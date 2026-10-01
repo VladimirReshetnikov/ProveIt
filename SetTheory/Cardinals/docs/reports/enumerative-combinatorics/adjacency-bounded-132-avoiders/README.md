@@ -1,8 +1,8 @@
 # Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations
 
-**Strict monotonicity of the growth constants, the exact constant 2 log π in their approach to 4, the largest-jump law near the boundary m = n − d, the macroscopic jump law for m proportional to n, the critical moments of the largest jump, and the staircase of polynomial rarity below half size**
+**Strict monotonicity of the growth constants, the exact constant 2 log π in their approach to 4, the largest-jump law near the boundary m = n − d, the macroscopic jump law for m proportional to n, the critical moments of the largest jump, the staircase of polynomial rarity below half size, and the exact half-size crossover**
 
-This is a research report in six parts. Part I is the original report of
+This is a research report in seven parts. Part I is the original report of
 19 September 2026. Part II was added on 28 September 2026 in batch 38 of
 ProveIt's incoming-report intake, from a later manuscript that answers the
 question Part I left open: whether the centered remainder `E_m` converges.
@@ -19,18 +19,25 @@ batch 68, from a seventh manuscript that proves the exact polynomial order of
 `P(M_n ≤ ⌊θn⌋)` for every fixed `0 < θ < 1` and the order and order-crossover
 scale at `m = n/2`, answering at the level of orders Part IV's questions on
 the hierarchy below half size and the window at `m = n/2` (its Sections 47.1
-and 47.2) and Part V's half-size question (its Section 63.3). All seven are
+and 47.2) and Part V's half-size question (its Section 63.3). Part VII was
+added on 1 October 2026 in batch 71, from an eighth manuscript that proves
+the limits Part VI left open at half size:
+`n P(M_n ≤ ⌊n/2 + t sqrt(n)⌋) → 6 + 12 t_+/sqrt(π)` locally uniformly in `t`,
+and `P(M_n ≤ ⌊θn⌋) ~ I_3(θ)/(2πn)` for `1/3 < θ ≤ 1/2`; this answers Part VI's
+questions 74.1–74.3 in their first case (`r = 2`, `q = 2`) and the
+transition questions of Parts IV and V (47.2, 63.3). All eight are
 AI-assisted.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 19 Sep 2026 (*Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations*) | `strict_growth_132.zip` | (none) | unpacked `a3fe9660e`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–9 (pp. 12–26) and Appendices A–C (pp. 167–168) |
-| 02 | batch 38, manuscript 04 (*Closing the Catalan growth-constant gap: Endpoint renewal comparison for adjacency-bounded 132-avoiding permutations*, 28 Sep 2026, 23-page PDF as delivered) | `Closing_Catalan_Growth_Gap` (inner `Adjacency_Growth_Constant/`, main file `article.tex`) | `6c9175a54` | `938b2f74e` (prefix `02-centered-remainder-`) | Part II: Sections 10–20 (pp. 27–47) |
-| 03 | batch 43, manuscript 02 (*The Largest Jump Is Almost Maximal: An algebraic boundary law for random 132-avoiding permutations*, 29 Sep 2026, 26-page US Letter PDF as delivered) | `ProveIt_Largest_Jump_Research.zip` (inner `ProveIt_Largest_Jump/`, main file `article.tex`), arrived in `06bcc37a8` | `8d936ee23` | `faef2ed2a` (prefix `03-largest-jump-`) | Part III: Sections 21–36 (pp. 48–72) |
-| 04 | batch 52, manuscript 10 (*The Macroscopic Jump Law: Exact rare-event profiles and moment constants for random 132-avoiding permutations*, 29 Sep 2026, 23-page US Letter PDF as delivered); the base of Part IV. It also read the standalone Part III source `article(20260929-161704).tex` from Vladimir's library | `ProveIt_Macroscopic_Jump.zip` (inner `ProveIt_Macroscopic_Jump/`, main file `article.tex`), arrived in `458ccfb80` | `1ee53d57d` | `a701d9098` (prefix `04-macroscopic-jump-`) | Part IV: Sections 37–50 (pp. 73–112), merged with 05 |
+| 01 (original) | Cardinals-collection report, 19 Sep 2026 (*Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations*) | `strict_growth_132.zip` | (none) | unpacked `a3fe9660e`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–9 (pp. 13–27) and Appendices A–C (pp. 181–182) |
+| 02 | batch 38, manuscript 04 (*Closing the Catalan growth-constant gap: Endpoint renewal comparison for adjacency-bounded 132-avoiding permutations*, 28 Sep 2026, 23-page PDF as delivered) | `Closing_Catalan_Growth_Gap` (inner `Adjacency_Growth_Constant/`, main file `article.tex`) | `6c9175a54` | `938b2f74e` (prefix `02-centered-remainder-`) | Part II: Sections 10–20 (pp. 28–48) |
+| 03 | batch 43, manuscript 02 (*The Largest Jump Is Almost Maximal: An algebraic boundary law for random 132-avoiding permutations*, 29 Sep 2026, 26-page US Letter PDF as delivered) | `ProveIt_Largest_Jump_Research.zip` (inner `ProveIt_Largest_Jump/`, main file `article.tex`), arrived in `06bcc37a8` | `8d936ee23` | `faef2ed2a` (prefix `03-largest-jump-`) | Part III: Sections 21–36 (pp. 49–73) |
+| 04 | batch 52, manuscript 10 (*The Macroscopic Jump Law: Exact rare-event profiles and moment constants for random 132-avoiding permutations*, 29 Sep 2026, 23-page US Letter PDF as delivered); the base of Part IV. It also read the standalone Part III source `article(20260929-161704).tex` from Vladimir's library | `ProveIt_Macroscopic_Jump.zip` (inner `ProveIt_Macroscopic_Jump/`, main file `article.tex`), arrived in `458ccfb80` | `1ee53d57d` | `a701d9098` (prefix `04-macroscopic-jump-`) | Part IV: Sections 37–50 (pp. 74–113), merged with 05 |
 | 05 | batch 52, manuscript 11 (*Macroscopic Deficits of the Largest Jump: A rare-event law and exact moment constants for 132-avoiding permutations*, 29 Sep 2026, 24-page US Letter PDF as delivered) | `ProveIt_Macroscopic_Jump_Research.zip` (inner directory also `ProveIt_Macroscopic_Jump/`, main file `article.tex`), arrived in `11e1e9001` | `1ee53d57d` | `a701d9098` (prefix `05-macroscopic-deficits-`) | Part IV (as 04), in particular Sections 40.4–40.5, 42, 43.3 and 46.2–46.5 |
-| 06 | batch 64, manuscript 06 (*Every Logarithmic Scale Contributes: Critical moment crossover and endpoint corrections for the largest jump of a 132-avoiding permutation*, 30 Sep 2026, 27-page US Letter PDF as delivered) | `ProveIt_Critical_Jump_Moments.zip` (inner `Critical_Jump_Moments/`, main file `article.tex`), arrived in `7747fcfdd` | `cb1646dc4` | `3025c15df` (prefix `06-critical-moments-`) | Part V: Sections 51–66 (pp. 113–140) |
-| 07 | batch 68, manuscript 05 (*A Staircase of Polynomial Rarity: Bulk exponents and reciprocal-threshold crossover scales for adjacency-bounded 132-avoiding permutations*, 30 Sep 2026, 25-page US Letter PDF as delivered) | `ProveIt_Polynomial_Rarity.zip` (inner `ProveIt_Polynomial_Rarity/`, main file `article.tex`), arrived in `a866ff9a2` | `ffddaa8b9` | `29e52fcdf` (prefix `07-polynomial-rarity-`) | Part VI: Sections 67–78 (pp. 141–166) |
+| 06 | batch 64, manuscript 06 (*Every Logarithmic Scale Contributes: Critical moment crossover and endpoint corrections for the largest jump of a 132-avoiding permutation*, 30 Sep 2026, 27-page US Letter PDF as delivered) | `ProveIt_Critical_Jump_Moments.zip` (inner `Critical_Jump_Moments/`, main file `article.tex`), arrived in `7747fcfdd` | `cb1646dc4` | `3025c15df` (prefix `06-critical-moments-`) | Part V: Sections 51–66 (pp. 114–141) |
+| 07 | batch 68, manuscript 05 (*A Staircase of Polynomial Rarity: Bulk exponents and reciprocal-threshold crossover scales for adjacency-bounded 132-avoiding permutations*, 30 Sep 2026, 25-page US Letter PDF as delivered) | `ProveIt_Polynomial_Rarity.zip` (inner `ProveIt_Polynomial_Rarity/`, main file `article.tex`), arrived in `a866ff9a2` | `ffddaa8b9` | `29e52fcdf` (prefix `07-polynomial-rarity-`) | Part VI: Sections 67–78 (pp. 142–167) |
+| 08 | batch 71, manuscript 03 (*Exact half size crossover for adjacency bounded 132 avoiders*, 1 Oct 2026, 8-page US Letter PDF as delivered; byline "AI-assisted mathematical research") | `132_Avoider_Crossover_Package.zip` (inner `Half_Size_Crossover/`, main file `half_size_crossover.tex`), arrived in `aee32ad45` | `29e52fcdf` | `427bca743` (prefix `08-half-size-crossover-`) | Part VII: Sections 79–89 (pp. 168–180) |
 
 The pin `6c9175a54` is ProveIt commit
 `6c9175a54bcaad3bfc2d416257d2b7d3dff2c1e0`; the manuscript quotes the blob
@@ -109,6 +116,28 @@ lower bounds are Part IV's Theorem 45.1, re-derived and credited; the upper
 bounds, the endpoint orders, the crossover comparison and the renewal theorem
 are new. Section 78.2 lists where the merge had to choose.
 
+The pin `29e52fcdf` is ProveIt commit
+`29e52fcdf8bfa99d52a76d3de380f58c24584b1e`, the placement commit of batch 68.
+Manuscript 03 of batch 71 records the blob `0b7cb2f2e6…` of this
+`article.tex` there, which ends at Part V (it is also the blob of the parent
+of `cfdefe6e3`, the commit that wrote Part VI), and it read the incoming
+batch-68 archive `ProveIt_Polynomial_Rarity.zip` (blob `cf18b47515…`,
+arrival commit `a866ff9a2`), whose manuscript is printed here as Part VI. So
+the manuscript's statements about Parts III–V refer to the text printed here
+(less the dated batch-68 notes), and its citations of the "incoming
+Polynomial Rarity manuscript" are printed as references to Part VI. The
+manuscript, its PDF and its delivery README are not shipped; they survive in
+the arrival commit `aee32ad45`. Its `SHA256SUMS` ledger was verified at
+placement (11/11) and retired. Part VII prints every result, proof, remark,
+limitation and question of the manuscript. What it re-derives from Parts IV
+and VI (the first-deficiency and last-entry estimates, the threshold parser
+above half size, the word masses and the two-piece acceptance weight, the
+local small-word bound and the exponential tilt) is printed with merge notes
+naming the earlier statement; the new content is the two limit theorems, the
+three-piece endpoint table and its mass 8, the exclusion of every other
+parser family at the scale `1/n`, and `I_3(1/2) = 12π`. Section 88.4 lists
+where the merge had to choose.
+
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The exact
 certificates and finite checks verify finite algebraic statements; they are
@@ -119,7 +148,10 @@ they have exactly the status of those parts; its printed decimals are
 high-precision numerics, not interval certificates. Part VI's theorems are
 two-sided orders (`Θ`, `≍`), not equivalents, and are proved without any
 asymptotic theorem of Parts I–V; its exact counts through `n = 128` are
-regression checks, not evidence for the orders.
+regression checks, not evidence for the orders. Part VII's theorems are
+limits and equivalents with no finite-size error rate; they re-derive every
+finite interface they use and assume no asymptotic theorem of Parts I–VI,
+and its finite checks are regression checks.
 
 ## Results
 
@@ -329,7 +361,45 @@ re-derives Part IV's lower bounds (Theorem 45.1) and adds the matching upper
 bounds; for `θ > 1/2` it gives only the order `n^(-1/2)`, weaker than Part IV's
 equivalent. Part VI writes `r = ⌊1/θ⌋`; Part IV's question writes
 `r = ⌈1/θ⌉ − 1`; the two agree unless `1/θ` is an integer, where the first is
-`q` and the second `q − 1`.
+`q` and the second `q − 1`. [1 October 2026, batch 71: Part VII proves, at
+`q = 2` and `r = 2`, the limiting transition function, the endpoint constant
+and the amplitude that this paragraph and item 3 leave open; see below.]
+
+**Part VII** (manuscript 03 of batch 71). With `p_n(m)` as for Part VI and
+`I_3(θ) = ∬ (xyz)^(-3/2) dx dy` over `x + y + z = 1`, `0 < x, y, z ≤ θ`
+(coordinate measure `dx dy`, `z = 1 − x − y`), it proves:
+
+1. **The half-size crossover** (Theorem 80.1): for every `B < ∞`,
+   `sup_(|t| ≤ B) |n p_n(⌊n/2 + t sqrt(n)⌋) − 6 − (12/sqrt(π)) t_+| → 0`; in
+   particular `p_n(⌊n/2⌋) ~ 6/n`, along all `n`, odd and even.
+2. **The first sub-half-size equivalent** (Theorem 80.2): for
+   `1/3 < θ ≤ 1/2`, `p_n(⌊θn⌋) ~ I_3(θ)/(2πn)`, uniformly on compact
+   subintervals of `(1/3, 1/2)`; `I_3` is finite and positive and
+   `I_3(1/2) = 12π` (Section 87).
+3. The ingredients: uniform endpoint estimates for a uniform avoiding block
+   (Lemma 81.1); the canonical threshold parser for **every** bound `m < n`
+   (Lemma 82.1; Part IV's parser needed `m ≥ n/2`); small-word estimates
+   (Lemma 83.1); the two-piece ramp, of mass `3` (Section 84); the exact
+   three-piece endpoint table (equation (371)) and its mass (372)
+   `𝒲_R(1/4)² + 𝒲(1/4)𝒲_A(1/4)/2 = 4 + 4 = 8`; and the exclusion of every
+   other parser family at the scale `1/n` (Section 86).
+4. Finite regression checks (Table 28): `n p_n(⌊n/2⌋)` = 4.6298, 4.8690,
+   5.0163, 5.1947, 5.3026 at `n` = 64, 96, 128, 192, 256, rising slowly
+   towards 6; and four further questions (Section 89).
+
+So Part VI's crossover question 74.3 is answered at `q = 2`: its candidate
+`𝔎_q + 𝔏_q t_+^(q−1)` holds with `𝔎_2 = 6` and `𝔏_2 = 12/sqrt(π)`, the slope
+Part VI said matching "would suggest", here proved directly. Its question
+74.2 is answered at `q = 2` (`𝔎_2 = 6`, no residue-class oscillation in the
+limit), and 74.1 at `r = 2` (`Ω_2(θ) = I_3(θ)/(2π)` for `1/3 < θ < 1/2`).
+Part IV's 47.2 and Part V's 63.3 now have their transition function on the
+scale `sqrt(n)`; Part IV's 47.1 is answered for `1/3 < θ < 1/2` only.
+Theorem 80.1 sharpens Part VI's Corollary 68.4 from an order to a limit, and
+Theorem 80.2 its Theorem 68.1 from an order to an equivalent for
+`1/3 < θ ≤ 1/2`. The ramp slope is the slope `12/sqrt(π)` of Part IV's
+profile at its upper end (equation (222)), and `I_3(θ) → 0` as `θ ↓ 1/3`, in
+agreement with the jump of the staircase exponent there. Nothing earlier is
+refuted.
 
 ## Not claimed
 
@@ -359,7 +429,9 @@ equivalent. Part VI writes `r = ⌊1/θ⌋`; Part IV's question writes
   bullet read "**Part III does not give a bulk joint limit.**", and the bulk
   profile `Ψ(u)` of Section 32.1 was a proposed problem.] [30 September 2026,
   batch 68: for `θ ≤ 1/2` Part VI proves the exact order
-  `Θ(n^(-⌊1/θ⌋/2))` (Theorem 68.1), but no equivalent.] Nothing interpolates
+  `Θ(n^(-⌊1/θ⌋/2))` (Theorem 68.1), but no equivalent.] [1 October 2026,
+  batch 71: for `1/3 < θ ≤ 1/2` Part VII proves the equivalent
+  `I_3(θ)/(2πn)` (Theorem 80.2); for `θ ≤ 1/3` there is still none.] Nothing interpolates
   between the fixed-`m` spectral regime of Parts I–II and the boundary or
   bulk regimes (Sections 32.10 and 47.10).
 - Part III does not claim exact leading constants for `E D_n` or the
@@ -392,7 +464,11 @@ equivalent. Part VI writes `r = ⌊1/θ⌋`; Part IV's question writes
   order `n^(-1)` and order-crossover scale `sqrt(n)` at `m = n/2`
   (Theorem 68.1, Corollary 68.4); the equivalents, the amplitudes `Ω_r(θ)`
   and a limiting transition function at `m = n/2` stay unproved, and every
-  other item stands.]
+  other item stands.] [1 October 2026, batch 71: Part VII proves the
+  equivalent for `1/3 < θ ≤ 1/2` (so `Ω_2(θ) = I_3(θ)/(2π)`) and the
+  transition function `6 + 12 t_+/sqrt(π)` at `m = n/2` on the scale
+  `sqrt(n)` (Theorems 80.1 and 80.2); equivalents for `θ ≤ 1/3` stay
+  unproved.]
 - **Part V does not claim** a local limit for individual lattice masses, the
   exact total-variation constant, the transition at `m = n/2`, a rate for the
   centered half-moment, any correction theorem for `p ≤ 0` (the coefficient
@@ -406,7 +482,8 @@ equivalent. Part VI writes `r = ⌊1/θ⌋`; Part IV's question writes
   permutation theorems are exactly as reliable as the three inputs from
   Parts III and IV; its abstract theorems do not depend on them.
   [30 September 2026, batch 68: the transition at `m = n/2` is described at
-  the level of orders by Part VI (Corollary 68.4).]
+  the level of orders by Part VI (Corollary 68.4).] [1 October 2026,
+  batch 71: and its limiting function by Part VII (Theorem 80.1).]
 - **Part VI does not claim** an asymptotic equivalent, an amplitude or any
   constant: its results are two-sided orders, and the normalized sequences are
   only shown to be bounded above and away from zero. In particular it does not
@@ -424,7 +501,25 @@ equivalent. Part VI writes `r = ⌊1/θ⌋`; Part IV's question writes
   For `θ > 1/2` it is weaker than Part IV's equivalent, which it does not use.
   Its lower bounds and its two envelopes are Part IV's and Part I's, credited,
   and its transfer principle (Proposition 72.1) requires cutoff-respecting
-  encodings that a generic Catalan class need not have.
+  encodings that a generic Catalan class need not have. [1 October 2026,
+  batch 71: Part VII proves `Ω_2(θ)` for `1/3 < θ < 1/2`, `𝔎_2 = 6` and
+  `ℌ_2(t) = 6 + 12 t_+/sqrt(π)`, the candidate with `𝔏_2 = 12/sqrt(π)`;
+  every other item of this bullet stands.]
+- **Part VII does not claim** any finite-size error rate or explicit error
+  term (Section 88.1; its delivery README's "explicit error bounds" is not
+  borne out by the text, see "Discrepancies"), uniformity of Theorem 80.2 up
+  to `θ = 1/3` or as `θ ↑ 1/2` beyond the stated compact subintervals and
+  the endpoint, anything for `θ ≤ 1/3` (the amplitudes `Ω_r(θ)` for `r ≥ 3`
+  and the endpoint constants `𝔎_q` for `q ≥ 3`), crossover functions at
+  `1/q` for `q ≥ 3`, or a limit law for the conditioned permutation (its
+  three-piece endpoint table identifies the leading parser families, not a
+  conditioned limit); nothing about the fixed-`m` regime or the component
+  ordering, and no Lean or Rocq declaration. Its finite table is a
+  regression check, not evidence of convergence. Its endpoint estimates, the
+  parser above half size, the word masses and the small-word lemmas are
+  those of Parts IV and VI, re-derived and credited; no exhaustive priority
+  is claimed. One step of its proof, the bound `4(1/2)^j` after Lemma 83.1,
+  is terse as delivered and is justified in the editorial Remark 83.3.
 - Part II's scalar polynomial is not a denominator of `A_m`,
   `det(I - W_V) ≠ 1 - K_m` in general, and the coefficientwise majorant
   `A_m ⪯ 1/(1 - K_m)` is **false** (at `m = 2`, `n = 3`: 5 against 3). The
@@ -458,12 +553,21 @@ equivalent. Part VI writes `r = ⌊1/θ⌋`; Part IV's question writes
   fitted to data. Part VI's Table 26 and Figure 15 are rounded displays of
   exact counts for `n ≤ 128`, whose scaled columns are not all monotone (the
   `θ = 1/3` column rises and falls) and are not claimed to converge; Figure 14 graphs the proved exponent, not data.
+  [1 October 2026, batch 71: two of Table 26's columns now have proved
+  limits, `6` at `θ = 1/2` and `I_3(2/5)/(2π) ≈ 0.4693` at `θ = 2/5`; the
+  tabulated `θ = 2/5` values, 1.14–1.21, are about 2.5 times that limit.]
+  Part VII's Table 28 is a rounded display of exact counts for
+  `n ≤ 256`, far from the limit `6` (5.30 at `n = 256`); no constant of
+  Part VII was fitted to data.
 - No priority. All literature checks were targeted (Part I on
   19 September 2026, Part II on 28 September 2026, Parts III and IV on
-  29 September 2026, Parts V and VI on 30 September 2026: the arXiv v1 records
-  of Nadler and of Mayama–Akita, for Part VI also the record and an
-  author-hosted PDF of Kerriou–Mörters and searches for truncated heavy-tail
-  and fewest-big-jumps asymptotics, for
+  29 September 2026, Parts V and VI on 30 September 2026, Part VII on
+  1 October 2026: the arXiv v1 records
+  of Nadler and of Mayama–Akita, for Parts VI and VII also the record of
+  Kerriou–Mörters (for Part VI also an author-hosted PDF) and, for Part VI,
+  searches for truncated heavy-tail
+  and fewest-big-jumps asymptotics, for Part VII searches for half-size
+  thresholds and crossover functions, for
   Part III also the records of two Janson papers, and for Parts III–VI
   targeted searches for largest adjacent differences in 132-avoiders; the
   Flajolet–Odlyzko PDF was not retrieved); none is an exhaustive novelty
@@ -529,6 +633,22 @@ moved by one, where dated notes reflowed pages, and the three of Part I's
 appendices, which moved by 28. Part VI is Sections 67–78,
 Tables 23–26 (Part V's uncaptioned audit longtable in Section 65 consumes the
 number 22) and Figures 14–15, and comes before Part I's appendices.
+
+Part VII added **49** labels, all with the prefix `hc:` ("half-size
+crossover"), its own prefix as for Parts II–VI (no `hc:` label existed
+before). The manuscript's 25 labels were all bare generic names
+(`thm:window`, `eq:8`, `eq:J`, `eq:L`, `sec:remainders`, …) and all 25 were
+prefixed; the merge added 24, to new sections, subsections, the two tables
+and the editorial Remark 83.3. No label was added to Parts I–VI. Total:
+**700**. No label was renamed or removed, and in the batch-71 build every one
+of the 651 earlier labels keeps its number (compared in the `.aux` files of
+the committed and the new build); their page numbers moved by one, because
+the contents grew by one page (the title page, which would otherwise have
+spilled onto a second page, still has one; see "Build the article"), except
+three labels of Part VI that moved by two, where dated notes reflowed pages,
+and the three of Part I's appendices, which moved by 14. Part VII is Sections 79–89, Tables 27–28 and
+equations (359)–(376); it has no figures, and comes before Part I's
+appendices.
 
 ## Notation
 
@@ -647,14 +767,36 @@ reading. Watch in particular for:
   T^free_(u,v)(n), T^(m)_(u,v)(n), c_(k,u)`. No normalization changed.
 - `≍` and `Θ` mean bounded ratios for large `n`, never ratio convergence.
 
+Part VII keeps Part VI's `p_n(m)`, `𝔴_q`, `𝔎_q`, `𝔏_q`, `ℌ_q`, Part IV's
+`θ`, `Ω_r(θ)`, `c_j = C_j/4^j`, `c_±`, the endpoint letters `F`, `J`, `L`,
+the operations `R_β`, `A`, the word series `𝒲`, `𝒲_R` and the acceptance
+weight `χ(w)`, and renames the manuscript symbols that clash. Table 27
+(Section 79.3) lists them with the tempting false reading. Watch in
+particular for:
+
+- The manuscript's word masses `W, W_R, W_A` are printed
+  `𝒲(1/4), 𝒲_R(1/4), 𝒲_A(1/4)` (`= 4, 2, 2`), with `𝒲_A = 𝒲 − 𝒲_R`; a bare
+  `W` is Part IV's random outer word or Part VI's renewal kernel.
+- Its small-word series `S(z), T(z)` are printed `S_n(z), T_n(z)`: they are
+  Part VI's equation (340) for the upper kernel (327), of mass `3/4`.
+- `x, y, z` are the three macroscopic size fractions in `I_3` and in the
+  three-piece section, and `z` is also the formal variable of Sections 82–83;
+  the two never meet in one formula (in `I_3`, `z = 1 − x − y`).
+- `K, K_h, K_B` are constants, as in Part IV, not Part II's polynomial `K_m`
+  or Part VI's `𝔎_q`; `L` is the last entry, except in the proof of
+  Lemma 83.1, where it is the tilt constant, as in Part VI.
+- Its `I_3(θ)` is a three-piece integral, not Part IV's split integral
+  `I(u)`. No normalization changed.
+
 ## Files
 
 ```
 article.tex                                          the report, standalone LaTeX with an internal bibliography
-article.pdf                                          the compiled report, 169 pages (title page, contents pp. 2–11,
-                                                     Part I pp. 12–26, Part II pp. 27–47, Part III pp. 48–72,
-                                                     Part IV pp. 73–112, Part V pp. 113–140, Part VI pp. 141–166,
-                                                     Part I's appendices pp. 167–168, bibliography pp. 168–169)
+article.pdf                                          the compiled report, 183 pages (title page, contents pp. 2–12,
+                                                     Part I pp. 13–27, Part II pp. 28–48, Part III pp. 49–73,
+                                                     Part IV pp. 74–113, Part V pp. 114–141, Part VI pp. 142–167,
+                                                     Part VII pp. 168–180, Part I's appendices pp. 181–182,
+                                                     bibliography p. 183)
 README.md                                            this guide
 build.sh, build.ps1                                  Part I's three-pass pdfLaTeX scripts (build in place; see below)
 requirements.txt                                     Part I's pins: numpy 2.3.5, scipy 1.17.0, sympy 1.14.0, matplotlib 3.10.8
@@ -762,6 +904,14 @@ data/07-polynomial-rarity-verification_log.txt       Part VI: recorded run (seve
 07-polynomial-rarity-SOURCES.md                      Part VI: the manuscript's pin, inspected files and literature ledger
 figures/07-polynomial-rarity-phase_exponents.{pdf,png}  Part VI: Figure 14 (PDF regenerated, PNG as delivered)
 figures/07-polynomial-rarity-finite_counts.{pdf,png}    Part VI: Figure 15 (PDF regenerated, PNG as delivered)
+code/08-half-size-crossover-model.py                 Part VII: the credited endpoint model (byte-identical to code/07-polynomial-rarity-model.py)
+code/08-half-size-crossover-verify.py                Part VII: generator, parser and word checks, exact-count table (standard library)
+code/08-half-size-crossover-build.sh                 Part VII: the manuscript's three-pass build (delivered layout)
+data/08-half-size-crossover-finite_checks.csv        Part VII: 12 exact window samples, n = 64, 96, 128, t = −1/2, 0, 1/2, 1 (CRLF)
+data/08-half-size-crossover-verification.json        Part VII: recorded finite-check run (PASS; 36, 5,599, 200; masses 3 and 8)
+data/08-half-size-crossover-verification.log         Part VII: its stdout capture (byte-identical to the JSON)
+data/08-half-size-crossover-validation.json          Part VII: audit of the delivered (unshipped) 8-page PDF
+08-half-size-crossover-SOURCES.md                    Part VII: the manuscript's pin, inspected sources and novelty boundary
 ```
 
 The sixteen `02-centered-remainder-` code and data files were staged in the
@@ -812,6 +962,22 @@ README and PDF are not shipped. In the write phase the two figure PDFs were
 regenerated (see "Discrepancies" below); the PNG previews, the code and the
 data are unchanged.
 
+The eight `08-half-size-crossover-` files were staged in the placement
+commit `427bca743`, byte-identical to the delivery (the delivered root
+`model.py`, `verify.py` and `build.sh` are under `code/`, the root
+`finite_checks.csv`, `verification.json`, `verification.log` and
+`validation.json` under `data/`, and the root `SOURCES.md` is
+`08-half-size-crossover-SOURCES.md`). Two of them duplicate other files:
+`code/08-half-size-crossover-model.py` is the same blob (`a4fdee3761`) as
+`code/07-polynomial-rarity-model.py`, because the manuscript copied Part VI's
+model, and `data/08-half-size-crossover-verification.log` is identical to the
+JSON it captures; both are shipped so that the delivered layout can be
+restored by renaming alone. `data/08-half-size-crossover-finite_checks.csv`
+is all-CRLF as delivered (13 lines) and is protected by a `-text` line in
+`SetTheory/Cardinals/.gitattributes`; no other Part VII file contains a CR
+byte. The delivered `SHA256SUMS` (11/11 verified at placement), manuscript,
+README and PDF are not shipped. Part VII has no figures.
+
 ## Build the article
 
 ```sh
@@ -858,8 +1024,8 @@ warning. Part V's three figures embed TrueType fonts.
 `code/06-critical-moments-build.sh` is the manuscript's own script; it changes
 to its own directory, looks for an `article.tex` there and fails in `code/`.
 
-The batch-68 build, which is the shipped `article.pdf` (169 pages,
-30 September 2026, `latexmk` with pdfTeX 1.40.29 under MiKTeX 26.2), is
+The batch-68 build (169 pages,
+30 September 2026, `latexmk` with pdfTeX 1.40.29 under MiKTeX 26.2) was
 equally clean: 0 errors, 0 undefined references or citations, 0 multiply
 defined labels, no duplicate destinations, no overfull or underfull boxes,
 and the same two font warnings as a build of the committed batch-64 text. The
@@ -868,6 +1034,21 @@ under the existing `\enlargethispage`; nothing else on it changed. Part VI's
 two figures embed TrueType fonts. `code/07-polynomial-rarity-Makefile` is the
 manuscript's own file: its targets run `latexmk` on an `article.tex` and
 `python code/…` from the package root, so they do nothing useful in `code/`.
+
+The batch-71 build, which is the shipped `article.pdf` (183 pages,
+30 September 2026 Pacific time, `latexmk` with pdfTeX 1.40.29 under
+MiKTeX 26.2), is equally clean: 0 errors, 0 undefined references or
+citations, 0 multiply defined labels, no duplicate destinations, no overfull
+or underfull boxes, and the same two font warnings as a build of the
+committed batch-68 text. With the abstract's batch-71 paragraph the title
+page spilled its last lines onto a second page; the batch-71 edit shortened
+its four vertical spaces (4 mm → 1 mm, 3 mm → 1 mm twice, 1 mm → 0 mm), and
+the title page fits on one page again under the existing `\enlargethispage`;
+nothing else on it changed. Part VII has no figures.
+`code/08-half-size-crossover-build.sh` is the manuscript's own script; it
+changes to its own directory and runs pdfLaTeX three times on a
+`half_size_crossover.tex` there, which is not shipped, so it fails in
+`code/`.
 
 ## Rerun the checks
 
@@ -1152,6 +1333,63 @@ were recomputed with Part I's own counter `code/model.py` (`counts`,
 `majorant_counts`, `block_counts` with `d = 1`; 0 mismatches, read-only
 import), and Table 26 was checked against the CSV to six decimals.
 
+**Part VII.** Its verifier uses the delivered names and writes beside
+itself, **overwriting its own recorded outputs** there. Run in place here it
+fails: `08-half-size-crossover-verify.py` does `from model import
+EndpointCounter, avoiders, catalans, max_jump`, which in `code/` loads
+Part I's `code/model.py`, which has no `EndpointCounter`, so it stops with an
+`ImportError`; were the import to succeed, it would write new unprefixed
+`code/finite_checks.csv` and `code/verification.json` (it writes to its own
+directory, `Path(__file__).resolve().parent`). `08-half-size-crossover-build.sh`
+needs the unshipped manuscript. Restore the delivered layout in a scratch
+copy (Git Bash or another POSIX shell, from this directory):
+
+```sh
+W=/path/to/scratch
+k=08-half-size-crossover
+mkdir -p "$W/$k"
+cp code/$k-model.py  "$W/$k/model.py"     # the credited model; same blob as code/07-polynomial-rarity-model.py
+cp code/$k-verify.py "$W/$k/verify.py"
+cd "$W/$k"
+py verify.py                 # standard library, no -O; rewrites finite_checks.csv and verification.json here
+py verify.py --max-n 256     # adds n = 192 and 256 to the table; several minutes
+```
+
+The default run was done this way on 30 September 2026 (Python 3.14.4): it
+passed (`"status": "PASS"`, 36 endpoint counts, 5,599 parser
+reconstructions, 200 word-coefficient equalities, masses 3 and 8) in about
+21 seconds (the delivered record says 8.3). The regenerated
+`finite_checks.csv` is byte-identical to the shipped one, and
+`verification.json` differs only in `elapsed_seconds` and in its line
+endings. **CRLF hazard:** the CSV writer uses `newline=''` with the `csv`
+module's `\r\n` terminator, so it writes CRLF on every platform, which is why
+the delivered CSV is CRLF and carries a `-text` line in
+`SetTheory/Cardinals/.gitattributes`; on Windows `write_text` also writes the
+JSON with CRLF, whereas the shipped JSON is LF. The shipped
+`verification.log` is the delivery's capture of the script's standard
+output, not a file the script writes. Do not copy regenerated outputs back
+over the shipped files; compare them with `diff --strip-trailing-cr`. The
+`--max-n 256` run was not repeated in full here (it exceeded a three-minute
+limit); its two extra rows, the values 5.194724686827719 and
+5.302598836522250 of Table 28, were reproduced independently, for this
+write-up, to eight decimals by a floating-point evaluation of the endpoint
+recurrence (validated against 38 exact counts to a relative error of
+6·10⁻¹⁶). Also independently, for this
+write-up: the eight counts at `n = 64` and `96` in the CSV were recomputed
+with Part I's own counter `code/model.py` (a different implementation;
+0 mismatches, read-only import), and the four rows shared with Part VI's
+CSVs agree; `I_3(1/2) = 12π` was confirmed by quadrature to 3·10⁻¹⁶, and
+`I_3(2/5)/(2π) = 0.469269`, `I_3(9/20)/(2π) = 1.636248`; the masses `1/2`
+(one large `R` letter) and `1` (terminal core) of Remark 83.3 were
+recomputed exactly with SymPy 1.14.0; and the same floating-point
+evaluation up to `n = 800` is consistent with the two theorems without
+testing them (a three-term fit
+`A + B n^(-1/2) + C/n` gives `A ≈ 0.4615` at `θ = 2/5` against
+`I_3(2/5)/(2π) = 0.4693`, `A ≈ 1.639` at `θ = 9/20` against `1.636`, and
+`A ≈ 6.02` at `θ = 1/2` against `6`). At `n` = 255, 256, 257 the values
+`n p_n(⌊n/2⌋)` = 5.109, 5.303, 5.113 show a finite-size parity effect of
+about `3/sqrt(n)`, which vanishes in the limit.
+
 ## Discrepancies and delivery names
 
 - **Delivery names.** The Part II scripts and records use the delivered paths
@@ -1161,7 +1399,7 @@ import), and Table 26 was checked against the CSV to six decimals.
 - **Unshipped PDF.** `data/02-centered-remainder-pdf_validation.json` and
   `data/02-centered-remainder-pdf_fonts.txt` describe the manuscript's
   delivered 23-page PDF, which is not shipped; `article.pdf` here is a new
-  build of the merged text (169 pages since batch 68).
+  build of the merged text (183 pages since batch 71).
 - **Duplicates.** Each Part II console capture is byte-identical to the JSON
   it prints, and `data/02-centered-remainder-environment.json` is
   byte-identical to Part I's `data/environment.json` (the same environment).
@@ -1353,22 +1591,97 @@ import), and Table 26 was checked against the CSV to six decimals.
   byte-identical to the delivery. The PNG previews are the delivered files.
   The axis label of Figure 15 writes `Pr` for the article's `P`; its caption
   says so.
+- **Part VII delivery names.** `code/08-half-size-crossover-verify.py`
+  imports `model` and writes `finite_checks.csv` and `verification.json`
+  beside itself (lines 11, 42, 77 and 83), and its docstring says "Run python
+  verify.py" and "The credited endpoint model is shipped as model.py";
+  `code/08-half-size-crossover-build.sh` builds `half_size_crossover.tex`
+  beside itself, which is not shipped (its text is Part VII);
+  `data/08-half-size-crossover-validation.json` names `verification.json`
+  and describes the delivered 8-page PDF, which is not shipped; and
+  `08-half-size-crossover-SOURCES.md` names `model.py` and `verify.py`. All
+  these are delivery names. The recipe above recreates the delivered layout;
+  the article quotes the shipped names. The delivered README (not shipped)
+  asks for Python 3.11 or later and writes `python`; the recipe uses `py`.
+- **Part VII duplicates.** `code/08-half-size-crossover-model.py` is
+  byte-identical to `code/07-polynomial-rarity-model.py` (Git blob
+  `a4fdee3761`): the manuscript copied Part VI's model and credits it
+  (`08-half-size-crossover-SOURCES.md`, line 13). Its docstring credits "the
+  Mayama--Akita recurrence and ProveIt's 05-macroscopic-deficits-model.py",
+  a shipped name. `data/08-half-size-crossover-verification.log` is
+  byte-identical to `data/08-half-size-crossover-verification.json`; it is
+  the delivery's capture of the script's standard output.
+- **"Independent" generation.** The delivered README (line 10) calls the
+  verifier's generator "independent finite Catalan generation", the
+  manuscript (Section 88.1) speaks of "independent generation of every
+  132-avoider through size eight", and `08-half-size-crossover-SOURCES.md`
+  (line 13) says that the verifier "independently generates all avoiders
+  through size eight". The generator is `avoiders` of the credited model module, which
+  builds avoiders by the maximum decomposition; generator and endpoint
+  counter are different algorithms in one module, and the Part VII verifier
+  does not test the generator against the 132 predicate. Part VI's verifier
+  did, for the same module, through `n = 7` (Section 88.1 prints a merge note).
+- **"Explicit error bounds".** The delivered README (line 23) says the
+  manuscript gives "ordinary mathematical proofs with explicit error bounds".
+  It does not: its proofs give limits without explicit error terms, and its
+  Section 9 says "No finite-size error rate is asserted here" (printed in
+  Section 88.1); quantitative errors are its third further question
+  (Section 89.3).
+- **Part VII's pin predates Part VI.** The pin `29e52fcdf` is batch 68's
+  placement commit; Part VI was written later, in `cfdefe6e3`. So
+  `08-half-size-crossover-SOURCES.md` (lines 7 and 11) and the manuscript
+  (its Section 9) describe this article as ending at Part V and the Polynomial
+  Rarity manuscript as an incoming archive whose article was "not staged";
+  both were true at the pin and are stale now. The article prints the
+  manuscript's sentence with a merge note (Section 88.3) and cites Part VI by
+  label wherever the manuscript cites the incoming manuscript.
+- **One terse step.** The manuscript's bound "Their total is bounded by
+  `4(1/2)^j`" (after Lemma 83.1) does not say where `(1/2)^j` comes from, and
+  under one reading (summing the gap letters too) it is false (the bound would
+  be `4·2^j`). The step is printed as delivered and followed by the
+  editorial Remark 83.3, which justifies it: each large `R` letter carries
+  total normalized mass `1/2`, the core `1`, and the gaps are controlled by
+  the suppression bound; the conclusion `o(n^(-1))` stands.
+- **Part VII's unshipped PDF, wording and date.** The delivered 8-page US
+  Letter PDF is not shipped; `article.pdf` here is a new A4 build of the
+  merged text. The delivery's byline and PDF metadata read "AI-assisted
+  mathematical research" (metadata "AI assisted mathematical research"); no
+  addressee is named. The manuscript and its ledger are dated
+  1 October 2026, the UTC date of the arrival commit `aee32ad45`
+  (30 September 2026, 19:45 −07:00); the dated notes of batch 71 use the
+  same date.
+- **Parts I–VI text since batch 71.** The abstract gained a batch-71
+  paragraph (the title page still fits; see "Build the article"). Dated
+  pointers to Part VII were added, with the original wording kept, to
+  Part II's research direction 19.5, Part IV's scope list (Section 37.3), its
+  paragraph on what neither manuscript claims (Section 38.6), its edge at one
+  half (Section 43.1), its remark after Theorem 45.1, its research questions
+  47.1 and 47.2, two rows of its scope table (Table 17) and "What is
+  resolved" (Section 48.2), Part V's scope (Section 62) and its research
+  question 63.3, Part VI's status box (Section 67.1), its answer list
+  (Section 67.2), Corollary 68.4, the caption of Table 26 and its research
+  questions 74.1–74.5, and Part I's Appendix B. No label of Parts I–VI was
+  added, renamed or removed, and nothing else in them changed.
 
 ## Relation to neighbouring reports and to the formal project
 
 No other report in the research-report collection treats these permutations,
-and none of Parts II–VI names a neighbouring report, so no reciprocal note
-was written; the dated pointers of Parts IV, V and VI are all inside this
+and none of Parts II–VII names a neighbouring report, so no reciprocal note
+was written; the dated pointers of Parts IV, V, VI and VII are all inside this
 report (a search of the collection for 132-avoidance, re-run on
-30 September 2026, finds only this report and the catalogue). Part V is a
-probabilistic moment-transfer argument and Part VI a renewal-sandwich order
-argument, neither transseries work; the transseries volume's README already
-sent Part IV's two manuscripts here on the same ground.
+30 September 2026 for batch 71, finds only this report, the catalogue and
+copies of its manifest inside other reports, and notes of other reports that
+name this one, e.g. to exclude it; none treats these permutations). Part V is a
+probabilistic moment-transfer argument, Part VI a renewal-sandwich order
+argument and Part VII a parser-and-Riemann-sum limit argument, none of them
+transseries work; the transseries volume's README already sent Part IV's two
+manuscripts here on the same ground.
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
-declaration anywhere in ProveIt formalizes any statement of Parts I–VI (a
+declaration anywhere in ProveIt formalizes any statement of Parts I–VII (a
 search of the repository's tracked `.lean` and `.v` files for 132-avoidance,
-adjacency bounds or largest jumps finds none, re-run on 30 September 2026).
+adjacency bounds or largest jumps finds none, re-run on 30 September 2026,
+batch 71; Part VII names no Lean or Rocq file or declaration).
 Section 19.9 records the formalization targets manuscript 04 of batch 38
 proposes (the renewal polynomial identity, the supersolution argument, the
 skew-cut injection, the uniform tail inequality), Section 32.9 those of
@@ -1430,12 +1743,21 @@ small-part suppression lemma; the matching upper bounds that complete the
 polynomial-order staircase, the reciprocal endpoints, the uniform two-term
 comparison and its order-crossover scales; and the renewal-sandwich transfer
 principle. Its two envelopes are Part I's and its lower bounds Part IV's,
-credited; its exact checks also use the Mayama–Akita recurrence.
+credited; its exact checks also use the Mayama–Akita recurrence. Part VII's
+are the extension of the canonical threshold parser to every adjacency
+bound, the exact three-piece endpoint table and its mass eight, the
+exclusion of small terminal children and mesoscopic outer words at the scale
+`1/n`, the three-piece integral `I_3` with `I_3(1/2) = 12π`, and the two
+limit theorems (the half-size ramp `6 + 12 t_+/sqrt(π)` and the equivalent
+`I_3(θ)/(2πn)`); its endpoint estimates, parser above half size, word masses
+and two-piece weight are Part IV's, and its small-word estimates Part VI's,
+re-derived and credited; its exact checks use Part VI's model, credited.
 
 Part VI also cites, as related context only, Céline Kerriou and Peter
 Mörters, *The fewest-big-jumps principle and an application to random
 graphs*, Bernoulli 31(3) (2025) 2525–2543, arXiv:2206.14627; no theorem of
-it is used, and the fewest-big-jumps mechanism is not claimed as new.
+it is used, and the fewest-big-jumps mechanism is not claimed as new. Part VII
+cites it on the same terms.
 
 Part III also cites, as background only, Svante Janson, *Simply generated
 trees, conditioned Galton–Watson trees, random allocations and condensation*,

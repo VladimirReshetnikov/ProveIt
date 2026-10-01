@@ -104,21 +104,21 @@
 
 \begin{document}
 \thispagestyle{empty}
-\enlargethispage{3\baselineskip}% batch 64: keeps the title page on one page
+\enlargethispage{3\baselineskip}% batch 64: keeps the title page on one page; batch 71: its four vertical spaces shortened to 1, 1, 1, 0 mm
 \begin{center}
 {\small\sffamily\color{Forest}\bfseries COMBINATORICS\quad /\quad INTEGER SEQUENCES\quad /\quad ASYMPTOTICS}\par
-\vspace{4mm}
+\vspace{1mm}
 {\LARGE\bfseries Strict growth and the Catalan limit\par
 for adjacency-bounded\par
 132-avoiding permutations}\par
-\vspace{3mm}
+\vspace{1mm}
 {\large A proof of the remaining strict-growth conjecture\par
 and a two-term large-bound asymptotic}\par
-\vspace{3mm}
+\vspace{1mm}
 {\sffamily Research report prepared for Vladimir Reshetnikov}\par
 {\small September 19, 2026}
 \end{center}
-\vspace{1mm}
+\vspace{0mm}
 \begin{abstract}
 Let $a_n^{(m)}$ count permutations $\pi\in S_n$ avoiding the pattern $132$ and
 satisfying $|\pi_{i+1}-\pi_i|\le m$. Nadler conjectured that their exponential
@@ -168,6 +168,11 @@ constant and finds the first correction to every moment of order $p<1/2$.
 $\mathbb P(M_n\le\lfloor\theta n\rfloor)=\Theta(n^{-\lfloor1/\theta\rfloor/2})$
 for every fixed $0<\theta<1$; at $m=n/2$ the order is $n^{-1}$ and it changes
 on the scale $\sqrt n$.
+
+\emph{Addition of 1 October 2026 (batch 71).} Part~VII proves
+$n\,\mathbb P(M_n\le\lfloor n/2+t\sqrt n\rfloor)\to6+12t_+/\sqrt\pi$ and
+$\mathbb P(M_n\le\lfloor\theta n\rfloor)\sim I_3(\theta)/(2\pi n)$ for
+$1/3<\theta\le1/2$.
 \end{abstract}
 \begin{resultbox}
 \textbf{Scope and attribution.}
@@ -2533,6 +2538,9 @@ open.]
 $a_n^{(\lfloor\theta n\rfloor)}/C_n=\Theta(n^{-\lfloor1/\theta\rfloor/2})$ for
 every fixed $0<\theta<1$ (\cref{pr:thm:staircase}); no equivalent below half
 size is proved, and the interpolation with the fixed-$m$ regime stays open.]
+[Added 1 October 2026, batch 71: Part~VII proves the equivalent
+$I_3(\theta)/(2\pi n)$ for $1/3<\theta\le1/2$ (\cref{hc:thm:phase}); below
+$1/3$ no equivalent is proved, and the interpolation stays open.]
 
 \subsection{Renewal comparisons for other constrained tree classes}
 The reset identity \cref{crem:lem:reset} is not specifically Catalan. It
@@ -4778,6 +4786,10 @@ $0<\theta\le1/2$, and at $m=n/2$ the order $\Theta(n^{-1})$ with
 order-crossover scale $\sqrt n$ (\cref{pr:thm:staircase,pr:cor:half});
 equivalents below half size and a limiting transition function at $m=n/2$
 stay open.]
+[Added 1 October 2026, batch 71: Part~VII proves the equivalent for
+$1/3<\theta\le1/2$ and the limiting transition function at $m=n/2$ on the
+scale $\sqrt n$ (\cref{hc:thm:phase,hc:thm:window}); equivalents for
+$\theta\le1/3$ stay open.]
 
 \section{The questions and the main results}
 \label{mj:sec:introduction}
@@ -5046,6 +5058,9 @@ smaller-bound bulk regime and the critical window at $m=n/2$ remain open.
 [Added 30 September 2026, batch 68: Part~VI proves the optimal polynomial
 order below the half-size cutoff and the order and order-crossover scale at
 $m=n/2$ (\cref{pr:thm:staircase,pr:cor:half}), but no equivalent there.]
+[Added 1 October 2026, batch 71: Part~VII proves the equivalent for
+$1/3<\theta\le1/2$ and the limit in the window at $m=n/2$
+(\cref{hc:thm:phase,hc:thm:window}).]
 Nor does this work resolve the fixed-$m$ component-ordering problem of
 Mayama--Akita.
 
@@ -6057,6 +6072,10 @@ orders: $\ljP(M_n\le\lfloor n/2\rfloor)=\Theta(n^{-1})$, and
 $\ljP(M_n\le m)\asymp n^{-1}+(2m-n)_+n^{-3/2}$ uniformly near $m=n/2$, so
 the order changes on the scale $\sqrt n$ (\cref{pr:cor:half}); no limiting
 transition function is proved.]
+[Added 1 October 2026, batch 71: Part~VII proves the limit,
+$n\,\ljP(M_n\le\lfloor n/2+t\sqrt n\rfloor)\to6+(12/\sqrt\pi)t_+$ locally
+uniformly in $t$ (\cref{hc:thm:window}); its ramp has the slope
+$12/\sqrt\pi$ of \eqref{mj:eq:half-edge}.]
 
 \subsection{Three equally weighted endpoint channels}
 Fix $0<u<1/2$ and condition on $D_n>un$. The split integral $I(u)$ of
@@ -6532,6 +6551,9 @@ The smallest admissible $r$ is $\lfloor1/\theta\rfloor$ in every case, and
 with it \eqref{mj:eq:many-block-lower} gives the exact polynomial order
 (\cref{pr:thm:staircase}); for $1/3<\theta\le1/2$ that order is $n^{-1}$.
 The profile, that is an equivalent, is still not proved.]
+[Added 1 October 2026, batch 71: for $1/3<\theta\le1/2$ Part~VII proves the
+equivalent $I_3(\theta)/(2\pi n)$ (\cref{hc:thm:phase}); for $\theta\le1/3$
+it is still not proved.]
 
 \section{Exact checks, exact data and sampling}
 \label{mj:sec:checks}
@@ -6865,6 +6887,10 @@ for every fixed $0<\theta<1$, so for nonreciprocal $\theta$ the exponent is
 $r/2$ with $r$ as above, while at $\theta=1/q$ it is $q/2$
 (\cref{pr:thm:staircase}). The existence and value of $\Omega_r(\theta)$, and
 an equivalent for $0<\theta<1/2$, stay open (\cref{pr:sec:q-amplitudes}).]
+[Added 1 October 2026, batch 71: for $r=2$ the amplitude exists:
+$\Omega_2(\theta)=I_3(\theta)/(2\pi)$ for $1/3<\theta<1/2$, and
+manuscript~11's equivalent holds there (\cref{hc:thm:phase}). For $r\ge3$,
+that is $0<\theta<1/3$, both stay open (\cref{hc:sec:q-lower}).]
 
 \subsection{Reciprocal thresholds and the critical window at \texorpdfstring{$m=n/2$}{m = n/2}}
 \label{cjm:sec:mj-half}
@@ -6887,6 +6913,11 @@ $\theta=1/q$ marks a distinct polynomial transition: the exponent jumps from
 $(q-1)/2$ to $q/2$, the endpoint belonging to the rarer phase, across the
 scale $n^{1-1/(2(q-1))}$ (\cref{pr:thm:staircase,pr:cor:scales}). The
 limiting transition function stays open (\cref{pr:sec:q-crossover}).]
+[Added 1 October 2026, batch 71: at $m=n/2$ the transition function is
+proved in Part~VII: for $s_n=t\sqrt n$,
+$n\,\ljP(M_n\le\lfloor n/2+t\sqrt n\rfloor)\to6+(12/\sqrt\pi)t_+$, and
+$\ljP(M_n\le\lfloor n/2\rfloor)\sim6/n$ (\cref{hc:thm:window}). At $1/q$ for
+$q\ge3$ it stays open (\cref{hc:sec:q-higher}).]
 
 \subsection{A uniform relative boundary-to-bulk approximation}
 \emph{Manuscript~11.} Find a formula with relative error tending to zero in a
@@ -7095,7 +7126,8 @@ Deficit-size-biased uniform law (10) & A change of variable in the limiting
 Sub-half-size regimes (10, 11) & Constructive polynomial lower bounds only
  (10), $o(n^{-1/2})$ (both); matching upper bounds and equivalents remain
  open. [Matching upper bounds, hence exact orders: Part~VI, added
- 30 September 2026; equivalents still open.]\\
+ 30 September 2026; equivalents still open.] [Equivalents for
+ $1/3<\theta\le1/2$: Part~VII, added 1 October 2026.]\\
 Computations (both) & Exact integer finite tests and exact symbolic checks
  (11); explicitly labelled Monte Carlo illustrations (10); rounded displays of
  exact counts (11). No asymptotic claim rests on computation.\\
@@ -7107,7 +7139,9 @@ Local limit, critical window, smaller-bound bulk, centered half-moment, exact
  TV constant & Open. [Centered half-moment: answered in
  Part~V, added 30 September 2026.] [Critical window and smaller-bound bulk:
  orders and order-crossover scales in Part~VI, added 30 September 2026;
- limiting functions open.]\\
+ limiting functions open.] [Limiting function at $m=n/2$, and the
+ smaller-bound bulk for $1/3<\theta\le1/2$: Part~VII, added 1 October
+ 2026.]\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -7123,7 +7157,9 @@ because smaller bounds are only shown to have lower-order probability, with
 polynomial lower bounds (manuscript~11's summary, extended by manuscript~10's
 lower bounds). [Added 30 September 2026, batch 68: Part~VI proves matching
 upper bounds, so the smaller bounds have exact polynomial orders
-(\cref{pr:thm:staircase}); their equivalents remain open.]
+(\cref{pr:thm:staircase}); their equivalents remain open.] [Added 1 October
+2026, batch 71: for $1/3<\theta\le1/2$ Part~VII proves the equivalent
+(\cref{hc:thm:phase}).]
 
 \subsection{Conclusion}
 \emph{Manuscript~10.} The main obstruction in passing from a boundary law to
@@ -8892,7 +8928,8 @@ Several stronger assertions would exceed the proof. There is no new local
 limit for individual lattice masses, no exact leading constant in the
 original total-variation error, and no description of the adjacency-bound
 transition at $m=n/2$ [added 30 September 2026, batch 68: Part~VI describes
-it at the level of orders, \cref{pr:cor:half}]. The coefficient function $\mathfrak m(p)$ is
+it at the level of orders, \cref{pr:cor:half}; added 1 October 2026,
+batch 71: Part~VII proves its limiting function, \cref{hc:thm:window}]. The coefficient function $\mathfrak m(p)$ is
 analytically continued below $1/2$, but the moment theorem is not extended
 to $p\le0$ on that basis. A continuation of a coefficient formula does not
 by itself continue an asymptotic theorem.
@@ -8957,6 +8994,9 @@ the threshold is $n^{-1}$, the order changes on the scale $\sqrt n$, and
 $\ljP(M_n\le\lfloor n/2+t\sqrt n\rfloor)\asymp n^{-1}(1+t_+)$ for bounded $t$
 (\cref{pr:cor:half}); the limiting function stays open
 (\cref{pr:sec:q-crossover}).]
+[Added 1 October 2026, batch 71: Part~VII proves the limiting function,
+$n\,\ljP(M_n\le\lfloor n/2+t\sqrt n\rfloor)\to6+(12/\sqrt\pi)t_+$ locally
+uniformly in $t$ (\cref{hc:thm:window}).]
 
 \subsection{Wider moving-exponent windows}
 Can \eqref{cjm:eq:crossover} be made uniform for
@@ -9396,7 +9436,10 @@ asymptotics. Its conclusions are matching two-sided \emph{orders}, not
 asymptotic equivalents: no amplitude, endpoint constant, limiting crossover
 function or conditioned-permutation geometry is determined. The finite data
 and the figures are regression checks and illustrations, not evidence for
-the asymptotic statements.
+the asymptotic statements. [Added 1 October 2026, batch 71: Part~VII
+determines the amplitude for $1/3<\theta<1/2$, the endpoint constant
+$\mathfrak K_2=6$ and the crossover function $\mathfrak H_2$ at half size
+(\cref{hc:thm:window,hc:thm:phase}).]
 \end{resultbox}
 
 \subsection{The questions of Parts~IV and~V, and what answers them}
@@ -9431,7 +9474,8 @@ Part~VI answers these questions at the level of orders:
  the order-crossover scale is $\sqrt n$, and
  $\ljP(M_n\le\lfloor n/2+t\sqrt n\rfloor)\asymp n^{-1}(1+t_+)$ uniformly for
  bounded $t$ (\cref{pr:cor:half}). A limiting transition function is not
- proved (\cref{pr:sec:q-crossover}).
+ proved (\cref{pr:sec:q-crossover}). [Added 1 October 2026, batch 71:
+ Part~VII proves it, $6+(12/\sqrt\pi)t_+$ (\cref{hc:thm:window}).]
 \item \emph{Every reciprocal threshold.} Each $\theta=1/q$, $q\ge2$, is a
  jump of the logarithmic exponent from $(q-1)/2$ to $q/2$, the endpoint
  belonging to the rarer phase, and the order changes across the scale
@@ -9733,6 +9777,10 @@ Thus
 uniformly for $t$ in any fixed bounded interval. There is no assertion here
 that $n\,p_n(\lfloor n/2+t\sqrt n\rfloor)$ has a limit.
 \end{corollary}
+
+[Added 1 October 2026, batch 71: it has one. Part~VII proves
+$n\,p_n(\lfloor n/2+t\sqrt n\rfloor)\to6+(12/\sqrt\pi)t_+$ uniformly for
+bounded $t$ (\cref{hc:thm:window}).]
 
 (The title is the manuscript's: $m=n/2$ is the first threshold that
 Parts~IV and~V left unresolved.)
@@ -10543,7 +10591,11 @@ $n$ & $\theta=3/5$ & $\theta=1/2$ & $\theta=2/5$ & $\theta=1/3$ & $\theta=1/4$\\
 \caption{The scaled quantity $n^{\lfloor1/\theta\rfloor/2}p_n(\lfloor\theta
 n\rfloor)$, from exact counts. Neither monotonicity nor convergence of these
 columns is asserted. In particular, a small table cannot distinguish a
-genuine limit from bounded nonconvergence.}\label{pr:tab:numerics}
+genuine limit from bounded nonconvergence. [Added 1 October 2026, batch 71:
+Part~VII proves the limits of two columns, $6$ for $\theta=1/2$ and
+$I_3(2/5)/(2\pi)\approx0.4693$ for $\theta=2/5$
+(\cref{hc:thm:window,hc:thm:phase}); the $\theta=2/5$ entries are about
+$2.5$ times their limit.]}\label{pr:tab:numerics}
 \end{table}
 
 \begin{figure}[htbp]
@@ -10633,6 +10685,12 @@ skeletons. The known upper-half formula \eqref{mj:eq:bulk-ratio} is a useful
 compatibility test, not a license to extrapolate. (This is the amplitude
 half of Part~IV's \cref{mj:sec:q-hierarchy}, whose exponent half
 \cref{pr:thm:staircase} answers.)
+[Added 1 October 2026, batch 71: answered for $r=2$ in Part~VII:
+$\Omega_2(\theta)=I_3(\theta)/(2\pi)$ for $1/3<\theta<1/2$, with $I_3$ the
+three-piece integral \eqref{hc:eq:I3} (\cref{hc:thm:phase}). It is obtained
+from an exact decomposition of the kind proposed here, the canonical
+threshold parser of \cref{hc:lem:parser}. For $r\ge3$ the question stays
+open (\cref{hc:sec:q-lower}).]
 
 \subsection{Constants at the reciprocal endpoints}
 \label{pr:sec:q-endpoints}
@@ -10646,6 +10704,10 @@ skeleton expansion should first establish whether changing $qm-n$ by a
 bounded integer changes the normalized limit. The bounded-shift lemma
 (\cref{pr:lem:shift}) proves only comparability, so an eventual proof must
 genuinely sharpen that step.
+[Added 1 October 2026, batch 71: answered for $q=2$ in Part~VII:
+$\mathfrak K_2=6$, along all $n$, so there is no residue-class oscillation
+in the limit (\cref{hc:thm:window}). For $q\ge3$ the question stays open
+(\cref{hc:sec:q-lower}).]
 
 \subsection{Limiting crossover functions}
 \label{pr:sec:q-crossover}
@@ -10671,6 +10733,11 @@ after proving a suitable uniform overlap regime. Fixed-$\theta$ asymptotics
 alone do not determine that slope. (For $q=2$ this is the transition
 function asked for in Part~IV's \cref{cjm:sec:mj-half} and Part~V's
 \cref{pr:sec:cjm-half}.)
+[Added 1 October 2026, batch 71: answered for $q=2$ in Part~VII. The
+candidate holds: $\mathfrak H_2(t)=6+(12/\sqrt\pi)t_+$, so
+$\mathfrak K_2=6$ and $\mathfrak L_2=12/\sqrt\pi$, the suggested slope,
+proved directly rather than by matching (\cref{hc:thm:window}). For $q\ge3$
+the question stays open (\cref{hc:sec:q-higher}).]
 
 \subsection{The geometry of a conditioned permutation}
 \label{pr:sec:q-geometry}
@@ -10686,6 +10753,10 @@ reciprocal transition might then become a geometric degeneration of a
 simplex of allowed block sizes. (Part~IV's \cref{mj:thm:conditional} gives
 the two-block geometry for $\theta>1/2$, and its question
 \cref{cjm:sec:mj-geometric} asks for the whole permutation there.)
+[Added 1 October 2026, batch 71: for $1/3<\theta\le1/2$ Part~VII's canonical
+parser and its three-piece endpoint table \eqref{hc:eq:chi2} identify the
+leading families, but it proves no conditioned limit theorem; see
+\cref{hc:sec:q-geometry}.]
 
 \subsection{Uniform relative errors and matching of scales}
 \label{pr:sec:q-uniform}
@@ -10698,6 +10769,8 @@ sharper method would track the cutoff through a dominated-convergence
 argument and isolate the contribution of intermediate-sized parts. A
 successful theorem should also specify the effect of rounding $m$ and give a
 genuinely relative, rather than merely additive, error.
+[Added 1 October 2026, batch 71: at $q=2$ Part~VII's limits come without an
+error rate; see \cref{hc:sec:q-errors}.]
 
 \subsection{Growing reciprocal index and the spectral regime}
 \label{pr:sec:q-growing}
@@ -11118,6 +11191,962 @@ and formal verification remain outstanding.
 \end{itemize}
 
 
+%% ====================================================================
+%% Part VII (batch 71): manuscript 03 of batch 71, "Exact half size
+%% crossover for adjacency bounded 132 avoiders". All labels of Part VII
+%% carry the prefix hc: (half-size crossover).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part VII.\quad The exact half-size crossover}
+\addcontentsline{toc}{part}{Part VII.\texorpdfstring{\quad}{ } The exact half-size crossover}
+
+\noindent\emph{Part~VII was added on 1 October 2026 in batch~71 of
+ProveIt's incoming-report intake, from one manuscript. Part~VI proved that
+$\ljP(M_n\le\lfloor n/2+t\sqrt n\rfloor)\asymp n^{-1}(1+t_+)$ for bounded
+$t$ (\cref{pr:cor:half}) and asked for the limiting crossover functions, the
+endpoint constants and the amplitudes inside the lower phases
+(\cref{pr:sec:q-amplitudes,pr:sec:q-endpoints,pr:sec:q-crossover}); Parts~IV
+and~V asked for the transition function at $m=n/2$
+(\cref{cjm:sec:mj-half,pr:sec:cjm-half}). Part~VII proves, locally
+uniformly in real $t$,
+\[
+ n\,\ljP\bigl(M_n\le\lfloor n/2+t\sqrt n\rfloor\bigr)
+ \longrightarrow6+\frac{12}{\sqrt\pi}\,t_+,
+\]
+and the equivalent $\ljP(M_n\le\lfloor\theta n\rfloor)\sim
+I_3(\theta)/(2\pi n)$ throughout the first sub-half-size phase
+$1/3<\theta\le1/2$, with an explicit two-dimensional integral $I_3$. This
+answers Part~VI's questions on crossover functions and endpoint constants at
+$q=2$ and on amplitudes at $r=2$, and the transition questions of Parts~IV
+and~V. Its proofs re-derive every finite interface they use and assume no
+asymptotic theorem of Parts~I--VI.}
+
+\section{Provenance, conventions and the answer}
+\label{hc:sec:intro}
+
+\subsection{One manuscript, one addition}
+\label{hc:sec:source}
+Part~VII is built from one AI-assisted research manuscript,
+\emph{manuscript~03} of batch~71, \emph{Exact half size crossover for
+adjacency bounded $132$ avoiders}, dated 1 October 2026 (8 pages, US Letter,
+as delivered; its byline reads ``AI-assisted mathematical research''). It
+arrived as the archive \texttt{132\_Avoider\_Crossover\_Package.zip} (inner
+directory \texttt{Half\_Size\_Crossover/}, main file
+\texttt{half\_size\_crossover.tex}) in ProveIt commit \texttt{aee32ad45},
+and was placed in commit \texttt{427bca743}. Its source ledger pins ProveIt
+commit \texttt{29e52fcdf}, the placement commit of batch~68, at which this
+report's \texttt{article.tex} had the blob \texttt{0b7cb2f2e6} and ended at
+Part~V; and it read the incoming batch-68 archive
+\texttt{ProveIt\_Polynomial\_Rarity.zip} (blob \texttt{cf18b47515}, arrival
+commit \texttt{a866ff9a2}), whose manuscript is printed above as Part~VI.
+Part~VI was written into this report after the pin, in commit
+\texttt{cfdefe6e3}, whose parent still had the article blob
+\texttt{0b7cb2f2e6}. The manuscript therefore cites Part~VI's results from
+the incoming manuscript, which Part~VI prints in full, and its statements
+about Parts~III--V refer to the text printed above (apart from the dated
+batch-68 notes that Part~VI added there).
+
+Its code, data and source ledger are shipped beside the earlier parts' files
+with the prefix \path{08-half-size-crossover-}, continuing the report's local
+sequence after Part~VI's \path{07-polynomial-rarity-}. Its manuscript,
+README and PDF are not shipped and survive in the arrival commit; its
+checksum ledger was verified at placement (11 of 11 files) and retired. Its
+\path{model.py} is byte-identical to Part~VI's
+\path{code/07-polynomial-rarity-model.py} (Git blob \texttt{a4fdee3761}): the
+manuscript copied it from the batch-68 package and credits it as such. Both
+copies are shipped, the second as
+\path{code/08-half-size-crossover-model.py}, because the delivered verifier
+imports it by its delivered name (\cref{hc:sec:reproduce}).
+
+The manuscript contributes, in the order printed here: the limiting
+half-size crossover (\cref{hc:thm:window}) and the first sub-half-size
+equivalent (\cref{hc:thm:phase}); uniform endpoint estimates for a uniform
+avoiding block (\cref{hc:lem:endpoints}); a canonical threshold parser valid
+for every adjacency bound below the size (\cref{hc:lem:parser}) with its word
+masses; small-word estimates (\cref{hc:lem:small}) and their use to discard
+large small-word costs; the two-piece contribution, with a uniform tail at
+the rare-event scale (\cref{hc:lem:pairtail}); the exact three-piece endpoint
+table and its mass eight; the exclusion of every other parser family at the
+scale $n^{-1}$; the evaluation $I_3(1/2)=12\pi$; finite regression checks;
+an exact statement of its repository boundary; and four further questions.
+Every result, proof, remark, limitation and question of the manuscript is
+printed.
+
+\begin{resultbox}
+\textbf{Status (manuscript 03 of batch 71).} The theorems of Part~VII have
+written mathematical proofs, which the manuscript reports were checked by
+direct derivation. They are ordinary mathematical arguments, not
+proof-assistant formalizations: nothing is Lean- or Rocq-verified, nothing
+has been externally refereed, and no exhaustive publication priority is
+claimed. Part~VII re-derives the finite interfaces it uses and does not
+assume Part~IV's macroscopic equivalent \eqref{mj:eq:bulk-ratio}; its
+small-word estimates are Part~VI's lemmas, re-derived. Its conclusions are
+limits and asymptotic equivalents with no finite-size error rate
+(\cref{hc:sec:checks}). Its finite data are regression checks, not evidence
+for the limits.
+\end{resultbox}
+
+\subsection{The questions of Parts~IV--VI, and what answers them}
+\label{hc:sec:answer}
+With $p_n(m)=\ljP(M_n\le m)$ as in \eqref{pr:eq:prob}, Part~VII answers the
+following questions in their first case.
+\begin{itemize}
+\item \emph{The crossover function at $q=2$} (Part~VI's
+ \cref{pr:sec:q-crossover}). There $\mathfrak w_2(n)=\sqrt n$, and
+ \cref{hc:thm:window} proves \eqref{pr:eq:Hquestion} at $q=2$ with
+ \[
+  \mathfrak H_2(t)=\mathfrak K_2+\mathfrak L_2t_+,\qquad
+  \mathfrak K_2=6,\qquad \mathfrak L_2=\frac{12}{\sqrt\pi}.
+ \]
+ This is exactly Part~VI's ``particularly simple candidate'' at $q=2$, with
+ the slope that matching with \eqref{mj:eq:bulk-ratio} ``would suggest''.
+ The slope is proved directly, by the parser, not by that matching. For
+ $q\ge3$ the question stays open (\cref{hc:sec:q-higher}).
+\item \emph{The endpoint constant at $q=2$} (\cref{pr:sec:q-endpoints}).
+ $\mathfrak K_2=\lim_n n\,p_n(\lfloor n/2\rfloor)$ exists and equals $6$.
+ \Cref{hc:thm:window} holds along all $n$, odd and even, so the limit has no
+ residue-class oscillation; $\mathfrak K_q$ for $q\ge3$ stays open.
+\item \emph{The amplitude at $r=2$} (\cref{pr:sec:q-amplitudes}).
+ For $1/3<\theta<1/2$, \eqref{pr:eq:amplitudequestion} holds with
+ \[
+  \Omega_2(\theta)=\frac{I_3(\theta)}{2\pi},
+ \]
+ $I_3$ as in \eqref{hc:eq:I3}, and at $\theta=1/2$ the same formula gives
+ $6$. This is also the $r=2$ case of the amplitude half of Part~IV's
+ \cref{mj:sec:q-hierarchy}; Part~IV's manuscript~11 asked there for an
+ equivalent for every $0<\theta<1/2$, which is now known only for
+ $1/3<\theta<1/2$. The amplitudes for $r\ge3$ stay open
+ (\cref{hc:sec:q-lower}).
+\item \emph{The transition at $m=n/2$} (Part~IV's \cref{cjm:sec:mj-half},
+ Part~V's \cref{pr:sec:cjm-half}). For $s_n=t\sqrt n$, the probability scale
+ is $n^{-1}$ (Part~VI) and the limiting transition function is
+ $6+(12/\sqrt\pi)t_+$, continuous and piecewise linear, constant on the
+ lower side.
+\end{itemize}
+\Cref{hc:thm:window} sharpens Part~VI's \cref{pr:cor:half} from a two-sided
+order to a limit, and \cref{hc:thm:phase} sharpens \cref{pr:thm:staircase}
+at $r=2$ from an order to an equivalent; nothing in Parts~I--VI is refuted.
+Two consistency checks connect the new constants with the earlier parts. The
+ramp slope $12/\sqrt\pi$ is the slope of Part~IV's profile at its upper end,
+\eqref{mj:eq:half-edge}: substituting $\theta=1/2+t/\sqrt n$ into
+\eqref{mj:eq:bulk-ratio} and multiplying by $n$ gives $12t/\sqrt\pi+o(1)$
+for fixed $t>0$, although no theorem licenses that substitution. And
+$I_3(\theta)\to0$ as $\theta\downarrow1/3$, because the integration domain
+of \eqref{hc:eq:I3} shrinks to the single point $x=y=z=1/3$, in agreement
+with the jump of the staircase exponent from $1$ to $3/2$ at $\theta=1/3$.
+Part~VII does not answer Part~VI's questions on the conditioned geometry,
+uniformity near reciprocal boundaries, growing reciprocal index, effective
+bounds, other classes, other tail indices or formalization
+(\cref{pr:sec:q-geometry,pr:sec:q-uniform,pr:sec:q-growing,pr:sec:q-effective,pr:sec:q-classes,pr:sec:q-tails,pr:sec:q-formal}).
+
+\subsection{Notation of Part~VII}
+\label{hc:sec:notation}
+The symbols $C_n$, $\Cat$, $\Av_n(132)$, $M(\pi)$, $M_n$, $p_n(m)$ of
+Part~VI, $c_j=C_j/4^j$ and the constants $c_\pm$ of
+\eqref{mj:eq:catalan-bounds}, the first entry $F$, first deficiency $J$ and
+last entry $L$ of a block (Parts~III and~IV), the operations $R_\beta$ and
+$A$ with Part~III's costs, the cost $\ljcost(w)$ of an outer word, the word
+series $\mathcal W$, $\mathcal W_R$ of \eqref{mj:eq:W}--\eqref{mj:eq:WR},
+the acceptance weight $\chi(w)$ of \eqref{mj:eq:acceptance}, Part~IV's
+fixed fraction $\theta$ and amplitude $\Omega_r(\theta)$, and Part~VI's
+$\mathfrak w_q$, $\mathfrak K_q$, $\mathfrak L_q$, $\mathfrak H_q$ keep their
+meanings. Part~VII fixes the remaining names as follows
+(\cref{hc:tab:notation}).
+\begin{itemize}
+\item The manuscript's word masses $W$, $W_R$, $W_A$ are printed as
+ $\mathcal W(1/4)$, $\mathcal W_R(1/4)$ and $\mathcal W_A(1/4)$, with
+ $\mathcal W_A:=\mathcal W-\mathcal W_R$ the series of outer words containing
+ an $A$. A bare $W$ is Part~IV's random outer word and Part~VI's renewal
+ kernel; it does not occur in Part~VII.
+\item The manuscript's small-word series $S(z)$, $T(z)$ are printed as
+ $S_n(z)$, $T_n(z)$: they are Part~VI's \eqref{pr:eq:smallkernel} for the
+ upper kernel $w^+$ of \eqref{pr:eq:weightsplus}. They are not Part~V's
+ survival functions, Part~III's cost $T$ or Part~IV's terminal operation
+ $T_\tau$.
+\item $x$, $y$, $z$ are both the three macroscopic size fractions of
+ \eqref{hc:eq:I3} and \cref{hc:sec:threepiece} and, in $z$'s case, the formal
+ variable of \cref{hc:sec:parser,hc:sec:smallwords}; the two uses never meet
+ in one formula. The tempting false reading of $z$ in \eqref{hc:eq:I3} is
+ the formal variable; there it is $1-x-y$.
+\item $K$, $K_h$, $K_B$ are constants, as in Part~IV
+ (as declared after \eqref{mj:eq:catalan-bounds}); they are not Part~II's polynomial $K_m$,
+ Part~I's $K_{m,d}$ or Part~VI's $\mathfrak K_q$. The cost cutoff $H$ is not
+ Part~III's series $H$, and the bound $B$ on $|t|$ is not Part~I's $B_d$ or
+ Part~V's $B_0$, $B_1$.
+\item The letter $L$ is the last entry of a block, as in Part~IV, except in
+ the proof of \cref{hc:lem:small}, where it is the tilt constant (as in
+ Part~VI's proof of \cref{pr:lem:small}); $\ell$ is a value of the last
+ entry, and $l$ the number of letters of a composition.
+\end{itemize}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols of Part~VII. ``Source'' gives manuscript~03's symbol; the
+last column prints the tempting false reading.}
+\label{hc:tab:notation}
+\begin{tabular}{>{\raggedright}p{.19\linewidth}>{\raggedright}p{.29\linewidth}>{\raggedright}p{.12\linewidth}>{\raggedright\arraybackslash}p{.28\linewidth}}
+\toprule
+Symbol & Meaning in Part~VII & Source & Not to be confused with\\
+\midrule
+$\mathcal W(1/4)$, $\mathcal W_R(1/4)$, $\mathcal W_A(1/4)$ & normalized
+ masses $4$, $2$, $2$ of all outer words, of those without $A$, of those
+ with an $A$ & $W$, $W_R$, $W_A$ & Part~IV's random word $W$; Part~VI's
+ kernel $W$.\\
+$S_n(z)$, $T_n(z)$ & small-word series and its resolvent & $S(z)$, $T(z)$ &
+ Part~V's survival $\mathcal S$; Part~III's cost $T$; $T_\tau$.\\
+$I_3(\theta)$, $I_{3,\varepsilon}$ & three-piece integral \eqref{hc:eq:I3}
+ and its cut-off version & same & Part~IV's split integral $I(u)$.\\
+$\chi(w)$; $\chi(w_1,w_2)$ & two-piece weight \eqref{mj:eq:acceptance};
+ three-piece weight \eqref{hc:eq:chi2} & $\chi$ & ---\\
+$x,y,z$ & size fractions $k/n$, $a/n$, $b/n$ & same & the formal variable
+ $z$; Part~IV's threshold $u$.\\
+$\Delta$ & $2m-n$ & $\Delta$ & Part~VI's $\Delta=qm-n$ at $q=2$ (equal).\\
+$K$, $K_h$, $K_B$ & constants & same & Part~II's $K_m$; $\mathfrak K_q$.\\
+$H$; $h$; $h_n$ & cost cutoff; a power of $T_n$; deleted splits & same &
+ Part~III's series $H$; Part~III's $h=\lfloor n/4\rfloor$.\\
+$L$; $\ell$; $l$ & last entry (tilt constant in one proof); its value;
+ number of letters & same & Part~VI's $\mathfrak L_q$; Part~I's $L_m$.\\
+$k$; $s$; $j$ & cost of a large $R$; small-word cost; number of large $R$ &
+ same & Part~IV's word cost $t$ (here $t$ is the window variable).\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No normalization changed: every renamed symbol denotes exactly the
+manuscript's quantity. Probability is written $\ljP$, positive parts
+$t_+=\prpos t$, and cost $\ljcost$, as in Parts~III--VI. Within single
+proofs, $\alpha$ and $\beta$ in the proof of \cref{hc:lem:endpoints} are
+blocks (not Part~I's $\alpha_m$ or Part~II's $\beta_m$; elsewhere $\beta$ is
+the decoration of $R_\beta$), and $\lambda$, $\eta$ are local parameters.
+Equations, tables and figures are numbered consecutively with those of
+Parts~I--VI.
+
+\section{Results and research boundary}
+\label{hc:sec:results}
+A permutation $\pi\in S_n$ avoids $132$ if no $i<j<k$ satisfy
+$\pi_i<\pi_k<\pi_j$. The set $\Av_n(132)$ has Catalan cardinality
+$C_n=(n+1)^{-1}\binom{2n}{n}$. Put
+\[
+ M(\pi)=\max_{1\le i<n}|\pi_{i+1}-\pi_i|,
+ \qquad p_n(m)=\frac{\#\{\pi\in\Av_n(132):M(\pi)\le m\}}{C_n}.
+\]
+An empty maximum is zero. (These are Part~VI's \eqref{pr:eq:objects} and
+\eqref{pr:eq:prob}.) Part~VI, from the manuscript that this one inspected
+as an incoming archive (\cref{hc:sec:source}), proves
+\[
+ p_n(m)\asymp n^{-1}+n^{-3/2}\prpos{2m-n}
+\]
+uniformly near $m/n=1/2$ (\cref{pr:cor:half}), but explicitly leaves
+limiting crossover functions and exact amplitudes open
+(\cref{pr:sec:q-amplitudes,pr:sec:q-crossover}). The following strengthens
+that comparison to a limit.
+
+\begin{theorem}[Half-size crossover]\label{hc:thm:window}
+For every $B<\infty$,
+\[
+ \sup_{|t|\le B}\left|
+ n p_n\!\left(\left\lfloor n/2+t\sqrt n\right\rfloor\right)
+ -6-\frac{12}{\sqrt\pi}\prpos t\right|\longrightarrow0.
+\]
+In particular, $p_n(\lfloor n/2\rfloor)\sim6/n$.
+\end{theorem}
+
+Define
+\begin{equation}\label{hc:eq:I3}
+ I_3(\theta)=\iint_{\substack{x+y+z=1\\0<x,y,z\le\theta}}
+ (xyz)^{-3/2}\,\dd x\,\dd y,\qquad z=1-x-y.
+\end{equation}
+The measure is the coordinate measure $\dd x\,\dd y$, not Euclidean surface
+area on the plane.
+\begin{theorem}[First sub-half-size equivalent]\label{hc:thm:phase}
+For $1/3<\theta\le1/2$,
+\[
+ p_n(\lfloor\theta n\rfloor)\sim\frac{I_3(\theta)}{2\pi n}.
+\]
+The convergence is uniform on compact subintervals of $(1/3,1/2)$. The
+integral is finite and positive, and $I_3(1/2)=12\pi$.
+\end{theorem}
+
+The fixed-bound enumeration was initiated by Nadler~\cite{Nadler} and
+developed by Mayama and Akita~\cite{MayamaAkita}. The present argument uses
+elementary Catalan interfaces appearing in Parts~III--IV of this report
+(\cref{mj:sec:first,mj:sec:last,mj:sec:parser}), and a small-letter
+estimate appearing in Part~VI (\cref{pr:lem:local,pr:lem:small}). We
+rederive the needed estimates. We do not infer any infinite claim from
+numerical data, and do not assume the earlier macroscopic equivalent. Related
+fewest-big-jumps results, such as~\cite{pr:KerriouMorters}, provide context
+but are not invoked as theorems here.
+
+\section{Finite Catalan interfaces}
+\label{hc:sec:interfaces}
+Write $c_j=4^{-j}C_j$. Stirling's formula and elementary bounds give
+\begin{equation}\label{hc:eq:cat}
+ c_j\sim\frac1{\sqrt\pi j^{3/2}},\qquad
+ c_-(j+1)^{-3/2}\le c_j\le c_+(j+1)^{-3/2}.
+\end{equation}
+(This is Part~IV's \eqref{mj:eq:catalan-bounds}.) The maximum
+decomposition is unique:
+\[
+ \pi=(\sigma+b)\,N\,\tau,\quad
+ \sigma\in\Av_a(132),\quad\tau\in\Av_b(132),\quad a+b+1=N.
+\]
+Every left entry exceeds every right entry. Conversely, arbitrary avoiding
+children with these value sets give an avoider. If $b>0$ and $M(\pi)\le m$,
+then $a+1\le m$, because the jump following $N$ is at least $a+1$. The left
+internal jumps and the jump into $N$ are smaller than this downward boundary
+jump.
+
+For a block of size $N$ let $F,L$ be its first and last entries, and $J=N-F$
+its first deficiency.
+\begin{lemma}[Endpoint estimates]\label{hc:lem:endpoints}
+For an unrestricted uniform avoiding block,
+\begin{align}
+ \ljP(J\ge h)&\le(h+2)2^{-h},\label{hc:eq:J}\\
+ \#\{\pi\in\Av_N(132):L(\pi)=\ell\}&=C_{N-\ell}C_{\ell-1}.
+ \label{hc:eq:L}
+\end{align}
+For $1\le r\le N$, uniformly,
+\begin{equation}\label{hc:eq:halfmass}
+ \ljP(L\ge r)=\frac12+
+ O\!\left(r^{-1/2}+(N-r+1)^{-1/2}\right).
+\end{equation}
+In particular $L/N\Rightarrow\tfrac12\delta_0+\tfrac12\delta_1$.
+\end{lemma}
+\begin{proof}
+The first-entry count at $F=N-j$ is
+\[
+ \frac{j+1}{N}\binom{2N-j-2}{N-1}.
+\]
+This is the Catalan triangle: it follows, for example, from the first-entry
+generating function $(x\Cat(x))^{j+1}$ and Lagrange inversion applied to
+$\Cat=1+x\Cat^2$. Division by $C_N$ gives
+\[
+ (j+1)\frac{N+1}{2(2N-1)}
+ \prod_{u=0}^{j-1}\frac{N-1-u}{2N-2-u}
+ \le(j+1)2^{-j-1}
+\]
+for $N\ge2$; summation proves \eqref{hc:eq:J}, and $N=1$ is immediate.
+
+For the last entry $\ell$, the entries larger than $\ell$ must precede all
+entries smaller than $\ell$: otherwise a smaller entry, a larger entry and
+the final $\ell$ form a $132$. Thus $\pi=(\alpha+\ell)\beta\ell$, with
+independent avoiding blocks of sizes $N-\ell$ and $\ell-1$. This proves
+\eqref{hc:eq:L}. The distribution is symmetric under $\ell\mapsto N+1-\ell$.
+The Catalan bounds give $\ljP(L=\ell)\le K\ell^{-3/2}$ for $\ell\le N/2$, and
+the reflected bound at the other endpoint. Summing from an endpoint cutoff
+to the middle yields \eqref{hc:eq:halfmass}.
+\end{proof}
+
+\begin{remark}[Merge note: the endpoint estimates in Parts~III, IV and~VI]
+The first-entry count is Part~IV's \eqref{mj:eq:first-count}
+(Part~III's \eqref{lj:eq:first-count}, Part~VI's \eqref{pr:eq:firstentry}),
+and \eqref{hc:eq:J} with its proof is Part~IV's \cref{mj:lem:first},
+\eqref{mj:eq:first-tail}, the same computation. Equation~\eqref{hc:eq:L} is Part~IV's
+\eqref{mj:eq:last-count} with the same decomposition. Equation~\eqref{hc:eq:halfmass}
+is uniform in $1\le r\le N$, with an explicit error at both ends; Part~IV's
+\eqref{mj:eq:last-half} states the same for $r$ in $[\eta N,(1-\eta)N]$
+only, by the same symmetry argument, and its limit statement is
+\eqref{mj:eq:last-limit}. The manuscript's proofs are kept because they are
+short and self-contained.
+\end{remark}
+
+\section{A parser that remains valid below half size}
+\label{hc:sec:parser}
+Let $R_\beta$ attach the left decoration $\beta$ and the new maximum before a
+current avoiding block. Its cost is $k=|\beta|+1$. Let $A$ append a new
+maximum; its cost is one. Each operation preserves avoidance. If the old last
+deficiency is $Q$, then $R_\beta$ changes it to $Q+k$. An append is accepted
+precisely when $Q+1\le m$ and then sets last deficiency to zero.
+
+\begin{lemma}[Canonical threshold parsing]\label{hc:lem:parser}
+Every $m$-bounded avoider of size $n>m$ has a unique representation by a
+decorated outer word in $R,A$ applied to a terminal core
+\[
+ (\sigma+b)N\tau,\qquad a,b\le m,
+ \qquad N=a+b+1>m.
+\]
+Every outer $R$ has cost at most $m$. Conversely, reconstruction from such a
+core and word is injective, and every accepted reconstruction has the
+prescribed parser.
+\end{lemma}
+\begin{proof}
+At each maximum decomposition, follow a child of size $>m$ if there is one.
+With a nonempty right sibling, the left size plus one is at most $m$, so a
+large child is unique. A large right child records $R$; a large left child
+necessarily has empty right sibling and records $A$. Stop when both children
+have size at most $m$. Sizes decrease strictly, and the size on stopping
+exceeds $m$. Reconstruction reverses these unique maximum decompositions. At
+every intermediate step the followed core exceeds $m$, while an $R$
+decoration has size below $m$, so the reconstructed parser follows exactly
+the specified core.
+\end{proof}
+
+\begin{remark}[Merge note: Part~IV's parser]
+\Cref{hc:lem:parser} is Part~IV's \cref{mj:lem:parse} (manuscript~11 of
+batch~52), with the same parsing rule, extended from the range
+$n/2\le m\le n-1$ of \eqref{mj:eq:threshold-range} to every $m<n$. Above
+half size two children larger than $m$ are excluded by their total size;
+below it, as the proof above shows, they are excluded by the positional
+restriction alone, so uniqueness survives. The price is that the terminal
+core no longer has fixed cost: its children may be small, and the outer word
+may contain macroscopic $R$ letters, which \cref{hc:sec:remainders}
+controls.
+\end{remark}
+
+The total normalized weight of a finite decorated word is obtained by giving
+a word of cost $s$ weight $4^{-s}$. Write $\mathcal W_R$ for words with no
+$A$, and $\mathcal W_A=\mathcal W-\mathcal W_R$ for words with at least one
+$A$. The Catalan identities give
+\begin{equation}\label{hc:eq:masses}
+ \mathcal W(1/4)=\left.\frac1{1-z\Cat(z)-z}\right|_{z=1/4}=4,
+ \qquad \mathcal W_R(1/4)=\left.\frac1{1-z\Cat(z)}\right|_{z=1/4}=2,
+ \qquad \mathcal W_A(1/4)=2.
+\end{equation}
+The unnormalized cost generating function is $\Cat(z)^2$, whose cost-$s$
+coefficient is $C_{s+1}$. In particular the normalized cost tail is
+$O((s+1)^{-3/2})$ locally. (These are Part~IV's
+\eqref{mj:eq:W}--\eqref{mj:eq:WR} at $z=1/4$ and
+\eqref{mj:eq:word-counts}.)
+
+\section{Uniform bounds for small words}
+\label{hc:sec:smallwords}
+Fix $\varepsilon>0$. An outer $R$ is large if its cost exceeds
+$\varepsilon n$. All remaining letters form small words, with normalized
+series
+\[
+ S_n(z)=\frac z4+\sum_{k\le\lfloor\varepsilon n\rfloor}
+ C_{k-1}4^{-k}z^k,\qquad T_n(z)=(1-S_n(z))^{-1}.
+\]
+For sufficiently large $n$, the first term accounts for $A$ and the sum for
+all small $R$ operations; in particular cost one has two letters. Since
+$S_n(1)\le3/4$, these are subcritical series. (They are Part~VI's
+\eqref{pr:eq:smallkernel} for the upper kernel \eqref{pr:eq:weightsplus},
+whose mass is $\bar w_+=3/4$.)
+
+\begin{lemma}[Small-word estimates]\label{hc:lem:small}
+For every fixed positive integer $h$, uniformly in $n$ and $\varepsilon$,
+\begin{align}
+ T_n(1)^h&\le4^h,\label{hc:eq:massbound}\\
+ [z^s]T_n(z)^h&\le K_h(s+1)^{-3/2},\label{hc:eq:local}\\
+ \sum_s s[z^s]T_n(z)^h&\le K_h\sqrt{\varepsilon n}
+ \quad(\varepsilon n\ge1).\label{hc:eq:moment}
+\end{align}
+Given $c,A_0>0$, choosing $\varepsilon$ sufficiently small gives
+\begin{equation}\label{hc:eq:suppress}
+ [z^s]T_n(z)^h=O_h(n^{-A_0})\qquad(s\ge cn),
+\end{equation}
+with the same choice of $\varepsilon$ for any prescribed finite set of $h$.
+\end{lemma}
+\begin{proof}
+The mass bound is immediate. In a composition of $s$ with $l$ letters, mark
+a largest letter, whose size is at least $s/l$. Its weight is at most
+$Kl^{3/2}s^{-3/2}$. There are at most $l$ choices for the mark, and the other
+letters have total weight at most $(3/4)^{l-1}$. Expanding
+$T_n^h=\sum_{l\ge0}\binom{l+h-1}{h-1}S_n^l$ proves \eqref{hc:eq:local} by a
+convergent polynomial-geometric sum. Differentiate $T_n^h$ at one and use
+$S_n'(1)=O(\sqrt{\varepsilon n})$ to obtain \eqref{hc:eq:moment}.
+
+For \eqref{hc:eq:suppress}, choose $L>A_0/c$ and then $L\varepsilon<1/2$.
+With $\lambda=L\log n/n$,
+\[
+ S_n(e^\lambda)-S_n(1)
+ \le\lambda e^{\lambda\varepsilon n}
+ \sum_{k\le\varepsilon n}k[z^k]S_n
+ =O\!\left((\log n)n^{L\varepsilon-1/2}\right)=o(1).
+\]
+Thus $T_n(e^\lambda)$ stays bounded. Positivity bounds the coefficient at
+$s\ge cn$ by $e^{-\lambda s}T_n(e^\lambda)^h=O_h(n^{-A_0})$.
+\end{proof}
+
+\begin{remark}[Merge note: Part~VI's lemmas]
+Equations~\eqref{hc:eq:local} and \eqref{hc:eq:suppress} are Part~VI's
+\cref{pr:lem:local} and \cref{pr:lem:small} for the upper kernel, with tail
+index $\alpha=1/2$; the proofs are the same (Part~VI's condition
+$L\varepsilon<\alpha$ is $L\varepsilon<1/2$ here). Equation~\eqref{hc:eq:moment} is a
+first-moment bound for the truncated series, which grows like
+$\sqrt{\varepsilon n}$; Part~VI's \eqref{pr:eq:momentbound} bounds the
+moments of order $p>\alpha$ of a partial sum instead. The manuscript credits
+the local bound and the tilt to Part~VI's manuscript and re-derives them.
+\end{remark}
+
+Choose $\varepsilon<1/16$ small enough that \eqref{hc:eq:suppress} holds
+with $c=1/4$, $A_0=10$. A parser word has at most $\lceil1/\varepsilon\rceil$
+large letters. If it has $j$ large letters, its $j+1$ intervening gaps are
+counted by $T_n^{j+1}$. For this fixed $\varepsilon$, large-gap estimates may
+depend on $j$ and $\varepsilon$, but the polynomial exponent $A_0$ need not
+grow with $j$: after applying \eqref{hc:eq:suppress}, sum every remaining
+normalized letter and core weight without a size constraint. Their total is
+bounded by $4(1/2)^j$. Division by $c_n$ loses only $O(n^{3/2})$. Hence total
+small-gap cost at least $n/4$ contributes $o(n^{-1})$ in every case.
+
+\begin{remark}[Editorial note, 1 October 2026: the bound $4(1/2)^j$]
+\label{hc:rem:jbound}
+The preceding paragraph does not say where the factor $(1/2)^j$ comes from,
+and one reading of ``every remaining normalized letter'' (all letters,
+including those of the gaps) makes it false. Here is a justification, added
+in the write phase and checked for this report. Fix $j\le\lceil1/\varepsilon\rceil$
+and a total small-gap cost $s\ge n/4$. A parser word with $j$ large letters
+splits uniquely as $g_0R_{\beta_1}g_1\cdots R_{\beta_j}g_j$ with small gaps
+$g_i$, and its terminal core is $(\sigma+b)N\tau$. Dropping every adjacency
+constraint only increases the count, and the total size is the sum of the
+costs and of the core size, so the normalized weight of all such
+configurations is at most the product of three factors:
+\begin{itemize}
+\item the gaps: $[z^s]T_n(z)^{j+1}$, which is $O_j(n^{-A_0})$ by
+ \eqref{hc:eq:suppress} with $h=j+1$;
+\item the large letters: each carries at most
+ $\sum_{k\ge1}C_{k-1}4^{-k}=\tfrac14\Cat(1/4)=\tfrac12$, the ``critical total
+ weight of one $R$ operation'' of Part~IV's proof of
+ \cref{mj:cor:wordstats}, so together at most $(1/2)^j$;
+\item the core: at most $\sum_{a,b\ge0}C_aC_b4^{-(a+b+1)}=\tfrac14\Cat(1/4)^2=1$.
+\end{itemize}
+Summing over the at most $n+1$ values of $s$ gives the normalized weight
+$O_j(n^{1-A_0})(1/2)^j$; the paragraph's ``$4(1/2)^j$'' is this bound for the
+letters and the core, with the core's mass $1$ enlarged to $4$, and the gap
+factor kept from \eqref{hc:eq:suppress}. Division by $c_n$ gives
+$O_j(n^{5/2-A_0})=O_j(n^{-15/2})$, and the finitely many values of $j$ give
+$o(n^{-1})$, as stated. The dependence on $j$ is harmless: the proof of
+\eqref{hc:eq:suppress} chooses $\varepsilon$ from $c$ and $A_0$ alone, and
+$h=j+1$ enters only through $T_n(e^\lambda)^h\le5^h$ for large $n$. The
+tempting false reading sums the gap letters without a size constraint as
+well; that gives $T_n(1)^{j+1}(1/2)^j\le4^{j+1}2^{-j}=4\cdot2^j$, not
+$4(1/2)^j$, and loses the suppression, so it cannot be the intended step.
+The conclusion of the paragraph stands. (The three masses $1/2$, $1$ and
+$S_n(1)\le3/4$ were recomputed exactly for this note.)
+\end{remark}
+
+\section{The two-piece contribution in the window}
+\label{hc:sec:twopiece}
+Set
+\[
+ m=\lfloor n/2+t\sqrt n\rfloor,\quad
+ \Delta=2m-n,\quad |t|\le B.
+\]
+First consider parser words with no large $R$. If their cost is $s\le n/4$,
+the terminal children are both at least $n/4-O(\sqrt n)$. Their weight
+divided by $C_n$ is $O(4^{-s}n^{-3/2})$, and there are at most
+$(\Delta+s+2)_+$ possible splits.
+
+\begin{lemma}[Uniform tail at the rare-event scale]\label{hc:lem:pairtail}
+For any cost cutoff $H$, the no-large-$R$ contribution from $s>H$, multiplied
+by $n$, is at most
+\begin{equation}\label{hc:eq:pairtail}
+ K_B\left((H+1)^{-1/2}+\sqrt\varepsilon\right)+o(1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Costs $s>n/4$ were suppressed above. For the rest, apply
+\cref{hc:lem:small} to
+\[
+ K n^{-1/2}\sum_{s>H}(\Delta_++s+2)[z^s]T_n.
+\]
+The constant term is bounded by $K_B\sum_{s>H}(s+1)^{-3/2}$, and the
+first-moment term by $K\sqrt\varepsilon$.
+\end{proof}
+
+For a fixed decorated word $w$ of cost $s$, define
+\[
+ \chi(w)=\begin{cases}1,&w\text{ has no }A,\\1/2,&w\text{ has an }A.\end{cases}
+\]
+(This is Part~IV's acceptance weight \eqref{mj:eq:acceptance}.) If $t<0$,
+there are no terminal splits for all large $n$; if $t=0$, there are only
+$O(1)$, giving $o(n^{-1})$. If $t>0$, their number is $2t\sqrt n+O(1)$.
+Delete $h_n$ splits near each end, with $h_n\to\infty$ and
+$h_n=o(\sqrt n)$. On the remaining splits, the slack below the adjacency cap
+grows, so \eqref{hc:eq:J} makes the downward constraints asymptotically
+automatic. If $w$ contains an append, its first such append is accepted with
+probability $1/2+o(1)$ by \eqref{hc:eq:halfmass}; subsequent appends have
+bounded jumps after the endpoint reset. No endpoint independence is needed:
+removing a first-deficiency event of probability $o(1)$ changes every other
+acceptance probability by at most $o(1)$.
+
+Uniform Stirling at these near-half splits gives
+\[
+ \frac{C_aC_b}{C_n}
+ \sim\frac{8\,4^{-s-1}}{\sqrt\pi n^{3/2}}.
+\]
+Therefore the contribution of $w$, multiplied by $n$, tends to
+$4t_+\chi(w)4^{-s}/\sqrt\pi$. Summing costs up to $H$, then using
+\cref{hc:lem:pairtail}, gives in the order $n\to\infty$, $H\to\infty$,
+$\varepsilon\downarrow0$ the limit
+\begin{equation}\label{hc:eq:ramp}
+ \frac{4t_+}{\sqrt\pi}\sum_w\chi(w)4^{-\ljcost(w)}
+ =\frac{4t_+}{\sqrt\pi}\left(2+\frac12\cdot2\right)
+ =\frac{12t_+}{\sqrt\pi}.
+\end{equation}
+
+\begin{remark}[Merge note: the two-piece family is Part~IV's]
+The sum in \eqref{hc:eq:ramp} is Part~IV's word mass \eqref{mj:eq:wordmass},
+$3$, and the normalized weights $\chi(w)4^{-\ljcost(w)}/3$ are Part~IV's
+limiting outer-word law \eqref{mj:eq:word-law}, whose cost marginal is
+$\ljP(T_W=t)=(C_t+C_{t+1})/(6\,4^t)$ (\eqref{mj:eq:cost-law}). The argument
+above is Part~IV's fixed-word computation (\cref{mj:prop:fixedword}), moved
+from a fixed split fraction $u<1/2$ to the moving window
+$|a/n-1/2|\le t/\sqrt n$, where the split kernel $\mathfrak k(y)$ of
+\eqref{mj:eq:kernel} is $\mathfrak k(1/2)=8$ and the window has width
+$2t/\sqrt n$; that product, $16t/\sqrt n$, times $3/(4\sqrt\pi)$ is the ramp
+$12t/(\sqrt\pi\sqrt n)$ on Part~IV's scale (the merge's consistency check, not a proof). New are the uniform tail
+\cref{hc:lem:pairtail} at the rarer scale $n^{-1}$ and the deletion of the
+large-$R$ families, which do not exist above half size.
+\end{remark}
+
+\section{The three-piece contribution}
+\label{hc:sec:threepiece}
+Now require exactly one large $R$ and both terminal children larger than
+$\varepsilon n$. Write the word as $w_1R_\beta w_2$, with $w_1,w_2$ the two
+small-word gaps. For fixed gaps of combined cost $s$, set
+\[
+ k=|\beta|+1,\quad x=k/n,\quad y=a/n,\quad z=b/n.
+\]
+The limiting domain is $x+y+z=1$, $0<x,y,z\le1/2$. Restrict initially to a
+compact subset of its interior. The first deficiencies in $\beta,\sigma,\tau$
+are uniformly tight by \cref{hc:lem:endpoints}, and all costs have linear
+slack below $m$, so every $R$ join is accepted apart from a vanishing
+fraction.
+
+The only remaining conditions come from appends. If $\tau$ has its low
+last-endpoint mode, the terminal last deficiency is asymptotic to
+$(y+z)n>m$; neither gap may contain an append. If it has its high mode, the
+terminal deficiency is asymptotic to $yn<m$. An append in $w_2$ resets it,
+so after the large $R$ the deficiency is asymptotic to $xn<m$ and $w_1$ is
+arbitrary. If $w_2$ has no append, the large $R$ instead makes the
+deficiency asymptotic to $(x+y)n>m$, so $w_1$ must have no append. Each
+endpoint mode has limiting probability one half. Hence
+\begin{equation}\label{hc:eq:chi2}
+ \chi(w_1,w_2)=
+ \begin{cases}
+ 1,&w_1,w_2\text{ both have no }A,\\
+ 1/2,&w_2\text{ has }A\text{ and }w_1\text{ is arbitrary},\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+Its summed normalized mass is
+\begin{equation}\label{hc:eq:8}
+ \mathcal W_R(1/4)^2+\tfrac12\mathcal W(1/4)\mathcal W_A(1/4)=4+4=8.
+\end{equation}
+
+There are three Catalan factors, with two maximum vertices outside them.
+Uniformly on the compact interior,
+\begin{equation}\label{hc:eq:tripleweight}
+ \frac{C_{k-1}C_aC_b}{C_n}
+ \sim\frac{4^{-s-2}}{\pi n^3}(xyz)^{-3/2}.
+\end{equation}
+The two free size coordinates give a Riemann sum with $n^2$ cells.
+Equations~\eqref{hc:eq:chi2}--\eqref{hc:eq:tripleweight} therefore give a
+limiting contribution $I_{3,\varepsilon}(1/2)/(2\pi)$ after multiplication by
+$n$, where the integral initially restricts all three coordinates to be at
+least $\varepsilon$. Removing this final cutoff gives $I_3(1/2)/(2\pi)$.
+
+Here is the precise justification for removing them. For fixed
+$\varepsilon$, the unrestricted weight of this family at any fixed total gap
+cost, divided by $c_n$, is $O_\varepsilon(n^{-1})$: every macroscopic
+variable is at least $\varepsilon n$, there are $O(n^2)$ choices, and the
+three factors contribute $O_\varepsilon(n^{-9/2})$. By \eqref{hc:eq:local},
+removing gap costs above $H$ costs $O_\varepsilon(H^{-1/2})$ after scaling by
+$n$. For fixed $H$, remove a strip of width $\eta$ at every cap boundary; its
+integral and Riemann sum are $O_\varepsilon(\eta)$. On the remaining compact
+set all endpoint estimates are uniform. Take $n\to\infty$, then
+$\eta\downarrow0$, then $H\to\infty$. The bounds in the next section permit
+$\varepsilon\downarrow0$.
+
+\section{Excluding all other parser families}\label{hc:sec:remainders}
+The stopping condition, rather than an unrestricted renewal majorant, is
+essential for small terminal children. If one terminal child has size
+$a\le\varepsilon n$, its sibling obeys
+\begin{equation}\label{hc:eq:capinterval}
+ m-a\le b\le m,
+\end{equation}
+so there are at most $a+1$ choices for $b$. This includes $a=0$ and, after
+exchanging names, $b=0$.
+
+For exactly one large $R$ and small-gap cost $s\le n/4$, both its cost $k$
+and the large terminal child $b$ are bounded below by a positive multiple of
+$n$. Their normalized product is $O(n^{-3})$. Once $a,b,s$ are fixed, $k$ is
+determined. Summing \eqref{hc:eq:capinterval}, either choice of small child,
+and the bounded gap mass gives
+\begin{equation}\label{hc:eq:corner}
+ \ljP(\text{one large }R,\ \min(a,b)\le\varepsilon n)
+ \le K n^{-3/2}\sum_{a\le\varepsilon n}(a+1)c_a+o(n^{-1})
+ \le K\sqrt\varepsilon\,n^{-1}+o(n^{-1}).
+\end{equation}
+The large-gap part is suppressed by \eqref{hc:eq:suppress}. If there is no
+large $R$ and a terminal child is small, the gap cost is at least
+$n-m-\varepsilon n-1>n/4$, so it is suppressed as well.
+
+Suppose there are $j\ge2$ large outer $R$ operations. If both terminal
+children exceed $\varepsilon n$, there are at most $O(n^{j+1})$ choices at a
+fixed gap cost, and $j+2$ macroscopic Catalan factors. Division by $c_n$
+gives
+\begin{equation}\label{hc:eq:many}
+ O_\varepsilon\!\left(n^{j+1}n^{-3(j+2)/2}n^{3/2}\right)
+ =O_\varepsilon\!\left(n^{-(j+1)/2}\right)=O_\varepsilon(n^{-3/2}).
+\end{equation}
+If one terminal child is small, \eqref{hc:eq:capinterval} leaves only
+$O(n^{j-1}(a+1))$ choices for the $j+1$ large variables. Their weight is
+$O_\varepsilon(n^{-3(j+1)/2})$; summing $(a+1)c_a$ costs
+$O(\sqrt{\varepsilon n})$. Division by $c_n$ gives the same order as
+\eqref{hc:eq:many}. Gap masses are bounded by \eqref{hc:eq:massbound}; the
+number of possible $j$ is finite at fixed $\varepsilon$. All these families
+are $o(n^{-1})$.
+
+These estimates exhaust the parser. They also directly explain the
+integrability at $\theta=1/2$: when one coordinate $x$ approaches zero, the
+allowed interval for a second coordinate has width $x$, giving local mass
+$O(x^{-1/2}\,\dd x)$ and therefore an $O(\sqrt\varepsilon)$ omitted corner.
+
+\section{Evaluation and completion of the proofs}
+\label{hc:sec:evaluation}
+Integrating the $y$ coordinate first gives
+\begin{align*}
+ I_3(1/2)
+ &=8\int_0^{1/2}
+   x^{-1/2}(1-x)^{-2}(1-2x)^{-1/2}\,\dd x\\
+ &=8\sqrt2\int_0^{\pi/2}
+   \left(1-\tfrac12\sin^2\phi\right)^{-2}\,\dd\phi
+ =12\pi.
+\end{align*}
+The substitution in the second line is $x=\tfrac12\sin^2\phi$. For the final
+evaluation, differentiating
+$\int_0^{\pi/2}(1-a\sin^2\phi)^{-1}\,\dd\phi=\pi/(2\sqrt{1-a})$ gives
+\[
+ \int_0^{\pi/2}(1-a\sin^2\phi)^{-2}\,\dd\phi
+ =\frac{\pi(2-a)}{4(1-a)^{3/2}}.
+\]
+The three-piece contribution is thus $12\pi/(2\pi)=6$. Add \eqref{hc:eq:ramp};
+the remainder estimates prove \cref{hc:thm:window} pointwise. For every $n$,
+the scaled probability is nondecreasing in $t$, and its limit is continuous.
+A finite partition of any compact interval upgrades pointwise convergence to
+uniform convergence.
+
+For fixed $1/3<\theta<1/2$, no-large-$R$ words require a positive linear cost
+and are suppressed by the same tilt with $c<1-2\theta$. With one large $R$,
+the domain is that of \eqref{hc:eq:I3}; every coordinate is at least
+$1-2\theta>0$. Every pair of coordinates is at least $1-\theta>\theta$, so
+the endpoint table \eqref{hc:eq:chi2} remains unchanged. The same Riemann sum
+gives \cref{hc:thm:phase}; all remainders are uniform on compact phase
+interiors. Its endpoint $\theta=1/2$ follows from \cref{hc:thm:window}.
+
+\section{Checks and provenance}
+\label{hc:sec:checks}
+
+\subsection{Finite regression checks}
+\label{hc:sec:finite}
+The package includes an exact endpoint recurrence and a script comparing it
+to independent generation of every $132$-avoider through size eight. The
+table records finite values at the central threshold. These are
+reproducible regression checks, not proof of a limit.
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rr}
+\toprule
+$n$ & $n p_n(\lfloor n/2\rfloor)$\\
+\midrule
+64&4.629846221170498\\
+96&4.868996036164201\\
+128&5.016273257983964\\
+192&5.194724686827719\\
+256&5.302598836522250\\
+\bottomrule
+\end{tabular}
+\caption{The scaled central probability, from exact counts; the limit is
+$\mathfrak K_2=6$ (\cref{hc:thm:window}). The rows $n\le128$ are those of
+Part~VII's shipped exact-count CSV file (\cref{hc:sec:reproduce}) at $t=0$
+(and of Part~VI's \cref{pr:tab:numerics}, $\theta=1/2$); the rows $192$ and
+$256$ come from the delivered verifier's longer run, whose output is not
+shipped.}\label{hc:tab:finite}
+\end{table}
+Convergence can be slow, particularly on the negative side of the window,
+where the limiting constant arises from an integrable corner. No finite-size
+error rate is asserted here.
+
+[Merge note. The ``independent generation'' is the generator
+\texttt{avoiders} of the credited model module, which builds the avoiders of
+each size by the maximum decomposition; the delivered verifier compares the
+endpoint counter with it for all $n\le8$, $1\le m\le n$ (36 counts) and
+checks the parser of \cref{hc:lem:parser} by reconstruction on every bounded
+avoider there (5,599 cases), but it does not test the generator against the
+$132$ predicate. Part~VI's verifier did, through $n=7$, for the same
+module.]
+
+\subsection{Rebuilding and rerunning}
+\label{hc:sec:reproduce}
+Part~VII's files are
+\begin{lstlisting}
+code/08-half-size-crossover-model.py    The credited endpoint model
+                                        (byte-identical to Part VI's
+                                        code/07-polynomial-rarity-model.py)
+code/08-half-size-crossover-verify.py   Generator, parser and word checks;
+                                        exact-count table (standard library)
+code/08-half-size-crossover-build.sh    The manuscript's three-pass build
+data/08-half-size-crossover-*           The exact-count CSV, the recorded
+                                        run (JSON, and its stdout capture)
+                                        and the delivery validation record
+08-half-size-crossover-SOURCES.md       Pinned sources, literature ledger
+                                        and novelty boundary
+\end{lstlisting}
+The programs are shipped byte-identical to the delivery and still use the
+delivered names: \path{verify.py} imports \texttt{model}, which in this
+directory would load Part~I's different \path{code/model.py} (it has no
+\texttt{EndpointCounter}), and it writes \path{finite_checks.csv} and
+\path{verification.json} beside itself; \path{build.sh} builds a
+\path{half_size_crossover.tex} beside itself, which is not shipped (its text
+is printed here). The report's README gives a recipe that restores the
+delivered layout in a scratch copy; there, the manuscript's instructions
+apply,
+\begin{verbatim}
+python verify.py
+python verify.py --max-n 256
+\end{verbatim}
+and rerunning overwrites only the copy's recorded outputs. The checks require
+only Python's standard library; the longer run takes several minutes.
+
+\subsection{Exact repository boundary}
+\label{hc:sec:boundary}
+The inspected combined report source is the Git blob
+\begin{center}\small\path{0b7cb2f2e63ad60760ddce0916d287e731d413f4};\end{center}
+\noindent it ends at Part~V. The
+incoming source of Part~VI was retrieved from the archive at arrival
+reference \texttt{a866ff9a2}, ZIP blob
+\path{cf18b47515f793c49d82cce5928967234e5a362f}. The ancillary addition07
+files occur in batch68 commit
+\path{29e52fcdf8bfa99d52a76d3de380f58c24584b1e}; the combined article and
+README were not staged with that integration. Accordingly, this manuscript
+compares with the incoming Polynomial Rarity text and does not describe the
+older combined article as already containing Part~VI. [Merge note: this was
+true at the pin. Part~VI has since been printed above from that same archive
+(\cref{pr:sec:source}), so in Part~VII every reference to the incoming
+Polynomial Rarity manuscript is printed as a reference to Part~VI; its
+order-level half-size result is \cref{pr:cor:half}, its local bound
+\cref{pr:lem:local} and its small-letter suppression \cref{pr:lem:small}.]
+
+The inherited ingredients are Catalan maximum decomposition, endpoint counts,
+threshold parsing and word masses, plus the subcritical local bound and
+small-letter exponential tilt. The new contribution is the three-piece
+endpoint table, its exact mass eight, the corner exclusions at scale
+$n^{-1}$, the leading integral and the limiting ramp. The proof has been
+checked by direct derivation. It has not been externally refereed or
+machine-formalized.
+
+The primary arXiv records~\cite{Nadler,MayamaAkita,pr:KerriouMorters} and
+targeted searches were checked on 1 October 2026. No matching exact
+half-window result was located in that limited search. This statement does
+not establish exhaustive priority. No third-party paper is redistributed in
+the package.
+
+\subsection{Where the merge had to choose}
+\label{hc:sec:merge}
+\begin{itemize}
+\item \emph{Placement.} Part~VII follows Part~VI and precedes Part~I's
+ appendices, which contain no numbered equations, tables or figures; no
+ number of Parts~I--VI changed. The manuscript's title page and abstract
+ are replaced by the opening note of Part~VII, the status box of
+ \cref{hc:sec:source} and a paragraph of the report's abstract; every claim
+ of its abstract is stated in \cref{hc:sec:results,hc:sec:source}. Its
+ Sections~1--8 are \cref{hc:sec:results,hc:sec:interfaces,hc:sec:parser,hc:sec:smallwords,hc:sec:twopiece,hc:sec:threepiece,hc:sec:remainders,hc:sec:evaluation};
+ its Section~9 is this section, without its ``Further questions'', which
+ open \cref{hc:sec:research}. Its unnumbered table of finite values is
+ \cref{hc:tab:finite}, with a caption that is the merge's. The subsection
+ on rebuilding and rerunning is the merge's. The manuscript's metadata
+ author line reads ``AI assisted mathematical research''; it names no
+ addressee.
+\item \emph{Citations.} The manuscript cites its two repository inputs as
+ bibliography entries: the report at the pin (``Parts III--V'') and the
+ incoming Polynomial Rarity archive. Both are replaced by references to
+ Parts~IV and~VI by label (\cref{hc:sec:results,hc:sec:boundary}); its
+ Kerriou--M\"orters entry is Part~VI's \cite{pr:KerriouMorters}, and its
+ Nadler and Mayama--Akita entries are the report's. No bibliography entry
+ was added.
+\item \emph{Duplicates with Parts~III, IV and~VI.} Equation~\eqref{hc:eq:cat} is
+ Part~IV's \eqref{mj:eq:catalan-bounds}; \cref{hc:lem:endpoints} is Part~IV's
+ \cref{mj:lem:first} and \eqref{mj:eq:last-count}, with a more uniform form
+ of \eqref{mj:eq:last-half}, and its first-entry count is also Part~VI's
+ \eqref{pr:eq:firstentry}; \eqref{hc:eq:masses} is Part~IV's
+ \eqref{mj:eq:W}--\eqref{mj:eq:word-counts}; the two-piece weight and mass
+ are Part~IV's \eqref{mj:eq:acceptance} and \eqref{mj:eq:wordmass}, and its
+ normalized law is \eqref{mj:eq:word-law}, whose cost marginal is
+ \eqref{mj:eq:cost-law}; \cref{hc:lem:small} is a second route to Part~VI's
+ \cref{pr:lem:local,pr:lem:small}. They are kept, with merge notes, because
+ Part~VII's limits are built on these exact forms. \Cref{hc:lem:parser}
+ generalizes Part~IV's \cref{mj:lem:parse} to all $m<n$. New are
+ \cref{hc:thm:window,hc:thm:phase}, the three-piece table \eqref{hc:eq:chi2}
+ and its mass \eqref{hc:eq:8}, the corner and many-letter exclusions of
+ \cref{hc:sec:remainders}, and the evaluation $I_3(1/2)=12\pi$; the
+ manuscript's own list of new content (\cref{hc:sec:boundary}) agrees.
+\item \emph{What Part~VII sharpens.} \Cref{hc:thm:window} turns Part~VI's
+ \cref{pr:cor:half} into a limit and \cref{hc:thm:phase} turns
+ \cref{pr:thm:staircase} into an equivalent for $1/3<\theta\le1/2$. Nothing
+ in Parts~I--VI is refuted.
+\item \emph{An unjustified step.} The bound $4(1/2)^j$ after
+ \cref{hc:lem:small} is printed as delivered, followed by the editorial
+ \cref{hc:rem:jbound}, which gives the missing justification and names the
+ false reading. No other step of the manuscript was changed.
+\item \emph{Notation.} Every rename is listed in \cref{hc:tab:notation}:
+ $W,W_R,W_A\to\mathcal W(1/4),\mathcal W_R(1/4),\mathcal W_A(1/4)$ and
+ $S,T\to S_n,T_n$; the manuscript's $\mathbb P$, positive part and cost
+ are Part~III's $\ljP$, Part~VI's $\prpos{\cdot}$ and Part~III's
+ $\ljcost$, and its thin space before each differential is written out. No
+ normalization changed.
+\item \emph{Labels.} The manuscript's 25 labels are kept with the prefix
+ \texttt{hc:}; unprefixed, its generic \texttt{eq:8}, \texttt{eq:J},
+ \texttt{eq:L} and \texttt{sec:remainders} would name nothing specific in a
+ report of this size. The merge added labels to the new sections,
+ subsections, tables and the editorial remark.
+\item \emph{Research questions.} The manuscript's one paragraph of further
+ questions is printed verbatim and then split into four subsections, each
+ pointing to the question of Part~VI it continues.
+\item \emph{Stale sentences elsewhere.} The abstract gained a paragraph;
+ dated pointers to Part~VII were added where Parts~II, IV, V and~VI say
+ that an equivalent below half size, the half-size transition function, the
+ endpoint constant at $q=2$ or the amplitude at $r=2$ is open, to the
+ caption of \cref{pr:tab:numerics}, and to Part~I's
+ \cref{app:reproduction}; their original wording is kept.
+\end{itemize}
+
+\section{Further research questions}
+\label{hc:sec:research}
+The next concrete targets are exact constants in the lower phases, the
+analogous crossover functions at $1/q$ for $q\ge3$, quantitative errors in
+\cref{hc:thm:window}, and the conditioned distribution of the three
+macroscopic pieces. The same parser suggests finite endpoint-state
+calculations for those problems, but this manuscript claims only the results
+stated above.
+
+The four subsections below split that paragraph; the pointers in
+parentheses are the merge's.
+
+\subsection{Exact constants in the lower phases}
+\label{hc:sec:q-lower}
+Determine $\Omega_r(\theta)$ for $r\ge3$, $1/(r+1)<\theta<1/r$, and the
+endpoint constants $\mathfrak K_q$ for $q\ge3$. (Part~VI's
+\cref{pr:sec:q-amplitudes,pr:sec:q-endpoints}, now answered at $r=2$ and
+$q=2$; for $r\ge3$ the parser has $r$ macroscopic outer letters and the
+endpoint table of \eqref{hc:eq:chi2} has to be extended.)
+
+\subsection{Crossover functions at the higher reciprocal thresholds}
+\label{hc:sec:q-higher}
+Find the analogue of \cref{hc:thm:window} at $1/q$ for $q\ge3$, on Part~VI's
+scale $\mathfrak w_q(n)$. (Part~VI's \cref{pr:sec:q-crossover}; at $q=2$ its
+candidate $\mathfrak K_q+\mathfrak L_qt_+^{q-1}$ is now a theorem.)
+
+\subsection{Quantitative errors in the half-size window}
+\label{hc:sec:q-errors}
+Give a rate in \cref{hc:thm:window}. \Cref{hc:tab:finite} and
+\cref{hc:sec:finite} show slow convergence, especially on the negative side
+of the window, where the constant comes from an integrable corner. (Part~VI's
+\cref{pr:sec:q-uniform} asks for uniform relative errors near every
+reciprocal boundary.)
+
+\subsection{The conditioned three-piece law}
+\label{hc:sec:q-geometry}
+Find the limiting law of the three macroscopic pieces of a uniform avoider
+conditioned on $M_n\le\lfloor\theta n\rfloor$, $1/3<\theta\le1/2$. The
+endpoint table \eqref{hc:eq:chi2} and the density $(xyz)^{-3/2}$ of
+\eqref{hc:eq:tripleweight} identify the leading families of the parser, but
+no conditioned limit theorem is proved. (Part~VI's
+\cref{pr:sec:q-geometry}; Part~IV's \cref{mj:thm:conditional} is the
+two-piece analogue above half size.)
+
+
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices of Part I}
 \appendix
@@ -11179,7 +12208,9 @@ listed in \cref{mj:sec:reproduce}.
 Added 30 September 2026, batch 64: Part~V's carry the prefix
 \path{06-critical-moments-} and are listed in \cref{cjm:sec:reproduce}.
 Added 30 September 2026, batch 68: Part~VI's carry the prefix
-\path{07-polynomial-rarity-} and are listed in \cref{pr:sec:reproduce}.]
+\path{07-polynomial-rarity-} and are listed in \cref{pr:sec:reproduce}.
+Added 1 October 2026, batch 71: Part~VII's carry the prefix
+\path{08-half-size-crossover-} and are listed in \cref{hc:sec:reproduce}.]
 
 The primary reproducibility command needs no third-party Python packages:
 \begin{lstlisting}
