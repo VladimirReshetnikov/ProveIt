@@ -141,6 +141,12 @@ universal Diophantine equations by James P. Jones and coauthors:
   illustrative table gives **259 certificate operations or297 polynomial
   operations**, with46 witnesses. A wider radix makes the joint bound
   sound; deleting the output bound is separately proved unsound.
+  The [coupled index/linear successor](Papers/research-wip/native-stream-queue/group_projective_coupled_linear_unit.md)
+  saves another three additions: **3m+3h+p+220+f_flow-3min(h,3)** polynomial
+  operations,11 equations,m+30 witnesses and degree164m+920 for those
+  same options. The illustrative table reaches **262/294 operations**
+  with46 witnesses. Its extra native sign branch restores positive
+  witnesses for the same ordinary input; the numerical75/88 bounds remain.
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
   represent universal membership, but unrestricted mortality accepts every

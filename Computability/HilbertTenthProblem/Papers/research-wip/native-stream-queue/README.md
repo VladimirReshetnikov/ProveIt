@@ -306,6 +306,25 @@ The ten-letter example now reaches **259/297 operations,13 equations,
 The separate-root version gives258/299 at degree2974. These remain
 parameterized fixed-table results, not a new numerical universal bound.
 
+The [index unit](group_projective_index_unit.md) saves one more polynomial
+addition. Its sign proof recovers the main Pell index while the checksum
+is still signed, then uses the upper ratio bound to exclude the negative
+index unit. The [coupled linear successor](group_projective_coupled_linear_unit.md)
+also combines the auxiliary linear comparison, saving two further
+additions and lowering the six-field degree relative to the index-only product.
+Its extra sign branch restores the same input predicate by subtracting2
+from the native complement field and index, and adding2 to its bound slack.
+The four-bit prefix proves the restored field stays strictly positive.
+
+Including the joint bound, this final coupled certificate costsC+4.
+Four computed fields give14-chi equations,m+33-chi witnesses and polynomial
+C+45-3chi, of degree24nu L+54. Six give12-chi equations,m+31-chi witnesses
+and polynomialC+39-3chi, of degree nu(40L+2m+30)+60. The ten-letter
+example with both options reaches **262 certificate operations or294
+polynomial operations,11 equations,46 positive witnesses and degree3544**.
+Disabling controller-mask reuse gives295 polynomial operations at degree2904.
+The universal numerical75/88 bounds remain separate and unchanged.
+
 Deleting the output bound outright is [unsound](group_projective_output_bound_obstruction.md):
 a fixed six-shear table with an empty genuine endpoint language acquires
 positive solutions at every input. Noncanonical individual output lanes
@@ -359,6 +378,8 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Coupled auxiliary linear unit](group_projective_coupled_linear_unit.md) | With the joint bound: six-field C+4 certificate,12-chi equations,m+31-chi witnesses, polynomial C+39-3chi, degree(1+chi)(40L+2m+30)+60. | Extra native sign branch normalizes positive complement/index/slack coordinates at the same ordinary input; not an identical positive zero set. Illustrative262/294,degree3544. |
+| [Index unit](group_projective_index_unit.md) | One further SOS addition saved with the same positive witness tuples as the merged-first parent. | Strong-rank recovery uses weak signed-checksum bounds before typing; both ratio slacks and X>r remain. |
 | [Joint bound and first-root composition](group_projective_joint_first_norm.md) | Merged six-field certificate C+1,14-chi equations,m+31-chi witnesses, polynomial C+42-3chi, degree(1+chi)(38L+4m+60)+48. | C is the padded-program cost above; L=m+18 or2m+10. Ten-letter example259/297; universal numerical table remains uninstantiated. |
 | [Joint history/output bound](group_projective_joint_bound.md) | B=16D allows one positive bound, saving1M+2A in SOS and one witness at unchanged certificate cost and degree. | Restore both parent bounds before typing; exclusivity proves the inverse joint slack positive. |
 | [Positive first-root unit](group_projective_first_norm_unit.md) | Merging the recoded first norm saves2A in SOS with unchanged witness count; a separate option lowers four-field degree at unchanged cost. | Both ratio slacks and strong auxiliary equality remain; root positivity and all unit signs are proved before typing. |

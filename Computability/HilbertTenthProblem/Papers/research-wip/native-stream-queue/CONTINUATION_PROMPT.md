@@ -353,6 +353,40 @@ positivity hypothesis. The ten-letter example with epsilon=chi=1 is
 259/297,13 equations,46 witnesses,degree3488; separate-root258/299 has
 degree2974. These are illustrative fixed-table counts.
 
+The [index-unit successor](group_projective_index_unit.md) merges
+Nk=k-hE-r with the product, saving1SOS addition. Initially Nk=Q=+/-1.
+With four positive native fields and q>=16, their signed checksum still
+gives r>=q^3+q^2+q+1 and r<q^4. X>r and Y>=q implyE>2r+1.
+First k=psi_(2XY²+1)(n) gives n>=r-1; c>kY and the larger first base
+give main p>n, hence c>A*Delta²,c>2p,c>2(2r+1). The independent
+strong-rank and half-index lemmas now recover p=2r+1 without assuming
+Q=1. Then n=r+/-1 exactly, and the negative case p=2n+3 contradicts
+psi_A(2n)=2A*psi_(2A²-1)(n)>k(Y+1). Both unit signs become positive
+before applying the parent typing theorem.
+
+The [coupled-linear successor](group_projective_coupled_linear_unit.md)
+uses K=k-hE and V=of-c, replaces the auxiliary norm's ordinate by V,
+and merges Lunit=V-jc+2K. Deleting r+1,2r+1,jc-(2r+1) pays for its
+three additions; one new product removes another comparison and saves
+2SOS additions. Initially Nk=epsilon_k,Lunit=lambda,Q=epsilon_k*lambda.
+Recover main p=2K-lambda and first n=K using the same weak-checksum
+rank argument with targets up to2r+3. The upper ratio forceslambda=1.
+If epsilon_k=1, restore the parent directly. If epsilon_k=-1, restore
+F0_old=F0-2,r_old=r-2,bound_beta_old=bound_beta+2. The padded ports and
+q divisible by16 give F0=3 mod16, so every restored supplied coordinate
+is positive. Packed r changes by exactly-2; both input ports and every
+outer history/controller field stay fixed. This is same-input equivalence,
+not equality of positive witness sets. Keep these branches separate.
+
+Composed with the joint bound, the coupled certificate costs C+4.
+Four fields give14-chi equations,m+33-chi witnesses,C+45-3chi polynomial
+gates,degree24nu L+54. Six give12-chi equations,m+31-chi witnesses,
+C+39-3chi gates,degree nu*(40L+2m+30)+60. The ten-letter epsilon=chi=1
+example is262/294,11 equations,46 witnesses,degree3544; with epsilon=0
+its polynomial is295 at degree2904. No numerical universal alphabet is
+instantiated. The unconditional negative-norm exclusions still precede
+all rank and typing arguments, and the full strong equality remains.
+
 Do not remove the output bound instead of combining it. The
 [exact carry counterexample](group_projective_output_bound_obstruction.md)
 uses fixed macros3..8, whose first block preserves first coordinate1

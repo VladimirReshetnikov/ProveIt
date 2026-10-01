@@ -244,6 +244,26 @@ Keeping the first norm separate adds two polynomial operations and lowers
 degree. The ten-letter example reaches259/297,13 equations,46 witnesses
 and degree3488; the separate option is258/299 at degree2974.
 
+The [index-unit refinement](../research-wip/native-stream-queue/group_projective_index_unit.md)
+adds the first index to the product, saving one more SOS addition.
+Its proof starts with only a signed checksum, establishes the size
+hypotheses of the independent strong-rank lemma, recovers the exact
+main index, and excludes the negative index unit by the upper ratio.
+The [coupled auxiliary linear unit](../research-wip/native-stream-queue/group_projective_coupled_linear_unit.md)
+then saves two more additions. Its auxiliary norm uses V=of-c and its
+linear unit is V-jc+2(k-hE). One extra sign branch is retained but
+normalizes to a valid positive parent tuple by shifting the native
+complement/index by-2 and the bound slack by+2. The fixed prefix proves
+the restored complement positive. The outer input predicate is unchanged.
+
+With the joint bound, the coupled certificate isC+4. Four fields give
+14-chi equations,m+33-chi witnesses,C+45-3chi polynomial operations and
+degree24(1+chi)L+54; six give12-chi equations,m+31-chi witnesses,
+C+39-3chi operations and degree(1+chi)(40L+2m+30)+60. The illustrative
+ten-letter table is262/294 with11 equations,46 witnesses and degree3544,
+or295 polynomial operations at degree2904 without mask reuse. Every
+comparison and positivity obligation remains paid;75/88 are unchanged.
+
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with
 an empty true endpoint language acquires full positive zeros at every
