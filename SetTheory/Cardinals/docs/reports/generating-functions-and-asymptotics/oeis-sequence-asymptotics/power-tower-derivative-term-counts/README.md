@@ -1,6 +1,6 @@
 # Term counts in the derivatives of power towers
 
-**One framework and three sequences: OEIS A293239 (`x^x`), A290268 (`x^(x^2)`), A281434 (`x^(x^x)`), with depth certificates for A290268 at logarithmic deficits 3 and 4, a second route to deficit 3, and Lehmer–Comtet nonvanishing on prime-multiple offsets for A293239**
+**One framework and three sequences: OEIS A293239 (`x^x`), A290268 (`x^(x^2)`), A281434 (`x^(x^x)`), with depth certificates for A290268 at logarithmic deficits 3 and 4, a second route to deficit 3, Lehmer–Comtet nonvanishing on prime-multiple offsets for A293239, and deficits 5 and 6 with explicit count bounds for A290268**
 
 **What this report is.** One article covering three OEIS sequences that ask the
 same question about three different functions:
@@ -23,7 +23,8 @@ manuscript, on A290268 only, was written into the end of Part 3 on
 29 September 2026 as Sections 3.14–3.26, and a fifth, also on A290268 only,
 after it on 30 September 2026 as Sections 3.27–3.34. Three more, on the
 Lehmer–Comtet triangle behind A293239, were written into the end of Part 2 on
-1 October 2026 as Sections 2.11–2.15.
+1 October 2026 as Sections 2.11–2.15, and two more on A290268 into the end of
+Part 3 on the same day as Sections 3.35–3.41.
 
 **Status.** AI-assisted research notes. Unrefereed. Nothing in this report is
 formalized; see "Relation to the Lean development" below for what the nearby
@@ -41,6 +42,8 @@ Lean development does and does not prove.
 | 04 | batch 72A, manuscript 09 | `ProveIt_Lehmer_Comtet_Stirling_Residues_and_Candidate_Lists.zip` (*Stirling Residues and Finite Candidate Lists: Arithmetic restrictions on Lehmer–Comtet zeros*, 6-page PDF, dated 1 October 2026) | `ca81647a9` | `d292c6765` | Part 2, Section 2.13 |
 | 05 | batch 72A, manuscript 12 | `ProveIt_Lehmer_Comtet_Prime_Multiple_Nonvanishing.zip` (*Complete Nonvanishing on Prime-Multiple Offsets: Lehmer–Comtet coefficients and derivatives of x^x*, 6-page PDF, dated 1 October 2026) | `ca81647a9` | `d292c6765` | Part 2, Section 2.12 |
 | 06 | batch 72A, manuscript 17 | `ProveIt_Lehmer_Comtet_Uniform_Padic_Nonvanishing.zip` (*Uniform p-adic Nonvanishing: Two valuation families for Lehmer–Comtet coefficients*, 4-page PDF, dated 1 October 2026) | `ca81647a9` | `d292c6765` | Part 2, Section 2.14 |
+| 07 | batch 72A, manuscript 68 | `ProveIt_A290268_Count_Bounds.zip` (*Pointwise and Summatory Bounds for OEIS A290268*, 6-page PDF, dated 1 October 2026) | `ca81647a9` | `d292c6765` | Part 3, Section 3.40 |
+| 08 | batch 72A, manuscript 70 | `ProveIt_A290268_Depths_Five_Six.zip` (*Depths Five and Six Nonvanishing for OEIS A290268*, 9-page PDF, dated 1 October 2026) | `ca81647a9` | `d292c6765` | Part 3, Sections 3.35–3.39 |
 
 The first three rows are the original merge; `MERGE_EDITS.md` records every
 edit made to them, and all fifty of their theorems, lemmas, propositions,
@@ -138,6 +141,46 @@ shipped: the three manuscripts, READMEs and PDFs, 09's embedded byte-identical
 copy of archive 12 and its PDF, and three copies of a generic `build_local.sh`;
 the archives survive in the history of `1512ef835`.
 
+Sources 07 and 08 (batch 72A, manuscripts 68 and 70) are printed in full at
+the end of Part 3, 70 first (68 uses its Theorem 7.2), including 68's input
+file `sharpness.tex`. Both pin `ca81647a9`. **Source 08 answers Question 1 of
+Section 3.24**: Theorem 3.71 classifies depths 5 and 6 (only the reflection
+holes `M = k+4d+1`, `k+d` even), by exact moment seeds (Lemmas 3.75, 3.79)
+for the convexity criteria (3.88) and finite rectangles of 343,151 and
+4,785,360 cells, so **the open region is now deficit `m >= 7`**. It answers
+Question 2 non-optimally (Theorem 3.81: cutoffs `ceil((2d+1)e^d)` and twice
+that, against the tower-type constants (3.74)), and Question 3 in part
+(Proposition 3.80, the sharp largest-root affine minorant). Source 07 gives
+the first explicit bound with an `N log N` gain (Theorem 3.83:
+`a(N) >= 3N^2/8 + (N/2)log N - (N/2)log log N - 5N/4` for `N >= e^10`), an
+exact summatory bound with cubic constant `11/72` (Theorem 3.85), the average
+`11/24` (Corollary 3.86), and the sharpness of `11/72` for integer-support
+information alone (Proposition 3.87), which quantifies the last sentence of
+Question 6. Re-derivations are printed once and credited: 70's Lemma 2.1 is
+Theorems 3.21 and 3.29, its branch cut Proposition 3.30, its factorization
+Proposition 3.26, its Lemma 4.1 Proposition 3.34 (with Lemmas 3.32–3.33),
+its recurrences (3.80) and (3.81), its Lemma 3.1 the criterion (3.88); 68's
+Proposition 3.82 at depth cap 4 is Corollary 3.45 and its row budget is
+Theorem 3.44. **Neither manuscript cites Sections 3.27–3.34**, yet 70's
+tail-moment formula (3.120) at `d = 3` is `pi^2/3 + 2 E_q`, the harmonic
+quantity of Lemma 3.54, and reproduces the cutoff `q >= 38`; its parameter
+integral is the beta–sine transform (3.94); Remark 3.76 records both. Where
+the write had to choose: the addition follows the batch-70 addition, so that
+no existing number moved (checked against the `.aux` of a build of the
+previous text: 0 of 417 numbered labels changed, and 0 of the 359 of the
+text before batch 72A); the notation table is numbered 3.A with the table
+counter restored; 70's `C_d, K_d, Q_d` and 68's `K_d, Q_d` are printed
+`hat C_d, hat K_d, hat Q_d`, because the same letters already name the
+different constants (3.74) (Table 3.A); Lemma 2.1 and Lemma 4.1 of 70 are
+printed with their proofs cited, not repeated; Remarks 3.76 and 3.84, the
+notation table and the editorial notes are additions of the intake. Remark
+3.84 records an intake check: the bound of Theorem 3.83 already follows from
+Corollary 3.45 for `3 <= N <= 92653`, from Corollary 3.78 for
+`N <= 814895`, and from Proposition 3.82 with the largest admissible depth
+cap for every `3 <= N <= 3*10^6`, so the threshold `e^10` is conservative.
+Not shipped: the two manuscripts, READMEs and PDFs, 68's `sharpness.tex`,
+and two copies of `build_local.sh`.
+
 ## Status of each headline question — read this first
 
 **None of the three headline questions is fully settled here, and this report
@@ -182,10 +225,18 @@ question is only how many.
   `(3n^2+28n-111)/8` for odd `n >= 17` — a gain of `2n-10`, resp. `2n-14`, in
   the linear term only; the leading constant `3/8` is unchanged, and the
   proposed leading constant `1/2` is not established. The certified finite
-  range `a(n) = U(n)` for `n <= 3000` (Proposition 3.18) is unchanged. **The
-  open region is now logarithmic deficit `m = k - j >= 5`, `n >= 2k + 2`**,
-  away from the reflection zeros; at every fixed `m >= 3` it is reduced to
-  finitely many cells, with bounds far too large to compute.
+  range `a(n) = U(n)` for `n <= 3000` (Proposition 3.18) is unchanged. The
+  open region was then logarithmic deficit `m = k - j >= 5`, `n >= 2k + 2`.
+  **Since 1 October 2026 (Sections 3.35–3.41) deficits 5 and 6 are also
+  classified (Theorem 3.71), so the open region is now `m >= 7`,
+  `n >= 2k + 2`**, away from the reflection zeros. At every fixed `m >= 3` it
+  is reduced to a finite rectangle of `2*ceil((2m+1)e^m)^2` cells (Theorem
+  3.81; the earlier bounds of Theorem 3.22 were tower-sized), still about
+  `5.4*10^8` cells at `m = 7`. The explicit lower bound is now
+  `a(n) >= 3n^2/8 + (n/2)log n - (n/2)log log n - 5n/4` for `n >= e^10`
+  (Theorem 3.83), with the exact summatory bound
+  `sum_{n<=X} a(n) >= 11X^3/72 + 5X^2/6 - O(X)` (Theorem 3.85); the leading
+  constant of every explicit lower bound is still `3/8`.
 
 - **A281434 (`x^(x^x)`): the growth order is settled; the constant is not.**
   For `n >= 1`, with `eps = 1` for odd `n` and `0` otherwise,
@@ -207,15 +258,35 @@ of Sections 3.27–3.34: its exact rational check (Proposition 3.55; the
 36 values `q` in `{1..5} ∪ {7..37}` with `0 <= k <= 14`, plus the centre
 `q = 6`) decides every `n` only because the proved recurrence (3.107) and the
 harmonic sign law (Lemma 3.54) make it exhaustive; its larger boxes are
-diagnostics.
+diagnostics. The depth-5 and depth-6 rectangles of Sections 3.35–3.39 decide
+every `n` only because the exact moment seeds (Lemmas 3.75 and 3.79) and the
+proved comparisons make them exhaustive (Proposition 3.77); the depth-5
+rectangle reaches `n <= 1665`, inside the certified range, while the depth-6
+rectangle reaches `n = 6198` and is the first certificate of cells with
+`3000 < n <= 6198`.
 
 ## What is not claimed
 
 - No closed formula for any of the three sequences, and no leading constant
   for A290268 or A281434.
-- For A290268: nothing at deficits `m >= 5` beyond the finite range
-  `n <= 3000` and the per-depth finiteness theorem; the manuscript's general
-  bounds `K_d`, `Q_d` are "deliberately crude" and not claimed practical.
+- For A290268: nothing at deficits `m >= 7` beyond the finite range
+  `n <= 3000` and the per-depth finiteness theorems (until 1 October 2026
+  this read `m >= 5`; deficits 5 and 6 are Theorem 3.71); the batch-42
+  manuscript's general bounds `K_d`, `Q_d` are "deliberately crude" and not
+  claimed practical, and manuscript 70's cutoffs `hat Q_d`, `hat K_d` are
+  "not a bit-complexity estimate or a claim of optimality".
+- For A290268, Sections 3.35–3.41: manuscript 70 does not claim "that the
+  coefficient distributions attain the worst case" of its sharp threshold;
+  "the full OEIS conjecture, the finite nonvanishing obligations at depths
+  `d >= 7`, and formal verification remain separate tasks". Manuscript 68's
+  average constant `11/24` "is an average statement, not a pointwise bound";
+  neither result proves `a(N) ~ N^2/2`; its sharpness pattern "is not
+  asserted to arise from any function". Its sentence "Depths one and two are
+  already classified" understates this report (depths 1–4 are), and 70's
+  "the leading lower-bound constant remains 3/8" is true only of explicit
+  bounds; both are kept with editorial notes. No exhaustive priority, formal
+  verification or refereeing is claimed; their READMEs' "independent"
+  checks are not confirmed here.
 - The manuscript's zero-count bound (at most `d` real zeros per row of the
   Mellin interpolant) is not an integer nonvanishing statement.
 - No priority: manuscript 06's literature and repository checks are "not a
@@ -286,6 +357,16 @@ worse risk than declaring the clash. Three collisions matter more than the rest:
   `q -> nu`, `E_j -> bold e_j`). 09's unsigned Stirling numbers `c(mu,j)` are
   `(-1)^(mu-j) s(mu,j)` in terms of Part 2's signed `s(m,l)`. No normalization
   changed.
+- **Sections 3.35–3.41 keep the depth coordinates** but print manuscript 70's
+  `C_d`, `K_d`, `Q_d` and manuscript 68's `K_d`, `Q_d` as **`hat C_d`,
+  `hat K_d`, `hat Q_d`**: they are *not* the constants `C_d`, `K_d`, `Q_d` of
+  (3.74). Table 3.A of the article lists the other renamings (70's `r_d`,
+  `beta_l` -> `varrho_d`, `omega_l`; `Q_k^(r)`, `A_{M,k}`, `B(r)`, `E_{k,q}` ->
+  the batch-42 `calQ`, `calA`, `calB_d`, `calE_{d,k,q}`; harmonic numbers ->
+  upright `H`; `L_4(N)` -> `Lambda_4(N)`; `U` -> `Xi`; 68's `D` -> `bar d`,
+  `L` -> `frak L`, `F` -> `calN`, `B(X)` -> `bar beta(X)`, `S(X)` -> `calS(X)`,
+  `A(X)` -> `Sigma_a(X)`, `h(d,k)` -> `iota(d,k)`). The practical cutoffs keep
+  the letters `(R, Q)` of Proposition 3.41. No normalization changed.
 
 §1.5 of the article gives the three canonical monomials side by side, and is
 explicit that many other letters (`u`, `v`, `t`, `q`, `U`, `Z`, `E`, `Δ`) are
@@ -305,17 +386,20 @@ intake's): 58 in all. They are the manuscripts' own labels with the prefix
 (all 19 of 12's, 14 of 09's, 13 of 17's), four subsection labels and the
 intake's eight; the four manuscript labels not carried (`st:H`, `st:b`,
 `pn:H`, `pn:b`) label 09's and 17's repetitions of 12's definitions, which
-are printed once. The article has 419
-`\label`s (219 before the batch-42 addition, 304 before the batch-70 one, 361
-before the batch-72A ones); none was renamed or removed. No label here has a
-Lean mapping.
+are printed once. The batch-72A Part 3 addition (Sections 3.35–3.41) uses
+**`xxb:d56:`** (30 labels: manuscript 70's 20, prefixed, and 10 of the
+intake's) and **`xxb:cb:`** (18: manuscript 68's 15, prefixed, and 3 of the
+intake's, one of them on the unnumbered proposition of `sharpness.tex`). The
+article has 467 `\label`s (219 before the batch-42 addition, 304 before the
+batch-70 one, 361 before batch 72A, 419 after its Part 2 addition); none was
+renamed or removed. No label here has a Lean mapping.
 
 ## Files
 
 ```
 README.md                                         this guide
 article.tex                                       the article (pdfLaTeX, internal bibliography)
-article.pdf                                       the compiled article, 120 pages (A4)
+article.pdf                                       the compiled article, 141 pages (A4)
 MERGE_EDITS.md                                    every edit made to the three original texts in the merge
 A293239_oeis_notes.txt                            statement of the x^x recurrence-range correction
 A290268_result_status.json                        Part 3's machine-readable status, as delivered (stale; see below)
@@ -345,11 +429,13 @@ code/05-prime-multiple-replay_convolution.py      12: independent convolution an
 code/06-padic-valuations-verify_padic.py          batch-72A manuscript 17: integer-triangle check of both valuation families
 code/06-padic-valuations-check_rational_powers.py 17: direct rational power recurrence (prints its JSON, writes nothing)
 code/06-padic-valuations-replay_padic_powers.py   17: integer-scaled convolution replay
-code/07-count-bounds-verify_counts.py             batch-72A manuscript 68 (count bounds; placed, to be written into Part 3)
-code/08-depths-five-six-verify_depth5.py,
-code/08-depths-five-six-independent_pascal_depth5.py,
-code/08-depths-five-six-independent_pascal_depth6.py,
-code/08-depths-five-six-verify_depth6_columns.cpp batch-72A manuscript 70 (depths five and six; placed, to be written into Part 3)
+code/07-count-bounds-verify_counts.py             batch-72A manuscript 68: exact count checks of Section 3.40 (SymPy; prints, writes nothing)
+code/08-depths-five-six-verify_depth5.py          batch-72A manuscript 70: depth-5 rectangle and seeds, exact integers
+code/08-depths-five-six-independent_pascal_depth5.py
+                                                  70: depth-5 rectangle by the Pascal recurrence modulo 1009/1013/1019, and seeds
+code/08-depths-five-six-independent_pascal_depth6.py
+                                                  70: depth-6 rectangle by the Pascal recurrence modulo 1000003/1000033, and seeds
+code/08-depths-five-six-verify_depth6_columns.cpp 70: depth-6 rectangle by the centered recurrence, same moduli (C++17; prints its JSON)
 data/02-depth-certificates-finite_certificate.csv all 16,034 rectangle cells: sign, reduced sign, residues mod 1009, 1013 (CRLF)
 data/02-depth-certificates-sign_thresholds.csv    observed sign transitions per tested row (CRLF)
 data/02-depth-certificates-verification.json      executed-check summary and exact seed integers
@@ -361,9 +447,9 @@ data/05-prime-multiple-{checks,replay_convolution}.json
 data/06-padic-valuations-{padic_checks,rational_power_checks,replay_padic_powers}.json
                                                   17: recorded outputs of its three programs
 data/07-count-bounds-{verification.txt,requirements.txt}
-                                                  68: recorded output; its SymPy pin (sympy==1.14.0)
+                                                  68: recorded output (three PASS lines); its SymPy pin (sympy==1.14.0)
 data/08-depths-five-six-{depth5_certificate,depth6_column_certificate,independent_pascal_depth5,independent_pascal_depth6}.json
-                                                  70: recorded outputs of its four programs
+                                                  70: recorded outputs of its four programs (depth5_certificate.json has a wall-clock field)
 data/b281434.txt, data/b352697.txt, data/benchmarks.csv, data/counts.csv,
 data/python_report.json, data/selected_holes.json, data/test_results.txt,
 data/zeros.csv, data/environment.json             A281434 and A293239 outputs
@@ -481,6 +567,32 @@ equals `data/06-padic-valuations-rational_power_checks.json`. The replay of 09
 is meant to be run with `-O`: its README runs it so, and the manuscript says
 it "passes with Python assertions disabled".
 
+**Depths five and six, and count bounds (Sections 3.35–3.41).** The three
+Python programs of manuscript 70 use only the standard library and write
+their JSON **beside themselves under their delivery names**
+(`depth5_certificate.json`, `independent_pascal_depth5.json`,
+`independent_pascal_depth6.json`), so **work on a copy** of this directory;
+the C++ checker prints its JSON to standard output. Use `py`, not bare
+`python` (the delivery README says `python`):
+
+    py code/08-depths-five-six-verify_depth5.py
+    py code/08-depths-five-six-independent_pascal_depth5.py
+    py code/08-depths-five-six-independent_pascal_depth6.py
+    g++ -O2 -std=c++17 code/08-depths-five-six-verify_depth6_columns.cpp -o verify_depth6_columns
+    ./verify_depth6_columns > depth6_column_certificate.json
+
+Manuscript 68's checker needs SymPy 1.14.0 and writes nothing:
+
+    uv run --no-project --with sympy==1.14.0 python code/07-count-bounds-verify_counts.py
+
+At the intake, on a copy and under the shipped names, all five exited with
+status 0 (the slowest, the depth-6 Pascal audit, took 11 s here and 105 s at
+placement; compiling the C++ checker took 5 s). Every output equalled the
+shipped file, ignoring line endings, except the field `elapsed_seconds` of
+`depth5_certificate.json`, which records wall-clock time and can never
+reproduce byte for byte; its digest and exact seed ratio agree. The standard
+output of `verify_counts.py` equals `data/07-count-bounds-verification.txt`.
+
 ## What the modular verifiers do and do not do
 
 Both compiled verifiers are exact. A nonzero residue certifies a nonzero
@@ -512,7 +624,9 @@ same `(j, k)` coordinates, and proves:
   `A290268.Hole` named in the declaration's docstring does not exist.
 
 Theorem 3.23 (deficits 1–4) would discharge the nonvanishing inclusion only on
-cells of depth at most four; the `Main` theorems stay conditional. Manuscript
+cells of depth at most four, and with Theorem 3.71 (Sections 3.35–3.41, which
+neither cite nor rely on the library) at most six; the `Main` theorems stay
+conditional. Manuscript
 03 (Sections 3.27–3.34) also cites only `A290268.Main` and reads its theorems
 as conditional; its Theorem 3.59 covers depth 3 only, already covered by
 Theorem 3.23. The six modules of its formalization blueprint (Section 3.33.2:
@@ -582,6 +696,22 @@ Lehmer–Comtet numbers, A008296 or A293239.
   shipped (`article.pdf`, `article.tex`, `build_local.sh`, 09's companion PDF
   and zip). The manuscripts' bibliography entries call this report "Part I";
   the article re-targets them to Part 2.
+- Sources 07 and 08 (Sections 3.35–3.41): manuscript 70's three Python
+  programs write their JSON beside themselves under the delivery names, and
+  the delivery README tells the user to run `python …` in the extracted
+  folder; `data/08-depths-five-six-depth5_certificate.json` contains a
+  wall-clock `elapsed_seconds`. The docstring of
+  `code/08-depths-five-six-independent_pascal_depth6.py` (and of its depth-5
+  twin) says the centered recurrence is used "only for its separate moment
+  seed": the central seed is recomputed by the same recurrence as in the
+  main certificate; the rectangles are the independent part (the tail seed is
+  a harmonic sum and needs no recurrence). The programs and JSON keep the manuscripts' letters (`R`,
+  `Q` cutoffs, `D` the depth). Manuscript 68's bibliography names
+  `ProveIt_A290268_Depths_Five_Six.zip` for "the companion"; the article
+  re-targets it to Theorem 3.81. Its main source loads `sharpness.tex` with
+  `\IfFileExists`; the file is printed in Section 3.40 and not shipped.
+  `data/07-count-bounds-requirements.txt` is byte-identical to a requirements
+  file already in the repository (`sympy==1.14.0`).
 
 ## Provenance
 
@@ -613,5 +743,21 @@ delivery; manuscripts, READMEs, PDFs, 09's embedded copy of 12 and the
 abstract, the reading guide, §1.5, Part 2's "What remains" (Section 2.10)
 and Section 5.1. All three are pinned to `ca81647a9`; all carry the line
 "Research note prepared for Vladimir Reshetnikov with OpenAI".
+
+Manuscripts 70 and 68 of batch 72A arrived and were placed in the same
+commits, as additions 08 and 07 (staged files prefixed
+`08-depths-five-six-` and `07-count-bounds-`, byte-identical to the
+delivery; manuscripts, READMEs, PDFs, 68's `sharpness.tex` and the
+`build_local.sh` wrappers not staged), and were written into Sections
+3.35–3.41 on 1 October 2026, with dated notes pointing forward from the
+abstract, the reading guide, §1.5, Part 3's status box and its update on
+`Lambda(n)`, Sections 3.7.4 and 3.10 and Part 3's conclusion, the batch-42
+introduction, example and conclusion, Questions 1–4 of Section 3.24, the
+formal-status list, the batch-70 introduction, its note on what depth four
+leaves open and two of its research questions ("Critical-strip bounds",
+"Asymptotic harmonic phases"), and Sections 5.1 and 5.5. Question 6 of
+Section 3.24 carries no note from this write; Section 3.40 says what
+manuscript 68 contributes to it. Both manuscripts are pinned to `ca81647a9`
+and carry the same "with OpenAI" line.
 
 These are AI-assisted drafts. None is refereed or machine-checked.
