@@ -22,7 +22,13 @@
 > zero-set bijection with the [coupled297 parent](neary_woods_universal_joint_and_coupled.md),
 > which retains51 witnesses,12 comparisons and degree at most2311.
 > That parent's earlier coupling preserves accepted outer instances,
-> not every supplied positive tuple. The
+> not every supplied positive tuple. The new
+> [positive-scale grouping frontier](neary_woods_universal_positive_scale_partitions.md)
+> gives301=142M+159A/degree-at-most608 with257 certificate gates,
+> 15 comparisons and50 witnesses;297/1142 and299/766 are alternatives.
+> Its fixed49-witness frontier ends at298/1344. The search optimizes
+> cost and conservative degree, not all three objectives including witnesses.
+> The earlier
 > [coupled factor-partition frontier](neary_woods_universal_joint_and_coupled_partitions.md)
 > gives301/degree-at-most1092,302/756 and304/608, all with51 witnesses.
 > The304 option costs257 certificate gates with16 comparisons. The exact
@@ -799,6 +805,29 @@ the changed coordinates. Twelve ledgers,768 full output identities
 (384 signed),768 coordinate round trips and384 positive lifts are checked.
 The degree bound is3892+2*44=3980; the parent alternatives below retain
 smaller degree bounds. The separate75/87 frontier is unchanged.
+
+The [positive-scale grouped successor](neary_woods_universal_positive_scale_partitions.md)
+combines all four strong treatments with all four scale-change subsets,
+keeping both cores indexed and coupled. Its complete cost/degree-bound
+frontier is291/3980,292/3486,293/3440,294/2322,295/1554,296/1508,
+297/1142,298/1098,299/766,300/734,301/608. The first three use49 witnesses;
+the other eight use50. This is a two-objective frontier, not an optimum
+also minimizing witnesses. Restricting to49 witnesses gives
+291/3980,292/3486,293/3440,294/2380,296/1810,298/1344. The two different
+298-operation schedules must be distinguished by witness count.
+
+Default301=142M+159A normalizes and changes the scale only in geometry.
+Its257=127M+130A certificate has15 comparisons and50 witnesses; group
+bounds304,280,282,276 and outer bound206 give608. With t normalized
+strong equations,b changed scales,g groups, counts are259+2t-g certificate,
+13-t-b+g comparisons,51-b witnesses and297-t-3b+2g polynomial operations.
+The frozen subset optimizer covers192 group-count schedules and384 ledgers
+across both program interfaces. The expanded audit has3,840 grouped-output
+identities,1,920 signed, plus192 scale-lift identities,96 signed.
+Scale changes preserve positive zeros by a coordinate bijection; grouping
+preserves accepted outer instances via canonical all-factor-1 extensions.
+The608 minimum concerns only the propagated objective of this sixteen-base
+family. No exact degree or unrestricted optimality is claimed.
 
 The [coupled linear-unit successor](neary_woods_universal_joint_and_coupled.md)
 replaces U=jc-(2r+1) by V=of-c in each auxiliary norm and adds

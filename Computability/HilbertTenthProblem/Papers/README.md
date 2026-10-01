@@ -39,13 +39,23 @@ supplies the single-polynomial bound. The latest explicit
 gives262 certificate / **291=142M+149A polynomial operations**,10 comparisons,
 49 positive witnesses, four positive program parameters and degree at most3980.
 Absorbing both native size bounds preserves positive zeros by an explicit
-coordinate bijection, including the shifted joint-index branch. Its
-[coupled297 parent](research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
+coordinate bijection, including the shifted joint-index branch.
+
+The [positive-scale grouping frontier](research-wip/native-stream-queue/neary_woods_universal_positive_scale_partitions.md)
+adds **301=142M+159A / degree at most608**, with257 certificate operations,
+15 comparisons and50 witnesses. Other50-witness choices include297/1142
+and299/766. Keeping49 witnesses gives a separate frontier ending at
+298/degree-at-most1344. The exact finite search optimizes operation count
+and conservative degree bounds over sixteen bases; witness counts vary,
+so this is not a three-objective optimum. All schedules preserve accepted
+outer instances, not every supplied coupled-parent zero.
+
+The [coupled297 parent](research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
 gives262 certificate / **297=144M+153A polynomial operations**,
 12 comparisons,51 positive witnesses, four positive program parameters
 and degree at most2311. It preserves the accepted outer relation through
 sign recovery and a conditional positive restoration; the supplied
-positive zero sets are not asserted identical. The
+positive zero sets are not asserted identical. The earlier
 [coupled partition frontier](research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled_partitions.md)
 includes301=142M+159A/degree-at-most1092,302=143M+159A/756 and
 304=143M+161A/608, all with51 witnesses. The304 option has257 certificate

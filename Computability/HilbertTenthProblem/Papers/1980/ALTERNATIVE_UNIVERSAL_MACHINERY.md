@@ -38,6 +38,15 @@ shifted joint-index branch, giving a positive zero-set bijection with the
 297 parent after the stated coordinate change. The separate75/87 frontier
 is unchanged.
 
+The [positive-scale grouping frontier](../research-wip/native-stream-queue/neary_woods_universal_positive_scale_partitions.md)
+adds **301=142M+159A / degree at most608**, with257 certificate operations,
+15 comparisons and50 witnesses. Other50-witness choices include297/1142
+and299/766. Keeping49 witnesses gives a separate frontier ending at
+298/degree-at-most1344. The exact finite search optimizes operation count
+and conservative degree bounds over sixteen bases; witness counts vary,
+so this is not a three-objective optimum. All schedules preserve accepted
+outer instances, not every supplied coupled-parent zero.
+
 The [coupled297 parent](../research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
 gives **262 certificate /297=144M+153A polynomial operations**,
 12 comparisons,51 positive witnesses and four positive program parameters.
@@ -47,7 +56,7 @@ contradiction. A remaining negative joint branch restores the parent by
 two private positive-coordinate changes. This preserves the accepted
 outer relation; no bijection of all supplied positive zeros is claimed.
 
-The [coupled factor-partition frontier](../research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled_partitions.md)
+The earlier [coupled factor-partition frontier](../research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled_partitions.md)
 also gives **301=142M+159A / degree at most1092**,
 **302=143M+159A / degree at most756**, and
 **304=143M+161A / degree at most608**, all with51 witnesses.

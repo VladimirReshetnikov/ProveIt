@@ -49,6 +49,15 @@ shifted joint-index branch, giving a positive zero-set bijection with the
 297 parent after the stated coordinate change. The separate75/87 frontier
 is unchanged.
 
+The [positive-scale grouping frontier](neary_woods_universal_positive_scale_partitions.md)
+adds **301=142M+159A / degree at most608**, with257 certificate operations,
+15 comparisons and50 witnesses. Other50-witness choices include297/1142
+and299/766. Keeping49 witnesses gives a separate frontier ending at
+298/degree-at-most1344. The exact finite search optimizes operation count
+and conservative degree bounds over sixteen bases; witness counts vary,
+so this is not a three-objective optimum. All schedules preserve accepted
+outer instances, not every supplied coupled-parent zero.
+
 The [coupled297 parent](neary_woods_universal_joint_and_coupled.md)
 gives **262 certificate /297=144M+153A polynomial operations**,
 12 comparisons,51 positive witnesses and four positive program parameters.
@@ -58,7 +67,7 @@ contradiction. A remaining negative joint branch restores the parent by
 two private positive-coordinate changes. This preserves the accepted
 outer relation; no bijection of all supplied positive zeros is claimed.
 
-The [coupled factor-partition frontier](neary_woods_universal_joint_and_coupled_partitions.md)
+The earlier [coupled factor-partition frontier](neary_woods_universal_joint_and_coupled_partitions.md)
 also gives **301=142M+159A / degree at most1092**,
 **302=143M+159A / degree at most756**, and
 **304=143M+161A / degree at most608**, all with51 witnesses.
@@ -1209,6 +1218,7 @@ New research and the completed75-operation construction:
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
 | [Positive-scale U9 universal polynomial](neary_woods_universal_positive_scale291.md) | **262 certificate /291=142M+149A polynomial**,10eq,49w,four positive program parameters,degree at most3980. | Both scale bounds become positive parametrizations; explicit forward/inverse coordinate maps give a positive zero-set bijection with coupled297, including its shifted joint branch. |
+| [Positive scales with grouped finalizers](neary_woods_universal_positive_scale_partitions.md) | **301=142M+159A / degree at most608**,257 certificate,15eq,50w;297/1142 and299/766 alternatives. With49w:298/1344,257 certificate,14eq. | Exact operation/degree-bound optimization over sixteen scale/strong bases and all grouped finalizers. Witness count varies; not a three-objective optimum. Grouping preserves the accepted outer relation. |
 | [Coupled-unit U9 universal polynomial](neary_woods_universal_joint_and_coupled.md) | **262 certificate /297=144M+153A polynomial**,12eq,51w,four positive program parameters,degree at most2311. Ordinary-strong both-core option299/degree1501. | Both linear signs recover before typing; joint population excludes a negative computed geometry index. A remaining negative joint branch restores two private positive coordinates. Same accepted outer relation, no all-tuple bijection. |
 | [Coupled factor-partition frontier](neary_woods_universal_joint_and_coupled_partitions.md) | **304=143M+161A / degree at most608**,257 certificate,16eq,51w; alternatives301/1092 and302/756. | Exact subset optimization over four strong treatments and all grouped finalizers with both cores indexed/coupled. Soundness follows the product theorem; completeness uses canonical all-factor-1 witnesses. Optimizes conservative bounds in this finite family only. |
 | [Two recovered native index units](neary_woods_universal_joint_and_arithmetic.md) | **260 certificate /301=144M+157A polynomial**,14eq,51w,degree at most2475. | Retained ratios and full strong equations force each index factor1 before parent typing. Same positive supplied zeros as303. |
