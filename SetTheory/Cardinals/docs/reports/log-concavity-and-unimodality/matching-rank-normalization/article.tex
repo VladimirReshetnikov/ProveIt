@@ -61,6 +61,13 @@ forests; graphs with a vertex cover of two vertices on each shore have
 real-stable basis polynomials and real-rooted support polynomials; and the
 full Hall family is ultra-log-concave for all activities exactly when one
 core has at most two vertices.
+Part~II (sources~71, 73, 55, 47 and~51) answers the unit-weight and
+one-shore questions of \prp{} negatively: a connected all-unit graph
+with 6916 vertices and matching number 3450 fails, and so does a
+125-vertex graph whose left activities are all one and whose right
+activities are one except for activity $10000$ on its 42 right-core
+vertices; for one common activity on the right core of a full Hall graph
+the least failing matching number is exactly~38.
 Nothing here is formalized in Lean or Rocq, and nothing is refereed.
 \end{abstract}
 
@@ -78,8 +85,8 @@ a twenty-eighth archive (78) is an exact duplicate of the leaf-compression
 manuscript already printed as Part~XIII of \prp{} and is not a source.
 The full record, archive by archive, is Appendix~\ref{mrn:sec:provenance}.
 At this stage of the write-up the report prints
-Part~I (sources 74, 72, 76 and 75); Parts~II--IV, built from the other
-twenty-three sources, are added in the following commits of the same write.
+Parts~I and~II (nine sources); Parts~III and~IV, built from the other
+eighteen sources, are added in the following commits of the same write.
 
 Every source is printed in full: statements, proofs, examples, remarks,
 limitations and verification notes. A result proved by several sources is
@@ -257,13 +264,32 @@ In large part: full Hall graphs are $\ULC$ for all activities exactly when
 one core has at most two vertices (Theorem~\ref{mrn:w:fh:thm:classification});
 explicit failures for all unequal cores $a,b\ge3$
 (Sections~\ref{mrn:w:rf:sec:negative} and~\ref{mrn:w:fh:sec:negative}).
+Unequal core activities: Part~II (one core at activity one).
 \\
 RQ~90 \path{hb:q:defects} (higher-index defect identities) &
 Bears on it: under the two-vertex-shore cover hypothesis, equality in any
 one gap holds only for balanced star forests
 (Theorem~\ref{mrn:w:se:thm:main}); no higher defect identity is given.\\
+RQ~84 \path{hb:q:unit} (unit weights) &
+Answered negatively (source~71, Theorem~\ref{mrn:u:uw:thm:main}):
+a connected all-unit graph with $\nu=3450$ is not $\ULC_\nu$; infinitely
+many deficiency-one examples. The least matching number of a unit
+counterexample is open.\\
+RQ~85 \path{hb:q:oneshore} (one-shore fields) &
+Answered negatively (source~73: $\nu=50$, 125 vertices; $\nu=38$; source~55:
+for one common right-core activity on full Hall graphs the least failing
+matching number is exactly 38).
+\\
+RQ~88 \path{hb:q:phase} (Hall phase diagrams, $s\ge4$) &
+Not answered (it concerns weight on both cores). Its one-shore analogue is
+answered by sources~47 and~51: the last gap controls all gaps through
+$\nu=38$ but not at $\nu=49$.\\
+RQ~94 \path{mr:q:allrank} (a structural all-rank proof) &
+Answered negatively for unit weights (source~71): no all-rank proof can
+exist.\\
 RQ~37 \path{lor:q:first} (Part~V) &
 Weighted: holds through $\nu=5$, fails from $\nu=6$ (Part~I).
+Unit and one-shore: fail (Part~II).
 \\
 \end{longtable}
 
@@ -1835,6 +1861,1042 @@ The readable argument above is uniform in $s$; it is not an inference from finit
 The existing Hall-bottleneck report \cite{b:HallMS} already disproves universal weighted rank normalization using a three-by-three core and studies symmetric higher cores. Theorem~\ref{mrn:w:fh:thm:classification} gives a sharp boundary for the \emph{full} Hall-core shapes, including all unequal cores and arbitrary independent positive activities in the positive range. Arbitrary graphs with a two-plus-three minimum cover are still not classified here: missing core edges and proper exterior neighbourhoods need different arguments. In particular, this report does not settle whether the first weighted counterexample among all bipartite graphs has rank five or six, and gives no negative result for unit weights or weights confined to one shore.
 \mnote{Settled within the batch: the first weighted counterexample rank is exactly six (source~74, Corollary~\ref{mrn:w:rf:cor:rankfive}); unit-weight and one-shore counterexamples are sources~71 and~73 (Part~II). Source~75's delivered README, which is not shipped, likewise says that general weighted rank five remains open ``here''. Arbitrary graphs with a $2+3$ minimum cover, which source~75 leaves unclassified, are covered by source~74's Theorem~\ref{mrn:w:rf:thm:main}.}
 
+\clearpage
+\part{Unit weights and one weighted shore: counterexamples and the rank-38 threshold}\label{mrn:part:two}
+
+\paragraph{Contents of Part~II.}
+Part~II prints five sources. Source~71 (Section~\ref{mrn:src:71}) gives a
+connected all-unit counterexample, answering Research question~84 of \prp{}
+negatively. Source~73 (Section~\ref{mrn:src:73}) gives one-shore
+counterexamples (all left activities one), answering Research question~85
+there negatively. Sources~55, 47 and~51 (Sections~\ref{mrn:src:55},
+\ref{mrn:src:47} and~\ref{mrn:src:51}) study the full Hall graphs with
+\emph{one common activity on the right core} and one elsewhere: the last gap
+first fails at matching number $38$ (55), so does full $\ULC$ (47), and at
+matching number $49$ the last gap no longer controls the others (51).
+
+\paragraph{Which weighting.}
+Every section title of this Part states its weighting. Source~71 is unit
+weighted; sources~73, 55, 47 and~51 are one-shore weighted, and the last
+three only with one common activity on the right core. None of them answers
+Research question~88 of \prp, which concerns the two-shore family $H_{s,n}$
+with weight on both cores; sources~47 and~51 answer its one-shore analogue.
+
+\paragraph{Same theorem in several sources.}
+Source~71's unit pendant-arm identity is the case $T=1$ of source~73's
+weighted identity; it is printed once, in the weighted form, in source~73's
+appendix. Source~47 recalls source~55's endpoint theorem without proof (kept
+as a recall, with pointers) and re-proves the first-gap inequality by the
+Motzkin--Straus route (replaced by a pointer to Part~XI of \prp; its
+strictness step is kept). Source~55 extends source~73: the top-three formula
+and the rank-38 construction of~73 reappear in~55 with an exact threshold.
+The smaller-shore steps of sources~55 and~47 restate \prp's Theorem~70.1.
+
+\paragraph{Non-claims of Part~II.}
+Source~71 does not determine the least matching number, vertex count or edge
+count of a unit counterexample, and keeps the smaller-shore bound and
+ordinary log-concavity; source~73 makes no minimal-rank claim; sources~55,
+47 and~51 concern one common right-core activity on full Hall graphs only,
+and not arbitrary one-shore activities; source~55 concerns the last gap only.
+
+%% ======================== source 71 ========================
+\section{Unit weight failure of matching rank normalization (source~71)}\label{mrn:src:71}
+\paragraph{Abstract of source~71, as delivered.} We give a connected bipartite graph whose unweighted matching-support polynomial fails ultra-log-concavity normalized by its maximum matching size. The explicit graph has $6916$ vertices, $174228$ edges and matching rank $3450$. Its last Newton margin is a strictly negative integer, certified by a short exact formula for its top three coefficients. Every vertex activity is one. A second example has matching rank exactly one below the size of the smaller shore, showing that even this smallest possible discrepancy can obstruct rank normalization. The construction uses pendant length-two arms and admits exact support counting without enumerating the large graphs' matchings.
+
+\paragraph{Status and scope.}
+The counting identities and the counterexamples below are established in ordinary mathematics and independently checked in exact arithmetic. This is an unrefereed research note, not a Lean-certified result. Its claim of resolving a question is relative to the inspected ProveIt manuscript \emph{Hall Bottlenecks and the Limits of Rank Normalization} \cite{b:HallMS}; worldwide priority is not asserted. The examples do not determine the smallest possible matching rank or number of vertices of a counterexample.
+
+\subsection{The question and the counterexample}
+For a finite simple bipartite graph $G=(X,Y;E)$, define
+\[
+ p_G(t)=\sum_{k\ge0}p_k t^k,
+\]
+where $p_k$ is the number of pairs $I\subseteq X$, $J\subseteq Y$ with
+$|I|=|J|=k$ for which $G[I,J]$ has a perfect matching. A feasible pair is counted once, regardless of its number of perfect matchings. This is the bipartite form of the perfectly matchable set polynomial; see \cite{b:DK} for earlier work on this polynomial. In particular $p_{K_{2,2}}(t)=1+4t+t^2$.
+
+For a polynomial of degree $R$ with positive coefficients, rank-normalized ultra-log-concavity means that $p_k/\binom Rk$ is log-concave. Equivalently,
+\begin{equation}\label{mrn:u:uw:eq:ULC}
+ k(R-k)p_k^2\ge(k+1)(R-k+1)p_{k-1}p_{k+1}
+ \qquad(1\le k<R).
+\end{equation}
+Here the proposed normalization is $R=\nu(G)$, the maximum matching size.
+The smaller-shore normalization is known to hold \cite[Theorem A]{b:RU}; replacing the smaller shore by $\nu(G)$ is a genuinely stronger assertion. The unit-weight version was explicitly left open in \cite[question ``Unit weights'']{b:HallMS}. \mnote{That question is Research question~84 of \prp{} (\path{hb:q:unit}); the smaller-shore normalization is its Theorem~70.1 (Part~V). The positive unit-weight theorems there, Theorem~191.1 ($\nu\le3$), Theorem~196.1 (a rank-four family) and Theorem~206.2 (singleton covers), and Theorem~\ref{mrn:w:rf:thm:main} of Part~I, do not apply to the graph below.}
+
+\begin{theorem}\label{mrn:u:uw:thm:main}
+There is a connected simple bipartite graph with all vertex activities equal to one, $6916$ vertices, $174228$ edges and matching rank $R=3450$, for which \eqref{mrn:u:uw:eq:ULC} fails at $k=3449$.
+\end{theorem}
+The complete graph definition, the rank certificate, and the exact negative margin are given below. No external field or limiting activity is used in this theorem.
+\mnote{Theorem~\ref{mrn:u:uw:thm:main} answers Research question~84 of \prp{} negatively, and with it the unit-weight half of its Research question~37 and its Research question~94 (no all-rank proof at unit weights can exist). By Corollary~\ref{mrn:w:rf:cor:coverobstruction}, every minimum cover of this graph meets both shores in at least three vertices; the cover of Lemma~\ref{mrn:u:uw:lem:rank} has $12+3040=3052$ vertices on the left and $398$ on the right.}
+
+\subsection{A graph family with pendant arms}
+Let $a,b,N,M\ge1$, with $N\ge b$ and $M\ge a$, and let $W\ge2$ be an integer. Start with left classes $A,L$ of sizes $a,N$ and right classes $B,C$ of sizes $b,M$. Include all edges in
+\[
+ A\times B,\qquad A\times C,\qquad L\times B,
+\]
+and no edges in $L\times C$. At each $c_j\in C$, attach $W-1$ new length-two arms
+\[
+ c_j-z_{j,h}-\ell_{j,h}\qquad(1\le h<W),
+\]
+where $z_{j,h}$ is a new left vertex and $\ell_{j,h}$ is a new right leaf. There are no further edges. Write
+\[
+ K=M(W-1),\qquad r=a+b,\qquad R=r+K.
+\]
+Denote the resulting graph by $G(a,b,N,M,W)$.
+\emph{Every activity is one; $W$ specifies an arm count and is not a vertex weight.}
+
+\begin{lemma}[Size and rank]\label{mrn:u:uw:lem:rank}
+The two shore sizes of $G(a,b,N,M,W)$ are $a+N+K$ and $b+M+K$. Its edge count is $ab+aM+bN+2K$, and its matching rank is $R=a+b+K$.
+\end{lemma}
+\begin{proof}
+Match every vertex of $A$ to a distinct vertex of $C$, every vertex of $B$ to a distinct vertex of $L$, and every new center $z_{j,h}$ to its leaf $\ell_{j,h}$. This matching has $a+b+K$ edges. The set consisting of $A$, $B$, and all new centers is a vertex cover of that same size. The size and edge formulas follow directly from the construction. Connectivity holds because the original three complete blocks form a connected graph, and all new vertices lie on attached arms.
+\end{proof}
+
+\subsection{Exact support counting}
+\begin{lemma}[The unit pendant-arm identity]\label{mrn:u:uw:lem:pendant}
+Let a vertex $x$ of a bipartite graph have $k\ge1$ new pendant length-two arms attached to it, all with unit activities. Write $p_G=f+g$, where $f$ counts original supports omitting $x$ and $g$ counts original supports containing $x$. Then the augmented support polynomial is
+\begin{equation}\label{mrn:u:uw:eq:pendant}
+ (1+t)^{k-1}\bigl[(1+(k+1)t)f+(1+t)g\bigr].
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof (pointer)]
+This is the case $T=1$ of source~73's weighted pendant-arm identity, Lemma~\ref{mrn:u:os:lem:pendant-identity} (Section~\ref{mrn:u:os:sec:pendant-transfer}), with the two shores exchanged: there the arms hang at a left vertex and their centers carry activity $T$. \mnote{The same theorem in two sources: source~71's proof is source~73's proof at $T=1$ (supports containing $x$ contribute $(1+t)^kg$; for supports omitting $x$, choosing $j$ centers gives $j+1$ distinct endpoint sets, whence $\sum_j\binom kj(j+1)t^jf=(1+t)^{k-1}(1+(k+1)t)f$; no matching multiplicities are counted). It is printed once, in the weighted form.}
+\end{proof}
+
+For the original three-block Hall graph, mark the number $\rho$ of selected vertices of $C$. Its corresponding support polynomial is
+\begin{equation}\label{mrn:u:uw:eq:marked}
+ P_\rho(t)=\binom M\rho
+ \sum_{\substack{0\le i\le a,\ 0\le j\le b\\i\ge\rho}}
+ \binom ai\binom bj\binom N{j+\rho-i}\,t^{j+\rho},
+\end{equation}
+where out-of-range binomial coefficients are zero. Indeed, $i$ and $j$ count selected core vertices in $A$ and $B$; balance requires $j+\rho-i$ selected vertices in $L$. Feasibility is precisely $i\ge\rho$: match the exterior vertices first, then match the remaining core vertices across the complete core.
+Applying Lemma~\ref{mrn:u:uw:lem:pendant} at all $M$ vertices of $C$ gives
+\begin{equation}\label{mrn:u:uw:eq:whole}
+ p_{G(a,b,N,M,W)}(t)
+ =\sum_{\rho=0}^{a}P_\rho(t)
+       (1+t)^{K-M+\rho}(1+Wt)^{M-\rho}.
+\end{equation}
+The factor $1+Wt$ records $W$ different endpoint sets; it does not assign an activity to a vertex.
+
+\subsubsection{A short formula for the top three coefficients}
+For $a,b\ge2$ and $\delta\in\{0,1,2\}$, let $e$ be the deficit of the original support size from $r=a+b$. If $u$ left-core and $v$ right-core vertices are omitted, then
+\[
+ u+v\le e,\qquad
+ \ell=b-e+u,\qquad \rho=a-e+v
+\]
+are the exterior-left and exterior-right support sizes. Put
+$A_\rho=K-M+\rho$ and $B_\rho=M-\rho$.
+Extracting the top coefficients in \eqref{mrn:u:uw:eq:whole} yields the entirely integer formula
+\begin{equation}\label{mrn:u:uw:eq:tail}
+\begin{split}
+ p_{R-\delta}={}&
+ \sum_{e=0}^{\delta}\ \sum_{u=0}^{e}\ \sum_{v=0}^{e-u}
+ \binom au\binom bv\binom N{b-e+u}\binom M{a-e+v}\\
+ &\quad\cdot
+ \sum_{z=0}^{\min(B_\rho,\delta-e)}
+ \binom{A_\rho}{\delta-e-z}\binom{B_\rho}{z}W^{B_\rho-z}.
+\end{split}
+\end{equation}
+To see the last line, the pendant factors have degree $K$. Selecting their coefficient of degree $K-(\delta-e)$ means omitting $\delta-e$ of their linear terms, with $z$ omissions from the $B_\rho$ factors of slope $W$. Thus \eqref{mrn:u:uw:eq:tail} counts supports exactly and requires only a few summands.
+
+\subsection{The finite certificate}
+Take
+\[
+ (a,b,N,M,W)=(12,398,410,16,191).
+\]
+Thus $K=3040$, the shore sizes are $3462$ and $3454$, and Lemma~\ref{mrn:u:uw:lem:rank} gives $R=3450$ and $174228$ edges. The graph has $6916$ vertices in total.
+
+Define the positive integer
+\[
+ D=160160547610973088925200.
+\]
+Formula~\eqref{mrn:u:uw:eq:tail} gives the compact exact certificate
+\begin{align}
+ p_{3450}&=455D\,191^4,\notag\\
+ p_{3449}&=3020455956D\,191^3,\label{mrn:u:uw:eq:certificate}\\
+ p_{3448}&=10022638278784267D\,191^2.\notag
+\end{align}
+The required endpoint inequality is
+$3449p_{3449}^2\ge6900p_{3448}p_{3450}$. Its margin is
+\begin{align*}
+ &3449p_{3449}^2-6900p_{3448}p_{3450}\\
+ &\qquad=D^2\,191^6
+ \bigl(3449\cdot3020455956^2
+       -6900\cdot455\cdot10022638278784267\bigr)\\
+ &\qquad=-314102056577041236\,D^2\,191^6<0.
+\end{align*}
+This proves Theorem~\ref{mrn:u:uw:thm:main}. The exact coefficient formula, together with the displayed finite integer substitution, is the proof of the counterexample; the search that led to the parameters is not used as a premise.
+
+\subsection{Failure when the smaller shore exceeds rank by one}
+The phenomenon does not require a large gap between the smaller shore and the matching rank.
+
+\begin{theorem}\label{mrn:u:uw:thm:defone}
+There is a connected unit-weight bipartite graph whose smaller shore has size $125509$, whose matching rank is $125508$, and whose support polynomial is not $\ULC_{125508}$.
+\end{theorem}
+\begin{proof}
+Take $G(8,100,101,30,4181)$. Then $K=125400$, $R=125508$, the shore sizes are $125509$ and $125530$, and the graph has $251039$ vertices and $261940$ edges. Put $D_1=8567325$. The same formula~\eqref{mrn:u:uw:eq:tail} gives
+\begin{align*}
+ p_R&=69D_1\,4181^{22},\\
+ p_{R-1}&=61945839672D_1\,4181^{21},\\
+ p_{R-2}&=27806230344578726426D_1\,4181^{20}.
+\end{align*}
+Consequently
+\[
+ (R-1)p_{R-1}^2-2Rp_{R-2}p_R
+ =-415296714996000603216\,D_1^2\,4181^{42}<0.
+\]
+The rank and the two shore sizes follow from Lemma~\ref{mrn:u:uw:lem:rank}.
+\end{proof}
+
+The smaller-shore theorem \cite{b:RU} still guarantees $\ULC_{125509}$ for this graph. The conclusion is failure of the stronger order $125508$, not failure of that published bound.
+
+\subsubsection{Why deficiency one is not an isolated accident}
+Fix $a,b,N,M$ and let $W$ grow, still keeping every vertex activity one. Write
+\[
+ h=N-b+1,\quad \theta=\frac bh,\quad
+ \zeta=\frac{b(b-1)}{h(h+1)},\quad
+ \mu=\frac a{M-a+1},\quad
+ \eta=\frac{a(a-1)}{(M-a+1)(M-a+2)}.
+\]
+Expanding \eqref{mrn:u:uw:eq:tail}, with $R=a+b+M(W-1)$, gives
+\begin{equation}\label{mrn:u:uw:eq:asym}
+ \frac{(R-1)p_{R-1}^2-2Rp_{R-2}p_R}{p_R^2 W^3}
+ \longrightarrow
+ M\left[\mu^2(a+\theta)^2
+ -2\eta\left(\binom a2+a\theta+\zeta\right)\right].
+\end{equation}
+For example, the leading terms of $p_{R-1}/p_R$ and $p_{R-2}/p_R$ are respectively
+\[
+ W\bigl(M+\mu(a+\theta)\bigr),\qquad
+ W^2\left[\frac{M^2}{2}+M\mu(a+\theta)
+       +\eta\left(\binom a2+a\theta+\zeta\right)\right],
+\]
+which imply \eqref{mrn:u:uw:eq:asym} directly.
+Set $h=2$, so $N=b+1$. After division by $\mu^2$, the bracket in \eqref{mrn:u:uw:eq:asym} tends as $M\to\infty$ to
+\[
+ 2a-1+\frac{4a-1}{3a}b-\frac{a-4}{12a}b^2.
+\]
+For any fixed $a\ge5$, choose $b$ sufficiently large, then choose a finite $M\ge a+2$ sufficiently large. The bracket is negative, so all sufficiently large integers $W$ give counterexamples. Their smaller shore is always $R+1$. This proves existence of infinitely many deficiency-one examples; Theorem~\ref{mrn:u:uw:thm:defone} supplies one explicit finite instance.
+
+\subsection{Consequences for Ehrhart \texorpdfstring{$h^*$}{h*}-polynomials}
+For either constructed graph $G=(X,Y;E)$, form $\widehat G$ by adding a new left vertex $v$, a new right vertex $w$, and the edges $vy$ for $y\in Y$ and $xw$ for $x\in X\cup\{v\}$. Let
+\[
+ Q_{\widehat G}=\operatorname{conv}\{e_i+e_j:ij\in E(\widehat G)\},
+\]
+and let $\operatorname{STAB}(\overline G)$ be the stable set polytope of the complement of $G$. Davis--Kohl \cite[Theorem 3.10 and Lemma 3.11]{b:DK} give
+\[
+ h^*(Q_{\widehat G};t)=p_G(t)
+ =h^*(\operatorname{STAB}(\overline G);t).
+\]
+Thus these two specific Ehrhart $h^*$-polynomials have degree $R=\nu(G)$ and fail $\ULC_R$. \mnote{Compare source~74's corollary in Section~\ref{mrn:w:rf:sec:geometry}, which gives $\ULC_r$ for these polynomials when $\nu\le5$ or a minimum cover meets one shore in at most two vertices.} They also have nonreal zeros: otherwise their nonnegative coefficients would satisfy the degree-normalized Newton inequalities. Their coefficients still satisfy ordinary log-concavity and the smaller-shore ULC bound by \cite{b:RU}.
+
+\subsection{Verification and remaining questions}
+The package contains standard-library Python scripts \mnote{shipped as \path{code/71-unit-weight-verify*.py}, with outputs \path{data/71-unit-weight-*.json}} checking the pendant identity by independent endpoint-set enumeration on $150$ small graphs, including nonuniform activities as an extra regression test. For both displayed examples, they evaluate \eqref{mrn:u:uw:eq:tail} by integer binomial sums and independently recompute the tails from normalized reciprocal sums of the pendant factors. They also check the exact negative margins, explicit matching and cover constructions, edge counts and coverage. All checks pass with fixed seeds. They count supports without matching multiplicity and supplement the written proof.
+
+The minimum matching rank, vertex count and edge count of an all-unit counterexample remain undetermined. \mnote{By Part~I (Corollary~\ref{mrn:w:rf:cor:rankfive}) such a counterexample has matching number at least six, so the least unit failure rank lies in $[6,3450]$.} Rank $3450$ is the best found in a bounded parameter search, not a proved minimum. Smaller deficiency-one examples and structural classes retaining rank-normalized ultra-log-concavity remain natural questions. The published smaller-shore normalization and ordinary log-concavity still hold.
+
+%% ======================== source 73 ========================
+\section{One-shore activities can destroy matching-rank ULC (source~73)}\label{mrn:src:73}
+\paragraph{Abstract of source~73, as delivered.} The restriction to activities on one shore does not restore matching-rank-normalized ultra-log-concavity of perfectly matchable endpoint supports. We give an explicit full Hall-bottleneck graph on 125 vertices, with matching rank 50, whose left activities are all one and whose right activities take only the values one and 10000. Its last Newton margin is a positive factor times the negative integer $-39998827$. A second example has matching rank 38. Both certificates follow from a closed formula for the top three coefficients and a quadratic in the common right-core activity. Thus no numerical root calculation or limiting argument is needed to certify either finite counterexample. We also give a general criterion for constructing such examples and record a separate pendant-arm transfer construction.
+
+\paragraph{Status and scope.}
+These are ordinary mathematical proofs with reproducible exact-integer checks, not formal Lean verification or external peer review. The result resolves the one-shore-activity question in the inspected ProveIt Hall-bottleneck report negatively. It does not produce a unit-weight counterexample, identify the smallest possible rank, or assert exhaustive literature priority.
+\mnote{The question is Research question~85 of \prp{} (\path{hb:q:oneshore}), with exactly these hypotheses: all left activities one, right activities arbitrary positive. The weighting here, activity $w$ on the right core $B$ and one elsewhere, is the ``one common right-core activity'' of Section~\ref{mrn:sec:notions}. The unit-weight counterexample is source~71's (Section~\ref{mrn:src:71}).}
+
+\subsection{The polynomial and two explicit counterexamples}
+For a bipartite graph $G=(X,Y;E)$ with positive vertex activities $u_x,v_y$, define
+\[
+ P_G(t)=\sum_{(I,J)\text{ feasible}}u_Iv_Jt^{|I|}=\sum_{k=0}^{d}p_kt^k.
+\]
+Here $I\subseteq X$, $J\subseteq Y$, $|I|=|J|$, and feasibility means that $G[I,J]$ admits a perfect matching. Each pair of endpoint sets is counted once, regardless of the number of realizing matchings. The degree $d$ is the maximum matching size. This is the vertex-weighted perfectly matchable set polynomial, with $t$ recording half the support size.
+
+The property $\ULC_d$ requires log-concavity of $p_k/\binom dk$ and no internal zeros. For these positive-activity support polynomials there are no internal zeros, so the inequalities are
+\begin{equation}\label{mrn:u:os:eq:gap}
+ \gap_k^{(d)}=k(d-k)p_k^2-(k+1)(d-k+1)p_{k-1}p_{k+1}\ge0.
+\end{equation}
+In particular, the last inequality is $(d-1)p_{d-1}^2\ge2dp_{d-2}p_d$.
+
+Write $H_{a,b;n,m}$ for the graph with shores $X=A\sqcup L$, $Y=B\sqcup R$, block sizes $a,n,b,m$, and exactly the edges
+\begin{equation}\label{mrn:u:os:eq:edges}
+ (A\times B)\cup(L\times B)\cup(A\times R).
+\end{equation}
+All exterior-left vertices are adjacent to all of $B$, all exterior-right vertices to all of $A$, and there are no exterior-to-exterior edges. Give every vertex activity one except the $b$ vertices of $B$, each of which has activity $w>0$. Thus the weighting is confined to one shore. If $n\ge b$ and $m\ge a$, the matching rank is $d=a+b$: the core is a cover of size $d$, attained by disjoint matchings $A\to R$ and $L\to B$.
+
+\begin{theorem}[A counterexample on 125 vertices]\label{mrn:u:os:thm:smallgraph}
+Let $G=H_{8,42;44,31}$, with activity $w$ on $B$ and one elsewhere. Its matching rank is $50$, and
+\begin{equation}\label{mrn:u:os:eq:cleanwitness}
+ \gap_{49}^{(50)}
+ =98\left[\binom{44}{42}\binom{31}{7}\right]^2
+       w^{82}\bigl(-w^2+5958w+421173\bigr).
+\end{equation}
+At $w=10000$ the parenthesized integer is $-39998827<0$. The first positive integer $w$ for which this particular margin fails is $6028$, where the integer is $-787$.
+\end{theorem}
+This graph has 125 vertices and 2432 edges. Only 42 activities differ from one. The theorem is an exact certificate against universal one-shore $\ULC_d$.
+
+\begin{theorem}[A counterexample of matching rank 38]\label{mrn:u:os:thm:smallrank}
+Let $G=H_{8,30;32,1000}$ with the same one-shore weighting. Put
+\[
+ Q(w)=-2404w^2+4878807600w+10888224221475.
+\]
+Then
+\begin{equation}\label{mrn:u:os:eq:rank38}
+ \gap_{37}^{(38)}
+ =\frac{3}{2272}\left[\binom{32}{30}\binom{1000}{7}\right]^2w^{58}Q(w).
+\end{equation}
+At $w=3000000$, one has $Q(w)=-6988688975778525<0$. The first positive integer giving a negative value of this particular margin is $2031684$.
+\end{theorem}
+No minimal-rank claim is made. The rank-38 example has 1070 vertices; the rank-50 example is a substantially smaller graph.
+\mnote{Within full Hall graphs with one common right-core activity, source~55 (Section~\ref{mrn:src:55}) proves that $38$ is the least matching number at which the last gap can fail, with $864$ vertices the fewest at that rank, and source~47 (Section~\ref{mrn:src:47}) extends this to every gap.}
+
+\subsection{Endpoint counting gives the complete certificate}
+A size-$k$ support selecting $i$ vertices of $A$ and $j$ vertices of $B$ is feasible exactly when $i+j\ge k$. Necessity follows because the $k-i$ selected exterior-left vertices must match into the $j$ selected vertices of $B$. For sufficiency, first match the exterior-left vertices into $B$, then the exterior-right vertices into $A$, and finally the remaining core vertices to each other. Consequently
+\begin{equation}\label{mrn:u:os:eq:fullsum}
+ p_k=\sum_{\substack{0\le i\le a,\ 0\le j\le b\\i+j\ge k}}
+      \binom ai\binom n{k-i}\binom bj\binom m{k-j}w^j,
+\end{equation}
+with out-of-range binomial coefficients set to zero.
+
+\begin{lemma}[The top three coefficients]\label{mrn:u:os:lem:top}
+Let $a,b\ge2$, $d=a+b$, $n\ge b$, $m\ge a$, and set
+\[
+ X_i=\binom n{b-i},\qquad Y_i=\binom m{a-i}\qquad(i=0,1,2).
+\]
+Then
+\begin{align}
+ p_d&=X_0Y_0w^b,\label{mrn:u:os:eq:pd}\\
+ p_{d-1}&=(X_1+aX_0)Y_1w^b+bX_1Y_0w^{b-1},\label{mrn:u:os:eq:pd1}\\
+ p_{d-2}&=\left(X_2+aX_1+\binom a2X_0\right)Y_2w^b\notag\\
+ &\qquad+b(X_2+aX_1)Y_1w^{b-1}+\binom b2X_2Y_0w^{b-2}.\label{mrn:u:os:eq:pd2}
+\end{align}
+\end{lemma}
+\begin{proof}
+At $k=d$, the condition $i+j\ge d$ forces $(i,j)=(a,b)$. At $k=d-1$, the possible deficits $(a-i,b-j)$ are $(0,0),(1,0),(0,1)$. At $k=d-2$, these and $(2,0),(1,1),(0,2)$ are possible. Substitution in~\eqref{mrn:u:os:eq:fullsum} gives the formulas.
+\end{proof}
+
+For a compact parametrization write
+\begin{equation}\label{mrn:u:os:eq:parameters}
+ h=n-b+1,\quad t=\frac bh,\quad z=\frac{b(b-1)}{h(h+1)},\quad
+ R=\frac{m-a+1}{a},\quad \rho=\frac{a-1}{m-a+2},\quad
+ J=\binom a2+at+z.
+\end{equation}
+Thus $t=X_1/X_0$, $z=X_2/X_0$, $R=Y_0/Y_1$ and $\rho=Y_2/Y_1$. Put $D=X_0Y_1>0$.
+
+\begin{proposition}[Quadratic endpoint criterion]\label{mrn:u:os:prop:quadratic}
+For $a,b\ge2$ and the above parameters,
+\begin{equation}\label{mrn:u:os:eq:quadratic}
+ \gap_{d-1}^{(d)}=D^2w^{2b-2}(\alpha w^2+\beta w+\gamma),
+\end{equation}
+where
+\begin{align}
+ \alpha&=(d-1)(a+t)^2-2dR\rho J,\label{mrn:u:os:eq:alpha}\\
+ \beta&=2bR\bigl((d-1)t(a+t)-d(at+z)\bigr),\label{mrn:u:os:eq:beta}\\
+ \gamma&=bR^2\bigl(b(d-1)t^2-d(b-1)z\bigr).\label{mrn:u:os:eq:gamma}
+\end{align}
+\end{proposition}
+\begin{proof}
+Divide the three identities in Lemma~\ref{mrn:u:os:lem:top} by $D$ and substitute them into $(d-1)p_{d-1}^2-2dp_{d-2}p_d$. Grouping the three powers $w^{2b},w^{2b-1},w^{2b-2}$ yields the displayed coefficients.
+\end{proof}
+For Theorem~\ref{mrn:u:os:thm:smallgraph}, formulas~\eqref{mrn:u:os:eq:alpha}--\eqref{mrn:u:os:eq:gamma} give
+\[
+ (\alpha,\beta,\gamma)=98(-1,5958,421173).
+\]
+For Theorem~\ref{mrn:u:os:thm:smallrank}, they give
+\[
+ (\alpha,\beta,\gamma)=\frac{3}{2272}
+ (-2404,4878807600,10888224221475).
+\]
+This proves both exact factorizations. Each primitive quadratic has a negative leading coefficient and a positive constant term, so it has precisely one positive zero. Direct substitution at the stated first integer and the preceding integer proves the threshold claims; the preceding values are respectively $5310$ and $1792188719$.
+
+\subsection{A general construction criterion}
+For fixed $a,b,h$ the leading coefficient~\eqref{mrn:u:os:eq:alpha} tends, as $m\to\infty$, to
+\begin{equation}\label{mrn:u:os:eq:limit}
+ \alpha_\infty=(d-1)(a+t)^2-
+       \frac{2d(a-1)}a\left(\binom a2+at+z\right).
+\end{equation}
+This is only a device for finding examples; the preceding theorems use finite exact identities.
+
+\begin{proposition}[From a negative limiting coefficient to a finite graph]\label{mrn:u:os:prop:finite}
+If $\alpha_\infty<0$, set
+\[
+ C=\frac{2d(a-1)}a\left(\binom a2+at+z\right),\qquad
+ m=a-1+\left\lfloor\frac{C}{-\alpha_\infty}\right\rfloor.
+\]
+Then $m\ge a$ and $\alpha<0$. With $\beta,\gamma$ defined by the finite parameters, the positive integer
+\begin{equation}\label{mrn:u:os:eq:weightbound}
+ w=1+\left\lfloor\frac{|\beta|+|\gamma|}{-\alpha}\right\rfloor
+\end{equation}
+necessarily makes the last margin negative.
+\end{proposition}
+\begin{proof}
+One has $\alpha=\alpha_\infty+C/(m-a+2)$. The chosen denominator is $1+\lfloor C/(-\alpha_\infty)\rfloor>C/(-\alpha_\infty)$, so $\alpha<0$. Also $C> -\alpha_\infty$, since their difference is $(d-1)(a+t)^2>0$, proving $m\ge a$. For~\eqref{mrn:u:os:eq:weightbound}, $(-\alpha)w>|\beta|+|\gamma|$ and $w\ge1$, hence
+\[
+ \alpha w^2+\beta w+\gamma
+ \le -(-\alpha)w^2+|\beta|w+|\gamma|<0.
+\]
+\end{proof}
+For $a=8$, $b=30$, $h=3$ (thus $n=32$),
+\[
+ \alpha_\infty=-\frac{61}{4},\qquad
+ \alpha=\frac{48379-61m}{4(m-6)}.
+\]
+The leading coefficient is negative exactly when $m\ge794$. Choosing $m=1000$ gives Theorem~\ref{mrn:u:os:thm:smallrank}. The alternative $a=7$, $b=31$, $h=3$ also has rank 38 and gives $\alpha_\infty=-764/63$. These are construction examples, not a proof of any global optimum.
+
+\subsection{What this settles and what remains open}
+The inspected ProveIt Hall-bottleneck report~\cite{b:HallMS} distinguishes the arbitrary-two-shore weighted failure from its unit-weight and one-shore variants. Theorems~\ref{mrn:u:os:thm:smallgraph} and~\ref{mrn:u:os:thm:smallrank} supply a negative answer to the one-shore variant, even inside the full two-step Ferrers family~\eqref{mrn:u:os:eq:edges}. Since a degree-$d$ polynomial with positive coefficients and only real zeros satisfies Newton's inequalities with normalization $d$, these examples also fail positive-field real-rootedness.
+
+There is no conflict with the ambient-shore normalization in the bimatroid theorem of R\"ohrle and Ulirsch~\cite{b:RU}. Nor does the current non-nesting-rook result of Alexandersson and Jal settle the stronger normalization used here: Corollary~4.1 of version~3 explicitly normalizes by the board's row count~\cite{b:AJ}. Our two examples have smaller shore sizes 52 and 40, respectively, while their matching ranks are 50 and 38. The older version's statement should not be substituted for that current row-normalized theorem.
+
+The full-Hall constructions here have nonunit activities. Further concrete questions include the smallest rank admitting one-shore failure, the smallest graph admitting such failure, and which fixed full-Hall core shapes remain universally rank-ULC under one-shore activities.
+\mnote{Re-scoped by the batch: for one common right-core activity on full Hall graphs the smallest failing rank is exactly $38$ (sources~55 and~47); among all one-shore graphs it lies in $[6,38]$, since Part~I gives $\ULC_\nu$ for $\nu\le5$.} The present calculation also suggests studying the sign of~\eqref{mrn:u:os:eq:limit} systematically; its negativity is sufficient for a counterexample, not asserted necessary for every one-shore failure.
+
+\paragraph{Reproducibility.}
+The accompanying script \texttt{verify\_full\_hall.py} \mnote{shipped as \path{code/73-one-shore-verify_full_hall.py}, output \path{data/73-one-shore-full_hall_verification.json}} evaluates the complete feasibility sum~\eqref{mrn:u:os:eq:fullsum}, checks it independently against Boolean matching on six small graphs, and compares the top-three formula on 100 deterministic parameter samples. It then verifies both factorizations at four stated integer activities using exact integers and rational numbers. For all four instances, the only negative order-$d$ Newton margin is the last one. These finite checks supplement the proof; they are not its logical basis.
+
+%% (source appendix follows)
+
+%% --- inlined from source 73 file pendant_appendix.tex ---
+\subsection{Appendix: A pendant gadget that transfers fields between shores}
+\label{mrn:u:os:sec:pendant-transfer}
+The direct Hall counterexamples above give much smaller matching rank.
+The following independent construction gives a one-shore counterexample
+whose only nonunit activity is the modest integer $21$. It also explains
+how a weighted obstruction can survive a transfer of fields between shores.
+
+\mnote{Lemma~\ref{mrn:u:os:lem:pendant-identity} contains source~71's Lemma~\ref{mrn:u:uw:lem:pendant} as the case $T=1$ (shores exchanged); it is printed here once for both sources.}
+\begin{lemma}[Exact pendant-arm identity]\label{mrn:u:os:lem:pendant-identity}
+Let $x$ be a left vertex of activity one in a bipartite graph, and write
+$p_G(t)=f(t)+g(t)$, where $f$ counts supports omitting $x$ and $g$ counts
+supports containing $x$. Attach $k\ge1$ disjoint length-two arms
+$x-z_i-\ell_i$. Give the new right vertices $z_i$ activity $T>0$ and the
+new left leaves $\ell_i$ activity one. Then
+\begin{equation}\label{mrn:u:os:eq:pendant-identity}
+ p_{G'}(t)=(1+Tt)^{k-1}
+ \bigl[(1+(k+1)Tt)f(t)+(1+Tt)g(t)\bigr].
+\end{equation}
+Moreover, $\nu(G')=\nu(G)+k$.
+\end{lemma}
+\begin{proof}
+Fix a support counted by $g$, so $x$ must match within the original graph.
+Each selected new center then forces its own leaf, contributing
+$(1+Tt)^k g$.
+For a support counted by $f$, choose $j$ new centers. Either all their
+leaves are selected and $x$ is absent, or $x$ replaces exactly one of those
+$j$ leaves. The latter support forces $x$ to that leaf's center, so it
+cannot also use $x$ in the original matching. These $j+1$ endpoint sets
+are distinct. Their total contribution is
+\[
+ \sum_{j=0}^k\binom kj(j+1)(Tt)^j f
+ =(1+Tt)^{k-1}(1+(k+1)Tt)f.
+\]
+This counts supports, not allocations or perfect matchings.
+An original maximum matching together with all $k$ center--leaf edges
+has size $\nu(G)+k$. An original minimum vertex cover together with the
+$k$ centers covers the augmented graph, giving the reverse inequality.
+\end{proof}
+
+The top power of $T$ in \eqref{mrn:u:os:eq:pendant-identity} is
+\[
+ T^kt^k\bigl((k+1)f+g\bigr).
+\]
+Thus the forced-center limit simulates activity $1/(k+1)$ at $x$, up to
+a positive scalar and the degree shift $k$. For gadgets at several left
+vertices, these factors multiply. The rank shift must be accounted for:
+a polynomial $t^Kp(t)$ of degree $r+K$ has last normalized inequality
+\[
+ (r+K-1)p_{r-1}^2\ge2(r+K)p_{r-2}p_r.
+\]
+In particular, a top-three ratio strictly below $2$ survives every such
+shift, and continuity then gives a finite positive center activity.
+This observation is a sufficient criterion; the finite example below is
+checked by its exact endpoint polynomial.
+
+\subsubsection{A rank 310 example with activity 21}
+\mnote{This example is one-shore weighted, not unit weighted: its ten right-core vertices have activity $21$. Its rank is superseded by the rank-$50$ and rank-$38$ examples above; it is kept for the transfer construction.}
+Start with a full $20\times10$ Hall core, with exterior populations
+$N=14$ on the left and $M=30$ on the right. Attach $20$ pendant arms to
+each exterior-left vertex. Give all left vertices activity one. Give the
+ten original right-core vertices activity $21$, and every other right
+vertex activity one, including every pendant center.
+There are $K=280$ arms, so the graph has
+\[
+ 634\text{ vertices},\qquad1500\text{ edges},\qquad\nu(G)=30+280=310.
+\]
+For completeness, the original $30$-edge matching pairs the twenty
+left-core vertices to distinct exterior-right vertices and the ten
+right-core vertices to distinct exterior-left vertices. Add all $280$
+center--leaf edges. The thirty original core vertices together with the
+$280$ centers form a cover of the same size.
+
+Here is an exact count of the endpoint coefficients. More generally let
+$a,b,N,M$ be Hall parameters, put $W=k+1$, $K=N(W-1)$, and let $P_\ell(t)$
+count original supports using exactly $\ell$ exterior-left vertices when
+only the right core has activity $W$. Then
+\begin{equation}\label{mrn:u:os:eq:marked-hall}
+ P_\ell(t)=\binom N\ell
+ \sum_{\substack{0\le i\le a,\ 0\le j\le b\\j\ge\ell}}
+ \binom ai\binom bj\binom M{i+\ell-j}W^j t^{i+\ell},
+\end{equation}
+where out-of-range binomial coefficients are zero. The condition
+$j\ge\ell$ is exactly the Hall-support feasibility condition after
+balancing the shores. Repeated application of
+Lemma~\ref{mrn:u:os:lem:pendant-identity} gives the full polynomial
+\begin{equation}\label{mrn:u:os:eq:full-gadget-polynomial}
+ P(t;T)=\sum_{\ell=0}^{\min(N,b)}P_\ell(t)
+ (1+Tt)^{K-N+\ell}(1+WTt)^{N-\ell}.
+\end{equation}
+Every factor and coefficient in this expression is explicit.
+
+For $(a,b,N,M,W,T)=(20,10,14,30,21,1)$, coefficient extraction gives
+\begin{align*}
+ p_{308}&=8131749153344342901404784768563550,\\
+ p_{309}&=39894459936702682423206366171900,\\
+ p_{310}&=97561086654439123859418490215.
+\end{align*}
+Consequently the endpoint margin is
+\begin{align*}
+ 309p_{309}^2-620p_{308}p_{310}
+ &=-726235\cdot4485169759863727935000\cdot21^{26}<0.
+\end{align*}
+This is an exact one-shore-weighted counterexample. Its full negative
+integer margin, full coefficient vector, edge list, matching, and cover
+are included in the verification data. \mnote{Shipped as \path{data/73-one-shore-gadget_verification-one_shore_rank310_witness.json}, beside \path{code/73-one-shore-gadget_verification-*.py}; the gadget identity record is byte-identical to source~71's \path{data/71-unit-weight-gadget_identity_verification.json}.}
+
+Keeping the same graph and allowing each center activity to be $T$, the
+stronger exact identity is
+\begin{align*}
+ 309p_{309}(T)^2-620p_{308}(T)p_{310}(T)
+ ={}&4485169759863727935000\cdot21^{26}T^{558}\\
+ &\cdot\bigl(-91777T^2-1459920T+825462\bigr).
+\end{align*}
+At $T=1$ the bracket is $-726235$. This identity makes the finite activity
+explicit; no limiting value is used in the counterexample.
+
+\paragraph{Verification.}
+The gadget identity was checked against independent weighted endpoint-set
+enumeration on $150$ small bipartite graphs, with a fixed seed. A separate
+standard-library script expands \eqref{mrn:u:os:eq:full-gadget-polynomial} in full,
+checks the three displayed coefficients and exact margin, and verifies
+the explicit rank certificates. An independent audit recomputed the
+three endpoint coefficients directly from Hall subset feasibility and
+the top coefficients of each gadget factor. The finite checks supplement
+the counting proofs above.
+%% --- end of pendant_appendix.tex ---
+
+%% ======================== source 55 ========================
+\section{A sharp rank-38 boundary for the last Hall inequality, one common right-core activity (source~55)}\label{mrn:src:55}
+\paragraph{Abstract of source~55, as delivered.} For full Hall graphs with one common activity on the right core and unit activities elsewhere, the first possible failure of the last matching-rank-normalized Newton inequality occurs at rank 38. We prove this for all finite exterior populations and every positive core activity, rather than only in a limiting regime. An explicit positive identity rules out a negative finite-field window whenever the leading quadratic coefficient is nonnegative. A cubic then gives an exact parameter criterion, and a finite integer certificate proves the rank threshold. Precisely two core shapes occur at rank 38. The smaller of their minimal populations gives an 864-vertex example with an exact integer certificate.
+
+\paragraph{Scope.}
+The activity is common across one specified core block. The theorem concerns the \emph{last} Newton inequality. It does not determine the first failure among arbitrary individual one-shore activities or among all gaps. General finite-activity rank-six one-shore ultra-log-concavity remains open. \mnote{At rank six, the first gap holds for every positively weighted graph (\prp, Theorem~180.2), and the second and last gaps for every one-shore graph (sources~05 and~13, Part~III); the third and fourth stay open in general.} These are ordinary mathematical proofs with exact certificates, not formal kernel verification or external peer review; no global priority claim is made.
+
+\subsection{The family and the sharp threshold}
+Let $H_{a,b;n,m}$ have shores $A\sqcup L$ and $B\sqcup R$, with respective block sizes $a,n,b,m$, and edges
+\[
+ (A\times B)\cup(L\times B)\cup(A\times R).
+\]
+Here $a,b\ge1$ and $n,m\ge0$ are integers. Every vertex has activity one except the vertices of $B$, whose common activity is $w>0$. Write
+\[
+ P(t)=\sum_{k=0}^{d}p_kt^k,
+\]
+where $p_k$ is the total activity of pairs of $k$-element endpoint sets admitting a perfect matching. Each pair is counted once, regardless of its number of matchings. The degree $d$ is the matching rank. The last rank-normalized Newton inequality is
+\begin{equation}\label{mrn:u:ep:eq:last}
+ \Delta_{d-1}:=(d-1)p_{d-1}^{\,2}-2d p_{d-2}p_d\ge0
+ \qquad(d\ge2).
+\end{equation}
+
+\begin{theorem}[Sharp common-core-field endpoint boundary]\label{mrn:u:ep:thm:main}
+Within this family, the smallest matching rank for which \eqref{mrn:u:ep:eq:last} fails at some $w>0$ is exactly $38$. At rank $38$, the only triples
+\[
+ (a,b,h),\qquad h=n-b+1,
+\]
+permitting failure for some finite $m,w$ are
+\[
+ (7,31,3)\quad\text{and}\quad(8,30,3).
+\]
+Their least possible $m$ are $923$ and $794$, respectively. Thus the fewest vertices at rank $38$ in this family with a failing last gap is $864$, attained by $H_{8,30;32,794}$. For that graph the first failing positive integer activity is $w=292602646$.
+\end{theorem}
+\mnote{Source~47 (Theorem~\ref{mrn:u:ag:thm:main}) shows that in this family no gap at all fails below matching number $38$, so the least failure rank of full $\ULC$ is also $38$. This is the one-shore analogue of Research question~88 of \prp; that question itself, with activity on both cores, is not answered here.}
+
+The qualifier ``at rank $38$'' in the vertex statement matters: a previously constructed rank-$50$ example has only $125$ vertices \cite{b:m73}. The new conclusion is a sharp rank threshold for the stated family and gap.
+
+\subsubsection{Deficient exterior populations}
+The actual matching rank is
+\begin{equation}\label{mrn:u:ep:eq:rank}
+ d=\min\{a+b,a+n,b+m\}.
+\end{equation}
+For a direct construction, first match $\min(a,m)$ pairs from $A$ to $R$ and $\min(b,n)$ pairs from $L$ to $B$, then match the remaining core vertices to each other. This attains \eqref{mrn:u:ep:eq:rank}; the three displayed quantities are upper bounds from the core cover and the two shores.
+
+If $n<b$ or $m<a$, this rank is the smaller shore size, and the established weighted smaller-shore theorem gives the entire actual-rank ULC sequence. \mnote{That theorem is \prp's Theorem~70.1 (Part~V), Lemma~\ref{mrn:w:rf:lem:small} here; the specialization recalled next is its proof.} Here is the weighted specialization explicitly. For any bipartite graph $G=(X,Y)$, introduce a private element $\bar x$ for each $x\in X$. Match these private elements and $Y$ into $X$, with $\bar x$ adjacent only to $x$. The resulting transversal matroid has bases
+\[
+ \{\bar x:x\notin I\}\sqcup J
+\]
+for exactly the feasible support pairs $(I,J)$. Its Lorentzian basis polynomial $\mathcal B$, specialized by
+\[
+ \left(\prod_{x\in X}u_x\right)
+ \mathcal B\big((s/u_x)_{x\in X},(tv_y)_{y\in Y}\big)
+ =\sum_k p_k s^{|X|-k}t^k,
+\]
+gives $\ULC_{|X|}$ by the bivariate characterization and closure under nonnegative linear substitutions \cite{b:BH}. Transpose to obtain the smaller order. This is the weighted form of the relation/bimatroid argument in \cite{b:RU}. Consequently deficient populations cannot fail \eqref{mrn:u:ep:eq:last}. We henceforth assume $n\ge b$ and $m\ge a$, and write $r=a+b=d$.
+
+\subsection{The exact endpoint quadratic}
+A size-$k$ support selecting $i$ core-left and $j$ core-right vertices is feasible exactly when $i+j\ge k$. Indeed, the selected exterior-left vertices must fit into the selected $B$ vertices; after matching the exterior vertices, the remaining core vertices can be matched because the core is complete. Thus
+\begin{equation}\label{mrn:u:ep:eq:count}
+ p_k=\sum_{\substack{0\le i\le a,\ 0\le j\le b\\i+j\ge k}}
+ \binom ai\binom n{k-i}\binom bj\binom m{k-j}w^j,
+\end{equation}
+where out-of-range binomial coefficients are zero.
+
+Set
+\begin{gather*}
+ h=n-b+1,\quad x=\frac bh,\quad y=\frac{b(b-1)}{h(h+1)},\\
+ R=\frac{m-a+1}{a},\quad \rho=\frac{a-1}{m-a+2},\quad
+ J=\binom a2+ax+y,\quad D=\binom nb\binom m{a-1}>0.
+\end{gather*}
+Enumerating total core deficits zero, one and two in \eqref{mrn:u:ep:eq:count} gives
+\begin{align*}
+ p_r&=DRw^b,\\
+ p_{r-1}&=D\big((a+x)w^b+bxRw^{b-1}\big),\\
+ p_{r-2}&=D\left(J\rho w^b+b(ax+y)w^{b-1}
+              +\binom b2 yRw^{b-2}\right).
+\end{align*}
+When $b=1$, the last term is zero. Substitution in \eqref{mrn:u:ep:eq:last} yields
+\begin{equation}\label{mrn:u:ep:eq:quad}
+ \Delta_{r-1}=D^2w^{2b-2}\big(\alpha_m w^2+2bRBw+R^2C\big),
+\end{equation}
+where
+\begin{align}
+ \alpha_m&=(r-1)(a+x)^2-2rR\rho J,\label{mrn:u:ep:eq:alpha}\\
+ B&=(r-1)x(a+x)-r(ax+y)
+   =\frac{b[b(r-1)-ah^2]}{h^2(h+1)},\label{mrn:u:ep:eq:B}\\
+ C&=b\big(b(r-1)x^2-r(b-1)y\big)\notag\\
+  &=\frac{b^2\{b^2(r-1)+h[r(2b-1)-b^2]\}}{h^2(h+1)}>0.\label{mrn:u:ep:eq:C}
+\end{align}
+The last positivity uses $r(2b-1)-b^2=a(2b-1)+b(b-1)>0$.
+Define
+\begin{equation}\label{mrn:u:ep:eq:limit}
+ K=\frac{2r(a-1)}aJ,\qquad
+ \alpha_\infty=(r-1)(a+x)^2-K.
+\end{equation}
+Then
+\begin{equation}\label{mrn:u:ep:eq:monotone}
+ \alpha_m=\alpha_\infty+\frac{K}{m-a+2}\ge\alpha_\infty.
+\end{equation}
+
+\subsection{A finite field cannot create a hidden negative window}
+\begin{lemma}[Positive discriminant margin]\label{mrn:u:ep:lem:identity}
+Put $H=ah^2-b(r-1)$ and define
+\begin{align*}
+ Q_0&=a^2(b^2+2b-1)+a(b-1)(2b^2+3b-1)+b(b-1)^2,\\
+ Q_1&=(r-1)(2ab-a-b),\\
+ R_0&=a(b^2+2b-1)+(b-1)(3b-1),\\
+ R_1&=a(3b-1)+(b-1).
+\end{align*}
+For all positive integers $a,b$,
+\begin{equation}\label{mrn:u:ep:eq:positiveidentity}
+ \frac{ah^3(h+1)^2}{b^2r}\big(\alpha_\infty C-b^2B^2\big)
+ =H(Q_0+Q_1h)+br(r-1)(R_0+R_1h).
+\end{equation}
+If $H\ge0$, the right side is strictly positive.
+\end{lemma}
+\begin{proof}
+Substitution of \eqref{mrn:u:ep:eq:B}, \eqref{mrn:u:ep:eq:C}, and \eqref{mrn:u:ep:eq:limit}, followed by collecting powers of $h$, proves the identity. Each displayed term in $Q_0,R_0,R_1$ is nonnegative and their first terms are positive. Also $2ab-a-b=a(b-1)+b(a-1)\ge0$, so $Q_1\ge0$. Finally $br(r-1)>0$ and $R_0+R_1h>0$.
+\end{proof}
+
+\begin{theorem}[Exact finite-field and population criterion]\label{mrn:u:ep:thm:criterion}
+Fix $a,b,n,m$ with $n\ge b$, $m\ge a$. The last inequality fails for some $w>0$ if and only if $\alpha_m<0$. If $\alpha_m\ge0$, it is strictly satisfied for every $w>0$. If $\alpha_m<0$, failure occurs precisely above the unique positive root of the quadratic in \eqref{mrn:u:ep:eq:quad}.
+
+For fixed $a,b,h$, there exist finite $m$ and $w>0$ giving failure if and only if $\alpha_\infty<0$. In that case the least eligible integer population is
+\begin{equation}\label{mrn:u:ep:eq:mmin}
+ m_{\min}=a-1+\left\lfloor\frac{K}{-\alpha_\infty}\right\rfloor.
+\end{equation}
+\end{theorem}
+\begin{proof}
+If $B\ge0$ and $\alpha_m\ge0$, every term in the quadratic is nonnegative and its constant term is positive. If $B<0$, then $H>0$ by \eqref{mrn:u:ep:eq:B}. Lemma~\ref{mrn:u:ep:lem:identity} and \eqref{mrn:u:ep:eq:monotone} imply
+\[
+ \alpha_m C-b^2B^2\ge\alpha_\infty C-b^2B^2>0.
+\]
+In particular $\alpha_m>0$, and the quadratic has negative discriminant and is positive on the entire real line. This rules out every putative negative finite-$w$ window with nonnegative leading coefficient.
+
+If $\alpha_m<0$, the constant term is positive, so the two real roots have opposite signs and failure is exactly above the positive root. Now \eqref{mrn:u:ep:eq:monotone} shows that some finite $m$ has $\alpha_m<0$ exactly when $\alpha_\infty<0$. In that case the necessary and sufficient condition is
+\[
+ m-a+2>\frac{K}{-\alpha_\infty},
+\]
+whose least integer solution is \eqref{mrn:u:ep:eq:mmin}. Since $K+\alpha_\infty=(r-1)(a+x)^2>0$, the quotient in \eqref{mrn:u:ep:eq:mmin} exceeds one, so $m_{\min}\ge a$.
+\end{proof}
+
+\subsection{A cubic classification and the finite rank certificate}
+Clearing the positive denominator in \eqref{mrn:u:ep:eq:limit} gives
+\begin{equation}\label{mrn:u:ep:eq:cubic}
+ ah^2(h+1)\alpha_\infty=F_{a,b}(h)
+ =A_3h^3+A_2h^2+A_1h+A_0,
+\end{equation}
+where
+\begin{align*}
+ A_0&=ab^2(r-1),\\
+ A_1&=-b(r-1)(ab-2a-2b),\\
+ A_2&=a(a^2+2ab-a+2b^2-b),\\
+ A_3&=a(a^2+2ab-a-b).
+\end{align*}
+The coefficients $A_0,A_2,A_3$ are strictly positive. Only $A_1$ can be negative. In particular $a\le2$ or $b\le2$ forces $F_{a,b}(h)>0$ for all $h\ge1$.
+
+This gives a complete test for any fixed core shape, at arbitrary rank. If $A_1\ge0$, failure is impossible. Otherwise the unique positive critical point is
+\[
+ h_* =\frac{-A_2+\sqrt{A_2^2-3A_3A_1}}{3A_3}.
+\]
+Since $F''(h)=6A_3h+2A_2>0$ on $h\ge0$, the integer minimum for $h\ge1$ is attained at
+\[
+ \max\{1,\lfloor h_*\rfloor\},\qquad
+ \max\{1,\lceil h_*\rceil\}.
+\]
+Some exterior populations and a common core field fail the last gap exactly when at least one of the two corresponding cubic values is negative.
+
+For the sharp finite-rank certificate we use an integer-only tail bound. Set
+\begin{equation}\label{mrn:u:ep:eq:cutoff}
+ H_0=\max\left\{1,\left\lceil\frac{-A_1}{A_2}\right\rceil\right\}.
+\end{equation}
+For $h\ge H_0$, the sum $A_2h^2+A_1h=h(A_2h+A_1)$ is nonnegative, so $F(h)>0$. It therefore suffices to evaluate $1\le h\le H_0$, with the boundary included redundantly.
+
+The following complete integer procedure covers every rank from $4$ through $38$:
+\[
+ \begin{gathered}
+ r=4,\ldots,38;\qquad a=2,\ldots,r-2;\qquad b=r-a;\\
+ h=1,\ldots,H_0(a,b);\qquad\text{evaluate }F_{a,b}(h).
+ \end{gathered}
+\]
+It contains $630$ core pairs and exactly $2237$ integer evaluations; the largest cutoff is $10$. Every value at rank at most $37$ is positive. At rank $38$, the only negative values are
+\begin{equation}\label{mrn:u:ep:eq:two}
+ F_{7,31}(3)=-3056,\qquad F_{8,30}(3)=-4392.
+\end{equation}
+No zeros occur. All omitted $a=1$ or $b=1$ cases have $A_1\ge0$, and \eqref{mrn:u:ep:eq:cutoff} proves positivity for all omitted $h$. The integer verifier and complete evaluation list accompany this report. For ease of inspection, Table~\ref{mrn:u:ep:tab:minima} records the minimum evaluated value at each rank. The tail argument, not a numerical extrapolation, makes the finite calculation exhaustive.
+
+\begin{table}[htbp]\centering\small
+\caption{Minimum of the cubic over the complete finite certificate at each rank.}\label{mrn:u:ep:tab:minima}
+\begin{tabular}{rr@{\qquad}rr@{\qquad}rr}
+\toprule
+$r$ & Minimum & $r$ & Minimum & $r$ & Minimum\\\midrule
+4&96&16&7680&28&30936\\
+5&200&17&9248&29&31248\\
+6&360&18&11016&30&30921\\
+7&588&19&12996&31&30312\\
+8&896&20&15200&32&29184\\
+9&1296&21&17640&33&26976\\
+10&1800&22&20328&34&24304\\
+11&2420&23&23276&35&21088\\
+12&3168&24&26337&36&16281\\
+13&4056&25&28000&37&8424\\
+14&5096&26&29200&38&$-4392$\\
+15&6300&27&30132&&\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The two rank 38 shapes and the smaller witness}
+For $(a,b,h)=(8,30,3)$ one has
+\[
+ \alpha_\infty=-\frac{61}{4},\qquad
+ \alpha_m=\frac{48379-61m}{4(m-6)}.
+\]
+Thus $\alpha_m<0$ exactly when $m\ge794$. For $(7,31,3)$, the limiting coefficient is $-764/63$, and \eqref{mrn:u:ep:eq:mmin} gives $m_{\min}=923$. These are the complete possibilities at rank $38$ by \eqref{mrn:u:ep:eq:two}.
+
+For the first graph at its minimal population, put
+\[
+ D=\binom{32}{30}\binom{794}{7},\qquad
+ q(w)=-22w^2+6437219280w+11385894392295.
+\]
+The exact endpoint factorization is
+\begin{equation}\label{mrn:u:ep:eq:witness}
+ \Delta_{37}=\frac{5}{6304}D^2w^{58}q(w).
+\end{equation}
+Direct integer substitution gives
+\[
+ q(292602645)=725475345>0,\qquad
+ q(292602646)=-5711821777<0.
+\]
+The unique positive root proves the stated first failing integer. This graph has $864$ vertices and $7552$ edges. The other rank-$38$ shape has at least $38+33+923=994$ vertices, establishing the rank-$38$ vertex minimum in Theorem~\ref{mrn:u:ep:thm:main}.
+
+For completeness, at that second minimal population its primitive endpoint quadratic is
+\[
+ -2w^2+3479879022w+8332557477297,
+\]
+whose first failing positive integer is $1739941906$. The preceding and failing values are $1715636157$ and $-1764252443$.
+
+\subsection{Verification and attribution}
+The top-three formula and the earlier rank-$38$ construction appeared in the companion \cite{b:m73}. \mnote{Source~73: Lemma~\ref{mrn:u:os:lem:top}, Proposition~\ref{mrn:u:os:prop:quadratic} (whose $\alpha,\beta,\gamma$ are the $\alpha_m$, $2bRB$, $R^2C$ above) and Proposition~\ref{mrn:u:os:prop:finite}.} The additional conclusions here are the exact finite-field criterion, exhaustive rank-$38$ endpoint classification, and minimal populations within that rank. The smaller-shore input is established Lorentzian theory \cite{b:BH,b:RU}.
+
+The standard-library script \texttt{verify\_boundary.py} \mnote{shipped as \path{code/55-rank38-endpoint-verify_boundary.py} and \path{code/55-rank38-endpoint-verify_symbolic.py}, outputs \path{data/55-rank38-endpoint-*.json}} regenerates all $2237$ exact cubic values, verifies both rank-$38$ population thresholds, and checks the endpoint formula against the complete support sum on $160$ deterministic rational-activity samples. It also checks the full support coefficients of both new minimal-population witnesses; in each, the last inequality is the only failing gap. The separate script \texttt{verify\_symbolic.py} expands \eqref{mrn:u:ep:eq:positiveidentity} and \eqref{mrn:u:ep:eq:cubic} exactly over $\mathbb Q(a,b,h)$. The complete certificate, scripts, and outputs are included. The general identities and the proven finite tail bound establish the result; sample regressions are additional checks.
+
+The exact first-failure question for arbitrary individual one-shore activities is broader. Earlier Newton gaps in the common-core-field family are also outside this report's classification. \mnote{The earlier gaps are settled by source~47 (Section~\ref{mrn:src:47}).} Neither is settled by the last-gap criterion proved here.
+
+%% ======================== source 47 ========================
+\section{The sharp rank-38 ULC boundary for full Hall graphs, one common right-core activity (source~47)}\label{mrn:src:47}
+\paragraph{Abstract of source~47, as delivered.} For full Hall graphs with a common positive activity on the right core and unit activities elsewhere, the first possible failure of matching-rank-normalized ultra-log-concavity occurs at rank 38. We close the earlier-gap question left open by the endpoint classification. Every intermediate Newton gap through rank 38 has positive coefficients in the common field, for every eligible pair of exterior populations. The proof expands each gap in two binomial population bases and checks a finite array of 22,452,529 positive integer coefficients. This is an exact all-population certificate, not a bounded population or activity scan. Together with the first-gap inequality and the previously established endpoint theorem, it gives the complete failure classification at rank 38.
+
+\paragraph{Scope.}
+The field is common across one specified core block. The result does not determine the first failure for arbitrary individual one-shore activities or for arbitrary bipartite graphs. General finite-activity rank-six one-shore ultra-log-concavity remains open. \mnote{See the note in the scope paragraph of source~55 (Section~\ref{mrn:src:55}).} This is a computer-assisted mathematical proof with reproducible integer certificates, not formal kernel verification or an external peer-review claim.
+
+\subsection{The family and the conclusion}
+Let $H_{a,b;n,m}$ have shores $A\sqcup L$ and $B\sqcup R$, with block sizes $a,n,b,m$, respectively, and edges
+\[
+ (A\times B)\cup(L\times B)\cup(A\times R).
+\]
+Here $a,b\ge1$ and $n,m\ge0$ are integers. Every activity is one except those of $B$, which all equal $w>0$. The support polynomial is
+\[
+ P(t)=\sum_{k=0}^{d}p_k(w)t^k.
+\]
+Each pair of equally sized endpoint sets admitting a perfect matching is counted once, regardless of its number of matchings. Its degree is
+\[
+ d=\min\{a+b,a+n,b+m\}.
+\]
+For $1\le k<d$, put
+\[
+ \Delta_k=k(d-k)p_k^2-(k+1)(d-k+1)p_{k-1}p_{k+1}.
+\]
+The sequence is $\ULC_d$ precisely when every $\Delta_k\ge0$, since all coefficients up to the matching rank are positive.
+
+\begin{theorem}[Sharp boundary for all gaps]\label{mrn:u:ag:thm:main}
+Every graph in this common-core-field family of matching rank at most $37$ is $\ULC_d$ for every $w>0$ and all exterior populations.
+
+At matching rank $38$, every gap except possibly the last is strictly positive whenever $a,b\ge3$ and $n\ge b,m\ge a$. A failure at some finite $m,w$ is possible only for
+\[
+ (a,b,n-b+1)=(7,31,3)\quad\hbox{or}\quad(8,30,3).
+\]
+The least corresponding $m$ are $923$ and $794$. The smallest graph at rank $38$ in this family admitting any failed gap therefore has $864$ vertices, namely $H_{8,30;32,794}$. Its first failing positive integer core activity is $292602646$.
+\end{theorem}
+
+The new ingredient is the following stronger statement about intermediate gaps.
+\begin{theorem}[Positive common-field coefficients]\label{mrn:u:ag:thm:intermediate}
+Suppose $a,b\ge3$, $r=a+b\le38$, $n\ge b$, and $m\ge a$. For every $2\le k\le r-2$, all coefficients of
+\[
+ w^{-\max(0,\,2k-2a)}\Delta_k
+\]
+from degree zero through degree $\min(2b,2k)-\max(0,2k-2a)$ are strictly positive. In particular $\Delta_k>0$ for every $w>0$.
+\end{theorem}
+
+At larger rank the last gap does not control the earlier ones: the separate rank-$49$ example $H_{14,35;38,624}$ has its last gap positive for every $w>0$ but a failing penultimate gap at $w=40000000$ \cite{b:m51}. The rank restriction in Theorem~\ref{mrn:u:ag:thm:intermediate} is therefore essential to the present certificate.
+
+\subsection{Counting and the finite population expansion}
+Write $\binom xy=0$ when $y<0$ or $y>x$, for nonnegative integer $x$. For $j,q\ge0$, define
+\begin{equation}\label{mrn:u:ag:eq:T}
+ T_{j,q}(n)=\sum_{\ell=0}^{j}\binom a{q+\ell}\binom n{j-\ell};
+\end{equation}
+set $T_{j,q}=0$ when either subscript is negative. A support selecting $j$ vertices of $B$ and $q$ of $R$ must select at least $q$ vertices of $A$. If it selects $q+\ell$ of $A$, it selects $j-\ell$ of $L$. The complete core makes this necessary condition sufficient. Hence
+\begin{equation}\label{mrn:u:ag:eq:pk}
+ p_k(w)=\sum_{j=0}^{b}\binom bj\binom m{k-j}T_{j,k-j}(n)w^j.
+\end{equation}
+This is endpoint-support counting throughout.
+
+Fix $2\le k\le r-2$. For a coefficient of $w^s$, write $L=2k-s$. Its possible range is
+\begin{equation}\label{mrn:u:ag:eq:srange}
+ \max(0,2k-2a)\le s\le\min(2b,2k).
+\end{equation}
+For $0\le p\le\lfloor L/2\rfloor$, define
+\begin{align}
+ G_{k,s,p}(n)
+ &=\binom{L-p}{p}
+   \sum_{j=\max(0,s-b)}^{\min(b,s)}
+       \binom bj\binom b{s-j}\bigl(U_j-V_j\bigr),\label{mrn:u:ag:eq:G}\\
+ U_j&=k(r-k)\binom{L-2p}{k-j-p}
+       T_{j,k-j}(n)T_{s-j,k-s+j}(n),\notag\\
+ V_j&=(k+1)(r-k+1)\binom{L-2p}{k-1-j-p}
+       T_{j,k-1-j}(n)T_{s-j,k+1-s+j}(n).\notag
+\end{align}
+
+\begin{lemma}[Exact finite population transfer]\label{mrn:u:ag:lem:transfer}
+For every nonnegative integer $m$,
+\begin{equation}\label{mrn:u:ag:eq:transfer}
+ [w^s]\Delta_k=\sum_{p=0}^{\lfloor L/2\rfloor}
+                  \binom m{L-p}G_{k,s,p}(n).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Two subsets of an $m$-element set, of sizes $q_1,q_2$ and intersection size $p$, can be specified by their union, their intersection, and the first disjoint remainder. Thus
+\[
+ \binom m{q_1}\binom m{q_2}
+ =\sum_p\binom m{q_1+q_2-p}
+          \binom{q_1+q_2-p}{p}
+          \binom{q_1+q_2-2p}{q_1-p}.
+\]
+Both products in the coefficient of $w^s$ have $q_1+q_2=L$. Applying this identity to \eqref{mrn:u:ag:eq:pk} gives exactly \eqref{mrn:u:ag:eq:G}--\eqref{mrn:u:ag:eq:transfer}.
+\end{proof}
+
+This transfer keeps all finite-population terms, including intersections. The diffuse limit alone would retain only $p=0$ and would not justify the finite-$m$ conclusion.
+
+\subsection{An exhaustive finite integer certificate}
+The polynomial $T_{j,q}(n)$ has degree at most $j$, so $G_{k,s,p}(n)$ has degree at most $s$. Its Newton finite-difference expansion about $n=b$ is
+\begin{align}
+ G_{k,s,p}(b+h)
+ &=\sum_{e=0}^{s}c_{a,b,k,s,p,e}\binom he,\label{mrn:u:ag:eq:difference}\\
+ c_{a,b,k,s,p,e}
+ &=\sum_{i=0}^{e}(-1)^{e-i}\binom ei G_{k,s,p}(b+i).\label{mrn:u:ag:eq:c}
+\end{align}
+These are integer identities. Combining them with Lemma~\ref{mrn:u:ag:lem:transfer} gives
+\begin{equation}\label{mrn:u:ag:eq:certificate}
+ \Delta_k=
+ \sum_s\sum_{p=0}^{\lfloor(2k-s)/2\rfloor}\sum_{e=0}^{s}
+ c_{a,b,k,s,p,e}\,
+ w^s\binom m{2k-s-p}\binom{n-b}{e}.
+\end{equation}
+Every basis factor is nonnegative at the populations and activities in question.
+
+\begin{proposition}[Verified coefficient array]\label{mrn:u:ag:prop:array}
+Every integer $c_{a,b,k,s,p,e}$ is strictly positive over the finite range
+\[
+ \begin{gathered}
+ 6\le r\le38,\qquad 3\le a\le r-3,\qquad b=r-a,\qquad
+ 2\le k\le r-2,\\
+ \max(0,2k-2a)\le s\le\min(2b,2k),\qquad
+ 0\le p\le\lfloor(2k-s)/2\rfloor,\qquad 0\le e\le s.
+ \end{gathered}
+\]
+There are $561$ core pairs, $13{,}651$ intermediate gaps, $1{,}583{,}703$ polynomials $G$, and $22{,}452{,}529$ checked coefficients.
+\end{proposition}
+\begin{proof}[Exact verification]
+The accompanying standard-library verifier evaluates \eqref{mrn:u:ag:eq:G} at $n=b,\ldots,b+s$, forms successive difference rows, and checks their first entries against zero. Every arithmetic operation is an integer addition, multiplication, binomial evaluation, or comparison. It visits precisely the displayed finite range; there are no numerical tolerances, sampled fields, or omitted population tails. Per-gap coefficient counts and SHA-256 records are included, allowing all entries to be regenerated and compared. A separate implementation constructs the support counts by adding exterior vertices using Pascal recurrence and computes the coefficients by the explicit inverse Pascal matrix. It agrees with every per-gap hash and count. The smallest checked coefficient is $9$; there are no zero entries.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{mrn:u:ag:thm:intermediate}]
+Equation~\eqref{mrn:u:ag:eq:certificate} and Proposition~\ref{mrn:u:ag:prop:array} give coefficientwise nonnegativity in $w$ for all $n\ge b$ and $m\ge a$. For each $s$ in \eqref{mrn:u:ag:eq:srange}, take $p=\lfloor L/2\rfloor$ and $e=0$. Then
+\[
+ L-p=\lceil L/2\rceil\le a\le m,
+\]
+so the corresponding population binomial is positive. Its coefficient is strictly positive by Proposition~\ref{mrn:u:ag:prop:array}. Thus every stated common-field coefficient is positive.
+\end{proof}
+
+\subsection{Closing the first and last gaps}
+\subsubsection{The first gap}
+\mnote{Source~47 proves here, by the Motzkin--Straus route, that $\Delta_1\ge0$ for every positively weighted bipartite graph; this is \prp's Theorem~180.2 (Part~XI, \path{hb:thm:firstidentity}) and the inequality printed with this route in Sections~\ref{mrn:w:rf:sec:firstgap} and~\ref{mrn:src:72}. The argument is not reprinted; in it $M_2\ge p_2$ is the weighted number of two-edge matchings and the Motzkin--Straus theorem gives $M_2\le\frac{d-1}{2d}p_1^2$. Source~47's strictness step is kept verbatim:} In the genuine full Hall cases with $a,b\ge3$, two vertices from each core form a $K_{2,2}$. Its support contributes two positive matchings to $M_2$ but only once to $p_2$. Hence $M_2>p_2$ and $\Delta_1\ge2d(M_2-p_2)>0$. \mnote{In \prp's identity this is the positive term $B_4$.}
+
+\subsubsection{The endpoint classification}
+We use the exact endpoint theorem of \cite{b:m55}. \mnote{That theorem is source~55, printed in Section~\ref{mrn:src:55}: the quadratic~\eqref{mrn:u:ep:eq:quad}, Lemma~\ref{mrn:u:ep:lem:identity}, Theorem~\ref{mrn:u:ep:thm:criterion}, the cubic~\eqref{mrn:u:ep:eq:cubic} and the two negative values~\eqref{mrn:u:ep:eq:two}. Source~47 recalls its formulas without proof; the recall is kept below, in source~47's notation, which agrees with source~55's.} Its essential formulas are recalled to make the scope and resulting boundary explicit. Assume $n\ge b,m\ge a$, and put
+\[
+ h=n-b+1,\quad x=\frac bh,\quad y=\frac{b(b-1)}{h(h+1)},\quad
+ R=\frac{m-a+1}{a},\quad \rho=\frac{a-1}{m-a+2},
+\]
+\[
+ J=\binom a2+ax+y,\qquad D=\binom nb\binom m{a-1}.
+\]
+Then
+\[
+ \Delta_{r-1}=D^2w^{2b-2}
+       \bigl(\alpha_m w^2+2bRBw+R^2C\bigr),
+\]
+where
+\[
+ \alpha_m=(r-1)(a+x)^2-2rR\rho J,\qquad
+ B=\frac{b[b(r-1)-ah^2]}{h^2(h+1)},
+\]
+\[
+ C=\frac{b^2\{b^2(r-1)+h[r(2b-1)-b^2]\}}{h^2(h+1)}>0.
+\]
+The endpoint theorem proves that this quadratic is positive for every $w>0$ if $\alpha_m\ge0$. If $\alpha_m<0$, it has one positive root and is negative precisely above it. Thus finite fields introduce no hidden negative window.
+
+Writing
+\[
+ K=\frac{2r(a-1)}aJ,\qquad
+ \alpha_\infty=(r-1)(a+x)^2-K
+\]
+gives $\alpha_m=\alpha_\infty+K/(m-a+2)$. Some finite $m,w$ fail exactly when $\alpha_\infty<0$, and then
+\[
+ m_{\min}=a-1+\left\lfloor\frac K{-\alpha_\infty}\right\rfloor.
+\]
+The sign of $\alpha_\infty$ is the sign of the cubic
+\begin{align*}
+ F_{a,b}(h)
+ &=a(a^2+2ab-a-b)h^3
+   +a(a^2+2ab-a+2b^2-b)h^2\\
+ &\quad-b(r-1)(ab-2a-2b)h+ab^2(r-1).
+\end{align*}
+Only its linear coefficient can be negative. The endpoint certificate uses the finite tail cutoff $\max(1,\lceil-A_1/A_2\rceil)$ for these cubic coefficients. Its $2237$ exact evaluations show positivity through rank $37$, and exactly
+\[
+ F_{7,31}(3)=-3056,\qquad F_{8,30}(3)=-4392
+\]
+as the rank-$38$ negative cases. The tail bound makes this exhaustive in $h$.
+
+\subsubsection{The remaining cover and population cases}
+If $n<b$ or $m<a$, the actual rank is the smaller shore size. The standard weighted transversal-matroid specialization then gives actual-rank ULC \cite{b:BH,b:RU}. \mnote{\prp's Theorem~70.1; Lemma~\ref{mrn:w:rf:lem:small} here.} Explicitly, with a private element for each left vertex, the extended transversal basis polynomial specializes to
+\[
+ \sum_k p_k s^{|X|-k}t^k
+\]
+by assigning a private variable $s/u_x$ and a right variable $tv_y$, then multiplying by $\prod_xu_x$. Matroid basis polynomials are Lorentzian, so this is $\ULC_{|X|}$; transpose for the smaller shore.
+
+When $n\ge b,m\ge a$ and $\min(a,b)\le2$, the previously proved minimum-cover theorem \cite{b:m74} gives actual-rank ULC for arbitrary positive activities. \mnote{Theorem~\ref{mrn:w:rf:thm:main}; also source~75's Theorem~\ref{mrn:w:fh:thm:classification}.} All remaining cases are precisely those in Proposition~\ref{mrn:u:ag:prop:array}. The first gap and the endpoint classification therefore complete the proof of Theorem~\ref{mrn:u:ag:thm:main}.
+
+\subsection{The sharp witness and reproducibility}
+For $H_{8,30;32,794}$, let $D=\binom{32}{30}\binom{794}{7}$. The endpoint factorization is
+\[
+ \Delta_{37}=\frac5{6304}D^2w^{58}
+  \bigl(-22w^2+6437219280w+11385894392295\bigr).
+\]
+The quadratic takes the values $725475345$ and $-5711821777$ at $292602645$ and $292602646$, respectively. The graph has $864$ vertices and $7552$ edges. The other rank-$38$ shape requires at least $994$ vertices. \mnote{These are source~55's numbers, \eqref{mrn:u:ep:eq:witness}; restated by source~47.} The new intermediate-gap theorem shows that these endpoint possibilities also exhaust every-gap failure at rank $38$.
+
+The new certificate and the endpoint certificate have different purposes. The former covers every intermediate gap and both unbounded exterior populations through binomial-basis identities. The latter covers the endpoint through a cubic tail bound and an exact quadratic criterion. The source package contains the generators, compact per-gap coefficient records, regression checks of the population identity, and instructions for replay. \mnote{Shipped as \path{code/47-rank38-ulc-*.py} and \path{data/47-rank38-ulc-*.json} (33 per-rank certificate files, ranks 6--38); the replay instructions were in the delivered README, which is not shipped (this report's README gives them).} Numerical scans used during exploration are not part of the proof.
+
+The new conclusion is restricted to a common core field on full Hall graphs. The minimum rank for failure with arbitrary individual one-shore activities remains between $6$ and $38$. \mnote{The lower end six rests on source~74's Corollary~\ref{mrn:w:rf:cor:rankfive} (Part~I); the upper end on sources~73 and~55.} The rank-$49$ separation \cite{b:m51} prevents extrapolating endpoint control to all higher ranks.
+
+%% ======================== source 51 ========================
+\section{The last Hall gap does not control ultra-log-concavity, one common right-core activity (source~51)}\label{mrn:src:51}
+\paragraph{Abstract of source~51, as delivered.} We give a full Hall graph of rank 49 with a common activity on one right-core block for which the last rank-normalized Newton inequality holds strictly at every positive activity, but the preceding inequality fails. The example has 711 vertices. Four explicit coefficient formulas give an exact quartic certificate. This separates the last-gap criterion from full ultra-log-concavity without changing the previously proved sharp rank-38 endpoint threshold.
+
+Let $H_{a,b;n,m}$ have left blocks $A,L$ of sizes $a,n$, right blocks $B,R$ of sizes $b,m$, and edges
+\[
+ (A\times B)\cup(L\times B)\cup(A\times R).
+\]
+Give every vertex activity one except the vertices of $B$, each of which has activity $w>0$. The coefficient $p_k$ of its support polynomial counts each pair of $k$-element endpoint sets admitting a perfect matching once, with the product of its vertex activities. For matching rank $r$, write
+\[
+ \Delta_k=k(r-k)p_k^2-(k+1)(r-k+1)p_{k-1}p_{k+1}.
+\]
+Rank-normalized ultra-log-concavity requires $\Delta_k\ge0$ at every $1\le k<r$.
+
+\begin{theorem}\label{mrn:u:sp:thm:separation}
+The graph $H_{14,35;38,624}$ has matching rank $49$, $711$ vertices and $10556$ edges. Its last gap $\Delta_{48}$ is strictly positive for every $w>0$. At $w=40000000$, its preceding gap $\Delta_{47}$ is negative. The first positive integer $w$ for which $\Delta_{47}<0$ is $38189138$.
+\end{theorem}
+
+\begin{proof}
+The core is a cover of size $49$, attained by disjoint matchings $A\to R$ and $L\to B$. This proves the rank. The vertex and edge counts are
+\[
+ 14+35+38+624=711,\qquad14\cdot35+38\cdot35+14\cdot624=10556.
+\]
+For general full Hall parameters, a size-$k$ support selecting $i$ vertices of $A$ and $j$ of $B$ is feasible exactly when $i+j\ge k$. Hence, with out-of-range binomial coefficients zero,
+\begin{equation}\label{mrn:u:sp:eq:sum}
+ p_k=\sum_{\substack{0\le i\le a,\ 0\le j\le b\\i+j\ge k}}
+ \binom ai\binom n{k-i}\binom bj\binom m{k-j}w^j.
+\end{equation}
+Set $D=\binom{38}{35}\binom{624}{12}>0$. The four coefficients needed here are
+\begin{align}
+ \frac{p_{46}}{Dw^{32}}
+ &=\frac{8801172765}{2}+32499495w
+   +\frac{136955}{2}w^2+\frac{27846}{613}w^3,\label{mrn:u:sp:eq:four}\\
+ \frac{p_{47}}{Dw^{33}}&=72736965+299880w+273w^2,\notag\\
+ \frac{p_{48}}{Dw^{34}}&=\frac{1258425}{2}+1071w,\notag\\
+ \frac{p_{49}}{Dw^{35}}&=\frac{14382}{7}.\notag
+\end{align}
+These follow directly from \eqref{mrn:u:sp:eq:sum}: the core-deficit pairs $(14-i,35-j)$ have total at most $3,2,1,0$, respectively. Thus the formulas require only ten, six, three and one terms.
+
+Substituting \eqref{mrn:u:sp:eq:four} gives
+\begin{align}
+ \Delta_{47}&=\frac{882}{613}D^2w^{66}q(w),\label{mrn:u:sp:eq:penultimate}\\
+ \Delta_{48}&=89964D^2w^{68}\bigl(w^2+47940w+48443370\bigr),\label{mrn:u:sp:eq:last}
+\end{align}
+where
+\begin{align*}
+ q(w)={}&-13w^4+496441140w^3+673931488920w^2\\
+        &+331783888454280w+68528424519495225.
+\end{align*}
+Every factor in \eqref{mrn:u:sp:eq:last} is positive for $w>0$. In contrast,
+\[
+ q(40000000)=-1506688736346303933404280504775<0,
+\]
+proving the finite counterexample. The quartic has one sign change in descending coefficient order; Descartes' rule, together with $q(0)>0$ and $q(w)\to-\infty$, gives exactly one positive root. Finally,
+\begin{align*}
+ q(38189137)&=358201675329747057329792>0,\\
+ q(38189138)&=-365864633482267706996743<0.
+\end{align*}
+This proves the first-integer claim.
+\end{proof}
+
+\paragraph{Scope and reproducibility.}
+The sharp rank-38 theorem in \cite{b:m55} concerns the last gap in this common-core-activity family. It remains valid. The present example shows that its criterion does not characterize the full ULC sequence. It does not decide whether an earlier gap can fail below rank $38$, or the first failure for arbitrary individual one-shore activities. \mnote{The first is decided by source~47 (Theorem~\ref{mrn:u:ag:thm:main}): no gap fails below rank $38$ in this family. The second stays open; it lies in $[6,38]$.}
+
+The accompanying standard-library script \mnote{shipped as \path{code/51-last-gap-verify_counterexample.py}, output \path{data/51-last-gap-verification.json}} independently sums \eqref{mrn:u:sp:eq:sum}, verifies all four coefficient identities and both polynomial factorizations exactly, and checks the stated integer signs. At $w=40000000$, it also finds that $k=47$ is the only negative gap. No numerical root approximation is used. These are ordinary proofs with reproducible exact arithmetic, not formal kernel verification; global priority is not claimed.
+
 \appendix
 \section{Provenance of this report}\label{mrn:sec:provenance}
 
@@ -1847,7 +2909,7 @@ manuscripts, READMEs, checksum ledgers and the identical helper
 provenance files are, under the prefixes listed (README of this report).
 ``Pin'' is a ProveIt commit that the manuscript itself cites; sources
 without a pin cite their siblings by archive name only.
-At this stage four sources are printed.
+At this stage nine sources are printed.
 
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.06\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}}
 \toprule
@@ -1860,6 +2922,11 @@ No. & Archive and title & Pin & Labels & Printed as\\
 72 & \path{strictness_equality_package.zip}: \emph{Strictness and equality for weighted matching support polynomials} (8 pages, Letter; ``AI-assisted mathematical research'') & none & \texttt{mrn:w:se:} & Section~\ref{mrn:src:72}\\
 76 & \path{ProveIt_Weighted_Rank_Four_Stability.zip}: \emph{Stability of Two by Two Covers and Weighted Rank Four} (8 pages) & \texttt{1b3960d8a}, \texttt{a866ff9a2} & \texttt{mrn:w:sb:} & Section~\ref{mrn:src:76}\\
 75 & \path{ProveIt_Sharp_Full_Hall_Classification.zip}: \emph{A Sharp Weighted Classification of Full Hall Bottleneck Graphs} (9 pages) & \texttt{4a3b6991d} & \texttt{mrn:w:fh:} & Section~\ref{mrn:src:75}\\
+71 & \path{ProveIt_Unit_Weight_Rank_Normalization_Counterexample.zip}: \emph{Unit Weight Failure of Matching Rank Normalization} (5 pages) & \texttt{a866ff9a2} & \texttt{mrn:u:uw:} & Section~\ref{mrn:src:71}\\
+73 & \path{ProveIt_One_Shore_Counterexamples.zip}: \emph{One Shore Activities Can Destroy Matching Rank Ultra Log Concavity} (6 pages, with \path{pendant_appendix.tex}) & \texttt{4a3b6991d} & \texttt{mrn:u:os:} & Section~\ref{mrn:src:73}\\
+55 & \path{ProveIt_Sharp_Rank_38_Hall_Endpoint.zip}: \emph{A Sharp Rank 38 Boundary for the Last Hall Inequality} (6 pages) & none & \texttt{mrn:u:ep:} & Section~\ref{mrn:src:55}\\
+47 & \path{ProveIt_Sharp_Rank_38_Full_Hall_ULC.zip}: \emph{The Sharp Rank 38 ULC Boundary for Full Hall Graphs} (6 pages) & none & \texttt{mrn:u:ag:} & Section~\ref{mrn:src:47}\\
+51 & \path{ProveIt_Last_Hall_Gap_Separation.zip}: \emph{The Last Hall Gap Does Not Control Ultra Log Concavity} (2 pages) & none & \texttt{mrn:u:sp:} & Section~\ref{mrn:src:51}\\
 \end{longtable}
 
 The full commit hashes are \path{1b3960d8acdabd983147b7c609bd9dfb2d67a0a0}
@@ -1897,6 +2964,21 @@ that file is kept as delivered.
   positive half, strictness, real-rootedness for a singleton core, explicit
   asymmetric failures, and a strictly ultra-log-concave rank-five example
   with nonreal zeros.
+\item \textbf{71}: a connected all-unit graph with 6916 vertices and matching
+  number 3450 that is not $\ULC_{3450}$ (Theorem~\ref{mrn:u:uw:thm:main}); a
+  deficiency-one example and infinitely many such; failure of the two
+  Davis--Kohl $h^*$-polynomials.
+\item \textbf{73}: one-shore counterexamples of matching number 50 (125
+  vertices) and 38; the endpoint quadratic and a construction criterion; the
+  weighted pendant-arm identity (which contains source~71's) and a rank-310
+  transfer example.
+\item \textbf{55}: for one common right-core activity on full Hall graphs, the
+  least matching number with a failing last gap is exactly 38, with the two
+  shapes and minimal populations (864 vertices).
+\item \textbf{47}: in the same family no intermediate gap fails through
+  matching number 38, so 38 is the least failure rank of full $\ULC$.
+\item \textbf{51}: a rank-49 full Hall graph whose last gap holds for every
+  activity while the penultimate gap fails.
 \end{itemize}
 
 \subsection{Where the merge chose}\label{mrn:sec:choices}
@@ -1929,6 +3011,14 @@ that file is kept as delivered.
 \item \emph{Stale sentences.} Statements of sources~75 and~76 that the first
   weighted failure rank is five or six, or that rank five is open, are kept
   with notes: source~74 settles them.
+\item \emph{Part~II.} Source~71's pendant lemma is printed once, in source~73's
+  weighted form (source~71's statement is kept with a pointer proof).
+  Source~47's first-gap proof is a pointer to Part~XI of \prp{} (its
+  strictness step is kept); its recall of source~55's endpoint theorem is kept
+  with pointers to source~55, which is printed before it. Source~73's
+  rank-310 example is kept as a remark; it is one-shore, not unit, weighted.
+  Statements of sources~55, 47 and~51 that call rank-six one-shore $\ULC$
+  open or that leave earlier gaps open are kept with notes.
 \end{itemize}
 
 \begin{thebibliography}{99}
@@ -2004,6 +3094,10 @@ now Part~XI of \prp. Cited as the incoming archive
 sources~74 (``The rank-six witness is restated and verified here'') and~76,
 and as Part~XI of \prp{} pinned at commit
 \path{4a3b6991d0cc12cc09b884e22728e2128a54c6e3} by source~75.
+Source~71 cites the archive at \texttt{a866ff9a2}, its section ``Further
+research questions'', question ``Unit weights'', and notes that it ``gives
+two-shore-weighted counterexamples and explicitly leaves the unit-weight
+question open''; source~73 cites Part~XI at \texttt{4a3b6991d}.
 
 \bibitem{b:RankMS}
 \emph{Rank-Three Ultra-Log-Concavity and Exact Kernels for Matching
@@ -2043,6 +3137,27 @@ Batch-72 source~76, \emph{Stability of Two by Two Covers and Weighted Rank
 Four}, printed here as Section~\ref{mrn:src:76}. Source~74: ``The present
 rank-five ULC proof is self-contained and does not import its stability
 constructions.''
+
+\bibitem{b:AJ}
+P.~Alexandersson and A.~Jal, \emph{Rook matroids and log-concavity of
+$P$-Eulerian polynomials}, version~3 (30 June 2026), Corollary~4.1.
+\url{https://arxiv.org/html/2410.00127v3}.
+
+\bibitem{b:m73}
+Batch-72 source~73, \emph{One Shore Activities Can Destroy Matching Rank
+Ultra Log Concavity}, printed here as Section~\ref{mrn:src:73}. Source~55
+cites its Sections~2 and~3, here the subsections of
+Section~\ref{mrn:src:73} from Lemma~\ref{mrn:u:os:lem:top} to
+Proposition~\ref{mrn:u:os:prop:finite}.
+
+\bibitem{b:m55}
+Batch-72 source~55, \emph{A Sharp Rank 38 Boundary for the Last Hall
+Inequality}, printed here as Section~\ref{mrn:src:55}.
+
+\bibitem{b:m51}
+Batch-72 source~51, \emph{The Last Hall Gap Does Not Control Ultra Log
+Concavity}, printed here as Section~\ref{mrn:src:51}. Source~47 cites it under
+the wrong title \emph{The Last Hall Gap Does Not Control All Earlier Gaps}.
 \end{thebibliography}
 
 \end{document}

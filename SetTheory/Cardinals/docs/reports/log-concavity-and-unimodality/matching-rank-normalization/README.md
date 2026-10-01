@@ -18,7 +18,7 @@ Vladimir Reshetnikov with OpenAI", except source 72: "AI-assisted
 mathematical research".
 
 The report is written in four commits, one per Part. **At this state Part
-I is printed (sources 74, 72, 76, 75); Parts II–IV follow.** The support
+I and II are printed (nine sources); Parts III and IV follow.** The support
 files of all 27 sources are already in the directory (placed in `8bb543f0f`).
 
 | Source | Batch-72 manuscript | Archive (`docs/incoming/…` at `1512ef835`) | Pin | Placed | Printed as |
@@ -27,11 +27,11 @@ files of all 27 sources are already in the directory (placed in `8bb543f0f`).
 | 72 | 72 | `strictness_equality_package.zip` (*Strictness and equality for weighted matching support polynomials*, 8 pp.; indexed in cluster E, handed to C) | none | `8bb543f0f` | Part I, Section 14 |
 | 76 | 76 | `ProveIt_Weighted_Rank_Four_Stability.zip` (*Stability of Two by Two Covers and Weighted Rank Four*, 8 pp.) | `1b3960d8a`, `a866ff9a2` | `8bb543f0f` | Part I, Section 15 |
 | 75 | 75 | `ProveIt_Sharp_Full_Hall_Classification.zip` (*A Sharp Weighted Classification of Full Hall Bottleneck Graphs*, 9 pp.) | `4a3b6991d` | `8bb543f0f` | Part I, Section 16 |
-| 71 | 71 | `ProveIt_Unit_Weight_Rank_Normalization_Counterexample.zip` (*Unit Weight Failure of Matching Rank Normalization*) | `a866ff9a2` | `8bb543f0f` | Part II (not yet written) |
-| 73 | 73 | `ProveIt_One_Shore_Counterexamples.zip` (*One Shore Activities Can Destroy Matching Rank ULC*) | `4a3b6991d` | `8bb543f0f` | Part II (not yet written) |
-| 55 | 55 | `ProveIt_Sharp_Rank_38_Hall_Endpoint.zip` (*A Sharp Rank 38 Boundary for the Last Hall Inequality*) | none | `8bb543f0f` | Part II (not yet written) |
-| 47 | 47 | `ProveIt_Sharp_Rank_38_Full_Hall_ULC.zip` (*The Sharp Rank 38 ULC Boundary for Full Hall Graphs*) | none | `8bb543f0f` | Part II (not yet written) |
-| 51 | 51 | `ProveIt_Last_Hall_Gap_Separation.zip` (*The Last Hall Gap Does Not Control Ultra Log Concavity*) | none | `8bb543f0f` | Part II (not yet written) |
+| 71 | 71 | `ProveIt_Unit_Weight_Rank_Normalization_Counterexample.zip` (*Unit Weight Failure of Matching Rank Normalization*) | `a866ff9a2` | `8bb543f0f` | Part II, Section 17 |
+| 73 | 73 | `ProveIt_One_Shore_Counterexamples.zip` (*One Shore Activities Can Destroy Matching Rank ULC*) | `4a3b6991d` | `8bb543f0f` | Part II, Section 18 |
+| 55 | 55 | `ProveIt_Sharp_Rank_38_Hall_Endpoint.zip` (*A Sharp Rank 38 Boundary for the Last Hall Inequality*) | none | `8bb543f0f` | Part II, Section 19 |
+| 47 | 47 | `ProveIt_Sharp_Rank_38_Full_Hall_ULC.zip` (*The Sharp Rank 38 ULC Boundary for Full Hall Graphs*) | none | `8bb543f0f` | Part II, Section 20 |
+| 51 | 51 | `ProveIt_Last_Hall_Gap_Separation.zip` (*The Last Hall Gap Does Not Control Ultra Log Concavity*) | none | `8bb543f0f` | Part II, Section 21 |
 | 60 | 60 | `ProveIt_Rank_Two_Matrix_Blocks_and_Conditioning.zip` (*Rank Two Matrix Blocks and Exterior Conditioning*) | none | `8bb543f0f` | Part III (not yet written) |
 | 10 | 10 | `ProveIt_Three_Vertex_Marginals_and_Star_Cores.zip` (*Lorentzian Marginals on Three Vertices*) | none | `8bb543f0f` | Part III (not yet written) |
 | 23 | 23 | `ProveIt_Rooted_Hall_Sectors_and_Cubic_Obstruction.zip` (*Rooted Lorentzian Hall Sectors and an Unrooted Cubic Obstruction*) | none | `8bb543f0f` | Part III (not yet written) |
@@ -68,7 +68,7 @@ repository states or uses these results.
 
 ```
 article.tex                                                              the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf                                                              the compiled report, 49 pages, A4
+article.pdf                                                              the compiled report, 76 pages, A4
 README.md                                                                this guide
 05-second-newton-VERIFICATION.md                                         source 05, Part III (Part III not yet written): delivered `VERIFICATION.md`
 10-three-vertex-VERIFICATION.md                                          source 10, Part III (Part III not yet written): delivered `VERIFICATION.md`
@@ -80,11 +80,11 @@ README.md                                                                this gu
 35-two-rows-VERIFICATION.md                                              source 35, Part IV (Part IV not yet written): delivered `VERIFICATION.md`
 38-matching-hole-VERIFICATION.md                                         source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/VERIFICATION.md`
 43-complete-core-VERIFICATION.md                                         source 43, Part IV (Part IV not yet written): delivered `Rank_Six_Complete_Core_Cubic/VERIFICATION.md`
-47-rank38-ulc-VERIFICATION.md                                            source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/VERIFICATION.md`
-51-last-gap-QA.md                                                        source 51, Part II (Part II not yet written): delivered `Last_Hall_Gap_Separation/QA.md`
-55-rank38-endpoint-QA.md                                                 source 55, Part II (Part II not yet written): delivered `Sharp_Rank_38_Hall_Endpoint/QA.md`
-71-unit-weight-PROOF_STATUS.md                                           source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/PROOF_STATUS.md`
-71-unit-weight-SOURCES.md                                                source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/SOURCES.md`
+47-rank38-ulc-VERIFICATION.md                                            source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/VERIFICATION.md`
+51-last-gap-QA.md                                                        source 51, Part II: delivered `Last_Hall_Gap_Separation/QA.md`
+55-rank38-endpoint-QA.md                                                 source 55, Part II: delivered `Sharp_Rank_38_Hall_Endpoint/QA.md`
+71-unit-weight-PROOF_STATUS.md                                           source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/PROOF_STATUS.md`
+71-unit-weight-SOURCES.md                                                source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/SOURCES.md`
 72-strictness-SOURCES.md                                                 source 72, Part I: delivered `Strictness_Equality/SOURCES.md`
 74-weighted-rank-five-PROOF_STATUS.md                                    source 74, Part I: delivered `ProveIt_Weighted_Rank_Five/PROOF_STATUS.md`
 76-rank-four-PROOF_STATUS.md                                             source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/PROOF_STATUS.md`
@@ -165,16 +165,16 @@ code/35-two-rows-verify_degree_one_certificate.py                        source 
 code/38-matching-hole-verify_first_gap.py                                source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/code/verify_first_gap.py`
 code/38-matching-hole-verify_support_counts.py                           source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/code/verify_support_counts.py`
 code/43-complete-core-verify_complete_core.py                            source 43, Part IV (Part IV not yet written): delivered `Rank_Six_Complete_Core_Cubic/code/verify_complete_core.py`
-code/47-rank38-ulc-check_population_identity.py                          source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/code/check_population_identity.py`
-code/47-rank38-ulc-check_support_identity.py                             source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/code/check_support_identity.py`
-code/47-rank38-ulc-compare_certificates.py                               source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/code/compare_certificates.py`
-code/47-rank38-ulc-difference_coeff.py                                   source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/code/difference_coeff.py`
-code/47-rank38-ulc-independent_replay.py                                 source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/code/independent_replay.py`
-code/47-rank38-ulc-population_coeff.py                                   source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/code/population_coeff.py`
-code/47-rank38-ulc-verify_all_populations.py                             source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/code/verify_all_populations.py`
-code/51-last-gap-verify_counterexample.py                                source 51, Part II (Part II not yet written): delivered `Last_Hall_Gap_Separation/verify_counterexample.py`
-code/55-rank38-endpoint-verify_boundary.py                               source 55, Part II (Part II not yet written): delivered `Sharp_Rank_38_Hall_Endpoint/verify_boundary.py`
-code/55-rank38-endpoint-verify_symbolic.py                               source 55, Part II (Part II not yet written): delivered `Sharp_Rank_38_Hall_Endpoint/verify_symbolic.py`
+code/47-rank38-ulc-check_population_identity.py                          source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/check_population_identity.py`
+code/47-rank38-ulc-check_support_identity.py                             source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/check_support_identity.py`
+code/47-rank38-ulc-compare_certificates.py                               source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/compare_certificates.py`
+code/47-rank38-ulc-difference_coeff.py                                   source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/difference_coeff.py`
+code/47-rank38-ulc-independent_replay.py                                 source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/independent_replay.py`
+code/47-rank38-ulc-population_coeff.py                                   source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/population_coeff.py`
+code/47-rank38-ulc-verify_all_populations.py                             source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/verify_all_populations.py`
+code/51-last-gap-verify_counterexample.py                                source 51, Part II: delivered `Last_Hall_Gap_Separation/verify_counterexample.py`
+code/55-rank38-endpoint-verify_boundary.py                               source 55, Part II: delivered `Sharp_Rank_38_Hall_Endpoint/verify_boundary.py`
+code/55-rank38-endpoint-verify_symbolic.py                               source 55, Part II: delivered `Sharp_Rank_38_Hall_Endpoint/verify_symbolic.py`
 code/60-rank-two-blocks-check_eventual_scaling.py                        source 60, Part III (Part III not yet written): delivered `checks/check_eventual_scaling.py`
 code/60-rank-two-blocks-check_kernel_compression.py                      source 60, Part III (Part III not yet written): delivered `checks/check_kernel_compression.py`
 code/60-rank-two-blocks-check_matrix_lifts.py                            source 60, Part III (Part III not yet written): delivered `checks/check_matrix_lifts.py`
@@ -190,17 +190,17 @@ code/63-nested-exterior-verify_two_core_sector.py                        source 
 code/69-common-exterior-run_all.py                                       source 69, Part III (Part III not yet written): delivered `checks/run_all.py`
 code/69-common-exterior-verify_barrier.py                                source 69, Part III (Part III not yet written): delivered `checks/verify_barrier.py`
 code/69-common-exterior-verify_certificate.py                            source 69, Part III (Part III not yet written): delivered `checks/verify_certificate.py`
-code/71-unit-weight-Makefile                                             source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/Makefile`
-code/71-unit-weight-verify.py                                            source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/code/verify.py`
-code/71-unit-weight-verify_gadget_identity.py                            source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/code/verify_gadget_identity.py`
-code/71-unit-weight-verify_unit_witness.py                               source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/code/verify_unit_witness.py`
+code/71-unit-weight-Makefile                                             source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/Makefile`
+code/71-unit-weight-verify.py                                            source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/code/verify.py`
+code/71-unit-weight-verify_gadget_identity.py                            source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/code/verify_gadget_identity.py`
+code/71-unit-weight-verify_unit_witness.py                               source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/code/verify_unit_witness.py`
 code/72-strictness-build.sh                                              source 72, Part I: delivered `Strictness_Equality/build.sh`
 code/72-strictness-verify.py                                             source 72, Part I: delivered `Strictness_Equality/verify.py`
 code/72-strictness-verify_witnesses.py                                   source 72, Part I: delivered `Strictness_Equality/verify_witnesses.py`
-code/73-one-shore-gadget_verification-exact_gadget_tails.py              source 73, Part II (Part II not yet written): delivered `gadget_verification/exact_gadget_tails.py`
-code/73-one-shore-gadget_verification-verify_explicit_witness.py         source 73, Part II (Part II not yet written): delivered `gadget_verification/verify_explicit_witness.py`
-code/73-one-shore-gadget_verification-verify_gadget_identity.py          source 73, Part II (Part II not yet written): delivered `gadget_verification/verify_gadget_identity.py`
-code/73-one-shore-verify_full_hall.py                                    source 73, Part II (Part II not yet written): delivered `verify_full_hall.py`
+code/73-one-shore-gadget_verification-exact_gadget_tails.py              source 73, Part II: delivered `gadget_verification/exact_gadget_tails.py`
+code/73-one-shore-gadget_verification-verify_explicit_witness.py         source 73, Part II: delivered `gadget_verification/verify_explicit_witness.py`
+code/73-one-shore-gadget_verification-verify_gadget_identity.py          source 73, Part II: delivered `gadget_verification/verify_gadget_identity.py`
+code/73-one-shore-verify_full_hall.py                                    source 73, Part II: delivered `verify_full_hall.py`
 code/74-weighted-rank-five-Makefile                                      source 74, Part I: delivered `ProveIt_Weighted_Rank_Five/Makefile`
 code/74-weighted-rank-five-run_all.py                                    source 74, Part I: delivered `ProveIt_Weighted_Rank_Five/checks/run_all.py`
 code/74-weighted-rank-five-verify_forced_core.py                         source 74, Part I: delivered `ProveIt_Weighted_Rank_Five/checks/verify_forced_core.py`
@@ -414,46 +414,46 @@ data/38-matching-hole-first_gap_replay.json                              source 
 data/38-matching-hole-support_checks.json                                source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/data/support_checks.json`
 data/43-complete-core-requirements.txt                                   source 43, Part IV (Part IV not yet written): delivered `Rank_Six_Complete_Core_Cubic/requirements.txt`
 data/43-complete-core-verification.json                                  source 43, Part IV (Part IV not yet written): delivered `Rank_Six_Complete_Core_Cubic/data/verification.json`
-data/47-rank38-ulc-certificate-rank_06.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_06.json`
-data/47-rank38-ulc-certificate-rank_07.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_07.json`
-data/47-rank38-ulc-certificate-rank_08.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_08.json`
-data/47-rank38-ulc-certificate-rank_09.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_09.json`
-data/47-rank38-ulc-certificate-rank_10.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_10.json`
-data/47-rank38-ulc-certificate-rank_11.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_11.json`
-data/47-rank38-ulc-certificate-rank_12.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_12.json`
-data/47-rank38-ulc-certificate-rank_13.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_13.json`
-data/47-rank38-ulc-certificate-rank_14.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_14.json`
-data/47-rank38-ulc-certificate-rank_15.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_15.json`
-data/47-rank38-ulc-certificate-rank_16.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_16.json`
-data/47-rank38-ulc-certificate-rank_17.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_17.json`
-data/47-rank38-ulc-certificate-rank_18.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_18.json`
-data/47-rank38-ulc-certificate-rank_19.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_19.json`
-data/47-rank38-ulc-certificate-rank_20.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_20.json`
-data/47-rank38-ulc-certificate-rank_21.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_21.json`
-data/47-rank38-ulc-certificate-rank_22.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_22.json`
-data/47-rank38-ulc-certificate-rank_23.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_23.json`
-data/47-rank38-ulc-certificate-rank_24.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_24.json`
-data/47-rank38-ulc-certificate-rank_25.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_25.json`
-data/47-rank38-ulc-certificate-rank_26.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_26.json`
-data/47-rank38-ulc-certificate-rank_27.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_27.json`
-data/47-rank38-ulc-certificate-rank_28.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_28.json`
-data/47-rank38-ulc-certificate-rank_29.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_29.json`
-data/47-rank38-ulc-certificate-rank_30.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_30.json`
-data/47-rank38-ulc-certificate-rank_31.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_31.json`
-data/47-rank38-ulc-certificate-rank_32.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_32.json`
-data/47-rank38-ulc-certificate-rank_33.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_33.json`
-data/47-rank38-ulc-certificate-rank_34.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_34.json`
-data/47-rank38-ulc-certificate-rank_35.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_35.json`
-data/47-rank38-ulc-certificate-rank_36.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_36.json`
-data/47-rank38-ulc-certificate-rank_37.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_37.json`
-data/47-rank38-ulc-certificate-rank_38.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_38.json`
-data/47-rank38-ulc-certificate-summary.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/summary.json`
-data/47-rank38-ulc-independent_summary.json                              source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/independent_summary.json`
-data/47-rank38-ulc-population_identity_checks.json                       source 47, Part II (Part II not yet written): delivered `Sharp_Rank_38_Full_Hall_ULC/data/population_identity_checks.json`
-data/51-last-gap-verification.json                                       source 51, Part II (Part II not yet written): delivered `Last_Hall_Gap_Separation/data/verification.json`
-data/55-rank38-endpoint-rank_certificate.json                            source 55, Part II (Part II not yet written): delivered `Sharp_Rank_38_Hall_Endpoint/data/rank_certificate.json`
-data/55-rank38-endpoint-requirements.txt                                 source 55, Part II (Part II not yet written): delivered `Sharp_Rank_38_Hall_Endpoint/requirements.txt`
-data/55-rank38-endpoint-verification.json                                source 55, Part II (Part II not yet written): delivered `Sharp_Rank_38_Hall_Endpoint/data/verification.json`
+data/47-rank38-ulc-certificate-rank_06.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_06.json`
+data/47-rank38-ulc-certificate-rank_07.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_07.json`
+data/47-rank38-ulc-certificate-rank_08.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_08.json`
+data/47-rank38-ulc-certificate-rank_09.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_09.json`
+data/47-rank38-ulc-certificate-rank_10.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_10.json`
+data/47-rank38-ulc-certificate-rank_11.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_11.json`
+data/47-rank38-ulc-certificate-rank_12.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_12.json`
+data/47-rank38-ulc-certificate-rank_13.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_13.json`
+data/47-rank38-ulc-certificate-rank_14.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_14.json`
+data/47-rank38-ulc-certificate-rank_15.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_15.json`
+data/47-rank38-ulc-certificate-rank_16.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_16.json`
+data/47-rank38-ulc-certificate-rank_17.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_17.json`
+data/47-rank38-ulc-certificate-rank_18.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_18.json`
+data/47-rank38-ulc-certificate-rank_19.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_19.json`
+data/47-rank38-ulc-certificate-rank_20.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_20.json`
+data/47-rank38-ulc-certificate-rank_21.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_21.json`
+data/47-rank38-ulc-certificate-rank_22.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_22.json`
+data/47-rank38-ulc-certificate-rank_23.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_23.json`
+data/47-rank38-ulc-certificate-rank_24.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_24.json`
+data/47-rank38-ulc-certificate-rank_25.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_25.json`
+data/47-rank38-ulc-certificate-rank_26.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_26.json`
+data/47-rank38-ulc-certificate-rank_27.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_27.json`
+data/47-rank38-ulc-certificate-rank_28.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_28.json`
+data/47-rank38-ulc-certificate-rank_29.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_29.json`
+data/47-rank38-ulc-certificate-rank_30.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_30.json`
+data/47-rank38-ulc-certificate-rank_31.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_31.json`
+data/47-rank38-ulc-certificate-rank_32.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_32.json`
+data/47-rank38-ulc-certificate-rank_33.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_33.json`
+data/47-rank38-ulc-certificate-rank_34.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_34.json`
+data/47-rank38-ulc-certificate-rank_35.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_35.json`
+data/47-rank38-ulc-certificate-rank_36.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_36.json`
+data/47-rank38-ulc-certificate-rank_37.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_37.json`
+data/47-rank38-ulc-certificate-rank_38.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_38.json`
+data/47-rank38-ulc-certificate-summary.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/summary.json`
+data/47-rank38-ulc-independent_summary.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/independent_summary.json`
+data/47-rank38-ulc-population_identity_checks.json                       source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/population_identity_checks.json`
+data/51-last-gap-verification.json                                       source 51, Part II: delivered `Last_Hall_Gap_Separation/data/verification.json`
+data/55-rank38-endpoint-rank_certificate.json                            source 55, Part II: delivered `Sharp_Rank_38_Hall_Endpoint/data/rank_certificate.json`
+data/55-rank38-endpoint-requirements.txt                                 source 55, Part II: delivered `Sharp_Rank_38_Hall_Endpoint/requirements.txt`
+data/55-rank38-endpoint-verification.json                                source 55, Part II: delivered `Sharp_Rank_38_Hall_Endpoint/data/verification.json`
 data/60-rank-two-blocks-QA.txt                                           source 60, Part III (Part III not yet written): delivered `QA.txt`
 data/60-rank-two-blocks-eventual_scaling_checks.json                     source 60, Part III (Part III not yet written): delivered `data/eventual_scaling_checks.json`
 data/60-rank-two-blocks-kernel_compression_checks.json                   source 60, Part III (Part III not yet written): delivered `data/kernel_compression_checks.json`
@@ -472,19 +472,19 @@ data/69-common-exterior-QA.txt                                           source 
 data/69-common-exterior-barrier_verification.json                        source 69, Part III (Part III not yet written): delivered `data/barrier_verification.json`
 data/69-common-exterior-exact_certificate.json                           source 69, Part III (Part III not yet written): delivered `data/exact_certificate.json`
 data/69-common-exterior-verification.json                                source 69, Part III (Part III not yet written): delivered `data/verification.json`
-data/71-unit-weight-gadget_identity_verification.json                    source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/gadget_identity_verification.json`
-data/71-unit-weight-unit_deficiency_one_witness.json                     source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/unit_deficiency_one_witness.json`
-data/71-unit-weight-unit_rank3450_witness.json                           source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/unit_rank3450_witness.json`
-data/71-unit-weight-verification.json                                    source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/verification.json`
-data/71-unit-weight-visual_qa.json                                       source 71, Part II (Part II not yet written): delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/visual_qa.json`
+data/71-unit-weight-gadget_identity_verification.json                    source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/gadget_identity_verification.json`
+data/71-unit-weight-unit_deficiency_one_witness.json                     source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/unit_deficiency_one_witness.json`
+data/71-unit-weight-unit_rank3450_witness.json                           source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/unit_rank3450_witness.json`
+data/71-unit-weight-verification.json                                    source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/verification.json`
+data/71-unit-weight-visual_qa.json                                       source 71, Part II: delivered `ProveIt_Unit_Weight_Rank_Normalization_Counterexample/data/visual_qa.json`
 data/72-strictness-validation.json                                       source 72, Part I: delivered `Strictness_Equality/validation.json`
 data/72-strictness-verification.json                                     source 72, Part I: delivered `Strictness_Equality/verification.json`
 data/72-strictness-verification.log                                      source 72, Part I: delivered `Strictness_Equality/verification.log`
 data/72-strictness-witness_verification.json                             source 72, Part I: delivered `Strictness_Equality/witness_verification.json`
 data/72-strictness-witness_verification.log                              source 72, Part I: delivered `Strictness_Equality/witness_verification.log`
-data/73-one-shore-full_hall_verification.json                            source 73, Part II (Part II not yet written): delivered `full_hall_verification.json`
-data/73-one-shore-gadget_verification-gadget_identity_verification.json  source 73, Part II (Part II not yet written): delivered `gadget_verification/gadget_identity_verification.json`
-data/73-one-shore-gadget_verification-one_shore_rank310_witness.json     source 73, Part II (Part II not yet written): delivered `gadget_verification/one_shore_rank310_witness.json`
+data/73-one-shore-full_hall_verification.json                            source 73, Part II: delivered `full_hall_verification.json`
+data/73-one-shore-gadget_verification-gadget_identity_verification.json  source 73, Part II: delivered `gadget_verification/gadget_identity_verification.json`
+data/73-one-shore-gadget_verification-one_shore_rank310_witness.json     source 73, Part II: delivered `gadget_verification/one_shore_rank310_witness.json`
 data/74-weighted-rank-five-forced_core_verification.json                 source 74, Part I: delivered `ProveIt_Weighted_Rank_Five/data/forced_core_verification.json`
 data/74-weighted-rank-five-full_lift_verification.json                   source 74, Part I: delivered `ProveIt_Weighted_Rank_Five/data/full_lift_verification.json`
 data/74-weighted-rank-five-line_matroid_verification.json                source 74, Part I: delivered `ProveIt_Weighted_Rank_Five/data/line_matroid_verification.json`
@@ -542,12 +542,12 @@ source NN becomes `mrn:<part>:<slug>:X`:
 | III (`mrn:s:`) | 60 `rb`, 10 `tv`, 23 `rs`, 13 `lg`, 05 `sn`, 69 `ce`, 63 `ne` |
 | IV (`mrn:e:`) | 08s `tg`, 21 `ec`, 43 `cc`, 38 `mh`, 35 `tr`, 32 `tc`, 29 `se`, 08 `r7`, 03 `fp`, 02 `ff`, 01 `r8` |
 
-The article has 99 labels: 84 under `mrn:w:`,
-0 under `mrn:u:`, 0 under `mrn:s:`, 0 under
-`mrn:e:` and 15 others. Labels were added to unlabelled delivered
+The article has 177 labels: 84 under `mrn:w:`,
+72 under `mrn:u:`, 0 under `mrn:s:`, 0 under
+`mrn:e:` and 21 others. Labels were added to unlabelled delivered
 sections or statements so that the merge could refer to them:
 `mrn:w:rf:sec:lorentz` and `mrn:w:rf:sec:tworow` (source 74; its text
-"Section 3" became a reference) and `mrn:w:sb:sec:tools` (source 76).
+"Section 3" became a reference) and `mrn:w:sb:sec:tools` (source 76), `mrn:u:sp:thm:separation` (source 51's unlabelled theorem).
 No delivered label was dropped. No label has a Lean or Rocq mapping.
 
 ## What is claimed
@@ -587,6 +587,33 @@ verifier output, recomputed independently) lists seven exact last-gap
 failures of `H_{a,b;N,M}`, five of them not in `preorder-root-polytopes`
 (ranks 7–11; the rank-seven one has 38 vertices).
 
+Part II (unit weights and one weighted shore):
+
+- **Source 71 (unit weights).** The connected graph `G(12,398,410,16,191)`
+  with every activity one has 6916 vertices, 174228 edges and matching
+  number 3450, and its last gap is `−314102056577041236·D²·191⁶ < 0`
+  (Theorem 17.1). A graph with matching number 125508 and
+  smaller shore 125509 also fails, and so do infinitely many deficiency-one
+  graphs; the two Davis–Kohl `h*`-polynomials of these graphs fail
+  `ULC_deg` and have nonreal zeros.
+- **Source 73 (one-shore).** `H_{8,42;44,31}` with activity `w` on its 42
+  right-core vertices and one elsewhere (125 vertices, matching number 50)
+  fails the last gap at `w = 10000`, first at `w = 6028`;
+  `H_{8,30;32,1000}` fails at matching number 38. A weighted pendant-arm
+  identity (containing source 71's) and a rank-310 transfer example with
+  right-core activity 21.
+- **Source 55.** For full Hall graphs with one common right-core activity,
+  the least matching number at which the last gap fails for some activity is
+  exactly 38; only the shapes `(a,b,n−b+1) = (7,31,3), (8,30,3)` occur
+  there, and the fewest vertices is 864 (`H_{8,30;32,794}`, first failing
+  `w = 292602646`).
+- **Source 47.** In the same family every intermediate gap through matching
+  number 38 has positive coefficients (22,452,529 integer coefficients), so
+  38 is also the least failure rank of full `ULC`.
+- **Source 51.** `H_{14,35;38,624}` (matching number 49, 711 vertices) has
+  its last gap positive for every `w > 0` but its penultimate gap negative
+  from `w = 38189138`.
+
 ## What is not claimed
 
 - Source 74's theorem asserts neither real-rootedness nor stability of the
@@ -597,6 +624,15 @@ failures of `H_{a,b;N,M}`, five of them not in `preorder-root-polytopes`
   number four; its stability argument has a genuine rank-five boundary.
 - Source 75 classifies the full Hall family only; its negative assertion
   concerns neither unit nor one-shore weights.
+- Source 71 does not determine the least matching number, vertex count or
+  edge count of a unit counterexample (it lies in `[6, 3450]`); the
+  smaller-shore bound and ordinary log-concavity still hold for its graphs.
+- Source 73 makes no minimal-rank claim; its examples are not unit weighted.
+- Sources 55, 47 and 51 concern full Hall graphs with one common right-core
+  activity only, not arbitrary one-shore activities (whose least failure
+  rank lies in `[6, 38]`); source 55 concerns the last gap only. None of them
+  answers Research question 88 of `preorder-root-polytopes`, which puts
+  weight on both cores.
 - No source claims global priority, Lean certification or referee review.
 
 What `preorder-root-polytopes` already proves is cited, not claimed: the
@@ -609,6 +645,8 @@ Corollary 94.3). Where a source re-proves one of them, the article marks the
 proof as a second route (sources 74 and 72 on the first gap) or replaces it
 by a pointer (source 74's two small lemmas; source 76's gluing and
 expected-determinant lemmas).
+Source 47's Motzkin–Straus proof of the first gap is a pointer as well
+(its strictness step is kept).
 
 ## Research questions of `preorder-root-polytopes`
 
@@ -617,9 +655,13 @@ expected-determinant lemmas).
 | RQ 86 `hb:q:rank` | answered: least weighted failure rank exactly 6 (source 74 with Part XI) |
 | RQ 87 `hb:q:order` | in part: `D(4) = 4`, `D(5) = 5` (source 74) |
 | RQ 93 `mr:q:rankfour` | answered affirmatively, unit and weighted (source 74; source 76 by real stability) |
-| RQ 89 `hb:q:asymmetry` | in large part: full Hall classification (source 75), asymmetric failures (sources 74, 75) |
+| RQ 89 `hb:q:asymmetry` | in large part: full Hall classification (source 75), asymmetric failures (sources 74, 75); unequal core activities (sources 73, 55, 47) |
 | RQ 90 `hb:q:defects` | bears on it: equality at every gap under the cover hypothesis (source 72) |
-| RQ 37 `lor:q:first` (Part V) | weighted: holds through `nu = 5`, fails from 6 |
+| RQ 84 `hb:q:unit` | answered negatively: connected all-unit graph with `nu = 3450` (source 71); least rank open, in `[6, 3450]` |
+| RQ 85 `hb:q:oneshore` | answered negatively: `nu = 50` (125 vertices) and `nu = 38` (source 73); exactly 38 for one common right-core activity on full Hall graphs (sources 55, 47); least rank in `[6, 38]` |
+| RQ 88 `hb:q:phase` | not answered (both cores weighted); its one-shore analogue is answered by sources 47 and 51 |
+| RQ 94 `mr:q:allrank` | answered negatively at unit weights (source 71) |
+| RQ 37 `lor:q:first` (Part V) | weighted: holds through `nu = 5`, fails from 6; unit and one-shore: fail (sources 71, 73) |
 
 ## Relation to neighbouring reports and formal projects
 
@@ -670,6 +712,11 @@ CRLF line endings; compare modulo line endings).
 | 72 | `strictness_equality_package` / `Strictness_Equality` | `python verify.py` then `python verify_witnesses.py` (standard library) | 1 s, 2 s |
 | 76 | `ProveIt_Weighted_Rank_Four_Stability` / same | `python verify_covariance.py`, `python verify_complete_core.py`, `python verify_boundary.py` (SymPy ≥ 1.10) | 18–19 s each |
 | 75 | `ProveIt_Sharp_Full_Hall_Classification` / same | `python verify_formulas.py`, `python prove_families.py`, `python compare_finite_tables.py`, `python verify_negative.py`, `python verify_separation.py` (SymPy 1.14.0) | under 1 min |
+| 71 | `ProveIt_Unit_Weight_Rank_Normalization_Counterexample` / same | `python code/verify.py` (standard library; rewrites `data/*.json` in place) | 4 s |
+| 73 | `ProveIt_One_Shore_Counterexamples` / (archive root) | `python verify_full_hall.py`, `python gadget_verification/verify_gadget_identity.py`, `python gadget_verification/verify_explicit_witness.py` | seconds |
+| 55 | `ProveIt_Sharp_Rank_38_Hall_Endpoint` / `Sharp_Rank_38_Hall_Endpoint` | `python verify_boundary.py`; optional `python verify_symbolic.py` (SymPy) | under 1 min |
+| 47 | `ProveIt_Sharp_Rank_38_Full_Hall_ULC` / `Sharp_Rank_38_Full_Hall_ULC` | `python code/verify_all_populations.py --output-dir replay`, `python code/compare_certificates.py data/certificate replay`, `python code/check_population_identity.py`, `python code/independent_replay.py --output independent_replay`, `python code/check_support_identity.py` | about 5 min (first command); ranks 30–38 were not rerun at placement |
+| 51 | `ProveIt_Last_Hall_Gap_Separation` / `Last_Hall_Gap_Separation` | `python verify_counterexample.py` | seconds |
 
 At placement every suite was run on such a copy (the times above); all
 passed, except that three long certificates were replayed only in part:
@@ -709,4 +756,22 @@ the shipped ones apart from line endings and timing fields.
 - Source 74's text cites its companions as `[Rank]`, `[Leaf]`, `[Four]`,
   `[Hall]`, `[OldHall]`; in the article these are Part XII, Part XIII,
   source 76, source 75 and Part XI respectively (bibliography notes).
+- Part II: `code/71-unit-weight-Makefile` runs `python3 code/verify.py` and
+  builds the unshipped manuscript. Source 73's delivery had no checksum
+  ledger; its `gadget_verification/` subdirectory is flattened into the
+  prefix `73-one-shore-gadget_verification-`, and
+  `code/73-one-shore-gadget_verification-verify_gadget_identity.py` differs
+  from `code/71-unit-weight-verify_gadget_identity.py` only in its output
+  path, while the two `gadget_identity_verification.json` files are
+  byte-identical. `data/73-one-shore-full_hall_verification.json` has no
+  final newline (as delivered). Source 47's certificate directory
+  `data/certificate/` is flattened into
+  `data/47-rank38-ulc-certificate-rank_06.json` … `rank_38.json` and
+  `data/47-rank38-ulc-certificate-summary.json`; its commands above use the
+  delivered layout. The audit files `47-rank38-ulc-VERIFICATION.md`,
+  `51-last-gap-QA.md`, `55-rank38-endpoint-QA.md` and
+  `71-unit-weight-PROOF_STATUS.md` describe the delivered PDFs (their page
+  counts and visual checks), which are not shipped. Source 47 cites source 51
+  under a wrong title ("… Does Not Control All Earlier Gaps"); the article's
+  bibliography notes it.
 
