@@ -10,7 +10,7 @@ The exact current live-TeX snapshots are:
 |---|---:|---:|---|
 | `Automatic_Scale_Factorizations_Rvachev_2026-08-30/automatic_scale_factorizations.tex` | 1,682 | 62,490 | `3e40fef5247ed3d7263ff885dc97159b456f26347614817fc18e087af647de90` |
 | `Digital_Spectral_Geometry_and_Log_Periodic_Saddles/Fabius_Rvachev_Frontier_Report.tex` | 1,940 | 61,049 | `92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1` |
-| `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex` | 2,321 | 91,688 | checksum receipt retired (source amended editorially 2026-09-29) |
+| `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex` | 2,340 | 92,888 | checksum receipt retired (source amended editorially 2026-09-29 and 2026-09-30) |
 | `fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex` | 2,251 | 85,256 | `75f2a36ee0ae4b68e17030536cd7aa2cd922fea8941ed023afb272fafd29b20f` |
 | `Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex` | 1,060 | 58,362 | `e7f05ac66a92284e82886bfe8b3376715ca0f71493a217d5a1adab6c17171475` |
 | `Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex` | 8,183 | 349,076 | `683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1` |
@@ -193,8 +193,8 @@ notation-only TeX; no PDF was regenerated.
 New standalone intake member:
 [`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
 *Reciprocal-Integer Convolution Divisors of the Rvachev Law* (retained
-35-A4-page PDF checkpoint; current live TeX: 2,321 lines, 91,688 bytes
-(amended editorially 2026-09-29; checksum receipt retired);
+35-A4-page PDF checkpoint; current live TeX: 2,340 lines, 92,888 bytes
+(amended editorially 2026-09-29 and 2026-09-30; checksum receipt retired);
 with a 352-line exact/numerical experiment),
 arrived from a rootless 14-file archive on 2026-08-30.  The package's
 characteristic quotients
@@ -235,7 +235,7 @@ Manuscript theorem labels do not imply Lean proof status.
 Archival arrival of 2026-09-28:
 [`Arithmetic_Convolution_Factors_Fabius_Type_Laws/`](Arithmetic_Convolution_Factors_Fabius_Type_Laws/),
 *Arithmetic Convolution Factors of Fabius-Type Laws* (26-page A4 PDF,
-1,762-line source, an exact standard-library regression program), filed by
+1,813-line source, an exact standard-library regression program), filed by
 a quick archival intake from the repository-level `docs/incoming/` drop
 zone.  It classifies scaled convolution factorizations
 `μ_A = D_c μ_B * ν` of laws of `Σ_k U_k/A_k` along divisibility ladders:
@@ -247,12 +247,18 @@ article does not cite that report, so the overlap is recorded here for the
 deferred comparison.  Its new layers are the two-ladder criterion, the
 encoding of inclusion modulo finite sets with a no-Borel-invariant theorem,
 arithmetical-hierarchy completeness results, and Wasserstein bounds.
+Its self-spectrum theorem, stated for every real ratio, already proves
+item 1 of the reciprocal-integer report's `conj:general-base` for every
+integer base (that report now carries a note of 2026-09-30 saying so).
+Editorial notes of 2026-09-30 point its questions "Beyond divisibility
+ladders", "Two arbitrary geometric ratios" and "Optimal approximate
+factorization" to the off-resonance article below.
 Unreviewed; no Lean statement.
 
 Archival arrival of 2026-09-29:
 [`Simultaneous_Convolution_Divisors_Fabius_Type_Laws/`](Simultaneous_Convolution_Divisors_Fabius_Type_Laws/),
 *Simultaneous Convolution Divisors of Fabius-Type Laws* (24-page A4 PDF,
-1,629-line source, an exact standard-library certificate program), filed
+1,646-line source, an exact standard-library certificate program), filed
 by a quick archival intake from the repository-level `docs/incoming/`
 drop zone.  It decides which families of uniform laws can be removed
 *together* from the prime-base law `X_p = Σ p^{−k}U_k`: exactly the
@@ -270,10 +276,11 @@ Unreviewed; no Lean statement.
 
 Archival arrival of 2026-09-30:
 [`Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/`](Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/),
-*Arithmetic Rigidity off Resonance* (24-page US Letter PDF, 852-line
+*Arithmetic Rigidity off Resonance* (25-page US Letter PDF, 901-line
 source, an exact standard-library certificate program), filed by a
 quick archival intake from the repository-level `docs/incoming/` drop
-zone.  It takes the convolution-factor problem of the two articles
+zone and amended editorially the same day (its README lists the
+amendments).  It takes the convolution-factor problem of the two articles
 above off integer ratios: when the source widths are pairwise
 rationally incommensurable, a family of uniforms divides the law
 exactly when its Fourier quotient is entire, exactly when each uniform
@@ -286,7 +293,10 @@ with a finite-orbit criterion for one geometric factor.  It answers the
 arithmetic-factor article's question "Two arbitrary geometric ratios"
 for all but countably many target ratios, credits the simultaneous
 article's prime-power Hall theorem and base-six example, and re-proves,
-uncited, the arithmetic-factor article's self-spectrum theorem; it adds
+uncited, the arithmetic-factor article's self-spectrum theorem and uses
+the mechanism of its Wasserstein bound (editorial notes now record both,
+with reciprocal notes in the arithmetic-factor, simultaneous and
+reciprocal-integer articles); it adds
 a Wasserstein separation bound and a family near `q = 1/2` on which
 exact factorability fails while the distance to it tends to zero.
 Unreviewed; no Lean statement.

@@ -129,3 +129,11 @@ byline ("Developed with ChatGPT") is kept as delivered.
   `verification_results.json` except `elapsed_seconds`, and its transcript
   equals `verification_run.txt` except the elapsed-time line.
 - `README.md`: the retired ledger, the output location, and this section.
+- Later the same day (editorial pass after batches 69 and 70): Part IX of
+  `../geometric_q_fabius_frontiers/` now carries a dated note after the
+  paragraph closing the proof of its full radial expansion, which refers to
+  `p9:status:inverse-analytic`: the endpoint case `q -> 1`, in this
+  package's dilation normalization, is Gevrey one with refined type
+  `1/(2 pi)` and no sectorial exponential bound, for a different function;
+  the volume's question whether its radial constants admit a Gevrey bound
+  stays open. This package itself is unchanged.

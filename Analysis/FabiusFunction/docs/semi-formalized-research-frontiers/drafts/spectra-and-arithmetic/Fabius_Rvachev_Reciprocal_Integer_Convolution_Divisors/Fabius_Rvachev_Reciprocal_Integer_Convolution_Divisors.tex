@@ -71,6 +71,8 @@
 \newtheorem{warning}[theorem]{Warning}
 % ed. (2026-09-29): unnumbered environment for editorial notes.
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+% ed. (2026-09-30): a second unnumbered environment for the notes of 2026-09-30.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
 
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
@@ -2016,6 +2018,23 @@ Items~3 and~4, and item~2 when $b\nmid M$, remain open there. That draft
 writes the $\Phi_b$ law as the law of $X_b/2$ with
 $X_b=\sum_{k\ge0}b^{-k}U_k$ and $U_k$ uniform on $[-1,1]$.
 \end{ednote}
+% ed. (2026-09-30): item 1 holds for every integer base, by an earlier draft.
+\begin{ednotelater}
+Item~1 holds for every integer base $b\ge2$, prime power or not. Theorem
+\texttt{thm:self-spectrum} of the unreviewed draft
+\path{spectra-and-arithmetic/Arithmetic_Convolution_Factors_Fabius_Type_Laws/}
+(filed 2026-09-28) shows that for every real $0<q<1$ the scales $c>0$ with
+$\mu_q=D_c\mu_q*\nu$ for a probability measure $\nu$ are exactly $q^j/m$,
+$j\ge0$, $m\ge1$; there $\mu_q$ is the law of $\sum_{k\ge0}q^kU_k$ with
+$U_k$ uniform on $[-\tfrac12,\tfrac12]$, whose Fourier transform is
+$\prod_{k\ge0}\SincRad(\pi q^kz)$. For $q=1/b$ this is the $\Phi_b$ law,
+and the positive scales are the $1/M$, $M\ge1$; negative scales follow by
+symmetry, and $c=0$ is trivial. The same statement is \texttt{prop:same} of
+the later draft
+\path{spectra-and-arithmetic/Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/}
+(batch~69 of the repository's \path{docs/incoming/}), which does not cite
+the earlier one. Items~2--4 are not affected.
+\end{ednotelater}
 
 \subsection{Legendre spectra and arithmetic preconditioners}
 

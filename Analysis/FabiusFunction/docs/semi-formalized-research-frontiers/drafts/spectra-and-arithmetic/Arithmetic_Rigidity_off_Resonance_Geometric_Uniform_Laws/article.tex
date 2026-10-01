@@ -27,6 +27,8 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\N}{\mathbb N_0}
 \newcommand{\Np}{\mathbb N_{>0}}
 \newcommand{\Q}{\mathbb Q}
@@ -45,6 +47,8 @@
 \DeclareMathOperator{\ord}{ord}
 \numberwithin{equation}{section}
 \begin{document}
+% ed. (2026-09-30): no page anchor on the title page (it duplicated the destination page.1).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{0.4in}
@@ -66,6 +70,8 @@ A double-zero obstruction is made quantitative in Wasserstein distance. An expli
 \vfill
 \noindent\textbf{Status.} AI-assisted, proof-bearing research manuscript; not peer reviewed or checked in a proof assistant. The novelty claims are relative to the specifically inspected sources, not a certified worldwide priority claim. The classification concerns uniform-series factors, not all probability convolution factors.
 \end{titlepage}
+% ed. (2026-09-30): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 \tableofcontents
 \clearpage
 
@@ -127,6 +133,21 @@ In particular,
  =\prod_{k\ge0}\sinc(\pi q^kz).
 \end{equation}
 The support of $\mu_q$ is $[-1/(2(1-q)),1/(2(1-q))]$. In this normalization $\mu_{1/2}$ is the Rvachev up-law on $[-1,1]$. The simultaneous-divisor report \cite{repo-hall} instead uses uniform variables on $[-1,1]$, so its random variable is twice ours. Keeping this factor of two explicit prevents incorrect Fourier-zero and support comparisons.
+% ed. (2026-09-30): Lean counterparts of the transform identity and of the dyadic two-section, which the article does not name
+\begin{ednote}
+The identity \eqref{eq:phi} is machine-checked for every real $|q|<1$ in the
+repository's normalized convention (the law of $(1-q)\sum_kq^kV_k$ with $V_k$
+uniform on $[0,1]$, hence with a phase factor and a rescaled argument) as
+\path{Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct}
+in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/GeometricSincCharacteristicFunction.lean}.
+The fixed dyadic two-section of \cite{repo-multisection}, the case $q=1/2$,
+$m=2$ of \eqref{eq:multisection} in that convention, is
+\path{Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_multisection}
+together with its convolution form
+\path{Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_conv_one_quarter}.
+No result of this article is formalized.
+\end{ednote}
 
 \begin{lemma}[Entire products and their exact zeros]\label{lem:zeros}
 Let $(s_k)$ be a finite or countable summable family of positive real numbers. Then
@@ -278,6 +299,20 @@ At resonant parameters, this representation need not be unique.
 \begin{proof}
 The denominator has a zero at $1/c$, so \cref{lem:zero-test,lem:zeros} force $1/c=n/q^a$. Conversely, leave source coordinates $0,\ldots,a-1$ untouched and apply the refinement $U=U'/n+D_n$ to every coordinate $a,a+1,\ldots$. The extracted uniform series has law $D_{q^a/n}\mu_q$.
 \end{proof}
+% ed. (2026-09-30): the proposition is an earlier repository theorem, not cited here
+\begin{ednote}
+\Cref{prop:same} is Theorem~\texttt{thm:self-spectrum} of the earlier
+repository article
+\path{../Arithmetic_Convolution_Factors_Fabius_Type_Laws/} (filed
+2026-09-28, the report \cite{repo-ladders}, of which only the README was
+read), stated there for every $0<q<1$ in the same normalization and proved
+by the same zero test and digit splitting. For $q=1/b$ it gives the scales
+$1/M$, $M\ge1$, for every integer base $b\ge2$: item~1 of
+\texttt{conj:general-base} of
+\path{../Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/}, whose
+earlier editorial note records only prime and prime-power bases and now
+carries a second note saying so.
+\end{ednote}
 
 \section{Geometric factors and arithmetic progression packing}\label{sec:streams}
 \begin{theorem}[A single geometric factor off resonance]\label{thm:geometric}
@@ -532,6 +567,20 @@ Set $h=h_q=D_q/(2A_q)$. The right-hand side is $D_q^2/(4A_q)$. Dividing by $2\pi
 \begin{remark}[What the estimate does and does not certify]
 The proof uses a simple source zero versus a double prescribed factor zero. It does not differentiate the unknown remainder. The lower bound is explicit as a positive convergent product, but may be very small and is not claimed to have an optimal exponent near resonance. Validated numerical lower bounds for that product require control of a finite head and an analytic tail; ordinary floating-point multiplication alone is not a proof of positivity.
 \end{remark}
+% ed. (2026-09-30): the mechanism is an earlier repository proposition, not cited here
+\begin{ednote}
+The mechanism of \cref{thm:metric}, the inequality \eqref{eq:Wchar}
+evaluated just beyond a frequency at which the prescribed factor vanishes
+to higher order than the target, with Taylor bounds on both transforms, is
+that of Proposition~\texttt{prop:wasserstein} of
+\path{../Arithmetic_Convolution_Factors_Fabius_Type_Laws/}, which proves
+such a bound for divisibility-ladder targets $\mu_A$ and factors
+$D_{1/m}\mu_B$; that article's README, read in full for this article,
+lists it. The targets here are nonresonant geometric laws and the factor
+is a fixed pair of uniforms, so neither statement contains the other. That
+article's question ``Optimal approximate factorization'' now carries a note
+pointing to \cref{thm:metric,thm:perturbation}.
+\end{ednote}
 
 \section{Exact factorability can vanish under small perturbations}\label{sec:perturbation}
 \begin{theorem}[An explicit resonant/nonresonant transition]\label{thm:perturbation}

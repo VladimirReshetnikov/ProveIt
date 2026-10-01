@@ -30,7 +30,9 @@ There are two live document packages and two unmerged archival arrivals:
   `1/(2π)`, its Borel minor is entire and sums it exactly on the positive
   ray, yet a natural-boundary interval rules out every sectorial
   exponential bound — the endpoint case of the unit-circle-barrier
-  article's summation question. Unreviewed; no Lean statement.
+  article's summation question (Part IX of the volume, whose Gevrey
+  question at roots of unity stays open, carries a dated pointer to it).
+  Unreviewed; no Lean statement.
 
 ## The 2026-09-02 consolidation
 

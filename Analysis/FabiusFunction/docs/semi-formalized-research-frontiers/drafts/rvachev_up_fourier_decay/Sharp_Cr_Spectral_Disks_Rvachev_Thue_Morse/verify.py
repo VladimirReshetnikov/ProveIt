@@ -257,13 +257,16 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-level", type=int, default=12)
     parser.add_argument("--max-jet", type=int, default=12)
-    parser.add_argument("--output", type=Path, default=Path("verification.json"))
+    # ed. (2026-09-30): the default output is a rerun file, so a plain run no longer
+    # overwrites the recorded verification.json (pass --output to choose another path).
+    parser.add_argument("--output", type=Path, default=Path("verification.rerun.json"))
     args = parser.parse_args()
     if args.max_level < 0 or args.max_jet < 0:
         raise SystemExit("levels must be nonnegative")
 
     result = run(args.max_level, args.max_jet)
-    args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    # ed. (2026-09-30): newline="\n", so the output is LF on every platform (CRLF on Windows before).
+    args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps({"status": result["status"], "counts": result["counts"]}, indent=2))
 
 

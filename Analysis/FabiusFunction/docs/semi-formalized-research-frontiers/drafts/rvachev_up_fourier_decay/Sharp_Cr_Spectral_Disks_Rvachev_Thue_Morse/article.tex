@@ -60,6 +60,8 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem*{status}{Claim boundary}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 
 \newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}
@@ -805,6 +807,25 @@ and its $-1/2$ eigenspace is
 \end{equation}
 Taking real and imaginary combinations gives the basis in
 \eqref{eq:minus-quarter-space} after scaling from $\Pop$ to $\Lop$.
+% ed. (2026-09-30): Lean counterparts of the three-mode eigen-identities, which the article mentions without naming them
+\begin{ednote}
+The eigen-identities of this block are machine-checked pointwise for $\Lop$
+in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/RMSTransferEigenfunctions.lean}:
+$\Lop\one=\tfrac12\one$ is \path{Fabius.rms_transfer_const_eigen},
+$\Lop\sin(2\pi\,\cdot)=-\tfrac14\sin(2\pi\,\cdot)$ is
+\path{Fabius.rms_transfer_sin_eigen}, and
+$\Lop\bigl(1+3\cos(2\pi\,\cdot)\bigr)=-\tfrac14\bigl(1+3\cos(2\pi\,\cdot)\bigr)$,
+three times the second vector of \eqref{eq:minus-quarter-space}, is
+\path{Fabius.rms_transfer_one_add_cos_eigen}. The same file proves the
+even-frequency case of \eqref{eq:P-fourier-rule},
+$\Lop\cos(4\pi m\,\cdot)=\tfrac12\cos(2\pi m\,\cdot)$ and its sine analogue
+(\path{Fabius.rms_transfer_cos_even_mode},
+\path{Fabius.rms_transfer_sin_even_mode}). These are the identities to
+which Layer~1 of the Lean plan in \cref{sec:verification-overview} and
+the provenance table in \cref{app:provenance} allude; no spectral statement of this article is
+formalized.
+\end{ednote}
 
 \begin{proof}[Proof of \cref{thm:main-rvachev} on the circle]
 The essential spectrum is \cref{thm:universal-disk}, scaled by one half.

@@ -10,15 +10,20 @@ source scales and to prime-power rational-return channels.
 
 ### Files
 
-- `article.pdf`: the compiled 24-page article.
+- `article.pdf`: the compiled article (25 pages since the editorial pass below;
+  24 as delivered).
 - `article.tex`: the standalone LaTeX source, including its bibliography.
 - `code/verify.py`: standard-library Python certificates and regression tests.
 - `results/verification.json`: the delivered successful verification receipt.
 - `results/verification.log`: console summary from the delivered run.
+- `results/build_validation.json`: the delivered build record (page, pass,
+  warning and box counts of the delivered 24-page PDF, and its hash).
 - `SOURCES.md`: source provenance, exact repository paths, and review limits.
 - `PROOF_AUDIT.md`: theorem dependency and claim-boundary checklist.
 - `build.sh`: verification plus three-pass PDF compilation into `build/`.
-- `SHA256SUMS`: integrity hashes for the delivered files other than itself.
+- The submitted `SHA256SUMS` was verified in full (10/10) on filing (batch 69
+  of `docs/incoming/`) and not kept; the delivered archive remains in the
+  repository history (see `docs/incoming/README.md`, batch 69 row).
 
 ### Main results
 
@@ -79,6 +84,11 @@ arithmetic are required.
 
     python3 code/verify.py --output results/verification.rerun.json
 
+(On the ProveIt machine use `py` rather than `python3`, and run the build script
+below as `PYTHON=py bash build.sh`. Without `--output` the program writes
+`verification.rerun.json` in the current directory; it never touches
+`results/` unless told to.)
+
 The executed run passed 156,227 exact finite checks, including CRT comparisons,
 Hall conditions versus independent backtracking, colored channels, geometric
 orbit cases, exact moment identities, and deliberate invalid inputs.
@@ -99,3 +109,63 @@ This creates `build/article.pdf` and `build/verification.json`, without replacin
 the delivered PDF or verification receipt. Set `PYTHON` or `PDFLATEX` in the
 environment to choose other executable names. Compilation timestamps may make
 PDF bytes differ on rebuilding; they do not affect mathematical content.
+
+### Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 69 and 70 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-30)`. The title-page wording ("AI-assisted", "Prepared for
+Vladimir Reshetnikov"), the `pdfauthor` entry and the US Letter page size are
+kept as delivered.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-30)" is defined in the preamble (the theorem counter is unchanged).
+  Three notes:
+  - in Section 2.1, after the normalization paragraph: the transform identity
+    (2.1) is machine-checked for every real `|q| < 1`, in the repository's
+    normalized `[0,1]` convention, as
+    `Fabius.charFun_geometricUniformDistribution_eq_phase_mul_geometricSincProduct`
+    (`Analysis/FabiusFunction/Lean/FabiusFunction/GeometricSincCharacteristicFunction.lean`),
+    and the dyadic two-section the article cites by file is
+    `Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_multisection`
+    with its convolution form `..._one_half_conv_one_quarter`
+    (`GeometricUniformMultisection.lean`), the case `q = 1/2`, `m = 2` of
+    (5.3); no result of the article is formalized;
+  - after Proposition 4.5 (`prop:same`): it is `thm:self-spectrum` of
+    `../Arithmetic_Convolution_Factors_Fabius_Type_Laws/` (filed 2026-09-28),
+    stated there for every `0 < q < 1` in the same normalization and proved
+    the same way, which the article does not cite (it read only that
+    article's README, which does not list the theorem); with `q = 1/b` it is
+    item 1 of `conj:general-base` of
+    `../Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/` for every
+    integer base, not only the prime-power bases recorded there before;
+  - after Remark 8.2: the mechanism of Theorem 8.1 (`thm:metric`) is that of
+    `prop:wasserstein` of the same article (divisibility-ladder targets),
+    which that article's README lists and this article does not cite; the
+    targets differ, so neither statement contains the other.
+  One further marked change: the title page no longer sets page anchors, which
+  removes the delivered source's one duplicate-destination warning (`page.1`).
+- Reciprocal notes now stand in
+  `../Arithmetic_Convolution_Factors_Fabius_Type_Laws/article.tex` (after its
+  questions "Beyond divisibility ladders", "Two arbitrary geometric ratios",
+  which this article answers for all but countably many target ratios, and
+  "Optimal approximate factorization"), after `conj:general-base` of
+  `../Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`, and under Q6
+  of `../Simultaneous_Convolution_Divisors_Fabius_Type_Laws/`.
+- `article.pdf`: rebuilt from the amended source with three `pdflatex` passes
+  (MiKTeX 26.2, pdfTeX 1.40.29): 25 pages (24 as delivered; the notes add
+  one), US Letter, with no error, undefined reference, multiply defined label,
+  duplicate destination, overfull or underfull box; every font embedded, no
+  Type 3 font. The pages carrying the notes were rendered and inspected.
+  `results/build_validation.json` is the delivered build record and describes
+  the delivered 24-page PDF; its `pdf_hash` is that file's.
+- `code/verify.py` and `build.sh` are unchanged: the program already writes
+  `verification.rerun.json` (LF) unless `--output` is given, and `build.sh`
+  writes only to `build/`. It calls `python3` by default; on the ProveIt
+  machine set `PYTHON=py`. A rerun on a copy (2026-09-30, `py code/verify.py`,
+  Python 3.14.4, standard library) passed all 156,227 checks; its
+  `verification.rerun.json` equals `results/verification.json` byte for byte,
+  and its console output equals `results/verification.log` up to the Windows
+  console's line endings.
+- `README.md`: the file list (page count, build record, retired ledger), the
+  note under the verification command, and this section.

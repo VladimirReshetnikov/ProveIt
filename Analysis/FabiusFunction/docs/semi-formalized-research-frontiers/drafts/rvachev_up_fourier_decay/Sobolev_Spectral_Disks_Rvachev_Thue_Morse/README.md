@@ -34,7 +34,8 @@ questions, provenance, bibliography, and a staged formalization plan.
 ## Files
 
 - `article.tex`: self-contained LaTeX source, including bibliography.
-- `article.pdf`: compiled, visually inspected article (rebuilt 2026-09-29).
+- `article.pdf`: compiled, visually inspected article (rebuilt 2026-09-29 and
+  2026-09-30).
 - `verify.py`: exact finite checks; Python standard library only.
 - `verification.json`, `verification.log`: executed verification results; the
   log is the program's console output (the same JSON without `energy_data`).
@@ -161,3 +162,31 @@ Made in the editorial pass after batch 57 of `docs/incoming/` (see
   Windows console capture.
 - `README.md`: the page count, the file list (ledger, log), the reproduction
   command and output location, and this section.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 69 and 70 of `docs/incoming/` (see
+`docs/incoming/README.md`); the change to the source is marked
+`% ed. (2026-09-30)`.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-09-30)") is defined after `ednote`. Under Question
+  12.9 ("Finite-smoothness spaces outside the Hilbert scale"), after the
+  2026-09-29 note (which still ends "The question above remains open"), a
+  note records that the later article
+  `../Sharp_Cr_Spectral_Disks_Rvachev_Thue_Morse/` (filed 2026-09-30,
+  batch 70, unreviewed) answers its integer `C^r` part: for the quadratic
+  dyadic operator, on `C^r` of the circle and of `[0,1]`, the essential
+  spectrum is the closed disk of radius `2^(-r-1)` and the spectrum adds
+  only `1/2` and `-1/4`, isolated exactly for `r >= 1` and `r >= 2`; for
+  every smooth dyadic Markov weight the essential spectral radius on
+  `C^r(T)` is `2^(-r)`. In the supremum-jet geometry the radius is thus
+  `2^(-r-1)`, smaller than `2^(-r) sqrt(1+sqrt 17)/4` on `H^r`; on `C^1` the
+  value `1/2` is isolated, consistent with the spectral gap on `C^alpha`
+  recalled in the earlier note, and on `C^0` it lies on the boundary of the
+  essential disk. Noninteger Hoelder spaces remain open.
+- `article.pdf`: rebuilt with three `pdflatex` passes (MiKTeX 26.2, pdfTeX
+  1.40.29): 24 pages, as before; no error, undefined reference, duplicate
+  destination, overfull or underfull box; no Type 3 font; the page carrying
+  the note was rendered and inspected.
+- `README.md`: the rebuild date under "Files", and this section.
