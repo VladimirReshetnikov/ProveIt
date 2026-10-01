@@ -1,0 +1,330 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={The Full Positive Triangle in Integer Thue Morse Pressure},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Z}{\mathbb Z}\newcommand{\E}{\mathcal E}\newcommand{\ii}{\mathrm i}
+\newcommand{\Lop}{\mathcal L}
+\title{The Full Positive Triangle in Integer Thue Morse Pressure}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For every integer moment order $m\ge2$, all even pressure coefficients strictly between degrees $2m$ and $4m$ are positive. More precisely, both the normalized transfer eigenfunction response $[a^{2r}]h_a(1/2)$ and the pressure coefficient $[t^{2m+2r}]p_m(t/\pi)$ are strictly positive whenever $1\le r<m$. This closes the full triangular range preceding the first nonlinear term in the eigenvalue feedback logarithm. The main new ingredient is a coefficientwise comparison of dyadic tangent products. Its proof establishes weak log-majorization through a single crossing of the rearranged tangent sequences. An explicit positive lower bound and exact rational checks accompany the result.
+\end{abstract}
+
+\paragraph{Status.}
+This is an unrefereed research note in ordinary mathematics, not a Lean formalization. It is a separate continuation of the first- and higher-coefficient reports; those artifacts are unchanged. No worldwide priority claim is made. The stronger positivity conjecture for individual eigenbasis coefficients and the signs beyond the stated range remain separate questions.
+
+\section{The theorem and its range}
+For the doubling map $T(x)=2x\pmod1$, let $p_m(c)$ be the pressure of $m\log\cos^2\!\pi(x-c)$ in the sum-over-preimages convention. The transfer operator is
+\[
+ (\Lop_{m,c}f)(x)=\sum_{Ty=x}\cos^{2m}\!\pi(y-c)f(y).
+\]
+Its local dominant eigenvalue is $\rho_m(c)=\exp p_m(c)$. Normalize the analytic eigenfunction by $h_{m,c}(0)=1$, and write
+\[
+ a=\tan t,\qquad h_a=h_{m,\arctan(a)/\pi},\qquad
+ R_m=\sum_{w\in\Z+1/2}(\pi w)^{-2m}
+ =\frac{2(2^{2m}-1)\zeta(2m)}{\pi^{2m}}.
+\]
+Define the response and pressure coefficients
+\[
+ H_{m,r}=[a^{2r}]h_a(1/2),\qquad
+ E_{m,r}=[t^{2m+2r}]p_m(t/\pi).
+\]
+The source manuscript proves that the degree-$2m$ pressure coefficient vanishes \cite{integer}. Earlier companions establish the first positive coefficient, the next one, and the sufficient region $m\ge3r$ \cite{first,higher}. The present result covers the full range before degree $4m$.
+
+\begin{theorem}\label{thm:main}
+For all integers $m\ge2$ and $1\le r<m$,
+\[
+ H_{m,r}>0,\qquad E_{m,r}>0.
+\]
+If $s=m-r$ and
+\[
+ g_{m,r}=[a^{2r}]\prod_{j\ge1}
+ \left(1+a\tan\frac{\pi}{2^{j+1}}\right)^{2m},
+\]
+then
+\begin{align}
+ H_{m,r}
+ &\ge 2\left(\frac2\pi\right)^{2m}g_{m,r}
+       \left[2-(1-2^{-2s})\zeta(2s)\right]\label{eq:sharpbound}\\
+ &\ge 2\left(\frac2\pi\right)^{2m}\binom{2m}{2r}
+       \left(2-\frac{\pi^2}{8}\right)>0.\label{eq:universalbound}
+\end{align}
+\end{theorem}
+At fixed $m$, the positive pressure degrees supplied by this theorem are $2m+2,2m+4,\ldots,4m-2$. The statement is about coefficients; it does not assert a uniform radius of analyticity as $m$ varies. A later coefficient can be negative: the exact value $E_{2,4}=-35360872/93555$ is recalled in Section~\ref{sec:checks}.
+
+\section{Local spectral data and the inverse branch formula}
+The finite Fourier space
+\[
+ \E_m=\operatorname{span}\{e^{2\pi\ii kx}:1-m\le k\le m-1\}
+\]
+is invariant, with matrix entries
+\begin{equation}\label{eq:fourier}
+ (A_m(c))_{k,\ell}=2\,4^{-m}\binom{2m}{m+2k-\ell}
+                   e^{-2\pi\ii(2k-\ell)c}.
+\end{equation}
+An out-of-range binomial coefficient means zero. At $c=0$, the functions
+\[
+ F_j(x)=\sin^{2m}(\pi x)
+       \sum_{n\in\Z}(\pi(x+n))^{-(2m-j)},
+ \qquad 0\le j\le2m-2,
+\]
+belong to $\E_m$ and satisfy $\Lop_{m,0}F_j=2^{-j}F_j$. Membership follows by differentiating the partial-fraction expansion of $\csc^2\pi x$; splitting the periodization into even and odd integers gives the eigenvalue identity. Their leading terms at zero are $(\pi x)^j$, so they form a basis. In particular $F_0(0)=1$, $F_0>0$, and $F_0(1/2)=R_m$. Analytic perturbation gives the normalized eigenfunction and simple dominant eigenvalue near zero.
+
+These data identify the local pressure as well. Positive comparison with the eigenfunction gives $\Lop_{m,c}^N1\asymp\rho_m(c)^N$. For $W_N(x)=\prod_{j<N}\cos^{2m}\!\pi(T^jx-c)$, its trigonometric degree is at most $m(2^N-1)$. The usual $L^1$ Bernstein inequality and interval variation give
+\[
+ 2^N\!\int_0^1W_N
+ \le\sum_{I\in\mathcal D_N}\sup_IW_N
+ \le(1+2\pi m)2^N\!\int_0^1W_N,
+\]
+where $\mathcal D_N$ denotes the dyadic intervals of length $2^{-N}$. Since $2^N\int W_N=\int\Lop_{m,c}^N1$, the logarithmic growth rate is $\log\rho_m(c)$. This is the local finite-model argument used in \cite{integer,first}.
+
+Normalize by the fixed-point weight:
+\[
+ (V_af)(x)=\sum_{Ty=x}(\cos\pi y+a\sin\pi y)^{2m}f(y).
+\]
+Its eigenvalue $\lambda_m(a)$ obeys the exact identities
+\begin{equation}\label{eq:feedback}
+ \lambda_m(a)=1+a^{2m}h_a(1/2),\qquad
+ p_m(t/\pi)=2m\log\cos t+\log\lambda_m(\tan t).
+\end{equation}
+The first follows by evaluating at zero. Reflection gives $h_{-a}(1/2)=h_a(1/2)$.
+
+For a half-integer $w$, put
+\begin{equation}\label{eq:G}
+ G_{m,r}(w)=[a^{2r}]
+ \prod_{j\ge1}\left(1+a\tan\frac{\pi w}{2^j}\right)^{2m}.
+\end{equation}
+No tangent has a pole. Its tail is geometrically summable, so the product converges locally uniformly in $a$ for each fixed $w$.
+
+\begin{lemma}\label{lem:orbit}
+For every integer pair $1\le r<m$,
+\begin{equation}\label{eq:orbit}
+ H_{m,r}=\sum_{w\in\Z+1/2}(\pi w)^{-2m}G_{m,r}(w),
+\end{equation}
+with absolute convergence.
+\end{lemma}
+\begin{proof}
+Set $U_N(a,x)=V_a^N1(x)$. Evaluation at zero gives
+\[
+ U_{N+1}(a,0)=U_N(a,0)+a^{2m}U_N(a,1/2),
+\]
+so $U_N(a,0)=1+O(a^{2m})$. For $2r<2m$, the coefficient of $a^{2r}$ in $U_N(a,1/2)$ is unchanged on dividing by $U_N(a,0)$. On a sufficiently small complex disk, spectral projection separates the leading eigenvalue from the rest by a uniform modulus ratio below one. The projection of $1$ is nonzero at $a=0$ and hence nearby. Therefore the normalized iterates converge locally uniformly analytically to $h_a(1/2)$, and Cauchy's coefficient formula gives convergence of these coefficients.
+
+Use centered representatives
+\[
+ \mathcal W_N=\{w\in\Z+1/2:|w|<2^{N-1}\}.
+\]
+The cosine product telescopes, yielding
+\begin{align}\label{eq:finiteorbit}
+ [a^{2r}]U_N(a,1/2)
+ =\sum_{w\in\mathcal W_N}&\left(2^N\sin\frac{\pi w}{2^N}\right)^{-2m}\notag\\[-2mm]
+ &\cdot[a^{2r}]\prod_{j=1}^N
+       \left(1+a\tan\frac{\pi w}{2^j}\right)^{2m}.
+\end{align}
+For all half-integers $w$,
+\begin{equation}\label{eq:coarsebound}
+ \sum_{j\ge1}\left|\tan\frac{\pi w}{2^j}\right|<10|w|.
+\end{equation}
+Indeed, for $w>0$ take $J=\lceil\log_2(2w)\rceil$. Up to $J$, distance from poles gives $|\tan(\pi w/2^j)|<2^{j+1}/\pi$. After $J$, the argument is at most $\pi/4$, so convexity gives the bound $4w/2^j$. The two sums total less than $(16/\pi+4)w<10w$; negative $w$ follows by symmetry.
+
+The absolute coefficient in~\eqref{eq:finiteorbit} is consequently at most $(20m|w|)^{2r}/(2r)!$. On $\mathcal W_N$, the preceding unperturbed factor is at most $(2|w|)^{-2m}$. This gives a uniform summable majorant $O_{m,r}(|w|^{2r-2m})$, since $r<m$. Dominated convergence proves~\eqref{eq:orbit} across the full claimed range.
+\end{proof}
+
+\section{A tangent product comparison}
+The following inequality is the new ingredient. Write $[a^r]P\le[a^r]Q$ for every $r$ when comparing products coefficientwise.
+
+\begin{theorem}\label{thm:tangent}
+For every positive odd integer $n$,
+\begin{equation}\label{eq:productcomparison}
+ \prod_{j\ge1}\left(1+\frac an
+                \left|\tan\frac{n\pi}{2^{j+1}}\right|\right)
+ \ \le_{\rm coeff}\
+ \prod_{j\ge1}\left(1+a\tan\frac{\pi}{2^{j+1}}\right).
+\end{equation}
+More strongly, if
+\[
+ \theta_j=\frac\pi{2^{j+1}},\quad b_j=\tan\theta_j,\quad
+ x_j=\frac{|\tan(n\theta_j)|}{n},
+\]
+and $x_j^\downarrow$ is their decreasing rearrangement, then
+\begin{equation}\label{eq:logmajor}
+ \prod_{j=1}^k x_j^\downarrow\le\prod_{j=1}^k b_j
+ \qquad(k\ge1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The case $n=1$ is equality. Assume $n\ge3$ and set $L=\lfloor\log_2n\rfloor$, so $2^L<n<2^{L+1}$. The tail $x_j$, $j\ge L+1$, is strictly decreasing to zero. There are only $L$ earlier terms, all positive, so sorting changes only finitely many positions.
+
+\emph{Original prefix products.} Include $\theta_0=\pi/2$ and put
+\[
+ s_j=\frac{|\sin(n\theta_j)|}{n\sin\theta_j}.
+\]
+The elementary inequality $|\sin(nu)|\le n|\sin u|$ gives $0<s_j\le1$, while oddness gives $s_0=s_1=1/n$. The double-angle identity implies
+\[
+ \frac{x_j}{b_j}=\frac{s_j^2}{s_{j-1}},\qquad
+ \prod_{j=1}^k\frac{x_j}{b_j}
+ =s_k^2\prod_{j=2}^{k-1}s_j\le1\quad(k\ge2).
+\]
+At $k=1$ the ratio is $1/n$. Thus every original prefix product is already bounded.
+
+\emph{The initial sorted terms.} We show $x_k^\downarrow\le b_k$ for $k\le L$. Oddness of $n$ gives $|\tan(n\theta_j)|\le\cot\theta_j$: its dyadic grid point stays at least one grid step from every tangent pole. If $j\le L-k+1$, then
+\[
+ x_j<\frac{2^{j+1}}{\pi n}
+ <\frac{2^{2-k}}\pi<\frac\pi{2^{k+1}}<b_k,
+\]
+using $8<\pi^2$. If $j\ge L+2$, then $n\theta_j<\pi/4$ and
+\[
+ x_j<1/n<2^{-L}<b_k\qquad(k\le L).
+\]
+Only the $k$ consecutive indices $L-k+2,\ldots,L+1$ can therefore exceed $b_k$.
+
+For $k\ge2$, let $\eta=nb_k$. If $\eta\ge\sqrt3$, two adjacent tangent magnitudes cannot both exceed $\eta$, because
+\[
+ \min\{|\tan u|,|\tan2u|\}\le\sqrt3.
+\]
+To see this, if $v=|\tan u|>\sqrt3$, then $|\tan2u|=2v/(v^2-1)<\sqrt3$. Hence the $k$ candidates cannot all exceed the threshold.
+
+If $\eta<\sqrt3$, put $y=n\theta_{L+1}$. Since $k\le L$,
+\[
+ 0<y\le\tfrac12 n\theta_k<\tfrac12\eta<\tfrac{\sqrt3}2.
+\]
+On this interval $\tan y<2y$: convexity on $[0,\pi/3]$ gives $\tan y\le(3\sqrt3/\pi)y<2y$. Consequently
+\[
+ nx_{L+1}=\tan y<2y\le n\theta_k<nb_k.
+\]
+Again at most $k-1$ candidates exceed $b_k$, proving the initial claim for $2\le k\le L$.
+
+At $k=1$ only $j=L+1$ remains to check. Put $q=2^{L+1}\ge4$. The function $v\mapsto\tan(cv)/v$ increases for $0<cv<\pi/2$. Since $n\le q-1$,
+\[
+ x_{L+1}\le\frac{\cot(\pi/(2q))}{q-1}
+ <\frac{2q}{\pi(q-1)}\le\frac8{3\pi}<1=b_1.
+\]
+Thus $x_k^\downarrow\le b_k$ throughout $k\le L$.
+
+\emph{The single crossing.} For $k\ge L+1$, each $L+1\le j\le k$ satisfies
+\[
+ x_j\ge x_k=\frac{\tan(n\theta_k)}n>\tan\theta_k=b_k,
+\]
+by strict increase of $\tan u/u$ on $(0,\pi/2)$. Every $j>k$ satisfies
+\[
+ x_j\le\frac4\pi\theta_j\le\frac2\pi\theta_k<b_k,
+\]
+using the convex chord bound for tangent on $[0,\pi/4]$. Exactly $k-L$ tail terms exceed $b_k$, so
+\[
+ x_k^\downarrow>b_k\quad\Longleftrightarrow\quad
+ \min_{1\le j\le L}x_j>b_k.
+\]
+The right side becomes true once and stays true. Before that crossing, multiplying the individual inequalities gives~\eqref{eq:logmajor}. At and after it, all first $k$ original terms exceed $b_k$ and all later terms are below it. The largest $k$ terms are therefore exactly the first $k$ original terms, whose product was bounded above. This proves~\eqref{eq:logmajor} using only finite products.
+
+Apply Lemma~\ref{lem:majorization} below to the logarithms of the first $N$ sorted terms and to $\log b_1,\ldots,\log b_N$. It gives every elementary symmetric coefficient inequality. Both sequences are summable, with geometric tails, so their infinite products converge locally uniformly and their fixed-degree elementary symmetric sums converge monotonically. Letting $N\to\infty$ proves~\eqref{eq:productcomparison}.
+\end{proof}
+
+\begin{lemma}\label{lem:majorization}
+Let $u,v\in\mathbb R^N$ be decreasing vectors with
+$\sum_{i\le k}u_i\le\sum_{i\le k}v_i$ for every $k$. If $F$ is differentiable, symmetric, convex, and coordinatewise increasing, then $F(u)\le F(v)$. In particular, this applies to
+\[
+ F(z)=e_d(e^{z_1},\ldots,e^{z_N})
+ =\sum_{|I|=d}\exp\left(\sum_{i\in I}z_i\right).
+\]
+\end{lemma}
+\begin{proof}
+Write $g_i=\partial_iF(u)$. Monotonicity gives $g_i\ge0$. Symmetry and convexity give $g_1\ge\cdots\ge g_N$: swap two coordinates of $u$ and use monotonicity of the gradient of a convex function; if the coordinates agree, symmetry gives equal derivatives. Set $S_k=\sum_{i\le k}(v_i-u_i)\ge0$. Summation by parts yields
+\[
+ \nabla F(u)\mathbin{\cdot}(v-u)
+ =\sum_{k<N}(g_k-g_{k+1})S_k+g_NS_N\ge0.
+\]
+The supporting-plane inequality $F(v)\ge F(u)+\nabla F(u)\cdot(v-u)$ proves the claim. The displayed $F$ is a sum of exponentials of linear functions, so all its required properties hold.
+\end{proof}
+
+\section{Positivity of the entire triangle}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+At $w=1/2$, all tangents in~\eqref{eq:G} are positive and the first is $1$. Thus $g_{m,r}=G_{m,r}(1/2)\ge\binom{2m}{2r}>0$. The even coefficient at $w=-1/2$ is equal.
+
+For every positive odd $n$, take absolute values in the product coefficients and raise~\eqref{eq:productcomparison} to the positive integer power $2m$. Products preserve coefficientwise inequalities with nonnegative coefficients, giving
+\[
+ |G_{m,r}(n/2)|\le n^{2r}g_{m,r}.
+\]
+Pairing the positive and negative half-integers in the absolutely convergent orbit formula therefore yields
+\[
+ H_{m,r}\ge2\left(\frac2\pi\right)^{2m}g_{m,r}
+ \left(1-\sum_{\substack{n\ge3\\n\text{ odd}}}n^{-2(m-r)}\right).
+\]
+The odd-integer sum equals $(1-2^{-2s})\zeta(2s)-1$ at $s=m-r\ge1$ and decreases with $s$. At $s=1$ it is $\pi^2/8-1$. This proves~\eqref{eq:sharpbound} and~\eqref{eq:universalbound}.
+
+For pressure, the square in the logarithmic expansion of~\eqref{eq:feedback} begins at degree $4m$. Since $r<m$, it contributes nothing at degree $2m+2r$. The cosine product and feedback identity give exactly
+\begin{equation}\label{eq:pressuretransfer}
+ E_{m,r}=\sum_{j=0}^r H_{m,j}
+ [t^{2m+2r}]\tan^{2m+2j}t-\frac{m}{m+r}R_{m+r},
+ \qquad H_{m,0}=R_m.
+\end{equation}
+All tangent coefficients are nonnegative, and all response coefficients in this range are positive. Moreover, the $j=0$ term alone dominates the negative term. Indeed,
+\[
+ [t^{2r}]\left(\frac{\tan t}{t}\right)^{2m}
+ \ge\frac{\binom{2m}{r}}{3^r}
+ \ge\left(\frac{2m}{3r}\right)^r>\left(\frac23\right)^r,
+\]
+while
+\[
+ \frac{m}{m+r}\frac{R_{m+r}}{R_m}
+ \le\frac{m}{m+r}\left(\frac4{\pi^2}\right)^r
+ <\left(\frac4{\pi^2}\right)^r<\left(\frac23\right)^r.
+\]
+The ratio bound for $R$ follows termwise from $|w|\ge1/2$; the binomial bound follows by multiplying $(2m-i)/(r-i)\ge2m/r$. The tangent coefficients are positive by $(\tan t)'=1+\tan^2t$. Hence $E_{m,r}>0$.
+\end{proof}
+
+\section{Exact checks and remaining boundaries}\label{sec:checks}
+The package provides rational Fourier recursions independent of the tangent comparison. In the indices of~\eqref{eq:fourier}, let $j=2k-\ell$. The normalized matrix has entries
+\[
+ (V_a)_{k,\ell}=2\,4^{-m}\binom{2m}{m+j}
+                   (1-\ii a)^{m+j}(1+\ii a)^{m-j}.
+\]
+Expand $V_a=\sum_n\ii^nM_na^n$, $h_a=\sum_n\ii^nv_na^n$, and $\lambda(a)=\sum_n\ii^n\ell_na^n$. All matrix coefficients are rational. At each order, compute
+\[
+ b_n=\sum_{q=1}^nM_qv_{n-q},\qquad \ell_n=\boldsymbol1^{\mathsf T}b_n,
+\]
+then solve
+\[
+ (I-M_0)v_n=b_n-\sum_{q=1}^n\ell_qv_{n-q},\qquad
+ \boldsymbol1^{\mathsf T}v_n=0.
+\]
+Every residual is checked exactly. Evaluation at $1/2$ uses the signs $(-1)^k$, and $H_{m,r}=(-1)^r\sum_k(-1)^k(v_{2r})_k$. The package verifies all 91 response values with $2\le m\le14$ and $1\le r<m$, computes their pressure coefficients by~\eqref{eq:pressuretransfer}, and compares the pressure triangle through $m=8$ against a separate direct phase-eigenvalue recursion. For example,
+\[
+ H_{2,1}=8,\quad H_{3,1}=155/21,\quad H_{3,2}=16454/315,
+\]
+\[
+ E_{2,1}=376/45,\quad E_{3,1}=213/28.
+\]
+These finite checks corroborate the formulas; the general proof is the tangent comparison and orbit argument.
+
+The stronger conjecture that every even response has nonnegative individual coefficients in the atomic basis $F_{2j}$ is not proved here. Exact exploratory checks through $m=9$ support it, but the proof of Theorem~\ref{thm:main} uses only evaluation at $1/2$.
+
+Nor is positivity asserted at every later degree. At $m=2$, the characteristic equation for the pressure eigenvalue is
+\[
+ \chi(\lambda,C)=\lambda^3-(3/4+C)\lambda^2
+                   +(1/4+5C/8)\lambda-1/8=0,
+ \qquad C=\cos2t.
+\]
+Its branch through $(\lambda,C)=(1,1)$ is simple, with $\partial_\lambda\chi=3/8$. Exact substitution gives
+\begin{align*}
+ p_2(t/\pi)={}&-2t^2+\frac{376}{45}t^6+\frac{6836}{189}t^8
+ +\frac{105448}{2025}t^{10}\\
+ &-\frac{35360872}{93555}t^{12}+O(t^{14}).
+\end{align*}
+The included standard-library checker certifies this polynomial residual. Determining the general first negative degree after the positive triangle remains open in this note.
+
+\begin{thebibliography}{9}\small
+\bibitem{integer}\emph{Integer Pressure and a Missing Taylor Coefficient}. ProveIt research manuscript, 28 September 2026. Version inspected 1 October 2026: commit \nolinkurl{6a98f89bac85cc6b4ba5d5c3b63996037d9824e1}, blob \nolinkurl{1973fd17245864bb8a83e1b1d90416ac032ba7c1}.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6a98f89bac85cc6b4ba5d5c3b63996037d9824e1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}.
+\bibitem{first}\emph{The First Positive Coefficient in Integer Thue Morse Pressure}. Research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Finite Bernoulli response formula, first-coefficient positivity, inverse-branch formula, and large-order expansion.
+\bibitem{higher}\emph{Higher Positive Coefficients in Integer Thue Morse Pressure}. Separate research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Fourth-response positivity, the sufficient region $m\ge3r$, and the negative degree-twelve certificate.
+\end{thebibliography}
+\end{document}

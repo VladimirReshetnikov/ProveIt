@@ -164,6 +164,56 @@ atomic values of the pressure articles above; phase regularity is not
 treated.  Unreviewed; its numerics are diagnostics, not certificates; no
 Lean statement.
 
+## Taylor-coefficient signs of integer pressure (thirteen arrivals, 2026-10-01)
+
+Thirteen packages filed on 2026-10-01 by a quick archival intake continue
+[`Thue_Morse_Integer_Pressure/`](Thue_Morse_Integer_Pressure/) at the
+atomic phase: they study the signs of the even phase Taylor coefficients
+of the integer pressure `p_m` beyond the missing coefficient at degree
+`2m`.  In logical order (each cites the earlier ones it uses):
+
+- [`…_First_Positive/`](Thue_Morse_Integer_Pressure_First_Positive/):
+  the coefficient at degree `2m+2` is positive for every `m ≥ 2` (the
+  positivity half of that article's question "The first coefficient
+  after the cancellation"), with a finite Bernoulli formula;
+- [`…_Higher_Positive/`](Thue_Morse_Integer_Pressure_Higher_Positive/):
+  degree `2m+4` for every `m`, and `2m+2r` when `m ≥ 3r`;
+- [`…_Positive_Triangle/`](Thue_Morse_Integer_Pressure_Positive_Triangle/):
+  every degree strictly between `2m` and `4m`, with the eigenfunction
+  responses;
+- [`…_Feedback_Boundary/`](Thue_Morse_Integer_Pressure_Feedback_Boundary/):
+  degree `4m`, where eigenvalue feedback enters;
+- [`…_Beyond_Boundary/`](Thue_Morse_Integer_Pressure_Beyond_Boundary/)
+  and [`…_Linear_Region/`](Thue_Morse_Integer_Pressure_Linear_Region/):
+  fixed offsets and a region of linear width above `4m`;
+- [`…_Full_Range/`](Thue_Morse_Integer_Pressure_Full_Range/): every
+  degree strictly between `2m` and `6m`, for every `m ≥ 2`, sharp at
+  `m = 2`;
+- [`…_Sign_Changes/`](Thue_Morse_Integer_Pressure_Sign_Changes/) and
+  [`…_Sign_Densities/`](Thue_Morse_Integer_Pressure_Sign_Densities/):
+  infinitely many coefficients of each sign, at the full exponential
+  scale, with positive lower densities;
+- [`…_Negative_Bound/`](Thue_Morse_Integer_Pressure_Negative_Bound/),
+  [`…_First_Negative/`](Thue_Morse_Integer_Pressure_First_Negative/)
+  and [`…_Cluster_Asymptotics/`](Thue_Morse_Integer_Pressure_Cluster_Asymptotics/):
+  the first negative degree `N_m` satisfies `N_m/m → γ ≈ 6.663`, with a
+  `log log m` correction, and each canonical feedback cluster has a
+  rooted-tree leading asymptotic;
+- [`…_First_Negative_Data/`](Thue_Morse_Integer_Pressure_First_Negative_Data/):
+  certified `N_m` for `2 ≤ m ≤ 128`.
+
+The packages share their notation and several programs and data files;
+the copies they bundled of each other's manuscripts, of two source
+archives and of `Thue_Morse_Integer_Pressure/article.tex` were not filed.
+A nine-page predecessor of the full-range package (*… for Large Integer
+Orders*, `m ≥ 4096`) and a duplicate archive were not filed.  The
+feedback-boundary and full-range packages name trace and interval
+archives that were not delivered.  Several results are proved more than
+once (the triangle contains the first two packages; the full range
+contains the pressure statements of the boundary, offset and linear
+packages); consolidating the thirteen into one companion volume is a
+follow-up.  Unreviewed; no Lean statement.
+
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
 complex form at every level: the sinc and negative-Laplace block equalities
