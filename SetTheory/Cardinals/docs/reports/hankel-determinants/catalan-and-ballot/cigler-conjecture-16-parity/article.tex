@@ -7,6 +7,7 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{microtype,booktabs,array,longtable}
 \usepackage{mathrsfs}% [Added 29 September 2026, batch 56] for Part II's \QQ, \AN, \GG
+\usepackage{tabularx}% [Added 30 September 2026, batch 70] for Part IV's verification table
 \usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem,fancyhdr}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
@@ -60,6 +61,30 @@
 \newcommand{\ii}{\mathrm i}
 \newcommand{\rise}[2]{(#1)_{#2}}
 \newcommand{\pinIII}{ff6969475bad8f61a33268418aaf23d23fdcd1fb}
+% [Added 30 September 2026, batch 70] Macros and environments of Part IV
+% (manuscript 02 of batch 70).  Its \Hank is printed as \Ht (the same
+% glyph and object); its \N, \Z, \Q, \ord are identical to the
+% definitions above; its unused \lc and \Span and its unused warning and
+% example environments are dropped; its \repoCommit is \texttt{\pinIV}.
+\newcommand{\IntZ}{\operatorname{Int}(\Z)}
+\newcommand{\Den}{\mathcal D}
+\newcommand{\ConfDelta}{\boldsymbol\Delta}
+\newcommand{\Cblock}{\mathsf C}
+\newcommand{\Pblock}{\mathsf P}
+\newcommand{\Btri}{\mathsf B}
+\newcommand{\dq}{\mathsf d}
+\newcommand{\rdeg}{\mathsf r}
+\newcommand{\epsK}{\varepsilon}
+\newcommand{\pinIV}{ffddaa8b9c89e7bf027e1442cc6216bb010906d0}
+\theoremstyle{definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{plain}
+\newenvironment{statusbox}[1]{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \hrule\vspace{0.55em}\noindent\textbf{#1}\par\smallskip
+}{%
+  \vspace{0.55em}\hrule\end{minipage}\end{center}\smallskip
+}
 \numberwithin{equation}{section}
 \pagestyle{fancy}
 \fancyhf{}
@@ -78,10 +103,12 @@ for Cigler's Hankel polynomials\\[0.5em]
 \normalsize Part~II (added 29 September 2026): rectangular Schur structure\\
 \normalsize and sharp recurrences\\[0.3em]
 \normalsize Part~III (added 30 September 2026): cyclotomic pole collapse\\
-\normalsize and exact minimal recurrences at complex parameters}
+\normalsize and exact minimal recurrences at complex parameters\\[0.3em]
+\normalsize Part~IV (added 30 September 2026): polynomial spectral blocks\\
+\normalsize and Cigler's Conjecture~17, proved in sign-corrected form}
 \author{Research draft prepared for Vladimir Reshetnikov}
-\date{20 September 2026 (Part~I); 29 September 2026 (Part~II);
-30 September 2026 (Part~III)}
+\date{20 September 2026 (Part~I); 29 September 2026 (Part~II);\\
+30 September 2026 (Parts~III and~IV)}
 
 \begin{document}
 \maketitle
@@ -112,6 +139,12 @@ exact minimal recurrence.]
 [Added 30 September 2026, batch 66: Part~III determines the reduced
 denominator and the minimal recurrence at every complex parameter,
 including every root of unity.]
+[Added 30 September 2026, batch 70: Part~IV proves Cigler's
+Conjecture~17 in a sign-corrected form. After Cigler's denominator is
+cleared, the spectral blocks are polynomials in $t$, integer-valued in
+$n$, with exact degrees in both variables and explicit leading terms;
+the reciprocity sign printed in his equation~(83) is false for the shifts
+$k\equiv1\pmod4$, and the correct sign is proved.]
 \end{abstract}
 
 \medskip
@@ -1081,6 +1114,11 @@ publication or addition to a collection of established theorems.
 formula and corrected forms of the generating-function assertions of
 Conjecture~18; Conjecture~17 remains open
 (Section~\ref{rs:sec:further}).]
+
+\noindent[Added 30 September 2026, batch 70: Part~IV proves Conjecture~17
+in a sign-corrected form (Theorem~\ref{sb:thm:main}); the sign printed in
+Cigler's equation~(83) is false for $k\equiv1\pmod4$
+(Section~\ref{sb:sec:printed-sign}).]
 
 \appendix
 \section{The removable specialization at \texorpdfstring{$t=1$}{t=1}}
@@ -2700,6 +2738,19 @@ it is not itself a proof of every Conjecture~17 assertion.
 Section~\ref{cp:q:numerators} asks for the reduced numerator at
 cyclotomic parameters; it is related to this topic, not part of it.]
 
+\noindent[Added 30 September 2026, batch 70: answered in Part~IV, in a
+sign-corrected form. Theorem~\ref{sb:thm:main} proves that after Cigler's
+denominator $(1-t)^a(1-t^2)^{ab}$ is cleared, the blocks are polynomials
+$\Cblock_{k,q}(n,t)$ in $t$, integer-valued in $n$, of exact $t$-degree
+$q(k-1-q)$, as printed, and exact $n$-degree $\lfloor q(k-1-q)/2\rfloor$,
+with closed leading coefficients in~$n$. Of the printed degree and
+reciprocity claims, the degrees survive normalization, and the
+reciprocity sign survives except for $k\equiv1\pmod4$, where Cigler's
+equation~(83) has the wrong sign (Section~\ref{sb:sec:printed-sign}).
+Formulas with manifest sign, flagged-tableau or minor expressions, and
+the full coefficient structure in~$n$ remain open; they are Part~IV's
+questions in Sections~\ref{sb:q:subresultant}--\ref{sb:q:sign}.]
+
 \subsection{Complex roots of unity and spectral cancellation}
 \label{cp:sec:rs-cyclotomic}
 At a complex root of unity, the roots $t^q$ can coincide even when
@@ -2790,6 +2841,11 @@ than an unproved bridge in the central determinant identity.
 \noindent[Added 30 September 2026, batch 66: the complex spectral collisions are
 classified in Part~III (Theorem~\ref{cp:thm:main} and
 Corollary~\ref{cp:cor:complex}).]
+
+\noindent[Added 30 September 2026, batch 70: the coefficient structure
+proposed in Cigler's Conjecture~17 is established, with a corrected sign,
+in Part~IV (Theorem~\ref{sb:thm:main}); finer questions remain
+(Section~\ref{sb:sec:further}).]
 
 \renewcommand{\thesection}{\Alph{section}}
 \renewcommand{\theHsection}{rs.app.\Alph{section}}
@@ -4513,6 +4569,11 @@ is related to, but should not be conflated with, the full coefficient
 assertions in Cigler's Conjecture~17 and the corrected generic numerator
 claims in the repository.
 
+\noindent[Added 30 September 2026, batch 70: the generic coefficient
+assertions of Conjecture~17 are proved, with a corrected sign, in Part~IV
+(Theorem~\ref{sb:thm:main}). That does not answer this question, which
+concerns the reduced numerator at roots of unity.]
+
 \subsection{Original, unnormalized Hankel determinants}
 \label{cp:q:unnormalized}
 Classify the minimal recurrence of $D_k(n;\zeta)$ itself, including the
@@ -4723,6 +4784,1697 @@ uv run --no-project --with sympy==1.14.0 python "$W/code/verify.py"
 with \verb|<scratch>| a directory outside the report; the outputs land in
 \verb|<scratch>/data/|.]
 
+%% ====================================================================
+%% Batch-70 addition (manuscript 02, "Polynomial Spectral Blocks for
+%% Cigler's Hankel Determinants").  Every label of Part IV carries the
+%% prefix sb: (spectral blocks).  The labels of Parts I (bare), II (rs:)
+%% and III (cp:) are unchanged.  Part IV's sections continue the numbering
+%% (35-44) after Part III's Appendices E-G; its appendices are H-I.
+%% ====================================================================
+\clearpage
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theHsection}{sb.\arabic{section}}
+\setcounter{section}{34}
+\phantomsection\part*{Part IV.\quad Polynomial spectral blocks and Cigler's Conjecture 17}
+\addcontentsline{toc}{part}{Part IV.\texorpdfstring{\quad}{ } Polynomial spectral blocks and Cigler's Conjecture 17}
+
+\noindent\emph{Part~IV was added on 30 September 2026 in batch~70 of
+ProveIt's incoming-report intake, from one manuscript written against the
+pinned state of Parts~I and~II. It answers Part~II's research topic ``Full
+coefficient structure in Cigler's Conjecture~17''
+(Section~\ref{cp:sec:rs-conj17}) in a sign-corrected form. It proves that,
+after Cigler's denominator is cleared, the normalized determinants split
+into blocks that are polynomials in $t$ and integer-valued in $n$, with the
+triangular exponents and $t$-degrees that Conjecture~17 proposes, exact
+$n$-degrees and explicit leading terms. It also proves that the reciprocity
+sign printed in Cigler's equation~(83) is false for the shifts
+$K\equiv1\pmod4$, and proves the correct sign. Its Sections~35--44 and
+Appendices~H--I are the manuscript's Sections~1--10 and Appendices~A--B.
+Parts~I--III are unchanged except for dated pointers to this addition,
+marked \textup{[Added 30 September 2026, batch~70: \dots]}.}
+
+\section{The problem and the result}
+\label{sb:sec:introduction}
+
+\subsection{Provenance of Part~IV}
+\label{sb:sec:merge-provenance}
+Part~IV is batch-70 manuscript~02, \emph{Polynomial Spectral Blocks for
+Cigler's Hankel Determinants: A proof of Conjecture~17, a reciprocity-sign
+correction, exact bidegrees, and explicit leading terms}, an AI-assisted
+research manuscript dated 30 September 2026 (20 pages, A4, as delivered). It
+arrived as the archive \path{ProveIt_Cigler_Conjecture17_Resolution.zip}
+(inner directory \path{cigler_conjecture17_resolution/}, main file
+\path{article.tex}) in ProveIt commit \texttt{1b3960d8a} and was placed in
+\texttt{51c6943bf}. It was written against ProveIt commit
+\texttt{ffddaa8b9} (in full \texttt{\pinIV}), at which this report's
+\texttt{article.tex} was the Git blob \texttt{07c41161857e}: Parts~I and~II
+exactly as printed above. Part~III was placed (\texttt{4fee1cd07}) and
+written (\texttt{e1817651a}) after that commit, so the manuscript does not
+know it. Every statement the manuscript makes about ``the inspected
+\texttt{ProveIt} report'', ``the repository'' or ``the current repository
+report'' therefore refers to Parts~I and~II of the present report. The
+manuscript lists the files it read at the pinned commit in its source audit,
+\path{04-spectral-blocks-SOURCES.md}. Its author line, ``Research report
+prepared for Vladimir Reshetnikov's \texttt{ProveIt} project'', names no
+assistant; its status file calls it ``an AI-assisted mathematical research
+draft''.
+
+Its code and records are shipped beside the earlier parts' files with the
+prefix \path{04-spectral-blocks-} (Part~I's unprefixed files count as~01,
+Part~II's and Part~III's prefixed files as~02 and~03):
+
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Shipped as & Content\\
+\midrule
+\path{code/04-spectral-blocks-verify.py} & the exact verifier\\
+\path{code/04-spectral-blocks-Makefile} & the delivered Makefile (not to be run)\\
+\path{data/04-spectral-blocks-verification.json} & the recorded run\\
+\path{data/04-spectral-blocks-verification.log} & its console log\\
+\path{data/04-spectral-blocks-requirements.txt} & the requirement pin\\
+\path{04-spectral-blocks-STATUS.md} & claims, verification and limitations\\
+\path{04-spectral-blocks-SOURCES.md} & repository pin and source audit\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent These files are byte-identical to the delivery, so their text
+still uses the delivery names. The manuscript, its PDF, its README and its
+checksum list \path{SHA256SUMS} (ten entries, all verified at the placement)
+are not shipped; they survive in the arrival commit \texttt{1b3960d8a}. The
+report README maps every delivery name to its shipped path, and
+Appendix~\ref{sb:app:package} explains why the shipped Makefile must not be
+run and how to rerun the verifier without touching Part~I's records.
+
+The manuscript contributes, in the order printed here: Cigler's moment
+family and its normalization (Section~\ref{sb:sec:input} and the subsection
+before it); the main theorem, Theorem~\ref{sb:thm:main}, on polynomial
+spectral blocks $\Cblock_{K,q}(n,t)\in\IntZ[t]$ with exact bidegrees and
+corrected reciprocity; the confluent bialternant with its Laplace grouping
+by the unique allocation of each spectral exponent
+(Section~\ref{sb:sec:bialternant}); two divisibility mechanisms, an exact
+triangular valuation at $t=0$ (Lemma~\ref{sb:lem:t-zero}) and a
+jet-collision valuation with a two-server counting lemma at $t=1$
+(Lemmas~\ref{sb:lem:jet-collision}--\ref{sb:lem:t-one}), giving
+polynomiality and integer values (Corollary~\ref{sb:cor:polynomiality});
+closed leading coefficients in the width~$n$ for even and odd sectors
+\eqref{sb:eq:C-leading-even}, \eqref{sb:eq:C-leading-odd} and the exact
+$n$-degree (Corollary~\ref{sb:cor:n-degree}); Schur reciprocity, the exact
+$t$-degree (Proposition~\ref{sb:prop:t-degree}), the failure of the printed
+sign (Section~\ref{sb:sec:printed-sign}) and the boundary blocks
+(Corollary~\ref{sb:cor:boundary}); worked examples for $K\le5$ and a table
+for $K\le8$ (Section~\ref{sb:sec:examples}); a finite algorithm
+(Algorithm~\ref{sb:alg:blocks}), its verifier and complexity remarks
+(Section~\ref{sb:sec:verification}); a four-layer formalization route
+(Section~\ref{sb:sec:formalization}); nine research questions
+(Section~\ref{sb:sec:further}); a conclusion; the exponent algebra behind
+the leading terms (Appendix~\ref{sb:app:leading-algebra}); and package notes
+(Appendix~\ref{sb:app:package}). Every result, proof, example, remark,
+limitation and question of the manuscript is printed.
+
+\paragraph{What Part~IV proves, and what it corrects.}
+Cigler's Conjecture~17 \cite{Cigler} (printed pp.~22--23) proposes the
+expansion \eqref{sb:eq:main-expansion} with polynomial blocks of
+$t$-degree $q(K-1-q)$ and a reciprocity between the blocks $q$ and
+$K-1-q$ whose sign his equation~(83) prints as $(-1)^{\lfloor K/2\rfloor-1}$
+for every shift. Theorem~\ref{sb:thm:main} proves the expansion, the
+$t$-degrees and the polynomiality, and adds the integrality in~$n$, the
+$n$-degrees and the leading terms. Its reciprocity sign $\epsK_K$
+\eqref{sb:eq:epsilon}, however, is not the printed one: the two agree for
+every even $K$ and every $K\equiv3\pmod4$, and for every
+$K\equiv1\pmod4$ the printed sign is $-1$ where the true sign is $+1$.
+Section~\ref{sb:sec:printed-sign} shows from the central block $\Cblock_{5,2}$
+that Cigler himself displays (his printed page~24) that the printed
+relation already fails at $K=5$, independently of any proof here. \emph{The
+literal printed Conjecture~17 is therefore false, and Part~IV proves a
+sign-corrected form of it, not the conjecture as printed.} Wherever the
+manuscript says that it proves or resolves Conjecture~17 (its title, the name
+of Theorem~\ref{sb:thm:main}, its abstract and its first status box), read
+``proves Conjecture~17 with the sign of~(83) corrected''; its status box
+says as much itself. This is the same situation as in Part~II, which proved
+a corrected Conjecture~18 after finding the positive sign of Cigler's
+equation~(85) false (Theorem~\ref{rs:thm:numerator} and
+\eqref{rs:eq:G4}), but the residue classes differ: Cigler's~(85) fails for
+shifts $k=2a$ with $a$ even, that is for $4\mid k$, whereas his~(83) fails
+for $K\equiv1\pmod4$. The manuscript states the failure range as
+``$K\equiv1\pmod4$ and $K\ge5$''; at $K=1$ the printed sign also fails,
+trivially (Section~\ref{sb:sec:printed-sign} carries a note). The
+correction concerns Cigler's paper, not this repository, which never
+asserted his equation~(83) and called Conjecture~17 open.
+
+\paragraph{Relation to other reports.} The sibling reports
+\path{cigler-conjecture-8-schur} (Cigler's Conjecture~8, for the different
+family $b_n(t)$) and \path{ballot-polynomial-hankel-determinants}
+(Conjectures~13--15, the family $a_n(t)$) do not treat Conjecture~17, and
+Part~IV does not treat their families. The manuscript expects its
+jet-collision mechanism to apply beyond this Hankel family (its fourth
+contribution, and the question in Section~\ref{sb:q:clusters}); only the
+three-cluster alphabet of this report is proved here.
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}
+\item \emph{Duplicated material.} The manuscript credits its inputs to
+the report, and they are printed in both parts.
+\eqref{sb:eq:moments}, \eqref{sb:eq:hankel} and
+\eqref{sb:eq:normalized-hankel} are Part~II's \eqref{rs:eq:moments},
+\eqref{rs:eq:D} and \eqref{rs:eq:H} (with $\mu_m=c_m$ and $\Delta_K=D_k$);
+the Schur identity \eqref{sb:eq:schur-identity} is Part~II's
+Theorem~\ref{rs:thm:schur}; the spectral decomposition
+\eqref{sb:eq:existing-spectral} with its $n$-degree is
+\eqref{rs:eq:spectralH} with \eqref{rs:eq:dq}; the unique allocation
+\eqref{sb:eq:unique-allocation} and the degrees \eqref{sb:eq:even-d},
+\eqref{sb:eq:odd-d} are \eqref{rs:eq:qallocation} and the two expressions
+after \eqref{rs:eq:dq}; the confluent matrix and Vandermonde
+\eqref{sb:eq:confluent-matrix}--\eqref{sb:eq:confluent-vandermonde}
+specialize \eqref{rs:eq:confluent-entries} and \eqref{rs:eq:confluent-den};
+$\beta(m,r)$ \eqref{sb:eq:beta} is Part~II's $B(m,r)$ \eqref{rs:eq:Bfactor},
+and the leading coefficient \eqref{sb:eq:cluster-leading} is
+\eqref{rs:eq:LC} of Theorem~\ref{rs:thm:cluster}, symbol for symbol. The
+first assertion of Corollary~\ref{sb:cor:n-degree} is inherited from
+\eqref{rs:eq:spectralH}, as its proof says; it is not a second route. The
+reciprocity \eqref{sb:eq:H-reciprocity} is Part~I's \eqref{eq:pal}
+(Theorem~\ref{thm:main}), which Part~I proves from its parity
+factorization; the manuscript's short Schur argument is a second route.
+New in Part~IV are the polynomiality and integrality of the cleared blocks,
+their $t$-degrees, the closed leading terms \eqref{sb:eq:C-leading-even},
+\eqref{sb:eq:C-leading-odd} (which refine \eqref{rs:eq:LC} to the blocks
+$\Cblock_{K,q}$), the corrected reciprocity of the blocks and the sign
+correction. As a consistency check of this merge,
+Corollary~\ref{sb:cor:boundary} with \eqref{sb:eq:C-definition} gives
+$\Pblock_{K,0}=1/\Den_K(t)$, which is
+Part~I's limit function $\F_k(t)$ of \eqref{eq:F}, and the sign $\epsK_K$
+coincides, as a function of the shift, with the numerator-reciprocity sign
+of Part~II's Theorem~\ref{rs:thm:numerator} ($(-1)^{a+1}$ for $k=2a$, $+1$ for
+odd~$k$). Neither part derives one sign from the other, and no implication
+between the two statements is claimed.
+\item \emph{Numbering.} The manuscript's Section~$n$ is Section~$n+34$
+here, and its Theorem, Lemma, Proposition, Corollary and Algorithm~$n.m$
+are $(n+34).m$; its Appendices~A--B are Appendices~H--I. The manuscript
+numbers its equations consecutively, (1)--(60), through the whole article;
+here they are numbered within sections, as in the rest of the report (the
+report README gives the correspondence). This subsection and the next two
+precede the manuscript's Section~1.1, which is Section~35.4 here. Its table
+of contents is merged into the report's.
+\item \emph{Names.} Every label of Part~IV carries the prefix
+\texttt{sb:} (spectral blocks); the manuscript's label \texttt{thm:main}
+would otherwise collide with Part~I's. The manuscript's macro
+\verb|\Hank| is printed with the report's \verb|\Ht|, the same glyph
+$\Ht$ for the same object; its \verb|\N|, \verb|\Z|, \verb|\Q|,
+\verb|\ord| are identical to the report's and were dropped; its pin macro
+is \verb|\pinIV|; its unused macros \verb|\lc|, \verb|\Span| and its unused
+\texttt{warning} and \texttt{example} environments were dropped. Its nine
+\verb|\cref| references are printed as ``Theorem~\ldots'',
+``Lemma~\ldots'' and so on, because the report does not load
+\texttt{cleveref}. Its bibliography is merged with the report's: its
+entries for Cigler's paper \cite{Cigler}, Cigler--Krattenthaler \cite{CK},
+Gonz\'alez-Serrano--Maximenko \cite{GSM} and Fulton \cite{Fulton} are the
+works already listed; its entry for the report (Part~II at the pin) is
+replaced by internal references; Macdonald's book is added
+\cite{sbMacdonald}. None of these entries is cited in the manuscript's
+body; they are cited here. The manuscript's page layout (27\,mm margins,
+\texttt{xurl}, section names in the running head) is not kept, and four
+headings containing mathematics received plain-text PDF bookmark strings
+(\verb|\texorpdfstring|). No symbol glyph and no normalization changed. Symbols that mean different things in
+Part~IV and the earlier parts are listed in Section~\ref{sb:sec:notation}.
+\item \emph{Added text.} Dated notes were added on the title page and in
+the abstract; after Part~I's batch-56 note at the end of
+Section~\ref{sec:audit}; in Part~II's research topic
+Section~\ref{cp:sec:rs-conj17} (answered in corrected form) and conclusion;
+in Part~III's question Section~\ref{cp:q:numerators}; and ten bracketed
+notes in Part~IV: on the pinned inputs (Section~\ref{sb:sec:input}),
+on the theorem's title (after Theorem~\ref{sb:thm:main}), on the inherited
+cluster theorem (Section~\ref{sb:sec:leading}), on the second route to
+\eqref{sb:eq:H-reciprocity}, on the index range of the sign failure
+(Section~\ref{sb:sec:printed-sign}), on the shipped names, the rerun and the
+intake's independent check (Section~\ref{sb:sec:verification}), on the
+formal status of the ``infrastructure'' of the formalization route
+(Section~\ref{sb:sec:formalization}), on the relation of the research
+questions to Parts~II and~III and the question answered by Part~III
+(Section~\ref{sb:sec:further}), and on the delivered commands
+(Appendix~\ref{sb:app:package}). All are marked
+\textup{[Added 30 September 2026, batch~70: \dots]}. The manuscript's
+subsections 1.2 and~5.3 and its research questions received labels
+\texttt{sb:sec:input}, \texttt{sb:sec:printed-sign} and \texttt{sb:q:\dots}.
+\end{itemize}
+
+\subsection{The manuscript's title, abstract and status}
+\label{sb:sec:front}
+The manuscript's title block reads \emph{Polynomial Spectral Blocks for
+Cigler's Hankel Determinants}, with the subtitle \emph{A proof of
+Conjecture~17, a reciprocity-sign correction, exact bidegrees, and explicit
+leading terms}, the author line ``Research report prepared for Vladimir
+Reshetnikov's \texttt{ProveIt} project'' and the date 30~September 2026. As
+explained in Section~\ref{sb:sec:merge-provenance}, ``a proof of
+Conjecture~17'' means a proof of its sign-corrected form. Its abstract:
+\begin{quote}\small
+Let $\mu_m(t)$ be Cigler's third polynomial extension of the middle binomial
+coefficients, let $\Delta_K(n;t)=\det(\mu_{K+i+j}(t))_{0\le i,j<n}$, and put
+\[
+ \Ht_K(n;t)=(-1)^{K\binom n2}t^{-\binom n2}\Delta_K(n;t).
+\]
+A recent report in the \texttt{ProveIt} repository proves the rectangular
+Schur identity
+\[
+ \Ht_K(n;t)=s_{(n^a)}(1^a,t,(t^2)^b),
+ \qquad
+ a=\left\lfloor\frac K2\right\rfloor,
+ \quad b=\left\lfloor\frac{K-1}{2}\right\rfloor,
+\]
+and obtains the unique exponential--polynomial decomposition
+\[
+ \Ht_K(n;t)=\sum_{q=0}^{K-1}\Pblock_{K,q}(n;t)t^{qn}.
+\]
+Its polynomial blocks have exact degrees
+\[
+ \deg_n\Pblock_{K,q}
+ =\left\lfloor\frac{q(K-1-q)}2\right\rfloor.
+\]
+The same report explicitly leaves unresolved the full coefficient structure
+proposed in Cigler's Conjecture~17.
+
+This article closes that gap.  Define
+\[
+ \Den_K(t)=(1-t)^a(1-t^2)^{ab},\qquad
+ \Btri_q=\binom{q+1}{2}.
+\]
+We prove that there are unique polynomials
+$\Cblock_{K,q}(n,t)\in\IntZ[t]$ such that
+\[
+ \boxed{\displaystyle
+ \Ht_K(n;t)=\frac{1}{\Den_K(t)}
+ \sum_{q=0}^{K-1}(-1)^q
+ \Cblock_{K,q}(n,t)t^{qn+\Btri_q}.}
+\]
+They have the exact bidegrees conjectured in $t$ and newly determined in $n$:
+\[
+ \deg_t\Cblock_{K,q}=q(K-1-q),\qquad
+ \deg_n\Cblock_{K,q}=\left\lfloor\frac{q(K-1-q)}2\right\rfloor.
+\]
+The proof starts from the confluent bialternant and groups its Laplace terms by
+the unique allocation corresponding to $q$.  Two divisibility mechanisms are
+then separated.  A weighted assignment argument at $t=0$ supplies exactly the
+triangular power $t^{qn+\binom{q+1}{2}}$.  At $t=1$, a new two-minor jet-collision
+lemma shows that every grouped numerator vanishes to order at least $b$; this
+cancels the one factor absent from Cigler's denominator.  The argument is
+finite and works coefficientwise in the width $n$.
+
+We also determine the leading coefficient in $n$ in closed form.  If
+$\beta(m,r)=\prod_{j=0}^{r-1}j!/\prod_{j=m-r}^{m-1}j!$, then for $q=2h$ it is
+\[
+ \beta(a,a-h)\beta(b,h)(1-t^2)^{\dq_{K,2h}},
+\]
+and for $q=2h+1$ it is
+\[
+ (-1)^h\beta(a,a-h-1)\beta(b,h)\chi_K(t)
+ (1-t^2)^{\dq_{K,2h+1}},
+ \qquad
+ \chi_K(t)=\begin{cases}1,&K\text{ even},\\1+t,&K\text{ odd}.
+ \end{cases}
+\]
+Finally, Schur reciprocity gives the corrected relation
+\[
+ \boxed{\displaystyle
+ \Cblock_{K,K-1-q}(n,t)=\epsK_K\,
+ t^{q(K-1-q)}\Cblock_{K,q}(n,t^{-1}),}
+\]
+where $\epsK_K=-1$ precisely when $4\mid K$, and $\epsK_K=1$ otherwise.
+Cigler's printed sign agrees for every even $K$ and for $K\equiv3\pmod4$,
+but fails for odd $K\equiv1\pmod4$; its own displayed polynomial
+$\Cblock_{5,2}$ is already a counterexample.  An exact symbolic verifier
+reconstructs the original Hankel determinants, all blocks, bidegrees,
+reciprocities, and leading coefficients through $K=8$.
+\end{quote}
+Its two status boxes:
+
+\begin{statusbox}{Research status and trust boundary}
+The all-index statements below are mathematical proof claims, with complete
+arguments supplied in the article.  The work builds on the rectangular-Schur
+and confluent spectral theorems already proved in the inspected
+\texttt{ProveIt} report at repository snapshot \texttt{\pinIV}.  The repository
+itself says that not every assertion of Cigler's Conjecture~17 had been
+settled.  The present package has not been independently refereed and has not
+been checked in Lean, Rocq, or another proof assistant.  The accompanying
+program performs exact finite verification; it is evidence and regression
+protection, not a substitute for the proofs.  ``Resolves'' refers to the
+mathematical statement of Conjecture~17, with the reciprocity sign corrected as
+forced by both the proof and Cigler's own $K=5$ example.  No exhaustive claim
+of worldwide priority is made.
+\end{statusbox}
+
+\begin{statusbox}{Main contributions}
+\begin{enumerate}
+\item A proof that every Conjecture~17 spectral numerator is a polynomial in
+      $t$, with coefficients integer-valued in $n$.
+\item Exact degrees in both variables and an explicit nonzero leading
+      coefficient in the width variable $n$.
+\item A corrected reciprocity sign: negative exactly for shifts divisible by
+      four, positive for every odd shift.
+\item A jet-collision divisibility lemma for products of complementary
+      confluent minors, applicable beyond this Hankel family.
+\item A reproducible exact verifier bridging the original Hankel determinant,
+      the rectangular Schur polynomial, and the spectral-block formula.
+\end{enumerate}
+\end{statusbox}
+
+\noindent The fourth item's ``applicable beyond this Hankel family'' is the
+manuscript's expectation: Lemma~\ref{sb:lem:jet-collision} is stated for
+arbitrary analytic rows, but the counting Lemma~\ref{sb:lem:two-server} and
+the cancellation Lemma~\ref{sb:lem:t-one} concern this alphabet only, and
+the general capacity theorem is a question
+(Section~\ref{sb:q:clusters}). The abstract's last sentence says that the
+verifier ``reconstructs the original Hankel determinants \dots\ through
+$K=8$''; its record compares the original Hankel determinants with the
+Schur side for $K\le6$, $n\le5$, and checks the blocks against the Schur
+side for $K\le8$ (Section~\ref{sb:sec:verification}). The repository statement
+quoted in the first box (``not every assertion \dots\ had been settled'') is
+Parts~I and~II at the pin.
+
+\subsection{Notation shared with Parts~I--III}
+\label{sb:sec:notation}
+Part~IV keeps the manuscript's notation. It writes $K$ for the shift that
+Parts~I--III call $k$; its $a=\lfloor K/2\rfloor$, $b=\lfloor(K-1)/2\rfloor$
+are theirs, and its $K=a+b+1$ is also Part~II's number of variables $K$ in
+Section~\ref{rs:sec:cluster} for Cigler's alphabet $\XX_k=(1^a,t,(t^2)^b)$.
+Its moments $\mu_m(t)$ are Part~II's $c_m(t)$, its Hankel determinant
+$\Delta_K(n;t)$ is $D_k(n;t)$, and $\Ht_K(n;t)$ is $\Ht_k(n;t)$. Its
+sans-serif $\Pblock_{K,q}(n;t)$ is Part~II's $P_{k,q}(n;t)$
+\eqref{rs:eq:spectralH}, its $\dq_{K,q}$ is Part~II's and Part~III's $d_q$
+(so $e_{k,q}=1+\dq_{K,q}$), and its $\beta(m,r)$ is Part~II's $B(m,r)$.
+It agrees with Part~II on $s_{(n^A)}$, $A$, $C=K-A$, the nodes $\xi_i$ with
+multiplicities $m_i$, the counts $r_i$, $s_i=m_i-r_i$, $L_{\boldsymbol r}$
+and $q$. Its $\Den_K(t)=(1-t)^a(1-t^2)^{ab}$ is $1/\F_k(t)$ \eqref{eq:F}.
+The following letters mean different things in Part~IV and the earlier
+parts, or within Part~IV; the right-hand column gives the tempting false
+reading.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.10\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.24\linewidth}@{}}
+\toprule
+Symbol & Parts~I--III & Part~IV & Do not read as\\
+\midrule
+\endhead
+$\Delta$ &
+$\Delta(\eta)$: a Vandermonde product (Part~I);
+$\Delta_{\boldsymbol m}(\boldsymbol\xi)$: the confluent Vandermonde
+\eqref{rs:eq:confluent-den}; $\Delta p_j$, $\Delta e_j$: differences
+(Part~III) &
+$\Delta_K(n;t)$: the Hankel determinant \eqref{sb:eq:hankel}, Part~II's
+$D_k(n;t)$; bold $\ConfDelta_K(t)$: the confluent Vandermonde
+\eqref{sb:eq:confluent-vandermonde} &
+$\Delta_K(n;t)$ as a Vandermonde product\\[3pt]
+$\Den$, $D$ &
+$D_k(n;t)$: the Hankel determinant; $D$: Part~III's tie degree &
+$\Den_K(t)=(1-t)^a(1-t^2)^{ab}$: Cigler's denominator
+\eqref{sb:eq:D-and-B} &
+$\Den_K(t)$ as $D_k(n;t)$\\[3pt]
+$C$ &
+$C=K-A$ (Part~II); $C_k=\binom k2$; $C_j(y)$ (Part~I); Catalan numbers $C_j$
+(Part~III) &
+sans-serif $\Cblock_{K,q}(n,t)$: the Conjecture~17 blocks
+\eqref{sb:eq:main-expansion}; italic $C=K-A=b+1$ \eqref{sb:eq:subset-localization} &
+$\Cblock_{K,q}$ as $C_k$ or a Catalan number\\[3pt]
+$B$ &
+$B=1+t^2$ (Part~I); $B(m,r)$: the factorial ratio \eqref{rs:eq:Bfactor} &
+sans-serif $\Btri_q=\binom{q+1}2$ \eqref{sb:eq:D-and-B}; the factorial
+ratio is called $\beta(m,r)$ &
+$\Btri_q$ as $B(m,r)$\\[3pt]
+$\beta$ &
+$\beta_s(L)$: Part~III's product polynomials &
+$\beta(m,r)$: Part~II's $B(m,r)$ \eqref{sb:eq:beta} &
+$\beta(m,r)$ as $\beta_s(L)$\\[3pt]
+$\mathsf r$, $r$ &
+$r_i$: allocation counts; $R_k$: numerator degree (Part~II) &
+sans-serif $\rdeg_{K,q}=q(K-1-q)$, the $t$-degree \eqref{sb:eq:r-and-d};
+italic $r_i$ as in Part~II; $r$ also a Taylor order \eqref{sb:eq:jet-taylor} &
+$\rdeg_{K,q}$ as an allocation count\\[3pt]
+$N$ &
+$N^\delta_{a,m}$ (Part~I); $N_k$, $N_{k,\ell}$: recurrence orders (Parts~II, III) &
+$N_{K,q}(n,t)$: the grouped Laplace numerator \eqref{sb:eq:N-sum} &
+$N_{K,q}$ as a recurrence order\\[3pt]
+$E$ &
+the forward shift $E$ in recurrences (Parts~II, III) &
+$E_{K,n}$: the exponent set \eqref{sb:eq:exponents} &
+---\\[3pt]
+$M$ &
+$M_\eps$: tridiagonal matrices (Part~I); $M=k-1$ (Parts~II, III) &
+$M_{K,n}(t)$: the normalized derivative matrix \eqref{sb:eq:confluent-matrix} &
+$M_{K,n}$ as the integer $K-1$\\[3pt]
+$\eps$ &
+$\eps\in\{0,1\}$: the index of $M_\eps$ (Part~I) &
+$\epsK_K\in\{\pm1\}$: the corrected reciprocity sign \eqref{sb:eq:epsilon} &
+$\epsK_K$ as the sign printed in Cigler's~(83)\\[3pt]
+$\delta$ &
+$\delta\in\{0,1\}$ (Part~I); $\delta_k=\lfloor k^2/4\rfloor$ (Part~II);
+$\delta=2m^2$ (Part~III) &
+$\delta_K=b+1-a\in\{0,1\}$, the parity of $K$ \eqref{sb:eq:delta-parity} &
+$\delta_K$ as $\delta_k$\\[3pt]
+$H$, $\mathfrak H$ &
+$\Ht_k(n;t)$; $h_j$: complete homogeneous polynomials &
+$H$, $H_1$, $H_2$: multisets of derivative orders; $\mathfrak H_{a,b}$
+\eqref{sb:eq:full-derivative-multiset}; $\Ht_K$ as in Parts~I--III &
+$H_1$ as $\Ht_1$\\[3pt]
+$h$ &
+derivative orders (Part~II); $h_j$ &
+a derivative order, and the half-index in $q=2h$, $q=2h+1$
+(Sections~\ref{sb:sec:leading} and~\ref{sb:sec:divisibility}) &
+---\\[3pt]
+$L$ &
+the moment functional (Part~I); $L_{\boldsymbol r}$ (Part~II); a number of
+nodes or an integer variable (Part~III) &
+$L_{\boldsymbol r}$ as in Part~II \eqref{sb:eq:cluster-leading} &
+---\\[3pt]
+$u$, $T$, $S$ &
+$u$: a detuning parameter (Part~III); $S$: the unilateral shift (Part~I);
+$T_s$: moment determinants (Part~III) &
+$u=t-1$ (Lemma~\ref{sb:lem:t-one}); $S$, $T$: derivative orders of the
+selected and complementary cluster-$3$ rows (Lemma~\ref{sb:lem:t-zero}) &
+---\\[3pt]
+$\chi$, $\kappa$, $\eta$ &
+$\eta=2m(m+1)$ for $k=4m+3$ (Part~III) &
+$\chi_K(t)\in\{1,1+t\}$ \eqref{sb:eq:chi}; the collision cost $\kappa(H)$
+\eqref{sb:eq:kappa}; $\eta\in\{0,1\}$ in
+\eqref{sb:eq:weighted-assignment-bound} &
+$\eta$ as Part~III's $2m(m+1)$\\
+\bottomrule
+\end{longtable}}
+
+\subsection{Cigler's moment family}
+For $m\ge1$, define
+\begin{equation}
+ \mu_m(t)=
+ \sum_{j=1}^{m}
+ \binom{\lfloor(m-1)/2\rfloor}{\lfloor(j-1)/2\rfloor}
+ \binom{\lfloor m/2\rfloor}{\lfloor j/2\rfloor}t^{j-1},
+ \qquad \mu_0(t)=1.
+ \label{sb:eq:moments}
+\end{equation}
+For a shift $K\ge1$ and an order $n\ge0$, let
+\begin{equation}
+ \Delta_K(n;t)=\det\bigl(\mu_{K+i+j}(t)\bigr)_{0\le i,j<n},
+ \qquad \Delta_K(0;t)=1.
+ \label{sb:eq:hankel}
+\end{equation}
+The normalization relevant to Cigler's Conjecture~17 is
+\begin{equation}
+ \Ht_K(n;t)=(-1)^{K\binom n2}t^{-\binom n2}\Delta_K(n;t),
+ \label{sb:eq:normalized-hankel}
+\end{equation}
+where the right side is interpreted by polynomial continuation at $t=0$.
+The factor $t^{\binom n2}$ divides the determinant, so no Laurent ambiguity
+remains.
+
+Throughout the article we use the actual shift $K$ as the principal index and
+write
+\begin{equation}
+ a=\left\lfloor\frac K2\right\rfloor,
+ \qquad
+ b=\left\lfloor\frac{K-1}{2}\right\rfloor,
+ \qquad K=a+b+1.
+ \label{sb:eq:ab}
+\end{equation}
+Thus $a=b$ for odd $K$, whereas $a=b+1$ for even $K$.  Set
+\begin{equation}
+ \Den_K(t)=(1-t)^a(1-t^2)^{ab},
+ \qquad
+ \Btri_q=\binom{q+1}{2},
+ \label{sb:eq:D-and-B}
+\end{equation}
+and
+\begin{equation}
+ \rdeg_{K,q}=q(K-1-q),
+ \qquad
+ \dq_{K,q}=\left\lfloor\frac{\rdeg_{K,q}}2\right\rfloor.
+ \label{sb:eq:r-and-d}
+\end{equation}
+
+\subsection{The repository input and the remaining gap}
+\label{sb:sec:input}
+The inspected \texttt{ProveIt} report proves the identity
+\begin{equation}
+ \boxed{\Ht_K(n;t)=s_{(n^a)}(1^a,t,(t^2)^b).}
+ \label{sb:eq:schur-identity}
+\end{equation}
+It also proves that, over $\Q(t)$, there are unique polynomials in $n$,
+$\Pblock_{K,q}(n;t)$, such that
+\begin{equation}
+ \Ht_K(n;t)=\sum_{q=0}^{K-1}\Pblock_{K,q}(n;t)t^{qn},
+ \qquad
+ \deg_n\Pblock_{K,q}=\dq_{K,q}.
+ \label{sb:eq:existing-spectral}
+\end{equation}
+The uniqueness follows from the linear independence of the sequences
+$n^j(t^q)^n$ over $\Q(t)$ when the roots $t^q$ are distinct.  The repository
+obtains the exact degree and a nonzero leading coefficient from a general
+confluent spectral theorem for rectangular Schur polynomials.
+
+Cigler's Conjecture~17 asks for substantially more than
+\eqref{sb:eq:existing-spectral}: after extracting a triangular power of $t$, its
+coefficient functions should be honest polynomials in $t$, with a precise
+degree and a reciprocal pairing.  The current repository report explicitly
+lists the full coefficient structure as unresolved.  The following theorem
+settles that problem and corrects its sign.
+
+\noindent[Added 30 September 2026, batch~70: ``the inspected
+\texttt{ProveIt} report'' is Parts~I and~II of this report at the pin
+(Section~\ref{sb:sec:merge-provenance}). The identity
+\eqref{sb:eq:schur-identity} is Theorem~\ref{rs:thm:schur}; the
+decomposition \eqref{sb:eq:existing-spectral}, its uniqueness and its
+degrees are \eqref{rs:eq:spectralH} and \eqref{rs:eq:dq}, proved with
+Theorem~\ref{rs:thm:cluster}; the passage listing the full coefficient
+structure as unresolved is Part~II's research topic in
+Section~\ref{cp:sec:rs-conj17}, which now carries a note pointing here. That
+topic also asked ``which of the printed degree and reciprocity claims
+survive normalization'': both degree claims survive, and the printed
+reciprocity sign survives except for $K\equiv1\pmod4$
+(Theorem~\ref{sb:thm:main}, Section~\ref{sb:sec:printed-sign}).]
+
+\subsection{Main theorem}
+Let
+\begin{equation}
+ \IntZ=\{f\in\Q[n]: f(m)\in\Z\text{ for every }m\in\Z\}
+ \label{sb:eq:IntZ}
+\end{equation}
+be the ring of integer-valued polynomials.
+
+\begin{theorem}[Conjecture 17, proved and sign-corrected]
+\label{sb:thm:main}
+For every $K\ge1$ and every $0\le q\le K-1$, there is a unique polynomial
+\[
+ \Cblock_{K,q}(n,t)\in\IntZ[t]
+\]
+such that, for all $n\ge0$,
+\begin{equation}
+ \boxed{\displaystyle
+ \Ht_K(n;t)=\frac{1}{\Den_K(t)}
+ \sum_{q=0}^{K-1}(-1)^q
+ \Cblock_{K,q}(n,t)t^{qn+\Btri_q}.}
+ \label{sb:eq:main-expansion}
+\end{equation}
+It satisfies the exact bidegree formulas
+\begin{equation}
+ \boxed{\deg_t\Cblock_{K,q}=\rdeg_{K,q},
+ \qquad \deg_n\Cblock_{K,q}=\dq_{K,q}.}
+ \label{sb:eq:bidegrees}
+\end{equation}
+Furthermore,
+\begin{equation}
+ \boxed{\displaystyle
+ \Cblock_{K,K-1-q}(n,t)=\epsK_K
+ t^{\rdeg_{K,q}}\Cblock_{K,q}(n,t^{-1}),}
+ \label{sb:eq:corrected-reciprocity}
+\end{equation}
+where
+\begin{equation}
+ \epsK_K=(-1)^{K-1+a+ab}
+ =\begin{cases}
+   (-1)^{a-1},&K=2a,\\
+   1,&K=2a+1.
+  \end{cases}
+ \label{sb:eq:epsilon}
+\end{equation}
+Equivalently, $\epsK_K=-1$ exactly when $4\mid K$.
+\end{theorem}
+
+The proof occupies Sections~\ref{sb:sec:bialternant}--\ref{sb:sec:reciprocity}.
+The integer-valued conclusion is stronger than mere rational polynomiality:
+for every integer width $n\ge0$, each $\Cblock_{K,q}(n,t)$ lies in $\Z[t]$.
+
+\noindent[Added 30 September 2026, batch~70: the name ``Conjecture 17,
+proved and sign-corrected'' is the manuscript's. The relation
+\eqref{sb:eq:corrected-reciprocity} with the sign \eqref{sb:eq:epsilon} is
+not the relation printed in Cigler's equation~(83) when $K\equiv1\pmod4$
+(Section~\ref{sb:sec:printed-sign}). This theorem therefore proves
+Conjecture~17 in a corrected form; the conjecture as printed is false.]
+
+\section{Confluent bialternants and spectral sectors}
+\label{sb:sec:bialternant}
+
+\subsection{A distinct-variable identity}
+For distinct variables $x_1,\ldots,x_K$ and $A+C=K$, the rectangular
+bialternant can be expanded along its last $A$ columns to give
+\begin{equation}
+ s_{(n^A)}(x_1,\ldots,x_K)
+ =\sum_{\substack{I\subseteq\{1,\ldots,K\}\\|I|=A}}
+ \frac{\left(\prod_{i\in I}x_i\right)^{n+C}}
+ {\displaystyle\prod_{i\in I}\prod_{j\notin I}(x_i-x_j)}.
+ \label{sb:eq:subset-localization}
+\end{equation}
+For $A=1$, this is the usual partial-fraction formula for a complete
+homogeneous symmetric polynomial.  In general it is the fixed-point or
+Laplace form of the rectangular Schur character.  We will not take the
+coalescing limit term by term; doing so would hide the cancellations that are
+the substance of Conjecture~17.
+
+For our specialization, $A=a$ and $C=b+1$.  The variables coalesce into the
+three clusters
+\begin{equation}
+ (\xi_1,m_1)=(1,a),\qquad
+ (\xi_2,m_2)=(t,1),\qquad
+ (\xi_3,m_3)=(t^2,b).
+ \label{sb:eq:clusters}
+\end{equation}
+The single middle cluster is decisive: it makes the spectral exponent
+$q=r_2+2r_3$ determine the whole allocation.
+
+\subsection{The normalized derivative matrix}
+Let
+\begin{equation}
+ E_{K,n}=\{0,1,\ldots,b\}
+ \cup\{n+b+1,n+b+2,\ldots,n+K-1\}.
+ \label{sb:eq:exponents}
+\end{equation}
+The first block contains $b+1=C$ exponents and the second contains $a=A$.
+For a cluster $i$ and an order $0\le h<m_i$, define the normalized derivative
+row
+\begin{equation}
+ M_{(i,h),e}=\binom eh\xi_i^{e-h},
+ \qquad e\in E_{K,n}.
+ \label{sb:eq:confluent-matrix}
+\end{equation}
+This is $h!^{-1}(d/dx)^hx^e$ evaluated at $x=\xi_i$.  The confluent
+bialternant reads
+\begin{equation}
+ \Ht_K(n;t)=\frac{\det M_{K,n}(t)}{\ConfDelta_K(t)},
+ \label{sb:eq:confluent-bialternant}
+\end{equation}
+where, with the cluster order of \eqref{sb:eq:clusters},
+\begin{align}
+ \ConfDelta_K(t)
+ &=\prod_{1\le i<j\le3}(\xi_j-\xi_i)^{m_im_j}\notag\\
+ &=(t-1)^a(t^2-1)^{ab}(t^2-t)^b\notag\\
+ &=t^b(t-1)^{a+b}(t^2-1)^{ab}.
+ \label{sb:eq:confluent-vandermonde}
+\end{align}
+The normalized derivatives remove all hidden factorials from this formula.
+
+\subsection{Laplace grouping and the unique allocation}
+Expand $\det M_{K,n}(t)$ along the $a$ high-exponent columns.  If the selected
+high rows contain $r_i$ rows from cluster $i$, then
+\begin{equation}
+ r_1+r_2+r_3=a,
+ \qquad r_2\in\{0,1\}.
+ \label{sb:eq:allocation-constraints}
+\end{equation}
+Every selected row from cluster $2$ contributes a factor $t^n$, and every
+selected row from cluster $3$ contributes $t^{2n}$.  Hence its spectral
+exponent is
+\begin{equation}
+ q=r_2+2r_3.
+ \label{sb:eq:q-allocation}
+\end{equation}
+For each $0\le q\le K-1$, the allocation is unique:
+\begin{equation}
+ r_3=\left\lfloor\frac q2\right\rfloor,
+ \qquad
+ r_2=q-2\left\lfloor\frac q2\right\rfloor,
+ \qquad
+ r_1=a-\left\lceil\frac q2\right\rceil.
+ \label{sb:eq:unique-allocation}
+\end{equation}
+Let $N_{K,q}(n,t)$ be the signed sum of all complementary-minor products with
+this allocation.  Thus
+\begin{equation}
+ \det M_{K,n}(t)=\sum_{q=0}^{K-1}N_{K,q}(n,t),
+ \label{sb:eq:N-sum}
+\end{equation}
+and comparison with \eqref{sb:eq:existing-spectral} gives
+\begin{equation}
+ \Pblock_{K,q}(n;t)
+ =\frac{N_{K,q}(n,t)}{\ConfDelta_K(t)t^{qn}}.
+ \label{sb:eq:P-via-N}
+\end{equation}
+The candidate Conjecture~17 block is therefore forced to be
+\begin{equation}
+ \Cblock_{K,q}(n,t)=(-1)^q\Den_K(t)t^{-\Btri_q}
+ \Pblock_{K,q}(n;t).
+ \label{sb:eq:C-definition}
+\end{equation}
+Using \eqref{sb:eq:confluent-vandermonde}, this becomes the much more revealing
+formula
+\begin{equation}
+ \boxed{\displaystyle
+ \Cblock_{K,q}(n,t)=
+ (-1)^{q+a+ab}
+ \frac{N_{K,q}(n,t)}
+ {t^{qn+\Btri_q+b}(t-1)^b}.}
+ \label{sb:eq:C-quotient}
+\end{equation}
+Consequently the entire polynomiality problem reduces to two divisibilities:
+\begin{equation}
+ t^{qn+\Btri_q+b}\mid N_{K,q}(n,t),
+ \qquad
+ (t-1)^b\mid N_{K,q}(n,t).
+ \label{sb:eq:two-divisibilities}
+\end{equation}
+The first is a weighted assignment problem at $t=0$.  The second is a
+collision problem for complementary jets at $t=1$.
+
+\section{The two divisibility mechanisms}
+\label{sb:sec:divisibility}
+
+\subsection{Weighted assignments at the origin}
+We begin with a general elementary bound.  Suppose a determinant has column
+exponents
+\[
+ e_0<e_1<\cdots<e_{m-1}
+\]
+and rows of three types: weight zero, one middle row of weight one and
+normalized derivative order zero, and $c$ weight-two rows with derivative
+orders in a set $H$.  A nonzero permutation term assigns distinct exponents
+to these rows.  The weight-two rows are cheapest on the $c$ smallest assigned
+exponents, while the middle row, when present, is cheapest on the next one.
+Therefore every determinant term has $t$-valuation at least
+\begin{equation}
+ 2\sum_{j=0}^{c-1}e_j+\eta e_c-2\sum_{h\in H}h,
+ \qquad \eta\in\{0,1\},
+ \label{sb:eq:weighted-assignment-bound}
+\end{equation}
+where the middle term is omitted when $\eta=0$.  Cancellation can increase
+this valuation but cannot decrease it.
+
+\begin{lemma}[Exact triangular lower valuation]
+\label{sb:lem:t-zero}
+For every $K,n,q$,
+\[
+ \ord_{t=0}N_{K,q}(n,t)\ge qn+\Btri_q+b.
+\]
+\end{lemma}
+
+\begin{proof}
+Write the derivative orders of the cluster-$3$ rows selected for the high
+minor as $S$; the complementary orders form $T$.  Thus
+\begin{equation}
+ \sum_{h\in S}h+\sum_{h\in T}h=\frac{b(b-1)}2.
+ \label{sb:eq:derivative-sum}
+\end{equation}
+
+First let $q=2h$.  The high minor contains $h$ cluster-$3$ rows and no middle
+row.  Its columns start at $n+b+1$, so
+\begin{equation}
+ \ord_t(\text{high})\ge
+ 2h(n+b+1)+h(h-1)-2\sum_{r\in S}r.
+ \label{sb:eq:even-high}
+\end{equation}
+The low minor contains $b-h$ cluster-$3$ rows and the middle row.  Applying
+\eqref{sb:eq:weighted-assignment-bound} to the columns $0,1,\ldots,b$ gives
+\begin{equation}
+ \ord_t(\text{low})\ge
+ (b-h)^2-2\sum_{r\in T}r.
+ \label{sb:eq:even-low}
+\end{equation}
+Adding and using \eqref{sb:eq:derivative-sum},
+\begin{align*}
+ \ord_t(\text{high}\cdot\text{low})
+ &\ge 2hn+2h^2+h+b\\
+ &=qn+\binom{q+1}{2}+b.
+\end{align*}
+
+Now let $q=2h+1$.  The high minor contains $h$ cluster-$3$ rows and the
+middle row.  The middle row receives the next high exponent after the $h$
+weight-two assignments, so
+\begin{align}
+ \ord_t(\text{high})\ge{}&
+ 2h(n+b+1)+h(h-1)\notag\\
+ &+(n+b+1+h)-2\sum_{r\in S}r.
+ \label{sb:eq:odd-high}
+\end{align}
+The low minor contains $b-h$ cluster-$3$ rows and no middle row, whence
+\begin{equation}
+ \ord_t(\text{low})\ge
+ (b-h)(b-h-1)-2\sum_{r\in T}r.
+ \label{sb:eq:odd-low}
+\end{equation}
+The sum is
+\[
+ (2h+1)n+2h^2+3h+1+b
+ =qn+\binom{q+1}{2}+b.
+\]
+Every Laplace product has the required valuation, so their signed sum does as
+well.
+\end{proof}
+
+The appearance of $\binom{q+1}{2}$ is therefore not guessed from examples: it
+is the exact tropical cost of assigning the vanishing nodes $t$ and $t^2$ to
+the two complementary exponent blocks.
+
+\subsection{A determinant collision lemma}
+The cancellation of $(t-1)^b$ is subtler.  All three nodes tend to $1$, and
+one must control each complementary minor, not only the full determinant.
+
+For a finite multiset $H$ of nonnegative integers, define its collision cost
+\begin{equation}
+ \kappa(H)=\min\left\{
+ \sum_i(p_i-h_i):
+ p_i\ge h_i,\ p_i\in\N,\ p_i\text{ pairwise distinct}
+ \right\}.
+ \label{sb:eq:kappa}
+\end{equation}
+
+\begin{lemma}[Jet-collision valuation]
+\label{sb:lem:jet-collision}
+Let $f_1,\ldots,f_m$ be analytic near $1$.  For rows indexed by derivative
+orders $h_i$ and analytic paths $x_i(u)=1+O(u)$, form
+\[
+ A_{ij}(u)=\frac{1}{h_i!}f_j^{(h_i)}(x_i(u)).
+\]
+Then
+\[
+ \ord_{u=0}\det A(u)\ge\kappa(\{h_1,\ldots,h_m\}).
+\]
+\end{lemma}
+
+\begin{proof}
+Write $D^h=f^{(h)}/h!$.  Taylor's formula gives
+\begin{equation}
+ D^{h_i}f_j(x_i(u))
+ =\sum_{r\ge0}\binom{h_i+r}{h_i}
+ D^{h_i+r}f_j(1)\,(x_i(u)-1)^r.
+ \label{sb:eq:jet-taylor}
+\end{equation}
+A multilinear determinant term choosing jet order $p_i=h_i+r_i$ from row
+$i$ vanishes unless the $p_i$ are distinct, because equal jet orders give
+identical row vectors.  Since $x_i(u)-1=O(u)$, that term has order at least
+$\sum_i(p_i-h_i)$.  Minimizing gives \eqref{sb:eq:kappa}.
+\end{proof}
+
+\begin{lemma}[Two complementary jet tables]
+\label{sb:lem:two-server}
+Let
+\begin{equation}
+ \mathfrak H_{a,b}
+ =\{0,1,\ldots,a-1\}\sqcup\{0\}\sqcup\{0,1,\ldots,b-1\}.
+ \label{sb:eq:full-derivative-multiset}
+\end{equation}
+For every partition $\mathfrak H_{a,b}=H_1\sqcup H_2$,
+\[
+ \kappa(H_1)+\kappa(H_2)\ge b.
+\]
+\end{lemma}
+
+\begin{proof}
+Interpret the two sets as jobs assigned to two single-server schedules.  A
+job released at time $h$ is scheduled at the distinct integer time $p\ge h$;
+its waiting time is $p-h$.  For every $0\le r<b$, the full multiset contains
+\[
+ (r+1)+1+(r+1)=2r+3
+\]
+jobs released by time $r$.  The two servers have only $2(r+1)=2r+2$ slots
+through time $r$.  Hence at least one job released by time $r$ must be
+scheduled after $r$.
+
+For any schedule,
+\[
+ \sum_i(p_i-h_i)=
+ \sum_{r\ge0}\#\{i:h_i\le r<p_i\}.
+\]
+The preceding deficit contributes at least one for each
+$r=0,1,\ldots,b-1$, proving the lower bound $b$.
+\end{proof}
+
+\begin{lemma}[Universal missing-factor cancellation]
+\label{sb:lem:t-one}
+For every $K,n,q$,
+\[
+ (t-1)^b\mid N_{K,q}(n,t).
+\]
+\end{lemma}
+
+\begin{proof}
+Put $u=t-1$.  The three node paths are
+\[
+ 1,\qquad 1+u,\qquad (1+u)^2=1+2u+u^2.
+\]
+Consider one Laplace product contributing to $N_{K,q}$.  Its high and low
+minors partition the complete derivative multiset
+$\mathfrak H_{a,b}$.  By Lemma~\ref{sb:lem:jet-collision}, their valuations are at
+least $\kappa(H_1)$ and $\kappa(H_2)$.  By Lemma~\ref{sb:lem:two-server}, the product
+has $u$-valuation at least $b$.  This holds term by term, hence also for the
+signed grouped sum.
+\end{proof}
+
+The proof exposes why the missing factor is exactly associated with the
+single intermediate node.  The full confluent Vandermonde contains
+$(t^2-t)^b=t^b(t-1)^b$, but Cigler's proposed denominator omits the
+$(t-1)^b$ part.  Complementary jets supply it automatically.
+
+\subsection{Polynomiality and integer values}
+
+\begin{corollary}[Polynomial blocks]
+\label{sb:cor:polynomiality}
+The quotient in \eqref{sb:eq:C-quotient} belongs to $\Q[n,t]$.  For every
+integer $n\ge0$, it belongs to $\Z[t]$; consequently
+$\Cblock_{K,q}\in\IntZ[t]$.
+\end{corollary}
+
+\begin{proof}
+The high-block rows contribute the common factor $t^{qn}$ for the allocation
+$q$.  After it is removed, every matrix entry is polynomial in $t$ and in the
+binomial polynomials $\binom{n+c}{h}$, hence lies in $\Q[n,t]$ and is
+integer-valued in $n$.  Lemmas~\ref{sb:lem:t-zero} and~\ref{sb:lem:t-one} prove
+exact divisibility by the monic polynomial
+$t^{qn+\Btri_q+b}(t-1)^b$ for each nonnegative integer $n$.  Division by a
+monic polynomial preserves integral coefficients.  The quotient is
+polynomial in $n$, and its coefficient polynomials take integer values at
+all nonnegative integers; finite-difference interpolation places them in
+$\IntZ$.
+\end{proof}
+
+Substitution of \eqref{sb:eq:C-definition} into
+\eqref{sb:eq:existing-spectral} now proves the existence part of
+Theorem~\ref{sb:thm:main}.  Uniqueness follows from the uniqueness of the spectral
+blocks $\Pblock_{K,q}$.
+
+\section{Exact width degree and leading coefficient}
+\label{sb:sec:leading}
+
+\subsection{The inherited confluent leading term}
+The repository's general cluster theorem gives the leading coefficient in
+$n$ of each canonical spectral polynomial.  We recall the finite formula in
+the notation needed here.  For cluster multiplicities $m_i$, selected counts
+$r_i$, complements $s_i=m_i-r_i$, total high size $A$, and $C=K-A$, define
+\begin{equation}
+ \beta(m,r)=
+ \frac{\displaystyle\prod_{j=0}^{r-1}j!}
+ {\displaystyle\prod_{j=m-r}^{m-1}j!},
+ \qquad \beta(m,0)=\beta(m,m)=1.
+ \label{sb:eq:beta}
+\end{equation}
+The degree is $d=\sum_i r_is_i$, and the leading coefficient of the spectral
+polynomial is
+\begin{equation}
+ L_{\boldsymbol r}=(-1)^{\sum_{i<j}r_is_j}
+ \frac{\displaystyle\prod_i
+ \beta(m_i,r_i)\xi_i^{Cr_i-r_is_i}}
+ {\displaystyle\prod_{i<j}
+ (\xi_j-\xi_i)^{s_ir_j+r_is_j}}.
+ \label{sb:eq:cluster-leading}
+\end{equation}
+It is nonzero whenever the cluster nodes are distinct.
+
+\noindent[Added 30 September 2026, batch~70: ``the repository's general
+cluster theorem'' is Part~II's Theorem~\ref{rs:thm:cluster}. Formula
+\eqref{sb:eq:cluster-leading} is \eqref{rs:eq:LC} symbol for symbol, with
+$\beta(m,r)$ for Part~II's $B(m,r)$ \eqref{rs:eq:Bfactor}; the degree
+$d=\sum_ir_is_i$ is Part~II's $d_{\boldsymbol r}$ \eqref{rs:eq:lambdad}.]
+
+\subsection{Evaluation for even sectors}
+Let $q=2h$.  Then
+\begin{equation}
+ \boldsymbol r=(a-h,0,h),
+ \qquad
+ \boldsymbol s=(h,1,b-h),
+ \label{sb:eq:even-allocation}
+\end{equation}
+and
+\begin{equation}
+ \dq_{K,2h}=h(a+b-2h).
+ \label{sb:eq:even-d}
+\end{equation}
+Direct substitution into \eqref{sb:eq:cluster-leading} gives
+\begin{equation}
+ [n^{\dq_{K,2h}}]\Pblock_{K,2h}
+ =(-1)^{(a-h)(b+1-h)}
+ \beta(a,a-h)\beta(b,h)
+ \frac{t^{\Btri_{2h}}}
+ {(t-1)^a(t^2-1)^{ab-\dq_{K,2h}}}.
+ \label{sb:eq:P-leading-even}
+\end{equation}
+Multiplying by $\Den_K(t)t^{-\Btri_{2h}}$ and simplifying the parity gives
+\begin{equation}
+ \boxed{\displaystyle
+ [n^{\dq_{K,2h}}]\Cblock_{K,2h}
+ =\beta(a,a-h)\beta(b,h)
+ (1-t^2)^{\dq_{K,2h}}.}
+ \label{sb:eq:C-leading-even}
+\end{equation}
+The sign disappears because the total exponent reduces to $h(h+1)$ modulo
+two.
+
+\subsection{Evaluation for odd sectors}
+Let $q=2h+1$.  Then
+\begin{equation}
+ \boldsymbol r=(a-h-1,1,h),
+ \qquad
+ \boldsymbol s=(h+1,0,b-h),
+ \label{sb:eq:odd-allocation}
+\end{equation}
+and
+\begin{equation}
+ \dq_{K,2h+1}=(a-h-1)(h+1)+h(b-h).
+ \label{sb:eq:odd-d}
+\end{equation}
+Put
+\begin{equation}
+ \delta_K=b+1-a=
+ \begin{cases}0,&K\text{ even},\\1,&K\text{ odd}.
+ \end{cases}
+ \label{sb:eq:delta-parity}
+\end{equation}
+The cluster formula becomes
+\begin{align}
+ [n^{\dq_{K,2h+1}}]\Pblock_{K,2h+1}
+ ={}&(-1)^{(a-h)(b-h)}
+ \beta(a,a-h-1)\beta(b,h)\notag\\
+ &\times
+ \frac{t^{\Btri_{2h+1}}}
+ {(t-1)^{b+1}(t^2-1)^{ab-\dq_{K,2h+1}-\delta_K}}.
+ \label{sb:eq:P-leading-odd}
+\end{align}
+After applying \eqref{sb:eq:C-definition}, the excess
+$(t^2-1)^{\delta_K}/(t-1)^{\delta_K}$ is $1$ for even $K$ and $1+t$ for odd
+$K$.  The remaining sign reduces to $(-1)^h$.  Hence
+\begin{equation}
+ \boxed{\displaystyle
+ [n^{\dq_{K,2h+1}}]\Cblock_{K,2h+1}
+ =(-1)^h\beta(a,a-h-1)\beta(b,h)
+ \chi_K(t)(1-t^2)^{\dq_{K,2h+1}},}
+ \label{sb:eq:C-leading-odd}
+\end{equation}
+where
+\begin{equation}
+ \chi_K(t)=\begin{cases}1,&K\text{ even},\\1+t,&K\text{ odd}.
+ \end{cases}
+ \label{sb:eq:chi}
+\end{equation}
+
+\begin{corollary}[Exact degree in $n$ and a nonzero constant term]
+\label{sb:cor:n-degree}
+For all $K,q$,
+\[
+ \deg_n\Cblock_{K,q}=\dq_{K,q}.
+\]
+Moreover the coefficient of $t^0$ in
+$[n^{\dq_{K,q}}]\Cblock_{K,q}$ is nonzero.
+\end{corollary}
+
+\begin{proof}
+The multiplication in \eqref{sb:eq:C-definition} is independent of $n$, so the
+nonzero degree $\dq_{K,q}$ from \eqref{sb:eq:existing-spectral} is preserved.
+Equations~\eqref{sb:eq:C-leading-even} and~\eqref{sb:eq:C-leading-odd} have
+nonzero constant term $\pm\beta(\cdot,\cdot)\beta(\cdot,\cdot)$.
+\end{proof}
+
+The leading formulas are useful independently of Conjecture~17.  They give a
+closed product expression for the highest-width coefficient of every block,
+and they certify that none of the origin valuations used in
+Lemma~\ref{sb:lem:t-zero} is an artifact of total cancellation.
+
+\section{Reciprocity, exact \texorpdfstring{$t$}{t}-degree, and the sign correction}
+\label{sb:sec:reciprocity}
+
+\subsection{Schur reciprocity}
+The specialized rectangular Schur polynomial is reciprocal:
+\begin{equation}
+ \Ht_K(n;t^{-1})=t^{-(K-1)n}\Ht_K(n;t).
+ \label{sb:eq:H-reciprocity}
+\end{equation}
+For odd $K$, this follows because inversion of the alphabet, followed by
+multiplication by $t^2$, permutes its entries.  For even $K$, it is the
+rectangular complement identity; the product of the alphabet entries is
+$t^{K-1}$.  Comparing the unique decompositions
+\eqref{sb:eq:existing-spectral} on both sides gives
+\begin{equation}
+ \Pblock_{K,K-1-q}(n;t)=\Pblock_{K,q}(n;t^{-1}).
+ \label{sb:eq:P-reciprocity}
+\end{equation}
+
+\noindent[Added 30 September 2026, batch~70:
+\eqref{sb:eq:H-reciprocity} is the reciprocity \eqref{eq:pal} of Part~I's
+Theorem~\ref{thm:main}, proved there from the parity factorization; the
+Schur argument above is a second route. The uniqueness used for
+\eqref{sb:eq:P-reciprocity} is that of Part~II's \eqref{rs:eq:spectralH}.]
+
+The denominator transforms as
+\begin{equation}
+ \Den_K(t^{-1})=(-1)^{a+ab}t^{-a-2ab}\Den_K(t).
+ \label{sb:eq:D-reciprocity}
+\end{equation}
+Let $q'=K-1-q$.  Two elementary identities, using $K=a+b+1$ and
+$a-b\in\{0,1\}$, are
+\begin{align}
+ a+2ab-\Btri_q-\Btri_{q'}&=qq'=\rdeg_{K,q},
+ \label{sb:eq:power-identity}\\
+ (-1)^{q'-q+a+ab}&=(-1)^{K-1+a+ab}=\epsK_K.
+ \label{sb:eq:sign-identity}
+\end{align}
+Substituting \eqref{sb:eq:P-reciprocity} into \eqref{sb:eq:C-definition} now proves
+\eqref{sb:eq:corrected-reciprocity}.
+
+\subsection{Exact degree in \texorpdfstring{$t$}{t}}
+Polynomiality alone gives no sharp upper degree.  Reciprocity supplies it
+without another determinant estimate.
+
+\begin{proposition}[Exact spectral-block width]
+\label{sb:prop:t-degree}
+For every $K,q$,
+\[
+ \deg_t\Cblock_{K,q}=\rdeg_{K,q}=q(K-1-q).
+\]
+\end{proposition}
+
+\begin{proof}
+By Corollary~\ref{sb:cor:n-degree}, the constant coefficient in $t$ of
+$\Cblock_{K,q}$ is not the zero polynomial in $n$.  The same holds for the
+paired block $q'=K-1-q$.  In
+\[
+ \Cblock_{K,q'}(n,t)=\epsK_K t^{\rdeg_{K,q}}
+ \Cblock_{K,q}(n,t^{-1}),
+\]
+the nonzero constant term of the left side is the image of the top
+$t$-coefficient of the right-side partner.  Thus the latter occurs exactly
+at degree $\rdeg_{K,q}$.  Symmetry gives the statement for both blocks.
+\end{proof}
+
+This proves both degree assertions in Conjecture~17 and completes the proof
+of Theorem~\ref{sb:thm:main}.
+
+\subsection{Where the printed sign fails}
+\label{sb:sec:printed-sign}
+Cigler's equation~(83) prints the sign
+\begin{equation}
+ (-1)^{\lfloor K/2\rfloor-1}
+ \label{sb:eq:printed-sign}
+\end{equation}
+for all shifts.  For even $K=2a$, this equals the correct sign
+$(-1)^{a-1}$.  For odd $K=2a+1$, however, the correct sign is always $+1$.
+The printed sign therefore fails exactly when $K\equiv1\pmod4$ and $K\ge5$.
+
+The first failure is already visible inside the source.  Its displayed
+central block for $K=5$ is
+\begin{align}
+ \Cblock_{5,2}(n,t)={}&(n+2)(n+3)-t
+ -2(n+2)(n+3)t^2-t^3\notag\\
+ &+(n+2)(n+3)t^4.
+ \label{sb:eq:c52}
+\end{align}
+It satisfies
+\begin{equation}
+ \Cblock_{5,2}(n,t)=t^4\Cblock_{5,2}(n,t^{-1}),
+ \label{sb:eq:c52-palindromic}
+\end{equation}
+whereas the printed sign would require its negative.  An anti-reciprocal
+polynomial of even degree would in particular have zero central coefficient;
+the coefficient of $t^2$ in \eqref{sb:eq:c52} is nonzero.  Thus this is not a
+matter of convention or normalization.  The correction is forced before any
+new examples are computed.
+
+\noindent[Added 30 September 2026, batch~70: two remarks of this merge.
+First, the residue class $K\equiv1\pmod4$ also contains $K=1$. There the
+printed sign is $(-1)^{\lfloor1/2\rfloor-1}=-1$, so it would demand
+$\Cblock_{1,0}=-\Cblock_{1,0}$, whereas $\Cblock_{1,0}=1$
+(Corollary~\ref{sb:cor:boundary}): it fails there too, trivially. The
+manuscript's range ``$K\ge5$'' is exact if Cigler's Conjecture~17 is stated
+only for $K\ge2$; whether it is was not re-checked against his paper during
+this intake, so the safe reading is that the printed sign fails for every
+$K\equiv1\pmod4$ to which the conjecture applies. Second, an independent
+computation during the intake (blocks read off by separating $t$-degrees at
+large widths and interpolating in~$n$, from the Jacobi--Trudi form, bridged
+to the raw Hankel determinant for $K\le5$, $n\le5$) confirmed the
+bidegrees, the integer values, $\epsK_K$ and the reconstruction of
+$\Ht_K(n;t)$ at small widths for $K\le7$, confirmed $\Cblock_{5,2}$ as
+displayed in \eqref{sb:eq:c52}, and found the printed sign failing at $K=1$
+and at $K=5$ for every $q$ and holding at $K=2,3,4,6,7$. It is not shipped.
+Part~II's correction of Cigler's equation~(85) concerns a different
+equation and the residue class $4\mid k$
+(Section~\ref{sb:sec:merge-provenance}).]
+
+\begin{corollary}[Boundary blocks]
+\label{sb:cor:boundary}
+For every $K\ge1$,
+\[
+ \Cblock_{K,0}(n,t)=1,
+ \qquad
+ \Cblock_{K,K-1}(n,t)=\epsK_K.
+\]
+\end{corollary}
+
+\begin{proof}
+Both blocks have bidegree $(0,0)$.  Equation~\eqref{sb:eq:C-leading-even} gives
+the first value, and reciprocity gives the second.
+\end{proof}
+
+\section{Examples and consistency checks}
+\label{sb:sec:examples}
+
+\subsection{The first three shifts}
+For $K=1$, the only block is $\Cblock_{1,0}=1$.  For $K=2$,
+\[
+ \Cblock_{2,0}=\Cblock_{2,1}=1,
+ \qquad
+ \Ht_2(n;t)=\frac{1-t^{n+1}}{1-t}.
+\]
+For $K=3$,
+\[
+ \Cblock_{3,0}=1,
+ \qquad \Cblock_{3,1}=1+t,
+ \qquad \Cblock_{3,2}=1,
+\]
+and
+\begin{equation}
+ \Ht_3(n;t)=
+ \frac{1-(1+t)t^{n+1}+t^{2n+3}}
+ {(1-t)(1-t^2)}.
+ \label{sb:eq:K3}
+\end{equation}
+The central block has $t$-degree one and $n$-degree zero, as prescribed by
+\eqref{sb:eq:bidegrees}.
+
+\subsection{Shift four}
+Here $a=2$, $b=1$, and $\epsK_4=-1$.  The blocks are
+\begin{align}
+ \Cblock_{4,0}&=1,\notag\\
+ \Cblock_{4,1}&=n+2+t-(n+2)t^2,\notag\\
+ \Cblock_{4,2}&=n+2-t-(n+2)t^2,\notag\\
+ \Cblock_{4,3}&=-1.
+ \label{sb:eq:K4-blocks}
+\end{align}
+They obey
+\[
+ \Cblock_{4,2}(n,t)=-t^2\Cblock_{4,1}(n,t^{-1}),
+ \qquad \Cblock_{4,3}=-\Cblock_{4,0}.
+\]
+Substitution gives
+\begin{align}
+ \Ht_4(n;t)=\frac{1}{(1-t)^2(1-t^2)^2}\bigl(&1
+ -\Cblock_{4,1}t^{n+1}
+ +\Cblock_{4,2}t^{2n+3}\notag\\
+ &-\Cblock_{4,3}t^{3n+6}\bigr).
+ \label{sb:eq:K4-expansion}
+\end{align}
+The leading $n$-coefficients are $1-t^2$ and $1-t^2$, in agreement with
+\eqref{sb:eq:C-leading-odd} and \eqref{sb:eq:C-leading-even}.
+
+\subsection{Shift five and the corrected central symmetry}
+Here $a=b=2$ and all paired signs are positive.  One finds
+\begin{align}
+ \Cblock_{5,0}&=1,\notag\\
+ \Cblock_{5,1}&=(1-t^2)\bigl(n+2+(n+3)t\bigr),\notag\\
+ \Cblock_{5,2}&=(n+2)(n+3)-t
+ -2(n+2)(n+3)t^2-t^3\notag\\
+ &\hspace{7em}+(n+2)(n+3)t^4,\notag\\
+ \Cblock_{5,3}&=t^3\Cblock_{5,1}(n,t^{-1}),\notag\\
+ \Cblock_{5,4}&=1.
+ \label{sb:eq:K5-blocks}
+\end{align}
+The $n$-leading terms are
+\begin{align*}
+ [n]\Cblock_{5,1}&=(1+t)(1-t^2),\\
+ [n^2]\Cblock_{5,2}&=(1-t^2)^2,\\
+ [n]\Cblock_{5,3}&=-(1+t)(1-t^2).
+\end{align*}
+The sign change between the leading coefficients of the odd sectors comes
+from $(-1)^h$ in \eqref{sb:eq:C-leading-odd}, not from reciprocal pairing.
+
+\subsection{Degree and sign table}
+For orientation, the first shifts have the following data.  The maximum
+$n$-degree is $\max_q\dq_{K,q}$.
+\begin{center}
+\begin{tabular}{@{}crrcc@{}}
+\toprule
+$K$ & $a$ & $b$ & $\epsK_K$ & $\max_q\deg_n\Cblock_{K,q}$\\
+\midrule
+1&0&0&$+1$&0\\
+2&1&0&$+1$&0\\
+3&1&1&$+1$&0\\
+4&2&1&$-1$&1\\
+5&2&2&$+1$&2\\
+6&3&2&$+1$&3\\
+7&3&3&$+1$&4\\
+8&4&3&$-1$&6\\
+\bottomrule
+\end{tabular}
+\end{center}
+Negative reciprocity occurs at $K=4,8,12,\ldots$, not at odd shifts.
+
+\section{Exact computation and verification}
+\label{sb:sec:verification}
+
+\subsection{A finite algorithm}
+The proof gives a direct exact algorithm that avoids an $n\times n$ Hankel
+determinant.
+
+\begin{algorithm}[Confluent spectral blocks]
+\label{sb:alg:blocks}
+Given $K$ and a nonnegative integer $n$:
+\begin{enumerate}
+\item Compute $a,b$ and the exponent list \eqref{sb:eq:exponents}.
+\item Build the $K\times K$ normalized derivative matrix
+      \eqref{sb:eq:confluent-matrix} over $\Z[t]$.
+\item Expand along the $a$ high columns and group each complementary-minor
+      product by $q=r_2+2r_3$.
+\item Divide the grouped numerator by
+      $t^{qn+\Btri_q+b}(t-1)^b$ and apply the sign
+      $(-1)^{q+a+ab}$.
+\end{enumerate}
+The result is $\Cblock_{K,q}(n,t)$.  To recover the full polynomial in $n$,
+interpolate from $\dq_{K,q}+1$ integer widths.
+\end{algorithm}
+
+The divisions in Step~4 are certified by the two lemmas, not inferred from a
+computer algebra simplification.  The determinant size depends only on the
+shift $K$, whereas the original Hankel matrix has size $n$.
+
+\subsection{What the shipped verifier checks}
+The package includes \path{code/verify.py}, using exact SymPy arithmetic.  A
+recorded run with Python~3.13 and SymPy~1.14 performs the following checks.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}XrX@{}}
+\toprule
+Check & Cases & Range or meaning\\
+\midrule
+Polynomial bidegrees & 36 & Every block for $1\le K\le8$\\
+Corrected reciprocity & 36 & Every paired block for $1\le K\le8$\\
+Explicit $n$-leading coefficient & 36 & Equations~\eqref{sb:eq:C-leading-even} and \eqref{sb:eq:C-leading-odd}\\
+Schur reconstruction & 40 & Interpolation widths and two fresh widths for each $K\le8$\\
+Integral $t$-coefficients & 216 & Every tested block at every tested integer width\\
+Original Hankel--Schur bridge & 36 & $1\le K\le6$, $0\le n\le5$\\
+Printed-sign counterexample & 1 & $K=5,q=2$: printed relation nonzero, corrected relation zero\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The verifier constructs the original moments \eqref{sb:eq:moments} independently,
+forms their Hankel determinant, and compares it with the Schur side before
+checking the spectral decomposition.  It therefore exercises every bridge in
+\[
+ \begin{gathered}
+ \text{moments}\longrightarrow\text{Hankel determinant}
+ \longrightarrow\text{Schur polynomial}\\
+ \longrightarrow\text{confluent sectors}
+ \longrightarrow\text{Conjecture 17 blocks}.
+ \end{gathered}
+\]
+All computations are exact.  The finite range does not prove the general
+theorem; its purpose is to catch indexing, sign, exponent, and normalization
+errors in the written derivation.
+
+\noindent[Added 30 September 2026, batch~70: the verifier and its records
+are shipped as \path{code/04-spectral-blocks-verify.py},
+\path{data/04-spectral-blocks-verification.json} and
+\path{data/04-spectral-blocks-verification.log}. The JSON record has the
+counts tabulated above, and also 96 interpolation input values, six sample
+blocks and an elapsed time of 16.39\,s. In this directory
+\path{code/verify.py} is Part~I's verifier, and the verifier's default
+output \path{data/verification.json} is Part~I's record; the report README
+gives a rerun with an explicit output path. Rerun that way during the
+intake, every check passed, and the record was reproduced except for the
+elapsed time. The intake's independent check is described in
+Section~\ref{sb:sec:printed-sign}; it covers $K\le7$ and is not shipped.]
+
+\subsection{Complexity remarks}
+For fixed $K$, each matrix entry is a binomial polynomial in $n$ times a
+monomial in $t$.  There are $\binom Ka$ Laplace selections.  A direct symbolic
+implementation is therefore exponential in $K$ but independent of the width
+as a matrix dimension.  Several improvements are immediate:
+\begin{itemize}
+\item compute each allocation with Cauchy--Binet rather than enumerate every
+      row subset;
+\item use fraction-free elimination in the integer-valued polynomial basis
+      $\binom nr$;
+\item exploit reciprocal pairing to compute only half the sectors;
+\item use the leading formulas as degree and normalization certificates;
+\item reinterpret grouped minors as subresultants, which should provide a
+      polynomial-time algorithm in $K$ for one sector.
+\end{itemize}
+No bit-complexity claim is made for the reference implementation.
+
+\section{A formalization route}
+\label{sb:sec:formalization}
+The proof is well suited to a staged Lean formalization because its difficult
+steps are finite algebra and discrete valuation estimates.
+
+\subsection{Layer 1: the finite Schur bridge}
+Represent the exponent list, normalized derivative rows, and confluent
+Vandermonde as finite matrices over $\Q[n,t]$.  The repository already
+contains determinant and Schur infrastructure around this family.  The new
+formal target is the grouped Laplace identity \eqref{sb:eq:P-via-N}, including
+the unique allocation \eqref{sb:eq:unique-allocation}.
+
+\noindent[Added 30 September 2026, batch~70: the ``determinant and Schur
+infrastructure'' is the paper proofs of Parts~I--III and their Python
+verifiers. No Lean or Rocq declaration in ProveIt concerns Cigler's
+polynomials; this section is a proposed route, and nothing in it is
+implemented.]
+
+\subsection{Layer 2: valuation certificates}
+Formalize a valuation lower bound for determinant permutation terms over
+$\Q[t]$.  The origin argument reduces to rearrangement on a finite list of
+column exponents.  It is important to state the result as a lower bound;
+minimal monomials may cancel, but cancellation cannot create a lower
+valuation.
+
+For $t=1$, define $\kappa(H)$ by \eqref{sb:eq:kappa}.  The Taylor-jet proof can
+be implemented either with truncated power series or with divisibility by
+powers of $t-1$.  The two-server lemma is a finite Hall-type counting
+argument.  Its cumulative form, $2r+3>2r+2$ for $r<b$, avoids any scheduling
+library.
+
+\subsection{Layer 3: integer-valued polynomial blocks}
+Once the two divisibilities are formalized, define $\Cblock_{K,q}$ by exact
+polynomial division.  The ring $\IntZ$ can initially be avoided by proving
+that every natural-number specialization lies in $\Z[t]$.  A later layer can
+identify the coefficients in the binomial basis and package the result as an
+integer-valued polynomial theorem.
+
+\subsection{Layer 4: leading terms and reciprocity}
+The existing confluent leading-coefficient theorem can be specialized to the
+two allocations \eqref{sb:eq:even-allocation} and
+\eqref{sb:eq:odd-allocation}.  The remaining work is factorial-product
+simplification and parity arithmetic.  Schur reciprocity then proves
+\eqref{sb:eq:corrected-reciprocity}; exact $t$-degree follows from the nonzero
+constant terms.  This order avoids relying on a computer-generated degree
+bound.
+
+\section{Further research questions and topics}
+\label{sb:sec:further}
+The theorem settles polynomiality, bidegrees, reciprocity, and leading width
+terms.  It also opens several more structural questions.
+
+\noindent[Added 30 September 2026, batch~70: relation to the questions of
+Parts~II and~III. Sections~\ref{sb:q:coefficients} and~\ref{sb:q:sign}
+continue Part~II's topic in Section~\ref{cp:sec:rs-conj17}, which
+Theorem~\ref{sb:thm:main} answers in corrected form; they ask for finer
+structure. Section~\ref{sb:q:zeros} is related to Part~III's
+Section~\ref{cp:q:numerators}, which concerns numerators at cyclotomic
+parameters. Section~\ref{sb:q:parameters} uses the alphabet of Part~II's
+topic ``A two-parameter Hankel deformation'' but asks for sector
+denominators, not for a moment family. Sections~\ref{sb:q:clusters}
+and~\ref{sb:q:certified} continue Part~II's
+Section~\ref{cp:sec:rs-noncollision} and Part~III's
+Sections~\ref{cp:q:middle} and~\ref{cp:q:certified}.
+Section~\ref{sb:q:merger} is Part~II's topic ``A uniform crossover as the
+poles merge'', now with the block formula as input. Section~\ref{sb:q:roots}
+is answered by Part~III (see the note there). Section~\ref{sb:q:subresultant}
+is new.]
+
+\subsection{A closed determinant or subresultant formula}
+\label{sb:q:subresultant}
+The grouped numerators are sums of products of complementary confluent
+minors.  Their universal $(t-1)^b$ factor strongly suggests a subresultant or
+Sylvester-double-sum interpretation.  Find a single determinant for
+$\Cblock_{K,q}$ whose polynomiality is manifest and whose size is governed by
+$\dq_{K,q}$ rather than by $K$.  Such a formula could turn the current
+Laplace algorithm into a substantially faster certified algorithm.
+
+\subsection{The full coefficient structure in \texorpdfstring{$n$}{n}}
+\label{sb:q:coefficients}
+Equations~\eqref{sb:eq:C-leading-even} and~\eqref{sb:eq:C-leading-odd} determine only
+the top coefficient in $n$.  Determine every coefficient in the binomial
+basis $\binom nr$.  The computations suggest product factorizations at
+$t=0$ and unexpectedly sparse formulas near the top degree.  A satisfactory
+answer should explain integer-valuedness directly and identify the relevant
+flagged tableaux, nonintersecting paths, or equivariant multiplicities.
+
+\subsection{Sign regularity and positivity bases}
+\label{sb:q:sign}
+The ordinary $t$-coefficients have mixed signs, so naive positivity is false.
+Are the blocks sign-regular after expansion in a basis adapted to reciprocity,
+such as
+\[
+ t^j+\epsK_K t^{\rdeg_{K,q}-j},
+ \qquad
+ (1-t^2)^r(1+t)^s,
+\]
+or after expressing the $n$ dependence in the binomial basis?  The explicit
+leading term is sign-controlled; classify how far that control extends to
+lower width degrees.
+
+\subsection{Zeros and reciprocal geometry}
+\label{sb:q:zeros}
+Reciprocity pairs the nonzero zeros of opposite sectors by inversion.  Study
+whether suitably normalized blocks have all real, unit-circle, or
+interlacing zeros in any nontrivial range of $K,q,n$.  The $K=4$ and $K=5$
+examples already show that a universal real-rootedness statement would need
+qualification.  Stable-polynomial or total-positivity methods may nevertheless
+apply to special sectors.
+
+\subsection{Independent middle and outer parameters}
+\label{sb:q:parameters}
+Replace the alphabet by
+\[
+ (1^a,u,v^b).
+\]
+The present curve is $u=t$, $v=t^2$.  Determine the exact grouped-sector
+denominators in $u,v$, then characterize algebraic curves $(u(t),v(t))$ on
+which an analogue of the jet-collision cancellation occurs.  The proof here
+shows that the path speeds $0,1,2$ create a deficit of exactly $b$; other speed
+patterns should lead to a tropical scheduling invariant.
+
+\subsection{More clusters and a capacity theorem}
+\label{sb:q:clusters}
+For a general repeated alphabet
+$(\xi_1^{m_1},\ldots,\xi_s^{m_s})$, a Laplace term partitions the derivative
+jobs among two complementary minors.  Generalize Lemma~\ref{sb:lem:two-server} to a
+capacity theorem for several colliding paths and prescribed speed vectors.
+This should produce automatic denominator certificates for broad families of
+rectangular Schur specializations.
+
+\subsection{Roots of unity and reduced recurrences}
+\label{sb:q:roots}
+The generic roots $t^q$ collide at roots of unity.  The repository already
+identifies this as an open recurrence problem.  The new polynomial blocks
+make cancellation at a collision explicit: sum the paired
+$\Pblock_{K,q}$ over a residue class and determine its surviving degree.
+A closed formula would classify every reduced recurrence at every complex
+root of unity.
+
+\noindent[Added 30 September 2026, batch~70: answered. ``The repository
+already identifies this as an open recurrence problem'' was true at the pin
+(Part~II's Section~\ref{cp:sec:rs-cyclotomic}). Part~III, added afterwards,
+classifies the reduced denominators and minimal recurrences at every root
+of unity (Theorem~\ref{cp:thm:main}) and at every complex parameter
+(Corollary~\ref{cp:cor:complex}), by summing the canonical polynomials
+$P_{k,q}=\Pblock_{K,q}$ over a residue class as suggested here. It does not
+use the blocks $\Cblock_{K,q}$; a derivation of its classification from the
+block formula has not been written.]
+
+\subsection{The pole-merger scaling \texorpdfstring{$t=e^{-s/n}$}{t = exp(-s/n)}}
+\label{sb:q:merger}
+For fixed $0<t<1$, one spectral root dominates; at $t=1$, all roots merge and
+the Schur value becomes a polynomial in $n$.  Insert the proven block formula
+into the critical scaling $t=e^{-s/n}$ and derive a uniform all-orders
+expansion.  The exact bidegrees make this a finite cancellation problem for
+each fixed $K$, while the leading formulas should determine the first
+nontrivial profile.
+
+\subsection{Machine-checked proof and certified extraction}
+\label{sb:q:certified}
+Formalize the divisibility lemmas and build an extractor that outputs
+$\Cblock_{K,q}$ together with certificates of its two exact divisions,
+bidegrees, and reciprocal partner.  The output should be proof-producing,
+not merely a symbolic expression whose cancellations are trusted to a CAS.
+
+\section{Conclusion}
+Cigler's Conjecture~17 is governed by two degenerations of one confluent
+bialternant: a weighted assignment at $t=0$ creates the triangular exponent,
+and a two-table jet collision at $t=1$ cancels the missing denominator factor.
+Together with the rectangular Schur identity and cluster theorem in
+\texttt{ProveIt}, these mechanisms give polynomial blocks, exact bidegrees,
+and closed leading terms.  Schur reciprocity fixes the printed sign error:
+every odd shift is positively reciprocal.
+
+The resulting circuit is exact and finite:
+\[
+ \begin{gathered}
+ \text{Cigler moments}
+ \longrightarrow \text{Hankel determinant}
+ \longrightarrow \text{rectangular Schur character}\\
+ \longrightarrow \text{confluent spectral sectors}
+ \longrightarrow \text{integer-valued polynomial blocks}.
+ \end{gathered}
+\]
+The remaining problems concern finer factorization, positivity, root geometry,
+collision specializations, asymptotic pole mergers, and formal certification,
+not the existence or the degree of the Conjecture~17 polynomials.
+
+\clearpage
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\theHsection}{sb.app.\Alph{section}}
+\setcounter{section}{7}
+\section{Algebra behind the leading terms}
+\label{sb:app:leading-algebra}
+For completeness, this appendix records the exponent reductions used in
+Section~\ref{sb:sec:leading}.
+
+For $q=2h$, the exponent of $t$ in \eqref{sb:eq:cluster-leading} is
+\[
+ 2h\bigl((b+1)-(b-h)\bigr)-h
+ =2h(h+1)-h=2h^2+h=\Btri_{2h},
+\]
+where the subtraction by $h$ comes from
+$(t^2-t)^h=t^h(t-1)^h$.  The exponent of $(t^2-1)$ in the denominator is
+\[
+ h^2+(a-h)(b-h)=ab-h(a+b-2h)=ab-\dq_{K,2h}.
+\]
+After replacing $(t^2-1)^d$ by $(-1)^d(1-t^2)^d$, the total sign exponent is
+\[
+ (a-h)(b+1-h)+a+ab+\dq_{K,2h}
+ \equiv h(h+1)\equiv0\pmod2.
+\]
+
+For $q=2h+1$, the $t$-exponent is
+\[
+ (b+1)+2h(h+1)-(b-h)=2h^2+3h+1=\Btri_{2h+1}.
+\]
+The cross exponent satisfies
+\[
+ ab-\left(h(h+1)+(a-h-1)(b-h)\right)
+ =\dq_{K,2h+1}+b+1-a.
+\]
+The residual quotient is therefore $(1+t)^{b+1-a}(1-t^2)^d$.  The sign
+exponent reduces to
+\[
+ 1+(a-h)(b-h)+a+ab+d\equiv h\pmod2.
+\]
+These are precisely \eqref{sb:eq:C-leading-even} and
+\eqref{sb:eq:C-leading-odd}.
+
+\section{Package contents and reproduction}
+\label{sb:app:package}
+The archive contains:
+\begin{itemize}
+\item \texttt{article.tex} and the compiled \texttt{article.pdf};
+\item \texttt{code/verify.py};
+\item \texttt{data/verification.json} and \texttt{data/verification.log};
+\item \texttt{README.md}, \texttt{STATUS.md}, \texttt{SOURCES.md},
+      \texttt{requirements.txt}, and a \texttt{Makefile}.
+\end{itemize}
+To reproduce the exact checks and the PDF, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify.py --output data/verification.json
+python /home/oai/skills/pdfs/scripts/latex_to_pdf.py \
+  article.tex -o article.pdf
+\end{verbatim}
+The recorded verifier run completed all checks.  Runtime is environment
+dependent and is not a complexity claim.
+
+\noindent[Added 30 September 2026, batch~70: this report ships the
+verifier, its JSON record and console log, \texttt{STATUS.md},
+\texttt{SOURCES.md}, \texttt{requirements.txt} and the \texttt{Makefile}
+under the prefixed names listed in Section~\ref{sb:sec:merge-provenance}.
+The archive's \texttt{article.tex}, \texttt{article.pdf},
+\texttt{README.md} and its checksum list \texttt{SHA256SUMS} are not
+shipped; Part~IV and the report's \texttt{article.pdf} replace the first
+three. The commands above are the delivery's and must not be used from
+this report's root: there \texttt{python code/verify.py} runs Part~I's
+verifier, and \verb|--output data/verification.json| names Part~I's
+record. The third command calls a PDF tool at
+\path{/home/oai/skills/pdfs/scripts/latex_to_pdf.py} in the environment that
+produced the manuscript; it does not exist here. The shipped
+\path{code/04-spectral-blocks-Makefile} runs these commands (its
+\texttt{verify} target is \verb|$(PYTHON) code/verify.py --output data/verification.json|,
+its \texttt{pdf} target calls that tool, and its \texttt{clean} target
+deletes \path{__pycache__} and \path{latex_build_*} directories), so it must
+not be run. From the report root, Part~IV's checks are rerun with an
+explicit output path:
+\begin{verbatim}
+uv run --no-project --with sympy==1.14.0 python \
+  code/04-spectral-blocks-verify.py --output <scratch>/verification.json
+\end{verbatim}
+with \verb|<scratch>| a directory outside the report.]
+
 \begin{thebibliography}{99}
 \bibitem{Cigler}
 Johann Cigler,
@@ -4733,6 +6485,10 @@ The present target is Conjecture 16, pp.~21--22; the input moments are
 equation (6), p.~3.
 Part~II uses especially Section~6 and printed pages~22--24, including
 equations (84)--(87) of Conjecture~18.
+[Added 30 September 2026, batch 70: Part~IV uses Conjecture~17 and
+equations (80)--(83), printed pp.~22--23 (the manuscript's bibliography
+says (81)--(83), its source audit (80)--(83)), and the displayed $K=5$
+block on printed p.~24.]
 \url{https://arxiv.org/abs/2111.14492v3}.
 
 \bibitem{CK}
@@ -4812,5 +6568,14 @@ S\'eminaire Lotharingien de Combinatoire \textbf{42} (1999), Article B42q.
 S.~Chern and W.~Shi, \emph{Hankel determinants of Catalan-like sequences},
 arXiv:2608.27208v1, 27 August 2026.
 \url{https://arxiv.org/abs/2608.27208}.
+
+% [Added 30 September 2026, batch 70] References of Part IV.  The
+% manuscript's entries Cigler2021, CiglerKrattenthaler, GonzalezMaximenko
+% and Fulton are Cigler, CK, GSM and Fulton above; its entry ProveItCigler
+% (Parts I and II at the pin) is replaced by internal references.
+\bibitem{sbMacdonald}
+I.~G.~Macdonald,
+\emph{Symmetric Functions and Hall Polynomials}, second edition,
+Oxford University Press, 1995.
 \end{thebibliography}
 \end{document}

@@ -4,27 +4,39 @@
 
 **Part III: cyclotomic pole collapse and exact minimal recurrences at complex parameters**
 
-This is a research report in three parts on the shifted Hankel determinants of
+**Part IV: polynomial spectral blocks and Cigler's Conjecture 17, proved in sign-corrected form**
+
+This is a research report in four parts on the shifted Hankel determinants of
 Cigler's polynomial extension `c_n(t)` of the middle binomial coefficients
 (Johann Cigler, *Hankel determinants of middle binomial coefficients and
 conjectures for some polynomial extensions and modifications*,
-arXiv:2111.14492v3, Section 6). It is built from three manuscripts. Part I (20
+arXiv:2111.14492v3, Section 6). It is built from four manuscripts. Part I (20
 September 2026) proposes a complete proof of Cigler's Conjecture 16 and
 determines where its stabilization first fails. Part II (29 September 2026)
 proves Part I's experimental rectangular-Schur formula and determines the exact
 minimal recurrence over `Q(t)` and at real parameters. Part III (30 September
 2026) answers Part II's research question on complex roots of unity
 (Section 21.2) completely: it determines the reduced denominator and the
-minimal recurrence at every complex parameter. All three are AI-assisted
-research manuscripts; Parts I and II were prepared for Vladimir Reshetnikov,
-and Part III's author line ("Research draft prepared for Vladimir
-Reshetnikov") names no assistant.
+minimal recurrence at every complex parameter. Part IV (30 September 2026)
+answers Part II's research topic on the full coefficient structure in Cigler's
+**Conjecture 17** (Section 21.1) in a **sign-corrected** form: after Cigler's
+denominator is cleared, the normalized determinants split into blocks that are
+polynomials in `t` and integer-valued in `n`, with exact degrees in both
+variables and explicit leading terms; and the reciprocity sign printed in
+Cigler's equation (83) is **false for every shift `K ≡ 1 (mod 4)`** from 5 on
+(Cigler's own displayed `K = 5` block is a counterexample), so the literal
+printed Conjecture 17 is false and Part IV proves a corrected statement. All
+four are AI-assisted research manuscripts; Parts I and II were prepared for
+Vladimir Reshetnikov, and the author lines of Part III ("Research draft
+prepared for Vladimir Reshetnikov") and Part IV ("Research report prepared for
+Vladimir Reshetnikov's ProveIt project") name no assistant.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A parity factorization and sharp stabilization for Cigler's Hankel polynomials*) | `cigler_conjecture16_research.zip` | (none) | sorted in `8374aaa79` of the Cardinals history, in ProveIt since `dc54c3cb3` | Part I: Sections 1–11 (pp. 6–18) and Appendices A–B (pp. 18–20) |
-| 02 | batch 56, manuscript 01 (*Rectangular Schur Structure and Sharp Recurrences for Cigler's Hankel Polynomials: A proof of the repository's Schur conjecture, exact pole multiplicities, and corrected generating-function reciprocity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Cigler_Schur_Recurrences.zip` (inner `cigler_schur_research/`, main file `article.tex`), arrived in `e47ed8547` | `e9c09b125` (and blob `f33543af` of this `article.tex`) | `ae718a441` (prefix `02-schur-recurrences-`) | Part II: Sections 12–22 (pp. 21–43) and Appendices C–D (pp. 43–44) |
-| 03 | batch 66, manuscript 02 (*Cyclotomic Pole Collapse and Exact Minimal Recurrences for Cigler's Hankel Polynomials: A complete complex-parameter classification and an exceptional fourth-root cancellation law*, 30 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Cyclotomic_Pole_Collapse.zip` (inner `ProveIt_Cyclotomic_Pole_Collapse/`, main file `article.tex`), arrived in `9ad899cbe` | `ff6969475` (and blob `07c41161` of this `article.tex`) | `4fee1cd07` (prefix `03-cyclotomic-poles-`) | Part III: Sections 23–34 (pp. 45–67) and Appendices E–G (pp. 67–69) |
+| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A parity factorization and sharp stabilization for Cigler's Hankel polynomials*) | `cigler_conjecture16_research.zip` | (none) | sorted in `8374aaa79` of the Cardinals history, in ProveIt since `dc54c3cb3` | Part I: Sections 1–11 (pp. 8–20) and Appendices A–B (pp. 20–22) |
+| 02 | batch 56, manuscript 01 (*Rectangular Schur Structure and Sharp Recurrences for Cigler's Hankel Polynomials: A proof of the repository's Schur conjecture, exact pole multiplicities, and corrected generating-function reciprocity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Cigler_Schur_Recurrences.zip` (inner `cigler_schur_research/`, main file `article.tex`), arrived in `e47ed8547` | `e9c09b125` (and blob `f33543af` of this `article.tex`) | `ae718a441` (prefix `02-schur-recurrences-`) | Part II: Sections 12–22 (pp. 23–45) and Appendices C–D (pp. 45–46) |
+| 03 | batch 66, manuscript 02 (*Cyclotomic Pole Collapse and Exact Minimal Recurrences for Cigler's Hankel Polynomials: A complete complex-parameter classification and an exceptional fourth-root cancellation law*, 30 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Cyclotomic_Pole_Collapse.zip` (inner `ProveIt_Cyclotomic_Pole_Collapse/`, main file `article.tex`), arrived in `9ad899cbe` | `ff6969475` (and blob `07c41161` of this `article.tex`) | `4fee1cd07` (prefix `03-cyclotomic-poles-`) | Part III: Sections 23–34 (pp. 47–69) and Appendices E–G (pp. 69–71) |
+| 04 | batch 70, manuscript 02 (*Polynomial Spectral Blocks for Cigler's Hankel Determinants: A proof of Conjecture 17, a reciprocity-sign correction, exact bidegrees, and explicit leading terms*, 30 Sep 2026, 20-page A4 PDF as delivered) | `ProveIt_Cigler_Conjecture17_Resolution.zip` (inner `cigler_conjecture17_resolution/`, main file `article.tex`), arrived in `1b3960d8a` | `ffddaa8b9` (and blob `07c41161` of this `article.tex`) | `51c6943bf` (prefix `04-spectral-blocks-`) | Part IV: Sections 35–44 (pp. 72–92) and Appendices H–I (pp. 93–94) |
 
 The pin `e9c09b125` is ProveIt commit
 `e9c09b12549ea4e3bea7cebc52b450b761f6f581`. At that commit Part I's
@@ -51,6 +63,20 @@ README are not shipped and survive only in `9ad899cbe`. The source and PDF
 SHA-256 values in `data/03-cyclotomic-poles-pdf_checks.json` match those
 unshipped delivered files.
 
+The pin `ffddaa8b9` of Part IV is ProveIt commit
+`ffddaa8b9c89e7bf027e1442cc6216bb010906d0`. At that commit this report's
+`article.tex` was again blob `07c41161857e`, Parts I and II exactly as printed
+here: Part III was placed (`4fee1cd07`) and written (`e1817651a`) after the
+pin, so the manuscript does not know Part III. Every statement it makes about
+"the inspected ProveIt report" or "the repository" refers to Parts I–II of
+this report; its source audit (`04-spectral-blocks-SOURCES.md`) lists the
+files it read at the pin. Its archive arrived in `1b3960d8a` and was retired in
+the placement commit `51c6943bf`; its manuscript, PDF, delivery README and
+checksum list `SHA256SUMS` (10 entries, all verified at the placement) are not
+shipped and survive only in `1b3960d8a`. Where Part IV's merge had to choose
+(duplicated inputs, numbering, names, the bibliography, added notes) is set
+out in its Section 35.1.
+
 **Status:** AI-assisted, unrefereed, and not formalized. No part has been
 independently refereed or checked in a proof assistant. None makes an
 absolute priority claim.
@@ -59,9 +85,9 @@ absolute priority claim.
 
 ```
 article.tex                                      the report, standalone LaTeX with an internal bibliography
-article.pdf                                      the compiled report, 70 pages (title page, contents pp. 2–5,
-                                                 Part I pp. 6–20, Part II pp. 21–44, Part III pp. 45–69,
-                                                 references pp. 69–70)
+article.pdf                                      the compiled report, 95 pages (title page, contents pp. 2–7,
+                                                 Part I pp. 8–22, Part II pp. 23–46, Part III pp. 47–71,
+                                                 Part IV pp. 72–94, references pp. 94–95)
 README.md                                        this guide
 LICENSE                                          MIT-0, Part I's delivered license file
 STATUS.md                                        Part I's logical scope and limitations, as delivered
@@ -95,12 +121,20 @@ data/03-cyclotomic-poles-verification.log        Part III: its console transcrip
 data/03-cyclotomic-poles-modular_checks.json     Part III: the 240 finite-field recurrence records
 data/03-cyclotomic-poles-requirements.txt        Part III's pin, sympy==1.14.0 (byte-identical to requirements.txt)
 data/03-cyclotomic-poles-pdf_checks.json         Part III: build and layout record of the delivered 22-page PDF
+04-spectral-blocks-STATUS.md                     Part IV's claims, verification and limitations, as delivered
+04-spectral-blocks-SOURCES.md                    Part IV's sources, repository pin and inputs, as delivered
+code/04-spectral-blocks-verify.py                Part IV's exact verifier (Python 3, SymPy)
+code/04-spectral-blocks-Makefile                 Part IV's delivered Makefile (must not be run; see below)
+data/04-spectral-blocks-verification.json        Part IV: recorded run, all ranges, with six sample blocks
+data/04-spectral-blocks-verification.log         Part IV: its console transcript
+data/04-spectral-blocks-requirements.txt         Part IV's pin, sympy==1.14.0 (byte-identical to requirements.txt)
 ```
 
 Every Part I file is as it arrived in the Cardinals collection, except
 `article.tex`, `article.pdf` and this README. Every `02-schur-recurrences-`
-file is byte-identical to the batch-56 delivery, and every
-`03-cyclotomic-poles-` file to the batch-66 delivery. The batch-56 delivery
+file is byte-identical to the batch-56 delivery, every
+`03-cyclotomic-poles-` file to the batch-66 delivery, and every
+`04-spectral-blocks-` file to the batch-70 delivery. The batch-56 delivery
 names map to the shipped paths as follows:
 
 | Delivered as | Shipped as |
@@ -132,6 +166,20 @@ The batch-66 delivery names map as follows:
 | `data/pdf_checks.json` | `data/03-cyclotomic-poles-pdf_checks.json` |
 | `requirements.txt` | `data/03-cyclotomic-poles-requirements.txt` |
 
+The batch-70 delivery names map as follows:
+
+| Delivered as | Shipped as |
+|---|---|
+| `article.tex`, `article.pdf`, `README.md` | not shipped (Part IV of `article.tex`, `article.pdf` and this README replace them) |
+| `SHA256SUMS` | not shipped (10 entries, verified at the placement and retired) |
+| `STATUS.md` | `04-spectral-blocks-STATUS.md` |
+| `SOURCES.md` | `04-spectral-blocks-SOURCES.md` |
+| `Makefile` | `code/04-spectral-blocks-Makefile` |
+| `code/verify.py` | `code/04-spectral-blocks-verify.py` |
+| `data/verification.json` | `data/04-spectral-blocks-verification.json` |
+| `data/verification.log` | `data/04-spectral-blocks-verification.log` (force-added: the root `.gitignore` ignores `*.log`) |
+| `requirements.txt` | `data/04-spectral-blocks-requirements.txt` |
+
 ## Labels and numbering
 
 Part I's 73 labels are bare (`thm:main`, `conj:schur`, `eq:schur-candidate`,
@@ -158,6 +206,19 @@ No earlier label was renamed or removed: the `.aux` numbers of all 176 were
 compared with a build of the committed text and are unchanged (their page
 numbers move by one or two, because the contents grew by a page and Part II's
 Section 21 gained notes).
+
+Every label of Part IV carries the prefix `sb:` (spectral blocks): the
+manuscript's 81 labels (one of which, `thm:main`, would otherwise collide with
+Part I's) and 14 added in the merge — five on subsections of Section 35 and 39
+(`sb:sec:merge-provenance`, `sb:sec:front` and `sb:sec:notation` on the three
+added before the manuscript's Section 1.1, `sb:sec:input` on its Section 1.2,
+`sb:sec:printed-sign` on its Section 5.3) and nine on the research questions
+(`sb:q:subresultant`, `sb:q:coefficients`, `sb:q:sign`, `sb:q:zeros`,
+`sb:q:parameters`, `sb:q:clusters`, `sb:q:roots`, `sb:q:merger`,
+`sb:q:certified`). That makes 387 labels in all (292 + 95). No earlier label
+was renamed or removed: the `.aux` numbers of all 292 were compared with a
+build of the committed text and are unchanged (every page number moves by
+two, because the contents grew by two pages).
 
 Part II's manuscript Section *n* is Section *n* + 11 here, and its Theorem,
 Lemma, Proposition, Corollary and equation *n.m* are (*n* + 11).*m*; its
@@ -194,6 +255,42 @@ Corollary 31.1 (Part II's real-parameter results), in Section 32.1 (shipped
 names, the rerun, the intake's independent check), at the start of
 Section 33 (relation of the questions to Part II's) and in Appendix G
 (delivered commands). No statement of any source was changed.
+
+Part IV's manuscript Section *n* is Section *n* + 34 here, and its Theorem,
+Lemma, Proposition, Corollary and Algorithm *n.m* are (*n* + 34).*m* (its
+Theorem 1.1 is Theorem 35.1); its Appendices A–B are Appendices H–I.
+Sections 35.1–35.3 (provenance with what Part IV proves and corrects, the
+relation to other reports and the merge's choices; the manuscript's title
+block, abstract and two status boxes; a notation table) were added before its
+Section 1.1, which is Section 35.4 here; they contain no numbered statement or
+equation. The manuscript numbers its equations consecutively through the whole
+article; here they are numbered within sections:
+
+| Manuscript | Here | Manuscript | Here |
+|---|---|---|---|
+| (1)–(13) | (35.1)–(35.13) | (37)–(48) | (38.1)–(38.12) |
+| (14)–(27) | (36.1)–(36.14) | (49)–(56) | (39.1)–(39.8) |
+| (28)–(36) | (37.1)–(37.9) | (57)–(60) | (40.1)–(40.4) |
+
+So the main expansion (10), the bidegrees (11), the corrected reciprocity
+(12) and the sign (13) are (35.10)–(35.13); the printed sign (54) and
+Cigler's displayed block `C_{5,2}` (55) are (39.6) and (39.7).
+
+Text added for Part IV is marked `[Added 30 September 2026, batch 70: …]`:
+on the title page and the date, a sentence in the abstract, a note after
+Part I's batch-56 note at the end of Section 11, notes at the end of Part II's
+Section 21.1 (answered in corrected form) and in Part II's conclusion
+(Section 22), a note in Part III's Section 33.6 (`cp:q:numerators`), and a
+sentence in the bibliography entry for Cigler's paper; and in Part IV, ten
+notes: in Section 35.5 (the pinned inputs, and which printed claims survive),
+after Theorem 35.1 (its title), in Section 38.1 (the inherited cluster
+theorem), after (39.2) (Part I's reciprocity; a second route), in
+Section 39.3 (the index `K = 1` and the intake's independent check), in
+Section 41.2 (shipped names and the rerun), in Section 42.1 (formal status),
+at the start of Section 43 (relation of the questions to Parts II and III), in
+Section 43.7 (answered by Part III) and in Appendix I (delivered commands).
+Four headings with mathematics received plain-text PDF bookmark strings. No
+statement of any source was changed.
 
 ## Notation
 
@@ -258,6 +355,44 @@ Part II's script `\QQ`, `\GG` (same objects), and the report's `\rep` prints
 replaced by internal references; `Cigler` and `GSM` are merged with Part II's
 entries (the manuscript adds GSM's page range 2613–2647); `Kratt` and
 `ChernShi` are added. No normalization changed.
+
+Part IV keeps its manuscript's notation; the table in Section 35.3 lists every
+letter that means different things in Part IV and the earlier parts, with the
+tempting false reading. Part IV writes **`K` for the shift** that Parts I–III
+call `k` (the same `a = ⌊K/2⌋`, `b = ⌊(K−1)/2⌋`; for Cigler's alphabet `K` is
+also Part II's number of variables). Its moments `μ_m(t)` are `c_m(t)`, its
+`Δ_K(n;t)` is the Hankel determinant `D_k(n;t)`, its sans-serif `𝖯_{K,q}` is
+Part II's `P_{k,q}`, its `𝖽_{K,q}` is `d_q` (so `e_{k,q} = 1 + 𝖽_{K,q}`), its
+`β(m,r)` is Part II's `B(m,r)`, and its denominator `𝒟_K(t) = (1−t)^a
+(1−t²)^{ab}` is `1/F_k(t)`. The important collisions:
+
+- **`Δ`.** `Δ_K(n;t)` is the Hankel determinant, not a Vandermonde product;
+  the confluent Vandermonde is the bold `𝚫_K(t)`.
+- **`C`, `B`.** The sans-serif blocks `𝖢_{K,q}(n,t)` are not `C_k = C(k,2)`
+  or Catalan numbers, and the sans-serif `𝖡_q = C(q+1,2)` is not the factorial
+  ratio `B(m,r)`.
+- **`N`.** `N_{K,q}(n,t)` is a grouped Laplace numerator, not a recurrence
+  order `N_k`.
+- **`ε`, `δ`.** `ε_K` is the corrected reciprocity sign (not the sign printed
+  in Cigler's (83), and not Part I's index `ε ∈ {0,1}`); `δ_K = b + 1 − a` is
+  the parity of `K`, not Part II's `δ_k = ⌊k²/4⌋`.
+- `E_{K,n}` (an exponent set) versus the shift operator `E`; `M_{K,n}(t)` (the
+  confluent matrix) versus `M = k − 1`; `H`, `H_1`, `H_2` (multisets of
+  derivative orders) versus `𝓗_k`.
+
+Renamed from Part IV's manuscript: its `\Hank` is printed with the report's
+`\Ht` (same glyph `𝓗`); its `\N`, `\Z`, `\Q`, `\ord` are identical to the
+report's and were dropped; its pin macro `\repoCommit` is `\pinIV`; its unused
+`\lc`, `\Span` and unused `warning` and `example` environments were dropped;
+its `algorithm` environment, `statusbox` environment and the `tabularx` package
+were added to the preamble. Its nine `\cref` references are printed as
+"Theorem …", "Lemma …" (the report does not load `cleveref`). Its
+bibliography entries for Cigler's paper, Cigler–Krattenthaler,
+González-Serrano–Maximenko and Fulton are the report's `Cigler`, `CK`, `GSM`
+and `Fulton`; its entry for the report is replaced by internal references;
+Macdonald's book is added as `sbMacdonald`. None of these is cited in the
+manuscript's body; Section 35.1 cites them. No glyph and no normalization
+changed.
 
 ## What the report claims
 
@@ -383,15 +518,77 @@ the Gram determinants (29.7) are Part II's (13.1)–(13.2), and (29.8) is the od
 part of Part II's Proposition 13.1 ("not an independent new claim"). They are
 printed in both parts (Section 23.1 lists them).
 
+### Part IV (Sections 35–44, Appendices H–I)
+
+With the shift written `K` (Parts I–III's `k`), `𝒟_K(t) = (1−t)^a (1−t²)^{ab}`
+and `𝖡_q = C(q+1, 2)`:
+
+- **Theorem 35.1 (Cigler's Conjecture 17, proved in sign-corrected form).**
+  For every `K ≥ 1` there are unique `𝖢_{K,q}(n,t) ∈ Int(Z)[t]`,
+  `0 ≤ q ≤ K−1`, with
+  `𝓗_K(n;t) = 𝒟_K(t)^{−1} Σ_q (−1)^q 𝖢_{K,q}(n,t) t^{qn+𝖡_q}` for all
+  `n ≥ 0`; `deg_t 𝖢_{K,q} = q(K−1−q)` and
+  `deg_n 𝖢_{K,q} = ⌊q(K−1−q)/2⌋` exactly; and
+  `𝖢_{K,K−1−q}(n,t) = ε_K t^{q(K−1−q)} 𝖢_{K,q}(n,1/t)` with
+  `ε_K = (−1)^{K−1+a+ab}`, which is `−1` exactly when `4 | K`. At every
+  integer width the blocks lie in `Z[t]`.
+- **The sign correction (Section 39.3).** Cigler's equation (83) prints the
+  sign `(−1)^{⌊K/2⌋−1}` for all shifts. It agrees with `ε_K` for every even
+  `K` and every `K ≡ 3 (mod 4)` and is wrong for every `K ≡ 1 (mod 4)`: the
+  central block `𝖢_{5,2}` that Cigler displays (his printed p. 24) is
+  palindromic, `𝖢_{5,2}(n,t) = t⁴ 𝖢_{5,2}(n,1/t)`, with nonzero central
+  coefficient, so it cannot be anti-palindromic. **The literal printed
+  Conjecture 17 is therefore false; Part IV proves the corrected
+  statement.** The manuscript states the failure range as `K ≥ 5`; at `K = 1`
+  the printed sign `−1` also fails, trivially (`𝖢_{1,0} = 1`), and whether
+  Cigler's conjecture covers `K = 1` was not re-checked against his paper
+  during the intake (Section 39.3 carries a note). This parallels Part II's
+  correction of Cigler's (85) for Conjecture 18, which fails in the different
+  class `4 | k`.
+- The mechanism: Laplace grouping of the confluent bialternant by the unique
+  allocation of each `q` (Section 36); the exact triangular valuation at
+  `t = 0` (Lemma 37.1); a jet-collision valuation (Lemma 37.2) and a
+  two-server counting lemma (Lemma 37.3) giving the missing factor
+  `(t−1)^b` (Lemma 37.4); polynomiality and integrality (Corollary 37.5).
+- **Leading terms (38.6), (38.11).** `[n^{𝖽}] 𝖢_{K,2h} = β(a,a−h) β(b,h)
+  (1−t²)^{𝖽_{K,2h}}` and `[n^{𝖽}] 𝖢_{K,2h+1} = (−1)^h β(a,a−h−1) β(b,h)
+  χ_K(t) (1−t²)^{𝖽_{K,2h+1}}`, `χ_K = 1` or `1+t` for even or odd `K`;
+  Corollary 38.1 (exact `n`-degree, nonzero constant term),
+  Proposition 39.1 (exact `t`-degree from reciprocity), Corollary 39.2
+  (`𝖢_{K,0} = 1`, `𝖢_{K,K−1} = ε_K`).
+- Section 40: blocks for `K ≤ 5` (for example `𝖢_{4,1} = n+2+t−(n+2)t²`) and a
+  table of `a`, `b`, `ε_K` and the maximal `n`-degree for `K ≤ 8`;
+  Algorithm 41.1 (blocks from a `K × K` confluent determinant, avoiding the
+  `n × n` Hankel determinant); Section 42: a four-layer formalization route;
+  Section 43: nine research questions; Appendix H: the exponent algebra
+  behind the leading terms.
+
+Part IV duplicates, and says so, some of Parts I–II: its (35.1)–(35.3) are
+Part II's (12.1)–(12.3) with `μ = c`, `Δ_K = D_k`; (35.7) is Theorem 12.1;
+(35.8) is (17.3) with (17.2); (36.9) is (17.1); (38.1) is Part II's `B(m,r)`
+(16.3) and (38.2) is (16.5) of Theorem 16.1, symbol for symbol; the first
+assertion of Corollary 38.1 is inherited from (17.3); and (39.1) is Part I's
+reciprocity (1.5) (Theorem 1.1), for which the manuscript's Schur argument is a
+second route. Section 35.1 lists them, with the consistency checks
+`𝖯_{K,0} = 1/𝒟_K = F_k` (Part I's (1.4)) and the coincidence of `ε_K` with the
+numerator-reciprocity sign of Part II's Theorem 18.2 (an observation of the
+merge; no implication between the two statements is claimed).
+
 ## What is not claimed
 
-- No absolute priority for either part; both searches were bounded. The
+- No absolute priority for any part; every search was bounded. The
   general Schur, character-factorization (Ciucu–Krattenthaler), stretched-Schur
   recurrence (Alexandersson) and repeated-variable bialternant
   (González-Serrano–Maximenko) machinery is classical and credited.
-- Not every assertion of Cigler's **Conjecture 17** is settled; it remains
-  open (Section 21.1). The literal whole of the printed **Conjecture 18** is
-  not claimed: one sign is false, and corrected statements are proved.
+- The literal printed **Conjecture 17** is not claimed, and is false: Parts
+  I–III left it open (Part II's Section 21.1), and Part IV proves it only in a
+  **sign-corrected form** — the reciprocity sign of Cigler's equation (83) is
+  wrong for `K ≡ 1 (mod 4)` (Theorem 35.1, Section 39.3). Likewise the literal
+  whole of the printed **Conjecture 18** is not claimed: one sign is false, and
+  corrected statements are proved (Part II). Part II's delivered
+  `02-schur-recurrences-STATUS.md` (line 55, "Not every assertion of the
+  original Conjecture 17 is settled here") is left as delivered and describes
+  Part II alone.
 - **Complex roots of unity** were left unclassified by Part II (Section 21.2;
   only the real line is Theorem 19.2). Part III classifies them
   (Theorem 24.1, Corollary 31.1). Part II's delivered
@@ -420,6 +617,24 @@ printed in both parts (Section 23.1 lists them).
   audit (Cigler; González-Serrano–Maximenko; Krattenthaler; Chern–Shi) was
   bounded, and no historical priority or peer review is claimed. Its verifier
   is not claimed to certify the repository as a whole.
+- **Part IV** uses Part II's Schur identity (Theorem 12.1), spectral
+  decomposition and cluster theorem (Theorem 16.1) as inputs and does not
+  reprove them. Its own status file says: an AI-assisted mathematical research
+  draft, not independently refereed, not checked in Lean, Rocq or another
+  proof assistant; the finite verifier is supporting evidence, not a proof of
+  the all-index statements; historical priority beyond the cited literature
+  has not been exhaustively investigated. It determines only the top
+  coefficient in `n` of each block; the full coefficient structure in the
+  binomial basis, sign regularity, zeros, a closed determinant formula, other
+  alphabets and the pole-merger scaling are its open questions (Section 43).
+  The manuscript expects its jet-collision mechanism to apply beyond this
+  family; only Cigler's alphabet is proved. Cigler's printed pages were checked
+  by the manuscript (its `SOURCES.md`), not re-read during this intake; in
+  particular, whether his Conjecture 17 is stated for `K = 1` was not
+  re-checked. Its abstract's "reconstructs the original Hankel determinants …
+  through `K = 8`" overstates the record: the original Hankel determinants are
+  compared with the Schur side for `K ≤ 6`, `n ≤ 5`; for `K ≤ 8` the blocks
+  are checked against the Schur side (Section 35.2 notes this).
 
 Part I's `STATUS.md` (lines 42–45) still calls the rectangular-Schur identity
 "experimental and unproved here" and does not claim minimality of the
@@ -462,6 +677,23 @@ of Theorem 29.1 for `m = 1..3`, `L = 0..5` and the bounds of Corollary 31.4
 for `ℓ ≤ 10`, `k ≤ 80` were also confirmed. These intake checks are not
 shipped.
 
+Part IV's verifier passed, for every block with `1 ≤ K ≤ 8` (36 blocks), the
+polynomial bidegrees, the corrected reciprocity and the explicit `n`-leading
+coefficients (36 checks each); 40 reconstructions of the Schur polynomial at
+the interpolation widths and two fresh widths per shift; 216 integrality checks
+of `t`-coefficients at integer widths (from 96 interpolation input values);
+36 comparisons of the original Hankel determinant with the Schur side
+(`1 ≤ K ≤ 6`, `0 ≤ n ≤ 5`); and the printed-sign counterexample at `K = 5`,
+`q = 2` (printed relation's residual nonzero, corrected residual 0), all in
+exact arithmetic (Python 3.13.5, SymPy 1.14.0, 16.39 s recorded). During the
+intake an independent computation (blocks read off by separating `t`-degrees at
+large widths and interpolating in `n`, from the Jacobi–Trudi form, bridged to
+the raw Hankel determinant for `K ≤ 5`, `n ≤ 5`) confirmed the bidegrees, the
+integer values, `ε_K` and the small-width reconstruction for `K = 1..7`,
+reproduced Cigler's displayed `𝖢_{5,2}` and the blocks `𝖢_{5,1}`, `𝖢_{4,1}`,
+`𝖢_{4,3}`, and found the printed sign failing at `K = 1` and at `K = 5` (every
+`q`) and holding at `K = 2, 3, 4, 6, 7`. This intake check is not shipped.
+
 ## Rebuild the PDF
 
 From a copy of `article.tex` in a scratch directory (the report was built
@@ -471,7 +703,7 @@ this way, with MiKTeX `pdflatex`):
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build (70 pages) has no errors, undefined references or citations,
+The build (95 pages) has no errors, undefined references or citations,
 multiply defined labels or duplicate destinations, no LaTeX or package
 warnings, and no overfull boxes. Of its five underfull-box warnings, three come
 from Part II's verification table as delivered (as in the build of the
@@ -479,9 +711,10 @@ committed text before Part III), and two from Part III's manuscript text in
 this report's layout (the pinned path quoted in Section 23.4, badness 10000,
 and a display-heavy line in Section 30.1, badness 1308); the delivered
 manuscript was set with 26 mm margins and `xurl`, which this report does not
-load. Copy back only `article.pdf`. Part I's `Makefile` target `pdf` runs
-`pdflatex` twice in place and leaves auxiliary files in the report directory;
-do not use it here (nor Part III's Makefile, below).
+load. Part IV added none: the build of the committed text before Part IV has
+the same five. Copy back only `article.pdf`. Part I's `Makefile` target `pdf`
+runs `pdflatex` twice in place and leaves auxiliary files in the report
+directory; do not use it here (nor Part III's or Part IV's Makefile, below).
 
 ## Rerun the checks
 
@@ -526,6 +759,21 @@ CRLF → LF, and `verification.json` differs only in `utc` and
 CRLF → LF except for its last line,
 which prints the output path (the record shows the delivery's
 `/mnt/data/ProveIt_Cyclotomic_Pole_Collapse/data/verification.json`).
+
+Part IV, from the report root, with an explicit output path outside the
+report (the verifier imports no local module and writes only its `--output`
+file):
+
+```sh
+W=/path/to/scratch/cig16-sb; mkdir -p "$W"
+uv run --no-project --with sympy==1.14.0 python code/04-spectral-blocks-verify.py --output "$W/verification.json" > "$W/console.txt"
+diff <(tr -d '\r' < "$W/verification.json") data/04-spectral-blocks-verification.json   # expect only "elapsed_seconds"
+diff <(tr -d '\r' < "$W/console.txt") data/04-spectral-blocks-verification.log          # expect only the elapsed_seconds line
+```
+
+Run this way on 30 September 2026 (Python 3.13.5, SymPy 1.14.0), every check
+passed in 34 s; `verification.json` and the console output differ from the
+records only in `elapsed_seconds` (31.4 s against the recorded 16.39 s).
 
 Part I, on a copy:
 
@@ -578,6 +826,18 @@ option; both Part I drivers reject it.
   place, overwriting the committed `article.pdf` and leaving auxiliary files;
   from `code/` its paths do not resolve. The same applies to the commands in
   Part III's Appendix G, which are the delivery's (Appendix G carries a note).
+- **Part IV's verifier overwrites Part I's record by default.** Its default
+  `--output` is `data/verification.json` (`verify.py:303`), Part I's recorded
+  file. Always pass `--output` outside the report.
+- **`code/04-spectral-blocks-Makefile` must not be run.** It is the delivered
+  Makefile (`all: verify pdf`; `verify: $(PYTHON) code/verify.py --output
+  data/verification.json`; `pdf: $(PYTHON) $(PDF_TOOL) article.tex -o
+  article.pdf` with `PDF_TOOL ?= /home/oai/skills/pdfs/scripts/latex_to_pdf.py`,
+  a tool of the environment that produced the manuscript, absent here;
+  `clean: rm -rf latex_build_* __pycache__ code/__pycache__`). From the report
+  root, `verify` runs **Part I's** verifier with Part I's record as output; from
+  `code/` its paths do not resolve. The same applies to the commands in
+  Part IV's Appendix I, which are the delivery's (Appendix I carries a note).
 
 ## Delivered text that no longer matches this layout
 
@@ -625,6 +885,34 @@ option; both Part I drivers reject it.
 - Part III's Appendix G lists the archive's `article.tex`, `article.pdf`,
   `README.md`, and gives the delivery's commands; Section 32.1 describes "the
   archive". Both carry dated notes with the shipped names.
+- `04-spectral-blocks-STATUS.md` and `04-spectral-blocks-SOURCES.md` describe
+  the delivered package: "the article", "the shipped exact verifier" and
+  "`SOURCES.md`" are Part IV of this report, `code/04-spectral-blocks-verify.py`
+  and `04-spectral-blocks-SOURCES.md` here. The status file's "Claims proved in
+  the article" include "existence and uniqueness of polynomial spectral
+  blocks" and "a direct counterexample to the sign printed in Cigler's equation
+  (83)"; it does not say "Conjecture 17 proved", but the manuscript's title and
+  Theorem 35.1's name do, and mean its sign-corrected form (Section 35.1).
+- `04-spectral-blocks-SOURCES.md` says that this report "explicitly records
+  that the full coefficient structure in Cigler's Conjecture 17 remains open"
+  and that `02-schur-recurrences-STATUS.md` "records … the unresolved
+  Conjecture 17 assertions": true at its pin `ffddaa8b9`, answered now (Part II's
+  Section 21.1 carries a dated note). It cites Conjecture 17 and equations
+  (80)–(83), while the manuscript's bibliography said (81)–(83); the report's
+  bibliography entry for Cigler's paper records both.
+- `code/04-spectral-blocks-verify.py` says "the all-index result rests on the
+  proofs in article.tex" (line 5; here Part IV of the report) and defaults to
+  the delivered output path `data/verification.json` (line 303; here Part I's
+  record). Its record's `"scope"` line says the same.
+- `code/04-spectral-blocks-Makefile` and the delivered commands of Part IV's
+  Appendix I name `code/verify.py`, `data/verification.json` and the absent
+  PDF tool `/home/oai/skills/pdfs/scripts/latex_to_pdf.py`; Appendix I lists
+  the archive's `article.tex`, `article.pdf`, `README.md`, `STATUS.md`,
+  `SOURCES.md`, `requirements.txt` and `Makefile`, and Section 41.2 names
+  `code/verify.py`. Both carry dated notes with the shipped names.
+- Part IV's Section 43.7 says "The repository already identifies this as an
+  open recurrence problem"; true at the pin, answered by Part III (a dated note
+  says so).
 
 ## Relation to neighbouring reports and to the formal project
 
@@ -636,9 +924,11 @@ option; both Part I drivers reject it.
   `k`, `k`, height `k`; allocation `(k−j, j)` has degree `2j(k−j)`). This
   observation of the merge is not recorded in that report. That report also
   remarks that specialized parameters can merge its poles; Part III does not
-  treat its family.
+  treat its family, and neither that report nor Part IV treats Conjecture 17
+  for the other's family.
 - `ballot-polynomial-hankel-determinants` treats Cigler's Conjectures 13–15
   (the family `a_n(t)`, Section 5); Part I explains why its target differs.
+  Within the collection, Cigler's Conjecture 17 is treated only here.
 - `shifted-catalan-hankel-polynomials` treats weighted Catalan moments and
   never `c_n(t)`. Its Part III (batch 42) classifies the cyclotomic
   resonances of one repeated root for that family, where likewise at most one
@@ -649,10 +939,14 @@ option; both Part I drivers reject it.
 - **Formal status.** No ProveIt Lean or Rocq development states any result of
   this report: no declaration mentions Cigler's polynomials (`git grep -i
   cigler -- '*.lean'` is empty), and the collection's placement under
-  `SetTheory/Cardinals` confers no formal status. Part II's Section 20.3 and
-  Part III's Section 32.3 are only proposed formalization routes; Part III
-  says "No Lean or Rocq implementation of these new results is included or
-  claimed".
+  `SetTheory/Cardinals` confers no formal status. Part II's Section 20.3,
+  Part III's Section 32.3 and Part IV's Section 42 are only proposed
+  formalization routes; Part III says "No Lean or Rocq implementation of these
+  new results is included or claimed", and Part IV's status file says it "has
+  not been checked in Lean, Rocq, or another proof assistant". The
+  "determinant and Schur infrastructure" that Part IV's Section 42.1 says the
+  repository contains is the paper proofs and Python verifiers of Parts I–III,
+  not a formal library (Section 42.1 carries a note).
 
 ## Small usage example (Part I's code)
 
