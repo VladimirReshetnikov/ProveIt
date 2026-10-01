@@ -71,3 +71,31 @@ The central theorems have detailed written proofs. They have not been independen
 The regularity classification is local at the atomic phase and concerns `q>1/2`. The article does not settle phase regularity at arbitrary nonzero phases or at and below the critical order. Nine further research questions address these boundaries, finer expansions, full spectra, other masks, and formalization.
 
 The source repository was inspected at commit `afb2d1227d8bc5df3beffc1463e958db3544960b`. Nothing in the repository was changed.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+In the editorial pass after batches 66 to 68 of `docs/incoming/` (see
+`docs/incoming/README.md`), a later package of this tree was found to bear on
+two of its research questions. The mathematical text is unchanged; every
+change to the source is marked `% ed. (2026-09-30)`.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note
+  (ProveIt, 2026-09-30)") is defined after the last theorem style. After
+  Research questions 3 ("Regularity at nonzero phases") and 8 ("Other masks
+  and multiple zeros"), notes record that
+  `../Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/` (batch 68, unreviewed) computes exactly the pressure of products of shifted digital
+  masks whose phases fill complete periodic orbits of `x -> bx mod 1`, with
+  a common exponent on each orbit, with every equilibrium measure, in every
+  base; it bears on the question without answering it (fixed phases; a
+  single mask whose phase has period at least two is not covered; no
+  phase regularity); the second note adds that the pressure of such a product
+  with several zeros is a maximum of explicit orbit branches, not a
+  perturbation of a positive eigenfunction.
+- `article.tex`: the title page no longer sets hyperref page anchors (it is
+  numbered 1 like the following page), which removes the delivered source's
+  one duplicate-destination warning (`page.1`).
+- `article.pdf`: rebuilt with the `Makefile`'s three `pdflatex` passes
+  (MiKTeX pdfTeX 1.40.29): 18 pages, as delivered, with no error, undefined
+  reference, multiply defined label, duplicate destination or overfull box;
+  no Type 3 font. The page carrying the notes was rendered and inspected.
+  `results/build_validation.json` describes the delivered build.

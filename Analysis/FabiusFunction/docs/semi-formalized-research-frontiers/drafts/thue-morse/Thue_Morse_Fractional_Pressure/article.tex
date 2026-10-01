@@ -45,6 +45,8 @@
 \newaliascnt{remark}{theorem}
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (no counter is shifted).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\TT}{\mathbb T}
 \newcommand{\RR}{\mathbb R}
 \newcommand{\CC}{\mathbb C}
@@ -64,6 +66,8 @@
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
 
 \begin{document}
+% ed. (2026-09-30): no page anchors on the title page, which is numbered 1 like the following page (removes a duplicate-destination warning of the delivered source).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \setlength{\parindent}{0pt}
@@ -114,6 +118,8 @@ proof-assistant verified.
 \nolinkurl{afb2d1227d8bc5df3beffc1463e958db3544960b}.\\
 The package contains the source, compiled PDF, executable checks, and their output.}
 \end{titlepage}
+% ed. (2026-09-30): page anchors back on after the title page.
+\hypersetup{pageanchor=true}
 \begingroup
 \small
 \setlength{\parskip}{0pt}
@@ -1128,6 +1134,17 @@ periodicity or recurrence? The atomic result rules out a global analytic
 theorem, but it does not rule out stronger regularity on substantial
 subsets of the punctured phase circle.
 \end{question}
+% ed. (2026-09-30): a later package bears on this question
+\begin{ednote}
+\path{../Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/} (batch~68 of
+the repository's \path{docs/incoming/}) computes exactly the pressure of
+products of shifted digital masks whose phases fill complete periodic
+orbits of $x\mapsto bx\bmod1$, with a common exponent on each orbit,
+together with every equilibrium measure and the resulting mixed-moment
+exponents, in every base. The zeros of such a product are mapped by $x\mapsto bx$ onto the selected periodic orbits. It bears on this question but does not
+answer it: the phases are fixed, a single mask whose phase has period at
+least two is not covered, and no regularity in the phase is proved.
+\end{ednote}
 
 \begin{question}[A complete fractional expansion]
 Determine the higher-order structure of $E_{b,s}(c)$. Does the pressure
@@ -1168,6 +1185,17 @@ when is the first nonanalytic exponent determined by a zero multiplicity?
 The arithmetic zeta sum in this paper may be replaced by a more general
 lattice or orbit sum.
 \end{question}
+% ed. (2026-09-30): a later package bears on this question
+\begin{ednote}
+\path{../Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/} (batch~68 of
+the repository's \path{docs/incoming/}) computes exactly the pressure of
+products of shifted digital masks whose phases fill complete periodic
+orbits of $x\mapsto bx\bmod1$, with a common exponent on each orbit,
+together with every equilibrium measure and the resulting mixed-moment
+exponents, in every base. Such a product has several zeros, organized by the selected orbits, and its pressure is a maximum of explicit orbit branches rather than a perturbation of a positive eigenfunction. It bears on this question but does not
+answer it: the phases are fixed, a single mask whose phase has period at
+least two is not covered, and no regularity in the phase is proved.
+\end{ednote}
 
 \begin{question}[Certified numerics and formalization]
 Turn the explicit branch bounds into quantitative constants and combine

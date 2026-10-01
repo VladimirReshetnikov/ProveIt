@@ -53,8 +53,9 @@ Run the computational checks with Python 3.10 or later:
     python code/verify.py
 
 The program uses only the standard library and writes by default to
-`results-rerun/`, preserving the recorded output. To select another output
-location:
+`results-rerun/`, preserving the recorded output; since the editorial pass
+(below) all three files are written with LF line endings on every platform.
+To select another output location:
 
     python code/verify.py --output-dir /path/to/output
 
@@ -70,3 +71,46 @@ No Lean build was run. The manuscript has not been independently peer
 reviewed. The contribution is presented relative to an explicitly documented
 repository question; exhaustive literature priority has not been established.
 No ProveIt repository files were changed.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 66 to 68 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-30)`, every change to the program `ed. (2026-09-30)`. The
+`pdfauthor` and title-page wording ("prepared with ChatGPT",
+"AI-assisted") is kept as delivered.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-30)" is defined in the preamble (the theorem counter is
+  unchanged). Two notes:
+  - after equation (3.8), `m_4(a^0) = 19/675`: `X_{a^0}` has Rvachev's `up`
+    law, and its fourth moment `19/675` is machine-checked as
+    `Fabius.upMoment_four` (from `Fabius.moment_two`) in
+    `Analysis/FabiusFunction/Lean/FabiusFunction/OrthogonalPolynomialJacobi.lean`,
+    which the article does not cite; no result of the article is
+    formalized;
+  - in Section 10.2, after the question mapping: the answered question in
+    `../Anchored_Dyadic_Recovery_Uniform_Spectrum/` now carries a
+    reciprocal note; at the dyadic reference the article also settles the
+    boundary case `q = 1/2` that the editorial note to "Geometrically
+    separated classes" in `../Recovering_Uniform_Factors_Fabius_Rvachev/`
+    leaves open; and `../Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/`
+    proves, for a finite list of uniform factors, that the optimal anchored
+    exponent is `1/2` whenever the reference has a repeated positive scale
+    or a zero slot (`thm:anchored`), of which Theorem 4.5 is an
+    infinite-spectrum counterpart at the dyadic reference, proved
+    independently.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf`
+  (MiKTeX pdfTeX 1.40.29): 22 pages, as delivered, with no error, undefined
+  reference, multiply defined label, duplicate destination or overfull box;
+  no Type 3 font. The two pages carrying the notes were rendered and
+  inspected. `results/build_report.txt` describes the delivered build and
+  is still accurate in every line.
+- `code/verify.py`: the three outputs are written with LF line endings on
+  every platform (CRLF on Windows for the JSON and text files, and CRLF
+  everywhere for the CSV, before). A rerun of the amended program on a copy
+  (2026-09-30, `py code/verify.py`, Python 3.14.4) passed all 29,776
+  assertions and reproduced `results/witness_diagnostics.csv` byte for
+  byte; `verification.json` and `verification.txt` differ only in the
+  Python version.
+- `README.md`: the line-ending sentence and this section.

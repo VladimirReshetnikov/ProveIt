@@ -27,6 +27,8 @@
 \newtheorem{question}{Question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
 \newcommand{\E}{\mathbb E}
@@ -131,6 +133,18 @@ explicitly leave critical complements and quantitative corrections open
 \cite{repo-uniform}. A companion lacunary-series manuscript develops
 full-configuration approximations, marginal corrections, fluctuation
 processes, and boundary laws \cite{repo-lacunary}.
+% ed. (2026-09-30): the description of the uniform-series article above is incomplete
+\begin{ednote}
+Beyond the qualitative conclusions, \cite{repo-uniform} also proves rates
+for the full configurations, for every positive summable weight sequence
+(its Corollary~\texttt{cor:full-info}): with $V$ the total tilted variance,
+$\KL=\frac12\log(2\pi V)-1+o(1)$ and $1-\TV\sim\log V/(2\sqrt{2\pi V})$.
+For geometric weights $V=n+\delta+o(1)$, so \eqref{eq:fullkl} below is
+that corollary's entropy statement, which this article re-proves without
+citing it, and the leading term of \eqref{eq:thin} coincides with its
+overlap statement. This article read only the README and the first 220
+source lines of \cite{repo-uniform} (see \texttt{provenance.json}).
+\end{ednote}
 
 The present paper asks the following precise continuation question:
 \begin{quote}
@@ -144,6 +158,39 @@ into a fixed-fraction limit. Relative entropy has a universal diverging
 logarithm once $m\to\infty$, whereas overlap has a transition at
 $m\asymp\log n$. Fixed complements retain a non-Gaussian boundary density
 and explicit phase constants.
+% ed. (2026-09-30): an independent answer to the same question was filed in the repository at the same time
+\begin{ednote}
+An independently written article under the same title,
+\emph{Critical Complements in Fabius Conditioning: Logarithmic overlap,
+finite-memory corrections, and the order-zero R\'enyi crossover}, written
+against an earlier snapshot and filed beside this package as
+\path{../Critical_Complements_Fabius_Conditioning/} (batch~66 of the
+repository's \path{docs/incoming/}), also answers \texttt{q:critical}, for
+different hidden coordinates; neither article cites the other. It
+observes $\{r+1,\ldots,n\}$ and hides the first $r$ coordinates together
+with the tail, for fixed $r$, and proves
+$\sqrt{2\pi n}\,(1-\TV)=\Lambda_n+r\log\Lambda_n+\log K-\log(r!)+1+o(1)$
+with $\Lambda_n=\frac12\log(2\pi n)$, the divergences of every fixed
+R\'enyi order, and an order-zero R\'enyi crossover. The two settings
+coincide only when nothing but the tail is hidden ($m=r=0$). Its tilt is
+$t_n=\rho_{\mathrm{CC}}q^{-n}$, so $\rho_{\mathrm{CC}}=\rho/q$; then its
+$\log K$ is $K_{q,\rho,0}$, its $H_0$ is $Z_0=R_0+E$, its deficit
+$\delta_0$ is $\Delta_0$, and its Theorem~3.4 (\texttt{thm:flatmain}) is
+\eqref{eq:correctedtv} at $m=0$, proved independently. Its printed
+$\log K=0.486134172\ldots$ ($q=1/2$, $\rho_{\mathrm{CC}}=1$) is
+$K_{1/2,1/2,0}$ by \eqref{eq:AK} (the phase $\rho=1/2$ lies outside the
+cell $1\le\rho<q^{-1}$ used here; see Proposition~\ref{prop:phase}), and
+$K_{1/2,1,0}=0.944809318$ of Table~\ref{tab:boundary} is its $\log K$ at
+$\rho_{\mathrm{CC}}=2$; both were checked to 30 digits on filing. For
+$m\ge1$ or $r\ge1$ the theorems concern different marginals and do not
+conflict: its terms $r\log\Lambda_n-\log(r!)$ come from a Gamma$(r+1,1)$
+variable, whereas $0\le R_m\le A_m$ here. The words ``crossover'', $K$,
+$h$ and $\delta$ mean different things in the two articles. The growing
+boundary-adjacent complement of Theorems~\ref{thm:crossover}
+and~\ref{thm:entropy} is not treated there; a growing early-coordinate
+complement (one of the masks of the first question of
+Section~\ref{sec:questions}) is open in both.
+\end{ednote}
 
 Our inspection is pinned to \snap. The relevant predecessor paths and
 precise comparison are recorded in the bibliography and the package's
@@ -425,6 +472,18 @@ Finally, $-x\log x$ is bounded on $[0,1]$, so the entropy integrand is
 integrable on $[0,A_m]$. The exact exponential tail handles every
 polynomially weighted integral on the remainder of the half-line.
 \end{proof}
+% ed. (2026-09-30): Lean counterpart of the Fabius case of F_q, not cited by the article
+\begin{ednote}
+For $q=1/2$ the distribution function $F_q$ in \eqref{eq:gprofile} is the
+Fabius function. This is machine-checked in the repository:
+\path{Fabius.ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal}
+(the distribution function of $\sum_{j\ge1}2^{-j}U_j$ is the Fabius function
+on the whole real line) and
+\path{Fabius.ProbabilityRepresentation.geometricUniformDensity_one_half_eq_rvachevUp}
+(its density is $2\,\mathrm{up}(2x-1)$), both in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/ProbabilityRepresentation.lean}.
+No result of this article is formalized.
+\end{ednote}
 
 \subsection{Reduction of both distances to one dimension}
 Let

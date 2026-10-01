@@ -156,7 +156,11 @@ def iterated_cos(s: mp.mpf, m: int, omega: mp.mpf) -> mp.mpf:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output-dir', type=Path, default=Path(__file__).resolve().parent)
+    # ed. (2026-09-30): the default was this directory, so a plain run overwrote the
+    # recorded verification_results.json and verification_run.txt; it is now
+    # rerun_results/ beside this file. Pass --output-dir . to regenerate the records.
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent/'rerun_results')
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     mp.mp.dps = 75
@@ -239,8 +243,9 @@ def main() -> None:
     receipt['status']='passed'
     receipt['elapsed_seconds']=round(time.perf_counter()-started,3)
     note(f"All finite assertions passed in {receipt['elapsed_seconds']} seconds.")
-    (args.output_dir/'verification_results.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
-    (args.output_dir/'verification_run.txt').write_text('\n'.join(transcript)+'\n',encoding='utf-8')
+    # ed. (2026-09-30): newline='\n', so both files are LF on every platform (CRLF on Windows before).
+    (args.output_dir/'verification_results.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8',newline='\n')
+    (args.output_dir/'verification_run.txt').write_text('\n'.join(transcript)+'\n',encoding='utf-8',newline='\n')
 
 if __name__ == '__main__':
     main()

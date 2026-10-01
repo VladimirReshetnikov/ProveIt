@@ -322,7 +322,7 @@ law's.  Unreviewed; its numerics are diagnostics; no Lean statement.
 
 [`Anchored_Dyadic_Recovery_Uniform_Spectrum/`](Anchored_Dyadic_Recovery_Uniform_Spectrum/)
 holds *Anchored Recovery of the Dyadic Uniform Spectrum*, filed on
-2026-09-29 by a quick archival intake (23-page A4 PDF, 1,659-line
+2026-09-29 by a quick archival intake (23-page A4 PDF, 1,682-line
 source, an exact check program with mpmath diagnostics).  It takes up
 the pointwise questions the uniform-factor recovery article above
 leaves open: comparing a law directly with the Rvachev law, the
@@ -338,7 +338,7 @@ remains open.  Unreviewed; no Lean statement.
 [`Lacunarity_Boundary_Geometric_Uniform_Spectra/`](Lacunarity_Boundary_Geometric_Uniform_Spectra/)
 holds *The Lacunarity Boundary: Two-Moment Rigidity and Sharp Recovery of
 Geometric Uniform Spectra*, filed on 2026-09-30 by a quick archival
-intake (22-page A4 PDF, 1,531-line source, a standard-library exact check
+intake (22-page A4 PDF, 1,557-line source, a standard-library exact check
 program).  It answers the anchored article's question "The sharp
 separation boundary ρ=1/2": under `a_{j+1} ≤ a_j/2` with variance `1/9`,
 `sup_j |a_j − 2^{−j}|² ≤ (75/4)(19/675 − E X⁴)`, so the whole spectrum is

@@ -66,8 +66,8 @@ lists the formalization targets.
 ## Integer pressure of generalized Thue–Morse products (arrival, 2026-09-28)
 
 [`Thue_Morse_Integer_Pressure/`](Thue_Morse_Integer_Pressure/) holds
-*Integer Pressure and a Missing Taylor Coefficient* (24-page A4 PDF,
-1,604-line source, two exact-arithmetic verifiers), filed on 2026-09-28 by a
+*Integer Pressure and a Missing Taylor Coefficient* (25-page A4 PDF,
+1,621-line source, two exact-arithmetic verifiers), filed on 2026-09-28 by a
 quick archival intake.  For the phase-shifted Riesz weight `cos²π(x−c)`
 under the doubling map it claims that every positive-integer pressure
 `p_m(c)` is real-analytic in `c` (a simple Perron eigenvalue of an explicit
@@ -82,7 +82,7 @@ and the `L^q` pressure of the sine cocycle in
 ## Fractional pressure at the atomic phase (arrival, 2026-09-29)
 
 [`Thue_Morse_Fractional_Pressure/`](Thue_Morse_Fractional_Pressure/) holds
-*Fractional Cusps at the Atomic Phase* (18-page A4 PDF, 1,295-line source, a
+*Fractional Cusps at the Atomic Phase* (18-page A4 PDF, 1,323-line source, a
 SymPy/mpmath identity check with floating-point collocation diagnostics),
 filed on 2026-09-29 by a quick archival intake.  It takes up the
 noninteger question left open by the integer pressure article above: for
@@ -99,7 +99,7 @@ not certificates; no Lean statement.
 ## Critical and subcritical pressure (arrival, 2026-09-29)
 
 [`Thue_Morse_Critical_Pressure/`](Thue_Morse_Critical_Pressure/) holds
-*Critical Cusps in Digital-Product Pressure* (22-page A4 PDF, 1,632-line
+*Critical Cusps in Digital-Product Pressure* (23-page A4 PDF, 1,691-line
 source, a mixed high-precision/collocation diagnostic program), filed on
 2026-09-29 by a quick archival intake.  It takes up the critical and
 subcritical questions left open by the fractional pressure article above.
@@ -149,7 +149,7 @@ diagnostics, not certificates; no Lean statement.
 
 [`Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/`](Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/)
 holds *Periodic Anchors and Exact Mixed-Moment Phase Diagrams* (21-page
-A4 PDF, 1,463-line source, an exact-arithmetic and diagnostic check
+A4 PDF, 1,484-line source, an exact-arithmetic and diagnostic check
 program), filed on 2026-09-30 by a quick archival intake.  It multiplies
 several phase-shifted digital masks before taking a moment: when the
 phases fill complete periodic orbits of `x ↦ bx` with a common exponent

@@ -888,6 +888,27 @@ remains a conjecture.
 Theorem~\ref{thm:allorders} gives every fixed algebraic order with a finite constant. Determine the optimal growth of those constants with the expansion order and with \(\ell\). This should decide whether the corrections admit a useful Gevrey estimate or Borel-type summation in sectors of the complex \(t\)-plane. The dense parameter boundary does not by itself answer a sectorial summation question. In particular, one should not infer summability merely from the existence of every finite-order expansion.
 
 The lower bound \eqref{eq:cusp-lower} behaves roughly like \((|w|/(2\pi))^L/L^2\). Thus higher-order roots may exhibit extremely small leading cusps before the \(1/t\) factor dominates. A uniform theorem should quantify the transition between a small resonant coefficient and the nonresonant background, rather than hide all root-order dependence inside a big-O constant.
+% ed. (2026-09-30): the endpoint case of this question is answered by a later package
+\begin{ednote}
+The package \path{../Entire_Borel_Transform_Natural_Boundary_q_Fabius_Law/}
+(batch~67 of the repository's \path{docs/incoming/}), written against this
+article, answers this question at the endpoint $q\to1$, that is at the root
+$\xi=1$, in a dilation normalization: with $q=e^{-t}$, centred uniform
+digits $U_j$ on $[-\tfrac12,\tfrac12]$ and digit amplitudes $zt\,e^{-jt}$,
+$z$ real and nonzero, it studies
+$F_z(t)=\log\mathbb E\exp\bigl(zt\sum_{j\ge0}e^{-jt}U_j\bigr)$, related to
+the fixed-argument transform by an exact change of variables. The odd
+coefficients $b_j(z)$ of its expansion at $t=0$ have a complete leading
+equivalent with a Lambert-$W$ saddle, and
+$\lim_{j\ \mathrm{odd}}\log j\,(|b_j(z)|/j!)^{1/j}=1/(2\pi)$: the series
+diverges, is Gevrey one of zero type, and is of no smaller Gevrey order.
+Its Borel transform is entire and sums it exactly along the positive ray
+for $0<t<2\pi/|z|$, yet no open Borel sector about that ray carries an
+exponential bound, because no point of $\{i\tau:|z\tau|<2\pi\}$ admits a
+meromorphic continuation. The fixed-argument problem, the roots of unity
+other than $1$ and the growth in $\ell$ asked for above remain open, as
+does Conjecture~\ref{conj:denominator}.
+\end{ednote}
 
 \subsection{The first-zero threshold}
 Classify the local asymptotic forms when \(|(1-\xi)z|=2\pi\). Depending on the argument, the boundary digit factor may meet one of the first zeros \(\pm2\pi i\), or may only meet the convergence circle of the logarithmic expansion. The natural-boundary theorem does not distinguish these cases because it need not. A two-parameter study of \(t\) and the displacement of \(z\) from the threshold should separate actual factor-zero transitions from limitations of a chosen logarithmic coordinate.

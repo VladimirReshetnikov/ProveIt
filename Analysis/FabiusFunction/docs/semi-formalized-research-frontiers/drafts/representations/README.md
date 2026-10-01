@@ -147,7 +147,9 @@ of an existing draft; semantic consolidation is deferred to the post-
   certificates; no Lean statement.
 - [`Sharp_Conditioning_Laws_Uniform_Random_Series/`](Sharp_Conditioning_Laws_Uniform_Random_Series/),
   *Sharp Conditioning Laws for Uniform Random Series* (26-page A4 PDF,
-  1,782-line source, a SymPy/SciPy check and Monte Carlo program), filed on
+  1,811-line source with an editorial note of 2026-09-30 at `q:critical`
+  naming the two critical-complements articles below, a SymPy/SciPy check
+  and Monte Carlo program), filed on
   2026-09-29 by a quick archival intake from the repository-level
   `docs/incoming/` drop zone.  It proves the variance-fraction threshold of
   the lacunary article above for **every** positive summable weight
@@ -177,10 +179,11 @@ of an existing draft; semantic consolidation is deferred to the post-
   uniform-series article above.  Unreviewed; its numerics are not
   certificates; no Lean statement.
 - [`Critical_Complements_Fabius_Conditioning/`](Critical_Complements_Fabius_Conditioning/),
-  *Critical Complements in Fabius Conditioning* (24-page A4 PDF,
-  1,652-line source, a SymPy/SciPy exact-and-diagnostic program), filed on
+  *Critical Complements in Fabius Conditioning* (25-page A4 PDF,
+  1,704-line source, a SymPy/SciPy exact-and-diagnostic program), filed on
   2026-09-30 by a quick archival intake from the repository-level
-  `docs/incoming/` drop zone.  In the setting of the uniform-series
+  `docs/incoming/` drop zone and amended editorially the same day (its
+  README lists the amendments).  In the setting of the uniform-series
   article above, for geometric weights (the Fabius law at `q = 1/2`) and a
   fixed number `r` of unobserved early coordinates, it replaces the
   Gaussian profile by an explicit boundary kernel: the overlap
@@ -190,15 +193,17 @@ of an existing draft; semantic consolidation is deferred to the post-
   `log 2`, and a universal normal-tail profile connects them on the scale
   `α√n`; for `r = 0` the flat Fabius endpoint appears in the residual
   (logarithm `∼ −√(log(1/q) log n)`).  It answers the bounded-complement
-  part of that article's `q:critical`; the slowly growing complement
-  stays open.  Unreviewed; its numerics are not certificates; no Lean
+  part of that article's `q:critical`; a growing number of hidden early
+  coordinates stays open (growing boundary-adjacent complements are
+  treated in the bullet below).  Unreviewed; its numerics are not certificates; no Lean
   statement.
 - [`Critical_Complements_Sharp_Information_Loss/`](Critical_Complements_Sharp_Information_Loss/),
   *Critical Complements in Fabius Conditioning: Sharp information loss,
-  geometric phase constants, and a logarithmic crossover* (24-page A4
-  PDF, 1,623-line source, a NumPy/SciPy diagnostic program), filed on
+  geometric phase constants, and a logarithmic crossover* (25-page A4
+  PDF, 1,682-line source, a NumPy/SciPy diagnostic program), filed on
   2026-09-30 by a quick archival intake from the repository-level
-  `docs/incoming/` drop zone; an independently written second answer to
+  `docs/incoming/` drop zone and amended editorially the same day (its
+  README lists the amendments); an independently written second answer to
   the uniform-series article's `q:critical`, under the same title as the
   bullet above.  It observes a prefix and hides the last `m` bulk
   coordinates with the tail: for fixed `m` the overlap is

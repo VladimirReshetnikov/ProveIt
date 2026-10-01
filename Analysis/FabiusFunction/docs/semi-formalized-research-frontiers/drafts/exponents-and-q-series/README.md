@@ -11,7 +11,7 @@ There are two live document packages and two unmerged archival arrivals:
   and parameter deformations.
 - [`Unit_Circle_Barrier_q_Fabius_Transform/`](Unit_Circle_Barrier_q_Fabius_Transform/)
   — an archival arrival of 2026-09-30, filed whole and amended
-  editorially the same day (24-page A4 PDF, 1,012-line source, an exact
+  editorially the same day (24-page A4 PDF, 1,033-line source, an exact
   and high-precision check program): for every
   fixed nonzero `z` the unit circle is a natural boundary of
   `q ↦ A(q,z)`, which generalizes Part IX's natural-boundary theorem and
@@ -22,8 +22,9 @@ There are two live document packages and two unmerged archival arrivals:
   transform's pole divisor with multiplicities. Unreviewed; no Lean
   statement.
 - [`Entire_Borel_Transform_Natural_Boundary_q_Fabius_Law/`](Entire_Borel_Transform_Natural_Boundary_q_Fabius_Law/)
-  — an archival arrival of 2026-09-30, filed whole (23-page A4 PDF,
-  1,202-line source, an exact and high-precision check program): at the
+  — an archival arrival of 2026-09-30, filed whole and amended
+  editorially the same day (23-page A4 PDF, 1,230-line source, an exact
+  and high-precision check program): at the
   endpoint `q → 1`, with the transform argument scaled by `t = −log q`,
   the centered q-Fabius cumulant series is Gevrey one with refined type
   `1/(2π)`, its Borel minor is entire and sums it exactly on the positive

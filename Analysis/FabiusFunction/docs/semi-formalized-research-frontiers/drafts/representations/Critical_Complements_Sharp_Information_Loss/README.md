@@ -3,7 +3,7 @@
 **Sharp information loss, geometric phase constants, and a logarithmic crossover**
 
 A 24-page research manuscript prepared for Vladimir Reshetnikov, dated
-30 September 2026. The complete article is `article.pdf`; its editable
+30 September 2026 (25 pages with the editorial notes of 2026-09-30). The complete article is `article.pdf`; its editable
 LaTeX source is `article.tex`.
 
 ## Research result
@@ -38,7 +38,11 @@ silently included in the stated scope.
 - `figures/`: the two vector PDF figures used by the article.
 - `CLAIM_STATUS.md`: proof and scope boundaries.
 - `provenance.json`, `validation.json`: source and build records.
-- `requirements.txt`, `Makefile`, `SHA256SUMS.txt`: reproduction support.
+- `requirements.txt`, `Makefile`: reproduction support. The submitted
+  checksum ledger `SHA256SUMS.txt` (18 entries) was verified in full on
+  filing (batch 68 of `docs/incoming/`) and not kept; the delivered archive
+  remains in the repository history (see `docs/incoming/README.md`,
+  batch 68 row).
 
 ## Build the PDF
 
@@ -69,9 +73,14 @@ reported grid agreement is not an interval-certified error bound.
 
 For faster exploratory runs a smaller Fourier grid can be selected, for
 example `python code/verify.py --grid-power 14`. The default is 15, with
-comparison against a second grid of power 16. Running the script rewrites
-the data receipt. Fixed source and library versions do not guarantee
-byte-identical figure PDFs across platforms.
+comparison against a second grid of power 16. Since the editorial pass
+(below) `code/verify.py` writes to `rerun/data/` and `code/make_figures.py`
+reads `rerun/data/` and writes `rerun/figures/` and the two table fragments
+in `rerun/data/`, so neither rewrites the recorded `data/` or `figures/`;
+text and CSV outputs are LF on every platform. To regenerate the recorded
+files, run both with `--output-dir .` from this directory. Fixed source and
+library versions do not guarantee byte-identical figure PDFs across
+platforms.
 
 ## Repository provenance
 
@@ -82,3 +91,79 @@ Pinned commit: `0a543d5e435df885f78ca731d71856f3ee0ab2d4`.
 The exact prior paths and the limited inspection scope are recorded in
 `provenance.json`. No repository files were modified, and no Lean/Lake build
 was run. The ten further research questions are in Section 10.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 66 to 68 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-30)`, every change to the programs `ed. (2026-09-30)`. The
+title-page wording ("Prepared for Vladimir Reshetnikov") is kept as
+delivered.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-30)" is defined in the preamble (the theorem counter is
+  unchanged). Three notes:
+  - Section 1.1, after the description of the two conditioning
+    manuscripts: that description is incomplete. *Sharp Conditioning Laws
+    for Uniform Random Series* also proves full-configuration rates for
+    every positive summable weight sequence (its `cor:full-info`:
+    `KL = (1/2) log(2 pi V) - 1 + o(1)` and
+    `1 - TV ~ log V/(2 sqrt(2 pi V))`); for geometric weights
+    `V = n + delta + o(1)`, so equation (2.21) (`eq:fullkl`) of Theorem 2.3
+    re-proves that corollary's entropy statement without citing it, and the
+    leading term of (2.16) coincides with its overlap statement. The article
+    read only that manuscript's README and first 220 source lines;
+  - end of Section 1.1: an independently written article under the same
+    title, `../Critical_Complements_Fabius_Conditioning/` (batch 66,
+    written against an earlier snapshot), answers the same question
+    `q:critical` for different hidden coordinates: it hides the first `r`
+    coordinates with the tail, for fixed `r`, and proves
+    `sqrt(2 pi n)(1 - TV) = Lambda_n + r log Lambda_n + log K - log r! + 1 + o(1)`,
+    every fixed Renyi order and an order-zero Renyi crossover. The two
+    coincide only when nothing but the tail is hidden (`m = r = 0`): its
+    tilt is `rho_CC q^{-n}`, so `rho_CC = rho/q`, its `log K` is
+    `K_{q,rho,0}`, its `H_0` is `Z_0 = R_0 + E`, its `delta_0` is
+    `Delta_0`, and its Theorem 3.4 (`thm:flatmain`) is (2.13)
+    (`eq:correctedtv`) at `m = 0`, proved independently. Its
+    `log K = 0.486134172...` (`q = 1/2`, `rho_CC = 1`) is `K_{1/2,1/2,0}` by
+    (2.6) (outside the phase cell `1 <= rho < 1/q` used here), and
+    `K_{1/2,1,0} = 0.944809318` of Table 1 is its `log K` at `rho_CC = 2`,
+    both checked to 30 digits on filing. For `m, r >= 1` the theorems concern
+    different marginals; "crossover", `K`, `h` and `delta` mean different
+    things in the two articles. The growing boundary-adjacent complement
+    (Theorems 2.2, 2.3) is not treated there; a growing early-coordinate
+    complement is open in both;
+  - after the proof of Proposition 3.1 (`prop:profile`): for `q = 1/2`,
+    `F_q` is the Fabius function, machine-checked as
+    `Fabius.ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal` and
+    `Fabius.ProbabilityRepresentation.geometricUniformDensity_one_half_eq_rvachevUp`
+    (`Analysis/FabiusFunction/Lean/FabiusFunction/ProbabilityRepresentation.lean`),
+    which the article does not cite; no result of the article is
+    formalized.
+
+  No label was renamed or removed.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf` (MiKTeX
+  pdfTeX 1.40.29): 25 pages (24 as delivered), with no error, undefined
+  reference, multiply defined label, duplicate destination or overfull box;
+  every font is embedded and none is Type 3. Theorem, section and equation
+  numbers are unchanged, so `CLAIM_STATUS.md` stays correct (its "full-
+  configuration entropy asymptotic" under Theorem 2.3 is the uniform-series
+  corollary above, re-proved). The three pages carrying the notes were
+  rendered and inspected.
+- `validation.json`: `pdf_pages`, `pdf_bytes`, `pdf_sha256` and
+  `tex_sha256` were recomputed for the filed files; its other fields
+  describe the delivered build and are kept.
+- `code/verify.py`, `code/make_figures.py`: they wrote the recorded `data/`
+  and `figures/` in place. New option `--output-dir` (default `rerun/` in
+  this package) for both; `make diagnostics` therefore writes `rerun/`.
+  CSV, JSON and table outputs are written with LF line endings on every
+  platform (CRLF on Windows before). A rerun of both amended programs on a
+  copy (2026-09-30, `uv run --no-project --with numpy==2.3.5 --with
+  scipy==1.17.0 --with matplotlib==3.10.8 python code/verify.py`, then
+  `... code/make_figures.py`) passed and reproduced both table fragments byte
+  for byte; the CSV files differ only in floating-point noise (relative at
+  most 7.5e-8, in `corrected_kl_residual`; elsewhere at most 1.2e-11, apart from
+  the noise column `grid_entropy_difference`), `verification.json` in three
+  floats, and the re-rendered figure PDFs embed TrueType fonts only.
+- `README.md`: the page count, the retired ledger, the output location, and
+  this section.

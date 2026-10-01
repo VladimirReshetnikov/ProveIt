@@ -35,6 +35,8 @@
 \newtheorem{question}[theorem]{Question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}
@@ -54,6 +56,8 @@
 \newcommand{\pin}{781594d886f8dc56069221e2b56bd1e94d9c6e5f}
 
 \begin{document}
+% ed. (2026-09-30): no page anchors on the title page, which is numbered 1 like the first arabic page (removes a duplicate-destination warning of the delivered source).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{10mm}
@@ -82,6 +86,8 @@ The proofs are self-contained after standard Bernoulli and hyperbolic-function i
 \vfill
 {\small\textbf{Keywords.} Fabius function; geometric uniform law; Borel transform; natural boundary; logarithmic Gevrey growth; Lambert $W$; divergent series.\par}
 \end{titlepage}
+% ed. (2026-09-30): page anchors back on after the title page.
+\hypersetup{pageanchor=true}
 
 \pagenumbering{roman}
 \begingroup
@@ -107,6 +113,28 @@ This article exhibits all three distinctions inside an explicit family already c
 and its measure, moment, and cumulant descriptions \cite{repo}. Throughout, the variables $V_j$ are independent; consequently the centered digits $U_j$ are independent as well. The half-base case belongs to Fabius--Rvachev theory; classical background is given by Arias de Reyna \cite{arias}. We use the centered variables $U_j=V_j-1/2$ and the logarithmic dilation coordinate $t=-\log q$.
 
 An earlier companion manuscript proves a unit-circle obstruction for the full normalized transform and asks for sharper information about the growth and summation of its boundary expansions \cite[\S\S7,11.2]{boundary}. We answer a precise version of that question: the transform argument is scaled so that the individual digit amplitudes are exactly $zt\e^{-jt}$. This choice has a natural Riemann-sum interpretation and makes the coefficient cancellation structure accessible. The distinction from keeping the original transform argument fixed is explicit throughout.
+% ed. (2026-09-30): where the companion is filed, and repository neighbours the article does not cite
+\begin{ednote}
+The companion manuscript \cite{boundary} is filed in the repository beside
+this package, as
+\path{../Unit_Circle_Barrier_q_Fabius_Transform/q_fabius_boundary.tex};
+its Section~11.2 now carries a note pointing here. Part~IX of the geometric
+$q$-Fabius volume \path{../geometric_q_fabius_frontiers/}, which this
+article did not read (it saw only the README of the package absorbed as
+Part~XI), leaves open whether the constants of its full radial expansion
+at roots of unity obey a Gevrey bound (its
+\texttt{p9:status:inverse-analytic}). The endpoint theorems here bear on
+that question but concern a different function and normalization, and do
+not answer it. The conclusion of Theorem~\ref{thm:nosector}, an entire
+Borel transform summable along the positive ray but exponentially bounded
+in no open sector because of a natural boundary on the imaginary axis, is
+the phenomenon that two transseries articles of the repository prove for
+unrelated functions, the reversions of exponential-feedback series:
+\path{Analysis/Transseries/docs/series-and-transseries/Natural_Boundaries_Quadratic_Exponential_Feedback/}
+and
+\path{Analysis/Transseries/docs/series-and-transseries/Natural_Boundaries_Survive_Nonlinear_Feedback/}.
+No theorem is shared.
+\end{ednote}
 
 \subsection{The endpoint theorem in brief}
 Fix $z\in\R\setminus\{0\}$ and put

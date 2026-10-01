@@ -33,6 +33,8 @@
 \newtheorem{question}{Question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\E}{\mathbb E}
 \newcommand{\Pp}{\mathbb P}
 \newcommand{\R}{\mathbb R}
@@ -52,6 +54,8 @@
 \newcommand{\sha}{\texttt{b8b0fa2184a044d46ce9ed0f25f88d7bb60fa042}}
 
 \begin{document}
+% ed. (2026-09-30): no page anchors on the title page, which is numbered 1 like the following page (removes a duplicate-destination warning of the delivered source).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{12mm}
 {\large\scshape Probability, asymptotic analysis, and information theory\par}
@@ -103,6 +107,8 @@ are not certified. Classical tilting, gamma/simplex identities, and
 small-deviation estimates are explicitly distinguished from the proposed
 extensions.
 \end{titlepage}
+% ed. (2026-09-30): page anchors back on after the title page.
+\hypersetup{pageanchor=true}
 
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \newpage
@@ -150,6 +156,41 @@ these uniform error claims. Neither are arbitrary nongeometric weights,
 several simultaneous constraints, an exact random-bit sampler, or a
 machine-checked formalization. The last section formulates these as
 further questions instead of treating them as corollaries.
+% ed. (2026-09-30): an independent second answer to the same question was filed beside this package
+\begin{ednote}
+A second, independently written article under the same title,
+\emph{Critical Complements in Fabius Conditioning: Sharp information loss,
+geometric phase constants, and a logarithmic crossover}, is filed beside
+this package as \path{../Critical_Complements_Sharp_Information_Loss/}
+(batch~68 of the repository's \path{docs/incoming/}); neither article cites
+the other. It answers the same question \texttt{q:critical} of
+\cite{repoSharp} for different hidden coordinates: it observes the prefix
+$\{1,\ldots,n-m\}$ and hides the last $m$ coordinates before the boundary
+together with the tail, for every $m=o(n)$. For fixed $m$ it gives a
+two-term overlap expansion with an explicit phase constant and relative
+entropy to order $1/n$; for growing
+$m$ it gives a leading overlap formula through the two real branches of
+Lambert~$W$, with a change of regime at $m\asymp\log n$, and relative
+entropy $\frac12\log(n/m)-\frac12+o(1)$. This article instead hides the
+first $r$ coordinates together with the tail, for fixed $r$.
+The two settings coincide only when nothing but the tail is hidden
+($r=m=0$). That article's tilt is $t_n=\rho'q^{-(n+1)}$, so $\rho=\rho'/q$;
+then its constant $K_{q,\rho',0}$ is $\log K$ of \eqref{eq:T}, its $R_0+E$
+is $H_0$, its deficit $\Delta_0$ is $\delta_0$, and its corrected overlap
+(its Theorem~2.1, \texttt{thm:fixed}, equation \texttt{eq:correctedtv}, at
+$m=0$) is \cref{thm:flatmain}, proved independently. On filing, the value
+$\log K=0.486134172\ldots$ of \eqref{eq:dyadicconstants} ($q=1/2$, $\rho=1$)
+was reproduced from that article's formula for $K_{q,\rho',0}$ at
+$\rho'=1/2$, and its tabulated $K_{1/2,1,0}=0.944809318$ equals $\log K$ at
+$\rho=2$ (both to 30 digits). For $r\ge1$ or $m\ge1$ the two theorems
+concern different marginals and do not conflict: the terms
+$r\log\Lambda_n-\log(r!)$ here come from the $\Gam(r+1,1)$ part of $H_r$,
+whereas the hidden coordinates there have a bounded sum. The words
+``crossover'', $K$ (a product here, a logarithm there), $h$ (a density
+here, an entropy there) and $\delta$ mean different things in the two
+articles. The growing early-coordinate complement of the first question
+of \cref{sec:future} is not treated there and remains open.
+\end{ednote}
 
 \subsection{Relation to existing methods}
 Exponential-family conditioning and finite-block approximation have a
@@ -230,6 +271,17 @@ particular $F'(x)=2F(2x)$ for $0<x<1/2$. This is the probability
 normalization of the Fabius function used in the geometric-sum
 representation~\cite{arias}. Our event is therefore a Fabius endpoint
 event when $q=1/2$, not an unrelated finite-dimensional surrogate.
+% ed. (2026-09-30): Lean counterpart of the Fabius identification, not cited by the article
+\begin{ednote}
+This identification is machine-checked in the repository:
+\path{Fabius.ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal}
+states that the distribution function of $\sum_{k\ge1}2^{-k}U_k$ is the
+Fabius function on the whole real line, and
+\path{Fabius.ProbabilityRepresentation.geometricUniformDensity_one_half_eq_rvachevUp}
+gives its density as $2\,\mathrm{up}(2x-1)$; both are in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/ProbabilityRepresentation.lean}.
+No result of this article is formalized.
+\end{ednote}
 
 \section{The boundary kernel and the main results}
 \label{sec:main}

@@ -127,3 +127,22 @@ to take up two more of its research questions.
   one), 782,505 bytes; no error, undefined reference, duplicate
   destination or overfull box; no Type 3 font; the pages carrying the notes
   were rendered and inspected.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+In the editorial pass after batches 66 to 68 of `docs/incoming/` (see
+`docs/incoming/README.md`), a later package of this tree was found to bear on
+one of its research questions.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-09-30)") is defined after `ednote`. After the research
+  question "Nonatomic phases", a note records that
+  `../Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/` (batch 68, unreviewed) computes exactly the pressure of products of shifted digital
+  masks whose phases fill complete periodic orbits of `x -> bx mod 1`, with
+  a common exponent on each orbit, with every equilibrium measure, in every
+  base; it bears on the question without answering it (fixed phases; a
+  single mask whose phase has period at least two is not covered; no
+  phase regularity). Both changes are marked `% ed. (2026-09-30)`.
+- `article.pdf`: rebuilt the same way: 23 pages, as before, with no error,
+  undefined reference, duplicate destination or overfull box; no Type 3
+  font; the page carrying the note was rendered and inspected.

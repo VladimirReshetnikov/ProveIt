@@ -17,6 +17,10 @@ from scipy.optimize import brentq
 from scipy.special import gammaln, lambertw
 
 ROOT = Path(__file__).resolve().parents[1]
+# ed. (2026-09-30): outputs went to the recorded data/ on every run; they now go
+# to <output-dir>/data (default <package>/rerun), set in main(). Pass
+# --output-dir . from the package directory to regenerate the recorded files.
+OUT = ROOT / 'rerun'
 
 def log_mgf_one(a: float) -> float:
     if a < 1e-5:
@@ -211,16 +215,22 @@ def roots(z:float)->tuple[float,float]:
     return low,high
 
 def write_csv(name:str,rows:list[dict])->None:
-    p=ROOT/'data'/name
+    p=OUT/'data'/name
     with p.open('w',newline='') as h:
-        writer=csv.DictWriter(h,fieldnames=list(rows[0]))
+        # ed. (2026-09-30): LF rows (the csv default is CRLF).
+        writer=csv.DictWriter(h,fieldnames=list(rows[0]),lineterminator='\n')
         writer.writeheader();writer.writerows(rows)
 
 def main()->None:
     parser=argparse.ArgumentParser()
     parser.add_argument('--grid-power',type=int,default=15)
+    # ed. (2026-09-30): output directory option (see the note at ROOT).
+    parser.add_argument('--output-dir',type=Path,default=ROOT/'rerun',
+                        help='directory receiving data/ (default: <package>/rerun)')
     args=parser.parse_args()
-    (ROOT/'data').mkdir(exist_ok=True)
+    global OUT
+    OUT=args.output_dir
+    (OUT/'data').mkdir(parents=True,exist_ok=True)
     boundary_rows=[]; checks={}
     for rho in [1.,1.25,1.5,1.75]:
         for m in [0,1,2]:
@@ -259,7 +269,8 @@ def main()->None:
     assert checks['tv_residual_decreases']
     checks['scope']='Floating-point diagnostics; no interval certification or Lean proof.'
     checks['environment']=dict(python=platform.python_version(),numpy=np.__version__,scipy=scipy.__version__)
-    (ROOT/'data'/'verification.json').write_text(json.dumps(checks,indent=2)+'\n')
+    # ed. (2026-09-30): newline='\n', so the receipt is LF on every platform.
+    (OUT/'data'/'verification.json').write_text(json.dumps(checks,indent=2)+'\n',newline='\n')
     print(json.dumps(checks,indent=2))
     print('\nFinite dyadic metrics:')
     for r in rows:

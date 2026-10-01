@@ -183,6 +183,9 @@ def critical_crossover_diagnostics() -> dict:
 def make_figures(outdir: Path, results: dict) -> None:
     import matplotlib
     matplotlib.use('Agg')
+    # ed. (2026-09-30): embed TrueType (Type 42) fonts instead of Type 3 fonts.
+    matplotlib.rcParams['pdf.fonttype'] = 42
+    matplotlib.rcParams['ps.fonttype'] = 42
     import matplotlib.pyplot as plt
     outdir.mkdir(parents=True, exist_ok=True)
     a = np.linspace(0, 4, 401); d = np.linspace(0, 4, 401)
@@ -216,7 +219,12 @@ def make_figures(outdir: Path, results: dict) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--out', type=Path, default=Path('verification_results.json'))
+    # ed. (2026-09-30): the default was verification_results.json in the current
+    # directory, so a plain run in this package overwrote the recorded file (and
+    # --figures the recorded figures/). The default is now rerun/ beside this file;
+    # pass --out verification_results.json from this directory to regenerate.
+    parser.add_argument('--out', type=Path,
+                        default=Path(__file__).resolve().parent/'rerun'/'verification_results.json')
     parser.add_argument('--figures', action='store_true')
     args = parser.parse_args()
     results = {'exact_algebra': exact_seventh_root_checks(),
@@ -224,7 +232,9 @@ def main() -> None:
                'periodic_energy': periodic_energy_checks(),
                'mixed_moments': mixed_moment_diagnostics(),
                'critical_crossover': critical_crossover_diagnostics()}
-    args.out.write_text(json.dumps(results, indent=2)+'\n', encoding='utf-8')
+    # ed. (2026-09-30): create the output directory; LF on every platform.
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(json.dumps(results, indent=2)+'\n', encoding='utf-8', newline='\n')
     if args.figures:
         make_figures(args.out.parent/'figures', results)
     print('All exact assertions and numerical identity checks passed.')

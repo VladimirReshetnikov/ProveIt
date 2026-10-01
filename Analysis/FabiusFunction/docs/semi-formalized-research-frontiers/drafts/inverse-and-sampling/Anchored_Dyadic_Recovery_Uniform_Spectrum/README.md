@@ -19,7 +19,10 @@ contraction at the reference.
 
 The exponent 1/2 is sharp. The leading stretched-exponential constant is not
 determined. The pairwise modulus, the exact-support-endpoint restriction, and
-the separation boundary rho = 1/2 are left open.
+the separation boundary rho = 1/2 are left open. (The boundary rho = 1/2 was
+later answered at the dyadic reference by
+`../Lacunarity_Boundary_Geometric_Uniform_Spectra/`, batch 68: a sharp
+`Theta(sqrt(epsilon))` modulus; see the editorial amendments below.)
 
 ## Contents
 
@@ -137,3 +140,29 @@ The byline "prepared with ChatGPT" is kept as delivered.
   program writes the same report twice), not a separate console log.
 - `README.md`: the ledger line under "Contents", the computation command and
   output location, and this section.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 66 to 68 of `docs/incoming/` (see
+`docs/incoming/README.md`); the changes to the source are marked
+`% ed. (2026-09-30)`.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-09-30)") is defined after `ednote`. After Research
+  question 3 ("The sharp separation boundary rho = 1/2") a note records
+  that `../Lacunarity_Boundary_Geometric_Uniform_Spectra/` (batch 68,
+  written against this article, same normalization) answers it: under
+  `a_{j+1} <= a_j/2`, `sup_j |a_j - 2^{-j}|^2 <= (75/4)(19/675 - E X_a^4)`,
+  so the anchored modulus at `rho = 1/2` is `Theta(sqrt(epsilon))` in total
+  variation and Kolmogorov distance, with matching deleted-factor witnesses
+  in `K`; at the boundary it also answers Research question 4 negatively
+  (`sum_j a_j <= 1`, with equality only at `a^0`) and Research question 5
+  inside its critical cone only (`Theta(2^r)`). The pairwise modulus, the
+  exact-support question with slack and the prefix constants on `A_L`
+  remain open.
+- `article.pdf`: rebuilt the same way: 23 pages, as before, with no error,
+  undefined reference, multiply defined label, duplicate destination or
+  overfull box; no Type 3 font. The page carrying the note was rendered and
+  inspected.
+- `README.md`: the sentence on open problems under "Main results" (a
+  parenthesis) and this section.

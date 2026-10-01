@@ -26,6 +26,8 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \DeclareMathOperator{\TV}{TV}
 \DeclareMathOperator{\Law}{Law}
 \DeclareMathOperator{\Var}{Var}
@@ -485,6 +487,15 @@ For $q=1/4$, $S=1/3$, we have $c_q=3/5$, $B_{\rho,S}=1$, and
 \begin{equation}
  m_4(a^0)=\frac1{27}-\frac2{225}=\frac{19}{675}.
 \end{equation}
+% ed. (2026-09-30): Lean counterpart of the reference fourth moment, not cited by the article
+\begin{ednote}
+The law of $X_{a^0}=\sum_{j\ge1}2^{-j}U_j$ is Rvachev's $\mathrm{up}$ law,
+and its fourth moment $19/675$ is machine-checked as
+\path{Fabius.upMoment_four}, derived from the rational moment value
+\path{Fabius.moment_two}, both in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/OrthogonalPolynomialJacobi.lean}.
+No result of this article is formalized.
+\end{ednote}
 Substituting in \cref{thm:geometric-rigidity} and
 \eqref{eq:moment-metrics} proves all upper estimates in
 \cref{thm:dyadic-intro}.
@@ -1339,6 +1350,21 @@ list. The immediately following exact-support question is addressed here
 only at the critical boundary. The earlier article's general identifiability,
 Fourier zero-count arguments, and numerical bounds are not assumptions in
 our new critical-boundary proofs.
+% ed. (2026-09-30): reciprocal note, and related repository results the article does not cite
+\begin{ednote}
+The question answered here,
+in \path{../Anchored_Dyadic_Recovery_Uniform_Spectrum/}, now carries a
+note pointing to this package. At the dyadic reference this also settles
+the boundary case $q=1/2$ that the editorial note to ``Geometrically
+separated classes'' in \path{../Recovering_Uniform_Factors_Fabius_Rvachev/}
+leaves open. In the same group,
+\path{../Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/} proves, for
+a finite list of uniform factors, that the optimal anchored exponent is
+$1/2$ whenever the reference has a repeated positive scale or a zero slot
+(its \texttt{thm:anchored}); the $\Theta(\sqrt\eps)$ modulus of
+\cref{thm:sharp-modulus} is an infinite-spectrum counterpart at the dyadic
+reference, proved independently.
+\end{ednote}
 
 The source's editorial crosswalk reports the formal derivative-norm theorem
 \path{Fabius.isGreatest_abs_iteratedDeriv_rvachevUp} in

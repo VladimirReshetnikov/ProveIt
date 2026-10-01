@@ -162,15 +162,17 @@ def main() -> None:
         arithmetic='fractions.Fraction; Decimal diagnostics at precision 65',
         total_exact_assertions=sum(COUNTS.values()), checks=dict(sorted(COUNTS.items())),
         scope='Finite exact regression tests; not formal verification or an analytic proof.')
-    (args.output_dir/'verification.json').write_text(json.dumps(record,indent=2)+'\n')
+    # ed. (2026-09-30): newline='\n' here and below, so every output is LF on all platforms.
+    (args.output_dir/'verification.json').write_text(json.dumps(record,indent=2)+'\n', newline='\n')
     text = '\n'.join([f'Status: {record["status"]}',
         f'Exact assertions: {record["total_exact_assertions"]}',
         f'Python: {record["python"]}', 'Seed: 20260930', '',
         *[f'{name}: {number}' for name,number in sorted(COUNTS.items())], '',record['scope']])+'\n'
-    (args.output_dir/'verification.txt').write_text(text)
+    (args.output_dir/'verification.txt').write_text(text, newline='\n')
     rows = diagnostic_rows()
     with (args.output_dir/'witness_diagnostics.csv').open('w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        # ed. (2026-09-30): LF rows (the csv default is CRLF).
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator='\n')
         writer.writeheader(); writer.writerows(rows)
     print(text)
     for row in rows[:5]:

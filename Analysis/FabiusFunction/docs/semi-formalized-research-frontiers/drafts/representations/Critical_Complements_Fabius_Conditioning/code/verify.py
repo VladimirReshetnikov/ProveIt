@@ -7,6 +7,7 @@ and a finite signed-gamma mixture for the bulk. They are not interval proofs.
 Run from any directory: python code/verify.py
 """
 from __future__ import annotations
+import argparse
 import csv
 import json
 import math
@@ -22,10 +23,12 @@ from scipy.special import gammaln, gammainc, log_ndtr, digamma
 import sympy as sp
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / 'data'
-FIG = ROOT / 'figures'
-DATA.mkdir(exist_ok=True)
-FIG.mkdir(exist_ok=True)
+# ed. (2026-09-30): outputs went to the recorded data/ and figures/ on every run;
+# they now go to <output-dir>/data and <output-dir>/figures, set in main()
+# (default <package>/rerun; pass --output-dir . from the package directory to
+# regenerate the recorded files).
+DATA = ROOT / 'rerun' / 'data'
+FIG = ROOT / 'rerun' / 'figures'
 
 
 def rational_moments(q: sp.Rational, rho: sp.Rational, degree: int) -> list:
@@ -73,7 +76,8 @@ def exact_checks() -> dict:
             target = mu**(N+r)*sp.factorial(N-1)*sp.factorial(r)/sp.factorial(N+r)
             assert sp.factor(integral-target) == 0
             count += 1
-    (DATA/'exact_algebra.json').write_text(json.dumps(records, indent=2)+'\n')
+    # ed. (2026-09-30): newline='\n' here and below, so text outputs are LF on every platform.
+    (DATA/'exact_algebra.json').write_text(json.dumps(records, indent=2)+'\n', newline='\n')
     return {'passed':count, 'failed':0,
             'categories': {'moment_vs_cumulant':72,'kernel_differential_identity':72,
                            'simplex_polynomial_integral':84}}
@@ -243,7 +247,8 @@ def simplex_renyi(n: int,r: int,alpha: float) -> float:
 
 def write_csv(name: str, rows: list[dict]) -> None:
     with (DATA/name).open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=rows[0].keys())
+        # ed. (2026-09-30): LF rows (the csv default is CRLF).
+        writer=csv.DictWriter(f,fieldnames=rows[0].keys(),lineterminator='\n')
         writer.writeheader();writer.writerows(rows)
 
 
@@ -286,12 +291,12 @@ def make_tex_tables(rows: list[dict], kernels: list[dict], cross: list[dict]) ->
             lines.append(f"{z['n']:,} & {z['r']} & {z['scaled_overlap']:.6f} & "
                          f"{z['overlap_prediction']:.6f} & {z['scaled_residual']:+.6f} \\\\")
     lines += [r'\bottomrule',r'\end{tabular}']
-    (DATA/'overlap_table.tex').write_text('\n'.join(lines)+'\n')
+    (DATA/'overlap_table.tex').write_text('\n'.join(lines)+'\n', newline='\n')
     lines=[r'\begin{tabular}{rrrr}',r'\toprule',r'$r$ & $h(H_r)$ & $h_{1/2}(H_r)$ & Normalization error\\',r'\midrule']
     for z in kernels:
         lines.append(f"{z['r']} & {z['entropy']:.8f} & {z['entropy_half']:.8f} & {z['normalization_error']:.2e} \\\\")
     lines += [r'\bottomrule',r'\end{tabular}']
-    (DATA/'kernel_table.tex').write_text('\n'.join(lines)+'\n')
+    (DATA/'kernel_table.tex').write_text('\n'.join(lines)+'\n', newline='\n')
 
 
     lines=[r'\begin{tabular}{rrrrrr}',r'\toprule',
@@ -302,10 +307,20 @@ def make_tex_tables(rows: list[dict], kernels: list[dict], cross: list[dict]) ->
                          f"{z['fixed_kernel_J']:.6f} & {z['boundary_defect']:.6f} & "
                          f"{z['reduction_error']:+.6f} " + r'\\')
     lines += [r'\bottomrule',r'\end{tabular}']
-    (DATA/'reduction_table.tex').write_text('\n'.join(lines)+'\n')
+    (DATA/'reduction_table.tex').write_text('\n'.join(lines)+'\n', newline='\n')
 
 
 def main() -> None:
+    # ed. (2026-09-30): output directory option (see the note at ROOT).
+    global DATA, FIG
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output-dir', type=Path, default=ROOT/'rerun',
+                        help='directory receiving data/ and figures/ (default: <package>/rerun)')
+    args = parser.parse_args()
+    DATA = args.output_dir/'data'
+    FIG = args.output_dir/'figures'
+    DATA.mkdir(parents=True, exist_ok=True)
+    FIG.mkdir(parents=True, exist_ok=True)
     exact=exact_checks()
     kernel=BoundaryKernel(16)
     finer=BoundaryKernel(17)
@@ -344,7 +359,7 @@ def main() -> None:
         'limitations':'No interval arithmetic. Infinite boundary approximated by dyadic midpoint convolution; caps >=64 removed in the bulk mixture.'},
         'environment':{'python':platform.python_version(),'numpy':np.__version__,
                        'scipy':scipy.__version__,'sympy':sp.__version__,'mpmath':mp.__version__}}
-    (DATA/'verification.json').write_text(json.dumps(receipt,indent=2)+'\n')
+    (DATA/'verification.json').write_text(json.dumps(receipt,indent=2)+'\n', newline='\n')
     print(f"Exact checks passed: {exact['passed']} (0 failed).")
     print(f"Numerical cases: {len(rows)} geometric and {len(cross)} simplex crossover cases.")
     print(f"Boundary mesh-refinement difference: {refinement:.3e}.")

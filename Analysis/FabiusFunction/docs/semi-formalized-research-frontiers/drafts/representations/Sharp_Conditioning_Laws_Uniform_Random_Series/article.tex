@@ -48,6 +48,8 @@
 \newaliascnt{remark}{theorem}
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (no counter is shifted).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\N}{\mathbb N}
 \newcommand{\R}{\mathbb R}
 \newcommand{\E}{\mathbb E}
@@ -1514,6 +1516,33 @@ the complement has the phase-dependent law of
 \cref{eq:block-ratio} is a plausible route to a matched
 macroscopic-to-boundary formula. The theorem that TV tends to one
 at fraction one does not determine that finer rate.
+% ed. (2026-09-30): two later packages answer this question for geometric weights
+\begin{ednote}
+Two independently written packages beside this one answer this question
+for geometric weights, for different unobserved coordinates; neither cites
+the other. \path{../Critical_Complements_Fabius_Conditioning/} (batch~66 of
+the repository's \path{docs/incoming/}) hides a fixed number $r$ of early
+coordinates together with the tail and proves
+$\sqrt{2\pi n}\,(1-\TV)=\Lambda_n+r\log\Lambda_n+\log K-\log(r!)+1+o(1)$,
+$\Lambda_n=\frac12\log(2\pi n)$, with the divergences of every fixed
+R\'enyi order and an order-zero R\'enyi crossover; a growing number of
+hidden early coordinates stays open there.
+\path{../Critical_Complements_Sharp_Information_Loss/} (batch~68) follows
+the route suggested above: it observes $\{1,\ldots,n-m\}$ and hides the
+last $m$ coordinates before the boundary together with the tail, with the
+boundary law of \cref{thm:boundary}. For fixed $m$ it gives a two-term
+overlap expansion with an explicit phase constant and the relative entropy
+to order $1/n$; for every $m=o(n)$ it gives the leading overlap through the
+two real branches of Lambert~$W$, with a change of regime at
+$m\asymp\log n$, and relative entropy $\frac12\log(n/m)-\frac12+o(1)$ when
+$m\to\infty$. The two coincide only when nothing but the tail is hidden,
+where their corrected overlap theorems agree after the phase change
+$\rho\mapsto\rho/q$ (the first package's $\log K=0.486134172\ldots$ at
+$q=1/2$, $\rho=1$ is the second's constant $K_{1/2,1/2,0}$). For a bounded hidden
+complement both leading overlap terms agree with \cref{eq:overlap}, and the second package's
+full-configuration entropy re-proves \cref{eq:full-kl} for geometric weights.
+General weights and \cref{q:edgeworth} are not treated.
+\end{ednote}
 
 \begin{question}[Phase-sensitive higher corrections]\label{q:edgeworth}
 Can the repository's all-orders scalar saddle expansions be

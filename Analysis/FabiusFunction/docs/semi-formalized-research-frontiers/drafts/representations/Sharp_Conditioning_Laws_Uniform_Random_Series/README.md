@@ -87,3 +87,40 @@ Eight further research questions concern quantitative error bounds, critical
 complements, phase-sensitive corrections, quantitative log-concave local
 limits, multiple constraints, other endpoint densities and random weights,
 nongeometric transition fields, and certified random-bit complexity.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 66 to 68 of `docs/incoming/` (see
+`docs/incoming/README.md`); the change to the source is marked
+`% ed. (2026-09-30)`.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-30)" is defined in the preamble (no counter is shifted). One note,
+  after the discussion of Question 13.2 (`q:critical`): two independently
+  written packages beside this one answer it for geometric weights, for
+  different unobserved coordinates, and neither cites the other.
+  `../Critical_Complements_Fabius_Conditioning/` (batch 66) hides a fixed
+  number `r` of early coordinates with the tail:
+  `sqrt(2 pi n)(1 - TV) = Lambda_n + r log Lambda_n + log K - log r! + 1 + o(1)`,
+  every fixed Renyi order and an order-zero Renyi crossover; a growing
+  number of hidden early coordinates stays open.
+  `../Critical_Complements_Sharp_Information_Loss/` (batch 68) follows the
+  route suggested after the question: it observes `{1, ..., n-m}` and hides
+  the last `m` coordinates before the boundary with the tail, giving a
+  two-term overlap expansion and entropy to order `1/n` for fixed `m`, and,
+  for every `m = o(n)`, a Lambert-W leading overlap with a change of regime
+  at `m ~ log n` and entropy `(1/2) log(n/m) - 1/2 + o(1)` for growing `m`.
+  The two coincide only when nothing but the tail is hidden, where their
+  corrected overlap theorems agree after `rho -> rho/q`
+  (`log K = 0.486134172...` at `q = 1/2`, `rho = 1`, in the first). For a
+  bounded hidden complement both leading terms agree with `eq:overlap`, and
+  the second package re-proves `eq:full-kl` for geometric weights. General
+  weights and `q:edgeworth` are not treated.
+- `article.pdf`: rebuilt from the amended source with the `Makefile`'s three
+  `pdflatex` passes (MiKTeX pdfTeX 1.40.29): 26 pages, as delivered, with no
+  error, undefined reference, multiply defined label, duplicate destination
+  or overfull box; every font is embedded and none is Type 3. The page with
+  the note was rendered and inspected. `validation.json`'s `pdf_sha256` was
+  recomputed for the filed PDF; its other fields describe the delivered
+  build.
+- `README.md`: this section.

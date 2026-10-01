@@ -127,7 +127,8 @@ delivered, as for the other arrivals of the Fabius drafts tree.
 
 - `q_fabius_boundary.tex`: an unnumbered environment "Editorial note
   (ProveIt, 2026-09-30)" is defined in the preamble (the theorem counter
-  is unchanged). Four notes:
+  is unchanged). Four notes (a fifth, added after batch 67, is listed at
+  the end of this section):
   - end of Section 1.1: the article's audit read only the Lean
     documentation. The geometric q-Fabius volume beside it
     (`../geometric_q_fabius_frontiers/`) already proves the natural boundary
@@ -190,3 +191,18 @@ delivered, as for the other arrivals of the Fabius drafts tree.
   (uncentred, on `[0,1]`) and `D_n` (the cyclotomic divisor) differ from the
   volume's `Y_q` and from the `D_n` of the volume's problem on the
   arithmetic of `P_n`.
+- Added in the editorial pass after batches 66 to 68 (same date, same
+  marking): a fifth note in `q_fabius_boundary.tex`, after the question
+  "Uniform cusp asymptotics, Gevrey order, and summation" (Section 11.2).
+  `../Entire_Borel_Transform_Natural_Boundary_q_Fabius_Law/` (batch 67),
+  written against this article, answers it at the endpoint `q -> 1` (the
+  root `xi = 1`) in a dilation normalization (digit amplitudes
+  `z t e^{-jt}`, `q = e^{-t}`, `z` real and nonzero): the odd coefficients
+  have a Lambert-W leading equivalent with refined type `1/(2 pi)`, so the
+  series is Gevrey one of zero type and of no smaller order; its entire
+  Borel transform sums it exactly along the positive ray for
+  `0 < t < 2 pi/|z|`, but no open sector about that ray carries an
+  exponential bound. The fixed-argument problem, the other roots of unity,
+  the growth in `l`, and Conjecture `conj:denominator` remain open. The PDF
+  was rebuilt the same way (24 pages, clean log, no Type 3 font); the page
+  with the note was rendered and inspected.
