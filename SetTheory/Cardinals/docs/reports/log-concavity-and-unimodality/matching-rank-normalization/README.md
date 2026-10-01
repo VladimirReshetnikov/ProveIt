@@ -17,10 +17,6 @@ printed there as Part XIII and is not a source. All sources were placed in
 Vladimir Reshetnikov with OpenAI", except source 72: "AI-assisted
 mathematical research".
 
-The report is written in four commits, one per Part. **At this state Part
-I–III are printed (sixteen sources); Part IV follows.** The support files
-of all 27 sources are already in the directory (placed in `8bb543f0f`).
-
 | Source | Batch-72 manuscript | Archive (`docs/incoming/…` at `1512ef835`) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | 74 | 74 (base) | `ProveIt_Weighted_Rank_Five_and_Two_Shore_Covers.zip` (*Weighted Rank Five and Covers with a Two Vertex Shore*, 16 pp.) | `1b3960d8a`, `a866ff9a2` | `8bb543f0f` | Part I, Sections 2–13 |
@@ -39,17 +35,17 @@ of all 27 sources are already in the directory (placed in `8bb543f0f`).
 | 05 | 05 | `ProveIt_Rank_Six_Second_Newton_Inequality.zip` (*The Second Newton Inequality at Rank Six*) | none | `8bb543f0f` | Part III, Section 26 |
 | 69 | 69 | `ProveIt_Rank_Six_Common_Exterior_Theorem.zip` (*Rank Six With Common Exterior Neighborhoods*) | none | `8bb543f0f` | Part III, Section 27 |
 | 63 | 63 | `ProveIt_Rank_Six_Nested_and_Conditional_Results.zip` (*Nested Rank Six Families and Conditional Barriers*) | none | `8bb543f0f` | Part III, Section 28 |
-| 08s | inside 08 | `ProveIt_Eventual_One_Shore_Scaling_Through_Rank_Seven.zip`, nested `Rank7_Eventual_Report/companion/structural_companion_source.zip` (*Top Conditional Gaps and the Rank Seven Reduction*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 21 | 21 | `ProveIt_Rank_Six_Conditioning_for_Every_Core.zip` (*Rank Six Conditioning for Every Core*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 43 | 43 | `ProveIt_Rank_Six_Complete_Core_Cubic.zip` (*A Rank Six Cubic Sector with a Complete Core*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 38 | 38 | `ProveIt_Rank_Six_Matching_Hole_Cores.zip` (*Rank Six Cubic Sectors for Matching Hole Cores*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 35 | 35 | `ProveIt_Rank_Six_Two_Complete_Rows.zip` (*Rank Six Cores with Two Complete Rows*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 32 | 32 | `ProveIt_Rank_Six_Two_Complete_Columns.zip` (*Rank Six Cores with Two Complete Columns*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 29 | 29 | `ProveIt_Rank_Six_At_Least_Six_Core_Edges.zip` (*Rank Six Cores with at Least Six Edges*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 08 | 08 | `ProveIt_Eventual_One_Shore_Scaling_Through_Rank_Seven.zip` (*Eventual One Shore Scaling Through Rank Seven*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 03 | 03 | `ProveIt_Eventual_Five_Plus_Three_Covers.zip` (*Eventual Scaling for Five Plus Three Covers*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 02 | 02 | `ProveIt_Four_Plus_Four_Top_Gap.zip` (*The Top Conditional Gap for Four Plus Four Covers*) | none | `8bb543f0f` | Part IV (not yet written) |
-| 01 | 01 | `ProveIt_Eventual_One_Shore_Scaling_Through_Rank_Eight.zip` (*Eventual One Shore Scaling Through Rank Eight*) | none | `8bb543f0f` | Part IV (not yet written) |
+| 08s | inside 08 | `ProveIt_Eventual_One_Shore_Scaling_Through_Rank_Seven.zip`, nested `Rank7_Eventual_Report/companion/structural_companion_source.zip` (*Top Conditional Gaps and the Rank Seven Reduction*) | none | `8bb543f0f` | Part IV, Section 29 |
+| 21 | 21 | `ProveIt_Rank_Six_Conditioning_for_Every_Core.zip` (*Rank Six Conditioning for Every Core*) | none | `8bb543f0f` | Part IV, Section 30 |
+| 43 | 43 | `ProveIt_Rank_Six_Complete_Core_Cubic.zip` (*A Rank Six Cubic Sector with a Complete Core*) | none | `8bb543f0f` | Part IV, Section 31 |
+| 38 | 38 | `ProveIt_Rank_Six_Matching_Hole_Cores.zip` (*Rank Six Cubic Sectors for Matching Hole Cores*) | none | `8bb543f0f` | Part IV, Section 32 |
+| 35 | 35 | `ProveIt_Rank_Six_Two_Complete_Rows.zip` (*Rank Six Cores with Two Complete Rows*) | none | `8bb543f0f` | Part IV, Section 33 |
+| 32 | 32 | `ProveIt_Rank_Six_Two_Complete_Columns.zip` (*Rank Six Cores with Two Complete Columns*) | none | `8bb543f0f` | Part IV, Section 34 |
+| 29 | 29 | `ProveIt_Rank_Six_At_Least_Six_Core_Edges.zip` (*Rank Six Cores with at Least Six Edges*) | none | `8bb543f0f` | Part IV, Section 35 |
+| 08 | 08 | `ProveIt_Eventual_One_Shore_Scaling_Through_Rank_Seven.zip` (*Eventual One Shore Scaling Through Rank Seven*) | none | `8bb543f0f` | Part IV, Section 36 |
+| 03 | 03 | `ProveIt_Eventual_Five_Plus_Three_Covers.zip` (*Eventual Scaling for Five Plus Three Covers*) | none | `8bb543f0f` | Part IV, Section 37 |
+| 02 | 02 | `ProveIt_Four_Plus_Four_Top_Gap.zip` (*The Top Conditional Gap for Four Plus Four Covers*) | none | `8bb543f0f` | Part IV, Section 38 |
+| 01 | 01 | `ProveIt_Eventual_One_Shore_Scaling_Through_Rank_Eight.zip` (*Eventual One Shore Scaling Through Rank Eight*) | none | `8bb543f0f` | Part IV, Section 39 |
 
 Pins are the commits the manuscripts themselves cite: `1b3960d8a` is
 `1b3960d8acdabd983147b7c609bd9dfb2d67a0a0`, the batch-70 archive of the
@@ -68,18 +64,18 @@ repository states or uses these results.
 
 ```
 article.tex                                                              the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf                                                              the compiled report, 118 pages, A4
+article.pdf                                                              the compiled report, 192 pages, A4
 README.md                                                                this guide
 05-second-newton-VERIFICATION.md                                         source 05, Part III: delivered `VERIFICATION.md`
 10-three-vertex-VERIFICATION.md                                          source 10, Part III: delivered `VERIFICATION.md`
 13-last-newton-VERIFICATION.md                                           source 13, Part III: delivered `VERIFICATION.md`
-21-every-core-VERIFICATION.md                                            source 21, Part IV (Part IV not yet written): delivered `VERIFICATION.md`
+21-every-core-VERIFICATION.md                                            source 21, Part IV: delivered `VERIFICATION.md`
 23-rooted-sectors-VERIFICATION.md                                        source 23, Part III: delivered `VERIFICATION.md`
-29-six-edges-VERIFICATION.md                                             source 29, Part IV (Part IV not yet written): delivered `VERIFICATION.md`
-32-two-columns-VERIFICATION.md                                           source 32, Part IV (Part IV not yet written): delivered `VERIFICATION.md`
-35-two-rows-VERIFICATION.md                                              source 35, Part IV (Part IV not yet written): delivered `VERIFICATION.md`
-38-matching-hole-VERIFICATION.md                                         source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/VERIFICATION.md`
-43-complete-core-VERIFICATION.md                                         source 43, Part IV (Part IV not yet written): delivered `Rank_Six_Complete_Core_Cubic/VERIFICATION.md`
+29-six-edges-VERIFICATION.md                                             source 29, Part IV: delivered `VERIFICATION.md`
+32-two-columns-VERIFICATION.md                                           source 32, Part IV: delivered `VERIFICATION.md`
+35-two-rows-VERIFICATION.md                                              source 35, Part IV: delivered `VERIFICATION.md`
+38-matching-hole-VERIFICATION.md                                         source 38, Part IV: delivered `Rank_Six_Matching_Hole_Cores/VERIFICATION.md`
+43-complete-core-VERIFICATION.md                                         source 43, Part IV: delivered `Rank_Six_Complete_Core_Cubic/VERIFICATION.md`
 47-rank38-ulc-VERIFICATION.md                                            source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/VERIFICATION.md`
 51-last-gap-QA.md                                                        source 51, Part II: delivered `Last_Hall_Gap_Separation/QA.md`
 55-rank38-endpoint-QA.md                                                 source 55, Part II: delivered `Sharp_Rank_38_Hall_Endpoint/QA.md`
@@ -89,25 +85,25 @@ README.md                                                                this gu
 74-weighted-rank-five-PROOF_STATUS.md                                    source 74, Part I: delivered `ProveIt_Weighted_Rank_Five/PROOF_STATUS.md`
 76-rank-four-PROOF_STATUS.md                                             source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/PROOF_STATUS.md`
 76-rank-four-SOURCES.md                                                  source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/SOURCES.md`
-code/01-rank-eight-independent-check_minor_supports.py                   source 01, Part IV (Part IV not yet written): delivered `code/independent/check_minor_supports.py`
-code/01-rank-eight-independent-check_transition.py                       source 01, Part IV (Part IV not yet written): delivered `code/independent/check_transition.py`
-code/01-rank-eight-independent-replay_hyperplane.py                      source 01, Part IV (Part IV not yet written): delivered `code/independent/replay_hyperplane.py`
-code/01-rank-eight-primary-check_hyperplane_transition.py                source 01, Part IV (Part IV not yet written): delivered `code/primary/check_hyperplane_transition.py`
-code/01-rank-eight-primary-support_counts.py                             source 01, Part IV (Part IV not yet written): delivered `code/primary/support_counts.py`
-code/01-rank-eight-replay_all.py                                         source 01, Part IV (Part IV not yet written): delivered `code/replay_all.py`
-code/02-four-plus-four-independent-replay.py                             source 02, Part IV (Part IV not yet written): delivered `code/independent/replay.py`
-code/02-four-plus-four-independent-replay_coupled.py                     source 02, Part IV (Part IV not yet written): delivered `code/independent/replay_coupled.py`
-code/02-four-plus-four-primary-check_generic_six_profiles.py             source 02, Part IV (Part IV not yet written): delivered `code/primary/check_generic_six_profiles.py`
-code/02-four-plus-four-primary-check_top_coupled_five.py                 source 02, Part IV (Part IV not yet written): delivered `code/primary/check_top_coupled_five.py`
-code/02-four-plus-four-primary-check_top_coupled_six.py                  source 02, Part IV (Part IV not yet written): delivered `code/primary/check_top_coupled_six.py`
-code/02-four-plus-four-primary-support_counts.py                         source 02, Part IV (Part IV not yet written): delivered `code/primary/support_counts.py`
-code/02-four-plus-four-primary-verify_real_counterexample.py             source 02, Part IV (Part IV not yet written): delivered `code/primary/verify_real_counterexample.py`
-code/02-four-plus-four-replay_all.py                                     source 02, Part IV (Part IV not yet written): delivered `code/replay_all.py`
-code/03-five-plus-three-check_four_quotient_unit.py                      source 03, Part IV (Part IV not yet written): delivered `code/check_four_quotient_unit.py`
-code/03-five-plus-three-endpoint_profiles.py                             source 03, Part IV (Part IV not yet written): delivered `code/endpoint_profiles.py`
-code/03-five-plus-three-replay_all.py                                    source 03, Part IV (Part IV not yet written): delivered `code/replay_all.py`
-code/03-five-plus-three-verify_five_by_three.py                          source 03, Part IV (Part IV not yet written): delivered `code/verify_five_by_three.py`
-code/03-five-plus-three-verify_plane_profiles.py                         source 03, Part IV (Part IV not yet written): delivered `code/verify_plane_profiles.py`
+code/01-rank-eight-independent-check_minor_supports.py                   source 01, Part IV: delivered `code/independent/check_minor_supports.py`
+code/01-rank-eight-independent-check_transition.py                       source 01, Part IV: delivered `code/independent/check_transition.py`
+code/01-rank-eight-independent-replay_hyperplane.py                      source 01, Part IV: delivered `code/independent/replay_hyperplane.py`
+code/01-rank-eight-primary-check_hyperplane_transition.py                source 01, Part IV: delivered `code/primary/check_hyperplane_transition.py`
+code/01-rank-eight-primary-support_counts.py                             source 01, Part IV: delivered `code/primary/support_counts.py`
+code/01-rank-eight-replay_all.py                                         source 01, Part IV: delivered `code/replay_all.py`
+code/02-four-plus-four-independent-replay.py                             source 02, Part IV: delivered `code/independent/replay.py`
+code/02-four-plus-four-independent-replay_coupled.py                     source 02, Part IV: delivered `code/independent/replay_coupled.py`
+code/02-four-plus-four-primary-check_generic_six_profiles.py             source 02, Part IV: delivered `code/primary/check_generic_six_profiles.py`
+code/02-four-plus-four-primary-check_top_coupled_five.py                 source 02, Part IV: delivered `code/primary/check_top_coupled_five.py`
+code/02-four-plus-four-primary-check_top_coupled_six.py                  source 02, Part IV: delivered `code/primary/check_top_coupled_six.py`
+code/02-four-plus-four-primary-support_counts.py                         source 02, Part IV: delivered `code/primary/support_counts.py`
+code/02-four-plus-four-primary-verify_real_counterexample.py             source 02, Part IV: delivered `code/primary/verify_real_counterexample.py`
+code/02-four-plus-four-replay_all.py                                     source 02, Part IV: delivered `code/replay_all.py`
+code/03-five-plus-three-check_four_quotient_unit.py                      source 03, Part IV: delivered `code/check_four_quotient_unit.py`
+code/03-five-plus-three-endpoint_profiles.py                             source 03, Part IV: delivered `code/endpoint_profiles.py`
+code/03-five-plus-three-replay_all.py                                    source 03, Part IV: delivered `code/replay_all.py`
+code/03-five-plus-three-verify_five_by_three.py                          source 03, Part IV: delivered `code/verify_five_by_three.py`
+code/03-five-plus-three-verify_plane_profiles.py                         source 03, Part IV: delivered `code/verify_plane_profiles.py`
 code/05-second-newton-build_core_schur_certificate.py                    source 05, Part III: delivered `verification/build_core_schur_certificate.py`
 code/05-second-newton-check_R_determinants.py                            source 05, Part III: delivered `verification/check_R_determinants.py`
 code/05-second-newton-check_core_endpoint_formulas.py                    source 05, Part III: delivered `verification/check_core_endpoint_formulas.py`
@@ -119,16 +115,16 @@ code/05-second-newton-independent-finalize.py                            source 
 code/05-second-newton-independent-reconstruct.py                         source 05, Part III: delivered `verification/independent/reconstruct.py`
 code/05-second-newton-run_core_schur_profiles.py                         source 05, Part III: delivered `verification/run_core_schur_profiles.py`
 code/05-second-newton-verify.py                                          source 05, Part III: delivered `verify.py`
-code/08-rank-seven-endpoint_profiles.py                                  source 08, Part IV (Part IV not yet written): delivered `Rank7_Eventual_Report/code/endpoint_profiles.py`
-code/08-rank-seven-replay_all.py                                         source 08, Part IV (Part IV not yet written): delivered `Rank7_Eventual_Report/code/replay_all.py`
-code/08-rank-seven-top-gap-endpoint_profiles.py                          source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/code/endpoint_profiles.py`
-code/08-rank-seven-top-gap-replay_all.py                                 source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/code/replay_all.py`
-code/08-rank-seven-top-gap-supplement-search.py                          source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/supplement/search.py`
-code/08-rank-seven-top-gap-supplement-search_heavy_right.py              source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/supplement/search_heavy_right.py`
-code/08-rank-seven-top-gap-supplement-search_rayleigh_seed.py            source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/supplement/search_rayleigh_seed.py`
-code/08-rank-seven-top-gap-verify_barrier.py                             source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/code/verify_barrier.py`
-code/08-rank-seven-top-gap-verify_rayleigh_seed.py                       source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/code/verify_rayleigh_seed.py`
-code/08-rank-seven-verify_middle.py                                      source 08, Part IV (Part IV not yet written): delivered `Rank7_Eventual_Report/code/verify_middle.py`
+code/08-rank-seven-endpoint_profiles.py                                  source 08, Part IV: delivered `Rank7_Eventual_Report/code/endpoint_profiles.py`
+code/08-rank-seven-replay_all.py                                         source 08, Part IV: delivered `Rank7_Eventual_Report/code/replay_all.py`
+code/08-rank-seven-top-gap-endpoint_profiles.py                          source 08s, Part IV: delivered `Rank7_Top_Gap_Report/code/endpoint_profiles.py`
+code/08-rank-seven-top-gap-replay_all.py                                 source 08s, Part IV: delivered `Rank7_Top_Gap_Report/code/replay_all.py`
+code/08-rank-seven-top-gap-supplement-search.py                          source 08s, Part IV: delivered `Rank7_Top_Gap_Report/supplement/search.py`
+code/08-rank-seven-top-gap-supplement-search_heavy_right.py              source 08s, Part IV: delivered `Rank7_Top_Gap_Report/supplement/search_heavy_right.py`
+code/08-rank-seven-top-gap-supplement-search_rayleigh_seed.py            source 08s, Part IV: delivered `Rank7_Top_Gap_Report/supplement/search_rayleigh_seed.py`
+code/08-rank-seven-top-gap-verify_barrier.py                             source 08s, Part IV: delivered `Rank7_Top_Gap_Report/code/verify_barrier.py`
+code/08-rank-seven-top-gap-verify_rayleigh_seed.py                       source 08s, Part IV: delivered `Rank7_Top_Gap_Report/code/verify_rayleigh_seed.py`
+code/08-rank-seven-verify_middle.py                                      source 08, Part IV: delivered `Rank7_Eventual_Report/code/verify_middle.py`
 code/10-three-vertex-check_supports.py                                   source 10, Part III: delivered `code/check_supports.py`
 code/10-three-vertex-generate_determinant.py                             source 10, Part III: delivered `code/generate_determinant.py`
 code/10-three-vertex-independent_replay.py                               source 10, Part III: delivered `code/independent_replay.py`
@@ -138,33 +134,33 @@ code/13-last-newton-generate_certificate.py                              source 
 code/13-last-newton-replay_all.py                                        source 13, Part III: delivered `code/replay_all.py`
 code/13-last-newton-replay_certificate.py                                source 13, Part III: delivered `code/replay_certificate.py`
 code/13-last-newton-verify_virtual_orbits.py                             source 13, Part III: delivered `code/verify_virtual_orbits.py`
-code/21-every-core-check_weighted_planes.py                              source 21, Part IV (Part IV not yet written): delivered `code/check_weighted_planes.py`
-code/21-every-core-replay_all.py                                         source 21, Part IV (Part IV not yet written): delivered `code/replay_all.py`
-code/21-every-core-verify_incidence.py                                   source 21, Part IV (Part IV not yet written): delivered `code/verify_incidence.py`
+code/21-every-core-check_weighted_planes.py                              source 21, Part IV: delivered `code/check_weighted_planes.py`
+code/21-every-core-replay_all.py                                         source 21, Part IV: delivered `code/replay_all.py`
+code/21-every-core-verify_incidence.py                                   source 21, Part IV: delivered `code/verify_incidence.py`
 code/23-rooted-sectors-independent_full_field.py                         source 23, Part III: delivered `code/independent_full_field.py`
 code/23-rooted-sectors-support_helpers.py                                source 23, Part III: delivered `code/support_helpers.py`
 code/23-rooted-sectors-verify_base_dynamic.py                            source 23, Part III: delivered `code/verify_base_dynamic.py`
 code/23-rooted-sectors-verify_common_field.py                            source 23, Part III: delivered `code/verify_common_field.py`
 code/23-rooted-sectors-verify_connected.py                               source 23, Part III: delivered `code/verify_connected.py`
 code/23-rooted-sectors-verify_rooted_hessians.py                         source 23, Part III: delivered `code/verify_rooted_hessians.py`
-code/29-six-edges-check_core_orbits.py                                   source 29, Part IV (Part IV not yet written): delivered `code/check_core_orbits.py`
-code/29-six-edges-check_star_edge.py                                     source 29, Part IV (Part IV not yet written): delivered `code/check_star_edge.py`
-code/29-six-edges-check_star_edge_transpose.py                           source 29, Part IV (Part IV not yet written): delivered `code/check_star_edge_transpose.py`
-code/29-six-edges-check_triangular.py                                    source 29, Part IV (Part IV not yet written): delivered `code/check_triangular.py`
-code/29-six-edges-independent_reconstruction.py                          source 29, Part IV (Part IV not yet written): delivered `code/independent_reconstruction.py`
-code/29-six-edges-replay_all.py                                          source 29, Part IV (Part IV not yet written): delivered `code/replay_all.py`
-code/32-two-columns-check_degree_one_counts.py                           source 32, Part IV (Part IV not yet written): delivered `code/check_degree_one_counts.py`
-code/32-two-columns-check_flag_algebra.py                                source 32, Part IV (Part IV not yet written): delivered `code/check_flag_algebra.py`
-code/32-two-columns-check_zero_column_counts.py                          source 32, Part IV (Part IV not yet written): delivered `code/check_zero_column_counts.py`
-code/32-two-columns-independent_reconstruction.py                        source 32, Part IV (Part IV not yet written): delivered `code/independent_reconstruction.py`
-code/32-two-columns-verify_degree_one_certificate.py                     source 32, Part IV (Part IV not yet written): delivered `code/verify_degree_one_certificate.py`
-code/35-two-rows-check_degree_one_counts.py                              source 35, Part IV (Part IV not yet written): delivered `code/check_degree_one_counts.py`
-code/35-two-rows-check_flag_algebra.py                                   source 35, Part IV (Part IV not yet written): delivered `code/check_flag_algebra.py`
-code/35-two-rows-check_zero_row_counts.py                                source 35, Part IV (Part IV not yet written): delivered `code/check_zero_row_counts.py`
-code/35-two-rows-verify_degree_one_certificate.py                        source 35, Part IV (Part IV not yet written): delivered `code/verify_degree_one_certificate.py`
-code/38-matching-hole-verify_first_gap.py                                source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/code/verify_first_gap.py`
-code/38-matching-hole-verify_support_counts.py                           source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/code/verify_support_counts.py`
-code/43-complete-core-verify_complete_core.py                            source 43, Part IV (Part IV not yet written): delivered `Rank_Six_Complete_Core_Cubic/code/verify_complete_core.py`
+code/29-six-edges-check_core_orbits.py                                   source 29, Part IV: delivered `code/check_core_orbits.py`
+code/29-six-edges-check_star_edge.py                                     source 29, Part IV: delivered `code/check_star_edge.py`
+code/29-six-edges-check_star_edge_transpose.py                           source 29, Part IV: delivered `code/check_star_edge_transpose.py`
+code/29-six-edges-check_triangular.py                                    source 29, Part IV: delivered `code/check_triangular.py`
+code/29-six-edges-independent_reconstruction.py                          source 29, Part IV: delivered `code/independent_reconstruction.py`
+code/29-six-edges-replay_all.py                                          source 29, Part IV: delivered `code/replay_all.py`
+code/32-two-columns-check_degree_one_counts.py                           source 32, Part IV: delivered `code/check_degree_one_counts.py`
+code/32-two-columns-check_flag_algebra.py                                source 32, Part IV: delivered `code/check_flag_algebra.py`
+code/32-two-columns-check_zero_column_counts.py                          source 32, Part IV: delivered `code/check_zero_column_counts.py`
+code/32-two-columns-independent_reconstruction.py                        source 32, Part IV: delivered `code/independent_reconstruction.py`
+code/32-two-columns-verify_degree_one_certificate.py                     source 32, Part IV: delivered `code/verify_degree_one_certificate.py`
+code/35-two-rows-check_degree_one_counts.py                              source 35, Part IV: delivered `code/check_degree_one_counts.py`
+code/35-two-rows-check_flag_algebra.py                                   source 35, Part IV: delivered `code/check_flag_algebra.py`
+code/35-two-rows-check_zero_row_counts.py                                source 35, Part IV: delivered `code/check_zero_row_counts.py`
+code/35-two-rows-verify_degree_one_certificate.py                        source 35, Part IV: delivered `code/verify_degree_one_certificate.py`
+code/38-matching-hole-verify_first_gap.py                                source 38, Part IV: delivered `Rank_Six_Matching_Hole_Cores/code/verify_first_gap.py`
+code/38-matching-hole-verify_support_counts.py                           source 38, Part IV: delivered `Rank_Six_Matching_Hole_Cores/code/verify_support_counts.py`
+code/43-complete-core-verify_complete_core.py                            source 43, Part IV: delivered `Rank_Six_Complete_Core_Cubic/code/verify_complete_core.py`
 code/47-rank38-ulc-check_population_identity.py                          source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/check_population_identity.py`
 code/47-rank38-ulc-check_support_identity.py                             source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/check_support_identity.py`
 code/47-rank38-ulc-compare_certificates.py                               source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/code/compare_certificates.py`
@@ -220,19 +216,19 @@ code/76-rank-four-Makefile                                               source 
 code/76-rank-four-verify_boundary.py                                     source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/verify_boundary.py`
 code/76-rank-four-verify_complete_core.py                                source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/verify_complete_core.py`
 code/76-rank-four-verify_covariance.py                                   source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/verify_covariance.py`
-data/01-rank-eight-independent_hyperplane_certificate.json               source 01, Part IV (Part IV not yet written): delivered `data/independent_hyperplane_certificate.json`
-data/01-rank-eight-minor_support_result.json                             source 01, Part IV (Part IV not yet written): delivered `data/minor_support_result.json`
-data/01-rank-eight-primary-check_hyperplane_transition.json              source 01, Part IV (Part IV not yet written): delivered `code/primary/check_hyperplane_transition.json`
-data/01-rank-eight-transition_result.json                                source 01, Part IV (Part IV not yet written): delivered `data/transition_result.json`
-data/02-four-plus-four-independent_certificate.json                      source 02, Part IV (Part IV not yet written): delivered `data/independent_certificate.json`
-data/02-four-plus-four-independent_coupled_certificate.json              source 02, Part IV (Part IV not yet written): delivered `data/independent_coupled_certificate.json`
-data/02-four-plus-four-primary-check_generic_six_profiles.json           source 02, Part IV (Part IV not yet written): delivered `code/primary/check_generic_six_profiles.json`
-data/02-four-plus-four-primary-check_top_coupled_five.json               source 02, Part IV (Part IV not yet written): delivered `code/primary/check_top_coupled_five.json`
-data/02-four-plus-four-primary-check_top_coupled_six.json                source 02, Part IV (Part IV not yet written): delivered `code/primary/check_top_coupled_six.json`
-data/02-four-plus-four-primary-verify_real_counterexample.json           source 02, Part IV (Part IV not yet written): delivered `code/primary/verify_real_counterexample.json`
-data/03-five-plus-three-check_four_quotient_unit.json                    source 03, Part IV (Part IV not yet written): delivered `data/check_four_quotient_unit.json`
-data/03-five-plus-three-verify_five_by_three.json                        source 03, Part IV (Part IV not yet written): delivered `data/verify_five_by_three.json`
-data/03-five-plus-three-verify_plane_profiles.json                       source 03, Part IV (Part IV not yet written): delivered `data/verify_plane_profiles.json`
+data/01-rank-eight-independent_hyperplane_certificate.json               source 01, Part IV: delivered `data/independent_hyperplane_certificate.json`
+data/01-rank-eight-minor_support_result.json                             source 01, Part IV: delivered `data/minor_support_result.json`
+data/01-rank-eight-primary-check_hyperplane_transition.json              source 01, Part IV: delivered `code/primary/check_hyperplane_transition.json`
+data/01-rank-eight-transition_result.json                                source 01, Part IV: delivered `data/transition_result.json`
+data/02-four-plus-four-independent_certificate.json                      source 02, Part IV: delivered `data/independent_certificate.json`
+data/02-four-plus-four-independent_coupled_certificate.json              source 02, Part IV: delivered `data/independent_coupled_certificate.json`
+data/02-four-plus-four-primary-check_generic_six_profiles.json           source 02, Part IV: delivered `code/primary/check_generic_six_profiles.json`
+data/02-four-plus-four-primary-check_top_coupled_five.json               source 02, Part IV: delivered `code/primary/check_top_coupled_five.json`
+data/02-four-plus-four-primary-check_top_coupled_six.json                source 02, Part IV: delivered `code/primary/check_top_coupled_six.json`
+data/02-four-plus-four-primary-verify_real_counterexample.json           source 02, Part IV: delivered `code/primary/verify_real_counterexample.json`
+data/03-five-plus-three-check_four_quotient_unit.json                    source 03, Part IV: delivered `data/check_four_quotient_unit.json`
+data/03-five-plus-three-verify_five_by_three.json                        source 03, Part IV: delivered `data/verify_five_by_three.json`
+data/03-five-plus-three-verify_plane_profiles.json                       source 03, Part IV: delivered `data/verify_plane_profiles.json`
 data/05-second-newton-check_core_endpoint_formulas.json                  source 05, Part III: delivered `verification/check_core_endpoint_formulas.json`
 data/05-second-newton-check_fifth_truncation_barrier.json                source 05, Part III: delivered `verification/check_fifth_truncation_barrier.json`
 data/05-second-newton-check_zero_core_schur.json                         source 05, Part III: delivered `verification/check_zero_core_schur.json`
@@ -365,16 +361,16 @@ data/05-second-newton-independent-replay_7_3_5.json                      source 
 data/05-second-newton-independent-replay_7_3_7.json                      source 05, Part III: delivered `verification/independent/replay_7_3_7.json`
 data/05-second-newton-independent-replay_7_7_7.json                      source 05, Part III: delivered `verification/independent/replay_7_7_7.json`
 data/05-second-newton-requirements.txt                                   source 05, Part III: delivered `requirements.txt`
-data/08-rank-seven-middle_checks.json                                    source 08, Part IV (Part IV not yet written): delivered `Rank7_Eventual_Report/data/middle_checks.json`
-data/08-rank-seven-replay.log                                            source 08, Part IV (Part IV not yet written): delivered `Rank7_Eventual_Report/data/replay.log`
-data/08-rank-seven-top-gap-barrier_checks.json                           source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/data/barrier_checks.json`
-data/08-rank-seven-top-gap-rayleigh_seed_checks.json                     source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/data/rayleigh_seed_checks.json`
-data/08-rank-seven-top-gap-replay.log                                    source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/data/replay.log`
-data/08-rank-seven-top-gap-search_summary.json                           source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/data/search_summary.json`
-data/08-rank-seven-top-gap-supplement-run_diffuse_left.log               source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/supplement/run_diffuse_left.log`
-data/08-rank-seven-top-gap-supplement-run_heavy_right.log                source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/supplement/run_heavy_right.log`
-data/08-rank-seven-top-gap-supplement-run_middle.log                     source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/supplement/run_middle.log`
-data/08-rank-seven-top-gap-supplement-run_rayleigh_seed.log              source 08s, Part IV (Part IV not yet written): delivered `Rank7_Top_Gap_Report/supplement/run_rayleigh_seed.log`
+data/08-rank-seven-middle_checks.json                                    source 08, Part IV: delivered `Rank7_Eventual_Report/data/middle_checks.json`
+data/08-rank-seven-replay.log                                            source 08, Part IV: delivered `Rank7_Eventual_Report/data/replay.log`
+data/08-rank-seven-top-gap-barrier_checks.json                           source 08s, Part IV: delivered `Rank7_Top_Gap_Report/data/barrier_checks.json`
+data/08-rank-seven-top-gap-rayleigh_seed_checks.json                     source 08s, Part IV: delivered `Rank7_Top_Gap_Report/data/rayleigh_seed_checks.json`
+data/08-rank-seven-top-gap-replay.log                                    source 08s, Part IV: delivered `Rank7_Top_Gap_Report/data/replay.log`
+data/08-rank-seven-top-gap-search_summary.json                           source 08s, Part IV: delivered `Rank7_Top_Gap_Report/data/search_summary.json`
+data/08-rank-seven-top-gap-supplement-run_diffuse_left.log               source 08s, Part IV: delivered `Rank7_Top_Gap_Report/supplement/run_diffuse_left.log`
+data/08-rank-seven-top-gap-supplement-run_heavy_right.log                source 08s, Part IV: delivered `Rank7_Top_Gap_Report/supplement/run_heavy_right.log`
+data/08-rank-seven-top-gap-supplement-run_middle.log                     source 08s, Part IV: delivered `Rank7_Top_Gap_Report/supplement/run_middle.log`
+data/08-rank-seven-top-gap-supplement-run_rayleigh_seed.log              source 08s, Part IV: delivered `Rank7_Top_Gap_Report/supplement/run_rayleigh_seed.log`
 data/10-three-vertex-check_supports.json                                 source 10, Part III: delivered `code/check_supports.json`
 data/10-three-vertex-determinant.json                                    source 10, Part III: delivered `data/determinant.json`
 data/10-three-vertex-independent_replay.json                             source 10, Part III: delivered `code/independent_replay.json`
@@ -382,38 +378,38 @@ data/13-last-newton-check_last_gap_quadratic.json                        source 
 data/13-last-newton-exact_certificate.json                               source 13, Part III: delivered `data/exact_certificate.json`
 data/13-last-newton-replay_certificate.json                              source 13, Part III: delivered `data/replay_certificate.json`
 data/13-last-newton-verify_virtual_orbits.json                           source 13, Part III: delivered `data/verify_virtual_orbits.json`
-data/21-every-core-check_weighted_planes.json                            source 21, Part IV (Part IV not yet written): delivered `data/check_weighted_planes.json`
-data/21-every-core-verify_incidence.json                                 source 21, Part IV (Part IV not yet written): delivered `data/verify_incidence.json`
+data/21-every-core-check_weighted_planes.json                            source 21, Part IV: delivered `data/check_weighted_planes.json`
+data/21-every-core-verify_incidence.json                                 source 21, Part IV: delivered `data/verify_incidence.json`
 data/23-rooted-sectors-independent_full_field.json                       source 23, Part III: delivered `data/independent_full_field.json`
 data/23-rooted-sectors-verify_base_dynamic.json                          source 23, Part III: delivered `data/verify_base_dynamic.json`
 data/23-rooted-sectors-verify_common_field.json                          source 23, Part III: delivered `data/verify_common_field.json`
 data/23-rooted-sectors-verify_connected.json                             source 23, Part III: delivered `data/verify_connected.json`
 data/23-rooted-sectors-verify_rooted_hessians.json                       source 23, Part III: delivered `data/verify_rooted_hessians.json`
-data/29-six-edges-check_core_orbits.json                                 source 29, Part IV (Part IV not yet written): delivered `data/check_core_orbits.json`
-data/29-six-edges-check_star_edge.json                                   source 29, Part IV (Part IV not yet written): delivered `data/check_star_edge.json`
-data/29-six-edges-check_star_edge_transpose.json                         source 29, Part IV (Part IV not yet written): delivered `data/check_star_edge_transpose.json`
-data/29-six-edges-check_triangular.json                                  source 29, Part IV (Part IV not yet written): delivered `data/check_triangular.json`
-data/29-six-edges-find_star_edge_first.json                              source 29, Part IV (Part IV not yet written): delivered `data/find_star_edge_first.json`
-data/29-six-edges-find_transpose_first.json                              source 29, Part IV (Part IV not yet written): delivered `data/find_transpose_first.json`
-data/29-six-edges-find_triangular_first.json                             source 29, Part IV (Part IV not yet written): delivered `data/find_triangular_first.json`
-data/29-six-edges-independent_reconstruction.json                        source 29, Part IV (Part IV not yet written): delivered `data/independent_reconstruction.json`
-data/29-six-edges-replay_all.json                                        source 29, Part IV (Part IV not yet written): delivered `data/replay_all.json`
-data/32-two-columns-degree_one_certificate.json                          source 32, Part IV (Part IV not yet written): delivered `data/degree_one_certificate.json`
-data/32-two-columns-degree_one_counts.json                               source 32, Part IV (Part IV not yet written): delivered `data/degree_one_counts.json`
-data/32-two-columns-degree_one_replay.json                               source 32, Part IV (Part IV not yet written): delivered `data/degree_one_replay.json`
-data/32-two-columns-flag_algebra_checks.json                             source 32, Part IV (Part IV not yet written): delivered `data/flag_algebra_checks.json`
-data/32-two-columns-independent_reconstruction.json                      source 32, Part IV (Part IV not yet written): delivered `data/independent_reconstruction.json`
-data/32-two-columns-zero_column_counts.json                              source 32, Part IV (Part IV not yet written): delivered `data/zero_column_counts.json`
-data/35-two-rows-degree_one_certificate.json                             source 35, Part IV (Part IV not yet written): delivered `data/degree_one_certificate.json`
-data/35-two-rows-degree_one_counts.json                                  source 35, Part IV (Part IV not yet written): delivered `data/degree_one_counts.json`
-data/35-two-rows-degree_one_replay.json                                  source 35, Part IV (Part IV not yet written): delivered `data/degree_one_replay.json`
-data/35-two-rows-flag_algebra_checks.json                                source 35, Part IV (Part IV not yet written): delivered `data/flag_algebra_checks.json`
-data/35-two-rows-zero_row_counts.json                                    source 35, Part IV (Part IV not yet written): delivered `data/zero_row_counts.json`
-data/38-matching-hole-first_gap_certificate.json                         source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/data/first_gap_certificate.json`
-data/38-matching-hole-first_gap_replay.json                              source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/data/first_gap_replay.json`
-data/38-matching-hole-support_checks.json                                source 38, Part IV (Part IV not yet written): delivered `Rank_Six_Matching_Hole_Cores/data/support_checks.json`
-data/43-complete-core-requirements.txt                                   source 43, Part IV (Part IV not yet written): delivered `Rank_Six_Complete_Core_Cubic/requirements.txt`
-data/43-complete-core-verification.json                                  source 43, Part IV (Part IV not yet written): delivered `Rank_Six_Complete_Core_Cubic/data/verification.json`
+data/29-six-edges-check_core_orbits.json                                 source 29, Part IV: delivered `data/check_core_orbits.json`
+data/29-six-edges-check_star_edge.json                                   source 29, Part IV: delivered `data/check_star_edge.json`
+data/29-six-edges-check_star_edge_transpose.json                         source 29, Part IV: delivered `data/check_star_edge_transpose.json`
+data/29-six-edges-check_triangular.json                                  source 29, Part IV: delivered `data/check_triangular.json`
+data/29-six-edges-find_star_edge_first.json                              source 29, Part IV: delivered `data/find_star_edge_first.json`
+data/29-six-edges-find_transpose_first.json                              source 29, Part IV: delivered `data/find_transpose_first.json`
+data/29-six-edges-find_triangular_first.json                             source 29, Part IV: delivered `data/find_triangular_first.json`
+data/29-six-edges-independent_reconstruction.json                        source 29, Part IV: delivered `data/independent_reconstruction.json`
+data/29-six-edges-replay_all.json                                        source 29, Part IV: delivered `data/replay_all.json`
+data/32-two-columns-degree_one_certificate.json                          source 32, Part IV: delivered `data/degree_one_certificate.json`
+data/32-two-columns-degree_one_counts.json                               source 32, Part IV: delivered `data/degree_one_counts.json`
+data/32-two-columns-degree_one_replay.json                               source 32, Part IV: delivered `data/degree_one_replay.json`
+data/32-two-columns-flag_algebra_checks.json                             source 32, Part IV: delivered `data/flag_algebra_checks.json`
+data/32-two-columns-independent_reconstruction.json                      source 32, Part IV: delivered `data/independent_reconstruction.json`
+data/32-two-columns-zero_column_counts.json                              source 32, Part IV: delivered `data/zero_column_counts.json`
+data/35-two-rows-degree_one_certificate.json                             source 35, Part IV: delivered `data/degree_one_certificate.json`
+data/35-two-rows-degree_one_counts.json                                  source 35, Part IV: delivered `data/degree_one_counts.json`
+data/35-two-rows-degree_one_replay.json                                  source 35, Part IV: delivered `data/degree_one_replay.json`
+data/35-two-rows-flag_algebra_checks.json                                source 35, Part IV: delivered `data/flag_algebra_checks.json`
+data/35-two-rows-zero_row_counts.json                                    source 35, Part IV: delivered `data/zero_row_counts.json`
+data/38-matching-hole-first_gap_certificate.json                         source 38, Part IV: delivered `Rank_Six_Matching_Hole_Cores/data/first_gap_certificate.json`
+data/38-matching-hole-first_gap_replay.json                              source 38, Part IV: delivered `Rank_Six_Matching_Hole_Cores/data/first_gap_replay.json`
+data/38-matching-hole-support_checks.json                                source 38, Part IV: delivered `Rank_Six_Matching_Hole_Cores/data/support_checks.json`
+data/43-complete-core-requirements.txt                                   source 43, Part IV: delivered `Rank_Six_Complete_Core_Cubic/requirements.txt`
+data/43-complete-core-verification.json                                  source 43, Part IV: delivered `Rank_Six_Complete_Core_Cubic/data/verification.json`
 data/47-rank38-ulc-certificate-rank_06.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_06.json`
 data/47-rank38-ulc-certificate-rank_07.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_07.json`
 data/47-rank38-ulc-certificate-rank_08.json                              source 47, Part II: delivered `Sharp_Rank_38_Full_Hall_ULC/data/certificate/rank_08.json`
@@ -542,9 +538,9 @@ source NN becomes `mrn:<part>:<slug>:X`:
 | III (`mrn:s:`) | 60 `rb`, 10 `tv`, 23 `rs`, 13 `lg`, 05 `sn`, 69 `ce`, 63 `ne` |
 | IV (`mrn:e:`) | 08s `tg`, 21 `ec`, 43 `cc`, 38 `mh`, 35 `tr`, 32 `tc`, 29 `se`, 08 `r7`, 03 `fp`, 02 `ff`, 01 `r8` |
 
-The article has 273 labels: 84 under `mrn:w:`,
-72 under `mrn:u:`, 88 under `mrn:s:`, 0 under
-`mrn:e:` and 29 others. Labels were added to unlabelled delivered
+The article has 455 labels: 84 under `mrn:w:`,
+72 under `mrn:u:`, 88 under `mrn:s:`, 170 under
+`mrn:e:` and 41 others. Labels were added to unlabelled delivered
 sections or statements so that the merge could refer to them:
 `mrn:w:rf:sec:lorentz` and `mrn:w:rf:sec:tworow` (source 74; its text
 "Section 3" became a reference) and `mrn:w:sb:sec:tools` (source 76), `mrn:u:sp:thm:separation` (source 51's unlabelled theorem), `mrn:s:tv:cor:starsix` (source 10's unlabelled corollary) and `mrn:s:rs:sec:obstruction` (source 23).
@@ -641,6 +637,29 @@ by source 74 one may assume a genuine `3+3` minimum cover):
   unshifted degree-three Newton inequalities, while its shifted rank-six
   inequalities and full `ULC_6` hold.
 
+Part IV (unit left activities, a fixed minimum cover `A ⊔ B`, common
+scaling `λ` of the activities of its right part `B`, conclusions for all
+sufficiently large `λ`):
+
+- **Source 08s** (delivered only inside archive 08). For every `a+b`
+  cover, the conditional top gap `C_{a−1}² ≥ a(b+2)²/((a−1)(b²+b+2))·C_{a−2}C_a`;
+  a two-plane incidence lemma in rank `b`; eventual strict `ULC` for every
+  `3+3`, `3+4` and `3+5` cover; rank seven reduced to the `4+3` middle gap.
+- **Source 21.** Its matching-number-six case for every core, with
+  `(n−1)C_1² ≥ 2nC_0C_2` (also for arbitrary left activities) and
+  `C_2² ≥ (21/8)C_1C_3`; every rank-six graph is eventually `ULC_6`
+  (nonstrict in general, strict for `3+3` covers).
+- **Sources 43, 38, 35, 32, 29.** Second routes to source 21's theorem for
+  special cores, with their own counting formulas, the orbit census of
+  six-edge cores (29) and every-field corollaries of Part I.
+- **Source 08.** Every `4+3` cover has `C_2² ≥ (15/8)C_1C_3`; every graph
+  with `nu ≤ 7` is eventually `ULC_nu`.
+- **Sources 03, 02, 01.** `5+3` covers (03), the `4+4` top gap (02) and the
+  `4+4` middle gap (01): every graph with `nu ≤ 8` is eventually `ULC_nu`.
+  The least matching number of a persistent failure under this scaling lies
+  in `[9, 38]` (01; the upper end is source 55's 864-vertex graph). Source 02
+  also shows that the unrestricted upper incidence bound is false.
+
 ## What is not claimed
 
 - Source 74's theorem asserts neither real-rootedness nor stability of the
@@ -668,6 +687,13 @@ by source 74 one may assume a genuine `3+3` minimum cover):
   source 05's quartic route is a research direction and its quintic route
   is refuted (not scalar `ULC_6`); the barriers of sources 63 and 69
   obstruct proof methods, not `ULC`.
+- Part IV proves nothing at finite activities beyond Parts I–III, and no
+  uniform threshold over graphs or fields. Source 08s proves no middle-gap
+  bound and no counterexample, and its numerical search (shipped as
+  discovery material) is not evidence for a uniform inequality; sources 03
+  and 02 do not claim a complete rank-eight theorem. Source 08s's statement
+  that Choe–Wagner's printed counts are wrong is its own and was not checked
+  against the publication in this merge.
 - No source claims global priority, Lean certification or referee review.
 
 What `preorder-root-polytopes` already proves is cited, not claimed: the
@@ -686,6 +712,9 @@ Source 60's `9×9` rank-three matrix is Theorem 192.1 of
 `preorder-root-polytopes` (Part XII, `mr:thm:matrix`) and is a pointer;
 the first-gap arguments of sources 69 and 63 are pointers; the unit-weight
 part of its Corollary 177.2 is a special case of source 69's theorem.
+Within the batch, source 08s's appendix proof of its weighted equality
+lemma is a pointer to source 72's identical proof, and source 21's proof of
+its incidence lemma is a pointer to source 13's printed copy of it.
 
 ## Research questions of `preorder-root-polytopes`
 
@@ -697,7 +726,7 @@ part of its Corollary 177.2 is a special case of source 69's theorem.
 | RQ 89 `hb:q:asymmetry` | in large part: full Hall classification (source 75), asymmetric failures (sources 74, 75); unequal core activities (sources 73, 55, 47) |
 | RQ 90 `hb:q:defects` | bears on it: equality at every gap under the cover hypothesis (source 72) |
 | RQ 84 `hb:q:unit` | answered negatively: connected all-unit graph with `nu = 3450` (source 71); least rank open, in `[6, 3450]` |
-| RQ 85 `hb:q:oneshore` | answered negatively: `nu = 50` (125 vertices) and `nu = 38` (source 73); exactly 38 for one common right-core activity on full Hall graphs (sources 55, 47); least rank in `[6, 38]`; at `nu = 6` gaps 1, 2 and 5 hold for every one-shore graph (Part XI, sources 05, 13) |
+| RQ 85 `hb:q:oneshore` | answered negatively: `nu = 50` (125 vertices) and `nu = 38` (source 73); exactly 38 for one common right-core activity on full Hall graphs (sources 55, 47); least rank in `[6, 38]`; at `nu = 6` gaps 1, 2 and 5 hold for every one-shore graph (Part XI, sources 05, 13); eventually after scaling the right part of a minimum cover through `nu = 8` (Part IV) |
 | RQ 88 `hb:q:phase` | not answered (both cores weighted); its one-shore analogue is answered by sources 47 and 51 |
 | RQ 94 `mr:q:allrank` | answered negatively at unit weights (source 71) |
 | RQ 101 `mr:q:bimatroid` | in part: rank-two exterior blocks with ordinary columns (source 60) |
@@ -764,6 +793,17 @@ CRLF line endings; compare modulo line endings).
 | 05 | `ProveIt_Rank_Six_Second_Newton_Inequality` / (archive root) | `python -O verify.py --quick`; full mode `python -O verify.py` (SymPy; tens of minutes, not rerun at placement) | about 3 min (quick) |
 | 69 | `ProveIt_Rank_Six_Common_Exterior_Theorem` / (archive root) | `python checks/run_all.py` (standard library) | 6 s |
 | 63 | `ProveIt_Rank_Six_Nested_and_Conditional_Results` / (archive root) | `python checks/run_all.py` (standard library) | 9 s |
+| 08s | inside `ProveIt_Eventual_One_Shore_Scaling_Through_Rank_Seven`: unzip `Rank7_Eventual_Report/companion/structural_companion_source.zip`, then `Rank7_Top_Gap_Report` | `python -O code/replay_all.py` (standard library); the optional `supplement/` searches need NumPy and SciPy | 29 s |
+| 21 | `ProveIt_Rank_Six_Conditioning_for_Every_Core` / (archive root) | `python -O code/replay_all.py` (writes JSON beside the scripts) | 8 s |
+| 43 | `ProveIt_Rank_Six_Complete_Core_Cubic` / `Rank_Six_Complete_Core_Cubic` | `python code/verify_complete_core.py` (SymPy) | seconds |
+| 38 | `ProveIt_Rank_Six_Matching_Hole_Cores` / `Rank_Six_Matching_Hole_Cores` | `python code/verify_first_gap.py`, `python code/verify_support_counts.py` | seconds |
+| 35 | `ProveIt_Rank_Six_Two_Complete_Rows` / (archive root) | `python code/verify_degree_one_certificate.py`, `python code/check_flag_algebra.py`, `python code/check_degree_one_counts.py`, `python code/check_zero_row_counts.py` | seconds |
+| 32 | `ProveIt_Rank_Six_Two_Complete_Columns` / (archive root) | the same four scripts with `check_zero_column_counts.py`; optional `python code/independent_reconstruction.py` (SymPy) | seconds |
+| 29 | `ProveIt_Rank_Six_At_Least_Six_Core_Edges` / (archive root) | `python code/replay_all.py`, `python code/check_triangular.py`, `python code/check_star_edge.py`, `python code/check_star_edge_transpose.py`, `python code/check_core_orbits.py`; optional `python code/independent_reconstruction.py` (SymPy) | up to 28 s |
+| 08 | `ProveIt_Eventual_One_Shore_Scaling_Through_Rank_Seven` / `Rank7_Eventual_Report` | `python -O code/replay_all.py` | about 2 min |
+| 03 | `ProveIt_Eventual_Five_Plus_Three_Covers` / (archive root) | `python -O code/replay_all.py` | 1 min |
+| 02 | `ProveIt_Four_Plus_Four_Top_Gap` / (archive root) | `python -O code/replay_all.py` | 4–5 min (its README says about one minute); the independent replays alone took 30 s and 81 s |
+| 01 | `ProveIt_Eventual_One_Shore_Scaling_Through_Rank_Eight` / (archive root) | `python -O code/replay_all.py` | seconds |
 
 At placement every suite was run on such a copy (the times above); all
 passed, except that three long certificates were replayed only in part:
@@ -836,4 +876,21 @@ the shipped ones apart from line endings and timing fields.
   "1 October2026". Source 05 uses source 13's theorem, source 23's graph
   and source 60's compression without citing them; the article's merge
   notes give the attributions.
-
+- Part IV: source 08s was delivered only inside archive 08; its code and
+  data are shipped with the prefix `08-rank-seven-top-gap-`, and its
+  `supplement/` search scripts and logs (`…-supplement-*`) are discovery
+  material, not proof inputs. The delivered subdirectories `primary/` and
+  `independent/` of sources 01 and 02 are flattened into the prefix, and
+  their scripts import one another by delivery path. The files
+  `code/01-rank-eight-primary-support_counts.py` and
+  `code/02-four-plus-four-primary-support_counts.py`, and the three
+  `endpoint_profiles.py` of sources 03, 08 and 08s, are identical copies,
+  each kept beside its own verifier; so are the `requirements.txt` files of
+  sources 05, 43, 55, 60 and 74. Source 01's delivered README (not shipped)
+  calls its embedded companions "unchanged reports77 and78" (foreign
+  numbering for sources 03 and 02). Source 21 cites source 55 under a
+  variant title, and source 32 relies on source 35 without listing it. The
+  JSON files `data/01-rank-eight-minor_support_result.json` and
+  `data/01-rank-eight-transition_result.json` have no final newline (as
+  delivered). The eight `.log` files are tracked despite the repository's
+  `*.log` ignore rule.
