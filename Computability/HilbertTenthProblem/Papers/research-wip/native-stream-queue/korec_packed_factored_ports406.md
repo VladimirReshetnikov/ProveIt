@@ -1,5 +1,10 @@
 # Factoring the U21 native ports removes four additions
 
+> Successor: [combined range/zero masks](korec_packed_zero_range397.md) reach397
+> operations with one program parameter, or396 with two. Its accepted-input
+> equivalence uses fresh native witnesses; the exact polynomial identity below
+> belongs to this historical406/405 step.
+
 The [literal source](korec_packed_factored_ports406.py) reduces the complete
 [positive-program410 construction](korec_packed_positive_program410.md) to
 **406 = 147M + 259A**, with **50 positive witnesses**, one fixed program

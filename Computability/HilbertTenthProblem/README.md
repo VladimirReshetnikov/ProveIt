@@ -49,15 +49,25 @@ and degree at most3396. It preserves the complete fixed-table accepted
 relation with fresh native witnesses. The numerical universal subgroup
 alphabet remains uninstantiated, so244 is not a numerical universal bound.
 
-The latest [native-bound U9 polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_native_bound254.md)
-keeps **254=133M+121A operations**,43 positive witnesses and four fixed
-program parameters, while lowering its degree bound **1379 to1203**.
-The already paid factor S in r=(q-1)S supplies X=q(S+beta)>r before
-native typing. The recovered exponent makes the inverse parent gap
-positive at zeros, proving a triangular positive-zero bijection on valid
-shifted program/input slices. Eight bases with joint scale projection
-are supported. Mapped fixed43 examples include258/756,260/514 and262/392;
-these new weights have not yet been repartitioned exhaustively.
+The latest [product-scale U9 polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_product_scale253.md)
+gives **252 certificate /253=132M+121A operations**, one comparison,
+43 positive witnesses, four fixed program parameters and degree at most1147.
+Its paid product b*P^9 types both history radices; fixed top tags2,1 let a
+private multiplication disappear. The same valid ordinary-input relation
+is proved with fresh private native witnesses, without a same-tuple claim.
+The [exact sixteen-base partition search](Papers/research-wip/native-stream-queue/neary_woods_universal_product_scale_partitions.md)
+gives the frontier253/1147,255/1013,256/967,257/710,258/664,259/488,
+261/372,263/302,264/272,265/228,266/212. The first seven use43 witnesses;
+the rest44. The finite propagated-objective floors are372 with43 witnesses
+and212 overall, attained at261 and266 operations. Fixed45 ends269/212.
+These optimize the stated finite objective, not exact degree or all circuits.
+
+The preceding [paid native bound](Papers/research-wip/native-stream-queue/neary_woods_universal_native_bound254.md)
+gives254/1203 by reusing r=(q-1)S in X=q(S+beta)>r. Its triangular
+coordinate map is a positive-zero bijection on valid slices. The preceding
+[complete native-bound repartitioning](Papers/research-wip/native-stream-queue/neary_woods_universal_native_bound_partitions.md)
+reaches258/742 and fixed43-witness259/696, ending262/392 with43 witnesses
+or266/212 with44. Those sources and their original scope remain unchanged.
 
 The preceding explicit [language-bound U9 polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_initial_bound254.md)
 gives **253 certificate /254=133M+121A polynomial operations**,
@@ -169,15 +179,16 @@ two input classes modulo4 are excluded. The latter is a scoped necessary
 condition, not a blanket theorem for other even-width input bridges.
 The established75/87 constructions and distinct86 statuses remain unchanged.
 
-The [positive-complement86 obstruction](Papers/research-wip/native-stream-queue/complete75_positive_complement86_obstruction.md)
-shows why supplying q-F as a positive coordinate does not restore F>0.
-The literal86=48M+38A candidate has complete positive19-coordinate zeros
-with R>q^4,C=0 and a negative input Pell root; the inverse F is negative.
-An exact progression, irrational rotation and normalized auxiliary lift
-prove an infinite family, with an integer-interval-certified concrete
-recipe. This is a scalar mask-contract obstruction, not an instantiated
-compiled false input or a new universal bound; its accepted-language
-claim remains unproved by this packet.
+The [positive-complement86 all-input collapse](Papers/research-wip/native-stream-queue/complete75_positive_complement86_all_input_collapse.md)
+refutes that candidate on actual modified helical compiler slices: it accepts
+**every positive input**, including input1 for the exact rejecting compiler.
+A coprime prime progression, CRT, irrational rotation and the complete
+normalized auxiliary lift specify all19 positive coordinates, with all eight
+factors1, R>q^4,C=0 and negative reconstructed F. This is an existence
+proof with finite algebra/congruence checks, not a materialized giant zero.
+The earlier [scalar obstruction](Papers/research-wip/native-stream-queue/complete75_positive_complement86_obstruction.md)
+and its exact ratio certificate remain unchanged. Candidate86=48M+38A,
+degree203 is not a universal bound; the established75/87 results are intact.
 
 A different [multiplicative-gamma86 shortcut](Papers/research-wip/native-stream-queue/complete75_multiplicative_gamma86_obstruction.md)
 replaces gamma=rho+sigma by rho*sigma and costs86=48M+38A with19 witnesses.
@@ -233,7 +244,21 @@ with44 witnesses; the fixed43-witness family reaches272/1344. These
 remain optima only for the stated finite propagated-degree objective.
 The established75/87 frontier is unchanged.
 
-The [positive-program U21 compiler](Papers/research-wip/native-stream-queue/korec_packed_positive_program410.md)
+The latest [combined-range U21 compiler](Papers/research-wip/native-stream-queue/korec_packed_zero_range397.md)
+gives **396 certificate /397=141M+256A operations**, one comparison,
+50 positive witnesses, one fixed program parameter and degree at most21549.
+The two-program radix interface gives **396=142M+254A**, degree at most40706.
+A selected zero branch clears one register from the counter range mask;
+the global scalar bound uses that same narrower mask before native typing.
+One submask then enforces both range and zero tests. Specialized port
+factoring and the paid scale B*P^35 save eight gates from the
+[minimal-radix405/404 parent](Papers/research-wip/native-stream-queue/korec_packed_minimal_radix405.md).
+The [factored406/405 predecessor](Papers/research-wip/native-stream-queue/korec_packed_factored_ports406.md)
+saves four additions by an identical-polynomial rewrite; the later radix
+and mask changes preserve accepted ordinary inputs with fresh private
+witnesses. The one- and two-program interfaces remain distinct.
+
+The preceding [positive-program U21 compiler](Papers/research-wip/native-stream-queue/korec_packed_positive_program410.md)
 gives **409 certificate /410=147M+263A polynomial operations**, one
 comparison,50 witnesses, one fixed program parameter and degree at most42589.
 Exact symbolic loops show that programs0 and2 both diverge on every input;

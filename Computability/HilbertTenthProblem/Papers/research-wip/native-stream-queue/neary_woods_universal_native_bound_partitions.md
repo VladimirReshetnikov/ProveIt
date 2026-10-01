@@ -1,5 +1,9 @@
 # Exact repartitioning after the native bound reaches258/742
 
+> Successor: [product-scale repartitioning](neary_woods_universal_product_scale_partitions.md)
+> reaches253/1147 and261/372 with43 witnesses. The finite frontier below
+> remains the historical native-bound family before that scale change.
+
 The [literal partition compiler](neary_woods_universal_native_bound_partitions.py)
 reoptimizes the complete sixteen-base family after the
 [paid native bound rewrite](neary_woods_universal_native_bound254.md).

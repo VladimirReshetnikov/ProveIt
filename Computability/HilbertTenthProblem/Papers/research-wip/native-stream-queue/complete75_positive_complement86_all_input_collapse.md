@@ -339,4 +339,9 @@ to contain complete positive Pell zeros or to exhaust actual compiler constants.
 The infinitely many complete zeros and the actual false-input consequence are
 proved in Sections1–6 using Dirichlet, rotation and the full normalized lift.
 Author writer and fresh default replay both pass on the final receipt.
-Independent review is pending.
+Independent full proof/source review and a separate fresh replay pass without
+findings. Another independent binary Pell executor checks48 separately
+constructed progressions, including q different from B: the actual main-root
+projection modulo H, first-index congruence, outer transport integrality and
+negative input-root norm all agree. These checks retain the finite-evidence
+scope stated above.

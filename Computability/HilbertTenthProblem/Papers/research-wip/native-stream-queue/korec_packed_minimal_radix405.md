@@ -1,5 +1,9 @@
 # Minimal time radix and a paid native bound give405 U21 operations
 
+> Successor: [one selected range mask](korec_packed_zero_range397.md) also
+> enforces zero branches, reaching397/396 operations in the respective
+> parameter interfaces. The narrowed scalar bound is part of its proof.
+
 The [literal source](korec_packed_minimal_radix405.py) gives a
 **405=146M+259A** universal counter polynomial with **one fixed positive
 program parameter**, ordinary positive input,50 positive witnesses and

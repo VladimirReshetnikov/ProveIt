@@ -1,5 +1,10 @@
 # A product history scale gives a253-operation U9 polynomial
 
+> The [complete sixteen-base partition search](neary_woods_universal_product_scale_partitions.md)
+> now reoptimizes these weights:257/710,258/664 and261/372 with43 witnesses;
+> the overall finite-family floor remains212. The mapped checks below are
+> the original scale-change packet, not that separate exhaustive search.
+
 The [literal source](neary_woods_universal_product_scale253.py) saves one
 multiplication from the [native-bound254 construction](neary_woods_universal_native_bound254.md).
 The default is **253=132M+121A**, with **252 certificate operations**, one

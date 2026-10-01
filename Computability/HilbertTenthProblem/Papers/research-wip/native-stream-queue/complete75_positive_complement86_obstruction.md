@@ -1,5 +1,10 @@
 # Supplying the positive complement q−F does not restore its upper bound
 
+> The [actual-compiler successor](complete75_positive_complement86_all_input_collapse.md)
+> proves that this same candidate accepts every positive input on every
+> actual modified compiler slice, including a rejecting-program input.
+> This note retains its original scalar-family theorem and exact recipe.
+
 The [literal86-operation candidate](complete75_positive_complement86_obstruction.py)
 deletes one subtraction from the [established normalized87 source](complete75_normalized_strong87.md)
 by supplying QF=q−F as a positive coordinate. Every old positive zero has

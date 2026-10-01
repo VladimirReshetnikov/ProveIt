@@ -1,5 +1,10 @@
 # A paid native port bound lowers the254-operation degree to1203
 
+> Successors: [product history scale](neary_woods_universal_product_scale253.md)
+> reaches253 operations and degree bound1147; its [exact repartitioning](neary_woods_universal_product_scale_partitions.md)
+> reaches261/372 with43 witnesses. The scale change rebuilds private native
+> coordinates; this note retains its254 bound-only bijection theorem.
+
 The [literal source](neary_woods_universal_native_bound254.py) changes one
 operand in the [initial-bound254 compiler](neary_woods_universal_initial_bound254.md).
 Its complete default polynomial still costs **254=133M+121A**, with
