@@ -8,6 +8,65 @@ Three independent full integration reviews passed without findings. This is
 a mathematical proof with symbolic and finite checks, not a Lean formalization
 or a new publication claim.
 
+The [signed-projection refinement](../research-wip/native-stream-queue/complete75_signed_projection_elimination101.md)
+preserves75 operations with20 positive witnesses and nine equations. Its
+degree-84 polynomial costs101=50M+51A. This follows the earlier
+[positive elimination](../research-wip/native-stream-queue/complete75_positive_elimination.md)
+and [shared-projection refinement](../research-wip/native-stream-queue/complete75_gamma_dominance_elimination102.md),
+but needs no stronger canonical packing bound: conditional positivity is
+proved on the zero set, and every original positive solution is preserved.
+The newer [bounded-projection refinement](../research-wip/native-stream-queue/complete75_bounded_projection_elimination99.md)
+uses a canonical compiler margin to give a **99=49M+50A** polynomial in
+**19 positive witnesses**, still of degree84. Its comparison system costs76
+with eight equations, so75 remains the best comparison bound. The stronger
+bound preserves the accepted input set through canonical completeness.
+A [norm-and-index product refinement](../research-wip/native-stream-queue/complete75_norm_product91.md)
+gives a **91=49M+42A** polynomial in the same19 positive witnesses, of
+degree266. Negative-Pell obstructions make the product equation restore all
+four original norms and the index equation, including for signed computed
+roots. Grouped variants give97 operations at degree84,95 at degree96, and93
+at degree136. The91 polynomial's four-equation comparison system costs80;
+it leaves this75 bound intact.
+The [shifted transport product](../research-wip/native-stream-queue/complete75_norm_product90.md)
+gives90 operations at degree276, with separate96/degree84,94/degree96,
+and92/degree138 variants. The
+[eight-factor product](../research-wip/native-stream-queue/complete75_norm_product89.md)
+gives **89=48M+41A** at exact degree **166**, still with19 positive
+witnesses. A residue argument recovers both auxiliary equations before
+the shifted index proof applies, allowing an unsquared product polynomial.
+The underlying single-comparison circuit costs88; this note's75-operation
+comparison certificate remains the best such bound.
+The later [reversed auxiliary refinement](../research-wip/native-stream-queue/complete75_reversed_auxiliary89.md)
+keeps89 operations and19 positive witnesses while lowering the degree
+to160, through exact positive-solution equivalence. The
+[retained-auxiliary variants](../research-wip/native-stream-queue/complete75_auxiliary_degree_tradeoffs.md)
+give93 operations at degree128 and92 at degree136. These improve degrees;
+the75 comparison bound is unchanged. A further
+[positive first-root coordinate](../research-wip/native-stream-queue/complete75_positive_root89.md)
+gives89=47M+42A at exact degree148, with19 positive witnesses and a
+bijection of positive solution sets. Both ratio slacks remain present.
+Its [regrouped variants](../research-wip/native-stream-queue/complete75_positive_root_degree_tradeoffs.md)
+give94 operations at degree84,93 at degree118 and92 at degree122;
+the degree84 result saves two operations from its preceding96 bound.
+The [coupled index/linear successor](../research-wip/native-stream-queue/complete75_coupled_index_linear88.md)
+gives **88=47M+41A** with19 positive witnesses and exact degree151.
+Sharing k-hE saves one subtraction. Its extra sign branch is
+excluded by the full compiler's low mask bits and population identity;
+it has the same positive zero set as the89 source under that contract.
+Its [grouped variants](../research-wip/native-stream-queue/complete75_coupled88_degree_tradeoffs.md)
+retain the strong comparison and give91/degree130 and93/degree90, with
+identical positive zeros. The [linear input modulus](../research-wip/native-stream-queue/complete75_linear_input_modulus89.md)
+now gives89=47M+42A at exact degree135, through a positive coordinate
+map restoring the discriminant quotient. Its [degree tradeoffs](../research-wip/native-stream-queue/complete75_linear_input_degree_tradeoffs.md)
+add90/132,92/114,94/80,95/72,96/62 and97/56, all with19 positive witnesses.
+The [positive auxiliary gap](../research-wip/native-stream-queue/complete75_auxiliary_gap_degree_tradeoffs.md)
+further gives90/131,91/128,98/54 and99/52. It reconstructs y=V+e in one
+addition and proves the inverse gap positive at every parent zero, after
+the strong-rank bound has restored V>1.
+The88 polynomial bound and this note's75 comparison bound remain distinct.
+The source and full compiler proof below retain their original30-coordinate
+presentation.
+
 This construction retains the strong auxiliary square and the cubed scales.
 It is distinct from the earlier auxiliary-scale, input-gap and squared-scale
 75 proposals. It changes the first norm and uses the supplied packed integer

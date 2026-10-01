@@ -1,8 +1,1219 @@
 # Alternative universal machinery: an arithmetic research program
 
-**Status: a complete fixed-index universal certificate in 76 operations,
+The leading numerical bounds are **75 certificate / 87 polynomial
+operations**. The [normalized strong witness](../research-wip/native-stream-queue/complete75_normalized_strong87.md)
+gives **87=48M+39A**,19 positive witnesses and exact degree203. The
+88-operation degree151 construction remains a lower-degree alternative.
+The latest complete
+[fixed-table matrix compiler](../research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
+gives an illustrative **228/245 operations, 6 equations, 36 witnesses,
+degree3504**, with polynomial split104M+141A; it does not instantiate a
+numerical universal alphabet. Mortality now has a
+[4D quadratic-loader3 interface](../research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
+and a [5D affine-loader2 interface](../research-wip/native-stream-queue/group_affine_bipartite_mortality5.md).
+The independent-gamma87
+candidate is still unresolved, with new
+[compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
+The historical stages below retain their original scope and counts.
+The separate [three-core normalized GPCP compiler](../research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md)
+has57 physical tiles and a paid ordinary-input bridge:
+**734 certificate /805=352M+453A polynomial operations**,24 comparisons,
+125 positive witnesses, three positive program parameters and degree205092.
+Supplying the initial history value gives808 operations,25 comparisons,
+126 witnesses and degree8532. A [fixed rule permutation](../research-wip/native-stream-queue/gpcp_ordered_sparse_tm.md)
+first saves two additions, then three normalized strong witnesses save
+three polynomial operations while retaining the separate history checksum.
+The unnormalized ordered808/degree130394 and supplied811/degree5204
+versions remain lower-degree alternatives. The [sparse810 predecessor](../research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
+and [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
+remain reproducible. These are alternative universal bounds above75/87;
+the matrix alphabet remains abstract.
+
+The latest explicit [factored-port U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_factored_ports269.md)
+gives **255 certificate /269=136M+133A polynomial operations**,
+5 comparisons,43 positive witnesses and four positive program parameters,
+with degree **at most3853**. Factoring the native packed index and folding
+existing affine expressions saves six additions from275. The complete
+polynomial is identical on every integer assignment, with unchanged
+supplied coordinates and positive domain. The separate75/87 frontier is unchanged.
+
+The [new grouped degree tradeoffs](../research-wip/native-stream-queue/neary_woods_universal_computed_ports_partitions.md)
+optimize all factor partitions and permitted anchors over16 inherited
+strong-treatment/positive-scale bases after checksum specialization.
+They give275/degree-at-most1094,276/1048,277/734,278/706 and279/608,
+all with44 witnesses; the fixed43-witness family reaches276/1344.
+These are exact optima of the stated finite propagated-degree objective.
+The minimum bound608 is not a lower bound on exact degree or all circuits.
+Regrouping preserves positive zeros within each fixed base; different
+bases retain the same accepted relation on valid program slices.
+
+The preceding [computed-port U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_computed_ports275.md)
+gives **261 certificate /275=136M+139A polynomial operations**,
+5 comparisons,43 positive witnesses and four positive program parameters,
+with degree **at most3853**. Retained mask and history bounds make three
+computed native fields positive at zeros. The one- and two-field modes are positive
+zero-set graph bijections; eliminating the checksum preserves the accepted
+outer relation through the parent's private sign normalization.
+The mapped lower-degree option gives **285 operations / degree at most608**
+with44 witnesses; the fixed43-witness alternative is282/1344. These are
+specializations of twelve selected parent schedules, not a new partition
+search or a global optimum. The separate75/87 frontier is unchanged.
+
+The [duration-floor282 predecessor](../research-wip/native-stream-queue/neary_woods_universal_duration_floor282.md)
+gives282=139M+143A,262 certificate gates,7 comparisons,46 witnesses and
+degree at most3980. Its input scale includes the duration, so one bound
+is automatic; completeness retains valid-program synchronized padding.
+The mask285 and loader288 parents remain reproducible.
+
+The preceding [positive-mask-gap U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_mask_gap285.md)
+gives **262 certificate /285=140M+145A polynomial operations**,
+8 comparisons,47 positive witnesses and four positive program parameters,
+with degree **at most3980**. Defining the mask above the quotient witness
+removes one comparison and witness from the288 parent. The retained
+mask-scale equation makes the restored bound slack positive at zeros;
+the typed recoder proves the inverse mask gap positive. This is a positive
+zero-set bijection with that parent, preserving its valid-program scope.
+The low-degree option gives **295=140M+155A / degree at most608**,
+257 certificate operations,13 comparisons and48 witnesses; keeping47
+witnesses gives292/1344. The separate75/87 frontier is unchanged.
+
+The preceding [loader-scale U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_loader_scale288.md)
+gives **262 certificate /288=141M+147A polynomial operations**,
+9 comparisons,48 positive witnesses and four positive program parameters,
+with degree **at most3980**. Defining the recoder scale from the paid
+loader repunit removes one comparison and witness. Every positive new
+tuple has a positive parent lift; completeness uses sufficiently long
+leading-zero padding on valid U9 program slices. It is not an all-parent-zero
+bijection or a completeness claim for arbitrary invalid program parameters.
+The same rewrite gives **298=141M+157A / degree at most608**,257 certificate,
+14 comparisons and49 witnesses; keeping48 witnesses gives295/1344.
+The separate75/87 frontier is unchanged.
+
+The [positive-scale291 parent](../research-wip/native-stream-queue/neary_woods_universal_positive_scale291.md)
+gives **262 certificate /291=142M+149A polynomial operations**,
+10 comparisons,49 positive witnesses and four positive program parameters,
+with degree **at most3980**. Two positive scale parametrizations absorb
+native bound comparisons. The explicit inverse remains positive on the
+shifted joint-index branch, giving a positive zero-set bijection with the
+297 parent after the stated coordinate change. The separate75/87 frontier
+is unchanged.
+
+The earlier [positive-scale grouping frontier](../research-wip/native-stream-queue/neary_woods_universal_positive_scale_partitions.md)
+adds **301=142M+159A / degree at most608**, with257 certificate operations,
+15 comparisons and50 witnesses. Other50-witness choices include297/1142
+and299/766. Keeping49 witnesses gives a separate frontier ending at
+298/degree-at-most1344. The exact finite search optimizes operation count
+and conservative degree bounds over sixteen bases; witness counts vary,
+so this is not a three-objective optimum. All schedules preserve accepted
+outer instances, not every supplied coupled-parent zero.
+
+The [coupled297 parent](../research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
+gives **262 certificate /297=144M+153A polynomial operations**,
+12 comparisons,51 positive witnesses and four positive program parameters.
+Its total degree is **at most2311**, including every program coordinate.
+The negative geometry-index branch is excluded by a joint population
+contradiction. A remaining negative joint branch restores the parent by
+two private positive-coordinate changes. This preserves the accepted
+outer relation; no bijection of all supplied positive zeros is claimed.
+
+The earlier [coupled factor-partition frontier](../research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled_partitions.md)
+also gives **301=142M+159A / degree at most1092**,
+**302=143M+159A / degree at most756**, and
+**304=143M+161A / degree at most608**, all with51 witnesses.
+The304 option has257 certificate operations and16 comparisons. An exact
+subset search optimizes the stated degree bounds over four strong
+treatments and grouped finalizers; it makes no global optimality claim.
+
+The [two-index301 parent](../research-wip/native-stream-queue/neary_woods_universal_joint_and_arithmetic.md)
+remains available with260 certificate operations,14 comparisons and
+degree at most2475. Its own sign theorem preserves the same positive
+zero set as the [303-operation parent](../research-wip/native-stream-queue/neary_woods_universal_joint_and_units.md).
+
+The earlier [grouped unit finalizers](../research-wip/native-stream-queue/neary_woods_universal_joint_and_partitions.md)
+give lower-degree alternatives at the same51-witness interface, including
+**303=143M+160A / degree at most1522**,
+**305=143M+162A / degree at most1144**, and
+**308=142M+166A / degree at most1076**. Their certificate/comparison
+counts are256/16,255/17 and252/19 respectively. The full family has
+operation/degree-upper-bound pairs301/2475,302/1707,303/1522,304/1296,
+305/1144,307/1110 and308/1076. The finite search optimizes only these
+propagated bounds within its specified factor-partition family.
+
+The earlier303=144M+159A source remains reproducible with256 certificate
+operations,16 comparisons,51 witnesses and degree at most2285. The
+[raw joint-AND form](../research-wip/native-stream-queue/neary_woods_universal_joint_and.md) retains the lower-degree
+alternative246 certificate / **356=155M+201A**,37 comparisons,64 witnesses
+and degree at most580. No exact degree is claimed for these U9 sources.
+
+A [population-fusion obstruction](../research-wip/native-stream-queue/native_population_and_fusion_obstruction.md)
+rejects simply concatenating the remaining geometry index with the four
+AND truth fields. For every width D>=3 and arbitrarily large dyadic n,
+positive recoder tuples with x=1,z=2 and Q=2^(D(n+1)) satisfy the proposed
+combined population relation and have full positive native extensions.
+Their false AND fields contribute exactly the excess D bits. This
+refutes that recoder fusion, not the complete fixed-tag polynomial.
+
+The separate [Wang B tape interface](../research-wip/native-stream-queue/wang_b_single_and_tape.md)
+uses one native AND to type a one-hot head and read/mark the current tape.
+Its complete scalar mark graph costs74 certificate /124 polynomial
+operations,17 comparisons,24 positive witnesses and degree at most40;
+the head/read-only graph costs72/119 with16 comparisons. A finite-window
+lemma initializes a literal Wang input with two gates after a paid initial
+head/read predicate. An exact nonhalting lasso rules out substituting
+final-tape reads for chronological reads.
+
+The [packed Wang tape successor](../research-wip/native-stream-queue/wang_b_packed_tape.md) pays uniform
+chronological reads and optional marks in **139 certificate /192 polynomial
+operations**,18 comparisons,31 witnesses and degree at most232. One AND
+also types every positive one-hot head, the radix and a positive duration.
+In that packet heads remain independently chosen: motion, instruction/control
+selection and TM-to-Wang input encoding are not supplied. No universal
+Wang-program bound is claimed.
+
+The [Wang tape-and-motion batch](../research-wip/native-stream-queue/wang_b_packed_motion.md) additionally pays
+left/right/stay heads: **188 certificate /244=100M+144A polynomial**,
+19 comparisons,35 witnesses and degree at most316. Its existential endpoint
+projection is exactly non-erasing tape inclusion with dyadic initial/final
+heads. That packet does not supply finite program control or TM-input coding.
+
+The [chronological toggle-tape component](../research-wip/native-stream-queue/langton_ant_packed_toggle_tape.md)
+costs **105 certificate /158=66M+92A polynomial**,18 comparisons,28 witnesses
+and degree at most124. A mixed native scale types both positive radices;
+all free-head endpoint pairs are realizable. Ant turns/motion, its periodic
+hardware background, the input perturbation and acceptance remain outside
+the component. These paid histories do not establish universal bounds.
+
+The [positive native-scale coordinate](../research-wip/native-stream-queue/native_binary_positive_scale.md)
+gives prescribed AND **64 certificate /108 polynomial**,15 comparisons,
+21 witnesses and degree at most28. Its positive zero-set bijection gives
+[Wang motion241](../research-wip/native-stream-queue/wang_b_packed_motion_positive_scale.md)
+with18 comparisons,34 witnesses and degree at most316, and
+[toggle155](../research-wip/native-stream-queue/langton_ant_packed_toggle_positive_scale.md)
+with17 comparisons,27 witnesses and degree at most124; certificates stay188
+and105. Computing [six already-paid native fields](../research-wip/native-stream-queue/native_binary_computed_fields.md)
+further gives **AND90/degree44**,9 comparisons,15 witnesses;
+**motion223/degree-at-most696**,12 comparisons,28 witnesses; and
+**toggle137/degree-at-most256**,11 comparisons,21 witnesses. Computing
+four fields instead gives AND96/28, motion229/316 and toggle143/124.
+All are complete component polynomials with the same endpoint relations;
+no controller, ant geometry or ordinary-input interface is added.
+
+The [normalized native-unit helper](../research-wip/native-stream-queue/native_binary_norm_units.md)
+further gives **AND83/degree-at-most124**,5 comparisons,15 witnesses;
+**Wang motion216/2112**,8 comparisons,28 witnesses; and
+**toggle130/778**,7 comparisons,21 witnesses. Ordinary-strong alternatives
+84/86,217/1602 and131/584 preserve the root-coordinate zero-set bijection;
+normalization instead rebuilds five native auxiliaries while preserving
+all outer histories.
+
+The [native index/coupled-unit successor](../research-wip/native-stream-queue/native_binary_index_coupled_units.md)
+gives complete **AND80=43M+37A**,72 certificate operations,3 comparisons,
+15 witnesses and degree **at most124**. The same guarded rewrite gives
+**motion213/degree-at-most2020**,6 comparisons,28 witnesses, and
+**toggle127/748**,5 comparisons,21 witnesses. Index-only82 preserves the
+parent positive zero set; coupling restores two private coordinates on
+a negative index branch and preserves the outer relation. These are
+complete components, with their control and geometry scope unchanged.
+
+The [fixed-program Wang compiler](../research-wip/native-stream-queue/wang_b_packed_program.md) now pays
+chronological instruction selection, current-read jumps, both control
+endpoints and the common duration. Its six-instruction example costs
+**350=150M+200A**,13 comparisons,37 witnesses,degree at most3838 for
+window endpoints. A two-gate literal binary-input loader and paid head
+typing give **352=151M+201A**,13 comparisons,40 witnesses,degree at most5767.
+These are complete fixed-program halting predicates. The example is not
+a universal instruction table, and that packet does not instantiate a
+TM-to-Wang input morphism; no new universal operation bound follows.
+
+The [computed-action successor](../research-wip/native-stream-queue/wang_b_computed_actions.md)
+defines four action hats from the paid edge sums and folds their bound
+contribution as2J-E_J+3. The positive graph bijection removes four
+comparisons and four witnesses, preserving the same fixed-program relation.
+The example now costs **331=146M+185A**,305 certificate operations,
+9 comparisons,33 witnesses and degree at most3838 at window endpoints;
+literal input gives **333=147M+186A**,307 certificate operations,
+9 comparisons,36 witnesses and degree at most5767. No universal table or
+TM-input encoding is added;350/352 remain the reproducible parent counts.
+
+Applying the [native coupled-unit rewrite](../research-wip/native-stream-queue/native_binary_index_coupled_units.md)
+to that computed-action example gives literal-input **330=147M+183A**,
+310 certificate operations,7 comparisons,36 witnesses and degree
+**at most5503**. This is still an illustrative fixed Wang program.
+
+The [non-erasing TM-to-Wang compiler](../research-wip/native-stream-queue/wang_b_nonerasing_tm_compiler.md)
+now pays the explicit Theorem7 instruction expansion and ordinary binary
+input pair map for any fixed total non-erasing binary TM. Its example
+with one nonhalting state gives **642=285M+357A**,566 certificate operations,25 comparisons,
+83 positive witnesses and degree **at most16124**. The pair loader and
+finite blank exterior are part of the complete theorem. This642 example
+is not a universal bound; its non-erasing-machine scope remains unchanged.
+
+The [finite erasing-TM record compiler](../research-wip/native-stream-queue/wang_b_erasing_bridge_compiler.md)
+now supplies the missing transition compiler for every fixed total binary
+TM with a unique halt. It appends successive tape records using only
+non-erasing writes and pays the exact framed ordinary-input loader.
+The illustrative erasing machine produces1481 nonhalting binary states
+and19254 Wang instructions; no fixed universal table/input slice is instantiated.
+
+The [dependency-projection audit](../research-wip/native-stream-queue/native_binary_dependency_projection.md)
+materializes that complete illustrative polynomial at **312942=118706M+194236A**,
+312866 certificate operations,25 comparisons,23763 positive witnesses and
+degree **at most12092924**. Every emitted gate reaches the output.
+Tracking only the dependency coordinates queried by two guards preserves
+both guards and every returned arithmetic packet; it makes the literal
+large build feasible. This actual source count supersedes the earlier
+conservative312967 estimate for the example, not the universal75/87 bounds.
+
+The [compact record compiler](../research-wip/native-stream-queue/wang_b_erasing_bridge_compact.md)
+now realizes the same illustrative machine at **41286=15648M+25638A**,
+41210 certificate operations,25 comparisons,3153 witnesses and degree
+**at most1581824**. Four-bit records, an exact control quotient and shorter
+paired Wang macros give377 nonhalting binary states and2362 instructions.
+The complete framed ordinary-input source is emitted and every gate
+reaches its output. This improves the general finite compiler and example;
+it does not instantiate a universal table or a new universal bound.
+
+A separate [positive NOR compiler for finite game graphs](../research-wip/native-stream-queue/lattice_game_positive_nor.md)
+forces exact Boolean outcomes using one bilinear row per nonterminal.
+For a fixed acyclic graph with N vertices,h nonterminals and E edges,
+its certificate costs E+3h operations with N+h positive witnesses;
+a target-outcome polynomial costs E+3h+3N+2 and has degree4 when h>0.
+The graph size is unbounded in the lattice-game universality theorem.
+This finite-graph family supplies no fixed-variable universal polynomial
+or paid ordinary-input interface.
+
+The earlier explicit [U9 tag polynomial](../research-wip/native-stream-queue/neary_woods_universal_u9_tag_chain.md)
+gave **450 certificate /524=318M+206A polynomial operations**,
+25 comparisons, 69 positive witnesses and four positive program parameters.
+Its 127-multiplication fixed-exponent schedule improves the
+[528-operation U15 successor](../research-wip/native-stream-queue/neary_woods_universal_tag_chain.md)
+by four operations. The fixed frame coefficient E also bounds the duration.
+The ordinary-input, exact-counter and fixed-production interfaces are proved
+on the U9 simulation slice with its persistent nonempty suffix.
+Huge fixed numerals have exact finite recipes; every use is charged.
+Its total degree is at most 26082961986495105871681692197398140, so
+the 805 construction remains a much lower-degree alternative. The
+[557-operation baseline](../research-wip/native-stream-queue/neary_woods_universal_tag557.md)
+remains reproducible. The separate 75/87 frontier is unchanged.
+
+The [four-tile binary-tag representation](../research-wip/native-stream-queue/binary_tag_four_tile_history.md)
+uses a fixed terminal boundary in place of a selectable terminal pair.
+Its complete encoded-word predicate costs197=92M+105A,28 positive
+witnesses and degree667, including the initially halted singleton. The
+zero-run and queue proofs establish halting equivalence on the specified
+length-congruence slices. The [normalized strong-witness successor](../research-wip/native-stream-queue/pcp_normalized_strong_history_units.md)
+saves one polynomial operation, giving196=93M+103A with the same28 witnesses
+and degree1015. Its certificate grows by2M while one comparison is removed.
+The [fixed-rule TM halt bridge](../research-wip/native-stream-queue/binary_tag_fixed_halt_bridge.md)
+now proves a unique pending halt activation on valid machine inputs,
+all-b cleanup to singleton b, and a fixed equal-length block morphism.
+The exact initialization counter now has separate proved components:
+a [fixed binary input format](../research-wip/native-stream-queue/clockwise_dyadic_input_normalization.md),
+a [paid dyadic-duration recoder](../research-wip/native-stream-queue/native_binary_dyadic_duration_recoder.md),
+and an [eight-operation shared-scale loader](../research-wip/native-stream-queue/binary_tag_shared_counter_loader.md).
+Their [complete fixed-family composition](../research-wip/native-stream-queue/binary_tag_complete_dyadic_compiler.md)
+now costs an illustrative399 operations with69 positive witnesses.
+The [compressed program interface](../research-wip/native-stream-queue/binary_tag_parameterized_compressed_compiler.md)
+costs397+mu(D), including the paid program-length bound, and keeps every
+huge fixed numeral explicit by its exact definition. The
+[ordinary-to-clockwise compiler](../research-wip/native-stream-queue/ordinary_tm_clockwise_compiler.md)
+provides actual finite tables and exact binary state counts. The isolated
+encoded-input counts above are not themselves universal bounds.
+
+A separate [weakened-bound86 candidate](../research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
+has the exact signed parent identity alpha_old=alpha-Z and positive
+completeness. The new [positive-index theorem](../research-wip/native-stream-queue/complete75_weakened86_positive_index.md)
+proves soundness for every zero with computed R>0, even when alpha<=Z,
+by restoring the weaker101 interface. R=0 is impossible. The remaining
+negative-R region is unresolved; outer fixtures there are not full
+polynomial zeros. The [index-gap theorem](../research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
+proves p odd globally; R<0,mu>0 at zero wrap requires E<3p. The
+[gap-three exclusion](../research-wip/native-stream-queue/complete75_weakened86_gap_three.md)
+now strengthens R<0,mu>0 to n<p<=2n-5: every one of237 remaining
+necessary triples for p=2n-3 fails an exact ratio test. The
+[gap-five successor](../research-wip/native-stream-queue/complete75_weakened86_gap_five.md)
+then gives n<p<=2n-7 by forcing X=2^p and excluding all40 necessary
+triples. The [gap-seven successor](../research-wip/native-stream-queue/complete75_weakened86_gap_seven.md)
+now gives **n<p<=2n-9**: all96 power-of-two-X triples fail the ratios,
+and exact input/main-root residues exclude all three small-X lanes.
+The [gap-nine successor](../research-wip/native-stream-queue/complete75_weakened86_gap_nine.md) now gives
+**n<p<=2n-11**, using uniform cutoffs in82 low-X lanes and exact tests on
+215 finite domains. The sole ratio-compatible case fails all four wrap
+classes. The [gap-eleven successor](../research-wip/native-stream-queue/complete75_weakened86_gap_eleven.md)
+now gives **n<p<=2n-13** on R<0,mu>0: all1,413 remaining ratio domains
+fail. Its general theorem gives an effective finite reduction for each
+fixed odd gap, without bounding the gap. Gaps at least13 and mu<0 remain
+open; no universal improvement below87 is claimed.
+
+**Current complete certificate: 75=41M+34A operations.** The
+[complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
+strong auxiliary square and saves the old doubled-index addition. The
+[signed-projection refinement](../research-wip/native-stream-queue/complete75_signed_projection_elimination101.md)
+reduces its30 positive witnesses and19 equations to **20 witnesses and
+nine equations** at the same operation count. Its single sum-of-squares
+polynomial has exact degree84 and a **101=50M+51A** evaluation DAG.
+The proof restores positivity of signed coordinate definitions on the zero
+set and preserves every original positive solution.
+The newer [bounded-projection refinement](../research-wip/native-stream-queue/complete75_bounded_projection_elimination99.md)
+improves the single polynomial to **99=49M+50A**, with **19 positive
+witnesses** and degree84. Its comparison system has76 operations and eight
+equations. A proved canonical compiler margin permits eliminating the
+packed index; the accepted ordinary input set is unchanged.
+The [norm-and-index product](../research-wip/native-stream-queue/complete75_norm_product91.md)
+then lowers the polynomial to **91=49M+42A**, with the same19 witnesses.
+Integer unit factorization and elementary negative-Pell obstructions
+justify merging four norm equations and the index equation. Its degree
+is266 and its underlying four-equation system costs80. Grouped variants
+give97 operations at degree84,95 at degree96, and93 at degree136.
+The [shifted transport product](../research-wip/native-stream-queue/complete75_norm_product90.md)
+then gives90 operations at degree276 and the separate96/degree84,
+94/degree96 and92/degree138 variants. The
+[eight-factor product](../research-wip/native-stream-queue/complete75_norm_product89.md)
+first gives **89=48M+41A**, with19 positive witnesses and exact degree166.
+A folded Pell-sequence residue gap restores the auxiliary linear equation
+before the shifted-index proof applies. All eight units can therefore
+share one unsquared product minus one. Its comparison circuit costs88,
+so75 remains the comparison frontier.
+The [strong-unit substitution](../research-wip/native-stream-queue/complete75_strong_reduction89.md)
+lowers degree166 to162 at the same cost. The subsequent
+[reversed auxiliary product](../research-wip/native-stream-queue/complete75_reversed_auxiliary89.md)
+gives **89 operations at exact degree160**, retaining all19 coordinates
+and their positive solution set. A displaced Pell-index proof excludes
+the added sign branches. The
+[retained-auxiliary partitions](../research-wip/native-stream-queue/complete75_auxiliary_degree_tradeoffs.md)
+improve the other options to93/degree128 and92/degree136;96/degree84 and
+94/degree96 remain available.
+The [positive first-root coordinate](../research-wip/native-stream-queue/complete75_positive_root89.md)
+gives **89=47M+42A at degree148**, with19 positive witnesses and an
+explicit bijection of positive solution sets. The old root is reconstructed
+as XY^2*k+tau_gap; its gap is positive on every parent zero. Both ratio
+slacks, all fixed compiler constants and the ordinary input are retained.
+Its [regrouped versions](../research-wip/native-stream-queue/complete75_positive_root_degree_tradeoffs.md)
+give **94/degree84**, **93/degree118**, and **92/degree122**. The first
+saves two operations at degree84. All retain19 positive witnesses, the
+strong auxiliary comparison and the exact linear comparison.
+The [coupled index/linear product](../research-wip/native-stream-queue/complete75_coupled_index_linear88.md)
+gives **88=47M+41A at degree151**, with the same19 positive witnesses
+and identical positive solution sets under the full compiler mask contract.
+Sharing k-hE saves one subtraction. Its extra negative-sign branch would
+satisfy the complete half-binomial kernel at R-2, but the repeated masks
+make its population one bit too small. Its [grouped variants](../research-wip/native-stream-queue/complete75_coupled88_degree_tradeoffs.md)
+give **91/degree130** and **93/degree90**, retaining the full strong
+comparison separately. The latter supersedes93/118. The
+[linear input modulus](../research-wip/native-stream-queue/complete75_linear_input_modulus89.md)
+gives **89=47M+42A at degree135**. Recovering the main kernel first permits
+the smaller modulus a+1 and restores the old positive quotient exactly.
+Its [degree tradeoffs](../research-wip/native-stream-queue/complete75_linear_input_degree_tradeoffs.md)
+extend the displayed choices. The [positive auxiliary gap](../research-wip/native-stream-queue/complete75_auxiliary_gap_degree_tradeoffs.md)
+adds one reconstruction gate and lowers the auxiliary norm degree to24,
+with a full positive bijection proved after strong-rank recovery.
+The [normalized strong witness](../research-wip/native-stream-queue/complete75_normalized_strong87.md)
+then removes one operation by supplying a positive normalized `i`, computing
+`t=i*c^2` and `Q=Delta*t^2`, and using `f^2-Q` with auxiliary coefficient `Delta*Q`.
+Its norm cannot be negative one modulo4. At a zero, the positive embedding
+`i_old=Delta*i` restores every parent factor. Fresh canonical witnesses at
+`m=2cR` prove the converse using `c^2 | psi_A(2cR)`; no arbitrary-tuple
+bijection is claimed. All compiler/input/ratio bounds remain intact.
+The current choices are **87/203,88/151,89/135,90/131,91/128,92/114,93/90,
+94/80,95/72,96/62,97/56,98/54 and99/52**, all with19 positive witnesses. No global
+optimality claim follows from this list.
+The comparison-based certificate count and single-polynomial evaluation
+count are separate measures. These are mathematical results with focused
+symbolic and executable audits, not Lean formalizations or publication claims.
+
+The current substrate continuation includes a
+[four-row finite-control queue simulator](../research-wip/native-stream-queue/four_row_queue_block_simulator.md),
+exact [66-operation ternary](../research-wip/native-stream-queue/native_four_row_fifo66.md)
+and [58-operation binary](../research-wip/native-stream-queue/native_binary_three_row_fifo58.md)
+ordinary-input FIFO components,
+and [residue-affine maps with an ancestor-pumping obstruction](../research-wip/native-stream-queue/residue_affine_ancestor_pumping.md).
+The simulator has a complete coded-input proof; finite-controller arithmetic
+and ordinary-input loading still need to be paid. The tested centered61/71
+carry families and the stated unit-slope residue-affine subclass are
+provably insufficient for universal representation. A separate
+[row-local-window obstruction](../research-wip/native-stream-queue/four_row_local_window_obstruction.md)
+also rules out replacing the simulator's arbitrary finite control by bounded
+row-only tests; it does not bound the cost of nonlocal arithmetic constraints.
+
+The subsequent [nonabsorbing-controller bounds](../research-wip/native-stream-queue/binary_nonabsorbing_cone_and_read_only.md)
+decide the entire read-only subclass and bound inputs outside a necessary
+coefficient cone. The [fixed-idle boundary](../research-wip/native-stream-queue/binary_fixed_idle_controller.md)
+has a57-operation predicate with an explicitly regular input language.
+The [odd-controller orbit analysis](../research-wip/native-stream-queue/binary_odd_controller_orbit.md)
+gives exact guarded fixed-width duration bounds and excludes the additional
+boundary region c=-b,a/b<1 by an effective width bound. It does not decide
+all remaining coefficients at unbounded width.
+The [factored residue-affine counter map](../research-wip/native-stream-queue/residue_affine_factored_counter_step.md)
+provides a universal coded simulation with paid scalar zero/decrement guards;
+it still needs certificates for its prime-power input loading and history.
+The [two-stack alternative](../research-wip/native-stream-queue/two_stack_affine_input_step.md)
+supplies an ordinary-input loader in two operations and an exact positive
+scalar step in16B-3 operations for B branches. Its
+[factored read-selector successor](../research-wip/native-stream-queue/two_stack_factored_selector_step.md)
+uses8B+18 operations for a full B=9K table, with eight positive witnesses
+and seven equations. Fixed-duration unrolling has an explicit cost.
+The [typed-history audit](../research-wip/native-stream-queue/two_stack_polycyclic_history_obstruction.md)
+gives an exact synchronized two-Dyck-word contract and proves that direct
+inverse-group products lose stack guards. Exact bounded-depth linear
+actions need dimensionN=2^(H+1)-1; the paid positive basis loader costs2N.
+The [typed prefix merge](../research-wip/native-stream-queue/typed_prefix_normal_form_merge25.md)
+instead gives exact nonzero composition in25 operations with four positive
+auxiliary witnesses and seven equations. It proves output typing from
+typed inputs and accounts for every fixed composition tree. Its
+[singleton-domain extension](../research-wip/native-stream-queue/typed_prefix_singleton_merge31.md)
+costs31 operations and handles binary empty tests exactly. Typed roots
+support ordinary-input-to-empty endpoints with the two-operation loader;
+fixed leaf flags allow cheaper explicitly counted schedules. Variable
+leaf selection, synchronized control and a uniform varying-duration
+history certificate remain unpaid. The
+executable decoder fixture is distinguished from the generic universal
+two-stack simulation.
+
+The [group-commutator substrate](../research-wip/native-stream-queue/group_commutator_universal_substrate.md)
+provides a different universal route: every computably enumerable positive
+set occurs as finitely generated subgroup membership in SL(4,Z), along
+one fixed quadratic curve in ordinary x. The graph-group presentation has
+an exact missing-edge converse. An effective finite-presentation embedding
+preserves named free letters, and a conjugated fibre-product subgroup
+allows a repeated two-block target. Its
+[faithful matrix loader](../research-wip/native-stream-queue/group_unipotent_input_loaders.md)
+costs **5=2M+3A**, with no witnesses and nonnegative literal numerals.
+The finite-presentation theorem is an explicit external dependency. This does
+not bypass the stack-guard obstruction by falsely identifying stack maps
+with a group: it constructs a different universal group directly.
+A folded affine program prefix and swapped free basis give one fixed
+universal matrix alphabet with **6=2M+4A** total input loading. The
+[affine-input obstruction](../research-wip/native-stream-queue/group_affine_input_obstruction.md)
+proves quadratic degree necessary for the paired-SL2 subgroup interface;
+an explicit SL3 counterexample prevents extending that statement to
+arbitrary affine SL3 or SL4 curves. No operation lower bound follows.
+
+The [four-register history](../research-wip/native-stream-queue/group_four_register_history.md)
+uses the shear-height bound and determinant one to recover each target
+block from its action on (2^t,1). This reduces eight evolving matrix entries
+to four bounded registers. Its paid ordinary-input boundary costs10;
+a conditional packed interface costs43 with20 positive history fields.
+That ledger excludes typing, eight digitwise selected-source products,
+regular macro control and two power relations with the same duration.
+The [canonical-history successor](../research-wip/native-stream-queue/group_four_register_canonical_history47.md)
+adds a single paid word bound and recovers all state digits in47 operations.
+The [selected-source successor](../research-wip/native-stream-queue/native_binary_masked_selection63.md)
+supplies eight products in117 operations, or119 with a specified binary
+scale; its standalone AND costs63 or64. A [regular macro controller](../research-wip/native-stream-queue/group_regular_macro_controller.md)
+pays all edge choices, ordered flow and physical selectors. The
+[repunit-population geometry](../research-wip/native-stream-queue/group_linked_binary_geometry47.md)
+links q=2^t and P=(8q^2)^t in47 further operations, sharing the paid B.
+
+Their [complete source composition](../research-wip/native-stream-queue/group_complete_matrix_compiler.md)
+has **7m+3h+p+273** operations,60 equations and m+87 positive witnesses,
+for m=2^h fixed macro edges and p selector additions. The literal single
+polynomial costs **7m+3h+p+452**, degree **max(112,12m+16)**. Its proof
+orders the independent power typing before controller and history decoding,
+and includes a full positive converse for every accepted ordinary input.
+The fixed universal subgroup theorem makes this an alternative complete
+universal compiler. The universal alphabet remains uninstantiated, and
+this parameterized bound does not improve the numerical75/87 frontier.
+
+The [shared typing kernel](../research-wip/native-stream-queue/group_shared_typing_matrix_compiler.md)
+combines control and all eight selected-source tests, proving the low-mask
+bound before Boolean decoding. [Sparse macro flow](../research-wip/native-stream-queue/group_sparse_macro_flow.md)
+shares weighted internal edges and already-paid checksum sums. Their
+[combined source](../research-wip/native-stream-queue/group_shared_sparse_matrix_compiler.md)
+also merges identical geometric registers. The [computed-port successor](../research-wip/native-stream-queue/group_computed_selector_ports.md)
+then removes eight positive selector witnesses and comparisons. Its complete
+cost is **C=3m+3h+p+222+f_flow-3min(h,3)**, with39 equations,m+59 witnesses,
+and f_flow at most twice the total macro-code length. Its polynomial costs
+**C+116**, exact degree **12m+112**. These counts include every arithmetic
+predicate; the universal fixed table itself remains numerically unspecified.
+
+The [Gram scalar-zero alternative](../research-wip/native-stream-queue/group_gram_zero_mortality.md)
+lifts the same universal subgroup to seven dimensions. Torsion-free integral
+blocks make a squared-Frobenius scalar test exact, with a12-operation positive
+quartic input column. A rank-one sentinel converts it to unrestricted
+mortality; after one fixed conjugation, its nonnegative input matrix costs
+**13=5M+8A** and all other matrices remain fixed. A fixed signed-shear word
+has a positive4t+17 certificate and a10t+19 polynomial of exact degree8.
+Uniform word choice and packing are still unpaid for this alternative.
+The packet also gives explicit torsion and nonnegative-support obstructions
+to dropping the fixed macro group or removing all signed generators.
+
+The newer [projective endpoint](../research-wip/native-stream-queue/group_projective_zero_mortality6.md)
+uses the special Schreier stabilizer and graph-group abelianization to
+replace full matrix equality by paired action on(-1,alpha*x+beta+1),
+ending at e2. The vector loader costs2; its fixed6D scalar-zero and
+unrestricted mortality lift has a3-operation positive quadratic input.
+The [complete range compiler](../research-wip/native-stream-queue/group_range_projective_compiler.md)
+adds explicit history-range and radix regions to the existing AND,
+removing geometry47 and saving37 certificate operations. Its cost is
+C=3m+3h+p+185+f_flow-3min(h,3). The [positive definition elimination](../research-wip/native-stream-queue/group_projective_computed_kernel_fields.md)
+then gives20 equations,m+34 witnesses and aC+59 polynomial of exact
+degree24m+444. A22-equation,m+36-witness alternative costsC+65 at
+degree12m+232. These are complete constructions for the fixed abstract
+universal alphabet, with every input, control and history condition paid;
+they do not instantiate its numerical table or improve75/87.
+
+The [shifted boundary](../research-wip/native-stream-queue/group_projective_shifted_boundary.md)
+reflects the alphabet and uses origin D-1, saving1A. The
+[unit product](../research-wip/native-stream-queue/group_projective_unit_product.md)
+merges the main norm, auxiliary norm and checksum, saving four polynomial
+operations. Reusing the controller mask saves another multiplication for
+m>=8. The [scalar projections](../research-wip/native-stream-queue/group_projective_scalar_projections.md)
+compute the edge repunit and remove its comparison plus the radix guard;
+optional computation of P removes a third comparison. Finally the
+[padded-program margin](../research-wip/native-stream-queue/group_projective_padded_program_margin.md)
+uses fixed alpha+beta+1>=m to remove one height addition. A specified
+repeated universal enumeration supplies this inequality after its one
+alphabet is built, without changing the ordinary runtime input.
+
+With epsilon recording mask reuse and chi recording computed P, the
+complete certificate costs C=3m+3h+p+185+f_flow-3min(h,3)-epsilon.
+The six-field variant has16-chi equations,m+32-chi positive witnesses and
+polynomial costC+47-3chi. Its exact degree is(1+chi)*(32L+4m+60)+38,
+where L=m+18 or2m+10 according to epsilon. The four-field alternative
+has18-chi equations,m+34-chi witnesses,C+53-3chi polynomial operations
+and degree12(1+chi)L+16. Both variants retain complete positive-domain
+proofs; computed J is proved positive before native typing. The illustrative
+ten-letter table reaches258/302 at degree2974 with47 witnesses, but the
+universal numerical alphabet remains uninstantiated.
+
+The [first-root unit](../research-wip/native-stream-queue/group_projective_first_norm_unit.md)
+recodes the positive triangular Pell root as g=2tau+1-2XY²k. Its norm
+g²+4XY²k(g-k) excludes-1 modulo4 and costs the same six gates. Merging
+it saves two SOS additions; retaining it separately lowers the four-field
+degree. Both ratio slacks remain. Independently, the
+[joint history/output bound](../research-wip/native-stream-queue/group_projective_joint_bound.md)
+uses B=16D to fit one bound Hsum+Zsum+b=P+1. It restores both parent
+positive bounds before typing, then proves its inverse positive from
+the exclusive selected-digit sum. This saves3SOS operations and one
+positive witness at unchanged degree and certificate cost.
+
+Their [complete composition](../research-wip/native-stream-queue/group_projective_joint_first_norm.md)
+has certificateC+1. The merged six-field polynomial costsC+42-3chi,
+with14-chi equations,m+31-chi witnesses and exact degree
+(1+chi)*(38L+4m+60)+48. The merged four-field option costsC+48-3chi,
+with16-chi equations,m+33-chi witnesses and degree16(1+chi)L+42.
+Keeping the first norm separate adds two polynomial operations and lowers
+degree. The ten-letter example reaches259/297,13 equations,46 witnesses
+and degree3488; the separate option is258/299 at degree2974.
+
+The [index-unit refinement](../research-wip/native-stream-queue/group_projective_index_unit.md)
+adds the first index to the product, saving one more SOS addition.
+Its proof starts with only a signed checksum, establishes the size
+hypotheses of the independent strong-rank lemma, recovers the exact
+main index, and excludes the negative index unit by the upper ratio.
+The [coupled auxiliary linear unit](../research-wip/native-stream-queue/group_projective_coupled_linear_unit.md)
+then saves two more additions. Its auxiliary norm uses V=of-c and its
+linear unit is V-jc+2(k-hE). One extra sign branch is retained but
+normalizes to a valid positive parent tuple by shifting the native
+complement/index by-2 and the bound slack by+2. The fixed prefix proves
+the restored complement positive. The outer input predicate is unchanged.
+
+With the joint bound, the coupled certificate isC+4. Four fields give
+14-chi equations,m+33-chi witnesses,C+45-3chi polynomial operations and
+degree24(1+chi)L+54; six give12-chi equations,m+31-chi witnesses,
+C+39-3chi operations and degree(1+chi)(40L+2m+30)+60. The illustrative
+ten-letter table is262/294 with11 equations,46 witnesses and degree3544,
+or295 polynomial operations at degree2904 without mask reuse. Every
+comparison and positivity obligation remains paid;75/87 are unchanged.
+
+The [two computed input fields](../research-wip/native-stream-queue/group_projective_computed_input_fields.md)
+remove two comparisons and witnesses, saving six SOS operations. Their
+positivity follows from the raw outer bounds before any native typing.
+The [computed checksum field](../research-wip/native-stream-queue/group_projective_computed_checksum_field.md)
+then chooses the already normalized positive-checksum branch, saving one
+multiplication and witness. Replacing the auxiliary norm coefficient by
+the [retained strong coefficient](../research-wip/native-stream-queue/group_projective_strong_coefficient.md)
+lowers the six-field degree by eight while its defining strong comparison
+remains paid. At that stage the six-field bounds are C+3 certificate operations,
+10-chi equations,m+28-chi witnesses and C+32-3chi SOS operations, at degree
+(1+chi)(38L+2m+30)+52. The ten-letter example with both options is
+261/287,9 equations,43 witnesses,SOS degree3368; without mask reuse it is
+262/288 at SOS degree2760.
+
+The [unsquared outer product](../research-wip/native-stream-queue/group_projective_unsquared_outer_product.md)
+replaces the SOS by `Punit*(1+SOSouter)-1`, retaining the same positive
+zero set, operation counts and supplied coordinates. Its exact degree
+is(1+chi)(27L+m+15)+46:2376 in the example with both options, or1944
+without mask reuse. Every residual besides the native unit product
+remains in SOSouter; the sum-of-squares alternatives retain degrees3368
+and2760 at the same arithmetic cost. The four-field checksum option remains C+3,
+12-chi equations,m+30-chi witnesses,C+38-3chi SOS operations and degree
+22(1+chi)L+54. These are complete fixed-table formulas; no numerical
+universal matrix alphabet or improvement to75/87 is asserted.
+
+The [factored native index](../research-wip/native-stream-queue/group_projective_factored_native_index.md)
+saves four additions by an exact polynomial identity, without changing
+any witness, comparison or positive zero. Both variants cost C-1 as
+certificates. The six-field product costs C+28-3chi, giving257/283 at
+degree2376 for the ten-letter example with both options.
+
+The [shifted native quotient](../research-wip/native-stream-queue/group_projective_shifted_X_quotient.md)
+then uses the computed factor S in r=(q-1)S to set X=q(w+S), proving
+X-r=qw+S>0 without a separate comparison. Divisibility q|X remains paid,
+and the old and new positive zeros correspond bijectively. Its complete
+six-field counts are C-1 certificate operations,9-chi equations,
+m+27-chi positive witnesses and C+25-3chi final product operations,
+with exact degree(1+chi)(44L+9m+135)+44. For the ten-letter table:
+both options give257/280,8 equations,42 witnesses,degree4298;
+no mask reuse gives258/281 at degree3594. Leaving P supplied gives
+257/283 at degree2171 with mask reuse or258/284 at degree1819 without it,
+with9 equations and43 witnesses in both cases. The factored parent keeps
+286/degree1211 and287/degree995 choices with44 witnesses, and its
+four-field option includes293/degree802 with46 witnesses. These are
+parameterized compiler results;75/87 remain the numerical universal bounds.
+
+The [shared history right-hand sides](../research-wip/native-stream-queue/group_projective_shared_history_rhs.md)
+reuse the paid P+1 register to save one multiplication in all three
+factored/shifted variants. Their full polynomials, comparisons, witnesses
+and degrees are unchanged. All certificates now costC-2. The four-field
+SOS costsC+33-3chi, the unshifted six-field product costsC+27-3chi,
+and the shifted-X product costsC+24-3chi. Its default example becomes
+256/279,8 equations,42 witnesses,degree4298. Lower-degree shared parent
+options include285/degree1211 and286/degree995 with44 witnesses, and
+four-field292/degree802 with46 witnesses.
+
+The [strong-unit product](../research-wip/native-stream-queue/group_projective_strong_unit_product.md)
+then absorbs the retained strong residual into the native product at
+unchanged final cost. The factor1+T^2-Delta(f^2-1) is never -1 modulo
+four on any integer assignment, so the complete integer zero set is
+preserved before using the native positive proof. Its certificate costs
+C+1, with8-chi equations,m+27-chi positive witnesses and aC+24-3chi
+polynomial. Its degree is(1+chi)(36L+7m+105)+44, except for idle-only
+supplied-P tables, where it is two lower. The default ten-letter result
+is259/279,7 equations,42 witnesses,degree3502. The other polynomial
+choices are280/degree2926 without mask reuse,282/degree1773 with mask
+reuse and supplied P, and283/degree1485 with neither option. This local
+degree improvement is specific to shifted X; unshifted absorption would
+increase degree. Numerical75/87 are still unchanged.
+
+The [port-bias rewrite](../research-wip/native-stream-queue/group_projective_port_bias_folding.md)
+folds equal opposite-port offsets into one paid packing bias. Let s be
+its table-dependent saving, and let theta=1 when a macro has length at
+least three, otherwise0. The
+[joint-bound unit](../research-wip/native-stream-queue/group_projective_joint_bound_unit.md)
+absorbs the scalar joint bound after a native sign and population proof.
+The [shared flow target](../research-wip/native-stream-queue/group_projective_shared_flow_target.md)
+then reuses the edge checksum, saving theta additions with the complete
+polynomial unchanged. With the preceding C notation, their composition
+costs **C+3-s-theta** as a certificate or **C+23-3chi-s-theta** as one
+polynomial, with7-chi equations andm+27-chi positive witnesses.
+The joint-unit degree is **nu(36L+7m+106)+38+2d_outer**, where d_outer=3
+unless the table is idle-only and P is supplied, in which case it is2.
+
+The ten-letter table has s=theta=1:
+
+| Mask reuse | Computed P | Certificate / polynomial | Equations / witnesses | Degree |
+|---|---|---:|---:|---:|
+|Yes|Yes|259 / 276|6 / 42|3504|
+|No|Yes|260 / 277|6 / 42|2928|
+|Yes|No|259 / 279|7 / 43|1774|
+|No|No|260 / 280|7 / 43|1486|
+
+The first polynomial uses117M+159A. These illustrative fixed-table
+counts leave the numerical75/87 frontier unchanged. The lower-degree
+unshifted supplied-P choices now cost283/degree1211 or284/degree995
+with44 witnesses; the four-field no-mask supplied-P choice costs
+290/degree802 with46 witnesses. Previous packets remain reproducible.
+
+The [frozen-padding compiler](../research-wip/native-stream-queue/group_projective_frozen_idle_padding.md)
+fixes the duplicate hub-idle hats to one, keeping their actual selectors
+zero inside the existing m-lane origin mask. With a=1+sum macro lengths
+and k=m-a, two paid packing plans save at least2k operations and k
+witnesses. The ten-letter example saves4M+8A, reaching247/264 operations,
+6 equations,37 witnesses and the same degree3504.
+
+The [idle-free successor](../research-wip/native-stream-queue/group_projective_idle_free_paths.md)
+also fixes the canonical idle hat to one for every nonempty macro table.
+Any accepting path remains a nonempty concatenation of macros after idle
+steps are erased; its shorter histories and positive native witnesses
+can be rebuilt at a fresh height and duration. A specialized-parent
+packing fallback guarantees at least one further operation saved. The
+ten-letter factored pack saves two more, yielding this intermediate table:
+
+| Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
+|---|---|---:|---:|---:|---:|
+|Yes|Yes|244 / 261|113 / 148|6 / 36|3504|
+|No|Yes|245 / 262|114 / 148|6 / 36|2928|
+|Yes|No|244 / 264|114 / 150|7 / 37|1774|
+|No|No|245 / 265|115 / 150|7 / 37|1486|
+
+For n>=1 actual macro edges, let k=m-n-1, Delta be the audited padding
+saving and delta the further idle0 saving. Then Delta>=2k,delta>=1, and
+with the preceding C,s,theta notation the exact costs are
+
+    certificate C+3-s-theta-Delta-delta,
+    polynomial C+23-3chi-s-theta-Delta-delta,
+    equations7-chi, positive witnesses n+27-chi.
+
+Every output is an exact parent specialization, while equivalence of
+ordinary-input projections uses the separate path and positive-extension
+proof. The m-based exponents and exact parent degrees persist. Empty
+macro tables retain the padding-only parent. These are complete
+fixed-table improvements, not a smaller numerical75/87 universal bound.
+
+The [reindexed geometry](../research-wip/native-stream-queue/group_projective_reindexed_edge_geometry.md)
+places actual edge e in controller lane e-1. On the factored branch it
+saves1M, reaching the intermediate260 polynomial. If the actual edge
+count n>=2 is a power of two, the old2n-lane geometry can shrink to n;
+controller-mask reuse requires n>=8. Such a halving at n>=8 saves3M+1A and
+the degree uses the smaller geometry. The other packing branch keeps
+its parent. The positive proof rebuilds the native witnesses rather than
+identifying the old and new polynomials.
+
+The [shared-selector rewrite](../research-wip/native-stream-queue/group_projective_shared_selector_pack.md)
+instead preserves the full polynomial on arbitrary integer assignments,
+reaching the intermediate246 count. Its
+[composition with reindexed geometry](../research-wip/native-stream-queue/group_projective_reindexed_shared_pack.md)
+gives the following ten-letter table, retained by the later lane planner:
+
+| Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
+|---|---|---:|---:|---:|---:|
+|Yes|Yes|228 / 245|104 / 141|6 / 36|3504|
+|No|Yes|229 / 246|105 / 141|6 / 36|2928|
+|Yes|No|228 / 248|105 / 143|7 / 37|1774|
+|No|No|229 / 249|106 / 143|7 / 37|1486|
+
+Here `Hc=S+(P^8-1)*T`, with the existing physical selector word S and
+`T=Ehat_9+P*Ehat_10-(P+1)`. The six-gate correction saves8M+7A after
+the1M reindexing saving. When all edge lanes align with physical labels,
+Hc aliases S with no arithmetic; the distinct aligned eight-letter
+illustration costs210/227 operations with6 equations,34 witnesses and
+degree2240. Neither alignment nor geometry halving is assumed for general
+tables: paid plans and unchanged-parent fallbacks are retained.
+
+The ten-letter strong-unit choices give polynomial/degree pairs246/3502,
+247/2926,249/1773 and250/1485 in the same row order. Unshifted supplied-P
+choices give252/1211 or253/995 with38 witnesses; the four-field no-mask
+choice gives259/802 with40 witnesses. These are complete fixed-table
+tradeoffs, while the numerical universal alphabet remains uninstantiated
+and the75/87 bounds remain unchanged.
+
+The latest [label-aligned lane planner](../research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
+tries at most six storage injections within the existing m lanes and
+retains the preceding compiler whenever none is cheaper. Every packing
+operation is paid. Only packed positions change: physical edge IDs,
+action order, state flow, masks and scales remain fixed. Its positive
+proof rebuilds native witnesses, and its degree proof uses the unchanged
+dominant history region. The default ten-letter source remains245 at
+degree3504. A nonaligned eight-letter table improves242 to227, with6
+equations,34 witnesses and degree2240; an unbalanced twelve-letter table
+improves273 to270, and a reversed sixteen-letter table improves294 to281,
+both at degree3504. These are distinct-table examples, not numerical
+instances of the universal alphabet.
+
+A separate [complete input recoder](../research-wip/native-stream-queue/native_binary_input_dilation130.md)
+represents `z=sum bit_j(x)*16^j` in **130=67M+63A** operations,
+with49 positive witnesses and34 equations. Its single polynomial costs
+**231=101M+130A** and has exact degree40. Inlining two shifted inputs
+preserves the complete132 parent's entire polynomial, with all native
+typing, exponent synchronization, masks and bounds still paid. A separate
+[radix4 recoder](../research-wip/native-stream-queue/native_binary_input_dilation129.md)
+costs129=65M+64A with the same49 witnesses and34 equations; its polynomial
+costs230=99M+131A and has degree40. It uses Q=q^2,B=2Q, obtaining
+J>=9,J>q directly before raw-kernel decoding. The older transport to
+B0=8q^2 is not used. It represents `sum bit_j(x)*4^j`, so the function
+and polynomial differ from the130 radix16 relation.
+
+The [norm-unit recoder](../research-wip/native-stream-queue/native_binary_input_dilation_unit179.md)
+gives the same complete radix4 graph with **135 certificate /179=86M+93A
+polynomial operations**,36 positive witnesses,15 comparisons and exact
+degree186. Its radix16 version costs180 at degree240. Two positive
+first-root changes and thirteen already-paid positive definitions give
+explicit inverse maps of zero sets. Six norm factors exclude -1 modulo4
+before typing, forcing the remaining checksum factor to1. Both strong
+comparisons remain; using their paid RHS inside the auxiliary factors
+lowers degree at unchanged cost. The original T^2-coefficient variant
+remains checked at degree194. Keeping P supplied gives182/degree132;
+the earlier degree40 recoders are retained as different tradeoffs.
+For fixed width k>=4 the polynomial costs178+mu(k), with exact degree
+27k+132 and the same36 witnesses and15 comparisons.
+
+The [fixed-program GPCP bridge](../research-wip/native-stream-queue/gpcp_fixed_program_input_bridge.md)
+now pays the framed ordinary-input and terminal boundary. For a fixed
+k-bit alphabet with k>=4, let mu(k)=floor(log2 k)+popcount(k)-1. The
+complete scalar boundary costs134+mu(k), with50 positive witnesses and36
+equations; its polynomial costs241+mu(k) and has exact degree
+2 max(20,k+1). At k=4 the counts are136=70M+66A and243=106M+137A.
+A fixed machine compiles to rewrite tiles with nonempty sides, with a fresh
+delimiter and an explicit zero-step construction proving the word equation.
+Thus program and padded ordinary-input conventions are supplied. This
+boundary packet alone leaves selected history open. The norm-unit
+recoder lowers its polynomial to190+mu(k), with37 witnesses and17
+comparisons; k=4 gives192 at degree240. These affine tile matrices
+generally have nonunit determinants, so the SL2 history compiler does
+not transfer directly; the next packet proves the needed history afresh.
+
+The [uniform affine-pair history](../research-wip/native-stream-queue/pcp_uniform_affine_pair_history.md)
+is a complete positive-integer certificate for a nonempty common word
+over any fixed s-tile table of positive integer slopes and nonnegative
+offsets. One prescribed AND joins selected-cell products, Boolean
+selectors, both bounded histories and a radix test. The global bound
+establishes nonoverlapping lanes before typing; the resulting dyadic
+radix and repunit give the common duration. Affine outputs lie below
+the radix, so the two packed transports recover exact updates and
+endpoints. There are19 comparisons and3s+26 witnesses. If H is the
+actual paid certificate cost, the polynomial costs H+56; two layouts
+have N=3s+4 or N=4s+4 and exact degree24N+16. The illustrative three-tile
+table gives161/217 at degree400 or163/219 at degree328.
+
+Its [norm-unit successor](../research-wip/native-stream-queue/pcp_uniform_affine_pair_units.md)
+retains the exact positive relation in H+3 certificate /H+32 polynomial
+operations, with10 comparisons,3s+20 witnesses and degree58N+28. Three
+norm factors exclude negative units, while its single checksum remains
+the unrestricted factor. Six positive definitions and a first-root
+bijection restore every old witness before native typing. The same
+three-tile table gives164/193,90M+103A,29 witnesses and degree956;
+the contiguous alternative gives166/195 at degree782. The raw history
+remains a lower-degree choice. Composition must retain enough separate
+checksum equations; two unrestricted checksum units cannot simply be
+multiplied together.
+
+The [complete fixed-program GPCP composition](../research-wip/native-stream-queue/gpcp_complete_fixed_program.md)
+joins the original boundary and raw affine-pair history with independent packing
+parameters. With its computed positive initial endpoint, it costs
+H+134+mu(k) certificate and H+295+mu(k) polynomial operations, with54
+comparisons,3s+78 positive witnesses and degree12(k+1)N+16. Keeping
+that endpoint supplied adds three polynomial operations and one
+witness/comparison, while lowering degree to max(24N+16,2k+2). The34-tile
+odd-integer example gives832/993 operations,422M+571A,180 witnesses
+and degree8416; its supplied-endpoint version gives996/degree3376.
+A paid three-operation program loader supplies a single fixed universal
+interpreter, or two operations when its program numeral is fixed.
+This closes both ordinary-input and unbounded-history interfaces. That
+generic packet did not instantiate its universal table numerically; the
+explicit construction below closes this gap. The75/87 bounds are unchanged.
+
+The [complete norm-unit composition](../research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
+then saves75 polynomial operations and19 positive witnesses from the
+raw full compiler. With H still the raw history cost, it costs
+H+143+mu(k) certificate and H+220+mu(k)
+polynomial operations, with26 comparisons and3s+59 witnesses in the
+computed-endpoint version. Nine sign-safe norms and the recoder checksum
+form one product, while the history checksum remains an explicit
+comparison; the two unrestricted checksums are not multiplied together.
+The same34-tile example gives **841 certificate /918=403M+515A
+polynomial operations**,161 witnesses and degree19782. Keeping the
+initial endpoint supplied gives921,162 witnesses and degree8040.
+The raw993-operation degree8416 source remains a separate tradeoff.
+The source recomputes degrees after every projection and loader,
+including the large-width case where the recoder strong norm dominates.
+This is a complete alternative universal compiler with an effective
+fixed interpreter; the displayed small table remains a decidable example.
+
+The [factored transport pass](../research-wip/native-stream-queue/pcp_affine_factored_transports.md)
+then shares repeated coefficients and common offset forms by exact
+polynomial identities on arbitrary integer assignments. Every retained
+residual and the complete polynomial stay unchanged. The34-tile history
+saves104 gates, from696 to592, and the complete unit polynomial falls
+918 to814=317M+497A at unchanged degree19782 and161 witnesses.
+
+The [slope-class history](../research-wip/native-stream-queue/pcp_affine_slope_class_history.md)
+changes the paid packing geometry: original tile selectors remain, but
+selected-history products are supplied only for nonbaseline slope
+classes. For du upper and dv lower slopes, g=du+dv-2 and N=s+g+4.
+The raw and unit versions have19/10 comparisons and s+g+26/s+g+20
+witnesses; their H+56/H+32 polynomials have exact degrees24N+16 and
+58N+28. Pretyping class bounds come from sums of original nonnegative
+selectors. After one-hot recovery, the signed baseline correction is
+the true selected affine update, with a paid carry margin. The34-tile
+table now needs five products instead of68, and its unfactored unit
+history drops728 to447 operations,59 witnesses and degree2522.
+
+The [complete slope-class composition](../research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
+scores every actual baseline pair after transport factoring and retains
+both per-tile layouts as fallbacks. All choices preserve the fixed table
+and ordinary-input predicate, using fresh native witnesses at their own
+scales. On the same example, the selected raw history costs381 and the
+full unit source costs **526 certificate /603=259M+344A polynomial
+operations**,26 equations,98 witnesses and degree6202. With the initial
+endpoint supplied it costs606,27 equations,99 witnesses and degree2608.
+The raw alternatives are678/degree2596 and681/degree1048, with117 and118
+witnesses respectively. These improve the preceding814/918/993 stages
+without identifying any of the example tables as universal.
+
+For selected grouped raw-history cost H and width-chain cost mu(k), the
+computed-endpoint unit formula remains H+143+mu(k) certificate and
+H+220+mu(k) polynomial operations, now with s+g+59 witnesses. Supplied
+endpoints add one witness/comparison and three polynomial operations.
+The paid program loaders and the complete fixed-interpreter theorem
+remain available; numerical universal75/87 improvements remain separate.
+
+The [state-free-copy compiler](../research-wip/native-stream-queue/gpcp_state_free_copies.md)
+then removes copies of control states while keeping all original symbols,
+codes, rewrite rules, input framing and loader gates. Every genuine rule
+consumes the unique state, so its copied contexts use only tape symbols
+and brackets. Rebuilding a nonempty accepting derivation proves
+completeness; inclusion in the old tile table proves soundness. Equivalence
+is asserted for well-formed starts with distinct initial/accepting states
+and the original leading-zero convention, not arbitrary boundary tuples.
+For the same odd recognizer,30 tiles give **510 certificate /587=254M+333A
+polynomial operations**,26 comparisons,94 witnesses and degree5642.
+The supplied endpoint gives590/2384; raw computed/supplied sources give
+662/2356 and665/952. These are decidable examples, not universal counts.
+
+The [explicit Neary–Woods U15,2 construction](../research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md)
+now instantiates a different universal fixed table. Published
+Table16 has29 instructions over two tape symbols. Its rewriting alphabet
+has21 symbols and width5. Every valid configuration has one state symbol,
+consumed by its transition or cleanup rule; the copied contexts therefore
+need no state-copy tiles. This leaves **97 fixed tiles: five copies and92
+rules**, with g=5 exceptional slope products, N=106 and raw-history cost836.
+Deleting state copies is justified on valid program configurations, not
+on arbitrary malformed parameter tuples.
+
+The ordinary-input bridge uses an actual pair-input convention in the
+represented machine. The two input bits become equal32-symbol blocks;
+the recoder width is consequently160, distinct from tilewidth5. A paid
+positive block repunit and bit-block morphism preserve every leading
+zero block. Three positive program parameters describe an encoded prefix,
+suffix scale and suffix value. For each r.e. positive-integer set the
+effective simulation produces a valid fixed triple, giving a slice of
+one fixed polynomial. The parameters are not existential witnesses.
+
+The default costs **992=418M+574A certificate operations**,27 comparisons,
+and **1072=445M+627A polynomial operations**, with162 positive witnesses
+and exact degree485982. Retaining the initial history value as a positive
+witness gives1075,28 comparisons,163 witnesses and degree9100. The earlier
+all-state-copy slope source remains1153 with178 witnesses; the old
+per-tile source remains2278 with399 witnesses. Thus the GPCP route now
+has a concrete numerical universal instance with all input and history
+interfaces paid. These alternative bounds are larger than75/87 and do
+not materialize the separate group-based matrix alphabet.
+
+The [binary prefix-code successor](../research-wip/native-stream-queue/neary_woods_prefix_universal.md)
+keeps the same97 physical tiles and universal simulation. Tape symbols
+receive two-bit codes, control states five-bit codes, and the three
+delimiters plus accepting state seven-bit codes. Prefix-free decoding and
+sentinel integers preserve concatenated word equality, even though the
+symbol widths differ. The existing32-symbol bit blocks now have width64;
+the recoder, repunit, framing, terminal constants and tile affine maps are
+all rebuilt at their paid costs. Different native scales receive fresh
+positive witnesses; the old and new numeric polynomials are not identical.
+
+The selected raw history has H=823,g=6,N=107. Its complete source has
+**977=402M+575A certificate operations**,27 comparisons and a
+**1057=429M+628A** universal polynomial,163 positive witnesses and degree201682.
+The supplied-initial-value option gives1060=430M+630A,28 comparisons,
+164 witnesses and degree7332. The fixed codeword assignment is compiler
+data, not an uncharged runtime choice. The three positive program
+parameters and valid-configuration slice theorem remain. The1072 source
+is retained as a one-fewer-witness alternative; neither changes75/87.
+
+The latest [bracket-anchored successor](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
+removes the fresh separator copy tile and its symbols in the initial and
+terminal framing. The proof uses the actual configuration brackets: the
+upper word cannot end partway through the first configuration, since the
+appended target would introduce an interior opening bracket. Its closing
+bracket cuts at a tile boundary; the unique state forces exactly one
+rewrite tile in that prefix. Cancelling the initial configuration exposes
+the next row, and induction recovers the full chronological derivation.
+Completeness concatenates the genuine rewrite rows without separators.
+This is a theorem for the valid bracketed configurations, not a deletion
+from an unrestricted rewriting-to-GPCP reduction.
+
+The universal table becomes **96 tiles, four copies plus92 rules**, with
+H=812,g=6,N=106. It gives **966=396M+570A certificate operations** and
+**1046=423M+623A polynomial operations**,27 comparisons,162 witnesses and
+degree199806. Supplying the initial value gives1049,28 comparisons,
+163 witnesses and degree7276. The ordinary input still uses the paid
+width64 recoder and three positive program parameters; the suffix now
+ends in the nonzero closing-bracket code. The odd recognizer separately
+gives29 tiles,502/579=249M+330A,26 comparisons,93 witnesses and degree5502;
+its supplied-value version costs582 at degree2328. Both improvements
+rebuild the native history witnesses and preserve the earlier scope.
+
+The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
+shows why outright deletion is different: a fixed six-shear table with
+an empty true endpoint language acquires full positive zeros at every
+input. Noncanonical output lanes preserve the entire scalar AND but
+change paired differences to cancel a false endpoint. The packed output
+remains below its aggregate bound, so individual-lane typing must still
+be enforced. This rejects a uniform fixed-table deletion, without
+classifying that deletion on the special fixed universal subgroup.
+
+The [controlled4D mortality alternative](../research-wip/native-stream-queue/group_two_reset_mortality4.md)
+uses a two-operation affine rank-two reset matrix. Two resets require one
+common bridge word killing both blocks and represent universal membership.
+Unrestricted mortality loses that synchronization: two different bridge
+words give a three-reset zero product for every input. Members have
+minimum reset count two, nonmembers three. Its regular language R F*R is
+explicit, but uniform word selection and control are not yet paid.
+
+The [10D affine mortality construction](../research-wip/native-stream-queue/group_affine_guarded_mortality10.md)
+recovers unrestricted mortality with the same two-operation input loader.
+Its one varying matrix has entries0,1,t. Two occurrences load the6D
+quadratic projective column. Four invertible control coordinates count
+input letters and fixed-letter-before-input pairs; a weighted magnitude
+bound makes their nonzero guard dominate every invalid physical scalar.
+A constant rank-one reset then permits arbitrary repetition without losing
+the common zero word. For an inherited s-letter alphabet, s+1 matrices
+are fixed and one varies. The dimension/loader tradeoff is exact; selected
+word and matrix-history arithmetic remain unpaid.
+
+The [9D successor](../research-wip/native-stream-queue/group_affine_guarded_mortality9.md)
+stores the same guard in three coordinates and keeps the affine loader2.
+For n>=2 selected letters over a fixed s-letter paired alphabet, it pays
+the branch ranges, integer lookup and signed intermediate states in
+(16n-8)s+9n-11 certificate operations, or(16n-8)s+24n-20 polynomial
+operations, with6n-3 positive witnesses and degree at most2s. The n=1
+polynomial costs8s+5. These circuits depend on the fixed duration n.
+Separately, the ambient modulo-four subgroup and compatible input
+congruence turn both projective zeros into the exact paired endpoint e2.
+Thus unbounded mortality existence projects to the existing uniform
+four-history certificate, explicitly importing the257/283 factored-index
+illustration. The shifted quotient composes to give280; the later
+shared-history/strong-unit theorems
+give279 at degree3502; the joint-unit/shared-flow composition gave276,
+the idle-free stage gave261; the reindexed/shared compiler gives245,
+retained by the latest lane planner at degree3504 under the same
+existence equivalence. None certifies
+an arbitrary supplied mortality word or its individual reset
+positions, and no numerical universal alphabet is materialized.
+
+The [7D weighted adapter](../research-wip/native-stream-queue/group_affine_weighted_mortality7.md)
+reduces the physical scalar from six to four coordinates. For the fixed
+subgroup, a strict norm bound prevents cancellation in a signed weighted
+sum of the two projective coordinates. Whole-run bounds, including the
+boundary t=3, let the affine input loader remain two operations.
+The [6D cone successor](../research-wip/native-stream-queue/group_affine_cone_mortality6.md)
+then replaces its guard by
+`CT=[[1,1],[0,1]], CF=[[1,0],[2,1]]`, start(-2,1) and row(1,0).
+Its exact zero language is `TTF*`: an early fixed letter enters a strict
+negative cone, while an extra input letter enters a strict positive cone.
+The6D input matrix has determinant t^3, and the fixed rank-one reset
+satisfies R^2=-6R. Unrestricted mortality is exactly the universal paired
+endpoint query, with one affine varying matrix ands+1 fixed matrices.
+
+This changes the scalar series, so the old exact-series rank bounds do
+not obstruct it. The packet's stable279 endpoint import remains unchanged;
+the latest245 compiler composes through the same existence equivalence. Neither
+is a certificate for a separately supplied arbitrary6D word or its reset
+positions, and no numerical universal alphabet or smaller75/87 bound is
+claimed.
+
+The [4D quadratic-reset construction](../research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
+removes the guard entirely. Its varying nonnegative rank-one reset is
+`R_t=(1,t,t,t^2)^T(1,0,1,0)`, loaded in3=2M+1A operations. Strict
+weighted separation makes each whole-space bridge scalar a simultaneous
+paired-endpoint test. Since every fixed letter is invertible, arbitrary
+reset counts and exterior words cannot create a false zero. This is
+unrestricted mortality, unlike the older controlled two-block4D reset.
+
+The [5D affine successor](../research-wip/native-stream-queue/group_affine_bipartite_mortality5.md)
+uses `z_t=(1,t,1,t)^T`, `u_t=(1,0,t,0)` and the rank-two input matrix
+`T=[0,z_t;u_t,0]`. Its entries are0,1,t, so all25 entries load in
+2=1M+1A. Alternating-block identities characterize arbitrary products
+by odd and even bridge-scalar factors. Every zero bridge is already a
+full paired witness, and repeating one such bridge gives `T M T M T=0`.
+The singular input creates no input-only false zero, since
+`T^3=(1+t)T`. No guard or free word restriction is used.
+
+These4D quadratic3 and5D affine2 results are dimension/input-cost
+tradeoffs, not new uniform Diophantine operation savings or minimality
+claims. Their stable named279 endpoint imports are unchanged; the245
+compiler composes independently with their existence predicates. An
+arbitrary supplied4D or5D word, its duration and its input/reset positions
+still require a separate paid selected-history interface.
+
+The [rank obstruction](../research-wip/native-stream-queue/group_guarded_mortality_rank_obstruction.md)
+proves exact linear rank6 for the physical paired-square scalar and
+rank9 for the complete guarded scalar on the actual universal subgroup.
+Opposite unipotents give irreducibility; its nontrivial normal kernel
+isolates the physical blocks, while lifted commutators cancel the
+commuting fixed control action. Both reachable and observable spans
+are full. This rules out coordinate compression preserving the identical
+scalar series, including a merger of guard and physical coordinates.
+It leaves different zero-equivalent functions, nonlinear certificates
+and other mortality constructions open, and gives no arithmetic lower
+bound or obstruction to the existing four-history existence reduction.
+
+The [native divisibility obstruction](../research-wip/native-stream-queue/native_binary_X_divisibility_obstruction.md)
+shows why X=wq cannot simply be replaced by its positive bound in the
+standalone selector. The resulting55-operation component has a full
+positive solution with q=48, defeating dyadic typing. This example does
+not defeat the joined matrix interface, whose q=16P^L condition excludes
+that scale.
+
+The [zero-offset input modulus obstruction](../research-wip/native-stream-queue/complete75_zero_offset_input_modulus_obstruction.md)
+concerns a different direct-polynomial proposal: replacing Delta by a
+in the input congruence gives an88-operation polynomial of degree135,
+but every positive zero must satisfy2d*x+b=psi_2(v) with v odd. Each
+fixed admissible tuple therefore has only O(log N) projected inputs up
+to N and explicit infinitely many omissions. The necessary condition
+does not claim a converse. It rejects this candidate, while the valid
+a+1 modulus retains its89-operation cost and75/87 remain unchanged.
+
+The [first-norm ratio obstruction](../research-wip/native-stream-queue/complete75_first_norm_ratio_obstruction.md)
+rejects a separate apparent87-operation shortcut in the direct universal
+polynomial. Replacing the positive upper ratio slack by a first-Pell-index
+gap leaves only c>kY. For every fixed compiled constant tuple, an explicit
+CRT outer construction extends through all positive Pell witnesses at
+every positive input. The relaxed source therefore represents all positive
+integers. This rejects that rewrite, not other potential87-operation
+equations;75 and87 are the established numerical bounds.
+
+The [positive-transport projection obstruction](../research-wip/native-stream-queue/complete75_positive_transport_projection_obstruction.md)
+rejects another exact87=47M+40A shortcut. It supplies C>0 instead of F>0,
+reverses the paid transport chain and saves one addition. The restored
+F can be negative. A fixed-scale CRT and population construction, followed
+by a fresh full positive Pell extension, makes the modified polynomial
+zero at every positive input for every actual fixed compiler. Both ratio
+slacks, the exact strong auxiliary square, input norm and all other factors
+remain. This is a full-input obstruction to that specific projection,
+not a kernel-only counterexample or a resolution of other87 candidates.
+
+The [independent main/input quotient relaxation](../research-wip/native-stream-queue/complete75_independent_gamma87_alias.md)
+has a different, **unresolved** status. Deleting gamma=rho+sigma gives
+87 operations at degree151 with19 positive witnesses and a positive
+forward map from88. The missing dominance inequality previously proved
+v<R. A conditional CRT lemma and a positive main/first component at R=11
+show how input-Pell aliases can occur without that bound. But the full
+compiler requires R>=3q+1 with q>=16; the component is therefore not a
+full independent-gamma87 zero or a rejected-input counterexample. Neither universality
+nor failure of the complete independent-gamma87 relaxation is established.
+
+The [exact period successor](../research-wip/native-stream-queue/complete75_independent_gamma87_period.md)
+characterizes all positive input extensions of a fixed genuine outer/main
+history. With A=a+2, Delta=A^2-1, H=4a+3, O=ord_H(2) and
+g=gcd(2Delta,O), W must be a power of2 modulo H with logarithm
+j=u or A*u modulo g. These are the odd and even input-Pell branches.
+For a parent88 marker W=2^u0 the even branch is excluded; preserving
+that history at a new x requires exactly alpha+2d*(x0-x)>0 for the
+width witness and g dividing2d*(x-x0). This is an exact conditional
+source extension, not a free order/discrete-log arithmetic primitive.
+The genuine half-binomial parameters also satisfy a=6 modulo9 exactly
+when r0=(R-1)/2 is divisible3 and has no ternary digit2; that class
+forces6 to divide g and restricts which input residues can share the
+history. No actual full false-input instance is supplied, and the
+independent-gamma87 relaxation remains unresolved.
+
+The [compiler/order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md)
+now use the actual sparse masks, including the source's MF+B-1 offset.
+They restrict a=6 modulo9 to odd history length N, even window-selector
+count k and even tile alphabet a_T, still requiring the ternary-digit
+test. The local3 obstruction vanishes in other layout cases, but proper
+prime factors of H can still contribute3 to the full period gcd.
+A Lucas upper-tail digit algorithm computes a modulo fixed odd primes
+without materializing the enormous Pell integers. Certified local orders
+give squarefree lower divisors of g; parity and cofactor bounds exclude
+some large prime powers. The algorithmic field-operation bounds are not
+free arithmetic gates. The large examples satisfy packing only, and no
+actual rejected-input history or full resolution of independent-gamma87 is supplied.
+
+The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
+gives a uniform four-positive-witness certificate for two fixed generators
+in H^r: graph18r+10, or one degree-at-most-four polynomial at27r+12.
+That entire two-generator family is decidable. For three letters, explicit
+strict-interior counterexamples defeat pair bounds and weighted-triangle
+bounds together; global order still needs a certificate. The primary-source
+audit of a universal Heisenberg compiler records that it starts from an
+existing Diophantine equation and qualifies its signed-parameter claim.
+
+## Historical 76-operation milestone
+
+The preceding complete fixed-index universal certificate used 76 operations,
 41 multiplications and 35 additions/subtractions, with 30 positive witnesses
-and 19 equations.** The [complete proof](FIXED_RAW_UNIVERSAL_76_PROOF.md)
+and 19 equations. The [complete proof](FIXED_RAW_UNIVERSAL_76_PROOF.md)
 fixes all compiler numerals independently of the varying positive raw input.
 It removes the stride divisor P*v=q and both coordinates, using the main
 Pell power X=2^(2r+1), already computed by the kernel, for temporal rotation.
@@ -39,7 +1250,7 @@ not a Lean theorem. The existing TeX/PDF remains89 and Lean remains90.
 The67 encoded-instance construction,69 cyclic Rule110 component and100
 counter-machine family keep their separate scopes and counts. The
 research history below retains milestone-relative statements about
-the formerly best universal bounds 89, 88, 84, 82, 81, 80, 78 and 77; the current complete bound is 76.
+the formerly best universal bounds 89, 88, 84, 82, 81, 80, 78 and 77; the current complete bound is 75.
 This note records the investigation of different universal models and
 their history encodings.
 Fixed numerals have no cost; multiplying a variable by a numeral still

@@ -1,0 +1,635 @@
+{
+  "status": "PASS_GROUP_UNIPOTENT_INPUT_LOADERS",
+  "quadratic_loaders": {
+    "fixed_rank5": {
+      "operations": 5,
+      "multiplications": 2,
+      "additions_subtractions": 3,
+      "supplied_witnesses": 0,
+      "input": "ordinary integer x; intended language domain x>0",
+      "fixed_parameter": "c=4k, k=N-1>=1 is fixed",
+      "schedule": [
+        [
+          "q",
+          "*",
+          "c",
+          "x"
+        ],
+        [
+          "product",
+          "*",
+          "q",
+          "x"
+        ],
+        [
+          "lower",
+          "-",
+          0,
+          "product"
+        ],
+        [
+          "upper_left",
+          "+",
+          1,
+          "q"
+        ],
+        [
+          "lower_right",
+          "-",
+          1,
+          "q"
+        ]
+      ],
+      "outputs": [
+        "upper_left",
+        "c",
+        "lower",
+        "lower_right"
+      ],
+      "coordinate_polynomials": [
+        "c*x + 1",
+        "c",
+        "-c*x**2",
+        "-c*x + 1"
+      ],
+      "coordinate_degrees": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "determinant_identity": true,
+      "trace": 2,
+      "symbolic_conjugation_identity": true,
+      "direct_integer_matrix_cases": 1285,
+      "repeated_pair_target_has_no_additional_arithmetic": true,
+      "fixed_numeral_products_charged": true,
+      "fixed_signed_numerals_allowed": true,
+      "arithmetic_gates_use_only_nonnegative_literals": true
+    },
+    "rank_uniform6": {
+      "operations": 6,
+      "multiplications": 3,
+      "additions_subtractions": 3,
+      "supplied_witnesses": 0,
+      "input": "ordinary integer x; intended language domain x>0",
+      "fixed_parameter": "A and B independent of rank",
+      "schedule": [
+        [
+          "four_x",
+          "*",
+          4,
+          "x"
+        ],
+        [
+          "t",
+          "-",
+          "four_x",
+          1
+        ],
+        [
+          "square",
+          "*",
+          "t",
+          "t"
+        ],
+        [
+          "four_t",
+          "*",
+          4,
+          "t"
+        ],
+        [
+          "upper_left",
+          "-",
+          1,
+          "four_t"
+        ],
+        [
+          "lower_right",
+          "+",
+          1,
+          "four_t"
+        ]
+      ],
+      "outputs": [
+        "upper_left",
+        -16,
+        "square",
+        "lower_right"
+      ],
+      "coordinate_polynomials": [
+        "5 - 16*x",
+        "-16",
+        "16*x**2 - 8*x + 1",
+        "16*x - 3"
+      ],
+      "coordinate_degrees": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "determinant_identity": true,
+      "trace": 2,
+      "symbolic_conjugation_identity": true,
+      "direct_integer_matrix_cases": 257,
+      "repeated_pair_target_has_no_additional_arithmetic": true,
+      "fixed_numeral_products_charged": true,
+      "fixed_signed_numerals_allowed": true,
+      "arithmetic_gates_use_only_nonnegative_literals": true
+    },
+    "reference_uniform_program7": {
+      "operations": 7,
+      "multiplications": 3,
+      "additions_subtractions": 4,
+      "supplied_witnesses": 0,
+      "input": "ordinary positive integer x",
+      "fixed_parameters": "kappa=2^(p+1), offset=2^p for fixed program p; c=12",
+      "schedule": [
+        [
+          "program_product",
+          "*",
+          "kappa",
+          "x"
+        ],
+        [
+          "loaded_input",
+          "+",
+          "program_product",
+          "offset"
+        ],
+        [
+          "q",
+          "*",
+          "c",
+          "loaded_input"
+        ],
+        [
+          "product",
+          "*",
+          "q",
+          "loaded_input"
+        ],
+        [
+          "lower",
+          "-",
+          0,
+          "product"
+        ],
+        [
+          "upper_left",
+          "+",
+          1,
+          "q"
+        ],
+        [
+          "lower_right",
+          "-",
+          1,
+          "q"
+        ]
+      ],
+      "outputs": [
+        "upper_left",
+        "c",
+        "lower",
+        "lower_right"
+      ],
+      "coordinate_polynomials": [
+        "12*kappa*x + 12*offset + 1",
+        "12",
+        "-12*kappa**2*x**2 - 24*kappa*offset*x - 12*offset**2",
+        "-12*kappa*x - 12*offset + 1"
+      ],
+      "coordinate_degrees": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "determinant_identity": true,
+      "symbolic_affine_composition_identity": true,
+      "integer_matrix_and_unique_valuation_cases": 832,
+      "no_runtime_exponentiation": true,
+      "arithmetic_gates_use_only_nonnegative_literals": true,
+      "scope": "Paid affine input composition only; the companion group theorem supplies the single subgroup for the universal coded c.e. set"
+    },
+    "swapped_fixed_rank5": {
+      "operations": 5,
+      "multiplications": 2,
+      "additions_subtractions": 3,
+      "supplied_witnesses": 0,
+      "schedule": [
+        [
+          "q",
+          "*",
+          "c",
+          "x"
+        ],
+        [
+          "square",
+          "*",
+          "q",
+          "q"
+        ],
+        [
+          "lower",
+          "-",
+          0,
+          "square"
+        ],
+        [
+          "upper_left",
+          "+",
+          1,
+          "q"
+        ],
+        [
+          "lower_right",
+          "-",
+          1,
+          "q"
+        ]
+      ],
+      "outputs": [
+        "upper_left",
+        1,
+        "lower",
+        "lower_right"
+      ],
+      "coordinate_polynomials": [
+        "c*x + 1",
+        "1",
+        "-c**2*x**2",
+        "-c*x + 1"
+      ],
+      "coordinate_degrees": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "determinant_identity": true,
+      "symbolic_conjugation_identity": true,
+      "direct_integer_matrix_cases": 48,
+      "fixed_rank_four_generators": {
+        "a": [
+          1,
+          1,
+          0,
+          1
+        ],
+        "b": [
+          1,
+          0,
+          12,
+          1
+        ]
+      },
+      "fixed_parameters": "c=4k with fixed rankN=k+1",
+      "arithmetic_gates_use_only_nonnegative_literals": true,
+      "fixed_numeral_products_charged": true,
+      "no_runtime_exponentiation": true
+    },
+    "preferred_uniform_program6": {
+      "operations": 6,
+      "multiplications": 2,
+      "additions_subtractions": 4,
+      "supplied_witnesses": 0,
+      "schedule": [
+        [
+          "program_product",
+          "*",
+          "scaled_kappa",
+          "x"
+        ],
+        [
+          "q",
+          "+",
+          "program_product",
+          "scaled_offset"
+        ],
+        [
+          "square",
+          "*",
+          "q",
+          "q"
+        ],
+        [
+          "lower",
+          "-",
+          0,
+          "square"
+        ],
+        [
+          "upper_left",
+          "+",
+          1,
+          "q"
+        ],
+        [
+          "lower_right",
+          "-",
+          1,
+          "q"
+        ]
+      ],
+      "outputs": [
+        "upper_left",
+        1,
+        "lower",
+        "lower_right"
+      ],
+      "coordinate_polynomials": [
+        "alpha*x + beta + 1",
+        "1",
+        "-alpha**2*x**2 - 2*alpha*beta*x - beta**2",
+        "-alpha*x - beta + 1"
+      ],
+      "coordinate_degrees": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "determinant_identity": true,
+      "symbolic_conjugation_identity": true,
+      "direct_integer_matrix_cases": 576,
+      "fixed_rank_four_generators": {
+        "a": [
+          1,
+          1,
+          0,
+          1
+        ],
+        "b": [
+          1,
+          0,
+          12,
+          1
+        ]
+      },
+      "fixed_parameters": "scaled_kappa=12*2^(p+1), scaled_offset=12*2^p for fixed program p",
+      "arithmetic_gates_use_only_nonnegative_literals": true,
+      "fixed_numeral_products_charged": true,
+      "no_runtime_exponentiation": true
+    }
+  },
+  "optional_commutator_loader": {
+    "operations": 19,
+    "multiplications": 8,
+    "additions_subtractions": 11,
+    "input": "ordinary integer x; intended language domain x>0",
+    "supplied_witnesses": 0,
+    "fixed_generators": {
+      "U": [
+        1,
+        4,
+        0,
+        1
+      ],
+      "B": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "A": [
+        5,
+        -16,
+        1,
+        -3
+      ]
+    },
+    "commutator_convention": "[g,h]=g h g^-1 h^-1",
+    "input_word": "[b^-x a b^x,a]",
+    "schedule": [
+      [
+        "t",
+        "*",
+        8,
+        "x"
+      ],
+      [
+        "q",
+        "*",
+        "t",
+        "t"
+      ],
+      [
+        "v",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "h",
+        "-",
+        "q",
+        "t"
+      ],
+      [
+        "two_q",
+        "+",
+        "q",
+        "q"
+      ],
+      [
+        "p_inner",
+        "-",
+        "two_q",
+        1
+      ],
+      [
+        "p",
+        "*",
+        "t",
+        "p_inner"
+      ],
+      [
+        "ell",
+        "+",
+        "p",
+        "h"
+      ],
+      [
+        "two_p",
+        "+",
+        "p",
+        "p"
+      ],
+      [
+        "r_inner",
+        "+",
+        "two_p",
+        "ell"
+      ],
+      [
+        "r",
+        "*",
+        4,
+        "r_inner"
+      ],
+      [
+        "w11",
+        "+",
+        1,
+        "r"
+      ],
+      [
+        "w12",
+        "*",
+        -64,
+        "p"
+      ],
+      [
+        "two_ell",
+        "+",
+        "ell",
+        "ell"
+      ],
+      [
+        "three_v",
+        "*",
+        3,
+        "v"
+      ],
+      [
+        "w21",
+        "-",
+        "two_ell",
+        "three_v"
+      ],
+      [
+        "sixteen_v",
+        "*",
+        16,
+        "v"
+      ],
+      [
+        "last",
+        "-",
+        "sixteen_v",
+        "r"
+      ],
+      [
+        "w22",
+        "+",
+        1,
+        "last"
+      ]
+    ],
+    "outputs": [
+      "w11",
+      "w12",
+      "w21",
+      "w22"
+    ],
+    "coordinate_polynomials": [
+      "12288*x**3 + 256*x**2 - 128*x + 1",
+      "-65536*x**3 + 512*x",
+      "-12288*x**4 + 2048*x**3 + 128*x**2 - 32*x",
+      "65536*x**4 - 12288*x**3 - 256*x**2 + 128*x + 1"
+    ],
+    "coordinate_degrees": [
+      3,
+      3,
+      4,
+      4
+    ],
+    "coordinate_leading_coefficients": [
+      12288,
+      -65536,
+      -12288,
+      65536
+    ],
+    "trace_polynomial": "2+65536*x^4",
+    "determinant_identity": true,
+    "symbolic_commutator_identity": true,
+    "direct_integer_matrix_cases": 385,
+    "fixed_integer_numeral_products_charged": true,
+    "nonnegative_numerals_only_variant": {
+      "operations": 20,
+      "multiplications": 8,
+      "additions_subtractions": 12,
+      "change": "replace -64*p by positive12=64*p; w12=0-positive12"
+    }
+  },
+  "conjugate_embedding": {
+    "conjugate_generator_formula_checks": 65,
+    "generator_formula": "g_i=[[1+4i,-16i^2],[1,1-4i]]",
+    "distinguished_generators": "b=g_0, a=g_1; other basis generators use distinct indices>=2",
+    "reduced_word_fixtures": [
+      {
+        "rank": 2,
+        "maximum_reduced_word_length": 8,
+        "nonempty_distinct_reduced_words": 13120,
+        "per_length": [
+          4,
+          12,
+          36,
+          108,
+          324,
+          972,
+          2916,
+          8748
+        ]
+      },
+      {
+        "rank": 3,
+        "maximum_reduced_word_length": 6,
+        "nonempty_distinct_reduced_words": 23436,
+        "per_length": [
+          6,
+          30,
+          150,
+          750,
+          3750,
+          18750
+        ]
+      },
+      {
+        "rank": 4,
+        "maximum_reduced_word_length": 5,
+        "nonempty_distinct_reduced_words": 22408,
+        "per_length": [
+          8,
+          56,
+          392,
+          2744,
+          19208
+        ]
+      }
+    ],
+    "rational_ping_pong_checks": 6624,
+    "proof_scope": "The note proves freeness for every finite set of distinct integer indices; bounded tests are supporting audits only"
+  },
+  "schreier_embedding": {
+    "basis": "a=U^k, b=V, remaining U^i V U^-i for1<=i<k",
+    "rank": "N=k+1",
+    "fixed_curve_parameter": "c=4k",
+    "reduced_word_fixtures": [
+      {
+        "k": 1,
+        "rank": 2,
+        "maximum_reduced_word_length": 8,
+        "nonempty_distinct_reduced_words": 13120
+      },
+      {
+        "k": 2,
+        "rank": 3,
+        "maximum_reduced_word_length": 6,
+        "nonempty_distinct_reduced_words": 23436
+      },
+      {
+        "k": 3,
+        "rank": 4,
+        "maximum_reduced_word_length": 5,
+        "nonempty_distinct_reduced_words": 22408
+      }
+    ],
+    "proof_scope": "The note proves freeness using the k-cycle covering graph and its spanning tree, for every fixed k>=1"
+  },
+  "scope": "Faithful free-group embedding and exact ordinary-input matrix curve only. No subgroup membership certificate, existential membership encoding, or universal Diophantine bound is provided."
+}

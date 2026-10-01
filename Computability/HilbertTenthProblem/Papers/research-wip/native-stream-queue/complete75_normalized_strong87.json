@@ -1,0 +1,1201 @@
+{
+  "status": "PASS_COMPLETE75_NORMALIZED_STRONG87",
+  "source": {
+    "certificate": {
+      "operations": 86,
+      "multiplications": 48,
+      "additions_subtractions": 38,
+      "equations": 1,
+      "witnesses": 19
+    },
+    "polynomial": {
+      "operations": 87,
+      "multiplications": 48,
+      "additions_subtractions": 39,
+      "degree": 203,
+      "witnesses": 19
+    },
+    "changed_registers": [
+      "R16",
+      "strong_difference",
+      "norm_strong"
+    ],
+    "deleted_register": "f_square_minus_one",
+    "unchanged_literal_gates": 83,
+    "retained_positive_witnesses": [
+      "Jrep",
+      "F",
+      "alpha",
+      "zplus",
+      "f",
+      "h",
+      "i",
+      "j",
+      "o",
+      "s",
+      "w",
+      "tau_gap",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma"
+    ],
+    "comparisons": [
+      [
+        "eight_units",
+        1
+      ]
+    ],
+    "polynomial_schedule": [
+      [
+        "tau_square",
+        "*",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "twice_tau_gap",
+        "+",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "first_signed_gap",
+        "-",
+        "twice_tau_gap",
+        "R10b"
+      ],
+      [
+        "first_cross",
+        "*",
+        "first_root_base",
+        "first_signed_gap"
+      ],
+      [
+        "norm_first",
+        "+",
+        "tau_square",
+        "first_cross"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "q_minus_F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "strong_difference",
+        "*",
+        "A",
+        "ic22"
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "strong_difference"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "R10a"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "wn2"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "zplus",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "norm_strong",
+        "-",
+        "L16",
+        "strong_difference"
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "R10a"
+      ],
+      [
+        "linear_difference",
+        "-",
+        "aux_u_rhs",
+        "jc"
+      ],
+      [
+        "norm_linear",
+        "+",
+        "linear_difference",
+        "index_difference"
+      ],
+      [
+        "eight_units",
+        "*",
+        "seven_units",
+        "norm_linear"
+      ],
+      [
+        "polynomial",
+        "-",
+        "eight_units",
+        1
+      ]
+    ],
+    "complete_factor_identities": 512,
+    "signed_cases": 128,
+    "negative_computed_input_roots": 66,
+    "soundness_coordinate_map": "i_old=Delta*i_new; all other coordinates unchanged"
+  },
+  "degree": {
+    "fixtures": [
+      {
+        "B": 16,
+        "cell_bits": 4,
+        "scales": {
+          "Jrep": 2,
+          "F": 2,
+          "alpha": 3,
+          "zplus": 4,
+          "f": 1,
+          "h": 2,
+          "i": 3,
+          "j": 4,
+          "o": 1,
+          "s": 2,
+          "w": 3,
+          "tau_gap": 5,
+          "eta": 1,
+          "zeta": 2,
+          "y_aux": 3,
+          "Z": 4,
+          "delta": 1,
+          "rho": 2,
+          "sigma": 3,
+          "x": 1
+        },
+        "factor_degrees": [
+          14,
+          22,
+          42,
+          64,
+          9,
+          5,
+          38,
+          9
+        ],
+        "exact_degree": 203,
+        "leading_coefficient": "2240949334983451810494910463815908076818583156954995180705564587195343614415881205138157731840000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "B": 64,
+        "cell_bits": 6,
+        "scales": {
+          "Jrep": 2,
+          "F": 3,
+          "alpha": 4,
+          "zplus": 1,
+          "f": 2,
+          "h": 3,
+          "i": 4,
+          "j": 1,
+          "o": 2,
+          "s": 3,
+          "w": 4,
+          "tau_gap": 5,
+          "eta": 1,
+          "zeta": 2,
+          "y_aux": 4,
+          "Z": 1,
+          "delta": 2,
+          "rho": 3,
+          "sigma": 4,
+          "x": 1
+        },
+        "factor_degrees": [
+          14,
+          22,
+          42,
+          64,
+          9,
+          5,
+          38,
+          9
+        ],
+        "exact_degree": 203,
+        "leading_coefficient": "11352408806772719308769112495599799072063118393587796400997045855550926230347670388953030830145113024169858587248519306339333672847052224711977666257450496195747886597635330041219129805466355132201942815943202206006641707865022123056668254363699212108627222726680448778251530593113169072631067063654370325383662408776548352"
+      },
+      {
+        "B": 256,
+        "cell_bits": 8,
+        "scales": {
+          "Jrep": 2,
+          "F": 4,
+          "alpha": 1,
+          "zplus": 2,
+          "f": 3,
+          "h": 4,
+          "i": 1,
+          "j": 2,
+          "o": 3,
+          "s": 4,
+          "w": 1,
+          "tau_gap": 5,
+          "eta": 1,
+          "zeta": 2,
+          "y_aux": 1,
+          "Z": 2,
+          "delta": 3,
+          "rho": 4,
+          "sigma": 1,
+          "x": 1
+        },
+        "factor_degrees": [
+          14,
+          22,
+          42,
+          64,
+          9,
+          5,
+          38,
+          9
+        ],
+        "exact_degree": 203,
+        "leading_coefficient": "1000502234737693826628254117850795708544917816057480426003935511965062464910172124605006039884510103229633942420378837115387511734584057485808543785690928732850060636998578851091340884363575555695637303338501775266527070829554463952111247526150336959810486927360000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "highest_homogeneous_term": "32*(B-1)^135*Jrep^135*h^2*(rho+sigma)*delta^2*i^4*(eta+zeta)^12*w^17*s^28*C_top*(2*tau_gap-eta-zeta)",
+    "C_top": "(B-1)*Jrep-F-Z-alpha-2*cell_bits*x"
+  },
+  "negative_unit_mod4_cases": [
+    [
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      1
+    ],
+    [
+      0,
+      0,
+      2,
+      0
+    ],
+    [
+      0,
+      0,
+      3,
+      1
+    ],
+    [
+      0,
+      1,
+      0,
+      1
+    ],
+    [
+      0,
+      1,
+      1,
+      2
+    ],
+    [
+      0,
+      1,
+      2,
+      1
+    ],
+    [
+      0,
+      1,
+      3,
+      2
+    ],
+    [
+      0,
+      2,
+      0,
+      0
+    ],
+    [
+      0,
+      2,
+      1,
+      1
+    ],
+    [
+      0,
+      2,
+      2,
+      0
+    ],
+    [
+      0,
+      2,
+      3,
+      1
+    ],
+    [
+      0,
+      3,
+      0,
+      1
+    ],
+    [
+      0,
+      3,
+      1,
+      2
+    ],
+    [
+      0,
+      3,
+      2,
+      1
+    ],
+    [
+      0,
+      3,
+      3,
+      2
+    ],
+    [
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      1,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      0,
+      2,
+      0
+    ],
+    [
+      1,
+      0,
+      3,
+      0
+    ],
+    [
+      1,
+      1,
+      0,
+      1
+    ],
+    [
+      1,
+      1,
+      1,
+      1
+    ],
+    [
+      1,
+      1,
+      2,
+      1
+    ],
+    [
+      1,
+      1,
+      3,
+      1
+    ],
+    [
+      1,
+      2,
+      0,
+      0
+    ],
+    [
+      1,
+      2,
+      1,
+      0
+    ],
+    [
+      1,
+      2,
+      2,
+      0
+    ],
+    [
+      1,
+      2,
+      3,
+      0
+    ],
+    [
+      1,
+      3,
+      0,
+      1
+    ],
+    [
+      1,
+      3,
+      1,
+      1
+    ],
+    [
+      1,
+      3,
+      2,
+      1
+    ],
+    [
+      1,
+      3,
+      3,
+      1
+    ],
+    [
+      2,
+      0,
+      0,
+      0
+    ],
+    [
+      2,
+      0,
+      1,
+      1
+    ],
+    [
+      2,
+      0,
+      2,
+      0
+    ],
+    [
+      2,
+      0,
+      3,
+      1
+    ],
+    [
+      2,
+      1,
+      0,
+      1
+    ],
+    [
+      2,
+      1,
+      1,
+      2
+    ],
+    [
+      2,
+      1,
+      2,
+      1
+    ],
+    [
+      2,
+      1,
+      3,
+      2
+    ],
+    [
+      2,
+      2,
+      0,
+      0
+    ],
+    [
+      2,
+      2,
+      1,
+      1
+    ],
+    [
+      2,
+      2,
+      2,
+      0
+    ],
+    [
+      2,
+      2,
+      3,
+      1
+    ],
+    [
+      2,
+      3,
+      0,
+      1
+    ],
+    [
+      2,
+      3,
+      1,
+      2
+    ],
+    [
+      2,
+      3,
+      2,
+      1
+    ],
+    [
+      2,
+      3,
+      3,
+      2
+    ],
+    [
+      3,
+      0,
+      0,
+      0
+    ],
+    [
+      3,
+      0,
+      1,
+      0
+    ],
+    [
+      3,
+      0,
+      2,
+      0
+    ],
+    [
+      3,
+      0,
+      3,
+      0
+    ],
+    [
+      3,
+      1,
+      0,
+      1
+    ],
+    [
+      3,
+      1,
+      1,
+      1
+    ],
+    [
+      3,
+      1,
+      2,
+      1
+    ],
+    [
+      3,
+      1,
+      3,
+      1
+    ],
+    [
+      3,
+      2,
+      0,
+      0
+    ],
+    [
+      3,
+      2,
+      1,
+      0
+    ],
+    [
+      3,
+      2,
+      2,
+      0
+    ],
+    [
+      3,
+      2,
+      3,
+      0
+    ],
+    [
+      3,
+      3,
+      0,
+      1
+    ],
+    [
+      3,
+      3,
+      1,
+      1
+    ],
+    [
+      3,
+      3,
+      2,
+      1
+    ],
+    [
+      3,
+      3,
+      3,
+      1
+    ]
+  ],
+  "canonical_composition_residue_cases": 66,
+  "full_canonical_auxiliary_cases": [
+    {
+      "A": 2,
+      "R": 3,
+      "c": 15,
+      "m": 90,
+      "normalized_i_bits": 162,
+      "f_bits": 170,
+      "y_bits": 344,
+      "V_bits": 344,
+      "all_five_auxiliaries_positive": true
+    },
+    {
+      "A": 3,
+      "R": 3,
+      "c": 35,
+      "m": 210,
+      "normalized_i_bits": 522,
+      "f_bits": 534,
+      "y_bits": 1072,
+      "V_bits": 1072,
+      "all_five_auxiliaries_positive": true
+    },
+    {
+      "A": 4,
+      "R": 3,
+      "c": 63,
+      "m": 378,
+      "normalized_i_bits": 1111,
+      "f_bits": 1125,
+      "y_bits": 2255,
+      "V_bits": 2255,
+      "all_five_auxiliaries_positive": true
+    },
+    {
+      "A": 5,
+      "R": 3,
+      "c": 99,
+      "m": 594,
+      "normalized_i_bits": 1948,
+      "f_bits": 1964,
+      "y_bits": 3934,
+      "V_bits": 3934,
+      "all_five_auxiliaries_positive": true
+    },
+    {
+      "A": 6,
+      "R": 3,
+      "c": 143,
+      "m": 858,
+      "normalized_i_bits": 3050,
+      "f_bits": 3067,
+      "y_bits": 6140,
+      "V_bits": 6140,
+      "all_five_auxiliaries_positive": true
+    },
+    {
+      "A": 7,
+      "R": 3,
+      "c": 195,
+      "m": 1170,
+      "normalized_i_bits": 4427,
+      "f_bits": 4445,
+      "y_bits": 8898,
+      "V_bits": 8898,
+      "all_five_auxiliaries_positive": true
+    },
+    {
+      "A": 8,
+      "R": 3,
+      "c": 255,
+      "m": 1530,
+      "normalized_i_bits": 6092,
+      "f_bits": 6111,
+      "y_bits": 12229,
+      "V_bits": 12229,
+      "all_five_auxiliaries_positive": true
+    },
+    {
+      "A": 9,
+      "R": 3,
+      "c": 323,
+      "m": 1938,
+      "normalized_i_bits": 8052,
+      "f_bits": 8072,
+      "y_bits": 16152,
+      "V_bits": 16152,
+      "all_five_auxiliaries_positive": true
+    },
+    {
+      "A": 10,
+      "R": 3,
+      "c": 399,
+      "m": 2394,
+      "normalized_i_bits": 10317,
+      "f_bits": 10338,
+      "y_bits": 20683,
+      "V_bits": 20683,
+      "all_five_auxiliaries_positive": true
+    },
+    {
+      "A": 2,
+      "R": 7,
+      "c": 2911,
+      "m": 40754,
+      "normalized_i_bits": 77407,
+      "f_bits": 77431,
+      "y_bits": 464593,
+      "V_bits": 464593,
+      "all_five_auxiliaries_positive": true
+    }
+  ],
+  "scope": "Same positive ordinary-input projection as complete coupled88 under all fixed compiler hypotheses. Completeness uses fresh canonical auxiliary witnesses, not a tuple bijection."
+}
