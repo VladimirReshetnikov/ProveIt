@@ -1,5 +1,10 @@
 # A complete 440-operation universal equation through Tseytin's semigroup
 
+> The [425-operation successor](tseytin_universal425.md) combines exact
+> selector sharing, a52-operation exponent relation and a fused query
+> endpoint. It retains65 witnesses and degree bound5868. This440 source
+> remains the fully reproducible baseline for its composition theorem.
+
 There is one fixed integer polynomial `F(x,A,z1,...,z65)`, evaluated by
 **440=200M+240A** binary additions, subtractions and multiplications, with
 the following property. From an enumerator of any computably enumerable

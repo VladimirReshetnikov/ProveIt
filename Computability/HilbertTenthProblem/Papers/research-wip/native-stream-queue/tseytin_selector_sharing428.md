@@ -1,5 +1,10 @@
 # Exact selector sharing reduces the C2 compiler to428
 
+> The [complete425 successor](tseytin_universal425.md) retains the exact
+> sharing here, then uses a smaller exponent component and fuses the query
+> endpoint. Its further savings require the separate positive proofs there;
+> only the twelve-operation rewrite here is a same-polynomial identity.
+
 The [literal successor](tseytin_selector_sharing428.py) saves **12 additions
 or subtractions** from the [complete universal440 source](tseytin_universal440.md),
 giving **428=200M+228A**, with408 certificate operations, seven comparisons,

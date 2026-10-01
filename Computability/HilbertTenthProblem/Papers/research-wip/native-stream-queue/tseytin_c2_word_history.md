@@ -1,5 +1,9 @@
 # A complete paid history for the literal Tseytin C2 semigroup
 
+> The [complete425 composition](tseytin_universal425.md) supplies an
+> ordinary positive input and one fixed program parameter, paying both
+> the exponent relation and the query loader used with this predicate.
+
 The [source](tseytin_c2_word_history.py) and
 [receipt](tseytin_c2_word_history.json) give a fixed polynomial with **374
 operations, 161M+213A, 52 positive existential witnesses and degree at

@@ -239,32 +239,43 @@ with44 witnesses; the fixed43-witness family reaches272/1344. These
 remain optima only for the stated finite propagated-degree objective.
 The established75/87 frontier is unchanged.
 
-The latest [selector-pair U21 compiler](research-wip/native-stream-queue/korec_packed_selector_sharing378.md)
-gives **377 certificate /378=141M+237A operations**, one comparison,
+The latest [repunit-factored U21 compiler](research-wip/native-stream-queue/korec_packed_repunit376.md)
+gives **375 certificate /376=143M+233A operations**, one comparison,
 50 positive witnesses, one fixed program parameter and degree at most21549.
-The [preceding shared-selector380](research-wip/native-stream-queue/korec_packed_selector_sharing380.md)
-saves17 additions by reusing five paid disjoint sums; two further paid
-selector pairs save two more. Both are exact whole-polynomial identities
-on the same supplied integer coordinates. The distinct two-program
-interface gives377=142M+235A, degree at most40706.
-The [complete shifted factor frontier](research-wip/native-stream-queue/korec_packed_selector_reuse_partitions.md)
-reaches **386/7704 with50 witnesses** or **389/3896 with51**; corresponding
-two-program endpoints are385/14552 and388/7352. Every plan of the
-[preceding four-base family](research-wip/native-stream-queue/korec_packed_factor_partitions.md) loses2A
-with unchanged degree dictionaries. These are exact finite propagated
-minima, not exact degrees or unrestricted lower bounds. Within one fixed
-base grouping preserves supplied positive zeros; across strong/scale
-bases the accepted outer relation is preserved by explicit scale maps
-and canonical private strong extensions.
+Factoring the eight-register repunit saves two operations (+2M,−4A)
+from the [selector-pair378 source](research-wip/native-stream-queue/korec_packed_selector_sharing378.md),
+with exactly the same integer polynomial and supplied coordinates.
+The separate two-program interface gives **375=144M+231A**, degree at most40706.
+The [complete transported factor frontier](research-wip/native-stream-queue/korec_packed_repunit_partitions.md)
+reaches **384/7704 with50 witnesses** or **387/3896 with51**; corresponding
+two-program endpoints are383/14552 and386/7352. Every allowed grouping
+and anchor saves two operations with unchanged degree dictionaries.
+These are exact finite propagated minima, not exact degrees or unrestricted
+lower bounds. Across strong/scale bases, the accepted outer relation is
+preserved by explicit scale maps and canonical private strong extensions.
 
-The [literal Tseytin word-table audit](research-wip/native-stream-queue/tseytin_group_completion_obstruction.md)
-records a genuine five-generator, nine-relation fixed-target universal
-semigroup and its effective primary word reduction. Its universal group
-is trivial: every direct invertible-matrix interpretation loses the language,
-including the false equality b=aaa. The raw base-eight commutator query has
-length |S|+20x+19 and needs more than a fixed auxiliary-free arithmetic
-loader. A paid compressed/existential loader and unbounded rewrite history
-remain open; no universal operation count is claimed for this substrate.
+The [complete Tseytin construction](research-wip/native-stream-queue/tseytin_universal425.md) gives
+**405 certificate /425=199M+226A operations**, seven comparisons,
+65 positive witnesses, one fixed positive program parameter, ordinary
+positive input, and degree at most5868. It uses the actual fixed C2
+semigroup with five generators and nine relations. Its components are a
+[362-operation shared word history](research-wip/native-stream-queue/tseytin_selector_sharing428.md), a
+[52-operation exact exponent relation](research-wip/native-stream-queue/pell_fixed_affine_exponent52.md),
+and a [ten-gate query loader](research-wip/native-stream-queue/tseytin_affine_power_query_loader.md).
+Fusing the query into the initial endpoint removes two more paid gates;
+the loader coefficients and program numeral are rescaled explicitly.
+The paid query comparison excludes the exponent product's negative sign
+by exact nonzero residues for both input parities; this justifies merging
+the two unit products. Keeping them separate gives427 with degree at most5814.
+The [440 baseline](research-wip/native-stream-queue/tseytin_universal440.md) and428 sharing-only version
+remain reproducible. Effective group embedding and the primary Tseytin
+reduction compile every c.e. positive set into one program numeral, with
+no alphabet-size bound. The external embedding algorithm and full giant
+Pell witnesses are not numerically materialized. The
+[group-completion obstruction](research-wip/native-stream-queue/tseytin_group_completion_obstruction.md)
+remains valid: direct invertible-matrix interpretations collapse this
+semigroup. The new construction retains its noninvertible rewrite history
+and pays its ordinary-input loader. The overall75/87 frontier is unchanged.
 
 The [independent gamma-period audit](research-wip/native-stream-queue/complete75_independent_gamma87_local_filters.md)
 reimplements the already established Lucas filter with three comparison

@@ -1,5 +1,9 @@
 # Two more paid selector pairs give the U21 source378
 
+> The [repunit-factored successor](korec_packed_repunit376.md) saves two
+> further operations with the same integer polynomial and supplied
+> coordinates, giving376 for one program parameter or375 for two.
+
 The [literal successor](korec_packed_selector_sharing378.py) saves exactly
 **two additions** from [selector-sharing380](korec_packed_selector_sharing380.md).
 Its default is **378=141M+237A**, with377 certificate operations, one

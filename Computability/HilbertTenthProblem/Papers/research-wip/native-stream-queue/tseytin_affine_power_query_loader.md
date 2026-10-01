@@ -1,5 +1,9 @@
 # A ten-operation ordinary-query bridge from a prescribed power
 
+> The [complete425 composition](tseytin_universal425.md) now pays the
+> required power relation and the unbounded C2 history. The ten-operation
+> count here remains the conditional loader component alone.
+
 The [literal source](tseytin_affine_power_query_loader.py) loads Tseytin's
 fixed-target query in **10=6M+4A operations and one comparison**, once a
 containing source has paid for the exact relation

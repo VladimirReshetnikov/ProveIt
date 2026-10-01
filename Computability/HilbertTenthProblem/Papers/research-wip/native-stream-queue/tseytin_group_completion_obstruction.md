@@ -4,7 +4,13 @@ Tseytin supplies an actual five-letter, nine-relation table with an undecidable 
 
 This packet also implements the primary effective word reduction from a supplied finite group presentation into the nine-relation table. For the distinguished commutator inputs, a concrete choice of code has word length `|S|+20x+19`. Its raw base-eight integer value therefore cannot be computed by any fixed circuit using only additions, subtractions and multiplications on ordinary `x` and fixed program constants. This is a restriction on that literal loader, not on existential Diophantine encodings.
 
-There is no new universal arithmetic count. In particular, the [244-operation product-scale illustration](group_projective_product_radix_scale.md) remains an illustration. The five generators and nine relations below are fully numerical; a paid unbounded rewrite history and a paid ordinary-input loader are still missing.
+This obstruction packet itself supplies no universal arithmetic count. The
+later [complete425 construction](tseytin_universal425.md) pays both a full
+unbounded C2 rewrite history and an ordinary-input loader, using a different
+permitted code assignment and a complete exponent relation. The obstruction
+to a direct group interpretation and to the auxiliary-free loader remains
+valid. The [244-operation product-scale illustration](group_projective_product_radix_scale.md)
+also remains an illustration.
 
 ## 1. Exact primary presentation and input theorem
 

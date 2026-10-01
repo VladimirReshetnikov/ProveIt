@@ -1,5 +1,9 @@
 # A complete 53-operation ordinary-input exponent component
 
+> The [52-operation successor](pell_fixed_affine_exponent52.md) changes the
+> index offset and both auxiliary signs, proving the same power projection
+> with fresh positive witnesses. This53 source remains its frozen parent.
+
 For every positive integer input `x`, the [literal source](pell_fixed_affine_exponent.py)
 has positive witnesses, and its computed register `Q` has exactly the value
 

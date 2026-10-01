@@ -1,5 +1,10 @@
 # Exact selector reuse shifts the counter frontier to378/21549--389/3896
 
+> The [repunit-factored family](korec_packed_repunit_partitions.md) transports
+> every plan here through a further two-operation saving, with the same
+> degree dictionary. Its one-program frontier starts376/21549 and reaches
+> 384/7704 at50 witnesses or387/3896 at51 witnesses.
+
 The [complete successor family](korec_packed_selector_reuse_partitions.py)
 applies the [two-addition selector rewrite](korec_packed_selector_sharing378.md)
 to every source in the [four-base partition family](korec_packed_factor_partitions.md).
