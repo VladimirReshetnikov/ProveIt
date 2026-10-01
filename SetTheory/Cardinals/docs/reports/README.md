@@ -205,7 +205,14 @@ the depth-three classification to
 (the zero-parameter matching test) and a Part XII to
 [`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
 (rank-three ultra-log-concavity of matching supports); its sixth
-manuscript went to the Fabius drafts tree.
+manuscript went to the Fabius drafts tree.  Batch 71 added a Part IV to
+[`constrained-crossover-closure`](automata-and-formal-languages/constrained-crossover-closure)
+(quadratic finite rank for NFAs), a Part XIII to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(weighted rank three by leaf compression) and a Part VII to
+[`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders)
+(the exact half-size crossover); its fourth manuscript went to the Fabius
+drafts tree.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
