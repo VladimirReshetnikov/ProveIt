@@ -176,6 +176,23 @@ of an existing draft; semantic consolidation is deferred to the post-
   `N/(log N)^{1/p}`.  It credits the polynomial variance clocks to the
   uniform-series article above.  Unreviewed; its numerics are not
   certificates; no Lean statement.
+- [`Critical_Complements_Fabius_Conditioning/`](Critical_Complements_Fabius_Conditioning/),
+  *Critical Complements in Fabius Conditioning* (24-page A4 PDF,
+  1,652-line source, a SymPy/SciPy exact-and-diagnostic program), filed on
+  2026-09-30 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  In the setting of the uniform-series
+  article above, for geometric weights (the Fabius law at `q = 1/2`) and a
+  fixed number `r` of unobserved early coordinates, it replaces the
+  Gaussian profile by an explicit boundary kernel: the overlap
+  `1 − TV` equals `(Λ_n + r log Λ_n + log K − log r! + 1 + o(1))/√(2πn)`,
+  with an all-orders inverse-logarithmic expansion; every fixed positive
+  Rényi order has an explicit entropy constant, order zero tends to
+  `log 2`, and a universal normal-tail profile connects them on the scale
+  `α√n`; for `r = 0` the flat Fabius endpoint appears in the residual
+  (logarithm `∼ −√(log(1/q) log n)`).  It answers the bounded-complement
+  part of that article's `q:critical`; the slowly growing complement
+  stays open.  Unreviewed; its numerics are not certificates; no Lean
+  statement.
 - [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
   *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
   Fekete Designs* (26-page A4 PDF, 1,840-line source, a SymPy/mpmath/SciPy
