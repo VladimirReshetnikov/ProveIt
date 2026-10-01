@@ -29,6 +29,16 @@ and [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_brac
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
+The explicit [U15 binary-tag route](../research-wip/native-stream-queue/neary_woods_universal_tag557.md)
+now lowers the alternative machine construction to
+**483 certificate /557=351M+206A polynomial operations**,25 comparisons,
+69 positive witnesses and five positive program parameters. The full
+ordinary-input, exact-counter and fixed-production interfaces are proved.
+Huge fixed numerals have exact finite recipes; every use is charged.
+Its total degree is at most496070855427922989652813345268287100, so
+the805 construction remains a much lower-degree alternative. The
+separate75/87 frontier is unchanged.
+
 The [four-tile binary-tag representation](../research-wip/native-stream-queue/binary_tag_four_tile_history.md)
 uses a fixed terminal boundary in place of a selectable terminal pair.
 Its complete encoded-word predicate costs197=92M+105A,28 positive
@@ -44,8 +54,14 @@ The exact initialization counter now has separate proved components:
 a [fixed binary input format](../research-wip/native-stream-queue/clockwise_dyadic_input_normalization.md),
 a [paid dyadic-duration recoder](../research-wip/native-stream-queue/native_binary_dyadic_duration_recoder.md),
 and an [eight-operation shared-scale loader](../research-wip/native-stream-queue/binary_tag_shared_counter_loader.md).
-Their complete composition and fixed universal program interface remain
-unaudited; neither encoded-input count is a universal bound.
+Their [complete fixed-family composition](../research-wip/native-stream-queue/binary_tag_complete_dyadic_compiler.md)
+now costs an illustrative399 operations with69 positive witnesses.
+The [compressed program interface](../research-wip/native-stream-queue/binary_tag_parameterized_compressed_compiler.md)
+costs397+mu(D), including the paid program-length bound, and keeps every
+huge fixed numeral explicit by its exact definition. The
+[ordinary-to-clockwise compiler](../research-wip/native-stream-queue/ordinary_tm_clockwise_compiler.md)
+provides actual finite tables and exact binary state counts. The isolated
+encoded-input counts above are not themselves universal bounds.
 
 A separate [weakened-bound86 candidate](../research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
 has the exact signed parent identity alpha_old=alpha-Z and positive

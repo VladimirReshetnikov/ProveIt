@@ -40,6 +40,16 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
+The explicit [U15 binary-tag route](neary_woods_universal_tag557.md)
+now lowers the alternative machine construction to
+**483 certificate /557=351M+206A polynomial operations**,25 comparisons,
+69 positive witnesses and five positive program parameters. The full
+ordinary-input, exact-counter and fixed-production interfaces are proved.
+Huge fixed numerals have exact finite recipes; every use is charged.
+Its total degree is at most496070855427922989652813345268287100, so
+the805 construction remains a much lower-degree alternative. The
+separate75/87 frontier is unchanged.
+
 The [signed-projection refinement](complete75_signed_projection_elimination101.md)
 retains **75=41M+34A** with **20 positive witnesses and nine equations**.
 Its single polynomial costs **101=50M+51A** and has exact degree **84**,
@@ -153,8 +163,8 @@ nonempty selected history, or **197=92M+105A**,28 positive witnesses and
 degree667 including the initially halted singleton. A zero-run phase proof
 and injective queue equation give exact tag-halting equivalence on the
 specified length-congruence slices. Its input is the encoded tag-word
-sentinel. The ordinary-input bridge to one fixed universal tag program
-remains unpaid;197 is not a numerical universal bound.
+sentinel. That isolated packet does not pay the ordinary-input bridge;
+the later557 composition does. The197 count is not a universal bound.
 The [normalized strong-unit wrapper](pcp_normalized_strong_history_units.md)
 further gives **194 operations** for nonempty words, or **196=93M+103A**
 with the singleton,28 witnesses and degree1015. Its positive embedding
@@ -175,8 +185,22 @@ uses some fixed dyadic a,b=2a. The
 that duration inside the existing AND; and the
 [shared counter loader](binary_tag_shared_counter_loader.md) costs
 8=5M+3A, one comparison and one positive witness using the existing Q-1.
-Full tag compilation and a fixed universal program interface remain to
-be audited. The component counts are not a complete universal bound.
+The [complete fixed-family composition](binary_tag_complete_dyadic_compiler.md)
+now gives an illustrative399=194M+205A polynomial,69 positive witnesses
+and exact degree4452. Its generic H161 schedule costs396+mu(D).
+The [compressed program interface](binary_tag_parameterized_compressed_compiler.md)
+adds only one gate for a positive program-length bound, giving397+mu(D),
+69 witnesses,25 comparisons and degree at most544D+1660. Four positive
+coefficient parameters fill the existing loader operands; duration is
+directly replaced by bound+gap. Every enormous fixed numeral has an exact
+definition and every use is charged. The
+[ordinary-to-clockwise table compiler](ordinary_tm_clockwise_compiler.md)
+handles all three move directions and computes the actual binary table.
+The [two-core dyadic unit recoder](native_binary_dyadic_duration_units.md)
+alone costs191 operations with39 witnesses at width2, or193 at lower
+degree244. These generic packets are now instantiated by the
+[U15 tag557 application](neary_woods_universal_tag557.md); their
+illustrative examples alone are not universal bounds.
 
 The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
 retains exact parent identities under alpha_old=alpha-Z and positive
@@ -1043,11 +1067,17 @@ New research and the completed75-operation construction:
 | [Ordered sparse universal table](gpcp_ordered_sparse_tm.md) | **728 certificate /808=349M+459A polynomial**,27eq,125w,degree130394; supplied811/126w/28eq/degree5204. | Descending slope-pair/upper-offset ordering is a fixed permutation of the same57 tiles. Chronology and actual word semantics are unchanged; the history is freshly compiled. |
 | [Fixed clockwise input normalization](clockwise_dyadic_input_normalization.md) | Explicit binary transition compiler; a=4,b=8 for a given binary-CW raw-input language, or fixed dyadic a,b=2a for the finite-alphabet route. Exact c0=2an for dyadic n>=2. | Whole machine simulation and fixed block ordering proved. No Diophantine count or numerical universal machine instance asserted. |
 | [Dyadic-duration input recoder](native_binary_dyadic_duration_recoder.md) | Width2:137=68M+69A,36eq,52w; SOS244/degree64. Widthk>=3:136+mu(k), SOS243+mu(k),degree12k+40. | Actual duration n recovered from J mod(B-1); low B-sized block of the existing AND forces n&(n-1)=0. Geometry and both positive native cores remain paid. |
+| [Complete fixed-family tag compiler](binary_tag_complete_dyadic_compiler.md) | Illustrative399=194M+205A,69w,25eq,degree4452; generic H161 count396+mu(D). | Fully paid ordinary-input recoder, shared-counter loader and independent nonempty history. The illustrative word family is not universal. |
+| [Explicit U15 universal tag polynomial](neary_woods_universal_tag557.md) | **483 certificate /557=351M+206A polynomial**,25eq,69w,five positive program parameters; degree at most496070855427922989652813345268287100. | Fixed binary table and production, effective ordinary-input slices, exact counter and complete positive native converse. Huge fixed numerals have exact recipes;75/87 unchanged. |
+| [U15 clockwise/tag metadata](neary_woods_u15_tag_metadata.md) | Actual binaryQ3089,beta1854620,D911894954830740789802965708213760,mu(D)160. | Full sparse CTS rows, track counts, physical interior cut, positive frame coefficients and shared counter width. No expanded giant production needed. |
+| [Compressed tag program interface](binary_tag_parameterized_compressed_compiler.md) | Normalized397+mu(D),69w,25eq, degree bound544D+1660; five positive program ports. | Exact fixed numeral recipes; direct duration=bound+gap costs1A. Whole arithmetic source is complete on valid fixed-word program slices. |
+| [Ordinary TM to clockwise compiler](ordinary_tm_clockwise_compiler.md) | Actual binary table:Q=(C-1)2^(a-1)+(2a-1)E+2. | Left/right/stationary moves, blank extensions, rejecting loops and padding prelude are explicit. Fixed framed inputs may use their actual interior head cut. |
+| [Dyadic-duration native units](native_binary_dyadic_duration_units.md) | Width2:191 operations,39w,degree382; lower-degree193/244. | Complete two-core recoder graph, positive projected ports and independent canonical strong witnesses. Generic normalized cost190+mu(D). |
 | [Shared counter input loader](binary_tag_shared_counter_loader.md) | Incremental8=5M+3A,1eq,1w with actual shared Q-1; local subtraction gives9. Boundary output degree2. | Fixed word blocks, typed recoder input and exact counter exponent are explicit contracts. Off-zero correction and coefficient-sign caveats retained; no complete universal count. |
 | [Fixed binary-tag halt bridge](binary_tag_fixed_halt_bridge.md) | One fixed production and equal-content block morphism on valid clockwise-TM simulation inputs; all halts are singleton b. | Primary stage-table index exclusion proves one pending halt object. That packet alone leaves the exact dyadic counter unpaid; later separate recoder/loader components are listed above. No new universal operation bound. |
 | [Weakened-bound86 candidate](complete75_weakened_bound86_candidate.md) | **Unresolved:**86=48M+38A,19w,degree203; exact parent substitution alpha_old=alpha-Z. | Positive completeness and inverse only for alpha>Z. Outer negative-index fixtures refute the old positivity bootstrap but are not full polynomial zeros. Established75/87 bounds unchanged. |
-| [Normalized strong history unit](pcp_normalized_strong_history_units.md) | Generic native-unit polynomial saves1 operation (+1M−2A), with certificate+2M and one fewer comparison. Tag **196=93M+103A**,28w,degree1015 including singleton; nonempty194/1014. | Same positive outer projection through sign-safe normalization and fresh five-auxiliary reconstruction. Single-core scope; ordinary universal tag input remains unpaid. |
-| [Four-tile binary tag history](binary_tag_four_tile_history.md) | **195** operations for a nonempty matching history; **197=92M+105A**,28 positive witnesses,degree667 including the initially halted singleton. | Exact halting equivalence on the stated length-congruence word slices. The supplied input is the encoded-tag sentinel; the fixed-universal ordinary-input bridge remains unpaid. |
+| [Normalized strong history unit](pcp_normalized_strong_history_units.md) | Generic native-unit polynomial saves1 operation (+1M−2A), with certificate+2M and one fewer comparison. Tag **196=93M+103A**,28w,degree1015 including singleton; nonempty194/1014. | Same positive outer projection through sign-safe normalization and fresh five-auxiliary reconstruction. Single-core packet; the later557 composition supplies ordinary universal input. |
+| [Four-tile binary tag history](binary_tag_four_tile_history.md) | **195** operations for a nonempty matching history; **197=92M+105A**,28 positive witnesses,degree667 including the initially halted singleton. | Exact halting equivalence on the stated word slices. Its input is an encoded-tag sentinel; the later557 composition pays the fixed-universal ordinary-input bridge. |
 | [Sparse oriented machine rules](sparse_tm_rewriting.md) | Exact symbolic rule saving `t*ell-k_R-k_L`; local moves share forced edge repairs. | Fixed state orientations preserve deterministic runs and accepting cleanup. A before-oriented start preserves the existing ordinary-input prefix; arithmetic compilation rebuilds the actual table. |
 | [Sparse oriented complete TM compiler](gpcp_sparse_tm_compiler.md) | **730 certificate /810=349M+461A universal polynomial**,27eq,125w,degree130394; supplied813/126w/degree5204. | Actual57-tile U15 table, prefix-code injection and paid width64 input bridge. Local transitions share forced repairs; all histories are recompiled with fresh positive native witnesses. |
 | [Bracket-anchored complete history](gpcp_bracket_anchored_history.md) | Earlier96-tile universal source966 certificate /1046=423M+623A polynomial,27eq,162w,degree199806; supplied1049/7276. Odd example502/579,26eq,93w,degree5502. | Unique-state and bracket-cut theorem replaces the fresh separator on valid configurations. Paid ordinary input, prefix-code injection and all positive native interfaces remain complete. |
@@ -1076,6 +1106,7 @@ New research and the completed75-operation construction:
 | [Shifted native quotient](group_projective_shifted_X_quotient.md) | Six-field C-1 certificate,9-chi equations,m+27-chi witnesses, product C+25-3chi, degree(1+chi)(44L+9m+135)+44. Illustrative257/280,8 equations,42 witnesses,degree4298. | Positive bijection retains q divides X. Supplied-P and factored-parent options trade more gates for lower degree; numerical75/87 remain separate. |
 | [Factored native index](group_projective_factored_native_index.md) | Four additions removed by an exact polynomial identity. Six-field C-1 certificate and C+28-3chi polynomial; illustrative257/283,degree2376. | Every residual, witness and positive zero is unchanged. Four-field option also saves four additions. |
 | [Nine-dimensional mortality and selected durations](group_affine_guarded_mortality9.md) | Guard dimension drops to3 with loader2. Fixed selected duration n>=2 has polynomial(16n-8)s+24n-20,6n-3 positive witnesses,degree at most2s. | Uniform existence projects to the named paid four-history compiler under the subgroup/input congruence. A separately supplied arbitrary mortality word is not certified by that projection. |
+| [Linear strong-parameter obstruction](complete75_linear_strong87_obstruction.md) | Replacing ic^2 by ic retains87 gates with candidate degree183, but its inherited local rank/index lemma fails. | Exact positive family has main indexp and target5p; not a full polynomial zero or a universality refutation. |
 | [Independent-quotient87 candidate](complete75_independent_gamma87_alias.md) | Literal87-operation,degree151 relaxation and positive forward map from88; conditional input aliases identify the lost v<R bound. | Full independent-gamma87 soundness is unresolved. The R=11 main component is outside the full compiler range and is not a full counterexample. |
 | [Unsquared outer product](group_projective_unsquared_outer_product.md) | Same six-field C+32-3chi polynomial cost and positive zeros, degree(1+chi)(27L+m+15)+46. Illustrative287/degree2376, or288/degree1944 without mask reuse. | Uses Punit*(1+SOSouter)-1 with every outer residual retained. Four-field variant unchanged; numerical75/87 remain separate. |
 | [Retained strong coefficient](group_projective_strong_coefficient.md) | Six-field C+3 certificate,10-chi equations,m+28-chi witnesses, SOS polynomial C+32-3chi, degree(1+chi)(38L+2m+30)+52. Illustrative261/287,SOS degree3368. | The strong equality remains explicit; same positive zeros. Four-field checksum variant is unchanged. Universal numerical alphabet remains uninstantiated. |

@@ -41,6 +41,16 @@ and [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
+The explicit [U15 binary-tag route](Papers/research-wip/native-stream-queue/neary_woods_universal_tag557.md)
+now lowers the alternative machine construction to
+**483 certificate /557=351M+206A polynomial operations**,25 comparisons,
+69 positive witnesses and five positive program parameters. The full
+ordinary-input, exact-counter and fixed-production interfaces are proved.
+Huge fixed numerals have exact finite recipes; every use is charged.
+Its total degree is at most496070855427922989652813345268287100, so
+the805 construction remains a much lower-degree alternative. The
+separate75/87 frontier is unchanged.
+
 ## Layout
 
 - [`Papers/`](Papers/README.md): the corrected editions
@@ -140,7 +150,13 @@ the matrix alphabet remains abstract.
   now costs8 operations, with separate
   [dyadic-duration recoding](Papers/research-wip/native-stream-queue/native_binary_dyadic_duration_recoder.md)
   and [fixed input-format normalization](Papers/research-wip/native-stream-queue/clockwise_dyadic_input_normalization.md).
-  Full tag compilation and a fixed universal program interface remain to be audited.
+  Their [complete fixed-family composition](Papers/research-wip/native-stream-queue/binary_tag_complete_dyadic_compiler.md)
+  gives an illustrative399-operation polynomial with69 positive witnesses.
+  The [compressed program interface](Papers/research-wip/native-stream-queue/binary_tag_parameterized_compressed_compiler.md)
+  costs397+mu(D), including a positive program-length bound. Its fixed
+  numeral definitions remain explicit even when their binary expansions
+  are enormous. The [ordinary-to-clockwise table compiler](Papers/research-wip/native-stream-queue/ordinary_tm_clockwise_compiler.md)
+  supplies the actual finite simulation table and exact state counts.
 - A [group-commutator substrate](Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md)
   represents every computably enumerable positive set by membership in a
   finitely generated SL(4,Z) subgroup, with a fixed quadratic ordinary-input

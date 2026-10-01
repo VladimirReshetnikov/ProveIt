@@ -35,6 +35,16 @@
 > the coupled linear unit is recovered by the complete sign proof.
 > The comparison bound75 and
 > polynomial bound87 are separate measures.
+
+The [linear strong-parameter obstruction](complete75_linear_strong87_obstruction.md)
+rules out reusing the inherited local rank/index lemma after replacing
+t=ic^2 by ic. The87-gate variant has candidate degree183, but exact
+positive local tuples with A>=3,p>=7,p=3mod4 have main indexp and target
+R=5p while satisfying both auxiliary norms, minus congruences and strong
+size bounds. The proof uses the odd Chebyshev quotient and fifth Pell
+power. These are not full polynomial zeros, and do not refute every
+possible new proof. Preserve the separate scopes of this obstruction,
+weakened86 and independent-gamma87.
 >
 > The README indexes the four-row queue simulator, binaryFIFO58 and
 > ternaryFIFO66, row-local controller obstruction, residue-affine pumping,
@@ -402,10 +412,12 @@ Thus one fixed production and block morphism recognize halting on valid
 TM initial configurations, with every halt at singleton b. Source/fresh
 replay and two primary-source proof reviews pass. This is a word-level
 bridge; the actual initial CTS word still contains mu^c0, with exact
-c0=2^ceil(log2 tape_length). No paid ordinary-input tag bound follows yet.
+c0=2^ceil(log2 tape_length). That word-level packet alone gives no
+ordinary-input count; the later557 composition below closes this interface.
 
-The counter-reuse lead now has three separate proved packets; do not
-add their raw counts and call the result a universal polynomial yet.
+The counter-reuse components below now have a complete composition,
+recorded after their individual contracts. Their separate raw counts
+must not be substituted for the composed source ledger.
 The [clockwise input normalization](clockwise_dyadic_input_normalization.md)
 compiles any fixed finite-alphabet clockwise machine to binary with
 power-of-two block size a. Every ordinary code starts0; a unique1-headed
@@ -459,28 +471,86 @@ concatenation formula is2^g(2^f*p*(Q+1)+b)*(Q−L*r−1). Boundary degree2
 is not the composed degree. Both coefficient orders are covered, with
 conditional positivity retained whenv1<v0; the intended blocks havev1>v0.
 
-Next: compose the dyadic recoder, eight-gate loader and selected tag
-history with literal names, all positive interfaces and actual source
-counts. Keep raw SOS as a complete baseline before trying native norm
-products; independent checksums cannot be merged without sign proofs.
-An instantiated fixed universal clockwise machine, its exact table and
-D=2azK (8zK in the a4 case) still need to be provided for a numerical
-universal count.
+The [two-core dyadic native units](native_binary_dyadic_duration_units.md)
+give193/degree244 at width2, or191/degree382 after two strong normalizations,
+with39 positive witnesses. Generic k>=3 costs192+mu(k) or190+mu(k),
+respectively. The joined-scale F3 and all positive projected ports are
+audited literally. Rebuild the two independent five-field auxiliaries;
+do not reuse witnesses for the old unjoined scale.
 
-A prospective program interface avoids a variable-length program prefix:
-choose one fixed ordinary semidecider for numbers y=2^e*(2x+1), accepted
-when program e accepts positive x. The valid fixed parameter Pprog=2^e
-allows loaded y=Pprog*(2x+1), costing1M2A with x+x, positive off-zero.
-The cited finite-alphabet clockwise simulation and binary block compiler
-provide some fixed dyadic a and b=2a. Feed loaded y to the dyadic recoder
-with that fixed format. An a4,b8 version would additionally require a
-fixed binary-CW recognizer on raw canonical y; it is not inferred from
-universality with an arbitrary input encoding. Instantiate the actual
-fixed table and audit composition before claiming a numerical bound;
-the three-gate loader alone does not establish that table or compiler.
-This is a follow-up lead, not an additional proved compiler. The earlier
-choice c=q=2^n would require an exponential-of-exponential counter scale
-and is not used.
+The [complete fixed-family tag compiler](binary_tag_complete_dyadic_compiler.md)
+composes the paid dyadic recoder, loader and four-tile history with actual
+namespaces. Default beta3,u=ccbbb,D6 gives raw477/88w, units402/69w,
+normalized399/69w; normalized degree4452,25eq. The fixed-family predicate
+is exactly existence of dyadic n>=2 with x<2^n and a halting framed tag
+word. Initial length is at least1+2(beta-1), so no singleton branch is
+needed. Input and history duration are independent. Raw SOS remains a
+complete baseline; nine sign-safe norms share one checksum, while the
+history checksum remains an equation. H161 gives normalized396+mu(D).
+This illustrative table is not universal.
+
+The [compressed program compiler](binary_tag_parameterized_compressed_compiler.md)
+uses fixed numeral atoms with exact definitions, not runtime powers or
+extra parameter inputs. Its actual H161 transport identities are checked
+over symbolic t=2^beta,R=2^L,d. The source directly replaces duration by
+positive program_bound+gap, so the bound costs1A and no extraeq/w.
+Positive A/B/T/E program ports fill the existing loader gates. Normalized
+cost is397+mu(D)=(191+mu(D))M+206A,69w25eq; raw475+mu(D),88w56eq;
+old units400+mu(D),69w28eq. Degree bounds are132D+412,342D+1042,
+544D+1660. Avoid numerical leading-coefficient propagation at gigantic D:
+even a small nonzero specialization raised to D is infeasible.
+
+The [ordinary-TM clockwise compiler](ordinary_tm_clockwise_compiler.md)
+now supplies full finite tables for L/R/S, blank extensions, rejecting
+loops and unique acceptance. With C logical states, alphabet sizeg+3,
+dyadic codewidtha and E distinct(write,target) pairs, the binary state
+count is(C-1)*2^(a-1)+(2a-1)*E+2. Its optional raw-positive-input prelude
+erases leading zeros; an already framed U15 input instead enters at the
+actual interior head cut.
+
+The [actual U15 tag metadata](neary_woods_u15_tag_metadata.md) and
+[complete universal557 application](neary_woods_universal_tag557.md)
+now instantiate this route. U15's external blank is a third symbol
+reading identically to physical0; the original c,b tape maps to0,1.
+Clockwise C78,E353,a4 give binaryQ3089 and6176 instructions,128 of
+which write two cells. Enter read(run(u1),empty), not generic ENTRY.
+The actual physical cut is c(cb)^(8q_B) DATA(w) A_right A_left RIGHT
+LEFT program b. Each input bit has32 ordinary cells, hence128 binary
+cells. Initial binary length128n+b_S with positive b_S and
+program_bound=ceil(b_S/128), n>bound, gives exact counter256n.
+No source-state/bracket/GPCP delimiter belongs on this physical tape.
+
+The full sparse CTS table hasz92731,p185462,beta1854620. Only i<Q
+receive generic nonhalt control rows; all-state counter copies includeQ,
+the unique halt row is self-copying and all unspecified rows are empty.
+Its total appendant length is16114983722, maximum741888. Fixed track
+lengths9273096 giveK38413148432644759683038410 and
+D=256zK=911894954830740789802965708213760. D has110bits,52setbits,
+so the baseline binary chain costs160. The actual polynomial costs
+**557=351M+206A**,69w,25eq,483certificate, five positive program ports;
+raw635/88w and old-unit560/69w remain alternatives. Its degree is at
+most496070855427922989652813345268287100, not claimed exact.
+The prior805 machine route has much smaller degree. The separate
+75/87 frontier is unchanged.
+
+Every giant coefficient is defined by the fixed sparse table and track
+recipe; production_letter provides exact random access without expanding
+u. Prefix bcb, both order reversals and the old32-symbol bit-pair order
+give positive B. Fixed frames, final b and DATA/MU congruences prove the
+full tag-family contract. Arbitrary parameter tuples need not be programs;
+each r.e. set has an effective valid positive tuple. Source/proof/fresh
+replays and two independent final reviews passed, including multistep CTS
+traces and17,898 directly audited actual production letters.
+
+Next: shorten the fixed-D addition chain before changing any machine
+encoding. A bounded search has an explicit131-multiplication chain
+(prospective528 polynomial), but its complete successor source still
+needs integration and review. The program bound may also reuse the
+existing E coefficient: E is sentinel(PREFIX MIDDLE TAIL) with data
+and counter omitted, so E>=fixed encoded length>=b_S. Substituting
+bound=E preserves a valid universal slice by arbitrarily long dyadic
+padding and would remove one free program parameter at the same cost.
+Keep the reviewed557 baseline until these refinements are committed.
 
 The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
 is separately preserved: remove the extra Z from C=q−F−Z−alpha−2dx,
