@@ -234,7 +234,7 @@ theorem, with epsilon0=1/[12(Y+1)], proves
 
 This argument uses arbitrary fixed positive Y, not its being a power of2.
 Set eta=c-kY, zeta=k(Y+1)-c and
-tau_gap=chi_P(n)-XY^2*k=2psi_P(n)-psi_P(n-1). They are positive integers.
+tau_gap=chi_P(n)-XY^2*k=psi_P(n)-psi_P(n-1). They are positive integers.
 The odd gaps2n-p are unbounded.
 
 ## 6. Complete positive coordinates and the literal polynomial
