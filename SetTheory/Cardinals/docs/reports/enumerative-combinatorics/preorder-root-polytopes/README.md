@@ -1,8 +1,8 @@
 # A Reflexive Root-Polytope Model for Preorder h-Polynomials
 
-**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points; rare stable markings on random trees, with sparse and critical transitions and annealed–quenched separation; and Hall bottlenecks: a weighted counterexample to normalization by the matching number, a rank-six phase diagram and exact counting parameterized by the matching number; and matching supports through rank three: normalization by the matching number at unit weights for `nu ≤ 3`, a bimatroid obstruction, and exact support kernels for graphs, relations and preorder gamma vectors**
+**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points; rare stable markings on random trees, with sparse and critical transitions and annealed–quenched separation; and Hall bottlenecks: a weighted counterexample to normalization by the matching number, a rank-six phase diagram and exact counting parameterized by the matching number; and matching supports through rank three: normalization by the matching number at unit weights for `nu ≤ 3`, a bimatroid obstruction, and exact support kernels for graphs, relations and preorder gamma vectors; and leaf compression: normalization by the matching number for every positive weighting through matching number three**
 
-This is a research report in twelve parts. Part I is the original report of
+This is a research report in thirteen parts. Part I is the original report of
 20 September 2026. Part II was added on 28 September 2026 in batch 39 of
 ProveIt's incoming-report intake, from a later manuscript that addresses the
 three questions Part I left open in its Section 10 ("What remains unresolved"):
@@ -105,7 +105,30 @@ bipartite graphs and `2^(O(d^2))·poly` for directed relations
 preorder satisfies `gamma_1^2 ≥ (2d/(d−1))·gamma_2`, `d = deg Gamma_tau`
 (Corollary 197.2), and its gamma vector and lattice-point count are
 computable in `2^(O(d^2))·poly` time (Corollary 197.4). Unit weights from
-matching number four on, and weighted rank three, stay open.
+matching number four on, and weighted rank three, stay open [updated
+30 September 2026, batch 71: weighted rank three is settled by Part XIII].
+**Part XIII** was added on 30 September 2026 in batch 71, from one
+manuscript (source 15 below; batch-71 manuscript 02), whose title page
+reads "Research note prepared for Vladimir Reshetnikov with OpenAI". It
+answers Part XII's Research question 95 ("Weighted rank three")
+**affirmatively**: leaves with one common neighbour can be merged into one
+leaf carrying the sum of their activities without changing the weighted
+support polynomial (Lemma 206.1), so a bipartite graph with a minimum
+vertex cover that has exactly one vertex on one shore (a `1 + (r−1)`
+split) is `ULC_r`, `r = nu(G)`, for arbitrary positive activities on both
+shores (Theorem 206.2), and so is every positively weighted graph with
+`nu(G) ≤ 3` (Corollary 206.3; with nonnegative activities, of the order of
+the surviving degree). The least matching number of a weighted
+counterexample to Research question 37 is therefore 4, 5 or 6 (Part XI's
+Research question 86), and a counterexample, weighted or not, has every
+minimum cover meeting both shores in at least two vertices; at rank four
+only `2 + 2` covers remain (Part XII's Research question 93). This does
+not contradict Part XI: its counterexamples `H_{4,11}` and `H_{3,n}`
+(`n > 3`) have unique minimum covers split `4 + 4` and `3 + 3`
+(Section 204.4). It also gives an elementary proof that a graph covered by
+one vertex on one shore and two on the other has a real-rooted support
+polynomial for all positive activities (Theorem 207.1), a conclusion
+already available from Part VI.
 
 > **Priority.** Part II's headline counterexample to Conjecture 5.3 (real
 > roots) is **not new**. The first counterexample known to this report, the
@@ -141,7 +164,7 @@ matching number four on, and weighted rank three, stay open.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 14–26) and Appendices A–C (pp. 357–359) |
+| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 14–26) and Appendices A–C (pp. 368–370) |
 | 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 27–55) |
 | 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 56–80) |
 | 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 81–122) |
@@ -154,7 +177,8 @@ matching number four on, and weighted rank three, stay open.
 | 11 | batch 64, manuscript 01 (*Two-Flow Bijections for Demand Polytopes: Full-coordinate sampling, exact certificates, restriction laws, and preorder applications*, 30 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Two_Flow_Lattice_Sampling.zip` (inner `Two_Flow_Lattice_Sampling/`, main file `article.tex`; arrival `7747fcfdd`) | commit `6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `3025c15df` (prefix `11-two-flow-`) | Part IX: Sections 132–151 (pp. 251–277) |
 | 12 | batch 66, manuscript 06 (*Rare Stable Markings on Random Trees: Exact enumeration, sparse transitions, conditioned geometry, and annealed–quenched separation*, 30 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Random_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `9ad899cbe`) | commit `b8b0fa2184a044d46ce9ed0f25f88d7bb60fa042` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `4fee1cd07` (prefix `12-random-trees-`) | Part X: Sections 152–171 (pp. 277–302) |
 | 13 | batch 68, manuscript 03 (*Hall Bottlenecks and the Limits of Rank Normalization: Exact counterexamples, a complete rank-six phase diagram, and fixed-parameter counting of matching supports*, 30 Sep 2026, 21-page A4 PDF as delivered) | `ProveIt_Hall_Bottlenecks.zip` (inner same, main file `article.tex`; arrival `a866ff9a2`) | commit `0a543d5e435df885f78ca731d71856f3ee0ab2d4` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `29e52fcdf` (prefix `13-hall-bottlenecks-`) | Part XI: Sections 172–186 (pp. 303–328) |
-| 14 | batch 70, manuscript 05 (*Rank-Three Ultra-Log-Concavity and Exact Kernels for Matching Supports: Sharp first inequalities, a rank-sensitive sum-of-squares proof, a bimatroid obstruction, and preorder gamma applications*, 30 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matching_Rank_Research.zip` (inner same, main file `article.tex`; arrival `1b3960d8a`) | commit `ffddaa8b9c89e7bf027e1442cc6216bb010906d0` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `51c6943bf` (prefix `14-matching-rank-`) | Part XII: Sections 187–203 (pp. 328–357) |
+| 14 | batch 70, manuscript 05 (*Rank-Three Ultra-Log-Concavity and Exact Kernels for Matching Supports: Sharp first inequalities, a rank-sensitive sum-of-squares proof, a bimatroid obstruction, and preorder gamma applications*, 30 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matching_Rank_Research.zip` (inner same, main file `article.tex`; arrival `1b3960d8a`) | commit `ffddaa8b9c89e7bf027e1442cc6216bb010906d0` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `51c6943bf` (prefix `14-matching-rank-`) | Part XII: Sections 187–203 (pp. 329–357) |
+| 15 | batch 71, manuscript 02 (*Leaf Compression and Weighted Rank Three for Matching Support Polynomials*, 1 Oct 2026, 6-page A4 PDF as delivered) | `ProveIt_Weighted_Rank_Three_Leaf_Compression.zip` (inner same, main file `article.tex`; arrival `aee32ad45`) | **none** for this report: it inspected source 14's archive at `1b3960d8a`, source 13's archive at `a866ff9a2` and its placement `29e52fcdf`, and this report on `main` "inspected 1 October 2026" (no commit) | `427bca743` (prefix `15-leaf-compression-`) | Part XIII: Sections 204–209 (pp. 357–367) |
 
 Manuscript 02 names no ProveIt commit. It records the Git blob of the
 `article.tex` it consulted; that blob is Part I exactly as printed here
@@ -390,6 +414,33 @@ README are not shipped; they survive in the arrival commit. Its
   printed with the report's `𝒬_tau`, and its input length `L` (which is
   also its left shore) is printed `ℓ`. Section 187.4 lists every choice.
 
+Batch 71's manuscript 02 (source 15) arrived in `aee32ad45` and was placed
+in `427bca743`, together with manuscripts for two other collection reports
+and one Fabius-tree arrival. It **names no ProveIt commit** for this
+report. Its bibliography records what it read: source 14's archive at
+that archive's arrival commit `1b3960d8a` ("The inspected `article.tex`
+has 76050 bytes" — the size of source 14's delivered manuscript, not of
+Part XII as printed), source 13's archive at `a866ff9a2` with its
+placement `29e52fcdf`, and this report on the branch `main` for Parts V
+and VI, by a link without a commit, "inspected 1 October 2026". It
+therefore calls source 14 "the incoming manuscript" and source 13 "the
+Hall-bottleneck report"; both are Parts of this report (XII and XI). Every
+claim it makes about them and about Parts V and VI is accurate at the
+placement commit. Its manuscript, PDF and delivery README are not shipped;
+they survive in the arrival commit. It shipped no checksum list.
+
+- **Part XIII** is source 15 in its own order, behind a merge section
+  (Section 204). Source 15's Section k is Section k + 204 here, and
+  statement and equation numbers follow the section (Lemma 2.1 → 206.1);
+  it has no table, figure or question environment (Table 29 is the merge's
+  notation table), and its open problems are recorded as dated notes on
+  Research questions 37, 84–87 and 93–95, not as new numbered questions.
+  Its Lemma 205.1 restates Part V's Theorem 70.1 and keeps its text and
+  label with a merge note. Its references to source 14 ("Rank"), source 13
+  ("Hall") and this report ("Root") became references to Parts XII, XI and
+  VI. Its leaf class `L` is printed `Λ`, the part `B` of its cover `C_Y`,
+  and its macro `\nuG` as `ν(G)`. Section 204.5 lists every choice.
+
 Section numbers of the sources that their shipped notes use:
 source 09's `09-matroid-lifts-CLAIMS_AND_SOURCES.md` cites its Sections 4
 (→ Part V, not reprinted: Corollary 67.2 and Proposition 71.5), 5 → 103,
@@ -415,7 +466,10 @@ section numbers, and `data/13-hall-bottlenecks-provenance.json` gives the
 line ranges of the pinned blob (mapped in Section 186). Source 14's
 `14-matching-rank-PROOF_STATUS.md` and `14-matching-rank-SOURCES.md` use
 no section or theorem numbers and no line ranges; `SOURCES.md` names the
-pinned blob and "Research question 37".
+pinned blob and "Research question 37". Source 15's
+`15-leaf-compression-PROOF_STATUS.md` uses the delivered numbers:
+Lemma 2.1 → 206.1, Theorem 2.2 → 206.2, Corollary 2.3 → 206.3,
+Theorem 3.1 → 207.1.
 
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The
@@ -463,7 +517,14 @@ sampled supports; the general theorems rest on the written proofs, the
 cover-in-one-shore case on Röhrle–Ulirsch's Theorem A (Part V's
 Theorem 67.1), disjoint unions on Liggett's convolution theorem, and the
 preorder corollaries on the support-counting bridge of Parts II, IV, V
-and IX.)
+and IX. Part XIII: source 15's verifier checks the compression identity
+on 600 random weighted graphs with a singleton-side cover (235 of matching
+number equal to the cover size, also checked for `ULC`), rank-normalized
+ULC on all 4,096 graphs on a fixed 4-by-3 bipartition with activities
+2, 3, 5, 7 and 11, 13, 17, and the cubic formula, the discriminant and
+interlacing inequalities and ULC on 500 random mixed-cover graphs, with
+integer activities; the general theorems rest on the written proofs and
+on Part V's Theorem 70.1 (the Lorentzian theory of Brändén–Huh).)
 
 ## Results
 
@@ -968,7 +1029,36 @@ proves:
    bijection the sampler would give exactly uniform lattice points; that
    composition is specified, not implemented.
 
-**What Parts II–XII do to the open questions** (Sections 11.3 and 26.3;
+**Part XIII** (source 15) works with Part V's weighted support
+polynomial `p_G(t; u, v) = Σ a_k t^k` of a bipartite graph `G = (X, Y; E)`
+with positive vertex activities on both shores (each support pair once),
+`r = nu(G)`, and Part XI's `ULC_D`. It proves:
+
+1. **Leaf compression** (Lemma 206.1): right vertices whose neighbourhood
+   is exactly `{x_0}` can be replaced by one leaf of `x_0` whose activity
+   is the sum of theirs; the support polynomial is unchanged, because a
+   support contains at most one of them.
+2. **A singleton on one shore** (Theorem 206.2): if `G` has a minimum
+   vertex cover `{x_0} ⊔ C_Y` with `|C_Y| = r − 1` (or, after exchanging
+   shores, the mirror image, or a minimum cover inside one shore), then
+   `p_G` is `ULC_r` for arbitrary positive activities: compression leaves a
+   shore of exactly `r` vertices, and Part V's Theorem 70.1 (restated as
+   Lemma 205.1) applies.
+3. **Weighted rank three** (Corollary 206.3): by König's theorem every
+   graph with `r ≤ 3` has such a cover, so `a_1^2 ≥ 3a_2` and
+   `a_2^2 ≥ 3a_1a_3` at `r = 3` for all positive activities; with
+   nonnegative activities the order is the surviving degree. This contains
+   Part XII's Theorem 191.1 (unit weights; a second proof without the
+   sum-of-squares certificate) and Part XI's Corollary 180.4 (`r ≤ 2`).
+4. **Mixed rank-three covers are real-rooted** (Theorem 207.1): with a
+   cover `{x_0} ⊔ {y_1, y_2}` the support polynomial is
+   `(1 + hTt)(1 + Dt + Qt^2) + ht(C + Ft)`, `D^2 − 4Q ≥ 0`, and
+   `CFD − F^2 − QC^2 ≥ 0` by an explicit sum of squares, so all zeros are
+   real and negative. As source 15 says, this already follows from Part
+   VI's Theorem 94.1 and Corollaries 93.3 and 94.3 (the blocks are edges
+   and `K_{2,q}`); the proof is new.
+
+**What Parts II–XIII do to the open questions** (Sections 11.3 and 26.3;
 Part II's dated pointers are in the abstract, the scope box, Sections 8 and
 10 and Appendix C; Part III's in the title block, the abstract, the
 reading-route box, Section 19 and Research questions 3 and 4 of Section 24;
@@ -1084,7 +1174,8 @@ Research questions 23, 24, 26, 28, 32 and 34):
   2026, batch 70: the unit-weight version is settled for matching number
   at most three by Part XII; see the next item], and no smallest
   counterexample is determined: the least matching number of a weighted
-  counterexample is 3, 4, 5 or 6 (Research question 86). It answers
+  counterexample is 3, 4, 5 or 6 (Research question 86) [updated
+  30 September 2026, batch 71: it is 4, 5 or 6, by Part XIII]. It answers
   Research question 38 at the first index for the normalization by
   `nu(H)` (Corollary 180.3); the merge adds that the first inequality is
   then strict for every larger order, so equality at the first index of
@@ -1111,7 +1202,9 @@ Research questions 23, 24, 26, 28, 32 and 34):
   counterexample, if any, has matching number at least four); 84 is open
   from rank four on (re-posed as Research questions 93 and 94), and 85
   (one-shore weights) and 86 (weighted ranks 3–5, of which Research
-  question 95 is the rank-three case) are untouched. It answers Research
+  question 95 is the rank-three case) are untouched [updated 30 September
+  2026, batch 71: Part XIII settles rank three for 85 and 86 and answers
+  95; see the next item]. It answers Research
   question 24 at the first index for every finite preorder and entirely
   in gamma degree at most two (Corollary 197.2), and improves the height-two
   normalization of Corollary 71.6 from `min(m,n)` to `nu` for the classes
@@ -1128,6 +1221,36 @@ Research questions 23, 24, 26, 28, 32 and 34):
   06's paragraph in Section 80.1, after source 09's in Section 112.1, in
   Part XI's opening paragraph and Section 172.3, and after Research
   questions 84, 85 and 86.
+- [Added 30 September 2026, batch 71.] Part XIII **answers Part XII's
+  Research question 95** ("Weighted rank three") **affirmatively**, for
+  positive and for nonnegative activities on both shores
+  (Corollary 206.3). It answers Part XI's Research question 86 in part
+  (the least matching number of a weighted counterexample is 4, 5 or 6;
+  at 4 and 5 every minimum cover of a counterexample meets both shores in
+  at least two vertices), answers Research question 85 (one-shore weights)
+  for `nu ≤ 3` and for minimum covers split `1 + (r−1)`, gives
+  Research question 87 the value `𝒟(3) = 3`, and reduces Research
+  questions 84, 93 and 94 (unit weights) at rank four to minimum covers
+  split `2 + 2`: of Part XII's 24 rank-four templates, the eight split
+  `1 + 3` need no certificate. For Research question 37 the weighted
+  version now holds for `nu(H) ≤ 3` and fails at 6 and 8. Part XIII is
+  **consistent with Part XI's counterexamples**: `H_{s,n}` with `n > s`
+  has the unique minimum cover `A ⊔ B`, split `s + s` (`4 + 4` for the
+  30-vertex witness, `3 + 3` for the rank-six family), outside its
+  hypothesis (Section 204.4). One sentence of Part XII's commentary after
+  Research question 95 ("Vertices with common neighborhoods cannot be
+  treated as a single weight …") is **corrected, not retracted**: true for
+  common neighbourhoods of two or more vertices, false for one (Lemma
+  206.1). Conjectures 5.3 and 5.1(d) are unchanged; nothing is refuted or
+  retracted. Its answers are in Section 204.3; its dated pointers, marked
+  "Added 30 September 2026, batch 71", are in the title block, the
+  abstract, the scope box, the reading-route box, after Research
+  question 37, in Part XI's opening paragraph and Section 172.3, after
+  Research questions 84–87, in Part XII's opening paragraph and
+  Section 187.3, after Research questions 93–95 (two at 95), after Part
+  XII's non-claim on nonuniform activities (Section 199.2) and in its
+  conclusion (Section 201); the Röhrle–Ulirsch bibliography entry gains a
+  sentence.
 
 ## Not claimed
 
@@ -1274,6 +1397,13 @@ From Part V (see also `06-lorentzian-support-SOURCES.md`,
   `G_N` and for disjoint unions (Part XII, Theorems 191.1, 196.1 and
   Corollary 196.2); it remains open at unit weights from `nu(H) = 4` on,
   with weights at `nu(H) = 3, 4, 5`, and with weights on one shore.]
+  [Updated 30 September 2026, batch 71: with positive weights on both
+  shores (hence also on one) the replacement is **proved for
+  `nu(H) ≤ 3`** and for every graph with a minimum cover split
+  `1 + (nu(H)−1)` (Part XIII, Corollary 206.3 and Theorem 206.2); it
+  remains open with weights at `nu(H) = 4, 5` and at unit weights from
+  `nu(H) = 4` on, in both cases only for graphs whose minimum covers all
+  meet both shores in at least two vertices.]
 - **No gamma log-concavity beyond height two** [Updated 30 September 2026,
   batch 70: except at the first index, and hence in gamma degree at most
   two, for every finite preorder (Part XII, Corollary 197.2)]; no real-rootedness
@@ -1426,7 +1556,8 @@ Section 182 and its delivery README state these):
   example is not claimed to be smallest (500 is a convenient weight; the
   last inequality of that graph first fails at the integer 485), and the least matching
   number of a weighted counterexample is only known to lie in 3–6
-  (Research question 86). No published smaller-shore theorem is
+  (Research question 86) [updated 30 September 2026, batch 71: in 4–6,
+  by Part XIII]. No published smaller-shore theorem is
   contradicted.
 - **Scope of the classifications.** The full phase diagram is for the
   symmetric core-three family only, not for all graphs of matching number
@@ -1458,7 +1589,8 @@ From Part XII (source 14's status box, Section 199.2 and its
   or more are open (Research questions 93–94; the 24 shipped rank-four
   templates are exact support formulas, **not** positivity certificates).
   The rank-three theorem is not claimed for nonuniform activities
-  (Research question 95); only the first inequality is weighted. No
+  (Research question 95); only the first inequality is weighted [updated
+  30 September 2026, batch 71: Part XIII proves it for them]. No
   equality classification beyond the first inequality and the mixed-cover
   step.
 - **Preorders.** No general gamma log-concavity or rank-ULC (Research
@@ -1485,6 +1617,34 @@ From Part XII (source 14's status box, Section 199.2 and its
 - **No Lean or Rocq verification, no independent refereeing, no
   worldwide priority** (source 14's source check was focused, "not an
   exhaustive priority search").
+
+From Part XIII (source 15's status paragraph, Section 208, its
+`15-leaf-compression-PROOF_STATUS.md` and its delivery README state
+these):
+
+- **Scope.** Matching number at most three, and graphs with a minimum
+  cover split `1 + (r−1)` or inside one shore, only. Rank four with
+  `2 + 2` covers, the first weighted failure rank (4, 5 or 6), general
+  unit-weight and one-shore normalization from rank four on, and a
+  universal rank-only order stay open (Research questions 84–87, 93–94);
+  source 15: "General unit-weight and one-shore rank normalization in rank
+  four and higher remain unresolved here."
+- **Compression is for single neighbours only.** Vertices with a common
+  neighbourhood of two or more vertices cannot be merged (Section 208).
+- **Real-rootedness** (Theorem 207.1) is not claimed as a new structural
+  classification: it follows from Part VI's block results, which source 15
+  cites "only for the scope comparison, not used in the proofs".
+- **Imported, not reproved:** König's theorem; that matroid basis
+  polynomials are Lorentzian, that positive scaling and nonnegative linear
+  specialization preserve this, and that bivariate Lorentzian polynomials
+  of degree `D` are `ULC_D` (Brändén–Huh; Part V's Theorem 70.1,
+  re-derived in Lemma 205.1).
+- **Checks.** The finite checks are exact regression checks, "not the
+  proof of the universal claims".
+- **No Lean or Rocq verification, no independent refereeing, no global
+  priority**: novelty is claimed only relative to the drafts source 15
+  inspected, and global priority for the compression observation is not
+  claimed.
 
 ## Labels
 
@@ -1624,6 +1784,22 @@ lines); those in Part I's appendices moved by 29 or 30. Part XII begins at
 Section 187, after Part XI and before Part I's appendices, whose letters
 and numbers are unchanged. Its research questions are 93–101; its only
 table is Table 28 (notation); it has no figure.
+
+Part XIII added **23** labels, all with the prefix `lc:` ("leaf
+compression"): source 15's 10 labels, prefixed before anything cited them,
+none dropped; and 13 new ones (Section 204, its five subsections and its
+notation table; the five source sections 205–209; and its unlabelled
+remark, Remark 206.4). No label was added to earlier text. New total:
+**1213** (occurrences of the pattern `\\label(\[[^]]*\])?\{`). No earlier
+label was renamed or removed, and the numbers of all 1190 earlier labels
+are unchanged (compared in the `.aux` files of the committed and the new
+build). Their pages are unchanged except for seven labels (one in
+Part V, two in Part XI, four in Part XII), which moved by one page (the
+dated pointers added a few lines), and the six in Part I's appendices,
+which moved by 10 or 11. Part XIII begins at Section 204, after Part XII and before Part I's
+appendices, whose letters and numbers are unchanged. It adds no research
+question (the next number would be 102); its only table is Table 29
+(notation); it has no figure.
 
 ## Notation
 
@@ -1766,17 +1942,31 @@ Part IV's against all three. Watch in particular:
   one-shore weights (Research question 85); `M` is the matrix of
   Section 192 and the clone multiplier in Section 195; `F_T(X, Y)` is a
   type's activity polynomial, not Part V's `F_H`.
+- **Part XIII (Table 29).** Three renamings, no normalization change:
+  source 15's class of leaves `L` is printed `Λ` (not Part XI's outer
+  block `L` or Part XII's left shore `L`), the part `B` of its minimum
+  cover on the shore `Y` is printed `C_Y` (Part XI's name for a cover
+  part; not Part XI's core block `B`), and its macro `\nuG` is printed
+  `ν(G)`. `p_G(t; u, v)` is Part V's `A_H(t; u, v)` (Part XII's `p_G` is
+  its unit-weight case); `r = nu(G)` is called "matching rank" (not
+  Part V's `r = min(m,n)`); `ULC_D` and its margin are Part XI's. In
+  Section 207, `a, b, c, d, h, y, z, T` are activity sums and
+  `A, B, q, D, Q, C, F` polynomials in them — not Part XI's cores `A, B`,
+  the ULC order `D` or the cover `C` — and `y, z` are activities, not
+  vertices. "`1 + (r−1)`", "`2 + 2`" are the sizes of a minimum cover's
+  intersections with the two shores, as in Part XII.
 
 ## Files
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 362 pages, A4 (title p. 1, scope box and contents pp. 2–13,
+article.pdf                                  the compiled report, 372 pages, A4 (title p. 1, scope box and contents pp. 2–13,
                                              Part I pp. 14–26, Part II pp. 27–55, Part III pp. 56–80,
                                              Part IV pp. 81–122, Part V pp. 123–172, Part VI pp. 173–206,
                                              Part VII pp. 207–223, Part VIII pp. 224–250, Part IX pp. 251–277,
-                                             Part X pp. 277–302, Part XI pp. 303–328, Part XII pp. 328–357,
-                                             Part I's appendices pp. 357–359, references pp. 359–362)
+                                             Part X pp. 277–302, Part XI pp. 303–328, Part XII pp. 329–357,
+                                             Part XIII pp. 357–367, Part I's appendices pp. 368–370,
+                                             references pp. 370–372)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -1901,6 +2091,10 @@ code/14-matching-rank-Makefile               Part XII (source 14): the delivered
 data/14-matching-rank-verification.json      Part XII (source 14): recorded output of verify.py (Python 3.13.5)
 data/14-matching-rank-verification.log       Part XII (source 14): console of that run (byte-identical to the JSON)
 data/14-matching-rank-rank4_templates.json   Part XII (source 14): the 24 rank-four templates (exact support formulas, not positivity certificates)
+15-leaf-compression-PROOF_STATUS.md          Part XIII (source 15): established, imported and remaining items (delivered PROOF_STATUS.md)
+code/15-leaf-compression-verify.py           Part XIII (source 15): exact compression, ULC and mixed-cover checks (standard library)
+code/15-leaf-compression-build_local.sh      Part XIII (source 15): the delivered TeX Live build wrapper (do not run here; see below)
+data/15-leaf-compression-verification.json   Part XIII (source 15): recorded output of verify.py
 ```
 
 The ten `02-height-two-` files were staged in the placement commit
@@ -1952,6 +2146,11 @@ byte-identical to their delivery (its programs and `Makefile` became
 force-added past the root `*.log` ignore rule. Two files are
 byte-identical by delivery: `verification.json` and `verification.log`
 (the verifier prints the record it writes, and the log is that output).
+The four `15-leaf-compression-` files of Part XIII were staged in
+`427bca743`, byte-identical to their delivery (its `verify.py` and
+`build_local.sh` became `code/`, its `verification.json` `data/`, its
+`PROOF_STATUS.md` the report root); all are LF text. It shipped no
+checksum list.
 
 ## Data conventions
 
@@ -2159,6 +2358,14 @@ masks) and terms `[i, j, k, m]`, each contributing `m` times the product
 of binomials of populations and quotas `i`, `j` to the coefficient of
 `t^k` (the exporter's docstring).
 
+**Part XIII.** `data/15-leaf-compression-verification.json` (309 bytes)
+has the counts `leaf_compression_graphs` 600, `full_cover_rank_graphs`
+235, `exhaustive_4_by_3_graphs` 4096 and
+`weighted_mixed_cover_formula_cases` 500, `all_checks_passed: true`,
+`random_seed` 314159265 and a `meaning` string ("Exact regression
+evidence; the all-graph conclusions follow from the written proofs."). It
+records no Python version or timing. All arithmetic is integer.
+
 ## Build the article
 
 ```sh
@@ -2179,20 +2386,21 @@ likewise no `cleveref` or `float`; Part X adds only macros (`\Pois`, `\st`,
 `\fall`, `\dto`, `\pto`, `\cst`; its `\mathscr` comes from newpxmath);
 Part XI adds one macro (`\ULC`), and its figure uses the TikZ library
 `positioning`, already loaded; Part XII adds two macros (`\GammaD`,
-`\poly`).
+`\poly`); Part XIII adds none.
 No image or font files are needed.
-The shipped PDF (362 pages) was built on 30 September 2026 with MiKTeX
+The shipped PDF (372 pages) was built on 30 September 2026 with MiKTeX
 (pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull boxes and
 no other LaTeX warnings; five underfull boxes, the same five as the build of
-the committed Parts I–XI text (and of Parts I–X, I–IX, I–VIII and I–VII before it): one (badness 1817) in Part II's
+the committed Parts I–XII text (and of Parts I–XI, I–X, I–IX, I–VIII and I–VII before it): one (badness 1817) in Part II's
 provenance-ledger table, which the committed builds before Parts III–VII and
 the delivered manuscript 02's own build also show, and four (badness
 1024–6625) in paragraphs of Parts V and VI that set long shipped file names
 (Sections 78, 78.1 and 83.4). (The earlier builds of 29 September 2026 had
 74 pages before Part IV, 116 before Parts V–VII and 220 before Part VIII;
 the builds of 30 September 2026 before Part IX, before Part X, before
-Part XI and before Part XII had 249, 277, 304 and 332.)
+Part XI, before Part XII and before Part XIII had 249, 277, 304, 332 and
+362.)
 
 ## Rerun the checks
 
@@ -2564,6 +2772,25 @@ On Windows all three outputs are written with CRLF line endings, and
 Python creates `code/__pycache__/` in the copy. The code example of
 Section 198.2 needs `code/` on the module path, as in this copy.
 
+**Part XIII, source 15.** Standard library only. The verifier writes
+`verification.json` beside itself (`Path(__file__).with_name(...)`), so
+run here it would add an unprefixed `code/verification.json`; the article
+and the delivery README say "Run `python3 verify.py`". Run it on a copy:
+
+```sh
+W=/path/to/scratch/15; mkdir -p "$W"
+cp code/15-leaf-compression-verify.py "$W/verify.py"
+cd "$W" && python verify.py > console.txt
+```
+
+Run this way on 30 September 2026 (`py`, Python 3.14.4 on Windows, under
+a second), it exited 0; after CR stripping, both the new
+`verification.json` and `console.txt` equal the shipped
+`data/15-leaf-compression-verification.json`. On Windows the JSON is
+written with CRLF line endings. The shipped
+`code/15-leaf-compression-build_local.sh` builds the unshipped manuscript
+(see below); do not use it.
+
 None of these runs changed a file of this report (checked with
 `git status` and by comparing a copy of `code/` and `data/`).
 
@@ -2876,6 +3103,43 @@ None of these runs changed a file of this report (checked with
     the removal of the self-citation and the merge note set ragged-right in
     Section 198.2 say so, and except that "Appendix" headings became
     sections.
+- **Part XIII's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/15-leaf-compression-verify.py` writes `verification.json` beside
+    itself; run it only on a copy (above). Source 15's Section 209 and its
+    delivery README say "Run `python3 verify.py`"; the article keeps this
+    with a merge note.
+  - `code/15-leaf-compression-build_local.sh` changes to its own
+    directory, sets `TEXMF` to `/usr/share/texlive/texmf-dist` and
+    `/usr/share/texmf`, builds a `pdflatex` format into `build/`, runs
+    `pdflatex` twice on `article.tex` (the delivered manuscript, **not
+    shipped**) and copies `build/article.pdf` to `article.pdf` beside
+    itself. It cannot be used here.
+  - `15-leaf-compression-PROOF_STATUS.md` cites the delivered numbers
+    (Lemma 2.1, Theorem 2.2, Corollary 2.3, Theorem 3.1 → 206.1, 206.2,
+    206.3, 207.1) and speaks of "this note" and "the inspected incoming
+    source" (source 14, now Part XII). The delivery README (not shipped)
+    lists `article.pdf` ("six-page research note"), `article.tex`,
+    `verify.py`, `verification.json`, `build_local.sh` and
+    `PROOF_STATUS.md` at the package root.
+  - The delivered article calls source 14 "the incoming ProveIt
+    manuscript" / "the incoming manuscript" and source 13 "the Hall-bottleneck
+    report"; both are Parts XII and XI of this report. Part XIII keeps the
+    wording with merge notes and replaces the citations "Rank", "Hall"
+    and "Root" by references to Parts XII, XI and VI (Section 204.5).
+    It has no pin for this report (source table above).
+  - The delivered article is dated 1 October 2026; it was placed on
+    30 September 2026 (Pacific time). It was set in its own 11-point A4
+    layout with 27 mm margins; Part XIII is set in the report's layout. No
+    wording of source 15 was changed except where merge notes, the renaming
+    of `L`, `B` and `\nuG`, and the replacement of its three
+    self-citations say so; its undefined `w_i` (Section 207) is explained
+    in a merge note.
+- **Bylines (Part XIII).** Source 15's title page and its PDF metadata
+  give the author as "Research note prepared for Vladimir Reshetnikov with
+  OpenAI"; its delivery README says "Research note dated 1 October 2026,
+  prepared for Vladimir Reshetnikov". The article records this in
+  Section 204.1 and does not reprint the byline.
 - **Bylines (Part XII).** Source 14's title page reads "Prepared for
   Vladimir Reshetnikov with ChatGPT" under the kicker "Combinatorics /
   Exact counting / Preorder polytopes"; its PDF metadata give the author as
@@ -2948,6 +3212,19 @@ None of these runs changed a file of this report (checked with
   random relations; the matrix counts and the criterion for
   `3 ≤ m = n ≤ 8`; `G_1` and `G_2` by brute force with their gaps); that
   check is not shipped.
+  Part XIII adds merge observations, marked in Section 204.4 and in merge
+  notes: the vertex-cover argument that Part XI's graphs `H_{s,n}` with
+  `n > s` have the unique minimum cover `A ⊔ B` (so the rank-six family
+  fails only for `n ≥ 33`, where it is split `3 + 3`), the identification
+  of Section 207's cubic with Part XII's mixed-cover formula at unit
+  activities, and the `K_{2,2}` example of a size-two twin class. The
+  batch-71 placement dossier rechecked source 15 with an independent
+  enumerator (1,973 random graphs of matching number at most three with
+  activities from `1/500` to `10^4`, 0 failures of `ULC_nu`; 300
+  compression identities; 237 rank-four graphs with a `1 + 3` minimum
+  cover, 0 failures; the minimum covers of `H_{1,2}`, `H_{2,3}`, `H_{2,4}`,
+  `H_{3,4}`; `H_{4,11}` at `w = 500` is `ULC_15` but not `ULC_8`); that
+  check is not shipped.
 
 ## Relation to neighbouring reports and to the formal projects
 
@@ -3003,6 +3280,9 @@ remark in `simplex-faces-of-order-and-chain-polytopes`), so no reciprocal
 note was written. Part XII (batch 70) continues Parts IV, V, IX and XI;
 its dated pointers are inside this report (Parts IV, V, VII and XI). It
 treats the same objects as Part XI, so no other report gains a note.
+Part XIII (batch 71) continues Parts V, XI and XII and cites Part VI; its
+dated pointers are inside this report (Parts V, XI and XII). It treats the
+same objects, so no other report gains a note.
 
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
@@ -3055,7 +3335,15 @@ only unrelated statements — Fourier–Motzkin elimination in
 `Algebra/SurrealNumbers/Surreal/Algebra/HankelHermite.lean`, not applied
 to Theorem 192.1's matrix) and log-concavity of real functions in
 `Analysis/FabiusFunction` — so nothing of Part XII is formalized, and the
-formalization sequence of Section 199.3 is unstarted.
+formalization sequence of Section 199.3 is unstarted. The same holds for
+Part XIII: a search of the tracked `.lean` and `.v` files outside `lib/`
+for vertex-cover, König, ultra-log-concave, Lorentzian, interlacing,
+matchable, leaf-compression and real-rooted terms finds only the
+real-rootedness of surreal polynomials in
+`Algebra/SurrealNumbers/Surreal/Algebra/HankelHermite.lean` and
+`PolynomialJensen.lean`, unrelated to matching supports; nothing of Part
+XIII is formalized (source 15 lists machine-checked formalization among
+its remaining questions; compare Research question 92).
 
 ## Sources and attribution
 
@@ -3136,5 +3424,9 @@ formalization sequence of Section 199.3 is unstarted.
   join graphs*, arXiv:2103.15045, doi:10.1007/s00454-022-00447-z
   (terminology; new to this report); Röhrle–Ulirsch (Theorem A, Examples
   2.3 and 2.4), Athanasiadis–Chapoton and Davis–Kohl above.
+- Part XIII: Brändén–Huh (Lorentzian polynomials) and Röhrle–Ulirsch
+  (Theorem A, Example 2.4 and the Lorentzian proof of Section 4; source 15
+  cites arXiv:2402.15317v3) above; König's theorem (classical). No
+  reference new to this report.
 
 No third-party papers or font files are included.

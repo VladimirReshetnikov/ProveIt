@@ -34,7 +34,8 @@
     Part IX: two-flow bijections, full-coordinate sampling of demand vectors and preorder lattice points;
     Part X: rare stable markings on random trees, sparse transitions and annealed--quenched separation;
     Part XI: Hall bottlenecks and the limits of rank normalization;
-    Part XII: rank-three matching supports, exact kernels and a bimatroid obstruction}}
+    Part XII: rank-three matching supports, exact kernels and a bimatroid obstruction;
+    Part XIII: leaf compression and weighted rank three}}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
 \pagestyle{fancy}
@@ -180,6 +181,9 @@ limits of rank normalization}\par
 \vspace{3pt}
 {\normalsize\color{Ink} With Part~XII (added 30 September 2026): matching supports through
 rank three --- rank normalization, exact kernels and a bimatroid obstruction}\par
+\vspace{3pt}
+{\normalsize\color{Ink} With Part~XIII (added 30 September 2026): leaf compression and
+weighted rank three}\par
 \vspace{9pt}
 {\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
 20 September 2026}
@@ -314,6 +318,15 @@ Neighbourhood-type kernels count disjoint supports exactly, and sample
 them exactly, in time $2^{O(d^2)}$ times a polynomial, $d$ the degree; for
 a finite preorder they give every gamma coefficient, and the first
 rank-normalized gamma inequality holds for every finite preorder.
+
+\emph{Addition of 30 September 2026 (batch 71).} Part~XIII, from a further
+manuscript, settles the weighted version at small matching number: leaves
+with one common neighbour can be merged into one leaf carrying the sum of
+their activities without changing the support polynomial, so every graph
+with a minimum vertex cover that has a single vertex on one shore, and
+hence every graph with $\nu(H)\le3$, satisfies the normalization by
+$\binom{\nu(H)}k$ for arbitrary positive activities on both shores. A
+weighted counterexample therefore has matching number four, five or six.
 \end{abstract}
 \begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
   left=9pt,right=9pt,top=7pt,bottom=7pt]
@@ -351,6 +364,9 @@ number negatively; see Section~\ref{hb:sec:answers}.]
 [Added 30 September 2026, batch 70: Part~XII answers its unit-weight
 version affirmatively for matching number at most three; see
 Section~\ref{mr:sec:answers}.]
+[Added 30 September 2026, batch 71: Part~XIII answers its weighted version
+affirmatively for matching number at most three, without contradicting
+Part~XI; see Section~\ref{lc:sec:answers}.]
 \end{tcolorbox}
 % Part III (batch 42): the page break that stood here was removed; the
 % longer abstract pushes this box to page 2, where the contents now follow it.
@@ -393,6 +409,9 @@ Part~XII (Sections~\ref{mr:sec:prov}--\ref{mr:app:ledger}), added
 on 30 September 2026, treats unit-weight normalization through rank three
 and exact support kernels; it follows Part~XI and precedes the appendices
 of Part~I.
+Part~XIII (Sections~\ref{lc:sec:prov}--\ref{lc:sec:verification}), added
+on 30 September 2026, treats weighted normalization by leaf compression;
+it follows Part~XII and precedes the appendices of Part~I.
 \end{tcolorbox}
 \newpage
 \phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A reflexive root-polytope model}
@@ -10374,6 +10393,18 @@ remains open from $\nu(H)=4$ on (Research questions~\ref{mr:q:rankfour}
 and~\ref{mr:q:allrank}), the weighted version at $\nu(H)\in\{3,4,5\}$
 (Research questions~\ref{mr:q:weighted} and~\ref{hb:q:rank}), and the
 one-shore version.]
+[Added 30 September 2026, batch 71: the weighted version is answered
+affirmatively for $\nu(H)\le3$: Part~XIII's
+Corollary~\ref{lc:cor:rankthree} proves the replacement for every graph of
+matching number at most three with arbitrary positive (or nonnegative)
+activities on both shores, and Theorem~\ref{lc:thm:singleton} for every
+graph with a minimum vertex cover that has one vertex on one shore. With
+Part~XI, the weighted version holds through $\nu(H)=3$ and fails at
+$\nu(H)=6$ and~$8$; it is open at $\nu(H)\in\{4,5\}$, where every
+minimum cover of a counterexample meets both shores in at least two
+vertices. The same restriction applies to a unit-weight or one-shore
+counterexample, so the unit-weight version at $\nu(H)=4$ reduces to
+covers split $2+2$. See Section~\ref{lc:sec:answers}.]
 
 \begin{question}[Equality, rigidity, and sharper covariance bounds; sources~06 and~07]\label{lor:q:equality}
 Characterize equality at a single ultra-log-concavity index under positive
@@ -20167,7 +20198,11 @@ and the support polynomial is computed exactly by an algorithm
 parameterized by the matching number. The unit-weight and one-shore
 versions of the question remain open. [Added 30 September 2026,
 batch 70: Part~XII settles the unit-weight version for matching number at
-most three; see Section~\ref{mr:sec:answers}.] Parts~I--X are unchanged except for
+most three; see Section~\ref{mr:sec:answers}.] [Added 30 September 2026, batch 71: Part~XIII
+proves the positively weighted version for matching number at most three,
+so Part~XI's counterexamples, of matching numbers six and eight, are as
+small as matching number four, five or six allows; see
+Section~\ref{lc:sec:answers}.] Parts~I--X are unchanged except for
 dated pointers. Section~\ref{hb:sec:prov} records the provenance, fixes
 the notation and states what is answered.}
 
@@ -20380,6 +20415,12 @@ affirmatively for matching number at most three, and for a connected
 family of matching number four, by Part~XII
 (Section~\ref{mr:sec:answers}); it remains open from matching number
 four on.]
+[Added 30 September 2026, batch 71: the least possible matching number
+of a weighted counterexample is now four, five or six: Part~XIII's
+Corollary~\ref{lc:cor:rankthree} proves the positively weighted version
+for matching number at most three. Part~XI's counterexamples have unique
+minimum covers with $s$ vertices on each shore, outside Part~XIII's
+hypothesis (Section~\ref{lc:sec:consistency}).]
 \item \textbf{Part~V's division caveat} (after Theorem~\ref{lor:thm:CLC} and
 after Research question~\ref{lor:q:first}) gains an instance inside the
 class: Corollary~\ref{hb:cor:division} is a Lorentzian polynomial of the
@@ -21658,6 +21699,11 @@ Corollary~\ref{mr:cor:components} add a connected family of rank four and
 disjoint unions; a counterexample, if any, has $r\ge4$. Whether one
 exists stays open (Research questions~\ref{mr:q:rankfour}
 and~\ref{mr:q:allrank}).]
+[Added 30 September 2026, batch 71: Part~XIII's
+Corollary~\ref{lc:cor:rankthree} gives a second proof for $r\le3$, and its
+Theorem~\ref{lc:thm:singleton} shows that a counterexample, if any, has
+every minimum cover meeting both shores in at least two vertices; at
+$r=4$ only covers split $2+2$ remain. The question stays open.]
 
 \begin{question}[One-shore external fields]\label{hb:q:oneshore}
 Does $\ULC_r$ hold when $u_x=1$ for every left vertex and the right weights
@@ -21672,6 +21718,12 @@ open of the weighted version of Research question~\ref{lor:q:first}.]
 [Added 30 September 2026, batch 70: not addressed by Part~XII, whose
 rank-three theorem is the unit-weight case $v_y=1$ only. Its ``one-shore
 case'' is a minimum cover inside one shore, a different notion.]
+[Added 30 September 2026, batch 71: answered for $r\le3$, and for every
+graph with a minimum cover split $1+(r-1)$, as special cases of Part~XIII's
+Corollary~\ref{lc:cor:rankthree} and Theorem~\ref{lc:thm:singleton}, which
+allow arbitrary positive weights on both shores. From $r=4$ on it stays
+open for graphs whose minimum covers all meet both shores in at least two
+vertices; source~15 says that it does not settle this question.]
 
 \begin{question}[First possible weighted rank]\label{hb:q:rank}
 Do all positively weighted support polynomials of matching ranks three,
@@ -21686,6 +21738,13 @@ certificates because the known rank-six threshold can be large.
 [Added 30 September 2026, batch 70: at unit weights rank three is
 settled by Part~XII; its Research question~\ref{mr:q:weighted} asks the
 weighted rank-three case of this question.]
+[Added 30 September 2026, batch 71: answered in part. Rank three holds
+with arbitrary positive weights (Part~XIII's
+Corollary~\ref{lc:cor:rankthree}), so the smallest possible rank of a
+failure is four, five or six. At ranks four and five a failure must have
+every minimum cover meeting both shores in at least two vertices (split
+$2+2$ at rank four, $2+3$ at rank five; Theorem~\ref{lc:thm:singleton}).
+Ranks four and five stay open.]
 
 \begin{question}[A universal rank-only order]\label{hb:q:order}
 Does there exist a finite function $\mathcal D(r)$ such that all positively
@@ -21696,6 +21755,10 @@ Corollary~\ref{hb:cor:universalorder} rules out $\mathcal D(r)=r$ and any
 asymptotic slope below $4/3$ along even ranks. It does not prove existence
 of a rank-only order. The possibilities include a larger linear bound,
 a nonlinear bound, or failure of every finite uniform order at some rank.
+[Added 30 September 2026, batch 71: Part~XIII's
+Corollary~\ref{lc:cor:rankthree} gives $\mathcal D(3)=3$, after
+$\mathcal D(1)=1$ and $\mathcal D(2)=2$ from
+Corollary~\ref{hb:cor:smallrank}. Existence for $r\ge4$ stays open.]
 
 \begin{question}[Full Hall-family phase diagrams]\label{hb:q:phase}
 For $s\ge4$, is the endpoint always the first rank-normalized inequality
@@ -21959,7 +22022,8 @@ family of matching number four with unbounded shores and for disjoint
 unions of these graphs. Part~XI answered the version with positive weights
 on both shores negatively; Part~XII leaves the unit-weight question open
 from matching number four on and the weighted one open at matching number
-three. It proves the first rank-normalized inequality for weighted directed
+three. [Added 30 September 2026, batch 71: Part~XIII settles the weighted one at
+matching number three; see Section~\ref{lc:sec:answers}.] It proves the first rank-normalized inequality for weighted directed
 disjoint supports, with the unweighted equality cases, shows by a positive
 $9\times9$ integer matrix of rank three that the normalization by actual
 rank fails for representable bimatroids, counts supports exactly by
@@ -22191,6 +22255,9 @@ and~\ref{mr:q:allrank}), weights at matching numbers three to five
 (Research question~\ref{mr:q:weighted} and Part~XI's
 Research question~\ref{hb:q:rank}), and weights on one shore (Part~XI's
 Research question~\ref{hb:q:oneshore}, not addressed here).
+[Added 30 September 2026, batch 71: Part~XIII settles weights at matching
+number three, for both shores and hence for one; weights at matching
+numbers four and five stay open (Section~\ref{lc:sec:answers}).]
 \item \textbf{Part~XI's Research question~\ref{hb:q:unit} is answered in
 part:} a unit-weight counterexample, if one exists, has matching number at
 least four and is not one of the graphs $G_N$ or a disjoint union of graphs
@@ -23706,7 +23773,8 @@ Part~XI's counterexamples carry positive weights on both shores and say
 nothing about unit weights (Section~\ref{mr:sec:answers}).] General preorder gamma log-concavity,
 unimodality of all gamma vectors, real-rootedness, and flag-polytopal
 realization are not proved. The rank-three theorem is not asserted for
-arbitrary nonuniform activities. No classification of equality in every
+arbitrary nonuniform activities. [Added 30 September 2026, batch 71: Part~XIII proves
+it for them; see Corollary~\ref{lc:cor:rankthree}.] No classification of equality in every
 higher coefficient inequality is supplied.
 
 No exhaustive literature-priority audit or independent referee review
@@ -23769,6 +23837,11 @@ they are exact support formulas, not positivity certificates. With
 Research question~\ref{mr:q:allrank} this is what remains open of the
 unit-weight version of Part~V's Research question~\ref{lor:q:first} and
 of Part~XI's Research question~\ref{hb:q:unit} at matching number four.]
+[Added 30 September 2026, batch 71: Part~XIII's
+Theorem~\ref{lc:thm:singleton} settles the $1+3$ case for arbitrary
+activities, by leaf compression and the ambient theorem, so the eight
+templates with covers split $1+3$ need no certificate. The sixteen split
+$2+2$ remain, at unit weights as with weights.]
 
 \begin{question}[A structural all-rank proof]\label{mr:q:allrank}
 Is $s_k(G)/\binom{\nu(G)}k$ log-concave for every bipartite graph?
@@ -23785,6 +23858,11 @@ question~\ref{hb:q:unit}. It is numbered again because it asks for a
 structural proof; Part~XII shows that a counterexample, if any, has
 matching number at least four and is neither a graph $G_N$ nor a disjoint
 union of graphs of matching number at most three and graphs $G_N$.]
+[Added 30 September 2026, batch 71: moreover every minimum cover of a
+counterexample meets both shores in at least two vertices (Part~XIII's
+Theorem~\ref{lc:thm:singleton}). For covers split $1+(r-1)$ the proof
+there does invoke the ambient theorem with a smaller parameter: leaf
+compression shrinks one shore to exactly $r$ vertices.]
 
 \begin{question}[Weighted rank three]\label{mr:q:weighted}
 Does the rank-three theorem extend to arbitrary nonnegative activities
@@ -23794,6 +23872,12 @@ The first inequality already does. The second requires a replacement for
 the four integer populations by first and second elementary symmetric
 functions of type activities. Vertices with common neighborhoods cannot
 be treated as a single weight without retaining these higher moments.
+[Added 30 September 2026, batch 71: this holds for common neighbourhoods
+of two or more vertices, but not for a common neighbourhood of a single
+vertex: Part~XIII's Lemma~\ref{lc:lem:compression} merges such vertices
+into one vertex carrying the sum of their activities without changing the
+support polynomial, and its Section~\ref{lc:sec:resolves} gives the reason
+the merge fails for larger neighbourhoods.]
 Deriving a weighted analogue of the subtraction $\alpha\beta z$ is a
 concrete next step.
 [Merge note: this is the matching-number-three case of Part~XI's
@@ -23804,6 +23888,15 @@ symmetric functions of the weights in each neighbourhood type
 The weighted counterexamples that Part~XI exhibits have matching number
 six or more; at matching numbers three to five the weighted version is
 open there as here.]
+[Added 30 September 2026, batch 71: answered affirmatively by Part~XIII's
+Corollary~\ref{lc:cor:rankthree}, for positive and for nonnegative
+activities on both shores. Its proof needs no weighted analogue of the
+populations: in the mixed case $\{a\}\sqcup\{b_1,b_2\}$ the right leaves
+of~$a$ are merged into one leaf and Part~V's
+Theorem~\ref{lor:thm:weightedULC} applies to a shore of size three. The
+weighted analogue of the subtraction is the term $-\epsilon\delta c$ of
+its display~\eqref{lc:eq:cubic}. Matching numbers four and five stay open
+(Research question~\ref{hb:q:rank}).]
 
 \begin{question}[Higher-height gamma inequalities]\label{mr:q:gamma}
 Are gamma coefficients of every finite preorder log-concave, or even
@@ -23903,6 +23996,9 @@ and sampling for directed support models and their preorder gamma
 applications. The remaining questions are concrete: 24 rank-four
 polynomial templates, a weighted rank-three identity, and the additional
 transitivity structure in higher-height gamma enumerators.
+[Added 30 September 2026, batch 71: Part~XIII proves weighted rank three
+without a new identity, by leaf compression, and removes the eight $1+3$
+templates; sixteen $2+2$ templates remain.]
 
 \needspace{7\baselineskip}
 \section{Review checklist for the central arguments}
@@ -23973,6 +24069,603 @@ claims with reproducible certificates, suitable for independent review.
 No claim of community acceptance, formal proof-assistant certification,
 or a general breakthrough beyond the explicitly proved scope is made.
 % End of Part XII (batch 70).
+
+\phantomsection\part*{Part XIII.\quad Leaf compression and weighted rank three}
+\addcontentsline{toc}{part}{Part XIII.\texorpdfstring{\quad}{ } Leaf compression and weighted rank three}
+
+\noindent\emph{Part~XIII was added on 30 September 2026 in batch~71 of
+ProveIt's incoming-report intake, from one manuscript. It answers
+Part~XII's Research question~\ref{mr:q:weighted} (``Weighted rank three'')
+affirmatively. Leaves with one common neighbour can be merged into a
+single leaf carrying the sum of their activities without changing the
+weighted support polynomial (Lemma~\ref{lc:lem:compression}). Hence every
+bipartite graph with a minimum vertex cover that has exactly one vertex
+on one shore is ultra-log-concave of the order of its matching number,
+for arbitrary positive activities on both shores
+(Theorem~\ref{lc:thm:singleton}), and so is every positively weighted
+graph of matching number at most three, and every nonnegatively weighted
+one with the order taken as the surviving degree
+(Corollary~\ref{lc:cor:rankthree}). This answers Part~XI's Research
+question~\ref{hb:q:rank} in part: the least matching number of a weighted
+counterexample to normalization by the matching number is four, five or
+six. It does not contradict Part~XI's counterexamples, whose unique
+minimum vertex covers have four, respectively three, vertices on each
+shore (Section~\ref{lc:sec:consistency}). An elementary proof that a
+graph covered by one vertex on one shore and two on the other has a
+real-rooted support polynomial under all positive activities is included;
+that conclusion was already available from Part~VI. Parts~I--XII are
+unchanged except for dated pointers. Section~\ref{lc:sec:prov} records
+the provenance, fixes the notation and states what is answered.}
+
+\section{Provenance, conventions and what Part~XIII answers}
+\label{lc:sec:prov}
+
+\subsection{The manuscript}
+\label{lc:sec:source}
+Part~XIII is printed from batch-71 manuscript~02, called \emph{source~15}
+here after its file prefix: \emph{Leaf Compression and Weighted Rank Three
+for Matching Support Polynomials}, dated 1 October 2026, six A4 pages as
+delivered. Its title page and its PDF metadata give the author as
+``Research note prepared for Vladimir Reshetnikov with OpenAI'', and its
+delivery README says ``Research note dated 1 October 2026, prepared for
+Vladimir Reshetnikov''; that byline is recorded here and not reprinted.
+Its archive \nolinkurl{ProveIt_Weighted_Rank_Three_Leaf_Compression.zip}
+(inner directory of the same name, main file \nolinkurl{article.tex})
+arrived in ProveIt commit \texttt{aee32ad45} and was placed in
+\texttt{427bca743}. Its program \nolinkurl{verify.py} and its build
+wrapper \nolinkurl{build_local.sh} are shipped in \nolinkurl{code/}, its
+record \nolinkurl{verification.json} in \nolinkurl{data/}, and its
+\texttt{PROOF\_STATUS.md} at the root of the report, all with the prefix
+\texttt{15-leaf-compression-}. It shipped no checksum list. The
+manuscript, delivery README and PDF are not shipped; they survive in the
+arrival commit.
+
+\emph{Pin.} Source~15 names no ProveIt commit for this report. Its
+bibliography records what it inspected: source~14's archive
+\nolinkurl{ProveIt_Matching_Rank_Research.zip} at that archive's arrival
+commit \texttt{1b3960d8a} (``the inspected \texttt{article.tex} has 76050
+bytes'', which is the size of source~14's delivered manuscript, not of
+Part~XII as printed); source~13's archive
+\nolinkurl{ProveIt_Hall_Bottlenecks.zip} at its arrival commit
+\texttt{a866ff9a2}, with its placement commit \texttt{29e52fcdf}; and this
+report on the branch \texttt{main}, ``inspected 1 October 2026'', for
+Parts~V and~VI, by a link that names no commit. It therefore read
+sources~13 and~14 as incoming manuscripts, and calls them ``the
+Hall-bottleneck report'' and ``the incoming manuscript''. Both are printed
+in this report: source~13 as Part~XI (batch~68) and source~14 as Part~XII
+(batch~70). Every statement of Parts~V, VI, XI and~XII that source~15
+relies on or answers was checked against the text printed here; its
+claims about them are accurate. Its ``Part~V'' and ``Part~VI'' are this
+report's Parts~V and~VI.
+
+Source~15 continues Parts~V, XI and~XII. It takes the weighted
+smaller-shore inequality (Part~V's Theorem~\ref{lor:thm:weightedULC}) as
+an established input, and it answers the question source~14 printed as
+``Weighted rank three'' (Part~XII's Research question~\ref{mr:q:weighted}).
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of source~15 (as delivered).}
+The incoming ProveIt manuscript \emph{Rank-Three Ultra-Log-Concavity and
+Exact Kernels for Matching Supports} proves its rank-three theorem only
+for unit weights and explicitly asks for arbitrary vertex activities. We
+answer that question affirmatively. A class of leaves with a common
+neighbour can be replaced by one leaf whose activity is their sum,
+preserving the entire support polynomial. Consequently every graph of
+matching rank $r$ with a minimum vertex cover split as $1+(r-1)$
+satisfies rank-normalized ultra-log-concavity for arbitrary positive
+activities on both shores. Together with the known smaller-shore theorem,
+this proves the weighted assertion through rank three and removes all
+$1+3$ cases from the rank-four problem. We also give a short elementary
+real-rootedness proof for the mixed three-vertex-cover class, identifying
+that conclusion as a consequence already available from the repository's
+block-stability results. Exact finite checks accompany the proofs.
+\end{tcolorbox}
+\noindent The abstract is reproduced as delivered. Its ``incoming ProveIt
+manuscript'' is source~14, printed as Part~XII; the question it answers
+is Research question~\ref{mr:q:weighted}; ``the known smaller-shore
+theorem'' is Part~V's Theorem~\ref{lor:thm:weightedULC}; its matching rank
+$r$ is the matching number $\nu(G)$; and ``the repository's
+block-stability results'' are Part~VI's (Section~\ref{lc:sec:real}).
+
+\begin{statusbox}
+\small\textbf{Status and scope (source~15, as delivered).}
+This note establishes the stated conclusions in ordinary mathematics,
+conditional only on the identified published Lorentzian-polynomial input.
+It is not Lean-certified or independently refereed. Its novelty claim is
+relative to the inspected ProveIt drafts; global priority for the
+elementary compression observation is not claimed. General unit-weight and
+one-shore rank normalization in rank four and higher remain unresolved
+here.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Priority and prior work (merge).}
+Already in this report: the weighted smaller-shore inequality, source~15's
+Lemma~\ref{lc:lem:ambient}, is Part~V's
+Theorem~\ref{lor:thm:weightedULC} (sources~06, 07 and~09), proved there by
+the same private-copy transversal-matroid specialization
+(display~\eqref{lor:eq:weightedhom}; Part~XI's
+display~\eqref{hb:eq:matroidspecialization} uses it too); at unit
+activities it is Theorem~A of R\"ohrle and Ulirsch~\cite{RU} for the
+relation bimatroid of their Example~2.4, and the Lorentzian facts are
+Br\"and\'en and Huh's~\cite{BH}. K\H{o}nig's matching--cover equality is
+classical (Part~XI's Lemma~\ref{hb:lem:konig} and Part~XII's
+Section~\ref{mr:sec:rankthree} prove it). Corollary~\ref{lc:cor:rankthree}
+contains Part~XII's Theorem~\ref{mr:thm:rankthree} (unit activities) and
+Part~XI's Corollary~\ref{hb:cor:smallrank} (matching number at most two)
+as special cases; at unit activities its proof is a second route to
+Part~XII's theorem that needs no sum-of-squares certificate. The
+conclusion of Theorem~\ref{lc:thm:real} follows from Part~VI's
+Theorem~\ref{ade:mat:thm:biclique} and
+Corollaries~\ref{ade:mat:cor:blocks}
+and~\ref{ade:mat:cor:block-family}, as source~15 says; its proof is new.
+New relative to Parts~I--XII: the leaf-compression identity
+(Lemma~\ref{lc:lem:compression}), the theorem for a minimum cover with a
+singleton on one shore (Theorem~\ref{lc:thm:singleton}) and the weighted
+rank-three corollary, for positive and for nonnegative activities. Source~15
+claims novelty only relative to the drafts it inspected, and no global
+priority for the compression observation; no worldwide priority is
+claimed for any result of Part~XIII.
+\end{statusbox}
+
+\subsection{Notation of Part~XIII}
+\label{lc:sec:notation}
+Part~XIII works with Part~V's weighted support polynomial, written
+$p_G(t;u,v)$ with coefficients $a_k$, and with Part~XI's $\ULC_D$.
+Table~\ref{lc:tab:notation} lists its symbols against earlier uses.
+\textbf{Two symbols are renamed} in source~15's Section~2
+(Section~\ref{lc:sec:compression} here), because both collide with
+Part~XI's blocks of the graphs $H_{s,n}$, which
+Section~\ref{lc:sec:consistency} discusses: its class of leaves $L$ is
+printed $\Lambda$, and the part $B$ of its minimum cover on the shore $Y$
+is printed $C_Y$, Part~XI's name for that part. Its macro
+\verb|\nuG| is printed as $\nu(G)$. No normalization was changed.
+
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Symbols of Part~XIII. The last column prints the tempting false
+reading.}
+\label{lc:tab:notation}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.2\textwidth}>{\raggedright}p{.38\textwidth}Y@{}}
+\toprule
+Symbol & Meaning in Part~XIII & Not to be confused with\\
+\midrule
+$G=(X,Y;E)$, $u_x$, $v_y$ & a finite simple bipartite graph with shores
+ $X$, $Y$ and positive (in Corollary~\ref{lc:cor:rankthree} also
+ nonnegative) vertex activities & Part~XII's $G=(L\sqcup R,E)$ (unit
+ activities); Part~II's comparability graph $G$; Part~XII's head
+ activity $v_v$.\\
+$p_G(t;u,v)=\sum a_kt^k$ & the weighted support polynomial, each support
+ pair once & Part~V's $A_H(t;u,v)$ and $a_k(u,v)$ (the same
+ polynomial); Part~XII's $s_k(G)$ (its unit-weight case); Part~II's
+ $p_G$ (the unweighted case).\\
+$m=|X|$, $n=|Y|$; $r=\nu(G)$ & shore sizes; the matching number, called
+ ``matching rank'' & Part~V's $r=\min(m,n)$ in
+ Theorem~\ref{lor:thm:weightedULC}; Part~XI's block size $n$ of
+ $H_{s,n}$.\\
+$\ULC_D$, \eqref{lc:eq:margin} & ultra-log-concavity of order $D$ and its
+ margin inequality & the same as Part~XI's $\ULC_D$ and margin
+ $\Delta_k^{(D)}$; Part~XII's rank-ULC is $\ULC_{\nu(G)}$. Not the $D$
+ of Section~\ref{lc:sec:real}.\\
+$\Lambda$, $y_*$, $v_*$ & a class of right vertices with neighbourhood
+ exactly $\{x_0\}$ (source~15's $L$), the merged leaf, its activity &
+ Part~XI's outer block $L$; Part~XII's left shore $L$.\\
+$C=\{x_0\}\sqcup C_Y$; ``$1+(r-1)$'' & a minimum vertex cover with one
+ vertex $x_0\in X$ and $C_Y\subseteq Y$ (source~15's $B$); the sizes of
+ its intersections with the two shores & Part~XI's core block $B$; the
+ coefficient $C$ of Section~\ref{lc:sec:real}. ``$0+4$, $1+3$, $2+2$''
+ are Part~XII's cover types, in the same sense.\\
+$\epsilon,\delta$; $a,b,c,d$, $w_i$ & Section~\ref{lc:sec:real}: core-edge
+ indicators; activity sums of the left vertices with neighbourhoods
+ $\{y_1\}$, $\{y_2\}$, $\{y_1,y_2\}$, and the second elementary symmetric
+ function of the third class & Part~XII's populations $x,y,z,w$ and
+ indicators $\alpha,\beta$ of the same mixed cover at unit weight;
+ Part~XI's core vertices $a,b$; the coefficients $a_k$.\\
+$h,y,z,T$ & Section~\ref{lc:sec:real}: activities of $x_0$, $y_1$, $y_2$
+ and the sum over the right leaves & $y$ also names vertices of $Y$;
+ Part~XII's population $z$; Part~XI's cores $A,B$.\\
+$A,B,q,D,Q,C,F$; $f,g$ & Section~\ref{lc:sec:real}: the polynomials in
+ the activities of display~\eqref{lc:eq:cubic}; $f=1+Dt+Qt^2$, $g=C+Ft$ &
+ Part~XI's core blocks $A,B$; the ULC order $D$; the cover $C$; Part~XII's
+ polynomials $A,B,C,e$ and Part~V's $F_H$.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What Part~XIII answers}
+\label{lc:sec:answers}
+Status after Part~XIII, as of 30 September 2026:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Part~XII's Research question~\ref{mr:q:weighted} is answered
+affirmatively} (Corollary~\ref{lc:cor:rankthree}): every bipartite graph
+of matching number at most three with arbitrary positive activities on
+both shores is $\ULC_{\nu(G)}$, and with nonnegative activities it is
+ultra-log-concave of the order of its surviving degree. The question
+asked for nonnegative activities; both readings are covered.
+\item \textbf{Part~XI's Research question~\ref{hb:q:rank} is answered in
+part.} Matching number three is settled positively, so the least matching
+number of a positively weighted counterexample is four, five or six (six
+is attained, Theorem~\ref{hb:thm:rank6phase}). By
+Theorem~\ref{lc:thm:singleton}, a counterexample must have \emph{every}
+minimum vertex cover meet both shores in at least two vertices: at
+matching number four only covers split $2+2$ remain, at five only $2+3$.
+Matching numbers four and five stay open.
+\item \textbf{Part~V's Research question~\ref{lor:q:first}}, weighted
+version: with positive weights on both shores, $\binom{\nu(G)}k$ may
+replace $\binom{\min(m,n)}k$ for every graph with $\nu(G)\le3$ and for
+every graph with a minimum cover split $1+(\nu(G)-1)$ (or lying in one
+shore); the replacement fails for some graphs of matching numbers six and
+eight (Part~XI). The unit-weight version gains a second proof at
+$\nu(G)\le3$ and all graphs of matching number four with a $1+3$
+minimum cover.
+\item \textbf{Part~XII's Research question~\ref{mr:q:rankfour}} (finish
+rank four, unit weights) \textbf{is reduced}: the $1+3$ case is settled for
+arbitrary activities, so of the 24 templates of
+\nolinkurl{data/14-matching-rank-rank4_templates.json} the eight with
+covers split $1+3$ need no positivity certificate; the sixteen split $2+2$
+remain, at unit weights as with weights. Part~XII's
+Research question~\ref{mr:q:allrank} and Part~XI's Research
+question~\ref{hb:q:unit} (unit weights) gain the same restriction: a
+counterexample has matching number at least four and every minimum cover
+meets both shores in at least two vertices.
+\item \textbf{Part~XI's Research question~\ref{hb:q:oneshore}} (weights on
+one shore) is answered for the same classes, because one-shore weights
+are a special case of weights on both shores: matching number at most
+three, and minimum covers split $1+(r-1)$. As source~15 says, the general
+one-shore question stays open; from matching number four on only graphs
+whose minimum covers all meet both shores in at least two vertices
+remain.
+\item \textbf{Part~XI's Research question~\ref{hb:q:order}} (a rank-only
+order $\mathcal D(r)$) gains its value at $r=3$: $\mathcal D(3)=3$, as
+$\mathcal D(1)=1$ and $\mathcal D(2)=2$ were already known
+(Corollary~\ref{hb:cor:smallrank}). Existence for $r\ge4$ stays open.
+\item \textbf{A remark of Part~XII is corrected, not retracted.} The
+commentary after Research question~\ref{mr:q:weighted} says that vertices
+with common neighbourhoods cannot be treated as a single weight. For a
+common neighbourhood of one vertex they can
+(Lemma~\ref{lc:lem:compression}); for two or more they cannot, as
+source~15's Section~\ref{lc:sec:resolves} says too. A dated note there
+records this.
+\item \textbf{No other numbered research question of Parts~I--XII is
+answered.} Theorem~\ref{lc:thm:real} is already a consequence of Part~VI
+and answers nothing new.
+\end{itemize}
+Part~XIII refutes no statement of Parts~I--XII, and nothing is retracted.
+The sentences of Parts~V, XI and~XII that leave weighted rank three or the
+rank range $3$--$6$ open were true when written and are re-scoped by dated
+pointers, not changed. Part~V gains a dated pointer after Research
+question~\ref{lor:q:first}; Part~XI in its front matter, in
+Section~\ref{hb:sec:answers} and after Research
+questions~\ref{hb:q:unit}--\ref{hb:q:order}; Part~XII in its front matter,
+in Section~\ref{mr:sec:answers}, after Research
+questions~\ref{mr:q:rankfour}--\ref{mr:q:weighted}, after its
+non-claim on nonuniform activities and in its conclusion; the title block,
+the abstract, the scope box and the reading route gain dated sentences,
+and the bibliography entry of R\"ohrle and Ulirsch a sentence.
+
+\subsection{Consistency with Part~XI's counterexamples}
+\label{lc:sec:consistency}
+Part~XI's weighted counterexamples and Part~XIII's positive theorem
+concern the same polynomial: the support polynomial with positive
+activities on the vertices of both shores (Part~V's
+display~\eqref{lor:eq:weighted}, Part~XI's vertex weights, source~15's
+$p_G(t;u,v)$). They do not contradict each other, because Part~XI's graphs
+lie outside the hypothesis of Theorem~\ref{lc:thm:singleton} and above
+matching number three.
+[Merge observation, not in source~15.] Part~XI's graph $H_{s,n}$ has
+edge set $(L\times B)\cup(A\times R)\cup(A\times B)$
+(display~\eqref{hb:eq:edges}), with $L$, $A$ in the left shore and $R$,
+$B$ in the right shore. Since $L\times B$ is complete, every vertex cover
+contains $L$ or $B$; since $A\times R$ is complete, it contains $A$ or $R$.
+The four candidates have sizes $2s$ ($A\sqcup B$), $n+s$ ($L\sqcup A$ or
+$B\sqcup R$) and at least $2n$ ($L\sqcup R$, which must also meet the
+edges $A\times B$). So for $n>s$ the \emph{unique} minimum cover is the
+core $A\sqcup B$, with $s$ vertices on each shore. For the 30-vertex
+witness $H_{4,11}$ of Theorem~\ref{hb:thm:witness} it is split $4+4$
+($\nu=8$), and for the rank-six family $H_{3,n}$ of
+Theorem~\ref{hb:thm:rank6phase} it is split $3+3$ whenever $n>3$, in
+particular for every member that fails ($Q_n(w)<0$ requires
+$-n^2+34n-49<0$, so $n\ge33$). Neither is split $1+(r-1)$ or lies in one
+shore, and both have matching number above three, so neither
+Theorem~\ref{lc:thm:singleton} nor Corollary~\ref{lc:cor:rankthree}
+applies. When $n=s$ the cover $L\sqcup A$ lies in one shore and
+$\min(m,n)=2s=\nu$, so Part~V's theorem already gives $\ULC_{2s}$, in
+agreement with both Parts. The batch-71 placement dossier rechecked this
+by exhaustive search of the vertex covers of $H_{1,2}$, $H_{2,3}$,
+$H_{2,4}$ and $H_{3,4}$ (each a unique minimum cover, split $1+1$, $2+2$,
+$2+2$, $3+3$; $H_{1,2}$ has matching number two and is covered by
+Corollary~\ref{hb:cor:smallrank}), and recomputed $H_{4,11}$ at weight
+$500$: it is $\ULC_{15}$ and not $\ULC_8$, with the quadratic of
+display~\eqref{hb:eq:witnessmargin} equal to $-7696$; that check is not
+shipped.
+
+\subsection{Where the merge had to choose}
+\label{lc:sec:merge}
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{Order and numbers.} Source~15's order is kept: its
+Section~$k$ is Section~$k+204$ here, and statement and equation numbers
+follow the section (its Lemma~2.1, Theorem~2.2, Corollary~2.3 and
+Theorem~3.1, which its \texttt{PROOF\_STATUS.md} cites, are
+Lemma~\ref{lc:lem:compression}, Theorem~\ref{lc:thm:singleton},
+Corollary~\ref{lc:cor:rankthree} and Theorem~\ref{lc:thm:real}). Its
+unlabelled remark gained the label \texttt{lc:rem:order}.
+\item \emph{Research questions.} Source~15 has no question environment.
+Its open problems (Section~\ref{lc:sec:resolves} and the ``Remaining
+questions'' of its \texttt{PROOF\_STATUS.md}: covers split $2+2$ at rank
+four, the first weighted failure rank, general unit-weight and one-shore
+normalization, a rank-only order, formalization) restate Research
+questions~\ref{mr:q:rankfour}, \ref{hb:q:rank}, \ref{hb:q:unit},
+\ref{hb:q:oneshore}, \ref{hb:q:order} and~\ref{hb:q:formal}; they are
+recorded as dated notes on those questions, not as new numbered
+questions, so the numbering of research questions is unchanged.
+\item \emph{Duplicates.} Source~15's Lemma~\ref{lc:lem:ambient} restates
+Part~V's Theorem~\ref{lor:thm:weightedULC}. It is kept with its text,
+proof and label, because Theorem~\ref{lc:thm:singleton} cites it, with a
+merge note naming the earlier statement.
+\item \emph{Self-citations.} Source~15's references ``Rank'' (source~14's
+archive), ``Hall'' (source~13's archive) and ``Root'' (this report, Parts~V
+and~VI) became references to Parts~XII, XI and~VI, with merge notes; their
+bibliographic data are recorded in Section~\ref{lc:sec:source}. ``Root''
+says of Part~VI's block results that they are ``mentioned only for the
+scope comparison, not used in the proofs above'', and source~15's
+\texttt{PROOF\_STATUS.md} says the same; Section~\ref{lc:sec:real} keeps
+this. Its \cite{BH} and \cite{RU} are the report's entries; source~15
+cites R\"ohrle--Ulirsch's arXiv v3 (Theorem~A, Example~2.4 and the
+Lorentzian proof of its Section~4), the report the journal version.
+\item \emph{Renamings and macros.} $L\to\Lambda$, $B\to C_Y$ and
+\verb|\nuG|$\,\to\nu(G)$ (Section~\ref{lc:sec:notation}). Its \verb|\ULC|
+is the report's (both \verb|\operatorname|); nothing was added to the
+preamble.
+\item \emph{Labels.} Its ten labels carry the prefix \texttt{lc:} (``leaf
+compression''); this section, its subsections and its notation table,
+the five source sections and the remark gained labels.
+\item \emph{Layout.} Its preamble, title, date and \verb|\maketitle| are
+dropped; its abstract and its ``Status and scope'' paragraph are printed
+in Section~\ref{lc:sec:source}. The one undefined symbol of its
+Section~3, the activities $w_i$, is explained in a merge note.
+\item \emph{File names.} Section~\ref{lc:sec:verification} keeps the
+delivery names, with a merge note giving the shipped ones.
+\end{itemize}
+
+\section{Definitions and the weighted input}
+\label{lc:sec:definitions}
+Let $G=(X,Y;E)$ be a finite simple bipartite graph. For vertex activities $u_x,v_y>0$, put
+\[
+ p_G(t;u,v)=\sum_{k\ge0}a_k t^k,
+ \qquad
+ a_k=\sum_{\substack{I\subseteq X,\ J\subseteq Y\\ |I|=|J|=k\\ G[I,J]\text{ has a perfect matching}}}
+ \prod_{x\in I}u_x\prod_{y\in J}v_y.
+\]
+Each pair $(I,J)$ is counted once, independently of its number of perfect matchings. Thus $p_{K_{2,2}}(t;\mathbf1,\mathbf1)=1+4t+t^2$.
+For positive activities, $\deg p_G=r:=\nu(G)$, the maximum matching size, and every coefficient from $a_0$ to $a_r$ is positive.
+[Merge note: this is Part~V's $A_H(t;u,v)$ of
+display~\eqref{lor:eq:weighted} for $H=G$, and at unit activities
+Part~XII's $p_G$ of display~\eqref{mr:eq:support}.]
+
+A polynomial of degree at most $D$ with nonnegative coefficients is $\ULC_D$ if its binomially normalized sequence $a_k/\binom Dk$, padded by zeros through $D$, is log-concave and has no internal zeros. For the support polynomials considered here, which have no internal zeros, this is equivalent to
+\begin{equation}\label{lc:eq:margin}
+ k(D-k)a_k^2\ \ge\ (k+1)(D-k+1)a_{k-1}a_{k+1}
+ \qquad(1\le k<D).
+\end{equation}
+The following weighted input is established in the existing repository and follows from the standard Lorentzian theory \cite{BH,RU}.
+
+\begin{lemma}[Weighted smaller-shore inequality]\label{lc:lem:ambient}
+If $m=|X|$ and $n=|Y|$, then $p_G(t;u,v)$ is $\ULC_{\min(m,n)}$.
+\end{lemma}
+\begin{proof}
+Introduce a private element $\bar x$ for each $x\in X$. On $\bar X\sqcup Y$ take the transversal matroid whose elements are matched into $X$, with $\bar x$ adjacent only to $x$, and $y$ adjacent to its neighbours in $G$. Its bases are exactly
+\[
+ \{\bar x:x\in X\setminus I\}\sqcup J
+\]
+for feasible support pairs $(I,J)$. If $B$ is its homogeneous basis polynomial, then
+\[
+ \left(\prod_{x\in X}u_x\right)
+ B\big((s/u_x)_{x\in X},(tv_y)_{y\in Y}\big)
+ =\sum_{k=0}^r a_k s^{m-k}t^k.
+\]
+Matroid basis polynomials are Lorentzian, and nonnegative linear substitutions preserve this property. The bivariate degree-$m$ characterization is precisely $\ULC_m$. Transposing the graph also gives $\ULC_n$, so the smaller of these two orders applies. These are the established Lorentzian facts used in the proof. For unit activities the conclusion is also the relation case of R\"ohrle--Ulirsch's Theorem A and Example 2.4 \cite{RU}.
+\end{proof}
+[Merge note: Lemma~\ref{lc:lem:ambient} is Part~V's
+Theorem~\ref{lor:thm:weightedULC} (sources~06, 07 and~09), and its proof is
+Part~V's display~\eqref{lor:eq:weightedhom}; ``the existing repository''
+is this report. The basis polynomial written $B$ here is Part~V's
+$\mathcal B_H$, not the cover part $C_Y$ below.]
+
+\section{Exact compression and the main theorem}
+\label{lc:sec:compression}
+\begin{lemma}[Weighted leaf compression]\label{lc:lem:compression}
+Let $\Lambda\subseteq Y$ be a nonempty set of vertices, all with neighbourhood exactly $\{x_0\}$. Replace $\Lambda$ by a single vertex $y_*$ adjacent to $x_0$, with activity
+\[
+ v_*:=\sum_{y\in \Lambda}v_y.
+\]
+Keep every other vertex, edge and activity. The resulting graph $G_*$ satisfies
+\[
+ p_{G_*}(t;u,v_*)=p_G(t;u,v).
+\]
+In particular, with positive activities it has the same matching rank.
+\end{lemma}
+\begin{proof}
+No feasible support can contain two vertices of $\Lambda$, since both would have to be matched to $x_0$. Supports containing none are unchanged. Fix a left support $I$ and a right support $J_0\subseteq Y\setminus \Lambda$. For every $y\in \Lambda$, feasibility of $(I,J_0\cup\{y\})$ is equivalent to feasibility of $(I,J_0\cup\{y_*\})$ in $G_*$. Indeed, the edge incident with the selected leaf is forced to use $x_0$, and replacing its leaf endpoint changes no other edge of a perfect matching. The total weight of the original alternatives is
+\[
+ u_Iv_{J_0}\sum_{y\in \Lambda}v_y=u_Iv_{J_0}v_*.
+\]
+Their degree is unchanged. Summing proves the polynomial identity. The equality of matching ranks follows either from this identity and positivity, or directly by replacing the leaf edge in a matching.
+\end{proof}
+
+\begin{theorem}[A minimum cover with a singleton shore]\label{lc:thm:singleton}
+Let $G$ have matching rank $r$ and a minimum vertex cover
+\[
+ C=\{x_0\}\sqcup C_Y,
+ \qquad x_0\in X,\quad C_Y\subseteq Y,\quad |C_Y|=r-1.
+\]
+Then $p_G(t;u,v)$ is $\ULC_r$ for arbitrary positive activities on both shores. The same conclusion holds after exchanging the shores, and when a minimum cover lies entirely on one shore.
+\end{theorem}
+\begin{proof}
+Delete isolated vertices, which never occur in a nonempty feasible support. Every vertex of $Y\setminus C_Y$ now has neighbourhood exactly $\{x_0\}$: an edge from such a vertex to $X\setminus\{x_0\}$ would avoid the cover. This leaf class is nonempty. Otherwise the whole active right shore would be contained in $C_Y$, contradicting $\nu(G)=r>|C_Y|$.
+
+Compress this class by Lemma~\ref{lc:lem:compression}. The new right shore is $C_Y\sqcup\{y_*\}$, with exactly $r$ vertices, and the new matching rank is still $r$. Its left shore therefore has at least $r$ vertices. Lemma~\ref{lc:lem:ambient} gives $\ULC_r$ for its polynomial, which is the original polynomial. If the minimum cover lies wholly on one shore, all other vertices on that shore are isolated; delete them and apply Lemma~\ref{lc:lem:ambient} directly.
+\end{proof}
+
+\begin{corollary}[Weighted rank three]\label{lc:cor:rankthree}
+For every bipartite graph of matching rank $r\le3$, and arbitrary positive vertex activities, $p_G(t;u,v)$ is $\ULC_r$. In particular, when $r=3$,
+\[
+ a_1^2\ge3a_2,
+ \qquad a_2^2\ge3a_1a_3.
+\]
+The same assertion holds for nonnegative activities when $r$ is interpreted as the degree of the resulting support polynomial.
+\end{corollary}
+\begin{proof}
+By K\H{o}nig's matching--cover theorem there is a vertex cover of size $r$. If $r\le3$, it either lies on one shore or has a singleton intersection with one shore. Apply Theorem~\ref{lc:thm:singleton}. Ranks zero and one are immediate.
+
+For nonnegative activities, delete all zero-activity vertices. Their nonempty supports contribute zero, so this deletion preserves the polynomial. The remaining activities are positive and the new matching rank is its degree, at most three. Apply the positive assertion to this graph.
+\end{proof}
+[Merge note: at unit activities this is Part~XII's
+Theorem~\ref{mr:thm:rankthree}, whose mixed-cover step is the
+sum-of-squares identity~\eqref{mr:eq:sos}; here the mixed case
+$\{x_0\}\sqcup C_Y$ is reduced by compression to Part~V's
+theorem with a shore of size three. For $r\le2$ it is Part~XI's
+Corollary~\ref{hb:cor:smallrank}. It answers Part~XII's Research
+question~\ref{mr:q:weighted} (Section~\ref{lc:sec:answers}).]
+
+\begin{remark}[The order in a zero-activity limit]\label{lc:rem:order}
+For the general rank-$r$ statement of Theorem~\ref{lc:thm:singleton}, continuity always preserves $\ULC_r$ under nonnegative activities. Continuity alone does not replace $r$ by a possibly smaller surviving degree. Corollary~\ref{lc:cor:rankthree} makes that replacement by deleting zero-activity vertices and reapplying the theorem, rather than by an invalid change of normalization order.
+\end{remark}
+
+\section{An elementary real root argument for the mixed rank three class}
+\label{lc:sec:real}
+The next strengthening is included for its direct proof. Its conclusion is also available from the existing report: a graph covered by one left and two right vertices has only edge blocks and complete bipartite blocks $K_{2,q}$. Part VI's complete-bipartite stability and block-locality results imply weighted real-rootedness. We therefore do not claim this consequence as a new structural classification.
+[Merge note: source~15 cites this report (``Root'') here. The results
+are Part~VI's Theorem~\ref{ade:mat:thm:biclique} and
+Corollaries~\ref{ade:mat:cor:blocks}
+and~\ref{ade:mat:cor:block-family}, stated for the multivariate signed
+support polynomial, whose real stability specializes to real-rootedness
+under positive activities. Source~15's reference adds that these
+unrefereed block results ``are mentioned only for the scope comparison,
+not used in the proofs above''.]
+
+\begin{theorem}\label{lc:thm:real}
+Suppose $G$ has a vertex cover $\{x_0\}\sqcup\{y_1,y_2\}$, with $x_0$ on one shore and $y_1,y_2$ on the other. For every choice of positive vertex activities, all zeros of $p_G$ are real and negative.
+\end{theorem}
+\begin{proof}
+Disregard isolated vertices outside the displayed cover, and separate the other left vertices according to their neighbourhoods $\{y_1\}$, $\{y_2\}$ and $\{y_1,y_2\}$. Let the sums of their activities be $a,b,c$, respectively. In the third class let
+\[
+ d=\sum_{i<j}w_iw_j,
+ \qquad 0\le d\le c^2/2.
+\]
+[Merge note: $w_i$ are the activities of the left vertices of the third
+class, so that $c=\sum_iw_i$; the source leaves them unnamed.]
+Let $h$ be the activity at $x_0$, let $y,z$ be the activities at $y_1,y_2$, and let $T$ be the sum of the activities of the right leaves outside the cover. Let $\epsilon,\delta\in\{0,1\}$ indicate the two possible core edges. Set
+\begin{align*}
+ A&=a+c,& B&=b+c,& q&=ab+ac+bc+d,\\
+ D&=yA+zB,& Q&=yzq,& C&=\epsilon y+\delta z,\\
+ F&=yz\big(\epsilon B+\delta A-\epsilon\delta c\big).
+\end{align*}
+Counting supports by their selected core vertices gives
+\begin{equation}\label{lc:eq:cubic}
+ p_G(t)=(1+hTt)(1+Dt+Qt^2)+ht(C+Ft).
+\end{equation}
+The subtraction in $F$ counts a support only once when both core edges and a common outside neighbour are present.
+
+Write $f(t)=1+Dt+Qt^2$ and $g(t)=C+Ft$. First,
+\begin{equation}\label{lc:eq:disc}
+ D^2-4Q=(yA-zB)^2+4yz(c^2-d)\ge0.
+\end{equation}
+For $C>0$ the linear polynomial $g$ interlaces $f$. It is enough to check
+\begin{equation}\label{lc:eq:interlace}
+ CFD-F^2-QC^2\ge0,
+\end{equation}
+since $F^2 f(-C/F)=F^2-DCF+QC^2$ when $F>0$.
+When $(\epsilon,\delta)=(1,0)$, the left side of \eqref{lc:eq:interlace} is $y^3z(c^2-d)$; the case $(0,1)$ is $yz^3(c^2-d)$. When both core edges are present it equals
+\begin{equation}\label{lc:eq:sos}
+ yz\left[
+ \left(ay-bz+\frac c2(y-z)\right)^2
+ +\left(\frac{3c^2}{4}-d\right)(y+z)^2
+ \right]\ge0.
+\end{equation}
+Thus both claims follow from explicit nonnegative expressions.
+
+In the nondegenerate case $Q,T>0$, and with strict interlacing, let the distinct negative roots of $f$ be $\rho_1<\rho_2$. Interlacing and the positive leading coefficient of $g$ give
+\[
+ \frac{g(t)}{f(t)}=
+ \frac{\lambda_1}{t-\rho_1}+\frac{\lambda_2}{t-\rho_2},
+ \qquad \lambda_1,\lambda_2>0.
+\]
+Consequently
+\[
+ \frac{p_G(t)}{tf(t)}=hT+\frac1t+
+ h\frac{\lambda_1}{t-\rho_1}+h\frac{\lambda_2}{t-\rho_2}
+\]
+is strictly decreasing between its three poles. It has one zero in each of $(-\infty,\rho_1)$, $(\rho_1,\rho_2)$ and $(\rho_2,0)$, by the endpoint limits. These are the three zeros of $p_G$.
+If $C=F=0$, \eqref{lc:eq:cubic} is already a product of real-rooted factors. Repeated roots, weak interlacing and missing exterior classes follow by limits. To make the last statement concrete, add two distinct common neighbours with positive activities tending to zero, and if necessary one right leaf with positive activity tending to zero. This ensures $Q,T>0$. This yields strict \eqref{lc:eq:disc}--\eqref{lc:eq:interlace} whenever a core edge is present. Real-rooted polynomials form a coefficientwise closed class; the constant term remains one and all coefficients are nonnegative, so no finite zero is zero or positive.
+\end{proof}
+[Merge note: at unit activities ($h=y=z=1$ and every $w_i=1$)
+display~\eqref{lc:eq:cubic} is Part~XII's mixed-cover
+formula~\eqref{mr:eq:mixedcoeff}: Part~XII's populations $x,y,z,w$, its
+indicators $\alpha,\beta$ and its $A,B,C,e$ are $a,b,c,T$, $\epsilon,\delta$
+and $D,Q,F,C$ here, with $d=\binom c2$. The correction $-\epsilon\delta c$
+in $F$ is the weighted form of the subtraction $\alpha\beta z$ that
+Part~XII's Research question~\ref{mr:q:weighted} names as a next step. The identity~\eqref{lc:eq:sos} is a different identity from
+Part~XII's~\eqref{mr:eq:sos}: it certifies interlacing, not the
+rank-normalized inequality.]
+
+\section{What this resolves and what remains}
+\label{lc:sec:resolves}
+The incoming manuscript (source~14, now Part~XII) proves the unit-weight rank-three theorem and explicitly poses the extension to nonuniform activities in its question ``Weighted rank three''. Corollary~\ref{lc:cor:rankthree} answers that question. Its second inequality requires no new population sum-of-squares certificate once the leaf class is compressed.
+[Merge note: ``the incoming manuscript'' is source~14, printed as
+Part~XII since batch~70 (Section~\ref{lc:sec:source}); its question is
+Research question~\ref{mr:q:weighted} and its rank-three theorem
+Theorem~\ref{mr:thm:rankthree}.]
+
+The same manuscript lists $0+4$, $1+3$ and $2+2$ minimum-cover types for its rank-four program. Theorem~\ref{lc:thm:singleton} settles every $1+3$ case, with arbitrary activities; the $0+4$ case was already covered by the smaller-shore input. Only the $2+2$ minimum-cover configurations can obstruct the weighted rank-four statement.
+[Merge note: this is Part~XII's Research question~\ref{mr:q:rankfour};
+the same reduction holds at unit weights (Section~\ref{lc:sec:answers}).]
+
+More generally, any failure of rank-normalized ULC under positive activities must have \emph{every} minimum cover meet both shores in at least two vertices. The Hall-bottleneck report (source~13, now Part~XI) constructs weighted failures of rank six and leaves the first failure rank in $\{3,4,5,6\}$. The present corollary narrows this set to $\{4,5,6\}$. This does not settle the unrestricted unit-weight or one-shore-only questions.
+[Merge note: the Hall-bottleneck report is source~13, printed as
+Part~XI since batch~68: its rank-six failures are
+Theorem~\ref{hb:thm:rank6phase}, the rank-eight witness is
+Theorem~\ref{hb:thm:witness}, and the rank range is its Research
+question~\ref{hb:q:rank}. The unit-weight and one-shore questions are
+Research questions~\ref{hb:q:unit}, \ref{mr:q:allrank}
+and~\ref{hb:q:oneshore}. Section~\ref{lc:sec:consistency} checks that
+Part~XI's failures meet the condition of the first sentence.]
+
+The compression does not extend to an arbitrary twin class. Vertices with a common neighbourhood of size two can occur together in a support, so their second elementary symmetric function matters. Replacing them by one vertex would erase these supports. The proof uses, specifically, a neighbourhood of size one.
+[Merge note: the simplest instance is $K_{2,2}$, whose support
+polynomial $1+4t+t^2$ would become $1+4t$ after merging the two vertices
+of one shore into one vertex of the summed activity (the batch-71
+placement dossier's check). This sharpens the commentary after
+Research question~\ref{mr:q:weighted}; see the dated note there.]
+
+\section{Verification and reproducibility}
+\label{lc:sec:verification}
+The accompanying standard-library Python script independently enumerates feasible endpoint sets, storing right endpoint sets as sets so multiple matchings never create multiplicity. It verifies:
+\begin{itemize}
+\item exact polynomial preservation for 600 weighted graphs with a displayed singleton-side cover, including 235 whose matching rank equals its cover size;
+\item rank-normalized inequalities for all 4096 graphs on a fixed $4\times3$ bipartition with nonuniform integer activities;
+\item the cubic formula, interlacing inequalities and ULC for 500 additional randomly generated weighted mixed-cover graphs.
+\end{itemize}
+All checks pass, with fixed seed $314159265$. Run \texttt{python3 verify.py}; the result is written to \texttt{verification.json}. These are exact regression checks, not the proof of the universal claims. The manuscript can be rebuilt using two runs of \texttt{pdflatex article.tex}.
+[Merge note: the script is shipped as
+\nolinkurl{code/15-leaf-compression-verify.py} and its record as
+\nolinkurl{data/15-leaf-compression-verification.json}. The script writes
+\nolinkurl{verification.json} beside itself, which in \nolinkurl{code/}
+would add an unprefixed file; run it on a copy, as the README describes.
+Run so on 30 September 2026 it exited with status~0, and its output,
+after line endings were normalized, equals the shipped record. The
+activities of the 600 compression checks and the 500 mixed-cover checks
+are random integers from 1 to 9 and from 1 to 8, respectively, and the 4,096 graphs on the
+$4\times3$ bipartition carry the activities $2,3,5,7$ and $11,13,17$. The
+manuscript \nolinkurl{article.tex} is not shipped; the shipped
+\nolinkurl{code/15-leaf-compression-build_local.sh}, a wrapper for one
+TeX~Live installation, builds it and cannot be used here. The batch-71
+placement dossier rechecked Corollary~\ref{lc:cor:rankthree} with an
+independent enumerator on 1,973 random graphs of matching number at most
+three with activities from $1/500$ to $10^4$, Lemma~\ref{lc:lem:compression}
+on 300 random graphs and Theorem~\ref{lc:thm:singleton} on 237 graphs of
+matching number four with a $1+3$ minimum cover, all without failure;
+that check is not shipped.]
+% End of Part XIII (batch 71).
 
 \appendix
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
@@ -24248,7 +24941,9 @@ F. R\"ohrle and M. Ulirsch,
 published online 14 August 2025. doi:10.1007/s00026-025-00780-z;
 \arxiv{2402.15317} (v1 23 February 2024, v3 6 August 2025).
 Theorem~A, Proposition~2.2, Example~2.4 and Theorem~E are used as
-identified in the text; Part~XII also uses Example~2.3.
+identified in the text; Part~XII also uses Example~2.3. Part~XIII
+(source~15) cites the arXiv v3 for Theorem~A, Example~2.4 and the
+Lorentzian proof of its Section~4.
 
 \bibitem{BH}
 P. Br\"and\'en and J. Huh,
