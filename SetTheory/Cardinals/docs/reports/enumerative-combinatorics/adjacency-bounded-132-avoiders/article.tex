@@ -179,6 +179,12 @@ phase amplitude, $\mathbb P(M_n\le\lfloor\theta n\rfloor)\sim
 \varkappa_pI_p(\theta)n^{-(p-1)/2}$ for $1/p<\theta<1/(p-1)$, and the
 crossover limit $\mathfrak K_r+\mathfrak L_rt_+^{r-1}$ at every $1/r$;
 Part~VII's theorems are its first cases.
+
+\emph{Addition of 1 October 2026 (batch 72).} Part~IX, merged from six
+manuscripts, takes $m\to\infty$ with $n/m\to\infty$: uniformly for
+$n\ge c_0m\log m$, $\log\mathbb P(M_n\le m)=-(n/m)t_m+O(n(\log m)^2/m^2+\log n)$,
+with relative equivalents (a saddle sum, a theta modulation, Gamma sums) where
+$n(\log m)^2/m^2\to0$.
 \end{abstract}
 \newpage% batch 72: the abstract fills the title page; the scope box and the companion-archive line form page 2
 \begin{resultbox}
@@ -189,6 +195,16 @@ are the all-$m$ strict comparison and the refined asymptotic bounds. A targeted
 literature check found no later resolution of the strict inequality in the
 sources inspected. This is a research proof with reproducible checks, not a
 claim of external peer review or an exhaustive novelty certification.
+\par\smallskip\phantomsection\label{jg:rem:li}%
+\emph{Added 1 October 2026, batch 72.} A.~C.~Li publicly announced on
+8 September 2026, eleven days before this Part's date, a proof that the
+exponential growth constants are strictly increasing in $m$, the
+strict-inequality part of Nadler's Conjecture~2 that Part~I
+proves~\cite{jg:Li} (abstract inspected, full manuscript not inspected).
+Part~I does not cite it, its proof does not use it, and the sources inspected
+by its literature check did not include it. The strict inequality is therefore
+not claimed as first proved here. This records an earlier external
+announcement; it is not a retraction (\cref{jg:sec:li}).
 \end{resultbox}
 \vfill
 {\small\sffamily\color{InkGray}Companion archive: editable \texttt{article.tex}, compiled PDF,
@@ -2518,7 +2534,7 @@ fixed-$m$ spectral information into estimates with useful error constants as
 $m$ grows. This is distinct from the scalar root's own simple zero, which
 follows immediately from $K_m'(r_m)>0$.
 
-\subsection{Joint growth of length and adjacency bound}
+\subsection{Joint growth of length and adjacency bound}\label{jg:sec:crem-joint}% batch 72
 Study $a_n^{(m(n))}/C_n$ when $m=m(n)$ grows with $n$. The fixed-$m$ limit
 used here is not automatically uniform, so substituting $m(n)$ into
 $\alpha_m^n$ is not justified. Candidate regimes should compare the
@@ -2553,6 +2569,16 @@ fixed $0<\theta\le1/3$ as well, $\varkappa_pI_p(\theta)n^{-(p-1)/2}$ in the
 phase $1/p<\theta\le1/(p-1)$ (\cref{gc:thm:phase}), so every fixed
 $0<\theta<1$ now has one; the interpolation with the fixed-$m$ regime stays
 open.]
+[Added 1 October 2026, batch 72: Part~IX treats the side $m\to\infty$,
+$n/m\to\infty$, each theorem with an explicit range of uniformity: a
+logarithmic bridge $\log(a_n^{(m)}/C_n)=n\log(\alpha_m/4)+O(n(\log m)^2/m^2+\log n)$
+for all $n\ge c_0m\log m$ (\cref{jg:lb:thm:bridge}), so that substituting
+$m(n)$ into $\alpha_m^n$ is justified there at logarithmic precision; relative
+equivalents whenever also $n(\log m)^2/m^2\to0$
+(\cref{jg:ss:thm:main,jg:ss:thm:cubic}); and Gamma-sum equivalents below and
+at $m\log m$ (\cref{jg:ic:thm:main,jg:gm:thm:ordinary}). A relative
+equivalent for $n(\log m)^2/m^2\not\to0$ and the regime of bounded
+$\lceil(n-1)/m\rceil$ stay open (\cref{jg:sec:research}).]
 
 \subsection{Renewal comparisons for other constrained tree classes}
 The reset identity \cref{crem:lem:reset} is not specifically Catalan. It
@@ -4328,6 +4354,13 @@ Parts~I and~II (\cref{sec:remaining,crem:sec:future}). Study whether a two-param
 between the fixed-$m$ spectral regime and the boundary regime here.
 Any proposed interpolation must specify its uniform error before taking
 a moving-bound limit; fixed-parameter rationality alone is insufficient.
+[Added 1 October 2026, batch 72: from the growing-cap side, Part~IX connects
+the fixed-$m$ rate with moving bounds: uniformly for $n\ge c_0m\log m$,
+$\log\ljP(M_n\le m)=n\log(\alpha_m/4)+O(n(\log m)^2/m^2+\log n)$
+(\cref{jg:lb:thm:bridge}), with relative equivalents where
+$n(\log m)^2/m^2\to0$ (\cref{jg:sec:answer}). It does not decide the
+component question, and no interpolation down to the boundary regime is
+proved.]
 
 \section{Proof audit, scope, and conclusion}
 \label{lj:sec:audit}
@@ -7057,6 +7090,11 @@ regimes with $m\to\infty$, $m/n\to0$. The lower-bound hierarchy suggests that
 the required number of large components itself grows, so a fixed-depth
 renewal expansion may cease to be uniform. (Compare Part~III's
 Section~\ref{lj:sec:q-reconnect}.)
+[Added 1 October 2026, batch 72: answered in Part~IX on the ranges of
+\cref{jg:tab:ranges}: for $m\to\infty$, $n/m\to\infty$ the number of large
+components does grow, like $(n-1)/m$, and explicit equivalents hold from
+$1\ll n/m\ll\log m$ up to $n(\log m)^2/m^2\to0$, with a logarithmic bridge to
+the fixed-$m$ rate beyond (\cref{jg:sec:answer}).]
 
 \subsection{Weighted refinements}
 \emph{Manuscript~11.} Extend the rare-event profile to avoiders weighted by
@@ -10856,6 +10894,16 @@ explicit is a prerequisite for connecting the present theorem with the
 report's fixed-bound growth-constant theory (Parts~I and~II). (This is
 Part~IV's question \cref{pr:sec:mj-bridge}, and Part~III's
 \cref{lj:sec:q-reconnect} from the other end.)
+[Added 1 October 2026, batch 72: answered in Part~IX for $q\approx n/m\to\infty$.
+A few-pieces description with one or two Gamma terms survives while
+$q=o(\log m)$, outside a phase window near integers
+(\cref{jg:gm:thm:ordinary,jg:gm:thm:transition}), and with a bounded number of
+Gamma terms at $q\asymp\log m$ (\cref{jg:ic:thm:main}); from
+$n\ge c_0m\log m$ on, a saddle sum over the cluster count is the right language
+(\cref{jg:ss:thm:main}), with a theta modulation above $m(\log m)^{3/2}$
+(\cref{jg:ss:thm:cubic}); and the fixed-$m$ spectral rate governs at
+logarithmic precision for all $n\ge c_0m\log m$ (\cref{jg:lb:thm:bridge}).
+Bounded $q$ with $m/n$ not converging stays open (\cref{jg:sec:q-bounded}).]
 
 \subsection{Effective bounds and improved lower subclasses}
 \label{pr:sec:q-effective}
@@ -13264,12 +13312,20 @@ and find the range of growing indices on which the few-pieces description
 survives. The endpoint-prefix mass $2^{p-2}(p+1)$ and the factor $\varkappa_p$
 are explicit, but the cutoffs $\varepsilon$, $\varepsilon'$ and the tilt
 depend on the index. (Part~VI's \cref{pr:sec:q-growing}.)
+[Added 1 October 2026, batch 72: for a growing index Part~IX proves
+equivalents when $\lceil(n-1)/m\rceil\to\infty$
+(\cref{jg:gm:thm:ordinary,jg:gm:thm:transition,jg:ic:thm:main}); a bounded
+index with $m/n$ not converging stays open (\cref{jg:sec:q-bounded}).]
 
 \subsection{The bridge to the fixed-bound spectral regime}
 \label{gc:sec:q-spectral}
 Connect the fixed-fraction theorems with the fixed-$m$ growth constants of
 Parts~I and~II as $m/n\to0$. (Part~VI's \cref{pr:sec:q-growing}, Part~IV's
 \cref{pr:sec:mj-bridge}, Part~III's \cref{lj:sec:q-reconnect}.)
+[Added 1 October 2026, batch 72: answered in Part~IX as $m/n\to0$: at
+logarithmic precision for all $n\ge c_0m\log m$ (\cref{jg:lb:thm:bridge}),
+and by relative equivalents while $n(\log m)^2/m^2\to0$
+(\cref{jg:sec:answer}).]
 
 \subsection{The whole conditioned permutation}
 \label{gc:sec:q-whole}
@@ -13285,6 +13341,3240 @@ manuscript leaves unanswered.)
 Evaluate $I_p(\theta)$ and $\mathfrak K_r$ in closed form beyond $p\le4$ and
 $r\le3$, or show that the pair-convolution method stops there. (The merge's
 question: the manuscript evaluates only $I_3(1/2)$ and $I_4(1/3)$.)
+%% ====================================================================
+%% Part IX (batch 72): manuscripts 36, 33, 30, 27, 24 and 22 of batch 72,
+%% merged. All labels of Part IX carry the prefix jg: (joint growth);
+%% delivered labels carry a sub-prefix naming their manuscript: jg:lb: (36),
+%% jg:ra: (33), jg:tb: (30), jg:ic: (27), jg:ss: (24), jg:gm: (22).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part IX.\quad Growing adjacency caps}
+\addcontentsline{toc}{part}{Part IX.\texorpdfstring{\quad}{ } Growing adjacency caps}
+
+\noindent\emph{Part~IX was added on 1 October 2026 in batch~72 of ProveIt's
+incoming-report intake, merged from six manuscripts written the same day.
+Part~II asked for the joint growth of length and adjacency bound and warned
+that its fixed-$m$ constants are not uniform
+(\cref{jg:sec:crem-joint}); Parts~III--VIII answered the side where $m/n$
+stays bounded below. Part~IX treats the other side, $m\to\infty$ with
+$n/m\to\infty$. For every fixed $c_0>0$ it proves, uniformly for
+$n\ge c_0m\log m$, the logarithmic bridge
+$\log\ljP(M_n\le m)=-(n/m)t_m+O(n(\log m)^2/m^2+\log n)$ to Part~II's scalar
+rate $t_m$, with no upper restriction on $n$ (\cref{jg:lb:thm:bridge}); one
+positive saddle sum for the squared-renewal envelope on the same range, and for
+$a_n^{(m)}$ itself when $n(\log m)^2/m^2\to0$ (\cref{jg:ss:thm:main}); a
+theta-function modulation of the equivalent that is needed down to
+$n\asymp m(\log m)^{3/2}$, with a cubic correction there
+(\cref{jg:ss:thm:cubic}); and explicit Gamma-sum equivalents on
+$n\asymp m\log m$ (\cref{jg:ic:thm:main}) and on $1\ll n/m\ll\log m$
+(\cref{jg:gm:thm:ordinary,jg:gm:thm:transition}). The six main theorems nest
+or continue one another, and four tools are proved in several of them; each is
+printed once, with its sources named, and the genuinely different proofs are
+kept as marked second routes.}
+
+\section{Provenance, conventions and the answer}
+\label{jg:sec:intro}
+
+\subsection{Six manuscripts, one addition}
+\label{jg:sec:source}
+Part~IX is built from six AI-assisted research manuscripts of batch~72, all
+dated 1 October 2026, all with the byline ``Research note prepared for
+Vladimir Reshetnikov with OpenAI'', and all pinned to ProveIt commit
+\texttt{7421a4ca6}, at which this report's \texttt{article.tex} had the blob
+\texttt{b9697af6c8} and contained Parts~I--VII as printed (the report did not
+change between the pin and the placement). They arrived in commit
+\texttt{1512ef835} and were placed in commit \texttt{9e6b04645}.
+\Cref{jg:tab:sources} lists them in the order in which they were written (the
+times of their archive entries), which is also their order of dependence: each
+cites only earlier ones. Their code, data, source ledgers and checks READMEs
+are shipped with the prefixes of the table, continuing the report's local
+sequence after Part~VIII's \path{09-general-crossovers-}. Their manuscripts,
+PDFs, delivery READMEs, checksum ledgers (all verified at placement) and
+\TeX{} build transcripts are not shipped and survive in the arrival commit;
+two of them, manuscripts~36 and~33, also delivered a \path{model.py} that is
+byte-identical to Part~VI's \path{code/07-polynomial-rarity-model.py} (Git blob
+\texttt{a4fdee3761}), which is not shipped again (\cref{jg:sec:checks}).
+
+\begin{table}[htbp]
+\centering\footnotesize
+\caption{The six sources of Part~IX. ``Ms.'' is the manuscript number in
+batch~72; ``Src.'' the report's local source number (Part~VIII is
+source~09). Pages are those of the delivered A4 PDFs.}
+\label{jg:tab:sources}
+\begin{tabular}{@{}>{\raggedright}p{.045\linewidth}>{\raggedright}p{.04\linewidth}>{\raggedright}p{.29\linewidth}>{\raggedright}p{.29\linewidth}>{\raggedright\arraybackslash}p{.22\linewidth}@{}}
+\toprule
+Src. & Ms. & Title (pages; written, UTC) & Archive; main file & Prefix; labels\\
+\midrule
+10 & 36 & \emph{A Uniform Logarithmic Bridge for Adjacency-Bounded
+ $132$-Avoiders} (8; 00:46--01:07) &
+ \path{Uniform_132_Avoider_Spectral_Bridge_Package.zip};
+ \path{uniform_avoider_spectral_bridge.tex} &
+ \path{10-logarithmic-bridge-}; \texttt{jg:lb:}\\
+11 & 33 & \emph{A Relative Asymptotic for Adjacency-Bounded $132$-Avoiders}
+ (7; 01:21--01:32) & \path{Relative_132_Avoider_Asymptotic_Package.zip};
+ \path{relative_avoider_asymptotic.tex} &
+ \path{11-relative-asymptotic-}; \texttt{jg:ra:}\\
+12 & 30 & \emph{Theta Modulation at the $132$-Avoider Renewal Boundary}
+ (7; 01:37--01:48) & \path{Theta_132_Avoider_Boundary_Package.zip};
+ \path{theta_avoider_boundary.tex} & \path{12-theta-boundary-};
+ \texttt{jg:tb:}\\
+13 & 27 & \emph{Integer-Count Transitions for $132$-Avoiders at the
+ $m\log m$ Scale} (8; 02:06--02:20) &
+ \path{Integer_Count_132_Avoider_Asymptotic_Package.zip};
+ \path{integer_count_avoider_asymptotic.tex} &
+ \path{13-integer-count-}; \texttt{jg:ic:}\\
+14 & 24 & \emph{Uniform Saddle Sums for Bounded Gap $132$ Avoiders}
+ (9; 02:42--02:52) & \path{Uniform_132_Avoider_Saddle_Sum_Package.zip}
+ (no inner directory); \path{uniform_avoider_saddle_sum.tex} &
+ \path{14-saddle-sum-}; \texttt{jg:ss:}\\
+15 & 22 & \emph{Growing Macro Counts for Bounded Gap $132$ Avoiders}
+ (8; 03:05--03:19) & \path{Growing_Macro_132_Avoider_Counts_Package.zip}
+ (no inner directory); \path{sublogarithmic_avoider_counts.tex} &
+ \path{15-growing-macro-counts-}; \texttt{jg:gm:}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+What each contributes, and where it is printed:
+\begin{itemize}
+\item \emph{Manuscript~36} (the bridge): the squared-renewal coefficient
+ majorant (\cref{jg:lb:prop:upper}), a negative-tilt cluster law on Part~I's
+ block kernel (\cref{jg:sec:llt}), the uniform logarithmic bridge and its sharp
+ constant (\cref{jg:lb:thm:bridge,jg:lb:cor:sharp}), and a Fourier-free
+ two-term version (\cref{jg:lb:prop:elementary}).
+\item \emph{Manuscript~33} (the relative equivalent): the relaxed class whose
+ counts are the squared envelope (\cref{jg:sec:majorant}), the cluster scales
+ and the summable pointwise deviation bound (\cref{jg:ra:lem:cluster},
+ \eqref{jg:ra:eq:pointwise}), the cluster-count summation
+ (\cref{jg:ra:prop:renewal}), the good-subclass inequality
+ (\cref{jg:ra:lem:good}), the nearby-root comparison and the unmodulated
+ equivalent $p_n(m)\sim\sqrt\pi\,n^{5/2}m^{-2}e^{-nt_m/m}$ for
+ $m(\log m)^2\ll n\ll m^2/(\log m)^2$ (part~(iii) of \cref{jg:ss:thm:cubic}).
+\item \emph{Manuscript~30} (the theta boundary): the exact finite cluster
+ parameters, the periodic Gaussian $\vartheta$ and its bounds
+ (\cref{jg:tb:lem:theta}), the theta-modulated equivalent for
+ $n\ge c_0m(\log m)^2$ and its lattice-sum proof (parts~(i)--(ii) of
+ \cref{jg:ss:thm:cubic}, \cref{jg:sec:theta-proof}), phase stability under a
+ shortened cap (\cref{jg:tb:lem:stability}), and the boundary limits in which
+ every phase occurs (\cref{jg:tb:cor:boundary}).
+\item \emph{Manuscript~27} (integer counts): compact tilts with a small
+ cutoff, in the general form printed here (\cref{jg:ic:lem:tilts}), a finite
+ saddle sum with controlled overflow, the Gamma equivalent at
+ $n\asymp m\log m$ (\cref{jg:ic:thm:main}), the phase-dependent rate and the
+ integer-count transition (\cref{jg:ic:cor:rate}), and the endpoint-layer route
+ to cap shortening.
+\item \emph{Manuscript~24} (saddle sums): one positive saddle sum for all
+ $n\ge c_0m\log m$ (\cref{jg:ss:thm:main}), the two exact actions in the
+ intermediate band (\cref{jg:ss:thm:two}), and the sharp Gaussian threshold
+ $m(\log m)^{3/2}$ with its cubic boundary (\cref{jg:ss:thm:cubic}).
+\item \emph{Manuscript~22} (growing macro counts): the Catalan-power small-run
+ law (\cref{jg:gm:lem:runs}), the general composition estimate
+ (\cref{jg:gm:lem:composition}), the Gamma equivalent for
+ $1\ll n/m\ll\log m$ and the shrinking transition below an integer
+ (\cref{jg:gm:thm:ordinary,jg:gm:thm:transition}), an endpoint-scale
+ maximal-atom bound, a three-range uniform-integrability argument, and the
+ Gamma-term route to cap shortening.
+\end{itemize}
+Every result, proof, example, remark, limitation and question of the six
+manuscripts is printed. Where several prove the same statement it is printed
+once, in the most general form proved, with every source named; genuinely
+different proofs are kept as marked second routes, and restatements with proof
+sketches are replaced by references (\cref{jg:sec:merge}).
+
+\begin{resultbox}
+\textbf{Status (manuscripts 36, 33, 30, 27, 24 and 22 of batch 72).} The
+theorems of Part~IX have written mathematical proofs. They are ordinary
+mathematical arguments, not proof-assistant formalizations: nothing is Lean-
+or Rocq-verified, nothing has been externally refereed, and no worldwide
+priority is claimed (each manuscript calls its claims ``source-relative'').
+All statements are asymptotic as $m\to\infty$, for fixed constants
+$c_0$, $c_1$, $\delta$; none gives an effective threshold, an error rate for a
+relative equivalent, or uniformity as these constants tend to their limits.
+Every statement about the actual class $a_n^{(m)}$, rather than the scalar
+envelope, needs $n(\log m)^2/m^2\to0$; only the logarithmic bridge of
+manuscript~36 holds without an upper restriction on $n$. The finite checks are
+regressions and diagnostics, several far from the asymptotic regime
+(\cref{jg:sec:checks}).
+\end{resultbox}
+
+\subsection{The questions answered, and the map of ranges}
+\label{jg:sec:answer}
+Part~II's research direction ``Joint growth of length and adjacency bound''
+(\cref{jg:sec:crem-joint}) asks for $a_n^{(m)}/C_n$ when $m$ grows with $n$,
+with ``an explicit range of uniformity before proposing a transition law'', and
+warns that substituting $m(n)$ into $\alpha_m^n$ is not justified. Part~III's
+\cref{lj:sec:q-reconnect}, Part~IV's \cref{pr:sec:mj-bridge}, Part~VI's
+\cref{pr:sec:q-growing} and Part~VIII's \cref{gc:sec:q-index,gc:sec:q-spectral}
+ask the same question from the boundary and bulk sides: which growth of $n/m$
+keeps a few-pieces description, and when do a saddle point or the fixed-$m$
+spectral rate become the right language. Part~IX answers on the following
+ranges, all with $m\to\infty$ (\cref{jg:tab:ranges}); each theorem states its
+own range of uniformity.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Ranges of Part~IX, from small to large $n/m$. Every statement holds
+for the actual count $a_n^{(m)}$ under the extra condition
+$n(\log m)^2/m^2\to0$, except where the envelope or the absence of an upper
+bound is named.}
+\label{jg:tab:ranges}
+\begin{tabular}{@{}>{\raggedright}p{.28\linewidth}>{\raggedright}p{.40\linewidth}>{\raggedright\arraybackslash}p{.24\linewidth}@{}}
+\toprule
+Range & Statement & Source; where\\
+\midrule
+$1\ll n/m\ll\log m$, phase of $(n-1)/m$ away from integers & one Gamma term
+ & 22; \cref{jg:gm:thm:ordinary}\\
+same, just below an integer & two Gamma terms, logistic shares & 22;
+ \cref{jg:gm:thm:transition}\\
+$(n-1)/(m\log m)\in[c_0,c_1]$ & finite Gamma sum; phase-dependent rate & 27;
+ \cref{jg:ic:thm:main,jg:ic:cor:rate}\\
+$n\ge c_0m\log m$ & one positive saddle sum (envelope: no upper bound) & 24;
+ \cref{jg:ss:thm:main}\\
+$n\ge c_0m\log m$, no upper bound & logarithmic bridge to $t_m$ and
+ $\alpha_m$, actual class & 36; \cref{jg:lb:thm:bridge}\\
+$m\log m\ll n\ll m(\log m)^2$ & the two neighbouring counts with exact
+ actions & 24; \cref{jg:ss:thm:two}\\
+$n\asymp m(\log m)^{3/2}$ & cubic correction, factor $\cosh(1/(192c^2))$ &
+ 24; \cref{jg:ss:thm:cubic}\\
+$n\gg m(\log m)^{3/2}$ & theta-modulated equivalent & 24 ($\supset$30,
+ 33); \cref{jg:ss:thm:cubic}\\
+$n\asymp m(\log m)^2$ & every phase of $\vartheta(2\sqrt c,\cdot)$ occurs &
+ 30; \cref{jg:tb:cor:boundary}\\
+$n\gg m(\log m)^2$ & unmodulated equivalent; $(\alpha_m/4)^n$ form & 33
+ ($=$ the $H\to\infty$ case); \cref{jg:ss:thm:cubic}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The answer to Part~II's question is therefore: on $n\ge c_0m\log m$ the
+fixed-cap rate is the right exponential language, at logarithmic precision
+with no upper restriction on $n$ (manuscript~36), and with a relative
+equivalent whenever also $n(\log m)^2/m^2\to0$ (manuscripts~24, 30, 33); the
+number of macroscopic clusters is $\approx n/\mu$ and its lattice structure
+survives as a theta modulation down to $m(\log m)^{3/2}$; below $m\log m$ the
+answer is a few-pieces description with explicit Gamma terms
+(manuscripts~27, 22). Part~IV's remark that ``the number of macroscopic
+components grows'' in this regime (\cref{pr:sec:mj-bridge}) is borne out: it
+is $\lceil(n-1)/m\rceil$ or one more in the Gamma regimes and about $n/\mu$
+above. What stays open is listed in \cref{jg:sec:research}: in particular
+bounded counts $\lceil(n-1)/m\rceil$ with $m\to\infty$ outside Part~VIII's
+fixed-$\theta$ statements, phases near integers outside the specified window,
+uniformity as $\delta,c_0\to0$, the actual class when $n(\log m)^2/m^2\not\to0$
+(the hand-off to the fixed-$m$ Perron regime, where only the logarithmic
+bridge holds), and error rates. Manuscript~36 is thus not superseded by
+manuscript~24: its statement is weaker in precision but has no upper
+restriction on~$n$.
+
+\subsection{Notation and conventions of Part~IX}
+\label{jg:sec:notation}
+The report's $C_n$, $\Cat$, $\Av_n(132)$, $a_n^{(m)}$,
+$p_n(m)=a_n^{(m)}/C_n=\ljP(M_n\le m)$, $\alpha_m$, Part~I's endpoint
+recurrence \eqref{eq:endpoint}, block counts $c_{k,p}$ \eqref{eq:c-def}, block
+polynomial $K_{m,d}$ \eqref{eq:K} and its root $s_{m,d}$, and Part~II's
+$K_m(x)=\sum_{k=1}^mC_{k-1}x^k$, scalar root $r_m$ with $K_m(r_m)=1$,
+$\beta_m=r_m^{-1}$, $t_m=m\log(4r_m)$ \eqref{crem:eq:tm}, partial sums $H_q$
+\eqref{crem:eq:H}, weights $b_k=C_{k-1}4^{-k}$ \eqref{crem:eq:bk} and tail
+$\eps_d=(d+2)2^{-d}$ \eqref{crem:eq:uniform-tail} keep their meanings. All
+logarithms are natural. Part~IX fixes the following conventions
+(\cref{jg:tab:notation}).
+\begin{itemize}
+\item \emph{The envelope.} All six manuscripts write
+ $E_m(n)=[x^n]\,x/(1-K_m(x))^2$. It is printed $\mathfrak E_m(n)$. The
+ tempting false reading is Parts~I--II's centered remainder $E_m$, defined by
+ $m(4-\alpha_m)=2\log m+4\log\log m+E_m$ and tending to $2\log\pi$; the two
+ are unrelated, and $E_m$ has no argument. $\mathfrak E_m(n)$ is also not
+ Part~IV's event $\mathcal E_{n,m}$.
+\item \emph{The periodic Gaussian.} Manuscripts~30 and~24 write $\Theta(H,u)$;
+ it is printed $\vartheta(H,u)$, defined in \eqref{jg:tb:eq:theta}. In
+ Part~IX, as in Parts~VI--VIII, $\Theta(\cdot)$ is always order notation
+ (bounded ratios); $\vartheta$ with two arguments is not Part~V's logarithmic
+ scale $\vartheta_n$.
+\item \emph{Clusters.} The tilted weights $p_k$ are split at a cutoff into a
+ small part $A(z)$ and a big part $B(z)$; $Q=B/(1-A)$, $b=B(1)$, and a cluster
+ $Y=X+R$ is an independent big jump $X$ (the manuscripts' $J$) plus a
+ geometric run $R$ of small jumps. $A(z)$, $B(z)$ carry no index: manuscript~30's
+ $A_m(z)$, $B_m(z)$, $Q_m(z)$, $b_m$ are printed without the $m$, because
+ $A_m(x)$ is Part~I's generating function of $a_n^{(m)}$. The big jump is
+ printed $X$ because $J$ is the first deficiency of Parts~III, IV, VII
+ and~VIII; the run $R$ is not the operation $R_\beta$.
+\item \emph{The cutoff.} The cutoff differs between the sources and changes
+ $A$, $B$, $Q$, $b$, $Y$, its mean $\mu$, variance $\sigma^2$, and hence the
+ phase $L_m(v)=v/\mu$ and the width $H_m(v)=(\sigma/\mu)\sqrt{L_m(v)}$:
+ manuscript~36 splits Part~I's block weights at $M/2$, with $M=m-d$;
+ manuscripts~33 and~30 split at $m/2$; manuscripts~27, 24 and~22 at a small
+ fixed fraction $\varepsilon m$ (manuscript~22 for the critical weights
+ $b_k$). Each section states its cutoff. The mean $\nu_m=\sum_kkp_k=b\mu$ does
+ not depend on it.
+\item \emph{Scales.} $w=1/\log(4r_m)$ (manuscript~24's $w_m=m/t_m$, the same
+ number); in \cref{jg:sec:bridge,jg:sec:llt-36} manuscript~36's
+ $w=1/\log(4s_{m,d})$ instead. $\Psi_m(h)$ is a scaled logarithmic
+ moment generating function, not Part~IV's profile $\Psi(u)$.
+\item \emph{Renamed from the sources.} Manuscript~36's lower kernel $L_m(x)$
+ and root $s_m$ are Part~I's $K_{m,d}(x)$ and $s_{m,d}$ with
+ $d=\lceil\log_2m\rceil$, and are printed so; its interval length $L$ is
+ $N_I$. Manuscript~33's integer cutoffs $D$, $L$ (and the $D$ of
+ manuscripts~30, 27, 22) are manuscript~24's $D_{\rm app}$, $L_{\rm app}$,
+ with $\eps_{D_{\rm app}}=(D_{\rm app}+2)2^{-D_{\rm app}}$. The tilt intervals
+ $\mathcal H$ of manuscripts~36, 27 and~24 are printed $\mathcal T$; the
+ letter $H$ is reserved for the width. The Gamma terms $F_{m,v}(\ell)$ of
+ manuscript~27 and $G_{m,v}(j)$ of manuscript~22, the same function, are
+ printed $\mathfrak g_{m,v}(\ell)$; manuscript~27's rate $J_c(s)$ is
+ $\mathfrak r_c(s)$. The coefficients $C_\ell(v)$, $V_m(v)$, $T_m(v)$ and
+ $\mathcal S_m(v)$ of manuscripts~27, 24, 33 and~30 are printed
+ $\mathfrak C_\ell(v)$, $\mathfrak V_m(v)$, $\mathfrak T_m(v)$,
+ $\mathfrak S_m(v)$ (not the Catalan numbers $C_\ell$, Part~I's component
+ $V_m$, Part~VI's $T^{(m)}_{u,v}$ or Part~V's survival function
+ $\mathcal S$), and manuscript~24's neighbour set $\mathcal J(L)$ is
+ $\mathfrak J(L)$. Residual masses and runs $D(h)$, $W_h$ are printed
+ $\mathsf D(h)$, $\mathsf W_h$ (not Part~III's law $D$ or Part~IV's word $W$).
+ Manuscripts~27 and~22 write $\beta_k$ for $C_{k-1}4^{-k}$; it is printed
+ $b_k$, as in Part~II, because $\beta_m$ is Part~II's $r_m^{-1}$; their
+ critical split $A$, $B$, $Q$ (manuscript~22) or $A_0$, $B_0$ (manuscript~27)
+ is printed $A_0$, $B_0$, $Q_0$, and manuscript~22's $V(v)$ and $T(u)$ are
+ $\mathfrak V^0_m(v)$ and $\mathfrak t(u)$. Manuscript~30's moment sums $A_j$,
+ $B_j$ are $a^{\rm s}_j$, $a^{\rm b}_j$. Characteristic functions are $\phi_h$,
+ $\phi_{X,h}$, and $\varphi$ is the standard normal density (manuscript~24
+ writes them the other way round).
+\end{itemize}
+
+\begin{table}[htbp]
+\centering\footnotesize
+\caption{Symbols of Part~IX. ``Source'' gives the manuscripts' symbol; the
+last column prints the tempting false reading.}
+\label{jg:tab:notation}
+\begin{tabular}{@{}>{\raggedright}p{.17\linewidth}>{\raggedright}p{.31\linewidth}>{\raggedright}p{.17\linewidth}>{\raggedright\arraybackslash}p{.26\linewidth}@{}}
+\toprule
+Symbol & Meaning in Part~IX & Source & Not to be confused with\\
+\midrule
+$\mathfrak E_m(n)$ & $[x^n]\,x/(1-K_m(x))^2$ & $E_m(n)$ (all six) & the
+ centered remainder $E_m\to2\log\pi$ (Parts~I--II); Part~IV's event
+ $\mathcal E$.\\
+$\vartheta(H,u)$ & periodic Gaussian \eqref{jg:tb:eq:theta} & $\Theta(H,u)$
+ (30, 24) & order notation $\Theta(\cdot)$; Part~V's $\vartheta_n$.\\
+$A(z)$, $B(z)$, $Q$, $b$ & small and big parts of the tilted law, cluster
+ PGF, big mass & same; $A_m$, $B_m$, $Q_m$, $b_m$ (30) & Part~I's $A_m(x)$;
+ the operation $A$; $b_k$.\\
+$Y=X+R$ & cluster: big jump plus small run & $Y=J+R$ & the first deficiency
+ $J$; the operation $R_\beta$.\\
+$\mu$, $\sigma^2$, $\nu_m$ & cluster mean and variance (cutoff-dependent);
+ $\sum kp_k=b\mu$ & same; $\mu_m$, $\sigma_m$ (30) & ---\\
+$L_m(v)$, $H_m(v)$ & $v/\mu$; $(\sigma/\mu)\sqrt{L_m(v)}$ & same & the append
+ cutoff $L_{\rm app}$; Part~I's $L_m$.\\
+$D_{\rm app}$, $L_{\rm app}$ & good-subclass cutoffs & $D$, $L$ (33);
+ $D$ (30, 27, 22) & Part~III's $D$; the phase $L_m$.\\
+$K_{m,d}$, $s_{m,d}$ & Part~I's block polynomial and root &
+ $L_m$, $s_m$ (36) & the deficit $s_\ell$.\\
+$\mathcal T$ & compact tilt interval in $(-1,\infty)$ & $\mathcal H$ (36,
+ 27, 24) & the width $H$; Part~V's $\mathcal H(p)$.\\
+$\Psi_m(h)$ & $\log\ljE e^{h(Y-m)/w}$ & $\Psi_m$, $\Psi$ & Part~IV's $\Psi(u)$.\\
+$\mathfrak g_{m,v}(\ell)$; $s_\ell$ & Gamma term \eqref{jg:ic:eq:summands};
+ deficit $\ell-v/m$ & $F_{m,v}$ (27), $G_{m,v}$ (22) & Part~I's $F_{p,q}$;
+ $G_q$ (33).\\
+$\mathfrak r_c(s)$ & rate $s/2-c-c\log(s/(2c))$ & $J_c(s)$ (27) & the first
+ deficiency $J$.\\
+$\mathfrak C_\ell$, $\mathfrak V_m$, $\mathfrak T_m$, $\mathfrak S_m$,
+ $\mathfrak J$ & count-$\ell$ coefficient, squared coefficient, weighted
+ count sum, saddle sum, neighbour set & $C_\ell$, $V_m$, $T_m$,
+ $\mathcal S_m$, $\mathcal J$ & Catalan $C_\ell$; Part~I's $V_m$; Part~II's
+ $T_m$ ($=\Delta_m$); Part~V's $\mathcal S$.\\
+$\mathsf D(h)$, $\mathsf W_h$ & residual mass and residual runs & $D(h)$,
+ $W_h$, $W$ & Part~III's $D$; Part~IV's word $W$.\\
+$b_k$; $A_0$, $B_0$, $Q_0$ & $C_{k-1}4^{-k}$; critical split & $\beta_k$;
+ $A$, $B$, $Q$ (22) & Part~II's root $\beta_m=r_m^{-1}$.\\
+$\phi_h$; $\varphi$ & characteristic function; normal density & 24:
+ $\varphi_h$; $\phi$ & ---\\
+$\tau$, $R_{m,\ell}(s)$ & transition centre; adjacent Gamma ratio & same &
+ Part~VII's child $\tau$; the operation $R_\beta$.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No normalization changed: every renamed symbol denotes exactly its source's
+quantity. Probability is written $\ljP$ and expectation $\ljE$; the
+manuscripts' coefficientwise order $\preceq_{\mathrm{coeff}}$ is the report's
+$\preceqc$; their thin-spaced differential is written out. Where the sources
+cite each other, this Part cites the merged statement; where they cite this
+report, it cites the label. Equations, tables and figures are numbered
+consecutively with those of Parts~I--VIII.
+
+\subsection{Host inputs, and what the sources re-prove}
+\label{jg:sec:inputs}
+The six manuscripts use the following results of Parts~I and~II; they are
+printed there and cited here.
+\begin{align}
+ \frac1{1-K_{m,d}(x)}&\preceqc A_m(x)
+   &&\text{(\cref{prop:lower,crem:prop:block-lower})},\label{jg:lb:eq:lowergf}\\
+ (1-\eps_D)C_{k-1}\le c_{k,D}&\le C_{k-1}
+   &&\text{(\cref{crem:lem:uniform-tail})},\label{jg:lb:eq:defect}\\
+ 0\le s_{m,d}-r_m=O\bigl((\log m)^2/m^2\bigr),&\quad
+   s_{m,d}^{-1}\le\alpha_m<r_m^{-1}
+   &&\text{(\cref{crem:thm:corridor-quantitative}, \eqref{crem:eq:corridor})},\label{jg:lb:eq:corridor}\\
+ t_m=\tfrac12\log m+\log\log m+\tfrac12\log\pi
+   &+O\Bigl(\frac{\log\log m}{\log m}\Bigr)
+   &&\text{(\eqref{crem:eq:t-allorders} at $J=0$)}.\label{jg:lb:eq:scalar}
+\end{align}
+Here $d=\lceil\log_2m\rceil$ in \eqref{jg:lb:eq:lowergf} and
+\eqref{jg:lb:eq:corridor} (\eqref{crem:eq:choice-d}), and
+\eqref{jg:lb:eq:defect} holds uniformly in $k$ and $D$, with
+$\eps_D=(D+2)2^{-D}=O(\log m/m)$ at $D=d$; it follows from the
+Catalan-triangle tail $\sum_{j>D}j2^{-j}=(D+2)2^{-D}$. The exact endpoint
+recurrence is Part~I's \cref{prop:endpoint}, \eqref{eq:endpoint}, with the block
+counts \eqref{eq:c-def}, \eqref{eq:c-formula}: $c_{1,p}=1$ and
+$c_{k,p}=\sum_{j=1}^{\min(p,k-1)}\frac{j}{k-1}\binom{2k-j-3}{k-2}$ for $k\ge2$,
+which counts $\sigma\in\Av_{k-1}(132)$ with $k-\sigma_1\le p$ (so
+$c_{k,\infty}=C_{k-1}$). The spectral corridor
+$0\le\log(r_m^{-1}/\alpha_m)=O((\log m)^2/m^2)$ is
+\eqref{crem:eq:main-quantitative}. These are the injective block bound (skew
+concatenations of blocks ending at their maxima, of lengths at most $m-d$ and
+first deficiency at most $d$; every join has jump at most $m$, and a block
+ending at its maximum has no internal skew cut, so the construction is
+injective), the uniform Catalan coefficient bound, the quantitative root
+corridor and the scalar-root expansion; the manuscripts invoke them as
+established results, not rederived.
+
+\begin{remark}[Merge note: credits the sources omit, and one retargeted citation]
+\label{jg:rem:credits}
+Four further results of Part~II are re-proved in the manuscripts without
+credit; Part~IX prints the re-proofs, with these credits.
+\begin{itemize}
+\item The finite majorant system in the proof of \cref{jg:lb:prop:upper} (and
+ manuscript~33's grammar of the relaxed class) is Part~II's renewal--reset
+ system: \cref{crem:lem:reset} with $w_k=C_{k-1}x^k$, $a=x$, that is
+ \eqref{crem:eq:H} and \eqref{crem:eq:catalan-renewal}, read coefficientwise;
+ \eqref{crem:eq:reset-vector} gives $(I-N)H=(1-K_m)\one$, which is the
+ identity $G_q=xH_q/(1-K_m)$ used there. New is the row $q=\infty$ and the
+ closed form $x/(1-K_m)^2$ as a \emph{coefficient} majorant.
+\item The lower-half tilted-mass estimates (in the proofs of
+ \cref{jg:sec:llt-36,jg:ra:lem:cluster,jg:ic:lem:tilts}) and the upper-half
+ endpoint Riemann sums are the proof of Part~II's \cref{crem:lem:watson} (the
+ same bound $O(m^{-1/4}(\log m)^{3/2})$ at zero tilt), and the limit
+ $B(1)\to1/2$ is \eqref{crem:eq:upper-mass}.
+\item Manuscript~33's nearby-root comparison \eqref{jg:ra:eq:rootgap} (and
+ manuscript~30's root shift) re-runs Part~II's corridor proof:
+ the removed mass is \eqref{crem:eq:last-d-tail}, the slope bound
+ \eqref{crem:eq:slope} of \cref{crem:lem:deficit-slope}, and the mean-value
+ step that of \cref{crem:thm:corridor-quantitative}; only the cutoff changes.
+\item The manuscripts' source ledgers cite the scalar expansion
+ \eqref{jg:lb:eq:scalar} as \cref{crem:thm:main-allorders}, which is the
+ expansion of $m(4-\alpha_m)$; the statement for $t_m$ with the rate
+ $O(\log\log m/\log m)$ is \eqref{crem:eq:t-allorders} at $J=0$ in
+ \cref{crem:prop:P-recursion}, and \cref{crem:cor:scalar-location} gives
+ only $o(1)$. The citation is retargeted here.
+\end{itemize}
+Manuscript~36's remark that Part~II excludes the single-pole series as a
+coefficient majorant is correct (\cref{crem:rem:not-quotient},
+\cref{pr:rem:falsemajorant}).
+\end{remark}
+
+\subsection{An earlier announcement of Part~I's theorem}
+\label{jg:sec:li}
+Manuscripts~30, 27, 24 and~22 cite a public announcement by
+A.~C.~Li~\cite{jg:Li}, of 8 September 2026, of results on strict fixed-cap
+growth and descent thresholds, and say that its full manuscript could not be
+retrieved, so that overlap beyond its abstract is not excluded. Its abstract
+announces that the exponential growth constants are strictly increasing in
+$m$, which is Part~I's theorem, eleven days before Part~I's date. A dated note
+in Part~I's scope box records this (page~\pageref{jg:rem:li}); it is not a retraction:
+Part~I's proof is independent of the announcement, and the report never
+claimed exhaustive priority. None of the six manuscripts claims priority over
+the announcement, and none of their results concerns fixed $m$.
+
+\section{The squared-renewal majorant and its exact relaxed class}
+\label{jg:sec:majorant}
+Throughout Part~IX,
+\begin{equation}\label{jg:ra:eq:roots}
+ K_m(x)=\sum_{k=1}^m C_{k-1}x^k,\qquad
+ K_m(r_m)=1,\qquad
+ t_m=m\log(4r_m),\qquad \nu_m=r_mK_m'(r_m).
+\end{equation}
+The positive root is unique. For $n\ge1$ put
+\begin{equation}\label{jg:ra:eq:envelope}
+ \mathfrak E_m(n)=[x^n]\frac{x}{(1-K_m(x))^2}.
+\end{equation}
+(These are Part~II's $K_m$, $r_m$, $t_m$; \eqref{jg:ra:eq:roots} is the
+definition shared by all six manuscripts, and manuscript~24 adds
+$w_m=m/t_m$.)
+
+\begin{proposition}[Sharp coefficient majorant; manuscript~36]
+\label{jg:lb:prop:upper}
+For every integer $m\ge1$,
+\begin{equation}\label{jg:lb:eq:uppergf}
+ A_m(x)\preceqc 1+\frac{x}{(1-K_m(x))^2}.
+\end{equation}
+Equality holds in every degree at most $m+1$. In particular,
+\begin{equation}\label{jg:lb:eq:uppercount}
+ a_n^{(m)}r_m^n\le r_m n\le n\qquad(n\ge1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $F_{p,q}(x)$, $p,q\in\{0,\ldots,m-1,\infty\}$, count the nonempty
+admissible permutations with first deficiency at most $p$ and last deficiency
+at most $q$ (negative thresholds give zero; $\infty$ imposes no restriction),
+so that Part~I's endpoint recurrence \eqref{eq:endpoint} reads
+$F_{p,q}=x+\sum_{k=1}^mc_{k,p}x^kF_{m-k,q-k}+xF_{p-1,m-1}$ and
+$A_m(x)=1+F_{\infty,\infty}$. (It follows by decomposing at the maximum: a
+nonempty right child leaves a left block of size $k-1$, while an empty right
+child appends the maximum.) Drop only the first-deficiency restriction.
+Coefficientwise induction gives the nonnegative majorant system
+\[
+ G_q=x+\sum_{k=1}^{q}C_{k-1}x^kG_{q-k}+xG_{m-1}
+ \quad(0\le q<m),\qquad
+ G_\infty=x+K_mG_\infty+xG_{m-1}.
+\]
+Indeed every recursive term loses positive degree, so the induction is well
+founded. With $H_q(x)=\sum_{j=0}^qC_jx^j$, the finite Catalan renewal identity
+gives $G_q=H_q(x)(x+xG_{m-1})$. Since $xH_{m-1}=K_m$, this implies
+$G_{m-1}=K_m/(1-K_m)$ and $G_\infty=x/(1-K_m)^2$. All permutations of length
+at most $m+1$ satisfy the cap; also, through those degrees, $K_m$ can be
+replaced by $x\Cat(x)$ and $1+x/(1-x\Cat(x))^2=\Cat(x)$. This proves the
+equality statement.
+
+The coefficients of $P_m(z)=K_m(r_mz)$ form a probability law on positive
+integers. Thus $u_j=[z^j](1-P_m(z))^{-1}$ is a renewal hitting probability and
+$0\le u_j\le1$. Taking the coefficient of degree $n$ in
+\eqref{jg:lb:eq:uppergf} after replacing $x$ by $r_mz$ gives
+$a_n^{(m)}r_m^n\le r_m\sum_{j=0}^{n-1}u_ju_{n-1-j}\le r_mn$. Finally
+$r_m\le1$.
+\end{proof}
+
+The squared denominator is essential to this argument; Part~II explicitly
+excludes the single-pole series $(1-K_m)^{-1}$ as a coefficient majorant
+(\cref{crem:rem:not-quotient}). No claim about the exact denominator or pole
+order of $A_m$ follows from \eqref{jg:lb:eq:uppergf}.
+
+[Merge note. The ``finite Catalan renewal identity'' is Part~II's
+\cref{crem:lem:reset} with $w_k=C_{k-1}x^k$, $a=x$, in the form
+\eqref{crem:eq:catalan-renewal}; the system $(G_q)_{q<m}$ is $x(I-N)^{-1}\one$
+for Part~II's reset matrix $N$ (\cref{jg:rem:credits}). The majorant
+\eqref{jg:lb:eq:uppergf} is new as a coefficient statement and is strictly
+sharper than Part~I's \eqref{eq:upper}, $1+x/(1-x-K_m)$, and Part~VI's
+\eqref{pr:eq:KandB}: it is exact through degree $m+1$ and grows like $r_m^{-n}$
+instead of $q_m^{-n}$ (compare \cref{crem:rem:vs-upper}). A ProveIt check made
+for this write-up confirmed \eqref{jg:lb:eq:uppergf} against exact counts for
+$m\le14$, $n\le60$, with equality exactly through $n=m+1$, and
+\eqref{jg:lb:eq:uppercount} there.]
+
+\subsection{The relaxed class counted by the envelope}
+\label{jg:sec:relaxed}
+Manuscript~33 identifies exactly which objects the envelope counts. Define a
+class $\mathcal G_M$ of nonempty $132$-avoiders by their unique decomposition
+at the maximum. A singleton is allowed. If the right child is nonempty, its
+left decoration $\sigma$ has size $k-1$ with $1\le k\le M$, is an arbitrary
+$132$-avoider, and the right child lies in $\mathcal G_M$. The jump from the
+maximum to the first entry of that child is temporarily unrestricted. If the
+right child is empty, append the maximum to a nonempty child in $\mathcal G_M$
+whose last deficiency is at most $M-1$.
+
+Let $G_q$ count these objects with last deficiency at most $q$, and use
+$q=\infty$ for no last restriction. Their exact grammar gives
+\[
+ G_q=x+\sum_{k=1}^q C_{k-1}x^kG_{q-k}+xG_{M-1}\quad(0\le q<M),
+ \qquad G_\infty=x+K_MG_\infty+xG_{M-1}.
+\]
+Writing $H_q=\sum_{j=0}^q C_jx^j$ gives $G_q=H_q(x)(x+xG_{M-1})$, whence
+\begin{equation}\label{jg:ra:eq:grammar}
+ G_{M-1}=\frac{K_M}{1-K_M},\qquad
+ G_\infty=\frac{x}{(1-K_M)^2}.
+\end{equation}
+Thus $|\mathcal G_M\cap S_n|=\mathfrak E_M(n)$. Actual cap-$M$ avoiders form a
+subset, so $a_n^{(M)}\le\mathfrak E_M(n)$. This is the squared majorant of
+\cref{jg:lb:prop:upper}, now viewed as an exact relaxed class; the grammar is
+the majorant system of its proof, with $M$ for $m$.
+
+The parser has one recursive spine, with Catalan left decorations attached at
+its right-child steps. All adjacent jumps already satisfy the cap $M$ except
+possibly those from a maximum to the first entry of its nonempty right child.
+
+[Merge note. A ProveIt check made for this write-up, coded from the prose above
+and not from the delivered parser, confirmed $|\mathcal G_M\cap
+S_n|=\mathfrak E_M(n)$ for $M\le6$, $n\le11$, and that every cap-$M$ avoider
+lies in $\mathcal G_M$ there.]
+
+\section{Clusters and a uniform local limit}
+\label{jg:sec:llt}
+\emph{Cutoff of this section: a fixed fraction $\varepsilon m$ in
+\cref{jg:ic:lem:tilts}; $m/2$ in \cref{jg:ra:lem:cluster,jg:ra:lem:local};
+$M/2$ on Part~I's block weights in \cref{jg:sec:llt-36}.}
+
+Tilt the Catalan coefficients at $r_m$:
+\[
+ p_k=C_{k-1}r_m^k\quad(1\le k\le m),\qquad
+ \lambda=\log(4r_m),\qquad w=\lambda^{-1}\sim\frac{2m}{\log m}.
+\]
+The $p_k$ form a probability distribution. For a cutoff fraction
+$0<\varepsilon\le1/2$, split
+\begin{equation}\label{jg:ra:eq:split}
+ A(z)=\sum_{k\le\varepsilon m}p_kz^k,\qquad
+ B(z)=\sum_{k>\varepsilon m}p_kz^k,\qquad
+ b=B(1)=1-A(1),\qquad Q(z)=\frac{B(z)}{1-A(z)}.
+\end{equation}
+Let $Y$ have probability generating function $Q$. It is an independent big
+jump $X$ plus a geometric run $R$ of small jumps. Put
+\[
+ \Psi_m(h)=\log\ljE e^{h(Y-m)/w},\qquad
+ \mu_h=m+w\Psi_m'(h),\qquad \sigma_h^2=w^2\Psi_m''(h),
+\]
+so that $\mu_h$ and $\sigma_h^2$ are the mean and variance of $Y$ under the
+normalized tilt $e^{h(Y-m)/w}$, and $\mu=\mu_0$, $\sigma=\sigma_0$.
+
+The mean and variance are exactly computable from finite sums
+(manuscript~30). If $a^{\rm s}_j=\sum_{k\le\varepsilon m}k^jp_k$,
+$a^{\rm b}_j=\sum_{k>\varepsilon m}k^jp_k$ and $P_j=a^{\rm s}_j+a^{\rm b}_j$,
+then
+\begin{equation}\label{jg:tb:eq:finite}
+ \mu=\frac{P_1}{b},\qquad
+ \sigma^2=\frac{P_2}{b}+\frac{(a^{\rm s}_1)^2-(a^{\rm b}_1)^2}{b^2},
+\end{equation}
+which follows from $\ljE X=a^{\rm b}_1/b$,
+$\operatorname{Var}X=a^{\rm b}_2/b-(a^{\rm b}_1)^2/b^2$, $\ljE R=a^{\rm s}_1/b$
+and $\operatorname{Var}R=a^{\rm s}_2/b+(a^{\rm s}_1)^2/b^2$. Put
+\begin{equation}\label{jg:tb:eq:phase}
+ \nu_m=\sum_k kp_k=b\mu,\qquad
+ L_m(v)=\frac v{\mu},\qquad
+ H_m(v)=\frac{\sigma}{\mu}\sqrt{L_m(v)}.
+\end{equation}
+This is a scalar renewal cluster, not an asserted statistic of the conditioned
+permutation.
+
+\begin{lemma}[Uniform compact tilts; manuscripts~27 and~24]
+\label{jg:ic:lem:tilts}
+For any fixed compact interval $\mathcal T\subset(-1,\infty)$, choose
+$0<\eta<1+\inf\mathcal T$ and then $\varepsilon>0$ with
+$\varepsilon(1+\sup\mathcal T+\eta)<1$. Uniformly for $h\in\mathcal T$, with any
+fixed number of derivatives,
+\begin{equation}\label{jg:ic:eq:mgflimit}
+ \Psi_m(h)\to-\log(1+h),\qquad
+ \Psi_m'(h)\to-\frac1{1+h},\qquad
+ \Psi_m''(h)\to\frac1{(1+h)^2}.
+\end{equation}
+Under the normalized tilt $e^{h(Y-m)/w}$, the big deficit $(m-X_h)/w$ tends to
+$\operatorname{Exp}(1+h)$, the small run divided by $w$ tends to zero, there is
+a uniform exponential moment for $|Y_h-m|/w$, and, for sums
+$S_\ell=Y_{h,1}+\cdots+Y_{h,\ell}$ of independent copies,
+\begin{equation}\label{jg:ic:eq:llt}
+ \sup_{h\in\mathcal T,\,j\in\mathbb Z}\left|
+ \sigma_h\sqrt\ell\,\ljP_h(S_\ell=j)
+ -\varphi\!\left(\frac{j-\ell\mu_h}{\sigma_h\sqrt\ell}\right)
+ \right|\longrightarrow0
+ \qquad(m,\ell\to\infty),
+\end{equation}
+with $\varphi(x)=(2\pi)^{-1/2}e^{-x^2/2}$, and the all-$\ell$ maximal-atom
+estimate
+\begin{equation}\label{jg:ic:eq:atom}
+ \sup_{h\in\mathcal T,\,j}\ljP_h(S_\ell=j)\le\frac{C}{w\sqrt\ell}
+ \qquad(\ell\ge1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The increase in the lower Catalan sum under the largest required tilt is at
+most
+\[
+ C\lambda e^{(1+\sup\mathcal T+\eta)\lambda\varepsilon m}\sqrt m
+ =O\!\left(
+ m^{-1/2+\varepsilon(1+\sup\mathcal T+\eta)/2}
+ (\log m)^{1+\varepsilon(1+\sup\mathcal T+\eta)}
+ \right)=o(1).
+\]
+Thus $A(e^{(h+\eta)/w})\to1/2$ uniformly, and the same holds at $h$. The
+tilted generating function factors exactly as
+\begin{equation}\label{jg:ra:eq:tiltedpgf}
+ \frac{Q(e^{h/w}z)}{Q(e^{h/w})}
+ =\frac{B(e^{h/w}z)}{B(e^{h/w})}\,
+       \frac{1-A(e^{h/w})}{1-A(e^{h/w}z)}.
+\end{equation}
+So $Y_h=X_h+R_h$ with independent summands: the big jump is normalized by
+$B(e^{h/w})$, and the run has success probability $1-A(e^{h/w})$. The normalized
+big deficit $(m-X_h)/w$ tends to $\operatorname{Exp}(1+h)$ with uniform
+exponential moments. Indeed, writing $k=m-u$ and using
+$C_{k-1}4^{-k}\sim(4\sqrt\pi)^{-1}k^{-3/2}$, endpoint Riemann sums give
+\[
+ \ljP_h(X_h=m-u)=\frac{1+h+o(1)}w e^{-(1+h)u/w}
+\]
+for bounded $u/w$, and an exponential upper bound throughout
+$0\le u<(1-\varepsilon)m$. The small-run exponential moment
+$[1-A(e^{h/w})]/[1-A(e^{(h+\eta)/w})]$ tends to one. These facts prove
+\eqref{jg:ic:eq:mgflimit}, including derivatives and the moment margin.
+
+Here are the necessary smoothing details. On $[\varepsilon m,m]$, the ideal
+tilted weights increase for large $m$, with consecutive ratio
+$e^{(1+h)/w}(2k-1)/(2k+2)>1$. Their normalized maximum is $O(1/w)$. Abel
+summation gives the big-jump characteristic bound $C/[w|\sin(t/2)|]$.
+Scaled-frequency convergence and this bound give a uniform gap $\rho<1$ on
+$\delta/w\le|t|\le\pi$. The cluster inherits it, and its maximal atom is
+$O(1/w)$. Parseval then bounds its squared characteristic integral by $C/w$.
+Near zero the uniform moments and positive variance give a Gaussian modulus
+bound. Fourier inversion proves \eqref{jg:ic:eq:atom}: for $\ell\ge2$ the outer
+integral is at most $C\rho^{\ell-2}/w$, and for $\ell=1$ use the big-jump
+maximal atom. The central integral has scale $1/(w\sqrt\ell)$.
+
+The centered characteristic expansion and the uniform third moment give
+\eqref{jg:ic:eq:llt} as $m,\ell\to\infty$. The scaled outer integral is
+$O(\sqrt\ell\,\rho^{\ell-2})$, with no remaining $m$ factor. This proves the
+claimed uniform local limit.
+\end{proof}
+
+The smaller cutoff permits arbitrarily large \emph{fixed} positive tilts. A
+cutoff at $m/2$ would not suffice for all compact intervals of $n/(m\log m)$
+and all competing phases (manuscript~27); it does suffice for tilts with
+$\sup\mathcal T<1$, the case of manuscripts~33 and~30 below.
+
+[Merge note. Manuscript~24's \texttt{lem:llt} is this lemma restated with the
+same hypotheses and the same displayed bound, and its proof is the same; it
+says so (``established in the logarithmic and integer-count companions; the
+proof is included in the form needed here''). Manuscript~24 states
+\eqref{jg:ic:eq:mgflimit} ``with any fixed number of derivatives'' and words
+the high-frequency step as follows: the limiting characteristic function on the
+scaled frequency axis has a strict modulus gap on every compact annulus away
+from zero, and with the Abel bound this gives a fixed gap outside a central
+interval of width $O(w^{-1})$; the geometric-run factor has modulus at most one.
+Manuscript~30 restates the conclusions for the cutoff $m/2$ and two-sided tilts
+$|h|\le h_*<1$, with a summary of the same mechanism (``these are not inferred
+from bounded moments alone''), and cites manuscript~33 for the proofs, which
+follow. The method appears first in manuscript~36 (\cref{jg:sec:llt-36}); its
+proof there is the most detailed.]
+
+\subsection{The scales at the half-cap cutoff and a summable deviation bound}
+\label{jg:sec:llt-33}
+\emph{Cutoff of this subsection: $\varepsilon=1/2$ (manuscripts~33 and~30).}
+
+\begin{lemma}[Cluster scales and uniform compact tilts; manuscript~33]
+\label{jg:ra:lem:cluster}
+One has $b\to1/2$ and
+\begin{equation}\label{jg:ra:eq:musigma}
+ \mu=m-w+o(w),\qquad \sigma^2\sim w^2,\qquad
+ \nu_m=b\mu\sim m/2.
+\end{equation}
+Fix $0<h_*<1$. Tilt $Y$ by $\exp(h(Y-m)/w)$ and normalize, for $|h|\le h_*$.
+Uniformly in that family, the big-jump deficit divided by $w$ tends to
+$\operatorname{Exp}(1+h)$, the small run divided by $w$ tends to zero in every
+fixed moment, and there is a bounded exponential moment on the $w$ scale. The
+variance divided by $w^2$ is bounded above and below by positive constants.
+\end{lemma}
+\begin{proof}
+Stirling's formula gives
+$C_{k-1}4^{-k}=(4\sqrt\pi)^{-1}k^{-3/2}(1+O(k^{-1}))$ and
+$\sum_{k\ge1}C_{k-1}4^{-k}=1/2$. Choose $\eta>0$ with $h_*+\eta<1$. Uniformly for
+$|h|\le h_*$,
+\[
+ A(e^{h/w})\to\tfrac12,\qquad A(e^{(h+\eta)/w})\to\tfrac12.
+\]
+Indeed the increase over the untilted partial Catalan sum is bounded, using
+$e^u-1\le ue^u$, by
+\[
+ C\lambda e^{(1+h_*+\eta)\lambda m/2}\sqrt m
+ =O\!\left(m^{-(1-h_*-\eta)/4}
+             (\log m)^{(3+h_*+\eta)/2}\right)=o(1).
+\]
+The lower estimate follows because $1+h>0$. At $h=0$, normalization then gives
+$b\to1/2$.
+
+The tilted cluster has the exact factorization \eqref{jg:ra:eq:tiltedpgf}.
+Consequently $\ljE_h e^{\eta R_h/w}=[1-A(e^{h/w})]/[1-A(e^{(h+\eta)/w})]\to1$.
+This proves the small-run moment assertion.
+
+For $k=m-u>m/2$, the big-jump weights before normalization are
+\[
+ \frac{1+o(1)}{4\sqrt\pi}\,
+ m^{-3/2}e^{(1+h)m/w}e^{-(1+h)u/w}(1-u/m)^{-3/2},
+\]
+uniformly on that half interval. Endpoint Riemann sums therefore give
+$\ljP_h(X_h=m-u)=(1+h+o(1))w^{-1}e^{-(1+h)u/w}$ for bounded $u/w$, uniformly in
+$h$. Throughout the half interval this probability is bounded by
+$Cw^{-1}e^{-(1-h_*)u/w}$. These estimates give the uniform exponential deficit
+limit and moments. Independence yields \eqref{jg:ra:eq:musigma}, except for its
+exact identity, which follows from $\ljE X=B'(1)/b$ and $\ljE R=A'(1)/b$.
+\end{proof}
+
+The next lemma includes the factor needed to sum probabilities over the number
+of clusters.
+
+\begin{lemma}[Local limit and summable deviation bound; manuscript~33]
+\label{jg:ra:lem:local}
+As both $m$ and $\ell$ tend to infinity,
+\begin{equation}\label{jg:ra:eq:llt}
+ \sup_{j\in\mathbb Z}
+ \left|\sigma\sqrt\ell\,\ljP(Y_1+\cdots+Y_\ell=j)
+ -\varphi\!\left(\frac{j-\ell\mu}{\sigma\sqrt\ell}\right)\right|
+ \longrightarrow0,
+\end{equation}
+where the $Y_i$ are independent copies of $Y$. For all sufficiently large $m$,
+all $\ell\ge1$, and every integer $j$,
+\begin{equation}\label{jg:ra:eq:pointwise}
+ \ljP(Y_1+\cdots+Y_\ell=j)
+ \le\frac{C}{w\sqrt\ell}
+  \exp\!\left\{-c\min\left(
+    \frac{(j-\ell\mu)^2}{\ell w^2},
+    \frac{|j-\ell\mu|}{w}\right)\right\}.
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof (third route to the local limit; the proof of \eqref{jg:ra:eq:pointwise})]
+Here are the uniform Fourier estimates, including their high-frequency
+justification. For every tilt in a smaller fixed interval $|h|\le h_*<1$, the
+ideal big weights have consecutive ratio $e^{(1+h)\lambda}(2k-1)/(2k+2)>1$ on
+$m/2<k<m$, for large $m$. Their normalized maximum is $O(1/w)$. The
+zero-extended sequence thus has total variation $O(1/w)$; Abel summation gives
+\[
+ |\phi_{X,h}(t)|\le\frac{C}{w|\sin(t/2)|},\qquad 0<|t|\le\pi.
+\]
+The deficit limit at $t=u/w$ gives compact convergence of its modulus to
+$(1+u^2/(1+h)^2)^{-1/2}$. Combining this on $\delta\le|u|\le T$ with the Abel
+bound beyond $T/w$ proves, for each small fixed $\delta>0$,
+\begin{equation}\label{jg:ra:eq:gap}
+ \sup_{h,\ \delta/w\le|t|\le\pi}|\phi_h(t)|\le\rho_\delta<1.
+\end{equation}
+The independent small-run factor has modulus at most one, so the cluster
+inherits the big-jump gap. Its maximal atom is $O(1/w)$, and Parseval gives
+$\int_{-\pi}^{\pi}|\phi_h(t)|^2\,\dd t\le C/w$. Near zero, the uniform moments
+and variance give $|\phi_h(t)|\le e^{-cw^2t^2}$ for $|t|\le\delta/w$. Fourier
+inversion now yields, uniformly in the tilt,
+\begin{equation}\label{jg:ra:eq:atom}
+ \sup_j\ljP_h(Y_1+\cdots+Y_\ell=j)\le\frac{C}{w\sqrt\ell}
+ \quad(\ell\ge1).
+\end{equation}
+For $\ell\ge2$, the outer integral is at most $C\rho_\delta^{\ell-2}/w$,
+bounded by $C/(w\sqrt\ell)$; the central Gaussian integral has the same bound.
+For $\ell=1$, use the big-jump maximal atom.
+
+The centered characteristic expansion has a uniform third-moment remainder. At
+scale $\sigma\sqrt\ell$ it converges on compact sets to $e^{-v^2/2}$ and is
+dominated by a Gaussian. The scaled outer Fourier integral is at most
+$C\sqrt\ell\,\rho_\delta^{\ell-2}\to0$, with no remaining $m$ factor. This
+proves \eqref{jg:ra:eq:llt}, uniformly in the target phase.
+
+Finally put $Z=(Y-\mu)/w$ and $K(h)=\log\ljE e^{hZ}$.
+\Cref{jg:ra:lem:cluster} gives $K(0)=K'(0)=0$ and $K''(h)\le C$ on a fixed
+two-sided tilt interval. Thus $K(h)\le Ch^2$. Undoing the tilt in
+\eqref{jg:ra:eq:atom} bounds the probability by
+\[
+ \frac{C}{w\sqrt\ell}\exp\{\ell K(h)-h(j-\ell\mu)/w\}.
+\]
+Choose the sign of $h$ to match $j-\ell\mu$ and its magnitude to be the smaller
+of a fixed positive constant and $|j-\ell\mu|/(2C\ell w)$. This proves
+\eqref{jg:ra:eq:pointwise}.
+\end{proof}
+
+[Merge note. \Cref{jg:ra:lem:cluster} and the local limit
+\eqref{jg:ra:eq:llt} are the cases $\varepsilon=1/2$, $\mathcal T=[-h_*,h_*]$
+of \cref{jg:ic:lem:tilts} (admissible because $h_*<1$), proved by the same
+method; the exact identity $\nu_m=b\mu$ and the pointwise deviation bound
+\eqref{jg:ra:eq:pointwise} are new in manuscript~33. Manuscript~30 restates
+\eqref{jg:ra:eq:llt} and \eqref{jg:ra:eq:pointwise} for its sums
+$S_\ell$ (its \texttt{eq:llt} and \texttt{eq:localtail}), together with the
+scales \eqref{jg:ra:eq:musigma} and $w\sim2m/\log m$ (its \texttt{eq:scales}),
+and says ``the complete estimates are proved in'' manuscript~33; both are
+replaced by these labels. A ProveIt check made for this write-up found the
+finite scales converging slowly: at the cutoff $m/2$ and $m=10^3,\ldots,10^6$,
+$b=0.43$--$0.49$, $(\mu-m)/w=-0.63$ to $-1.06$ (limit $-1$), $\sigma/w=1.27$
+to $1.20$ (limit $1$) and $\nu_m/m=0.39$--$0.44$ (limit $1/2$).]
+
+\subsection{Negative tilts on Part~I's block kernel}
+\label{jg:sec:llt-36}
+\emph{Weights and cutoff of this subsection (manuscript~36): Part~I's block
+weights $c_{k,d}s_{m,d}^k$ on $k\le M$, split at $M/2$, with
+$w=1/\log(4s_{m,d})$.} Take
+\begin{equation}\label{jg:lb:eq:lowerkernel}
+ d=\lceil\log_2m\rceil,\qquad M=m-d,\qquad
+ K_{m,d}(x)=\sum_{k=1}^Mc_{k,d}x^k,\qquad K_{m,d}(s_{m,d})=1,
+\end{equation}
+Part~I's block polynomial \eqref{eq:K} and its root (manuscript~36 writes
+$L_m$ and $s_m$). All subsequent statements involving these quantities concern
+sufficiently large $m$. Set
+\begin{equation}\label{jg:lb:eq:scales}
+ \lambda=\log(4s_{m,d}),\qquad w=\lambda^{-1},\qquad
+ p_k=c_{k,d}s_{m,d}^k\ (1\le k\le M),\qquad
+ b_k=C_{k-1}4^{-k}.
+\end{equation}
+The $p_k$ sum to one. The inherited bounds \eqref{jg:lb:eq:defect}--\eqref{jg:lb:eq:scalar} imply
+\begin{equation}\label{jg:lb:eq:scaleas}
+ M\lambda=t_m+o(1),\qquad w\sim\frac{2m}{\log m},\qquad M\sim m,
+ \qquad
+ p_k=(1+O(\eps_d))b_ke^{\lambda k}
+\end{equation}
+uniformly in $k$, where $b_k=(4\sqrt\pi)^{-1}k^{-3/2}(1+O(k^{-1}))$ and
+$\sum_{k\ge1}b_k=1/2$. Define $A(z)=\sum_{k\le M/2}p_kz^k$,
+$B(z)=\sum_{M/2<k\le M}p_kz^k$ and $Q=B/(1-A)$. Here and below the integer
+endpoints mean the corresponding floor or ceiling. Since $A(1)+B(1)=1$, $Q$ is
+a probability generating function, of $Y=X+R$ as before. In particular,
+\begin{equation}\label{jg:lb:eq:renewalfactor}
+ \frac1{1-A-B}=\frac1{1-A}\frac1{1-Q}.
+\end{equation}
+Every coefficient is nonnegative, and the first factor has constant term one.
+
+We establish all estimates simultaneously for a compact family of negative
+tilts. Fix $\mathcal T=[h_0,0]$, $-1<h_0<0$. Under $\ljP_h$, tilt $Y$ by
+$\exp(h(Y-M)/w)$ and normalize. Its generating function factors exactly as
+\begin{equation}\label{jg:lb:eq:tiltfactor}
+ Q_h(z)=\frac{Q(e^{h/w}z)}{Q(e^{h/w})}
+ =\frac{B(e^{h/w}z)}{B(e^{h/w})}\,
+   \frac{1-A(e^{h/w})}{1-A(e^{h/w}z)}.
+\end{equation}
+Thus $Y_h=X_h+R_h$ with independent summands. The big jump is normalized by
+$B(e^{h/w})$, whereas the geometric run has success probability
+$1-A(e^{h/w})$. These quantities need not be equal after tilting.
+
+\begin{lemma}[Uniform tilted cluster scales; manuscript~36]
+\label{jg:lb:lem:moments}
+Uniformly for $h\in\mathcal T$,
+\begin{align}
+ \frac{M-X_h}{w}&\ \Longrightarrow\ \operatorname{Exp}(1+h),
+ &\frac{R_h}{w}&\longrightarrow0\quad\text{in every fixed moment},\label{jg:lb:eq:clusterlimits}\\
+ \mu_h:=\ljE_hY&=M-\frac{w}{1+h}+o(w),
+ &\frac{\sigma_h^2}{w^2}:=\frac{\operatorname{Var}_hY}{w^2}
+     &\longrightarrow\frac1{(1+h)^2}.\label{jg:lb:eq:moments}
+\end{align}
+For some $\theta_0>0$ depending only on $\mathcal T$,
+\begin{equation}\label{jg:lb:eq:expmoment}
+ \sup_{m\ \mathrm{large}}\ \sup_{h\in\mathcal T}
+       \ljE_h e^{\theta_0|Y-M|/w}<\infty,
+ \qquad
+ \sup_j\ljP_h(Y=j)\le\frac{C_{\mathcal T}}w.
+\end{equation}
+In particular $A(1)\to1/2$ and $B(1)\to1/2$.
+\end{lemma}
+\begin{proof}
+For any fixed $0<\eta<1$, the lower-half sum satisfies
+\begin{equation}\label{jg:lb:eq:smallmass}
+ A(e^{h/w})\to\tfrac12,\qquad A(e^{(h+\eta)/w})\to\tfrac12
+\end{equation}
+uniformly in $h\in\mathcal T$. Indeed the untilted partial Catalan sum tends to
+$1/2$. Its increase under any of these tilts is bounded by
+\[
+ C\lambda e^{(1+\eta)\lambda M/2}
+       \sum_{k\le M/2}k^{-1/2}
+ =O\!\left(M^{-(1-\eta)/4}
+            (\log M)^{(3+\eta)/2}\right)=o(1).
+\]
+We used $e^u-1\le ue^u$, \eqref{jg:lb:eq:scaleas}, and the uniform relative
+perturbation \eqref{jg:lb:eq:defect}. The lower bound follows from
+$1+h\ge1+h_0>0$. Equation~\eqref{jg:lb:eq:tiltfactor} now gives
+\[
+ \ljE_h e^{\eta R_h/w}
+ =\frac{1-A(e^{h/w})}{1-A(e^{(h+\eta)/w})}\longrightarrow1.
+\]
+Since $R_h\ge0$, this proves its asserted moment convergence and an
+exponential bound.
+
+For the big jump, write $k=M-u$, $0\le u<M/2$. Uniformly on that interval,
+\[
+ p_{M-u}e^{h(M-u)/w}
+ =\frac{1+o(1)}{4\sqrt\pi}\,
+     M^{-3/2}e^{(1+h)M/w}
+     e^{-(1+h)u/w}(1-u/M)^{-3/2}.
+\]
+The factor $(1-u/M)^{-3/2}$ lies between $1$ and $2^{3/2}$. Endpoint Riemann
+sums and $w/M\to0$ therefore give, uniformly for bounded $u/w$ and for
+$h\in\mathcal T$,
+\[
+ \ljP_h(X_h=M-u)=\frac{1+h+o(1)}w e^{-(1+h)u/w}.
+\]
+Throughout the entire half interval it is bounded by
+$Cw^{-1}e^{-(1+h_0)u/w}$. This proves the exponential deficit limit with
+uniform exponential moments at every rate below $1+h_0$. It also proves that
+the maximal big-jump atom is $O(1/w)$. Convolution with the probability law of
+$R_h$ preserves that bound. Independence and the two moment conclusions give
+\eqref{jg:lb:eq:moments}--\eqref{jg:lb:eq:expmoment}. Finally
+\eqref{jg:lb:eq:smallmass} at $h=0$ and normalization give the last statement.
+\end{proof}
+
+The changing lattice law has width of order $w$, which diverges. A moment bound
+alone would not control its high frequencies. The next proof supplies that
+control explicitly.
+
+\begin{lemma}[Cluster local limit, uniformly under compact tilts; manuscript~36]
+\label{jg:lb:lem:llt}
+Let $Y_{h,1},\ldots,Y_{h,\ell}$ be independent copies of $Y_h$. As both
+$m\to\infty$ and $\ell\to\infty$, with no further relation required,
+\begin{equation}\label{jg:lb:eq:llt}
+ \sup_{\substack{h\in\mathcal T\\j\in\mathbb Z}}
+ \left|
+ \sigma_h\sqrt\ell\,
+   \ljP_h\!\left(\sum_{i=1}^{\ell}Y_{h,i}=j\right)
+ -\varphi\!\left(\frac{j-\ell\mu_h}{\sigma_h\sqrt\ell}\right)
+ \right|\longrightarrow0.
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof (second route to the local limit, in full detail)]
+Let $\phi_h(t)=\ljE_he^{itY}$ and $\phi_{X,h}(t)=\ljE_he^{itX_h}$. The ideal
+big-jump weights are $b_ke^{(1+h)\lambda k}$. Their exact consecutive ratio is
+\[
+ e^{(1+h)\lambda}\frac{2k-1}{2k+2}>1
+ \qquad(M/2<k<M)
+\]
+for sufficiently large $m$, uniformly in $h\in\mathcal T$. After normalization
+their maximum is $O(1/w)$, by the same endpoint sum as in
+\cref{jg:lb:lem:moments}. Their zero-extended sequence consequently has total
+variation at most twice its maximum. Abel summation gives
+\begin{equation}\label{jg:lb:eq:abel}
+ |\phi_{X,h}(t)|
+ \le\frac{C_{\mathcal T}}{w|\sin(t/2)|}+C_{\mathcal T}\eps_d
+ \qquad(0<|t|\le\pi).
+\end{equation}
+The last term follows because a uniform relative weight error $O(\eps_d)$
+changes the normalized probability law by $O(\eps_d)$ in total variation. This
+remains true even if its unnormalized total mass tends to zero.
+
+At $t=u/w$, the deficit limit gives uniform compact convergence of the modulus
+to $(1+u^2/(1+h)^2)^{-1/2}$. Fix a sufficiently small $\delta>0$. On
+$\delta\le|u|\le T$ this yields a bound strictly below one, uniformly in $h$.
+For $|t|\ge T/w$, choose $T$ large and use \eqref{jg:lb:eq:abel}, with
+$|\sin(t/2)|\ge|t|/\pi$ on $[-\pi,\pi]$. Thus
+\begin{equation}\label{jg:lb:eq:gap}
+ \sup_{\substack{h\in\mathcal T\\\delta/w\le|t|\le\pi}}
+       |\phi_{X,h}(t)|\le\rho_\delta<1
+\end{equation}
+for all sufficiently large $m$. The independent factorization
+\eqref{jg:lb:eq:tiltfactor} gives $|\phi_h(t)|\le|\phi_{X,h}(t)|$, so the
+cluster inherits this gap.
+
+The maximal-atom bound in \eqref{jg:lb:eq:expmoment} and Parseval imply
+\begin{equation}\label{jg:lb:eq:parseval}
+ \int_{-\pi}^{\pi}|\phi_h(t)|^2\,\dd t
+   =2\pi\sum_j\ljP_h(Y=j)^2\le \frac{C_{\mathcal T}}w.
+\end{equation}
+Consequently the outer part of Fourier inversion for the $\ell$-fold sum is
+bounded, after multiplication by $\sigma_h\sqrt\ell$, by
+\begin{equation}\label{jg:lb:eq:fouriertail}
+ \sigma_h\sqrt\ell
+ \int_{\delta/w\le|t|\le\pi}|\phi_h(t)|^\ell\,\dd t
+ \le C_{\mathcal T}\sqrt\ell\,\rho_\delta^{\,\ell-2}
+ \longrightarrow0.
+\end{equation}
+There is no remaining $m$-dependent prefactor.
+
+For $|t|\le\delta/w$, the uniform third moment and the variance bounds give
+$|\phi_h(t)|\le e^{-cw^2t^2}$ after reducing $\delta$ if necessary. The centered
+expansion, with $v=\sigma_h\sqrt\ell\,t$, gives uniformly for bounded $v$ and
+all $h$,
+\[
+ \left(e^{-it\mu_h}\phi_h(t)\right)^\ell
+ =\exp\!\left(-\frac{v^2}{2}+O_{\mathcal T}(|v|^3/\sqrt\ell)\right).
+\]
+The preceding Gaussian modulus bound supplies an integrable dominating
+function. Hence the central Fourier integrand converges in $L^1$ to
+$e^{-v^2/2}$. Together with \eqref{jg:lb:eq:fouriertail} and the Gaussian tail
+this proves \eqref{jg:lb:eq:llt}; the error is independent of the target
+Fourier phase and therefore uniform in $j$.
+\end{proof}
+
+[Merge note. \Cref{jg:lb:lem:moments,jg:lb:lem:llt} are the variant of
+\cref{jg:ic:lem:tilts} that the logarithmic bridge needs: Part~I's block weights
+$c_{k,d}s_{m,d}^k$ instead of $C_{k-1}r_m^k$ (a uniform relative perturbation
+$O(\eps_d)$, which is the origin of the extra term in \eqref{jg:lb:eq:abel}),
+cut at $M/2$, and negative tilts only. The lower-half estimate and the upper-half
+Riemann sum in the proof of \cref{jg:lb:lem:moments} are Part~II's proof of
+\cref{crem:lem:watson} at a tilt, and $B(1)\to1/2$ is
+\eqref{crem:eq:upper-mass} (\cref{jg:rem:credits}). Manuscript~33's proofs
+(\cref{jg:ra:lem:cluster,jg:ra:lem:local}) repeat several sentences of these
+nearly verbatim.]
+
+\section{The good-subclass inequality and the transfer to actual avoiders}
+\label{jg:sec:good}
+Recall from \cref{jg:sec:relaxed} that the actual class lies inside the
+relaxed class, so $a_n^{(m)}\le\mathfrak E_m(n)$ for every $n$. The converse
+direction is manuscript~33's.
+
+\begin{lemma}[Good objects and two exact loss bounds; manuscript~33]
+\label{jg:ra:lem:good}
+Let $D_{\rm app},L_{\rm app}$ be positive integers, set
+$d=D_{\rm app}+L_{\rm app}$ and $M=m-d\ge1$, and suppose $n>L_{\rm app}$. Then
+\begin{equation}\label{jg:ra:eq:good}
+ (1-n\eps_{D_{\rm app}})\mathfrak E_M(n)-n\mathfrak E_M(n-L_{\rm app})
+ \le a_n^{(m)}\le\mathfrak E_m(n),
+ \qquad \eps_{D_{\rm app}}=(D_{\rm app}+2)2^{-D_{\rm app}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The upper bound was shown above. Call an envelope object of $\mathcal G_M$
+good if every left decoration has first deficiency $k-\sigma_1\le D_{\rm app}$
+(zero for the empty decoration), and every consecutive run of append steps on
+the spine has length at most $L_{\rm app}$. Each spine subtree of a good object
+has first deficiency at most $D_{\rm app}+L_{\rm app}$: after its initial
+append run, a right-child step has first deficiency at most $D_{\rm app}$, or a
+singleton has deficiency zero; each append raises it by one. Every formerly
+unrestricted jump is therefore at most $k+(D_{\rm app}+L_{\rm app})\le M+d=m$.
+Append jumps are already at most $M$, and internal decoration jumps are smaller
+than $M$. The underlying permutation is unchanged, so good objects inject into
+actual cap-$m$ avoiders.
+
+Fix the spine shape and its step costs. Its last-deficiency conditions depend
+only on those costs and the positions of append steps, not on any decoration's
+internal shape. Each decoration independently retains at least the fraction
+$1-\eps_{D_{\rm app}}$ by \eqref{jg:lb:eq:defect}. There are at most $n$
+decorations; the union bound shows that at most
+$n\eps_{D_{\rm app}}\mathfrak E_M(n)$ objects fail this restriction.
+
+For an append run longer than $L_{\rm app}$, choose the first such maximal run
+in spine order. Delete its outermost $L_{\rm app}$ append nodes and mark the
+first surviving append node. At least one append remains. Both the old and new
+subtrees have last deficiency zero. Every ancestor's last-deficiency condition
+is unchanged: a right-child step adds its fixed cost, and an append resets the
+deficiency to zero. The reduced object therefore lies in $\mathcal G_M$ and has
+size $n-L_{\rm app}$. Reinserting $L_{\rm app}$ append nodes immediately above
+the mark recovers the original uniquely. There are at most $n$ possible marked
+spine nodes, giving at most $n\mathfrak E_M(n-L_{\rm app})$ bad objects. This
+includes terminal runs, since at least one append remains above the terminal
+singleton. Subtracting both excluded families proves \eqref{jg:ra:eq:good}.
+\end{proof}
+
+The two losses have different origins: restricting the first deficiency of
+every Catalan decoration loses at most $n\eps_{D_{\rm app}}$ by the endpoint
+law, and the long append runs are removed by a marked injection
+(manuscript~24's summary). The bound needs no uniform fixed-cap Perron
+assumption (manuscript~27).
+
+[Merge note. Manuscripts~30, 27, 24 and~22 restate \eqref{jg:ra:eq:good}
+(each as its \texttt{eq:good}) from manuscript~33, with a one-paragraph proof
+sketch of the same two losses; manuscript~24 keeps $D_{\rm app}$, $L_{\rm app}$
+general, the others fix them as in \eqref{jg:ra:eq:cutoff}. Those restatements
+are replaced by this label. A ProveIt check made for this write-up tested
+\eqref{jg:ra:eq:good} against exact counts for $3\le m\le16$, all
+$D_{\rm app},L_{\rm app}\ge1$ with $M\ge1$, and $L_{\rm app}<n\le45$ (22,820
+cases, no violation); at such sizes the lower bound is weak (positive in only
+296 of them).]
+
+Choose
+\begin{equation}\label{jg:ra:eq:cutoff}
+ D_{\rm app}=L_{\rm app}=\lceil3\log_2m\rceil,\qquad
+ d=D_{\rm app}+L_{\rm app},\qquad M=m-d.
+\end{equation}
+Then $\eps_{D_{\rm app}}=O(\log m/m^3)$, and $r_m^{L_{\rm app}}=O(m^{-6})$.
+So the squeeze \eqref{jg:ra:eq:good} gives $a_n^{(m)}\sim\mathfrak E_m(n)$ as
+soon as three things are known in the range under study:
+\begin{equation}\label{jg:eq:transfer}
+ n\eps_{D_{\rm app}}\to0,\qquad
+ \frac{\mathfrak E_{m-d}(n)}{\mathfrak E_m(n)}\to1,\qquad
+ \frac{n\,\mathfrak E_M(n-L_{\rm app})}{\mathfrak E_M(n)}\to0.
+\end{equation}
+The first holds whenever $n(\log m)^2/m^2\to0$. The third follows from the
+second at both lengths and the shift estimate
+$\mathfrak E_m(n-j)/\mathfrak E_m(n)\sim r_m^j$ for $j=O(\log m)$, since
+$nr_m^{L_{\rm app}}\to0$; manuscript~22 writes the shift as $4^{-j}$, which is
+equivalent because $jt_m/m\to0$. The second is cap shortening.
+
+\begin{proposition}[Cap shortening; manuscripts~33, 30, 27, 24 and~22]
+\label{jg:prop:capshort}
+Let $d=O(\log m)$. In each of the ranges of
+\cref{jg:ss:thm:main,jg:ss:thm:cubic,jg:ic:thm:main,jg:gm:thm:ordinary,jg:gm:thm:transition},
+under the upper condition $n(\log m)^2/m^2\to0$ where it is stated,
+\[
+ \frac{\mathfrak E_{m-d}(n)}{\mathfrak E_m(n)}\longrightarrow1,
+ \qquad
+ \frac{\mathfrak E_m(n-j)}{\mathfrak E_m(n)}\sim r_m^{\,j}\quad(j=O(\log m)).
+\]
+\end{proposition}
+The statement is proved three times, by three different routes, each printed
+where its regime is treated:
+\begin{enumerate}
+\item \emph{Root shift and phase stability} (manuscripts~33 and~30): the roots
+ $r_{m-d}$ and $r_m$ differ by $O(d\log m/m^2)$, and the explicit equivalent
+ of the envelope, including its theta phase, is stable under that shift
+ (\cref{jg:sec:theta-cap}).
+\item \emph{A conditional endpoint layer} (manuscripts~27 and~24): at the
+ exact centering tilt, the probability that one of the $\ell$ big jumps lies in
+ the forbidden layer above $m-d$ is $O(\ell d/w)$ (\cref{jg:sec:ss-transfer}).
+\item \emph{Gamma terms} (manuscript~22): the explicit Gamma terms change by a
+ relative $o(1)$ when the deficit is shifted exactly
+ (\cref{jg:sec:gm-transfer}).
+\end{enumerate}
+With \cref{jg:prop:capshort} and \eqref{jg:ra:eq:cutoff}, \eqref{jg:eq:transfer}
+holds in each of those ranges, and $a_n^{(m)}\sim\mathfrak E_m(n)$ there; the
+marked endpoint loss is $O(n(\log m)^2/m^2)$ (manuscript~24). Catalan Stirling
+asymptotics $C_n\sim4^n/(\sqrt\pi\,n^{3/2})$ then turn each envelope equivalent
+into an equivalent for $p_n(m)$.
+
+\section{The uniform logarithmic bridge}
+\label{jg:sec:bridge}
+\emph{Source: manuscript~36. Its cluster is that of \cref{jg:sec:llt-36}.}
+Part~II, in its research direction ``Joint growth of length and adjacency
+bound'' (\cref{jg:sec:crem-joint}), asks for a bridge between fixed-$m$
+spectral growth and growing-cap regimes, and warns that its fixed-$m$
+multiplicative constants are not controlled uniformly
+(\cref{crem:rem:fixed-m}). Manuscript~36 answers that question on the
+following range.
+
+\begin{theorem}[Uniform logarithmic bridge; manuscript~36]
+\label{jg:lb:thm:bridge}
+For each fixed $c_0>0$, uniformly for sufficiently large integers $m$ and all
+integers $n\ge c_0m\log m$,
+\begin{align}
+ \log p_n(m)
+ &=-\frac nm t_m
+   +O_{c_0}\!\left(\frac{n(\log m)^2}{m^2}+\log n\right)\label{jg:lb:eq:bridge}\\
+ &=n\log(\alpha_m/4)
+   +O_{c_0}\!\left(\frac{n(\log m)^2}{m^2}+\log n\right).\label{jg:lb:eq:spectral}
+\end{align}
+Consequently, on the same range,
+\begin{equation}\label{jg:lb:eq:normalized}
+ -\frac mn\log p_n(m)
+ =\frac12\log m+\log\log m+\frac12\log\pi
+  +O_{c_0}\!\left(\frac{\log\log m}{\log m}+\frac{m\log n}{n}\right).
+\end{equation}
+\end{theorem}
+
+\begin{corollary}[The sharp constant; manuscript~36]\label{jg:lb:cor:sharp}
+Along every sequence $m\to\infty$ with $n/(m\log m)\to\infty$,
+\[
+ -\frac mn\log p_n(m)-\frac12\log m-\log\log m
+ \longrightarrow \frac12\log\pi.
+\]
+On the uniform range $n\ge c_0m(\log m)^2$, the error in
+\eqref{jg:lb:eq:normalized} is $O_{c_0}(\log\log m/\log m)$.
+\end{corollary}
+
+The sharp constant is not asserted uniformly at the lower edge
+$n\asymp m\log m$: there $(m/n)\log n$ can remain of order one. A polynomial
+prefactor could contribute at that order. These are logarithmic estimates, not
+a probability equivalent or a uniform leading prefactor. Thus no substitution
+into a nonuniform fixed-cap Perron equivalent is needed. (On
+$n(\log m)^2/m^2\to0$ the relative equivalents of
+\cref{jg:sec:saddle,jg:sec:gauss} sharpen \eqref{jg:lb:eq:bridge}; above that
+band, for $n\gtrsim m^2/(\log m)^2$, \cref{jg:lb:thm:bridge} is the only
+statement of Part~IX about the actual class.)
+
+\subsection{Exact centering and the proof of the bridge}
+\label{jg:sec:bridge-proof}
+Fix $c_0>0$ and let $n\ge c_0m\log m$. Write $\mu_0=\ljE Y$ and choose
+$\ell=\lceil n/\mu_0\rceil$. Then $\ell\asymp n/m$, in particular
+$\ell\ge c\log m$, and
+\begin{equation}\label{jg:lb:eq:rounding}
+ 0\le\frac{\mu_0-n/\ell}{w}
+       <\frac{\mu_0}{w\ell}
+       \le C\frac{\log m}{\ell}\le C_{c_0}.
+\end{equation}
+Only a negative tilt is needed. Define the scaled log moment generating
+function $\Psi_m(h)=\log\ljE\exp(h(Y-M)/w)$ and $x=(n/\ell-M)/w$. Then
+$\Psi_m'(h)=(\mu_h-M)/w$ and $\Psi_m''(h)=\sigma_h^2/w^2$. At $h=0$ the
+derivative tends to $-1$. Choose $h_0=h_0(c_0)>-1$ sufficiently close to $-1$.
+By \eqref{jg:lb:eq:moments}, its limiting derivative $-1/(1+h_0)$ lies below all
+targets $x$ allowed by \eqref{jg:lb:eq:rounding}. The variance is strictly
+positive, so for every sufficiently large $m$ and all allowed $n$ there is a
+unique $h\in[h_0,0]$ such that
+\begin{equation}\label{jg:lb:eq:centering}
+ \Psi_m'(h)=x,\qquad \ell\mu_h=n.
+\end{equation}
+The mean $n/\ell$ need not be integral; continuity of the tilt mean permits
+exact centering of the sum at the integer $n$.
+
+\Cref{jg:lb:lem:llt} at its center now yields
+\begin{equation}\label{jg:lb:eq:tiltcenter}
+ \ljP_h\!\left(\sum_{i=1}^{\ell}Y_{h,i}=n\right)
+       \ge \frac{c_{c_0}}{w\sqrt\ell}.
+\end{equation}
+To undo the tilt, let $a=\Psi_m'(0)$. On the fixed interval $[h_0,0]$,
+\cref{jg:lb:lem:moments} gives $\Psi_m''\ge v_0>0$ uniformly for large $m$.
+Since $\Psi_m(0)=0$,
+\[
+ 0\le hx-\Psi_m(h)
+ \le h(x-a)-\frac{v_0h^2}{2}
+ \le\frac{(x-a)^2}{2v_0}
+ \le C_{c_0}\left(\frac{\log m}{\ell}\right)^2.
+\]
+The first inequality is convex duality at $\Psi_m'(h)=x$. Multiplying
+\eqref{jg:lb:eq:tiltcenter} by the inverse tilting factor gives
+\begin{equation}\label{jg:lb:eq:untilted}
+ \ljP\!\left(\sum_{i=1}^{\ell}Y_i=n\right)
+ \ge \frac{c_{c_0}}{w\sqrt\ell}
+        \exp\!\left(-C_{c_0}\frac{(\log m)^2}{\ell}\right).
+\end{equation}
+
+The coefficient of degree $n$ in
+$(1-K_{m,d}(s_{m,d}z))^{-1}=(1-A(z)-B(z))^{-1}$ dominates the probability in
+\eqref{jg:lb:eq:untilted}, by \eqref{jg:lb:eq:renewalfactor}. The injective
+block bound \eqref{jg:lb:eq:lowergf} and \cref{jg:lb:prop:upper} therefore prove
+the explicit two-sided estimate
+\begin{equation}\label{jg:lb:eq:twosided}
+ \frac{c_{c_0}s_{m,d}^{-n}}{w\sqrt{n/m}}\,
+       \exp\!\left(-C_{c_0}\frac{m(\log m)^2}{n}\right)
+ \le a_n^{(m)}\le n r_m^{-n}.
+\end{equation}
+Here constants absorb the bounded comparison of $\ell$ and $n/m$. On the stated
+range the extra negative logarithm is $O_{c_0}(\log m)$. The denominator
+contributes $O(\log n)$, and \eqref{jg:lb:eq:corridor} implies
+$\log(s_{m,d}/r_m)=O((\log m)^2/m^2)$. Taking logarithms in
+\eqref{jg:lb:eq:twosided}, and using $\log C_n=n\log4-\tfrac32\log n+O(1)$,
+proves \eqref{jg:lb:eq:bridge}. The rate sandwich in \eqref{jg:lb:eq:corridor}
+proves \eqref{jg:lb:eq:spectral}.
+
+Multiplication by $m/n$ and the scalar expansion \eqref{jg:lb:eq:scalar} prove
+\eqref{jg:lb:eq:normalized}; the term $(\log m)^2/m$ is absorbed in its first
+error. If $N=n/m$ and $N/\log m\to\infty$, then
+\[
+ \frac{m\log n}{n}=\frac{\log m+\log N}{N}\longrightarrow0,
+\]
+proving \cref{jg:lb:cor:sharp}. On $n\ge c_0m(\log m)^2$, the decreasing
+function $\log n/n$ has its maximum at the lower endpoint for large $m$, and the
+same error is $O_{c_0}(1/\log m)$.
+
+[Merge note. Two details checked for this write-up. The lower bound
+$s_{m,d}^{-1}\le\alpha_m<r_m^{-1}$ of \eqref{jg:lb:eq:corridor} is Part~II's
+\eqref{crem:eq:corridor} with $\beta_m=r_m^{-1}$ (\eqref{crem:eq:scalar-root});
+and the remainder
+$t_m-(\frac12\log m+\log\log m+\frac12\log\pi)$ is $0.207$, $0.196$, $0.204$,
+$0.213$ at $m=64$, $256$, $1024$, $4096$, the size of Part~II's first
+correction $\mathcal P_1(z)/\Lambda$ (\eqref{crem:eq:first-polynomials}), so
+the convergence in \cref{jg:lb:cor:sharp} is very slow. Manuscript~36 writes
+$L$ for $n/m$ here; it is printed $N$.]
+
+\subsection{An elementary two-term alternative}
+\label{jg:sec:bridge-elementary}
+There is also a coefficient-composition proof on the same $n$ range which
+avoids Fourier analysis, at the cost of losing the constant term.
+
+\begin{proposition}[manuscript~36]\label{jg:lb:prop:elementary}
+For every fixed $c_0>0$, uniformly on $n\ge c_0m\log m$ as $m\to\infty$,
+\[
+ \log p_n(m)
+ =-\frac{n}{2m}\log m-\frac nm\log\log m
+       +O_{c_0}\!\left(\frac nm+\log n\right).
+\]
+\end{proposition}
+\begin{proof}
+The endpoint calculation in \cref{jg:lb:lem:moments} at $h=0$ shows that every
+integer $k\in[M-Tw,M]$ has $p_k\ge c_T/w$, for each fixed $T>0$ and all
+sufficiently large $m$. Choose a large $T=T(c_0)$ and an integer interval $I$ of
+length $N_I\asymp Tw$ ending at $M$. If $c_I$ is its midpoint, choose $j$
+nearest to $n/c_I$. Then $j\asymp n/m$ and
+\[
+ |n/j-c_I|\le C m^2/n\le C_{c_0}w.
+\]
+Taking $T$ sufficiently large ensures that $c=\lfloor n/j\rfloor$ is in the
+middle half of $I$. Let $R=n-jc$, so $0\le R<j$. For a sufficiently small fixed
+fraction $K$ of $N_I$, choose integer offsets $z_i\in[-K,K]$ with
+$\sum_{i=1}^jz_i=0$. Then
+\[
+ k_i=c+z_i+\one_{\{i\le R\}}\quad(1\le i\le j)
+\]
+are valid jumps in $I$, sum exactly to $n$, and determine the offsets uniquely.
+
+The convolution of symmetric unimodal integer sequences remains symmetric
+unimodal. This follows by expressing each sequence as a nonnegative combination
+of centered interval indicators and convolving; the convolution of two such
+indicators is symmetric unimodal. Hence the central coefficient of the $j$-fold
+uniform sum on $[-K,K]$ is maximal and at least $(2K+1)^j/(2jK+1)$. The tilted
+renewal coefficient is consequently at least
+\[
+ \frac{(2K+1)^j(c_T/w)^j}{2jK+1}
+ \ge\frac{(c'_T)^j}{2jK+1}.
+\]
+Its logarithm is bounded below by $-C_{c_0}n/m-C\log n$. Combine the lower
+renewal bound with \eqref{jg:lb:eq:uppercount}, \eqref{jg:lb:eq:corridor}, and
+$t_m=\tfrac12\log m+\log\log m+O(1)$.
+\end{proof}
+
+\section{One saddle sum for the whole growing range}
+\label{jg:sec:saddle}
+\emph{Source: manuscript~24; the compact-$n/(m\log m)$ case is manuscript~27's
+(\cref{jg:sec:ic-saddle}). Cutoff: a small fixed $\varepsilon m$, as in
+\cref{jg:ic:lem:tilts}.}
+Part~II asks for joint growth of $m$ and $n$ and warns that fixed-cap spectral
+asymptotics cannot simply be substituted along a moving cap. The results of
+manuscripts~33, 30 and~27 cover separate scales; the following formula includes
+these scales and the band between $m\log m$ and $m(\log m)^2$.
+
+Fix $c_0>0$. A fixed compact interval
+$\mathcal T=[h_-,h_+]\Subset(-1,\infty)$, with $h_-<0<h_+$, and a sufficiently
+small fixed $\varepsilon>0$, both depending only on $c_0$, are chosen below.
+With the split \eqref{jg:ra:eq:split} at $\varepsilon m$, put
+\begin{equation}\label{jg:ss:eq:split}
+ \Psi_m(h)=\log Q(e^{h/w})-\frac{hm}{w},\quad
+ \mu_h=m+w\Psi_m'(h),\quad \sigma_h^2=w^2\Psi_m''(h),\quad
+ \mathsf D(h)=(1-A(e^{h/w}))^{-2}.
+\end{equation}
+Here $Q$ is a probability generating function; its $h/w$ exponential tilt has
+mean $\mu_h$ and variance $\sigma_h^2$. For $v=n-1$, define
+\begin{equation}\label{jg:ss:eq:counts}
+ \begin{split}
+ \mathcal I_m(v)&=\{\ell\in\mathbb Z_{\ge1}:\mu_{h_-}\le v/\ell\le\mu_{h_+}\},\\
+ x_\ell&=(v/\ell-m)/w,\qquad \Psi_m'(h_\ell)=x_\ell,\\
+ \Phi_v(\ell)&=\ell\{h_\ell x_\ell-\Psi_m(h_\ell)\}.
+ \end{split}
+\end{equation}
+Every retained saddle $h_\ell$ exists uniquely. All parameters in these
+definitions are exact finite-$m$ quantities. ($\Phi_v$ is an action, not
+Part~I's shift $\Phi$.)
+
+\begin{theorem}[Uniform positive saddle sum; manuscript~24]\label{jg:ss:thm:main}
+The constants $\mathcal T,\varepsilon$ can be chosen so that, uniformly for all
+integers $n\ge c_0m\log m$ as $m\to\infty$,
+\begin{equation}\label{jg:ss:eq:main}
+ \mathfrak E_m(n)\sim r_m^{\,1-n}\mathfrak S_m(n-1),\qquad
+ \mathfrak S_m(v)=
+ \sum_{\ell\in\mathcal I_m(v)}
+ \frac{(\ell+1)\mathsf D(h_\ell)e^{-\Phi_v(\ell)}}
+      {\sigma_{h_\ell}\sqrt{2\pi\ell}}.
+\end{equation}
+There is no upper restriction on $n$ in this scalar statement. Along every
+sequence satisfying
+\begin{equation}\label{jg:ss:eq:actualband}
+ n\ge c_0m\log m,\qquad \frac{n(\log m)^2}{m^2}\longrightarrow0,
+\end{equation}
+one further has
+\begin{equation}\label{jg:ss:eq:actual}
+ a_n^{(m)}\sim\mathfrak E_m(n),\qquad
+ p_n(m)\sim\sqrt\pi\,n^{3/2}r_m e^{-nt_m/m}\mathfrak S_m(n-1).
+\end{equation}
+\end{theorem}
+
+The number of summands in \eqref{jg:ss:eq:main} may grow. Uniform relative
+error for each positive summand permits this growth. Different sufficiently
+generous fixed choices of $\mathcal T$ and sufficiently small $\varepsilon$
+give equivalent expressions, since they approximate the same exact coefficient.
+No truncated root expansion is substituted into the exponential. The scalar
+inputs are $t_m=\tfrac12\log m+\log\log m+\tfrac12\log\pi+o(1)$ (Part~II's
+\eqref{crem:eq:t-leading}) and $w\sim2m/\log m$, and the analytic input is
+\cref{jg:ic:lem:tilts}.
+
+\subsection{Relative control of every omitted count}
+\label{jg:sec:ss-tails}
+Write $\mu=\mu_0$ and $L=v/\mu$. Under the lower bound on $n$, one has
+$L\ge c_*\log m$ and $t_m/L\le C(c_0)$.
+
+\emph{A competitor chosen before the tail interval.} Let $\ell_0=\lceil L\rceil$.
+Its centered mean displacement satisfies
+\[
+ 0\le\Psi_m'(0)-\frac{v/\ell_0-m}{w}
+   \le\frac{\mu}{w\ell_0}\le C(c_0).
+\]
+First choose a negative interval $\mathcal T_c=[h_c,0]\Subset(-1,\infty)$ from
+the limiting function $-\log(1+h)$, with strict margins sufficient to contain
+these displacements. Choose all constants in the following quadratic bound from
+this limiting interval, also with strict margins. They then hold for every
+sufficiently small final cutoff by \cref{jg:ic:lem:tilts}; the choice is
+independent of the larger interval used for the tails. The Legendre transform
+has second derivative $1/\Psi_m''$, bounded on this interval. Thus the exact
+centered saddle of $\ell_0$ satisfies
+\begin{equation}\label{jg:ss:eq:competitorcost}
+ \Phi_v(\ell_0)\le C_c\,\frac{t_m^2}{L}.
+\end{equation}
+The centered local limit, including the residual convolution below, provides a
+positive coefficient contribution at least
+\begin{equation}\label{jg:ss:eq:competitor}
+ c\frac{\sqrt L}{w}\exp\!\left(-C_c\frac{t_m^2}{L}\right).
+\end{equation}
+This is a local calculation for one count, independent of any tail conclusion.
+
+Since $t_m^2/L\le C_*L$ uniformly in the theorem's range, choose a large fixed
+$D_*>4C_cC_*+20$. The limiting cost $i(h)=\log(1+h)-h/(1+h)$ tends to infinity
+as either $h\downarrow-1$ or $h\to\infty$. Choose $h_-<h_c$ and $h_+>0$ with
+$i(h_\pm)>4D_*$, and finally choose $\varepsilon$ sufficiently small for this
+$\mathcal T$, with a slight surrounding moment margin. For large $m$,
+\begin{equation}\label{jg:ss:eq:tailcost}
+ h_\pm\Psi_m'(h_\pm)-\Psi_m(h_\pm)>3D_*.
+\end{equation}
+
+\emph{The exact decomposition and its tails.} The squared-renewal identity is
+\begin{equation}\label{jg:ss:eq:decomp}
+ \begin{split}
+ \mathfrak V_m(v)&=[z^v](1-K_m(r_mz))^{-2}
+       =\sum_{\ell\ge0}(\ell+1)\mathfrak C_\ell(v),\\
+ \mathfrak C_\ell(v)&=[z^v](1-A(z))^{-2}Q(z)^\ell.
+ \end{split}
+\end{equation}
+For $h\in\mathcal T$, let $\mathsf W_h$ have generating function
+$\bigl((1-A(e^{h/w}))/(1-A(e^{h/w}z))\bigr)^2$. It represents the two residual
+small runs and has a uniform exponential moment on scale $w$. Exact tilting
+gives
+\begin{equation}\label{jg:ss:eq:tilt}
+ \mathfrak C_\ell(v)=\mathsf D(h)
+  \exp\{\ell\log Q(e^{h/w})-hv/w\}
+  \ljP_h(S_\ell+\mathsf W_h=v).
+\end{equation}
+Both $\mathsf D(h)$ and its reciprocal are uniformly bounded.
+
+The retained real interval is $[\ell_+,\ell_-]$, where $\ell_\pm=v/\mu_{h_\pm}$.
+Both endpoints are $(1+o(1))L$, uniformly for arbitrarily large $v$. At either
+endpoint the exponential factor in \eqref{jg:ss:eq:tilt} is at most
+$e^{-2D_*L}$ by \eqref{jg:ss:eq:tailcost}. For $\ell<\ell_+$, use $h_+$. The
+factor increases geometrically with $\ell$, because
+$\log Q(e^{h_+/w})=h_+t_m+\Psi_m(h_+)\to+\infty$. For $\ell>\ell_-$, use $h_-$
+and obtain a decreasing geometric factor, whose logarithmic ratio tends to
+$-\infty$. The maximal-atom bound, after convolution with $\mathsf W_h$,
+consequently gives
+\begin{equation}\label{jg:ss:eq:tail}
+ \sum_{\substack{\ell\ge1\\\ell\notin\mathcal I_m(v)}}
+      (\ell+1)\mathfrak C_\ell(v)
+ \le C\frac{\sqrt L}{w}e^{-2D_*L}.
+\end{equation}
+The geometric sums introduce no growing count factor. In the lower tail
+$\sqrt\ell\le C\sqrt L$, and in the upper tail
+$\sum_{j\ge0}\sqrt{\ell_-+j}\,e^{-ct_mj}\le C\sqrt L$. The $\ell=0$ term is at
+most $\mathsf D(h_+)e^{-h_+v/w}$. Relative to \eqref{jg:ss:eq:competitor}, this
+also tends to zero uniformly, since $v/w$ has order $Lt_m$ and $\log w=O(L)$.
+Thus all omitted counts are relatively negligible. This includes $\ell m\le v$,
+although individual clusters and residual runs can exceed $m$; their overflow is
+controlled on the coefficient scale.
+
+\emph{Summing the retained local limits.} Every retained $\ell$ is asymptotic to
+$L$ uniformly, and hence tends to infinity. At its exact centering tilt,
+$\ell\mu_{h_\ell}=v$. In \eqref{jg:ss:eq:tilt}, the shift
+$\mathsf W_{h_\ell}/(\sigma_{h_\ell}\sqrt\ell)$ tends to zero in probability
+uniformly. Averaging \eqref{jg:ic:eq:llt} therefore proves
+\begin{equation}\label{jg:ss:eq:each}
+ \mathfrak C_\ell(v)=
+ \frac{\mathsf D(h_\ell)e^{-\Phi_v(\ell)}}{\sigma_{h_\ell}\sqrt{2\pi\ell}}
+ (1+o(1))
+\end{equation}
+with a uniformly relative error. Indeed the expected Gaussian factor tends to
+$\varphi(0)>0$, and the local-limit error is absolute on that same scale. All
+terms are positive, so summation preserves the relative error regardless of the
+size of $\mathcal I_m(v)$. Together with \eqref{jg:ss:eq:tail} and
+$\mathfrak E_m(n)=r_m^{1-n}\mathfrak V_m(n-1)$, this proves the scalar part of
+\cref{jg:ss:thm:main}.
+
+\subsection{Transfer to the avoidance class: the endpoint-layer route}
+\label{jg:sec:ss-transfer}
+The comparison of the coefficients is direct, without a nearby-root or phase
+estimate. For $d=O(\log m)$, forbidding all scalar letters greater than $m-d$
+changes $\mathfrak E_m(n)$ exactly to $\mathfrak E_{m-d}(n)$ (use the positive
+two-renewal-word interpretation of $(1-K_m)^{-2}$; in the cluster decomposition
+only the $\ell$ big jumps can violate the restriction for large $m$). At any
+retained centered tilt, the endpoint atom bound gives
+$\ljP_h(X>m-d)\le Cd/w$. After marking one such jump, the remaining $\ell-1$ full
+clusters and all small runs have maximal atom $C/(w\sqrt\ell)$. The unrestricted
+centered probability in \eqref{jg:ss:eq:tilt} is at least $c/(w\sqrt\ell)$ by
+\eqref{jg:ss:eq:each}. Hence
+\begin{equation}\label{jg:ss:eq:layer}
+ \ljP(\text{a forbidden jump}\mid\text{total }v,\text{ count }\ell)
+ \le C\ell d/w\le \frac{Cnd}{mw}.
+\end{equation}
+Tilting does not alter this conditional law, because the total size is fixed.
+The same bound survives the positive count sum; the already omitted tails are
+negligible. Under \eqref{jg:ss:eq:actualband}, it follows that
+\begin{equation}\label{jg:ss:eq:capremove}
+ \mathfrak E_{m-d}(n)/\mathfrak E_m(n)\longrightarrow1.
+\end{equation}
+
+For an integer target shift $j=O(\log m)$, keep the original centering tilts in
+\eqref{jg:ss:eq:tilt}. The target moves by $o(w)$ and the untilting ratio is
+$e^{h_\ell j/w}=1+o(1)$. The local probabilities have ratio $1+o(1)$,
+uniformly. The omitted-tail estimates at $v-j$ use the same old cutoffs; their
+factors change only by $e^{h_\pm j/w}=1+o(1)$. Thus
+\begin{equation}\label{jg:ss:eq:shift}
+ \mathfrak E_m(n-j)/\mathfrak E_m(n)\sim r_m^j.
+\end{equation}
+Apply \eqref{jg:ss:eq:capremove} at both lengths when needed. Finally take
+$D_{\rm app}=L_{\rm app}=\lceil3\log_2m\rceil$ in \eqref{jg:ra:eq:good}. The
+upper condition in \eqref{jg:ss:eq:actualband} makes $n\eps_{D_{\rm app}}\to0$
+and $nr_m^{L_{\rm app}}\to0$. Equations
+\eqref{jg:ss:eq:capremove}--\eqref{jg:ss:eq:shift} squeeze
+$a_n^{(m)}/\mathfrak E_m(n)$ to one. Catalan Stirling asymptotics give
+\eqref{jg:ss:eq:actual}. The marked endpoint loss is $O(n(\log m)^2/m^2)$.
+
+[Merge note. This is route~2 of \cref{jg:prop:capshort}. Manuscript~27 proves
+the same two statements (its \texttt{eq:shortcap}, \texttt{eq:layer},
+\texttt{eq:shortshift}) by the same argument at $n\asymp m\log m$, where its
+bound \eqref{jg:ss:eq:layer} reads $C\ell d/w=O((\log m)^3/m)$; it adds that a
+slight enlargement of the retained window handles the endpoints of the window,
+whose terms already have the strict tail margins. Those labels are replaced by
+these.]
+
+\section{Two exact actions in the intermediate band}
+\label{jg:sec:two}
+\emph{Source: manuscript~24. Cutoff as in \cref{jg:sec:saddle}.} Set
+\begin{equation}\label{jg:ss:eq:width}
+ b=B(1),\quad \mu=\mu_0,\quad\sigma=\sigma_0,\quad
+ \nu=b\mu=\sum_{k=1}^m kp_k,\quad
+ L=\frac{v}{\mu},\quad H=\frac{\sigma}{\mu}\sqrt L .
+\end{equation}
+The width $H$ is distinct from the tilt interval $\mathcal T$. The basic scales
+are $b\to1/2$, $\mu=m-w+o(w)$, and $\sigma\sim w$.
+
+\begin{theorem}[The intermediate two-action formula; manuscript~24]
+\label{jg:ss:thm:two}
+If
+\begin{equation}\label{jg:ss:eq:middle}
+ m\log m\ll n\ll m(\log m)^2,
+\end{equation}
+let $\mathfrak J(L)$ be the set of distinct integers
+$\{\lfloor L\rfloor,\lceil L\rceil\}$. Then, uniformly along such sequences,
+\begin{equation}\label{jg:ss:eq:two}
+ \mathfrak E_m(n)\sim a_n^{(m)}
+ \sim r_m^{1-n}\frac{\sqrt L}{b^2\sigma\sqrt{2\pi}}
+          \sum_{j\in\mathfrak J(L)}e^{-\Phi_v(j)}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{jg:ss:eq:twonorm}
+ \frac{a_n^{(m)}}{(n/m^2)r_m^{-n}}
+ \sim\frac1{H\sqrt{2\pi}}\sum_{j\in\mathfrak J(L)}e^{-\Phi_v(j)}.
+\end{equation}
+At integral $L$ the shared neighbor is counted once.
+\end{theorem}
+
+\begin{proof}
+Here $L/t_m\to\infty$ and $H\to0$. The centering tilts of the one or two
+neighbors tend uniformly to zero, since their scaled mean displacements are
+$O(t_m/L)=o(1)$. Extend $\Phi_v$ to the retained real interval.
+Differentiation gives
+\begin{equation}\label{jg:ss:eq:curvature}
+ \Phi_v'(\ell)=-\log Q(e^{h_\ell/w}),\quad
+ \Phi_v''(\ell)=\frac{v^2}{\ell^3\sigma_{h_\ell}^2}>0,\quad
+ \Phi_v(L)=\Phi_v'(L)=0.
+\end{equation}
+Throughout that interval, $\Phi_v''$ is between positive constant multiples of
+$H^{-2}$.
+
+Put $j_-=\lfloor L\rfloor$ and $j_+=\lceil L\rceil$. For $\ell\le j_--1$,
+integrating the curvature bound gives
+\[
+ \Phi_v(\ell)-\Phi_v(j_-)
+ \ge \frac{c}{H^2}\big((L-\ell)^2-(L-j_-)^2\big)
+ \ge \frac{c(j_--\ell)^2}{H^2}.
+\]
+The corresponding bound on $\ell\ge j_++1$ is relative to $j_+$. All retained
+prefactors are uniformly comparable. The omitted Gaussian lattice tails are
+therefore bounded by $Ce^{-c/H^2}$ times the sum of the neighboring terms, and
+hence by $2Ce^{-c/H^2}$ times the larger neighboring term. This comparison is
+uniform in the fractional phase, including integral $L$.
+
+The one or two neighboring prefactors in \eqref{jg:ss:eq:main} are each
+asymptotic to $b^{-2}\sqrt L/(\sigma\sqrt{2\pi})$; other fixed-tilt prefactors
+are only uniformly comparable. The scalar tails were already excluded, proving
+\eqref{jg:ss:eq:two}. Condition \eqref{jg:ss:eq:middle} implies the actual-class
+upper bound. Dividing by $r_m^{1-n}v/\nu^2$ gives exactly the factor
+$1/(H\sqrt{2\pi})$; also $r_mm^2/\nu^2\to1$ and $v/n\to1$. This proves
+\eqref{jg:ss:eq:twonorm}.
+\end{proof}
+
+The exact actions determine dominance and transitions. Their higher Taylor terms
+can remain relevant even though the centering tilts tend to zero. The next
+section identifies when the quadratic approximation is relatively valid.
+
+\section{Gaussian periodization, the theta boundary and the cubic boundary}
+\label{jg:sec:gauss}
+\emph{Sources: manuscript~24 (the base statement), manuscript~30 (the
+theta-modulated equivalent above $m(\log m)^2$, its lattice-sum proof and its
+boundary limits) and manuscript~33 (the unmodulated equivalent). Cutoff: the
+cluster parameters $\mu$, $\sigma$ and hence $L_m$, $H_m$ of
+\eqref{jg:tb:eq:phase} are computed with one fixed cutoff, the small
+$\varepsilon m$ of \cref{jg:sec:saddle} in manuscript~24's statements and $m/2$
+in manuscripts~30 and~33's; each statement holds with its source's cutoff
+(\cref{jg:rem:cutoff}).}
+
+For $H>0$, let
+\begin{equation}\label{jg:tb:eq:theta}
+ \vartheta(H,u)
+ =\frac1H\sum_{j\in\mathbb Z}\varphi\!\left(\frac{j-u}{H}\right)
+ =\sum_{j\in\mathbb Z}e^{-2\pi^2H^2j^2}e^{2\pi iju},
+ \qquad \varphi(x)=\frac{e^{-x^2/2}}{\sqrt{2\pi}}.
+\end{equation}
+This is the classical periodic Gaussian, equivalently a Jacobi theta
+function~\cite{jg:DLMF}. It is positive and has period one in $u$.
+
+\begin{lemma}[Bounds on the periodic Gaussian; manuscript~30]
+\label{jg:tb:lem:theta}
+For every $h_0>0$, $\vartheta(H,u)$ is bounded above and bounded away from zero
+uniformly for $H\ge h_0$ and real $u$. Moreover
+\begin{equation}\label{jg:tb:eq:deriv}
+ \sup_{H\ge h_0,\ u\in\R}
+ \left\{|\partial_u\vartheta(H,u)|+
+               |H\partial_H\vartheta(H,u)|\right\}<\infty,
+\end{equation}
+and $\vartheta(H,u)\to1$ uniformly in $u$ as $H\to\infty$.
+\end{lemma}
+\begin{proof}
+Computing the Fourier coefficients of the first series in
+\eqref{jg:tb:eq:theta} gives $e^{-2\pi^2H^2j^2}$, proving the second
+representation. Absolute Gaussian convergence justifies every interchange and
+differentiation. That representation gives the upper and derivative bounds and
+the uniform limit. For a lower bound use positivity and compactness on
+$[h_0,H_0]\times(\R/\mathbb Z)$, then the uniform limit on $H\ge H_0$.
+\end{proof}
+
+\begin{theorem}[Gaussian periodization, its range, and the cubic boundary;
+manuscripts~24, 30 and~33]\label{jg:ss:thm:cubic}
+\leavevmode
+\begin{enumerate}
+\item[(i)] \emph{(manuscript~24)} If $n/[m(\log m)^{3/2}]\to\infty$, then
+ \begin{equation}\label{jg:ss:eq:gauss}
+  \mathfrak E_m(n)\sim\frac{r_m n}{\nu_m^2}r_m^{-n}
+             \vartheta(H_m(n),L_m(n)).
+ \end{equation}
+ \emph{(manuscript~30, cutoff $m/2$)} In particular, for every fixed
+ $c_0>0$, \eqref{jg:ss:eq:gauss} holds uniformly over integers
+ $n\ge c_0m(\log m)^2$ as $m\to\infty$; there is no upper restriction on $n$
+ in this statement.
+\item[(ii)] \emph{(manuscripts~24 and~30)} Along every integer sequence
+ $m\to\infty$ satisfying, for a fixed $c_0>0$,
+ \begin{equation}\label{jg:tb:eq:range}
+  n\ge c_0m(\log m)^2,
+  \qquad \frac{n(\log m)^2}{m^2}\longrightarrow0,
+ \end{equation}
+ and more generally whenever $n/[m(\log m)^{3/2}]\to\infty$ and
+ $n(\log m)^2/m^2\to0$, one has
+ \begin{align}
+  a_n^{(m)}&\sim\mathfrak E_m(n)\sim
+        \frac n{m^2}r_m^{-n}\vartheta(H_m(n),L_m(n)),\label{jg:tb:eq:count}\\
+  p_n(m)&\sim\frac{\sqrt\pi\,n^{5/2}}{m^2}
+       e^{-nt_m/m}\vartheta(H_m(n),L_m(n)).\label{jg:tb:eq:prob}
+ \end{align}
+\item[(iii)] \emph{(manuscript~33, cutoff $m/2$)} Along every integer sequence
+ $m\to\infty$ satisfying
+ \begin{equation}\label{jg:ra:eq:band}
+  \frac{n}{m(\log m)^2}\longrightarrow\infty,
+  \qquad
+  \frac{n(\log m)^2}{m^2}\longrightarrow0,
+ \end{equation}
+ one has
+ \begin{align}
+  a_n^{(m)}
+  &\sim\mathfrak E_m(n)
+  \sim \frac{r_m n}{\nu_m^2}r_m^{-n}
+  \sim \frac n{m^2}r_m^{-n},\label{jg:ra:eq:counts}\\
+  p_n(m)
+  &\sim \frac{\sqrt\pi\,n^{5/2}}{m^2}\exp(-nt_m/m)
+  \sim \frac{\sqrt\pi\,n^{5/2}}{m^2}\left(\frac{\alpha_m}{4}\right)^n.\label{jg:ra:eq:prob}
+ \end{align}
+ The scalar envelope equivalent
+ $\mathfrak E_m(n)\sim r_mn\nu_m^{-2}r_m^{-n}$ requires only the first condition
+ in \eqref{jg:ra:eq:band}.
+\item[(iv)] \emph{(manuscript~24)} At $n/[m(\log m)^{3/2}]\to c\in(0,\infty)$,
+ let $L=L_m(n-1)$, $H=H_m(n-1)$ and $\delta_j=j-L$. In \eqref{jg:ss:eq:two},
+ the neighboring sum may instead be written
+ \begin{equation}\label{jg:ss:eq:cubicweights}
+  \sum_{j\in\mathfrak J(L)}
+  \exp\!\left(-\frac{\delta_j^2}{2H^2}+\frac{\delta_j^3}{24c^2}\right)
+ \end{equation}
+ with relative error $o(1)$. There are integer sequences at this scale for
+ which the ratio of the exact coefficient to the Gaussian expression
+ \eqref{jg:ss:eq:gauss} tends to
+ \begin{equation}\label{jg:ss:eq:cosh}
+  \cosh\!\left(\frac1{192c^2}\right)>1.
+ \end{equation}
+ Thus the lower scale $m(\log m)^{3/2}$ is a genuine obstruction to a uniform
+ unmodified Gaussian equivalent.
+\end{enumerate}
+\end{theorem}
+
+Both theta arguments use the exact parameters \eqref{jg:tb:eq:finite}. An
+asymptotic replacement for $\mu$ can lose the phase modulo one. Likewise the
+complete scalar $t_m$ is retained in the exponential: multiplying the displayed
+error of \eqref{jg:lb:eq:scalar} by $n/m$ would not yield an $o(1)$ exponent
+throughout the band \eqref{jg:ra:eq:band}, so the expansion is used only to
+control scales (manuscript~33). The factor $n^{5/2}/m^2$ has been obtained from
+uniform coefficient analysis and a retained class, not from a fixed-$m$ Perron
+approximation. In~(iii), the second form follows from the spectral corridor
+$0\le\log(r_m^{-1}/\alpha_m)=O((\log m)^2/m^2)$
+(\eqref{crem:eq:main-quantitative}), whose product with $n$ tends to zero under
+\eqref{jg:ra:eq:band}. Manuscript~33 does not assert a fixed-$m$ prefactor or a
+relative equivalent throughout $m=o(n)$. Part~(iii) is the case $H\to\infty$
+of~(ii), because $\vartheta\to1$ uniformly (\cref{jg:tb:lem:theta}); and the
+stricter lower condition of~(iii) has mathematical content, by
+\cref{jg:tb:cor:boundary} below (manuscript~30).
+
+\begin{corollary}[Every phase occurs; manuscript~30]\label{jg:tb:cor:boundary}
+Suppose $n/[m(\log m)^2]\to c\in(0,\infty)$ and $L_m(n)\to u$ modulo one, with
+the cutoff $m/2$. Then
+\begin{equation}\label{jg:tb:eq:limit}
+ \frac{a_n^{(m)}}{(n/m^2)r_m^{-n}}
+ \longrightarrow
+ \vartheta(2\sqrt c,u)
+ =\sum_{j\in\mathbb Z}e^{-8\pi^2cj^2}e^{2\pi iju}.
+\end{equation}
+The same limiting factor is obtained by normalizing $p_n(m)$ by
+$\sqrt\pi\,n^{5/2}m^{-2}e^{-nt_m/m}$. Every $u\in\R/\mathbb Z$ is attained by an
+integer sequence.
+\end{corollary}
+\begin{proof}
+The scales \eqref{jg:ra:eq:musigma} give $H_m(n)\to2\sqrt c$, while the upper
+condition in \eqref{jg:tb:eq:range} holds automatically. Apply part~(ii) of
+\cref{jg:ss:thm:cubic} and continuity of $\vartheta$. For a prescribed phase,
+take $n_m$ to be a nearest integer to
+\[
+ \mu\left\{
+     \left\lfloor\frac{c m(\log m)^2}{\mu}\right\rfloor+u
+       \right\},\qquad 0\le u<1.
+\]
+Its change from $c m(\log m)^2$ is $O(m)$, so the normalized length tends to
+$c$. Also $n_m/\mu$ has the required phase with error $O(1/\mu)$.
+\end{proof}
+
+For any fixed $c>0$, the limiting amplitudes at phases $0$ and $1/2$ differ by
+\begin{equation}\label{jg:tb:eq:difference}
+ 4\sum_{\substack{j\ge1\\j\ \mathrm{odd}}}e^{-8\pi^2cj^2}>0.
+\end{equation}
+In particular $\vartheta(2\sqrt c,0)>1$. Thus the unmodulated equivalent fails
+at the order $m(\log m)^2$: its normalized ratio has distinct subsequential
+limits. If instead $n/[m(\log m)^2]\to\infty$, then $H_m(n)\to\infty$ and
+$\vartheta\to1$ uniformly in phase, recovering the relative equivalent~(iii).
+The same boundary limit follows from~(i)--(ii) with manuscript~24's cutoff, up
+to the phase convention of \cref{jg:rem:cutoff}; manuscript~24 does not state
+it.
+
+\begin{remark}[Merge note: the cutoff fixes the phase, and the effects are small]
+\label{jg:rem:cutoff}
+Neither manuscript says so, but the phase $L_m(n)=n/\mu$ depends on the cluster
+cutoff: $\nu_m=b\mu$ does not, but $\mu$ and $\sigma$ do. Manuscript~24 computes
+them at a small $\varepsilon m$, manuscript~30 at $m/2$. Both theta formulas
+are equivalents of the same $\mathfrak E_m(n)$, so they agree asymptotically
+(the phase difference is $O(cm^{-1/4}(\log m)^{3/2})$ at $n=cm(\log m)^2$), and
+each theorem is true with its own cutoff; but at feasible sizes the phase is
+not canonical. A ProveIt check made for this write-up found
+$L_{m/2}(n)-L_{m/16}(n)=-11.4c$, $-9.2c$, $-6.7c$, $-4.7c$ at $n=cm(\log m)^2$
+and $m=10^3$, $10^4$, $10^5$, $10^6$. Manuscript~24's own remark,
+``each formula evaluates the same scalar coefficient'', is printed in
+\cref{jg:sec:scope}. The effects themselves are small:
+$\vartheta(2\sqrt c,0)-1\approx2e^{-8\pi^2c}$ is $0.995$, $0.039$,
+$7.4\cdot10^{-4}$, $5.4\cdot10^{-9}$ and $10^{-34}$ at $c=0.01$, $0.05$, $0.1$,
+$0.25$ and $1$, so the modulation is numerically visible only for
+$c\lesssim0.1$; and $\cosh(1/(192c^2))-1\approx1.4\cdot10^{-5}c^{-4}$. The
+convergence of the constants is slow: at the cutoff $m/16$ the ratio
+$\kappa_3/w^3$ of \eqref{jg:ss:eq:cumulants} is $-4.2$, $-5.8$, $-5.8$, $-5.2$,
+$-4.5$ at $m=10^3,\ldots,10^7$, and at the cutoff $m/2$ it is $+2.6$, $+1.6$,
+$+0.7$, $-0.1$, $-0.8$, against the limit $-2$; $\Phi_v'''(L)$ is $68$--$88\%$
+of its limit $-1/(4c^2)$ for $m\le16384$. At finite $m$ the exact action
+\eqref{jg:ss:eq:two} should be used rather than the limiting cubic weight. None
+of this contradicts the theorem, whose statements are limits.
+\end{remark}
+
+\subsection{Width bounded below: retaining the discrete cluster-count sum}
+\label{jg:sec:theta-proof}
+\emph{Source: manuscript~30 (its proof of part~(i) above $m(\log m)^2$);
+cutoff $m/2$, with \cref{jg:ra:lem:cluster,jg:ra:lem:local} as inputs.
+Manuscript~24 cites this proof for $H$ bounded below and says it applies to its
+fixed cutoff as well.} Define
+\[
+ \mathfrak T_m(v)=\sum_{\ell\ge0}(\ell+1)\ljP(S_\ell=v),
+\]
+with $S_0=0$ and $S_\ell=Y_1+\cdots+Y_\ell$. Fix $c_0>0$ and suppose
+$v\ge c_0m(\log m)^2$. Write $L=L_m(v)$ and $H=H_m(v)$. By
+\eqref{jg:ra:eq:musigma}, $L\ge c(\log m)^2$ and $H\ge h_0(c_0)>0$ for large
+$m$. For fixed $A>0$ and $|\ell-L|\le AH$, the local limit gives
+\[
+ \ljP(S_\ell=v)
+ =\frac{\varphi((\ell-L)/H)+o(1)}{\sigma\sqrt L}
+\]
+uniformly. Here $\ell/L\to1$ because $H/L=O(1/(\sqrt L\log m))$. After
+multiplication by $\ell+1\sim L$ and division by $v/\mu^2=L/\mu$, the window
+sum is
+\begin{equation}\label{jg:tb:eq:windowsum}
+ \frac1H\sum_{|\ell-L|\le AH}
+       \varphi((\ell-L)/H)+o(1).
+\end{equation}
+There are $O(AH+1)$ summands, so the accumulated local-limit error is at most
+$o(1)(A+1/h_0)$. No assumption that $H$ diverges is required.
+
+We give the tail details to justify using the whole Gaussian sum. Set
+$\gamma=\mu/w\sim(\log m)/2$. On $L/2\le\ell\le2L$, the exponent in
+\eqref{jg:ra:eq:pointwise} is at most
+$-c\min\{\gamma^2(\ell-L)^2/L,\ \gamma|\ell-L|\}$. Beyond $AH$ and up to
+$L/\gamma$, its normalized sum has a Gaussian tail that tends to zero as
+$A\to\infty$, uniformly for $H\ge h_0$. Beyond $L/\gamma$, the geometric tail
+starts at $e^{-cL}$ and is negligible. For $\ell<L/2$, the normalized sum is at
+most $C\gamma\sqrt L\,e^{-c\gamma L}$. For $\ell>2L$, the bound is a weighted
+geometric sum with exponent at most $-c\gamma\ell$ and is negligible too. The
+tails of the Gaussian sum in \eqref{jg:tb:eq:windowsum} also vanish uniformly for
+$H\ge h_0$: one may compare its terms beyond $AH$ with the Gaussian integral,
+allowing one extra lattice interval of length at most $1/h_0$ in the rescaled
+variable. Taking the joint limit with $A$ fixed and then $A\to\infty$ proves
+\begin{equation}\label{jg:tb:eq:T}
+ \mathfrak T_m(v)=\frac v{\mu^2}
+        \{\vartheta(H_m(v),L_m(v))+o(1)\},
+\end{equation}
+uniformly for $v\ge c_0m(\log m)^2$.
+
+The two residual small runs do not change the limiting phase. Let $\mathsf W$
+have generating function $[b/(1-A(z))]^2$. Then $\ljE\mathsf W=O(w)$,
+$\ljE e^{\theta\mathsf W/w}\le C$ for some fixed $\theta>0$, and
+\begin{equation}\label{jg:tb:eq:residual}
+ [z^v](1-K_m(r_mz))^{-2}=b^{-2}\ljE\,\mathfrak T_m(v-\mathsf W).
+\end{equation}
+On $\mathsf W\le v/2$, use \eqref{jg:tb:eq:T} with lower constant $c_0/2$. The
+phase and logarithmic-width changes satisfy
+\[
+ |L_m(v-\mathsf W)-L_m(v)|=\frac{\mathsf W}{\mu},\qquad
+ \left|\log\frac{H_m(v-\mathsf W)}{H_m(v)}\right|
+       \le\frac{\mathsf W}v.
+\]
+\Cref{jg:tb:lem:theta} bounds their expected effect by $O(w/\mu+w/v)=o(1)$.
+Also $\ljE[(v-\mathsf W)\one_{\{\mathsf W\le v/2\}}]\sim v$. For
+$\mathsf W>v/2$, use its exponential tail and $\mathfrak T_m(u)\le
+C(1+(u/m)^2)$ for $0\le u\le v$, which follows from $Y>m/2$. After division by
+$v/m^2$, this contribution still tends uniformly to zero because
+$v/m\ge c_0(\log m)^2$ and the exponential is $e^{-c(v/m)\log m}$. Since
+$\nu_m=b\mu$, equation \eqref{jg:tb:eq:residual} becomes
+\begin{equation}\label{jg:tb:eq:squared}
+ [z^v](1-K_m(r_mz))^{-2}
+ =\frac v{\nu_m^2}
+       \{\vartheta(H_m(v),L_m(v))+o(1)\}.
+\end{equation}
+Now use $v=n-1$ in $\mathfrak E_m(n)=r_m^{1-n}[z^{n-1}](1-K_m(r_mz))^{-2}$.
+Replacing $n-1$ by $n$ changes the phase by $1/\mu$ and the log width by
+$O(1/n)$, hence changes $\vartheta$ by $o(1)$. Its positive lower bound turns
+this additive expansion into the relative equivalent \eqref{jg:ss:eq:gauss}
+for $n\ge c_0m(\log m)^2$.
+
+[Merge note. Manuscript~24's account of this case, for its fixed cutoff, is a
+summary of the same steps: central counts $|\ell-L|\le AH$ give a normalized
+Gaussian sum with error $o(1)(A+H^{-1})$; compact two-sided tilts and
+\eqref{jg:ic:eq:atom} give the summable pointwise bound
+\eqref{jg:ra:eq:pointwise}, which controls all tails as $A\to\infty$; the two
+residual runs have an exponential moment on scale $w$ and an expected phase
+shift $O(w/\mu)=o(1)$; and the Fourier series in \eqref{jg:tb:eq:theta} gives
+bounded derivatives and a positive lower bound for $\vartheta$ when $H$ is
+bounded below, so the additive approximation is relative. Manuscript~24 is
+therefore not self-contained for $H$ bounded below; this subsection is the full
+proof of that regime.]
+
+\subsection{Vanishing width: Taylor expansion of the action}
+\label{jg:sec:taylor}
+\emph{Source: manuscript~24. Cutoff $\varepsilon m$.} Let $\kappa_{3,h}$ and
+$\kappa_{4,h}$ be the third and fourth cumulants under tilt $h/w$, and write
+$\kappa_3=\kappa_{3,0}$. The limiting centered fluctuation is the negative of a
+centered exponential, so \cref{jg:ic:lem:tilts} gives
+\begin{equation}\label{jg:ss:eq:cumulants}
+ \frac{\kappa_3}{w^3}\to-2,\qquad \frac{\sigma}{w}\to1,\qquad
+ \frac{\mu}{w}\sim\tfrac12\log m.
+\end{equation}
+In particular $\Psi_m'''=\kappa_{3,h}/w^3$. Since
+$h_\ell'=-vw/(\ell^2\sigma_{h_\ell}^2)$ and $\dd\sigma_h^2/\dd h=\kappa_{3,h}/w$,
+differentiating \eqref{jg:ss:eq:curvature} gives exactly
+\begin{equation}\label{jg:ss:eq:third}
+ \Phi_v'''(L)=-\frac{3\mu^2}{L^2\sigma^2}
+              +\frac{\mu^3\kappa_3}{L^2\sigma^6}.
+\end{equation}
+One more differentiation gives, with $h=h_\ell$,
+\begin{equation}\label{jg:ss:eq:fourth}
+ \Phi_v''''(\ell)=
+ \frac{12v^2}{\ell^5\sigma_h^2}
+ -\frac{8v^3\kappa_{3,h}}{\ell^6\sigma_h^6}
+ -\frac{v^4\kappa_{4,h}}{\ell^7\sigma_h^8}
+ +\frac{3v^4\kappa_{3,h}^2}{\ell^7\sigma_h^{10}}.
+\end{equation}
+For $|\ell-L|\le C$ and $L/\log m\to\infty$, these tilts tend uniformly to zero.
+Their cumulants obey $\kappa_{j,h}=O(w^j)$ and $\sigma_h\asymp w$, so
+\begin{equation}\label{jg:ss:eq:fourthbound}
+ \sup_{|\ell-L|\le C}|\Phi_v''''(\ell)|
+       =O\!\left(\frac{(\log m)^4}{L^3}\right).
+\end{equation}
+
+Suppose $H\to0$ and $L/(\log m)^{3/2}\to\infty$. For each relevant neighbor, the
+cubic Taylor term is $O((\log m)^3/L^2)=o(1)$, and \eqref{jg:ss:eq:fourthbound}
+makes the fourth-order remainder $o(1)$. Thus the action can be replaced
+relatively by $\delta_j^2/(2H^2)$. All other Gaussian lattice terms are
+relatively negligible by the same quadratic curvature comparison used in the
+proof of \cref{jg:ss:thm:two}. Every sequence has subsequences with $H\to0$ or
+$H$ bounded below, which with \cref{jg:sec:theta-proof} proves the full range
+of part~(i). Replacing $v=n-1$ by $n$ in the two Gaussian neighbors changes
+their logarithms by $O((\log m)^2/(mL))=o(1)$ when $H\to0$. This can also be
+seen from the entire Gaussian lattice sum, so a change in the identity of a
+nearest neighbor causes no problem. For $H$ bounded below, use the bounded
+theta derivatives. This proves \eqref{jg:ss:eq:gauss};
+\cref{jg:ss:thm:main} gives the actual-class transfer of part~(ii) by the
+endpoint-layer route (\cref{jg:sec:ss-transfer}), and
+\cref{jg:sec:theta-cap} gives it by the root-shift route.
+
+\subsection{Diverging width: the window integral}
+\label{jg:sec:window}
+\emph{Source: manuscript~33, a second route to part~(iii); cutoff $m/2$.}
+
+\begin{proposition}[The squared-renewal equivalent; manuscript~33]
+\label{jg:ra:prop:renewal}
+Uniformly along integer sequences with $m\to\infty$ and
+$v/[m(\log m)^2]\to\infty$,
+\begin{equation}\label{jg:ra:eq:T}
+ \mathfrak T_m(v)\sim v/\mu^2,\qquad
+ [z^v](1-K_m(r_mz))^{-2}\sim v/\nu_m^2.
+\end{equation}
+Consequently the scalar envelope equivalent of part~(iii) of
+\cref{jg:ss:thm:cubic} holds under its stated one-sided condition.
+\end{proposition}
+\begin{proof}
+Put $L=v/\mu$ and $H=(\sigma/\mu)\sqrt L$. Then $H$ is comparable to
+$\sqrt L/\log m$ and tends to infinity. For fixed $A>0$ and $|\ell-L|\le AH$,
+the local limit \eqref{jg:ra:eq:llt} gives uniformly
+\[
+ \ljP(Y_1+\cdots+Y_\ell=v)
+ =\frac{\varphi(-(\ell-L)/H)+o(1)}{\sigma\sqrt L}.
+\]
+Since $\ell+1\sim L$, the sum over that window, divided by $v/\mu^2$, tends to
+$\int_{-A}^{A}\varphi(u)\,\dd u$. The mesh is $1/H$, and the normalization is
+$LH/(\sigma\sqrt L)=L/\mu=v/\mu^2$.
+
+For completeness, the remaining cluster counts are uniformly summable. Set
+$\gamma=\mu/w\sim(\log m)/2$. On $L/2\le\ell\le2L$, the exponent in
+\eqref{jg:ra:eq:pointwise} is at most
+$-c\min\{\gamma^2(\ell-L)^2/L,\ \gamma|\ell-L|\}$. For
+$AH<|\ell-L|\le L/\gamma$, this gives a Gaussian tail after summation, with
+normalized bound $C\int_{cA}^\infty e^{-cu^2}\,\dd u+o(1)$. For
+$|\ell-L|>L/\gamma$, the geometric tail starts at $e^{-cL}$ and is negligible.
+When $\ell<L/2$, the entire contribution is at most
+$CL^{3/2}w^{-1}e^{-c\gamma L}$; after division by $L/\mu$ this is at most
+$C\gamma\sqrt L\,e^{-c\gamma L}\to0$. For $\ell>2L$, the exponent is at most
+$-c\gamma\ell$, and the weighted geometric sum is negligible too. First let
+$m,v$ tend to infinity with $A$ fixed, and then let $A$ increase. This proves
+the first equivalent in \eqref{jg:ra:eq:T}.
+
+The exact factorization
+\begin{equation}\label{jg:ra:eq:square}
+ (1-A-B)^{-2}=(1-A)^{-2}(1-Q)^{-2}
+\end{equation}
+handles the residual small runs. Let $\mathsf W$ have probability generating
+function $[b/(1-A(z))]^2$, the sum of two independent small runs.
+\Cref{jg:ra:lem:cluster} gives $\ljE\mathsf W=O(w)$ and
+$\ljE e^{\theta\mathsf W/w}\le C$ for some $\theta>0$. Thus
+$[z^v](1-A-B)^{-2}=b^{-2}\ljE\,\mathfrak T_m(v-\mathsf W)$, where
+$\mathfrak T_m$ is zero at negative arguments. On $\mathsf W\le v/2$, the first
+equivalent is uniform at every argument $v-\mathsf W$, and
+$\ljE[(v-\mathsf W)\one_{\{\mathsf W\le v/2\}}]\sim v$. For the complement,
+note $Y>m/2$, so the elementary bound $\mathfrak T_m(u)\le C(1+(u/m)^2)$ holds
+for $0\le u\le v$. Its contribution is at most $C(1+(v/m)^2)e^{-cv/w}$.
+Dividing by $v/m^2$ still gives a quantity tending to zero: with $L\asymp v/m$
+the exponential is $e^{-cL\log m}$, which dominates the displayed polynomial
+factor when $L/(\log m)^2\to\infty$. Finally $\nu_m=b\mu$, proving the second
+equivalent.
+
+The identity $\mathfrak E_m(n)=r_m^{1-n}[z^{n-1}](1-K_m(r_mz))^{-2}$ now gives
+$\mathfrak E_m(n)\sim r_mn\nu_m^{-2}r_m^{-n}$.
+\end{proof}
+
+[Merge note. \Cref{jg:sec:theta-proof} is this argument with the discrete
+Gaussian sum retained instead of summed to one; manuscript~30 says its result
+recovers manuscript~33's when $H\to\infty$. A ProveIt check made for this
+write-up confirmed the complement estimate: $C(m^2/v+v)e^{-cv/w}\to0$ already
+when $v/m\to\infty$, so manuscript~33's stated condition is sufficient.]
+
+\subsection{Cap shortening by root shift and phase stability}
+\label{jg:sec:theta-cap}
+\emph{Sources: manuscripts~33 and~30; route~1 of \cref{jg:prop:capshort}.
+Cutoff $m/2$.} We need a quantitative comparison of the scalar roots at
+$M=m-d$ and $m$, $d=O(\log m)$. The endpoint calculation in
+\cref{jg:ra:lem:cluster} gives $p_k\le C\log m/m$ for $m-d<k\le m$.
+Consequently $1-K_M(r_m)=\sum_{k=M+1}^mp_k=O(d\log m/m)$. Since $d/w\to0$, the
+retained layer $[m-w,m-d]$ has probability mass bounded below by a positive
+constant. Hence $K_M'(r_m)\ge cm$. The derivative is increasing on positive
+arguments, so the mean value theorem gives
+\begin{equation}\label{jg:ra:eq:rootgap}
+ 0\le r_M-r_m
+ \le C\frac{d\log m}{m^2}
+ =O((\log m)^2/m^2).
+\end{equation}
+Moreover $\nu_M/\nu_m\to1$, by $\nu_j\sim j/2$ and $M/m\to1$. (Manuscript~30
+states the same bound as $0\le r_M-r_m=O(d\log m/m^2)$, with the removed
+endpoint mass $O(d\log m/m)$ and a retained layer of width comparable to $w$
+giving $K_M'(r_m)\ge cm$; that display, its \texttt{eq:rootshift}, is replaced
+by \eqref{jg:ra:eq:rootgap}. Both re-run Part~II's corridor proof,
+\cref{jg:rem:credits}.)
+
+\emph{Completion of part~(iii) (manuscript~33).} With \eqref{jg:ra:eq:cutoff},
+apply \cref{jg:ra:prop:renewal} to $(m,n)$, $(M,n)$, and $(M,n-L_{\rm app})$;
+all satisfy its lower growth condition. Equation \eqref{jg:ra:eq:rootgap} and the
+upper condition in \eqref{jg:ra:eq:band} give
+\begin{equation}\label{jg:ra:eq:ratios}
+ \frac{\mathfrak E_M(n)}{\mathfrak E_m(n)}\longrightarrow1,\qquad
+ \frac{\mathfrak E_M(n-L_{\rm app})}{\mathfrak E_M(n)}
+       \sim r_M^{L_{\rm app}}\frac{n-L_{\rm app}}{n}.
+\end{equation}
+Here $r_M^{L_{\rm app}}=4^{-L_{\rm app}}\exp(O(L_{\rm app}\log m/m))=O(m^{-6})$.
+Thus $n\mathfrak E_M(n-L_{\rm app})/\mathfrak E_M(n)\to0$, and
+$n\eps_{D_{\rm app}}\to0$ under \eqref{jg:ra:eq:band}. \Cref{jg:ra:lem:good}
+and the exact upper bound $a_n^{(m)}\le\mathfrak E_m(n)$ prove relative
+sharpness. The scalar equivalent and $\nu_m\sim m/2$, $r_m\to1/4$ prove
+\eqref{jg:ra:eq:counts}. Stirling's formula $C_n\sim4^n/(\sqrt\pi\,n^{3/2})$
+then proves \eqref{jg:ra:eq:prob}. In the band, the lower condition makes the
+cluster-count lattice window diverge, while the upper condition makes the
+nearby-root replacement harmless.
+
+\emph{Phase stability (manuscript~30).} The extra issue in transferring the
+theta-modulated envelope to actual avoiders is stability of its phase.
+
+\begin{lemma}[Exact-law and moment stability; manuscript~30]
+\label{jg:tb:lem:stability}
+For $M=m-d$ as above, with $\mu_M,\sigma_M,L_M,H_M$ the parameters of the cap
+$M$ (cutoff $M/2$),
+\begin{align}
+ |\mu_M-\mu_m|&=O(d\log m),\label{jg:tb:eq:meanshift}\\
+ |\sigma_M^2-\sigma_m^2|&=O(md\log m),\label{jg:tb:eq:varshift}\\
+ |L_M(n)-L_m(n)|&=O(nd\log m/m^2),\label{jg:tb:eq:Lshift}\\
+ \left|\log\frac{H_M(n)}{H_m(n)}\right|
+       &=O(d(\log m)^3/m).\label{jg:tb:eq:Hshift}
+\end{align}
+The last two estimates hold at every common positive argument $n$.
+\end{lemma}
+\begin{proof}
+Write $p_{m,k}=C_{k-1}r_m^k$, and let $T=\sum_{k=M+1}^mp_{m,k}$ be the removed
+endpoint mass, $O(d\log m/m)$. Extend the cap-$M$ tilted law by zero above $M$.
+On the common support, $p_{M,k}=p_{m,k}(r_M/r_m)^k\ge p_{m,k}$. Both laws sum
+to one, so their $\ell^1$ distance is exactly $2T$. Write
+$\epsilon=d\log m/m$. Their raw moments of degree $j=1,2$ therefore differ by
+$O(m^j\epsilon)$.
+
+The splitting thresholds $M/2$ and $m/2$ differ by $O(d)$ lattice points. Each
+probability on this middle layer is $O(\log m/m)$: the ideal weights are
+eventually increasing for $k\ge m/3$ and their endpoint maximum has that bound.
+The same holds for the cap-$M$ law, or follows from its pointwise root
+reweighting. Thus the small and big masses differ by $O(\epsilon)$, and their
+degree-$j$ moment sums by $O(m^j\epsilon)$. The masses $b_m,b_M$ stay bounded
+away from zero. The finite formulas \eqref{jg:tb:eq:finite} now imply
+\eqref{jg:tb:eq:meanshift}--\eqref{jg:tb:eq:varshift}.
+
+Since $\sigma_m^2\sim4m^2/(\log m)^2$ and $\mu_m\sim m$,
+\[
+ \left|\log\frac{\sigma_M}{\sigma_m}\right|
+      =O(d(\log m)^3/m),\qquad
+ \left|\log\frac{\mu_M}{\mu_m}\right|
+      =O(d\log m/m).
+\]
+Using $L_m(n)=n/\mu_m$ gives \eqref{jg:tb:eq:Lshift}; using
+$H_m(n)=\sigma_m\sqrt n/\mu_m^{3/2}$ gives \eqref{jg:tb:eq:Hshift}.
+\end{proof}
+
+Under \eqref{jg:tb:eq:range}, with $d=O(\log m)$, both phase changes in
+\cref{jg:tb:lem:stability} tend to zero. The derivative bound in the
+\emph{logarithmic} width variable is uniform even as $H$ tends to infinity. Thus
+\begin{equation}\label{jg:tb:eq:thetaratio}
+ \frac{\vartheta(H_M(n),L_M(n))}
+      {\vartheta(H_m(n),L_m(n))}\longrightarrow1.
+\end{equation}
+Part~(i), \eqref{jg:ra:eq:rootgap} and \eqref{jg:tb:eq:thetaratio} imply
+$\mathfrak E_M(n)/\mathfrak E_m(n)\to1$. At a fixed cap $M$, replacing $n$ by
+$n-L_{\rm app}$ changes the phase by $O(\log m/m)$ and log width by
+$O(\log m/n)$, so its theta ratio also tends to one. Therefore
+\[
+ \frac{\mathfrak E_M(n-L_{\rm app})}{\mathfrak E_M(n)}
+ \sim r_M^{L_{\rm app}}\frac{n-L_{\rm app}}n.
+\]
+Now $r_M^{L_{\rm app}}=O(m^{-6})$ and $n\eps_{D_{\rm app}}\to0$ under
+\eqref{jg:tb:eq:range}. The squeeze \eqref{jg:ra:eq:good} proves
+$a_n^{(m)}\sim\mathfrak E_m(n)$. Combining this with $\nu_m\sim m/2$,
+$r_m\to1/4$, and Catalan Stirling asymptotics proves part~(ii) on
+\eqref{jg:tb:eq:range}.
+
+[Merge note. A ProveIt check made for this write-up found the bound
+\eqref{jg:tb:eq:meanshift} generous (the delivered stability rows show a mean
+shift of about $d$, e.g.\ $-58.4$ for $d=66$ at $m=2048$), and the root gap
+\eqref{jg:ra:eq:rootgap} bounded after scaling:
+$(r_M-r_m)m^2/(\log m)^2=2.72$, $1.97$, $1.76$ at $m=128$, $512$, $2048$.]
+
+\subsection{The cubic boundary}
+\label{jg:sec:cubic}
+\emph{Source: manuscript~24; proof of part~(iv).} At the boundary
+$L/(\log m)^{3/2}\to c$, equation \eqref{jg:ss:eq:third} tends to
+$-1/(4c^2)$. Its first term tends to zero and its second has this limit by
+\eqref{jg:ss:eq:cumulants}. The fourth-order remainder is
+$O((\log m)^{-1/2})$. Consequently, uniformly for bounded $\delta$,
+\[
+ \Phi_v(L+\delta)=\frac{\delta^2}{2H^2}
+                  -\frac{\delta^3}{24c^2}+o(1).
+\]
+This proves \eqref{jg:ss:eq:cubicweights}.
+
+Finally choose an integer $k_m$ nearest $c(\log m)^{3/2}$, and choose $v=n-1$
+nearest to $\mu(k_m+1/2)$. Then $L/(\log m)^{3/2}\to c$ and
+$\operatorname{dist}(L,\mathbb Z+1/2)\le1/(2\mu)=o(H^2)$. The two Gaussian
+weights are asymptotically equal, while their cubic multipliers tend to
+$e^{\pm1/(192c^2)}$. Their mean is \eqref{jg:ss:eq:cosh}. The actual-class upper
+condition holds automatically at this scale.
+
+The full two-weight expression is needed when phases approach a half-integer at
+an unspecified rate. For a fixed limiting fractional phase $0<u<1/2$, the
+Gaussian-dominant neighbor instead has multiplier $e^{-u^3/(24c^2)}$; for
+$1/2<u<1$ its multiplier is $e^{(1-u)^3/(24c^2)}$. At integral limiting phase
+the multiplier is one.
+
+[Merge note. The derivative identities \eqref{jg:ss:eq:third} and
+\eqref{jg:ss:eq:fourth}, the limit $\Phi_v'''(L)\to-1/(4c^2)$, the cubic
+coefficient, the multipliers $e^{\pm1/(192c^2)}$ and their mean, and the
+fixed-phase multipliers were rechecked symbolically for this write-up, and
+\eqref{jg:ss:eq:third} with the exact $\kappa_3$ was confirmed against finite
+differences of the exact action at $m=1024$, $4096$, $16384$; see
+\cref{jg:rem:cutoff} for the slow approach of the constants.]
+
+\section{The Gamma law for few macroscopic clusters}
+\label{jg:sec:gamma}
+\emph{Sources: manuscripts~27 ($n\asymp m\log m$) and~22
+($1\ll n/m\ll\log m$). Cutoff: a small fixed $\varepsilon m$; manuscript~22
+works with the critical weights $b_k$.} Part~VIII keeps the number of
+macroscopic pieces fixed, while \cref{jg:ss:thm:main} starts at a fixed
+positive multiple of $m\log m$. Here the macroscopic count is
+$\approx(n-1)/m$, at most of order $\log m$.
+
+Put $v=n-1$. For an integer $\ell$ with $s_\ell=\ell-v/m>0$, define the Gamma
+term
+\begin{equation}\label{jg:ic:eq:summands}
+ \mathfrak g_{m,v}(\ell)
+ =\frac{(\ell+1)e^{3s_\ell/2}s_\ell^{\,\ell-1}}
+           {(2\sqrt{\pi m})^\ell\Gamma(\ell)},
+ \qquad \Gamma(\ell)=(\ell-1)!.
+\end{equation}
+(Manuscript~27's $F_{m,v}(\ell)$ and manuscript~22's $G_{m,v}(j)$ are this
+function, character for character.) Fix $0<c_0<c_1<\infty$, and define
+\[
+ \mathfrak r_c(s)=\frac s2-c-c\log\frac{s}{2c}\quad(c,s>0),\qquad
+ B_*=10+\max_{\substack{c_0\le c\le c_1\\1\le s\le2}}\mathfrak r_c(s).
+\]
+Choose constants $a,b$ satisfying
+\begin{equation}\label{jg:ic:eq:ab}
+ \begin{gathered}
+ 0<a<\min(1,c_0),\qquad b>\max(2,4c_1),\\
+ \inf_{c_0\le c\le c_1}\mathfrak r_c(a)>B_*+10,\qquad
+ \inf_{c_0\le c\le c_1}\mathfrak r_c(b)>B_*+10.
+ \end{gathered}
+\end{equation}
+Such choices exist because $\mathfrak r_c(s)\to\infty$ uniformly on this compact
+$c$ interval as $s\downarrow0$ or $s\to\infty$. No optimization of $a,b$ is
+intended. Set $\mathcal I_m(v)=\{\ell\ge1:\ell\in\mathbb Z,\ a\le s_\ell\le b\}$.
+(This index set is manuscript~27's; manuscript~24's $\mathcal I_m(v)$ of
+\eqref{jg:ss:eq:counts} is defined by tilts instead.)
+
+\begin{theorem}[Uniform integer-count equivalent; manuscript~27]
+\label{jg:ic:thm:main}
+Uniformly over integers $m,n$ with $m\to\infty$ and
+\begin{equation}\label{jg:ic:eq:range}
+ c_m=\frac{n-1}{m\log m}\in[c_0,c_1],
+\end{equation}
+one has
+\begin{align}
+ a_n^{(m)}&\sim\mathfrak E_m(n)
+ \sim\frac{4^n}{m}\sum_{\ell\in\mathcal I_m(n-1)}\mathfrak g_{m,n-1}(\ell),
+                                                        \label{jg:ic:eq:count}\\
+ p_n(m)&\sim\frac{\sqrt\pi\,n^{3/2}}{m}
+                \sum_{\ell\in\mathcal I_m(n-1)}\mathfrak g_{m,n-1}(\ell).
+                                                        \label{jg:ic:eq:prob}
+\end{align}
+The number of positive summands is bounded independently of $m,n$.
+\end{theorem}
+
+The full finite sum is important near a count transition. Its coefficients are
+elementary apart from the factorial notation, and no Gaussian theta
+approximation is extrapolated to this scale.
+
+\begin{corollary}[Phase-dependent rate; manuscript~27]\label{jg:ic:cor:rate}
+If $c_m\to c>0$ and $v/m\to f$ modulo one, then
+\begin{equation}\label{jg:ic:eq:rate}
+ \frac1{\log m}\log\frac{a_n^{(m)}}{(n/m^2)r_m^{-n}}
+ \longrightarrow-\min_{\substack{j\in\mathbb Z\\j-f>0}}\mathfrak r_c(j-f).
+\end{equation}
+The same rate is obtained on normalizing $p_n(m)$ by
+$\sqrt\pi\,n^{5/2}m^{-2}e^{-nt_m/m}$. Adjacent deficits $s,s+1$ tie at leading
+order exactly when
+\begin{equation}\label{jg:ic:eq:threshold}
+ s=s_*(c):=\frac1{e^{1/(2c)}-1}.
+\end{equation}
+\end{corollary}
+
+Every fixed phase can be realized by integer lengths, for example by taking
+$v_m$ to be a nearest integer to $m(\lfloor c\log m\rfloor+f)$. The minimum in
+\eqref{jg:ic:eq:rate} is zero precisely when $2c+f$ is integral. At other phases
+it is positive, so the normalized count has an additional polynomial decay
+in~$m$.
+
+For the range below $m\log m$ put
+\begin{equation}\label{jg:gm:eq:basic}
+ \rho=\frac vm,\qquad \ell=\lceil\rho\rceil,\qquad
+ s=\ell-\rho=s_\ell .
+\end{equation}
+The statements below exclude integral $\rho$ and thus have $0<s<1$.
+
+\begin{theorem}[One minimal macro count; manuscript~22]\label{jg:gm:thm:ordinary}
+Fix $0<\delta<1/2$. Uniformly along integer sequences with
+\[
+ m\to\infty,\qquad \ell\to\infty,\qquad
+ \ell=o(\log m),\qquad \delta\le s\le1-\delta,
+\]
+one has
+\begin{equation}\label{jg:gm:eq:ordinary}
+ a_n^{(m)}\sim\mathfrak E_m(n)\sim\frac{4^n}{m}\mathfrak g_{m,v}(\ell),
+ \qquad
+ p_n(m)\sim\frac{\sqrt\pi\,n^{3/2}}m\mathfrak g_{m,v}(\ell).
+\end{equation}
+\end{theorem}
+
+The first count $\ell$ is the smallest number of letters of size at most $m$
+that can reach $v$, apart from the small-run contribution. The proof
+quantitatively excludes the small-run overflows that might replace one of these
+letters. The exact ratio of two adjacent Gamma terms is
+\begin{equation}\label{jg:gm:eq:R}
+ R_{m,\ell}(s)=\frac{\mathfrak g_{m,v}(\ell+1)}{\mathfrak g_{m,v}(\ell)}
+ =\frac{\ell+2}{\ell+1}e^{3/2}
+       \frac{s}{2\ell\sqrt{\pi m}}\left(1+\frac1s\right)^\ell,
+\end{equation}
+with $v=m(\ell-s)$ in the ratio and $s=s_\ell$. (This is manuscript~27's
+\texttt{eq:ratio} and manuscript~22's \texttt{eq:R}; both delivered suites check
+it in exact rationals.)
+
+\begin{theorem}[The shrinking transition; manuscript~22]
+\label{jg:gm:thm:transition}
+Assume $m\to\infty$, $\ell\to\infty$, $\ell=o(\log m)$ and $0<s<1$. Uniformly
+whenever $R_{m,\ell}(s)$ stays in a fixed compact subset of $(0,\infty)$,
+\begin{equation}\label{jg:gm:eq:two}
+ \begin{split}
+ a_n^{(m)}\sim\mathfrak E_m(n)
+   &\sim\frac{4^n}{m}\bigl(\mathfrak g_{m,v}(\ell)+\mathfrak g_{m,v}(\ell+1)\bigr),\\
+ p_n(m)&\sim\frac{\sqrt\pi\,n^{3/2}}m
+                   \bigl(\mathfrak g_{m,v}(\ell)+\mathfrak g_{m,v}(\ell+1)\bigr).
+ \end{split}
+\end{equation}
+For all sufficiently large $m$ along this count regime, there is a unique
+$\tau=\tau_{m,\ell}\in(0,1)$ with $R_{m,\ell}(\tau)=1$. It satisfies
+\begin{equation}\label{jg:gm:eq:tau}
+ \begin{gathered}
+ \tau^{\ell-1}
+  =\frac{e^{3/2}(\ell+2)}{2\ell(\ell+1)\sqrt{\pi m}}(1+\tau)^\ell,\\
+ \tau\sim
+ \left(\frac{e^{3/2}(\ell+2)}{2\ell(\ell+1)\sqrt{\pi m}}\right)^{1/(\ell-1)},
+ \qquad
+ \log\frac1\tau\sim\frac{\log m}{2(\ell-1)},\qquad
+ m\tau=m^{1-o(1)}.
+ \end{gathered}
+\end{equation}
+For $s=\tau e^{x/(\ell-1)}$, uniformly for $x$ in a fixed compact real interval,
+\begin{equation}\label{jg:gm:eq:logistic}
+ R_{m,\ell}(s)\to e^{-x}.
+\end{equation}
+Thus the two positive terms in \eqref{jg:gm:eq:two} have limiting shares
+$1/(1+e^{-x})$ and $1/(1+e^x)$.
+\end{theorem}
+
+The transition width is of order $\tau/\ell$ in $s$, or $m\tau/\ell$ in $v$.
+The explicit equivalent for $\tau$ alone need not resolve that smaller width, so
+the exact root is retained. The shares above describe contributions to the
+equivalent, not an unproved statistic of a conditioned permutation.
+\Cref{jg:gm:thm:transition} is a specified below-integer window; it makes no
+uniform assertion over every phase tending to an integer.
+
+\begin{remark}[Merge note: one Gamma law on adjacent ranges]
+\label{jg:rem:gamma}
+\Cref{jg:ic:thm:main,jg:gm:thm:ordinary,jg:gm:thm:transition} are one formula,
+the Gamma terms \eqref{jg:ic:eq:summands}, on disjoint adjacent ranges: counts
+$\ell\asymp\log m$ (a bounded number of terms, selected by the rate
+$\mathfrak r_c$) and counts $\ell\to\infty$, $\ell=o(\log m)$ (one or two terms,
+with phase restrictions). They are consistent at the seam: with
+$\ell=c\log m$, manuscript~22's transition centre $\tau$ and manuscript~27's
+leading-order tie $s_*(c)$ agree to leading exponential order
+($\log\tau\sim-\log m/(2(\ell-1))$, $\log s_*\sim-1/(2c)$); a ProveIt check made
+for this write-up found $\tau/s_*(\ell/\log m)=0.24$, $0.34$, $0.44$, $0.43$,
+$0.60$ at $m=10^{30},\ldots,10^{10^6}$, a ratio that tends to one only like
+$\exp(O(\log\ell/\ell+1/(c\ell)))$. So the transition of
+\cref{jg:gm:thm:transition} is the $\ell\to\infty$, $c\to0$ shadow of the tie in
+\cref{jg:ic:cor:rate}. At $n\asymp m\log m$ the Gamma sum
+\eqref{jg:ic:eq:count} and manuscript~24's saddle sum \eqref{jg:ss:eq:main} are
+two expressions of one coefficient: both are equivalents of $\mathfrak E_m(n)$,
+and manuscript~27's \eqref{jg:ic:eq:saddle} and \cref{jg:sec:gm-comp} evaluate
+the same count coefficients $\mathfrak C_\ell(v)$; no term-by-term identity of
+the two sums is proved (manuscript~24's sentence ``a common expression for the
+earlier finite Gamma sum'', printed in \cref{jg:sec:scope}, is to be read so).
+
+Convergence in \cref{jg:ic:thm:main} is slow, and manuscript~27 does not
+quantify it. The first equivalence of the composition estimate
+\eqref{jg:gm:eq:macro} carries a relative error $\exp(O(s_\ell^2/\ell))$, which
+is $1+O(1/\log m)$ at this scale, and the small runs add a correction of order
+$\ell^{3/2}(ms_\ell)^{-1/2}$. A ProveIt check made for this write-up computed
+exact envelopes against the Gamma sum at $n=cm\log m$: at $c=1$ the ratio is
+$1.32$, $1.87$, $2.24$, $2.39$, $2.40$, $2.35$, $2.06$, $1.93$ for
+$m=64,128,256,512,1024,4096,16384,65536$, and at $c=1/2$ between $1.16$ and
+$1.66$; a Monte Carlo evaluation of the composition factor reproduces the
+$1+O(1/\log m)$ correction. The theorem stays asymptotic and is not
+contradicted.
+\end{remark}
+
+\subsection{A finite saddle sum with controlled overflow}
+\label{jg:sec:ic-saddle}
+\emph{Source: manuscript~27; the compact-$c_m$ case of \cref{jg:ss:thm:main},
+proved with its own tail argument by the rate $\mathfrak r_c$, and the first
+step of the proof of \cref{jg:ic:thm:main}.} Choose a compact interval
+$\mathcal T\subset(-1,\infty)$ containing all $2c/s-1$ for $c\in[c_0,c_1]$,
+$s\in[a,b]$, in its interior. Choose $\varepsilon$ for \cref{jg:ic:lem:tilts};
+it may be reduced further below. Because \eqref{jg:ic:eq:ab} is strict, these
+choices and margins persist on a fixed small neighborhood of the $c$ interval.
+
+With the squared-renewal decomposition \eqref{jg:ss:eq:decomp} and the exact
+tilting identity \eqref{jg:ss:eq:tilt} (the two residual small runs are
+included in this identity; their total mass $\mathsf D(h)$ is uniformly bounded,
+and $\mathsf W_h$ has a uniform exponential moment on scale $w$), put, for each
+retained $\ell\in\mathcal I_m(v)$, $x_\ell=(v/\ell-m)/w$. Uniformly in this set,
+$x_\ell\to-s_\ell/(2c_m)$. The strict convexity and limits in
+\eqref{jg:ic:eq:mgflimit} give a unique exact $h_\ell\in\mathcal T$ with
+$\Psi_m'(h_\ell)=x_\ell$, $\ell\mu_{h_\ell}=v$. With
+$I_\ell=h_\ell x_\ell-\Psi_m(h_\ell)$, the centered local limit in
+\eqref{jg:ss:eq:tilt} yields
+\begin{equation}\label{jg:ic:eq:saddle}
+ \mathfrak C_\ell(v)\sim
+ \frac{\mathsf D(h_\ell)e^{-\ell I_\ell}}
+       {\sigma_{h_\ell}\sqrt{2\pi\ell}},
+ \qquad
+ \frac{\ell I_\ell}{\log m}-\mathfrak r_{c_m}(s_\ell)\longrightarrow0
+\end{equation}
+uniformly. To justify the residual convolution relatively, the error in
+\eqref{jg:ic:eq:llt} is uniform in its target. Its Gaussian factor at
+$-\mathsf W_h/(\sigma_h\sqrt\ell)$ tends in expectation to $\varphi(0)$, by the
+moment bound and $\ell\to\infty$. This calculation also supplies the positive
+competitor $\ell=\lfloor v/m\rfloor+2$, whose deficit lies in $(1,2]$ and whose
+rate is at most $B_*-10+o(1)$. ($\ell I_\ell$ is manuscript~24's action
+$\Phi_v(\ell)$.)
+
+We now exclude \emph{all} other counts on the coefficient scale. For
+$s_\ell<a$ use $h_+(c_m)=2c_m/a-1>0$. For $\ell\ge1$, \eqref{jg:ic:eq:atom}
+bounds the probability in \eqref{jg:ss:eq:tilt} by $C/(w\sqrt\ell)$. The factor
+$Q(e^{h_+/w})^\ell e^{-h_+v/w}$ grows geometrically in $\ell$, since
+$Q(e^{h_+/w})>1$ for large $m$. At its largest tail integer,
+$s_\ell\in[a-1,a)$ and
+\[
+ \frac1{\log m}\log\{Q(e^{h_+/w})^\ell e^{-h_+v/w}\}
+ \le-\mathfrak r_{c_m}(a)+o(1).
+\]
+Indeed its exponent is $\ell\Psi_m(h_+)+h_+s_\ell m/w$, and its limiting cost is
+$c_m\log(1+h_+)-h_+s_\ell/2\ge\mathfrak r_{c_m}(a)$. The weighted geometric sum
+preserves this bound. It includes every $s_\ell\le0$, even though $Y$ can exceed
+$m$. The residual-only $\ell=0$ term is at most
+$\mathsf D(h_+)e^{-h_+v/w}=O(e^{-c(\log m)^2})$.
+
+For $s_\ell>b$, use $h_-(c_m)=2c_m/b-1<0$. Now $Q(e^{h_-/w})<1$; the first tail
+term has cost at least $\mathfrak r_{c_m}(b)\log m+o(\log m)$, and the rest is a
+weighted geometric tail. The margins in \eqref{jg:ic:eq:ab}, compared with the
+positive competitor, make both omitted tails relatively negligible. This
+quantitatively rules out large small-run overflows. Equations
+\eqref{jg:ss:eq:decomp}, \eqref{jg:ss:eq:tilt} and \eqref{jg:ic:eq:saddle}
+therefore already give a uniform positive finite exact-MGF saddle sum.
+
+[Merge note. Manuscript~27's \texttt{eq:tm} (the scalar expansion), its
+\texttt{eq:decomp} and its \texttt{eq:exacttilt} are \eqref{jg:lb:eq:scalar},
+\eqref{jg:ss:eq:decomp} and \eqref{jg:ss:eq:tilt}, and are replaced by them.
+Manuscript~24's \cref{jg:sec:ss-tails} re-runs this section with a growing
+count range and a centered competitor in place of the rate margins.]
+
+\subsection{Small runs and compositions}
+\label{jg:sec:gm-comp}
+\emph{Source: manuscript~22, with manuscript~27's reduction as its
+compact-deficit case. Critical weights $b_k=C_{k-1}4^{-k}$, cutoff
+$\varepsilon m$.} Choose a sufficiently small fixed $\varepsilon>0$ later, and
+write
+\begin{equation}\label{jg:gm:eq:split}
+ A_0(z)=\sum_{k\le\varepsilon m}b_kz^k,\qquad
+ B_0(z)=\sum_{\varepsilon m<k\le m}b_kz^k,\qquad
+ Q_0(z)=\frac{B_0(z)}{1-A_0(z)}.
+\end{equation}
+These are critical Catalan weights, and $Q_0(1)$ is not one. The exact positive
+decomposition is
+\begin{equation}\label{jg:gm:eq:decomp}
+ \begin{split}
+ \mathfrak V^0_m(v)&=[z^v](1-A_0(z)-B_0(z))^{-2}\\
+ &=\sum_{j\ge0}(j+1)[z^v](1-A_0(z))^{-j-2}B_0(z)^j,\qquad
+ \mathfrak E_m(n)=4^{n-1}\mathfrak V^0_m(n-1).
+ \end{split}
+\end{equation}
+There are $j$ big letters and $j+2$ small runs in the $j$th term. (Every count's
+coefficient here is $(4r_m)^{-v}$ times its tilted coefficient
+$\mathfrak C_j(v)$, so the relative tail estimates of
+\cref{jg:sec:ic-saddle} persist.)
+
+\begin{lemma}[Small-run domination; manuscript~22]\label{jg:gm:lem:runs}
+Let $U$ be the total of $N$ independent normalized small runs, with generating
+function $[(1-A_0(1))/(1-A_0(z))]^N$. Uniformly for $N=O(\ell)$,
+$\ell=o(\log m)$, one has
+\begin{equation}\label{jg:gm:eq:tailatom}
+ \ljP(U=u)\le\frac{CN}{(u+1)^{3/2}}\quad(u\ge0).
+\end{equation}
+Moreover $\ljE e^{\gamma U}\to1$ in either of the following cases:
+\[
+ \gamma m=O(\ell),\quad\gamma\ge0;
+ \qquad\text{or}\qquad
+ \gamma=T\frac{\log m}{m},\quad T>0\text{ fixed},\quad T\varepsilon<1/4.
+\]
+\end{lemma}
+\begin{proof}
+The full critical Catalan series is
+\[
+ A_\infty(z)=\frac{1-\sqrt{1-z}}2,\qquad
+ \left(\frac{1/2}{1-A_\infty(z)}\right)^N
+      =\left(\frac{\Cat(z/4)}2\right)^N .
+\]
+The classical Catalan-power identity, obtained by Lagrange inversion, gives the
+exact probability
+\begin{equation}\label{jg:gm:eq:catalanpower}
+ \ljP(U_\infty=u)
+ =2^{-N}4^{-u}\frac{N}{2u+N}\binom{2u+N}{u}.
+\end{equation}
+The maximal binomial coefficient in row $2u+N$ is at most
+$C2^{2u+N}/\sqrt{2u+N}$. Thus \eqref{jg:gm:eq:catalanpower} is bounded by
+$CN/(u+1)^{3/2}$. Also $A_0(1)=1/2+O(m^{-1/2})$, and coefficientwise
+domination gives $\ljP(U=u)\le[2(1-A_0(1))]^N\ljP(U_\infty=u)$. The prefactor
+is $1+o(1)$ for the stated range of $N$, proving \eqref{jg:gm:eq:tailatom}.
+
+For every $\gamma\ge0$,
+\begin{equation}\label{jg:gm:eq:runmgf}
+ A_0(e^\gamma)-A_0(1)
+ \le \gamma e^{\gamma\varepsilon m}
+                \sum_{k\le\varepsilon m}kb_k
+ \le C\gamma e^{\gamma\varepsilon m}\sqrt m.
+\end{equation}
+In the first case, multiplying this bound by $N=O(\ell)$ gives
+$m^{-1/2+o(1)}\to0$. In the second case it gives
+$O(\ell\log m\,m^{-1/2+T\varepsilon})\to0$. In both cases $A_0(e^\gamma)<1$
+eventually and
+\[
+ \log\ljE e^{\gamma U}
+ =N\log\frac{1-A_0(1)}{1-A_0(e^\gamma)}
+ =O\bigl(N[A_0(e^\gamma)-A_0(1)]\bigr)\to0.
+\]
+This controls all the runs together, including rare large totals.
+\end{proof}
+
+Let $j\to\infty$, $j=O(\ell)$, and put $\Delta=jm-v=ms_j>0$. Write a big letter
+as $m-d_i$, where the nonnegative deficits sum to $\Delta$.
+
+\begin{lemma}[Composition estimate; manuscript~22]\label{jg:gm:lem:composition}
+Suppose $s_j$ is bounded above, $j^2/\Delta\to0$, and either $s_j$ is bounded
+away from zero or $s_j\to0$. Then
+\begin{equation}\label{jg:gm:eq:macro}
+ \begin{split}
+ [z^v]B_0(z)^j
+ &\sim b_m^j e^{3s_j/2}\binom{\Delta+j-1}{j-1}\\
+ &\sim (4\sqrt\pi)^{-j}m^{-3j/2}
+             e^{3s_j/2}\frac{(ms_j)^{j-1}}{\Gamma(j)}.
+ \end{split}
+\end{equation}
+For every $0\le u\le v$, a global ratio bound is
+\begin{equation}\label{jg:gm:eq:ratiobound}
+ \frac{[z^{v-u}]B_0(z)^j}{[z^v]B_0(z)^j}
+ \le C e^{C_\varepsilon u/m}\left(1+\frac u\Delta\right)^{j-1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+On legal compositions $d_i<(1-\varepsilon)m$, Catalan Stirling estimates give
+\[
+ \prod_i\frac{b_{m-d_i}}{b_m}
+  =\prod_i(1-d_i/m)^{-3/2}\bigl(1+O(j/(\varepsilon m))\bigr).
+\]
+The product is bounded by $e^{C_\varepsilon s_j}$. Under the uniform weak
+compositions of $\Delta$, for fixed $\eta>0$,
+\[
+ \ljP(\max_i d_i\ge\eta m)
+ \le j\left(1-\frac{\lceil\eta m\rceil}{\Delta+j-1}\right)^{j-1}
+\]
+when the event is possible. For $s_j$ in a compact positive interval this tends
+to zero, and illegal compositions have probability $o(1)$. The logarithm of the
+product therefore tends to $3s_j/2$. For $s_j\to0$, every composition is legal
+eventually and $\max_i d_i/m\le s_j\to0$, which gives the same conclusion
+directly. Bounded domination proves the first equivalent. The last
+approximation has error $O(j^2/\Delta)$; the Catalan normalization contributes
+$O(j/m)$.
+
+For the global ratio, bound the numerator by
+$b_m^j e^{C_\varepsilon(\Delta+u)/m}\binom{\Delta+u+j-1}{j-1}$. The denominator
+in \eqref{jg:gm:eq:macro} is bounded below by a fixed positive multiple of
+$b_m^j\binom{\Delta+j-1}{j-1}$. The exact binomial ratio is at most
+$(1+u/\Delta)^{j-1}$. The bounded value of $s_j$ absorbs the remaining
+constant. Impossible coefficients are zero.
+\end{proof}
+
+If $s_j$ stays in a fixed compact positive interval, apply
+\cref{jg:gm:lem:runs} with $\gamma=Cj/m$ sufficiently large to dominate the
+exponent in \eqref{jg:gm:eq:ratiobound}. For $U$ equal to the total of $j+2$
+normalized small runs, $\ljE e^{\gamma U}\to1$. When $\gamma u\to0$, the
+composition formula at $\Delta+u$ and $\Delta$ makes the ratio tend to one. The
+exponential bound provides uniform integrability. Consequently
+\begin{equation}\label{jg:gm:eq:ordinaryruns}
+ [z^v](1-A_0)^{-j-2}B_0^j
+ \sim(1-A_0(1))^{-j-2}[z^v]B_0^j
+ \sim2^{j+2}[z^v]B_0^j.
+\end{equation}
+Using \eqref{jg:gm:eq:decomp}, the contribution of this count to
+$\mathfrak E_m(n)$ is exactly the equivalent $(4^n/m)\mathfrak g_{m,v}(j)$. For
+\cref{jg:gm:thm:ordinary}, take $j=\ell$; its compositions even satisfy
+$m-d_i\ge\delta m$ automatically.
+
+\emph{The compact-deficit case (manuscript~27): reducing the retained terms of
+\cref{jg:sec:ic-saddle} to Gamma factors.} For a retained $\ell$ of
+\cref{jg:ic:thm:main}, $\ell=O(\log m)$, $\Delta=\ell m-v=ms_\ell$ and
+$m-d_i>\varepsilon m$, so \eqref{jg:gm:eq:macro} holds: under uniformly chosen
+compositions the maximum $d_i/m$ tends to zero in probability, uniformly for
+$s_\ell\in[a,b]$; on legal compositions
+$\prod_i(1-d_i/m)^{-3/2}\le e^{C_\varepsilon\Delta/m}\le e^{C_\varepsilon b}$, and
+its logarithm tends to $3s_\ell/2$ on the small-maximum event; the last errors
+are $O(\ell/m)$ and $O(\ell^2/\Delta)$, both $o(1)$. All $\ell+2$ small runs
+must still be controlled relatively. Since $A_0(1)=1/2+O(m^{-1/2})$, their
+total mass is $(1-A_0(1))^{-\ell-2}\sim2^{\ell+2}$. Let $U$ be the sum of the
+corresponding normalized runs. Choose $G>4(c_1+1)/a$, put
+$\gamma_m=G\log m/m$, and reduce $\varepsilon$ so $\varepsilon G<1/4$. Then
+$A_0(e^{\gamma_m})-A_0(1)\le C\gamma_me^{\gamma_m\varepsilon m}\sqrt m
+=O(m^{-1/2+\varepsilon G}\log m)$. Because $\ell=O(\log m)$, it follows that
+\begin{equation}\label{jg:ic:eq:smallmoment}
+ \ljE e^{\gamma_m U}\longrightarrow1
+\end{equation}
+uniformly (the second case of \cref{jg:gm:lem:runs}). For every $0\le u\le v$,
+there is a global bound
+\begin{equation}\label{jg:ic:eq:domination}
+ \frac{[z^{v-u}]B_0(z)^\ell}{[z^v]B_0(z)^\ell}
+ \le C e^{\gamma_m u}.
+\end{equation}
+The numerator is at most
+$b_m^\ell e^{C_\varepsilon(\Delta+u)/m}\binom{\Delta+u+\ell-1}{\ell-1}$. The
+denominator is at least a fixed positive fraction of
+$b_m^\ell\binom{\Delta+\ell-1}{\ell-1}$, using the composition estimate and
+$b_{m-d}\ge b_m$. The binomial ratio is at most $e^{\ell u/\Delta}$. For large
+$m$, $\ell/\Delta\le2c_1\log m/(am)$, so $G$ absorbs this exponent and
+$C_\varepsilon u/m$. When $\gamma_mu\to0$, the uniform formula
+\eqref{jg:gm:eq:macro} at the slightly shifted deficit makes the ratio in
+\eqref{jg:ic:eq:domination} tend to one. Equation \eqref{jg:ic:eq:smallmoment}
+implies both this convergence in probability at $u=U$ and uniform integrability
+under the bound \eqref{jg:ic:eq:domination}. Hence \eqref{jg:gm:eq:ordinaryruns}
+holds; this controls the rare large totals as well as the typical small ones.
+Multiply by $\ell+1$ and by $4^{n-1}$. The constant is
+\[
+ 4^{n-1}2^{\ell+2}(4\sqrt\pi)^{-\ell}m^{-3\ell/2}m^{\ell-1}
+ =\frac{4^n}{m}(2\sqrt{\pi m})^{-\ell}.
+\]
+Together with the finite-window tail bounds of \cref{jg:sec:ic-saddle}, this
+proves the scalar equivalent in \eqref{jg:ic:eq:count}; the transfer to
+$a_n^{(m)}$ is \cref{jg:sec:good} with route~2 of \cref{jg:prop:capshort}
+(\cref{jg:sec:ss-transfer}), since $n\eps_{D_{\rm app}}\to0$ and
+$nr_m^{L_{\rm app}}\to0$ under \eqref{jg:ic:eq:range}. Catalan Stirling
+asymptotics then give \eqref{jg:ic:eq:prob}.
+
+[Merge note. Manuscript~27's \texttt{eq:macro} and \texttt{eq:smallconvolution}
+are \eqref{jg:gm:eq:macro} and \eqref{jg:gm:eq:ordinaryruns}, and are replaced
+by them. Manuscript~22's lemmas generalize manuscript~27's estimates: they allow
+$s_j\to0$ and give the sharper ratio bound $(1+u/\Delta)^{j-1}$ in place of
+$e^{\ell u/\Delta}$, and \cref{jg:gm:lem:runs} adds the exact Catalan-power
+law.]
+
+\subsection{Endpoint-scale atoms and the count tails}
+\label{jg:sec:gm-tails}
+\emph{Source: manuscript~22.} For $j\in\{\ell,\ell+1\}$ with $s_j$ in a fixed
+compact positive interval, use the critical tilt $\gamma=j/(ms_j)$. Here
+$\gamma m\asymp\ell\to\infty$ and $\gamma m=o(\log m)$. Endpoint summation gives
+\begin{equation}\label{jg:gm:eq:tiltscale}
+ A_0(e^\gamma)=\tfrac12+o(1),\qquad
+ B_0(e^\gamma)=\frac{b_me^{\gamma m}}{\gamma}
+                   (1+O(\ell^{-1})),\qquad
+ q_\gamma=Q_0(e^\gamma)=m^{-1/2+o(1)}.
+\end{equation}
+Indeed, set $k=m-d$ and sum $e^{-\gamma d}(1-d/m)^{-3/2}$. The first relative
+correction is $O((\gamma m)^{-1})$; the lower-cutoff tail is exponentially
+small in $\ell$. The small-series error, even multiplied by $\ell$, is $o(1)$ by
+\eqref{jg:gm:eq:runmgf}.
+
+Normalize $Q_0(e^\gamma z)/Q_0(e^\gamma)$ into a big jump followed by a
+geometric small run. The big weights increase on $[\varepsilon m,m]$, have
+largest atom $O(\gamma)$, and satisfy $\gamma(m-X)\Rightarrow\operatorname{Exp}(1)$
+with a uniform exponential-moment margin. Abel summation gives the
+characteristic bound $C\gamma/|\sin(\theta/2)|$. The central quadratic bound,
+the strict scaled-frequency modulus gap, and Parseval's $O(\gamma)$
+squared-modulus integral therefore imply
+\begin{equation}\label{jg:gm:eq:atom}
+ \sup_u\ljP_\gamma(S_k=u)\le\frac{C\gamma}{\sqrt k}\qquad(k\ge1).
+\end{equation}
+To see the uniformity, the Fourier integral in the central interval is
+$O(\gamma/\sqrt k)$. Outside it, a fixed gap $\varrho<1$ and Parseval bound the
+integral by $C\gamma\varrho^{k-2}$ for $k\ge2$; $k=1$ follows from the largest
+atom. The small-run characteristic factor has modulus at most one. Thus the
+bound is proved at the new scale $1/\gamma$, without assuming a previously fixed
+tilt range remains uniform. (This is the method of \cref{jg:ic:lem:tilts},
+re-proved at a non-compact scale.)
+
+The explicit composition term and Stirling's formula also give
+\begin{equation}\label{jg:gm:eq:comparison}
+ (j+1)[z^v](1-A_0)^{-j-2}B_0^j
+ \ge c\gamma\sqrt j\,e^{-\gamma v}q_\gamma^j .
+\end{equation}
+In fact $q_\gamma^je^{-\gamma v}$ differs by bounded positive factors from
+$[(2\sqrt{\pi m})^{-1}s_j/j]^je^j$; multiplying the Gamma coefficient by $j+1$
+supplies the factor of order $\gamma\sqrt j$. Only comparability is needed here.
+
+\emph{Extra counts.} Take $\gamma=\ell/(ms)$ in the bounded-phase case. Exact
+tilting, \eqref{jg:gm:eq:atom}, and a positive geometric sum give
+\[
+ \sum_{j\ge\ell+1}(j+1)[z^v](1-A_0)^{-j-2}B_0^j
+ \le C\gamma\sqrt\ell\,e^{-\gamma v}q_\gamma^{\ell+1}.
+\]
+The normalized two residual runs do not increase the maximal atom, and their
+normalizing factor stays bounded. Compared with \eqref{jg:gm:eq:comparison}, the
+total extra-count contribution is $O(q_\gamma)=m^{-1/2+o(1)}$.
+
+\emph{Too few counts.} Use a different tilt, $\gamma_T=T\log m/m$, with fixed
+$T>4/\delta$, and choose $\varepsilon$ small enough that $T\varepsilon<1/4$. The
+small denominator is bounded away from zero, while endpoint summation gives
+$Q_0(e^{\gamma_T})\asymp m^{T-1/2}/\log m\to\infty$. (Manuscript~22 writes
+$\Theta(m^{T-1/2}/\log m)$, order notation.) The positive-coefficient Cauchy
+bound yields
+\begin{equation}\label{jg:gm:eq:low}
+ \sum_{0\le j\le\ell-1}(j+1)[z^v](1-A_0)^{-j-2}B_0^j
+ \le C\ell e^{-\gamma_Tv}Q_0(e^{\gamma_T})^{\ell-1}.
+\end{equation}
+This includes the residual-only term $j=0$. Comparing its logarithm with the
+main term in \eqref{jg:gm:eq:ordinaryruns}, using $v/m=\ell-s$, gives
+\begin{equation}\label{jg:gm:eq:lowratio}
+ \log\frac{\text{bound in \eqref{jg:gm:eq:low}}}{\text{main term}}
+ \le\bigl(\tfrac32-T(1-s)\bigr)\log m
+       +\ell\log\frac{\ell}{\log m}
+       +O_\delta(\ell+\log\log m).
+\end{equation}
+Since $1-s\ge\delta$ and $\ell=o(\log m)$, this is bounded above by a negative
+fixed multiple of $\log m$. It quantitatively excludes every overflow capable of
+replacing a missing big letter. The scalar assertion of
+\cref{jg:gm:thm:ordinary} follows.
+
+\subsection{The transition location}
+\label{jg:sec:gm-tau}
+\emph{Source: manuscript~22.} Differentiation of \eqref{jg:gm:eq:R} gives
+\[
+ \frac{\dd}{\dd s}\log R_{m,\ell}(s)
+ =\frac{1+s-\ell}{s(1+s)}<0
+ \qquad(0<s<1,\ \ell\ge2).
+\]
+The ratio tends to infinity at zero, while $R_{m,\ell}(1)=m^{-1/2+o(1)}\to0$.
+This proves eventual existence and uniqueness of $\tau$.
+
+When $R$ stays in a fixed compact positive interval, taking logarithms gives
+\begin{equation}\label{jg:gm:eq:logroot}
+ \begin{split}
+ (\ell-1)\log(1/s)
+  ={}&\tfrac12\log m+\log(2\ell\sqrt\pi)-\tfrac32\\
+    &-\log\frac{\ell+2}{\ell+1}-\ell\log(1+s)+O(1).
+ \end{split}
+\end{equation}
+First this forces $s\to0$, and then
+\[
+ \log(1/s)\sim\frac{\log m}{2(\ell-1)},\qquad
+ s=m^{-o(1)},\qquad ms=m^{1-o(1)},\qquad \ell^2/(ms)\to0.
+\]
+The composition lemma now applies to $j=\ell$ and $j=\ell+1$, whose deficit is
+$1+s$. A further consequence of the upper bound on $R$ is
+\begin{equation}\label{jg:gm:eq:keybound}
+ \frac1{\sqrt m\,s^{\ell-1}}\le C\ell.
+\end{equation}
+The factor $(1+s)^\ell$ in \eqref{jg:gm:eq:R} only improves this estimate.
+
+At $R(\tau)=1$, its exact equation is the first line of \eqref{jg:gm:eq:tau}.
+Dividing by the $(\ell-1)$st root of its constant gives the factor
+$(1+\tau)^{\ell/(\ell-1)}\to1$, proving the stated explicit equivalent. Finally
+\[
+ \frac{\dd\log R}{\dd\log s}=1-\frac{\ell}{1+s}.
+\]
+Integrating over $s=\tau e^{x/(\ell-1)}$ proves \eqref{jg:gm:eq:logistic},
+uniformly on bounded $x$ intervals. The term $\ell\log(1+\tau)$ can still matter
+for locating the narrower transition; the exact root is used throughout.
+
+\subsection{Small runs at a shrinking deficit}
+\label{jg:sec:gm-shrink}
+\emph{Source: manuscript~22.} The remaining delicate step is
+\eqref{jg:gm:eq:ordinaryruns} at $j=\ell$ when $s\to0$ in
+\cref{jg:gm:thm:transition}. Write
+\[
+ \mathfrak t(u)=\frac{[z^{v-u}]B_0^\ell}{[z^v]B_0^\ell},
+ \qquad u_0=\frac{ms}{\ell^2},
+\]
+and let $U$ comprise $\ell+2$ normalized small runs. Here $u_0=m^{1-o(1)}$. For
+$0\le u\le u_0$, the composition formula and the binomial ratio give
+$\mathfrak t(u)\to1$ uniformly, because $\ell u/(ms)\le1/\ell$. Also
+$\ljP(U>u_0)\le C\ell/\sqrt{u_0}\to0$ by \eqref{jg:gm:eq:tailatom}. We prove
+that the weighted contribution on this exceptional event tends to zero.
+
+\emph{Totals between the typical range and the deficit.} For $u_0<u\le ms$,
+equation \eqref{jg:gm:eq:ratiobound} gives $\mathfrak t(u)\le C2^\ell$. Thus
+\begin{equation}\label{jg:gm:eq:range1}
+ \ljE[\mathfrak t(U);u_0<U\le ms]
+ \le\frac{C\ell^2 2^\ell}{\sqrt{ms}}
+ =m^{-1/2+o(1)}\to0.
+\end{equation}
+This uses both $\ell=o(\log m)$ and $s=m^{-o(1)}$.
+
+\emph{Totals up to a small fixed fraction of the cap.} Fix
+$0<\varepsilon'<1/4$. On $ms<u\le\varepsilon'm$,
+$(1+u/(ms))^{\ell-1}\le(2u/(ms))^{\ell-1}$. The other exponential in
+\eqref{jg:gm:eq:ratiobound} is bounded by a fixed constant. Using
+\eqref{jg:gm:eq:tailatom}, summing $u^{\ell-5/2}$, and then applying
+\eqref{jg:gm:eq:keybound} gives
+\begin{equation}\label{jg:gm:eq:range2}
+ \ljE[\mathfrak t(U);ms<U\le\varepsilon'm]
+ \le\frac{C(2\varepsilon')^\ell}{\sqrt m\,s^{\ell-1}}
+ \le C\ell(2\varepsilon')^\ell\to0.
+\end{equation}
+Constants here may depend on $\varepsilon'$ and the final fixed $\varepsilon$.
+
+\emph{Larger totals.} Choose fixed $T_*>2/\varepsilon'$. For
+$u\ge\varepsilon'm$, the function $\log(1+u/(ms))/u$ is decreasing. Equation
+\eqref{jg:gm:eq:logroot} consequently implies, for all large $m$,
+\begin{equation}\label{jg:gm:eq:domlarge}
+ C_\varepsilon u/m+(\ell-1)\log(1+u/(ms))
+ \le T_*(\log m)u/m.
+\end{equation}
+Indeed, at $u=\varepsilon'm$ the logarithmic term is at most
+$(1/2+o(1))\log m$: use \eqref{jg:gm:eq:logroot} and
+$(\ell-1)\log(s+\varepsilon')\le0$ eventually. The right side there is
+$T_*\varepsilon'\log m$, and the fixed $C_\varepsilon$ is absorbed as $m$ grows.
+Now choose $\varepsilon$ sufficiently smaller than $\varepsilon'$ that
+$T_*\varepsilon<1/4$. \Cref{jg:gm:lem:runs} gives
+$\ljE\exp(T_*(\log m)U/m)\to1$. Combining \eqref{jg:gm:eq:ratiobound} and
+\eqref{jg:gm:eq:domlarge},
+\begin{equation}\label{jg:gm:eq:range3}
+ \ljE[\mathfrak t(U);U>\varepsilon'm]
+ \le C\ljE[e^{T_*(\log m)U/m};U>\varepsilon'm]\to0.
+\end{equation}
+For the last implication, on this event the exponential minus one is at least
+$1-m^{-T_*\varepsilon'}$ times the exponential itself. The expected
+exponential minus one tends to zero.
+
+Equations \eqref{jg:gm:eq:range1}--\eqref{jg:gm:eq:range3} prove uniform
+integrability and hence $\ljE\,\mathfrak t(U)\to1$. This proves
+\eqref{jg:gm:eq:ordinaryruns} at the shrinking deficit, including every residual
+small run.
+
+\subsection{Other counts in the transition, and the Gamma-term route to the actual class}
+\label{jg:sec:gm-transfer}
+\emph{Source: manuscript~22; route~3 of \cref{jg:prop:capshort}.} For
+$j=\ell+1$, the deficit $1+s$ lies in a fixed compact positive interval. The
+ordinary composition and small-run argument applies. Use
+$\gamma=(\ell+1)/(m(1+s))$ in the endpoint estimate: all $j\ge\ell+2$ are smaller
+by $m^{-1/2+o(1)}$ than this second main term. For $j\le\ell-1$, choose a fixed
+$T>4$, enlarged if necessary to satisfy the preceding large-total argument, and
+then make $\varepsilon$ smaller. The calculation of \eqref{jg:gm:eq:lowratio},
+now relative to the second Gamma term, gives
+\[
+ \bigl(2-T(1-s)\bigr)\log m
+ +(\ell-1)\log\frac{\ell}{\log m}
+ +O(\ell+\log\log m).
+\]
+Since $s\to0$, this is again bounded above by a negative fixed multiple of
+$\log m$. All counts other than $\ell,\ell+1$ are negligible relatively, proving
+the scalar assertion in \cref{jg:gm:thm:transition}.
+
+We finish the actual-class transfer with \cref{jg:ra:lem:good}. Let
+$d=O(\log m)$ and $M=m-d$. At the same $v$, the new deficit is exactly
+\[
+ s_M=\ell-v/M=s-\frac{(\ell-s)d}{M}.
+\]
+In \cref{jg:gm:thm:ordinary}, the count $\ell$ stays unchanged and the phase
+remains in a slightly enlarged compact subinterval of $(0,1)$. The logarithmic
+change in the Gamma term is $O(\ell^2d/m)=o(1)$, giving
+$\mathfrak E_M(n)/\mathfrak E_m(n)\to1$. In \cref{jg:gm:thm:transition}, one has
+$|s_M-s|=O(\ell d/m)=o(s/\ell)$, since $ms=m^{1-o(1)}$. The count again stays
+unchanged, both Gamma terms change relatively by $1+o(1)$, and their ratio stays
+in a slightly enlarged compact positive interval. Their logarithmic changes are
+$O(\ell^2d/(ms))=o(1)$. Thus $\mathfrak E_M(n)/\mathfrak E_m(n)\to1$ in this
+window as well. A target shift of $L_{\rm app}=O(\log m)$ preserves the same
+conditions and gives $\mathfrak E_M(n-L_{\rm app})/\mathfrak E_M(n)\sim
+4^{-L_{\rm app}}$. Take $D_{\rm app}=L_{\rm app}=\lceil3\log_2m\rceil$ in
+\eqref{jg:ra:eq:good}. Since $n=O(m\log m)$, both loss factors tend to zero.
+This proves $a_n^{(m)}\sim\mathfrak E_m(n)$ and completes both theorems after
+Catalan Stirling asymptotics.
+
+The transition is realizable with integer lengths. For any integer sequence
+$\ell\to\infty$, $\ell=o(\log m)$, choose $v$ nearest
+$m(\ell-\tau e^{x/(\ell-1)})$. Rounding changes $s$ by $O(m^{-1})$, negligible
+compared with $\tau/\ell$ because $m\tau=m^{1-o(1)}$. The resulting minimal
+count is $\ell$ and its ratio tends to $e^{-x}$.
+
+\subsection{The integer-count transition}
+\label{jg:sec:ic-transition}
+\emph{Source: manuscript~27; proof of \cref{jg:ic:cor:rate}.} The finite
+positive saddle sum and \eqref{jg:ic:eq:saddle} prove the rate statement
+\eqref{jg:ic:eq:rate}. Relative to $n/m^2$, the remaining prefactors have
+logarithm $o(\log m)$. Deficits tending to zero cause no exception: their
+coefficients were uniformly suppressed by the positive-tilt bound.
+
+The function $\mathfrak r_c$ is strictly convex and minimized at $s=2c$, while
+\[
+ \mathfrak r_c(s+1)-\mathfrak r_c(s)=\frac12-c\log(1+1/s).
+\]
+This difference is negative below $s_*(c)$, zero there, and positive above.
+Hence the minimizing positive deficit is the first lattice point above
+$s_*(c)$, except that if $s_*(c)$ itself is on the lattice, it and its successor
+both minimize. This proves \cref{jg:ic:cor:rate}.
+
+At a fixed positive distance from a limiting leading-rate tie, only the
+minimizing summand survives relatively, uniformly on compact parameter sets with
+that separation. At a limiting tie, all other summands are polynomially smaller
+in $m$; the two adjacent terms must be retained with their exact ratio
+\eqref{jg:gm:eq:R}. If this ratio tends to $R\in[0,\infty]$, their shares in the
+equivalent tend to $1/(1+R)$ and $R/(1+R)$, with the natural endpoint
+conventions. These are shares of the explicit sum, not an unproved
+identification of a statistic of the conditioned permutation. The prefactor in
+\eqref{jg:gm:eq:R} also explains why a leading-rate tie does not force equal
+terms. The term $-\log\ell$ in its logarithm can displace the finite-$m$
+transition on a finer scale than the leading threshold
+\eqref{jg:ic:eq:threshold}.
+
+[Merge note. The tie criterion was rechecked for this write-up:
+$\mathfrak r_c(s+1)-\mathfrak r_c(s)$ vanishes exactly at $s_*(c)$, and on a grid
+of 1,600 pairs $(c,f)$ the minimum in \eqref{jg:ic:eq:rate} is zero exactly when
+$2c+f$ is integral, with the minimizer the first lattice point at or above
+$s_*(c)$. At $(c,s)=(1,0.7)$ the normalized logarithm approaches $-\mathfrak
+r_c(s)$ only at the rate $O(\log\log m/\log m)$: $-0.406$ against $-0.392$ at
+$m=10^{50}$, $-0.40013$ against $-0.39962$ at $m=10^{2000}$.]
+
+\section{Checks, data and reproducibility}
+\label{jg:sec:checks}
+
+\subsection{What the delivered programs check}
+\label{jg:sec:checks-list}
+Each manuscript ships a standard-library exact checker or an optional
+floating-point diagnostic, or both. They check finite statements and record
+finite values; none of them proves an asymptotic statement, and none counts
+actual avoiders at the large lengths of the theorems.
+\begin{itemize}
+\item \emph{Manuscript~36.} The exact standard-library checker verifies
+ $1{,}600$ upper-envelope coefficients ($1\le m\le20$, $1\le n\le80$),
+ $1{,}520$ lower-envelope coefficients, $230$ equalities with Catalan counts
+ through degree $m+1$, and $32{,}895$ instances of the uniform coefficient bound
+ through $m=256$. It uses the credited exact endpoint implementation from the
+ report's polynomial-rarity work (Part~VI). The recorded integers and hashes make
+ these finite regressions reproducible; they do not replace the proof or certify
+ an asymptotic cutoff. An optional floating-point diagnostic evaluates the
+ scalar roots and clustered means and variances (\cref{jg:tab:lb-diag}). The
+ limiting values are $1/2,1,1$. These diagnostics illustrate slow convergence
+ and are not proof evidence for a uniform error rate.
+\item \emph{Manuscript~33.} The exact standard-library checker reconstructs all
+ $132$-avoiders through size nine and their relaxed parsers. It verifies
+ $6{,}917$ parser round trips, $5{,}766$ exact spine-shape factorizations,
+ $17{,}298$ restricted-decoration factorizations, $53{,}563$ retained cap
+ inequalities, and $16{,}932$ marked append deletions. The $405$ parameter rows
+ and their hash are retained in the package. The inherited Catalan generator and
+ endpoint model are credited separately. A second, separately implemented
+ permutation-level replay through size ten, importing nothing from the first
+ checker or the model, checks $50$ envelope equalities, $450$ bad-family
+ parameter cases and $126{,}565$ retained cap inequalities. These tests check the
+ combinatorial normalization and injections; no finite computation is used to
+ infer an asymptotic statement.
+\item \emph{Manuscript~30.} The optional numerical checker compares the Gaussian
+ and Fourier forms of $\vartheta$ at twenty parameter pairs, checks the exact
+ total-variation identity for six neighboring-cap pairs, and records
+ thirty-six finite squared-envelope values computed by the scalar recurrence.
+ It uses high-precision and ordinary floating-point arithmetic and is
+ explicitly diagnostic. No numerical error enclosure or asymptotic cutoff is
+ claimed; the theorem follows from the written uniform estimates and exact
+ inclusions.
+\item \emph{Manuscript~27.} The accompanying checker verifies two hundred
+ instances of the adjacent-ratio identity \eqref{jg:gm:eq:R} by exact rational
+ arithmetic after removing the common exponential and square-root factors. It
+ also records thirty-six scalar-envelope values and their finite Gamma-sum
+ comparisons. The latter use floating-point arithmetic and can converge slowly;
+ no finite approximation bound or effective asymptotic threshold is asserted.
+ They are diagnostics, not evidence replacing the uniform proof.
+\item \emph{Manuscript~24.} The packaged standard-library checker differentiates
+ the exact second derivative twice, verifies
+ \eqref{jg:ss:eq:third}--\eqref{jg:ss:eq:fourth}, checks the constants $1/24$
+ and $1/192$, and performs 54 rational checks of the normalized prefactor. A
+ separate optional NumPy/SciPy diagnostic compares the positive saddle sum with
+ finite scalar coefficients obtained from the renewal recurrence (twenty rows,
+ $m=128,\ldots,1024$, tilt interval $[-0.8,1]$, cutoff $\lfloor m/64\rfloor$;
+ saddle-to-scalar ratios between about $0.915$ and $1.103$). Those numerical
+ rows are not a proof, do not count actual avoiders at large lengths, and assert
+ no finite error bound.
+\item \emph{Manuscript~22.} The package contains a standard-library checker for
+ 610 Catalan-power and probability-normalization identities and 40 exact
+ adjacent-Gamma ratios. All checks remain active under optimized Python. A
+ separate optional NumPy/SciPy script compares the Gamma expressions with finite
+ scalar coefficients computed from a positive renewal recurrence, for
+ $m=128$, $512$, $2048$, $4096$ at ordinary and near-transition phases (twenty
+ rows). These diagnostics neither count actual avoiders at those lengths nor
+ provide a finite error bound; the samples are visibly pre-asymptotic, their
+ single-Gamma-to-exact ratios lying between about $0.076$ and $0.519$ and their
+ two-Gamma ratios between $0.358$ and $0.656$.
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$m$ & $A(1)$ & $(M-\mu_0)/w$ & $\sigma_0/w$\\
+\midrule
+$256$  & $0.596383$ & $0.404554$ & $1.300960$\\
+$1024$ & $0.570264$ & $0.632334$ & $1.268606$\\
+$4096$ & $0.549363$ & $0.790077$ & $1.249886$\\
+\bottomrule
+\end{tabular}
+\caption{Manuscript~36's cluster diagnostic, in the setting of
+\cref{jg:sec:llt-36} (block weights, cutoff $M/2$, $h=0$); the limits are
+$1/2$, $1$, $1$ (\cref{jg:lb:lem:moments}). Rounded floating-point values
+from the shipped diagnostic record, reproduced to all printed digits for this
+write-up.}\label{jg:tab:lb-diag}
+\end{table}
+
+[Merge note on the checks. (i) Several diagnostic families lie outside the
+theorems' ranges: manuscript~30's thirty-six envelope rows use a fixed mean
+count $L\le16.5$, so $n/[m(\log m)^2]$ is only about $0.02$--$0.28$ and
+decreases with $m$ (their ratios to the theta formula, $1.04$--$1.28$, drift
+upwards); manuscript~27's six phase-zero rows with $v=m$ have
+$c_m=1/\log m\to0$ and lowest count $\ell=1$ at zero deficit, and their ratios
+($2.30$ to $22.05$ for $m=64,\ldots,2048$) reflect the fixed-count regime outside
+\cref{jg:ic:thm:main}; and manuscript~22's row labelled
+\texttt{transition\_x2} at $m=128$ has count $3$ and deficit $0.18$, because the
+target $\tau e^{2/(\ell-1)}$ exceeds one there, so it is not a transition sample
+and the checks README's ``their counts are only four or five'' is false for
+that row. (ii) Some exact checks are algebraic identities by construction:
+manuscript~24's 54 prefactor normalizations and manuscript~27's 200 ratios
+compare two rearrangements of one rational expression (manuscript~24's
+derivative identities are the substantive check); manuscript~22's 610 rows check
+each Catalan-power coefficient and its probability scaling, not that the
+probabilities sum to one. (iii) The checks were rerun on copies for the
+placement: every suite passed, and the regenerated outputs equal the delivered
+ones apart from line endings, recorded library versions and floating-point
+noise. (iv) A ProveIt check made for this write-up compared exact envelopes with
+manuscript~30's theta formula at $n=cm(\log m)^2$ for $m$ up to $65536$: the
+ratios decrease monotonically towards one ($1.07$ at $c=0.1$, $1.03$ at
+$c=0.25$, $1.007$ at $c=1$, all at $m=65536$).]
+
+\subsection{Rebuilding and rerunning}
+\label{jg:sec:reproduce}
+Part~IX's files carry the prefixes \path{10-logarithmic-bridge-},
+\path{11-relative-asymptotic-}, \path{12-theta-boundary-},
+\path{13-integer-count-}, \path{14-saddle-sum-} and
+\path{15-growing-macro-counts-}:
+\begin{lstlisting}
+code/10-...-verify_envelopes.py, probe_cluster.py      ms. 36: exact envelopes; cluster diagnostics
+code/11-...-verify_good_subclass.py,
+         independent_replay.py                         ms. 33: relaxed class, good subclass; replay
+code/12-...-theta_diagnostics.py                       ms. 30: theta and envelope diagnostics
+code/13-...-verify_summand_ratio.py,
+         gamma_sum_diagnostics.py                      ms. 27: ratio identity; Gamma-sum diagnostics
+code/14-...-verify_saddle_algebra.py,
+         saddle_diagnostics.py                         ms. 24: action derivatives; saddle diagnostics
+code/15-...-verify_exact_identities.py,
+         scalar_diagnostics.py                         ms. 22: Catalan powers, ratios; diagnostics
+code/1N-...-build.sh                                   each manuscript's build of its own .tex
+data/1N-...-*.json, data/11-...-*.txt                  recorded runs and delivery validation records
+1N-...-SOURCES.md, 1N-...-CHECKS.md                    source ledgers; the delivered checks READMEs
+\end{lstlisting}
+The programs are shipped byte-identical to the delivery and still use the
+delivered names: each writes its record beside itself under its delivered name;
+the checkers of manuscripts~36 and~33 import \texttt{model}, which in this
+directory would load Part~I's different \path{code/model.py}, and manuscript~36's
+also checks the SHA-256 of a \path{model.py} beside itself; each
+\path{build.sh} builds the unshipped manuscript. The report's README gives a
+recipe that restores the delivered layout in a scratch copy, with Part~VI's
+\path{code/07-polynomial-rarity-model.py} as \path{model.py}. The exact checkers
+need only Python's standard library; the diagnostics need NumPy and SciPy, and
+manuscript~30's also mpmath.
+
+\section{Attribution, scope and non-claims}
+\label{jg:sec:scope}
+The six manuscripts state their attributions and limits as follows; every
+sentence is kept, and the bracketed pointers are the merge's.
+
+\emph{Manuscript~36.} The fixed-cap enumeration setting is studied by
+Nadler~\cite{Nadler} and Mayama--Akita~\cite{MayamaAkita}. The endpoint
+recurrence, injective block kernel, coefficient defect, root corridor, and
+inverse-logarithmic scalar expansion used here belong to this report
+(\cref{jg:sec:inputs}). Its contribution is the squared-renewal majorant and the
+uniform coefficient analysis giving the joint-growth logarithmic bridge. The
+Fourier and exponential-tilting methods are classical tools; the needed
+triangular-array estimates are proved rather than assumed from a fixed-law
+theorem. The note answers a stated repository question and makes no worldwide
+priority claim. No effective threshold for $m$, relative probability asymptotic,
+leading polynomial prefactor, or uniform extension of fixed-index crossover
+formulas is established. In particular, the squared-renewal envelope has not
+been proved relatively sharp [by manuscript~36; manuscript~33 proves it on the
+band \eqref{jg:ra:eq:band}, and \cref{jg:sec:good} wherever
+$n(\log m)^2/m^2\to0$]. The proof is ordinary mathematics, not formally
+verified or externally refereed.
+
+\emph{Manuscript~33.} This report supplies the endpoint recurrence, uniform
+Catalan-triangle tail, scalar-root expansion, and spectral corridor.
+Manuscript~36 supplies the squared majorant and the clustered Fourier method at
+logarithmic precision. The new steps are the weighted cluster-count summation
+giving the squared-renewal equivalent and the exact good-subclass losses making
+that envelope relatively sharp. The underlying enumeration context is given by
+Nadler~\cite{Nadler} and Mayama--Akita~\cite{MayamaAkita}. All analytic
+estimates required for the triangular-array equivalent are included. No
+effective numerical threshold, error rate for the relative equivalent, full
+fixed-cap prefactor, or extension outside \eqref{jg:ra:eq:band} is asserted. In
+particular, the lower condition makes the cluster-count lattice window diverge,
+while the upper condition makes the nearby-root replacement harmless. The proof
+is ordinary mathematics, not formally verified or externally refereed, and no
+worldwide priority claim is made. [The band \eqref{jg:ra:eq:band} is purely
+asymptotic: $m(\log m)^2<m^2/(\log m)^2$ only when $m>(\log m)^4$, which fails
+for $5\le m\le5503$; the ratio of its ends is $1.39$ at $m=10^4$ and $27$ at
+$m=10^6$, so no computation can exercise it.]
+
+\emph{Manuscript~30.} The Gaussian periodization and Jacobi identity are
+classical~\cite{jg:DLMF}. The root and endpoint inputs are credited to this
+report; the uniform local limit, pointwise bound, and good-subclass inequality
+were established by manuscript~33, with their required forms and mechanisms
+stated. The contribution of this continuation is the retained lattice
+modulation, its stability under the cap shift, and the phase-dependent boundary
+limits. A related announcement by Li~\cite{jg:Li} concerns strict growth and
+descent thresholds. Its full manuscript could not be retrieved during this
+check, so overlap beyond its public abstract has not been excluded. The priority
+claim is source-relative, not exhaustive. The result is uniform for each fixed
+positive lower constant $c_0$. It makes no uniform assertion as $c_0$ decreases
+to zero, no claim in $n=o(m(\log m)^2)$ [manuscript~24 covers
+$m(\log m)^{3/2}\ll n$], and no extension of the upper band condition. It is
+ordinary mathematical research, not formally verified or externally refereed.
+
+\emph{Manuscript~27.} This report supplies the endpoint recurrence, uniform
+first-deficiency tail, and scalar-root estimates. Manuscripts~33 and~30 supply
+the exact good-subclass framework and the clustered Fourier method [which first
+appears in manuscript~36, uncredited by manuscript~27]. The new contributions
+are the compact-tilt finite-count selection at the lower scale, the relatively
+valid Gamma reduction including all small runs, the direct conditional
+endpoint-layer transfer, and the integer transition law. A related public
+announcement by Li~\cite{jg:Li} was inspected, but its full manuscript could not
+be retrieved; overlap beyond its abstract has not been excluded. The priority
+claim is source-relative. All constants may depend on the fixed compact $c$
+interval. No uniform claim is made as $c_0\downarrow0$ or $c_1\to\infty$, and no
+exact finite coefficient formula is asserted. The Gaussian theta expression is
+not used outside its proved range. The proof is ordinary mathematics, not
+formally verified or externally refereed.
+
+\emph{Manuscript~24.} The exact sum \eqref{jg:ss:eq:main} is a common expression
+for the earlier finite Gamma sum at $n\asymp m\log m$, the present two-action
+regime, and Gaussian periodization above its now sharpened threshold [as
+equivalents of one coefficient; no term-by-term identity with the Gamma sum is
+proved, \cref{jg:rem:gamma}]. It does not extrapolate the elementary Gamma
+formula to an unproved growing-count range. The cutoff used here can differ
+from the half-cap cutoff in the theta report; each formula evaluates the same
+scalar coefficient [\cref{jg:rem:cutoff}]. Every Gaussian phase stated here
+uses its specified exact cluster law. The analytical argument uses uniform
+Fourier smoothing, relative tail estimates and the exact good-subclass
+inequality [and, for $H$ bounded below, manuscript~30's lattice-sum proof,
+\cref{jg:sec:theta-proof}]. The saddle-point and Gaussian-periodization methods
+are classical~\cite{jg:FlajoletSedgewick,jg:DLMF}; the claims concern their
+uniform implementation and combinatorial transfer for this particular problem.
+The related public announcement~\cite{jg:Li} states fixed-cap growth and
+descent-threshold results; its full linked manuscript was not retrieved, so
+overlap beyond that abstract is not excluded. These are source-relative research
+claims. The proofs are not formally verified or externally refereed. No
+uniformity as $c_0\downarrow0$ is asserted.
+
+\emph{Manuscript~22.} The main new estimate is the relative control of small
+runs at a shrinking deficit. It uses the exact Catalan-power law and the full
+three-range argument, rather than moment bounds alone. The Fourier
+maximal-atom bound is reproved at the changing endpoint scale. These facts
+distinguish the lower range from the compact-$n/(m\log m)$ theorem, and no
+compact-tilt theorem at $n\asymp m\log m$ is extrapolated to it. Lagrange
+inversion and coefficient saddle estimates are classical
+tools~\cite{jg:FlajoletSedgewick}; no novelty is claimed for those general
+methods. The conclusions are relative to this report and the preceding
+companions. The related announcement~\cite{jg:Li} states fixed-cap growth and
+descent-threshold results, but its full linked manuscript was not retrieved;
+overlap beyond its abstract is not excluded. The arguments are not formally
+verified or externally refereed. Uniformity as the phase margin $\delta$ tends
+to zero is not asserted in \cref{jg:gm:thm:ordinary}, and
+\cref{jg:gm:thm:transition} retains its explicit compact-ratio restriction.
+
+\section{Where the merge had to choose}
+\label{jg:sec:merge}
+\begin{itemize}
+\item \emph{One Part, not six.} The six main theorems nest or continue one
+ another (manuscript~33's theorem is the $H\to\infty$ case of manuscript~30's,
+ which is a sub-range of manuscript~24's Gaussian theorem; manuscripts~27
+ and~22 prove one Gamma formula on adjacent ranges), and the cluster local
+ limit, the squared majorant, the good-subclass inequality and the
+ cap-shortening estimate are each proved in two to five of them. Six Parts would
+ have restated one another; one Part prints each statement once. The base of
+ the Gaussian statements is manuscript~24 (weakest hypotheses), of the Gamma law
+ manuscripts~27 and~22 jointly. Part~IX follows Part~VIII and precedes Part~I's
+ appendices; no number of Parts~I--VIII changed.
+\item \emph{Order.} Shared tools first (\cref{jg:sec:majorant,jg:sec:llt,jg:sec:good}),
+ then the theorems from coarse to fine precision and from large to small $n/m$
+ (\cref{jg:sec:bridge,jg:sec:saddle,jg:sec:two,jg:sec:gauss,jg:sec:gamma}),
+ then the checks, the sources' own scope statements, this list and the
+ questions. The manuscripts' title pages and abstracts are replaced by the
+ opening note of Part~IX, \cref{jg:sec:source} and a paragraph of the report's
+ abstract; every claim of each abstract is stated in a theorem or remark.
+\item \emph{Theorems printed once.} \Cref{jg:ss:thm:cubic} combines manuscript~24's
+ \texttt{thm:cubic}, manuscript~30's \texttt{thm:envelope} and \texttt{thm:main}
+ and manuscript~33's \texttt{thm:main}, each part naming its source and keeping
+ its displays and labels; the three replaced theorem labels are
+ \texttt{jg:tb:thm:envelope}, \texttt{jg:tb:thm:main}, \texttt{jg:ra:thm:main}
+ (not defined). Manuscript~27's intermediate saddle sum is the compact case of
+ \cref{jg:ss:thm:main} and is kept with its own tail argument
+ (\cref{jg:sec:ic-saddle}).
+\item \emph{Proofs printed once, with marked second routes.} The cluster local
+ limit: the general lemma of manuscripts~27 and~24
+ (\cref{jg:ic:lem:tilts}) with its proof; manuscript~36's
+ detailed proof for its variant (\cref{jg:lb:lem:llt}, ``second route'') and
+ manuscript~33's proof with the pointwise bound (\cref{jg:ra:lem:local}, ``third
+ route''); manuscript~30's summary and manuscript~24's identical proof are
+ replaced by merge notes. The good-subclass inequality: manuscript~33's proof;
+ the four restatements with sketches are references. The squared majorant:
+ manuscript~36's proof, with manuscript~33's grammar as its exact-class reading.
+ Cap shortening: one statement (\cref{jg:prop:capshort}) and three routes, each
+ printed in full where its regime is treated. The Gaussian theorem: three
+ regimes of $H$, three proofs (\cref{jg:sec:theta-proof,jg:sec:taylor,jg:sec:window}).
+ The composition estimate: manuscript~22's lemma, with manuscript~27's
+ reduction as its compact-deficit case.
+\item \emph{Credits added.} \Cref{jg:rem:credits}: Part~II's
+ \cref{crem:lem:reset}, \cref{crem:lem:watson} and
+ \cref{crem:lem:deficit-slope}, re-proved without credit, and the retargeted
+ citation \eqref{crem:eq:t-allorders} for the rate in $t_m$.
+\item \emph{Additions of the merge.} The convention and range tables, the
+ remarks \cref{jg:rem:credits,jg:rem:cutoff,jg:rem:gamma}, the merge notes, the
+ statement \eqref{jg:eq:transfer} and \cref{jg:prop:capshort} collecting what
+ the sources prove five times, and the numerical findings of ProveIt checks
+ made for this write-up (none shipped). No step of a manuscript was changed;
+ manuscript~22's $\Theta(m^{T-1/2}/\log m)$ is printed with $\asymp$ to keep
+ $\Theta$ free, which is the same statement.
+\item \emph{Notation.} Every rename is listed in \cref{jg:sec:notation} and
+ \cref{jg:tab:notation}; no normalization changed. The cutoff of each
+ statement is the source's and is stated.
+\item \emph{Citations.} The manuscripts cite this report as an external item
+ (``combined article at commit \texttt{7421a4ca60fd}'', ``Parts~I--II''); every
+ such citation is printed as a reference by label. Their citations of one
+ another (by title, or by package name) are printed as references to the merged
+ statements. Their Nadler and Mayama--Akita entries are the report's; added to
+ the bibliography are \cite{jg:Li}, \cite{jg:FlajoletSedgewick} and
+ \cite{jg:DLMF}.
+\item \emph{Labels.} The six manuscripts carry 192 labels, all bare generic
+ names (\texttt{thm:main} four times, \texttt{eq:llt} five times, \ldots;
+ manuscript~36's \texttt{prop:upper} and \texttt{eq:endpoint} would even
+ collide with Part~I's). Those that name printed material are kept with the
+ prefix \texttt{jg:} and a sub-prefix naming the manuscript. Labels of
+ duplicates printed once, and of displays that restate this report, are
+ replaced by the printed label; the report's README lists them.
+\item \emph{Research questions.} None of the manuscripts has a section of
+ questions; their non-claims and the gaps between their ranges are turned into
+ \cref{jg:sec:research}.
+\item \emph{Stale sentences elsewhere.} The abstract gained a paragraph; dated
+ pointers to Part~IX were added where Parts~II, III, IV, VI and~VIII ask for
+ growing caps or the bridge to the fixed-$m$ regime, and to Part~I's
+ \cref{app:reproduction}; Part~II's research direction~19.5 received the label
+ \texttt{jg:sec:crem-joint}; Part~I's scope box received the dated note on
+ Li's announcement. Their original wording is kept.
+\end{itemize}
+
+\section{Further research questions}
+\label{jg:sec:research}
+The questions below are the merge's, drawn from the six manuscripts'
+non-claims and from the gaps between their ranges.
+
+\subsection{Bounded counts with a growing cap}
+\label{jg:sec:q-bounded}
+Find the asymptotics when $\lceil(n-1)/m\rceil$ stays bounded while
+$m\to\infty$ and $m/n$ does not converge, between Part~VIII's fixed-$\theta$
+theorems (\cref{gc:thm:phase,gc:thm:window}) and
+\cref{jg:gm:thm:ordinary}, which needs $\ell\to\infty$.
+
+\subsection{Phases near integers}
+\label{jg:sec:q-phases}
+\Cref{jg:gm:thm:ordinary} keeps the phase $s$ in $[\delta,1-\delta]$ and
+\cref{jg:gm:thm:transition} keeps the adjacent ratio in a compact subset of
+$(0,\infty)$. Phases $s=\tau e^{x/(\ell-1)}$ with $|x|\to\infty$ but $s\to0$, and
+phases just above an integer, are covered by neither.
+
+\subsection{Uniformity in the fixed constants}
+\label{jg:sec:q-uniform}
+Every theorem of Part~IX is uniform only for fixed $c_0$ (and $c_1$, $\delta$).
+Make the dependence explicit as $c_0\downarrow0$, $c_1\to\infty$ or
+$\delta\to0$, and join the Gamma law of \cref{jg:sec:gamma} continuously to the
+saddle sum of \cref{jg:sec:saddle}.
+
+\subsection{The hand-off to the fixed-cap Perron regime}
+\label{jg:sec:q-perron}
+Every relative statement about $a_n^{(m)}$ needs $n(\log m)^2/m^2\to0$; for
+larger $n$ only the logarithmic bridge holds. Find a relative equivalent, with
+its prefactor, when $n(\log m)^2/m^2\not\to0$, and decide whether the squared
+envelope stays relatively sharp there. This is the part of Part~II's direction
+19.5, Part~III's \cref{lj:sec:q-reconnect} and Part~VI's
+\cref{pr:sec:q-growing} that Part~IX leaves open; it meets Part~II's
+\cref{crem:sec:future} questions on poles and a uniform spectral gap.
+
+\subsection{Error rates and effective thresholds}
+\label{jg:sec:q-rates}
+None of the six manuscripts gives an error rate for a relative equivalent or an
+effective threshold in $m$. The numerical findings recorded above (the
+$1+O(1/\log m)$ correction in the Gamma law, the slow cumulant limits at the
+cubic boundary, the cutoff dependence of the theta phase) indicate where rates
+are needed.
+
+\subsection{The conditioned permutation}
+\label{jg:sec:q-conditioned}
+The shares in \cref{jg:gm:thm:transition,jg:ic:cor:rate} and the cluster counts
+of \cref{jg:sec:gauss} are contributions to an equivalent, not statistics of a
+conditioned permutation. Identify the number and sizes of the macroscopic
+pieces of a uniform avoider conditioned on $M_n\le m$ in these regimes, as
+Part~VIII does for fixed $\theta$ (\cref{gc:cor:geometry}).
 
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices of Part I}
@@ -13351,7 +16641,10 @@ Added 30 September 2026, batch 68: Part~VI's carry the prefix
 Added 1 October 2026, batch 71: Part~VII's carry the prefix
 \path{08-half-size-crossover-} and are listed in \cref{hc:sec:reproduce}.
 Added 1 October 2026, batch 72: Part~VIII's carry the prefix
-\path{09-general-crossovers-} and are listed in \cref{gc:sec:reproduce}.]
+\path{09-general-crossovers-} and are listed in \cref{gc:sec:reproduce}.
+Added 1 October 2026, batch 72: Part~IX's carry the prefixes
+\path{10-logarithmic-bridge-} to \path{15-growing-macro-counts-} and are
+listed in \cref{jg:sec:reproduce}.]
 
 The primary reproducibility command needs no third-party Python packages:
 \begin{lstlisting}
@@ -13457,5 +16750,26 @@ application to random graphs}, Bernoulli \textbf{31}(3) (2025), 2525--2543.
 DOI: \href{https://doi.org/10.3150/24-BEJ1816}{10.3150/24-BEJ1816}. Preprint:
 \url{https://arxiv.org/abs/2206.14627}. Cited in Part~VI as related context
 only; no theorem of it is used.
+
+\bibitem{jg:Li}
+A. C. Li (Alex Chengyu Li), \emph{Strict Growth and Descent Thresholds for
+Bounded-Gap $132$-Avoiders}, working-paper announcement, 8 September 2026.
+DOI: \href{https://doi.org/10.5281/zenodo.22648521}{10.5281/zenodo.22648521};
+\url{https://crabresearch.com/research/bounded-gap-growth?lang=en}. Cited by
+manuscripts~30, 27, 24 and~22 of batch~72 (Part~IX), whose public abstract they
+inspected on 1 October 2026; the full manuscript was not inspected, by them or
+for this report.
+
+\bibitem{jg:FlajoletSedgewick}
+P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge
+University Press, 2009, Chapter VIII.
+\url{https://algo.inria.fr/flajolet/Publications/AnaCombi/anacombi.html}.
+Cited in Part~IX for classical methods only.
+
+\bibitem{jg:DLMF}
+NIST Digital Library of Mathematical Functions, Chapter~20, \S20.2 (theta
+Fourier series) and \S20.7 (identities). \url{https://dlmf.nist.gov/20.2};
+\url{https://dlmf.nist.gov/20.7}. Cited in Part~IX for the classical
+periodic Gaussian only.
 \end{thebibliography}
 \end{document}
