@@ -1,5 +1,10 @@
 # Infinite low-X outer families for the86 candidate
 
+The later [all-input collapse](complete75_weakened86_all_input_collapse.md) and
+[actual rejecting compiler](complete75_weakened86_rejecting_compiler.md) now refute
+the specific86 weakening on actual program slices. The outer-only theorem below and
+its independent scope remain unchanged.
+
 The [complete negative-input successor](complete75_weakened86_full_negative_family.md)
 pays the missing input/index congruences and all five auxiliary coordinates
 for one fixed scalar compiler instance, giving infinitely many full positive
@@ -18,8 +23,9 @@ counterexample to the [weakened86 candidate](complete75_weakened_bound86_candida
 The family does not complete the input norm, the first-index equation
 or the target congruence. In particular it supplies no passing full
 class for the [negative-input extension criterion](complete75_weakened86_auxiliary_sign_lift.md).
-The candidate remains unresolved; its86=48M+38A operations,19 positive
-coordinates and exact degree203 are unchanged.
+This packet alone left soundness unresolved; the later all-input theorem
+refutes the proposal. Its86=48M+38A operations,19 positive coordinates
+and exact degree203 are unchanged.
 
 The [checker](complete75_weakened86_infinite_outer_family.py) and
 [receipt](complete75_weakened86_infinite_outer_family.json) also certify
@@ -305,5 +311,5 @@ interval recurrence. All four local links resolve.
 The result rules out a uniform finite search based only on these outer
 equations. It does not rule out a
 uniform obstruction using the remaining input and index congruences,
-and it changes neither the established75/87 bounds nor the unresolved
-status of the full86 candidate.
+and by itself did not settle soundness. The later all-input theorem
+refutes the proposal; the established75/87 bounds remain unchanged.

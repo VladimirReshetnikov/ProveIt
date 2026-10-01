@@ -1,5 +1,10 @@
 # A positive repunit unit gives263 operations
 
+The [history-unit successor](neary_woods_universal_history_units260.md) lowers the
+complete U9 polynomial to260=134M+126A,2 comparisons and43 positive witnesses, with
+degree at most3866. Its positive slack bijection preserves the full relation;
+mapped270/608 has44 witnesses. The263 source and proof below remain unchanged.
+
 The explicit U9 universal polynomial has a **263=134M+129A** successor
 to the [shared-history265 source](neary_woods_universal_shared_history265.md).
 Its certificate costs **252=130M+122A**, with **four comparisons**,

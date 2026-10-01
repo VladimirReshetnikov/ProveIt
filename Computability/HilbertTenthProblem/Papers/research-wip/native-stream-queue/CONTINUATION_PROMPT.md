@@ -15,17 +15,43 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **263=134M+129A**,252 certificate operations,43 positive witnesses,
-> 4 comparisons and four positive program parameters, with degree
-> at most3857: [positive mask unit](neary_woods_universal_mask_unit263.md).
-> The new factor S-(2B-1)K replaces the second repunit comparison.
-> Both signs preserve the untyped port bounds; local native restoration
-> makes B and S dyadic before a Mersenne residue excludes the negative sign.
-> The complete positive zero set is identical on the same supplied tuple;
-> off-zero polynomial values have explicit correction identities.
-> Mapped selected schedules reach273/608 with44 witnesses, or270/1344
-> with43. Only the new factor's placement within each selected partition
-> is optimized; this is not a fresh exhaustive enlarged-factor search.
+> **260=134M+126A**,255 certificate operations,43 positive witnesses,
+> 2 comparisons and four positive program parameters, with degree
+> at most3866: [positive history units](neary_woods_universal_history_units260.md).
+> Upper transport and global bound become two integer units. Independent
+> rank restoration and the paid loader recover native signs before the
+> upper low digit and global product force both new units to+1.
+> The private slack map beta_parent=beta_new+1 is a full positive-zero
+> bijection; the converse has beta_parent>=17. Off-zero correction
+> identities are explicit. The upper-only intermediate costs261.
+> Mapped selected schedules reach270/608 with44 witnesses, or267/1344
+> with43. Only the two factors' placements within selected partitions are
+> optimized, not all partitions of the enlarged factor set.
+> The [mask-unit263 parent](neary_woods_universal_mask_unit263.md) retains
+> 252 certificate gates,4eq43w and degree at most3857; its selected
+> degree608 option costs273 with44 witnesses.
+>
+> The specific [weakened-bound86 proposal](complete75_weakened_bound86_candidate.md)
+> is **REFUTED** by the [all-input collapse](complete75_weakened86_all_input_collapse.md)
+> and [actual rejecting compiler](complete75_weakened86_rejecting_compiler.md).
+> Every actual modified compiler slice accepts every positive x in the
+> unchanged weakened polynomial. Full positive19-coordinate zeros have
+> R<0,mu<0; Dirichlet's theorem, irrational rotation and positive Pell
+> lifts pay every retained condition. The explicit rejecting program has
+> empty language, so x=1 is a false positive. This refutes this proposal,
+> not the possibility of a different86-operation universal construction.
+> Established75/87 and the separate independent-gamma87 status are unchanged.
+>
+> An independent [packed-register route](korec_packed_counter_compiler.md)
+> instantiates the actual strongly universal U22 machine:
+> **453=138M+315A**,436 certificate operations,6 comparisons,54 positive
+> witnesses and degree at most43897. One positive program parameter and
+> unchanged ordinary x supply the strong universal input convention.
+> All eight registers share one chronological counter word, two joined-AND
+> counter lanes and one transport equation; instruction and control
+> chronology are paid. Raw484/61w/degree-at-most7024 remains available.
+> This complete route does not improve260 or the separate75/87 bounds.
+>
 > The [shared-history265 parent](neary_woods_universal_shared_history265.md)
 > retains251 certificate operations,5eq43w and degree at most3853.
 > Its exact reuse saves2M+2A from [factored269](neary_woods_universal_factored_ports269.md),
@@ -820,7 +846,7 @@ checksum is1. The same positive supplied tuples therefore give
 ordinary-strong version gives303/degree-at-most1665; single-index
 choices and both program-bound interfaces remain available.
 
-The current [positive-mask-unit263 source](neary_woods_universal_mask_unit263.md)
+The preceding [positive-mask-unit263 source](neary_woods_universal_mask_unit263.md)
 replaces mask_scale=(2B-1)K+1=S by Nmask=S-(2B-1)K in one existing
 unit group. The new certificate adds1M and loses one comparison, for
 a net2A polynomial saving:252 certificate/263=134M+129A,4eq43w,
@@ -1414,7 +1440,8 @@ index sign is excluded also at the new boundary by its smaller population.
 Restore the positive101 tuple with alpha_101=F+alpha, r_101=R,
 z_101=zplus-1 and i_101=Delta*i; it need not be an87 tuple.
 
-Only R<0 remains open, equivalently S>q^2, with W=C-Z<0. Globally the
+Historically the remaining branch was R<0, equivalently S>q^2, with
+W=C-Z<0; the new collapse refutes soundness through its mu<0 part. Globally the
 main Pell index still satisfies p>=12, restoring full strong rank and
 the auxiliary target congruence. The first/main ratios also give n<p<2n
 globally. When the computed input root mu>0, the identity
@@ -1423,13 +1450,14 @@ signs. The target is confined to ±p-jc with0<=j<=2(q^2-1)-1;
 mu<0 has a separate
 unexcluded expression for Z. These are necessary restrictions, not
 full candidate zeros. The literal86=48M+38A/19w/degree203 circuit is
-unchanged and does not impose R>0. Paying that condition is still an
-obligation. The source checks512 full restoration identities,256 signed;
-neither its fixtures nor the older negative-index family settle universal
-soundness. Established75/87 and independent-gamma87 status are unchanged.
+unchanged and does not impose R>0. The source checks512 full restoration
+identities,256 signed; those earlier fixtures alone did not settle
+soundness. The later all-input construction does. Established75/87 and
+independent-gamma87 status are unchanged.
 
 The committed [86 index-gap restrictions](complete75_weakened86_index_gap.md)
-strengthen that open branch without changing the circuit. The normalized
+give necessary restrictions in that historical branch without changing
+the circuit. The normalized
 strong norm gives p*c|m; the auxiliary odd index is congruent to±p modulo
 m, so p is odd globally. For R<0 and mu>0, set M=q^2-1 and write the
 wrapped target as omega*p-j*c,0<=j<=2M-1. ModuloY,
@@ -1595,15 +1623,35 @@ The eight literal factors are(1,1,1,1,-1,-1,1,1), giving a complete
 positive zero, not merely a ratio or subsystem fixture. The giant tuple
 is specified exactly by Pell formulas, not printed or materialized.
 
-These scalar constants satisfy the mask contract, but no actual universal
-program with these constants is instantiated and x1 is not shown outside
-its represented language. The next semantic task is to realize suitable
-scalar data by an actual program/input slice, or prove the additional
-program constraints exclude the family. Blanket exclusion of all negative
-R or all negative mu is no longer possible under the scalar contract alone.
-Positive-mu gaps at least13 and actual-program soundness of86 remain
-unresolved; no improved universal bound or false-membership claim follows.
-The separate75/87 results remain unchanged.
+These scalar constants satisfy the mask contract, but that earlier packet
+does not instantiate a program or show false membership. Its theorem remains
+scoped to those scalar data. The following successor settles the semantic
+question using the actual compiler parity class.
+
+The [all-input collapse](complete75_weakened86_all_input_collapse.md) fixes
+any positive d,b,DC,DR,MC,MF with d odd,3 not dividing d, b odd and MC even.
+For every positive x choose a sufficiently large power-of-five N and
+q=(2^d)^N>2dx+2. An even wrap2<=j<=2(q^2-1)-2 and signs pay the initial
+CRT compatibility. Choose e=3mod4 with e=tmod18(q^2-1) and e=tmod(dN).
+A coprime Dirichlet progression supplies Y=q^3*s and H=3ell with ell prime,
+ell=2mod3. The exact return period12(q^2-1)(ell-1) pays the main-root and
+input congruences; a further progression freezes the first-index residues.
+Irrational rotation yields infinitely many strict-ratio hits. The auxiliary
+sign theorem then reconstructs five positive coordinates at p=3mod4.
+Every supplied coordinate is positive and the literal factor values are
+(1,1,1,1,epsilon,-1,1,-epsilon), so the complete polynomial vanishes.
+No giant numeral or full witness is materialized; existence rests on the
+proved prime progression, density and Pell identities.
+
+Every actual modified compiler has d,b powers of5 and MC=2mod4, so its
+weakened polynomial accepts all positive inputs. The separate
+[rejecting compiler recipe](complete75_weakened86_rejecting_compiler.md)
+fixes an empty-language stationary machine, its exact local window alphabet
+and lazy modified compiler constants. It therefore supplies an actual
+false-input example at x=1. This specific86 proposal is REFUTED; the
+established75 certificate and87 polynomial remain unchanged. Positive-mu
+gap questions survive only as algebraic questions about the refuted source,
+not prerequisites for deciding its universal soundness.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary

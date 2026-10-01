@@ -1,18 +1,25 @@
-# A scoped 86-operation candidate with an unresolved positive inverse
+# Refuted86-operation weakened-bound proposal
 
-**This is not a proved universal bound.** The candidate polynomial has
-86=48M+38A operations, 19 positive supplied coordinates and exact degree
-203. Every positive zero of [normalized87](complete75_normalized_strong87.md)
-maps to a positive candidate zero at the same input. The reverse map is
-proved only when the candidate coordinate `alpha` exceeds `Z`.
-Full positive soundness outside that region remains open. The established
-75-operation certificate / 87-operation polynomial frontier is unchanged.
+**REFUTED on actual compiled program slices.** The
+[all-input collapse theorem](complete75_weakened86_all_input_collapse.md)
+proves that the unchanged86=48M+38A polynomial, with19 positive supplied
+coordinates and exact degree203, has infinitely many complete positive
+zeros at every positive input for every actual modified compiler slice.
+The [explicit rejecting compiler](complete75_weakened86_rejecting_compiler.md)
+has empty language and therefore gives a false positive at x=1.
+
+This refutes this particular weakening, not the possibility of a different
+86-operation universal polynomial. The established75 certificate and
+[normalized87 polynomial](complete75_normalized_strong87.md) are unchanged.
+The proofs specify exact finite compiler and Pell recipes; huge constants
+and full witness integers need not be materialized for the existence result.
 
 The [source](complete75_weakened_bound86_candidate.py) and
-[receipt](complete75_weakened_bound86_candidate.json) preserve the exact
-candidate circuit and a failure of the earlier *outer positivity
-bootstrap*. The exhibited fixtures are expressly not full polynomial
-zeros. They do not prove that this candidate accepts a false input.
+[receipt](complete75_weakened_bound86_candidate.json) retain the original
+arithmetic circuit. The following signed parent identity, conditional
+positive inverse and outer-only obstruction remain valid historical
+results. Their original fixtures are not full zeros; the later theorem
+supplies the complete false-input witnesses.
 
 ## 1. The literal saving and exact signed identity
 
@@ -71,9 +78,9 @@ are unchanged.
 The candidate source does **not** impose that restriction. If
 `0<alpha<=Z`, its exact parent image has a nonpositive supplied alpha,
 so the parent positive theorem cannot be invoked. Neither the signed
-polynomial identity nor canonical completeness fills this gap. Proving
-soundness would require a new argument excluding false accepted inputs
-in that region, possibly by normalizing complete zeros in another way.
+polynomial identity nor canonical completeness fills this gap. The later
+all-input theorem proves that false accepted inputs do occur in this
+region on actual compiler slices.
 
 The earlier [bounded projection](complete75_bounded_projection_elimination99.md)
 uses the extra Z in C to infer `F,Z<q` after transport gives C>0. This
@@ -113,8 +120,8 @@ would be circular.
 These fixtures do not satisfy the full native norms. The receipt checks
 that their complete candidate polynomial is nonzero. Accordingly the
 family refutes only the old proposed bootstrap, and supplies no full
-counterexample or lower bound. The complete negative-index/sign analysis
-is the unresolved part of this candidate.
+counterexample or lower bound. The later all-input collapse resolves
+soundness negatively using full positive zeros in the R<0,mu<0 branch.
 
 ## 4. Degree and replay
 
@@ -140,8 +147,8 @@ the outer family above.
 ```
 
 Author receipt generation and fresh default replay pass. No parent packet or navigation file
-is changed. This bounded result preserves a concrete candidate and its
-precise missing implication; it establishes no improvement below87.
+is changed. This original bounded result preserved a concrete candidate and its
+then-missing implication. The later refutation establishes no improvement below87.
 
 Independent scoped proof/source review and fresh default replay pass
 without findings. A separate literal executor verified 192 signed
@@ -152,5 +159,5 @@ projection and outer obstruction, not full candidate soundness.
 The subsequent [positive-index theorem](complete75_weakened86_positive_index.md)
 extends conditional soundness to every candidate zero with computed R>0,
 including alpha<=Z. It proves R=0 impossible and supplies necessary
-restrictions in the remaining R<0 branch. That branch is still unresolved;
-the literal86-operation candidate is not promoted to a universal bound.
+restrictions in the R<0 branch. The subsequent all-input theorem proves
+that this specific proposal is unsound on actual compiler slices.

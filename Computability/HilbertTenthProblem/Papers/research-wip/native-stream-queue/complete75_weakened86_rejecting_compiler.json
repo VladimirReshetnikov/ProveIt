@@ -1,0 +1,371 @@
+{
+  "status": "PASS_ACTUAL_REJECTING_COMPILER_86_COUNTEREXAMPLE",
+  "arithmetic_theorem_contract": {
+    "source": {
+      "polynomial_operations": 86,
+      "operation_split": {
+        "M": 48,
+        "A": 38
+      },
+      "positive_witnesses": 19,
+      "unchanged_exact_degree": 203,
+      "source_sha256": "ddb8279523a53370138e6e96ddf8cca8fb73a985e2a0de9fbb7ed4145949d90b",
+      "normalized_strong_rows_checked": 7,
+      "source_changed": false,
+      "additional_input_rows_checked": 14
+    },
+    "hypotheses": "B=2^d; d positive odd, 3 does not divide d; b positive odd; MC positive even; MF,DC,DR positive; x positive.",
+    "conclusion": "Every positive x has infinitely many complete positive19-coordinate zeros of the unchanged86 polynomial, with R<0 and negative input root.",
+    "existence_dependencies": [
+      "Dirichlet primes in a coprime arithmetic progression",
+      "irrational rotation",
+      "proved positive auxiliary Pell lift"
+    ],
+    "established_75_87_unchanged": true,
+    "witness_materialization_claimed": false
+  },
+  "machine": {
+    "states": [
+      "start",
+      "loop",
+      "halt"
+    ],
+    "tape_alphabet": [
+      0,
+      1,
+      2
+    ],
+    "transitions": [
+      [
+        "start",
+        0,
+        "loop",
+        0,
+        0
+      ],
+      [
+        "start",
+        1,
+        "loop",
+        2,
+        0
+      ],
+      [
+        "start",
+        2,
+        "loop",
+        2,
+        0
+      ],
+      [
+        "loop",
+        0,
+        "loop",
+        0,
+        0
+      ],
+      [
+        "loop",
+        1,
+        "loop",
+        1,
+        0
+      ],
+      [
+        "loop",
+        2,
+        "loop",
+        2,
+        0
+      ],
+      [
+        "halt",
+        0,
+        "halt",
+        0,
+        0
+      ],
+      [
+        "halt",
+        1,
+        "halt",
+        1,
+        0
+      ],
+      [
+        "halt",
+        2,
+        "halt",
+        2,
+        0
+      ]
+    ],
+    "exact_loop_invariant": true,
+    "semantic_input_traces": 64,
+    "first_transition_is_stationary_origin_mark": true,
+    "fixed_start_and_end_are_valid": true,
+    "ordinary_language": "empty set",
+    "false_ordinary_input": 1,
+    "theorem_basis": "Every start transition enters loop, and every loop transition preserves the tape/head/state. The unreachable halt is retained as the tableau acceptance state."
+  },
+  "window_alphabet": {
+    "tile_alphabet": [
+      [
+        1,
+        0,
+        null,
+        null
+      ],
+      [
+        0,
+        1,
+        null,
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          0,
+          null
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          0,
+          "start"
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          0,
+          "loop"
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          0,
+          "halt"
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          1,
+          null
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          1,
+          "start"
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          1,
+          "loop"
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          1,
+          "halt"
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          2,
+          null
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          2,
+          "start"
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          2,
+          "loop"
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          2,
+          "halt"
+        ],
+        null
+      ],
+      [
+        0,
+        0,
+        [
+          0,
+          null
+        ],
+        "L"
+      ],
+      [
+        0,
+        0,
+        [
+          1,
+          null
+        ],
+        "I"
+      ],
+      [
+        0,
+        0,
+        [
+          1,
+          "start"
+        ],
+        "Q"
+      ],
+      [
+        0,
+        0,
+        [
+          0,
+          null
+        ],
+        "R"
+      ]
+    ],
+    "tile_count": 18,
+    "exhaustive_five_cell_crosses_tested": 1889568,
+    "valid_five_cell_crosses": 121165,
+    "free_corner_choices": 104976,
+    "exact_full_window_count": 12719417040,
+    "full_window_list_materialized": false,
+    "marker_raw_indices": [
+      12702627156,
+      12701682294
+    ],
+    "start_window": [
+      1,
+      1,
+      1,
+      15,
+      15,
+      16,
+      6,
+      6,
+      12
+    ],
+    "end_window": [
+      1,
+      1,
+      1,
+      14,
+      15,
+      15,
+      2,
+      6,
+      6
+    ],
+    "cross_table_sha256": "d305e812838d53f5cb86683d818fb65948f4dc5ce881256c11b08c24a0ac79f6",
+    "random_access_round_trips": 1030,
+    "independent_corner_variations": 256
+  },
+  "compiler": {
+    "actual_rejecting_layout": {
+      "window_count": 12719417040,
+      "tile_count": 18,
+      "clause_radix_log2": 34,
+      "initial_m": 616,
+      "zero_clause_padding": 6359708295,
+      "m": 12719417206,
+      "native_positions": 12719417207,
+      "dummy_positions": 1,
+      "extra_dummy": 12719417256,
+      "anchor_unit": 12719417311,
+      "Emax": 343424267397,
+      "spatial_copy_shift": 648690282916,
+      "T1": 1335538817729,
+      "T2": 2022387352524,
+      "optional_high_degree": 2365811619922,
+      "cell_radix_length": 3814697265625,
+      "mu_highest_clause_exponent": 6359708461,
+      "coefficient_sum_strict_upper_power2": 5682,
+      "raw_radix_margin_strict_upper_power2": 5720,
+      "exact_radix_target_bit_length": 216230087676,
+      "inner_bits": 762939453125,
+      "cell_bits": 2910383045673370361328125,
+      "MC_even": true,
+      "native_MC_population": 2910383045673357641910918,
+      "native_MF_population": 12719417207,
+      "total_mask_population": 2910383045673370361328125,
+      "fixed_numerals_materialized": false,
+      "original_export": "new_constants(compile_windows([window(i) for i in range(k)],18))",
+      "scope": "The export is an exact finite mathematical recipe, not an executed billions-window list."
+    },
+    "literal_small_layout_matches": [
+      {
+        "windows": 1000,
+        "tile_count": 3,
+        "b": 15625,
+        "L": 390625,
+        "d": 6103515625
+      },
+      {
+        "windows": 1200,
+        "tile_count": 3,
+        "b": 15625,
+        "L": 390625,
+        "d": 6103515625
+      },
+      {
+        "windows": 1500,
+        "tile_count": 3,
+        "b": 15625,
+        "L": 390625,
+        "d": 6103515625
+      }
+    ],
+    "required_frozen_export": "complete75_half_binomial_compiler.new_constants",
+    "new_masks": [
+      "MC=B-1-sum_(e in positions,e!=1)2^(b*e)-2^(b*extra_dummy+1)",
+      "MF=sum_e MFpoly[e]*2^(b*e)+4"
+    ],
+    "toy_width4_is_not_an_actual_layout": true,
+    "actual_program_semantics": "Both markers precede the remaining allowed windows; the ordinary language is empty."
+  },
+  "conclusion": "The fixed actual modified helical compiler of this rejecting machine represents the empty ordinary-input language, but its unchanged weakened86 polynomial has full positive19-coordinate zeros for x1 and for every positive x by the all-input-collapse theorem.",
+  "scope": "An actual program/input counterexample by an exact finite compiler recipe and an existence theorem. No giant compiler numerals, full window list, Dirichlet prime or full witness integers are materialized. The sound75 certificate and87 polynomial are unchanged."
+}
