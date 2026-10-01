@@ -1,0 +1,195 @@
+{
+  "status": "PASS_TSEYTIN_AFFINE_POWER_QUERY_LOADER",
+  "packet": {
+    "source": [
+      [
+        "query_Q2",
+        "*",
+        "Q",
+        "Q"
+      ],
+      [
+        "query_leading",
+        "*",
+        "program_A",
+        "query_Q2"
+      ],
+      [
+        "query_degree4",
+        "-",
+        "query_leading",
+        431359146674410236714672241397758608648929326176063153381381683281920
+      ],
+      [
+        "query_times_Q",
+        "*",
+        "query_degree4",
+        "Q"
+      ],
+      [
+        "query_degree3",
+        "-",
+        "query_times_Q",
+        842498333348457493583344216024845587816145347790399171057476960256
+      ],
+      [
+        "query_times_Q2",
+        "*",
+        "query_degree3",
+        "query_Q2"
+      ],
+      [
+        "query_degree1",
+        "-",
+        "query_times_Q2",
+        205688069665150755269371147822264961552109397018462730948968448
+      ],
+      [
+        "query_last_product",
+        "*",
+        "query_degree1",
+        "Q"
+      ],
+      [
+        "query_numerator",
+        "-",
+        "query_last_product",
+        58287373257162035664189470619351330310679486290489298691209
+      ],
+      [
+        "query_scaled_word",
+        "*",
+        6277101735386680763835789423207666416102355444464034512895,
+        "word"
+      ]
+    ],
+    "parameters": [
+      "program_A",
+      "Q",
+      "word"
+    ],
+    "auxiliaries": [],
+    "comparisons": [
+      [
+        "query_numerator",
+        "query_scaled_word"
+      ]
+    ],
+    "operations": 10,
+    "multiplications": 6,
+    "additions_subtractions": 4,
+    "equations": 1,
+    "degree_upper_bound": 7,
+    "required_power_interface": "Q=8**(32*x), ordinary x>0",
+    "valid_program_recipe": "program_A=(8**64-1)*8**17*enc8(S)+h6; S is the exact primary program word"
+  },
+  "polynomial_operations": 11,
+  "polynomial_source": [
+    [
+      "query_Q2",
+      "*",
+      "Q",
+      "Q"
+    ],
+    [
+      "query_leading",
+      "*",
+      "program_A",
+      "query_Q2"
+    ],
+    [
+      "query_degree4",
+      "-",
+      "query_leading",
+      431359146674410236714672241397758608648929326176063153381381683281920
+    ],
+    [
+      "query_times_Q",
+      "*",
+      "query_degree4",
+      "Q"
+    ],
+    [
+      "query_degree3",
+      "-",
+      "query_times_Q",
+      842498333348457493583344216024845587816145347790399171057476960256
+    ],
+    [
+      "query_times_Q2",
+      "*",
+      "query_degree3",
+      "query_Q2"
+    ],
+    [
+      "query_degree1",
+      "-",
+      "query_times_Q2",
+      205688069665150755269371147822264961552109397018462730948968448
+    ],
+    [
+      "query_last_product",
+      "*",
+      "query_degree1",
+      "Q"
+    ],
+    [
+      "query_numerator",
+      "-",
+      "query_last_product",
+      58287373257162035664189470619351330310679486290489298691209
+    ],
+    [
+      "query_scaled_word",
+      "*",
+      6277101735386680763835789423207666416102355444464034512895,
+      "word"
+    ],
+    [
+      "query_output",
+      "-",
+      "query_numerator",
+      "query_scaled_word"
+    ]
+  ],
+  "output": "query_output",
+  "source_sha256": "b61383c712def75ee14610305819cccc71d5e9964f7f2267b5d30acedb3e05b8",
+  "constants": {
+    "B": 79228162514264337593543950336,
+    "denominator": 6277101735386680763835789423207666416102355444464034512895,
+    "tail_coefficients": [
+      -58287373257162035664189470619351330310679486290489298691209,
+      -205688069665150755269371147822264961552109397018462730948968448,
+      0,
+      -842498333348457493583344216024845587816145347790399171057476960256,
+      -431359146674410236714672241397758608648929326176063153381381683281920,
+      0,
+      2050804628760624668266327456219458991585472380302057719247931015816019968
+    ],
+    "leading_scale": 14134776518227074636666380005943348126619871175004951664970597810527272960
+  },
+  "checks": {
+    "literal_primary_query_codes": 216,
+    "perturbed_word_residuals": 432,
+    "formal_signed_Horner_outputs": 128
+  },
+  "examples": [
+    {
+      "x": 1,
+      "program_length": 219,
+      "query_length": 428,
+      "Q_bits": 97,
+      "word_bits": 1285,
+      "program_parameter_bits": 901
+    },
+    {
+      "x": 2,
+      "program_length": 219,
+      "query_length": 620,
+      "Q_bits": 193,
+      "word_bits": 1861,
+      "program_parameter_bits": 901
+    }
+  ],
+  "scope": "Exact ten-gate input bridge on the explicitly required Q=8**(32*x) interface. No unpaid powers or divisions in the source, but this module alone does not certify Q or assert a universal operation bound."
+}
