@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and fifteen independent mathematical research packages, unpacked
+One hundred and eighteen independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and fifteen reports, names the problem each one attacks
+numbers all one hundred and eighteen reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -20,17 +20,17 @@ records what each report claims rather than verifying it.
 | [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences | 19 |
 | [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions, polyomino growth | 22 |
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
-| [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy | 12 |
+| [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy, matching-rank normalization | 13 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, valuations and periodicity | 9 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
-| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies, Apéry arrays | 17 |
+| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies, power-tower derivative supports, Apéry arrays | 19 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 7 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
 | [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting | 3 |
-| **Total** | **115** |
+| **Total** | **118** |
 
 ## Later deliveries
 
@@ -214,6 +214,35 @@ manuscript went to the Fabius drafts tree.  Batch 71 added a Part IV to
 (the exact half-size crossover); its fourth manuscript went to the Fabius
 drafts tree.
 
+Batch 72, seventy-nine archives in one delivery, opened three reports:
+[`power-tower-exponent-supports`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-exponent-supports)
+(the leading asymptotic `N^2/2` of the derivative supports of `x^(x^a)` for
+every integer `a`, hence for A293239 and A290268, from seven manuscripts),
+[`a290268-unbounded-deficits`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290268-unbounded-deficits)
+(A290268 when the logarithmic deficit grows, from eight) and
+[`matching-rank-normalization`](log-concavity-and-unimodality/matching-rank-normalization)
+(twenty-seven manuscripts continuing Parts XI–XIII of
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes),
+which gained dated pointers to it but no new Part). It added three
+manuscripts on the Lehmer–Comtet triangle and two on depths five and six and
+count bounds to
+[`power-tower-derivative-term-counts`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts),
+and a Part VIII (every fixed phase amplitude and reciprocal crossover) and a
+Part IX (growing caps, from six manuscripts) to
+[`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders).
+Twenty-one other manuscripts — thirteen on Thue–Morse pressure signs and
+eight on Fabius observation masks — were filed in the Fabius drafts tree.
+Vladimir asked for particular vigilance about duplicates in this batch.
+Three archives repeated batch 71 byte for byte (the leaf-compression
+manuscript printed as Part XIII of `preorder-root-polytopes`, the half-size
+crossover printed as Part VII of `adjacency-bounded-132-avoiders`, and a
+Fabius-tree note), one was a byte copy of another archive of the same batch,
+and two were superseded (an earlier version of a Thue–Morse note, and an
+A290268 note wholly implied by another); none of these six was placed.
+Theorems proved by more than one manuscript are printed once, with the other
+proofs kept as marked second routes: the integer-exponent asymptotic, for
+instance, was proved three times.
+
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
 own theorems are not formalized.
@@ -252,7 +281,13 @@ survive unchanged, and a record of every edit made to the three source texts
 accompanied the merge.  This was editorial, not deduplication — those three
 went through the duplicate sweep first and *cleared* it, below.  Their three
 theorems are three different theorems, and the merged article is at pains to say
-so rather than let a shared setup suggest the answers are connected.
+so rather than let a shared setup suggest the answers are connected.  Two
+later reports sit beside it rather than inside it:
+[`power-tower-exponent-supports`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-exponent-supports)
+proves the leading constant `1/2` for `x^x` and `x^(x^2)` that the article
+leaves open, and
+[`a290268-unbounded-deficits`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290268-unbounded-deficits)
+studies the `x^(x^2)` coefficients at unbounded logarithmic deficit.
 
 **The tenth delivery was nine manuscripts on one foundation**, and that turned
 out to be a different problem from nine manuscripts on one theorem.  All nine
