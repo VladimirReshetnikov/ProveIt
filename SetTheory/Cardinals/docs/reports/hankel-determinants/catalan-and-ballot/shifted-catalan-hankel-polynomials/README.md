@@ -1600,6 +1600,15 @@ Theorem 30.4, by a Schur-function route. The odd case is not covered there.
 No reciprocal note was written in that report in this change; it would be a
 natural one.
 
+Batch 66 added a Part III to `cigler-conjecture-16-parity` (commit
+`e1817651a`) that classifies the reduced denominators and minimal recurrences
+of Cigler's Hankel polynomials at every complex parameter: at a primitive root
+of unity of order at least 3 at most one residue class loses order, by an
+explicit parity test, one order in general and three at primitive fourth roots
+for `k ≡ 1 (mod 4)`, `k ≥ 9`. A dated note after Corollary 30.3 of Part III
+here records this parallel to Theorem 30.1 and where it differs (no
+one-order bound, no sign datum); neither result uses the other.
+
 Part IV touches no sibling report: none of them treats moving roots of a
 Catalan multiplier or endpoint (hard-edge) limits. The nearest is
 `cigler-conjecture-8-schur`, whose asymptotics are fixed-parameter and
