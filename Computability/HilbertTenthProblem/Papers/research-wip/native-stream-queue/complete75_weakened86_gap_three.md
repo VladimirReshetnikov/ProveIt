@@ -21,6 +21,11 @@ integer endpoints then exclude every allowed Y=sq^3. This is an
 exhaustion of a proved necessary domain, not a sample of formal Pell
 assignments or an assertion that any listed row is a complete zero.
 
+The [gap-five successor](complete75_weakened86_gap_five.md) further
+excludes p=2n-5 using the exact main-root congruence and40 necessary
+triples. On the same R<0,mu>0 branch it gives n<p<=2n-7; gaps at
+least7 and mu<0 remain unresolved. This note's proof and source are unchanged.
+
 ## 1. Retained necessary inequalities
 
 Assume for contradiction that R<0, mu>0 and p=2n-3 at a positive

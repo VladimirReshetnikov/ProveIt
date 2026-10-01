@@ -41,7 +41,19 @@ and [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The latest explicit [positive-scale U9 polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_positive_scale291.md)
+The latest explicit [loader-scale U9 polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_loader_scale288.md)
+gives **262 certificate /288=141M+147A polynomial operations**,
+9 comparisons,48 positive witnesses and four positive program parameters,
+with degree **at most3980**. Defining the recoder scale from the paid
+loader repunit removes one comparison and witness. Every positive new
+tuple has a positive parent lift; completeness uses sufficiently long
+leading-zero padding on valid U9 program slices. It is not an all-parent-zero
+bijection or a completeness claim for arbitrary invalid program parameters.
+The same rewrite gives **298=141M+157A / degree at most608**,257 certificate,
+14 comparisons and49 witnesses; keeping48 witnesses gives295/1344.
+The separate75/87 frontier is unchanged.
+
+The [positive-scale291 parent](Papers/research-wip/native-stream-queue/neary_woods_universal_positive_scale291.md)
 gives **262 certificate /291=142M+149A polynomial operations**,
 10 comparisons,49 positive witnesses and four positive program parameters,
 with degree **at most3980**. Two positive scale parametrizations absorb
@@ -50,7 +62,7 @@ shifted joint-index branch, giving a positive zero-set bijection with the
 297 parent after the stated coordinate change. The separate75/87 frontier
 is unchanged.
 
-The [positive-scale grouping frontier](Papers/research-wip/native-stream-queue/neary_woods_universal_positive_scale_partitions.md)
+The earlier [positive-scale grouping frontier](Papers/research-wip/native-stream-queue/neary_woods_universal_positive_scale_partitions.md)
 adds **301=142M+159A / degree at most608**, with257 certificate operations,
 15 comparisons and50 witnesses. Other50-witness choices include297/1142
 and299/766. Keeping49 witnesses gives a separate frontier ending at
@@ -157,6 +169,24 @@ further gives **AND90/degree44**,9 comparisons,15 witnesses;
 four fields instead gives AND96/28, motion229/316 and toggle143/124.
 All are complete component polynomials with the same endpoint relations;
 no controller, ant geometry or ordinary-input interface is added.
+
+The [normalized native-unit helper](Papers/research-wip/native-stream-queue/native_binary_norm_units.md)
+further gives **AND83/degree-at-most124**,5 comparisons,15 witnesses;
+**Wang motion216/2112**,8 comparisons,28 witnesses; and
+**toggle130/778**,7 comparisons,21 witnesses. Ordinary-strong alternatives
+84/86,217/1602 and131/584 preserve the root-coordinate zero-set bijection;
+normalization instead rebuilds five native auxiliaries while preserving
+all outer histories.
+
+The [fixed-program Wang compiler](Papers/research-wip/native-stream-queue/wang_b_packed_program.md) now pays
+chronological instruction selection, current-read jumps, both control
+endpoints and the common duration. Its six-instruction example costs
+**350=150M+200A**,13 comparisons,37 witnesses,degree at most3838 for
+window endpoints. A two-gate literal binary-input loader and paid head
+typing give **352=151M+201A**,13 comparisons,40 witnesses,degree at most5767.
+These are complete fixed-program halting predicates. The example is not
+a universal instruction table, and the TM-to-Wang input morphism remains
+uninstantiated; no new universal operation bound follows.
 
 A separate [positive NOR compiler for finite game graphs](Papers/research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes using one bilinear row per nonterminal.
@@ -296,8 +326,11 @@ retains its full strong equation.
   makes p odd globally; R<0,mu>0 at zero wrap requires E<3p. The
   [gap-three exclusion](Papers/research-wip/native-stream-queue/complete75_weakened86_gap_three.md)
   strengthens R<0,mu>0 to n<p<=2n-5 by excluding all237 remaining
-  necessary triples for p=2n-3. Larger odd gaps and mu<0 remain unresolved;
-  no universal86 bound follows. These results are not yet Lean formalized.
+  necessary triples for p=2n-3. The
+  [gap-five exclusion](Papers/research-wip/native-stream-queue/complete75_weakened86_gap_five.md)
+  then gives n<p<=2n-7: the exact main-root residue forces X=2^p and
+  all40 necessary triples fail the ratios. Gaps at least7 and mu<0
+  remain unresolved; no universal86 bound follows. These results are not yet Lean formalized.
 - The [normalized sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md)
   gives a second complete universal route at **805 operations**,125 positive
   witnesses and degree205092. Fixed orientations and shared forced edge

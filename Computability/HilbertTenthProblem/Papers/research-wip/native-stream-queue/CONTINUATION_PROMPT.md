@@ -15,14 +15,22 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **291=142M+149A**,262 certificate operations,49 positive witnesses,
-> 10 comparisons and four positive program parameters, with degree
-> at most3980: [positive scale coordinates](neary_woods_universal_positive_scale291.md).
+> **288=141M+147A**,262 certificate operations,48 positive witnesses,
+> 9 comparisons and four positive program parameters, with degree
+> at most3980: [loader-defined scale](neary_woods_universal_loader_scale288.md).
+> Its positive sound lift is unconditional; completeness uses sufficiently
+> large synchronized leading-zero padding on valid U9 program slices.
+> It is not a bijection on all parent zeros or arbitrary-invalid-program
+> completeness theorem. The transformed low-degree option is
+> 298=141M+157A/degree-at-most608,257 certificate,14eq49w;
+> the fixed48-witness alternative gives295/1344.
+> The [positive-scale291 parent](neary_woods_universal_positive_scale291.md)
+> retains262 certificate,10 comparisons,49 witnesses and degree at most3980.
 > Absorbing two native bound comparisons gives an explicit positive
 > zero-set bijection with the [coupled297 parent](neary_woods_universal_joint_and_coupled.md),
 > which retains51 witnesses,12 comparisons and degree at most2311.
 > That parent's earlier coupling preserves accepted outer instances,
-> not every supplied positive tuple. The new
+> not every supplied positive tuple. The preceding
 > [positive-scale grouping frontier](neary_woods_universal_positive_scale_partitions.md)
 > gives301=142M+159A/degree-at-most608 with257 certificate gates,
 > 15 comparisons and50 witnesses;297/1142 and299/766 are alternatives.
@@ -792,7 +800,23 @@ checksum is1. The same positive supplied tuples therefore give
 ordinary-strong version gives303/degree-at-most1665; single-index
 choices and both program-bound interfaces remain available.
 
-The latest [positive-scale291 source](neary_woods_universal_positive_scale291.md)
+The current [loader-scale288 source](neary_woods_universal_loader_scale288.md)
+sets load_r=q+z+b, modulus=(2^D-1)*load_r and Q=modulus+1, replacing
+three already-paid gates and deleting the repunit comparison. It keeps
+262 certificate gates, with9eq48w and288=141M+147A,degree at most3980.
+The positive forward map restores old_gap=Q-q-z and old_load_r=load_r.
+For valid programs, choose larger dyadic padded length n with an absent
+top input digit; then old_load_r-z>=2^(D(n-1))>q gives the positive
+inverse b. Exact counter128n is recomputed for the longer padded tape.
+No arbitrary oversized-counter or invalid-program padding theorem is used.
+The transformed family is288/3980,289/3486,290/3440,291/2322,292/1554,
+293/1508,294/1142,295/1098,296/766,297/734,298/608. First three use48w;
+the others49w. Separate fixed48w295/1344 must be distinguished from
+49w295/1098. The finite cost/degree-bound objective is unchanged,
+not a three-objective witness optimum. All24 sources on both interfaces
+have768 whole-output identities,384 signed, plus552 exact padding checks.
+
+The earlier [positive-scale291 source](neary_woods_universal_positive_scale291.md)
 keeps262=132M+130A certificate gates but removes two comparisons and two
 witnesses:291=142M+149A,10eq49w,four program parameters,degree at most3980.
 In each core replace X=q*w and X=r+beta by X=q*(r+b), b>0. The forward
@@ -1011,13 +1035,41 @@ outer transfers/416 rows with native placeholders, not full Pell zeros.
 Independent manual graph formulas add640 full source/output identities,
 320 signed, over all128 standalone choices and eight component schedules.
 
-Next arithmetic work is to audit generic first-norm, unit-product and
-coupled-index rewrites after these graph substitutions. Do not import
-untyped sign or rank assumptions from a different kernel. No operation
-savings from those unimplemented finalizers are claimed. Finite-program
-control, branches and ordinary input remain separate computational
-obligations for Wang; planar turns, periodic hardware and input loading
-remain obligations for the ant component.
+The [generic native norm units](native_binary_norm_units.md) now implement
+the first-root gap, three sign-safe norms/checksum and optional normalized
+strong witness after these graph changes. Six fields plus scale give
+AND83=43M+40A,69 certificate,5eq15w,degree at most124;
+motion216=94M+122A,193 certificate,8eq28w,degree at most2112; and
+toggle130=60M+70A,110 certificate,7eq21w,degree at most778.
+Ordinary-strong alternatives84/86,217/1602 and131/584 retain the root
+bijection. Normalization instead preserves outer projections via
+fresh f,i,j,o,y; even off-zero root gaps may lift half-integrally.
+Recursive interface guards and actual complete raw embeddings matter.
+
+The [fixed Wang program compiler](wang_b_packed_program.md) now also pays
+instruction control. K=m+j edge masks partition the same repunit J;
+B=cD with fixed dyadic c>=max(16,K+2) prevents partition carries.
+Two shared-output lanes equate current selected jump reads with taken
+heads. Weighted control words satisfy B*Next+1=Current+P*(m+1), enforcing
+initial, adjacent and accepting control with the same physical duration.
+The six-instruction example has312 certificate /350=150M+200A,13eq37w,
+degree at most3838 at nonnegative-window endpoints. Computing
+initial_tape_hat=x*initial_head+1 costs2 gates and makes the spatial shift
+and final endpoints existential:314 certificate /352=151M+201A,
+13eq40w,degree at most5767. Initial-head typing is already paid by motion.
+Projected SOS alternatives357/1264 and359/1900 remain available.
+This is a full fixed-program literal-input halting theorem, not a universal
+instruction table. The exact future-read lasso is rejected by its branch
+lane. Its64 ledgers have1,024 full identities512signed;240 actual halted
+outer histories have1,336 rows, with30 normalized-map transfers and
+714 enumerated controller sequences. Native placeholders are not Pell zeros.
+
+Next Wang work is an actual fixed universal instruction table and its
+paid ordinary-TM input morphism, or a smaller complete control circuit.
+Investigate further coupled-index/kernel savings only with their actual
+sign/rank hypotheses. Planar turns, periodic hardware and input loading
+remain obligations for the ant component. Other substrates remain useful
+only with a concrete paid ordinary-input and uniform-history interface.
 
 The [finite lattice-game NOR compiler](lattice_game_positive_nor.md) is a
 separate exact degree-four family. At each nonterminal use positive
@@ -1099,8 +1151,18 @@ pairs and237 triples(q,p,w). The474 ratio coefficient arrays have the
 required signs after division by Y^p; certified integer endpoints
 exclude every positive scale Y=sq^3. This is exhaustive on the proved
 necessary gap-three domain, not evidence for candidate zeros. A ratio-only
-regression violates X<=2^p and is explicitly excluded. Larger odd gaps
-and mu<0 remain unresolved; the86 source and established75/87 do not change.
+regression violates X<=2^p and is explicitly excluded.
+
+The [gap-five successor](complete75_weakened86_gap_five.md) then uses the
+exact computed main-root congruence X=2^p mod(4Y(X+1)+3), not just
+X<=2^p. At p=2n-5, assuming X<2^p contradicts the growth bound, so
+X=2^p. Thus q=2^t,w=2^(p-3t),t>=4; uniform bounds leave only40 triples.
+All80 coefficient arrays and integer endpoint certificates exclude both
+strict ratios, giving n<p<=2n-7 for R<0,mu>0. The infinite coarse-bound
+survivor family violates the exact residue and is not a false zero.
+Remaining work concerns odd gaps at least7 or mu<0, preserving the
+actual main root and full compiler relation. The literal86 source and
+established75/87 bounds do not change.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary

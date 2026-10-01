@@ -222,3 +222,11 @@ sections of the U9 parents. Its separate literal executor and manual
 coordinate formulas checked192 complete source/output identities,
 96 signed and96 positive, across all24 schedules; another2,177 exact
 padded-scale inequalities passed. All six local links resolve.
+
+A second independent full proof/source/fresh-default review also passed
+without findings. Its separate literal executor checked another192
+whole source/output identities across all24 schedules,96 signed and96
+positive, including equality of every shared certificate register and
+positivity of every positive lift. Neither review interprets the padded
+converse as an all-tuple inverse or as a theorem for invalid program
+parameters.
