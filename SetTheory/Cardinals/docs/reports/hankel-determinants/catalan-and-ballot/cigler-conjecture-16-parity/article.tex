@@ -52,6 +52,14 @@
 \newcommand{\XX}{\mathcal X}
 \newcommand{\rep}[2]{(#1)^{[#2]}}
 \newcommand{\pin}{e9c09b12549ea4e3bea7cebc52b450b761f6f581}
+% [Added 30 September 2026, batch 66] Macros of Part III (manuscript 02 of
+% batch 66).  Its \HH, \QQ, \CC, \NN, \ZZ, \rat are printed with the
+% macros above (\QQ and its generating function \mathcal G in Part II's
+% script glyphs); its \LC, \CT, \ord, \rep are identical to or replaced
+% by the definitions above.  Its \pin is \pinIII.
+\newcommand{\ii}{\mathrm i}
+\newcommand{\rise}[2]{(#1)_{#2}}
+\newcommand{\pinIII}{ff6969475bad8f61a33268418aaf23d23fdcd1fb}
 \numberwithin{equation}{section}
 \pagestyle{fancy}
 \fancyhf{}
@@ -68,9 +76,12 @@
 for Cigler's Hankel polynomials\\[0.5em]
 \large A proposed proof of Conjecture 16 in arXiv:2111.14492v3\\[0.6em]
 \normalsize Part~II (added 29 September 2026): rectangular Schur structure\\
-\normalsize and sharp recurrences}
+\normalsize and sharp recurrences\\[0.3em]
+\normalsize Part~III (added 30 September 2026): cyclotomic pole collapse\\
+\normalsize and exact minimal recurrences at complex parameters}
 \author{Research draft prepared for Vladimir Reshetnikov}
-\date{20 September 2026 (Part~I); 29 September 2026 (Part~II)}
+\date{20 September 2026 (Part~I); 29 September 2026 (Part~II);
+30 September 2026 (Part~III)}
 
 \begin{document}
 \maketitle
@@ -98,6 +109,9 @@ the article. A stronger rectangular-Schur identity suggested by computation
 is separated from the proved results and is not used in any proof.
 [Added 29 September 2026, batch 56: Part~II proves this identity and the
 exact minimal recurrence.]
+[Added 30 September 2026, batch 66: Part~III determines the reduced
+denominator and the minimal recurrence at every complex parameter,
+including every root of unity.]
 \end{abstract}
 
 \medskip
@@ -2671,6 +2685,7 @@ article. Except where the original Cigler conjecture is named explicitly,
 they are not claims about the status of a separately published conjecture.
 
 \subsection{Full coefficient structure in Cigler's Conjecture 17}
+\label{cp:sec:rs-conj17}
 The spectral polynomials $P_{k,q}(n;t)$ have exact degrees in $n$, but the
 present paper does not identify all of their coefficient signs and
 factorizations after a common denominator is cleared. The numerator
@@ -2681,7 +2696,12 @@ which of the printed degree and reciprocity claims survive normalization.
 The confluent Laplace expansion gives a finite formula from which to start;
 it is not itself a proof of every Conjecture~17 assertion.
 
+\noindent[Added 30 September 2026, batch 66: Part~III's question in
+Section~\ref{cp:q:numerators} asks for the reduced numerator at
+cyclotomic parameters; it is related to this topic, not part of it.]
+
 \subsection{Complex roots of unity and spectral cancellation}
+\label{cp:sec:rs-cyclotomic}
 At a complex root of unity, the roots $t^q$ can coincide even when
 $1,t,t^2$ are distinct. The exact reduced multiplicity is the degree of a
 sum of canonical $P_{k,q}$'s in one residue class, plus one, unless that sum
@@ -2691,6 +2711,15 @@ settled by Theorem~\ref{rs:thm:real}; simply substituting into the generic
 product does not solve the complex problem. Schur root-of-unity identities
 and cyclic-sieving methods may give a structural approach, but cancellation
 must be checked, not assumed absent.
+
+\noindent[Added 30 September 2026, batch 66: answered in Part~III.
+Theorem~\ref{cp:thm:main} gives these multiplicities in closed form as a
+function of $k$, the root order $\ell\ge3$ and the residue class,
+including empty residue classes and factors that disappear: at most one
+residue class can lose order relative to the maximum-degree baseline:
+one order in general, three for $\ell=4$, $k\equiv1\pmod4$, $k\ge9$,
+and the whole simple factor for $\ell=4$, $k=5$. Corollary~\ref{cp:cor:complex} completes the
+classification at every complex parameter.]
 
 \subsection{Coefficient shape for even shifts}
 Odd shifts have an $\SL_2$ interpretation that proves parity-wise
@@ -2725,6 +2754,7 @@ organized before taking the limit. This is a natural meeting point of the
 repository's determinant and asymptotic-analysis programs.
 
 \subsection{Broader noncollision criteria and certified algorithms}
+\label{cp:sec:rs-noncollision}
 The middle multiplicity one in $(a,1,b)$ makes
 $q=r_2+2r_3$ determine the whole allocation. For alphabets with more clusters,
 classify linear relations among their exponents that still yield a unique
@@ -2733,6 +2763,15 @@ Such a criterion would turn Theorem~\ref{rs:thm:cluster} into a reusable exact
 minimal-recurrence algorithm for specialized rectangular Schur families.
 A formalized implementation should output both the recurrence and a
 certificate for every pole multiplicity, rather than an annihilator alone.
+
+\noindent[Added 30 September 2026, batch 66: Part~III bears on this topic without
+answering it. Its Theorem~\ref{cp:thm:jet} gives the first centered
+subleading coefficient of every canonical confluent mode for arbitrary
+cluster multiplicities, the tool its proof uses when two allocations of
+Cigler's alphabet share a product at a root of unity; the case of a
+middle cluster of multiplicity at least two and certified recurrence
+generation are its questions in Sections~\ref{cp:q:middle}
+and~\ref{cp:q:certified}.]
 
 \section{Conclusion}
 The experimental Schur formula in the inspected ProveIt report admits a
@@ -2747,6 +2786,10 @@ a sharp convergence equivalent and all reduced denominators at real
 parameters. The remaining questions concern finer coefficient structure,
 complex spectral collisions, and uniform pole-merger asymptotics, rather
 than an unproved bridge in the central determinant identity.
+
+\noindent[Added 30 September 2026, batch 66: the complex spectral collisions are
+classified in Part~III (Theorem~\ref{cp:thm:main} and
+Corollary~\ref{cp:cor:complex}).]
 
 \renewcommand{\thesection}{\Alph{section}}
 \renewcommand{\theHsection}{rs.app.\Alph{section}}
@@ -2819,7 +2862,1868 @@ with \verb|<scratch>| a directory outside the report.]
 
 
 
-\begin{thebibliography}{9}
+%% ====================================================================
+%% Batch-66 addition (manuscript 02, "Cyclotomic Pole Collapse and Exact
+%% Minimal Recurrences for Cigler's Hankel Polynomials").  Every label of
+%% Part III carries the prefix cp: (cyclotomic poles).  The labels of
+%% Parts I (bare) and II (rs:) are unchanged.  Part III's sections continue
+%% the numbering (23-34) after Part II's Appendices C-D; its appendices
+%% are E-G.
+%% ====================================================================
+\clearpage
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theHsection}{cp.\arabic{section}}
+\setcounter{section}{22}
+\phantomsection\part*{Part III.\quad Cyclotomic pole collapse and exact minimal recurrences at complex parameters}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Cyclotomic pole collapse and exact minimal recurrences at complex parameters}
+
+\noindent\emph{Part~III was added on 30 September 2026 in batch~66 of
+ProveIt's incoming-report intake, from one manuscript written against the
+pinned state of Parts~I and~II. It answers Part~II's research question
+``Complex roots of unity and spectral cancellation''
+(Section~\ref{cp:sec:rs-cyclotomic}) completely: it determines the reduced
+generating denominator and the minimal recurrence of $\Ht_k(n;t)$ at every
+complex parameter, where Part~II's Theorems~\ref{rs:thm:recurrence-main}
+and~\ref{rs:thm:real} cover $\Q(t)$ and the real line. Its
+Sections~23--34 and Appendices~E--G are the manuscript's Sections~1--12 and
+Appendices~A--C. Parts~I and~II are unchanged except for dated pointers to
+this addition, marked \textup{[Added 30 September 2026, batch~66: \dots]}.}
+
+\section{The problem, its source, and the mathematical interface}
+\label{cp:sec:introduction}
+
+\subsection{Provenance of Part~III}
+\label{cp:sec:merge-provenance}
+Part~III is batch-66 manuscript~02, \emph{Cyclotomic Pole Collapse and Exact
+Minimal Recurrences for Cigler's Hankel Polynomials: A complete
+complex-parameter classification and an exceptional fourth-root
+cancellation law}, an AI-assisted research manuscript dated
+30 September 2026 (22 pages, A4, as delivered). It arrived as the archive
+\path{ProveIt_Cyclotomic_Pole_Collapse.zip} (inner directory
+\path{ProveIt_Cyclotomic_Pole_Collapse/}, main file \path{article.tex}) in
+ProveIt commit \texttt{9ad899cbe} and was placed in \texttt{4fee1cd07}. It
+was written against ProveIt commit \texttt{ff6969475} (in full
+\texttt{\pinIII}), at which this report's \texttt{article.tex} was the Git
+blob \texttt{07c41161857e}: Parts~I and~II exactly as printed above, since
+no commit touched this report between Part~II's write commit
+\texttt{3a06260c4} and the placement. Every statement the manuscript makes
+about ``the relevant ProveIt report'', ``the inspected repository'' or
+``Part~II'' therefore refers to Parts~I and~II of the present report, and
+the numbers it cites (Section~21.2; Theorems~12.1, 16.1 and~19.2) are this
+report's own. The manuscript read the report at the pinned commit through a
+GitHub connector (its source audit,
+\path{03-cyclotomic-poles-SOURCES.md}). Its author line,
+``Research draft prepared for Vladimir Reshetnikov'', names no assistant.
+
+Its code and records are shipped beside the earlier parts' files with the
+prefix \path{03-cyclotomic-poles-} (Part~I's unprefixed files count as~01,
+Part~II's \path{02-schur-recurrences-} files as~02):
+
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Shipped as & Content\\
+\midrule
+\path{code/03-cyclotomic-poles-verify.py} & the exact verifier\\
+\path{code/03-cyclotomic-poles-modular.py} & its finite-field helper module\\
+\path{code/03-cyclotomic-poles-Makefile} & the delivered Makefile (not to be run)\\
+\path{data/03-cyclotomic-poles-verification.json} & the recorded run\\
+\path{data/03-cyclotomic-poles-verification.log} & its console log\\
+\path{data/03-cyclotomic-poles-modular_checks.json} & the 240 finite-field records\\
+\path{data/03-cyclotomic-poles-requirements.txt} & the requirement pin\\
+\path{data/03-cyclotomic-poles-pdf_checks.json} & build and layout record of the delivered PDF\\
+\path{03-cyclotomic-poles-CLAIM_STATUS.md} & claim status and limitations\\
+\path{03-cyclotomic-poles-SOURCES.md} & repository pin and literature audit\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent These files are byte-identical to the
+delivery, so their text still uses the delivery names. The manuscript, its
+PDF and its README are not shipped; they survive in the arrival commit
+\texttt{9ad899cbe}. The report README maps every delivery name to its
+shipped path, and Appendix~\ref{cp:app:package} explains why the shipped
+Makefile must not be run and how to rerun the verifier without touching
+Part~I's records.
+
+The manuscript contributes, in the order printed here: the complete
+classification of the reduced denominators and minimal recurrences at every
+primitive root of unity of order $\ell\ge3$ (Theorem~\ref{cp:thm:main}),
+with small examples, among them
+$\QQ_{9,\ii}(z)=(1-z)^9(1+z)^4(1+z^2)^8$ \eqref{cp:eq:k9}; a restatement of
+Part~II's confluent leading-coefficient theorem with its specialization to
+Cigler's alphabet (Lemma~\ref{cp:lem:cluster}, \eqref{cp:eq:spectral}) and
+the minimality lemma for exponential polynomials
+(Lemma~\ref{cp:lem:minimality}); the concavity restriction to one tied
+residue (Lemma~\ref{cp:lem:tie}) and a mode-by-mode negative-index
+reflection (Lemma~\ref{cp:lem:reflection}); a general formula for the
+first centered subleading coefficient of a canonical confluent
+rectangular-Schur mode with arbitrary cluster multiplicities
+(Theorem~\ref{cp:thm:jet}); the one-order loss outside the exceptional
+family (Lemma~\ref{cp:lem:nonzero}, Proposition~\ref{cp:prop:ordinary});
+exact fourth-root product formulas for $k=4m+1$
+(Theorem~\ref{cp:thm:quartic}); the exact three-order loss in that family
+(Theorem~\ref{cp:thm:triple}); four corollaries
+(Corollaries~\ref{cp:cor:complex}--\ref{cp:cor:order}: every complex
+parameter, compact fourth-root forms, quasipolynomial periods, and the
+quadratic recurrence-order law $N_{k,\ell}=\ell(k-1)^2/8+O_\ell(1)$); its
+finite checks, dependency audit and formalization route
+(Section~\ref{cp:sec:verification}); nine research questions
+(Section~\ref{cp:sec:further}); a conclusion; an elementary beta-moment
+determinant (Appendix~\ref{cp:app:beta}); an integer exponent algorithm
+(Appendix~\ref{cp:app:algorithm}); and package notes
+(Appendix~\ref{cp:app:package}). Every result, proof, example, remark,
+limitation and question of the manuscript is printed.
+
+\paragraph{Relation to other reports.} The report
+\path{shifted-catalan-hankel-polynomials} in this directory classifies, in
+its Part~III, the cyclotomic resonances of one repeated root for weighted
+Catalan moments, a different family; there too at most one residue class
+loses an order. The two manuscripts were written independently and neither
+uses the other; this parallel is an observation of this merge. The sibling
+report \path{cigler-conjecture-8-schur} remarks that specialized parameters
+can merge the poles of its two-cluster family $b_n(t)$; Part~III does not
+treat that family.
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}
+\item \emph{Duplicated material.} Lemma~\ref{cp:lem:cluster} is Part~II's
+Theorem~\ref{rs:thm:cluster}, with nodes $\alpha_i$ in place of $\xi_i$
+and $L$ clusters in place of $\ell$, and \eqref{cp:eq:leading} is
+\eqref{rs:eq:LC} with the cross factors normalized; the manuscript credits
+the argument to Part~II.
+\eqref{cp:eq:allocation}, \eqref{cp:eq:dq} and \eqref{cp:eq:spectral}
+restate \eqref{rs:eq:qallocation}, \eqref{rs:eq:dq} and
+\eqref{rs:eq:spectralH}; the Gram determinants \eqref{cp:eq:gramUV} are
+Part~II's \eqref{rs:eq:U}--\eqref{rs:eq:V}, and the odd-shift identity
+\eqref{cp:eq:oddparity} is the odd part of Part~II's
+Proposition~\ref{rs:prop:parity} (the manuscript calls it ``not an
+independent new claim''); \eqref{cp:eq:negativegeneral} is the
+negative-index continuation behind Part~II's
+Lemma~\ref{rs:lem:negative}, of which Lemma~\ref{cp:lem:reflection} is a
+mode-by-mode refinement. In Corollary~\ref{cp:cor:complex} the cases
+$t\in\{0,1,-1\}$ and real $t$ are Part~II's Theorems~\ref{rs:thm:real}
+and~\ref{rs:thm:recurrence-main} (agreement checked during the intake);
+complex $t$ not a root of unity extends Theorem~\ref{rs:thm:recurrence-main}
+from the real line, and roots of unity are new. The manuscript re-derives
+this material so that its argument is self-contained; it is printed in
+both parts, and Part~III's proofs are second routes. The interface
+\eqref{cp:eq:interface} is Part~II's Theorem~\ref{rs:thm:schur}; Part~III
+uses it as an input and does not reprove it.
+\item \emph{Numbering.} The manuscript's Section~$n$ is Section~$n+22$
+here, and its Theorem, Lemma, Proposition, Corollary, Remark and
+equation~$n.m$ are $(n+22).m$; its Appendices~A--C are
+Appendices~E--G. This subsection and the next two precede its
+Section~1.1, which is Section~\ref{cp:sec:question} here. Its table of
+contents is merged into the report's. Its claim-status file numbers the
+results as delivered (Theorem~2.1 is Theorem~\ref{cp:thm:main}, and so on).
+\item \emph{Names.} Every label of Part~III carries the prefix
+\texttt{cp:}; four of the manuscript's labels (\texttt{thm:main},
+\texttt{sec:main}, \texttt{sec:consequences}, \texttt{eq:UV}) would
+otherwise collide with Part~I's. The manuscript's macros for $\Ht$, $\Q$,
+$\Z$, $\N$, $\C$ are replaced by the report's, with the same glyphs. Three
+glyphs change: the manuscript's calligraphic $\mathcal Q$ (reduced
+denominators) and $\mathcal G$ (generating function) are printed as Part~II's
+script $\QQ$ and $\GG$, which denote the same kinds of object; and the
+report's repetition macro prints $\rep xr$ with parentheses where the
+manuscript printed $x^{[r]}$. Its bibliography entry for Parts~I and~II is
+replaced by internal references; its entries for Cigler's paper and for
+Gonz\'alez-Serrano--Maximenko are merged with Part~II's (the same papers;
+the manuscript adds the page range 2613--2647 of the latter), and
+Krattenthaler's survey and Chern--Shi's paper are added. A layout-only
+\verb|\Needspace| before Theorem~\ref{cp:thm:main} is dropped. No
+normalization is changed. Symbols that mean different things in Part~III
+and the earlier parts are listed in Section~\ref{cp:sec:notation}.
+\item \emph{Added text.} Dated notes were added on the title page, in the
+abstract, in Part~II's research-topic Sections~\ref{cp:sec:rs-conj17},
+\ref{cp:sec:rs-cyclotomic} and~\ref{cp:sec:rs-noncollision} (which received
+new labels \texttt{cp:sec:rs-\dots}) and in Part~II's conclusion; and six
+bracketed notes in Part~III: on the pinned paths and cited numbers
+(Section~\ref{cp:sec:question}), on the duplicated cluster lemma (after
+Lemma~\ref{cp:lem:cluster}), on Part~II's real-parameter results (after
+Corollary~\ref{cp:cor:complex}), on the shipped names and a rerun
+(Section~\ref{cp:sec:verification}), on the relation of the research
+questions to Part~II's (Section~\ref{cp:sec:further}), and on the delivered
+commands (Appendix~\ref{cp:app:package}). All are marked
+\textup{[Added 30 September 2026, batch~66: \dots]}. The research questions
+received labels \texttt{cp:q:\dots}.
+\end{itemize}
+
+\subsection{The manuscript's title, abstract and status}
+\label{cp:sec:front}
+The manuscript's title block reads \emph{Cyclotomic Pole Collapse and Exact
+Minimal Recurrences for Cigler's Hankel Polynomials}, with the subtitle
+\emph{A complete complex-parameter classification and an exceptional
+fourth-root cancellation law}, and the date 30~September 2026. Its
+abstract:
+\begin{quote}\small
+A ProveIt research report identifies normalized shifted Hankel determinants of
+Cigler's middle-binomial polynomial family with rectangular Schur polynomials,
+and determines their minimal recurrence away from complex root-of-unity
+collisions. It explicitly leaves the latter cancellations unclassified.
+We give the missing classification for every shift and every root of unity.
+At a primitive root of order $\ell\ge3$, the possible spectral degrees are
+$\lfloor q(k-1-q)/2\rfloor$. In each residue class modulo $\ell$ the largest
+one survives, except possibly in a single residue class. An explicit parity
+criterion decides whether cancellation occurs. When it does, the pole order
+usually drops by one; precisely for $\ell=4$, $k\equiv1\pmod4$, it drops by
+three, with a small-shift disappearance exception.
+
+The proof combines a reflection identity with a general explicit formula for
+the first subleading coefficient of a confluent rectangular-Schur spectral
+polynomial. A fourth-root product evaluation and a fifth elementary-symmetric
+coefficient calculation resolve the exceptional case. We obtain minimal
+recurrences at every complex parameter, exact fourth-root quasipolynomials,
+and a quadratic rather than cubic recurrence-order law at fixed cyclotomic
+order. All-index proofs, reproducible exact checks, a dependency audit, and
+further research questions are included.
+\end{quote}
+Its status box:
+
+\medskip
+\noindent\fcolorbox{MidnightBlue}{blue!3}{\parbox{0.94\linewidth}{\small
+\textbf{Status.} The article supplies mathematical proofs, not a Lean or Rocq
+formalization. The Hankel--Schur identification is an explicitly cited input
+from the inspected repository; the spectral classification is proved here.
+The general confluent and orthogonal-polynomial machinery is classical.
+Neither external peer review nor exhaustive historical priority is claimed.
+The target is the repository's stated cyclotomic gap, not the entirety of
+Cigler's Conjectures 17 or 18.}}
+\medskip
+
+\subsection{Notation shared with Parts~I and~II}
+\label{cp:sec:notation}
+Part~III keeps the manuscript's notation. It agrees with Part~II on
+$c_r(t)$, $D_k(n;t)$, $\Ht_k(n;t)$, $a$, $b$, $M=k-1$, the forward shift
+$E$, $Q_t(z)=(1+tz)(1+t/z)$, the Gram determinants $\mathcal U_N(q)$,
+$\mathcal V_N(q)$ and $U_h(N)$, $V_h(N)$, the bases $P_j$, $R_j$, the
+allocation data $r_i$, $s_i=m_i-r_i$, $K$, $A$, $C=K-A$, $B(m,r)$,
+$\lambda_{\boldsymbol r}$, $L_{\boldsymbol r}$, the degrees $d_q$ and the
+canonical polynomials $P_{k,q}(n;t)$. Its alphabet $X_k(t)$ is Part~II's
+$\XX_k$. The following letters mean different things in Part~III and the
+earlier parts, or within Part~III; the right-hand column gives the tempting
+false reading.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.10\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.24\linewidth}@{}}
+\toprule
+Symbol & Parts~I and~II & Part~III & Do not read as\\
+\midrule
+\endhead
+$\QQ$ &
+$\QQ_k(z,t)$: the generic reduced denominator \eqref{rs:eq:denominator}
+over $\Q(t)$ &
+$\QQ_{k,\zeta}(z)$, $\QQ_{k,t}(z)$: the reduced denominator at the
+specialized parameter \eqref{cp:eq:answer}, \eqref{cp:eq:allcomplex} &
+$\QQ_{k,\zeta}(z)$ as $\QQ_k(z,\zeta)$, which adds the colliding
+multiplicities and is not reduced\\[3pt]
+$e$ &
+$e_{k,q}=1+d_q$, indexed by the eigenvalue exponent $q$
+\eqref{rs:eq:exponents}; $e_j(X)$: elementary symmetric polynomials &
+$e_\rho$, $e^0_\rho$: exponents indexed by a residue $\rho$ modulo $\ell$
+\eqref{cp:eq:baseline}; $e_j^{(r)}$: elementary symmetric functions of root
+multisets (Section~\ref{cp:sec:triple}) &
+$e^0_\rho$ as $e_{k,\rho}$, or as a sum of the $e_{k,q}$ with
+$q\equiv\rho$; it is their maximum\\[3pt]
+$N$ &
+$N_k=\sum_qe_{k,q}$: generic order &
+$N_{k,\ell}=\sum_\rho e_\rho$: order at a root of order $\ell$ &
+---\\[3pt]
+$\ell$, $L$ &
+$\ell$: the number of distinct nodes $\xi_1,\ldots,\xi_\ell$ in
+Theorem~\ref{rs:thm:cluster}; $L$: Part~I's moment functional &
+$\ell$: the exact order of the root $\zeta$; $L$: the number of nodes
+$\alpha_1,\ldots,\alpha_L$ (Section~\ref{cp:sec:confluence}), an integer
+variable in $\Ht_{4m+1}(4L+r;\ii)$ (Sections~\ref{cp:sec:quartic}
+and~\ref{cp:sec:triple}), and a matrix size (Appendix~\ref{cp:app:beta}) &
+Part~III's $\ell$ as a number of clusters\\[3pt]
+$\delta$ &
+$\delta\in\{0,1\}$ (Part~I); $\delta_k=\lfloor k^2/4\rfloor$
+\eqref{rs:eq:deltaR} &
+$\delta=2m^2$ for $k=4m+1$ (Sections~\ref{cp:sec:quartic}--\ref{cp:sec:consequences});
+$\eta=2m(m+1)$ for $k=4m+3$ &
+$\delta$ as $\delta_k$: for $k=4m+1$, $\delta_k=4m^2+2m$\\[3pt]
+$D$ &
+$D_k(n;t)$: the Hankel determinant &
+also $D_k(n;t)$; and the scalar tie degree
+$D=\lfloor(M^2-\ell^2)/8\rfloor$ \eqref{cp:eq:tie}; $D_N^0$, $D_L(A,B)$:
+moment determinants (Section~\ref{cp:sec:quartic},
+Appendix~\ref{cp:app:beta}) &
+the scalar $D$ as a determinant\\[3pt]
+$U$, $V$ &
+$U_a(r)$, $V_a(r)$: matrices (Part~I); $U_h(m)$, $V_h(m)$: normalized Gram
+determinants (Part~II) &
+$U(t)=(1+t)/(1-t)$, $V(t)=(1+t^2)/(1-t^2)$ \eqref{cp:eq:UV}
+(Section~\ref{cp:sec:ordinary}); $U_h(N)$, $V_h(N)$ as in Part~II and
+their rescalings $U_N^0$, $V_N^0$ (Section~\ref{cp:sec:quartic}) &
+$U(t)$ as a Gram determinant\\[3pt]
+$x$ &
+Part~I: generating variable; Part~II: $x=z+z^{-1}$ &
+$x=n+k/2$ \eqref{cp:eq:center}; $n=x-K/2$ in Theorem~\ref{cp:thm:jet};
+$x=z+z^{-1}$ in Section~\ref{cp:sec:quartic};
+$x=n+2m+1/2$ in Section~\ref{cp:sec:triple} &
+---\\[3pt]
+$c$ &
+$c_r(t)$: Cigler's moments &
+also $c_r(t)$; $c_{\boldsymbol r}$, $c_q(t)$: centered first coefficients
+\eqref{cp:eq:jetc}, \eqref{cp:eq:cq}; $c=2m+1/2$
+(Section~\ref{cp:sec:triple}); $c\ge2$: a middle multiplicity
+(Section~\ref{cp:q:middle}) &
+---\\[3pt]
+$A$, $T$ &
+$A$: the height of a rectangle (Part~II); $\AN_k$: generating numerator &
+also the height $A$; $A_s(L)$, $T_s(L)$: binomial and Catalan moment
+determinants \eqref{cp:eq:AT}; $A_\rho(n)$, $A_j(n)$: grouped polynomials;
+$A$, $B$: beta parameters (Appendix~\ref{cp:app:beta}); $T_s(b,j)$:
+triangular power sums \eqref{cp:eq:triangularsum} &
+$T_s(L)$ as $T_s(b,j)$\\[3pt]
+$B$ &
+$B=1+t^2$ (Part~I); $B(m,r)$ (Part~II) &
+$B(m,r)$ as in Part~II; $B_i$ \eqref{cp:eq:uncenteredjet}; $\mathrm B$:
+the beta function &
+---\\[3pt]
+$C$ &
+$C_k=\binom k2$; $C=K-A$ (Part~II); $C_j(y)$ (Part~I) &
+$C=K-A$; $C_j=\binom{2j}j/(j+1)$: Catalan numbers
+(Section~\ref{cp:sec:quartic}) &
+---\\[3pt]
+$F$, $G$ &
+$\F_k$, $F_k$: the limit function; $\GG_k$: the generating function &
+$F_r(n)$, $G_r(x)$: residue polynomials at $t=\ii$
+(Section~\ref{cp:sec:triple}); $\GG_k$ as in Part~II &
+$F_r$ as the limit function $F_k$\\[3pt]
+$\alpha$, $\beta$ &
+--- &
+$\alpha_i$: cluster nodes (Part~II's $\xi_i$); $\alpha_s(L)$,
+$\beta_s(L)$: product polynomials \eqref{cp:eq:alpha}--\eqref{cp:eq:beta} &
+$\alpha_s(L)$ as a node\\[3pt]
+$h$ &
+the index of the parity factors; derivative orders; $h_j$ &
+also the parity-factor index ($h=2m$ in Section~\ref{cp:sec:quartic});
+$h_i$, $h$: selected sums (Section~\ref{cp:sec:jet}); $h=M-2q$
+(Section~\ref{cp:sec:ordinary}) &
+---\\[3pt]
+$p$, $P$ &
+$P_i$, $R_i$: monic bases; $P_{k,q}$: canonical polynomials &
+the same; also $p_N(x)$: monic orthogonal polynomials, $p_j^{(r)}$: power
+sums, $P_{\rm bad}$: the exceptional phase polynomial &
+---\\[3pt]
+$R$ &
+$R_i$: monic bases (Part~II) &
+$R_j$ the same; $R_i$: derivative-order sets (proof of
+Lemma~\ref{cp:lem:cluster}); $\mathcal R_j$: root multisets;
+$R_{k,\zeta}(E)$: minimal recurrence &
+---\\[3pt]
+$\varepsilon$, $J$ &
+$\eps$ (Part~I); $J=\diag(1,-1,\ldots)$ (Part~I), $Jf(z)=zf(z^{-1})$
+(Part~II) &
+$\varepsilon=\pm1$ \eqref{cp:eq:paritypair}; $\epsilon$: a splitting
+parameter, $\mathcal J$: an alternant functional
+(Section~\ref{cp:sec:jet}) &
+---\\
+\bottomrule
+\end{longtable}}
+
+\subsection{Which question is being resolved?}
+\label{cp:sec:question}
+The relevant ProveIt report is \emph{A parity factorization and sharp
+stabilization for Cigler's Hankel polynomials}, with its Part~II,
+\emph{Rectangular Schur structure and sharp recurrences}: Parts~I and~II
+of the present report.
+At the inspected commit, Part~II proves a rectangular-Schur identity, exact
+generic recurrence multiplicities, and the real-parameter classification.
+Its Section~\ref{cp:sec:rs-cyclotomic} explicitly leaves spectral cancellations at complex roots of
+unity unclassified. That is the question resolved below.
+
+This distinction is important. Simply specializing the generic denominator
+does not determine a minimal recurrence. Different exponential modes acquire
+the same eigenvalue, their polynomial coefficients must be added, and the
+highest terms of that sum can cancel. A bound on an annihilating recurrence
+therefore does not answer the question.
+
+The source snapshot is ProveIt commit
+\begin{center}\small\texttt{\pinIII}.\end{center}
+The inspected manuscript is
+\begin{quote}\small\path{SetTheory/Cardinals/docs/reports/hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity/article.tex}.
+\end{quote}
+Its Git blob is \texttt{07c41161857ed17854b2208b66418e9d73b956d5}.
+The companion status document also records the cyclotomic limitation.
+These are research manuscripts, not proof-assistant certificates. Their
+mathematical inputs are isolated below so that the present results can be
+read independently of the repository's other projects.
+
+\noindent[Added 30 September 2026, batch 66: the inspected manuscript is this report's
+\path{article.tex} at the pin, that is, Parts~I and~II as printed above
+(Section~\ref{cp:sec:merge-provenance}); the companion status document is
+shipped as \path{02-schur-recurrences-STATUS.md}, whose line~51 records the
+limitation. The manuscript's bibliography entry for the report is replaced
+by internal references; the numbers it cites, Section~21.2 and
+Theorems~12.1, 16.1 and~19.2, are Section~\ref{cp:sec:rs-cyclotomic} and
+Theorems~\ref{rs:thm:schur}, \ref{rs:thm:cluster} and~\ref{rs:thm:real}
+of this report.]
+
+\subsection{Cigler's moments and the normalization}
+A binomial coefficient is zero outside its ordinary range. Following
+Cigler \cite{Cigler}, define
+\begin{equation}
+ c_0(t)=1,\qquad
+ c_r(t)=\sum_{j=1}^{r}
+ \binom{\lfloor(r-1)/2\rfloor}{\lfloor(j-1)/2\rfloor}
+ \binom{\lfloor r/2\rfloor}{\lfloor j/2\rfloor}t^{j-1}
+ \quad(r\ge1).
+ \label{cp:eq:moments}
+\end{equation}
+For instance, $c_1=1$, $c_2=1+t$, $c_3=1+t+t^2$, and
+$c_4=1+2t+2t^2+t^3$. Put
+\begin{equation}
+ D_k(n;t)=\det(c_{k+i+j}(t))_{0\le i,j<n},\qquad D_k(0;t)=1.
+ \label{cp:eq:hankel}
+\end{equation}
+Throughout the article $k\ge1$ and
+\begin{equation}
+ a=\lfloor k/2\rfloor,\qquad b=\lfloor(k-1)/2\rfloor,
+ \qquad M=k-1,\qquad X_k(t)=(\rep1a,t,\rep{t^2}b).
+ \label{cp:eq:alphabet}
+\end{equation}
+Here $\rep{x}{r}$ denotes $r$ repetitions of $x$, not an exponent.
+The explicit interface supplied by Part~II (Theorem~\ref{rs:thm:schur}) is
+\begin{equation}
+ \boxed{\quad
+ \Ht_k(n;t):=s_{(n^a)}(X_k(t))
+ =(-1)^{k\binom n2}t^{-\binom n2}D_k(n;t).
+ \quad}
+ \label{cp:eq:interface}
+\end{equation}
+The identity means that the quotient extends to the polynomial on the left,
+including at $t=0$. It is not permission to evaluate an undefined quotient.
+The empty-height Schur polynomial gives $\Ht_1(n;t)=1$.
+
+Our spectral theorems are unconditional statements about the explicitly
+defined Schur sequence on the left of \eqref{cp:eq:interface}. Their application
+to the original Hankel determinants uses exactly the displayed identity.
+The repository proves that identity through a Laurent-moment parity
+factorization and a Toeplitz factorization; it is not assumed merely because
+finite numerical values agree. For the fourth-root analysis we also use its
+odd-shift parity identity, which is rederived in Section~\ref{cp:sec:quartic}.
+
+\subsection{What is new here, and what is background?}
+The principal addition is the all-$k$, all-$\ell$ minimality theorem in
+Section~\ref{cp:sec:main}. Two useful intermediate results are the general
+centered subleading-coefficient formula in Section~\ref{cp:sec:jet} and the
+four explicit fourth-root product formulas in Section~\ref{cp:sec:quartic}.
+The five-coefficient calculation in Section~\ref{cp:sec:triple} proves, rather
+than extrapolates, the exceptional loss of three pole orders.
+
+Schur polynomials, the bialternant formula, confluence of repeated variables,
+Christoffel transformations, and beta-moment Hankel determinants are existing
+mathematics \cite{GSM,Kratt}. We supply the particular calculations needed
+here, and do not present these general techniques as discoveries. The
+repository's Schur identity and generic leading-coefficient theorem are
+likewise not claimed as additions of this article.
+
+A bounded literature check included Cigler's original paper, repeated-variable
+bialternant work \cite{GSM}, determinant-calculus sources \cite{Kratt}, and
+Chern--Shi's August 2026 paper \cite{ChernShi}. The latter treats shifted
+Catalan-like arrays indexed by a fixed meander height, a different parameter
+family from the three-cluster rectangular character studied here. No matching
+all-shift cyclotomic pole classification was identified in that check. This is
+a description of the check, not a proof of worldwide priority.
+
+\section{The exact cyclotomic classification}
+\label{cp:sec:main}
+
+\subsection{Minimal recurrence and pole multiplicity}
+Let $E$ be the forward shift: $(Ef)(n)=f(n+1)$. A monic polynomial $R(E)$
+is a constant-coefficient recurrence if $R(E)f(n)=0$ for every $n\ge0$.
+The minimal one divides every such recurrence. The denominator of
+\begin{equation}
+ \GG_k(z,t)=\sum_{n\ge0}\Ht_k(n;t)z^n
+ \label{cp:eq:gf}
+\end{equation}
+is always normalized to have constant term one and to be relatively prime
+to its numerator. An exponent zero means that a factor is omitted.
+
+For $0\le q\le M$, define
+\begin{equation}
+ d_q=\left\lfloor\frac{q(M-q)}2\right\rfloor.
+ \label{cp:eq:dq}
+\end{equation}
+At a primitive $\ell$th root $\zeta$, $\ell\ge3$, define the baseline exponents
+\begin{equation}
+ e^0_\rho=
+ \begin{cases}
+ 1+\max\{d_q:0\le q\le M,\ q\equiv\rho\pmod\ell\},
+      &\text{if this set is nonempty},\\
+ 0,&\text{otherwise},
+ \end{cases}
+ \quad 0\le\rho<\ell.
+ \label{cp:eq:baseline}
+\end{equation}
+They use a \emph{maximum}, not a sum. The following theorem gives the exact
+correction to that maximum.
+
+\begin{theorem}[Complete cyclotomic pole classification]
+\label{cp:thm:main}
+Let $k\ge1$ and let $\zeta$ have exact order $\ell\ge3$.
+Start with $e_\rho=e^0_\rho$ from \eqref{cp:eq:baseline}.
+
+If $\ell>M$ or $\ell\not\equiv M\pmod2$, no correction is required.
+Otherwise put
+\begin{equation}
+ q_*=(M-\ell)/2,\quad \rho_*=q_*\bmod\ell,\quad
+ D=\left\lfloor\frac{M^2-\ell^2}{8}\right\rfloor.
+ \label{cp:eq:tie}
+\end{equation}
+Only $e_{\rho_*}$ can change. The cancellation criterion is
+\begin{equation}
+ \begin{array}{c|c}
+ k=2a & a+D\text{ is odd}\\
+ k=2a+1 & D\text{ is even}.
+ \end{array}
+ \label{cp:eq:criterion}
+\end{equation}
+If the criterion fails, leave $e_{\rho_*}=D+1$. If it holds, set
+\begin{equation}
+ e_{\rho_*}=
+ \begin{cases}
+ \max(0,D-2),&\ell=4\text{ and }k\equiv1\pmod4,\\
+ D,&\text{otherwise}.
+ \end{cases}
+ \label{cp:eq:correction}
+\end{equation}
+Then the reduced denominator and the monic minimal recurrence are exactly
+\begin{equation}
+ \boxed{\displaystyle
+ \QQ_{k,\zeta}(z)=\prod_{\rho=0}^{\ell-1}(1-\zeta^\rho z)^{e_\rho},
+ \qquad R_{k,\zeta}(E)=\prod_{\rho=0}^{\ell-1}(E-\zeta^\rho)^{e_\rho}.}
+ \label{cp:eq:answer}
+\end{equation}
+The exponent list depends on $k$ and $\ell$, not on the choice of primitive
+root of that order.
+\end{theorem}
+
+\begin{remark}[What ``loss of three'' means]
+In the exceptional family write $k=4m+1$, $m\ge1$. Then
+$D=2m^2-2$. For $m\ge2$ the exponent drops from $D+1$ to $D-2$,
+exactly three orders. For $m=1$, the baseline exponent is one and the
+factor disappears; negative exponents are not introduced.
+\end{remark}
+
+\subsection{Small examples}
+The exponent vectors below are ordered by phases
+$1,\zeta,\ldots,\zeta^{\ell-1}$.
+\begin{center}
+\begin{tabular}{@{}rrrrl@{}}
+\toprule
+$k$ & $\ell$ & baseline $e^0$ & exact $e$ & outcome\\
+\midrule
+$4$ & $3$ & $(1,2,2)$ & $(1,2,2)$ & tie, no cancellation\\
+$5$ & $4$ & $(1,2,3,2)$ & $(0,2,3,2)$ & disappearance\\
+$6$ & $3$ & $(4,3,4)$ & $(4,2,4)$ & one-order loss\\
+$6$ & $5$ & $(1,3,4,4,3)$ & $(0,3,4,4,3)$ & disappearance\\
+$7$ & $4$ & $(5,3,5,5)$ & $(5,2,5,5)$ & one-order loss\\
+$9$ & $4$ & $(9,8,7,8)$ & $(9,8,4,8)$ & three-order loss\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular,
+\begin{equation}
+ \QQ_{9,\ii}(z)=(1-z)^9(1+z)^4(1+z^2)^8.
+ \label{cp:eq:k9}
+\end{equation}
+The maximum-degree rule alone would incorrectly give exponent seven at
+$1+z$. Direct substitution into the generic denominator would be still
+less accurate because it would add all colliding multiplicities.
+
+\subsection{Outline of the proof}
+The proof has three separable parts. First, strict concavity shows that only
+one residue can have two maximal-degree contributions. Second, a negative-index
+reflection identity decides whether their leading terms cancel. The explicit
+first subleading coefficient proves that cancellation stops immediately,
+except at primitive fourth roots in one congruence class of $k$.
+Third, exact fourth-root product formulas show that two further coefficients
+cancel there, and that the next permitted coefficient is nonzero.
+Each ingredient is proved in the following sections.
+
+\section{Confluent rectangular characters and their spectral terms}
+\label{cp:sec:confluence}
+
+\subsection{The distinct-variable subset identity}
+For $K$ distinct nonzero variables $x_1,\ldots,x_K$, a rectangle of height
+$A$, and $C=K-A$, the bialternant gives
+\begin{equation}
+ s_{(n^A)}(X)
+ =\sum_{\substack{I\subseteq\{1,\ldots,K\}\\ |I|=A}}
+ \left(\prod_{i\in I}x_i\right)^n
+ \prod_{\substack{i\in I\\j\notin I}}(1-x_j/x_i)^{-1}.
+ \label{cp:eq:subset}
+\end{equation}
+Indeed, use exponent columns
+$0,1,\ldots,C-1,n+C,\ldots,n+K-1$, and expand along the last $A$
+columns. The Vandermonde factors internal to $I$ and its complement cancel.
+The cross factors and the powers $x_i^C$ give precisely
+\eqref{cp:eq:subset}. This also defines an exponential-polynomial extension
+$\widetilde s_A(n;X)$ for all integer $n$; no negative partition is being
+asserted to exist.
+
+Now coalesce $m_i$ variables at distinct nonzero nodes $\alpha_i$,
+$1\le i\le L$, where $\sum_i m_i=K$. An allocation is a vector
+$\boldsymbol r$ with $0\le r_i\le m_i$ and $\sum_i r_i=A$. Write
+\begin{equation}
+ s_i=m_i-r_i,\quad d_i=r_is_i,\quad d=\sum_i d_i,\quad
+ \lambda_{\boldsymbol r}=\prod_i\alpha_i^{r_i},\quad
+ B(m,r)=\frac{\prod_{h=0}^{r-1}h!}{\prod_{h=m-r}^{m-1}h!}.
+ \label{cp:eq:clusterdata}
+\end{equation}
+Empty products equal one, in particular $B(m,0)=B(m,m)=1$.
+
+\begin{lemma}[Canonical cluster polynomials]
+\label{cp:lem:cluster}
+There are canonically grouped polynomials $P_{\boldsymbol r}(n)$ such that
+\begin{equation}
+ s_{(n^A)}(\rep{\alpha_1}{m_1},\ldots,\rep{\alpha_L}{m_L})
+ =\sum_{\boldsymbol r}\lambda_{\boldsymbol r}^{\,n}P_{\boldsymbol r}(n).
+ \label{cp:eq:clusters}
+\end{equation}
+They have exact degree $d$ and nonzero leading coefficient
+\begin{equation}
+ \boxed{\displaystyle
+ L_{\boldsymbol r}=\prod_i B(m_i,r_i)
+ \prod_{i\ne j}(1-\alpha_j/\alpha_i)^{-r_i s_j}.}
+ \label{cp:eq:leading}
+\end{equation}
+The grouping is by allocations, even when two products
+$\lambda_{\boldsymbol r}$ coincide.
+\end{lemma}
+
+\begin{proof}
+The normalized confluent row of order $h$ at $\alpha_i$ in an exponent
+column $e$ is $\binom eh\alpha_i^{e-h}$. The denominator is
+$\prod_{i<j}(\alpha_j-\alpha_i)^{m_i m_j}$. Expand the numerator along
+its $A$ high columns. Selecting $r_i$ rows in cluster $i$ extracts the
+factor $\alpha_i^{nr_i}$, so the remaining coefficient is polynomial
+in $n$.
+
+Suppose the selected derivative orders in this cluster form $R_i$.
+The normalized Leibniz rule for $x^n g(x)$ gives a degree bound
+$\sum_{h\in R_i}h-\binom{r_i}{2}$: distinct derivative rows of $g$
+are required in a nonzero determinant, and their smallest possible total
+order is $\binom{r_i}{2}$. The unique maximizing selection is
+$R_i=\{s_i,\ldots,m_i-1\}$, giving degree $r_is_i$.
+Its local leading determinant is
+\begin{equation}
+ \det\left(\frac1{(s_i+h-p)!}\right)_{0\le h,p<r_i}=B(m_i,r_i),
+ \label{cp:eq:factorial}
+\end{equation}
+where negative factorials mean zero entries. Multiply row $h$ by
+$(s_i+h)!$; the columns become monic falling-factorial polynomials at
+$s_i,s_i+1,\ldots,s_i+r_i-1$, proving \eqref{cp:eq:factorial}.
+
+The remaining low and high confluent Vandermondes give
+\[
+ (-1)^{\sum_{i<j}r_i s_j}
+ \frac{\prod_i B(m_i,r_i)\alpha_i^{Cr_i-r_is_i}}
+ {\prod_{i<j}(\alpha_j-\alpha_i)^{s_i r_j+r_i s_j}},
+\]
+which is \eqref{cp:eq:leading}. All factors are nonzero. This proof is the
+confluent leading-term argument already used in Part~II
+(Theorem~\ref{rs:thm:cluster}); general
+repeated-variable bialternants are treated in \cite{GSM}.
+\end{proof}
+
+\noindent[Added 30 September 2026, batch 66: Lemma~\ref{cp:lem:cluster} is Part~II's
+Theorem~\ref{rs:thm:cluster}, whose nodes $\xi_1,\ldots,\xi_\ell$ are
+written $\alpha_1,\ldots,\alpha_L$ here, and \eqref{cp:eq:leading} is
+\eqref{rs:eq:LC}, written with normalized cross factors; the proof above
+condenses Part~II's argument, as it says. Part~II's remark after that
+theorem already notes that summands with a common product must be
+combined; Sections~\ref{cp:sec:reflection}--\ref{cp:sec:triple} carry
+out that combination at roots of unity.]
+
+\subsection{Specialization to the three-cluster alphabet}
+For $t\ne0,\pm1$, the nodes $1,t,t^2$ are distinct. In
+\eqref{cp:eq:clusterdata} take multiplicities $(a,1,b)$ and height $A=a$.
+There is exactly one allocation for each $q=0,\ldots,M$:
+\begin{equation}
+ r_0=a-\lceil q/2\rceil,\qquad r_1=q\bmod2,\qquad r_2=\lfloor q/2\rfloor.
+ \label{cp:eq:allocation}
+\end{equation}
+Its eigenvalue is $t^q$. Direct substitution gives degree $d_q$ in
+\eqref{cp:eq:dq}. Hence
+\begin{equation}
+ \Ht_k(n;t)=\sum_{q=0}^{M}t^{qn}P_{k,q}(n;t),\qquad
+ \deg_nP_{k,q}=d_q.
+ \label{cp:eq:spectral}
+\end{equation}
+Each canonical $P_{k,q}$ is a rational function of $t$ with polynomial
+coefficients in $n$; its only possible parameter poles are $0,1,-1$.
+Thus \eqref{cp:eq:spectral} specializes regularly at every root of unity
+of order at least three. Confluence of \emph{nodes} is not needed there:
+only eigenvalue products collide.
+
+\begin{lemma}[Minimality for exponential polynomials]
+\label{cp:lem:minimality}
+If $f(n)=\sum_\lambda\lambda^n A_\lambda(n)$, with distinct nonzero
+$\lambda$ and nonzero polynomials $A_\lambda$, then its minimal recurrence
+is $\prod_\lambda(E-\lambda)^{1+\deg A_\lambda}$.
+Its reduced generating denominator is
+$\prod_\lambda(1-\lambda z)^{1+\deg A_\lambda}$.
+\end{lemma}
+\begin{proof}
+The operator $E-\lambda$ lowers the polynomial degree in the $\lambda$
+mode by one, whereas $E-\mu$, $\mu\ne\lambda$, preserves it with
+nonzero leading multiplier $\lambda-\mu$. Applying operators that kill
+all but one mode proves their linear independence and the stated
+minimality. Equivalently, a degree-$d$ polynomial times $\lambda^n$
+has a pole of exact order $d+1$ at $z=\lambda^{-1}$.
+\end{proof}
+For a root $\zeta$, therefore, the entire question is the exact degree of
+\begin{equation}
+ A_\rho(n)=\sum_{q\equiv\rho\ (\mathrm{mod}\ \ell)}P_{k,q}(n;\zeta).
+ \label{cp:eq:grouped}
+\end{equation}
+If this polynomial is zero, its phase is absent.
+
+\section{Why there is at most one cancellation class}
+\label{cp:sec:reflection}
+
+\subsection{The concavity restriction}
+\begin{lemma}[Unique possible tie]
+\label{cp:lem:tie}
+Among the $q$ in a fixed residue class modulo $\ell\ge3$, the maximum
+of $d_q$ is unique except possibly for a pair $q,M-q$.
+A two-way maximum occurs in exactly one residue if and only if
+$\ell\le M$ and $\ell\equiv M\pmod2$. Its two indices are
+$q_*$ and $q_*+\ell$ from \eqref{cp:eq:tie}.
+Every other index in that residue, when present, has degree at most
+$D-\ell^2$.
+\end{lemma}
+\begin{proof}
+If $d_q=d_p$, the integers $q(M-q)$ and $p(M-p)$ differ by at most one.
+Their difference is $(q-p)(M-q-p)$. For different indices in one residue,
+$|q-p|\ge\ell\ge3$, so necessarily $q+p=M$.
+If two symmetric maxima were separated by more than $\ell$, an intermediate
+index of the same residue would be strictly closer to $M/2$ and have larger
+degree. Thus $p-q=\ell$, proving the criterion and uniqueness.
+The next possible indices are at distance $3\ell/2$ from $M/2$, rather
+than $\ell/2$. The quadratic values divided by two decrease by exactly
+$\ell^2$; taking floors preserves this integral difference.
+\end{proof}
+
+A unique maximum cannot cancel because its leading coefficient in
+\eqref{cp:eq:leading} is nonzero. The lemma already proves all uncorrected
+entries of Theorem~\ref{cp:thm:main}.
+
+\subsection{Reflection about the canonical center}
+\begin{lemma}[Negative-index reflection]
+\label{cp:lem:reflection}
+The canonical polynomials of \eqref{cp:eq:spectral} satisfy
+\begin{align}
+ P_{k,M-q}(n;t)&=(-1)^a t^{a(M-2q)}P_{k,q}(-n-k;t),&&k=2a,
+ \label{cp:eq:reflecteven}\\
+ P_{k,M-q}(n;t)&=t^{k(a-q)}P_{k,q}(-n-k;t),&&k=2a+1.
+ \label{cp:eq:reflectodd}
+\end{align}
+These are identities of rational functions in $t$ and polynomials in $n$.
+\end{lemma}
+\begin{proof}
+Complementing the subsets in \eqref{cp:eq:subset} gives
+\begin{equation}
+ \widetilde s_A(-n-K;X)=(-1)^{A(K-A)}
+ (\prod X)^{-n-A}s_{(n^{K-A})}(X).
+ \label{cp:eq:negativegeneral}
+\end{equation}
+For example, each cross denominator changes sign on complementation;
+there are $A(K-A)$ such signs. This argument works for the
+exponential-polynomial extension, so there is no appeal to a Schur
+polynomial indexed by a negative partition.
+
+For even $k$, $K-A=A=a$ and $\prod X_k=t^M$. Comparing distinct
+powers $t^{qn}$ over $\Q(t)$ in \eqref{cp:eq:negativegeneral} gives
+\eqref{cp:eq:reflecteven}. For odd $k$, $\prod X_k=t^k$ and
+$X_k^{-1}=t^{-2}X_k$ as multisets. The rectangular complement identity
+$s_{(n^{K-A})}(X)=(\prod X)^n s_{(n^A)}(X^{-1})$ therefore yields
+$s_{(n^{a+1})}(X_k)=t^n s_{(n^a)}(X_k)$.
+Equation~\eqref{cp:eq:reflectodd} follows. The identities continue to every
+$t\ne0,\pm1$ because the canonical coefficients are regular there.
+\end{proof}
+
+At a tied residue let $q=q_*$ and introduce the centered variable
+\begin{equation}x=n+k/2.\label{cp:eq:center}\end{equation}
+If $p(x)=P_{k,q}(x-k/2;\zeta)$, the sum of the two maximal-degree
+polynomials is
+\begin{equation}
+ p(x)+\varepsilon p(-x),\qquad
+ \varepsilon=
+ \begin{cases}(-1)^a,&k\text{ even},\\-1,&k\text{ odd}.
+ \end{cases}
+ \label{cp:eq:paritypair}
+\end{equation}
+For the odd case, $a-q_*=\ell/2$ and
+$\zeta^{k\ell/2}=(-1)^k=-1$. Its leading coefficient is multiplied by
+$1+\varepsilon(-1)^D$, giving exactly \eqref{cp:eq:criterion}.
+If $D=0$ and the criterion holds, the constant pair disappears, and there
+are no lower terms in that residue by Lemma~\ref{cp:lem:tie}. We henceforth
+consider $D>0$.
+
+\section{A general first subleading coefficient for confluent Schur modes}
+\label{cp:sec:jet}
+The leading coefficient alone cannot distinguish an ordinary cancellation
+from the fourth-root exception. We now calculate one further coefficient
+for arbitrary cluster multiplicities. This calculation is useful beyond
+Cigler's family.
+
+\begin{theorem}[Centered first-coefficient formula]
+\label{cp:thm:jet}
+Use the notation of Lemma~\ref{cp:lem:cluster}, and suppose $d\ge1$.
+Then
+\begin{equation}
+ P_{\boldsymbol r}(x-K/2)=L_{\boldsymbol r}
+ \bigl(x^d+c_{\boldsymbol r}x^{d-1}+O(x^{d-2})\bigr),
+ \label{cp:eq:jet}
+\end{equation}
+where
+\begin{equation}
+ \boxed{\displaystyle
+ c_{\boldsymbol r}=\frac12\sum_{i<j}
+ \bigl[d_i(2r_j-m_j)-d_j(2r_i-m_i)\bigr]
+ \frac{\alpha_i+\alpha_j}{\alpha_i-\alpha_j}.}
+ \label{cp:eq:jetc}
+\end{equation}
+Here $O(x^u)$ denotes a polynomial of degree at most $u$; if $u<0$,
+that polynomial is zero. Equivalently, before centering,
+\begin{equation}
+ [n^{d-1}]P_{\boldsymbol r}(n)=L_{\boldsymbol r}\sum_i d_i B_i,
+ \quad
+ B_i=\frac{m_i}{2}+
+ \sum_{j\ne i}\frac{r_j-s_j\alpha_j/\alpha_i}{1-\alpha_j/\alpha_i}.
+ \label{cp:eq:uncenteredjet}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Split the $i$th cluster formally into
+$\alpha_i\exp(\epsilon y_{i,1}),\ldots,
+\alpha_i\exp(\epsilon y_{i,m_i})$, with
+$\sum_u y_{i,u}=0$. The $y$'s may be chosen distinct and generic.
+In \eqref{cp:eq:subset}, group subsets that select $r_i$ variables in each
+cluster. Such a grouped expression has a removable singularity as
+$\epsilon\to0$: antisymmetrizing within each cluster cancels its
+internal Vandermonde, while the cross-cluster denominators remain nonzero.
+Its limit is exactly the canonical $P_{\boldsymbol r}(n)$ times
+$\lambda_{\boldsymbol r}^n$.
+
+For a selected set $I_i$ let $h_i=\sum_{u\in I_i}y_{i,u}$ and
+$h=\sum_i h_i$. Consider the finite alternant functional
+\begin{equation}
+ \mathcal J(f)=
+ \sum_{|I_i|=r_i\ \forall i}
+ \frac{f(I_1,\ldots,I_L)}
+ {\displaystyle\prod_i\prod_{u\in I_i,\ v\notin I_i}(y_{i,u}-y_{i,v})}.
+ \label{cp:eq:functional}
+\end{equation}
+For a polynomial separately symmetric in selected and unselected variables,
+possible poles cancel in pairs under an interchange of two variables.
+Thus the result is polynomial and symmetric in each whole cluster. If the
+input is homogeneous of degree less than $d$, its output is zero; at degree
+$d$ it is a constant. This also follows directly by multiplying by the
+cluster Vandermondes: the alternating numerator must be divisible by each
+of them.
+
+The functional factors by cluster. The same leading confluent determinant
+\eqref{cp:eq:factorial}, applied to the exponential subset sum, gives
+\begin{equation}
+ \mathcal J\left(\frac{h^d}{d!}\right)=\prod_i B(m_i,r_i),\qquad
+ \mathcal J\left(\frac{h_i h^{d-1}}{(d-1)!}\right)
+ =d_i\prod_j B(m_j,r_j).
+ \label{cp:eq:functionalvalues}
+\end{equation}
+For clarity, the one-cluster identity in the first formula is
+$\mathcal J_i(h_i^{d_i}/d_i!)=B(m_i,r_i)$; it is the coefficient of
+$n^{d_i}$ in the coalescing bialternant. In the product functional every
+cluster must receive degree at least $d_i$. At total degree $d$, it
+receives exactly that degree. The multinomial theorem proves both displayed
+formulas, with multiplier $d_i$ in the second. This also covers $d_i=0$.
+
+For selected $u$ and unselected $v$ in one cluster,
+\begin{equation}
+ \frac1{1-e^{\epsilon(v-u)}}
+ =\frac1{\epsilon(u-v)}
+ \left(1+\frac\epsilon2(u-v)+O(\epsilon^2)\right).
+ \label{cp:eq:internalexpand}
+\end{equation}
+The total linear correction in cluster $i$ is $m_i h_i/2$ because
+$\sum_{u\in I_i,v\notin I_i}(y_{i,u}-y_{i,v})=m_i h_i$.
+For two different clusters put $z_{ij}=\alpha_j/\alpha_i$. Their
+cross factor expands as
+\begin{equation}
+ \frac1{1-z_{ij}e^{\epsilon(v-u)}}
+ =\frac1{1-z_{ij}}
+ \left(1+\epsilon\frac{z_{ij}(v-u)}{1-z_{ij}}+O(\epsilon^2)\right).
+ \label{cp:eq:externalexpand}
+\end{equation}
+Summing $v-u$ over selected variables in $i$ and unselected variables in
+$j$ gives $-r_i h_j-s_j h_i$. After both orientations of each pair
+are collected, the coefficient of $h_i$ is exactly $B_i$ in
+\eqref{cp:eq:uncenteredjet}. The exponential factor contributes
+$e^{\epsilon n h}$.
+
+After extracting $\epsilon^{-d}$ and the constant cross-factor product,
+the coefficient of $n^d$ in the finite limit comes from $h^d/d!$.
+The coefficient of $n^{d-1}$ comes only from the linear correction
+$\sum_i B_i h_i$ times $h^{d-1}/(d-1)!$.
+Equation~\eqref{cp:eq:functionalvalues} proves \eqref{cp:eq:uncenteredjet}.
+No higher-order expansion term can contribute to $n^{d-1}$.
+
+Replacing $n$ by $x-K/2$ subtracts $dK/2$ from the normalized
+subleading coefficient. Finally,
+\[
+ B_i-K/2=\frac12\sum_{j\ne i}(2r_j-m_j)
+ \frac{\alpha_i+\alpha_j}{\alpha_i-\alpha_j}.
+\]
+Antisymmetrization in $i,j$ yields \eqref{cp:eq:jetc}.
+\end{proof}
+
+\begin{remark}[A useful consistency check]
+For a single cluster the sum in \eqref{cp:eq:jetc} is empty. Thus a rectangular
+Weyl-dimension polynomial is centered at $-K/2$ with zero first subleading
+coefficient. The formula detects the additional asymmetry introduced by
+separated nodes, rather than an arbitrary choice of origin.
+\end{remark}
+
+\section{Ordinary cyclotomic cancellations stop after one order}
+\label{cp:sec:ordinary}
+Set
+\begin{equation}
+ U(t)=\frac{1+t}{1-t},\qquad V(t)=\frac{1+t^2}{1-t^2}.
+ \label{cp:eq:UV}
+\end{equation}
+For the allocation \eqref{cp:eq:allocation}, put $q=2r+\sigma$,
+$\sigma\in\{0,1\}$, and
+\[
+ d_0=(a-r-\sigma)(r+\sigma),\quad d_2=r(b-r),\quad
+ u_0=a-2r-2\sigma,\quad u_2=2r-b.
+\]
+The middle cluster has $d_1=0$. Equation~\eqref{cp:eq:jetc} becomes
+\begin{equation}
+ c_q(t)=\frac12\bigl[(2\sigma-1)(d_0-d_2)U(t)
+ +(d_0u_2-d_2u_0)V(t)\bigr].
+ \label{cp:eq:cq}
+\end{equation}
+
+\begin{lemma}[Nonvanishing of the centered coefficient]
+\label{cp:lem:nonzero}
+Suppose a tied maximal pair has common degree $D>0$ and satisfies the
+cancellation criterion \eqref{cp:eq:criterion}. Then $c_q(\zeta)\ne0$,
+except when $\ell=4$ and $k\equiv1\pmod4$.
+\end{lemma}
+\begin{proof}
+Write $\zeta=e^{\ii\theta}$. We repeatedly use
+\begin{equation}
+ \frac{V(\zeta)}{U(\zeta)}=\frac{\cos\theta}{1+\cos\theta}.
+ \label{cp:eq:cosratio}
+\end{equation}
+All denominators here are legitimate because $\ell\ge3$.
+If the cosine of the argument of a root of unity is rational, then
+$2\cos\theta=\zeta+\zeta^{-1}$ is a rational algebraic integer and
+hence an integer. The only nonreal possibilities are $-1/2,0,1/2$,
+corresponding to orders $3,4,6$.
+
+\paragraph{Even $k=2a$.}
+Here $M$ and the tied separation $\ell$ are odd. Choose the even index
+$q=2r$ in the symmetric pair, and let $h=M-2q=\pm\ell$.
+Then $D=r(M-q)$, and \eqref{cp:eq:cq} simplifies to
+\begin{equation}
+ c_q=-\frac r2 U+\frac{r-Dh}{4}V.
+ \label{cp:eq:ceven}
+\end{equation}
+Since $D>0$, $r>0$. Vanishing would imply
+$\cos\theta=-2r/(r+Dh)$; a zero denominator cannot solve the equation.
+The order is odd, so the only possibility is $\ell=3$ and cosine
+$-1/2$, giving $Dh=3r$. If $h=-3$ this contradicts positivity.
+If $h=3$, it would require $M-q=1$, whereas
+$M-q=q+3\ge3$. Thus $c_q$ cannot vanish.
+
+\paragraph{Odd $k=2a+1$, even tied index.}
+Take the smaller tied index $q=q_*$ and put $v=a-q=\ell/2>0$.
+When $q$ is even, \eqref{cp:eq:cq} reduces to
+\begin{equation}
+ c_q=-\frac{Dv}{2}V.
+ \label{cp:eq:coddeven}
+\end{equation}
+It vanishes exactly when $\zeta^2=-1$, that is, $\ell=4$.
+Then $q=a-2$ is even, so $a$ is even and $k\equiv1\pmod4$.
+
+\paragraph{Odd $k=2a+1$, odd tied index.}
+For odd $q$, the corresponding simplification is
+\begin{equation}
+ c_q=\frac v2\bigl(U-(D+1)V\bigr).
+ \label{cp:eq:coddodd}
+\end{equation}
+Vanishing would force $\cos\theta=1/D$. The only admissible rational
+cosine is $1/2$, hence $\ell=6$, $v=3$, and $D=2$.
+But $D=\lfloor(a^2-9)/2\rfloor=2$ would give
+$13\le a^2<15$, impossible for an integer $a$.
+\end{proof}
+
+\begin{proposition}[One-order cancellation outside the exceptional family]
+\label{cp:prop:ordinary}
+Under the hypotheses of Lemma~\ref{cp:lem:nonzero}, excluding its exception,
+$\deg A_{\rho_*}=D-1$. Thus the exact exponent is $D$.
+\end{proposition}
+\begin{proof}
+In \eqref{cp:eq:paritypair}, cancellation of the degree-$D$ term means
+$\varepsilon(-1)^D=-1$. The degree-$(D-1)$ coefficient is therefore
+$2L_q c_q$, which is nonzero by Lemma~\ref{cp:lem:nonzero}.
+All remaining terms in the residue have degree at most $D-\ell^2<D-1$.
+They cannot alter it. The $D=0$ case was dealt with immediately after
+\eqref{cp:eq:paritypair}.
+\end{proof}
+
+\section{Exact fourth-root product formulas}
+\label{cp:sec:quartic}
+The remaining family is $k=4m+1$, $m\ge1$, at $t=\ii$ or $-\ii$.
+We first evaluate its four residue polynomials completely.
+
+Define, for $s\ge1$,
+\begin{align}
+ \alpha_s(L)&=\prod_{1\le u\le v\le s-1}
+       \frac{2L+u+v-1}{u+v-1},\label{cp:eq:alpha}\\
+ \beta_s(L)&=\prod_{1\le u\le v\le s-1}
+       \frac{2L+u+v}{u+v}.\label{cp:eq:beta}
+\end{align}
+They are polynomials in $L$ with rational coefficients; $\alpha_1=\beta_1=1$.
+
+\begin{theorem}[Fourth-root quasipolynomials]
+\label{cp:thm:quartic}
+For all integers $m\ge1$ and $L\ge0$,
+\begin{align}
+ \Ht_{4m+1}(4L;\ii)
+ &=\alpha_{m+1}(L)\beta_m(L)^2\beta_{m+1}(L),
+ \label{cp:eq:quart0}\\
+ \Ht_{4m+1}(4L+1;\ii)
+ &=(-1)^m2\alpha_m(L+1)\beta_m(L)\beta_{m+1}(L)^2,
+ \label{cp:eq:quart1}\\
+ \Ht_{4m+1}(4L+2;\ii)
+ &=2\alpha_m(L+1)\beta_m(L+1)\beta_{m+1}(L)^2,
+ \label{cp:eq:quart2}\\
+ \Ht_{4m+1}(4L+3;\ii)
+ &=(-1)^m\alpha_{m+1}(L+1)\beta_m(L+1)^2\beta_{m+1}(L).
+ \label{cp:eq:quart3}
+\end{align}
+The same values hold at $-\ii$. Each residue polynomial has degree
+$\delta=2m^2$.
+\end{theorem}
+
+\subsection{The odd-shift parity factorization}
+Here is the specific Hankel reduction used in the proof. Put
+\[
+ Q_t(z)=(1+tz)(1+t/z)=1+t^2+t(z+z^{-1}),\quad x=z+z^{-1},
+\]
+and, for a symmetric Laurent polynomial $q(z)=q(z^{-1})$, write
+$q_j=[z^j]q(z)$ and define
+\begin{equation}
+ \mathcal U_N(q)=\det(q_{i-j}+q_{i+j+1})_{i,j<N},\qquad
+ \mathcal V_N(q)=\det(q_{i-j}-q_{i+j+2})_{i,j<N}.
+ \label{cp:eq:gramUV}
+\end{equation}
+Both empty determinants are one. They equal the polynomial moment
+Gram determinants with weights $q(x)(x+2)/2$ and $q(x)(4-x^2)/2$ under
+$\CT_z$. To check this, use the monic bases
+\[
+ P_j(x)=\frac{z^{j+1}+z^{-j}}{z+1},\qquad
+ R_j(x)=\frac{z^{j+1}-z^{-j-1}}{z-z^{-1}}.
+\]
+Both satisfy the monic recurrence $F_{j+1}=xF_j-F_{j-1}$.
+Multiplication gives the entries in \eqref{cp:eq:gramUV}; replacing these
+monic bases by powers of $x$ does not change the determinants.
+
+Write $U_h(N)=\mathcal U_N(Q_t^h)$ and
+$V_h(N)=\mathcal V_N(Q_t^h)$. Then
+\begin{equation}
+ \Ht_{2h+1}(2N;t)=U_h(N)V_h(N),\qquad
+ \Ht_{2h+1}(2N+1;t)=U_h(N+1)V_h(N).
+ \label{cp:eq:oddparity}
+\end{equation}
+For completeness, these identities follow directly from
+\eqref{cp:eq:moments}. Let
+$u_j=\CT(1+z)Q_t^j$ and $v_j=\CT(1-z^2)Q_t^j$.
+Binomial expansion gives $c_{2j+1}=u_j$, $c_{2j+2}=(1+t)u_j$ and
+$(1+t)^2u_j-u_{j+1}=t v_j$. Reorder a Hankel matrix of odd shift with
+even indices first and subtract $(1+t)$ times each corresponding even row
+from the odd row. Its diagonal blocks are a $u$-moment block and a
+$-t v$-moment block. Since $Q_t=1+t^2+tx$, changing powers of $Q_t$
+to powers of $x$ in a size-$N$ Gram determinant contributes
+$t^{N(N-1)}$. For even order the total power is
+$N+2N(N-1)=\binom{2N}{2}$; for odd order it is
+$N+N(N+1)+N(N-1)=\binom{2N+1}{2}$.
+The signs also cancel the normalization in \eqref{cp:eq:interface}.
+This proves \eqref{cp:eq:oddparity}; it is the odd part of the repository's
+parity factorization, not an independent new claim.
+
+\subsection{Binomial and Catalan moment determinants}
+Let $C_j=\binom{2j}{j}/(j+1)$ and, for $s\ge1$, define
+\begin{equation}
+ A_s(L)=\det\left(\binom{2(s+i+j)}{s+i+j}\right)_{i,j<L},\qquad
+ T_s(L)=\det(C_{s+i+j})_{i,j<L}.
+ \label{cp:eq:AT}
+\end{equation}
+The following elementary evaluations will also specify every normalization
+in the calculation:
+\begin{equation}
+ A_s(L)=2^L\alpha_s(L),\qquad T_s(L)=\beta_s(L),\qquad
+ \frac{T_s(L)}{A_s(L)}=
+ \frac{2^L\rise{1/2}{L}}{\rise{s+L}{L}}.
+ \label{cp:eq:ATeval}
+\end{equation}
+Here $\rise{u}{L}=u(u+1)\cdots(u+L-1)$. A proof from beta moments,
+including an elementary determinant proof rather than an appeal to a
+Selberg integral, is given in Appendix~\ref{cp:app:beta}.
+
+\subsection{Evaluation of the two Gram factors at a fourth root}
+At $t=\ii$, $Q_t=\ii x$. For $h=2m$, remove the scalar
+$(-1)^{mN}$ from both size-$N$ Gram determinants, and denote the remaining
+ones by $U_N^0,V_N^0$. Their weights are respectively
+$x^{2m}(x+2)/2$ and $x^{2m}(4-x^2)/2$.
+Because $\CT x^{2j}=\binom{2j}{j}$ and odd moments vanish,
+\[
+ \tfrac12\CT x^{2j}(4-x^2)=C_j.
+\]
+Separating even and odd monomials therefore gives
+\begin{equation}
+ V_{2L}^0=T_m(L)T_{m+1}(L),\qquad
+ V_{2L+1}^0=T_m(L+1)T_{m+1}(L).
+ \label{cp:eq:V0}
+\end{equation}
+
+Let $D_N^0$ be the moment determinant for the even weight $x^{2m}$
+alone, and let $p_N(x)$ be its monic orthogonal polynomial. The
+Christoffel determinant identity at $-2$, together with
+$p_N(-x)=(-1)^Np_N(x)$, gives
+\begin{equation}
+ U_N^0=2^{-N}D_N^0 p_N(2).
+ \label{cp:eq:Christoffel}
+\end{equation}
+Under $y=x^2/4$, the even polynomials correspond to beta weight
+$y^{m-1/2}(1-y)^{-1/2}$ and the odd polynomials to
+$y^{m+1/2}(1-y)^{-1/2}$. The endpoint ratio of beta determinants gives
+\begin{equation}
+ p_{2L}(2)=\frac{4^L\rise{1/2}{L}}{\rise{m+L}{L}},\qquad
+ p_{2L+1}(2)=\frac{2\cdot4^L\rise{1/2}{L}}{\rise{m+L+1}{L}}.
+ \label{cp:eq:endpoints}
+\end{equation}
+For instance, a monic polynomial $\pi_L$ for beta weight with parameters
+$(A,B)$ satisfies $\pi_L(1)=\rise B L/\rise{A+B+L-1}L$;
+this follows by applying the Christoffel identity to $(1-y)$ and taking
+the quotient of the two beta determinants in Appendix~\ref{cp:app:beta}.
+Thus no unspecified Jacobi-polynomial normalization is used.
+
+Even--odd separation gives
+$D_{2L}^0=A_m(L)A_{m+1}(L)$ and
+$D_{2L+1}^0=A_m(L+1)A_{m+1}(L)$. Combining
+\eqref{cp:eq:ATeval}--\eqref{cp:eq:endpoints} yields
+\begin{equation}
+ U_{2L}^0=2^{-L}T_m(L)A_{m+1}(L),\qquad
+ U_{2L+1}^0=2^{-L}A_m(L+1)T_{m+1}(L).
+ \label{cp:eq:U0}
+\end{equation}
+
+\begin{proof}[Proof of Theorem~\ref{cp:thm:quartic}]
+Insert \eqref{cp:eq:U0} and \eqref{cp:eq:V0} into \eqref{cp:eq:oddparity},
+with $h=2m$. At even order the scalar factors multiply to one; at odd
+order they multiply to $(-1)^m$. Substitution of \eqref{cp:eq:ATeval}
+gives all four displayed formulas, including the factors two.
+Their degrees sum to $2m^2$. Their values are real, so conjugation gives
+the identical formulas at $-\ii$.
+\end{proof}
+
+\section{The exceptional cancellation is exactly three orders}
+\label{cp:sec:triple}
+
+Let $F_r(n)$ be the polynomial obtained from
+\eqref{cp:eq:quart0}--\eqref{cp:eq:quart3} by substituting $L=(n-r)/4$.
+Thus $F_r(n)=\Ht_{4m+1}(n;\ii)$ on the residue $n\equiv r\pmod4$.
+Remove the odd-residue signs by setting
+\[
+ G_0=F_0,\quad G_2=F_2,\quad
+ G_1=(-1)^m F_1,\quad G_3=(-1)^m F_3.
+\]
+In this section these polynomials are expressed in the centered variable
+$x=n+2m+1/2$. All four have degree $\delta=2m^2$ and the same positive
+leading coefficient
+\begin{equation}
+ \Lambda_m=
+ \frac{2^{-2m^2}}
+ {\displaystyle
+  \prod_{1\le u\le v\le m}(u+v-1)
+  \prod_{1\le u\le v\le m-1}(u+v)^2
+  \prod_{1\le u\le v\le m}(u+v)}.
+ \label{cp:eq:Lambda}
+\end{equation}
+For $G_1$, the ratio to the displayed leading coefficient is
+$2\rise m m/\rise{m+1}m=1$. Reflection gives
+\begin{equation}
+ G_3(x)=G_0(-x),\qquad G_2(x)=G_1(-x).
+ \label{cp:eq:Greflection}
+\end{equation}
+One can verify these identities from the factors. Alternatively,
+\eqref{cp:eq:negativegeneral} at $k=4m+1,t=\ii$ reads
+$\widetilde\Ht_k(-n-k;\ii)=(-1)^m\widetilde\Ht_k(n;\ii)$ for integer
+$n$; it swaps residues $0,3$ and $1,2$. Since each residue agrees with a
+polynomial at infinitely many integers, this proves
+\eqref{cp:eq:Greflection} as a polynomial identity.
+
+\subsection{The relevant discrete Fourier coefficient}
+For any period-four polynomial representation,
+$F_r(n)=\sum_{j=0}^3\ii^{jr}A_j(n)$, so
+$A_j(n)=\frac14\sum_{r=0}^3\ii^{-jr}F_r(n)$.
+The potentially exceptional phase is
+$\lambda_{\rm bad}=(-1)^{m-1}$. In either parity of $m$, its grouped
+polynomial is
+\begin{equation}
+ P_{\rm bad}(x)=\frac14(G_0-G_1+G_2-G_3)
+ =\frac12\bigl(\operatorname{odd}G_0-\operatorname{odd}G_1\bigr),
+ \label{cp:eq:badFourier}
+\end{equation}
+where $\operatorname{odd}G=(G(x)-G(-x))/2$.
+Thus three consecutive candidate odd-degree coefficients can be inspected
+without expanding the full high-degree products.
+
+\subsection{Root power sums through degree five}
+Write $G_j(x)=\Lambda_m\prod_{u\in\mathcal R_j}(x+u)$ for $j=0,1$.
+Let $c=2m+1/2$ and let a triangular set of size $s$ mean
+$1\le u\le v\le s$. The two offset multisets are
+\begin{align*}
+ \mathcal R_0:\quad&
+ 2(u+v)-2-c\quad(s=m),\\[-2pt]
+ &2(u+v)-c\quad(s=m-1),\text{ twice},\\[-2pt]
+ &2(u+v)-c\quad(s=m);\\[3pt]
+ \mathcal R_1:\quad&
+ 2(u+v)+1-c\quad(s=m-1),\\[-2pt]
+ &2(u+v)-1-c\quad(s=m-1),\\[-2pt]
+ &2(u+v)-1-c\quad(s=m),\text{ twice}.
+\end{align*}
+Put $p_j^{(r)}=\sum_{u\in\mathcal R_r}u^j$,
+$\overline p_j=(p_j^{(0)}+p_j^{(1)})/2$, and
+$\Delta p_j=p_j^{(0)}-p_j^{(1)}$. Direct summation gives
+\begin{equation}
+\begin{array}{c|c|c}
+ j&\overline p_j&\Delta p_j\\ \hline
+ 1&m&0\\
+ 2& m^2(8m^2+1)/6&2m\\
+ 3& m(16m^2-9)/4&3m^2\\
+ 4&\text{not needed}&m(16m^2-11)\\
+ 5&\text{not needed}&\frac52m^2(8m^2-5).
+\end{array}
+ \label{cp:eq:powersums}
+\end{equation}
+These are finite polynomial identities, not asymptotic approximations.
+A reproducible way to check every entry is to use
+\begin{equation}
+ T_s(b,j)=\sum_{v=1}^s\sum_{u=1}^v
+       (2(u+v)+b-c)^j
+ =\sum_{h=0}^j\binom jh2^h(b-c)^{j-h}
+   \sum_{v=1}^s\sum_{r=0}^h\binom hr v^{h-r}\sum_{u=1}^v u^r.
+ \label{cp:eq:triangularsum}
+\end{equation}
+The two power sums are respectively
+$T_m(-2,j)+2T_{m-1}(0,j)+T_m(0,j)$ and
+$T_{m-1}(1,j)+T_{m-1}(-1,j)+2T_m(-1,j)$.
+The usual finite sums of powers through degree six evaluate the right side
+of \eqref{cp:eq:triangularsum} and give \eqref{cp:eq:powersums} for every integer
+$m\ge1$. The included symbolic verifier repeats this polynomial calculation
+with $m$ left as a symbol.
+
+Let $e_j^{(r)}$ be the elementary symmetric functions of the respective
+multisets. Newton's identities yield
+\begin{equation}
+ \Delta e_1=0,\qquad \Delta e_3=0,\qquad
+ \boxed{\Delta e_5=-m^2(m^2-1).}
+ \label{cp:eq:elementarydifferences}
+\end{equation}
+For an explicit algebra check, $e_3=(p_1^3-3p_1p_2+2p_3)/6$, while
+\[
+ 120e_5=p_1^5-10p_1^3p_2+15p_1p_2^2+20p_1^2p_3
+        -20p_2p_3-30p_1p_4+24p_5.
+\]
+Subtracting between the two multisets, the terms containing
+$\overline p_2$ cancel. What remains is
+\[
+ 120\Delta e_5=40m^4-40m\overline p_3+30m^2
+             =-120m^2(m^2-1),
+\]
+which proves the last identity without relying on an unevaluated computer
+output.
+
+\begin{theorem}[Exact exceptional degree]
+\label{cp:thm:triple}
+For $m\ge2$, the polynomial of phase $(-1)^{m-1}$ in
+$\Ht_{4m+1}(n;\ii)$ has degree $2m^2-5$ and leading term
+\begin{equation}
+ -\frac{\Lambda_m}{2}m^2(m^2-1)x^{2m^2-5},
+ \qquad x=n+2m+1/2.
+ \label{cp:eq:badleading}
+\end{equation}
+For $m=1$ that phase polynomial is identically zero.
+\end{theorem}
+\begin{proof}
+Since $\delta$ is even, the odd parts of $G_0,G_1$ have their first three
+possible degrees $\delta-1,\delta-3,\delta-5$.
+Equation~\eqref{cp:eq:elementarydifferences}, inserted into
+\eqref{cp:eq:badFourier}, cancels the first two and gives the nonzero third
+coefficient \eqref{cp:eq:badleading}. For $m=1$, the polynomials have degree
+two, and their odd linear terms agree, so \eqref{cp:eq:badFourier} vanishes.
+\end{proof}
+
+\begin{proof}[Completion of Theorem~\ref{cp:thm:main}]
+Lemma~\ref{cp:lem:tie} settles every unique-maximum residue. Reflection
+\eqref{cp:eq:paritypair} settles the leading cancellation criterion in the
+single possible tied residue. Proposition~\ref{cp:prop:ordinary} gives an
+exact one-degree loss except at the stated fourth roots, including the
+separately treated constant disappearance case.
+In the exceptional family $D=2m^2-2$; Theorem~\ref{cp:thm:triple} gives
+exponent $1+(2m^2-5)=D-2$ for $m\ge2$ and zero for $m=1$.
+Conjugation treats $-\ii$. Finally Lemma~\ref{cp:lem:minimality} converts
+these exact grouped degrees to the reduced denominator and minimal
+recurrence. This proves every case of the theorem.
+\end{proof}
+
+\section{Consequences and explicit forms}
+\label{cp:sec:consequences}
+
+\subsection{Every complex parameter, not just roots of unity}
+\begin{corollary}[Complete complex-parameter classification]
+\label{cp:cor:complex}
+For $k=1$ the reduced denominator is $1-z$ for all $t$. For $k\ge2$:
+\begin{equation}
+ \QQ_{k,t}(z)=
+ \begin{cases}
+ 1-z,&t=0,\\
+ (1-z)^{a(k-a)+1},&t=1,\\
+ (1-z)^{ab+1}(1+z)^{(a-1)(b+1)+1},&t=-1,\\
+ \displaystyle\prod_{q=0}^{M}(1-t^qz)^{d_q+1},
+       &t\ne0\text{ is not a root of unity},\\
+ \displaystyle\prod_{\rho=0}^{\ell-1}(1-t^\rho z)^{e_\rho},
+       &t\text{ has order }\ell\ge3,
+ \end{cases}
+ \label{cp:eq:allcomplex}
+\end{equation}
+where the last exponents are given in Theorem~\ref{cp:thm:main}.
+\end{corollary}
+\begin{proof}
+At $t=0$ the Schur alphabet has exactly $a$ nonzero entries, all one,
+and the rectangular tableau is unique. At $t=1$ the one-cluster formula
+in Lemma~\ref{cp:lem:cluster} has degree $a(k-a)$.
+At $t=-1$ there are two nodes: $1$ of multiplicity $k-1$ and $-1$ of
+multiplicity one. The allocations select respectively $a$ or $a-1$
+entries from the first cluster. Their degrees are $ab$ and
+$(a-1)(b+1)$, and their distinct phases have nonzero leading coefficients.
+Away from roots of unity all products $t^q$ are distinct, so
+\eqref{cp:eq:spectral} and Lemma~\ref{cp:lem:minimality} apply directly.
+The remaining case is the main theorem. The first three cases and the
+generic real case agree with the preceding repository report.
+\end{proof}
+
+\noindent[Added 30 September 2026, batch 66: the preceding repository report is Part~II;
+the cases $t=0,\pm1$ are its Theorem~\ref{rs:thm:real}, and the generic
+case is its Theorem~\ref{rs:thm:recurrence-main}, stated there over
+$\Q(t)$ and at real $t\notin\{0,\pm1\}$. The line for complex $t$
+that is not a root of unity extends that theorem to the complex plane.]
+
+\subsection{Compact formulas at primitive fourth roots}
+\begin{corollary}[Odd shifts at $t=\ii$]
+\label{cp:cor:fourth}
+For $m\ge1$, put $\delta=2m^2$. Then
+\begin{equation}
+ \QQ_{4m+1,\ii}(z)=
+ (1-(-1)^m z)^{\delta+1}
+ (1+(-1)^m z)^{\max(0,\delta-4)}
+ (1+z^2)^\delta.
+ \label{cp:eq:fourth1}
+\end{equation}
+For $m\ge0$, put $\eta=2m(m+1)$. Then
+\begin{equation}
+ \QQ_{4m+3,\ii}(z)=
+ (1-z^2)^{\eta+1}
+ (1-(-1)^m\ii z)^{\eta+1}
+ (1+(-1)^m\ii z)^{\max(0,\eta-2)}.
+ \label{cp:eq:fourth3}
+\end{equation}
+At $-\ii$ take complex conjugates.
+\end{corollary}
+\begin{proof}
+For $k=4m+1$, the index nearest the center in the central residue is
+$q=2m$, of degree $\delta$. The two adjacent residues have maximal degree
+$\delta-1$, and the opposite real phase has the exceptional exponent
+$\max(0,\delta-4)$.
+For $k=4m+3$, the two real phases and the central imaginary phase have
+maximal degree $\eta$; the opposite imaginary phase has degree
+$\eta-3$ after ordinary cancellation. The small case $m=0$ has no such
+phase and is covered by the maximum with zero.
+\end{proof}
+
+For example, Theorem~\ref{cp:thm:quartic} at $m=1$ gives particularly simple
+integer values:
+\begin{align*}
+ \Ht_5(4L;\ii)&=(2L+1)(L+1),&
+ \Ht_5(4L+1;\ii)&=-2(L+1)^2,\\
+ \Ht_5(4L+2;\ii)&=2(L+1)^2,&
+ \Ht_5(4L+3;\ii)&=-(2L+3)(L+1).
+\end{align*}
+The phase $+1$ cancels identically, not merely in its highest coefficient.
+The denominator is $(1+z)^3(1+z^2)^2$.
+
+\subsection{Quasipolynomial periods and exact reconstruction}
+\begin{corollary}[Quasipolynomial structure]
+\label{cp:cor:quasipolynomial}
+At a root of unity of order $\ell\ge3$, $\Ht_k(n;\zeta)$ is a
+quasipolynomial of period dividing $\ell$. Its least quasipolynomial
+period is
+\begin{equation}
+ \operatorname{lcm}\{\ord(\zeta^\rho):e_\rho>0\}.
+ \label{cp:eq:leastperiod}
+\end{equation}
+On each residue it is a polynomial of degree at most
+$\max_\rho(e_\rho-1)$.
+\end{corollary}
+\begin{proof}
+Each surviving mode is a polynomial times $\zeta^{\rho n}$, which is
+periodic in $n$. Conversely a quasipolynomial of period $s$ has only
+$s$th roots of unity as its exponential phases, by finite Fourier inversion
+on its residue polynomials. Independence in Lemma~\ref{cp:lem:minimality}
+forces every surviving phase to have order dividing $s$.
+\end{proof}
+
+This gives an exact reconstruction procedure, not just an existence result.
+Compute the exponents from the main theorem, then either compute the
+canonical confluent polynomials and combine their equal phases, or compute
+sufficient initial values by Jacobi--Trudi and interpolate the bounded-degree
+polynomial on each residue. The proof supplies the a priori bound that makes
+such interpolation a certified finite task in exact arithmetic. The
+Berlekamp--Massey experiments included with this article serve as independent
+checks, rather than as the source of that bound.
+
+For the unnormalized determinants $D_k(n;\zeta)$, the multiplier in
+\eqref{cp:eq:interface} is a nonzero periodic quadratic phase, of period
+dividing $4\ell$. Thus they too are quasipolynomials, of period dividing
+$4\ell$. Their \emph{minimal} recurrences need a further Fourier
+combination and are not asserted to equal \eqref{cp:eq:answer}.
+
+\subsection{A quadratic recurrence-order law}
+\begin{corollary}[Fixed cyclotomic order]
+\label{cp:cor:order}
+Let $N_{k,\ell}=\sum_\rho e_\rho$ and fix $\ell\ge3$.
+For $M=k-1\ge\ell$,
+\begin{equation}
+ \frac{\ell(M^2-\ell^2)}8-3
+ \ \le\ N_{k,\ell}\ \le\ \frac{\ell M^2}8+\ell.
+ \label{cp:eq:orderbounds}
+\end{equation}
+In particular
+\begin{equation}
+ N_{k,\ell}=\frac{\ell(k-1)^2}{8}+O_\ell(1)
+ \qquad(k\to\infty).
+ \label{cp:eq:orderasymptotic}
+\end{equation}
+\end{corollary}
+\begin{proof}
+In each residue choose an index nearest to $M/2$. Its distance is at most
+$\ell/2$, and $M\ge\ell$ ensures that a nearest choice lies in $[0,M]$.
+Since $q(M-q)/2=M^2/8-(q-M/2)^2/2$, the baseline exponent lies between
+$(M^2-\ell^2)/8$ and $M^2/8+1$. Sum over residues and use the fact that
+the total correction is at most three.
+\end{proof}
+Generically the order is
+$\sum_{q=0}^{k-1}(1+d_q)=k^3/12+O(k^2)$. Therefore a fixed
+cyclotomic order changes the growth from cubic in the shift to quadratic.
+This is a statement about recurrence order, not a bit-complexity assertion:
+large exact coefficients and initial-value computation still have costs.
+
+\section{Verification, dependency audit, and formalization prospects}
+\label{cp:sec:verification}
+
+\subsection{What the included computations check}
+The archive contains an executable Python verifier, exact output records,
+and a source audit. The program uses integer arithmetic, rational arithmetic,
+Gaussian-rational arithmetic, symbolic polynomial arithmetic, and finite
+fields; it never estimates pole orders from floating-point roots.
+
+The independent checks comprise the following finite tasks.
+\begin{enumerate}
+\item Canonical confluent polynomials for $2\le k\le7$ at $t=2,3$,
+constructed by Laplace expansion rather than by the claimed coefficient
+formulas. All 54 modes are checked for degree, leading coefficient,
+centered first coefficient, and reflection. An additional 22 modes with
+other cluster multiplicities check the general coefficient formula.
+\item The four product formulas for $1\le m\le4$, $0\le n<20$,
+checked against Jacobi--Trudi over $\Q(\ii)$: 80 exact values.
+\item The power-sum and Newton identities in
+\eqref{cp:eq:powersums}--\eqref{cp:eq:elementarydifferences}, checked with $m$
+left symbolic. This is polynomial identity verification, not a list of
+numerical samples.
+\item Finite-field recurrence reconstruction for $2\le k\le17$ and
+$3\le\ell\le17$: 240 cases. For each order a prime $p>10^6$ with
+$p\equiv1\pmod\ell$ is used, and a primitive $\ell$th root is formed
+in $\mathbb F_p$. At least twice the baseline denominator degree plus
+eight sequence terms are computed. Berlekamp--Massey output is factored
+into the predicted linear factors and compared with the exponent list.
+\item A separate finite check compares the original normalized Hankel
+formula with Schur evaluation at rational and Gaussian-rational parameters.
+This includes $1\le k\le8$, $0\le n\le5$, and $t=2,-2,\ii$: 144 comparisons.
+The generated JSON report records these ranges and counts.
+\end{enumerate}
+The finite-field test is a check of specialized finite sequences, not an
+independent characteristic-zero proof and not a theorem for untested
+parameters. Bad reduction could in principle conceal or create a
+cancellation; the all-index arguments above, not the modular experiments,
+establish the characteristic-zero classification. No claim is made that
+this script certifies the repository as a whole.
+
+\noindent[Added 30 September 2026, batch 66: in this report the verifier is shipped as
+\path{code/03-cyclotomic-poles-verify.py}, its helper module as
+\path{code/03-cyclotomic-poles-modular.py}, and its records as
+\path{data/03-cyclotomic-poles-verification.json} (with the console log
+\path{data/03-cyclotomic-poles-verification.log}) and
+\path{data/03-cyclotomic-poles-modular_checks.json}. The file
+\path{data/verification.json} is Part~I's record
+(Section~\ref{sec:verify}). The verifier has no output option: it always
+writes \path{verification.json} and \path{modular_checks.json} into the
+\path{data/} directory beside its own \path{code/} directory, and it
+imports its helper under the delivered name \texttt{modular}. It must
+therefore be run only on a copy with the delivered layout
+(Appendix~\ref{cp:app:package}). Run that way on 30 September 2026
+(Python 3.13.5, SymPy 1.14.0), it passed every check; its
+\path{modular_checks.json} equals the record after CRLF$\to$LF (the
+script writes CRLF on Windows), and its \path{verification.json} differs
+only in the fields \texttt{utc} and \texttt{elapsed\_seconds}. During
+the intake the pole exponents were also recomputed from scratch for
+$3\le\ell\le8$, $1\le k\le15$ (Jacobi--Trudi in exact
+$\Z[x]/\Phi_\ell(x)$, lowering each phase exponent while the operator
+still annihilates): all 90 cases agree with Theorem~\ref{cp:thm:main}.]
+
+\subsection{Logical dependencies}
+The new spectral argument depends on a short, explicit list of ingredients.
+The bialternant identity and Vandermonde confluence give the canonical
+polynomials. Reflection and the elementary concavity lemma restrict their
+collisions. The first-coefficient theorem resolves every ordinary collision.
+The fourth-root Gram reduction, beta determinant calculation, and Newton
+identities resolve the only exception. Finally exponential-polynomial
+independence proves minimality, not just annihilation.
+
+The spectral theorem can be formalized without first constructing the whole
+Hankel-moment development: take $s_{(n^a)}(X_k(t))$ as the initial definition.
+To transfer it to the original moments one needs exactly
+\eqref{cp:eq:interface}. The fourth-root proof as written uses the same
+identification together with the directly verified odd-shift block
+elimination in Section~\ref{cp:sec:quartic}. All assumptions are thus explicit;
+no numerical recurrence is promoted to an all-index theorem.
+
+\subsection{A practical proof-assistant route}
+A realistic first stage is entirely algebraic: formalize exponential
+polynomials, their annihilators, and exact minimality for distinct nonzero
+phases. Next prove the quadratic maximum lemma and implement the integer
+exponent function from Theorem~\ref{cp:thm:main}. These steps do not require
+analysis or infinite series.
+
+The main algebraic effort is then the canonical confluent determinant and
+its first two coefficients. The proof in Section~\ref{cp:sec:jet} can be
+translated into finite polynomial identities by clearing all differences
+$\alpha_i-\alpha_j$. Formal power series in $\epsilon$ are one route;
+a finite Taylor-jet ring truncated after degree $d+1$ avoids an analytic
+limit. The divisibility of alternating polynomials by Vandermondes should
+be kept as a reusable lemma.
+
+For the exceptional case, formalize the beta determinant in the factorial
+specializations actually used, rather than importing real integration.
+The triangular power sums and Newton identities are elementary polynomial
+identities and are suitable for ring normalization with generated,
+independently checkable coefficient tables. Only after those components are
+in place is it useful to attach the original Hankel--Schur interface.
+No Lean or Rocq implementation of these new results is included or claimed.
+
+\section{Further research questions}
+\label{cp:sec:further}
+The classification suggests several concrete follow-up problems. The
+questions below are not used in the proofs.
+
+\noindent[Added 30 September 2026, batch 66: none of these questions repeats one of
+Part~II's. Section~\ref{cp:q:middle} and Section~\ref{cp:q:certified}
+continue Part~II's topic ``Broader noncollision criteria and certified
+algorithms'' (Section~\ref{cp:sec:rs-noncollision}), on which
+Theorem~\ref{cp:thm:jet} bears; Section~\ref{cp:q:numerators} is related
+to Part~II's Section~\ref{cp:sec:rs-conj17} on Cigler's Conjecture~17, as
+it says; Section~\ref{cp:q:detuning} moves the parameter near a root of
+unity, whereas Part~II's ``uniform crossover as the poles merge'' moves it
+to $t=1$.]
+
+\subsection{More than one middle variable}
+\label{cp:q:middle}
+Replace the alphabet $(1^{[a]},t,(t^2)^{[b]})$ by
+$(1^{[a]},t^{[c]},(t^2)^{[b]})$ with $c\ge2$.
+Several allocations can then have the same product even before a
+root-of-unity specialization. Determine their combined degrees and the
+exact minimal recurrence. The first-coefficient formula remains available,
+but the unique-allocation mechanism \eqref{cp:eq:allocation} disappears.
+A useful first target is $c=2$, where one can enumerate the competing
+allocations explicitly.
+
+\subsection{A general bound on cancellation depth}
+\label{cp:q:depth}
+For arbitrary repeated-node rectangular Schur polynomials, can the maximal
+degree lost when products collide be bounded in terms of the number of
+clusters, rather than the total multiplicity? The present family has loss
+at most three, and its exceptional loss is detected by a fifth symmetric
+coefficient. A structural theorem would explain when a finite number of
+Taylor coefficients suffices to establish minimality.
+
+\subsection{Higher coefficients of a canonical spectral mode}
+\label{cp:q:higher}
+Extend Theorem~\ref{cp:thm:jet} to the second and third centered coefficients
+in closed cluster notation. Expanding the finite functional proof further
+introduces quadratic and cubic characteristic polynomials in the selected
+sums. Such formulas could replace special-purpose product evaluations and
+make multi-cluster collision tests systematic.
+
+\subsection{Why do fourth roots force the additional cancellation?}
+\label{cp:q:fourth}
+The proof here is an explicit algebraic one: the first and third elementary
+symmetric differences vanish and the fifth does not. Is there a character-
+theoretic or geometric explanation that predicts this pattern before
+calculation? In particular, does a symmetry of the relevant rectangular
+Schur module identify the missing low-order terms in the bad phase?
+Any such explanation should recover the coefficient
+$-\Lambda_m m^2(m^2-1)/2$, not merely predict vanishing.
+
+\subsection{Detuning a root of unity}
+\label{cp:q:detuning}
+Investigate the transition when $t=\zeta e^{u/n}$ with $u$ in a bounded
+complex set. Distinct generic phases then remain separated on a scale
+visible to the polynomial prefactors, while at $u=0$ they cancel.
+Uniform asymptotic formulas should distinguish the ordinary one-order
+transition from the exceptional three-order one. This is a separate
+moving-parameter problem; fixed-$t$ recurrence minimality alone does not
+solve it.
+
+\subsection{Numerators and zeros at cyclotomic parameters}
+\label{cp:q:numerators}
+The denominator is now known exactly. Determine the reduced numerator,
+its reciprocity, and its zero set at roots of unity. Which of its
+coefficients admit an enumerative or signed representation? This problem
+is related to, but should not be conflated with, the full coefficient
+assertions in Cigler's Conjecture~17 and the corrected generic numerator
+claims in the repository.
+
+\subsection{Original, unnormalized Hankel determinants}
+\label{cp:q:unnormalized}
+Classify the minimal recurrence of $D_k(n;\zeta)$ itself, including the
+periodic quadratic phase in \eqref{cp:eq:interface}. Its Fourier transform
+can mix the surviving $\Ht$ phases, so the answer need not be a simple
+relabeling of the denominator obtained here. Exact Gauss-sum identities
+may provide a useful description of this additional mixing.
+
+\subsection{Joint growth of the shift and cyclotomic order}
+\label{cp:q:joint}
+Corollary~\ref{cp:cor:order} fixes $\ell$. Determine a uniform recurrence-order
+asymptotic when $\ell/k$ approaches a nonzero limit, and describe the
+transition between the quadratic and cubic regimes. The finite maximum
+formula reduces this to a lattice-point problem with a small cancellation
+correction, making this an accessible next theorem rather than an
+unstructured asymptotic conjecture.
+
+\subsection{Certified recurrence generation}
+\label{cp:q:certified}
+Produce a proof-producing implementation that accepts $k$ and a cyclotomic
+order and returns the exact denominator, its minimality certificate, and
+a certified evaluator. A first practical deliverable is the exponent
+function plus a checked proof of the concavity and reflection reductions;
+the later confluence and quartic certificates can be attached modularly.
+
+\section{Conclusion}
+The distinction between an annihilating denominator and a reduced denominator
+is decisive at roots of unity. For Cigler's normalized Hankel polynomials,
+strict concavity reduces all possible leading cancellations to one residue.
+Reflection gives an exact parity test, a general centered coefficient formula
+settles every ordinary case, and an explicit fourth-root product calculation
+proves the unique three-order exception. The resulting theorem classifies
+the minimal recurrence at every complex parameter and closes the precise
+cyclotomic gap identified in the inspected ProveIt report.
+
+The further questions concern genuinely additional work: larger middle
+multiplicity, deeper multi-cluster collisions, moving-parameter transitions,
+numerators, and proof-assistant integration. They are not needed to complete
+the classification proved here.
+
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\theHsection}{cp.app.\Alph{section}}
+\setcounter{section}{4}
+\section{An elementary beta determinant and the product evaluations}
+\label{cp:app:beta}
+This appendix supplies the normalizations used in
+\eqref{cp:eq:ATeval} and \eqref{cp:eq:endpoints}. Although these evaluations
+belong to classical determinant and orthogonal-polynomial theory
+\cite{Kratt}, the required determinant can be proved directly.
+
+\begin{lemma}[Beta-moment determinant]
+\label{cp:lem:betadet}
+For positive real $A,B$ and $L\ge0$,
+\begin{equation}
+ \det\bigl(\mathrm B(A+i+j,B)\bigr)_{0\le i,j<L}
+ =\prod_{j=0}^{L-1}
+   \frac{j!\,\Gamma(A+j)\Gamma(B+j)}{\Gamma(A+B+L+j-1)}.
+ \label{cp:eq:betadet}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $X_i=A+i$. Factor $\mathrm B(X_i,B)$ from row $i$.
+The remaining entry in column $j$ is
+$\rise{X_i}j/\rise{X_i+B}j$.
+For arbitrary distinct $X_i$ one has
+\begin{equation}
+ \det\left(\frac{\rise{X_i}j}{\rise{X_i+B}j}\right)_{i,j<L}
+ =\frac{\displaystyle\prod_{j=0}^{L-1}\rise Bj
+              \prod_{i<r}(X_r-X_i)}
+        {\displaystyle\prod_{i=0}^{L-1}\rise{X_i+B}{L-1}}.
+ \label{cp:eq:rationaldet}
+\end{equation}
+To prove this, multiply row $i$ by its denominator on the right.
+Column $j$ becomes the polynomial
+$f_j(X)=\rise Xj\rise{X+B+j}{L-1-j}$ of degree $L-1$.
+Its evaluation determinant is its coefficient determinant times the
+Vandermonde. Evaluate at $X_i=-i$: the matrix is lower triangular,
+with diagonal $(-1)^i i!\rise B{L-1-i}$.
+The Vandermonde at these points is
+$(-1)^{\binom L2}\prod_i i!$. Their quotient is
+$\prod_j\rise Bj$, proving \eqref{cp:eq:rationaldet}.
+Substitute $X_i=A+i$, use
+$\prod_{i<r}(r-i)=\prod_j j!$, and simplify the gamma factors.
+The empty determinant is immediate.
+\end{proof}
+
+The binomial and Catalan moments have beta representations
+\begin{equation}
+ \binom{2j}{j}=\frac{4^j}{\pi}\mathrm B(j+1/2,1/2),\qquad
+ C_j=\frac{2\cdot4^j}{\pi}\mathrm B(j+1/2,3/2).
+ \label{cp:eq:betamoments}
+\end{equation}
+They follow from the gamma recurrence and the half-integer formula.
+Applying \eqref{cp:eq:betadet} after factoring the powers of four gives
+\begin{align}
+ A_s(L)&=4^{Ls+L(L-1)}\pi^{-L}
+  \prod_{j=0}^{L-1}
+   \frac{j!\Gamma(s+j+1/2)\Gamma(j+1/2)}{\Gamma(s+L+j)},
+ \label{cp:eq:Aproduct}\\
+ T_s(L)&=4^{Ls+L(L-1)}(2/\pi)^L
+  \prod_{j=0}^{L-1}
+   \frac{j!\Gamma(s+j+1/2)\Gamma(j+3/2)}{\Gamma(s+L+j+1)}.
+ \label{cp:eq:Tproduct}
+\end{align}
+Their quotient immediately yields the third formula in
+\eqref{cp:eq:ATeval}.
+For an elementary check of the first two, the factorial products give
+$A_1(L)=2^L$, $T_1(L)=1$, and
+\begin{align*}
+ \frac{A_{s+1}(L)}{A_s(L)}
+ &=4^L\frac{\rise{s+1/2}L}{\rise{s+L}L}
+   =\frac{\rise{2L+s}s}{\rise ss},\\
+ \frac{T_{s+1}(L)}{T_s(L)}
+ &=4^L\frac{\rise{s+1/2}L}{\rise{s+L+1}L}
+   =\frac{\rise{2L+s+1}s}{\rise{s+1}s}.
+\end{align*}
+The right sides are exactly the successive triangular factors in
+\eqref{cp:eq:alpha} and \eqref{cp:eq:beta}. Induction on $s$ proves
+\eqref{cp:eq:ATeval} for all $s\ge1$, $L\ge0$.
+
+Finally, the Christoffel determinant identity follows by appending the row
+$1,y,\ldots,y^L$ to the moment matrix: the resulting determinant divided
+by the size-$L$ moment determinant is the monic orthogonal polynomial.
+Putting $y=1$ and subtracting adjacent columns identifies its value with
+the determinant ratio for weights $(1-y)w$ and $w$.
+For beta weight, \eqref{cp:eq:betadet} gives
+\begin{equation}
+ \pi_L(1)=\frac{D_L(A,B+1)}{D_L(A,B)}
+         =\frac{\rise BL}{\rise{A+B+L-1}L}.
+ \label{cp:eq:betaendpoint}
+\end{equation}
+Scaling $y=x^2/4$ proves \eqref{cp:eq:endpoints}. Positivity of the beta
+weights ensures all the moment determinants used to define these monic
+polynomials are nonzero. The final identities themselves are polynomial
+or rational identities and need no limiting interpretation.
+
+\section{A minimal exponent algorithm}
+\label{cp:app:algorithm}
+The following pseudocode is an exact integer algorithm for
+Theorem~\ref{cp:thm:main}. It does not need a numerical approximation to a
+root of unity.
+\begin{verbatim}
+cyclotomic_exponents(k, ell):
+    require k >= 1 and ell >= 3
+    M = k - 1
+    a = floor(k/2)
+    e = array of ell zeros
+    for q in 0..M:
+        e[q mod ell] = max(e[q mod ell], 1 + floor(q*(M-q)/2))
+    if ell > M or (ell-M) is odd:
+        return e
+    q = (M-ell)/2
+    D = floor((M*M-ell*ell)/8)
+    cancels = (a+D is odd) if k is even else (D is even)
+    if cancels:
+        e[q mod ell] = max(0, D-2) if ell == 4 and k mod 4 == 1 else D
+    return e
+\end{verbatim}
+A direct implementation uses $O(k+\ell)$ elementary integer operations
+and $O(\ell)$ storage for a dense output array. These are arithmetic-operation
+counts; bit costs depend on the sizes of the integer indices. A sparse map
+avoids allocating $\ell$ entries when $\ell$ is large compared with $k$.
+The coefficient field for the actual recurrence is $\Q(\zeta)$, and
+its factorized form is usually preferable to expanding it.
+
+\section{Package and reproduction}
+\label{cp:app:package}
+The package has a standalone \texttt{article.tex}, its compiled
+\texttt{article.pdf}, a \texttt{README.md}, a claim-status file, a source
+audit, and code and data directories. Compile the paper with
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+Run the exact verification suite from the package root with
+\begin{verbatim}
+python code/verify.py
+\end{verbatim}
+It writes \texttt{data/verification.json} and
+\texttt{data/modular\_checks.json}. The delivered record reports the versions
+and counts actually used. Successful finite checks are explicitly separated
+from the all-index mathematical proofs. No network access, proprietary
+computer algebra system, or repository checkout is required to rerun them.
+
+\noindent[Added 30 September 2026, batch 66: this report ships the verifier, its helper
+module, the JSON records, the console log, the claim-status file, the
+source audit, \texttt{requirements.txt} and the \texttt{Makefile} under
+the prefixed names listed in Section~\ref{cp:sec:merge-provenance}. The
+archive's \texttt{article.tex}, \texttt{article.pdf} and
+\texttt{README.md} are not shipped: Part~III and the report's
+\texttt{article.pdf} replace them. The commands above are the delivery's
+and must not be used from this report's root: there
+\texttt{python code/verify.py} runs Part~I's verifier, which rewrites
+Part~I's records in \path{data/}, and \texttt{pdflatex} rebuilds the
+whole report in place. The shipped \path{code/03-cyclotomic-poles-Makefile}
+runs exactly these commands (\texttt{make check} is
+\texttt{python code/verify.py}; its \texttt{clean} target deletes
+\path{article.aux}, \path{article.log}, \path{article.out} and
+\path{article.toc}), so it must not be run from the report root, and
+from \path{code/} its paths do not resolve. Part~III's checks are
+reproduced on a copy with the delivered layout:
+\begin{verbatim}
+W=<scratch>; mkdir -p "$W/code"
+cp code/03-cyclotomic-poles-verify.py  "$W/code/verify.py"
+cp code/03-cyclotomic-poles-modular.py "$W/code/modular.py"
+uv run --no-project --with sympy==1.14.0 python "$W/code/verify.py"
+\end{verbatim}
+with \verb|<scratch>| a directory outside the report; the outputs land in
+\verb|<scratch>/data/|.]
+
+\begin{thebibliography}{99}
 \bibitem{Cigler}
 Johann Cigler,
 \emph{Hankel determinants of middle binomial coefficients and conjectures
@@ -2894,5 +4798,19 @@ W.~Fulton,
 \emph{Young Tableaux: With Applications to Representation Theory and Geometry},
 London Mathematical Society Student Texts~35, Cambridge University Press,
 1997. Used for classical Schur identities and Schur-module characters.
+
+% [Added 30 September 2026, batch 66] References of Part III.  The
+% manuscript's entries Cigler and GSM are those above (it adds the page
+% range 2613--2647 of GSM); its entry Repo (Parts I and II) is replaced
+% by internal references.
+\bibitem{Kratt}
+C.~Krattenthaler, \emph{Advanced determinant calculus},
+S\'eminaire Lotharingien de Combinatoire \textbf{42} (1999), Article B42q.
+\url{https://arxiv.org/abs/math/9902004}.
+
+\bibitem{ChernShi}
+S.~Chern and W.~Shi, \emph{Hankel determinants of Catalan-like sequences},
+arXiv:2608.27208v1, 27 August 2026.
+\url{https://arxiv.org/abs/2608.27208}.
 \end{thebibliography}
 \end{document}
