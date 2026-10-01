@@ -1,5 +1,11 @@
 # An explicit erasing-TM compiler with a paid framed input
 
+The [dependency-projection successor](native_binary_dependency_projection.md)
+now materializes the full illustrative Wang source and framed composition:
+312942 operations,25 comparisons,23763 witnesses and degree at most12092924.
+Its guard optimization leaves arithmetic unchanged; the conservative312967
+estimate below remains historical, and no universal table is instantiated.
+
 This packet supplies the finite transition compiler missing from the
 [non-erasing TM-to-Wang bridge](wang_b_nonerasing_tm_compiler.md). Every
 fixed total binary TM with a unique halt is compiled into a concrete

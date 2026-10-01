@@ -1,5 +1,10 @@
 # A positive mask gap gives a285-operation universal U9 polynomial
 
+The [duration-floor successor](neary_woods_universal_duration_floor282.md)
+reuses the input bound and gives282 operations with46 witnesses. The
+later [computed-port source](neary_woods_universal_computed_ports275.md)
+gives275/43w; this packet's285 source and proof remain unchanged.
+
 The [loader-scale288 source](neary_woods_universal_loader_scale288.md)
 has a **285=140M+145A** successor with **47 positive witnesses**, eight
 comparisons,262 certificate operations and degree **at most3980**.

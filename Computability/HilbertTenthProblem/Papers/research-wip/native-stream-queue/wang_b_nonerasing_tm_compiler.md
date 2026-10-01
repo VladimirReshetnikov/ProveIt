@@ -1,5 +1,11 @@
 # An exact non-erasing TM-to-Wang compiler with paid binary input
 
+The [finite record-compiler successor](wang_b_erasing_bridge_compiler.md)
+now supplies explicit erasing-to-non-erasing microcode and its framed
+ordinary-input loader. The [materialization audit](native_binary_dependency_projection.md)
+realizes the complete illustrative composition at312942 operations;
+neither successor instantiates a fixed universal table/input slice.
+
 This packet turns every fixed finite non-erasing binary Turing machine
 into a literal Wang B instruction list and then a single Diophantine
 polynomial for halting on its ordinary positive binary input x. The

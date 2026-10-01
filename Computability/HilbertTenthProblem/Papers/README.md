@@ -36,7 +36,25 @@ supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound.
 
-The latest explicit [positive-mask-gap U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_mask_gap285.md)
+The latest explicit [computed-port U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_computed_ports275.md)
+gives **261 certificate /275=136M+139A polynomial operations**,
+5 comparisons,43 positive witnesses and four positive program parameters,
+with degree **at most3853**. Retained mask and history bounds make three
+computed native fields positive at zeros. The one- and two-field modes are positive
+zero-set graph bijections; eliminating the checksum preserves the accepted
+outer relation through the parent's private sign normalization.
+The mapped lower-degree option gives **285 operations / degree at most608**
+with44 witnesses; the fixed43-witness alternative is282/1344. These are
+specializations of twelve selected parent schedules, not a new partition
+search or a global optimum. The separate75/87 frontier is unchanged.
+
+The [duration-floor282 predecessor](research-wip/native-stream-queue/neary_woods_universal_duration_floor282.md)
+gives282=139M+143A,262 certificate gates,7 comparisons,46 witnesses and
+degree at most3980. Its input scale includes the duration, so one bound
+is automatic; completeness retains valid-program synchronized padding.
+The mask285 and loader288 parents remain reproducible.
+
+The preceding [positive-mask-gap U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_mask_gap285.md)
 gives **262 certificate /285=140M+145A polynomial operations**,
 8 comparisons,47 positive witnesses and four positive program parameters,
 with degree **at most3980**. Defining the mask above the quotient witness
@@ -197,10 +215,24 @@ now pays the explicit Theorem7 instruction expansion and ordinary binary
 input pair map for any fixed total non-erasing binary TM. Its example
 with one nonhalting state gives **642=285M+357A**,566 certificate operations,25 comparisons,
 83 positive witnesses and degree **at most16124**. The pair loader and
-finite blank exterior are part of the complete theorem. No universal
-non-erasing transition table is instantiated; the remaining obstacle is
-an explicit erasing-to-non-erasing compiler or a suitable universal table
-with its input convention. This642 example is not a universal bound.
+finite blank exterior are part of the complete theorem. This642 example
+is not a universal bound; its non-erasing-machine scope remains unchanged.
+
+The [finite erasing-TM record compiler](research-wip/native-stream-queue/wang_b_erasing_bridge_compiler.md)
+now supplies the missing transition compiler for every fixed total binary
+TM with a unique halt. It appends successive tape records using only
+non-erasing writes and pays the exact framed ordinary-input loader.
+The illustrative erasing machine produces1481 nonhalting binary states
+and19254 Wang instructions; no fixed universal table/input slice is instantiated.
+
+The [dependency-projection audit](research-wip/native-stream-queue/native_binary_dependency_projection.md)
+materializes that complete illustrative polynomial at **312942=118706M+194236A**,
+312866 certificate operations,25 comparisons,23763 positive witnesses and
+degree **at most12092924**. Every emitted gate reaches the output.
+Tracking only the dependency coordinates queried by two guards preserves
+both guards and every returned arithmetic packet; it makes the literal
+large build feasible. This actual source count supersedes the earlier
+conservative312967 estimate for the example, not the universal75/87 bounds.
 
 The [finite-game positive NOR compiler](research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes on every fixed acyclic option graph with
@@ -229,8 +261,11 @@ uses the exact main-root residue to force X=2^p and excludes all40
 remaining triples, giving n<p<=2n-7. The
 [gap-seven successor](research-wip/native-stream-queue/complete75_weakened86_gap_seven.md)
 now gives **n<p<=2n-9**, excluding all96 power-of-two-X triples and all
-three small-X lanes through exact input/main-root residues. Gaps at
-least9 and mu<0 remain unresolved;75/87 remain unchanged.
+three small-X lanes through exact input/main-root residues. The
+[gap-nine successor](research-wip/native-stream-queue/complete75_weakened86_gap_nine.md) now gives
+**n<p<=2n-11**:82 low-X lanes have uniform tail cutoffs;215 finite domains
+leave one ratio-compatible case, excluded by all four wrap classes.
+Gaps at least11 and mu<0 remain unresolved;75/87 remain unchanged.
 Native queue components retain their separate scope.
 
 - Every displayed system, machine table and count of the six articles was

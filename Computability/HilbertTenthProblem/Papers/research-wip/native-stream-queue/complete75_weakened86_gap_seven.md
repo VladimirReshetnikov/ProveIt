@@ -1,5 +1,9 @@
 # Excluding gap seven with the retained input congruence
 
+The [gap-nine successor](complete75_weakened86_gap_nine.md) strengthens
+the same R<0,mu>0 branch to n<p<=2n-11. Gaps at least11 and mu<0 remain
+open; the86 candidate is still unresolved and this gap-seven proof is unchanged.
+
 Every positive zero of the [unchanged86 candidate](complete75_weakened_bound86_candidate.md)
 with **R<0 and mu>0** must satisfy
 

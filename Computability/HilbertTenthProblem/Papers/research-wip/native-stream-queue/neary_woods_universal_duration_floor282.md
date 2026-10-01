@@ -1,5 +1,10 @@
 # Absorb the duration bound into the input scale: a282-operation U9 polynomial
 
+The [computed-port successor](neary_woods_universal_computed_ports275.md)
+gives275 operations,43 witnesses and degree at most3853 by specializing
+three native fields and the grouped checksum. It preserves accepted
+outer instances; this282 parent remains reproducible.
+
 The explicit U9 universal polynomial now costs **282=139M+143A**
 operations, with **262=132M+130A** certificate gates, **7 comparisons**,
 **46 positive existential witnesses**, four positive program parameters
@@ -230,4 +235,4 @@ checked192 complete output/register/residual/factor identities,96 signed,
 with96 positive lifts across all24 schedules. It independently assembled
 288 padded recoder/loader/mask cases, retaining K>quotient_hat and the
 exact duration congruence. These remain component and algebraic checks,
-not constructed complete native Pell zeros. All five local links resolve.
+not constructed complete native Pell zeros. All local links resolve.

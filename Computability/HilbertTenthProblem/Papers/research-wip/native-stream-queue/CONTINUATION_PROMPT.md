@@ -15,17 +15,21 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **285=140M+145A**,262 certificate operations,47 positive witnesses,
-> 8 comparisons and four positive program parameters, with degree
-> at most3980: [positive mask gap](neary_woods_universal_mask_gap285.md).
-> The retained mask-scale equation supplies a positive sound lift;
-> the typed recoder supplies its inverse, giving a positive zero-set
-> bijection with the [loader288 parent](neary_woods_universal_loader_scale288.md).
-> That parent's completeness still uses sufficiently long synchronized
-> padding on valid U9 program slices, not arbitrary invalid parameters.
-> The low-degree option is295=140M+155A/degree-at-most608,
-> 257 certificate,13eq48w; the fixed47-witness alternative is292/1344.
-> Loader288/48w and its298/608/49w alternative remain reproducible.
+> **275=136M+139A**,261 certificate operations,43 positive witnesses,
+> 5 comparisons and four positive program parameters, with degree
+> at most3853: [computed native ports](neary_woods_universal_computed_ports275.md).
+> Retained outer margins make three computed truth fields positive.
+> One- and two-field modes are positive-zero graph bijections; the all-fields mode
+> preserves accepted outer instances using the private checksum/index
+> sign normalization. The low-degree option is285=136M+149A/degree-at-most608,
+> 256 certificate,10eq44w; the fixed43-witness alternative is282/1344.
+> These are mapped selected schedules, not a rerun partition search.
+> The [duration-floor282 predecessor](neary_woods_universal_duration_floor282.md)
+> retains262 certificate gates,7eq46w and degree at most3980. Its
+> [positive-mask-gap285 parent](neary_woods_universal_mask_gap285.md)
+> retains8eq47w; loader288/48w and its298/608/49w option remain reproducible.
+> Completeness still uses sufficiently long synchronized padding on
+> valid U9 program slices, not arbitrary invalid program parameters.
 > The [positive-scale291 parent](neary_woods_universal_positive_scale291.md)
 > retains262 certificate,10 comparisons,49 witnesses and degree at most3980.
 > Absorbing two native bound comparisons gives an explicit positive
@@ -802,7 +806,40 @@ checksum is1. The same positive supplied tuples therefore give
 ordinary-strong version gives303/degree-at-most1665; single-index
 choices and both program-bound interfaces remain available.
 
-The current [positive-mask-gap285 source](neary_woods_universal_mask_gap285.md)
+The current [computed-port275 source](neary_woods_universal_computed_ports275.md)
+computes F1=joined_A-F3,F2=joined_B-F3 and F0=q-joined_A-F2-1.
+Retained mask/global bounds prove all three positive at zeros before
+native typing. One- and two-field modes give positive-zero graph bijections.
+The all-fields mode sets the checksum to1; negative-checksum parent zeros
+first use the private F0-2,beta+2 normalization, preserving outer inputs.
+It therefore claims accepted-outer equivalence, not a bijection of every
+old supplied positive tuple. Specializing grouped products then yields
+261 certificate /275=136M+139A,5eq43w and degree at most3853.
+The mapped selected family is275/3853,276/3437,277/3391,278/2273,
+279/1505,280/1459,281/1142,282/1098,283/764,284/734,285/608.
+The first three use43 witnesses; the remaining options use44. The
+285 option has256 certificate gates and10 comparisons; the separate
+fixed43-witness282/1344 option has256 certificate gates and9 comparisons.
+These specialize twelve selected parent schedules, not a new exhaustive
+partition or three-objective optimization. All72 configurations cover
+three modes and both program-bound interfaces. Exact output lifts also
+apply to signed assignments; positivity is claimed at zeros only.
+Root, Gibbs and author full proof/source/fresh reviews pass; an additional
+independent executor checks288 complete outputs,144 signed. Current group
+metadata is remapped with the product aliases, including checksum removal.
+A next arithmetic target is recomputing grouping/strong-treatment degree
+tradeoffs after this checksum specialization. Better degree at fixed cost
+is a research possibility; no further operation saving is presumed.
+
+The [duration-floor282 source](neary_woods_universal_duration_floor282.md)
+reuses the input bound to set q=x+duration+input_slack. Then B-1 exceeds
+the duration automatically; one comparison and witness disappear, giving
+282=139M+143A,262 certificate,7eq46w and degree at most3980. The sound
+positive lift is unconditional; converse completeness uses sufficiently
+long dyadic leading-zero padding on valid program slices. Its mapped
+lower-degree option is292/608/47w. This remains the frozen parent of275.
+
+The preceding [positive-mask-gap285 source](neary_woods_universal_mask_gap285.md)
 defines K=quotient_hat+fusion_output_slack and deletes the separate
 Ahat+slack=S bound. Certificate cost stays262 while one comparison and
 witness disappear:285=140M+145A,8eq47w,degree at most3980. Before typing,
@@ -1127,13 +1164,38 @@ The example with one nonhalting state costs642=285M+357A,566 certificate,
 is not universal. The source covers32 ledgers and192 complete-output
 identities,96 signed, plus independent physical-machine traces.
 
-Next Wang work is an explicit erasing-to-non-erasing transition compiler
-or a fixed universal non-erasing table with its ordinary-input convention,
-or a smaller complete control circuit. The
+The [finite erasing-TM record compiler](wang_b_erasing_bridge_compiler.md)
+now supplies that earlier simulation step with literal non-erasing binary
+microcode. It copies each new tape record into fresh blank space, keeping
+unique head/processed markers and adding blank cells at both ends. The
+full finite-table theorem handles every fixed total binary TM with a
+unique halt, including erasures and negative head positions. Its actual
+10-bit paired loader is190=94M+96A,143 certificate,16eq38w,degree at most402:
+y=523615+401563648*r+32768*z. Four paid framing gates feed the subsequent
+Wang source. The default example produces1481 nonhalting binary states,
+2962 rows,19254 Wang instructions and23697 packed edges.
+
+The [dependency-projection audit](native_binary_dependency_projection.md)
+now materializes that whole illustrative source. Two guards query only
+five or two rebuilt coordinates, so intersecting dependency sets at
+initialization commutes exactly with every union and preserves every
+rejection and returned arithmetic packet. The child source costs312749
+operations,9eq23725w,degree at most6046462. Disjointly composing the paid
+190-operation loader and three square/sum gates gives an actual
+**312942=118706M+194236A** polynomial,312866 certificate gates,25eq23763w,
+degree **at most12092924**, with ordinary x as its sole parameter.
+Iterative closure verifies every gate reaches the output. The deterministic
+source hash and bounded whole-output checks are recorded; the observed
+roughly435MiB peak and21-second run are measurements, not platform guarantees.
+The earlier312967 conservative estimate remains valid historically.
+This is an illustrative fixed erasing machine, not an instantiated
+universal table or numerical universal bound.
+
+Next Wang work is a concrete universal transition table with its proved
+ordinary-input slice, or a smaller record/control compiler. The
 [2014 primary paper](https://mural.maynoothuniversity.ie/id/eprint/12409/1/Woods_Wang_2014.pdf),
-Lemma5, printed p637, gives only a copying overview for that preceding
-step; its now-implemented Theorem7 does not close this earlier interface.
-The imported
+Lemma5, printed p637, gave only the copying overview; the new finite
+record compiler supplies an explicit implementation. The imported
 [U15 table](neary_woods_explicit_universal_tm.py) writes c->b at
 u2, u5, u6, u8, u10 and b->c at u3, u14, so neither binary renaming makes it
 non-erasing. Preserve its program-left-of-head, paired-BTS input and pay
@@ -1238,7 +1300,7 @@ X=2^p. Thus q=2^t,w=2^(p-3t),t>=4; uniform bounds leave only40 triples.
 All80 coefficient arrays and integer endpoint certificates exclude both
 strict ratios, giving n<p<=2n-7 for R<0,mu>0. The infinite coarse-bound
 survivor family violates the exact residue and is not a false zero.
-The [gap-seven successor](complete75_weakened86_gap_seven.md) now gives
+The [gap-seven successor](complete75_weakened86_gap_seven.md) gives
 **n<p<=2n-9** on the same R<0,mu>0 branch. The exact residue and growth
 split gap seven into X=2^p with odd p<=43 (96 triples), or q=16 with
 X=4096,8192,12288. All finite-branch ratios fail certified monotone
@@ -1249,12 +1311,20 @@ integer strictly between-H andH, forces j=0, and contradicts R<0.
 Both independent full reviews/fresh replays pass, including independent
 closed coefficient and residue audits. These are necessary-domain and
 component checks, not constructed complete candidate zeros.
-Remaining work concerns odd gaps at least9 or mu<0, preserving the
-actual main root and full compiler relation. For a future fixed-gap
-attempt, the low-X input-index and residue bounds may give an effective
-large-p cutoff, leaving finite ratio/residue cases; this is a research
-lead, not a proved larger-gap exclusion. The literal86 source and
-established75/87 bounds do not change.
+The [gap-nine successor](complete75_weakened86_gap_nine.md) now gives
+**n<p<=2n-11** on R<0,mu>0. The residue/growth split leaves X=2^p with
+odd p<57, or X+1<2^18. The latter has82 lanes(q,w); exact integer
+induction cutoffs identify the input index and force a divisible residue
+strictly between-H andH, giving j=0 and contradicting R<0.
+Below those cutoffs,176 power-X and39 low-X domains remain. Exact
+coefficient signs and integer endpoints exclude214 ratio domains.
+The remaining q=16,p=21,w=512,s=2 fixture satisfies both ratios, but
+its four required wrap residues1292,4078,2454,5240 all exceed j<=509.
+It is not a full candidate zero. Both full independent reviews and fresh
+replays pass, with independently generated coefficient, tail-cutoff and
+wrap certificates. Remaining work concerns odd gaps at least11 or mu<0,
+preserving the actual main root and full compiler relation. The literal86
+source and established75/87 bounds do not change.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary
