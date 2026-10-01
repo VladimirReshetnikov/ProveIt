@@ -161,7 +161,7 @@ there are no admitted results.
 
 ## Research reports continuing this project
 
-Three external research reports in ProveIt's research-report collection
+Four external research reports in ProveIt's research-report collection
 continue this project.  None of their theorems is formalized; each README
 names the declarations here that it builds on.
 
@@ -191,6 +191,15 @@ names the declarations here that it builds on.
 - [`gao-f6-fiber-geometry`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/gao-f6-fiber-geometry/README.md):
   the fiber geometry of Gao's five-dimensional six-sheeted Keller map `F6`,
   a different map from the dimension-five stable map verified here.
+- [`keller-map-dynamical-degrees`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/keller-map-dynamical-degrees/README.md)
+  (batch 70): the three-variable map above under iteration.  Outside
+  characteristic three, `deg F^n` satisfies `d_{n+2} = 6d_{n+1} + d_n`
+  (`1, 7, 43, 265, …`), so the first dynamical degree is `3+√10`;
+  composing with the shears `z ↦ z + y²h(xy)` gives, in characteristic
+  zero, Keller maps in one tame equivalence class whose dynamical degrees
+  are unbounded.  It also treats characteristics three and two, and
+  arithmetic degree on an escape region.
+  Not formalized; the declarations it builds on are unchanged.
 
 ## Checking
 

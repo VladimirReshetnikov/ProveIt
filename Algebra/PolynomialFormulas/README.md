@@ -327,7 +327,11 @@ search.  The bound is not formalized; formalizing it would make that search
 bounded.  Its Part II (batch 57) shows that on the irreducible branch the
 decision needs no separating parameter at all: a triple-resolvent test at one
 parameter, or matching-resolvent tests at three distinct parameters, decide
-radical solvability.  Part II is not formalized either.
+radical solvability.  Its Part III (batch 70) needs fewer matching tests:
+one compressed test at `t = 0`, or tests at any two distinct parameters,
+together with the triple test: a nonsolvable sextic has at most one
+false-positive matching parameter, never `t = 0`.  Parts II
+and III are not formalized either.
 
 ## Checking
 

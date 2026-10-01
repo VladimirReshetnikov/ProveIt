@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and fourteen independent mathematical research packages, unpacked
+One hundred and fifteen independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and fourteen reports, names the problem each one attacks
+numbers all one hundred and fifteen reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -27,10 +27,10 @@ records what each report claims rather than verifying it.
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 7 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
-| [`jacobian-conjecture/`](jacobian-conjecture) — fibers of Keller maps: Gao's five-dimensional map, arithmetic fibers and weighted rigidity of the three-variable counterexample | 3 |
+| [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
 | [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting | 3 |
-| **Total** | **114** |
+| **Total** | **115** |
 
 ## Later deliveries
 
@@ -191,7 +191,21 @@ to the Fabius drafts tree.  Batch 68 added a Part V to
 (Hall bottlenecks for normalization by the matching number) and a Part VI to
 [`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders)
 (a staircase of polynomial rarity below half size); its other three
-manuscripts went to the Fabius drafts tree.
+manuscripts went to the Fabius drafts tree.  Batch 69 brought nothing to
+this collection.  Batch 70 opened a fourth Jacobian-conjecture report,
+[`keller-map-dynamical-degrees`](jacobian-conjecture/keller-map-dynamical-degrees)
+(degree growth, shear spectra and arithmetic escape under iteration of the
+three-variable counterexample), and added a Part IV to
+[`cigler-conjecture-16-parity`](hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity)
+(Cigler's Conjecture 17, proved in sign-corrected form), a second proof of
+the depth-three classification to
+[`power-tower-derivative-term-counts`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts)
+(with a harmonic sign law), a Part III to
+[`sextic-block-resolvent-separators`](galois-theory-and-radicals/sextic-block-resolvent-separators)
+(the zero-parameter matching test) and a Part XII to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(rank-three ultra-log-concavity of matching supports); its sixth
+manuscript went to the Fabius drafts tree.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

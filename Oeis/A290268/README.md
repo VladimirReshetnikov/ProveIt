@@ -175,6 +175,16 @@ else in the region `D >= 1`, `M >= D`. Status by stratum:
    "wobbles" — e.g. `k=2, D=5` — never pass through zero but break
    alternation); all-terms-one-sign pairings.
 
+   *Note (30 September 2026).* This item records the July 2026 state; it
+   is no longer the open core on paper. The research-report collection's
+   [`power-tower-derivative-term-counts`](../../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts/README.md)
+   classifies the zeros at `D = 3` and `D = 4` for every `k` (its batch-42
+   addition: only the forced holes vanish), so the open region begins at
+   `D = 5`, and its batch-70 addition gives a second proof of `D = 3` (the
+   only zeros of `gamma(k,3,M)` are `M = k+13` with `k` odd) by a harmonic
+   sign law and positivity propagation in `k`. None of it is formalized;
+   see the correction under "Lean formalization".
+
 **Literature status** (searched July 2026): the conjecture is open; no
 published attack on A290268/A293239/A281434 exists. The closest proven result
 is Štampach (J. Approx. Theory 262 (2021), arXiv:2011.13808): sign-alternation
