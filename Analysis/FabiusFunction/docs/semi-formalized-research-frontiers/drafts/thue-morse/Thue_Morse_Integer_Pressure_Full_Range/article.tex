@@ -616,6 +616,17 @@ its filed intervals have strictly positive lower endpoints at every even degree 
 $2m$ and $6m$ for $2\le m\le128$, and for $m=24$ they enclose all 48 exact values of
 \path{finite/exact_reference_m024.json} at degrees $48$ to $142$ (both checked on filing).
 \end{ednote}
+% ed. (2026-10-01): the missing interval files can be reconstructed from the filed producer
+\begin{ednote}
+The missing interval files can be regenerated, byte for byte, with the filed producer
+\path{finite/producer_v1.cpp} and the run times recorded in
+\path{finite/production_manifest.json}: see the section ``Reconstructing the interval
+archives'' of \path{README.md}. On filing, \path{finite/replay_one.py} passed on a copy for
+$m=2,3,5,24,40,60,80$ (every state hash and both exact enclosures), and the regenerated
+interval files of these orders reproduce the hashes recorded for the delivered ones. The full
+set (110 orders, about 86~MB of interval files and 2.2~GB of transient traces, one to two
+hours of computation on one core) was not regenerated.
+\end{ednote}
 
 \section{Sharp endpoint, reproducibility and open questions}
 At $m=2$, the pressure eigenvalue $\mu(t)$ near one satisfies

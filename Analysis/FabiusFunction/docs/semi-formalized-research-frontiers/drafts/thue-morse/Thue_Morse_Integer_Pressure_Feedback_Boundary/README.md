@@ -74,6 +74,112 @@ The source ZIP is approximately 45MB because it preserves every per-order
 integer vector and error bound. Earlier delivered reports remain unchanged.
 
 
+## Reconstructing the trace archives (ProveIt, 2026-10-01)
+
+The five trace archives of the split delivery were not delivered (see the
+editorial amendments below). Their 68 files
+`data/certificates/parity_mNNN.json.trace.gz` (`m = 2..69`) are output of
+the filed producer `code/check_boundary_parity.cpp`, which uses only exact
+GMP integer arithmetic; the one run-dependent value it writes is
+`elapsed_seconds` in its JSON record. They can therefore be regenerated, and
+checked byte for byte against the SHA-256 of every delivered trace, which
+survives as `trace_sha256` in the filed record `data/trace_checks.json`.
+
+Requirements: a C++17 compiler, GMP with its C++ interface (`gmpxx`), and
+Python 3 built with classic zlib (see step 2). Work on a copy of this
+directory: the commands write `build/traces/` and `data/certificates/`.
+
+1. Build the producer and run it for every order:
+
+       cp -r Thue_Morse_Integer_Pressure_Feedback_Boundary /tmp/fb && cd /tmp/fb
+       mkdir -p build/traces
+       g++ -O3 -std=c++17 code/check_boundary_parity.cpp -lgmpxx -lgmp -o build/traces/check_boundary_parity
+       for m in $(seq 2 69); do
+         build/traces/check_boundary_parity $m build/traces/parity_m$(printf %03d $m).json
+       done
+
+   Each run writes `build/traces/parity_mNNN.json` (the interval record) and
+   `build/traces/parity_mNNN.json.trace` (the uncompressed trace). Do not
+   point the producer at `data/certificates/`: it would replace the filed
+   records' `elapsed_seconds`. With MinGW-w64 and static GMP libraries add
+   `-DGMP_STATIC_COMPILATION -static`; a MinGW build writes CRLF line
+   endings, which step 2 removes.
+
+2. Compare the records, compress the traces as delivered, and match the
+   recorded hashes:
+
+       python3 - <<'EOF'
+       import calendar, hashlib, json, struct, zlib
+       from pathlib import Path
+       assert 'ng' not in zlib.ZLIB_RUNTIME_VERSION, 'needs classic zlib, not zlib-ng'
+       rec = {r['m']: r['trace_sha256'] for r in json.loads(Path('data/trace_checks.json').read_text())['records']}
+       t0 = calendar.timegm((2026, 10, 1, 5, 45, 0))
+       for m in range(2, 70):
+           name = f'parity_m{m:03d}.json'
+           new = json.loads(Path('build/traces', name).read_text())
+           old = json.loads(Path('data/certificates', name).read_text())
+           assert {k: v for k, v in new.items() if k != 'elapsed_seconds'} == \
+                  {k: v for k, v in old.items() if k != 'elapsed_seconds'}, m
+           data = Path('build/traces', name + '.trace').read_bytes().replace(b'\r\n', b'\n')
+           c = zlib.compressobj(9, zlib.DEFLATED, -15)
+           tail = (bytes([2, 255]) + (name + '.trace').encode() + bytes(1) + c.compress(data) + c.flush()
+                   + struct.pack('<II', zlib.crc32(data), len(data)))
+           for t in range(t0, t0 + 900):
+               gz = bytes([31, 139, 8, 8]) + struct.pack('<I', t) + tail
+               if hashlib.sha256(gz).hexdigest() == rec[m]:
+                   Path('data/certificates', name + '.trace.gz').write_bytes(gz)
+                   print(m, 'JSON equal; trace.gz identical to the recorded hash')
+                   break
+           else:
+               raise SystemExit(f'm={m}: no gzip header time reproduces the recorded hash')
+       EOF
+
+   For every order this checks that the regenerated record equals the filed
+   one apart from `elapsed_seconds`, compresses the trace in the format the
+   delivery used (Python's `gzip` format: level 9, header name
+   `parity_mNNN.json.trace`, operating-system byte 255), finds the header
+   time stamp of the original (the seven traces tested on filing were
+   compressed between 05:52:05 and 05:53:34 UTC on 2026-10-01; the search
+   covers 05:45 to 06:00) by matching the recorded hash, and writes the identical file to
+   `data/certificates/`, where the archives were to be extracted. The time
+   stamp is the only value not determined by the filed files. The deflate
+   stream must come from classic zlib (tested with 1.3.1): the Windows builds
+   of CPython 3.14 link zlib-ng, whose level-9 output differs, and the script
+   stops. Without classic zlib, `gzip -9 -c build/traces/parity_mNNN.json.trace
+   > data/certificates/parity_mNNN.json.trace.gz` gives traces that the
+   checkers accept, with other `trace_sha256` values.
+
+3. Run the quick check:
+
+       python3 code/run_all.py
+
+   It ends with "All packaged certificate checks passed" (instead of "Trace
+   audit INCOMPLETE") and writes `data/rerun/trace_checks.json`; with the
+   identical files of step 2 its 68 records equal those of
+   `data/trace_checks.json`, `trace_sha256` included. `code/reproduce_all.py`
+   then recomputes all 68 enclosures a second time and compares them with the
+   traces; it links the system GMP and compares uncompressed bytes, so run it
+   on Unix (a MinGW build fails on its CRLF line endings).
+
+Time and size: the delivery records 202 s of producer time for the 68
+orders (17.5 s for `m = 69`; 30 s for `m = 69` here), so step 1 takes a few
+minutes on one core; step 2 takes seconds per order. The uncompressed traces
+take about 95 MB (about `16 m^3` bytes each; 5,352,690 bytes for `m = 69`)
+and the compressed ones about 45 MB (2,524,460 bytes for `m = 69`), the
+"approximately 45MB" of the paragraph above.
+
+Tested on filing (2026-10-01), on copies: g++ 16.1.0 (MinGW-w64 UCRT) with
+static GMP 6.3.0, Python 3.11.15 with zlib 1.3.1. The traces for
+`m = 2, 3, 10, 20, 35, 50, 69` were regenerated: all seven records equal the
+filed ones apart from `elapsed_seconds`; all seven compressed traces
+reproduce the recorded `trace_sha256` byte for byte (header times 05:52:05
+UTC for `m = 69` to 05:53:34 for `m = 2, 3, 10`); `code/check_trace_coverage.py`
+passed on them, with records equal to the filed ones. Steps 1 to 3 were run
+verbatim, restricted to `m = 2, 3, 20, 50` (step 3 then reports the audit
+incomplete for the other 64 orders). The full set and
+`code/reproduce_all.py` were not run.
+
+
 ## Editorial amendments (ProveIt, 2026-10-01)
 
 Made in the editorial pass after batch 72 of `docs/incoming/` (see
@@ -103,7 +209,7 @@ filed; neither was a duplicate archive.
 
 - `article.tex`: an unnumbered environment `ednote` ("Editorial note (ProveIt,
   2026-10-01)") is defined after the theorem environments (no counter
-  changes). Four notes:
+  changes). Five notes:
   - after Theorem 1.1 and its paragraph: `E_{m,m} > 0` is re-proved as the
     case `r = m` of Theorem 1.1 of
     `../Thue_Morse_Integer_Pressure_Full_Range/`, so it does not hang on the
@@ -119,6 +225,9 @@ filed; neither was a duplicate archive.
     `51 <= m <= 67` the intervals are the only finite evidence; `E_{m,m} > 0`
     is certified for `m <= 128` by the filed intervals of
     `../Thue_Morse_Integer_Pressure_First_Negative_Data/`;
+  - right after it (added later the same day): the traces can be regenerated
+    byte for byte with the filed producer (see "Reconstructing the trace
+    archives" above), as tested on filing for seven orders;
   - after the open directions: pressure positivity for `1 <= r < 2m` is proved
     in `../Thue_Morse_Integer_Pressure_Full_Range/`; the table of first
     negative degrees agrees with
@@ -131,7 +240,7 @@ filed; neither was a duplicate archive.
     `../Thue_Morse_Integer_Pressure_Positive_Triangle/`).
 - `article.pdf`: rebuilt from the amended source with three `pdflatex` passes
   (MiKTeX 26.2, pdfTeX 1.40.29), on a copy: 9 A4 pages (8 as delivered),
-  383,155 bytes; all 21 fonts embedded, none Type 3; the final log has no
+  383,935 bytes after the fifth note (383,155 before it); all 21 fonts embedded, none Type 3; the final log has no
   error, overfull or underfull box, undefined or multiply defined reference,
   duplicate destination, or rerun request. The pages carrying the notes were
   rendered and inspected.
@@ -142,7 +251,11 @@ filed; neither was a duplicate archive.
   audit and `code/reproduce_all.py` (which also needs g++ and GMP) cannot run
   here; `data/trace_checks.json` is the delivered record of the audit as run
   before the split. If the five archives are delivered later, they belong in
-  this directory, filed in a commit of their own.
+  this directory, filed in a commit of their own. They need not be: the
+  traces can be regenerated from the filed producer and matched byte for byte
+  against the recorded hashes, as described in "Reconstructing the trace
+  archives" above (tested on filing for `m = 2, 3, 10, 20, 35, 50, 69`). No
+  program was changed for it.
 - `code/check_trace_coverage.py` and `code/run_all.py`: as delivered, a
   missing trace was skipped in silence, `run_all.py` printed "All packaged
   certificate checks passed" after auditing no trace at all, and it overwrote
@@ -176,5 +289,5 @@ filed; neither was a duplicate archive.
 - `build_local.sh`: kept as delivered. It sets `TEXMF` to the Debian paths
   `/usr/share/texlive/texmf-dist` and `/usr/share/texmf`, writes `build/` here
   and copies the result over the filed PDF: build on a copy.
-- `README.md`: the page count and the retired ledger under "Main files", and
-  this section.
+- `README.md`: the page count and the retired ledger under "Main files", the
+  section "Reconstructing the trace archives", and this section.

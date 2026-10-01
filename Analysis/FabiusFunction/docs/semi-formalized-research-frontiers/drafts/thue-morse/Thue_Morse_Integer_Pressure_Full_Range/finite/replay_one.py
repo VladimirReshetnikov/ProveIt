@@ -36,5 +36,10 @@ reference=json.loads((root/'independent_numeric_index.json').read_text())['cases
 assert reference['m']==args.m
 canonical=json.dumps(fresh['pressure_bounds'],sort_keys=True,separators=(',',':')).encode()
 assert hashlib.sha256(canonical).hexdigest()==reference['pressure_bounds_canonical_sha256']
-assert hashlib.sha256(Path(str(audit_output)+'.radii.gz').read_bytes()).hexdigest()==reference['fresh_radii_sha256']
+# ed. (2026-10-01): zlib's gzopen writes the operating-system byte of the gzip header
+# (offset 9) as 10 on Windows and 3 on Unix; the recorded hashes are of Unix output, so
+# that one byte is set to 3 before hashing (as delivered, this check failed for every m
+# on Windows although the compressed radii were otherwise identical).
+_ed_radii=bytearray(Path(str(audit_output)+'.radii.gz').read_bytes());assert _ed_radii[:2]==bytes([31,139]);_ed_radii[9]=3
+assert hashlib.sha256(bytes(_ed_radii)).hexdigest()==reference['fresh_radii_sha256']
 print(f'm={args.m}: all {count} states match; both exact pressure enclosures pass.')
