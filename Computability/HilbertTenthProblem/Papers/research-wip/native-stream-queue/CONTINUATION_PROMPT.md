@@ -64,18 +64,22 @@
 > proofs with exact source audits, not Lean formalizations.
 
 The latest matrix packet is the
-[unsquared outer product](group_projective_unsquared_outer_product.md),
-after the [strong-coefficient successor](group_projective_strong_coefficient.md),
-after [two input-field projections](group_projective_computed_input_fields.md)
-and [checksum-field projection](group_projective_computed_checksum_field.md).
-The illustrative ten-letter example is **261 certificate / 287 polynomial
-operations, nine equations, 43 positive witnesses, exact degree 2376**.
-Its SOS alternative has the same operation count at degree 3368.
+[shifted X quotient](group_projective_shifted_X_quotient.md), after the
+[factored native index](group_projective_factored_native_index.md).
+The illustrative ten-letter example is **257 certificate / 280 polynomial
+operations, eight equations, 42 positive witnesses, exact degree 4298**.
+Other switch choices give281/degree3594,283/degree2171 and284/degree1819.
+The factored-index parent retains286/degree1211 and287/degree995 with44
+witnesses; its four-field no-mask/supplied-P option gives293/degree802
+with46 witnesses. These are operation/degree tradeoffs, not an optimality
+claim. Earlier same-cost SOS alternatives remain reproducible.
 The numerical universal alphabet remains uninstantiated; these do not
 replace the separate 75/88 frontier above. The new
-[ten-dimensional mortality interface](group_affine_guarded_mortality10.md)
-has an affine two-operation input and unrestricted reset words, but no
-uniform Diophantine word/history certificate yet.
+[nine-dimensional mortality interface](group_affine_guarded_mortality9.md)
+has an affine two-operation input, unrestricted reset words, a paid
+selected-word circuit for each fixed duration, and an exact uniform
+existence reduction to the named paired-vector compiler. Certification
+of a separately supplied arbitrary mortality word remains distinct.
 
 The previous cone/singleton proposal is now implemented and proved in
 merge31: positive flags avoid their two explicit decodings. Its root
@@ -456,6 +460,45 @@ For epsilon=chi=1 the new degree is110m+616. The four-field analogue
 and earlier coefficient/partition variants remain possible separate
 degree investigations, not part of this six-field packet.
 
+The [factored native index](group_projective_factored_native_index.md)
+removes four additions from both the four-field and six-field variants.
+With old padded inputs A=16H+12,B=16M+10 and F3=16Z+8, the computed
+checksum gives the exact integer identity
+r=(q-1)[A+1+(q+1)(B+(q-1)F3)]. Change the existing first padding
+offset12 to13, delete five private field additions and the old Horner
+chain, and compute this factorization in3M4A instead of3M8A. The
+source audits every deleted consumer; no physical port comparison
+remains. Every retained residual and the entire final polynomial are
+identical on all supplied assignments. Certificate cost is nowC-1;
+four-field SOS costsC+34-3chi with unchanged degree22nu L+54,
+and six-field product costsC+28-3chi with unchanged degree
+nu(27L+m+15)+46. The six-field both-options example is257/283,
+9 equations,43 witnesses,degree2376.
+
+The [shifted quotient](group_projective_shifted_X_quotient.md) then uses
+the paid factor S=packed_top_sum in r=(q-1)S. For all positive supplied
+assignments q>=16,S>0. Replace X=q*w_old by X=q*(w+S), repurposing
+the old r+bound_beta addition. Delete bound_beta and its comparison:
+X-r=qw+S>0 holds before typing and q|X is retained. The positive
+forward map is w_old=w+S,bound_beta=qw+S. At every parent zero its
+native theorem gives X=2^(2r+1),q<r, so X/q>r>S; the inverse
+w=w_old-S is strictly positive. This is a positive zero-set bijection.
+
+Under this shift, the paid T² auxiliary coefficient has smaller degree
+than the earlier K=Delta(f²-1) coefficient. Restore T² at the same
+gate cost; retain delta=T²-K as an outer comparison. The lifted unit
+residual changes by N0*N1*Nk*Nl*delta*(V²-y²), so the zero-set maps
+remain exact. The certificate staysC-1, with9-chi comparisons,
+m+27-chi witnesses, and product polynomialC+25-3chi. Its exact degree
+is nu(44L+9m+135)+44. Write Q=nuL,A0=nu(4L+m+15): X*=r*,
+a*=s*q*r*, c*=k*s*q*, unit degree5A0+8Q+32, and the unique largest
+outer residual is now-K with degree2A0+6. Every other outer residual
+has degree at most three. The final product degree is9A0+8Q+44.
+The ten-letter switch table (mask,computedP) is (1,1):280/4298/42w,
+(0,1):281/3594/42w,(1,0):283/2171/43w,(0,0):284/1819/43w.
+All source/default/proof reviews passed. Do not delete q|X or assume
+the unstrengthened native bound follows without a replacement proof.
+
 The [standalone X-divisibility obstruction](native_binary_X_divisibility_obstruction.md)
 rejects computing X from r+bound_beta while erasing w and X=wq.
 The apparent55-operation selector /93-operation SOS admits q=48,
@@ -509,6 +552,37 @@ Potential next work is a cheaper guard/physical dimension or a paid
 uniform scalar-word history, not an unguarded regular-language tensor
 whose missing transitions would themselves create zero products.
 
+The [nine-dimensional successor](group_affine_guarded_mortality9.md)
+tracks (1,3f,G),G=n_T-2+3I directly. Its control matrices are
+C_T=[1,0,0;0,1,0;1,1,1], C_F=[1,0,0;3,1,0;0,0,1], with start
+(1,0,-2). The varying block t*C_T still uses only 0,1,t; all coefficient-3
+arithmetic occurs in fixed matrix data. The same scalar domination and
+rank-one reset theorem prove unrestricted9D mortality. A Hankel minor
+of determinant-9 makes three states minimal for this exact guard series,
+not for every guard or mortality representation.
+
+For n selected fixed letters over an s>=2 paired-SL2 table, positive
+branch index j and a slack with j+slack=s+1 pay the index range. Integer interpolation
+of s! times the eight entries pays selection; one positive common
+height shifts four signed intermediate states. Only the two first
+coordinates are tested at the last step. For n>=2 the literal graph
+cost is(16n-8)s+9n-11, with6n-3 witnesses and5n-2 comparisons;
+its SOS costs(16n-8)s+24n-20, degree at most2s. For n=1 the counts
+are 8s-1 graph,2 witnesses,3 equations,8s+5 SOS. Two terminal
+zero-comparison outputs are reused directly as residuals. This is
+duration-dependent, not a uniform circuit obtained by declaring n variable.
+
+For the compatible universal t=1 mod4 and blocks with diagonal1/lower-left0
+mod4, a vanishing first coordinate at(-1,t) forces the whole vector=e2:
+a=bt and determinant one give b(td-c)=1, while b=1 mod4 selects +1. Thus mortality
+existence projects exactly onto the paid paired-vector endpoint compiler.
+The note imports the current factored-index257/283 example after explicit
+macro reflection; the shifted-X successor also applies by equivalence.
+There is no extra guard-history charge for this existence predicate,
+but this does not verify an arbitrary supplied mortality word. Compatible
+input congruences, subgroup hypotheses and the padded-program margin
+remain explicit. Independent source/proof/default reviews passed.
+
 The primary75/88 frontier remains unchanged. An [exact input-translation
 obstruction](complete75_input_bound_absorption_obstruction.md) rejects the
 specific apparent87 shortcut that absorbs2d*x into alpha: x shifts by
@@ -534,6 +608,24 @@ typing; a>2^(R(R+1)/2)/3 then puts psi_2(v) and u below a, so the
 congruence is exact. Every fixed instance has O(log N) inputs up to N
 and misses an explicit infinite family. It cannot represent all positive
 integers. No converse or materialized full parent tuple is claimed.
+
+The [independent-quotient87 candidate](complete75_independent_gamma87_alias.md)
+deletes gamma_sum and uses positive sigma directly as the main quotient.
+Its cost is87=47M+40A, degree151,19 witnesses, but full soundness is
+UNRESOLVED. Parent zeros map positively by sigma_new=rho+sigma_old;
+the exact inverse sigma_old=sigma_new-rho may be negative. Main recovery
+still works, but input v<R no longer follows. Odd input indices obey
+v=u modDelta; even indices obey v*A=u modDelta, so parity is not automatic.
+
+For odd u and j<R, a period ell of 2 modulo H with gcd(2Delta,ell)|(u-j) gives
+arbitrarily large odd v via CRT: v=u mod2Delta,v=j mod ell. Then
+W=2^j,kappa=psi_A(v),mu=chi_A(v) have positive input quotients and
+rho>gamma. A fresh R=11 half-binomial main/ratio/strong component has
+verified period 12288046457816218188 and gcd 6, admitting u=9,j=3. It is
+NOT a full compiler zero: R=11 violates q>=16,R>=3q+1. The actual
+packed-mask, transport and positive width constraints are the next
+obligation. Do not call87 established or refuted without closing that
+full interface. The packet's component proof and default replay pass.
 
 The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
 uniform four-witness representation for any two fixed H^r generators,

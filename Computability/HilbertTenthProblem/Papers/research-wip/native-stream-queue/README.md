@@ -357,6 +357,34 @@ C+38-3chi polynomial of degree22nu L+54; the strong-coefficient replacement
 would increase its degree. These are complete fixed-table formulas with
 an abstract universal alphabet, not improvements to the numerical75/88 bounds.
 
+The [factored native index](group_projective_factored_native_index.md)
+then removes four literal additions by evaluating the same packed index
+directly. Every retained residual and the final polynomial are identical.
+The six-field certificate costsC-1 and its polynomial costsC+28-3chi,
+with the preceding equations, witnesses and degree. The illustrative
+table becomes257/283 at degree2376, or258/284 at degree1944 without mask reuse.
+
+The [shifted native quotient](group_projective_shifted_X_quotient.md)
+uses the paid factor S in r=(q-1)S to set X=q(w+S). Thus X-r=qw+S>0
+without a separate bound witness. Its positive zero sets correspond
+bijectively to the parent, retaining q divides X. The current six-field
+bounds are **C-1 certificate operations,9-chi equations,m+27-chi positive
+witnesses and C+25-3chi product operations**, of exact degree
+**nu(44L+9m+135)+44**. The ten-letter illustration has:
+
+| Mask reuse | Computed P | Certificate / polynomial | Equations / positive witnesses | Degree |
+|---|---|---:|---:|---:|
+|Yes|Yes|257 / 280|8 / 42|4298|
+|No|Yes|258 / 281|8 / 42|3594|
+|Yes|No|257 / 283|9 / 43|2171|
+|No|No|258 / 284|9 / 43|1819|
+
+The factored parent retains lower-degree choices:286 operations at
+degree1211 or287 at degree995, each with44 positive witnesses. Its
+four-field option includes293 operations at degree802 with46 witnesses.
+These complete fixed-table bounds still use an uninstantiated universal
+numerical alphabet; the separate75/88 bounds are unchanged.
+
 Deleting the output bound outright is [unsound](group_projective_output_bound_obstruction.md):
 a fixed six-shear table with an empty genuine endpoint language acquires
 positive solutions at every input. Noncanonical individual output lanes
@@ -382,6 +410,19 @@ matrix for an inherited s-letter alphabet. This trades dimension for
 one loader operation; uniform word selection and history arithmetic remain
 unpaid, and the numerical universal alphabet remains uninstantiated.
 
+The [nine-dimensional successor](group_affine_guarded_mortality9.md)
+reduces the guard to three coordinates while retaining the two-operation
+loader. For a selected duration n>=2 over s fixed paired matrices, its
+positive certificate costs(16n-8)s+9n-11 and its polynomial costs
+(16n-8)s+24n-20, with6n-3 witnesses and degree at most2s. The n=1
+polynomial costs8s+5. Letter selection and all intermediate states are paid.
+For the compatible subgroup and input congruence, unrestricted mortality
+is also exactly the existence predicate of the four-history compiler.
+The packet imports the named257/283 factored-index illustration; composing
+with the shifted-quotient theorem gives the280-operation illustration.
+This uniform existence reduction does not certify a separately supplied
+arbitrary mortality word or fix its duration and reset positions.
+
 The apparent one-gate reduction below88 obtained by absorbing the ordinary
 input width is [provably unsound](complete75_input_bound_absorption_obstruction.md).
 An exact positive-witness input translation makes the modified compiler
@@ -400,6 +441,15 @@ fixed admissible instance consequently has only O(log N) accepted inputs
 up to N and explicitly omits infinitely many positive inputs. No converse
 or exact accepted-set classification is claimed; the valid a+1 modulus
 still costs89 operations.
+
+The [independent main/input quotient candidate](complete75_independent_gamma87_alias.md)
+is **unresolved**, not an established87-operation universal polynomial.
+Deleting gamma=rho+sigma gives87 operations at degree151 and preserves
+every positive parent zero, but loses the input-index bound v<R.
+A conditional CRT alias and a positive main component at R=11 expose
+that missing argument. R=11 lies outside the full compiler range
+R>=3q+1 with q>=16. No full87 false input or reverse proof is known;
+the packet neither proves nor refutes the complete relaxation.
 
 The [native X-divisibility audit](native_binary_X_divisibility_obstruction.md)
 shows that computing X only from its positive bound breaks standalone
@@ -436,6 +486,10 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Shifted native quotient](group_projective_shifted_X_quotient.md) | Six-field C-1 certificate,9-chi equations,m+27-chi witnesses, product C+25-3chi, degree(1+chi)(44L+9m+135)+44. Illustrative257/280,8 equations,42 witnesses,degree4298. | Positive bijection retains q divides X. Supplied-P and factored-parent options trade more gates for lower degree; numerical75/88 remain separate. |
+| [Factored native index](group_projective_factored_native_index.md) | Four additions removed by an exact polynomial identity. Six-field C-1 certificate and C+28-3chi polynomial; illustrative257/283,degree2376. | Every residual, witness and positive zero is unchanged. Four-field option also saves four additions. |
+| [Nine-dimensional mortality and selected durations](group_affine_guarded_mortality9.md) | Guard dimension drops to3 with loader2. Fixed selected duration n>=2 has polynomial(16n-8)s+24n-20,6n-3 positive witnesses,degree at most2s. | Uniform existence projects to the named paid four-history compiler under the subgroup/input congruence. A separately supplied arbitrary mortality word is not certified by that projection. |
+| [Independent-quotient87 candidate](complete75_independent_gamma87_alias.md) | Literal87-operation,degree151 relaxation and positive forward map from88; conditional input aliases identify the lost v<R bound. | Full87 soundness is unresolved. The R=11 main component is outside the full compiler range and is not a full counterexample. |
 | [Unsquared outer product](group_projective_unsquared_outer_product.md) | Same six-field C+32-3chi polynomial cost and positive zeros, degree(1+chi)(27L+m+15)+46. Illustrative287/degree2376, or288/degree1944 without mask reuse. | Uses Punit*(1+SOSouter)-1 with every outer residual retained. Four-field variant unchanged; numerical75/88 remain separate. |
 | [Retained strong coefficient](group_projective_strong_coefficient.md) | Six-field C+3 certificate,10-chi equations,m+28-chi witnesses, SOS polynomial C+32-3chi, degree(1+chi)(38L+2m+30)+52. Illustrative261/287,SOS degree3368. | The strong equality remains explicit; same positive zeros. Four-field checksum variant is unchanged. Universal numerical alphabet remains uninstantiated. |
 | [Computed checksum field F0](group_projective_computed_checksum_field.md) | Computes a positive F0 on the normalized checksum-one branch, removing one multiplication and one witness. | Same ordinary-input relation, not erasure on every parent tuple. Four-field polynomial C+38-3chi has degree22(1+chi)L+54. |

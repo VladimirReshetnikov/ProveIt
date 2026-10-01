@@ -272,7 +272,7 @@ then chooses the already normalized positive-checksum branch, saving one
 multiplication and witness. Replacing the auxiliary norm coefficient by
 the [retained strong coefficient](../research-wip/native-stream-queue/group_projective_strong_coefficient.md)
 lowers the six-field degree by eight while its defining strong comparison
-remains paid. The final six-field bounds are C+3 certificate operations,
+remains paid. At that stage the six-field bounds are C+3 certificate operations,
 10-chi equations,m+28-chi witnesses and C+32-3chi SOS operations, at degree
 (1+chi)(38L+2m+30)+52. The ten-letter example with both options is
 261/287,9 equations,43 witnesses,SOS degree3368; without mask reuse it is
@@ -288,6 +288,27 @@ and2760 at the same arithmetic cost. The four-field checksum option remains C+3,
 12-chi equations,m+30-chi witnesses,C+38-3chi SOS operations and degree
 22(1+chi)L+54. These are complete fixed-table formulas; no numerical
 universal matrix alphabet or improvement to75/88 is asserted.
+
+The [factored native index](../research-wip/native-stream-queue/group_projective_factored_native_index.md)
+saves four additions by an exact polynomial identity, without changing
+any witness, comparison or positive zero. Both variants cost C-1 as
+certificates. The six-field product costs C+28-3chi, giving257/283 at
+degree2376 for the ten-letter example with both options.
+
+The [shifted native quotient](../research-wip/native-stream-queue/group_projective_shifted_X_quotient.md)
+then uses the computed factor S in r=(q-1)S to set X=q(w+S), proving
+X-r=qw+S>0 without a separate comparison. Divisibility q|X remains paid,
+and the old and new positive zeros correspond bijectively. Its complete
+six-field counts are C-1 certificate operations,9-chi equations,
+m+27-chi positive witnesses and C+25-3chi final product operations,
+with exact degree(1+chi)(44L+9m+135)+44. For the ten-letter table:
+both options give257/280,8 equations,42 witnesses,degree4298;
+no mask reuse gives258/281 at degree3594. Leaving P supplied gives
+257/283 at degree2171 with mask reuse or258/284 at degree1819 without it,
+with9 equations and43 witnesses in both cases. The factored parent keeps
+286/degree1211 and287/degree995 choices with44 witnesses, and its
+four-field option includes293/degree802 with46 witnesses. These are
+parameterized compiler results;75/88 remain the numerical universal bounds.
 
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with
@@ -317,6 +338,21 @@ the common zero word. For an inherited s-letter alphabet, s+1 matrices
 are fixed and one varies. The dimension/loader tradeoff is exact; selected
 word and matrix-history arithmetic remain unpaid.
 
+The [9D successor](../research-wip/native-stream-queue/group_affine_guarded_mortality9.md)
+stores the same guard in three coordinates and keeps the affine loader2.
+For n>=2 selected letters over a fixed s-letter paired alphabet, it pays
+the branch ranges, integer lookup and signed intermediate states in
+(16n-8)s+9n-11 certificate operations, or(16n-8)s+24n-20 polynomial
+operations, with6n-3 positive witnesses and degree at most2s. The n=1
+polynomial costs8s+5. These circuits depend on the fixed duration n.
+Separately, the ambient modulo-four subgroup and compatible input
+congruence turn both projective zeros into the exact paired endpoint e2.
+Thus unbounded mortality existence projects to the existing uniform
+four-history certificate, explicitly importing the257/283 factored-index
+illustration. The shifted quotient composes to give280. This does not
+certify an arbitrary supplied mortality word or its individual reset
+positions, and no numerical universal alphabet is materialized.
+
 The [native divisibility obstruction](../research-wip/native-stream-queue/native_binary_X_divisibility_obstruction.md)
 shows why X=wq cannot simply be replaced by its positive bound in the
 standalone selector. The resulting55-operation component has a full
@@ -341,6 +377,16 @@ CRT outer construction extends through all positive Pell witnesses at
 every positive input. The relaxed source therefore represents all positive
 integers. This rejects that rewrite, not other potential87-operation
 equations;75 and88 remain the established numerical bounds.
+
+The [independent main/input quotient relaxation](../research-wip/native-stream-queue/complete75_independent_gamma87_alias.md)
+has a different, **unresolved** status. Deleting gamma=rho+sigma gives
+87 operations at degree151 with19 positive witnesses and a positive
+forward map from88. The missing dominance inequality previously proved
+v<R. A conditional CRT lemma and a positive main/first component at R=11
+show how input-Pell aliases can occur without that bound. But the full
+compiler requires R>=3q+1 with q>=16; the component is therefore not a
+full87 zero or a rejected-input counterexample. Neither universality
+nor failure of the complete87 relaxation is established.
 
 The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
 gives a uniform four-positive-witness certificate for two fixed generators

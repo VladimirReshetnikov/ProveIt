@@ -151,7 +151,7 @@ universal Diophantine equations by James P. Jones and coauthors:
   and [checksum field](Papers/research-wip/native-stream-queue/group_projective_computed_checksum_field.md)
   then saves seven polynomial operations and three witnesses. Using the
   [retained strong coefficient](Papers/research-wip/native-stream-queue/group_projective_strong_coefficient.md)
-  lowers the six-field degree by eight at unchanged cost. The latest bound
+  lowers the six-field degree by eight at unchanged cost. At that stage the bound
   for the same options is **3m+3h+p+213+f_flow-3min(h,3)** polynomial
   operations,9 equations,m+27 witnesses and SOS degree156m+872. The illustrative
   table is **261 certificate / 287 polynomial operations**,43 witnesses,
@@ -161,8 +161,24 @@ universal Diophantine equations by James P. Jones and coauthors:
   operation/witness counts. Its degree is **110m+616** when both options are enabled,
   giving **2376** in the example, or **1944** without mask reuse. The
   previous degree3368/2760 polynomials remain SOS alternatives; the
-  four-field variant is unchanged. The universal
-  numerical alphabet is still uninstantiated, so75/88 remain unchanged.
+  four-field variant is unchanged.
+  The [factored native index](Papers/research-wip/native-stream-queue/group_projective_factored_native_index.md)
+  removes four additions without changing the polynomial, taking the example
+  to257/283 at degree2376. The
+  [shifted native quotient](Papers/research-wip/native-stream-queue/group_projective_shifted_X_quotient.md)
+  removes a bound witness and comparison through a positive bijection,
+  saving three more polynomial operations. Write
+  C=3m+3h+p+185+f_flow-3min(h,3)-epsilon, L=m+18 or2m+10 according to
+  mask reuse epsilon, and nu=1+chi for the computed-P option chi. Its
+  six-field bounds are **C-1 certificate operations,C+25-3chi polynomial
+  operations,9-chi equations and m+27-chi positive witnesses**, at degree
+  **nu(44L+9m+135)+44**. The ten-letter example with both options is
+  **257/280 operations,8 equations,42 witnesses,degree4298**. Disabling
+  mask reuse gives281/degree3594; retaining P gives283/degree2171 with
+  mask reuse or284/degree1819 without it. Lower-degree factored-parent
+  options remain286/degree1211 and287/degree995 with44 witnesses, or
+  four-field293/degree802 with46 witnesses. The universal numerical
+  alphabet is still uninstantiated, so75/88 remain unchanged.
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
   represent universal membership, but unrestricted mortality accepts every
@@ -175,6 +191,16 @@ universal Diophantine equations by James P. Jones and coauthors:
   arbitrary repetition. All other matrices are fixed. This saves one loader
   operation relative to6D by increasing dimension; uniform word/history
   arithmetic is not included.
+- The [nine-dimensional successor](Papers/research-wip/native-stream-queue/group_affine_guarded_mortality9.md)
+  retains that loader with a three-coordinate guard. For a fixed selected
+  duration n>=2 over s letters, its paid positive certificate costs
+  (16n-8)s+9n-11 and its polynomial costs(16n-8)s+24n-20, with6n-3
+  witnesses and degree at most2s; n=1 costs8s+5 polynomial operations.
+  Under the compatible subgroup and input congruence, its unrestricted
+  mortality predicate reduces exactly to the paid uniform four-history
+  compiler. The packet imports the257/283 factored-index example, and the
+  shifted-quotient theorem further gives280 by composition. This is an
+  existence reduction, not verification of an arbitrary supplied mortality word.
 - The [first-norm ratio audit](Papers/research-wip/native-stream-queue/complete75_first_norm_ratio_obstruction.md)
   rejects an apparent87-operation rewrite: after losing the upper ratio
   slack, an explicit CRT and positive Pell construction supplies zeros for
@@ -187,6 +213,13 @@ universal Diophantine equations by James P. Jones and coauthors:
   rejects a standalone55-operation selector at q=48 after dropping
   q divides X. That scale is excluded by the stronger joined matrix
   interface; neither result is a general arithmetic lower bound.
+- The [independent-quotient87 candidate](Papers/research-wip/native-stream-queue/complete75_independent_gamma87_alias.md)
+  remains **unresolved**. Deleting gamma=rho+sigma gives a literal87-operation,
+  degree151 relaxation containing all parent zeros, but the input-index bound
+  v<R is lost. A conditional alias and positive main component at R=11
+  expose the proof gap; R=11 is outside the full compiler range R>=3q+1,
+  q>=16. This neither proves nor refutes the full87 candidate and supplies
+  no full counterexample. The established numerical bounds remain75/88.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree
