@@ -41,10 +41,12 @@ and [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [U15 binary-tag route](Papers/research-wip/native-stream-queue/neary_woods_universal_tag557.md)
-now lowers the alternative machine construction to
-**483 certificate /557=351M+206A polynomial operations**,25 comparisons,
-69 positive witnesses and five positive program parameters. The full
+The explicit [U15 tag successor](Papers/research-wip/native-stream-queue/neary_woods_universal_tag_chain.md)
+now gives **454 certificate /528=322M+206A polynomial operations**,
+25 comparisons,69 positive witnesses and four positive program parameters.
+A131-multiplication fixed-exponent schedule saves29 operations from the
+[557-operation baseline](Papers/research-wip/native-stream-queue/neary_woods_universal_tag557.md), and the
+fixed frame coefficient E also bounds the duration. The full
 ordinary-input, exact-counter and fixed-production interfaces are proved.
 Huge fixed numerals have exact finite recipes; every use is charged.
 Its total degree is at most496070855427922989652813345268287100, so

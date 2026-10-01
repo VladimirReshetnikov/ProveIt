@@ -542,15 +542,28 @@ each r.e. set has an effective valid positive tuple. Source/proof/fresh
 replays and two independent final reviews passed, including multistep CTS
 traces and17,898 directly audited actual production letters.
 
-Next: shorten the fixed-D addition chain before changing any machine
-encoding. A bounded search has an explicit131-multiplication chain
-(prospective528 polynomial), but its complete successor source still
-needs integration and review. The program bound may also reuse the
-existing E coefficient: E is sentinel(PREFIX MIDDLE TAIL) with data
-and counter omitted, so E>=fixed encoded length>=b_S. Substituting
-bound=E preserves a valid universal slice by arbitrarily long dyadic
-padding and would remove one free program parameter at the same cost.
-Keep the reviewed557 baseline until these refinements are committed.
+The [fixed-exponent successor](neary_woods_universal_tag_chain.md)
+implements and verifies those two refinements. Its explicit131-multiplication
+schedule computes exactly q^D over every integer q, saving29M. Every
+exponent is a sum of earlier exponents, and every paid node is used.
+The four-parameter source specializes program_bound=program_E: E is
+sentinel(PREFIX MIDDLE TAIL) with data and counter omitted, hence
+E>=fixed encoded length>=b_S. Arbitrarily large dyadic n>E preserve
+the represented language and the exact counter. This is a valid-slice
+specialization, not a bijection with all older witness tuples.
+
+The successor costs**528=322M+206A**,454certificate,69w25eq and four
+program parameters, with the same degree upper bound. Raw606/88w and
+old-unit531/69w are retained. All three complete DAGs have exact parent
+identities after the program substitution; modular full-output checks
+supplement the exponent proof. The557 source remains the baseline.
+Neither chain optimality nor exact total degree is claimed.
+
+Next fixed-machine lead: U9's bit pairs A3 A1 versus A1 A3 have16
+physical symbols, so four-bit binary coding would give64n+b and
+counter128n. Actual table metadata suggests fewer states and a smaller D;
+its interior cut, valid simulation slice and full arithmetic composition
+must be reviewed separately before reporting another universal bound.
 
 The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
 is separately preserved: remove the extra Z from C=q−F−Z−alpha−2dx,
