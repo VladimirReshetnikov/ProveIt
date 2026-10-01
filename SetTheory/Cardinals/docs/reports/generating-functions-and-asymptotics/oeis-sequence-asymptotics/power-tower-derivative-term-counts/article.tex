@@ -68,6 +68,9 @@
 % accompanied by its explicit product expansion -- and the merge fixes one form.
 \newcommand{\fall}[2]{#1^{\underline{#2}}}
 \newcommand{\rise}[2]{#1^{\overline{#2}}}
+% Batch 72A reciprocal notes: the two sibling reports, by directory name.
+\newcommand{\sibPTE}{\texttt{power-\allowbreak{}tower-\allowbreak{}exponent-\allowbreak{}supports}}
+\newcommand{\sibAUD}{\texttt{a290268-\allowbreak{}unbounded-\allowbreak{}deficits}}
 
 \lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
  frame=single,framerule=0.3pt,rulecolor=\color{black!25},keepspaces=true,
@@ -117,7 +120,8 @@ infinite families of offsets of the triangle --- every offset $\mu(p-1)$ for
 primes $p>\mu$ under explicit conditions, and every prime $p$ for $\mu=2,4$,
 every odd one for $\mu=3,5$ --- and
 give exact $p$-adic valuations on divisibility progressions; the zero
-classification itself stays open.  For $x^{x^2}$ the conjectured expression is
+classification itself stays open.  [Added 1 October 2026, batch 72A: the sibling report \sibPTE{} proves $a(n)\sim n^2/2$,
+that is $Z(n)=o(n^2)$, without an effective threshold.]  For $x^{x^2}$ the conjectured expression is
 proved to be an upper bound, every predicted cancellation is explained, and
 $a(n)=\Theta(n^2)$ is established, but the conjectured leading constant is not;
 a later addition to that part (Section~\ref{xxb:dc:sec:intro}) proves the
@@ -128,6 +132,9 @@ third (Section~\ref{xxb:d56:sec:intro}) proves deficits five and six, so that
 deficits seven and above are now open, reduces every fixed deficit to a
 finite rectangle of singly exponential size, and derives an explicit lower
 bound $3n^2/8+(n/2)\log n-(n/2)\log\log n-5n/4$ for $n\ge e^{10}$.
+[Added 1 October 2026, batch 72A: the same sibling report proves $a(n)\sim n^2/2$ here too, so the
+leading constant is $\tfrac12$; the proof is ineffective, and $3/8$ remains the
+leading constant of every explicit lower bound.]
 For $x^{x^x}$ two explicit polynomial bounds give $a(n)=\Theta(n^3)$
 unconditionally, while the sharper equivalent $a(n)\sim\tfrac23n^3$ is not
 proved --- and there, unlike the other two, the obstruction is not a
@@ -200,6 +207,13 @@ has been dropped, weakened or strengthened in the merge.
  cutoffs at every deficit, the other derives explicit pointwise and
  summatory bounds on the term count.  They use the same depth coordinates,
  with the renamings of Table~\ref{xxb:d56:tab:notation}.
+\item {}[Added 1 October 2026, batch 72A: two sibling reports, at the paths
+ \texttt{../}\sibPTE{} and \texttt{../}\sibAUD{} relative
+ to this article's directory, build on it without being part of it.  The
+ first proves $a(n)\sim n^2/2$ for $x^x$ and for $x^{x^2}$, ineffectively, as
+ the cases $a=1,2$ of a theorem on $x^{x^a}$; the second studies the
+ coefficients of $x^{x^2}$ when the logarithmic deficit grows with $n$.
+ Dated notes of this date point to them where they bear on the text.]
 \end{itemize}
 
 The parts keep the notation of their sources, which is not uniform across them.
@@ -709,6 +723,10 @@ We prove, for all $n\ge0$,
 \end{equation}
 Consequently $a(n)=\Theta(n^2)$. This does not establish the sharper claim
 $a(n)\sim n^2/2$; that claim is equivalent to $E(n)=o(n^2)$.
+[Added 1 October 2026, batch 72A: the sharper claim is proved, without an effective
+threshold, in the sibling report \sibPTE{} (its Corollary~12.1, the case
+$a=1$ of its Theorem~3.1); the bounds \eqref{xx:eq:introbounds}
+and~\eqref{xx:eq:primebound} remain the best explicit ones.]
 We also prove infinite nonvanishing results that substantially restrict where
 additional zeros could lie. The remaining gap is stated explicitly in
 Conjecture~\ref{xx:conj:zeros}.
@@ -1310,7 +1328,10 @@ leading quadratic coefficient. In terms of the exact defect,
 \end{equation}
 Thus the proposed asymptotic equivalent is potentially a weaker target than
 the complete zero classification: it would allow a sufficiently sparse set
-of additional zeros.
+of additional zeros.  [Added 1 October 2026, batch 72A: the weaker target is now proved: the
+sibling report \sibPTE{} shows $E(n)=o(n^2)$, hence
+$a(n)\sim n^2/2$ (its Corollary~12.1), without an effective threshold.
+Conjecture~\ref{xx:conj:zeros}, and with it the closed formula, remains open.]
 
 \subsection{The rational function, quasipolynomial, and recurrence}\label{xx:sec:gf}
 
@@ -1537,7 +1558,12 @@ open.
 For the asymptotic conjecture alone, an exclusion of every additional zero
 is unnecessary: by \eqref{xx:eq:asympeq}, it suffices to bound their cumulative
 number by $o(n^2)$. The present root-counting argument proves quadratic
-order but not this sharper estimate.
+order but not this sharper estimate.  [Added 1 October 2026, batch 72A: the sharper estimate is
+proved in the sibling report \sibPTE{}, by a contour argument rather
+than root counting; its Section~12 prints manuscript~31's proof at $a=1$, a
+second route to the case $a=1$ of its Theorem~3.1.  It gives no rate and no
+threshold, so Theorem~\ref{xx:thm:bounds} and Corollary~\ref{xx:cor:primebound}
+remain the explicit bounds.]
 
 \medskip
 \noindent\textbf{Conclusion.}
@@ -2954,6 +2980,14 @@ $n\ge e^{10}$ (Theorem~\ref{xxb:cb:thm:pointwise}) and bounds the summatory
 count (Theorem~\ref{xxb:cb:thm:sum}); the leading constant of the explicit
 lower bound is still $3/8$.
 
+\smallskip
+[Added 1 October 2026, batch 72A: two sibling reports bear on this part without being part
+of it.  \sibPTE{} proves $a(n)=n^2/2+o(n^2)$ (its Corollary~13.1),
+without an effective threshold, which answers Question~6 of
+Subsection~\ref{xxb:dc:sec:future}; \sibAUD{} studies the coefficients when
+the deficit grows with $n$ (phase laws, an Airy law at the fold, cosine laws,
+arithmetic families).  Neither proves Conjecture~\ref{xxb:conj:support}.]
+
 \medskip
 \textbf{Abstract of the original report.}\itshape
 Let $a(n)$ be the number of nonzero monomials in the fully collected $n$th
@@ -3038,6 +3072,13 @@ $a(n)\ge3n^2/8+(n/2)\log n-(n/2)\log\log n-5n/4$ for every $n\ge e^{10}$; the
 leading constant of every explicit lower bound is still $3/8$.
 Theorem~\ref{xxb:cb:thm:sum} bounds the cumulative count,
 $\sum_{n\le X}a(n)\ge11X^3/72+5X^2/6-O(X)$.
+
+[Added 1 October 2026, batch 72A: the proposed leading constant $1/2$ is now established
+in the limit: the sibling report \sibPTE{} proves $\lim a(n)/n^2=1/2$
+(its Corollary~13.1, the case $a=2$ of its Theorem~3.1), without an effective
+threshold.  Theorem~\ref{xxb:thm:main-bounds} stands as stated, and as explicit
+bounds $\Lambda(n)$ and the improvements above, all with leading constant $3/8$,
+are still the best known.]
 
 \subsection{A canonical polynomial expansion}\label{xxb:sec:canonical}
 Set $z=x^2$ and $L=\log x$. Define polynomials $P_n\in\Z[z,L]$ by
@@ -5183,6 +5224,10 @@ No asymptotic equivalence $a(N)\sim N^2/2$ is deduced here.
 Theorem~\ref{xxb:d56:thm:main}, and the cell at $N=12$ is nonzero;
 Corollary~\ref{xxb:d56:cor:count} adds depths five and six to this bound,
 and Theorem~\ref{xxb:cb:thm:pointwise} lets the number of depths grow with $N$.)
+[Added 1 October 2026, batch 72A: the equivalence $a(N)\sim N^2/2$ is proved, ineffectively,
+in the sibling report \sibPTE{} (its Corollary~13.1); the leading
+term $3N^2/8$ of~\eqref{xxb:dc:eq:lower} is still that of every explicit lower
+bound.]
 
 \begin{remark}[How much this improves $\Lambda$; editorial]\label{xxb:dc:rem:improve}
 Since $\beta=\Lambda$, the gain of \eqref{xxb:dc:eq:lower} over
@@ -5198,7 +5243,10 @@ Hence
  \Lambda(N)+2N-14=\dfrac{3N^2+28N-111}{8},&N\text{ odd},\ N\ge17.
  \end{cases}
 \]
-The leading constant $3/8$ is unchanged; the linear term improves.  Below these thresholds the gain is read off
+The leading constant $3/8$ is unchanged; the linear term improves.
+[Added 1 October 2026, batch 72A: unchanged for explicit bounds, including
+Theorem~\ref{xxb:cb:thm:pointwise}; in the limit the constant is $\tfrac12$, by
+the sibling report \sibPTE{}, ineffectively.]  Below these thresholds the gain is read off
 \eqref{xxb:dc:eq:lower} directly; the bound equals $\U(N)$ for every $N\le11$.  Of the even gain
 $2N-10$, the part $N-3$ from depths one and two already followed from
 Theorems~\ref{xxb:thm:m1}--\ref{xxb:thm:m2}, although Part~\ref{xxb:part} did
@@ -5296,11 +5344,34 @@ argument limits the number of candidates in each row, but integer
 nonvanishing needs a second ingredient.  An effective distance-from-integers
 theorem for its zeros would be particularly valuable.
 
+[Added 1 October 2026, batch 72A: the sibling report \sibAUD{} bears on Questions~4
+and~5 without answering either.  At every fixed offset $b=q-2d$ it proves
+eventual nonvanishing along each ray $k/d\to\kappa$ with $\kappa$ algebraic
+below the fold $\kappa_c\approx0.0281$, apart from the reflection holes, and
+uniformly for $|b|\le8$, $0\le k\le d/36$ (its Theorem~2.1); an Airy law at the
+fold (its Part~II); nonvanishing at $k=0$ on all-depth strips around $q=2d$
+(its Theorem~29.2); prime-unit families with exact valuations; and an exact
+example showing that root geometry alone cannot prove
+Conjecture~\ref{xxb:conj:support} (its Part~IV).  None of its thresholds is
+numerical.]
+
 \textbf{Question 6.}  Establish the conjectured leading term
 $a(N)\sim N^2/2$ without first proving every individual nonvanishing
 claim.  This would require bounding the total number of extra zeros
 across growing depths.  The fixed-row bound alone does not give such a
 bound after summing over the whole triangular array.
+
+[Added 1 October 2026, batch 72A: answered.  The sibling report \sibPTE{} proves
+$a(N)=N^2/2+o(N^2)$ (its Corollary~13.1, with manuscript~34's proof; the case
+$a=2$ of its Theorem~3.1) by showing that only $o(N^2)$ of the candidate cells
+outside the positive bulk vanish --- the bound across growing depths asked for
+--- without classifying individual zeros.  The proof is ineffective.  The
+explicit lower bounds are still this report's, the best being
+Theorem~\ref{xxb:cb:thm:pointwise}; Theorem~\ref{xxb:cb:thm:sum} and
+Proposition~\ref{xxb:cb:prop:sharpness} measure what the fixed-row bound gives.
+Coefficient-level results at growing depth (cosine laws, density one with
+$O(N^{5/3})$ exceptions on tail patches) are in \sibAUD{}, whose
+headline lower bounds this asymptotic supersedes (its Section~25).]
 
 \subsubsection{Formal proof and symbolic computation}
 \textbf{Question 7.}  Formalize the polynomial factorization, bulk theorem,
@@ -5320,6 +5391,19 @@ $x^{x^r}$ for integer $r\ge3$, or to other exponential-logarithmic
 families.  The correct depth generating function and the symmetry center
 must first be rederived.  The success of the square-exponent case does
 not justify assuming an analogous support quasipolynomial elsewhere.
+
+[Added 1 October 2026, batch 72A: partly answered.  The sibling report \sibPTE{},
+which writes the exponent $a$, proves $N^2/2+o_a(N^2)$ terms for every integer
+$a\ge1$ (its Theorem~3.1, ineffective), derives the depth generating function
+(its equation~(3.6)) and the symmetry centre $q=ad$, and classifies the first
+two depths (its Theorem~11.1).  It also proves $N^2/2+o(N^2)$ for $x^{\sqrt x}$
+(its Theorem~14.1), and only finitely many zeros off the reflection line on
+each fixed defect large enough: from defect four for rational $a\ne1$, from
+$4D+2$ for algebraic $a$ of degree $D$, from two (effectively) for irrational
+$a$ (its Part~III).  For $a=1/2$ and every rational $1/2<a<1$ there are
+infinite families of non-reflection zeros (its Theorem~14.3 and
+Corollary~16.3), so an analogous support pattern indeed cannot be assumed.
+Exact noncancellation at arbitrary depth stays open for every exponent.]
 
 \subsubsection{Suggested order of work}
 The most direct continuation is to formalize the bulk factorization while
@@ -6701,6 +6785,13 @@ $b(8,5)=0$, \eqref{xx:eq:exception}, proved in Part~\ref{xx:part}; for
 $x^{x^x}$ additional zeros provably exist (Part~\ref{xxc:part}).  The question
 for $x^{x^m}$, $m\ge3$, is Question~8 of Subsection~\ref{xxb:dc:sec:future}
 (there written $x^{x^r}$); it is open.
+[Added 1 October 2026, batch 72A: partly answered; see the note after Question~8.
+The batch-72A intake scanned the recurrence of $x^{x^m}$ for $m=1,\ldots,5$
+and $N\le70$ (the sibling report \sibPTE{}, its Section~19.8): for
+$m=2,\ldots,5$ every zero is structural or a reflection zero, and for $m=1$ the
+only others are copies of $b(8,5)=0$ along one line.  That is a finite
+observation, not a theorem.  For $x^{\sqrt x}$ sporadic cancellations occur in
+two infinite families (its Theorem~14.3).]
 
 \begin{question}[Asymptotic harmonic phases]
 For $k=0$ and general $d$, the tail is governed by an elementary symmetric
@@ -9215,6 +9306,15 @@ $n\ge e^{10}$ (Theorem~\ref{xxb:cb:thm:pointwise}); the leading constant of
 every explicit lower bound is still $3/8$, and
 Conjecture~\ref{xxb:conj:support} is now needed only on deficits $m\ge7$.
 
+[Added 1 October 2026, batch 72A: in the row ``Growth order'' both quadratic entries are
+sharpened to $a(n)\sim n^2/2$ by the sibling report \sibPTE{} (its
+Corollaries~12.1 and~13.1, the cases $a=1,2$ of its Theorem~3.1), without an
+effective threshold: for $x^x$, $Z(n)=o(n^2)$; for $x^{x^2}$, the constant
+$\tfrac12$ of the row ``Not settled'' is settled in the limit.  The row
+``Lower bound'' and the updates above still give the best explicit bounds, and
+the closed formulas still need Conjectures~\ref{xx:conj:zeros}
+and~\ref{xxb:conj:support}.]
+
 \subsection{Why the orders differ}\label{syn:orders}
 
 The growth orders line up with the number of variables in the frame, and
@@ -9309,6 +9409,10 @@ its centre.  What is \emph{not} shared is everything past that point: the
 triangles the parity acts on are different, the difference operators are
 different, and --- this is the crux --- in no case is the parity family known to
 be the whole zero set, which is exactly what each part's open question asks.
+[Added 1 October 2026, batch 72A: the sibling report \sibPTE{} shows that this does
+not extend to $x^{x^a}$ in general: for $a=1/2$ and every rational $1/2<a<1$
+infinitely many cancellations lie off the reflection line (its Theorem~14.3 and
+Corollary~16.3).  For the three functions here the statement stands.]
 
 Given that, a caution about the two $\Theta(n^2)$ results.  Parts~\ref{xx:part}
 and~\ref{xxb:part} both bound a two-dimensional envelope and subtract
@@ -9319,6 +9423,10 @@ statements about different objects.  What can be said honestly is the
 metamathematical thing: no argument given in either part carries over to the
 other.  Whether either open conjecture \emph{implies} the other is not something
 this article can settle, and it does not claim to.
+[Added 1 October 2026, batch 72A: both leading constants are now proved, ineffectively, by
+one contour argument for every integer exponent, in the sibling report
+\sibPTE{}; that argument is not part of this article, and the point
+above, that no argument given here carries over between the two parts, stands.]
 
 \subsection{What would settle each one}\label{syn:open}
 

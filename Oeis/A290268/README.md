@@ -185,6 +185,17 @@ else in the region `D >= 1`, `M >= D`. Status by stratum:
    sign law and positivity propagation in `k`. None of it is formalized;
    see the correction under "Lean formalization".
 
+   *Note (1 October 2026, batch 72A).* Two further steps, neither
+   formalized. The same report's batch-72A addition classifies `D = 5` and
+   `D = 6` (only the forced holes vanish there too), so the open region is
+   now `D >= 7`. And the sibling report
+   [`power-tower-exponent-supports`](../../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-exponent-supports/README.md)
+   proves `a(N) ~ N^2/2` (its Corollary 13.1), ineffectively and without
+   classifying individual zeros, so the leading constant of the conjecture
+   is settled while the conjecture itself stays open. The coefficients at
+   unbounded `D` are studied in
+   [`a290268-unbounded-deficits`](../../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290268-unbounded-deficits/README.md).
+
 **Literature status** (searched July 2026): the conjecture is open; no
 published attack on A290268/A293239/A281434 exists. The closest proven result
 is Štampach (J. Approx. Theory 262 (2021), arXiv:2011.13808): sign-alternation

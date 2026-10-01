@@ -1,6 +1,6 @@
 # Term counts in the derivatives of power towers
 
-**One framework and three sequences: OEIS A293239 (`x^x`), A290268 (`x^(x^2)`), A281434 (`x^(x^x)`), with depth certificates for A290268 at logarithmic deficits 3 and 4, a second route to deficit 3, Lehmer–Comtet nonvanishing on prime-multiple offsets for A293239, and deficits 5 and 6 with explicit count bounds for A290268**
+**One framework and three sequences: OEIS A293239 (`x^x`), A290268 (`x^(x^2)`), A281434 (`x^(x^x)`), with depth certificates for A290268 at logarithmic deficits 3 and 4, a second route to deficit 3, Lehmer–Comtet nonvanishing on prime-multiple offsets for A293239, and deficits 5 and 6 with explicit count bounds for A290268; the leading asymptotics `a(n) ~ n^2/2` of A293239 and A290268 are proved in a sibling report**
 
 **What this report is.** One article covering three OEIS sequences that ask the
 same question about three different functions:
@@ -24,7 +24,12 @@ manuscript, on A290268 only, was written into the end of Part 3 on
 after it on 30 September 2026 as Sections 3.27–3.34. Three more, on the
 Lehmer–Comtet triangle behind A293239, were written into the end of Part 2 on
 1 October 2026 as Sections 2.11–2.15, and two more on A290268 into the end of
-Part 3 on the same day as Sections 3.35–3.41.
+Part 3 on the same day as Sections 3.35–3.41. Two sibling reports written
+the same day from batch 72A build on this one without being part of it:
+[`power-tower-exponent-supports`](../power-tower-exponent-supports/) proves `a(n) ~ n^2/2` for A293239 and A290268, and
+[`a290268-unbounded-deficits`](../a290268-unbounded-deficits/) studies the A290268
+coefficients when the logarithmic deficit grows with `n`. Dated notes
+`[Added 1 October 2026, batch 72A: …]` in the article point to them.
 
 **Status.** AI-assisted research notes. Unrefereed. Nothing in this report is
 formalized; see "Relation to the Lean development" below for what the nearby
@@ -209,6 +214,13 @@ question is only how many.
   only columns `1..p-1` on `p^2-1` (`p >= 5`); exact `p`-adic valuations on
   divisibility progressions; and the cone `T_d(Y) > 0` for `Y >= 4d`. The
   complete classification, and with it the closed formula, stays open.
+  **Since 1 October 2026 the sibling report
+  [`power-tower-exponent-supports`](../power-tower-exponent-supports/) proves
+  `a(n) ~ n^2/2`**, that is `Z(n) = o(n^2)` (its Corollary 12.1, the case
+  `a = 1` of its Theorem 3.1), the "weaker target" of this report's (2.35).
+  The proof is ineffective, is not part of this report, and classifies no
+  individual zero; Theorem 2.16 and Corollary 2.17 remain the only explicit
+  lower bounds.
 
 - **A290268 (`x^(x^2)`): the OEIS conjecture is NOT proved.** What is proved:
   the conjectured expression `U(n)` is an *upper* bound; every predicted
@@ -236,7 +248,18 @@ question is only how many.
   `a(n) >= 3n^2/8 + (n/2)log n - (n/2)log log n - 5n/4` for `n >= e^10`
   (Theorem 3.83), with the exact summatory bound
   `sum_{n<=X} a(n) >= 11X^3/72 + 5X^2/6 - O(X)` (Theorem 3.85); the leading
-  constant of every explicit lower bound is still `3/8`.
+  constant of every explicit lower bound is still `3/8`. **The leading
+  constant itself is `1/2`**: the sibling report
+  [`power-tower-exponent-supports`](../power-tower-exponent-supports/) proves
+  `lim a(n)/n^2 = 1/2` (its Corollary 13.1, the case `a = 2` of its
+  Theorem 3.1), without an effective threshold, which answers Question 6 of
+  Section 3.24; it also answers Question 8 in part (every integer exponent
+  `x^(x^a)`). The sibling report
+  [`a290268-unbounded-deficits`](../a290268-unbounded-deficits/) proves
+  coefficient-level results at unbounded deficit (phase laws, an Airy law at
+  the fold, cosine laws, arithmetic families) bearing on Questions 4 and 5;
+  its headline lower bounds are superseded by the asymptotic. Neither proves
+  the conjecture, and neither is part of this report.
 
 - **A281434 (`x^(x^x)`): the growth order is settled; the constant is not.**
   For `n >= 1`, with `eps = 1` for odd `n` and `0` otherwise,
@@ -268,7 +291,10 @@ rectangle reaches `n = 6198` and is the first certificate of cells with
 ## What is not claimed
 
 - No closed formula for any of the three sequences, and no leading constant
-  for A290268 or A281434.
+  for A290268 or A281434. (Since 1 October 2026 `a(n) ~ n^2/2` for A293239
+  and A290268 is proved, ineffectively, in the sibling report
+  `power-tower-exponent-supports`; this report does not reprint or rely on
+  that proof, and its dated notes pointing there claim nothing new here.)
 - For A290268: nothing at deficits `m >= 7` beyond the finite range
   `n <= 3000` and the per-depth finiteness theorems (until 1 October 2026
   this read `m >= 5`; deficits 5 and 6 are Theorem 3.71); the batch-42
@@ -399,7 +425,7 @@ renamed or removed. No label here has a Lean mapping.
 ```
 README.md                                         this guide
 article.tex                                       the article (pdfLaTeX, internal bibliography)
-article.pdf                                       the compiled article, 141 pages (A4)
+article.pdf                                       the compiled article, 142 pages (A4)
 MERGE_EDITS.md                                    every edit made to the three original texts in the merge
 A293239_oeis_notes.txt                            statement of the x^x recurrence-range correction
 A290268_result_status.json                        Part 3's machine-readable status, as delivered (stale; see below)
@@ -644,10 +670,28 @@ Lehmer–Comtet numbers, A008296 or A293239.
 - `Oeis/A290268/README.md` (research notes, outside the collection) is the
   note manuscript 06 continued. It still calls the general-`k` bulk open and
   lists three Lean modules (`A290268.Hole`, `.DepthOne`, `.Series`) that never
-  existed; both are stale with respect to this report. It is not edited here.
+  existed; both are stale with respect to this report. It receives dated
+  notes only (30 September 2026; 1 October 2026, batch 72A: open region
+  `D >= 7`, and `a(N) ~ N^2/2` in the sibling report below).
   Its line "Open core: `D >= 3` negative region" is also stale (its own dated
   correction says deficits 3 and 4 are closed here); it is the line that led
   batch-70 manuscript 03 to call depth 3 open.
+- [`power-tower-exponent-supports`](../power-tower-exponent-supports/) (batch 72A,
+  same subcategory): derivative supports of `x^(x^a)`. It proves
+  `A_a(N) = N^2/2 + o_a(N^2)` for every positive integer `a` (Theorem 3.1),
+  hence `a(n) ~ n^2/2` for A293239 and A290268, ineffectively; the same for
+  `x^(sqrt x)`; and finiteness theorems on fixed defects for rational,
+  algebraic and irrational `a`. It answers this report's Question 6 and the
+  closing remark of Part 2, partly answers Question 8 and Research question
+  3.68, and qualifies Section 5's observation that every proved cancellation
+  is a parity zero (true of the three functions here, not of `x^(sqrt x)` or
+  of rational `1/2 < a < 1`). Its re-derivations of results here are marked
+  as second routes there.
+- [`a290268-unbounded-deficits`](../a290268-unbounded-deficits/) (batch 72A, same
+  subcategory): A290268 at unbounded logarithmic deficit, in the depth
+  coordinates of Section 3.15. It continues Conjecture 3.19, bears on
+  Questions 4 and 5, and its lower bounds are superseded by the sibling's
+  asymptotic; the best *explicit* lower bound is still Theorem 3.83 here.
 - `Combinatorics/ExpressionEnumeration/PowerTowers/` (power-tower *value*
   counts) is unrelated.
 
