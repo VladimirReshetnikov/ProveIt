@@ -229,9 +229,11 @@ while claiming its numerical size is unchanged.
 The [source](group_projective_padded_program_margin.py) exposes the
 parent's options `variant`, `controller_mask` and `compute_length`, and
 checks condition (1). Its [receipt](group_projective_padded_program_margin.json)
-records twenty full source variants over m=2,8,16, their unchanged
-coordinate/comparison lists, the one-addition saving and inherited
-exact degrees.
+records twenty compact variant ledgers over m=2,8,16, including all
+options, boundary facts, operation and coordinate counts, and inherited
+exact degrees. One complete source example retains the m=16 six-field
+variant with controller-mask reuse and computed P; all twenty variants
+still undergo the same verification checks.
 
 Across2,560 assignments, including640 signed cases, the checker applies
 (5) and verifies every retained computed register, every residual and

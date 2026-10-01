@@ -126,6 +126,24 @@ universal Diophantine equations by James P. Jones and coauthors:
   gives20 equations,m+34 positive witnesses and a **C+59** polynomial of
   degree24m+444. A degree12m+232 alternative uses22 equations,m+36 witnesses
   andC+65 operations. The fixed universal table is still uninstantiated.
+  The [padded-program successor](Papers/research-wip/native-stream-queue/group_projective_padded_program_margin.md)
+  combines a reflected boundary, a norm/checksum product and scalar
+  projections. With controller-mask reuse and computed P, it gives
+  **3m+3h+p+228+f_flow-3min(h,3)** polynomial operations,15 equations and
+  m+31 positive witnesses, at degree136m+798. This requires m>=8 and a
+  fixed numeral margin supplied by an explicit padded universal enumeration.
+  Some lower-degree alternatives retain additional equations. The illustrative
+  ten-letter table costs302; it is not a numerical universal alphabet.
+- A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
+  loads its affine input matrix in two operations. Exactly two resets
+  represent universal membership, but unrestricted mortality accepts every
+  input with at most three resets. The regular word restriction is explicit;
+  its uniform Diophantine control remains unpaid.
+- The [first-norm ratio audit](Papers/research-wip/native-stream-queue/complete75_first_norm_ratio_obstruction.md)
+  rejects an apparent87-operation rewrite: after losing the upper ratio
+  slack, an explicit CRT and positive Pell construction supplies zeros for
+  every ordinary positive input at every fixed compiled constant tuple.
+  The complete numerical bounds remain75/88.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree

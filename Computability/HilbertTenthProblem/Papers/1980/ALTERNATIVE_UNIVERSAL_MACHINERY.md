@@ -200,6 +200,47 @@ degree12m+232. These are complete constructions for the fixed abstract
 universal alphabet, with every input, control and history condition paid;
 they do not instantiate its numerical table or improve75/88.
 
+The [shifted boundary](../research-wip/native-stream-queue/group_projective_shifted_boundary.md)
+reflects the alphabet and uses origin D-1, saving1A. The
+[unit product](../research-wip/native-stream-queue/group_projective_unit_product.md)
+merges the main norm, auxiliary norm and checksum, saving four polynomial
+operations. Reusing the controller mask saves another multiplication for
+m>=8. The [scalar projections](../research-wip/native-stream-queue/group_projective_scalar_projections.md)
+compute the edge repunit and remove its comparison plus the radix guard;
+optional computation of P removes a third comparison. Finally the
+[padded-program margin](../research-wip/native-stream-queue/group_projective_padded_program_margin.md)
+uses fixed alpha+beta+1>=m to remove one height addition. A specified
+repeated universal enumeration supplies this inequality after its one
+alphabet is built, without changing the ordinary runtime input.
+
+With epsilon recording mask reuse and chi recording computed P, the
+complete certificate costs C=3m+3h+p+185+f_flow-3min(h,3)-epsilon.
+The six-field variant has16-chi equations,m+32-chi positive witnesses and
+polynomial costC+47-3chi. Its exact degree is(1+chi)*(32L+4m+60)+38,
+where L=m+18 or2m+10 according to epsilon. The four-field alternative
+has18-chi equations,m+34-chi witnesses,C+53-3chi polynomial operations
+and degree12(1+chi)L+16. Both variants retain complete positive-domain
+proofs; computed J is proved positive before native typing. The illustrative
+ten-letter table reaches258/302 at degree2974 with47 witnesses, but the
+universal numerical alphabet remains uninstantiated.
+
+The [controlled4D mortality alternative](../research-wip/native-stream-queue/group_two_reset_mortality4.md)
+uses a two-operation affine rank-two reset matrix. Two resets require one
+common bridge word killing both blocks and represent universal membership.
+Unrestricted mortality loses that synchronization: two different bridge
+words give a three-reset zero product for every input. Members have
+minimum reset count two, nonmembers three. Its regular language R F*R is
+explicit, but uniform word selection and control are not yet paid.
+
+The [first-norm ratio obstruction](../research-wip/native-stream-queue/complete75_first_norm_ratio_obstruction.md)
+rejects a separate apparent87-operation shortcut in the direct universal
+polynomial. Replacing the positive upper ratio slack by a first-Pell-index
+gap leaves only c>kY. For every fixed compiled constant tuple, an explicit
+CRT outer construction extends through all positive Pell witnesses at
+every positive input. The relaxed source therefore represents all positive
+integers. This rejects that rewrite, not other potential87-operation
+equations;75 and88 remain the established numerical bounds.
+
 The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
 gives a uniform four-positive-witness certificate for two fixed generators
 in H^r: graph18r+10, or one degree-at-most-four polynomial at27r+12.

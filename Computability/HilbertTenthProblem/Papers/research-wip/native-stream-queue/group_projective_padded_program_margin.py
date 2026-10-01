@@ -45,6 +45,7 @@ def general_coordinates(packet,z):
 
 def source_checks():
     rng=random.Random(1853736);records=[];cases=nonpositive_restored=0
+    example=None
     tables=((),((1,2),(3,4)),tuple((i,) for i in range(1,9)))
     for codes in tables:
       for variant in ('four','six'):
@@ -75,12 +76,28 @@ def source_checks():
             new['sum_of_squares']=dict(operations=len(sos),multiplications=counts['M'],
                 additions_subtractions=counts['A'],exact_degree=degree,
                 degree_argument='Identical polynomial under height_slack -> height_slack-m; translation preserves the full highest homogeneous part.',output=out)
-            records.append(new)
+            records.append(dict(
+                m=new['m'],h=new['h'],alpha=new['alpha'],beta=new['beta'],
+                variant=variant,controller_mask=reuse,compute_length=comp,
+                projection_additions=new['projection_additions'],
+                flow_cost={key:new['flow'][key] for key in
+                           ('operations','multiplications','additions_subtractions')},
+                common_register_saving=new['common_register_saving'],
+                certificate_operations=new['operations'],
+                certificate_M=new['multiplications'],certificate_A=new['additions_subtractions'],
+                equations=new['equations'],positive_witnesses=new['positive_witnesses'],
+                polynomial_operations=len(sos),polynomial_M=counts['M'],polynomial_A=counts['A'],
+                exact_degree=degree,scale_exponent=new['scale_exponent'],
+                compile_time_margin=new['compile_time_margin'],expanded_height=new['expanded_height'],
+                boundary_source=new['boundary_source']))
+            if new['m']==16 and variant=='six' and reuse and comp:
+                example=new
     # The specialization must reject a table whose actual margin is too small.
     try:build(tuple((i,) for i in range(1,9)),alpha=1,beta=1)
     except AssertionError as exc:assert 'fixed input numerals' in str(exc)
     else:raise AssertionError('unpaid table margin accepted')
-    return dict(packets=records,complete_source_residual_and_SOS_identities=cases,
+    return dict(records=records,source_example=example,
+                complete_source_residual_and_SOS_identities=cases,
                 positive_assignments=3*cases//4,signed_assignments=cases//4,
                 positive_tuples_with_nonpositive_general_height=nonpositive_restored,
                 invalid_compile_time_margin_rejected=True)

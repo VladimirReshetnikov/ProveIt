@@ -258,11 +258,52 @@ it remains an illustrative table. This is a complete universal theorem
 for the inherited fixed alphabet, whose numerical table is still not
 instantiated. The global75/88 frontiers remain unchanged.
 
+The [reflected shifted boundary](group_projective_shifted_boundary.md)
+saves one addition by starting at(1,u) and shifting histories by D-1.
+The [unit product](group_projective_unit_product.md) merges two norm
+comparisons and the checksum, with an optional reuse of the controller
+mask. The [scalar projections](group_projective_scalar_projections.md)
+compute the edge repunit, remove the radix-margin witness, and optionally
+compute P. Finally, the [fixed padded-program margin](group_projective_padded_program_margin.md)
+removes a further addition using fixed numerals alpha+beta+1>=m.
+An explicit repeated universal enumeration supplies this margin after
+its one fixed alphabet is built; no runtime input coding is introduced.
+
+For epsilon=1 when the controller mask is reused (m>=8), and chi=1 when
+P is computed, the current complete matrix certificate costs
+
+    C=3m+3h+p+185+f_flow-3min(h,3)-epsilon.
+
+The six-field version has16-chi equations,m+32-chi positive witnesses
+and a C+47-3chi polynomial. Its exact degree is36m+674 for epsilon=chi=0,
+68m+418 for epsilon=1,chi=0,72m+1310 for epsilon=0,chi=1, and136m+798
+for epsilon=chi=1. The four-field alternative has18-chi equations,
+m+34-chi witnesses and a C+53-3chi polynomial, with degrees12m+232,
+24m+136,24m+448 and48m+256 in the same order. Computing P saves three
+polynomial operations but increases degree.
+
+The illustrative ten-letter table now reaches258 certificate operations
+and302 polynomial operations, with15 equations,47 positive witnesses
+and degree2974. This table is not a numerical universal alphabet;75/88
+remain the complete numerical frontiers.
+
+The [four-dimensional reset construction](group_two_reset_mortality4.md)
+has a **two-operation affine input matrix**. A zero product with exactly
+two resets represents universal membership. Allowing unrestricted resets
+accepts every input: members need two and nonmembers need three. Its
+regular word restriction is explicit but not yet paid in a uniform
+Diophantine certificate.
+
 The apparent one-gate reduction below88 obtained by absorbing the ordinary
 input width is [provably unsound](complete75_input_bound_absorption_obstruction.md).
 An exact positive-witness input translation makes the modified compiler
 for every nonempty finite language accept an additional input. This rules
 out that precise shortcut, without asserting a general lower bound.
+The separate [first-norm ratio rewrite](complete75_first_norm_ratio_obstruction.md)
+also costs87 arithmetically, but accepts every positive input for every
+fixed compiled constant tuple. A CRT outer construction and full positive
+Pell extension prove this stronger failure. Replacing the upper ratio
+slack by a positive first-Pell-index gap is therefore unsound.
 
 The [Heisenberg membership audit](heisenberg_two_generator_membership.md)
 gives a uniform four-witness certificate for any two fixed generators in
@@ -292,6 +333,12 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Padded-program matrix margin](group_projective_padded_program_margin.md) | Complete C=3m+3h+p+185+f_flow-3min(h,3)-epsilon; six fields give16-chi equations,m+32-chi witnesses and polynomial C+47-3chi. | Fixed alpha+beta+1>=m; supplied by an explicit padded universal enumeration. Optional mask reuse epsilon requires m>=8; computed P is chi. Exact degree tradeoffs above; universal numerical alphabet uninstantiated. |
+| [Scalar projections](group_projective_scalar_projections.md) | Erases the repunit and radix-margin comparisons/witnesses, optionally P, at unchanged certificate cost. | Restores J>0 from history bound and repunit before typing; D=u+height_slack+m supplies B>m. Computing P increases degree. |
+| [Norm/checksum unit product](group_projective_unit_product.md) | Merges three comparisons into one; saves four polynomial operations, or five with controller-mask reuse. | Both norm factors exclude-1 modulo4 before typing. Reusing the mask enlarges the range region when m>8. |
+| [Reflected shifted boundary](group_projective_shifted_boundary.md) | One-addition saving for the complete compiler; initial(1,u), shift D-1. | Reflect every fixed shear sign without reversing the word; choose D freely above the trace. |
+| [Four-dimensional controlled mortality](group_two_reset_mortality4.md) | A fixed4D alphabet with a two-operation affine rank-two reset; two-reset mortality represents universal membership. | Unrestricted mortality accepts every input with at most three resets; regular selected-word control remains unpaid. |
+| [First-norm upper-ratio obstruction](complete75_first_norm_ratio_obstruction.md) | The apparent87=47M+40A rewrite accepts every positive ordinary input at every fixed compiled tuple. | Exact CRT/positive-Pell construction rejects this rewrite; does not rule out other87-operation representations. |
 | [Positive auxiliary-gap degree tradeoffs](complete75_auxiliary_gap_degree_tradeoffs.md) | **90/131,91/128,98/54,99/52**,19 positive witnesses. | The strong rank argument restores V>1 before using the computed positive auxiliary ordinate. |
 | [Computed projective kernel fields](group_projective_computed_kernel_fields.md) | Complete cost C=3m+3h+p+185+f_flow-3min(h,3);20 equations,m+34 witnesses; polynomial C+59,degree24m+444. | Four-field alternative gives22 equations,m+36 witnesses,C+65,degree12m+232. Positive graph bijections; numerical universal alphabet remains uninstantiated. |
 | [Range-typed projective compiler](group_range_projective_compiler.md) | Complete C=3m+3h+p+185+f_flow-3min(h,3),26 equations,m+40 witnesses; polynomial C+77,degree12m+232. | Removes geometry47 using paid range and radix regions in the shared AND. Generic vector action; universality uses the special subgroup theorem. |

@@ -283,18 +283,72 @@ computed r has degree4(m+18)-2, so do not claim its substitution preserves
 degree. All expressions are positive before using any comparison; whole
 source and SOS identities also hold on signed assignments.
 
-The best illustrative ten-letter table now costs259/318 and has50 witnesses
-in the six-field variant; it is not a numerical universal alphabet.
-Root and independent proof/source reviewers passed the new packets.
-Next useful targets are reducing the remaining one AND kernel, replacing
-its product/packing structure, or a smaller effective macro table. A
-separate duration-height kernel is no longer needed for this route.
+The [shifted boundary](group_projective_shifted_boundary.md) reflects every
+fixed shear sign, starts at(1,u), and uses origin D-1. It saves one addition
+without changing the exact degrees. The [unit product](group_projective_unit_product.md)
+merges main norm, auxiliary norm and checksum into one comparison: both
+norms exclude-1 modulo4 on arbitrary integer assignments. The certificate
+adds2M, but two fewer equations save four polynomial operations. Optional
+controller-mask reuse (epsilon=1,m>=8) saves1M by replacing J*K8 with the
+already paid J*K_m and expanding the range region from8 to m lanes.
+Its scale is16P^L, L=m+18 normally or2m+10 with reuse; fresh native
+extension must use this actual scale.
+
+The [scalar projections](group_projective_scalar_projections.md) then
+compute J from the edge checksum and remove the radix-margin coordinate.
+Use D=u+height_slack+m so B>m without its old comparison. Before typing,
+J>=0; the history bound givesP>=5 and the retained repunit forcesJ>0.
+Optional chi=1 computes P=(B-1)J+1 too. It saves another comparison and
+witness at unchanged certificate cost, but makes P degree2. Keep this
+positivity argument before invoking native typing.
+
+The [padded-program specialization](group_projective_padded_program_margin.md)
+restores D=u+height_slack and saves1A whenever fixed alpha+beta+1>=m.
+It is a positive solution bijection with the unit-product parent after
+restoring J,B-m and optionalP. Its signed identity with the general
+scalar parent translates height_slack by-m; do not call that translation
+a positive bijection. To supply the fixed margin uniformly, define
+S_p=T_v2(p+1), construct the alphabet for U_pad={2^p(2x+1):x in S_p}
+once, determine m, then choose p_e=2^e(2m+1)-1 for the requested program.
+The affine constants alpha=12*2^(p_e+1),beta=12*2^p_e supply the margin.
+No runtime gate is added. This specifies a new padded enumeration and
+does not claim an unchanged alphabet for an earlier unspecified one.
+
+The resulting cost is C=3m+3h+p+185+f_flow-3min(h,3)-epsilon. Four computed
+fields give18-chi equations,m+34-chi witnesses,C+53-3chi polynomial gates;
+six give16-chi equations,m+32-chi witnesses,C+47-3chi gates. With nu=1+chi,
+exact degrees are12nu*L+16 (four) andnu*(32L+4m+60)+38 (six).
+For the illustrative ten-letter table, epsilon=chi=1 gives258/302,
+15 equations,47 witnesses and degree2974. It is not a numerical universal
+alphabet. Root and independent proof/source reviewers passed these packets.
+Next targets include reducing the one AND kernel, replacing its packing,
+or a smaller effective macro table; no separate duration-height kernel
+is needed.
+
+The [four-dimensional reset construction](group_two_reset_mortality4.md)
+uses a two-operation affine nonnegative rank-two idempotent reset R.
+A word with exactly two resets has zero product iff both blocks vanish
+at its common bridge word. Such a zero product exists iff the input
+belongs to the universal set. Unrestricted resets destroy synchronization: two different bridges
+kill the two blocks, and every input has a three-reset zero product.
+The minimum is two for members and three for nonmembers. The restriction
+R F*R is regular but its uniform selected-word certificate remains unpaid.
+
 The primary75/88 frontier remains unchanged. An [exact input-translation
 obstruction](complete75_input_bound_absorption_obstruction.md) rejects the
 specific apparent87 shortcut that absorbs2d*x into alpha: x shifts by
 M/gcd(2d,M), delta drops by2d/gcd(2d,M), and all eight units are invariant.
 The odd Pell expansion proves the new delta stays positive at every old
 zero, so every nonempty finite language acquires a false input.
+The [first-norm ratio obstruction](complete75_first_norm_ratio_obstruction.md)
+rejects a different apparent87 source that replaces zeta by k-2*tau_gap.
+It loses c<k(Y+1). An explicit CRT construction gives full positive zeros
+at every input for every fixed compiled constant tuple. It chooses
+q=2^ell, R congruent to a bounded e moduloell, C>2^u, F=(K0+2^e)C,
+and zplus=1+C*(2^R-2^e)/(q-1), then restores fresh main, strong auxiliary
+and input Pell witnesses. The +1 in zplus is essential for transport
+unit1. This is a proved all-input projection, stronger than its initial
+same-input coordinate-bijection failure. Preserve the upper ratio slack.
 
 The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
 uniform four-witness representation for any two fixed H^r generators,
