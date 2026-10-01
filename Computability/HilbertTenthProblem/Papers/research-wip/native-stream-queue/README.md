@@ -187,6 +187,16 @@ These are complete fixed-program halting predicates. The example is not
 a universal instruction table, and the TM-to-Wang input morphism remains
 uninstantiated; no new universal operation bound follows.
 
+The [computed-action successor](wang_b_computed_actions.md)
+defines four action hats from the paid edge sums and folds their bound
+contribution as2J-E_J+3. The positive graph bijection removes four
+comparisons and four witnesses, preserving the same fixed-program relation.
+The example now costs **331=146M+185A**,305 certificate operations,
+9 comparisons,33 witnesses and degree at most3838 at window endpoints;
+literal input gives **333=147M+186A**,307 certificate operations,
+9 comparisons,36 witnesses and degree at most5767. No universal table or
+TM-input encoding is added;350/352 remain the reproducible parent counts.
+
 A separate [positive NOR compiler for finite game graphs](lattice_game_positive_nor.md)
 forces exact Boolean outcomes using one bilinear row per nonterminal.
 For a fixed acyclic graph with N vertices,h nonterminals and E edges,
@@ -1282,6 +1292,7 @@ New research and the completed75-operation construction:
 | [Computed native graph fields](native_binary_computed_fields.md) | Six fields after scale: **AND90/44**,9eq15w; **motion223/degree-at-most696**,12eq28w; **toggle137/256**,11eq21w. Four fields:96/28,229/316,143/124. | All paid defining gates remain charged; positive graph extension gives a full zero-set bijection. Standalone exact operation/degree frontier90/44,93/40,96/28 within128 subset/scale schedules. Component degree claims are bounds. |
 | [Native norm-unit finalizers](native_binary_norm_units.md) | **AND83/degree-at-most124**,5eq15w; **motion216/2112**,8eq28w; **toggle130/778**,7eq21w. Ordinary strong:84/86,217/1602,131/584. | Positive first-root coordinate plus three sign-safe norms/checksum; normalized strong rebuilds five auxiliaries while preserving outer histories. Local components retain their previous missing control/geometry. |
 | [Chronological fixed Wang program](wang_b_packed_program.md) | Example **350=150M+200A**,312 certificate,13eq37w,degree at most3838 at window endpoints. Literal input: **352=151M+201A**,314 certificate,13eq40w,degree at most5767. | Arbitrary fixed instruction lists receive paid edge partition, current-read branches, chronological control and common time. Literal binary input uses two gates plus already-paid head typing. Example program is not universal; numerical universal table/TM-input morphism remain open. |
+| [Computed Wang actions](wang_b_computed_actions.md) | Example **331=146M+185A**,305 certificate,9eq33w,degree at most3838 at window endpoints. Literal input: **333=147M+186A**,307 certificate,9eq36w,degree at most5767. | Exact positive graph bijection defines four hats from paid edge sums; bound contribution becomes2J-E_J+3. Same complete fixed-program relation and paid input shift; no universal instruction table or TM-input map. |
 | [Finite-game positive NOR compiler](lattice_game_positive_nor.md) | For N vertices,h nonterminals,E edges: E+3h certificate, N+h witnesses; target polynomial E+3h+3N+2,degree4 if h>0. | Complete Boolean outcome projection on each fixed acyclic graph. All legal options and predecessor closure matter; graph size and the primary unbounded-position input interface remain unpaid. |
 | [Two-core U9 universal polynomial](neary_woods_universal_joint_and_units.md) | **256 certificate /303=144M+159A polynomial**,16eq,51w,four positive program parameters,degree at most2285. Unnormalized units:252 certificate /305=142M+163A,18eq,51w,degree at most1475. | Six norm units plus one checksum, then two independent strong normalizations. Full positive input relation; fresh canonical auxiliaries preserve completeness. |
 | [Joint recoder/history AND](neary_woods_universal_joint_and.md) | **246 certificate /356=155M+201A raw polynomial**,37eq,64w,four positive program parameters,degree at most580. | Paid lower-output bound and pretyping low-block bounds recover both AND graphs from one concatenation. Fresh native extensions prove outer-coordinate equivalence; no full old/new witness bijection. |

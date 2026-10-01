@@ -30,6 +30,12 @@ and degree at most5767. The projected SOS alternatives357/1264 and
 359/1900 remain available at17 comparisons and the same witness counts. These example counts concern this particular
 program, which is not asserted universal.
 
+The separate [computed-action successor](wang_b_computed_actions.md)
+preserves this fixed-program relation while lowering the example to
+331 endpoint /333 literal-input operations, with9 comparisons and33/36
+witnesses; the degree bounds remain3838/5767. The350/352 schedules here
+remain unchanged.
+
 ## 1. Exact program convention and finite layout
 
 The primary [Neary–Woods–Murphy–Glaschick paper](https://mural.maynoothuniversity.ie/id/eprint/12409/1/Woods_Wang_2014.pdf),

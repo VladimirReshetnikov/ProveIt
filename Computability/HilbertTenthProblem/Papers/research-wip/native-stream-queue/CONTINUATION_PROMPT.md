@@ -1064,8 +1064,39 @@ lane. Its64 ledgers have1,024 full identities512signed;240 actual halted
 outer histories have1,336 rows, with30 normalized-map transfers and
 714 enumerated controller sequences. Native placeholders are not Pell zeros.
 
+The [computed-action successor](wang_b_computed_actions.md) replaces
+I_hat,L_hat,R_hat,Stay_hat by the paid edge-action sums plus1 and defines
+J from the full edge partition. This is an exact positive graph bijection
+on every parent zero, including each chosen normalized native tuple;
+there is no new canonical-auxiliary reconstruction in this projection.
+It removes four comparisons and four witnesses. Folding the global-bound
+contribution as2J-E_J+3 saves three further additions for the mixed-action
+example. Its endpoint source costs305 certificate /331=146M+185A,
+9eq33w,degree at most3838; literal input costs307 certificate /
+333=147M+186A,9eq36w,degree at most5767. The plain graph schedules334/336
+remain available. The same fixed-program chronology, current-read jumps,
+first halt and paid spatial shift are preserved; no universal table or
+TM-to-Wang input map is supplied by this rewrite.
+
 Next Wang work is an actual fixed universal instruction table and its
 paid ordinary-TM input morphism, or a smaller complete control circuit.
+The [2014 primary paper](https://mural.maynoothuniversity.ie/id/eprint/12409/1/Woods_Wang_2014.pdf),
+Theorem 7, printed pp638–640, gives the exact Wang expansion for an already
+non-erasing binary TM and the pair code 0->10, 1->11, with the head on the
+first bit and blank exterior pairs initialized during execution. Its
+Lemma 5, printed p637, gives only an overview of the preceding copying
+simulation; an explicit finite non-erasing table, startup/frame convention
+and state ledger still need construction. The imported
+[U15 table](neary_woods_explicit_universal_tm.py) writes c->b at
+u2, u5, u6, u8, u10 and b->c at u3, u14, so neither binary renaming makes it
+non-erasing. Preserve its program-left-of-head, paired-BTS input and pay
+the complete composed input map; literal x is not that encoded tape.
+[Margenstern 1997](https://www.numdam.org/item/ITA_1997__31_2_159_0.pdf),
+Theorem 2 on printed p166, identifies an explicit 218-state non-erasing
+universal machine in LITP report 94.08 (reference 4, p204). That table and
+its input convention were not retrieved or checked here: this is a
+retrieval lead, not an instantiated universal Wang program or bound.
+
 Investigate further coupled-index/kernel savings only with their actual
 sign/rank hypotheses. Planar turns, periodic hardware and input loading
 remain obligations for the ant component. Other substrates remain useful

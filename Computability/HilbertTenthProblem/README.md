@@ -188,6 +188,16 @@ These are complete fixed-program halting predicates. The example is not
 a universal instruction table, and the TM-to-Wang input morphism remains
 uninstantiated; no new universal operation bound follows.
 
+The [computed-action successor](Papers/research-wip/native-stream-queue/wang_b_computed_actions.md)
+defines four action hats from the paid edge sums and folds their bound
+contribution as2J-E_J+3. The positive graph bijection removes four
+comparisons and four witnesses, preserving the same fixed-program relation.
+The example now costs **331=146M+185A**,305 certificate operations,
+9 comparisons,33 witnesses and degree at most3838 at window endpoints;
+literal input gives **333=147M+186A**,307 certificate operations,
+9 comparisons,36 witnesses and degree at most5767. No universal table or
+TM-input encoding is added;350/352 remain the reproducible parent counts.
+
 A separate [positive NOR compiler for finite game graphs](Papers/research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes using one bilinear row per nonterminal.
 For a fixed acyclic graph with N vertices,h nonterminals and E edges,
