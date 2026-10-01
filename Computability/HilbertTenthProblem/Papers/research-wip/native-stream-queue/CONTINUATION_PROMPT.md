@@ -15,6 +15,32 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source is
+> **257=133M+124A**,256 certificate operations,1 comparison,43 positive
+> witnesses and four positive program parameters, degree at most1384:
+> [positive history scale](neary_woods_universal_history_scale257.md).
+> The scale is the positive global sum, hence degree1 rather than the
+> parent's degree4. Its retained repunit unit may initially have either
+> sign; independent native typing and the reserved top AND lane exclude−1.
+> The map beta_new=beta_parent+1 gives a positive-zero bijection on valid
+> program/input slices, with beta_new>=17. It is not an arbitrary-point
+> polynomial identity. The E'=E−1 offset recipe and raw input are unchanged.
+>
+> The [new all-factor history-scale search](neary_woods_universal_history_scale_partitions.md)
+> covers all sixteen strong/scale bases and every factor partition/anchor.
+> Its finite operation/degree-bound frontier is257/1384,259/1242,260/1196,
+> 261/858,262/606,263/560,264/458,265/412,266/306,267/276,268/230,269/212.
+> The first four use43 witnesses and the rest44. The fixed43-witness
+> frontier additionally has262/814,263/610 and265/456; fixed45 ends272/212.
+> Endpoint269=133M+136A has group weights106,100,102,104 and maximum
+> ordinary residual bound74. Six exact largest-factor/residual cases
+> certify the family minimum212 independently of the subset search.
+> This optimizes propagated bounds, not exact degree or arbitrary circuits.
+> Within each fixed valid-program base the positive zeros agree; across
+> native bases keep the inherited projections and canonical extensions.
+> Its matching regrouped258 parent has the same complete polynomial on
+> N_P=1 under beta_parent=beta_new−1. Do not claim an arbitrary-point identity.
+>
+> The preceding complete explicit U9/tag source is
 > **258=133M+125A**,257 certificate operations,1 comparison,43 positive
 > witnesses and four positive program parameters, degree at most3861:
 > [shifted program offset](neary_woods_universal_offset258.md). The new
@@ -27,6 +53,12 @@
 > retains old program recipes and the same positive zero coordinates on
 > valid slices. Its negative lower unit would create a forbidden internal
 > zero run in V0−2; only then does the remaining global sign follow.
+>
+> The [older shifted-offset all-factor search](neary_woods_universal_offset_partitions.md)
+> retains E' but uses the older history-scale definition. Its sixteen-base
+> frontier gives265/1112,266/1066,267/742 and268/712 with44 witnesses,
+> ending269/608; fixed43 witnesses end266/1344. This historical family is
+> distinct from both the new257 scale search and the older-E family below.
 >
 > A separate [all-factor32-base search](neary_woods_universal_history_unit_partitions.md)
 > retains the older E semantics. It permits every factor partition and
@@ -191,10 +223,21 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > arbitrary finite iteration with fixed arity: shortcut Collatz gives
 > 134=64M+70A,21w5eq,degree at most748; zero duration costs two more gates.
 > Starting and target integers are direct ports. This is no Collatz
-> universality/convergence claim; the prime-coded universal substrate's
-> ordinary-input exponent loader remains unpaid. A concrete next task is
-> to compose that loader with an actual fixed universal residue table,
-> while counting all residue selectors and fixed coefficients.
+> universality/convergence claim; that packet leaves input loading separate.
+> The [sparse prime-payload successor](residue_affine_sparse_universal.md)
+> now completes the universal route at **674=249M+425A**,651 certificate
+> operations,8 comparisons,81 positive witnesses and degree at most10416.
+> It has one fixed program parameter E=3^e and ordinary positive x.
+> The actual U21 body's34 branches plus two prefix edges give36 branches
+> and23 selected quotient classes; the deterministic total residue-affine
+> body has223092870 rows, which the source never enumerates. The branching
+> prefix doubles the payload exactly x times. Its count equation costs
+> three gates and one comparison inside the fully paid chronology, not a
+> standalone exponent predicate. Acceptance targets the fixed halting
+> control class with a positive existential payload. Raw705/88w has degree
+> at most1564. This independent route is above257,411 and75/87.
+> Further work can reduce sparse lane/branch arithmetic while preserving
+> the paid prefix and chronological converse; no better bound is presumed.
 >
 > The [two-stack substrate](two_stack_affine_input_step.md) has a two-operation
 > ordinary-input prefix. [Factored selectors](two_stack_factored_selector_step.md)

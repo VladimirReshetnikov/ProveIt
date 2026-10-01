@@ -1,5 +1,12 @@
 # Shifting the fixed program offset gives258 operations
 
+The later [positive-history-scale compiler](neary_woods_universal_history_scale257.md)
+gives257 operations and degree at most1384, with a positive-zero slack
+bijection on valid program/input slices. Its [new partition search](neary_woods_universal_history_scale_partitions.md)
+reaches269/212 with44 witnesses and265/456 with43. The separate
+[shifted-offset partition search](neary_woods_universal_offset_partitions.md)
+retains this packet's older scale and its historical degree bounds.
+
 The [literal builder](neary_woods_universal_offset258.py) saves one addition
 from the [259-operation lower-unit compiler](neary_woods_universal_lower_unit259.md).
 Its default has **258=133M+125A**,257 certificate operations, one comparison,
