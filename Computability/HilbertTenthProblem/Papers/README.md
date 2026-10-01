@@ -35,12 +35,16 @@ frontiers alongside the historical handoff. The
 supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound. The separate explicit
-[two-index U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_joint_and_arithmetic.md)
-now gives260 certificate / **301=144M+157A polynomial operations**,
-14 comparisons,51 positive witnesses, four positive program parameters
-and degree at most2475. Its two native index signs are recovered before
-typing, preserving the parent's positive zero set.
-[Grouped finalizers](research-wip/native-stream-queue/neary_woods_universal_joint_and_partitions.md)
+[coupled-unit U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
+now gives262 certificate / **297=144M+153A polynomial operations**,
+12 comparisons,51 positive witnesses, four positive program parameters
+and degree at most2311. It preserves the accepted outer relation through
+sign recovery and a conditional positive restoration; the supplied
+positive zero sets are not asserted identical. The
+[two-index301 parent](research-wip/native-stream-queue/neary_woods_universal_joint_and_arithmetic.md)
+remains available at260 certificate operations,14 comparisons and degree
+at most2475.
+The earlier [grouped finalizers](research-wip/native-stream-queue/neary_woods_universal_joint_and_partitions.md)
 give alternatives303=143M+160A with degree at most1522,
 305=143M+162A with degree at most1144, and308=142M+166A with degree
 at most1076, all with51 witnesses. The finite search optimizes the
@@ -67,8 +71,14 @@ The [Wang B tape component](research-wip/native-stream-queue/wang_b_single_and_t
 provides a complete head/read/mark scalar graph in74 certificate /124
 polynomial operations,24 witnesses and degree at most40. A finite-window
 initialization of literal Wang input uses two gates after a paid initial
-head/read predicate; the chronological whole-run certificate and published
-TM-to-Wang input encoding remain open.
+head/read predicate. The [packed tape successor](research-wip/native-stream-queue/wang_b_packed_tape.md)
+pays arbitrary-duration chronological reads and optional marks in139
+certificate /192 polynomial operations,18 comparisons,31 witnesses and
+degree at most232. Head motion, control and TM input coding remain open.
+The [finite-game positive NOR compiler](research-wip/native-stream-queue/lattice_game_positive_nor.md)
+forces exact Boolean outcomes on every fixed acyclic option graph with
+one bilinear row per nonterminal. Its degree-at-most-four family grows
+with the graph; no uniform lattice-game or ordinary-input bound follows.
 
 That predecessor joins the [joint positive scale bound](research-wip/native-stream-queue/neary_woods_universal_population_joint_bound386.md),
 [154-gate shared history](research-wip/native-stream-queue/neary_woods_universal_shared_history382.md)
@@ -80,6 +90,10 @@ remain reproducible. The separate75/87 frontier is unchanged.
 The [local target CRT theorem](research-wip/native-stream-queue/complete75_linear_strong87_target_crt.md)
 realizes nearby wrong targets for a weakened auxiliary system, not full
 polynomial zeros; the87-operation,degree183 candidate remains unresolved.
+The [positive-index86 theorem](research-wip/native-stream-queue/complete75_weakened86_positive_index.md)
+proves the unresolved86 candidate sound whenever its computed R>0,
+without assuming alpha>Z. R=0 is impossible; the negative-R branch
+remains unresolved, so the established75/87 bounds are unchanged.
 Native queue components retain their separate scope.
 
 - Every displayed system, machine table and count of the six articles was

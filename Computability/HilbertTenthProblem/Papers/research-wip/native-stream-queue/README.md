@@ -40,15 +40,21 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [two-index U9 universal polynomial](neary_woods_universal_joint_and_arithmetic.md)
-now gives **260 certificate /301=144M+157A polynomial operations**,
-14 comparisons,51 positive witnesses and four positive program parameters.
-Its total degree is **at most2475**, including every program coordinate.
-Both native index signs are recovered from the retained ratios and full
-strong equations before typing; this preserves the same positive zero
-set as the [303-operation parent](neary_woods_universal_joint_and_units.md).
+The explicit [coupled-unit U9 universal polynomial](neary_woods_universal_joint_and_coupled.md)
+now gives **262 certificate /297=144M+153A polynomial operations**,
+12 comparisons,51 positive witnesses and four positive program parameters.
+Its total degree is **at most2311**, including every program coordinate.
+The negative geometry-index branch is excluded by a joint population
+contradiction. A remaining negative joint branch restores the parent by
+two private positive-coordinate changes. This preserves the accepted
+outer relation; no bijection of all supplied positive zeros is claimed.
 
-[Grouped unit finalizers](neary_woods_universal_joint_and_partitions.md)
+The [two-index301 parent](neary_woods_universal_joint_and_arithmetic.md)
+remains available with260 certificate operations,14 comparisons and
+degree at most2475. Its own sign theorem preserves the same positive
+zero set as the [303-operation parent](neary_woods_universal_joint_and_units.md).
+
+The earlier [grouped unit finalizers](neary_woods_universal_joint_and_partitions.md)
 give lower-degree alternatives at the same51-witness interface, including
 **303=143M+160A / degree at most1522**,
 **305=143M+162A / degree at most1144**, and
@@ -86,11 +92,25 @@ Its complete scalar mark graph costs74 certificate /124 polynomial
 operations,17 comparisons,24 positive witnesses and degree at most40;
 the head/read-only graph costs72/119 with16 comparisons. A finite-window
 lemma initializes a literal Wang input with two gates after a paid initial
-head/read predicate. A uniform run, control selection and the published
-TM-to-Wang input encoding remain unimplemented.
-An exact nonhalting lasso also rules out substituting final-tape reads
-for chronological reads. No new universal bound follows from this local
-interface.
+head/read predicate. An exact nonhalting lasso rules out substituting
+final-tape reads for chronological reads.
+
+The [packed Wang tape successor](wang_b_packed_tape.md) pays uniform
+chronological reads and optional marks in **139 certificate /192 polynomial
+operations**,18 comparisons,31 witnesses and degree at most232. One AND
+also types every positive one-hot head, the radix and a positive duration.
+Heads remain independently chosen: motion, instruction/control selection
+and the published TM-to-Wang input encoding remain unpaid. No universal
+Wang-program bound is claimed.
+
+A separate [positive NOR compiler for finite game graphs](lattice_game_positive_nor.md)
+forces exact Boolean outcomes using one bilinear row per nonterminal.
+For a fixed acyclic graph with N vertices,h nonterminals and E edges,
+its certificate costs E+3h operations with N+h positive witnesses;
+a target-outcome polynomial costs E+3h+3N+2 and has degree4 when h>0.
+The graph size is unbounded in the lattice-game universality theorem.
+This finite-graph family supplies no fixed-variable universal polynomial
+or paid ordinary-input interface.
 
 The [377-operation predecessor](neary_woods_universal_population377.md)
 remains available with318 certificate operations,20 comparisons,66
@@ -287,8 +307,10 @@ illustrative examples alone are not universal bounds.
 
 The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
 retains exact parent identities under alpha_old=alpha-Z and positive
-completeness, with degree203 and19 witnesses. Its inverse is proved only
-for alpha>Z; full soundness elsewhere remains open. The negative-index
+completeness, with degree203 and19 witnesses. Its new
+[positive-index theorem](complete75_weakened86_positive_index.md) proves
+soundness whenever computed R>0, without alpha>Z, by restoring101.
+R=0 is impossible; only R<0 remains unresolved. The negative-index
 outer fixtures are not complete polynomial zeros, so neither a new bound
 nor a full false-input counterexample is claimed.
 
@@ -1154,6 +1176,11 @@ New research and the completed75-operation construction:
 | [Explicit U15 universal tag polynomial](neary_woods_universal_tag557.md) | **483 certificate /557=351M+206A polynomial**,25eq,69w,five positive program parameters; degree at most496070855427922989652813345268287100. | Fixed binary table and production, effective ordinary-input slices, exact counter and complete positive native converse. Huge fixed numerals have exact recipes;75/87 unchanged. |
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
+| [Coupled-unit U9 universal polynomial](neary_woods_universal_joint_and_coupled.md) | **262 certificate /297=144M+153A polynomial**,12eq,51w,four positive program parameters,degree at most2311. Ordinary-strong both-core option299/degree1501. | Both linear signs recover before typing; joint population excludes a negative computed geometry index. A remaining negative joint branch restores two private positive coordinates. Same accepted outer relation, no all-tuple bijection. |
+| [Two recovered native index units](neary_woods_universal_joint_and_arithmetic.md) | **260 certificate /301=144M+157A polynomial**,14eq,51w,degree at most2475. | Retained ratios and full strong equations force each index factor1 before parent typing. Same positive supplied zeros as303. |
+| [Grouped U9 unit finalizers](neary_woods_universal_joint_and_partitions.md) | Prior family:301/2475,302/1707,303/1522,304/1296,305/1144,307/1110,308/1076; all51w. | Exhaustive1,286,789-partition search only within its stated factor families and conservative degree model. These are retained alternatives, not a partition search on the coupled297 source. |
+| [Packed Wang chronological tape](wang_b_packed_tape.md) | **139 certificate /192=81M+111A polynomial**,18eq,31w,degree at most232. | One AND certifies arbitrary positive duration, row-positive one-hot heads, current reads, Boolean mark choices and tape chronology. Head motion, program/control and TM input coding remain unpaid. |
+| [Finite-game positive NOR compiler](lattice_game_positive_nor.md) | For N vertices,h nonterminals,E edges: E+3h certificate, N+h witnesses; target polynomial E+3h+3N+2,degree4 if h>0. | Complete Boolean outcome projection on each fixed acyclic graph. All legal options and predecessor closure matter; graph size and the primary unbounded-position input interface remain unpaid. |
 | [Two-core U9 universal polynomial](neary_woods_universal_joint_and_units.md) | **256 certificate /303=144M+159A polynomial**,16eq,51w,four positive program parameters,degree at most2285. Unnormalized units:252 certificate /305=142M+163A,18eq,51w,degree at most1475. | Six norm units plus one checksum, then two independent strong normalizations. Full positive input relation; fresh canonical auxiliaries preserve completeness. |
 | [Joint recoder/history AND](neary_woods_universal_joint_and.md) | **246 certificate /356=155M+201A raw polynomial**,37eq,64w,four positive program parameters,degree at most580. | Paid lower-output bound and pretyping low-block bounds recover both AND graphs from one concatenation. Fresh native extensions prove outer-coordinate equivalence; no full old/new witness bijection. |
 | [Combined U9 universal polynomial](neary_woods_universal_population377.md) | **318 certificate /377=183M+194A polynomial**,20eq,66w,four positive program parameters,degree at most2285. Separate checksum:317 certificate /379=183M+196A,21eq,66w,degree at most2241. | Composes the joint bound,154-gate history and conditional checksum sign theorem. Same complete ordinary-input relation and fixed U9 table;40 source configurations retain degree alternatives. |
@@ -1175,7 +1202,7 @@ New research and the completed75-operation construction:
 | [Dyadic-duration native units](native_binary_dyadic_duration_units.md) | Width2:191 operations,39w,degree382; lower-degree193/244. | Complete two-core recoder graph, positive projected ports and independent canonical strong witnesses. Generic normalized cost190+mu(D). |
 | [Shared counter input loader](binary_tag_shared_counter_loader.md) | Incremental8=5M+3A,1eq,1w with actual shared Q-1; local subtraction gives9. Boundary output degree2. | Fixed word blocks, typed recoder input and exact counter exponent are explicit contracts. Off-zero correction and coefficient-sign caveats retained; no complete universal count. |
 | [Fixed binary-tag halt bridge](binary_tag_fixed_halt_bridge.md) | One fixed production and equal-content block morphism on valid clockwise-TM simulation inputs; all halts are singleton b. | Primary stage-table index exclusion proves one pending halt object. That packet alone leaves the exact dyadic counter unpaid; later separate recoder/loader components are listed above. No new universal operation bound. |
-| [Weakened-bound86 candidate](complete75_weakened_bound86_candidate.md) | **Unresolved:**86=48M+38A,19w,degree203; exact parent substitution alpha_old=alpha-Z. | Positive completeness and inverse only for alpha>Z. Outer negative-index fixtures refute the old positivity bootstrap but are not full polynomial zeros. Established75/87 bounds unchanged. |
+| [Weakened-bound86 candidate](complete75_weakened_bound86_candidate.md) / [positive-index soundness](complete75_weakened86_positive_index.md) | **Unresolved:**86=48M+38A,19w,degree203; exact signed parent identity and positive completeness. | Every zero with R>0 is sound via101, without alpha>Z; R=0 is impossible. The negative-R branch remains open, and its outer fixtures are not full polynomial zeros. Established75/87 bounds unchanged. |
 | [Normalized strong history unit](pcp_normalized_strong_history_units.md) | Generic native-unit polynomial saves1 operation (+1M−2A), with certificate+2M and one fewer comparison. Tag **196=93M+103A**,28w,degree1015 including singleton; nonempty194/1014. | Same positive outer projection through sign-safe normalization and fresh five-auxiliary reconstruction. Single-core packet; the later557 composition supplies ordinary universal input. |
 | [Four-tile binary tag history](binary_tag_four_tile_history.md) | **195** operations for a nonempty matching history; **197=92M+105A**,28 positive witnesses,degree667 including the initially halted singleton. | Exact halting equivalence on the stated word slices. Its input is an encoded-tag sentinel; the later557 composition pays the fixed-universal ordinary-input bridge. |
 | [Sparse oriented machine rules](sparse_tm_rewriting.md) | Exact symbolic rule saving `t*ell-k_R-k_L`; local moves share forced edge repairs. | Fixed state orientations preserve deterministic runs and accepting cleanup. A before-oriented start preserves the existing ordinary-input prefix; arithmetic compilation rebuilds the actual table. |

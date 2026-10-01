@@ -15,9 +15,14 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **301=144M+157A**,260 certificate operations,51 positive witnesses,
-> 14 comparisons and four positive program parameters, with degree
-> at most2475: [two recovered index units](neary_woods_universal_joint_and_arithmetic.md).
+> **297=144M+153A**,262 certificate operations,51 positive witnesses,
+> 12 comparisons and four positive program parameters, with degree
+> at most2311: [coupled native linear units](neary_woods_universal_joint_and_coupled.md).
+> It preserves the accepted outer relation through a conditional positive
+> restoration, not an asserted bijection of all supplied zeros. The
+> [two-index301 parent](neary_woods_universal_joint_and_arithmetic.md)
+> remains available with260 certificate operations,14 comparisons and
+> degree at most2475.
 > [Grouped finalizers](neary_woods_universal_joint_and_partitions.md) give
 > 303/degree-at-most1522,305/1144 and308/1076 at the same51 witnesses.
 > The earlier [303-operation two-core source](neary_woods_universal_joint_and_units.md)
@@ -772,7 +777,31 @@ checksum is1. The same positive supplied tuples therefore give
 ordinary-strong version gives303/degree-at-most1665; single-index
 choices and both program-bound interfaces remain available.
 
-The [factor-partition packet](neary_woods_universal_joint_and_partitions.md)
+The [coupled linear-unit successor](neary_woods_universal_joint_and_coupled.md)
+replaces U=jc-(2r+1) by V=of-c in each auxiliary norm and adds
+Nl=V-jc+2K, K=k-hE. Each coupling saves two polynomial additions.
+The old strong/rank and ratio arguments force both linear signs+1;
+the raw population theorem applies at r'=r+epsilon-1 before field typing.
+A negative geometry sign would make the joint population exceed its
+native exponent in either checksum-sign case, so epsilon_geometry=1.
+The remaining negative joint branch has F0=3 mod16 and restores the
+301 parent by F0_old=F0-2>0 and bound_beta_old=bound_beta+2. Geometry,
+all program coordinates and outer histories are unchanged. Parent zeros
+extend with all signs+1. This preserves the accepted outer relation;
+it is not an identity of the two supplied positive zero sets.
+
+The normalized both-core source is **262 certificate /297=144M+153A**,
+12eq51w, degree at most2311=1941+2*185. The ordinary-strong both-core
+option gives258 certificate /299=142M+157A,14eq51w,degree at most1501.
+The packet has12 ledgers,768 full output corrections (384 signed), and
+240 conditional source restorations, including96 negative-joint cases.
+The restoration fixtures need not satisfy the norm equations and are
+not numerical full Pell zeros. Future grouping must retain the distinction:
+all-group-product1 zeros imply the all-product theorem, while completeness
+uses the parent's all-positive-unit extension; exact equality of coupled
+witness zero sets is not automatic.
+
+The earlier [factor-partition packet](neary_woods_universal_joint_and_partitions.md)
 independently chooses both strong normalizations and both index merges,
 then enumerates all factor partitions for16 bases. A grouped SOS uses
 sum r²+sum(V_group-1)²; the alternative leaves one group unsquared as
@@ -827,10 +856,42 @@ Wang input by an existential power-of-two head H0 and initializes
 T0_hat=x*H0+1 in2=1M1A gates. Initial H0 typing is a separately paid
 head/read predicate; it is not supplied by those two gates. Exact
 doubling/halving and current-tape reads recover the bi-infinite trace
-after the coordinate shift. A whole Wang history still needs uniform
-chronological tape/head/control selection and the published TM-to-Wang
-input encoding. No numerical universal program or new universal bound
-is claimed.
+after the coordinate shift. These scalar counts do not include the
+later uniform packed tape relation or a complete Wang program.
+
+The [packed Wang tape](wang_b_packed_tape.md) now pays chronological tape
+reads and optional marks at arbitrary positive duration:139=63M+76A
+certificate gates,18 comparisons,31 witnesses and192=81M+111A SOS gates,
+with degree at most232. D=initial_hat+final_hat+height_slack, B=8D,
+J=I_hat+N_hat-2 and P=(B-1)J+1 are paid. A global bound gives J>0 and
+canonical lanes before native typing. Seven AND lanes join head/read,
+selected products, mark selection and T/G range; two reserved top lanes
+force B AND(B-1)=0 even when duration1 gives B=P. P^9 typing then gives
+P=B^t. Bounded G plus J supplies a positive head in each row without
+borrowing. The folded comparison B(T+W-V)+T0=T+P*Tt is carry-free and
+recovers all chronological updates. Every genuine finite sequence has
+global_bound>=(3D+1)J-5>0 and a fresh full positive native extension.
+The139/192 relation allows unrelated heads in successive rows. Movement,
+instruction/control selection, jumps and the published TM-to-Wang input
+encoding remain open. No numerical universal Wang program or bound is
+claimed. Independent review added192 complete identities (96 signed)
+and96 physical prefixes/639 steps; outer paths are not full Pell zeros.
+
+The [finite lattice-game NOR compiler](lattice_game_positive_nor.md) is a
+separate exact degree-four family. At each nonterminal use positive
+u_v,w_v and S_v=sum_options(u_j-1)>=0, with fixed D divisible by1..d,
+and impose S_v*w_v+D*u_v=2D. Positivity types every u_v in{1,2}
+simultaneously; divisibility supplies the converse w_v=D/S_v when S_v>0.
+Terminals have u_v=2. On a fixed acyclic graph the positive projection
+is exactly its unique game outcome labeling. Counts are E+3h certificate,
+N+h witnesses and E+3h+3N+2 target SOS operations. Positive rank weights
+make finite sublevel boards predecessor-closed, including negative move
+coordinates. Dropping a position or a legal option has explicit false
+certificates. Fink's universality asks for an unbounded existential
+P-position; any computable ordinary-x loader into one finite position
+is decidable. Graph size, input encoding and uniform packing remain open.
+The28-move fixture is the non-rational-strategy example, not a numerical
+universal game table. Preserve that distinction.
 
 The [counter-initialization obstruction](clockwise_cts_counter_initialization_obstruction.md)
 executes the printed Q3 CTS table: counter3 on tape01 falsely activates
@@ -846,13 +907,32 @@ The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
 is separately preserved: remove the extra Z from C=q−F−Z−alpha−2dx,
 factor gap=q*(q−F)−Z, and save1A. All eight factors agree with87 under
 alpha_old=alpha−Z. Positive forward inclusion is unconditional; inverse
-is proved only for alpha>Z. At B=q16,J1,F1,alpha3,x1,d4,w11,DC3,DR5,
+to the87 parent was originally proved only for alpha>Z. At B=q16,J1,F1,alpha3,x1,d4,w11,DC3,DR5,
 MC10,MF12,zplus12038,Z265+4j the literal transport is1 but
 R=−5933−1020j. The source adapter uses MF+B−1, hence actual mask442.
 The full polynomial is nonzero on these fixtures: they refute only the
-old outer bootstrap, not universal soundness. Exact86=48M38A/19w/203
-is an UNRESOLVED candidate; full alpha<=Z soundness remains open. Parent
-75/87 bounds and independent-gamma87 status are unchanged.
+old outer bootstrap, not universal soundness.
+
+The new [positive-index86 theorem](complete75_weakened86_positive_index.md)
+proves every zero with computed R>0 sound, without alpha>Z. With
+S=Z+qF-1 and Tmask=(MC*J+1)+q*(MF*J-1), the exact identity
+R=(q^2-S)(q^2-1)+Tmask gives R!=0 and R>0 iff S<=q^2. The widened
+boundary S=q^2 is allowed: there R=Tmask and G=-1. Bounds on R±2
+restore the coupled signs and full half-binomial theorem. The negative
+index sign is excluded also at the new boundary by its smaller population.
+Restore the positive101 tuple with alpha_101=F+alpha, r_101=R,
+z_101=zplus-1 and i_101=Delta*i; it need not be an87 tuple.
+
+Only R<0 remains open, equivalently S>q^2, with W=C-Z<0. Globally the
+main Pell index still satisfies p>=12, restoring full strong rank and
+the auxiliary target congruence. When the computed input root mu>0,
+the target is confined to ±p-jc with0<=j<=2(q^2-1); mu<0 has a separate
+unexcluded expression for Z. These are necessary restrictions, not
+full candidate zeros. The literal86=48M+38A/19w/degree203 circuit is
+unchanged and does not impose R>0. Paying that condition is still an
+obligation. The source checks512 full restoration identities,256 signed;
+neither its fixtures nor the older negative-index family settle universal
+soundness. Established75/87 and independent-gamma87 status are unchanged.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary

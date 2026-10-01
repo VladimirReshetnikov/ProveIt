@@ -41,15 +41,21 @@ and [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [two-index U9 universal polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_arithmetic.md)
-now gives **260 certificate /301=144M+157A polynomial operations**,
-14 comparisons,51 positive witnesses and four positive program parameters.
-Its total degree is **at most2475**, including every program coordinate.
-Both native index signs are recovered from the retained ratios and full
-strong equations before typing; this preserves the same positive zero
-set as the [303-operation parent](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_units.md).
+The explicit [coupled-unit U9 universal polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
+now gives **262 certificate /297=144M+153A polynomial operations**,
+12 comparisons,51 positive witnesses and four positive program parameters.
+Its total degree is **at most2311**, including every program coordinate.
+The negative geometry-index branch is excluded by a joint population
+contradiction. A remaining negative joint branch restores the parent by
+two private positive-coordinate changes. This preserves the accepted
+outer relation; no bijection of all supplied positive zeros is claimed.
 
-[Grouped unit finalizers](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_partitions.md)
+The [two-index301 parent](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_arithmetic.md)
+remains available with260 certificate operations,14 comparisons and
+degree at most2475. Its own sign theorem preserves the same positive
+zero set as the [303-operation parent](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_units.md).
+
+The earlier [grouped unit finalizers](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_partitions.md)
 give lower-degree alternatives at the same51-witness interface, including
 **303=143M+160A / degree at most1522**,
 **305=143M+162A / degree at most1144**, and
@@ -87,11 +93,25 @@ Its complete scalar mark graph costs74 certificate /124 polynomial
 operations,17 comparisons,24 positive witnesses and degree at most40;
 the head/read-only graph costs72/119 with16 comparisons. A finite-window
 lemma initializes a literal Wang input with two gates after a paid initial
-head/read predicate. A uniform run, control selection and the published
-TM-to-Wang input encoding remain unimplemented.
-An exact nonhalting lasso also rules out substituting final-tape reads
-for chronological reads. No new universal bound follows from this local
-interface.
+head/read predicate. An exact nonhalting lasso rules out substituting
+final-tape reads for chronological reads.
+
+The [packed Wang tape successor](Papers/research-wip/native-stream-queue/wang_b_packed_tape.md) pays uniform
+chronological reads and optional marks in **139 certificate /192 polynomial
+operations**,18 comparisons,31 witnesses and degree at most232. One AND
+also types every positive one-hot head, the radix and a positive duration.
+Heads remain independently chosen: motion, instruction/control selection
+and the published TM-to-Wang input encoding remain unpaid. No universal
+Wang-program bound is claimed.
+
+A separate [positive NOR compiler for finite game graphs](Papers/research-wip/native-stream-queue/lattice_game_positive_nor.md)
+forces exact Boolean outcomes using one bilinear row per nonterminal.
+For a fixed acyclic graph with N vertices,h nonterminals and E edges,
+its certificate costs E+3h operations with N+h positive witnesses;
+a target-outcome polynomial costs E+3h+3N+2 and has degree4 when h>0.
+The graph size is unbounded in the lattice-game universality theorem.
+This finite-graph family supplies no fixed-variable universal polynomial
+or paid ordinary-input interface.
 
 The [377-operation predecessor](Papers/research-wip/native-stream-queue/neary_woods_universal_population377.md)
 remains available with318 certificate operations,20 comparisons,66
@@ -215,8 +235,10 @@ retains its full strong equation.
   both ratio slacks and the ordinary-input contract remain unchanged.
   The75-operation certificate bound and87-operation polynomial bound remain distinct.
   The [weakened-bound86 candidate](Papers/research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
-  has exact signed parent identities and positive completeness, but its
-  inverse is proved only for alpha>Z. It is not a new universal bound.
+  has exact signed parent identities and positive completeness. Its new
+  [positive-index theorem](Papers/research-wip/native-stream-queue/complete75_weakened86_positive_index.md)
+  proves soundness whenever computed R>0, without alpha>Z. R=0 is
+  impossible; R<0 remains unresolved. This is not a universal86 bound.
   These optimized results are not yet Lean formalized.
 - The [normalized sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md)
   gives a second complete universal route at **805 operations**,125 positive
