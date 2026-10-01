@@ -35,14 +35,21 @@ frontiers alongside the historical handoff. The
 supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound. The separate explicit
-[two-core U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_joint_and_units.md)
-now gives256 certificate / **303=144M+159A polynomial operations**,
-16 comparisons,51 positive witnesses, four positive program parameters
-and degree at most2285. The unnormalized unit form gives252 certificate /
-305=142M+163A,18 comparisons,51 witnesses and degree at most1475. Its
+[two-index U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_joint_and_arithmetic.md)
+now gives260 certificate / **301=144M+157A polynomial operations**,
+14 comparisons,51 positive witnesses, four positive program parameters
+and degree at most2475. Its two native index signs are recovered before
+typing, preserving the parent's positive zero set.
+[Grouped finalizers](research-wip/native-stream-queue/neary_woods_universal_joint_and_partitions.md)
+give alternatives303=143M+160A with degree at most1522,
+305=143M+162A with degree at most1144, and308=142M+166A with degree
+at most1076, all with51 witnesses. The finite search optimizes the
+propagated degree bounds only within its specified partition family.
+The [earlier303 source](research-wip/native-stream-queue/neary_woods_universal_joint_and_units.md)
+remains reproducible at degree at most2285. Its
 [raw joint-AND parent](research-wip/native-stream-queue/neary_woods_universal_joint_and.md)
 gives246 certificate /356=155M+201A,37 comparisons,64 witnesses and
-degree at most580. These bounds include all program coordinates.
+degree at most580. These are upper bounds including all program coordinates.
 
 A paid lower-output bound permits one native AND to replace the separate
 recoder/history AND cores. Positive native extensions are rebuilt;
@@ -50,6 +57,18 @@ the complete outer relation is preserved without a bijection of all old
 and new native tuples. The two remaining cores have one checksum.
 The [377/379 predecessor](research-wip/native-stream-queue/neary_woods_universal_population377.md)
 remains reproducible at66 witnesses and degree bounds2285/2241.
+
+The [population-fusion obstruction](research-wip/native-stream-queue/native_population_and_fusion_obstruction.md)
+shows why simply concatenating the remaining geometry index and truth
+fields fails: excess field population compensates for the wrong width
+on positive recoder tuples with x=1,z=2. Their full native extensions do
+not supply an accepting fixed-tag history or false universal-polynomial zero.
+The [Wang B tape component](research-wip/native-stream-queue/wang_b_single_and_tape.md)
+provides a complete head/read/mark scalar graph in74 certificate /124
+polynomial operations,24 witnesses and degree at most40. A finite-window
+initialization of literal Wang input uses two gates after a paid initial
+head/read predicate; the chronological whole-run certificate and published
+TM-to-Wang input encoding remain open.
 
 That predecessor joins the [joint positive scale bound](research-wip/native-stream-queue/neary_woods_universal_population_joint_bound386.md),
 [154-gate shared history](research-wip/native-stream-queue/neary_woods_universal_shared_history382.md)

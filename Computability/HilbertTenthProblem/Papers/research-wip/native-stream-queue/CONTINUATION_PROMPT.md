@@ -15,15 +15,17 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **303=144M+159A**,256 certificate operations,51 positive witnesses,
-> 16 comparisons and four positive program parameters, with total degree
-> at most2285: [two-core unit construction](neary_woods_universal_joint_and_units.md).
-> Unnormalized units give252 certificate /305=142M+163A,18 comparisons,
-> 51 witnesses and degree at most1475. The [raw joint-AND parent](neary_woods_universal_joint_and.md)
+> **301=144M+157A**,260 certificate operations,51 positive witnesses,
+> 14 comparisons and four positive program parameters, with degree
+> at most2475: [two recovered index units](neary_woods_universal_joint_and_arithmetic.md).
+> [Grouped finalizers](neary_woods_universal_joint_and_partitions.md) give
+> 303/degree-at-most1522,305/1144 and308/1076 at the same51 witnesses.
+> The earlier [303-operation two-core source](neary_woods_universal_joint_and_units.md)
+> remains reproducible at degree at most2285. The [raw joint-AND parent](neary_woods_universal_joint_and.md)
 > gives246 certificate /356=155M+201A,37 comparisons,64 witnesses and
 > degree at most580. All degree bounds include the program coordinates.
-> The377/379 predecessors remain available. Root integration and both
-> independent full proof/source/fresh-replay reviews passed.
+> The377/379 predecessors remain available. These are complete mathematical
+> proofs with literal source audits, not Lean formalizations.
 > This alternative does not improve the separate75/87 frontier.
 > The [88-operation degree151 construction](complete75_coupled_index_linear88.md)
 > remains a lower-degree alternative. It has the same positive zeros as
@@ -755,6 +757,80 @@ off-zero first-root lifts included. Every303-source gate reaches the final
 output, and all13 local links in the raw/unit notes resolve. These finite
 checks supplement the proved positive witness maps; they do not replace
 the universality proof or materialize the huge Pell witnesses.
+
+The [two native index units](neary_woods_universal_joint_and_arithmetic.md)
+replace each first-index comparison k=r+1+hE by Nk=k-hE-r in the
+product. Each adds1M1A and deletes one comparison, saving one polynomial
+addition. Restore the normalized full strong equation before the rank
+argument. Geometry has r>=112,Y>=12 independently of any checksum;
+the joint core obtains r>=4369 with its checksum still signed. These
+bounds recover main Pell index p=2r+1 and n=r+epsilon. Epsilon=-1 would
+give p=2n+3, contradicting the upper ratio by Pell duplication. Thus
+each Nk=1 before either parent typing theorem, and then the sole
+checksum is1. The same positive supplied tuples therefore give
+**260 certificate /301=144M+157A**,14eq51w,degree at most2475. An
+ordinary-strong version gives303/degree-at-most1665; single-index
+choices and both program-bound interfaces remain available.
+
+The [factor-partition packet](neary_woods_universal_joint_and_partitions.md)
+independently chooses both strong normalizations and both index merges,
+then enumerates all factor partitions for16 bases. A grouped SOS uses
+sum r²+sum(V_group-1)²; the alternative leaves one group unsquared as
+V_anchor*(1+sum r²+sum_other(V_group-1)²)-1. At a zero all group
+products are1 and every old residual is0, restoring the complete base.
+Conversely its sign theorem gives every individual factor1. This needs
+no off-zero factor positivity and preserves each base's positive zero set.
+Literal dependency closure deletes only the old n-1 product gates;
+with n factors,m old residuals and g groups both finalizers cost
+B+n+3m-1+2g, where B counts the retained factor/residual closure.
+
+| Polynomial | M | A | Degree upper bound | Certificate | Comparisons |
+|---:|---:|---:|---:|---:|---:|
+|301|144|157|2475|260|14|
+|302|143|159|1707|258|15|
+|303|143|160|1522|256|16|
+|304|143|161|1296|257|16|
+|305|143|162|1144|255|17|
+|307|143|164|1110|254|18|
+|308|142|166|1076|252|19|
+
+All rows have51 positive witnesses and the same ordinary-input program
+interface. The search checks1,286,789 partitions; optimality refers
+only to these conservative degree formulas in this fixed finalizer
+family. The305 SOS separates a degree572 joint auxiliary from a
+degree538 product. The308 anchor is the degree572 factor, with the
+other group bounds252 and244, giving572+2*252=1076. The raw356/580
+alternative remains outside this family. Existing303/2285 and305/1475
+packets retain their historical source/count meaning.
+
+The [geometry/AND population-fusion obstruction](native_population_and_fusion_obstruction.md)
+is now a concrete limitation on the next one-core proposal. For every
+D>=3 and dyadic n>=2, take q=2^n,Q=2^(D(n+1)),B=2^(D-1)Q,
+P=B^n,J=repunit_B(n),K=repunit_(2B)(n),x=1,z=2,A=Q+1. All retained
+recoder scalar bounds/equalities and the loader repunit hold. The false
+four-field population changes by(2-D,D-2,D-1,1), totalD, cancelling
+pc(R)=Dn versus log2(Q)=D(n+1). For any correct high AND, the proposed
+index R+t*r_fields at scale Q*t has the exact population and a full
+positive raw-native extension, but z!=spread_D(1). This rules out that
+fusion relation, not every one-core construction. No accepting fixed-tag
+history or false full universal-polynomial zero is constructed.
+
+The [Wang B single-AND tape packet](wang_b_single_and_tape.md) is a local
+complete scalar alternative: with positive head H and tape T>=0, join
+T+PH and H+P(H-1) at scale P² and output C<P. The native theorem types
+P, then splitting gives H AND(H-1)=0 and C=T AND H. A two-addition
+mark comparison yields T'=T OR H. Head/read is72 certificate/119 SOS,
+16eq24w; head/read/mark is74/124,17eq24w; both have degree at most40.
+Its four-instruction lasso proves final-tape reads can falsely shortcut
+a nonhalting run. A bounded finite-run translation shifts a literal
+Wang input by an existential power-of-two head H0 and initializes
+T0_hat=x*H0+1 in2=1M1A gates. Initial H0 typing is a separately paid
+head/read predicate; it is not supplied by those two gates. Exact
+doubling/halving and current-tape reads recover the bi-infinite trace
+after the coordinate shift. A whole Wang history still needs uniform
+chronological tape/head/control selection and the published TM-to-Wang
+input encoding. No numerical universal program or new universal bound
+is claimed.
 
 The [counter-initialization obstruction](clockwise_cts_counter_initialization_obstruction.md)
 executes the printed Q3 CTS table: counter3 on tape01 falsely activates

@@ -40,14 +40,29 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [two-core U9 universal polynomial](neary_woods_universal_joint_and_units.md)
-now gives **256 certificate /303=144M+159A polynomial operations**,
-16 comparisons,51 positive witnesses and four positive program parameters.
-Its total degree is **at most2285**, including all program coordinates.
-The unnormalized unit form gives252 certificate / **305=142M+163A**,
-18 comparisons,51 witnesses and degree at most1475. The
-[raw joint-AND form](neary_woods_universal_joint_and.md) gives246 certificate /
-**356=155M+201A**,37 comparisons,64 witnesses and degree at most580.
+The explicit [two-index U9 universal polynomial](neary_woods_universal_joint_and_arithmetic.md)
+now gives **260 certificate /301=144M+157A polynomial operations**,
+14 comparisons,51 positive witnesses and four positive program parameters.
+Its total degree is **at most2475**, including every program coordinate.
+Both native index signs are recovered from the retained ratios and full
+strong equations before typing; this preserves the same positive zero
+set as the [303-operation parent](neary_woods_universal_joint_and_units.md).
+
+[Grouped unit finalizers](neary_woods_universal_joint_and_partitions.md)
+give lower-degree alternatives at the same51-witness interface, including
+**303=143M+160A / degree at most1522**,
+**305=143M+162A / degree at most1144**, and
+**308=142M+166A / degree at most1076**. Their certificate/comparison
+counts are256/16,255/17 and252/19 respectively. The full family has
+operation/degree-upper-bound pairs301/2475,302/1707,303/1522,304/1296,
+305/1144,307/1110 and308/1076. The finite search optimizes only these
+propagated bounds within its specified factor-partition family.
+
+The earlier303=144M+159A source remains reproducible with256 certificate
+operations,16 comparisons,51 witnesses and degree at most2285. The
+[raw joint-AND form](neary_woods_universal_joint_and.md) retains the lower-degree
+alternative246 certificate / **356=155M+201A**,37 comparisons,64 witnesses
+and degree at most580. No exact degree is claimed for these U9 sources.
 
 One joint AND replaces the separate recoder and selected-history AND
 cores, retaining the independent population geometry. A paid bound on
@@ -56,6 +71,26 @@ extensions prove both directions. This preserves the complete outer
 relation, not every old native witness tuple. The two remaining cores
 have only one checksum, so the earlier history-checksum sign lemma is
 not needed by the new unit finalizer.
+
+A [population-fusion obstruction](native_population_and_fusion_obstruction.md)
+rejects simply concatenating the remaining geometry index with the four
+AND truth fields. For every width D>=3 and arbitrarily large dyadic n,
+positive recoder tuples with x=1,z=2 and Q=2^(D(n+1)) satisfy the proposed
+combined population relation and have full positive native extensions.
+Their false AND fields contribute exactly the excess D bits. This
+refutes that recoder fusion, not the complete fixed-tag polynomial.
+
+The separate [Wang B tape interface](wang_b_single_and_tape.md)
+uses one native AND to type a one-hot head and read/mark the current tape.
+Its complete scalar mark graph costs74 certificate /124 polynomial
+operations,17 comparisons,24 positive witnesses and degree at most40;
+the head/read-only graph costs72/119 with16 comparisons. A finite-window
+lemma initializes a literal Wang input with two gates after a paid initial
+head/read predicate. A uniform run, control selection and the published
+TM-to-Wang input encoding remain unimplemented.
+An exact nonhalting lasso also rules out substituting final-tape reads
+for chronological reads. No new universal bound follows from this local
+interface.
 
 The [377-operation predecessor](neary_woods_universal_population377.md)
 remains available with318 certificate operations,20 comparisons,66
