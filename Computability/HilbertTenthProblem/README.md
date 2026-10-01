@@ -15,9 +15,9 @@ universal Diophantine equations by James P. Jones and coauthors:
 
 The established arithmetic bounds remain **75 operations for a complete
 certificate and 88 for one universal polynomial**. The latest complete
-[fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_idle_free_paths.md)
-has an illustrative **244-operation certificate / 261-operation polynomial
-(113M+148A)**, six equations, 36 positive witnesses and degree3504.
+[fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_reindexed_shared_pack.md)
+has an illustrative **228-operation certificate / 245-operation polynomial
+(104M+141A)**, six equations, 36 positive witnesses and degree3504.
 Its numerical universal alphabet is not instantiated. Mortality now has
 [a 4D quadratic loader costing3](Papers/research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
@@ -234,6 +234,41 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   costs. There are7-chi equations andn+27-chi witnesses, where chi records
   computed P. Empty tables keep the padding-only parent. Degrees and
   the original m-based geometry are unchanged;75/88 remain separate.
+
+  [Reindexing the actual edge lanes](Papers/research-wip/native-stream-queue/group_projective_reindexed_edge_geometry.md)
+  saves1M on the factored branch, giving the intermediate260 polynomial.
+  It can also halve the old2n-lane geometry when n>=2 is a power of two;
+  reused controller masks require n>=8. Such a halving at n>=8 saves3M+1A and
+  lowers degree. Accepted inputs are preserved through fresh native
+  witnesses. Separately, [shared selector packing](Papers/research-wip/native-stream-queue/group_projective_shared_selector_pack.md)
+  reaches246 by an exact polynomial identity. Their
+  [combined source](Papers/research-wip/native-stream-queue/group_projective_reindexed_shared_pack.md)
+  is now the latest fixed-table compiler:
+
+  | Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
+  |---|---|---:|---:|---:|---:|
+  |Yes|Yes|228 / 245|104 / 141|6 / 36|3504|
+  |No|Yes|229 / 246|105 / 141|6 / 36|2928|
+  |Yes|No|228 / 248|105 / 143|7 / 37|1774|
+  |No|No|229 / 249|106 / 143|7 / 37|1486|
+
+  For this ten-letter table, the controller word is the paid physical
+  selector word plus a six-gate correction. The combined saving is16
+  operations from261. Strong-unit alternatives give246/degree3502,
+  247/2926,249/1773 or250/1485; unshifted supplied-P alternatives give
+  252/1211 or253/995 with38 witnesses, and the four-field no-mask
+  choice gives259/802 with40 witnesses. Generic tables retain audited
+  fallbacks; these numerical examples do not instantiate the universal
+  alphabet or improve the separate75/88 bounds.
+
+- The [complete binary input recoder](Papers/research-wip/native-stream-queue/native_binary_input_dilation130.md)
+  represents `z=sum bit_j(x)*16^j` in **130=67M+63A** operations,
+  with49 positive witnesses and34 equations. Its polynomial costs
+  **231=101M+130A**, with exact degree40. Two inlined shifted inputs
+  preserve the complete132 parent's polynomial identically. All typing,
+  synchronization and bounds are paid; this is a word-code primitive,
+  with a full PCP program/history certificate still uncomposed.
+
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
   represent universal membership, but unrestricted mortality accepts every
@@ -256,8 +291,8 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   compiler. The packet imports the257/283 factored-index example, and the
   shifted-quotient theorem gives280 by composition; the later shared-history
   and strong-unit results give279 at degree3502; the subsequent shared-flow
-  composition gave276 at degree3504. Removing all idle selectors now
-  gives261 at degree3504 under the same existence equivalence.
+  composition gave276 and the idle-free stage gave261. The reindexed/shared
+  successor now gives245 at degree3504 under the same existence equivalence.
   This is an existence reduction, not verification of an arbitrary supplied
   mortality word.
   The [seven-dimensional weighted adapter](Papers/research-wip/native-stream-queue/group_affine_weighted_mortality7.md)
@@ -278,7 +313,7 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   **2=1M+1A affine loader** with a rank-two varying matrix. Its arbitrary-word
   parity formula proves unrestricted mortality despite that singularity.
   Both packets retain their named279-operation endpoint imports. The
-  latest261 compiler composes through the same existence theorem; none
+  latest245 compiler composes through the same existence theorem; none
   certifies an arbitrary independently supplied mortality word.
   The [exact-series rank obstruction](Papers/research-wip/native-stream-queue/group_guarded_mortality_rank_obstruction.md)
   proves physical rank6 and guarded rank9 for the actual universal fibre

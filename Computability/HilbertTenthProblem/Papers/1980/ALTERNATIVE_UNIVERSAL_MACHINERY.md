@@ -2,9 +2,9 @@
 
 The leading numerical bounds are **75 certificate / 88 polynomial
 operations**. The latest complete
-[fixed-table matrix compiler](../research-wip/native-stream-queue/group_projective_idle_free_paths.md)
-gives an illustrative **244/261 operations, 6 equations, 36 witnesses,
-degree3504**, with polynomial split113M+148A; it does not instantiate a
+[fixed-table matrix compiler](../research-wip/native-stream-queue/group_projective_reindexed_shared_pack.md)
+gives an illustrative **228/245 operations, 6 equations, 36 witnesses,
+degree3504**, with polynomial split104M+141A; it does not instantiate a
 numerical universal alphabet. Mortality now has a
 [4D quadratic-loader3 interface](../research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
 and a [5D affine-loader2 interface](../research-wip/native-stream-queue/group_affine_bipartite_mortality5.md).
@@ -389,7 +389,7 @@ Any accepting path remains a nonempty concatenation of macros after idle
 steps are erased; its shorter histories and positive native witnesses
 can be rebuilt at a fresh height and duration. A specialized-parent
 packing fallback guarantees at least one further operation saved. The
-ten-letter factored pack saves two more, yielding the current table:
+ten-letter factored pack saves two more, yielding this intermediate table:
 
 | Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
 |---|---|---:|---:|---:|---:|
@@ -411,6 +411,51 @@ ordinary-input projections uses the separate path and positive-extension
 proof. The m-based exponents and exact parent degrees persist. Empty
 macro tables retain the padding-only parent. These are complete
 fixed-table improvements, not a smaller numerical75/88 universal bound.
+
+The [reindexed geometry](../research-wip/native-stream-queue/group_projective_reindexed_edge_geometry.md)
+places actual edge e in controller lane e-1. On the factored branch it
+saves1M, reaching the intermediate260 polynomial. If the actual edge
+count n>=2 is a power of two, the old2n-lane geometry can shrink to n;
+controller-mask reuse requires n>=8. Such a halving at n>=8 saves3M+1A and
+the degree uses the smaller geometry. The other packing branch keeps
+its parent. The positive proof rebuilds the native witnesses rather than
+identifying the old and new polynomials.
+
+The [shared-selector rewrite](../research-wip/native-stream-queue/group_projective_shared_selector_pack.md)
+instead preserves the full polynomial on arbitrary integer assignments,
+reaching the intermediate246 count. Its
+[composition with reindexed geometry](../research-wip/native-stream-queue/group_projective_reindexed_shared_pack.md)
+gives the current ten-letter table:
+
+| Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
+|---|---|---:|---:|---:|---:|
+|Yes|Yes|228 / 245|104 / 141|6 / 36|3504|
+|No|Yes|229 / 246|105 / 141|6 / 36|2928|
+|Yes|No|228 / 248|105 / 143|7 / 37|1774|
+|No|No|229 / 249|106 / 143|7 / 37|1486|
+
+Here `Hc=S+(P^8-1)*T`, with the existing physical selector word S and
+`T=Ehat_9+P*Ehat_10-(P+1)`. The six-gate correction saves8M+7A after
+the1M reindexing saving. When all edge lanes align with physical labels,
+Hc aliases S with no arithmetic; the distinct aligned eight-letter
+illustration costs210/227 operations with6 equations,34 witnesses and
+degree2240. Neither alignment nor geometry halving is assumed for general
+tables: paid plans and unchanged-parent fallbacks are retained.
+
+The ten-letter strong-unit choices give polynomial/degree pairs246/3502,
+247/2926,249/1773 and250/1485 in the same row order. Unshifted supplied-P
+choices give252/1211 or253/995 with38 witnesses; the four-field no-mask
+choice gives259/802 with40 witnesses. These are complete fixed-table
+tradeoffs, while the numerical universal alphabet remains uninstantiated
+and the75/88 bounds remain unchanged.
+
+A separate [complete input recoder](../research-wip/native-stream-queue/native_binary_input_dilation130.md)
+represents `z=sum bit_j(x)*16^j` in **130=67M+63A** operations,
+with49 positive witnesses and34 equations. Its single polynomial costs
+**231=101M+130A** and has exact degree40. Inlining two shifted inputs
+preserves the complete132 parent's entire polynomial, with all native
+typing, exponent synchronization, masks and bounds still paid. It is a
+word-code primitive; the full PCP program/history remains uncomposed.
 
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with
@@ -454,8 +499,8 @@ four-history certificate, explicitly importing the257/283 factored-index
 illustration. The shifted quotient composes to give280; the later
 shared-history/strong-unit theorems
 give279 at degree3502; the joint-unit/shared-flow composition gave276,
-and the latest idle-free compiler gives261 at degree3504 under the same
-existence equivalence. None certifies
+the idle-free stage gave261; the latest reindexed/shared compiler gives245
+at degree3504 under the same existence equivalence. None certifies
 an arbitrary supplied mortality word or its individual reset
 positions, and no numerical universal alphabet is materialized.
 
@@ -475,7 +520,7 @@ endpoint query, with one affine varying matrix ands+1 fixed matrices.
 
 This changes the scalar series, so the old exact-series rank bounds do
 not obstruct it. The packet's stable279 endpoint import remains unchanged;
-the latest261 compiler composes through the same existence equivalence. Neither
+the latest245 compiler composes through the same existence equivalence. Neither
 is a certificate for a separately supplied arbitrary6D word or its reset
 positions, and no numerical universal alphabet or smaller75/88 bound is
 claimed.
@@ -499,7 +544,7 @@ The singular input creates no input-only false zero, since
 
 These4D quadratic3 and5D affine2 results are dimension/input-cost
 tradeoffs, not new uniform Diophantine operation savings or minimality
-claims. Their stable named279 endpoint imports are unchanged; the261
+claims. Their stable named279 endpoint imports are unchanged; the245
 compiler composes independently with their existence predicates. An
 arbitrary supplied4D or5D word, its duration and its input/reset positions
 still require a separate paid selected-history interface.

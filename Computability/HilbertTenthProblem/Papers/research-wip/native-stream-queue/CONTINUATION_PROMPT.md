@@ -64,20 +64,25 @@
 > proofs with exact source audits, not Lean formalizations.
 
 The latest matrix packet is the
-[idle-free path compiler](group_projective_idle_free_paths.md), after
-[freezing padded idles](group_projective_frozen_idle_padding.md) in the
-[shared-flow source](group_projective_shared_flow_target.md).
-The illustrative ten-letter example is **244 certificate / 261 polynomial
-operations (113M+148A), six equations, 36 positive witnesses, exact degree3504**.
-Other joint-bound switch choices give262/degree2928 with36 witnesses,
-264/degree1774 and265/degree1486 with37 witnesses. Keeping the strong-unit
-comparison arrangement gives262/3502,263/2926,265/1773 and266/1485.
+[reindexed shared-pack compiler](group_projective_reindexed_shared_pack.md).
+It composes [zero-based lanes](group_projective_reindexed_edge_geometry.md)
+with [physical-selector reuse](group_projective_shared_selector_pack.md),
+after the idle-free and frozen-padding reductions.
+The illustrative ten-letter example is **228 certificate / 245 polynomial
+operations (104M+141A), six equations, 36 positive witnesses, exact degree3504**.
+Other joint-bound switch choices give246/degree2928 with36 witnesses,
+248/degree1774 and249/degree1486 with37 witnesses. Keeping the strong-unit
+comparison arrangement gives246/3502,247/2926,249/1773 and250/1485.
 The shifted parent without either unit merge has the smaller certificate
-cost239, with eight equations and262 polynomial operations at degree4298.
-Its unshifted six-field choices retain268/degree1211 and269/degree995
+cost223, with eight equations and246 polynomial operations at degree4298.
+Its unshifted six-field supplied-P choices retain252/degree1211 and253/degree995
 with38 witnesses; its four-field no-mask/supplied-P option gives
-275/degree802 with40 witnesses. These are operation/degree tradeoffs,
+259/degree802 with40 witnesses. These are operation/degree tradeoffs,
 not an optimality claim. Earlier alternatives remain reproducible.
+The distinct aligned eight-letter example halves geometry to m=8 and
+aliases its entire controller pack to the physical selector pack, giving
+210 certificate / 227 polynomial operations, six equations,34 witnesses,
+and degree2240. It is not the ten-letter comparison table.
 The numerical universal alphabet remains uninstantiated; these do not
 replace the separate75/88 frontier above. The new
 [five-dimensional mortality interface](group_affine_bipartite_mortality5.md)
@@ -90,6 +95,15 @@ the same paid paired-vector endpoint. Certification of a
 separately supplied arbitrary mortality word remains distinct; the
 [9D packet](group_affine_guarded_mortality9.md) retains its paid selected-word
 circuit for each fixed duration.
+
+The [complete binary recoder130](native_binary_input_dilation130.md)
+proves the exact positive relation z=sum bit_j(x)*16^j. It costs
+130=67M+63A with49 positive witnesses and34 equations; its full
+sum-of-squares polynomial costs231=101M+130A and has degree40.
+Both native kernels, exponent synchronization, mask and remainder bounds
+are paid. This supplies a word-code primitive for PCP-style directions;
+a fixed-program input convention, tile selection and uniform history
+remain uncomposed. No witness-free polynomial loader can implement it.
 
 The previous cone/singleton proposal is now implemented and proved in
 merge31: positive flags avoid their two explicit decodings. Its root
@@ -651,6 +665,99 @@ verify all outer constraints and joined AND; their huge native Pell
 coordinates remain covered by the theorem. Author/default and independent
 proof/source reviews passed, including direct signed specializations.
 
+The [reindexed successor](group_projective_reindexed_edge_geometry.md)
+keeps physical edge IDs e=1,...,n while moving their packed exponents to
+e-1 on the factored branch. It deletes the final multiplication by P.
+For n a power of two at least2 it may use m=n, except that reused
+controller masks still require m>=8. For n>=8 halving saves a further
+2M+1A; for n=2,4 without reuse it changes scale/degree but cannot delete
+the eight-lane physical powers. Small-mask and nonfactored parent
+fallbacks are explicit. The actual scalar H/M/Z/q interfaces change;
+completeness therefore builds new native witnesses, not a tuple bijection.
+Metadata `packed_edge_exponents` maps original IDs to actual exponents;
+`lane_edges` is separate from original `edges`. Its degree helper uses
+new m,L and relabels leading weights. Default is243/260; the single
+ascending eight-letter macro is225/242 withm8 and degree2240.
+
+The [shared-selector planner](group_projective_shared_selector_pack.md)
+uses S=sum E_e P^ell_e already paid by the physical pack. For actual
+controller positions p_e, group by d=p_e-ell_e and choose anchor r>=b,
+where b=min p_e. If j_d is the group's smallest label, its all-integer
+identity is
+
+    Hc=P^b [P^(r-b)S + sum_(d!=r)
+         (P^(d+j_d-b)-P^(r+j_d-b)) G'_d],
+    G'_d=sum_group E_e P^(ell_e-j_d).
+
+All exponents are nonnegative, including negative offsets. Sparse Horner
+and coefficient polynomials are paid, existing pure-P gates are audited,
+and the parent survives unless cheaper. No division or Boolean typing
+is needed for this identity. The unreindexed default costs229/246.
+The [composition](group_projective_reindexed_shared_pack.md) reads the
+explicit exponent map and gives228/245. Its ten-letter word is exactly
+S+(P^8-1)*(Ehat9+P Ehat10-(P+1)), only2M+4A. Relative to idle-free261,
+the combined saving is9M+7A. When p_e=ell_e, it renames the existing
+S defining register and consumers to the controller word at zero cost;
+no paid copy gate and no private pack are required. Single-edge aliases,
+empty tables, halved geometries and parent fallbacks are covered.
+The all-integer polynomial identity is against the reindexed source,
+whose earlier semantic transformation must still be invoked separately.
+Author/default and independent proof/source checks pass for both stages;
+composition has190 ledgers,4560 complete identities including1520 signed,
+and480 further independent signed output checks. Earlier receipts pass.
+
+The [binary dilation132 proof](native_binary_input_dilation132.md)
+introduces positive q,P,J,K,Ahat and two bound slacks plus a shifted
+quotient. Put Q=q^4, B=8Q, S=qP and require
+
+    (B-1)J+1=P, (2B-1)K+1=S, x+input_slack=q,
+    Ahat+Q=(Q-1)*quotient_hat+z+2, z+output_slack=Q.
+
+Shared-B geometry47 applies to B>=8q²: the only B-dependent equation
+is B+index_beta=J. Transport to B0=8q² by replacing beta with
+beta+B-B0; conversely J>B allows beta=J-B>0. This is a comparison of
+positive witness sets, not a free circuit substitution. AND64 at scale
+S types qP as dyadic and asserts Ahat-1=(xJ) AND K. Geometry already
+types q=2^popcount(J), so P is dyadic. The repunit divisibility implies
+P=B^h and popcount(J)=h; hence q=2^n forces h=n>=2. Then
+K=sum_(j<n)(2B)^j and A=sum bit_j(x)*2^((4n+4)j). Modulo Q-1 this folds
+to z=sum bit_j(x)*16^j, lying strictly between0 andQ-1. The paid positive
+output bound selects that unique representative. The quotient is shifted
+by one because x=1 has A=z. Full kernel converses provide all49 positive
+witnesses for every x, with arbitrary sufficient high-zero padding.
+
+The [inline130 successor](native_binary_input_dilation130.md) replaces
+16(xJ+1)-4 with16xJ+12 and16(K+1)-6 with16K+10. Audited private consumers
+allow exactly two additions to disappear; all34 residuals and the entire
+polynomial remain identical on every integer tuple. Its231-operation
+SOS has exact degree40. Finite genuine outer tuples do not materialize
+astronomical Pell solutions. Iterating r times costs130r with34r equations,
+50r-1 witnesses and a232r-1 polynomial still of degree40; block width is4^r.
+It pays one uniform injective word code, not a complete fixed-program PCP
+interface. A polynomial-only loader is impossible: values at2^n would
+force f(x)=x^4, but spread4(3)=17. The ordinary75/88 frontier is unchanged.
+
+Useful next targets: prove and cost a fixed-program PCP composition using
+this paid recoder, or explore physical-label-aligned lane permutations.
+A permutation may reduce offset groups without changing chronological
+flow, but arbitrary internal macro actions cannot be reordered. Sparse
+lane placement can enlarge m and the native degree; every mask, lane
+coefficient, scale, source gate and positive converse must be audited.
+No unimplemented permutation saving is included above. A separate
+proof-only follow-up suggests raw geometry47 may use just J>=9 and J>q
+instead of its original B=8q² bootstrap. The ratio, rank and converse
+proofs were re-read for these hypotheses, but no revised source packet
+has been implemented. In the recoder, x+input_slack=q already forces
+q>=2; choosing Q=q² and B=Q+Q would give J>B>=8, hence J>=9. The same
+synchronization and folding would represent the different radix-four
+relation sum bit_j(x)*4^j, with prospective129=65M+64A, SOS230 and degree40.
+This needs a standalone weaker-bootstrap proof plus literal source,
+receipts and independent review. It cannot use the B0 transport above,
+which requires B>=8q². Do not claim129 established or confuse radix four
+with the proved radix16 relation. The bounded88
+factor/norm/parity search in this checkpoint found no further proved
+operation reduction; independent-gamma87 remains unresolved.
+
 The [standalone X-divisibility obstruction](native_binary_X_divisibility_obstruction.md)
 rejects computing X from r+bound_beta while erasing w and X=wq.
 The apparent55-operation selector /93-operation SOS admits q=48,
@@ -733,7 +840,7 @@ macro reflection; the shifted-X successor also applies by equivalence.
 The shared-history and strong-unit successors give the named
 279-operation polynomial at degree3502 for the same existence predicate;
 the port, joint-bound and shared-flow successors give276/degree3504,
-and the idle specializations now give261/degree3504.
+and reindexed shared packing now gives245/degree3504.
 There is no extra guard-history charge for this existence predicate,
 but this does not verify an arbitrary supplied mortality word. Compatible
 input congruences, subgroup hypotheses and the padded-program margin
@@ -795,7 +902,7 @@ can have scalar zero. This proves only a minimal dimension for that
 guard model, not for arbitrary mortality constructions. Both physical
 and guard scalar series changed, so the old6/9 exact-series lower bounds
 are respected. The cone packet keeps the stable named279 endpoint
-import; composing the latest equivalent compiler gives261/3504 for its
+import; composing the latest equivalent compiler gives245/3504 for its
 illustrative table. Finite fixtures, all-word proofs and independent
 source/default reviews pass; the universal numerical alphabet and a
 certificate of a separately supplied arbitrary word remain uninstantiated.
@@ -833,7 +940,7 @@ two occurrences can give zero, even with an accepting bridge.
 This proves unrestricted5D affine2 mortality without a guard or a free
 regular-language constraint. It complements4D quadratic3; neither is a
 global minimum claim. Both packets retain the named279 endpoint import,
-and the latest261 compiler composes through their existence equivalence.
+and the latest245 compiler composes through their existence equivalence.
 Separate arbitrary supplied-word certification remains unpaid. Exact
 all-word proofs, source/default checks and independent rational channel
 and repeated-reset reviews passed.

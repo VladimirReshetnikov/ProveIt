@@ -14,9 +14,9 @@ Three independent full integration reviews passed; this is a mathematical
 proof with symbolic and finite checks, not a Lean formalization.
 
 The separate universal polynomial bound is **88 operations**. The latest
-[complete fixed-table matrix compiler](group_projective_idle_free_paths.md)
-has an illustrative **244-operation certificate / 261-operation polynomial
-(113M+148A), 6 equations, 36 positive witnesses and degree3504**. The
+[complete fixed-table matrix compiler](group_projective_reindexed_shared_pack.md)
+has an illustrative **228-operation certificate / 245-operation polynomial
+(104M+141A), 6 equations, 36 positive witnesses and degree3504**. The
 numerical universal alphabet remains uninstantiated. Mortality now has
 [a 4D quadratic-loader3 interface](group_weighted_reset_mortality4.md) and
 [a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
@@ -207,8 +207,17 @@ Boolean edge choices, adjacency and all physical selectors; the
 [linked geometry47](group_linked_binary_geometry47.md) proves q=2^t
 from the population of the cell repunit and separately typed dyadic P.
 
+The [complete binary input recoder](native_binary_input_dilation130.md)
+represents `z=sum bit_j(x)*16^j` in **130=67M+63A** operations,
+with49 positive witnesses and34 equations. Its single polynomial costs
+**231=101M+130A**, with exact degree40. Inlining two shifted inputs
+preserves the [132-operation parent's](native_binary_input_dilation132.md)
+entire polynomial on arbitrary integer assignments. Both native kernels,
+exponent synchronization, masks and bounds are paid. This is a word-code
+primitive; a full PCP program and history certificate remain uncomposed.
+
 The [complete matrix compiler](group_complete_matrix_compiler.md) composes
-these actual sources. For a fixed macro table with m=2^h edges and p
+the history, selection, control and geometry sources. For a fixed macro table with m=2^h edges and p
 selector additions, it costs **7m+3h+p+273** operations, with60 equations
 and m+87 positive witnesses. Its single polynomial costs **7m+3h+p+452**
 and has exact degree **max(112,12m+16)**. Ordinary input and every typing,
@@ -485,6 +494,40 @@ path normalization and a new positive native extension, not a bijection
 with every old witness tuple. Exact degrees persist; empty tables keep
 the padding-only parent. The numerical75/88 bounds remain unchanged.
 
+[Reindexed geometry](group_projective_reindexed_edge_geometry.md) moves
+edge e to controller lane e-1 on the factored branch, saving1M and
+reaching the intermediate260-operation polynomial. For a power-of-two
+number n>=2 of actual edges, it can halve the old2n-lane span to n; mask
+reuse requires n>=8. In this case n>=8 saves3M+1A, and the degree
+uses the smaller geometry. Other packing branches retain their parent.
+This preserves accepted ordinary inputs through fresh native witnesses.
+
+[Shared selector packing](group_projective_shared_selector_pack.md)
+separately gives an intermediate246-operation polynomial by an exact
+all-integer identity. Its [composition with reindexing](group_projective_reindexed_shared_pack.md)
+is now the latest complete fixed-table compiler. For the ten-letter table,
+the controller word is `Hc=S+(P^8-1)*T`, where S is the already paid physical
+selector word and `T=Ehat_9+P*Ehat_10-(P+1)`. This six-gate fragment saves
+8M+7A after reindexing, for a combined saving of9M+7A from261:
+
+| Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
+|---|---|---:|---:|---:|---:|
+|Yes|Yes|228 / 245|104 / 141|6 / 36|3504|
+|No|Yes|229 / 246|105 / 141|6 / 36|2928|
+|Yes|No|228 / 248|105 / 143|7 / 37|1774|
+|No|No|229 / 249|106 / 143|7 / 37|1486|
+
+Keeping the strong-unit comparison arrangement gives polynomial/degree
+pairs246/3502,247/2926,249/1773 and250/1485 in the same row order.
+Unshifted supplied-P choices give252/1211 or253/995 with38 witnesses;
+the four-field no-mask choice gives259/802 with40 witnesses. For the
+different aligned eight-letter table, Hc is exactly S: its zero-cost
+alias gives210/227 operations,6 equations,34 witnesses and degree2240.
+Generic tables use paid packing plans and fallbacks; neither saving nor
+geometry halving is assumed universally. The composition separates fresh
+positive geometry witnesses from an exact packing identity. These
+illustrations do not instantiate the universal alphabet or improve75/88.
+
 Deleting the output bound outright is [unsound](group_projective_output_bound_obstruction.md):
 a fixed six-shear table with an empty genuine endpoint language acquires
 positive solutions at every input. Noncanonical individual output lanes
@@ -521,8 +564,9 @@ is also exactly the existence predicate of the four-history compiler.
 The packet imports the named257/283 factored-index illustration; composing
 with the shifted-quotient theorem gives the280-operation illustration,
 and the shared-history/strong-unit successors give279 at degree3502.
-The joint-bound/shared-flow composition gave276; the latest idle-free
-compiler gives261 at degree3504 under the same existence equivalence.
+The joint-bound/shared-flow composition gave276 and the idle-free stage
+gave261. The latest reindexed/shared compiler gives245 at degree3504
+under the same existence equivalence.
 This uniform existence reduction does not certify a separately supplied
 arbitrary mortality word or fix its duration and reset positions.
 
@@ -540,7 +584,7 @@ exactly the universal endpoint query. The scalar values differ from the
 older rank-nine series, so that rank bound does not apply.
 
 The6D packet keeps its named279-operation endpoint import stable. The
-latest261 compiler also composes with its existence theorem; this transfers a
+latest245 compiler also composes with its existence theorem; this transfers a
 paid endpoint predicate, not a certificate for an arbitrary supplied6D
 word, duration or reset placement. No mortality-dimension minimum or
 smaller numerical75/88 bound is asserted.
@@ -559,7 +603,7 @@ The matrix `T=[0,z_t;u_t,0]` is nonnegative, affine and rank2, with a
 words despite its singularity. One accepted bridge yields `T M T M T=0`;
 input-only powers stay nonzero because `T^3=(1+t)T`.
 
-Both packets retain their named279-operation endpoint imports. The261
+Both packets retain their named279-operation endpoint imports. The245
 compiler composes with the same existence predicate, without changing
 those imports or claiming a paid certificate for a separately supplied
 arbitrary mortality word. Matrix dimension and loader cost are separate
@@ -664,9 +708,13 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Reindexed/shared selector packing](group_projective_reindexed_shared_pack.md) | Latest ten-letter illustration:228 certificate / 245=104M+141A polynomial,6 equations,36 witnesses,degree3504. | Geometry preserves the input predicate via fresh witnesses; packing preserves the full polynomial. Numerical universal alphabet remains uninstantiated;75/88 unchanged. |
+| [Shared selector packing](group_projective_shared_selector_pack.md) | Exact paid packing identity; intermediate229/246 operations for the ten-letter table. | Table-dependent anchor planner and fallback; no universal saving or optimality claim. |
+| [Reindexed edge geometry](group_projective_reindexed_edge_geometry.md) | Intermediate243/260 operations; eligible power-of-two edge tables halve their geometry and lower degree. | Mask reuse needs at least8 lanes. Same accepted inputs, not an identity with the old geometry polynomial. |
+| [Complete binary input recoder](native_binary_input_dilation130.md) | Complete130=67M+63A relation,49 positive witnesses,34 equations; polynomial231,degree40. | Exact polynomial identity with132 parent. Paid word-code primitive; PCP program/history remains uncomposed. |
 | [Idle-free macro paths](group_projective_idle_free_paths.md) | Every nonempty table can remove edge0 after frozen padding. Default244 certificate / 261=113M+148A polynomial,6 equations,36 witnesses,degree3504. | Exact parent specialization; same input projection needs fresh shorter histories and native witnesses. Full m-lane geometry remains; empty tables keep the parent. |
 | [Frozen duplicate idle lanes](group_projective_frozen_idle_padding.md) | Saves at least2k operations and k witnesses for k redundant idle lanes. Default247 certificate / 264=113M+151A polynomial,6 equations,37 witnesses,degree3504. | Both repunit/packing plans are paid; completeness relabels idles to edge0 and rebuilds the native extension. Numerical75/88 unchanged. |
-| [4D weighted-reset mortality](group_weighted_reset_mortality4.md) | Unrestricted mortality with one rank-one nonnegative quadratic input matrix loaded in3=2M+1A. | Whole-space bridge scalars prevent independent block erasure. Stable279 endpoint import; latest261 composes only for existence. |
+| [4D weighted-reset mortality](group_weighted_reset_mortality4.md) | Unrestricted mortality with one rank-one nonnegative quadratic input matrix loaded in3=2M+1A. | Whole-space bridge scalars prevent independent block erasure. Stable279 endpoint import; latest245 composes only for existence. |
 | [5D affine alternating-block mortality](group_affine_bipartite_mortality5.md) | Unrestricted mortality with one rank-two nonnegative affine input matrix loaded in2=1M+1A. | Arbitrary-word parity formulas handle singular input letters. No free word restriction, minimality claim or separate supplied-word certificate. |
 | [Shared flow target](group_projective_shared_flow_target.md) | Saves1A whenever a macro has length at least3, with every retained residual and output polynomial identical. Joint default259 certificate / 276=117M+159A polynomial,6 equations,42 witnesses,degree3504. | Complete fixed-table theorem; numerical universal alphabet remains uninstantiated and75/88 unchanged. |
 | [Joint-bound unit](group_projective_joint_bound_unit.md) | One further polynomial addition saved: default260/277,6 equations,42 witnesses,degree3504 before shared-flow composition. | Native sign/population proof restores the scalar bound on the same positive coordinate vector. |
