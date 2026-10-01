@@ -148,3 +148,9 @@ without findings. A separate literal executor verified 192 signed
 eight-factor/full-output identities at B=16,32,128,512 under the exact
 alpha-Z substitution. The review confirms only the stated conditional
 projection and outer obstruction, not full candidate soundness.
+
+The subsequent [positive-index theorem](complete75_weakened86_positive_index.md)
+extends conditional soundness to every candidate zero with computed R>0,
+including alpha<=Z. It proves R=0 impossible and supplies necessary
+restrictions in the remaining R<0 branch. That branch is still unresolved;
+the literal86-operation candidate is not promoted to a universal bound.
