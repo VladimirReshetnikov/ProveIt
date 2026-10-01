@@ -1,0 +1,176 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=27mm]{geometry}
+\usepackage{lmodern,microtype,booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={Weighted Rank Five and Covers with a Two Vertex Shore},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{2pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ULC}{\operatorname{ULC}}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\e}{\mathrm e}
+\title{Weighted Rank Five\newline and Covers with a Two Vertex Shore}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Every bipartite matching-support polynomial with a minimum vertex cover meeting one shore in at most two vertices is ultra-log-concave after normalization by its matching rank, for arbitrary positive activities on both shores. The main construction replaces a displayed $2+q$ cover by a rank-$(q+2)$ represented matroid whose Lorentzian basis polynomial specializes exactly to the homogenized support polynomial. Consequently weighted rank normalization holds through rank five, and known rank-six Hall obstructions show that the first weighted failure rank is exactly six. We also prove a sharp all-core boundary inequality with constant three, give independent Lorentzian transfer proofs for star cores, and derive quantitative eventual strictness under two natural activity scalings. Full proofs, finite exact coefficient certificates, sum-of-squares identities and independent verification scripts are included.
+\end{abstract}
+
+\paragraph{Scope and status.}
+The rank-five weighted question posed in the inspected ProveIt draft is resolved here. At higher rank the theorem covers every minimum cover with a shore of size at most two; the unrestricted unit-weight and one-shore-weighted problems at higher rank are not addressed here. These are proofs in ordinary mathematics, not Lean-certified or independently refereed results. The work extends the inspected rank manuscript and the separate rank-four and full-Hall classification reports \cite{Rank,Four,Hall}; global priority is not claimed.
+
+\section{Definitions and main conclusions}
+For a finite bipartite graph $G=(X,Y;E)$ and positive vertex activities $u_x,v_y$, write
+\[
+ p_G(t)=\sum_{k=0}^{r}a_kt^k,
+ \qquad
+ a_k=\sum_{\substack{I\subseteq X,\ J\subseteq Y\\|I|=|J|=k\\G[I,J]\text{ perfectly matchable}}}u_Iv_J,
+ \qquad r=\nu(G).
+\]
+Each endpoint pair is counted once. In particular $p_{K_{2,2}}(t)=1+4t+t^2$ at unit activities. The polynomial is $\ULC_D$, for $D\ge\deg p_G$, if its zero-padded sequence $a_k/\binom Dk$ is log-concave and has no internal zeros. Equivalently, for these support polynomials,
+\begin{equation}\label{eq:gap}
+ \Delta_k^{(D)}:=k(D-k)a_k^2-(k+1)(D-k+1)a_{k-1}a_{k+1}\ge0.
+\end{equation}
+Strict $\ULC_D$ means all $D-1$ displayed gaps are positive.
+
+A displayed $2+q$ cover is $A\sqcup B$, where $A=\{A_1,A_2\}\subseteq X$ and $|B|=q$, $B\subseteq Y$. Put $L=X\setminus A$ and $R=Y\setminus B$. There are no $L$--$R$ edges. The induced graph $G[A,B]$ is called the core. We call the displayed cover \emph{genuine} when $\nu(G)=q+2$.
+
+\begin{theorem}[A two-vertex cover shore]\label{thm:main}
+If $G$ has a displayed $2+q$ cover, fix positive activities $v$ on its right shore. The homogeneous left marginal
+\[
+ \sum_{\substack{I\subseteq X\\|I|\le q+2}}\left(\sum_{\substack{J\subseteq Y\\(I,J)\text{ feasible}}}v_J\right)z_I s^{q+2-|I|}
+\]
+is Lorentzian. In particular, the degree-$(q+2)$ homogenization of its weighted matching-support polynomial is Lorentzian. Thus $p_G$ is $\ULC_{q+2}$ for every positive activity assignment. If the displayed cover is minimum, the normalization is by the actual matching rank.
+\end{theorem}
+
+\begin{corollary}[Weighted rank five and the first failure rank]\label{cor:rankfive}
+Every bipartite matching-support polynomial of matching rank $r\le5$ is $\ULC_r$ for arbitrary positive activities on both shores. The smallest rank admitting a weighted counterexample is exactly six. At every rank $r\ge6$ there is a weighted counterexample.
+\end{corollary}
+The positive conclusion follows from Theorem~\ref{thm:main}, the pure and singleton-side cover cases proved below, and K\H{o}nig's theorem. The negative construction is given in Section~\ref{sec:negative}. For nonnegative activities, delete zero-activity vertices first; the same conclusion holds with $r$ interpreted as the surviving degree.
+
+\begin{theorem}[Forced-sector and strict-scaling refinements]\label{thm:forcedleft}
+For any displayed $2+q$ cover with $q\ge1$, the coefficient of the product of the two $A$ activities in $p_G$ is $t^2C(t)$, where $C$ is $\ULC_q$. For a genuine cover, common scaling of only the two $A$ activities makes $p_G$ strictly $\ULC_{q+2}$ for all sufficiently large scale factors.
+
+For a rank-five $2+3$ cover whose core has matching rank two, common scaling of all five cover activities also makes all four gaps strictly positive eventually. An explicit coefficient bound gives a sufficient threshold for both scalings.
+\end{theorem}
+Every fixed minimum-cover scaling at rank at most five is therefore $\ULC$ at \emph{every} positive scale factor. At each rank at least six, some fixed graph and minimum cover fail for every sufficiently large common cover scale, so the universal scaling threshold is sharp as well.
+
+\section{Lorentzian input and singleton covers}
+We use the following published facts from Br\"and\'en--Huh \cite{BH}: matroid basis polynomials are Lorentzian (Theorem 3.10); partial derivatives, nonnegative linear substitutions, products and coefficientwise limits preserve this class (Corollary 2.11, Theorem 2.10, Corollary 2.32, and closedness); homogeneous stability preservers that preserve nonnegative coefficients preserve Lorentzian polynomials (Theorem 3.4); and multiaffine truncation and polarization preserve the class (Corollary 3.5 and Proposition 3.1). A homogeneous bivariate polynomial of degree $D$ is Lorentzian exactly when its coefficients form a $\ULC_D$ sequence (Example 2.26). The zero polynomial is included by closure.
+
+\begin{lemma}[Weighted smaller-shore inequality]\label{lem:small}
+Every bipartite support polynomial is $\ULC_{\min(|X|,|Y|)}$.
+\end{lemma}
+\begin{proof}
+Add a private element $\bar x$ for each $x\in X$. The transversal matroid on $\bar X\sqcup Y$, matched into $X$, has bases exactly $\overline{X\setminus I}\sqcup J$ for feasible $(I,J)$. If $F$ is its basis polynomial, then
+\[
+ \left(\prod_{x\in X}u_x\right)
+ F\big((s/u_x)_{x\in X},(tv_y)_{y\in Y}\big)
+ =\sum_k a_k s^{|X|-k}t^k.
+\]
+The Lorentzian facts give $\ULC_{|X|}$; transpose the graph for the other shore. This is the standard bimatroid specialization \cite{RU}.
+\end{proof}
+
+\begin{lemma}[Singleton-side minimum covers]\label{lem:singleton}
+If a rank-$r$ graph has a minimum cover entirely on one shore or split as $1+(r-1)$, its support polynomial is $\ULC_r$ for all positive activities.
+\end{lemma}
+\begin{proof}
+For a pure cover, delete isolated vertices on that shore and apply Lemma~\ref{lem:small}. For a cover $\{x_0\}\sqcup B$, every nonisolated right vertex outside $B$ is a leaf at $x_0$. A feasible support contains at most one such leaf; replacing all of them by one leaf with activity equal to their sum preserves the entire support polynomial. There is at least one such leaf, since the rank exceeds $|B|$. The compressed graph has exactly $r$ active right vertices and the same polynomial, so Lemma~\ref{lem:small} applies. This is the exact leaf-compression argument of \cite{Leaf}.
+\end{proof}
+
+\section{The exact two-row formula}
+Let the two $A$ activities be $x,y$, and let $H=G[L,B]$. For a virtual left vertex with neighborhood $S\subseteq B$ and activity one, define $g_S$ by
+\[
+ p_H=f,\qquad p_{H+S}=f+t g_S.
+\]
+If $S_1,S_2$ are the actual core-row neighborhoods, define $h$ by
+\[
+ p_{H+A}=f+t(xg_1+yg_2)+xy t^2h,
+ \qquad g_i=g_{S_i},\quad g_U=g_{S_1\cup S_2}.
+\]
+The feasible support set for $g_U$ is the union of those for $g_1,g_2$: in a matching the virtual row uses one edge, and that edge belongs to at least one of the original neighborhoods.
+
+For $R$, let $a,b,c$ be the sums of activities in classes with neighborhoods $\{A_1\}$, $\{A_2\}$ and $A$, respectively. If the individual common-class activities are $r_1,\ldots,r_m$, put
+\[
+ d=\sum_{i<j}r_i r_j,\qquad Q=ab+ac+bc+d,
+ \qquad 0\le d\le c^2/2.
+\]
+Then the exact full polynomial is
+\begin{align}\label{eq:union}
+ p_G={}&f\big[1+(x(a+c)+y(b+c))t+xyQt^2\big]
+       +t(xg_1+yg_2)\notag\\
+ &+xy t^2\big(h+a g_2+b g_1+c g_U\big).
+\end{align}
+To prove this, condition on the selected $A$ vertices and then on the number of selected $R$ vertices. With both $A$ selected, two selected $R$ contribute $Qf$; one singleton-class vertex forces the corresponding $A$ and gives $ag_2$ or $bg_1$; one common-class vertex leaves the union-neighborhood alternative and gives $cg_U$; no selected $R$ gives $h$. These cases have disjoint endpoint sets. In particular the common term is $cg_U$, not $c(g_1+g_2)$.
+
+\input{full_lift.tex}
+\input{negative_ranks.tex}
+\input{geometric_corollary.tex}
+\appendix
+
+\section{A generic-line matroid model for the forced-left sector}\label{sec:line}
+By \eqref{eq:union}, the polynomial in Theorem~\ref{thm:forcedleft} is
+\begin{equation}\label{eq:C}
+ C=Qf+a g_2+b g_1+c g_U+h.
+\end{equation}
+Write $f_h=s^qf(t/s)$, $G_i=s^{q-1}g_i(t/s)$, $G_U=s^{q-1}g_U(t/s)$ and $H_h=s^{q-2}h(t/s)$. For $q=1$ the last term is zero. The right-complement transversal matroid of $H+A$ gives a degree-$q$ basis specialization
+\[
+ F=f_h+z_1G_1+z_2G_2+z_1z_2H_h.
+\]
+The private $B$ variables are $s/v_b$, the exterior-left variables are $tu_l$, the two distinguished elements have variables $z_1,z_2$, and we multiply by $\prod_bv_b$.
+
+Represent this matroid by a generic matrix: use an independent indeterminate for each allowed adjacency and private standard basis columns. A square determinant is nonzero exactly when its support admits a matching, since different matchings give distinct monomials. Denote the two distinguished columns by $v_1,v_2$. Adjoin columns
+\[
+ U_j=\alpha_jv_1+\beta_jv_2\quad(1\le j\le m),
+\]
+with generic coefficients, algebraically independent over the original matrix field. For a basis containing just one $U_j$ from this distinguished set, its determinant is $\alpha_jD_1+\beta_jD_2$ and is nonzero iff at least one of $D_1,D_2$ is nonzero. Thus its remaining-element profile is exactly $G_U$. Any pair of distinct distinguished columns has determinant a nonzero scalar multiple of the determinant using $v_1,v_2$, hence profile $H_h$. Three distinguished columns are dependent. These statements also hold when $v_1,v_2$ are dependent or zero: pair profiles then vanish, and the single profile remains the union.
+
+The resulting matroid basis specialization is therefore
+\begin{align}\label{eq:Fext}
+ F_{\rm ext}={}&f_h+z_1G_1+z_2G_2+\left(\sum_jZ_j\right)G_U\notag\\
+ &+\left[z_1z_2+(z_1+z_2)\sum_jZ_j+\sum_{i<j}Z_iZ_j\right]H_h.
+\end{align}
+It is Lorentzian. For $Q>0$, substitute
+\[
+ z_1=bs/Q,\qquad z_2=as/Q,\qquad Z_j=r_js/Q.
+\]
+The bracket becomes $s^2/Q$, and
+\[
+ QF_{\rm ext}=Qf_h+s(aG_2+bG_1+cG_U)+s^2H_h=s^qC(t/s).
+\]
+This proves the first part of Theorem~\ref{thm:forcedleft}. For $Q=0$, add two singleton right vertices with positive activities tending to zero and use coefficientwise closedness.
+
+\begin{corollary}[Scaling only the two cover vertices]\label{cor:two-scale}
+For a genuine $2+q$ cover with $q\ge1$, scaling only the two $A$ activities by a common sufficiently large factor makes every $\ULC_{q+2}$ gap strictly positive.
+\end{corollary}
+\begin{proof}
+Every matching of size $q+2$ uses exactly one cover vertex per edge. Thus $R$ matches both $A$ vertices and $L$ matches all $B$, so $Q>0$ and $f_q>0$. Consequently all coefficients $C_0,\ldots,C_q$ are positive. Write the two activities as $w\alpha,w\beta$. With $E$ the weighted edge sum incident with $A$ at relative activities $\alpha,\beta$,
+\[
+ a_1(w)=wE+O(1),\qquad
+ a_k(w)=w^2\alpha\beta C_{k-2}+O(w)\quad(k\ge2).
+\]
+The graph induced by $A$ and the opposite shore has matching rank two, so $E^2\ge4\alpha\beta C_0$. The first two leading gaps are respectively
+\[
+ (q+1)E^2-2(q+2)\alpha\beta C_0\ge2q\alpha\beta C_0>0,
+ \qquad 2q(\alpha\beta C_0)^2>0,
+\]
+at powers $w^2,w^4$. For $k=i+2$, $1\le i<q$, the leading coefficient at $w^4$ is at least
+\[
+ \frac{2(q-i+1)}{i}(\alpha\beta)^2C_{i-1}C_{i+1}>0,
+\]
+by substituting the $\ULC_q$ inequality for $C_i^2$ into \eqref{eq:gap}. Positive leading coefficients prove the claim.
+\end{proof}
+
+\input{forced_core.tex}
+\input{star_transfer.tex}
+\input{first_gap.tex}
+\input{scaling_threshold.tex}
+\input{verification_scope.tex}
+\end{document}

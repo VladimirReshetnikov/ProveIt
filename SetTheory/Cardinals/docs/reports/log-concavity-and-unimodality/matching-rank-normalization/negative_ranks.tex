@@ -1,0 +1,68 @@
+\section{Exact failure at rank six and at every higher rank}\label{sec:negative}
+We include the elementary obstruction calculation to make the sharpness conclusion self-contained. It is the negative construction from the Hall reports \cite{Hall,OldHall}.
+
+Let $H_{a,b;N,M}$ have a complete $a\times b$ core, $N$ exterior-left vertices adjacent to every right-core vertex, and $M$ exterior-right vertices adjacent to every left-core vertex. Give core vertices activity $w$ and exterior vertices activity one. If $N\ge b$ and $M\ge a$, the core is a minimum cover of size $r=a+b$: match its two shores independently into the opposite exterior sets.
+
+A size-$k$ endpoint support with $i$ selected left-core and $j$ selected right-core vertices is feasible exactly when $i+j\ge k$, subject to the cardinality bounds. Match all exterior vertices to the core first, then use the complete core for the remainder. Thus
+\begin{equation}\label{eq:Hallcount}
+ a_k=\sum_{\substack{0\le i\le a,\ 0\le j\le b\\i+j\ge k}}
+ \binom ai\binom bj\binom N{k-i}\binom M{k-j}w^{i+j}.
+\end{equation}
+Put $A_i=\binom N{b-i}$, $B_i=\binom M{a-i}$ for $i=0,1,2$, and
+\[
+ X=aA_0B_1+bA_1B_0,\quad Y=aA_1B_2+bA_2B_1,
+ \quad Z=\binom a2A_0B_2+abA_1B_1+\binom b2A_2B_0.
+\]
+Counting at most two omitted core vertices gives
+\[
+ a_r=A_0B_0w^r,\quad
+ a_{r-1}=A_1B_1w^r+Xw^{r-1},\quad
+ a_{r-2}=A_2B_2w^r+Yw^{r-1}+Zw^{r-2}.
+\]
+Hence
+\begin{equation}\label{eq:neggap}
+ \Delta_{r-1}^{(r)}=w^{2r-2}(\alpha w^2+\beta w+\gamma),
+\end{equation}
+where
+\begin{align*}
+ \alpha&=(r-1)A_1^2B_1^2-2rA_0A_2B_0B_2,\\
+ \beta&=2(r-1)A_1B_1X-2rA_0B_0Y,\\
+ \gamma&=(r-1)X^2-2rA_0B_0Z.
+\end{align*}
+
+\subsection{A concrete rank-six witness}
+Take $a=b=3$ and $N=M=33$. Here $A_0=B_0=5456$, $A_1=B_1=528$, $A_2=B_2=33$, and exact simplification of \eqref{eq:neggap} gives
+\[
+ \Delta_5^{(6)}=404794368\,w^{10}(-w^2+26784w+522784).
+\]
+At $w=26804$, the parenthesis equals $-13296$. This is an exact positive-integer-activity counterexample on $72$ vertices and $207$ edges, with minimum cover and matching rank six. Combined with Corollary~\ref{cor:rankfive}, the first weighted failure rank is exactly six.
+
+\subsection{Permanent scaling failure at every rank at least six}
+Let $a,b\ge3$. Write
+\[
+ K=(r-1)ab,\qquad J=(r+1)ab-2r(r-1).
+\]
+Because $ab\ge3(r-3)$ and $r\ge6$,
+\[
+ J\ge r^2-4r-9>0.
+\]
+Choose $N=b+30$, $M=a+30$, so that
+\[
+ \frac{A_1^2B_1^2}{A_0A_2B_0B_2}
+ =\frac{ab}{(a-1)(b-1)}\left(\frac{32}{31}\right)^2.
+\]
+The inequality $\alpha<0$ is equivalent to
+\[
+ K(2\cdot31+1)<J\cdot31^2.
+\]
+Indeed
+\[
+ 15J-K=(14r+16)ab-30r(r-1)
+ \ge12(r-6)(r+2)\ge0,
+\]
+and $63/961<1/15\le J/K$. Thus \eqref{eq:neggap} is negative for every sufficiently large $w$. An explicit sufficient integer is
+\[
+ w\ge1+\left\lfloor\frac{|\beta|+|\gamma|}{-\alpha}\right\rfloor,
+\]
+since for $w\ge1$ the bracket is at most $w(\alpha w+|\beta|+|\gamma|)<0$.
+Taking $a=3$, $b=r-3$ supplies every $r\ge6$. In contrast, every graph of rank at most five remains $\ULC$ at every positive minimum-cover scale by Corollary~\ref{cor:rankfive}. This proves the sharp universal rank threshold for minimum-cover scaling.

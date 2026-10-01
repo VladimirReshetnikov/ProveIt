@@ -1,0 +1,52 @@
+\section{Exact verification and scope of the conclusions}\label{sec:verification}
+The proofs above are universal arguments. Their exact checks are independently implementable and do not use numerical root searches or numerical optimization as evidence for a theorem.
+\begin{itemize}
+\item The full transversal lift is checked by Boolean basis enumeration on $180$ weighted graphs with $q=0,1,2,3,4,5$. It tests $140450$ candidate basis subsets and compares the complete left-subset marginal, before diagonalizing the left variables.
+\item An independent finite-field representation check covers all $64$ labeled $2\times3$ cores and $73441$ basis determinants, comparing the full weighted support polynomial exactly. A separate generic-line check covers $192$ graphs and $23553$ determinants, including $54$ rank-deficient cores.
+\item The union formula is checked on $1352$ weighted graphs with $q=1,2,3,4$, including overlapping, nested and empty core neighborhoods.
+\item The rank-five quartic certificate checks all $4424$ stated coefficient cases, all $46$ labeled rank-two cores, the four moment-corner identities, the exceptional correction, and the right-side quadratic identity.
+\item The star-core and scaling checks cover $820$ weighted star-core graphs for $q=1,\ldots,5$ and $230$ rank-five common-scaling instances. All displayed interlacing sums of squares, grading identities and computed strictness thresholds are verified exactly.
+\item The negative-family verifier checks complete endpoint support counts for seven core shapes and the universal exterior population choice for all $3\le a,b\le20$. The rank-six witness and its exact negative gap are included.
+\end{itemize}
+The package contains the Python sources, fixed seeds and JSON outputs. Only SymPy is needed beyond the Python standard library. Run \texttt{python3 checks/run\_all.py}; the JSON outputs are regenerated in \texttt{data/}. The LaTeX sources compile with ordinary pdfLaTeX; \texttt{build\_local.sh} also handles the local TeX configuration used to generate this PDF.
+
+R\"ohrle--Ulirsch's bimatroid theorem \cite{RU} normalizes by the smaller ambient shore size. The new lift replaces that order by $q+2$, and hence by matching rank when the cover is minimum. The polynomial is the perfectly matchable set polynomial of \cite{DK}, not a matching count with multiplicities. A bounded primary-literature comparison located no prior universal $2+q$-cover or weighted rank-five theorem; global priority remains unclaimed.
+
+Higher-rank unrestricted unit-weight and one-shore-only questions are outside this report. The proof uses Lorentzian matroid bases; it does not assume that transversal matroids have the half-plane property. The cover obstruction in Corollary~\ref{cor:coverobstruction} is sharp.
+
+\begin{thebibliography}{10}
+\small
+\setlength{\itemsep}{2pt}
+\bibitem{BH}
+P. Br\"and\'en and J. Huh, \emph{Lorentzian polynomials}, Annals of Mathematics \textbf{192} (2020), 821--891.
+\href{https://arxiv.org/html/1902.03719v3}{arXiv:1902.03719v3}. Theorem 2.10, Example 2.26, Corollary 2.32, Proposition 3.1, Theorem 3.4, Corollary 3.5 and Theorem 3.10.
+
+\bibitem{RU}
+F. R\"ohrle and M. Ulirsch, \emph{Logarithmic concavity of bimatroids}, Annals of Combinatorics (2025).
+\href{https://arxiv.org/html/2402.15317v3}{arXiv:2402.15317v3}. Theorem A and Example 2.4.
+
+\bibitem{DK}
+R. Davis and F. Kohl, \emph{Perfectly Matchable Set Polynomials and $h^*$-polynomials for Stable Set Polytopes of Complements of Graphs}, Discrete Mathematics \textbf{347}(7) (2024), 114018.
+\href{https://arxiv.org/html/2207.14759}{arXiv:2207.14759}. Theorem 3.10 and Lemma 3.11 state the geometric identities used here.
+
+\bibitem{MS}
+T. S. Motzkin and E. G. Straus, \emph{Maxima for Graphs and a New Proof of a Theorem of Tur\'an}, Canadian Journal of Mathematics \textbf{17} (1965), 533--540.
+\href{https://doi.org/10.4153/CJM-1965-053-6}{doi:10.4153/CJM-1965-053-6}.
+
+\bibitem{Rank}
+\emph{Rank-Three Ultra-Log-Concavity and Exact Kernels for Matching Supports}, ProveIt research manuscript prepared for Vladimir Reshetnikov with ChatGPT, 30 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1b3960d8acdabd983147b7c609bd9dfb2d67a0a0/docs/incoming/ProveIt_Matching_Rank_Research.zip}{Pinned incoming archive}.
+
+\bibitem{Leaf}
+\emph{Leaf Compression and Weighted Rank Three for Matching Support Polynomials}, companion research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. The compression proof is repeated in Lemma~\ref{lem:singleton}.
+
+\bibitem{Four}
+\emph{Stability of Two by Two Covers and Weighted Rank Four}, companion research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. The present rank-five ULC proof is self-contained and does not import its stability constructions.
+
+\bibitem{Hall}
+\emph{Sharp Full Hall Classification}, companion research report prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Its general negative-shape construction is reproduced in Section~\ref{sec:negative}.
+
+\bibitem{OldHall}
+\emph{Hall Bottlenecks and the Limits of Rank Normalization}, ProveIt research manuscript prepared for Vladimir Reshetnikov with ChatGPT, 30 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a866ff9a2/docs/incoming/ProveIt_Hall_Bottlenecks.zip}{Pinned incoming archive}. The rank-six witness is restated and verified here.
+\end{thebibliography}
