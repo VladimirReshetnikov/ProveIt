@@ -1,5 +1,10 @@
 # Sparse prime-payload universality with a paid power prefix
 
+> Successor: [factored prime/action selections](residue_affine_sparse_factored.md)
+> give551=193M+358A operations,67 witnesses and degree at most10052 with
+> the same actual U21, fixed program recipe and paid ordinary-input prefix.
+> This674-operation parent remains unchanged.
+
 The [literal compiler](residue_affine_sparse_universal.py) completes the
 prime-coded counter route with **674=249M+425A** polynomial operations,
 **81 positive witnesses**, one positive program parameter and ordinary

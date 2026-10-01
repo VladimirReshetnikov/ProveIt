@@ -29,7 +29,19 @@ and [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_brac
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The latest explicit [positive-history-scale U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_history_scale257.md)
+The latest explicit [dominated-endpoint U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_height256.md)
+gives **255 certificate /256=133M+123A polynomial operations**,
+one comparison,43 positive witnesses, four positive program parameters
+and degree **at most1384**. The computed terminal endpoint already exceeds
+the upper endpoint, so one height addition is redundant. Direct soundness
+and a positive forward map preserve accepted inputs on valid shifted
+program slices; the inverse affine slack map need not remain positive.
+The entire preceding finite partition family shifts down by one operation,
+reaching **268 operations, degree at most212, with44 witnesses**, or264/456 with43.
+This preserves the inherited propagated-bound scope, not an all-circuit
+optimum. The E'=E−1 recipe and paid ordinary-input interface are unchanged.
+
+The preceding explicit [positive-history-scale U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_history_scale257.md)
 gives **256 certificate /257=133M+124A polynomial operations**,
 one comparison,43 positive witnesses, four positive program parameters
 and degree **at most1384**. It computes the history scale from the positive
@@ -39,7 +51,7 @@ The slack map beta_new=beta_parent+1 is a positive-zero bijection on valid
 program/input slices; it is not an arbitrary-point polynomial identity.
 The offset parameter retains the E'=E−1 recipe and ordinary input is unchanged.
 
-The new [all-factor history-scale search](../research-wip/native-stream-queue/neary_woods_universal_history_scale_partitions.md)
+The preceding [all-factor history-scale search](../research-wip/native-stream-queue/neary_woods_universal_history_scale_partitions.md)
 optimizes all partitions and either finalizer across sixteen native bases.
 Its operation/degree-bound frontier is257/1384,259/1242,260/1196,261/858,
 262/606,263/560,264/458,265/412,266/306,267/276,268/230 and269/212.
@@ -66,7 +78,7 @@ The [preceding shifted-offset partition search](../research-wip/native-stream-qu
 uses the same E' program recipe but the older history-scale definition.
 Its exact sixteen-base frontier includes265/1112,266/1066,267/742 and
 268/712 with44 witnesses, ending at269/608. These historical bounds
-belong to a separate family from the new257 history-scale search.
+belong to a separate family from the257 history-scale search.
 
 The separate [all-factor history-unit search](../research-wip/native-stream-queue/neary_woods_universal_history_unit_partitions.md)
 keeps the older E parameter meaning and searches32 bases: all sixteen
@@ -89,6 +101,22 @@ reach270/608 with44 witnesses; the fixed43-witness family reaches267/1344.
 Only the new factors' placement in selected inherited partitions is
 optimized, not all partitions of the enlarged factor set. The actual U9
 program/input contract and exact initialization counter remain paid.
+
+A different [multiplicative-gamma86 shortcut](../research-wip/native-stream-queue/complete75_multiplicative_gamma86_obstruction.md)
+replaces gamma=rho+sigma by rho*sigma and costs86=48M+38A with19 witnesses.
+Its valid compiler slices are **EMPTY**, including accepted inputs: a
+Pell projection-polynomial divisibility obstruction rules out every
+positive zero. This rejects this specific shortcut, separately from the
+weakened-bound86 all-input collapse and the unresolved independent-gamma87
+route; the established75/87 constructions are unchanged.
+
+The [fixed-modulus count obstruction](../research-wip/native-stream-queue/complete75_fixed_modulus_count_obstruction.md)
+also rules out a guarded input-bridge replacement: if x is read only
+through alpha+a*x and m*(t−1)+c*x with fixed positive a,m,c, acceptance is
+closed under downward shifts by m/gcd(m,c) while the input stays positive. Each slice is
+ultimately periodic, so it cannot represent the powers of two. This
+assumes the stated port guard and fixed modulus; it does not apply to the
+sparse compiler's paid variable radix and strict prefix-growth bounds.
 
 The specific [weakened-bound86 proposal](../research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
 is now **REFUTED**. The [all-input collapse theorem](../research-wip/native-stream-queue/complete75_weakened86_all_input_collapse.md)
@@ -149,7 +177,19 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
-The independent [sparse prime-payload compiler](../research-wip/native-stream-queue/residue_affine_sparse_universal.md)
+The [factored prime/action successor](../research-wip/native-stream-queue/residue_affine_sparse_factored.md)
+reduces the sparse prime-payload construction to **528 certificate /
+551=193M+358A polynomial operations**,8 comparisons,67 positive witnesses
+and degree **at most10052**. Seven prime selections and two action
+selections replace23 coefficient-pair selections; a shared remainder
+correction removes both weighted offset forms. The one fixed program
+parameter E=3^e, raw positive x, actual U21 table and paid growth/count
+prefix are retained. Positive converse and fresh native extensions are
+proved; this is not an arbitrary-point identity with674. It saves123
+operations and14 witnesses in that route, while remaining above256,
+Korec411 and the established75/87 frontier.
+
+The preceding independent [sparse prime-payload compiler](../research-wip/native-stream-queue/residue_affine_sparse_universal.md)
 gives **651 certificate /674=249M+425A polynomial operations**,
 eight comparisons,81 positive witnesses and degree **at most10416**.
 One fixed positive program parameter E=3^e and ordinary positive x supply
@@ -159,7 +199,7 @@ comparison within the fully paid chronology. The deterministic body is
 a total residue-affine map. The sparse compiler uses34 body branches and
 two prefix edges, avoiding expansion of the body's223092870-row residue
 table. Its target is a halting control class with positive existential
-payload. This complete independent route remains above257,411 and the
+payload. This historical complete route is above257,411 and the
 established75/87 bounds.
 
 The [packed residue-affine history compiler](../research-wip/native-stream-queue/residue_affine_packed_history.md)

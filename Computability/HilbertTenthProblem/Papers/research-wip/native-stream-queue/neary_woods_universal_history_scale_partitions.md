@@ -1,5 +1,10 @@
 # Repartitioning the positive history scale gives degree bounds down to212
 
+> Successor: [removing the dominated height endpoint](neary_woods_universal_height256.md)
+> shifts every schedule below down by one operation without changing its
+> degree bound:256/1384 through268/212, with fixed43 witnesses reaching264/456.
+> The finite-family optimization and this historical source remain unchanged.
+
 The [literal compiler](neary_woods_universal_history_scale_partitions.py)
 optimizes every factor partition and either allowed finalizer after the
 [257-operation history-scale rewrite](neary_woods_universal_history_scale257.md).

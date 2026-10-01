@@ -1,5 +1,10 @@
 # A normalized strong auxiliary witness gives 87 operations
 
+> Rejected shortcut: [multiplying the two quotient witnesses](complete75_multiplicative_gamma86_obstruction.md)
+> produces a distinct86-operation source with no positive zeros on any valid
+> compiler slice. The established87 theorem below is unchanged; this does not
+> settle the independent-gamma87 route or all possible86-operation sources.
+
 The complete fixed compiler now gives a universal Diophantine polynomial
 with **87 operations = 48 multiplications + 39 additions/subtractions**,
 **19 strictly positive existential witnesses**, and exact total degree

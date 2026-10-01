@@ -1,5 +1,10 @@
 # Computing the history scale gives257 operations and degree1384
 
+> Successor: [the dominated-endpoint rewrite](neary_woods_universal_height256.md)
+> gives256 operations at the same43 witnesses and degree bound1384, with
+> accepted-input equivalence on valid shifted slices. Its inverse affine
+> height-slack map need not preserve positivity. This parent remains unchanged.
+
 The [literal source](neary_woods_universal_history_scale257.py) replaces the
 history scale definition in the [258-operation compiler](neary_woods_universal_offset258.md).
 The default complete polynomial costs **257=133M+124A**, with **43 positive
