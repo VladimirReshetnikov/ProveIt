@@ -77,7 +77,10 @@ def rewrite(old, prefix=''):
     assert [pair for pair in old['comparisons'] if bound in pair]==[removed]
     assert all(not {w,beta}&set(pair) for pair in old['comparisons'])
     assert not {w,beta,bound}&set(old.get('public_registers',{}).values())
-    dependencies={n:{n} for n in old['parameters']+old['auxiliaries']}
+    # The sole query below intersects with {w,beta}; retaining only those
+    # names commutes with every union and bounds each dependency set by2.
+    dependencies={n:({n} if n in {w,beta} else set())
+                  for n in old['parameters']+old['auxiliaries']}
     dep=lambda v:dependencies[v] if isinstance(v,str) else set()
     for n,_,a,b in old['source']:dependencies[n]=dep(a)|dep(b)
     assert not {w,beta}&(dep(q)|dep(r))

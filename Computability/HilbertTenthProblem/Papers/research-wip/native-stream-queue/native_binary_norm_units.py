@@ -101,7 +101,10 @@ def normalize(old):
     strong=(n('ic22'),n('R16'));linear=(n('H17'),n('aux_u_rhs'))
     assert old['comparisons'].count(strong)==1 and old['comparisons'].count(linear)==1
     rebuilt={n(k) for k in ('f','i','j','o','y_aux')}
-    deps={name:{name} for name in old['parameters']+old['auxiliaries']}
+    # Only intersections with rebuilt are used below. Projection commutes
+    # with each union, so retain at most these five names per register.
+    deps={name:({name} if name in rebuilt else set())
+          for name in old['parameters']+old['auxiliaries']}
     dep=lambda v:deps[v] if isinstance(v,str) else set()
     for name,_,a,b in old['source']:deps[name]=dep(a)|dep(b)
     alias=lambda k:old['computed_substitutions'].get(n(k),n(k))
