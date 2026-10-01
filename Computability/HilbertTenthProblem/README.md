@@ -27,15 +27,16 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate independent-gamma87 candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
-The separate [bracket-anchored GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
-pays ordinary input and arbitrary selected tile histories. Its29-tile
-odd-integer example costs **502 certificate /579=249M+330A polynomial
-operations**, with26 equations,93 positive witnesses and degree5502.
-Its distinct explicit Neary–Woods universal table has96 physical tiles
-and a paid ordinary-input bridge: **1046=423M+623A** polynomial operations,
-162 positive witnesses, three positive program parameters and degree199806.
-Supplying the initial history value gives1049 operations at degree7276. These alternative
-universal bounds are larger than75/87; the matrix alphabet remains abstract.
+The separate [sparse oriented GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
+now has57 physical tiles and a paid ordinary-input bridge:
+**730 certificate /810=349M+461A polynomial operations**,27 comparisons,
+125 positive witnesses, three positive program parameters and degree130394.
+Supplying the initial history value gives813 operations,126 witnesses and
+degree5204. Forced boundary repairs and fixed state orientations preserve
+the original universal machine; the actual table and arithmetic are rebuilt.
+The [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
+and its decidable odd-integer579 example remain reproducible. These are
+alternative universal bounds above75/87; the matrix alphabet remains abstract.
 
 ## Layout
 
@@ -118,6 +119,16 @@ universal bounds are larger than75/87; the matrix alphabet remains abstract.
   both ratio slacks and the ordinary-input contract remain unchanged.
   The75 comparison bound and87 polynomial bound remain distinct.
   These optimized results are not yet Lean formalized.
+- The [sparse oriented TM compiler](Papers/research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
+  gives a second complete universal route at **810 operations**,125 positive
+  witnesses and degree130394. Fixed orientations make27 moves local;
+  shared forced edge repairs give57 tiles. A tuned fixed prefix code saves
+  five further arithmetic gates over the balanced815 alternative.
+- The [normalized four-tile tag predicate](Papers/research-wip/native-stream-queue/pcp_normalized_strong_history_units.md)
+  costs **196=93M+103A operations**,28 positive witnesses and degree1015,
+  including initially halted input. The preceding197-operation degree667
+  alternative remains available. The input is an encoded tag-word sentinel;
+  its fixed-universal ordinary-input bridge remains unpaid.
 - A [group-commutator substrate](Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md)
   represents every computably enumerable positive set by membership in a
   finitely generated SL(4,Z) subgroup, with a fixed quadratic ordinary-input

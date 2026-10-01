@@ -15,15 +15,27 @@ The independent-gamma87
 candidate is still unresolved, with new
 [compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The historical stages below retain their original scope and counts.
-The separate [bracket-anchored GPCP route](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
-pays ordinary integer input and arbitrary common tile histories. Its
-29-tile odd-integer example costs **502 certificate /579=249M+330A
-polynomial operations**,26 equations,93 witnesses and degree5502.
-Its distinct explicit Neary–Woods table instead gives a numerical universal
-polynomial with a paid ordinary-input bridge: **1046=423M+623A** operations,
-162 positive witnesses, three positive program parameters and degree199806.
-Supplying its initial history value gives1049 at degree7276. This is a complete alternative
-above75/87; the separate matrix alphabet remains abstract.
+The separate [sparse oriented GPCP compiler](../research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
+now has57 physical tiles and a paid ordinary-input bridge:
+**730 certificate /810=349M+461A polynomial operations**,27 comparisons,
+125 positive witnesses, three positive program parameters and degree130394.
+Supplying the initial history value gives813 operations,126 witnesses and
+degree5204. Forced boundary repairs and fixed state orientations preserve
+the original universal machine; the actual table and arithmetic are rebuilt.
+The [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
+and its decidable odd-integer579 example remain reproducible. These are
+alternative universal bounds above75/87; the matrix alphabet remains abstract.
+
+The [four-tile binary-tag representation](../research-wip/native-stream-queue/binary_tag_four_tile_history.md)
+uses a fixed terminal boundary in place of a selectable terminal pair.
+Its complete encoded-word predicate costs197=92M+105A,28 positive
+witnesses and degree667, including the initially halted singleton. The
+zero-run and queue proofs establish halting equivalence on the specified
+length-congruence slices. The [normalized strong-witness successor](../research-wip/native-stream-queue/pcp_normalized_strong_history_units.md)
+saves one polynomial operation, giving196=93M+103A with the same28 witnesses
+and degree1015. Its certificate grows by2M while one comparison is removed.
+A paid bridge from ordinary inputs to a fixed universal tag program is
+still required; neither encoded-input count is a universal bound.
 
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the

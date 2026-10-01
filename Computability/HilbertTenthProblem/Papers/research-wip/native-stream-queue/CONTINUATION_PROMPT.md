@@ -311,15 +311,81 @@ width bound must be replaced if this projection is revisited. This does
 not resolve the distinct independent-gamma87 candidate or prove a general
 lower bound. The75/87 frontier remains unchanged.
 
-The [sparse oriented TM rules](sparse_tm_rewriting.md) now prove the
-pending-head semantics: before-oriented right targets and after-oriented
-left targets use local moves, with one shared boundary repair per relevant
-nonaccepting state. The repair is forced, and accepting pending states
-clean up to the same terminal. The complete run theorem and deterministic
-helper passed independent review. A before-oriented start preserves the
-paid input prefix. Arithmetic compilation must still rebuild the actual
-table, geometry and native witnesses; symbolic rule savings alone are
-not arithmetic bounds.
+The [sparse oriented TM rules](sparse_tm_rewriting.md) and their
+[complete compiler](gpcp_sparse_tm_compiler.md) now close the pending-head
+lead. Before-oriented right targets and after-oriented left targets use
+local moves, sharing forced blank repairs. A before-oriented start keeps
+the paid input unchanged. The actual U15 table has27 local moves, two
+contextual moves,15 repairs, one stationary adapter and four cleanup rules:
+53 rules plus four copies =57 tiles. Fixed grouped row ordering is a
+permutation, not a changed rewrite relation.
+
+The default sparse_tuned code is balanced with swaps u10/u12,u4/u6,u7/u9,
+chosen by a bounded2745-map search and fully rescored. It gives
+H576=236M+340A, g8,N69, **730 certificate /810=349M+461A polynomial**,
+27eq,125w,degree130394. Supplied Vi gives813/126w/28eq/5204. Balanced
+code retains815/818 with the same witnesses and degrees. Every changed
+map is recompiled; all native witnesses and positive program framing
+numerals are freshly constructed. The old1046 packet remains a predecessor.
+
+The [four-tile binary-tag history](binary_tag_four_tile_history.md) gives
+195 operations for nonempty matching histories, or197=92M+105A with the
+initially halted singleton,28 witnesses and degree667. Its word equation
+forces production/deletion phases via maximal zero runs. On inputs and
+productions ending in b, with both lengths1 mod(beta−1), its projection is exactly tag
+halting. Outside that slice a match can stop at an earlier short queue;
+soundness still implies halting. The input is the encoded tag sentinel.
+A fixed-program ordinary-input morphism and the TM-to-cyclic-tag
+initialization counter remain to be supplied. Do not call197 universal.
+The [single-core normalized strong wrapper](pcp_normalized_strong_history_units.md)
+now saves one polynomial operation in that complete native-unit history:
+194 nonempty or196=93M+103A including singleton,28w,degree1015. Its
+certificate is168=83M+85A with9 comparisons. The generic three-tile
+interleaved example is192/29w/degree1464. It maps i_old=Delta*i and
+restores the full strong square after an unconditional norm sign proof;
+fresh auxiliaries at m=2cJ retain the exact native J=2r+1=3 mod4.
+Generic degree is90N+24. No three-core composition saving is included.
+A next bounded task is to normalize each of the complete compiler's
+three cores while retaining both independent checksums and auditing
+all off-zero correction terms and the changed highest forms.
+
+
+A bounded next tag-input candidate separates the unused bootstrap track
+from the normal simulation tracks in Neary's
+[STACS2015 construction](https://drops.dagstuhl.de/storage/00lipics/lipics-vol030-stacs2015/LIPIcs.STACS.2015.649/LIPIcs.STACS.2015.649.pdf).
+This is a research checkpoint, not an established universal input bridge.
+For a fixed CTS with p>=2 and designated halt appendant h in1,...,p-1,
+put beta=10p, M=beta-1 and choose s>=11max(p,max|alpha_m|)+3
+with s=1 mod M.
+Set theta_e=b^4 c b^6, theta_0=b^6 c b^4, theta_1=b^8 c b^2.
+Define u from beta interleaved length-s tracks. Even tracks and unused
+9-mod10 tracks are b^s. At z_m=(beta-10m+1) mod beta use c^s; at
+z_m-4 and z_m-6 use theta_e^p c^(s-11p). At z_m-8 use
+theta(alpha_m)c^(s-11|alpha_m|), with the garbage row for empty alpha_0.
+For the m0 rows remove the initial b and add a trailing c. At m=h the
+last row is instead b c^(s-1). The local track identities should be
+re-audited literally: the published table contains u-versus-c and halt-index
+notation inconsistencies, so its printed rows cannot be copied unchecked.
+
+Put phi_e=b^4 u b^6, phi_0=b^6 u b^4, phi_1=b^8 u b^2,
+k=(-11) mod M and B_i=phi_i u^k. Then
+W(w)=u[1:] B_w1...B_wn u has length1 mod M, ends b, and starts at
+shift1; B0/B1 have equal b/c content and length0 mod M. Hence its
+four-tile input has the fixed-morphism candidate
+E(W)=e(u[1:]) e(B_w1)...e(B_wn) E(u), without length-dependent padding.
+The unresolved halt condition is substantive: a first h-output
+H=b u^(s-1) flips entry parity, enabling even-track cleanup, only if no
+second pending h-activation reverses that parity. The intended TM-to-CTS
+encoding may enforce one pending halt activation; prove that precise
+invariant before asserting halting equivalence for this candidate.
+
+The ordinary TM-to-CTS initialization also appends mu^c, with
+c=2^ceil(log2 tape_length). Even a proof that any larger dyadic c works
+would leave a paid synchronization problem: choosing c=q=2^n from the
+recoder requires a counter scale2^(K*z*q), while its existing scale is
+2^(K*n). Independent dyadic powers do not equate these exponents.
+Neither this counter relation nor the pending-halt invariant is closed.
+No arithmetic or universal bound follows from the candidate tracks.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary
