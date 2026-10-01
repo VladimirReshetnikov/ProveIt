@@ -102,34 +102,94 @@ separately supplied arbitrary mortality word remains distinct; the
 [9D packet](group_affine_guarded_mortality9.md) retains its paid selected-word
 circuit for each fixed duration.
 
-The complete input recoders now include
+The complete input recoders include
 [radix four129](native_binary_input_dilation129.md) and
 [radix sixteen130](native_binary_input_dilation130.md). They represent
 different functions, sum bit_j(x)*4^j andsum bit_j(x)*16^j. Both have49
 positive witnesses,34 equations and degree40; their SOS costs are230
 and231. All native typing, synchronized geometry, masks and bounds are
 paid. The smaller radix uses a directly proved weaker raw-kernel bound,
-not the radix16 B0 witness transport.
+not the radix16 B0 witness transport. Their
+[native-unit successor](native_binary_input_dilation_unit179.md) gives
+**179=86M+93A**,36 positive witnesses,15 comparisons,135 certificate
+operations and degree186 for radix four, or180/degree240 for radix sixteen.
+The lower-degree230/231 alternatives remain valid. Six independently
+sign-safe norm units share one checksum, the two positive root gaps are
+bijective, and thirteen positive definitions are projected through paid
+source gates. Keep both strong equalities and both ratio slacks. The
+cost-neutral strong-RHS auxiliary coefficient is justified by its own
+modulo-four sign proof; restore its old coefficient before using a kernel.
 
 The [fixed-program GPCP input bridge](gpcp_fixed_program_input_bridge.md)
-now pays the ordinary-integer input and terminal boundary: at block
+pays the ordinary-integer input and terminal boundary: at block
 width4 it has136=70M+66A gates,50 positive witnesses and36 equations,
 with243-operation degree40 SOS. For a larger fixed alphabet its exact
 width-dependent ledger is explicit. It compiles a fixed Turing machine
 through nonempty rewriting rules and a fresh-delimiter word equation;
-all program tiles stay input-independent. The unbounded common tile
-selection and matrix histories still need an arithmetic certificate.
-This is not a complete universal GPCP Diophantine equation or a change
-to75/88.
+all program tiles stay input-independent. The unit-projected boundary
+alone costs192/degree240, with37 witnesses and17 comparisons at width4.
+
+The [complete affine-pair history](pcp_uniform_affine_pair_history.md)
+now pays the unbounded common tile selection. It permits any fixed
+positive integral slopes and nonnegative offsets. One AND64 joins
+selected products, one-hot controller, history range and dyadic radix
+typing; a joint positive bound and two transports complete the source.
+It has19 comparisons and3s+26 witnesses for s tiles. The illustrative
+three-tile auto layout gives161 certificate/217 polynomial operations,
+degree400; contiguous gives163/219 at degree328. Its
+[unit successor](pcp_uniform_affine_pair_units.md) saves24 polynomial
+operations and six witnesses, giving193/degree956 or195/degree782,
+with10 comparisons and3s+20 witnesses. No illustrative table is universal.
+
+The [complete fixed-program compiler](gpcp_complete_fixed_program.md)
+joins the boundary and history with disjoint geometries and shared
+endpoints. It optionally projects the initial endpoint through its
+positive framing expression. A fixed machine must normalize all permitted
+leading-zero paddings, not merely be eventually invariant. The sample
+34-tile odd-integer recognizer gives832 certificate/993 polynomial
+operations,54 comparisons,180 witnesses and degree8416. Supplied-endpoint
+and contiguous-layout alternatives have lower degree. The exact raw
+supplied-endpoint degree is max(24N+16,2k+2), not always24N+16; the
+width100 singleton regression exercises recoder dominance.
+
+The [complete native-unit composition](gpcp_complete_fixed_program_units.md)
+then saves75 operations and nineteen witnesses for every compatible
+table. Its default sample is **841 certificate/918 polynomial operations
+(403M+515A),26 comparisons,161 witnesses,degree19782**. The supplied
+initial endpoint costs921 with162 witnesses and degree8040. Nine
+sign-safe norms and only the recoder checksum form one global unit;
+the history checksum remains an explicit comparison. Never multiply
+two unrestricted checksum factors into one unit without a new sign proof.
+The separate-unit option is also retained. Degree uses the actual loader
+and projected q: e=1 for direct/fixed input,e=2 for a free program code,
+v=(k+1)e+1, nu=ke+1 if the endpoint is computed else2, d=N*nu. The
+regrouped degree is14e+19v+20d-6nu+84+8max(d,v). Exact source audits
+account for cancellation of the leading a^2*c^2 terms in each main norm.
+
+A fixed universal interpreter can decode N=code*(2x+1), costing3 paid
+operations; selecting code=2^p represents program p on ordinary x.
+For a fixed program numeral the loader costs2 operations. This closes
+the complete effective fixed-table universality interface. An explicit
+numerical universal interpreter/table remains uninstantiated, so the
+sample918 is not a new numerical universal bound and75/88 is unchanged.
+Full positive extensions are component theorems; executable outer
+fixtures deliberately leave astronomical native Pell witnesses unbuilt.
+
+Next useful PCP work is to reduce the fixed affine transport and selection
+costs on actual rewrite tables, or instantiate and cost a small universal
+table. Repeated copy-tile slopes may admit paid grouped linear forms;
+using a default affine slope plus exceptional selected outputs requires
+a fresh complete mask and carry proof. Preserve both physical layouts,
+independent input/history duration, positive domain and degree tradeoffs.
 
 The previous cone/singleton proposal is now implemented and proved in
 merge31: positive flags avoid their two explicit decodings. Its root
 condition V=1,U=kappa*x+lambda uses the root's already proved power typing.
 Keep the fixed-word and uniform-history scopes separate. Precomputed
 subtree flags are legitimate only when the leaf flags are source constants;
-variable selected branches need a paid replacement. The next substantive
-history task is a uniform synchronized selected-word/tree certificate,
-rather than another unchecked input or empty-test conversion.
+variable selected branches need a paid replacement. A uniform synchronized
+selected-tree certificate remains a separate task; the complete affine
+GPCP history above does not establish prefix-stack typing for such trees.
 
 For algebraic work, the strong factor1+T^2-K cannot be-1 modulo4, so any
 integer product zero forces T^2=K before substitutions. The one-gate

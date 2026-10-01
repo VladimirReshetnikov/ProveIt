@@ -22,6 +22,9 @@ numerical universal alphabet remains uninstantiated. Mortality now has
 [a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
 the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
+The [complete fixed-program GPCP compiler](gpcp_complete_fixed_program_units.md)
+also pays ordinary input and arbitrary selected tile histories. Its fixed
+universal interpreter table is effective but not numerically instantiated.
 
 The [signed-projection refinement](complete75_signed_projection_elimination101.md)
 retains **75=41M+34A** with **20 positive witnesses and nine equations**.
@@ -158,10 +161,12 @@ cheap one-step polynomial from the remaining history cost; unit slopes
 with a pure-division branch cannot represent arbitrarily thin sets under
 affine input loading. The factored counter map explicitly escapes that
 unit-slope hypothesis and has paid zero/decrement guards; its prime-power
-input encoding and finite iteration still need certificates. The PCP trace retains the useful
-shared endpoint. A separate [fixed-program ordinary-input boundary](gpcp_fixed_program_input_bridge.md)
-is now paid; the unbounded common tile selection and weighted histories
-still need a complete certificate. The two-stack substrate
+input encoding and finite iteration still need certificates. The historical
+PCP trace retains its useful shared endpoint. The
+[fixed-program ordinary-input boundary](gpcp_fixed_program_input_bridge.md)
+and [uniform affine-pair history](pcp_uniform_affine_pair_history.md) now
+have a [complete composition](gpcp_complete_fixed_program.md), paying
+unbounded common tile selection as well. The two-stack substrate
 has a paid two-operation ordinary-input prefix. Factoring its read selectors
 reduces a scalar step from16B-3 to8B+18 operations for a full B=9K table,
 using eight witnesses and seven equations. Fixed-duration costs are explicit.
@@ -225,6 +230,20 @@ geometry hypotheses needed before typing. No transport to B0=8q^2 is
 used. The represented function changes, so129 does not replace the
 radix16 relation or preserve its polynomial.
 
+The [norm-unit recoder](native_binary_input_dilation_unit179.md) reduces
+the complete radix4 polynomial to **179=86M+93A**, with36 positive
+witnesses,15 comparisons and exact degree186. Its certificate costs135;
+the corresponding radix16 polynomial costs180 at degree240. Six norm
+factors exclude negative units before typing, and a seventh checksum
+factor restores its sign. Two positive root-gap bijections and thirteen
+already-paid positive definitions restore every parent witness. The
+default auxiliary coefficient uses the retained strong comparison's RHS;
+the literal T^2 option remains checked at the same cost and degree194.
+A radix4 alternative keeping P supplied costs182 at degree132. These
+are operation/degree tradeoffs with the preserved degree40 parents.
+For fixed width k>=4, the new recoder polynomial costs178+mu(k), with
+degree27k+132, where mu(k)=floor(log2 k)+popcount(k)-1.
+
 The [fixed-program GPCP input bridge](gpcp_fixed_program_input_bridge.md)
 pays both framed input and terminal boundaries. For a fixed k-bit
 alphabet, k>=4, put mu(k)=floor(log2 k)+popcount(k)-1. Its complete
@@ -232,10 +251,67 @@ boundary costs **134+mu(k)** operations, with50 positive witnesses and36
 equations; one polynomial costs **241+mu(k)** with exact degree
 **2 max(20,k+1)**. At k=4 this is136/243 operations. The proof compiles a
 fixed machine into rewrite tiles with nonempty sides and a fresh delimiter, and
-includes the zero-step case. Program and padded ordinary-input conventions
-are now supplied; the unbounded common tile word and its selected matrix
-history remain unpaid. The existing SL2 compiler does not certify these
-affine tile products, and no numerical75/88 improvement follows.
+includes the zero-step case. This boundary alone leaves the common tile
+history open; the following construction closes that interface without
+importing the SL2 history theorem for nonunit-determinant affine maps.
+The norm-unit recoder gives the same boundary in190+mu(k) polynomial
+operations, with37 witnesses and17 comparisons; k=4 gives192/degree240.
+
+The [uniform affine-pair history](pcp_uniform_affine_pair_history.md)
+certifies a nonempty common tile word over every fixed table of positive
+slopes and nonnegative offsets. A single prescribed AND pays selectors,
+history ranges, selected-cell products, a dyadic radix and common duration.
+The global positive bound establishes canonical lanes before Boolean
+typing; bounded affine outputs then make both transports carry-free.
+For s tiles the literal certificate H has19 comparisons and3s+26
+witnesses, and its polynomial costs H+56. Two paid layouts use scale
+exponents N=3s+4 and N=4s+4, with exact degree24N+16. The illustrative
+three-tile table costs161/217 at degree400, or163/219 at degree328.
+
+The [history norm-unit successor](pcp_uniform_affine_pair_units.md)
+uses the same complete positive relation, six already-paid positive
+definitions and one first-root bijection. Three sign-safe norm factors
+join its single checksum; both strong and transport comparisons remain.
+Its certificate costs H+3, with10 comparisons and3s+20 witnesses,
+and its polynomial costs H+32:24 fewer operations than the raw history.
+Its exact degree is58N+28. The interleaved three-tile example gives
+164/193,90M+103A,29 witnesses and degree956; the contiguous alternative
+gives166/195 at degree782. These are different operation/degree tradeoffs;
+combining independent kernels' unrestricted checksums still requires care.
+
+The [complete fixed-program GPCP compiler](gpcp_complete_fixed_program.md)
+composes the original boundary and raw uniform history with independent
+input and tile-duration geometries. Its default computes the positive
+initial endpoint from the already-paid framing expression. With the
+history certificate cost H and width-chain cost mu(k), the result is
+H+134+mu(k) certificate operations,54 comparisons,3s+78 positive
+witnesses and H+295+mu(k) polynomial operations. Its degree is
+12(k+1)N+16; retaining the initial endpoint adds one witness/comparison
+and three polynomial operations but reduces the degree to
+max(24N+16,2k+2), including arbitrarily wide input codes.
+The illustrative34-tile odd recognizer gives832 certificate /993
+polynomial operations,422M+571A,54 comparisons,180 witnesses and
+degree8416; its supplied-endpoint version costs996 at degree3376.
+A paid3=1M+2A program loader gives a single fixed universal interpreter
+table; a fixed program numeral uses2=1M+1A. The universal table is not
+numerically instantiated, so the separate75/88 bounds are unchanged.
+
+The [complete norm-unit composition](gpcp_complete_fixed_program_units.md)
+combines both coordinate changes on the three actual native cores,
+saving75 polynomial operations and19 positive witnesses against that
+raw full compiler. With H still the raw history cost, the default costs
+H+143+mu(k) certificate and
+H+220+mu(k) polynomial operations, with26 comparisons and3s+59
+witnesses. It safely groups all nine sign-safe norm factors with the
+recoder checksum while retaining the history checksum as a separate
+comparison. This avoids admitting two negative checksum factors.
+The same odd-integer example becomes **841 certificate /
+918=403M+515A polynomial operations**,161 witnesses and degree19782.
+Keeping the initial endpoint supplied gives921,27 comparisons,162
+witnesses and degree8040. The raw993/8416 source remains a degree
+alternative. All projections and optional loaders are included in the
+fresh degree calculation; a free program parameter gives degree35547
+for the default example. None of these example tables is universal.
 
 The [complete matrix compiler](group_complete_matrix_compiler.md) composes
 the history, selection, control and geometry sources. For a fixed macro table with m=2^h edges and p
@@ -743,11 +819,16 @@ New research and the completed75-operation construction:
 |---|---|---|
 | [Label-aligned controller lanes](group_projective_label_aligned_lanes.md) | Latest fixed-m planner retains the ten-letter245 default; nonaligned8 improves242 to227, unbalanced12 improves273 to270, reversed16 improves294 to281. | Storage lanes alone are permuted; physical word/state flow stay fixed. Fresh native witnesses prove input equivalence; distinct tables are not universal numerical instances. |
 | [Radix4 input recoder](native_binary_input_dilation129.md) | Complete129=65M+64A relation,49 positive witnesses,34 equations; polynomial230,degree40. | Weaker raw geometry uses J>=9,J>q directly. Different function and polynomial from radix16/130. |
-| [Fixed-program GPCP input bridge](gpcp_fixed_program_input_bridge.md) | Complete boundary134+mu(k),50 witnesses,36 equations; polynomial241+mu(k),degree2 max(20,k+1). At k=4:136/243. | Fixed program and ordinary-input framing are paid; unbounded common tile selection/history remains unpaid. No direct SL2 history transfer. |
+| [Norm-unit input recoder](native_binary_input_dilation_unit179.md) | Radix4:135 certificate /179=86M+93A polynomial,15 comparisons,36 witnesses,degree186; keeping P gives182/degree132. Radix16:180/degree240. | Exact positive coordinate bijections; strong auxiliary comparisons retained. Genericwidth polynomial178+mu(k),degree27k+132. Degree40 parents remain alternatives. |
+| [Uniform selected affine-pair history](pcp_uniform_affine_pair_history.md) | Complete arbitrary positive-duration word certificate H,19 comparisons,3s+26 witnesses; polynomial H+56,degree24N+16 for either paid layout. | Fixed positive slopes/nonnegative offsets; example161/217 is not a universal tile table. No external word typing or geometry remains. |
+| [Affine-pair history norm units](pcp_uniform_affine_pair_units.md) | Same complete relation in H+3 certificate /H+32 polynomial operations,10 comparisons,3s+20 witnesses,degree58N+28; example164/193. | Exact positive coordinate bijection; full strong and outer comparisons remain. Independent checksum factors cannot be merged without sign control. |
+| [Complete fixed-program GPCP compiler](gpcp_complete_fixed_program.md) | Default H+134+mu(k) certificate /H+295+mu(k) polynomial,54 comparisons,3s+78 witnesses. Example832/993,degree8416. | Ordinary input and unbounded selected history paid. Fixed universal interpreter plus paid program loader; numerical universal table not instantiated. |
+| [Complete GPCP norm-unit composition](gpcp_complete_fixed_program_units.md) | Saves75 polynomial operations and19 witnesses; default H+143+mu(k) certificate /H+220+mu(k) polynomial,26 comparisons,3s+59 witnesses. Example841/918,161 witnesses,degree19782. | Nine norm signs justify regrouping with only one checksum; the other stays explicit. Supplied endpoint921/8040 and raw993/8416 remain tradeoffs. No numerical universal table. |
+| [Fixed-program GPCP input bridge](gpcp_fixed_program_input_bridge.md) | Complete boundary134+mu(k),50 witnesses,36 equations; polynomial241+mu(k),degree2 max(20,k+1). At k=4:136/243. | Historical boundary-only packet. The uniform affine-pair history and full composition now close its selected-word interface. |
 | [Reindexed/shared selector packing](group_projective_reindexed_shared_pack.md) | Ten-letter illustration:228 certificate / 245=104M+141A polynomial,6 equations,36 witnesses,degree3504. | Geometry preserves the input predicate via fresh witnesses; packing preserves the full polynomial. Numerical universal alphabet remains uninstantiated;75/88 unchanged. |
 | [Shared selector packing](group_projective_shared_selector_pack.md) | Exact paid packing identity; intermediate229/246 operations for the ten-letter table. | Table-dependent anchor planner and fallback; no universal saving or optimality claim. |
 | [Reindexed edge geometry](group_projective_reindexed_edge_geometry.md) | Intermediate243/260 operations; eligible power-of-two edge tables halve their geometry and lower degree. | Mask reuse needs at least8 lanes. Same accepted inputs, not an identity with the old geometry polynomial. |
-| [Complete binary input recoder](native_binary_input_dilation130.md) | Complete130=67M+63A relation,49 positive witnesses,34 equations; polynomial231,degree40. | Exact polynomial identity with132 parent. Paid radix16 primitive; the newer GPCP boundary still leaves unbounded selected histories unpaid. |
+| [Complete binary input recoder](native_binary_input_dilation130.md) | Complete130=67M+63A relation,49 positive witnesses,34 equations; polynomial231,degree40. | Exact polynomial identity with132 parent. Paid radix16 primitive used by the separate complete GPCP composition. |
 | [Idle-free macro paths](group_projective_idle_free_paths.md) | Every nonempty table can remove edge0 after frozen padding. Default244 certificate / 261=113M+148A polynomial,6 equations,36 witnesses,degree3504. | Exact parent specialization; same input projection needs fresh shorter histories and native witnesses. Full m-lane geometry remains; empty tables keep the parent. |
 | [Frozen duplicate idle lanes](group_projective_frozen_idle_padding.md) | Saves at least2k operations and k witnesses for k redundant idle lanes. Default247 certificate / 264=113M+151A polynomial,6 equations,37 witnesses,degree3504. | Both repunit/packing plans are paid; completeness relabels idles to edge0 and rebuilds the native extension. Numerical75/88 unchanged. |
 | [4D weighted-reset mortality](group_weighted_reset_mortality4.md) | Unrestricted mortality with one rank-one nonnegative quadratic input matrix loaded in3=2M+1A. | Whole-space bridge scalars prevent independent block erasure. Stable279 endpoint import; latest245 composes only for existence. |
@@ -838,7 +919,7 @@ New research and the completed75-operation construction:
 | [Residue-affine maps and ancestor pumping](residue_affine_ancestor_pumping.md) | One step has two positive witnesses and a **6b+8** polynomial evaluation. Unit slopes with a pure-division residue force an affine geometric progression in every infinite point-target language under any fixed affine loader. | The pumping subclass cannot represent factorials. Nonunit slopes, wider guards and other acceptance interfaces are outside the theorem; finite iteration is unpaid. |
 | [Positive elimination and one polynomial](complete75_positive_elimination.md) | Eight positive definitions reduce complete75 to **22 witnesses and 11 equations**; a single degree-84 polynomial has a **107=52M+55A** evaluation DAG. | The certificate operation bound remains75. Positive witnesses and fixed compiler constants are essential conventions; no optimality or Lean claim. |
 | [Controlled read-functional queues](native_read_functional_controller_regular.md) | Arbitrary synchronized finite control still gives a regular initial-word language when each physical read symbol has one fixed append symbol, uniformly over existential width and duration. | State-dependent physical rewriting, variable-length rules, and additional non-finite-state arithmetic constraints are outside the theorem. |
-| [Post correspondence and affine matrices](matrix_pcp_trace.md) | Conditional finite PCP trace in **11=4M+7A**, with a paid carry margin; explicit positive branch expansion in **10m+7** operations, hence57 for five tiles. A prescribed bound on prefix imbalance gives an effective finite automaton. | Selected fields, digit bounds, common power geometry and selector control remain unpaid in this trace. The [new fixed-program input bridge](gpcp_fixed_program_input_bridge.md) supplies a separate paid boundary; selected-history composition remains unpaid. Shared tile slopes collapse to individually matching tiles. |
+| [Post correspondence and affine matrices](matrix_pcp_trace.md) | Conditional finite PCP trace in **11=4M+7A**, with a paid carry margin; explicit positive branch expansion in **10m+7** operations, hence57 for five tiles. A prescribed bound on prefix imbalance gives an effective finite automaton. | Selected fields, digit bounds, common power geometry and selector control remain unpaid in this historical trace. The separate [complete GPCP compiler](gpcp_complete_fixed_program.md) now supplies paid input and selected history. Shared tile slopes still collapse to individually matching tiles. |
 | [Six empty constant deletions](complete75_constant_deletion_obstructions.md) | Six literal **74=41M+33A** sources obtained by deleting norm units, the first-index successor, or the odd input offset have no positive solutions. | Scoped rejected rewrites, with exact whole-source audits; no lower bound on general74 constructions. |
 | [Complete half-binomial75](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) | Complete universal certificate in **75=41M+34A**,30 positive witnesses and19 equations, with fixed program numerals, ordinary input, synchronized accepting computation and both proof directions. | Three independent full integration reviews pass; no Lean formalization or publication claim. |
 | [Strong half-binomial42](pell_kernel_half_binomial42.md) | A changed first norm supplies a doubled Pell coefficient without a paid doubling and saves the main-index addition; the strong auxiliary square is retained. | The full source pays the explicit scale and index bounds. |

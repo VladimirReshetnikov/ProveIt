@@ -12,6 +12,9 @@ The independent-gamma87
 candidate is still unresolved, with new
 [compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The historical stages below retain their original scope and counts.
+The separate [complete fixed-program GPCP route](../research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
+now pays ordinary integer input and arbitrary common tile histories;
+its effective universal interpreter table is not numerically instantiated.
 
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
@@ -475,6 +478,20 @@ J>=9,J>q directly before raw-kernel decoding. The older transport to
 B0=8q^2 is not used. It represents `sum bit_j(x)*4^j`, so the function
 and polynomial differ from the130 radix16 relation.
 
+The [norm-unit recoder](../research-wip/native-stream-queue/native_binary_input_dilation_unit179.md)
+gives the same complete radix4 graph with **135 certificate /179=86M+93A
+polynomial operations**,36 positive witnesses,15 comparisons and exact
+degree186. Its radix16 version costs180 at degree240. Two positive
+first-root changes and thirteen already-paid positive definitions give
+explicit inverse maps of zero sets. Six norm factors exclude -1 modulo4
+before typing, forcing the remaining checksum factor to1. Both strong
+comparisons remain; using their paid RHS inside the auxiliary factors
+lowers degree at unchanged cost. The original T^2-coefficient variant
+remains checked at degree194. Keeping P supplied gives182/degree132;
+the earlier degree40 recoders are retained as different tradeoffs.
+For fixed width k>=4 the polynomial costs178+mu(k), with exact degree
+27k+132 and the same36 witnesses and15 comparisons.
+
 The [fixed-program GPCP bridge](../research-wip/native-stream-queue/gpcp_fixed_program_input_bridge.md)
 now pays the framed ordinary-input and terminal boundary. For a fixed
 k-bit alphabet with k>=4, let mu(k)=floor(log2 k)+popcount(k)-1. The
@@ -483,10 +500,68 @@ equations; its polynomial costs241+mu(k) and has exact degree
 2 max(20,k+1). At k=4 the counts are136=70M+66A and243=106M+137A.
 A fixed machine compiles to rewrite tiles with nonempty sides, with a fresh
 delimiter and an explicit zero-step construction proving the word equation.
-Thus program and padded ordinary-input conventions are supplied. The
-unbounded common tile selection and weighted matrix histories remain
-unpaid. These affine tile matrices generally have nonunit determinants,
-so the SL2 history compiler does not transfer directly;75/88 is unchanged.
+Thus program and padded ordinary-input conventions are supplied. This
+boundary packet alone leaves selected history open. The norm-unit
+recoder lowers its polynomial to190+mu(k), with37 witnesses and17
+comparisons; k=4 gives192 at degree240. These affine tile matrices
+generally have nonunit determinants, so the SL2 history compiler does
+not transfer directly; the next packet proves the needed history afresh.
+
+The [uniform affine-pair history](../research-wip/native-stream-queue/pcp_uniform_affine_pair_history.md)
+is a complete positive-integer certificate for a nonempty common word
+over any fixed s-tile table of positive integer slopes and nonnegative
+offsets. One prescribed AND joins selected-cell products, Boolean
+selectors, both bounded histories and a radix test. The global bound
+establishes nonoverlapping lanes before typing; the resulting dyadic
+radix and repunit give the common duration. Affine outputs lie below
+the radix, so the two packed transports recover exact updates and
+endpoints. There are19 comparisons and3s+26 witnesses. If H is the
+actual paid certificate cost, the polynomial costs H+56; two layouts
+have N=3s+4 or N=4s+4 and exact degree24N+16. The illustrative three-tile
+table gives161/217 at degree400 or163/219 at degree328.
+
+Its [norm-unit successor](../research-wip/native-stream-queue/pcp_uniform_affine_pair_units.md)
+retains the exact positive relation in H+3 certificate /H+32 polynomial
+operations, with10 comparisons,3s+20 witnesses and degree58N+28. Three
+norm factors exclude negative units, while its single checksum remains
+the unrestricted factor. Six positive definitions and a first-root
+bijection restore every old witness before native typing. The same
+three-tile table gives164/193,90M+103A,29 witnesses and degree956;
+the contiguous alternative gives166/195 at degree782. The raw history
+remains a lower-degree choice. Composition must retain enough separate
+checksum equations; two unrestricted checksum units cannot simply be
+multiplied together.
+
+The [complete fixed-program GPCP composition](../research-wip/native-stream-queue/gpcp_complete_fixed_program.md)
+joins the original boundary and raw affine-pair history with independent packing
+parameters. With its computed positive initial endpoint, it costs
+H+134+mu(k) certificate and H+295+mu(k) polynomial operations, with54
+comparisons,3s+78 positive witnesses and degree12(k+1)N+16. Keeping
+that endpoint supplied adds three polynomial operations and one
+witness/comparison, while lowering degree to max(24N+16,2k+2). The34-tile
+odd-integer example gives832/993 operations,422M+571A,180 witnesses
+and degree8416; its supplied-endpoint version gives996/degree3376.
+A paid three-operation program loader supplies a single fixed universal
+interpreter, or two operations when its program numeral is fixed.
+This closes both ordinary-input and unbounded-history interfaces;
+the universal table remains uninstantiated numerically and75/88 is unchanged.
+
+The [complete norm-unit composition](../research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
+then saves75 polynomial operations and19 positive witnesses from the
+raw full compiler. With H still the raw history cost, it costs
+H+143+mu(k) certificate and H+220+mu(k)
+polynomial operations, with26 comparisons and3s+59 witnesses in the
+computed-endpoint version. Nine sign-safe norms and the recoder checksum
+form one product, while the history checksum remains an explicit
+comparison; the two unrestricted checksums are not multiplied together.
+The same34-tile example gives **841 certificate /918=403M+515A
+polynomial operations**,161 witnesses and degree19782. Keeping the
+initial endpoint supplied gives921,162 witnesses and degree8040.
+The raw993-operation degree8416 source remains a separate tradeoff.
+The source recomputes degrees after every projection and loader,
+including the large-width case where the recoder strong norm dominates.
+This is a complete alternative universal compiler with an effective
+fixed interpreter; the displayed small table remains a decidable example.
 
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with

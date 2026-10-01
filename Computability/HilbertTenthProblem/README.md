@@ -23,6 +23,9 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate87-operation candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
+The separate [complete fixed-program GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
+now pays both ordinary input and arbitrary selected tile histories; its
+fixed universal interpreter table is effective but not numerically instantiated.
 
 ## Layout
 
@@ -285,6 +288,16 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   bounds. It changes the represented function to `sum bit_j(x)*4^j`,
   so it does not replace the radix16 relation or share its polynomial.
 
+- The [norm-unit recoder](Papers/research-wip/native-stream-queue/native_binary_input_dilation_unit179.md)
+  reduces the complete radix4 polynomial to **179=86M+93A**, with36
+  positive witnesses,15 comparisons and degree186; the certificate costs135.
+  The radix16 version costs180 at degree240. Integer unit signs and explicit
+  positive coordinate bijections preserve the complete represented graphs.
+  A radix4 alternative retaining P costs182 at degree132, and the older
+  degree40 polynomials remain available. For fixed width k>=4 the new
+  recoder costs178+mu(k) polynomial operations, where
+  mu(k)=floor(log2 k)+popcount(k)-1; its degree is27k+132.
+
 - The [fixed-program GPCP input bridge](Papers/research-wip/native-stream-queue/gpcp_fixed_program_input_bridge.md)
   pays the framed ordinary-input and terminal boundaries. For a fixed
   k-bit alphabet, k>=4, its certificate costs134+mu(k) and its polynomial
@@ -292,9 +305,43 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   positive witnesses,36 equations and exact degree2 max(20,k+1); k=4
   gives136/243 operations. Fixed rewrite tiles with nonempty sides, a fresh
   delimiter and the zero-step case establish the program convention.
-  The unbounded common tile word and selected histories remain unpaid;
-  the existing SL2 history compiler cannot simply be imported. The
-  separate numerical75/88 bounds are unchanged.
+  That boundary packet alone leaves the selected history open; the
+  following affine-pair compiler supplies it. Applying the norm-unit
+  recoder gives the same boundary in190+mu(k) polynomial operations,
+  with37 witnesses and17 comparisons; k=4 gives192 at degree240.
+
+- The [uniform affine-pair history](Papers/research-wip/native-stream-queue/pcp_uniform_affine_pair_history.md)
+  completely certifies a nonempty common word over any fixed s-tile table
+  of positive slopes and nonnegative offsets. One paid AND types the
+  selectors, both histories, selected products, radix and common duration.
+  Its literal table-dependent certificate H has19 comparisons and3s+26
+  witnesses; the polynomial costs H+56. The illustrative three-tile
+  table gives161/217 operations and degree400, or163/219 and degree328
+  with the other paid layout.
+
+  Its [norm-unit successor](Papers/research-wip/native-stream-queue/pcp_uniform_affine_pair_units.md)
+  preserves the complete relation in H+3 certificate /H+32 polynomial
+  operations, with10 comparisons and3s+20 witnesses. The same example
+  gives164/193,90M+103A,29 witnesses and degree956; the alternate layout
+  gives166/195 at degree782. The raw history remains a lower-degree option.
+
+- The [complete GPCP composition](Papers/research-wip/native-stream-queue/gpcp_complete_fixed_program.md)
+  combines the original boundary and raw history with disjoint packing
+  parameters. Its default costs H+134+mu(k) certificate and
+  H+295+mu(k) polynomial operations, with54 comparisons and3s+78
+  positive witnesses. The34-tile odd-integer example gives832/993,
+  180 witnesses and degree8416; retaining the initial endpoint gives
+  996 at degree3376. These are decidable example counts. A paid
+  three-operation program loader supplies one fixed universal interpreter
+  interface, but no numerical universal table is instantiated;75/88 is unchanged.
+
+  The [complete norm-unit composition](Papers/research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
+  saves75 polynomial operations and19 witnesses. Its same illustrative
+  machine gives **841 certificate /918=403M+515A polynomial operations**,
+  26 comparisons,161 witnesses and degree19782. Keeping the initial
+  endpoint supplied gives921,162 witnesses and degree8040; raw993/8416
+  remains a degree alternative. The regrouped product contains nine
+  sign-safe norms and one checksum; the second checksum stays explicit.
 
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets

@@ -283,3 +283,12 @@ audits. The scalar outer fixtures instantiate the binary truth fields
 but leave the large Pell core as placeholders; their scope is explicitly
 not full numerical Pell zeros. The full native extension and the
 arbitrary-duration equivalence are proved above.
+
+Independent final proof/source/default reviews by `reduce_complete75`
+and `substrates` both passed without findings. The former additionally
+checked 480 signed complete-output identities and 240 genuine outer
+histories on separate tables. The latter checked 128 independently
+generated outer traces and 2,048 canonical-digit transport cases,
+rejecting every altered bad history. Both reviews include the full
+positive extension and the duration-one region bounds; their additional
+finite fixtures are expressly outer checks, not numerical Pell zeros.
