@@ -18,13 +18,13 @@
 \definecolor{accent}{HTML}{176B74}
 \definecolor{pale}{HTML}{EDF5F6}
 \hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
- pdftitle={A proof of the Apery Hankel growth conjecture, with Part II: sharp Szego asymptotics},
+ pdftitle={A proof of the Apery Hankel growth conjecture, with Part II: sharp Szego asymptotics, and Part III: proportionally shifted determinants},
  pdfauthor={ChatGPT},pdfsubject={OEIS A228143; exact computations and elementary proofs}}
 \titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
 \titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small\color{ink}Ap\'ery Hankel determinants}
-\fancyhead[R]{\small\color{ink}Research note / 18 September 2026; Part II 1 October 2026}
+\fancyhead[R]{\small\color{ink}Research note / 18 September 2026; Part II 1 October; Part III 2 October 2026}
 \fancyfoot[C]{\small\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \setlength{\parskip}{4pt}
@@ -47,13 +47,17 @@
 \newcommand{\Lam}{\Lambda}
 \newcommand{\norm}[1]{\lVert#1\rVert}
 \newcommand{\mean}[1]{\left\langle#1\right\rangle}
+% Part III (batch 77P5, manuscript 10) macros; its \mcA is Part I's \A.
+\newcommand{\fh}{\widehat f}
+\newcommand{\Dcal}{\mathcal D}
+\DeclareMathOperator{\dist}{dist}
 \setcounter{tocdepth}{1}
 \newtcolorbox{resultbox}{colback=pale,colframe=accent,boxrule=0.6pt,
  arc=1.5mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
 \title{\vspace{-1.3em}\color{ink}\textbf{A proof of the Ap\'ery Hankel\texorpdfstring{\\}{ }growth conjecture}\vspace{0.25em}\\
-\large OEIS A228143, linearly shifted determinants,\texorpdfstring{\\}{ }and a non-D-finite generating series\texorpdfstring{\\[0.4em]}{; }\normalsize with Part II: sharp Szeg\H{o} asymptotics, the ratio constant $K$,\texorpdfstring{\\}{ }and monotone Hankel envelopes}
+\large OEIS A228143, linearly shifted determinants,\texorpdfstring{\\}{ }and a non-D-finite generating series\texorpdfstring{\\[0.4em]}{; }\normalsize with Part II: sharp Szeg\H{o} asymptotics, the ratio constant $K$,\texorpdfstring{\\}{ }and monotone Hankel envelopes, and Part III: proportional shifts}
 \author{Research report prepared with ChatGPT}
-\date{Part I: 18 September 2026\quad Part II: 1 October 2026}
+\date{Part I: 18 September 2026\quad Part II: 1 October 2026\quad Part III: 2 October 2026}
 
 \begin{document}
 \maketitle
@@ -87,6 +91,12 @@ $\mathbb Q(\sqrt2)$, sharp constants for fixed polynomial modifications and
 fixed strides and shifts, a two-term inverse-index law, and a conditional
 transfer theorem whose hypothesis is not proved for the Ap\'ery density. The
 full multiplicative prefactor of $D_n$ remains open.
+
+Part~III (2 October 2026, batch 77P5) proves, for
+$H_N(r)=\det(A_{r+i+j})_{0\leq i,j<N}$ and $r/N=s$ in compact subsets of
+$(3\sqrt2/4-1,\infty)$, $H_N(r)\sim M(s)N^{-1/24}e^{N^2A(s)+NB(s)}$ with
+explicit $A,B,M$ and a first correction; $A$ is Part~I's linear-shift law at
+stride one. Strides $m\geq2$, smaller $s$ and $D_n$ ($s=0$) are not covered.
 \end{abstract}
 
 \begin{resultbox}
@@ -108,7 +118,7 @@ This is a proof of the precise assertion still labelled a conjecture in the
 accessed OEIS revision, not a claim that the result has no antecedent anywhere
 in the literature. The essential pre-existing analytic input is G.~A.~Edgar's
 work. This report has not been peer reviewed or formalized in a proof assistant.
-Both Parts are AI-assisted research notes; neither is peer reviewed or
+All three Parts are AI-assisted research notes; none is peer reviewed or
 formalized.
 
 \newpage
@@ -376,6 +386,12 @@ For example,
 \end{align}
 The constant $C^m/4$ for a stride $m$ is not $(C/4)^m$. The proof below also
 provides a finite-size comparison with a completely explicit determinant.
+[Added 2 October 2026, batch~77P5: for stride $m=1$ and $\rho$ in compact
+subsets of $(s_*,\infty)$, $s_*=3\sqrt2/4-1$, Part~III refines this limit to a
+full asymptotic equivalent with a first correction
+(Corollary~\ref{psh:cor:full} and Theorem~\ref{psh:thm:correction}); its
+quadratic coefficient is the limit \eqref{eq:shiftlaw}
+(Remark~\ref{psh:rem:partI}). Part~III indexes by the matrix order $N=n+1$.]
 
 \subsection{The power-weight model}
 For $s>-1$ and $L>0$, put
@@ -1459,6 +1475,16 @@ This theorem deliberately keeps $m$ and $r$ fixed. It does not replace
 Part~I's separate varying-shift Theorem~\ref{thm:shift} when $r$ is
 proportional to $n$. An exact linear correction in that varying regime
 remains a further problem.
+[Added 2 October 2026, batch~77P5: Part~III answers this for stride $m=1$
+and shifts $r=sN$ with $s$ in a fixed compact subset of $(s_*,\infty)$,
+$s_*=3\sqrt2/4-1$, where $N$ is the matrix order: the linear coefficient is
+$B(s)$ of \eqref{psh:eq:B}, and Corollary~\ref{psh:cor:full} also gives the
+power $N^{-1/24}$ and the constant $M(s)$
+(Theorem~\ref{psh:thm:correction} adds the first $1/N$ correction).
+Section~\ref{psh:sec:inverse} records how the linear coefficient changes
+when $r=\lfloor\rho N\rfloor$ or $r=\lfloor\rho n\rfloor$ with $N=n+1$.
+Strides $m\geq2$ and shifts with $s\leq s_*$, including the approach to the
+cusp collision at $s_*$, remain open.]
 
 \begin{remark}[Relation to Part~I]\label{szego:rem:strides}
 The quadratic term $n(n+1)\log\Lambda_m=n(n+1)\log(C^m/4)$ in
@@ -1767,6 +1793,13 @@ proposed at the end of Part~I (Section~8): the limit of $h_n/\Lambda^{2n}$ and
 the linear term of $\log D_n$ are now determined
 (Theorem~\ref{szego:thm:main}); the prefactor, the oscillation and the
 varying-shift linear term are not.
+[Added 2 October 2026, batch~77P5: Part~III determines the varying-shift
+linear term for stride one and $s=r/N>s_*=3\sqrt2/4-1$, together with the
+power of $N$, the constant and the first correction
+(Corollary~\ref{psh:cor:full}, Theorem~\ref{psh:thm:correction}). The
+prefactor of $D_n$ itself ($s=0$) and the oscillation remain open: Part~III's
+prefactor is proved only on compact subsets of $(s_*,\infty)$ and must not
+be evaluated at $s=0$.]
 
 \subsection{Quantitative reflection-coefficient asymptotics}
 Determine the first terms of $\alpha_j$ for the lifted Ap\'ery density.
@@ -1822,6 +1855,16 @@ approaches the density's interior singularity.
 Separately, extend Theorem~\ref{szego:thm:polynomial} uniformly to moving roots
 or growing polynomial degree. The fixed-polynomial result alone does not
 justify those limits.
+[Added 2 October 2026, batch~77P5: Part~III identifies the next linear term,
+and also the power of $N$, the constant and the first $1/N$ correction, for
+stride one and $\rho>s_*=3\sqrt2/4-1$; there the moving soft edge $a(\rho)$
+stays a positive distance to the right of the interior singularity, which
+sits at $t_c=C^{-2}$ in the scaled variable $t=x/C$
+(Section~\ref{psh:sec:equilibrium}). The regime named here, in which the
+moving endpoint approaches the interior singularity, is exactly
+$\rho\downarrow s_*$; its double-scaling analysis remains open
+(Section~\ref{psh:sec:open}, item~1). Strides $m\geq2$ and the extension to
+moving roots or growing degree are not addressed.]
 
 \subsection{Formalization and reuse for other moment sequences}
 The exact determinant/Gram identities and the reciprocal-polynomial
@@ -1835,10 +1878,1270 @@ integrability against the arcsine measure. The envelope construction then
 uses moments alone.
 
 
+%% ====================================================================
+%% Batch-77P5 addition (manuscript 10, "Full equivalents for
+%% proportionally shifted Apery Hankel determinants", 2 October 2026).
+%% Every label of Part III carries the prefix psh: ; Parts I and II keep
+%% their labels unchanged.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part III.\quad Full equivalents for proportionally shifted Ap\'ery Hankel determinants}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Full equivalents for proportionally shifted Ap\'ery Hankel determinants}
+
+\noindent{\large\color{ink}Explicit asymptotic constants and phase-aware
+inversion above the support cusp collision}\par\smallskip
+\noindent Research report prepared with ChatGPT, dated 2 October 2026;
+added to this report on 2 October 2026 in batch~77P5 of ProveIt's
+incoming-report intake.\par\medskip
+
+\noindent\emph{Part~III was written against Parts~I and~II as printed above
+(repository commit \texttt{946b6c762}). For stride one and shifts above a
+critical proportion, it answers the question that both earlier Parts leave
+open: the linear term of $\log\det(A_{r+i+j})$ when the shift $r$ is
+proportional to the matrix order (Section~\ref{szego:sec:strides}, the
+opening of Section~\ref{szego:sec:questions}, and its subsection on growing
+shifts). It also gives the power of the order, the constant and the first
+$1/N$ correction. Section~\ref{psh:sec:provenance} records the provenance and
+fixes the notation of the addition. Read Table~\ref{psh:tab:notation} first:
+the matrix order in Part~III is $N$, not $n+1$.}
+
+\paragraph{Summary (the manuscript's abstract).}
+Let $H_N(r)=\det(\A_{r+i+j})_{0\leq i,j<N}$, where $\A_k$ is the
+Ap\'ery number associated with $\zeta(3)$. For $s=r/N$ in a fixed compact
+subset of $(3\sqrt2/4-1,\infty)$, we prove
+\[
+ H_N(r)=M(s)N^{-1/24}\exp\{N^2 A(s)+N B(s)\}
+ \bigl(1+O(N^{-1})\bigr).
+\]
+The functions $A,B$ and the positive constant $M$ are explicit in terms of
+Edgar's moment density, a one-dimensional integral, an exponentially
+convergent cosine series and Barnes' $G$-function. An equivalent form
+retains an exact Selberg determinant. The proof adapts the
+Charlier--Gharakhloo determinant-ratio analysis to a logarithmically
+confining potential; quantitative remote-jump and differential-identity
+tail estimates supply the needed extension. We also derive an explicit
+first $1/N$ correction with relative $O(N^{-2})$ error, retain all bounded
+shift phases and derive asymptotic inverse thresholds on rational residue
+classes, including the error inside the ceiling. The cusp collision and
+the full prefactor of the unshifted sequence A228143 are not settled here.
+
+\begin{resultbox}
+\textbf{The principal result.} Put $C=17+12\sqrt2$ and
+$s_*=3\sqrt2/4-1=0.06066\ldots$. Uniformly for $s=r/N$ in every fixed
+compact subset of $(s_*,\infty)$,
+\[
+ \det(\A_{r+i+j})_{0\leq i,j<N}
+ =M(s)\,N^{-1/24}\,e^{N^2A(s)+NB(s)}
+ \left(1+\frac{c_{\rm full}(s)}N+O(N^{-2})\right),
+\]
+with $A$, $B$, $M$ of \eqref{psh:eq:A}--\eqref{psh:eq:M} and $c_{\rm full}$
+of \eqref{psh:eq:cfull}. The quadratic coefficient
+$A(s)=(1+s)\log C-\Psi(s)$ is Part~I's limit (Remark~\ref{psh:rem:partI});
+the linear coefficient $B(s)$, the power $N^{-1/24}$, the constant $M(s)>0$
+and $c_{\rm full}(s)$ are new. The statement says nothing about $s\leq s_*$:
+in particular it does not apply to $D_n$ ($s=0$).
+\end{resultbox}
+
+\noindent\textbf{Status.} This is an AI-assisted mathematical research
+report, not a peer-reviewed publication or a proof-assistant formalization.
+Numerical checks in the accompanying replay are reproducible but are not
+interval certificates.
+
+\section{Scope and prior results}
+\label{psh:sec:scope}
+The Ap\'ery numbers are Part~I's $A_k$ of \eqref{eq:apery}. Part~III writes
+them $\A_k$, in sans-serif, because the italic letter $A$ denotes the
+quadratic coefficient $A(s)$ of \eqref{psh:eq:A}. As in both earlier Parts,
+$C=17+12\sqrt2=(1+\sqrt2)^4$.
+We study a shift that is constant across each matrix but grows with its
+order:
+\begin{equation}\label{psh:eq:det}
+ H_N(r)=\det(\A_{r+i+j})_{0\leq i,j<N},
+ \qquad N\geq1,\quad r\in\mathbb Z_{\geq0}.
+\end{equation}
+The original OEIS sequence A228143 uses $D_n=H_{n+1}(0)$. In the notation
+of Part~I's \eqref{eq:shiftdef}, $H_N(r)=H_{N-1}^{(1,r)}$: the matrix of
+$H^{(m,r)}_n$ has order $n+1$, that of $H_N(r)$ has order $N$.
+Parts~I and~II already establish the quadratic logarithmic law of $D_n$
+(Theorem~\ref{thm:main}), its Szeg\H{o} norm-ratio constant
+(Theorem~\ref{szego:thm:main}), fixed shifts and strides
+(Theorems~\ref{thm:shift} and~\ref{szego:thm:strides}), and a two-term
+inverse-index law (Section~\ref{szego:sec:inverse}). In particular, with
+$\Lambda=C/4$ and the constant $K$ of \eqref{szego:eq:arcsine},
+\[
+ \log D_n=n(n+1)\log\Lambda+(n+1)\log K+o(n).
+\]
+That result does not determine the multiplicative prefactor of $D_n$.
+The present Part addresses the different, positive-proportional-shift
+regime. Part~II's Section~\ref{szego:sec:questions} explicitly leaves its
+linear coefficient and the support/cusp collision open (in its opening
+paragraph and in its subsection on growing shifts and moving polynomial
+zeros). Here the equilibrium support lies strictly to the right of the
+cusp, and we obtain the linear term, the power $N^{-1/24}$ and the full
+positive leading constant.
+
+The general methods and the moment density are established mathematics.
+Our contribution is this application with its explicit normalization,
+confinement adaptation, compact-uniform remainder and shift-phase
+consequences. The comparison with Parts~I and~II is dated
+2 October 2026. It is not a universal priority claim.
+
+\subsection{Relation to Parts I and II}
+\label{psh:sec:relation}
+\begin{remark}[The quadratic term is Part~I's]\label{psh:rem:partI}
+For $s>0$, the coefficient \eqref{psh:eq:A} is
+\[
+ A(s)=(1+s)\log C-\Psi(s),
+\]
+with Part~I's $\Psi$ of \eqref{eq:Psi}. This is the limit
+\eqref{eq:shiftlaw} of Part~I's Theorem~\ref{thm:shift} at stride $m=1$ and
+$\rho=s$; the change of matrix order from $n+1$ to $N$ does not affect a
+limit at scale $N^2$. The $N^2$ term of Corollary~\ref{psh:cor:full}
+therefore re-proves Part~I's growth law on compact subsets of
+$(s_*,\infty)$. It is not claimed as new, and the manuscript credits it.
+Part~I's theorem is in other respects more general: it covers every stride
+$m\geq1$ and every $\rho\in[0,\infty)$, including $\rho\leq s_*$.
+What Part~III adds, for $m=1$ and $s>s_*$, is everything below the
+quadratic term: the exact Selberg normalization
+(Theorem~\ref{psh:thm:selberg}), the linear coefficient $B(s)$, the power
+$N^{-1/24}$, the constant $M(s)$ (Corollary~\ref{psh:cor:full}), the first
+correction (Theorem~\ref{psh:thm:correction}), eventual monotonicity of the
+floor-shifted sequence, the rational-residue inverse thresholds
+(Corollary~\ref{psh:cor:threshold}) and the next inverse term.
+\end{remark}
+
+\noindent The tempting false reading is to let $s\downarrow0$ in
+Corollary~\ref{psh:cor:full} and compare with Part~II's
+$\log D_n=n(n+1)\log\Lambda+(n+1)\log K+o(n)$. The estimates of Part~III are
+uniform only on compact subsets of $(s_*,\infty)$, and the manuscript states
+that substituting $s=0$ into the prefactor is invalid (the remark after
+Corollary~\ref{psh:cor:full}). No relation between $B(0+)$, $M(0+)$ and
+Part~II's $K$ is asserted.
+
+\subsection{Provenance and conventions of Part III}
+\label{psh:sec:provenance}
+Part~III is built from one manuscript, number~10 of batch~77 (cluster
+P5): \emph{Full equivalents for proportionally shifted Ap\'ery Hankel
+determinants} (2 October 2026). It was delivered as
+\texttt{apery-shifted-release.zip} in arrival commit \texttt{096ee7b87} and
+placed in commit \texttt{4f11bc9c0}. Its pin is commit \texttt{946b6c762},
+at which this report consisted of Parts~I and~II exactly as printed above.
+Its replay programs, unit tests, expected and recorded outputs and
+dependency pins are shipped with the prefix \texttt{03-shifted-}; the README
+of this report lists them. The merge made the following choices.
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item The manuscript's restated definition of the Ap\'ery numbers (its
+display (1.1)) is not repeated: Part~III cites Part~I's \eqref{eq:apery}
+instead. Every other display, theorem, corollary, lemma, remark, proof,
+table and question of the manuscript is printed. The manuscript's
+Section~$n$ is Section~$n+20$ here; its abstract is the summary above.
+\item The manuscript cites Parts~I and~II as an external repository report
+pinned at \texttt{946b6c762}, and Part~II's density program as a separate
+item. Here these citations are references to the numbered statements of
+Parts~I and~II and to the shipped file
+\path{code/02-szego-density_constant.py}. Its Edgar reference is merged with
+Part~I's bibliography entry. Its other three references are added to the
+bibliography.
+\item The quadratic term re-proves Part~I's Theorem~\ref{thm:shift}
+(Remark~\ref{psh:rem:partI}). It is not claimed as new.
+\item The context paragraph after Corollary~\ref{psh:cor:threshold}, which
+relates the threshold corollary to the general staircase theorem of the
+repository's transseries volume, is an editorial addition of the merge.
+\item File names in the text are the shipped names. The delivered programs
+still import and read one another under their delivery names (see the
+README).
+\end{itemize}
+
+\paragraph{Notation.} Part~III keeps the manuscript's symbols except for the
+renamings marked $\star$ in Table~\ref{psh:tab:notation}. Where a letter is
+shared with Parts~I and~II, the table prints the earlier meaning beside the
+Part~III one. No normalization changed.
+
+\begin{table}[p]
+\centering\small
+\caption{Symbols of Part~III that Parts~I and~II also use.}\label{psh:tab:notation}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.11\textwidth}>{\raggedright\arraybackslash}p{.36\textwidth}>{\raggedright\arraybackslash}p{.45\textwidth}}
+\toprule
+Symbol & Parts I and II & Part III\\
+\midrule
+$A_k$, $\A_k$, $A$ & $A_k$, the Ap\'ery numbers \eqref{eq:apery} & $\A_k$, the same numbers; italic $A(s)$ is the quadratic coefficient \eqref{psh:eq:A}, and $A=A(\rho)$ in \eqref{psh:eq:phaseconstants}\\[2pt]
+$N$, $n$, $H$ & $D_n$ and $H^{(m,r)}_n$ \eqref{eq:shiftdef} have matrix order $n+1$ & $H_N(r)$ \eqref{psh:eq:det} has matrix order $N$: $H_N(r)=H^{(1,r)}_{N-1}$, $D_n=H_{n+1}(0)$. \emph{Not} $H_N(r)=H^{(1,r)}_N$\\[2pt]
+$s$, $\rho$ & $\rho=\lim r_n/n$ (Theorem~\ref{thm:shift}); $s$ the power-weight exponent in Section~\ref{sec:shifts} & $s=r/N$ exactly; $\rho$ a fixed limit with $r=\rho N-\delta_N$ in Section~\ref{psh:sec:inverse}; $\rho_V$ a density in Section~\ref{psh:sec:c1algebra}\\[2pt]
+$C$, $c$, $\Lambda$ & \eqref{eq:constants} & the same; the cusp $x=c$ is $t_c=C^{-2}$ in the scaled variable $t=x/C$\\[2pt]
+$K$ & Part~II's ratio constant \eqref{szego:eq:arcsine}; Part~I: a generic constant & Part~II's constant (Section~\ref{psh:sec:scope} only)\\
+$\star\ K_I$ & --- & the generic constants of \eqref{psh:eq:Wbounds}, \eqref{psh:eq:deltabound} and Lemma~\ref{psh:lem:derivative}; the manuscript writes $K$\\[2pt]
+$E$ & Part~II's envelopes $E_m\downarrow K$ (Section~\ref{szego:sec:envelopes}) & $E(s)$ of \eqref{psh:eq:E}, an exponential of Fourier data, not an envelope; $\mathcal E_N(s)$ is the diagnostic \eqref{psh:eq:error}\\
+$\star\ \Theta_j$ & --- & the coefficient functionals $\Theta_0,\Theta_1,\Theta_2$ of Lemma~\ref{psh:lem:derivative}; the manuscript writes $E_0,E_1,E_2$ (its $E_0$, $E_1$ are not Part~II's envelopes $E_0=2$, $E_1=81120\sqrt2-114720$)\\[2pt]
+$B$ & Part~II: $B=L+\log K$ \eqref{szego:eq:B}, $B_m=C^m$; Part~I: a placeholder & $B(s)$ \eqref{psh:eq:B}; $B_\delta$ of \eqref{psh:eq:phaseconstants}\\[2pt]
+$\star\ \eta_I$ & $\eta$: Part~I's minorant constant (Lemma~\ref{lem:minorant}) & the tail slopes $\eta_I$, $\eta_{I,1}$ of \eqref{psh:eq:Qtail} and Lemma~\ref{psh:lem:derivative}; the manuscript writes $\eta$, $\eta_1$\\[2pt]
+$\star\ h_{\min}$, $\ell$ & $m$: the stride (Part~III has stride $1$) & the lower bound $h\geq h_{\min}$ in \eqref{psh:eq:hbound} and the logarithmic exponent $\ell$ in \eqref{psh:eq:tailintegral}; the manuscript writes $m$ for both\\[2pt]
+$\varphi$ & Edgar's density & the same density\\
+$\star\ \vartheta$ & --- & the angle of the transformed support in Section~\ref{psh:sec:bias}; the manuscript writes $\varphi$\\
+$\star\ c_I$ & --- & the rate in $O(e^{-c_IN})$ (Section~\ref{psh:sec:analytic}); the manuscript writes $c$\\[2pt]
+$h$ & $h_n$, the monic norms \eqref{eq:hk} & $h(x)=\exp f((1+x)^{-1})$ \eqref{psh:eq:hbound}; $h_V$, a density factor \\[2pt]
+$Q$, $R$ & Part~I: a polynomial $Q(x)$ and $R=\varphi/Q^2$ (Section~\ref{sec:density}) & $Q_s$, the effective potential; $R$, the small-norm error matrix; $R_s(z)$, a square root\\[2pt]
+$G$, $D$ & Part~II: $G_\varepsilon$, $D_\varepsilon(z)$ (Section~\ref{szego:sec:circle}); $D_n$, the determinants & $G$, Barnes' function; $G_s$, the Stieltjes transform \eqref{psh:eq:resolvent}; $D=a_\epsilon'(0)$ \eqref{psh:eq:D}, not a determinant\\[2pt]
+$J$, $U$ & Part~I: $\J_n(s;L)$ \eqref{eq:Jdef}; Part~II: the norms $U_n$ & $J(a,V)$, the endpoint integral \eqref{psh:eq:J}; $U(u)$, an arcsine average \eqref{psh:eq:U}, and the constant $U_*$\\[2pt]
+$F$, $L$ & Part~I: the series $\sum D_nz^n$, a length $L$; Part~II: an interpolation $F$, $L=\log\Lambda$ & $F(s)$ \eqref{psh:eq:F}; $F_a(\theta)$ in Lemma~\ref{psh:lem:energy}; $L_s=4(s+1)/s^2$ \eqref{psh:eq:mux}\\[2pt]
+$a$, $b$, $q$ & Part~II: constants of \eqref{szego:eq:alphaansatz}; a polynomial $q(x)$ (Appendix~\ref{szego:app:density}) & $a=a(s)$, the soft edge \eqref{psh:eq:eqmeasure}; $b=\frac12$, the hard-edge exponent; $q=1/(s+1)$ in Section~\ref{psh:sec:bias}, $q_0$ and $q_\epsilon$ elsewhere\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Within Part~III, $S_N(r,b)$ of \eqref{psh:eq:selberg} is the Selberg
+product (the replay calls $S_N(r,\frac12)$ $J_N(r)$) and $\mathcal S(u)$ of
+\eqref{psh:eq:energyu} is a cosine energy. In the next inverse term,
+$k=-\frac1{24}$ is the coefficient of $\log N$, not an index.
+
+
+\section{Constants and the full equivalent}\label{psh:sec:main}
+Edgar's theorem \cite{edgar} gives a positive density $\varphi$ on $[0,C]$
+with $\A_k=\int_0^C x^k\varphi(x)\dd x$. Define
+\begin{equation}\label{psh:eq:wf}
+ w(t)=C\varphi(Ct),\qquad
+ f(t)=\log\frac{w(t)}{\sqrt{1-t}},\qquad 0<t<1.
+\end{equation}
+The function $f$ is real analytic for $t>C^{-2}$ and extends analytically
+through $t=1$. Its endpoint value is
+\begin{equation}\label{psh:eq:f1}
+ f(1)=\log\frac{\sqrt C}{2^{5/4}\pi^2}.
+\end{equation}
+Its behavior elsewhere is material to the proof: it has a H\"older cusp
+at $t_c=C^{-2}$, while $w$ has logarithmic growth at zero. We do not
+replace it by a globally analytic background.
+
+For $s>0$, write
+\begin{align}
+ a=a(s)&=\left(\frac{s}{s+2}\right)^2,
+ &p_s(t)&=\frac{s+2}{2\pi t}\sqrt{\frac{t-a}{1-t}},\quad a<t<1,
+ \label{psh:eq:eqmeasure}\\
+ t_s(\theta)&=\frac{1+a}{2}+\frac{1-a}{2}\cos\theta,
+ &\fh_k(s)&=\frac1\pi\int_0^\pi f(t_s(\theta))\cos(k\theta)\dd\theta.
+ \label{psh:eq:fourier}
+\end{align}
+Thus the Fourier convention is
+$f(t_s(\theta))=\fh_0+2\sum_{k\geq1}\fh_k\cos(k\theta)$.
+Set
+\begin{align}
+ F(s)&=\int_a^1 f(t)p_s(t)\dd t,\label{psh:eq:F}\\
+ E(s)&=\exp\left\{\frac{\fh_0(s)-f(1)}4+
+                  \frac12\sum_{k\geq1}k\fh_k(s)^2\right\}.
+ \label{psh:eq:E}
+\end{align}
+On every fixed compact interval strictly above the critical value
+\begin{equation}\label{psh:eq:critical}
+ s_*=\frac{2}{C-1}=\frac{3\sqrt2}{4}-1
+       =0.0606601717798212866\ldots,
+\end{equation}
+the series in \eqref{psh:eq:E} is exponentially convergent, uniformly in $s$.
+The same is true after any fixed number of parameter derivatives.
+
+\begin{theorem}[Exact Selberg normalization]\label{psh:thm:selberg}
+Let $I$ be any fixed compact subset of $(s_*,\infty)$. Uniformly over all
+integers $N\geq1$, $r\geq0$ with $s=r/N\in I$, as $N\to\infty$,
+\begin{equation}\label{psh:eq:mainS}
+ H_N(r)=C^{Nr+N(N-1)} S_N(r,\tfrac12)
+             e^{NF(s)}E(s)\bigl(1+O_I(N^{-1})\bigr),
+\end{equation}
+where the reference determinant is the exact finite product
+\begin{equation}\label{psh:eq:selberg}
+ S_N(r,b)=\prod_{j=0}^{N-1}
+ \frac{\Gamma(j+1)\Gamma(r+j+1)\Gamma(b+j+1)}
+      {\Gamma(r+b+N+j+1)}.
+\end{equation}
+\end{theorem}
+
+For the elementary exponential form, let $G$ denote Barnes' $G$-function,
+normalized by $G(1)=1$ and $G(z+1)=\Gamma(z)G(z)$, and define
+\begin{align}
+ A(s)={}&(s+1)\log C+(s+1)^2\log(s+1)
+       -\frac{s^2}{2}\log s-\frac{(s+2)^2}{2}\log(s+2),\label{psh:eq:A}\\
+ B(s)={}&\log(2\pi)-\log C
+       +\frac{(s+1)\log(s+1)-(s+2)\log(s+2)}2+F(s),\label{psh:eq:B}\\
+ M(s)={}&\frac{(2\pi)^{1/4}e^{2\zeta'(-1)}}{G(3/2)}
+       \frac{s^{1/12}}{[(s+1)(s+2)]^{1/24}} E(s).
+       \label{psh:eq:M}
+\end{align}
+All three functions are smooth, indeed real analytic, for $s>s_*$, and
+$M(s)>0$.
+
+\begin{corollary}[Full multiplicative equivalent]\label{psh:cor:full}
+Under the assumptions of Theorem~\ref{psh:thm:selberg},
+\begin{equation}\label{psh:eq:full}
+ H_N(r)=M(s)N^{-1/24}\exp\{N^2 A(s)+N B(s)\}
+          \bigl(1+O_I(N^{-1})\bigr),\qquad s=\frac rN.
+\end{equation}
+\end{corollary}
+\begin{remark}
+The compact set $I$ is fixed independently of $N$. These estimates do not
+assert uniformity as $s\downarrow s_*$, $s\downarrow0$ or $s\to\infty$.
+In particular, substituting $s=0$ into the prefactor is invalid. The
+power $-1/24$ belongs to the present mixed soft/hard regime.
+\end{remark}
+
+\section{Equilibrium measure and the collision}\label{psh:sec:equilibrium}
+The logarithmic external field on $[0,1]$ is $V_s(t)=-s\log t$.
+Its equilibrium measure is \eqref{psh:eq:eqmeasure}. We give the verification,
+since it determines both the critical value and the relevant geometry.
+Let
+\[
+ R_s(z)=\sqrt{\frac{z-a}{z-1}},\qquad R_s(z)\to1\quad(z\to\infty).
+\]
+The candidate Stieltjes transform is
+\begin{equation}\label{psh:eq:resolvent}
+ G_s(z)=\frac{-s+(s+2)R_s(z)}{2z}.
+\end{equation}
+It is $z^{-1}+O(z^{-2})$ at infinity. Since
+$\sqrt a=s/(s+2)$, its apparent pole at zero cancels. The boundary jump on
+$(a,1)$ is $-2\pi i p_s(t)$, and
+$G_{s,+}(t)+G_{s,-}(t)=-s/t=V_s'(t)$. These facts prove the mass
+normalization and the equilibrium equality on the support.
+
+Let $Q_s$ be the effective potential, normalized to zero on $[a,1]$:
+\[
+ Q_s(t)=V_s(t)-2\int_a^1\log|t-u|p_s(u)\dd u+\ell_s.
+\]
+For $0<t<a$ the chosen branch of $R_s$ is positive, and
+\begin{equation}\label{psh:eq:voidt}
+ Q_s'(t)=-\frac{s+2}{t}R_s(t)<0,\qquad Q_s(a)=0.
+\end{equation}
+Consequently $Q_s(t)>0$ throughout the void $(0,a)$. This proves the
+variational inequality and one-cut regularity. The left edge is a regular
+soft edge; the fixed right endpoint is a hard edge.
+
+The density cusp is at $t_c=C^{-2}$. The soft edge meets it precisely when
+$a(s)=C^{-2}$, or $s=2/(C-1)$, giving \eqref{psh:eq:critical}. For $s\in I$
+there is a uniform positive distance between the support and the cusp.
+
+\section{Exact determinant reduction}\label{psh:sec:reduction}
+Heine's identity and the scaling $x=Ct$ give
+\begin{align}
+ H_N(r)&=\frac1{N!}\int_{[0,C]^N}
+           \prod_{i<j}(x_j-x_i)^2\prod_{j=1}^N x_j^r\varphi(x_j)\dd x_j
+           \notag\\
+ &=C^{Nr+N(N-1)}\Dcal_N[t^r(1-t)^{1/2}e^{f(t)}],\label{psh:eq:Heine}
+\end{align}
+where
+\[
+ \Dcal_N[v]=\frac1{N!}\int_{[0,1]^N}
+                    \prod_{i<j}(t_j-t_i)^2\prod_{j=1}^N v(t_j)\dd t_j.
+\]
+The Selberg integral divided by $N!$ says
+$\Dcal_N[t^r(1-t)^b]=S_N(r,b)$ for $r,b>-1$.
+Thus no normalization of a probability density or factorial is left
+implicit in \eqref{psh:eq:mainS}.
+
+For each integration variable use the M\"obius map
+\begin{equation}\label{psh:eq:mobius}
+ x=\frac{1-t}{t},\qquad t=\frac1{1+x}.
+\end{equation}
+The Jacobian contributes $(1+x)^{-2}$ and the squared Vandermonde
+contributes $(1+x)^{-2(N-1)}$ for each variable. Hence
+\[
+ t^r(1-t)^b\dd t\ \prod\text{Vandermonde denominators}
+   =x^b(1+x)^{-r-2N-b}\dd x.
+\]
+The ratio in \eqref{psh:eq:Heine} to $S_N(r,b)$ is exactly a ratio of
+Laguerre-type Hankel integrals on $[0,\infty)$ with
+\begin{align}
+ V_s(x)&=(s+2)\log(1+x),\label{psh:eq:Vx}\\
+ W_0(x)&=-b\log(1+x),
+ &W_1(x)&=W_0(x)+f((1+x)^{-1}),\qquad b=\tfrac12.\label{psh:eq:W}
+\end{align}
+The hard edge is now at zero. The equilibrium measure and its support are
+\begin{equation}\label{psh:eq:mux}
+ \dd\mu_s(x)=\frac{s}{2\pi(1+x)}\sqrt{\frac{L_s-x}{x}}\dd x,
+ \qquad 0<x<L_s,\qquad L_s=\frac{4(s+1)}{s^2}=a^{-1}-1.
+\end{equation}
+After mapping $[0,L_s]$ to $[-1,1]$ by $u=2x/L_s-1$, its analytic
+coefficient is
+\[
+ \psi_s(u)=\frac{sL_s}{4\pi(1+L_s(u+1)/2)}>0.
+\]
+Its pole remains a positive distance to the left of $-1$ uniformly for
+$s\in I$. This verifies the local hard/soft regularity used below.
+
+\section{The determinant ratio and logarithmic confinement}\label{psh:sec:analytic}
+The primary analytic input is the background-weight ratio in
+Charlier--Gharakhloo \cite[Proposition 9.1 and (9.1)--(9.4)]{psh-cg}, using
+its Section 5 transformations. With no bulk Fisher--Hartwig
+singularities, that ratio has an $O(N^{-1})$ logarithmic remainder.
+Their printed hypotheses impose superlogarithmic confinement; the
+potential \eqref{psh:eq:Vx} does not satisfy that condition. The following
+arguments adapt the ratio proof, rather than claim literal coverage by
+the printed theorem. They establish the remote-contour and
+differential-identity estimates at the precise places where stronger
+confinement was used.
+
+\subsection{Positive continuity at the off support cusp}
+Put $c=C^{-1}$ and $z_0=[2^{3/2}(1+\sqrt2)]^{-1}$.
+Edgar's density formula \cite[Proposition 23]{edgar} gives
+\begin{equation}\label{psh:eq:cusplimit}
+ \varphi(c-)=\frac{4\sqrt3}{\pi(1+c)}
+ \left[{}_2F_1\left(\frac13,\frac23;1;z_0\right)\right]^2>0.
+\end{equation}
+The hypergeometric value is finite since $0<z_0<1$.
+The local Frobenius branches at $c$ have powers $0,1/2,1$ with no
+logarithms \cite[Proposition 4]{edgar}. Continue each upper and lower
+boundary branch used to define the jump density around $c$ inside its
+own half-plane. The constant Frobenius coefficient is unchanged, and the
+square-root term vanishes in the limit. The density's right limit
+therefore equals \eqref{psh:eq:cusplimit}. In particular,
+\begin{equation}\label{psh:eq:holder}
+ \varphi(c\pm v)=\varphi(c)+O(\sqrt v)\quad(v\downarrow0)
+\end{equation}
+with convergent one-sided expansions. Thus $\varphi$, $\log\varphi$, $f$
+and the transformed background have local H\"older exponent $1/2$ at
+the cusp, with positive finite common limit.
+
+At $C$, Edgar's Proposition 25 supplies a positive analytic factor times
+$\sqrt{C-x}$, yielding \eqref{psh:eq:f1}. At zero, Proposition 26 gives
+positive logarithmic growth. Consequently
+\[
+ h(x)=\exp(f((1+x)^{-1}))
+\]
+extends positively to $x=0$, has a positive finite cusp limit, and grows
+like a positive multiple of $\log x$ at infinity. In particular,
+\begin{equation}\label{psh:eq:hbound}
+ h(x)\geq h_{\min}>0,\qquad h(x)=O(1+\log x)\quad(x\to\infty).
+\end{equation}
+The off-support cusp fits the local H\"older hypothesis of \cite{psh-cg};
+no analyticity there and no surrogate density is needed.
+
+\subsection{Uniform remote jump estimates}\label{psh:sec:tails}
+Use the same symbol $Q_s$ for the transformed effective potential,
+normalized by $Q_s(L_s)=0$. From \eqref{psh:eq:resolvent} or
+\eqref{psh:eq:mux},
+\begin{equation}\label{psh:eq:Qprime}
+ Q_s'(x)=\frac{s}{1+x}\sqrt{\frac{x-L_s}{x}},\qquad x>L_s.
+\end{equation}
+Let $s_{\min}=\min I>0$ and choose
+\[
+ X_0>\max(1,2\max_{s\in I}L_s),\qquad
+ \eta_I=\frac{s_{\min}}{2\sqrt2},\qquad
+ q_0=\min_{s\in I}Q_s(X_0)>0.
+\]
+Then, uniformly for $s\in I$ and $x\geq X_0$,
+\begin{equation}\label{psh:eq:Qtail}
+ Q_s'(x)\geq\frac{\eta_I}{x},\qquad
+ Q_s(x)\geq q_0+\eta_I\log(x/X_0).
+\end{equation}
+On the compact remainder of the remote ray outside a fixed soft-edge
+disk, $Q_s$ has a uniform strictly positive lower bound. This includes
+the cusp, whose distance from $L_s$ is uniformly positive.
+
+For the relative deformation take
+\begin{equation}\label{psh:eq:deformation}
+ W_\tau(x)=-b\log(1+x)+\log(1-\tau+\tau h(x)),
+ \qquad 0\leq\tau\leq1.
+\end{equation}
+Since $h\geq h_{\min}>0$, all these backgrounds are analytic in a common
+neighborhood of the compact union of supports and locally H\"older
+elsewhere. Uniformly in $s,\tau$, for $x\geq X_0$,
+\begin{align}
+ x^b e^{W_\tau(x)}&\leq K_I(1+\log x),
+ &|\partial_\tau W_\tau(x)|&\leq K_I(1+\log x),\notag\\
+ |\partial_\tau[x^b e^{W_\tau(x)}]|&\leq K_I(1+\log x).
+ \label{psh:eq:Wbounds}
+\end{align}
+The global Szeg\H{o} parametrices $P^{(\infty)}$ and their inverses are
+uniformly bounded on the remote ray, as are the needed parameter
+derivatives. The jump formula in \cite[(5.15)]{psh-cg} therefore gives
+\begin{equation}\label{psh:eq:deltabound}
+ \norm{\Delta_N(x)}\leq K_I(1+\log x)e^{-NQ_s(x)}.
+\end{equation}
+Its first $\tau$ derivative satisfies the same estimate up to a fixed
+additional power of $1+\log x$.
+
+For each fixed nonnegative integer $\ell$ and $p=1,2$, substitution
+$x=X_0e^u$ in \eqref{psh:eq:Qtail} gives the explicit bound
+\begin{multline}\label{psh:eq:tailintegral}
+ \int_{X_0}^\infty(1+\log x)^\ell e^{-pNQ_s(x)}\dd x\ \leq\\
+ e^{-pNq_0}X_0
+ \sum_{j=0}^\ell\binom\ell j(1+\log X_0)^{\ell-j}
+       \frac{j!}{(pN\eta_I-1)^{j+1}},\qquad pN\eta_I>1.
+\end{multline}
+The supremum counterpart is exponentially small as well. Any fixed
+factor $x^d$ replaces the denominator $pN\eta_I-1$ by
+$pN\eta_I-d-1$ and adds a fixed power of $X_0$.
+These estimates give uniform exponential smallness in $L^1$, $L^2$
+and $L^\infty$ for the remote jumps and their relevant derivatives.
+
+\subsection{Finite moments and the small norm problem}
+The transformed weight is
+$O(x^{-N(s+2)}\log x)$ at infinity. It need not have moments of every
+order at a fixed $N$. The orthogonal-polynomial problem of degree $N$
+uses only finitely many, and moments through degree $2N+k$ exist once
+$Ns_{\min}>k+1$. This holds uniformly for every fixed $k$ and all
+sufficiently large $N$. It also holds for the $\tau$ derivative. Positivity
+therefore gives the relevant orthogonal polynomials and nonzero
+determinants, and justifies the moment differentiation in the ratio
+identity.
+
+On the endpoint circles the usual hard- and soft-edge parametrices have
+$O(N^{-1})$ matching errors. Together with \eqref{psh:eq:tailintegral},
+\[
+ \norm{\Delta_N}_{L^2(\Sigma_R)}+
+ \norm{\Delta_N}_{L^\infty(\Sigma_R)}=O_I(N^{-1}).
+\]
+The Cauchy projections on the ray/lens/circle contour have uniformly
+bounded $L^2$ operator norms: after affine normalization the contour
+shapes range over a compact regular family. The small-norm inverse
+therefore exists by a uniform Neumann series. If
+$\mu_R=I+C_-(\mu_R\Delta_N)$ is its boundary solution, then
+\begin{equation}\label{psh:eq:Rrep}
+ R(z)=I+\frac1{2\pi i}\int_{\Sigma_R}
+              \frac{\mu_R(\zeta)\Delta_N(\zeta)}{\zeta-z}\dd\zeta,
+ \qquad \norm{\mu_R\Delta_N}_2=O_I(N^{-1}).
+\end{equation}
+It follows that
+\begin{equation}\label{psh:eq:Rdist}
+ R(z)-I=O_I\!\left(\frac1{N\sqrt{\dist(z,\Sigma_R)}}\right).
+\end{equation}
+The $L^1$ estimates also yield the required expansion at infinity.
+
+\subsection{The differentiated tail without differentiating the cusp}
+The discarded part of the determinant differential identity requires a
+separate argument; jump smallness alone is not that argument.
+Let $T$ be the first normalized Riemann--Hilbert transform in
+\cite[Section 5]{psh-cg}. On the right void set $v(z)=T(z)e_1$.
+The triangular $T$-jump fixes $e_1$, so the column $v$ is analytic through
+the remote real ray, including the cusp. Outside the support and lenses,
+\[
+ v=R P^{(\infty)}e_1.
+\]
+For each remote real $x$, choose a fixed-radius circle centered at $x$
+that is separated from the support and endpoint disks. Estimate
+\eqref{psh:eq:Rdist} has at most an integrable
+$|\operatorname{Im}z|^{-1/2}$ majorant at its two real crossings.
+Cauchy's integral formulas therefore give uniform bounds
+$v(x),v'(x)=O(1)$, also for arbitrarily large $x$. Bounded compact
+portions are handled by the same separated-circle argument.
+
+Write the full transformed weight as
+$\omega_\tau(x)=x^b e^{-NV_s(x)+W_\tau(x)}$.
+The determinant-one property of the original orthogonal-polynomial
+matrix $Y$ and reversal of its normalization give the exact cancellation
+\begin{equation}\label{psh:eq:wronskian}
+ [Y^{-1}Y']_{21}\,\partial_\tau\omega_\tau
+ =e^{-NQ_s(x)}(v_1v_2'-v_2v_1')
+                  \partial_\tau[x^b e^{W_\tau(x)}].
+\end{equation}
+The scalar equilibrium constant is included in $Q_s$. The two terms
+containing $Ng'$ cancel in the Wronskian. No derivative of the H\"older
+weight occurs. By \eqref{psh:eq:Wbounds} and \eqref{psh:eq:tailintegral}, the
+remote integral in the differential identity is $O(e^{-c_IN})$, uniformly
+in $s$ and $\tau$.
+
+A contour enclosing the support must cross the real void ray. Choose
+that crossing in the analytic gap between the soft edge and cusp and
+locally remove the holomorphically continued, exponentially small
+triangular jump. On the continued contour, which is otherwise separated
+from $\Sigma_R$, \eqref{psh:eq:Rrep} and Cauchy's formula give
+$R-I=O(N^{-1})$ and $R'=O(N^{-1})$. The compact-contour calculation in
+\cite[Proposition 9.1]{psh-cg}, and the differential identities it uses from
+\cite[(6.3)--(6.6)]{psh-charlier}, now apply with the same $O(N^{-1})$
+remainder. Integrating in $\tau$ proves the desired logarithmic ratio
+expansion. This completes the confinement adaptation: only the
+superlogarithmic tail input has been replaced, by explicit estimates.
+
+\subsection{Transforming the relative constant}\label{psh:sec:bias}
+The ratio calculation gives the equilibrium mean, a quadratic
+Dirichlet-energy term, and the hard-edge bias. We verify their
+normalization under \eqref{psh:eq:mobius}.
+Parameterize the transformed support by
+$x=L_s(1-\cos\vartheta)/2$, and denote by $\fh_k^x$ the cosine coefficients
+of $f((1+x)^{-1})$ in that coordinate, with the same convention as
+\eqref{psh:eq:fourier}. Put
+\[
+ q=\frac{1-\sqrt a}{1+\sqrt a}=\frac1{s+1}.
+\]
+The nonconstant cosine coefficients of $\log(1+x)$ are $-q^k/k$.
+Thus the cross term between $W_0=-b\log(1+x)$ and the perturbation in
+the quadratic functional is $b\sum_{k\geq1}q^k\fh_k^x$.
+The disk automorphism induced by the M\"obius map gives the Poisson
+identity and the conformal invariance identity
+\begin{equation}\label{psh:eq:poisson}
+ \fh_0=\fh_0^x+2\sum_{k\geq1}q^k\fh_k^x,
+ \qquad
+ \sum_{k\geq1}k(\fh_k^x)^2=\sum_{k\geq1}k\fh_k^2.
+\end{equation}
+These identities can also be proved first for harmonic polynomial or
+rational boundary data and extended by uniform analytic approximation.
+The transformed hard-edge bias is $b(\fh_0^x-f(1))/2$; adding the
+cross term changes it to $b(\fh_0-f(1))/2$. Hence the final ratio is
+\begin{equation}\label{psh:eq:ratio}
+ \log\frac{\Dcal_N[t^{sN}(1-t)^b e^f]}
+               {\Dcal_N[t^{sN}(1-t)^b]}
+ =NF(s)+\frac b2(\fh_0-f(1))
+       +\frac12\sum_{k\geq1}k\fh_k^2+O_I(N^{-1}).
+\end{equation}
+Taking $b=1/2$ proves Theorem~\ref{psh:thm:selberg}.
+The analytic neighborhoods, disks, lenses and void gaps may be chosen
+uniformly on $I$, as may all preceding bounds. This establishes
+compact-parameter uniformity as part of the adaptation; it is not
+inferred from a parameter-uniform statement in the printed theorem.
+
+\section{Barnes expansion and exact normalization tests}\label{psh:sec:barnes}
+The recurrence of $G$ converts \eqref{psh:eq:selberg} into the exact identity
+\begin{equation}\label{psh:eq:barnes}
+ S_N(r,b)=
+ \frac{G(N+1)G(r+N+1)G(N+b+1)G(r+b+N+1)}
+      {G(r+1)G(b+1)G(r+b+2N+1)}.
+\end{equation}
+For fixed positive $q$ and bounded $d$, the standard large-argument
+Barnes expansion gives
+\begin{align}
+ \log G(qN+d+1)={}&q^2N^2\left(\frac{\log N+\log q}{2}-\frac34\right)
+    +qdN(\log N+\log q-1)\notag\\
+ &+\frac{qN}{2}\log(2\pi)
+    +\left(\frac{d^2}{2}-\frac1{12}\right)(\log N+\log q)
+       \notag\\
+ &+\frac d2\log(2\pi)+\zeta'(-1)
+    +\frac{d^3/6-d/12}{qN}+O(N^{-2}).\label{psh:eq:Barnesexp}
+\end{align}
+The signed $(q,d)$ pairs in \eqref{psh:eq:barnes} are
+\[
+ +(1,0),\ +(s+1,0),\ +(1,b),\ +(s+1,b),\ -(s,0),\ -(s+2,b).
+\]
+They cancel the unwanted $N^2\log N$ and $N\log N$ terms. The
+coefficient of $\log N$ is $b^2/2-1/6$, equal to $-1/24$ when $b=1/2$.
+The remaining constant factor is
+\begin{equation}\label{psh:eq:generalconst}
+ \frac{(2\pi)^{b/2}e^{2\zeta'(-1)}}{G(b+1)}
+ s^{1/12}(s+1)^{b^2/2-1/6}(s+2)^{-(b^2/2-1/12)}.
+\end{equation}
+Combining this with \eqref{psh:eq:mainS} proves Corollary~\ref{psh:cor:full},
+including all factors in \eqref{psh:eq:A}--\eqref{psh:eq:M}.
+At $b=1/2$, the first term beyond the constant in the logarithm of the
+Selberg factor is
+\begin{equation}\label{psh:eq:Selbergc1}
+ -\frac1{48N}\left(1+\frac1{s+1}-\frac1{s+2}\right).
+\end{equation}
+This is the Selberg contribution only, not the full first correction of
+the Ap\'ery determinant.
+
+There are useful exact tests of the ratio constant. For constant $f=c$,
+\eqref{psh:eq:ratio} reduces to $Nc$ exactly. For
+$f(t)=\gamma\log t$, its left side is exactly
+$\log[S_N(sN+\gamma,b)/S_N(sN,b)]$. In this case
+\begin{align*}
+ \fh_0&=2\gamma\log\frac{s+1}{s+2},
+ &\fh_k&=\gamma\frac{(-1)^{k+1}}{k(s+1)^k},\quad k\geq1.
+\end{align*}
+The hard-edge bias and quadratic term are respectively
+\[
+ b\gamma\log\frac{s+1}{s+2},\qquad
+ \frac{\gamma^2}{2}\log\frac{(s+1)^2}{s(s+2)}.
+\]
+These are precisely the terms obtained by Taylor expansion of the exact
+Selberg quotient. They independently check the bias and the factor
+$1/2$ in the Fourier energy. A trace perturbation $f(t)=\lambda t$
+gives limiting variance $(1-a)^2/16$ and mean bias
+$-b(1+s)/(2+s)^2$, in agreement with the exact Jacobi trace formulas.
+
+\section{Bounded phases and asymptotic inverse thresholds}\label{psh:sec:inverse}
+Using $s=r/N$ exactly is essential. For a fixed $\rho>s_*$, write
+\begin{equation}\label{psh:eq:phase}
+ r=\rho N-\delta_N,\qquad |\delta_N|\leq D<\infty.
+\end{equation}
+Taylor expansion of Corollary~\ref{psh:cor:full} gives
+\begin{align}
+ \log H_N(r)={}&N^2A(\rho)
+   +N\bigl[B(\rho)-\delta_N A'(\rho)\bigr]-\frac1{24}\log N\notag\\
+ &+\log M(\rho)+\frac{\delta_N^2}{2}A''(\rho)
+                       -\delta_N B'(\rho)+O(N^{-1}).\label{psh:eq:phaseexp}
+\end{align}
+The error is uniform over bounded $\delta_N$ and compact admissible
+$\rho$ ranges. In particular,
+\begin{align}
+ A'(s)&=\log C+2(s+1)\log(s+1)-s\log s-(s+2)\log(s+2),\label{psh:eq:Aprime}\\
+ A''(s)&=\log\frac{(s+1)^2}{s(s+2)}>0.\label{psh:eq:Adouble}
+\end{align}
+Since $A'(0+)=\log(C/4)>0$ and $A(0+)=\log(C/4)>0$, both $A'$ and $A$
+are positive for $s>0$.
+In fact, for $g(s)=2A(s)-sA'(s)$,
+\[
+ g(0+)=2\log(C/4)>0,\qquad
+ g'(s)=\log\left[C\left(\frac{s+1}{s+2}\right)^2\right]>0.
+\]
+For $r_N=\lfloor\rho N\rfloor$ and $k_N=r_{N+1}-r_N\geq0$,
+expansion at the exact $r_N/N$ gives the adjacent logarithmic increment
+$N[2A(\rho)+(k_N-\rho)A'(\rho)]+O(1)$.
+Its leading coefficient is $g(\rho)+k_NA'(\rho)>0$, uniformly over
+these finitely many possible increments. Thus the full floor-shifted
+sequence is eventually strictly increasing, not merely each rational
+residue subsequence.
+
+For $r=\lfloor\rho N\rfloor$, the phase is $\delta_N=\{\rho N\}$.
+For the older matrix-order convention $N=n+1$ with
+$r=\lfloor\rho n\rfloor$, it is instead
+\begin{equation}\label{psh:eq:olderphase}
+ \delta_N=\rho+\{\rho(N-1)\}.
+\end{equation}
+The two conventions must not be interchanged. Dropping $\delta_N$ from
+\eqref{psh:eq:phaseexp} can change an exponential factor of size $e^{O(N)}$;
+it is not an innocuous change to the leading constant.
+
+For a fixed phase $\delta$, abbreviate
+\begin{equation}\label{psh:eq:phaseconstants}
+ A=A(\rho),\quad B_\delta=B(\rho)-\delta A'(\rho),\quad
+ C_\delta=\log M(\rho)+\frac{\delta^2}{2}A''(\rho)-\delta B'(\rho).
+\end{equation}
+For a large target $e^y$, set $u=\sqrt{y/A}$ and
+\begin{equation}\label{psh:eq:inverse}
+ \mathcal N_\delta(y)=u-\frac{B_\delta}{2A}
+  +\frac{B_\delta^2/(4A)+(\log u)/24-C_\delta}{2Au}.
+\end{equation}
+Substitution into $AN^2+B_\delta N-(\log N)/24+C_\delta$ leaves
+$O(\log u/u)$; division by its derivative $2Au+O(1)$ shows that the
+smooth inverse expansion has remainder
+\begin{equation}\label{psh:eq:inverseerror}
+ N_\delta(y)=\mathcal N_\delta(y)+O(\log u/u^2)
+            =\mathcal N_\delta(y)+O(\log y/y).
+\end{equation}
+This describes the inverse asymptotic model, with the forward
+$O(N^{-1})$ uncertainty included. A determinant indexed by matrix order
+is a discrete sequence; an integer inverse needs an additional statement.
+
+\begin{corollary}[Rational residue thresholds]\label{psh:cor:threshold}
+Let $\rho=p/q>s_*$ be rational in lowest terms, and take
+$r_N=\lfloor\rho N\rfloor$. For each $j\in\{0,\ldots,q-1\}$ put
+$\delta_j=\{pj/q\}$. On the residue class $N\equiv j\pmod q$, the
+first sufficiently large index satisfying $H_N(r_N)\geq e^y$ has the form
+\begin{equation}\label{psh:eq:ceil}
+ j+q\left\lceil\frac{\mathcal N_{\delta_j}(y)-j+\varepsilon_j(y)}q
+       \right\rceil,
+ \qquad \varepsilon_j(y)=O(\log y/y).
+\end{equation}
+The overall threshold is the minimum of these $q$ candidates. For
+$r_N=\lfloor\rho(N-1)\rfloor$, replace the phase by
+$\delta_j=\rho+\{p(j-1)/q\}$.
+\end{corollary}
+\begin{proof}
+On a fixed residue class the phase is constant.
+The leading difference of \eqref{psh:eq:phaseexp} between $N+q$ and $N$ is
+$2AqN+O(1)$, so the sequence is eventually strictly increasing there.
+At its discrete threshold values, \eqref{psh:eq:inverseerror} locates the
+corresponding index within $O(\log y/y)$ of
+$\mathcal N_{\delta_j}(y)$. Between consecutive threshold values, the
+ceiling is fixed except when this approximation lies within that same
+error of a residue boundary. Choosing a bounded correction of that order
+inside the ceiling yields \eqref{psh:eq:ceil}, including equality thresholds.
+There are finitely many residue classes; their earliest candidates give
+the overall threshold once $y$ is large enough to exclude any fixed
+initial segment.
+\end{proof}
+\begin{remark}
+The sign and constant of $\varepsilon_j$ are not determined here.
+Equation~\eqref{psh:eq:ceil} is an asymptotic threshold formula, not a
+computable exact ceiling that is valid arbitrarily close to a threshold.
+Away from the stated shrinking neighborhoods of residue boundaries, the
+ceiling may safely use $\varepsilon_j=0$. For irrational $\rho$, the
+nonperiodic floor phase remains part of the problem; no phase-free
+smooth inverse is claimed.
+\end{remark}
+
+\paragraph{Context (editorial, batch~77P5).} The passage from the smooth
+inverse \eqref{psh:eq:inverse} to the integer threshold \eqref{psh:eq:ceil}
+follows the pattern of the staircase theorem \texttt{p0:thm:staircase} of the
+repository's transseries volume \cite{psh-tai}: its part~(1) is the exact
+ceiling identity for a strictly increasing interpolation, its part~(2) the
+separation condition behind the caveat above, and its part~(4) the minimum
+over residue classes. The two-term smooth inverse is the first step of the
+perturbed inversion \texttt{p0:thm:perturbed-inversion} of the same volume.
+No Lambert-$W$ block occurs here, so its \texttt{p0:thm:lambert-core} is not
+needed. No novelty is claimed for the inversion technique; what is specific
+to this Part is the forward expansion \eqref{psh:eq:phaseexp}, with its
+phases, on which the inversion acts.
+
+\section{An explicit first correction}\label{psh:sec:correction}
+The full equivalent admits one more explicitly computable term. To state
+it unambiguously, hold the function $f$ fixed and vary the left endpoint
+$u$ near $a=a(s)$. Define
+\begin{align}
+ U(u)&=\frac1\pi\int_0^\pi
+ f\left(\frac{1+u}{2}+\frac{1-u}{2}\cos\theta\right)\dd\theta,
+ \label{psh:eq:U}\\
+ \fh_k[u]&=\frac1\pi\int_0^\pi
+ f\left(\frac{1+u}{2}+\frac{1-u}{2}\cos\theta\right)
+ \cos(k\theta)\dd\theta,
+ &\mathcal S(u)&=\sum_{k\geq1}k\fh_k[u]^2.\label{psh:eq:energyu}
+\end{align}
+Primes on $U$ and $\mathcal S$ below are derivatives in $u$, not in $s$.
+All these derivatives exist with uniform bounds on the compact ranges
+used in this paper.
+
+\begin{theorem}[First correction]\label{psh:thm:correction}
+Let
+\begin{align}
+ c_{\rm rel}(s)=\frac{\sqrt a(1-a)}{24s}
+ \left[-4a(1-a)U'(a)^3+6aU'(a)^2+3U'(a)+2aU''(a)\right],
+ \label{psh:eq:crel}\\
+ c_{\rm full}(s)=c_{\rm rel}(s)-\frac1{48}
+                     \left(1+\frac1{s+1}-\frac1{s+2}\right).
+ \label{psh:eq:cfull}
+\end{align}
+Uniformly for $s=r/N$ in every fixed compact $I\subset(s_*,\infty)$,
+\begin{align}
+ H_N(r)={}&C^{Nr+N(N-1)}S_N(r,\tfrac12)e^{NF(s)}E(s)
+       \left(1+\frac{c_{\rm rel}(s)}N+O_I(N^{-2})\right),\label{psh:eq:correctedS}\\
+ H_N(r)={}&M(s)N^{-1/24}e^{N^2A(s)+NB(s)}
+       \left(1+\frac{c_{\rm full}(s)}N+O_I(N^{-2})\right).
+       \label{psh:eq:correctedfull}
+\end{align}
+Equivalently, the logarithm of either ratio has the corresponding
+$c(s)/N+O_I(N^{-2})$ correction.
+\end{theorem}
+
+\subsection{The finite order potential derivative lemma}\label{psh:sec:derivative}
+For real $\epsilon$ near zero, let
+\[
+ V_{s,\epsilon}(t)=-s\log t-\epsilon f(t),\qquad
+ Z_N(s,\epsilon)=\Dcal_N[e^{-NV_{s,\epsilon}(t)}(1-t)^b],
+ \qquad b=\tfrac12.
+\]
+Then $Z_N(s,1/N)/Z_N(s,0)$ is exactly the background ratio in
+Theorem~\ref{psh:thm:selberg}. Let $[a_\epsilon,1]$ and
+$\mu_{s,\epsilon}$ be the nearby equilibrium support and measure.
+For a function $g$, write $\langle g\rangle_{[a,1]}$ for its normalized
+arcsine average. The relevant coefficient functionals are
+\begin{align}
+ \Theta_0'(\epsilon)&=\int f\dd\mu_{s,\epsilon},\label{psh:eq:E0prime}\\
+ \Theta_1(\epsilon)&=\log(2\pi)+b\log\frac{1-a_\epsilon}{4}
+      -\frac b2\langle V_{s,\epsilon}\rangle_{[a_\epsilon,1]}
+      +\frac b2V_{s,\epsilon}(1),\label{psh:eq:E1}\\
+ \Theta_2(\epsilon)&=U_*-\frac1{24}\log(\pi\psi_{\rm soft}(s,\epsilon)),
+ \label{psh:eq:E2}\\
+ U_*&=2\zeta'(-1)+\tfrac14\log(2\pi)-\log G(3/2).\notag
+\end{align}
+Here $\psi_{\rm soft}$ is the analytic equilibrium-density factor at the
+soft edge after affine normalization to $[-1,1]$, with the hard edge
+at $-1$.
+
+\begin{lemma}[Uniform derivative expansion]\label{psh:lem:derivative}
+There exist $\epsilon_0>0$, $N_0$ and $K_I<\infty$, depending on $I$, such
+that for $s\in I$, real $|\epsilon|\leq\epsilon_0$ and $N\geq N_0$,
+\begin{equation}\label{psh:eq:derivativelemma}
+ \partial_\epsilon\log Z_N(s,\epsilon)
+ =N^2\Theta_0'(\epsilon)+N\Theta_1'(\epsilon)+\Theta_2'(\epsilon)
+        +\mathcal R_N(s,\epsilon),\qquad
+ |\mathcal R_N|\leq K_I/N.
+\end{equation}
+The displayed coefficient functionals are analytic in $\epsilon$ near
+zero, with uniformly bounded derivatives of every fixed required order.
+\end{lemma}
+\begin{proof}
+We establish an estimate for the derivative identity itself; we do not
+differentiate an asymptotic remainder.
+
+\textit{The local and global equilibrium family.}
+The endpoint condition is
+\begin{equation}\label{psh:eq:J}
+ J(a,V):=\int_a^1 V'(t)\sqrt{\frac{1-t}{t-a}}\dd t=-2\pi.
+\end{equation}
+At $\epsilon=0$, $J_a=\pi s/(2a^{3/2})\ne0$.
+The analytic implicit-function theorem and the scalar Cauchy density
+formula therefore give analytic $a_\epsilon$ and local density data.
+The support remains uniformly above the cusp, and its analytic density
+factor remains positive for real small $\epsilon$. The strict void
+inequality persists on compact remote intervals by continuity, while
+its positive $3/2$ soft-edge behavior persists immediately outside the
+moving edge.
+
+In the M\"obius coordinate the perturbed effective potential satisfies
+\[
+ Q_{s,\epsilon}(x)=s\log x-\epsilon\log\log x+O_I(1)
+ \quad(x\to\infty),
+\]
+uniformly after a harmless bounded change inside the logarithms.
+Choose a sufficiently large fixed cutoff. Since $s_{\min}>0$, the
+$\epsilon\log\log x$ term is bounded by a chosen fraction of
+$s_{\min}\log x$, and the bounded remainder is absorbed by increasing
+the cutoff. It follows that
+$Q_{s,\epsilon}(x)\geq q+\eta_{I,1}\log(x/X)$ on the tail, for fixed
+$q,\eta_{I,1}>0$. The estimates \eqref{psh:eq:tailintegral}, with adjusted
+constants, thus remain valid uniformly in the real parameter.
+Only local spatial analyticity near the support is used: the remote
+cusp of the perturbed potential is confined to the exponentially small
+real-line jump.
+
+\textit{One additional matching order.}
+Choose uniform moving disks and lenses, or affinely normalize the
+support. The Airy/Bessel matching expansion on endpoint circles is
+\[
+ \Delta_N=\frac{\Delta_1(s,\epsilon)}N+O_I(N^{-2})
+\]
+in both supremum and square-integrable contour norms, with analytic
+local coefficient data. The remote ray is exponentially small.
+One additional expansion of the small-norm equation gives
+\begin{equation}\label{psh:eq:Rone}
+ R=I+\frac{R_1(s,\epsilon)}N+O_I(N^{-2}),\qquad
+ \partial_zR=\frac{\partial_zR_1(s,\epsilon)}N+O_I(N^{-2}).
+\end{equation}
+The coefficient $R_1$ is the Cauchy integral of $\Delta_1$; its endpoint
+residue data are analytic in $\epsilon$.
+A contour surrounding the support necessarily crosses the real void
+ray. Place its crossing inside the analytic gap between the soft edge
+and cusp. There the exponentially small triangular jump has a
+holomorphic continuation and may be removed locally. Cauchy estimates
+for the continued error matrix prove the derivative statement in
+\eqref{psh:eq:Rone} at the crossing as well. No continuation through the
+cusp is invoked.
+
+\textit{Power counting and the tail of the exact identity.}
+In physical coordinates the potential derivative multiplies the weight
+by $Nf$. Its remote contribution is controlled by the analytic-first-column
+Wronskian argument of \eqref{psh:eq:wronskian}. The factor $N$ and the tail
+$f=O(\log\log x)$ are absorbed by the exponential bound; no spatial
+derivative of the cusp is taken. Substitution of \eqref{psh:eq:Rone} in the
+exact differential identity gives orders $N^2$, $N$ and $1$ from the
+equilibrium, global-parametrix and first error-matrix terms. The residual
+$O(N^{-2})$ matrix error, multiplied by $Nf$ on the compact contour,
+is $O(N^{-1})$.
+
+\textit{Coefficient identification with moving endpoints.}
+The local calculation is the potential-derivative computation in
+\cite[Section 8, especially (8.28), (8.39), (8.43)--(8.44)]{psh-cg}.
+Its residue identities are linear in a tangent potential variation and
+its induced density variation. Applied at each parameter value, they
+yield \eqref{psh:eq:E0prime}--\eqref{psh:eq:E2}.
+The hard-edge order-one residue is proportional to $1-4b^2$ and
+vanishes for $b=1/2$; the soft residue is
+$-(1/24)\partial_\epsilon\log\psi_{\rm soft}$.
+
+For clarity about covariance, use
+$t=(1+a_\epsilon)/2-q_\epsilon u$,
+$q_\epsilon=(1-a_\epsilon)/2$.
+Heine's integral has affine factor $q_\epsilon^{N^2+bN}$.
+Its derivative contributes only at orders $N^2$ and $N$, with no
+order-one term. The endpoint factor becomes $(1+u)^b$, and the scaled
+soft density is precisely the $\psi_{\rm soft}$ in \eqref{psh:eq:E2}.
+Thus its total derivative includes the motion of the soft endpoint.
+One may differentiate in the original physical coordinate first and
+use this affine covariance only in the local contour formulas; there
+is no need to differentiate a moving remote cusp. This proves the
+lemma, including the uniform remainder and the claimed analyticity of
+the explicit coefficient data.
+\end{proof}
+
+\subsection{Eliminating the endpoint energy derivative}
+The correction ultimately requires only $U'$ and $U''$, through a general
+identity for a fixed analytic background.
+\begin{lemma}[Endpoint variation of the cosine energy]\label{psh:lem:energy}
+For fixed real analytic $f$ near $[a,1]$, with $U$ and $\mathcal S$
+defined in \eqref{psh:eq:U}--\eqref{psh:eq:energyu},
+\begin{equation}\label{psh:eq:energyderivative}
+ \mathcal S'(a)=-\frac{1-a}{2}U'(a)^2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $F_a(\theta)=f((1+a)/2+(1-a)\cos\theta/2)$ and
+$c_k=\fh_k[a]$. Analyticity gives exponential decay of the coefficients
+and their endpoint derivatives, locally uniformly in $a$; all subsequent
+series rearrangements and differentiations are therefore justified.
+Direct differentiation gives
+\[
+ \partial_aF_a(\theta)=-\frac{\tan(\theta/2)}{1-a}
+                           \partial_\theta F_a(\theta).
+\]
+The apparent singularity at $\pi$ is removable, since
+$\partial_\theta F_a=O(\pi-\theta)$ there.
+The finite trigonometric identity for
+$\sin(l\theta)/\sin\theta$ gives, for $l\geq1$,
+\[
+ \frac1\pi\int_0^\pi\tan(\theta/2)\sin(l\theta)\dd\theta=(-1)^{l+1}.
+\]
+Extend the integral by oddness to negative $l$, with value zero at
+$l=0$. Product-to-sum then gives, for $k,l\geq1$,
+\[
+ \frac1\pi\int_0^\pi\cos(k\theta)\tan(\theta/2)\sin(l\theta)\dd\theta
+ =\begin{cases}0,&l<k,\\-1/2,&l=k,\\(-1)^{k+l+1},&l>k.\end{cases}
+\]
+Consequently
+\begin{align*}
+ U'(a)&=\frac2{1-a}\sum_{l\geq1}(-1)^{l+1}l c_l,\\
+ c_k'(a)&=-\frac{k c_k}{1-a}
+    +\frac2{1-a}\sum_{l>k}(-1)^{k+l+1}l c_l.
+\end{align*}
+Multiply the second equality by $2kc_k$ and sum. Completing the square,
+\[
+ \mathcal S'(a)=-\frac2{1-a}
+       \left[\sum_{k\geq1}(-1)^k k c_k\right]^2
+       =-\frac{1-a}{2}U'(a)^2.
+\]
+\end{proof}
+This identity concerns general analytic $f$; it is not a new
+sequence-specific asymptotic input.
+
+\subsection{Evaluation of the coefficient}\label{psh:sec:c1algebra}
+The endpoint condition \eqref{psh:eq:J} becomes
+\begin{equation}\label{psh:eq:endpointeps}
+ s(a_\epsilon^{-1/2}-1)+\epsilon I_f(a_\epsilon)=2,
+ \qquad
+ I_f(u)=\frac1\pi\int_u^1 f'(t)\sqrt{\frac{1-t}{t-u}}\dd t
+       =(1-u)U'(u).
+\end{equation}
+Consequently
+\begin{equation}\label{psh:eq:D}
+ D:=a_\epsilon'(0)=\frac{2a^{3/2}(1-a)U'(a)}s.
+\end{equation}
+Cosine diagonalization of the logarithmic kernel, the same quadratic
+energy as in \eqref{psh:eq:ratio}, gives
+\[
+ \Theta_0''(\epsilon)=\mathcal S(a_\epsilon),\qquad
+ \Theta_0'''(0)=D\mathcal S'(a).
+\]
+The endpoint condition also implies
+$\partial_a\langle V\rangle_{[a,1]}=-2/(1-a)$.
+It cancels the endpoint-motion terms in the first derivative of
+\eqref{psh:eq:E1}; hence
+\begin{equation}\label{psh:eq:E1diff}
+ \Theta_1'(\epsilon)=\frac b2[U(a_\epsilon)-f(1)],\qquad
+ \Theta_1''(0)=\frac b2DU'(a).
+\end{equation}
+
+For completeness, write the physical density as
+$\rho_V(t)=(2\pi)^{-1}\sqrt{(t-a)/(1-t)}\,h_V(t)$.
+The scalar Cauchy formula and integration by parts give
+\begin{align}
+ h_V(a)&=-V'(a)+\frac1\pi\int_a^1
+     \frac{V'(t)-V'(a)}{t-a}\sqrt{\frac{1-t}{t-a}}\dd t
+       =\frac{2J_a(a,V)}\pi,\notag\\
+ \pi\psi_{\rm soft}&=\frac{(1-a)J_a(a,V)}{2\pi}.\label{psh:eq:softfactor}
+\end{align}
+At the base model this equals $(s+1)(s+2)/s^2$. For $V_{s,\epsilon}$,
+$J_a/\pi=s/(2a^{3/2})-\epsilon I_f'(a)$, so
+\begin{align}
+ \left.\partial_\epsilon\log(\pi\psi_{\rm soft})\right|_0
+   &=-\frac D{1-a}-\frac{3D}{2a}-\frac{2a^{3/2}I_f'(a)}s,\notag\\
+ \Theta_2'(0)&=\frac D{24(1-a)}+\frac D{16a}
+                         +\frac{a^{3/2}I_f'(a)}{12s}.\label{psh:eq:E2diff}
+\end{align}
+Integrate Lemma~\ref{psh:lem:derivative} over $0\leq\epsilon\leq1/N$.
+Its error integrates to $O_I(N^{-2})$. Taylor expansion of its explicit
+analytic coefficient functions, not of a remainder, gives
+\begin{align}
+ \log\frac{Z_N(s,1/N)}{Z_N(s,0)}
+ ={}&N\Theta_0'(0)+\frac12\Theta_0''(0)+\Theta_1'(0)\notag\\
+ &+\frac1N\left[\frac16\Theta_0'''(0)+\frac12\Theta_1''(0)+\Theta_2'(0)\right]
+      +O_I(N^{-2}).\label{psh:eq:intderivative}
+\end{align}
+The leading terms recover $NF+\log E$. The coefficient in brackets is
+\begin{multline}\label{psh:eq:cD}
+ \frac D6\mathcal S'(a)+\frac D8U'(a)
+ +\frac D{24}\left(\frac1{1-a}+\frac3{2a}\right)\\
+ +\frac{a^{3/2}}{12s}[(1-a)U''(a)-U'(a)].
+\end{multline}
+Inserting \eqref{psh:eq:D} first gives the equivalent energy form
+\begin{equation}\label{psh:eq:cenergy}
+ c_{\rm rel}(s)=\frac{\sqrt a(1-a)}{24s}
+ [8aU'(a)\mathcal S'(a)+6aU'(a)^2+3U'(a)+2aU''(a)].
+\end{equation}
+Lemma~\ref{psh:lem:energy} then gives the displayed formula \eqref{psh:eq:crel}.
+Adding the exact Barnes term \eqref{psh:eq:Selbergc1} gives
+\eqref{psh:eq:cfull}. Exponentiation proves Theorem~\ref{psh:thm:correction}.
+
+\subsection{Two exact special cases}
+For $f(t)=\gamma\log t$, the coefficient reduces to
+\begin{equation}\label{psh:eq:cLog}
+ c_{\rm rel}(s)=
+ \frac{\gamma[-8\gamma^2+6\gamma s+3s+4]}{24s(s+1)(s+2)}.
+\end{equation}
+Expanding the exact quotient $S_N(sN+\gamma,1/2)/S_N(sN,1/2)$
+gives the same polynomial in $\gamma$, identically for $s>0$.
+For a constant perturbation the correction is zero, as it must be.
+
+There is an independent check for $f(t)=\lambda t$ using finite-$N$
+Jacobi/Selberg moments. If $T=\sum t_j$, its Schur averages satisfy
+\begin{equation}\label{psh:eq:Schur}
+ \mathbb E\,s_\nu(t)=s_\nu(1^N)
+ \prod_{i\geq1}\frac{(r+N-i+1)_{\nu_i}}
+                        {(r+b+2N-i+1)_{\nu_i}},
+\end{equation}
+where $(z)_m$ is the rising factorial. This is the Schur specialization
+of the Selberg--Jack average, explicitly recorded in
+\cite[equation (4.1)]{psh-arw}. Partitions of sizes one, two and three give
+the first three trace cumulants. At $r=sN$, $b=1/2$, their $1/N$
+coefficients are respectively
+\[
+ \frac{s+1}{4(s+2)^3},\qquad
+ \frac{s^2(s+1)}{2(s+2)^5},\qquad
+ -\frac{2s^2(s+1)^2}{(s+2)^7}.
+\]
+Formula~\eqref{psh:eq:crel} gives exactly
+\begin{equation}\label{psh:eq:cTrace}
+ c_{\rm rel}(s)=
+ \frac{\lambda(s+1)}{4(s+2)^3}
+ +\frac{\lambda^2s^2(s+1)}{4(s+2)^5}
+ -\frac{\lambda^3s^2(s+1)^2}{3(s+2)^7}.
+\end{equation}
+Thus its linear, quadratic and cubic responses agree separately with
+the exact mean, half-variance and one-sixth third cumulant contributions.
+The replay verifies these identities symbolically. They are checks of
+the coefficient algebra; the uniform derivative lemma supplies the
+analytic remainder.
+
+\subsection{The next inverse term}
+For the fixed phase $\delta$ in \eqref{psh:eq:phase}, define
+\begin{equation}\label{psh:eq:cdelta}
+ c_\delta=c_{\rm full}(\rho)-\frac{\delta^3}{6}A'''(\rho)
+          +\frac{\delta^2}{2}B''(\rho)-\delta(\log M)'(\rho).
+\end{equation}
+Then the sharpened logarithmic model is
+\[
+ y=AN^2+B_\delta N+k\log N+C_\delta+c_\delta/N+O(N^{-2}),
+ \qquad k=-\frac1{24}.
+\]
+With $u=\sqrt{y/A}$, set
+\[
+ d_0=-\frac{B_\delta}{2A},\qquad
+ d_1(u)=\frac{B_\delta^2/(4A)-k\log u-C_\delta}{2A},\qquad
+ d_2=-\frac{kd_0+c_\delta}{2A}.
+\]
+The refined inverse expansion is
+\begin{equation}\label{psh:eq:invrefined}
+ N_\delta(y)=u+d_0+\frac{d_1(u)}u+\frac{d_2}{u^2}
+                +O\left(\frac{(\log u)^2}{u^3}\right).
+\end{equation}
+Indeed $2Ad_0+B_\delta=0$ cancels the terms involving $d_1/u$ at the
+next order, leaving $2Ad_2+kd_0+c_\delta=0$.
+In Corollary~\ref{psh:cor:threshold}, replace $\mathcal N_\delta(y)$ by the
+four displayed terms in \eqref{psh:eq:invrefined} and sharpen the
+inside-ceiling error to $O((\log y)^2/y^{3/2})$.
+Its sign remains unspecified; the floor phase and threshold caveat remain.
+
+\subsection{Continuation to further fixed orders}
+The argument provides a continuation method on each fixed compact
+$s$-range above $s_*$. At any fixed order, Airy/Bessel matching supplies
+finitely many local jump coefficients; solving the singular-integral
+equation by its Neumann expansion supplies the corresponding finite
+list of error-matrix coefficients. Their dependence on the local
+potential data is analytic, and the remote estimates remain smaller
+than every algebraic power. The exact potential derivative identity can
+therefore be expanded to that order, with a uniform remainder, and
+integrated over $[0,1/N]$ as above. This justifies continuation to any
+fixed number of inverse-$N$ terms without differentiating a remainder.
+Only the first correction is evaluated explicitly in this report.
+A complete usable recursion for every determinant coefficient, together
+with its implementation, is not supplied.
+
+\section{Numerical evidence and reproducibility}\label{psh:sec:numerics}
+The release contains a small standalone implementation of Edgar's
+upper-band hypergeometric density (shipped here as
+\path{code/03-shifted-density.py}). Its formulas and continuation
+convention are attributed both to Edgar \cite{edgar} and to Part~II's
+density program \path{code/02-szego-density_constant.py}
+(Appendix~\ref{szego:app:density}); the replay reimplements only the
+upper-band density formulas needed for the proportional-shift constants.
+It does not include a copy of the repository or of its manuscripts. All
+quadrature nodes used here lie above the cusp.
+
+For a specified rational $s$ with integral $r=sN$, the numerical replay
+computes $F$, the cosine coefficients, the hard-edge bias and the Fourier
+energy. Independently it computes exact integer Ap\'ery moments from
+\[
+ (k+1)^3\A_{k+1}=(34k^3+51k^2+27k+5)\A_k-k^3\A_{k-1},
+ \qquad \A_0=1,\quad\A_1=5,
+\]
+and performs high-precision elimination on the scaled positive Hankel
+matrix. The moment generation is exact; the subsequent elimination is
+floating point. The reported diagnostic is
+\begin{equation}\label{psh:eq:error}
+ \mathcal E_N(s)=\log H_N(sN)-[sN^2+N(N-1)]\log C
+       -\log S_N(sN,\tfrac12)-NF(s)-\log E(s).
+\end{equation}
+Theorems~\ref{psh:thm:selberg} and~\ref{psh:thm:correction} predict
+$\mathcal E_N(s)=c_{\rm rel}(s)/N+O(N^{-2})$.
+
+At $s=1$, using 512 midpoint cosine nodes, one obtains
+\[
+ F(1)\approx-0.9052804694622163,\qquad
+ E(1)\approx1.3511218257963278.
+\]
+Table~\ref{psh:tab:errors} records the original numerical examples. For
+$s=0.1$ and $s=0.2$, 1024 nodes were used. The smaller-shift samples
+are closer to the collision and show longer preasymptotic behavior;
+no monotonic error claim is made.
+\begin{table}[htbp]\centering
+\caption{Logarithmic error after exact Selberg normalization}
+\label{psh:tab:errors}
+\begin{tabular}{@{}rrrr@{}}\toprule
+$s$ & $N$ & $\mathcal E_N(s)$ & $N\mathcal E_N(s)$\\\midrule
+$1$ & 20 & $0.00100562078$ & $0.0201124156$\\
+$1$ & 40 & $0.000509359003$ & $0.0203743601$\\
+$1$ & 80 & $0.000256302053$ & $0.0205041642$\\\addlinespace
+$0.2$ & 20 & $0.000839079936$ & $0.0167815987$\\
+$0.2$ & 40 & $0.000569348565$ & $0.0227739426$\\
+$0.2$ & 80 & $0.000324954543$ & $0.0259963634$\\\addlinespace
+$0.1$ & 20 & $0.00160846232$ & $0.0321692463$\\
+$0.1$ & 40 & $0.00168695335$ & $0.0674781341$\\
+$0.1$ & 80 & $0.000751788540$ & $0.0601430832$\\\bottomrule
+\end{tabular}
+\end{table}
+
+Direct derivative quadrature of the proved coefficient gives
+\[
+ c_{\rm rel}(1)\approx0.0206331502033372131,\qquad
+ c_{\rm full}(1)\approx-0.0036724053522183424.
+\]
+The evaluations at 256 and 512 nodes agree within about
+$3.5\times10^{-18}$, a stability check rather than an interval bound.
+Subtracting $c_{\rm rel}(1)/N$ gives the corrected residuals below.
+They are consistent with the uniform $O(N^{-2})$ remainder.
+\begin{table}[htbp]\centering
+\caption{Residual after the first correction at $s=1$}
+\begin{tabular}{@{}rrr@{}}\toprule
+$N$ & $\mathcal E_N(1)-c_{\rm rel}(1)/N$ &
+$N^2[\mathcal E_N(1)-c_{\rm rel}(1)/N]$\\\midrule
+20 & $-0.0000260367287$ & $-0.0104146915$\\
+40 & $-0.00000646975258$ & $-0.0103516041$\\
+80 & $-0.00000161232494$ & $-0.0103188796$\\\bottomrule
+\end{tabular}
+\end{table}
+
+The cosine transform uses double precision after high-precision density
+evaluation. Its decimal outputs therefore do not inherit the full
+precision of the determinant calculation. A small last cosine
+coefficient is a diagnostic, not a certified quadrature bound.
+The release also checks the critical value, equilibrium mass,
+Barnes cancellations and exact fixed-logarithm perturbation. Finite
+symbolic and numerical tests corroborate the normalization; they do not
+replace the analytic argument in Section~\ref{psh:sec:analytic}.
+
+\section{Completion boundary and further questions}\label{psh:sec:open}
+The full equivalent has an explicit constant; Theorem~\ref{psh:thm:correction}
+adds a proved first correction and a compact-uniform relative
+$O(N^{-2})$ remainder. Several natural continuations
+remain outside that assertion.
+\begin{enumerate}
+\item \textbf{The cusp collision.} When $s\downarrow s_*$, the uniform
+analytic neighborhood used above collapses. A double-scaling analysis
+must account for an ordinary soft edge meeting a cusp of the fixed
+background density. The present proof gives neither its scaling law
+nor its transition function.
+\item \textbf{The unshifted prefactor.} At $r=0$ the equilibrium geometry
+and the endpoint/cusp singularities are different. The full prefactor of
+$D_n=H_{n+1}(0)$, including possible powers or oscillatory corrections,
+remains open in this report. Existing results of Parts~I and~II are not
+relabelled as new here.
+\item \textbf{Further corrections.} The regular matching and potential-derivative
+construction gives the fixed-order continuation method in
+Section~\ref{psh:sec:correction}. Only $c_{\rm rel}$ and $c_{\rm full}$ are
+explicitly evaluated here. A complete implemented recursion for all
+higher coefficients remains to be developed. The residual table does
+not by itself identify or prove a second correction.
+\item \textbf{Certified computation.} Interval evaluation of the density,
+Fourier tail and equilibrium integral would make the constants and
+finite-size comparisons numerically rigorous. The current release uses
+floating-point reproducibility, not interval enclosures.
+\end{enumerate}
+
 \appendix
 \noindent\emph{Appendix~A belongs to Part~I (and is printed as it was);
 Appendices~\ref{szego:app:density} and~\ref{szego:app:package} belong to
-Part~II.}
+Part~II. Part~III has no appendix: its replay is described in
+Section~\ref{psh:sec:numerics} and in the README.}
 
 \section{Reproducing and auditing the package}
 The supplied files have separate roles. The article contains the proof.
@@ -1976,8 +3279,9 @@ Accessed 18 September 2026 (Part~II: 1 October 2026).
 G.~A.~Edgar, \emph{The Ap\'ery Numbers as a Stieltjes Moment Sequence},
 arXiv:2005.10733v2, 2 September 2020.
 Theorem~1, Proposition~4, Notation~6, Propositions~25--26, Corollary~27,
-and equation~(1); Part~II also uses Proposition~23. Manuscript dated 2017,
-appendix added 2020.
+and equation~(1); Part~II also uses Proposition~23. Part~III uses
+Propositions 4, 23, 25 and 26 (density, endpoint expansions and Frobenius
+behavior). Manuscript dated 2017, appendix added 2020.
 \url{https://arxiv.org/abs/2005.10733}.
 
 \bibitem{oeisplot}
@@ -2004,5 +3308,36 @@ NIST Digital Library of Mathematical Functions, \S18.2,
 determinant identities and the numerical-conditioning caution in \S18.2(ix).
 Accessed 18 September 2026.
 \url{https://dlmf.nist.gov/18.2}.
+
+\bibitem{psh-cg}
+C.~Charlier and R.~Gharakhloo,
+\emph{Asymptotics of Hankel determinants with a Laguerre-type or
+Jacobi-type potential and Fisher--Hartwig singularities},
+Advances in Mathematics \textbf{383} (2021), 107672;
+arXiv:1902.08162v3.
+\url{https://arxiv.org/abs/1902.08162v3}.
+Part~III's adaptation uses Section 5 and Proposition 9.1.
+
+\bibitem{psh-charlier}
+C.~Charlier,
+\emph{Asymptotics of Hankel determinants with a one-cut regular potential
+and Fisher--Hartwig singularities},
+arXiv:1706.03579v4 (2018).
+\url{https://arxiv.org/abs/1706.03579v4}.
+See equations (6.3)--(6.6) for the determinant differential identity.
+
+\bibitem{psh-arw}
+S.~P. Albion, E.~M. Rains and S.~O. Warnaar,
+\emph{Elliptic $A_n$ Selberg integrals},
+Constructive Approximation \textbf{62} (2025), 151--184.
+\url{https://doi.org/10.1007/s00365-025-09705-8}.
+Equation (4.1) supplies the Schur average used in Part~III's trace check.
+
+\bibitem{psh-tai}
+ProveIt, \emph{Transseries: the polynomial-logarithmic calculus, series
+reversal at infinity, and inversion}, repository volume
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+theorems labelled \texttt{p0:thm:staircase} and
+\texttt{p0:thm:perturbed-inversion}. Cited editorially in Part~III.
 \end{thebibliography}
 \end{document}
