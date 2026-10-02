@@ -2,10 +2,11 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are fifty-two unmerged
-arrivals, fifty of 2026-09-29, one of 2026-09-30 and one of 2026-10-01,
-each filed whole with its PDF and then amended editorially (see
-"Arrivals of 2026-09-29 to 2026-10-01" below).
+2026-09-04 (see the end of this file). Beside them are fifty-five unmerged
+arrivals, fifty of 2026-09-29, one of 2026-09-30, one of 2026-10-01 and
+three of 2026-10-02, each filed whole with its PDF, the first fifty-two
+then amended editorially (see "Arrivals of 2026-09-29 to 2026-10-02"
+below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -262,7 +263,7 @@ natural follow-up.  Note for future filing: on Windows a directory named
 deleted `combinatorial_transseries_and_inverses/`, which is why the
 companion's directory omits the "And".
 
-## Arrivals of 2026-09-29 to 2026-10-01 (unmerged)
+## Arrivals of 2026-09-29 to 2026-10-02 (unmerged)
 
 Fifty-one research packages arrived through the repository drop zone
 `docs/incoming/`: fifty on 2026-09-29, in nine deliveries (its batches 45
@@ -368,6 +369,14 @@ transseries package among sixty-two archives, the factorial-transseries
 article on OEIS A006014 below. It cites no repository revision and no
 package of this group, and does not cite Vladimir's library. The other
 sixty-one archives are not transseries work.
+
+The twelfth delivery (2026-10-02, the drop zone's batch 77) brought three
+transseries packages among seventy-one archives, the late-coefficient
+articles on A395976, A274600 and A260879 below. Three cite the repository
+revision `4b874cea0` as the snapshot of a bounded overlap search; none
+cites a package of this group except that the A260879 article credits the
+canonical volume's Fubini chapter. The other sixty-eight archives went to
+the research-report collection under `SetTheory/Cardinals/docs/reports/`.
 
 All fifty-two packages of the nine deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
@@ -1942,6 +1951,42 @@ A006014 coefficients are new to the repository. It
 leaves the Borel singularities at actions 2, 3, … open (article.tex:621-623)
 and is not formalized.
 
+[`Late_Growth_Bessel_Counting_Coefficients/`](Late_Growth_Bessel_Counting_Coefficients/)
+holds *Late growth of Bessel counting coefficients* (639-line source, its
+PDF, an exact check suite). For A336293, `a_n = Σ C(n,k)² C(2k,k) (n−k)!`,
+and its half-power coefficients `d_j` (A395976/A395977) it proves
+`d_j = (2e²/(π 4^j)) {Σ_{m<M} 16^m c_m Γ(j−2m) + O(Γ(j−2M))}` with a finite
+Bernoulli-polynomial generator, hence Kotěšovec's conjecture and eventual
+positivity, both inverse constructions with rounding-aware enclosures, and
+a fixed-colors corollary. It does not settle positivity for every `j > 5`.
+It is a new sequence case for the canonical volume's Part "Inversion: the
+apparatus for a rapidly growing function" (`p0:sec:top`); its
+factorial-series algebra is Borinsky's; not formalized.
+
+[`Late_Coefficients_Three_Letter_Abelian_Squares/`](Late_Coefficients_Three_Letter_Abelian_Squares/)
+holds *Late coefficients of three letter abelian squares* (889-line source,
+its PDF, check programs). It proves A274600's conjectured
+`a_n ~ (2/log 3)^n (n−1)!/(π√3)` with every fixed correction, the exact
+normalized Borel transform, the median-Laplace representation and a nonzero
+Stokes jump of action `log 3/2`, Lambert inversions for the late
+coefficients and for A002893, and a convergent Lagrange generator of the
+inverse exponential sectors. It leaves the farther Borel sheets, optimal
+truncation and Stokes smoothing open. Its Lambert inversions are instances
+of `p0:thm:lambert-core`; not formalized.
+
+[`Late_Coefficients_Factorially_Forced_Catalan_Recurrence/`](Late_Coefficients_Factorially_Forced_Catalan_Recurrence/)
+holds *Late coefficients of the factorially forced Catalan recurrence*
+(720-line source, its PDF, check programs). For A229741,
+`a_n = n! + Σ a_i a_{n−1−i}`, it proves the A260879 conjecture
+`c_k ~ Γ(k)/(log 2)^k` with every fixed correction, an exact positive
+Stirling transform, smooth inverses and threshold enclosures for both
+sequences, and, separately, the exact positive half-truncation remainder
+with its parity-dependent scale and nine scalar corrections. Its
+pole-lattice estimates overlap the volume's chapter "The Fubini numbers: an
+exact pole lattice" (`q2:sec:fubini`, `q2:thm:fubini`, `q2:thm:weighted`),
+which it credits; it sits beside the A006014 package, the other factorially
+forced quadratic recurrence (a different sequence); not formalized.
+
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
 theta-resolved, certified inversion, gamma core, inverse harmonic and the
 three direct-truncation articles) are sharp instances of
@@ -1986,7 +2031,9 @@ moment-determinacy package had none. From the eighth, they are the
 `SHA256SUMS.txt` of the Hahn–Dulac package; the other five had none. From
 the ninth, it is the `SHA256SUMS.txt` of the triangular package. The tenth
 delivery's package had none. From the eleventh, it is the `SHA256SUMS.txt`
-of the factorial-transseries package. The READMEs of the
+of the factorial-transseries package. From the twelfth, they are the
+`SHA256SUMS` of the abelian-squares and Catalan-recurrence packages and the
+`MANIFEST.sha256` of the Bessel package. The READMEs of the
 inverse-harmonic, moving-fold, certified-inversion, Stokes-transport,
 action-accumulation, near-linear and critical Hahn packages, and of the five
 fourth-delivery and five fifth-delivery packages that had one, now record
@@ -2063,6 +2110,9 @@ CRLF on Windows; the diagnostics CSV was always LF).
 The eleventh delivery has no carriage return in any file, and since its
 editorial pass its program writes LF on every platform (as delivered, it
 used the platform's line endings, CRLF on Windows).
+The twelfth delivery has no carriage return in any file; as delivered, its
+programs use the platform's line endings (CRLF on Windows), so their byte
+comparisons fail on Windows until an editorial pass makes them write LF.
 
 The inverse-harmonic package's `verification/run.log` and
 `verification/certification.log` are byte-identical to its `results.json`

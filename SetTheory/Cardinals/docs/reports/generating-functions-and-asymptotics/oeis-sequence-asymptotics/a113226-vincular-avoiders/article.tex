@@ -1,0 +1,682 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,
+pdftitle={Exact enumeration and complete asymptotics for permutations avoiding 12 34}}
+\setlength{\parskip}{.35em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ind}[1]{\mathbf1_{\{#1\}}}
+\renewcommand{\labelitemi}{$\bullet$}
+\title{Exact enumeration and complete asymptotics\newline for permutations avoiding 12 34}
+\author{}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We derive a closed exponential generating function for OEIS A113226,
+the number of permutations avoiding the vincular pattern $12$--$34$.
+The derivation uses the labelled binary-word model of Bevan, Cheon and
+Kitaev. The logarithm of the generating function satisfies a first-order
+linear differential equation and has an inverse-square-root singularity
+at $\rho=\log4$. A saddle-point analysis proves their conjectured
+stretched-exponential form, with exact constants and power $-5/6$,
+and gives every algebraic correction in powers of $n^{-1/3}$.
+We provide an executable finite-order coefficient generator, the first
+four corrections, an exact quadratic-arithmetic enumeration recurrence,
+checks through $n=1000$, and controlled Lambert-$W$ inverse expansions.
+The known sequence A136127 is the logarithmic derivative's coefficient
+sequence. The expansion is in the Poincar\'e sense; exponentially
+improved sectors remain a separate question.
+\end{abstract}
+
+\section{The result and its context}
+
+Let $A_n$ count permutations of $[n]$ avoiding the vincular pattern
+$12$--$34$, with $A_0=1$, and put
+\[
+ H(z)=\sum_{n\ge0}A_n\frac{z^n}{n!},\qquad L(z)=\log H(z),\quad L(0)=0.
+\]
+An occurrence requires positions $i,i+1,j,j+1$ with $i+1<j$ and
+$\pi_i<\pi_{i+1}<\pi_j<\pi_{j+1}$. This adjacency convention matters.
+The sequence is OEIS A113226 \cite{oeis}.
+
+Bevan--Cheon--Kitaev \cite{bck} identify these objects with
+$\{3,2+2\}$-free naturally labelled posets, give a labelled binary-word
+model and an insertion recurrence, and conjecture the asymptotic form
+\[
+ A_n\sim D\,n!\,\rho^{-n}\mu^{n^{1/3}}n^\beta,
+ \qquad \rho=\log4.
+\]
+Their Conjectures 13 and 14 specify the exponential rate and the
+stretched-exponential form, with fitted estimates for $D,\mu,\beta$.
+Elizalde \cite{elizalde} obtained earlier bounds. The exact expression
+below resolves both conjectural forms and identifies their constants.
+
+Define
+\begin{equation}\label{eq:constants}
+ c=\left(\frac{\pi^2}{4\rho}\right)^{1/3},\qquad
+ D=2e^{-3}\sqrt{\frac{c}{3\pi}},\qquad C=3c,\qquad \mu=e^C.
+\end{equation}
+\begin{theorem}\label{thm:main}
+The exponential generating function is
+\begin{equation}\label{eq:egf}
+ H(z)=\exp\left\{\frac z2+
+ \frac{q(3\arcsin q-\pi/2)}{\sqrt{1-q^2}}\right\},
+ \qquad q=\frac{e^{z/2}}2,
+\end{equation}
+with branches analytic at $z=0$. Its logarithm is equivalently the unique
+analytic solution of
+\begin{equation}\label{eq:ode}
+ (4-e^z)L'(z)-2L(z)=2+e^z-z,\qquad L(0)=0.
+\end{equation}
+For every fixed integer $J\ge0$,
+\begin{equation}\label{eq:main}
+ A_n=D\,n!\,\rho^{-n}e^{3cn^{1/3}}n^{-5/6}
+ \left(\sum_{j=0}^{J}a_jn^{-j/3}
+       +O_J(n^{-(J+1)/3})\right),
+\end{equation}
+where $a_0=1$ and all $a_j$ are given by the finite Gaussian coefficient
+formula in Section~\ref{sec:generator}. In particular,
+\begin{align}
+ a_1&=\frac{c^2(1-\rho)}2-\frac5{36c},\label{eq:a1}\\
+ a_2&=\frac{324c^6(\rho-1)^2+c^3(1908\rho-612)-35}{2592c^2}.
+ \label{eq:a2}
+\end{align}
+\end{theorem}
+
+The constants are
+\begin{align*}
+ c&=1.21188506246461864249\ldots,&
+ D&=0.03570604125804483339\ldots,\\
+ C&=3.63565518739385592747\ldots,&
+ \mu&=37.92669385021515730\ldots.
+\end{align*}
+Thus $\beta=-5/6$. The paper's decimal estimates are finite-range fits;
+they are not exact conjectured values. In particular, the amplitude
+$D$ differs visibly from their estimate near $0.032$.
+
+The theorem is an all-orders Poincar\'e expansion. It neither asserts
+convergence of the coefficient series nor identifies all exponentially
+small contributions. Its combinatorial foundation belongs to
+\cite{bck}; the known sequence A136127 and its leading asymptotic are
+also prior work \cite{oeis136,aval,testart}. Our contribution is scoped
+to the exact A113226 transform, its complete coefficient asymptotics,
+and the resulting inverse.
+
+\section{From labelled words to an integral equation}
+
+Proposition 7 of \cite{bck} gives a bijection with labelled binary words
+beginning in zero, whose labels decrease within a zero run, increase
+within a one run, and satisfy the condition that every one label exceeds
+all earlier zero labels. Equivalently, an object has the block form
+\begin{equation}\label{eq:blocks}
+ E_1,M_1,E_2,M_2,\ldots,E_k,M_k,E_{k+1},
+\end{equation}
+where $E_i,M_i$ for $i\le k$ are nonempty sets, $E_{k+1}$ is an
+arbitrary set, and every label in $M_i$ exceeds all labels in
+$E_1\cup\cdots\cup E_i$. Each block has its unique prescribed order.
+The case $k=0$ includes the empty object and a single decreasing zero run.
+
+Replace the integer labels by distinct coordinates in $[0,1]$ and
+integrate over them. For fixed block cardinalities totaling $n$, divide
+by the factorial of every block size. Each ordering chamber has volume
+$1/n!$; the unordered coordinates inside each block supply exactly its
+block factorial. The coefficient is therefore the number of valid
+labelled objects divided by $n!$. There is no extra multinomial factor.
+Coincident coordinates have measure zero.
+
+Let $x$ be the largest coordinate among preceding zero blocks, initially
+$x=0$. A new nonempty zero block has maximum at most $x$, with weight
+$e^{zx}-1$, or creates a new maximum $t>x$, with density
+$ze^{zt}\dd t$. Indeed, the maximum of $m$ coordinates has volume
+density $mt^{m-1}$, and summing $z^mmt^{m-1}/m!$ gives $ze^{zt}$.
+A following nonempty one block then has weight $e^{z(1-t)}-1$.
+The final arbitrary zero block has weight $e^z$, independent of the
+state. Its labels have no restriction relative to earlier one labels.
+
+If $f(x)$ counts any number of additional zero/one pairs, then
+\begin{align}
+ f(x)={}&1+(e^{zx}-1)(e^{z(1-x)}-1)f(x)\notag\\
+ &+\int_x^1 z(e^z-e^{zt})f(t)\dd t.\label{eq:transfer}
+\end{align}
+This holds as a formal series, and analytically for small $|z|$.
+Each application of the operator increases size by at least two, so the
+formal solution is unique. Put
+\[
+ D_z(x)=e^{zx}+e^{z(1-x)}-e^z,\quad
+ h(x)=D_z(x)f(x),\quad b(x)=z(e^z-e^{zx}).
+\]
+Then
+\[
+ h(x)=1+\int_x^1\frac{b(t)h(t)}{D_z(t)}\dd t,
+ \qquad h'(x)=-\frac{b(x)}{D_z(x)}h(x),\qquad h(1)=1.
+\]
+Since $D_z(0)=1$ and $H(z)=e^zf(0)$, this yields
+\begin{align}
+ L(z)&=z+\int_0^1\frac{z(e^z-e^{zx})}{D_z(x)}\dd x\label{eq:integral1}\\
+ &=\frac z2+\frac{ze^z}{2}\int_0^1\frac{\dd x}{D_z(x)}.
+ \label{eq:integral2}
+\end{align}
+For the second equality average $x$ and $1-x$ and use
+$e^{zx}+e^{z(1-x)}=D_z(x)+e^z$.
+
+Set $v=z(x-1/2)$ and $q=e^{z/2}/2$. The substitution
+$u=\tanh(v/2)$ in \eqref{eq:integral2} gives
+\begin{equation}\label{eq:atan}
+ L(z)=\frac z2+\frac{2q}{\sqrt{1-q^2}}
+ \arctan\left(\frac{2q-1}{2q+1}\sqrt{\frac{1+q}{1-q}}\right).
+\end{equation}
+The arctangent vanishes at $q=1/2$ and its derivative is
+$3/(2\sqrt{1-q^2})$. It therefore equals
+$(3/2)\arcsin q-\pi/4$ near $q=1/2$.
+This proves \eqref{eq:egf}. Differentiation proves \eqref{eq:ode}.
+
+\section{Exact recurrences and the known cumulants}
+
+Let $\ell_n=L^{(n)}(0)$, with $\ell_0=0$. Coefficient extraction from
+\eqref{eq:ode} gives
+\begin{equation}\label{eq:cumulant}
+ 3\ell_{n+1}=\sum_{k=0}^{n-1}\binom nk\ell_{k+1}
+       +2\ell_n+1+2\ind{n=0}-\ind{n=1}\qquad(n\ge0).
+\end{equation}
+The empty sum is zero. Since $H'=L'H$,
+\begin{equation}\label{eq:exact}
+ A_0=1,\qquad
+ A_{n+1}=\sum_{k=0}^n\binom nk\ell_{k+1}A_{n-k}.
+\end{equation}
+These recurrences use $O(N^2)$ integer arithmetic operations for all
+terms through $N$. This statement counts arithmetic operations, not
+bit operations. It gives a fast recurrence of the kind asked for by
+Callan \cite[Section 9]{callan}.
+
+The cumulants begin
+\[
+ (\ell_n)_{n\ge1}=1,1,2,5,16,63,294,1585,9692,66275,\ldots.
+\]
+They are the known sequence A136127 shifted by one:
+\begin{equation}\label{eq:known}
+ \ell_n=\mathrm{A136127}(n-1)\qquad(n\ge1).
+\end{equation}
+Here is an exact verification that also explains the nonbinomial
+antidiagonal sum. The known poly-Bernoulli-relative array $T_{a,b}$ has
+bivariate exponential generating function
+\[
+ T(x,y)=\log\frac1{e^x+e^y-e^{x+y}}
+       =\sum_{a,b\ge1}T_{a,b}\frac{x^ay^b}{a!b!}.
+\]
+The antidiagonal identity recorded in \cite[Section 6]{testart} is
+\[
+ \mathrm{A136127}(n)=\sum_{k=0}^{n-1}T_{k+1,n-k}\quad(n\ge1),
+ \qquad \mathrm{A136127}(0)=1.
+\]
+Equation \eqref{eq:integral1} is exactly
+\begin{equation}\label{eq:transform}
+ L(z)=z+\int_0^z T_x(t,z-t)\dd t.
+\end{equation}
+Since
+\[
+ \int_0^z\frac{t^{a-1}(z-t)^b}{(a-1)!b!}\dd t
+     =\frac{z^{a+b}}{(a+b)!},
+\]
+\eqref{eq:known} follows, including $n=1$ separately. Thus $H'/H$ is
+the EGF of A136127. The existing objects, array and asymptotic for that
+sequence are not new claims of this report. A direct labelled bijection
+explaining the exponential transform remains an interesting question.
+
+\section{Analytic continuation and the singular expansion}
+
+For $|z|<\rho$, the elementary estimate
+\begin{align*}
+ |(e^{zx}-1)(e^{z(1-x)}-1)|
+ &\le(e^{|z|x}-1)(e^{|z|(1-x)}-1)\\
+ &\le(e^{|z|/2}-1)^2<1
+\end{align*}
+shows that \eqref{eq:integral1} is analytic. The second inequality
+follows by minimizing $e^{rx}+e^{r(1-x)}$ at $x=1/2$.
+On $|z|=\rho$, equality can occur only at $z=\rho,x=1/2$.
+More strongly, the linear ODE continues $L$ along every path avoiding
+\[
+ \rho+2\pi\ii k,\qquad k\in\mathbb Z.
+\]
+In a disk of radius $R$ with $\rho<R<|\rho+2\pi\ii|$, cut along
+$[\rho,R)$, this continuation is single-valued and has no other
+singularities. This follows from analytic ODE existence and uniqueness
+on a simply connected domain.
+
+Write $w=\rho-z$, with the square root positive for real $w>0$.
+Equation \eqref{eq:egf} gives a convergent local decomposition
+\begin{equation}\label{eq:local}
+ L(z)=\frac\pi{\sqrt{e^w-1}}+R(w),
+\end{equation}
+where
+\[
+ R(w)=\frac{\rho-w}{2}
+       -\frac{3\arccos(e^{-w/2})}{\sqrt{e^w-1}}
+\]
+is analytic at zero: the square roots in the quotient cancel.
+Its Taylor expansion starts
+\begin{equation}\label{eq:Rexp}
+ R(w)=\frac\rho2-3+\frac w2-\frac{w^2}{10}
+                  -\frac{w^3}{210}+O(w^4).
+\end{equation}
+All coefficients can be generated without repeated differentiation of
+inverse trigonometric functions. If $R(w)=\sum_{m\ge0}r_mw^m$, then
+$r_0=\rho/2-3$ and
+\begin{equation}\label{eq:rrec}
+ r_m=\frac{
+ -\ind{m=1}-4(-1)^m/m!
+ -4\displaystyle\sum_{k=1}^{m-1}
+       \frac{(-1)^{m-k}kr_k}{(m-k+1)!}}
+ {4m+2}\qquad(m\ge1).
+\end{equation}
+Indeed substitution in \eqref{eq:ode} gives
+\[
+ 4(1-e^{-w})R'(w)+2R(w)=\rho-w-2-4e^{-w}.
+\]
+Also define
+\[
+ s_m=[w^m]\sqrt{\frac w{e^w-1}},\qquad
+ s_0=1,\quad s_1=-\frac14,\quad s_2=\frac1{96},\quad s_3=\frac1{384}.
+\]
+Put $t=1-z/\rho$, $K=\rho/2-3$ and $A=\pi/\sqrt\rho=2c^{3/2}$.
+Then, convergently near $\sqrt t=0$,
+\begin{equation}\label{eq:puiseux}
+ L(\rho(1-t))=K+A t^{-1/2}+\sum_{j\ge1}g_jt^{j/2},
+\end{equation}
+where
+\begin{equation}\label{eq:gj}
+ g_{2m-1}=\pi s_m\rho^{m-1/2},\qquad
+ g_{2m}=r_m\rho^m\quad(m\ge1).
+\end{equation}
+In particular $g_1=-\pi\sqrt\rho/4$ and $g_2=\rho/2$.
+There is no logarithmic term. This fact determines the power
+$n^{-5/6}$ in the main result.
+
+\section{Contour estimates and a complete saddle expansion}
+
+Set $\delta=n^{-1/3}$, $t_0=c\delta^2$, and take the Cauchy circle
+$z=\rho(1-t_0)e^{\ii\theta}$. For fixed sufficiently small $\theta_0$,
+\eqref{eq:puiseux} gives uniformly for $|\theta|\le\theta_0$
+\begin{equation}\label{eq:modlocal}
+ \log|H(z)|=K+A\Re(t^{-1/2})+O(|t|^{1/2}),\qquad
+ t=1-(1-t_0)e^{\ii\theta}.
+\end{equation}
+For $|\theta|\le\varepsilon t_0$, with $\varepsilon$ small and fixed,
+the Taylor expansion of $(1+v)^{-1/2}$ yields
+\begin{equation}\label{eq:quaddecay}
+ \Re(t^{-1/2})\le t_0^{-1/2}-b\theta^2t_0^{-5/2}
+\end{equation}
+for a constant $b>0$. Here $\Re t\ge t_0$ and $\Im t$ is comparable
+to $-\theta$. For the complementary range
+$\varepsilon t_0\le|\theta|\le\theta_0$, use
+\[
+ |t|^2=t_0^2+2(1-t_0)(1-\cos\theta)
+\]
+to obtain a fixed fractional loss
+\begin{equation}\label{eq:fracdecay}
+ \Re(t^{-1/2})\le |t|^{-1/2}
+       \le t_0^{-1/2}(1+b'\varepsilon^2)^{-1/4}.
+\end{equation}
+On the rest of the circle, $L$ is uniformly bounded as $n$ grows,
+by analytic continuation across the compact arc of $|z|=\rho$
+that excludes $\rho$.
+
+Consequently every arc outside
+\begin{equation}\label{eq:window}
+ |\theta|\le\delta^{5/2}\log(1/\delta)
+\end{equation}
+is smaller than the main coefficient scale by every negative power
+of $n$. Estimate \eqref{eq:quaddecay} treats the intermediate range;
+\eqref{eq:fracdecay} treats the remaining local arc. The bounded error
+in \eqref{eq:modlocal} cannot offset either loss. The modulus of the
+Cauchy coefficient kernel is constant on this circle.
+
+For a simple coefficient formula, deform the central arc to the vertical
+segment
+\begin{equation}\label{eq:vertical}
+ t=c\delta^2(1+\ii\sqrt\delta\,u).
+\end{equation}
+One can choose endpoints with $|\Im t|=\varepsilon t_0$.
+They differ from the circular arc by $O(t_0^2)$ in real part. The
+connecting segments stay in $\Re t\ge t_0$, with $|\Im t|$ comparable
+to $\varepsilon t_0$, so the same fixed fractional loss applies.
+Their change in $-n\log|1-t|$ is $O(nt_0^2)=O(\delta)$.
+They are exponentially negligible, and no singularity is crossed.
+Reversing orientation gives a positive Gaussian integral.
+
+The leading phase on \eqref{eq:vertical} is
+\begin{equation}\label{eq:phase}
+ A t^{-1/2}+nt=\frac{3c}\delta-\frac{3c}{4}u^2
+                        +O(\sqrt\delta\,|u|^3).
+\end{equation}
+The Cauchy Jacobian is $c\delta^{5/2}/(2\pi)$; the remaining
+$(1-t)^{-1}$ will be included explicitly below. Therefore the leading
+factor, apart from $n!\rho^{-n}e^{3c/\delta}$, is
+\begin{equation}\label{eq:prefactor}
+ \frac{e^Kc\delta^{5/2}}{2\pi}\sqrt{\frac{4\pi}{3c}}
+     =2e^{-3}\sqrt{\frac c{3\pi}}\,n^{-5/6}.
+\end{equation}
+In particular $nt^2/2=O(\delta)$ affects the first correction, not
+this constant.
+
+\section{A finite generator for every correction}\label{sec:generator}
+
+Let $U$ be a centered Gaussian variable of variance $2/(3c)$.
+Define the following formal series in $\sqrt\delta$:
+\begin{align}
+ Q(\delta,U)={}&2c\sum_{k\ge3}\binom{-1/2}{k}
+                      (\ii U)^k\delta^{k/2-1}\notag\\
+ &+\sum_{m\ge2}\frac{c^m}{m}\delta^{2m-3}
+                      (1+\ii\sqrt\delta U)^m\notag\\
+ &+\sum_{m\ge1}\frac{c^m}{m}\delta^{2m}
+                      (1+\ii\sqrt\delta U)^m\notag\\
+ &+\sum_{j\ge1}g_jc^{j/2}\delta^j
+                      (1+\ii\sqrt\delta U)^{j/2}.
+ \label{eq:Q}
+\end{align}
+The four lines are, respectively, the principal phase after removing
+its constant, linear and quadratic terms;
+$n[-\log(1-t)-t]$; the extra $-\log(1-t)$; and the Puiseux perturbation.
+The coefficients in Theorem~\ref{thm:main} are
+\begin{equation}\label{eq:gaussian}
+ a_j=[\delta^j]\E e^{Q(\delta,U)}.
+\end{equation}
+Every requested coefficient involves finitely many terms. Odd powers
+of $\sqrt\delta$ are odd in $U$ and integrate to zero. The Gaussian
+moments then imply $a_j\in\mathbb Q[c,c^{-1},\rho]$.
+
+We spell out why the formal calculation supplies the asserted error
+bound. Restrict \eqref{eq:vertical} to $|u|\le\log(1/\delta)$.
+Its complement is superpolynomially small by the quadratic estimate.
+On this window the principal phase remainder is
+$O(\sqrt\delta(1+|u|^3))$. Every other summand and every fixed finite
+Taylor remainder are bounded by a power of $\delta$ times a polynomial
+in $u$, uniformly on the window. This follows from the convergent
+local expansion \eqref{eq:puiseux} and the analytic binomial and
+logarithm series. The exact integrand after its leading normalization
+is bounded by $C_0e^{-b_0u^2}$, since
+$\sqrt\delta|u|^3=o(1+u^2)$ there. Expanding to two extra half-orders,
+and bounding the exponential Taylor remainder by an integrable
+polynomial times $e^{-b_0u^2}$, gives a remainder
+$O_J(\delta^{J+1})$. The next odd half-order vanishes on the symmetric
+window and on its Gaussian extension. No residual logarithmic loss
+is hidden in the remainder. This completes the proof of
+\eqref{eq:main} and \eqref{eq:gaussian}.
+
+For example the coefficient of $\delta$ is
+\[
+ \frac{c^2(1-\rho)}2+\frac{35c}{64}\E U^4
+                    -\frac{25c^2}{128}\E U^6
+ =\frac{c^2(1-\rho)}2-\frac5{36c}.
+\]
+The first four values are
+\begin{center}
+\begin{tabular}{cr}
+\toprule
+$j$ & $a_j$\\\midrule
+1 & $-0.39827424329477706556\ldots$\\
+2 & $\phantom{-}0.98158861254222799575\ldots$\\
+3 & $-0.53022033843535145958\ldots$\\
+4 & $-0.66858737252587671304\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Exact expressions for $a_3,a_4$ are given in Appendix~\ref{app:coeff}.
+
+The accompanying \texttt{asymptotic\_coefficients.py} implements the
+finite algorithm for arbitrary requested fixed order $J$.
+It generates $s_m$ and \eqref{eq:rrec}, constructs \eqref{eq:Q} to
+order $h^{2J}$ with $h=\sqrt\delta$, and computes
+\begin{equation}\label{eq:exprec}
+ E_0=1,\qquad E_k=\frac1k\sum_{j=1}^k jQ_jE_{k-j},
+ \qquad Q=\sum Q_jh^j,\quad e^Q=\sum E_kh^k.
+\end{equation}
+It replaces $U^{2m}$ by $(2m-1)!![2/(3c)]^m$ and odd powers by zero.
+Default execution computes $J=4$. Larger orders may incur significant
+symbolic time and memory cost. The stored decimal constants are
+high-precision evaluations, not certified interval enclosures.
+
+\section{A controlled inverse and integer thresholds}
+
+There exists a smooth increasing realization $F(x)$ for all sufficiently
+large $x$ with $F(n)=A_n$, whose logarithm has a differentiable all-orders
+expansion. Here is a construction, to avoid assuming a canonical
+analytic interpolation. Realize the formal logarithmic expansion by
+a locally finite sum with successively later smooth cutoffs. Choose
+the cutoffs so its tail and each fixed derivative satisfy the desired
+bounds. If $G$ is the resulting smooth logarithm, the discrepancies
+$\log A_n-G(n)$ are smaller than every negative power of $n$.
+Multiply each discrepancy by a fixed smooth bump centered at $n$,
+with value one there and support of radius less than $1/3$.
+The bumps have disjoint supports; their sum and each fixed derivative
+are flat to all algebraic orders. Exponentiating the corrected $G$
+gives $F$. Its logarithmic derivative is asymptotic to
+$\log(x/\rho)>0$, proving eventual monotonicity.
+
+Write
+\begin{equation}\label{eq:logasym}
+ \log F(x)=x\log\frac{x}{e\rho}+Cx^{1/3}
+    +\alpha\log x+d+\sum_{j\ge1}\beta_jx^{-j/3},
+\end{equation}
+where
+\begin{align*}
+ C&=3c,&\alpha&=-\frac13,&d&=\log(D\sqrt{2\pi}),\\
+ \beta_1&=a_1,&\beta_2&=a_2-\frac{a_1^2}{2},&
+ \beta_3&=a_3-a_1a_2+\frac{a_1^3}{3}+\frac1{12}.
+\end{align*}
+The $1/12$ comes from Stirling's expansion for $\log\Gamma(x+1)$;
+later Stirling terms are included at their respective orders.
+
+For $Y\to\infty$ define
+\begin{equation}\label{eq:N}
+ L_Y=\log Y,\qquad N=\frac{L_Y}{W(L_Y/(e\rho))},\qquad
+ \ell=\log(N/\rho)=W(L_Y/(e\rho))+1.
+\end{equation}
+Thus $N\log(N/(e\rho))=L_Y$. Put
+\begin{align}
+ a&=-\frac C\ell,&
+ b&=\frac13+\frac{\log\rho/3-d}{\ell},\label{eq:inverseab}\\
+ d_1&=-\frac{a^2/2+Ca/3+\beta_1}{\ell},&
+ e_1&=-\frac{(a+C/3)b+\alpha a+\beta_2}{\ell}.
+ \label{eq:inversede}
+\end{align}
+Then
+\begin{equation}\label{eq:inverse}
+ F^{-1}(Y)=N+N^{1/3}a+b+N^{-1/3}d_1+N^{-2/3}e_1
+                           +O\left(\frac1{N\ell}\right).
+\end{equation}
+Omitting the two decaying corrections leaves an error
+$O(N^{-1/3}/\ell)$, already $o(1)$.
+
+To prove \eqref{eq:inverse}, substitute its displayed approximation
+in \eqref{eq:logasym}. The terms of orders
+$N^{1/3}$, $1$, $N^{-1/3}$ and $N^{-2/3}$ vanish successively by
+\eqref{eq:inverseab}--\eqref{eq:inversede}. The remaining logarithmic
+residual is $O(N^{-1})$. Its derivative is asymptotic to $\ell$, so
+the mean value theorem divides that residual by a quantity comparable
+to $\ell$. All four coefficient functions remain bounded as
+$\ell\to\infty$.
+
+Successive cancellation gives a complete inverse expansion in powers
+of $N^{-1/3}$, beginning with $N^{1/3}$, with coefficients rational
+in $\ell$. There is no separate growing logarithm in these coefficients,
+since $\log N=\ell+\log\rho$. Every logarithmic residual is converted
+to an inverse error by the same derivative bound. Changing the smooth
+realization by a flat function leaves every algebraic order unchanged.
+
+For the eventual integer threshold
+$\tau(Y)=\min\{n:A_n\ge Y\}$, the monotone realization gives
+$\tau(Y)=\lceil F^{-1}(Y)\rceil$ for sufficiently large $Y$.
+If an approximation $X$ has an established bound
+$|F^{-1}(Y)-X(Y)|\le E(Y)$, then
+\begin{equation}\label{eq:ceiling}
+ \lceil X-E\rceil\le\tau(Y)\le\lceil X+E\rceil.
+\end{equation}
+An $o(1)$ approximation alone does not justify unconditional rounding
+when $X$ approaches an integer. The numerical checks below are not
+certificates of explicit constants in the asymptotic remainder.
+
+\section{Exact checks and reproducibility}
+
+The file \texttt{exact\_recurrence.py} computes \eqref{eq:cumulant}
+and \eqref{eq:exact} using integer arithmetic. The released data
+contain all terms through $n=1000$. All 21 displayed OEIS values agree.
+Two independent combinatorial checks are included:
+\begin{itemize}
+\item The five insertion rules in Proposition 11 of \cite{bck} agree
+through $n=65$. This implementation does not use the EGF or cumulants.
+\item Exhaustive permutation enumeration with the literal vincular
+pattern predicate agrees through $n=8$.
+\end{itemize}
+These checks supplement the combinatorial proof; they do not replace it.
+
+Let $R_n$ be the ratio of $A_n$ to the leading term in
+\eqref{eq:main}, and let
+\[
+ T_j(n)=n^{(j+1)/3}\left(R_n-\sum_{k=0}^ja_kn^{-k/3}\right).
+\]
+The theorem predicts $T_j(n)\to a_{j+1}$. Some exact-data comparisons
+are shown below. The convergence is slow, consistent with the
+$n^{-1/3}$ correction scale.
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $R_n$ & $T_0(n)$ & $T_1(n)$ & $T_3(n)$\\\midrule
+100 & 0.9535673415 & $-0.2155213093$ & 0.8482639777 & $-0.4113273816$\\
+200 & 0.9575584055 & $-0.2481999506$ & 0.8776397878 & $-0.4542524517$\\
+400 & 0.9625345125 & $-0.2760480719$ & 0.9005701306 & $-0.4916630397$\\
+557 & 0.9650312573 & $-0.2877167077$ & 0.9096480952 & $-0.5076047828$\\
+1000 & 0.9694049550 & $-0.3059504504$ & 0.9232379289 & $-0.5328649788$\\\midrule
+Limit & 1 & $a_1=-0.3982742433$ & $a_2=0.9815886125$ & $a_4=-0.6685873725$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $n=1000$, the scaled remainder $T_4(n)$ is about $1.3572$.
+The data are consistent with the next algebraic correction, but this
+comparison does not certify a uniform remainder bound.
+
+At $Y=A_{1000}$ the inverse approximation errors after the constant
+term $b$, after adding $N^{-1/3}d_1$, and after adding
+$N^{-2/3}e_1$ are respectively
+\[
+ -0.0115393\ldots,\qquad +0.00233040\ldots,\qquad
+ -0.0000291627\ldots.
+\]
+All sampled ratios and inverse errors are stored in
+\texttt{validation.json}.
+
+The reproducibility archive contains the report source, exact data,
+Python programs, pinned dependencies, a build script, a replay
+script, and review/validation records. A separate proof review and
+independent hand-expanded Gaussian checks of $a_1,a_2$ found no
+unresolved defect. These checks are not formal verification or
+conventional peer review. A short replay regenerates the
+asymptotic coefficients and numerical comparison file, while checking
+a smaller exact prefix against the supplied $n=1000$ data. Full exact
+regeneration is separately available. No network access is needed for
+the mathematics once the standard dependencies are installed.
+
+\section{Prior work and further questions}
+
+The focused screening inspected the current OEIS entry, the
+Bevan--Cheon--Kitaev preprint and journal record, Elizalde's primary
+paper, A136127 and its listed literature, and Testart's 2026 paper.
+The exact A113226 EGF and logarithmic-derivative relation were not
+found in those sources. This is a scoped priority check, not an
+exhaustive claim about all literature. The underlying binary-word
+model, its bijections, the cumulant sequence and standard saddle
+methods are explicitly credited.
+
+A contemporaneous default-branch search of the public ProveIt
+repository for A113226, \texttt{12-34}, and the author names returned
+no matches. The checked head was
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/63b9d68407f21832316eb296fd0885e40e033c90}{\texttt{63b9d68407f2}} (full hash in the source-check record).
+The original source model and conjectures remain independently
+verifiable through the references below.
+
+Several extensions are meaningful but are not needed for the theorem:
+\begin{enumerate}
+\item Find a direct labelled bijection explaining why A136127 is the
+logarithmic derivative's coefficient sequence.
+\item Refine the transfer equation by statistics such as the number
+of zero/one blocks or natural poset parameters, and determine their
+limiting laws.
+\item Establish certified numerical constants in finite-$n$ error
+bounds and threshold envelopes.
+\item Develop exponentially improved expansions accounting for
+continuation near the other singularities $\rho+2\pi\ii k$.
+\end{enumerate}
+The last question is distinct from the complete algebraic expansion
+proved here.
+
+\appendix
+\section{Third and fourth correction coefficients}\label{app:coeff}
+
+For convenient exact reproduction, define
+\begin{align*}
+ P_3={}&5832c^9(\rho-1)^3
+       +c^6(98172\rho^2-173016\rho+28188)\\
+      &+c^3(134190\rho+1890)+665.
+\end{align*}
+Then
+\begin{equation}
+ a_3=-\frac{P_3}{279936c^3}.
+\end{equation}
+Similarly let
+\begin{align*}
+ P_4={}&524880c^{12}(\rho-1)^4\\
+ &+c^9(17379360\rho^3-56337120\rho^2
+                         +43740000\rho-4782240)\\
+ &+c^6(84480408\rho^2-181744560\rho-3139560)\\
+ &+c^3(15661800\rho-693000)+48125.
+\end{align*}
+Then
+\begin{equation}
+ a_4=\frac{P_4}{201553920c^4}.
+\end{equation}
+These expressions are the symbolic output of
+\eqref{eq:Q}--\eqref{eq:exprec}, rather than fitted constants.
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+The OEIS Foundation, \href{https://oeis.org/A113226}{A113226},
+number of permutations avoiding $12$--$34$, inspected 1 October 2026.
+\bibitem{bck}
+D. Bevan, G.-S. Cheon and S. Kitaev,
+\emph{On naturally labelled posets and permutations avoiding $12$--$34$},
+European Journal of Combinatorics \textbf{126} (2025), 104117.
+\href{https://doi.org/10.1016/j.ejc.2024.104117}{doi:10.1016/j.ejc.2024.104117}.
+See also \href{https://arxiv.org/abs/2311.08023v2}{arXiv:2311.08023v2},
+Propositions 7 and 11 and Conjectures 13 and 14.
+\bibitem{elizalde}
+S. Elizalde, \emph{Asymptotic enumeration of permutations avoiding
+generalized patterns}, Advances in Applied Mathematics \textbf{36}
+(2006), 138--155.
+\href{https://math.dartmouth.edu/~sergi/papers/pp05_aam_elizalde.pdf}{Author's full text}.
+\bibitem{oeis136}
+The OEIS Foundation, \href{https://oeis.org/A136127}{A136127},
+permutations with an initial-interval excedance set, inspected
+1 October 2026.
+\bibitem{aval}
+J.-C. Aval, A. Boussicault, M. Bouvel and M. Silimbani,
+\emph{Combinatorics of non-ambiguous trees}.
+\href{https://arxiv.org/abs/1305.3716}{arXiv:1305.3716}.
+\bibitem{testart}
+B. Testart, \emph{On minimal pattern-containing inversion sequences},
+\href{https://arxiv.org/abs/2602.12130v1}{arXiv:2602.12130v1} (2026),
+Section 6.
+\bibitem{callan}
+D. Callan, \emph{A bijection to count $(1$--$23$--$4)$-avoiding
+permutations}, Section 9.
+\href{https://pages.stat.wisc.edu/~callan/papers/1_23_4_avoid/1_23_4_avoid.pdf}{Author's full text}.
+\end{thebibliography}
+\end{document}

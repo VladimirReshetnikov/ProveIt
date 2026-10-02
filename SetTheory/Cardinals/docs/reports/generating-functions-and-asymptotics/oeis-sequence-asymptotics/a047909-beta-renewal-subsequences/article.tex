@@ -1,0 +1,829 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+symbols.map}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Complete increasing subsequences}\fancyhead[R]{\small Quantitative Beta renewal asymptotics}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Prob}{\mathbb P}\newcommand{\E}{\mathbb E}\newcommand{\He}{\operatorname{He}}
+\newcommand{\ii}{\mathrm i}\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\title{Quantitative Beta renewal asymptotics\\for complete increasing subsequences}
+\author{Research report for OEIS A047909 and A268485}
+\date{2 October 2026}
+\hypersetup{pdftitle={Quantitative Beta renewal asymptotics for complete increasing subsequences},pdfauthor={Research report},pdfsubject={OEIS A047909 and A268485 central expansions diagonal parity inverse thresholds and separated rare tails}}
+\begin{document}
+\maketitle
+\begin{abstract}
+A word chosen uniformly from all words with $m$ copies of each letter
+$1,\ldots,k$ contains $12\cdots k$ with probability $p_m(k)$.  The exact
+representation of this probability as the tail of a renewal process with
+independent $\operatorname{Beta}(1,m)$ increments, and its Gaussian limit,
+are established results of El Maazouz and Pitman.  Starting from that
+representation, we give an explicit expansion to every fixed finite order
+in the central window $k=m+O(\sqrt m)$, prove its uniform remainder, and
+compute the first four central polynomials.  On the diagonal, a parity
+argument eliminates all integer powers beyond the leading $1/2$ and gives
+four explicit half-integer corrections.  We derive smooth success
+thresholds and a Lambert-$W$ inverse for diagonal counts, keeping the
+integer rounding issue explicit.  A complementary saddle calculation
+gives the exponentially small success or failure probability, to every
+fixed integer correction order, when $k/m$ stays in a compact set separated
+from $1$.  The two regimes are proved separately; no transition-uniform
+matching or optimal truncation is claimed.  Exact rational checks and
+independent symbolic and combinatorial calculations accompany the report.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\section{The counting problem and the scope of the report}
+
+Let $H(m,k)$ be the number of words with exactly $m$ copies of each symbol
+in $\{1,\ldots,k\}$ that contain the subsequence $12\cdots k$.  A subsequence
+need not be contiguous.  Because there are only $k$ distinct letters, this
+condition is equivalent to having a strictly increasing subsequence of
+length $k$.  Define
+\begin{equation}\label{eq:definition}
+ W(m,k)=\frac{(mk)!}{(m!)^k},\qquad p_m(k)=\frac{H(m,k)}{W(m,k)},\qquad m,k\geq1.
+\end{equation}
+Thus $p_m(k)$ is a probability rather than a raw count.
+
+\paragraph{OEIS indexing.}
+The array A047909 is $h(m,k)=H(m,k)$, with $m$ the row index (multiplicity)
+and $k$ the column index (alphabet size).  Its row $m=2$ is
+$1,5,47,641,11389,\ldots$, whereas column $k=2$ is
+$1,5,19,69,251,\ldots$.  The flattened sequence is read by upward
+antidiagonals: antidiagonal $d\geq1$ is
+\[
+ H(d,1),H(d-1,2),\ldots,H(1,d).
+\]
+The diagonal sequence A268485 is
+\begin{equation}\label{eq:diagonaldef}
+ a(n)=H(n,n)\quad(n\geq1),\qquad a(0)=1.
+\end{equation}
+The $n=0$ convention is the empty word and is separate from the Beta
+construction below.  These conventions agree with the official OEIS
+entries \cite{oeisarray,oeisdiag}.
+
+\paragraph{Established results.}
+Horton and Kurn \cite{horton} supplied exact enumeration.  Their formula
+is reproduced in Clifton, Deb, Huang, Spiro and Yoo \cite{clifton}, which
+also studies means and states Gaussian and moment conjectures.
+El Maazouz and Pitman \cite{clock} subsequently established the Beta
+increment mechanism and the Gaussian limit, in particular in their
+Proposition 5.13.  The latter paper was published online in November 2023
+and in volume 33 of \emph{Combinatorics, Probability and Computing} in
+2024.  Accordingly, neither the renewal identity nor the Gaussian limit
+is a newly resolved conjecture in this report.
+
+\paragraph{Quantitative contribution and its limits.}
+The work here is the explicit specialization to this counting family:
+a uniform central expansion at every fixed finite order, its coefficient
+algorithm, the diagonal parity and corrections, controlled inversions,
+and a complementary separated-ratio rare-tail expansion.  A bounded
+literature and repository search did not locate these particular explicit
+higher-order central and inverse formulas.  This is not a universal
+historical novelty certificate, and no new general Edgeworth or saddle
+method is claimed.  All asymptotic orders are fixed before the limit;
+constants may depend on that order and on the stated compact set.
+Section~\ref{sec:provenance} gives the source-audit boundaries.
+
+\section{The exact Beta renewal law}
+
+\begin{proposition}[Established identity with a direct proof]\label{prop:renewal}
+Let $B_1,B_2,\ldots$ be independent with density
+$m(1-b)^{m-1}$ on $0<b<1$.  Then
+\begin{equation}\label{eq:renewal}
+ p_m(k)=\Prob(B_1+\cdots+B_k\leq1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Give each of the $mk$ distinguishable cards an independent uniform
+position in $(0,1)$.  Sort the positions and forget copy labels.  Each
+multiset word has exactly $(m!)^k$ distinguishable preimages, so the
+resulting word is uniform.  Read greedily: after selecting the earliest
+possible $1$, choose the earliest $2$ after it, and continue.  Greedy
+success is equivalent to the existence of $12\cdots k$.
+
+Suppose previous greedy selections have ended at position $t$.  The
+$m$ positions belonging to the next letter have not been inspected; they
+remain independent uniforms and are independent of all earlier letters.
+For $0\leq w\leq1-t$, the probability of no such position in $(t,t+w]$ is
+$(1-w)^m$.  Consequently the next successful wait has density
+$m(1-w)^{m-1}$ on $(0,1-t)$, and the failure atom has mass $t^m$.
+This is exactly the kernel obtained by drawing an independent
+$\operatorname{Beta}(1,m)$ increment and killing the process if it exceeds
+$1-t$, since $\Prob(B>1-t)=t^m$.  The entire killed kernels agree, including
+their failure masses.  Induction proves \eqref{eq:renewal}.
+\end{proof}
+
+It is important that the proof does not replace a wait conditioned on
+success by an unconditioned increment.  The killing construction is what
+makes independence valid.  If
+\[
+ N_m(1)=\max\{j\geq0:B_1+\cdots+B_j\leq1\},
+\]
+then $\Prob(N_m(1)\geq k)=p_m(k)$ and $N_m(1)\geq1$ almost surely.
+This fixes the stopping-index convention directly; shifted conventions
+in related formulations do not change any formula here.
+
+\subsection{An exact finite arithmetic formula}
+
+On the simplex $b_i\geq0$, $\sum b_i\leq1$, expand the product of the Beta
+densities and use the Dirichlet monomial integral.  This gives
+\begin{equation}\label{eq:exactsum}
+ p_m(k)=m^k\!\sum_{j_1,\ldots,j_k=0}^{m-1}
+ \frac{\displaystyle\prod_{i=1}^k
+ (-1)^{j_i}\frac{(m-1)!}{(m-1-j_i)!}}
+ {(k+j_1+\cdots+j_k)!}.
+\end{equation}
+For computation, take the $k$th power of
+$\sum_{j=0}^{m-1}(-1)^j(m-1)!/(m-1-j)!\,z^j$, and perform the remaining
+sum over its coefficients.  The common denominator $(mk)!$ makes the
+calculation exact using integers and rational numbers.  Direct floating
+point evaluation of the alternating sum is inappropriate because of
+severe cancellation.  This formula supplies finite checks independently
+of the asymptotic derivation.
+
+\section{A uniform central expansion at every fixed order}
+
+Write
+\[
+ h=m^{-1/2},\qquad x=\frac{k-m}{\sqrt m},\qquad
+ \phi(x)=\frac{e^{-x^2/2}}{\sqrt{2\pi}},\qquad
+ \Phi(x)=\int_{-\infty}^x\phi(u)\,du.
+\]
+
+\begin{theorem}[Central expansion]\label{thm:central}
+For every fixed integer $R\geq0$ and fixed $C<\infty$, there are explicitly
+computable polynomials $P_1,\ldots,P_R$ such that, uniformly over integers
+$m,k$ with $m\to\infty$ and $|x|\leq C$,
+\begin{equation}\label{eq:central}
+ p_m(k)=\Phi(-x)+\phi(x)\sum_{j=1}^R P_j(x)m^{-j/2}
+       +O_{R,C}\bigl(m^{-(R+1)/2}\bigr).
+\end{equation}
+The first four polynomials are
+\begin{align}
+ P_1(x)&=\frac{x^2+8}{6},\label{eq:p1}\\
+ P_2(x)&=\frac{x(x^4+11x^2-6)}{72},\\
+ P_3(x)&=\frac{5x^8+40x^6-561x^4-1074x^2-4848}{6480},\\
+ P_4(x)&=\frac{x(5x^{10}-5x^8-1539x^6+3339x^4+15264x^2+173988)}{155520}.
+\end{align}
+\end{theorem}
+
+For $R=0$, this is the known Gaussian transition together with an
+$O_C(m^{-1/2})$ error.  The theorem gives each requested finite refinement;
+it asserts neither convergence of an infinite formal series nor
+uniformity when $R$ or $C$ grows with $m$.
+
+\subsection{Finite coefficient construction}
+
+Set $Y_m=mB$.  Its moments and cumulants satisfy
+\begin{align}
+ \mu_0(m)&=1,&
+ \mu_r(m)&=r!\prod_{a=1}^{r}(1+a/m)^{-1},\label{eq:moments}\\
+ \kappa_r(m)&=\mu_r(m)-\sum_{a=1}^{r-1}
+ \binom{r-1}{a-1}\kappa_a(m)\mu_{r-a}(m).\label{eq:cumulants}
+\end{align}
+Only $r\leq R+2$ is needed for order $R$.  With $u$ formal, form through
+degree $h^R$ the expression
+\begin{align}\label{eq:E}
+ E(h,u,x)={}&(h^{-1}+x)(\kappa_1-1)u
+ +\frac{(1+xh)\kappa_2-1}{2}u^2\\
+ &+(1+xh)\sum_{r=3}^{R+2}h^{r-2}\kappa_r\frac{u^r}{r!}.\nonumber
+\end{align}
+Here and below each cumulant is expanded to the finite required order in
+$h^2$.  If $E_j=[h^j]E$, define
+\begin{equation}\label{eq:A}
+ A_0=1,\qquad A_j(u,x)=\frac1j\sum_{i=1}^j iE_i(u,x)A_{j-i}(u,x).
+\end{equation}
+These are the coefficients of the finite exponential $e^E$.
+Using the probabilists' Hermite polynomials
+$\He_d(z)=(-1)^de^{z^2/2}(d/dz)^de^{-z^2/2}$, the answer is
+\begin{equation}\label{eq:Hermite}
+ P_j(x)=-\sum_{d\geq1}[u^d]A_j(u,x)\He_{d-1}(-x).
+\end{equation}
+All sums and series manipulations in this prescription are finite.
+In particular, this procedure does not assume analyticity in $h$ of the
+full moment generating function of the Beta distribution.
+
+\subsection{Uniform analytic estimates}
+
+We give the details that turn the formal prescription into a theorem.
+For $m\geq2$, the density of $Y_m$ is
+\begin{equation}\label{eq:density}
+ f_m(y)=(1-y/m)^{m-1}\mathbf1_{(0,m)}(y)\leq e^{-y/2}.
+\end{equation}
+Thus $M_m(z)=\E e^{zY_m}$ has uniformly bounded exponential moments on a
+fixed complex neighborhood of zero.  By
+$|e^{zy}-1|\leq |z|y e^{|z|y}$, one can choose a fixed disk on which
+$|M_m(z)-1|<1/2$.  A single analytic branch of $\log M_m(z)$ exists there,
+and its derivatives of any prescribed fixed order are uniformly bounded.
+The variance is
+\[
+ \kappa_2(m)=\frac{m^3}{(m+1)^2(m+2)}\longrightarrow1.
+\]
+Taylor's theorem therefore gives fixed $\delta,c>0$ such that
+\begin{equation}\label{eq:gaussianbound}
+ |\E e^{\ii tY_m}|\leq e^{-ct^2},\qquad |t|\leq\delta,
+\end{equation}
+for all sufficiently large $m$.
+
+Dominated convergence in \eqref{eq:density} gives $L^1$ convergence of
+$f_m$ to the unit exponential density.  Their characteristic functions
+consequently converge uniformly on the entire real line to
+$(1-\ii t)^{-1}$.  For any fixed $T>\delta$, this implies a uniform
+$\eta_0<1$ bound on the annulus $\delta\leq|t|\leq T$.
+The density $f_m$ is decreasing from $1$ to $0$; integration by parts,
+including the boundary at zero, gives
+\begin{equation}\label{eq:tailbound}
+ |\E e^{\ii tY_m}|\leq\frac2{|t|}.
+\end{equation}
+For $T>4$ one obtains, on the positive half line,
+\begin{equation}\label{eq:tailintegral}
+ \int_\delta^\infty |\E e^{\ii tY_m}|^k\frac{dt}{t}
+ \leq\eta_0^k\log(T/\delta)+\frac{(2/T)^k}{k}.
+\end{equation}
+The constants can be chosen independently of all sufficiently large $m$.
+These estimates supply the small-, middle-, and high-frequency controls
+needed for Fourier inversion in the triangular array.
+
+\subsection{Proof of the central remainder}
+
+\begin{proof}[Proof of Theorem~\ref{thm:central}]
+Define
+\[
+ T_{m,k}=\frac{\sum_{i=1}^kY_{m,i}-k}{\sqrt m}.
+\]
+For $|th|$ inside the fixed nonvanishing disk, choose the logarithm
+branch continuous from $t=0$.  The characteristic logarithm is then exactly
+\begin{equation}\label{eq:charlog}
+ \log\E e^{\ii tT_{m,k}}=k\{\log M_m(\ii th)-\ii th\}.
+\end{equation}
+Since $k=h^{-2}+xh^{-1}$, the leading term is $-t^2/2$ and the residual
+formal exponent is \eqref{eq:E} at $u=\ii t$.
+Taylor expansion of the logarithm through degree $R+2$ in its argument
+leaves an error $O(h^{R+1}|t|^{R+3})$, uniformly in bounded $x$.
+Each of the finitely many rational cumulants in \eqref{eq:cumulants} has
+a finite Taylor expansion in $h^2$ with a controlled remainder.
+
+Choose a fixed $\alpha>0$ with $\alpha<1/[6(R+3)]$.  On
+$|t|\leq m^\alpha$, exponentiate the finite correction through degree $R$.
+Finite Taylor remainder estimates, with a slightly weakened Gaussian
+majorant from \eqref{eq:gaussianbound}, bound the difference from
+\[
+ e^{-t^2/2}\sum_{j=0}^R h^jA_j(\ii t,x)
+\]
+by
+\begin{equation}\label{eq:lowerror}
+ C_{R,C}h^{R+1}Q_R(|t|)e^{-c't^2},
+\end{equation}
+where $Q_R$ is a fixed polynomial with zero constant term.  The cutoff is
+small enough that the exponent correction and its finite remainders are
+uniformly controlled.  Polynomial factors are absorbed by the weakened
+Gaussian.
+
+Between $m^\alpha$ and $\delta\sqrt m$, the Gaussian estimate makes the
+inversion integrals smaller than every power of $m^{-1}$.
+Beyond $\delta\sqrt m$, substitute the unscaled frequency $th$ and apply
+\eqref{eq:tailintegral}; because $k/m\to1$ uniformly in the central
+window, this contribution is exponentially small.  The normal-polynomial
+comparison has the same required integrable tails.
+
+The exact sum and the comparison function have continuous integrable
+densities for all sufficiently large $k$; the latter need not be positive.
+Their characteristic functions agree at zero.  The difference of their
+CDFs is bounded by the integral of their characteristic-function
+difference divided by $|t|$, up to $1/(2\pi)$.  The low-frequency bound
+\eqref{eq:lowerror} is integrable after this division because
+$Q_R(0)=0$.  The other frequency ranges were just controlled.  This gives
+an $O(h^{R+1})$ CDF error, uniformly in the threshold.
+
+The inverse transform of $(\ii t)^de^{-t^2/2}$ is
+$\phi(z)\He_d(z)$, whose integral from $-\infty$ to $z$ is
+$-\phi(z)\He_{d-1}(z)$ for $d\geq1$.  Finally,
+$\sum B_i\leq1$ is equivalent to $T_{m,k}\leq-x$.
+Evaluating at $z=-x$ yields \eqref{eq:Hermite} and
+\eqref{eq:central}.
+\end{proof}
+
+\section{The diagonal expansion and its parity}
+
+\begin{corollary}[Diagonal A268485]\label{cor:diagonal}
+As $n\to\infty$,
+\begin{align}\label{eq:diagonal}
+ \frac{a(n)}{(n^2)!/(n!)^n}
+ =\frac12+\frac1{\sqrt{2\pi}}\bigg\{
+ &\frac4{3n^{1/2}}-\frac{101}{135n^{3/2}}
+ +\frac{19819}{7560n^{5/2}}\\
+ &-\frac{4463177}{272160n^{7/2}}+O(n^{-9/2})\bigg\}.\nonumber
+\end{align}
+More generally, only odd half-integer powers occur beyond $1/2$.
+Retaining through $n^{-(2J+1)/2}$, for any fixed $J\geq0$, leaves a
+remainder $O_J(n^{-(2J+3)/2})$.
+\end{corollary}
+\begin{proof}
+Set $x=0$ in \eqref{eq:E}.  Every monomial $h^ju^d$ has $j\equiv d\pmod2$,
+because every cumulant is a series in $h^2$.  This property is preserved
+by products and therefore by the finite exponential.  In
+\eqref{eq:Hermite}, $\He_{d-1}(0)=0$ for even $d$.  Thus only odd $j$
+survives.  For the stated remainder, apply Theorem~\ref{thm:central} at
+$R=2J+2$, whose last even coefficient vanishes.  Finite rational
+calculation gives the four displayed coefficients.
+\end{proof}
+
+The leading half-factor is consequently refined, rather than newly
+identified.  For example, exact arithmetic gives
+\[
+ \sqrt{40}\{p_{40}(40)-\tfrac12\}=0.5250319715431282\ldots,
+ \qquad \frac4{3\sqrt{2\pi}}=0.5319230405352436\ldots.
+\]
+The approach of the first number to the second is consistent with the
+negative $n^{-3/2}$ correction.  Finite numerical agreement is a useful
+sign and indexing check; the Fourier proof supplies the asymptotic error
+statement.
+
+\section{Inverting success probabilities}
+
+Fix a compact interval $\mathcal P\subset(0,1)$ and put
+$z_p=\Phi^{-1}(p)$.  To avoid inventing an unstated interpolation of an
+integer-indexed probability, define a specific smooth carrier
+\[
+ F_{m,R}(x)=\Phi(-x)+\phi(x)\sum_{j=1}^R P_j(x)m^{-j/2}.
+\]
+On a fixed central interval containing the required normal quantiles,
+$F'_{m,R}(x)=-\phi(x)+O(m^{-1/2})$ is uniformly negative for large $m$.
+Let $K_{m,R}(p)=m+x\sqrt m$, where $x$ is the unique root in this interval
+of $F_{m,R}(x)=p$.  This is a chosen approximation, not a canonical
+extension of $p_m(k)$ to real $k$.
+
+\begin{proposition}[Smooth inverse and integer bracket]\label{prop:quantile}
+For each fixed $R\geq2$, uniformly for $p\in\mathcal P$,
+\begin{equation}\label{eq:quantile}
+ K_{m,R}(p)=m-z_p\sqrt m+\frac{z_p^2+8}{6}
+ +\frac{z_p(z_p^2+38)}{72\sqrt m}+O(m^{-1}).
+\end{equation}
+Define the exact integer threshold by
+\[
+ q_m(p)=\min\{k\geq1:p_m(k)\leq p\}.
+\]
+For a suitable uniform constant $D_{R,\mathcal P}$ and all sufficiently
+large $m$, with $\varepsilon_m=D_{R,\mathcal P}m^{-R/2}$,
+\begin{equation}\label{eq:ceil}
+ \left\lceil K_{m,R}(p)-\varepsilon_m\right\rceil
+ \leq q_m(p)\leq
+ \left\lceil K_{m,R}(p)+\varepsilon_m\right\rceil.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Insert $x=-z+ah+bh^2$ into $F_{m,R}(x)=\Phi(z)$ and compare coefficients.
+At order $h$, $a=P_1(-z)=(z^2+8)/6$.  At order $h^2$,
+\[
+ b=-\frac{za^2}{2}
+   +a\{P_1'(-z)+zP_1(-z)\}+P_2(-z)
+   =\frac{z(z^2+38)}{72}.
+\]
+The implicit derivative is bounded away from zero uniformly for
+$p\in\mathcal P$, so the finite Taylor remainder controls the inverse
+remainder.  Higher fixed orders follow by the same recursion.
+
+The increments are positive, with positive density on $(0,1)$, so
+$p_m(k)$ is strictly decreasing in $k$ and tends to zero.  The threshold
+exists.  The probability error in Theorem~\ref{thm:central} is
+$O(h^{R+1})$; the carrier derivative with respect to $k$ has magnitude at
+least $ch$ on the relevant interval.  A displacement $Dh^R$ therefore
+absorbs the probability error when $D$ is sufficiently large.  Integers
+below $K_{m,R}-Dh^R$ have probability greater than $p$, and integers at
+or above $K_{m,R}+Dh^R$ have probability at most $p$.  Taking ceilings
+gives \eqref{eq:ceil}.
+\end{proof}
+
+If an asymptotic truncation replaces the exact carrier root, enlarge
+$\varepsilon_m$ to include its root error.  In particular,
+\eqref{eq:quantile} alone has smooth-root error $O(m^{-1})$.
+When the two ceilings in \eqref{eq:ceil} agree, they determine the exact
+integer threshold.  Near an integer boundary, sharper error control or
+exact evaluation is needed.  There is no vanishing-error expansion of an
+integer threshold obtained by simply suppressing its lattice oscillation.
+
+\section{Inverting diagonal count growth}
+
+For large real $n$, choose a finite diagonal probability carrier $D(n)$
+from Corollary~\ref{cor:diagonal} and set
+\[
+ A_*(n)=\frac{\Gamma(n^2+1)}{\Gamma(n+1)^n}D(n).
+\]
+For sufficiently large $n$ this is positive and increasing.  Different
+finite carriers agree to the order for which their probability
+expansions are retained; no unique real interpolation of $a(n)$ is
+asserted.  Stirling subtraction gives
+\begin{align}\label{eq:logcount}
+ \log A_*(n)={}&n^2\log n-\frac n2\log(2\pi n)+\log n\\
+ &+\frac12\log(2\pi)-\frac1{12}-\log2+O(n^{-1/2}).\nonumber
+\end{align}
+Indeed the factorial-ratio logarithm alone has the displayed terms
+without $-\log2$ and with error $O(n^{-2})$; the probability contributes
+$-\log2+O(n^{-1/2})$.
+
+\begin{proposition}[A Lambert-$W$ count inverse]\label{prop:countinverse}
+Put $L=\log y$ and
+\[
+ r=\sqrt{\frac{2L}{W_0(2L)}},
+\]
+where $W_0$ is the positive real branch of Lambert's $W$ function.  If
+$A_*(n_*(y))=y$, then
+\begin{equation}\label{eq:inversecount}
+ n_*(y)=r+\frac{\log(2\pi r)}{4\log r+2}+O(r^{-1}).
+\end{equation}
+In particular, the smooth displacement $n_*(y)-r$ tends to $1/4$.
+\end{proposition}
+\begin{proof}
+The definition gives $r^2\log r=L$.  The leading logarithmic derivative
+is $r(2\log r+1)$.  One Newton correction for the next term in
+\eqref{eq:logcount} is therefore
+$\log(2\pi r)/(4\log r+2)$.  Substitution at this corrected point leaves
+a logarithmic residual $O(\log r)$: the quadratic leading-term remainder,
+the change in the subleading term, and the uncorrected $\log r$ term
+all have at most that size.  Dividing by a derivative asymptotic to
+$r(2\log r+1)$ gives the $O(r^{-1})$ inverse error.
+\end{proof}
+
+Finite Stirling and diagonal expansions, followed by Newton or formal
+implicit inversion, give arbitrary further fixed terms.  At any specified
+order a logarithmic error is converted into a smooth inverse error by
+division by a quantity asymptotic to $n(2\log n+1)$.
+
+For clarity, exact diagonal counts are strictly increasing for $n\geq1$.
+An injection from successful $n$-square words appends the block
+$1,\ldots,n$, followed by $n+1$ copies of the new largest letter.  The
+result is a successful $(n+1)$-square word.  Successful target words
+beginning with the new largest letter lie outside the image.  This proves
+strictness and makes a first-crossing index well-defined.  Nevertheless,
+integer crossings must be bracketed using controlled errors.  The limit
+$1/4$ in Proposition~\ref{prop:countinverse} concerns the smooth carrier;
+it is not a claim about an integer displacement.
+
+\section{Exponentially small tails away from the transition}\label{sec:rare}
+
+Now let $\rho=k/m$ be the \emph{exact} integer ratio.  Throughout this
+section, $\rho$ lies in a fixed compact set $\mathcal K$ contained either
+in $(0,1)$ or in $(1,\infty)$.  Define
+\[
+ I(\rho)=1-\rho+\rho\log\rho,\qquad
+ T_m(k)=\begin{cases}1-p_m(k),&\rho<1,\\p_m(k),&\rho>1.\end{cases}
+\]
+The first case is rare failure and the second rare success.
+
+\begin{theorem}[Separated-ratio expansion]\label{thm:rare}
+For every fixed integer $J\geq0$, uniformly on $\mathcal K$,
+\begin{align}\label{eq:rare}
+ T_m(k)={}&\frac{e^{1-1/\rho}\sqrt\rho}
+ {|\rho-1|\sqrt{2\pi m}}e^{-mI(\rho)}\\
+ &\times\left\{1+\sum_{j=1}^J\frac{c_j(\rho)}{m^j}
+ +O_{J,\mathcal K}(m^{-J-1})\right\},\nonumber
+\end{align}
+where the $c_j$ are explicitly computable rational functions, possibly
+singular at $0$ and $1$.  In particular,
+\begin{equation}\label{eq:c1}
+ c_1(\rho)=-\frac{\rho^4+10\rho^3-17\rho^2+24\rho-6}
+ {12\rho^3(\rho-1)^2}.
+\end{equation}
+\end{theorem}
+
+Replacing $k/m$ by its limit in \eqref{eq:rare} without controlling the
+offset changes the prefactor.  Even a bounded displacement in $k$ can
+produce a nonvanishing exponential factor.  Likewise the poles at
+$\rho=1$ prevent the theorem from being applied uniformly as the ratio
+approaches the central window.
+
+\subsection{Finite transform and saddle expansions}
+
+For real $t<1$, set $K_m(t)=\log\E e^{tY_m}$.  On compact real intervals
+below $1$, and on a fixed sufficiently small complex neighborhood,
+finite density expansion gives, with derivative-uniform remainders,
+\begin{align}\label{eq:Kexp}
+ K_m(t)&=-\log(1-t)+\sum_{j=1}^{L}m^{-j}B_j(t)+O_L(m^{-L-1}),\\
+ B_1(t)&=\frac1{1-t}-\frac1{(1-t)^2},\nonumber\\
+ B_2(t)&=\frac3{2(1-t)^2}-\frac4{(1-t)^3}
+            +\frac5{2(1-t)^4}.\nonumber
+\end{align}
+To justify every finite order, start from
+\begin{equation}\label{eq:logdensity}
+ (m-1)\log(1-y/m)
+ =-y+\sum_{j\geq1}m^{-j}
+ \left(\frac{y^j}{j}-\frac{y^{j+1}}{j+1}\right).
+\end{equation}
+Split the integral at $y=m^\alpha$ for a sufficiently small fixed
+$\alpha$.  On the first part, expand to the needed finite order and
+bound the remainder by a polynomial times a common integrable
+exponential.  On the second part, exponential domination applies
+uniformly in the complex neighborhood, whose real part stays below
+$1$ by a fixed margin.  Polynomial factors also control every prescribed
+finite derivative.  Integrating the finite polynomial coefficients
+against $e^{-(1-t)y}$ and taking a finite formal logarithm gives the
+rational functions $B_j$.  Analytic dependence of the full transform on
+$1/m$ is not required.
+
+There is a unique real saddle $t_m$ with
+\begin{equation}\label{eq:saddle}
+ K'_m(t_m)=\rho^{-1}.
+\end{equation}
+Uniform strict convexity near the limiting saddle and
+\eqref{eq:Kexp} yield
+\begin{equation}\label{eq:tshift}
+ t_m=1-\rho+\frac{2/\rho-1}{m}+O(m^{-2}),\qquad
+ K''_m(t_m)=\rho^{-2}+O(m^{-1}).
+\end{equation}
+Successive substitution in \eqref{eq:saddle}, with a finite-order
+implicit-function estimate for the residual, gives all further fixed
+orders.  The derivative at the limiting saddle is $\rho^{-2}$ and is
+uniformly nonzero on $\mathcal K$.
+
+\subsection{Exact tilting and the integer-power algorithm}
+
+Tilt the density to
+$e^{t_my}f_m(y)/M_m(t_m)$.  Write $\sigma^2=K''_m(t_m)$ and
+$\lambda_r=K_m^{(r)}(t_m)/\sigma^r$.  The tilted mean is $1/\rho$.
+If $g_{m,k}$ is the tilted density of $\sum_{i=1}^kY_{m,i}-m$, then,
+with $\epsilon=+1$ for $\rho<1$ and $\epsilon=-1$ for $\rho>1$,
+\begin{equation}\label{eq:tilt}
+ T_m(k)=e^{kK_m(t_m)-t_mm}
+ \int_0^\infty e^{-|t_m|u}g_{m,k}(\epsilon u)\,du.
+\end{equation}
+Equivalently, Fourier inversion and integration of the half-line weight
+give
+\begin{align}\label{eq:tailfourier}
+ T_m(k)=\frac{e^{kK_m(t_m)-t_mm}}{2\pi}
+ \int_{\mathbb R}&\left\{\frac{M_m(t_m+\ii v)}{M_m(t_m)}e^{-\ii v/\rho}\right\}^{k}\\
+ &\times\frac{\sgn(t_m)}{t_m+\ii v}\,dv.\nonumber
+\end{align}
+The global formula uses the characteristic function directly; the analytic
+branch $K_m$ is used only near the real saddle, where the transform is
+nonvanishing.  There is no real-axis singularity: $|t_m|$ is uniformly bounded away
+from zero.  The interchange is justified by the integrable $k$th power
+of the tilted characteristic function and the integrable half-line
+weight.
+
+Let $\eta=k^{-1/2}$ and let $\mathcal G$ be the linear Gaussian
+functional on polynomials in $u$ defined by
+\[
+ \mathcal G[u^{2a}]=(-1)^a(2a-1)!!,\qquad
+ \mathcal G[u^{2a+1}]=0,\qquad \mathcal G[1]=1.
+\]
+The negative signs encode powers of the imaginary Fourier argument.
+For $j\geq0$, set
+\begin{equation}\label{eq:Qj}
+ Q_j=\mathcal G\!\left([\eta^{2j}]
+ \left\{\frac1{1+\eta u/(t_m\sigma)}
+ \exp\!\left(\sum_{r=3}^{2j+2}
+       \lambda_r\frac{u^r\eta^{r-2}}{r!}\right)\right\}\right).
+\end{equation}
+Then $Q_0=1$, and the exact-saddle expansion is
+\begin{equation}\label{eq:exact-saddle}
+ T_m(k)=\frac{e^{kK_m(t_m)-t_mm}}
+ {|t_m|\sqrt{2\pi kK''_m(t_m)}}
+ \left\{\sum_{j=0}^JQ_jk^{-j}+O_{J,\mathcal K}(k^{-J-1})\right\}.
+\end{equation}
+The $Q_j$ here use the actual $m$-dependent tilted cumulants and saddle;
+they are not yet the $c_j(\rho)$ in \eqref{eq:rare}.  Substitute the
+finite transform and saddle expansions into \eqref{eq:exact-saddle},
+use $k=\rho m$, and collect powers of $m^{-1}$ to obtain those $c_j$.
+This is a finite algorithm at any prescribed order.
+
+\subsection{Uniform remainder and the first correction}
+
+\begin{proof}[Proof of Theorem~\ref{thm:rare}]
+The tilted laws have uniformly bounded exponential moments and variances
+bounded above and below.  Their densities converge uniformly in the
+parameter, in $L^1$, to exponential densities of rate $\rho$.
+The annular nonlattice bound therefore follows as in the central proof.
+For large $m$, their logarithmic density derivative is
+\[
+ t_m-\frac{m-1}{m-y}<0,
+\]
+since $t_m\leq1-a$ for a fixed $a>0$.  The endpoint density and total
+variation are uniformly bounded, yielding a uniform $O(1/|v|)$
+characteristic-function bound.  These facts give the same three
+frequency controls used in Theorem~\ref{thm:central}.
+
+In \eqref{eq:tailfourier}, scale $v=w/(\sigma\sqrt k)$ and expand the
+exponent and denominator to any fixed order on a small-power cutoff.
+The leading factor is $e^{-w^2/2}$, and all remainders are bounded by a
+fixed polynomial times a weaker integrable Gaussian.  Odd powers of
+$\eta$ integrate to zero: each of their monomials has odd degree in the
+imaginary Fourier variable.  Expand through one additional odd order
+before bounding the remainder; after retaining $k^{-J}$ this gives
+$O(k^{-J-1})$.  Middle and high frequencies are smaller than every
+algebraic order.  The coefficients are exactly \eqref{eq:Qj}, proving
+\eqref{eq:exact-saddle} with its uniform error.
+
+Stationarity at $t_0=1-\rho$ gives
+\[
+ kK_m(t_m)-t_mm=-mI(\rho)+1-\rho^{-1}+O(m^{-1}).
+\]
+Together with \eqref{eq:tshift}, this gives the leading factor of
+\eqref{eq:rare}.  Repeating the finite substitutions proves all stated
+orders and the rational form of the coefficients.  For the first order,
+\begin{equation}\label{eq:Q1}
+ Q_1=\frac{\lambda_4}{8}-\frac{5\lambda_3^2}{24}
+       -\frac{\lambda_3}{2t_m\sigma}
+       -\frac1{t_m^2\sigma^2}.
+\end{equation}
+The order-$m^{-1}$ contributions from the exponent, the prefactor, and
+$Q_1/k$, respectively, are
+\[
+ \frac{2\rho^2-4\rho+1}{2\rho^3},\qquad
+ -\frac{\rho^2-3\rho+1}{\rho^2(\rho-1)},\qquad
+ \frac1\rho\left(-\frac1{12}-\frac{\rho}{(1-\rho)^2}\right).
+\]
+Their sum is \eqref{eq:c1}.  In particular the true saddle displacement
+has been included; omitting it changes the correction.
+\end{proof}
+
+At $\rho=2$, $m=40$, exact arithmetic gives a ratio of exact tail to
+leading approximation of about $0.98318167$.  Including $c_1/m$ changes
+the ratio of exact tail to the approximation to about $1.00143703$.
+This illustrates the correction, not an effective universal error bound.
+Convergence can be much slower near $\rho=1$, where the theorem excludes
+uniformity.
+
+\section{Reproducible calculations and verification}\label{sec:reproduce}
+
+The companion archive contains this editable \LaTeX{} source and PDF,
+mathematical proof notes, portable Python checks, a dependency list,
+a SHA-256 manifest, and a Bash replay entry point.  It does not bundle
+third-party full papers.  The computations are ordinary exact and
+symbolic checks; no formal proof-assistant certification is claimed.
+
+The main coefficient calculation uses the cumulant recurrence
+\eqref{eq:cumulants}.  An independent calculation instead forms the
+truncated raw moment series, applies the finite logarithm series, and
+then exponentiates in rational polynomial arithmetic.  This recovers
+all four displayed central polynomials and the diagonal coefficients
+through $n^{-7/2}$, including the zero even coefficients.
+
+A separate dynamic program counts words directly.  Its state consists
+of remaining letter multiplicities and the length of the greedy matched
+prefix.  At each step it chooses a letter with positive remaining count,
+decrements that count, and advances the prefix exactly when the chosen
+letter is the next required symbol.  It counts distinct words, not
+copy-labelled permutations.  It agrees with \eqref{eq:exactsum} for all
+$20$ pairs $m=1,\ldots,4$, $k=1,\ldots,5$, and independently reproduces
+Table~\ref{tab:counts}.
+
+\begin{table}[ht]
+\centering
+\caption{Exact diagonal counts with the specified offset}\label{tab:counts}
+\begin{tabular}{@{}rr@{}}\toprule
+$n$ & $a(n)$\\\midrule
+0 & 1\\
+1 & 1\\
+2 & 5\\
+3 & 1306\\
+4 & 46922017\\
+5 & 449363984934526\\\bottomrule
+\end{tabular}
+\end{table}
+
+Central numerical checks use the exact integer $k$ and the resulting
+$x=(k-m)/\sqrt m$, rather than a target real $x$ before rounding.
+Rare-tail checks likewise use the exact $k/m$.
+The replay also tests symbolic identities by assertion, so a coefficient
+mismatch fails the run rather than merely printing a different result.
+The recorded outputs are reproducibility diagnostics, not numerical
+proofs of the uniform remainder estimates.
+
+\paragraph{Running the archive.}
+Extract the archive, install the versions listed in
+\texttt{requirements.txt} if needed, and run \texttt{bash replay.sh}
+from the extracted directory.  The entry point checks the input manifest,
+executes every included check, and writes fresh results and logs.
+Use \texttt{bash replay.sh -{}-with-pdf} to compile the article as well,
+requiring \texttt{pdflatex} and the standard \LaTeX{} packages declared
+in the source.  No script relies on executable permission bits, an
+absolute workspace path, a network call, or a bundled external paper.
+
+\section{Source audit and bounded novelty}\label{sec:provenance}
+
+The public sources consulted are the official OEIS entries and the
+primary papers in the bibliography.  The full 2023 Clifton et al. paper
+and the full El Maazouz--Pitman arXiv paper were inspected.  The original
+1981 Horton--Kurn publication was not obtained in full; exact enumeration
+is attributed via its reproduction in Theorem 2.1 of Clifton et al.
+No claim about absence of asymptotics in the unseen original is made.
+
+The El Maazouz--Pitman paper explicitly supplies the independent Beta
+construction and the Gaussian theorem.  Neither an explicit central
+Edgeworth correction nor an inverse-threshold expansion was located in
+the inspected text.  Searches combined the sequence identifiers and
+complete or continuously increasing subsequence terminology with
+renewal, normal, Edgeworth, asymptotic, and later dates.  Such searches
+cannot exclude an existing general theorem that implies the expansions
+after specialization.  The bounded claim is therefore the explicit
+family-level formulas and their controlled proofs, with no assertion
+of a new general probabilistic mechanism.
+
+A read-only overlap check of the ProveIt report repository was pinned to
+commit\par
+\noindent\texttt{4b874cea0012c51a6841ad9c58f6e20fa57c71da}.\par
+It used a nontruncated SetTheory subtree, the exact OEIS-asymptotics
+report directory, all $92$ Markdown or \LaTeX{} files in that directory
+scope, the full report manifest, and the relevant text members of six
+incoming archives.  Searches found no matching sequence identifiers or
+Beta-renewal titles in that scoped material.  This is a scoped content
+check, not a claim to have downloaded every repository file.  The
+bibliographic and source-hash record accompanying this report records
+what was actually inspected.
+
+\section{Further research directions}
+
+The results leave several concrete questions open within this project.
+
+\begin{enumerate}[leftmargin=*,itemsep=0.7em]
+\item \textbf{Uniform matching across the transition.}
+Construct a single error-function saddle formula valid as
+$\rho\to1$, then prove that its central re-expansion gives the $P_j$
+and its separated-ratio re-expansion gives the $c_j$.  The singular
+coefficients in \eqref{eq:c1} show why substituting
+$\rho=1+x/\sqrt m$ into a fixed-ratio remainder is insufficient.
+A useful result would state a precise shared domain and a relative or
+absolute error appropriate to each tail.
+
+\item \textbf{Moderate deviations.}
+Determine rigorous growing windows for $x=(k-m)/\sqrt m$, with error
+bounds retaining relative accuracy in a small Gaussian tail.  The
+present fixed-$C$ theorem cannot simply be extended by putting
+$C=C_m\to\infty$.  One must track the polynomial coefficient growth,
+the Fourier cutoffs, and the transition from an absolute CDF error to
+a relative tail error.  The regime $\rho-1\to0$ while
+$\sqrt m\,|\rho-1|\to\infty$ is the natural bridge.
+
+\item \textbf{Effective constants and certified rounding.}
+Extract numerical constants and explicit lower bounds on $m$ from the
+moment, annulus, and Fourier-tail estimates.  Such constants would turn
+\eqref{eq:ceil} into a directly usable certified threshold algorithm,
+including a principled switch to exact computation near integer
+boundaries.  The present big-$O$ constants are existential and depend on
+fixed compact sets and fixed truncation order.
+
+\item \textbf{Stable large-parameter computation.}
+The exact simplex formula is excellent for audit-sized parameters but
+has large intermediate alternating integers.  Develop a numerically
+stable renewal convolution or saddle-based method with rigorous
+interval errors for larger $m,k$, and compare its cost with exact
+coefficient convolution and combinatorial dynamic programming.
+
+\item \textbf{High order and truncation.}
+Study growth of the coefficient families, possible useful truncation
+rules, and singular behavior as the ratio approaches $0$ or $1$.
+Nothing proved here provides growing-order estimates, an optimally
+truncated transseries, Stokes phenomena, or exponentially improved
+remainders.  Any such extension would need additional analytic work.
+\end{enumerate}
+
+\paragraph{Conclusion.}
+The established renewal representation makes a controlled quantitative
+study possible.  The central coefficients, diagonal parity, inverses,
+and separated-ratio tails form two complementary finite-order theories.
+The remaining challenge is to join their ranges with explicit,
+transition-uniform and practically effective error estimates.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{oeisarray} OEIS Foundation Inc., \emph{A047909: Array read by
+antidiagonals upwards}, \url{https://oeis.org/A047909}, inspected
+2 October 2026.  Multiplicity is the row index and alphabet size is the
+column index.
+\bibitem{oeisdiag} OEIS Foundation Inc., \emph{A268485: Number of sequences
+with $n$ copies each of $1,2,\ldots,n$ and longest increasing subsequence
+of length $n$}, \url{https://oeis.org/A268485}, inspected 2 October 2026.
+\bibitem{horton} J. D. Horton and A. Kurn, \emph{Counting sequences with
+complete increasing subsequences}, Congressus Numerantium \textbf{33}
+(1981), 75--80.  Original not inspected in full; enumeration consulted
+through \cite[Theorem 2.1]{clifton}.
+\bibitem{clifton} A. Clifton, B. Deb, Y. Huang, S. Spiro and S. Yoo,
+\emph{Continuously increasing subsequences of random multiset
+permutations}, European Journal of Combinatorics \textbf{110} (2023),
+103708.  \href{https://doi.org/10.1016/j.ejc.2023.103708}{doi:10.1016/j.ejc.2023.103708}.
+Preprint: \url{https://arxiv.org/abs/2110.10315}.
+\bibitem{clock} Y. El Maazouz and J. Pitman, \emph{The Bernoulli clock:
+probabilistic and combinatorial interpretations of the Bernoulli
+polynomials by circular convolution}, Combinatorics, Probability and
+Computing \textbf{33} (2024), 210--237.  Published online 16 November 2023.
+\href{https://doi.org/10.1017/S0963548323000421}{doi:10.1017/S0963548323000421}.
+Preprint: \url{https://arxiv.org/abs/2210.02027}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,592 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{pdftitle={Asymptotic expansions and inversion for A124380},pdfsubject={Exact moments and two sectorwise asymptotic expansions},pdfauthor={Research report},pdfkeywords={A124380, saddle point, asymptotic expansion, inverse, oscillation}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Asymptotics of A124380}\fancyhead[R]{\small Research report}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\ii}{\mathrm i}\newcommand{\M}{\mathcal M}\newcommand{\dd}{\,\mathrm dt}\newcommand{\C}{\mathbb C}
+\title{Asymptotic expansions and inversion for A124380}
+\author{Research report}\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The coefficients of $\sum_{k\ge0}z^k\prod_{j=1}^k(1+jz)$ admit an exact decomposition into a positive moment and a signed moment. This identity yields a multiplicative asymptotic equivalent, an arbitrary fixed-order relative expansion, and a separately controlled oscillatory expansion for the exponentially smaller signed term. Both sectors have explicit finite coefficient recurrences. We also invert the positive moment through a Lambert $W$ normalization, give five explicit inverse coefficients and an arbitrary-order recurrence, and explain the additional certification needed for integer thresholds. The proof uses real Laplace estimates and Gaussian moments; no convergence of the formal series, complete exponential classification, or publication-priority claim is made.
+\end{abstract}
+
+\section{Sequence and main conclusions}
+Define $a_0=1$ and, as a formal power series,
+\begin{equation}\label{eq:gf}
+ \sum_{n\ge0}a_nz^n=\sum_{k\ge0}z^k\prod_{j=1}^k(1+jz).
+\end{equation}
+These are OEIS A124380, beginning
+\[
+1,1,2,4,9,22,57,157,453,1368,4296,13995,47138,163779,585741.
+\]
+The series is used formally; none of the arguments requires a positive radius of convergence. For $n\to\infty$ put
+\begin{equation}\label{eq:xL}
+ x=\sqrt{n/2},\qquad L=\log x,\qquad B=x^2(2L-1).
+\end{equation}
+The principal equivalent proved below is
+\begin{equation}\label{eq:leading}
+ a_n\sim\M_n,
+ \qquad \M_n=\frac{e^{1/2}}2\,x\exp\left\{B+x(L+1)+\frac{L^2}{8}\right\}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:logsummary}
+ \log a_n=B+x(L+1)+\frac{L^2}{8}+L+\frac12-\log2
+ +O\!\left(\frac{(1+L)^3}{x}\right).
+\end{equation}
+This proves substantially more than the logarithmic conjecture recorded in the OEIS entry \cite{oeis}: the factor in \eqref{eq:leading} has relative error tending to zero. The terms of size $\sqrt n\log n$, $(\log n)^2$, and the multiplicative prefactor matter for this conclusion.
+
+There is also an exact identity
+\begin{equation}\label{eq:identity-summary}
+ a_n=I_n+(-1)^nJ_n,
+\end{equation}
+where $I_n>0$ and $J_n$ is signed. The signed contribution satisfies
+\begin{align}
+ \frac{|J_n|}{I_n}&\le \exp\{-2x(L+1)+O(L^2)\},\label{eq:small-summary}\\
+ J_n&=\M_n^-\left\{\sin\theta_n+O\!\left(\frac{(1+L)^3}{x}\right)\right\},\label{eq:j-summary}\\
+ \M_n^-&=e^{1/2-\pi^2/8}x\exp\left\{B-x(L+1)+\frac{L^2}{8}\right\},\qquad
+ \theta_n=\pi x-\frac{\pi(L+2)}4.\notag
+\end{align}
+The error in \eqref{eq:j-summary} is measured against $\M_n^-$, not against $J_n$; it remains valid near zeros of the sine. Both \eqref{eq:leading} and \eqref{eq:j-summary} extend to every fixed algebraic order. A finite algebraic approximation to $I_n$ generally has an error much larger than $J_n$. The exact subtraction $a_n-I_n=(-1)^nJ_n$ is therefore essential when interpreting the smaller sector.
+
+\subsection{Established combinatorial models and asymptotic background}
+Chen, Fan, and Zhao \cite{cfz}, Theorem 1.1, already identify \eqref{eq:gf} with partial matchings avoiding neighbor alignments. Their Theorem 2.1 gives the corresponding triangular recurrence. This natural model dates to their 2010 preprint. Their displayed initial list has $4290$ where their generating function gives $4296$; the identification here uses the generating function.
+
+Cerbai, Claesson, and Sagan \cite{ccs}, Theorem 4.5 and Lemma 4.6, give a later model consisting of restricted-growth words
+\[
+ 1B_1\,2B_2\cdots kB_k,
+\]
+where $B_i$ is empty or a single letter in $\{1,\ldots,i\}$. They also identify the stabilized large-difference limit of self-modified difference ascent sequences. These models and their historical precedence are established work, not discoveries claimed by this report.
+
+Temme \cite{temme} gives important uniform asymptotic estimates for Stirling numbers; the first-kind analysis includes gamma-ratio saddles. The method here first sums the relevant diagonal exactly into real moments, then applies ordinary Laplace expansion. A targeted literature check did not locate a sequence-specific relative asymptotic theorem of the form proved here. That observation does not establish publication priority or exhaust the literature.
+
+\section{An exact signed moment decomposition}
+Let $e_j$ denote the elementary symmetric polynomial, and let square brackets with two entries denote unsigned Stirling numbers of the first kind. Introduce
+\begin{equation}\label{eq:An}
+ A_n(u)=\sum_{k=\lceil n/2\rceil}^{n}e_{n-k}(1,\ldots,k)u^k,
+ \qquad a_n=A_n(1)=\sum_k\genfrac{[}{]}{0pt}{}{k+1}{2k-n+1}.
+\end{equation}
+All sums in this section are finite when indexed by a fixed $n$.
+
+\begin{theorem}\label{thm:identity}
+For every integer $n\ge0$,
+\begin{align}
+ a_n&=I_n+(-1)^nJ_n,\label{eq:identity}\\
+ I_n&=\int_0^\infty\frac{t^{n+2t+1}e^{-t^2}}{\Gamma(1+t)}\dd,\label{eq:I}\\
+ J_n&=\int_0^\infty t^{n-2t+1}e^{-t^2}\frac1{\Gamma(1-t)}\dd.\label{eq:J}
+\end{align}
+Both integrals are absolutely convergent. The reciprocal gamma function in \eqref{eq:J} is entire and vanishes at positive integral $t$; those points are not singularities of the integrand.
+\end{theorem}
+\begin{proof}
+For $r>0$ use its real logarithm and set
+\[
+ R(z;r)=\frac{r^z}{\Gamma(1+z)}.
+\]
+For $a\in\C$, define
+\begin{equation}\label{eq:Mn}
+ M_n(a)=\frac{a^n}{2}\int_0^\infty e^{-r}r^{n/2}
+ \{R(a\sqrt r;r)+(-1)^nR(-a\sqrt r;r)\}\,\mathrm dr.
+\end{equation}
+This is entire in $a$. Indeed, on $|a|\le K$, the standard global reciprocal-gamma bound gives, for $r\ge1$, an integrable majorant of the form
+\[
+ C_Kr^{n/2}\exp\{-r+C_K\sqrt r\log(2+r)\}.
+\]
+For $0<r\le1$, the arguments of reciprocal gamma lie in a compact disc, while $\sqrt r\,|\log r|\to0$. Thus the remaining factors are uniformly bounded. Dominated holomorphic parameter integration and Cauchy coefficient extraction apply.
+
+Only Taylor indices $m\ge0$ with $n+m$ even survive the parity sum. Put $k=(n+m)/2$. The coefficient of $a^{n+m}=a^{2k}$ in \eqref{eq:Mn} is
+\begin{align*}
+ \int_0^\infty e^{-r}r^k[z^m]\frac{r^z}{\Gamma(1+z)}\,\mathrm dr
+ &=[z^m]\frac{\Gamma(k+1+z)}{\Gamma(1+z)}\\
+ &=[z^m]\prod_{j=1}^{k}(j+z)
+ =e_{n-k}(1,\ldots,k).
+\end{align*}
+The gamma-integral exchange is justified uniformly on, for example, $|z|<1/2$. The product has degree $k$, so the coefficient is zero if $m>k$, equivalently $k>n$. Consequently the entire function $M_n(a)$ equals the finite polynomial $A_n(a^2)$. Set $a=1$ and substitute $r=t^2$ in \eqref{eq:Mn}; the factor $2t$ cancels its $1/2$ and yields \eqref{eq:identity}.
+\end{proof}
+
+For completeness, the same identity gives, for real $u>0$,
+\begin{equation}\label{eq:uidentity}
+ A_n(u)=\int_0^\infty e^{-t^2/u}\left\{
+ \frac{u^{-1-t}t^{n+2t+1}}{\Gamma(1+t)}
+ +(-1)^n\frac{u^{-1+t}t^{n-2t+1}}{\Gamma(1-t)}\right\}\dd.
+\end{equation}
+No uniform moving-$u$ asymptotic assertion is needed in this report.
+
+\section{Saddles and the exponentially small scale}
+Define the two real phases
+\begin{align}
+ \Phi_n(t)&=(n+2t+1)\log t-t^2-\log\Gamma(1+t),\label{eq:phi}\\
+ \Psi_n(t)&=(n-2t+1)\log t-t^2+\log\Gamma(t).\label{eq:psi}
+\end{align}
+Reflection gives the exact expression
+\begin{equation}\label{eq:reflection}
+ J_n=\frac1\pi\int_0^\infty e^{\Psi_n(t)}\sin(\pi t)\dd.
+\end{equation}
+Here $\psi$ and $\psi_1$ below denote the digamma and trigamma functions, respectively.
+
+\begin{lemma}\label{lem:concavity}
+For $n\ge1$, each phase has a unique positive saddle, denoted by $\tau$ for $\Phi_n$ and $\sigma$ for $\Psi_n$. They satisfy
+\begin{align}
+ \Phi_n''(t)&\le -2+\frac1{n+1}<-1,\label{eq:concavityplus}\\
+ \Psi_n''(t)&<-2,\label{eq:concavityminus}\\
+ \tau&=x+\frac{L+2}{4}+O(L^2/x),\qquad
+ \sigma=x-\frac{L+2}{4}+O(L^2/x).\label{eq:saddles}
+\end{align}
+At either saddle, the negative second derivative tends to $4$. For every fixed $j\ge3$, the $j$th derivative is $O_j(x^{2-j})$, uniformly on the interval from one half to three halves of the corresponding saddle.
+\end{lemma}
+\begin{proof}
+Direct differentiation gives
+\[
+ \Phi_n''(t)=-\frac{n+1}{t^2}+\frac2t-2-\psi_1(1+t).
+\]
+The quadratic $-(n+1)v^2+2v$ is at most $1/(n+1)$, proving \eqref{eq:concavityplus}. For the other phase, the series for trigamma and an integral comparison give
+\[
+ \psi_1(t)=\frac1{t^2}+\sum_{k\ge1}\frac1{(t+k)^2}
+ <\frac1{t^2}+\int_0^\infty\frac{\mathrm ds}{(t+s)^2}
+ =\frac1{t^2}+\frac1t.
+\]
+Hence
+\[
+ \Psi_n''(t)=-\frac{n+1}{t^2}-\frac2t-2+\psi_1(t)
+ <-\frac n{t^2}-\frac1t-2.
+\]
+Both first derivatives tend to $+\infty$ at zero and to $-\infty$ at infinity. Strict concavity yields existence and uniqueness. The exact positive saddle equation is
+\begin{equation}\label{eq:tau}
+ n=2\tau^2-2\tau\log\tau-2\tau+\tau\psi(1+\tau)-1.
+\end{equation}
+Stirling's formula and its differentiated forms first locate both saddles at $x+O(L)$ and then give \eqref{eq:saddles}, the curvature limit, and the derivative estimates.
+\end{proof}
+
+\begin{proposition}\label{prop:small}
+As $n\to\infty$, \eqref{eq:small-summary} holds. In particular $J_n/I_n$ is smaller than every fixed inverse power of $n$.
+\end{proposition}
+\begin{proof}
+For $t\ge1$, Stirling's formula gives
+\begin{align*}
+ \Phi_n(t)&=(n+t+\tfrac12)\log t-t^2+t-\tfrac12\log(2\pi)+O(1/t),\\
+ \Psi_n(t)&=(n-t+\tfrac12)\log t-t^2-t+\tfrac12\log(2\pi)+O(1/t).
+\end{align*}
+Evaluation at $x$, together with the $O(L)$ saddle displacements and bounded saddle curvatures, gives
+\[
+ \Phi_n(\tau)=B+x(L+1)+O(L^2),\qquad
+ \Psi_n(\sigma)=B-x(L+1)+O(L^2).
+\]
+A fixed-width interval about $\tau$ gives $I_n\ge c e^{\Phi_n(\tau)}$ for all sufficiently large $n$. Global concavity gives
+\[
+ |J_n|\le\pi^{-1}\int_0^\infty e^{\Psi_n(t)}\dd
+ \le\pi^{-1/2}e^{\Psi_n(\sigma)}.
+\]
+Their ratio proves the claim. This is an upper bound and does not exclude further oscillatory cancellation.
+\end{proof}
+
+\section{Full expansion at the positive saddle}
+Set
+\[
+ H_+=-\Phi_n''(\tau),\qquad \lambda_j^+=\Phi_n^{(j)}(\tau)\quad(j\ge3).
+\]
+For $r\ge0$ define the finite expression
+\begin{equation}\label{eq:Cr}
+ C_r=\sum_{\substack{m_3,\ldots,m_{2r+2}\ge0\\
+                  \sum_{j=3}^{2r+2}(j-2)m_j=2r}}
+ \frac{(2r+2M-1)!!}{H_+^{r+M}}
+ \prod_{j=3}^{2r+2}\frac{(\lambda_j^+/j!)^{m_j}}{m_j!},
+ \quad M=\sum_jm_j,
+\end{equation}
+with $C_0=1$ and $(-1)!!=1$.
+\begin{theorem}\label{thm:positive}
+For each fixed $R\ge0$, $C_r=O_r(\tau^{-2r})$ and
+\begin{equation}\label{eq:positivesaddle}
+ I_n=e^{\Phi_n(\tau)}\sqrt{\frac{2\pi}{H_+}}
+ \left\{\sum_{r=0}^{R}C_r+O_R(\tau^{-2R-2})\right\}.
+\end{equation}
+The same formula holds with $a_n$ in place of $I_n$. Its constants may depend on $R$ but not on $n$.
+\end{theorem}
+For example, writing $\lambda_j=\lambda_j^+$ and $H=H_+$,
+\begin{align}
+ C_1&=\frac{\lambda_4}{8H^2}+\frac{5\lambda_3^2}{24H^3},\label{eq:C1}\\
+ C_2&=\frac{\lambda_6}{48H^3}+\frac{7\lambda_3\lambda_5}{48H^4}
+ +\frac{35\lambda_4^2}{384H^4}
+ +\frac{35\lambda_3^2\lambda_4}{64H^5}
+ +\frac{385\lambda_3^4}{1152H^6}.\label{eq:C2}
+\end{align}
+\begin{proof}
+Put $t=\tau+s$. By global concavity,
+\[
+ \Phi_n(\tau+s)-\Phi_n(\tau)\le-\frac{s^2}{2}.
+\]
+Fix a requested weight $m$. On $|s|\le\delta\tau$, with sufficiently small fixed $\delta>0$, write
+\[
+ A(s)=\Phi_n(\tau+s)-\Phi_n(\tau)+H_+s^2/2.
+\]
+The third derivative bound gives $|A(s)|\le C|s|^3/\tau\le C\delta s^2$. Choose $\delta$ so that this is at most $H_+s^2/4$. Taylor expansion of the phase through derivative $m+2$ has remainder
+$O_m(\tau^{-m-1}|s|^{m+3})$. Expanding the residual exponential through power $m$ and using its integral remainder bounds the additional error by $\tau^{-m-1}$ times a fixed polynomial in $|s|$ times $e^{H_+s^2/4}$. This is integrable against $e^{-H_+s^2/2}$. A factor $\lambda_j s^j/j!$ has weight $j-2$, so the finitely many retained monomials of weight greater than $m$ also have integrated size $O_m(\tau^{-m-1})$.
+
+The complementary tails $|s|>\delta\tau$ are $O(e^{-c\tau^2})$ after division by $e^{\Phi_n(\tau)}$, by global concavity. Extending the retained polynomial Gaussian integrals to the whole real line has the same negligible error. Take $m=2R+1$. A monomial indexed by $(m_j)$ has power $\sum j m_j=\sum(j-2)m_j+2M$ in $s$. Odd weights therefore integrate to zero. The normal moment for weight $2r$ is $(2r+2M-1)!!/H_+^{r+M}$, which gives \eqref{eq:Cr}. Proposition~\ref{prop:small} absorbs $J_n$ when replacing $I_n$ by $a_n$.
+\end{proof}
+
+\section{Explicit powers and polynomial logarithms}
+The positive saddle form has log-free remainder estimates. An alternative makes every coefficient elementary in $L$.
+For $j\ge1$ define
+\begin{equation}\label{eq:Rplus}
+ R_j^+(y)=(-1)^{j+1}\left\{
+ \frac{2y^{j+2}}{j+2}+\frac{y^{j+1}}{j(j+1)}+\frac{y^j}{2j}
+ -\sum_{r=1}^{\lfloor(j+1)/2\rfloor}
+ \frac{B_{2r}}{2r(2r-1)}\binom{j-1}{2r-2}y^{j-2r+1}\right\},
+\end{equation}
+where $B_{2r}$ are Bernoulli numbers. Starting with $Q_0^+=1$, put
+\begin{equation}\label{eq:Qplus}
+ Q_j^+(y)=\frac1j\sum_{\ell=1}^j\ell R_\ell^+(y)Q_{j-\ell}^+(y),
+ \qquad q_j(L)=\E Q_j^+(Y),
+\end{equation}
+where $Y$ is normal with mean $(L+2)/4$ and variance $1/4$. Its moments are obtained without integration from
+\begin{equation}\label{eq:normalrec}
+ m_0=1,\quad m_1=\mu,\quad
+ m_d=\mu m_{d-1}+\frac{d-1}{4}m_{d-2},\qquad \mu=\frac{L+2}{4}.
+\end{equation}
+
+\begin{theorem}\label{thm:explicit}
+For every fixed $R\ge0$, $q_0=1$, $\deg q_j\le3j$, and
+\begin{equation}\label{eq:explicit}
+ I_n=\M_n\left\{\sum_{j=0}^R\frac{q_j(L)}{x^j}
+ +O_R\!\left(\frac{(1+L)^{3R+3}}{x^{R+1}}\right)\right\}.
+\end{equation}
+The same expansion holds for $a_n$. Define $P_0=0$ and
+\begin{equation}\label{eq:logrec}
+ P_j=q_j-\frac1j\sum_{\ell=1}^{j-1}\ell P_\ell q_{j-\ell}.
+\end{equation}
+Then
+\begin{equation}\label{eq:logfull}
+ \log I_n=\log\M_n+\sum_{j=1}^R\frac{P_j(L)}{x^j}
+ +O_R\!\left(\frac{(1+L)^{3R+3}}{x^{R+1}}\right),
+\end{equation}
+and likewise for $\log a_n$.
+\end{theorem}
+\begin{proof}
+Set $t=x+y$ in \eqref{eq:I}. Stirling's expansion for $\log\Gamma(1+t)$, with its fixed-order real remainder, gives the residual phase
+\begin{equation}\label{eq:localplus}
+ -2y^2+(L+2)y+\sum_{j\ge1}R_j^+(y)x^{-j},
+\end{equation}
+after factoring $\exp\{B+x(L+1)+L/2\}/\sqrt{2\pi}$. The sum here is formal: at any fixed order it is replaced by a finite Taylor expansion with a remainder. Expanding $\log(1+y/x)$ and the reciprocal powers in the Stirling correction gives exactly \eqref{eq:Rplus}. Completing the square in the order-zero phase produces mean $(L+2)/4$, variance $1/4$, and the factor $\M_n$. Exponentiating the finite residual series gives \eqref{eq:Qplus}.
+
+Each $R_j^+$ has degree $j+2$, and each $Q_j^+$ has degree at most $3j$. For the error, put $z=y-\mu$, where $\mu=(L+2)/4$, and work on $|z|\le\delta x$ with small fixed $\delta$. The phase remainder after $R$ corrections is
+\[
+ O_R\!\left(x^{-R-1}(1+|y|^{R+3})\right).
+\]
+The full residual after the quadratic part has absolute value at most $C(1+|y|^3)/x$. Since $|y|^3\le4(|\mu|^3+|z|^3)$, its exponential is bounded by a constant times $e^{C'\delta z^2}$; the other factor $e^{O((1+|\mu|^3)/x)}$ is bounded. Choosing $\delta$ small absorbs this into the centered Gaussian. The exponential Taylor remainder is therefore bounded, after integration, by $x^{-R-1}$ times Gaussian moments of degree at most $3R+3$. A discarded monomial of weight $w>R$ has polynomial degree at most $3w$; its integrated size is $O_R((1+L)^{3w}x^{-w})$. There are only finitely many such monomials at the chosen expansion depth, and their excess weights are absorbed using $(1+L)^3/x\to0$. This leaves the common bound $O_R((1+L)^{3R+3}x^{-R-1})$. The exact saddle differs from $x+\mu$ by $O(L^2/x)$, so global concavity makes the omitted tails exponentially small. This proves \eqref{eq:explicit}. Formal logarithm extraction yields \eqref{eq:logrec}; finite-order Taylor control of $\log(1+v)$ preserves the stated conservative remainder. The signed term is negligible by Proposition~\ref{prop:small}.
+\end{proof}
+The first relative coefficients are
+\begin{align}
+ q_1&=\frac{L^3+9L^2+48L+72}{96},\label{eq:q1}\\
+ q_2&=\frac{L^6+18L^5+177L^4+1104L^3+4032L^2+9024L+8544}{18432}.
+\end{align}
+The logarithmic coefficients are considerably shorter:
+\begin{align}
+ P_1&=\frac{L^3+9L^2+48L+72}{96},\notag\\
+ P_2&=\frac{2L^3+9L^2+44L+70}{384},\notag\\
+ P_3&=-\frac{9L^5+105L^4+540L^3+2580L^2+6000L+5072}{92160},\label{eq:P}\\
+ P_4&=-\frac{12L^5+90L^4+420L^3+1215L^2+2652L+2323}{92160}.\notag
+\end{align}
+These are finite-order asymptotic coefficients. The report makes no convergence claim for the infinite formal series.
+
+\begin{corollary}
+The sequence is eventually strictly log-convex, and
+\[
+ \log\frac{a_{n-1}a_{n+1}}{a_n^2}\sim\frac1{2n}.
+\]
+\end{corollary}
+\begin{proof}
+Use the logarithmic expansion through $P_2$ and denote its explicit smooth part by $F(n)$. Its second derivative is $F''(n)=1/(2n)+O(\log n/n^{3/2})$. Its centered second difference is the integral of $F''$ against the triangular kernel on $[-1,1]$, so it is asymptotic to $1/(2n)$. The three-point difference of the remainder is $O((\log n)^9/n^{3/2})=o(1/n)$ simply by bounding its three values. No differentiation of an unknown remainder is used.
+\end{proof}
+
+\section{The oscillatory sector to every fixed order}
+\subsection{Expansion at its real saddle}
+Let
+\[
+ H_-=-\Psi_n''(\sigma),\qquad \lambda_j^-=\Psi_n^{(j)}(\sigma),\quad j\ge3.
+\]
+Define complex Gaussian moments by
+\begin{equation}\label{eq:complexmoments}
+ \mu_0=1,\quad\mu_1=\frac{\ii\pi}{H_-},\quad
+ \mu_m=\frac{\ii\pi}{H_-}\mu_{m-1}+\frac{m-1}{H_-}\mu_{m-2}.
+\end{equation}
+For $d\ge0$, put
+\begin{equation}\label{eq:Bd}
+ D_d=\sum_{\substack{m_3,\ldots,m_{d+2}\ge0\\\sum(j-2)m_j=d}}
+ \mu_{\sum j m_j}\prod_{j=3}^{d+2}\frac{(\lambda_j^-/j!)^{m_j}}{m_j!},
+ \qquad D_0=1.
+\end{equation}
+\begin{theorem}\label{thm:Jexact}
+For every fixed $R\ge0$, $D_d=O_d(\sigma^{-d})$ and
+\begin{align}
+ J_n={}&\frac{e^{\Psi_n(\sigma)}}\pi\sqrt{\frac{2\pi}{H_-}}
+ e^{-\pi^2/(2H_-)}
+ \operatorname{Im}\left\{e^{\ii\pi\sigma}\sum_{d=0}^R D_d\right\}
+ +O_R\!\left(e^{\Psi_n(\sigma)}\sigma^{-R-1}\right).\label{eq:Jsaddle}
+\end{align}
+This is an absolute, amplitude-scaled error estimate, including near cancellations of the oscillation.
+\end{theorem}
+\begin{proof}
+Use \eqref{eq:reflection}, shift $t=\sigma+s$, and replace the sine by the imaginary part of $e^{\ii\pi(\sigma+s)}$. The Gaussian Fourier integral is
+\[
+ \int_{\mathbb R}e^{-H_-s^2/2+\ii\pi s}\,\mathrm ds
+ =\sqrt{\frac{2\pi}{H_-}}e^{-\pi^2/(2H_-)}.
+\]
+After division by this factor, its polynomial moments are exactly \eqref{eq:complexmoments}, by differentiation or integration by parts. The Taylor and exponential expansion used in Theorem~\ref{thm:positive} applies unchanged in absolute value, because $|e^{\ii\pi s}|=1$. Global concavity of $\Psi_n$ bounds the complementary tails. Keeping weights at most $R$ leaves $O_R(\sigma^{-R-1})$ in the normalized integral. Unlike the positive sector, odd powers need not disappear: their Fourier moments are imaginary. This gives \eqref{eq:Bd} and \eqref{eq:Jsaddle}.
+\end{proof}
+In particular, writing $\lambda_3=\lambda_3^-$ and $H=H_-$,
+\begin{align}
+ J_n={}&\frac{e^{\Psi_n(\sigma)}}\pi\sqrt{\frac{2\pi}{H}}e^{-\pi^2/(2H)}
+ \left\{\sin(\pi\sigma)
+ +\lambda_3\left(\frac{\pi}{2H^2}-\frac{\pi^3}{6H^3}\right)\cos(\pi\sigma)
+ +O(\sigma^{-2})\right\}.\label{eq:Jfirst}
+\end{align}
+Since $\lambda_3=4/\sigma+O(\log\sigma/\sigma^2)$, the cosine coefficient is
+\[
+ \frac{\pi(12-\pi^2)}{96\sigma}+O\!\left(\frac{\log\sigma}{\sigma^2}\right).
+\]
+
+\subsection{Elementary coefficient recurrence for the oscillation}
+For $j\ge1$ define
+\begin{equation}\label{eq:Rminus}
+ R_j^-(y)=(-1)^{j+1}\left\{
+ \frac{2y^{j+2}}{j+2}-\frac{y^{j+1}}{j(j+1)}+\frac{y^j}{2j}
+ +\sum_{r=1}^{\lfloor(j+1)/2\rfloor}
+ \frac{B_{2r}}{2r(2r-1)}\binom{j-1}{2r-2}y^{j-2r+1}\right\}.
+\end{equation}
+Set $Q_0^-=1$ and use the exponential recurrence
+\[
+ Q_j^-(y)=\frac1j\sum_{\ell=1}^j\ell R_\ell^-(y)Q_{j-\ell}^-(y).
+\]
+For the complex mean
+\[
+ \zeta=-\frac{L+2}{4}+\frac{\ii\pi}{4},
+\]
+define a linear moment functional by $\mathcal E(1)=1$, $\mathcal E(y)=\zeta$, and
+\[
+ \mathcal E(y^m)=\zeta\mathcal E(y^{m-1})+\frac{m-1}{4}\mathcal E(y^{m-2}).
+\]
+This is a polynomial functional, not a probability measure with complex outcomes. Put $q_j^-(L)=\mathcal E(Q_j^-(y))$.
+
+\begin{theorem}\label{thm:Jexplicit}
+For every fixed $R\ge0$, $q_0^-=1$, $\deg_L q_j^-\le3j$, and
+\begin{equation}\label{eq:Jexplicit}
+ J_n=\M_n^-\left\{\operatorname{Im}\left(e^{\ii\theta_n}
+ \sum_{j=0}^R\frac{q_j^-(L)}{x^j}\right)
+ +O_R\!\left(\frac{(1+L)^{3R+3}}{x^{R+1}}\right)\right\}.
+\end{equation}
+The constants may depend on $R$; $\pi$ is fixed.
+\end{theorem}
+\begin{proof}
+In \eqref{eq:reflection}, put $t=x+y$. The Stirling form for $\Psi_n$ gives the order-zero residual phase $-2y^2-(L+2)y$, with prefactor
+\[
+ \frac{\sqrt{2\pi}}\pi\exp\{B-x(L+1)+L/2\}.
+\]
+The higher residual phases are precisely \eqref{eq:Rminus}: the $t\log t$ and Bernoulli terms reverse signs relative to the positive sector. Completing the real square gives center $-(L+2)/4$. Taking the Gaussian Fourier transform supplies $e^{-\pi^2/8}$ and tilts the polynomial moments to the complex mean $\zeta$. The resulting prefactor is $\M_n^-$ and the phase is $\theta_n$.
+
+The finite Taylor and exponential remainder proof of Theorem~\ref{thm:explicit} applies to absolute values, with the same polynomial degree bound and Gaussian moments. The Fourier normalization is a fixed nonzero constant. This proves the stated amplitude-scaled estimate.
+\end{proof}
+There is a useful exact identity between the two finite coefficient families:
+\begin{equation}\label{eq:shiftidentity}
+ q_j^-(L)=(-1)^j q_j(L-\ii\pi).
+\end{equation}
+Indeed, $R_j^-(-y)=(-1)^jR_j^+(y)$, and the exponential recurrence gives $Q_j^-(-y)=(-1)^jQ_j^+(y)$. Reflecting the complex moment mean gives $(L-\ii\pi+2)/4$, proving \eqref{eq:shiftidentity} algebraically. No integration contour is moved.
+
+Writing $q_1^-=U_1+\ii V_1$, the first elementary correction is
+\begin{align}
+ U_1(L)&=\frac{-L^3-9L^2+(3\pi^2-48)L+9\pi^2-72}{96},\notag\\
+ V_1(L)&=\frac{\pi(3L^2+18L+48-\pi^2)}{96},\label{eq:Jpoly1}\\
+ J_n&=\M_n^-\left\{\sin\theta_n+\frac{U_1\sin\theta_n+V_1\cos\theta_n}{x}
+ +O\!\left(\frac{(1+L)^6}{x^2}\right)\right\}.\notag
+\end{align}
+In particular,
+\begin{equation}\label{eq:JrelativeM}
+ \frac{J_n}{\M_n}=2e^{-\pi^2/8-2x(L+1)}
+ \left\{\sin\theta_n+O\!\left(\frac{(1+L)^3}{x}\right)\right\}.
+\end{equation}
+Equations \eqref{eq:identity}, \eqref{eq:explicit}, and \eqref{eq:Jexplicit} give two separately controlled asymptotic sectors under an exact decomposition. They do not assert a relative equivalent for $J_n$ uniformly in $n$, convergence, optimal truncation, or a complete resurgent or exponential-transseries classification.
+
+\section{A canonical smooth inverse}
+For real $s>-2$ define $I_s$ by \eqref{eq:I} with $n$ replaced by $s$. The condition $s>-2$ ensures integrability at zero. All fixed-order positive-sector expansions above hold as $s\to\infty$ through real values.
+Differentiation under the integral and saddle concentration yield
+\begin{equation}\label{eq:derivativeinverse}
+ \frac{\mathrm d}{\mathrm ds}\log I_s
+ =\log\sqrt{s/2}+O\!\left(\frac{\log s}{\sqrt s}\right)>0
+\end{equation}
+for all sufficiently large $s$. For example, this follows by inserting $\log t$ into the normalized Laplace integral; the mass is concentrated within bounded distance of $\tau_s$. Thus, for all sufficiently large $y$, there is a unique large solution $\nu(y)$ to
+\begin{equation}\label{eq:nudef}
+ \log I_{\nu(y)}=y.
+\end{equation}
+This specifies the continuation being inverted; it does not assume an arbitrary interpolation of $a_n$.
+
+\subsection{Lambert normalization and a finite recurrence}
+Let $W$ denote the positive real Lambert function and put
+\begin{equation}\label{eq:Lambert}
+ X=\sqrt{\frac{y}{W(y/e)}},\qquad \Lambda=\log X,\qquad c=\frac12-\log2.
+\end{equation}
+Then $X^2(2\Lambda-1)=y$ exactly. Define the following formal expression in $z$ and $v$:
+\begin{align}
+ K(z,v;\Lambda)={}&(1+v)^2\{2\Lambda+2\log(1+v)-1\}-(2\Lambda-1)\notag\\
+ &+z(1+v)\{\Lambda+\log(1+v)+1\}\notag\\
+ &+z^2\left\{\frac{(\Lambda+\log(1+v))^2}{8}
+                  +\Lambda+\log(1+v)+c\right\}\label{eq:K}\\
+ &+\sum_{j\ge1}z^{j+2}(1+v)^{-j}P_j(\Lambda+\log(1+v)).\notag
+\end{align}
+Every requested coefficient uses only finitely many $P_j$. Recursively define
+\begin{equation}\label{eq:drec}
+ d_k(\Lambda)=-\frac1{4\Lambda}[z^{k+1}]
+ K\left(z,\sum_{j=0}^{k-1}d_j(\Lambda)z^{j+1};\Lambda\right),\qquad k\ge0,
+\end{equation}
+where the empty sum is zero. Finally put
+\begin{equation}\label{eq:brec}
+ b_k=4d_k+2\sum_{i=0}^{k-1}d_i d_{k-1-i}.
+\end{equation}
+Thus all coefficients are rational functions of $\Lambda$ and $c$ and are computable by exact arithmetic.
+
+\begin{theorem}\label{thm:inverse}
+For every fixed integer $M\ge2$,
+\begin{equation}\label{eq:inversefull}
+ \nu(y)=2X^2+\sum_{j=0}^M b_j(\Lambda)X^{1-j}
+ +O_M\!\left(\frac{(1+\Lambda)^{3M-1}}{X^M}\right).
+\end{equation}
+The first two levels, with their sharper simple remainder, are
+\begin{align}
+ \nu(y)={}&2X^2-X(1+1/\Lambda)-\Lambda/8-3/4\notag\\
+ &+\frac{\log2+1/8}{\Lambda}+\frac1{4\Lambda^2}-\frac1{8\Lambda^3}
+ +O(\Lambda^2/X).\label{eq:inversefirst}
+\end{align}
+The three further explicit terms $b_2/X$, $b_3/X^2$, and $b_4/X^3$ are given in Appendix~\ref{sec:inversepolys}.
+\end{theorem}
+\begin{proof}
+Write $x=X(1+v)$ and multiply the forward logarithmic expansion minus $y$ by $X^{-2}$. With $z=X^{-1}$, the resulting formal expression is exactly \eqref{eq:K}. Its linear coefficient in $v$ at $z=v=0$ is $4\Lambda$. At degree $z^{k+1}$, the previously undetermined coefficient $d_k$ therefore occurs only as $4\Lambda d_k$. This proves the triangular cancellation rule \eqref{eq:drec}. Squaring $x=X+\sum d_j X^{-j}$ and multiplying by $2$ gives \eqref{eq:brec}.
+
+For a remainder proof, truncate the forward expansion after $P_{M-1}$ and use Theorem~\ref{thm:explicit}, giving log-error $O_M((1+\Lambda)^{3M}X^{-M})$. The recurrence has $d_0=O(1)$, $d_1=O(1+\Lambda)$, and, by induction, $d_j=O_j((1+\Lambda)^{3j-4})$ for $j\ge2$. Finite Taylor expansion about $X$ then bounds the first uncanceled log-residual, and the terms discarded on squaring, at the same or smaller order. The derivative with respect to $s=2x^2$ is comparable to $\Lambda$ by \eqref{eq:derivativeinverse}. The mean value theorem therefore gives the error in \eqref{eq:inversefull}. Computing $d_0$ and $d_1$ gives \eqref{eq:inversefirst}; its sharper error follows by including the $P_1/x$ contribution in the residual bound.
+\end{proof}
+
+\subsection{Implicit inverses at arbitrary order}
+For fixed $R\ge0$ let
+\[
+ G_R(s)=\log\M_s+\sum_{j=1}^R
+ P_j(\log\sqrt{s/2})(s/2)^{-j/2},
+\]
+and let $N_R(y)$ be its unique sufficiently large inverse. The same mean value argument gives
+\begin{equation}\label{eq:implicitinverse}
+ \nu(y)=N_R(y)+O_R\!\left((\log N_R)^{3R+2}N_R^{-(R+1)/2}\right).
+\end{equation}
+Using the exact-saddle approximation \eqref{eq:positivesaddle} instead gives implicit inverse error $O_R(s^{-R-1}/\log s)$. Its eventual invertibility follows directly by differentiating the saddle equation: $\tau_s'=1/(\tau_s H_+)$, $H_+'=O(\tau_s^{-2})$, and $C_r'=O_r(\tau_s^{-2r-2})$. Thus the logarithm of the truncated saddle expression has derivative $\log\tau_s+O(\tau_s^{-2})>0$. These are asymptotic error estimates, with unspecified constants, rather than automatic finite-$n$ certificates.
+
+\subsection{Integer thresholds require an extra bound}
+The restricted-growth model gives an injection from size $n$ to size $n+1$: append a new record $k+1$. Hence $a_n$ is nondecreasing. Define
+\[
+ T(y)=\min\{n\ge0:a_n\ge e^y\}.
+\]
+An unconditional formula $T(y)=\lceil\nu(y)\rceil$ is not justified, because the exponentially small signed contribution may matter when $\nu(y)$ is extremely close to an integer.
+
+Here is a valid certification rule. Suppose $[\ell,u]$ is a certified interval containing $\nu(y)$. In a neighborhood containing all relevant neighboring integer indices, suppose
+\[
+ |\log a_n-\log I_n|\le\eta,\qquad
+ (\log I_s)'\ge m>0
+\]
+are certified bounds. Set $\varepsilon=\eta/m$. Then, for sufficiently large $y$ within that neighborhood,
+\begin{equation}\label{eq:threshold}
+ \lceil\ell-\varepsilon\rceil\le T(y)\le\lceil u+\varepsilon\rceil.
+\end{equation}
+Indeed the inverse points at levels $y-\eta$ and $y+\eta$ bracket the possible threshold, and each lies within $\varepsilon$ of $\nu(y)$. Equal endpoints in \eqref{eq:threshold} certify the integer. A proved asymptotic $O$ estimate with an unknown constant does not by itself supply $\eta$, $m$, or a certified interval.
+
+\section{Reproducibility and numerical diagnostics}
+The companion archive contains portable Python scripts requiring only SymPy and mpmath. They make no network calls. The forward, inverse, and oscillatory coefficient generators print exact symbolic expressions as JSON and accept an arbitrary finite requested order.
+
+The verifier checks the Bernoulli phase formula against an independent direct integrand expansion through order four, verifies inverse composition through $b_4$, reproduces the first fifteen sequence values, and checks the exact signed-moment identity to sixty relative decimal digits at $n=0,1,2,3,4,5,10$. Exact coefficients for further comparisons are generated by
+\begin{equation}\label{eq:recurrence}
+ A_{n,k}=A_{n-1,k-1}+kA_{n-2,k-1},\qquad A_{0,0}=1,
+\end{equation}
+with inadmissible indices zero and $a_n=\sum_k A_{n,k}$. This recurrence follows directly by deciding whether the final factor contributes its $1$ or its $kz$ term.
+
+Let $E_R(n)$ be exact $\log a_n$ minus \eqref{eq:logfull} truncated after $P_R$, with $R=0$ meaning just $\log\M_n$. Representative diagnostics are:
+\begin{center}
+\begin{tabular}{r r r r}
+\toprule
+$n$ & $E_0(n)$ & $E_2(n)$ & $E_4(n)$\\\midrule
+50 & $3.83866\cdot10^{-1}$ & $-2.29622\cdot10^{-3}$ & $3.96371\cdot10^{-5}$\\
+100 & $3.15767\cdot10^{-1}$ & $-1.06134\cdot10^{-3}$ & $1.01831\cdot10^{-5}$\\
+200 & $2.58405\cdot10^{-1}$ & $-4.85957\cdot10^{-4}$ & $2.57829\cdot10^{-6}$\\
+500 & $1.96765\cdot10^{-1}$ & $-1.70911\cdot10^{-4}$ & $4.12307\cdot10^{-7}$\\
+1000 & $1.59245\cdot10^{-1}$ & $-7.68743\cdot10^{-5}$ & $1.01915\cdot10^{-7}$\\\bottomrule
+\end{tabular}
+\end{center}
+At $y=\log a_n$, the inverse diagnostics below compare $n$ with the explicit approximation through the indicated $b_j$. This also includes the tiny distinction between the inverse of $I_s$ and the integer sequence.
+\begin{center}
+\begin{tabular}{r r r r}
+\toprule
+$n$ & through $b_1$ & through $b_2$ & through $b_4$\\\midrule
+50 & $-1.10738\cdot10^{-1}$ & $-1.98776\cdot10^{-3}$ & $1.59680\cdot10^{-5}$\\
+100 & $-7.89875\cdot10^{-2}$ & $-1.08696\cdot10^{-3}$ & $6.37038\cdot10^{-6}$\\
+200 & $-5.70618\cdot10^{-2}$ & $-6.31740\cdot10^{-4}$ & $2.47762\cdot10^{-6}$\\
+500 & $-3.77495\cdot10^{-2}$ & $-3.15337\cdot10^{-4}$ & $6.53684\cdot10^{-7}$\\
+1000 & $-2.78863\cdot10^{-2}$ & $-1.85663\cdot10^{-4}$ & $2.27180\cdot10^{-7}$\\\bottomrule
+\end{tabular}
+\end{center}
+The exact-saddle expansion is already more accurate at low order: at $n=1000$, the relative error after $C_2$ is about $1.91\cdot10^{-11}$. Separate quadrature diagnostics check the oscillatory sector with the positive exponential amplitude factored out, avoiding severe underflow and avoiding division by the sine.
+
+Numerical checks support transcription and implementation; they do not prove the remainder estimates or provide interval-certified thresholds. The proof rests on the exact entire-parameter identity, concavity, finite Taylor remainders, and Gaussian moment bounds.
+
+\appendix
+\section{Explicit inverse coefficients}\label{sec:inversepolys}
+In this appendix write $L=\Lambda$ and $c=1/2-\log2$. The first two coefficients are
+\[
+ b_0=-\frac{L+1}{L},\qquad
+ b_1=-\frac{L^4+6L^3+(8c-5)L^2-2L+1}{8L^3}.
+\]
+For the next three, define polynomials $N_2,N_3,N_4$ by
+\begin{align*}
+ N_2={}&-L^7-6L^6-18L^5+(24c-35)L^4+(24c-12)L^3\\
+       &+(-24c+9)L^2+7L-3,\\[3pt]
+ N_3={}&8L^9+15L^8+24L^7+(-48c-10)L^6\\
+       &+(192c^2-240c+173)L^4+(-192c+88)L^3\\
+       &+(144c-42)L^2-40L+15,\\[3pt]
+ N_4={}&9L^{13}+75L^{12}+105L^{11}+(-240c+1290)L^{10}\\
+       &+(-960c+2610)L^9+(-2880c+4418)L^8\\
+       &+(2880c^2-8400c+3525)L^7\\
+       &+(5760c^2-11280c+5040)L^6\\
+       &+(2880c^2-3600c+1830)L^5\\
+       &+(-8640c^2+8160c-4290)L^4\\
+       &+(6000c-2619)L^3+(-3600c+870)L^2+945L-315.
+\end{align*}
+Then
+\begin{equation}\label{eq:b234}
+ b_2=\frac{N_2}{96L^5},\qquad
+ b_3=-\frac{N_3}{1536L^7},\qquad
+ b_4=\frac{N_4}{92160L^9}.
+\end{equation}
+In particular, including all five displayed coefficients gives
+\[
+ \nu(y)=2X^2+b_0X+b_1+\frac{b_2}{X}+\frac{b_3}{X^2}+\frac{b_4}{X^3}
+ +O\!\left(\frac{(1+\log X)^{11}}{X^4}\right).
+\]
+The general remainder is deliberately conservative; the explicit low-order polynomials have smaller degrees than its worst-case bound.
+
+\section{Archive contents and replay}
+The archive contains the report PDF and editable TeX source, together with:
+\begin{itemize}
+\item \texttt{code/replay\_coefficients.py}: exact positive-sector $q_j$ and $P_j$ generator;
+\item \texttt{code/replay\_inverse.py}: exact $d_j$ and $b_j$ generator;
+\item \texttt{code/replay\_oscillatory.py}: exact sine and cosine coefficient generator for the signed sector;
+\item \texttt{code/derive\_real\_laplace.py}: independent direct symbolic derivation through order four;
+\item \texttt{code/verify\_all.py}: independent composition, exact integer, moment, saddle, and inverse diagnostics;
+\item \texttt{code/verify\_oscillatory.py} and \texttt{code/check\_sector.py}: independent symbolic and amplitude-scaled quadrature checks, with output under \texttt{receipts/};
+\item a README, dependency specification, and checksum manifest.
+\end{itemize}
+Run the generators with \texttt{--order 4} or another nonnegative finite order. Very high orders may require substantial symbolic computation. The results are finite asymptotic expansions, not convergent numerical series guaranteed to improve monotonically at arbitrary truncation orders.
+
+\begin{thebibliography}{9}
+\bibitem{oeis} The OEIS Foundation, \emph{A124380}. Entry created by Paul D. Hanna, 2006; logarithmic conjecture attributed to V\'aclav Kot\v e\v sovec, 18 September 2024. Consulted 1 October 2026. \url{https://oeis.org/A124380}.
+\bibitem{cfz} W. Y. C. Chen, N. J. Y. Fan, and A. F. Y. Zhao, \emph{Partitions and Partial Matchings Avoiding Neighbor Patterns}, arXiv:1009.4535, 2010. Theorems 1.1 and 2.1. \url{https://arxiv.org/abs/1009.4535}.
+\bibitem{ccs} G. Cerbai, A. Claesson, and B. E. Sagan, \emph{Self-modified difference ascent sequences}, arXiv:2408.06959, 2024. Theorem 4.5 and Lemma 4.6 in the author-hosted version consulted 1 October 2026. \url{https://akc.is/papers/046-Self-modified-d-ascent-sequences.pdf}.
+\bibitem{temme} N. M. Temme, \emph{Asymptotic Estimates of Stirling Numbers}, Studies in Applied Mathematics \textbf{89} (1993), 233--243. \url{https://ir.cwi.nl/pub/2304/2304D.pdf}.
+\end{thebibliography}
+\end{document}
