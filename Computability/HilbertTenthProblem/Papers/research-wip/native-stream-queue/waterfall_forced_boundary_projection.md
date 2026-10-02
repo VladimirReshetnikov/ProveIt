@@ -95,9 +95,10 @@ QG = 2QH+1 = 4QI+3.
 
 Erase `QG,QH` and these two equations. Only `QI` remains as a suffix witness.
 If the half tapes entering G0 are `(X,Y)`, the remaining boundary equations
-require `X=8QI+6` and produce final half tapes `(QI,8Y+3)`. State and head
-links at the suffix entrance remain; they are essential to connect the
-forced suffix to the arbitrary intervening computation.
+require `X=8QI+6` and produce final half tapes `(QI,8Y+3)`. For `k>=5`, state
+and head links at the suffix entrance remain and connect the forced suffix
+to the intervening computation. At `k=4`, the head link is already enforced
+by the prefix substitution `rR0=S1=0`; the state link remains.
 
 For disjoint boundaries, `k>=4`, the complete result is
 
