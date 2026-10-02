@@ -4716,6 +4716,18 @@ in which rational-matrix membership and the orbit of $e$ are polynomial-time
 while the orbit of $\xi$ is c.e.-complete
 (Theorem~\ref{pqc:rr:thm:main}); there the boundary is set by the source state,
 not by a matrix class.
+\par\noindent\wtag\ \emph{Batch-78 note (2 October 2026).} Bears on it, not
+answered: Part~I of the sibling report \code{stochastic-and-thermal-exactness}
+treats strictly positive rational column-stochastic families, which share the
+invariant cone of nonnegative vectors. For them it is undecidable whether some
+finite product of at most eight such $7\times7$ matrices has rank one, even
+under the promise that the generators have no common invariant complex line
+(Theorem \code{ste:ee:thm:linefree}, Corollary \code{ste:ee:cor:seven}).
+So the nonnegative-support boundary of Proposition~\ref{pqc:qm:prop:nonnegative},
+which concerns the zero predicate, does not transfer to rank one: rank one in
+dimension $n$ is mortality of the signed induced matrices in dimension $n-1$
+(Proposition \code{ste:ee:prop:dimension}). A decidable signed subclass is not
+given there.
 \end{question}
 
 \begin{question}[Other exact scalar fields and tensor observables]\label{pqc:q:fields}
@@ -4998,6 +5010,19 @@ own questions point to Questions~\ref{pqc:q:smaller}, \ref{pqc:qm:q:smaller},
 Theorem~\ref{pqc:qm:thm:47} answers source~19's Question~\ref{pqc:iq:q:clocks}
 in dimension four with seven continuation outcomes
 (Corollary~\ref{pqc:iq:cor:dimfour}); the question is re-scoped below that.
+\item \wtag\ \emph{Batch 78: two sibling reports} (dated notes of 2 October
+2026). Batch~78 opened two reports in this category and added no Part here.
+\code{stochastic-and-thermal-exactness} answers Part~VII's
+Question~\ref{pqc:sc:q:subclasses} negatively in part (monotone, nonnegative,
+genuinely two-player Bellman operators with c.e.-complete half-space, equality
+and fixed-point observations; the one-player case stays open), bears on
+Question~\ref{pqc:q:signed} (undecidable rank one for strictly positive
+stochastic families), adds a third route to Section~\ref{pqc:contr:sec:overlap}
+and makes concrete the multiplicity caveat of
+Corollary~\ref{pqc:tu:cor:fixedquartic}, whose statement is reworded without
+change of claim (the note after it). \code{signal-machine-collision-certificates}
+treats deterministic signal machines; it shares no theorem with this report,
+answers none of its questions and gets no note.
 \end{itemize}
 
 \section{Conclusions}
@@ -15689,6 +15714,26 @@ own kind of substrate, rational piecewise-affine networks: without a noise
 margin, precision is unbounded memory
 (Theorems~\ref{pqc:pm:thm:height} and~\ref{pqc:pm:thm:no-ceiling}).
 
+\paragraph{\wtag\ A third route (batch-78 note, 2 October 2026).}
+Part~II of the sibling report \code{stochastic-and-thermal-exactness} of this
+category (Theorem \code{ste:ec:thm:main}) gives a real, order-preserving
+(coordinatewise monotone) piecewise-affine $1/2$-contraction of $[0,1]^N$, the
+Bellman operator of a fixed stochastic game, with the known fixed point
+$\frac12\mathbf 1$, for which exact attainment of the fixed point from a dyadic
+initial vector is c.e.-complete. Its live clock is erased at halting (Lemma
+\code{ste:ec:lem:erasure} there), so the whole vector reaches the fixed point.
+It is thus the real counterpart of source~12's exact extinction, and it locates
+source~14's decidable point reachability (Theorem~\ref{pqc:sc:thm:point}) in
+that compiler's radial clock, which is divided by $B$ at every step and never
+vanishes, rather than in real contractions as such. Nothing printed in this
+section is contradicted, and the table above is unchanged. The elementary
+companions recur there: a fixed positive threshold is decidable (Proposition
+\code{ste:ec:prop:threshold}, the argument of
+Propositions~\ref{pqc:sc:prop:away} and~\ref{pqc:sc:prop:threshold}), and no
+total computable function bounds the first attainment time (Corollary
+\code{ste:ec:cor:no-cutoff}, the argument of Corollaries~\ref{pqc:sc:cor:gap}
+and~\ref{pqc:ad:cor:nobound}).
+
 % --- source 15, lines 104-1341 ---
 \section{What is being resolved, and what is not}
 \label{pqc:pm:sec:scope}
@@ -17313,7 +17358,7 @@ degree-one homogeneity or change the encoding mechanism.
 \wtag\ Compare Question~\ref{pqc:cb:q:realizers} and source~12's Question~\ref{pqc:ad:q:regularity}.
 \end{question}
 
-\begin{question}[Structural subclasses]
+\begin{question}[Structural subclasses]\label{pqc:sc:q:subclasses}
 Which additional restrictions force half-space reachability to be
 decidable: monotonicity in the coordinatewise order, nonnegative neural
 weights, a bounded number of activation patterns along every orbit,
@@ -17321,6 +17366,22 @@ or a genuine Bellman-operator structure? The present hats and zero tests
 use signed coefficients. The Bellman results~\cite{b62s14-bellman} concern a
 structurally narrower class and a different target specification.
 \wtag\ Compare, in spirit, Question~\ref{pqc:q:signed}.
+\par\noindent\wtag\ \emph{Batch-78 note (2 October 2026).} Answered negatively
+in part, for three of the four restrictions taken together, by Part~II of the
+sibling report \code{stochastic-and-thermal-exactness} of this category
+(Theorem \code{ste:ec:thm:main} and its Section \code{ste:ec:sec:universality}).
+There a fixed finite turn-based stochastic game gives the operator
+$\Phi(v)=\frac14\mathbf 1+\frac12 S(v)$, where $S$ takes at each state the
+minimum or maximum, by the state's owner, of at most two dyadic stochastic
+rows with every entry at least $1/(2N)$, and both owners occur. This $\Phi$ is
+coordinatewise monotone, has nonnegative coefficients, is a genuine Bellman
+operator and a $1/2$-contraction of $[0,1]^N$ in the supremum norm with the
+known fixed point $\frac12\mathbf 1$. Yet, for suitable fixed games and dyadic
+initial vectors, the strict-inequality observation ``halt-register value
+greater than baseline value'' (an open half-space), scalar equality and exact
+attainment of the fixed point are each c.e.-complete. The restriction to a
+bounded number of activation patterns is not addressed, and the case with only
+MIN or only MAX states stays open there (Section \code{ste:ec:q:oneplayer}).
 \end{question}
 
 \begin{question}[Relative-precision semantics]
@@ -18444,8 +18505,22 @@ Diophantine interfaces are a natural downstream destination \cite{b64s18-repo}.
 
 \begin{corollary}[A fixed quartic exists, without the explicit trace count]\label[corollary]{pqc:tu:cor:fixedquartic}
 The set in \cref{pqc:tu:thm:re} also has a representation by one fixed integer
-polynomial of degree at most four with finitely many natural witnesses.
+polynomial of degree at most four in a fixed finite number of natural witness
+variables.
 \end{corollary}
+\noindent\wtag\ \emph{Batch-78 note (2 October 2026).} The statement's last
+words are reworded; source~18 wrote ``with finitely many natural witnesses''.
+The claim is unchanged: a fixed polynomial has a fixed number of variables, and
+the proof below fixes them once (the MRDP witnesses and the circuit
+intermediates). The old wording could be misread as finitely many witness
+\emph{tuples} for each input, which is not claimed: the remark after the proof
+leaves the multiplicity of the MRDP witnesses uncontrolled. Part~III of the
+sibling report \code{stochastic-and-thermal-exactness} makes this difference
+concrete: there finite witness multiplicity is exactly compact resolvent and a
+finite thermal trace of the associated diagonal Hamiltonian
+(Theorem \code{ste:ta:thm:classification}), and one free padding coordinate
+makes the multiplicity of a fixed universal family infinite on every halting
+input (Theorem \code{ste:ta:thm:padding}).
 \begin{proof}
 Let $Q_0(a,z)$ be the polynomial provided by MRDP for the encoded input $a$.
 Evaluate $Q_0$ by a fixed integer arithmetic circuit, represent every signed
@@ -22002,6 +22077,26 @@ Sections~\ref{pqc:conv:formal}, \ref{pqc:conv:sources} and~\ref{pqc:conv:qoverla
 \code{MRDP.lean} is kept apart from \cite{proveit-mrdp}, because it records a
 different pin (\code{c58206ca1}); the file is unchanged between the pins.
 \end{itemize}
+
+\subsection{\wtag\ Batch 78: notes for two sibling reports}
+Batch~78 (cluster H2, placement commit \code{798b0c5d4}) added no Part and no
+source to this report. It opened two sibling reports in this category:
+\code{signal-machine-collision-certificates} (written in \code{b6a99c594}) and
+\code{stochastic-and-thermal-exactness} (written in \code{57baff577}), whose
+labels carry the prefixes \code{smc:} and \code{ste:} and are cited here by
+name. Dated notes of 2 October 2026, marked \wtag, were added after
+Questions~\ref{pqc:q:signed} and~\ref{pqc:sc:q:subclasses}, at the end of
+Section~\ref{pqc:contr:sec:overlap}, after
+Corollary~\ref{pqc:tu:cor:fixedquartic}, and in
+Section~\ref{pqc:conv:qoverlap}. Two edits touch existing text: Part~VII's
+unlabelled question ``Structural subclasses'' received the label
+\code{pqc:sc:q:subclasses}, the only new label; and the last words of
+Corollary~\ref{pqc:tu:cor:fixedquartic}, ``with finitely many natural
+witnesses'', now read ``in a fixed finite number of natural witness
+variables'', a wording clarification that does not change the claim (the note
+after the corollary gives the reason). No existing label was renamed or
+renumbered. The signal-machine report shares no theorem with this one and
+gets no note.
 
 \begin{thebibliography}{99}
 \small\raggedright

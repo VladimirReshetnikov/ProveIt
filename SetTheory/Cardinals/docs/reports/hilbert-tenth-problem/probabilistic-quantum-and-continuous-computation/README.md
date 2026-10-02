@@ -318,10 +318,17 @@ type hints. Writing Part IX added 17 labels: `pqc:part:quantumruns`;
 `pqc:iq:conv` and `pqc:iq:conv:relation`, `:letters`, `:macros`;
 `pqc:iq:cor:dimfour` (the written dimension-four corollary);
 `pqc:iq:sec:shipped` and `pqc:iq:sec:conclusion`; eight research-question labels
-`pqc:iq:q:*`; and `pqc:app:provenance76`. The report now has **1137 labels**
+`pqc:iq:q:*`; and `pqc:app:provenance76`. The report then had 1137 labels
 (1018 + 102 + 17). No existing label was renamed or removed, and no existing
 label's number or bibliography number changed (checked against the `.aux` of a
 build of the previous text).
+
+Batch 78 (notes only, no new Part) added one label, `pqc:sc:q:subclasses`, on
+Part VII's previously unlabelled research question "Structural subclasses"
+(research question 63). The report now has **1138 labels** (1137 + 1). Again no
+existing label was renamed or removed, and no existing label's number or
+bibliography number changed (checked against the `.aux` of a build of the
+previous text).
 
 Numbering: source 08's Section *n* is Section *n* + 1 here for *n* = 2–8
 (Part I), and its Sections 9, 10, 11 are Sections 11, 12, 33; source 07's
@@ -863,6 +870,37 @@ Part V's remark on finite Markov chains (Section 48) and Part VI's Theorem
 `canonical-diophantine-certificates` and `liveness-beyond-halting`, and they
 get no note.
 
+**Related reports (batch 78):**
+[`stochastic-and-thermal-exactness`](../stochastic-and-thermal-exactness/README.md)
+(written in `57baff577`) and
+[`signal-machine-collision-certificates`](../signal-machine-collision-certificates/README.md)
+(written in `b6a99c594`), both opened in this category by batch 78 (cluster
+H2) without adding a Part here. The stochastic report's Part II (Theorem
+`ste:ec:thm:main`: a fixed two-player stochastic game whose monotone,
+nonnegative Bellman operator is a 1/2-contraction with a known fixed point,
+yet half-space, scalar-equality and exact fixed-point observations are
+c.e.-complete) answers Part VII's research question 63, "Structural subclasses" (now
+labelled `pqc:sc:q:subclasses`), negatively in part, the one-player case
+staying open; it is also a third route beside sources 14 and 12 in Section
+134 ("Two routes to one phenomenon"), a real, order-preserving contraction
+whose clock is erased at halting. Its Part I (`ste:ee:thm:linefree`,
+`ste:ee:cor:seven`, `ste:ee:prop:dimension`: rank one is undecidable for at
+most eight strictly positive 7×7 column-stochastic matrices without a common
+invariant line) bears on research question 21 (`pqc:q:signed`), since the
+nonnegative-support boundary of Proposition `pqc:qm:prop:nonnegative`
+concerns the zero predicate and does not transfer to rank one. Its Part III
+(`ste:ta:thm:classification`, `ste:ta:thm:padding`) makes concrete the
+witness-multiplicity caveat of Corollary 160.2 (`pqc:tu:cor:fixedquartic`), whose
+statement now says "in a fixed finite number of natural witness variables"
+instead of source 18's "with finitely many natural witnesses" — a wording
+clarification, not a change of claim. Each has a dated note of 2 October
+2026, listed in Section 36.4 and Appendix F.4. The signal-machine report
+treats deterministic signal machines, shares no theorem with this one and
+gets no note. The stochastic report cites this one by label name (its
+subsection "Relation to neighbouring reports and to the repository's
+reviews"); the signal-machine report names it
+only to record that none of its results is re-proved there.
+
 ## Build
 
 TeX Live or MiKTeX with lmodern, amsmath/amssymb/amsthm, mathtools,
@@ -1353,3 +1391,24 @@ in each source's implementation section gives the shipped names (for source
   between the pins.
 - The write used the pristine manuscript from the archive in `6914ccca6` and
   the files staged in `2a04b60f2`.
+
+**Batch 78 (notes only, Appendix F.4).**
+
+- **No new Part.** Batch 78's cluster H2 (placement commit `798b0c5d4`)
+  opened the sibling reports `signal-machine-collision-certificates`
+  (`b6a99c594`) and `stochastic-and-thermal-exactness` (`57baff577`) instead
+  of adding Parts here; this report received only dated notes of 2 October
+  2026, each checked against the `ste:` labels it names.
+- **Written text** (`[write]`): dated notes after research questions 21
+  (`pqc:q:signed`) and 63 (`pqc:sc:q:subclasses`) and after Corollary 160.2
+  (`pqc:tu:cor:fixedquartic`); a closing paragraph "A third route" in Section
+  134; a bullet in Section 36.4; Appendix F.4.
+- **Changed existing text.** The label `pqc:sc:q:subclasses` on the
+  previously unlabelled question "Structural subclasses"; and the last words
+  of Corollary `pqc:tu:cor:fixedquartic`, "with finitely many natural
+  witnesses" → "in a fixed finite number of natural witness variables". The
+  latter is a wording clarification: a fixed polynomial has a fixed number of
+  variables, the proof fixes them once, and the remark after the proof
+  already leaves the multiplicity of witness tuples uncontrolled; the old
+  phrase could be misread as finitely many witness tuples per input. The note
+  after the corollary records the source's wording.
