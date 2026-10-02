@@ -125,6 +125,14 @@ table):
   report's `E_Γ(V)`, `C_Γ(V)`: with `V = ℝ` those are all of `H_Γ`.
 - 52's Euler operator `D` → `𝔇`. In ω-exponents `𝔇 ω^β = −β ω^β`, so `𝔇` is
   51's `D_d` with `d = −id`, not `D_id`; on real exponents `D_ct = −𝔇`.
+  The write (`9265235fd`) left three bare `D` of 52 unrenamed: the commutant
+  condition `TD = DT` in Theorem 1.2(2) and in (14.1) (Theorem 14.1), and
+  the module action `Xx = Dx` in Proposition 13.2. They now print `𝔇`, each
+  marked by a `% ed.` comment in `article.tex`; no other bare `D` means the
+  Euler operator (the remaining ones are a division ring in Section 5, sets
+  of distances in Section 11, a generic diagonal derivation in Theorem 18.5
+  and an exponent cut in Section 21). The shipped program
+  `code/52-euler-quotient-verify.py` still writes `D` in its check names.
 - 52's `𝔠` (typed `\ct`) → `\cont`; 51's `ct` is the constant term `[ω^0]`.
 - 53's `𝓗_A`, `𝓗_A^fin` → 51's `H(A)`, `H(A)^fin` (sans-serif); 53's `𝓜` → `𝔐`.
 - 51's and 53's real Vandermonde parameter `t` → `s` (`t` is 52's Hahn variable).
