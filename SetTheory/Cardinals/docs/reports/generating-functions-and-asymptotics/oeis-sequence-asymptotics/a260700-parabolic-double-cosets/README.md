@@ -1,73 +1,241 @@
-# All fixed order asymptotics for distinct parabolic double cosets
+# All Fixed Order Asymptotics for Distinct Parabolic Double Cosets
 
-This package accompanies the research article on A260700, the number of **distinct subsets** of the symmetric group that are double cosets of standard parabolic subgroups. Equal subsets are counted once, even when their presentations differ.
+**Every fixed correction order for OEIS A260700, a proof of Browning's
+higher-order conjecture, smooth inverse models and qualified integer
+thresholds**
 
-## Main result
+A research report dated 2 October 2026, built from one manuscript. Its
+author line reads only "Research manuscript with reproducible computations";
+the delivery names no author and no tool.
 
-With rho = log(2) and K = exp(-rho²/2)/(4rho²), for every fixed nonnegative integer M,
+| Source | Manuscript | Archive | Pin | Placed | Printed as |
+|---|---|---|---|---|---|
+| 01 | batch 77, manuscript 17 | `double-coset-report.zip` (wrapper directory `double-coset-report/`), arrival commit `096ee7b87`; main file already named `article.tex` | none: no ProveIt commit is named and no repository path is continued | `d0e6008d9` | the whole report |
 
-p_n = K n! rho^(-2n) [sum_(j=0)^M B_j(rho)/n^j + O_M(n^(-M-1))].
+**Status:** presumed AI-assisted (the delivery names neither an author nor
+a tool), unrefereed, not formalized. Exact integer and rational
+computations corroborate the finite identities and the coefficients;
+numerical agreement is a diagnostic, not the proof.
 
-The leading equivalent is Thomas Browning's established 2021 result. The first correction proved here is
+## What it proves
 
-B_1(r) = r²/2 - r³ - 11r⁴/12 + r⁵/4,
+`p_n` counts the **distinct subsets** `W_I w W_J` of the symmetric group
+`S_n` (standard parabolic subgroups `W_I`, `W_J`; equal subsets with
+different presentations counted once), OEIS A260700:
+1, 3, 19, 167, 1791, 22715, …. With `ρ = log 2` and
+`K = e^(-ρ²/2)/(4ρ²) = 0.40922300504774271232…`:
 
-which proves his higher-order conjecture with
+- **Theorem 1.1 (all fixed orders).** There are polynomials `B_m(r) ∈ Q[r]`
+  with `p_n = K n! ρ^(-2n) (Σ_{m≤M} B_m(ρ) n^(-m) + O_M(n^(-M-1)))` for
+  every fixed `M`; `B_1(r) = r²/2 - r³ - 11r⁴/12 + r⁵/4` and `B_2` are
+  printed, `B_3`, `B_4` in Appendix A. Consequently Browning's
+  higher-order conjecture (arXiv Conjecture 5.1, journal Conjecture 41)
+  holds with `c = -K B_1(ρ) = 0.108197052893921571585327453732… > 0`, and
+  `c > 0` is proved without a numerical sign test.
+- **Method.** Starting from Browning's exact enumeration (his Theorem 3.18,
+  Proposition 3.19, Section 4.1): uniform generalized-Fubini pole
+  extraction for logarithmically growing `j` (Lemma 3.1), summable bounds for
+  the signed inner defects (Proposition 4.1), and a joint bound for all
+  omitted long-cycle configurations in the outer Stirling transform
+  (Section 5).
+- **Section 6.** A finite exact coefficient algorithm for any fixed order
+  (implemented in `code/coefficients.py`), not a numerical fit.
+- **Section 7 (inverse).** Smooth inverse models `x_M(y)` of
+  `F_M(x) = K Γ(x+1) ρ^(-2x) P_M(1/x)` with a Lambert-W seed, explicit first
+  corrections, Newton error estimates (Propositions 7.1, 7.2) and an
+  eventual two-ceiling bracket for the integer threshold
+  `N(y) = min{n : p_n ≥ y}` (Corollary 7.3). **The rounding counterexample
+  stays:** `y = p_25 + 1` has threshold 26 but `⌈x_1(y)⌉ = 25`, so an
+  unconditional `N(y) = ⌈x_M(y)⌉` is false.
 
-c = -K B_1(rho) = 0.108197052893921571585327453732… > 0.
+## What is not claimed
 
-The article provides full analytic proofs, exact B_1 and B_2, an appendix with B_3 and B_4, a finite coefficient algorithm for any fixed order, and properly qualified inverse models and integer-threshold brackets. A bounded primary-source search through 2 October 2026 found no later solution to the precise correction conjecture; this is not a claim of exhaustive novelty or external peer review.
+- The leading equivalent `p_n ~ K n! ρ^(-2n)`, its constant and the exact
+  enumerative identities are Browning's (EJC 28(3) (2021), P3.40); Stirling
+  transforms and singularity analysis are not claimed as new techniques
+  (Kotěšovec's A120733 work is credited for the neighbouring approach).
+- Only every **fixed** order: no convergence of the series, no bound uniform
+  in `M`, no optimal truncation, no exponentially improved transseries.
+- No effective remainder constants or starting indices; the inverse bracket
+  is an asymptotic theorem, not a finite-input rounding test, and the smooth
+  model is not a canonical interpolation of the sequence.
+- Novelty rests on a bounded primary-source search through 2 October 2026
+  (no later solution of the precise correction conjecture located); "not a
+  certification of universal novelty or a claim of external peer review".
+  Nothing was submitted to OEIS, a journal or an external repository.
+- The five further questions of Section 9 (effective bounds, growth of
+  `B_m(ρ)`, exponentially small contributions, combinatorial meaning, other
+  parabolic families) are open; the four computed negative corrections do
+  not establish a sign pattern.
+- **The inversion is an instance of repository results, with no novelty
+  claimed for the method.** The seed is the factorial core
+  `p0:prop:factorial-core` (`κ = 1`, `d = -1 - 2 log ρ`, `L = log y`) of
+  `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`,
+  equivalently `t2:eq:unbalanced-core` of
+  `Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex`;
+  in `s = log X + d` it is `p0:thm:lambert-core` with `a = b = 1`
+  (branch `W_0`). The corrections are the admissible-core reversion
+  `p0:thm:core-reversion` (CTI `t2:prop:scaled`); the linear–logarithmic
+  `p0:thm:lambert-centered` and CTI's balanced `t2:thm:balanced-inverse`
+  do not apply directly (the phase is `x log x`). The bracket is the
+  separation condition, part (2) of `p0:thm:staircase`; part (1) (exact
+  rounding) does not apply because `F_M` is not an interpolation of `p_n`,
+  which is what the counterexample shows. A dated `[write]` note at the end
+  of Section 7.2 says so.
+
+## Relation to the repository
+
+**Formal status.** No statement of this report is formalized in Lean or
+Rocq, and its place in the collection gives it no formal status; the
+manuscript used no ProveIt result. The generic staircase arithmetic named
+in the Section 7 note is formalized as `Fabius.staircase_ceil` and
+`Fabius.staircase_separation` in
+`Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`;
+those lemmas concern an arbitrary monotone function, not `p_n`.
+
+**Neighbouring report.** The same batch opened
+`oeis-sequence-asymptotics/a260952-full-support-signed-permutations`
+(manuscript 02: full-support elements of the Weyl groups of types B and D,
+A260952, A109253, A112225). Both count objects defined by standard
+parabolic subgroups of a Coxeter group and both pass through a Stirling
+transform and a Lambert-W seed; the theorems, generating functions and
+scales differ (`ρ = log 2`, `n! ρ^(-2n)` here; `τ = log 3`,
+`m!/(log 3)^(m+1)` there), neither uses the other, and the A260952 report
+counts elements, so it does not answer this report's question 5 (other
+parabolic families). The intake's untruncated repository search found no
+other report on A260700, Browning's conjecture or parabolic double cosets.
+The batch-77 dossier offered one two-Part report instead (Vladimir's call);
+the placement kept two reports that cite each other.
+
+## Notation
+
+Symbols are printed as delivered. A table in the first `[write]` note
+(Section 1) fixes the letters with two meanings (`A`, `D`, `a`, `c`, `L`,
+`T`, `R`, `C`, `t`, `w`, `x`, `E`) and the tempting false readings: `B_m`
+are correction polynomials, not Bernoulli polynomials and not the
+signed-permutation counts `B_n(q)` of the A260952 report; `S_a(x)` is a
+Faulhaber power sum, not a Stirling number; `p_m(q)` in the A260952 report
+are asymptotic coefficients, not counts. No symbol was renamed.
+
+## Labels
+
+Every label carries the prefix `pdc:`. The manuscript's 64 labels were
+prefixed before anything cited them (49 `\ref`/`\eqref` updated); no label
+was added (64 labels in all). The writing step also added three dated
+`[write]` notes (Section 1: provenance, the neighbouring report, notation
+table; end of Section 7.2: the instance note; Appendix B: the shipped
+layout), three bibliography entries (`pdc-fss`, `pdc-tai`, `pdc-cti`), and
+set the bibliography ragged-right. No statement, proof or number of the
+manuscript was changed.
 
 ## Files
 
-- `article.pdf`: the research article
-- `article.tex`: editable LaTeX source
-- `code/coefficients.py`: original exact rational coefficient generator
-- `code/validate.py`: Browning's finite formula implemented with integer recurrences, actual group-subset enumeration, and cycle checks
-- `code/inverse.py`: Lambert-W, Newton and rounding diagnostics
-- `code/replay.py`: a complete offline computational replay
-- `code/verify_manifest.py`: SHA-256 and byte-count verification
-- `data/coefficients-order4.json`: exact D, U and B polynomials through order four
-- `data/exact-values.json`: locally computed p_n and q_n for n = 0,…,400
-- `data/b260700.txt`: separately attributed OEIS numerical reference data
-- `results/validation.json`: recorded exact and residual checks
-- `results/inverse-validation.json`: numerical inverse diagnostics and a rounding counterexample
-- `SOURCES.md`: primary-source attribution and scope
-- `MANIFEST.json`: checksums of all other declared deliverable files
-
-## Replay
-
-Python 3.10 or later is required. The tested environment used Python 3.12.14, SymPy 1.14.0 and mpmath 1.3.0. Dependencies are pinned; no network is used by the programs after installation.
-
-```sh
-python -m pip install -r requirements.txt
-python code/verify_manifest.py
-python code/replay.py --quick
-python code/replay.py --full
+```text
+README.md                             this guide (replaces the delivery README)
+SOURCES.md                            delivered primary-source attribution and scope (bounded search, 2 October 2026)
+article.tex                           the report (delivered as article.tex)
+article.pdf                           compiled report, 19 pages
+code/coefficients.py                  exact fixed-order algorithm of Section 6 (SymPy); writes coefficients-order<M>.json to --output-dir
+code/validate.py                      Browning's finite formula by integer recurrences, actual coset enumeration (n ≤ 5), 259 cycle identities; writes exact-values.json, validation.json
+code/inverse.py                       Lambert-W/Newton inverse diagnostics and the rounding counterexample (150 digits); writes inverse-validation.json
+code/replay.py                        the delivered full replay (first runs verify_manifest.py; see below)
+code/verify_manifest.py               SHA-256 check against MANIFEST.json (not shipped)
+code/build_pdf.sh                     the delivered PDF build (expects article.tex beside it)
+data/b260700.txt                      OEIS A260700 b-file, n = 1..400, retrieved 2 October 2026 (third-party reference data, attributed in SOURCES.md)
+data/exact-values.json                p_n and q_n for n = 0..400, computed by validate.py
+data/coefficients-order4.json         exact D_m, U_m, B_m (m ≤ 4) with decimal evaluations
+data/results-validation.json          recorded validation.json of the delivered full run (n ≤ 400)
+data/results-inverse-validation.json  recorded inverse diagnostics, including y = p_25 + 1
+data/requirements.txt                 sympy==1.14.0, mpmath==1.3.0
 ```
 
-The quick replay recomputes exact values through n=40. The full replay uses n=400. Both regenerate the correction polynomials through order four, enumerate all distinct group-coset subsets for n≤5, verify 259 cycle identities, compare with stored exact data, and run the inverse diagnostics. Outputs go into `replay-output/`, leaving the supplied data unchanged. Use `--output-dir PATH` for another output directory.
+Every file except `README.md`, `article.tex` and `article.pdf` is
+byte-identical to the delivery. Placement moved `build_pdf.sh` to `code/`,
+`requirements.txt` to `data/`, and `results/validation.json`,
+`results/inverse-validation.json` to `data/results-validation.json`,
+`data/results-inverse-validation.json`. Not shipped: the delivered 16-page
+PDF `article.pdf` and `MANIFEST.json` (a checksum ledger, verified 16/16 at
+placement and retired). Both survive in the archive:
+`git show 096ee7b87:docs/incoming/double-coset-report.zip > <scratch>/double-coset-report.zip`.
 
-To generate a different fixed coefficient order:
+`data/b260700.txt` (184,552 B) and the `p` column of
+`data/exact-values.json` (528,796 B) hold the same 400 values: the intake
+checked all `n = 1…400` equal, and `validate.py` compares the two. The
+b-file is a third-party copy (its SHA-256 is recorded in `SOURCES.md` and
+as `bfile_sha256` in `data/results-validation.json`, delivered bytes kept);
+`exact-values.json` is the package's own computation and is regenerable
+(`validate.py 400 --output-dir <dir>`); nothing was excluded under the
+heavy-artifact rule, since no file reaches 1 MB.
+
+Delivered text that names the delivery layout or unshipped files: the
+delivery README (replaced by this guide) and the article's Appendix B
+describe a self-contained ZIP with a PDF and `MANIFEST.json` and run
+`python -m pip install -r requirements.txt` from the package root (here
+`data/requirements.txt`); `code/replay.py` runs `verify_manifest.py`, which
+reads `MANIFEST.json`, so in this layout it stops at its first step;
+`code/build_pdf.sh` compiles `article.tex` in its own directory (`code/`)
+and writes `.build/` and `article.pdf` there. A dated note in Appendix B
+says so.
+
+## Rerun the checks (on a scratch copy)
+
+The three computational scripts read only `data/` (through their own
+location) and write to `--output-dir`, whose default `replay-output/` is
+relative to the **current directory**; Windows also writes the JSON with
+CRLF. Run on a copy (Git Bash, from this directory):
 
 ```sh
-python code/coefficients.py 5 --output-dir replay-order5
+R=$(mktemp -d) && cp -r code data "$R" && cd "$R"
+export PYTHONUTF8=1
+PY="uv run --no-project --with sympy==1.14.0 --with mpmath==1.3.0 python"
+$PY code/coefficients.py 4 --output-dir out
+$PY code/validate.py 40 --output-dir out      # 400 for the full range
+$PY code/inverse.py --output-dir out
+$PY - <<'EOF'
+import json
+J = lambda p: json.load(open(p))
+print(J('out/coefficients-order4.json') == J('data/coefficients-order4.json'))
+print(all(J('out/exact-values.json')[k] == J('data/exact-values.json')[k][:41] for k in 'pq'))
+print(J('out/inverse-validation.json') == J('data/results-inverse-validation.json'))
+EOF
 ```
 
-This uses exact rational expressions, not numerical interpolation or fitting. Runtime and expression size grow with the requested order. The computation of exact p_n and q_n also grows substantially with the limit.
+At writing (2 October 2026, loaded machine) the three steps took 14 s, 13 s
+and 25 s and all three comparisons printed `True`; `validation.json`
+differs from `data/results-validation.json` only in the range fields
+(`exact_formula_matches_OEIS_through`, `q_residuals`), because the recorded
+file is from the `n ≤ 400` run.
 
-To rebuild the PDF with a standard TeX installation:
+For the delivered `replay.py` (manifest check included), use the delivered
+layout: `git show 096ee7b87:docs/incoming/double-coset-report.zip > x.zip`,
+extract, and run `python code/replay.py --quick` (or `--full`) in
+`double-coset-report/`. At intake `--quick` (n ≤ 40) passed in 133 s with
+outputs equal to the delivered ones apart from CRLF and the `--quick` range
+fields; `--full` (n ≤ 400) was not run.
+
+## Build the PDF
+
+pdfLaTeX with lmodern, amsmath, amssymb, amsthm, mathtools, booktabs,
+microtype, geometry, enumitem, fancyhdr, xcolor, hyperref and listings. From
+this directory:
 
 ```sh
-bash build_pdf.sh
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build uses common LaTeX packages: lmodern, amsmath, amssymb, amsthm, mathtools, booktabs, microtype, geometry, enumitem, fancyhdr, xcolor, hyperref and listings. If the system TeX format or font-map cache is missing, the script builds a writable cache under `.build/` from the installed TeX resources. It does not download software or depend on another workspace. Computational reproduction does not require TeX. PDF byte identity is not expected across TeX versions because metadata and rendering can differ.
+The committed PDF was built in a scratch directory with MiKTeX: 19 pages,
+no errors or warnings, no undefined references or citations, no multiply
+defined labels, no duplicate PDF destinations, no overfull or underfull
+boxes. (The delivered source built to 16 pages with the same clean log.)
 
-## Interpretation and limits
+## Provenance
 
-The article proves an expansion for every **fixed** order M. It does not prove convergence of the infinite series, optimal truncation, or an exponentially improved transseries. The leading constant and exact enumerative formula belong to Browning; the general methods of singularity analysis and Stirling transforms are not claimed new here.
-
-Numerical agreement is a diagnostic, not the proof. No effective global remainder constants or finite starting indices have been extracted. The smooth inverse model is not a canonical interpolation of the discrete sequence. In particular, its ceiling need not equal the exact threshold when the inverse lies extremely close to an integer. The checked example y=p_25+1 has exact threshold 26 but ceil(F_1^(-1)(y))=25.
-
-No full third-party paper, private review notes, credentials, environment-specific build caches, or downloaded software is included. Nothing has been submitted to OEIS, a journal, or an external repository as part of this package.
+- Browning, *Counting parabolic double cosets in symmetric groups*,
+  Electron. J. Combin. 28(3) (2021), P3.40 (arXiv:2010.13256); OEIS A260700
+  and A120733; Kotěšovec, *Asymptotics of the sequence A120733* (2015);
+  Schwob (2026), Diaconis–Simper (2022), Renteln (2024),
+  Munarini–Poneti–Rinaldi (2009) as neighbouring work (see `SOURCES.md`).
+- Repository input: none recorded; no pin.
+- Batch 77 of `docs/incoming`, manuscript 17 (cluster P4); arrival
+  `096ee7b87`, placement `d0e6008d9`, written in the batch-77 write phase
+  (2 October 2026). Single source, so the write made no merge choices.

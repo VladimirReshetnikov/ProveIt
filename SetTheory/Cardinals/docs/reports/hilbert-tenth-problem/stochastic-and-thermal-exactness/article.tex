@@ -1,0 +1,1745 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{xurl}
+\usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Exact erasure without a common invariant line}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.32em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\code}{\operatorname{val}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\transpose}{^{\mathsf T}}
+\newcommand{\repo}{\texttt{928ea97017a25ebe56d240c84f27d2275d818c75}}
+\hypersetup{pdftitle={Exact Erasure without a Common Invariant Line},
+ pdfauthor={ChatGPT, prepared for Vladimir Reshetnikov},
+ pdfsubject={Positive stochastic matrix products, mortality, and Diophantine certificates}}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{0.65in}
+{\Large\bfseries Exact Erasure without a Common Invariant Line\par}
+\vspace{0.28in}
+{\large Positive stochastic computation, tensor guards,\par
+and Diophantine certificates\par}
+\vspace{0.4in}
+{Research report prepared for Vladimir Reshetnikov\par}
+{Mathematical development and implementation: ChatGPT\par}
+\vspace{0.12in}
+{October 2, 2026\par}
+\vspace{0.38in}
+\begin{minipage}{0.91\textwidth}
+\textbf{Abstract.}
+We give an explicit reduction from integer matrix mortality to exact finite-time
+forgetting by strictly positive rational stochastic matrices. Two tensor-factor
+guards remove every common invariant complex line without creating spurious
+zero products. From $m$ matrices of dimension $d$, the construction produces
+$m+2$ matrices of dimension $2d+1$, with every entry arbitrarily close to the
+uniform stochastic matrix and a prescribed uniform total-variation contraction
+factor. A product has rank one precisely when its source-letter projection is
+mortal. Consequently, rank-one product existence is undecidable already for at
+most eight positive rational $7\times7$ column-stochastic matrices having no
+common invariant complex line. Clearing one common denominator gives the same
+conclusion for strictly positive integer matrices. This answers the specific
+no-common-invariant-line restriction raised in a June 2026 MathOverflow discussion;
+it does not establish irreducibility.
+
+A separate, fully printed four-dimensional correspondence-problem compiler gives
+a many-one complete nine-state stochastic family with a variable-size alphabet.
+A higher tensor construction excludes all invariant subspaces of dimensions
+$1,\ldots,r-1$. For independent full-support switching, existence of an erasing
+word is equivalent both to almost-sure finite exact forgetting and to finite
+expected forgetting time, despite deterministic exponential approximate
+forgetting on every instance. Explicit mass-compressed horizon-$T$ natural-domain quartics have
+$T((n-1)^2+k)$ witnesses and $T((n-1)^2+1)+(n-1)^2$ squared residuals, with
+exactly one witness per accepted labelled word. We also prove a sharp $n-1$ erasure horizon
+when the induced matrices on the zero-mass hyperplane commute, and exhibit
+arbitrarily small non-erasing perturbations preserving all common invariant
+subspaces. The package includes exact-arithmetic code, independent certificate
+replay, and 50,582 passing finite checks.
+\end{minipage}
+\vfill
+\begin{minipage}{0.91\textwidth}\small
+\textbf{Status.} Full mathematical proofs are supplied below. The new constructions
+are not proof-assistant verified or independently refereed. Established mortality,
+PCP, and DPRM results are cited as dependencies. The literature search is targeted,
+not a certification of global priority. No improvement to ProveIt's fixed universal
+polynomial operation count is claimed.
+\end{minipage}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Research question, contributions, and provenance}
+\label{sec:intro}
+
+A stochastic matrix usually suggests information loss rather than universal
+computation. If every entry is positive and close to $1/n$, every step loses a
+large fraction of the distinction between two initial distributions. It is
+therefore tempting to expect that determining whether all distinction is ever
+lost exactly should be straightforward. The distinction between \emph{small}
+and \emph{zero}, however, changes the problem completely.
+
+This report studies a finite alphabet $S_1,\ldots,S_k$ of rational stochastic
+matrices. A word is an externally selected schedule. The question is whether
+some finite schedule makes the output distribution independent of the input
+distribution. Equivalently, does a matrix product have rank one? The control
+alphabet and rational coefficients are finite data; the word length is unbounded.
+
+\subsection{A concrete question that the construction answers}
+
+In a MathOverflow question posted on June 2, 2026, Victor Miller asked about the
+rank-one analogue of matrix mortality. Benjamin Steinberg observed that
+$A\mapsto A\oplus[1]$ transfers mortality to rank-one product existence. The
+subsequent discussion isolated the restriction that the generators have no common
+invariant line, and suggested an affine modification without a complete argument
+for that restriction \cite{miller}. We prove the missing restricted statement,
+with positivity and strong stochastic contraction added.
+
+The answer has a necessary qualification. Every column-stochastic matrix
+preserves the hyperplane $\one\transpose x=0$. Our construction has no common
+invariant \emph{line}, even over $\C$, but it is not an irreducible matrix family.
+It answers the stated line restriction, not a stronger irreducibility requirement
+that may arise in a particular application. It also does not settle any general
+question about computing hidden-Markov entropy.
+
+\subsection{Main results and their logical dependencies}
+
+The principal construction, Theorem~\ref{thm:linefree}, is elementary once a matrix
+mortality instance is supplied. Its central identity is
+\begin{equation}
+  \rk S_w=1+2\rk A_{\pi(w)},
+  \label{eq:intro-rank}
+\end{equation}
+where $\pi$ deletes the two guard letters. The guards are invertible on their
+private tensor factor, so inserting them anywhere cannot fabricate a mortal
+source computation. One guard removes possible shared eigenvectors in a
+transverse direction; an affine displacement in the other removes a common
+stationary line.
+
+For the small numerical undecidability bounds, we import only the established
+mortality bounds of Cassaigne, Halava, Harju, and Nicolas \cite{cassaigne}.
+Their conventions allow oracle Turing reductions, so we do not silently promote
+every numerical bound in their paper to a many-one completeness statement.
+Instead, Section~\ref{sec:pcp} prints a separate PCP reduction. That route gives
+many-one completeness in dimension nine, with alphabet size part of the input.
+The classical halting-to-PCP dependency is standard and has also been treated by
+formal reduction proofs \cite{forster}.
+
+The Diophantine contribution is explicit at a fixed horizon. Its witness
+bijection is proved directly, rather than inferred from DPRM. The latter theorem
+is used only for the separate fixed-arity, unbounded representation in
+Section~\ref{sec:unbounded}. Its use does not preserve a unique witness per
+unbounded computation.
+
+\subsection{Relationship to the inspected ProveIt material}
+
+The repository was inspected at the pinned commit
+\begin{center}\small\repo.\end{center}
+The relevant sources are its Hilbert-tenth-problem README, the October 2 substrate
+review, and the README of the combined probabilistic/quantum/continuous report
+\cite{repoH10,repoReview,repoProb}. These already contain extensive work on exact
+observations, contractions, matrix substrates, and bounded certificates. We do
+not present the generic claim ``computably enumerable implies Diophantine'' or
+``contraction can coexist with undecidable exactness'' as new.
+
+The proposed contribution is more specific: the two-guard no-invariant-line
+compiler, its higher-dimensional invariant-subspace exclusion, its exact
+stochastic forgetting interpretation, and the ensuing explicitly counted
+certificate interface. The targeted inspection did not amount to rereading every
+manuscript in the repository, and the public-source search is not an exhaustive
+priority audit.
+
+The October 2 review emphasizes the difference between an external-horizon
+polynomial and one fixed polynomial accepting arbitrarily long computations
+\cite{repoReview}. We retain that distinction throughout. The review's stated
+87-operation fixed universal polynomial is not improved by any count in this
+report. State dimension, residual count, arithmetic-circuit size, and number of
+unbounded Diophantine witnesses are different resources.
+
+\section{Exact forgetting and the zero-mass representation}
+\label{sec:setup}
+
+All stochastic matrices in this article are \emph{column-stochastic}. Probability
+distributions are columns, so $p\mapsto Sp$. We set $\N=\{0,1,2,\ldots\}$.
+Matrices called positive have every entry strictly greater than zero. Integer
+matrix mortality allows negative entries in the source matrices.
+
+For a word $w=i_1\cdots i_T$ in chronological order, define
+\[
+ S_w=S_{i_T}\cdots S_{i_1},\qquad S_\epsilon=I.
+\]
+The same convention applies to every matrix alphabet. A nonempty word is required
+for mortality and erasure.
+
+\begin{definition}
+An \emph{erasing word} for $S_1,\ldots,S_k$ is a nonempty word $w$ for which
+$S_wp$ is the same distribution for every initial distribution $p$. A
+\emph{uniform erasing word} satisfies $S_w=J_n$, where
+\[
+ u_n=\frac1n\one_n,\qquad J_n=u_n\one_n\transpose.
+\]
+\end{definition}
+
+\begin{lemma}[Equivalent erasure tests]\label{lem:erasure}
+For a nonnegative column-stochastic $n\times n$ matrix $S$, the following are
+equivalent: $S$ erases all initial distributions; all its columns are equal;
+$\rk S=1$; and $S$ vanishes on
+\[
+ H_n=\{x\in\R^n:\one_n\transpose x=0\}.
+\]
+If $S$ is also row-stochastic, these conditions are equivalent to $S=J_n$.
+\end{lemma}
+\begin{proof}
+The images of the point-mass distributions are precisely the columns of $S$.
+Thus erasure is equivalent to equal columns. Equal columns have rank one, not
+zero, since their sums are one. Conversely, rank one makes the columns scalar
+multiples of a fixed nonzero vector; their equal nonzero column sums force all
+these multiples to be equal. The vectors $e_j-e_1$, $j>1$, span $H_n$, giving the
+hyperplane condition. Finally, a matrix with equal columns has the form
+$p\one\transpose$; its row sums are $np_a$, which are all one precisely when
+$p=u_n$.
+\end{proof}
+
+\begin{lemma}[Erasure persists]\label{lem:persistence}
+If a word $w$ is erasing, every word containing $w$ as a contiguous block is
+erasing. Appending further letters after erasure can change the common output
+distribution, but cannot restore dependence on the initial distribution.
+\end{lemma}
+\begin{proof}
+Multiplication on either side cannot increase matrix rank. Every product remains
+column-stochastic and so has rank at least one. A product containing the rank-one
+factor $S_w$ therefore has rank exactly one.
+\end{proof}
+
+To separate total mass from information, let $h=n-1$ and introduce
+\begin{equation}
+ E=\begin{pmatrix}I_h\\-\one_h\transpose\end{pmatrix},\qquad
+ F=[I_h\ 0]-\frac1n\one_h\one_n\transpose,\qquad F_0=nF.
+ \label{eq:EF}
+\end{equation}
+These are explicit rational coordinate maps, not existentially chosen bases.
+
+\begin{lemma}[Coordinates]\label{lem:coordinates}
+One has
+\[
+ FE=I_h,\quad Fu_n=0,\quad \one_n\transpose E=0,\quad
+ EF=I_n-J_n.
+\]
+Every $x\in\Q^n$ has the unique decomposition
+\[
+ x=Ey+s u_n,\qquad y=Fx,\quad s=\one_n\transpose x.
+\]
+For any rational column-stochastic $S$, its matrix in these coordinates is
+\begin{equation}
+ \begin{pmatrix}C&b\\0&1\end{pmatrix},\qquad
+ C=FSE,\quad b=FSu_n,
+ \label{eq:generalblock}
+\end{equation}
+and $\rk S=1+\rk C$.
+\end{lemma}
+\begin{proof}
+The displayed identities follow by multiplying the matrices in
+\eqref{eq:EF}. They prove existence and uniqueness of the decomposition.
+Column-stochasticity preserves $s$, while applying $F$ to $S(Ey+s u_n)$ gives
+$Cy+sb$. To compute the rank, subtract from each of the first $h$ output rows its
+last-column entry times the last row. This leaves the block diagonal matrix
+$\diag(C,1)$ and hence rank $1+\rk C$.
+\end{proof}
+
+The same algebra holds over $\C$. We will use the complexified hyperplane and
+coordinates when excluding invariant lines. The distinction between a common
+invariant subspace and a common eigenvector is important: a one-dimensional
+invariant subspace is generated by a common eigenvector, but its eigenvalue may
+depend on the generator.
+
+\section{An explicit positive affine lift}
+\label{sec:lift}
+
+Let $(C_i,b_i)$, $1\leq i\leq k$, be finitely many integer affine data, with
+$C_i\in\Z^{h\times h}$ and $b_i\in\Z^h$. Fix a rational number
+$0<\eta<1$, chosen independently of the input coefficients. Define
+\begin{align}
+ \Delta_i&=EC_iF_0+nEb_i\one_n\transpose,\label{eq:delta}\\
+ M&=\max_{i,a,b}|(\Delta_i)_{ab}|,\qquad
+ K=\max\{2,1+\lceil M/\eta\rceil\},\qquad D=nK,\label{eq:scale}\\
+ B_i&=K\one_n\one_n\transpose+\Delta_i,\qquad S_i=B_i/D.
+ \label{eq:positiveB}
+\end{align}
+Here $B_i$ and $D$ are integers. The same $K$ and $D$ are used for every generator.
+
+\begin{theorem}[Positive affine lift]\label{thm:lift}
+The matrices in \eqref{eq:positiveB} are positive rational column-stochastic and
+satisfy the strict entrywise bounds
+\begin{equation}
+ \frac{1-\eta}{n}<(S_i)_{ab}<\frac{1+\eta}{n}.
+ \label{eq:entrybounds}
+\end{equation}
+In the coordinates of Lemma~\ref{lem:coordinates},
+\begin{equation}
+ S_i\sim\begin{pmatrix}K^{-1}C_i&K^{-1}b_i\\0&1\end{pmatrix}.
+ \label{eq:liftblock}
+\end{equation}
+For every word $w$ of length $T$,
+\begin{equation}
+ \rk S_w=1+\rk C_w.
+ \label{eq:affine-rank}
+\end{equation}
+All entries of $B_i$ are strictly positive integers and all its column sums equal
+$D$.
+\end{theorem}
+\begin{proof}
+Since $K>M/\eta$, each entry of $\Delta_i/(nK)$ has absolute value less than
+$\eta/n$. Adding $J_n$ proves \eqref{eq:entrybounds} and positivity.
+The column sums of $\Delta_i$ vanish because $\one\transpose E=0$, so the column
+sums of $S_i$ are one and those of $B_i$ are $D$.
+Using $F_0=nF$, rewrite the lift as
+\[
+ S_i=J_n+K^{-1}EC_iF+K^{-1}Eb_i\one_n\transpose.
+\]
+On $Ey+s u_n$ this gives
+\[
+ S_i(Ey+s u_n)=E\bigl(K^{-1}C_i y+K^{-1}b_i s\bigr)+s u_n,
+\]
+which proves \eqref{eq:liftblock}. Multiplying these upper block-triangular
+matrices gives a top-left block $K^{-T}C_w$. Its translation block need not vanish,
+but Lemma~\ref{lem:coordinates} shows that it does not affect the rank. Since
+$K\ne0$, \eqref{eq:affine-rank} follows.
+\end{proof}
+
+\begin{proposition}[Uniform approximate forgetting]\label{prop:contraction}
+For all probability distributions $p,q$ and every word $w$ of length $T$,
+\begin{equation}
+ \TV(S_wp,S_wq)\leq\eta^T\TV(p,q),\qquad
+ \TV(p,q)=\tfrac12\|p-q\|_1.
+ \label{eq:contraction}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The lower bound in \eqref{eq:entrybounds} allows the decomposition
+\[
+ S_i=(1-\eta)J_n+\eta Q_i,
+\]
+where $Q_i$ is nonnegative and column-stochastic. Such a matrix is nonexpansive in
+$\ell^1$: for any real vector $z$,
+\[
+ \|Q_i z\|_1\leq\sum_a\sum_b(Q_i)_{ab}|z_b|=\|z\|_1.
+\]
+For $z=p-q$ one has $J_nz=0$, giving a factor $\eta$ in one step. Iteration proves
+the result.
+\end{proof}
+
+In particular, for a fixed accuracy $\varepsilon>0$, a horizon with
+$\eta^T\leq\varepsilon$ works for every input instance and every schedule. This
+is a bound on the difference between two trajectories driven by the same
+schedule. When translations are present, it is \emph{not} a claim that arbitrary
+switching converges to one common stationary distribution.
+
+\begin{corollary}[Doubly stochastic special case]\label{cor:double}
+For $A_1,\ldots,A_m\in\Z^{d\times d}$, apply the lift with $h=d$, $C_i=A_i$,
+and $b_i=0$. Then $S_i$ is doubly stochastic, and
+\begin{equation}
+ S_w=J_{d+1}+K^{-T}EA_wF.
+ \label{eq:doublyproduct}
+\end{equation}
+Thus $A_w=0$ if and only if $S_w$ has rank one, if and only if $S_w=J_{d+1}$.
+\end{corollary}
+\begin{proof}
+The zero translations imply $S_i u_n=u_n$, which is row-stochasticity. The block
+product has zero translation and top-left block $K^{-T}A_w$. Conjugating it back
+gives \eqref{eq:doublyproduct}; the equivalences follow from $FE=I_d$.
+\end{proof}
+
+The baseline lift alone is a direct transport of mortality, not the main
+no-line result: its generators share the stationary line $\C u_n$.
+
+\section{Two guards eliminate every common invariant line}
+\label{sec:linefree}
+
+The obstacle in the baseline is structural. Merely adding an affine term need
+not remove eigenvectors already shared by the original matrices inside $H_n$.
+We therefore reserve a tensor factor for two invertible guards.
+
+Set
+\begin{equation}
+ R=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad
+ L=\begin{pmatrix}1&0\\1&1\end{pmatrix}.
+ \label{eq:guards}
+\end{equation}
+Given $A_1,\ldots,A_m\in\Z^{d\times d}$, take $h=2d$, $n=2d+1$, and use the
+following $m+2$ affine data:
+\begin{align}
+ (C_i,b_i)&=(A_i\otimes I_2,0), &&1\leq i\leq m,\label{eq:sourcepairs}\\
+ (C_R,b_R)&=(I_d\otimes R,0),\label{eq:Rpair}\\
+ (C_L,b_L)&=(I_d\otimes L,e_1).\label{eq:Lpair}
+\end{align}
+The vector $e_1$ in \eqref{eq:Lpair} is the first standard basis vector of
+$\Z^{2d}$. Apply the common-scale positive affine lift to all these pairs.
+
+For a word $w$ in the augmented alphabet, let $\pi(w)$ be its source-letter
+subword and $\gamma(w)$ its guard-letter subword. Both retain chronological
+order. An empty source subword has product $I_d$.
+
+\begin{theorem}[Line-free mortality compiler]\label{thm:linefree}
+The construction \eqref{eq:sourcepairs}--\eqref{eq:Lpair} is effective and has the
+following properties.
+\begin{enumerate}[label=(\roman*)]
+\item All $m+2$ generators are positive rational column-stochastic matrices of
+size $2d+1$, satisfying \eqref{eq:entrybounds} and \eqref{eq:contraction} for the
+prescribed $\eta$.
+\item The generators have no common invariant one-dimensional subspace of
+$\C^{2d+1}$.
+\item Every word $w$ satisfies
+\begin{equation}
+  C_w=A_{\pi(w)}\otimes G_{\gamma(w)},\qquad
+  \rk S_w=1+2\rk A_{\pi(w)},
+  \label{eq:tensorrank}
+\end{equation}
+where $G_{\gamma(w)}$ is a product of $R,L$ and is invertible.
+\item The source family is mortal if and only if the target family has an
+erasing word, if and only if it has a uniform erasing word.
+\end{enumerate}
+The same rank-one existence equivalence and no-common-line property hold for the
+positive integer numerators $B_1,\ldots,B_{m+2}$.
+\end{theorem}
+\begin{proof}
+The first assertion is Theorem~\ref{thm:lift} and
+Proposition~\ref{prop:contraction}.
+
+For the tensor identity, each source linear part acts only on the first tensor
+factor and each guard only on the second. Thus source factors commute with guard
+factors. Moving source factors past guards, without changing the order within
+either subword, gives the first identity in \eqref{eq:tensorrank}. Both $R$ and
+$L$ have determinant one. Therefore $G_{\gamma(w)}$ is invertible, including
+$G_\epsilon=I_2$. Multiplying on the second factor by its inverse shows
+\[
+ \rk\bigl(A_{\pi(w)}\otimes G_{\gamma(w)}\bigr)
+ =\rk\bigl(A_{\pi(w)}\otimes I_2\bigr)=2\rk A_{\pi(w)}.
+\]
+The affine rank formula now proves \eqref{eq:tensorrank}.
+
+We next rule out a common invariant complex line $\ell$. There are two cases.
+If $\ell\subseteq H_n^{\C}$, use the $E$ coordinates. A nonzero vector spanning
+it would be an eigenvector of both $I_d\otimes R$ and $I_d\otimes L$; scaling
+both by $K^{-1}$ does not affect their eigenvectors. The only eigenvalue of each
+unipotent guard is one. Their eigenspaces are respectively
+\[
+ \C^d\otimes\operatorname{span}(e_1)
+ \quad\hbox{and}\quad
+ \C^d\otimes\operatorname{span}(e_2),
+\]
+whose intersection is zero. This is impossible.
+
+If $\ell\not\subseteq H_n^{\C}$, choose $v\in\ell$ with
+$\one\transpose v=1$. Every column-stochastic generator acts on $v$ by its
+line eigenvalue, and preservation of total mass forces that eigenvalue to be
+one. Write $v=Ey+u_n$. The unshifted $R$ guard gives
+\[
+ y=K^{-1}(I_d\otimes R)y.
+\]
+The matrix on the right has only eigenvalue $K^{-1}\ne1$, since $K\geq2$.
+Consequently $y=0$ and $v=u_n$. But the shifted $L$ guard sends
+\[
+ u_n\longmapsto u_n+K^{-1}Ee_1\ne u_n,
+\]
+contradicting invariance. This proves (ii) over $\C$, not just over $\Q$.
+
+If $A_v=0$ for a nonempty source word $v$, use the same word without guards.
+Its affine translations are zero, so its lifted product is exactly $J_n$.
+Conversely, if $S_w$ has rank one, \eqref{eq:tensorrank} gives
+$A_{\pi(w)}=0$. The projection cannot be empty, since $A_\epsilon=I_d\ne0$.
+This establishes (iv).
+
+Finally, each $B_i=DS_i$ with a common nonzero scalar $D$. Scaling a generator
+by a nonzero scalar preserves all its invariant subspaces, and
+$B_w=D^{|w|}S_w$ preserves every product rank. The integer conclusion follows.
+\end{proof}
+
+\begin{remark}[Why the guard arguments must both be present]
+The two unipotent guards without an affine displacement would still fix $u_n$.
+An affine displacement without a protected tensor factor could leave an
+invariant line inside the information hyperplane. Our two cases address these
+independent obstructions. Invertibility of the guards is equally essential:
+a singular guard could destroy source information and introduce false erasing
+words.
+\end{remark}
+
+\subsection{Small numerical consequences}
+
+Cassaigne et al. prove undecidability of mortality for the four parameter pairs
+$(d,m)=(3,6),(5,4),(9,3),(15,2)$ \cite{cassaigne}. Applying the two explicit lifts
+gives Table~\ref{tab:bounds}. The entries are sufficient bounds transported from
+that paper, not a claim to list an optimal or exhaustive current frontier.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}ccc@{}}
+\toprule
+Source mortality $(d,m)$ & Doubly stochastic $(n,k)$ & No common line $(n,k)$\\
+\midrule
+$(3,6)$ & $(4,6)$ & $(7,8)$\\
+$(5,4)$ & $(6,4)$ & $(11,6)$\\
+$(9,3)$ & $(10,3)$ & $(19,5)$\\
+$(15,2)$ & $(16,2)$ & $(31,4)$\\
+\bottomrule
+\end{tabular}
+\caption{Undecidable exact-erasure families. Generator counts are upper bounds.
+All target entries may be confined to any prescribed band
+$((1-\eta)/n,(1+\eta)/n)$ with rational $0<\eta<1$.}
+\label{tab:bounds}
+\end{table}
+
+\begin{corollary}\label{cor:seven}
+For any fixed rational $0<\eta<1$, it is undecidable whether a finite product of
+at most eight positive rational $7\times7$ column-stochastic matrices has rank
+one, even under both promises that the entrywise band
+\eqref{eq:entrybounds} holds and that the generators have no common invariant
+complex line. The corresponding rank-one problem for positive integer matrices
+with one common positive column sum is also undecidable.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:linefree} to the $(3,6)$ mortality family. An algorithm on
+the promised target class would decide every source instance, since the compiler
+always meets the promises and preserves the answer.
+\end{proof}
+
+This is a family of finite alphabets parameterized by the source input. It is
+not a claim that the displayed three-state example below, or one fixed numerical
+eight-generator alphabet, simulates every program. Rational precision is
+unbounded across input instances; fixing all numerator and denominator bounds
+would leave only finitely many instances.
+
+\section{A direct correspondence-problem compiler}
+\label{sec:pcp}
+
+To separate completeness from the numerical mortality bounds, we now give a
+standalone many-one reduction. The starting problem is PCP: for a finite list of
+pairs $(u_i,v_i)$, does some nonempty index word satisfy
+\[
+ u_{i_1}\cdots u_{i_T}=v_{i_1}\cdots v_{i_T}?
+\]
+We use its classical computably enumerable completeness. The halting-to-PCP
+reduction is an external dependency, not re-proved here; see the formal treatment
+of PCP-related reductions by Forster, Heiter, and Smolka \cite{forster}.
+Restriction to a two-letter alphabet does not lose generality: encode a finite
+alphabet injectively by equal-length binary codewords, which preserves equality
+of all concatenations.
+
+\subsection{A four-dimensional integer front end}
+
+Use letters $a,b$ as digits $1,2$ in base three, read most significant digit first.
+Write $\code(s)$ for the resulting nonnegative integer, including
+$\code(\epsilon)=0$. This encoding is injective, and
+\begin{equation}
+ \code(st)=3^{|t|}\code(s)+\code(t).
+ \label{eq:stringcode}
+\end{equation}
+Define
+\begin{equation}
+ M_i=\begin{pmatrix}
+ 3^{|u_i|}&0&\code(u_i)&0\\
+ 0&3^{|v_i|}&\code(v_i)&0\\
+ 0&0&1&0\\
+ 0&0&0&0
+ \end{pmatrix},\qquad
+ c=\begin{pmatrix}0\\0\\1\\1\end{pmatrix},\qquad
+ \ell=\begin{pmatrix}1&-1&0&1\end{pmatrix},\qquad Q=c\ell.
+ \label{eq:pcp-matrices}
+\end{equation}
+The letter $q$ denotes the extra generator $Q$. It is deliberately idempotent:
+$\ell c=1$ and $Q^2=Q\ne0$.
+
+\begin{lemma}[PCP block identity]\label{lem:pcpblock}
+For a nonempty source word $v=i_1\cdots i_T$, let
+$U_v=u_{i_1}\cdots u_{i_T}$ and $V_v=v_{i_1}\cdots v_{i_T}$. Then
+\[
+ M_v=\begin{pmatrix}
+ 3^{|U_v|}&0&\code(U_v)&0\\
+ 0&3^{|V_v|}&\code(V_v)&0\\
+ 0&0&1&0\\
+ 0&0&0&0
+ \end{pmatrix},\qquad
+ \ell M_vc=\code(U_v)-\code(V_v).
+\]
+The corresponding scalar for the empty word is $\ell I_4c=1$, not zero.
+\end{lemma}
+\begin{proof}
+The product convention is chronological. Multiplying a later tile on the left
+updates the first translation by
+$3^{|u_i|}\code(U)+\code(u_i)=\code(Uu_i)$, and similarly for the second.
+Induction proves the matrix formula. The scalar follows by direct multiplication.
+For the empty word use $M_\epsilon=I_4$; the block formula with a zero final
+diagonal entry is asserted only for a nonempty word.
+\end{proof}
+
+\begin{theorem}[Full-word PCP reduction]\label{thm:pcp}
+The integer alphabet $M_1,\ldots,M_m,Q$ is mortal if and only if the PCP instance
+has a solution. More precisely, write any word containing $s\geq1$ connector
+letters as
+\[
+ w=v_0qv_1q\cdots qv_s,
+\]
+where each $v_j$ is a possibly empty source word. Its product is zero if and only
+if at least one internal block $v_j$, $1\leq j<s$, is a nonempty PCP solution.
+Words without a connector never have zero product.
+\end{theorem}
+\begin{proof}
+By $Q=c\ell$ and the chronological convention,
+\begin{equation}
+ M_w=(M_{v_s}c)
+ \left(\prod_{j=1}^{s-1}\ell M_{v_j}c\right)(\ell M_{v_0}).
+ \label{eq:pcp-factor}
+\end{equation}
+Both endpoint vectors are nonzero. For a nonempty $v_s$, the third coordinate of
+$M_{v_s}c$ is one; for an empty block it is the nonzero vector $c$. For nonempty
+$v_0$, the first coordinate of $\ell M_{v_0}$ is $3^{|U_{v_0}|}>0$; for an empty
+block it is $\ell\ne0$. Thus the outer product in \eqref{eq:pcp-factor} is
+nonzero, and vanishing occurs exactly when an internal scalar is zero.
+Lemma~\ref{lem:pcpblock} identifies those zero scalars with nonempty PCP matches;
+an empty internal block contributes one. Without $Q$, the third diagonal entry
+of every nonempty product is one, excluding mortality.
+
+Conversely, a PCP match $v$ gives the zero word $qvq$. The entire map from tiles
+to matrices is an explicit computable map, so this is a many-one reduction.
+\end{proof}
+
+The fourth coordinate has a specific purpose. A more naive connector based on a
+scalar comparison that vanishes for the empty word would have $Q^2=0$, making
+every instance mortal. Here the extra coordinate is killed by the first genuine
+tile but makes the empty-block scalar one. This is a boundary condition, not a
+cosmetic padding coordinate.
+
+\begin{corollary}[A many-one complete stochastic substrate]\label{cor:complete}
+For any fixed rational $0<\eta<1$, exact erasure is computably enumerable complete
+under many-one reductions for positive rational $9\times9$ column-stochastic
+families with a variable-size alphabet, even with no common invariant complex
+line and with the entrywise band \eqref{eq:entrybounds}.
+\end{corollary}
+\begin{proof}
+A PCP instance with $m$ tiles maps by Theorem~\ref{thm:pcp} to $m+1$ integer
+$4\times4$ matrices, then by Theorem~\ref{thm:linefree} to $m+3$ stochastic
+$9\times9$ matrices. Both maps are many-one and preserve the exact answer.
+Erasure is computably enumerable: enumerate all finite words and multiply their
+rational matrices exactly. This proves completeness on the promised class.
+Equivalently, one may regard the source tile list as the input parameter of the
+compiled family, so promise validation is not part of the reduction.
+\end{proof}
+
+This gives a precise sense in which the substrate supports universal finite
+computation. A halting instance can be transformed into a finite rational gate
+alphabet such that a finite exact-forgetting schedule exists exactly when the
+computation halts. It does not supply an autonomous universal stochastic machine
+with one fixed gate alphabet and a separate ordinary input loader.
+
+\section{Excluding all small common invariant subspaces}
+\label{sec:higher}
+
+The tensor guard method is not limited to lines. Let $r\geq2$, and let $P$ be the
+cyclic permutation matrix on $\C^r$, while
+\[
+ Z_r=\diag(1,2,\ldots,r).
+\]
+For an integer mortality instance of dimension $d$, use $h=rd$, $n=rd+1$, and
+\begin{equation}
+ (A_i\otimes I_r,0),\qquad (I_d\otimes P,0),\qquad
+ (I_d\otimes Z_r,e_1).
+ \label{eq:higherpairs}
+\end{equation}
+Apply the same common-scale lift. The name $Z_r$ here denotes a diagonal matrix,
+not an integer witness domain.
+
+\begin{lemma}[The guard algebra]\label{lem:guardalgebra}
+The complex unital algebra generated by $P$ and $Z_r$ is
+$\Mat_r(\C)$. Every subspace of $\C^d\otimes\C^r$ invariant under
+$I_d\otimes P$ and $I_d\otimes Z_r$ has the form $W\otimes\C^r$ for some
+$W\leq\C^d$.
+\end{lemma}
+\begin{proof}
+Since the diagonal entries of $Z_r$ are distinct, Lagrange interpolation produces
+the coordinate projections:
+\[
+ E_{jj}=\prod_{a\ne j}\frac{Z_r-aI}{j-a}.
+\]
+For each $i,j$ choose a power $P^t$ taking $e_j$ to $e_i$. Then
+$E_{ii}P^tE_{jj}=E_{ij}$, so the generated algebra contains every matrix unit.
+
+A subspace invariant under the two generators is invariant under their products
+and complex linear combinations, hence under all $I_d\otimes E_{ij}$. Define
+$W=\{v:v\otimes e_1\text{ belongs to the subspace}\}$. Applying
+$I_d\otimes E_{1j}$ to $\sum_jv_j\otimes e_j$ shows that every coefficient
+$v_j$ belongs to $W$. Conversely, applying $I_d\otimes E_{j1}$ shows that
+$W\otimes\C^r$ is contained in the subspace. This proves equality.
+\end{proof}
+
+\begin{theorem}[Invariant-subspace and product-rank gaps]\label{thm:higher}
+For the lift of \eqref{eq:higherpairs}, every common invariant complex subspace
+has dimension congruent to $0$ or $1$ modulo $r$. There is no common invariant
+line and, consequently, no nonzero common invariant subspace of any dimension
+$1,\ldots,r-1$. Every product satisfies
+\begin{equation}
+ \rk S_w=1+r\rk A_{\pi(w)}.
+ \label{eq:higherrank}
+\end{equation}
+In particular, a product is either rank one or has rank at least $r+1$.
+Mortality, erasure, and existence of a uniform erasing word remain equivalent.
+\end{theorem}
+\begin{proof}
+Both $P$ and $Z_r$ are invertible. The source/guard tensor factorization therefore
+proves \eqref{eq:higherrank} exactly as before. Zero translations on source-only
+words give the uniform-target equivalence.
+
+Let $U$ be a common invariant subspace. Its intersection with $H_n^{\C}$ is
+invariant under the linear guard restrictions and has dimension divisible by
+$r$, by Lemma~\ref{lem:guardalgebra}. If $U\subseteq H_n^{\C}$, this is its
+full dimension. Otherwise, restriction of the nonzero mass functional to $U$
+has a one-dimensional image, so
+$\dim U=\dim(U\cap H_n^{\C})+1$. This proves the congruence statement.
+
+A common invariant line cannot be inside $H_n^{\C}$ because its dimension would
+be a positive multiple of $r$. Outside $H_n^{\C}$ normalize a spanning vector to
+mass one. The unshifted $P$ guard forces its transverse part $y$ to satisfy
+$y=K^{-1}(I_d\otimes P)y$. Every eigenvalue of $P$ has modulus one, whereas
+$K>1$, so $y=0$. The translated $Z_r$ guard does not fix $u_n$, again a
+contradiction. Excluding dimension one and using the congruence statement
+excludes all positive dimensions smaller than $r$.
+\end{proof}
+
+The rank gap makes the exactness phenomenon sharper: products cannot drift
+through ranks $2,\ldots,r$ on their way to erasure. Their entries can nevertheless
+approach a rank-one matrix arbitrarily closely without ever becoming rank one.
+The common hyperplane of dimension $rd$ remains, so the theorem must not be
+reported as an irreducible-semigroup result.
+
+For example, applying this construction to the $d=3$, $m\leq6$ mortality bound
+gives undecidable erasure for at most eight positive stochastic matrices in
+dimension $3r+1$, with no invariant subspace of dimensions $1,\ldots,r-1$.
+Applying it to the explicit PCP front end gives many-one completeness in
+dimension $4r+1$ with variable alphabet size.
+
+\section{Decidable boundaries and a sharp commuting horizon}
+\label{sec:decidable}
+
+\subsection{An exact dimension correspondence}
+
+\begin{proposition}\label{prop:dimension}
+For $n\geq2$, rank-one product existence for rational column-stochastic
+$n\times n$ matrices reduces effectively, without changing the number of
+generators, to mortality for integer $(n-1)\times(n-1)$ matrices. Conversely,
+integer mortality in dimension $n-1$ reduces to erasure for positive rational
+doubly stochastic matrices of dimension $n$, in any prescribed band
+\eqref{eq:entrybounds}.
+\end{proposition}
+\begin{proof}
+For the first direction, compute $C_i=FS_iE$ using the explicit rational
+coordinates of Lemma~\ref{lem:coordinates}. The restriction of $S_w$ to $H_n$
+has coordinate matrix $C_w$, so erasure is equivalent to $C_w=0$. Clear the
+rational denominators in each $C_i$, or use one common positive denominator.
+Every product is merely multiplied by a nonzero scalar, preserving zero
+products. The converse is Corollary~\ref{cor:double}.
+\end{proof}
+
+This correspondence is useful independently of particular known dimension
+bounds. For example, the three-state positive doubly stochastic erasure problem
+has exactly the corresponding two-dimensional mortality difficulty. We do not
+infer a current open/closed classification of two-dimensional mortality from a
+dated source; the reduction equivalence itself is the assertion here.
+
+\subsection{Commuting information dynamics}
+
+The affine stochastic generators need not commute in the next theorem. It is
+enough that their restrictions to the zero-mass hyperplane commute.
+
+\begin{theorem}[Sharp commuting horizon]\label{thm:commuting}
+Let $S_1,\ldots,S_k$ be rational column-stochastic $n\times n$ matrices,
+$n\geq2$. Suppose that the induced $(n-1)$-dimensional matrices
+$C_i=FS_iE$ commute pairwise. If an erasing word exists, one of length at most
+$n-1$ exists. A finite exact rank-reduction algorithm finds such a word or
+certifies that no erasing word exists. The bound $n-1$ is sharp, even for a
+single positive doubly stochastic generator.
+\end{theorem}
+\begin{proof}
+Set $h=n-1$ and start with $P=I_h$, $V=\im P=\Q^h$. Since $P$ is a product of
+commuting $C_i$, every $C_i$ leaves $V$ invariant. If some generator satisfies
+$\rk(C_iP)<\rk P$, replace $P$ by $C_iP$, append that letter, and continue.
+Each such step strictly decreases the nonnegative integer $\dim V$, so at most
+$h$ steps are possible.
+
+If $P=0$, the chosen word is erasing. Otherwise suppose that no generator lowers
+the rank. Every $C_i:V\to V$ then has full rank on $V$ and is invertible there.
+All products remain invertible on this nonzero space, so none can be the zero
+matrix on $\Q^h$. Thus failure to find a further rank-lowering generator is a
+correct no-erasure certificate. Conversely, if any zero product exists it
+annihilates $V$, which is impossible while all $C_i|_V$ are invertible. Hence
+the algorithm cannot stop at a nonzero $V$ in a mortal instance.
+
+For sharpness, take the $h\times h$ nilpotent shift $N$ with ones immediately
+above the diagonal. It has $N^{h}=0$ and $N^t\ne0$ for $0\leq t<h$. The
+single-generator positive doubly stochastic lift of $N$ therefore first erases
+at time $h=n-1$.
+\end{proof}
+
+The algorithm uses rational matrix multiplication and Gaussian rank tests; it
+has no unbounded word search. The proof does not assume that a rank reduction
+already makes a matrix zero, and it allows arbitrary choices among available
+rank-lowering generators. The common-invariant-image property provided by
+commutation is what makes these greedy choices safe.
+
+For one generator, erasure is exactly nilpotency of $C$, and $C^{n-1}=0$ is a
+complete test. For $n=2$, every induced $C_i$ is a scalar, so erasure occurs if and
+only if at least one generator already has rank one. These are genuine finite
+boundaries, not numerical heuristics for the undecidable cases.
+
+\section{Random schedules, exact forgetting, and a hidden-state interpretation}
+\label{sec:random}
+
+Now choose each letter independently with probabilities
+$p_1,\ldots,p_k>0$, $\sum_i p_i=1$. Define the exact-forgetting time
+\[
+ \tau=\inf\{T\geq1:\rk(S_{I_T}\cdots S_{I_1})=1\},
+\]
+with $\inf\varnothing=\infty$. The event concerns exact equality, not a
+numerical distance threshold.
+
+\begin{theorem}[A zero--one law for finite exact forgetting]\label{thm:iid}
+For a finite column-stochastic alphabet under independent full-support
+switching, the following conditions are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item an erasing word exists;
+\item $\PP(\tau<\infty)>0$;
+\item $\PP(\tau<\infty)=1$;
+\item $\EE\tau<\infty$.
+\end{enumerate}
+If $v$ is an erasing word of length $L$ and
+$q=\prod_{j=1}^L p_{v_j}>0$, then
+\begin{equation}
+ \PP(\tau>t)\leq(1-q)^{\lfloor t/L\rfloor},\qquad
+ \EE\tau\leq L/q.
+ \label{eq:tail}
+\end{equation}
+For uniform letter probabilities, $q=k^{-L}$.
+\end{theorem}
+\begin{proof}
+If no erasing word exists, no finite prefix can have rank one, so $\tau=\infty$
+for every schedule. Suppose instead that an erasing word $v$ of length $L$
+exists. Partition the random schedule into successive disjoint blocks of length
+$L$. Each block equals $v$ with probability $q$, independently of the others.
+The first matching block occurs after a geometric number $G$ of blocks, with
+$\EE G=1/q$. By Lemma~\ref{lem:persistence}, regardless of the preceding prefix,
+that block makes the entire prefix product rank one. Hence $\tau\leq LG$, which
+proves \eqref{eq:tail} and finite expectation. Finite expectation implies
+almost-sure finiteness, and almost-sure finiteness implies positive probability.
+These implications establish all equivalences.
+\end{proof}
+
+\begin{corollary}\label{cor:randomhard}
+On the seven-state promised class of Corollary~\ref{cor:seven}, both almost-sure
+finite exact forgetting and finiteness of its expected time are undecidable.
+They are many-one complete on the variable-alphabet nine-state family of
+Corollary~\ref{cor:complete}. Nevertheless, the deterministic approximation
+bound \eqref{eq:contraction} holds for every schedule on every instance.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:iid} identifies each of these random-schedule predicates with
+existence of a finite erasing word. The reductions and contraction estimates
+already proved therefore apply unchanged.
+\end{proof}
+
+There is no contradiction with the higher logical complexity of many other
+almost-sure termination questions. Here a single finite erasing block is an
+absorbing certificate that recurs in independent full-support sampling. That
+special structure collapses the almost-sure predicate to an existential
+finite-word predicate. Removing independence, full support, or the absorbing
+rank-one property changes the argument.
+
+\subsection{A labelled hidden-state model with trivial output statistics}
+
+The stochastic interpretation can be made into a finite labelled transition
+model. For label $i$, use the nonnegative transition matrix
+\[
+ T_i=p_iS_i.
+\]
+Since $\sum_iT_i$ is column-stochastic, these matrices specify joint probabilities
+of the next hidden state and the emitted label. Conditional on any current hidden
+state, label $i$ has probability $p_i$, because
+$\one\transpose T_i=p_i\one\transpose$. Thus the emitted labels are independent
+with the prescribed common distribution.
+
+After observing a word $w=i_1\cdots i_T$, its probability is
+$\prod_t p_{i_t}$, independent of the initial hidden distribution. The normalized
+hidden-state update is exactly $S_w$. Consequently, exact independence of the
+posterior from the initial hidden distribution is precisely rank-one product
+existence.
+
+The output entropy rate in this particular construction is simply
+$-\sum_i p_i\log p_i$. It is not an undecidable quantity. This observation is
+important: even when output statistics are completely elementary, deciding
+whether filtering ever forgets its initial distribution \emph{exactly} can be
+undecidable. The result addresses exact filtering, not the entropy question that
+motivated the MathOverflow discussion.
+
+\subsection{Finite-horizon probabilities}
+
+Under uniform switching, let $N_T$ be the number of labelled words of length $T$
+with rank-one product. By persistence,
+\begin{equation}
+ \PP(\tau\leq T)=N_T/k^T.
+ \label{eq:probcount}
+\end{equation}
+This is an exact rational number computable by finite enumeration. The next
+section realizes $N_T$ as the number of natural solutions of an explicit quartic.
+Duplicate numerical generators, when present, remain distinct labels; this
+matches the probability model and the certificate count.
+
+\section{Explicit natural-domain Diophantine certificates}
+\label{sec:quartic}
+
+Fix a numerical input alphabet $B_1,\ldots,B_k\in\Z_{>0}^{n\times n}$, each
+with column sum $D>0$, and set $S_i=B_i/D$. In this section $T\geq1$ is an
+externally supplied horizon. A polynomial is produced for that horizon; its
+arity is not fixed as $T$ varies.
+
+\subsection{A full-prefix certificate with no minors}
+
+Introduce natural selector variables $e_{t,i}$, $1\leq t\leq T$, $1\leq i\leq k$,
+and natural prefix matrices $X_t\in\N^{n\times n}$. The matrix $X_0=I_n$ is
+constant. Use residuals
+\begin{align}
+ s_t&=\sum_{i=1}^k e_{t,i}-1,\label{eq:selector}\\
+ r_{t,ab}&=(X_t)_{ab}-\sum_{i=1}^k e_{t,i}
+                   \sum_{c=1}^n(B_i)_{ac}(X_{t-1})_{cb},\label{eq:prefix}\\
+ q_{ab}&=(X_T)_{ab}-(X_T)_{a1},\quad 1\leq a\leq n,\quad 2\leq b\leq n.
+ \label{eq:terminal}
+\end{align}
+Define the integer polynomial
+\begin{equation}
+ \mathcal Q_T=\sum_{t=1}^T s_t^2+
+ \sum_{t=1}^T\sum_{a,b=1}^n r_{t,ab}^2+
+ \sum_{a=1}^n\sum_{b=2}^n q_{ab}^2.
+ \label{eq:fullquartic}
+\end{equation}
+
+\begin{theorem}[Word-bijective full certificate]\label{thm:fullcertificate}
+The polynomial $\mathcal Q_T$ has total degree at most four in its natural
+witnesses. Its natural zero set is in bijection with the labelled erasing words
+of length $T$. It has exactly
+\begin{equation}
+ T(n^2+k)\quad\text{witness variables},\qquad
+ T(n^2+1)+n(n-1)\quad\text{squared residuals}.
+ \label{eq:fullcounts}
+\end{equation}
+\end{theorem}
+\begin{proof}
+A sum of integer squares vanishes exactly when every residual vanishes. Natural
+selectors with sum one have exactly one entry equal to one and every other entry
+zero. No separate Boolean equation is needed. Let $i_t$ be that unique selected
+letter. The prefix equations then force, successively,
+\[
+ X_t=B_{i_t}\cdots B_{i_1}.
+\]
+All these entries are natural, and each column sum equals $D^t$. Thus the
+terminal equations say precisely that the stochastic matrix $X_T/D^T$ has equal
+columns, which is equivalent to erasure by Lemma~\ref{lem:erasure}.
+
+Conversely, each erasing word supplies those one-hot selectors and exact prefix
+products, and all residuals vanish. The selectors and the recurrence determine
+every witness uniquely. Different labelled words have different selector tuples,
+even when some numerical generators coincide. This proves the bijection.
+The prefix residuals have degree at most two because $B_i$ are fixed numerical
+coefficients, and all other residuals are linear. The displayed counts simply
+count selectors, matrix entries, and equations.
+\end{proof}
+
+The terminal test uses equal columns rather than $2\times2$ minors. It is sound
+because the common, nonzero column sum has already been established by the
+retained recurrence. If the target is specifically $J_n$, replace
+\eqref{eq:terminal} by
+\[
+ (X_T)_{ab}-(X_T)_{11}=0\qquad ((a,b)\ne(1,1)).
+\]
+This uses $n^2-1$ terminal residuals. It is unnecessary in the doubly stochastic
+case, but it distinguishes a general rank-one product from the uniform matrix
+in the line-free construction.
+
+\subsection{A smaller certificate in information coordinates}
+
+Mass conservation allows a substantial further reduction. Put $h=n-1$ and
+compute the integer restriction matrices
+\begin{equation}
+ (H_i)_{ac}=(B_i)_{ac}-(B_i)_{an},\qquad 1\leq a,c\leq h.
+ \label{eq:integerH}
+\end{equation}
+These may have negative entries. They are the coordinates of the action of $B_i$
+on the zero-mass hyperplane: $B_iE=EH_i$. For a prefix product $X_t$,
+\begin{equation}
+ (H_{i_t}\cdots H_{i_1})_{ab}=(X_t)_{ab}-(X_t)_{an}.
+ \label{eq:restrictiondifference}
+\end{equation}
+Each entry on the right lies between $-D^t$ and $D^t$, since both nonnegative
+entries belong to columns of sum $D^t$.
+
+Introduce natural matrices $Y_t\in\N^{h\times h}$ and use the fixed shifts
+\[
+ p_t=D^t\quad(0\leq t\leq T),\qquad
+ Y_0=I_h+\one_h\one_h\transpose.
+\]
+The intended value is
+\[
+ (Y_t)_{ab}=(H_{i_t}\cdots H_{i_1})_{ab}+p_t.
+\]
+Retain the selector residuals $s_t$ and define
+\begin{align}
+ \rho_{t,ab}
+   &=(Y_t)_{ab}-p_t-
+     \sum_{i=1}^k e_{t,i}\sum_{c=1}^h(H_i)_{ac}
+                      \bigl((Y_{t-1})_{cb}-p_{t-1}\bigr),\label{eq:compressedrec}\\
+ \theta_{ab}&=(Y_T)_{ab}-p_T.\label{eq:compressedterminal}
+\end{align}
+Let
+\begin{equation}
+ \mathcal I_T=\sum_t s_t^2+
+ \sum_{t,a,b}\rho_{t,ab}^2+\sum_{a,b}\theta_{ab}^2.
+ \label{eq:compressedquartic}
+\end{equation}
+
+\begin{theorem}[Mass-compressed natural quartic]\label{thm:compressed}
+The natural zeros of $\mathcal I_T$ are in bijection with the labelled erasing
+words of length $T$. Every residual has degree at most two, and the polynomial
+has degree at most four. Its exact counts are
+\begin{equation}
+ \boxed{\ T\bigl((n-1)^2+k\bigr)\ \text{witnesses},\qquad
+ T\bigl((n-1)^2+1\bigr)+(n-1)^2\ \text{residuals}.\ }
+ \label{eq:compressedcounts}
+\end{equation}
+There is a canonical bijection between the natural zero sets of
+$\mathcal Q_T$ and $\mathcal I_T$, preserving the selected labelled word.
+\end{theorem}
+\begin{proof}
+The selectors again determine a unique word. Write
+$Z_t=Y_t-p_t\one_h\one_h\transpose$. Equation~\eqref{eq:compressedrec} becomes
+$Z_t=H_{i_t}Z_{t-1}$, with $Z_0=I_h$. Hence every $Y_t$ is forced uniquely.
+The intended values are natural because \eqref{eq:restrictiondifference} bounds
+each entry of $Z_t$ below by $-D^t$. Thus no additional range witnesses or
+nonnegativity slack equations are needed.
+
+The terminal residuals are zero exactly when $Z_T=0$, which means that the full
+product vanishes on the zero-mass hyperplane. Lemma~\ref{lem:erasure} identifies
+this with rank-one product existence. This proves both directions and the
+word-bijection. The counts and degree bounds follow directly from the formulas.
+
+For the zero-set bijection, keep the selectors and map a full prefix certificate
+to the compressed one by
+\[
+ (Y_t)_{ab}=(X_t)_{ab}-(X_t)_{an}+D^t.
+\]
+On valid zeros these values are natural. Conversely, the selectors in a
+compressed zero uniquely reconstruct the full prefix products. Both directions
+preserve the word and are inverse on the zero sets.
+\end{proof}
+
+This is a bijection on the valid natural zero sets, not an identity between the
+two polynomials away from zero. The map from arbitrary full witness assignments
+need not preserve nonnegativity; only its zero-set behavior is asserted.
+The distinction matches the source-audit discipline emphasized in ProveIt's
+October 2 review \cite{repoReview}.
+
+For the seven-state, eight-letter construction, the full certificate uses
+$57T$ witnesses and $50T+42$ residuals. The compressed certificate uses
+\begin{equation}
+ \boxed{44T\ \text{natural witnesses and }37T+36\ \text{residuals}.}
+ \label{eq:sevenledger}
+\end{equation}
+The improvement is $13T$ witnesses and $13T+6$ residuals. No assertion about an
+optimal arithmetic circuit or a smallest possible polynomial follows from
+these ledgers.
+
+The constants $p_t=D^t$ are computed for the supplied horizon. Their bit lengths
+are $O(t\log D)$, and printing all of them has a horizon-dependent cost. They
+are not an uncharged fixed-arity exponentiation primitive. The next subsection
+makes the uniform-input version polynomial without treating those powers as
+free input constants.
+
+\subsection{When the numerical matrices become polynomial parameters}
+
+A degree statement must specify whether matrix entries are coefficients or
+variables. In \eqref{eq:prefix}, treating $(B_i)_{ac}$ as polynomial input
+parameters turns a term $e_{t,i}(B_i)_{ac}(X_{t-1})_{cb}$ into a cubic. It would
+therefore be incorrect to reuse the full-prefix quartic degree claim unchanged
+in that setting.
+
+Here is a fully uniform compressed alternative for fixed $n,k,T$. Let the
+positive entries of $B_i$ and the common column sum $D$ be input parameters,
+subject to the stated stochastic-numerator promise. Introduce natural variables
+$z_t$, $W_t\in\N^{h\times h}$, and $Y_t\in\N^{h\times h}$ at each step,
+in addition to the selectors. Set $z_0=1$ and the same constant $Y_0$ as before.
+Use the residuals
+\begin{align}
+ z_t-Dz_{t-1}&=0,\label{eq:clock}\\
+ (W_t)_{ac}-\sum_i e_{t,i}\bigl((B_i)_{ac}+D-(B_i)_{an}\bigr)&=0,
+ \label{eq:selectH}\\
+ (Y_t)_{ab}-z_t-
+ \sum_c\bigl((W_t)_{ac}-D\bigr)
+       \bigl((Y_{t-1})_{cb}-z_{t-1}\bigr)&=0,
+ \label{eq:uniforminfo}
+\end{align}
+along with the selector equations and terminal equations
+$(Y_T)_{ab}-z_T=0$. Square and sum all these residuals.
+
+\begin{proposition}[Uniform-input quartic]\label{prop:uniformquartic}
+On the positive, common-column-sum input domain, the resulting polynomial has
+total degree at most four, \emph{including its matrix and denominator input
+parameters}. It has exactly
+\begin{equation}
+ T\bigl(k+2(n-1)^2+1\bigr)\quad\text{natural witnesses}
+ \label{eq:uniformvar}
+\end{equation}
+and
+\begin{equation}
+ T\bigl(2(n-1)^2+2\bigr)+(n-1)^2\quad\text{squared residuals}.
+ \label{eq:uniformres}
+\end{equation}
+Its natural zeros are again in bijection with the labelled erasing words of
+length $T$.
+\end{proposition}
+\begin{proof}
+Every displayed residual is quadratic or linear in all inputs and witnesses.
+One-hot selectors force $z_t=D^t$ and
+\[
+ (W_t)_{ac}=(H_{i_t})_{ac}+D.
+\]
+Since $0\leq(B_i)_{ab}\leq D$, these selected values are natural. The $Y$
+recurrence then reduces exactly to \eqref{eq:compressedrec}, so the preceding
+proof supplies uniqueness and naturalness of the remaining witnesses.
+There are $k+2h^2+1$ variables and $2h^2+2$ residuals per step, and $h^2$ terminal
+residuals, yielding the counts.
+\end{proof}
+
+The input promises themselves are decidable finite equalities and inequalities.
+They are not counted as witnesses in \eqref{eq:uniformvar}. To make a polynomial
+whose accepted inputs also enforce these promises, include their finite
+arithmetic conditions in the input-domain representation; one should then
+charge those additional conditions separately. This proposition supplies the
+uniform schema and its proof. The shipped numerical certificate evaluators
+implement Theorems~\ref{thm:fullcertificate} and~\ref{thm:compressed}, not an
+expanded symbolic version of Proposition~\ref{prop:uniformquartic}.
+
+\subsection{Exact counts of solutions and limits of uniqueness}
+
+The two numerical quartics have at most $k^T$ natural zeros, exactly one per
+erasing labelled word. Combining the bijection with \eqref{eq:probcount} gives
+\begin{equation}
+ \PP(\tau\leq T)=\frac{\#\{x\in\N^{T((n-1)^2+k)}:\mathcal I_T(x)=0\}}{k^T}.
+ \label{eq:quarticprobability}
+\end{equation}
+This identity is about a finite solution set for one externally fixed horizon.
+It is not a finite-fold Diophantine representation of arbitrary computably
+enumerable sets. A different polynomial is constructed for every $T$, and an
+unbounded union over those polynomials is not automatically one fixed-arity
+finite-fold polynomial.
+
+\section{Fixed unbounded Diophantine representations and impossibility of bounds}
+\label{sec:unbounded}
+
+\subsection{What DPRM supplies, and what it does not}
+
+Fix an effective encoding $e\in\N$ of finite rational stochastic alphabets.
+Validity of the finite rational data, positivity, and common-column-sum claims
+is decidable. The set of valid codes possessing an erasing word is computably
+enumerable by exact word enumeration. The Davis--Putnam--Robinson--Matiyasevich
+(DPRM) theorem identifies computably enumerable sets with Diophantine sets
+\cite{matiyasevich}. Hence there is an integer polynomial $P$ and a fixed number
+of natural witnesses such that
+\begin{equation}
+ e\text{ admits exact erasure}\quad\Longleftrightarrow\quad
+ \exists x_1,\ldots,x_s\in\N:\ P(e,x_1,\ldots,x_s)=0.
+ \label{eq:MRDP}
+\end{equation}
+The same conclusion holds for the compiled mortality or PCP input predicates.
+
+\begin{proposition}[Fixed-arity quartic consequence]\label{prop:fixedquartic}
+The unbounded erasure predicate has a fixed-arity integer-polynomial
+representation of total degree at most four over natural witnesses.
+\end{proposition}
+\begin{proof}
+Start from \eqref{eq:MRDP}. Split $P=P_+-P_-$, where $P_+$ and $P_-$ have
+nonnegative integer coefficients. Evaluate these two polynomials by finite
+addition/multiplication circuits over natural numbers. Introduce one natural
+wire variable for each gate output and impose the appropriate equation
+$z-u-v=0$, $z-uv=0$, or $z-c=0$. Identify the two final outputs by a linear
+equation. Squaring and summing all gate and final-output equations gives total
+degree at most four, including $e$ as a parameter. For fixed original witnesses,
+all new circuit-wire values are unique and natural. Conversely, any zero of the
+sum of squares reproduces the two evaluations and satisfies $P=0$.
+The circuit and its arity are fixed because $P$ is fixed.
+\end{proof}
+
+This is an existence-and-compilation theorem, not a printed small universal
+polynomial. It leaves the number and multiplicity of the original DPRM witnesses
+uncontrolled. The explicit horizon-dependent polynomials of the previous section
+are independent constructions with better traceability, not substitutes for
+this fixed-arity argument. None of these observations resolves a general
+finite-fold representation problem.
+
+\subsection{No uniform computable exactness horizon}
+
+Let the size of an input be the bit length of its finite binary encoding. The
+following statement applies to either the fixed seven-state undecidable family
+or the nine-state many-one complete family.
+
+\begin{theorem}[No computable yes-instance horizon]\label{thm:nobound}
+There is no total computable function $b:\N\to\N$ such that every erasing input
+of bit length $N$ has an erasing word of length at most $b(N)$.
+The conclusion remains true at every fixed rational contraction factor
+$0<\eta<1$ used above.
+\end{theorem}
+\begin{proof}
+Such a bound would decide erasure: compute $b(N)$ and enumerate all words up to
+that length, multiplying exactly and checking equal columns. If a word erases,
+answer yes; otherwise the assumed bound permits a no answer. Applied to the
+compiler output, this would decide source mortality or PCP, contradicting the
+proved reduction and its external undecidability dependency.
+\end{proof}
+
+By contrast, approximate forgetting has the uniform computable horizon
+$\eta^T\leq\varepsilon$, independently of the matrix coefficients. The
+undecidability concerns exact zero information, not the task of reaching any
+fixed positive tolerance.
+
+\begin{corollary}[No computable uniform finite-expectation bound]\label{cor:expectbound}
+Under uniform independent switching, there is no total computable bound in the
+input bit length for $\EE\tau$ on all inputs where that expectation is finite.
+Nor is there a computable function $b(N)$ guaranteeing
+$\PP(\tau\leq b(N))\geq1/2$ on every such input.
+\end{corollary}
+\begin{proof}
+Let $L_{\min}$ be the shortest erasing-word length. Every finite value of $\tau$
+is at least $L_{\min}$, so a finite upper bound for $\EE\tau$ bounds
+$L_{\min}$. A bound with positive probability of erasure by a given horizon also
+implies existence of a word by that horizon. Either would contradict
+Theorem~\ref{thm:nobound} after taking an integer ceiling when necessary.
+\end{proof}
+
+For any fixed arity representation such as \eqref{eq:MRDP}, an analogous argument
+excludes a computable bound on all necessary natural witness coordinates in
+terms of the input size. A complete computably enumerable family of
+\emph{non-erasure} certificates is also impossible on the undecidable class:
+parallel enumeration of yes and no certificates would be a decision algorithm.
+These are uniform impossibility statements, not obstacles to finding useful
+certificates or tight bounds for particular instances.
+
+\section{Exact erasure is not robust under perturbation}
+\label{sec:perturbation}
+
+The preceding hardness holds arbitrarily close to the uniform matrix. That is a
+statement about the location of the input family, not robustness of individual
+yes instances. Indeed, erasure is destroyed by arbitrarily small perturbations
+that preserve the invariant-subspace restrictions.
+
+\begin{theorem}[Subspace-preserving non-erasing perturbations]\label{thm:perturb}
+Let $S_1,\ldots,S_k$ be positive rational column-stochastic matrices of dimension
+$n\geq2$. For arbitrarily small positive rational $\delta$, all matrices
+\begin{equation}
+ S_i^{(\delta)}=(1-\delta)S_i+\delta I_n
+ \label{eq:perturb}
+\end{equation}
+are invertible. They remain positive and column-stochastic, have exactly the
+same common invariant complex subspaces as the original family, and have no
+erasing word. If the original family contracts total variation by at most
+$\eta$, the perturbed family contracts it by at most
+$\eta_\delta=(1-\delta)\eta+\delta<1$ for $0<\delta<1$.
+\end{theorem}
+\begin{proof}
+For each $i$, $f_i(\delta)=\det((1-\delta)S_i+\delta I_n)$ is a polynomial and
+$f_i(1)=1$. It therefore has only finitely many roots. Outside the finite union
+of these root sets, all perturbed generators are invertible. Every interval
+$(0,\varepsilon)$ contains a positive rational outside that finite set.
+A finite product of invertible matrices is invertible and, since $n\geq2$,
+cannot have rank one.
+
+Positivity and column-stochasticity follow immediately from the convex
+combination for $0<\delta<1$. For every subspace $U$, invariance under $S_i$
+implies invariance under $S_i^{(\delta)}$. Conversely,
+\[
+ S_i=\frac{S_i^{(\delta)}-\delta I_n}{1-\delta}
+\]
+shows the reverse implication whenever $\delta\ne1$. Applying this to every
+generator proves equality of the common invariant-subspace families.
+Finally, for $z=p-q$,
+\[
+ \|S_i^{(\delta)}z\|_1
+ \leq(1-\delta)\eta\|z\|_1+\delta\|z\|_1,
+\]
+which proves the contraction claim.
+\end{proof}
+
+For a prescribed open entrywise band, first choose a compiled family strictly
+inside that band. Its positive distance from the finitely many band endpoints
+allows sufficiently small perturbations to remain inside it. Thus even within
+the line-free, strongly contracting promised class, non-erasing instances occur
+arbitrarily close to every constructed erasing instance.
+
+This theorem also explains why floating-point rank tests cannot certify exact
+erasure. A determinant or singular value that is numerically tiny can be nonzero
+for a nearby rational input with a completely different exact answer. The shipped
+checks therefore use integer arithmetic and exact rational Gaussian elimination,
+with explicit rejection of floating-point and Boolean values in integer witness
+fields.
+
+\section{Worked examples and executable verification}
+\label{sec:examples}
+
+\subsection{A completely printed three-state example}
+
+Take the scalar source alphabet $A_0=[0]$, tensor degree two, and $\eta=1/2$.
+The compiler gives $K=13$, $D=39$, and
+\begin{equation}
+ B_0=\begin{pmatrix}13&13&13\\13&13&13\\13&13&13\end{pmatrix},\quad
+ B_R=\begin{pmatrix}14&14&11\\12&15&12\\13&10&16\end{pmatrix},\quad
+ B_L=\begin{pmatrix}18&15&15\\14&14&11\\7&10&13\end{pmatrix}.
+ \label{eq:tiny}
+\end{equation}
+Every column sums to 39, every entry divided by 39 lies between $1/6$ and $1/2$,
+and the family has no common invariant complex line by the guard proof.
+The source generator is already $S_0=J_3$; this is a readable sanity-check
+instance, not a universal numerical machine.
+
+The chronological word $(0,L)$ has numerator product
+\[
+ B_LB_0=
+ \begin{pmatrix}624&624&624\\507&507&507\\390&390&390\end{pmatrix}
+\]
+and denominator $39^2=1521$. Thus its stochastic product is
+\[
+ \begin{pmatrix}16/39\\13/39\\10/39\end{pmatrix}\one_3\transpose,
+\]
+which is rank one but not $J_3$. This explicitly demonstrates why the line-free
+construction requires a distinction between erasure and a specified uniform
+output, even though existence of the two kinds of word is equivalent.
+
+The full horizon-two certificate has 24 natural witnesses and 26 residuals.
+Its compressed version has 14 witnesses and 14 residuals. For the compressed
+certificate, the restriction matrices are
+\[
+ H_0=0,\qquad H_R=3R,\qquad H_L=3L.
+\]
+After the source letter, the information restriction is zero and remains zero.
+Hence the two $Y$ matrices are respectively $39\one_2\one_2\transpose$ and
+$1521\one_2\one_2\transpose$. These are the exact values in the delivered JSON
+certificate, not floating-point approximations.
+
+Under uniform random switching, erasure occurs precisely when letter $0$ first
+appears. Therefore
+\[
+ N_T=3^T-2^T,\qquad \PP(\tau\leq T)=1-(2/3)^T,\qquad \EE\tau=3.
+\]
+The enumerated values for $T=1,\ldots,5$ are $1,5,19,65,211$, matching the
+certificate counts. This instance also permits direct checks of the zero--one
+law and the difference between a uniform erasing product and an arbitrary
+rank-one product.
+
+\subsection{A seven-state, eight-letter numerical packet}
+
+The delivered seven-state instance has source dimension three and six labelled
+source generators:
+\[
+ N=\begin{pmatrix}0&1&0\\0&0&1\\0&0&0\end{pmatrix},\quad
+ I_3,\quad -I_3,\quad \diag(2,1,1),\quad I_3+E_{12},\quad I_3+E_{23}.
+\]
+The two tensor guards give eight target letters. With $\eta=1/10$, the compiler
+selects $K=131$ and $D=917$. All 392 integer entries of the eight numerator
+matrices are printed in \path{examples/seven_state_instance.json}.
+
+The chronological word $(N,N,N)$ erases because $N^3=0$, while neither $N$ nor
+$N^2$ is zero. The numerator product is
+\[
+ B_N^3=110156459\,\one_7\one_7\transpose,
+ \qquad D^3=771095213=7\cdot110156459.
+\]
+The full certificate has 171 witnesses and 192 residuals. The compressed
+certificate has 132 witnesses and 147 residuals. Both independent evaluations
+return polynomial value exactly zero. A separate uniform-target full certificate
+checks that this source-only word produces precisely $J_7$.
+
+This finite example illustrates the format and counts of the undecidable class.
+It does not prove undecidability by enumeration; that conclusion rests on the
+all-input reduction and the cited mortality theorem.
+
+\subsection{End-to-end PCP example}
+
+Use the two tiles
+\[
+ (u_0,v_0)=(a,ab),\qquad (u_1,v_1)=(ba,a).
+\]
+The index word $(0,1)$ is a match because both concatenations are $aba$.
+The four-dimensional front end has three generators, including connector $q=2$.
+The chronological word $(q,0,1,q)$ is zero. After the two-guard lift, this becomes
+an erasing word in a nine-state, five-letter positive stochastic instance.
+
+Both that numerical instance and its certificates are included. The full
+certificate has 344 natural witnesses and 400 residuals; the compressed one has
+276 natural witnesses and 324 residuals. Every residual evaluates to zero in
+both. The example exercises the complete chain
+\[
+ \text{PCP match}\ \longrightarrow\ \text{integer zero product}\
+ \longrightarrow\ \text{positive stochastic erasure}\
+ \longrightarrow\ \text{natural quartic zero}.
+\]
+The general proof also handles arbitrary connector placement, adjacent
+connectors, and empty component strings, rather than checking only this
+successful shape.
+
+\subsection{Scope and results of the executable checks}
+
+The shipped suite is deterministic. It uses Python's exact integers and
+\texttt{fractions.Fraction}; no external Python package is required. Rational
+matrix rank is computed by exact Gaussian elimination. The finite random source
+sample uses seed \texttt{20261002}, recorded in the result file.
+
+The completed run performed \textbf{50,582 passing assertions}. Its principal
+categories are shown in Table~\ref{tab:tests}; the full category ledger is in
+\path{verification/check_results.json}. Counts denote assertions, not distinct
+mathematical instances or independently proved theorems.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check category & Assertions\\
+\midrule
+Mortality versus erasure for enumerated words & 10,188\\
+Exact tensor product-rank formula & 10,188\\
+Full word coordinate/block identity & 10,188\\
+Independent full-prefix quartic replay & 3,448\\
+Independent compressed quartic replay & 3,448\\
+Full and compressed size ledgers, combined & 6,896\\
+Exact total-variation contraction inequalities & 3,601\\
+PCP arbitrary connector-word reduction & 1,638\\
+All remaining algebraic, domain, mutation, and example checks & 987\\
+\midrule
+Total & 50,582\\
+\bottomrule
+\end{tabular}
+\caption{Finite exact checks run for this report. The two numerical certificate
+formats are checked by a module that imports no generator code.}
+\label{tab:tests}
+\end{table}
+
+The suite includes scalar source alphabets with coefficients from $-2$ to $2$,
+eight seeded two-dimensional source examples, the seven-state packet, a higher
+tensor example, one-generator nilpotent examples attaining the commuting bound,
+and PCP examples with empty words and adjacent connectors. It also changes
+individual witness entries, changes selectors, and rejects values of type
+\texttt{float}, \texttt{bool}, and \texttt{str} in natural-number fields.
+
+The independent checker evaluates the defining residuals directly, without
+calling the generator. It is independent at the implementation-module level,
+not an independent human review. The all-instance reduction, the nonexistence
+of common complex lines, the infinite-horizon probability theorem, and the
+DPRM dependency are established mathematically in the text, not by these finite
+experiments. The uniform-parameter schema has a hand proof but is not one of the
+implemented certificate formats.
+
+\section{Integration and formalization plan for ProveIt}
+\label{sec:formalization}
+
+The present package is self-contained and does not modify the repository. It is
+suited to a separate research-report directory, with a link from the substrate
+review rather than a change to the fixed universal-operation record.
+
+A useful formalization order follows the mathematical dependency graph. First
+formalize the explicit maps $E,F$, the affine block decomposition, and the
+rank-one/equal-column equivalence over $\Q$. Next establish the tensor product
+identity and the two common-line obstructions over $\C$. The mortality
+undecidability theorem can initially be an explicitly declared external
+interface, rather than an unproved statement hidden inside an implementation.
+The PCP front end offers a separate path to a fully concrete reduction chain.
+
+The certificate layer is especially suitable for an early machine-checked
+milestone. It needs only finite sums, natural one-hot selectors, a matrix-product
+recurrence, and the equivalence between a zero sum of squares and vanishing of
+each residual. The compressed form additionally needs the column-sum invariant,
+the difference formula \eqref{eq:restrictiondifference}, and the offset bounds.
+This proves an exact zero-set bijection, not merely soundness of a successful
+example.
+
+For source integration, four interfaces should remain visibly separate:
+\begin{enumerate}
+\item the computable mortality/PCP-to-stochastic compiler, including its common
+scale and all numerical input coefficients;
+\item the exact finite-word rank and invariant-subspace theorems;
+\item the bounded polynomial family and its literal witness/residual counts;
+\item the unbounded DPRM polynomial existence theorem and its unspecified
+original witness multiplicities.
+\end{enumerate}
+No existing Lean or Rocq file in ProveIt was compiled during this task, and no
+new theorem here is presented as proof-assistant verified. The accompanying
+\path{PROOF_STATUS.md} states these boundaries explicitly.
+
+\section{Further research questions and concrete next targets}
+\label{sec:questions}
+
+The following are research directions exposed by the present proofs. Except for
+the precisely cited MathOverflow restriction already answered, this list does
+not claim that every formulation is a previously catalogued open problem.
+
+\subsection{Reduce the tensor overhead without losing the line guarantee}
+
+The present no-line compiler uses dimension $2d+1$ and two guard letters. Can one
+construct a uniformly valid compiler in dimension $d+2$, or with one additional
+letter, while retaining positivity and a word-projection soundness theorem?
+The obstacle is not positivity, which the affine lift handles uniformly; it is
+removing all source invariant lines without allowing guards to create false
+zero products. A useful first goal is to characterize the affine guard systems
+whose linear products cannot lower the rank of a protected source word.
+
+\subsection{Irreducibility beyond a missing invariant line}
+
+Our stochastic models necessarily have a common invariant hyperplane. Thus no
+construction confined to normalized column-stochastic matrices can make the
+whole linear action irreducible. A meaningful stronger target is either
+irreducibility on the information hyperplane, or a positive integer matrix
+construction without a common invariant hyperplane after normalization is
+abandoned. The first target is not achieved here either: source invariant
+subspaces can survive as $W\otimes\C^r$. A reduction must explain how to remove
+those spaces while still decoding mortality.
+
+\subsection{Low-dimensional classifications via the exact correspondence}
+
+Proposition~\ref{prop:dimension} translates state-dimension questions directly
+into mortality questions. It can be used to transport new decidability results,
+bounded-alphabet results, or structural restrictions in either direction. The
+three-state case is especially focused: its transverse dimension is two. Any
+claimed classification should consult current primary sources rather than
+inherit the status labels of a 2014 survey table.
+
+\subsection{Regularly constrained and non-independent scheduling}
+
+For a finite-state controller, only a regular language of schedules may be
+allowed. The unrestricted mortality compiler does not by itself preserve such
+constraints when guard letters are erased. One needs a product construction
+that tracks both source computation and controller state. On the probabilistic
+side, identify conditions under which a reachable erasing block recurs almost
+surely. Full-support independent switching is sufficient here, but zero
+probabilities, transient controller states, and forbidden blocks can invalidate
+the zero--one argument.
+
+\subsection{Sharper canonical certificates and fully charged arithmetic}
+
+The compressed quartic reduces natural witnesses by using the invariant mass
+rather than storing it. Can additional structure of the tensor restrictions
+reduce the $h^2T$ information entries, while retaining a bijection for every
+labelled word? One possibility is to certify the source projection and guard
+product separately; another is to exploit the rank gap without recording a full
+matrix at every step. Every proposal should count input parsing, selectors,
+scale arithmetic, coefficient generation, and reconstruction obligations. An
+improvement to $44T$ witnesses is a bounded-compiler result, not automatically
+an improvement to the repository's 87-operation universal construction.
+
+\subsection{Fixed-alphabet universality with an ordinary input interface}
+
+The nine-state many-one complete family encodes the problem in the gate alphabet.
+A different objective is one fixed numerical stochastic alphabet with a separate
+ordinary integer or finite-word input representation. Such a construction needs
+a concrete universal correspondence or matrix system and a fully paid input
+loader. It would make the relationship to the fixed universal Diophantine
+polynomials in ProveIt substantially tighter.
+
+\subsection{Structural non-erasure certificates}
+
+The commuting case supplies a complete finite certificate: a nonzero invariant
+image on which all generators are invertible. Can useful larger decidable
+classes be characterized by analogous invariant-space certificates? Candidate
+restrictions include simultaneously triangularizable transverse actions,
+prescribed rank patterns, or semigroups with a bounded descending-image chain.
+A proposed algorithm must account for the possibility that noncommuting
+invertible-on-current-image maps carry that image elsewhere; the commuting
+proof cannot simply be reused without that invariant-image property.
+
+\subsection{Precision-sensitive versus robust observation predicates}
+
+The perturbation theorem shows that exact erasure is destroyed by generic small
+invertibilizing perturbations, even when the invariant-subspace restrictions
+are unchanged. A quantitative alternative is to study coefficient uncertainty
+sets together with a fixed tolerance on output dependence. Which robust
+predicates admit computable finite certificates, and how do their costs scale
+as the tolerance tends to zero? The universal bound
+$\eta^T\leq\varepsilon$ solves one natural approximate-forgetting question;
+more delicate targets could depend on a specified output distribution, a
+restricted schedule language, or nonuniform contraction rates.
+
+\subsection{A formal proof of the guard compiler and the projection bijection}
+
+A focused formal milestone is Theorem~\ref{thm:linefree} together with
+Theorem~\ref{thm:compressed}, keeping mortality undecidability as a separately
+identified dependency. A second milestone is the complete PCP chain and its
+connector boundary condition. These targets are concrete enough to test the
+repository's arithmetic and matrix APIs, and they would turn the present
+hand-checked compiler into a reusable trusted frontend.
+
+\section{Conclusion}
+
+Exact stochastic erasure supports computational hardness even when every gate
+is positive, every step uniformly contracts total variation, and no common
+invariant complex line exists. The mechanism is explicit: preserve the source
+computation on one tensor factor, use invertible guards on the other, and lift
+the resulting affine dynamics into the interior of the stochastic simplex.
+
+The strongest precise line-restriction result in this report is the
+$(d,m)\mapsto(2d+1,m+2)$ compiler. It supplies the promised seven-state numerical
+undecidability bound, while the independent four-dimensional PCP front end
+supplies a nine-state many-one complete family. The probabilistic interpretation
+then identifies exact finite forgetting, almost-sure finite forgetting, and
+finite expected forgetting time without changing the underlying finite-word
+predicate.
+
+The Diophantine layer is equally explicit at a bounded horizon. A zero-set
+bijection reduces the seven-state certificate from $57T$ to $44T$ natural
+witnesses by storing only shifted information coordinates. The fixed-arity
+unbounded representation remains a separate DPRM consequence. Together, these
+results give a concrete new computational frontend and a carefully delimited
+research contribution, rather than a claim that a generic invocation of DPRM
+or contraction has solved every arithmetic-compression problem.
+
+\appendix
+\section{A fully instantiated horizon-two polynomial schema}
+\label{app:tinyquartic}
+
+For the three-state alphabet \eqref{eq:tiny}, let $e_{t,0},e_{t,R},e_{t,L}$ be the
+natural selectors at time $t=1,2$. Its compressed information matrix is
+\[
+ A(e_t)=e_{t,0}H_0+e_{t,R}H_R+e_{t,L}H_L
+ =3\begin{pmatrix}
+ e_{t,R}+e_{t,L}&e_{t,R}\\
+ e_{t,L}&e_{t,R}+e_{t,L}
+ \end{pmatrix}.
+\]
+Let $U=\one_2\one_2\transpose$, $Y_0=I_2+U$, $p_0=1$, $p_1=39$, and
+$p_2=1521$. The following is one explicit integer polynomial in fourteen natural
+variables (six selectors and eight entries of $Y_1,Y_2$):
+\begin{align*}
+ \mathcal I_2={}&
+ \sum_{t=1}^2(e_{t,0}+e_{t,R}+e_{t,L}-1)^2\\
+ &+\sum_{t=1}^2\sum_{a,b=1}^2
+ \left((Y_t)_{ab}-p_t-
+       \bigl[A(e_t)(Y_{t-1}-p_{t-1}U)\bigr]_{ab}\right)^2\\
+ &+\sum_{a,b=1}^2((Y_2)_{ab}-1521)^2.
+\end{align*}
+All finite sums, coefficients, dimensions, and constant matrices are specified;
+expanding the squares is optional and does not change the polynomial. The word
+$(0,L)$ gives selectors $(1,0,0)$ and $(0,0,1)$, with $Y_1=39U$ and $Y_2=1521U$.
+Every displayed residual is then visibly zero. A word containing only $R,L$
+produces an invertible transverse product and cannot satisfy the terminal
+conditions.
+
+This example illustrates the natural-domain uniqueness directly. A selector
+assignment such as $(2,-1,0)$ is inadmissible, even though its entries sum to one;
+using arbitrary integer selectors without additional conditions would invalidate
+the one-hot proof. The checker enforces the natural domain exactly.
+
+\section{Reproduction and source ledger}
+\label{app:reproduction}
+
+The archive contains the standalone \path{article.tex}, its compiled
+\path{article.pdf}, the Python implementation and independent evaluator,
+numerical example JSON files, a test receipt, and separate source/proof-status
+notes. From the package directory, run
+\begin{verbatim}
+python3 code/run_checks.py
+python3 code/check_certificate.py \
+    examples/seven_state_information_certificate.json
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The first command rewrites the delivered examples and verification receipt. The
+checker returns exit status zero for an accepted certificate and nonzero for a
+rejected or ill-typed certificate. The deliberately incorrect uniform-target
+example is expected to fail, not to be treated as a regression.
+
+The numerical implementation uses only the Python standard library. The PDF
+build uses pdfLaTeX and standard TeX packages named in the preamble. The version
+used for the recorded Python checks was 3.13.5. The final PDF is rendered and
+checked separately; the PDF preflight record is included in the verification
+folder.
+
+The external dependencies are narrow. The mortality bounds come from
+\cite{cassaigne}; the halting/PCP interface is supported by \cite{forster}; the
+computably-enumerable/Diophantine correspondence is DPRM \cite{matiyasevich}.
+The MathOverflow discussion \cite{miller} supplies the precise research question,
+not a theorem used as an unproved premise. The repository sources
+\cite{repoH10,repoReview,repoProb} supply project context and claim boundaries,
+not automatic mathematical authority for the present results.
+
+\begin{thebibliography}{9}
+\bibitem{cassaigne}
+J. Cassaigne, V. Halava, T. Harju, and F. Nicolas,
+\emph{Tighter Undecidability Bounds for Matrix Mortality, Zero-in-the-Corner
+Problems, and More}, arXiv:1404.0644v3, September 5, 2014.
+\url{https://arxiv.org/html/1404.0644v3}.
+The adopted bounds are $(d,m)=(3,6),(5,4),(9,3),(15,2)$; the paper's general
+reducibility convention is oracle Turing reducibility.
+
+\bibitem{forster}
+Y. Forster, E. Heiter, and G. Smolka,
+\emph{Verification of PCP-Related Computational Reductions in Coq},
+arXiv:1711.07023v2, July 18, 2018.
+\url{https://arxiv.org/abs/1711.07023v2}.
+Related publication DOI: \url{https://doi.org/10.1007/978-3-319-94821-8_15}.
+
+\bibitem{matiyasevich}
+Y. V. Matiyasevich, \emph{Hilbert's Tenth Problem}, MIT Press, 1993.
+Author-hosted preface, including the statement of the
+computably-enumerable/Diophantine correspondence:
+\url{https://logic.pdmi.ras.ru/~yumat/H10Pbook/preface.htm}.
+
+\bibitem{miller}
+V. Miller, \emph{Decidability of a matrix product being rank 1},
+MathOverflow question 511960, June 2, 2026; subsequent discussion with
+B. Steinberg, June 2--4, 2026. The common-invariant-line restriction appears in
+the June 3 discussion. Accessed October 2, 2026.
+\url{https://mathoverflow.net/questions/511960/decidability-of-a-matrix-product-being-rank-1}.
+
+\bibitem{repoH10}
+V. Reshetnikov and contributors, \emph{ProveIt: Hilbert's tenth problem},
+repository README at commit \repo, accessed October 2, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/928ea97017a25ebe56d240c84f27d2275d818c75/Computability/HilbertTenthProblem/README.md}.
+
+\bibitem{repoReview}
+\emph{Review of the imported computational-substrate reports, 2 October 2026},
+ProveIt research review, at the same pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/928ea97017a25ebe56d240c84f27d2275d818c75/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/imported_substrate_review_20261002.md}.
+
+\bibitem{repoProb}
+\emph{Diophantine Laws of Probabilistic, Quantum and Continuous Computation},
+ProveIt combined report README, at the same pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/928ea97017a25ebe56d240c84f27d2275d818c75/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation/README.md}.
+\end{thebibliography}
+\end{document}
