@@ -148,6 +148,7 @@ copy and its resulting source bytes are verified before execution.
 The larger context is the [preceding six-report review](incoming_substrate_review_1977e6ea6.md)
 and [earlier three-report review](incoming_substrate_review_6914ccca6.md).
 `Waterfall_Diophantine_Certificates.zip`, delivered at `24a743255` while this
-batch was being reviewed, is [triaged and queued](waterfall_intake_triage_24a743255.md)
-for a separate full review. Its author tests and complete proofs have not yet
-been reviewed or replayed in that intake pass.
+batch was being reviewed, was initially [triaged](waterfall_intake_triage_24a743255.md)
+and is now [fully reviewed](waterfall_report_review_24a743255.md), with all eight
+author commands replayed and a complete forced-boundary reduction. The original
+triage preserves its more limited historical read scope.

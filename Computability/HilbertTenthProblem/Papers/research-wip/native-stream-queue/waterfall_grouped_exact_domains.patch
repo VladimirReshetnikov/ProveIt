@@ -1,0 +1,82 @@
+--- a/replay/grouped_quadratic.py
++++ b/replay/grouped_quadratic.py
+@@ -15,8 +15,25 @@
+         if t!='---':RULES.append((q,s,ord(t[2])-65,int(t[1]=='R'),int(t[0])))
+ assert len(RULES)==29
+ 
++def integer(value, name):
++    if type(value) is not int:
++        raise TypeError(f'{name} must be an exact integer')
++    return value
++
++def natural(value, name, positive=False):
++    integer(value,name)
++    if value < int(positive):
++        raise ValueError(f'{name} must be {"positive" if positive else "nonnegative"}')
++    return value
++
+ class P:
+-    def __init__(self,terms=None):self.t={m:c for m,c in (terms or {}).items() if c}
++    def __init__(self,terms=None):
++        self.t={}
++        for monomial,coefficient in ({} if terms is None else terms).items():
++            integer(coefficient,'polynomial coefficient')
++            if type(monomial) is not tuple or any(type(v) is not str or not v for v in monomial):
++                raise TypeError('A monomial must be a tuple of nonempty variable names')
++            if coefficient:self.t[monomial]=coefficient
+     @staticmethod
+     def cast(x):return x if isinstance(x,P) else P({():x})
+     @staticmethod
+@@ -41,12 +58,13 @@
+     def at(self,env):
+         total=0
+         for mon,c in self.t.items():
+-            for v in mon:c*=env[v]
++            for v in mon:c*=integer(env[v],v)
+             total+=c
+         return total
+     def dump(self):return [{'coefficient':c,'monomial':list(m)} for m,c in sorted(self.t.items())]
+ 
+ def tm_history(L,R,k):
++    natural(L,'left half tape');natural(R,'right half tape');natural(k,'horizon')
+     q=s=0;history=[]
+     for j in range(k):
+         key=(q,s);rule=next((t for t in RULES if t[:2]==key),None)
+@@ -60,17 +78,24 @@
+ 
+ class Base:
+     def __init__(self,k):
+-        assert type(k) is int and k>=1
++        natural(k,'horizon',positive=True)
+         self.k=k;self.parameters=['L0','R0','C','tau'];self.witnesses=[];self.squares=[];self.products=[]
+     def v(self,n):self.witnesses.append(n);return P.var(n)
+     def eq(self,n,p):assert p.degree<=1;self.squares.append((n,p))
+-    def energy(self,env):return sum(p.at(env)**2 for _,p in self.squares)+sum(a.at(env)*b.at(env) for _,a,b in self.products)
++    def energy(self,env):
++        # This is the natural certificate interface.  P.at remains available
++        # for exact signed-integer evaluations of a formal polynomial.
++        env=dict(env)
++        if set(env)!=set(self.parameters+self.witnesses):
++            raise ValueError('Supply exactly the declared parameters and witnesses')
++        for name,value in env.items():natural(value,name)
++        return sum(p.at(env)**2 for _,p in self.squares)+sum(a.at(env)*b.at(env) for _,a,b in self.products)
+     def polynomial(self):return sum((p*p for _,p in self.squares),P())+sum((a*b for _,a,b in self.products),P())
+     def finish(self,B,r,count):
+         self.eq('halt_state',B-9);self.eq('halt_head',r-1)
+         self.eq('count',count-P.var('C'));self.eq('time',P.var('tau')-1-2*P.var('C')-7*self.k)
+     def dump(self):
+-        return dict(external_TM_steps=self.k,parameters=self.parameters,witnesses=self.witnesses,
++        return dict(external_TM_steps=self.k,parameters=list(self.parameters),witnesses=list(self.witnesses),
+                     domain='natural integers; exact fixed-k first halt; no unbounded fixed-arity claim',
+                     degree=self.degree,squared_linear_residuals=[dict(name=n,polynomial=p.dump()) for n,p in self.squares],
+                     nonnegative_products=[dict(name=n,left=a.dump(),right=b.dump()) for n,a,b in self.products],
+@@ -102,7 +127,8 @@
+         self.finish(B,rprev,count)
+         assert len(self.witnesses)==35*k and len(self.squares)==5*k+4 and len(self.products)==2*k
+     def lift(self,L,R):
+-        history,halt,end=tm_history(L,R,self.k);assert len(history)==self.k
++        history,halt,end=tm_history(L,R,self.k)
++        if len(history)!=self.k:raise ValueError('The run halts before the requested horizon')
+         C=sum(t['C'] for t in history);env=dict(L0=L,R0=R,C=C,tau=1+2*C+7*self.k)
+         for j,t in enumerate(history):
+             env.update({f'e{j}_{i}':int(i==t['rule']) for i in range(29)})
