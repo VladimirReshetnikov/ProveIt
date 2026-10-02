@@ -1,0 +1,1826 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor,booktabs,array,tabularx,enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{20344B}
+\definecolor{Accent}{HTML}{176B78}
+\definecolor{Pale}{HTML}{F0F5F7}
+\hypersetup{colorlinks=true,linkcolor=Accent,citecolor=Accent,urlcolor=Accent,
+ pdftitle={Lexicographic Orders of Well-Orderings of the Continuum},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsc{Well-orderings of the continuum}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.25em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\W}{\mathcal W}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathbb B}
+\newcommand{\two}{\{0,1\}}
+\newcommand{\lex}{\mathrm{lex}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\cat}{\mathbin{\frown}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\ci}{\operatorname{ci}}
+\newcommand{\dens}{\operatorname{d}}
+\newcommand{\cell}{\operatorname{cell}}
+\newcommand{\bl}{\ell_2}
+\newcommand{\emb}{\hookrightarrow}
+\newcommand{\equi}{\mathrel{\simeq_{\!e}}}
+\newcommand{\rev}{\mathrm{op}}
+\newcommand{\kplus}{\kappa^+}
+\newcommand{\powlex}[2]{\bigl({#1}^{#2},<_{\lex}\bigr)}
+\newtcolorbox{resultbox}{colback=Pale,colframe=Accent,boxrule=.6pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\title{\color{Ink}\LARGE Lexicographic Orders of Well-Orderings\\of the Continuum\\[7pt]
+\large Ordinal spectra, lexicographic complexity,\\finite-tail geometry, and self-absorption}
+\author{Research manuscript prepared for Vladimir Reshetnikov}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $\kappa=2^{\aleph_0}$, regarded as an initial ordinal. A well-ordering of
+$\R$ has a unique exhaustive enumeration by an ordinal of cardinality $\kappa$.
+We compare two such enumerations at their first unequal real entry. The
+resulting linear order $\W$ has cardinality $2^\kappa$, contains every linear
+order of cardinality at most $\kappa$, and contains an ordinal $\beta$ exactly
+when $\beta<\kappa^+$. Nevertheless, its least binary lexicographic coding
+length is $\kappa^+$: it contains every binary lexicographic cube of smaller
+length but does not contain the cube of length $\kappa^+$.
+
+The restriction $\W_\kappa$ to enumerations of length exactly $\kappa$ is
+quite different. It is equimorphic with $\two^\kappa$ in lexicographic order,
+as is the actual ultrafilter-enumeration index in the Kanovei--Shelah
+construction. We prove the exact fixed-type classification
+$\W_{\lambda+n}\equi\B_\lambda\times_{\lex}n!$ for limit $\lambda$ of cardinality $\kappa$,
+characterize every adjacent
+pair in $\W$, compute several order-topological invariants, and prove the
+sharp absorption theorem $\W^\gamma_{\lex}\emb\W$ if and only if
+$\gamma<\kappa^+$. We also analyze Dedekind completion and formulate further
+embedding, definability, and formalization problems.
+\end{abstract}
+\begin{resultbox}
+\textbf{Conventions and status.} All main theorems are in ZFC. All embeddings
+are order embeddings, not necessarily continuous maps. Equimorphism means
+embeddability in both directions, not isomorphism. Proofs are supplied below;
+they have not been independently refereed or checked by a proof assistant.
+The results are presented as a research synthesis with explicit derivations,
+not as a claim of established historical priority.
+\end{resultbox}
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{Three orders that must be distinguished}\label{sec:three}
+
+\subsection{The literal order of all well-orderings}
+Throughout the real case, put
+\[
+                 \kappa=|\R|=2^{\aleph_0},
+\]
+and identify this cardinal with its initial ordinal. For an ordinal $\alpha$
+of cardinality $\kappa$, let
+\[
+ \W_\alpha=\{e:\alpha\longrightarrow\R:e\text{ is a bijection}\},
+ \qquad
+ \W=\bigcup_{\kappa\leq\alpha<\kappa^+}\W_\alpha.
+\]
+A well-order relation on $\R$ determines exactly one member of $\W$: its
+increasing enumeration in that well-order. Conversely, $e\in\W_\alpha$
+defines the relation
+\[
+       r\mathrel{\prec_e}s\quad\Longleftrightarrow\quad e^{-1}(r)<e^{-1}(s).
+\]
+Thus $\W$ really represents all well-orderings, not merely their ordinal
+isomorphism types. The order in which we compare their entries is the
+\emph{usual} order of the real numbers, not one of the well-orders being
+compared.
+
+For distinct $e,f\in\W$, write
+\begin{equation}\label{eq:lex}
+ e<_{\lex}f
+ \quad\Longleftrightarrow\quad
+ e(\delta)<f(\delta),\qquad
+ \delta=\min\{\xi<\min(\dom e,\dom f):e(\xi)\ne f(\xi)\}.
+\end{equation}
+The existence of $\delta$ is proved in \cref{lem:prefix-free}. In particular,
+there is no choice of an ``end-of-word'' convention hidden in this definition.
+
+One could instead sort by ordinal length first. That would be a different
+order: choosing one enumeration of each possible length would then give an
+increasing sequence of type $\kappa^+$. This is impossible for
+\eqref{eq:lex}. Another different construction is to compare characteristic
+functions of well-order relations using a chosen well-order of $\R^2$.
+Neither alternative is used here.
+
+\subsection{The fixed-length restriction}
+The suborder $\W_\kappa$ contains only those well-orderings whose ordinal type
+is the initial ordinal $\kappa$. It is a substantial suborder, but it is not
+all of $\W$. For example, types $\kappa+1$, $\kappa+2$, and
+$\kappa\cdot2$ also occur in $\W$.
+
+This distinction cannot be dismissed on cardinality grounds. Both
+$\W_\kappa$ and $\W$ have cardinality $2^\kappa$, yet $\W$ does not embed
+into $\W_\kappa$. Indeed, no union of strata with a bounded set of ordinal
+lengths can contain an embedded copy of $\W$.
+
+\subsection{The index in the checked Kanovei--Shelah paper}
+Kanovei and Shelah's 2004 paper constructs a definable, countably saturated
+elementary extension of the reals. Its Section~1 uses the index
+\begin{equation}\label{eq:KS}
+ \A=\{a:\kappa\longrightarrow\mathcal P(\N):
+                     \ran a\text{ is an ultrafilter on }\N\},
+\end{equation}
+ordered lexicographically; subsets of $\N$ are themselves compared by their
+binary characteristic sequences \cite[Section~1]{KS}. These maps need not be
+injective. The definition includes principal ultrafilters. For an ultrafilter
+$U$, write $\A_U=\{a\in\A:\ran a=U\}$.
+
+Thus the checked source uses fixed-length ultrafilter enumerations, not
+literally $\W$. The two constructions share the principle of ordering
+\emph{presentations} without first selecting a presentation. We study both
+rather than identifying them.
+
+\subsection{Connection to ProveIt and to existing terminology}
+The ProveIt report \emph{Every ordinal as a point-separating game value}
+contains a binary-cylinder argument and an order-embedding interpretation of
+lexicographic coding \cite{ProveIt}. We use that line of thought, but give the
+needed cube argument independently in \cref{sec:cubes}. None of that report's
+claims about compact $T_1$ spaces is needed here.
+
+Minimum ordinal lengths of binary lexicographic representations are also
+studied under the name \emph{intrinsic length} in work of Knoblauch
+\cite{Knoblauch}. We fix our precise convention in \cref{def:binary-length};
+no classification theorem from that literature is assumed. The targeted source
+search did not establish a prior full classification of the specific order
+$\W$ considered here. This is a limitation of the bibliography, not a claim
+that such a classification is absent from the literature.
+
+\section{Main conclusions at a glance}\label{sec:summary}
+
+Let $\B_\theta=(\two^\theta,<_{\lex})$, for every ordinal $\theta$.
+An expression such as $\R^\gamma_{\lex}$ always has ordinal-indexed
+coordinates, read from left to right. We use $L\equi M$ for equimorphism.
+
+\begin{theorem}[Main embedding spectrum]\label{thm:main-spectrum}
+The following statements hold.
+\begin{enumerate}[label=(\roman*)]
+\item $|\W|=|\W_\kappa|=|\A|=2^\kappa$. Every linear order of cardinality
+at most $\kappa$ embeds into each of these orders.
+\item For every ordinal $\beta$ and each
+$L\in\{\W,\W_\kappa,\A\}$,
+\[
+                \beta\emb L\quad\Longleftrightarrow\quad\beta<\kappa^+.
+\]
+The same equivalence holds for reverse ordinals.
+\item $\W_\kappa\equi\A\equi\A_U\equi\B_\kappa$ for every ultrafilter
+$U$ on $\N$.
+\item $\B_\theta\emb\W$ exactly when $\theta<\kappa^+$, whereas
+$\B_\theta\emb\W_\kappa$ exactly when $\theta\leq\kappa$.
+The latter criterion also holds with $\A$ in place of $\W_\kappa$.
+\item $\R^\gamma_{\lex}\emb\W$ exactly when $\gamma<\kappa^+$.
+It embeds into $\W_\kappa$ or $\A$ exactly when $\gamma\leq\kappa$.
+\item $\W^\gamma_{\lex}\emb\W$ exactly when $\gamma<\kappa^+$.
+For $0<\gamma<\kappa^+$ the two orders are equimorphic. In contrast,
+$\W_\kappa\times_{\lex}\W_\kappa\not\emb\W_\kappa$, and
+$\A\times_{\lex}\A\not\emb\A$.
+\end{enumerate}
+\end{theorem}
+
+These assertions are proved in \cref{sec:ordinal,sec:fixed,sec:length,sec:absorption}.
+The exact refinement for every fixed type, proved in \cref{sec:all-strata}, is
+\[
+ \W_{\lambda+n}\equi\B_\lambda\times_{\lex}\{0,\ldots,n!-1\},
+ \qquad |\lambda|=\kappa,\quad\lambda\text{ limit},\quad n<\omega.
+\]
+Moreover, two strata compare by their limit parts first and by their final
+factorial block sizes second; see \cref{cor:strata-comparison}.
+The structural distinction is summarized in \cref{tab:invariants}. Here
+$2^{<\kappa}=\sup_{\lambda<\kappa}2^\lambda$, with cardinal exponents;
+$\cell$ is the supremum of the sizes of pairwise disjoint families of
+nonempty open sets. All topologies in the table are order topologies.
+
+\begin{table}[ht]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}Y*{3}{>{\centering\arraybackslash}p{.14\textwidth}}@{}}
+\toprule
+Invariant & $\W_\kappa$ & $\A$ & $\W$\\
+\midrule
+Cardinality & $2^\kappa$ & $2^\kappa$ & $2^\kappa$\\
+Ordinals that embed & $\beta<\kappa^+$ & $\beta<\kappa^+$ & $\beta<\kappa^+$\\
+Binary coding length $\bl$ & $\kappa$ & $\kappa$ & $\kappa^+$\\
+Dense linear order & yes & yes & no\\
+Least or greatest element & neither & neither & neither\\
+Cofinality & $\omega$ & $\cf(\kappa)$ & $\omega$\\
+Coinitiality & $\omega$ & $\omega$ & $\omega$\\
+Density and cellularity & $2^{<\kappa}$ & $2^{<\kappa}$ & $2^\kappa$\\
+Isolated points & none & none & $2^\kappa$\\
+Self-dual & yes & no & yes\\
+Unfilled $(\omega,\omega)$ cut & yes & yes & yes\\
+Absorbs its lexicographic square & no & no & yes\\
+\bottomrule
+\end{tabularx}
+\caption{Equal ordinal spectra do not imply equal lexicographic complexity.
+The assertions about $\A$ refer to the full index \eqref{eq:KS}.}
+\label{tab:invariants}
+\end{table}
+
+Under CH the ordinal cutoff is $\omega_2$: every ordinal below $\omega_2$
+embeds, including $\omega_1\cdot2$ and $\omega_1^2$, but $\omega_2$ does not.
+Without CH, the answer is still exactly $\kappa^+$, not an absolute cutoff at
+$\omega_2$. For example, if $\mathfrak c=\aleph_2$, then $\omega_2$ embeds
+and $\omega_3$ does not. These are conditional substitutions into the ZFC
+theorem, not additional assumptions in its proof.
+
+\section{Exhaustive enumeration orders}\label{sec:enumerations}
+
+Several central facts hold for any infinite linearly ordered set $X$, not
+just the real line. Write $\lambda=|X|$ and let $\W(X)$ consist of all
+bijections from ordinals of cardinality $\lambda$ onto $X$, with the same
+first-difference comparison.
+
+\begin{lemma}[Prefix-freeness]\label[lemma]{lem:prefix-free}
+No member of $\W(X)$ is a proper initial segment of another. Consequently
+two distinct members have a first disagreement in the common part of their
+domains, and first-difference comparison is a linear order.
+\end{lemma}
+\begin{proof}
+Suppose $e:\alpha\to X$ is an initial segment of the injective map
+$f:\beta\to X$, where $\alpha<\beta$. Since $e$ is onto, the value
+$f(\alpha)$ already occurs at some coordinate below $\alpha$, contrary to
+injectivity. If two enumerations agree throughout their common domain, one
+is therefore equal to the other.
+
+For transitivity, suppose $e<f<g$, with first disagreements $\delta$ and
+$\varepsilon$. Before $\min(\delta,\varepsilon)$ all three agree. If the
+coordinates are unequal, the earlier comparison gives $e<g$ there. If they
+are equal, $e(\delta)<f(\delta)<g(\delta)$ gives the same conclusion.
+Trichotomy follows from the linear order on $X$.
+\end{proof}
+
+\begin{definition}
+For an injective ordinal sequence $s$ of elements of $X$, its cylinder is
+\[
+                  C_s=\{e\in\W(X):s\subseteq e\}.
+\]
+We consider only prefixes that have an exhaustive extension. An exhaustive
+prefix has a singleton cylinder.
+\end{definition}
+
+\begin{lemma}[Residual-set geometry]\label[lemma]{lem:cylinder}
+Every cylinder is convex. If $s$ is not exhaustive and
+$Y=X\setminus\ran s$, then concatenation gives an order isomorphism
+\[
+                       \W(Y)\longrightarrow C_s,
+                       \qquad t\longmapsto s\cat t.
+\]
+For finite $Y$ of size $m$, the cylinder has exactly $m!$ points.
+\end{lemma}
+\begin{proof}
+A point between two extensions of $s$ cannot first disagree with $s$ before
+its end: that disagreement would put it on the same strict side of both
+extensions. The remaining assertions follow because every exhaustive
+extension must enumerate precisely $Y$ after $s$, and first differences in
+the tail are unchanged by concatenation.
+\end{proof}
+
+In particular, a long prefix may have already used all but two or three
+reals. This is why the density of the usual real order does \emph{not}
+imply density of $\W$.
+
+\begin{proposition}[Cardinality]\label[proposition]{prop:cardinality}
+For every infinite linearly ordered set $X$ of cardinality $\lambda$,
+\[
+              |\W(X)|=|\W_\lambda(X)|=2^\lambda.
+\]
+\end{proposition}
+\begin{proof}
+A well-order relation is a subset of $X^2$, giving the upper bound
+$2^{|X^2|}=2^\lambda$. For the lower bound, partition $X$ into
+$\lambda$ two-element sets $\{a_\xi,b_\xi\}$, with $a_\xi<b_\xi$.
+For $x\in\two^\lambda$, enumerate the pair at coordinate $\xi$ as
+$(a_\xi,b_\xi)$ if $x(\xi)=0$, and as $(b_\xi,a_\xi)$ otherwise.
+The concatenation has length $2\cdot\lambda=\lambda$ and enumerates all of
+$X$. Different bit sequences give different enumerations. In fact, this is
+an order embedding $\B_\lambda\emb\W_\lambda(X)$.
+\end{proof}
+
+\section{Binary cubes and the cylinder obstruction}\label{sec:cubes}
+
+\begin{lemma}[Cut coding]\label[lemma]{lem:cut-code}
+Every linear order $L$ of cardinality at most an infinite cardinal $\lambda$
+embeds into $\B_\lambda$.
+\end{lemma}
+\begin{proof}
+Choose a well-ordered list $(t_\xi)_{\xi<\mu}$ of the elements of $L$, where
+$\mu\leq\lambda$. For $x\in L$, put
+\[
+ c_x(\xi)=\begin{cases}1&t_\xi\leq_Lx,\\0&t_\xi>_Lx,\end{cases}
+ \qquad(\xi<\mu),
+\]
+and put $c_x(\xi)=0$ for $\mu\leq\xi<\lambda$. If $x<y$, then
+$c_x\leq c_y$ coordinatewise, and the coordinate listing $y$ distinguishes
+them. Their first unequal bits are consequently $0$ and $1$.
+\end{proof}
+
+\begin{lemma}[A cut preserves a full child]\label[lemma]{lem:child}
+Let $C_s$ be a full prefix cylinder in $\B_\theta$, with
+$\dom s<\theta$. If $D$ is an initial segment of $C_s$, then either
+$C_{s\cat0}\subseteq D$ or $C_{s\cat1}\subseteq C_s\setminus D$.
+The same assertion holds for cylinders $C_s\times F$ in
+$\B_\theta\times_{\lex}F$, where $F$ is any nonempty linear order.
+\end{lemma}
+\begin{proof}
+If the first inclusion fails, choose a point of the lower child outside
+$D$. Every point of the upper child lies above it, hence is also outside
+the initial segment. The additional terminal factor does not change the
+ordering of the two children.
+\end{proof}
+
+\begin{theorem}[Strict hierarchy of binary cubes]\label{thm:cube-strict}
+For all ordinals $\alpha,\beta$,
+\[
+                         \B_\alpha\emb\B_\beta
+                         \quad\Longleftrightarrow\quad\alpha\leq\beta.
+\]
+\end{theorem}
+\begin{proof}
+Padding with zero bits proves the forward-length direction. Suppose instead
+that $f:\B_\alpha\emb\B_\beta$ and $\beta<\alpha$. Construct a source
+prefix $s_\xi$ of length $\xi$, for $\xi\leq\beta$, so that $f$ is constant
+on its first $\xi$ target coordinates throughout $C_{s_\xi}$.
+
+At a successor step, all previous target bits are fixed. The inverse image
+of target bit $0$ at coordinate $\xi$, restricted to the current cylinder,
+is an initial segment. By \cref{lem:child}, one source child lies entirely
+on one side of this cut. Retain that child. At a limit stage take the union
+of the retained prefixes. Its full cylinder is the intersection of the
+earlier cylinders and remains nonempty. This is a fusion argument, not an
+appeal to finite-intersection compactness.
+
+After $\beta$ steps a source cylinder of length $\beta<\alpha$ still
+contains at least two points, while their images agree on all $\beta$
+coordinates. This contradicts injectivity.
+\end{proof}
+
+\begin{definition}[Binary lexicographic length]\label[definition]{def:binary-length}
+For a set-sized linear order $L$, define
+\[
+               \bl(L)=\min\{\theta:L\emb\B_\theta\}.
+\]
+This minimum exists in ZFC by \cref{lem:cut-code}. A singleton and the empty order have length
+zero. Equimorphic orders have the same binary length.
+\end{definition}
+
+\begin{lemma}[Real and binary coordinates]\label[lemma]{lem:real-code}
+$\R\equi\B_\omega$. More generally,
+\[
+                 \R^\gamma_{\lex}\equi\B_{\omega\cdot\gamma}
+\]
+for every ordinal $\gamma$.
+\end{lemma}
+\begin{proof}
+List the rationals as $(q_n)_{n<\omega}$ and send $r$ to
+$j(r)(n)=1$ exactly when $q_n<r$. This is an order embedding by the same
+coordinatewise argument as in \cref{lem:cut-code}. In the other direction,
+send a bit sequence $x$ to
+\[
+                     T(x)=\sum_{n<\omega}\frac{2x(n)}{3^{n+1}}.
+\]
+At the first unequal digit the contribution dominates the sum of all later
+possible differences, so this map is strictly increasing. Applying these
+maps coordinatewise and concatenating blocks of length $\omega$ proves the
+last statement. The ordinal length is $\omega\cdot\gamma$, not cardinal
+multiplication and not $\gamma\cdot\omega$.
+\end{proof}
+
+For the uncountable initial ordinal $\kappa=2^{\aleph_0}$,
+\begin{equation}\label{eq:omega-kappa}
+                             \omega\cdot\kappa=\kappa.
+\end{equation}
+Indeed, each $\omega\cdot\xi$ for $\xi<\kappa$ has cardinality less than
+$\kappa$, and their supremum is at least $\kappa$ and at most $\kappa$.
+No regularity of $\kappa$ is assumed.
+
+\section{The exact ordinal spectrum}\label{sec:ordinal}
+
+The upper bound is the essential point. Cardinality alone would permit
+well-ordered suborders far larger than $\kappa$.
+
+\begin{lemma}[Eventual constancy]\label[lemma]{lem:eventual}
+Let $\lambda$ be an infinite cardinal. A nondecreasing sequence of length
+$\lambda^+$ with values in a linear order of cardinality at most $\lambda$
+is eventually constant. The same holds for a nonincreasing sequence.
+\end{lemma}
+\begin{proof}
+There are at most $\lambda$ distinct values. Take the first occurrence of
+each value. Their supremum, increased by one if necessary, is below
+$\lambda^+$: the supremum of at most $\lambda$ ordinals below $\lambda^+$
+has cardinality at most $\lambda$. After this bound no new value can first
+occur. Monotonicity prevents a change to a value that already occurred
+before the current value. Hence the sequence is constant on a tail.
+\end{proof}
+
+\begin{theorem}[Exhaustion forbids a successor-cardinal chain]\label{thm:no-long}
+For every infinite linearly ordered set $X$ of cardinality $\lambda$,
+$\W(X)$ contains neither $\lambda^+$ nor its reverse.
+\end{theorem}
+\begin{proof}
+Suppose $(e_\eta)_{\eta<\lambda^+}$ is strictly increasing. Recursively, for
+each $\xi<\lambda^+$, we shall obtain an injective prefix $s_\xi$ of length
+$\xi$ shared by every $e_\eta$ on a tail of the index set.
+
+The empty prefix starts the recursion. At a limit $\xi<\lambda^+$, the
+supremum of the preceding tail bounds is still below $\lambda^+$, since
+$|\xi|\leq\lambda$. The union of the prefixes is injective and is shared
+by the resulting common tail.
+
+Suppose the shared prefix $s_\xi$ is exhaustive. Prefix-freeness forces all
+members of this tail to equal $s_\xi$, contrary to strict increase. Thus it
+is not exhaustive. Every enumeration on the tail has a value at coordinate
+$\xi$, and these values are nondecreasing because the earlier coordinates
+are fixed. By \cref{lem:eventual}, they are constant on a further tail.
+Their common value is not in $\ran s_\xi$, by injectivity. Adjoin it to get
+$s_{\xi+1}$.
+
+If the recursion never stops, its union is an injection
+$\lambda^+\to X$, a contradiction. If it stops by exhaustion, we already
+have a contradiction. Replacing nondecreasing by nonincreasing proves the
+reverse-order assertion.
+\end{proof}
+
+\begin{remark}
+It would be incorrect to argue that the sequence of enumeration lengths is
+bounded below $\lambda^+$. A long family can have unbounded lengths. The
+proof instead stabilizes a common prefix and uses the fact that an exhaustive
+prefix cannot be extended. This is exactly the extra step needed for the
+full order, rather than a fixed-length product.
+\end{remark}
+
+\begin{theorem}[Universal small orders and exact ordinals]\label{thm:ordinal-spectrum}
+For every infinite linearly ordered set $X$ of cardinality $\lambda$:
+\begin{enumerate}[label=(\alph*)]
+\item Every linear order of cardinality at most $\lambda$ embeds into
+$\W_\lambda(X)$ and hence into $\W(X)$.
+\item For every ordinal $\beta$,
+\[
+       \beta\emb\W(X)\quad\Longleftrightarrow\quad\beta<\lambda^+.
+\]
+The same is true for reverse ordinals and for $\W_\lambda(X)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Compose cut coding with the pair-swap embedding in
+\cref{prop:cardinality}. An ordinal has cardinality at most $\lambda$
+exactly when it is below $\lambda^+$. Larger ordinals contain
+$\lambda^+$ as an initial segment and are excluded by \cref{thm:no-long}.
+Reverse orders are covered by the same small-order universality and the
+reverse half of that theorem.
+\end{proof}
+
+For the real line, this proves the precise ordinal answer in
+\cref{thm:main-spectrum}. Notice the distinction between the external
+lexicographic order on well-orderings and the well-order carried by any one
+of its elements. The external order contains long ascending and descending
+chains even though every element individually codes a well-order.
+
+\section{Fixed length and the actual ultrafilter index}\label{sec:fixed}
+
+\begin{theorem}[Fixed-length equivalences]\label{thm:fixed-equivalence}
+For every ultrafilter $U$ on $\N$,
+\[
+                 \W_\kappa\equi\B_\kappa\equi\A_U\equi\A.
+\]
+Consequently, for any set-sized linear order $L$,
+\begin{equation}\label{eq:fixed-classification}
+ L\emb\W_\kappa
+ \quad\Longleftrightarrow\quad L\emb\A
+ \quad\Longleftrightarrow\quad\bl(L)\leq\kappa.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The pair-swap construction gives $\B_\kappa\emb\W_\kappa$. In the other
+direction, $\W_\kappa$ is a suborder of $\R^\kappa_{\lex}$, which embeds
+into $\B_{\omega\cdot\kappa}=\B_\kappa$ by \cref{lem:real-code}.
+
+Every ultrafilter $U$ has cardinality $\kappa$. To see this, partition
+$\mathcal P(\N)$ into complementary pairs $\{S,\N\setminus S\}$.
+There are $\kappa$ such pairs, and an ultrafilter contains exactly one
+member of each pair. Choose a surjection $u:\kappa\to U$ and two distinct
+members $u_0<u_1$ of $U$, in binary lexicographic order. For
+$x\in\two^\kappa$, set
+\begin{equation}\label{eq:ultrafilter-code}
+ a_x(2\cdot\xi)=u_{x(\xi)},\qquad
+ a_x(2\cdot\xi+1)=u(\xi)\qquad(\xi<\kappa).
+\end{equation}
+Since $2\cdot\kappa=\kappa$, these are maps of the required length. Their
+ranges are exactly $U$, and the first changed coding bit gives the first
+changed value. Thus $\B_\kappa\emb\A_U$.
+
+Finally, $\A_U\subseteq\A\subseteq(\mathcal P(\N))^\kappa$.
+Flattening the characteristic sequences of subsets of $\N$ turns the last
+order into $\B_{\omega\cdot\kappa}=\B_\kappa$. Composing these embeddings
+proves all the equivalences and \eqref{eq:fixed-classification}.
+\end{proof}
+
+The fact that even one fixed fiber $\A_U$ has this universality is an
+order-theoretic statement; it does not eliminate the role of all ultrafilters
+in the definable model construction. In particular, the embeddings in
+\eqref{eq:ultrafilter-code} use a chosen enumeration of $U$.
+
+\begin{corollary}\label[corollary]{cor:fixed-spectra}
+The binary lengths of $\W_\kappa$, $\A$, and $\A_U$ are all $\kappa$.
+Their embedded ordinals and reverse ordinals are exactly those below
+$\kappa^+$. Moreover,
+\[
+ \B_\theta\emb\W_\kappa\ \Longleftrightarrow\ \theta\leq\kappa,
+ \qquad
+ \R^\gamma_{\lex}\emb\W_\kappa\ \Longleftrightarrow\ \gamma\leq\kappa,
+\]
+with the same criteria for $\A$ and $\A_U$.
+\end{corollary}
+\begin{proof}
+Use \cref{thm:cube-strict,thm:fixed-equivalence}. For real powers,
+$\omega\cdot\gamma\leq\kappa$ is equivalent to $\gamma\leq\kappa$:
+\eqref{eq:omega-kappa} proves one direction, while
+$\gamma\geq\kappa+1$ implies
+$\omega\cdot\gamma\geq\kappa+\omega>\kappa$. The ordinal spectrum follows
+from equimorphism with $\W_\kappa$ and \cref{thm:ordinal-spectrum}.
+\end{proof}
+
+\subsection{An exact finite-tail refinement}
+The last entry of an exhaustive enumeration is forced by all preceding
+entries. Several final entries, however, retain a genuine finite amount of
+lexicographic information. This gives a more precise hierarchy than the
+cardinality or ordinal spectrum alone detects.
+
+For a positive integer $m$, write
+\[
+                  D_{\kappa,m}=\B_\kappa\times_{\lex}\{0,\ldots,m-1\}.
+\]
+The binary sequence is the first, more significant coordinate.
+
+\begin{theorem}[Finite-tail equivalence]\label{thm:finite-tail}
+For every nonnegative integer $n$,
+\begin{equation}\label{eq:finite-tail}
+                         \W_{\kappa+n}\equi D_{\kappa,n!}.
+\end{equation}
+In particular,
+\[
+ \W_{\kappa+1}\equi\W_\kappa,
+ \qquad
+ \W_{\kappa+2}\equi\B_{\kappa+1}.
+\]
+\end{theorem}
+\begin{proof}
+Choose a fixed $n$-element set $F\subseteq\R$. Partition $\R\setminus F$
+into $\kappa$ ordered pairs, and use the pair-swap construction for the
+first $\kappa$ entries. Append the $r$-th permutation of $F$ in lexicographic
+order, for $0\leq r<n!$. This embeds $D_{\kappa,n!}$ into
+$\W_{\kappa+n}$. The case $n=0$ uses the unique empty permutation.
+
+Conversely, code the first $\kappa$ entries of an enumeration by a member of
+$\B_\kappa$, using rational-cut codes and \eqref{eq:omega-kappa}. When two
+such prefixes agree, the remaining set of $n$ reals is the same. Record the
+rank, between $0$ and $n!-1$, of the final permutation of those reals. The
+prefix code followed by this rank is an order embedding into
+$D_{\kappa,n!}$.
+\end{proof}
+
+\begin{theorem}[Finite-fiber capacity]\label{thm:finite-capacity}
+For every positive finite $m$,
+\begin{align}
+ \bl(D_{\kappa,m})&=\kappa+\lceil\log_2m\rceil,\label{eq:finite-length}\\
+ \B_\theta\emb D_{\kappa,m}
+       &\quad\Longleftrightarrow\quad
+             \theta\leq\kappa+\lfloor\log_2m\rfloor.
+             \label{eq:finite-cubes}
+\end{align}
+Hence the same formulas hold for $\W_{\kappa+n}$ with $m=n!$.
+\end{theorem}
+\begin{proof}
+A finite increasing binary code for $\{0,\ldots,m-1\}$ proves the upper
+bound in \eqref{eq:finite-length}. Suppose
+$D_{\kappa,m}\emb\B_{\kappa+j}$ for a finite $j$. Read the first $\kappa$
+target bits and apply \cref{lem:child} successively to source cylinders
+$C_s\times\{0,\ldots,m-1\}$. After $\kappa$ steps, all $m$ points over one
+source bit sequence have the same first $\kappa$ target bits. They must fit
+into a fiber of size $2^j$. Thus $m\leq2^j$. Targets of length below
+$\kappa$ are already excluded by their failure to contain $\B_\kappa$.
+This proves \eqref{eq:finite-length}.
+
+For \eqref{eq:finite-cubes}, $2^j\leq m$ gives the direct embedding
+$\B_{\kappa+j}=\B_\kappa\times_{\lex}\two^j\emb D_{\kappa,m}$.
+Conversely, given an embedding in this direction, fuse source cylinders
+while reading the first $\kappa$ bits of the target's $\B_\kappa$
+coordinate. The final source cylinder contains $2^j$ points, but its target
+fiber has only $m$ points. Hence $2^j\leq m$. Any ordinal length greater
+than $\kappa+\lfloor\log_2m\rfloor$ contains the next forbidden finite
+extension as an initial coordinate block, so all larger lengths are also
+excluded.
+\end{proof}
+
+\begin{example}
+For $n=3$ there are six final permutations. Thus
+\[
+ \bl(\W_{\kappa+3})=\kappa+3,
+ \qquad
+ \B_\theta\emb\W_{\kappa+3}
+       \Longleftrightarrow\theta\leq\kappa+2.
+\]
+The least coding length need not itself be a cube that embeds back. This
+small finite-fiber example foreshadows the much larger discrepancy for
+$\W$: its coding length is $\kappa^+$, but $\B_{\kappa^+}$ does not embed.
+\end{example}
+
+\section{Unbounded lengths and full lexicographic complexity}\label{sec:length}
+
+\begin{lemma}[Arbitrarily long small-cardinal cubes]\label[lemma]{lem:all-small-cubes}
+Let $X$ be an infinite linearly ordered set of cardinality $\lambda$. For
+every ordinal $\theta<\lambda^+$,
+\[
+                              \B_\theta\emb\W(X).
+\]
+\end{lemma}
+\begin{proof}
+Choose pairwise disjoint pairs $\{a_\xi,b_\xi\}$ for $\xi<\theta$, ordered
+so that $a_\xi<b_\xi$, leaving a residual set of cardinality $\lambda$.
+This is possible because $|\theta|\leq\lambda$ and $\lambda$ is infinite.
+For each bit sequence, list each pair in its selected orientation, in the
+ordinal order of $\theta$, and then append one fixed enumeration of the
+residual set. The total length is $2\cdot\theta+\lambda$, an ordinal of
+cardinality $\lambda$. First changed bits give first changed entries.
+\end{proof}
+
+\begin{theorem}[The full coding length]\label{thm:full-length}
+For every infinite linearly ordered set $X$ of cardinality $\lambda$,
+\begin{equation}\label{eq:full-length}
+ \bl(\W(X))=\lambda^+,
+ \qquad
+ \B_\theta\emb\W(X)\ \Longleftrightarrow\ \theta<\lambda^+.
+\end{equation}
+In particular, $\W$ embeds into $\B_{\kappa^+}$, but the reverse embedding
+does not exist.
+\end{theorem}
+\begin{proof}
+Embed $X$ into $\B_\lambda$ by \cref{lem:cut-code}. For an enumeration of
+length $\alpha<\lambda^+$, concatenate its coordinate codes into a binary
+sequence of length $\lambda\cdot\alpha$, and pad with zeros to length
+$\lambda^+$. Since $|\lambda\cdot\alpha|\leq\lambda$, this is a legitimate
+shorter initial block. Prefix-freeness ensures that two different
+exhaustive enumerations disagree before either ends, so padding introduces
+no ambiguity. This proves the upper bound $\bl(\W(X))\leq\lambda^+$.
+
+If $\W(X)$ embedded into $\B_\delta$ for $\delta<\lambda^+$, then
+\cref{lem:all-small-cubes} would give
+$\B_{\delta+1}\emb\B_\delta$, contrary to \cref{thm:cube-strict}. This
+proves equality.
+
+The positive cube embeddings are \cref{lem:all-small-cubes}. To exclude
+$\B_{\lambda^+}$, note that this cube contains a copy of $\lambda^+$:
+map $\eta<\lambda^+$ to the sequence with value $1$ below $\eta$ and $0$
+from $\eta$ onward. This would contradict \cref{thm:no-long}. Larger cubes
+contain this forbidden cube.
+\end{proof}
+
+For the real case, the upper coding construction can use countable
+rational-cut blocks rather than blocks of length $\kappa$. Thus an
+enumeration of length $\alpha$ is first coded at length
+$\omega\cdot\alpha$. The ultimate common padding length is still
+$\kappa^+$.
+
+\begin{corollary}[No bounded-length universal suborder]\label[corollary]{cor:unbounded}
+Fix $\tau<\kappa^+$. Then
+\[
+                      \W\not\emb\bigcup_{\alpha\leq\tau}\W_\alpha.
+\]
+Consequently, the image of every order embedding $\W\emb\W$ has an
+unbounded set of enumeration lengths in $\kappa^+$.
+\end{corollary}
+\begin{proof}
+The bounded union embeds into $\B_{\omega\cdot(\tau+1)}$ by coding and
+padding. Its target length is below $\kappa^+$, whereas $\bl(\W)=\kappa^+$.
+\end{proof}
+
+\begin{corollary}[Real-coordinate powers]\label[corollary]{cor:real-powers}
+For every ordinal $\gamma$,
+\[
+                        \R^\gamma_{\lex}\emb\W
+                        \quad\Longleftrightarrow\quad\gamma<\kappa^+.
+\]
+\end{corollary}
+\begin{proof}
+For $\gamma<\kappa^+$, the ordinal $\omega\cdot\gamma$ also lies below
+$\kappa^+$, so use \cref{lem:real-code,lem:all-small-cubes}. For
+$\gamma\geq\kappa^+$, restricting all coordinates to two reals gives a
+copy of $\B_{\kappa^+}$ and therefore of $\kappa^+$.
+\end{proof}
+
+These results give an exact classification for binary and real-coordinate
+lexicographic powers. They do not classify every linear order of cardinality
+$2^\kappa$ that has no $\kappa^+$-chain in either direction. In particular,
+absence of the two long monotone chains is not asserted to be a sufficient
+embedding criterion for $\W$.
+
+
+\section{An exact classification of every fixed ordinal type}\label{sec:all-strata}
+
+The finite-tail result extends to \emph{every} possible ordinal length, not
+only to $\kappa+n$. The key is to exploit the shrinking alphabet after a
+long prefix has already enumerated most of the ground set. Coding every
+remaining real by a fresh block of $\omega$ bits would miss this improvement.
+
+\begin{lemma}[Countable alphabets]\label[lemma]{lem:countable-alphabet}
+If $X$ is a countable linear order, then $X^\omega_{\lex}$ embeds into
+$\B_\omega$. Consequently, for every nonzero limit ordinal $\lambda$,
+$X^\lambda_{\lex}$ embeds into $\B_\lambda$.
+\end{lemma}
+\begin{proof}
+There are countably many nonempty finite words $t$ over $X$. For a word of
+length $m$, the set
+\[
+                 D_t=\{x\in X^\omega:x\restr m\leq_{\lex}t\}
+\]
+is an initial segment. Enumerate these sets and code a point by bit $0$
+when it belongs to the corresponding $D_t$, and bit $1$ otherwise. If
+$x<y$ first differ at coordinate $m-1$, then $t=x\restr m$ gives a cut
+containing $x$ but not $y$. Every cut code is monotone, so the resulting
+binary code is an order embedding.
+
+Every limit ordinal has the form $\lambda=\omega\cdot\eta$. Apply the
+countable-alphabet code separately to its successive $\omega$-blocks. The
+concatenated binary length is $\omega\cdot\eta=\lambda$.
+\end{proof}
+
+\begin{theorem}[All fixed-type strata]\label{thm:all-strata}
+Let $X\subseteq\R$ be infinite, with the inherited order, and let
+$|\alpha|=|X|$. Write
+\[
+                  \alpha=\lambda+n,
+       \qquad \lambda\text{ a nonzero limit ordinal},\quad n<\omega.
+\]
+Then
+\begin{equation}\label{eq:all-strata}
+                   \W_\alpha(X)\equi
+                         \B_\lambda\times_{\lex}\{0,\ldots,n!-1\}.
+\end{equation}
+In particular, this is an exact equimorphism classification of all strata
+$\W_\alpha$ of the real well-ordering space.
+\end{theorem}
+\begin{proof}
+The lower embedding has a uniform construction. Fix an $n$-element set
+$F\subseteq X$ and partition $X\setminus F$ into pairs indexed by
+$\lambda$. Orient these pairs according to a member of $\B_\lambda$ and
+append one of the $n!$ permutations of $F$. Since $\lambda$ is a limit
+ordinal, $2\cdot\lambda=\lambda$, so the result has exactly the required
+length $\lambda+n$.
+
+For the upper embedding, induct on the infinite cardinal $\mu=|X|$,
+proving the assertion simultaneously for all inherited real suborders of
+that size and all appropriate $\alpha$. If $\mu=\aleph_0$, code the first
+$\lambda$ entries by \cref{lem:countable-alphabet}, and rank the permutation
+of the remaining $n$ elements. This gives the required target.
+
+Suppose $\mu$ is uncountable and the assertion is known for smaller infinite
+cardinals. Use ordinal division to write
+\[
+                         \alpha=\mu\cdot\eta+\rho,
+                  \qquad 0\leq\rho<\mu,\quad\eta>0,
+\]
+and put $\delta=\mu\cdot\eta$. Since $\omega\cdot\mu=\mu$,
+$\omega\cdot\delta=\delta$. Rational-cut coding therefore embeds the
+first $\delta$ real entries into $\B_\delta$ without increasing their
+ordinal length.
+
+For a fixed such prefix $p$, the residual set
+$Y=X\setminus\ran p$ has cardinality $|\rho|$. If $\rho$ is finite, its
+tail is just one of $\rho!$ permutations, which finishes the construction.
+If $\rho$ is infinite, write $\rho=\sigma+n$, with $\sigma$ a limit
+ordinal. By the induction hypothesis, choose an embedding
+\[
+             \W_\rho(Y)\emb\B_\sigma\times_{\lex}\{0,\ldots,n!-1\}.
+\]
+Choose such an embedding for each possible residual set $Y$; this is a
+set-sized use of Choice. Append its binary part after the prefix code and
+retain its final finite rank. The target is
+\[
+          \B_{\delta+\sigma}\times_{\lex}\{0,\ldots,n!-1\}
+                =\B_\lambda\times_{\lex}\{0,\ldots,n!-1\}.
+\]
+Two different prefixes are compared inside the first $\delta$ bits. Equal
+prefixes have the same residual set and are compared by the chosen
+embedding of their tails. Thus the assembled map preserves and reflects
+order. The induction is complete.
+\end{proof}
+
+\begin{corollary}[Exact length and cube spectrum in every stratum]
+\label[corollary]{cor:all-strata-length}
+For $\alpha=\lambda+n$ as above,
+\begin{align*}
+ \bl(\W_\alpha(X))&=\lambda+\lceil\log_2(n!)\rceil,\\
+ \B_\theta\emb\W_\alpha(X)
+       &\quad\Longleftrightarrow\quad
+          \theta\leq\lambda+\lfloor\log_2(n!)\rfloor.
+\end{align*}
+For $X=\R$, every stratum still has cardinality $2^\kappa$ and ordinal
+spectrum precisely $\{\beta:\beta<\kappa^+\}$.
+\end{corollary}
+\begin{proof}
+The finite-fiber fusion proof of \cref{thm:finite-capacity} works with any
+ordinal $\lambda$ in place of $\kappa$; it only uses full binary cylinders
+through $\lambda$ steps. Apply it to \cref{thm:all-strata}.
+For the real case, $|\lambda|=\kappa$ and $\lambda\geq\kappa$, so the
+stratum contains $\B_\kappa$ and is a suborder of $\W$. The cardinality and
+ordinal conclusions follow from the earlier upper and lower bounds.
+\end{proof}
+
+\begin{corollary}[The exact comparison between strata]\label[corollary]{cor:strata-comparison}
+Let $\alpha=\lambda+n$ and $\beta=\mu+m$ have cardinality $\kappa$, with
+$\lambda,\mu$ nonzero limit ordinals and $m,n<\omega$. Then
+\[
+ \W_\alpha\emb\W_\beta
+ \quad\Longleftrightarrow\quad
+ \lambda<\mu\ \text{ or }\ [\lambda=\mu\text{ and }n!\leq m!].
+\]
+Thus the fixed strata are linearly ordered by embeddability. Distinct
+strata are equimorphic exactly for the pairs $\W_\lambda,\W_{\lambda+1}$
+with $\lambda$ a limit ordinal.
+\end{corollary}
+\begin{proof}
+For the same limit length, fusing source cylinders while reading the
+$\lambda$ target bits forces an entire source fiber of size $n!$ into a
+target fiber of size $m!$. Hence $n!\leq m!$ is necessary, and it is
+plainly sufficient. If $\lambda<\mu$, then
+$\lambda+\lceil\log_2(n!)\rceil<\mu$, since $\mu$ is a limit ordinal.
+Code the source into that shorter cube and then into $\B_\mu$ in the
+target. If $\mu<\lambda$, the target codes into a cube of length
+$\mu+\lceil\log_2(m!)\rceil<\lambda$, whereas the source contains
+$\B_\lambda$. The strict cube hierarchy excludes an embedding.
+\end{proof}
+
+\begin{example}
+For the following infinite-tail types, the fixed stratum is equimorphic
+with the binary cube of exactly the same length:
+\[
+ \W_{\kappa+\omega}\equi\B_{\kappa+\omega},\qquad
+ \W_{\kappa+\omega^2}\equi\B_{\kappa+\omega^2},\qquad
+ \W_{\kappa\cdot2}\equi\B_{\kappa\cdot2}.
+\]
+More generally, $\W_\lambda\equi\W_{\lambda+1}\equi\B_\lambda$
+for every limit $\lambda$ of cardinality $\kappa$. The formula is about
+embeddability, not an order isomorphism with a cube that has endpoints.
+\end{example}
+
+\begin{proposition}[Density and cellularity across the strata]
+\label[proposition]{prop:all-strata-density}
+For every $\kappa\leq\alpha<\kappa^+$,
+\[
+ \dens(\W_\alpha)=\cell(\W_\alpha)=
+ \begin{cases}
+ 2^{<\kappa},&\alpha=\kappa,\ \kappa+1,\ \kappa+2,\\
+ 2^\kappa,&\alpha\geq\kappa+3.
+ \end{cases}
+\]
+\end{proposition}
+\begin{proof}
+The first three cases are proved in \cref{prop:finite-topology}. For the
+others, write $\alpha=\kappa+\tau$, where $\tau\geq3$. Choose a set
+$Y\subseteq\R$ of cardinality $|\tau|$ whose complement still has
+cardinality $\kappa$. There are $2^\kappa$ distinct exhaustive prefixes of
+length $\kappa$ listing $\R\setminus Y$. Each corresponding cylinder in
+$\W_\alpha$ is isomorphic to $\W_\tau(Y)$ and has at least three points.
+Inside each choose a nonempty open interval between three such points.
+These intervals are pairwise disjoint. Cardinality gives the upper bound.
+\end{proof}
+
+\section{Self-absorption and closure under lexicographic constructions}
+\label{sec:absorption}
+
+The availability of arbitrary exhaustive lengths lets one concatenate entire
+well-orderings, rather than squeezing them into a fixed coordinate budget.
+
+\begin{lemma}[Many disjoint real copies]\label[lemma]{lem:disjoint-reals}
+There are $\kappa$ pairwise disjoint subsets of $(0,1)$, each admitting an
+order isomorphism from $\R$ onto that subset.
+\end{lemma}
+\begin{proof}
+Use the increasing injection $j:\R\to\two^\omega$ from
+\cref{lem:real-code}. For $t\in\two^\omega$, interleave the fixed bits of
+$t$ with the variable bits of $j(r)$:
+\[
+ z_{t,r}(2n)=t(n),\qquad z_{t,r}(2n+1)=j(r)(n).
+\]
+For fixed $t$, first disagreements are those of $j(r)$, so
+$r\mapsto T(z_{t,r})$ is increasing. Different $t$ give disjoint images
+because ternary coding is injective. An affine rescaling puts all images
+strictly inside $(0,1)$. There are $2^{\aleph_0}=\kappa$ parameters $t$.
+\end{proof}
+
+\begin{theorem}[Sharp power absorption]\label{thm:absorption}
+For every ordinal $\gamma$,
+\begin{equation}\label{eq:absorption}
+                       \W^\gamma_{\lex}\emb\W
+                       \quad\Longleftrightarrow\quad\gamma<\kappa^+.
+\end{equation}
+For $0<\gamma<\kappa^+$, $\W^\gamma_{\lex}\equi\W$.
+\end{theorem}
+\begin{proof}
+Assume $0<\gamma<\kappa^+$. Choose disjoint images
+$X_\xi=h_\xi[\R]\subseteq(0,1)$ for $\xi<\gamma$, with each $h_\xi$
+increasing. Let
+\[
+                  Z=\R\setminus\bigcup_{\xi<\gamma}X_\xi,
+\]
+and choose a fixed exhaustive enumeration $z$ of $Z$. The set $Z$ has
+cardinality $\kappa$, because it contains $\R\setminus(0,1)$.
+For a tuple $(e_\xi)_{\xi<\gamma}\in\W^\gamma$, define
+\begin{equation}\label{eq:concatenation}
+ E((e_\xi)_{\xi<\gamma})
+       =\mathop{\cat}_{\xi<\gamma}(h_\xi\circ e_\xi)\cat z.
+\end{equation}
+All images being disjoint, this is an injective enumeration of all reals.
+Its ordinal length is the sum of at most $\kappa$ ordinals, each of
+cardinality at most $\kappa$, followed by the length of $z$. The total has
+cardinality $\kappa$, so it is an allowed member of $\W$.
+
+For two distinct tuples, let $\xi$ be their first different component.
+Earlier components are equal as exhaustive enumerations, including their
+lengths; hence the concatenated prefixes are identical. Within component
+$\xi$, prefix-freeness supplies a disagreement before either component
+ends. Since $h_\xi$ is increasing, that disagreement has exactly the
+required sign. Thus $E$ is an order embedding.
+
+The empty product is a singleton and embeds trivially. For
+$\gamma\geq\kappa^+$, choose two points of $\W$ and use them as binary
+coordinate values. The product then contains $\B_{\kappa^+}$ and hence
+$\kappa^+$, which $\W$ cannot contain. Finally, for $\gamma>0$, varying one
+coordinate and fixing all other coordinates embeds $\W$ into the product.
+\end{proof}
+
+\begin{corollary}[Closure of the embedding class]\label[corollary]{cor:closure}
+Let $\mathscr E(\W)=\{L:L\emb\W\}$. This class is closed under reversal,
+under ordinal-indexed lexicographic products of at most $\kappa$ factors,
+and under lexicographic sums whose index order and every summand belong to
+$\mathscr E(\W)$.
+\end{corollary}
+\begin{proof}
+Negation of all real entries reverses $\W$, so the class is closed under
+reversal. Embed each factor into $\W$ and apply \cref{thm:absorption} for
+products. For a sum $\sum_{i\in I}L_i$, choose embeddings $f:I\to\W$ and
+$g_i:L_i\to\W$. Then
+\[
+                      (i,x)\longmapsto(f(i),g_i(x))
+\]
+embeds the sum into $\W\times_{\lex}\W$, and the latter embeds into $\W$.
+The family of chosen embeddings is a set-sized choice in ZFC.
+\end{proof}
+
+\begin{corollary}[Failure of absorption at fixed length]\label[corollary]{cor:no-fixed-square}
+For every ordinal $\gamma$,
+\[
+                 (\W_\kappa)^\gamma_{\lex}\equi\B_{\kappa\cdot\gamma},
+                 \qquad
+                 \A^\gamma_{\lex}\equi\B_{\kappa\cdot\gamma}.
+\]
+Either product embeds back into its original factor exactly when
+$\gamma\leq1$.
+\end{corollary}
+\begin{proof}
+Equimorphisms can be applied coordinatewise, and consecutive blocks of
+$\kappa$ binary coordinates have ordinal length $\kappa\cdot\gamma$.
+For $\gamma\geq2$, this length exceeds $\kappa$; use
+\cref{thm:cube-strict}. The cases $0$ and $1$ are immediate.
+\end{proof}
+
+\subsection{Many convex copies inside the full order}
+The preceding embeddings need not have convex images. There is also a
+particularly strong convex version for a large family of copies.
+
+\begin{proposition}\label[proposition]{prop:convex-copies}
+$\W$ contains $2^\kappa$ pairwise disjoint open convex suborders, each
+isomorphic to $\W$. They can be chosen so that their index order is
+$\B_\kappa$.
+\end{proposition}
+\begin{proof}
+Let $I=(0,1)$. Partition $\R\setminus I$ into $\kappa$ ordered pairs.
+For $x\in\two^\kappa$, let $s_x$ be the pair-swap enumeration of
+$\R\setminus I$. The cylinders $C_{s_x}$ are pairwise disjoint and ordered
+according to $x$. By \cref{lem:cylinder}, each is isomorphic to $\W(I)$,
+and an increasing bijection $\R\to I$ identifies $\W(I)$ with $\W$.
+The order $\W(I)$ has no endpoints, since $I$ has none. Thus every point of
+a cylinder is bracketed by two points in that cylinder, making the convex
+cylinder open in $\W$.
+\end{proof}
+
+\section{Adjacent pairs and finite condensation}\label{sec:adjacency}
+
+\begin{lemma}[Extrema of exhaustive enumeration orders]\label[lemma]{lem:extrema}
+For any nonempty linearly ordered set $Y$, $\W(Y)$ has a least element
+exactly when the given order on $Y$ is a well-order. That element is the
+increasing enumeration of $Y$. It has a greatest element exactly when the
+given order on $Y$ is a reverse well-order, in which case it is the
+decreasing enumeration.
+\end{lemma}
+\begin{proof}
+In a lexicographically least exhaustive enumeration, the value at each
+coordinate must be the least as-yet-unused element. Otherwise a smaller
+unused choice, followed by any exhaustive enumeration of the residual set,
+would give a smaller member of $\W(Y)$. Thus a least enumeration must be
+increasing and exhibit $Y$ as a well-order. Conversely, at the first
+changed coordinate of any other enumeration, the increasing enumeration
+uses the least available value, so it is lexicographically smaller.
+Reversing the ground order proves the maximum assertion.
+\end{proof}
+
+\begin{theorem}[Complete adjacency criterion]\label{thm:adjacency}
+Let $e<f$ in $\W(X)$, where $X$ is any infinite linearly ordered set.
+Let $s$ be their maximal common prefix, of length $\delta$, and write
+\[
+                Y=X\setminus\ran s,\qquad a=e(\delta),\quad b=f(\delta).
+\]
+Then $e$ and $f$ are adjacent if and only if all of the following hold:
+\begin{enumerate}[label=(\alph*)]
+\item $Y$ is finite;
+\item $a<b$ are consecutive elements of $Y$ in its given order;
+\item after $a$, the enumeration $e$ lists $Y\setminus\{a\}$ in decreasing
+order;
+\item after $b$, the enumeration $f$ lists $Y\setminus\{b\}$ in increasing
+order.
+\end{enumerate}
+In particular, an adjacent pair has equal enumeration lengths and differs
+only in a finite final segment.
+\end{theorem}
+\begin{proof}
+If $a<c<b$ for some $c\in Y$, then an exhaustive extension of $s\cat c$
+lies strictly between $e$ and $f$. If $e$ is not the greatest member of its
+$a$-cylinder, a larger member of that cylinder also lies between them.
+Likewise, $f$ must be the least member of its $b$-cylinder. By
+\cref{lem:extrema}, $Y\setminus\{a\}$ must be reverse well-ordered and
+$Y\setminus\{b\}$ must be well-ordered.
+
+The intersection $Y\setminus\{a,b\}$ is consequently both well-ordered and
+reverse well-ordered. It is finite: an infinite well-order contains an
+increasing $\omega$-sequence, whose range has no greatest member and cannot
+be reverse well-ordered. Thus $Y$ is finite. The two extremal tails are then
+exactly the decreasing and increasing finite lists in the statement.
+
+Conversely, any point between $e$ and $f$ would have to extend $s$, by
+convexity. Its next entry could not lie strictly between $a$ and $b$.
+Choosing $a$ cannot exceed the greatest tail $e$, and choosing $b$ cannot
+precede the least tail $f$. No intermediate point exists.
+\end{proof}
+
+\begin{example}[A jump and an isolated point]
+Choose any exhaustive prefix $s$ enumerating
+$\R\setminus\{a,b\}$, with $a<b$. Then
+\[
+                         s\cat(a,b)<s\cat(b,a)
+\]
+is an adjacent pair in the full order $\W$, not just in a fixed-length
+suborder.
+
+If $a<b<c$ and $s$ enumerates $\R\setminus\{a,b,c\}$, its cylinder is the
+six-point chain
+\[
+\begin{split}
+ s\cat(a,b,c)&<s\cat(a,c,b)<s\cat(b,a,c)\\
+             &<s\cat(b,c,a)<s\cat(c,a,b)<s\cat(c,b,a).
+\end{split}
+\]
+The four interior points are isolated in the order topology of $\W$.
+\end{example}
+
+\begin{definition}
+The finite-condensation relation on a linear order is
+\[
+        x\sim_{\mathrm{fin}}y\quad\Longleftrightarrow\quad
+        [\min(x,y),\max(x,y)]\text{ is finite}.
+\]
+It is a convex equivalence relation.
+\end{definition}
+
+\begin{theorem}[Exact finite blocks]\label{thm:blocks}
+Let $e\in\W$, and write its length uniquely as
+$\alpha=\lambda+n$, where $\lambda$ is a nonzero limit ordinal and
+$n<\omega$. If $n=0$, its finite-condensation class is a singleton. If
+$n>0$, its class consists exactly of all $n!$ permutations of the final
+$n$ reals after the fixed prefix $e\restr\lambda$.
+
+These classes are the maximal finite convex blocks. A point is isolated
+exactly when it is an interior point of one of the blocks with $n\geq3$.
+\end{theorem}
+\begin{proof}
+The displayed permutations form a finite convex cylinder. If a point is
+adjacent to $e$, \cref{thm:adjacency} says that the first disagreement
+leaves only finitely many entries. Hence the two enumerations have the same
+length and agree before its final finite remainder $n$. No adjacency can
+cross to a different displayed block. Every finite interval is connected
+by finitely many adjacency steps, so the displayed block is the full
+finite-condensation class.
+
+In a linear order with no endpoints, a point is isolated exactly when it
+has both an immediate predecessor and an immediate successor. The first
+and last points of these maximal blocks have no adjacent point beyond the
+block; an interior point has both required neighbors. A factorial block has
+an interior point precisely when $n!\geq3$, equivalently $n\geq3$.
+\end{proof}
+
+The quotient by finite condensation is a dense linear order: if two
+different classes were adjacent in the quotient, their union would be a
+finite interval and they would be the same class. We do not need to assume
+that this quotient is isomorphic to any familiar generalized real line.
+Its precise isomorphism type remains a separate question.
+
+\section{Order topology, size of intervals, and cofinalities}
+\label{sec:topology}
+
+\subsection{Global invariants of the full order}
+
+\begin{proposition}\label[proposition]{prop:full-topology}
+The order $\W$ has no endpoints, is isomorphic to its reverse, and satisfies
+\[
+ \cf(\W)=\ci(\W)=\omega,
+ \qquad
+ \dens(\W)=\cell(\W)=2^\kappa.
+\]
+It has exactly $2^\kappa$ isolated points.
+\end{proposition}
+\begin{proof}
+Every real can be the first entry of an exhaustive enumeration. Choosing
+first entries tending to $+\infty$ gives a countable cofinal sequence;
+choosing first entries tending to $-\infty$ gives a countable coinitial
+sequence. Neither endpoint exists. The map $e\mapsto -e$, with the same
+ordinal domain, is an order-reversing bijection.
+
+Fix three reals and use all pair-swap enumerations of their complement as
+prefixes of length $\kappa$. For each prefix choose one of the four
+interior permutations in its six-point block. This gives $2^\kappa$
+isolated points by \cref{thm:blocks}. Each isolated singleton must be met
+by a dense set, and the singletons are pairwise disjoint nonempty open
+sets. The upper bounds follow from $|\W|=2^\kappa$.
+\end{proof}
+
+There is a second, independent reason for the large cellularity:
+\cref{prop:convex-copies} gives $2^\kappa$ disjoint open copies of $\W$.
+Thus the phenomenon is not solely a by-product of isolated finite tails.
+For example, selecting one point from each finite-condensation class still
+leaves $2^\kappa$ disjoint nontrivial interval regions coming from those
+large cylinders.
+
+It would nevertheless be false to say that \emph{every} interval in $\W$
+is large. Some intervals are empty, some are finite, and a cylinder leaving
+countably infinitely many unused reals has cardinality only $2^{\aleph_0}$.
+The residual-set lemma, not the ambient cardinality, controls such examples.
+
+\subsection{The dense fixed-length order}
+
+\begin{proposition}\label[proposition]{prop:fixed-topology}
+The order $\W_\kappa$ is dense, has no endpoints, and is self-dual. Its
+global cofinality and coinitiality are $\omega$, and
+\begin{equation}\label{eq:fixed-density}
+                \dens(\W_\kappa)=\cell(\W_\kappa)=2^{<\kappa}.
+\end{equation}
+At every point $e$, the cofinality of the left side and the coinitiality of
+the right side are both $\cf(\kappa)$.
+\end{proposition}
+\begin{proof}
+Let $e<f$ first disagree at $\delta<\kappa$. The common prefix has used
+fewer than $\kappa$ reals, whereas the interval
+$(e(\delta),f(\delta))$ has cardinality $\kappa$. Choose an unused real
+strictly between the two entries. Extending the resulting prefix to a
+bijection of length $\kappa$ gives an intermediate point. This proves
+density. Endpoints, global cofinalities, and self-duality are treated as for
+$\W$.
+
+There are at most
+\[
+       \sum_{\xi<\kappa}\kappa^{|\xi|}=2^{<\kappa}
+\]
+prefixes of length below $\kappa$. Here finite nonzero exponents contribute
+$\kappa=2^{\aleph_0}$, and for infinite $\mu<\kappa$,
+$\kappa^\mu=(2^{\aleph_0})^\mu=2^\mu$. Choose one exhaustive extension
+for each such prefix. The resulting set is dense, since the intermediate
+prefix in the previous paragraph determines a whole cylinder inside the
+given interval.
+
+For every infinite cardinal $\mu<\kappa$, orient $\mu$ disjoint pairs to
+obtain $2^\mu$ incompatible prefixes of length $2\cdot\mu<\kappa$.
+Their cylinders are nonempty, convex, and have no endpoints: one can change
+a later coordinate upward or downward while fewer than $\kappa$ values have
+been used. The cylinders are therefore open. This proves the lower
+cellularity bound after taking the supremum over $\mu<\kappa$.
+Cellularity never exceeds density, proving \eqref{eq:fixed-density}.
+
+Finally, for every prefix length $\xi<\kappa$, there are points on both
+sides of $e$ agreeing with it below $\xi$: change a still later coordinate
+to an unused smaller or larger real and complete the enumeration. Choose
+such points at a cofinal set of $\cf(\kappa)$ prefix lengths. They are
+cofinal on the left and coinitial on the right. Conversely, fewer than
+$\cf(\kappa)$ points on one side have a bounded set of first-disagreement
+coordinates with $e$. A perturbation agreeing longer than that bound lies
+closer to $e$ than all of them. This proves both local lower bounds.
+\end{proof}
+
+\begin{remark}[Regularity is not assumed]
+The formula uses $\cf(\kappa)$, not automatically $\kappa$. However,
+$\cf(2^{\aleph_0})>\omega$. Here is a direct diagonal proof. If
+$\two^\omega=\bigcup_{n<\omega}X_n$ with each $|X_n|<2^{\aleph_0}$,
+partition $\omega$ into infinite sets $I_n$. Choose a pattern on $I_n$ that
+is not the restriction of any member of $X_n$. The union of these patterns
+belongs to none of the $X_n$, a contradiction. A countable cofinal sequence
+of smaller cardinals would produce just such a cover.
+Consequently $\W_\kappa$ is not first countable at any point.
+\end{remark}
+
+\subsection{A topology refinement for finite tails}
+
+\begin{proposition}\label[proposition]{prop:finite-topology}
+For finite $n\geq0$, the following hold.
+\begin{enumerate}[label=(\alph*)]
+\item For $n=0,1$, $\W_{\kappa+n}$ is dense and has no isolated points.
+\item For $n=2$, it has $2^\kappa$ adjacent pairs and no isolated points.
+Its density and cellularity are still $2^{<\kappa}$.
+\item For $n\geq3$, it has $2^\kappa$ isolated points and hence density and
+cellularity $2^\kappa$.
+\end{enumerate}
+For $n=0,1$, density and cellularity are $2^{<\kappa}$ as well. The weight
+of $\W_{\kappa+2}$ is $2^\kappa$, even when its density is smaller.
+\end{proposition}
+\begin{proof}
+If two points first disagree below $\kappa$, the unused-real argument in
+\cref{prop:fixed-topology} gives an intermediate point of the same length.
+If their first $\kappa$ entries agree, they lie in one finite permutation
+block. The block sizes are $1,1,2,6,\ldots$, proving the assertions about
+adjacency and isolation. Varying a pair-swap prefix while fixing the final
+finite set gives $2^\kappa$ blocks.
+
+For $n\leq2$, a nonempty open interval cannot be finite: a finite open set
+in a $T_1$ space would contain an isolated point. Such an interval therefore
+contains two points with different prefixes below $\kappa$, since each
+full $\kappa$-prefix has at most two extensions. As before, a shorter
+cylinder fits between those points. Choosing one extension of every prefix
+of length below $\kappa$ gives the upper density bound, and incompatible
+short prefixes give the lower cellularity bound.
+
+For the weight assertion, every adjacent pair $a<b$ requires a basic open
+set containing $b$ and contained in $(a,\infty)$. Different adjacent pairs
+require different such basic sets: if $a<b\leq c<d$, one set cannot both
+contain $b$ and be contained in $(c,\infty)$. Thus any base has size at
+least $2^\kappa$. The set of all endpoint intervals supplies the reverse
+bound.
+\end{proof}
+
+\section{Finer properties of the Kanovei--Shelah index}\label{sec:KS-topology}
+
+Equimorphism with $\B_\kappa$ gives the exact embeddable orders, but does not
+determine global cofinality or topology. Those require separate arguments.
+
+\begin{lemma}\label[lemma]{lem:A-cylinders}
+Every nonempty cylinder in $\A$ determined by fewer than $\kappa$
+coordinates has no endpoints. In particular, $\A$ is a dense linear order
+without endpoints.
+\end{lemma}
+\begin{proof}
+Fix $a\in\A_U$ and a prefix of length $\xi<\kappa$. Every ultrafilter
+contains $\N$ and has $\kappa$ members. Since the prefix lists fewer than
+$\kappa$ values, arbitrarily far out in the tail there is a value other
+than $\N$. Replacing such a value by $\N$, and then enumerating all of
+$U$ on the remaining coordinates, gives a larger point with the prescribed
+prefix.
+
+For a smaller point, if $U$ has a least member, the tail cannot consist
+only of this member; choose a later larger value and replace it by the
+least one. If $U$ has no least member, replace any chosen later value by
+a smaller member of $U$. In either case complete the remaining coordinates
+by an enumeration of $U$. Thus there are both larger and smaller points in
+the cylinder.
+
+If $a<b$ first differ at $\delta$, apply the preceding construction to
+$a$ with its prefix through $\delta$ fixed. A larger extension in that
+cylinder still lies below $b$.
+\end{proof}
+
+\begin{proposition}\label[proposition]{prop:A-topology}
+The full index $\A$ satisfies
+\[
+ |\A|=2^\kappa,\qquad
+ \dens(\A)=\cell(\A)=2^{<\kappa},\qquad
+ \cf(\A)=\cf(\kappa),\qquad\ci(\A)=\omega.
+\]
+At every point, the left and right local cofinalities are both
+$\cf(\kappa)$. In particular, $\A$ is not isomorphic to its reverse and
+is not isomorphic to $\W_\kappa$.
+\end{proposition}
+\begin{proof}
+Cardinality follows from the embeddings in \cref{thm:fixed-equivalence}.
+For density, there are at most $2^{<\kappa}$ prefixes of length below
+$\kappa$. By \cref{lem:A-cylinders}, every nonempty interval contains a
+cylinder with such a prefix; choose one extension for each extendible
+prefix. Conversely, fix $U$ and two of its members. All binary choices for
+a prefix of an infinite length $\mu<\kappa$ extend to members of $\A_U$.
+Their full $\A$-cylinders are disjoint nonempty open sets. This proves the
+cellularity and density formulas.
+
+Let $\nu(a)$ be the first coordinate at which $a$ is not $\N$. It exists
+because $\ran a$ is an ultrafilter with $\kappa$ members. For a cofinal set
+of ordinals $\delta<\kappa$, construct a map beginning with $\delta$ copies
+of $\N$, then a fixed non-$\N$ member of a fixed ultrafilter, then an
+exhaustive tail. These maps are cofinal in $\A$. A family of fewer than
+$\cf(\kappa)$ maps has its values of $\nu(a)$ bounded below $\kappa$;
+a sufficiently long initial string of $\N$ lies above the whole family.
+Hence $\cf(\A)=\cf(\kappa)$.
+
+For each natural number $n$, take a member of $\A$ whose first value is
+$\{n\}$ and whose range is the principal ultrafilter at $n$. The singletons
+$\{n\}$ descend coinitially among the nonempty subsets of $\N$ in binary
+lexicographic order. Therefore these maps are coinitial in $\A$, which has
+no least element. This proves $\ci(\A)=\omega$.
+
+Local cofinalities follow from the same bounded-disagreement argument used
+for $\W_\kappa$, now using \cref{lem:A-cylinders} for perturbations after
+arbitrary prescribed prefixes. Finally, $\cf(\kappa)>\omega$, so the two
+global cofinalities are unequal. They rule out self-duality and also rule
+out an isomorphism with $\W_\kappa$.
+\end{proof}
+
+For comparison, a fixed principal-ultrafilter fiber $\A_U$ has coinitiality
+$\cf(\kappa)$: it has a least available coordinate value, which can be
+repeated for arbitrarily long initial segments. A nonprincipal fiber has
+coinitiality $\omega$, because the cofinite sets form a decreasing
+coinitial sequence in its coordinate order. All fibers nevertheless have
+the same embeddability class by \cref{thm:fixed-equivalence}.
+
+\section{Explicit countable gaps and Dedekind completion}\label{sec:completion}
+
+\subsection{A gap caused by a repeated real}
+
+\begin{proposition}\label[proposition]{prop:real-gap}
+Both $\W$ and $\W_\kappa$ have an unfilled cut of cofinality type
+$(\omega,\omega)$.
+\end{proposition}
+\begin{proof}
+Divide either order into the following initial and final segments:
+\begin{align*}
+ L&=\{e:e(0)<0\text{ or }[e(0)=0\text{ and }e(1)<0]\},\\
+ R&=\{e:e(0)>0\text{ or }[e(0)=0\text{ and }e(1)>0]\}.
+\end{align*}
+Every exhaustive enumeration has at least two entries, and injectivity
+excludes $e(0)=e(1)=0$. Thus this is a partition and $L<R$.
+For $n\geq1$, complete $(0,-1/n)$ and $(0,1/n)$ to exhaustive
+enumerations of length $\kappa$. The first family is cofinal in $L$;
+the second is coinitial in $R$. Neither side has an endpoint, and a point
+between all the bounds would have to start $(0,0)$, which is forbidden.
+\end{proof}
+
+This also illustrates why large local character at every point does not
+imply countable saturation as a dense order. The obstruction is an omitted
+cut, rather than a point with small local character.
+
+\subsection{A gap caused by incompatible ultrafilter values}
+
+\begin{proposition}\label[proposition]{prop:A-gap}
+The order $\A$ also has an unfilled $(\omega,\omega)$ cut.
+\end{proposition}
+\begin{proof}
+Let $u$ be the even natural numbers and $v$ the odd natural numbers. Put
+\[
+ v^-_n=(v\setminus\{2n+1\})\cup\{2n+2\},
+ \qquad
+ v^+_n=v\cup\{2n\}.
+\]
+In binary lexicographic order, $v^-_n$ increases toward $v$ from below,
+and $v^+_n$ decreases toward $v$ from above. Each pair $u,v^-_n$ belongs to
+the principal ultrafilter at $2n+2$; each pair $u,v^+_n$ belongs to the
+principal ultrafilter at $2n$. Therefore both two-term prefixes
+$(u,v^-_n)$ and $(u,v^+_n)$ extend to members of $\A$.
+
+A map between all these bounds must have first value $u$ and second value
+$v$. Indeed, if a binary sequence differs from $v$, its first differing bit
+is eventually shared by neither bounding side in the required direction.
+But no ultrafilter contains the disjoint sets $u$ and $v$. Thus the cut is
+not realized. The initial segment of maps with first value below $u$, or
+first value $u$ and second value below $v$, has the lower sequence cofinal;
+the complementary final segment has the upper sequence coinitial.
+\end{proof}
+
+These statements concern the index orders. They do not contradict the
+countable saturation of the elementary extension constructed from the index
+in the Kanovei--Shelah theorem.
+
+\subsection{Completion does not create longer ordinals}
+
+We use the Dedekind completion that fills unrealized two-sided cuts and
+keeps existing points and jumps. Adding endpoints is optional and does not
+change the following cardinal or ordinal conclusions.
+
+\begin{lemma}[Cuts have small cofinal witnesses]\label[lemma]{lem:small-cut}
+Every nonempty initial segment of $\W$ has a cofinal subset of cardinality
+at most $\kappa$. Every nonempty final segment has a coinitial subset of
+cardinality at most $\kappa$.
+\end{lemma}
+\begin{proof}
+If an initial segment had no such cofinal subset, at every stage
+$\xi<\kappa^+$ one could choose a point larger than all previously chosen
+points: the preceding set has cardinality at most $\kappa$ and is not
+cofinal. This constructs the forbidden increasing sequence of length
+$\kappa^+$. Reverse the order for the other assertion.
+\end{proof}
+
+\begin{theorem}[Completion invariants]\label{thm:completion}
+Let $\widehat\W$ be a Dedekind completion of $\W$. Then
+\[
+ |\widehat\W|=2^\kappa,
+ \qquad
+ \beta\emb\widehat\W\ \Longleftrightarrow\ \beta<\kappa^+,
+ \qquad
+ \bl(\widehat\W)=\kappa^+.
+\]
+The ordinal equivalence also holds for reverse ordinals. Every two-sided
+cut of $\W$ has each of its two cofinalities at most $\kappa$.
+\end{theorem}
+\begin{proof}
+By \cref{lem:small-cut}, every lower half of a cut is determined by a
+cofinal subset of size at most $\kappa$. Thus the number of cuts is at most
+\[
+                 |\W|^\kappa=(2^\kappa)^\kappa=2^\kappa.
+\]
+The lower cardinal bound follows from the copy of $\W$ already present.
+
+Suppose the completion contained an increasing sequence of length
+$\kappa^+$. Between the first and third members of each successive
+three-point block, choose a point of $\W$. Such a point always exists:
+if the middle point is old, use it; if it is an added cut, the cut property
+supplies an old point between the outer endpoints. The resulting points
+form a strictly increasing sequence of length $\kappa^+$ in $\W$, a
+contradiction. The same argument applies in reverse. The positive ordinal
+embeddings were already present in $\W$.
+
+For binary length, $\W\emb\widehat\W$ gives the lower bound. The cube
+$\B_{\kappa^+}$ is Dedekind complete, as verified below. An embedding
+$f:\W\to\B_{\kappa^+}$ extends over each unrealized cut $(L,R)$ by
+assigning it $\sup f[L]$. This value is strictly above every $f(l)$ because
+$L$ has no greatest element, and strictly below every $f(r)$ because $R$
+has no least element. Distinct cuts remain distinct, by an old point
+between them. Thus the extension is an order embedding. If endpoints are
+to be added, first put $f[\W]$ inside a proper binary cylinder by a fixed
+finite prefix and then use the ambient endpoints. Its length remains
+$\kappa^+$ because finite $+\,\kappa^+=\kappa^+$.
+\end{proof}
+
+\begin{lemma}[Completeness of binary lexicographic cubes]\label[lemma]{lem:cube-complete}
+Every $\B_\theta$ is Dedekind complete and has both endpoints.
+\end{lemma}
+\begin{proof}
+The constant sequences give endpoints. For a nonempty subset $S$, construct
+its supremum by retaining a nonempty set of candidates with a common
+prefix. At a successor step choose bit $1$ if some current candidate has
+bit $1$, and retain those candidates; otherwise choose bit $0$ and retain
+all current candidates. At a limit, intersect the candidate sets.
+
+If the first empty intersection occurs at a limit $\lambda\leq\theta$,
+complete the accumulated prefix by zeros. Every member of $S$ was discarded
+at an earlier first disagreement where it had $0$ and the chosen prefix had
+$1$, so the completed sequence is an upper bound. Any strictly smaller
+sequence first disagrees with this upper bound before $\lambda$; at that
+stage there was a candidate with the chosen $1$, which is larger than the
+proposed smaller bound. Thus the completed sequence is the least upper
+bound. If no empty intersection occurs through $\theta$, the final sequence
+belongs to $S$ and is its maximum. This covers all cases.
+\end{proof}
+
+\begin{remark}
+The completion theorem does not prove $\widehat\W\emb\W$. Both orders have
+the same cardinality, ordinal spectrum, and binary length, but these
+invariants do not in general decide embeddability. Whether the completion
+can be absorbed is one of the natural next questions.
+\end{remark}
+
+\section{Foundational scope and interpretation}\label{sec:scope}
+
+\subsection{A definable order is not a selected well-order}
+The set of all well-order relations on $\R$ is definable from $\R$, and
+first-difference comparison can be expressed without choosing one member
+of that set as privileged. This observation does not produce a definable
+well-ordering of $\R$. It defines a linear order \emph{on the collection}
+of all its well-orderings. Likewise, forming all the presentations in
+\eqref{eq:KS} does not select one ultrafilter or one presentation.
+
+Our proofs nevertheless use Choice. It supplies well-orderings of the
+real line, partitions into pairs, selected enumerations of residual sets,
+and simultaneous choices of embeddings. In ZF alone, $\R$ need not be
+well-orderable, so the literal collection $\W$ may be empty. Even when
+that collection is nonempty, the arguments using families of choices
+should not automatically be read as proofs in a weaker theory.
+
+The set-sized nature of the construction is also essential. Every possible
+length is below $\kappa^+$, and every well-ordering is a subset of
+$\R^2$. There is no proper class of elements hidden in $\W$, despite its
+unbounded range of lengths below $\kappa^+$. In contrast, the phrase
+``all ordinals'' denotes a proper class and does not describe a suborder
+of this set.
+
+\subsection{Which aspects are genuinely independent?}
+The proofs separate four kinds of information. The ordinal spectrum records
+how far a single monotone well-ordered chain can run. Binary length measures
+the depth needed to distinguish all points through ordered binary cuts.
+Adjacency records what happens when only finitely many ground elements
+remain. Finally, topology and cut cofinalities describe local approach and
+missing limits. These quantities interact, but none should be silently
+substituted for another.
+
+For example, $\W_\kappa$ and $\A$ have identical embedding classes yet
+unequal global cofinalities. The full order and its completion have the
+same ordinal spectrum and binary length, but differ in completeness.
+The strata $\W_{\kappa+2}$ and $\W_{\kappa+3}$ have different binary
+lengths and different finite blocks, though their cardinalities and ordinal
+spectra coincide. Under some cardinal-arithmetic assumptions even density
+fails to distinguish those last two orders; their isolated points still do.
+
+All embeddings in this article are purely order-theoretic. An order
+embedding need not be continuous for the two order topologies. In
+particular, the fact that a cube or a complete order embeds into a dense
+order does not transfer its order-topological compactness to the ambient
+space. No topological or model-theoretic consequence is inferred from an
+embedding without a separate argument.
+
+\section{Further research questions and topics}\label{sec:research}
+
+The following are questions proposed by this investigation. We have not
+verified that every one is open in the published literature. The solved
+fixed-stratum \emph{equimorphism} problem is deliberately excluded from the
+list; the next issues concern sharper structure and broader universality.
+
+\subsection{An intrinsic embedding criterion for the full order}
+Find a necessary and sufficient condition on a set-sized linear order $L$
+for $L\emb\W$. We have an exact answer when $\bl(L)\leq\kappa$ and
+exact answers for the binary and real-coordinate powers, but not for every
+order of cardinality $2^\kappa$ and binary length $\kappa^+$.
+Absence of $\kappa^+$ and its reverse is necessary; this article does not
+prove it sufficient.
+
+A concrete route is to study trees of convex partitions whose branches
+consume distinct symbols from an alphabet of size $\kappa$. The exhaustion
+argument shows what a forbidden branch would do. The remaining problem is
+to characterize when a compatible coding can be organized across all
+branches, not merely along each branch separately.
+
+\subsection{Can the full order absorb its completion?}
+Decide whether
+\[
+                         \widehat\W\emb\W.
+\]
+The affirmative direction would make the two orders equimorphic, since the
+other embedding is automatic. The invariants in \cref{thm:completion} do
+not obstruct it, and the power-absorption theorem suggests considerable
+room for coding cuts. A proof must nevertheless assign codes to different
+cuts coherently. Independently choosing a cofinal sequence for each cut
+need not preserve their lexicographic comparison.
+
+A related problem asks whether the dense finite-condensation quotient
+$\W/{\sim_{\mathrm{fin}}}$ is equimorphic with $\W$, and whether its
+completion has a more recognizable presentation.
+
+\subsection{Isomorphism types beyond equimorphism}
+Determine the order-isomorphism types of individual strata and their
+natural quotients. In particular, equimorphism of $\W_\lambda$ and
+$\W_{\lambda+1}$ does not settle whether they are isomorphic. Their
+presentations impose different exhaustion conditions, and an isomorphism
+need not preserve the represented ordinal length.
+
+The comparison theorem \cref{cor:strata-comparison} supplies a complete
+baseline: the task is no longer to decide which fixed strata embed, but
+to identify additional invariants capable of distinguishing equimorphic
+ones. Cut spectra, automorphism orbits, and local characters are plausible
+candidates.
+
+\subsection{Automorphisms and recovery of the prefix structure}
+Every increasing bijection $h:\R\to\R$ induces an automorphism
+$e\mapsto h\circ e$ of $\W$. Determine the full automorphism group and
+whether some canonical fragment of the prefix tree can be reconstructed
+from the external linear order alone.
+
+Finite-condensation classes and their sizes are intrinsic and therefore
+preserved. It is less clear how much of the non-finite ordinal remainder
+of an enumeration can be recovered. One useful intermediate target is a
+classification of the orbits of endpoints and interior points of the
+finite blocks, together with the singleton-block points.
+
+\subsection{Exact spectra of cuts and point characters}
+Classify all pairs of left and right cofinalities occurring at points and
+unrealized cuts of $\W$ and its fixed strata. We have computed the local
+pair $(\cf\kappa,\cf\kappa)$ throughout $\W_\kappa$, exhibited missing
+$(\omega,\omega)$ cuts, and bounded every side of a full-order cut by
+$\kappa$. Those facts leave many cases undecided.
+
+A productive decomposition may separate three sources of cuts: a missing
+next coordinate in an ordered residual set, a limit of increasingly long
+injective prefixes, and exhaustion at the end of a finite block. This
+could also lead to exact criteria for convex suborders to be complete,
+separable, or first countable.
+
+\subsection{Other ground orders}
+The ordinal cutoff and full binary length were proved for every infinite
+linearly ordered ground set $X$. The all-strata classification used
+$X\subseteq\R$, particularly countable separating cuts and rational
+coordinate codes. Determine the weakest hypotheses on $X$ under which
+\[
+           \W_{\lambda+n}(X)\equi\B_\lambda\times_{\lex}n!
+\]
+still holds. For orders with large intrinsic binary length, develop a
+replacement formula that records both coordinate complexity and the
+shrinking size of the residual alphabet.
+
+This question naturally includes nonseparable real-closed fields and
+set-sized suborders of surreal numbers. The distinction between the
+underlying order and any algebraic structure must remain explicit.
+
+\subsection{Ultrafilter fibers and the hyperreal presentation}
+Among nonprincipal ultrafilters $U$, determine whether the order-isomorphism
+type of $\A_U$ depends on $U$, even though its embedding class does not.
+Principal and nonprincipal fibers are already distinguished by their
+coinitialities, so an undifferentiated claim that all fibers are isomorphic
+would be false.
+
+One can also ask which transformations of the index preserve a specified
+finite-support ultrapower presentation, rather than merely providing an
+order embedding of indices. The index order by itself does not encode all
+ultrafilter data used by the construction; equimorphism of index orders is
+not a proof of isomorphism of the associated nonstandard models.
+
+\subsection{Weak choice and uniform definability}
+Determine the choice principles needed for the separate results: existence
+of a nonempty exhaustive order, the successor-cardinal chain obstruction,
+universality for small orders, optimal fixed-stratum coding, and power
+absorption. Distinguish existence of arbitrary embeddings from embeddings
+definable uniformly from their input orders.
+
+Herzberg, Kanovei, Katz, and Lyubetsky develop a modification of the
+hyperreal construction with transfer under countable choice and a further
+well-ordering hypothesis for properness \cite{HKKL}. Their work provides
+motivation for separating the choice strength of the index-order analysis
+from that of the nonstandard model. No equivalence with their precise
+axiomatic hypotheses is asserted here.
+
+\subsection{Cardinal arithmetic and stability of the classification}
+The embeddability theorems are stated in ZFC, but their numerical
+interpretation depends on the continuum. Investigate which finer
+isomorphism invariants depend on $2^{<\kappa}$, $2^\kappa$, or
+$\cf(\kappa)$. For instance, the density distinction between the first
+three real strata and later ones is strict exactly when
+$2^{<\kappa}<2^\kappa$; the adjacency and isolation distinctions do not
+require that inequality.
+
+A model-comparison study should specify whether the real set, the
+collection of its well-orderings, or only selected cardinal parameters are
+preserved. Keeping the reals fixed does not by itself keep every subset of
+$\R^2$, and hence every member of $\W$, fixed.
+
+\subsection{A proof-assistant development for ProveIt}
+A formalization can be divided into reusable modules. First formalize
+prefix-free ordinal words and their first-difference order. Then establish
+cut coding, the full-cylinder obstruction, and the successor-cardinal
+stabilization argument. On that foundation, formalize ordinal block
+concatenation and finite-fiber capacity, followed by the cardinal induction
+for all fixed strata. Adjacency and finite condensation form a largely
+independent final module.
+
+The most delicate obligations are not numerical. They are the existence of
+common tail bounds at limit stages, correct ordinal rather than cardinal
+multiplication, and preservation of a full cylinder under transfinite
+fusion. The finite verification program accompanying this article checks
+none of these infinitary obligations and should not be presented as a
+substitute for them.
+
+\appendix
+\section{Proof dependencies and reproducible finite checks}\label{app:checks}
+
+The central arguments have a short dependency structure:
+\[
+\begin{gathered}
+ \text{prefix-freeness} + \text{eventual constancy}
+       \ \Longrightarrow\ \text{exact ordinal cutoff},\\
+ \text{full-child lemma} + \text{fusion}
+       \ \Longrightarrow\ \text{strict cube hierarchy},\\
+ \text{pair swaps} + \text{cut coding}
+       \ \Longrightarrow\ \text{small-order universality},\\
+ \text{countable codes} + \text{cardinal induction}
+       \ \Longrightarrow\ \text{all fixed-stratum equivalences},\\
+ \text{disjoint real copies} + \text{exhaustive concatenation}
+       \ \Longrightarrow\ \text{full power absorption}.
+\end{gathered}
+\]
+These arguments are self-contained apart from elementary ZFC facts about
+well-ordering, cardinal arithmetic, and transfinite recursion, which are
+explained at their points of use.
+
+The archive contains \texttt{finite\_checks.py}, a Python program using only
+the standard library, together with its actual output in
+\texttt{finite\_checks.json}. Run it with
+\begin{quote}\ttfamily
+python finite\_checks.py --output finite\_checks.json
+\end{quote}
+It checks pair-swap order preservation, cut coding of finite labeled
+orders, every candidate adjacent pair of permutations through size six,
+consecutive permutation pairs through size eight, finite concatenation,
+and the integer capacities used in the terminal-factor formulas. The supplied run passes \textbf{552,450} exact checks. Counts
+and parameter bounds are recorded by the program, rather than inferred
+from an informal estimate.
+
+\begin{resultbox}
+\textbf{What the checks establish.} They are exact finite tests of the
+stated constructions and permutation formulas. They do not verify a
+transfinite theorem, establish a literature-priority claim, or constitute
+a Lean or Rocq formalization. The mathematical evidence for the infinite
+claims is the written proof, subject to ordinary review.
+\end{resultbox}
+
+\section{Source audit and manuscript status}\label{app:sources}
+
+The Kanovei--Shelah definition was checked directly in the paper, including
+the displayed index and its comparison rule on page~2 of the arXiv PDF.
+The paper's bibliographic information was cross-checked against Shelah's
+official paper archive. The weak-choice follow-up was checked through its
+authors' arXiv record. Knoblauch's work is cited for the related research
+terminology and bibliographic context, not as an uninspected source for any
+specific theorem proved here.
+
+The ProveIt source was inspected at the immutable commit
+\begin{center}\small\ttfamily
+6ea60e3677bd847a00baf023c3c532c83884530e.
+\end{center}
+Its relevant report is the binary-cube and point-separation manuscript
+cited below. Only its elementary cylinder perspective is reused; the
+required lemma is reproved. No existing formal verification of the new
+article's theorems is claimed, and this work does not modify the repository.
+
+The literature search was targeted rather than exhaustive. It identified
+related primary sources, but it does not settle historical priority for the
+classification and absorption statements. The questions in
+\cref{sec:research} are proposed next steps, not an authenticated list of
+published open problems. All websites and repository material were
+consulted for this manuscript on 2 October 2026.
+
+\begin{thebibliography}{9}
+\raggedright
+\addcontentsline{toc}{section}{References}
+
+\bibitem{KS}
+Vladimir Kanovei and Saharon Shelah,
+\emph{A definable nonstandard model of the reals},
+Journal of Symbolic Logic \textbf{69} (2004), no.~1, 159--164.
+\href{https://doi.org/10.2178/jsl/1080938834}{doi:10.2178/jsl/1080938834}.
+\href{https://arxiv.org/abs/math/0311165}{arXiv:math/0311165}.
+\href{https://shelah.logic.at/papers/825/}{Author-maintained paper archive, Sh:825}.
+
+\bibitem{Knoblauch}
+Vicki Knoblauch,
+\emph{Lexicographic preference representation: Intrinsic length of linear
+orders on infinite sets},
+Journal of Mathematical Economics \textbf{105} (2023), article 102823.
+\href{https://doi.org/10.1016/j.jmateco.2023.102823}{doi:10.1016/j.jmateco.2023.102823}.
+\href{https://vickiknoblauch.com/research.html}{Author's publication list}.
+
+\bibitem{HKKL}
+Frederik S. Herzberg, Vladimir Kanovei, Mikhail G. Katz, and Vassily Lyubetsky,
+\emph{Minimal axiomatic frameworks for definable hyperreals with transfer},
+Journal of Symbolic Logic \textbf{83} (2018), no.~1, 385--391.
+\href{https://doi.org/10.1017/jsl.2017.48}{doi:10.1017/jsl.2017.48}.
+\href{https://arxiv.org/abs/1707.00202}{arXiv:1707.00202}.
+
+\bibitem{ProveIt}
+ProveIt repository, maintained by Vladimir Reshetnikov,
+\emph{Every ordinal as a point-separating game value}, research report,
+20 September 2026. File \texttt{ordinal\_separation.tex}, in the
+repository's ordinal-order reports, under
+\texttt{games-on-ordinals/point-separating-game-values/}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6ea60e3677bd847a00baf023c3c532c83884530e/SetTheory/Cardinals/docs/reports/ordinals-and-order-types/games-on-ordinals/point-separating-game-values/ordinal_separation.tex}{Immutable source at the inspected commit}.
+
+\end{thebibliography}
+\end{document}
