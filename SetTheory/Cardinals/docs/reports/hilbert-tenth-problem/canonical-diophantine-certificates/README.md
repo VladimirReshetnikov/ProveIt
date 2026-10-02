@@ -280,7 +280,7 @@ article.
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 451 pages
+article.pdf                              the compiled report, 452 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -1511,8 +1511,9 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 451 pages (196 before batch 62, 306 before batch 63,
-338 before batch 78, 419 after Part XV, 449 after Part XVI),
+The recorded build has 452 pages (196 before batch 62, 306 before batch 63,
+338 before batch 78, 419 after Part XV, 449 after Part XVI,
+451 after the reciprocal notes, 452 after restoring the XVI organization row),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -1527,6 +1528,14 @@ undefined reference, duplicate destination or overfull box, and the same
 single underfull line. The reciprocal notes of cluster H3 (six dated notes, no label) add two
 pages and change no label number (compared in the `.aux`); that build has
 the same clean log and the same single underfull line.
+
+The organization-table correction was rebuilt in a scratch directory with
+three `pdflatex -interaction=nonstopmode -halt-on-error article.tex` passes
+(`latexmk` was unavailable). The final pass has no errors, warnings, unresolved
+references or overfull boxes; the same single underfull line remains. The
+corrected table was visually inspected. The integration review and pinned
+byte-preservation checker are recorded in
+[the research review](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_canonical_revision_cb8238b64.md).
 
 ## Rerunning the checks
 
