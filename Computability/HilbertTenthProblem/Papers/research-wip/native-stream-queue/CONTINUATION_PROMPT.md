@@ -1,5 +1,14 @@
 # Continuation: universal straight-line certificates
 
+> Next priority: [ten new reports](incoming_substrate_intake_aebfa386e.md) arrived
+> at `ef2fc7990`/`aebfa386e` during the final frontier push. They are merged,
+> byte-inventoried (334 files/84 Python modules), and **not yet reviewed**.
+> The intake gives the concrete four-way review allocation and proof/source
+> boundaries. Keep their claims pending until full review and author replays.
+> The preceding turn made verified arithmetic progress through the complete
+> U15 frontier511/4881,513/3120,515/2116,517/1936, all reviewed and published.
+
+
 > Historical handoff below. The current comparison frontier is
 > **75=41M+34A**: see [the complete proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md)
 > and [consolidated checker](../../verification/explore_fixed_raw_universal_75.py).

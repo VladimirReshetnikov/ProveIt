@@ -1,5 +1,11 @@
 # WIP: native queue streams and research continuation
 
+[Ten newly arrived reports](incoming_substrate_intake_aebfa386e.md) at
+`ef2fc7990`/`aebfa386e` are inventoried (334 files/84 Python modules) and
+**pending full review**. Their original archives and member hashes are pinned;
+no new theorem or operation bound is accepted from this intake alone.
+
+
 The [complete direct U15 partition frontier](u15_unit_partition_frontier.md)
 gives **511/4881,513/3120,515/2116,517/1936** (operations/exact degree),
 all with211 multiplications and87 positive witnesses. In particular,517
