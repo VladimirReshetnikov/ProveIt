@@ -1,15 +1,14 @@
 \documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\pdfmapfile{+lm.map}
-\pdfmapfile{+cm.map}
-\pdfmapfile{+symbols.map}
 \usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
-\usepackage[margin=1in]{geometry}
+\usepackage[letterpaper,margin=1in]{geometry}
 \usepackage{booktabs,array,longtable,enumitem}
 \usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
 \usepackage{fancyhdr}
-\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Complete increasing subsequences}\fancyhead[R]{\small Quantitative Beta renewal asymptotics}\fancyfoot[C]{\thepage}
+\newcommand{\parthead}{Front matter}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Complete increasing subsequences (A047909, A268485)}\fancyhead[R]{\small\parthead}\fancyfoot[C]{\thepage}
 \setlength{\headheight}{14pt}
 \setlength{\emergencystretch}{2em}
 \numberwithin{equation}{section}
@@ -18,16 +17,130 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Macros of the two sources; every shared name has the same definition in both.
 \newcommand{\Prob}{\mathbb P}\newcommand{\E}{\mathbb E}\newcommand{\He}{\operatorname{He}}
 \newcommand{\ii}{\mathrm i}\newcommand{\sgn}{\operatorname{sgn}}
 \newcommand{\coef}[2]{[#1^{#2}]}
-\title{Quantitative Beta renewal asymptotics\\for complete increasing subsequences}
-\author{Research report for OEIS A047909 and A268485}
-\date{2 October 2026}
-\hypersetup{pdftitle={Quantitative Beta renewal asymptotics for complete increasing subsequences},pdfauthor={Research report},pdfsubject={OEIS A047909 and A268485 central expansions diagonal parity inverse thresholds and separated rare tails}}
+\newcommand{\norm}[2]{\left\lVert #1\right\rVert_{#2}}
+% Added when the two manuscripts were merged (batch 77P5).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}{\par\smallskip\begingroup\small\noindent\textbf{[write, 2 October 2026]}\ }{\par\endgroup\smallskip}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\title{Complete increasing subsequences in multiset permutations\\(OEIS A047909 and A268485)\\[6pt]
+\large Quantitative Beta renewal asymptotics: central, diagonal and\\separated-ratio expansions, and transition-uniform relative accuracy}
+\author{Two AI-assisted research manuscripts, merged into one ProveIt report}
+\date{Both Parts: 2 October 2026\quad merged: 2 October 2026}
+\hypersetup{pdftitle={Complete increasing subsequences in multiset permutations (OEIS A047909 and A268485)},pdfsubject={Quantitative Beta renewal asymptotics: central expansion, diagonal parity, inverse thresholds, separated rare tails, and transition-uniform relative accuracy for both tails; two research manuscripts merged}}
 \begin{document}
 \maketitle
 \begin{abstract}
+A word chosen uniformly from all words with $m$ copies of each letter $1,\ldots,k$ contains $12\cdots k$ with probability $p_m(k)=H(m,k)(m!)^k/(mk)!$, where $H(m,k)$ is the array A047909 and $H(n,n)$ is A268485. By a theorem of El Maazouz and Pitman, $p_m(k)$ is the probability that $k$ independent $\operatorname{Beta}(1,m)$ increments sum to at most $1$, and $p_m(k)$ has a Gaussian limit in the window $k=m+O(\sqrt m)$. This report prints two research manuscripts built on that representation. Part~I proves an expansion to every fixed order in the central window, with the first four correction polynomials. It proves that the diagonal has only odd half-integer corrections beyond the leading $1/2$, and computes four of them. It also gives smooth probability and Lambert-$W$ count inverses with qualified integer brackets, and proves an expansion to every fixed order of the exponentially small success or failure probability when $k/m$ stays away from $1$. Part~II joins the two regimes. Unexpanded Gaussian--Hermite half-line kernels in the exponential-tilting construction give relative error $O(m^{-(R+1)/2})$ for both tails, uniformly on every fixed compact range of $k/m$ in $(0,\infty)$, through the exact zero-saddle point $k=m+1$. Part~II recovers Part~I's first central and separated coefficients from this formula, and gives both real Lambert-$W$ branches for separated tail thresholds. Effective constants, growing orders, ratios tending to $0$ or $\infty$ and certified rounding remain open. The report is AI-assisted and unrefereed, and nothing in it is formalized.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section*{Guide to this report}\label{brs:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are two manuscripts of batch~77 (arrival commit \texttt{096ee7b87}, 2~October 2026), placed in this directory by commit \texttt{4f11bc9c0}. The second is an addendum to the first and cites it as its companion report:
+\begin{center}
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.48\textwidth} l@{}}
+\toprule
+Part & Batch-77 manuscript & Delivered title & Date\\
+\midrule
+I & 13 & Quantitative Beta renewal asymptotics for complete increasing subsequences & 2 Oct.\\
+II & 14 & Transition uniform Beta renewal asymptotics for complete increasing subsequences & 2 Oct.\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each Part prints its manuscript's text, with every result, proof, remark, open question and limitation. Its statements keep their delivered wording. Part~I keeps exactly the section, statement and equation numbers of manuscript~13 (Sections~1--10). Part~II's Section~$k$ is Section~$k+10$ here, so its equation $(k.n)$ is $(k+10.n)$ and its Theorem~3.1 is Theorem~\ref{brs:un:thm:uniform}. Each Part has its own symbols, fixed in its own text. Section~\hyperref[brs:sec:notation]{``Notation across the two Parts''} lists the symbols whose meaning changes between the Parts. Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write, 2 October 2026]}. They give cross-references between the Parts, mark results that Part~II re-derives, and mark the statements of Part~I that Part~II answers. No delivered statement was changed, and no symbol was renamed.
+
+\section*{What is proved, and where}\label{brs:sec:status}
+\addcontentsline{toc}{section}{What is proved, and where}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.45\textwidth} >{\raggedright\arraybackslash}p{0.5\textwidth}@{}}
+\toprule
+Statement & Where\\
+\midrule
+Renewal identity $p_m(k)=\Prob(B_1+\cdots+B_k\le1)$, $B_i\sim\operatorname{Beta}(1,m)$, and the Gaussian limit & El Maazouz and Pitman \cite{clock}, not new here. Direct proof of the identity: Part~I, Proposition~\ref{brs:prop:renewal}; restated in scaled form as Part~II, \eqref{brs:un:eq:renewal}\\
+Exact finite simplex formula & Part~I, \eqref{brs:eq:exactsum}\\
+Central expansion to every fixed order; $P_1,\ldots,P_4$ & Part~I, Theorem~\ref{brs:thm:central}. Part~II recovers $P_1$ (\eqref{brs:un:eq:P1}) and identifies every $P_j$ by uniqueness (Section~\ref{brs:un:sec:matching})\\
+Diagonal: only odd half-integer powers beyond $1/2$; four corrections & Part~I, Corollary~\ref{brs:cor:diagonal}\\
+Smooth probability inverse and integer brackets & Part~I, Proposition~\ref{brs:prop:quantile}\\
+Lambert-$W$ count inverse; strict increase of $a(n)$ & Part~I, Proposition~\ref{brs:prop:countinverse} and the paragraph after it\\
+Separated-ratio tails to every fixed order; $c_1$ & Part~I, Theorem~\ref{brs:thm:rare}. Part~II recovers $c_1$ (\eqref{brs:un:eq:c1}) and every $c_j$ (Section~\ref{brs:un:sec:matching})\\
+Weighted $(1+z^2)$ density remainder for the tilted triangular family & Part~II, Lemma~\ref{brs:un:lem:density}\\
+Relative error $O(m^{-(R+1)/2})$ for both tails, uniformly for $a\le k/m\le b$; exact switch at $k=m+1$ & Part~II, Theorem~\ref{brs:un:thm:uniform} and \eqref{brs:un:eq:switch}\\
+$p_m(m+1)=\frac12+\lambda_3\phi(0)/(6\sqrt k)+O(k^{-3/2})$ & Part~II, \eqref{brs:un:eq:mean}\\
+Separated tail thresholds: both real Lambert-$W$ branches, two inverse corrections, integer brackets & Part~II, Corollary~\ref{brs:un:cor:inverse} and \eqref{brs:un:eq:ceil}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Open after both Parts}}\\
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{Effective constants and certified integer thresholds; truncation order growing with $m$, coefficient growth, optimal truncation, Stokes phenomena or exponentially improved remainders; ratios $k/m$ tending to $0$ or $\infty$; growing windows for the central polynomial expansion \eqref{brs:eq:central} itself; a transition-uniform inversion; numerically stable evaluation of the exact probabilities and of the half-line kernels.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Finite computations in both Parts (exact rational probabilities, word counts, symbolic re-derivations, quadrature at sample points) are checks and diagnostics; no asymptotic or uniform statement rests on them. The literature and repository searches recorded in the Parts are bounded, not novelty or priority certificates. Neither Part claims a new general Edgeworth, saddle-point or tilting method: Part~II attributes the method to Esscher and Cram\'er through Daniels, with Lugannani--Rice, Robinson and Jensen as related classical work. The inverses use the Lambert~$W$ function. The leading count inverse of Part~I is the case $a=b=1$ of the exact Lambert-core theorem \texttt{p0:thm:lambert-core} of the repository's transseries volume (\file{Analysis/Transseries/docs/series-and-transseries/}\allowbreak\file{Transseries_And_Inversion/}), after taking logarithms. The correction terms of both Parts are instances of its perturbed inversion (\texttt{p0:thm:perturbed-inversion}). The integer brackets are of the first-crossing kind treated by its staircase recovery (\texttt{p0:thm:staircase}). No novelty is claimed for the inversion method.
+
+\section*{Notation across the two Parts}\label{brs:sec:notation}
+\addcontentsline{toc}{section}{Notation across the two Parts}
+Common to both Parts: $H(m,k)$, $W(m,k)=(mk)!/(m!)^k$, $p_m(k)=H(m,k)/W(m,k)$, $a(n)=H(n,n)$, the scaled increment $Y_m=mB$ with density $f_m$ and transform $M_m$, the cumulant generating function $K_m(t)=\log\E e^{tY_m}$, $h=m^{-1/2}$, $x=(k-m)/\sqrt m$ (computed from the actual integer $k$), the exact ratio $\rho=k/m$, $I(\rho)=1-\rho+\rho\log\rho$, $\sigma^2$ and $\lambda_r$ (tilted variance and standardized cumulants at the exact saddle), $\eta=k^{-1/2}$, $\phi$, $\Phi$, $\He_d$, the central polynomials $P_j$ and the separated coefficients $c_j$. The symbols below change meaning between the Parts; each Part's own text fixes its meaning there.
+\begin{center}
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.1\textwidth} >{\raggedright\arraybackslash}p{0.42\textwidth} >{\raggedright\arraybackslash}p{0.42\textwidth}@{}}
+\toprule
+Symbol & Part I & Part II\\
+\midrule
+\endhead
+$B$ & $B_i$: unscaled $\operatorname{Beta}(1,m)$ increments, success iff $\sum B_i\le1$; $B_1(t),B_2(t)$: transform corrections in \eqref{brs:eq:Kexp} & Increments are the scaled $Y_{m,i}$, $S_k=\sum Y_{m,i}$, success iff $S_k\le m$; $B_1,B_2$: the same transform corrections; $B_R^\varepsilon(u)$: the kernel sum of \eqref{brs:un:eq:kernels}, not an increment\\
+$t$ & Fourier variable (Section~\ref{brs:sec:central}); the exact saddle is $t_m$ (Section~\ref{brs:sec:rare}) & The exact real saddle (Part~I's $t_m$), of either sign or zero; Fourier variables are $v,w$\\
+$T$ & $T_{m,k}$: normalized sum in the proof of Theorem~\ref{brs:thm:central}; $T$: frequency cutoff in \eqref{brs:eq:tailintegral}; $T_m(k)$: the rare tail, defined only for $\rho$ separated from $1$ & $T$: the outward saddle-side tail \eqref{brs:un:eq:T}, defined for every ratio; on separated ranges it is Part~I's $T_m(k)$\\
+$E$, $E_j$ & $E(h,u,x)$: the formal residual exponent \eqref{brs:eq:E}; $E_j=[h^j]E$, polynomials in $u,x$ & $E_j(z)$: $C_j(v)$ with each $v^d$ replaced by $\He_d(z)$. \emph{Tempting false reading:} Part~II's $E_j$ is not Part~I's $[h^j]E$\\
+$A$ & $A_j(u,x)$: coefficients of $e^E$ \eqref{brs:eq:A}; $A_*(n)$: smooth diagonal count carrier & $A=kK_m(t)-tm$: the tilted exponent; $A_0(\rho)$: the separated amplitude \eqref{brs:un:eq:rate}\\
+$u$ & Formal variable standing for $\ii t$ (Section~\ref{brs:sec:central}); integration variable in \eqref{brs:eq:tilt} & $u=|t|\sigma\sqrt k\ge0$, the kernel argument\\
+$C$, $C_j$ & $C$: half-width of the central window $|x|\le C$ & $C_j(v)$: coefficient polynomials \eqref{brs:un:eq:C}; $C$: generic constants\\
+$Q$ & $Q_R$: polynomial in the bound \eqref{brs:eq:lowerror}; $Q_j$: exact-saddle coefficients \eqref{brs:eq:Qj} & $Q_R(w)$: the Gaussian--polynomial comparison \eqref{brs:un:eq:Fourier}; $Q_1$ in \eqref{brs:un:eq:Q1} is Part~I's \eqref{brs:eq:Q1}\\
+$K$ & $K_m(t)$ as above; $K_{m,R}(p)$: root of the smooth probability carrier & $K_m(t)$ as above; $K_m(\ell)$: crossing of the separated carrier (Corollary~\ref{brs:un:cor:inverse}). Same letter and subscript as the cumulant generating function; read it by its argument\\
+$F$ & $F_{m,R}(x)$: the smooth probability carrier & $F(u)=H_0(u)=e^{u^2/2}\Phi(-u)$, the scaled normal tail\\
+$H$ & $H(m,k)$ only & $H(m,k)$; also the half-line kernels $H_d(u)$ \eqref{brs:un:eq:kernels}\\
+$q$ & $q_m(p)$: integer threshold for a fixed probability $p$ & $q<1$: Cram\'er gap \eqref{brs:un:eq:annulus}; $q_s$, $q_f$: integer thresholds for targets $e^{-m\ell}$ \eqref{brs:un:eq:q}\\
+$\kappa$ & $\kappa_r(m)$: cumulants of $Y_m$ \eqref{brs:eq:cumulants} & $\kappa=m\rho_0+d_0+d_1/m$: centre of the integer bracket, not a cumulant\\
+$L$ & $L=\log y$ (Proposition~\ref{brs:prop:countinverse}); a truncation order in \eqref{brs:eq:Kexp} & A frequency cutoff (Section~\ref{brs:un:sec:densityproof}); $L=\log A_0$ (Corollary~\ref{brs:un:cor:inverse})\\
+$D$, $d$ & $D(n)$: diagonal probability carrier; $D_{R,\mathcal P}$, $D$: constants & $D_R(w)$: Fourier difference \eqref{brs:un:eq:Fourier}; $d$: a margin; $d_0,d_1$: inverse coefficients \eqref{brs:un:eq:d0d1}\\
+$J$, $a$, $b$, $g$ & $J$: fixed order; $a,b$: coefficients in the proof of Proposition~\ref{brs:prop:quantile}; $a(n)$: A268485; $g_{m,k}$: tilted density & $J$: a compact saddle interval (Lemma~\ref{brs:un:lem:density}) and a fixed separated order (Section~\ref{brs:un:sec:matching}); $0<a<b$: ratio bounds; $g=\log\rho_0$\\
+$\varepsilon$, $\epsilon$ & $\varepsilon_m$: rounding displacement; $\epsilon=+1$ for $\rho<1$, $-1$ for $\rho>1$ & $\varepsilon=+1$ for $t\ge0$ (that is, $k\le m+1$), $-1$ otherwise; on separated ranges it equals Part~I's $\epsilon$\\
+$r$ & $r=\sqrt{2L/W_0(2L)}$ & $r$: the density remainder\\
+\bottomrule
+\end{longtable}
+\end{center}
+Part~I's tilted-tail formula \eqref{brs:eq:exact-saddle} expands the half-line weight $1/(t_m+\ii v)$ in powers of $\eta$, which requires $|t_m|$ bounded below. Part~II keeps that weight unexpanded inside the kernels $H_d(u)$, which are finite at $u=0$. This difference is why Part~I's separated theorem has poles at $\rho=1$ and Part~II's theorem has none.
+
+\section*{Provenance and merge decisions}\label{brs:sec:mergeprovenance}
+\addcontentsline{toc}{section}{Provenance and merge decisions}
+Two manuscripts, both of batch~77 (arrival commit \texttt{096ee7b87}; placement commit \texttt{4f11bc9c0}).
+\begin{itemize}
+\item \textbf{Part~I}, manuscript~13, archive \file{beta-renewal-asymptotics-reproducibility.zip}, delivered main file \file{beta-renewal-asymptotics.tex} (14-page PDF), 2~October 2026, author line ``Research report for OEIS A047909 and A268485''. Pin \texttt{4b874cea0}, the commit of its scoped repository overlap check (Section~\ref{brs:sec:provenance}). Contributes the central, diagonal, inverse and separated-ratio theories, its proof notes and seven check scripts.
+\item \textbf{Part~II}, manuscript~14, archive \file{beta-renewal-uniform-reproducibility.zip}, delivered main file \file{beta-renewal-uniform-addendum.tex} (12-page PDF), 2~October 2026, author line ``Research addendum for OEIS A047909 and A268485''. It names no repository commit. Its \file{source-hashes.json} pins manuscript~13 instead: the SHA-256 values of 13's TeX, PDF and archive equal the delivered bytes. Contributes the weighted density lemma, the transition-uniform theorem, the recovery of $P_1$ and $c_1$, the separated Lambert-branch inverse, and three check scripts.
+\end{itemize}
+Where the merge had to choose:
+\begin{enumerate}
+\item \emph{Order and base.} Manuscript~14 is an addendum to manuscript~13 and says that it does not replace it. Manuscript~13 is the base and Part~I; nothing is superseded.
+\item \emph{Re-derived material.} Part~II restates Part~I's definitions, the renewal identity in scaled form, the transform expansion \eqref{brs:eq:Kexp} and the saddle displacement \eqref{brs:eq:tshift}, and recomputes $Q_1$, the three contributions to $c_1$, $c_1$ itself and $P_1$. These are printed where they stand, because Part~II's proofs cite them. \textbf{[write]} notes identify them with Part~I's equations. Part~II's recovery of $P_1$ and $c_1$ is printed as a consistency check by a second route, not as a second statement of Part~I's theorems.
+\item \emph{Answered non-claims.} Part~I says that its two regimes are proved separately and that no transition-uniform matching is claimed, and lists the uniform bridge as its first open question. These passages are printed as delivered, each followed by a note pointing to Part~II. The questions that Part~II answers only in part are re-scoped in the notes.
+\item \emph{References between manuscripts.} Manuscript~14 cites manuscript~13 as \cite{base}. The citation is kept, and the bibliography entry says that the companion report is Part~I.
+\item \emph{Front matter.} The two title blocks and abstracts are printed at the head of their Parts; manuscript~13's table of contents is replaced by this report's.
+\item \emph{Bibliography.} The two bibliographies are merged into one. Five entries occur in both. Manuscript~13's copies of the two OEIS entries add an inspection date and an indexing note; those copies are kept, and the other three shared entries are identical in content.
+\item \emph{Preamble.} One preamble, the union of the two; every shared macro has the same definition in both sources. The \verb|\pdfmapfile| lines of both preambles were removed; on MiKTeX they only produce ``fontmap entry already exists'' warnings. Manuscript~13 set no paper size and manuscript~14 set letter paper; this report uses letter paper throughout. The running heads of the two manuscripts are replaced by one.
+\item \emph{Labels.} Every label carries the report prefix: \texttt{brs:} in Part~I and \texttt{brs:un:} in Part~II, followed by the delivered name. Eight delivered names occur in both manuscripts, for different equations (\texttt{eq:renewal}, \texttt{eq:density}, \texttt{eq:Kexp}, \texttt{eq:tshift}, \texttt{eq:rare}, \texttt{eq:c1}, \texttt{eq:Q1}, \texttt{eq:ceil}).
+\end{enumerate}
+
+
+\clearpage
+\renewcommand{\parthead}{Part I: central and separated regimes}
+\part{Quantitative Beta renewal asymptotics for complete increasing subsequences}\label{brs:part:central}
+\partsource{Batch-77 manuscript 13, archive \file{beta-renewal-asymptotics-reproducibility.zip} (delivered as \file{beta-renewal-asymptotics.tex}, 14 pages), dated 2 October 2026. Delivered author line: ``Research report for OEIS A047909 and A268485''. Pin \texttt{4b874cea0}. Printed as delivered, with \textbf{[write]} notes; section, statement and equation numbers are those of the delivery.}
+\begin{partabstract}
 A word chosen uniformly from all words with $m$ copies of each letter
 $1,\ldots,k$ contains $12\cdots k$ with probability $p_m(k)$.  The exact
 representation of this probability as the tail of a renewal process with
@@ -45,9 +158,10 @@ fixed integer correction order, when $k/m$ stays in a compact set separated
 from $1$.  The two regimes are proved separately; no transition-uniform
 matching or optimal truncation is claimed.  Exact rational checks and
 independent symbolic and combinatorial calculations accompany the report.
-\end{abstract}
-\setcounter{tocdepth}{1}
-\tableofcontents
+\end{partabstract}
+\begin{writenote}
+The sentence ``The two regimes are proved separately; no transition-uniform matching or optimal truncation is claimed'' is true of this Part. Part~\ref{brs:part:uniform} proves transition-uniform matching: Theorem~\ref{brs:un:thm:uniform} gives one formula with relative error $O(m^{-(R+1)/2})$ for both tails, uniformly on every fixed compact range of $k/m$ in $(0,\infty)$, and Section~\ref{brs:un:sec:matching} re-expands it into this Part's $P_j$ and $c_j$. Optimal truncation is claimed in neither Part.
+\end{writenote}
 
 \section{The counting problem and the scope of the report}
 
@@ -56,7 +170,7 @@ in $\{1,\ldots,k\}$ that contain the subsequence $12\cdots k$.  A subsequence
 need not be contiguous.  Because there are only $k$ distinct letters, this
 condition is equivalent to having a strictly increasing subsequence of
 length $k$.  Define
-\begin{equation}\label{eq:definition}
+\begin{equation}\label{brs:eq:definition}
  W(m,k)=\frac{(mk)!}{(m!)^k},\qquad p_m(k)=\frac{H(m,k)}{W(m,k)},\qquad m,k\geq1.
 \end{equation}
 Thus $p_m(k)$ is a probability rather than a raw count.
@@ -71,7 +185,7 @@ antidiagonals: antidiagonal $d\geq1$ is
  H(d,1),H(d-1,2),\ldots,H(1,d).
 \]
 The diagonal sequence A268485 is
-\begin{equation}\label{eq:diagonaldef}
+\begin{equation}\label{brs:eq:diagonaldef}
  a(n)=H(n,n)\quad(n\geq1),\qquad a(0)=1.
 \end{equation}
 The $n=0$ convention is the empty word and is separate from the Beta
@@ -99,14 +213,14 @@ higher-order central and inverse formulas.  This is not a universal
 historical novelty certificate, and no new general Edgeworth or saddle
 method is claimed.  All asymptotic orders are fixed before the limit;
 constants may depend on that order and on the stated compact set.
-Section~\ref{sec:provenance} gives the source-audit boundaries.
+Section~\ref{brs:sec:provenance} gives the source-audit boundaries.
 
 \section{The exact Beta renewal law}
 
-\begin{proposition}[Established identity with a direct proof]\label{prop:renewal}
+\begin{proposition}[Established identity with a direct proof]\label{brs:prop:renewal}
 Let $B_1,B_2,\ldots$ be independent with density
 $m(1-b)^{m-1}$ on $0<b<1$.  Then
-\begin{equation}\label{eq:renewal}
+\begin{equation}\label{brs:eq:renewal}
  p_m(k)=\Prob(B_1+\cdots+B_k\leq1).
 \end{equation}
 \end{proposition}
@@ -127,7 +241,7 @@ $m(1-w)^{m-1}$ on $(0,1-t)$, and the failure atom has mass $t^m$.
 This is exactly the kernel obtained by drawing an independent
 $\operatorname{Beta}(1,m)$ increment and killing the process if it exceeds
 $1-t$, since $\Prob(B>1-t)=t^m$.  The entire killed kernels agree, including
-their failure masses.  Induction proves \eqref{eq:renewal}.
+their failure masses.  Induction proves \eqref{brs:eq:renewal}.
 \end{proof}
 
 It is important that the proof does not replace a wait conditioned on
@@ -144,7 +258,7 @@ in related formulations do not change any formula here.
 
 On the simplex $b_i\geq0$, $\sum b_i\leq1$, expand the product of the Beta
 densities and use the Dirichlet monomial integral.  This gives
-\begin{equation}\label{eq:exactsum}
+\begin{equation}\label{brs:eq:exactsum}
  p_m(k)=m^k\!\sum_{j_1,\ldots,j_k=0}^{m-1}
  \frac{\displaystyle\prod_{i=1}^k
  (-1)^{j_i}\frac{(m-1)!}{(m-1-j_i)!}}
@@ -158,7 +272,7 @@ point evaluation of the alternating sum is inappropriate because of
 severe cancellation.  This formula supplies finite checks independently
 of the asymptotic derivation.
 
-\section{A uniform central expansion at every fixed order}
+\section{A uniform central expansion at every fixed order}\label{brs:sec:central}
 
 Write
 \[
@@ -167,17 +281,17 @@ Write
  \Phi(x)=\int_{-\infty}^x\phi(u)\,du.
 \]
 
-\begin{theorem}[Central expansion]\label{thm:central}
+\begin{theorem}[Central expansion]\label{brs:thm:central}
 For every fixed integer $R\geq0$ and fixed $C<\infty$, there are explicitly
 computable polynomials $P_1,\ldots,P_R$ such that, uniformly over integers
 $m,k$ with $m\to\infty$ and $|x|\leq C$,
-\begin{equation}\label{eq:central}
+\begin{equation}\label{brs:eq:central}
  p_m(k)=\Phi(-x)+\phi(x)\sum_{j=1}^R P_j(x)m^{-j/2}
        +O_{R,C}\bigl(m^{-(R+1)/2}\bigr).
 \end{equation}
 The first four polynomials are
 \begin{align}
- P_1(x)&=\frac{x^2+8}{6},\label{eq:p1}\\
+ P_1(x)&=\frac{x^2+8}{6},\label{brs:eq:p1}\\
  P_2(x)&=\frac{x(x^4+11x^2-6)}{72},\\
  P_3(x)&=\frac{5x^8+40x^6-561x^4-1074x^2-4848}{6480},\\
  P_4(x)&=\frac{x(5x^{10}-5x^8-1539x^6+3339x^4+15264x^2+173988)}{155520}.
@@ -194,26 +308,26 @@ uniformity when $R$ or $C$ grows with $m$.
 Set $Y_m=mB$.  Its moments and cumulants satisfy
 \begin{align}
  \mu_0(m)&=1,&
- \mu_r(m)&=r!\prod_{a=1}^{r}(1+a/m)^{-1},\label{eq:moments}\\
+ \mu_r(m)&=r!\prod_{a=1}^{r}(1+a/m)^{-1},\label{brs:eq:moments}\\
  \kappa_r(m)&=\mu_r(m)-\sum_{a=1}^{r-1}
- \binom{r-1}{a-1}\kappa_a(m)\mu_{r-a}(m).\label{eq:cumulants}
+ \binom{r-1}{a-1}\kappa_a(m)\mu_{r-a}(m).\label{brs:eq:cumulants}
 \end{align}
 Only $r\leq R+2$ is needed for order $R$.  With $u$ formal, form through
 degree $h^R$ the expression
-\begin{align}\label{eq:E}
+\begin{align}\label{brs:eq:E}
  E(h,u,x)={}&(h^{-1}+x)(\kappa_1-1)u
  +\frac{(1+xh)\kappa_2-1}{2}u^2\\
  &+(1+xh)\sum_{r=3}^{R+2}h^{r-2}\kappa_r\frac{u^r}{r!}.\nonumber
 \end{align}
 Here and below each cumulant is expanded to the finite required order in
 $h^2$.  If $E_j=[h^j]E$, define
-\begin{equation}\label{eq:A}
+\begin{equation}\label{brs:eq:A}
  A_0=1,\qquad A_j(u,x)=\frac1j\sum_{i=1}^j iE_i(u,x)A_{j-i}(u,x).
 \end{equation}
 These are the coefficients of the finite exponential $e^E$.
 Using the probabilists' Hermite polynomials
 $\He_d(z)=(-1)^de^{z^2/2}(d/dz)^de^{-z^2/2}$, the answer is
-\begin{equation}\label{eq:Hermite}
+\begin{equation}\label{brs:eq:Hermite}
  P_j(x)=-\sum_{d\geq1}[u^d]A_j(u,x)\He_{d-1}(-x).
 \end{equation}
 All sums and series manipulations in this prescription are finite.
@@ -224,7 +338,7 @@ full moment generating function of the Beta distribution.
 
 We give the details that turn the formal prescription into a theorem.
 For $m\geq2$, the density of $Y_m$ is
-\begin{equation}\label{eq:density}
+\begin{equation}\label{brs:eq:density}
  f_m(y)=(1-y/m)^{m-1}\mathbf1_{(0,m)}(y)\leq e^{-y/2}.
 \end{equation}
 Thus $M_m(z)=\E e^{zY_m}$ has uniformly bounded exponential moments on a
@@ -237,23 +351,23 @@ The variance is
  \kappa_2(m)=\frac{m^3}{(m+1)^2(m+2)}\longrightarrow1.
 \]
 Taylor's theorem therefore gives fixed $\delta,c>0$ such that
-\begin{equation}\label{eq:gaussianbound}
+\begin{equation}\label{brs:eq:gaussianbound}
  |\E e^{\ii tY_m}|\leq e^{-ct^2},\qquad |t|\leq\delta,
 \end{equation}
 for all sufficiently large $m$.
 
-Dominated convergence in \eqref{eq:density} gives $L^1$ convergence of
+Dominated convergence in \eqref{brs:eq:density} gives $L^1$ convergence of
 $f_m$ to the unit exponential density.  Their characteristic functions
 consequently converge uniformly on the entire real line to
 $(1-\ii t)^{-1}$.  For any fixed $T>\delta$, this implies a uniform
 $\eta_0<1$ bound on the annulus $\delta\leq|t|\leq T$.
 The density $f_m$ is decreasing from $1$ to $0$; integration by parts,
 including the boundary at zero, gives
-\begin{equation}\label{eq:tailbound}
+\begin{equation}\label{brs:eq:tailbound}
  |\E e^{\ii tY_m}|\leq\frac2{|t|}.
 \end{equation}
 For $T>4$ one obtains, on the positive half line,
-\begin{equation}\label{eq:tailintegral}
+\begin{equation}\label{brs:eq:tailintegral}
  \int_\delta^\infty |\E e^{\ii tY_m}|^k\frac{dt}{t}
  \leq\eta_0^k\log(T/\delta)+\frac{(2/T)^k}{k}.
 \end{equation}
@@ -263,32 +377,32 @@ needed for Fourier inversion in the triangular array.
 
 \subsection{Proof of the central remainder}
 
-\begin{proof}[Proof of Theorem~\ref{thm:central}]
+\begin{proof}[Proof of Theorem~\ref{brs:thm:central}]
 Define
 \[
  T_{m,k}=\frac{\sum_{i=1}^kY_{m,i}-k}{\sqrt m}.
 \]
 For $|th|$ inside the fixed nonvanishing disk, choose the logarithm
 branch continuous from $t=0$.  The characteristic logarithm is then exactly
-\begin{equation}\label{eq:charlog}
+\begin{equation}\label{brs:eq:charlog}
  \log\E e^{\ii tT_{m,k}}=k\{\log M_m(\ii th)-\ii th\}.
 \end{equation}
 Since $k=h^{-2}+xh^{-1}$, the leading term is $-t^2/2$ and the residual
-formal exponent is \eqref{eq:E} at $u=\ii t$.
+formal exponent is \eqref{brs:eq:E} at $u=\ii t$.
 Taylor expansion of the logarithm through degree $R+2$ in its argument
 leaves an error $O(h^{R+1}|t|^{R+3})$, uniformly in bounded $x$.
-Each of the finitely many rational cumulants in \eqref{eq:cumulants} has
+Each of the finitely many rational cumulants in \eqref{brs:eq:cumulants} has
 a finite Taylor expansion in $h^2$ with a controlled remainder.
 
 Choose a fixed $\alpha>0$ with $\alpha<1/[6(R+3)]$.  On
 $|t|\leq m^\alpha$, exponentiate the finite correction through degree $R$.
 Finite Taylor remainder estimates, with a slightly weakened Gaussian
-majorant from \eqref{eq:gaussianbound}, bound the difference from
+majorant from \eqref{brs:eq:gaussianbound}, bound the difference from
 \[
  e^{-t^2/2}\sum_{j=0}^R h^jA_j(\ii t,x)
 \]
 by
-\begin{equation}\label{eq:lowerror}
+\begin{equation}\label{brs:eq:lowerror}
  C_{R,C}h^{R+1}Q_R(|t|)e^{-c't^2},
 \end{equation}
 where $Q_R$ is a fixed polynomial with zero constant term.  The cutoff is
@@ -299,7 +413,7 @@ Gaussian.
 Between $m^\alpha$ and $\delta\sqrt m$, the Gaussian estimate makes the
 inversion integrals smaller than every power of $m^{-1}$.
 Beyond $\delta\sqrt m$, substitute the unscaled frequency $th$ and apply
-\eqref{eq:tailintegral}; because $k/m\to1$ uniformly in the central
+\eqref{brs:eq:tailintegral}; because $k/m\to1$ uniformly in the central
 window, this contribution is exponentially small.  The normal-polynomial
 comparison has the same required integrable tails.
 
@@ -308,7 +422,7 @@ densities for all sufficiently large $k$; the latter need not be positive.
 Their characteristic functions agree at zero.  The difference of their
 CDFs is bounded by the integral of their characteristic-function
 difference divided by $|t|$, up to $1/(2\pi)$.  The low-frequency bound
-\eqref{eq:lowerror} is integrable after this division because
+\eqref{brs:eq:lowerror} is integrable after this division because
 $Q_R(0)=0$.  The other frequency ranges were just controlled.  This gives
 an $O(h^{R+1})$ CDF error, uniformly in the threshold.
 
@@ -316,15 +430,15 @@ The inverse transform of $(\ii t)^de^{-t^2/2}$ is
 $\phi(z)\He_d(z)$, whose integral from $-\infty$ to $z$ is
 $-\phi(z)\He_{d-1}(z)$ for $d\geq1$.  Finally,
 $\sum B_i\leq1$ is equivalent to $T_{m,k}\leq-x$.
-Evaluating at $z=-x$ yields \eqref{eq:Hermite} and
-\eqref{eq:central}.
+Evaluating at $z=-x$ yields \eqref{brs:eq:Hermite} and
+\eqref{brs:eq:central}.
 \end{proof}
 
 \section{The diagonal expansion and its parity}
 
-\begin{corollary}[Diagonal A268485]\label{cor:diagonal}
+\begin{corollary}[Diagonal A268485]\label{brs:cor:diagonal}
 As $n\to\infty$,
-\begin{align}\label{eq:diagonal}
+\begin{align}\label{brs:eq:diagonal}
  \frac{a(n)}{(n^2)!/(n!)^n}
  =\frac12+\frac1{\sqrt{2\pi}}\bigg\{
  &\frac4{3n^{1/2}}-\frac{101}{135n^{3/2}}
@@ -336,11 +450,11 @@ Retaining through $n^{-(2J+1)/2}$, for any fixed $J\geq0$, leaves a
 remainder $O_J(n^{-(2J+3)/2})$.
 \end{corollary}
 \begin{proof}
-Set $x=0$ in \eqref{eq:E}.  Every monomial $h^ju^d$ has $j\equiv d\pmod2$,
+Set $x=0$ in \eqref{brs:eq:E}.  Every monomial $h^ju^d$ has $j\equiv d\pmod2$,
 because every cumulant is a series in $h^2$.  This property is preserved
 by products and therefore by the finite exponential.  In
-\eqref{eq:Hermite}, $\He_{d-1}(0)=0$ for even $d$.  Thus only odd $j$
-survives.  For the stated remainder, apply Theorem~\ref{thm:central} at
+\eqref{brs:eq:Hermite}, $\He_{d-1}(0)=0$ for even $d$.  Thus only odd $j$
+survives.  For the stated remainder, apply Theorem~\ref{brs:thm:central} at
 $R=2J+2$, whose last even coefficient vanishes.  Finite rational
 calculation gives the four displayed coefficients.
 \end{proof}
@@ -370,9 +484,9 @@ Let $K_{m,R}(p)=m+x\sqrt m$, where $x$ is the unique root in this interval
 of $F_{m,R}(x)=p$.  This is a chosen approximation, not a canonical
 extension of $p_m(k)$ to real $k$.
 
-\begin{proposition}[Smooth inverse and integer bracket]\label{prop:quantile}
+\begin{proposition}[Smooth inverse and integer bracket]\label{brs:prop:quantile}
 For each fixed $R\geq2$, uniformly for $p\in\mathcal P$,
-\begin{equation}\label{eq:quantile}
+\begin{equation}\label{brs:eq:quantile}
  K_{m,R}(p)=m-z_p\sqrt m+\frac{z_p^2+8}{6}
  +\frac{z_p(z_p^2+38)}{72\sqrt m}+O(m^{-1}).
 \end{equation}
@@ -382,7 +496,7 @@ Define the exact integer threshold by
 \]
 For a suitable uniform constant $D_{R,\mathcal P}$ and all sufficiently
 large $m$, with $\varepsilon_m=D_{R,\mathcal P}m^{-R/2}$,
-\begin{equation}\label{eq:ceil}
+\begin{equation}\label{brs:eq:ceil}
  \left\lceil K_{m,R}(p)-\varepsilon_m\right\rceil
  \leq q_m(p)\leq
  \left\lceil K_{m,R}(p)+\varepsilon_m\right\rceil.
@@ -402,19 +516,19 @@ remainder.  Higher fixed orders follow by the same recursion.
 
 The increments are positive, with positive density on $(0,1)$, so
 $p_m(k)$ is strictly decreasing in $k$ and tends to zero.  The threshold
-exists.  The probability error in Theorem~\ref{thm:central} is
+exists.  The probability error in Theorem~\ref{brs:thm:central} is
 $O(h^{R+1})$; the carrier derivative with respect to $k$ has magnitude at
 least $ch$ on the relevant interval.  A displacement $Dh^R$ therefore
 absorbs the probability error when $D$ is sufficiently large.  Integers
 below $K_{m,R}-Dh^R$ have probability greater than $p$, and integers at
 or above $K_{m,R}+Dh^R$ have probability at most $p$.  Taking ceilings
-gives \eqref{eq:ceil}.
+gives \eqref{brs:eq:ceil}.
 \end{proof}
 
 If an asymptotic truncation replaces the exact carrier root, enlarge
 $\varepsilon_m$ to include its root error.  In particular,
-\eqref{eq:quantile} alone has smooth-root error $O(m^{-1})$.
-When the two ceilings in \eqref{eq:ceil} agree, they determine the exact
+\eqref{brs:eq:quantile} alone has smooth-root error $O(m^{-1})$.
+When the two ceilings in \eqref{brs:eq:ceil} agree, they determine the exact
 integer threshold.  Near an integer boundary, sharper error control or
 exact evaluation is needed.  There is no vanishing-error expansion of an
 integer threshold obtained by simply suppressing its lattice oscillation.
@@ -422,7 +536,7 @@ integer threshold obtained by simply suppressing its lattice oscillation.
 \section{Inverting diagonal count growth}
 
 For large real $n$, choose a finite diagonal probability carrier $D(n)$
-from Corollary~\ref{cor:diagonal} and set
+from Corollary~\ref{brs:cor:diagonal} and set
 \[
  A_*(n)=\frac{\Gamma(n^2+1)}{\Gamma(n+1)^n}D(n).
 \]
@@ -430,7 +544,7 @@ For sufficiently large $n$ this is positive and increasing.  Different
 finite carriers agree to the order for which their probability
 expansions are retained; no unique real interpolation of $a(n)$ is
 asserted.  Stirling subtraction gives
-\begin{align}\label{eq:logcount}
+\begin{align}\label{brs:eq:logcount}
  \log A_*(n)={}&n^2\log n-\frac n2\log(2\pi n)+\log n\\
  &+\frac12\log(2\pi)-\frac1{12}-\log2+O(n^{-1/2}).\nonumber
 \end{align}
@@ -438,14 +552,14 @@ Indeed the factorial-ratio logarithm alone has the displayed terms
 without $-\log2$ and with error $O(n^{-2})$; the probability contributes
 $-\log2+O(n^{-1/2})$.
 
-\begin{proposition}[A Lambert-$W$ count inverse]\label{prop:countinverse}
+\begin{proposition}[A Lambert-$W$ count inverse]\label{brs:prop:countinverse}
 Put $L=\log y$ and
 \[
  r=\sqrt{\frac{2L}{W_0(2L)}},
 \]
 where $W_0$ is the positive real branch of Lambert's $W$ function.  If
 $A_*(n_*(y))=y$, then
-\begin{equation}\label{eq:inversecount}
+\begin{equation}\label{brs:eq:inversecount}
  n_*(y)=r+\frac{\log(2\pi r)}{4\log r+2}+O(r^{-1}).
 \end{equation}
 In particular, the smooth displacement $n_*(y)-r$ tends to $1/4$.
@@ -453,7 +567,7 @@ In particular, the smooth displacement $n_*(y)-r$ tends to $1/4$.
 \begin{proof}
 The definition gives $r^2\log r=L$.  The leading logarithmic derivative
 is $r(2\log r+1)$.  One Newton correction for the next term in
-\eqref{eq:logcount} is therefore
+\eqref{brs:eq:logcount} is therefore
 $\log(2\pi r)/(4\log r+2)$.  Substitution at this corrected point leaves
 a logarithmic residual $O(\log r)$: the quadratic leading-term remainder,
 the change in the subleading term, and the uncorrected $\log r$ term
@@ -466,6 +580,10 @@ implicit inversion, give arbitrary further fixed terms.  At any specified
 order a logarithmic error is converted into a smooth inverse error by
 division by a quantity asymptotic to $n(2\log n+1)$.
 
+\begin{writenote}
+The leading inverse $r$ solves $r^2\log r=L$, that is $X\log X=2L$ with $X=r^2$. After taking logarithms, $\log X+\log\log X=\log(2L)$ is the case $a=b=1$ of the exact Lambert-core theorem \texttt{p0:thm:lambert-core} of the repository's transseries volume (\file{Analysis/Transseries/docs/series-and-transseries/}\allowbreak\file{Transseries_And_Inversion/}). The Newton correction in \eqref{brs:eq:inversecount}, like the inverse expansion \eqref{brs:eq:quantile}, is an instance of its perturbed inversion \texttt{p0:thm:perturbed-inversion}. The integer brackets \eqref{brs:eq:ceil} and the first-crossing discussion below are of the kind treated by its staircase recovery \texttt{p0:thm:staircase}. No novelty is claimed for the inversion method.
+\end{writenote}
+
 For clarity, exact diagonal counts are strictly increasing for $n\geq1$.
 An injection from successful $n$-square words appends the block
 $1,\ldots,n$, followed by $n+1$ copies of the new largest letter.  The
@@ -473,10 +591,10 @@ result is a successful $(n+1)$-square word.  Successful target words
 beginning with the new largest letter lie outside the image.  This proves
 strictness and makes a first-crossing index well-defined.  Nevertheless,
 integer crossings must be bracketed using controlled errors.  The limit
-$1/4$ in Proposition~\ref{prop:countinverse} concerns the smooth carrier;
+$1/4$ in Proposition~\ref{brs:prop:countinverse} concerns the smooth carrier;
 it is not a claim about an integer displacement.
 
-\section{Exponentially small tails away from the transition}\label{sec:rare}
+\section{Exponentially small tails away from the transition}\label{brs:sec:rare}
 
 Now let $\rho=k/m$ be the \emph{exact} integer ratio.  Throughout this
 section, $\rho$ lies in a fixed compact set $\mathcal K$ contained either
@@ -487,9 +605,9 @@ in $(0,1)$ or in $(1,\infty)$.  Define
 \]
 The first case is rare failure and the second rare success.
 
-\begin{theorem}[Separated-ratio expansion]\label{thm:rare}
+\begin{theorem}[Separated-ratio expansion]\label{brs:thm:rare}
 For every fixed integer $J\geq0$, uniformly on $\mathcal K$,
-\begin{align}\label{eq:rare}
+\begin{align}\label{brs:eq:rare}
  T_m(k)={}&\frac{e^{1-1/\rho}\sqrt\rho}
  {|\rho-1|\sqrt{2\pi m}}e^{-mI(\rho)}\\
  &\times\left\{1+\sum_{j=1}^J\frac{c_j(\rho)}{m^j}
@@ -497,31 +615,35 @@ For every fixed integer $J\geq0$, uniformly on $\mathcal K$,
 \end{align}
 where the $c_j$ are explicitly computable rational functions, possibly
 singular at $0$ and $1$.  In particular,
-\begin{equation}\label{eq:c1}
+\begin{equation}\label{brs:eq:c1}
  c_1(\rho)=-\frac{\rho^4+10\rho^3-17\rho^2+24\rho-6}
  {12\rho^3(\rho-1)^2}.
 \end{equation}
 \end{theorem}
 
-Replacing $k/m$ by its limit in \eqref{eq:rare} without controlling the
+Replacing $k/m$ by its limit in \eqref{brs:eq:rare} without controlling the
 offset changes the prefactor.  Even a bounded displacement in $k$ can
 produce a nonvanishing exponential factor.  Likewise the poles at
 $\rho=1$ prevent the theorem from being applied uniformly as the ratio
 approaches the central window.
+
+\begin{writenote}
+This remains true of Theorem~\ref{brs:thm:rare}. Part~\ref{brs:part:uniform} keeps the half-line weight of \eqref{brs:eq:tailfourier} unexpanded inside the kernels $H_d(u)$ of \eqref{brs:un:eq:kernels}, which are finite at $u=0$. Its Theorem~\ref{brs:un:thm:uniform} is uniform through $\rho=1$ and through the exact zero-saddle point $k=m+1$, and \eqref{brs:un:eq:c1} recovers the coefficient \eqref{brs:eq:c1} from it.
+\end{writenote}
 
 \subsection{Finite transform and saddle expansions}
 
 For real $t<1$, set $K_m(t)=\log\E e^{tY_m}$.  On compact real intervals
 below $1$, and on a fixed sufficiently small complex neighborhood,
 finite density expansion gives, with derivative-uniform remainders,
-\begin{align}\label{eq:Kexp}
+\begin{align}\label{brs:eq:Kexp}
  K_m(t)&=-\log(1-t)+\sum_{j=1}^{L}m^{-j}B_j(t)+O_L(m^{-L-1}),\\
  B_1(t)&=\frac1{1-t}-\frac1{(1-t)^2},\nonumber\\
  B_2(t)&=\frac3{2(1-t)^2}-\frac4{(1-t)^3}
             +\frac5{2(1-t)^4}.\nonumber
 \end{align}
 To justify every finite order, start from
-\begin{equation}\label{eq:logdensity}
+\begin{equation}\label{brs:eq:logdensity}
  (m-1)\log(1-y/m)
  =-y+\sum_{j\geq1}m^{-j}
  \left(\frac{y^j}{j}-\frac{y^{j+1}}{j+1}\right).
@@ -538,16 +660,16 @@ rational functions $B_j$.  Analytic dependence of the full transform on
 $1/m$ is not required.
 
 There is a unique real saddle $t_m$ with
-\begin{equation}\label{eq:saddle}
+\begin{equation}\label{brs:eq:saddle}
  K'_m(t_m)=\rho^{-1}.
 \end{equation}
 Uniform strict convexity near the limiting saddle and
-\eqref{eq:Kexp} yield
-\begin{equation}\label{eq:tshift}
+\eqref{brs:eq:Kexp} yield
+\begin{equation}\label{brs:eq:tshift}
  t_m=1-\rho+\frac{2/\rho-1}{m}+O(m^{-2}),\qquad
  K''_m(t_m)=\rho^{-2}+O(m^{-1}).
 \end{equation}
-Successive substitution in \eqref{eq:saddle}, with a finite-order
+Successive substitution in \eqref{brs:eq:saddle}, with a finite-order
 implicit-function estimate for the residual, gives all further fixed
 orders.  The derivative at the limiting saddle is $\rho^{-2}$ and is
 uniformly nonzero on $\mathcal K$.
@@ -559,13 +681,13 @@ $e^{t_my}f_m(y)/M_m(t_m)$.  Write $\sigma^2=K''_m(t_m)$ and
 $\lambda_r=K_m^{(r)}(t_m)/\sigma^r$.  The tilted mean is $1/\rho$.
 If $g_{m,k}$ is the tilted density of $\sum_{i=1}^kY_{m,i}-m$, then,
 with $\epsilon=+1$ for $\rho<1$ and $\epsilon=-1$ for $\rho>1$,
-\begin{equation}\label{eq:tilt}
+\begin{equation}\label{brs:eq:tilt}
  T_m(k)=e^{kK_m(t_m)-t_mm}
  \int_0^\infty e^{-|t_m|u}g_{m,k}(\epsilon u)\,du.
 \end{equation}
 Equivalently, Fourier inversion and integration of the half-line weight
 give
-\begin{align}\label{eq:tailfourier}
+\begin{align}\label{brs:eq:tailfourier}
  T_m(k)=\frac{e^{kK_m(t_m)-t_mm}}{2\pi}
  \int_{\mathbb R}&\left\{\frac{M_m(t_m+\ii v)}{M_m(t_m)}e^{-\ii v/\rho}\right\}^{k}\\
  &\times\frac{\sgn(t_m)}{t_m+\ii v}\,dv.\nonumber
@@ -585,27 +707,27 @@ functional on polynomials in $u$ defined by
 \]
 The negative signs encode powers of the imaginary Fourier argument.
 For $j\geq0$, set
-\begin{equation}\label{eq:Qj}
+\begin{equation}\label{brs:eq:Qj}
  Q_j=\mathcal G\!\left([\eta^{2j}]
  \left\{\frac1{1+\eta u/(t_m\sigma)}
  \exp\!\left(\sum_{r=3}^{2j+2}
        \lambda_r\frac{u^r\eta^{r-2}}{r!}\right)\right\}\right).
 \end{equation}
 Then $Q_0=1$, and the exact-saddle expansion is
-\begin{equation}\label{eq:exact-saddle}
+\begin{equation}\label{brs:eq:exact-saddle}
  T_m(k)=\frac{e^{kK_m(t_m)-t_mm}}
  {|t_m|\sqrt{2\pi kK''_m(t_m)}}
  \left\{\sum_{j=0}^JQ_jk^{-j}+O_{J,\mathcal K}(k^{-J-1})\right\}.
 \end{equation}
 The $Q_j$ here use the actual $m$-dependent tilted cumulants and saddle;
-they are not yet the $c_j(\rho)$ in \eqref{eq:rare}.  Substitute the
-finite transform and saddle expansions into \eqref{eq:exact-saddle},
+they are not yet the $c_j(\rho)$ in \eqref{brs:eq:rare}.  Substitute the
+finite transform and saddle expansions into \eqref{brs:eq:exact-saddle},
 use $k=\rho m$, and collect powers of $m^{-1}$ to obtain those $c_j$.
 This is a finite algorithm at any prescribed order.
 
 \subsection{Uniform remainder and the first correction}
 
-\begin{proof}[Proof of Theorem~\ref{thm:rare}]
+\begin{proof}[Proof of Theorem~\ref{brs:thm:rare}]
 The tilted laws have uniformly bounded exponential moments and variances
 bounded above and below.  Their densities converge uniformly in the
 parameter, in $L^1$, to exponential densities of rate $\rho$.
@@ -617,9 +739,9 @@ For large $m$, their logarithmic density derivative is
 since $t_m\leq1-a$ for a fixed $a>0$.  The endpoint density and total
 variation are uniformly bounded, yielding a uniform $O(1/|v|)$
 characteristic-function bound.  These facts give the same three
-frequency controls used in Theorem~\ref{thm:central}.
+frequency controls used in Theorem~\ref{brs:thm:central}.
 
-In \eqref{eq:tailfourier}, scale $v=w/(\sigma\sqrt k)$ and expand the
+In \eqref{brs:eq:tailfourier}, scale $v=w/(\sigma\sqrt k)$ and expand the
 exponent and denominator to any fixed order on a small-power cutoff.
 The leading factor is $e^{-w^2/2}$, and all remainders are bounded by a
 fixed polynomial times a weaker integrable Gaussian.  Odd powers of
@@ -627,17 +749,17 @@ $\eta$ integrate to zero: each of their monomials has odd degree in the
 imaginary Fourier variable.  Expand through one additional odd order
 before bounding the remainder; after retaining $k^{-J}$ this gives
 $O(k^{-J-1})$.  Middle and high frequencies are smaller than every
-algebraic order.  The coefficients are exactly \eqref{eq:Qj}, proving
-\eqref{eq:exact-saddle} with its uniform error.
+algebraic order.  The coefficients are exactly \eqref{brs:eq:Qj}, proving
+\eqref{brs:eq:exact-saddle} with its uniform error.
 
 Stationarity at $t_0=1-\rho$ gives
 \[
  kK_m(t_m)-t_mm=-mI(\rho)+1-\rho^{-1}+O(m^{-1}).
 \]
-Together with \eqref{eq:tshift}, this gives the leading factor of
-\eqref{eq:rare}.  Repeating the finite substitutions proves all stated
+Together with \eqref{brs:eq:tshift}, this gives the leading factor of
+\eqref{brs:eq:rare}.  Repeating the finite substitutions proves all stated
 orders and the rational form of the coefficients.  For the first order,
-\begin{equation}\label{eq:Q1}
+\begin{equation}\label{brs:eq:Q1}
  Q_1=\frac{\lambda_4}{8}-\frac{5\lambda_3^2}{24}
        -\frac{\lambda_3}{2t_m\sigma}
        -\frac1{t_m^2\sigma^2}.
@@ -649,7 +771,7 @@ $Q_1/k$, respectively, are
  -\frac{\rho^2-3\rho+1}{\rho^2(\rho-1)},\qquad
  \frac1\rho\left(-\frac1{12}-\frac{\rho}{(1-\rho)^2}\right).
 \]
-Their sum is \eqref{eq:c1}.  In particular the true saddle displacement
+Their sum is \eqref{brs:eq:c1}.  In particular the true saddle displacement
 has been included; omitting it changes the correction.
 \end{proof}
 
@@ -660,7 +782,7 @@ This illustrates the correction, not an effective universal error bound.
 Convergence can be much slower near $\rho=1$, where the theorem excludes
 uniformity.
 
-\section{Reproducible calculations and verification}\label{sec:reproduce}
+\section{Reproducible calculations and verification}\label{brs:sec:reproduce}
 
 The companion archive contains this editable \LaTeX{} source and PDF,
 mathematical proof notes, portable Python checks, a dependency list,
@@ -669,7 +791,7 @@ third-party full papers.  The computations are ordinary exact and
 symbolic checks; no formal proof-assistant certification is claimed.
 
 The main coefficient calculation uses the cumulant recurrence
-\eqref{eq:cumulants}.  An independent calculation instead forms the
+\eqref{brs:eq:cumulants}.  An independent calculation instead forms the
 truncated raw moment series, applies the finite logarithm series, and
 then exponentiates in rational polynomial arithmetic.  This recovers
 all four displayed central polynomials and the diagonal coefficients
@@ -680,13 +802,13 @@ of remaining letter multiplicities and the length of the greedy matched
 prefix.  At each step it chooses a letter with positive remaining count,
 decrements that count, and advances the prefix exactly when the chosen
 letter is the next required symbol.  It counts distinct words, not
-copy-labelled permutations.  It agrees with \eqref{eq:exactsum} for all
+copy-labelled permutations.  It agrees with \eqref{brs:eq:exactsum} for all
 $20$ pairs $m=1,\ldots,4$, $k=1,\ldots,5$, and independently reproduces
-Table~\ref{tab:counts}.
+Table~\ref{brs:tab:counts}.
 
 \begin{table}[ht]
 \centering
-\caption{Exact diagonal counts with the specified offset}\label{tab:counts}
+\caption{Exact diagonal counts with the specified offset}\label{brs:tab:counts}
 \begin{tabular}{@{}rr@{}}\toprule
 $n$ & $a(n)$\\\midrule
 0 & 1\\
@@ -716,7 +838,11 @@ requiring \texttt{pdflatex} and the standard \LaTeX{} packages declared
 in the source.  No script relies on executable permission bits, an
 absolute workspace path, a network call, or a bundled external paper.
 
-\section{Source audit and bounded novelty}\label{sec:provenance}
+\begin{writenote}
+The archive is not shipped as such. Its scripts are in \file{code/} and its recorded checks in \file{data/}, all with the prefix \file{13-central-}; its proof notes, \file{SOURCES.md} and \file{VALIDATION.md} are \file{13-central-*.md} at the report root. The SHA-256 manifest that \file{replay.sh} checks first, the delivered PDF and the delivery README are not shipped. The archive survives in the arrival commit \texttt{096ee7b87}; the report's README says how to rerun the replay from it. On Windows Python~3.14 the replay's final float comparison fails at a relative difference of $2.6\times10^{-12}$ after every exact and symbolic assertion has passed; the README explains why this is a floating-point difference, not a mathematical one.
+\end{writenote}
+
+\section{Source audit and bounded novelty}\label{brs:sec:provenance}
 
 The public sources consulted are the official OEIS entries and the
 primary papers in the bibliography.  The full 2023 Clifton et al. paper
@@ -748,7 +874,11 @@ check, not a claim to have downloaded every repository file.  The
 bibliographic and source-hash record accompanying this report records
 what was actually inspected.
 
-\section{Further research directions}
+\begin{writenote}
+The record is shipped as \file{13-central-SOURCES.md} and \file{data/13-central-source-hashes.json}. Since batch~77 this report itself is in the repository, at \file{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/}\allowbreak\file{oeis-sequence-asymptotics/a047909-beta-renewal-subsequences/}. The pin \texttt{4b874cea0} is kept as provenance. At the placement (\texttt{4f11bc9c0}) no other repository report mentioned A047909, A268485, El Maazouz--Pitman or Beta renewal.
+\end{writenote}
+
+\section{Further research directions}\label{brs:sec:further}
 
 The results leave several concrete questions open within this project.
 
@@ -757,10 +887,14 @@ The results leave several concrete questions open within this project.
 Construct a single error-function saddle formula valid as
 $\rho\to1$, then prove that its central re-expansion gives the $P_j$
 and its separated-ratio re-expansion gives the $c_j$.  The singular
-coefficients in \eqref{eq:c1} show why substituting
+coefficients in \eqref{brs:eq:c1} show why substituting
 $\rho=1+x/\sqrt m$ into a fixed-ratio remainder is insufficient.
 A useful result would state a precise shared domain and a relative or
 absolute error appropriate to each tail.
+
+\begin{writenote}
+Answered by Part~\ref{brs:part:uniform} at every fixed order on every fixed compact positive ratio range. The single formula is the kernel representation $e^AB_R^\varepsilon(u)$ of Theorem~\ref{brs:un:thm:uniform}; the shared domain is $a\le k/m\le b$; the error is relative for both tails, \eqref{brs:un:eq:both}. Section~\ref{brs:un:sec:matching} proves that its central and separated re-expansions give the $P_j$ and the $c_j$, explicitly for $P_1$ and $c_1$. Ratios tending to $0$ or $\infty$ and growing orders are not covered.
+\end{writenote}
 
 \item \textbf{Moderate deviations.}
 Determine rigorous growing windows for $x=(k-m)/\sqrt m$, with error
@@ -771,13 +905,21 @@ the Fourier cutoffs, and the transition from an absolute CDF error to
 a relative tail error.  The regime $\rho-1\to0$ while
 $\sqrt m\,|\rho-1|\to\infty$ is the natural bridge.
 
+\begin{writenote}
+Answered in part by Part~\ref{brs:part:uniform}. Its Theorem~\ref{brs:un:thm:uniform} covers every sequence with $\rho\to1$ and $\sqrt m\,|\rho-1|\to\infty$ inside a fixed compact ratio range, with relative accuracy in the small tail. That accuracy is for the unexpanded kernel formula. Part~II states that it does not justify extending the bounded-window polynomial expansion \eqref{brs:eq:central} by substituting a growing normal coordinate. Growing windows for the $P_j$-expansion itself therefore remain open.
+\end{writenote}
+
 \item \textbf{Effective constants and certified rounding.}
 Extract numerical constants and explicit lower bounds on $m$ from the
 moment, annulus, and Fourier-tail estimates.  Such constants would turn
-\eqref{eq:ceil} into a directly usable certified threshold algorithm,
+\eqref{brs:eq:ceil} into a directly usable certified threshold algorithm,
 including a principled switch to exact computation near integer
 boundaries.  The present big-$O$ constants are existential and depend on
 fixed compact sets and fixed truncation order.
+
+\begin{writenote}
+Still open after Part~\ref{brs:part:uniform}, whose constants are also existential (its open question~2 in Section~\ref{brs:un:sec:open}).
+\end{writenote}
 
 \item \textbf{Stable large-parameter computation.}
 The exact simplex formula is excellent for audit-sized parameters but
@@ -786,12 +928,20 @@ stable renewal convolution or saddle-based method with rigorous
 interval errors for larger $m,k$, and compare its cost with exact
 coefficient convolution and combinatorial dynamic programming.
 
+\begin{writenote}
+Still open. Part~\ref{brs:part:uniform} adds a related question, stable evaluation of its half-line kernels (Section~\ref{brs:un:sec:open}, question~1).
+\end{writenote}
+
 \item \textbf{High order and truncation.}
 Study growth of the coefficient families, possible useful truncation
 rules, and singular behavior as the ratio approaches $0$ or $1$.
 Nothing proved here provides growing-order estimates, an optimally
 truncated transseries, Stokes phenomena, or exponentially improved
 remainders.  Any such extension would need additional analytic work.
+
+\begin{writenote}
+Still open after Part~\ref{brs:part:uniform} (Section~\ref{brs:un:sec:open}, question~3), which also leaves ratios tending to $0$ or $\infty$ open.
+\end{writenote}
 \end{enumerate}
 
 \paragraph{Conclusion.}
@@ -801,8 +951,784 @@ and separated-ratio tails form two complementary finite-order theories.
 The remaining challenge is to join their ranges with explicit,
 transition-uniform and practically effective error estimates.
 
+\begin{writenote}
+Part~\ref{brs:part:uniform} joins the two ranges with transition-uniform error estimates. Its constants are not explicit and its estimates are not practically effective, so that part of the challenge remains.
+\end{writenote}
+
+
 \clearpage
-\begin{thebibliography}{9}
+\renewcommand{\parthead}{Part II: transition-uniform accuracy}
+\part{Transition uniform Beta renewal asymptotics for complete increasing subsequences}\label{brs:part:uniform}
+\partsource{Batch-77 manuscript 14, archive \file{beta-renewal-uniform-reproducibility.zip} (delivered as \file{beta-renewal-uniform-addendum.tex}, 12 pages), dated 2 October 2026. Delivered author line: ``Research addendum for OEIS A047909 and A268485''. No repository pin; its \file{source-hashes.json} pins manuscript~13 (Part~\ref{brs:part:central}) by SHA-256. Printed as delivered, with \textbf{[write]} notes; its Section~$k$ is Section~$k+10$ here.}
+\begin{partabstract}
+The central and separated rare-tail expansions for complete increasing
+subsequences can be joined at every fixed algebraic order.  We retain
+nonsingular Gaussian--Hermite half-line kernels in the classical
+exponential-tilting and Edgeworth construction and prove a weighted
+density remainder, uniform over the relevant Beta-renewal triangular
+family.  The resulting approximation has relative error
+$O(m^{-(R+1)/2})$ for both success and failure, uniformly on every fixed
+compact positive range of $k/m$, including moderate deviations and the
+exact zero-saddle point $k=m+1$.  The first central and separated
+coefficients are recovered explicitly, and the finite-order matching
+mechanism is established.  A separated-regime corollary gives both real
+Lambert-$W$ branches for exponentially small target tails, their
+logarithmic corrections, and qualified integer-threshold brackets.
+The constants are not effective; endpoint-ratio uniformity, growing
+truncation order, numerical certification, and general-method novelty
+are not asserted.
+\end{partabstract}
+
+\section{What the addendum establishes}
+
+Let $H(m,k)$ count words with exactly $m$ copies of each of
+$1,\ldots,k$ that contain the subsequence $12\cdots k$, and put
+\begin{equation}\label{brs:un:eq:count}
+ W(m,k)=\frac{(mk)!}{(m!)^k},\qquad
+ p_m(k)=\frac{H(m,k)}{W(m,k)}.
+\end{equation}
+The array $H(m,k)$ is OEIS A047909, with multiplicity $m$ as its row
+index and alphabet size $k$ as its column index \cite{oeisarray}.  Its diagonal
+$H(n,n)$ is A268485 for $n\ge1$; the latter also has $a(0)=1$ \cite{oeisdiag}.
+
+\begin{writenote}
+\eqref{brs:un:eq:count} is Part~I's \eqref{brs:eq:definition}. The renewal representation \eqref{brs:un:eq:renewal} below is Part~I's Proposition~\ref{brs:prop:renewal} for the scaled increments $Y_{m,i}=mB_i$, so that $\sum B_i\le1$ becomes $S_k\le m$; the density \eqref{brs:un:eq:density} is Part~I's \eqref{brs:eq:density}.
+\end{writenote}
+The established renewal representation is
+\begin{equation}\label{brs:un:eq:renewal}
+ p_m(k)=\Prob(S_k\le m),\qquad
+ S_k=Y_{m,1}+\cdots+Y_{m,k},\qquad
+ Y_{m,i}\overset{\mathrm{iid}}\sim m\operatorname{Beta}(1,m),
+\end{equation}
+where
+\begin{equation}\label{brs:un:eq:density}
+ f_m(y)=(1-y/m)^{m-1}\mathbf1_{(0,m)}(y),\qquad
+ \E Y_m=\frac{m}{m+1}.
+\end{equation}
+The renewal identity and Gaussian limit are prior results of
+El Maazouz and Pitman \cite{clock}; the counting background includes
+Horton and Kurn \cite{horton} and Clifton et al.\ \cite{clifton}.
+
+The companion report \cite{base} proves central and separated-ratio
+expansions independently and leaves their transition-uniform joining as
+an open question.  This addendum closes that question on every fixed
+compact positive ratio range.  It is a separate document and does not
+replace the companion report or alter its results.
+\begin{writenote}
+The companion report \cite{base} is Part~\ref{brs:part:central}. Its open question is the first of its further research directions (Section~\ref{brs:sec:further}, ``Uniform matching across the transition''), whose \textbf{[write]} note points back here.
+\end{writenote}
+  The theorem also
+covers moderate-deviation sequences that remain in such a ratio range;
+it does not justify extending a bounded-window central polynomial
+expansion merely by substituting a growing normal coordinate.
+
+The underlying method is classical.  Daniels \cite{daniels} discusses
+the Esscher--Cram\'er approach of tilting, recentering, and integrating
+an Edgeworth expansion.  Related classical constructions include
+Lugannani and Rice \cite{lr}, Robinson \cite{robinson}, and the
+uniformity literature represented by Jensen \cite{jensen}.
+The work here is the family-specific verification of a uniform
+weighted density bound and its conversion to a relative error for
+both tails, with explicit coefficient matching.  Neither a new general
+saddlepoint formula nor priority for this family-specific theorem is
+claimed.  The representation below is not literally the conventional
+Lugannani--Rice formula.
+
+\section{Exact saddles and nonsingular kernels}\label{brs:un:sec:setup}
+
+Fix $0<a<b<\infty$ and an integer $R\ge0$.  Unless otherwise stated,
+all estimates are uniform in integers $m,k$ with
+$a\le\rho=k/m\le b$, as $m\to\infty$.  Constants may depend on
+$a,b,R$, and every truncation order is fixed before taking a limit.
+Define
+\begin{align}\label{brs:un:eq:parameters}
+ M_m(t)&=\E e^{tY_m},&K_m(t)&=\log M_m(t),&
+ K'_m(t)&=\rho^{-1},\\
+ \sigma^2&=K''_m(t),&\lambda_r&=\frac{K_m^{(r)}(t)}{\sigma^r},&
+ \eta&=k^{-1/2},\nonumber\\
+ u&=|t|\sigma\sqrt{k},& A&=kK_m(t)-tm.&&\nonumber
+\end{align}
+Here $t$ is the exact real saddle, and all cumulants are the exact
+$m$-dependent tilted cumulants, not their limiting values.
+
+\subsection{Saddle existence and its exact switch}
+
+Under any real tilt, $K''_m$ is a positive variance.  Its mean $K'_m(t)$
+increases continuously from $0$ to $m$ as $t$ runs from $-\infty$ to
+$\infty$.  Since $1/\rho\in(0,m)$ for all sufficiently large $m$, the
+saddle is unique.  On compact intervals below $1$, finite expansion of
+the density gives, with any prescribed finite number of derivatives,
+\begin{align}\label{brs:un:eq:Kexp}
+ K_m(t)&=-\log(1-t)+m^{-1}B_1(t)+m^{-2}B_2(t)+O(m^{-3}),\\
+ B_1(t)&=(1-t)^{-1}-(1-t)^{-2},\nonumber\\
+ B_2(t)&=\tfrac32(1-t)^{-2}-4(1-t)^{-3}
+                 +\tfrac52(1-t)^{-4}.\nonumber
+\end{align}
+To obtain any fixed order, expand
+\[
+ (m-1)\log(1-y/m)
+ =-y+\sum_{j\ge1}m^{-j}
+       \left(\frac{y^j}{j}-\frac{y^{j+1}}{j+1}\right)
+\]
+only to the needed finite order.  Split the transform integral at
+$y=m^\alpha$ with sufficiently small fixed $\alpha>0$.  Taylor
+remainders on the first part are bounded by a polynomial times an
+integrable exponential, and common exponential domination controls the
+second part.  Polynomial weights give the same estimates for fixed
+transform derivatives.  A finite logarithm then gives
+\eqref{brs:un:eq:Kexp} and its higher-order versions; analyticity in $1/m$ is
+not required.
+
+Uniform convergence of $K'_m$ on fixed bracketing intervals first puts
+all saddles in a compact interval $J\subset(-\infty,1)$.  Strict
+convexity and \eqref{brs:un:eq:Kexp} then give
+\begin{equation}\label{brs:un:eq:tshift}
+ t=1-\rho+\frac{2/\rho-1}{m}+O(m^{-2}),\qquad
+ \sigma^2=\rho^{-2}+O(m^{-1}).
+\end{equation}
+
+\begin{writenote}
+\eqref{brs:un:eq:Kexp} and \eqref{brs:un:eq:tshift} restate Part~I's \eqref{brs:eq:Kexp} and \eqref{brs:eq:tshift}, with $t$ for Part~I's $t_m$. Part~I uses them only on ratio ranges separated from $1$; here the saddle interval contains $t=0$.
+\end{writenote}
+Because $K'_m(0)=m/(m+1)$, the exact sign rule is
+\begin{equation}\label{brs:un:eq:switch}
+ t>0\ \Longleftrightarrow\ k<m+1,\qquad
+ t=0\ \Longleftrightarrow\ k=m+1,\qquad
+ t<0\ \Longleftrightarrow\ k>m+1.
+\end{equation}
+In particular, $k=m$ is not the zero-saddle point.
+
+\subsection{Coefficient polynomials and kernels}
+
+Using a formal variable $v$, define
+\begin{equation}\label{brs:un:eq:C}
+ C_j(v)=[\eta^j]\exp\left\{
+   \sum_{r=3}^{R+2}\frac{\lambda_r v^r}{r!}\eta^{r-2}
+                         \right\},\qquad 0\le j\le R.
+\end{equation}
+The symbol $[\eta^j]$ means formal coefficient extraction.  Thus
+\[
+ C_0=1,\qquad C_1=\frac{\lambda_3v^3}{6},\qquad
+ C_2=\frac{\lambda_4v^4}{24}+\frac{\lambda_3^2v^6}{72}.
+\]
+Replace each $v^d$ in $C_j$ by the probabilists' Hermite polynomial
+$\He_d(z)$ to obtain $E_j(z)$.  Define the real half-line kernels
+\begin{align}\label{brs:un:eq:kernels}
+ H_d(u)&=\int_0^\infty e^{-uz}\phi(z)\He_d(z)\,dz,
+                    &&u\ge0,\\
+ F(u)&=H_0(u)=e^{u^2/2}\Phi(-u),\nonumber\\
+ B_R^\varepsilon(u)&=\sum_{j=0}^R\eta^j
+             \sum_d [v^d]C_j(v)\,\varepsilon^d H_d(u),
+                    &&\varepsilon\in\{-1,+1\}.\nonumber
+\end{align}
+Here $\phi$ and $\Phi$ are the standard normal density and distribution
+function.  Each kernel is finite and smooth at $u=0$, and
+\begin{equation}\label{brs:un:eq:derivatives}
+ H_d(u)=\sum_{q=0}^{\lfloor d/2\rfloor}
+ \frac{(-1)^q d!}{2^q q!(d-2q)!}
+ (-\partial_u)^{d-2q}F(u).
+\end{equation}
+In particular, with $\phi(0)=1/\sqrt{2\pi}$,
+\begin{equation}\label{brs:un:eq:H3}
+ F'(u)=uF(u)-\phi(0),\qquad
+ H_3(u)=(u^2-1)\phi(0)-u^3F(u).
+\end{equation}
+These are nonsingular analytic formulas.  Their direct floating-point
+evaluation can nevertheless suffer cancellation for large $u$.
+
+\section{The uniform relative tail theorem}\label{brs:un:sec:theorem}
+
+Define the outward saddle-side tail and reflection sign by
+\begin{equation}\label{brs:un:eq:T}
+ (T,\varepsilon)=
+ \begin{cases}
+  (\Prob(S_k\ge m),+1),&t\ge0,\\
+  (\Prob(S_k\le m),-1),&t<0.
+ \end{cases}
+\end{equation}
+There is no atom at the threshold, so either convention can be used
+at $t=0$.
+
+\begin{theorem}[Uniform relative accuracy for both tails]\label{brs:un:thm:uniform}
+For every fixed $R\ge0$ and $0<a<b<\infty$,
+\begin{equation}\label{brs:un:eq:U}
+ T=e^A\left\{B_R^\varepsilon(u)
+        +O\left(\frac{\eta^{R+1}}{1+u}\right)\right\}
+   =e^AB_R^\varepsilon(u)\{1+O(\eta^{R+1})\},
+\end{equation}
+uniformly for $a\le k/m\le b$, with no lower bound on $|t|$.
+The positive leading term $e^AF(u)$ is uniformly comparable to $T$.
+Set
+\begin{equation}\label{brs:un:eq:phat}
+ \widehat p_m(k)=
+ \begin{cases}
+  1-e^AB_R^+(u),&t\ge0,\\
+  e^AB_R^-(u),&t<0.
+ \end{cases}
+\end{equation}
+Then, for a constant depending only on the fixed range and order,
+\begin{equation}\label{brs:un:eq:both}
+ |\widehat p_m(k)-p_m(k)|
+ \le C\eta^{R+1}\min\{p_m(k),1-p_m(k)\}.
+\end{equation}
+Consequently both $\widehat p_m(k)$ and $1-\widehat p_m(k)$ have
+relative error $O(m^{-(R+1)/2})$ for their respective probabilities.
+\end{theorem}
+
+The outward saddle-selected tail need not be literally the smaller
+probability near the mean: skewness can put it just above $1/2$.
+The proof uses only a bounded comparison to the smaller probability,
+not their equality.  At the exact switch,
+\begin{equation}\label{brs:un:eq:complement}
+ A=u=0,\qquad B_R^+(0)+B_R^-(0)=1.
+\end{equation}
+Indeed, every nonconstant $C_j$ contains only positive Hermite degrees,
+and their full-line Gaussian integrals vanish.  The two expressions
+for $\widehat p_m(k)$ therefore agree exactly at $t=0$, without
+subtracting singular terms or taking a pole-cancellation limit.
+
+The result includes any sequence with $\rho\to1$ and
+$\sqrt m\,|\rho-1|\to\infty$, provided $\rho$ stays in a fixed compact
+positive range.  It does not cover $\rho\to0$ or $\rho\to\infty$.
+
+\section{A uniform weighted density remainder}\label{brs:un:sec:densityproof}
+
+This section proves the additional analytic estimate needed for the
+transition.  A uniform distribution-function Edgeworth estimate alone
+would not control relative error in an exponentially small tail.
+
+Under the tilted density $e^{ty}f_m(y)/M_m(t)$, let
+\[
+ X=\frac{Y_m-K'_m(t)}{\sigma},\qquad
+ \chi(v)=\E_t e^{\ii vX}.
+\]
+Let $f_{m,k,t}$ denote the density of
+$k^{-1/2}\sum_{i=1}^kX_i$ for independent tilted variables.
+
+\begin{lemma}[Weighted density estimate]\label{brs:un:lem:density}
+For every fixed $R\ge0$ and compact interval $J\subset(-\infty,1)$,
+for all sufficiently large $m,k$,
+\begin{equation}\label{brs:un:eq:D}
+ \sup_{z\in\mathbb R}(1+z^2)
+ \left|f_{m,k,t}(z)-\phi(z)\sum_{j=0}^R\eta^j E_j(z)\right|
+ \le C_{R,J}\eta^{R+1},\qquad t\in J.
+\end{equation}
+The density remainder has both $L^1$ and $L^\infty$ norm
+$O_{R,J}(\eta^{R+1})$.
+\end{lemma}
+
+\subsection{Uniform analytic and Fourier inputs}
+
+Choose $d>0$ with $\sup J\le1-d$.  For sufficiently large $m$,
+\[
+ e^{ty}f_m(y)\le e^{-(d/2)y},\qquad y\ge0,\quad t\in J.
+\]
+Integration over a fixed small interval also gives a positive lower
+bound on the normalizers.  Polynomially weighted dominated convergence
+is uniform in $t\in J$: the tilted densities and their moments converge
+to those of exponential laws of rate $1-t$.  The tilted variances
+remain bounded above and away from zero.  The centered standardized
+variables therefore have a uniform exponential moment in a fixed
+neighborhood of zero, and uniformly bounded absolute moments of every
+fixed order.
+
+The characteristic functions extend holomorphically to a common
+strip near the real axis.  On one sufficiently small complex disk,
+$|\chi(v)-1|<1/2$ uniformly, so a local analytic logarithm exists there
+with uniformly bounded fixed-order derivatives.  Exact centering and
+variance normalization give
+\[
+ \log\chi(v)=-v^2/2+O(v^3),\qquad
+ |\chi(v)|\le e^{-cv^2}\quad (|v|\le\delta)
+\]
+for fixed positive $c,\delta$.  No global logarithm is needed.
+Uniform convergence of the characteristic functions after
+standardization gives a strict Cram\'er gap
+\begin{equation}\label{brs:un:eq:annulus}
+ |\chi(v)|\le q<1,\qquad \delta\le|v|\le L,
+\end{equation}
+for each fixed $L$.  The limiting standardized exponential
+characteristic function has modulus $(1+v^2)^{-1/2}$, independent
+of its original rate.
+
+For sufficiently large $m$ the tilted density is decreasing, since
+its logarithmic derivative is
+\[
+ t-\frac{m-1}{m-y}<0\qquad (0<y<m).
+\]
+Its endpoint value is uniformly bounded, and it tends to zero at
+$m$.  Integration by parts, followed by the uniformly nondegenerate
+standardization, gives
+\begin{equation}\label{brs:un:eq:decay}
+ |\chi(v)|\le C/|v|.
+\end{equation}
+Choose $L$ large enough that $C/L<1$.  The derivatives
+$\chi'$ and $\chi''$ are bounded on the entire real axis by uniform
+absolute moment bounds.  Their Fourier decay is not assumed.
+
+\subsection{Differentiated Fourier estimates}
+
+Write
+\begin{equation}\label{brs:un:eq:Fourier}
+ \Psi_k(w)=\chi(\eta w)^k,\qquad
+ Q_R(w)=e^{-w^2/2}\sum_{j=0}^R\eta^j C_j(\ii w),\qquad
+ D_R(w)=\Psi_k(w)-Q_R(w).
+\end{equation}
+We prove
+\begin{equation}\label{brs:un:eq:DL1}
+ \norm{D_R}{1}+\norm{D_R''}{1}\le C\eta^{R+1}.
+\end{equation}
+Fix a sufficiently small $\gamma>0$, for example
+$\gamma<1/[12(R+3)]$.
+
+On $|w|\le k^\gamma$, Taylor expansion of the local logarithm gives
+\begin{equation}\label{brs:un:eq:logchi}
+ k\log\chi(\eta w)=-\frac{w^2}{2}
+  +\sum_{r=3}^{R+2}\frac{\lambda_r(\ii w)^r}{r!}\eta^{r-2}
+  +\mathcal R(w).
+\end{equation}
+Applying Taylor's theorem separately to the logarithm and its first
+two derivatives gives
+\begin{equation}\label{brs:un:eq:remder}
+ |\mathcal R^{(\ell)}(w)|
+ \le C\eta^{R+1}|w|^{R+3-\ell},\qquad \ell=0,1,2.
+\end{equation}
+To make the finite-order bookkeeping precise, set
+$G(w)=\sum_{j=1}^R\eta^j a_j(w)$, where $a_j$ has degree $j+2$.
+Expand $e^G$ through $G^R/R!$ with its integral remainder.
+Every product omitted from the finite polynomial has total
+$\eta$-degree at least $R+1$.  The same is true after at most two
+$w$-derivatives.  In the integral remainder, each factor of $G$ or
+one of its derivatives carries at least one power of $\eta$.
+All such terms are bounded by $\eta^{R+1}$ times a fixed polynomial
+in $|w|$.  The choice of $\gamma$ keeps $G$ and $\mathcal R$ bounded
+on this range, and a slightly weakened Gaussian absorbs their
+exponentials.  The retained coefficients are precisely
+$C_j(\ii w)$.  Thus, for a fixed polynomial $P_R$,
+\begin{equation}\label{brs:un:eq:low}
+ |D_R^{(\ell)}(w)|
+ \le C\eta^{R+1}P_R(|w|)e^{-c'w^2},\qquad \ell=0,1,2.
+\end{equation}
+This argument also covers $R=0$, when the finite correction sum is
+empty.  Integration gives the required order on the low range.
+
+On $k^\gamma<|w|\le\delta\sqrt k$, use the exact derivatives
+\begin{align}\label{brs:un:eq:psider}
+ \Psi_k'(w)&=\sqrt k\,\chi^{k-1}\chi',\\
+ \Psi_k''(w)&=(k-1)\chi^{k-2}(\chi')^2+\chi^{k-1}\chi'',\nonumber
+\end{align}
+where all factors on the right are evaluated at $\eta w$.
+The local Gaussian bound and bounded derivatives show that the
+integrals of $\Psi_k$ and its first two derivatives are at most a
+polynomial in $k$ times $e^{-c''k^{2\gamma}}$.  The corresponding
+Gaussian-polynomial $Q_R$ terms have negligible integrals too.
+
+On $\delta\sqrt k\le|w|\le L\sqrt k$, the same identities and
+\eqref{brs:un:eq:annulus} give an integrated bound
+$Ck^{3/2}q^{k-2}$.  On $|w|>L\sqrt k$, \eqref{brs:un:eq:decay} gives
+\begin{equation}\label{brs:un:eq:outer}
+ Ck^{3/2}\int_L^\infty(C/v)^{k-2}\,dv
+ =Ck^{3/2}\frac{L}{k-3}(C/L)^{k-2},\qquad k>3,
+\end{equation}
+with a harmless change of the outside constant.  This also decays
+exponentially.  These estimates control all three derivative orders
+$0,1,2$ and prove \eqref{brs:un:eq:DL1}.
+
+\subsection{Fourier inversion and the two norms}
+
+Let $r$ be the density remainder in \eqref{brs:un:eq:D}.  The Hermite
+convention ensures that the inverse Fourier transform of
+$(\ii w)^d e^{-w^2/2}$ is $\phi(z)\He_d(z)$.  Hence inversion gives
+\[
+ |r(z)|\le\frac{\norm{D_R}{1}}{2\pi},\qquad
+ |z^2r(z)|\le\frac{\norm{D_R''}{1}}{2\pi}.
+\]
+The second estimate follows from two integrations by parts:
+$D_R,D_R'$ vanish at infinity, and the required derivatives are
+integrable, by the same high-frequency bounds above.  Adding the two
+estimates proves \eqref{brs:un:eq:D}.  Taking the supremum gives the
+$L^\infty$ estimate; integrating $(1+z^2)^{-1}$ gives the $L^1$
+estimate.  This completes the proof of Lemma~\ref{brs:un:lem:density}.
+
+\section{From density control to relative tail control}
+
+At the exact saddle, under the tilted law,
+$S_k=m+\sigma\sqrt k\,Z$, where $Z$ has density $f_{m,k,t}$.
+The change of measure and reflection $Z=\varepsilon z$ give the
+exact identity
+\begin{equation}\label{brs:un:eq:esscher}
+ T=e^A\int_0^\infty e^{-uz}f_{m,k,t}(\varepsilon z)\,dz.
+\end{equation}
+If $r$ is the density remainder, its integral in this formula is at
+most $\norm r1$ when $0\le u\le1$, and at most
+$\norm r\infty/u$ when $u\ge1$.  Lemma~\ref{brs:un:lem:density} therefore
+gives the additive remainder in \eqref{brs:un:eq:U}, uniformly through $u=0$.
+
+For each fixed $d$, the same two-norm argument gives
+$|H_d(u)|\le C_d/(1+u)$.  Moreover,
+\begin{equation}\label{brs:un:eq:Fcompare}
+ F(u)\asymp(1+u)^{-1},\qquad u\ge0.
+\end{equation}
+For the upper bound, use $F\le1/2$ and $\phi\le\phi(0)$.
+For the lower bound, restrict the defining integral to
+$0\le z\le1/(1+u)$, on which $e^{-uz}\ge e^{-1}$ and
+$\phi(z)\ge\phi(1)$.  Since all fixed cumulants are uniformly bounded,
+\[
+ B_R^\varepsilon(u)=F(u)\{1+O(\eta)\},
+\]
+and this bracket is positive for all sufficiently large $k$.
+Division proves the relative version of \eqref{brs:un:eq:U}.
+
+Convexity, together with $K_m(0)=0$ and $K'_m(t)=m/k$, implies
+$A\le0$.  The $R=0$ case and $F(u)\le1/2$ show that
+$T\le1/2+C\eta$, so $1-T\ge1/3$ for all sufficiently large $k$.
+Consequently $T/\min(T,1-T)$ stays bounded, even if $T$ is slightly
+larger than $1/2$.  The relative estimate for $T$ thus gives
+\eqref{brs:un:eq:both}, completing the proof of
+Theorem~\ref{brs:un:thm:uniform}.
+
+\section{Recovery of the two earlier regimes}\label{brs:un:sec:matching}
+
+\subsection{The first central correction}
+
+Set $h=m^{-1/2}$ and $k=m+x\sqrt m$, with $x$ in a fixed compact
+interval.  The actual integer $k$ determines $x$; no independent
+rounding of $x$ is implicit.  Finite re-expansion gives
+\begin{align}\label{brs:un:eq:centralexp}
+ t&=-xh+h^2+O(h^3),& \sigma&=1-xh+O(h^2),\\
+ t\sigma\sqrt k&=-x+(1+x^2/2)h+O(h^2),&
+ A&=-x^2/2+(x+x^3/6)h+O(h^2),\nonumber\\
+ \eta&=h+O(h^2),&\lambda_3&=2+O(h^2).\nonumber
+\end{align}
+For fixed $x>0$, the lower-tail branch applies.  Its coefficient of
+$h$, after removal of $e^{-x^2/2}$, is
+\begin{align*}
+ &(x+x^3/6)F(x)-(1+x^2/2)F'(x)-H_3(x)/3\\
+ &\hspace{35mm}=\frac{x^2+8}{6}\phi(0),
+\end{align*}
+by \eqref{brs:un:eq:H3}.  The upper/complement branch for $x<0$ gives the
+same result.  Thus
+\begin{equation}\label{brs:un:eq:P1}
+ p_m(k)=\Phi(-x)+m^{-1/2}\phi(x)P_1(x)+O(m^{-1}),
+ \qquad P_1(x)=\frac{x^2+8}{6}.
+\end{equation}
+
+This matching is uniform through the sign change.  Away from the
+shrinking switch region, the displayed branch re-expansions have
+uniform Taylor errors.  On $|x|\le Ch$ the quantities satisfy
+$u=O(h)$ and $A=O(h^2)$, and
+\[
+ F(u)=\tfrac12-\phi(0)u+O(u^2),\qquad
+ H_3(u)=-\phi(0)+O(u^2).
+\]
+Either branch, with the complement relation at zero, gives
+\[
+ p_m(k)=\tfrac12+\phi(0)(-x+4h/3)+O(h^2),
+\]
+which agrees with \eqref{brs:un:eq:P1}.  The apparent absolute-value branching
+therefore introduces no transition defect.
+
+\begin{writenote}
+\eqref{brs:un:eq:P1} is Part~I's Theorem~\ref{brs:thm:central} at $R=1$, with $P_1$ of \eqref{brs:eq:p1}. Here it is derived from Theorem~\ref{brs:un:thm:uniform} by re-expansion, a second route, and is printed as a consistency check, not as a second statement of Part~I's theorem.
+\end{writenote}
+
+At $k=m+1$, the lower-half expression at zero tilt gives
+\begin{equation}\label{brs:un:eq:mean}
+ p_m(m+1)=\frac12+\frac{\lambda_3\phi(0)}{6\sqrt k}
+                      +O(k^{-3/2}).
+\end{equation}
+The order-$k^{-1}$ term vanishes because its Hermite polynomials are
+even, of positive degree, and have zero half-line Gaussian integral.
+The use of $R=2$ justifies the displayed remainder.
+The first correction is $\phi(0)h/3$, agreeing with
+\eqref{brs:un:eq:P1} at $x=h$.  At $k=m$, the positive-saddle complement
+branch instead gives $1/2+4\phi(0)h/3+O(h^2)$.
+
+\subsection{The first separated correction}
+
+Suppose now that $\rho$ lies in a compact set contained either in
+$(0,1)$ or in $(1,\infty)$.  Then $|t|$ is bounded away from zero.
+Set $w=t\sigma$, so $u=|w|/\eta$.  Use
+Theorem~\ref{brs:un:thm:uniform} with $R=3$, whose relative error is
+$O(\eta^4)$.  Watson expansion of the finitely many kernels gives
+\begin{align}\label{brs:un:eq:watson}
+ F(u)&=\phi(0)\{u^{-1}-u^{-3}+O(u^{-5})\},\\
+ H_3(u)&=\phi(0)\{-3u^{-2}+O(u^{-4})\},\nonumber\\
+ H_4(u)&=\phi(0)\{3u^{-1}+O(u^{-3})\},\nonumber\\
+ H_6(u)&=\phi(0)\{-15u^{-1}+O(u^{-3})\}.\nonumber
+\end{align}
+The odd-degree kernels in $E_3$ are $O(u^{-2})$, so their relative
+contribution is $O(\eta^4)$, not order $\eta^3$.  It follows that
+\begin{align}\label{brs:un:eq:Q1}
+ T&=\frac{e^A}{|t|\sqrt{2\pi k\sigma^2}}
+         \{1+Q_1/k+O(k^{-2})\},\\
+ Q_1&=\frac{\lambda_4}{8}-\frac{5\lambda_3^2}{24}
+       -\frac{\lambda_3}{2t\sigma}-\frac{1}{t^2\sigma^2}.
+       \nonumber
+\end{align}
+The signed factor $t$ in the skew term is essential on both sides.
+
+Define
+\begin{equation}\label{brs:un:eq:rate}
+ I(\rho)=1-\rho+\rho\log\rho,\qquad
+ A_0(\rho)=\frac{e^{1-1/\rho}\sqrt\rho}
+                  {|\rho-1|\sqrt{2\pi}}.
+\end{equation}
+Substituting \eqref{brs:un:eq:Kexp} and the saddle expansion into
+\eqref{brs:un:eq:Q1} gives
+\begin{equation}\label{brs:un:eq:rare}
+ T=m^{-1/2}A_0(\rho)e^{-mI(\rho)}
+       \{1+c_1(\rho)/m+O(m^{-2})\}.
+\end{equation}
+Here $T=1-p_m(k)$ below ratio $1$ and $T=p_m(k)$ above it.
+The three contributions to $c_1$ are, respectively,
+\begin{equation}\label{brs:un:eq:three}
+ \frac{2\rho^2-4\rho+1}{2\rho^3},\qquad
+ -\frac{\rho^2-3\rho+1}{\rho^2(\rho-1)},\qquad
+ \frac1\rho\left\{-\frac1{12}-\frac{\rho}{(1-\rho)^2}\right\},
+\end{equation}
+from the exponent, the prefactor, and $Q_1/k$.  Their sum is exactly
+\begin{equation}\label{brs:un:eq:c1}
+ c_1(\rho)=
+ -\frac{\rho^4+10\rho^3-17\rho^2+24\rho-6}
+        {12\rho^3(\rho-1)^2},
+\end{equation}
+recovering the coefficient of the companion report.
+
+\begin{writenote}
+The companion report's coefficient is Part~I's \eqref{brs:eq:c1}. $Q_1$ in \eqref{brs:un:eq:Q1} is Part~I's \eqref{brs:eq:Q1}, and the three contributions \eqref{brs:un:eq:three} are those in Part~I's proof of Theorem~\ref{brs:thm:rare}. Part~I reaches them from its exact-saddle expansion \eqref{brs:eq:exact-saddle}; here they come from the uniform kernel formula through Watson expansion. This is a consistency check by a second route, not a second statement of Part~I's Theorem~\ref{brs:thm:rare}.
+\end{writenote}
+
+\subsection{Matching at every fixed order}
+
+Every monomial contributing to $C_j$ has degree congruent to $j$
+modulo $2$: if its cumulant factors have orders $r_1,\ldots,r_s$,
+then its $\eta$-degree is $\sum(r_i-2)=j$ and its polynomial degree
+is $\sum r_i=j+2s$.  An even Hermite kernel has inverse-$u$
+powers $u^{-1},u^{-3},\ldots$; an odd kernel has powers
+$u^{-2},u^{-4},\ldots$.  After division by the leading $\eta$
+factor, every term therefore has an even total power of $\eta$.
+For any fixed separated correction order $J$, choose $R=2J+1$.
+Then the relative remainder is $O(\eta^{2J+2})$, and finite kernel
+and transform re-expansions recover all separated coefficients
+through $m^{-J}$.  Their identification with the earlier $c_j$
+follows from uniqueness of finite asymptotic coefficients.
+
+In the bounded central window, finite re-expansion of the same
+formula to any requested fixed order has a controlled remainder by
+Theorem~\ref{brs:un:thm:uniform}.  Comparison with the companion report's
+uniform central expansion identifies all its $P_j$ by the same
+uniqueness argument.  The explicit calculations of $P_1$ and $c_1$
+above independently check normalization, reflection signs, and the
+exact location of the switch.
+
+\begin{writenote}
+This section thus gives a second route to the existence of fixed-order central and separated expansions, by re-expansion of Theorem~\ref{brs:un:thm:uniform}. It identifies their coefficients with Part~I's $P_j$ and $c_j$ by uniqueness, which presupposes Part~I's expansions; only $P_1$ and $c_1$ are computed explicitly here. Part~I's own proofs and coefficient algorithms (Theorems~\ref{brs:thm:central} and~\ref{brs:thm:rare}) are kept. For the diagonal, $k=m$ is not the zero-saddle point (\eqref{brs:un:eq:switch}); Part~I's Corollary~\ref{brs:cor:diagonal} is the case $x=0$ of its central expansion.
+\end{writenote}
+
+\section{Separated rare tail thresholds}\label{brs:un:sec:inverse}
+
+This corollary uses the separated expansion and is not a claim of
+transition-uniform inversion.  Let the target probability be
+$e^{-m\ell}$.  For rare success let $\ell$ vary in a fixed compact
+subset of $(0,\infty)$; for rare failure let it vary in a fixed
+compact subset of $(0,1)$.  In particular, these ranges exclude
+$\ell=0$ and, for failure, the endpoint $\ell=1$.
+
+\subsection{The two Lambert branches}
+
+The two solutions of $I(\rho_0)=\ell$ are
+\begin{equation}\label{brs:un:eq:lambert}
+ \rho_0=
+ \begin{cases}
+  \exp\{1+W_0((\ell-1)/e)\}>1,&\text{rare success},\\
+  \exp\{1+W_{-1}((\ell-1)/e)\}<1,&\text{rare failure}.
+ \end{cases}
+\end{equation}
+Indeed, $w=\log\rho_0-1$ gives $we^w=(\ell-1)/e$.
+The principal real branch has $w>-1$ in the success range; the lower
+real branch has $w<-1$ in the failure range.  Monotonicity of $I$
+on each side of $1$ proves uniqueness.  The compact restrictions
+keep $\rho_0$ in a compact positive set separated from $1$.
+
+\begin{writenote}
+\eqref{brs:un:eq:lambert} is an exact Lambert-$W$ solution of the rate equation $I(\rho_0)=\ell$. The corrections $d_0$, $d_1$ of Corollary~\ref{brs:un:cor:inverse} are an instance of the perturbed inversion \texttt{p0:thm:perturbed-inversion} of the repository's transseries volume, and the brackets \eqref{brs:un:eq:ceil} are of the first-crossing kind of its staircase recovery \texttt{p0:thm:staircase}. No novelty is claimed for the inversion method. The separated rate here is Part~I's $I(\rho)$, and the amplitude $A_0(\rho)$ is the prefactor of Part~I's \eqref{brs:eq:rare} without $m^{-1/2}$.
+\end{writenote}
+
+\begin{corollary}[Smooth carrier inversion]\label{brs:un:cor:inverse}
+Take a sufficiently high finite separated expansion and continue its
+formula smoothly to real $k$ using $\rho=k/m$.  This defines a
+\emph{carrier}, not a canonical real-$k$ extension of the exact integer
+probability.  Its locally unique crossing $K_m(\ell)$ satisfies,
+uniformly on the stated compact $\ell$ ranges,
+\begin{equation}\label{brs:un:eq:inverseone}
+ K_m(\ell)=m\rho_0+
+       \frac{L(\rho_0)-\tfrac12\log m}{\log\rho_0}
+       +O((\log m)^2/m),\qquad L=\log A_0.
+\end{equation}
+More explicitly, put
+\begin{align}\label{brs:un:eq:d0d1}
+ g&=\log\rho_0,\qquad
+ d_0=\frac{L(\rho_0)-\tfrac12\log m}{g},\\
+ L'(\rho)&=\frac1{\rho^2}+\frac1{2\rho}-\frac1{\rho-1},\nonumber\\
+ d_1&=\frac{-d_0^2/(2\rho_0)+L'(\rho_0)d_0+c_1(\rho_0)}{g}.
+ \nonumber
+\end{align}
+Then
+\begin{equation}\label{brs:un:eq:inversetwo}
+ K_m(\ell)=m\rho_0+d_0+d_1/m+O((\log m)^3/m^2).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The logarithm of the carrier is
+$-mI(\rho)-\tfrac12\log m+L(\rho)+c_1(\rho)/m+O(m^{-2})$.
+Write $\rho=\rho_0+d/m$.  Cancellation of the target exponent gives
+\begin{align}\label{brs:un:eq:inverseproof}
+ 0={}&-gd-\tfrac12\log m+L(\rho_0)\\
+ &+m^{-1}\{-d^2/(2\rho_0)+L'(\rho_0)d+c_1(\rho_0)\}
+       +O((1+|d|^3)/m^2).\nonumber
+\end{align}
+First $d=O(\log m)$.  The choices $d_0$ and $d_1$ cancel the next
+two orders.  The derivative with respect to $d$ is
+$-g+O(\log m/m)$, uniformly separated from zero.  The residual is
+therefore also a root-error bound, giving \eqref{brs:un:eq:inversetwo} and
+local uniqueness.  Continuing this finite implicit expansion yields
+any fixed further order, with polynomials in $\log m$; powers of
+$\log\rho_0$ in the denominators explain the excluded transition.
+\end{proof}
+
+\subsection{What the inverse says about integer crossings}
+
+For the exact probabilities, define
+\begin{equation}\label{brs:un:eq:q}
+ q_s=\min\{k\ge1:p_m(k)\le e^{-m\ell}\},\qquad
+ q_f=\min\{k\ge1:1-p_m(k)\ge e^{-m\ell}\}.
+\end{equation}
+Positivity of the increments makes $p_m(k)$ nonincreasing in $k$,
+and the relevant separated crossings are well defined.  Set
+\[
+ \kappa=m\rho_0+d_0+d_1/m,\qquad
+ \Delta=C(1+\log m)^3/m^2.
+\]
+For a sufficiently large uniform constant $C$ and sufficiently large
+$m$, the controlled carrier/probability error and the nonzero local
+logarithmic slope give, for the corresponding branch,
+\begin{equation}\label{brs:un:eq:ceil}
+ \lceil\kappa-\Delta\rceil\le q_s\le
+ \lceil\kappa+\Delta\rceil
+ \quad\text{or}\quad
+ \lceil\kappa-\Delta\rceil\le q_f\le
+ \lceil\kappa+\Delta\rceil.
+\end{equation}
+The constant absorbs both the smooth root error and the probability
+approximation error.  Monotonicity turns their local sign bounds into
+bounds for the first integer crossing.
+
+The constant and the lower cutoff for $m$ are existential here, so
+\eqref{brs:un:eq:ceil} is not a finite-$m$ numerical certificate.  Even once
+effective bounds are available, a bracket containing two integers
+requires exact or certified evaluation to decide between them.
+An unconditional ceiling of the displayed truncated smooth expansion
+is not justified.  The integer threshold itself does not have a
+vanishing-error smooth expansion.
+
+\section{Reproducibility and source scope}\label{brs:un:sec:repro}
+
+The accompanying archive contains this \LaTeX{} source, the PDF,
+portable build and replay scripts, pinned Python dependencies,
+recorded finite checks, a file-integrity manifest, and a bounded
+source-scope record.  It contains no third-party full-text articles.
+Running \texttt{bash replay.sh} checks the manifest, reruns the
+symbolic and numerical calculations in a fresh output directory,
+and compares their outputs to the recorded checks.
+\texttt{bash replay.sh --with-pdf} also rebuilds the article when a
+suitable \LaTeX{} installation is available.  Extraction with Python's
+\texttt{zipfile} is supported; executable mode bits are not required.
+
+Two independent forms of checking accompany the proof.  Symbolic
+calculations rederive the first saddle displacement, the variance,
+exponent, and prefactor corrections, the $H_3$ identity, and the
+$P_1$ and $c_1$ identities.  Degree-parity checks through order $10$
+are finite diagnostics; the all-order parity proof is the argument
+in Section~\ref{brs:un:sec:matching}.  Numerical diagnostics compare the
+$R=0,1,3$ formulas with exact rational probabilities at $16$ pairs
+$(m,k)$, including both tails and the exact switch.  They evaluate
+moments and kernels by high-precision, non-interval quadrature.
+They support implementation checks and do not prove the theorem or
+supply certified error constants.
+
+On that finite sample the largest observed values of
+$k^{(R+1)/2}|\widehat p-p|/\min(p,1-p)$ are approximately
+$0.3072$, $0.08194$, and $0.03466$ for $R=0,1,3$, respectively.
+These are sample maxima, not proven uniform constants.  The threshold
+checks verify rate-branch identities and cancellation of the displayed
+inverse coefficients; no exact-rounding certification is inferred.
+
+\begin{writenote}
+The archive is not shipped as such. Its scripts are in \file{code/} and its recorded checks in \file{data/}, all with the prefix \file{14-uniform-}; its \file{SOURCES.md} and \file{VALIDATION.md} are \file{14-uniform-*.md} at the report root. Its manifest, delivered PDF, build script and delivery README are not shipped; the archive survives in the arrival commit \texttt{096ee7b87}, and the report's README says how to rerun the replay from it. The companion report's primary-source record mentioned below is \file{13-central-SOURCES.md}.
+\end{writenote}
+
+\paragraph{Literature boundaries.}
+The general-method attribution uses the inspected first-page
+introduction and publisher abstract of Daniels \cite{daniels}.
+Pages 38--48 of that article were not inspected, and no exact theorem
+from those pages is invoked.  The original publisher text of
+Lugannani and Rice \cite{lr}, especially pp.\ 478--483, documents
+tilted associated densities and classical uniform tail-series
+constructions, but is not used as a substitute for the triangular
+family proof here.  Robinson \cite{robinson} was consulted at the
+abstract and indexed-publisher-text level; Jensen \cite{jensen}
+at the abstract level.  Their precise formulas and hypotheses are
+not claimed to imply Lemma~\ref{brs:un:lem:density}.  For the counting
+literature, the companion report's primary-source record supplies
+the earlier audit scope.  The full Horton--Kurn article was not
+inspected; its enumeration was consulted through Clifton et al.
+This is a bounded attribution review, not an exhaustive novelty search.
+
+\section{What remains open}\label{brs:un:sec:open}
+
+The analytic transition question is resolved within the stated fixed
+order and compact ratio scope.  The following separate questions
+remain useful.
+\begin{enumerate}[leftmargin=*,itemsep=0.55em]
+\item \textbf{Stable evaluation of the kernels.}
+Develop an implementation that evaluates the scaled normal tail and
+Gaussian--Hermite half-line kernels reliably for both small and large
+$u$.  Direct derivative-polynomial identities can cancel badly at
+large $u$.  Switching rules, recurrences, quadrature, or asymptotic
+kernel evaluation need quantitative error analysis.
+\item \textbf{Effective constants and certified thresholds.}
+Make the moment bounds, Cram\'er gap, Fourier cutoffs, and density
+remainder constants explicit.  Combine these with validated saddle
+and kernel evaluation to turn the existential integer brackets into
+usable certificates, with exact computation near an integer boundary.
+\item \textbf{Ratio endpoints and order growth.}
+The present theorem keeps $k/m$ in a fixed compact subset of
+$(0,\infty)$ and fixes $R$.  Ratios tending to $0$ or infinity, growing
+orders, coefficient growth, and optimal truncation require new
+estimates.  No convergent asymptotic series, exponentially improved
+remainder, or Stokes analysis is implied.
+\item \textbf{Uniform inverse regimes.}
+The Lambert inverses deliberately avoid $\ell=0$, where
+$\log\rho_0$ vanishes, and the failure endpoint $\ell=1$.
+A unified inversion with explicit error control as target tails move
+between central and separated scales is a further problem, even
+though the forward probabilities now have a uniform representation.
+\end{enumerate}
+
+\paragraph{Conclusion.}
+Keeping the half-line kernels unexpanded removes the transition
+singularities.  Uniform control of the tilted density in both norms
+then supplies the same relative order for both tails, while finite
+re-expansion recovers the earlier central and rare-tail theories.
+This is a mathematical uniformity result; a stable, effective,
+certified numerical method remains to be built.
+
+
+\clearpage
+\renewcommand{\parthead}{References}
+\begin{thebibliography}{99}
 \bibitem{oeisarray} OEIS Foundation Inc., \emph{A047909: Array read by
 antidiagonals upwards}, \url{https://oeis.org/A047909}, inspected
 2 October 2026.  Multiplicity is the row index and alphabet size is the
@@ -825,5 +1751,23 @@ polynomials by circular convolution}, Combinatorics, Probability and
 Computing \textbf{33} (2024), 210--237.  Published online 16 November 2023.
 \href{https://doi.org/10.1017/S0963548323000421}{doi:10.1017/S0963548323000421}.
 Preprint: \url{https://arxiv.org/abs/2210.02027}.
+\bibitem{base} \emph{Quantitative Beta renewal asymptotics for complete
+increasing subsequences}, companion research report for OEIS A047909
+and A268485, 2 October 2026.  Central and separated-regime results;
+not a published journal article.  \textbf{[write]} Printed as Part~\ref{brs:part:central} of this report.
+\bibitem{daniels} H. E. Daniels, \emph{Tail Probability Approximations},
+International Statistical Review \textbf{55}(1) (1987), 37--48.
+\href{https://doi.org/10.2307/1403269}{doi:10.2307/1403269}.
+\bibitem{lr} R. Lugannani and S. Rice, \emph{Saddle point approximation
+for the distribution of the sum of independent random variables},
+Advances in Applied Probability \textbf{12}(2) (1980), 475--490.
+\href{https://doi.org/10.2307/1426607}{doi:10.2307/1426607}.
+\bibitem{robinson} J. Robinson, \emph{Saddlepoint Approximations for
+Permutation Tests and Confidence Intervals}, Journal of the Royal
+Statistical Society, Series B \textbf{44}(1) (1982), 91--101.
+\href{https://doi.org/10.1111/j.2517-6161.1982.tb01191.x}{doi:10.1111/j.2517-6161.1982.tb01191.x}.
+\bibitem{jensen} J. L. Jensen, \emph{Uniform saddlepoint approximations},
+Advances in Applied Probability \textbf{20}(3) (1988), 622--634.
+\href{https://doi.org/10.2307/1427038}{doi:10.2307/1427038}.
 \end{thebibliography}
 \end{document}
