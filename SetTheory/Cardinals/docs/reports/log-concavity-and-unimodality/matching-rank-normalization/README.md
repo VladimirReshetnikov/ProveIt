@@ -999,7 +999,18 @@ records.
   real-rootedness picture of Parts XII–XIII of `preorder-root-polytopes`
   (`mr:thm:rankthree`, `lc:thm:real`): `1+2` covers are real-rooted, and the
   least graph of matching number three with a nonreal zero has 15 vertices.
-  That report has no note on it yet.
+  That report has no note on it yet. [Updated 1 October 2026, batch 73: it
+  now has one, after its Theorem 207.1.]
+- [`preorder-gamma-rank-ulc`](../preorder-gamma-rank-ulc) (batch 73, cluster C2) is the directed and
+  preorder counterpart: its Theorem 5.10 generalizes Theorem 15.1
+  (`mrn:w:sb:thm:main`) to overlapping two-by-two role covers of directed
+  relations, its Section 3 rests on Part V's Theorem 40.1 for bipartite
+  components (Corollary 2.2, `mrn:w:rf:cor:rankfive`, already covers
+  them), and its Theorem 2.9 finds the graph of Theorem 40.6 to be the
+  least nonreal case among all preorders of gamma degree three. Its
+  reciprocal-notes commit adds two further notes marked "Added 1 October
+  2026, batch 73" here, on the first two points, after the existing notes
+  at Theorem 15.1 and Corollary 2.2.
 - Placement in this collection beside other work confers no formal status.
   No Lean or Rocq declaration in the repository concerns matching-support
   polynomials; nothing in this report, Part V included, is formalized.
