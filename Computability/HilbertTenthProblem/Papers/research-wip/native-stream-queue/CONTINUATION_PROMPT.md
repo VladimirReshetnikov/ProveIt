@@ -45,9 +45,11 @@
 > query, program recipe, wrong-power residues and input-height proof.
 > The particular asymmetric Y=sq² shortcuts are now refuted on actual
 > compiler slices; further scale weakenings need fresh soundness arguments.
-> The complete sparse-TM route reaches744 by computing three history fields.
-> It has122 positive witnesses and exact degree187625. Restoration bijects
-> the754 history-checksum-positive slice; parent normalization is two-to-one.
+> The complete sparse-TM route reaches741 by reparameterizing the paid
+> input frame after computing three history fields. It has122 positive
+> witnesses and exact formal degree11237. Corresponding positive program
+> triples preserve every auxiliary positive zero; arbitrary new triples
+> are not claimed to decode to valid old programs.
 > The older64-base frontier retains its scope.
 > The C2 route reaches378, with its reviewed32-base transport/query frontier.
 > These reviewed packets are linked below.
@@ -1067,7 +1069,17 @@ reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
 natural witness tuple and passed independent review. Their arity depends
 on the external horizon; the fixed universal bound remains 87 operations.
 
-The [computed-history-field compiler](gpcp_history_computed_fields744.md)
+The [GPCP program-frame rewrite](gpcp_program_frame741.md)
+reduces that complete U15 route to **741=347M+394A operations**, eight
+comparisons,122 positive witnesses and exact formal degree11237. Three new
+positive fixed program numerals replace the old seven-gate frame by four
+gates, using the retained input-repunit equation. Corresponding positive
+program triples have exactly the same auxiliary positive zeros; arbitrary
+new triples have no asserted program interpretation. All eight complete
+source variants, explicit off-zero corrections and exact degree certificates
+replay. The overall87-operation universal bound is unchanged.
+
+The preceding [computed-history-field compiler](gpcp_history_computed_fields744.md)
 gives **721 certificate /744=349M+395A operations**, eight comparisons,
 122 positive witnesses and exact formal degree187625. It computes three
 private history AND fields from the retained ports, saving3M+7A and three

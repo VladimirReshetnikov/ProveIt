@@ -105,7 +105,17 @@ reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
 natural witness tuple and passed independent review. Their arity depends
 on the external horizon; the fixed universal bound remains 87 operations.
 
-The [computed-history-field compiler](research-wip/native-stream-queue/gpcp_history_computed_fields744.md)
+The [GPCP program-frame rewrite](research-wip/native-stream-queue/gpcp_program_frame741.md)
+reduces that complete U15 route to **741=347M+394A operations**, eight
+comparisons,122 positive witnesses and exact formal degree11237. Three new
+positive fixed program numerals replace the old seven-gate frame by four
+gates, using the retained input-repunit equation. Corresponding positive
+program triples have exactly the same auxiliary positive zeros; arbitrary
+new triples have no asserted program interpretation. All eight complete
+source variants, explicit off-zero corrections and exact degree certificates
+replay. The overall87-operation universal bound is unchanged.
+
+The preceding [computed-history-field compiler](research-wip/native-stream-queue/gpcp_history_computed_fields744.md)
 gives **721 certificate /744=349M+395A operations**, eight comparisons,
 122 positive witnesses and exact formal degree187625. It computes three
 private history AND fields from the retained ports, saving3M+7A and three
