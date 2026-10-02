@@ -73,8 +73,13 @@ route; the global87-operation universal bound remains unchanged.
 
 The [nine-report intake](incoming_substrate_intake_2a8a39599.md) authenticates
 new spectral, clock, polynomial-history, boundary, sandpile, conservative-signal
-and membrane archives at060e08a07/2a8a39599. Their full reviews are pending;
+and membrane archives at060e08a07/2a8a39599. Full reviews are in progress;
 the intake record states each claimed witness domain and external parameter.
+The [polynomial-history review](review_unique_polynomial_histories.md) verifies
+the complete coefficientwise proof and all three original/repaired author CLIs.
+A checked patch rejects noninteger symbol aliases that generated dangling witness
+names. Its nine-row feature system uses polynomial witnesses; it gives no new
+ordinary integer bound. All valid saved JSON exports are preserved.
 
 The [complete Waterfall review](waterfall_report_review_24a743255.md)
 validates the fixed 46-clock universal-machine frontend and all eight original

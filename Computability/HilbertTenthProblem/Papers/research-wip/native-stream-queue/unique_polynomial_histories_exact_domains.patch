@@ -1,0 +1,103 @@
+--- a/code/polynomial_histories.py
++++ b/code/polynomial_histories.py
+@@ -18,8 +18,10 @@
+ 
+ 
+ def monomial(x: int = 0, y: int = 0, coefficient: int = 1) -> Poly:
+-    if x < 0 or y < 0:
++    if type(x) is not int or type(y) is not int or x < 0 or y < 0:
+         raise ValueError("Polynomial exponents must be nonnegative.")
++    if type(coefficient) is not int:
++        raise ValueError("Polynomial coefficients must be exact integers.")
+     return {(x, y): coefficient} if coefficient else {}
+ 
+ 
+@@ -38,7 +40,7 @@
+ 
+ 
+ def shift(poly: Mapping[Exponent, int], x: int = 0, y: int = 0) -> Poly:
+-    if x < 0 or y < 0:
++    if type(x) is not int or type(y) is not int or x < 0 or y < 0:
+         raise ValueError("Negative shifts are not supported.")
+     return {(i + x, j + y): c for (i, j), c in poly.items()}
+ 
+@@ -55,7 +57,7 @@
+ 
+ 
+ def repunit(length: int, y: int = 0) -> Poly:
+-    if length < 0:
++    if type(length) is not int or type(y) is not int or length < 0 or y < 0:
+         raise ValueError("Negative repunit length.")
+     return {(j, y): 1 for j in range(length)}
+ 
+@@ -65,8 +67,8 @@
+ 
+ 
+ def is_natural(poly: Mapping[Exponent, int]) -> bool:
+-    return all(isinstance(i, int) and isinstance(j, int) and i >= 0 and j >= 0
+-               and isinstance(c, int) and c >= 0 for (i, j), c in poly.items())
++    return all(type(i) is int and type(j) is int and i >= 0 and j >= 0
++               and type(c) is int and c >= 0 for (i, j), c in poly.items())
+ 
+ 
+ def is_boolean(poly: Mapping[Exponent, int]) -> bool:
+@@ -81,16 +83,19 @@
+     accepting: frozenset[int]
+ 
+     def __post_init__(self) -> None:
+-        if self.size < 1:
++        if type(self.size) is not int or self.size < 1:
+             raise ValueError("The alphabet must be nonempty.")
+         expected = set(product(range(self.size), repeat=3))
+-        if set(self.table) != expected:
++        if (any(type(key) is not tuple or len(key) != 3
++                or any(type(a) is not int for a in key) for key in self.table)
++                or set(self.table) != expected):
+             raise ValueError("The rule must supply exactly all alphabet triples.")
+-        if any(not isinstance(a, int) or not 0 <= a < self.size for a in self.table.values()):
++        if any(type(a) is not int or not 0 <= a < self.size for a in self.table.values()):
+             raise ValueError("Rule output outside the alphabet.")
+         if self.table[(0, 0, 0)] != 0:
+             raise ValueError("The blank must be quiescent.")
+-        if 0 in self.accepting or not self.accepting <= frozenset(range(self.size)):
++        if (any(type(a) is not int for a in self.accepting)
++                or 0 in self.accepting or not self.accepting <= frozenset(range(self.size))):
+             raise ValueError("Acceptance must exclude the blank and use valid symbols.")
+         # Copy mutable caller data: a later mutation cannot change the CA semantics.
+         from types import MappingProxyType
+@@ -99,7 +104,7 @@
+ 
+     def validate_word(self, word: Sequence[int]) -> tuple[int, ...]:
+         value = tuple(word)
+-        if not value or any(not isinstance(a, int) or not 0 <= a < self.size for a in value):
++        if not value or any(type(a) is not int or not 0 <= a < self.size for a in value):
+             raise ValueError("Input must be a nonempty word over the alphabet.")
+         return value
+ 
+@@ -236,7 +241,7 @@
+     row has one accepting cell and is set to zero otherwise, so a failed
+     acceptance test never silently produces a claimed certificate.
+     """
+-    if not isinstance(h, int) or h < 0:
++    if type(h) is not int or h < 0:
+         raise ValueError("Horizon must be a nonnegative integer.")
+     ca, m = system.ca, len(system.word)
+     witness = {v: {} for v in system.variables}
+@@ -279,7 +284,7 @@
+ 
+ 
+ def elementary_ca(rule_number: int) -> CA:
+-    if not 0 <= rule_number < 256 or rule_number & 1:
++    if type(rule_number) is not int or not 0 <= rule_number < 256 or rule_number & 1:
+         raise ValueError("Use a binary elementary rule with quiescent 000 (even rule number).")
+     return CA(2, {t: (rule_number >> (4 * t[0] + 2 * t[1] + t[2])) & 1
+                   for t in product(range(2), repeat=3)}, frozenset({1}))
+@@ -324,7 +329,7 @@
+             raise ValueError("There must be exactly one feature vector per symbol.")
+         d = len(feature_tuple[0])
+     if (any(len(row) != d for row in feature_tuple)
+-        or any(not isinstance(c, int) or c < 0 for row in feature_tuple for c in row)
++        or any(type(c) is not int or c < 0 for row in feature_tuple for c in row)
+         or any(feature_tuple[0]) or len(set(feature_tuple)) != s):
+         raise ValueError("Features must be nonnegative, equally sized, injective, and zero on blank.")
+     triples = tuple(product(range(s), repeat=3))
