@@ -1,0 +1,17 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+.PHONY: all paper test clean
+all: paper test
+
+paper:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+
+test:
+	$(PYTHON) code/verify.py
+
+clean:
+	rm -f article.aux article.log article.out article.toc
+	rm -rf code/__pycache__
