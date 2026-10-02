@@ -1,129 +1,115 @@
-# Unconditional all-orders asymptotics for two OEIS permutation sequences
+# Unconditional All-Orders Asymptotics for Two OEIS Permutation Sequences
 
-Prepared for Vladimir Reshetnikov, 1 October 2026.
+**Stable path forests, Poisson expansions, and index inversion for A189281 and A110128**
 
-Start with **article.pdf** (21 pages). Its self-contained source is **article.tex**;
-no external bibliography, figure files, or nonstandard fonts are needed.
+This research report is dated 1 October 2026. It was built from one manuscript, manuscript 60 of batch 73 of ProveIt's incoming-reports intake. The manuscript's author line is "Prepared for Vladimir Reshetnikov" (PDF metadata: "Research report prepared for Vladimir Reshetnikov").
 
-## Scope and status
+| Source | Batch-73 manuscript | Archive | Pin | Arrived | Placed | Printed as |
+|---|---|---|---|---|---|---|
+| sole | 60 (cluster O2) | `oeis_path_forests.zip` (main file `article.tex`, 21-page PDF *Unconditional all-orders asymptotics for two OEIS permutation sequences*) | none | `aa43cc555` | `6e193dd4f` | the whole article |
 
-The report studies A189281 (signed distance-two avoidance) and A110128
-(absolute distance-two avoidance), and generalizes them to every fixed pair
-of positive offsets. It supplies mathematical proofs of:
+The manuscript pins no repository revision. It cites the repository only by the path `Analysis/FabiusFunction/docs/ASYMPTOTIC_COMPLETION_AUDIT.md`, as an editorial example of separating a printed approximation, a correction and an all-orders theorem, and calls it "not a dependency". The archive arrived in `aa43cc555`; the placement commit `6e193dd4f` deleted it from `docs/incoming`, and it survives in `aa43cc555`.
 
-- an exact stabilization formula for path-forest tilings and factorial moments;
-- a recurrence-independent, all-orders expansion with a uniform complex-variable
-  remainder and a finite formula for each correction polynomial;
-- whole-distribution Poisson corrections, a factorial denominator bound,
-  and a quantitative total-variation universality theorem;
-- an all-orders Lambert-W index inversion with a discrete-sequence interpretation.
-
-The article derives and tabulates the two avoidance expansions through n^-16.
-The coefficient formula does not use fitted sequence values or a guessed
-recurrence. It extends the higher expansions currently displayed by OEIS.
-
-**Not claimed:** a proof of either specific guessed OEIS recurrence, all-orders
-integrality for A189281, a complete exponentially improved transseries, a
-Lean-checked formalization, peer review, or established historical priority
-beyond the sources reviewed. Section 11's rational-collapse formula is a
-**conjecture**, tested symbolically only for h=4,...,16. Those finite tests
-are not its proof. The existing exact inclusion-exclusion framework is credited
-to Spahn and Zeilberger; the report reproves what it uses.
-
-The mathematical proofs and the finite computational checks serve different
-purposes. The checks detect implementation and transcription errors; they do
-not replace the infinite arguments. Independent mathematical review remains
-appropriate before publication or an OEIS update.
+**Status: AI-assisted, unrefereed, not formalized.** The intake reran every shipped program on a copy and spot-checked the mathematics (see "Checks by the intake"). It did not re-derive every proof.
 
 ## Files
 
-- `article.tex`, `article.pdf`: full article, including eight follow-up research
-  topics, proof-dependency audit, and references.
-- `code/path_forests.py`: exact coefficient formula, stable moments, and an
-  independent full path-tiling enumeration. Standard library only.
-- `code/validate.py`: independent brute-force distributions, published sequence
-  values, stabilization tests, degree tests, and coefficient regression.
-- `code/certify.py`: exact rational Bonferroni enclosures and scaled asymptotic
-  residual certificates. Decimal displays are rounded outwards.
-- `code/check_collapse.py`: finite symbolic tests of the unproved rational
-  collapse. Requires SymPy.
-- `code/inverse.py`: numerical inverse diagnostics from exact enumerated inputs.
-  Requires mpmath. These are not certified integer-threshold computations.
-- `data/coefficients_order16.json`: exact rational coefficients; keys `1` and `2`
-  denote the signed and absolute cases. `B[J]` lists coefficients in ascending
-  powers of u; `c[J] = B[J](-1)`. Fractions are stored as strings.
-- `data/exact_values.json`: n=0,...,21 for both sequences, recomputed by full
-  tiling enumeration and compared to the OEIS entries.
-- `data/validation.json`, `data/validation.txt`: counts and outcomes of checks.
-- `data/bonferroni_certificates.json`: exact rational endpoints, with the stated
-  truncation order and cutoff. `scaled_error_*` encloses
-  n^(M+1) (exp(theta) A(n)/n! - sum(j=0..M) c[j]/n^j).
-- `data/bonferroni_certificates.txt`, `data/inverse_diagnostics.txt`,
-  `data/collapse_checks.txt`: human-readable outputs.
-- `SOURCES.md`: source and status audit.
-- `requirements-optional.txt`: tested versions of the two optional dependencies.
-- `build.sh`: compilation helper.
-- `SHA256SUMS`: checksums of the delivered files, excluding itself.
-
-## Reproduce the exact computations
-
-Run from this directory, without Python's `-O` flag (the checks use assertions):
-
-```sh
-python code/path_forests.py --order 16 --output data/coefficients_order16.json
-python code/validate.py > data/validation.txt
-python code/certify.py > data/bonferroni_certificates.txt
+```
+README.md                          this guide
+SOURCES.md                         the manuscript's source and novelty audit, as delivered
+article.tex                        the report (LaTeX, internal bibliography)
+article.pdf                        the compiled report, 23 pages
+code/build.sh                      the delivered PDF build helper (does not work from code/; see below)
+code/path_forests.py               exact coefficient formula, stable moments, full path-tiling enumerator (standard library)
+code/validate.py                   brute-force distributions, OEIS values, stabilization, degree and coefficient checks
+code/certify.py                    exact rational Bonferroni enclosures and scaled-residual certificates
+code/check_collapse.py             finite symbolic tests of the rational-collapse conjecture, h = 4..16 (SymPy)
+code/inverse.py                    numerical inverse diagnostics from exact values (mpmath); not certified
+data/coefficients_order16.json     exact B_J and c_J through order 16; keys "1" (oriented) and "2" (absolute)
+data/exact_values.json             n = 0..21 for both sequences, by full tiling enumeration
+data/validation.json               counts and outcomes of the validation checks
+data/validation.txt                standard output of validate.py
+data/bonferroni_certificates.json  exact rational certificate endpoints
+data/bonferroni_certificates.txt   standard output of certify.py
+data/collapse_checks.txt           standard output of check_collapse.py (13 lines, h = 4..16, all True)
+data/inverse_diagnostics.txt       standard output of inverse.py
+data/requirements-optional.txt     sympy==1.14.0, mpmath==1.3.0 (for check_collapse.py and inverse.py only)
 ```
 
-These programs need only Python's standard library. They were tested with
-CPython 3.13.5. Their syntax requires Python 3.10 or later; other versions were
-not separately tested. The coefficient-generation CLI accepts other fixed
-positive offsets, for example:
+Every file except `README.md`, `article.tex` and `article.pdf` is byte-identical to the delivery. `article.pdf` is a build of this `article.tex`, not the delivered PDF. `data/coefficients_order16.json` has no final newline, as delivered.
+
+## Labels
+
+Every label carries the prefix `spf:`. The manuscript's 78 labels are kept, unchanged after the prefix. The write added three: `spf:rem:offsets-one-one`, `spf:rem:inverse-apparatus` and `spf:app:provenance` (81 in all).
+
+## What is claimed
+
+- **All-orders theorem** (Theorem 1.1, `spf:thm:main`). For fixed positive offsets r, s and θ ∈ {1, 2} (oriented or absolute differences), E(1+u)^X = e^{θu} Σ_{J≤M} B_J(u) n^{-J} + O(n^{-M-1}), uniformly for |u| ≤ U, with a finite formula for every B_J (`spf:eq:Bformula`). Also deg B_J ≤ 2J, B_J(u; r, s) = B_J(u; s, r), (2J)! B_J ∈ ℤ[u], and c_1 = θ(r+s−θ).
+- **Structure.** An exact profile identity (Spahn–Zeilberger's matching-of-tilings formula at u = −1, reproved), a stable tiling polynomial independent of the individual path lengths (`spf:thm:stable`), the uniform factorial-moment bound μ_k ≤ (θe²)^k/k! (`spf:lem:moment-bound`), and total-variation universality with error exp(−η′ n log n + O(n)) (`spf:thm:universality`).
+- **The whole law.** An all-orders signed Charlier approximation of the full distribution in ℓ¹ (`spf:cor:distribution`).
+- **The two OEIS sequences.** A189281 (θ = 1) and A110128 (θ = 2), (r, s) = (2, 2), through n^{-10}. These recover, without the guessed recurrences, the expansions the OEIS entries attribute to those recurrences; Table 1 extends both to n^{-16}.
+- **Inversion.** An all-orders Lambert-W index inversion along the sequence values (`spf:thm:inverse-first`, `spf:thm:inverse-all`), and Bonferroni certificates at n = 80, 160, 320.
+- **Added in the write** (Remark 7.2): at (r, s) = (1, 1) the coefficient formula gives c_J^{(1)} = 1, 1, 0, 0, … (no successions, A000255(n−1) = D_n + D_{n−1}) and reproduces the Abramson–Moser expansion of A002464 (Hertzsprung's problem), as displayed in the OEIS entry, through n^{-10}. The intake checked this with the shipped generator and against exact counts to n = 800.
+
+## What is not claimed
+
+- **The rational collapse is a conjecture** (`spf:conj:collapse`): R_h(n) = 24 (n−h+1)^{\underline{h−4}} / n^{\underline{2h}} for h ≥ 4, checked as a rational-function identity for h = 4, …, 16 only. The integrality of every c_J^{(1)}(2, 2) is conditional on it (`spf:prop:collapse-implication`).
+- Neither guessed OEIS recurrence (A189281's order-8, degree-11 recurrence; A110128's order-24, degree-64 operator) is proved.
+- Only the algebraic asymptotic sector: no exponentially improved transseries, no geometry-dependent exponential sector, no optimal truncation (the expansion is a Poincaré statement with M fixed).
+- Nothing uniform in growing offsets or for forests with a bounded short path.
+- The inverse diagnostics are numerical, not certified integer thresholds.
+- No peer review, no Lean or Rocq formalization, no historical priority beyond the sources reviewed. The leading Poisson behaviour, Tauraso's first correction in the diagonal absolute case and the inclusion–exclusion framework are credited, not claimed.
+- Padhi's preprint (arXiv:2608.11290) is not a dependency. The intake confirmed that the record exists with the cited title but did not check its content.
+- **The inversion method is not new.** Section 9 re-derives the canonical transseries volume's gamma-carrier inversion (`p6:thm:gamma`, `p0:thm:perturbed-inversion` in `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`), and its integer-threshold remark is an instance of that volume's `p0:thm:staircase`. Remark 9.1 cites them; no novelty is claimed there.
+
+## Relation to neighbouring material
+
+- **Sibling report** [`a330266-balanced-smirnov-poisson`](../a330266-balanced-smirnov-poisson/) (batch 73, manuscript 57): the same chain of method (exact marked-subset generating function, Poisson limit, all-orders 1/n expansion of E(1+v)^X, Lambert-W inversion) for a different model, equal-rank adjacencies in balanced multiset words with limit Poisson(k−1). Neither theorem specializes to the other, so the two are separate reports. That report's all-orders expansion rests on a sketched tail estimate, for which this report's uniform factorial-moment bound (`spf:lem:moment-bound`) is the natural device.
+- **Transseries volume** `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`: the inversion apparatus cited above, and its chapter "The subfactorial" (`p8:sec:top`), the closest analogue (derangements, by citing the same gamma carrier).
+- **Fabius audit** `Analysis/FabiusFunction/docs/ASYMPTOTIC_COMPLETION_AUDIT.md`: cited by the manuscript as context only; not continued.
+- **Formal status.** Placement in the collection confers no formal status, and no formal development continues this report; none of its statements is formalized. The only Lean declaration the report mentions (in a bracketed note at the end of Section 9), `Fabius.staircase_separation` (`Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`), formalizes the separation step of the staircase theorem in general; it verifies nothing specific to this report.
+
+## Building
+
+From a scratch copy of `article.tex`, run
 
 ```sh
-python code/path_forests.py --r 2 --s 3 --order 8 --output offsets_2_3.json
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The direct full-tiling enumerator is intended for independent small-n checks,
-not as a replacement for the fastest known large-n counting algorithms.
-The stable-moment routine rejects cutoffs outside its proved sufficient range.
-No network access is required by any included program.
+pdfLaTeX (MiKTeX) produced the shipped `article.pdf`: 23 pages, with no errors, no warnings, no undefined references or citations, no multiply defined labels, no duplicate destinations, and no overfull or underfull boxes. Copy back only `article.pdf`.
 
-The recorded checks passed:
+The delivered `code/build.sh` changes into its own directory and runs `pdflatex` on `article.tex` there three times, writing `build/`. In the shipped layout it sits in `code/`, where there is no `article.tex`, so it fails; use the command above.
 
-- 44 published sequence values (n=0,...,21, both sequences);
-- 96 full brute-force distributions (n=1,...,8; six offset pairs; both statistics);
-- 246 factorial-moment equalities and 86 unequal-path stabilization identities;
-- 375 finite-difference degree checks and 396 coefficient-denominator checks.
+## Rerunning the programs
 
-The exact interval computations use moment cutoffs 30 and 31 at n=80,160,320.
-The full rational endpoints, not just displayed decimals, are the certificates.
-
-## Optional symbolic and numerical checks
+`validate.py` and `certify.py` write their JSON outputs into `../data/` relative to themselves (`data/exact_values.json`, `data/validation.json`, `data/bonferroni_certificates.json`), so running them in place overwrites the shipped records. Run every program on a copy of the report directory. Use `py` (or `uv run --no-project --with …`) without Python's `-O` flag, since the checks use assertions:
 
 ```sh
-python -m pip install -r requirements-optional.txt
-python code/check_collapse.py > data/collapse_checks.txt
-python code/inverse.py > data/inverse_diagnostics.txt
+R=SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a189281-path-forest-expansions
+W=$(mktemp -d); cp -r "$R/code" "$R/data" "$W/"; cd "$W"
+py code/path_forests.py --order 16 --output data/coefficients_order16.json   # about 7 s
+py code/validate.py > data/validation.txt                                    # about 4 s; rewrites exact_values.json, validation.json
+py code/certify.py > data/bonferroni_certificates.txt                        # about 2 min; rewrites bonferroni_certificates.json
+uv run --no-project --with sympy==1.14.0 python code/check_collapse.py > data/collapse_checks.txt   # about 50 s
+uv run --no-project --with mpmath==1.3.0 python code/inverse.py > data/inverse_diagnostics.txt     # about 1 s
+py code/path_forests.py --r 1 --s 1 --order 10 --output offsets_1_1.json      # the (1,1) check of Remark 7.2
 ```
 
-SymPy 1.14.0 and mpmath 1.3.0 were tested. The symbolic checks prove the individual
-rational-function identities in their finite range only. The inverse diagnostics
-use 80-decimal working precision, but are not interval certificates.
+Compare the outputs with the shipped `data/` files. On Windows the regenerated text files have CRLF line endings, while the shipped ones are LF, so compare ignoring line endings (JSON as parsed). The intake's run on a copy matched in this sense; `collapse_checks.txt` differs only in its timings, and `coefficients_order16.json` also in its final newline, which the regenerated file has and the delivered one lacks.
 
-## Build the PDF
+## Checks by the intake
 
-With a TeX installation including the standard packages listed in the preamble:
+- Every shipped program rerun on a copy: all passed, outputs as described above.
+- Both sequences recounted by brute force for n ≤ 9; equal to `data/exact_values.json`.
+- The two order-ten expansions compared with the current OEIS entries: equal digit for digit (A189281: 3, 2, 1, 0, 3, 26, 101, 124, −1409, −13266; A110128: 4, 8, 68/3, …, 32213578294/14175).
+- The coefficient d_1 of `spf:thm:inverse-first` rederived by hand (71/24 = 3 − 1/24, 95/24 = 4 − 1/24).
+- The (1, 1) checks of Remark 7.2.
 
-```sh
-sh build.sh
-```
+## Disclosures and discrepancies
 
-Or run `pdflatex -interaction=nonstopmode -halt-on-error article.tex` three times.
-The delivered PDF was built with pdfTeX 1.40.26 (TeX Live 2025/dev/Debian),
-checked for unresolved references and overflow warnings, and visually inspected
-after rendering all 21 pages with `pdftoppm`.
-
-The build script keeps temporary TeX files in `build/` and copies the completed
-PDF to the top level. Rerunning computations or rebuilding the PDF changes
-file checksums; `SHA256SUMS` describes the delivered snapshot.
+- **Not shipped:** the delivered README (replaced by this one), the delivered 21-page PDF (replaced by a build of the edited text) and the checksum ledger `SHA256SUMS` (verified 19/19 at placement and retired).
+- **Moved files.** The delivered `build.sh` is shipped as `code/build.sh` and `requirements-optional.txt` as `data/requirements-optional.txt`. The delivered README placed both at the archive root.
+- **Delivery wording in shipped text.** The article's "the archive", "the accompanying JSON" and "the archive's README" mean this directory, `data/coefficients_order16.json` and this README; bracketed notes say so. `SOURCES.md` refers to "Section 11" for the rational collapse, which is still Section 11.
+- **Edited text.** `article.tex` is the delivered manuscript with the label prefix, the editorial note after the status paragraph, Remarks 7.2 and 9.1, bracketed notes marked "[Added 1 October 2026, batch 73O2]", three bibliography entries (A000255, A002464, the transseries volume) and Appendix B (provenance). Nothing was removed.
+- **Overloaded letters** (kept, listed in Appendix B): C, K, d and D each carry two or more meanings in different sections.

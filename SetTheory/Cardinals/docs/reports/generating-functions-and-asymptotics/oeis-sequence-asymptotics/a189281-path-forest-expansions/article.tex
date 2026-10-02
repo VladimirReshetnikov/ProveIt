@@ -84,12 +84,23 @@ computations are reproducible exact checks. Historical priority beyond the
 sources reviewed here remains to be assessed. The results establish the
 algebraic asymptotic sector, not a complete exponentially improved transseries.
 
+\paragraph{Editorial note (1 October 2026, batch 73O2).}
+This report is manuscript~60 of batch~73 of ProveIt's incoming-reports intake,
+placed in the research-report collection in commit \texttt{6e193dd4f}. It is
+AI-assisted, unrefereed and not formalized. The text is the delivered
+manuscript; the write added only the label prefix \texttt{spf:}, the bracketed
+notes marked ``[Added 1 October 2026, batch 73O2]'',
+Remarks~\ref{spf:rem:offsets-one-one} and~\ref{spf:rem:inverse-apparatus}, three bibliography
+entries, and \cref{spf:app:provenance}, which records the provenance and every
+editorial change. The rational-collapse statement of \cref{spf:sec:collapse}
+remains a conjecture.
+
 \newpage
 \tableofcontents
 \newpage
 
 \section{The target and the precise contribution}
-\label{sec:target}
+\label{spf:sec:target}
 
 For a uniformly random $\pi\in S_n$, define, for fixed $r,s\ge1$,
 \begin{align}
@@ -102,7 +113,7 @@ An empty sum is zero. Write
 \begin{equation}
  A^{(\theta)}_{r,s}(n)=n!\,\Pp(X^{(\theta)}_{r,s,n}=0),
  \qquad \theta\in\{1,2\}.
- \label{eq:counts}
+ \label{spf:eq:counts}
 \end{equation}
 In this notation,
 \begin{equation}
@@ -127,7 +138,7 @@ case, the first correction
 \begin{equation}
  \frac{A^{(2)}_{r,r}(n)}{n!}
  =e^{-2}\left(1+\frac{4(r-1)}n+\bigO(n^{-2})\right)
- \label{eq:tauraso}
+ \label{spf:eq:tauraso}
 \end{equation}
 and gave exact counting formulas~\cite{tauraso}. Spahn and Zeilberger developed
 an exact matching-of-tilings formula for both offset families, explained its
@@ -141,6 +152,9 @@ partial result toward the specific A189281 operator~\cite{padhi}. Our arguments
 neither assume that preprint's holonomicity theorem nor prove a particular
 recurrence. A general existence theorem for a recurrence and a proof of a
 specific guessed operator are distinct questions.
+[Added 1 October 2026, batch 73O2: the intake confirmed that the arXiv record
+of~\cite{padhi} exists under the title given in the bibliography, but did not
+check its content. Nothing below depends on it.]
 
 \subsection{The gap addressed here}
 
@@ -175,7 +189,7 @@ Put
 The use of $1+u$, rather than $u$, makes the coefficients factorial moments.
 
 \begin{theorem}[All-orders polynomial correction theorem]
-\label{thm:main}
+\label{spf:thm:main}
 For fixed positive integers $r,s$, $\theta\in\{1,2\}$, every integer $M\ge0$,
 and every $0\le U<\infty$, there are polynomials
 $B_J^{(\theta)}(u;r,s)\in\Q[u]$ such that, uniformly for $|u|\le U$,
@@ -183,16 +197,16 @@ $B_J^{(\theta)}(u;r,s)\in\Q[u]$ such that, uniformly for $|u|\le U$,
  G^{(\theta)}_{r,s,n}(u)
  =e^{\theta u}\sum_{J=0}^{M}\frac{B_J^{(\theta)}(u;r,s)}{n^J}
    +\bigO_{M,r,s,U}(n^{-M-1}).
- \label{eq:main}
+ \label{spf:eq:main}
 \end{equation}
-They are given by the finite formula \eqref{eq:Bformula}. They satisfy
+They are given by the finite formula \eqref{spf:eq:Bformula}. They satisfy
 \begin{gather}
  B_0=1,\qquad \deg B_J\le2J,\qquad B_J(0)=0\quad(J\ge1),\\
  B_J(u;r,s)=B_J(u;s,r),\qquad (2J)!B_J(u;r,s)\in\Z[u],
- \label{eq:arithmetic-preview}\\
+ \label{spf:eq:arithmetic-preview}\\
  B_1^{(\theta)}(u;r,s)
  =\theta(1-r-s)u+\theta(1-\theta)u^2.
- \label{eq:B1}
+ \label{spf:eq:B1}
 \end{gather}
 In particular, for $c_J^{(\theta)}(r,s)=B_J^{(\theta)}(-1;r,s)$,
 \begin{equation}
@@ -200,14 +214,14 @@ In particular, for $c_J^{(\theta)}(r,s)=B_J^{(\theta)}(-1;r,s)$,
  =e^{-\theta}\left(\sum_{J=0}^{M}\frac{c_J^{(\theta)}(r,s)}{n^J}
                    +\bigO(n^{-M-1})\right),
  \quad c_0=1,\quad c_1=\theta(r+s-\theta).
- \label{eq:avoidance-expansion}
+ \label{spf:eq:avoidance-expansion}
 \end{equation}
 \end{theorem}
-The proof occupies \cref{sec:tilings,sec:stable,sec:bounds,sec:coefficients,sec:proof}.
-The arithmetic assertions are proved in \cref{sec:arithmetic}.
+The proof occupies \cref{spf:sec:tilings,spf:sec:stable,spf:sec:bounds,spf:sec:coefficients,spf:sec:proof}.
+The arithmetic assertions are proved in \cref{spf:sec:arithmetic}.
 
 \section{Selected violations and pairs of path tilings}
-\label{sec:tilings}
+\label{spf:sec:tilings}
 
 \subsection{Why paths are the right objects}
 
@@ -242,7 +256,7 @@ $\mathbf b=(b_2,b_3,\ldots)$ of nonnegative integers. Define
  v&=\sum_{\ell\ge2}\ell b_\ell=k+c,&
  d&=k-c=\sum_{\ell\ge2}(\ell-2)b_\ell,
  \end{aligned}
- \label{eq:profile}
+ \label{spf:eq:profile}
 \end{equation}
 and $\bfac=\prod_{\ell\ge2}b_\ell!$.
 The number $d$ is the \emph{defect}: dimers have defect zero, and each extra
@@ -255,14 +269,14 @@ singletons. A tiling is simply a partition into consecutive intervals along
 each path; unused edges may lie between neighboring intervals.
 
 \begin{proposition}[Exact profile identity]
-\label{prop:exact}
+\label{spf:prop:exact}
 For position and value forests $\mathcal P,\mathcal V$ on $n$ vertices,
 \begin{equation}
  \E(1+u)^X
  =\sum_{\mathbf b:\,v\le n}
     \theta^c u^k C_{\mathcal P}(\mathbf b)C_{\mathcal V}(\mathbf b)
     \frac{(n-v)!\,\bfac}{n!}.
- \label{eq:exact-profile}
+ \label{spf:eq:exact-profile}
 \end{equation}
 Infeasible profiles have zero tiling count.
 \end{proposition}
@@ -281,37 +295,37 @@ the identity counts marked subsets of violations, not permutations having
 exactly that selected set.
 \end{proof}
 
-At $u=-1$, \eqref{eq:exact-profile} is the matching-of-tilings
+At $u=-1$, \eqref{spf:eq:exact-profile} is the matching-of-tilings
 inclusion-exclusion formula of Spahn and Zeilberger~\cite{spahn}. Its extension
 to general $u$ makes the later distributional statements possible.
 
 \section{Exact stabilization on long path forests}
-\label{sec:stable}
+\label{spf:sec:stable}
 
 Write $\fall{x}{j}=x(x-1)\cdots(x-j+1)$ and
 $\rise{x}{j}=x(x+1)\cdots(x+j-1)$, with both empty products equal to one.
 For a profile $\mathbf b$, put
 \begin{equation}
  E_h(\mathbf b)=[z^h]\prod_{\ell\ge2}(1+(\ell-1)z)^{b_\ell}.
- \label{eq:E}
+ \label{spf:eq:E}
 \end{equation}
 Define an integer polynomial
 \begin{equation}
  F_r(n;\mathbf b)=
  \sum_{h=0}^{c}(-1)^h\rise{(r-1)}{h}E_h(\mathbf b)
                    \fall{(n-k-h)}{c-h}.
- \label{eq:F}
+ \label{spf:eq:F}
 \end{equation}
 Its degree in $n$ is $c$ and its leading coefficient is one. For $r=1$, it
 reduces to $\fall{(n-k)}c$.
 
 \begin{theorem}[Stable tiling polynomial]
-\label{thm:stable}
+\label{spf:thm:stable}
 Let $\mathcal P$ be a union of $r$ directed paths with vertex counts
 $L_1,\ldots,L_r$ and total $n$. If each $L_i\ge k$, then
 \begin{equation}
  C_{\mathcal P}(\mathbf b)=\frac{F_r(n;\mathbf b)}{\bfac}.
- \label{eq:stable-C}
+ \label{spf:eq:stable-C}
 \end{equation}
 Thus, in this range, the answer depends on $n,r,\mathbf b$, but not on the
 individual path lengths.
@@ -336,7 +350,7 @@ For every integer $N$ and every profile,
 \begin{equation}
  [\mathbf z^{\mathbf b}]\frac{(1+W)^N}{\mathcal D}
      =\frac{\fall{(N-k)}c}{\bfac}.
- \label{eq:lagrange-id}
+ \label{spf:eq:lagrange-id}
 \end{equation}
 To prove this, replace every $z_\ell$ by $t z_\ell$ and put
 $\phi(w)=\sum z_\ell(1+w)^{-(\ell-1)}$. Then $W=t\phi(W)$ and
@@ -349,7 +363,7 @@ The change of formal residue variable $t=w/\phi(w)$ gives
 Indeed, the Jacobian factor cancels $1-t\phi'(W)$. The coefficient of
 $\mathbf z^{\mathbf b}$ in $\phi(w)^c$ is
 $c!(1+w)^{-k}/\bfac$. Taking $f(w)=(1+w)^N$ proves
-\eqref{eq:lagrange-id}.
+\eqref{spf:eq:lagrange-id}.
 
 \subsection{Proof of the stabilization theorem}
 
@@ -358,7 +372,7 @@ all. Ordering those tiles gives
 \begin{equation}
  C_L(\mathbf b)=\frac{(L-k)!}{(L-v)!\bfac}
               =\frac{\fall{(L-k)}c}{\bfac}.
- \label{eq:onepath}
+ \label{spf:eq:onepath}
 \end{equation}
 If $k\le L<v$, the falling factorial is zero, again giving the correct count.
 Consequently, through weighted edge degree $k\le L$, the actual tiling series
@@ -370,7 +384,7 @@ surrogates is therefore legitimate at the required coefficient. Their product
 is
 \begin{equation}
  \frac{(1+W)^n}{\mathcal D^r}.
- \label{eq:forest-surrogate}
+ \label{spf:eq:forest-surrogate}
 \end{equation}
 Expand the additional factor $\mathcal D^{-(r-1)}$. A selected subprofile
 $\mathbf a\le\mathbf b$, with $|\mathbf a|=h$, contributes
@@ -379,7 +393,7 @@ $\mathbf a\le\mathbf b$, with $|\mathbf a|=h$, contributes
  \prod_{\ell\ge2}(\ell-1)^{a_\ell}\mathbf z^{\mathbf a}
  \frac{(1+W)^{n-\sum\ell a_\ell}}{\mathcal D}.
 \end{equation}
-Applying \eqref{eq:lagrange-id} to the remaining profile gives
+Applying \eqref{spf:eq:lagrange-id} to the remaining profile gives
 \begin{equation}
  \frac{(-1)^h\rise{(r-1)}h
           \prod(\ell-1)^{a_\ell}}{\mathbf a!(\mathbf b-\mathbf a)!}
@@ -387,11 +401,11 @@ Applying \eqref{eq:lagrange-id} to the remaining profile gives
 \end{equation}
 Summing over subprofiles of size $h$ replaces the product of binomial
 coefficients by $E_h(\mathbf b)/\bfac$. This is exactly
-\eqref{eq:F}--\eqref{eq:stable-C}, proving \cref{thm:stable}.
+\eqref{spf:eq:F}--\eqref{spf:eq:stable-C}, proving \cref{spf:thm:stable}.
 \hfill$\square$
 
 \begin{corollary}[Stable factorial moments]
-\label{cor:stable-moments}
+\label{spf:cor:stable-moments}
 If the position forest has $r$ paths, the value forest has $s$ paths, every
 path has at least $k$ vertices, and $2k\le n$, then
 \begin{equation}
@@ -399,18 +413,18 @@ path has at least $k$ vertices, and $2k\le n$, then
  =\sum_{\mathbf b:\,\sum(\ell-1)b_\ell=k}
        \frac{\theta^c F_r(n;\mathbf b)F_s(n;\mathbf b)}
             {\bfac\,\fall nv}.
- \label{eq:stable-moment}
+ \label{spf:eq:stable-moment}
 \end{equation}
 For the ordinary offset model, this is exact whenever
 \begin{equation}
  k\le\min\left(\left\lfloor\frac nr\right\rfloor,
                \left\lfloor\frac ns\right\rfloor,
                \left\lfloor\frac n2\right\rfloor\right).
- \label{eq:stable-range}
+ \label{spf:eq:stable-range}
 \end{equation}
 \end{corollary}
 \begin{proof}
-Use \cref{thm:stable} on both tiling counts in \eqref{eq:exact-profile} and
+Use \cref{spf:thm:stable} on both tiling counts in \eqref{spf:eq:exact-profile} and
 extract $u^k$. The condition $2k\le n$ ensures $v=k+c\le n$ for every profile
 in the displayed sum.
 \end{proof}
@@ -419,30 +433,30 @@ As a first check, a single dimer has $F_r=n-r$, so, for
 $n\ge\max(r,s,2)$,
 \begin{equation}
  \E X=\frac{\theta(n-r)(n-s)}{n(n-1)}.
- \label{eq:exact-mean}
+ \label{spf:eq:exact-mean}
 \end{equation}
 The same formula follows directly by counting the available input and output
 edges.
 
 \section{Uniform bounds and beyond-all-orders universality}
-\label{sec:bounds}
+\label{spf:sec:bounds}
 
 An exact formula for fixed moments is not, by itself, enough to justify an
 asymptotic expansion of a probability. A bound uniform in the moment order is
 needed.
 
 \begin{lemma}[Uniform factorial-moment bound]
-\label{lem:moment-bound}
+\label{spf:lem:moment-bound}
 For either statistic and arbitrary path forests on $n\ge1$ vertices,
 \begin{equation}
  0\le\mu_k\le\frac{(\theta e^2)^k}{k!}\qquad(k\ge0).
- \label{eq:moment-bound}
+ \label{spf:eq:moment-bound}
 \end{equation}
 Consequently, for $|u|\le U$ and $a=\theta e^2U$,
 \begin{equation}
  \left|G(u)-\sum_{k=0}^{K}\mu_k u^k\right|
  \le e^a\frac{a^{K+1}}{(K+1)!}.
- \label{eq:moment-tail}
+ \label{spf:eq:moment-tail}
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -457,12 +471,12 @@ least the geometric mean of all $n$ factors. Also
 $n!\ge(n/e)^n$. Thus $\fall nv\ge(n/e)^v$, and the last probability is at most
 $\theta^k e^{2k}n^{-k}$, since $c\le k$ and $v\le2k$.
 There are at most $n^k/k!$ possible selected edge sets. Summing proves
-\eqref{eq:moment-bound}. Summing its exponential-series tail proves
-\eqref{eq:moment-tail}. For $k=0$ the assertion is immediate.
+\eqref{spf:eq:moment-bound}. Summing its exponential-series tail proves
+\eqref{spf:eq:moment-tail}. For $k=0$ the assertion is immediate.
 \end{proof}
 
 \begin{theorem}[Quantitative independence of long path lengths]
-\label{thm:universality}
+\label{spf:thm:universality}
 Consider two position--value forest pairs, each on $n$ vertices, with the same
 numbers $r$ and $s$ of paths. Suppose every path in both pairs has at least $K$
 vertices and $2K\le n$. Let $X$ and $\widetilde X$ be the corresponding
@@ -471,7 +485,7 @@ $a=\theta e^2(R+1)$,
 \begin{equation}
  \TV(\mathcal L(X),\mathcal L(\widetilde X))
  \le \frac{R}{R-1}\,e^a\frac{a^{K+1}}{(K+1)!}.
- \label{eq:TV-universality}
+ \label{spf:eq:TV-universality}
 \end{equation}
 If all path lengths are at least $\eta n$ for a fixed $\eta>0$, the right-hand
 side can be chosen to be
@@ -479,12 +493,12 @@ $\exp(-\eta' n\log n+\bigO(n))$ for every fixed
 $0<\eta'<\min(\eta,1/2)$.
 \end{theorem}
 \begin{proof}
-By Corollary~\ref{cor:stable-moments}, the two sets of factorial moments agree through
+By Corollary~\ref{spf:cor:stable-moments}, the two sets of factorial moments agree through
 order $K$. On the circle $|t|=R$, use $u=t-1$ in
-\eqref{eq:moment-tail}; the two ordinary probability generating functions differ
+\eqref{spf:eq:moment-tail}; the two ordinary probability generating functions differ
 by at most $2e^a a^{K+1}/(K+1)!$. Cauchy's coefficient inequality bounds the
 difference of the probabilities at $j$ by this quantity times $R^{-j}$.
-Sum over $j\ge0$ and divide by two to obtain \eqref{eq:TV-universality}.
+Sum over $j\ge0$ and divide by two to obtain \eqref{spf:eq:TV-universality}.
 Finally, take $K=\lfloor\eta'n\rfloor$ and use
 $\log(K!)=K\log K-K+\bigO(\log K)$.
 \end{proof}
@@ -495,7 +509,7 @@ bound does not identify the leading exponentially small difference between
 two particular forest geometries. That finer sector is left open.
 
 \section{A finite formula for every asymptotic coefficient}
-\label{sec:coefficients}
+\label{spf:sec:coefficients}
 
 \subsection{Normalization and the defect filtration}
 
@@ -506,13 +520,13 @@ Put $x=1/n$ and define
        \prod_{a=0}^{c-h-1}(1-(k+h+a)x),\\
  D_v(x)&=\prod_{a=0}^{v-1}(1-ax),\\
  Q_{\mathbf b}(x)&=\frac{f_{r,\mathbf b}(x)f_{s,\mathbf b}(x)}{D_v(x)}.
- \label{eq:Q}
+ \label{spf:eq:Q}
 \end{align}
 Then $f_{r,\mathbf b}(1/n)=n^{-c}F_r(n;\mathbf b)$, and a stabilized profile
 contributes
 \begin{equation}
  \frac{\theta^c u^k}{\bfac}\,n^{-d}Q_{\mathbf b}(1/n)
- \label{eq:normalized-profile}
+ \label{spf:eq:normalized-profile}
 \end{equation}
 to the generating function. This displays why defect $d>J$ cannot contribute
 to the coefficient of $n^{-J}$.
@@ -533,11 +547,11 @@ ordinary integer partitions of $d$: a component of length $\ell$ contributes a
 part $\ell-2$.
 
 \begin{lemma}[Polynomial dependence on the number of dimers]
-\label{lem:polynomial}
+\label{spf:lem:polynomial}
 For fixed $\boldsymbol\beta,j,r,s$,
 \begin{equation}
  P_{\boldsymbol\beta,j}(m):=[x^j]Q_{(m,\boldsymbol\beta)}(x)
- \label{eq:P}
+ \label{spf:eq:P}
 \end{equation}
 is a polynomial in $m$ over $\Q$ of degree at most $2j$. For positive integer
 $r,s$, it takes integer values at every $m\ge0$.
@@ -564,9 +578,9 @@ extension gives the same zero contribution. Equivalently one can define the
 consecutive power sums by their polynomial extensions before multiplying by
 $E_h$.
 
-Finally, for nonnegative $m$, the numerator polynomials in \eqref{eq:Q} have
+Finally, for nonnegative $m$, the numerator polynomials in \eqref{spf:eq:Q} have
 integer coefficients and $D_v^{-1}\in\Z[[x]]$. Hence every value in
-\eqref{eq:P} is an integer.
+\eqref{spf:eq:P} is an integer.
 \end{proof}
 
 \subsection{Poisson summation by finite differences}
@@ -579,13 +593,13 @@ Therefore the elementary identity
 \begin{equation}
  \sum_{m\ge0}\frac{z^m}{m!}P(m)
   =e^z\sum_{t=0}^{q}\frac{\Delta^tP(0)}{t!}z^t
- \label{eq:poisson-transform}
+ \label{spf:eq:poisson-transform}
 \end{equation}
 turns an infinite dimer sum into a finite polynomial. It follows either by
 summing each falling factorial, or by differentiating $e^z$ exactly $t$ times.
 
 \begin{definition}[Coefficient formula]
-\label{def:B}
+\label{spf:def:B}
 For $J\ge0$, define
 \begin{equation}
  \boxed{\displaystyle
@@ -596,7 +610,7 @@ For $J\ge0$, define
  \frac{\theta^C u^K}{\betafac}
  \sum_{t=0}^{2(J-d)}
  \frac{\Delta^t P_{\boldsymbol\beta,J-d}(0)}{t!}(\theta u)^t .}
- \label{eq:Bformula}
+ \label{spf:eq:Bformula}
 \end{equation}
 All sums on the right are finite.
 \end{definition}
@@ -606,31 +620,31 @@ proved degree bound, not a polynomial guess. No term $A(n)$ and no recurrence
 for $A(n)$ is needed to compute $B_J$.
 
 \section{Proof of the uniform all-orders expansion}
-\label{sec:proof}
+\label{spf:sec:proof}
 
-We now justify the asymptotic interpretation of \eqref{eq:Bformula}. This is
+We now justify the asymptotic interpretation of \eqref{spf:eq:Bformula}. This is
 the analytic step that a purely formal expansion of the profile formula would
 leave unresolved.
 
 \begin{lemma}[Uniform analytic bound for a profile]
-\label{lem:Qbound}
+\label{spf:lem:Qbound}
 For every profile of edge degree $k$, put
 $\rho_k=1/[8(k+1)^2]$. There is a constant $C_{r,s}$, independent of the
 profile and $k$, such that
 \begin{equation}
  \sup_{|x|\le\rho_k}|Q_{\mathbf b}(x)|\le C_{r,s}.
- \label{eq:Qbound}
+ \label{spf:eq:Qbound}
 \end{equation}
 One may take $C_{r,s}=e\,2^{r+s}$. In particular,
 \begin{equation}
  |[x^j]Q_{\mathbf b}(x)|\le C_{r,s}[8(k+1)^2]^j,
- \label{eq:Qcoeffbound}
+ \label{spf:eq:Qcoeffbound}
 \end{equation}
 and, if $n\ge16(k+1)^2$,
 \begin{equation}
  \left|Q_{\mathbf b}(1/n)-\sum_{j=0}^{q}[x^j]Q_{\mathbf b}(x)n^{-j}\right|
  \le2C_{r,s}\left(\frac{8(k+1)^2}{n}\right)^{q+1}.
- \label{eq:Qremainder}
+ \label{spf:eq:Qremainder}
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -651,22 +665,22 @@ $0\le a<v$, so
  |D_v(x)^{-1}|\le\exp\left(2\rho_k\sum_{a=0}^{v-1}a\right)
                  \le e^{4k^2\rho_k}.
 \end{equation}
-Combining these bounds gives \eqref{eq:Qbound} with the stated generous
+Combining these bounds gives \eqref{spf:eq:Qbound} with the stated generous
 constant. The denominator has no zero on the disk. Cauchy's coefficient bound
-then proves \eqref{eq:Qcoeffbound}, and its geometric tail at
-$1/n\le\rho_k/2$ proves \eqref{eq:Qremainder}.
+then proves \eqref{spf:eq:Qcoeffbound}, and its geometric tail at
+$1/n\le\rho_k/2$ proves \eqref{spf:eq:Qremainder}.
 \end{proof}
 
-\begin{proof}[Proof of \cref{thm:main}: analytic assertion]
+\begin{proof}[Proof of \cref{spf:thm:main}: analytic assertion]
 Fix $M,r,s,U$, and for sufficiently large $n$ choose
 \begin{equation}
  T_n=\left\lfloor\frac{(2M+4)\log n}{\log\log n}\right\rfloor.
 \end{equation}
-The factorial-moment tail \eqref{eq:moment-tail} with $K=T_n$ is
+The factorial-moment tail \eqref{spf:eq:moment-tail} with $K=T_n$ is
 $n^{-(2M+4)+o(1)}$, hence is $\bigO(n^{-M-1})$. For fixed offsets, every
 position and value path has more than $T_n$ vertices eventually. Also
 $2T_n\le n$ and $16(T_n+1)^2\le n$. Thus all retained moments are given
-exactly by \eqref{eq:stable-moment}, and Lemma~\ref{lem:Qbound} applies to every
+exactly by \eqref{spf:eq:stable-moment}, and Lemma~\ref{spf:lem:Qbound} applies to every
 retained profile.
 
 \emph{High defect.} The sum of absolute profile weights, marked by their defect,
@@ -675,29 +689,29 @@ has the convergent generating function
  \sum_{\mathbf b}\frac{\theta^c U^k}{\bfac}z^d
  =\exp\left(\sum_{q\ge1}\theta U^q z^{q-1}\right)
  =\exp\left(\frac{\theta U}{1-Uz}\right).
- \label{eq:defect-majorant}
+ \label{spf:eq:defect-majorant}
 \end{equation}
 For $U=0$ the assertion is immediate; otherwise use a disk strictly inside
 $|z|<1/U$. Its Taylor tail of degree $M$ at $z=1/n$ is
-$\bigO(n^{-M-1})$. Together with \eqref{eq:Qbound}, this bounds all retained
+$\bigO(n^{-M-1})$. Together with \eqref{spf:eq:Qbound}, this bounds all retained
 profiles of defect $d\ge M+1$ by $\bigO(n^{-M-1})$.
 
 \emph{Low defect.} For each $d\le M$, there are only finitely many
 $\boldsymbol\beta$. Expand $Q_{(m,\boldsymbol\beta)}$ through order $M-d$.
-By \eqref{eq:Qremainder}, after multiplying by $n^{-d}$ the error is bounded
+By \eqref{spf:eq:Qremainder}, after multiplying by $n^{-d}$ the error is bounded
 by $n^{-M-1}$ times a fixed polynomial in $m$ times
 $(\theta U)^m/m!$, with a constant depending only on the fixed parameters
 and $\boldsymbol\beta$. The sum over $m$ is finite uniformly in $n$. This is
 why no extra power of $\log n$ appears in the remainder.
 
 We may now extend the retained dimer sums to $m=\infty$. Indeed, for each
-retained coefficient, \eqref{eq:Qcoeffbound} bounds the omitted summands by a
+retained coefficient, \eqref{spf:eq:Qcoeffbound} bounds the omitted summands by a
 polynomial in $m$ times $(\theta U)^m/m!$. Since $k=m+K>T_n$ implies
 $m>T_n-K$, their tails are again
 $n^{-(2M+4)+o(1)}$. Summing each polynomial in $m$ by
-\eqref{eq:poisson-transform} gives exactly \eqref{eq:Bformula}. The total error
+\eqref{spf:eq:poisson-transform} gives exactly \eqref{spf:eq:Bformula}. The total error
 is $\bigO(n^{-M-1})$, uniformly on $|u|\le U$. This proves
-\eqref{eq:main} and, on setting $u=-1$, \eqref{eq:avoidance-expansion}.
+\eqref{spf:eq:main} and, on setting $u=-1$, \eqref{spf:eq:avoidance-expansion}.
 \end{proof}
 
 The proof also works for any fixed numbers $r,s$ of paths whose shortest
@@ -706,24 +720,24 @@ uniformity for arbitrarily growing offsets or for forests with a bounded
 short path.
 
 \section{Arithmetic, first corrections, and the full distribution}
-\label{sec:arithmetic}
+\label{spf:sec:arithmetic}
 
 \subsection{Degree and denominator control}
 
 \begin{proposition}[Arithmetic of the correction polynomials]
-\label{prop:arithmetic}
-The structural assertions \eqref{eq:arithmetic-preview} hold.
+\label{spf:prop:arithmetic}
+The structural assertions \eqref{spf:eq:arithmetic-preview} hold.
 \end{proposition}
 \begin{proof}
 For a defect-$d$ profile, $C\le d$ and $K\le2d$. A term in
-\eqref{eq:Bformula} has $u$-degree at most
+\eqref{spf:eq:Bformula} has $u$-degree at most
 $K+2(J-d)\le2J$. The formula is symmetric in $r,s$ because $Q_{\mathbf b}$ is.
 For $J=0$ it gives $B_0=1$. When $J>0$, any nonempty
 $\boldsymbol\beta$ contributes positive $u$-degree. For the empty profile the
 constant term is $P_{\varnothing,J}(0)=0$, since the completely empty
 $\mathbf b$ has $Q_{\mathbf b}=1$. Thus $B_J(0)=0$.
 
-By Lemma~\ref{lem:polynomial}, every $\Delta^tP(0)$ is an integer. A summand's only
+By Lemma~\ref{spf:lem:polynomial}, every $\Delta^tP(0)$ is an integer. A summand's only
 possible denominator is $t!\betafac$. This divides $(t+C)!$, by the
 multinomial coefficient, and
 \begin{equation}
@@ -735,7 +749,7 @@ therefore gives a polynomial over $\Z$.
 
 This denominator bound is unconditional. It is deliberately weaker than
 claiming all the oriented coefficients themselves are integers; that stronger
-phenomenon is discussed in \cref{sec:collapse}.
+phenomenon is discussed in \cref{spf:sec:collapse}.
 
 \subsection{The first two corrections}
 
@@ -746,12 +760,12 @@ For the dimer-only profile,
 \end{equation}
 The only defect-one profile is a single component of length three, with
 $C=1$, $K=2$, and $P_{\boldsymbol\beta,0}=1$. Applying
-\eqref{eq:poisson-transform} immediately gives \eqref{eq:B1}. For $\theta=1$,
+\eqref{spf:eq:poisson-transform} immediately gives \eqref{spf:eq:B1}. For $\theta=1$,
 a calculation of the four profile types of defect at most two gives
 \begin{equation}
  B_2^{(1)}(u;r,s)
  =(r-1)(s-1)u+\binom{r+s-1}{2}u^2.
- \label{eq:B2-oriented}
+ \label{spf:eq:B2-oriented}
 \end{equation}
 For completeness, the required dimer-only polynomial is
 \begin{equation}
@@ -766,7 +780,7 @@ For one length-three component,
 $P_{\boldsymbol\beta,1}(m)=-m^2-(r+s)m+3-2r-2s$.
 The defect-two profiles are one length-four component or two length-three
 components; both have $P_{\boldsymbol\beta,0}=1$. These data and
-\eqref{eq:Bformula} verify \eqref{eq:B2-oriented} directly.
+\eqref{spf:eq:Bformula} verify \eqref{spf:eq:B2-oriented} directly.
 
 In the absolute case a useful general expression is
 \begin{equation}
@@ -774,11 +788,49 @@ In the absolute case a useful general expression is
  B_2^{(2)}(u;r,s)={}&2(r-1)(s-1)u
  +2\bigl((r+s)^2-r-s-1\bigr)u^2\\
  &+2(2r+2s-1)u^3+2u^4.
- \label{eq:B2-absolute}
+ \label{spf:eq:B2-absolute}
  \end{split}
 \end{equation}
-Thus \eqref{eq:tauraso} is recovered as a special case of the first correction,
+Thus \eqref{spf:eq:tauraso} is recovered as a special case of the first correction,
 while the theorem supplies every later order.
+
+\begin{remark}[Offsets $(1,1)$: two classical sequences]
+\label{spf:rem:offsets-one-one}
+[Added 1 October 2026, batch 73O2.] The manuscript does not discuss the
+smallest offsets, which give two classical sequences. The intake ran
+the shipped coefficient generator \texttt{code/path\_forests.py} on a copy with
+\texttt{--r 1 --s 1 --order 10}.
+\begin{itemize}
+\item \emph{Oriented case, no successions.} Here
+ $A^{(1)}_{1,1}(n)$ counts permutations of $[n]$ with no $\pi(i+1)=\pi(i)+1$,
+ which is $\textnormal{A000255}(n-1)=D_n+D_{n-1}$ with $D_n$ the derangement
+ numbers~\cite{oeis000255}. The formula gives
+ $c_J^{(1)}(1,1)=1,1,0,0,\ldots,0$ for $J=0,\ldots,10$. This is consistent
+ with $(D_n+D_{n-1})/n!=e^{-1}(1+1/n)+\bigO(1/n!)$, so every later
+ coefficient is zero as well.
+\item \emph{Absolute case, Hertzsprung's problem.} Here
+ $A^{(2)}_{1,1}(n)$ is \textnormal{A002464}, the number of permutations with
+ no rising or falling succession~\cite{oeis002464}. The formula gives
+ \begin{gather*}
+ c_J^{(2)}(1,1)=1,\ 0,\ -2,\ -\tfrac{10}{3},\ -6,\ -\tfrac{154}{15},\
+ -\tfrac{88}{9},\\
+ \tfrac{5336}{105},\ \tfrac{1612}{3},\
+ \tfrac{2098234}{567},\ \tfrac{36500686}{1575}\qquad(J=0,\ldots,10).
+ \end{gather*}
+ These are, term for term, the Abramson--Moser expansion displayed in the
+ OEIS entry (computed by Kotesovec, 2011, extended 2020), through $n^{-10}$.
+\end{itemize}
+Both cases agree with $c_1=\theta(r+s-\theta)$ of \eqref{spf:eq:avoidance-expansion}.
+As an independent check, the intake computed both sequences exactly to
+$n=800$, from the recurrences printed in the two OEIS entries (themselves
+checked against brute-force enumeration for $n\le8$). It found the scaled
+residuals $n^{M+1}\bigl(e^{\theta}A(n)/n!-\sum_{j\le M}c_jn^{-j}\bigr)$ for
+$M=4,8$ approaching $c_{M+1}$ at $n=200,400,800$. These finite checks are
+evidence; the proof is \cref{spf:thm:main}. The theorem covers the pair
+$(1,1)$, and the manuscript's brute-force tests already include it (it is one
+of the six offset pairs of \cref{spf:sec:computation}). Only the comparison
+with the two OEIS entries is new here.
+\end{remark}
 
 \subsection{Poisson corrections for all probabilities}
 
@@ -787,7 +839,7 @@ function. Write $B_J(u)=\sum_h b_{J,h}u^h$ and define
 \begin{equation}
  H_h(q;\theta)=\sum_{i=0}^{\min(h,q)}
       \binom hi(-1)^{h-i}\frac{\fall qi}{\theta^i}.
- \label{eq:Charlier}
+ \label{spf:eq:Charlier}
 \end{equation}
 These are a normalization of the Charlier correction polynomials.
 Direct coefficient extraction gives
@@ -799,24 +851,24 @@ Consequently define the signed approximation
 \begin{equation}
  p_M(q)=e^{-\theta}\frac{\theta^q}{q!}
    \sum_{J=0}^{M}\frac1{n^J}\sum_h b_{J,h}H_h(q;\theta).
- \label{eq:pmf}
+ \label{spf:eq:pmf}
 \end{equation}
 
 \begin{corollary}[An all-orders approximation of the entire law]
-\label{cor:distribution}
+\label{spf:cor:distribution}
 For fixed $M,r,s,\theta$,
 \begin{equation}
  \sum_{q\ge0}\left|\Pp(X^{(\theta)}_{r,s,n}=q)-p_M(q)\right|
  =\bigO(n^{-M-1}).
- \label{eq:l1}
+ \label{spf:eq:l1}
 \end{equation}
 In particular the law converges in total variation to
 $\mathrm{Poisson}(\theta)$, with error $\bigO(n^{-1})$.
 \end{corollary}
 \begin{proof}
-Apply \cref{thm:main} on $|t|=R>1$, using $u=t-1$. Cauchy's inequality gives
+Apply \cref{spf:thm:main} on $|t|=R>1$, using $u=t-1$. Cauchy's inequality gives
 an error $\bigO(n^{-M-1}R^{-q})$ in the coefficient of $t^q$. Summing the
-geometric series proves \eqref{eq:l1}.
+geometric series proves \eqref{spf:eq:l1}.
 \end{proof}
 
 For $M\ge1$, $p_M$ need not be nonnegative at every $q$, so it is a signed
@@ -824,7 +876,7 @@ asymptotic approximation, not a new probability model. It nevertheless has
 total mass one, because $B_0(0)=1$ and $B_J(0)=0$ for $J>0$.
 
 \section{The two OEIS expansions, unconditionally}
-\label{sec:OEIS-results}
+\label{spf:sec:OEIS-results}
 
 \subsection{A189281: oriented distance-two avoidance}
 
@@ -850,7 +902,7 @@ Setting $u=-1$ in these polynomials proves
  +\frac3{n^5}+\frac{26}{n^6}+\frac{101}{n^7}+\frac{124}{n^8}\\
  &-\frac{1409}{n^9}-\frac{13266}{n^{10}}+\bigO(n^{-11})\biggr).
  \end{split}
- \label{eq:A189281}
+ \label{spf:eq:A189281}
 \end{equation}
 The coefficient of $n^{-4}$ is exactly zero. The terms through $n^{-10}$
 agree with the recurrence-dependent list in the OEIS~\cite{oeis189281};
@@ -876,7 +928,7 @@ It follows that
   +\frac{32213578294}{14175n^{10}}
   +\bigO(n^{-11})\biggr).
  \end{split}
- \label{eq:A110128}
+ \label{spf:eq:A110128}
 \end{equation}
 This recovers the higher list attributed to the guessed operator in the
 OEIS~\cite{oeis110128}, again by a direct argument from the permutation model.
@@ -904,18 +956,42 @@ $J$ & $c_J^{(1)}(2,2)$ & $c_J^{(2)}(2,2)$\\
 \caption{Exact evaluations of the finite coefficient formula beyond the
 order-ten lists. The accompanying JSON includes every polynomial $B_J$ through
 order sixteen, not only its value at $u=-1$.}
-\label{tab:extra}
+\label{spf:tab:extra}
 \end{table}
 
 For any fixed $M$, adding terms through $c_Mn^{-M}$ gives a remainder
 $\bigO(n^{-M-1})$ inside the parentheses. This is a Poincar\'e statement with
 $M$ fixed as $n\to\infty$. It does not establish convergence of the infinite
 series, justify setting $M$ proportional to $n$, or identify an optimal
-truncation rule. The exact finite coefficients in \cref{tab:extra} are supplied
+truncation rule. The exact finite coefficients in \cref{spf:tab:extra} are supplied
 with their generating code rather than inferred from a numerical fit.
 
 \section{Lambert-\texorpdfstring{$W$}{W} inversion with a discrete interpretation}
-\label{sec:inverse}
+\label{spf:sec:inverse}
+
+\begin{remark}[Relation to the repository's inversion apparatus]
+\label{spf:rem:inverse-apparatus}
+[Added 1 October 2026, batch 73O2.] This section re-derives, for its own
+forward map, machinery that the canonical volume \emph{Transseries and
+Inversion} of the ProveIt repository already contains~\cite{tai}, and the
+manuscript does not cite it. The forward map
+$e^{-\theta}\Gamma(n+1)C(1/n)$ is the gamma carrier of that volume's chapter
+on the increasing inverse of Gamma (theorem ``All-orders expansion of
+$\Gamma_+^{-1}$'', label \texttt{p6:thm:gamma}), perturbed by a power series
+in $1/n$, which is the situation of its theorem ``Perturbed inversion''
+(\texttt{p0:thm:perturbed-inversion}). The volume's chapter ``The
+subfactorial'' (\texttt{p8:sec:top}) treats the closest analogue, the
+derangement numbers, by citing that carrier. Normalizations differ: here
+$z=L/W_0(L/e)$ with $L=\log y$, and the constant $\tfrac12\log(2\pi)$ sits in
+$\kappa_\theta$; the volume uses $R=\log y-\tfrac12\log(2\pi)$ and
+$T=R/W_0(R/e)$. The discussion of integer thresholds at the end of the
+section is an instance of the volume's staircase theorem
+(\texttt{p0:thm:staircase}). \Cref{spf:thm:inverse-first,spf:thm:inverse-all}
+are therefore printed as a self-contained second route for this family of
+sequences. No novelty is claimed for the inversion method; what is specific
+to this report is the forward input, the coefficients $c_j$ of
+\cref{spf:thm:main}.
+\end{remark}
 
 \subsection{Logarithmic coefficients}
 
@@ -929,7 +1005,7 @@ The right side is a formal asymptotic series. Define
 $\log C(x)=\sum_{j\ge1}\ell_jx^j$. An explicit coefficient recursion is
 \begin{equation}
  \ell_j=c_j-\frac1j\sum_{k=1}^{j-1}k\ell_k c_{j-k}.
- \label{eq:log-recursion}
+ \label{spf:eq:log-recursion}
 \end{equation}
 Combining the proved probability expansion with Stirling's expansion, in its
 usual remainder-controlled form~\cite{dlmfGamma}, yields
@@ -937,13 +1013,13 @@ usual remainder-controlled form~\cite{dlmfGamma}, yields
  \log A(n)
  =n\log n-n+\tfrac12\log n+\kappa_\theta
        +\sum_{j=1}^{M}a_jn^{-j}+\bigO(n^{-M-1}),
- \label{eq:logA}
+ \label{spf:eq:logA}
 \end{equation}
 where
 \begin{equation}
  \kappa_\theta=\tfrac12\log(2\pi)-\theta,\qquad
  a_j=\ell_j+\frac{\mathsf B_{j+1}}{j(j+1)}.
- \label{eq:a-coeff}
+ \label{spf:eq:a-coeff}
 \end{equation}
 Here $\mathsf B_m$ are Bernoulli numbers; the additional term vanishes for
 even $j$. For A189281,
@@ -958,13 +1034,13 @@ For A110128, $a_1=49/12$.
 Given $y=A(n)$, let $L=\log y$ and
 \begin{equation}
  z=\frac{L}{W_0(L/e)},\qquad w=\log z.
- \label{eq:Lambert}
+ \label{spf:eq:Lambert}
 \end{equation}
 The principal Lambert function is characterized by $W_0(x)e^{W_0(x)}=x$
 for $x>0$~\cite{dlmfW}. Thus $z(\log z-1)=L$ exactly.
 
 \begin{theorem}[First inverse corrections]
-\label{thm:inverse-first}
+\label{spf:thm:inverse-first}
 Along the sequence values $y=A(n)$ as $n\to\infty$,
 \begin{equation}
  \boxed{\displaystyle
@@ -972,13 +1048,13 @@ Along the sequence values $y=A(n)$ as $n\to\infty$,
      -\frac1z\left(\frac{c_1-1/24}{w}
                     +\frac{\kappa_\theta^2}{2w^3}\right)
      +\bigO\left(\frac1{z^2w}\right).}
- \label{eq:inverse-first}
+ \label{spf:eq:inverse-first}
 \end{equation}
 For A189281 the coefficient $c_1-1/24$ is $71/24$; for A110128 it is $95/24$.
 \end{theorem}
 \begin{proof}
 Set $n=z+D$. The derivative of $x\log x-x$ at $z$ is $w$, and its second
-derivative is $1/z$. The constant-order terms of \eqref{eq:logA}, after
+derivative is $1/z$. The constant-order terms of \eqref{spf:eq:logA}, after
 subtracting $L$, give
 $wD+\tfrac12w+\kappa_\theta=0$, hence
 $D=d_0=-1/2-\kappa_\theta/w$ at that order. The coefficient of $z^{-1}$ is
@@ -1004,7 +1080,7 @@ Put $t=1/z$ and seek $D(t,w)=\sum_{j\ge0}d_j(w)t^j$. Define
  +\frac12\log(1+tD)\\
  &+\sum_{j\ge1}a_jt^j(1+tD)^{-j}.
  \end{split}
- \label{eq:H-inverse}
+ \label{spf:eq:H-inverse}
 \end{equation}
 The quotient by $t$ is a formal series divisible by $t$, so no singular
 constant term occurs. The inverse equation is
@@ -1016,20 +1092,20 @@ It gives the triangular recursion
  d_0(w)&=-\tfrac12-\kappa_\theta/w,\\
  d_j(w)&=-\frac1w[t^j]\mathcal H\left(t,\sum_{q=0}^{j-1}d_q(w)t^q\right)
              \qquad(j\ge1).
- \label{eq:inverse-recursion}
+ \label{spf:eq:inverse-recursion}
 \end{align}
 Only $a_1,\ldots,a_j$ enter the $j$th step.
 
 \begin{theorem}[All-orders index inversion]
-\label{thm:inverse-all}
-For every fixed $J\ge0$, the functions in \eqref{eq:inverse-recursion} are
+\label{spf:thm:inverse-all}
+For every fixed $J\ge0$, the functions in \eqref{spf:eq:inverse-recursion} are
 rational in $w$, with coefficients in $\Q[\kappa_\theta]$ for the rational
 forward coefficients considered here, and
 \begin{equation}
  n=z+\sum_{j=0}^{J}\frac{d_j(w)}{z^j}
        +\bigO\left(\frac1{z^{J+1}w}\right),
  \qquad y=A(n).
- \label{eq:inverse-all}
+ \label{spf:eq:inverse-all}
 \end{equation}
 Moreover, $d_0=\bigO(1)$ and $d_j=\bigO(1/w)$ for $j\ge1$ as $w\to\infty$.
 \end{theorem}
@@ -1039,7 +1115,7 @@ induction. Since $\mathcal H$ has no $t^0$ term, its coefficient of $t^j$
 depends only on the earlier $d_q$, and stays bounded when those earlier
 coefficients are bounded. Dividing by $w$ proves the stated size bounds.
 
-Fix $J$ and retain sufficiently many terms of \eqref{eq:logA}. Substitution
+Fix $J$ and retain sufficiently many terms of \eqref{spf:eq:logA}. Substitution
 of the truncated $D$ cancels every term through $z^{-J}$, leaving a residual
 $\bigO(z^{-J-1})$. All relevant derivatives of the finite logarithmic model
 are controlled on a bounded neighborhood of $z+d_0$, and its first derivative
@@ -1047,7 +1123,7 @@ is $\log z+\bigO(1/z)$. The actual index is in such a neighborhood: the leading
 term first gives $n/z\to1$, and then the mean value theorem applied to
 $n\log n-n-z\log z+z=\bigO(\log n)$ gives $n-z=\bigO(1)$.
 A further application of the mean value theorem divides the residual by a
-quantity asymptotic to $w$, proving \eqref{eq:inverse-all}.
+quantity asymptotic to $w$, proving \eqref{spf:eq:inverse-all}.
 \end{proof}
 
 \subsection{What is being inverted}
@@ -1072,17 +1148,25 @@ For an integer threshold $N(y)=\min\{n:A(n)\ge y\}$, an asymptotic estimate
 alone does not justify unconditional nearest-integer rounding near a jump.
 Certified bounds for $A(n)$ can resolve the remaining adjacent candidates.
 The Bonferroni method in the next section provides one such tool.
+[Added 1 October 2026, batch 73O2: the general form of this remark, exact
+rounding $N(y)=\lceil\nu(y)\rceil$ for an increasing interpolation $\nu$ and the
+separation condition under which an approximate inverse decides it, is the
+staircase theorem \texttt{p0:thm:staircase} of~\cite{tai}. Its separation
+step is formalized in Lean as \texttt{Fabius.staircase\_separation} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean}.
+That formalization is context only; it does not verify any statement of this
+report.]
 
 \section{Reproducible computations and exact certificates}
-\label{sec:computation}
+\label{spf:sec:computation}
 
 \subsection{Coefficient generation}
 
 The core implementation, \texttt{code/path\_forests.py}, uses only the Python
 standard library. It forms the numerator factors and reciprocal denominator
-in \eqref{eq:Q} as truncated integer polynomials; evaluates
+in \eqref{spf:eq:Q} as truncated integer polynomials; evaluates
 $P_{\boldsymbol\beta,j}(m)$ at the proved sufficient set of integers; takes
-forward differences; and assembles \eqref{eq:Bformula} using exact rational
+forward differences; and assembles \eqref{spf:eq:Bformula} using exact rational
 arithmetic. The work depends on the requested asymptotic order, not on a large
 sequence index $n$.
 
@@ -1118,11 +1202,11 @@ $n$ or arbitrary expansion order.
 
 \subsection{Bonferroni probability intervals}
 
-When \eqref{eq:stable-range} holds through $2q+1$, exact factorial moments give
+When \eqref{spf:eq:stable-range} holds through $2q+1$, exact factorial moments give
 \begin{equation}
  S_{2q+1}\le\Pp(X=0)\le S_{2q},\qquad
  S_j=\sum_{k=0}^{j}(-1)^k\mu_k.
- \label{eq:bonferroni}
+ \label{spf:eq:bonferroni}
 \end{equation}
 For completeness, this follows pointwise from
 $\sum_{k=0}^{j}(-1)^k\binom{x}{k}=(-1)^j\binom{x-1}{j}$ when $x\ge1$,
@@ -1137,7 +1221,7 @@ error intervals is rational. The quantity displayed below is
 \begin{equation}
  E_M(n)=n^{M+1}\left(e^{\theta}\frac{A^{(\theta)}_{2,2}(n)}{n!}
                        -\sum_{j=0}^{M}c_jn^{-j}\right).
- \label{eq:scaled-error}
+ \label{spf:eq:scaled-error}
 \end{equation}
 By the theorem its limit is $c_{M+1}$.
 
@@ -1160,7 +1244,7 @@ $\theta$ & $n$ & Certified interval for $E_4(n)$ & Certified interval for $E_8(n
 $\theta=1$, and $1692/5,186091480/567$ for $\theta=2$. The intervals certify
 these finite residuals; their convergence is a consequence of the proof, not
 an inference from three samples.}
-\label{tab:certificates}
+\label{spf:tab:certificates}
 \end{table}
 
 The archive includes the unrounded rational endpoints and additional
@@ -1174,7 +1258,7 @@ it without using a guessed recurrence.
 
 Using exact enumerated sequence values at $n=20$, the Lambert backbone $z$
 has index errors about $0.52023$ for A189281 and $0.20749$ for A110128.
-Including both displayed correction levels in \eqref{eq:inverse-first}
+Including both displayed correction levels in \eqref{spf:eq:inverse-first}
 reduces these to approximately $-0.00066084$ and $0.00089419$, respectively.
 These are numerical diagnostics, not certified rounding guarantees.
 
@@ -1183,9 +1267,12 @@ and rational-certificate programs need no third-party package. The optional
 rational-identity exploration uses SymPy 1.14.0; the inverse diagnostic uses
 mpmath 1.3.0. The commands and expected outputs are recorded in the archive's
 README. No Lean code was executed or supplied as an asserted formal proof.
+[Added 1 October 2026, batch 73O2: the delivered README is not shipped. The
+report's \texttt{README.md} replaces it and gives rerun commands for the
+shipped layout; see \cref{spf:app:provenance}.]
 
 \section{A sharper conjecture suggested by the exact computations}
-\label{sec:collapse}
+\label{spf:sec:collapse}
 
 There is a striking simplification in the oriented $(2,2)$ case that is not
 needed by any preceding theorem. Define the universal rational moments
@@ -1198,7 +1285,7 @@ moments whenever the stability conditions hold. Remove the leading Poisson
 factor by setting
 \begin{equation}
  R_h(n)=\sum_{k=0}^{h}\frac{(-1)^{h-k}}{(h-k)!}\mu_k^*(n).
- \label{eq:R}
+ \label{spf:eq:R}
 \end{equation}
 Exact finite algebra gives
 \begin{align}
@@ -1209,12 +1296,12 @@ Exact finite algebra gives
 \end{align}
 
 \begin{conjecture}[Rational collapse]
-\label{conj:collapse}
+\label{spf:conj:collapse}
 For every $h\ge4$,
 \begin{equation}
  R_h(n)=\frac{24\,\fall{(n-h+1)}{h-4}}{\fall n{2h}}
        =\frac{24}{\fall n{h-1}\,\fall{(n-2h+5)}5}.
- \label{eq:collapse}
+ \label{spf:eq:collapse}
 \end{equation}
 \end{conjecture}
 
@@ -1229,14 +1316,14 @@ The proposed formula would imply the recurrence
  \frac{R_{h+1}(n)}{R_h(n)}
  =\frac{(n-2h+5)(n-2h+4)}{(n-h+1)(n-2h)(n-2h-1)}
  \qquad(h\ge4).
- \label{eq:R-ratio}
+ \label{spf:eq:R-ratio}
 \end{equation}
-Proving \eqref{eq:R-ratio} directly from \eqref{eq:R} is therefore a sharply
+Proving \eqref{spf:eq:R-ratio} directly from \eqref{spf:eq:R} is therefore a sharply
 specified next target.
 
 \begin{proposition}[What the rational collapse would imply]
-\label{prop:collapse-implication}
-If Conjecture~\ref{conj:collapse} holds, then
+\label{spf:prop:collapse-implication}
+If Conjecture~\ref{spf:conj:collapse} holds, then
 $B_J^{(1)}(u;2,2)\in\Z[u]$ for every $J$, and therefore all
 $c_J^{(1)}(2,2)$ are integers. For $J\ge4$ it would also give
 \begin{equation}
@@ -1250,7 +1337,7 @@ product of factors $(1-ax)^{-1}$ with nonnegative integers $a$, after
 cancellation. It too has integer coefficients and begins at degree $h+4$.
 At any fixed power $x^J$, only finitely many of these $R_h$ can contribute.
 
-By \eqref{eq:R}, the coefficient of $u^h$ in the Poisson-normalized stable
+By \eqref{spf:eq:R}, the coefficient of $u^h$ in the Poisson-normalized stable
 moment series is $R_h(n)$. Comparing with the already proved coefficient
 formula gives
 $B_J^{(1)}(u;2,2)=\sum_h[x^J]R_h(1/x)u^h$.
@@ -1263,13 +1350,13 @@ integrality into a more structured rational-function identity, making it
 more approachable than a bare statement about an infinite list of integers.
 
 \section{Further research questions and proposed next steps}
-\label{sec:questions}
+\label{spf:sec:questions}
 
 \paragraph{1. Prove or refute the rational collapse.}
 The most concrete next step is an identity in two symbolic parameters rather
-than a fit to sequence values. Clear denominators in \eqref{eq:R}, organize
+than a fit to sequence values. Clear denominators in \eqref{spf:eq:R}, organize
 profiles by their component count, and seek a telescoping proof of
-\eqref{eq:R-ratio}. A combinatorial cancellation proof would be particularly
+\eqref{spf:eq:R-ratio}. A combinatorial cancellation proof would be particularly
 valuable: it should explain both the factor $24$ and the loss of four powers
 of $n$ beyond the moment index. A failure at some later $h$ would also be
 informative, because the first discrepancy would identify a missing component
@@ -1286,7 +1373,7 @@ with the listed operators. All boundary terms must be proved, not discarded
 because their numerical influence is small.
 
 \paragraph{3. Identify the first geometry-dependent exponential sector.}
-Theorem~\ref{thm:universality} shows that long path-length differences are
+Theorem~\ref{spf:thm:universality} shows that long path-length differences are
 invisible to every algebraic order. It does not give their leading amplitude,
 sign, or possible dependence on $n$ modulo the offsets. The first profiles
 that can see a short boundary have edge degree comparable to the shortest
@@ -1381,6 +1468,72 @@ program, two optional exploratory programs, and their outputs. The README gives
 commands to reproduce the computations and compile the article. The symbolic
 collapse script asserts only its explicitly bounded range of identities; its
 success is not presented as an infinite proof.
+[Added 1 October 2026, batch 73O2: in the shipped report the compiled PDF is
+a new build of this text, and the archive's README is replaced by the report
+README; \cref{spf:app:provenance} lists what is shipped.]
+
+\section{Provenance and editorial notes}
+\label{spf:app:provenance}
+
+[Added 1 October 2026, batch 73O2.]
+
+\paragraph{Source.}
+The report was built from one manuscript, manuscript~60 of batch~73 of
+ProveIt's incoming-reports intake: the archive \texttt{oeis\_path\_forests.zip}
+(main file \texttt{article.tex}, a 21-page PDF titled \emph{Unconditional
+all-orders asymptotics for two OEIS permutation sequences}). It arrived in
+commit \texttt{aa43cc555} and was placed in commit \texttt{6e193dd4f}, which
+deleted the archive from \texttt{docs/incoming}; it survives in
+\texttt{aa43cc555}. The manuscript pins no repository revision. It cites the
+repository only by the path of the Fabius completion audit~\cite{proveit},
+which it uses as an editorial example and calls ``not a dependency''. This
+report does not continue that audit, and nothing was filed in the Fabius tree.
+
+\paragraph{What the write changed.}
+\begin{itemize}
+\item Every label gained the prefix \texttt{spf:}; no label was renamed
+ otherwise and none was removed. The manuscript had 78 labels.
+\item Added: the editorial note after the status paragraph;
+ Remark~\ref{spf:rem:offsets-one-one} on the offsets $(1,1)$ (A000255 and
+ A002464); Remark~\ref{spf:rem:inverse-apparatus} on the repository's inversion
+ apparatus; bracketed notes on Padhi's preprint, on integer thresholds and on
+ the shipped files; three bibliography entries~\cite{oeis000255,oeis002464,tai};
+ and this section.
+\item Nothing was removed. Every non-claim of the manuscript is kept: the status
+ paragraph, the Poincar\'e-only reading of Table~\ref{spf:tab:extra}, the
+ limitation after \cref{spf:thm:universality}, the fixed-offset limitation
+ after the proof of \cref{spf:thm:main}, the conditional nature of
+ Proposition~\ref{spf:prop:collapse-implication}, and the statement that the
+ recurrences of A189281 and A110128 are not proved.
+\end{itemize}
+
+\paragraph{Status of the conjecture.}
+Conjecture~\ref{spf:conj:collapse} (rational collapse) is a conjecture. It has been
+checked as an identity of rational functions for $h=4,\ldots,16$ only, and the
+integrality of every $c_J^{(1)}(2,2)$ is conditional on it
+(Proposition~\ref{spf:prop:collapse-implication}).
+
+\paragraph{Overloaded letters.}
+The manuscript reuses a few letters; none is renamed here. $C$ is a tiling
+count $C_{\mathcal P}(\mathbf b)$ in \cref{spf:sec:tilings,spf:sec:stable}, the
+number of non-dimer components in \cref{spf:sec:coefficients}, a constant
+$C_{r,s}$ in Lemma~\ref{spf:lem:Qbound}, and the series $C(x)$ in
+\cref{spf:sec:inverse}. $K$ is a moment cutoff in
+Lemma~\ref{spf:lem:moment-bound} and Theorem~\ref{spf:thm:universality} but the edge degree of the
+non-dimer part of a profile in \cref{spf:sec:coefficients}. $d$ is the
+defect of a profile, while $d_j(w)$ are the inverse coefficients of
+\cref{spf:sec:inverse}. $\mathcal D$ is a formal series in
+\cref{spf:sec:stable} and $D$ the index correction in \cref{spf:sec:inverse}.
+In each case the section determines the meaning.
+
+\paragraph{Checks by the intake.}
+The intake reran every shipped program on a copy (all passed; the
+regenerated outputs equal the shipped ones apart from line endings, a final
+newline and timings), recounted both sequences for $n\le9$ by brute force,
+compared the two order-ten expansions with the OEIS entries digit for digit,
+rederived $d_1$ in \cref{spf:thm:inverse-first} by hand, and made the
+$(1,1)$ checks of Remark~\ref{spf:rem:offsets-one-one}. These checks do not
+replace an independent review of the proofs.
 
 \begin{thebibliography}{99}
 \bibitem{oeis189281}
@@ -1433,5 +1586,28 @@ V. Reshetnikov, \emph{ProveIt}, repository and asymptotic completion audit:\\
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
 Repository material inspected 1 October 2026. Used as project context and an
 example of separating asymptotic assertions from their verification status.
+
+\bibitem{oeis000255}
+[Added in the batch-73O2 write.] OEIS Foundation Inc., \emph{A000255:
+$a(n)=n\,a(n-1)+(n-1)\,a(n-2)$, $a(0)=a(1)=1$}.
+\url{https://oeis.org/A000255}. Entry inspected 1 October 2026.
+
+\bibitem{oeis002464}
+[Added in the batch-73O2 write.] OEIS Foundation Inc., \emph{A002464:
+Hertzsprung's problem}, including the Abramson--Moser asymptotic expansion
+computed by V.~Kotesovec. \url{https://oeis.org/A002464}. Entry inspected
+1 October 2026.
+
+\bibitem{tai}\begingroup\raggedright
+[Added in the batch-73O2 write.] V. Reshetnikov and contributors,
+\emph{Transseries and Inversion}, canonical volume of the ProveIt
+series-and-transseries collection. Its source is
+\path{Analysis/Transseries/docs/series-and-transseries/}\allowbreak
+\path{Transseries_And_Inversion/transseries_and_inversion.tex}. Cited here:
+Part ``Inversion: the apparatus for a rapidly growing function''
+(labels \texttt{p0:thm:perturbed-inversion}, \texttt{p0:thm:staircase}),
+chapter on the increasing inverse of Gamma (\texttt{p6:thm:gamma}) and chapter
+``The subfactorial'' (\texttt{p8:sec:top}). Repository state of placement
+commit \texttt{6e193dd4f}.\par\endgroup
 \end{thebibliography}
 \end{document}
