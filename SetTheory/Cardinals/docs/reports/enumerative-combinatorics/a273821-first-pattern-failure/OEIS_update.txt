@@ -1,0 +1,54 @@
+DRAFT ONLY — NOT SUBMITTED
+OEIS A273821: suggested formula/comment amendments
+Based on the proofs in the accompanying article.tex / article.pdf.
+Retrieval and preparation date: October 1, 2026.
+
+FORMULA
+For n > k >= 1,
+T(n,k) = 2^(k-1)*binomial(2*n-2*k,n-k-1)
+         - binomial(2*n-k-1,n-k-1).
+T(n,n) = 2^(n-1), n >= 1.
+
+G.f.:
+F(x,y) = x*y/(1-2*x*y)
+       + x^3*y^2*C(x)^3/((1-2*x*y)*(1-x*y*C(x))),
+where C(x) is the Catalan generating function.
+This is algebraically the same as the expression presently marked
+conjectural. The accompanying report supplies a combinatorial proof.
+
+For fixed k >= 2,
+T(n,k) ~ ((k-1)*(k+4)/2^(k+3))*4^n/(sqrt(Pi)*n^(3/2)).
+Both T(n,k)^(1/n) and T(n+1,k)/T(n,k) tend to 4.
+
+For 1 <= k <= n,
+sum(T(n,h), h=k..n)
+ = 2^(k-1)*binomial(2*n-2*k+1,n-k)
+   - binomial(2*n-k,n-k-1),
+with a negative lower binomial argument interpreted as zero.
+
+sum(2^k*T(n,k), k=1..n) = (n+2)*binomial(2*n,n)-4^n.
+
+COMMENTS
+Under the uniform measure on 123-avoiding permutations, the statistic
+has limiting probabilities (k-1)*(k+4)/2^(k+3), k>=2, with mean 9/2
+and variance 21/4.
+
+Under the measure proportional to 2^k, k/n converges to Beta(1,1/2),
+with cumulative distribution 1-sqrt(1-t), 0<=t<=1.
+
+PROOF SYNOPSIS
+Insert successive minima. If d is the length of the terminal decreasing
+suffix, the 123-preserving child states are 1,...,d+1. Their descendant
+generating function is C(x)^(d+1). Until a 132 occurs, only appending or
+inserting before the last entry is safe. The number of safe size-k
+prefixes permitting a first failing insertion with j>=2 entries to its
+right is 2^(k-j). Hence, for n>k,
+T(n,k) = sum(2^(k-j)*[x^(n-k-1)]C(x)^(j+1), j=2..k).
+Summing yields the g.f.; Catalan coefficient extraction and a binomial
+telescoper yield the explicit entry formula.
+
+EDITORIAL CAUTION
+Before submission, review attribution and establish a durable public link
+to the proof. No claim is made that all companion-sequence asymptotics are
+new. The low-column offsets and initial diagonal exceptions are documented
+in the article.
