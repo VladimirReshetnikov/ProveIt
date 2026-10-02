@@ -38,7 +38,20 @@ reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
 natural witness tuple and passed independent review. Their arity depends
 on the external horizon; the fixed universal bound remains 87 operations.
 
-The [fixed-target index/linear compiler](Papers/research-wip/native-stream-queue/gpcp_index_linear_units757.md)
+The [coupled-index compiler](Papers/research-wip/native-stream-queue/gpcp_coupled_index_units754.md)
+gives **728 certificate /754=352M+402A operations**, nine comparisons,
+125 positive witnesses and exact formal degree205777. Reusing each first
+index removes three additions. An explicit positive projection to757 has
+exactly four preimages over each parent positive zero, with an identity
+section; it changes only two AND fields and their two bound slacks. The
+geometry index sign is forced positive from the actual recoder scale and repunit
+equation before history typing. Supplied initial data costs757 operations,
+126 witnesses and degree8892. All eight bound/interface configurations
+are checked. This preserves the full outer relation for every positive
+program parameter; it does not assert identical supplied witness tuples.
+The separate universal polynomial bound remains87 operations.
+
+The preceding [fixed-target index/linear compiler](Papers/research-wip/native-stream-queue/gpcp_index_linear_units757.md)
 gives **731 certificate /757=352M+405A operations**, nine comparisons,
 125 positive witnesses and exact formal degree214883. All six new signs
 are forced positive locally before checksum or history recovery. The full
@@ -1113,11 +1126,11 @@ retains its full strong equation.
   compiler slices. The established75/87 bounds remain unchanged.
 
   These results are not yet Lean formalized.
-- The [fixed-target sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_index_linear_units757.md)
-  gives a second complete universal route at **757 operations**,125 positive
-  witnesses and exact degree214883. Its57-tile compiler retains the complete
-  ordinary-input interface. Shared selector sums, independently forced
-  checksum signs, and proved global/native bound projections reduce the
+- The [coupled-index sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_coupled_index_units754.md)
+  gives a second complete universal route at **754 operations**,125 positive
+  witnesses and exact degree205777. Its57-tile compiler retains the complete
+  ordinary-input interface. Shared selector sums, paired index/checksum
+  signs, and proved global/native bound projections reduce the
   complete paid circuit; signed bound factors need not individually be+1.
 - The [normalized four-tile tag predicate](Papers/research-wip/native-stream-queue/pcp_normalized_strong_history_units.md)
   costs **196=93M+103A operations**,28 positive witnesses and degree1015,

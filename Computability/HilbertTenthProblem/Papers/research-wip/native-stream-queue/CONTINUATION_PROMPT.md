@@ -45,8 +45,9 @@
 > query, program recipe, wrong-power residues and input-height proof.
 > The particular asymmetric Y=sq² shortcuts are now refuted on actual
 > compiler slices; further scale weakenings need fresh soundness arguments.
-> The complete sparse-TM route reaches757 with fixed-target index/linear
-> units; the older64-base degree frontier retains its scope.
+> The complete sparse-TM route reaches754 with coupled indices. Its positive
+> projection has four preimages per parent zero; the older64-base frontier
+> retains its scope.
 > The C2 route reaches378, with its reviewed32-base transport/query frontier.
 > These reviewed packets are linked below.
 > Further grouped sources must retain their proved positive sections:
@@ -996,7 +997,20 @@ reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
 natural witness tuple and passed independent review. Their arity depends
 on the external horizon; the fixed universal bound remains 87 operations.
 
-The [fixed-target index/linear compiler](gpcp_index_linear_units757.md)
+The [coupled-index compiler](gpcp_coupled_index_units754.md)
+gives **728 certificate /754=352M+402A operations**, nine comparisons,
+125 positive witnesses and exact formal degree205777. Reusing each first
+index removes three additions. An explicit positive projection to757 has
+exactly four preimages over each parent positive zero, with an identity
+section; it changes only two AND fields and their two bound slacks. The
+geometry index sign is forced positive from the actual recoder scale and repunit
+equation before history typing. Supplied initial data costs757 operations,
+126 witnesses and degree8892. All eight bound/interface configurations
+are checked. This preserves the full outer relation for every positive
+program parameter; it does not assert identical supplied witness tuples.
+The separate universal polynomial bound remains87 operations.
+
+The preceding [fixed-target index/linear compiler](gpcp_index_linear_units757.md)
 gives **731 certificate /757=352M+405A operations**, nine comparisons,
 125 positive witnesses and exact formal degree214883. All six new signs
 are forced positive locally before checksum or history recovery. The full
