@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of sixty-four research reports on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of sixty-five research reports on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -60,10 +60,10 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Sixty-four mathematical research packages,\\
+ {\large Sixty-five mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
- {\small September 2026}
+ {\small October 2026}
 \end{center}
 
 \vspace{4pt}
@@ -71,11 +71,11 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the sixty-four research packages stored under
+This document catalogues the sixty-five research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
-The collection divides in five, and so does the directory tree.  Twenty-four
+The collection divides in five, and so does the directory tree.  Twenty-five
 reports, under \dir{docs/surreal}, are about the surreal field $\No$ itself and
 its real Hahn subfields: birthdays and their behaviour under multiplication,
 the option graphs of surreal forms, genetic functions and gaps, two questions
@@ -84,7 +84,8 @@ automorphisms, Gamma functions, differential transcendence of explicit
 surreals, Hahn-valued measures and probability, Markov generators,
 transcendence over bounded-support series, diagonal matrix scaling, vector
 and tensor fields, Euclidean three-space and its rotations, and finite
-probability, finite polytopes at surreal scales, independent surreal copies, and six reports on Conway's omnific integers $\Oz$: their
+probability, finite polytopes at surreal scales, independent surreal copies,
+the structure of $\No$ as a real vector space, and six reports on Conway's omnific integers $\Oz$: their
 Diophantine geometry, their set-sized quotients, the automorphisms that
 preserve them, their algebraic groups and lattices, and the discrete initial
 subgroups they normalize, and continued fractions with omnific digits.
@@ -140,7 +141,7 @@ latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
 
 \section{The surreal field}
 
-Twenty-four reports about $\No$ and its real Hahn subfields.  Two questions of
+Twenty-five reports about $\No$ and its real Hahn subfields.  Two questions of
 Lipparini on evaluating formal sums; two independent halves of Gonshor's
 product-birthday conjecture, on domains neither of which contains the other;
 the subgraph question from Roughan's paper on birthday arithmetic; a genetic
@@ -151,7 +152,8 @@ transcendence of explicit surreals; Hahn-valued measures and probability;
 Markov generators at every valuation scale; transcendence over bounded-support
 series; diagonal matrix scaling; vector and tensor fields in every
 dimension; Euclidean three-space and $\mathrm{SO}(3,\No)$; and finite surreal
-probability; finite polytopes at surreal scales, from batches 58 and 59; and six reports on the omnific integers $\Oz$, written from
+probability; finite polytopes at surreal scales, from batches 58 and 59; $\No$
+as a real vector space, from batch 73; and six reports on the omnific integers $\Oz$, written from
 batches 24--29: Diophantine geometry, set-sized quotients, preserving
 automorphisms, groups and lattices, and discrete initial subgroups with their
 omnific normalization, together with continued fractions. A further report proposes independent copies with
@@ -166,7 +168,8 @@ twenty-four, the preserving-automorphism report fifteen, the groups and lattices
 report five and the initial-subgroup report two. The continued-fraction report
 is a written single-source report. The polytope report merges twelve
 manuscripts, six from each of batches 58 and 59, into ten Parts on three
-spines. Assembly, independent proof
+spines, and the vector-space report three independent manuscripts of
+batch 73 that answer one question. Assembly, independent proof
 review and Lean coverage are separate; the ledger maps the ring and
 constant-term package, degree laws, units, finite elements and exact
 omnific floor and ordinary polynomial-root rigidity of the Diophantine
@@ -672,6 +675,35 @@ right-hand sides exactly when every row is rational in direction; and
 set-sized presentations, where a small hull that is also a small halfspace
 class is a polytope.  Merged from twelve manuscripts; not refereed, no Lean
 verification, priority not certified.}
+
+\entry{The surreal numbers as a real vector space}
+{surreal/real-vector-space-structure}
+{article.pdf}{three manuscripts, delivered 1~October 2026 (batch~73)}
+{What is the natural basis of the proper-class vector space $\No$ over its
+canonical copy of $\R$?  The monomials $\omega^\gamma$ are a canonical
+\emph{Hahn} basis (unique set-supported strong expansions) and the basis of
+every one-dimensional layer of the associated graded algebra
+$\mathrm{gr}\,\No\cong\R[\No]$, but a Hamel basis only of the finite-support
+subspace.  No set spans $\No$; in NBG with global choice a class Hamel basis
+exists, may contain every monomial, and must contain a proper class of
+infinite-support vectors with supports of unbounded cardinality.  Every
+infinite support window $A$ has Hamel dimension $|\R|^{|A|}$, and for every
+nonzero set-sized exponent group $\Gamma$ the finite-monomial part of
+$\R((t^\Gamma))$ has codimension $|\R((t^\Gamma))|$.  The canonical linear
+structure is described in detail: support projections and their commutant,
+positive diagonal operators, valuation bases on finite-dimensional subspaces
+and their global failure, strong linear maps as Hahn-compatible column
+families, the strong real dual, the vanishing order-bounded dual, and why
+normal forms are not Schauder expansions.  Part~IV: for real exponent groups
+the Euler operator $t^\gamma\mapsto\gamma t^\gamma$ makes $\R((t^\Gamma))$ modulo its
+finite-monomial part a continuum-dimensional $\R(X)$-vector space, whose
+commuting real-linear maps are strong coefficient multipliers, and the
+finite-monomial part has no invariant complement.  Merged from three
+independent manuscripts that give the same answer by different proofs (no
+set spans; a class Hamel basis by a global well-order and by staged Hahn
+fields), printed once with second and third routes; results of the
+three-duals, exponential-automorphism and omnific reports are pointers.  Not
+refereed, no Lean verification, priority not certified.}
 
 \entry{Omnific integers and omnific--Diophantine geometry}
 {surreal/omnific-diophantine-geometry}

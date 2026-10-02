@@ -196,6 +196,11 @@ else in the region `D >= 1`, `M >= D`. Status by stratum:
    unbounded `D` are studied in
    [`a290268-unbounded-deficits`](../../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290268-unbounded-deficits/README.md).
 
+   *Note (1 October 2026, batch 73).* The same report's batch-73 addition
+   (`13ef7d939`) classifies `D = 7`, twice by independent certificates, and
+   `D = 8` (its Theorems 3.99 and 3.100): only the forced holes vanish, so
+   the open region is now `D >= 9`. Not formalized.
+
 **Literature status** (searched July 2026): the conjecture is open; no
 published attack on A290268/A293239/A281434 exists. The closest proven result
 is Štampach (J. Approx. Theory 262 (2021), arXiv:2011.13808): sign-alternation

@@ -109,6 +109,7 @@ Text added in the merge is marked `[Merge note, batch 72A.]` or `[Added 1 Octobe
   - This report continues its conjecture `xxb:conj:support` and bears on its Questions 4 and 5 (Section 3.24).
   - Its Question 6, a(N) ~ N²/2, is answered in the sibling report, not here.
   - Batch 72A also added to it manuscript 70 (depths five and six), which 64 calls "an earlier companion", and manuscript 68 (count bounds), to which 53 alludes. Neither was cited by its sibling.
+  - Batch 73 classifies depths seven and eight there (`13ef7d939`), so the open fixed-depth region is now m ≥ 9; this report's own results are unaffected.
 - **Sibling report** [`power-tower-exponent-supports`](../power-tower-exponent-supports/) (batch 72A): it proves a(N) = N²/2 + o(N²) (manuscript 34, the case a = 2 of manuscript 28). It is cited, not reprinted.
 - **Research notes** `Oeis/A290268/README.md`: the ProveIt investigation of A290268.
 - **Lean.** Placement beside a formal development confers no formal status. The A290268 Lean development (`Combinatorics/DerivativeExpansions/A290268/Lean`) formalizes:

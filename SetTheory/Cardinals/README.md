@@ -31,7 +31,7 @@ strongly compact cardinals — a partial negative answer to a problem of Blue an
 
 ## Other research reports
 
-`docs/reports/` holds one hundred and eighteen independent reports that are not formalized
+`docs/reports/` holds one hundred and thirty-six independent reports that are not formalized
 here: ordinals and well-quasi-orders, Hankel determinants, supercongruences, tetration and digit stabilization, log-concavity,
 graphs, automata and formal languages, enumerative combinatorics,
 generating-function asymptotics, quaternionic analysis, the Jacobian conjecture,
@@ -43,7 +43,7 @@ specific conjecture from the literature or from an OEIS entry; about a quarter a
 counterexamples rather than proofs.  Where several manuscripts proved the same
 result, they are combined in one report that keeps each one's extra material and,
 where the proofs genuinely differ, every proof.
-`docs/reports/manifest.pdf` catalogues all one hundred and eighteen, and `docs/reports/README.md` is the index.
+`docs/reports/manifest.pdf` catalogues all one hundred and thirty-six, and `docs/reports/README.md` is the index.
 
 ## Building
 

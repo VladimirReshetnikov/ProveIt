@@ -103,7 +103,7 @@ requirement to build Lean one module at a time.
   infinite ideal as kernel, the units are `±1`, every surreal has a unique
   omnific floor, integer polynomials have only their ordinary integer roots,
   and every nonzero finite quotient is `ℤ/nℤ`.  An audit checks that every
-  declaration uses only the standard axioms.  Beside it, 64 research reports
+  declaration uses only the standard axioms.  Beside it, 65 research reports
   on `No`, `No[i]` and `Oz` — among them proposed answers to published
   questions of Ehrlich–Kaplan and Kaplan–Krapp–Serra, and Diophantine
   geometry over `Oz` — with a ledger mapping their statements to Lean.
@@ -213,7 +213,7 @@ requirement to build Lean one module at a time.
   universal pair `(58, 4)`, prime-representing polynomials, and the Jones
   articles of 1974–1984 formalized statement by statement, next to corrected
   editions of the six articles with editorial notes on every discrepancy.
-- A [collection of 118 research reports](SetTheory/Cardinals/docs/reports/README.md)
+- A [collection of 136 research reports](SetTheory/Cardinals/docs/reports/README.md)
   without Lean counterparts, most of them attacking a specific conjecture from
   the literature or an OEIS entry: ordinals and well-quasi-orders, Hankel
   determinants, supercongruences, tetration and digit stabilization,
