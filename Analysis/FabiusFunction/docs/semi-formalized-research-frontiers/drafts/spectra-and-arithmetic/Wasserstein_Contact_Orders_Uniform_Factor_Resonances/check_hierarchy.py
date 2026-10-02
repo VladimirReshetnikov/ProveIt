@@ -4,6 +4,21 @@ from fractions import Fraction as F
 import json
 import math
 
+# ed. (2026-10-01): the receipt printed below is also written to
+# <output-dir>/hierarchy-verification.json, by default rerun/ beside this program, with LF line
+# endings (as delivered it went only to standard output, and a shell
+# redirection on Windows writes CRLF). Pass --output-dir with this program's
+# own directory, on a copy, to regenerate the recorded receipt.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 
 def comps(total,n):
     if n==1:
@@ -87,4 +102,7 @@ out={
  'defect_rows':rows,
  'not_computed':['optimal distances','all-depth analytic proof by a proof assistant','weighted-integral maxima','upper constants','one-sided order-j limits'],
 }
-print(json.dumps(out,indent=2))
+# ed. (2026-10-01): the receipt is also written by _ed_write (see above).
+_ed_text=json.dumps(out,indent=2)
+_ed_write('hierarchy-verification.json', _ed_text+'\n')
+print(_ed_text)

@@ -4,6 +4,21 @@ import cmath
 import json
 import math
 
+# ed. (2026-10-01): the receipt printed below is also written to
+# <output-dir>/linear-verification.json, by default rerun/ beside this program, with LF line
+# endings (as delivered it went only to standard output, and a shell
+# redirection on Windows writes CRLF). Pass --output-dir with this program's
+# own directory, on a copy, to regenerate the recorded receipt.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 
 def sinc(x):
     return 1.0 if x == 0 else math.sin(x) / x
@@ -50,7 +65,8 @@ for j in range(1001):
     assert lower <= upper + 1e-16
     counts['bound_grid'] += 1
 
-print(json.dumps({
+# ed. (2026-10-01): the receipt is also written by _ed_write (see above).
+_ed_text = json.dumps({
     'status': 'PASS',
     'scope': 'Finite floating-point regressions; no interval or proof-assistant certification',
     'counts': counts,
@@ -62,4 +78,6 @@ print(json.dumps({
     'defect_ratio_rows': rows,
     'not_computed': ['optimal distance Delta_1', 'tangent-cone distances c_plus and c_minus',
                      'equality of one-sided coefficients'],
-}, indent=2))
+}, indent=2)
+_ed_write('linear-verification.json', _ed_text + '\n')
+print(_ed_text)

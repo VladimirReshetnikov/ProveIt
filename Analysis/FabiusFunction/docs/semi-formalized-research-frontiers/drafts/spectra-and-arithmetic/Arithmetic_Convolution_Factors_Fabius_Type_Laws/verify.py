@@ -6,6 +6,10 @@ checks use Python integers/Fraction; the article supplies the mathematical
 proofs and their hypotheses.  No third-party modules or network are required.
 
 Run: python3 verify.py --output verification_results.json
+ed. (2026-10-01): without --output it now writes rerun/verification_results.json
+beside this program (as delivered it wrote verification_results.json in the
+current directory), always with LF line endings; the command above, run in
+this directory, overwrites the recorded file, so run it on a copy.
 """
 from __future__ import annotations
 
@@ -230,7 +234,9 @@ def test_periodic_ratios() -> dict[str, int]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path("verification_results.json"))
+    # ed. (2026-10-01): default rerun/ beside this program, not the current directory.
+    parser.add_argument("--output", type=Path,
+                        default=Path(__file__).resolve().parent / "rerun" / "verification_results.json")
     args = parser.parse_args()
     tests = {
         "finite_ladders": test_finite_ladders(),
@@ -248,7 +254,8 @@ def main() -> None:
         "tests": tests,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    # ed. (2026-10-01): LF line endings on every platform (write_text gave CRLF on Windows).
+    args.output.write_bytes((json.dumps(result, indent=2) + "\n").encode("utf-8"))
     print(json.dumps(result, indent=2))
 
 

@@ -39,6 +39,8 @@
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 % ed. (2026-09-30): a second unnumbered environment for the notes of 2026-09-30.
 \newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
+% ed. (2026-10-01): a third unnumbered environment for the notes of 2026-10-01.
+\newtheorem*{ednotethird}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Z}{\mathbb Z}
@@ -646,6 +648,31 @@ arithmetic failure yields not only an exact nonexistence witness but a
 strict lower bound against \emph{every} independent probability remainder.
 The bound may be very small for a high-index obstruction; no uniform
 separation over all failed instances is implied.
+% ed. (2026-10-01): a later draft credits this proposition and sharpens its simple-zero case (batch 73)
+\begin{ednotethird}
+The later unreviewed draft
+\path{../Wasserstein_Contact_Orders_Uniform_Factor_Resonances/}
+of this group (batch~73 of the repository's \path{docs/incoming/},
+2026-10-01) credits \eqref{eq:fourier-wasserstein} and the question
+``Optimal approximate factorization''. Its Lemma~2.1 compares Fourier
+derivatives instead of values: if $\mu$ is supported in $[-R,R]$ and
+$\eta$ has finite first moment, then
+$|\widehat\mu{}'(t)-\widehat\eta{}'(t)|\le2\pi(1+2\pi|t|R)\,W_1(\mu,\eta)$
+for every real $t$. When the target zero is simple, $r=1$ (that is,
+$A_1\nmid t_0$), the factor's zero has order at least two, so the
+transform of $\D_{1/m}\mu_B*\nu$ has derivative zero at $t_0$ for every
+$\nu$ with finite first moment, and the lemma gives, for every
+probability $\nu$,
+\[
+ W_1(\mu_A,\D_{1/m}\mu_B*\nu)\ \ge\ \frac{a_1}{2\pi(1+2\pi t_0R_A)},
+\]
+linear in $a_1$, whereas \eqref{eq:quantitative-obstruction} at the
+largest admissible $h=a_1/(2D_1)$ is $a_1^2/(8\pi D_1(t_0+h))$. Only the
+target needs bounded support; the draft has no analogue for $r\ge2$. For
+geometric targets and factors of two uniforms it also proves matching
+upper bounds (see the note after the question ``Optimal approximate
+factorization''); for divisibility-ladder targets it gives none.
+\end{ednotethird}
 
 \section{Geometric laws and cross-base rigidity}
 \label{sec:geometric}
@@ -1654,6 +1681,19 @@ $|q-1/2|/(2(1-q))$ (its \texttt{thm:perturbation}), so exact factorability
 is lost under arbitrarily small changes of $q$ while the distance tends to
 zero. The sharp rate is open there too.
 \end{ednotelater}
+% ed. (2026-10-01): the rate left open in the preceding note, from a later draft (batch 73)
+\begin{ednotethird}
+That rate is now known. By
+\path{../Wasserstein_Contact_Orders_Uniform_Factor_Resonances/}
+(batch~73, unreviewed), $\inf_\nu W_1(\mu_q,\Unif_{1/2}*\Unif_{1/3}*\nu)$
+is of exact first order at $q=1/2$: its one-sided coefficients lie
+between $|P|/(6\pi(1+12\pi))\approx6.33\cdot10^{-5}$, where
+$P=\prod_{k\ge2}\sinc(6\cdot2^{-k})\approx-0.0462$ in this article's
+normalized $\sinc$, and $1/4$, and it is at most $|q-1/2|/4$ for every
+$q$. For $\Unif_{1/B}*\Unif_{B^{-j}}$, with fixed integers $B\ge2$ and
+$j\ge1$, it is of exact order $|q-1/B|^j$ on both sides of $1/B$. The
+question above, for divisibility-ladder targets $\mu_A$, remains open.
+\end{ednotethird}
 
 \begin{question}[Decidable presentations beyond eventual periodicity]
 Extend Proposition~\ref{prop:periodic} to ratio sequences given by finite
