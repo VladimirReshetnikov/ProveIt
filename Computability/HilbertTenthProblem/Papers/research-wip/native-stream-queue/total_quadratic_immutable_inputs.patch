@@ -1,0 +1,107 @@
+--- a/code/quadratic_compiler.py
++++ b/code/quadratic_compiler.py
+@@ -41,10 +41,37 @@
+     def data(self) -> dict:
+         return {'constant': self.const, 'terms': dict(self.terms)}
+ 
++def _natural(value, name):
++    if type(value) is not int or value < 0:
++        raise ValueError(f'{name} must be an exact nonnegative integer')
++    return value
++
++
++def _sequence(value, name):
++    if type(value) not in (tuple, list):
++        raise ValueError(f'{name} must be a finite tuple or list')
++    return tuple(value)
++
++
++def _literal(value):
++    pair = _sequence(value, 'literal')
++    if len(pair) != 2:
++        raise ValueError('A literal has one site and one label')
++    site, label = pair
++    _natural(site, 'site'); _natural(label, 'label')
++    if label == 0:
++        raise ValueError('A rule or seed label must be positive')
++    return site, label
++
++
+ @dataclass(frozen=True)
+ class Rule:
+     head: tuple[int,int]
+     tail: tuple[tuple[int,int], ...] = ()
++    def __post_init__(self):
++        object.__setattr__(self, 'head', _literal(self.head))
++        tail = tuple(_literal(p) for p in _sequence(self.tail, 'rule body'))
++        object.__setattr__(self, 'tail', tail)
+ 
+ @dataclass(frozen=True)
+ class Network:
+@@ -52,7 +79,16 @@
+     labels: int
+     seeds: tuple[tuple[int,int], ...]
+     rules: tuple[Rule, ...]
++    def __post_init__(self):
++        _natural(self.sites, 'site count'); _natural(self.labels, 'label count')
++        seeds = tuple(_literal(p) for p in _sequence(self.seeds, 'seeds'))
++        rules = _sequence(self.rules, 'rules')
++        if any(type(rule) is not Rule for rule in rules):
++            raise ValueError('Every rule must be an exact Rule descriptor')
++        object.__setattr__(self, 'seeds', seeds)
++        object.__setattr__(self, 'rules', tuple(Rule(r.head, r.tail) for r in rules))
+     def validate(self) -> None:
++        _natural(self.sites, 'site count'); _natural(self.labels, 'label count')
+         if self.sites < 0 or self.labels < 1: raise ValueError('Invalid site/label count')
+         sd = dict(self.seeds)
+         if len(sd) != len(self.seeds): raise ValueError('Repeated seed site')
+@@ -69,7 +105,7 @@
+ def simulate(net: Network, delays: Iterable[int]) -> tuple[list[int], list[int | None]]:
+     """Independent event-driven semantics: earliest completion, label priority."""
+     net.validate(); ds = tuple(delays)
+-    if len(ds) != len(net.rules) or any(not isinstance(x,int) or x<1 for x in ds):
++    if len(ds) != len(net.rules) or any(type(x) is not int or x<1 for x in ds):
+         raise ValueError('Supply one positive integer delay per rule')
+     label=[0]*net.sites; time=[None]*net.sites
+     for v,a in net.seeds: label[v]=a; time[v]=0
+@@ -108,7 +144,7 @@
+         for x in xs[1:]: out=self.gate(kind,out,x)
+         return out
+     def evaluate(self, values):
+-        if any(not isinstance(values.get(n),int) or values[n]<0 for n in self.parameters+self.variables):
++        if any(type(values.get(n)) is not int or values[n]<0 for n in self.parameters+self.variables):
+             raise ValueError('Every parameter and witness must be a natural number')
+         return sum(e.value(values)**2 for e in self.residuals)+sum(a.value(values)*b.value(values) for a,b in self.products)
+     def expanded(self):
+@@ -124,7 +160,7 @@
+     def export(self, values=None):
+         p=self.expanded()
+         result={'domain':'All parameters and witnesses are nonnegative integers.',
+-                'parameters':self.parameters, 'witnesses':self.variables,
++                'parameters':list(self.parameters), 'witnesses':list(self.variables),
+                 'affine_residuals':[e.data() for e in self.residuals],
+                 'nonnegative_products':[[a.data(),b.data()] for a,b in self.products],
+                 'expanded_polynomial':[{'coefficient':v,'variables':list(k)} for k,v in sorted(p.items(),key=lambda kv:(len(kv[0]),kv[0]))],
+@@ -132,12 +168,13 @@
+                           'affine_residuals':len(self.residuals),'product_terms':len(self.products),
+                           'expanded_monomials':len(p),'degree':max(map(len,p),default=0)}}
+         if values is not None:
+-            result['assignment']=values; result['polynomial_value']=self.evaluate(values)
++            result['assignment']=dict(values); result['polynomial_value']=self.evaluate(values)
+             result['counts']['maximum_witness_bit_length']=max((values[n].bit_length() for n in self.variables),default=0)
+         return result
+ 
+ class Compiled:
+     def __init__(self, net: Network, timed: bool=True):
++        if type(net) is not Network or type(timed) is not bool: raise ValueError('Expected an exact Network and Boolean timed option')
+         net.validate(); self.net=net; self.timed=timed; self.c=Certificate(); c=self.c
+         sd=dict(net.seeds); q=net.labels; B=q+1
+         self.free=[v for v in range(net.sites) if v not in sd]
+@@ -229,6 +266,7 @@
+ class HornCompiled:
+     """Smaller q=1 closure compiler. Seeds and catalogue are fixed; no labels needed."""
+     def __init__(self, net: Network, timed: bool=False):
++        if type(net) is not Network or type(timed) is not bool: raise ValueError('Expected an exact Network and Boolean timed option')
+         net.validate()
+         if net.labels!=1: raise ValueError('Horn specialization requires one label')
+         self.net=net; self.timed=timed; self.c=Certificate(); c=self.c
