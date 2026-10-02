@@ -1,0 +1,103 @@
+{
+  "sources": [
+    {
+      "id": "KOV",
+      "authors": "Steve Kirkland; D. D. Olesky; P. van den Driessche",
+      "title": "Digraphs with Large Exponent",
+      "publication": "Electronic Journal of Linear Algebra 7 (2000), 30-40",
+      "url": "https://www2.math.ethz.ch/EMIS/journals/ELA/ela-articles/articles/vol7_pp30-40.pdf",
+      "used_results": [
+        "Section 1: classical Wielandt bound and two-generator Frobenius threshold",
+        "Theorem 1.1",
+        "Theorem 1.2",
+        "Proof of Theorem 1.2: exponent at most n+j(k-2)",
+        "Lemma 2.1",
+        "Theorem 2.2",
+        "Theorem 2.3",
+        "Corollary 2.4",
+        "Theorem 3.3"
+      ],
+      "accessed_utc_date": "2026-10-01",
+      "role": "Classical primitive exponent input and high-exponent structure; new fragment and reduction arguments are supplied in the article"
+    },
+    {
+      "id": "Schwarz",
+      "author": "Stefan Schwarz",
+      "title": "On the semigroup of binary relations on a finite set",
+      "publication": "Czechoslovak Mathematical Journal 20(95) (1970), no. 4, 632-679",
+      "doi": "10.21136/CMJ.1970.100989",
+      "url": "https://dml.cz/bitstream/handle/10338.dmlcz/100989/CzechMathJ_20-1970-4_9.pdf",
+      "used_result": "Theorem 4.3, printed page 653; index definition on printed page 634",
+      "role": "Historical context for the previous general two-boundary bound; not needed in the new leading-coefficient proof",
+      "accessed_utc_date": "2026-10-01"
+    },
+    {
+      "id": "Report",
+      "title": "Aligned Fragments and Constrained Crossover",
+      "date": "2026-09-30",
+      "commit": "1bd730779e8bc44c8976dcd9f38cad86a0d21c26",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/1bd730779e8bc44c8976dcd9f38cad86a0d21c26/SetTheory/Cardinals/docs/reports/automata-and-formal-languages/constrained-crossover-closure/article.tex",
+      "used_content": "Part I coordinate-hull and aligned-fragment conventions; Part II periodic-interior criterion, with the needed finite-rank implication reproved in this article"
+    },
+    {
+      "id": "Quadratic",
+      "title": "Quadratic Finite Rank for Constrained Crossover",
+      "date": "2026-10-01",
+      "commit": "aee32ad456135cff5db062c5b13eb27fd10ef4c0",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/aee32ad456135cff5db062c5b13eb27fd10ef4c0/docs/incoming/quadratic-finite-rank-package.zip",
+      "used_content": "Theorem 1.1 and Sections 3-4: lower family with exact rank (s-3)^2, fully reproved here"
+    },
+    {
+      "id": "Slopes",
+      "title": "Rational Rank Slopes for Constrained Crossover",
+      "date": "2026-10-01",
+      "source_filename": "rational-rank-slopes.tex",
+      "source_sha256": "0bb167e7f451bf6b51a2f752055b706755e6c58f907c6d7986dc1176249f59c3",
+      "used_content": "Section 9, general finite-rank upper bound",
+      "availability": "Companion research note; no public URL asserted"
+    }
+  ],
+  "revision": "Finite-alphabet and exact-small-binary revision, 2026-10-01",
+  "priority_scope": "Resolves the sharp-leading-coefficient question developed from the pinned report; no comprehensive literature-priority claim",
+  "research_source_provenance": {
+    "fixed_alphabet_proof": {
+      "source_sha256": "8204032016ca613369859501f64847b83e9ba70cfdbaffd60d28a253100cacde",
+      "incorporated_in": "hamiltonian-rank.tex, Section 6",
+      "source_note_omitted": "The complete proof is integrated in the article; only its compact audit receipt is included"
+    },
+    "exact_census_source": {
+      "scope": "Independently audited complete two-/three-state censuses and transient-pruned four-state upper bound",
+      "supplied_files": "exact/",
+      "empty_hull_program_convention": 0,
+      "article_floor_convention": 1
+    },
+    "alphabet_check_packaging": {
+      "changes": "Only proof-file hashing was redirected from separate research notes to the integrated TeX; structural and arithmetic test logic is unchanged",
+      "original_script_sha256": {
+        "check_fixed_alphabet_lemmas.py": "a9ce3f0dbb4232ea55c1d7ac6e322eb06b612afd424c110659d02644318900d5",
+        "check_ternary_bookkeeping.py": "6bdd44c93d23217feb0529a571b75e00175d70daf407a3fa34a3e2adec29f1bd"
+      }
+    },
+    "four_state_packaging": {
+      "changes": "Producer candidate-list input changed from preparation-machine absolute path to local relative file, with an explicit missing-input error; rank and enumeration logic unchanged",
+      "original_source_sha256": "c6bbd6ae4684b142eab693fd0993471c57b80a35a2c2dfc340dcf2328fb276c6"
+    }
+  },
+  "computational_sources_sha256": {
+    "exact/audit_census.cpp": "d4cb35e9126107b1dbb648dd55868d9dbd2489d82c4e1a565041145d27a58a8a",
+    "exact/audit_literal.py": "ab1af88e0ad1c01ecd795e8e738e724c8be9a22038f35d8a704a0ab535b1c91f",
+    "exact/compare_pointwise.cpp": "287cf36011420f4842abf0074031b1b21e6bc8968c7f4d3b718367f592a70d01",
+    "exact/four_state/audit_families.py": "4dd40f18ce7c18f2b544e1e33c0d67c69e02e957d852a08b0dd3c976533fe3e9",
+    "exact/four_state/audit_four.cpp": "49d6cb83efe4eff8b0e99a1ed04b3c518f45ec26131dd50769769952288eb7af",
+    "exact/four_state/census_four_pruned.cpp": "a2f057141bcffe56844a46de37cf6ef1f5ea3579cd8be5a5c28264e814617446",
+    "exact/four_state/check_literal_four.py": "5186fbff7aab6f16cd94fb3da4323bc4ada71b43b440da38c37ff5f584f8ee93",
+    "exact/four_state/four_state_prune_budget.cpp": "fe8cf6e09ac5e963b4aef7eca412672a4b7e7beeff5b06ceafab1250fd9212d8",
+    "exact/four_state/reproduce.sh": "00727a5d32323987bc5610aec9964d053d7610b9c14db9c16310a4a4d2a7a9b5",
+    "exact/four_state/validate_receipts.py": "77b643d1ae8f583bcd29195c148dad582aed6892263bbb6f2056e94da87e12d5",
+    "exact/producer/census.cpp": "836896a2d32f3a90957b0b1ae1e88202abd37bc28cd1f17db1699526bddba2d4",
+    "exact/producer/census_graph.cpp": "18c60e0aaf734c9f42bd8b51f9b00f21f6d808505e17dde1af120c91a7ed2947",
+    "exact/producer/exact_rank.py": "a56b217608b1745dfbb3f48d5d3033d30e26de25931ebe28fe1866d847b35a76",
+    "exact/reproduce.sh": "5b85c99458f3d1a2451c1f4212c89c398642e24c4101f3191b00189fb9f208f4",
+    "exact/validate_receipts.py": "07d4996408fb2d6cf3ba7eb881465a78a01bc680b5c425a03a5507cf72101232"
+  }
+}
