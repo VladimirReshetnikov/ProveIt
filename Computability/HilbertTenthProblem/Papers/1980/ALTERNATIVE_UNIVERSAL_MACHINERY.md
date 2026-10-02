@@ -17,7 +17,18 @@ The independent-gamma87
 candidate is still unresolved, with new
 [compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The historical stages below retain their original scope and counts.
-The [shared-selector sparse-TM/GPCP compiler](../research-wip/native-stream-queue/gpcp_shared_selectors774.md)
+The [checksum/global-unit sparse-TM compiler](../research-wip/native-stream-queue/gpcp_checksum_global_units771.md)
+gives **706 certificate /771=352M+419A operations**,22 comparisons,
+125 positive witnesses, three positive program parameters, ordinary input
+and exact degree209782. The checksum-only stage is772/209715; supplied
+initial-value forms cost774/8672 and775/8670 respectively, with126 witnesses.
+Both native checksum signs are forced independently by their reserved-bit
+population obstruction before any global-bound sign is used. The checksum
+merge preserves full supplied positive zeros; the global step has a
+positive bijection adding1 to its bound witness. These save three additions
+from774 while increasing degree; they are not off-zero polynomial identities.
+
+The preceding [shared-selector sparse-TM/GPCP compiler](../research-wip/native-stream-queue/gpcp_shared_selectors774.md)
 gives **703 certificate /774=352M+422A polynomial operations**,
 24 comparisons,125 positive witnesses, three positive program parameters,
 ordinary positive input and exact degree205092. Supplying the initial
@@ -269,7 +280,26 @@ These are exact finite propagated minima, not exact degrees or unrestricted
 lower bounds. Across strong/scale bases, the accepted outer relation is
 preserved by explicit scale maps and canonical private strong extensions.
 
-The [global-bound unit Tseytin compiler](../research-wip/native-stream-queue/tseytin_global_bound_unit385.md)
+The [opposite-coordinate offset identity](../research-wip/native-stream-queue/tseytin_cross_offsets383.md)
+gives **372 certificate /383=176M+207A operations**, four comparisons,
+62 positive witnesses, one fixed positive program parameter and ordinary
+positive input, with degree at most4714. Two already-paid slope-class sums
+replace two multiplications after shifting their common offset coefficients.
+Both coordinate updates, every full integer polynomial and all supplied
+coordinates remain identical to the selected385 parent. The same rewrite
+of the equality386 parent gives384/4712. No new semantic or sign theorem
+is needed for this arithmetic identity.
+
+The [transported four-base factor family](../research-wip/native-stream-queue/tseytin_cross_offset_factor_partitions.md)
+has frontier **383/4714,384/4134,385/4132,386/2900,388/2210,390/1664**,
+with62 witnesses. Every source in the preceding four-base family loses
+exactly two multiplications and keeps its complete polynomial and degree
+bound. The385/4132 point retains the global equality; changing strong or
+global treatments still has the distinct coordinate-map scopes proved
+by the parents. The1664 floor belongs to the specified propagated
+objective, not exact expanded degrees or unrestricted circuit complexity.
+
+The preceding [global-bound unit Tseytin compiler](../research-wip/native-stream-queue/tseytin_global_bound_unit385.md)
 gives **374 certificate /385=178M+207A operations**, four comparisons,
 62 positive witnesses, one fixed positive program parameter and ordinary
 positive input, with degree at most4714. The preceding
@@ -282,7 +312,7 @@ forces the global unit to+1. Adding1 to the global-bound witness is a
 full positive-zero bijection with386 on valid program slices; the inverse
 is strictly positive. This step changes the polynomial off zero.
 
-The [four-base global/equality factor family](../research-wip/native-stream-queue/tseytin_global_unit_factor_partitions.md)
+The preceding [four-base global/equality factor family](../research-wip/native-stream-queue/tseytin_global_unit_factor_partitions.md)
 gives the operation/degree-bound frontier **385/4714,386/4134,387/4132,
 388/2900,390/2210,392/1664**, with62 witnesses throughout. It retains
 both normalized/ordinary strong treatments and both global-bound forms.

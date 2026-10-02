@@ -1,8 +1,8 @@
 # A product scale gives a412-operation Tseytin universal polynomial
 
-> The [reviewed global-unit successor](tseytin_global_bound_unit385.md)
-> gives385 operations,62 witnesses and degree at most4714; its
-> [four-base factor family](tseytin_global_unit_factor_partitions.md) reaches392/1664.
+> The [reviewed cross-offset successor](tseytin_cross_offsets383.md)
+> gives383 operations,62 witnesses and degree at most4714; its
+> [four-base factor family](tseytin_cross_offset_factor_partitions.md) reaches390/1664.
 > Its encoding descends from the permuted-digit stage. The source, encoding
 > and transfer proof below remain this frozen stage.
 
