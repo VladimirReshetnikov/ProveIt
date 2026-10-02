@@ -26,7 +26,24 @@ reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
 natural witness tuple and passed independent review. Their arity depends
 on the external horizon; the fixed universal bound remains 87 operations.
 
-The [first-padding sparse-TM compiler](../research-wip/native-stream-queue/gpcp_first_padding_units763.md)
+The [fixed-target index/linear compiler](../research-wip/native-stream-queue/gpcp_index_linear_units757.md)
+gives **731 certificate /757=352M+405A operations**, nine comparisons,
+125 positive witnesses and exact formal degree214883. All six new signs
+are forced positive locally before checksum or history recovery. The full
+supplied positive zero set equals the selected763 parent for every positive
+program parameter. The supplied-initial form costs760 operations with126
+witnesses and degree9223. All48 combinations of parent stage, interface,
+bound pairs and index/linear conversions are checked. The older grouping
+frontiers retain their stated scope; these new factors are not yet included.
+
+The [interaction-combinator wiring obstruction](../research-wip/native-stream-queue/interaction_combinator_wiring_obstruction.md)
+gives two four-agent nets with identical labelled underlying graph, port-type counts
+and initially active pair, but different agent-free reachability. Exact
+port gluing preserves cyclic wires. The result rejects only that summary
+abstraction; a topology-aware arithmetic compiler remains open. It changes
+neither the universal87 bound nor the counted sparse-TM route.
+
+The preceding [first-padding sparse-TM compiler](../research-wip/native-stream-queue/gpcp_first_padding_units763.md)
 gives **719 certificate /763=352M+411A operations**,15 comparisons,
 125 positive witnesses and exact formal degree232964. Both first-padding
 signs and both checksum signs are forced positive by a local population
