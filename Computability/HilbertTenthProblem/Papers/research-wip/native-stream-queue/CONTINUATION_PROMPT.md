@@ -77,7 +77,11 @@
 > modules; it is not a full proof/test review. Preserve the distinctions between
 > ordinary integer witnesses, finite-support polynomial/field witnesses,
 > functional exponentiation and external horizon bounds. The spectral/clock,
-> polynomial/boundary/sandpile and signal/membrane groups are ready for review.
+> polynomial/boundary/sandpile and signal/membrane groups are under review.
+> The [polynomial-history review](review_unique_polynomial_histories.md) is complete:
+> the written N[X,Y] construction passes, all three author CLIs reproduce on
+> original and repaired sources, and a checked patch rejects symbol aliases that
+> generate nonexistent witness names. Keep polynomial and scalar arity distinct.
 >
 > The seven-report review at `808b53ed8`/`48ee077c7` is now linked below.
 > The Waterfall packet at `24a743255` now has a complete proof/source review

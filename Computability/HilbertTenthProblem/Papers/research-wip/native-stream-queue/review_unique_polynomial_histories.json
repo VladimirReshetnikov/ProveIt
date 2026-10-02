@@ -1,0 +1,253 @@
+{
+  "status": "PASS_WITH_REPAIRED_EXACT_DOMAIN_API",
+  "archive": "unique_polynomial_histories.zip",
+  "arrival": "060e08a07d8e6a8ad5ab9ff6c1f7465e22e35630",
+  "archive_sha256": "0f0f52d5c6617a22cdd0820386eb378c700e5f5c36bfee810ae13818137465e4",
+  "member_sha256": {
+    "unique_polynomial_histories/README.md": "5b07270691b6c41fa2f9decdb8619c72e20b62c554e23c6f13b380ca56e78bf0",
+    "unique_polynomial_histories/SHA256SUMS.txt": "7b2b4740b4f08e637e01f4c79ac90a848f091f306f79370281937d0f27a43c5e",
+    "unique_polynomial_histories/code/export_quadratic.py": "b020065dd43481c5268f9de208022f1101258716f7f1930d94916c97c87f973e",
+    "unique_polynomial_histories/code/feature_verification.py": "ecc359721802fbf9a5effd1b6f41d6532a8bc5310bb6f4873378806e0ff776cb",
+    "unique_polynomial_histories/code/polynomial_histories.py": "1abf1b9a8a670b7b6b93c23a501eb29d55718307524cab52af3a5bdf21c21013",
+    "unique_polynomial_histories/code/verification.py": "21e5d932e317ada7b6bba9de228f553a3fc93620b2aa0e8a44a5a7d293a739d8",
+    "unique_polynomial_histories/results/example_binary_quadratic.json": "c43c3a8f9fcac0d1c44a6e937a8a1d347fecd2a9cffa2c38e0d4578e4d95410c",
+    "unique_polynomial_histories/results/example_binary_system.json": "42570dfa2ef785f11a515f7222cf7ea78f517eeafe23f19ae91fa64192ed7b68",
+    "unique_polynomial_histories/results/example_certificate.json": "2bf9328450302e314d7f4257d9becb4b8fbde9384dd121d45196bd20ac3b26bf",
+    "unique_polynomial_histories/results/example_quadratic.json": "d898f5d25bbd927d50b0920b806700481749a279db41e3a274896f663830ce28",
+    "unique_polynomial_histories/results/example_system.json": "369d0fd286277f5bd982bf65652afd8cec8e51e46f89264fc71d1234f3f851f7",
+    "unique_polynomial_histories/results/example_weighted_quadratic.json": "5118044a710caa984070117d071d351e02cf64bdfb2e412f3118bcc705dfc559",
+    "unique_polynomial_histories/results/example_weighted_system.json": "5d998df63d00b16ca085a135902d2cf15e51e6593e9770b0d2f8a81d7af6d938",
+    "unique_polynomial_histories/results/feature_results.json": "1eca3944038f95607479ca646f6f0cfce555a8ea659ecceabd5fd02c695cfcd8",
+    "unique_polynomial_histories/results/quadratic_results.json": "f985b616f0f875fef863d712182a4934fc7791d08f9a340c9963e881ed0c07ae",
+    "unique_polynomial_histories/results/verification_results.json": "a1951e72b530da2dfdadad815d615a9f34d5754e08dfe67fa530485114f015ba",
+    "unique_polynomial_histories/unique_polynomial_histories.pdf": "8c132183bca2b236bd35fa59a523fef9faa68c9a9ebe713e90577bc3ef8d16ea",
+    "unique_polynomial_histories/unique_polynomial_histories.tex": "709bab5303e4cc2f6e14212db2c75f79ee7da92c0ba402076af2cbb2c451fc49"
+  },
+  "source_sha256": "1abf1b9a8a670b7b6b93c23a501eb29d55718307524cab52af3a5bdf21c21013",
+  "repaired_source_sha256": "53c95479edfa477e878741d050644227efa898705ff416e54fb45e9368c52ad3",
+  "patch_sha256": "6fb34d781403cd495b7e15ae2e1c2c309c1ea86da100c4efe6776db62a828343",
+  "original_defect_reproductions": [
+    {
+      "accepting_symbol_type": "bool",
+      "dangling_variable": "T_True"
+    },
+    {
+      "accepting_symbol_type": "float",
+      "dangling_variable": "T_1.0"
+    }
+  ],
+  "counts": {
+    "original_dangling_symbol_failures": 2,
+    "invalid_calls_rejected": 36,
+    "identical_valid_systems": 120,
+    "identical_valid_witness_and_residual_cases": 360,
+    "exact_feature_system_row_maps": 60,
+    "exact_feature_residual_identities": 594,
+    "feature_matrix_bound_audits": 60
+  },
+  "author_replays": {
+    "original": {
+      "commands": [
+        "verification.py",
+        "export_quadratic.py",
+        "feature_verification.py"
+      ],
+      "saved_json_exports_reproduced": 10,
+      "results": {
+        "verification_results.json": {
+          "clock_exhaustion": {
+            "candidate_flows": 59049,
+            "admitted_ray_clocks": 11
+          },
+          "binary_exhaustion": {
+            "quiescent_rules": 128,
+            "input_words_per_rule": 30,
+            "horizons_per_word": 5,
+            "cases": 19200,
+            "accepted": 1280
+          },
+          "multistate_tests": {
+            "seed": 20261002,
+            "rules": 120,
+            "cases": 840,
+            "accepted": 56
+          },
+          "independent_tile_exhaustion": {
+            "rules": 16,
+            "independent_tile_assignments": 16384,
+            "admitted_structural_histories": 32,
+            "pair_marginal_equivalences_checked": 16384
+          },
+          "matrix_and_domain_tests": {
+            "matrix_invariance_cases": 4,
+            "invalid_inputs_rejected": 5,
+            "coefficient_magnitude_bound": 1,
+            "coefficient_total_degree_bound": 3,
+            "maximum_terms_per_matrix_entry": 2,
+            "mutable_source_is_copied": true
+          },
+          "worked_example": {
+            "input": [
+              1,
+              0,
+              0,
+              0,
+              2
+            ],
+            "horizon": 4,
+            "variables": 73,
+            "equations": 15,
+            "boolean_coefficients": true,
+            "total_nonzero_coefficients": 74,
+            "max_X_degree": 14,
+            "max_Y_degree": 4,
+            "max_total_degree": 18,
+            "mutations_or_wrong_horizons_rejected": 373
+          },
+          "status": "all exact assertions passed",
+          "proof_status": "computational validation, not a proof-assistant formalization"
+        },
+        "quadratic_results.json": {
+          "unknowns": 73,
+          "squared_residuals": 15,
+          "degree_in_unknowns": 2,
+          "monomials_in_unknowns": 2098,
+          "fully_expanded_integer_terms": 5082,
+          "max_coefficient_total_degree_in_X_Y": 12,
+          "exact_evaluation_checks": 8
+        },
+        "feature_results.json": {
+          "status": "all exact assertions passed",
+          "binary_rule_input_horizon_cases": 7168,
+          "multistate_cases": 288,
+          "feature_system_checks_per_case": 2,
+          "multistate_seed": 20261003,
+          "example_forms": {
+            "binary": {
+              "variables": 73,
+              "equations": 12,
+              "coefficient_magnitude_bound": 1,
+              "rejected_mutations": 367,
+              "quadratic_unknown_monomials": 2704,
+              "quadratic_expanded_terms": 12364,
+              "exact_expanded_evaluation_checks": 2
+            },
+            "weighted": {
+              "variables": 73,
+              "equations": 9,
+              "coefficient_magnitude_bound": 3,
+              "rejected_mutations": 367,
+              "quadratic_unknown_monomials": 2704,
+              "quadratic_expanded_terms": 12364,
+              "exact_expanded_evaluation_checks": 2
+            }
+          },
+          "invalid_feature_maps_rejected": 3,
+          "matrix_invariance_checks": 2
+        }
+      }
+    },
+    "repaired": {
+      "commands": [
+        "verification.py",
+        "export_quadratic.py",
+        "feature_verification.py"
+      ],
+      "saved_json_exports_reproduced": 10,
+      "results": {
+        "verification_results.json": {
+          "clock_exhaustion": {
+            "candidate_flows": 59049,
+            "admitted_ray_clocks": 11
+          },
+          "binary_exhaustion": {
+            "quiescent_rules": 128,
+            "input_words_per_rule": 30,
+            "horizons_per_word": 5,
+            "cases": 19200,
+            "accepted": 1280
+          },
+          "multistate_tests": {
+            "seed": 20261002,
+            "rules": 120,
+            "cases": 840,
+            "accepted": 56
+          },
+          "independent_tile_exhaustion": {
+            "rules": 16,
+            "independent_tile_assignments": 16384,
+            "admitted_structural_histories": 32,
+            "pair_marginal_equivalences_checked": 16384
+          },
+          "matrix_and_domain_tests": {
+            "matrix_invariance_cases": 4,
+            "invalid_inputs_rejected": 5,
+            "coefficient_magnitude_bound": 1,
+            "coefficient_total_degree_bound": 3,
+            "maximum_terms_per_matrix_entry": 2,
+            "mutable_source_is_copied": true
+          },
+          "worked_example": {
+            "input": [
+              1,
+              0,
+              0,
+              0,
+              2
+            ],
+            "horizon": 4,
+            "variables": 73,
+            "equations": 15,
+            "boolean_coefficients": true,
+            "total_nonzero_coefficients": 74,
+            "max_X_degree": 14,
+            "max_Y_degree": 4,
+            "max_total_degree": 18,
+            "mutations_or_wrong_horizons_rejected": 373
+          },
+          "status": "all exact assertions passed",
+          "proof_status": "computational validation, not a proof-assistant formalization"
+        },
+        "quadratic_results.json": {
+          "unknowns": 73,
+          "squared_residuals": 15,
+          "degree_in_unknowns": 2,
+          "monomials_in_unknowns": 2098,
+          "fully_expanded_integer_terms": 5082,
+          "max_coefficient_total_degree_in_X_Y": 12,
+          "exact_evaluation_checks": 8
+        },
+        "feature_results.json": {
+          "status": "all exact assertions passed",
+          "binary_rule_input_horizon_cases": 7168,
+          "multistate_cases": 288,
+          "feature_system_checks_per_case": 2,
+          "multistate_seed": 20261003,
+          "example_forms": {
+            "binary": {
+              "variables": 73,
+              "equations": 12,
+              "coefficient_magnitude_bound": 1,
+              "rejected_mutations": 367,
+              "quadratic_unknown_monomials": 2704,
+              "quadratic_expanded_terms": 12364,
+              "exact_expanded_evaluation_checks": 2
+            },
+            "weighted": {
+              "variables": 73,
+              "equations": 9,
+              "coefficient_magnitude_bound": 3,
+              "rejected_mutations": 367,
+              "quadratic_unknown_monomials": 2704,
+              "quadratic_expanded_terms": 12364,
+              "exact_expanded_evaluation_checks": 2
+            }
+          },
+          "invalid_feature_maps_rejected": 3,
+          "matrix_invariance_checks": 2
+        }
+      }
+    }
+  },
+  "scope": "Written proof review and finite exact replays; fixed polynomial witnesses over N[X,Y], not fixed scalar integer arity. Feature row maps prove forward affine identities; reverse inclusion and uniqueness use nonnegative occupancy. No audited literal universal CA table or ordinary87 improvement."
+}
