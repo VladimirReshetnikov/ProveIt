@@ -1,5 +1,13 @@
 # WIP: native queue streams and research continuation
 
+The [binary affine rewrite](u15_joint_binary_affine_rewrite.md) saves another
+**nine operations** in the direct U15 route: the seven controller projections
+use90=4M+86A gates, giving527 ordinary/329 raw on the frozen536 source.
+All seven affine vectors and the complete polynomial remain identical.
+This is a reusable source transformer; the reviewed536 compiler remains its
+canonical parent. The overall87-operation benchmark is unchanged.
+
+
 This directory contains the research continuation on
 `codex/diophantine-certificate-research` and the preserved historical handoff.
 Start with
