@@ -1,46 +1,71 @@
 # Five OEIS Asymptotic Conjectures for Distinct-Partition Norms
 
-**Proofs, all-orders logarithmic expansions, exact-saddle corrections, inverse and extreme-value laws for ∏(1 + k^α q^k): A022629, A092484, A265840, A265841, A265842**
+**Proofs, all-orders logarithmic expansions, exact-saddle corrections, inverse and extreme-value laws, eventual log-concavity and Jensen hyperbolicity, and convolution powers for ∏(1 + k^α q^k)^μ: A022629, A092484, A265840, A265841, A265842, A022630, A022631**
 
-This research report is dated 1 October 2026. It was built from two
-manuscripts of batch 73O1 (cluster O1 of batch 73) of ProveIt's
-incoming-reports intake, written independently on the same day. Both prove
-the same theorems for the same real family (source 48's A022629 is source
-40's α = 1, and its real exponent `s` is source 40's α), with identical
-coefficients. Each shared theorem is printed once and credited to both, with
-the other proof as a marked second route. Neither manuscript is superseded:
-each has results the other lacks.
+This research report is dated 1 October 2026. It was built from four
+manuscripts of ProveIt's incoming-reports intake, all written independently
+on that day: two of batch 73O1 (cluster O1 of batch 73), merged on
+1 October, and two of batch 75, merged on 2 October 2026. All four prove the
+same core theorems for the same real family (source 48's A022629 is source
+40's α = 1; sources 48 and 75-01 call the power `s`, source 75-06 calls it
+`r`), with identical coefficients. Each shared theorem is printed once and
+credited; the batch-75 duplicates are recorded in one table (Table 2) with
+pointers rather than reprinted, and only genuinely different proofs are kept
+as marked second routes. No manuscript is superseded: each has results the
+others lack.
 
-| Source | Batch-73O1 manuscript | Archive (arrival commit) | Pin | Placed | Printed as |
+| Source | Manuscript | Archive (arrival commit) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| base | 40 | `OEIS_Distinct_Partition_Norms.zip` (`f8c3a392a`); `article.tex`, *Five OEIS Asymptotic Conjectures for Distinct-Partition Norms*, 22-page PDF | `1f1981f68` | `9df4ba51a` | the whole text, in its order (Sections 1–14, Appendix A) |
-| member | 48 | `A022629_Research_Package.zip` (`3a9518c52`); `article.tex`, *The A022629 Conjecture: All-Orders Logarithmic Asymptotics, Saddle-Point Expansions, Inverse Growth, and the Largest Part of a Weighted Partition*, 20-page PDF | `dc1a7242d` | `9df4ba51a` | second proofs and credits throughout; Section 3.1, Sections 6.1, 7.3, 8.1–8.2, 9.1, 10.3, 12.5, 13.1, part of Appendix B, Appendix C |
+| base | batch 73O1, no. 40 | `OEIS_Distinct_Partition_Norms.zip` (`f8c3a392a`); `article.tex`, *Five OEIS Asymptotic Conjectures for Distinct-Partition Norms*, 22-page PDF | `1f1981f68` | `9df4ba51a` | the whole text, in its order (Sections 1–14, Appendix A) |
+| member | batch 73O1, no. 48 | `A022629_Research_Package.zip` (`3a9518c52`); `article.tex`, *The A022629 Conjecture: All-Orders Logarithmic Asymptotics, Saddle-Point Expansions, Inverse Growth, and the Largest Part of a Weighted Partition*, 20-page PDF | `dc1a7242d` | `9df4ba51a` | second proofs and credits throughout; Section 3.1, Sections 6.1, 7.3, 8.1–8.2, 9.1, 10.3, 12.5, 13.1, part of Appendix B, Appendix C |
+| addition | batch 75, no. 01 (source 75-01) | `A022629_research_package.zip` (`4b874cea0`); `article.tex`, *Norm-weighted distinct partitions: A proof of the A022629 growth conjecture, all-order asymptotics, Lambert inversion, and eventual Jensen hyperbolicity*, 20-page PDF | `29aca108e` | `6ea60e367` | Table 2 and Section 15.2; Sections 16–17; Section 19 (75-01.1–10); files prefixed `75-01-jensen-` |
+| addition | batch 75, no. 06 (source 75-06) | `OEIS_Norm_Weighted_Partitions.zip` (`4b874cea0`); `article.tex`, *Norm-weighted distinct partitions: A022629, all-order expansions, and inversion*, 26-page PDF | `29aca108e` | `6ea60e367` | Table 2 and Section 15.2; the second proof of Lemma 16.1; Section 18; Section 19 (75-06.1–12); files prefixed `75-06-powers-` |
 
 Author lines as delivered: source 40, "Research report prepared for Vladimir
 Reshetnikov" (no AI wording); source 48, the same, with "Developed with AI
-assistance; proofs and computations supplied for review". Both pins are
-ProveIt commits of 1 October 2026 (`1f1981f682b2878bde51a6ad40c22777f362fc05`,
-`dc1a7242d2ab4a4496b7dfee63256ee767b21fc9`); source 48 calls its identifier a
-"tree response" and says it does not pin every later read. Source 40 arrived
-first; neither cites the other, and their texts share almost nothing
-(8-gram containment 0.004 both ways). The placement commit `9df4ba51a`
-staged the files below and deleted both archives, which survive in their
-arrival commits.
+assistance; proofs and computations supplied for review"; source 75-01,
+"Research report prepared for Vladimir Reshetnikov" (empty PDF author field,
+no AI wording); source 75-06, "Prepared for Vladimir Reshetnikov" (PDF
+author "Research report prepared for Vladimir Reshetnikov", no AI wording).
+The pins are ProveIt commits of 1 October 2026
+(`1f1981f682b2878bde51a6ad40c22777f362fc05`,
+`dc1a7242d2ab4a4496b7dfee63256ee767b21fc9`, and
+`29aca108ed25d714f31b1316512777fbbdc8e006` for both batch-75 sources);
+source 48 calls its identifier a "tree response" and says it does not pin
+every later read. The batch-75 pin already held the archives of sources 40
+and 48, unopened, and predates their placement, so source 75-01's "A
+repository code search for A022629 returned no match" is stale; the article
+says so (Sections 1.3 and 15.1). No source cites another, and their texts
+share 0.4–1.4 % of their word 8-grams pairwise (source 40/48: 0.4 %; the
+batch-75 pairs: 0.55–1.41 %): they are independent. Source 75-01 is not a
+version of source 48, although the archive names differ only in letter case.
+Each placement commit deleted its archives, which survive in the arrival
+commits.
 
-**Status: AI-assisted (source 48 says so; source 40 does not say), unrefereed,
-not formalized.** The intake recomputed the A022629 table to n = 6400,
-re-derived P_1–P_8 and the inverse coefficients by a third route (a Sommerfeld
-expansion), recomputed source 48's operator series and coordinate change in
-exact arithmetic, compared the two Gumbel centrings numerically, and reran
-every shipped program on copies. It did not referee every proof.
+**Status: AI-assisted (source 48 says so; sources 40, 75-01 and 75-06 do not
+say), unrefereed, not formalized.** For batch 73O1 the intake recomputed the
+A022629 table to n = 6400, re-derived P_1–P_8 and the inverse coefficients by
+a third route (a Sommerfeld expansion), recomputed source 48's operator
+series and coordinate change in exact arithmetic, and compared the two Gumbel
+centrings numerically. For batch 75 it checked in exact rational arithmetic
+that source 75-06's b_j(6c) = P_j(c) for j ≤ 8 and source 75-01's
+c_j(6c) = P_j(c) for j ≤ 5, recomputed the inverse coefficients Δ_2–Δ_8 from
+the report's own inverse equation (they equal source 75-06's d_j(6c), and
+source 75-01's through order 5), compared source 75-01's exact tables with
+the earlier ones, confirmed the OEIS names and first fifteen terms of A022630
+and A022631 and the definition of A297321, and reran every batch-75 program
+on copies (below). It did not referee every proof.
 
 ## Files
 
 ```
 README.md                                          this guide
 article.tex                                        the merged report (pdfLaTeX, internal bibliography)
-article.pdf                                        the compiled report, 38 pages (title page, then pages 1-37)
+article.pdf                                        the compiled report, 59 pages (title page, then pages 1-58)
 48-a022629-PROVENANCE.md                           source 48's sources and verification record, as delivered
+75-01-jensen-BUILD_AND_VALIDATION.txt              source 75-01's build and computation record, as delivered
+75-01-jensen-OEIS_PROPOSED_NOTES.md                source 75-01's draft OEIS notes (not submitted), as delivered
+75-06-powers-proposed_oeis_updates.txt             source 75-06's draft OEIS notes (not submitted), as delivered
 code/40-norm-moments-verify.py                     exact sequences (alpha = 1..5, n <= 5000), recurrence check, saddle/Edgeworth diagnostics
 code/40-norm-moments-derive_series.py              symbolic boundary derivatives and P_j (SymPy)
 code/40-norm-moments-derive_inverse.py             symbolic reversion through six inverse orders (SymPy)
@@ -49,6 +74,12 @@ code/40-norm-moments-check_resonances.py           product moduli at the first r
 code/48-a022629-coefficients.py                    source 48's operator construction of six forward and six inverse coefficients
 code/48-a022629-verify.py                          source 48's exact table to n = 6400 and saddle diagnostics
 code/48-a022629-Makefile                           source 48's pdf/verify/clean targets (delivery layout; see below)
+code/75-01-jensen-verify.py                        source 75-01's exact tables, log-concavity audits, saddle and Edgeworth comparisons (mpmath)
+code/75-01-jensen-derive_series.py                 source 75-01's exact check of five forward and five inverse coefficients (SymPy)
+code/75-01-jensen-extra_checks.py                  source 75-01's divisor recurrence, exact Jensen root counts, 40/60-digit comparison, Gaussian inverse
+code/75-06-powers-formal.py                        source 75-06's exact formal algebra over Q[u]: eight forward, seven inverse coefficients
+code/75-06-powers-numerics.py                      source 75-06's exact A022629 coefficients to 10000 and floating-point saddle estimates (NumPy, SciPy)
+code/75-06-powers-checks.py                        source 75-06's recurrence and convolution checks (imports numerics)
 data/40-norm-moments-A022629_computed.txt          a(n), n = 0..5000, alpha = 1 (and A092484, A265840, A265841, A265842 below)
 data/40-norm-moments-A092484_computed.txt
 data/40-norm-moments-A265840_computed.txt
@@ -76,11 +107,30 @@ data/48-a022629-formal_coefficients.json           six forward and six inverse p
 data/48-a022629-numerical_checks.json              saddle, variance, cumulants, residuals, cutoffs, errors (n = 100, 400, 1600, 6400)
 data/48-a022629-saddle_table.tex                   generated table fragment (not \input by the article)
 data/48-a022629-requirements.txt                   mpmath==1.3.0, sympy==1.14.0
+data/75-01-jensen-exact_s1.json                    a(n), n = 0..10000, alpha = 1, as decimal strings
+data/75-01-jensen-exact_audit_s1.json              strict-log-concavity failures and monotonicity, alpha = 1 (n <= 10000)
+data/75-01-jensen-exact_audit_s2.json              the same, alpha = 2 (n <= 2500)
+data/75-01-jensen-exact_audit_s3.json              the same, alpha = 3 (n <= 2500)
+data/75-01-jensen-saddle_s1_dps40.csv              relative errors for J = 0..3, inverse displacements, log-expansion errors (alpha = 1)
+data/75-01-jensen-saddle_s1_dps60.csv              the n = 10000 row at 60 digits
+data/75-01-jensen-saddle_s2_dps40.csv              the same, alpha = 2 (n = 1000, 2500)
+data/75-01-jensen-saddle_s3_dps40.csv              the same, alpha = 3 (n = 1000, 2500)
+data/75-01-jensen-extra_checks.json                recurrence result, Jensen root counts, 40/60-digit difference, Gaussian inverse
+data/75-01-jensen-symbolic.txt                     symbolic coefficient output
+data/75-01-jensen-symbolic_run.txt                 derive_series console transcript
+data/75-01-jensen-requirements.txt                 mpmath==1.3.0, sympy==1.14.0
+data/75-06-powers-formal_coefficients.json         eight forward and seven inverse polynomials in u
+data/75-06-powers-a022629_exact.json               selected exact A022629 coefficients up to n = 10000
+data/75-06-powers-numerical_results.json           saddle results; exact comparisons to n = 10000, saddle-only estimates at 10^6, 10^8, 10^10
+data/75-06-powers-verification_results.json        checks.py summary and software versions
+data/75-06-powers-source_audit.json                source 75-06's inspected OEIS entries, conjecture dates and repository tree
+data/75-06-powers-requirements.txt                 numpy==2.3.5, scipy==1.17.0, sympy==1.14.0
 ```
 
 Every file except `README.md`, `article.tex` and `article.pdf` is
-byte-identical to the delivery. The eight `40-norm-moments-*.csv` files and
-`data/48-a022629-exact_coefficients.csv` are CRLF as delivered and are kept
+byte-identical to the delivery. The eight `40-norm-moments-*.csv` files,
+`data/48-a022629-exact_coefficients.csv` and the four
+`data/75-01-jensen-saddle_*.csv` files are CRLF as delivered and are kept
 byte for byte by `-text` lines in `SetTheory/Cardinals/.gitattributes`.
 Delivered name → shipped path: source 40's `oeis_norm_partitions/X.py` →
 `code/40-norm-moments-X.py`, `data/Y` → `data/40-norm-moments-Y`,
@@ -89,56 +139,103 @@ Delivered name → shipped path: source 40's `oeis_norm_partitions/X.py` →
 `A022629_Research/code/X.py` → `code/48-a022629-X.py`, `Makefile` →
 `code/48-a022629-Makefile`, `data/Y` → `data/48-a022629-Y`,
 `requirements.txt` → `data/48-a022629-requirements.txt`, `PROVENANCE.md` →
-`48-a022629-PROVENANCE.md`. Not shipped: both PDFs, source 48's manuscript and
-README, and source 40's `SHA256SUMS.txt` (30/30 verified, retired).
+`48-a022629-PROVENANCE.md`; source 75-01's `A022629_research/code/X.py` →
+`code/75-01-jensen-X.py`, `data/Y` → `data/75-01-jensen-Y`,
+`requirements.txt` → `data/75-01-jensen-requirements.txt`,
+`BUILD_AND_VALIDATION.txt` and `OEIS_PROPOSED_NOTES.md` →
+`75-01-jensen-<name>`; source 75-06's `oeis_norm_weighted_partitions/X.py` →
+`code/75-06-powers-X.py`, its JSON files and `requirements.txt` →
+`data/75-06-powers-<name>`, `proposed_oeis_updates.txt` →
+`75-06-powers-proposed_oeis_updates.txt`. Not shipped: the four PDFs, the
+manuscripts and READMEs of sources 48, 75-01 and 75-06, source 40's
+`SHA256SUMS.txt` (30/30 verified, retired), source 75-06's `SHA256SUMS.txt`
+(14/14 verified, retired) and `build.sh` (it builds the unshipped
+manuscript), and source 75-01's `data/exact_s2.json` and `data/exact_s3.json`
+(α = 2, 3 to n = 2500; value-identical to source 40's A092484 and A265840
+tables on that range, and regenerated in seconds; see the rerun recipe).
+All survive in the arrival commits.
 
 ## Labels, structure and notation
 
-Every label carries the prefix `dpn:`. The staged base had **84** labels; all
-are kept, unchanged after the prefix. The merge added **44**: 37 of source
-48's 83 labels under the sub-prefix `dpn:48:` (source 48's own name after it),
-4 new `dpn:48:` names (`sec:operator`, `sec:gumbel`, `eq:sfirst`, `eq:N1`) and
-3 new `dpn:` labels (`sec:merge`, `sec:notation`, `app:prov`): **128** in all.
-Source 48's other 46 labels named statements and equations that duplicate
-source 40's and are printed once.
+Every label carries the prefix `dpn:`. The staged base had **84** labels; the
+batch-73O1 merge added **44** (37 of source 48's labels under the sub-prefix
+`dpn:48:`, 4 new `dpn:48:` names and 3 new `dpn:` labels): **128**. The
+batch-75 merge renamed or deleted none of them and left every existing
+section, theorem, equation and table number unchanged (checked against a
+build of the previous text), and added **46**: 28 under `dpn:jh:` (source
+75-01's sharp scales, threshold, log-concavity and Jensen material), 13 under
+`dpn:cp:` (source 75-06's convolution powers) and 5 `dpn:` labels for the
+merge sections and the duplicates table (`sec:b75`, `sec:b75dup`,
+`sec:b75routes`, `sec:b75questions`, `tab:b75dup`): **174** in all. The
+batch-75 sources' own labels were not carried over: their shared results are
+pointers, and their new results were rewritten in this report's notation.
 
-Section 1.4 says what came from where; Section 1.5 is the notation table.
-Source 40's notation is used throughout, and source 48's material is
-translated into it. The collisions that matter: source 48's `s` is the power
-(here α), while source 40's `s` is the log transition coordinate
-−W₋₁(−t/α) (48's `L`); source 48's `r` is the transition site (here M),
-while source 40's `r` is log √(2n) (48's λ); source 48's `K`, `M` are
-truncation orders (here R, J), while here K = √(2n) and M = e^s; source 48's
-`Q_s(n)` (largest weight, here Π_α(n)) and `d_s(λ)` (Gumbel centring, here
-β_α(r)) are not source 40's `Q_α(s)` and `d_α(s)`. Source 48's cumulative
-Edgeworth sum is written 1 + Σ_{ℓ<J} 𝓔_ℓ. Text added in the merge is marked
-"[Merge note, batch 73O1.]"; material only source 48 has is marked
-"(source 48)".
+Section 1.4 says what came from where; Section 1.5 has the notation tables.
+This report's notation (source 40's) is used throughout, and the other three
+sources are translated into it. The collisions that matter: the power is α
+here, `s` in sources 48 and 75-01 and `r` in source 75-06; source 75-06's `s`
+is the number of layers, here μ; this report's `s` is the log transition
+coordinate −W₋₁(−t/α) (source 48's and 75-01's `L`, source 75-06's `v`);
+source 48's `r` and source 75-06's `K` are the transition site (here M),
+while `r` here is log √(2n); sources 48's and 75-01's `K` are truncation
+orders; source 75-01's ε = 1/(αMs) is written ε♯ here, beside ε = s/M;
+source 75-01's cumulant polynomials `P_j(p)` are not the coefficients
+`P_j(c)`, and source 75-06's `b_j(u)` are the coefficients, not the cumulant
+polynomials `b_j(p)`; source 75-06's `d(v)`, `d_j(u)` and source 48's `d_s(λ)`
+are not `d_α(s)`; source 75-01's `x_0(A)` (Gaussian inverse, here n_*) is not
+source 48's `x_0` (= K_0); source 75-01's Hermite `H_d` is written 𝖧_d, since
+`H` is the transition width. Text added in the merges is marked "[Merge note,
+batch 73O1.]" or "[Merge note, batch 75.]"; dated notes on earlier text read
+"[Batch 75, 2 October 2026.]"; material from a single source is marked
+"(source 48)", "(source 75-01)" or "(source 75-06)". The batch-75 material
+follows the conclusion as Sections 15–19, so that the earlier numbering is
+unchanged; merge notes in the earlier sections point forward to it.
 
 ## What is claimed
 
-For every fixed real α > 0, with K = √(2n), r = log K, c = π²/(6α²):
+For every fixed real α > 0, with K = √(2n), r = log K, c = π²/(6α²), and M,
+s the exact-saddle transition site and its logarithm:
 
 - The Kotesovec conjectures log a_α(n) ~ α√(n/2)(log 2n − 2) for A022629,
   A092484, A265840, A265841, A265842 hold, with the sharper additive form
-  log a_α(n) = αK(r − 1) + O(K/r) (both sources; source 48's elementary
-  upper-bound proof is a second route).
+  log a_α(n) = αK(r − 1) + O(K/r) (all four sources; sources 48, 75-01 and
+  75-06 give further elementary routes).
 - All fixed orders of log a_α(n) = αK(r − 1 + Σ P_j(c) r^{−j}), with
-  P_1–P_7 printed (both sources print P_1–P_6), P_8 computed and checked
-  numerically (source 40), and two generating algorithms: source 40's
-  Lagrange-inversion route and source 48's differential operator.
+  P_1–P_7 printed and P_8 computed (source 40), and two generating
+  algorithms: source 40's Lagrange-inversion route and source 48's
+  differential operator. Sources 48, 75-01 and 75-06 print P_1–P_6, P_1–P_5
+  and P_1–P_8; source 75-06's exact rational P_8 confirms source 40's, which
+  was checked only numerically before.
 - The exact-saddle multiplicative expansion with all fixed Edgeworth orders,
-  including control of noncentral arcs (both).
+  including control of noncentral arcs (all four), and, from source 75-01
+  (with source 75-06 for the scales), its sharp form: signed cumulants
+  κ_j ~ (j!/2)M^{j+1}/(αs)^{j−1}, relative error O((αMs)^{−J−1}) after J
+  corrections, and first correction 𝓔_1 ~ −3/(8αMs).
 - Lambert-W_0 inversion of the first index with log a_α(n) ≥ Y, through
-  R_0^{−6} (both; source 48 displays the order-6 form and the A022629 form).
+  R_0^{−6} (sources 40, 48), R_0^{−5} (75-01) and R_0^{−8} (75-06; the
+  coefficients of R_0^{−7} and R_0^{−8} are new), and (source 75-01)
+  localization of that index to within 1 + o(1) of an exact-saddle Gaussian
+  inverse, with displacement −3/(8α²s²)(1 + o(1)) at sequence values.
 - Logistic occupation at the boundary, a Gumbel law for the largest part
-  with exact-root centring (source 40) and explicit centring in log √(2n)
-  (source 48), and L_n/√(2n) → 1 + 1/α (both).
+  with exact-root centring (sources 40, 75-06) and explicit centring in
+  log √(2n) (source 48), and L_n/√(2n) → 1 + 1/α.
 - The fixed-resonance modulus −log|φ_t(2πℓ/M)| ~ 2π⁴ℓ²M/(3α³s³)
   (source 40).
 - Source 48 only: the Taylor series of log ∏(1 + k^α q^k) at 0 has radius
   3^{−α/3}; log max weight = αK(r − 1) + O(r); and
   log(a_α(n)/max weight) ~ π²K/(6αr).
+- Source 75-01 only: eventual strict log-concavity of a_α(n), with gap
+  log(a(n)²/(a(n−1)a(n+1))) ~ α log √(2n)/(2n)^{3/2}; eventual hyperbolicity
+  of the Jensen polynomials of each fixed degree, by verifying the hypotheses
+  of the Griffin–Ono–Rolen–Zagier Hermite-limit criterion; exact data to
+  n = 10000 (α = 1) with the strict-log-concavity failures (the last tested
+  failure for α = 1 is n = 76) and exact Jensen root counts.
+- Source 75-06 only: the convolution powers ∏(1 + k^α q^k)^μ for fixed
+  integer μ ≥ 1 (A022630, A022631 and the positive columns of A297321 at
+  α = 1): growth, all logarithmic orders with the same P_j in
+  √(2n/μ), the relative expansion with first correction −3/(8μαMs), the
+  threshold inversion, and the logistic and Gumbel laws with centring
+  (μ/t)b^α e^{−tb} = 1.
 
 ## What is not claimed
 
@@ -146,18 +243,34 @@ For every fixed real α > 0, with K = √(2n), r = log K, c = π²/(6α²):
   gives the modulus at a point, not the secondary saddles' contributions
   (source 40). No resolution of the smaller blocks or exponentially small
   contributions; no convergence of the inverse-logarithmic series
-  (source 48).
-- No uniformity as α ↓ 0 (both); α = 0 is a different regime.
+  (sources 48, 75-01, 75-06).
+- No uniformity as α ↓ 0 (all); α = 0 is a different regime. No theorem for
+  growing α, growing μ, or growing Jensen degree (75-01, 75-06); the
+  diagonal A292190 is not covered.
+- The sharp remainder O((αMs)^{−J−1}) is proved for one layer only; source
+  75-06's μ-layer remainder uses the safe parameter s/M. The complete
+  expansion of 𝓔_1 in 1/s, asked for by source 48's project 48.6, is not
+  given; that question is only partly answered.
+- The near-integer threshold localization is asymptotic: no universal
+  rounding rule, no explicit constants, no certified finite-input algorithm
+  (75-01). 77 is not proved to be the log-concavity threshold of A022629.
 - The finite-size diagnostics are not interval-certified. At n = 5000 the
   central approximation is excellent for α = 1 but fails for α = 3, 4, 5
   (ratio about 1.58 at α = 5); fixed truncations of the logarithmic
   expansion do not improve monotonically at fixed n (source 40). The
   four-term logarithmic approximation is still off by about 3.55 in the
-  logarithm at n = 6400 (source 48).
+  logarithm at n = 6400 (source 48). At α = 3, n = 2500 the relative error
+  stays near 5 % for J = 1, 2, 3 (source 75-01); the article identifies this
+  as the noncentral contribution of the resonance section, not slow
+  Edgeworth convergence, but neither source computes it. Source 75-06's
+  values at n = 10^6, 10^8, 10^10 are saddle estimates, not exact
+  comparisons.
 - Gikunda's 2026 dissertation treats a shrinking tilt and is not claimed to
   be superseded; Granovsky–Stark's theorem is not claimed to be
-  inapplicable in every form.
-- No priority, no Lean or Rocq verification, and no OEIS submission.
+  inapplicable in every form; Kumar–Rana 2026 is flagged by source 75-01 for
+  any priority review; the Hermite-limit mechanism is not new.
+- No priority, no Lean or Rocq verification, and no OEIS submission (the
+  three shipped OEIS-note files are drafts).
 
 ## Relation to neighbouring material
 
@@ -172,11 +285,20 @@ For every fixed real α > 0, with K = √(2n), r = log K, c = π²/(6α²):
 - **Transseries.** The partition-number chapter of
   `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion`
   (`transseries_and_inversion.tex`, label `p3:sec:top`, A000041) is a
-  methodological relative. Nothing is imported from it, and neither
-  manuscript builds a transseries in that volume's sense.
-- **Lean.** Neither manuscript ships or cites Lean or Rocq proofs. No
-  statement of this report is formalized, and placement in the collection
-  confers no formal status.
+  methodological relative. Nothing is imported from it, and no manuscript
+  builds a transseries in that volume's sense. The Lambert-W inversions and
+  the threshold localization are instances of that volume's theorems
+  `p0:thm:lambert-core`, `p0:thm:perturbed-inversion`,
+  `p0:thm:backward-error` and `p0:thm:staircase`, which the batch-75 sections
+  cite.
+- **Lean.** No manuscript ships or cites Lean or Rocq proofs, and no
+  statement of this report is formalized; placement in the collection
+  confers no formal status. The only formal statement the article cites is
+  the separation step of the staircase theorem,
+  `Fabius.staircase_separation` (with `Fabius.staircase_ceil`) in
+  `Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`, a
+  general fact about ceilings that this report's threshold theorem uses but
+  that does not formalize any of its analytic content.
 
 ## Building
 
@@ -186,45 +308,71 @@ From a scratch copy of this directory, run
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 38 pages (an
-unnumbered title page, then pages 1–37), with no errors, no warnings, no
+pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 59 pages (an
+unnumbered title page, then pages 1–58), with no errors, no warnings, no
 undefined references or citations, no multiply defined labels, no duplicate
-destinations and no overfull or underfull boxes. The build of the delivered
-base text had a duplicate `page.1` destination from its title page; the merge
-wraps the title page in `\hypersetup{pageanchor=false}` … `pageanchor=true`.
-Copy back only `article.pdf`.
+destinations and no overfull or underfull boxes. The title page is wrapped in
+`\hypersetup{pageanchor=false}` … `pageanchor=true`. Copy back only
+`article.pdf`.
 
 ## Rerunning the programs
 
 Every program writes its outputs under the **delivered** names, relative to
 its own location: source 40's scripts write to `data/` beside themselves (run
-from `code/` they would create `code/data/`), and source 48's write to
-`../data/` (run from `code/` they would add unprefixed files to the shipped
-`data/`). `check_resonances.py` also reads `data/diagnostics.csv`. So rerun on
-a copy laid out as delivered:
+from `code/` they would create `code/data/`); source 48's and source 75-01's
+write to `../data/` (run from `code/` they would add unprefixed files to the
+shipped `data/`); source 75-06's write beside themselves (into `code/`).
+Three programs import a sibling by its delivered name:
+`75-01-jensen-extra_checks.py` imports `verify`, `75-06-powers-checks.py`
+imports `numerics`, and `check_resonances.py` reads `data/diagnostics.csv`.
+So rerun on a copy laid out as delivered:
 
 ```sh
 R=SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a022629-distinct-partition-norms
-W=$(mktemp -d); mkdir -p "$W/40" "$W/48/code"
+W=$(mktemp -d); mkdir -p "$W/40" "$W/48/code" "$W/01/code" "$W/01/data" "$W/06"
 for f in "$R"/code/40-norm-moments-*.py; do cp "$f" "$W/40/${f##*/40-norm-moments-}"; done
 for f in "$R"/code/48-a022629-*.py;      do cp "$f" "$W/48/code/${f##*/48-a022629-}"; done
+for f in "$R"/code/75-01-jensen-*.py;    do cp "$f" "$W/01/code/${f##*/75-01-jensen-}"; done
+for f in "$R"/data/75-01-jensen-*;       do cp "$f" "$W/01/data/${f##*/75-01-jensen-}"; done
+for f in "$R"/code/75-06-powers-*.py;    do cp "$f" "$W/06/${f##*/75-06-powers-}"; done
 U="uv run --no-project --with mpmath==1.3.0 --with sympy==1.14.0 python"
+V="uv run --no-project --with numpy==2.3.5 --with scipy==1.17.0 --with sympy==1.14.0 python"
 (cd "$W/40" && $U verify.py --max-n 5000 --dps 50 && $U derive_series.py && $U derive_inverse.py \
              && $U check_continuum.py && $U check_resonances.py)    # about 85, 79, 66, 51, 13 s
 (cd "$W/48" && $U code/coefficients.py --order 6 && $U code/verify.py --max-n 6400 --dps 45)   # about 83, 46 s
+(cd "$W/01" && for s in 1 2 3; do n=2500; [ $s = 1 ] && n=10000; $U code/verify.py --exact --s $s --nmax $n; done \
+            && $U code/verify.py --s 1 --dps 40 \
+            && $U code/verify.py --s 2 --samples 1000,2500 --dps 40 \
+            && $U code/verify.py --s 3 --samples 1000,2500 --dps 40 \
+            && $U code/derive_series.py && $U code/extra_checks.py)  # about 41 s (exact tables), 48 s (three saddle runs), 89 s, 14-70 s
+(cd "$W/06" && $V formal.py --order 8 && $V checks.py && $V numerics.py)   # about 7, 13, 32 s
 ```
 
-Compare `$W/40/data/<name>` with `data/40-norm-moments-<name>` and
-`$W/48/data/<name>` with `data/48-a022629-<name>`. The intake's runs matched
-every shipped file: the CSVs byte for byte, the text and JSON outputs up to
-line endings (on Windows, Python text mode writes CRLF where the delivered
-files are LF). The console transcripts `*_run.txt` are the scripts' standard
-output. `verify.py --alpha 1 --max-n 300` is a quick partial run, but a subset
-run rewrites `data/diagnostics.csv` with that subset only. `make verify` and
-`make pdf` in `code/48-a022629-Makefile` assume source 48's delivered layout
-(`code/coefficients.py`, `code/verify.py`, `article.tex` beside the Makefile);
-`make pdf` would build source 48's unshipped manuscript, so use it only in a
-re-extraction of the archive from `3a9518c52`.
+Compare `$W/40/data/<name>` with `data/40-norm-moments-<name>`,
+`$W/48/data/<name>` with `data/48-a022629-<name>`, `$W/01/data/<name>` with
+`data/75-01-jensen-<name>`, and `$W/06/<name>` with
+`data/75-06-powers-<name>`. The intake's runs matched every shipped file:
+the CSVs byte for byte, source 75-01's `exact_s1.json` byte for byte, and the
+other text and JSON outputs up to line endings (on Windows, Python text mode
+writes CRLF where the delivered files are LF) or, for
+`numerical_results.json`, last-place floating-point differences. The console
+transcripts `*_run.txt` are the scripts' standard output. Notes:
+
+- Source 75-01's `extra_checks.py` reads `exact_s1.json`, `exact_s2.json`,
+  `exact_s3.json`, `saddle_s1_dps40.csv` and `saddle_s1_dps60.csv` from
+  `data/`. The α = 2, 3 tables are not shipped, so the `--exact --s 2/3`
+  runs above must come first. `verify.py --exact` **replaces** that α's
+  table and audit, and the saddle runs **merge** their sample rows into the
+  existing CSV, which is why the recipe copies the shipped data first.
+  `saddle_s1_dps60.csv` comes from `verify.py --s 1 --samples 10000 --dps 60`,
+  which the intake did not rerun; `extra_checks.py` uses the shipped one.
+- `verify.py --alpha 1 --max-n 300` (source 40) is a quick partial run, but a
+  subset run rewrites `data/diagnostics.csv` with that subset only.
+- `make verify` and `make pdf` in `code/48-a022629-Makefile` assume source
+  48's delivered layout (`code/coefficients.py`, `code/verify.py`,
+  `article.tex` beside the Makefile); `make pdf` would build source 48's
+  unshipped manuscript, so use it only in a re-extraction of the archive
+  from `3a9518c52`.
 
 ## Disclosures and discrepancies
 
@@ -233,9 +381,11 @@ re-extraction of the archive from `3a9518c52`.
   recorded transcripts and source 40's text use `--dps 50`; both are well
   above the 30 the script requires, and the intake's `--dps 50` run
   reproduced the shipped data.
-- The two A022629 tables, `data/40-norm-moments-A022629_computed.txt`
-  (n ≤ 5000) and `data/48-a022629-exact_coefficients.csv` (n ≤ 6400), agree on
-  the common range; both are shipped beside their own verifiers.
+- The A022629 tables `data/40-norm-moments-A022629_computed.txt`
+  (n ≤ 5000), `data/48-a022629-exact_coefficients.csv` (n ≤ 6400),
+  `data/75-01-jensen-exact_s1.json` (n ≤ 10000) and the selected values in
+  `data/75-06-powers-a022629_exact.json` agree on their common indices; each
+  is shipped beside its own verifier.
 - **Delivery names in shipped text.** `48-a022629-PROVENANCE.md` points to
   "requirements.txt and the executable programs" (shipped as
   `data/48-a022629-requirements.txt` and `code/48-a022629-*.py`), and its
@@ -246,13 +396,37 @@ re-extraction of the archive from `3a9518c52`.
   header line it writes into the `*_computed.txt` files), and
   `code/40-norm-moments-derive_series.py` cites "Sections 7 and 8 of
   article.pdf": the section numbers of source 40's text are unchanged in the
-  merged article, so that pointer still holds. The scripts' output names are
-  the delivered ones (above). The article uses the shipped names; its
-  Appendix A records both sources' delivered command lists.
+  merged article, so that pointer still holds.
+  `75-01-jensen-BUILD_AND_VALIDATION.txt` describes source 75-01's unshipped
+  20-page PDF and its own build; `75-01-jensen-OEIS_PROPOSED_NOTES.md` cites
+  "`article.pdf` in this package", meaning source 75-01's manuscript, not
+  this report; the docstring of `code/75-01-jensen-verify.py` says "Output is
+  written to ../data". `75-06-powers-proposed_oeis_updates.txt` cites
+  "Section 5" and "Section 6" of source 75-06's manuscript (its relative and
+  logarithmic theorems; here Theorems 2.2 and 2.1 with Sections 6 and 8, and
+  Section 18 for μ layers), and `data/75-06-powers-source_audit.json` records its
+  repository tree and that "No repository changes were made". The scripts'
+  output names are the delivered ones (above). The article uses the shipped
+  names; its Appendix A records all four sources' delivered command lists.
+- **Stale statements.** Source 75-01's "A repository code search for A022629
+  returned no match" and both batch-75 sources' presentation of the proof of
+  the five conjectures as their contribution predate the placement of
+  sources 40 and 48; the article records them as the third and fourth
+  proofs (Sections 1.3 and 15.1). Source 75-01's README line "Higher powers
+  can converge slowly" (its α = 3, n = 2500 test) is kept in the article with
+  its own words and a merge note identifying the residual as noncentral.
 - **External claims.** The A022629 entry's conjecture text (Kotesovec,
-  8 May 2018) was confirmed live on 1 October 2026. The other four entries,
-  A292189, the Gikunda dissertation, Bridges–Craig, Schneider–Sills,
-  Rana–Kaur–Kumar and Granovsky–Stark were not re-checked by the intake.
-- **Abstracts and title pages.** The two abstracts were merged into source 40's
-  with an added paragraph; source 48's title page and package-contents
-  paragraph are replaced by the article's provenance appendix and this README.
+  8 May 2018) was confirmed live on 1 October 2026; on 2 October 2026 the
+  intake confirmed the names and first fifteen terms of A022630 and A022631
+  and the definition of A297321. Source 75-06's statement that A297321
+  cross-references its first 32 columns to A022629–A022660, the other four
+  entries, A292189, A292190, A022661, the Gikunda dissertation,
+  Bridges–Craig, Schneider–Sills, Rana–Kaur–Kumar, Kumar–Rana,
+  Granovsky–Stark, Griffin–Ono–Rolen–Zagier, Fristedt and Lagarias–Sun were
+  not re-checked by the intake.
+- **Abstracts and title pages.** The batch-73O1 abstracts were merged into
+  source 40's with an added paragraph, and a second paragraph summarizes the
+  batch-75 additions; source 48's title page and package-contents paragraph,
+  and both batch-75 sources' title pages, abstracts, novelty paragraphs and
+  package-contents appendices, are replaced by the article's Sections 1.4 and
+  15, its provenance appendix and this README.
