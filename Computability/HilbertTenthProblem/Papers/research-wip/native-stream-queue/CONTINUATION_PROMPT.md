@@ -66,11 +66,19 @@
 > Commit and push reviewed packets frequently. These finite improvements
 > do not establish a global optimum or finish the open research goal.
 >
+> Next full report review: [nine new archives](incoming_substrate_intake_2a8a39599.md)
+> at `060e08a07` and `2a8a39599`. Intake authenticates231 files and54 Python
+> modules; it is not a full proof/test review. Preserve the distinctions between
+> ordinary integer witnesses, finite-support polynomial/field witnesses,
+> functional exponentiation and external horizon bounds. The spectral/clock,
+> polynomial/boundary/sandpile and signal/membrane groups are ready for review.
+>
 > The seven-report review at `808b53ed8`/`48ee077c7` is now linked below.
 > The Waterfall packet at `24a743255` now has a complete proof/source review
 > and a paid forced-boundary reduction, linked below. The successor direct
-> [U15 tape compiler](u15_packed_computed_truth647.md) costs647 operations,
-> including ordinary input, with102 positive witnesses and degree at most1936.
+> [U15 tape compiler](u15_packed_composed_truth646.md) costs646 operations,
+> including ordinary input, with102 positive witnesses and exact degree1936
+> certified separately by the [degree audit](u15_packed_exact_degree1936.md).
 > It pays all typing, range, controller and common-duration predicates; its
 > unbounded history has fixed arity. The overall87-operation bound is unchanged.
 > Other ready followups are hardened source rewrites for signal endpoint rows
@@ -1012,15 +1020,19 @@ with29 witnesses and degree2. These are complete single-step relations;
 ordinary multiplication of packed histories would convolve time cells, so
 neither scalar count is an unbounded universal-polynomial bound.
 
-The [computed-truth packed U15 compiler](u15_packed_computed_truth647.md)
-costs **647=253M+394A operations**,102 positive witnesses and46 comparisons,
-including ordinary input. Its raw interface costs404 operations and51 witnesses.
+The [composed packed U15 compiler](u15_packed_composed_truth646.md)
+costs **646=252M+394A operations**,102 positive witnesses and46 comparisons,
+including ordinary input. Its raw interface costs403 operations and51 witnesses.
 Three paid disjoint-tag gates allow three native truth witnesses and their
 comparisons to be eliminated. Positivity follows from the retained head and
 aggregate bounds before any AND typing. Exact signed graph restoration is to
 the newly tagged parent; the original outer relation is preserved with fresh
 history-native witnesses. All input, range, controller and unbounded-duration
-costs remain paid. Degree is at most1936; the global87 bound is unchanged.
+costs remain paid. The state relabeling saves a further multiplication.
+The [separate degree certificate](u15_packed_exact_degree1936.md)
+proves exact degree1936 on every fixed program slice for all12 emitted forms
+of the baseline, relabel, tagged and composed sources. The frozen compiler
+metadata remains upper-bound-only. The global87 bound is unchanged.
 
 The [state-relabeled packed U15 tape compiler](u15_packed_state_relabel652.md)
 gives **652=254M+398A operations**, 105 positive witnesses and formal degree
