@@ -333,8 +333,8 @@ polynomial degree.
 `base(normalized=True|False)` returns a fresh canonical current scaffold.
 `grouped(base,partition,anchor)` emits any valid grouping, with `None`
 selecting SOS. `build(operations=406)` selects a combined frontier row;
-`normalized=True|False` restricts selection to that subfamily. Complete
-source, degree and ledger APIs require equality with the full canonical
+`normalized=True|False` restricts selection to that subfamily. Complete-source,
+degree-bound and ledger APIs require equality with the full canonical
 base/plan packet, including domains, interfaces and semantic scope.
 
 The receipt stores all23 group-count winner ledgers and seven complete

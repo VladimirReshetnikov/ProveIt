@@ -1,23 +1,23 @@
-# Complete factor partitions for the zero-a Tseytin388 compiler
+# Complete factor partitions for the permuted-digit Tseytin387 compiler
 
-The [source](tseytin_zero_a_factor_partitions.py) and
-[receipt](tseytin_zero_a_factor_partitions.json) rebuild the finite
+The [source](tseytin_permuted_factor_partitions.py) and
+[receipt](tseytin_permuted_factor_partitions.json) rebuild the finite
 factor-group family from the complete
-[zero-a388 source](tseytin_zero_a388.md).
+[permuted-digit387 source](tseytin_permuted_digits387.md).
 The operation / propagated-degree frontier is
 
 |Operations|M|A|Certificate|Comparisons|Positive witnesses|Degree bound|
 |---:|---:|---:|---:|---:|---:|---:|
-|388|180|208|374|5|62|4712|
-|389|179|210|372|6|62|4132|
-|391|179|212|371|7|62|2900|
-|393|179|214|370|8|62|2210|
-|395|179|216|369|9|62|1664|
+|387|179|208|373|5|62|4712|
+|388|178|210|371|6|62|4132|
+|390|178|212|370|7|62|2900|
+|392|178|214|369|8|62|2210|
+|394|178|216|368|9|62|1664|
 
 All rows retain the actual fixed 24-tile C2 system, the unchanged
 exponent52 source, the paid fused query loader, one fixed positive
 program parameter A, and ordinary positive input x. For every computably
-enumerable positive set T, the recompiled zero-a program recipe A_T gives
+enumerable positive set T, the recompiled permuted-digit program recipe A_T gives
 
 \[
  x\in T\iff\exists z_1,\ldots,z_{62}>0:\ F(x,A_T,z)=0
@@ -40,21 +40,21 @@ only the accepted-input equivalence through positive auxiliary extensions
 is asserted. The previous factor packets and their frontiers remain frozen.
 
 This is a separate family from the
-[computed-field399 partitions](tseytin_computed_factor_partitions.md).
-The word encoding now has digits a,b,c,d,e,# = 0,1,2,3,4,5 and the six
-copy tiles occur in reverse order, followed by the same eighteen relation
-tiles. For a literal word v, use enc(v)=8^|v|+raw(v); the leading sentinel
-preserves length even when v begins with a. A valid program literal S
+[zero-a388 partitions](tseytin_zero_a_factor_partitions.md).
+The digit codes are now a,b,c,d,e,# = 0,3,1,2,4,5. Copies occur in the
+order #,e,b,d,c,a, followed by the same eighteen relation tiles. A leading
+sentinel still encodes v as8^|v|+raw(v). The valid primary program word S
 is recompiled as
 
     A=8*(d*8^17*enc(S)+h6_new), d=8^64−1,
 
-with h_new given exactly by the parent coefficient compiler. The paid
-query endpoint is I=8*enc(query)+5 and the target suffix equation is
-V_final=4096*U_final+2560. No equality of program numerals, supplied
-positive zeros, or whole polynomials across the old and new encodings
-is claimed. All same-base assertions below refer to these recompiled
-valid program slices.
+where h_new is three times the388 tail coefficient list. The paid query
+endpoint is I=8*enc(query)+5 and the terminal relation remains
+V_final=4096*U_final+2560. The permuted parent proves universality using
+its exact literal maps, nonzero residues and zero-run bound10. No equality
+of program numerals, supplied positive zeros or whole polynomials across
+the two encodings is asserted. All within-base claims below use the
+recompiled387 program slices.
 
 ## 1. Current source and the two factor bases
 
@@ -70,7 +70,7 @@ The six following exponent factors are
 There is no checksum factor or supplied F0,F1,F2 coordinate. There are
 four ordinary residuals: the global positive bound, the two chronological
 transports, and the fused query loader. After deleting only unused old
-product-tree ancestors, the normalized factor core has363 gates.
+product-tree ancestors, the normalized factor core has362 gates.
 
 For the ordinary strong alternative, put Delta=A0²−1 for the word
 native discriminant and t=ic². Replace
@@ -87,16 +87,16 @@ omit Ns from the factor list and retain the full comparison
 
 Only the private product `and__normalized_strong_Q=Delta*t²` disappears
 from the core. Its other two consumers are the replaced rows. This base
-has362 core gates, eleven factors and five ordinary comparisons, with
+has361 core gates, eleven factors and five ordinary comparisons, with
 the identical list of62 supplied positive coordinates. Their i coordinate
 has the corresponding ordinary strong meaning.
 
-The source requires the entire canonical388 parent, including its codes,
+The source requires the entire canonical387 parent, including its codes,
 ordered tiles, complete source, domain and program recipe. The parent
 deliberately exports minimal metadata: no inherited checksum, computed-
 field or native-bound flag is assumed or inserted into it. The checker
 compares all118 native/exponent rows and the161-row ancestry of the
-global bound and packed H,M,Z ports with the reviewed399 scaffold.
+global bound and packed H,M,Z ports with the reviewed388 scaffold.
 It then checks the exact padded ports, factored index and bound rows,
 strong, auxiliary-root and square rows, and private consumer sets.
 The new base records this source-verified contract explicitly. It
@@ -158,19 +158,19 @@ is not used here.
 
 First consider the all-factor product with its ordinary comparisons.
 At a positive zero, all individual factors are integer units. As in the
-complete388 parent, the independent exponent52 signed theorem, followed
-by the zero-a two-parity fused-loader residue test, gives power
+complete387 parent, the independent exponent52 signed theorem, followed
+by the permuted-digit two-parity fused-loader residue test, gives power
 product P_exp=+1 on the valid program slice. It also restores the literal
 query endpoint. This step uses no word semantics or height assumption.
 The complete factor product is one, so the word product W is now+1.
 For clarity, the two nonzero residues of the wrong exponent branch
 are
 
-    9988681081606374650385542317808271360,
-    15284823877311898831486648573545922560,
+    29966043244819123951156626953424814080,
+    45854471631935696494459945720637767680,
 
-modulo d=8^64−1. They are identical to the old fused test even though
-the valid program numeral and constant tail were recompiled. The
+modulo d=8^64−1. They are three times the388 residues and strictly below d, after
+recompiling the valid program numeral and constant tail. The
 parent proves this from its literal coefficient formula, for both
 parities of x; finite literal-query fixtures are only a supplement.
 Once the exponent product is+1, its theorem gives Q=8^(32x), so the
@@ -279,7 +279,7 @@ V=−p modulo c. Thus all displayed coordinates are positive integers.
 The resulting normalized strong and auxiliary norms equal one, while
 V=of−c=jc−p gives Nl=1. No main datum, implicit field, bound slack,
 ordinary comparison or power factor changes; the source's dependency
-guard checks that precise independence. This is a complete normalized388
+guard checks that precise independence. This is a complete normalized387
 zero on the same program/input slice, so the parent's full universal
 soundness and completeness apply. No word-input or height semantics
 were invoked before this positive restoration.
@@ -321,8 +321,8 @@ certificate has c+n−g gates and m+g equations. Both finalizers cost
     c+n+3m−1+2g.
 
 Here m=4 or5, so the empty-residual exception never arises. Normalized
-cost is386+2g; ordinary cost is387+2g. The one normalized all-factor
-anchor is exactly the parent388 polynomial, with a reassociated product
+cost is385+2g; ordinary cost is386+2g. The one normalized all-factor
+anchor is exactly the parent387 polynomial, with a reassociated product
 tree. General regroupings need not be identical polynomials off zero.
 
 ## 6. Exact finite search of propagated degree bounds
@@ -350,8 +350,8 @@ bounds and attained upper bounds only. Thus, for every group count, the
 returned plan minimizes this finite propagated objective. Literal cost
 depends only on the group count, giving the frontiers stated here.
 
-Normalized alone has388/4712,390/4705,392/3608; ordinary alone has
-389/4132,391/2900,393/2210,395/1664. The normalized floor3608 is attained
+Normalized alone has387/4712,389/4705,391/3608; ordinary alone has
+388/4132,390/2900,392/2210,394/1664. The normalized floor3608 is attained
 by three SOS groups of weights1804,1521,1373. Its largest factor1804
 forces this SOS floor. An anchor omitting1804 exceeds3608; one including
 1804 but omitting974 has bound at least3752; including those but omitting
@@ -363,7 +363,7 @@ The ordinary floor1664 is attained by four SOS groups of weights
 760,832,690,470. An anchor omitting832 exceeds1664; one containing it
 has bound at least832+2*690=2212. The receipt also checks all4095 and2047
 nonempty anchor subsets as finite floor certificates. The global floor
-for these two bases is therefore1664 at395 operations. It is a minimum
+for these two bases is therefore1664 at394 operations. It is a minimum
 of the stated bound objective, not a minimum possible actual universal
 polynomial degree.
 
@@ -371,7 +371,7 @@ polynomial degree.
 
 `base(normalized=True|False)` returns a fresh canonical current scaffold.
 `grouped(base,partition,anchor)` emits any valid grouping, with `None`
-selecting SOS. `build(operations=395)` selects a combined frontier row;
+selecting SOS. `build(operations=394)` selects a combined frontier row;
 `normalized=True|False` restricts selection to that subfamily. Complete-source,
 degree-bound and ledger APIs require equality with the full canonical
 base/plan packet, including domains, interfaces and semantic scope.
@@ -382,7 +382,7 @@ exercise every possible anchor in a four-group fixture. The528 signed/positive s
 checks compare every retained core register and independently reconstructed
 finalizer, including264 signed cases. Sixty-four strong-base maps verify(13),
 including32 signed maps and32 positive forward maps. Another64 signed
-assignments compare the all-factor normalized polynomial directly with388.
+assignments compare the all-factor normalized polynomial directly with387.
 
 The scalar pretyping audit evaluates actual graph rows at600 positive
 global-bound contexts, including D=1 and nondyadic scales, checking every
@@ -391,30 +391,33 @@ are not assumed to satisfy any native norm, AND or Boolean selector rule.
 Modulo-four and sign-algebra checks supplement, but do not replace, the
 local rank proof. Independent Bell enumeration of smaller weighted
 problems validates the unchanged optimizer. No fixture is claimed to
-materialize a complete enormous Pell zero. The receipt also compares all23 schedules against their399-family plans:
-every actual source loses6M+5A, and every retained register degree bound,
-all factor weights and all ordinary residual bounds agree. The direct
-388 polynomial agrees with the all-factor normalized anchor on arbitrary
+materialize a complete enormous Pell zero. The receipt also compares all23 schedules against their388-family plans:
+every actual source loses one multiplication with additions unchanged.
+Every retained register degree bound, factor weight and ordinary residual
+bound agrees; the two new correction products have degree1. The direct
+387 polynomial agrees with the all-factor normalized anchor on arbitrary
 signed assignments, solely by reassociation. These are separate claims:
-no arbitrary-point identity with the differently encoded399 polynomial
+no arbitrary-point identity with the differently encoded388 polynomial
 is asserted.
 
 Twenty-four bad canonical/domain/encoding/native-contract/partition
 callers are rejected. The inherited parent query audit checks96 literal
 query instances, both wrong-sign residues and the ten-zero run bound.
-Author receipt generation25698 and a separate fresh replay30681 passed.
-All nine local destinations and whitespace checks pass. The388 dependency
-is frozen after its author and two independent proof/source/fresh reviews.
-Franklin independently read the full proof, source and dependencies and
-passed fresh replay17959 with no findings. His separate oracle checked
-all23 objective and degree records,340 manual full finalizers(202 signed),
-80 strong-coordinate maps(40 signed),60 new pretyping contexts(12 at D=1),
-the complete118/161-row source contract, and all23 literal6M+5A/retained-
-degree transports. Nine links and whitespace passed.
+Author generation43329 and fresh replay4170 passed. The preceding388
+family and the387 parent are separately reviewed dependencies; their
+receipts remain frozen.
 
-Root separately read the complete proof and source, passed fresh replay
-68912 and checked184 full manual finalizers(92 signed) across all23
-winners with an independent scalar executor. No findings; the canonical
-388 dependency and all claimed semantic scopes were checked. These finite
-audits do not materialize complete native Pell zeros.
-
+Native independently read the full source, proof and dependencies and
+passed fresh1892. One API wording issue was corrected: the complete-source,
+degree-bound and ledger APIs require full canonical equality; the lower-level
+degree_dictionary helper propagates guarded norm bounds. No findings remain.
+His independent subset recurrence reproduced all23 group-count objectives,
+both floors and the combined frontier. It checked23 actual388-to387
+ledger/complete-degree transfers(−1M, same A),37 winner/novel-plan
+degree/domain/closure ledgers,444 core/group/manual-finalizer outputs
+(222 signed),74 zero-selector assignments,96 full strong-forward maps
+(48 signed), and two five-coordinate support audits. A separate118-row
+native/exponent plus161-row pretyping comparison and480 new uneven
+global-bound source contexts(96 at D=1,408 nondyadic) checked every
+positive-field, index and X/Y margin. Nine links and whitespace passed.
+These remain finite algebra/source fixtures, not complete native Pell zeros.
