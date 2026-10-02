@@ -1,0 +1,342 @@
+{
+  "author_replay": {
+    "motif": {
+      "checks": {
+        "focused_receipt.json": {
+          "deterministic_rounds": 8,
+          "distinct_motifs": 256,
+          "elementary_nonleaf_guard": true,
+          "evolution_count_normalization": true,
+          "orphan_config_rejected": true,
+          "variable_ledgers_checked": 7
+        },
+        "quartic_receipt.json": {
+          "coefficient_height": 19,
+          "degree": 4,
+          "monomial_count": 282,
+          "mutated_value": 2,
+          "residuals": 129,
+          "status": "passed",
+          "witness_value": 0
+        },
+        "regression_extensions_receipt.json": {
+          "checks": {
+            "arbitrary_duplicate_catalogue_converse_fails": [
+              [
+                "targetchild:1:0:0",
+                -1
+              ],
+              [
+                "targetchild:1:0:1",
+                1
+              ]
+            ],
+            "constant_schema": {
+              "largest_population_bits": 10001,
+              "residuals": 30,
+              "variables": 18
+            },
+            "mixed_structural_population_checks": 228,
+            "natural_domain_is_required": true,
+            "nested_dissolution_then_division": {
+              "max_degree": 2,
+              "monomials": 465,
+              "residuals": 259,
+              "variables": 225
+            },
+            "old_topology_elementary_guard": true,
+            "sharp_chain_population_and_ledgers_depths": 10
+          },
+          "status": "passed"
+        },
+        "replay_receipt.json": {
+          "checks": {
+            "auxiliary_mutations_rejected": 275,
+            "candidate_plans": 48621,
+            "deterministic_distinct_leaf_motifs": 256,
+            "deterministic_separation_rounds": 8,
+            "examples": 7,
+            "exponential_family_max_membranes": 2047,
+            "huge_population_bits": 10001,
+            "legal_plans": 2123,
+            "residuals_checked": 160332
+          },
+          "scope": "Finite exact checks of weak-division motif quadratic compiler, not formal verification or universal frontend certification.",
+          "status": "passed"
+        },
+        "saved_example_receipt.json": {
+          "examples": [
+            {
+              "coefficient_height": 1,
+              "height_bound": 3,
+              "max_degree": 2,
+              "name": "separate_parent_contexts",
+              "residuals": 146,
+              "variables": 90
+            },
+            {
+              "coefficient_height": 1,
+              "height_bound": 3,
+              "max_degree": 2,
+              "name": "split_identical_children",
+              "residuals": 61,
+              "variables": 43
+            },
+            {
+              "coefficient_height": 1,
+              "height_bound": 3,
+              "max_degree": 2,
+              "name": "released_objects_are_not_old_resources",
+              "residuals": 55,
+              "variables": 43
+            },
+            {
+              "coefficient_height": 2,
+              "height_bound": 3,
+              "max_degree": 2,
+              "name": "dissolution_then_contextual_copy",
+              "residuals": 129,
+              "variables": 86
+            },
+            {
+              "coefficient_height": 2,
+              "height_bound": 2,
+              "max_degree": 2,
+              "name": "nested_division_depth10",
+              "residuals": 957,
+              "variables": 315
+            },
+            {
+              "coefficient_height": 2,
+              "height_bound": 3,
+              "max_degree": 2,
+              "name": "same_mass_first",
+              "residuals": 77,
+              "variables": 49
+            },
+            {
+              "coefficient_height": 2,
+              "height_bound": 2,
+              "max_degree": 2,
+              "name": "same_mass_second",
+              "residuals": 46,
+              "variables": 31
+            }
+          ],
+          "status": "passed"
+        }
+      },
+      "exact_regenerated_files": {
+        "contextual_copy_polynomials.json": "b9186d5830f973858616e9126f5c941bb6a1f216f80a4f4cad9d931dc7f800e0",
+        "contextual_copy_quartic.json": "386f3273c01ca2f7bf9a43df8c961f53f7773bf494214b3a8b681d43c098ed7f",
+        "examples.json": "7e7e73e8594af5aef198c6df4943e2b741b2442b47536fc89b13fea3d7b266f9",
+        "focused_receipt.json": "c3849dc27084670fd6eeb94367255e66d5ee2cdba6013ffa34bba37d0ecc9892",
+        "quartic_receipt.json": "31df86809ee5633d3595c7f3c4350c924877a40ebd151311fd98ca743e07257a",
+        "regression_extensions_receipt.json": "0afa0cb672ed1fe3803806bc6b52a3be0b62d5de4ab135defadfa9fe49fdafcc",
+        "replay_receipt.json": "4d88616a3a744904f417bf6581f42acd4c51f5f1a72cbe32bd0e37c1c341b351",
+        "saved_example_receipt.json": "4c1e2cfb3386cc00ddcbf496e71677f726c0fa432e2f56a09367d9eca0007639"
+      },
+      "nonsemantic_metadata_omitted": "run_receipt.json timestamp, interpreter/platform and subprocess timing fields",
+      "status": "passed"
+    },
+    "universal": {
+      "checks": [
+        {
+          "command": [
+            "python3",
+            "build_frontend.py"
+          ],
+          "packet": "packet",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "verify_frontend.py"
+          ],
+          "packet": "packet",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "verify_membrane.py"
+          ],
+          "packet": "packet",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "replay_example.py"
+          ],
+          "packet": "packet",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "verify_density.py"
+          ],
+          "packet": "packet",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "quadratic_outcome.py",
+            "--steps",
+            "1"
+          ],
+          "packet": "packet",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "verify_quadratic.py"
+          ],
+          "packet": "packet",
+          "status": "passed"
+        },
+        {
+          "check": "all source-manifest entries unchanged after regeneration",
+          "files": 31,
+          "packet": "packet",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "build_direct.py"
+          ],
+          "packet": "direct",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "verify_direct.py"
+          ],
+          "packet": "direct",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "build_quadratic.py",
+            "--steps",
+            "1"
+          ],
+          "packet": "direct",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "make_accepting_witness.py"
+          ],
+          "packet": "direct",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "verify_accepting_quadratic.py"
+          ],
+          "packet": "direct",
+          "status": "passed"
+        },
+        {
+          "command": [
+            "python3",
+            "verify_membrane.py"
+          ],
+          "packet": "direct",
+          "status": "passed"
+        },
+        {
+          "check": "all source-manifest entries unchanged after regeneration",
+          "files": 30,
+          "packet": "direct",
+          "status": "passed"
+        }
+      ],
+      "scope": "Clean temporary-copy regeneration, all public computational checks, source-manifest verification, and exact byte comparison. Mathematical all-input claims require the article proofs; this receipt is not formal proof-assistant verification.",
+      "source_manifest_sha256": {
+        "direct": "f627280060c9cf35bd0fdb2490b7f211b2a199c20da744e6930b9fb9ab5d4180",
+        "packet": "3d54dc2f9a9426ee1502b108677dc735da2a44089fa7770f70507581e19c2325"
+      },
+      "status": "passed"
+    }
+  },
+  "motif": {
+    "complete_residual_identities": 91,
+    "derived_coordinate_mutations_rejected": 502,
+    "independent_concrete_updates": 1060,
+    "independent_old_resource_and_maximality_cases": 10125,
+    "scalar_residuals_compared": 19123,
+    "schema_ledgers_and_heights": 7
+  },
+  "quadratic": {
+    "domain_rejections": 16,
+    "empty_or_singleton_fibers": 24,
+    "exhaustive_natural_tuples": 122640,
+    "full_actual_source_ledgers": 6,
+    "full_actual_source_offzero_identities": 12,
+    "nonnegative_rational_tuples": 750
+  },
+  "scope": "Full proof/source human review plus bounded independent exact checks; no formal proof or fixed-arity unbounded-time claim.",
+  "source_pins": {
+    "motif": {
+      "MANIFEST.json": "a322c91a128325553aead8b927c3db89b8d4de17b4db63c90cf20df64dc71987",
+      "README.md": "0988e2b387059f5d07204473191c208dc52266c7138c3e884d1610f6238e0b79",
+      "RELEASE_NOTES.md": "5df43ef8bd96d6753d25919388837eea6c6419c0b1c136562a836be8967f6117",
+      "article/membrane_motifs.tex": "3d8f41cc0fa443a02ab5cdada43f21abdd90b4b0e50cc41f3d2f4892224f0844",
+      "replay/contextual_copy_polynomials.json": "b9186d5830f973858616e9126f5c941bb6a1f216f80a4f4cad9d931dc7f800e0",
+      "replay/contextual_copy_quartic.json": "386f3273c01ca2f7bf9a43df8c961f53f7773bf494214b3a8b681d43c098ed7f",
+      "replay/examples.json": "7e7e73e8594af5aef198c6df4943e2b741b2442b47536fc89b13fea3d7b266f9",
+      "replay/export_sos.py": "cb749d41dedfcb211ae3f704a0b200a6a88bcab0e9081f345946efaef7e3131d",
+      "replay/focused_tests.py": "91fac87d62224e07a7dc08e481a13012a5508af054ff6a8f318cdee4712645e5",
+      "replay/motif_compiler.py": "90e7b7e18bc6e24918dbb26c6c21d6f18c23e5b9adb5756557aec7d25d3354e2",
+      "replay/regression_extensions.py": "d035b6f91ac2c29b5404a47f8802b544d5559d5eddc164e99ab43877fb5f39a6",
+      "replay/replay_tests.py": "c725c6432b89da61f2a1e2b4420a9ffb42fdb7a8f77fee2eb6ea2334f194794b",
+      "replay/run_all.py": "df980619aa5bf03934c551dbe42587b6f5d5daeacaf7dfcded9ace07b59adc9f",
+      "replay/verify_saved_examples.py": "b9610921ff953de9ffa51d9c5aa65ce68f77b30711b653a9198d7fcd318360d0"
+    },
+    "universal": {
+      "MANIFEST.json": "5d888ed88f2e6d322ab89c4f8c379d73c6dfd0f2db79d202c4add6224956a8d8",
+      "README.md": "2bfeb22e5223de05760e372fe93de2c87e3f009909b4c8fbb634ecd95cd0dbfb",
+      "article/membrane_frontend.tex": "e726bd6e77cf9f9e2a03d4d42069ad7179c3298b7587b6c928cfa5e31a828dba",
+      "direct/MANIFEST.json": "f627280060c9cf35bd0fdb2490b7f211b2a199c20da744e6930b9fb9ab5d4180",
+      "direct/PROOF.md": "1535607bebd0b2b19d004ad068e21a11e82d1d8014d406365911d52abdabdeac",
+      "direct/README.md": "c716cbe17c77713251031baadbcb65b8b85051e129a59aa0c4bdda354fb175ba",
+      "direct/build_direct.py": "457a67e2b6e61b91dabba45a6709d9ece9351165b49587ac505808ca5cb295f5",
+      "direct/build_quadratic.py": "db1242f104bd1dd134dcb804a850adf666f0ca048295782eb93f83417efa4876",
+      "direct/load_input.py": "2f1e5f49f6f949e19056fc96d8ca7c44b54c683909a49b12ea098600a8e83fff",
+      "direct/make_accepting_witness.py": "124c13f3a715ed68198f97e7859c4c35544c13868cdf60c1812a1b683475ff35",
+      "direct/quadratic_core.py": "a14ab87fea4ec8c2d9441dc35768a2972cb52b7627e59423a99844c49e706124",
+      "direct/source/WATERFALL-FRONTEND-PROOF.md": "f04ff59532792396513f0141c2782958516477e9ac0f33e0678c2d794f6c7da7",
+      "direct/verify_accepting_quadratic.py": "6410a038486fd8c30037282ea04db1a13402536d8151566535cdd6f7f7a7e96d",
+      "direct/verify_direct.py": "59ab01c44ad3a237776642cca4359a808e367b959e52954731c9e4a02f3cd5de",
+      "direct/verify_membrane.py": "4fe115c22b2916b17f2d95a0ee0744a685ddcedc4da0c991bed1b02085a02dd1",
+      "direct/virtual3.json": "24c771db50dc621068e470227802c2710a4531ce2e7ad3703a5cdb6b0543bbcf",
+      "packet/MANIFEST.json": "3d54dc2f9a9426ee1502b108677dc735da2a44089fa7770f70507581e19c2325",
+      "packet/PROOF.md": "be43b604667570aad004d78324f312d61b6b2c38c33be14844814b283608af6e",
+      "packet/README.md": "1b1527cfbccb50ad71bb1bba6cd8a66fb0ce9af8e6de38f2667cfcf3a1a6bb23",
+      "packet/build_frontend.py": "b5e46ed6b5b6e1daab5a71f169d28b4892bca419f957943365e4916950d5c1bb",
+      "packet/literal2.json": "85e16b44828f2f3d4ad6d0805dcc9e9922893a6d286874f2018d6a33af864b00",
+      "packet/load_input.py": "bde5fab60276744777bd4f975735f2bea0828563064e963c07df3f8fc23f5690",
+      "packet/quadratic_outcome.py": "648033cbc595b0e77ca56a5e09b1dc171056153fb0de77e9f83ad74b902c4d86",
+      "packet/replay_example.py": "02aff748c2bea8d0438bbdba0a12c07c3b8d2900a27f46998bebdbb25e9357c3",
+      "packet/source/WATERFALL-FRONTEND-PROOF.md": "f04ff59532792396513f0141c2782958516477e9ac0f33e0678c2d794f6c7da7",
+      "packet/verify_density.py": "9a98b4a0d1fb989ccfed6240e9673a74cace3a120c0c4afc82cd280a1e753cbc",
+      "packet/verify_frontend.py": "eccbd28b106d808bd5b6cc300ec68887c85b382599e2f22d8131abb9c704ae60",
+      "packet/verify_membrane.py": "9804ca38f2bed97230e098006fc3a19ee5caa533b58050392c62bd271498c58f",
+      "packet/verify_quadratic.py": "2f190de7bdcb466c434f4d1be50f875d226267c941432bb6bb4ac70dc9f37dd2",
+      "packet/virtual3.json": "24c771db50dc621068e470227802c2710a4531ce2e7ad3703a5cdb6b0543bbcf",
+      "reproduce.py": "510fcb892c9a21730626e2cd04294feb50d7a558c362b5b899c41beaaf838643"
+    }
+  },
+  "status": "passed"
+}
