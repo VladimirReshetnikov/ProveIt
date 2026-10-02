@@ -32,7 +32,7 @@ interface, or improve a universal Diophantine operation bound.
 ## 1. The imported source and exact construction
 
 The source is the incoming archive
-[Infinite Quantum Runs, Finite Diophantine Certificates](../../../../../docs/incoming/Infinite_Quantum_Runs_Diophantine_Certificates.zip),
+[Infinite Quantum Runs, Finite Diophantine Certificates](https://github.com/VladimirReshetnikov/ProveIt/blob/6914ccca6/docs/incoming/Infinite_Quantum_Runs_Diophantine_Certificates.zip),
 committed at `6914ccca6`. Its complete SHA-256 is
 `9da3025f7f93c5f2a2f8c33b7b467f70c0c0ec22587a07cc1983d0615de90ff4`.
 The wrapper reads that exact working-tree archive, or retrieves the same
@@ -184,6 +184,11 @@ strings and malformed shapes are rejected. Omitting `t` selects the scalar
 geometric example. The construction accepts rational matrices with the
 required algebraic index condition, including nonphysical examples; physical
 interpretation remains a separate promise.
+
+Each exported instance pins every entry of `T` to the supplied rational
+constant using the imported `Circuit.matrix(..., pin=True)` interface.
+This is a family of polynomials for fixed rational inputs, not one polynomial
+with a free ordinary universal input parameter.
 
 `checked`, `polynomial_source`, `evaluate`, `export_certificate` and `ledger`
 require the complete exact-type canonical packet. `polynomial_source` returns
