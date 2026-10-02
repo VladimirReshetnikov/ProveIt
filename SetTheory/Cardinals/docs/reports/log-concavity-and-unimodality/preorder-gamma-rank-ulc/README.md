@@ -3,7 +3,8 @@
 **Degree four, independent role activities, small covers and universal-sink clouds**
 
 This is a research report dated 1 October 2026, built from eleven
-manuscripts delivered in eighteen archives of ProveIt's batch 73 (arrival
+manuscripts and a supplement (source 23; twelve sources), delivered with two
+superseded versions in eighteen archives of ProveIt's batch 73 (arrival
 commit `f8c3a392a`, placement commit `8f5c53106`). It answers Research
 question 96 (`mr:q:gamma`) of
 [`preorder-root-polytopes`](../../enumerative-combinatorics/preorder-root-polytopes):
