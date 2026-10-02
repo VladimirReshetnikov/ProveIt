@@ -1,20 +1,24 @@
 # Canonical Diophantine certificates
 
-**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks and routing networks**
+**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks and interaction combinators**
 
-This is a research report dated 30 September 2026, merged from twelve
-manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
+This is a research report dated 30 September 2026, with Part XV dated 2 October
+2026, merged from fifteen manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
 of batch 61, which is numbered 07 here, four of batch 62 (its
 manuscripts 01, 02, 04 and 05), numbered 08–11 here and added as Parts X–XIII
 after the report had been written, and one of batch 63 (its manuscript 02),
-numbered 12 here and added as Part XIV. The base is manuscript 05, *Canonical
+numbered 12 here and added as Part XIV, and three of batch 78 (its
+manuscripts 01, 04 and 05), numbered 13–15 here and merged into one Part,
+XV. The base is manuscript 05, *Canonical
 Trace Polytopes*; its `article.tex` was staged unprefixed and has been
-replaced in place by the merged text. All twelve manuscripts prove the same
+replaced in place by the merged text. All fifteen manuscripts prove the same
 kind of theorem: an explicit integer polynomial whose natural zeros are in
 bijection with the bounded executions (or trace classes of executions) of a
 discrete substrate, with exactly one witness each; in 12 the execution is a
 terminating chip-routing run, represented by its outcome (firing counts and
-sink outputs) rather than its history. They continue the Lean
+sink outputs) rather than its history. In 13–15 the executions are
+scheduled reductions of Lafont's interaction combinators, with exact port
+wiring and exact counts of port-free cyclic wires. They continue the Lean
 project `Computability/HilbertTenthProblem`, whose trace interfaces assert
 only that such representations exist. Author lines: "Research report
 prepared for the ProveIt project" (01), "Research manuscript for the ProveIt
@@ -26,7 +30,12 @@ metadata reads "Research prepared with ChatGPT for Vladimir Reshetnikov"),
 "Research manuscript prepared with ChatGPT" (10) and "Research draft
 prepared for Vladimir Reshetnikov / Developed with ChatGPT; proofs and
 executable verification included" (11) and "Research article prepared for
-the ProveIt program" (12). The article prints the batch-62
+the ProveIt program" (12), "Prepared for Vladimir Reshetnikov" (13 and 15;
+13's title page adds "Prepared with ChatGPT" and its PDF metadata reads
+"Research report prepared with ChatGPT for the ProveIt project"; 15's PDF
+metadata reads "OpenAI, research draft prepared for Vladimir Reshetnikov")
+and "Research prepared with ChatGPT for Vladimir Reshetnikov's ProveIt
+program" (14). The article prints the batch-62 and batch-78
 author lines in neutral form and records these assistant names only in its
 provenance appendix; 12's author line names no assistant.
 
@@ -44,6 +53,9 @@ provenance appendix; 12's author line names no assistant.
 | 10 | batch 62, manuscript 04 | `ProveIt_Priority_Pumping_Diophantine`, inner directory `priority_fractran_research` (30-page PDF) | *Sharp Pumping Bounds and Canonical Diophantine Certificates for Priority Arithmetic Computation* | `4e128356d` | `b57c0b5ff` | `adeddcecc` | Section 3.10 (abstract, status, §1); Part XII (§§2–14, Appendices A–C) |
 | 11 | batch 62, manuscript 05 | `one_shared_fallback_research`, inner directory `one_shared_fallback` (26-page PDF) | *One Shared Fallback: Conservative Reaction Computation, Unique Quartic Certificates, and a Canonical Fuel Form of the Finite-Fold Problem* | `4e128356d` (also names `ccfb084ad`) | `b57c0b5ff` | `adeddcecc` | Section 3.11 (abstract, §1); Part XIII (§§2–14, Appendices A–B) |
 | 12 | batch 63, manuscript 02 | `Diophantine_Certificates_Without_Histories`, inner directory `diophantine_certificates` (26-page PDF) | *Diophantine Certificates Without Execution Histories: Single-fold quartics for succinct routing, and a universal one-router boundary* | `e18718e83` | `a4268e78e` | `62f1ad07c` | Section 3.12 (abstract, §1); Part XIV (§§2–11, Appendices A–B) |
+| 13 | batch 78, manuscript 01 | `Exact_Wiring_Diophantine_Report`, inner directory `Exact_Wiring_Diophantine` (28-page PDF) | *Exact Wiring in Diophantine Computation: Sharp loop-parity separation and a cycle-preserving compiler for interaction combinators* | `439c0a2d9` | `1977e6ea6` | `aa11f3fef` | Section 3.13 (abstract, package statement, §1); Part XV (§§2–13, Appendix A); provenance appendix (Appendix B) |
+| 14 | batch 78, manuscript 04 | `Topology_Is_Not_Free_Interaction_Nets`, inner directory `Interaction_Net_Diophantine` (23-page PDF) | *Topology Is Not Free: Loop-Sensitive Diophantine Certificates for Interaction Nets* | `6914ccca6` | `1977e6ea6` | `aa11f3fef` | Section 3.14 (title-page box, status, abstract, §1); Part XV (§§2–13, Appendices A–C); provenance appendix (Appendix D) |
+| 15 | batch 78, manuscript 05 | `no_ghost_wires`, inner directory `no_ghost_wires` (25-page PDF) | *No Ghost Wires: Loop-Exact Quartic Certificates for Interaction Combinators* | `928ea9701` | `1977e6ea6` | `aa11f3fef` | Section 3.15 (abstract, status, §1); Part XV (§§2–13, Appendices A–C) |
 
 Section numbers in the last column are those of each manuscript. Manuscripts
 01–07 also contribute to the Introduction and to the back matter
@@ -51,7 +63,9 @@ Section numbers in the last column are those of each manuscript. Manuscripts
 Conclusions of the manuscripts, Provenance); manuscripts 08–12 keep their
 validation, formalization plans, questions and conclusions inside their
 Parts, and appear in the back matter only in the provenance appendix and
-the bibliography. The Parts are: I Exact commutation and resource algebra;
+the bibliography. Manuscripts 13–15 are merged by subject into Part XV,
+which closes with their validation, questions, conclusions and
+appendices; the source audits of 13 and 14 are in the provenance appendix. The Parts are: I Exact commutation and resource algebra;
 II Canonical trace classes; III Compressed repetition and accelerators; IV
 Polynomial trajectories; V Memory logs, RAM and graph evaluation; VI Queues:
 tag systems and FIFO networks; VII FRACTRAN, SKI and term rewriting; VIII
@@ -61,13 +75,16 @@ and a positivity-restricted degree threshold; XII Priority repetition:
 pumping bounds, program-uniform certificates and periodic tails; XIII
 Conservative priority reaction networks and a canonical-fuel form of the
 finite-fold problem; XIV History-free routing certificates: last exits,
-compressed periods and a rank-function bottleneck.
+compressed periods and a rank-function bottleneck; XV Interaction
+combinators: exact wiring, loop-exact gluing and bounded quartic frontends.
 
 The full pins are `e8bb0931d67f80d9fce87a8cddb0f661ff19f956` (01–06),
 `725d2ebb6909fe11a13a92354c0f47367a3cbbf5` (07),
 `4e128356d0ef75308be8ed405d89aea2ffdb8a57` (08–11; 11 also names
 `ccfb084adaa2f32e8d2738a25f82a00377fb3a8c`, a later commit it read on the
-live branch) and `e18718e837d43e162252f9a314e8cb797fbd1a1f` (12). The pin of 07 is the commit
+live branch) and `e18718e837d43e162252f9a314e8cb797fbd1a1f` (12), and `439c0a2d9c1052595f3de6a29c11511a24fb2e11` (13),
+`6914ccca6685baf53b7a35f25efc89366c76ba74` (14) and
+`928ea97017a25ebe56d240c84f27d2275d818c75` (15). The pin of 07 is the commit
 in which 01–03 arrived; 07 was written after 04 and 06, names them by title
 as its companion manuscripts, and arrived after this report was placed but
 before it was written. The batch-60 placement commit `7498484af` also placed
@@ -84,6 +101,19 @@ report had been placed but not written then (it was written in `5b87c88c5`),
 so 12 does not cite it either. No file under
 `Computability/HilbertTenthProblem` differs between `e8bb0931d`,
 `e18718e83` and the batch-63 write.
+
+Manuscripts 13–15 were written on the morning of 2 October 2026 at three
+commits of that morning (`439c0a2d9` 10:29, `928ea9701` 10:41, `6914ccca6`
+10:45), after Part XIV had been written (`781594d88`); 14 read this report's
+README and cites it, 13 and 15 do not cite the report. 15 calls
+`928ea9701` a "tree identifier" ("recursive-tree revision" in its
+`PROVENANCE.md`); it is a commit. 13 records an "initially fetched" README
+blob `79153a4ed`, which is the project README of `928ea9701`, not of its pin
+(there the README is `076832c56`); both state the 75- and 87-operation
+figures that 13 quotes. The other repository files they cite, the research
+note `interaction_combinator_wiring_obstruction.md` (blob `764c98229`) and
+`Lean/Diophantine/MRDP.lean` (blob `74aea8c5e`), are the same at the three
+pins and at the batch-78 write.
 
 What each manuscript contributes:
 
@@ -168,6 +198,40 @@ What each manuscript contributes:
   of its one monotone Boolean rank function has a single-fold (finite-fold)
   representation exactly when every c.e. set has one, with `2r+3` witnesses
   and degree `max{4,2d}`.
+- **13** for distinct perfect matchings `M ≠ N` of `2n` labelled ports and a
+  uniformly random closing matching, the parities of the numbers of cyclic
+  wires after closing differ with probability between 2/5 and 2/3, both
+  sharp (2/3 exactly when `M ∪ N` is one alternating four-cycle plus common
+  edges, 2/5 exactly for one six-cycle), by a signed contraction recurrence;
+  hence
+  any summary that predicts loop parity in every closing context is
+  injective on all `(2n−1)!!` matchings and needs `⌈log₂(2n−1)!!⌉` bits,
+  `O(n log n)` random one-bit probes separate all matchings (existence; no
+  efficient decoder), and a two-edge context separates any two matchings
+  modulo every `r ≥ 2`; an exact splice and order-independent gluing; a
+  linear-size memory certificate with initial and final arrays; and a
+  bounded six-rule quartic compiler with `O(C₀+F+T)` coordinates, printed
+  as a second presentation of 14's theorem (a paper construction).
+- **14** locality of wire suppression; closed quadratic formulas for the new
+  loops and surviving endpoints of a binary annihilation (ten boundary
+  patterns) and a sharp ten-state result; a 23-residual quartic kernel with
+  a unique 17-coordinate extension; a capped memory certificate with
+  exactly `17L−4` auxiliaries and residuals (`16L−4` with a precomputed
+  base); a fixed 36-access rewrite step; the bounded quartic family for
+  exact scheduled reductions of all six rules, with `O(C₀+f+T)`
+  coordinates, one witness per legal schedule and an explicit ledger (a
+  paper construction); terminal predicates, a bounded ordinary-integer
+  loader for fixed dimensions, and transfer to fixed interaction systems.
+- **15** a division-free pair-suppression identity on natural matching
+  matrices; a sixteen-port support bound; the path–cycle dictionary
+  `cyc(α∘β) = |B|/2 + 2L`; completeness of the summary (boundary matching,
+  loop count) for matching contexts; a canonical minimum-and-distance orbit
+  certificate with exactly one natural witness for every permutation (`4n`
+  witnesses and `5n` quadratic residuals; `5n` and `6n` with a selector
+  matrix); a single-fold gluing certificate; an implemented fixed-schedule
+  compiler for all six rules with an exact ledger (68 parameters, 126
+  witnesses and 169 residuals for the repository's example); a finite
+  schedule disjunction; and a lasso up to renaming.
 
 **Status.** The report is AI-assisted and unrefereed. None of its theorems
 is formalized in Lean or Rocq, and no manuscript ships Lean or Rocq files.
@@ -194,6 +258,10 @@ README.md                                this guide
 10-priority-pumping-VALIDATION.md        manuscript 10's delivery validation (PDF build, 114,875 counted checks)
 10-priority-pumping-provenance.md        manuscript 10's pin, inspected repository files and literature
 12-rle-routing-SOURCES.md                manuscript 12's pinned repository and literature provenance
+13-exact-wiring-SOURCES.md               manuscript 13's pinned repository and literature audit
+15-no-ghost-wires-CLAIMS.md              manuscript 15's claims and scope ledger
+15-no-ghost-wires-PROVENANCE.md          manuscript 15's repository revision, sources and verification limits
+16-sandpile-SOURCES.md                   placed by 41e7f1189 (batch 78, cluster H3) for a later Part
 
 code/01-causal-traces-causal_diophantine.py   exact semantics and the four compiler entry points
 code/01-causal-traces-demo.py            the 11-witness large-count example (prints; writes no file)
@@ -241,6 +309,27 @@ code/11-reaction-fallback-verify.py      deterministic tests (seed 20260930); wr
 code/12-rle-routing-Makefile             manuscript 12's make targets (all, pdf, test, clean), delivery paths
 code/12-rle-routing-compile_quartic.py   sparse compiler for the RLE quartic; writes --output and a .txt beside it
 code/12-rle-routing-verify_certificates.py   exact semantics, witnesses, residuals and tests; writes --output
+code/13-exact-wiring-Makefile            manuscript 13's make targets (all, paper, test, clean), delivery paths
+code/13-exact-wiring-diophantine_memory.py   sparse quadratic memory compiler, canonical witness, quartic export
+code/13-exact-wiring-parity.py           signed closure recurrence, partitions, representative matching pairs
+code/13-exact-wiring-verify.py           finite checks; compares with its recorded receipt, rewrites it only with --write
+code/13-exact-wiring-wiring.py           six-rule evaluator, splice and component gluing, separating contexts
+code/14-net-topology-Makefile            manuscript 14's make targets (all, test, pdf, clean), delivery paths
+code/14-net-topology-certificates.py     sparse quadratic systems, witness generators, quartic exporters
+code/14-net-topology-nets.py             six-rule templates; component and local-formula reducers
+code/14-net-topology-verify.py           finite checks (seed 20261002); rewrites three quartics and verification.json
+code/14-net-topology-verify_exports.py   independent JSON quartic checker; rewrites export_audit.json
+code/15-no-ghost-wires-build.sh          manuscript 15's three-pass PDF build (its .tex is not shipped; do not run it here)
+code/15-no-ghost-wires-check_export.py   independent evaluator of the exported example (prints one line)
+code/15-no-ghost-wires-loop_exact.py     net semantics, templates, orbit certificate, scheduled compiler, witness
+code/15-no-ghost-wires-verify.py         finite checks; rewrites four data files and writes verification.txt
+code/16-sandpile-build.sh                placed by 41e7f1189 (batch 78, cluster H3) for a later Part
+code/16-sandpile-sandpile_compact.py     (the same)
+code/16-sandpile-sandpile_cubic.py       (the same)
+code/16-sandpile-sandpile_spatial.py     (the same)
+code/16-sandpile-verify.py               (the same)
+code/16-sandpile-verify_compact.py       (the same)
+code/16-sandpile-verify_spatial.py       (the same)
 
 data/01-causal-traces-build_validation.json   build and rendering record of the delivered 29-page PDF
 data/01-causal-traces-canonical_history.json  32-witness, 48-residual causal-history polynomial and certificate
@@ -327,14 +416,42 @@ data/12-rle-routing-example_quartic.txt             the same, human-readable
 data/12-rle-routing-parametric_quartic.json         the same topology, both lengths free: 81 monomials
 data/12-rle-routing-parametric_quartic.txt          the same, human-readable
 data/12-rle-routing-test_results.json               recorded run of verify_certificates.py: PASS
+data/13-exact-wiring-build_receipt.json            build and rendering record of the delivered 28-page PDF
+data/13-exact-wiring-example_memory_certificate.json   A = 3, m = 5, V = 8: 21 parameters, 167 witnesses, 144 residuals, 2,496 monomials
+data/13-exact-wiring-verification.json             recorded receipt of verify.py (Python 3.13.5), with source hashes
+data/14-net-topology-delta_loop_quartic.json       delta kernel: 6 source fields, 17 auxiliaries, 23 residuals, 104 monomials
+data/14-net-topology-export_audit.json             recorded run of verify_exports.py
+data/14-net-topology-gamma_loop_quartic.json       gamma kernel, the same counts
+data/14-net-topology-memory_example_quartic.json   four-access log, A = 4, V = 10: 12 source fields, 64 auxiliaries, 64 residuals, 402 monomials
+data/14-net-topology-pdf_quality.json              build and rendering record of the delivered 23-page PDF
+data/14-net-topology-source_audit.json             manuscript 14's pin, inspected repository files and literature
+data/14-net-topology-verification.json             recorded run of verify.py (seed 20261002)
+data/15-no-ghost-wires-endpoints.json              the repository's two distinguishing nets and the target
+data/15-no-ghost-wires-quartic_A_schedule.json     the example: 169 residuals, 68 parameters, 126 witnesses
+data/15-no-ghost-wires-verification.json           recorded run of verify.py (with a runtime field)
+data/15-no-ghost-wires-witness_A.json              the unique witness for net A
+data/16-sandpile-BUILD_REPORT.json                 placed by 41e7f1189 (batch 78, cluster H3) for a later Part
+data/16-sandpile-compact_huge_input_certificate.json   (the same)
+data/16-sandpile-compact_two_site_polynomial.json  (the same)
+data/16-sandpile-compact_two_site_polynomial.txt   (the same)
+data/16-sandpile-huge_input_certificate.json       (the same)
+data/16-sandpile-requirements.txt                  (the same)
+data/16-sandpile-two_site_polynomial.json          (the same)
+data/16-sandpile-two_site_polynomial.txt           (the same)
+data/16-sandpile-verification.json                 (the same)
+data/16-sandpile-verification_compact.json         (the same)
+data/16-sandpile-verification_spatial.json         (the same)
 ```
 
-The directory holds 146 files: 15 at the root (the article, its PDF, this
-README and twelve provenance and audit files), 46 in `code/` and 85 in
+The directory holds 196 files: 19 at the root (the article, its PDF, this
+README and sixteen provenance and audit files), 67 in `code/` and 110 in
 `data/`. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
 besides the replaced `article.tex` and `README.md`, 06 15, 07 14, 08 8, 09
-9, 10 14, 11 9 and 12 9. Every file except `article.tex`, `article.pdf` and `README.md`
-is byte-identical to the delivery.
+9, 10 14, 11 9, 12 9, 13 9, 14 12 and 15 10. Every file of manuscripts 01–15 except `article.tex`, `article.pdf` and
+`README.md` is byte-identical to the delivery. The nineteen files
+`16-sandpile-*` (1 at the root, 7 in `code/`, 11 in `data/`) were placed by
+`41e7f1189` (batch 78, cluster H3) for a Part that has not been written yet;
+this README does not describe them.
 
 ## Labels
 
@@ -356,6 +473,9 @@ manuscripts take a sub-prefix:
 | 10 | `cdc:pf:` | `cdc:pf:thm:pumping` |
 | 11 | `cdc:rx:` | `cdc:rx:thm:FF` |
 | 12 | `cdc:rt:` | `cdc:rt:thm:bottleneck` |
+| 13 | `cdc:ew:` | `cdc:ew:thm:sharp` |
+| 14 | `cdc:nt:` | `cdc:nt:thm:main` |
+| 15 | `cdc:ng:` | `cdc:ng:thm:orbit` |
 
 Labels written in the merge use `cdc:conv:` (the Conventions section),
 `cdc:bd:` (merged statements of Part IX, such as the universal-halting
@@ -401,6 +521,31 @@ periods and variable degrees"). No existing label was renamed, removed or
 renumbered: the 840 labels of the batch-62 build have the same numbers and
 types in the new `.aux` (compared entry by entry). Part XIV's equations are
 numbered within its sections, as in Parts X–XIII.
+
+The batch-78 write (Part XV) raised the count from 916 to 1105. It adds all
+128 labels of manuscripts 13–15 (13 63, 14 16, 15 49), each with its
+sub-prefix and none dropped (13 and 14 share the bare names `lem:product`,
+`prop:height`, `thm:glue` and `thm:memory`, and 13 and 15 share
+`thm:compiler`, `sec:compiler` and `sec:future`), and 61 written labels: the
+Part (`cdc:part:wiring`), its conventions section (`cdc:conv:b78-wiring`),
+the three manuscript subsections (`cdc:sec:ms13` … `cdc:sec:ms15`), twelve
+sections and subsections written in the merge under the sub-prefix
+`cdc:ic:` (`cdc:ic:sec:nets`, `…:example`, `…:gluing`, `…:context`,
+`…:kernel`, `…:memory`, `…:memcompare`, `…:compiler`, `…:orbits`,
+`…:boundaries`, `…:validation`, `…:questions`), nine section and appendix
+labels in manuscript 14's namespace (`cdc:nt:sec:intro`, `…:nets`, `…:glue`,
+`…:kernel`, `…:memhist`, `…:machine`, `…:main`, `…:boundaries`,
+`cdc:nt:app:sources`), because 14 left its sections unlabelled and cited
+them by number, the 34 equation labels `cdc:nt:eq:2.1` … `cdc:nt:eq:11.1`,
+which replace 14's hand-set `\tag` numbers and keep them in their names
+(`cdc:nt:eq:3.3` is printed as (143.3)), and `cdc:nh:q:frontend`, put on
+Part X's existing, previously unlabelled question "A complete
+interaction-combinator frontend" so that Part XV and the notes can cite it.
+No existing label was renamed, removed or renumbered: the 916 labels of the
+batch-63 build have the same numbers in the new `.aux` (compared entry by
+entry). Part XV's equations are numbered within its sections, and those of
+Sections 3.13–3.15 within subsections; table numbers after Part XV did not
+move, because no captioned table follows it.
 
 Text written during the merge is marked `[write]` in the article.
 
@@ -624,6 +769,65 @@ cites, map as follows: Theorem 3.1 = `cdc:rt:thm:rle`, Theorem 4.1 =
 article); its Sections 2–11 are Sections 127–136 of the article and its
 Appendices A–B Sections 137–138.
 
+**Manuscript 13** (package root `Exact_Wiring_Diophantine/`)
+
+| Delivered | Shipped |
+|---|---|
+| `Makefile` | `code/13-exact-wiring-Makefile` |
+| `SOURCES.md` | `13-exact-wiring-SOURCES.md` |
+| `code/diophantine_memory.py` | `code/13-exact-wiring-diophantine_memory.py` |
+| `code/parity.py` | `code/13-exact-wiring-parity.py` |
+| `code/verify.py` | `code/13-exact-wiring-verify.py` |
+| `code/wiring.py` | `code/13-exact-wiring-wiring.py` |
+| `results/build_receipt.json` | `data/13-exact-wiring-build_receipt.json` |
+| `results/example_memory_certificate.json` | `data/13-exact-wiring-example_memory_certificate.json` |
+| `results/verification.json` | `data/13-exact-wiring-verification.json` |
+
+**Manuscript 14** (package root `Interaction_Net_Diophantine/`)
+
+| Delivered | Shipped |
+|---|---|
+| `Makefile` | `code/14-net-topology-Makefile` |
+| `code/certificates.py` | `code/14-net-topology-certificates.py` |
+| `code/nets.py` | `code/14-net-topology-nets.py` |
+| `code/verify.py` | `code/14-net-topology-verify.py` |
+| `code/verify_exports.py` | `code/14-net-topology-verify_exports.py` |
+| `data/delta_loop_quartic.json` | `data/14-net-topology-delta_loop_quartic.json` |
+| `data/export_audit.json` | `data/14-net-topology-export_audit.json` |
+| `data/gamma_loop_quartic.json` | `data/14-net-topology-gamma_loop_quartic.json` |
+| `data/memory_example_quartic.json` | `data/14-net-topology-memory_example_quartic.json` |
+| `data/pdf_quality.json` | `data/14-net-topology-pdf_quality.json` |
+| `data/source_audit.json` | `data/14-net-topology-source_audit.json` |
+| `data/verification.json` | `data/14-net-topology-verification.json` |
+
+**Manuscript 15** (package root `no_ghost_wires/`)
+
+| Delivered | Shipped |
+|---|---|
+| `CLAIMS.md` | `15-no-ghost-wires-CLAIMS.md` |
+| `PROVENANCE.md` | `15-no-ghost-wires-PROVENANCE.md` |
+| `build.sh` | `code/15-no-ghost-wires-build.sh` |
+| `code/check_export.py` | `code/15-no-ghost-wires-check_export.py` |
+| `code/loop_exact.py` | `code/15-no-ghost-wires-loop_exact.py` |
+| `code/verify.py` | `code/15-no-ghost-wires-verify.py` |
+| `data/endpoints.json` | `data/15-no-ghost-wires-endpoints.json` |
+| `data/quartic_A_schedule.json` | `data/15-no-ghost-wires-quartic_A_schedule.json` |
+| `data/verification.json` | `data/15-no-ghost-wires-verification.json` |
+| `data/witness_A.json` | `data/15-no-ghost-wires-witness_A.json` |
+
+Delivered numbers cited by delivered text map as follows. 15's shipped
+`CLAIMS.md` cites "article equations (22) and (23)": they are
+`cdc:ng:eq:variables` and `cdc:ng:eq:residuals`, equations (146.17) and
+(146.18) of the article. 13's delivered README (not shipped) cites its
+Theorem 3.1, Section 4, Theorem 7.1 and Theorem 9.1: `cdc:ew:thm:sharp`
+(Theorem 142.1), `cdc:ew:sec:tomography` (Section 142.2),
+`cdc:ew:thm:memory` (Theorem 144.4) and `cdc:ew:thm:compiler` (Remark
+145.5). 14's equation `(N.M)` is `cdc:nt:eq:N.M`. Part XV is Sections
+139–156 of the article: 139 its conventions, 140–149 its ten subject
+sections, 150 13's Appendix A, 151–153 14's Appendices A–C and 154–156
+15's Appendices A–C; 13's Appendix B and 14's Appendix D are subsections
+K.1 and K.2 of the provenance appendix.
+
 **Not shipped.** The manuscripts (`article.tex`) and delivery READMEs of
 members 01, 02, 03, 04, 06 and 07: they survive in their arrival commits
 (`725d2ebb6` for 01–03, `c1f56f842` for 04 and 06, `b998f70c6` for 07), as
@@ -640,11 +844,24 @@ the arrival commit `b57c0b5ff`; 08's and 09's checksum ledgers
 `article.tex`, delivery `README.md` and 26-page `article.pdf` survive in the
 arrival commit `a4268e78e`; its checksum ledger `SHA256SUMS` (12/12) was
 verified and retired at placement (`62f1ad07c`) and verified again for this
-write against a fresh extraction.
+write against a fresh extraction. For the batch-78 additions 13–15:
+their manuscripts (`article.tex`), delivery READMEs and PDFs (28, 23 and 25
+pages) survive in the arrival commit `1977e6ea6`, as members of the
+committed archives `Exact_Wiring_Diophantine_Report.zip`,
+`Topology_Is_Not_Free_Interaction_Nets.zip` and `no_ghost_wires.zip`
+(`git show 1977e6ea6:docs/incoming/<archive>.zip`). 14's `SHA256SUMS.json`
+(16/16) and 15's `SHA256SUMS.txt` (14/14) were verified and retired at
+placement (`aa11f3fef`); 13 delivered no ledger (its
+`results/verification.json` records the hashes of its programs). Three
+console copies were not shipped: 14's `data/export_audit_console.txt` and
+`data/verification_console.txt`, byte-identical to `export_audit.json` and
+`verification.json`, and 15's `data/verification.txt`, which is its
+`verification.json` with a two-line header. No file of 13–15 reaches 1 MB,
+so nothing was excluded as a heavy regenerable artifact.
 
 ## What is claimed and what is not
 
-The report claims the theorems of the twelve manuscripts, with the proofs
+The report claims the theorems of the fifteen manuscripts, with the proofs
 printed in the article: bijections between the natural zeros of explicit
 integer polynomials and bounded executions, trace classes or logs of the
 substrates listed above, with one witness per execution or class, exact
@@ -663,7 +880,16 @@ For Part XIV: 12's exact odometer criterion with canonical heights, the
 run-length and grammar quartics with their exact witness and residual
 counts, the both-outcome certificates and the `UP ∩ coUP` membership, the
 Presburger and transport statements, the circuit counting barrier, the
-universal one-router theorem and the rank-function bottleneck equivalence. It
+universal one-router theorem and the rank-function bottleneck equivalence.
+For Part XV: 13's sharp loop-parity theorem and its consequences, its
+splice and gluing theorems and its memory certificate with initial and
+final arrays; 14's locality lemma, kernel formulas, ten-state minimality,
+23-residual kernel, `17L−4` memory certificate, 36-access machine, the
+bounded six-rule quartic family with one witness per legal schedule (with
+13's second presentation), the bounded loader and the transfer theorem;
+15's suppression identity, support bound, path–cycle dictionary, contextual
+completeness, canonical orbit certificate, single-fold gluing certificate,
+scheduled compiler with its exact ledger, disjunction and lasso. It
 does not claim the following. Each item is stated by at least the
 manuscripts named; the article keeps every one of them.
 
@@ -684,9 +910,21 @@ manuscripts named; the article keeps every one of them.
   quadratization, Cartier–Foata and forbidden-factor normal forms, sorting
   networks and sorted-memory verification, radix encodings, finite-table
   interpolation, polynomial centralizers, pairing) are not claimed.
+  Batch 78: 13 does not certify priority for its sharp 2/5–2/3 theorem
+  (abstract, Section 1 and `SOURCES.md`); 14 does not assert independent
+  priority for each elementary lemma (Section 1 and `source_audit.json`);
+  15 has not established priority for its orbit certificate (status box,
+  `CLAIMS.md`, `PROVENANCE.md`). Interaction combinators, their
+  universality and the numbered rules are Lafont's; permutation gluing with
+  closed components is de Falco's and the Brauer-category setting's; the
+  four-δ witness pair is the repository note's. The carry-free product
+  lemma of 13 and 14 is Part V's (`cdc:mem:lem:fingerprint`), and 14's
+  ten-pattern loop formula was also derived independently in the research
+  note `interaction_combinator_quadratic_topology.md`; priority is claimed
+  for neither.
 - **Not formal.** No new Lean, Rocq or Coq proof was written or compiled,
   the repository's Lean build and axiom audits were not rerun, and
-  repository documentation is not treated as a kernel audit (all twelve).
+  repository documentation is not treated as a kernel audit (all fifteen).
   The formalization sections of 08, 09, 10, 11 and 12 are likewise
   proposals; 12's five-layer Lean plan names no module as existing, and
   "none of these new layers has been kernel-checked".
@@ -713,6 +951,11 @@ manuscripts named; the article keeps every one of them.
   (the graph of one monotone Boolean function computable in polynomial
   time), "an equivalence, not a solution"; it supplies no coefficients of a
   global rank polynomial and no new constructive proof of MRDP.
+  13, 14 and 15 each state that MRDP applied to the unbounded reachability
+  relation is classical and does not preserve their unique witnesses,
+  degree or size ledgers, and that they resolve neither the single-fold nor
+  the finite-fold problem (13's "no illicit single-fold conclusion", 14's
+  Section 10, 15's Section 8.2 and `CLAIMS.md`).
 - **Families, not fixed arity.** Every construction is a family indexed by
   a horizon, height, log length or schedule, whose number of variables grows
   with that parameter: 01's causal height `H` is a compiler parameter
@@ -737,6 +980,45 @@ manuscripts named; the article keeps every one of them.
   `RESEARCH_STATUS.md`; 04's integration section; 09 and 10 say so
   explicitly; 11's 61 species and 62 reactions count a network, not
   operations; 12 improves no universal variable–degree record).
+  13–15's polynomials are families indexed by the horizon `T` and the input
+  dimensions (15's by the whole lifetime schedule); a fixed horizon is not
+  fixed arity, and none supplies an ordinary-integer universal loader. 13
+  says that it lowers neither the 75- nor the 87-operation figure; 14's
+  ledger and 15's counts decline that comparison.
+- **13, scope.** The sharp theorem concerns bare labelled matchings and
+  all closing matchings: summaries for a restricted family of contexts, or
+  overapproximating reachability analyses, are not ruled out. The state-bit
+  bound is an information bound, not a lower bound on Diophantine
+  variables, and says nothing of the bit optimality of the large-height
+  certificate. The tomography theorem is existence and sampling, with no
+  efficient decoder. The compiler is a paper construction; only the memory
+  component is exported. Uniqueness is over a fixed schedule, not of the
+  schedule. The memory certificate pays `O(L² log U)`-bit witnesses; it is
+  not a cryptographic improvement on fingerprinting. The two rule evaluators
+  share one rule table, so their agreement tests gluing, not the table; the
+  bounds to weight 30 are computed with the recurrence. Its formalization
+  path is a proposal; the MRDP interface was read, not rebuilt.
+- **14, scope.** The ten-state result is for one observation interface
+  (external positions and both annihilation loop counts), not a global
+  graph-memory bound. The memory caps `A, V` are external; the `17L−4` count
+  "must not be advertised as an unconditional improvement" of earlier
+  ledgers. The unknown-schedule assembler is specified and proved but not
+  implemented, and its constants `G, H` are not measured. The bijection is
+  with scheduled executions, not normal forms, interleaving classes or
+  observational classes. The loader is for fixed dimensions, not a universal
+  loader. The transfer theorem is uniform for a fixed rule table, not for
+  rules given as data. Witnesses are bounded in bit length, not small; no
+  least degree is claimed; natural witnesses are essential.
+- **15, scope.** The schedule is structural; its exporter is dense
+  (`O(T(C₀+T+F)²)` witnesses and residuals), and the support bound is not a
+  constant-cost memory lookup. The finite disjunction may be exponential
+  and, like the multiaffine variant and a general lasso wrapper, is proved
+  but not implemented. The lasso is a sufficient condition for
+  nontermination only. No fixed-arity universal equation, paid loader,
+  sparse near-linear exporter, canonical quotient of concurrent schedules,
+  minimal witness count or optimal circuit. Bounded uniqueness checks and
+  single-coordinate mutations are not the uniqueness proof; algorithmic
+  independence within one implementation is not external review.
 - **Real relaxation is not integral.** 05's quadratic has a real zero set
   that is a bounded rational polytope, but that polytope need not be
   integral: its example of a nonempty polytope with no lattice point shows
@@ -816,8 +1098,9 @@ manuscripts named; the article keeps every one of them.
 - **08, scope.** Only the memory layer and a pointer-log demonstration are
   implemented; the complete source-language (local heap and graph) compiler
   is a mathematical construction, not a delivered implementation, and there
-  is no interaction-combinator front end or checked reduction from the
-  repository's Iota or lambda semantics. The two-stack module is a logging
+  is no interaction-combinator front end (Part XV, from manuscripts 13–15,
+  now supplies one for bounded scheduled histories) or checked reduction
+  from the repository's Iota or lambda semantics. The two-stack module is a logging
   demonstration, not a Turing-machine front end. The linearithmic bound is
   a corollary of published sorting theory (Goodrich; Part V uses AKS), not
   a benchmark, and the comparator lower bound holds only within the
@@ -985,6 +1268,43 @@ finite periodic routing network is decidable, below its hierarchy.
 Manuscript 12 bears on no question of
 *probabilistic-quantum-and-continuous-computation*.
 
+Part XV (manuscripts 13–15) relies on no formal declaration either. 13 and
+15 cite, as context only, `Diophantine.mrdp` and `Diophantine.mrdp_iff`
+(`Lean/Diophantine/MRDP.lean`, lines 33 and 42), which assert existence of a
+Diophantine representation and say nothing about its witnesses. No theorem
+of Part XV is formalized in Lean or Rocq, none of the three ships Lean or
+Rocq files, and their formalization sections are proposals. Placing these
+manuscripts beside the formal project confers no formal status on them.
+They answer the research note
+`Papers/research-wip/native-stream-queue/interaction_combinator_wiring_obstruction.md`
+of the Hilbert's-tenth-problem tree, which is maintained separately and was
+not edited. Two later notes of that tree bear on Part XV and are cited by
+dated notes in the article: `interaction_combinator_quadratic_topology.md`
+(`b7a9404d4`) derives 14's ten-pattern δδ loop formula independently, with
+a 472-operation charge for one complete selected δδ step, and
+`incoming_substrate_review_1977e6ea6.md` (`44b28c395`) reviews and replays
+the three archives, finds no mathematical error, notes that 13's
+`Circuit.failures` ignores unused trailing coordinates, and derives three
+natural-domain reductions of the shipped systems: 15's orbit rows 169 → 147
+in the example (same 126 witnesses), 14's loop kernel 23 → 15 residuals
+and 17 → 15 helpers, and 13's memory example 144 → 134 residuals. They are
+recorded, not applied: the shipped exports are unchanged.
+
+**Relations (batch 78).** Part XV answers, for bounded scheduled histories,
+Part X's question on a complete interaction-combinator frontend
+(`cdc:nh:q:frontend`), answers Part V's question on the best scalar
+constant (`cdc:q:scalar`) in part for capped relations, bears on the
+question on faithful graph-rewriting front ends (`cdc:q:graphfront`), and
+re-derives Part V's product lemma; dated notes at those places and after
+Part V's linear-memory theorem, in Part X's subsection on interaction
+systems and at its question on quotienting independent schedules say how
+far. The commutation quotient of independent schedules stays open. In
+*liveness-beyond-halting*, the question on clock-faithful translations to
+interaction nets ("Other unconventional substrates with timing
+certificates") is not answered: Part XV supplies a local polynomial compiler
+for the target's own finite steps, not the clock-faithful simulation
+theorem. That report was not edited in this write.
+
 ## Build
 
 pdfLaTeX, with the packages loaded in `article.tex` (base 05's preamble
@@ -1002,12 +1322,16 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 338 pages (196 before batch 62, 306 before batch 63),
+The recorded build has 419 pages (196 before batch 62, 306 before batch 63,
+338 before batch 78),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
 five macros for manuscript 12 (`\rankf`, `\UP`, `\coUP`, `\NP`, `\coNP`) and
-no package.
+no package. Batch 78 adds five macros for manuscripts 13–15 (`\M`, `\PP`,
+`\multiset`, `\cyc`, `\id`) and no package; the batch-78 build has no
+error, warning or overfull box, and its one underfull line is the one
+above.
 
 ## Rerunning the checks
 
@@ -1015,7 +1339,7 @@ Every suite needs Python 3.10 or later and the standard library only. Every
 suite rewrites its recorded outputs at fixed paths relative to its own
 location, and most scripts import their siblings by delivered name, so run
 them **on a copy with the delivered layout**, never in the report
-directory. The recipes below build such copies, `r01` … `r12`, beside
+directory. The recipes below build such copies, `r01` … `r15`, beside
 `code/` and `data/`: run them in a scratch copy of the report directory
 (copying `code/` and `data/` is enough), not in the collection. Where the
 Windows `python` alias does not resolve, use `py`.
@@ -1094,6 +1418,23 @@ for f in verify_certificates compile_quartic; do cp code/12-rle-routing-$f.py r1
 (cd r12 && py verify_certificates.py --output test_results.json \
   && py compile_quartic.py --output example_quartic.json \
   && py compile_quartic.py --variable-lengths --output parametric_quartic.json)
+
+# 13: compares with the recorded receipt and the exported certificate; writes nothing
+mkdir -p r13/code r13/results
+for f in wiring parity diophantine_memory verify; do cp code/13-exact-wiring-$f.py r13/code/$f.py; done
+cp data/13-exact-wiring-verification.json r13/results/verification.json
+cp data/13-exact-wiring-example_memory_certificate.json r13/results/example_memory_certificate.json
+(cd r13 && py code/verify.py)
+
+# 14: writes r14/data/{delta,gamma}_loop_quartic.json, memory_example_quartic.json, verification.json, export_audit.json
+mkdir -p r14/code r14/data
+for f in certificates nets verify verify_exports; do cp code/14-net-topology-$f.py r14/code/$f.py; done
+(cd r14 && py code/verify.py > /dev/null && py code/verify_exports.py)
+
+# 15: writes r15/data/{endpoints,quartic_A_schedule,witness_A,verification}.json and verification.txt
+mkdir -p r15/code r15/data
+for f in loop_exact verify check_export; do cp code/15-no-ghost-wires-$f.py r15/code/$f.py; done
+(cd r15 && py code/verify.py > /dev/null && py code/check_export.py)
 ```
 
 The recipes for 08–12 use `py`, which resolves on this machine; the
@@ -1142,11 +1483,38 @@ the `2^8192 + 2^4096`-firing certificate evaluated to zero, 205 toy clock
 checks; the compiler printed 11 residuals, degree 4, 50 and 81 monomials
 and 500 cross-checks each. All five regenerated files equal the shipped
 ones after removing carriage returns (no elapsed time is recorded).
+The recipes for 13–15 were run the same way in the batch-78 write (Python
+3.14.4, Windows) and all pass. 13 prints `"status": "PASS"` (about 22
+seconds) after recomputing 121,537 closures, the bounds to weight 30,
+23,930 splice comparisons and the exported memory certificate and comparing
+them with the recorded receipt; it writes nothing. 14's two programs (about
+8 seconds) regenerate five files that equal the shipped ones after removing
+carriage returns. 15's `verify.py` (about 26 seconds) regenerates four
+files that equal the shipped ones after removing carriage returns, except
+the `runtime_seconds` field of `verification.json` (4.019 recorded), and
+`check_export.py` prints `PASS: 68 parameters, 126 witnesses, 169
+residuals, energy 0`.
 
 **Hazards.**
 
 - On Windows the regenerated files have CRLF line endings; the shipped
   files have LF. Compare with line endings normalized.
+- Batch 78: 14's and 15's `verify.py` and 14's `verify_exports.py` write
+  into `data/` beside their own `code/` directory, overwriting the recorded
+  files there (15 also writes `verification.txt`); 13's `verify.py --write`
+  rewrites its two files in `results/`. Run them only in the `r13`–`r15`
+  copies. The shipped `code/13-*`, `code/14-*` and `code/15-*` scripts that
+  import a sibling (13's and 14's `verify.py`, 15's `verify.py`) fail at
+  that import, because the siblings carry prefixes. The three verifiers
+  record SHA-256 hashes of every `.py` file in their code directory: keep
+  only the copied programs there, or 13's comparison mode fails and 14's
+  and 15's records change. 15's `check_export.py` takes `--data` for the
+  directory but expects the delivered file names. Do not use
+  `code/13-exact-wiring-Makefile` or `code/14-net-topology-Makefile` (their
+  `paper`/`pdf` targets run `pdflatex` on `article.tex`, which is now the
+  merged article, and `clean` deletes its auxiliary files) or
+  `code/15-no-ghost-wires-build.sh` (it changes to its own directory and
+  runs `pdflatex` three times on `article.tex`, which is not there).
 - Every suite overwrites its recorded outputs at paths fixed relative to the
   script (the parent of the script's directory in 01, 03, 04, 05, 06, 07,
   08, 09 and 10; the working directory in 02; the `--output` paths in 11). The shipped `code/` scripts that import
@@ -1273,17 +1641,50 @@ ones after removing carriage returns (no elapsed time is recorded).
     (bare example names). 01's and 03's `build_validation.json` and 06's
     `pdf_quality.json` describe the delivered 29-, 31- and 30-page PDFs,
     which are not shipped.
+- **Batch 78: shipped text that uses delivery names or names unshipped
+  files.** `13-exact-wiring-SOURCES.md` speaks of "the report" and "the
+  article" (manuscript 13's delivered text, now merged) and names only
+  repository paths. `15-no-ghost-wires-CLAIMS.md` cites "article equations
+  (22) and (23)" (see "Delivered names and shipped names") and
+  `data/verification.json` (now `data/15-no-ghost-wires-verification.json`);
+  `15-no-ghost-wires-PROVENANCE.md` names `verify.py`, `check_export.py`,
+  "the article", "the PDF" and "the archive", and calls `928ea9701` a
+  "recursive-tree revision" (it is a commit). `code/13-exact-wiring-Makefile`
+  uses `code/verify.py` and `article.tex`; `code/14-net-topology-Makefile`
+  uses `code/verify.py`, `code/verify_exports.py` and `article.tex`;
+  `code/15-no-ghost-wires-build.sh` runs `pdflatex` on `article.tex`; none
+  of these manuscript sources is shipped. The scripts use delivery names in
+  their imports and paths: 13 (`wiring`, `parity`, `diophantine_memory`;
+  `results/`), 14 (`certificates`, `nets`; `data/`), 15 (`loop_exact`;
+  `data/`). Recorded data name delivery files: 13's `verification.json`,
+  14's `verification.json` and 15's `verification.json` key their program
+  hashes by delivered names, and 14's `export_audit.json` names the bare
+  data files; 13's `build_receipt.json` and 14's `pdf_quality.json`
+  describe the delivered 28- and 23-page PDFs, which are not shipped and
+  survive in `1977e6ea6`; 14's `source_audit.json` names this report's
+  README as "prior collection". The article prints the shipped names where
+  13–15 name their files in prose and keeps their listings in the delivered
+  layout with notes. The review in the research tree reports one limitation
+  of 13's code: `Circuit.failures` in `diophantine_memory.py` ignores unused
+  trailing coordinates instead of requiring the declared tuple length; the
+  polynomial on its declared coordinates is unaffected.
 - **Byte-identical duplicates within a manuscript** (checked with `cmp`):
   03's `test_results.json` and `test_run.txt`, `linear_test_results.json`
   and `linear_test_run.txt`, and `example-events.json` and
   `linear_example-events.json`; 05's `verification.json` and
   `verification_stdout.txt`; 10's `verification.json` and `test_output.txt`.
+  Batch 78 shipped none: 14's two console copies and 15's
+  `verification.txt` were left in the arrival commit. 15's `build.sh` is
+  byte-identical to the build script of another batch-78 manuscript, placed
+  in another report.
   The console files are the scripts' printed JSON. No two files of
   different manuscripts are identical.
 - **Machine-dependent fields.** 08's `receipt.json` and 10's
   `verification.json` (and hence `test_output.txt`) record an elapsed time,
   which a rerun changes; nothing else in the batch-62 records depends on
-  the machine.
+  the machine. In batch 78, 15's `verification.json` records a
+  `runtime_seconds` field and 13's `verification.json` the Python version
+  of its run (13's comparison mode ignores elapsed time).
 - **Missing final newlines.** Four of 06's JSON files end without a newline
   and are kept so: `canonical_huge_witness.json`,
   `canonical_multiplication_certificate.json`,
@@ -1302,7 +1703,9 @@ ones after removing carriage returns (no elapsed time is recorded).
   different files, told apart by their prefixes. In batch 63, 12 delivers a
   `test_results.json` (as do 03 and 06, under `artifacts/` and
   `verification/`) and a `verify_certificates.py`, which is not 04's or
-  07's `code/verify_certificate.py`.
+  07's `code/verify_certificate.py`. In batch 78, 13, 14 and 15 each
+  deliver a `code/verify.py`, and 14 and 15 each a `data/verification.json`;
+  all are different files, told apart by their prefixes.
 - **Two Cantone–Cuzziol–Omodeo papers.** 02, 04, 05 and 06 cite
   Cantone, Cuzziol and Omodeo, *On Diophantine singlefold specifications*,
   Le Matematiche 79(2) (2024), 585–620 (merged key `cco2024`). 07 cites a
@@ -1511,6 +1914,47 @@ same decisions.
   declarations its Lean plan names. Where 12 names its files in prose the
   shipped names are printed. Reciprocal pointers to *liveness-beyond-halting*
   (written in the same batch) are dated notes in Parts IV, VIII, X and XII.
+- **Batch 78 (Part XV).** Manuscripts 13–15 were written after Parts
+  I–XIV, without knowledge of one another, as answers to the same research
+  note, and answer Part X's frontend question. They share their target, the
+  rule table, the gluing theorem and the bounded compiler, so they are
+  merged into one Part arranged by subject, appended after Part XIV and
+  before the appendices; no existing number changed. Their title pages,
+  abstracts, status statements and introductions are Sections 3.13–3.15
+  (the Section 3 heading became "The fifteen manuscripts"). Printed once,
+  crediting every source: the rule table and witness pair (13's text, with
+  14's and 15's definitions and readings beside it); the storage and loop
+  bounds (13's corollary; 14's and 15's statements keep their additions);
+  order-independent gluing (13's theorem, with 15's division-free matrix
+  form and 14's locality lemma); the compiler theorem (14's statement and
+  ledger, with 13's statement as a remark, because it is the same theorem,
+  and its proof as a second presentation; likewise the transfer theorem);
+  and the carry-free product lemma, which is Part V's (13's and 14's
+  statements kept in their notation, their proofs replaced by a pointer).
+  Kept with their own proofs: 15's contextual completeness (it adds
+  sufficiency to the loop-count form of 13's injectivity); 13's and 14's
+  memory theorems, variants for different relations, compared with Part
+  V's in a table, where 14's `17L−4` is not presented as an improvement on
+  `24L`; and 15's orbit route. The 25 questions (13 9, 14 8, 15 8) are
+  `question` environments at the end of the Part, cross-referenced, not
+  merged. Renamed: no symbol; 13's `\M`, `\PP`, `\multiset` and 15's
+  `\cyc`, `\id` were added to the preamble with their meanings; 14's pin
+  and URL macros are printed literally; 14's hand-set equation numbers and
+  its hard-coded "Section 1/4/6/7/8" now point to its equations and
+  sections here; a conventions table lists the letters that clash (`L`,
+  `B`, `M`, `n`, `D_n`, `C`, `F`/`f`, `c`, `U`, `H`, `S`, `A`, `V`, `h`, `e`,
+  `P`, `Q`, `K`, `R`). Where 13–15 name their files in prose, the shipped
+  names are printed. The title-page lines naming the AI assistant are in
+  the provenance appendix only. Dated `[write]` notes credit the research
+  note `interaction_combinator_quadratic_topology.md` as an independent
+  derivation of 14's loop formula and record the three reductions of the
+  review `incoming_substrate_review_1977e6ea6.md`, unapplied. Bibliography:
+  eleven new entries (the research note, the two later research-tree notes,
+  this report's README as 14 cites it, Lafont 1990, de Falco,
+  Lehrer–Zhang, Blum–Evans–Gemmell–Kannan–Naor, Naor–Parter–Yogev,
+  Sutherland, Matiyasevich's Scholarpedia article), and the entries for
+  Lafont 1997, Matiyasevich 1970 and 2010, Batcher, the project README and
+  `MRDP.lean` extended (73 distinct works in all).
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
   different commits), `\repoCommit` (02) and `\reposha` (04) printed as
