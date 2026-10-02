@@ -1,0 +1,28 @@
+CXX ?= c++
+CXXFLAGS ?= -O3 -std=c++17 -Wall -Wextra -pedantic
+PYTHON ?= python3
+BUILD := .build
+
+.PHONY: all verify pdf clean
+all: verify pdf
+
+$(BUILD):
+	mkdir -p $(BUILD)
+
+$(BUILD)/verify_rectangles: code/verify_rectangles.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+verify: $(BUILD)/verify_rectangles
+	$(PYTHON) code/verify_exact.py > data/exact_results.new.json
+	mv data/exact_results.new.json data/exact_results.json
+	$(BUILD)/verify_rectangles > data/rectangle_results.new.json
+	mv data/rectangle_results.new.json data/rectangle_results.json
+
+pdf: | $(BUILD)
+	pdflatex -output-directory=$(BUILD) -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -output-directory=$(BUILD) -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -output-directory=$(BUILD) -interaction=nonstopmode -halt-on-error article.tex
+	cp $(BUILD)/article.pdf article.pdf
+
+clean:
+	rm -rf $(BUILD)

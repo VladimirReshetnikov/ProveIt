@@ -1,0 +1,2321 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+  urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{TitleBlue}{HTML}{173A5E}
+\definecolor{AccentBlue}{HTML}{2D668F}
+\definecolor{SoftGray}{HTML}{F2F4F7}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Surreal numbers as a real vector class}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\setlength{\parindent}{1.15em}
+\setlength{\parskip}{0.24em}
+\setlength{\emergencystretch}{3em}
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\allowdisplaybreaks[2]
+\setlist{leftmargin=2.0em,itemsep=0.22em,topsep=0.35em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{principle}[theorem]{Principle}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\crefname{theorem}{theorem}{theorems}
+\crefname{proposition}{proposition}{propositions}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\crefname{question}{research question}{research questions}
+\crefname{warning}{warning}{warnings}
+\crefname{principle}{principle}{principles}
+
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\On}{\mathbf{On}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\M}{\mathfrak{M}}
+\newcommand{\Hahn}{\mathsf{H}}
+\newcommand{\Fin}{\No_{\mathrm{fin}}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\lead}{\operatorname{lead}}
+\newcommand{\coeff}{\operatorname{coeff}}
+\newcommand{\gr}{\operatorname{gr}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Ord}{\operatorname{Ord}}
+\newcommand{\sH}{\mathop{\sum}\nolimits^{\mathrm H}}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\angles}[1]{\langle #1\rangle}
+\newcommand{\RepoCommit}{f7e7d8607d3b1c49c93b844cae20a77ab3689fe7}
+\newcommand{\RepoShort}{f7e7d86}
+\newcommand{\classprod}{\mathop{\prod}\nolimits^{\mathrm H}}
+
+\hypersetup{
+  pdftitle={The Surreal Numbers as a Real Vector Class},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Conway--Hahn coordinates, Hamel bases, strong duality, and canonical operators},
+  pdfkeywords={surreal numbers, vector space, Hahn basis, Hamel basis, Conway normal form, strong summation}
+}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{-0.25in}
+{\large\scshape A research report for the ProveIt project\par}
+\vspace{0.22in}
+{\Huge\bfseries\color{TitleBlue} The Surreal Numbers as a Real Vector Class\par}
+\vspace{0.13in}
+{\LARGE\color{AccentBlue} Conway--Hahn Coordinates, Hamel Bases,\par
+Strong Duality, and Canonical Operators\par}
+\vspace{0.22in}
+{\large October 1, 2026\par}
+\vspace{0.22in}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+\noindent
+The surreal numbers form a proper-class vector space over their canonical
+copy of the real field.  The immediate question---what is its natural
+basis?---has two different answers, depending on what ``basis'' means.
+The canonical answer is the monomial class
+\(
+  \M=\{\omega^\gamma:\gamma\in\No\}.
+\)
+Every surreal has a unique Conway normal form, a set-supported,
+reverse-well-ordered real linear combination of these monomials.  Thus
+\(\M\) is a genuine \emph{Hahn basis}, a basis for strong transfinite
+summation, and the canonical basis of the associated graded vector class.
+It is not a Hamel basis, because Hamel combinations are finite and most
+surreals have infinite normal-form support.
+
+Working in NBG set theory with global choice, we prove that a Hamel class
+basis does exist, but no set-sized family spans \(\No\), every such basis is
+a proper class, and every Hamel basis contains a proper class of
+infinite-support vectors.  The quotient by the finite-support skeleton
+already contains an explicit proper-class linearly independent family.
+On each infinite reverse-well-ordered support window \(A\), the set-sized
+space of all series supported in \(A\) has Hamel dimension
+\(\lvert\R\rvert^{\lvert A\rvert}\); in particular, a countable window has
+continuum dimension, although its monomial Hahn basis is countable.
+
+The normal form also yields a canonical Boolean algebra of support
+projections and identifies the associated graded algebra with the real
+group algebra of the additive surreal class.  We classify strongly real
+linear maps by Hahn-compatible column families, and specialize this to an
+exact classification of strongly summation-preserving real-valued
+functionals.  Such a functional is a weighted coefficient sum whose active
+exponents meet every reverse-well-ordered set only finitely; this permits
+proper-class active sets, including the ordinal exponents.  In sharp
+contrast, every order-bounded real linear functional is zero, hence there
+is no nonzero positive real linear state and no nonzero order-compatible
+real-valued seminorm on all of \(\No\).
+
+Finally, the full natural valuation topology admits no non-eventually-
+constant set-indexed convergent net, so Conway normal forms are strong
+formal sums rather than Schauder expansions in that topology.  We describe
+monomial-preserving ordered-field automorphisms, diagonal strong
+derivations, and an explicit proper-class algebraically independent family.
+A detailed research program closes the article.  Classical inputs are
+Conway normal form, the omega map, Hahn--Neumann support arithmetic, and the
+Erd\H{o}s--Kaplansky dimension theorem; the structural package assembled here
+is offered as an unrefereed research draft, not as a claim of priority.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Repository context.}  The report was prepared after inspecting
+\texttt{VladimirReshetnikov/ProveIt}, especially its surreal-number reports
+on vector and tensor fields, Hahn vector-space duality, infinite-dimensional
+Hahn spectral theory, and automorphisms.  Repository snapshot:
+\texttt{\RepoCommit} (\texttt{\RepoShort}).
+
+\textbf{Status.}  This is an AI-assisted mathematical research draft with
+complete proofs of the results stated as new deductions in this text.  It
+has not been refereed and the new statements have not been formalized in
+Lean.  Literature searches cannot certify novelty; the article therefore
+separates classical inputs, elementary consequences, and proposed research
+questions explicitly.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\pagenumbering{roman}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\section{The question and the answer}\label{sec:intro}
+
+The surreal numbers \(\No\) contain the real numbers as a canonical ordered
+subfield.  Consequently their additive class is naturally a vector class over
+\(\R\).  This observation is elementary; the word \emph{basis} is not.  In
+ordinary linear algebra a basis means a Hamel basis, so every vector is a
+\emph{finite} linear combination.  The defining coordinate theorem for
+surreals, however, is Conway normal form, and its support may have any
+set-sized ordinal order type.  Treating those two notions as interchangeable
+obscures the main structure.
+
+The answer developed in this article is:
+\begin{quote}
+\textbf{The canonical basis of \(\No\) over \(\R\) is the monomial class
+\(\{\omega^\gamma:\gamma\in\No\}\) in the Hahn, strong-summation, and
+associated-graded senses.  It is not a Hamel basis.  Hamel bases exist only
+after a class-choice principle is specified, are necessarily proper classes,
+and have no comparably canonical known description.}
+\end{quote}
+
+The distinction can be summarized as follows.
+
+\begin{center}
+\small
+\begin{tabularx}{0.96\textwidth}{L{0.20\textwidth}Y Y}
+\toprule
+Notion of basis & Allowed expansion & Verdict for \(\No\) over \(\R\)\\
+\midrule
+Hamel basis & Finite linear combinations & Exists in NBG with global choice;
+necessarily a proper class and noncanonical.\\
+Conway--Hahn basis & Set-indexed, reverse-well-ordered, locally finite strong
+sums & Canonically \(\{\omega^\gamma\}\); every surreal has one unique
+expansion.\\
+Associated-graded basis & One coordinate in each dominance grade &
+Canonically the same monomials.\\
+Schauder basis & Limits of partial sums in a topology & Not in the full fine
+order or natural valuation topology: every set-indexed convergent net is
+eventually constant.\\
+Transcendence basis & Algebraic field generation & Choice-dependent; the
+monomials nevertheless contain explicit proper-class algebraically
+independent families.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Why the repository makes this question timely}
+
+The ProveIt repository already separates several uses of the word ``vector.''
+Its report on vector and tensor fields studies finite tuples with surreal
+coefficients.  Its reports on Hahn duality and Hahn spectral theory study
+set-sized coefficient spaces \(V((t^\Gamma))\), strong sums, completion, and
+several dual notions.  A separate report and the work of Kaplan, Krapp, and
+Serra study automorphisms through Conway normal forms.  The present article
+asks a more foundational question: view the scalar class \(\No\) itself as
+an \(\R\)-vector object and determine which linear-algebraic structures are
+canonical.
+
+An informal MathOverflow discussion in 2013 already noticed both sides of
+the issue: global choice should produce a class-sized real basis, while the
+``homogeneous'' pieces ought to be real multiples of powers of \(\omega\)
+\cite{MO2013}.  Conway normal form makes the latter intuition exact, but only
+as a Hahn decomposition rather than an algebraic direct sum.
+
+\subsection{Main results at a glance}\label{subsec:main-results}
+
+Besides the central basis theorem, the article proves the following.
+\begin{enumerate}[label=\textbf{\Alph*.}]
+\item No set of surreals spans \(\No\) over \(\R\)
+(\cref{thm:no-set-spans}).
+\item Under global choice a Hamel class basis exists
+(\cref{thm:class-basis}), but every one has a proper class of vectors outside
+the finite-support skeleton (\cref{cor:basis-many-infinite}).
+\item Every infinite reverse-well-ordered support window \(A\) has Hamel
+dimension \(\lvert\R\rvert^{\lvert A\rvert}\)
+(\cref{thm:window-dimension}).
+\item Normal-form truncation gives canonical complementary projections for
+every exponent subclass and a one-dimensional graded piece at every surreal
+exponent (\cref{thm:support-splitting,thm:graded}).
+\item Strongly linear maps are exactly Hahn-compatible column matrices
+(\cref{thm:strong-matrix}), and the strong real dual is classified by
+summation-finite coefficient weights (\cref{thm:strong-dual}).
+\item The order-bounded real dual is zero
+(\cref{thm:order-dual-zero}), although the strong dual is nonzero and even
+contains functionals with proper-class active support.
+\item The fine natural valuation topology has only eventually constant
+set-indexed convergent nets (\cref{thm:eventually-constant}).
+\item Monomial-preserving strong ordered-field automorphisms are controlled by
+ordered exponent automorphisms and positive real characters
+(\cref{thm:monomial-aut}), while additive real-valued characters of the
+exponent group yield diagonal strong derivations
+(\cref{thm:diagonal-derivation}).
+\item Rational independence of exponents is exactly algebraic independence of
+the corresponding monomials (\cref{thm:monomial-alg-ind}).
+\end{enumerate}
+
+\subsection{Claim status and novelty discipline}
+
+The existence and uniqueness of Conway normal form, the omega map, Hahn
+support arithmetic, and the Erd\H{o}s--Kaplansky theorem are classical.  Several
+results below are immediate or short consequences once the correct basis
+notion is fixed; others package familiar Hahn-space ideas in the proper-class
+surreal setting.  The exact combination---especially the quotient witness,
+strong real-dual classification, order-dual collapse, and the anti-Schauder
+observation---was not located as a single published theorem package in the
+targeted search.  This is not a certification that each statement is new.
+
+\section{Foundations and Conway--Hahn coordinates}\label{sec:foundations}
+
+\subsection{Class-theoretic convention}\label{subsec:classes}
+
+We work in von Neumann--Bernays--Godel set theory with global choice (NBG+GC),
+as is common in recent work on class-sized automorphism groups of \(\No\)
+\cite{KKS}.  A \emph{class} may be a set or a proper class.  A class vector
+space over the set field \(\R\) has the usual operations, with quantification
+over its vectors understood class-theoretically.  A \emph{Hamel class basis}
+is a linearly independent class such that every vector is a finite linear
+combination of basis vectors.
+
+The use of NBG+GC has three purposes.
+\begin{enumerate}
+\item It permits direct statements about \(\No\) as one algebraic object.
+\item It permits a class-length recursion choosing compatible bases of its
+set-sized birthday stages.
+\item It keeps every actual infinite sum set-indexed.  No proper-class sum is
+ever formed in this article.
+\end{enumerate}
+Readers preferring ZFC may interpret every construction inside a fixed
+set-sized surreal subfield or birthday cutoff; all local arguments are then
+ordinary set mathematics.  Only the global basis-existence statement and the
+proper-class conclusions require the class framework.
+
+\subsection{Reverse well ordering and supports}
+
+\begin{definition}[Reverse well ordered]
+A linearly ordered set \(S\) is \emph{reverse well ordered} if every nonempty
+subset of \(S\) has a largest element.  Equivalently, \(S\) admits a unique
+enumeration without repetition
+\[
+  S=\{\gamma_\beta:\beta<\lambda\},\qquad
+  \gamma_0>\gamma_1>\cdots,
+\]
+for some ordinal \(\lambda\).
+\end{definition}
+
+Every subset of a reverse-well-ordered set is reverse well ordered.  This
+simple hereditary property is responsible for the existence of arbitrary
+support truncations later in the article.
+
+\begin{theorem}[Conway normal form]\label{thm:cnf}
+Every surreal number \(x\) has a unique expansion
+\begin{equation}\label{eq:cnf}
+  x=\sum_{\beta<\lambda} r_\beta\,\omega^{\gamma_\beta},
+\end{equation}
+where \(\lambda\) is an ordinal, the exponents
+\(\gamma_\beta\in\No\) are strictly decreasing, and
+\(r_\beta\in\R\setminus\{0\}\).  Conversely, every expression of this form
+represents a surreal number.
+\end{theorem}
+
+This is the classical Conway--Gonshor normal-form theorem
+\cite{Conway,Gonshor,vdDE,MantovaMatusinski}.  The map
+\(\gamma\mapsto\omega^\gamma\) here is Conway's \emph{omega map}.  It sends
+the additive ordered class \(\No\) isomorphically onto the multiplicative
+ordered class of monomials and chooses the simplest positive representative
+of each Archimedean equivalence class.  It should not be confused merely with
+formal use of ordinary real exponentiation.
+
+For \(x\) in the form \eqref{eq:cnf}, define
+\[
+  \supp(x)=\{\gamma_\beta:\beta<\lambda\},
+  \qquad
+  [\omega^\gamma]x=
+  \begin{cases}
+  r_\beta,&\gamma=\gamma_\beta,\\
+  0,&\gamma\notin\supp(x).
+  \end{cases}
+\]
+The first notation is the \emph{normal-form support}; the second is the
+coefficient of \(\omega^\gamma\).  The support is always a set, even though
+the exponent class is proper.
+
+\begin{definition}[The Hahn product over the surreal exponent class]
+Let
+\begin{equation}\label{eq:hahn-product}
+ \Hahn_{\R}(\No)=
+ \left\{f:\No\to\R:
+ \supp(f)=\{\gamma:f(\gamma)\ne0\}
+ \text{ is a reverse-well-ordered set}\right\}.
+\end{equation}
+The functions are class functions, but each one has set support.  Addition and
+real scalar multiplication are coefficientwise.
+\end{definition}
+
+The normal-form theorem gives a canonical \(\R\)-linear class isomorphism
+\begin{equation}\label{eq:no-hahn-linear}
+  \No\ \cong\ \Hahn_{\R}(\No),
+  \qquad
+  x\longmapsto\bigl(\gamma\mapsto[\omega^\gamma]x\bigr).
+\end{equation}
+Hahn--Neumann support arithmetic further identifies the ordered field
+structure with the generalized power-series field
+\begin{equation}\label{eq:no-hahn-field}
+  \No=\R((\omega^{\No})).
+\end{equation}
+In particular,
+\[
+ \omega^\gamma\omega^\delta=\omega^{\gamma+\delta},
+\]
+and multiplication of two normal forms is the convolution of their
+coefficients.  The support theorem guarantees that each output coefficient
+is a finite sum and that the resulting support is reverse well ordered
+\cite{Hahn,Neumann,Gonshor}.
+
+\subsection{Strong Hahn summation}\label{subsec:strong-sum}
+
+Normal form is not an ordinary finite sum and, as \cref{sec:topology} will
+show, it is not generally a topological limit of finite partial sums.  The
+appropriate operation is strong Hahn summation.
+
+\begin{definition}[Hahn-summable family]\label{def:hahn-summable}
+Let \(I\) be a set and \((x_i)_{i\in I}\) a family in \(\No\).  The family is
+\emph{Hahn summable}, or \emph{strongly summable}, if
+\begin{enumerate}
+\item \(\bigcup_{i\in I}\supp(x_i)\) is reverse well ordered, and
+\item for every exponent \(\gamma\), only finitely many \(i\) have
+\([\omega^\gamma]x_i\ne0\).
+\end{enumerate}
+Its strong sum is
+\begin{equation}\label{eq:strong-sum}
+ \sH_{i\in I}x_i
+ =\sum_{\gamma}
+   \left(\sum_{i\in I}[\omega^\gamma]x_i\right)\omega^\gamma,
+\end{equation}
+where the inner sum is finite.
+\end{definition}
+
+This definition is purely algebraic and support-controlled.  It is invariant
+under reindexing of the family and is associative under the usual flattening
+hypotheses.  In particular, every normal form is the strong sum of its
+monomial terms:
+\begin{equation}\label{eq:normal-strong}
+ x=\sH_{\gamma\in\supp(x)}
+     [\omega^\gamma]x\,\omega^\gamma.
+\end{equation}
+
+\begin{example}[A geometric normal form]\label{ex:geometric}
+The reverse-well-ordered set \(\{0,-1,-2,\ldots\}\) supports the identity
+\begin{equation}\label{eq:geometric}
+  \frac{1}{1-\omega^{-1}}
+  =1+\omega^{-1}+\omega^{-2}+\cdots
+  =\sH_{n<\omega}\omega^{-n}.
+\end{equation}
+The right side is a legitimate surreal normal form.  It is not a finite
+linear combination of monomials.
+\end{example}
+
+\begin{example}[What is not allowed]
+The class-indexed expression \(\sum_{\gamma\in\No}\omega^\gamma\) is not a
+surreal number: its support is a proper class.  Likewise, a set-supported
+formal expression whose support is not reverse well ordered is not a Conway
+normal form.  The word ``transfinite'' therefore does not mean that arbitrary
+class sums are permitted.
+\end{example}
+
+\subsection{Leading exponent, valuation, and Archimedean scale}
+
+For \(x\ne0\), let
+\[
+ \lead(x)=\max\supp(x),
+ \qquad
+ \operatorname{lc}(x)=[\omega^{\lead(x)}]x.
+\]
+Then
+\begin{equation}\label{eq:leading-factor}
+ x=\operatorname{lc}(x)\,\omega^{\lead(x)}(1+\varepsilon),
+ \qquad \abs{\varepsilon}<1/n\quad(n\in\N_{>0}),
+\end{equation}
+so \(\varepsilon\) is infinitesimal.  The sign of \(x\) is the sign of its
+leading real coefficient, and the monomial \(\omega^{\lead(x)}\) is the
+simplest positive representative of its Archimedean magnitude.
+
+We use the additive natural valuation
+\begin{equation}\label{eq:natural-valuation}
+ v(x)=-\lead(x)\quad(x\ne0),\qquad v(0)=+\infty.
+\end{equation}
+Thus larger values mean smaller surreal magnitude.  This sign convention
+agrees with writing the formal Hahn variable as \(t^\gamma=\omega^{-\gamma}\).
+
+\section{The natural basis: Hahn, not Hamel}\label{sec:natural-basis}
+
+\subsection{Four basis notions}
+
+For a set-sized vector space, ``basis'' normally means Hamel basis.  In
+non-Archimedean analysis and transseries, one also encounters topological,
+orthogonal, and strong-summation bases.  The distinctions are essential here.
+
+\begin{definition}[Hamel and Hahn bases]
+Let \(V\) be a class vector space over \(\R\).
+\begin{enumerate}
+\item A \emph{Hamel class basis} \(B\) is linearly independent and every
+\(x\in V\) is a unique finite sum \(\sum_{b\in F}r_b b\), with \(F\subset B\)
+finite.
+\item A \emph{Hahn basis} indexed by a linearly ordered class \(\Gamma\) is a
+family \((e_\gamma)_{\gamma\in\Gamma}\) together with a specified strong
+summation rule such that every vector has a unique expansion
+\[
+ x=\sH_{\gamma\in S}r_\gamma e_\gamma
+\]
+with \(S\) a set in the admissible support class.
+\end{enumerate}
+\end{definition}
+
+A Hahn basis is not a weakened Hamel basis.  It is a basis for a richer
+algebraic object: a vector space equipped with distinguished infinite sums.
+Likewise, a Schauder basis requires a topology and convergence of partial
+sums, a condition independent of formal Hahn summability.
+
+\begin{theorem}[The canonical Conway--Hahn basis]\label{thm:hahn-basis}
+The monomial class
+\begin{equation}\label{eq:monomial-class}
+  \M=\{\omega^\gamma:\gamma\in\No\}
+\end{equation}
+is a canonical Hahn basis of \(\No\) over \(\R\).  More precisely, the map
+\[
+ \Hahn_{\R}(\No)\longrightarrow\No,
+ \qquad
+ f\longmapsto\sH_{\gamma\in\supp(f)}f(\gamma)\omega^\gamma
+\]
+is an \(\R\)-linear class isomorphism, and its coordinate expansion is
+unique.
+\end{theorem}
+
+\begin{proof}
+Existence and uniqueness are exactly \cref{thm:cnf}.  Linearity follows from
+coefficientwise addition and scalar multiplication.  Every support involved
+is a reverse-well-ordered set, and no class-indexed sum is taken.
+\end{proof}
+
+The theorem answers the user's basis question in the sense best adapted to
+surreal arithmetic.  It also explains why the answer is useful rather than
+merely formal: the basis vectors multiply by addition of their indices, order
+is read from the first nonzero coordinate, and every truncation of an
+expansion is again a surreal.
+
+\subsection{The finite-support skeleton}\label{subsec:finite-skeleton}
+
+Define
+\begin{equation}\label{eq:fin-def}
+ \Fin=\{x\in\No:\supp(x)\text{ is finite}\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:direct-vs-hahn}
+ \Fin=\bigoplus_{\gamma\in\No}\R\omega^\gamma
+ \quad\subsetneq\quad
+ \No=\classprod_{\gamma\in\No}\R\omega^\gamma.
+\end{equation}
+The symbol on the right denotes the Hahn product: set-supported,
+reverse-well-ordered coordinate families, not the unrestricted direct
+product.
+
+\begin{proposition}[Where the monomials are a Hamel basis]
+The class \(\M\) is a Hamel class basis of \(\Fin\), and it is real-linearly
+independent in \(\No\).  It does not Hamel-span \(\No\).
+\end{proposition}
+
+\begin{proof}
+A finite-support normal form is, by definition, a finite real linear
+combination of distinct monomials, and uniqueness of normal form proves
+linear independence.  Strictness follows from \cref{ex:geometric}, whose
+support is infinite.
+\end{proof}
+
+Thus the most natural algebraic direct sum is not the whole surreal field.
+Passing from \(\Fin\) to \(\No\) is analogous to passing from polynomials to a
+Hahn-series field, not merely adjoining more basis vectors.
+
+\begin{remark}[Why ``all Archimedean lines'' is not a direct-sum answer]
+Each canonical line \(\R\omega^\gamma\) is Archimedean as an ordered additive
+group, but \(\No\) is not their algebraic direct sum.  Moreover, there are
+many nonhomogeneous one-dimensional real subspaces such as
+\(\R(\omega+1)\).  The omega map is what canonically selects one pure line per
+Archimedean scale.
+\end{remark}
+
+\subsection{Why the monomial basis is natural}\label{subsec:naturality}
+
+The word ``natural'' can conceal taste.  Here it is supported by five precise
+properties.
+
+\begin{principle}[Simplicity normalization]
+For every Archimedean class of positive surreals,
+\(\omega^\gamma\) is its unique simplest positive representative.  Hence the
+basis vectors are selected by the defining simplicity hierarchy of surreal
+numbers, not by an external well ordering.
+\end{principle}
+
+\begin{principle}[Multiplicative grading]
+The index law
+\[
+ \omega^\gamma\omega^\delta=\omega^{\gamma+\delta}
+\]
+turns the additive exponent class into the multiplicative monomial class.
+The basis therefore interacts exactly with the field multiplication.
+\end{principle}
+
+\begin{principle}[Leading-coordinate order]
+For nonzero \(x\), the sign and Archimedean scale of \(x\) are determined by
+the coefficient and index of its largest supported monomial.  Thus the basis
+is adapted to both the total order and the natural valuation.
+\end{principle}
+
+\begin{principle}[Truncation stability]
+Every subset of a reverse-well-ordered support is reverse well ordered.
+Consequently every coordinate truncation of a surreal normal form is again a
+surreal number.
+\end{principle}
+
+\begin{principle}[Strong uniqueness]
+The expansion remains unique even though arbitrary set-sized ordinal lengths
+are allowed.  This is substantially stronger than a nonunique asymptotic
+expansion.
+\end{principle}
+
+No arbitrary Hamel basis supplied by choice is known to enjoy this package.
+Indeed, a Hamel basis must somehow encode infinite-support normal forms into
+individual basis vectors, destroying the one-monomial-per-scale geometry.
+
+\subsection{Changing the scalar field}\label{subsec:scalar-change}
+
+The special role of \(\R\) can also be characterized by coefficient
+normalization.
+
+\begin{proposition}[Hahn bases over smaller coefficient fields]
+Let \(k\subseteq\R\) be a subfield and let \(C\) be a Hamel basis of \(\R\)
+over \(k\).  Then
+\begin{equation}\label{eq:k-hahn-basis}
+  \{c\omega^\gamma:c\in C,\ \gamma\in\No\}
+\end{equation}
+is a Hahn basis of \(\No\) over \(k\): every surreal has a unique strongly
+summable expansion in these vectors, with finitely many \(C\)-coordinates at
+each exponent.
+\end{proposition}
+
+\begin{proof}
+Write each real normal-form coefficient \(r_\gamma\) uniquely as a finite
+\(k\)-linear combination of elements of \(C\).  Replacing
+\(r_\gamma\omega^\gamma\) by those finitely many terms preserves the union of
+exponent supports and local finiteness.  Conversely, collecting the finitely
+many terms at each exponent recovers the unique real coefficient and then the
+unique Conway normal form.
+\end{proof}
+
+Over \(\R\), the coefficient basis is canonically \(\{1\}\).  Over \(\Q\),
+for example, an additional highly noncanonical Hamel basis of \(\R\) is
+unavoidable.  This is another sense in which \(\R\) is the natural scalar
+field for the monomial coordinates.
+
+\subsection{A first warning about topology}
+
+It is tempting to enumerate the support in decreasing order and call the
+normal form the limit of its finite initial sums.  In ordinary Hahn fields
+this may work for selected supports and selected valuation topologies, but it
+fails globally for \(\No\).  The full reason is proved in
+\cref{sec:topology}; already the geometric series \eqref{eq:geometric} is not
+the limit of its ordinary partial sums in the full natural valuation topology,
+because the tail valuations \(1,2,3,\ldots\) never exceed the surreal
+threshold \(\omega\).  Strong summation, not sequential convergence, is the
+primitive operation.
+
+\section{Hamel bases, class size, and local dimensions}\label{sec:hamel}
+
+\subsection{No set-sized family can span}\label{subsec:no-set-span}
+
+The first obstruction to ordinary linear algebra is stronger than
+infinite-dimensionality.
+
+\begin{theorem}[No set spans \(\No\)]\label{thm:no-set-spans}
+If \(S\subseteq\No\) is a set, then
+\[
+  \Span_{\R}(S)\ne\No.
+\]
+More precisely, there is an exponent \(\gamma\in\No\) such that
+\(\omega^\gamma\notin\Span_{\R}(S)\).
+\end{theorem}
+
+\begin{proof}
+The union
+\[
+  U=\bigcup_{x\in S}\supp(x)
+\]
+is a set, by Replacement and Union.  The support of every finite real linear
+combination of members of \(S\) is contained in \(U\), since addition and
+scalar multiplication create no new exponents.  The class \(\No\) is proper,
+so choose \(\gamma\notin U\).  Then \(\omega^\gamma\) has support
+\(\{\gamma\}\) and cannot lie in the span.
+\end{proof}
+
+\begin{corollary}\label{cor:basis-proper}
+Every Hamel basis of \(\No\) over \(\R\), if one is available in the chosen
+class theory, is a proper class.  In particular, \(\No\) has no cardinal-valued
+Hamel dimension in the ordinary set-theoretic sense.
+\end{corollary}
+
+The proof is support-theoretic and does not use birthdays, saturation, or
+field multiplication.  It applies to many proper-class Hahn spaces.
+
+\subsection{Existence with global choice}\label{subsec:basis-existence}
+
+The ordinary vector-space basis theorem applies only to sets.  Nevertheless,
+NBG+GC supplies a class analogue by a transparent stage construction.
+
+For an ordinal \(\alpha\), let \(\No_{<\alpha}\) be the set of surreal
+numbers born before day \(\alpha\), and put
+\begin{equation}\label{eq:Valpha}
+  V_\alpha=\Span_{\R}(\No_{<\alpha}).
+\end{equation}
+Each \(V_\alpha\) is a set-sized real vector space,
+\(V_\alpha\subseteq V_\beta\) for \(\alpha<\beta\), and
+\begin{equation}\label{eq:union-Va}
+  \No=\bigcup_{\alpha\in\On}V_\alpha.
+\end{equation}
+At a limit ordinal \(\lambda\), every finite linear combination of elements
+born below \(\lambda\) already occurs at some earlier stage, so
+\(V_\lambda=\bigcup_{\alpha<\lambda}V_\alpha\).
+
+\begin{theorem}[Existence of a Hamel class basis]\label{thm:class-basis}
+In NBG with global choice, \(\No\) has a Hamel class basis over \(\R\).
+\end{theorem}
+
+\begin{proof}
+Construct bases \(B_\alpha\) by transfinite class recursion.  Start with the
+empty basis of \(V_0\).  At a successor stage, use the ordinary basis-extension
+theorem inside the set \(V_{\alpha+1}\) to extend \(B_\alpha\) to a basis
+\(B_{\alpha+1}\) of \(V_{\alpha+1}\).  Global choice permits these extensions
+to be selected uniformly through all ordinals.  At a limit \(\lambda\), set
+\(B_\lambda=\bigcup_{\alpha<\lambda}B_\alpha\); this is a basis of
+\(V_\lambda\) because every vector and every finite dependence occurs at an
+earlier stage.  Finally let \(B=\bigcup_{\alpha\in\On}B_\alpha\).  Every
+surreal lies in some \(V_\alpha\) and has a finite \(B_\alpha\)-expansion,
+while every finite dependence among members of \(B\) occurs in one stage.
+Thus \(B\) is a Hamel class basis.
+\end{proof}
+
+
+\begin{proposition}[A Hamel basis may contain all monomials]
+\label{prop:basis-containing-monomials}
+In NBG with global choice, the linearly independent class \(\M\) extends to
+a Hamel class basis \(B\) of \(\No\).  Every such extension has a proper
+class of additional, infinite-support vectors.
+\end{proposition}
+
+\begin{proof}
+Global choice gives a class enumeration
+\((x_\alpha)_{\alpha\in\On}\) of \(\No\setminus\M\).  Recursively build a
+set \(C_\alpha\subseteq\{x_\beta:\beta<\alpha\}\): at stage \(\alpha\), add
+\(x_\alpha\) exactly when it is not in the finite real span of
+\(\M\cup C_\alpha\).  Each stage adds at most one vector, so the previously
+added part is a set and elementary transfinite recursion applies.  Put
+\(C=\bigcup_{\alpha\in\On}C_\alpha\) and \(B=\M\cup C\).
+
+A finite dependence in \(B\) would have a last-added member of \(C\), which
+was added only because it was outside the span of all earlier members and
+\(\M\); hence \(B\) is independent.  Every enumerated vector was either
+added or already in the span at its stage, so \(B\) spans \(\No\).  Finally,
+\cref{cor:basis-many-infinite} shows that \(B\setminus\Fin\), and therefore
+also the supplement beyond the monomials, is a proper class.
+\end{proof}
+
+\begin{remark}[Existence is not naturality]
+The construction makes class-many arbitrary extension choices.  It proves
+that a Hamel basis exists under a stated foundation; it does not identify a
+basis respected by normal-form truncations, multiplication, order, the omega
+map, exponentiation, or the canonical derivations.  The Conway monomials are
+canonical precisely because they solve a different, strong-summation basis
+problem.
+\end{remark}
+
+\subsection{The quotient by finite support is already class-large}
+
+The failure of the monomials to Hamel-span \(\No\) is not repaired by adding
+only a set of infinite-support vectors.  We give an explicit witness.
+
+For each ordinal \(\alpha\), define the disjoint reverse-well-ordered block
+\begin{equation}\label{eq:block-Ea}
+ E_\alpha=
+ \{-\!(\omega\alpha+n):n<\omega\}\subseteq\No,
+\end{equation}
+where \(\omega\alpha\) denotes ordinal multiplication, viewed as a surreal
+ordinal, and put
+\begin{equation}\label{eq:block-ua}
+ u_\alpha=\sH_{n<\omega}
+          \omega^{-(\omega\alpha+n)}.
+\end{equation}
+The intervals \([\omega\alpha,\omega\alpha+\omega)\) are disjoint, hence so
+are the supports \(E_\alpha\).
+
+\begin{theorem}[A proper-class independent quotient family]
+\label{thm:quotient-independent}
+The cosets
+\[
+  \{u_\alpha+\Fin:\alpha\in\On\}
+\]
+are real-linearly independent in \(\No/\Fin\).
+\end{theorem}
+
+\begin{proof}
+Take distinct ordinals \(\alpha_1,\ldots,\alpha_m\) and real numbers
+\(c_1,\ldots,c_m\).  Because the supports \(E_{\alpha_j}\) are pairwise
+disjoint, no cancellation occurs between different blocks.  If some
+\(c_j\ne0\), the support of \(\sum_j c_j u_{\alpha_j}\) contains the entire
+infinite block \(E_{\alpha_j}\), and therefore the sum does not belong to
+\(\Fin\).  Hence a linear combination represents zero in the quotient only
+when every coefficient is zero.
+\end{proof}
+
+\begin{corollary}\label{cor:basis-many-infinite}
+Every Hamel class basis \(B\) of \(\No\) contains a proper class of vectors
+outside \(\Fin\).
+\end{corollary}
+
+\begin{proof}
+The images in \(\No/\Fin\) of the members of \(B\setminus\Fin\) span the
+quotient.  If \(B\setminus\Fin\) were a set, its real span would be a set and
+could not contain the proper-class family of distinct independent cosets from
+\cref{thm:quotient-independent}.
+\end{proof}
+
+This result sharpens the slogan that a Hamel basis is nonmonomial.  It must
+contain class-many genuinely infinite normal forms.
+
+\subsection{Set-sized support windows}\label{subsec:windows}
+
+Class size should not hide the familiar cardinal arithmetic visible in every
+set-sized coordinate window.  Let \(A\subseteq\No\) be a reverse-well-ordered
+set and define
+\begin{equation}\label{eq:H-A}
+  \Hahn(A)=\{x\in\No:\supp(x)\subseteq A\}.
+\end{equation}
+Every subset of \(A\) is reverse well ordered, so coefficient extraction gives
+an ordinary vector-space isomorphism
+\begin{equation}\label{eq:H-A-product}
+  \Hahn(A)\cong\R^A.
+\end{equation}
+The monomials indexed by \(A\) form a Hahn basis of \(\Hahn(A)\), but only a
+Hamel basis of its finite-support subspace.
+
+\begin{theorem}[Hamel dimension of a support window]
+\label{thm:window-dimension}
+If \(A\) is an infinite reverse-well-ordered set, then
+\begin{equation}\label{eq:window-dim}
+  \dim_{\R}\Hahn(A)=\lvert\R\rvert^{\lvert A\rvert}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:H-A-product}, this is the Erd\H{o}s--Kaplansky theorem
+\(\dim_D D^I=\lvert D^I\rvert\) for an infinite index set \(I\) and division
+ring \(D\) \cite{Jacobson,Bergman}.  Taking \(D=\R\) and \(I=A\) gives the
+formula.
+\end{proof}
+
+\begin{corollary}[A countable window has continuum dimension]
+\label{cor:countable-window}
+Let \(A=\{\gamma_0>\gamma_1>\cdots\}\) be countably infinite.  Then
+\[
+  \dim_{\R}\Hahn(A)=2^{\aleph_0}.
+\]
+An explicit continuum-sized independent family is
+\begin{equation}\label{eq:vandermonde-family}
+ x_t=\sH_{n<\omega}t^n\omega^{\gamma_n},
+ \qquad t\in\R.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The space has cardinality
+\(\lvert\R\rvert^{\aleph_0}=2^{\aleph_0}\), so its dimension is at most the
+continuum.  To prove the matching lower bound, take distinct
+\(t_1,\ldots,t_m\in\R\) and suppose
+\(\sum_{j=1}^m c_jx_{t_j}=0\).  Comparing the first \(m\) coordinates gives
+\[
+ \sum_{j=1}^m c_jt_j^n=0,
+ \qquad n=0,\ldots,m-1.
+\]
+The Vandermonde matrix \((t_j^n)\) is invertible, hence all \(c_j=0\).
+Thus \(\{x_t:t\in\R\}\) is linearly independent.
+\end{proof}
+
+\begin{example}[The gap between coordinate and Hamel dimensions]
+On a countable support window, the canonical monomial Hahn basis has
+cardinality \(\aleph_0\), while every Hamel basis has cardinality continuum.
+The difference is exactly the information carried by arbitrary infinite
+coordinate strings.
+\end{example}
+
+\subsection{What a ``dimension of \texorpdfstring{\(\No\)}{No}'' can mean}
+
+There is no set cardinal \(\kappa\) with \(\dim_{\R}\No=\kappa\), because no
+set spans.  Three replacements are meaningful.
+\begin{enumerate}
+\item The \emph{class Hamel dimension} is represented by any Hamel basis
+class, but comparing proper-class sizes requires the chosen class theory and
+is too coarse to capture support.
+\item The \emph{graded dimension} is one at each exponent
+(\cref{sec:filtration}).
+\item The \emph{window dimension profile}
+\(A\mapsto\lvert\R\rvert^{\lvert A\rvert}\) records the ordinary Hamel
+dimensions of set-sized Hahn blocks.
+\end{enumerate}
+The second and third are canonical and structurally informative; the first is
+mostly an existence invariant.
+
+\section{Canonical projections, flags, and the associated graded}\label{sec:filtration}
+
+The monomial coordinates provide much more than a list of generators.  They
+split \(\No\) functorially by arbitrary exponent classes and resolve its
+natural valuation into one-dimensional layers.
+
+\subsection{Support projections}\label{subsec:support-projections}
+
+For a subclass \(A\subseteq\No\), define
+\begin{equation}\label{eq:PA}
+ P_A(x)=\sH_{\gamma\in\supp(x)\cap A}
+       [\omega^\gamma]x\,\omega^\gamma.
+\end{equation}
+This is well defined because \(\supp(x)\cap A\) is a subset of a
+reverse-well-ordered set.
+
+\begin{theorem}[Canonical support splitting]\label{thm:support-splitting}
+For every subclass \(A\subseteq\No\), \(P_A\) is a strongly summation-
+preserving real-linear idempotent and
+\begin{equation}\label{eq:support-split}
+ \No=\No[A]\oplus\No[\No\setminus A],
+ \qquad
+ \No[A]=\{x:\supp(x)\subseteq A\}.
+\end{equation}
+The projections satisfy
+\begin{align}
+ P_AP_B&=P_{A\cap B},\label{eq:boolean1}\\
+ P_{\No\setminus A}&=\id-P_A,\label{eq:boolean2}\\
+ P_{A\cup B}&=P_A+P_B-P_{A\cap B}.\label{eq:boolean3}
+\end{align}
+Thus exponent subclasses act as a Boolean algebra of canonical linear
+projections.
+\end{theorem}
+
+\begin{proof}
+Coefficientwise linearity and idempotence are immediate.  Every normal form
+splits uniquely into the terms with exponent in \(A\) and those outside
+\(A\), proving \eqref{eq:support-split}.  If \((x_i)\) is Hahn summable, the
+union of the supports of \((P_Ax_i)\) is a subset of the original
+reverse-well-ordered union, and local finiteness at every exponent is
+preserved.  Hence \(P_A\) is strong.  The Boolean identities are checked on
+each coordinate.
+\end{proof}
+
+Important special cases include:
+\begin{enumerate}
+\item the single-coordinate projection
+\(P_{\{\gamma\}}x=[\omega^\gamma]x\,\omega^\gamma\);
+\item initial and final truncations at an exponent \(\delta\);
+\item the decomposition into positive, zero, and negative exponents;
+\item projections onto ordinal exponents, real exponents, or any definable
+scale family.
+\end{enumerate}
+No Hamel-basis choice is needed.
+
+\begin{warning}
+Support projections are real-linear, not generally field homomorphisms.  For
+example, constant-term extraction is multiplicative on certain support
+subrings but not on all of \(\No\), because exponents from different factors
+can add to zero.
+\end{warning}
+
+\subsection{The dominance flag}
+
+For \(\gamma\in\No\), define
+\begin{align}
+ F_{\le\gamma}
+ &=\{x\in\No:\supp(x)\subseteq(-\infty,\gamma]\},\label{eq:Fle}\\
+ F_{<\gamma}
+ &=\{x\in\No:\supp(x)\subseteq(-\infty,\gamma)\}.
+ \label{eq:Fl}
+\end{align}
+Equivalently, a nonzero \(x\) belongs to \(F_{\le\gamma}\) exactly when
+\(\lead(x)\le\gamma\).  These subspaces form an increasing proper-class flag.
+
+\begin{proposition}[One-dimensional graded quotients]\label{prop:grade-one}
+For every \(\gamma\in\No\), coefficient extraction induces a canonical
+isomorphism
+\begin{equation}\label{eq:one-grade}
+  F_{\le\gamma}/F_{<\gamma}\ \cong\ \R,
+  \qquad
+  x+F_{<\gamma}\longmapsto[\omega^\gamma]x.
+\end{equation}
+The class of \(\omega^\gamma\) is the distinguished basis vector of this
+quotient.
+\end{proposition}
+
+\begin{proof}
+The kernel of the coefficient map on \(F_{\le\gamma}\) is precisely
+\(F_{<\gamma}\), and every real coefficient occurs as
+\(r\omega^\gamma\).
+\end{proof}
+
+Thus \(\No\) has one real direction at every Archimedean scale, plus the
+support-completion needed to combine set-many scales.
+
+\subsection{Associated graded algebra}\label{subsec:graded}
+
+Let
+\begin{equation}\label{eq:gr-def}
+  \gr(\No)=\bigoplus_{\gamma\in\No}
+  F_{\le\gamma}/F_{<\gamma}.
+\end{equation}
+The direct sum is algebraic: an element has only finitely many nonzero
+homogeneous coordinates.  Multiplication of leading terms makes this a graded
+\(\R\)-algebra.
+
+\begin{theorem}[The associated graded is the group algebra]
+\label{thm:graded}
+There is a canonical graded \(\R\)-algebra isomorphism
+\begin{equation}\label{eq:gr-group-algebra}
+  \gr(\No)\ \cong\ \R[\No_{\mathrm{add}}]
+  \ \cong\ \Fin,
+\end{equation}
+where \(\R[\No_{\mathrm{add}}]\) is the finite-support group algebra of the
+additive surreal class.  Under this isomorphism the homogeneous symbol of
+\(\omega^\gamma\) is the group-algebra element \(e_\gamma\), with
+\[
+ e_\gamma e_\delta=e_{\gamma+\delta}.
+\]
+\end{theorem}
+
+\begin{proof}
+By \cref{prop:grade-one}, the grade at \(\gamma\) is one-dimensional with
+basis the symbol of \(\omega^\gamma\).  If
+\(x=r\omega^\gamma+\text{lower terms}\) and
+\(y=s\omega^\delta+\text{lower terms}\), then
+\[
+ xy=rs\omega^{\gamma+\delta}+\text{terms of exponent below }\gamma+\delta.
+\]
+Hence multiplication of homogeneous symbols is exactly the group-algebra
+law.  The finite-support normal forms identify that group algebra with
+\(\Fin\).
+\end{proof}
+
+\begin{remark}[What completion adds]
+The associated graded remembers every individual dominance layer and their
+multiplicative law, but it forgets the admissible infinite assembly of those
+layers.  Recovering \(\No\) from \(\gr(\No)\) therefore requires the
+reverse-well-ordered support rule.  This is the precise sense in which
+\(\No\) is a Hahn completion of its graded skeleton, rather than an ordinary
+linear span.
+\end{remark}
+
+\subsection{Canonical coefficient exact sequences}
+
+For any exponent subclass \(A\), restriction of coefficients gives a split
+exact sequence of real vector classes
+\begin{equation}\label{eq:split-exact-A}
+  0\longrightarrow \No[\No\setminus A]
+  \longrightarrow \No
+  \xrightarrow{\ P_A\ } \No[A]
+  \longrightarrow0.
+\end{equation}
+For a singleton \(A=\{\gamma\}\), composition with
+\(r\omega^\gamma\mapsto r\) gives
+\begin{equation}\label{eq:coord-exact}
+  0\longrightarrow\ker[\omega^\gamma]
+  \longrightarrow\No
+  \xrightarrow{[\omega^\gamma]}\R
+  \longrightarrow0.
+\end{equation}
+These canonical splittings will supply the simplest nonzero members of the
+strong dual in \cref{sec:strong-maps}.
+
+\section{Strong linear maps and the intrinsic real dual}\label{sec:strong-maps}
+
+A Hamel-linear map is determined by a Hamel basis, hence inherits all of its
+choice dependence.  A map adapted to Conway normal form should instead
+commute with the distinguished strong sums.
+
+\subsection{Strong linearity}
+
+\begin{definition}[Strong real-linear map]\label{def:strong-map}
+An \(\R\)-linear class map \(T:\No\to\No\) is \emph{strong} if for every
+Hahn-summable set-indexed family \((x_i)_{i\in I}\), the family
+\((Tx_i)_{i\in I}\) is Hahn summable and
+\begin{equation}\label{eq:strong-map}
+  T\!\left(\sH_{i\in I}x_i\right)=\sH_{i\in I}Tx_i.
+\end{equation}
+\end{definition}
+
+The definition includes both preservation of admissibility and commutation
+with the sum.  Merely writing a coefficientwise formula is not enough unless
+its output supports satisfy the Hahn conditions.
+
+\begin{definition}[Hahn-compatible column family]
+A class family \((y_\gamma)_{\gamma\in\No}\) in \(\No\) is
+\emph{Hahn compatible} if for every reverse-well-ordered set
+\(S\subseteq\No\), the family \((y_\gamma)_{\gamma\in S}\) is Hahn summable.
+\end{definition}
+
+Write
+\begin{equation}\label{eq:matrix-entry}
+  y_\gamma=\sH_{\delta}
+  a_{\delta\gamma}\omega^\delta,
+  \qquad a_{\delta\gamma}\in\R.
+\end{equation}
+Then compatibility says exactly that, for every reverse-well-ordered set
+\(S\),
+\begin{enumerate}
+\item \(\bigcup_{\gamma\in S}\{\delta:a_{\delta\gamma}\ne0\}\) is reverse
+well ordered, and
+\item for each row exponent \(\delta\), only finitely many
+\(\gamma\in S\) have \(a_{\delta\gamma}\ne0\).
+\end{enumerate}
+This is the surreal-Hahn analogue of a column-finiteness condition.
+
+\begin{theorem}[Hahn-matrix classification of strong maps]
+\label{thm:strong-matrix}
+The assignments
+\begin{equation}\label{eq:column-correspondence}
+  T\longmapsto(T\omega^\gamma)_{\gamma\in\No}
+\end{equation}
+and
+\begin{equation}\label{eq:T-from-columns}
+  (y_\gamma)\longmapsto
+  \left[
+  \sH_{\gamma\in S}r_\gamma\omega^\gamma
+  \longmapsto
+  \sH_{\gamma\in S}r_\gamma y_\gamma
+  \right]
+\end{equation}
+are inverse bijections between strong \(\R\)-linear endomorphisms of \(\No\)
+and Hahn-compatible column families.
+\end{theorem}
+
+\begin{proof}
+Let \(T\) be strong.  For a reverse-well-ordered set \(S\), the monomial
+family \((\omega^\gamma)_{\gamma\in S}\) is Hahn summable.  Therefore
+\((T\omega^\gamma)_{\gamma\in S}\) is Hahn summable, so the columns are
+compatible.  Applying strong linearity to a normal form gives
+\eqref{eq:T-from-columns}, establishing uniqueness.
+
+Conversely, suppose \((y_\gamma)\) is compatible and define \(T\) by
+\eqref{eq:T-from-columns}.  The output sum exists by compatibility and is
+plainly real linear.  Let \((x_i)_{i\in I}\) be Hahn summable and write
+\(x_i=\sH_\gamma r_{i\gamma}\omega^\gamma\).  Put
+\(S=\bigcup_i\supp(x_i)\).  Compatibility says that
+\((y_\gamma)_{\gamma\in S}\) has reverse-well-ordered union of supports and
+is locally finite in every output exponent.  For a fixed \(\gamma\), only
+finitely many \(i\) have \(r_{i\gamma}\ne0\).  Hence the flattened family
+\((r_{i\gamma}y_\gamma)_{(i,\gamma)}\) is Hahn summable: at each output
+exponent only finitely many \(\gamma\)'s contribute, and for each such
+\(\gamma\) only finitely many \(i\)'s contribute.  Associativity of finite
+coefficient sums now yields
+\[
+ T\!\left(\sH_i x_i\right)
+ =\sH_{i,\gamma}r_{i\gamma}y_\gamma
+ =\sH_i Tx_i.
+\]
+Thus \(T\) is strong.
+\end{proof}
+
+\begin{remark}
+The theorem is a universal property of the Conway--Hahn basis.  A Hamel basis
+determines all algebraic linear maps; the monomial Hahn basis determines all
+strong linear maps, with the compatibility condition recording exactly which
+images of basis vectors extend to every normal form.
+\end{remark}
+
+\subsection{Diagonal maps and support projections}
+
+For an arbitrary class function \(a:\No\to\R\), define
+\begin{equation}\label{eq:Da}
+  D_a\!\left(\sH_\gamma r_\gamma\omega^\gamma\right)
+  =\sH_\gamma a(\gamma)r_\gamma\omega^\gamma.
+\end{equation}
+The output support is contained in the input support, so \(D_a\) is strong.
+
+\begin{proposition}[Diagonal operator calculus]\label{prop:diagonal}
+For class functions \(a,b:\No\to\R\),
+\begin{align}
+ D_aD_b&=D_{ab},\\
+ D_a+D_b&=D_{a+b}.
+\end{align}
+Moreover:
+\begin{enumerate}
+\item \(D_a\) is injective exactly when \(a(\gamma)\ne0\) for every
+\(\gamma\);
+\item \(D_a\) is a strong automorphism exactly when every \(a(\gamma)\ne0\),
+with inverse \(D_{1/a}\);
+\item \(D_a\) is idempotent exactly when
+\(a(\gamma)\in\{0,1\}\) for every \(\gamma\).
+\end{enumerate}
+In particular, the support projection \(P_A\) is
+\(D_{\mathbf{1}_A}\).
+\end{proposition}
+
+\begin{proof}
+All assertions follow by checking each monomial coordinate.  Over the field
+\(\R\), the scalar equation \(a^2=a\) has only the solutions \(0\) and
+\(1\).
+\end{proof}
+
+\subsection{The strong real-valued dual}\label{subsec:strong-dual}
+
+Embed \(\R\) in \(\No\) as the exponent-zero line.  A family of real numbers
+is Hahn summable in this subspace exactly when only finitely many members are
+nonzero, because all nonzero terms occupy the same exponent \(0\).
+
+\begin{definition}[Summation-finite exponent class]\label{def:summation-finite}
+A subclass \(A\subseteq\No\) is \emph{summation finite} if
+\begin{equation}\label{eq:summation-finite}
+  A\cap S\text{ is finite for every reverse-well-ordered set }
+  S\subseteq\No.
+\end{equation}
+A weight \(a:\No\to\R\) is summation finite if its active class
+\(\supp(a)=\{\gamma:a(\gamma)\ne0\}\) is summation finite.
+\end{definition}
+
+
+\begin{proposition}[Sequential characterization]
+\label{prop:summation-finite-seq}
+A subclass \(A\subseteq\No\) is summation finite if and only if it contains
+no strictly decreasing sequence
+\(a_0>a_1>a_2>\cdots\) indexed by \(\omega\).
+\end{proposition}
+
+\begin{proof}
+A strictly decreasing sequence has reverse-well-ordered range: every nonempty
+subset of its range has a largest member, corresponding to the least index
+that occurs.  Hence such a sequence violates summation finiteness.
+Conversely, if \(A\cap S\) is infinite for a reverse-well-ordered set \(S\),
+enumerate that intersection in decreasing order.  Its order type is an
+infinite ordinal and its first \(\omega\) members form a strictly decreasing
+sequence in \(A\).
+\end{proof}
+
+\begin{theorem}[Classification of the strong real dual]
+\label{thm:strong-dual}
+An \(\R\)-linear map \(\Lambda:\No\to\R\) is strong if and only if there is a
+summation-finite weight \(a:\No\to\R\) such that
+\begin{equation}\label{eq:strong-functional}
+  \Lambda(x)=
+  \sum_{\gamma\in\supp(x)\cap\supp(a)}
+  a(\gamma)[\omega^\gamma]x.
+\end{equation}
+The sum in \eqref{eq:strong-functional} is always finite.  The weight is
+unique and equals
+\begin{equation}\label{eq:weight-from-Lambda}
+  a(\gamma)=\Lambda(\omega^\gamma).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Suppose \(\Lambda\) is strong and define \(a\) by
+\eqref{eq:weight-from-Lambda}.  For every reverse-well-ordered set \(S\), the
+family \((\omega^\gamma)_{\gamma\in S}\) is Hahn summable.  Its image family
+\((a(\gamma))_{\gamma\in S}\) must be summable in \(\R\), hence only
+finitely many of those reals are nonzero.  Thus \(\supp(a)\) is summation
+finite.  Applying \(\Lambda\) to the strong normal form of \(x\) yields
+\eqref{eq:strong-functional}.
+
+Conversely, let \(a\) be summation finite and define \(\Lambda\) by
+\eqref{eq:strong-functional}.  It is real linear.  If \((x_i)_{i\in I}\) is
+Hahn summable and \(S=\bigcup_i\supp(x_i)\), then
+\(F=S\cap\supp(a)\) is finite.  For each \(\gamma\in F\), only finitely many
+\(i\) have a nonzero \(\gamma\)-coefficient.  Therefore only finitely many
+\(\Lambda(x_i)\) can be nonzero, and finite rearrangement of coefficients
+gives
+\(\Lambda(\sH_i x_i)=\sum_i\Lambda(x_i)\).  Hence \(\Lambda\) is strong.
+Uniqueness follows by evaluation on monomials.
+\end{proof}
+
+\begin{example}[Coordinate functionals]
+For every \(\gamma\), the coefficient map
+\[
+  \pi_\gamma(x)=[\omega^\gamma]x
+\]
+is strong.  It corresponds to the weight supported on the singleton
+\(\{\gamma\}\).
+\end{example}
+
+The next example shows that a strong functional need not use only finitely
+many coordinates globally.
+
+\begin{lemma}[Well-ordered active classes are summation finite]
+\label{lem:well-ordered-active}
+If a subclass \(A\subseteq\No\) is well ordered by the inherited order, then
+it is summation finite.
+\end{lemma}
+
+\begin{proof}
+For a reverse-well-ordered set \(S\), the intersection \(A\cap S\) is both
+well ordered and reverse well ordered.  An infinite linear order cannot have
+both properties: an infinite ordinal, or any infinite set of ordinal type,
+has a subset with no greatest element.  Hence \(A\cap S\) is finite.
+\end{proof}
+
+\begin{example}[The ordinal-coefficient trace]\label{ex:ordinal-trace}
+The class \(\On\) is well ordered, so
+\begin{equation}\label{eq:ordinal-trace}
+  \operatorname{Tr}_{\On}(x)
+  =\sum_{\gamma\in\supp(x)\cap\On}
+    [\omega^\gamma]x
+\end{equation}
+is a well-defined strong \(\R\)-linear functional.  Its active exponent
+class is the proper class \(\On\).  Every individual normal form contains
+only finitely many ordinal exponents, even though the functional is active at
+all ordinals.
+\end{example}
+
+
+\begin{remark}[Three duals already appear]
+There are at least three very different notions of real dual for \(\No\):
+\begin{enumerate}
+\item the algebraic dual determined by a choice of Hamel basis;
+\item the intrinsic strong dual classified by \cref{thm:strong-dual};
+\item the order-bounded dual, which is zero by \cref{thm:order-dual-zero}.
+\end{enumerate}
+This mirrors, at the scalar-class level, the repository's separation of
+represented, strong, and valuation-continuous duals for set-sized Hahn vector
+spaces.
+\end{remark}
+
+\section{Order duality and the failure of Schauder convergence}\label{sec:topology}
+
+The strong dual is nontrivial because it is adapted to formal support sums.
+Demanding compatibility with the total order has the opposite effect: every
+real-valued order-bounded linear functional vanishes.
+
+\subsection{The order-bounded real dual is zero}
+
+\begin{definition}[Order-bounded linear map]
+An \(\R\)-linear map \(L:\No\to\R\) is \emph{order bounded} if for every
+\(y\ge0\) there is a real number \(M_y\) such that
+\[
+  \abs{x}\le y\quad\Longrightarrow\quad\abs{L(x)}\le M_y.
+\]
+Equivalently, it maps every surreal order interval to a bounded subset of
+\(\R\).
+\end{definition}
+
+\begin{theorem}[Collapse of the order-bounded real dual]
+\label{thm:order-dual-zero}
+Every order-bounded \(\R\)-linear map \(L:\No\to\R\) is zero.
+\end{theorem}
+
+\begin{proof}
+Fix \(x\in\No\).  If \(x=0\) there is nothing to prove.  Put
+\(y=\omega\abs{x}>0\).  For every positive integer \(n\), one has
+\(n\abs{x}<\omega\abs{x}=y\), so \(nx\in[-y,y]\).  Order boundedness gives a
+real \(M_y\) with
+\[
+  n\abs{L(x)}=\abs{L(nx)}\le M_y
+  \qquad(n\in\N_{>0}).
+\]
+No positive real number can satisfy these inequalities for every \(n\).
+Hence \(L(x)=0\).  Since \(x\) was arbitrary, \(L=0\).
+\end{proof}
+
+\begin{corollary}[No positive real linear state]\label{cor:no-positive-state}
+Every positive \(\R\)-linear map \(L:\No\to\R\) is zero.  In particular,
+there is no positive real-linear retraction of \(\No\) onto its real
+subfield.
+\end{corollary}
+
+\begin{proof}
+If \(L\) is positive and \(-y\le x\le y\), then
+\(-L(y)\le L(x)\le L(y)\).  Thus \(L\) is order bounded and
+\cref{thm:order-dual-zero} applies.
+\end{proof}
+
+\begin{example}[Constant term is strong but not positive]
+The coefficient functional
+\[
+  \ct(x)=[\omega^0]x
+\]
+is strong and restricts to the identity on \(\R\), but it is not positive:
+\(\omega-1>0\) while \(\ct(\omega-1)=-1\).  This example shows exactly why
+\cref{cor:no-positive-state} does not contradict the existence of canonical
+coefficient retractions.
+\end{example}
+
+\begin{corollary}[No nonzero order-compatible real seminorm]
+\label{cor:no-order-seminorm}
+Suppose \(p:\No\to\R_{\ge0}\) is absolutely homogeneous over \(\R\) and
+monotone with respect to surreal magnitude:
+\[
+  \abs{x}\le\abs{y}\quad\Longrightarrow\quad p(x)\le p(y).
+\]
+Then \(p=0\).
+\end{corollary}
+
+\begin{proof}
+For \(x\ne0\) and every \(n\in\N_{>0}\),
+\(\abs{nx}<\abs{\omega x}\).  Hence
+\[
+ n p(x)=p(nx)\le p(\omega x),
+\]
+where the right side is one fixed real number.  Therefore \(p(x)=0\).
+\end{proof}
+
+A choice of Hamel basis can of course be declared orthonormal, producing a
+noncanonical real-valued norm.  The corollary says that no such norm can
+respect the ambient surreal order in the displayed sense.
+
+\subsection{The fine valuation topology}
+
+The natural valuation \eqref{eq:natural-valuation} gives fine balls
+\begin{equation}\label{eq:valuation-ball}
+  B_\gamma(0)=\{x\in\No:v(x)>\gamma\},
+  \qquad \gamma\in\No.
+\end{equation}
+Translates of these balls define the full natural valuation topology.  It is
+``fine'' because every surreal threshold is allowed, not merely thresholds
+from a fixed set-sized subgroup.
+
+The following elementary fact about \(\No\) is decisive.
+
+\begin{lemma}[Every set of surreals is bounded]
+\label{lem:set-bounded}
+Every set \(A\subseteq\No\) has a surreal upper bound and a surreal lower
+bound.
+\end{lemma}
+
+\begin{proof}
+The Conway cut \(\{A\mid\varnothing\}\) is greater than every member of
+\(A\).  Applying this to \(-A\) gives a lower bound.
+\end{proof}
+
+\begin{theorem}[Set-indexed convergence is eventually constant]
+\label{thm:eventually-constant}
+Let \((x_i)_{i\in I}\) be a net in \(\No\) whose directed index \(I\) is a
+set.  If \(x_i\to x\) in the full natural valuation topology, then
+\(x_i=x\) eventually.
+\end{theorem}
+
+\begin{proof}
+Consider the set
+\[
+ A=\{v(x_i-x):i\in I,\ x_i\ne x\}\subseteq\No.
+\]
+By \cref{lem:set-bounded}, choose \(\beta\in\No\) strictly above every member
+of \(A\).  Convergence to \(x\) in the neighborhood
+\(x+B_\beta(0)\) implies that eventually
+\(v(x_i-x)>\beta\).  No nonzero difference in the net has such a value by
+the choice of \(\beta\), so eventually \(x_i-x=0\).
+\end{proof}
+
+\begin{remark}[Non-discrete but net-rigid]
+The topology is not discrete: no single threshold \(\gamma\) excludes every
+nonzero infinitesimal, because \(\omega^{-\delta}\in B_\gamma(0)\) for
+sufficiently large \(\delta\).  Nevertheless, every \emph{set}-indexed net
+has only a set of valuation values, hence a common upper bound.  This is a
+proper-class phenomenon: the neighborhood system itself has proper-class
+cofinality.
+\end{remark}
+
+\begin{corollary}[Normal forms are not Schauder expansions]
+\label{cor:not-schauder}
+If a surreal has infinite normal-form support, no set-indexed net of its
+finite support truncations converges to it in the full natural valuation
+topology.  Consequently the Conway monomials are not a Schauder basis for
+that topology.
+\end{corollary}
+
+\begin{proof}
+A convergent net of finite truncations would be eventually equal to its
+limit by \cref{thm:eventually-constant}, forcing the limit to have finite
+support.
+\end{proof}
+
+The same argument applies to the fine order topology.
+
+\begin{corollary}[Fine order convergence is also eventually constant]
+\label{cor:order-net}
+Every set-indexed net convergent in the order topology generated by all
+surreal intervals \((x-\varepsilon,x+\varepsilon)\), with
+\(\varepsilon>0\), is eventually constant.
+\end{corollary}
+
+\begin{proof}
+For the set of nonzero distances
+\(D=\{\abs{x_i-x}:x_i\ne x\}\), the cut \(\{0\mid D\}\) gives a positive
+surreal \(\varepsilon\) smaller than every member of \(D\).  Eventual
+membership in the \(\varepsilon\)-interval around \(x\) therefore forces
+equality.
+\end{proof}
+
+\subsection{How nontrivial convergence can be recovered}
+
+The anti-Schauder theorem concerns the \emph{full} value group \(\No\).
+Useful analytic work generally chooses a set-sized Hahn workspace
+\(k((t^\Gamma))\), a set-sized cofinal scale family, or a coarser topology.
+Within such a workspace, a support can be cofinal in the chosen value group,
+and partial sums may converge.  This is why the repository's analytical
+reports carefully distinguish set-sized workspaces, strong summation, and
+fine surreal topology.  A future theory of ``Schauder bases for \(\No\)''
+must specify which scale system has been retained and which proper-class
+neighborhoods have been discarded.
+
+\section{Monomial symmetries, derivations, and algebraic independence}
+\label{sec:multiplicative}
+
+The Hahn basis is not only linear.  Because its indices form the additive
+surreal group, linear transformations of the monomials often extend to field
+automorphisms and derivations.
+
+\subsection{Monomial-preserving ordered-field automorphisms}
+
+Let \(\phi:(\No,+,<)\to(\No,+,<)\) be an ordered additive class
+automorphism, and let
+\[
+  \chi:(\No,+)\longrightarrow(\R_{>0},\cdot)
+\]
+be a positive real character.  Define
+\begin{equation}\label{eq:T-chiphi}
+ T_{\chi,\phi}\!\left(
+   \sH_{\gamma\in S}r_\gamma\omega^\gamma\right)
+ =\sH_{\gamma\in S}
+   r_\gamma\chi(\gamma)\omega^{\phi(\gamma)}.
+\end{equation}
+
+\begin{theorem}[Monomial automorphisms]\label{thm:monomial-aut}
+The map \(T_{\chi,\phi}\) is a strong \(\R\)-linear ordered-field
+automorphism of \(\No\).  Conversely, every strong \(\R\)-linear
+ordered-field automorphism that permutes the monomial lines
+\(\{\R\omega^\gamma:\gamma\in\No\}\) has this form for unique
+\(\chi\) and \(\phi\).
+\end{theorem}
+
+\begin{proof}
+Because \(\phi\) is an order isomorphism, it sends reverse-well-ordered sets
+to reverse-well-ordered sets.  The columns in \eqref{eq:T-chiphi} have
+singleton supports with distinct output exponents, so
+\cref{thm:strong-matrix} gives strong real linearity.  The inverse is obtained
+from \(\phi^{-1}\) and the character
+\(\gamma\mapsto\chi(\phi^{-1}\gamma)^{-1}\).
+
+For monomials,
+\begin{align*}
+ T_{\chi,\phi}(\omega^\gamma\omega^\delta)
+ &=\chi(\gamma+\delta)\omega^{\phi(\gamma+\delta)}\\
+ &=\chi(\gamma)\chi(\delta)
+   \omega^{\phi(\gamma)+\phi(\delta)}\\
+ &=T_{\chi,\phi}(\omega^\gamma)
+   T_{\chi,\phi}(\omega^\delta).
+\end{align*}
+Strong distributivity extends this identity to arbitrary normal forms.
+Positive real coefficients and the increasing map \(\phi\) preserve the sign
+of the leading term, hence the order.
+
+Conversely, suppose \(T\) strongly permutes monomial lines.  Write uniquely
+\[
+  T(\omega^\gamma)=\chi(\gamma)\omega^{\phi(\gamma)},
+  \qquad \chi(\gamma)>0.
+\]
+Bijectivity on lines makes \(\phi\) a bijection.  Multiplicativity of \(T\)
+gives
+\(\phi(\gamma+\delta)=\phi(\gamma)+\phi(\delta)\) and
+\(\chi(\gamma+\delta)=\chi(\gamma)\chi(\delta)\).  Preservation of the order
+of positive monomials makes \(\phi\) increasing.  Strong linearity then
+forces \(T\) to act on every normal form by \eqref{eq:T-chiphi}.
+\end{proof}
+
+This elementary subgroup is one of the reasons the monomial basis is useful:
+its symmetries are controlled by familiar group data.  The full automorphism
+group is richer; Kaplan, Krapp, and Serra give a systematic Hahn-field
+decomposition and distinguish strongly linear automorphisms from general
+ones \cite{KKS}.
+
+\begin{example}[Exponent dilations]\label{ex:exponent-dilation}
+For every positive surreal \(a\), multiplication
+\[
+  \phi_a(\gamma)=a\gamma
+\]
+is an ordered additive automorphism of \(\No\).  Taking \(\chi=1\) gives
+\begin{equation}\label{eq:sigma-a}
+  \sigma_a\!\left(\sH_\gamma r_\gamma\omega^\gamma\right)
+  =\sH_\gamma r_\gamma\omega^{a\gamma}.
+\end{equation}
+Then \(\sigma_a(\omega)=\omega^a\),
+\(\sigma_a^{-1}=\sigma_{a^{-1}}\), and
+\(\sigma_a\sigma_b=\sigma_{ab}\).
+These are ordered-field automorphisms fixing \(\R\).  Preservation of the
+surreal exponential or of the omega map as an additional named operation is
+a separate and much more rigid requirement.
+\end{example}
+
+\begin{theorem}[Dilation-invariant strong functionals]
+\label{thm:dilation-invariant-dual}
+Let \(\sigma_a\) be the exponent-dilation automorphism
+\eqref{eq:sigma-a}.  A strong real-linear functional
+\(\Lambda:\No\to\R\) satisfies
+\[
+  \Lambda\circ\sigma_a=\Lambda
+  \qquad\text{for every }a\in\No_{>0}
+\]
+if and only if \(\Lambda\) is a real multiple of constant-term extraction
+\(\ct=[\omega^0]\).
+\end{theorem}
+
+\begin{proof}
+Let \(w(\gamma)=\Lambda(\omega^\gamma)\).  Invariance gives
+\(w(a\gamma)=w(\gamma)\) for all \(a>0\).  Any two positive exponents are
+related by multiplication by a positive surreal, so \(w\) is constant on
+\(\No_{>0}\); similarly it is constant on \(\No_{<0}\).  If the positive
+constant were nonzero, the active set would contain the decreasing sequence
+\(1>1/2>1/3>\cdots\), contradicting
+\cref{prop:summation-finite-seq}.  If the negative constant were nonzero, it
+would contain \(-1>-2>-3>\cdots\), again a contradiction.  Thus only the
+weight at exponent \(0\) may survive, giving a multiple of \(\ct\).  The
+converse is immediate because every \(\sigma_a\) fixes exponent \(0\) and its
+coefficient.
+\end{proof}
+
+\begin{example}[Coefficient characters]
+If \(d:(\No,+)\to(\R,+)\) is an additive class homomorphism, then
+\(\chi_d(\gamma)=\exp(d(\gamma))\) is a positive character.  The resulting
+automorphism fixes every monomial line and rescales it by a positive real.
+A concrete choice is \(d=\ct\), constant-term extraction applied to the
+\emph{exponent} \(\gamma\):
+\[
+  \omega^\gamma\longmapsto
+  e^{\ct(\gamma)}\omega^\gamma.
+\]
+\end{example}
+
+\subsection{Diagonal strong derivations}\label{subsec:derivations}
+
+The same additive characters produce derivations rather than automorphisms.
+
+\begin{theorem}[Diagonal derivations]\label{thm:diagonal-derivation}
+Let \(d:(\No,+)\to(\R,+)\) be additive.  Then
+\begin{equation}\label{eq:Dd}
+ D_d\!\left(\sH_\gamma r_\gamma\omega^\gamma\right)
+ =\sH_\gamma r_\gamma d(\gamma)\omega^\gamma
+\end{equation}
+is a strong \(\R\)-linear derivation of \(\No\):
+\[
+  D_d(xy)=xD_d(y)+yD_d(x).
+\]
+Conversely, every strong \(\R\)-linear derivation satisfying
+\(D(\omega^\gamma)\in\R\omega^\gamma\) for every \(\gamma\) is uniquely of
+this form.
+\end{theorem}
+
+\begin{proof}
+The support of \(D_dx\) is contained in \(\supp(x)\), so the map is strong.
+For monomials,
+\begin{align*}
+ D_d(\omega^{\gamma+\delta})
+ &=d(\gamma+\delta)\omega^{\gamma+\delta}\\
+ &=(d(\gamma)+d(\delta))\omega^{\gamma+\delta}\\
+ &=\omega^\gamma D_d(\omega^\delta)
+   +\omega^\delta D_d(\omega^\gamma).
+\end{align*}
+Hahn distributivity and local finiteness extend the Leibniz identity to all
+normal forms.
+
+Conversely, write
+\(D(\omega^\gamma)=d(\gamma)\omega^\gamma\).  The Leibniz identity on a
+product of two monomials forces
+\(d(\gamma+\delta)=d(\gamma)+d(\delta)\).  Strong linearity determines \(D\)
+on every normal form, giving \eqref{eq:Dd}.
+\end{proof}
+
+\begin{example}[A surreal Euler-type derivation]
+With \(d=\ct\),
+\[
+  D_{\ct}(\omega^r)=r\omega^r\qquad(r\in\R),
+\]
+so in particular \(D_{\ct}(\omega)=\omega\), while
+\(D_{\ct}\) kills real constants.  It is diagonal in the Conway--Hahn basis.
+It is not asserted here to commute with the surreal exponential; differential
+compatibility is an additional structure studied by Berarducci--Mantova and
+later work \cite{BerarducciMantova,ADH}.
+\end{example}
+
+\subsection{Algebraic independence of monomials}
+
+Linear coordinates also give a clean field-theoretic criterion.
+
+\begin{theorem}[Rational exponents versus algebraic monomials]
+\label{thm:monomial-alg-ind}
+For \(\gamma_1,\ldots,\gamma_n\in\No\), the monomials
+\(\omega^{\gamma_1},\ldots,\omega^{\gamma_n}\) are algebraically independent
+over \(\R\) if and only if the exponents
+\(\gamma_1,\ldots,\gamma_n\) are linearly independent over \(\Q\).
+\end{theorem}
+
+\begin{proof}
+Suppose first that the exponents are \(\Q\)-dependent.  Clearing
+denominators gives a nonzero integer relation
+\(\sum_i m_i\gamma_i=0\).  Moving negative terms to the other side gives an
+equality between two distinct monomials in the
+\(\omega^{\gamma_i}\), hence a nonzero polynomial relation over \(\R\).
+
+Conversely, assume the exponents are \(\Q\)-independent and let
+\[
+ P(X_1,\ldots,X_n)=\sum_{\mathbf{k}\in F}
+ c_{\mathbf{k}}X_1^{k_1}\cdots X_n^{k_n}
+\]
+be a nonzero polynomial with finite exponent set
+\(F\subseteq\N^n\).  Distinct multiindices \(\mathbf{k}\ne\mathbf{l}\)
+give distinct surreal exponents
+\[
+  \sum_i k_i\gamma_i\ne\sum_i l_i\gamma_i,
+\]
+by rational independence.  Therefore
+\[
+ P(\omega^{\gamma_1},\ldots,\omega^{\gamma_n})
+ =\sum_{\mathbf{k}\in F}
+ c_{\mathbf{k}}\omega^{\sum_i k_i\gamma_i}
+\]
+is a nonzero finite normal form.  No cancellation between distinct exponents
+is possible.
+\end{proof}
+
+\begin{corollary}
+Every nontrivial monomial \(\omega^\gamma\), with \(\gamma\ne0\), is
+transcendental over \(\R\).
+\end{corollary}
+
+\begin{corollary}[An explicit proper-class independent family]
+\label{cor:proper-class-alg-independent}
+The family
+\begin{equation}\label{eq:proper-class-AI}
+  \{\omega^{\omega^\alpha}:\alpha\in\On\}
+\end{equation}
+is algebraically independent over \(\R\).
+\end{corollary}
+
+\begin{proof}
+The exponent family \(\{\omega^\alpha:\alpha\in\On\}\) is real-linearly,
+hence rationally, independent: every finite relation would be a finite
+normal form with distinct exponents \(\alpha\).  Apply
+\cref{thm:monomial-alg-ind}.
+\end{proof}
+
+Thus the field extension \(\No/\R\) has proper-class transcendence complexity
+in the evident class-theoretic sense.  An actual transcendence basis again
+requires class choice and is not supplied canonically by normal form; the
+explicit family \eqref{eq:proper-class-AI} gives a natural lower bound without
+such a choice.
+
+\section{Relation to the ProveIt collection and the literature}
+\label{sec:repo-relation}
+
+\subsection{Repository map}
+
+The repository snapshot \texttt{\RepoShort} contains a broad surreal-number
+program \cite{ProveIt}.  The present article is designed to complement, rather than repeat,
+the following components.
+
+\begin{center}
+\small
+\begin{tabularx}{0.98\textwidth}{L{0.34\textwidth}Y Y}
+\toprule
+Repository item & Principal object & Relation to this article\\
+\midrule
+\path{docs/surreal/vector-and-tensor-fields} & Finite-dimensional
+\(K^n\), tensor fields, and support-controlled calculus over set-sized
+surreal subfields & Uses surreal numbers as \emph{scalars}; does not ask for
+a basis of \(\No\) over \(\R\).\\
+\path{docs/surcomplex/three-duals-of-hahn-vector-spaces} &
+\(V((t^\Gamma))\), algebraic scalar extension, valuation completion, strong
+and continuous duals & Supplies the closest set-sized analogy to the strong
+map and dual distinctions in \cref{sec:strong-maps}.\\
+\path{docs/surcomplex/infinite-dimensional-hahn-spectral-theory} &
+Hahn-summable vector families and Hahn-orthonormal synthesis & Explicitly
+distinguishes Hahn bases from Hamel and Hilbert bases; the present report
+applies that distinction to \(\No\) itself.\\
+\path{docs/surcomplex/hahn-hilbert-geometry} & Set-sized Hahn--Hilbert
+workspaces at surreal scales & Illustrates why analytical work selects a
+set-sized workspace rather than the full fine class topology.\\
+\path{docs/surreal/exponential-automorphism-rigidity} & Ordered,
+valuation, and exponential automorphisms of \(\No\) & Complements the
+monomial-preserving strong automorphisms in \cref{sec:multiplicative}; extra
+exponential structure is substantially more rigid.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The repository states that its reports are AI-assisted, unrefereed drafts and
+separately records which results have Lean formalizations.  The same claim
+firewall is adopted here: no theorem newly proved in this report is presented
+as machine checked merely because related foundations exist in the repository.
+
+\subsection{Classical sources}
+
+Conway introduced \(\No\) and its normal forms; Gonshor developed the sign-
+sequence and omega-map theory in detail \cite{Conway,Gonshor}.  Hahn's
+generalized series and Neumann's support lemma provide the ambient algebraic
+technology \cite{Hahn,Neumann}.  Van den Dries and Ehrlich related the surreal
+field and exponentiation to model-theoretic and Hahn-field structure
+\cite{vdDE}; Ehrlich's surveys explain the role of \(\No\) as a universal
+ordered continuum \cite{Ehrlich2012}.  Berarducci--Mantova and
+Aschenbrenner--van den Dries--van der Hoeven developed the differential and
+transseries aspects \cite{BerarducciMantova,ADH}.  Mantova--Matusinski give a
+modern survey of Conway normal form and surreal analysis
+\cite{MantovaMatusinski}.
+
+The automorphism viewpoint used in \cref{sec:multiplicative} is now developed
+systematically by Kaplan, Krapp, and Serra, who work in NBG with global choice,
+view \(\No\) as a Hahn field, decompose its automorphism group, and isolate
+strongly linear automorphisms \cite{KKS}.  Their work also notes that
+choice-dependent bases enter descriptions of additive homomorphisms; this
+reinforces the separation between intrinsic Hahn coordinates and arbitrary
+Hamel coordinates.
+
+The set-sized dimension formula in \cref{thm:window-dimension} is the
+Erd\H{o}s--Kaplansky theorem.  We cite Jacobson's classical account and Bergman's
+later discussion and extension \cite{Jacobson,Bergman}.
+
+\subsection{What is genuinely specific to the vector-space question}
+
+The literature generally invokes Conway normal form to study order, fields,
+valuations, derivations, or automorphisms.  The present organization instead
+starts from the linear question and follows its consequences:
+\begin{enumerate}
+\item it separates Hamel, Hahn, graded, and Schauder meanings of basis;
+\item it proves the no-set-spanning theorem directly from support;
+\item it quantifies the local Hamel-dimension explosion inside support
+windows;
+\item it exposes the quotient \(\No/\Fin\) by an explicit proper-class
+independent family;
+\item it derives an intrinsic strong real dual and contrasts it with the zero
+order dual;
+\item it explains why the full proper-class valuation topology cannot realize
+normal forms as set-indexed limits.
+\end{enumerate}
+These are primarily structural deductions from classical coordinates.  Their
+value is to prevent category errors when importing finite-dimensional or
+Banach-space intuitions into surreal analysis.
+
+\section{Further research questions and proposed program}
+\label{sec:research}
+
+The vector-class viewpoint opens a research program that is distinct from,
+but compatible with, the existing surreal analysis, automorphism, and
+formalization programs.  The questions below are ordered roughly from
+foundational to analytic and computational.
+
+\subsection{Foundations and definability}
+
+\begin{question}[Choice strength for class bases]
+What is the weakest conservative class theory over ZFC that proves every
+class vector space whose carrier is bijective with \(\On\) has a Hamel class
+basis?  In particular, how much of global choice is needed for
+\cref{thm:class-basis}, and can the statement fail in natural models of NBG
+without global choice?
+\end{question}
+
+The staged proof uses global choice to select basis extensions through a
+proper class of stages.  A reverse-mathematical analysis would separate the
+choice needed for this particular highly structured vector class from a
+general class-basis principle.
+
+\begin{question}[Definable Hamel bases]
+Does \(\No\) admit a Hamel basis definable, without arbitrary parameters, in
+natural class universes such as \((V,\in)\), \(L\), or HOD?  Can one prove
+that no such basis is invariant under specified large subgroups of
+\(\Aut(\No,+,\cdot,<)\)?
+\end{question}
+
+A useful intermediate target is a definable basis containing all monomials,
+as in \cref{prop:basis-containing-monomials}, together with a definable rule
+for selecting the necessary infinite-support supplement.  Symmetry may make
+this impossible in the full universe even when a basis exists abstractly.
+
+\begin{question}[Class matroids]
+Develop a class-matroid framework in which linear independence on \(\No\),
+basis extension, closure, and rank are formulated without forcing all ranks
+to be set cardinals.  Which ordinary matroid theorems survive for set-finitary
+class matroids under global choice?
+\end{question}
+
+The linear matroid of \(\No\) is finitary---dependence is witnessed by a
+finite subset---but its ground class and every basis are proper.  This makes
+it a natural test case for class-sized combinatorial geometry.
+
+\subsection{Support strata and quotient geometry}
+
+\begin{question}[Structure of \(\No/\Fin\)]
+Classify the real vector-class quotient \(\No/\Fin\) and its natural
+filtrations by support order type, cofinality, and leading exponent.  Is there
+a canonical hierarchy of subquotients whose set-sized pieces have computable
+Hamel dimensions?
+\end{question}
+
+The block family in \cref{thm:quotient-independent} gives only a lower bound.
+A finer analysis could distinguish countable support, bounded support order
+type, and support contained in specified exponent intervals.
+
+\begin{question}[Support-rank dimension spectra]
+For an infinite cardinal \(\kappa\), let \(\No^{(<\kappa)}\) consist of
+surreals whose normal-form support has cardinality below \(\kappa\), or order
+type below \(\kappa\).  Determine the Hamel dimensions of set-sized
+intersections of these classes and the strictness of the resulting hierarchy.
+\end{question}
+
+The countable-window theorem suggests cardinal-exponent formulas, but order
+type and ambient exponent geometry can interact when the allowed support
+window itself is not reverse well ordered.
+
+\begin{question}[Canonical complements]
+Which naturally defined real subspaces of \(\No\) admit canonical strong
+complements?  Support-defined subspaces do by \cref{thm:support-splitting};
+what happens for birthday cutoffs, differential kernels, logarithmic strata,
+or fields generated by selected monomials?
+\end{question}
+
+The contrast between support subspaces and birthday subspaces may reveal
+which decompositions belong to the Hahn geometry and which depend on the
+genetic construction.
+
+\subsection{Strong operator algebras and duality}
+
+\begin{question}[The algebra of Hahn-compatible matrices]
+Give intrinsic necessary and sufficient conditions for composition,
+invertibility, triangular factorization, and spectral decomposition of the
+class matrices in \cref{thm:strong-matrix}.  Identify natural operator ideals:
+finite-row, finite-column, support-contracting, valuation-increasing, and
+nuclear analogues.
+\end{question}
+
+A promising route is to first solve the problem on every set-sized support
+window and then formulate uniform class conditions.  The recent theory of
+automorphisms and derivations on algebras with formal infinite sums should be
+compared directly \cite{BagayokoEtAl}.
+
+\begin{question}[Invariant strong duals]
+For important automorphism groups \(G\) of \(\No\), compute
+\[
+  (\No^{\vee}_{\mathrm{str}})^G.
+\]
+Theorem~\ref{thm:dilation-invariant-dual} shows that invariance under all
+positive exponent dilations leaves exactly the constant-term line.  What are
+the invariant strong functionals for valuation-preserving, omega-preserving,
+or exponential automorphism groups?
+\end{question}
+
+This is a tractable bridge between the linear theory developed here and the
+automorphism decomposition of Kaplan--Krapp--Serra.
+
+\begin{question}[Duality beyond real scalars]
+Classify strong, order-bounded, and topology-continuous maps from \(\No\) to
+other codomains: a set-sized Hahn field, \(\No\) itself, the surcomplex field,
+or quotient spaces such as \(\No/\Fin\).  Which codomains avoid the collapse
+of \cref{thm:order-dual-zero}?
+\end{question}
+
+Real-valued positive states vanish because the codomain is Archimedean.
+Surreal-valued positive maps may exist and could provide a better foundation
+for surreal measure, probability, and convex analysis.
+
+\subsection{Topology and generalized bases}
+
+\begin{question}[Coarser topologies with genuine Schauder expansions]
+Classify set-generated valuation or bornological structures on \(\No\) for
+which selected classes of Conway normal forms are limits of their finite
+truncations.  What is the largest natural subspace on which the monomials form
+a Schauder basis for a given set-sized scale system?
+\end{question}
+
+Any answer must evade \cref{thm:eventually-constant} by replacing the full
+proper-class neighborhood basis with a set-sized cofinal family, restricting
+the domain, or allowing class-indexed convergence.
+
+\begin{question}[Class-indexed convergence]
+Can class-indexed nets or filters be developed safely enough to make every
+Conway normal form a topological sum without collapsing separation axioms or
+leaving conservative class theory?  How does such convergence compare with
+strong Hahn summation?
+\end{question}
+
+Strong summation may already be the correct replacement.  A topological
+reconstruction would be valuable only if it adds robust continuity,
+completion, or functional-analytic theorems.
+
+\begin{question}[Bornological and locally convex analogues]
+Is there a useful class-bornology on \(\No\) whose bounded linear dual lies
+strictly between the strong dual and the zero order-bounded real dual?  Can
+one formulate barrelledness, nuclearity, or reflexivity using only set-sized
+bounded pieces?
+\end{question}
+
+The support windows \(\Hahn(A)\) provide a canonical directed family of
+set-sized test spaces.  An inductive-limit or bornological approach may be
+more faithful than the full fine topology.
+
+\subsection{Differential and exponential compatibility}
+
+\begin{question}[Derivation-adapted bases]
+How does the Berarducci--Mantova derivation act relative to the monomial Hahn
+basis, and is there a more refined basis---perhaps using log-atomic numbers or
+transseries trees---in which its matrix is triangular or locally finite?
+\end{question}
+
+The diagonal derivations of \cref{thm:diagonal-derivation} are completely
+controlled by additive real characters, but the canonical surreal derivation
+changes scales in a subtler way.  A basis adapted simultaneously to
+multiplication, exponentiation, and derivation would be highly significant.
+
+\begin{question}[Exponential rigidity of monomial automorphisms]
+Determine exactly which pairs \((\chi,\phi)\) in
+\cref{thm:monomial-aut} commute with the surreal exponential or preserve the
+omega map.  Existing rigidity results rule out broad subclasses; an explicit
+intersection with the monomial automorphism group should be computable.
+\end{question}
+
+A direct coefficient-and-leading-scale proof could provide an independent
+check on more general automorphism theorems.
+
+\begin{question}[Transcendence bases compatible with support]
+Can one construct a class transcendence basis of \(\No/\R\) whose elements
+have controlled normal-form support, and then describe the algebraic closure
+of the generated field inside \(\No\)?  How far is the explicit family
+\(\{\omega^{\omega^\alpha}\}\) from a transcendence basis?
+\end{question}
+
+The answer should distinguish finite field generation from Hahn closure;
+normal-form completeness is far larger than rational-function generation.
+
+\subsection{Tensor constructions and geometry}
+
+\begin{question}[Completed tensor powers]
+Define and compare the algebraic tensor powers of the class vector space
+\(\No\) with support-completed Hahn tensor products.  Do the monomials
+\(\omega^{\gamma_1}\otimes\cdots\otimes\omega^{\gamma_n}\) form a natural
+multi-Hahn basis, and which support conditions are forced by contraction and
+symmetrization?
+\end{question}
+
+This would connect the present scalar decomposition with the repository's
+finite-dimensional tensor-field program and with infinite-dimensional Hahn
+Hilbert geometry.
+
+\begin{question}[Exterior and symmetric class algebras]
+Describe the exterior, symmetric, and Clifford algebras of \(\No\) over
+\(\R\) under both Hamel and Hahn completions.  Which constructions retain a
+canonical grading by surreal exponents?
+\end{question}
+
+The algebraic versions depend on a Hamel basis only through isomorphism, while
+support-completed versions may preserve much more of the normal-form geometry.
+
+\subsection{Formalization and computation}
+
+\begin{question}[Formalization strategy]
+Formalize the set-sized core of the article in Lean: reverse-well-ordered
+support spaces, strong sums, support projections, the matrix theorem, the
+strong-dual criterion, the Vandermonde lower bound, and the monomial algebraic-
+independence theorem.  Then isolate the additional class-theoretic axioms
+needed for global statements.
+\end{question}
+
+Most proofs reduce to finite-support bookkeeping plus well-order properties
+and are good candidates for machine checking.  The class-basis existence
+theorem should be kept logically separate from constructive normal-form
+results.
+
+\begin{question}[Symbolic linear algebra for normal forms]
+Develop algorithms that operate on finite or certified transfinite
+truncations: support projection, leading-grade elimination, diagonal and
+reindexing operators, strong matrix application, and independence tests for
+monomial families.  Produce proof certificates for all support conditions.
+\end{question}
+
+Such tools would turn the Hahn-basis viewpoint into a practical computer
+algebra interface.  A certificate should state the support order type, local
+finiteness bounds, and the exact truncation region used.
+
+\begin{question}[Repository integration]
+Add a dedicated ProveIt report and Lean ledger entry that distinguishes
+\(\No^n\) over \(\No\), set-sized Hahn vector spaces, and \(\No\) over
+\(\R\).  Cross-link the terminology ``Hamel basis,'' ``Hahn basis,''
+``strongly summable family,'' and ``associated graded'' across all related
+reports.
+\end{question}
+
+This editorial step would prevent the same word ``basis'' from denoting three
+incompatible synthesis rules in neighboring parts of the project.
+
+\section{Conclusion}\label{sec:conclusion}
+
+The surreal numbers are unquestionably a vector class over \(\R\), but the
+ordinary phrase ``choose a basis'' suppresses the structure that makes them
+surreal.  A Hamel basis sees only finite sums.  It exists under global choice,
+may be chosen to contain every monomial, and is necessarily supplemented by a
+proper class of infinite-support vectors.  Such a basis is useful for abstract
+algebraic existence arguments but not for normal-form computation, order, or
+asymptotics.
+
+The natural answer is instead
+\[
+  \boxed{\M=\{\omega^\gamma:\gamma\in\No\}}.
+\]
+This class is canonical in three mutually reinforcing senses:
+\begin{enumerate}
+\item it is the Conway--Hahn basis giving every surreal a unique strongly
+summable real expansion;
+\item it is the basis of the one-dimensional dominance grades, with
+\(\gr(\No)\cong\R[\No_{\mathrm{add}}]\);
+\item it is normalized by simplicity, since \(\omega^\gamma\) is the
+simplest positive representative of its Archimedean class.
+\end{enumerate}
+Its basis law is therefore not
+\(\No=\bigoplus_\gamma\R\omega^\gamma\), but the sharper statement
+\[
+  \No=\classprod_{\gamma\in\No}\R\omega^\gamma,
+\]
+where the product sign denotes set-supported, reverse-well-ordered Hahn
+coordinates.  (Equivalently, use \eqref{eq:direct-vs-hahn}; the displayed
+formula is conceptual rather than new notation.)
+
+Several consequences follow immediately once the correct synthesis rule is
+fixed.  Support subsets give canonical projections.  Strong operators have
+Hahn matrices.  Strong real functionals are precisely summation-finite
+weighted coefficient sums, while order-bounded real functionals vanish.
+Set-sized support windows reveal an enormous gap between Hahn and Hamel
+dimensions.  The full fine topology is too refined for set-indexed partial
+sums, so normal forms are formal strong sums rather than Schauder series.
+Monomial symmetries and diagonal derivations reduce to group maps on the
+exponents, and rational exponent independence becomes algebraic monomial
+independence.
+
+The resulting picture is analogous to several familiar distinctions, but is
+not identical to any one of them: Fourier series versus finite trigonometric
+polynomials, formal power series versus polynomials, completed graded objects
+versus their direct sums, and topological bases versus algebraic bases.  The
+surreal case adds two features absent from those set-sized analogies: the
+exponent group is itself the proper class \(\No\), and every individual
+series still has only set support.  That combination is exactly why the
+Conway--Hahn basis is both global and rigorously manageable.
+
+\appendix
+
+\section{Proof and dependency audit}\label{app:audit}
+
+\begin{center}
+\small
+\begin{longtable}{L{0.26\textwidth}L{0.26\textwidth}L{0.36\textwidth}}
+\toprule
+Result & Main input & Status in this report\\
+\midrule
+\endfirsthead
+\toprule
+Result & Main input & Status in this report\\
+\midrule
+\endhead
+Conway--Hahn basis, \cref{thm:hahn-basis} & Conway normal-form theorem &
+Classical theorem restated in vector-language.\\
+No set spans, \cref{thm:no-set-spans} & Set union of normal-form supports &
+Complete direct proof.\\
+Hamel class basis, \cref{thm:class-basis} & NBG+GC; set-sized basis extension &
+Complete class-recursion proof.\\
+Basis containing monomials,
+\cref{prop:basis-containing-monomials} & NBG+GC; greedy class recursion &
+Complete proof.\\
+Quotient independent family,
+\cref{thm:quotient-independent} & Disjoint countable support blocks &
+Complete explicit proof.\\
+Support-window dimension,
+\cref{thm:window-dimension} & Erd\H{o}s--Kaplansky theorem & Classical cardinal
+result applied to \(\R^A\); countable lower bound also proved directly.\\
+Support projections, \cref{thm:support-splitting} & Heredity of reverse well
+ordering & Complete proof.\\
+Associated graded, \cref{thm:graded} & Leading-term multiplication & Complete
+proof.\\
+Strong matrix classification,
+\cref{thm:strong-matrix} & Flattening of locally finite Hahn families &
+Complete proof.\\
+Strong real dual, \cref{thm:strong-dual} & Strong matrix theorem with
+codomain \(\R\) & Complete proof.\\
+Dilation invariants,
+\cref{thm:dilation-invariant-dual} & Strong-dual weights and exponent
+dilations & Complete proof.\\
+Order dual is zero,
+\cref{thm:order-dual-zero} & Infinite surreal bound \(\omega\abs{x}\) &
+Complete proof.\\
+Set-indexed nets eventually constant,
+\cref{thm:eventually-constant} & Every set of surreals has a surreal upper
+bound & Complete proof.\\
+Monomial automorphisms,
+\cref{thm:monomial-aut} & Hahn support transport and character laws & Complete
+proof for the stated monomial-line-preserving subgroup.\\
+Diagonal derivations,
+\cref{thm:diagonal-derivation} & Additive real characters of the exponent
+group & Complete proof.\\
+Monomial algebraic independence,
+\cref{thm:monomial-alg-ind} & Uniqueness of finite normal forms & Complete
+proof.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+No computer algebra was needed for these proofs.  The main verification risks
+are foundational rather than computational: distinguishing sets from proper
+classes, and never replacing strong summability by an unjustified topological
+limit.
+
+\section{Notation and terminology}\label{app:notation}
+
+\begin{center}
+\small
+\begin{tabularx}{0.96\textwidth}{L{0.24\textwidth}Y}
+\toprule
+Symbol & Meaning\\
+\midrule
+\(\No\), \(\On\) & The surreal-number and ordinal classes.\\
+\(\omega^\gamma\) & Conway omega-map monomial at exponent \(\gamma\).\\
+\(\supp(x)\) & Set of exponents with nonzero coefficient in the Conway normal
+form of \(x\).\\
+\([\omega^\gamma]x\) & Real coefficient of \(\omega^\gamma\) in \(x\).\\
+\(\sH\) & Strong or Hahn sum.\\
+\(\M\) & The monomial class \(\{\omega^\gamma:\gamma\in\No\}\).\\
+\(\Fin\) & Finite-support normal forms; the algebraic direct sum of the
+monomial lines.\\
+\(\Hahn(A)\) & Surreals whose support is contained in the reverse-well-ordered
+set \(A\).\\
+\(P_A\) & Projection retaining exactly the exponents in \(A\).\\
+\(v(x)\) & Natural valuation \(-\lead(x)\).\\
+Strong map & A real-linear map preserving every admissible set-indexed Hahn
+sum and commuting with it.\\
+Summation-finite class & A class meeting every reverse-well-ordered set in a
+finite set; equivalently, containing no infinite decreasing sequence.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\clearpage
+\begin{thebibliography}{99}
+
+\bibitem{ADH}
+M. Aschenbrenner, L. van den Dries, and J. van der Hoeven,
+\emph{Asymptotic Differential Algebra and Model Theory of Transseries},
+Annals of Mathematics Studies 195, Princeton University Press, 2017.
+
+\bibitem{BagayokoEtAl}
+V. Bagayoko, L. S. Krapp, S. Kuhlmann, D. Panazzolo, and M. Serra,
+``Automorphisms and derivations on algebras endowed with formal infinite
+sums,'' arXiv:2403.05827, revised 2025.
+
+\bibitem{BerarducciMantova}
+A. Berarducci and V. Mantova,
+``Surreal numbers, derivations and transseries,''
+\emph{Journal of the European Mathematical Society} 20 (2018), 339--390.
+\href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
+
+\bibitem{Bergman}
+G. M. Bergman,
+``Families of ultrafilters, and homomorphisms on infinite direct product
+algebras,'' arXiv:1301.6383, 2013; see Section 6 for the
+Erd\H{o}s--Kaplansky theorem and reduced products.
+
+\bibitem{Conway}
+J. H. Conway,
+\emph{On Numbers and Games}, 2nd ed., A K Peters, 2001.
+
+\bibitem{Ehrlich2012}
+P. Ehrlich,
+``The absolute arithmetic continuum and the unification of all numbers great
+and small,'' \emph{Bulletin of Symbolic Logic} 18 (2012), no. 1, 1--45.
+\href{https://doi.org/10.2178/bsl/1327328438}{doi:10.2178/bsl/1327328438}.
+
+\bibitem{Gonshor}
+H. Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+\href{https://doi.org/10.1017/CBO9780511629143}{doi:10.1017/CBO9780511629143}.
+
+\bibitem{Hahn}
+H. Hahn,
+``{\"U}ber die nichtarchimedischen Gr{\"o}{\ss}ensysteme,''
+\emph{Sitzungsberichte der Kaiserlichen Akademie der Wissenschaften,
+Mathematisch-Naturwissenschaftliche Klasse} 116 (1907), 601--655.
+
+\bibitem{Jacobson}
+N. Jacobson,
+\emph{Lectures in Abstract Algebra, Volume II: Linear Algebra},
+Van Nostrand, 1953; reprinted as Graduate Texts in Mathematics 31,
+Springer, 1975.
+
+\bibitem{KKS}
+E. Kaplan, L. S. Krapp, and M. Serra,
+``Decomposing the automorphism group of the surreal numbers,''
+arXiv:2509.22374v3, revised April 23, 2026.
+\href{https://doi.org/10.48550/arXiv.2509.22374}{doi:10.48550/arXiv.2509.22374}.
+
+\bibitem{MantovaMatusinski}
+V. Mantova and M. Matusinski,
+``Surreal numbers with derivation, Hardy fields and transseries: a survey,''
+arXiv:1608.03413v2, 2016.
+
+\bibitem{MO2013}
+M. Battaglia, with comments by T. Trimble,
+``Is a certain group, derivable from the surreal numbers, isomorphic to the
+surreal numbers?,'' MathOverflow question 140732, August--September 2013.
+\url{https://mathoverflow.net/questions/140732/}.
+
+\bibitem{Neumann}
+B. H. Neumann,
+``On ordered division rings,''
+\emph{Transactions of the American Mathematical Society} 66 (1949),
+202--252.
+
+\bibitem{ProveIt}
+V. Reshetnikov,
+\emph{ProveIt}, GitHub repository, surreal-number documentation and Lean
+sources, snapshot \texttt{\RepoCommit}, accessed October 1, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{vdDE}
+L. van den Dries and P. Ehrlich,
+``Fields of surreal numbers and exponentiation,''
+\emph{Fundamenta Mathematicae} 167 (2001), no. 2, 173--188;
+erratum, 168 (2001), 295--297.
+
+\end{thebibliography}
+
+\end{document}
