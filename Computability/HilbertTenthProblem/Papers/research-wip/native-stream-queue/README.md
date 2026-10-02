@@ -28,19 +28,26 @@ numerical universal alphabet remains uninstantiated. Mortality now has
 [a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
 the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
-The separate [three-core normalized GPCP compiler](gpcp_normalized_strong_compiler.md)
-has57 physical tiles and a paid ordinary-input bridge:
-**734 certificate /805=352M+453A polynomial operations**,24 comparisons,
-125 positive witnesses, three positive program parameters and degree205092.
-Supplying the initial history value gives808 operations,25 comparisons,
-126 witnesses and degree8532. A [fixed rule permutation](gpcp_ordered_sparse_tm.md)
-first saves two additions, then three normalized strong witnesses save
-three polynomial operations while retaining the separate history checksum.
-The unnormalized ordered808/degree130394 and supplied811/degree5204
-versions remain lower-degree alternatives. The [sparse810 predecessor](gpcp_sparse_tm_compiler.md)
-and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
-remain reproducible. These are alternative universal bounds above75/87;
-the matrix alphabet remains abstract.
+The [shared-selector sparse-TM/GPCP compiler](gpcp_shared_selectors774.md)
+gives **703 certificate /774=352M+422A polynomial operations**,
+24 comparisons,125 positive witnesses, three positive program parameters,
+ordinary positive input and exact degree205092. Supplying the initial
+history value gives777=353M+424A,25 comparisons,126 witnesses and exact
+degree8532. A disjoint cover by25 already-paid scalar registers saves31
+additions from the [normalized805/808 parent](gpcp_normalized_strong_compiler.md).
+Both complete polynomials, domains and program numerals remain identical
+to their respective parents. The actual57-tile U15,2 compiler and input
+bridge are retained. These are separate universal bounds above75/87;
+no arithmetic-circuit optimum is claimed.
+
+The [asymmetric squared-scale refutation](complete75_asymmetric_squared_scale_refutation.md)
+shows why deleting the remaining cube does not yield a new86-operation
+bound. Both resulting normalized86 and ordinary87 sources accept every
+positive input on every actual modified compiler slice, including a
+fixed empty-language program. The construction uses the actual masks,
+aligns the half-binomial index R, and supplies all nineteen positive
+coordinates, including the shared-gamma split. These particular shortcuts
+are refuted; the sound75/87 results above are unchanged.
 
 The [asymmetric linear-input and positive-gap search](complete75_asymmetric_linear_gap_tradeoffs.md)
 extends X=wq to ten more factor/comparison bases and eleven frozen direct
@@ -273,7 +280,31 @@ These are exact finite propagated minima, not exact degrees or unrestricted
 lower bounds. Across strong/scale bases, the accepted outer relation is
 preserved by explicit scale maps and canonical private strong extensions.
 
-The [permuted-digit Tseytin construction](tseytin_permuted_digits387.md) gives
+The [global-bound unit Tseytin compiler](tseytin_global_bound_unit385.md)
+gives **374 certificate /385=178M+207A operations**, four comparisons,
+62 positive witnesses, one fixed positive program parameter and ordinary
+positive input, with degree at most4714. The preceding
+[shared-offset identity](tseytin_shared_offsets386.md) first reduces387
+to386 by reusing a paid selector prefix, with identical complete polynomials.
+The385 step then turns the global bound comparison into a unit factor.
+Before its sign is known, the ten positive ports still fit the scalar
+lanes. Reserved binary digits exclude the negative native index, which
+forces the global unit to+1. Adding1 to the global-bound witness is a
+full positive-zero bijection with386 on valid program slices; the inverse
+is strictly positive. This step changes the polynomial off zero.
+
+The [four-base global/equality factor family](tseytin_global_unit_factor_partitions.md)
+gives the operation/degree-bound frontier **385/4714,386/4134,387/4132,
+388/2900,390/2210,392/1664**, with62 witnesses throughout. It retains
+both normalized/ordinary strong treatments and both global-bound forms.
+The387/4132 point keeps the old equality. Each fixed base has the same
+full supplied positive zero set across groupings; global forms use the
+proved one-unit slack shift, while strong treatments may require fresh
+five-coordinate extensions. The finite propagated objectives are exact
+within these bases; the bounds are not exact expanded degrees or global
+circuit lower bounds.
+
+The preceding [permuted-digit Tseytin construction](tseytin_permuted_digits387.md) gives
 **373 certificate /387=179M+208A operations**, five comparisons,
 62 positive witnesses, one fixed positive program parameter, ordinary
 positive input, and degree at most4712. It uses the actual fixed C2
@@ -2057,6 +2088,11 @@ New research and the completed75-operation construction:
 | [Canonical matrix history47](group_four_register_canonical_history47.md) | **47=15M+32A**,21 history fields, five equations; one global bound recovers every history digit. | Selected products, regular control and geometry are supplied by the complete compiler. |
 | [Binary AND and selected-source successor63](native_binary_masked_selection63.md) | AND63/64; eight selections117/119. Exclusive prescribed batch119 uses23 auxiliaries and17 equations. | Canonical zero digits are allowed. The exclusive completeness bound is proved from the actual small history digits and mutual exclusion. |
 | [Asymmetric linear-input/gap exact frontier](complete75_asymmetric_linear_gap_tradeoffs.md) | **89/113,90/109,92/92,94/62,95/60,96/50,97/48,98/44** join the frozen87/169,88/125,91/104,93/72 points;19w. | Ten explicit bases; computed-y positivity before the auxiliary index; complete positive-zero bijections and exact finite SOS/anchor degrees. |
+| [Global-bound unit C2 compiler](tseytin_global_bound_unit385.md) | **374 certificate /385=178M+207A**,4eq,62w,degree at most4714. | Reserved low bits exclude the negative index before fixing the global unit; full positive-zero bijection with386 shifts one witness by1. |
+| [Global/equality C2 factor frontier](tseytin_global_unit_factor_partitions.md) | **385/4714,386/4134,387/4132,388/2900,390/2210,392/1664**,62w. | Four complete bases; same-base supplied zeros, positive global-slack shift, and fresh strong extensions as needed. |
+| [Shared-offset C2 identity](tseytin_shared_offsets386.md) | **372 certificate /386=178M+208A**,5eq,62w,degree at most4712. | Reuse a paid selector subtotal; identical complete integer polynomials, coordinates and program recipe with387. |
+| [Shared-selector sparse-TM compiler](gpcp_shared_selectors774.md) | **703 certificate /774=352M+422A**,24eq,125w,exact degree205092; supplied777/126w/8532. | A25-block disjoint cover of57 selectors saves31 additions; exact complete polynomial identity with normalized805/808. |
+| [Asymmetric squared-scale refutation](complete75_asymmetric_squared_scale_refutation.md) | Specified86/87 shortcuts accept every input of every actual modified compiler. | Actual masks, main-index alignment and all nineteen positive coordinates; no new universal bound. |
 | [Permuted-digit C2 compiler](tseytin_permuted_digits387.md) | **373 certificate /387=179M+208A**,5eq,62w,one recompiled program numeral,degree at most4712. | Pair equal commutation corrections and remove a common multiplier1; preserve universal inputs by literal recoding and fresh native extensions. |
 | [Permuted-digit C2 factor frontier](tseytin_permuted_factor_partitions.md) | **387/4712,388/4132,390/2900,392/2210,394/1664**,62w. | Exact finite propagated-bound objective with full positive-zero equality within each fixed strong base on valid recompiled slices. |
 | [Zero-a digit architecture search](tseytin_zero_a_permutation_search.md) | **387 minimum among120 emitted circuits,16 minimizers**. | Same positive-digit set and sorted-copy order; explicit shared-offset/grouped-correction architecture, paid loader and all120 valid-program proofs. |

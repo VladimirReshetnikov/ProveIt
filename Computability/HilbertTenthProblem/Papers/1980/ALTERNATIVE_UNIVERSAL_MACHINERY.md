@@ -17,19 +17,26 @@ The independent-gamma87
 candidate is still unresolved, with new
 [compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The historical stages below retain their original scope and counts.
-The separate [three-core normalized GPCP compiler](../research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md)
-has57 physical tiles and a paid ordinary-input bridge:
-**734 certificate /805=352M+453A polynomial operations**,24 comparisons,
-125 positive witnesses, three positive program parameters and degree205092.
-Supplying the initial history value gives808 operations,25 comparisons,
-126 witnesses and degree8532. A [fixed rule permutation](../research-wip/native-stream-queue/gpcp_ordered_sparse_tm.md)
-first saves two additions, then three normalized strong witnesses save
-three polynomial operations while retaining the separate history checksum.
-The unnormalized ordered808/degree130394 and supplied811/degree5204
-versions remain lower-degree alternatives. The [sparse810 predecessor](../research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
-and [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
-remain reproducible. These are alternative universal bounds above75/87;
-the matrix alphabet remains abstract.
+The [shared-selector sparse-TM/GPCP compiler](../research-wip/native-stream-queue/gpcp_shared_selectors774.md)
+gives **703 certificate /774=352M+422A polynomial operations**,
+24 comparisons,125 positive witnesses, three positive program parameters,
+ordinary positive input and exact degree205092. Supplying the initial
+history value gives777=353M+424A,25 comparisons,126 witnesses and exact
+degree8532. A disjoint cover by25 already-paid scalar registers saves31
+additions from the [normalized805/808 parent](../research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md).
+Both complete polynomials, domains and program numerals remain identical
+to their respective parents. The actual57-tile U15,2 compiler and input
+bridge are retained. These are separate universal bounds above75/87;
+no arithmetic-circuit optimum is claimed.
+
+The [asymmetric squared-scale refutation](../research-wip/native-stream-queue/complete75_asymmetric_squared_scale_refutation.md)
+shows why deleting the remaining cube does not yield a new86-operation
+bound. Both resulting normalized86 and ordinary87 sources accept every
+positive input on every actual modified compiler slice, including a
+fixed empty-language program. The construction uses the actual masks,
+aligns the half-binomial index R, and supplies all nineteen positive
+coordinates, including the shared-gamma split. These particular shortcuts
+are refuted; the sound75/87 results above are unchanged.
 
 The [asymmetric linear-input and positive-gap search](../research-wip/native-stream-queue/complete75_asymmetric_linear_gap_tradeoffs.md)
 extends X=wq to ten more factor/comparison bases and eleven frozen direct
@@ -262,7 +269,31 @@ These are exact finite propagated minima, not exact degrees or unrestricted
 lower bounds. Across strong/scale bases, the accepted outer relation is
 preserved by explicit scale maps and canonical private strong extensions.
 
-The [permuted-digit Tseytin construction](../research-wip/native-stream-queue/tseytin_permuted_digits387.md) gives
+The [global-bound unit Tseytin compiler](../research-wip/native-stream-queue/tseytin_global_bound_unit385.md)
+gives **374 certificate /385=178M+207A operations**, four comparisons,
+62 positive witnesses, one fixed positive program parameter and ordinary
+positive input, with degree at most4714. The preceding
+[shared-offset identity](../research-wip/native-stream-queue/tseytin_shared_offsets386.md) first reduces387
+to386 by reusing a paid selector prefix, with identical complete polynomials.
+The385 step then turns the global bound comparison into a unit factor.
+Before its sign is known, the ten positive ports still fit the scalar
+lanes. Reserved binary digits exclude the negative native index, which
+forces the global unit to+1. Adding1 to the global-bound witness is a
+full positive-zero bijection with386 on valid program slices; the inverse
+is strictly positive. This step changes the polynomial off zero.
+
+The [four-base global/equality factor family](../research-wip/native-stream-queue/tseytin_global_unit_factor_partitions.md)
+gives the operation/degree-bound frontier **385/4714,386/4134,387/4132,
+388/2900,390/2210,392/1664**, with62 witnesses throughout. It retains
+both normalized/ordinary strong treatments and both global-bound forms.
+The387/4132 point keeps the old equality. Each fixed base has the same
+full supplied positive zero set across groupings; global forms use the
+proved one-unit slack shift, while strong treatments may require fresh
+five-coordinate extensions. The finite propagated objectives are exact
+within these bases; the bounds are not exact expanded degrees or global
+circuit lower bounds.
+
+The preceding [permuted-digit Tseytin construction](../research-wip/native-stream-queue/tseytin_permuted_digits387.md) gives
 **373 certificate /387=179M+208A operations**, five comparisons,
 62 positive witnesses, one fixed positive program parameter, ordinary
 positive input, and degree at most4712. It uses the actual fixed C2

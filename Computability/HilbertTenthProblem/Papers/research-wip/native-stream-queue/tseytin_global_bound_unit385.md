@@ -21,6 +21,14 @@ are different polynomials and different off-zero bounds; the positive
 inverse is proved below. The established75-certificate/87-polynomial
 bound remains separate.
 
+This applies the established
+[group joint-bound unit argument](group_projective_joint_bound_unit.md)
+to the actual recoded C2 universal compiler. That group packet already
+excludes the negative index by the population of r−2; the proof here
+checks the complete C2 scalar cone, both power interfaces and the
+one-unit slack shift required by this parent's different global equality.
+It is a new instantiated source reduction, not a new general sign lemma.
+
 ## 1. The source change and its initially unknown sign
 
 Let D=`height_slack`, B=65536D, J=sum Shat_i−24 and
