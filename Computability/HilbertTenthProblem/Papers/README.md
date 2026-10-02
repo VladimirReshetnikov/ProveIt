@@ -39,10 +39,10 @@ supplies87=48M+39A with19 positive witnesses and exact degree169. Its
 X=wq³ to X=wq preserves each frozen parent's full positive zero set through
 a proved integer coordinate bijection at zeros.
 
-The [complete packed U15 tape compiler](research-wip/native-stream-queue/u15_packed_two_tape_history.md)
-gives **653=255M+398A operations**, 105 positive witnesses and formal degree
+The [state-relabeled packed U15 tape compiler](research-wip/native-stream-queue/u15_packed_state_relabel652.md)
+gives **652=254M+398A operations**, 105 positive witnesses and formal degree
 at most1936, including the ordinary-integer input conversion. Its raw natural
-half-tape interface costs410 operations and54 witnesses. One joined AND pays
+half-tape interface costs409 operations and54 witnesses. One joined AND pays
 for the29-rule controller, tape ranges and selected fields; the product scale
 recovers an unbounded common run length with fixed arity. The four positive
 program numerals have an effective valid-slice recipe. Independent reviews
