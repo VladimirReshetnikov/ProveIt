@@ -1,5 +1,11 @@
 # WIP: native queue streams and research continuation
 
+The [complete87 discriminant-shear scout](complete87_discriminant_shear_scout.md)
+checks3,249 fully charged main/input norm schedules with exact full-polynomial
+identities. The best changed schedule costs88; this finite family does not
+improve87. It is distinct from the earlier product-of-norms composition scout.
+
+
 The [factored history index](u15_packed_factored_index532.md) removes four
 additions from536 on exactly the same polynomial:532 ordinary/334 raw.
 Its [independent review](review_u15_factored532.md) also verifies composition
