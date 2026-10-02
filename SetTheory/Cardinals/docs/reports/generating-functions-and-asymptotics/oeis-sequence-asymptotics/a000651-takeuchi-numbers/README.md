@@ -100,12 +100,17 @@ lemmas concern an arbitrary monotone function, not `T_n`.
   theorem; its proportional-depth addendum's literature note (shipped there as
   `28-proportional-sources-literature.md`) quotes
   Section 2.1 of this manuscript by an unshipped `/workspace/shared/…` path,
-  and its attribution review checked the limitation against this report. The
-  check is printed once, here (dated note in Section 2.1). That report treats
-  the bivariate iterated-Bell numbers, not `T_n`.
+  and its attribution review checked the limitation against this report.
+  That report, as written, keeps its own one-paragraph copy of the check
+  (Part I, subsection "Historical attribution", with a note pointing here),
+  so the check is printed in both reports and the two agree (dated notes in
+  Section 2.1; the second, batch 77P2, corrects the first's "printed once,
+  here"). That report treats the bivariate iterated-Bell numbers, not `T_n`.
 
-(These pointers are made here only; the neighbouring reports are not edited
-by this write.)
+(These pointers were made here only; the neighbouring reports were not
+edited by this write. The batch-77P2 reciprocal notes later added a dated
+note to `a277364-bell-asymptotics`, after its remark "Two normalizations",
+pointing back here; `a139383-iterated-bell-diagonals` already pointed here.)
 
 ## Notation
 
@@ -125,8 +130,11 @@ notes: 72 labels in all. The writing step also added five dated `[write]`
 notes (Section 1: provenance and notation table; Section 2.1: the
 external-source claim and the iterated-Bell duplicate; Section 9: the Bell
 report; Section 10: the transseries-instance note; Section 11: the shipped
-layout), and loaded `booktabs` and `array` for the table. No statement, proof
-or number of the manuscript was changed.
+layout), and loaded `booktabs` and `array` for the table. A sixth dated note
+(Section 2.1, batch 77P2) was added afterwards with the reciprocal notes: it
+corrects the first Section 2.1 note's claim that the Prellberg check is
+printed only here. No statement, proof or number of the manuscript was
+changed.
 
 ## Files
 

@@ -66,7 +66,10 @@ The text is printed as delivered, apart from the label prefix and three
 notes marked `[Write note, batch 73O1]`: one line on the title page,
 Section 1.4 "Place in the ProveIt collection" (provenance, status, shipped
 layout, neighbouring material), and a paragraph at the end of Section 9.4 on
-the shipped paths of the requirements file and the build script. The title
+the shipped paths of the requirements file and the build script. A fourth
+note, `[Write note, batch 77P2, 2 October 2026]`, at the end of question Q6
+(Section 10), points to the Mahonian report named below; it adds no label.
+The title
 page also gained a `\par` after its status box, so that the author line no
 longer starts beside the box (a layout defect of the delivered PDF). No
 symbol was renamed.
@@ -131,8 +134,12 @@ them.
 
 ## Relation to neighbouring material
 
-- **No repository host.** A357824, A357825, A357871 and A008315 occur nowhere
-  else in the repository.
+- **No repository host.** No other report treats A357824, A357825, A357871
+  or A008315. (When this report was written they occurred nowhere else in
+  the repository outside its catalogue entries; since then they are also
+  named in cross-references only: the README of
+  `a215561-fixed-composition-excursions` (batch 75, a terminology warning)
+  and the Mahonian report below (batch 77).)
 - **Same mechanism, different objects** (cross-references only; no statement
   depends on them):
   [`Theta_Resolved_Optimal_Truncation_q_Multinomial`](../../../../../../../Analysis/Transseries/docs/series-and-transseries/Theta_Resolved_Optimal_Truncation_q_Multinomial/)
@@ -141,6 +148,13 @@ them.
   sectors" of
   [`Combinatorial_Transseries_Inverses`](../../../../../../../Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/),
   both in the series-and-transseries collection.
+- [`a380274-mahonian-growing-powers`](../a380274-mahonian-growing-powers/)
+  (batch 77, manuscript 55) proves the same theta phenomenon for growing
+  powers of Mahonian numbers (OEIS A380274, A380275), with only the two
+  lattice shifts δ ∈ {0, 1/2} instead of a varying phase. It is an instance
+  for one more triangular array, not the general lattice-peak theorem of
+  question Q6, which stays open (dated note in Q6). Its theta functions are
+  normalized differently: Z_δ(q) there is Θ_{q/8}(δ) here.
 - [`ballot-polynomial-hankel-determinants`](../../../hankel-determinants/catalan-and-ballot/ballot-polynomial-hankel-determinants/)
   studies Hankel determinants of ballot moments, not growing powers; there
   is no overlap.

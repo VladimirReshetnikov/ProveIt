@@ -970,6 +970,27 @@ The exponent $n-2$ is also suggested by parabolic iteration theory.  A proof
 will likely require a uniform saddle-point analysis of the iteration matrix,
 not only a fixed-order formal conjugacy.
 
+\emph{[Write note, batch 77P2, 2 October 2026.]} A worked example of such
+an analysis for another diagonal of the same shape is now in the
+collection: the report
+\texttt{a139383-\allowbreak iterated-\allowbreak bell-\allowbreak diagonals}
+in its directory
+\texttt{generating-\allowbreak functions-\allowbreak and-\allowbreak asymptotics/\allowbreak oeis-\allowbreak sequence-\allowbreak asymptotics}
+(batch~77, manuscripts~53 and~28) proves, for the iterated Bell numbers
+$H(n,m)=n!\,[z^n](e^z-1)^{\circ m}$, an expansion of the diagonal
+$H(n,n+k)$ to every fixed order (OEIS A139383 and A261280 are $k=0,1$),
+by an exact residue representation on a fixed contour, an effective Fatou
+coordinate of the parabolic germ $e^z-1$ and uniform cut estimates; its
+Part~II extends this to depth proportional to $n$. That method is a
+candidate route to Conjecture~\ref{lim:conj:refined-asymptotic}, offered as a method
+pointer only. It does not transfer as it stands: $F$ here is lacunary,
+with the unit circle as natural boundary, whereas $e^z-1$ is entire; the
+quadratic and cubic Taylor coefficients, which fix the logarithmic term of
+the Fatou coordinate, differ ($1,0$ here, $\tfrac12,\tfrac16$ there); and
+$H$ carries the factor $n!$. No statement of this report is changed, and the
+conjecture remains open; the iterated-Bell report's guide also lists it as
+open and makes no claim about it.
+
 \section{Formalization route}
 
 The proof is well suited to a short Lean development over truncated
