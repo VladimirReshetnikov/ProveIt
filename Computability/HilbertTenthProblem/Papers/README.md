@@ -39,6 +39,17 @@ supplies87=48M+39A with19 positive witnesses and exact degree169. Its
 X=wq³ to X=wq preserves each frozen parent's full positive zero set through
 a proved integer coordinate bijection at zeros.
 
+The [complete packed U15 tape compiler](research-wip/native-stream-queue/u15_packed_two_tape_history.md)
+gives **653=255M+398A operations**, 105 positive witnesses and formal degree
+at most1936, including the ordinary-integer input conversion. Its raw natural
+half-tape interface costs410 operations and54 witnesses. One joined AND pays
+for the29-rule controller, tape ranges and selected fields; the product scale
+recovers an unbounded common run length with fixed arity. The four positive
+program numerals have an effective valid-slice recipe. Independent reviews
+check every emitted residual, the full source composition and the positive
+soundness/converse proof. This is a direct tape alternative to the GPCP history
+route; the global87-operation universal bound remains unchanged.
+
 The [complete Waterfall review](research-wip/native-stream-queue/waterfall_report_review_24a743255.md)
 validates the fixed 46-clock universal-machine frontend and all eight original
 replays. A checked patch repairs exact integer input contracts and mutable

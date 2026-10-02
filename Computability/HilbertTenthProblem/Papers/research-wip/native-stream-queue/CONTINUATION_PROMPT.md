@@ -65,11 +65,12 @@
 > do not establish a global optimum or finish the open research goal.
 >
 > The seven-report review at `808b53ed8`/`48ee077c7` is now linked below.
-> Next incoming review: `Waterfall_Diophantine_Certificates.zip` at `24a743255`.
-> Its README/outline intake distinguishes a fixed 46-clock machine from a
-> horizon-indexed certificate with 35k witnesses; no full proof review yet.
-> Inspect its forced first-step selectors as a possible coordinate projection,
-> and keep its unbounded sequence/decoder and ordinary-input costs explicit.
+> The Waterfall packet at `24a743255` now has a complete proof/source review
+> and a paid forced-boundary reduction, linked below. The successor direct
+> [U15 tape compiler](u15_packed_two_tape_history.md) costs653 operations,
+> including ordinary input, with105 positive witnesses and degree at most1936.
+> It pays all typing, range, controller and common-duration predicates; its
+> unbounded history has fixed arity. The overall87-operation bound is unchanged.
 > Other ready followups are hardened source rewrites for signal endpoint rows
 > and the exact-order finalizer, and a fully charged min/max output projection
 > for the irreversible-catalogue compiler. Their review notes distinguish
@@ -999,6 +1000,17 @@ The [ordered sparse successor](gpcp_ordered_sparse_tm.md) sorts the same
 the four copy tiles. An explicit word bijection preserves physical
 chronology. Recompilation saves2A: H574=236M+338A and **728 certificate /
 808=349M+459A polynomial**,27eq,125w,degree130394; supplied811/126w/5204.
+
+The [complete packed U15 tape compiler](u15_packed_two_tape_history.md)
+gives **653=255M+398A operations**, 105 positive witnesses and formal degree
+at most1936, including the ordinary-integer input conversion. Its raw natural
+half-tape interface costs410 operations and54 witnesses. One joined AND pays
+for the29-rule controller, tape ranges and selected fields; the product scale
+recovers an unbounded common run length with fixed arity. The four positive
+program numerals have an effective valid-slice recipe. Independent reviews
+check every emitted residual, the full source composition and the positive
+soundness/converse proof. This is a direct tape alternative to the GPCP history
+route; the global87-operation universal bound remains unchanged.
 
 The [complete Waterfall review](waterfall_report_review_24a743255.md)
 validates the fixed 46-clock universal-machine frontend and all eight original
