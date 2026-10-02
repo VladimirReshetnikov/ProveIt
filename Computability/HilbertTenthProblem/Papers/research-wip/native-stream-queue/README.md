@@ -1,5 +1,12 @@
 # WIP: native queue streams and research continuation
 
+The [native unit-product transfer](u15_packed_unit_product524.md), with its
+[independent review](review_u15_unit524.md), lowers536 to524 ordinary/336 raw
+by exact integer-zero equivalence. All witnesses remain; exact degrees rise
+to4881 ordinary and3464 raw with the selected finalizers. This source-local
+rewrite composes after the affine and packed-index improvements.
+
+
 The [complete87 discriminant-shear scout](complete87_discriminant_shear_scout.md)
 checks3,249 fully charged main/input norm schedules with exact full-polynomial
 identities. The best changed schedule costs88; this finite family does not
