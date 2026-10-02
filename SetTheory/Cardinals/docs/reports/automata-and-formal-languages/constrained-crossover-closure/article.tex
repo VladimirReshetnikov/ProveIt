@@ -1795,6 +1795,9 @@ unformalized.}
 DFA is coNP-complete and that the largest finite rank of an $s$-state
 complete binary DFA is $s^2+O(s)$, with leading constant one. It is equally
 unrefereed and unformalized.}
+\waddsevthree{Part~VII shows that the same holds for NFAs, $F(s)=s^2+O(s)$ over
+every fixed finite alphabet, and computes $F(s)$ for $s\le4$, with computer
+assistance. It is equally unrefereed and unformalized.}
 
 %% =====================================================================
 %% [write] Batch-66 addition 02: manuscript 01 of batch 66, "Finite
@@ -1895,6 +1898,8 @@ constant, and the order for DFAs, are not.}
 coNP-complete (Theorem~\ref{ccc:dc:thm:complexity}), and the order for
 complete DFAs is quadratic with leading constant one
 (Theorem~\ref{ccc:dc:thm:rank}).}
+\waddsevthree{The constant of the optimal rank bound for NFAs is one as well
+(Part~VII, Theorem~\ref{ccc:sc:thm:general}).}
 
 \subsection{Notation beside Part~I and Part~III}\label{ccc:ps:sec:notation}
 
@@ -2919,6 +2924,8 @@ a complete DFA; for DFAs the lower order in this report stays linear
 \waddsevthree{Part~VI gives complete binary DFAs with $m+6$ states and
 finite maximal rank at least $(m-1)^2+2$ (Theorem~\ref{ccc:dc:thm:rank}), so
 the lower order for DFAs is quadratic as well, with leading constant one.}
+\waddsevthree{The constant left open above is one (Part~VII,
+Theorem~\ref{ccc:sc:thm:general}).}
 
 \subsection{A regular language with a repairable boundary}
 
@@ -3189,6 +3196,8 @@ and the leading constant lies in $[1,2]$.}
 \waddsevthree{For complete DFAs Part~VI determines the order and the
 constant: $(s-7)^2+2\le F_{\rm DFA}(s)\le s^2+3$ for $s\ge8$
 (Theorem~\ref{ccc:dc:thm:rank}).}
+\waddsevthree{Part~VII proves that the leading constant is one: $(s-3)^2\le F(s)\le s^2+8s$ for $s\ge4$ (Theorem~\ref{ccc:sc:thm:general}); $F(1),\ldots,F(4)=1,2,5,7$
+(Theorem~\ref{ccc:sc:thm:small}).}
 
 \begin{question}[Exact residue-wise rank slope]\label{ccc:ps:q:slope}
 On a bad residue, does $M_L(n)/n$ always have a limit, perhaps after
@@ -3362,6 +3371,8 @@ most two (Corollary~\ref{ccc:rs:cor:upper}).}
 \waddsevthree{The exact DFA complexity is coNP-complete, and the rank order
 for complete DFAs is quadratic with constant one (Part~VI,
 Theorems~\ref{ccc:dc:thm:complexity} and~\ref{ccc:dc:thm:rank}).}
+\waddsevthree{For NFAs the constant is one (Part~VII,
+Theorem~\ref{ccc:sc:thm:general}).}
 
 \section{Proof and edge-case audit}\label{ccc:ps:app:audit}
 
@@ -5102,7 +5113,8 @@ bound is Part~II's (Corollary~\ref{ccc:ps:cor:cutoff}), imported, not
 reproved. The leading constant, the exact $F(s)$ and the order for DFAs stay
 open. Section~\ref{ccc:qr:sec:provenance} records the provenance and fixes
 the notation of the addition.
-\waddsevthree{the order for DFAs is settled in Part~VI.}}
+\waddsevthree{the order for DFAs is settled in Part~VI, the leading
+constant (one) in Part~VII.}}
 
 \section{\texorpdfstring{\wsevone\ }{}Provenance and notation of Part~IV}
 \label{ccc:qr:sec:provenance}
@@ -5159,6 +5171,7 @@ report. No theorem was strengthened or weakened.
  anticipated, a long unary transient combined with components that force
  genuinely separate fragments. The leading constant and the exact $F(s)$ are
  not determined (Question~\ref{ccc:qr:q:constant}).
+ \waddsevthree{Part~VII proves that the leading constant is one: $(s-3)^2\le F(s)\le s^2+8s$ for $s\ge4$ (Theorem~\ref{ccc:sc:thm:general}).}
 \item \emph{Imported:} the upper bound $F(s)\le(2s+5)^2$ is Part~II's
  (Theorem~\ref{ccc:ps:thm:main}(2) and Corollary~\ref{ccc:ps:cor:cutoff});
  Section~\ref{ccc:qr:sec:upper} only identifies its inputs.
@@ -5684,6 +5697,10 @@ one state. Thus the one-initial-state version satisfies
 (s-4)^2\le F_{\rm one}(s)\le(2s+5)^2\qquad(s\ge5),
 \]
 and also has quadratic order.
+\waddsevthree{With Part~VII's bound $s^2+8s$, which needs no assumption on the
+initial states (Theorem~\ref{ccc:sc:thm:general}), this gives
+$(s-4)^2\le F_{\rm one}(s)\le s^2+8s$ and $F_{\rm one}(s)/s^2\to1$. This is
+an observation of the write, not of either manuscript.}
 
 \section{Attribution and remaining questions}\label{ccc:qr:sec:scope}
 
@@ -5694,6 +5711,9 @@ $\liminf F(s)/s^2\ge1$ and $\limsup F(s)/s^2\le4$, without proving either a
 limit or a sharp constant.
 \waddsevthree{Part~V proves $\limsup F(s)/s^2\le2$
 (Corollary~\ref{ccc:rs:cor:upper}).}
+\waddsevthree{Part~VII proves that the limit exists and equals one
+(Theorem~\ref{ccc:sc:thm:general}); the construction here is its lower
+bound.}
 
 The equal-length fragment framework and its crossover interpretation are not
 claimed as new. They are developed in the ProveIt report. Closely related
@@ -5720,6 +5740,13 @@ $(s-3)^2\le F(s)\le2(s-1)^2+3$ for $s\ge4$
 \waddsevthree{For complete DFAs, Part~VI proves leading constant one:
 $(s-7)^2+2\le F_{\rm DFA}(s)\le s^2+3$ (Theorem~\ref{ccc:dc:thm:rank}). Its
 proof of the upper bound uses determinism and does not apply to NFAs.}
+\waddsevthree{Answered as to the leading constant in Part~VII: it is one,
+$(s-3)^2\le F(s)\le s^2+8s$ for $s\ge4$
+(Theorem~\ref{ccc:sc:thm:general}), and over a $q$-letter alphabet the upper
+bound is $s^2+\max\{8,2q-4\}s$ (Theorem~\ref{ccc:sc:thm:alphabet}). The exact
+function is known for $s\le4$: $F(1),\ldots,F(4)=1,2,5,7$
+(Theorem~\ref{ccc:sc:thm:small}, computer-assisted for $s=2,3,4$). The exact
+$F(s)$ for $s\ge5$ and the optimal additive term remain open.}
 
 \begin{question}[Order for DFAs]\label{ccc:qr:q:dfa}
 What is the optimal finite-rank order for binary DFAs? The construction here
@@ -5931,7 +5958,8 @@ theorem was strengthened or weakened.
  De~Luca--Fici); represented-interval machinery (Manzoni--Vanneschi--Mauri);
  Part~IV's lower family.
 \item \emph{Not affected:} the leading constant and the exact $F(s)$
- (Question~\ref{ccc:qr:q:constant}) remain open, now within $[1,2]$; Part~II's
+ (Question~\ref{ccc:qr:q:constant}) remain open, now within $[1,2]$
+ \waddsevthree{the constant is one, by Part~VII}; Part~II's
  Question~\ref{ccc:ps:q:dfa} and Part~IV's Question~\ref{ccc:qr:q:dfa} on
  DFAs, Part~II's Questions~\ref{ccc:ps:q:length} and~\ref{ccc:ps:q:period}
  (to which Part~V's denominator bound and Question~\ref{ccc:rs:q:period} are
@@ -6354,6 +6382,10 @@ Neither equality of these limits nor a sharp leading constant has been establish
 \wsevthree\ This improves the bracket $[1,4]$ of Part~IV
 (Section~\ref{ccc:qr:sec:scope}) to $[1,2]$, for NFAs. The bound
 $2(s-1)^2+3$ is smaller than Part~II's $(2s+5)^2$ for every $s\ge1$.
+\waddsevthree{Part~VII proves that the limit exists and equals one, with the
+upper bound $s^2+8s$ (Theorem~\ref{ccc:sc:thm:general}). That bound is
+larger than $2(s-1)^2+3$ for $s\le11$, so the corollary above remains the
+better bound for small $s$.}
 
 \subsection{Why a simple one-boundary improvement fails}
 The coefficient two in the boundary estimate cannot be removed merely by asserting $R(L)\le t+1$. Here is an explicit three-state example. Use states $0,1,2$, initial set $\{0,1\}$, final set $\{0\}$, and transitions
@@ -6586,7 +6618,8 @@ theorem was strengthened or weakened.
  Frobenius arithmetic (Part~IV's credit to Sylvester).
 \item \emph{Not affected:} the NFA questions. The bound $s^2+3$ is proved for
  complete DFAs only; the leading constant for NFAs
- (Question~\ref{ccc:qr:q:constant}) stays in $[1,2]$ by Part~V. Part~III's
+ (Question~\ref{ccc:qr:q:constant}) stays in $[1,2]$ by Part~V
+ \waddsevthree{it is one, by Part~VII}. Part~III's
  coNP-completeness (Theorem~\ref{ccc:cl:thm:complexity}) concerns another
  input and problem (note in Section~\ref{ccc:dc:sec:hardness}).
 \end{itemize}
@@ -7015,6 +7048,12 @@ R(L)\le s^2+3.
 \]
 The proof uses determinism and does not establish this bound for general NFAs.
 \end{theorem}
+\waddsevthree{For NFAs Part~VII proves $R(L)\le s^2+8s$ over two letters and
+$R(L)\le s^2+\max\{8,2q-4\}s$ over $q$ letters
+(Theorems~\ref{ccc:sc:thm:general} and~\ref{ccc:sc:thm:alphabet}), which also
+gives $F_{\rm DFA}(s)\le s^2+8s$ for binary DFAs. The point of the theorem
+here is the additive constant~$3$ for complete DFAs over every finite
+alphabet, together with the deterministic lower family.}
 
 For this proof choose a global transient $t\le(s-1)^2+1$ and a period for $E$ from Schwarz's theorem \cite[Theorem~4.3]{Schwarz}. Enlarge the period $p$ to a multiple of every integer $1,\ldots,s$; this does not change $t$. The resulting period need not be the particular $p$ used for the complexity certificate. Stable sets, live residues, and stripes are defined as before. The source's interior criterion and the stripe results above apply to any such common transient and period.
 
@@ -7030,6 +7069,9 @@ A walk of at least $s$ edges visits a vertex twice and contains a simple directe
 
 For the letter statement, take its accepting seed witness with transition $q\mathrel{\mathop{\longrightarrow}\limits^c}q'$ at position $i$. Pump the witness prefix and suffix separately. The prefix proves stable forward membership of $q$, and appending $c$ proves stable forward membership of $q'$. The suffix proves stable backward membership of $q'$, and prepending $c$ proves stable backward membership of $q$. Thus both endpoints lie in the correct stable viable layers and $c$ is permitted there.
 \end{proof}
+\waddsevthree{The proof uses no determinism. Part~VII states the lemma for
+NFAs, with a liveness clause, as Lemma~\ref{ccc:sc:lem:guards} and proves it
+by this argument, which is printed only here.}
 
 Fix a live residue $r$. Finite rank and the inherited safe-core criterion give a nonempty safe core. Theorem~\ref{ccc:dc:thm:stripe} supplies an entire viable stripe over an original cyclic SCC $C$, closed under every stable-permitted letter at its phase. Write $c=|C|$, $d=d_C$, and $\kappa$ for its cyclic-class function. Full-stripe membership depends only on the class/time offset modulo $d$, even though the phase graph is indexed modulo the possibly much larger $p$.
 
@@ -7052,6 +7094,10 @@ The outside states occurring before entry and after exit in the original walk ar
 
 The interior segment of the original walk has length congruent to $\kappa(v)-\kappa(u)$ modulo $d$. Because $d\mid p$, the two shortenings yield \eqref{ccc:dc:eq:compatibility}. The original entry pair lies in the stripe by the cyclic-class invariant along the path to the known stripe vertex. Preserving entry time modulo $d$ therefore keeps $(h\bmod p,u)$ in the same \emph{full} stripe, despite a possible change of its phase modulo $p$.
 \end{proof}
+\waddsevthree{The proof uses no determinism, only that the stripe is a full
+stripe over an original SCC. Part~VII states the lemma for the universal
+stripe of an NFA as Lemma~\ref{ccc:sc:lem:outside} and proves it by this
+argument, which is printed only here.}
 
 \begin{proof}[Proof of Theorem~\ref{ccc:dc:thm:leading-one}]
 First assume $s\ge2$. For the component $C$, Schwarz's theorem supplies an internal relation-power transient
@@ -7092,6 +7138,10 @@ Combining Theorem~\ref{ccc:dc:thm:leading-one} with the deterministic lower fami
 \quad(s\ge8),
 \]
 and therefore the sharp leading constant one. The result does not determine the optimal lower-order terms or exact extremal function. Determinism enters through the safe-core characterization and its strict survivor-count decrease; nondeterministic images can expand, so this proof does not supply a leading-one NFA bound.
+\waddsevthree{Part~VII supplies one by another route, robust compression in a
+primitive component (Theorem~\ref{ccc:sc:thm:primitive}) in place of the
+safe-core step; it uses Lemmas~\ref{ccc:dc:lem:early}
+and~\ref{ccc:dc:lem:budget} in their NFA forms.}
 
 \section{Finite verification and attribution}\label{ccc:dc:sec:checks}
 
@@ -7171,6 +7221,1381 @@ changes to its own directory and runs \texttt{pdflatex} twice on
 printed here as Part~VI and is not shipped; it must not be run in
 \texttt{code/}.
 
+%% =====================================================================
+%% [write] Batch-73 addition 07: manuscript 21 of batch 73 (cluster C1),
+%% "Sharp Leading Constant for Constrained Crossover Rank". Every label of
+%% this Part carries the prefix ccc:sc: (sharp constant).
+%% =====================================================================
+\clearpage
+\phantomsection\part*{Part VII.\quad Sharp leading constant for constrained crossover rank}
+\addcontentsline{toc}{part}{Part VII.\texorpdfstring{\quad}{ } Sharp leading constant for constrained crossover rank}
+
+\noindent\emph{\wsevthree\ Part~VII was added on 1 October 2026 in batch~73,
+from one manuscript written against Parts~I--III as printed above; it knew
+Parts~IV and~V only as separate manuscripts and Part~VI not at all. It
+answers Part~IV's Question~\ref{ccc:qr:q:constant} as to the leading
+constant: for binary NFAs $(s-3)^2\le F(s)\le s^2+8s$, so
+$F(s)/s^2\to1$, and for a $q$-letter alphabet the upper bound is
+$s^2+\max\{8,2q-4\}s$. It computes $F(1),\ldots,F(4)=1,2,5,7$, the last
+three with computer assistance, and gives an exact algorithm and a witness
+cutoff for the maximal rank of one automaton. The exact $F(s)$ for $s\ge5$
+stays open. Section~\ref{ccc:sc:sec:provenance} records the provenance and
+fixes the notation of the addition.}
+
+\section{\texorpdfstring{\wsevthree\ }{}Provenance and notation of Part~VII}
+\label{ccc:sc:sec:provenance}
+
+\subsection{One manuscript, one addition}\label{ccc:sc:sec:source}
+
+Part~VII is batch-73 manuscript~21, \emph{Sharp Leading Constant for
+Constrained Crossover Rank}, dated 1 October 2026 (31 US-letter pages as
+delivered). It is an AI-assisted research note: its title page and PDF
+metadata read ``Research note prepared with OpenAI for Vladimir
+Reshetnikov'', quoted here and in the report's README only. It arrived as the
+archive \texttt{common-path-rank-package.zip} in ProveIt commit
+\texttt{f8c3a392a} and was placed in commit \texttt{5e4f1263c}. Its source
+files are named \texttt{hamiltonian-rank.tex} and \texttt{.pdf}, a name its
+README says was kept from an earlier delivery; that delivery is not in the
+repository. Its bibliography and its file \texttt{source-pins.json} pin
+ProveIt commit \texttt{1bd730779} (in full
+\nolinkurl{1bd730779e8bc44c8976dcd9f38cad86a0d21c26}) for this report, where
+\texttt{article.tex} held Parts~I--III as printed above (blob
+\texttt{ff492c83}), and commit \texttt{aee32ad45} for Part~IV's manuscript,
+then the archive \texttt{docs/incoming/quadratic-finite-rank-package.zip};
+they identify Part~V's manuscript by the SHA-256 of its source file, which is
+the source of Part~V. So ``the pinned report'' is this report and its
+``Part~II'' is Part~II, and ``the companion notes'' are Parts~IV and~V.
+
+\paragraph{The earlier version.} The same batch delivered an earlier version
+of this manuscript, batch-73 manuscript~24 (archive
+\texttt{common-path-rank-package~(1).zip}, 19 pages, same pins). The review
+receipt of manuscript~21 names it as the previous version by the SHA-256 of
+its source. Every result and proof of it is in manuscript~21 verbatim,
+apart from the name $F$ for $F_2$; manuscript~21 adds the manuscript's
+Sections~6--9 (Sections~\ref{ccc:sc:sec:alphabet}--\ref{ccc:sc:sec:census}
+here: the finite-alphabet bound, the linear family, the exact algorithm and
+the censuses). The one sentence of the earlier version that manuscript~21
+withdraws, that the same leading coefficient for each fixed alphabet of at
+least three letters ``also remains open here'', is answered by
+Theorem~\ref{ccc:sc:thm:alphabet}. It was superseded, is not printed, and
+nothing of it is shipped; it survives in the arrival commit.
+
+Its checkers, census programs, receipts and logs and its build and
+reproduction scripts are shipped beside the files of Parts~I--VI with the
+prefix \nolinkurl{07-sharp-constant-} (45 files; the delivered
+subdirectories are flattened into the name, so
+\texttt{exact/four\_state/audit\_four.cpp} is
+\nolinkurl{code/07-sharp-constant-exact-four_state-audit_four.cpp}). Two
+delivered files are not shipped again, because they are byte-identical to
+Part~IV's shipped checker and record. Its manuscript, delivery README and
+PDF are not shipped and survive in the arrival commit, and its checksum list
+\texttt{SHA256SUMS} (50 files, all verified at placement) was retired by the
+repository's policy. Section~\ref{ccc:sc:sec:scope} and the report's README
+list the shipped names.
+
+Every result, proof, example, table, limitation and remark of the manuscript
+is printed here, in its order, except four proofs that repeat proofs printed
+in earlier Parts and are replaced by pointers: those of
+Lemma~\ref{ccc:sc:lem:interior} and Corollary~\ref{ccc:sc:cor:transient}
+(Part~II), of Lemmas~\ref{ccc:sc:lem:guards} and~\ref{ccc:sc:lem:outside}
+(Part~VI, which states them for DFAs), and of
+Proposition~\ref{ccc:sc:prop:lower} (Part~IV). The statements are kept. Its
+proof of Lemma~\ref{ccc:sc:lem:greedy}, Part~V's lemma, is kept as a second
+proof. Its title page and abstract became this section; its Sections~1--13
+are Sections~\ref{ccc:sc:sec:intro}--\ref{ccc:sc:sec:scope} (manuscript
+Section~$n$ is Section~$n+75$; its main theorems are
+Theorems~\ref{ccc:sc:thm:general} and~\ref{ccc:sc:thm:alphabet}); it has no
+appendix and no numbered questions. Text marked \wsevthree{} was added when
+the manuscript was written into this report. No theorem was strengthened or
+weakened.
+
+\paragraph{What Part~VII adds, and what it repeats.}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \emph{Answered:} Part~IV's Question~\ref{ccc:qr:q:constant} (``What is
+ the best leading constant, or the exact function $F(s)$?''), as to the
+ leading constant: it is one, $(s-3)^2\le F(s)\le s^2+8s$ for $s\ge4$
+ (Theorem~\ref{ccc:sc:thm:general}); and as to the exact function for
+ $s\le4$: $F(1),\ldots,F(4)=1,2,5,7$ (Theorem~\ref{ccc:sc:thm:small},
+ computer-assisted for $s=2,3,4$). This also settles the constant left in
+ Part~II's Question~\ref{ccc:ps:q:rank} and narrows Part~V's $[1,2]$ to $1$.
+\item \emph{New:} robust compression in a primitive factor-universal
+ component (Theorem~\ref{ccc:sc:thm:primitive}, with
+ Lemmas~\ref{ccc:sc:lem:order}--\ref{ccc:sc:lem:bubble-fragments}); a
+ universal strongly connected component and its full stripe
+ (Lemmas~\ref{ccc:sc:lem:universal-scc} and~\ref{ccc:sc:lem:stripe}); the
+ imprimitive and one-symbol cases; the finite-alphabet bound
+ $s^2+\max\{8,2q-4\}s$ with its common-anchor lemmas
+ (Theorem~\ref{ccc:sc:thm:alphabet},
+ Lemmas~\ref{ccc:sc:lem:counts}--\ref{ccc:sc:lem:common-anchors}) and an
+ all-symbol lower family; the linear family with $R=2s-1=2e+1$ and its slice
+ maxima (Proposition~\ref{ccc:sc:prop:linear}); the exact algorithm and the
+ witness cutoff (Theorems~\ref{ccc:sc:thm:exact-algorithm}
+ and~\ref{ccc:sc:thm:cutoff}); the small extrema
+ (Theorem~\ref{ccc:sc:thm:small}); the Hamiltonian and near-Hamiltonian
+ bounds and the barrier family (Theorems~\ref{ccc:sc:thm:hamiltonian}
+ and~\ref{ccc:sc:thm:near}, Proposition~\ref{ccc:sc:prop:barrier}).
+\item \emph{Shared with Part~VI:} Lemmas~\ref{ccc:sc:lem:guards}
+ and~\ref{ccc:sc:lem:outside} are Part~VI's Lemmas~\ref{ccc:dc:lem:early}
+ and~\ref{ccc:dc:lem:budget}, here for NFAs (and with a liveness clause), with
+ the same proofs, which are printed once, in Part~VI. The two manuscripts
+ were written separately and do not cite each other.
+\item \emph{Restated:} Lemma~\ref{ccc:sc:lem:interior} and
+ Corollary~\ref{ccc:sc:cor:transient} are Part~II's
+ Theorem~\ref{ccc:ps:thm:criterion} (necessity, via
+ Theorem~\ref{ccc:ps:thm:pumping}) and its bound
+ \eqref{ccc:ps:eq:transient-bound}; Proposition~\ref{ccc:sc:prop:lower} is
+ Part~IV's Theorem~\ref{ccc:qr:thm:main}, and the manuscript says so;
+ Lemma~\ref{ccc:sc:lem:greedy}, the parser after it and the periodic-middle
+ graph are Part~V's (second proof kept).
+\item \emph{Imported and credited:} the primitive-exponent results of
+ Kirkland, Olesky and van den Driessche~\cite{KOV} (with Lewin and Vitek's
+ two-cycle-length result, which they credit) and the classical bound
+ $e\le(n-1)^2+1$.
+\item \emph{Not affected:} the exact $F(s)$ for $s\ge5$, the optimal additive
+ term, and a leading constant uniform in the alphabet size when $q$ is
+ comparable to $s$ are not determined; Part~IV's
+ Questions~\ref{ccc:qr:q:transfer} and~\ref{ccc:qr:q:formal}, Part~V's and
+ Part~VI's questions, and the questions of Parts~I--III are untouched. For
+ complete DFAs Part~VI's bound $s^2+3$ is sharper than $s^2+8s$.
+\end{itemize}
+
+\subsection{The manuscript's summary and status}\label{ccc:sc:sec:abstract}
+
+\emph{Abstract, as delivered.} For every $s$-state $\eps$-free NFA over a
+$q$-letter alphabet, $q\ge2$, with finite maximal aligned-fragment rank, we
+prove $R(L)\le s^2+\max\{8,2q-4\}s$. For every $s\ge4$, an explicit family
+using every alphabet symbol has $R(L)=(s-3)^2$. Hence $F_q(s)/s^2\to1$ for
+each fixed alphabet and even when $q=o(s)$. The proof combines
+primitive-graph compression, a circulation-based common-anchor theorem for
+selected monochromatic cycles, and a reduction through periodic viable
+layers. We also give an exact weighted-parser algorithm and a complete
+witness-length cutoff. Independent exhaustive computations establish the
+binary values $F_2(1)=1$, $F_2(2)=2$, $F_2(3)=5$, and $F_2(4)=7$, with a
+proved transient pruning rule in the four-state case. For every $s\ge3$, a
+uniform $s$-state family has slice maxima $\min(N,2s-1)$ for $N\ge1$ and
+attains the exponent bound $R=2e+1$ with $e=s-1$. Sharper Hamiltonian bounds
+and a quadratic-exponent, linear-rank barrier family are retained. Ordinary
+all-size proofs are distinguished from the computer-assisted censuses and
+finite consistency checks. No exact formula for $F_2(s)$ at $s\ge5$,
+unrestricted alphabet-growth leading coefficient, proof-assistant
+certification, or literature-wide priority is claimed.
+
+\emph{Status, as delivered.} The manuscript has no separate status box; its
+abstract ends with the disclaimer above, and
+Section~\ref{ccc:sc:sec:scope} states its scope and the three roles of its
+evidence. Its delivery README adds: no alphabet-size-independent additive
+term or leading-one conclusion for unrestricted alphabet growth is claimed;
+the article keeps $R(\varnothing)=1$, whereas the census programs record an
+empty hull as raw value $0$, a difference that affects no extremal value;
+the four-state counts are pruned representative counts, not a full
+four-state rank distribution; the bounded tests do not substitute for an
+all-size proof; this is an unrefereed note with ordinary and
+computer-assisted proofs, not a proof-assistant certificate; no
+literature-wide priority claim is made. It also says that every page of the
+delivered PDF was visually inspected, and that raw million-row listings and
+compiled executables were omitted from the package.
+
+\subsection{Notation beside Parts~I--VI}\label{ccc:sc:sec:notation}
+
+Part~VII uses the report's rank $\rank_L$, hull $\rec(L)$, supremum rank
+$R(L)$, live residues, phase-admissible words and stable layers, and Part~II's
+slice maximum $M_L(N)$. One symbol was renamed when the manuscript was written in: its
+backward exact-length layers $B_j$ are printed $R_j$, Part~II's name for the
+same sets, because $B_s$ is Part~II's constant $(2s+5)^2$ and the manuscript
+itself uses $B$ for three other things. No normalization changed. In the
+manuscript, letters are indexed from one in the definition of the hull and
+boundaries from zero, as in Part~I.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.19\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}>{\raggedright\arraybackslash}p{.35\textwidth}@{}}
+\toprule
+\textbf{In Part~VII} & \textbf{Meaning in Part~VII} & \textbf{Not to be confused with}\\
+\midrule
+$F_2(s)$, $F_q(s)$ & largest finite $R(L)$ over NFAs with at most $s$ states on $2$, or $q$, letters; the subscript is the alphabet size & Part~II's $F(s)$, which is $F_2(s)$; $F_3(s)$ is ternary, not $F_2(3)=5$; Part~VI's $F_{\rm DFA}(s)$\\[3pt]
+$R_j$ (manuscript $B_j$) & backward exact-length layers & Part~II's constant $B_s$; the $B$ of Sections~\ref{ccc:sc:sec:primitive}, \ref{ccc:sc:sec:transfer} and~\ref{ccc:sc:sec:alphabet}\\[3pt]
+$\Gamma_{r,a}$ & stable alphabet, Part~II's $C_{r,a}$ & the alphabet $\Gamma=\{0,1,\guard\}$ of Parts~I and~II; Part~III's graph $\Gamma_R$\\[3pt]
+$C$, $c$, $d$, $\kappa$ & the original component under a universal stripe, its size, period and cyclic classes & $C_q$; $C_{r,a}$; Part~V's index $\kappa$\\[3pt]
+$C_q=\max\{8,2q-4\}$ & coefficient of the linear term & the stable alphabets $C_{r,a}$ of Parts~II, V, VI\\[3pt]
+$\omega_n=(n-1)^2+1$ & the classical bound on primitive exponents & Part~III's clique number $\omega(\Gamma_R)$\\[3pt]
+$e$, $e_0$, $e_C$; $j<k$ & exponents; the two cycle lengths & \\[3pt]
+$m$ & $|V(U)|$ in Sections~\ref{ccc:sc:sec:primitive} and~\ref{ccc:sc:sec:alphabet}; a cyclic class size in Section~\ref{ccc:sc:sec:transfer}; the gate size $s-2$ in Section~\ref{ccc:sc:sec:lower} & Part~II's $m=s+2$; Part~IV's gate size $m=s-2$\\[3pt]
+$T$, $V$, $H$ & imprimitive length threshold; vertex bound $p(2^s-1)$; witness cutoff & the operator $T(L)$, Part~II's $T_s$; Part~IV's $H_m$; Part~V's $N$\\[3pt]
+$A_r$, $D_r$ & boundary operators of the exact algorithm & Part~II's $A_{n,i}$ and $D_L(n)$\\[3pt]
+$\delta(S,x)$ & subset image under an NFA & Part~VI's DFA transition $\delta$\\[3pt]
+$H_m$, $T_m$, $L_m$ & in the manuscript's proof of Proposition~\ref{ccc:sc:prop:lower}, not reprinted: the semigroup, the gate lengths, the gate language & \emph{swapped} against Part~IV's $S_m$, $H_m$; Part~IV's $\Lgate m$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The manuscript's macros for $\eps$, $\rank$ and $\rec$ are the report's; its
+unused macro \verb|\ex| was not carried over. Its \texttt{lmodern} and
+\texttt{amssymb} packages are not loaded.
+
+\section{Aligned fragments and the main results}\label{ccc:sc:sec:intro}
+
+\wsevthree\ ``The preceding reports'' and ``the pinned report'' of this Part
+are this report as it stood at the pin, Parts~I--III; ``the companion
+notes'' are the manuscripts of Parts~IV and~V. The manuscript's citations of
+all three are replaced by internal references. Its $F_2(s)$ is Part~II's
+$F(s)$, and its $R_j$ (written $B_j$ in the manuscript) are Part~II's
+backward layers; Section~\ref{ccc:sc:sec:notation} lists the other symbols.
+
+Let $\Sigma$ be a nonempty finite alphabet. The definitions below apply to every such alphabet; Sections~\ref{ccc:sc:sec:primitive}--\ref{ccc:sc:sec:transfer} first establish the binary upper bound, with $\Sigma=\{0,1\}$. For $L\subseteq\Sigma^*$ write $L_N=L\cap\Sigma^N$. Boundaries are indexed from zero: $w[u:v]$ consists of the letters in positions $u+1,\ldots,v$.
+
+\begin{definition}
+If $L_N\ne\varnothing$ and $N\ge1$, the \emph{coordinate hull} at length $N$ is
+\[
+ \rec(L)_N=\prod_{i=1}^N\{x_i:x\in L_N\}.
+\]
+It is empty when $L_N$ is empty, and $\rec(L)_0=L_0$. Put $\rec(L)=\bigcup_{N\ge0}\rec(L)_N$.
+For a target $w\in\Sigma^N$, a nonempty interval $[u,v)$ is \emph{admissible} if a full seed $x\in L_N$ satisfies $x[u:v]=w[u:v]$. Its \emph{aligned-fragment rank} $\rank_L(w)$ is the least number of consecutive admissible intervals partitioning $[0,N)$, or $\infty$ if none exist. Set $\rank_L(\eps)=1$ if $\eps\in L$, and $\infty$ otherwise. Finally define
+\[
+ R(L)=\sup\bigl(\{1\}\cup\{\rank_L(w):w\in\rec(L)\}\bigr).
+\]
+\end{definition}
+
+Every fragment has its original position and a seed of the same full length. Different fragments may use different seeds. In particular, finite rank is equivalent to hull membership, and $\rank_L(w)\le N$ for every nonempty hull word of length $N$. The supremum defining $R(L)$ excludes words outside the hull; its value can still be infinite if the finite ranks are unbounded. These are the fragment conventions used for constrained crossover in the preceding reports (Part~I's Definitions~\ref{ccc:def:hull} and~\ref{ccc:def:rank}, Part~II's Definition~\ref{ccc:ps:def:rank} and Corollary~\ref{ccc:ps:cor:bounded}, and Part~V's Section~\ref{ccc:rs:sec:setting}).
+
+An $\eps$-free NFA here consists of a state set $Q$, transition relations $\Delta_a\subseteq Q\times Q$ for $a\in\Sigma$, and sets $I,F\subseteq Q$. Its underlying digraph has edge relation $E=\bigcup_{a\in\Sigma}\Delta_a$. An edge may carry several letters. For $S\subseteq Q$ and $x\in\Sigma^*$, let $\delta(S,x)$ be the possible endpoints of paths labeled $x$ from $S$.
+The NFA is \emph{factor-universal} if
+\[
+ \delta(Q,x)\ne\varnothing\qquad\text{for every }x\in\Sigma^*.
+\]
+Thus all words label some walk, with both endpoints unrestricted. This is a condition on the labeled graph, not a claim that $L=\Sigma^*$ for the chosen $I,F$.
+
+A digraph is \emph{primitive} if some positive length admits a walk between every ordered pair of vertices; its least such length is its \emph{exponent} $e$. Equivalently, it is strongly connected and its cycle lengths have gcd one. A Hamilton cycle visits all vertices once.
+
+\begin{theorem}[General binary NFA bound]\label{ccc:sc:thm:general}
+Let an $s$-state, $\varepsilon$-free binary NFA have arbitrary initial and final sets, where $s\ge1$. If $R(L)<\infty$, then
+\[
+ \boxed{R(L)\le s^2+8s.}
+\]
+Consequently, if $F_2(s)$ is the supremum of finite values $R(L)$ over binary NFAs with at most $s$ states, then
+\begin{equation}\label{ccc:sc:eq:sharp}
+ (s-3)^2\le F_2(s)\le s^2+8s\quad(s\ge4),
+ \qquad \boxed{\lim_{s\to\infty}\frac{F_2(s)}{s^2}=1.}
+\end{equation}
+\end{theorem}
+
+For alphabet size $q\ge2$, write $F_q(s)$ for the supremum of finite ranks recognized by NFAs over a fixed $q$-letter alphabet with at most $s$ states. The subscript always records alphabet size and the argument records state count. The same extremal convention results from using exactly $s$ states, since unreachable states may be added. The main generalization, proved in Section~\ref{ccc:sc:sec:alphabet}, is
+\begin{equation}\label{ccc:sc:eq:main-alphabets}
+ \boxed{(s-3)^2\le F_q(s)\le s^2+\max\{8,2q-4\}s\quad(q\ge2,\ s\ge4).}
+\end{equation}
+Thus the leading coefficient is one for each fixed finite alphabet and for every alphabet-size sequence $q=o(s)$. In particular $s^2+8s$ works for every alphabet of size two through six. The exact binary small-state results, established separately in Section~\ref{ccc:sc:sec:census}, are $1,2,5,7$ for one through four states. The subscript in $F_q(s)$ must not be confused with the state argument: the ternary function is $F_3(s)$, while the binary three-state value is $F_2(3)=5$.
+
+Sections~\ref{ccc:sc:sec:primitive}--\ref{ccc:sc:sec:transfer} first prove the binary upper bound, using two monochromatic cycles and an alphabet-independent phase-component reduction. Section~\ref{ccc:sc:sec:lower} proves the quadratic lower construction. Section~\ref{ccc:sc:sec:alphabet} supplies the small-family common-anchor theorem and extends the bound to every finite alphabet. Section~\ref{ccc:sc:sec:linear} gives the sharp linear family and its exact slice profile. Sections~\ref{ccc:sc:sec:exact}--\ref{ccc:sc:sec:census} separate the exact algorithm and pruning proofs from the exhaustive binary computations. Section~\ref{ccc:sc:sec:restricted} preserves sharper bounds for Hamiltonian and near-Hamiltonian graphs, followed by the barrier to a total-state-subset approach. None of the arguments assumes determinism, a single initial state, or a total labeled state subset.
+
+The leading-coefficient result sharpens the earlier binary comparison $(s-3)^2\le F_2(s)\le2(s-1)^2+3$ from the companion notes (Part~IV's Theorem~\ref{ccc:qr:thm:main} and Part~V's Corollary~\ref{ccc:rs:cor:upper}). The proof here is complete apart from the explicitly cited classical primitive-digraph exponent results. The periodic-interior implication needed for the reduction is reproved, and no global transient estimate enters the leading-coefficient bound.
+
+\wsevthree\ Theorem~\ref{ccc:sc:thm:general} answers Part~IV's
+Question~\ref{ccc:qr:q:constant} as to the leading constant, which is one,
+for NFAs over any fixed finite alphabet. Two consequences are the write's
+observations, not the manuscript's. First, the bound $s^2+8s$ needs no
+assumption on the initial states, so with Part~IV's single-initial-state
+family (Section~\ref{ccc:qr:sec:upper}) it gives
+$(s-4)^2\le F_{\rm one}(s)\le s^2+8s$ and $F_{\rm one}(s)/s^2\to1$ as well.
+Second, it does not make Part~V's bound obsolete for small $s$:
+$2(s-1)^2+3<s^2+8s$ exactly when $s\le11$ (for example $203<209$ at
+$s=11$, and $240<245$ the other way at $s=12$). For complete DFAs,
+Part~VI's $s^2+3$ (Theorem~\ref{ccc:dc:thm:leading-one}) is smaller than
+both.
+
+\section{Robust compression inside a primitive component}\label{ccc:sc:sec:primitive}
+
+The general reduction needs more than a rank theorem for a component's own coordinate hull. An interval taken from a hull word of the whole NFA need not belong to that smaller hull. The following formulation explicitly permits its singleton witnesses to come from outside the component.
+
+\begin{definition}
+Fix vertices $u,v$ in a labeled graph and a target $x$ of length $M\ge1$. A \emph{permissive partition} is a consecutive partition of $x$ in which each piece is either a singleton with no internal witness required, or agrees on the same interval with the label of a complete $M$-edge walk from $u$ to $v$. The endpoints and full length of these witnesses are fixed; different pieces may use different walks.
+\end{definition}
+
+\begin{samepage}
+\begin{theorem}[Robust primitive bound]\label{ccc:sc:thm:primitive}
+Let an $n$-vertex binary labeled graph be primitive and factor-universal. For every $u,v$, every $M\ge1$, and every binary target of length $M$, there is a permissive partition with at most
+\[
+ n^2+8n
+\]
+pieces. Consequently any NFA with this graph and nonempty initial and final sets satisfies $R(L)\le n^2+8n$.
+\end{theorem}
+\end{samepage}
+
+The consequence follows by choosing $u\in I$, $v\in F$: replace every licensed singleton by its full-language hull witness. The assertion does not claim that every short length admits an internal $u$-to-$v$ walk. At such lengths an all-singleton partition is allowed.
+
+\subsection{Exponent reduction and the two-cycle geometry}
+
+For a primitive graph of exponent $e$, a target of length $M>2e$ has a single internally witnessed middle interval $[e,M-e)$. Indeed, factor universality gives a path labeled by that interval, and $e$-step walks from $u$ and to $v$ complete it to length $M$. The two boundaries can be licensed singletons. Hence the permissive rank is at most $2e+1$; when $M\le2e$, use only singletons.
+
+Put $\omega_n=(n-1)^2+1$. The classical results of Kirkland, Olesky and van den Driessche \cite[Theorems~1.1--1.2 and the proof of Theorem~1.2]{KOV} give the following input. If $n\ge6$ and
+\begin{equation}\label{ccc:sc:eq:general-threshold}
+ e\ge\lfloor\omega_n/2\rfloor+2,
+\end{equation}
+then the only elementary cycle lengths are two coprime integers $j<k\le n$, and
+\begin{equation}\label{ccc:sc:eq:general-exponent}
+ e\le n+j(k-2).
+\end{equation}
+Below this threshold, $2e+1\le(n-1)^2+4$. If $j\le n/2$, equation~\eqref{ccc:sc:eq:general-exponent} gives $e\le n^2/2$. For $2\le n\le5$, the classical bound $e\le\omega_n$ suffices, and the one-state graph has both loop labels. All these cases satisfy Theorem~\ref{ccc:sc:thm:primitive}. It remains to treat
+\begin{equation}\label{ccc:sc:eq:longcycles}
+ n\ge6,\qquad n/2<j<k\le n,\qquad \gcd(j,k)=1,\qquad e\le jk.
+\end{equation}
+The final inequality follows from $n-2j<0$ in \eqref{ccc:sc:eq:general-exponent}.
+
+\begin{lemma}[Order of cycle intersections]\label{ccc:sc:lem:order}
+If a digraph has only the elementary cycle lengths $j<k$, where $j\ge3$ and $\gcd(j,k)=1$, any two elementary cycles encounter their common vertices in the same cyclic order.
+\end{lemma}
+\begin{proof}
+Otherwise there are common vertices $a,b,c$ ordered $a,b,c$ on one cycle and $a,c,b$ on the other. The path from $a$ to $b$ on the first cycle followed by the path from $b$ to $a$ on the second is a nonempty closed walk. Do the same for $b$ to $c$ and for $c$ to $a$. These three nonempty closed walks partition the two original cycles' edge multiset, with multiplicity. Decomposing them into elementary cycles produces at least three cycles whose total length is $2j$, $j+k$, or $2k$.
+
+Each such total has a unique nonnegative representation $Aj+Bk$, namely its original representation $A_0j+B_0k$ with $A_0+B_0=2$. To see this, any other representation has $B=B_0+t j$ and $A=A_0-t k$ for an integer $t$. Since $A_0,B_0\le2<j<k$, neither sign of nonzero $t$ preserves nonnegativity. Every decomposition must therefore contain exactly two elementary cycles, a contradiction. With fewer than three common vertices the order assertion is automatic.
+\end{proof}
+
+\begin{lemma}[A circular chain of alternatives]\label{ccc:sc:lem:bubbles}
+Suppose two elementary cycles meet and satisfy Lemma~\ref{ccc:sc:lem:order}. Their union is a circular chain of pairs of directed paths between consecutive common vertices, allowing internally simple return paths to the same vertex when there is just one common vertex. Each pair either is a single shared edge or consists of two internally disjoint paths, called a \emph{bubble}. Choices of paths in different bubbles are independent and produce elementary cycles. If the two original cycles have equal length, every bubble has equal-length alternatives. If their lengths are $j<k$, exactly one bubble has unequal alternatives, of lengths differing by $k-j$.
+\end{lemma}
+\begin{proof}
+Between consecutive common vertices, the two paths have no further common internal vertex; distinct pairs have disjoint interiors. Thus any choice visits each common vertex once and is an elementary cycle. If both original cycles have length $j$, replacing any one path cannot shorten a cycle below $j$, so every difference, measured from the first cycle to the second, is nonnegative. Their sum is zero, so each difference is zero. For two $k$-cycles use the analogous prohibition against exceeding $k$.
+
+For cycles of lengths $j<k$, every difference measured from the $j$-cycle is nonnegative. A positive difference must be exactly $k-j$, because otherwise a single replacement would produce a cycle of a forbidden intermediate length. The differences sum to $k-j$, proving uniqueness of the unequal bubble. The one-common-vertex case consists of a single bubble and obeys the same argument.
+\end{proof}
+
+Factor universality supplies a monochromatic elementary cycle $C_0$ for $0$ and one $C_1$ for $1$: read a constant word of length at least $n$ and extract a cycle. Under \eqref{ccc:sc:eq:longcycles}, these cycles meet, since each has more than $n/2$ vertices. Write $U=C_0\cup C_1$ and $m=|V(U)|\le n$. Every shared edge carries both labels.
+
+\begin{lemma}[Equal-bubble fragments]\label{ccc:sc:lem:bubble-fragments}
+Inside a complete walk that traverses the bubbles of $U$, a length-$t$ equal bubble requires cuts only where consecutive target letters differ within that bubble. No cut is required just because the target crosses a common vertex or a shared edge. Give charge zero to shared edges and to the first edge of each equal bubble path, and charge one to its other edges. A segment meeting only equal-length bubbles and shared edges, of charge $W$ and with every touched bubble in a complete ambient traversal, can be covered by at most $W+1$ internally witnessed fragments.
+\end{lemma}
+\begin{proof}
+After cutting at each internal symbol change, every fragment's portion in a given bubble is constant. Choose its $0$- or $1$-monochromatic branch accordingly. Choices for different bubbles are independent, and each preserves both endpoints and length. Shared edges permit both symbols. Thus a fragment can cross a bubble endpoint and continue into further bubbles without another cut.
+
+For a fragment starting or ending inside a bubble, replace the whole containing traversal in its complete witness walk, including the portion outside the fragment. The witness still has the original total length and endpoints. Each possible internal change is charged to the second of its two edges, so the number of cuts is at most $W$. Different fragments may use different branch choices.
+\end{proof}
+
+All applications below use a repeated-cycle block based at a common vertex of $C_0,C_1$. Its bubbles are therefore complete eligible traversals, even when the segment being covered cuts through one of them.
+
+\subsection{Equal lengths of the monochromatic cycles}
+
+Suppose $|C_0|=|C_1|=\ell\in\{j,k\}$ and write $r$ for the other length. Set $h=m-\ell$. If the equal bubbles have lengths $t_1,\ldots,t_b$, vertex counting gives
+\[
+ h=\sum_{i=1}^b(t_i-1).
+\]
+Every elementary cycle of $U$ has length $\ell$ and charge $h$ under Lemma~\ref{ccc:sc:lem:bubble-fragments}. Put $d_0=h/\ell$, so $0\le d_0<1$, since $m\le n<2\ell$. Successively deleting elementary cycles from a $U$-walk segment of length $x$ leaves a simple path of at most $m-1$ edges, each of charge at most one. Its total charge is consequently at most
+\begin{equation}\label{ccc:sc:eq:equal-charge}
+ d_0x+(1-d_0)(m-1).
+\end{equation}
+Cycle deletion only counts charge; fragments stay at the original positions.
+
+Choose an elementary $r$-cycle $J$. It meets $C_0$ because $r+\ell>n$. Let $z\in J\cap C_0$ and let $y\in C_0\cap C_1$. Choose a path from $u$ to $z$ of length $a\le n-1$, the forward $C_0$ path from $z$ to $y$ of length $t\le\ell-1$, and a path from $y$ to $v$ of length $b\le n-1$. Their combined length is
+\[
+ D_0=a+t+b\le2n+\ell-3.
+\]
+For $M-D_0\ge(\ell-1)(r-1)$, the elementary two-generator Frobenius formula yields
+\[
+ M-D_0=\alpha r+\beta\ell,\qquad \alpha,\beta\ge0.
+\]
+Reducing $\alpha$ modulo $\ell$ increases $\beta$ and gives $0\le\alpha<\ell$. Use one complete $M$-edge walk, in this order:
+\[
+ u\to z;\quad J^{\alpha};\quad z\to y\text{ along }C_0;
+ \quad C_0^{\beta}\text{ at }y;\quad y\to v.
+\]
+Its single $J$ block has length $K_0=\alpha r<jk$. Replacements inside the repeated-$C_0$ block are legitimate complete-walk witnesses.
+
+If the representation threshold fails, the singleton bound is enough, because
+\[
+ M<D_0+(\ell-1)(r-1)\le jk+2n-r-2<n^2+2n.
+\]
+Otherwise cover the whole target if $M\le2e$, or only the two windows $[0,e)$ and $[M-e,M)$ if $M>2e$, supplementing them with the universal middle fragment. Let $T\le2e$ be the number of covered window positions and $K$ the number lying in the single $J$ block. Importantly, $K\le K_0<jk$ \emph{in total across both windows}. The fixed connecting paths cost at most $D_0$ licensed singletons. The repeated-$C_0$ portions form at most two segments. Equations~\eqref{ccc:sc:eq:equal-charge} and \eqref{ccc:sc:eq:longcycles} give a total of at most
+\begin{align*}
+ d_0T+(1-d_0)K+D_0+2(1-d_0)(m-1)+3
+ &\le 2d_0 e+(1-d_0)jk+D_0+2m+1\\
+ &\le jk(1+d_0)+D_0+2m+1\\
+ &=rm+D_0+2m+1\\
+ &\le rn+4n+\ell-2\le n^2+5n.
+\end{align*}
+The constant three allows one extra piece for each of the at most two repeated-cycle segments and one middle piece. If the monochromatic cycles coincide, $h=0$ and every edge is doubly labeled; the argument remains valid.
+
+\subsection{Unequal lengths of the monochromatic cycles}
+
+After interchanging symbols if necessary, take $|C_0|=j$ and $|C_1|=k$. Let the unique unequal bubble have path lengths $p_0$ and $q_0=p_0+k-j$. If $B$ is the sum of $t-1$ over the equal bubbles, then
+\[
+ m=j+B+q_0-1.
+\]
+Use the equal-bubble charges already defined, but charge every edge of the unequal bubble by one, with an additional unit on its first edge. Thus edge charges belong to $\{0,1,2\}$. A length-$a$ traversal of the unequal bubble has charge $a+1$, enough to cut before it and after every position and to use licensed singleton pieces there. Cuts outside the covered segment are unnecessary. In the other bubbles, Lemma~\ref{ccc:sc:lem:bubble-fragments} applies. Any segment has a permissive partition of size at most its charge plus one, also when it starts or ends inside the unequal bubble.
+
+The charges of the $j$- and $k$-cycles are respectively
+\[
+ B+p_0+1=m-k+2,\qquad B+q_0+1=m-j+2.
+\]
+Since $j+k\ge n+2\ge m+2$, their maximum mean charge is
+\[
+ \mu=\frac{m-j+2}{k}\le1,
+\]
+for
+\[
+ j(m-j+2)-k(m-k+2)=(k-j)(j+k-m-2)\ge0.
+\]
+All cycles in $U$ arise by branch choices, so these are the only possible means. Deleting cycles leaves a simple path of at most $m-1$ edges, each of charge at most two. A segment of length $x$ therefore has charge at most
+\[
+ \mu x+(2-\mu)(m-1).
+\]
+
+Choose a common vertex $y$ and fixed paths $u\to y$ and $y\to v$ with total length $D_0\le2n-2$. If $M-D_0\ge(j-1)(k-1)$, write $M-D_0=\alpha j+\beta k$ and use the complete walk consisting of the entry path, $\alpha$ copies of $C_0$ and $\beta$ copies of $C_1$ based at $y$, and the exit path. Below this threshold the singleton bound is less than $n^2+2n$.
+
+As before, cover the full target when $M\le2e$, or the two boundary windows otherwise, with a separate middle fragment. There are at most two covered $U$ segments. The number of pieces is at most
+\begin{align*}
+ 2\mu e+D_0+2(2-\mu)(m-1)+3
+ &\le2j(m-j+2)+6n-3\\
+ &\le2j(n+2-j)+6n-3\\
+ &\le\frac{(n+2)^2}{2}+6n-3\\
+ &=\frac{n^2}{2}+8n-1\le n^2+8n.
+\end{align*}
+Together with the preliminary cases, this proves Theorem~\ref{ccc:sc:thm:primitive}. In particular, every nonsingleton witness has exactly the required $M$ edges from the fixed $u$ to the fixed $v$. No target-hull assumption for the component entered the proof.
+\section{Stable phases and a universal cyclic component}\label{ccc:sc:sec:periodic}
+
+We supply the finite-rank implication of the periodic-interior criterion from Part~II (Theorem~\ref{ccc:ps:thm:criterion}). Only an eventual period is needed here; its size will never be charged to rank.
+
+For the underlying relation $E$, use the exact-length layers
+\[
+ P_i=E^i(I),\qquad R_j=\{q:\text{a $j$-edge walk leads from $q$ to }F\}.
+\]
+For a target of length $N$, a word $x$ can occur as an aligned seed fragment on $[i,j)$ exactly when
+\begin{equation}\label{ccc:sc:eq:fragment-test}
+ \delta(P_i,x)\cap R_{N-j}\ne\varnothing.
+\end{equation}
+The forward implication follows by restricting an accepting walk; for the converse, append arbitrary-label prefix and suffix walks of lengths $i$ and $N-j$. Intermediate states lie in the viable layers $P_a\cap R_{N-a}$.
+
+The pair $(P_i,R_i)$ evolves deterministically on a finite set, so it has a common eventual threshold $t$ and period $p$. Enlarge $p$ to be divisible by every integer from $1$ to $s$; this does not change the threshold. Denote the stable layers by $P_a^\infty,R_a^\infty$, for $a\in\mathbb Z/p\mathbb Z$. A total residue $r$ is live if $P_r^\infty\cap F\ne\varnothing$. For a live $r$, define
+\begin{align*}
+ S_{r,a}&=P_a^\infty\cap R_{r-a}^\infty,\\
+ \Gamma_{r,a}&=\{b\in\{0,1\}:\Delta_b(S_{r,a})\cap S_{r,a+1}\ne\varnothing\}.
+\end{align*}
+At sufficiently interior coordinates of a sufficiently large accepted length in residue $r$, these are exactly the viable state sets and coordinate alphabets. They are nonempty at every phase: an arbitrarily long accepting walk in that residue passes through every phase in its interior.
+
+\wsevthree\ These are Part~II's definitions~\eqref{ccc:ps:eq:PR},
+\eqref{ccc:ps:eq:fragment-test}, \eqref{ccc:ps:eq:periodicity},
+\eqref{ccc:ps:eq:live} and~\eqref{ccc:ps:eq:stable-states}; the stable
+alphabet $\Gamma_{r,a}$ is Part~II's $C_{r,a}$~\eqref{ccc:ps:eq:stable-letters},
+kept under the manuscript's name because $C$ denotes a component and $C_q$ a
+constant below. The enlargement of $p$ is the one made in Part~VI,
+Section~\ref{ccc:dc:sec:leading-one}.
+
+Form a phase graph with vertices $(q,a)$ for $q\in S_{r,a}$, and edges $(q,a)\xrightarrow{b}(q',a+1)$ whenever $(q,q')\in\Delta_b$. A word is phase-admissible at $a$ when its successive symbols belong to $\Gamma_{r,a},\Gamma_{r,a+1},\ldots$.
+
+\begin{lemma}[Finite rank forces all stable words to lift; Part~II, restated]\label{ccc:sc:lem:interior}
+If $R(L)<\infty$, every phase-admissible word at every live residue and starting phase labels a path in the phase graph.
+\end{lemma}
+\noindent\wsevthree\ This is the implication (1)$\Rightarrow$(3) of Part~II's
+Theorem~\ref{ccc:ps:thm:criterion}, proved there by
+Theorem~\ref{ccc:ps:thm:pumping} for any $t,p$
+satisfying~\eqref{ccc:ps:eq:periodicity}. The manuscript proves it again by
+the same pumping argument (pad a missing word to a block of length divisible
+by $p$, embed $k$ copies between an accepted prefix and suffix, and count one
+internal cut per copy); that proof is not reprinted.
+
+\begin{lemma}[A universal strongly connected component]\label{ccc:sc:lem:universal-scc}
+In a finite phase graph with nonempty alphabets at every phase, if every phase-admissible word can be read, some strongly connected component reads every phase-admissible word at every starting phase.
+\end{lemma}
+\begin{proof}
+If a component misses a positive-length word $v$ at phase $b$, then at any phase $a$ prepend arbitrary admissible symbols of length congruent to $b-a\pmod p$. The resulting word is missing in that component at phase $a$. Thus failure anywhere gives an obstruction starting at every phase; if a component lacks a phase, any permitted one-letter word there supplies a positive-length obstruction.
+
+If no component is universal, starting at any current phase concatenate one appropriately aligned obstruction for each component, updating the phase after each word. The resulting block cannot be read wholly within any component. Repeat this construction $h$ times, where $h$ is the number of components. Every successful walk would cross a component boundary inside each block, contradicting the fact that a walk in the condensation acyclic graph can change components at most $h-1$ times. This contradicts universality. The universal component is cyclic, since it reads arbitrarily long words.
+\end{proof}
+
+For a strongly connected cyclic digraph $C$ of period $d$, fix cyclic classes $\kappa:C\to\mathbb Z/d\mathbb Z$, so every edge increases $\kappa$ by one. We use the standard cyclic-class path property: all sufficiently large lengths $a$ admit a walk $u\to v$ exactly when $a\equiv\kappa(v)-\kappa(u)\pmod d$. This follows, for example, by restricting the $d$th relation power to a cyclic class, where it is primitive.
+
+\begin{lemma}[The whole cyclic stripe is present]\label{ccc:sc:lem:stripe}
+Every cyclic strongly connected component of the viable phase graph has the form
+\begin{equation}\label{ccc:sc:eq:stripe}
+ K=\{(v,b):v\in C,\ b-a\equiv\kappa(v)-\kappa(q)\pmod d\}
+\end{equation}
+for an original strongly connected component $C$, a pair $(q,a)\in K$, and the period $d$ of $C$. Every internal edge between stripe pairs is present. If $K$ is the universal component of Lemma~\ref{ccc:sc:lem:universal-scc}, then $\Gamma_{r,b}$ is precisely the union of the labels on internal edges of $C$ leaving its stripe class at phase $b$. Consequently the stable alphabet sequence has period dividing $d$.
+\end{lemma}
+\begin{proof}
+Project paths and return paths in $K$ to identify the original component $C$. A cyclic phase component projects a nonempty closed walk, so $C$ is cyclic. Along any path the difference of phase and cyclic class stays fixed, proving one containment in \eqref{ccc:sc:eq:stripe}.
+
+For a compatible pair $(v,b)$, choose sufficiently long internal walks $q\to v$ and $v\to q$ whose lengths are respectively $b-a$ and $a-b$ modulo $p$. Such lengths exist because $d\mid p$ and the prescribed residues have the correct cyclic-class differences. Concatenate the first walk to a stable prefix reaching $q$ at phase $a$, and concatenate the second before a stable suffix leaving $q$ with complementary phase $r-a$. This gives stable prefix and suffix access to $v$ at the required phases. Thus $(v,b)$ is viable. The same construction applies to all intermediate compatible pairs, so these internal walks belong to the phase graph and show mutual reachability. This proves equality.
+
+Every internal edge advances the cyclic class, hence joins stripe pairs and is present in the viable graph. Its label belongs to the stable alphabet. Conversely, universality within $K$ reads every permitted one-letter word, so every stable symbol occurs on such an internal edge. The leaving cyclic class is determined by $b\bmod d$, giving the final periodicity statement.
+\end{proof}
+
+This argument extracts a universal \emph{component}, not a forward-total set of original states. No step uses deterministic images or a decrease in subset cardinality.
+
+\wsevthree\ For a DFA, Part~VI reaches a full stripe from the other side: a
+nonempty safe core contains a whole viable stripe with no permitted exit
+(Lemmas~\ref{ccc:dc:lem:viability}--\ref{ccc:dc:lem:propagation} and
+Theorem~\ref{ccc:dc:thm:stripe}). Lemma~\ref{ccc:sc:lem:stripe} is the NFA
+counterpart for a universal component; the two share the core step (long
+internal walks of the right residue, $d\mid p$) but state different
+things.
+\section{Transferring the component bound to the whole NFA}\label{ccc:sc:sec:transfer}
+
+Two quantitative facts keep a possibly large phase period from entering the rank estimate. The first uses only linear guards; the second charges entry and exit to disjoint outside states.
+
+\begin{lemma}[Actual slices and stable alphabets; Part~VI, for NFAs]\label{ccc:sc:lem:guards}
+Every accepted length $N\ge s$ has a live residue modulo $p$. Moreover,
+\[
+ P_i\subseteq P_{i\bmod p}^\infty\quad(i\ge s),\qquad
+ R_j\subseteq R_{j\bmod p}^\infty\quad(j\ge s).
+\]
+If $w\in\rec(L)_N$ and $s\le i<N-s$, its symbol at zero-based position $i$ belongs to $\Gamma_{N\bmod p,i\bmod p}$.
+\end{lemma}
+\noindent\wsevthree\ This is Part~VI's Lemma~\ref{ccc:dc:lem:early}, stated
+there for complete DFAs, with one more clause (liveness of every accepted
+length $N\ge s$). The manuscript's proof is Part~VI's, almost word for word:
+a walk of at least $s$ edges contains an elementary cycle of length
+$\ell\le s$, and inserting $p/\ell$ copies of it adds $p$ edges without moving
+its endpoints; pumping the prefix and the suffix of a seed witness separately
+puts the endpoints of the witnessed letter into the stable layers. That
+proof uses no determinism, so it proves the lemma for NFAs as stated; applied
+to a whole accepting walk of length $N\ge s$ it also gives the liveness
+clause. It is not reprinted. The manuscript does not cite Part~VI, which was
+written separately; only inclusion, not equality with the stable alphabets,
+is asserted in both.
+
+\begin{lemma}[Joint entry and exit budget; Part~VI, for NFAs]\label{ccc:sc:lem:outside}
+Fix a live residue and its universal stripe over an original component $C$ of size $c$ and period $d$. There are fixed paths from an initial state to a vertex $u\in C$ and from a vertex $v\in C$ to a final state, of lengths $h,\beta$, such that
+\begin{equation}\label{ccc:sc:eq:outside-budget}
+ h+\beta\le(s-c)d.
+\end{equation}
+For every $N$ in the live residue,
+\begin{equation}\label{ccc:sc:eq:outside-residue}
+ N-h-\beta\equiv\kappa(v)-\kappa(u)\pmod d,
+\end{equation}
+and $(u,h\bmod p)$ belongs to that stripe.
+\end{lemma}
+\noindent\wsevthree\ This is Part~VI's Lemma~\ref{ccc:dc:lem:budget}, with
+the universal stripe of Lemma~\ref{ccc:sc:lem:universal-scc} in place of
+Part~VI's safe stripe; \eqref{ccc:sc:eq:outside-budget}
+and~\eqref{ccc:sc:eq:outside-residue} are \eqref{ccc:dc:eq:budget}
+and~\eqref{ccc:dc:eq:compatibility}. The manuscript's proof is Part~VI's, step
+for step: take a long accepting walk through a stripe pair, let $u$ and $v$
+be its first and last vertices in $C$, shorten the parts before $u$ and after
+$v$ by deleting segments between repeated pairs (outside state, elapsed time
+modulo $d$), and note that the outside states used before entry and after
+exit are disjoint. That proof uses only that the stripe is a full stripe of
+viable pairs over an original strongly connected component, not
+determinism, so it proves the lemma as stated. It is not reprinted.
+
+\subsection{An imprimitive component}
+
+Suppose $d\ge2$. Choose a cyclic class of minimum size $m$, so $m\le c/d$. The internal $d$-step relation on this class is primitive. Its exponent $e_0$ obeys
+\[
+ e_0\le(m-1)^2+1
+\]
+by the classical primitive exponent bound; this conservative formula also holds at $m=1$.
+
+For any $u',v'\in C$, follow internal edges from $u'$ for $r'<d$ steps to the chosen class, and follow internal predecessor edges backwards from $v'$ for $t'<d$ steps to that class. There is an internal outgoing and incoming edge at every vertex, and the cyclic classes fix these two residues. Every length $L$ of compatible residue with
+\begin{equation}\label{ccc:sc:eq:imprimitive-threshold}
+ L\ge T:=d\bigl((m-1)^2+1\bigr)+2d-2
+       \le\frac{c^2}{d}+2d-2
+\end{equation}
+can join the two selected vertices: $L-r'-t'$ is a multiple of $d$ and is at least $de_0$. Thus every compatible pair has every compatible length at least $T$. The final estimate uses $(m-1)^2+1\le m^2$.
+
+For a hull target of length $N\ge s$, use its live residue and the paths of Lemma~\ref{ccc:sc:lem:outside}. Put
+\[
+ A=\max(h+T,s),\qquad B=\max(\beta+T,s).
+\]
+If $N\le A+B$, use only singletons. Otherwise the target interval $w[A:N-B]$ follows the stable alphabet profile by Lemma~\ref{ccc:sc:lem:guards}. The universal stripe supplies an internal lift with the appropriate starting cyclic class. Equation~\eqref{ccc:sc:eq:imprimitive-threshold} connects $u$ to its first vertex in exactly $A-h$ steps and its last vertex to $v$ in exactly $B-\beta$ steps. The stripe congruence and \eqref{ccc:sc:eq:outside-residue} give the two required residues. Appending the fixed outside paths produces a full accepted seed of exactly $N$ edges matching this interval.
+
+In both length cases the rank is at most
+\begin{align}
+ A+B+1
+ &\le(s-c)d+\frac{2c^2}{d}+4d+2s-3.\label{ccc:sc:eq:imprimitive-rank}
+\end{align}
+For fixed $s,c$, the function $f(d)=(s-c)d+2c^2/d$ is convex on $[2,c]$, and
+\[
+ f(2)=c^2+2(s-c)\le s^2,\qquad
+ f(c)=c(s-c+2)\le cs\le s^2.
+\]
+The second inequality uses $c\ge2$. The maximum of a convex function on an interval is attained at an endpoint, so \eqref{ccc:sc:eq:imprimitive-rank} gives
+\begin{equation}\label{ccc:sc:eq:imprimitive-result}
+ \rank_L(w)\le s^2+6s-3.
+\end{equation}
+Unequal cyclic-class sizes and phase-dependent singleton or binary alphabets are all included. We did not recode blocks as letters or apply a binary theorem to a larger block alphabet.
+
+\subsection{A primitive component with both symbols}
+
+Now $d=1$. Lemma~\ref{ccc:sc:lem:stripe} says that the stable alphabet is constant and equals the set of internal labels in $C$. If it is $\{0,1\}$, the component is primitive and factor-universal, and $h+\beta\le s-c$.
+
+If $N<h+\beta$, singletons already suffice with at most $s$ pieces. Otherwise put $M=N-h-\beta$ and apply Theorem~\ref{ccc:sc:thm:primitive} to the \emph{actual} substring $w[h:N-\beta]$ and fixed endpoints $u,v$. At $M=0$ use the empty partition. Every internally witnessed piece extends by the fixed outside paths to a complete global seed of exactly $N$ edges. Every freely licensed singleton instead uses its witness from the global coordinate hull. The outside positions are also covered by global singleton witnesses. Thus
+\begin{align*}
+ \rank_L(w)&\le h+\beta+c^2+8c\\
+ &\le s-c+c^2+8c\le s^2+8s,
+\end{align*}
+since $s^2+8s-(s-c+c^2+8c)=(s-c)(s+c+7)\ge0$.
+
+No extra stable-alphabet guard is required in this case: every binary symbol is in the core alphabet. We do not infer isolated-core hull membership. The permissive form of Theorem~\ref{ccc:sc:thm:primitive} is exactly what makes short lengths and externally licensed singletons legitimate here.
+
+\subsection{A primitive component with one symbol}
+
+The remaining alphabet is $\{\gamma\}$ for one binary symbol $\gamma$. Every internal edge then carries $\gamma$ alone. Let $e_C\le(c-1)^2+1$ be the exponent of $C$ and $M=N-h-\beta$.
+
+If $M<e_C$, singleton fragments give
+\[
+ \rank_L(w)\le N<h+\beta+e_C
+ \le c^2+s-3c+2\le s^2.
+\]
+The last difference is $(s-c)(s+c-1)+2c-2\ge0$; the argument includes a negative $M$.
+
+If $M\ge e_C$, choose an exact $M$-edge $u$-to-$v$ walk. Its label is $\gamma^M$, and extending it by the outside paths gives a full seed. Put $A=\max(h,s)$ and $B=\max(\beta,s)$. For $N\le A+B$, singletons give at most $3s-c$ pieces. Otherwise Lemma~\ref{ccc:sc:lem:guards} and the unary stable alphabet show that the chosen seed matches the whole target interval $[A,N-B)$. The two singleton boundaries and this interval use at most
+\[
+ A+B+1\le h+\beta+2s+1\le3s-c+1\le3s
+\]
+pieces.
+
+\begin{proof}[Conclusion of the proof of Theorem~\ref{ccc:sc:thm:general}]
+At lengths $1\le N<s$, use at most $s-1$ singletons. For every nonempty hull slice of length $N\ge s$, Lemma~\ref{ccc:sc:lem:guards} gives a live residue, Lemmas~\ref{ccc:sc:lem:interior}--\ref{ccc:sc:lem:outside} give a universal stripe and the bounded exterior paths, and exactly one of the three component cases just proved applies. The empty word has rank one when accepted. The empty language has $R(L)=1$ by definition. For $s=1$, every nonempty slice is a coordinate product on the available loop labels and has rank one. Thus all cases satisfy the claimed $s^2+8s$ bound.
+\end{proof}
+
+The qualitative eventual threshold and phase period can be large; neither appears in this estimate. The leading coefficient comes from robust primitive compression, the minimum cyclic class in the imprimitive case, and the joint outside-state budget.
+\section{The matching leading coefficient from a length gate}\label{ccc:sc:sec:lower}
+
+For completeness, we reprove the lower construction from the companion note (Part~IV). It establishes sharpness for the unrestricted class; it does not establish sharpness within the primitive factor-universal class.
+
+\begin{proposition}[Part~IV, restated]\label{ccc:sc:prop:lower}
+For every $s\ge4$ there is an $s$-state binary $\eps$-free NFA with universal coordinate hull and
+\[
+ R(L)=(s-3)^2.
+\]
+\end{proposition}
+\noindent\wsevthree\ This is Part~IV's Theorem~\ref{ccc:qr:thm:main}, the
+manuscript says so, and its proof is Part~IV's (the gate of
+Section~\ref{ccc:qr:sec:gate} with two monochromatic loop states;
+Lemmas~\ref{ccc:qr:lem:returns}, \ref{ccc:qr:lem:gap}
+and~\ref{ccc:qr:lem:rank}), condensed; it is not reprinted. In it the
+manuscript writes $H_m$ for Part~IV's semigroup $S_m=\langle m,m-1\rangle$,
+$T_m$ for Part~IV's set of gate lengths $H_m$, and $L_m$ for Part~IV's
+$\Lgate m$: the names $H_m$ and $S_m$ are \emph{swapped} relative to
+Part~IV. Section~\ref{ccc:sc:sec:alphabet} refers to this gate as ``the
+$m=s-2$ state gate of Proposition~\ref{ccc:sc:prop:lower}''.
+
+
+Combining Proposition~\ref{ccc:sc:prop:lower} with Theorem~\ref{ccc:sc:thm:general} gives the leading coefficient in \eqref{ccc:sc:eq:sharp}. The graph used for the length gate is classical; the rank argument uses the two extra monochromatic components to turn its last missing length into the number of necessary cuts. The result resolves the leading-coefficient question in the pinned report, without asserting literature-wide priority or an exact formula for $F_2(s)$.
+\wsevthree\ At the pin, Part~II's Question~\ref{ccc:ps:q:rank} asked only for
+the order of $F(s)$; the leading-coefficient question is Part~IV's
+Question~\ref{ccc:qr:q:constant}, which the manuscript knew from Part~IV's
+manuscript.
+\section{The leading coefficient for finite alphabets}\label{ccc:sc:sec:alphabet}
+
+The two-cycle geometry extends beyond two symbols, but it requires a common-anchor theorem for a selected family of cycles. Pairwise intersection alone would not justify the argument. We give that structural step explicitly and keep the dependence on alphabet size visible.
+
+\begin{theorem}[Finite alphabet bound]\label{ccc:sc:thm:alphabet}
+For $q\ge2$, put $C_q=\max\{8,2q-4\}$. Every $s$-state $\varepsilon$-free NFA over a $q$-letter alphabet with finite maximal rank satisfies
+\[
+ \boxed{R(L)\le s^2+C_qs.}
+\]
+For every $s\ge4$ and every $q\ge2$ there is such an NFA with $R(L)=(s-3)^2$, using every alphabet symbol. Hence
+\[
+ (s-3)^2\le F_q(s)\le s^2+\max\{8,2q-4\}s,
+ \qquad \lim_{s\to\infty}\frac{F_q(s)}{s^2}=1
+\]
+for each fixed $q$. The same ratio tends to one along any integer sequence $q=q(s)\ge2$ with $q(s)=o(s)$. In particular the explicit upper bound $s^2+8s$ holds for $2\le q\le6$.
+\end{theorem}
+
+\subsection{A common vertex for a small cycle family}
+
+Work in an $n$-vertex digraph whose only elementary cycle lengths are coprime integers $j<k$, where $j>n/2$ and $j\ge3$. Choose $t<j$ elementary cycles, allowing repetitions, of which $a$ have length $j$ and $b$ length $k$.
+
+\begin{lemma}[Uniqueness of the cycle counts]\label{ccc:sc:lem:counts}
+Every decomposition of the sum of these cycles' integral edge-incidence vectors into elementary cycles has exactly $a$ cycles of length $j$ and $b$ of length $k$.
+\end{lemma}
+\begin{proof}
+Any such decomposition gives $aj+bk=Aj+Bk$ with $A,B\ge0$. Coprimality implies $A=a+hk$ and $B=b-hj$ for an integer $h$. If $h>0$, then $B<0$ because $b<j$; if $h<0$, then $A<0$ because $a<j<k$. Therefore $h=0$. Every nonnegative integral circulation decomposes into elementary cycles by successively removing a cycle from its positive support.
+\end{proof}
+
+\begin{lemma}[Small family common vertex]\label{ccc:sc:lem:common-vertex}
+The $t$ selected cycles have a common vertex.
+\end{lemma}
+\begin{proof}
+Sum their edge-incidence vectors as an Eulerian directed multigraph. At vertex $v$ the indegree and outdegree both equal $d_v$, the number of selected cycles containing $v$. If there were no common vertex, then $\Delta:=\max_v d_v\le t-1$. Add $\Delta-d_v$ new loops at each vertex, making all indegrees and outdegrees $\Delta$.
+
+Replace every vertex by a left and a right copy and every directed edge by the corresponding bipartite edge. The resulting bipartite multigraph is $\Delta$-regular. For any left vertex subset, counting its incident edges proves Hall's condition, so a perfect matching exists; deleting it and repeating decomposes the multigraph into $\Delta$ perfect matchings. Each matching is a directed cycle cover. Its added loops are isolated one-vertex components. Every other cycle uses original edges and has at least $j>n/2$ vertices, so each cover contains at most one such cycle. Removing the added loops therefore decomposes the original circulation into at most $\Delta<t$ elementary cycles, contradicting Lemma~\ref{ccc:sc:lem:counts}.
+\end{proof}
+
+Fix a common vertex $z$. Let $U_j,U_k$ be the edge unions of the selected cycles of their respective lengths, omitting an empty group. Each nonempty union is strongly connected, since its constituent cycles contain $z$. Every elementary cycle of $U_j$ has length $j$: if a $k$-cycle existed, subtract one copy from the sum of the selected $j$-cycle circulations and decompose the nonnegative remainder, contradicting Lemma~\ref{ccc:sc:lem:counts}. Similarly $U_k$ has only length $k$. Thus their periods are $j$ and $k$, respectively.
+
+Index the cyclic classes of each group from $z$. Every selected cycle visits each of its group's classes exactly once. Write $m_j=|V(U_j)|$, $m_k=|V(U_k)|$, and $m=|V(U_j)\cup V(U_k)|\le n$. Let $S_j,S_k$ be the vertices constituting singleton classes in the corresponding groups. Counting non-singleton classes gives
+\begin{equation}\label{ccc:sc:eq:singleton-anchors}
+ |S_j|\ge2j-m_j,\qquad |S_k|\ge2k-m_k.
+\end{equation}
+A vertex is on every selected cycle of one length if and only if it is a singleton-class vertex of that group's union: every cycle meets the class once, and every vertex of the union belongs to a selected cycle.
+
+\subsection{Aligning the two class systems}
+
+Assume both length groups are nonempty. For any vertex $v$ common to $U_j,U_k$, its class indices $p_j(v)\in\{0,\ldots,j-1\}$ and $p_k(v)\in\{0,\ldots,k-1\}$ are its exact positions after $z$ on every selected cycle of the corresponding group that contains it. We claim
+\begin{equation}\label{ccc:sc:eq:class-alignment}
+ p_k(v)-p_j(v)\in\{0,k-j\}.
+\end{equation}
+For $v\ne z$, choose one cycle of each length containing $v$ and cross-splice their $z$-to-$v$ prefixes and $v$-to-$z$ suffixes. The two resulting nonempty closed walks have lengths $j+p_k(v)-p_j(v)$ and $k-p_k(v)+p_j(v)$. Their total is $j+k$. Decomposition and Lemma~\ref{ccc:sc:lem:counts} give exactly one $j$-cycle and one $k$-cycle in total. Each nonempty walk must supply one, proving \eqref{ccc:sc:eq:class-alignment}. For $v=z$, both indices are zero and the claim is immediate.
+
+\begin{lemma}[Common anchor bound]\label{ccc:sc:lem:common-anchors}
+If both length groups occur, the selected cycles have at least $2j+k-2n$ common vertices.
+\end{lemma}
+\begin{proof}
+Their common vertices are exactly $S_j\cap S_k$. Consider $v\in S_j\cap V(U_k)$ not in $S_k$, and another vertex $w$ in its $k$-class. We first prove $w\notin V(U_j)$.
+
+Otherwise \eqref{ccc:sc:eq:class-alignment} says that $p_j(v),p_j(w)$ either agree or differ in absolute value by $\delta=k-j$. Equality is impossible because the $j$-class of $v$ is a singleton. Also $0<\delta<j$, since $k\le n<2j$. A selected $j$-cycle containing $w$ also contains $v$, and in the forward order of their class indices supplies a path of length $\delta$ between them. The group $U_k$ supplies a return path of exactly $k$ edges: a shortest path between the distinct same-class vertices has positive length divisible by $k$ and at most $m_k-1\le n-1<2k$.
+
+Concatenation gives a closed walk of length $k+\delta=2k-j$. This length is not a nonnegative combination of $j,k$. It can contain at most one $k$-term. With no $k$-term, divisibility would force $j\mid2k$, hence $j\le2$; with one, it would force $j\mid k$. Both contradict the hypotheses. Decomposing the closed walk into elementary cycles is therefore impossible, proving the claim.
+
+Two vertices of $S_j$ cannot be in the same $k$-class, since the claim applied to one would exclude the other from $U_j$. Each vertex of $S_j\cap U_k$ not in $S_k$ can consequently be charged injectively to a vertex of $U_k\setminus U_j$ in its distinct $k$-class. The vertices of $S_j$ absent from $U_k$ are at most $|U_j\setminus U_k|$. Using \eqref{ccc:sc:eq:singleton-anchors},
+\begin{align*}
+ |S_j\cap S_k|
+ &\ge |S_j|-|U_k\setminus U_j|-|U_j\setminus U_k|\\
+ &\ge(2j-m_j)-(m-m_j)-(m-m_k)\\
+ &=2j+m_k-2m\ge2j+k-2n.
+\end{align*}
+\end{proof}
+
+\subsection{Compression with one branch for every symbol}
+
+The exponent reduction preceding \eqref{ccc:sc:eq:longcycles} does not depend on alphabet size. Thus for a primitive factor-universal $q$-letter graph it leaves only the hard case $n\ge6$, $n/2<j<k\le n$, $\gcd(j,k)=1$, and $e\le jk$. Choose one monochromatic elementary cycle for each symbol. If $n\ge2q$, then $q<j$ and the preceding lemmas apply to all selected cycles at once.
+
+First suppose all chosen cycles have length $\ell\in\{j,k\}$; let $r$ be the other length. Their union $U$ is strongly connected and has only elementary cycle length $\ell$, by Lemmas~\ref{ccc:sc:lem:common-vertex} and \ref{ccc:sc:lem:counts}. It has $\ell$ cyclic classes, of which at least $b\ge2\ell-m\ge1$ are singletons, where $m=|V(U)|\le n$. These singleton vertices lie on every selected cycle. Between consecutive such anchors, each symbol has a monochromatic path of the same length, equal to the cyclic-class distance. With only one anchor, the region is the full positive-length return traversal of length $\ell$.
+
+In each equal-length region give its first position charge zero and its other positions charge one. A fragment may cross an anchor without a cut. Cutting only at symbol changes internal to a region allows each fragment to choose the relevant monochromatic branch independently, replacing whole regions in its complete witness even when the fragment begins or ends inside one. Hence charge plus one pays for the fragments in a segment. This is the same fixed-endpoint argument as Lemma~\ref{ccc:sc:lem:bubble-fragments}; disjoint interiors of the branches are unnecessary for valid walks.
+
+A lap has charge $h=\ell-b\le m-\ell$. Set $\mu=h/\ell<1$. In a repeated selected $\ell$-cycle, a segment of length $x$ has charge at most $\mu x+h$: remove full periods beginning at the segment's own phase and bound its remaining proper-period charge by a complete lap. Choose an elementary $r$-cycle meeting a selected $\ell$-cycle at $z'$, and choose a singleton anchor $y$. Fixed paths $u\to z'$, $z'\to y$ along that cycle, and $y\to v$ have combined length $D\le2n+\ell-3$. Above the Frobenius threshold write
+\[
+ M-D=\alpha r+\beta\ell,\qquad0\le\alpha<\ell,\quad\beta\ge0,
+\]
+and use the complete walk formed by these connectors, the single $r$-cycle block at $z'$, and the repeated $\ell$-cycle block at $y$. If the threshold fails, $M<jk+2n-r-2<n^2+2n$, so singletons suffice.
+
+Cover the entire target if $M\le2e$, or the two $e$-position boundary windows and a universal middle fragment otherwise. Their combined length is $T\le2e$. Their total intersection $K$ with the single $r$-block is less than $jk$. The repeated $\ell$-block meets at most two window segments, so the number of pieces is at most
+\begin{align*}
+ \mu T+(1-\mu)K+D+2h+3
+ &\le jk(1+\mu)+D+2h+3\\
+ &=r(\ell+h)+D+2h+3\\
+ &\le rm+D+2h+3\le n^2+4n.
+\end{align*}
+For the last estimate use $r,m\le n$, $D\le2n+\ell-3$, and $h\le n-\ell$.
+
+Now suppose both cycle lengths occur. Let $b$ be the number of vertices common to all selected cycles. Lemma~\ref{ccc:sc:lem:common-anchors} gives $b\ge2j+k-2n$. If $b\le2$, then $2j+k\le2n+2$ and the elementary bound suffices:
+\[
+ 2e+1\le2jk+1\le4j(n+1-j)+1\le(n+1)^2+1\le n^2+8n.
+\]
+If $b\ge3$, the pairwise order lemma puts all anchors in the same cyclic order on every selected cycle. Within a length group their class indices fix every anchor-to-anchor path length. Comparing one $j$-cycle with one $k$-cycle and coarsening their pairwise bubbles to these anchors shows that exactly one region has unequal lengths, differing by $k-j$. All other regions offer an equal-length monochromatic branch for every symbol. This asserts only a property of the selected paths, not a global bubble decomposition of the whole graph.
+
+Charge the equal regions as before. Charge every position of the unequal region one, with an additional unit on its first position. This pays for its singleton fragments and the necessary interfaces. A segment again needs at most its charge plus one pieces. The two lap charges are
+\[
+ c_j=j-b+2,\qquad c_k=k-b+2,
+ \qquad \mu=\frac{k-b+2}{k}\le1.
+\]
+Their mean charges are at most $\mu$. A segment of length $x$ in either repeated cycle has charge at most $\mu x+n$, since its residual proper-period charge is at most one lap, which is at most $n$.
+
+Choose an anchor $y$ and fixed entry and exit paths of total length $D\le2n-2$. Above the Frobenius threshold, use $M-D=\alpha j+\beta k$ and the complete ambient walk with a $j$-block followed by a $k$-block at $y$. Below the threshold, singletons give fewer than $n^2+2n$ pieces. The two boundary windows meet these two consecutive repeated-cycle blocks in at most three nonempty periodic segments. That count is used for the residual-charge overhead $3n$. The junction of the blocks is an anchor, so it adds no fragment cut: the combined repeated-cycle block meets the windows in at most two pieces of charge-plus-one bookkeeping. Including connectors and the possible middle fragment gives
+\begin{align*}
+ 2\mu e+3n+D+3
+ &\le2j(k-b+2)+5n+1\\
+ &\le4j(n-j+1)+5n+1\\
+ &\le n^2+7n+2\le n^2+8n.
+\end{align*}
+This proves the robust primitive bound $n^2+8n$ for $n\ge2q$.
+
+For $n<2q$, use the general exponent bound $2e+1\le2(n-1)^2+3$. For $q\ge3$ and $2\le n\le2q-1$,
+\[
+ n^2+(2q-4)n-\bigl(2(n-1)^2+3\bigr)=n(2q-n)-5\ge0.
+\]
+The concave quadratic is minimized at an interval endpoint, where it is at least $2q-6\ge0$. The one-state case has rank one, and $q=2$ is covered by Theorem~\ref{ccc:sc:thm:primitive}. We have therefore proved the robust primitive bound $n^2+C_qn$ for every $n$.
+
+\subsection{Transfer and the lower construction}
+
+The proofs of the stable-word, universal-component, stripe, guard, entry--exit, and imprimitive-component results in Sections~\ref{ccc:sc:sec:periodic}--\ref{ccc:sc:sec:transfer} work over any finite alphabet: replace $\{0,1\}$ in the stable-alphabet definition by $\Sigma$. The imprimitive estimate $s^2+6s-3$ is within the desired bound because $C_q\ge8$.
+
+For a primitive universal component of size $c$, let $B$ be its nonempty internal alphabet and let $h+\beta\le s-c$ be the fixed exterior-path budget. Over $B$, the robust bound is at most $c^2+C_qc$, since $C_{|B|}\le C_q$ when $|B|\ge2$. For $|B|=1$ the same estimate holds directly: a target has the unique unary label, and an exact internal witness exists for lengths at least the exponent, while shorter lengths cost at most $(c-1)^2+1$ singletons.
+
+If $c=s$, all seed symbols lie in $B$, so apply that robust bound directly. If $c<s$, put $A=\max(h,s)$ and $Z=\max(\beta,s)$. When $N\le A+Z$, use singletons. Otherwise project $w[h:N-\beta]$ to $B$ by retaining its symbols in $B$ and replacing the others by a fixed symbol in $B$. Apply the robust primitive theorem with the required fixed endpoints and full internal length. Restrict the resulting partition to the contiguous global interval $[A,N-Z)$; its piece count does not increase. By Lemma~\ref{ccc:sc:lem:guards}, the original target already lies in $B$ there. Thus all retained internal witnesses match the actual target and extend by the fixed exterior paths to accepted length-$N$ seeds. Licensed and outside singletons use their global hull witnesses. The total cost is at most
+\[
+ h+\beta+2s+c^2+C_qc\le s-c+2s+c^2+C_qc\le s^2+C_qs.
+\]
+Indeed the last slack is $(s-c)(s+c+C_q-1)-2s\ge C_q-2\ge0$ for $c\le s-1$. Short lengths, the empty word, and the empty hull are handled as in the binary proof. This establishes the upper bound of Theorem~\ref{ccc:sc:thm:alphabet}.
+
+For the lower bound, keep the $m=s-2$ state gate of Proposition~\ref{ccc:sc:prop:lower} and label every gate edge by all symbols. Partition $\Sigma=A\sqcup B$ into two nonempty classes. Give one extra isolated state all loop labels in $A$ and the other all loop labels in $B$, with both states initial and final as before. At a gate length every word is accepted. At a missing gate length $N$, the seeds are exactly $A^N\cup B^N$, so the hull is $\Sigma^N$ and an interval is admissible exactly when its symbols belong to one class. Rank is therefore the number of class runs. Alternating one symbol from each class at the last exceptional length $(m-1)^2$ proves exact rank $(s-3)^2$. The quantitative sandwich implies both asymptotic statements.
+
+No alphabet-independent additive constant is established here. When $q$ is comparable to $s$, the displayed upper bound alone does not give a leading coefficient of one; for unrestricted alphabet growth that question remains open in this article.
+
+\section{A sharp linear family and its slice maxima}\label{ccc:sc:sec:linear}
+
+The quadratic length-gate family is asymptotically extremal, but is not the best lower bound for small state counts. A different construction attains the general exponent estimate $2e+1$ with a linear exponent, and supplies the lower witnesses for the three- and four-state extrema below.
+
+\begin{proposition}[Shortest access and exit gates]\label{ccc:sc:prop:linear}
+For every $s\ge3$ there is a primitive factor-universal binary $s$-state NFA with sole initial state $u$, sole final state $v$, exponent $e=s-1$, and
+\[
+ R(L)=2s-1=2e+1.
+\]
+More precisely, for every $N\ge1$ its slice maximum is
+\[
+ M_L(N):=\max\{\rank_L(w):w\in\rec(L)_N\}
+       =\min\{N,2s-1\},
+\]
+and $0^N$ attains that maximum. Its empty word is not accepted.
+\end{proposition}
+\begin{proof}
+Use distinct states $u,v,b$, and put a $1$-loop at every state. The only $0$-edges are $u\to v$ and $b\to b$. For $s=3$, add $1$-edges $v\to b$ and $b\to u$. For $s\ge4$, introduce states $x_1,\ldots,x_{s-3}$ and add precisely these $1$-edges:
+\[
+ v\to x_1,\quad b\to x_1,\quad
+ x_i\to x_{i+1}\ (1\le i<s-3),\quad
+ x_{s-3}\to u,\quad x_{s-3}\to b.
+\]
+There are no further edges. Take $I=\{u\}$ and $F=\{v\}$.
+
+The underlying graph is strongly connected. Every walk from $u$ to $b$ must use $u\to v$ and then the full corridor; every walk from $b$ to $v$ must traverse the full corridor to $u$ and then use $u\to v$. Thus
+\begin{equation}\label{ccc:sc:eq:gate-distances}
+ \operatorname{dist}(u,b)=\operatorname{dist}(b,v)=s-1.
+\end{equation}
+For $s=3$ this is immediate from its directed three-cycle. Every ordered pair is connected by a simple path of at most $s-1$ edges. The loops pad it to exactly $s-1$ edges, and \eqref{ccc:sc:eq:gate-distances} rules out a smaller exponent. Hence $e=s-1$. The two loops at $b$ establish factor universality, so the central-fragment argument gives $R(L)\le2s-1$.
+
+At each zero-based coordinate $i$ of a positive length $N$, the seed $1^i01^{N-i-1}$ is accepted: wait at $u$, use $u\to v$, and wait at $v$. Consequently $0^N$ belongs to the hull. Any fragment of the target $0^N$ of length at least two must use only the $0$-loop at $b$, since the other $0$-edge ends at $v$ and no $0$-edge leaves $v$. By \eqref{ccc:sc:eq:gate-distances}, such a fragment can begin only at a boundary at least $s-1$ and end only at a boundary at most $N-s+1$.
+
+If $N<2s-1$, no nonsingleton zero fragment fits, so $\rank_L(0^N)=N$. If $N\ge2s-1$, the first and last $s-1$ positions each force singleton pieces, and the remaining nonempty middle requires at least one piece. Thus $\rank_L(0^N)\ge2s-1$. The singleton bound and the established global upper bound give equality in both cases, proving the slice formula.
+\end{proof}
+
+This also identifies the exact maximum within the useful universal-loop class. If an $s$-state NFA has a state carrying every symbol loop and lying on an accepting walk, choose shortest access and exit paths of lengths $a,b'\le s-1$. At length $N>a+b'$, the target's middle interval $[a,N-b')$ is read at that state; its witness is completed by the two fixed paths. The outside positions are hull singletons. Shorter targets use only singletons. Hence $R(L)\le a+b'+1\le2s-1$. Proposition~\ref{ccc:sc:prop:linear} attains this for each $s\ge3$. This observation explains a limitation of searches that always insert a universal-loop state: they cannot discover superlinear rank in the full primitive class.
+
+For binary NFAs the two ordinary lower constructions together give
+\[
+ F_2(s)\ge\max\{2s-1,(s-3)^2\}\qquad(s\ge4).
+\]
+Neither construction alone is asserted to give the exact general extremum.
+
+\section{An exact algorithm for the maximal rank}\label{ccc:sc:sec:exact}
+
+The asymptotic state bound and the exact value for one automaton are different questions. We now give an effective exact algorithm for any fixed finite alphabet, together with a complete finite witness-length cutoff. No guessed experimental horizon is used.
+
+\subsection{The greedy parser is optimal}
+
+\wsevthree\ Lemma~\ref{ccc:sc:lem:greedy}, the parser after it and the
+periodic-middle graph below are Part~V's Lemma~\ref{ccc:rs:lem:greedy}, its
+parser of Section~\ref{ccc:rs:sec:parser} and its reset graph
+$G_{r,a_0}$ of Section~\ref{ccc:rs:sec:graph}, which the manuscript cites
+elsewhere but not here. The lemma is printed as a restatement with the
+manuscript's proof as a second proof; the parser is the same procedure. What
+is new here is the treatment of the two boundaries, $A_r$ and $D_r$, the
+positive-cycle test and the cutoff.
+
+Fix a nonempty hull slice of length $N$ and put $S_i=P_i\cap R_{N-i}$. An interval is admissible exactly when its label can be read from $S_i$ to $S_j$ through the intervening viable layers; this is equivalent to \eqref{ccc:sc:eq:fragment-test}. In particular, restriction of an admissible interval is admissible, and every singleton of a hull word is admissible.
+
+\begin{lemma}[Greedy optimality; Part~V, restated]\label{ccc:sc:lem:greedy}
+Partition a nonempty hull word by repeatedly taking its longest admissible prefix from the current boundary. This partition has minimum size.
+\end{lemma}
+\begin{proof}[Second proof (manuscript~21)]
+Let $g_k$ be the greedy boundaries and let $q_k$ be those of any comparison partition. Inductively $g_k\ge q_k$ as long as the greedy parser has not already finished. If $g_{k-1}\ge q_k$, the claim is immediate. Otherwise the induction hypothesis gives $q_{k-1}\le g_{k-1}<q_k$, so $[g_{k-1},q_k)$ is a restriction of the comparison partition's $k$th admissible interval. The longest greedy extension reaches at least $q_k$. Thus the greedy parser finishes in no more pieces than any comparison partition.
+\end{proof}
+
+The parser stores the nonempty subset $Z$ of possible endpoints of its current fragment. Initially $Z=S_0$ and its rank counter is $1$. At zero-based coordinate $i$, on letter $a$, compute
+\[
+ Z'=\Delta_a(Z)\cap S_{i+1}.
+\]
+If this is nonempty, replace $Z$ by $Z'$. Otherwise cut immediately before that letter, add one to the rank counter, and restart with
+\[
+ Z=\Delta_a(S_i)\cap S_{i+1},
+\]
+which is nonempty by coordinate admissibility. The subset is exactly the possible endpoints of the current greedy fragment. A failed extension cannot be rescued by later letters, so this procedure implements Lemma~\ref{ccc:sc:lem:greedy}. A nonempty target therefore has rank $1$ plus its reset count. Taking maxima of this deterministic parser output does not interchange a minimum and a maximum.
+
+At a single length $N$, dynamic programming keeps for each current nonempty subset the largest rank counter attained there and advances over all coordinate-permitted letters. This computes $M_L(N)$ without enumerating target words; a maximizing target is recovered by retaining predecessor choices.
+
+\subsection{Finite boundary operators and the periodic middle}
+
+Choose any common eventual transient $t\ge0$ and period $p\ge1$ for $(P_i,R_i)$. In this section it is unnecessary to enlarge $p$ to a multiple of all cycle lengths. They can be found by following the deterministic orbit of pairs of subsets until its first repetition. Stable phase values are extended periodically to all integer phase arguments.
+
+For a live total residue $r$, every $N\ge2t$ with $N\equiv r\pmod p$ has the following viable layers, independent of the particular $N$:
+\[
+ \begin{array}{ll}
+ \text{left boundary:}&P_i\cap R_{r-i}^{\infty}\quad(0\le i\le t),\\[2pt]
+ \text{middle phase:}&S_{r,a}=P_a^{\infty}\cap R_{r-a}^{\infty},\\[2pt]
+ \text{right boundary:}&P_{r-t+j}^{\infty}\cap R_{t-j}\quad(0\le j\le t).
+ \end{array}
+\]
+The descriptions agree at the joins. A coordinate alphabet consists exactly of letters with an edge between its two consecutive viable layers. All such alphabets are nonempty on a live slice.
+
+Run the parser on all coordinate-permitted $t$-letter prefixes, retaining for each terminal subset $Z$ the largest rank-so-far $A_r(Z)$. This subset is at phase $t\bmod p$. When $t=0$, the initial value $1$ is assigned to the initial viable subset. Similarly, for each nonempty subset at phase $r-t\bmod p$, let $D_r(Z)$ be the largest additional reset count in the final $t$ coordinates. These finite operators can be computed by the same subset dynamic programming. Every eligible nonempty $Z$ can process the suffix, using resets if needed, so each $D_r(Z)$ is finite. Ineligible or unattainable values are $-\infty$.
+
+The periodic-middle graph has vertices $(a,Z)$, where $a\in\mathbb Z/p\mathbb Z$ and $\varnothing\ne Z\subseteq S_{r,a}$. For each $c\in\Gamma_{r,a}$, advance to phase $a+1$ and put a directed edge of weight
+\[
+ \begin{cases}
+ 0,&\text{with target }\Delta_c(Z)\cap S_{r,a+1},\quad
+                   \text{if that set is nonempty},\\
+ 1,&\text{with target }\Delta_c(S_{r,a})\cap S_{r,a+1},\quad
+                   \text{otherwise}.
+ \end{cases}
+\]
+Initialize the phase-$t$ vertices with their $A_r$ values and discard unreachable vertices.
+\wsevthree\ With $t\bmod p$ as starting phase this is Part~V's graph
+$G_{r,t\bmod p}$, whose vertex bound $p(2^s-1)$ is the same. Every retained vertex has an outgoing edge, and the graph has at most
+\begin{equation}\label{ccc:sc:eq:parser-vertices}
+ V=p(2^s-1)
+\end{equation}
+vertices.
+
+A complete word of length $N\ge2t$ in residue $r$ is exactly a permitted prefix, a middle path of length $N-2t$ ending at phase $r-t$, and a permitted suffix. Its rank is the prefix value plus the path weight plus its suffix resets. Conversely every such combination gives a hull word, because a coordinate hull independently permits each of its coordinate letters. The terminal phase enforces the required congruence on the total length; there is no additional hidden congruence restriction.
+
+\begin{theorem}[Exact graph algorithm]\label{ccc:sc:thm:exact-algorithm}
+The maximal rank is unbounded if and only if one of the reachable periodic-middle graphs contains a directed cycle of positive total weight. Otherwise, contracting its strongly connected components and optimizing on the resulting directed acyclic graph computes the exact maximal rank over all sufficiently long slices. Together with the slices of lengths less than $2t$ and the empty-word convention, this computes $R(L)$ exactly.
+\end{theorem}
+\begin{proof}
+Every reachable middle vertex can reach a vertex at phase $r-t$ by following arbitrary outgoing edges for the appropriate number of steps, chosen below $p$. The suffix can then be processed. Thus every reachable directed cycle is co-accessible to a complete word. A positive-weight cycle may be repeated between fixed access and exit paths. Its length is a multiple of $p$, so these complete words retain the same residue and boundary operators; their ranks grow without bound.
+
+Conversely, if no reachable positive-weight cycle exists, every edge within a reachable strongly connected component has weight zero: a positive edge there could be completed to a positive cycle, since all weights are nonnegative. Contract these components. At a contracted vertex retain the maximum of the initial values $A_r$ and, separately, the maximum eligible terminal value $D_r$ among its members. Arbitrary entry and exit vertices in one component can be connected at zero cost. These maxima are therefore compatible with any incoming and outgoing component edges, even when attained at different original vertices. A longest-path dynamic program in the condensation graph gives exactly the largest sum of initial, transition, and terminal values. Its paths correspond to finite original paths, and hence to complete hull words as above. The finitely many short slices and the accepted empty word finish the calculation. If the hull is empty our definition gives $R(L)=1$.
+\end{proof}
+
+\begin{theorem}[Complete finite witness cutoff]\label{ccc:sc:thm:cutoff}
+If $R(L)<\infty$, every hull word of length $N\ge2t$ has the same rank as a hull word in the same total residue of length at most
+\[
+ 2t+p(2^s-1)-1.
+\]
+Consequently, if the hull is nonempty, its maximal rank is attained at some length at most
+\begin{equation}\label{ccc:sc:eq:cutoff}
+ H=\max\{1,\,2t+p(2^s-1)-1\},
+\end{equation}
+with length zero included when the empty word is accepted.
+\end{theorem}
+\begin{proof}
+Take the target's middle parser path. By Theorem~\ref{ccc:sc:thm:exact-algorithm}, all its directed cycles have weight zero. Repeatedly delete closed portions between repeated vertices. The resulting simple path has at most $V-1$ edges and the same endpoints and total weight. Each removed length is divisible by $p$, so the terminal and total phases are unchanged. Keep the original $t$-letter prefix and suffix and the remaining middle edge labels. At the new total length all boundary layers are unchanged and each retained middle letter is still coordinate-permitted. This reconstructs a hull word with the same prefix parser value, middle reset count, final subset, and suffix reset count. Its rank is unchanged and its length is at most $2t+V-1$.
+
+Shorter words already satisfy the bound, since $V\ge1$. The artificial lower bound $H\ge1$ only avoids a zero positive-length horizon in trivial cases. For an empty hull, the value $R(L)=1$ is a convention and is not asserted to have a witness.
+\end{proof}
+\wsevthree\ This complements Part~II's
+Corollary~\ref{ccc:ps:cor:witness-length}, which bounds the length of
+high-rank witnesses when stabilization fails, and bears on Part~II's
+Question~\ref{ccc:ps:q:length}; neither is the other.
+
+An alternative exact implementation first decides boundedness using stable-word universality and then computes all slice maxima up to $H$. Universality is decidable by the finite phase/subset graph that starts from each entire viable layer and checks whether a permitted word can reach the empty set.
+
+\begin{corollary}[A transient bound for finite rank; Part~II, restated]\label{ccc:sc:cor:transient}
+For any common eventual transient $t$ of $(P_i,R_i)$,
+\[
+ R(L)<\infty\quad\Longrightarrow\quad R(L)\le2t+1.
+\]
+\end{corollary}
+\noindent\wsevthree\ This is the bound~\eqref{ccc:ps:eq:transient-bound} of
+Part~II's Theorem~\ref{ccc:ps:thm:criterion}, which holds for any $t,p$
+satisfying~\eqref{ccc:ps:eq:periodicity}; Part~V uses it the same way
+(Corollary~\ref{ccc:rs:cor:upper}). The manuscript's proof is Part~II's
+(one central fragment and $2t$ singleton boundaries) and is not reprinted.
+
+This equivalence also proves the boundedness test just described: failure of stable-word universality yields unbounded ranks by the obstruction repetition, and success yields the transient bound. Although $t$ is useful for exact computation and pruning, it need not be a sharp state-count parameter; the compression theorem avoids paying for a potentially large transient twice.
+
+\section{Computer assisted binary extrema through four states}\label{ccc:sc:sec:census}
+
+Here $F_2(s)$ is the binary extremal function. Its argument counts states; it is not the alphabet index. All upper census conclusions here concern exactly two symbols. The exact algorithms of Section~\ref{ccc:sc:sec:exact} apply to other fixed finite alphabets, but these binary censuses do not determine their extrema.
+
+\begin{theorem}[Exact small binary extrema]\label{ccc:sc:thm:small}
+For binary $\varepsilon$-free NFAs with at most $s$ states,
+\[
+ \boxed{F_2(1)=1,\qquad F_2(2)=2,\qquad F_2(3)=5,\qquad F_2(4)=7.}
+\]
+The upper bounds for two and three states are established by exhaustive finite computation with independent implementations. The four-state upper bound combines Corollary~\ref{ccc:sc:cor:transient} with an exhaustive pruned computation. The lower bounds have explicit witnesses.
+\end{theorem}
+
+\subsection{One to three states}
+
+For one state every nonempty accepted slice is the full product of its loop alphabet, so the maximal rank is one. For two states, use initial state $v$ and final state $u$, $1$-loops at both states, and $0$-edges $v\to v$ and $v\to u$, with no other edges. This accepts exactly the binary words containing at least one $0$: switch to $u$ at the last zero. A seed has rank one. At a length $N\ge2$, the only nonseed hull target is $1^N$, and it has rank two: split it into two nonempty intervals and place a zero outside each interval in its witnessing seed. It is not itself a seed. At length one, only $0$ belongs to the hull. Thus this NFA has $R(L)=2$, attained by $11$.
+
+For three states Proposition~\ref{ccc:sc:prop:linear} already gives rank five with the target $0^5$. The census supplies the upper bound.
+
+There are $2^{2s^2}(2^s-1)^2$ labeled binary transition pairs with nonempty initial and final sets. Presentations with an empty endpoint set recognize the empty language and cannot raise $F_2(s)$. The complete two- and three-state distributions are shown below. Here ``empty'' denotes an empty hull, recorded as raw maximum $0$ by the programs; under this article's floor convention it has $R(L)=1$. Every numbered rank column excludes those empty presentations.
+\[
+\begin{array}{c|r|r}
+\text{outcome}&s=2&s=3\\\hline
+\text{empty}&128&270{,}336\\
+R=1&1{,}612&8{,}680{,}660\\
+R=2&188&2{,}239{,}104\\
+R=3&0&111{,}984\\
+R=4&0&2{,}016\\
+R=5&0&72\\
+R=\infty&376&1{,}540{,}884\\\hline
+\text{total}&2{,}304&12{,}845{,}056
+\end{array}
+\]
+
+One implementation quotients transition pairs by state permutations and exchange of the binary letters, enumerates all nonempty endpoint sets, and weights each result by its exact transition-pair orbit size. For $s=3$ there are $22{,}284$ transition-pair representatives. It uses the complete cutoff and slice dynamic programming. A second implementation uses full Boolean-matrix eventual periodicity, exact boundary operators, positive-cycle detection, and periodic-middle path optimization. A third, independently written implementation directly enumerates every labeled transition pair and endpoint choice, using the paired-layer orbit and explicit boundary/core graph with strongly connected components. All three agree pointwise on all $12{,}847{,}360$ two- and three-state presentations.
+
+The finite cutoff is at most $6$ in the finite two-state cases and at most $20$ in the finite three-state cases. An independent literal oracle enumerates accepted seeds and their actual aligned substrings, then minimizes over all interval partitions. It corroborates the parser on $208{,}712$ two-state hull targets and $147{,}264$ targets from all $72$ three-state rank-five maximizers. These cross-checks are additional evidence, not a replacement for the complete enumeration.
+
+\subsection{A complete four-state pruning rule}
+
+A brute-force full rank distribution is unnecessary for the four-state maximum. For each underlying relation $E$ and nonempty $I,F$, let $t$ be the least transient of the paired orbit
+\[
+ (P_0,R_0)=(I,F),\qquad
+ (P_{i+1},R_{i+1})=(E(P_i),E^{\mathsf T}(R_i)).
+\]
+This orbit depends only on $E,I,F$, before the present edges are labeled. By Corollary~\ref{ccc:sc:cor:transient}, any finite-rank counterexample to $R(L)\le7$ must have $t\ge4$. All labelings of every discarded pair with $t\le3$ are therefore covered by an ordinary proof.
+
+Enumerate the $2^{16}$ four-state underlying relations, including loops, up to state permutation. There are $3{,}044$ graph representatives. For each one, examine all $15^2$ nonempty ordered endpoint-set pairs and retain exactly those with $t\ge4$. This leaves $411$ graphs and $23{,}228$ triples $(E,I,F)$.
+
+For each retained graph with $m$ present edges, enumerate its $3^m$ assignments of each edge as $0$-only, $1$-only, or both. These are exactly the binary transition pairs with union $E$. Retain one from each exchange of the two letters, using their integer matrix encodings to impose $\Delta_0\le\Delta_1$. Exactly one labeling is fixed by that exchange, namely the all-doubly-labeled graph. Thus each endpoint pair contributes $(3^m+1)/2$ cases. The total is independently predicted as
+\[
+ \frac{91{,}368{,}216+23{,}228}{2}=45{,}695{,}722.
+\]
+
+Every possible counterexample is covered: move its underlying graph to the chosen state-permutation representative and transport its labels and endpoint sets by the same permutation. All those endpoint sets and labelings are examined; exchange of the letter names preserves rank. It is unnecessary to quotient endpoint sets by graph stabilizers, since duplicate isomorphic cases do not affect a maximum. No trimming, connectedness, primitivity, or singleton-endpoint assumption is imposed.
+
+The complete retained scan has the following outcome. These are unweighted counts inside the pruned graph-representative and letter-exchange search, \emph{not} a distribution over all labeled four-state NFAs.
+\[
+\begin{array}{c|r@{\qquad}c|r}
+\text{outcome}&\text{count}&\text{outcome}&\text{count}\\\hline
+\text{empty}&186{,}704&R=1&14{,}622{,}000\\
+R=2&15{,}145{,}667&R=3&3{,}127{,}160\\
+R=4&202{,}894&R=5&3{,}837\\
+R=6&80&R=\infty&12{,}407{,}380
+\end{array}
+\]
+The counts sum to $45{,}695{,}722$ and the largest finite rank in the retained class is $6$. In particular there is no retained counterexample to rank at most $7$. The discarded cases already satisfy that bound, and Proposition~\ref{ccc:sc:prop:linear} attains $7$ with four states. Thus $F_2(4)=7$. Padding with isolated states makes the conclusion valid for the at-most-state convention.
+
+An independent candidate generator uses orbit marking and Floyd cycle detection, rather than the producer's minimum-under-permutations test and indexed orbit table. It regenerates the same $23{,}228$-record candidate list. Its independently written label enumeration and boundary/core graph rank engine completes all $45{,}695{,}722$ retained cases and reproduces every displayed count. Finite inputs are checked with the complete graph optimization; unboundedness is tested by the proved interior-universality criterion, with $12{,}492$ deterministic unbounded samples additionally checked by the full graph. All paired orbits have $t\le10$, $p\le4$, and cutoff expression $2t+15p-1\le59$; retained graphs have at most ten edges. These bounds also validate the finite arrays and integer encodings used by the implementations.
+
+The exact small-state conclusions are computer-assisted mathematical results with compact receipts and independently reproducible source. They are not proof-assistant certificates, and they do not claim $F_2(s)$ for any $s\ge5$.
+
+\section{Sharper bounds from common paths}\label{ccc:sc:sec:restricted}
+
+\begin{theorem}\label{ccc:sc:thm:hamiltonian}
+Let $L$ be recognized by an $n$-state, $\eps$-free, factor-universal binary NFA whose underlying digraph is primitive and has a Hamilton cycle. For arbitrary nonempty initial and final sets,
+\[
+ \boxed{R(L)\le n^2+n+1.}
+\]
+\end{theorem}
+
+The common-path argument gives a smaller additive term than Theorem~\ref{ccc:sc:thm:primitive} in this restricted class.
+
+\subsection{The central fragment and boundary compression}
+
+For an underlying digraph with edge relation $E$, let
+\[
+ \begin{aligned}
+ P_t&=\{q:\text{an $E$-walk of length $t$ goes from $I$ to $q$}\},\\
+ R_t&=\{q:\text{an $E$-walk of length $t$ goes from $q$ to $F$}\}.
+ \end{aligned}
+\]
+These are exact-length layers, with labels disregarded.
+
+\begin{lemma}\label{ccc:sc:lem:central}
+For a primitive factor-universal NFA of exponent $e$ with nonempty initial and final sets, one has $P_e=R_e=Q$. Every hull word $w$ of length $N>2e$ has an admissible central interval $[e,N-e)$. Consequently $R(L)\le2e+1$.
+\end{lemma}
+\begin{proof}
+Since $I,F$ are nonempty, the definition of exponent gives both layer equalities. Factor universality realizes $w[e:N-e]$ as a labeled walk. Prepend a length-$e$ walk from $I$ to its first vertex and append a length-$e$ walk from its last vertex to $F$. Choose any available edge labels on the added walks. The result is a complete accepted seed matching the central interval. Singleton hull witnesses cover the two boundaries. If $1\le N\le2e$, the singleton bound suffices; the empty word has rank at most one when present.
+\end{proof}
+
+The next lemma is the quantitative step. A directed path is simple, so its vertices are distinct.
+
+\begin{lemma}[Common path edge charge]\label{ccc:sc:lem:charge}
+Suppose a labeled digraph on $n$ vertices has a directed path $H$ of $c\ge1$ edges with these properties:
+\begin{enumerate}
+\item Every edge of $H$ carries both letters.
+\item No edge outside $H$ enters or leaves an internal vertex of $H$.
+\item Give weight one to the first edge of $H$ and to each edge outside $H$, and weight zero to the other edges of $H$. Every elementary directed cycle has mean weight at most $\mu$, where $0\le\mu\le1$.
+\end{enumerate}
+Fix a hull target of length $N$ and any underlying accepting walk of length $N$. Every segment of this walk of length $\ell\ge1$ yields a partition of the corresponding target interval into at most
+\begin{equation}\label{ccc:sc:eq:segment}
+ \mu\ell+(1-\mu)(n-1)+1
+\end{equation}
+admissible pieces. An empty segment needs no pieces.
+\end{lemma}
+\begin{proof}
+Delete elementary cycles successively from the segment, leaving a simple path of $m\le n-1$ edges. Its weight is at most $m$. The removed cycles have total weight at most $\mu(\ell-m)$, so the original segment's weight $W$ satisfies
+\begin{equation}\label{ccc:sc:eq:weight}
+ W\le\mu\ell+(1-\mu)m\le\mu\ell+(1-\mu)(n-1).
+\end{equation}
+This cycle deletion is used only to count weight; fragments remain on the original accepting walk.
+
+Make each position on a non-$H$ edge a singleton, using its hull witness, and each nonempty maximal run of $H$ edges one piece. Each run is admissible: on that run choose the target's letters on the doubly labeled edges, and choose any labels on the other edges of the same complete accepting walk. The endpoints and total length are unchanged.
+
+Except for a possible initial truncated run, every run enters through the first edge of $H$, because internal vertices admit no outside entry. Charge each such run to that edge. Charge each non-$H$ singleton to its own edge. The number of pieces is at most $W+1$, proving \eqref{ccc:sc:eq:segment}. This reasoning also covers $c=1$.
+\end{proof}
+
+\begin{corollary}\label{ccc:sc:cor:global}
+Under the hypotheses of Lemmas~\ref{ccc:sc:lem:central} and \ref{ccc:sc:lem:charge},
+\begin{equation}\label{ccc:sc:eq:global}
+ R(L)\le2\mu e+2(1-\mu)(n-1)+3
+       =2\mu(e-n+1)+2n+1.
+\end{equation}
+\end{corollary}
+\begin{proof}
+If $N>2e$, apply Lemma~\ref{ccc:sc:lem:charge} separately to the first and last $e$ edges of any length-$N$ accepting walk, and use the single central fragment. Such an accepting walk exists because the hull slice is nonempty. If $1\le N\le2e$, apply the lemma to the whole walk; its bound is no larger than \eqref{ccc:sc:eq:global}. The empty word is harmless. Boundary and central fragments may have different witnessing seeds.
+\end{proof}
+
+\subsection{High exponent structure and the quadratic bound}
+
+Put $\omega_n=(n-1)^2+1$. We use the following classical facts from Kirkland, Olesky and van den Driessche \cite{KOV}: Theorem~1.1, Lemma~2.1, Theorems~2.2--2.3, and Corollary~2.4, printed pages~30--34. Their Theorem~1.1 credits the two-cycle-length result to Lewin and Vitek.
+
+For a primitive Hamiltonian graph with $n\ge3$ and
+\begin{equation}\label{ccc:sc:eq:threshold}
+ e\ge\lfloor\omega_n/2\rfloor+2,
+\end{equation}
+there is a unique Hamilton cycle; the other elementary cycles have one length $j$, where $\gcd(n,j)=1$ and $n>j\ge\lceil(n-1)/2\rceil$. If $j>n/2$, label vertices $1,\ldots,n$ so the Hamilton edges descend modulo $n$, and the other edges are
+\begin{equation}\label{ccc:sc:eq:chords}
+ i\longrightarrow i+j-1\quad(i\text{ in a subset of }\{1,\ldots,a\}),\qquad
+ 1\le a\le n-j+1,
+\end{equation}
+with sources $1,a$ present. Their exact exponent formula is
+\begin{equation}\label{ccc:sc:eq:exponent}
+ e=n-a+1+(n-2)j.
+\end{equation}
+The exceptional possibility is odd $n$ with $j=(n-1)/2$; the same formula holds with $1\le a\le j$. These imported statements concern the underlying graph, without labels.
+
+\begin{proof}[Proof of Theorem~\ref{ccc:sc:thm:hamiltonian}]
+First assume $n\ge4$, \eqref{ccc:sc:eq:threshold}, and $j>n/2$. Set $c=j-a\ge0$. Consider first $c\ge1$ and the descending path
+\[
+ H:\quad j\longrightarrow j-1\longrightarrow\cdots\longrightarrow a,
+\]
+of $c$ edges. Every elementary $j$-cycle uses one chord and contains $H$. To verify the one-chord assertion, a $j$-cycle using $r$ chords has total displacement $-j+rj$ modulo $n$, so $r\equiv1\pmod n$. Since $0\le r\le a<n$, it follows that $r=1$. Its remaining edges descend from $i+j-1$ back to its chord source $i$, and include all edges of $H$. The Hamilton cycle contains $H$ as well.
+
+No internal vertex of $H$ has an outside entering or leaving edge. Indeed, chord sources are at most $a$, while chord targets lie between $j$ and $a+j-1\le n$. There is no modular wrap in the chord targets.
+
+Every edge of $H$ is doubly labeled. For either letter $x$, factor universality supplies arbitrarily long $x$-labeled walks. A sufficiently long such walk contains an elementary directed cycle all of whose edges carry $x$. Every elementary cycle contains $H$, so all edges of $H$ carry $x$.
+
+Use the weights of Lemma~\ref{ccc:sc:lem:charge}. Each $j$-cycle has total weight $a+1$, and the Hamilton cycle has total weight $n-j+a+1$. Their means obey
+\[
+ j(n-j+a+1)-n(a+1)=(n-j)(c-1)\ge0.
+\]
+Thus the maximum cycle mean is
+\[
+ \mu=\frac{n-j+a+1}{n}\le1.
+\]
+By \eqref{ccc:sc:eq:global} and \eqref{ccc:sc:eq:exponent},
+\begin{equation}\label{ccc:sc:eq:rankparameter}
+ R(L)\le\frac{2}{n}(n-j+a+1)\bigl((n-2)j-a+2\bigr)+2n+1.
+\end{equation}
+
+Put $k=n-j$ and $G(a)=(k+a+1)((n-2)j-a+2)$. On the real interval $1\le a\le k+1$,
+\[
+ G'(a)=(n-2)j-k+1-2a\ge(n+1)j-3n-1\ge0.
+\]
+The last inequality follows from $j>n/2$ when $n\ge6$, and from the integer bound $j\ge3$ when $n=4,5$. Hence $G(a)\le G(k+1)$. Substitution into \eqref{ccc:sc:eq:rankparameter} gives
+\begin{align*}
+ R(L)&\le\frac{4(n-1)}{n}(n-j+1)(j-1)+2n+1\\
+     &\le n(n-1)+2n+1=n^2+n+1,
+\end{align*}
+since $(n-j+1)+(j-1)=n$. The endpoint $a=k+1$ is only an algebraic maximizer; it need not satisfy $c\ge1$. The path lemma was applied at the actual graph's parameters.
+
+If $c=0$, then $a=j\le n-j+1$ and $j>n/2$ force odd $n$ and $a=j=(n+1)/2$. Equation~\eqref{ccc:sc:eq:exponent} gives $e=(n^2-1)/2$, so Lemma~\ref{ccc:sc:lem:central} gives $R(L)\le n^2$.
+
+If \eqref{ccc:sc:eq:threshold} fails, then
+\[
+ R(L)\le2e+1\le(n-1)^2+4\le n^2+n+1\qquad(n\ge2).
+\]
+If the exceptional case $j=(n-1)/2$ holds, \eqref{ccc:sc:eq:exponent} and $a\ge1$ give
+\[
+ R(L)\le2e+1\le n^2-n+3\le n^2+n+1.
+\]
+These cover all $n\ge4$ cases.
+
+For $n=1$, factor universality forces both self-loop labels, and $R(L)=1$. For $n=2,3$, the classical primitive exponent bound $e\le(n-1)^2+1$ gives $R(L)\le5,11$, respectively. That bound and these small cases are recalled in \cite[Section~1]{KOV}. They satisfy the claimed estimate.
+\end{proof}
+
+\section{Graphs with a cycle on all but one vertex}\label{ccc:sc:sec:near}
+
+The \emph{circumference} of a digraph is the maximum length of an elementary directed cycle. The compression argument extends to the case where at most one vertex is omitted.
+
+\begin{theorem}\label{ccc:sc:thm:near}
+Let $L$ be recognized by an $n$-state, $\eps$-free, factor-universal binary NFA with primitive underlying digraph and circumference at least $n-1$. For arbitrary nonempty initial and final sets,
+\[
+ \boxed{R(L)\le n^2+3n.}
+\]
+\end{theorem}
+
+\begin{lemma}[Several common paths]\label{ccc:sc:lem:paths}
+In a primitive factor-universal $n$-state NFA with nonempty initial and final sets, suppose there are $t\ge1$ pairwise vertex-disjoint directed paths of positive lengths, with $C$ edges in total. Each edge carries both letters, internal path vertices have no outside incoming or outgoing edges, and every elementary cycle contains all the paths. If all cycle lengths are at most $k$, their mean weights under the first-edge charge are at most
+\[
+ \mu=1-\frac{C-t}{k}.
+\]
+The segment estimate \eqref{ccc:sc:eq:segment} and global bound \eqref{ccc:sc:eq:global} hold with this $\mu$, or with any larger valid cycle-mean bound in $[0,1]$.
+\end{lemma}
+\begin{proof}
+Charge every outside edge and the first edge of every path by one, and all other path edges by zero. A cycle of length $\ell$ has weight $\ell-(C-t)$, hence mean at most $1-(C-t)/k$. Every path run except possibly an initial truncated run contains its charged first edge. Therefore pieces are bounded by weight plus one, just as in Lemma~\ref{ccc:sc:lem:charge}. The same residual simple-path estimate proves the claim.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{ccc:sc:thm:near}]
+The Hamiltonian case follows from Theorem~\ref{ccc:sc:thm:hamiltonian}. Assume first $n\ge6$, exponent satisfying \eqref{ccc:sc:eq:threshold}, and circumference $k=n-1$. By \cite[Theorems~1.1--1.2]{KOV}, the elementary cycle lengths are $k$ and $j$, with
+\begin{equation}\label{ccc:sc:eq:near-exp}
+ \gcd(j,k)=1,\qquad j\ge\lceil n/2\rceil,\qquad e\le n+j(n-3).
+\end{equation}
+If $j=n/2$, Lemma~\ref{ccc:sc:lem:central} gives $R(L)\le n^2-n+1$, so assume $j>n/2$.
+
+The classification \cite[Theorem~3.3]{KOV} places the graph, up to relabeling and reversal of all arcs, inside one of two templates. Start with the descending cycle on $1,\ldots,k$ and every chord
+\[
+ i\to i+j-1\qquad(1\le i\le a_0=n-j).
+\]
+Either add vertex $n$ with the same base predecessors and successors as one base vertex $v$, or add edges $1\to n$, $n\to n-2$, $n\to j-1$.
+
+Reversal causes no loss: reverse all labels' edges, exchange $I$ and $F$, and reverse each word. This bijects seeds and hull words, preserves every aligned partition after reversing its interval order, and preserves factor universality. Thus $R(L)$ is unchanged.
+
+In the base template, every elementary cycle contains the descending path $H$ from $j$ to $a_0$, of length
+\[
+ c=j-a_0=2j-n.
+\]
+The base cycles have lengths $j$ and $k$, with a unique $k$-cycle and one chord in each $j$-cycle, by the Hamiltonian classification or the displacement argument used above. Internal vertices of $H$ have unique incoming and outgoing base edges.
+
+In the replication template, project $n$ to $v$. Every elementary cycle projects to an elementary base cycle. Otherwise the only repeated projected vertex is $v$, and splitting there gives two nonempty closed base walks. Each has length at least the base girth $j$, forcing an original elementary cycle of length at least $2j>n$, which is impossible. Remove from $H$ its at most two edges incident with $v$. The remaining edges form at most two vertex-disjoint nonempty paths after empty pieces are discarded. Every template cycle contains them, their internal vertices retain unique incoming and outgoing edges, and their total length $C$ and number $t$ satisfy
+\[
+ C\ge c-2,\qquad t\le2,\qquad C-t\ge c-4.
+\]
+
+In the other template, the descending path from $j-1$ to $a_0$ is common to all cycles and has $c-1$ edges. For a cycle through $n$, entrance is from $1$. Exit to $n-2$ gives a descending return path and a $k$-cycle; exit to $j-1$ gives a $j$-cycle. A chord on either return route would force a repeated base vertex before returning to $1$, so no further possibility occurs. Internal vertices of this shortened path have unique incoming and outgoing edges. For $c\ge2$ it is a positive-length path with $C-t=c-2\ge c-4$. At $c=1$ it is empty, a case handled below without compression.
+
+Each retained edge lies in every cycle of the relevant full template, so it lies in every cycle of the actual strongly connected subgraph. In particular it is present there. Factor universality forces it to carry both letters, using a monochromatic elementary cycle for each letter as in the Hamiltonian proof. Internal degree conditions persist under deletion of edges.
+
+For $c\ge4$, Lemma~\ref{ccc:sc:lem:paths} therefore permits the larger mean bound
+\[
+ \mu_0=1-\frac{c-4}{n-1}=\frac{2n-2j+3}{n-1}\in[0,1].
+\]
+If no positive-length path remains when $c=4$, charging every edge by one gives the same bound $\mu_0=1$ directly.
+
+If $c\le4$, use \eqref{ccc:sc:eq:near-exp} and $j\le(n+4)/2$ to obtain
+\[
+ R(L)\le2e+1\le2n+(n+4)(n-3)+1=n^2+3n-11.
+\]
+If $c\ge4$, \eqref{ccc:sc:eq:global} and \eqref{ccc:sc:eq:near-exp} give
+\[
+ R(L)\le\frac{2(2n-2j+3)(j(n-3)+1)}{n-1}+2n+1.
+\]
+The derivative of the numerator product with respect to $j$ is
+\[
+ (n-3)(2n+3-4j)-2<0\qquad\bigl(j\ge(n+4)/2\bigr).
+\]
+Evaluate at $j=(n+4)/2$ to get $R(L)\le n^2+3n-9$. Both estimates imply the theorem.
+
+Below the high-exponent threshold, use $R(L)\le(n-1)^2+4$. For $2\le n\le5$, the primitive exponent bound gives $R(L)\le2(n-1)^2+3\le n^2+3n$. For $n=1$ the rank is one, and an accepted empty word always has rank one. This exhausts the cases.
+\end{proof}
+
+\section{A large exponent without a total labeled state subset}\label{ccc:sc:sec:barrier}
+
+A nonempty $S\subseteq Q$ is \emph{forward-total} if every $q\in S$ has, for each letter, an outgoing edge into $S$. It is \emph{backward-total} if every $q\in S$ has, for each letter, an incoming edge from $S$. The next family shows why such subsets cannot be assumed even near the maximum primitive exponent.
+
+\begin{proposition}\label{ccc:sc:prop:barrier}
+For every odd $n\ge5$ there is a primitive, Hamiltonian, factor-universal binary graph on $n$ vertices with exponent $(n-1)(n-2)$, no nonempty forward-total or backward-total subset, and
+\[
+ R(L)\le6n+3
+\]
+for every choice of nonempty initial and final sets.
+\end{proposition}
+\begin{proof}
+Use $Q=\{0,\ldots,n-1\}$, Hamilton edges $i\to i-1$ modulo $n$, and chords
+\[
+ 0\to n-3,\qquad 2\to n-1.
+\]
+The edges $0\to n-1$ and $1\to0$ carry only $0$; the edge $n-1\to n-2$ carries only $1$. Every other edge, including both chords, carries both letters.
+
+Set $A=Q\setminus\{n-2\}$ and $C=Q\setminus\{0\}$. Directly,
+\begin{equation}\label{ccc:sc:eq:subsets}
+ \delta(S,0)=A,\qquad\delta(S,1)=C\qquad(S\in\{Q,A,C\}).
+\end{equation}
+For completeness, deleting $0$ can remove only targets $n-1,n-3$; alternative suppliers $2,n-2$ remain in $C$. Deleting $n-2$ can remove only target $n-3$; its alternative supplier $0$ remains in $A$. Together with the displayed full-set images this proves \eqref{ccc:sc:eq:subsets}, letter by letter. Thus every nonempty word maps $Q$ to $A$ or $C$, according to its last letter, proving factor universality.
+
+A forward-total subset must omit $1$, which has no outgoing $1$, and $n-1$, which has no outgoing $0$. Both targets of $2$ are then absent; the unique outgoing chain excludes $3,\ldots,n-2$, and finally both targets of $0$ are absent. A backward-total subset must omit $0$, which has no incoming $1$, and $n-2$, which has no incoming $0$. The predecessors of $n-3$ are then absent; this exclusion propagates down to $1$. The two predecessors $0,2$ of $n-1$ are also absent. Both kinds of subset are therefore empty.
+
+The elementary cycle lengths are $n$ and $n-2$. An elementary cycle cannot use both chords: after the chord from $0$, it meets $2$ before returning to $0$, and using the second chord would revisit a vertex; the reversed order is analogous. The graph is primitive since $n$ is odd. In the notation of \eqref{ccc:sc:eq:chords}, after increasing the vertex names by one, $j=n-2$ and $a=3$. The graph belongs to the class of \cite[Theorem~2.2]{KOV}, so Corollary~2.4 there gives
+\[
+ e=n-2+(n-2)^2=(n-1)(n-2).
+\]
+Its girth is $g=n-2$.
+
+Choose any $f\in F$. There is a suffix length $b\le n-2=g$ such that $|R_b|\ge2$. Follow predecessors of $f$ along the Hamilton cycle until reaching $n-3$ or $n-1$, then take one further predecessor step; these are precisely the two vertices of indegree two. This takes at most $n-2-f$ steps if $0\le f\le n-3$, at most two if $f=n-2$, and one if $f=n-1$. The singleton final set $\{f\}$ has two predecessors at that first branch, and monotonicity gives the assertion for $F$.
+
+If $N>e+b$, the nonempty word $w[e:N-b]$ maps $Q=P_e$ onto a set missing just one state, by \eqref{ccc:sc:eq:subsets}. That image meets $R_b$, so this entire central interval is admissible. Singleton boundaries would already give $R(L)\le e+b+1\le(n-1)^2$.
+
+For the stronger linear estimate, fix any length-$N$ accepting underlying walk. Choose the target's symbol at every doubly labeled edge and the prescribed symbol at each other edge. This gives a seed that can disagree only at singly labeled edges. A given source vertex appears at most $\lceil\ell/g\rceil$ times among the sources of a walk segment of $\ell$ edges: two occurrences are separated by a positive closed walk, of length at least $g$. Only three source vertices, $0,1,n-1$, have singly labeled edges. Hence a segment has at most $3\lceil\ell/g\rceil$ potential disagreements. A segment with $d$ disagreements is covered by at most $2d+1$ admissible pieces: matching runs use the constructed seed, and each disagreement uses its singleton hull witness.
+
+If $1\le N\le e+b\le ng$, this gives at most $6n+1$ pieces. If $N>e+b$, apply it to the first $e=(n-1)g$ edges and the last $b\le g$ edges, using at most $6(n-1)+1$ and $7$ pieces, respectively. Add the central piece to obtain $6n+3$. The empty-word convention completes the proof.
+\end{proof}
+
+The family has $e/n^2\to1$ but $R(L)/n^2\to0$, uniformly over the endpoint sets. Thus near-extremal exponent alone does not produce a quadratic rank lower bound. It also disproves the proposed route of finding a nonempty total original-state subset in every high-exponent factor-universal graph. Its large reachable subsets and sparse singly labeled edges instead make the rank small.
+
+\section{Scope and reproducible checks}\label{ccc:sc:sec:scope}
+
+The all-size theorem establishes the leading coefficient for every fixed finite alphabet, quantitatively as $F_q(s)\le s^2+\max\{8,2q-4\}s$. Together with the alphabet-independent lower family it also covers $q=o(s)$. It does not establish a leading-one estimate uniform over unrestricted alphabet growth or the optimal additive term. The binary finite function is known here exactly only through four states. The sharper Hamiltonian and near-Hamiltonian estimates do not have matching lower constructions in those classes. A near-maximal primitive exponent can coexist with linear rank and no nonempty forward-total or backward-total state subset.
+
+The evidence has three distinct roles. First, the periodic-obstruction, component, stripe, entry--exit, bubble, circulation, common-anchor, parser, cutoff, pruning, and explicit-family arguments are ordinary proofs supplied in this article. The primitive exponent and high-exponent structural inputs are classical results cited precisely in \cite{KOV}. The length-gate construction is reproduced from the companion note (Part~IV). Second, the exact binary two-, three-, and four-state upper extrema depend on complete finite computations whose coverage is justified in Section~\ref{ccc:sc:sec:census}. Independent implementations reproduce the counts, with pointwise agreement for all two- and three-state presentations and a full independently regenerated pruned four-state run. Third, the finite parameter, bookkeeping, template, and family checks corroborate the all-size proofs; they are not premises in place of those proofs.
+
+The accompanying source package contains the editable article, PDF, build script, exact implementations, reproduction scripts, compact count and audit receipts, consistency checks, pinned source descriptions, and checksums. Millions of raw automaton records and compiled executables are omitted. Candidate lists can be regenerated by the supplied programs, and their digests compared with the receipts. The README distinguishes fast receipt and consistency validation from complete exhaustive reruns.
+
+The mathematical arguments and computation packages have undergone separate independent review, followed by review of the integrated article. This is an unrefereed research note with ordinary and computer-assisted proofs, not a Lean development or another proof-assistant certificate. The provenance claim is local: the results answer questions developed from the pinned report, without claiming first discovery throughout the literature.
+\wsevthree\ The reviews mentioned above are recorded in three delivered
+receipts (\texttt{review-receipt.json},
+\texttt{finite\_alphabet\_integration\_audit.json} and
+\texttt{linear-exact-census-integration-review.json}, shipped as listed
+below); they belong to the delivery and are not refereeing.
+\wsevthree\ No statement of this Part is formalized; Part~IV's
+Question~\ref{ccc:qr:q:formal} applies to it as well. The exact $F_2(s)$ for
+$s\ge5$, the optimal additive term and a leading constant uniform in the
+alphabet size remain open; they refine Question~\ref{ccc:qr:q:constant}.
+
+\wsevthree\ \emph{Shipped layout.} The paragraphs above describe the delivered
+package. In this report its files are shipped, byte-identical, as follows;
+the manuscript and its PDF (delivered as \texttt{hamiltonian-rank.tex} and
+\texttt{hamiltonian-rank.pdf}, a file name kept from an earlier delivery) are
+printed or replaced by this report, the delivery README by the report's
+README, and the checksum list \texttt{SHA256SUMS} was verified and retired.
+Two delivered files are not shipped again because they are already shipped
+with Part~IV, byte for byte: \texttt{check\_lower.py} is
+\nolinkurl{code/04-quadratic-finite-rank-check.py} and
+\texttt{lower-verification.json} is
+\nolinkurl{data/04-quadratic-finite-rank-verification.json}.
+In the table the shipped name is
+\texttt{code/} or \texttt{data/}, then the prefix
+\nolinkurl{07-sharp-constant-}, then the second column.
+{\footnotesize
+\begin{longtable}{@{}P{.06\textwidth}P{.46\textwidth}P{.42\textwidth}@{}}
+\toprule
+\textbf{In} & \textbf{Shipped name after the prefix} & \textbf{Delivered as}\\
+\midrule
+\endhead
+code & \nolinkurl{alphabet-check_fixed_alphabet_lemmas.py} & \nolinkurl{alphabet/check_fixed_alphabet_lemmas.py}\\
+code & \nolinkurl{alphabet-check_ternary_bookkeeping.py} & \nolinkurl{alphabet/check_ternary_bookkeeping.py}\\
+code & \nolinkurl{build.sh} & \nolinkurl{build.sh}\\
+code & \nolinkurl{check.py} & \nolinkurl{check.py}\\
+code & \nolinkurl{check_general.py} & \nolinkurl{check_general.py}\\
+code & \nolinkurl{check_templates.py} & \nolinkurl{check_templates.py}\\
+code & \nolinkurl{exact-audit_census.cpp} & \nolinkurl{exact/audit_census.cpp}\\
+code & \nolinkurl{exact-audit_literal.py} & \nolinkurl{exact/audit_literal.py}\\
+code & \nolinkurl{exact-compare_pointwise.cpp} & \nolinkurl{exact/compare_pointwise.cpp}\\
+code & \nolinkurl{exact-four_state-audit_families.py} & \nolinkurl{exact/four_state/audit_families.py}\\
+code & \nolinkurl{exact-four_state-audit_four.cpp} & \nolinkurl{exact/four_state/audit_four.cpp}\\
+code & \nolinkurl{exact-four_state-census_four_pruned.cpp} & \nolinkurl{exact/four_state/census_four_pruned.cpp}\\
+code & \nolinkurl{exact-four_state-check_literal_four.py} & \nolinkurl{exact/four_state/check_literal_four.py}\\
+code & \nolinkurl{exact-four_state-four_state_prune_budget.cpp} & \nolinkurl{exact/four_state/four_state_prune_budget.cpp}\\
+code & \nolinkurl{exact-four_state-reproduce.sh} & \nolinkurl{exact/four_state/reproduce.sh}\\
+code & \nolinkurl{exact-four_state-validate_receipts.py} & \nolinkurl{exact/four_state/validate_receipts.py}\\
+code & \nolinkurl{exact-producer-census.cpp} & \nolinkurl{exact/producer/census.cpp}\\
+code & \nolinkurl{exact-producer-census_graph.cpp} & \nolinkurl{exact/producer/census_graph.cpp}\\
+code & \nolinkurl{exact-producer-exact_rank.py} & \nolinkurl{exact/producer/exact_rank.py}\\
+code & \nolinkurl{exact-reproduce.sh} & \nolinkurl{exact/reproduce.sh}\\
+code & \nolinkurl{exact-validate_receipts.py} & \nolinkurl{exact/validate_receipts.py}\\
+code & \nolinkurl{verify.sh} & \nolinkurl{verify.sh}\\
+data & \nolinkurl{alphabet-fixed_alphabet_independent_audit_receipt.json} & \nolinkurl{alphabet/fixed_alphabet_independent_audit_receipt.json}\\
+data & \nolinkurl{alphabet-fixed_alphabet_lemmas_receipt.json} & \nolinkurl{alphabet/fixed_alphabet_lemmas_receipt.json}\\
+data & \nolinkurl{alphabet-ternary_bookkeeping_receipt.json} & \nolinkurl{alphabet/ternary_bookkeeping_receipt.json}\\
+data & \nolinkurl{exact-audit_receipt.json} & \nolinkurl{exact/audit_receipt.json}\\
+data & \nolinkurl{exact-four_state-audit_receipt.json} & \nolinkurl{exact/four_state/audit_receipt.json}\\
+data & \nolinkurl{exact-four_state-family_verification.json} & \nolinkurl{exact/four_state/family_verification.json}\\
+data & \nolinkurl{exact-four_state-four-state-pruned-census.log} & \nolinkurl{exact/four_state/four-state-pruned-census.log}\\
+data & \nolinkurl{exact-four_state-independent-pruned-census.log} & \nolinkurl{exact/four_state/independent-pruned-census.log}\\
+data & \nolinkurl{exact-four_state-literal_rank_seven.json} & \nolinkurl{exact/four_state/literal_rank_seven.json}\\
+data & \nolinkurl{exact-independent_one_state.json} & \nolinkurl{exact/independent_one_state.json}\\
+data & \nolinkurl{exact-independent_three_state.json} & \nolinkurl{exact/independent_three_state.json}\\
+data & \nolinkurl{exact-independent_two_state.json} & \nolinkurl{exact/independent_two_state.json}\\
+data & \nolinkurl{exact-literal_receipt.json} & \nolinkurl{exact/literal_receipt.json}\\
+data & \nolinkurl{exact-original_cutoff_rerun.json} & \nolinkurl{exact/original_cutoff_rerun.json}\\
+data & \nolinkurl{exact-original_graph_rerun.json} & \nolinkurl{exact/original_graph_rerun.json}\\
+data & \nolinkurl{exact-pointwise_three_state.json} & \nolinkurl{exact/pointwise_three_state.json}\\
+data & \nolinkurl{exact-pointwise_two_state.json} & \nolinkurl{exact/pointwise_two_state.json}\\
+data & \nolinkurl{finite_alphabet_integration_audit.json} & \nolinkurl{finite_alphabet_integration_audit.json}\\
+data & \nolinkurl{general-verification.json} & \nolinkurl{general-verification.json}\\
+data & \nolinkurl{linear-exact-census-integration-review.json} & \nolinkurl{linear-exact-census-integration-review.json}\\
+data & \nolinkurl{review-receipt.json} & \nolinkurl{review-receipt.json}\\
+data & \nolinkurl{source-pins.json} & \nolinkurl{source-pins.json}\\
+data & \nolinkurl{verification.json} & \nolinkurl{verification.json}\\
+\bottomrule
+\end{longtable}}
+\noindent The delivered \texttt{verify.sh} copies the checkers, receipts and
+the \texttt{alphabet} and \texttt{exact} directories into a temporary
+directory and runs them there, so it needs the delivered layout; the
+report's README gives a rerun on a copy that restores it. When the batch was
+placed, the ten Python checks that \texttt{verify.sh} runs without its
+\texttt{-{}-compile} option were rerun on such a copy with Python~3.14.4;
+all passed, and those with a shipped record printed it apart from CRLF line
+endings. The two \texttt{alphabet} checkers also rewrite their receipts
+beside themselves, and those differ from the shipped ones only in the
+recorded running time (the \texttt{"seconds"} field). The C\texttt{++}
+censuses and the two reproduction scripts were not rerun; their receipts
+validate.
+
+
 % [write, batch 66] the appendices belong to Part I.
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
@@ -7181,7 +8606,7 @@ printed here as Part~VI and is not shipped; it must not be run in
 belong to Part~I and are printed after Parts~II and~III so that no letter or
 number of Part~I moved.}
 \waddsevone{Part~IV is printed before them too.}
-\waddsevthree{So are Parts~V and~VI.}
+\waddsevthree{So are Parts~V--VII.}
 
 For completeness, here is the standard route to the co-r.e.-completeness used
 in Section~\ref{ccc:sec:undecidable}. The foundational undecidable problem is Post
@@ -7436,6 +8861,42 @@ remark on the DFA decision question; in Appendix~\ref{ccc:app:universality}
 and here. No existing label, theorem, section, equation or question number
 changed.
 
+\paragraph{\waddsevthree{A seventh manuscript.}} On 1 October 2026 batch-73
+manuscript~21, \emph{Sharp Leading Constant for Constrained Crossover Rank}
+(archive \texttt{common-path-rank-package.zip}), written against Parts~I--III
+at ProveIt commit \texttt{1bd730779} and citing Part~IV's manuscript at
+commit \texttt{aee32ad45}, which arrived in commit \texttt{f8c3a392a} and
+was placed in commit \texttt{5e4f1263c}, became Part~VII. Its earlier
+version, manuscript~24 (\texttt{common-path-rank-package~(1).zip}), was
+superseded and is neither printed nor shipped. The report is now built from
+seven manuscripts; Section~\ref{ccc:sc:sec:source} gives this one's
+provenance and what it contributed. The choices made were these. Part~VII
+answers Part~IV's Question~\ref{ccc:qr:q:constant} as to the leading constant
+and was kept as a Part of its own. It shares two lemmas, with the same
+proofs, with Part~VI; they are printed once, with their proofs, in Part~VI,
+and Part~VII states them for NFAs and points there. Its reproofs of Part~II's
+criterion and transient bound and of Part~IV's construction became pointers
+without the repeated proofs; its greedy lemma, Part~V's, keeps its proof as a
+second proof. Its backward layers $B_j$ were renamed $R_j$, Part~II's name;
+four sections without labels received labels; every label received the
+prefix \texttt{ccc:sc:}; its bibliography entries for the pinned report and
+for the manuscripts of Parts~IV and~V were replaced by internal references,
+its Schwarz entry (not cited in its text) identified with \cite{Schwarz}, and
+one entry (Kirkland--Olesky--van den Driessche) added. Two of its delivered
+files are Part~IV's shipped checker and record and were not shipped again.
+Dated notes were added wherever the report called the leading constant open
+or bounded it by two: after Questions~\ref{ccc:ps:q:rank}
+and~\ref{ccc:qr:q:constant}, after the comment on
+Theorem~\ref{ccc:ps:thm:lower-family}, in Part~II's delivered status and
+conclusion, in Part~IV's opening, its list of answers, its single-initial-state
+paragraph and Section~\ref{ccc:qr:sec:scope}, in Part~V after
+Corollary~\ref{ccc:rs:cor:upper} and in its list of what it leaves open, and in
+Part~VI after Theorem~\ref{ccc:dc:thm:leading-one}, after its two shared
+lemmas, at the end of Section~\ref{ccc:dc:sec:leading-one} and in its list of
+what it leaves open; also in Part~I's conclusion, in
+Appendix~\ref{ccc:app:universality} and here. No existing label, theorem,
+section, equation or question number changed.
+
 \begin{thebibliography}{99}
 \small\raggedright\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}\setlength{\parskip}{0pt}
 \bibitem{Hughes}
@@ -7648,5 +9109,15 @@ Theorem~6.1, pp.~7--8.
 Pawe\l{} Gawrychowski, Martin Lange, Narad Rampersad, Jeffrey Shallit, and Marek Szyku\l{}a.
 Existential length universality.
 \href{https://arxiv.org/abs/1702.03961v5}{arXiv:1702.03961v5} (9 March 2020), full version, Theorems~5--6.
+
+% [write, batch 73] entry cited by Part VII. Its entries for this report and
+% for the manuscripts of Parts IV and V were replaced by internal references;
+% its Schwarz entry is \cite{Schwarz} above.
+\bibitem{KOV}
+Steve Kirkland, D.~D.~Olesky and P.~van den Driessche.
+Digraphs with large exponent.
+\emph{Electronic Journal of Linear Algebra} \textbf{7} (2000), 30--40.
+Theorems~1.1--1.2, Lemma~2.1, Theorems~2.2--2.3 and~3.3, Corollary~2.4.
+\href{https://www2.math.ethz.ch/EMIS/journals/ELA/ela-articles/articles/vol7_pp30-40.pdf}{Primary full text}.
 \end{thebibliography}
 \end{document}

@@ -1,8 +1,8 @@
 # Aligned Fragments and Constrained Crossover
 
-**Undecidability, exact generation depth, and rational growth of context-free recombination closures; with Part II, PSPACE-complete finite stabilization of regular seeds, Part III, decidable regularity and exact stabilization of crossover closures, Part IV, quadratic finite rank, Part V, rational rank slopes, and Part VI, finite crossover stabilization for deterministic automata**
+**Undecidability, exact generation depth, and rational growth of context-free recombination closures; with Part II, PSPACE-complete finite stabilization of regular seeds, Part III, decidable regularity and exact stabilization of crossover closures, Part IV, quadratic finite rank, Part V, rational rank slopes, Part VI, finite crossover stabilization for deterministic automata, and Part VII, the sharp leading constant**
 
-This is a research report in six Parts, built from six manuscripts.
+This is a research report in seven Parts, built from seven manuscripts.
 Part I (29 September 2026) answers a question that Charles E. Hughes left
 open in arXiv:2608.27755v1: the complexity of deciding `L ⊗_c L = L` for a
 context-free language `L`, where `⊗_c` is constrained crossover (see "Which
@@ -22,15 +22,19 @@ October 2026, batch 73) answers Part II's Question 24.1 and Part IV's
 Question 53.2: finite stabilization of an explicit complete binary DFA is
 coNP-complete, and the largest finite rank `F_DFA(s)` of an `s`-state
 complete binary DFA satisfies `(s−7)² + 2 ≤ F_DFA(s) ≤ s² + 3` for `s ≥ 8`,
-so `F_DFA(s)/s² → 1`. All six are AI-assisted research drafts. The title pages and PDF metadata of
+so `F_DFA(s)/s² → 1`. Part VII (1 October 2026, batch 73) answers Part
+IV's Question 53.1 as to the leading constant: for binary NFAs
+`(s−3)² ≤ F(s) ≤ s² + 8s`, so `F(s)/s² → 1` (over `q` letters the upper
+bound is `s² + max(8, 2q−4)s`), and `F(1), …, F(4) = 1, 2, 5, 7`, the last
+three computer-assisted. All seven are AI-assisted research drafts. The title pages and PDF metadata of
 Parts I-III name ChatGPT as the drafting assistant and Vladimir Reshetnikov
 as the person they were prepared for (Part I: "Research draft prepared with
 ChatGPT for Vladimir Reshetnikov"; Part II the same; Part III "Research
 manuscript prepared with ChatGPT for Vladimir Reshetnikov"); the title
-pages and metadata of Parts IV-VI read "Research note prepared with
+pages and metadata of Parts IV-VII read "Research note prepared with
 OpenAI for Vladimir Reshetnikov". That wording
 stays on Part I's title page and in the provenance records (here and the
-opening sections of Parts II-VI) only.
+opening sections of Parts II-VII) only.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -40,14 +44,15 @@ opening sections of Parts II-VI) only.
 | 04 | batch 71, manuscript 01 | `quadratic-finite-rank-package` (inner directory `quadratic-finite-rank`; *Quadratic Finite Rank for Constrained Crossover*; arrived in `aee32ad45`; 8-page US-letter PDF) | `1bd730779` | `427bca743` | Part IV: Sections 46-54 |
 | 05 | batch 73, manuscript 33 | `rational-rank-slopes-package` (inner directory `rational-rank-slopes`; *Rational Rank Slopes for Constrained Crossover*; arrived in `f8c3a392a`; 11-page US-letter PDF) | `1bd730779` | `5e4f1263c` | Part V: Sections 55-65 |
 | 06 | batch 73, manuscript 29 | `dfa-crossover-package` (inner directory `dfa-crossover`; *Finite Crossover Stabilization for Deterministic Automata*, revised edition; arrived in `f8c3a392a`; 12-page US-letter PDF) | `1bd730779` | `26abf259b` | Part VI: Sections 66-74 |
+| 07 | batch 73, manuscript 21 | `common-path-rank-package` (no inner directory; *Sharp Leading Constant for Constrained Crossover Rank*, source files `hamiltonian-rank.*`; arrived in `f8c3a392a`; 31-page US-letter PDF) | `1bd730779` (and `aee32ad45` for Part IV's manuscript) | `5e4f1263c` | Part VII: Sections 75-88 |
 
 The pins are ProveIt commits `9b24a3a8d545af9624f6ac455f5b548be62818b6`
 (source 01, recorded in its Section 1.1 and in `provenance.md`),
 `b8b0fa2184a044d46ce9ed0f25f88d7bb60fa042` (sources 02 and 03, recorded in
 Sections 14.1 and 30.1 and in their audit notes) and
-`1bd730779e8bc44c8976dcd9f38cad86a0d21c26` (sources 04-06, recorded in
-their bibliographies and delivery READMEs, and in Sections 46.1, 55.1 and
-66.1). At `b8b0fa218` Part
+`1bd730779e8bc44c8976dcd9f38cad86a0d21c26` (sources 04-07, recorded in
+their bibliographies and delivery READMEs, and in Sections 46.1, 55.1, 66.1
+and 75.1). At `b8b0fa218` Part
 I's `article.tex` had the blob `eb4f427f`, which is also the blob at the
 placement commit `4fee1cd07`, so everything the two batch-66 manuscripts
 say about "the inspected report" refers to Part I as printed. They were
@@ -67,7 +72,17 @@ lacks source 06's Section 7 (the bound `s² + 3`, with Lemmas 73.2-73.3),
 takes the upper bound `2(s−1)² + 3` from source 05 and so concludes only
 `F_DFA(s) = Θ(s²)`; its nine support files are byte-identical to source
 06's. Nothing of it is printed or shipped; it survives in the arrival
-commit, and Section 66.1 describes it.
+commit, and Section 66.1 describes it. Source 07 pins `1bd730779` for this
+report and `aee32ad456135cff5db062c5b13eb27fd10ef4c0` for Part IV's
+manuscript (then `docs/incoming/quadratic-finite-rank-package.zip`), and
+identifies Part V's manuscript by the SHA-256 of its source file
+(`data/07-sharp-constant-source-pins.json`); it did not know Part VI.
+**Superseded and not shipped:** batch-73 manuscript 24,
+`common-path-rank-package (1).zip`, the first (19-page) version of source 07,
+same pins, also arrived in `f8c3a392a`; source 07's review receipt names it
+as the previous version, and every result and proof of it is in source 07
+(which adds Sections 81-84: the finite-alphabet bound, the linear family,
+the exact algorithm and the censuses). Section 75.1 describes it.
 
 **Status.** AI-assisted and unrefereed. **Not formalized**: no statement of
 any Part has a Lean or Rocq proof, and none of the manuscripts claims one.
@@ -78,11 +93,12 @@ Lean and Rocq developments; that placement gives it no formal status (see
 
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf        the compiled report, 121 US-letter pages (unnumbered title page, contents pp. 1-4,
-                   Part I Sections 1-12 pp. 5-28, Part II Sections 13-28 pp. 29-52,
-                   Part III Sections 29-45 pp. 53-76, Part IV Sections 46-54 pp. 77-87,
-                   Part V Sections 55-65 pp. 88-100, Part VI Sections 66-74 pp. 101-115,
-                   Part I's Appendices A-D pp. 116-119, references pp. 119-120)
+article.pdf        the compiled report, 156 US-letter pages (unnumbered title page, contents pp. 1-4,
+                   Part I Sections 1-12 pp. 5-28, Part II Sections 13-28 pp. 29-53,
+                   Part III Sections 29-45 pp. 54-77, Part IV Sections 46-54 pp. 78-88,
+                   Part V Sections 55-65 pp. 89-101, Part VI Sections 66-74 pp. 102-116,
+                   Part VII Sections 75-88 pp. 117-149,
+                   Part I's Appendices A-D pp. 150-154, references pp. 154-155)
 README.md          this guide
 provenance.md      Part I: the manuscript's source record and bounded novelty audit, as delivered
 proof-audit.md     Part I: the manuscript's author-side proof and edge-case audit, as delivered
@@ -108,6 +124,15 @@ code/06-dfa-crossover-check_stripes_random.py      Part VI: the same on 1,519 se
 code/06-dfa-crossover-check_rank_family.py         Part VI: rank witnesses of the deterministic gate family, literal seed checks
 code/06-dfa-crossover-check_gate_completion.py     Part VI: independent gate-completion and witness checks
 code/06-dfa-crossover-build.sh                     Part VI: the delivered two-pass pdfLaTeX build script
+code/07-sharp-constant-<name>                      Part VII: 22 files (delivered layout flattened into the name):
+                                                   check.py, check_general.py, check_templates.py (consistency checks),
+                                                   alphabet-check_fixed_alphabet_lemmas.py, alphabet-check_ternary_bookkeeping.py,
+                                                   exact-audit_census.cpp, exact-compare_pointwise.cpp, exact-audit_literal.py,
+                                                   exact-validate_receipts.py, exact-reproduce.sh,
+                                                   exact-producer-{census.cpp,census_graph.cpp,exact_rank.py},
+                                                   exact-four_state-{audit_four.cpp,census_four_pruned.cpp,
+                                                   four_state_prune_budget.cpp,audit_families.py,check_literal_four.py,
+                                                   validate_receipts.py,reproduce.sh}, verify.sh, build.sh
 data/verification.json   Part I: the delivered receipt, PASS, 1,766,639 checks
 data/verification.txt    Part I: console output of the delivered run
 data/02-pspace-stabilization-verification.json  Part II: the delivered receipt, PASS (Python 3.13.5)
@@ -129,8 +154,26 @@ data/06-dfa-crossover-stripes-exhaustive.json      Part VI: PASS, 2 + 64 + 5,832
 data/06-dfa-crossover-stripes-random.txt           Part VI: one line, 1,519 random DFAs passed
 data/06-dfa-crossover-rank-family.json             Part VI: PASS, 24 path witnesses (m = 2..25, top rank 578), 14,308 seed checks
 data/06-dfa-crossover-gate-completion.json         Part VI: PASS, 1,829 gate-state completions, 19 witnesses (m = 2..20)
-code/07-sharp-constant-*, data/07-sharp-constant-* 22 + 23 files placed in 5e4f1263c for Part VII, not yet written in
+data/07-sharp-constant-<name>                      Part VII: 23 files: general-verification.json, verification.json
+                                                   (receipts of check_general.py and check.py), source-pins.json,
+                                                   review-receipt.json, finite_alphabet_integration_audit.json,
+                                                   linear-exact-census-integration-review.json,
+                                                   alphabet-{fixed_alphabet_lemmas,ternary_bookkeeping,
+                                                   fixed_alphabet_independent_audit}_receipt.json,
+                                                   exact-{audit_receipt,literal_receipt,independent_one_state,
+                                                   independent_two_state,independent_three_state,pointwise_two_state,
+                                                   pointwise_three_state,original_cutoff_rerun,original_graph_rerun}.json,
+                                                   exact-four_state-{audit_receipt,family_verification,
+                                                   literal_rank_seven}.json and two census logs
+                                                   (exact-four_state-four-state-pruned-census.log,
+                                                   exact-four_state-independent-pruned-census.log)
 ```
+
+Part VII's two remaining delivered files, `check_lower.py` and
+`lower-verification.json`, are byte-identical to Part IV's
+`code/04-quadratic-finite-rank-check.py` and
+`data/04-quadratic-finite-rank-verification.json` and were not shipped
+again.
 
 All shipped code, data and notes files are byte-identical to the
 deliveries. Delivery names and shipped paths:
@@ -173,12 +216,23 @@ deliveries. Delivery names and shipped paths:
   `REVISION.md` is not shipped (its content is in Section 66.1 and above),
   and its checksum list `SHA256SUMS` (13 entries, all verified at placement)
   was retired by repository policy.
-- **Not shipped**, for all six: the delivered manuscript (`article.tex`, for
+- **Part VII:** every staged file keeps its delivered path with `/` turned
+  into `-` after the prefix `07-sharp-constant-`: programs and build or
+  reproduction scripts in `code/`, receipts, review and audit JSON and the
+  two census logs in `data/` (for example `exact/four_state/audit_four.cpp`
+  -> `code/07-sharp-constant-exact-four_state-audit_four.cpp`,
+  `alphabet/fixed_alphabet_lemmas_receipt.json` ->
+  `data/07-sharp-constant-alphabet-fixed_alphabet_lemmas_receipt.json`;
+  Section 88 tabulates all 45). The package had no audit or provenance
+  Markdown; its checksum list `SHA256SUMS` (50 entries, all verified at
+  placement) was retired by repository policy.
+- **Not shipped**, for all seven: the delivered manuscript (`article.tex`, for
   Part IV `quadratic-finite-rank.tex`, for Part V `rational-rank-slopes.tex`,
-  for Part VI `dfa-crossover-stabilization.tex`; printed in the report), its
-  PDF (this directory's PDF is a build of the written `article.tex`) and
-  `README.md` (replaced by this file). They survive in the arrival commits
-  `ae28ea2db`, `9ad899cbe`, `aee32ad45` and `f8c3a392a`.
+  for Part VI `dfa-crossover-stabilization.tex`, for Part VII
+  `hamiltonian-rank.tex`; printed in the report), its PDF (this directory's
+  PDF is a build of the written `article.tex`) and `README.md` (replaced by
+  this file). They survive in the arrival commits `ae28ea2db`, `9ad899cbe`,
+  `aee32ad45` and `f8c3a392a`.
 
 Delivered files whose text still uses delivery names or describes the
 package rather than this report:
@@ -258,12 +312,40 @@ package rather than this report:
   with output in `build/`, and copies the PDF beside itself; there it would
   fail. `data/06-dfa-crossover-stripes-random.txt` contains an en dash
   ("1–8 states"), as delivered.
+- **Part VII's programs all use their delivered layout.** Each Python
+  program reads and writes receipts beside itself under delivered names
+  (`Path(__file__).parent`), and the two `alphabet` checkers also hash the
+  manuscript at `../hamiltonian-rank.tex`, which is not shipped; run in
+  `code/` they fail or write files there. `code/07-sharp-constant-verify.sh`
+  copies `check*.py`, `*verification.json`, `hamiltonian-rank.tex`,
+  `alphabet/` and `exact/` into a temporary directory, and its `diff` against
+  `lower-verification.json` needs the delivered `check_lower.py` (Part IV's
+  checker here). `code/07-sharp-constant-exact-reproduce.sh` and
+  `...-exact-four_state-reproduce.sh` compile the C++ censuses and **replace
+  the result receipts in place**; `code/07-sharp-constant-build.sh` builds
+  `hamiltonian-rank.tex`. See "Rerunning".
+- Part VII's Section 88 describes the package by its delivery names and
+  says "the README distinguishes fast receipt and consistency validation
+  from complete exhaustive reruns" (the delivered README, not this one); a
+  `[write, batch 73]` note there gives the shipped paths.
+- `data/07-sharp-constant-exact-audit_receipt.json` records a SHA-256 for
+  `producer/exact-finite-rank-algorithm.md`, a note that was not delivered
+  (the package's `source-pins.json` says the separate notes were integrated
+  into the article). `data/07-sharp-constant-source-pins.json` and
+  `data/07-sharp-constant-review-receipt.json` record SHA-256 values of
+  delivered and earlier sources (the earlier version, manuscript 24, among
+  them); they are kept as delivered data, and the article quotes none of
+  them.
+- `code/07-sharp-constant-exact-four_state-census_four_pruned.cpp` and
+  `data/07-sharp-constant-exact-literal_receipt.json` have no final newline,
+  as delivered; the two `.log` files were added past the repository's
+  `*.log` ignore rule.
 
 ## Labels
 
 Every label carries the prefix `ccc:`; Part II's carry `ccc:ps:`, Part
 III's `ccc:cl:`, Part IV's `ccc:qr:`, Part V's `ccc:rs:` and Part VI's
-`ccc:dc:`. **332 labels in total** (pattern
+`ccc:dc:`, Part VII's `ccc:sc:`. **404 labels in total** (pattern
 `\label(\[[^]]*\])?\{`, no `\label[...]` form occurs):
 
 - **Part I, 80.** The 76 labels of the batch-44 write, unchanged: none was
@@ -296,6 +378,11 @@ III's `ccc:cl:`, Part IV's `ccc:qr:`, Part V's `ccc:rs:` and Part VI's
   Part V and four new on the questions of its sentence of open refinements,
   now Questions 74.1-74.4 (`q:exact`, `q:lower-order`, `q:family`,
   `q:individual`).
+- **Part VII, 72** (`ccc:sc:`): all 64 labels of batch-73 manuscript 21,
+  prefixed, every `\ref` and `\eqref` updated; four new sections as in
+  Parts V and VI, and four new on the manuscript's unlabelled Sections 1, 11,
+  12 and 13 (`sec:intro`, `sec:near`, `sec:barrier`, `sec:scope`). The
+  manuscript has no numbered questions.
 
 The raw manuscripts collided with each other (`app:audit`, `eq:hull`,
 `sec:examples`, `sec:hardness`, `sec:questions`) but not with Part I; the
@@ -313,7 +400,10 @@ the appendices fourteen pages later). The write of Part VI renamed and
 removed no label either; all 295 earlier labels keep their numbers (Part I's
 stay on their pages or fall one page later, those of Parts II-IV one or two
 pages, those of Part V two, because of the dated notes, and the appendices
-seventeen pages later).
+seventeen pages later). The write of Part VII renamed and removed no label;
+all 332 earlier labels keep their numbers (those of Parts I and II stay on
+their pages or move one page, those of Parts III-VI one or two pages, and
+the appendices thirty-four pages later).
 
 ## Which question of Hughes
 
@@ -561,6 +651,49 @@ period `t, p`, stable layers `S_{r,a}` and letters `C_{r,a}`, `M_L(n)`):
   rank 578) with 14,308 literal seed-membership tests; 1,829 gate-completion
   cases for `2 ≤ m ≤ 60` and 19 witnesses for `m ≤ 20`.
 
+**Part VII** (source 07), with `F_2(s)` = Part II's `F(s)` and `F_q(s)` its
+`q`-letter analogue (the subscript is the alphabet size):
+
+- **General bound** (Theorem 76.2): every `s`-state ε-free binary NFA (any
+  initial and final sets) with finite `R(L)` has `R(L) ≤ s² + 8s`; with Part
+  IV's family, `(s−3)² ≤ F(s) ≤ s² + 8s` for `s ≥ 4` and `F(s)/s² → 1`. This
+  answers Part IV's Question 53.1 as to the leading constant.
+- The route: robust compression in a primitive factor-universal component,
+  `n² + 8n` pieces with fixed-endpoint witnesses (Theorem 77.2; Lemmas
+  77.3-77.5 on two-cycle-length digraphs, from Kirkland-Olesky-van den
+  Driessche); a universal strongly connected component and its full stripe
+  (Lemmas 78.2-78.3); transfer to the whole NFA with Part VI's two lemmas in
+  NFA form (Lemmas 79.1-79.2), the imprimitive case `s² + 6s − 3` and the
+  one-symbol case `3s`.
+- **Finite alphabets** (Theorem 81.1): `R(L) ≤ s² + max(8, 2q−4)s` over `q`
+  letters, an all-symbol family with `R(L) = (s−3)²`, so `F_q(s)/s² → 1` for
+  fixed `q` and for `q = o(s)` (Lemmas 81.2-81.4: cycle counts, a common
+  vertex by a Hall/König argument, common anchors).
+- **Linear family** (Proposition 82.1): for `s ≥ 3` a primitive
+  factor-universal binary NFA with one initial and one final state, exponent
+  `e = s − 1`, `R(L) = 2s − 1 = 2e + 1` and slice maxima `min(N, 2s − 1)`;
+  with Part IV's family `F(s) ≥ max(2s − 1, (s−3)²)`.
+- **Exact algorithm and cutoff** (Theorems 83.2-83.3): `R(L)` is unbounded
+  iff a reachable periodic-middle graph has a positive cycle, and otherwise is
+  computed exactly; finite maximal rank is attained at a length at most
+  `max(1, 2t + p(2^s − 1) − 1)`.
+- **Small extrema** (Theorem 84.1): `F(1) = 1`, `F(2) = 2`, `F(3) = 5`,
+  `F(4) = 7`; computer-assisted for `s = 2, 3, 4` (complete censuses of 2,304
+  and 12,845,056 labelled presentations with three agreeing implementations;
+  for four states a proved pruning by the bound `2t + 1` and a complete scan
+  of 45,695,722 letter-exchange representatives, maximum 6, reproduced
+  independently), with explicit witnesses.
+- **Restricted classes** (Sections 85-87): `R(L) ≤ n² + n + 1` for
+  Hamiltonian primitive factor-universal graphs (Theorem 85.1),
+  `n² + 3n` for circumference at least `n − 1` (Theorem 86.1), and a family
+  with exponent `(n−1)(n−2)`, no forward- or backward-total subset and
+  `R(L) ≤ 6n + 3` (Proposition 87.1).
+- Restated, not claimed: Lemma 78.1 and Corollary 83.4 (Part II's criterion
+  and bound `2t + 1`), Proposition 80.1 (Part IV's theorem), Lemma 83.1 and
+  its parser (Part V's, second proof kept).
+- **Audit** (Section 88): the delivered receipts of the consistency checks
+  and censuses; the census logs; three review receipts of the delivery.
+
 ## What is not claimed
 
 **Part I**, kept from the manuscript: an unrefereed draft, not a
@@ -662,6 +795,23 @@ the stripe lemmas, the complexity classification, every CRT reduction
 instance or the asymptotic rank bounds, and no finite test exercises
 `s² + 3`.
 
+**Part VII**, kept from batch-73 manuscript 21 and its delivery README:
+unrefereed, ordinary and computer-assisted proofs, no proof-assistant
+certificate; no literature-wide priority claim (the provenance claim is
+local to the pinned report); the primitive-exponent and high-exponent
+structure results (Kirkland-Olesky-van den Driessche, with Lewin-Vitek) are
+imported; the length-gate construction is Part IV's; **no exact `F(s)` for
+`s ≥ 5`, no optimal additive term, and no leading constant one uniform in the
+alphabet size** when `q` is comparable to `s`; the Hamiltonian and
+near-Hamiltonian bounds have no matching lower constructions in their
+classes; the lower family is sharp for the unrestricted class, not within
+the primitive factor-universal class; the four-state counts are pruned
+representative counts, not a distribution over all four-state NFAs; the
+censuses record an empty hull as raw value 0 where the article puts
+`R(L) = 1` (no extremal value is affected); the finite parameter,
+template and family checks corroborate the proofs and are not premises; the
+delivered reviews are the delivery's own, not refereeing.
+
 ## Questions answered or re-scoped by the batch-66 Parts
 
 Dated notes (`[Added 30 September 2026, batch 66: …]`) record these in the
@@ -750,9 +900,25 @@ article.
   certificate of stabilization would give NP = coNP. Not answered.
 - Part VI adds Questions 74.1-74.4 (exact `F_DFA(s)`, lower-order terms,
   exact rank of its family, complexity for one DFA).
-- Part I's conclusion, its Appendix A note (the appendices follow Parts V
-  and VI too) and Appendix D gain one dated note each for each of Parts V and
-  VI (the Appendix A note is one sentence). The title page gains none (it is
+- Part IV's **Question 53.1** ("Leading constant"): answered as to the
+  constant by Part VII: it is one, `(s−3)² ≤ F(s) ≤ s² + 8s`
+  (Theorem 76.2), over `q` letters `s² + max(8, 2q−4)s` (Theorem 81.1); the
+  exact function is known for `s ≤ 4`, `1, 2, 5, 7` (Theorem 84.1). The exact
+  `F(s)` for `s ≥ 5` and the additive term stay open. Notes after Questions
+  24.2 and 53.1, after the comment on Theorem 22.1, in Part II's delivered
+  status and conclusion, in Part IV's opening, its list of answers, its
+  one-initial-state paragraph and Section 53, in Part V after Corollary 64.2
+  and in its list of what it leaves open, and in Part VI after Theorem 73.1,
+  its Lemmas 73.2-73.3 and at the end of Section 73 and in its list of what it
+  leaves open say so.
+- Two consequences recorded as the write's observations, not the
+  manuscript's: `F_one(s)/s² → 1` (Part IV's single-initial-state family with
+  Part VII's bound, which needs no assumption on the initial states; notes in
+  Section 52 and Section 76), and Part V's `2(s−1)² + 3` stays the better
+  bound for `s ≤ 11` (`s² + 8s` wins from `s = 12`).
+- Part I's conclusion, its Appendix A note (the appendices follow Parts
+  V-VII too) and Appendix D gain one dated note each for each of Parts V-VII
+  (the Appendix A note is one sentence). The title page gains none (it is
   full).
 
 ## Notation
@@ -760,7 +926,7 @@ article.
 Article Section 1.5 has Part I's table (no symbol of manuscript 01 was
 renamed). Sections 13.3 and 29.3 have the tables for Parts II and III. Ten
 symbols of the batch-66 manuscripts were renamed, with no change of
-normalization (and one of Part IV, one of Part V and two of Part VI):
+normalization (and one of Part IV, one of Part V, two of Part VI and one of Part VII):
 
 - Part II: the coordinate hull `𝓗(L)` is printed as Part I's `Rec(L)`;
   the regular delimiter languages `G(K)`, `B(K)` of Section 20.3 as
@@ -797,6 +963,14 @@ normalization (and one of Part IV, one of Part V and two of Part VI):
   II's `T_s, p_s`, but in Section 73 a Schwarz transient and enlarged period;
   `κ_H` are cyclic classes, not Part V's relation-power index `κ`; `B`, `K`,
   `D` are not Part II's `B_s`, `K_s`, `D_L(n)`.
+- Part VII (Section 75.3 has its table): the backward layers `B_j` as `R_j`,
+  Part II's name for the same sets, because Part II's `B_s` is a constant and
+  the manuscript uses `B` for three other things. **Easy to misread, and
+  kept:** `F_2(s)`, `F_q(s)` carry the alphabet size as subscript (`F_3(s)` is
+  ternary, `F_2(3) = 5`); `Γ_{r,a}` is Part II's `C_{r,a}`, while `C` is a
+  component and `C_q = max(8, 2q−4)` a constant; `ω_n = (n−1)² + 1` is not
+  Part III's clique number; in the manuscript's proof of Proposition 80.1
+  (not reprinted) `H_m` and `T_m` are Part IV's `S_m` and `H_m`, **swapped**.
 
 To watch: `⊗_c` is Hughes's constrained crossover (his `⊗_u` contains
 concatenation); `L^[k]` is the parallel iteration, whereas Hughes's iterated
@@ -830,7 +1004,7 @@ being positions `i+1..j` in Part I's one-based letter count.
   counterpart here is the frozen-source iteration (Theorem 3.8). Hughes's
   singleton conjecture (that report's Question 21.1) stays open. Article
   Section 1.4 sets this out; that report carries a dated reciprocal remark
-  under its scope sentence. Parts II-VI concern crossover only and use
+  under its scope sentence. Parts II-VII concern crossover only and use
   nothing from that report. A dated batch-66 note there (after its
   Corollary 4.3, commit `8140a0967`) extends that remark to Parts II and
   III, citing the `(2s+5)²` rank bound as "a quadratic bound"; it does not
@@ -843,7 +1017,7 @@ being positions `i+1..j` in Part I's one-based letter count.
   it leaves open"; this remains true of Part II, and Part VI (batch 73) now
   settles the DFA complexity (coNP-complete). No note was added there in
   this write; whether that dated note gains a further pointer is left to the
-  catalogue step.
+  catalogue step. Part VII bears on nothing about insertion degrees either.
 - No other report of the research-report or surreal collections treats
   crossover of languages or cites Hughes's preprint (searched: crossover,
   Hughes, 2608.27755; the other reports using the word "crossover" use it in
@@ -886,7 +1060,13 @@ reductions (`git grep` for coNP, 3SAT, NP-complete and Cook-Levin over the
 tracked Lean and Rocq files outside `lib/` finds only
 `plon_NP_complete` in `Logic/Modal/Coq/CorsiVF.v`, a frame-completeness
 theorem for a modal logic named NP, unrelated).
-**Not formalized:** every statement of all six Parts. No Lean build was
+Part VII needs primitive digraphs and their exponents (Wielandt's bound and
+the Kirkland-Olesky-van den Driessche structure theorems), Hall's theorem in
+a regular bipartite multigraph, and the two-generator Frobenius formula; it
+cites no formal source, and no ProveIt Lean or Rocq file treats primitive
+exponents or crossover. Its small extrema are computer-assisted censuses in
+C++ and Python, not certificates.
+**Not formalized:** every statement of all seven Parts. No Lean build was
 run for this report.
 
 ## Building
@@ -897,7 +1077,7 @@ In a scratch directory holding a copy of `article.tex`:
 
 The committed PDF was built this way with MiKTeX pdfLaTeX (packages include
 newtx, `shuffle`, fancyhdr, listings, tikz with the `automata` library,
-hyperref; no BibTeX step): 121 US-letter pages, 0 errors, 0 warnings, 0
+hyperref; no BibTeX step): 156 US-letter pages, 0 errors, 0 warnings, 0
 overfull or underfull boxes, no undefined or multiply-defined references or
 citations and no duplicate destinations. The title page is excluded from
 page anchors. All fonts are embedded; the two Type 3 fonts are the
@@ -906,8 +1086,8 @@ page anchors. All fonts are embedded; the two Type 3 fonts are the
 `code/03-closure-classification-Makefile`),
 `code/02-pspace-stabilization-build.sh`,
 `code/04-quadratic-finite-rank-build.sh`,
-`code/05-rational-slopes-build.sh` or `code/06-dfa-crossover-build.sh` in
-this directory: they would leave
+`code/05-rational-slopes-build.sh`, `code/06-dfa-crossover-build.sh` or
+`code/07-sharp-constant-build.sh` in this directory: they would leave
 auxiliary files here, or fail. GNU `make` is not installed on the reference
 machine anyway.
 
@@ -1025,16 +1205,46 @@ delivered README's `diff -u` recipe reports spurious differences on Windows
 because of CRLF. Do not run `code/06-dfa-crossover-build.sh` (see
 "Building").
 
+**Part VII:** its programs need the delivered layout and the unshipped
+manuscript (see above), so rerun them in a fresh extraction of the delivered
+archive, never in `code/`:
+
+    mkdir run7 && cd run7
+    git -C <repo> show f8c3a392a:docs/incoming/common-path-rank-package.zip > p.zip
+    unzip -q p.zip
+    PYTHONUTF8=1 py check_general.py > general-new.json
+    PYTHONUTF8=1 py check.py > verification-new.json
+    PYTHONUTF8=1 py check_templates.py
+    PYTHONUTF8=1 py alphabet/check_fixed_alphabet_lemmas.py
+    PYTHONUTF8=1 py alphabet/check_ternary_bookkeeping.py
+    PYTHONUTF8=1 py exact/validate_receipts.py
+    PYTHONUTF8=1 py exact/four_state/audit_families.py
+    PYTHONUTF8=1 py exact/four_state/check_literal_four.py
+    PYTHONUTF8=1 py exact/four_state/validate_receipts.py
+
+(or `sh verify.sh` where `python3` resolves; it works in a temporary copy).
+When the batch was placed these ran this way with Python 3.14.4 on the
+shared machine, each within about three minutes: all passed, the outputs with
+shipped records equalled them apart from CRLF line endings, `check_templates`
+printed a pass record that has no shipped counterpart, and the two
+`alphabet` checkers rewrote their receipts beside themselves, differing from
+the shipped ones only in `"seconds"` (`check_ternary_bookkeeping.py` took
+159 seconds on the loaded machine, against 7.5 recorded). Never use
+`python -O`. The C++ censuses (`sh verify.sh --compile`,
+`sh exact/reproduce.sh`, `sh exact/four_state/reproduce.sh`; g++ with C++17)
+were **not** rerun; the receipts validate, and the reproduction scripts
+replace result receipts in place, so run them only in such an extraction.
+
 ## Other discrepancies
 
 - The delivered PDFs were 23 pages each for Parts I-III, 8 pages for
-  Part IV, 11 for Part V and 12 for Part VI; this build is 121, because the six are one document
+  Part IV, 11 for Part V, 12 for Part VI and 31 for Part VII; this build is 156, because the seven are one document
   with `[write]` text (Part I's Sections 1.4-1.5, its notes on the title
   page, in Sections 1.1, 2, 7, 10, 11 and 12 and in Appendices A and D;
-  Sections 13, 29, 46, 55 and 66; notes in Parts II-VI). The page size stays US letter. The
-  contents list Parts II-VI by section only (`tocdepth` 1 from Part II on);
+  Sections 13, 29, 46, 55, 66 and 75; notes in Parts II-VII). The page size stays US letter. The
+  contents list Parts II-VII by section only (`tocdepth` 1 from Part II on);
   Part I's appendices are listed under "Appendices to Part I" and are
-  printed after Part VI.
+  printed after Part VII.
 - Part IV's bibliography cited this report as `ProveIt` (Part II, Question
   24.2, at the pin); those citations were replaced by internal references.
   Its `To` entry is the report's `To` (same paper; the manuscript adds the
@@ -1119,5 +1329,30 @@ because of CRLF. Do not run `code/06-dfa-crossover-build.sh` (see
   before it says so.
 - Part VI's two lemmas on actual alphabets and on the joint entry and exit
   budget (Lemmas 73.2 and 73.3) are printed once, here, with their proofs.
+- Part VII's bibliography cited this report as `Report` and the manuscripts
+  of Parts IV and V as `Quadratic` and `Slopes`; all were replaced by internal
+  references (its `Report` entry also called the report "prepared with
+  OpenAI", whereas Parts I-III say ChatGPT). Its `Schwarz` entry, not cited in
+  its text, is the report's; `KOV` was added in the report's style. No DOI or
+  URL was checked online.
+- Part VII's proofs of Lemmas 78.1, 79.1 and 79.2, Proposition 80.1 and
+  Corollary 83.4 repeat proofs printed in Parts II, IV and VI and are
+  replaced by pointers; the statements are kept. Its Lemma 79.1 adds a
+  liveness clause to Part VI's Lemma 73.2, and the pointer says how the same
+  proof gives it. Its greedy lemma (Lemma 83.1) is Part V's Lemma 57.1 and
+  keeps its proof as a second proof; its parser and periodic-middle graph are
+  Part V's, with boundary operators added.
+- Part VII's manuscript says its lower construction "resolves the
+  leading-coefficient question in the pinned report"; at the pin Part II's
+  Question 24.2 asked only for the order, and the leading-constant question is
+  Part IV's Question 53.1 (a note says so).
+- Part VII's manuscript does not credit Part VI (written separately) for
+  Lemmas 79.1-79.2 or Part V at its greedy lemma; notes there do.
+- Part VII's delivered files are named `hamiltonian-rank.*` and its archive
+  `common-path-rank-package`, names that predate its title; its README says
+  the file name was kept from an earlier delivery, which is not in the
+  repository.
+- Part VII's unused macro `\ex` and its `lmodern` and `amssymb` packages were
+  not carried over; its census tables are printed as delivered.
 - Batch-73 notes are dated 1 October 2026, the date of the manuscripts and of
   the write.
