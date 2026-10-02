@@ -1,0 +1,448 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+symbols.map}
+\usepackage{lmodern,microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Factorial growth of ascent sequences avoiding 000},pdfsubject={Exact growth constant for OEIS A202058}}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\asc}{\operatorname{asc}}
+\newcommand{\TT}{\mathcal T}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prb}{\mathbb P}
+\title{Factorial growth of ascent sequences avoiding 000}
+\author{A proof and reproducible research report}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove that the number $a_n$ of ascent sequences in which each value occurs at most twice satisfies
+\[
+ \lim_{n\to\infty}(a_n/n!)^{1/n}=\frac{8}{3\pi^2}.
+\]
+This is the factorial exponential constant conjectured by Conway, Conway, Elvey Price and Guttmann. The proof starts from their exact compacted recurrence. A positive transfer operator admits uniform exponential barriers whose characteristic curve has endpoint $3\pi^2/8$. Stopped Feynman--Kac comparison proves the exact exponential-generating-function radius. A growing-state coefficient argument upgrades the resulting limsup to a full limit. We also obtain a non-optimal logarithmic error bound and a controlled leading Lambert $W$ inverse. The ratio limit, prefactor, and possible stretched-exponential corrections remain unresolved.
+\end{abstract}
+
+\section{Result and scope}
+An ascent sequence is a word $w_1\cdots w_n$ of nonnegative integers such that $w_1=0$ and
+\[
+ w_i\le1+\asc(w_1\cdots w_{i-1})\quad(i\ge2),\qquad
+ \asc(w)=\#\{i:w_i<w_{i+1}\}.
+\]
+Avoidance of the pattern 000 means that no value occurs three times. Let $a_n$ count these words, with $a_0=1$. The sequence is OEIS A202058 \cite{OEIS}.
+
+\begin{theorem}\label{thm:main}
+Put
+\[
+ T=\frac{3\pi^2}{8},\qquad \mu=T^{-1}=0.27018982304623405718\ldots.
+\]
+Then the exponential generating function $A(t)=\sum_{n\ge0}a_nt^n/n!$ has radius $T$, and
+\begin{equation}\label{eq:limit}
+ \lim_{n\to\infty}\left(\frac{a_n}{n!}\right)^{1/n}=\mu.
+\end{equation}
+More quantitatively,
+\begin{equation}\label{eq:coarse}
+ \log a_n=\log(n!)-n\log T+O\bigl(n^{9/13}(\log n)^3\bigr).
+\end{equation}
+\end{theorem}
+
+Conway--Conway--Elvey Price--Guttmann \cite{CCEG} conjectured the constant $8/(3\pi^2)$ from long exact series. Their Section 5 also leaves a possible stretched-exponential factor unresolved; its numerical discussion is more cautious than the simplified introduction. The recurrence and its compaction argument are theirs. The contribution proved here is the exact factorial growth constant, including existence of the normalized root limit, together with the coarse error and inverse below. A scoped literature search found no later proof; this is not a comprehensive novelty certification before publication.
+
+The exponent $9/13$ in \eqref{eq:coarse} comes from coarse uniform bounds. It is not a prediction of the actual subexponential scale. In particular, this report does not establish $a_n\sim Cn!\mu^n$, a ratio limit, a power prefactor, or an all-orders expansion.
+
+\section{The exact compacted recurrence}
+Twice-used labels can no longer occur, and may be deleted from the active alphabet. The remaining once-used labels can be compacted to an initial segment. In the notation of \cite[Sections 2.2 and 2.6]{CCEG}, if $F_0(a,\ell,s)=1$, then
+\begin{align}\label{eq:paperrec}
+F_n(a,\ell,s)={}&\sum_{i=0}^{s-1}
+ F_{n-1}(a+\one_{i>\ell}-1,i-1,s-1)\notag\\
+&+\sum_{i=s}^{a+1}F_{n-1}(a+\one_{i>\ell},i,s+1),
+\end{align}
+and $a_n=F_{n-1}(0,0,1)$ for $n\ge1$. The adjusted quantities $a$ and $\ell$ may equal $-1$.
+
+For completeness, the compaction mechanism is as follows. If adjacent labels $i,i+1$ have different remaining capacities and $i<\ell$, reverse every maximal suffix block using only these two labels, and interchange the two labels. This interchanges their multiplicities and preserves the total number of ascents in each block, including the comparisons with outside labels. Both labels are already allowed because $i+1\le\ell$. Thus the ascent bounds inside a block remain valid, and those after the block see the same number of preceding ascents. The operation is an involution. In the binary-capacity setting needed here, it exchanges a once-used and an unused label below the last value. After appending a previously unused $i$, bubble it down through unused labels until the once-used set is again an initial segment; after a repetition, delete the exhausted label. This gives \eqref{eq:paperrec}. The canonical states need not themselves retain every property of an original prefix; they retain its suffix counts.
+
+Set $m=a+2$, $k=\ell+1$, and $u=m-s$. The following slightly larger invariant state space is convenient:
+\[
+ \mathcal S=\{(s,u,k):s\ge0,\ u\ge1,\ 0\le k<s+u\},\qquad m=s+u.
+\]
+For $x=(s,u,k)$, choose each integer $i\in\{0,\ldots,m-1\}$ once and form the child
+\begin{equation}\label{eq:children}
+ x_i=\begin{cases}
+ (s-1,u,i),&i<s,\ i<k,\\
+ (s-1,u+1,i),&i<s,\ i\ge k,\\
+ (s+1,u,i+1),&i\ge s,\ i\ge k,\\
+ (s+1,u-1,i+1),&i\ge s,\ i<k.
+ \end{cases}
+\end{equation}
+Call the first two types $D$ and the latter two $N$, for a duplicate or new value. An ascent means $i\ge k$. The last case requires $u\ge2$, so $\mathcal S$ is invariant. Every step changes $m$ by at most one.
+
+Define the positive operator
+\[
+ (\TT f)(x)=\sum_{i=0}^{m-1}f(x_i),\qquad x_0=(1,1,1).
+\]
+Then $\TT^n\one(x_0)=a_{n+1}$. Write
+\begin{equation}\label{eq:F}
+ \mathcal F(t,x)=\sum_{n\ge0}\TT^n\one(x)\frac{t^n}{n!},
+\end{equation}
+allowing the value $+\infty$ for $t\ge0$. We have $\mathcal F(t,x_0)=A'(t)$, so the two series have the same radius.
+
+\section{A characteristic curve and rank profile}
+For $q\ge0$ define
+\begin{align}\label{eq:parameters}
+ p(q)&=\tfrac12\log(2e^q-1),& R(q)&=2-e^{-q},\notag\\
+ b(q)&=\frac{e^{p(q)}(1-e^{-q})}{q},&
+ t(q)&=\int_0^q\frac{dv}{b(v)},
+\end{align}
+with $b(0)=1$. Put $T_*=t(\infty)$ and use $q=q(t)$ for $0\le t<T_*$. Along this curve,
+\begin{equation}\label{eq:flow}
+ \frac{dq}{dt}=\frac{e^p(1-e^{-q})}{q},\qquad
+ \frac{dp}{dt}=\frac{e^{-p}(e^q-1)}{q}.
+\end{equation}
+The identity $e^{2p}=2e^q-1$ verifies both equations and their initial values.
+
+For a state $x=(s,u,k)$ let
+\begin{align}\label{eq:profile}
+ D&=s+Ru,& h(y)&=\min(y,s)+R\max(y-s,0),\notag\\
+ r(y)&=h(y)/D,&
+ \psi(t,x)&=\exp\{ps+qu-qr(k)\}.
+\end{align}
+In particular $0\le r(k)\le1$, $\psi(0,x)=1$, and
+\begin{equation}\label{eq:psibounds}
+ e^{ps+qu-q}\le\psi(t,x)\le e^{ps+qu}.
+\end{equation}
+Write
+\[
+ A_0=e^{-p}(e^q-1),\qquad B_0=e^p(1-e^{-q})=RA_0,
+ \qquad \lambda=\frac{A_0s+B_0u}{q}=\frac{A_0D}{q}.
+\]
+The removable value of $\lambda$ at $q=0$ is $m$.
+
+\begin{lemma}\label{lem:residual}
+Uniformly over $x\in\mathcal S$ and $0\le t<T_*$,
+\begin{equation}\label{eq:residual}
+ \left|\frac{\partial_t\psi(t,x)}{\psi(t,x)}
+       -\frac{\TT\psi(t,x)}{\psi(t,x)}\right|
+ \le C(q),\qquad C(q)=8(1+q)e^{5q/8}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+We keep all three sources of error uniform in the state.
+
+\paragraph{The frozen rank integral.}
+For real $y\in[0,m]$ put
+\[
+ w(y)=\begin{cases}
+ e^{-p+q\one_{y\ge k}},&y<s,\\
+ e^{p-q\one_{y<k}},&y\ge s,
+ \end{cases}
+ \qquad g(y)=w(y)e^{-q(r(y)-r(k))}.
+\]
+Direct integration gives
+\begin{equation}\label{eq:integral}
+ \int_0^m g(y)\,dy=\lambda.
+\end{equation}
+For a verification, set $\phi(y)=e^{-qh(y)/D}$. On the two intervals,
+$\lambda\phi'=-A_0\phi$ and $\lambda\phi'=-B_0\phi$, respectively, while
+$\phi(m)=e^{-q}\phi(0)$. If $J(k)=\phi(k)\int g$, these derivative identities show that $J-\lambda\phi$ is constant. At $k=0$, writing $X=e^{-qs/D}$ and using $e^p/R=e^{q-p}$ gives
+\[
+ J(0)=\frac Dq\left[e^{q-p}(1-X)+\frac{e^p}{R}(X-e^{-q})\right]
+     =\frac Dq e^{-p}(e^q-1)=\lambda.
+\]
+This proves \eqref{eq:integral}, including the continuous value at $q=0$.
+
+The inequalities
+\[
+ q/2\le p\le q/2+(\log2)/2
+\]
+show that $g(y)\le\sqrt2e^{q/2}$. On an ascent interval use $r(y)\ge r(k)$; on a descent interval use $r(k)-r(y)\le1$. On each of the at most three intervals separated by the integers $s,k$, $g$ decreases. The left Riemann sum therefore differs from its integral by at most
+\begin{equation}\label{eq:quaderror}
+ \left|\sum_{i=0}^{m-1}g(i)-\lambda\right|\le3\sqrt2e^{q/2}.
+\end{equation}
+
+\paragraph{The shifted states.}
+Let $r_i$ be the rank fraction at the exact child $x_i$. In the order of the four cases in \eqref{eq:children},
+\begin{equation}\label{eq:rankchildren}
+ r_i=\frac{i}{D-1},\quad
+ \frac{i}{D+R-1},\quad
+ \frac{h(i)+1}{D+1},\quad
+ \frac{h(i)+1}{D+1-R}.
+\end{equation}
+The relevant denominators are positive. Subtraction yields $|r_i-r(i)|\le4/D$. Except in the $D$-ascent case, $r_i\ge r(i)$, so the exact transition ratio $\psi(x_i)/\psi(x)$ is no greater than its frozen counterpart $g(i)$.
+
+For a $D$ ascent, $k\le i<s$ and
+\[
+ r(k)-r_i\le\frac{k(R-1)}{D(D+R-1)}
+ \le\frac{D-2}{D^2}\le\frac18.
+\]
+Here $k\le s-1$, $D\ge s+1$, and $1\le R\le2$. Thus every exact or frozen ratio is at most $\sqrt2e^{5q/8}$. The exponential mean-value inequality gives
+\[
+ \left|\frac{\psi(x_i)}{\psi(x)}-g(i)\right|
+ \le\frac{4q}{D}\sqrt2e^{5q/8}.
+\]
+Since $m\le D$, its sum is at most $4\sqrt2q e^{5q/8}$.
+
+\paragraph{The time derivative.}
+At fixed state, differentiation gives
+\[
+ \frac{\partial_t\psi}{\psi}
+ =\lambda-q'\{r(k)+qe^{-q}\partial_Rr(k)\}.
+\]
+The two expressions for $\partial_Rr(k)$ are $-ku/D^2$ for $k\le s$ and $-s(m-k)/D^2$ for $k\ge s$. Both lie in $[-1/(4R),0]$. The expression in braces has absolute value at most one. Also $q'\le\sqrt2e^{q/2}$. Combining these bounds with \eqref{eq:quaderror} proves
+\[
+ |\partial_t\psi/\psi-\TT\psi/\psi|
+ \le4\sqrt2e^{q/2}+4\sqrt2q e^{5q/8}
+ \le8(1+q)e^{5q/8}.
+\]
+\end{proof}
+
+\section{Comparison for the infinite state space}
+Define
+\begin{equation}\label{eq:E}
+ E(q)=\int_0^q\frac{C(v)}{b(v)}\,dv,\qquad
+ G_\pm(t,x)=e^{\pm E(q(t))}\psi(t,x).
+\end{equation}
+Lemma \ref{lem:residual} gives $\partial_tG_-\le\TT G_-$ and $\partial_tG_+\ge\TT G_+$, with initial values one.
+
+\begin{lemma}\label{lem:comparison}
+For every state and $0\le t<T_*$,
+\begin{equation}\label{eq:comparison}
+ e^{-E(q)}\psi(t,x)\le\mathcal F(t,x)\le e^{E(q)}\psi(t,x).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Consider the continuous-time chain which takes each of the $m$ transitions in \eqref{eq:children} at rate one. Its generator is $\mathcal L=\TT-mI$. Its jump rate is $m$, and each jump increases $m$ by at most one, so a Yule-process domination proves nonexplosion. Let $\tau_N$ be the first exit from $m\le N$. Each stopped state space is finite.
+
+Summing over its finite jump paths gives the extended Feynman--Kac identity
+\begin{equation}\label{eq:FK}
+ \mathcal F(t,x)=\E_x\exp\left\{\int_0^t m(X_v)\,dv\right\}.
+\end{equation}
+Indeed, the holding-time exponential is canceled by the displayed weight. Each $n$-step path then contributes the simplex volume $t^n/n!$, exactly as in \eqref{eq:F}. Nonexplosion and Tonelli justify the sum even when it is infinite.
+
+For the supersolution, stopped Dynkin comparison applied to
+\[
+ \exp\left\{\int_0^v m(X_z)\,dz\right\}G_+(t-v,X_v)
+\]
+gives
+\[
+ \E_x\left[\exp\left\{\int_0^t m(X_v)\,dv\right\};\ \tau_N>t\right]
+ \le G_+(t,x).
+\]
+Letting $N\to\infty$ proves the upper bound and finiteness before $T_*$.
+
+The lower comparison requires control of exit terms. Choose $\varepsilon>0$ such that $t+\varepsilon<T_*$. Uniformly in $v\in[0,t]$ and states $y$,
+\begin{equation}\label{eq:tailratio}
+ \frac{G_-(v,y)}{G_+(v+\varepsilon,y)}
+ \le e^{q(t+\varepsilon)}e^{-\eta m(y)},
+\end{equation}
+where $\eta>0$ is the minimum, on this compact interval, of both
+$p(v+\varepsilon)-p(v)$ and $q(v+\varepsilon)-q(v)$. These functions are strictly increasing. Inequality \eqref{eq:tailratio} follows directly from \eqref{eq:psibounds} and $E\ge0$.
+
+Stopped Dynkin comparison for $G_-$ bounds $G_-(t,x)$ above by the terminal expectation in \eqref{eq:FK}, restricted to $\tau_N>t$, plus the exit contribution. Use \eqref{eq:tailratio} and then the later supersolution to bound the latter by
+\[
+ e^{q(t+\varepsilon)}e^{-\eta(N+1)}G_+(t+\varepsilon,x).
+\]
+It tends to zero. Passing to the limit gives the lower bound. This step avoids an unjustified comparison of an arbitrary subsolution with an unbounded positive operator.
+\end{proof}
+
+For $q\ge1$,
+\[
+ b(q)\ge(1-e^{-1})e^{q/2}/q,
+ \qquad E(q)=O\bigl((1+q)^3e^{q/8}\bigr)=o(e^p).
+\]
+This deliberately loose estimate suffices for all subsequent arguments.
+
+\section{The exact radius}
+The upper comparison proves that the radius of $\mathcal F(t,x_0)$ is at least $T_*$. Positivity and Tonelli give the semigroup identity
+\[
+ \mathcal F(t+\delta,x_0)
+ =\sum_{j\ge0}\frac{\delta^j}{j!}
+       (\TT^j\mathcal F(t,\cdot))(x_0),
+\]
+with infinity allowed. There is a path of $j$ successive new-maximal-label steps from $x_0$ to $(j+1,1,j+1)$. At this state the $qu-qr$ term is nonnegative. Hence
+\[
+ \mathcal F(t+\delta,x_0)
+ \ge e^{p-E(q)}\sum_{j\ge0}\frac{(\delta e^p)^j}{j!}
+ =\exp\{p-E(q)+\delta e^p\}.
+\]
+For any fixed $\delta>0$ the right side tends to infinity as $t\uparrow T_*$, because $E(q)=o(e^p)$. Monotonicity gives $\mathcal F(T_*+\delta,x_0)=\infty$. Its radius is therefore exactly $T_*$.
+
+To evaluate the endpoint, put $y=\sqrt{2e^q-1}$ in \eqref{eq:parameters}:
+\[
+ T_*=\int_1^\infty\frac{2\log((y^2+1)/2)}{y^2-1}\,dy.
+\]
+Integrate by parts using $\log((y-1)/(y+1))$ as an antiderivative of $2/(y^2-1)$, and then set $z=(y-1)/(y+1)$. Both endpoint terms vanish, and
+\begin{align*}
+ T_*&=-2\int_0^1\log z\,\frac{1+z}{(1-z)(1+z^2)}\,dz\\
+ &=-2\int_0^1\frac{\log z}{1-z}\,dz
+   -2\int_0^1\frac{z\log z}{1+z^2}\,dz
+ =\frac{\pi^2}{3}+\frac{\pi^2}{24}=\frac{3\pi^2}{8}.
+\end{align*}
+The geometric-series integrations are absolutely integrable. We have proved the radius assertion and the corresponding factorial-normalized limsup. The next section establishes the full limit.
+
+\section{From the radius to the full coefficient limit}
+For $x_N=(N,1,N)$, $N\ge1$, the uniform comparison becomes
+\begin{equation}\label{eq:growing}
+ \log\mathcal F(t(q),x_N)=Np(q)+O(E(q)+q),
+\end{equation}
+uniformly in $N$, since the extra rank term is $qR/(N+R)\in[0,q]$.
+Put
+\[
+ d(q)=\frac{d}{dq}\log t(q)=\frac1{t(q)b(q)},\qquad
+ M(q)=\frac{p_q(q)}{d(q)}=t(q)p_t(t(q)).
+\]
+As $q\to\infty$,
+\begin{equation}\label{eq:largescales}
+ p_q=\tfrac12+O(e^{-q}),\qquad
+ d(q)\sim\frac{q e^{-q/2}}{\sqrt2T},\qquad
+ M(q)\sim\frac{T e^{q/2}}{\sqrt2q}.
+\end{equation}
+
+\begin{lemma}\label{lem:concentration}
+Let $c_j=\TT^j\one(x_N)$, and define
+\[
+ \Prb(J=j)=\frac{c_jt(q)^j}{j!\mathcal F(t(q),x_N)},\qquad K=NM(q).
+\]
+For all sufficiently large $q$ and $0<\epsilon<1/2$,
+\begin{equation}\label{eq:chernoff}
+ \Prb(|J-K|>\epsilon K)
+ \le2\exp\left\{-\frac{3N\epsilon^2}{128}
+                    +2E(q+1)+O(q+1)\right\},
+\end{equation}
+uniformly in $N$ and $\epsilon$.
+\end{lemma}
+\begin{proof}
+For $|v|\le1$ set
+\[
+ H_q(v)=p(q+v)-p(q)-M(q)\{\log t(q+v)-\log t(q)\}.
+\]
+We have $H_q(0)=H_q'(0)=0$. The exact formulas
+\[
+ p_q=1/R,\qquad
+ \frac{d'}d=-d-\frac1R-\frac1{e^q-1}+\frac1q
+\]
+show, uniformly for bounded $v$, that
+\[
+ H_q''(v)\longrightarrow\tfrac14e^{-v/2},\qquad
+ M(q)d(q+v)\longrightarrow\tfrac12e^{-v/2}.
+\]
+Thus for all sufficiently large $q$, $|H_q(v)|\le v^2/2$ on $[-1,1]$. Also, for $0<\eta<1/2$,
+\[
+ M(q)|\log t(q\pm\eta)-\log t(q)|\ge\eta/4.
+\]
+Choose $\eta=\epsilon/8$. The Chernoff upper-tail bound, with the generating function tilted from $t(q)$ to $t(q+\eta)$, has logarithm at most
+\[
+ NH_q(\eta)-\epsilon NM(q)\{\log t(q+\eta)-\log t(q)\}
+       +2E(q+1)+O(q+1).
+\]
+It is at most $-3N\epsilon^2/128+2E(q+1)+O(q+1)$. The tilt $q-\eta$ gives the same bound for the lower tail. All error constants follow uniformly from \eqref{eq:growing}.
+\end{proof}
+
+For each sufficiently large integer $n$, take
+\begin{equation}\label{eq:choices}
+ q=\log n,\qquad \epsilon=(\log n)^{-2},\qquad
+ N=\left\lfloor\frac{(1-4\epsilon)n}{M(q)}\right\rfloor.
+\end{equation}
+Then
+\[
+ N\sim\frac{\sqrt2}{T}\sqrt n\log n,\qquad
+ K=(1-4\epsilon)n+O(\sqrt n/\log n),
+\]
+while $N\epsilon^2$ has order $\sqrt n/(\log n)^3$ and
+$E(q+1)=O(n^{1/8}(\log n)^3)=o(N\epsilon^2)$. Lemma \ref{lem:concentration} puts at least half the probability in $|j-K|\le\epsilon K$. Some integer $j$ in this interval therefore satisfies
+\begin{equation}\label{eq:extract}
+ \log c_j\ge\log(j!)-j\log t(q)+Np(q)-E(q)-O(\log n).
+\end{equation}
+Indeed, there are at most $2\epsilon K+3$ integers in the interval, and the lower comparison gives $\log\mathcal F\ge Np-E$.
+
+The floor error in \eqref{eq:choices} is $o(\epsilon n)$, and $N=o(\epsilon n)$. Consequently
+\[
+ (1-6\epsilon)n\le j,\qquad N+j\le n
+\]
+for large $n$. The initial state reaches $x_N$ after $N-1$ new-maximal-label steps, so $a_{N+j}\ge c_j$. Every valid ascent sequence extends injectively by appending one plus its current number of ascents. The appended label is new: induction gives $\max w\le\asc(w)$ for every ascent sequence. Hence $a_n\ge a_{N+j}\ge c_j$.
+
+It follows that
+\[
+ \log(a_n/n!)\ge-j\log t(q)-\log(n!/j!)+Np(q)-E(q)-O(\log n)
+             \ge-n\log T-o(n).
+\]
+Here $j/n\to1$, $t(q)\to T$, and
+$\log(n!/j!)\le6\epsilon n\log n=o(n)$. The radius theorem supplies the matching limsup, proving \eqref{eq:limit}.
+
+\section{A coarse error and a threshold inverse}
+For a quantitative version, repeat the coefficient argument with
+\[
+ q=\frac8{13}\log n,\qquad
+ \epsilon=n^{-4/13}(\log n)^2.
+\]
+Now $N$ has order $n^{9/13}\log n$, $E(q+1)=O(n^{1/13}(\log n)^3)$, and $N\epsilon^2$ has order $n^{1/13}(\log n)^5$. Thus the same Chernoff estimate applies, and $N=o(\epsilon n)$. The factorial loss is
+\[
+ O(\epsilon n\log n)=O\bigl(n^{9/13}(\log n)^3\bigr),
+\]
+which proves the lower half of \eqref{eq:coarse}.
+
+For the upper half, coefficient positivity and monotonicity give
+\[
+ \frac{a_n}{n!}\le\frac{A(t)}{t^n},\qquad
+ A(t)=1+\int_0^t\mathcal F(v,x_0)\,dv\le1+t\mathcal F(t,x_0).
+\]
+The superbarrier yields $\log A(t(q))\le E(q)+O(q+1)$, whereas
+$T-t(q)=O(qe^{-q/2})$. At the same choice of $q$ this gives
+\[
+ \log(a_n/n!)+n\log T
+ \le O\{E(q)+q+nq e^{-q/2}\}
+ =O(n^{9/13}\log n).
+\]
+This completes Theorem \ref{thm:main}.
+
+\begin{corollary}\label{cor:inverse}
+For $y\to\infty$ let $L=\log y$ and
+\[
+ N(L)=\frac{L}{W(L/(eT))},
+\]
+where $W$ is the positive real Lambert function. The integer threshold
+$\nu(y)=\min\{n\ge0:a_n\ge y\}$ satisfies
+\begin{equation}\label{eq:inverse}
+ \nu(y)=N(L)+O\bigl(N(L)^{9/13}(\log N(L))^2\bigr).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Stirling's formula and \eqref{eq:coarse} give
+\[
+ \log a_n=f(n)+O(n^{9/13}(\log n)^3),\qquad
+ f(x)=x\log\frac{x}{eT}.
+\]
+The chosen $N(L)$ is the positive solution of $f(N)=L$. Since
+$f'(x)=\log(x/T)\sim\log N$ near $N$, evaluating at
+$N\pm C N^{9/13}(\log N)^2$ brackets $L$ for a sufficiently large fixed $C$. The error envelope is of the same order throughout this $o(N)$ interval. Monotonicity of $a_n$ and integer rounding prove \eqref{eq:inverse}.
+\end{proof}
+
+The inverse is a controlled leading approximation. This does not provide unit-level rounding accuracy or an all-orders inverse, nor a multiplicative asymptotic equivalent for $a_n$.
+
+\section{Verification and remaining questions}
+The accompanying programs provide independent finite checks of the exact operator, its agreement with \eqref{eq:paperrec}, and direct word enumeration through length ten. They verify 21 initial coefficients. The uniform residual was also checked on 287820 state--parameter cases with $m\le40$ and thirteen positive $q$ values up to 80. These finite checks are diagnostics; the proof of uniformity is Lemma \ref{lem:residual}. A separate numerical script checks the bounded-shift calculus and the characteristic integral at high precision.
+
+The remaining asymptotic questions are substantial. Neither these barriers nor the growing-state coefficient extraction determine whether $a_n/(n!\mu^n)$ has a power or stretched-exponential factor. The method does not prove $a_{n+1}/((n+1)a_n)\to\mu$. Extracting a prefactor or a full transseries would require sharper control near the singular endpoint and individual-coefficient transfer. The published numerical uncertainty about a weak stretched factor is therefore preserved.
+
+\begin{thebibliography}{9}
+\bibitem{CCEG}
+A.~R.~Conway, M.~Conway, A.~Elvey Price, and A.~J.~Guttmann,
+\emph{Pattern-Avoiding Ascent Sequences of Length 3},
+Electronic Journal of Combinatorics \textbf{29}(4) (2022), P4.25.
+\href{https://doi.org/10.37236/11266}{doi:10.37236/11266}.
+\href{https://arxiv.org/abs/2111.01279}{arXiv:2111.01279}.
+\bibitem{OEIS}
+OEIS Foundation Inc., \emph{A202058: Number of ascent sequences avoiding the pattern 000},
+\url{https://oeis.org/A202058}.
+\end{thebibliography}
+\end{document}

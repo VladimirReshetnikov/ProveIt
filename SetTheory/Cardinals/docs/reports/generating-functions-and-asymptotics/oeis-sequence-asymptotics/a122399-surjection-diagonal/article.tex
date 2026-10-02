@@ -1,0 +1,389 @@
+\documentclass[11pt,letterpaper]{article}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+symbols.map}
+\usepackage{lmodern,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl,enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setcounter{secnumdepth}{0}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\Log}{\operatorname{Log}}
+\allowdisplaybreaks[2]
+\hypersetup{pdftitle={Asymptotic enumeration and inversion for A122399},pdfsubject={Exact contours, all orders asymptotics, inversion, block fluctuations, and congruences}}
+\title{Asymptotic enumeration and inversion for A122399}
+\author{A proof and reproducible research report}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For $a_n=\sum_k k^n k!S(n,k)$, we prove the leading equivalent already recorded in OEIS and obtain a complete fixed-order expansion with explicit coefficients. An exact vertical contour gives a branch-safe representation and a simple, nonasymptotic exponential truncation bound. The same method yields compact-direction two-size asymptotics, Gaussian block-count fluctuations, and a controlled inverse with integer-threshold envelopes. An elementary appendix proves the posted mod-prime periodicity conjecture, in the sense that $p-1$ is a period, and extends it to prime powers. The standard saddle methodology and existing leading result are explicitly credited.
+\end{abstract}
+\subsection{Results and attribution}\label{results-and-attribution}
+
+The leading equivalent for A122399 was posted by Vaclav Kotesovec on OEIS on August 9, 2018; its growth constant was already identified in 2013. \textbf{Neither that equivalent nor its numerical constant is claimed as a new conjecture.} This manuscript proves it and develops explicit, reproducible higher coefficients, a globally valid contour with an explicit exponentially small truncation bound, a compact-direction extension, a block-count central limit theorem, and controlled inversion. These are applications and refinements of standard analytic saddle methods, not a new general method. In particular Khera--Lundberg--Melczer (2021, preprint 2019), Section 3 and the paragraph following its equation (15), give directional asymptotics and explain higher-order expansion for the nearby but different lonesum-matrix denominator. No global novelty claim is made.
+
+\subsection{1. Exact combinatorics}\label{exact-combinatorics}
+
+Put
+
+\[
+ A_{m,n}=\sum_{k=0}^m k^n k!\,S(m,k),\qquad a_n=A_{n,n},\qquad
+ b_{m,n}=\frac{A_{m,n}}{m!n!}.
+\]
+
+The convention at the origin is \(0^0=1\). For positive \(m,n\), a structure consists of an ordered partition of an \(m\)-element red set into \(k\) nonempty blocks, followed by a map of an \(n\)-element blue set to these blocks. Its bivariate exponential generating function, with \(u\) marking blocks, is
+
+\[
+ F(x,y;u)=\frac1{1-u e^y(e^x-1)}.
+\]
+
+Thus the diagonal is exactly A122399, not an approximation to it. When a structure is chosen uniformly, its block count satisfies \(\Pr(K_n=k)=k^n k!S(n,k)/a_n\).
+
+\subsection{2. Exact contour and a nonasymptotic tail bound}\label{exact-contour-and-a-nonasymptotic-tail-bound}
+
+For \(\Re z>0\), use the single analytic branch
+
+\[
+ X(z)=\Log(1+e^{-z}),\qquad p(z)=\frac1{1+e^z}=-X'(z).
+\]
+
+Here \(1+e^{-z}\) stays in the open disk of radius one about 1, and \(X(z)\ne0\). The following identities hold for every pair of integers \(m,n\ge1\) and every \(c>0\):
+
+\[
+\begin{aligned}
+ b_{m,n}&=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ \frac{p(z)}{X(z)^{m+1}z^{n+1}}\,dz\\
+ &=\frac{n+1}{m}\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ X(z)^{-m}z^{-n-2}\,dz.
+\end{aligned}\tag{2.1}
+\]
+
+Both integrals are absolutely convergent. Integer powers are used, so there is no unresolved power branch.
+
+\subsubsection{Proof}\label{proof}
+
+For \(\Re h>0\) and \(n\ge1\), the absolutely and locally uniformly convergent Mittag--Leffler identity is
+
+\[
+ \frac1{n!}\sum_{k\ge1}k^n e^{-kh}
+ =\sum_{j\in\mathbb Z}(h+2\pi i j)^{-n-1}.\tag{2.2}
+\]
+
+It follows, for example, by differentiating \(1/(e^h-1)\)'s symmetric partial-fraction expansion; the constant term disappears after one derivative. It also follows by Poisson summation for \(t^n e^{-ht}\mathbf1_{t\ge0}/n!\), whose Fourier coefficients are the terms on the right.
+
+Change the \(x\)-coefficient contour to \(q=e^x-1\), with \(|q|=e^{-c}<1\); the inverse is \(x=\Log(1+q)\), analytic and one-to-one near the closed contour, and it winds once around zero. On this circle choose the continuous parametrization \(q=e^{-c+it}\), \(-\pi\le t\le\pi\), so \(h=c-it\). Insert (2.2) in the Cauchy coefficient integral. Uniform absolute convergence permits the sum--integral interchange. The shifted intervals in \(h+2\pi i j\) join to the whole vertical line; \(X\) and \(p\) are \(2\pi i\)-periodic. This gives the first identity in (2.1). Since \((X^{-m})'=m p X^{-m-1}\), integration by parts gives the second. Its boundary term tends to zero: on a fixed vertical line \(X\) is bounded away from zero, and \(z^{-n-1}\to0\). This also proves absolute convergence.
+
+This argument does \textbf{not} treat an individual \((h(x)+2\pi i j)^{-n-1}\) as a globally analytic power series at \(x=0\). Doing so would ignore its logarithmic monodromy.
+
+\subsubsection{Explicit truncation theorem}\label{explicit-truncation-theorem}
+
+Let \(x_c=X(c)>0\), and let \(R_T\) denote the sum of the parts of the \textbf{second} integral in (2.1) with \(|\Im z|\ge T>0\), including its prefactor. Then
+
+\[
+ |R_T|\le\frac{x_c^{-m}c^{-n}}{\pi m T}
+ \left(\frac{c}{\sqrt{c^2+T^2}}\right)^n.\tag{2.3}
+\]
+
+Indeed, with \(w=X(c+it)\),
+
+\[
+ e^{-c}=|e^w-1|\le e^{|w|}-1,
+ \quad\text{so}\quad |X(c+it)|\ge X(c).
+\]
+
+Consequently the modulus of the tail is bounded by \((n+1)x_c^{-m}/(\pi m)\int_T^\infty(c^2+t^2)^{-(n+2)/2}dt\). Set \(v=\sqrt{c^2+t^2}\); since \(v/\sqrt{v^2-c^2}\) decreases, that integral is at most \((c^2+T^2)^{-n/2}/((n+1)T)\), proving (2.3).
+
+There is therefore an exact, absolutely convergent strip decomposition obtained by splitting the second contour into \((2j-1)\pi\le\Im z\le(2j+1)\pi\), \(j\in\mathbb Z\). The noncentral strips together have bound (2.3) with \(T=\pi\). They are not asserted to be canonical saddle/transseries sectors: their artificial endpoint contributions can cancel, and no individual secondary-saddle expansion is proved here. A fixed-order Poincaré expansion for the central strip has algebraic error, despite the exponentially accurate contour truncation.
+
+\subsection{3. The unique saddle and all orders}\label{the-unique-saddle-and-all-orders}
+
+Fix \(\lambda=m/n>0\). There is a unique \(y=y(\lambda)>0\) satisfying
+
+\[
+ x=X(y)=\lambda y p(y),\qquad
+ B=B(\lambda)=1+\lambda^{-1}-y(1-p(y)).\tag{3.1}
+\]
+
+Moreover \(B>1\), and \(x,y,B\) depend analytically on \(\lambda\). To prove uniqueness, \(R(y)=yp(y)/X(y)\) increases strictly from 0 to infinity. In fact \(p/X>1-p\), since \(p+(1-p)\log(1-p)>0\) for \(0<p<1\); differentiating \(\log(p/X)\) shows its derivative is positive. Thus \(R'>0\). At the root \(y(1-p)<1/\lambda\), proving \(B>1\). The implicit-function theorem supplies analyticity.
+
+Define the analytic phase germ at \(s=0\)
+
+\[
+ f_\lambda(s)=-\log(1+s)-\lambda\log\frac{X(y(1+s))}{x}
+ =\frac B2s^2+\sum_{r\ge3}f_rs^r.\tag{3.2}
+\]
+
+Here logarithms are local germs, and \(f_\lambda(0)=f'_\lambda(0)=0\). Globally along \(s=i\theta\), the exponential in the following formula means its integer-power expression, so no global choice of \(f\) is needed:
+
+\[
+ b_{m,n}=\frac{x^{-m}y^{-n}}{\lambda y}\left(1+\frac1n\right)
+ \frac1{2\pi}\int_{-\infty}^{\infty}
+ \frac{e^{n f_\lambda(i\theta)}}{(1+i\theta)^2}\,d\theta.\tag{3.3}
+\]
+
+The bound from Section 2 gives \(|e^{n f_\lambda(i\theta)}|\le(1+\theta^2)^{-n/2}\).
+
+\subsubsection{Explicit coefficient formula}\label{explicit-coefficient-formula}
+
+Set \((-1)!!=1\). For \(j\ge0\), sum over nonnegative integers \(a,m_3,\ldots,m_{2j+2}\) subject to
+
+\[
+ a+\sum_{r=3}^{2j+2}(r-2)m_r=2j,
+ \qquad M=a+\sum_{r=3}^{2j+2}r m_r.
+\]
+
+The integer \(M\) is necessarily even. Define
+
+\[
+ d_j=\sum
+ (-1)^a(a+1)\prod_{r=3}^{2j+2}\frac{f_r^{m_r}}{m_r!}
+ \frac{(-1)^{M/2}(M-1)!!}{B^{M/2}},
+ \quad c_0=1,\quad c_j=d_j+d_{j-1}\ (j\ge1).\tag{3.4}
+\]
+
+The empty product gives \(d_0=1\). For every fixed integer \(J\ge0\),
+
+\[
+ \boxed{\displaystyle
+ A_{m,n}=\frac{m!n!\,x^{-m}y^{-n}}{\lambda y\sqrt{2\pi n B}}
+ \left(\sum_{j=0}^J\frac{c_j(\lambda)}{n^j}+O(n^{-J-1})\right).}\tag{3.5}
+\]
+
+The remainder is uniform when \(m/n\) ranges over any fixed compact subset of \((0,\infty)\). No growing-direction or boundary-uniform assertion is made.
+
+\subsubsection{All-orders proof and remainder justification}\label{all-orders-proof-and-remainder-justification}
+
+Choose a small fixed \(\delta>0\) uniformly over the compact direction set. Outside \(|\theta|<\delta\), the modulus bound above makes the integral exponentially small; integrate the power tail exactly or use (2.3). Inside, analyticity, \(B>1\), and compactness give uniform Taylor remainder bounds and a uniform quadratic bound \(\Re f(i\theta)\le-b\theta^2\), for some \(b>0\). Set \(\theta=t/\sqrt n\). Expand the analytic amplitude \((1+s)^{-2}\) and \(\exp\{n(f(s)-Bs^2/2)\}\) through order \(n^{-J-1/2}\), keeping enough further Taylor terms to bound the remainder. On \(|t|\le n^\epsilon\), with \(\epsilon>0\) chosen sufficiently small for this fixed \(J\), Taylor's theorem bounds the remainder by \(n^{-J-1}\) times a fixed polynomial in \(|t|\) times a Gaussian with uniformly negative exponent. On \(n^\epsilon<|t|<\delta\sqrt n\), the uniform quadratic bound is superpolynomially small. Extend the polynomial--Gaussian integrals to the real line with the same accuracy. Odd terms integrate to zero. The even Gaussian moments are \((M-1)!!B^{-M/2}\), with \(i^M=(-1)^{M/2}\), giving (3.4). The prefactor \(1+1/n\) gives \(c_j=d_j+d_{j-1}\). This proves (3.5) with its uniform remainder.
+
+This is the ordinary analytic one-dimensional saddle expansion; the exact contour is what supplies the particularly simple global tail control here.
+
+\subsection{4. Diagonal constants and reproducible coefficients}\label{diagonal-constants-and-reproducible-coefficients}
+
+On the diagonal write \(x=x(1),y=y(1),B=2-y+x\), \(D=(xy)^{-1}\), and
+
+\[
+ C=\frac1{y\sqrt{2\pi B}}.
+\]
+
+Numerically,
+
+\begin{itemize}
+\tightlist
+\item
+  \(x=0.2763928914715160816083833582415360977661\)
+\item
+  \(y=1.144554440911905470205106411159417937429\)
+\item
+  \(B=1.131838450559610611403276947082118160337\)
+\item
+  \(D=3.161088653865428813830172202588132491726\)
+\item
+  \(C=0.3276282855698694814422864924105070307103\)
+\end{itemize}
+
+Thus
+
+\[
+\begin{aligned}
+ a_n=\frac{C D^n(n!)^2}{\sqrt n}\Bigg[1
+ &-\frac{0.0600744155748035800316371200380}{n}\\
+ &+\frac{0.00759452281787645507680871266458}{n^2}\\
+ &+\frac{0.00371322633571244961947936026057}{n^3}\\
+ &-\frac{0.000362980958541489832391365216986}{n^4}
+ +O(n^{-5})\Bigg].
+\end{aligned}\tag{4.1}
+\]
+
+An exact expression for the first coefficient is
+
+\[
+ c_1=1-\frac3B+\frac{3f_4-6f_3}{B^2}-\frac{15f_3^2}{2B^3},\tag{4.2}
+\]
+
+where, setting \(a=y-x\), \(b=y-2x\),
+
+\[
+ f_3=\frac{a(b-3)}6,
+\quad f_4=\frac12-\frac a2+\frac{a^2}8+\frac{ab}6
+ -\frac{a(y^2-6xy+6x^2)}{24}.
+\]
+
+The numerical generator uses exact rational symbolic algebra for the phase, then 90-digit arithmetic; it does not fit these coefficients to sequence values. It prints coefficients through \(n^{-7}\), exact checks through \(n=800\), and scaled remainders. The recurrence \(T_{m,k}=k(T_{m-1,k}+T_{m-1,k-1})\), \(T_{0,0}=1\), generates \(T_{m,k}=k!S(m,k)\), so the numerical checks use independent exact integer values.
+
+The strip-tail factor for \(T=\pi\) is \(\rho_\pi=y/\sqrt{y^2+\pi^2}<0.343\). Accordingly the exact central-contour integral differs from \(a_n/(n!)^2\) by at most \(D^n\rho_\pi^n/(\pi^2 n)\). This is a contour-evaluation statement, not an exponentially accurate bound for a fixed truncation of (4.1).
+
+\subsection{5. Controlled inverse}\label{controlled-inverse}
+
+Define \(P_J(t)=\sum_{j=0}^J c_jt^j\). For every fixed \(J\), it is positive for all sufficiently small nonnegative \(t\). For sufficiently large real \(v\), put
+
+\[
+ H_J(v)=2\log\Gamma(v+1)+v\log D-\tfrac12\log v+\log C+\log P_J(1/v).
+\]
+
+Then
+
+\[
+ \log a_n=H_J(n)+O(n^{-J-1}),\qquad
+ H'_J(v)=2\log v+\log D+O(v^{-1})>0.
+\]
+
+Consequently the large solution \(\nu_J\) of \(H_J(\nu_J)=\log a_n\) is unique and satisfies
+
+\[
+ \boxed{\nu_J=n+O(n^{-J-1}/\log n).}\tag{5.1}
+\]
+
+This follows from the mean-value theorem, using (3.5) and the derivative estimate. It is a controlled inverse along the sequence, without choosing an arbitrary exact interpolation of the integers.
+
+For a practical Lambert-W initialization, put \(L=\log A\) and
+
+\[
+ w=W_0\left(\frac{\sqrt D}{2e}L\right),\qquad N_0=\frac{L}{2w}.
+\]
+
+If \(A=a_n\), then \(N_0=n+O(1)\), and
+
+\[
+ n=N_0-\frac{\tfrac12\log N_0+\log(2\pi C)}{2(w+1)}
+ +O\left(\frac1{N_0\log N_0}\right).\tag{5.2}
+\]
+
+Indeed Stirling's expansion gives \(\log a_n=2n\log n+(\log D-2)n+\frac12\log n+\log(2\pi C)+O(1/n)\), while \(N_0\) exactly solves its first two terms. Taylor expansion around \(N_0\) gives (5.2).
+
+For arbitrary algebraic inverse precision use Newton iteration
+
+\[
+ N_{r+1}=N_r-\frac{H_J(N_r)-L}{H'_J(N_r)},\tag{5.3}
+\]
+
+starting at \(N_0\). Uniformly in its \(O(1)\) starting neighborhood, \(H''_J/H'_J=O((n\log n)^{-1})\). Therefore its error relative to \(\nu_J\) after fixed \(r\) iterations is \(O((n\log n)^{-(2^r-1)})\). Taking \(2^r-1\ge J+1\) and combining with (5.1) gives the inverse error in (5.1).
+
+For an arbitrary large target \(A\), let \(\nu=H_J^{-1}(\log A)\) and \(M(A)=\min\{n:a_n\ge A\}\). There is a constant \(E_J>0\) such that
+
+\[
+ \boxed{\left\lceil\nu-E_J\frac{\nu^{-J-1}}{\log\nu}\right\rceil
+ \le M(A)\le
+ \left\lceil\nu+E_J\frac{\nu^{-J-1}}{\log\nu}\right\rceil}\tag{5.4}
+\]
+
+for all sufficiently large \(A\). Indeed, the uniform sequence-value error \(|\log a_k-H_J(k)|\le C_Jk^{-J-1}\) and the lower bound on \(H'_J\) show that integers below the lower real endpoint have \(a_k<A\), and an integer at or above the upper endpoint has \(a_k\ge A\). Enlarge \(E_J\) to cover both comparisons. The sequence is strictly increasing from \(n=1\) onward: its old positive block-count summands weakly increase and additional positive structures occur.
+
+The envelope (5.4) allows two neighboring candidates near an integer boundary, so rounding a real inverse alone is not guaranteed. Exact integer comparison settles that boundary. The constants and starting threshold in (5.4) are asymptotic existence constants, not a certified finite-input error bar unless separately bounded.
+
+\subsection{6. Block-count fluctuations}\label{block-count-fluctuations}
+
+For \(u=e^s\) near 1, replace \(X\) by \(X_s(z)=\Log(1+e^{-s-z})\), and let \(y(s)\), \(x(s)=X_s(y(s))\) solve \(x(s)=y(s)p(s)\), where \(p(s)=1/(1+e^{s+y(s)})\). Set
+
+\[
+ B(s)=2-y(s)(1-p(s)),\quad D(s)=[x(s)y(s)]^{-1},
+ \quad C(s)=\frac1{y(s)\sqrt{2\pi B(s)}}.
+\]
+
+The all-orders theorem extends analytically and uniformly to a sufficiently small complex disk in \(s\). To justify this rather than assuming it, use the analytic implicit-function theorem at the nondegenerate saddle. The contour can be locally deformed through \(y(s)\) inside \(\Re(s+z)>0\). The fixed outer contour portions retain a strict exponential gap by continuity from \(s=0\), and the far tails retain uniform power bounds. The local analytic saddle expansion is therefore uniform in complex \(s\). Cauchy estimates allow differentiation of its remainder.
+
+It follows that
+
+\[
+ \mathbb E e^{sK_n}=\frac{C(s)}{C(0)}
+ \left(\frac{D(s)}{D(0)}\right)^n[1+O(n^{-1})],\tag{6.1}
+\]
+
+uniformly near zero. This is the standard analytic quasi-powers situation. A direct expansion of the logarithm of (6.1) at \(s=it/\sqrt n\), followed by the continuity theorem, gives the Gaussian limit stated below.
+
+Let \(\mu=1/y\) and \(\sigma^2=(B-1)/(B y^2)>0\). Then
+
+\[
+ \begin{aligned}\mathbb EK_n&=\mu n+\mu_0+O(n^{-1}),\\
+ \operatorname{Var}(K_n)&=\sigma^2 n+O(1),\end{aligned}
+ \qquad \frac{K_n-\mu n}{\sigma\sqrt n}\Longrightarrow N(0,1),\tag{6.2}
+\]
+
+where
+
+\[
+ \mu_0=\frac{B-1}{B y}-\frac{B-1-p}{2B^2},\qquad p=x/y.
+\]
+
+For verification, envelope differentiation gives \((\log D)'=1/y\). Implicit differentiation of the saddle equation gives \(y'=1/B-1\), hence \((\log D)''=(B-1)/(By^2)\). Further, \(B'=(B-1-p)/B\) and \((\log C)'=-y'/y-B'/(2B)\), yielding \(\mu_0\).
+
+Numerically,
+
+\[
+\begin{aligned} \mu&=0.873702433239668330496568304721,\\
+ \sigma^2&=0.0889169868271170325484054553784,\\
+ \mu_0&=0.144565688577761026837729354227.\end{aligned}
+\]
+
+This gives a probabilistic interpretation of the OEIS growth parametrization's constant \(r=0.873702\ldots\): it is the asymptotic fraction of occupied ordered blocks. No local limit theorem or growing-marking-range result is claimed.
+
+\subsection{7. Elementary congruence appendix}\label{elementary-congruence-appendix}
+
+The current OEIS entry conjectures that, for a prime \(p\), the reduction of \(a_n\) for \(n\ge1\) is purely periodic with period \(p-1\). The following proves that \(p-1\) is a period; it does not assert that it is always the least period.
+
+\textbf{Proposition.} For every prime \(p\) and integer \(r\ge1\),
+
+\[
+ a_{n+\varphi(p^r)}\equiv a_n\pmod{p^r}\qquad(n\ge r).\tag{7.1}
+\]
+
+In particular \(a_{n+p-1}\equiv a_n\pmod p\) for every \(n\ge1\).
+
+\textbf{Proof.} Terms with \(k\ge pr\) vanish modulo \(p^r\), since \(v_p(k!)\ge\lfloor k/p\rfloor\ge r\). We may extend the sum up to \(pr-1\) even when this exceeds \(n\), since \(S(n,k)=0\) for \(k>n\). The exact inclusion-exclusion formula gives
+
+\[
+ a_n\equiv\sum_{k=0}^{pr-1}\sum_{j=0}^k
+ (-1)^{k-j}\binom{k}{j}(kj)^n\pmod{p^r}.
+\]
+
+For \(n\ge r\), a term with \(p\mid kj\) is zero modulo \(p^r\). Each other base \(kj\) is a unit, so Euler's theorem leaves its power unchanged on replacing \(n\) by \(n+\varphi(p^r)\). This proves (7.1). The argument is elementary and independent of the asymptotic analysis.
+
+\subsection{8. Questions left by this analysis}\label{questions-left-by-this-analysis}
+
+The results separate three different levels of control: an exact contour with an explicit exponential tail, a fixed-order algebraic saddle expansion, and an asymptotic inverse. Several natural extensions require additional arguments.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Exponentially improved expansions.} Locate and classify the complex saddles of \(z\Log(1+e^{-z})\), determine which are reached by valid contour deformations, and obtain an optimally truncated expansion with a controlled secondary-saddle remainder. The exact strip decomposition alone does not answer this question.
+\item
+  \textbf{Directions approaching the boundary.} Determine uniform laws when \(m/n\to0\) or \(m/n\to\infty\), including the transition scales where the compact-direction expansion ceases to be uniform. These regimes may require different saddle coordinates and block-count normalizations.
+\item
+  \textbf{Effective finite-input inverse bounds.} Turn the implicit all-orders constants into computable numerical bounds and starting thresholds, combining analytic Taylor estimates with the explicit contour tail. This would make the ceiling envelope a certified finite-input bracket and could reduce the need for exact comparisons away from sequence-value boundaries.
+\item
+  \textbf{Sharper block-count laws.} Prove a local limit theorem, explicit Edgeworth terms, or a uniform large-deviation estimate for the block count. The analytic marking germ provides the central cumulants, but the required global Fourier or tilted-contour estimates are not supplied here.
+\end{enumerate}
+
+These are limitations and possible continuations of this analysis, not claims that the corresponding general techniques or all related results are absent from the literature.
+
+\subsection{Sources and reproducibility}\label{sources-and-reproducibility}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  OEIS A122399, current entry inspected 2026-10-01: \url{https://oeis.org/A122399}
+\item
+  OEIS A317855: \url{https://oeis.org/A317855}
+\item
+  Jessica Khera, Erik Lundberg, Stephen Melczer, \emph{Asymptotic Enumeration of Lonesum Matrices}, Advances in Applied Mathematics 123 (2021), article 102118, doi:10.1016/j.aam.2020.102118; arXiv:1912.08850: \url{https://arxiv.org/html/1912.08850} (especially Section 3, Theorem 3.1, and higher-order comment after equation (15)). Its denominator is \(e^{-x}+e^{-y}-1\), different from the one here.
+\item
+  \nolinkurl{check_a122399.py}: exact rational phase generation, finite-sum saddle coefficients, exact-integer comparisons, and moment checks; outputs \nolinkurl{numerical_results.json}, \nolinkurl{phase_coefficients.txt}, and \nolinkurl{test_output.txt}.
+\item
+  \nolinkurl{export_exact_coefficients.py}: exact rational expressions through the fourth correction, including fully combined rational functions of \(x,y\) for the first two corrections; the exporter asserts that no floating-point atoms occur.
+\item
+  \nolinkurl{verify_contour_inverse.py}: independent direct quadrature of the finite vertical contour with the explicit tail certificate, and inverse-iteration checks.
+\item
+  \nolinkurl{verify_congruences.py}: finite modular checks of (7.1), including all primes below 50 and several prime powers.
+\end{enumerate}
+
+The computer checks are reproducible evidence; the all-orders and error statements rely on the analytic proofs above. An independent audit and clean replay accompany this report. Conventional peer review remains appropriate before publication.
+
+\end{document}

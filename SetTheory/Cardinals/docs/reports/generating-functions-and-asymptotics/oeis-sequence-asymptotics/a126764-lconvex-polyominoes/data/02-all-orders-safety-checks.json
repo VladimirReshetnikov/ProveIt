@@ -1,0 +1,56 @@
+{
+  "checks": [
+    {
+      "check": "reject -O",
+      "status": "PASS",
+      "exit_code": 1,
+      "message": "Refusing optimized Python (-O/-OO): run with checks enabled."
+    },
+    {
+      "check": "reject -OO",
+      "status": "PASS",
+      "exit_code": 1,
+      "message": "Refusing optimized Python (-O/-OO): run with checks enabled."
+    },
+    {
+      "check": "reject existing replay output",
+      "status": "PASS",
+      "exit_code": 1,
+      "message": "output directory already exists; choose a fresh destination"
+    },
+    {
+      "check": "reject ZIP traversal",
+      "status": "PASS",
+      "exit_code": 1,
+      "message": "unsafe ZIP member: lconvex-asymptotics/../escape"
+    },
+    {
+      "check": "reject ZIP absolute",
+      "status": "PASS",
+      "exit_code": 1,
+      "message": "unsafe ZIP member: /tmp/escape"
+    },
+    {
+      "check": "reject ZIP symlink",
+      "status": "PASS",
+      "exit_code": 1,
+      "message": "nonregular ZIP entry"
+    },
+    {
+      "check": "reject truncated reference fixture",
+      "status": "PASS",
+      "exit_code": 1,
+      "message": "reference must contain exactly 2001 entries, n=0..2000"
+    },
+    {
+      "check": "reject existing TeX output directory",
+      "status": "PASS",
+      "exit_code": 1,
+      "message": "Output destination already exists"
+    }
+  ],
+  "existing_destination_unchanged": true,
+  "standard_library_only_run": "PASS using python -S; n=100, q-degree=32, series-order=8",
+  "zero_order_run": "PASS; n=0, q-degree=0, series-order=0",
+  "order_20_standard_library_run": "PASS: exact rational forward degree 20"
+}

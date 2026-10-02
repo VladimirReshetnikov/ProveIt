@@ -1,0 +1,474 @@
+\documentclass[11pt]{article}
+\ifdefined\pdfmapfile
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\fi
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={All orders asymptotics and asymptotic inversion for A292507},pdfauthor={Research note},pdfsubject={All-orders proof, coefficient algorithm, and inverse residual bounds}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Prb}{\mathbb P}
+\newcommand{\dd}{\mathrm d}\newcommand{\OO}{\mathcal O}
+\DeclareMathOperator{\sech}{sech}
+\title{All orders asymptotics and asymptotic inversion for A292507}
+\author{Research note}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove an all-orders Poincar\'e expansion for the binomial transform of the number of partitions without parts equal to one. This gives a precise additive version of the logarithmic conjecture recorded for OEIS A292507. A finite symbolic coefficient algorithm, six computed correction terms, an all-orders reversion algorithm, and rigorous residual and integer-threshold bounds are supplied. The leading binomial-smoothing principle is already recorded in OEIS A218481 and is not claimed as new. The report establishes the mathematics of the expansion; its limited literature search does not establish publication priority.
+\end{abstract}
+
+\section{Definition and main result}
+Let $p(k)$ be the ordinary partition function, with $p(0)=1$ and $p(-1)=0$, and put
+\begin{equation}\label{eq:def}
+ b(k)=p(k)-p(k-1),\qquad
+ a_n=\sum_{k=0}^n\binom nk b(k).
+\end{equation}
+Here $b(k)$ counts partitions without ones: removing one part of size one bijects the remaining partitions with partitions of $k-1$. Consequently
+\[
+ a_n=[x^n](1+x)^n\prod_{m\ge2}(1-x^m)^{-1},
+\]
+by expanding the polynomial and then replacing $k$ by $n-k$. This agrees with the formula recorded in A292507 \cite{oeis292507}. The initial terms are
+$1,1,2,5,13,33,82,201,488,1176$.
+
+Throughout the report, define
+\begin{equation}\label{eq:constants}
+ c=\pi\sqrt{2/3},\quad A=\frac1{4\sqrt3},\quad
+ \beta=\frac c{\sqrt2}=\frac\pi{\sqrt3},\quad
+ \lambda=\frac\beta2,\quad
+ C=\frac\pi6 e^{\pi^2/24}.
+\end{equation}
+All asymptotics are for positive integers $n\to\infty$, with the truncation order fixed.
+
+\begin{theorem}\label{thm:main}
+There is a uniquely determined sequence of real constants $(c_j)_{j\ge0}$, with $c_0=1$, such that for every integer $M\ge0$,
+\begin{equation}\label{eq:main}
+ a_n=C\,2^n n^{-3/2}e^{\beta\sqrt n}
+ \left(\sum_{j=0}^M c_j n^{-j/2}
+       +\OO_M(n^{-(M+1)/2})\right).
+\end{equation}
+The finite algorithm in Section~\ref{sec:algorithm} computes every $c_j$. In particular,
+\begin{align}
+ c_1&=-\frac{17\beta}{12}-\frac3\beta-\frac{\beta^3}{32},\label{eq:c1}\\
+ c_2&=\frac{9\beta^8+1008\beta^6+32416\beta^4
+                    +156672\beta^2+55296}{18432\beta^2},\label{eq:c2}\\
+ c_3&=-\frac{27\beta^{10}+5400\beta^8+389088\beta^6
+                    +11153152\beta^4}{5308416\beta}\notag\\
+ &\hspace{1.7em}-\frac{85893120\beta^2+112803840}{5308416\beta}.
+ \label{eq:c3}
+\end{align}
+\end{theorem}
+
+Taking logarithms is legitimate because the normalized expression tends to one. Thus, with the formal coefficients $\ell_j=[t^j]\log(\sum_{r\ge0}c_rt^r)$,
+\begin{equation}\label{eq:log}
+ \log a_n=n\log2+\beta\sqrt n-\frac32\log n+\log C
+       +\sum_{j=1}^M\ell_jn^{-j/2}
+       +\OO_M(n^{-(M+1)/2}).
+\end{equation}
+In particular $\ell_1=c_1$ and $\ell_2=c_2-c_1^2/2$. This proves more than the recorded relation
+$\log a_n\sim n\log2+\pi\sqrt{n/3}-\tfrac32\log n$:
+\eqref{eq:log} specifies the subleading terms additively. A ratio asymptotic between two expressions of size $n$ would not by itself determine their $\sqrt n$ and $\log n$ terms.
+
+\section{The partition input and finite differences}
+The only non-elementary input needed for the proof is the following established partition estimate. For real $x>1/24$, write
+\begin{equation}\label{eq:P}
+ P(x)=\frac{A e^{c\sqrt{x-1/24}}}{x-1/24}
+       \left(1-\frac1{c\sqrt{x-1/24}}\right).
+\end{equation}
+Nemes' Lemma~2.2 and its displayed identification of the convergent coefficient series give, for integers $k\ge1$ \cite{nemes},
+\begin{equation}\label{eq:nemes}
+ |p(k)-P(k)|\le \frac A{k}\,e^{c\sqrt k/2}.
+\end{equation}
+This is the positive-exponential part of the first partition term, with a genuine exponentially smaller remainder. Merely differentiating a leading equivalent for $p(k)$ would not justify its finite difference.
+
+To extract that difference without losing accuracy, define functions analytic at $t=0$ by removable continuation:
+\begin{align}
+ F_q(t)&=\frac{\exp\!\left(c(\sqrt{1-qt^2}-1)/t\right)}{1-qt^2}
+     \left(1-\frac{t}{c\sqrt{1-qt^2}}\right),\label{eq:F}\\
+ D(t)&=\frac{2}{ct}\left(F_{1/24}(t)-F_{25/24}(t)\right).
+ \label{eq:D}
+\end{align}
+All square roots take their branch equal to one at zero. The numerator of \eqref{eq:D} vanishes to first order, so $D$ is analytic and $D(0)=1$.
+
+\begin{lemma}\label{lem:b}
+For any fixed $0<\eta<c/2$, as integer $k\to\infty$,
+\begin{equation}\label{eq:b}
+ b(k)=\frac{Ac}{2}\,k^{-3/2}e^{c\sqrt k}
+        \left(D(k^{-1/2})+\OO(e^{-\eta\sqrt k})\right).
+\end{equation}
+Moreover $0\le b(k)\le B_0e^{c\sqrt k}$ for all $k\ge0$ and some constant $B_0$.
+\end{lemma}
+\begin{proof}
+By direct substitution, $P(k)=Ak^{-1}e^{c\sqrt k}F_{1/24}(k^{-1/2})$ and
+$P(k-1)=Ak^{-1}e^{c\sqrt k}F_{25/24}(k^{-1/2})$.
+Subtracting gives the main term in \eqref{eq:b}. The sum of the two errors in \eqref{eq:nemes} is $\OO(k^{-1}e^{c\sqrt k/2})$ for $k\ge2$.
+After division by $k^{-3/2}e^{c\sqrt k}$ it is
+$\OO(\sqrt k\,e^{-c\sqrt k/2})=\OO(e^{-\eta\sqrt k})$.
+The final bound follows from $0\le b(k)\le p(k)$, \eqref{eq:P}--\eqref{eq:nemes}, and enlargement of the constant for finitely many small $k$.
+\end{proof}
+For example, Taylor expansion gives
+\[
+ D(t)=1+\left(-\frac{13c}{48}-\frac3c\right)t+\OO(t^2).
+\]
+Define $\widetilde D(t)=D(\sqrt2t)=\sum_{j\ge0}d_jt^j$. Then
+\begin{equation}\label{eq:d1}
+ d_0=1,\qquad d_1=-\frac{13\beta}{24}-\frac3\beta.
+\end{equation}
+
+\section{Uniform smoothing and the tails}\label{sec:proof}
+Let $K\sim\operatorname{Bin}(n,1/2)$, $h=n^{-1/2}$, and
+$Z=(2K-n)/\sqrt n$. The binomial transform is exactly $a_n=2^n\E b(K)$.
+Its moment-generating function is
+\begin{equation}\label{eq:mgf}
+ M_n(s)=\E e^{sZ}=\cosh(hs)^{1/h^2}.
+\end{equation}
+For real $s$, $M_n(s)\le e^{s^2/2}$: integrate
+$\tanh u\le u$ for $u\ge0$, use evenness, and exponentiate.
+Chernoff's inequality then gives
+\begin{equation}\label{eq:tail}
+ \Prb(|Z|>T)\le2e^{-T^2/2}.
+\end{equation}
+For every fixed real $s$ and nonnegative integer $r$,
+\begin{equation}\label{eq:uniformmom}
+ \sup_n\E\big[e^{sZ}(1+|Z|)^r\big]<\infty.
+\end{equation}
+Indeed, a polynomial is bounded by a constant times $e^{|Z|}$, and the two signs of $Z$ are bounded using $M_n(s+1)+M_n(s-1)$.
+Cauchy--Schwarz and \eqref{eq:tail} also give
+\begin{equation}\label{eq:weightedtail}
+ \E\big[e^{sZ}(1+|Z|)^r\mathbf1_{\{|Z|>T\}}\big]
+      \le C_{s,r}e^{-T^2/4}.
+\end{equation}
+
+Use the fixed-fraction central event
+$\mathcal C_n=\{|Z|\le(2h)^{-1}\}$, which is equivalent to
+$n/4\le K\le3n/4$. Concavity of the square root gives, for every $0\le K\le n$,
+\[
+ c\sqrt K\le c\sqrt{n/2}+\lambda Z.
+\]
+Set
+\[
+ L_n=\frac{Ac}{2}(n/2)^{-3/2}e^{c\sqrt{n/2}}
+     =\frac\pi6 n^{-3/2}e^{\beta\sqrt n}.
+\]
+Lemma~\ref{lem:b} and \eqref{eq:weightedtail} imply
+\begin{equation}\label{eq:btail}
+ \frac{\E[b(K)\mathbf1_{\mathcal C_n^c}]}{L_n}
+ \le C n^{3/2}\E[e^{\lambda Z}\mathbf1_{\mathcal C_n^c}]
+ =\OO(n^{3/2}e^{-n/16}).
+\end{equation}
+This handles $K=0,1$ as well and does not apply a large-$k$ partition approximation at the endpoints.
+
+On $\mathcal C_n$, formula \eqref{eq:b} gives
+\begin{equation}\label{eq:central}
+ \frac{b(K)}{L_n}
+  =e^{\lambda Z}\left(H(h,Z)+\OO(e^{-\kappa/h})\right)
+\end{equation}
+for some $\kappa>0$, uniformly there, where
+\begin{align}
+ H(h,z)&=e^{E(h,z)}(1+hz)^{-3/2}
+       \widetilde D\!\left(\frac h{\sqrt{1+hz}}\right),\label{eq:H}\\
+ E(h,z)&=\frac\beta h(\sqrt{1+hz}-1)-\frac{\beta z}{2}
+       =-\frac{\beta hz^2}{2(1+\sqrt{1+hz})^2}.\label{eq:exponent}
+\end{align}
+The error in \eqref{eq:central} follows since $K\ge n/4$ and
+$(1+hz)^{-3/2}$ is bounded. Both exponentials from \eqref{eq:b}
+are handled by \eqref{eq:exponent}; its sign is especially useful.
+
+\begin{lemma}\label{lem:Taylor}
+Let $P_j(z)=[h^j]H(h,z)$, with $H(0,z)=1$. These are polynomials in $z$.
+For every fixed $M$, there are $h_0>0$ and $B_M$ such that
+\begin{equation}\label{eq:Taylor}
+ \left|H(h,z)-\sum_{j=0}^M h^jP_j(z)\right|
+ \le B_Mh^{M+1}(1+|z|)^{2M+2}
+\end{equation}
+when $0<h\le h_0$ and $|hz|\le1/2$.
+\end{lemma}
+\begin{proof}
+Apply the one-variable Taylor theorem in the nonnegative variable $h$, with $z$ held fixed. For every intermediate $0\le u\le h$,
+$1+uz\ge1/2$ and $E(u,z)\le0$. Differentiating the last expression in \eqref{eq:exponent} shows, for $r\ge1$,
+\[
+ |\partial_u^r E(u,z)|\le B_r(1+|z|)^{r+1}.
+\]
+The product formula for derivatives of $e^E$ therefore bounds its $r$th derivative by $B'_r(1+|z|)^{2r}$: a product with derivative orders summing to $r$ has at most $r$ factors, and $e^E\le1$.
+Derivatives of $(1+uz)^{-3/2}$ of order $r$ are bounded by a constant times $(1+|z|)^r$.
+Put $w(u)=u(1+uz)^{-1/2}$. Its derivatives of positive order $r$ are bounded by a constant times $(1+|z|)^{r-1}$, using $|uz|\le1/2$. Also $|w(u)|\le\sqrt2h_0$.
+Choose $h_0$ inside a compact analytic neighborhood of $\widetilde D$; all its required derivatives there are bounded. The chain and product rules now bound the $(M+1)$st derivative of $H$ by the right-hand polynomial in \eqref{eq:Taylor}, up to a constant. Taylor's integral remainder proves the assertion. Its coefficients are polynomials because every fixed-order formal expansion of \eqref{eq:H} is polynomial in $z$.
+\end{proof}
+
+Combining \eqref{eq:central}, Lemma~\ref{lem:Taylor}, and \eqref{eq:uniformmom}, then removing the central restriction from each polynomial using \eqref{eq:weightedtail}, gives
+\begin{equation}\label{eq:expectP}
+ \frac{\E b(K)}{L_n}
+ =\sum_{j=0}^M h^j\E[e^{\lambda Z}P_j(Z)]
+      +\OO_M(h^{M+1}).
+\end{equation}
+Thus the growing central range causes no loss of powers in the error: its Taylor remainders are integrated against uniformly bounded, exponentially weighted moments.
+
+\section{A finite coefficient algorithm}\label{sec:algorithm}
+Let $b_r=[s^{2r}]\log\cosh s$ and define polynomials $Q_v$ by the formal identity
+\begin{equation}\label{eq:Q}
+ \sum_{v\ge0}h^vQ_v(s)
+ =\exp\left(\sum_{r\ge2}b_rh^{2r-2}s^{2r}\right).
+\end{equation}
+For example $Q_0=1$, $Q_1=0$, $Q_2=-s^4/12$, $Q_3=0$,
+and $Q_4=s^6/45+s^8/288$. Define the finite differential operator
+$P_j(\partial_s)$ by replacing each $z^r$ in $P_j(z)$ with $\partial_s^r$.
+Then all coefficients in Theorem~\ref{thm:main} are
+\begin{equation}\label{eq:coeff}
+ c_m=e^{-\lambda^2/2}
+       \sum_{j+v=m}
+       \left.P_j(\partial_s)\big(e^{s^2/2}Q_v(s)\big)\right|_{s=\lambda}.
+\end{equation}
+Only coefficients through degree $m$ in $h$ are needed in \eqref{eq:H} and \eqref{eq:Q}; the procedure is finite for every $m$.
+
+\begin{proof}[Completion of the proof of Theorem~\ref{thm:main}]
+The analytic function $h^{-2}\log\cosh(hs)$ has a removable singularity at $h=0$. On any fixed complex neighborhood of $s=\lambda$, its Taylor expansion converges uniformly for small $h$. Hence \eqref{eq:mgf} has expansion
+\[
+ M_n(s)=e^{s^2/2}\left(\sum_{v=0}^M h^vQ_v(s)
+                         +\OO_M(h^{M+1})\right).
+\]
+The remainder and any fixed number of $s$-derivatives have the same order, by Cauchy's formula on a slightly larger compact neighborhood.
+Since $\E[e^{sZ}P_j(Z)]=P_j(\partial_s)M_n(s)$ exactly, insert this expansion in \eqref{eq:expectP} and collect powers of $h$. Its leading coefficient is $e^{\lambda^2/2}$. Multiplication by $2^nL_n$ gives \eqref{eq:main} with
+$C=(\pi/6)e^{\lambda^2/2}$ and \eqref{eq:coeff}. Uniqueness follows by subtracting two finite expansions and considering their first differing coefficient.
+\end{proof}
+
+For direct implementation it is convenient to avoid square roots in the symbolic coefficient field. Define
+\begin{equation}\label{eq:Fbeta}
+ \widetilde F_q(t)=\frac{\exp\!\left(\beta(\sqrt{1-2qt^2}-1)/t\right)}{1-2qt^2}
+       \left(1-\frac t{\beta\sqrt{1-2qt^2}}\right).
+\end{equation}
+Then $\widetilde D(t)=(\widetilde F_{1/24}(t)-\widetilde F_{25/24}(t))/(\beta t)$.
+Compute this through order $M$ (the numerator through order $M+1$), and use
+\begin{equation}\label{eq:Pconstruct}
+ \sum_{j\ge0}h^jP_j(z)
+ =\exp\!\left(\beta\sum_{r\ge2}\binom{1/2}{r}h^{r-1}z^r\right)
+       \sum_{j\ge0}d_jh^j(1+hz)^{-(3+j)/2}.
+\end{equation}
+Every operation lies in $\mathbb Q[\beta,\beta^{-1},z]$ at fixed order.
+For a truncated exponential $e^{\sum_{k\ge1}u_kt^k}=\sum v_jt^j$, use
+$v_0=1$ and $v_j=j^{-1}\sum_{k=1}^jku_kv_{j-k}$.
+Finally, differentiation in \eqref{eq:coeff} can be implemented without exponential expressions by iterating
+\[
+ e^{-s^2/2}\partial_s(e^{s^2/2}R(s))=R'(s)+sR(s).
+\]
+The script \texttt{reproduce.py} implements precisely these finite recurrences and accepts any nonnegative finite order. Symbolic expression size and runtime grow with the requested order.
+
+As a check on the first correction,
+\[
+ P_1(z)=d_1-\frac32z-\frac\beta8z^2.
+\]
+The first non-Gaussian term in \eqref{eq:Q} is at order $h^2$.
+Using the Gaussian tilted moments $1$, $\lambda$, and $1+\lambda^2$ yields
+$c_1=d_1-3\lambda/2-\beta(1+\lambda^2)/8$, which simplifies to \eqref{eq:c1}.
+
+\section{Asymptotic inversion and residual control}\label{sec:inverse}
+An integer sequence has no canonical real inverse. We therefore define the continuous model explicitly and treat the integer threshold separately.
+Set $\alpha=\log2$, $\gamma=3/2$, and $L_0=\log C$. For fixed $M\ge0$, let
+\begin{align}
+ S_M(x)&=\sum_{j=0}^M c_jx^{-j/2},\notag\\
+ \mathcal A_M(x)&=C2^xx^{-\gamma}e^{\beta\sqrt x}S_M(x),\label{eq:model}\\
+ F_M(x)&=\log\mathcal A_M(x)
+       =\alpha x+\beta\sqrt x-\gamma\log x+L_0+\log S_M(x).
+ \label{eq:FM}
+\end{align}
+Here and below the model is used only on its eventual positive increasing branch.
+
+\begin{proposition}\label{prop:residual}
+Choose $x_*>0$ so that
+\begin{equation}\label{eq:xstar}
+ \sum_{j=1}^M|c_j|x_*^{-j/2}\le\frac12,\qquad
+ \frac\gamma{x_*}+\sum_{j=1}^Mj|c_j|x_*^{-j/2-1}\le\frac\alpha2.
+\end{equation}
+Then $S_M(x)>0$ and $F'_M(x)\ge\alpha/2$ for $x\ge x_*$.
+For $Y=\log y\ge F_M(x_*)$, there is a unique $x_M(y)\ge x_*$ with
+$F_M(x_M(y))=Y$. Any $x_0\ge x_*$ satisfies the exact residual bound
+\begin{equation}\label{eq:residual}
+ |x_0-x_M(y)|\le\frac2\alpha|F_M(x_0)-Y|.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Both left sides in \eqref{eq:xstar} decrease to zero, so such a threshold exists and can be found by repeated doubling. The first inequality bounds $S_M$ below by $1/2$. The derivative of \eqref{eq:FM} is at least
+\[
+ \alpha-\gamma/x-\sum_{j=1}^Mj|c_j|x^{-j/2-1}\ge\alpha/2,
+\]
+where the positive $\beta/(2\sqrt x)$ term was discarded. Hence $F_M$ is strictly increasing and tends to infinity. The mean value theorem gives \eqref{eq:residual} on the interval with endpoints $x_0,x_M(y)$.
+\end{proof}
+
+Let $X=Y/\alpha$ and $L=\log X$. The first terms are
+\begin{align}\label{eq:inverse0}
+ x_M(y)={}&X-\frac\beta\alpha\sqrt X+\frac\gamma\alpha\log X
+       +\frac{\beta^2}{2\alpha^2}-\frac{L_0}\alpha
+       +\OO\!\left(\frac{\log X}{\sqrt X}\right).
+\end{align}
+For $M\ge1$, one further term is $X^{-1/2}U_1(L)$, where
+\begin{equation}\label{eq:U1}
+ U_1(L)=-\frac{\gamma\beta}{2\alpha^2}L
+         -\frac{\beta^3}{8\alpha^3}
+         +\frac{\beta(L_0-2\gamma)}{2\alpha^2}
+         -\frac{c_1}\alpha.
+\end{equation}
+With that term included, the error is $\OO(X^{-1}\log X)$.
+For $M=0$, the same expression uses zero in place of $c_1$.
+For $M\ge2$, the next polynomial is
+\begin{equation}\label{eq:U2}
+ U_2(L)=\frac{\gamma^2}{\alpha^2}L+\frac{c_1^2/2-c_2}{\alpha}
+       -\frac{\gamma L_0}{\alpha^2}+\frac{\beta^2\gamma}{2\alpha^3}.
+\end{equation}
+
+\begin{theorem}\label{thm:reversion}
+For any fixed $M,J\ge0$, polynomials $U_1,\ldots,U_J$ can be obtained by the recursion below so that, on setting
+\begin{equation}\label{eq:TJ}
+ T_J(X)=X-\frac\beta\alpha\sqrt X+\frac\gamma\alpha L
+        +\frac{\beta^2}{2\alpha^2}-\frac{L_0}\alpha
+        +\sum_{j=1}^JX^{-j/2}U_j(L),
+\end{equation}
+we have both
+\begin{align}
+ F_M(T_J(X))-\alpha X
+     &=\OO_{M,J}\!\left(X^{-(J+1)/2}(1+\log X)^{J+2}\right),\label{eq:invres}\\
+ x_M(y)-T_J(X)
+     &=\OO_{M,J}\!\left(X^{-(J+1)/2}(1+\log X)^{J+2}\right).
+ \label{eq:invbound}
+\end{align}
+The coefficient $U_j$ depends only on $c_1,\ldots,c_{\min(j,M)}$. In particular it stabilizes for all $M\ge j$.
+\end{theorem}
+\begin{proof}
+Treat $t=X^{-1/2}$ and $L$ as independent formal symbols. Put
+\[
+ v_0=1-\frac\beta\alpha t+
+ \left(\frac\gamma\alpha L+\frac{\beta^2}{2\alpha^2}-\frac{L_0}\alpha\right)t^2.
+\]
+If $U_1,\ldots,U_{j-1}$ have been chosen, set
+$v_{j-1}=v_0+\sum_{r<j}U_r(L)t^{r+2}$ and form
+\begin{align}\label{eq:revertR}
+ R(v;t,L)={}&\alpha t^{-2}(v-1)+\beta t^{-1}\sqrt v
+             -\gamma(L+\log v)+L_0\notag\\
+          &+\log\left(1+\sum_{k=1}^Mc_kt^kv^{-k/2}\right).
+\end{align}
+The $t^{-1}$ and $t^0$ coefficients vanish for $v_0$. Define
+\begin{equation}\label{eq:Urec}
+ U_j(L)=-\alpha^{-1}[t^j]R(v_{j-1};t,L).
+\end{equation}
+Adding $U_jt^{j+2}$ to $v$ changes the $t^j$ coefficient only through the first term of \eqref{eq:revertR}, by $\alpha U_j$; every other change has larger degree. Induction cancels every coefficient through $t^J$. Each extraction is finite polynomial algebra and involves only $c_k$ with $k\le j$. In fact $\deg U_j\le j$: if every coefficient of $t^k$ in $v-1$ has degree at most $k-1$ in $L$, then the same is true of each positive-degree coefficient of an analytic function of $v$. The square-root term in \eqref{eq:revertR} shifts $k$ to $k-1$, so its $t^j$ coefficient has degree at most $j$; the logarithmic terms have no larger degree. This proves the induction.
+
+Here is a uniform analytic justification of the remainder. Hold real $L\ge0$ fixed, and let $r_L=\rho/(1+L)$ for a sufficiently small constant $\rho>0$. Because the coefficient of $t^k$ in the finite polynomial $v_J-1$ has degree at most $k-1$, on the complex disk $|t|\le r_L$ one has $|v_J-1|\le K|t|$. Choose $\rho$ so that this is less than $1/2$ and the argument of the final logarithm in \eqref{eq:revertR} stays within $1/2$ of one. All square roots and logarithms are then analytic on that disk, with their branches fixed at $t=0$.
+The apparent poles of $R$ at zero cancel, and on $|t|=r_L$ its magnitude is at most $K'(1+L)$: the first two terms are of this size, the explicit $L$ term is of this size, and the remaining analytic terms are bounded. All coefficients through degree $J$ vanish. Cauchy's coefficient bound therefore gives, for $0<t\le r_L/2$,
+\[
+ |R(v_J;t,L)|\le
+ K'(1+L)\frac{(t/r_L)^{J+1}}{1-t/r_L}
+ \le K''t^{J+1}(1+L)^{J+2}.
+\]
+On substituting $L=-2\log t$, both $t$ and $tL$ tend to zero and this proves \eqref{eq:invres}. Eventually $T_J(X)\ge x_*$. Proposition~\ref{prop:residual} proves \eqref{eq:invbound}. Expanding the $t^1$ coefficient gives \eqref{eq:U1}; the next coefficient is only linear in $L$, giving the sharper error stated there.
+\end{proof}
+
+\section{The integer threshold and rounding}
+Define $N(y)=\min\{n\ge0:a_n\ge y\}$. This is well defined for large $y$.
+In fact, Pascal's identity gives
+\[
+ a_{n+1}-a_n=\sum_{k=1}^{n+1}\binom n{k-1}b(k)>0\quad(n\ge1),
+\]
+since the $k=2$ term is $n$ and $b(2)=1$. The main asymptotic also shows $a_n\to\infty$.
+
+\begin{theorem}\label{thm:integer}
+For each fixed $M$, write $r=(M+1)/2$. There is a constant $B_M>0$ such that for all sufficiently large $y$, with $X=(\log y)/\log2$,
+\begin{equation}\label{eq:integer}
+ \left\lceil x_M(y)-B_MX^{-r}\right\rceil
+       \le N(y)\le
+ \left\lceil x_M(y)+B_MX^{-r}\right\rceil.
+\end{equation}
+An asymptotic approximation $T_J(X)$ may replace $x_M(y)$ after enlarging the bracket radius by the bound in \eqref{eq:invbound}.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:main} implies
+$|\log a_n-F_M(n)|\le D_Mn^{-r}$ for all sufficiently large integers $n$.
+Also $x_M(y)\sim X$, and leading-order asymptotics place $N(y)$ in $[X/2,2X]$ for large $y$.
+Within that range $n^{-r}\le2^rX^{-r}$, while
+$F'_M\ge\alpha/2$. Choose $B_M>2^{r+1}D_M/\alpha$.
+Every integer $n<x_M(y)-B_MX^{-r}$ in this range satisfies
+$\log a_n<Y$, and every integer $n\ge x_M(y)+B_MX^{-r}$ satisfies $\log a_n>Y$. Integers outside the range are settled by monotonicity and the leading-order bounds. Taking ceilings proves \eqref{eq:integer}.
+\end{proof}
+The constants $D_M,B_M$ here are existence constants, not numerically certified thresholds. The real-model residual estimate \eqref{eq:residual}, in contrast, has the explicit factor $2/\alpha$ once \eqref{eq:xstar} is verified. In particular, no unconditional formula $N(y)=\lceil x_M(y)\rceil$ is asserted: an arbitrarily small inverse error can change the ceiling near an integer.
+
+\section{Reproducibility and numerical checks}
+The companion script has two independent layers: exact integer values of $p(k)$ from Euler's pentagonal recurrence and exact binomial sums for $a_n$; and symbolic truncated-series arithmetic for the coefficients. It verifies the first sixteen OEIS values and symbolically compares $c_1,c_2,c_3$ with the separately derived formulas. The general-order algorithm was run through $M=6$; the approximate coefficients are
+\begin{center}
+\begin{tabular}{cr}\toprule
+$j$ & $c_j$ \\\midrule
+0 & $1$\\
+1 & $-4.410009558388217$\\
+2 & $15.80699952226008$\\
+3 & $-55.10689011321474$\\
+4 & $192.6836569593585$\\
+5 & $-685.3858215031009$\\
+6 & $2492.654442088339$\\\bottomrule
+\end{tabular}
+\end{center}
+The following table gives $a_n/\mathcal A_M(n)-1$, computed from exact integer $a_n$ followed by 90-digit arithmetic. Exact symbolic expressions through $c_6$ and fuller diagnostics are in \texttt{verification.json}.
+\begin{center}
+\begin{tabular}{rrrr}\toprule
+$n$ & $M=0$ & $M=3$ & $M=6$\\\midrule
+100 & $-3.238\times10^{-1}$ & $2.150\times10^{-2}$ & $-9.949\times10^{-4}$\\
+500 & $-1.699\times10^{-1}$ & $8.020\times10^{-4}$ & $-3.421\times10^{-6}$\\
+1000 & $-1.252\times10^{-1}$ & $1.981\times10^{-4}$ & $-2.997\times10^{-7}$\\
+2000 & $-9.128\times10^{-2}$ & $4.911\times10^{-5}$ & $-2.633\times10^{-8}$\\
+5000 & $-5.935\times10^{-2}$ & $7.802\times10^{-6}$ & $-1.060\times10^{-9}$\\
+10000 & $-4.257\times10^{-2}$ & $1.943\times10^{-6}$ & $-9.346\times10^{-11}$\\
+\bottomrule\end{tabular}
+\end{center}
+For $y=a_{10000}$, numerical inversion of $\mathcal A_6$ gives
+$x_6(y)-10000\approx-1.3311749344\times10^{-10}$.
+This is a diagnostic; the floating-point root is not an interval-certified calculation, and the displayed numerical signs do not prove a universal error sign. Finite data also do not prove the expansion, which rests on Sections~\ref{sec:proof}--\ref{sec:algorithm}.
+
+To reproduce the recorded run, use Python~3 with \texttt{sympy} and \texttt{mpmath} installed:
+\begin{lstlisting}
+python3 reproduce.py --order 6 --max-n 10000 --output verification.json
+pdflatex a292507_asymptotics.tex
+pdflatex a292507_asymptotics.tex
+\end{lstlisting}
+The TeX source contains the displayed table; the full results are also stored in JSON. The script's \texttt{inverse\_polynomials(M,J)} function implements \eqref{eq:Urec}. The computational work uses no network calls or downloaded sequence tables.
+
+\section{Prior art and limits of the result}
+The source check on 1 October 2026 found the logarithmic conjecture attributed to V\'aclav Kote\v{s}ovec on 11 May 2019 and the coefficient formula attributed to Ilya Gutkovskiy on 24 April 2021 in A292507 \cite{oeis292507}. A218481 already records the leading binomial-transform asymptotic for partition numbers (2015), and its 2023 comments explicitly give the $e^{r^2/16}$ smoothing factor for inputs proportional to $e^{r\sqrt n}n^{-b}$ \cite{oeis218481}. The leading constant here is a direct application of that established mechanism after taking the partition difference. A292622 also records a fixed-column asymptotic, which is a different regime from its diagonal A292507 \cite{oeis292622}.
+
+All-orders expansions and error analysis for the underlying partition function predate this note. Nemes' paper \cite{nemes}, together with the earlier work of Banerjee, Paule, Radu, and Schneider \cite{bprs}, provides relevant context and stronger explicit source-function error estimates than are needed here. The normal moment-generating-function expansion used above is a standard cumulant calculation.
+
+Searches by the sequence identifier, its descriptive title, and combinations of the terms binomial transform, partitions, and asymptotic inverse did not locate a published formula for the specific higher $c_j$ or this inverse. That is a limited negative search result, not evidence of priority or a claim of novelty. This report's contribution is a self-contained verification of the specific expansion, its finite coefficient procedure, and the stated inversion bounds, conditional only on the cited standard partition estimate. It is a Poincar\'e expansion to arbitrary fixed algebraic order. It does not prove convergence of the resulting $a_n$ correction series or describe a complete exponential transseries; transformed secondary partition sectors would require separate analysis.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{oeis292507}
+OEIS Foundation, \emph{A292507}, contributed by A.~P.~Heinz, 2017;
+formula comments by V.~Kote\v{s}ovec (2019) and I.~Gutkovskiy (2021).
+\url{https://oeis.org/A292507}. Accessed 1 October 2026.
+\bibitem{oeis218481}
+OEIS Foundation, \emph{A218481}, contributed by P.~D.~Hanna, 2012;
+asymptotic formula and comments by V.~Kote\v{s}ovec (2015, 2023).
+\url{https://oeis.org/A218481}. Accessed 1 October 2026.
+\bibitem{oeis292622}
+OEIS Foundation, \emph{A292622}, fixed-column asymptotic comment by
+V.~Kote\v{s}ovec, 24 October 2018.
+\url{https://oeis.org/A292622}. Accessed 1 October 2026.
+\bibitem{nemes}
+G.~Nemes, \emph{Simple error bounds for an asymptotic expansion of the partition function},
+Ramanujan Journal \textbf{65} (2024), 1757--1771.
+\href{https://doi.org/10.1007/s11139-024-00958-8}{doi:10.1007/s11139-024-00958-8}.
+\url{https://arxiv.org/abs/2402.07115}; version~2, Lemma~2.2 and its proof.
+\bibitem{bprs}
+K.~Banerjee, P.~Paule, C.-S.~Radu, and C.~Schneider,
+\emph{Error bounds for the asymptotic expansion of the partition function},
+Rocky Mountain Journal of Mathematics \textbf{54}(6) (2024), 1551--1592.
+\href{https://doi.org/10.1216/rmj.2024.54.1551}{doi:10.1216/rmj.2024.54.1551}.
+\url{https://arxiv.org/abs/2209.07887}.
+\end{thebibliography}
+\end{document}
