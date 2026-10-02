@@ -33,8 +33,11 @@ records the current75-operation certificate and87-operation polynomial
 frontiers alongside the historical handoff. The
 [complete half-binomial75 proof](1980/FIXED_RAW_UNIVERSAL_75_PROOF.md)
 supplies the comparison bound; the
-[normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
-supplies the single-polynomial bound.
+[asymmetric-scale proof](research-wip/native-stream-queue/complete75_asymmetric_scale_tradeoffs.md)
+supplies87=48M+39A with19 positive witnesses and exact degree169. Its
+88=47M+41A alternative has exact degree125. Keeping Y=sq³ while changing
+X=wq³ to X=wq preserves each frozen parent's full positive zero set through
+a proved integer coordinate bijection at zeros.
 
 The latest [product-scale group compiler](research-wip/native-stream-queue/group_projective_product_radix_scale.md)
 saves one multiplication by using q=32BP^a to type both history radices,
@@ -254,28 +257,39 @@ These are exact finite propagated minima, not exact degrees or unrestricted
 lower bounds. Across strong/scale bases, the accepted outer relation is
 preserved by explicit scale maps and canonical private strong extensions.
 
-The [complete Tseytin construction](research-wip/native-stream-queue/tseytin_universal425.md) gives
-**405 certificate /425=199M+226A operations**, seven comparisons,
+The [product-scale Tseytin construction](research-wip/native-stream-queue/tseytin_product_scale412.md) gives
+**392 certificate /412=191M+221A operations**, seven comparisons,
 65 positive witnesses, one fixed positive program parameter, ordinary
-positive input, and degree at most5868. It uses the actual fixed C2
-semigroup with five generators and nine relations. Its components are a
-[362-operation shared word history](research-wip/native-stream-queue/tseytin_selector_sharing428.md), a
-[52-operation exact exponent relation](research-wip/native-stream-queue/pell_fixed_affine_exponent52.md),
-and a [ten-gate query loader](research-wip/native-stream-queue/tseytin_affine_power_query_loader.md).
-Fusing the query into the initial endpoint removes two more paid gates;
-the loader coefficients and program numeral are rescaled explicitly.
-The paid query comparison excludes the exponent product's negative sign
-by exact nonzero residues for both input parities; this justifies merging
-the two unit products. Keeping them separate gives427 with degree at most5814.
-The [440 baseline](research-wip/native-stream-queue/tseytin_universal440.md) and428 sharing-only version
-remain reproducible. Effective group embedding and the primary Tseytin
-reduction compile every c.e. positive set into one program numeral, with
-no alphabet-size bound. The external embedding algorithm and full giant
-Pell witnesses are not numerically materialized. The
+positive input, and degree at most5662. It uses the actual fixed C2
+semigroup with five generators and nine relations. The
+[425 baseline](research-wip/native-stream-queue/tseytin_universal425.md) pays the52-operation exponent
+relation and ten-gate query loader; its exact parity residues justify
+merging the exponent and word unit products. Then
+[shared repunits](research-wip/native-stream-queue/tseytin_repunit_sharing418.md) save seven operations,
+[recovered endpoint bounds](research-wip/native-stream-queue/tseytin_free_height415.md) save three
+additions, and the paid product B*P^34 saves three more multiplications.
+The new native scale types both history radices; fixed top tags2,1 recover
+the same lower lanes. The valid query's bounded zero runs recover the
+initial bound, while paid transports recover terminal bounds. Keeping
+the power unit separate gives414 with degree at most5608. The new scale
+preserves accepted inputs by rebuilding positive native witnesses.
+
+The [exact factor-partition search on425](research-wip/native-stream-queue/tseytin_universal_factor_partitions.md)
+independently gives425/5868,426/5140,428/3578,430/2720 and432/2012,
+with65 witnesses. It searches normalized and ordinary strong bases with
+the52-operation exponent filter retained; these are exact finite minima
+of proved degree bounds, not exact degrees or unrestricted lower bounds.
+Its grouping/source family is frozen at425 rather than the smaller412.
+
+Effective group embedding and the primary Tseytin reduction compile
+every c.e. positive set into one program numeral, with no alphabet-size
+bound. The external embedding algorithm and full giant Pell witnesses
+are not numerically materialized. The
 [group-completion obstruction](research-wip/native-stream-queue/tseytin_group_completion_obstruction.md)
 remains valid: direct invertible-matrix interpretations collapse this
-semigroup. The new construction retains its noninvertible rewrite history
-and pays its ordinary-input loader. The overall75/87 frontier is unchanged.
+semigroup. The construction retains its noninvertible rewrite history
+and pays its ordinary-input loader. The overall75/87 operation bounds
+are unchanged.
 
 The [independent gamma-period audit](research-wip/native-stream-queue/complete75_independent_gamma87_local_filters.md)
 reimplements the already established Lucas filter with three comparison

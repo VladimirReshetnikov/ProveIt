@@ -14,9 +14,11 @@ Three independent full integration reviews passed; this is a mathematical
 proof with symbolic and finite checks, not a Lean formalization.
 
 The separate universal polynomial bound is **87=48M+39A operations**,
-with19 positive witnesses and exact degree203; see the
-[normalized strong-witness proof](complete75_normalized_strong87.md).
-The88-operation degree151 construction remains a lower-degree alternative.
+with19 positive witnesses and exact degree169; see the
+[asymmetric-scale proof](complete75_asymmetric_scale_tradeoffs.md).
+The88-operation alternative has exact degree125. Each source has a full
+positive-zero bijection to its frozen parent, with both ratios and the
+strong equation retained.
 The preceding
 [complete fixed-table matrix compiler](group_projective_label_aligned_lanes.md)
 has an illustrative **228-operation certificate / 245-operation polynomial
@@ -258,28 +260,39 @@ These are exact finite propagated minima, not exact degrees or unrestricted
 lower bounds. Across strong/scale bases, the accepted outer relation is
 preserved by explicit scale maps and canonical private strong extensions.
 
-The [complete Tseytin construction](tseytin_universal425.md) gives
-**405 certificate /425=199M+226A operations**, seven comparisons,
+The [product-scale Tseytin construction](tseytin_product_scale412.md) gives
+**392 certificate /412=191M+221A operations**, seven comparisons,
 65 positive witnesses, one fixed positive program parameter, ordinary
-positive input, and degree at most5868. It uses the actual fixed C2
-semigroup with five generators and nine relations. Its components are a
-[362-operation shared word history](tseytin_selector_sharing428.md), a
-[52-operation exact exponent relation](pell_fixed_affine_exponent52.md),
-and a [ten-gate query loader](tseytin_affine_power_query_loader.md).
-Fusing the query into the initial endpoint removes two more paid gates;
-the loader coefficients and program numeral are rescaled explicitly.
-The paid query comparison excludes the exponent product's negative sign
-by exact nonzero residues for both input parities; this justifies merging
-the two unit products. Keeping them separate gives427 with degree at most5814.
-The [440 baseline](tseytin_universal440.md) and428 sharing-only version
-remain reproducible. Effective group embedding and the primary Tseytin
-reduction compile every c.e. positive set into one program numeral, with
-no alphabet-size bound. The external embedding algorithm and full giant
-Pell witnesses are not numerically materialized. The
+positive input, and degree at most5662. It uses the actual fixed C2
+semigroup with five generators and nine relations. The
+[425 baseline](tseytin_universal425.md) pays the52-operation exponent
+relation and ten-gate query loader; its exact parity residues justify
+merging the exponent and word unit products. Then
+[shared repunits](tseytin_repunit_sharing418.md) save seven operations,
+[recovered endpoint bounds](tseytin_free_height415.md) save three
+additions, and the paid product B*P^34 saves three more multiplications.
+The new native scale types both history radices; fixed top tags2,1 recover
+the same lower lanes. The valid query's bounded zero runs recover the
+initial bound, while paid transports recover terminal bounds. Keeping
+the power unit separate gives414 with degree at most5608. The new scale
+preserves accepted inputs by rebuilding positive native witnesses.
+
+The [exact factor-partition search on425](tseytin_universal_factor_partitions.md)
+independently gives425/5868,426/5140,428/3578,430/2720 and432/2012,
+with65 witnesses. It searches normalized and ordinary strong bases with
+the52-operation exponent filter retained; these are exact finite minima
+of proved degree bounds, not exact degrees or unrestricted lower bounds.
+Its grouping/source family is frozen at425 rather than the smaller412.
+
+Effective group embedding and the primary Tseytin reduction compile
+every c.e. positive set into one program numeral, with no alphabet-size
+bound. The external embedding algorithm and full giant Pell witnesses
+are not numerically materialized. The
 [group-completion obstruction](tseytin_group_completion_obstruction.md)
 remains valid: direct invertible-matrix interpretations collapse this
-semigroup. The new construction retains its noninvertible rewrite history
-and pays its ordinary-input loader. The overall75/87 frontier is unchanged.
+semigroup. The construction retains its noninvertible rewrite history
+and pays its ordinary-input loader. The overall75/87 operation bounds
+are unchanged.
 
 The [independent gamma-period audit](complete75_independent_gamma87_local_filters.md)
 reimplements the already established Lucas filter with three comparison
@@ -2000,6 +2013,7 @@ New research and the completed75-operation construction:
 | [Regular macro controller](group_regular_macro_controller.md) | **7m+3h+p+60**,25 equations,m+22 auxiliaries; pays edge typing, ordered adjacency and physical selectors. | Its component theorem assumes dyadic B,P; the complete compiler supplies them independently. |
 | [Canonical matrix history47](group_four_register_canonical_history47.md) | **47=15M+32A**,21 history fields, five equations; one global bound recovers every history digit. | Selected products, regular control and geometry are supplied by the complete compiler. |
 | [Binary AND and selected-source successor63](native_binary_masked_selection63.md) | AND63/64; eight selections117/119. Exclusive prescribed batch119 uses23 auxiliaries and17 equations. | Canonical zero digits are allowed. The exclusive completeness bound is proved from the actual small history digits and mutual exclusion. |
+| [Asymmetric complete87/88 scales](complete75_asymmetric_scale_tradeoffs.md) | **87/degree169** or **88/degree125**,19 positive witnesses. | Keep Y=sq³ and use X=wq. Main power recovery makes the exact inverse w_old=w_new/q² a positive integer; each full positive zero set is in bijection with its frozen parent. |
 | [Normalized strong-witness universal polynomial](complete75_normalized_strong87.md) | **87=48M+39A**,19 positive witnesses,degree203. | Positive embedding into coupled88 and canonical reconstruction preserve the full ordinary-input projection. All packed bounds, both ratios and the full strong square remain proved. The88/151 alternative has lower degree. |
 | [Coupled index/linear universal polynomial](complete75_coupled_index_linear88.md) | **88=47M+41A**, 19 positive witnesses and exact degree151. One shared expression saves a subtraction; a compiler-mask population contradiction excludes the extra sign. | Positive zero-set equivalence uses the full compiled mask contract. The75 comparison bound and89/135 tradeoff remain separate. |
 | [Coupled-unit degree tradeoffs](complete75_coupled88_degree_tradeoffs.md) | **91/degree130** and **93/degree90**, each with19 positive witnesses and identical positive zeros to coupled88. | Exact partition bounds concern the seven fixed factors with the full strong equation retained separately. The compiler-specific sign proof is inherited intact. |

@@ -1,5 +1,11 @@
 # A complete 425-operation universal equation with a fused query endpoint
 
+> The [product-scale successor](tseytin_product_scale412.md) gives412
+> operations and degree at most5662 with the same65-witness interface.
+> Repunit sharing and recovered endpoint bounds are intermediate savings.
+> The [factor-partition family](tseytin_universal_factor_partitions.md)
+> independently reaches432/degree-at-most2012 from the frozen425 source.
+
 The [literal source](tseytin_universal425.py) is a fixed universal integer
 polynomial with **425=199M+226A operations**,405 certificate gates,
 seven comparisons,65 positive witnesses, one fixed positive program
