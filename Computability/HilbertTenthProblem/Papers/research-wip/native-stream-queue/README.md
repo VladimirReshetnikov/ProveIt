@@ -28,7 +28,17 @@ numerical universal alphabet remains uninstantiated. Mortality now has
 [a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
 the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
-The [latest seven-report review](incoming_substrate_review_808b53ed8.md) covers the signal,
+The [complete Waterfall review](waterfall_report_review_24a743255.md)
+validates the fixed 46-clock universal-machine frontend and all eight original
+replays. A checked patch repairs exact integer input contracts and mutable
+exports. Its [complete forced-boundary compiler](waterfall_forced_boundary_projection.md)
+reduces the seven-step quadratic from **245 witnesses / 1558 operations** to
+**107 witnesses / 720=203M+517A**, with a natural-zero bijection and independent
+full polynomial/gate identities. A [literal matrix counterexample](waterfall_endpoint_alias.md)
+rejects replacing ordered history by canonical endpoints and timing counts.
+The horizon remains external; the universal **87-operation** bound is unchanged.
+
+The [preceding seven-report review](incoming_substrate_review_808b53ed8.md) covers the signal,
 maximal-parallel, exact-order, exact-convergence, irreversible-semantics and
 affine-matrix reports delivered at 808b53ed8 and 48ee077c7. All eleven original
 verifier/CLI entry points pass. Checked patches repair input binding, nested
