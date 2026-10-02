@@ -66,6 +66,12 @@
 > Commit and push reviewed packets frequently. These finite improvements
 > do not establish a global optimum or finish the open research goal.
 >
+> The [grouped U15 compiler](u15_packed_grouped_projections621.md) now costs621
+> including ordinary input, or378 on raw half tapes. Fourteen shared paid sums
+> save25 additions and preserve the entire646 parent polynomial on all tuples.
+> Its102 ordinary positive witnesses,46 comparisons and exact degree1936 remain.
+> The independent review passed; no87-operation improvement is claimed.
+>
 > Next full report review: [nine new archives](incoming_substrate_intake_2a8a39599.md)
 > at `060e08a07` and `2a8a39599`. Intake authenticates231 files and54 Python
 > modules; it is not a full proof/test review. Preserve the distinctions between

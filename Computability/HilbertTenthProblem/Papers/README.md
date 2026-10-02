@@ -39,6 +39,15 @@ supplies87=48M+39A with19 positive witnesses and exact degree169. Its
 X=wq³ to X=wq preserves each frozen parent's full positive zero set through
 a proved integer coordinate bijection at zeros.
 
+The [grouped U15 compiler](research-wip/native-stream-queue/u15_packed_grouped_projections621.md)
+reduces this direct tape route to **621=252M+369A operations**, with102 positive
+witnesses and46 comparisons, including ordinary input. Its raw interface costs378.
+Fourteen paid source-state sums save25 later additions. Exact affine expansion
+and downstream expression identities prove the complete polynomial is unchanged
+on every supplied tuple; exact degree1936 and all witness conventions transfer.
+The [independent review](research-wip/native-stream-queue/review_u15_grouped621.md) verifies the full source,
+costs and public interfaces. The overall87-operation universal bound is unchanged.
+
 The [composed packed U15 compiler](research-wip/native-stream-queue/u15_packed_composed_truth646.md)
 costs **646=252M+394A operations**,102 positive witnesses and46 comparisons,
 including ordinary input. Its raw interface costs403 operations and51 witnesses.
