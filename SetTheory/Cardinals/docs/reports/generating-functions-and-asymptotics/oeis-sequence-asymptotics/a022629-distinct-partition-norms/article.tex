@@ -47,6 +47,9 @@
 \newcommand{\mergenoteb}[1]{\par\smallskip\noindent\textbf{[Merge note, batch 75.]}\ #1\par\smallskip}
 \newcommand{\writenote}[1]{\par\smallskip\noindent\textit{[Batch 75, 2 October 2026.]}\ #1\par\smallskip}
 \newcommand{\epsh}{\varepsilon_{\sharp}}
+% Batch 77: source 77-51 (written 2 October 2026).
+\newcommand{\mergenotec}[1]{\par\smallskip\noindent\textbf{[Merge note, batch 77.]}\ #1\par\smallskip}
+\newcommand{\writenotec}[1]{\par\smallskip\noindent\textit{[Batch 77, 2 October 2026.]}\ #1\par\smallskip}
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
@@ -64,7 +67,8 @@
 {\normalsize Merged with an independent manuscript on A022629\par
 (batch 73O1: base source 40, member source 48)\par
 and with two further independent manuscripts\par
-(batch 75: sources 75-01 and 75-06)\par}
+(batch 75: sources 75-01 and 75-06),\par
+and with a fifth (batch 77: source 77-51)\par}
 \vspace{12mm}
 \hrule\vspace{6mm}
 \noindent\textbf{Central family}
@@ -137,6 +141,12 @@ $1+o(1)$, eventual strict log-concavity and fixed-degree Jensen hyperbolicity
 (\OEIS{A297321}, \OEIS{A022630}, \OEIS{A022631}) with $\mu$-independent
 coefficients, two further inverse coefficients, and an exact rational check
 of $P_8$ (source 75-06).
+
+A fifth manuscript, source 77-51 of batch 77, proves the core theorems once
+more (recorded in one table) and adds the slot-multiplicity family
+$\prod(1+k^\alpha q^k)^{k^\beta}$, $\beta\ge1$ an integer, with the
+logarithmic equivalent conjectured for \OEIS{A266891}
+(Section~\ref{dpn:fp:sec:b77}).
 \end{abstract}
 \setcounter{tocdepth}{1}
 \begingroup
@@ -163,6 +173,10 @@ as the number of colors available for a part of size $k$, with at most one part
 of each \emph{size}, regardless of color. This is not the product
 $\prod_k(1+q^k)^{k^\alpha}$, which allows several differently colored copies of
 the same size.
+\writenotec{Source 77-51 (Section~\ref{dpn:fp:sec:family}) treats a third
+product between these two, $\prod_k(1+k^\alpha q^k)^{k^\beta}$ with integer
+$\beta\ge0$: $k^\beta$ slots of size $k$, each with internal weight
+$k^\alpha$.}
 
 The OEIS entries consulted on October 1, 2026 have the following status
 \cite{oeis1,oeis2,oeis3,oeis4,oeis5}.
@@ -241,6 +255,10 @@ $\prod(1+k^{-q}z^k)$ with $q>0$.  Their main theorem assumes parameters
 $0<a_k\le1$, so substituting $a_k=k^\alpha>1$ is not a direct application of
 that theorem.  This observation is not a claim that no other general theorem
 can cover the present case \src{48}.
+\mergenotec{Source 77-51 (Section~\ref{dpn:fp:sec:checks}) repeats the Gikunda
+and Granovsky--Stark distinctions in its own words and adds Naranjo and
+Ram\'irez \cite{NR}, who discuss A022629 explicitly in a combinatorial
+treatment of coloured partitions.}
 
 \subsection{Relation to the ProveIt repository}
 The repository snapshot consulted was
@@ -278,6 +296,9 @@ ProveIt commit \texttt{29aca108e}, which held the archives of sources 40 and
 repository search for A022629 found nothing was true of that snapshot only;
 this report is the repository's treatment, and both sources are merged into
 it.}
+\mergenotec{Source 77-51 (Section~\ref{dpn:fp:sec:b77}) names no ProveIt
+commit and records no repository search; it was written without knowledge of
+this report.}
 
 \subsection{The two sources and this merge}\label{dpn:sec:merge}
 This report is built from two manuscripts of batch 73O1 of ProveIt's
@@ -321,6 +342,12 @@ material is Sections~\ref{dpn:jh:sec:sharp}--\ref{dpn:sec:b75questions}
 \textbf{[Merge note, batch 75.]}, and dated notes on earlier text
 \textit{[Batch 75, 2 October 2026.]}.  Earlier sections are otherwise
 unchanged, so their numbering is that of the batch-73O1 report.}
+\mergenotec{Batch 77 added a fifth independent manuscript, source 77-51.
+Its shared results are recorded once, in Table~\ref{dpn:fp:tab:dup}; its new
+material is Section~\ref{dpn:fp:sec:b77} (marked \src{77-51}).  Text added in
+that merge is marked \textbf{[Merge note, batch 77.]}, and dated notes on
+earlier text \textit{[Batch 77, 2 October 2026.]}.  Every earlier section,
+statement, equation and table keeps its number.}
 
 \subsection{Notation across the two sources}\label{dpn:sec:notation}
 The two manuscripts use the same letters for different objects.  This report
@@ -436,6 +463,52 @@ divisor sum in \eqref{dpn:eq:exactrec} & $C_\alpha(m)$ & $b_s(m)$ & $\beta_r(m)$
       Lagrange coefficient $U_m(s)$.
 \end{itemize}
 
+\mergenotec{Source 77-51 (Section~\ref{dpn:fp:sec:b77}) is translated as
+follows.  The family notation $A^{[\beta]}_\alpha$, $a^{[\beta]}_\alpha$,
+$K^{[\beta]}$, $r^{[\beta]}$, $K^{[\beta]}_0$, $R^{[\beta]}_0$ is new in this report.}
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{4.6cm}}
+\toprule
+Notion & This report & Source 77-51\\
+\midrule
+power in the weight; slot exponent & $\alpha$; $\beta$ & $\alpha$; $\beta$, and $d=\beta+1$\\
+slot family, coefficients & $A^{[\beta]}_\alpha(q)$, $a^{[\beta]}_\alpha(n)$ & $F_{\alpha,\beta}(q)$, $a^{(\alpha,\beta)}_n$\\
+$\sqrt{2n}$, $\log\sqrt{2n}$ & $K$, $r$; $K^{[\beta]}=((\beta+2)n)^{1/(\beta+2)}$, $r^{[\beta]}$ & $m$, $L$; $m_0$, $L_0$\\
+$\pi^2/(6\alpha^2)$ at $\alpha=1$; $\pi^2$ & $c$; $6c$ & $C$; $P$\\
+transition site; its logarithm & $M=e^s$; $s$ & $M$; $\ell=\log M$\\
+small parameter & $\eps=s/M$; $\mathcal W=M^{\beta+1}/s$ & $w=M/\ell$; $\mathcal W$\\
+log generating function, mean, variance & $F(t)$, $-F'(t)$, $B$; $F^{[\beta]}$, $B^{[\beta]}$ & $f(t)$, $\mu(t)$, $V(t)$\\
+cumulant order & $j$ & $r$\\
+Edgeworth sum through order $R$ & $1+\sum_{\ell\le R}\mathcal E_\ell$ & $E_R$\\
+logarithmic and inverse coefficients ($\alpha=1$) & $P_j(c)$; $\Delta_j(c)$ & $d_j$; $b_j$\\
+boundary-inverse derivatives; smoothing series & $U_j(s)$; Lemma~\ref{dpn:lem:smoothing} & $R_j(x)$; $T(L)$\\
+log threshold; threshold index & $Y$; $N_\alpha(Y)$, $N^{[\beta]}_\alpha(Y)$ & $s=\log y$; $N(y)$, $N_{\alpha,\beta}(y)$\\
+Lambert data & $K_0$, $R_0$; $K^{[\beta]}_0$, $R^{[\beta]}_0$ & $m_*$, $L_*$; $m_*$, $L_*$, $u_*$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent\textbf{Readings to avoid (batch 77).}
+\begin{itemize}
+\item Source 77-51's $s=\log y$ is this report's log threshold $Y$, not the
+      transition coordinate $s=-W_{-1}(-t/\alpha)$, which source 77-51 calls
+      $\ell$.
+\item Source 77-51's $\mu(t)$ is the mean $-F'(t)$, not the number of layers
+      $\mu$ of Section~\ref{dpn:cp:sec:powers}; and $a^{[\beta]}_\alpha$ is not
+      $a_{\alpha,\mu}$.
+\item Source 77-51's $m$ is $K=\sqrt{2n}$; its $M$ (with $t=\log M/M$ at
+      $\alpha=1$) is this report's transition site $M=e^s$, not $K$; its $L$
+      is $r$, not the $L$ of sources 48 and 75-01.
+\item Source 77-51's $d_j$ are $P_j(\pi^2/6)$ and its $b_j$ are
+      $\Delta_j(\pi^2/6)$: neither is source 75-06's $d_j(u)$ or $b_j(u)$, nor
+      the cumulant polynomials $b_j(p)$; its $d=\beta+1$ is a dimension.
+\item Source 77-51's $R_j(x)$ are rational functions ($=U_j$); here $R$ is a
+      truncation order and $R_0$ a Lambert datum.  Its $E_R$ includes the
+      leading $1$; this report's $\mathcal E_\ell$ is the single weight $2\ell$.
+\item Source 77-51's $r$ is a cumulant order (and, in its Section~2,
+      $n-M(M+1)/2$, with $M$ there the largest integer such that $M(M+1)/2\le n$); here $r=\log K$.  Its $C=\pi^2/6$ is $c$ at $\alpha=1$.
+\end{itemize}
+
 \section{Main results and the hierarchy of scales}
 Throughout the paper, $\alpha>0$ is fixed. Constants in $O$-terms may depend on
 $\alpha$ and on the indicated truncation order. Put
@@ -493,6 +566,13 @@ prove Theorem~\ref{dpn:thm:log} independently; $c_j(6c)=b_j(6c)=P_j(c)$
 (Table~\ref{dpn:tab:b75dup}).  Source 75-06 proves it also for the convolution
 powers $A_\alpha(q)^\mu$, with the same $P_j$
 (Theorem~\ref{dpn:cp:thm:log}).}
+\mergenotec{Source 77-51 proves Theorem~\ref{dpn:thm:log} for $\alpha=1$ (its
+Theorem~6.1, with $d_j=P_j(\pi^2/6)$ printed through $j=4$ and checked through
+$j=6$), and its first two orders for every $\alpha$, in the resummed form
+\[
+ \log a_\alpha(n)=\alpha K(r-1)+\frac{\pi^2K}{6\alpha(r-1)}+O_\alpha(K/r^3)
+\]
+(Proposition~\ref{dpn:fp:prop:thermal}, with the matching inverse).}
 
 For a different level of precision, define
 \begin{equation}\label{dpn:eq:F}
@@ -2197,6 +2277,10 @@ preserve a single large crossing, the logistic boundary, and a computable
 inverse expansion. Arithmetic thinning of the allowed part sizes would also
 require a replacement for the consecutive-block lemma and may introduce
 persistent lattice obstructions.
+\writenotec{A different generalization, integer slot multiplicities
+$k^\beta$ with the weight $k^\alpha$ kept, is proved by source 77-51
+(Theorem~\ref{dpn:fp:thm:family}); the weight perturbations asked for here
+remain open.}
 
 \paragraph{8. Certified numerics and formal verification.}
 Give explicit constants in the Fourier bounds, add interval-enclosed saddle
@@ -2278,6 +2362,10 @@ literature audit for products with coefficients \emph{inside} their factors,
 rather than mistaking $\prod(1+k^\alpha q^k)$ for $\prod(1+q^k)^{k^\alpha}$.
 Compare any earlier theorem at the level of hypotheses and error terms before
 making a priority claim.
+\writenotec{The intermediate products $\prod(1+k^\alpha q^k)^{k^\beta}$ are
+treated in Section~\ref{dpn:fp:sec:family} (source 77-51), which also cites
+Naranjo and Ram\'irez \cite{NR}; the broader literature audit asked for here
+is still open.}
 \end{enumerate}
 
 \section{Conclusion}
@@ -2313,6 +2401,8 @@ fourth time and add what follows: the sharp saddle scale and threshold
 (Section~\ref{dpn:jh:sec:sharp}), the eventual shape of the sequence
 (Section~\ref{dpn:jh:sec:shape}), and the convolution powers
 (Section~\ref{dpn:cp:sec:powers}).}
+\mergenotec{Source 77-51 reaches them a fifth time and adds the slot
+multiplicities $k^\beta$ and A266891 (Section~\ref{dpn:fp:sec:b77}).}
 
 %% ---------------------------------------------------------------------
 %% Batch 75: sources 75-01 and 75-06 (written 2 October 2026)
@@ -3303,6 +3393,444 @@ that the problems are globally open.
   before any novelty claim; independent review is the next validation step.
 \end{enumerate}
 
+%% ---------------------------------------------------------------------
+%% Batch 77: source 77-51 (written 2 October 2026)
+%% ---------------------------------------------------------------------
+\section{Addendum (batch 77): a fifth independent source and slot multiplicities}\label{dpn:fp:sec:b77}
+Batch 77 of ProveIt's incoming-reports intake delivered one more manuscript on
+this family: \textbf{source 77-51} (batch-77 manuscript 51),
+\emph{Asymptotic expansions and inversion for fixed power weighted
+partitions}, dated October 1, 2026, author line ``Research report'', archive
+\file{oeis-fixed-power-asymptotics-result.zip} (arrival commit
+\texttt{096ee7b87}; 11-page PDF, not shipped).  It names no ProveIt commit,
+records no repository search, and cites none of sources 40, 48, 75-01 and
+75-06.  It treats A022629 in detail and the two-parameter family
+\[
+ A^{[\beta]}_\alpha(q)=\prod_{k\ge1}(1+k^\alpha q^k)^{k^\beta},
+ \qquad\alpha>0\text{ real},\ \beta\ge0\text{ an integer},
+\]
+whose case $\beta=0$ is this report's $A_\alpha(q)$.  Its symbols are
+translated by the third table of Section~\ref{dpn:sec:notation}.
+
+For this report, source 77-51 is a fifth independent proof of
+Proposition~\ref{dpn:prop:elementary} for every fixed $\alpha$, of
+Theorems~\ref{dpn:thm:log} and~\ref{dpn:thm:inverse} for $\alpha=1$ (all
+orders) and for every fixed $\alpha$ (first two orders), and of
+Theorem~\ref{dpn:thm:saddle} for every fixed $\alpha$, with identical
+coefficients.  Table~\ref{dpn:fp:tab:dup} records them, following
+Section~\ref{dpn:sec:merge}; they are not printed again.  Its new material is
+Section~\ref{dpn:fp:sec:family} (slot multiplicities $k^\beta$, $\beta\ge1$)
+and Section~\ref{dpn:fp:sec:oeis} (OEIS \OEIS{A266891}), the resummed
+``thermal'' forms of Proposition~\ref{dpn:fp:prop:thermal}, a further
+citation (Section~\ref{dpn:fp:sec:checks}), and four research questions
+(Section~\ref{dpn:fp:sec:questions}).  Material from this source is marked
+\src{77-51}.
+
+\paragraph{Stale statements and priority caveats.}
+Source 77-51's abstract and README present the proofs of the A022629 and
+A092484 conjectures as its contribution (``proves the logarithmic OEIS
+conjectures for A022629, A092484 and A266891''); in this report they are the
+fifth proofs, and only the A266891 statement is new.  It makes no priority
+claim: ``neither an exponentially complete transseries nor a literature-wide
+priority claim is asserted''; ``Our proof does not depend on an
+absence-of-literature assertion''; its comparison with Gikunda's thesis
+``neither discounts the thesis nor claims that no other source treats fixed
+tilts''.  Its asymptotic constants ``depend on fixed parameters and
+truncation order'' and ``have not been made effective''; uniformity at zero
+tilt and proof-assistant verification are not asserted, and ``No external
+submission or publication'' was made (its README).
+
+\paragraph{Neighbouring reports of batch 77.}
+\file{oeis-sequence-asymptotics/a301746-divisor-weighted-asymptotics}, written
+on the same day in the same style, applies the same exact-saddle sum and
+consecutive-block lemma to $\prod(1+q^k)^{d(k)^2}$; its independent audit
+cites ``the independently reviewed A022629 proof'', which is source 77-51's
+audit (\file{77-51-fp-ind-AUDIT.md} here).
+\file{oeis-sequence-asymptotics/a291698-moving-fugacity-partitions} treats
+distinct partitions with one global fugacity $u=n^\alpha$ attached to every
+part, $[q^n]\prod_k(1+uq^k)$, rather than the per-part weights $k^\alpha$ of
+this report: a different weighting, with no result in common.
+
+\subsection{Same results, a fifth independent derivation}\label{dpn:fp:sec:dup}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{5.6cm}}
+\toprule
+Result in this report & Source 77-51 & Relation\\
+\midrule
+Proposition~\ref{dpn:prop:elementary} (two-term growth; the A022629 and A092484
+conjectures) & Thm.~1.1, first display, and Section~2; Thm.~8.1 at $\beta=0$ &
+ same lower-bound partition $1,\dots,m-1,m+d$; the upper bound by a cutoff sum
+ is a fifth route (Section~\ref{dpn:fp:sec:routes})\\
+Strict monotonicity (Section~\ref{dpn:sec:inverse}) & Section~2, end &
+ same injection; extended to $\beta\ge1$ in Section~\ref{dpn:fp:sec:family}\\
+Lemma~\ref{dpn:lem:scales}, \eqref{dpn:eq:mombound} & Lemma~3.1 &
+ same conservative scales: $-F'\sim M^2/2$, $B\asymp M^3/s$,
+ $|\kappa_j|=O(M^{j+1}/s)$\\
+Lemma~\ref{dpn:lem:block} and the noncentral bounds & Lemma~3.2 and the arc
+ bounds of Section~3 & same inequality, same geometric-sum proof\\
+Theorem~\ref{dpn:thm:saddle}, \eqref{dpn:eq:edgepoly}, \eqref{dpn:eq:E1} &
+ Thm.~1.2, $E_R$, $E_1$; Thm.~8.1 at $\beta=0$ & same expansion with $J=R+1$
+ ($E_R=1+\sum_{\ell\le R}\mathcal E_\ell$); remainder $O(w^{-R-1})$,
+ $w=M/s=1/\eps$: the conservative scale, \emph{not} the sharp
+ $O((\alpha Ms)^{-J})$ of Theorem~\ref{dpn:jh:thm:saddle}\\
+\eqref{dpn:48:eq:firstlimit} and the first two orders of
+ Theorem~\ref{dpn:thm:log} & Thm.~1.1, second display; Thm.~8.1 at $\beta=0$ &
+ same, in resummed form (Proposition~\ref{dpn:fp:prop:thermal})\\
+Theorem~\ref{dpn:thm:log} at $\alpha=1$, $P_1,\dots,P_4$ & Thm.~6.1,
+ $d_1,\dots,d_4$ printed, checked through $d_6$ & identical:
+ $d_j=P_j(\pi^2/6)$; same generation (Section~\ref{dpn:fp:sec:routes})\\
+Theorem~\ref{dpn:thm:inverse} at $\alpha=1$, $\Delta_2,\dots,\Delta_5$ &
+ Thm.~6.1, $b_2,\dots,b_5$ printed, checked through $b_7$; $m_*=K_0$,
+ $L_*=R_0$ & identical: $b_j=\Delta_j(\pi^2/6)$\\
+Threshold localization (Theorem~\ref{dpn:jh:thm:threshold}, source 75-01) &
+ Section~7 & weaker: $N$ lies between the roundings of $x_R\mp C_Rw^{-R}$,
+ with $x_R$ the inverse of the exact-saddle model; $N=x_0+O(1)$\\
+Recurrence \eqref{dpn:eq:exactrec} & Section~9 & same (an ``independent
+ recurrence uses logarithmic differentiation'')\\
+Gikunda and Granovsky--Stark comparisons (Section~1.2) & Section~9 & the same
+ distinctions, in other words; Naranjo--Ram\'irez is new
+ (Section~\ref{dpn:fp:sec:checks})\\
+\bottomrule
+\end{tabular}
+\caption{Results of source 77-51 that this report already proves.  Statement
+and section numbers are those of the delivered manuscript.}\label{dpn:fp:tab:dup}
+\end{table}
+
+\mergenotec{The intake checked the coefficient agreements in exact rational
+arithmetic: with $P=\pi^2=6c$, source 77-51's $d_3=P/6-P^2/72=c-c^2/2$,
+$d_4=P/6+P^2/40=c+\frac9{10}c^2$, $b_4=P(P-3)/9=4c^2-2c$ and
+$b_5=P(P-10)/30=\frac65c^2-2c$ are $P_3$, $P_4$, $\Delta_4$, $\Delta_5$ at
+$\alpha=1$, and its family theorem at $\beta=0$ reproduces $P_1=P_2=c$ and
+$\Delta_2=\Delta_3=-2c$ for every $\alpha$ (Proposition~\ref{dpn:fp:prop:thermal}).
+Its relative errors (Table~\ref{dpn:fp:tab:numerics}) are $a_1(n)/G_J-1$,
+the reciprocal convention of Table~\ref{dpn:jh:tab:errors}; converted, they
+agree with that table at $n=200$, $1000$ and $2000$ to within one unit in the last printed digit.}
+
+\subsection{Second routes and forms that differ}\label{dpn:fp:sec:routes}
+\begin{proposition}[Thermal forms; source 77-51]\label{dpn:fp:prop:thermal}
+For fixed $\alpha>0$, with $K$, $r$, $c$ as in \eqref{dpn:eq:Kr} and $K_0$,
+$R_0$ as in \eqref{dpn:eq:Wlead},
+\begin{align}
+ \log a_\alpha(n)&=\alpha K(r-1)+\frac{\alpha cK}{r-1}+O_\alpha(K/r^3),
+ \label{dpn:fp:eq:thermal}\\
+ N_\alpha(Y)&=\frac{K_0^2}{2}\left(1-\frac{2c}{R_0(R_0-1)}
+ +O_\alpha(R_0^{-4})\right).\label{dpn:fp:eq:thermalinv}
+\end{align}
+\end{proposition}
+Here $\alpha c=\pi^2/(6\alpha)$; for $\alpha=1$ source 77-51 writes
+$m(L-1)+Cm/(L-1)$ and $\frac{m_*^2}2(1-\pi^2/(3L_*(L_*-1)))$, with $m=K$,
+$L=r$, $C=\pi^2/6$, $m_*=K_0=Y/W_0(Y/e)$, $L_*=R_0$.
+\begin{proof}
+Expanding $1/(r-1)$ and $1/(R_0(R_0-1))$ in powers of $1/r$ and $1/R_0$ shows
+that the two displays agree with Theorem~\ref{dpn:thm:log} ($P_1=P_2=c$) and
+with \eqref{dpn:eq:inverselead} ($-2c$, $-2c$) through the orders kept, so
+they follow from those theorems.  Source 77-51 proves them directly
+\src{77-51}: at $t=\alpha s/M$ the first-order case of the boundary smoothing
+(Lemma~\ref{dpn:lem:smoothing}) gives $F(t)=\alpha M(s/2-1)+\pi^2M/(6\alpha(s-1))
++O(M/s^3)$, through the inverse branch $x(v)$ of $tx-\alpha\log x$ with
+$x'(0)=M/(\alpha(s-1))$ and the kernel integral
+$\int_\R\log(1+e^{-|v|})\dd v=\pi^2/6$; the mean relation gives
+$M=K(1+O(r^{-2}))$; replacing $M$ by $K$ in the hard exponent and in the
+thermal term costs $O(K/r^3)$; and the exact-saddle theorem adds only
+$O(r)$.  For the inverse it substitutes $K=K_0\{1-c/(R_0(R_0-1))\}$: the
+thermal term cancels the first variation of $\alpha K(\log K-1)$ to error
+$O(K_0/R_0^3)$, and division by the slope $\sim\alpha R_0$ gives the relative
+error $O(R_0^{-4})$.
+\end{proof}
+\mergenotec{The resummed forms have the same order of accuracy as the
+two-term truncations of Theorem~\ref{dpn:thm:log} and \eqref{dpn:eq:inverselead}:
+the term $\alpha cK/r^3$ hidden in \eqref{dpn:fp:eq:thermal} is not $\alpha
+P_3(c)K/r^3$.  They are compact displays, not sharper estimates.  Source 77-51
+calls \eqref{dpn:fp:eq:thermal} ``a sharper thermal correction'' relative to its
+first display, $\log a_n=m(L-1)+O(m/L)$.  As in Section~\ref{dpn:sec:inverse},
+the core $K(\log K-1)=Y/\alpha$ is the case $a=b=1$ of the Lambert-core
+theorem \texttt{p0:thm:lambert-core} of \cite{tai}, after taking logarithms
+with $w=\log K-1$.}
+
+\paragraph{An elementary upper bound by a cutoff sum \src{77-51}.}
+For $\alpha=1$ choose $t=r/K$; positivity gives $\log a_1(n)\le nt+F(t)$.  With
+$g(x)=\log x-tx$ and $K'=\lfloor K\rfloor$, source 77-51 shows
+$F(t)=\sum_{k=1}^{K'}g(k)+O(K/r)$.  For large $K$, concavity gives $g(k)\ge0$
+on $2\le k\le K'$, and the $k=1$ correction is bounded.  On $2\le k\le K/2$,
+$\log(1+e^{-g(k)})\le e^{tk}/k\le\sqrt K/k$, a total $O(\sqrt K\log K)$.  On
+$K/2<k\le K$, $\log x\ge-2(1-x)$ for $1/2\le x\le1$ gives $g(k)\ge(r-2)(1-k/K)$,
+and a geometric sum gives $O(K/r)$.  For $k>K$,
+$\log(1+e^{g(k)})\le(k/K)e^{-r(k-K)/K}$, with the same bound.  Finally
+$nt+\sum_{k\le K'}g(k)=\log K'!+t\{n-K'(K'+1)/2\}=K(r-1)+O(r)$.  This is a
+discrete form of the positive-part argument of
+Section~\ref{dpn:48:sec:elementary}; source 77-51 adds that solving
+$K(\log K-1)=Y$ exactly, with error $O(K/\log K)$ and slope $\log K$, proves
+the first inverse form ``without saddle analysis''.
+
+\paragraph{Coefficient generation in source 77-51's variables \src{77-51}.}
+Source 77-51 generates $d_j$ and $b_j$ by the same two steps as
+Sections~\ref{dpn:sec:sommerfeld} and~\ref{dpn:sec:eliminate}, at $\alpha=1$.
+Its rational functions $R_1(x)=1/(x-1)$,
+$R_{j+1}(x)=(R_j(x)+xR_j'(x))/(x-1)$ are the derivatives $U_j$ of
+\eqref{dpn:eq:Ulagrange} ($x^{(j)}(0)=MR_j(s)$); its series
+$T(L)=\sum_{j\ge0}2\eta(2j+2)R_{2j+1}(L)$ is the smoothing series of
+Lemma~\ref{dpn:lem:smoothing}; and its stationarity equation for
+$\rho=M/K$ in powers of $h=1/r$ is the elimination of the saddle.  With
+$P=\pi^2$ it records
+\[
+ T(L)=\frac{P}{6(L-1)}+\frac{7P^2(2L+1)}{360(L-1)^5}+O(L^{-6}),\qquad
+ \rho=1-\frac{Ph^2}6-\frac{Ph^3}6+\frac{P^2h^4}{24}+O(h^5),
+\]
+and its inverse equation
+$\tau[h^{-1}+\log\tau-1+D((h^{-1}+\log\tau)^{-1})]=h^{-1}-1$,
+$D(h)=\sum_jd_jh^j$, $\tau^2=1+\sum_{j\ge2}b_jh^j$, is \eqref{dpn:eq:Einverse}
+with $E=\tau$, $h=1/R_0$.  A separately written rational-series checker agrees
+through $d_6$ and $b_7$; the formal series are justified, as here, by
+truncation and the implicit function theorem, ``without interchanging
+infinite asymptotic series''.  No convergence of either formal hierarchy is
+asserted.
+
+\paragraph{Inverses of the exact-saddle model \src{77-51}.}
+Source 77-51 inverts $A_R(x)=e^{F(t_x)+xt_x}(2\pi B(t_x))^{-1/2}
+(1+\sum_{\ell\le R}\mathcal E_\ell(t_x))$, whose logarithmic slope is
+asymptotic to $t_x$, and places the threshold between the roundings of
+$x_R(Y)\mp C_Rw^{-R}$, $w=M/s$.  It ``does not prescribe an exact rounding
+choice when $x_R(y)$ is very close to an integer'', and ``the asymptotic
+constants are not supplied as effective numerical interval bounds''.
+Theorem~\ref{dpn:jh:thm:threshold} \src{75-01} is the sharper statement; the
+two-ceiling step is the staircase theorem \texttt{p0:thm:staircase} of
+\cite{tai}.
+
+\subsection{Slot multiplicities \texorpdfstring{$k^\beta$}{k\textasciicircum beta}}\label{dpn:fp:sec:family}
+This subsection is source 77-51's Section~8, translated (its $a^{(\alpha,\beta)}_n$,
+$F_{\alpha,\beta}$, $d$, $m_0$, $L_0$, $\ell$, $\mathcal W$, $u_*$, $m_*$,
+$L_*$ are written as below).  Fix $\alpha>0$ and an integer $\beta\ge0$, and let
+\begin{equation}\label{dpn:fp:eq:family}
+ A^{[\beta]}_\alpha(q)=\prod_{k\ge1}(1+k^\alpha q^k)^{k^\beta}
+ =\sum_{n\ge0}a^{[\beta]}_\alpha(n)q^n .
+\end{equation}
+Here $k^\beta$ is the number of labelled slots of size $k$, each used at most
+once, and a used slot of size $k$ has weight $k^\alpha$.  The coefficients are
+nonnegative real weights; for integer $\alpha$ they are coloured counts.
+Fractional slot multiplicities are outside the theorem.
+\mergenotec{For $\beta=0$ this is $A_\alpha$.  For $\beta\ge1$ it lies
+between the two products that Section~1.1 distinguishes: several parts of
+one size may occur, as in $\prod(1+q^k)^{k^\alpha}$, but each carries the
+internal weight $k^\alpha$, as in $A_\alpha$.  It is also not the convolution
+power $A_\alpha^\mu$ of Section~\ref{dpn:cp:sec:powers}, which has a constant
+number $\mu$ of slots at every size.  The notation $a^{[\beta]}_\alpha$ is
+chosen so as not to collide with $a_{\alpha,\mu}$.}
+
+\begin{theorem}[Slot multiplicities; source 77-51]\label{dpn:fp:thm:family}
+Put $K^{[\beta]}=((\beta+2)n)^{1/(\beta+2)}$ and $r^{[\beta]}=\log K^{[\beta]}$.  Then
+\begin{equation}\label{dpn:fp:eq:familythermal}
+ \log a^{[\beta]}_\alpha(n)
+ =\alpha (K^{[\beta]})^{\beta+1}\left(\frac{r^{[\beta]}}{\beta+1}-\frac1{(\beta+1)^2}\right)
+  +\frac{\pi^2(K^{[\beta]})^{\beta+1}}{6\alpha(r^{[\beta]}-1)}
+  +O_{\alpha,\beta}\bigl((K^{[\beta]})^{\beta+1}/(r^{[\beta]})^3\bigr).
+\end{equation}
+Define the exact saddle $t_n$ and the cumulants $\kappa^{[\beta]}_j$,
+$B^{[\beta]}=\kappa^{[\beta]}_2$ from $F^{[\beta]}(t)=\log A^{[\beta]}_\alpha(e^{-t})$
+as in Section~\ref{dpn:sec:saddle}, and $s$, $M=e^s$ by $t=\alpha s/M$ as in
+\eqref{dpn:eq:phase}.  With $\mathcal W=M^{\beta+1}/s$, for every fixed
+$R\ge0$,
+\begin{equation}\label{dpn:fp:eq:familysaddle}
+ a^{[\beta]}_\alpha(n)=\frac{e^{F^{[\beta]}(t_n)+nt_n}}{\sqrt{2\pi B^{[\beta]}}}
+ \left(1+\sum_{\ell=1}^R\mathcal E^{[\beta]}_\ell+O_{\alpha,\beta,R}(\mathcal W^{-R-1})\right),
+\end{equation}
+where $\mathcal E^{[\beta]}_\ell$ is \eqref{dpn:eq:edgepoly} with $\kappa_j$
+replaced by $\kappa^{[\beta]}_j$.  For $Y=\log y$ set
+\begin{equation}\label{dpn:fp:eq:familyinvvars}
+ u_*=\frac{(\beta+1)^2Y/\alpha}{W_0\bigl((\beta+1)^2Y/(\alpha e)\bigr)},\qquad
+ K^{[\beta]}_0=u_*^{1/(\beta+1)},\qquad R^{[\beta]}_0=\log K^{[\beta]}_0.
+\end{equation}
+The least index $N^{[\beta]}_\alpha(Y)$ with $a^{[\beta]}_\alpha(n)\ge e^Y$ obeys
+\begin{equation}\label{dpn:fp:eq:familyinverse}
+ N^{[\beta]}_\alpha(Y)=\frac{(K^{[\beta]}_0)^{\beta+2}}{\beta+2}
+ \left[1-\frac{(\beta+2)\pi^2}{6\alpha^2R^{[\beta]}_0(R^{[\beta]}_0-1)}
+ +O_{\alpha,\beta}((R^{[\beta]}_0)^{-4})\right].
+\end{equation}
+The exact-saddle inverse has pre-rounding uncertainty
+$O_{\alpha,\beta,R}(\mathcal W^{-R-1}/t)$.
+\end{theorem}
+At $\beta=0$, $K^{[0]}=K$, $r^{[0]}=r$, $\mathcal W=M/s=1/\eps$, and the theorem is
+Proposition~\ref{dpn:fp:prop:thermal} with Theorem~\ref{dpn:thm:saddle}.
+
+\paragraph{Monotonicity \src{77-51}.}
+Choose the least-labelled selected slot at the largest occupied size $k$, and
+move it to size $k+1$ with the same label.  The label exists because
+$(k+1)^\beta\ge k^\beta$, and no slot at the new largest size was occupied.
+The unique new largest slot records the inverse operation.  The map is
+injective and multiplies its weight by $((k+1)/k)^\alpha>1$.  Thus the
+coefficient sequence is strictly increasing for $n\ge1$, including
+noninteger $\alpha$.
+
+\paragraph{Uniform estimates for a fixed pair \src{77-51}.}
+To prove the estimates uniformly for a \emph{fixed} pair $(\alpha,\beta)$, take
+$0<\delta<\min(1/2,(\beta+1)/(2\alpha))$, and let $p_k$ be the Bernoulli
+parameter of a slot of size $k$, as in \eqref{dpn:eq:pk}.  For $k\le\delta M$
+and fixed $j\ge0$,
+\[
+ k^{\beta+j}p_k(1-p_k)\le M^{\alpha\delta}k^{\beta+j-\alpha}.
+\]
+Its sum is $O(M^{\max(\alpha\delta,\beta+j+1-\alpha+\alpha\delta)}\log M)$, and
+that exponent is less than $\beta+j+1$.  This handles large $\alpha$, for
+which a naive split at $M/2$ is insufficient.  On $\delta M\le k\le M$,
+\[
+ \alpha\log k-tk\ge\alpha(s-1/\delta)(1-k/M),
+\]
+so a geometric sum applies.  Above $M$, use
+$p_k\le(k/M)^\alpha e^{-\alpha s(k-M)/M}$.  It follows that
+\begin{equation}\label{dpn:fp:eq:familybounds}
+ \sum_{k\ge1}k^{\beta+j}p_k(1-p_k)
+ =O_{\alpha,\beta,j}(M^{\beta+j+1}/s).
+\end{equation}
+The active interval still has consecutive length comparable to $M/s$, but
+each size now has $k^\beta\asymp M^\beta$ independent slots.  Thus
+$B^{[\beta]}\asymp M^2\mathcal W$ and $\kappa^{[\beta]}_j=O_j(M^j\mathcal W)$.
+The analytic-disk argument remains valid; in its upper tail the small quantity
+is $O(M^{-\alpha})$.  The trigonometric exponent of Lemma~\ref{dpn:lem:block}
+is multiplied by $M^\beta$, giving noncentral suppression
+$e^{-cM^{\beta+1}/s^3}$ (with an absolute constant $c$, not this report's
+$c=\pi^2/(6\alpha^2)$).  The proof of the exact-saddle expansion then applies
+with $1/\eps$ replaced by $\mathcal W$.
+
+\paragraph{Thermal and inverse constants \src{77-51}.}
+Sum--integral errors are $O(M^\beta s)$ for $x^\beta\log(1+x^\alpha e^{-tx})$
+and $O(M^{\beta+1})$ for the mean integrand.  These follow by integrating
+absolute derivatives, using \eqref{dpn:fp:eq:familybounds}.  The hard
+integrals of the log generating function and of the mean are
+\[
+ F_{\rm hard}=\alpha M^{\beta+1}\left(\frac{s}{(\beta+1)(\beta+2)}-\frac1{(\beta+1)^2}\right),
+ \qquad \frac{M^{\beta+2}}{\beta+2}.
+\]
+Small-size and distant-tail contributions are smaller than every
+inverse-logarithmic order, by the $\delta$ split just proved.  On the central
+branch $v=tx-\alpha\log x$,
+\[
+ x'(0)=\frac M{\alpha(s-1)},\quad
+ x''(0)=-\frac M{\alpha^2(s-1)^3},\quad
+ x'''(0)=\frac{M(2s+1)}{\alpha^3(s-1)^5}.
+\]
+The even soft-cutoff kernel multiplies $x(v)^\beta x'(v)$, whose second
+derivative is $O(M^{\beta+1}/s^3)$.  Its constant term gives
+\[
+ F^{[\beta]}(t)=F_{\rm hard}+\frac{\pi^2M^{\beta+1}}{6\alpha(s-1)}+O(M^{\beta+1}/s^3).
+\]
+For the mean, the odd kernel multiplies $x(v)^{\beta+1}x'(v)$, whose first
+derivative is $O(M^{\beta+2}/s^2)$.  Hence $M=K^{[\beta]}(1+O((r^{[\beta]})^{-2}))$.  The
+hard exponent has zero derivative at $K^{[\beta]}$ and second derivative
+$\alpha(r^{[\beta]}-1)(K^{[\beta]})^{\beta-1}$, so the displacement costs
+$O((K^{[\beta]})^{\beta+1}/(r^{[\beta]})^3)$.  This proves \eqref{dpn:fp:eq:familythermal}.
+
+The main entropy $H(m)=\alpha m^{\beta+1}(\log m/(\beta+1)-1/(\beta+1)^2)$ has
+derivative $\alpha m^\beta\log m$.  With $u=m^{\beta+1}$, the equation $H(m)=Y$
+is $u(\log u-1)=(\beta+1)^2Y/\alpha$, giving \eqref{dpn:fp:eq:familyinvvars}.
+The thermal term changes $m$ by the relative amount
+$-\pi^2/[6\alpha^2R^{[\beta]}_0(R^{[\beta]}_0-1)]+O((R^{[\beta]}_0)^{-4})$, proving
+\eqref{dpn:fp:eq:familyinverse}.  The exact-saddle inverse follows as before
+from a logarithmic slope asymptotic to $t$.
+\mergenotec{The core $u(\log u-1)=(\beta+1)^2Y/\alpha$ is, with
+$w=\log u-1$, the equation $w+\log w=\log((\beta+1)^2Y/(\alpha e))$: the case
+$a=b=1$ of \texttt{p0:thm:lambert-core} of \cite{tai}, on the principal
+branch, as for $\beta=0$.  No novelty is claimed for the inversion.  Source
+77-51 gives every inverse-logarithmic order only for A022629 ($\alpha=1$,
+$\beta=0$); for $\beta\ge1$ only the two orders of
+\eqref{dpn:fp:eq:familythermal} and \eqref{dpn:fp:eq:familyinverse} are proved.}
+
+\subsection{The OEIS instances, and A266891}\label{dpn:fp:sec:oeis}
+For $(\alpha,\beta)=(1,0)$ the theorem gives A022629, and for $(2,0)$ A092484,
+whose entry records the conjecture $\log a_n\sim\sqrt{2n}\{\log(2n)-2\}$
+\cite{oeis2}; both are proved above by Theorem~\ref{dpn:thm:log}.
+\begin{corollary}[OEIS A266891; source 77-51]\label{dpn:fp:cor:a266891}
+For $(\alpha,\beta)=(1,1)$, that is for $\prod_{k\ge1}(1+kq^k)^k$
+(\OEIS{A266891}), with $K^{[1]}=(3n)^{1/3}$ and $r^{[1]}=\log K^{[1]}$,
+\begin{equation}\label{dpn:fp:eq:a266891}
+ \log a^{[1]}_1(n)=(K^{[1]})^2\left(\frac{r^{[1]}}2-\frac14\right)
+ +\frac{\pi^2(K^{[1]})^2}{6(r^{[1]}-1)}+O\bigl((K^{[1]})^2/(r^{[1]})^3\bigr).
+\end{equation}
+\end{corollary}
+Its leading term is exactly the A266891 conjecture
+$n^{2/3}(2\log(3n)-3)/(4\cdot3^{1/3})$, credited to Kote\v{s}ovec on
+8~May 2018 \cite{oeis266891}.  These are specializations of one family
+theorem.  Its constants are not asserted to be uniform as $\alpha\downarrow0$
+or $\beta\to\infty$ \src{77-51}.
+\mergenotec{The intake computed the coefficients of $\prod_{k\ge1}(1+kq^k)^k$
+by the finite product: $1,1,4,13,29,81,188,456,1030,2405,5295,11611,25246$.
+The first ten equal the A266891 prefix recorded in source 77-51's
+\file{77-51-fp-ind-SOURCE_CHECK.md}; the intake did not re-fetch the OEIS
+entry.  No other ProveIt file mentions A266891.}
+
+\subsection{Related work and computational checks \src{77-51}}\label{dpn:fp:sec:checks}
+Naranjo and Ram\'irez \cite{NR} discuss A022629 explicitly in their
+combinatorial treatment of coloured partitions; source 77-51's proof ``does
+not depend on an absence-of-literature assertion''.  Its comparisons with
+Gikunda's thesis \cite{gikunda} (Proposition~4.2.5 assumes a shrinking tilt
+$a=O(r^\delta)$, which a fixed $\alpha>0$ does not satisfy) and with
+Granovsky and Stark \cite{GS} (their framework assumes internal weights at
+most one, so it cannot be applied directly with $k^\alpha>1$) are those of
+Section~1.2.
+\mergenotec{Source 77-51 cites the thesis at a ResearchGate address
+(publication 402798449) and its supplementary source check at another
+(publication 402798310); this report keeps the DOI of \cite{gikunda}.}
+
+Source 77-51's package contains proof-source snapshots, independent
+mathematical audits, and separate exact and numerical programs.  One exact
+recurrence multiplies the finite product through the requested degree; an
+independent one uses logarithmic differentiation.  The A022629 producer check
+verifies 2,001 exact coefficients, the first 43 listed terms, 1,999 strict
+inequalities and 2,000 factorial lower bounds.  The independent core checker
+compares 251 coefficients by two methods and checks Gaussian corrections
+through $R=4$ and 48 inverse-derivative identities; independent
+rational-series calculations reproduce $d_1,\dots,d_6$ and $b_2,\dots,b_7$.
+Table~\ref{dpn:fp:tab:numerics} gives its high-precision comparisons for
+A022629.  They are not interval certificates or proof dependencies.  The
+signed relative error is the exact coefficient divided by the approximant,
+minus one.
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{r rr}
+\toprule
+$n$ & Leading saddle & With $\mathcal E_1$\\
+\midrule
+50   & $-1.75854\cdot10^{-2}$ & $-8.75761\cdot10^{-4}$\\
+200  & $-6.85783\cdot10^{-3}$ & $-2.59784\cdot10^{-5}$\\
+1000 & $-2.47368\cdot10^{-3}$ & $-4.50475\cdot10^{-6}$\\
+2000 & $-1.60739\cdot10^{-3}$ & $-1.92291\cdot10^{-6}$\\
+\bottomrule
+\end{tabular}
+\caption{Relative errors $a_1(n)/G_J-1$ for A022629, $J=0,1$, source
+77-51.}\label{dpn:fp:tab:numerics}
+\end{table}
+The exact-saddle approximation is already useful in this range; the
+inverse-logarithmic hierarchy serves a different, much coarser scale.  No
+finite truncation is guaranteed to improve every small-$n$ value
+\src{77-51}.
+
+\subsection{Research questions of source 77-51}\label{dpn:fp:sec:questions}
+Source 77-51 closes with four problems, kept with its own numbers; overlaps
+with Sections~\ref{dpn:sec:future} and~\ref{dpn:sec:b75questions} are marked.
+\begin{enumerate}[label=\textbf{77-51.\arabic*}, leftmargin=*]
+\item \textbf{Effective constants} for the Fourier remainder and the inverse
+  brackets, so that a given large threshold can be located with certified
+  numerical error (overlaps project~8, 48.7, 75-01.8 and 75-06.8).
+\item \textbf{The beyond-all-inverse-logarithmic contributions} from discrete
+  sum--integral corrections and noncentral Fourier arcs: the argument
+  suppresses them in bounds and does not identify a complete exponential
+  transseries (overlaps projects~1 and~2, 48.1, 75-01.5 and 75-06.1).
+  \writenotec{Theorem~\ref{dpn:thm:resonance} \src{40} gives the action of
+  each fixed resonance; the full contribution stays open.}
+\item \textbf{The transition as the positive tilt tends to zero with $n$},
+  connecting the fixed-tilt cutoff to the shrinking-tilt regime of
+  \cite{gikunda}; the constants of the present proof are not uniform there
+  (overlaps project~3, 48.2, 75-01.3 and 75-06.3).
+\item \textbf{Slot multiplicities beyond exact integer powers}, under explicit
+  regularity and lattice conditions.  Arbitrary fractional exponents in
+  \eqref{dpn:fp:eq:family} need not retain coefficient positivity and are not
+  covered by the Bernoulli interpretation (related to project~7, 48.5,
+  75-01.6 and 75-06.5, which vary the weight rather than the number of slots).
+\end{enumerate}
+Source 77-51 establishes its displayed statements by ordinary analysis.
+Finite computations corroborate the formulas, but ``no numerical fit,
+exhaustive test or proof-assistant verification is used to infer the
+asymptotic theorems''.
+
 \appendix
 \section{Reproduction guide and file manifest}
 Besides this source, its compiled PDF and the README, the report directory
@@ -3333,6 +3861,8 @@ File & Purpose\\
 \file{code/75-06-powers-numerics.py}, \file{code/75-06-powers-checks.py} & Source 75-06's exact coefficients and saddle estimates; recurrence and convolution checks.\\
 \file{data/75-06-powers-*} & Source 75-06's coefficient, numerical, verification and source-audit records and requirements.\\
 \file{75-06-powers-proposed_oeis_updates.txt} & Source 75-06's draft OEIS notes.\\
+\file{code/77-51-fp-*} & Source 77-51's producer checks and symbolic generator, three independent checkers, root driver and build script.\\
+\file{data/77-51-fp-*}, \file{77-51-fp-*.md} & Source 77-51's receipts, approvals and requirements; proof snapshots, audits and reviews.\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -3369,6 +3899,11 @@ Their manuscripts, PDFs and READMEs, source 75-01's \file{exact_s2.json} and
 \file{exact_s3.json}, and source 75-06's \file{build.sh} and
 \file{SHA256SUMS.txt} are not shipped; the README says how to rerun the
 programs on a copy.
+\mergenotec{Source 77-51's README gives \texttt{python verify.py}, run from
+the delivered root; it checks the delivered file manifest and PDF, so it runs
+only on an extraction of the arrival archive.  Its five checkers take an
+\texttt{-{}-output-dir} argument; the README gives the commands.  Its
+manuscript, PDF, README and \file{SHA256SUMS} are not shipped.}
 
 \section{Compact proposed OEIS formula updates}
 For the entry corresponding to $\alpha=1,\ldots,5$, write
@@ -3480,6 +4015,9 @@ Source & Archive (arrival commit) & Main file, PDF & Pin & Author line\\
 75-06 & \file{OEIS_Norm_Weighted_Partitions.zip} (\texttt{4b874cea0}) &
   \file{article.tex}, 26 pp. & \texttt{29aca108e} & Prepared for Vladimir
   Reshetnikov (no AI wording)\\
+77-51 & \file{oeis-fixed-power-asymptotics-result.zip} (\texttt{096ee7b87}) &
+  \file{fixed-power-partition-asymptotics.tex}, 11 pp. & none & Research
+  report (no AI wording)\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -3576,6 +4114,54 @@ twelve research questions and its OEIS notes.
       Section~\ref{dpn:sec:b75}; their priority caveats are kept there.
 \item Source 75-01's tables for $\alpha=2,3$ duplicate source 40's and are not
       shipped; its $\alpha=1$ table, which extends the range to $n=10000$, is.
+\end{itemize}
+
+\paragraph{Batch 77.}
+Source 77-51 is manuscript 51 of batch 77 of the intake (cluster P2), in the
+arrival commit \texttt{096ee7b87}; the placement commit \texttt{aa7345800}
+staged its 33 support files under the prefix \file{77-51-fp-} and deleted the
+archive, which survives in the arrival commit.  The prefix continues this
+report's source-numbered scheme, with the batch named as for batch 75.  The
+archive has no wrapper directory; its three
+\file{*-optimization-negative-control.txt} files were shortened to
+\file{*-negative-control.txt} to keep paths short.  Source 77-51 names no
+ProveIt commit (its approval records name only the producer's working
+directory) and records no repository search.  Its text shares $0.69\,\%$ of
+its word 8-grams with this report and $0.11\,\%$ in the other direction: it is
+independent.  Its checksum ledger \file{SHA256SUMS} was verified (36/36) and
+retired.
+
+\emph{What it contributed.}  The fifth proofs recorded in
+Table~\ref{dpn:fp:tab:dup}; Proposition~\ref{dpn:fp:prop:thermal} (the
+resummed forms); the cutoff-sum route, the coefficient generation in its
+variables and the exact-saddle inverse of Section~\ref{dpn:fp:sec:routes};
+Theorem~\ref{dpn:fp:thm:family} with its monotonicity, uniform estimates and
+constants; Corollary~\ref{dpn:fp:cor:a266891}; the citation of Naranjo and
+Ram\'irez; Table~\ref{dpn:fp:tab:numerics}; four research questions.
+
+\emph{Where the batch-77 merge chose.}
+\begin{itemize}
+\item Placement: added to this report, not filed separately, because its
+      core theorems are this report's and its family contains this report's
+      at $\beta=0$.
+\item Duplicates: recorded in Table~\ref{dpn:fp:tab:dup} and not reprinted;
+      the resummed forms, the cutoff-sum route, the generation in its
+      variables and the exact-saddle inverse are kept because they differ in
+      form or route.
+\item Placement in the text: Section~\ref{dpn:fp:sec:b77} follows the
+      batch-75 sections and precedes the appendices, so every earlier
+      number is unchanged.
+\item Notation: this report's throughout, with the family notation
+      $A^{[\beta]}_\alpha$ new; source 77-51's symbols are renamed as in the
+      third table of Section~\ref{dpn:sec:notation}.
+\item Bibliography: source 77-51's OEIS items for A022629 and A092484 are
+      \cite{oeis1} and \cite{oeis2}, its Granovsky--Stark item is \cite{GS},
+      and its Gikunda item is \cite{gikunda} (with the DOI rather than either
+      of its two ResearchGate addresses); \cite{NR} and \cite{oeis266891} are
+      new.
+\item Its abstract, title, novelty sentences and package description are
+      replaced by Section~\ref{dpn:fp:sec:b77} and the README; its priority
+      caveats are kept there.
 \end{itemize}
 
 \clearpage
@@ -3701,6 +4287,14 @@ Theorems \texttt{p0:thm:lambert-core}, \texttt{p0:thm:perturbed-inversion},
 \nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean},
 declarations \texttt{Fabius.staircase\_ceil} and
 \texttt{Fabius.staircase\_separation}.
+\bibitem{NR} [Added in the batch-77 merge.] B. J. Naranjo and J. L. Ram\'irez,
+\emph{On colored partitions and Euler-type identities}, INTEGERS \textbf{26}
+(2026), A20. \url{https://math.colgate.edu/~integers/aa20/aa20.pdf}.  Cited by
+source 77-51.
+\bibitem{oeis266891} [Added in the batch-77 merge.] OEIS Foundation Inc.,
+\emph{A266891: Expansion of $\prod_{k\ge1}(1+kx^k)^k$}.
+\url{https://oeis.org/A266891}.  Asymptotic conjecture credited to
+V. Kote\v{s}ovec, 8 May 2018; accessed by source 77-51, October 1, 2026.
 \end{thebibliography}
 }
 \end{document}
