@@ -448,7 +448,8 @@ halting of quantum controllers is `Σ⁰₁`-complete and almost-sure halting
 reduced word of length `n` has denominator exactly `5^n`, decoded in
 polynomial time; a finite presentation compiles to rational `SO(4)` gates
 whose group is the image of the Mihailova fiber product, dense when the
-presentation is nontrivial (Section 84). Source 11's instantiation has
+relator kernel is nontrivial, as ensured by the stated dummy-generator
+padding (Section 84). Source 11's instantiation has
 polynomial-time rational-matrix membership and c.e.-complete state transfer
 from a fixed rational vector, with hard targets satisfying an order-five
 recurrence and no recursive precision bound (Sections 81, 85–90); source 16's
