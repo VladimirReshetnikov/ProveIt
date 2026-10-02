@@ -80,6 +80,12 @@ check every emitted residual, the full source composition and the positive
 soundness/converse proof. This is a direct tape alternative to the GPCP history
 route; the global87-operation universal bound remains unchanged.
 
+The [joint-norm scout on the complete87 source](complete87_joint_norm_scout.md)
+checks four fully charged alternatives. First-norm reassociation ties87; direct
+and expanded norm composition cost90/89; a strong-unit auxiliary substitution
+preserves every integer zero but costs88. Exact identities and complete source
+replays rule out savings in these four schedules, not in all norm circuits.
+
 The [completed nine-report review](incoming_substrate_review_2a8a39599.md) covers
 the spectral, clock, polynomial-history, boundary, sandpile, conservative-signal
 and membrane archives at060e08a07/2a8a39599. All written constructions and

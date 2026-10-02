@@ -78,6 +78,11 @@
 > Its102 ordinary positive witnesses,46 comparisons and exact degree1936 remain.
 > The independent review passed; no87-operation improvement is claimed.
 >
+> The [complete87 joint-norm scout](complete87_joint_norm_scout.md) now records
+> four exact full schedules:87,90,89,88. The last preserves full integer zeros
+> by unconditional negative-strong-unit exclusion; none improves the bound.
+> These are explicit circuit comparisons, not a general lower bound.
+>
 > The [nine-report review](incoming_substrate_review_2a8a39599.md) is complete
 > for arrivals `060e08a07` and `2a8a39599`: all nine proof/source reviews and
 > original author replays pass within their stated hypotheses. The historical
