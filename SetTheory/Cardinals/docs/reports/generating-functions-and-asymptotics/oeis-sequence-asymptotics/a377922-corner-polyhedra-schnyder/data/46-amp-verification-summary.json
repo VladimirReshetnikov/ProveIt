@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "python": "3.12.14",
+  "sympy": "1.14.0",
+  "checks": [
+    {
+      "script": "scripts/verify_foundation.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "script": "scripts/verify_addendum.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "script": "foundation/scripts/run_all.py",
+      "execution": "isolated temporary copy",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "check": "Foundation exact result byte comparison",
+      "files": 4,
+      "status": "PASS"
+    }
+  ],
+  "scope": "Exact finite checks and unchanged Foundation integrity; asymptotic proofs and their review are separate."
+}

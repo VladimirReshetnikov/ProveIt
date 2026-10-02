@@ -1,0 +1,612 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[T1]{fontenc}
+\pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
+\usepackage{lmodern,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\hypersetup{pdftitle={Factorial growth of ascent sequences with bounded multiplicity},pdfsubject={OEIS A294220 and A317784}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\asc}{\operatorname{asc}}
+\newcommand{\TT}{\mathcal T}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Err}{\mathcal E}
+\title{Factorial growth of ascent sequences with bounded multiplicity}
+\author{A proof and reproducible research report}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_n^{(b)}$ count ascent sequences of length $n$ in which each value occurs at most $b$ times. For every fixed $b\ge3$ we prove the exact factorial root constant
+\[
+ \lim_{n\to\infty}\left(\frac{a_n^{(b)}}{n!}\right)^{1/n}
+ =\left[\int_0^\infty\frac{\log E_b(v)}{E_b(v)-1}\,dv\right]^{-1},
+ \qquad E_b(v)=\sum_{j=0}^b\frac{v^j}{j!}.
+\]
+The separate cap-two proof gives the same formula. We establish exact compaction by a suffix involution, uniform positive-operator barriers, and a coefficient argument for every $n$. A non-optimal logarithmic error supports a controlled inverse for the required length. We also prove a large-cap expansion of the constant, including an exact zeta first variation and an exponentially smaller remainder, and obtain a rounding-safe cap inverse. This report does not determine fixed-cap prefactors, ratio limits, or all-orders coefficient expansions. The limits in length and cap are kept separate.
+\end{abstract}
+
+\section{Results and interpretation}
+An ascent sequence is a word $w_1\cdots w_n$ of nonnegative integers with $w_1=0$ and
+\[
+ 0\le w_i\le1+\asc(w_1\cdots w_{i-1})\quad(i\ge2),\qquad
+ \asc(w)=\#\{i:w_i<w_{i+1}\}.
+\]
+Write $a_0^{(b)}=1$ and let $a_n^{(b)}$ count the words with every label used at most $b$ times. Equivalently, these words avoid the constant pattern of length $b+1$. This is the array in OEIS A294220; cap two is A202058 and cap three is A317784 \cite{array,cap3}.
+
+\begin{theorem}\label{thm:fixed}
+For every fixed integer $b\ge3$, set
+\begin{equation}\label{eq:Tb}
+ T_b=\int_0^\infty\frac{\log E_b(v)}{E_b(v)-1}\,dv,
+ \qquad \mu_b=T_b^{-1}.
+\end{equation}
+The integrand is interpreted as $1$ at zero. The exponential generating function
+$A_b(t)=\sum_{n\ge0}a_n^{(b)}t^n/n!$ has radius $T_b$, and
+\begin{equation}\label{eq:main}
+ \log a_n^{(b)}=\log(n!)-n\log T_b+O_b\!\left(\frac n{\log n}\right).
+\end{equation}
+Consequently $(a_n^{(b)}/n!)^{1/n}\to\mu_b$ and
+\[
+ a_n^{(b)}=n!\,\mu_b^n\exp\!\left(O_b\!\left(\frac n{\log n}\right)\right).
+\]
+\end{theorem}
+The subscript $b$ permits constants and starting indices to depend on the fixed cap. The logarithmic error is deliberately coarse; it is not an estimate of the true subexponential scale. In particular, the theorem does not imply $a_n^{(b)}\sim C_bn!\mu_b^n$ or $a_{n+1}^{(b)}/((n+1)a_n^{(b)})\to\mu_b$.
+
+The separately audited cap-two report \cite{cap2report} proves $T_2=3\pi^2/8$ and a stronger logarithmic error $O(n^{9/13}(\log n)^3)$, so \eqref{eq:main} also holds for $b=2$. Its analytic proof is not repeated here. For $b=1$, the unique word at each length is strictly increasing, $T_1=\infty$, and the normalized root is zero.
+
+\begin{theorem}\label{thm:cap}
+As $b\to\infty$ through integers,
+\begin{align}
+ T_b&=\frac{\pi^2}{6}+(b+1)\bigl(\zeta(b+2)-1\bigr)
+       +O\!\left(b^{5/2}(4/9)^b\right),\label{eq:capstrong}\\
+ T_b-\frac{\pi^2}{6}&\sim\frac{b+1}{2^{b+2}},\qquad
+ \frac6{\pi^2}-\mu_b\sim\frac{9(b+1)}{\pi^4 2^b}.\label{eq:caplead}
+\end{align}
+Moreover $T_b$ strictly decreases to $\pi^2/6$, and $\mu_b$ strictly increases to $6/\pi^2$.
+\end{theorem}
+This is an expansion of the fixed-cap growth constant after the length limit. It does not assert uniform coefficient asymptotics when $b=b(n)$ grows. Sections~\ref{sec:lengthinverse} and~\ref{sec:capinverse} give different inverses for the length and the cap.
+
+\section{Exact compaction and the counting operator}\label{sec:compaction}
+For any ascent-sequence prefix, $\max(w)\le\asc(w)$. Indeed a new maximum creates an ascent, whereas a nonascent cannot raise the maximum. Thus the top admissible label $1+\asc(w)$ is unused and strictly larger than the last value.
+
+Delete labels whose budgets have been exhausted. The remaining active labels, in numerical order, have positive budgets $\beta_0,\ldots,\beta_{m-1}\in\{1,\ldots,b\}$. Let $k$ be the number of active labels at or below the actual last value. This can be a virtual boundary when that value has just been deleted. Choosing active rank $i$ is an ascent exactly when $i\ge k$. Decrease $\beta_i$ by one; remove it and set $k'=i$ if it reaches zero, and otherwise set $k'=i+1$. An ascent creates precisely one additional top label of budget $b$.
+
+\begin{lemma}[Adjacent-budget interchange]\label{lem:swap}
+Suppose $x<y$ are adjacent active labels with both at or below the last value. Exchanging their positive remaining budgets, while retaining the last boundary, preserves the number of legal suffixes of every length.
+\end{lemma}
+\begin{proof}
+In a suffix, reverse each maximal contiguous block consisting only of $x,y$, and then interchange $x$ and $y$ throughout that block. This is an involution that exchanges their total usages. Every intermediate usage is at most the total, so the exchanged quotas hold at every stage.
+
+Inside a binary block, a comparison $p<q$ becomes the same comparison between the complemented pair in reverse order. Its total number of ascents is preserved. No possible outside label lies strictly between $x$ and $y$: the two labels were adjacent among the initially active labels, exhausted labels never return, and future labels are all above the initial alphabet. Thus boundary comparisons with outside letters are unchanged. Entry into an initial binary block is nonascending both before and after the map, since the initial last value is at least $y$.
+
+Ascent totals therefore agree at each block end and before every unchanged outside letter. The timing inside a block can change, but both block labels were already admissible initially, and the admissible upper bound never decreases. This proves legality as well as invertibility.
+\end{proof}
+The lemma allows permutations below the boundary, not arbitrary sorting above it. Start with a canonical state in which budgets increase with rank. After choosing budget $r>1$, move its decremented entry left to the beginning of the old budget-$r$ group. Every swap lies among the first $i+1$ entries, hence below the new boundary $i+1$, which stays fixed. Exhaustion leaves an already sorted tuple and boundary $i$. A new top label is appended. This gives an exact reduction at every step. The last boundary does not follow the moved budget.
+
+Write $N_0=u$ for the number of unused labels and $N_j=s_j$ for those used $j$ times, $1\le j<b$. Groups occur in increasing rank order as
+\[
+ N_{b-1},N_{b-2},\ldots,N_1,N_0,\qquad
+ m=\sum_{j=0}^{b-1}N_j,\quad u\ge1,\quad0\le k<m.
+\]
+If rank $i$ belongs to group $j$, put $\alpha=\one_{i\ge k}$. Its child is
+\begin{equation}\label{eq:transition}
+ N'=N-e_j+\one_{j+1<b}e_{j+1}+\alpha e_0,
+ \qquad
+ k'=\begin{cases}i,&j=b-1,\\i+1,&j<b-1.\end{cases}
+\end{equation}
+These transitions preserve $u\ge1$ and $k<m$: a choice of the final unused top label is always ascending and creates another. They satisfy $m'\le m+1$.
+Define the positive operator and its series by
+\begin{equation}\label{eq:operator}
+ (\TT f)(x)=\sum_{i=0}^{m-1}f(x_i),\qquad
+ F(t,x)=\sum_{r\ge0}\TT^r\one(x)\frac{t^r}{r!}.
+\end{equation}
+Let $x_1$ have $s_1=u=k=1$ and all other $s_j=0$. Then
+\[
+ \TT^r\one(x_1)=a_{r+1}^{(b)},\qquad F(t,x_1)=A_b'(t).
+\]
+All series identities below allow $+\infty$ and use nonnegative sums when necessary.
+
+\section{Characteristic curve and a uniform barrier}\label{sec:barrier}
+For this section fix $b\ge3$ and write $\theta=(b-1)/b>1/2$. Parameterize time by $v\ge0$:
+\begin{equation}\label{eq:characteristic}
+ q=\log E_b(v),\quad p_j=\log E_{b-j}(v)\ (1\le j<b),\quad
+ p_0=q,\ p_b=0,\quad
+ t(v)=\int_0^v\frac{\log E_b(z)}{E_b(z)-1}\,dz.
+\end{equation}
+Its endpoint is $T_b<\infty$: the integrand is $O_b(\log v/v^b)$ at infinity. A dot denotes a time derivative. Direct differentiation gives
+\begin{equation}\label{eq:ODE}
+ \dot q=e^{p_1}\frac{1-e^{-q}}q,
+ \qquad \dot p_j=\frac{e^q-1}{q}e^{p_{j+1}-p_j}.
+\end{equation}
+At zero the removable values are all $1$, so every $p_j,q$ is strictly increasing. Polynomial asymptotics give
+\begin{align}
+ p_j&=\frac{b-j}{b}q+c_j+O_b(e^{-q/b}),\label{eq:poly}\\
+ e^{p_1}&\sim c_b e^{\theta q},\qquad
+ \dot q\sim c_b e^{\theta q}/q,\qquad
+ c_b=\frac{(b!)^{\theta}}{(b-1)!}.
+\end{align}
+Fixed-order differentiated estimates follow from the underlying rational functions of $v$, rather than differentiation of an arbitrary error term.
+
+Define
+\[
+ \rho_0=1,\quad\rho_b=0,\quad
+ \rho_j=\frac{\dot p_j}{\dot q}
+ =\frac{E_b(v)E_{b-j-1}(v)}{E_{b-1}(v)E_{b-j}(v)}\quad(1\le j<b).
+\]
+They satisfy $1=\rho_0\ge\rho_1\ge\cdots\ge\rho_{b-1}>0$. To see this, put $d_r=v^r/r!$ and note
+\[
+ E_r^2-E_{r-1}E_{r+1}
+ =d_r\left(E_r-\frac{v}{r+1}E_{r-1}\right)\ge0;
+\]
+the bracket has positive coefficients. Also $\rho_j\to(b-j)/b$. Positivity, continuity, and rational asymptotics yield fixed-cap constants $c>0,K<\infty$ such that
+\begin{equation}\label{eq:weights}
+ c\le\rho_j\le1,\qquad |(\rho_j)_q|\le K\quad(0\le j<b, q\ge0).
+\end{equation}
+
+For a state $x$, let
+\[
+ D=\sum_{j=0}^{b-1}\rho_jN_j,\quad
+ h(y)=\int_0^y\rho_{\mathrm{group}(z)}\,dz,\quad
+ r(y)=h(y)/D,\quad r=r(k),
+\]
+where group weights are constant on unit rank intervals. Put
+\begin{equation}\label{eq:psi}
+ \psi(t,x)=\exp\left(\sum_{j=1}^{b-1}p_js_j+qu-qr\right).
+\end{equation}
+Here $D\ge u\ge1$, $cm\le D\le m$, $0\le r\le1$, and $\psi(0,x)=1$.
+
+\subsection{Exact child rank and its bounds}
+If rank $i$ belongs to group $j$, write $H=h(i)$ and $d_j=\rho_j-\rho_{j+1}\in[0,1]$. Every compaction swap is below the new boundary, so its weight sum is unchanged. Consequently
+\begin{equation}\label{eq:rank}
+ D_i=D-d_j+\alpha,\qquad
+ h_{x_i}(k_i)=H+\rho_{j+1},\qquad
+ r_i=\frac{H+\rho_{j+1}}{D-d_j+\alpha}.
+\end{equation}
+This includes saturation through $\rho_b=0$. Since $D_i\ge1$ and $D_i\ge D-1$, we have $D_i\ge D/2$ and
+\begin{equation}\label{eq:rankbound}
+ |r_i-r(i)|\le\frac4D.
+\end{equation}
+For an ascent, $i\ge k$ and $D_i\le D+1$, whence the crucial one-sided bound
+\begin{equation}\label{eq:ascentbound}
+ r(k)-r_i\le\frac HD-\frac H{D+1}\le\frac1{D+1}\le\frac12.
+\end{equation}
+
+\subsection{Frozen integral and residual}
+For real $y$ in group $j$ set
+\[
+ g(y)=\exp\left(p_{j+1}-p_j+q\one_{y\ge k}-q(r(y)-r(k))\right).
+\]
+The exact transition ratio $\psi(t,x_i)/\psi(t,x)$ replaces $r(i)$ by $r_i$ in $g(i)$. The characteristic equations imply
+\begin{equation}\label{eq:frozen}
+ \int_0^m g(y)\,dy=\dot qD=\sum_{j=1}^{b-1}\dot p_js_j+\dot q u=:\lambda.
+\end{equation}
+Indeed, for $\phi(y)=e^{-qh(y)/D}$ one has
+$\phi_y=-(q\rho_j/D)\phi$ and
+$e^{p_{j+1}-p_j}=q\dot q\rho_j/(e^q-1)$.
+Using $\phi(0)=1,\phi(m)=e^{-q}$, the integrals before division by $\phi(k)$ are
+\[
+ \frac{\dot qD}{e^q-1}(1-\phi(k)),\qquad
+ \frac{\dot qD e^q}{e^q-1}(\phi(k)-e^{-q}),
+\]
+whose sum is $\dot qD\phi(k)$. Continuity handles $q=0$.
+
+By \eqref{eq:poly}, every frozen ratio is at most $C_be^{\theta q}$. On each of at most $b+1$ intervals cut at group boundaries and $k$, $g$ decreases. All endpoints are integers; hence the left-sum error is bounded by the sum of left endpoint values:
+\[
+ \left|\sum_i g(i)-\lambda\right|\le C_be^{\theta q}.
+\]
+Exact descending ratios obey the same bound; exact ascending ratios are at most $C_be^{(\theta+1/2)q}$ by \eqref{eq:ascentbound}. Apply
+$|e^z-e^w|\le|z-w|\max(e^z,e^w)$, \eqref{eq:rankbound}, and $m/D\le1/c$ to obtain
+\[
+ \left|\frac{\TT\psi}{\psi}-\sum_i g(i)\right|
+ \le C_b q e^{(\theta+1/2)q}.
+\]
+Finally $|h_q|,|D_q|\le Km$ imply $|r_q|\le2K/c$. Thus
+\[
+ \frac{\partial_t\psi}{\psi}=\lambda-\dot q(r+qr_q),
+ \qquad
+ \left|\frac{\partial_t\psi}{\psi}-\lambda\right|
+ \le C_b(1+q)e^{\theta q}.
+\]
+Together these give the state-uniform estimate
+\begin{equation}\label{eq:residual}
+ \left|\frac{\partial_t\psi}{\psi}-\frac{\TT\psi}{\psi}\right|
+ \le C_b(1+q)e^{(\theta+1/2)q}=:C(q).
+\end{equation}
+Let
+\begin{equation}\label{eq:Err}
+ \Err(q)=\int_0^q\frac{C(z)}{\dot q(z)}\,dz
+ =O_b((1+q)^3e^{q/2}),\qquad g_\pm=e^{\pm\Err}\psi.
+\end{equation}
+Then $\partial_tg_-\le\TT g_-$ and $\partial_tg_+\ge\TT g_+$, and both start at $1$. Since $\theta>1/2$,
+\begin{equation}\label{eq:smaller}
+ \Err(q)=o(e^{p_1(q)}).
+\end{equation}
+This strict inequality explains why this particular proof excludes $b=2$.
+
+\section{Comparison on the infinite state space}\label{sec:comparison}
+Let $X$ be the continuous-time chain with each rank-choice edge at rate $1$. Its generator is $L=\TT-mI$ and its total rate is $m$. Because $m$ grows by at most one per jump, comparison with a linear pure-birth process proves nonexplosion. Expanding by finite jump paths cancels survival factors against the potential factor and gives the extended-real identity
+\begin{equation}\label{eq:FK}
+ F(t,x)=\EE_x\exp\left(\int_0^t m(X_s)\,ds\right).
+\end{equation}
+Let $\tau_M$ be the first exit from $m\le M$ and $Y_s=\exp(\int_0^s m(X_r)\,dr)$. The stopped region is finite. Applying stopped Dynkin comparison to $Y_sg_+(t-s,X_s)$ and discarding its nonnegative exit term gives $F(t,x)\le g_+(t,x)$ upon letting $M\to\infty$.
+
+For the lower bound fix $\delta>0$ with $t+\delta<T_b$. Strict increase of all $p_j,q$ gives an $\eta>0$, uniform for $0\le v\le t$, such that
+\begin{equation}\label{eq:exitratio}
+ g_-(v,y)\le C e^{-\eta m(y)}g_+(v+\delta,y).
+\end{equation}
+Indeed the population terms each decrease by at least $\eta$ in the log ratio; its rank term is bounded above by $q(t+\delta)$, and the $\Err$ terms have favorable signs. The stopped subsolution inequality is
+\[
+ g_-(t,x)\le\EE_x[Y_t;\tau_M>t]
+ +\EE_x[Y_{\tau_M}g_-(t-\tau_M,X_{\tau_M});\tau_M\le t].
+\]
+On exit $m(X_{\tau_M})=M+1$. Equation~\eqref{eq:exitratio} and the stopped supersolution inequality at horizon $t+\delta$ bound the second term by
+$Ce^{-\eta(M+1)}g_+(t+\delta,x)\to0$. Nonexplosion handles the first term. We have proved
+\begin{equation}\label{eq:comparison}
+ e^{-\Err(q)}\psi(t,x)\le F(t,x)\le e^{\Err(q)}\psi(t,x),
+ \qquad0\le t<T_b.
+\end{equation}
+No uniqueness assertion for an infinite differential system is required.
+
+\section{The radius and the coefficient limit}\label{sec:coefficients}
+Let $x_N$ have $s_1=N,u=1,k=N$ and all other populations zero; the increasing prefix of length $N$ reaches it. Its rank formula yields
+\begin{equation}\label{eq:growing}
+ \log\psi(t,x_N)=Np_1(q)+\frac q{\rho_1N+1},\qquad
+ \log F(t,x_N)=Np_1(q)+O_b(\Err(q)+q),
+\end{equation}
+with error independent of $N$. In particular $F(t,x_N)\ge e^{Np_1-\Err}$.
+The positive semigroup identity and one increasing-prefix path at every length give, for $h>0$,
+\begin{align*}
+ F(t+h,x_1)&=\sum_{r\ge0}\frac{h^r}{r!}(\TT^rF(t,\cdot))(x_1)\\
+ &\ge\sum_{r\ge0}\frac{h^r}{r!}F(t,x_{r+1})
+ \ge\exp(p_1-\Err+h e^{p_1}).
+\end{align*}
+As $t\uparrow T_b$, \eqref{eq:smaller} makes the last expression diverge. Monotonicity forces $F(T_b+h,x_1)=\infty$. Equation~\eqref{eq:comparison} gives finiteness below $T_b$. Thus $F(t,x_1)$ and $A_b$ have exact radius $T_b$, proving the normalized-root limsup. The next argument is needed for the full limit.
+
+\subsection{A concentration estimate from barrier values}
+Put $p=p_1$, $d=(\log t)_q$ and $M(q)=p_q/d=t\dot p$. Direct characteristic asymptotics give
+\begin{equation}\label{eq:M}
+ p_q\to\theta,\quad p_{qq}\to0,\quad
+ d\sim\frac{qe^{-\theta q}}{c_bT_b},\quad
+ d'/d\to-\theta,\quad
+ M(q)\sim\frac{\theta c_bT_b e^{\theta q}}q.
+\end{equation}
+These limits are uniform after bounded shifts in $q$. For $c_j=\TT^j\one(x_N)$ define
+\[
+ \PP(J=j)=\frac{c_jt(q)^j}{j!F(t(q),x_N)},\qquad K=NM(q).
+\]
+The deterministic center $K$ need not be the exact mean. We use values of \eqref{eq:growing}, never derivatives of its error.
+Set
+\[
+ H_q(v)=p(q+v)-p(q)-M(q)(\log t(q+v)-\log t(q)).
+\]
+For $|v|\le1$, $H_q(0)=H_q'(0)=0$ and
+\[
+ H_q''(v)\to\theta^2e^{-\theta v},\qquad
+ M(q)d(q+v)\to\theta e^{-\theta v}
+\]
+uniformly. Consequently there are fixed-cap constants $B,c>0$ with
+\[
+ |H_q(v)|\le Bv^2,\qquad
+ M(q)|\log t(q+v)-\log t(q)|\ge c|v|.
+\]
+The exponential Markov bounds at $q\pm\gamma\varepsilon$, with fixed small $\gamma>0$, now give
+\begin{equation}\label{eq:chernoff}
+ \PP(|J-K|>\varepsilon K)
+ \le2\exp\{-c_b' N\varepsilon^2+2\Err(q+1)+O_b(q+1)\}
+\end{equation}
+for sufficiently large $q$ and $0<\varepsilon<1/2$. Explicitly the main exponent is at most
+$N(B\gamma^2\varepsilon^2-c\gamma\varepsilon^2)$; choosing $\gamma$ small makes it negative. Uniformity permits shrinking $\varepsilon$.
+
+\subsection{Extraction for each sufficiently large length}
+For every sufficiently large integer $n$, choose
+\[
+ q=\tfrac12\log n,\qquad\varepsilon=(\log n)^{-2},\qquad
+ N=\left\lfloor\frac{(1-4\varepsilon)n}{M(q)}\right\rfloor.
+\]
+Then
+\begin{align*}
+ N&\asymp_b n^{1-\theta/2}\log n,&
+ N\varepsilon^2&\asymp_b\frac{n^{1-\theta/2}}{(\log n)^3},\\
+ K&=(1-4\varepsilon)n+O_b(n^{\theta/2}/\log n),&
+ \Err(q+1)&=O_b(n^{1/4}(\log n)^3).
+\end{align*}
+Since $1/2<\theta<1$, $N\varepsilon^2$ dominates the error and both $N$ and the floor loss in $K$ are $o(\varepsilon n)$. Equation~\eqref{eq:chernoff} puts probability at least $1/2$ in $|J-K|\le\varepsilon K$. Some integer $j$ there satisfies
+\[
+ \frac{c_jt(q)^j}{j!}\ge\frac{F(t(q),x_N)}{4\varepsilon K+6}.
+\]
+For large $n$ it obeys $(1-6\varepsilon)n\le j$ and $N+j\le n$, giving
+\begin{equation}\label{eq:lowercoef}
+ \log c_j\ge\log(j!)-j\log t(q)+Np(q)-\Err(q)-O_b(\log n).
+\end{equation}
+The increasing prefix reaches $x_N$ in $N-1$ transitions, so $a_{N+j}^{(b)}\ge c_j$. Appending the new maximum $1+\asc(w)$ repeatedly gives an injective extension to length $n$, so $a_n^{(b)}\ge c_j$.
+
+\subsection{A quantitative logarithmic error}\label{sec:logerror}
+From \eqref{eq:ODE},
+\begin{equation}\label{eq:tailt}
+ T_b-t(q)=O_b((1+q)e^{-\theta q}).
+\end{equation}
+In \eqref{eq:lowercoef} the term $Np(q)$ is nonnegative. Also
+$\log(n!/j!)\le6\varepsilon n\log n=6n/\log n$ and
+\[
+ |-j\log t(q)+n\log T_b|
+ =O_b(\varepsilon n+n(1+q)e^{-\theta q}).
+\]
+All latter errors, and $\Err(q)$, are $o_b(n/\log n)$ for $q=\frac12\log n$. Hence
+\[
+ \log a_n^{(b)}\ge\log(n!)-n\log T_b-O_b(n/\log n).
+\]
+For the matching upper estimate use a single coefficient of $F(t,x_1)$:
+\[
+ a_n^{(b)}\le (n-1)!F(t(q),x_1)t(q)^{-(n-1)}.
+\]
+Equations~\eqref{eq:growing} and~\eqref{eq:tailt} bound its excess logarithm above $\log(n!)-n\log T_b$ by
+\[
+ O_b\bigl(\Err(q)+q+\log n+n(1+q)e^{-\theta q}\bigr)
+ =o_b(n/\log n).
+\]
+This proves \eqref{eq:main}, and therefore the full root limit. The proof uses no unproved ratio asymptotic.
+
+\section{Inverse in the sequence length}\label{sec:lengthinverse}
+For fixed $b\ge2$ and $X>1$, define the integer threshold
+\[
+ N_b(X)=\min\{n\ge0:a_n^{(b)}\ge X\},\qquad L=\log X.
+\]
+The injective extension above makes the counts nondecreasing, and Theorem~\ref{thm:fixed} makes them unbounded. Let $W_0$ denote the principal real branch of Lambert $W$, characterized by $W_0(z)e^{W_0(z)}=z$ for $z>0$. As $X\to\infty$ with $b$ fixed,
+\begin{equation}\label{eq:lengthinverse}
+ n_0=\frac{L}{W_0(L/(eT_b))},\qquad
+ N_b(X)=n_0+O_b\left(\frac{L}{(\log L)^3}\right)
+ =n_0\left(1+O_b((\log L)^{-2})\right).
+\end{equation}
+To prove it, Stirling and \eqref{eq:main} give
+$\log a_n^{(b)}=G(n)+O_b(n/\log n)$ for
+$G(x)=x\log(x/(eT_b))$. The threshold inequalities at $N=N_b(X)$ and $N-1$, together with $G(N)-G(N-1)=O_b(\log N)$, imply
+$L=G(N)+O_b(N/\log N)$.
+Thus $N\sim L/\log L$, while $G(n_0)=L$ exactly. Since
+$G'(x)=\log(x/T_b)\asymp\log L$ between comparable $N$ and $n_0$, the mean value theorem gives \eqref{eq:lengthinverse}.
+
+This is a controlled leading inverse, not an exact rounding rule: its error tends to infinity. One may expand $W_0$ itself in logarithms, but such a formal expansion cannot improve the error inherited from the unknown coefficient correction. For $b=2$, the separate report gives a sharper inverse using its stronger logarithmic bound.
+
+\section{Large caps and an exact first variation}\label{sec:largecap}
+Put $f(x)=\log x/(x-1)$, continuously extended at $1$, and $\tau=\pi^2/6$. The representation
+\begin{equation}\label{eq:frep}
+ f(x)=\int_0^1\frac{dt}{1+t(x-1)}
+\end{equation}
+shows $f'<0$ and $f''>0$ on $[1,\infty)$. Thus $E_b$ increasing strictly in $b$ implies $T_b$ decreasing strictly. The cap-two integrand dominates all later integrands and is integrable. Dominated convergence and the nonnegative geometric series give
+\[
+ T_b\downarrow\int_0^\infty\frac{v}{e^v-1}\,dv
+ =\sum_{k\ge1}\frac1{k^2}=\tau.
+\]
+Write
+\[
+ R_b(v)=e^v-E_b(v),\quad
+ \Delta_b(v)=f(E_b(v))-f(e^v),\quad
+ L_b=\int_0^\infty[-f'(e^v)]R_b(v)\,dv.
+\]
+Convexity gives $\Delta_b(v)\ge[-f'(e^v)]R_b(v)\ge0$. We will prove
+\begin{equation}\label{eq:variation}
+ L_b=(b+1)(\zeta(b+2)-1),\qquad
+ 0\le T_b-\tau-L_b=O\!\left(b^{5/2}(4/9)^b\right).
+\end{equation}
+
+\subsection{Evaluation of the linear term}
+For $v>0$,
+\[
+ -f'(e^v)=\sum_{h\ge2}\bigl((h-1)v-1\bigr)e^{-hv},\qquad
+ R_b(v)=\sum_{k\ge b+1}\frac{v^k}{k!}.
+\]
+Although individual terms can have either sign near zero, their integrated absolute values are bounded by
+\[
+ \sum_{k\ge b+1}\sum_{h\ge2}
+ \left(\frac{(h-1)(k+1)}{h^{k+2}}+\frac1{h^{k+1}}\right)<\infty
+ \quad(b\ge2).
+\]
+Fubini is therefore legitimate. Integration and then summation in $k$ yield
+\[
+ L_b=\sum_{h\ge2}\sum_{k\ge b+1}\frac{(h-1)k-1}{h^{k+2}}
+ =\sum_{h\ge2}\frac{b+1}{h^{b+2}}
+ =(b+1)(\zeta(b+2)-1).
+\]
+
+\subsection{A uniform bound for the nonlinear remainder}
+There is an absolute constant $C$ with
+\begin{equation}\label{eq:fsecond}
+ 0\le f''(z)\le C\frac{1+\log z}{z^3}\quad(z\ge1).
+\end{equation}
+This follows from smoothness at $1$ and the derivative asymptotics at infinity, or directly from \eqref{eq:frep}. For $0\le v\le b$, the function $e^{-v}E_b(v)$ decreases, since its derivative is $-e^{-v}v^b/b!$. Stirling therefore gives
+\[
+ e^{-v}E_b(v)\ge e^{-b}E_b(b)\ge e^{-b}b^b/b!\ge c b^{-1/2}
+\]
+with absolute $c>0$. Taylor's theorem on $[E_b(v),e^v]$, using $\log z\le v$, gives
+\begin{equation}\label{eq:remainderpoint}
+ 0\le\Delta_b(v)-[-f'(e^v)]R_b(v)
+ \le C b^{3/2}(1+v)e^{-3v}R_b(v)^2.
+\end{equation}
+Let $m=b+1$. Expanding the square, grouping $S=k+\ell$, and using
+$\sum_{k=m}^{S-m}\binom Sk\le2^S$, we obtain
+\begin{align*}
+ \int_0^\infty(1+v)e^{-3v}R_b(v)^2\,dv
+ &\le\sum_{S\ge2m}2^S
+ \left(\frac1{3^{S+1}}+\frac{S+1}{3^{S+2}}\right)\\
+ &=O\!\left(b(4/9)^b\right).
+\end{align*}
+All these integrands and terms are nonnegative, so Tonelli applies. This bounds the integrated remainder on $[0,b]$ by $O(b^{5/2}(4/9)^b)$.
+
+For $v\ge b\ge3$, $E_b(v)\ge v^b/b!\ge2$ and $\log E_b(v)\le v$. Convexity implies the remainder is at most $\Delta_b(v)\le f(E_b(v))$, and hence its tail is at most
+\[
+ 2b!\int_b^\infty v^{1-b}\,dv
+ =\frac{2b!b^{2-b}}{b-2}
+ =O(b^{3/2}e^{-b})
+ =O\!\left(b^{5/2}(4/9)^b\right).
+\]
+This proves \eqref{eq:variation} and \eqref{eq:capstrong} with constants independent of $b$.
+
+Since
+\[
+ L_b=\frac{b+1}{2^{b+2}}+O(b3^{-b}),
+\]
+the remainder is smaller than the leading term by an exponentially decaying factor. The reciprocal identity
+\[
+ \mu_\infty-\mu_b=\frac{T_b-\tau}{\tau T_b},\qquad\mu_\infty=\frac1\tau=\frac6{\pi^2},
+\]
+then gives the useful quantified form
+\begin{equation}\label{eq:gap}
+ \mu_\infty-\mu_b
+ =D(b+1)2^{-b}\left[1+O\!\left(b^{3/2}(8/9)^b\right)\right],
+ \qquad D=\frac9{\pi^4}.
+\end{equation}
+Indeed the additive contributions $O(b3^{-b})$ and $O(b^24^{-b})$ are absorbed by $O(b^{5/2}(4/9)^b)$. This also proves \eqref{eq:caplead}. Equation~\eqref{eq:capstrong} is a rigorously controlled first-variation expansion; it is not an all-orders transseries.
+
+\section{Inverse in the multiplicity cap}\label{sec:capinverse}
+For small $\varepsilon>0$ let
+\[
+ b_\varepsilon=\min\{b\ge2:\mu_b\ge\mu_\infty-\varepsilon\}.
+\]
+Monotonicity proves existence. The large real solution of the leading model
+$D(b+1)2^{-b}=\varepsilon$ is
+\begin{equation}\label{eq:capinverse}
+ b_0=-\frac1{\log2}W_{-1}\!\left(-\frac{\varepsilon\log2}{2D}\right)-1,
+\end{equation}
+where $W_{-1}$ is the real branch with $W_{-1}(z)\le-1$ on $[-1/e,0)$. The branch is essential; $W_0$ gives the irrelevant small root.
+
+There are constants $C$ and $\varepsilon_0>0$ such that, for $0<\varepsilon<\varepsilon_0$, with
+\[
+ \eta=C b_0^{3/2}(8/9)^{b_0},
+\]
+one has the integer-safe bracket
+\begin{equation}\label{eq:rounding}
+ \left\lceil b_0-\eta\right\rceil
+ \le b_\varepsilon\le
+ \left\lceil b_0+\eta\right\rceil.
+\end{equation}
+No interpolation of the exact sequence $T_b$ to real $b$ is assumed.
+
+Here is the discrete justification. For the real leading model $h(x)=D(x+1)2^{-x}$,
+\[
+ (\log h)'(x)=\frac1{x+1}-\log2
+\]
+is negative and bounded away from zero for large $x$. Equation~\eqref{eq:gap} first places $b_\varepsilon$ within a fixed bounded distance of $b_0$: at integers several units below or above $b_0$, the fixed change of $h$ dominates the vanishing relative error. In that bounded window the relative error is uniformly $O(b_0^{3/2}(8/9)^{b_0})$. Increasing $C$ if necessary, every integer $b<b_0-\eta$ fails the threshold and every integer $b\ge b_0+\eta$ meets it. Monotonicity handles all integers outside the window, giving \eqref{eq:rounding}.
+
+A useful explicit strengthening, proved by the same estimates, is
+\begin{equation}\label{eq:explicitround}
+ \lfloor b_0\rfloor+1\le b_\varepsilon\le
+ \left\lceil b_0+2000b_0^{3/2}(8/9)^{b_0}\right\rceil
+ \qquad(b_0\ge13).
+\end{equation}
+Here are details to make its constants and strict lower bound reproducible. The bound
+$f''(z)\le16(1+\log z)/z^3$ and $b!\le3\sqrt b(b/e)^b$ make
+\eqref{eq:remainderpoint} valid with $216$. Its integrated central bound is
+$64b^{3/2}(b+4)(4/9)^b$, and its tail is at most $6b^{5/2}(4/9)^b$.
+Thus $0\le H_b:=T_b-\tau-L_b\le160b^{5/2}(4/9)^b$ for every $b\ge3$.
+Put $M_b=(b+1)2^{-b-2}$ and $V_b=L_b-M_b$. Integral comparison gives
+\[
+ L_b\le (b/2)2^{-b},\qquad
+ (b+1)3^{-b-2}\le V_b\le(b+4)3^{-b-2}.
+\]
+Hence $M_bL_b/V_b\le(9b/8)(3/4)^b\le729/512<\tau$, so
+\[
+ d_b:=\mu_\infty-\mu_b\ge\frac{L_b}{\tau(\tau+L_b)}>
+ \frac{M_b}{\tau^2}=h(b).
+\]
+The upper bounds above also give
+$0<d_b/h(b)-1\le644\phi(b)$, where $\phi(x)=x^{3/2}(8/9)^x$.
+For $x\ge13$, $\phi$ decreases, and for $x\ge2$,
+$(\log h)'(x)<-1/3$. Every integer $b\le b_0$ fails the threshold, proving
+its strict lower bracket. For $m=\lceil b_0+2000\phi(b_0)\rceil$,
+\[
+ \frac{d_m}{\varepsilon}\le
+ e^{-2000\phi(b_0)/3}(1+644\phi(b_0))<1,
+\]
+proving the upper bracket. The constants are conservative for moderate caps.
+In particular, at $\varepsilon=h(n)$ for an integer $n\ge3$, one has
+$b_0=n$ but $b_\varepsilon\ge n+1$. This supplies actual counterexamples
+to unconditional rounding by $\lceil b_0\rceil$ at arbitrarily small tolerances.
+
+Thus $b_\varepsilon=b_0+O(1)$, and away from vanishingly small neighborhoods of integer transitions the threshold is the expected ceiling. Exactly near those transitions, an unconditional rounding prescription is not justified by an asymptotic equivalence. In particular this is an inverse for the cap of the limiting growth constant, not a cap selection guarantee for finite-length counts.
+
+\section{Numbers and reproducible checks}\label{sec:checks}
+The following values are numerical quadratures of \eqref{eq:Tb}; the displayed digits are checks, not interval-certified enclosures.
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+$b$ & $T_b$ & $\mu_b$\\
+\midrule
+2 & 3.701101650408509482 & 0.270189823046234057\\
+3 & 2.212067760911192191 & 0.452065717728321870\\
+4 & 1.871791135820212368 & 0.534247641664251966\\
+5 & 1.748278343303498299 & 0.571991298656956259\\
+6 & 1.695001120651513698 & 0.589970111415399178\\
+8 & 1.657736605427835731 & 0.603232139970701640\\
+10 & 1.648371562426905637 & 0.606659337490447259\\
+$\infty$ & 1.644934066848226436 & 0.607927101854026629\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular, for cap three (A317784),
+\[
+ a_n^{(3)}=n!\,(0.452065717728321870\ldots)^n
+                \exp\bigl(O(n/\log n)\bigr),
+\]
+where the constant is exactly the reciprocal integral, not the rounded decimal. The first ten counts, indexed from $n=0$, are
+\begin{align*}
+ b=3:&\quad 1,1,2,5,14,47,180,773,3701,19488,\\
+ b=4:&\quad 1,1,2,5,15,52,210,964,4960,28272.
+\end{align*}
+
+The accompanying source archive contains independent reproducibility routes:
+\begin{itemize}
+\item Direct generation of numerical words, unsorted raw-budget recursion, and grouped recursion agree for caps $3,4$ through $n=9$.
+\item All 8,460 adjacent-budget state comparisons and 5,364 canonical raw/grouped state comparisons pass in the stated finite ranges.
+\item The actual suffix involution, its inverse, quotas, and ascent total pass 69,500 individual checks.
+\item Seeded tests of exact child-rank identities and the implementation of the barrier cover 82,801 transitions for $b=3,\ldots,8$. Finite residual tests do not prove a uniform bound; Section~\ref{sec:barrier} does.
+\item High-precision quadrature reproduces the constants, large-cap ratios, exact first variation, and numerical instances of both inverse models. It is not substituted for the analytic error estimates.
+\end{itemize}
+The commands, dependency list, test results, proof-source provenance, independent audits, and checksums are included. All mathematics needed for $b\ge3$ is in this report; the separate cap-two document is identified by its file hash rather than duplicated. The PDF and \TeX{} source can be rebuilt with the supplied script. No external OEIS edit or publication is implied.
+
+\section{Literature and the remaining questions}\label{sec:scope}
+Duncan and Steingr\'imsson \cite{DS} study pattern avoidance and growth rates for ascent sequences. Conway, Conway, Elvey Price and Guttmann \cite{CCEG} give the cap-two compacted recurrence and conjecture its factorial growth constant $8/(3\pi^2)$. The present arbitrary-budget involution generalizes that compaction mechanism. Their recurrence and conjectured constant are prior work, not a discovery claimed here.
+
+The OEIS family entry A294220, retrieved on 1 October 2026, describes the maximum-letter-multiplicity array, identifies caps two and three as A202058 and A317784, and lists the finite values matching the checks above. Its retrieved formula section gives array relations and its program section gives exact enumeration. The standalone A317784 page could not be retrieved in this check; its identification here is verified through A294220's explicit cross-reference. No claim about A317784's current formula-section wording is made. Search-engine cache dates and the OEIS site footer do not certify an individual entry's revision date.
+
+The report proves the statements presented here; it makes no exhaustive priority claim. The literature check is scoped, and conventional expert review and further literature screening remain appropriate before publication. The independent audits included with the package are mathematical checks of this argument, not journal peer review.
+
+Several concrete questions remain:
+\begin{enumerate}
+\item Determine the subexponential factor of $a_n^{(b)}$ for fixed $b$: a prefactor, any power or stretched-exponential correction, and eventually a full coefficient expansion. The present error permits many possibilities.
+\item Establish or refute the normalized ratio limit. A root limit by itself does not answer it.
+\item Sharpen the rank barrier enough to quantify the true singular behavior of $A_b$ near $T_b$, rather than only its radius and coefficient exponential scale.
+\item Determine a joint regime $b=b(n)$ and the transition to unrestricted ascent sequences. The convergence of growth constants alone does not allow exchange of limits.
+\item Extend the controlled large-cap first variation to further exponentially small sectors and their internal $1/b$ expansions, with uniform remainder estimates. Such a cap expansion is logically distinct from an all-orders expansion in $n$.
+\item Find a direct combinatorial explanation for the truncated-exponential integral. A standard ascent-sequence/Fishburn bijection must not be assumed to preserve label multiplicity without proof.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{CCEG} A. R. Conway, M. Conway, A. Elvey Price and A. J. Guttmann,
+\emph{Pattern-Avoiding Ascent Sequences of Length 3},
+Electronic Journal of Combinatorics \textbf{29}(4) (2022), P4.25.
+\href{https://doi.org/10.37236/11266}{doi:10.37236/11266}.
+\href{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v29i4p25/pdf/}{Published paper};
+\href{https://arxiv.org/abs/2111.01279}{arXiv:2111.01279}.
+\bibitem{DS} P. Duncan and E. Steingr\'imsson,
+\emph{Pattern avoidance in ascent sequences}, preprint (2011),
+\href{https://arxiv.org/abs/1109.3641}{arXiv:1109.3641}.
+\bibitem{array} OEIS Foundation Inc.,
+\href{https://oeis.org/A294220}{A294220}, maximum-letter-multiplicity array.
+Retrieved 1 October 2026.
+\bibitem{cap3} OEIS Foundation Inc.,
+\href{https://oeis.org/A317784}{A317784}, cap-three column.
+Identification verified from A294220 on 1 October 2026.
+\bibitem{cap2report} \emph{Factorial growth of ascent sequences avoiding 000},
+companion proof and reproducible report, 1 October 2026.
+The separate deliverable is \texttt{a202058-report.pdf}; its SHA-256 and source hashes
+are recorded in this archive's \texttt{provenance.json}.
+\end{thebibliography}
+\end{document}

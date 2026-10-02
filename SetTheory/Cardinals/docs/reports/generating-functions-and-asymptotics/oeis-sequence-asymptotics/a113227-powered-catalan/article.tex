@@ -1,0 +1,635 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
+\usepackage{lmodern,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs,enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Var}{\operatorname{Var}}
+\hypersetup{pdftitle={Precise asymptotics of the powered Catalan numbers},pdfsubject={Positive Bessel spectrum, all orders expansions and controlled inversion for OEIS A113227}}
+\title{Precise asymptotics of the powered Catalan numbers}
+\author{A proof and reproducible research report}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The powered Catalan numbers count permutations avoiding the vincular pattern $1$-$23$-$4$ and form OEIS A113227. We derive a positive discrete moment representation from their known formal continued fraction, identify its transform by a branch-safe Bessel quotient, and determine every sufficiently large spectral node and its weight. This proves a sharp equivalent involving the Bell polynomial $B_n(\ee)$, including its explicit constant, and gives an expansion to every fixed algebraic order. An exact coefficient algorithm, two displayed corrections, and a canonical continuous inverse accompany the proof. The analytic arguments control the full spectrum and all omitted tails; numerical computations are used only as reproducible diagnostics.
+\end{abstract}
+
+\section{Main results and known starting points}
+Let $a_n$ count permutations $\pi_1\cdots\pi_n$ for which there are no indices $i<j<j+1<k$ with
+\[
+ \pi_i<\pi_j<\pi_{j+1}<\pi_k.
+\]
+Thus $a_n$ is OEIS A113227, with
+\[
+ (a_n)_{n\ge0}=1,1,2,6,23,105,549,3207,20577,143239,\ldots.
+\]
+The adjacency of the middle pair is essential. This sequence is different from avoidance of the classical pattern $1234$, fully consecutive $1234$, or the vincular pattern $12$-$34$.
+
+For $n>0$, throughout the report put
+\begin{equation}\label{eq:rw}
+ w=W(n/\ee),\qquad r=\frac n w=\ee^{w+1},\qquad
+ M_n=\frac{\ee^{-2}r^{n-3/2}\exp(r-n)}{\sqrt{2\pi(w+1)}},
+\end{equation}
+where $W$ is the positive real Lambert function. Write
+\[
+ B_n(\theta)=\sum_{k=0}^n\left\{\!\begin{matrix}n\\k\end{matrix}\!\right\}\theta^k
+\]
+for the Bell or Touchard polynomial; $B_n(\ee)$ is not the ordinary Bell number.
+
+\begin{theorem}\label{thm:main}
+The powered Catalan numbers satisfy
+\begin{equation}\label{eq:leading}
+ a_n\sim M_n\sim
+ \frac{\ee^{\ee-2}}{\sqrt{2\pi}}\,r^{-3/2}B_n(\ee).
+\end{equation}
+For every fixed integer $J\ge1$,
+\begin{equation}\label{eq:allorders}
+ a_n=M_n\left(\sum_{j=0}^{J-1}\frac{c_j(w)}{r^j}
+                    +O_J(r^{-J})\right),
+\end{equation}
+where $c_0=1$ and the $c_j$ are explicitly computable rational functions. Their denominators divide a constant times $(w+1)^{3j}$, and their numerators have degree at most $3j$. In particular,
+\begin{align}
+ c_1(w)&=\frac{20w^3+86w^2+128w+67}{24(w+1)^3},\label{eq:c1}\\
+ c_2(w)&=\frac{1168w^6+9968w^5+34692w^4+64536w^3
+                   +69380w^2+42208w+11857}{1152(w+1)^6}.\label{eq:c2}
+\end{align}
+The constants in \eqref{eq:allorders} may depend on $J$; no convergence of the infinite correction series is asserted.
+\end{theorem}
+
+The recurrence, combinatorial models, and formal fraction used below are known. Callan \cite{Callan} gives the recurrence and valley-marked Dyck paths; Beaton et al.\ \cite{Beaton} develop the powered-Catalan terminology and further models. OEIS credits the formal continued fraction to Sergei N.\ Gladkovskii, 10 October 2012 \cite{OEIS}. Elizalde \cite{Elizalde} established asymptotic bounds and explicitly left a precise asymptotic for this pattern open. The contribution proved here is the sharp equivalent, the global positive spectral representation supporting it, and the controlled refinements. A scoped literature review is summarized in Section~\ref{sec:literature}; it does not certify worldwide priority or repository-wide nonduplication.
+
+\section{The formal fraction and positive finite measures}
+\subsection{A reversible path derivation}
+In the known path model, a Dyck path of semilength $n$ has $h+1$ possible marks at every valley of height $h$. Keep mark-zero valleys unchanged. Replace a valley $DU$ with a nonzero mark by a long horizontal step at height $h+1$, with $h$ possible colors. Distinct valleys do not overlap, and expansion of each horizontal step to $DU$ reverses the operation. The resulting Schr\"oder paths have unit up/down weights and horizontal weights
+\[
+ d_0=0,\qquad d_h=h-1\quad(h\ge1).
+\]
+First-return decomposition therefore gives, as a formal series,
+\begin{equation}\label{eq:cf}
+ A(x)=\sum_{n\ge0}a_nx^n=1+\frac{x}{U_0(x)-x},\qquad
+ U_k(x)=1-kx-\frac{x}{U_{k+1}(x)}\quad(k\ge0).
+\end{equation}
+Equivalently it is the Thron fraction with successive denominator weights $0,0,1,2,\ldots$ and unit numerators. This also falls under general nonnegative Thron-fraction moment-positivity results \cite{PSZ}; the following direct proof is sufficient here. Nothing in the argument treats the divergent series $A(x)$ as analytic near zero.
+
+\subsection{Finite fractions}
+Truncate \eqref{eq:cf} at $U_m=1-mx$, with $m\ge1$, and denote the resulting rational function by $A_m$. For $k\ge1$ let $R_k(t)=tU_k(1/t)$ and at the root let $R_0=tU_0(1/t)-1$. Then
+\begin{equation}\label{eq:R}
+ R_m=t-m,\quad R_k=t-k-\frac{t}{R_{k+1}}\ (1\le k<m),
+ \quad R_0=t-1-\frac{t}{R_1},\quad A_m(1/t)=1+\frac1{R_0}.
+\end{equation}
+The exceptional root shift must be retained.
+
+\begin{lemma}\label{lem:finite}
+Each $A_m(1/t)$ is a probability moment transform
+\[
+ A_m(1/t)=\sum_{j=1}^{N_m}\omega_{m,j}\frac{t}{t-\lambda_{m,j}},
+ \qquad \omega_{m,j}>0,\quad\lambda_{m,j}>0,\quad
+ \sum_j\omega_{m,j}=1.
+\]
+\end{lemma}
+\begin{proof}
+Consider a real rational function
+\[
+ R(t)=t-b-\sum_j\frac{c_j}{t-\eta_j},\qquad c_j>0,\quad\eta_j>0,
+ \qquad R(0)<0.
+\]
+Repeated poles can be combined. Since $R'(t)=1+\sum_j c_j/(t-\eta_j)^2>0$, its zeros are simple and interlace its poles. There is no nonpositive zero, one zero between zero and its first pole, one between each successive pair, and one after its last pole. Its reciprocal consequently has the partial fraction expansion
+\[
+ \frac1{R(t)}=\sum_j\frac{\rho_j}{t-\xi_j},\qquad
+ \rho_j=\frac1{R'(\xi_j)}>0,\qquad \sum_j\rho_j=1.
+\]
+The sum of residues follows from $1/R(t)\sim1/t$ at infinity. Hence
+\[
+ \frac{t}{R(t)}=1+\sum_j\frac{\xi_j\rho_j}{t-\xi_j}.
+\]
+This proves preservation of the stated form under \eqref{eq:R}, starting from $t-m$. Also $R_k(0)=-k$ for $k\ge1$ and $R_0(0)=-1$. At the root evaluation at zero gives $\sum_j\rho_j/\xi_j=1$, and
+\[
+ 1+\frac1{R_0(t)}=\sum_j\frac{\rho_j}{\xi_j}\frac{t}{t-\xi_j}.
+\]
+These are the asserted probability weights.
+\end{proof}
+
+\subsection{Passage to a unique measure}
+Every fixed formal coefficient of $A_m$ eventually stabilizes to that of $A$. The associated probability measures $\mu_m$ have bounded first moments, so they are tight. Along any weakly convergent subsequence, a bound on the next moment gives uniform integrability of each fixed power. The limit $\mu$ thus has moments
+\begin{equation}\label{eq:moments}
+ a_n=\int_0^\infty s^n\dd\mu(s),\qquad n\ge0.
+\end{equation}
+It is unique: the permutation interpretation gives $a_n\le n!$, so monotone convergence implies
+\[
+ \int\exp(\delta s)\dd\mu(s)
+   =\sum_{n\ge0}\frac{\delta^na_n}{n!}\le\frac1{1-\delta}
+       \quad(0<\delta<1).
+\]
+The moments determine the moment-generating function near zero and therefore determine the measure. Thus the whole sequence $\mu_m$ converges to $\mu$. In particular the function
+\begin{equation}\label{eq:Fmeasure}
+ F(t)=\int_0^\infty\frac{t}{t-s}\dd\mu(s),\qquad
+ t\in\C\setminus[0,\infty),
+\end{equation}
+is the limit of the finite fractions. It is this analytic transform, rather than the divergent ordinary series, that will be identified.
+
+\section{A branch safe Bessel representation}
+\subsection{Identification on the negative real axis}
+Fix $t=-s<0$ and define
+\[
+ V_k=\frac{I_{k+s-1}(2\sqrt{s})}{\sqrt{s}\,I_{k+s}(2\sqrt{s})}.
+\]
+All these quantities are positive: denominator orders are positive and numerator orders exceed $-1$. The modified Bessel recurrence gives
+\begin{equation}\label{eq:Irec}
+ V_k=1+\frac{k}{s}+\frac{1/s}{V_{k+1}},\qquad V_k\ge1+\frac{k}{s}.
+\end{equation}
+The truncated $U_k(-1/s)$ satisfy the same recurrence, with terminal value $1+m/s$. Its discrepancy from $V_m$ is at most $(1/s)/(1+(m+1)/s)$. Each preceding step contracts the discrepancy by at most
+\[
+ \frac{1/s}{(1+(k+1)/s)^2}=\frac{s}{(s+k+1)^2}\le\frac1{4(k+1)}.
+\]
+Their product tends to zero factorially. This proves the required branch selection directly, without an assumption about a minimal solution of an infinite recurrence.
+
+In Bessel notation the resulting transform is
+\begin{equation}\label{eq:BesselF}
+ F(t)=1-\frac{J_{-t}(2\sqrt t)}{\sqrt t\,J_{-t-1}(2\sqrt t)+J_{-t}(2\sqrt t)}.
+\end{equation}
+A formula with no square-root or logarithmic branch convention is preferable for global use. Define
+\begin{align}
+ E(t)&=\sum_{j\ge0}\frac{(-t)^j}{j!\,\Gamma(j-t+1)},\label{eq:E}\\
+ D(t)&=\sum_{j\ge0}\frac{(j-t+1)(-t)^j}{j!\,\Gamma(j-t+1)}.\label{eq:D}
+\end{align}
+The gamma growth in $j$ proves local uniform convergence for complex $t$, so both functions are entire. The Bessel series \cite[\S10.2]{DLMF} identifies \eqref{eq:BesselF}, after cancellation of its common factor $t^{-t/2}$, with
+\begin{equation}\label{eq:entirequotient}
+ F(t)=1-\frac{E(t)}{D(t)}.
+\end{equation}
+The negative-axis equality and the identity theorem give its analytic continuation.
+
+\begin{theorem}\label{thm:spectrum}
+All zeros of $D$ are positive and simple. They are exactly the support points of a probability measure with positive weights, and
+\begin{equation}\label{eq:spectrum}
+ F(t)=\sum_{\lambda:D(\lambda)=0}\omega_\lambda\frac{t}{t-\lambda},
+ \qquad
+ a_n=\sum_{\lambda:D(\lambda)=0}\omega_\lambda\lambda^n,
+ \qquad
+ \omega_\lambda=-\frac{E(\lambda)}{\lambda D'(\lambda)}>0.
+\end{equation}
+The support has no finite accumulation point and is bounded away from zero.
+\end{theorem}
+\begin{proof}
+The functions $E,D$ have no common zero. At zero both equal 1. At a nonzero common zero, \eqref{eq:BesselF} would make two consecutive Bessel functions vanish at the same nonzero argument. Their recurrence would make every forward consecutive order vanish, contradicting the fixed-argument large-positive-order series.
+
+The quotient \eqref{eq:entirequotient} agrees with the Stieltjes transform \eqref{eq:Fmeasure}; hence its genuine poles can occur only on the positive axis. Every such pole is simple, since a Cauchy transform of a finite positive measure has at most a simple meromorphic pole, and its residue is the corresponding positive atom. Between poles the quotient continues analytically with real values. Stieltjes inversion therefore gives zero measure there, ruling out continuous mass. Entire-function zeros are locally finite. Finally $F(0)=0$ rules out an atom at zero, while $D(0)=1$ leaves a neighborhood of zero free of support. This proves every assertion, including the absence of an additional entire contribution or a hidden cut.
+\end{proof}
+
+\section{Uniform estimates and the large spectral nodes}
+For real $t>0$ define
+\begin{align}
+ a(t)&=J_t(2\sqrt t)-\sqrt t\,J_{t+1}(2\sqrt t),\label{eq:ab}\\
+ b(t)&=\sqrt t\,Y_{t+1}(2\sqrt t)-Y_t(2\sqrt t),\qquad q(t)=\frac{a(t)}{b(t)}.
+\end{align}
+Order reflection \cite[\S10.4]{DLMF} writes the denominator in \eqref{eq:BesselF} as
+\begin{equation}\label{eq:H}
+ H(t)=\cos(\pi t)a(t)+\sin(\pi t)b(t).
+\end{equation}
+
+\begin{lemma}\label{lem:largeorder}
+Let $P(t)=t^{t/2}/\Gamma(t+1)$. As real $t\to\infty$,
+\begin{align}
+ J_t(2\sqrt t)&=P(t)\bigl(\ee^{-1}+O(t^{-1})\bigr),\label{eq:Jest}\\
+ b(t)&=-\frac{\ee}{\pi}\,t\Gamma(t)t^{-t/2}\bigl(1+O(t^{-1})\bigr),\label{eq:best}\\
+ a(t)&=O(P(t)),\quad a'(t)=O(P(t)\log t),\quad
+ b'(t)=O(|b(t)|\log t).\label{eq:derivs}
+\end{align}
+Consequently, for every fixed $0<c<1$ and all sufficiently large $t$,
+\begin{equation}\label{eq:qsmall}
+ |q(t)|+|q'(t)|\le\exp(-ct\log t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The absolutely convergent series gives
+\[
+ \frac{J_t(2\sqrt t)}{P(t)}
+ =\sum_{j\ge0}\frac{(-1)^j}{j!}
+                 \prod_{h=1}^j(1+h/t)^{-1}.
+\]
+The product differs from 1 by at most $j(j+1)/(2t)$, whose sum against $1/j!$ is finite. Its derivative in $t$ is bounded by $j(j+1)/(2t^2)$. Since $P'/P=O(\log t)$, the same reasoning for the adjacent order proves the $J$ and $a$ estimates without differentiating an unspecified remainder.
+
+Schl\"afli's formula \cite[10.9.7]{DLMF} is
+\begin{align*}
+ Y_\nu(z)={}&\frac1\pi\int_0^\pi\sin(z\sin\theta-\nu\theta)\dd\theta\\
+ &-\frac1\pi\int_0^\infty
+       \bigl(\ee^{\nu u}+\cos(\pi\nu)\ee^{-\nu u}\bigr)
+                                      \ee^{-z\sinh u}\dd u.
+\end{align*}
+The bounded integral and the decaying integral contribute $O(\sqrt t)$ to $b$ and to its total $t$-derivative. In the growing integral use $v=\sqrt t\,\ee^u$. This gives the exact dominant integral
+\begin{equation}\label{eq:bint}
+ b(t)=-\frac{t^{-t/2}}\pi
+ \int_{\sqrt t}^\infty(v-1)v^{t-1}\exp(-v+t/v)\dd v+O(\sqrt t).
+\end{equation}
+For $V$ of gamma distribution with shape $t$ and scale 1, its integral normalized by $\Gamma(t)$ is
+\[
+ \E\bigl[(V-1)\ee^{t/V}\mathbf1_{\{V\ge\sqrt t\}}\bigr]
+       =\ee t\bigl(1+O(t^{-1})\bigr).
+\]
+Indeed on $[t/2,2t]$ Taylor expansion at $V=t$ uses $\E(V-t)=0$ and $\Var(V)=t$. On the lower tail $\ee^{t/V}\le\ee^{\sqrt t}$, absorbed by the gamma bound $\ee^{-c_0t}$; on the upper tail it is at most $\ee^{1/2}$. This proves \eqref{eq:best}.
+
+Differentiation of the growing integrand including its prefactor adds
+\[
+ \log v-\frac12\log t-\frac12+\frac1v.
+\]
+The same gamma localization bounds its weighted integral by $O(\log t)$ times the main integral. The lower-endpoint term is $O(t^{-1/2})$ in absolute size and is negligible relative to that main term. This proves the last derivative bound. Stirling's formula now gives \eqref{eq:qsmall}.
+\end{proof}
+
+\begin{proposition}\label{prop:nodes}
+For every sufficiently large integer $k$ there is exactly one spectral node $\lambda_k$ in $(k-\tfrac12,k+\tfrac12)$, there are no other sufficiently large nodes, and
+\begin{equation}\label{eq:nodeerror}
+ \lambda_k=k+O\bigl(\exp(-ck\log k)\bigr)\qquad(0<c<1).
+\end{equation}
+At those nodes the weight has the exact expression
+\begin{equation}\label{eq:weight-exact}
+ \omega_k=\frac1{\lambda_kb(\lambda_k)^2
+     \{\pi^2(1+q(\lambda_k)^2)+\pi q'(\lambda_k)\}}.
+\end{equation}
+In particular,
+\begin{align}
+ \omega_k&=\frac1{\pi^2k b(k)^2}
+       \bigl(1+O(\exp(-ck\log k))\bigr),\label{eq:weight-b}\\
+ \omega_k&\sim\ee^{-2}\frac{k^{k-3}}{\Gamma(k)^2}
+     \sim\frac{k^{-2}\exp(-k\log k+2k)}{2\pi\ee^2}
+     \sim\frac{\ee^{-2}}{\sqrt{2\pi}}k^{-3/2}\frac{\ee^k}{k!}.
+ \label{eq:weight-leading}
+\end{align}
+\end{proposition}
+\begin{proof}
+For large $t$, $b(t)<0$. Zeros of \eqref{eq:H} solve $\tan(\pi t)+q(t)=0$. On each indicated interval the left side ranges from $-\infty$ to $+\infty$ and has derivative at least $\pi-|q'|>0$. The endpoints are not zeros because $b\ne0$ there. This proves completeness and \eqref{eq:nodeerror}.
+
+At a pole, reflection gives the residue formula
+\[
+ \omega_k=-\frac{J_t+q(t)Y_t}
+ {t b(t)\{\pi(1+q(t)^2)+q'(t)\}}\bigg|_{t=\lambda_k},
+\]
+where the argument of each Bessel function is $2\sqrt t$. The Wronskian \cite[10.5.2]{DLMF} implies
+\[
+ J_tb+aY_t=\sqrt t\,(J_tY_{t+1}-J_{t+1}Y_t)=-1/\pi.
+\]
+This proves \eqref{eq:weight-exact}. Bounds \eqref{eq:derivs} and \eqref{eq:qsmall} permit replacing $\lambda_k$ by $k$, giving \eqref{eq:weight-b}. Equations \eqref{eq:best} and Stirling's formula finish the proof.
+\end{proof}
+
+A further expansion, not needed for completeness of the spectrum, gives
+\[
+ a(t)=P(t)\ee^{-1}\left(t^{-2}+\frac32t^{-3}-\frac{97}{24}t^{-4}
+                               +O(t^{-5})\right).
+\]
+It follows that the displacement is eventually positive and
+\begin{equation}\label{eq:shift}
+ \lambda_k-k\sim\ee^{-2}\frac{k^{k-4}}{\Gamma(k)^2}\sim\frac{\omega_k}{k}.
+\end{equation}
+The finite number of remaining low nodes cause no difficulty in large moments.
+
+\section{The residue expansion to arbitrary order}
+Introduce the following \emph{formal} series:
+\begin{align}
+ T_0(z)&=\sum_{j\ge0}\frac1{j!}\prod_{h=0}^{j-1}(1-hz)^{-1},\label{eq:T0}\\
+ T_1(z)&=\sum_{j\ge0}\frac1{j!}\prod_{h=1}^{j}(1-hz)^{-1},\qquad
+ \mathcal B(z)=\ee^{-1}\{T_0(z)-zT_1(z)\}.\label{eq:Bformal}
+\end{align}
+Each formal coefficient is a convergent Poisson sum of a polynomial in $j$. The expressions are not infinite convergent sums to be evaluated at $z=1/k$: individual factors then have poles for large $j$.
+
+\begin{lemma}\label{lem:bexp}
+For each fixed order, the following is an asymptotic expansion with a remainder of the corresponding inverse power:
+\begin{equation}\label{eq:bexp}
+ b(k)\sim-\frac{\ee k\Gamma(k)k^{-k/2}}\pi\,\mathcal B(1/k).
+\end{equation}
+Its first coefficients are
+\begin{align}
+ \mathcal B(z)&=1-\frac z2-\frac{5z^2}{24}-\frac{7z^3}{16}
+                    -\frac{7057z^4}{5760}+O(z^5),\label{eq:Bcoeff}\\
+ \mathcal B(z)^{-2}&=1+z+\frac76z^2+2z^3+\frac{1739}{360}z^4+O(z^5).
+\end{align}
+\end{lemma}
+\begin{proof}
+Use \eqref{eq:bint} with $t=k$. Fix $0<\epsilon<1/2$ and retain terms $0\le j\le m=\lfloor k^\epsilon\rfloor$ in the exponential $\exp(k/v)$. On $[k/2,2k]$ the discarded remainder is at most a constant times $2^{m+1}/(m+1)!$, smaller than every inverse power of $k$. The exterior contribution of the original integral is exponentially small as in Lemma~\ref{lem:largeorder}.
+
+For retained $j$ the gamma integrals have shapes $k-j+1$ and $k-j$. Extending their central intervals to $(0,\infty)$ changes them by uniformly exponentially small relative errors, since their centers differ from $k$ by $O(k^\epsilon)$. The extended integral of the $j$th term is
+\[
+ \frac{k^j}{j!}\bigl\{\Gamma(k-j+1)-\Gamma(k-j)\bigr\}.
+\]
+After normalization by $k\Gamma(k)$, these terms give precisely $T_0(1/k)-k^{-1}T_1(1/k)$, truncated at $j=m$.
+
+For either reciprocal product, expansion through degree $J$ has remainder bounded uniformly for $j\le m$ by
+\[
+ C_J k^{-J-1}(1+j)^{2J+2}\exp(Cj^2/k).
+\]
+This follows by expanding its logarithm or by differentiating the product. The exponential factor is bounded for $\epsilon<1/2$, and the polynomial factor is summable against $1/j!$. Extending every coefficient sum to all $j$ costs a further superalgebraic factorial tail. Thus the remainder is $O_J(k^{-J-1})$ after retaining degrees through $J$, proving \eqref{eq:bexp}. The coefficients follow by exact polynomial arithmetic.
+\end{proof}
+
+Let $\beta_{2m}$ denote the Bernoulli numbers, to distinguish them from $B_n(\theta)$. Define $\alpha_\ell$ by
+\begin{equation}\label{eq:alpha}
+ \sum_{\ell\ge0}\alpha_\ell z^\ell
+ =\mathcal B(z)^{-2}
+   \exp\left(-\sum_{m\ge1}\frac{\beta_{2m}z^{2m-1}}{m(2m-1)}\right).
+\end{equation}
+Combining \eqref{eq:weight-b}, Lemma~\ref{lem:bexp}, and Stirling's formula proves
+\begin{equation}\label{eq:weight-expansion}
+ \omega_k=\frac{k^{-2}\exp(-k\log k+2k)}{2\pi\ee^2}
+ \left(\sum_{\ell=0}^{J-1}\frac{\alpha_\ell}{k^\ell}+O_J(k^{-J})\right).
+\end{equation}
+In particular
+\[
+ \alpha_0=1,\quad \alpha_1=\frac56,\quad \alpha_2=\frac{73}{72},\quad
+ \alpha_3=\frac{11821}{6480},\quad \alpha_4=\frac{702533}{155520}.
+\]
+For comparison with Bell polynomials the equivalent normalization is
+\begin{equation}\label{eq:Dobinskiweight}
+ \frac{\omega_k}{[\ee^{-2}/\sqrt{2\pi}]k^{-3/2}\ee^k/k!}
+ \sim1+\frac{11}{12k}+\frac{313}{288k^2}
+                         +\frac{98959}{51840k^3}+\cdots.
+\end{equation}
+An exact implementation is included in the reproducibility package. Polynomial moments are evaluated using $\ee^{-1}\sum_{j\ge0}j^p/j!=B_p(1)$, so these coefficients are not numerical fits.
+
+\section{Global moment reduction and the saddle expansion}
+\subsection{Removing the node displacements}
+The exact positive moment representation separates into finitely many low nodes and the $\lambda_k$ of Proposition~\ref{prop:nodes}. For $k\ge\sqrt r$, \eqref{eq:nodeerror} gives, for every fixed $J$,
+\[
+ \left(\frac{\lambda_k}{k}\right)^n=1+o(r^{-J})
+\]
+uniformly in this range. For nodes indexed by $k<\sqrt r$, including all low nodes, positivity and total mass one bound their entire contribution by $(2\sqrt r)^n$ for large $n$. This is smaller than every algebraic multiple of a single term near $k=r$, since that term has logarithm $n\log r-n+r+O(\log r)$. Thus the actual nodes can be replaced by integers at every algebraic order.
+
+Consequently \eqref{eq:weight-expansion} reduces the problem to real lattice sums with exponent
+\begin{equation}\label{eq:phi}
+ \phi(t)=n\log t-t\log t+2t.
+\end{equation}
+The unique maximum is at $t=r$, where
+\[
+ \phi(r)=n\log r-n+r,\qquad -\phi''(r)=\frac{w+1}{r}.
+\]
+The Gaussian width $\sigma=\sqrt{r/(w+1)}$ tends to infinity.
+
+\subsection{Uniform localization and remainders}
+The exact identity
+\begin{equation}\label{eq:localization}
+ \phi(ry)-\phi(r)
+ =-r\{w(y-1-\log y)+(y\log y-y+1)\}
+\end{equation}
+controls both tails: both bracketed functions are nonnegative and vanish only at $y=1$. It also absorbs every fixed power coming from amplitudes and their derivatives.
+
+With $t=r+\sigma u$, the exponent becomes
+\begin{align}
+ \phi(t)-\phi(r)&=-u^2/2+
+          \sum_{h\ge1}\gamma_h(w)r^{-h/2}u^{h+2},\label{eq:gaussianexp}\\
+ \gamma_h(w)&=
+ \frac{(-1)^{h+1}((h+1)w+1)}{(h+1)(h+2)(w+1)^{(h+2)/2}}.
+\end{align}
+For each fixed $h$, these coefficients are bounded for $w\ge1$, as are the normalized amplitude coefficients. On the symmetric interval $|u|\le r^\delta$, with a sufficiently small fixed $\delta>0$, Taylor expansion through degree $2J-1$ in $r^{-1/2}$ has, after including the Gaussian factor, a remainder bounded by
+\[
+ C_Jr^{-J}P_J(|u|)\ee^{-u^2/4},
+\]
+where $P_J$ is a fixed polynomial. Its integral is $O_J(r^{-J})$. Odd terms integrate to zero. The rest of the fixed relative neighborhood is Gaussian-small, and \eqref{eq:localization} handles the exterior. This proves a uniform algebraic expansion without residual powers of $\log r$.
+
+To pass from integrals to sums, apply Euler--Maclaurin to
+\[
+ f_\ell(t)=t^{-\ell-2}\ee^{\phi(t)}.
+\]
+For fixed $m,\ell$, its endpoint derivatives vanish once $n$ is large enough, and Gaussian rescaling and the derivative product rule give
+\begin{equation}\label{eq:EMderivative}
+ \int_0^\infty|f_\ell^{(2m)}(t)|\dd t
+ \le C_{m,\ell}\sigma^{-2m}\ee^{\phi(r)}r^{-\ell-2}\sigma.
+\end{equation}
+On the exterior, \eqref{eq:localization} absorbs the finitely many derivative powers of $n$ and $1/t$; near zero take $n>\ell+2+2m$. Hence the relative lattice error is $O_m(((w+1)/r)^m)$. Taking $m=J+1$ makes it $o(r^{-J})$, since $w=\log r-1$. There is no fractional-power lattice correction.
+
+The leading Gaussian integral is
+\[
+ \frac{1}{2\pi\ee^2}r^{-2}\ee^{\phi(r)}\sqrt{\frac{2\pi r}{w+1}}=M_n.
+\]
+The preceding bounds applied to the residual term in \eqref{eq:weight-expansion} prove \eqref{eq:allorders}.
+
+\subsection{An explicit algorithm for every coefficient}
+Let $V$ be a centered Gaussian variable of variance $1/(w+1)$, used only as a device for exact polynomial moments. Then the coefficients in Theorem~\ref{thm:main} are
+\begin{align}\label{eq:c-algorithm}
+ c_j(w)=[z^{2j}]\E\Bigg[&\sum_{\ell\ge0}\alpha_\ell z^{2\ell}
+                                      (1+Vz)^{-\ell-2}\notag\\[-2pt]
+ &\times\exp\left\{\sum_{h\ge1}
+ \frac{(-1)^{h+1}((h+1)w+1)}{(h+1)(h+2)}V^{h+2}z^h\right\}\Bigg].
+\end{align}
+For fixed $j$ all sums truncate finitely. Use $\E V^{2m}=(2m-1)!!/(w+1)^m$ and $\E V^{2m+1}=0$. Counting the Gaussian powers gives the denominator and degree bounds asserted in the theorem.
+
+For example the amplitude $t^{-2}$ and the cubic/quartic exponent terms give
+\[
+ c_1=\frac56+\frac3{w+1}-\frac{2w+1}{(w+1)^2}
+ -\frac{3w+1}{4(w+1)^2}+\frac{5(2w+1)^2}{24(w+1)^3},
+\]
+which simplifies to \eqref{eq:c1}; the next coefficient is \eqref{eq:c2}. The package gives $c_3,c_4$ and the exact generator.
+
+\subsection{The Bell polynomial form}
+Dobi\'nski's identity reads
+\[
+ B_n(\ee)=\ee^{-\ee}\sum_{k\ge0}\frac{k^n\ee^k}{k!}.
+\]
+Stirling's formula and the same saddle give
+\[
+ B_n(\ee)\sim\frac{\ee^{-\ee}r^n\exp(r-n)}{\sqrt{w+1}}.
+\]
+Comparing with $M_n$ proves the second equivalent in \eqref{eq:leading}, with constant
+\[
+ \frac{\ee^{\ee-2}}{\sqrt{2\pi}}=0.818193265211777\ldots.
+\]
+This completes the proof of Theorem~\ref{thm:main}.
+
+\section{Canonical continuous inversion}
+\subsection{The increasing branch}
+The spectral measure gives a canonical interpolation
+\begin{equation}\label{eq:interpolation}
+ \mathcal A(z)=\sum_{\lambda:D(\lambda)=0}\omega_\lambda\lambda^z,
+ \qquad \lambda^z=\exp(z\log\lambda).
+\end{equation}
+It is entire in $z$: the support has a positive minimum and all positive moments, so the series is locally uniformly dominated on each vertical strip. For real $x$, $\mathcal A(x)>0$, and
+\[
+ (\log\mathcal A)''(x)=\Var_x(\log\lambda)>0,
+\]
+where the variance is under the tilted probability weights. The measure is nondegenerate since $a_1=1$ and $a_2=2$. Jensen's inequalities give
+\[
+ \mathcal A'(0)=\E\log\lambda<0,\qquad
+ \mathcal A'(1)=\E(\lambda\log\lambda)>0.
+\]
+Thus the unique minimum lies in $(0,1)$; $\mathcal A$ is strictly increasing on $[1,\infty)$, from $\mathcal A(1)=1$ to infinity. Let $x_*(L)\ge1$ be its inverse defined by $\mathcal A(x_*)=\ee^L$ for $L\ge0$. All preceding asymptotic arguments hold for real $x\to\infty$.
+
+\subsection{Controlled inversion of the full expansion}
+Write $r=r(x)$ and $w=w(x)$ as in \eqref{eq:rw}, and set
+\begin{align}
+ F_0(x)&=x\log r-x+r=\ee^{w+1}(w^2+1),\label{eq:F0}\\
+ g(x)&=\frac32\log r+\frac12\log(w+1)+2+\frac12\log(2\pi).
+\end{align}
+Let $\ell_j(w)=[z^j]\log(\sum_{k\ge0}c_k(w)z^k)$, and define
+\begin{equation}\label{eq:HJ}
+ H_J(x)=F_0(x)-g(x)+\sum_{j=1}^J\frac{\ell_j(w(x))}{r(x)^j}\quad(J\ge0).
+\end{equation}
+Then $\log\mathcal A(x)=H_J(x)+O_J(r^{-J-1})$ and
+\[
+ H_J'(x)=w+1+O\bigl(1/[r(w+1)]\bigr)>0
+\]
+for large $x$.
+
+\begin{theorem}\label{thm:inverse}
+If $x_J(L)$ solves $H_J(x_J)=L$ on its eventual increasing branch, then
+\begin{equation}\label{eq:inverse-error}
+ x_*(L)=x_J(L)+O_J\left(\frac{r(x_J)^{-J-1}}{w(x_J)+1}\right)
+       \qquad(L\to\infty).
+\end{equation}
+\end{theorem}
+\begin{proof}
+No differentiation of an asymptotic remainder is needed. Convexity bounds $(\log\mathcal A)'(x)$ between the secants on $[x-1,x]$ and $[x,x+1]$. The already proved expansion on those intervals gives
+\[
+ (\log\mathcal A)'(x)=w+1+O(1/r).
+\]
+At $x_J$ the logarithmic residual is $O_J(r^{-J-1})$. The mean-value theorem and the eventual positive lower bound on the derivative prove \eqref{eq:inverse-error}.
+\end{proof}
+
+\subsection{An explicit inverse based on the exact leading core}
+Let $w_0>0$ solve
+\begin{equation}\label{eq:coreinverse}
+ \ee^{w_0+1}(w_0^2+1)=L,\qquad r_0=\ee^{w_0+1},\qquad N_0=r_0w_0.
+\end{equation}
+This core equation is strictly increasing for $w_0>0$. Define
+\begin{equation}\label{eq:d0}
+ d_0=\frac32+
+ \frac{\tfrac12\log(w_0+1)+2+\tfrac12\log(2\pi)}{w_0+1}.
+\end{equation}
+Since $F_0'(x)=w+1$, Taylor expansion yields
+\begin{equation}\label{eq:inversefirst}
+ x_*(L)=N_0+d_0+O\bigl(1/[r_0(w_0+1)]\bigr).
+\end{equation}
+A further explicit term is
+\begin{align}\label{eq:inversesecond}
+ x_*(L)={}&N_0+d_0-\frac{1}{r_0(w_0+1)}
+ \left[c_1(w_0)+\frac{d_0^2}{2(w_0+1)}\right.\notag\\[-2pt]
+ &\left.\hspace{28mm}-d_0\left\{\frac{3}{2(w_0+1)}
+                              +\frac{1}{2(w_0+1)^2}\right\}\right]
+ +O\bigl(1/[r_0^2(w_0+1)]\bigr).
+\end{align}
+Indeed $F_0''=1/[r(w+1)]$ and
+$g'=r^{-1}\{3/[2(w+1)]+1/[2(w+1)^2]\}$; substituting $N_0+d_0$ leaves exactly the displayed logarithmic residual of order $r_0^{-1}$. All coefficients and the needed derivatives remain bounded for $w_0\ge1$.
+
+For numerical work, $2W(\tfrac12\sqrt{L/\ee})$ initializes safeguarded Newton for \eqref{eq:coreinverse}; its derivative is $\ee^{w+1}(w+1)^2$. Newton can then solve \eqref{eq:HJ}. A numerical residual $\eta$ bounds the numerical error in the $H_J$ root by order $|\eta|/(w+1)$. A certified enclosure for the \emph{true} inverse at a finite target additionally requires an explicit numerical bound for the asymptotic remainder. The $O_J$ estimates above prove error scales, not ready-made interval certificates.
+
+For $Y>1$, the discrete threshold is $\min\{n:a_n\ge Y\}=\lceil x_*(\log Y)\rceil$. If a finite-target enclosure straddles an integer, neighboring exact recurrence values must be compared. A finite expansion purely in inverse logarithms is not claimed to give integer accuracy uniformly.
+
+\section{The exponential generating function on the positive axis}
+Let $\mathcal E(z)=\sum_{n\ge0}a_nz^n/n!$, distinguished from the interpolation $\mathcal A$ and the normalized Bessel numerator $E$.
+
+\begin{corollary}\label{cor:EGF}
+The function $\mathcal E$ is entire and has the exact representation
+\[
+ \mathcal E(z)=\sum_\lambda\omega_\lambda\exp(\lambda z).
+\]
+For real $z\to+\infty$, put $q=\exp(z+1)$. Then
+\begin{equation}\label{eq:EGF}
+ \mathcal E(z)=\frac{\ee^{-2}}{\sqrt{2\pi}}\ee^q q^{-3/2}
+ \left(1+\frac{67}{24q}+\frac{11857}{1152q^2}+O(q^{-3})\right).
+\end{equation}
+There is an expansion to every fixed inverse power of $q$; its coefficients are $c_j(0)$ from \eqref{eq:c-algorithm}.
+\end{corollary}
+\begin{proof}
+The weight estimate \eqref{eq:weight-leading} makes the exponential spectral sum locally uniformly convergent for complex $z$. Its Taylor coefficients are the exact moments, proving entirety and the representation. For $k\ge\sqrt q$, the pole displacement in $\exp(z\lambda_k)$ is smaller than every algebraic relative error. The complementary spectrum contributes at most $\exp(2z\sqrt q)$ for large $q$, negligible compared with $\ee^q q^{-3/2}$.
+
+Using \eqref{eq:Dobinskiweight}, the main sum is
+\[
+ \frac{\ee^{-2}}{\sqrt{2\pi}}\ee^q
+ \E\left[K^{-3/2}\left(1+\frac{11}{12K}
+                          +\frac{313}{288K^2}+\cdots\right)
+                    \mathbf1_{\{K\ge1\}}\right],
+\]
+where $K$ is Poisson with mean $q$. Poisson concentration and Taylor expansion about $q$ justify this to every fixed order. For general fixed $p>0$,
+\[
+ \E[K^{-p}\mathbf1_{\{K\ge1\}}]
+ =q^{-p}\left(1+\frac{p(p+1)}{2q}
+ +\frac{p(p+1)(p+2)(3p+5)}{24q^2}+O(q^{-3})\right).
+\]
+The first correction is $15/8+11/12=67/24$; the next is
+$665/128+(11/12)(35/8)+313/288=11857/1152$.
+Alternatively the real saddle of $(z+2)t-t\log t$ is $q$. Retain the lower cutoff $t\ge\sqrt q$ (or a smooth equivalent): the uncut inverse-power amplitude is not integrable at zero when $w=0$. All cutoff endpoint terms are $\exp(O(\sqrt q\log q))$, negligible relative to $\ee^q$. The central Gaussian coefficient and Taylor bounds remain bounded at $w=0$, and give exactly $c_j(0)$ from \eqref{eq:c-algorithm}. Euler--Maclaurin on the cut-off domain has negligible endpoints and proves the stated all-orders form.
+\end{proof}
+
+\section{Numerical checks and reproducibility}\label{sec:checks}
+The exact recurrence used for validation is
+\begin{equation}\label{eq:recurrence}
+ p_{0,0}=1,\qquad p_{n,0}=0\ (n>0),\qquad
+ p_{n,k}=p_{n-1,k-1}+k\sum_{j\ge k}p_{n-1,j},\qquad
+ a_n=\sum_kp_{n,k}.
+\end{equation}
+Suffix sums evaluate a row in linear time, using exact integers. Let $R_n=a_n/M_n$. The following high-precision diagnostics use exact $a_n$ through $n=2500$:
+\begin{center}
+\begin{tabular}{r r r r}
+\toprule
+$n$ & $R_n$ & $r(R_n-1)$ & $c_1(w)$\\
+\midrule
+50   &1.058106438359&1.352791674642&1.251473654579\\
+100  &1.032686382461&1.240030857333&1.186048117956\\
+200  &1.018353693325&1.165057005282&1.135943310080\\
+400  &1.010254878707&1.112627221355&1.096857105828\\
+800  &1.005694089255&1.074346527794&1.065802240138\\
+1600 &1.003140908882&1.045321581963&1.040701211579\\
+2500 &1.002134095265&1.030095275457&1.026990044234\\
+\bottomrule
+\end{tabular}
+\end{center}
+The second scaled residual $r^2(R_n-1-c_1/r)$ likewise approaches $c_2(w)$; its discrepancy decreases from about $0.244$ at $n=50$ to $0.00638$ at $n=2500$.
+
+A separate spectral computation with 110 decimal digits and 65 nodes begins with
+\begin{center}
+\begin{tabular}{r r r}
+\toprule
+ & node $\lambda$ & probability weight $\omega$\\
+\midrule
+0&0.320955976594004859&0.541638005518968697\\
+1&1.115304216978757830&0.256514749784783314\\
+2&2.042059059595086477&0.118696820250535227\\
+3&3.014766264330034697&0.051578277597176440\\
+\bottomrule
+\end{tabular}
+\end{center}
+The sum of these 65 weights agrees with 1 at the displayed 50 digits in the accompanying output. Their moments agree with the exact recurrence with relative errors from about $1.46\times10^{-65}$ at $n=1$ to $1.84\times10^{-40}$ at $n=30$, consistent with the omitted positive tail. This root search is a numerical diagnostic; the analytic proof, rather than the scan, establishes completeness of the spectrum.
+
+The inverse check solves $H_J(x)=\log a_n$ for $J=0,1,2$ and exact targets through $n=500$. At $n=500$, the $J=2$ approximation differs from 500 by $2.07456\times10^{-7}$. Its error multiplied by $r^3(w+1)$ is $2.18743$, compared with the next logarithmic coefficient $2.13558$.
+
+The reproducibility archive contains the editable \LaTeX\ source, a portable build script, exact coefficient generators, all three numerical tests, their outputs, dependency versions, a single replay command, and mathematical verification records. It contains no third-party paper copies. Numerical arithmetic uses \texttt{mpmath}; symbolic coefficients use \texttt{SymPy}. The formulas are derived symbolically, never fitted to these data.
+
+\section{Literature scope and further questions}\label{sec:literature}
+Elizalde's Proposition 6.1 and Corollary 6.2 \cite{Elizalde} give coarse bounds and subfactorial growth; Section 7 leaves precise asymptotics for $1$-$23$-$4$ open. Callan \cite{Callan}, Duchi--Guerrini--Rinaldi \cite{Duchi}, and Beaton et al.\ \cite{Beaton} supply the models used here. Later work by Lin--Fu \cite{LinFu}, Cervetti \cite{Cervetti}, Frosini--Guerrini--Rinaldi \cite{Frosini}, and Testart \cite{Testart} provides refinements, generating trees, or related bijections. The sources surveyed do not supply a previous precise equivalent of the form \eqref{eq:leading}. As of the dated review, the OEIS entry lists the known fraction but no sharp asymptotic. These observations are a scoped literature statement, not a proof of global novelty.
+
+The formal fraction, general continued-fraction techniques, Bessel identities, and saddle methods are established tools. The central analytic issue addressed by this report is their connection to the \emph{correct global positive measure}; a formal quotient alone would not justify the moment asymptotics.
+
+Several further questions remain meaningful.
+\begin{enumerate}
+\item Can the exact Bessel nodes and weights be enclosed by efficient certified interval algorithms with explicit tail bounds? This would turn the asymptotic inverse estimates into finite-target enclosures.
+\item What is the optimally truncated remainder of the algebraic expansion, and how do exponentially small node displacements interact with lattice effects? The present result is an all-orders Poincar\'e expansion, not an exponentially complete transseries.
+\item Can the positive spectral representation be deformed to refined powered-Catalan statistics, with a uniform two-parameter asymptotic theorem?
+\item Is there a direct probabilistic or combinatorial explanation for the Bell-polynomial parameter $\ee$ and the factor $r^{-3/2}$?
+\end{enumerate}
+
+\begingroup\small
+\begin{thebibliography}{99}
+\setlength{\itemsep}{3pt}
+\bibitem{OEIS} OEIS Foundation, \emph{A113227}, entry inspected 1 October 2026. Formal continued fraction credited to S.\ N.\ Gladkovskii, 10 October 2012. \url{https://oeis.org/A113227}.
+\bibitem{Elizalde} S.\ Elizalde, \emph{Asymptotic enumeration of permutations avoiding generalized patterns}, Advances in Applied Mathematics \textbf{36} (2006), 138--155. \href{https://doi.org/10.1016/j.aam.2005.05.006}{doi:10.1016/j.aam.2005.05.006}; \href{https://arxiv.org/abs/math/0505254}{arXiv:math/0505254}.
+\bibitem{Callan} D.\ Callan, \emph{A bijection to count $(1$-$23$-$4)$-avoiding permutations} (2010). \href{https://arxiv.org/abs/1008.2375}{arXiv:1008.2375}.
+\bibitem{Beaton} N.\ R.\ Beaton, M.\ Bouvel, V.\ Guerrini and S.\ Rinaldi, \emph{Enumerating five families of pattern-avoiding inversion sequences; and introducing the powered Catalan numbers}, Theoretical Computer Science \textbf{777} (2019), 69--92. \href{https://doi.org/10.1016/j.tcs.2019.02.003}{doi:10.1016/j.tcs.2019.02.003}; \href{https://arxiv.org/abs/1808.04114}{arXiv:1808.04114}.
+\bibitem{Duchi} E.\ Duchi, V.\ Guerrini and S.\ Rinaldi, \emph{A generating tree for permutations avoiding the pattern $122^+3$}, Fundamenta Informaticae \textbf{163} (2018), 21--39. \href{https://doi.org/10.3233/FI-2018-1730}{doi:10.3233/FI-2018-1730}.
+\bibitem{LinFu} Z.\ Lin and S.\ Fu, \emph{On $\underline{12}0$-avoiding inversion and ascent sequences}, European Journal of Combinatorics \textbf{93} (2021), 103282. \href{https://doi.org/10.1016/j.ejc.2020.103282}{doi:10.1016/j.ejc.2020.103282}; \href{https://arxiv.org/abs/2003.11813}{arXiv:2003.11813}.
+\bibitem{Cervetti} M.\ Cervetti, \emph{A generating tree with a single label for permutations avoiding the vincular pattern $1$-$32$-$4$}, Pure Mathematics and Applications \textbf{30} (2022), 56--62. \href{https://doi.org/10.2478/puma-2022-0009}{doi:10.2478/puma-2022-0009}.
+\bibitem{Frosini} A.\ Frosini, V.\ Guerrini and S.\ Rinaldi, \emph{Constrained underdiagonal paths and pattern avoiding permutations}, Mathematics \textbf{13} (2025), 517. \href{https://doi.org/10.3390/math13030517}{doi:10.3390/math13030517}.
+\bibitem{Testart} B.\ Testart, \emph{Generating trees growing on the left for pattern-avoiding inversion sequences}, Discrete Mathematics and Theoretical Computer Science \textbf{27:1} (2025), article 10. \href{https://arxiv.org/abs/2411.05726}{arXiv:2411.05726}.
+\bibitem{PSZ} M.\ P\'etr\'eolle, A.\ D.\ Sokal and B.-X.\ Zhu, \emph{Lattice paths and branched continued fractions: an infinite sequence of generalizations of the Stieltjes--Rogers and Thron--Rogers polynomials, with coefficientwise Hankel-total positivity}, version 2 (2020), Theorem 9.9. \href{https://arxiv.org/abs/1807.03271}{arXiv:1807.03271}.
+\bibitem{DLMF} F.\ W.\ J.\ Olver et al., eds., \emph{NIST Digital Library of Mathematical Functions}, Chapter 10, especially \S\S10.2, 10.4, 10.5 and formula 10.9.7. \url{https://dlmf.nist.gov/10}.
+\end{thebibliography}
+\endgroup
+\end{document}

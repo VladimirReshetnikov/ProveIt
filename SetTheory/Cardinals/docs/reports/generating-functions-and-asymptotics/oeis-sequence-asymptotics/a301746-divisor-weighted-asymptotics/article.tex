@@ -1,0 +1,505 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Asymptotic expansions and inversion for divisor square exclusion partitions}}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\DeclareMathOperator{\Res}{Res}
+\title{Asymptotic expansions and inversion for divisor square exclusion partitions}
+\author{}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_n$ be the coefficient of $q^n$ in $\prod_{k\ge1}(1+q^k)^{d(k)^2}$, where $d(k)$ is the divisor function. We prove the logarithmic equivalent recorded conjecturally for OEIS A301746 and compute three further inverse-logarithmic corrections, both forward and for the integer threshold inverse. A fourth-order Mellin pole yields an explicit cubic polynomial and an algorithm for every fixed logarithmic order. Separately, a Bernoulli saddle argument gives arbitrary-order relative coefficient expansions in exact cumulants. Their specified positive-real inverses locate the integer threshold within shrinking intervals before rounding. A positive Euler-product factorization establishes global coefficient monotonicity. The explicit logarithmic expansion and the sharper exact-saddle expansion have different error scales; neither is asserted to be a complete exponentially improved transseries.
+\end{abstract}
+
+\section{The sequence and the two expansion scales}
+Let $d(k)=\sum_{j\mid k}1$ and define
+\begin{equation}\label{eq:product}
+ F(q)=\prod_{k\ge1}(1+q^k)^{b_k}=\sum_{n\ge0}a_nq^n,
+ \qquad b_k=d(k)^2.
+\end{equation}
+A part of size $k$ has $b_k$ distinguished colors, each of which may occur at most once. Different colors of the same size may occur together. The first terms are
+\[
+1,1,4,8,19,35,82,142,291,524,989,1724,3174,\ldots.
+\]
+The inspected OEIS entry A301746~\cite{OEIS} records Kote\v{s}ovec's 2018 conjecture
+\begin{equation}\label{eq:conjecture}
+ \log a_n\sim \frac{\sqrt n(\log n)^{3/2}}{2\sqrt6}.
+\end{equation}
+Our proof gives substantially more detailed formulas while keeping their precision explicit.
+
+For $t>0$ set
+\begin{equation}\label{eq:data}
+ f(t)=\log F(\e^{-t}),\qquad
+ \kappa_r(t)=(-1)^rf^{(r)}(t),\quad V(t)=\kappa_2(t).
+\end{equation}
+The exact saddle $t_x$ is determined by $\kappa_1(t_x)=x$. We shall prove its existence and uniqueness for all real $x>0$. For small $t$ write
+\[
+ L=\log(1/t),\qquad M=t^{-1}L^3.
+\]
+The first type of expansion is an explicit expansion of $\log a_n$ in powers of $1/\log n$, with polynomial coefficients in $\log\log n$. The second is a relative expansion of $a_n$, using $f(t_n)$ and its exact derivatives, with remainder $O_R(M^{-R-1})$ for every fixed $R$. Exponentiating a finitely truncated expansion of the first type does not supply a multiplicative equivalent of the second type.
+
+The methods have substantial antecedents. Bridges, Brindle, Bringmann and Franke~\cite{BBBF} prove arbitrary-order infinite-product expansions under simple-pole hypotheses. Berndt, Robles, Zaharescu and Zeindler~\cite{BRZZ} study divisor-weighted colored partitions, including coincident double poles and logarithmic saddle inversion. Ahmadi, G\'omez-A\'iza and Ward~\cite{AGW} treat both signs of product with higher-order poles arising from divisor convolutions. Their exclusion family includes $d_4(k)$ weights. The present weight is $d(k)^2$, whose Dirichlet series contains the extra factor $1/\zeta(2s)$. We give a self-contained treatment of this sequence and do not claim that the underlying saddle or Mellin methods are new.
+
+\section{The cubic Mellin polynomial}
+Define, in a neighborhood of $s=1$,
+\begin{equation}\label{eq:h}
+ h(s)=\frac{\Gamma(s)(1-2^{-s})\zeta(s+1)[(s-1)\zeta(s)]^4}{\zeta(2s)},
+ \qquad B_j=(\log h)^{(j)}(1)\quad(1\le j\le3).
+\end{equation}
+Since $h(1)=1/2$, the logarithm in this definition is well defined locally. Let
+\begin{equation}\label{eq:P}
+ P(L)=\frac{(L+B_1)^3+3B_2(L+B_1)+B_3}{12},\qquad
+ P_r=\prod_{j=1}^r\left(\frac{\dd}{\dd L}+j\right)P,
+\end{equation}
+where $P_0=P$.
+
+\begin{proposition}\label{prop:Mellin}
+For every fixed $1/2<\sigma<1$ and integer $r\ge0$, as $t\downarrow0$,
+\begin{equation}\label{eq:cumulant-poly}
+ \kappa_r(t)=t^{-r-1}P_r(L)+O_{\sigma,r}(t^{-\sigma-r}),
+\end{equation}
+where $\kappa_0=f$. In particular,
+\begin{equation}\label{eq:cumulant-leading}
+ \kappa_r(t)\sim\frac{r!}{12}t^{-r-1}L^3.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $|z|<1$, $\sum_{j\ge0}(j+1)^2z^j=(1-z^2)/(1-z)^4$. Multiplying the corresponding prime factors proves
+\[
+ \sum_{k\ge1}\frac{d(k)^2}{k^s}=\frac{\zeta(s)^4}{\zeta(2s)}
+ \qquad(\Re s>1).
+\]
+Mellin inversion of $\log(1+\e^{-u})$, followed by absolutely convergent summation, gives for $c>1$
+\begin{equation}\label{eq:Mellin}
+ f(t)=\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+ \frac{\Gamma(s)(1-2^{-s})\zeta(s+1)\zeta(s)^4}{\zeta(2s)}t^{-s}\,\dd s.
+\end{equation}
+Move the line to $\Re s=\sigma$. The reciprocal $1/\zeta(2s)$ has an absolutely convergent Dirichlet series there. The other zeta factors have polynomial growth on the relevant vertical strip, whereas $\Gamma(s)$ decays exponentially. Only the fourth-order pole at $1$ is crossed. Its residue is
+\[
+ \frac1{2t}\left\{\frac{L^3}{6}+\frac{B_1L^2}{2}
+ +\frac{(B_1^2+B_2)L}{2}+\frac{B_1^3+3B_1B_2+B_3}{6}\right\}
+ =t^{-1}P(L).
+\]
+For the $r$th signed derivative, replace $\Gamma(s)$ by $\Gamma(s+r)$ and $t^{-s}$ by $t^{-s-r}$ before shifting the line. This proves the stated derivative errors directly. Repeated differentiation of $t^{-1}P(L)$ gives $P_r$, whose leading coefficient is $r!/12$.
+\end{proof}
+
+The constants can be evaluated using Stieltjes constants. Define $\gamma_j$ by
+\[
+ \zeta(1+u)=\frac1u+\sum_{j\ge0}\frac{(-1)^j\gamma_j}{j!}u^j,
+ \qquad \gamma_0=\gamma,
+\]
+and write $Z_j=(\log\zeta)^{(j)}(2)$. Direct logarithmic differentiation of~\eqref{eq:h} yields
+\begin{align}
+ B_1&=3\gamma+\log2-Z_1,\label{eq:B1}\\
+ B_2&=\zeta(2)-2(\log2)^2-3Z_2-8\gamma_1-4\gamma^2,\label{eq:B2}\\
+ B_3&=-2\zeta(3)+6(\log2)^3-7Z_3
+       +12\gamma_2+24\gamma\gamma_1+8\gamma^3.\label{eq:B3}
+\end{align}
+For orientation,
+\[
+ B_1=2.994755168359\ldots,\quad
+ B_2=-2.719602394240\ldots,\quad B_3=13.658493990592\ldots.
+\]
+
+\section{An arbitrary-order exact-saddle expansion}
+The independent variables underlying the saddle are particularly simple. For $1\le j\le b_k$, let $X_{k,j}$ be Bernoulli with parameter
+\[
+ p_k(t)=\frac1{1+\e^{kt}},\qquad S_t=\sum_{k\ge1}\sum_{j=1}^{b_k}kX_{k,j}.
+\]
+These sums converge almost surely because their expectations are finite. Their cumulants are $\kappa_r(t)$. Since
+\[
+ \kappa_1'(t)=-V(t)<0,
+\]
+and $\kappa_1(t)$ decreases from infinity to zero, there is exactly one $t_x>0$ with $\kappa_1(t_x)=x$ for each $x>0$.
+
+\begin{theorem}\label{thm:exact}
+Define
+\begin{equation}\label{eq:A0}
+ A_0(x)=\frac{\exp(f(t_x)+xt_x)}{\sqrt{2\pi V(t_x)}}.
+\end{equation}
+For every fixed integer $R\ge0$,
+\begin{equation}\label{eq:exact-expansion}
+ a_n=A_0(n)\left\{E_R(t_n)+O_R(M(t_n)^{-R-1})\right\},
+\end{equation}
+where
+\begin{equation}\label{eq:ER}
+ E_R(t)=\sum_{\boldsymbol j}(-1)^{s/2}(s-1)!!
+ \prod_{r=3}^{2R+2}\frac1{j_r!}
+ \left(\frac{\kappa_r(t)}{r!V(t)^{r/2}}\right)^{j_r}.
+\end{equation}
+The sum is over nonnegative $j_r$ with $\sum(r-2)j_r\le2R$ and $s=\sum rj_r$ even. The empty term is $1$. In particular,
+\begin{align}
+ E_0&=1,\nonumber\\
+ E_1&=1+\frac{\kappa_4}{8V^2}-\frac{5\kappa_3^2}{24V^3}
+ =1-\frac{9t}{4L^3}\left(1+O(L^{-1})\right).\label{eq:E1}
+\end{align}
+\end{theorem}
+
+\subsection{Analytic bounds}
+The elementary prime-power inequality
+\[
+ (j+1)^2\le\binom{j+3}{3}
+\]
+gives $b_k\le d_4(k)$. Counting ordered products of four positive integers shows
+\begin{equation}\label{eq:summatory}
+ \sum_{k\le X}b_k\le X(1+\log X)^3\qquad(X\ge1).
+\end{equation}
+The logarithm $f(z)$ is analytic in $\Re z>0$: the factors $1+\e^{-kz}$ have no zeros there, and their logarithmic series converge normally on compact subsets. For $|z-t|\le t/2$ and each fixed $r\ge1$,
+\begin{equation}\label{eq:analytic}
+ |f^{(r)}(z)|\le\sum_{k\ge1}b_kk^r\sum_{j\ge1}j^{r-1}\e^{-jkt/2}
+ =O_r(t^{-r-1}L^3).
+\end{equation}
+For $k\le1/t$, bound the inner sum by $O_r((kt)^{-r})$ and use~\eqref{eq:summatory}. For $k>1/t$, it is $O_r(\e^{-kt/2})$, and partial summation finishes the estimate. Together with Proposition~\ref{prop:Mellin}, this gives
+\begin{equation}\label{eq:normalized}
+ V\asymp t^{-2}M,\qquad
+ \frac{\kappa_r}{V^{r/2}}=O_r(M^{-(r-2)/2})\quad(r\ge3).
+\end{equation}
+
+\subsection{A consecutive-block estimate}
+\begin{lemma}\label{lem:block}
+For any interval $I$ of $W$ consecutive integers, $W$ sufficiently large, and $|\theta|\le\pi$,
+\begin{equation}\label{eq:block}
+ \sum_{k\in I}\sin^2(k\theta/2)
+ \ge cW\min(1,W^2\theta^2),
+\end{equation}
+where $c>0$ is absolute.
+\end{lemma}
+\begin{proof}
+The left side is at least $(W-|D_W(\theta)|)/2$, where $D_W(\theta)=\sum_{j=1}^W\e^{\ii j\theta}$. If $|\theta|\le1/W$, use
+\[
+ W^2-|D_W(\theta)|^2
+ =\sum_{i,j=1}^W(1-\cos((i-j)\theta))\gg W^4\theta^2.
+\]
+Division by $W+|D_W|\le2W$ gives the result. For $1/W\le|\theta|\le C/W$, retain differences $|i-j|$ between $W/(4C)$ and $W/(2C)$ in the same identity. Their phases remain in a bounded small interval, and their total contribution is $\gg_CW^4\theta^2\gg_CW^2$. Finally, for $C/W\le|\theta|\le\pi$, the geometric-sum bound gives $|D_W|\le\pi/|\theta|\le W/2$ if $C\ge2\pi$. Fixing such a $C$ proves the lemma.
+\end{proof}
+The Bernoulli product implies
+\[
+ |\E\e^{\ii\theta S_t}|
+ \le\exp\left(-2\sum_kb_kp_k(1-p_k)\sin^2(k\theta/2)\right).
+\]
+For $1/t\le k\le2/t$, $p_k$ stays uniformly away from zero and one, and $b_k\ge1$. Lemma~\ref{lem:block} therefore gives
+\begin{equation}\label{eq:minor}
+ |\E\e^{\ii\theta S_t}|
+ \le\exp\left(-ct^{-1}\min(1,t^{-2}\theta^2)\right),
+ \qquad |\theta|\le\pi.
+\end{equation}
+Set $U=M^{1/12}$ and $\theta_0=U/\sqrt V$. Then $\theta_0/t\asymp M^{-5/12}\to0$. On the entire region $\theta_0\le|\theta|\le\pi$, the right side of~\eqref{eq:minor} is bounded by
+\begin{equation}\label{eq:minor-small}
+ \exp(-cM^{1/6}/L^3).
+\end{equation}
+This is smaller than every fixed power of $t$, even after multiplication by $\sqrt V$. One slot at each consecutive active size suffices; no equidistribution assertion for $d(k)^2$ is needed.
+
+\subsection{Gaussian expansion}
+At $t=t_n$, exponential tilting and Fourier inversion give
+\begin{equation}\label{eq:Fourier}
+ a_n=\e^{f(t)+nt}\Prob(S_t=n)
+ =\frac{\e^{f(t)+nt}}{2\pi}
+ \int_{-\pi}^{\pi}\E\e^{\ii\theta(S_t-n)}\,\dd\theta.
+\end{equation}
+Outside $[-\theta_0,\theta_0]$, use~\eqref{eq:minor-small}. Inside, set $u=\theta\sqrt V$. The analytic estimate~\eqref{eq:analytic} yields
+\begin{align}\label{eq:local}
+ \log\E\e^{\ii u(S_t-n)/\sqrt V}
+ &=-\frac{u^2}{2}+\sum_{r=3}^{2R+3}
+  \frac{\kappa_r(\ii u)^r}{r!V^{r/2}}\\
+ &\hspace{12mm}+O_R(M^{-R-1}|u|^{2R+4}).\nonumber
+\end{align}
+Assign weight $r-2$ to the $r$th normalized cumulant. Expand the exponential through weighted degree $2R+1$. Its integrated remainder is $O_R(M^{-R-1})$: Taylor's integral remainder is bounded by that power times a fixed polynomial in $|u|$ times $\e^{-u^2/4}$. Indeed $|u|\le M^{1/12}$ and the nonlinear exponent is $O(M^{-1/2}|u|^3)=o(1)$; the finite higher terms satisfy the same domination. Extending the Gaussian integrals to $\R$ incurs an exponentially small error. Odd weighted degree has odd $s$ and integrates to zero. For even $s$,
+\[
+ \frac1{\sqrt{2\pi}}\int_{\R}(\ii u)^s\e^{-u^2/2}\,\dd u
+ =(-1)^{s/2}(s-1)!!.
+\]
+This proves~\eqref{eq:exact-expansion} and~\eqref{eq:ER}. Finally~\eqref{eq:cumulant-leading} gives $\kappa_4/(8V^2)\sim9t/L^3$ and $5\kappa_3^2/(24V^3)\sim45t/(4L^3)$, proving~\eqref{eq:E1}.
+
+\section{Monotonicity and sharp inverse localization}
+\begin{proposition}\label{prop:monotonicity}
+The coefficients satisfy $a_0=a_1=1$ and $a_{n+1}>a_n$ for every $n\ge1$.
+\end{proposition}
+\begin{proof}
+Since $1+q^k=(1-q^{2k})/(1-q^k)$,
+\begin{equation}\label{eq:Euler}
+ F(q)=\prod_{k\ge1}(1-q^k)^{-w_k},\qquad
+ w_k=d(k)^2-\mathbf1_{2\mid k}d(k/2)^2.
+\end{equation}
+If $k=2^am$ with $m$ odd, then $w_k=(2a+1)d(m)^2\ge1$, including $a=0$. Also $w_1=1$. Thus $G(q)=(1-q)F(q)$ has nonnegative coefficients, and $[q^k]G(q)>0$ for every $k\ge2$, using its size-$k$ factor alone. Since $a_{n+1}-a_n=[q^{n+1}]G(q)$, the assertion follows.
+\end{proof}
+
+Define the integer threshold
+\[
+ N(y)=\min\{n\ge0:a_n\ge y\}.
+\]
+For fixed $R\ge0$, specify a positive-real model by
+\begin{equation}\label{eq:AR}
+ A_R(x)=A_0(x)E_R(t_x).
+\end{equation}
+The word ``inverse'' below refers to this explicit model, not to an unspecified interpolation of the integer sequence.
+
+\begin{theorem}\label{thm:inverse}
+For every fixed $R$, $A_R$ is positive and strictly increasing for all sufficiently large $x$. Write $x_R(y)$ for its unique large positive-real inverse. There is $C_R>0$ such that, for all sufficiently large $y$,
+\begin{equation}\label{eq:brackets}
+ \left\lceil x_R(y)-\delta_R(y)\right\rceil
+ \le N(y)\le
+ \left\lceil x_R(y)+\delta_R(y)\right\rceil,
+ \qquad
+ \delta_R(y)=C_R\frac{t^R}{L^{3R+3}},
+\end{equation}
+where $t=t_{x_R(y)}$ and $L=\log(1/t)$.
+\end{theorem}
+\begin{proof}
+Implicit differentiation gives
+\[
+ \frac{\dd t_x}{\dd x}=-\frac1V,\qquad
+ \frac{\dd}{\dd x}\kappa_r(t_x)=\frac{\kappa_{r+1}}V.
+\]
+Consequently,
+\begin{equation}\label{eq:slope}
+ \frac{\dd}{\dd x}\log A_0(x)
+ =t_x-\frac{\kappa_3}{2V^2}=t_x(1+O(M^{-1})).
+\end{equation}
+Each nonconstant monomial in $E_R$ has size $O_R(M^{-1})$ or smaller. Differentiating it costs a factor $O(t/M)$, so $\frac{\dd}{\dd x}E_R(t_x)=O_R(tM^{-2})$. Since $E_R=1+O_R(M^{-1})$, positivity and $\frac{\dd}{\dd x}\log A_R(x)\sim t_x$ follow.
+
+Theorem~\ref{thm:exact} implies $\log a_n-\log A_R(n)=O_R(M^{-R-1})$. Dividing this logarithmic height error by the slope $\sim t$ bounds its real-index displacement by
+\[
+ O_R(M^{-R-1}/t)=O_R(t^R/L^{3R+3}).
+\]
+The saddle data are comparable throughout these shrinking neighborhoods. Proposition~\ref{prop:monotonicity} and integer rounding prove~\eqref{eq:brackets}.
+\end{proof}
+Already $R=0$ gives a shrinking $O(L^{-3})$ interval before rounding. If $x_R(y)$ is exceptionally close to an integer, the brackets intentionally leave two neighboring possibilities.
+
+\begin{corollary}\label{cor:inverse-shift}
+Let $x_0=A_0^{-1}(y)$, $t=t_{x_0}$, $L=\log(1/t)$, $M=t^{-1}L^3$, and
+\[
+ C_1(t)=\frac{\kappa_4}{8V^2}-\frac{5\kappa_3^2}{24V^3}.
+\]
+Then
+\begin{align}
+ x_1(y)&=x_0-\frac{C_1(t)}t+O\left(\frac1{tM^2}\right)\label{eq:inverse-shift}\\
+ &=x_0+\frac9{4L^3}\left(1+O(L^{-1})\right).\nonumber
+\end{align}
+In particular, the threshold is between the ceilings of
+\[
+ x_0-\frac{C_1(t)}t\ \pm\ C\frac{t}{L^6}
+\]
+for a suitable constant $C$ and all sufficiently large $y$.
+\end{corollary}
+\begin{proof}
+Write $g=\log A_0$ and $h(x)=\log(1+C_1(t_x))$. The derivative rules above give $g'\sim t$, $g''=O(t^2/M)$ and $h'=O(tM^{-2})$. The equation $g(x_1)+h(x_1)=g(x_0)$ first gives $\Delta=x_1-x_0=O(1/(tM))$. Taylor expansion then shows
+\[
+ g'(x_0)\Delta+h(x_0)
+ =O\left(\frac{t^2}{M}\Delta^2+\frac{t}{M^2}|\Delta|\right)
+ =O(M^{-3}).
+\]
+Thus $x_1=x_0-h(x_0)/g'(x_0)+O(1/(tM^3))$. Use $h=C_1+O(M^{-2})$ and~\eqref{eq:slope} to obtain~\eqref{eq:inverse-shift}; then use~\eqref{eq:E1}. The final brackets follow from Theorem~\ref{thm:inverse} with $R=1$. Retaining exact $C_1$ is essential for the $t/L^6$ error scale.
+\end{proof}
+
+\section{Explicit forward logarithmic expansions}
+Let
+\begin{equation}\label{eq:QT}
+ Q=P+P',\qquad T=2P+P'.
+\end{equation}
+For sufficiently large $n$, let $\ell=\ell_n$ be the unique large solution of
+\begin{equation}\label{eq:model-saddle}
+ n=\e^{2\ell}Q(\ell).
+\end{equation}
+The polynomials are eventually positive, and this equation is eventually strictly increasing in $\ell$.
+
+\begin{proposition}\label{prop:model}
+For every fixed $1/2<\sigma<1$,
+\begin{equation}\label{eq:entropy}
+ \log a_n=\e^\ell T(\ell)+O_\sigma(\e^{\sigma\ell}+\ell).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Put $\widehat t=\e^{-\ell}$. Proposition~\ref{prop:Mellin} with $r=1,2$ and monotonicity of the exact mean give
+\[
+ t_n-\widehat t=O(\widehat t^{2-\sigma}/\ell^3).
+\]
+For completeness, both exact and model means are asymptotic to $t^{-2}L^3/12$, so first $t_n/\widehat t\to1$; the mean value theorem then gives the displayed bound. The model entropy $t^{-1}P(\log(1/t))+nt$ is stationary at $\widehat t$. Its change on replacing $\widehat t$ by $t_n$ is therefore
+\[
+ O\left(\widehat t^{-3}\ell^3(t_n-\widehat t)^2\right)
+ =O(\widehat t^{1-2\sigma}/\ell^3)=o(\widehat t^{-\sigma}).
+\]
+The difference between exact and model $f$ is $O(\widehat t^{-\sigma})$. The logarithm of the Gaussian factor in Theorem~\ref{thm:exact} is $O(\ell)$, and its remaining logarithmic error is smaller. At the model saddle the entropy is $\e^\ell(P+Q)(\ell)=\e^\ell T(\ell)$.
+\end{proof}
+Since the main term in~\eqref{eq:entropy} is of order $\e^\ell\ell^3$, its error is below every fixed inverse power of $\ell$ relative to that term. This permits arbitrary fixed-depth logarithmic reversion.
+
+\begin{theorem}\label{thm:forward}
+Put $H=\log n$ and $r=-3\log H+2B_1+\log96$. Then
+\begin{equation}\label{eq:forward}
+ \log a_n=\frac{\sqrt n H^{3/2}}{2\sqrt6}
+ \left\{1+\frac{F_1(r)}H+\frac{F_2(r)}{H^2}+\frac{F_3(r)}{H^3}
+ +O\left(\frac{(\log H)^4}{H^4}\right)\right\},
+\end{equation}
+where
+\begin{align*}
+ F_1(r)&=\frac{3r}{2},\\
+ F_2(r)&=\frac{3r^2}{8}-\frac{9r}{2}+6B_2-\frac92,\\
+ F_3(r)&=-\frac{r^3}{16}-3B_2r-18B_2+4B_3+\frac{63r}{4}+27.
+\end{align*}
+There is a constructive expansion to every fixed further order of this scale.
+\end{theorem}
+\begin{proof}
+Set $z=\ell+B_1$ and introduce
+\begin{align}\label{eq:qr}
+ \mathsf q(z)&=z^3+3z^2+3B_2z+3B_2+B_3,\\
+ \mathsf r(z)&=z^3+\frac32z^2+3B_2z+\frac32B_2+B_3.\nonumber
+\end{align}
+Then $Q(\ell)=\mathsf q(z)/12$ and $T(\ell)=\mathsf r(z)/6$. The model saddle is equivalent to
+\begin{equation}\label{eq:forward-revert}
+ 2z+3\log z+\log\left(1+\frac3z+\frac{3B_2}{z^2}
+ +\frac{3B_2+B_3}{z^3}\right)=H+2B_1+\log12.
+\end{equation}
+Successive substitution gives
+\begin{equation}\label{eq:z-forward}
+ z=\frac{H+r}{2}-\frac{3(r+2)}{2H}
+ +\frac{3(r^2+10r+24-8B_2)}{4H^2}
+ +O\left(\frac{(\log H)^3}{H^3}\right).
+\end{equation}
+More generally insert $z=H/2+r/2+\sum_{j=1}^K u_j(\log H)H^{-j}$ into~\eqref{eq:forward-revert} and annul successive powers of $H^{-1}$. Each new coefficient has multiplier $2$; every $u_j$ is a polynomial in $\log H$. Taylor's theorem, with derivative $2+O(H^{-1})$, turns each formal truncation into an asymptotic expansion with its stated remainder.
+
+At this saddle,
+\[
+ \e^\ell T(\ell)=\sqrt n\,\frac{T(\ell)}{\sqrt{Q(\ell)}}.
+\]
+Expanding the polynomial quotient gives
+\begin{equation}\label{eq:forward-quotient}
+ \frac{T(\ell)}{\sqrt{Q(\ell)}}
+ =\frac{z^{3/2}}{\sqrt3}\left\{1+\frac{3B_2/2+9/8}{z^2}
+ +\frac{B_3/2-27/8}{z^3}+O(z^{-4})\right\}.
+\end{equation}
+Substitution of the recursively obtained saddle coefficients yields the three displayed $F_j$. The same procedure gives every fixed further order. Proposition~\ref{prop:model} absorbs its arithmetic error below all these logarithmic orders.
+\end{proof}
+In particular,~\eqref{eq:forward} proves~\eqref{eq:conjecture}. A useful Lambert-$W$ starting point is
+\begin{equation}\label{eq:W-forward}
+ z_* =\frac32 W\left(\frac23(12\e^{2B_1}n)^{1/3}\right),
+\end{equation}
+where $W$ is the positive principal branch. It exactly solves $\e^{2(z_*-B_1)}z_*^3/12=n$. Equation~\eqref{eq:forward-revert} gives $z-z_*=-3/(2z_*)+O(z_*^{-2})$, and a full fixed-depth expansion in $z_*^{-1}$ follows by the same recursion.
+
+\section{Explicit inverse logarithmic expansions}
+Let $Y=\log y$ and $Z=\log Y$. Inverting the model entropy is naturally parametric:
+\begin{equation}\label{eq:inverse-parametric}
+ Y=\e^\ell T(\ell),\qquad
+ n=\e^{2\ell}Q(\ell)=Y^2\frac{Q(\ell)}{T(\ell)^2}.
+\end{equation}
+This model is enough for every fixed logarithmic order, although the exact inverses in Section~4 have much sharper absolute error control.
+
+\begin{theorem}\label{thm:inverse-log}
+Put $r=-3\log Z+B_1+\log6$. Then
+\begin{equation}\label{eq:inverse-log}
+ N(y)=\frac{3Y^2}{Z^3}
+ \left\{1+\frac{I_1(r)}Z+\frac{I_2(r)}{Z^2}+\frac{I_3(r)}{Z^3}
+ +O\left(\frac{(\log Z)^4}{Z^4}\right)\right\},
+\end{equation}
+where
+\begin{align*}
+ I_1(r)&=-3r,\\
+ I_2(r)&=6r^2+9r+\frac94-3B_2,\\
+ I_3(r)&=-10r^3-\frac{81}{2}r^2-\frac{153}{4}r-\frac{81}{8}
+          +15B_2r+9B_2-B_3.
+\end{align*}
+The same expansion holds for every fixed $x_R(y)$, and a constructive expansion exists to every fixed further logarithmic order.
+\end{theorem}
+\begin{proof}
+With $z=\ell+B_1$, the first equation in~\eqref{eq:inverse-parametric} reads
+\begin{equation}\label{eq:inverse-revert}
+ z+3\log z+\log\left(1+\frac{3}{2z}+\frac{3B_2}{z^2}
+ +\frac{3B_2/2+B_3}{z^3}\right)=Z+B_1+\log6.
+\end{equation}
+It gives
+\[
+ z=Z+r-\frac{3(2r+1)}{2Z}
+ +\frac{3(4r^2+28r+15-8B_2)}{8Z^2}
+ +O\left(\frac{(\log Z)^3}{Z^3}\right).
+\]
+The second equation in~\eqref{eq:inverse-parametric} becomes $n=3Y^2\mathsf q(z)/\mathsf r(z)^2$, and
+\begin{equation}\label{eq:inverse-quotient}
+ \frac{z^3\mathsf q(z)}{\mathsf r(z)^2}
+ =1-\frac{3B_2+9/4}{z^2}+\frac{27/4-B_3}{z^3}+O(z^{-4}).
+\end{equation}
+Substituting the saddle expansion gives the stated $I_j$. At all higher orders, the successive coefficient equation in~\eqref{eq:inverse-revert} has multiplier $1$, so Taylor's theorem again justifies the formal recursion.
+
+It remains to compare this model with the exact inverses. Proposition~\ref{prop:model} and the slope estimate~\eqref{eq:slope} show that the logarithmic height error $O(\e^{\sigma\ell}+\ell)$ creates an index error $O(\e^{(1+\sigma)\ell}+\e^\ell\ell)$. Relative to $n\asymp\e^{2\ell}\ell^3$, this is smaller than every fixed power of $1/\ell$. The correction $E_R$ and the integer rounding in Theorem~\ref{thm:inverse} are smaller still. Thus all the stated inverses share this logarithmic hierarchy.
+\end{proof}
+The leading inverse scale is therefore $N(y)\sim3(\log y)^2/(\log\log y)^3$. Its first correction is explicitly
+\[
+ \frac{9\log Z-3B_1-3\log6}{Z}.
+\]
+For inversion based on Lambert $W$, one may use $z_*=3W((6\e^{B_1}Y)^{1/3}/3)$, with $z-z_*=-3/(2z_*)+O(z_*^{-2})$. A centered version removes the first inverse-power correction from the entropy polynomial. Put $v=\ell+B_1+1/2$; then
+\[
+ T(\ell)=\frac{v^3+(3B_2-3/4)v+B_3+1/4}{6}.
+\]
+The core
+\begin{equation}\label{eq:W-inverse}
+ v_*=3W\left(\frac{(6\e^{B_1+1/2}Y)^{1/3}}3\right)
+\end{equation}
+satisfies $v-v_*=O(v_*^{-2})$ and supports a recursively computable expansion.
+
+\section{Numerical checks and the boundary of the result}
+The exact coefficient recurrence
+\begin{equation}\label{eq:recurrence}
+ na_n=\sum_{j=1}^n c_j a_{n-j},\qquad
+ c_j=\sum_{k\mid j}k\,d(k)^2(-1)^{j/k-1},\qquad a_0=1,
+\end{equation}
+comes from logarithmically differentiating~\eqref{eq:product}. Integer arithmetic through $n=3000$ matches the OEIS initial terms. Independent high-precision evaluations of the exact saddle illustrate the improvement from successive corrections. The entries below are signed residuals relative to $A_0$, so the third column is $a_n/A_0-E_1$, not $a_n/(A_0E_1)-1$.
+\begin{center}
+\begin{tabular}{r r r r}
+\toprule
+$n$ & $a_n/A_0-1$ & $a_n/A_0-E_1$ & $a_n/A_0-E_2$\\
+\midrule
+100  & $-8.56230\cdot10^{-3}$ & $-4.98078\cdot10^{-5}$ & $ 1.40988\cdot10^{-7}$\\
+300  & $-4.20198\cdot10^{-3}$ & $-1.25442\cdot10^{-5}$ & $-8.03186\cdot10^{-8}$\\
+1000 & $-1.95937\cdot10^{-3}$ & $-2.81188\cdot10^{-6}$ & $-8.97545\cdot10^{-9}$\\
+3000 & $-9.88167\cdot10^{-4}$ & $-7.28494\cdot10^{-7}$ & $-1.27319\cdot10^{-9}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are numerical diagnostics, not certified numerical error bounds or ingredients of the proof. At such sizes, $L$ is still small relative to $B_1$, so the explicit logarithmic approximations reach their asymptotic regime much later than the exact-cumulant approximation. The symbolic forward and inverse corrections were also checked by exact formal reversion, rather than fitted to coefficient data.
+
+The continuation of the Mellin kernel explains why the two expansion scales should remain separate. Beyond $\Re s>1/2$, zeros $\rho$ of $\zeta$ can create poles at $s=\rho/2$, subject to cancellations and multiplicities. Such terms are not represented by the cubic polynomial $P$. The exact saddle retains their effect implicitly, whereas a finite logarithmic truncation does not. Even a small numerical value of $f(t)-t^{-1}P(L)$ at moderate $t$ cannot justify a multiplicative equivalent obtained by simply exponentiating the cubic model.
+
+The results proved here are arbitrary fixed-order logarithmic expansions, arbitrary-order relative expansions in exact saddle data, and explicit inverse localization. No convergence of the full formal series or complete explicit exponentially improved transseries is asserted. Establishing individual arithmetic sectors with a controlled collective remainder is a separate problem.
+
+\begin{thebibliography}{9}
+\bibitem{OEIS}
+The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A301746, entry by V. Kote\v{s}ovec, 2018.
+\url{https://oeis.org/A301746}. Indexed internal entry inspected 1 October 2026.
+
+\bibitem{BBBF}
+W. Bridges, B. Brindle, K. Bringmann and J. Franke,
+\emph{Asymptotic expansions for partitions generated by infinite products},
+Mathematische Annalen \textbf{390} (2024), 2593--2632.
+\url{https://doi.org/10.1007/s00208-024-02807-x}.
+
+\bibitem{BRZZ}
+B. C. Berndt, N. Robles, A. Zaharescu and D. Zeindler,
+\emph{Partitions with multiplicities associated with divisor functions},
+Journal of Mathematical Analysis and Applications \textbf{533} (2024), article 127987.
+\url{https://doi.org/10.1016/j.jmaa.2023.127987}.
+
+\bibitem{AGW}
+L. Ahmadi, R. G\'omez-A\'iza and M. D. Ward,
+\emph{A Unified Treatment of Families of Partition Functions},
+La Matematica \textbf{3} (2024), 1257--1296.
+\url{https://doi.org/10.1007/s44007-024-00134-w}.
+\end{thebibliography}
+\end{document}

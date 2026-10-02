@@ -1,0 +1,410 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[hidelinks,pdftitle={Asymptotics of iterated Bell diagonals}]{hyperref}
+\usepackage{enumitem}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Res}{\mathop{\rm Res}}
+\newcommand{\I}{\mathcal I}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Oh}{\mathcal O}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\title{Asymptotics of iterated Bell diagonals}
+\author{}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\vspace{-1.8em}
+\begin{abstract}
+The diagonal higher-order Bell numbers count hierarchical set partitions whose depth grows with their size. Prellberg's 2002 pre-sum coefficient formula already announces the corresponding leading asymptotic scale through parabolic-coordinate analysis. We give a self-contained finite-contour proof for OEIS A139383 and A261280, with an expansion to every finite log-polynomial order, explicit remainder construction, and a separate outward-rounded certificate that $2<C<4$. A coefficient generator and smooth-model inverses with safe discrete threshold treatment are included. No priority is claimed for the leading formula, the parabolic method, or displayed coefficients.
+\end{abstract}
+\noindent\textbf{Verification scope.} The mathematical argument and production interval certificate have undergone independent review and replay. This is not proof-assistant verification. The interval calculation certifies a coarse enclosure only; the displayed finer amplitude estimate is exploratory.
+
+\section{Result and exact model}
+Put $f(z)=e^z-1$ and, for integers $n\geq1$, $m\geq0$, define
+\begin{equation}\label{eq:H}
+ H(n,m)=n![z^n]f^{\circ m}(z).
+\end{equation}
+The two sequences of interest are
+\[
+ A139383(n)=H(n,n),\qquad A261280(n)=H(n,n+1).
+\]
+The conventional value at $n=0$ is $1$. Equivalently, $H(n,m)$ counts the corresponding leaf-labeled rooted trees with $m$ levels; the second sequence counts $n$ successive refinements of a partition of an $n$-element set. Specifying \eqref{eq:H} avoids ambiguity about level conventions.
+
+Let $S(n,j)$ be a Stirling number of the second kind. Composition of exponential generating functions gives the exact positive recurrence
+\begin{equation}\label{eq:rec}
+ H(n,m+1)=\sum_{j=1}^n S(n,j)H(j,m),\qquad H(n,0)=\mathbf1_{\{n=1\}}.
+\end{equation}
+A useful normalization is $Q(n,m)=2^{n-1}H(n,m)/n!$, for which
+\[
+ Q(n,m+1)=\sum_{j=1}^n\frac{S(n,j)j!2^{n-j}}{n!}Q(j,m).
+\]
+For fixed $n$, $Q(n,m)$ is a polynomial in $m$ of degree $n-1$ with leading coefficient $1$. This fixed-$n$ fact does not justify taking $m=n$ in its leading term.
+
+\begin{theorem}\label{thm:main}
+There is a real constant $C>0$, defined by the fixed contour in Section~\ref{sec:contour}, with the certified coarse enclosure $2<C<4$. For each fixed integer $k$ and each $M\geq0$, there are explicit real polynomials $P_{j,k}$, of degree at most $2j$, such that
+\begin{align}\label{eq:main}
+ H(n,n+k)&=e^k C\frac{n^{2n-5/6}}{2^{n-1}e^n}
+ \left(1+\sum_{j=1}^M\frac{P_{j,k}(\log n)}{n^j}
+ +\Oh_{M,k}\!\left(\frac{(1+\log n)^{D_M}}{n^{M+1}}\right)\right).
+\end{align}
+Here $D_M$ is a finite effectively obtainable logarithmic remainder degree, and $n+k\geq0$, as holds for all sufficiently large $n$. In particular, the ratio of A261280 to A139383 tends to $e$. The expansion is a finite-order Poincar\'e expansion, not an exponentially improved transseries.
+\end{theorem}
+The theorem's proof combines the analytic argument below with the independently executable amplitude certificate. The leading exponent $-5/6$ arises from a logarithmic drift in inverse iteration. It does not mean that the correction scale is $n^{-1/3}$.
+
+There is also an exact probabilistic interpretation. If $Z_m$ is generation $m$ in a critical Poisson$(1)$ Galton--Watson process starting from one ancestor, then its generating function is $G(s)=e^{s-1}$ and
+\[
+ G^{\circ m}(1+z)-1=f^{\circ m}(z),\qquad
+ H(n,m)=\mathbb E\bigl[(Z_m)_n\bigr].
+\]
+Thus the diagonal describes factorial moments whose order grows with time.
+
+\section{Inverse logarithmic iteration}
+Let $h(u)=\log(1+u)$ be the principal logarithm and set
+\[
+ t_m(u)=\frac2{h^{\circ m}(u)},\qquad
+ g(w)=\frac2{\log(1+2/w)},\qquad t_0(u)=\frac2u.
+\]
+Then $t_{m+1}=g(t_m)$. Lagrange inversion yields the exact identity
+\begin{equation}\label{eq:residue}
+ H(n,m)=(n-1)!\,2^{-n}\Res_{u=0}t_m(u)^n\dd u.
+\end{equation}
+Indeed, the local inverse of $f^{\circ m}$ is $h^{\circ m}$, and
+$[z^n]f^{\circ m}(z)=n^{-1}[u^{n-1}](u/h^{\circ m}(u))^n$.
+
+\begin{lemma}\label{lem:stieltjes}
+Off $[-2,0]$, with consistent half-plane branches,
+\begin{align}\label{eq:stieltjes}
+ g(w)&=w+1-\int_0^2\frac{\rho(s)}{w+s}\dd s,
+ &\rho(s)&=\frac2{\log^2((2-s)/s)+\pi^2},\\
+ g(w)&=\int_0^1 w^{1-v}(w+2)^v\dd v.\label{eq:mean}
+\end{align}
+The density has mass and first moment $1/3$, and second moment $19/45$. In particular
+\begin{equation}\label{eq:gexp}
+ g(w)=w+1-\frac1{3w}+\frac1{3w^2}-\frac{19}{45w^3}+\frac3{5w^4}+\cdots.
+\end{equation}
+Moreover, $|g(w)|\leq g(|w|)\leq |w|+1$, and $g$ is increasing on positive reals.
+\end{lemma}
+\begin{proof}
+On $w=-s+i0$, $0<s<2$, the inner logarithm is
+$\log((2-s)/s)-i\pi$, so the imaginary part of $g$ is $\pi\rho(s)$. Subtracting $w+1$, a keyhole Cauchy integral around $[-2,0]$ gives \eqref{eq:stieltjes}; the endpoint logarithmic singularities are integrable and the remainder at infinity is $\Oh(1/w)$. Expansion at infinity identifies the mass and moments. Alternatively, the first moment follows from symmetry about $1$.
+
+For \eqref{eq:mean}, integrate the exponential interpolation between $w$ and $w+2$. Their logarithm difference is the principal logarithm of $1+2/w$ in either half-plane. Taking absolute values and using $|w+2|\leq |w|+2$ proves $|g(w)|\leq g(|w|)$. The arithmetic-mean bound gives $g(r)\leq r+1$. Finally $g'(r)=1+\int\rho(s)/(r+s)^2\dd s>0$.
+\end{proof}
+
+\subsection{An effective Fatou coordinate}
+For $\Rea w=x\geq4$, put
+\[
+ V(w)=w+\frac13\log w+\frac1{18w}.
+\]
+\begin{lemma}\label{lem:tail}
+For $x\geq4$,
+\begin{equation}\label{eq:defect}
+ |V(g(w))-V(w)-1|\leq\frac2{x^3}.
+\end{equation}
+The limit $\Phi(w)=\lim_{j\to\infty}(V(g^{\circ j}(w))-j)$ exists locally uniformly, is analytic, and satisfies
+\begin{equation}\label{eq:tail}
+ |\Phi(w)-V(w)|\leq\frac2{x^2},\qquad
+ \Phi(g(w))=\Phi(w)+1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $a=g(w)-w$. The Stieltjes formula gives
+$|a-1|\leq1/(3x)$, $|a|\leq13/12$, $\Rea a\geq11/12$, and
+\[
+ a=1-\frac1{3w}+\frac1{3w^2}+R,\qquad |R|\leq\frac2{3x^3}.
+\]
+Here the bound on the second moment can be weakened to $2/3$. With $\delta=a/w$, $|\delta|<1/3$. Direct Taylor bounds give
+\[
+ \log(1+\delta)=\frac1w-\frac5{6w^2}+E,\quad |E|\leq\frac2{x^3},
+\]
+\[
+ \frac1{w+a}-\frac1w=-\frac1{w^2}+E_2,\quad |E_2|\leq\frac9{4x^3}.
+\]
+For the logarithm, errors from $a/w$ and $a^2/(2w^2)$ are each at most $x^{-3}/2$ and the cubic remainder is less than $x^{-3}$. For the reciprocal, use
+$|1-a+a/w|\leq3/(2x)$ and $|1+a/w|\geq2/3$.
+The coefficients of $w^{-1}$ and $w^{-2}$ in the Abel defect cancel, leaving at most $35/(24x^3)<2/x^3$.
+
+Along iteration $w_j=g^{\circ j}(w)$, $\Rea w_j\geq x+11j/12$. Summing \eqref{eq:defect} gives
+\[
+ \sum_{j\geq0}\frac2{(x+11j/12)^3}
+ \leq\frac2{x^3}+\frac{12}{11x^2}<\frac2{x^2}.
+\]
+Uniform convergence of analytic functions proves the assertions. Also $w_j=w+j+\Oh(\log j)$ by the Stieltjes increment, so
+$\Phi(w)=\lim_j(w_j-j+(\log j)/3)$.
+\end{proof}
+Whenever $t_M(u)$ has entered $\Rea w\geq4$, define
+\begin{equation}\label{eq:psi}
+ \Psi(u)=\Phi(t_M(u))-M.
+\end{equation}
+The functional identity makes this independent of the chosen entry time. In particular,
+\begin{equation}\label{eq:psitail}
+ \left|\Psi(u)-\left(V(t_M(u))-M\right)\right|
+ \leq\frac2{(\Rea t_M(u))^2}.
+\end{equation}
+Only finite continuation near the specific contours used below is needed. No global dynamics theorem or unrestricted circle expansion is assumed.
+
+\section{The finite contour and uniform cut estimates}\label{sec:contour}
+Fix $r=1/2$. The interval certificate in Section~\ref{sec:certificate} verifies a common finite entry into $\Rea w\geq4$ on every upper semicircle subarc; conjugation supplies the lower semicircle. Strict interval bounds also give entry in small neighborhoods of these arcs.
+
+For fixed $m$, $h^{\circ m}$ is analytic off a negative-real cut beginning at $f^{\circ(m-1)}(-1)$. Nonreal points retain the sign of their imaginary part under principal logarithms, so no off-axis preimage of the cut occurs. Its only zero is $0$. Deforming the small residue contour to the fixed circle and the two lips gives
+\begin{align}\label{eq:contourfinite}
+ \Res t_m(u)^n\dd u={}&\frac1\pi\int_0^\pi
+ \Rea\!\left[r e^{i\theta}t_m(r e^{i\theta})^n\right]\dd\theta\\
+ &+\frac1\pi\int_0^r\Ima\!\left[t_m(-s+i0)^n\right]\dd s.\nonumber
+\end{align}
+At the finitely many logarithmic preimages met in a fixed iteration, the reciprocal tends to zero, so the small connecting circles vanish. Before its first cut crossing the boundary orbit is real; its contribution to the imaginary part is exactly zero. Values at the exceptional points themselves can be assigned arbitrarily within the limiting bounded enclosure.
+
+\subsection{A compact entrance set}
+Consider a nonexceptional upper-cut point $u=-s+i0$. At its first crossing, $h=a+i\pi$ and hence $|t|\leq2/\pi$. One further logarithm gives $h=U+iV$ with
+\[
+ U=\log|1+a+i\pi|\geq\log\pi>1,\qquad0<V<\pi.
+\]
+The reciprocal therefore lies in the right-half-plane cone
+\[
+ |\arg t|\leq\theta_0:=\arctan(\pi/\log\pi)<\pi/2.
+\]
+Equation~\eqref{eq:mean} preserves this cone: each integrand argument lies between $\arg w$ and $\arg(w+2)$, and the cone is convex. Stop at the first subsequent iterate with modulus at least $16$. It enters
+\begin{equation}\label{eq:K}
+ K=\{w:16\leq|w|\leq17,\ \Rea w\geq16\cos\theta_0>4,\ \Ima w\leq0\}.
+\end{equation}
+The upper bound is from $|g(w)|\leq|w|+1$. The stopping time is finite: for $\Rea w=x>0$,
+$\Rea g(w)\geq g(x)>x$; a finite positive limit of the real parts would contradict this strict continuous increment.
+
+Write $\tau(s)$ for the total entrance time and $w(s)=t_{\tau(s)}(-s+i0)\in K$. Then
+\begin{equation}\label{eq:entrance}
+ t_n(-s+i0)=g^{\circ(n-\tau)}(w(s)),\qquad
+ \Psi(-s+i0)=\Phi(w(s))-\tau
+\end{equation}
+when $n\geq\tau$. Thus $\Rea\Psi\leq C_K-\tau$ and $\Ima\Psi$ is bounded uniformly. Long logarithmic excursions are absorbed into $\tau$; a uniform bound on $\tau$ near branch preimages is neither asserted nor needed. Between crossing and entrance the reciprocal modulus is less than $16$.
+
+\subsection{Suppression of large delays}
+For $R_0>0$ let $R_j=g^{\circ j}(R_0)$. Since
+\[
+ g(r)\leq r+1-\frac1{3(r+2)},\qquad R_j\leq j+R_0,
+\]
+harmonic summation gives
+\begin{equation}\label{eq:realbound}
+ R_j\leq j-\frac13\log(j+1)+C_{R_0}.
+\end{equation}
+For $n\geq\tau$ put $j=n-\tau$ and compare with $R_0=17$. If $j\geq n/2$, the inequality $\log(1+v)\leq v$ gives
+\[
+ n^{1/3}|t_n/n|^n\leq C e^{-\tau}\left(\frac n{j+1}\right)^{1/3}\leq C' e^{-\tau}.
+\]
+If $j<n/2$, then $|t_n|\leq j+17$ gives $C e^{-c n}$. If crossing has occurred but $\tau>n$, use $|t_n|<16$; before crossing the imaginary part is zero. Altogether,
+\begin{equation}\label{eq:delaybound}
+ n^{1/3}\left|\Ima\!\left[(t_n/n)^n\right]\right|
+ \leq C e^{-c\min(\tau,n)}.
+\end{equation}
+Also $e^{\Psi}$ times any fixed polynomial in $\Psi$ is bounded by
+$C_d e^{-\tau}(1+\tau)^d$.
+
+Near the cut endpoint, write the pre-crossing reciprocal as $-R$, $R>2$. Its next magnitude satisfies
+\[
+ R-2\leq\frac2{-\log(1-2/R)}\leq R-1.
+\]
+The second inequality is the logarithmic-mean arithmetic-mean inequality. Starting at $R=2/s$, the crossing delay is at least $1/s-1$. Hence the limiting cut integrands have an integrable bound of the form $C\exp(-c/s)$ near zero.
+
+\section{All finite orders and a coefficient generator}\label{sec:orders}
+For every $J$, choose rational $d_\ell$ successively so that
+\[
+ V_J(w)=w+\tfrac13\log w+\sum_{\ell=1}^J d_\ell w^{-\ell},\qquad
+ V_J(g(w))-V_J(w)-1=\Oh_J(|w|^{-J-2}).
+\]
+The multiplier of the new $d_\ell$ at order $w^{-\ell-1}$ is $-\ell$, so the recursion is uniquely solvable; $d_1=1/18$. This is an effective analytic expansion. The Laurent series of $g$ converges for $|w|>2$, and its Stieltjes moments satisfy $\mu_j\leq2^j/3$. Finite Taylor remainders therefore bound every defect. An explicit rational majorant is available. With $z=1/w$ and $q(z)=zg(1/z)$, on $|z|\leq1/3$ the Stieltjes formula gives $|q-1|\leq4/9$ and $|q|\geq5/9$. The analytic defect
+\[
+ D_J(z)=\frac{q-1-z}{z}+\frac13\log q+
+       \sum_{\ell=1}^Jd_\ell z^\ell(q^{-\ell}-1)
+\]
+has a zero of order $J+2$. On that circle its modulus is bounded by
+\[
+ B_J=\frac8{15}+\sum_{\ell=1}^J|d_\ell|
+                   \left((3/5)^\ell+3^{-\ell}\right),
+\]
+using $\log(9/5)<3/5$. The maximum-modulus principle applied to $D_J(z)/z^{J+2}$ gives the explicit defect constant $C_J=3^{J+2}B_J$. Consequently, for $\Rea w\geq4$,
+\begin{equation}\label{eq:generalremainder}
+ |\Phi(w)-V_J(w)|\leq
+ C_J\left(\frac14+\frac{12}{11(J+1)}\right)(\Rea w)^{-J-1}.
+\end{equation}
+The generator records these exact rational constants. They are conservative bounds for the Abel approximation; no claim is made that they are the final numerically instantiated remainder constants for a concrete sequence threshold.
+
+Summing along the linearly growing real part gives
+\[
+ \Phi(w)=V_J(w)+\Oh_J((\Rea w)^{-J-1}).
+\]
+On orbits starting in the compact set $K$, imaginary parts stay bounded: the Stieltjes formula bounds their multiplicative increments by
+$1+1/[3(\Rea w)^2]$, whose product converges. Thus the preceding estimates are uniform on these orbits. Reversion, using $V_J'(w)=1+\Oh(1/w)$, supplies uniform finite expansions for $t_n$.
+
+\subsection{Polynomial recursion}
+The following equivalent recursion is convenient for actual coefficients. Put
+\[
+ y=b-\tfrac13\log n,\qquad
+ W(n,y)=n+y+\sum_{j\geq1}v_j(y)n^{-j},\qquad b=\Psi(u).
+\]
+Enforce, as a formal expansion,
+\begin{equation}\label{eq:vrec}
+ W(n+1,y-\tfrac13\log(1+1/n))=g(W(n,y)).
+\end{equation}
+At order $n^{-j-1}$ the new polynomial enters as
+$-jv_j-v_j'/3$. This operator is invertible on polynomials of degree at most $j$; induction gives a unique $v_j$ of degree at most $j$. In particular
+\[
+ v_1(y)=-\frac y3-\frac1{18}.
+\]
+Define $R_j(y)$ by
+\begin{equation}\label{eq:Rgen}
+ \exp\left(n\log\frac{W(n,y)}n-y+
+ \sum_{\ell\geq1}\frac{B_{2\ell}}{2\ell(2\ell-1)n^{2\ell-1}}\right)
+ =\sum_{j\geq0}\frac{R_j(y)}{n^j}.
+\end{equation}
+The Bernoulli sum is the logarithmic Stirling expansion. At any requested order both sums are truncated finitely. One has
+\begin{equation}\label{eq:R1}
+ R_0=1,\qquad R_1(y)=-\frac{y^2}2-\frac y3+\frac1{36},\qquad \deg R_j\leq2j.
+\end{equation}
+The second integrand polynomial, useful for checking conventions, is
+\[
+ R_2(y)=\frac{y^4}8+\frac{y^3}2+\frac{13y^2}{24}
+          +\frac{23y}{108}+\frac{341}{12960}.
+\]
+The included exact-rational program implements \eqref{eq:vrec}--\eqref{eq:Rgen}, checks the recurrence cancellations, and verifies the degree bounds through the selected order. The analytic proof, rather than the program's finite tests, justifies arbitrary fixed depth.
+
+\subsection{Why the cut expansion is uniform}
+For a requested order $M$, split the cut into $\tau\leq A\log n$ and its complement. In the first region use the compact expansion at time $n-\tau$ with initial coordinate $\Phi(w)$ and reexpand in $n$. The functional relation identifies the parameter as $b=\Phi(w)-\tau=\Psi(u)$. Here $|b|=\Oh(\log n)$, so finite Taylor remainders are uniform. Finite Taylor expansion gives a bound of order
+$n^{-M-1}(1+\log n)^{D_M}$ after normalized exponentiation and Stirling multiplication, for some finite effectively obtainable $D_M$. The theorem does not claim a sharp value of this remainder degree.
+
+In the complementary region \eqref{eq:delaybound} bounds the true integrand by $\Oh(n^{-cA})$. The tails of all finitely many proposed coefficient functions are bounded by $e^{-\tau}$ times a polynomial in $\tau$, and hence by $\Oh(n^{-A}\operatorname{polylog}n)$. Choose $A$ sufficiently large in terms of $M$. The cases $n<\tau$ have already been included in \eqref{eq:delaybound}. This proves uniform integrability of every finite expansion without excluding neighborhoods of the countably many limiting log-preimages.
+
+On the outer arcs the verified compact entry gives the expansion directly. Finite-length integration in \eqref{eq:contourfinite} therefore proves Theorem~\ref{thm:main}, except for positivity, which is supplied in Section~\ref{sec:certificate}.
+
+\section{Contour constants and the first correction}
+For an analytic function $F$ with the boundary behavior established above define the fixed-radius functional
+\begin{equation}\label{eq:Ifunc}
+ \I[F]=\frac1\pi\int_0^\pi\Rea\!\left[r e^{i\theta}F(r e^{i\theta})\right]\dd\theta
+ +\frac1\pi\int_0^r\Ima F(-s+i0)\dd s,\quad r=\tfrac12.
+\end{equation}
+Set
+\[
+ I_j=\I[e^{\Psi}\Psi^j],\qquad C=\frac{\sqrt{2\pi}}2 I_0,
+ \qquad m_j=\frac{I_j}{I_0}.
+\]
+All these integrals are finite. These definitions use only the fixed certified radius, not a global residue of a Fatou coordinate on a punctured disk.
+
+The general forward coefficient in Theorem~\ref{thm:main} is
+\begin{equation}\label{eq:Pmom}
+ P_{j,k}(L)=\frac1{I_0}\I\!\left[e^{\Psi}R_j(\Psi+k-L/3)\right].
+\end{equation}
+For $k=0$ the first correction is
+\begin{equation}\label{eq:first}
+ P_{1,0}(L)=-\frac{L^2}{18}+
+ \left(\frac19+\frac{m_1}3\right)L+\frac1{36}-\frac{m_1}3-\frac{m_2}2.
+\end{equation}
+For a fixed shift $k$, replace $m_1$ by $m_1+k$ and $m_2$ by $m_2+2km_1+k^2$. More generally, \eqref{eq:Pmom} is the entire shift rule. It follows either from $\Psi\mapsto\Psi+k$ in inverse iteration or by expanding the compact orbit for $n+k$ steps with exponent $n$.
+
+\section{Certified positivity and numerical checks}\label{sec:certificate}
+The outer contribution
+\[
+ J=\frac1\pi\int_0^\pi
+ \Rea\!\left[\tfrac12 e^{i\theta}e^{\Psi(e^{i\theta}/2)}\right]\dd\theta
+\]
+is enclosed by the included outward-rounded interval verifier:
+\begin{equation}\label{eq:Jcert}
+ \frac{214}{100}<J<\frac{243}{100}.
+\end{equation}
+The verifier uses $2048$ whole angular panels, $12$ direct logarithmic iterates, then reciprocal iteration to total depth $64$ using $20$ exact rational moment terms. For $|w|\geq R>2$, the omitted moment tail is bounded by
+\begin{equation}\label{eq:momenttail}
+ \left|g(w)-w-1+\sum_{j=0}^{K-1}\frac{(-1)^j\mu_j}{w^{j+1}}\right|
+ \leq\frac{2^K}{3R^K(R-2)}.
+\end{equation}
+The program checks every logarithm's domain and branch, confirms final $\Rea w\geq4$, adds the analytic Fatou tail \eqref{eq:psitail}, and encloses each full-panel integrand. Summing panel intervals is a Darboux enclosure, not a point-sampling quadrature estimate. The rational endpoint assertions \eqref{eq:Jcert} are executable checks.
+
+\subsection{The whole cut needs only a coarse bound}
+At crossing, $|t|\leq r_0=2/\pi$. Summing the real comparison bound gives
+\[
+ \lim_{j\to\infty}\bigl(R_j-j+\tfrac13\log j\bigr)
+ \leq r_0+\tfrac13\log(r_0+2)<2.
+\]
+The crossing delay is at least $1/s-1$, whence
+\[
+ \Rea\Psi(-s+i0)\leq3-1/s.
+\]
+Therefore the absolute cut contribution in $I_0$ is at most
+\begin{equation}\label{eq:cutbound}
+ \frac1\pi\int_0^{1/2}e^{3-1/s}\dd s
+ \leq\frac e{2\pi}<\frac12.
+\end{equation}
+Combining \eqref{eq:Jcert} and \eqref{eq:cutbound} gives
+$1.64<I_0<2.93$, and elementary bounds on $\pi$ yield $2<C<4$.
+This avoids any inference that a fixed sign of a cut jump determines an essential-singularity residue; the outer contour has been retained throughout.
+
+\subsection{Runtime assumptions and exploratory values}
+The certificate uses the outward-rounded interval operations of \texttt{mpmath.iv}, tested with mpmath 1.3.0 and Python 3.12.14. Arithmetic and transcendental interval containment rely on that implementation and its documented interval semantics; this is not an independently verified hardware arithmetic kernel. The analytic remainders are proved above. No random sampling or fitted asymptotics enter the certificate.
+
+Exploratory extended-precision contour evaluation suggests
+\[
+ C\approx2.86540798.
+\]
+These digits are \emph{not} certified. The earlier OEIS estimate $2.86539\ldots$ is accordingly treated as a numerical conjectural estimate, not an exact input. Independent exact recurrence calculations through $n=260$ agree with the predicted scale. For example,
+\begin{center}
+\begin{tabular}{rrr}\toprule
+$n$ & normalized A139383 amplitude & A261280/A139383\\\midrule
+40&2.9199890&2.6908095\\
+80&2.8906587&2.7125203\\
+160&2.8761109&2.7193708\\
+260&2.8708292&2.7206539\\\bottomrule
+\end{tabular}
+\end{center}
+The ratio crosses $e$; monotone extrapolation would be misleading. These diagnostics check normalization and indexing, not the theorem's remainder constants.
+
+\section{Inversion and discrete thresholds}\label{sec:inverse}
+\input{inverse-section.tex}
+
+\section{Literature boundary and further questions}
+\subsection{Historical attribution}
+Prellberg's FPSAC 2002 slides~\cite{prellberg2002}, numbered slide 17 (PDF pages 55--59, final build on page 59), give an asymptotic for the individual coefficient $X_{n,m}$ before summing over depth. Mishna's 2005 summary of the 2002 seminar~\cite{mishna2005}, Section 2.2, page 49, prints the same formula. This is substantive prior overlap with the present diagonal result and method, rather than merely an asymptotic for the depth-summed sequence.
+
+For an explicit comparison, use their setup with $f(z)=e^z-1$, $c=1/2$, $d=1/6$, $a(z)=a_0\in(0,1)$ and $b(z)=z$. Then
+\[
+ X_{n,m}=a_0^m H(n,m)/n!,\qquad Y(\mu(s))=a_0^s.
+\]
+Writing $\beta=n/m$, cancellation of $a_0^m$ in their pre-sum formula yields the announced form
+\begin{equation}\label{eq:historical}
+ \frac{H(n,m)}{n!}\sim 2^{-n}m^{n-1-\beta/3}J(\beta),
+ \qquad J(\beta)=\frac1{2\pi i}\int_{\mathcal C}\mu(s)e^{\beta s}\dd s.
+\end{equation}
+Thus $m=n$ already gives the power $n^{2n-5/6}$ after Stirling's formula. Their $\mu$ is an inverse parabolic coordinate; the contour and additive-coordinate conventions must be matched before identifying its amplitude with ours. Equation~\eqref{eq:historical} records the historical announcement, not an additional theorem invoked in our proof.
+
+The brief sources do not supply the quantitative contour and uniform remainder estimates used here. Moreover, the broad printed theorem needs additional hypotheses or normalization in general: for $f(z)=z/(1-z)$, $a(z)=z$, $b(z)=1$, its solution is $1+zB(z)$ with $B$ the ordinary Bell-number series, giving $B_{n-1}$ rather than a nonzero constant multiple of the printed $B_n$ scale. This limitation does not negate the specific pre-sum announcement. The slides also record earlier non-rigorous computation of further terms. Accordingly, we claim no priority for the leading formula, parabolic-coordinate method, or displayed correction coefficients. The present contribution is the fully specified proof and reproducibility package, without a claim that every component is historically new.
+
+The official OEIS exports retrieved on 2 October 2026 still label the leading equivalents conjectural; both entries have an internal revision date of 14 March 2026~\cite{oeisA,oeisB}. This metadata is not evidence of novelty or absence of an earlier result. The unbound $k$ in A261280's displayed compositional formula is fixed by its own code and definition to $k=n$.
+
+Skau and Kristensen~\cite{skau} prove the leading polynomial in depth for fixed set size. Their convention has one more composition than $H(n,m)$. Carlson, Makarychev and Mosenzon~\cite{cmm}, Theorem 5.7 and Section 9, provide bounds uniform in both parameters for the $p$-th root of an order-$k$ Bell number. At diagonal depth these bounds determine a root scale, not a multiplicative equivalent or the exponent $-5/6$. Their shortest-path approximation application demonstrates that this hierarchy has uses beyond a formal generating-function example. Higher-order symmetric-function work~\cite{weising} concerns structural and representation-theoretic extensions, rather than this diagonal equivalent.
+
+The branching-process interpretation also requires care. Nagaev--Vakhtel's Cram\'er-type theorem~\cite{nv} treats populations $q=o(n^2)$; the correction coefficient is $1-2f'''(1)/(3f''(1)^2)$, equal to $1/3$ for Poisson offspring. Wachtel's later introduction~\cite{wachtel} explicitly records that boundary. The diagonal factorial moment has a heuristic dominant population of order $n^2/2$, outside that small-$o$ regime. The theorem statement was checked in an indexed primary copy; direct retrieval of the full 2003 PDF did not complete during the literature check. The later source supplies an additional explicit confirmation of the range.
+
+The searches covered sequence IDs, higher-order and iterated Bell numbers, growing depth, Stirling-matrix iteration, hierarchical set partitions, parabolic iteration, and critical branching deviations. Scoped default-branch searches in the specified ProveIt repository found no exact target IDs or matching iterated-Bell phrases; existing general parabolic-germ material is background, not automatically a duplicate of this diagonal coefficient theorem. This is bounded overlap evidence, not a claim to have excluded every branch, unpublished result, or semantic formulation.
+
+Natural next questions include a fully quantitative uniform treatment of the historically announced proportional-depth formula, high-order moment interpretation in critical branching, rigorous narrow enclosures for $C$ and the first contour moments, and exponentially small corrections. None is implied merely by the fixed-shift theorem proved here.
+
+\section{Reproducibility}
+The accompanying archive contains this PDF and editable TeX, the official sequence exports, exact recurrence diagnostics, the rational coefficient generator, and the interval amplitude verifier. Run \texttt{python verification/replay.py} from the extracted directory for the mathematical checks. Use \texttt{bash build.sh} to rebuild the PDF with a local TeX installation. The replay uses no network access. Runtime dependencies are Python, mpmath for the interval proof, and SymPy for coefficient generation; recurrence checks use the standard library.
+
+The manifest lists deliverable files and SHA256 digests. The certificate's positive enclosure is separate from the exploratory numerical amplitude. Exact tests at finitely many indices and symbolic orders supplement, but do not replace, the analytic proof.
+
+\begin{thebibliography}{99}
+\bibitem{prellberg2002} T. Prellberg, \emph{On the asymptotic analysis of a class of linear recurrences}, FPSAC 2002 slides, numbered slide 17 and final slide. \url{https://webspace.maths.qmul.ac.uk/t.prellberg/talks/recurrence.pdf}.
+\bibitem{mishna2005} M. Mishna, summary of T. Prellberg's seminar of 23 September 2002, \emph{On the asymptotic analysis of a class of linear recurrences}, in F. Chyzak (ed.), \emph{Algorithms Seminar 2002--2004}, INRIA (2005), pp.~47--50. \url{https://algo.inria.fr/seminars/summary/Prellberg2002a.pdf}.
+\bibitem{oeisA} OEIS Foundation, \emph{A139383}, official sequence export, revision 14 March 2026. \url{https://oeis.org/A139383}.
+\bibitem{oeisB} OEIS Foundation, \emph{A261280}, official sequence export, revision 14 March 2026. \url{https://oeis.org/A261280}.
+\bibitem{bell} E. T. Bell, The iterated exponential integers, \emph{Annals of Mathematics} 39 (1938), 539--557.
+\bibitem{skau} I. H. Skau and K. F. Kristensen, \emph{An asymptotic formula for the iterated exponential Bell numbers}, 2019. \url{https://arxiv.org/abs/1903.07979}.
+\bibitem{cmm} C. Carlson, Y. Makarychev and R. Mosenzon, \emph{Hardness of approximation for shortest path with vector costs}, SODA 2026; preprint 2025. \url{https://arxiv.org/abs/2510.21058}.
+\bibitem{weising} M. Bechtloff Weising, \emph{Higher order Bell symmetric functions}, 2025. \url{https://arxiv.org/abs/2505.18504}.
+\bibitem{nv} S. V. Nagaev and V. I. Vakhtel, Limit theorems for probabilities of large deviations of a Galton--Watson process, \emph{Discrete Mathematics and Applications} 13 (2003), 1--26. \href{https://doi.org/10.1163/156939203321669537}{doi:10.1163/156939203321669537}.
+\bibitem{wachtel} V. I. Wachtel, Limit theorems for probabilities of large deviations of a critical Galton--Watson process having power tails, \emph{Theory of Probability and Its Applications} 52 (2008), 674--688. \href{https://doi.org/10.1137/S0040585X97983249}{doi:10.1137/S0040585X97983249}.
+\end{thebibliography}
+\end{document}
