@@ -71,12 +71,14 @@ and explicit all-orders corrections}
 \begin{abstract}
 Let $B_{n,k}$ be the number of permutations of $kn$ distinct cards, partitioned
 into $n$ ranks of size $k$, in which neighboring cards never have the same
-rank.  The OEIS entry A330266 records the fixed-$k$ conjecture
+rank.  The OEIS entry A330266~\cite{oeis330266} records the fixed-$k$
+conjecture (S.~Kirgizov, 29 September 2023)
 \[
   \frac{B_{n,k}}{(kn)!}\longrightarrow \ee^{-(k-1)}.
 \]
 The case $k=4$ was subsequently deduced on that entry from an approximation
-to a related sequence, but the general statement remained posed there.  We
+to a related sequence (D.~Radcliffe, 9 September 2025), but the general
+statement remained posed there.  We
 give a direct proof for every fixed $k\ge2$ and prove considerably more.
 If $X_{n,k}$ is the number of equal-rank adjacencies in a uniformly random
 shuffle, then
@@ -113,7 +115,7 @@ article.
 \small
 \textbf{Scope and priority.}
 The sequence definitions and historical comments below are taken from the
-OEIS pages cited in the bibliography.  A330266 now states that its particular
+OEIS pages cited in the bibliography.  A330266~\cite{oeis330266} now states that its particular
 $k=4$ leading equivalent follows from an approximation to A190830.  The point
 of the present note is the uniform fixed-$k$ theorem, the Poisson law, exact
 factorial cumulants, and systematic correction terms.  No claim of a complete
@@ -122,6 +124,16 @@ independently checked before submission or attribution.
 \normalsize
 
 \newpage
+{\small\textbf{Editorial note (1 October 2026, batch 73O2).}
+Manuscript~57 of batch~73 of ProveIt's incoming-reports intake, placed in
+commit \texttt{6e193dd4f}; AI-assisted, unrefereed, not formalized.  The
+write added the label prefix \texttt{bsw:}, citation commands, the names of
+the OEIS contributors, notes marked ``[Added 1 October 2026, batch 73O2]'',
+Remark~\ref{bsw:rem:tail-sketch}, one bibliography entry and
+Appendix~\ref{bsw:app:provenance}.  The analytic tail step of
+Theorem~\ref{bsw:thm:all-orders} is a sketch; the fixed-$k$ limit law does
+not depend on it.\par}
+\vspace{-0.5em}
 \setcounter{tocdepth}{1}
 \tableofcontents
 \newpage
@@ -130,19 +142,19 @@ independently checked before submission or attribution.
 
 Fix integers $n\ge0$ and $k\ge2$.  There are $n$ ranks, each containing $k$
 distinct cards.  A shuffle is a permutation of all $N=kn$ cards.  Let
-\begin{equation}\label{eq:Xdef}
+\begin{equation}\label{bsw:eq:Xdef}
  X_{n,k}=\#\{1\le j<N:\text{the cards at positions $j$ and $j+1$
 have the same rank}\}.
 \end{equation}
 Write
-\begin{equation}\label{eq:defB}
+\begin{equation}\label{bsw:eq:defB}
  B_{n,k}=N!\,\PP(X_{n,k}=0),
  \qquad p_{n,k}=\frac{B_{n,k}}{N!}.
 \end{equation}
 If cards within one rank are made indistinguishable, let $S_{n,k}$ denote the
 number of admissible multiset words.  Every rank word lifts to exactly
 $(k!)^n$ labeled permutations, so
-\begin{equation}\label{eq:labeled-multiset}
+\begin{equation}\label{bsw:eq:labeled-multiset}
  B_{n,k}=(k!)^n S_{n,k},
  \qquad
  p_{n,k}=\frac{S_{n,k}}{(kn)!/(k!)^n}.
@@ -155,31 +167,34 @@ The most visible OEIS rows are as follows.
 \toprule
 $k$ & labeled count $B_{n,k}$ & interpretation & multiset count $S_{n,k}$\\
 \midrule
-2 & A007060 & couples with no adjacent spouses & A114938\\
-3 & A193624 & triples with no adjacent siblings & A193638\\
-4 & A330266 & four cards in each rank & A321633\\
+2 & A007060~\cite{oeis007060} & couples with no adjacent spouses & A114938~\cite{oeis114938}\\
+3 & A193624~\cite{oeis193624} & triples with no adjacent siblings & A193638~\cite{oeis193638}\\
+4 & A330266~\cite{oeis330266} & four cards in each rank & A321633~\cite{oeis321633}\\
 \bottomrule
 \end{tabular}
 \end{center}
-A330266 records the exact integral
+A330266~\cite{oeis330266} records the exact integral
 \[
  B_{n,4}=\int_0^\infty
  (t^4-12t^3+36t^2-24t)^n\ee^{-t}\,dt
 \]
-and the conjectured fixed-multiplicity law
-\begin{equation}\label{eq:oeis-conj}
+and the conjectured fixed-multiplicity law, posed there by S.~Kirgizov on
+29 September 2023,
+\begin{equation}\label{bsw:eq:oeis-conj}
  p_{n,k}\longrightarrow \ee^{-(k-1)}.
 \end{equation}
 The entry also records a September 2025 deduction of the $k=4$ equivalent
-from a separate approximation.  Our derivation below is direct, applies to
+from a separate approximation: D.~Radcliffe (9 September 2025) combined
+$\textnormal{A330266}(n)=24^n\,n!\,\textnormal{A190830}(n)$ with
+V.~Kot\v{e}\v{s}ovec's approximation of A190830 and Stirling's formula.  Our derivation below is direct, applies to
 every fixed $k$, and identifies the full limiting distribution behind
-\eqref{eq:oeis-conj}.
+\eqref{bsw:eq:oeis-conj}.
 
 \subsection{Why a Poisson law is plausible but not automatic}
 
 For each of the $N-1$ adjacent position pairs, the probability of equal ranks
 is $(k-1)/(N-1)$.  Hence
-\begin{equation}\label{eq:mean-quick}
+\begin{equation}\label{bsw:eq:mean-quick}
  \EE X_{n,k}=(N-1)\frac{k-1}{N-1}=k-1.
 \end{equation}
 If the rare adjacency indicators were independent, one would expect a
@@ -197,29 +212,29 @@ vertices are joined.  Consequently $B_{n,k}$ is the number of \emph{oriented}
 Hamiltonian paths, counted as ordered vertex lists, in
 $K_{k,k,\ldots,k}$.  Unoriented paths are counted by $B_{n,k}/2$ when
 $kn>1$.  This connection places the problem among balanced Smirnov words and
-complete multipartite Hamiltonian enumeration.
+complete multipartite Hamiltonian enumeration~\cite{eriksson-martin,mehiri}.
 
 \section{A weighted run transform}
 
 It is useful to enumerate all shuffles while recording the number of bad
 adjacencies.  Define
-\begin{equation}\label{eq:weightedA}
+\begin{equation}\label{bsw:eq:weightedA}
  A_{n,k}(u)=\sum_{\pi\in\mathfrak S_{kn}}u^{X_{n,k}(\pi)},
  \qquad
  G_{n,k}(u)=\frac{A_{n,k}(u)}{(kn)!}=\EE u^{X_{n,k}}.
 \end{equation}
 Thus $A_{n,k}(0)=B_{n,k}$ and $G_{n,k}(0)=p_{n,k}$.
 
-\begin{theorem}[Run-transform generating function]\label{thm:run-transform}
+\begin{theorem}[Run-transform generating function]\label{bsw:thm:run-transform}
 For indeterminates $x_1,\ldots,x_n$,
-\begin{equation}\label{eq:runGF}
+\begin{equation}\label{bsw:eq:runGF}
  \sum_{w}u^{X(w)}x_1^{|w|_1}\cdots x_n^{|w|_n}
  =\frac{1}{1-\displaystyle\sum_{i=1}^n
              \frac{x_i}{1+(1-u)x_i}},
 \end{equation}
 where the sum is over all finite words on $\{1,\ldots,n\}$, including the
 empty word.  Therefore
-\begin{equation}\label{eq:coeffA}
+\begin{equation}\label{bsw:eq:coeffA}
  A_{n,k}(u)=(k!)^n\coef{x_1^k\cdots x_n^k}
  \frac{1}{1-\displaystyle\sum_{i=1}^n
              \frac{x_i}{1+(1-u)x_i}}.
@@ -234,7 +249,8 @@ $u^{r-1}x_i^r$, whose generating series is
 \[
  y_i=\sum_{r\ge1}u^{r-1}x_i^r=\frac{x_i}{1-ux_i}.
 \]
-The classical multivariate generating function of Smirnov words is
+The classical multivariate generating function of Smirnov
+words~\cite{stanley,flajolet-sedgewick} is
 \[
  \frac{1}{1-\sum_i y_i/(1+y_i)}.
 \]
@@ -244,22 +260,22 @@ by the standard run-decomposition bijection.  Substitution gives
 \[
  \frac{y_i}{1+y_i}=\frac{x_i}{1+(1-u)x_i},
 \]
-which proves \eqref{eq:runGF}.  Extracting $k$ occurrences of each rank gives
+which proves \eqref{bsw:eq:runGF}.  Extracting $k$ occurrences of each rank gives
 multiset words; labeling the $k$ copies independently in each rank contributes
-$(k!)^n$ and proves \eqref{eq:coeffA}.
+$(k!)^n$ and proves \eqref{bsw:eq:coeffA}.
 \end{proof}
 
 \section{The exact Laguerre integral}
 
 Set $v=u-1$ and define
-\begin{equation}\label{eq:Pku}
+\begin{equation}\label{bsw:eq:Pku}
  P_{k,u}(t)=k!\coef{x^k}
  \exp\!\left(\frac{tx}{1-vx}\right).
 \end{equation}
 
-\begin{theorem}[Exact integral and polynomial kernel]\label{thm:integral}
+\begin{theorem}[Exact integral and polynomial kernel]\label{bsw:thm:integral}
 For every $n\ge0$, $k\ge2$, and complex $u$,
-\begin{equation}\label{eq:exact-integral}
+\begin{equation}\label{bsw:eq:exact-integral}
  \boxed{\displaystyle
  A_{n,k}(u)=\int_0^\infty \ee^{-t}P_{k,u}(t)^n\,dt.}
 \end{equation}
@@ -267,9 +283,9 @@ The kernel has the explicit forms
 \begin{align}
  P_{k,u}(t)
  &=\sum_{j=1}^k \binom{k-1}{j-1}\frac{k!}{j!}
-       t^j(u-1)^{k-j},\label{eq:Pexplicit}\\
+       t^j(u-1)^{k-j},\label{bsw:eq:Pexplicit}\\
  &=k!(u-1)^k L_k^{(-1)}\!\left(-\frac{t}{u-1}\right),
- \label{eq:Plaguerre}
+ \label{bsw:eq:Plaguerre}
 \end{align}
 where the value at $u=1$ is interpreted by continuity.
 \end{theorem}
@@ -279,20 +295,21 @@ Use the coefficientwise Laplace identity
 \[
  \frac1{1-s}=\int_0^\infty \ee^{-t}\ee^{ts}\,dt.
 \]
-In \eqref{eq:coeffA}, the exponential factors into $n$ identical univariate
+In \eqref{bsw:eq:coeffA}, the exponential factors into $n$ identical univariate
 series.  Extracting $x_i^k$ from each factor gives
-\eqref{eq:exact-integral}.  Expanding
+\eqref{bsw:eq:exact-integral}.  Expanding
 $\exp(tx/(1-vx))$ first by the exponential degree and then extracting $x^k$
-gives \eqref{eq:Pexplicit}.  Finally, the standard expansion
+gives \eqref{bsw:eq:Pexplicit}.  Finally, the standard
+expansion~\cite{dlmf}
 \[
  L_k^{(-1)}(z)=\sum_{j=1}^k
  \binom{k-1}{j-1}\frac{(-z)^j}{j!}
 \]
-gives \eqref{eq:Plaguerre}.
+gives \eqref{bsw:eq:Plaguerre}.
 \end{proof}
 
 For no equal adjacencies, $u=0$ and $v=-1$.  Write
-\begin{equation}\label{eq:Pk}
+\begin{equation}\label{bsw:eq:Pk}
  P_k(t):=P_{k,0}(t)=(-1)^k k!L_k^{(-1)}(t).
 \end{equation}
 The first kernels are
@@ -308,35 +325,35 @@ explains it as one row of a uniform Laguerre family.
 \section{Exact inclusion--exclusion and a compact reciprocal polynomial}
 
 For $0\le m\le k-1$, put
-\begin{equation}\label{eq:akm}
+\begin{equation}\label{bsw:eq:akm}
  a_{k,m}=\binom{k-1}{m}\frac{k!}{(k-m)!}
         =m!\binom{k}{m}\binom{k-1}{m},
 \end{equation}
 and define the degree-$(k-1)$ polynomial
-\begin{equation}\label{eq:Rk}
+\begin{equation}\label{bsw:eq:Rk}
  R_k(z)=\sum_{m=0}^{k-1}a_{k,m}z^m.
 \end{equation}
 The no-adjacency reciprocal polynomial is
-\begin{equation}\label{eq:Ck}
+\begin{equation}\label{bsw:eq:Ck}
  C_k(z)=z^kP_k(1/z)=R_k(-z).
 \end{equation}
 
-\begin{theorem}[Exact finite formula]\label{thm:exact-sum}
+\begin{theorem}[Exact finite formula]\label{bsw:thm:exact-sum}
 Let $N=kn$.  Then
 \begin{align}
  B_{n,k}
  &=\sum_{m_1,\ldots,m_n=0}^{k-1}
  (-1)^M(N-M)!\prod_{i=1}^n a_{k,m_i},
- \qquad M=m_1+\cdots+m_n,\label{eq:multi-sum}\\
+ \qquad M=m_1+\cdots+m_n,\label{bsw:eq:multi-sum}\\
  &=\sum_{M=0}^{n(k-1)}(N-M)!\coef{z^M}C_k(z)^n.
- \label{eq:grouped-sum}
+ \label{bsw:eq:grouped-sum}
 \end{align}
 More generally, the factorial probability generating function
-\begin{equation}\label{eq:Phi-def}
+\begin{equation}\label{bsw:eq:Phi-def}
  \Phi_{n,k}(v):=\EE(1+v)^{X_{n,k}}=G_{n,k}(1+v)
 \end{equation}
 satisfies the exact identity
-\begin{equation}\label{eq:Phi-exact}
+\begin{equation}\label{bsw:eq:Phi-exact}
  \boxed{\displaystyle
  \Phi_{n,k}(v)=
  \sum_{M=0}^{n(k-1)}
@@ -345,18 +362,18 @@ satisfies the exact identity
 \end{theorem}
 
 \begin{proof}
-From \eqref{eq:Pexplicit},
+From \eqref{bsw:eq:Pexplicit},
 \[
  z^kP_{k,u}(1/z)=\sum_{m=0}^{k-1}a_{k,m}v^mz^m=R_k(vz).
 \]
 Raise to the $n$th power and integrate termwise in
-\eqref{eq:exact-integral}.  Since
+\eqref{bsw:eq:exact-integral}.  Since
 $\int_0^\infty t^{N-M}\ee^{-t}\,dt=(N-M)!$, division by $N!$ yields
-\eqref{eq:Phi-exact}.  Setting $v=-1$ gives
-\eqref{eq:multi-sum} and \eqref{eq:grouped-sum}.
+\eqref{bsw:eq:Phi-exact}.  Setting $v=-1$ gives
+\eqref{bsw:eq:multi-sum} and \eqref{bsw:eq:grouped-sum}.
 \end{proof}
 
-Formula \eqref{eq:grouped-sum} is a rook-polynomial form of
+Formula \eqref{bsw:eq:grouped-sum} is a rook-polynomial form of
 inclusion--exclusion.  It uses only a degree-$(k-1)$ polynomial raised to the
 $n$th power and is efficient for exact integer computation.  In particular,
 for $k=4$ it reproduces
@@ -371,13 +388,13 @@ the standard-deck value recorded on A330266.
 Recall that the $r$th falling factorial is
 $\fall{x}{r}=x(x-1)\cdots(x-r+1)$.
 
-\begin{theorem}[Factorial moments]\label{thm:factorial-moments}
+\begin{theorem}[Factorial moments]\label{bsw:thm:factorial-moments}
 For fixed $k\ge2$ and fixed $r\ge0$,
-\begin{equation}\label{eq:fm-limit}
+\begin{equation}\label{bsw:eq:fm-limit}
  \EE\fall{X_{n,k}}{r}=(k-1)^r+O_{k,r}(n^{-1}).
 \end{equation}
 Consequently,
-\begin{equation}\label{eq:poisson-limit}
+\begin{equation}\label{bsw:eq:poisson-limit}
  \boxed{\displaystyle
  X_{n,k}\xrightarrow[n\to\infty]{d}\Pois(k-1).}
 \end{equation}
@@ -385,7 +402,7 @@ Consequently,
 
 \begin{proof}
 The factorial moment is $r!$ times the coefficient of $v^r$ in
-\eqref{eq:Phi-exact}.  Since every term $a_{k,m}z^m$ in $R_k(z)$ has the same
+\eqref{bsw:eq:Phi-exact}.  Since every term $a_{k,m}z^m$ in $R_k(z)$ has the same
 $z$-degree as the corresponding $v$-degree, the denominator for this
 coefficient is exactly $\fall{N}{r}$.  The leading contribution to
 $\coef{z^r}R_k(z)^n$ selects $a_{k,1}z$ from $r$ distinct factors and $1$
@@ -404,17 +421,17 @@ Here $a_{k,1}=k(k-1)$.  Therefore
 These are the factorial moments of $\Pois(k-1)$.  Ordinary moments are finite
 linear combinations of factorial moments, so every ordinary moment converges.
 The Poisson distribution is moment-determinate; the method of moments gives
-\eqref{eq:poisson-limit}.
+\eqref{bsw:eq:poisson-limit}.
 \end{proof}
 
-\begin{corollary}[The fixed-multiplicity OEIS law]\label{cor:main-limit}
+\begin{corollary}[The fixed-multiplicity OEIS law]\label{bsw:cor:main-limit}
 For every fixed integer $k\ge2$,
-\begin{equation}\label{eq:main-limit}
+\begin{equation}\label{bsw:eq:main-limit}
  \boxed{\displaystyle
  \frac{B_{n,k}}{(kn)!}=p_{n,k}\longrightarrow\ee^{-(k-1)}.}
 \end{equation}
 Equivalently,
-\begin{equation}\label{eq:multiset-leading}
+\begin{equation}\label{bsw:eq:multiset-leading}
  S_{n,k}\sim\frac{(kn)!}{(k!)^n}\ee^{-(k-1)}.
 \end{equation}
 \end{corollary}
@@ -427,34 +444,34 @@ Because the variables are integer-valued,
 The endpoints $\pm\tfrac12$ carry no mass under the limiting Poisson law, so
 weak convergence implies convergence of this probability.  Hence
 $\PP(X_{n,k}=0)\to\PP(\Pois(k-1)=0)=\ee^{-(k-1)}$.
-Equation \eqref{eq:multiset-leading} follows from
-\eqref{eq:labeled-multiset}.
+Equation \eqref{bsw:eq:multiset-leading} follows from
+\eqref{bsw:eq:labeled-multiset}.
 \end{proof}
 
 \begin{remark}
 The proof is short because the correct object is not merely the zero-event
 count.  The entire adjacency statistic has a stable Poisson limit.  The
-constant $k-1$ is already forced by the exact mean \eqref{eq:mean-quick}.
+constant $k-1$ is already forced by the exact mean \eqref{bsw:eq:mean-quick}.
 \end{remark}
 
 \section{A gamma expectation and an all-orders expansion engine}
 
 The exact finite sum admits a useful probabilistic transform.  Let
 $T_N$ have the gamma density
-\begin{equation}\label{eq:gamma-density}
+\begin{equation}\label{bsw:eq:gamma-density}
  f_N(t)=\frac{t^N\ee^{-t}}{N!},\qquad t>0,
  \qquad T_N\sim\GammaDist(N+1,1).
 \end{equation}
 Since
-\begin{equation}\label{eq:negative-moment}
+\begin{equation}\label{bsw:eq:negative-moment}
  \EE T_N^{-M}=\frac{(N-M)!}{N!}=\frac1{\fall NM}
  \qquad(0\le M\le N),
 \end{equation}
 we obtain the following exact formula.
 
-\begin{proposition}[Gamma representation]\label{prop:gamma}
+\begin{proposition}[Gamma representation]\label{bsw:prop:gamma}
 For $N=kn$,
-\begin{equation}\label{eq:gamma-rep}
+\begin{equation}\label{bsw:eq:gamma-rep}
  \boxed{\displaystyle
  \Phi_{n,k}(v)=\EE\left[R_k\!\left(\frac v{T_N}\right)^n\right].}
 \end{equation}
@@ -462,30 +479,30 @@ For $N=kn$,
 
 The gamma variable is concentrated at scale $\sqrt N$ around $N+1$.  Since
 $R_k(w)=1+k(k-1)w+O_k(w^2)$, the exponent in
-\eqref{eq:gamma-rep} tends to $(k-1)v$.  This already supplies another proof
+\eqref{bsw:eq:gamma-rep} tends to $(k-1)v$.  This already supplies another proof
 of the Poisson limit.  More importantly, it supports a complete Laplace
 expansion.
 
 For a nonnegative integer $M$, define polynomials $H_r(M)$ by
-\begin{equation}\label{eq:Hr-def}
+\begin{equation}\label{bsw:eq:Hr-def}
  \prod_{j=0}^{M-1}\frac1{1-jx}=\sum_{r\ge0}H_r(M)x^r.
 \end{equation}
 Thus $H_r(M)=h_r(0,1,\ldots,M-1)$, a complete homogeneous symmetric
 polynomial.  The first four are
 \begin{align}
- H_0(M)&=1,\label{eq:H0}\\
- H_1(M)&=\frac{M(M-1)}2,\label{eq:H1}\\
- H_2(M)&=\frac{M(M-1)(3M^2+M-2)}{24},\label{eq:H2}\\
+ H_0(M)&=1,\label{bsw:eq:H0}\\
+ H_1(M)&=\frac{M(M-1)}2,\label{bsw:eq:H1}\\
+ H_2(M)&=\frac{M(M-1)(3M^2+M-2)}{24},\label{bsw:eq:H2}\\
  H_3(M)&=\frac{M^2(M-1)^2(M+1)(M+2)}{48}.
- \label{eq:H3}
+ \label{bsw:eq:H3}
 \end{align}
 Let $D=v\,d/dv$.
 
-\begin{theorem}[Constructive all-orders expansion]\label{thm:all-orders}
+\begin{theorem}[Constructive all-orders expansion]\label{bsw:thm:all-orders}
 Fix $k\ge2$.  As $n\to\infty$, uniformly for $v$ in every compact subset of
 $\CC$, $\Phi_{n,k}(v)$ has a Poincare expansion in integer powers of $1/n$.
 A coefficientwise construction is
-\begin{equation}\label{eq:operator-expansion}
+\begin{equation}\label{bsw:eq:operator-expansion}
  \boxed{\displaystyle
  \Phi_{n,k}(v)\sim
  \sum_{r\ge0}\frac1{N^r}
@@ -503,7 +520,7 @@ Write
 \[
  R_k(z)^n=\sum_{M=0}^{n(k-1)}r_{n,M}z^M.
 \]
-Then \eqref{eq:Phi-exact} is
+Then \eqref{bsw:eq:Phi-exact} is
 \[
  \Phi_{n,k}(v)=\sum_M r_{n,M}\frac{v^M}{N^M}
  \frac{N^M}{\fall NM}.
@@ -515,10 +532,10 @@ For fixed $M$,
  \sim\sum_{r\ge0}\frac{H_r(M)}{N^r}.
 \]
 Since $D$ acts on $v^M$ by multiplication by $M$, this is precisely the
-formal operator rule \eqref{eq:operator-expansion}.
+formal operator rule \eqref{bsw:eq:operator-expansion}.
 
 It remains to justify the asymptotic use when $M$ is not fixed.  The exact
-gamma representation \eqref{eq:gamma-rep} does so.  Split the integral into
+gamma representation \eqref{bsw:eq:gamma-rep} does so.  Split the integral into
 $|T_N-N|\le N^{2/3}$ and its complement.  On the upper tail, gamma Chernoff
 bounds are enough.  On the lower tail one combines the polynomial bound
 $|R_k(v/t)|\le C_{k,V}(1+t^{1-k})$ for $|v|\le V$ with Stirling's formula;
@@ -533,32 +550,65 @@ times a Gaussian majorant, so termwise integration is valid to arbitrary
 fixed order.  Odd half-powers cancel in the integrated expansion, leaving
 integer powers of $1/N$.  The coefficientwise operator computation and the
 Laplace computation agree because both expand the same exact negative moments
-\eqref{eq:negative-moment}.  This proves the Poincare expansion and the stated
+\eqref{bsw:eq:negative-moment}.  This proves the Poincare expansion and the stated
 uniformity.
 \end{proof}
+
+\begin{remark}[Status of the analytic step]\label{bsw:rem:tail-sketch}
+[Added 1 October 2026, batch 73O2.]  The tail estimate is sketched.  The
+coefficientwise operator rule is exact algebra, but the passage to an
+asymptotic statement uniform for $v$ in compact sets is not proved in detail:
+the gamma Chernoff bounds, the superexponential smallness of terms of total
+degree proportional to $N$, and the cancellation of odd half-powers are
+asserted, not derived.  A uniform factorial-moment bound of the type proved in
+the companion path-forest report \texttt{a189281-path-forest-expansions} of
+this collection (its Lemma~4.1, ``Uniform factorial-moment bound'', label
+\texttt{spf:lem:moment-bound}, which bounds the $k$th factorial moment by
+$(\theta\ee^2)^k/k!$ for its own model) would make the truncation rigorous; that
+lemma is not proved here for the present model.
+
+Accordingly, Theorem~\ref{bsw:thm:all-orders} and everything that uses it
+rest on this sketched step: the scale $\kappa_r^{(F)}=O_{k,r}(n^{1-r})$ stated
+after Theorem~\ref{bsw:thm:cumulants}, Theorem~\ref{bsw:thm:log-pgf}
+(through ``the fifth and higher factorial cumulants begin at
+$O_k(n^{-4})$''), Corollaries~\ref{bsw:cor:p-expansion}
+and~\ref{bsw:cor:local}, the specializations
+\eqref{bsw:eq:k2}--\eqref{bsw:eq:k5}, the count, ratio and inverse expansions
+\eqref{bsw:eq:logB}, \eqref{bsw:eq:ratio} and \eqref{bsw:eq:inverse}, and the
+correction terms in the proposed OEIS comments.  They do not depend on it:
+Theorems~\ref{bsw:thm:run-transform}, \ref{bsw:thm:integral},
+\ref{bsw:thm:exact-sum}, \ref{bsw:thm:factorial-moments}
+and~\ref{bsw:thm:cumulants}, Proposition~\ref{bsw:prop:gamma}, and
+Corollary~\ref{bsw:cor:main-limit}, the fixed-$k$ limit law that settles the
+conjecture on A330266.  The intake's numerical check is consistent with the
+displayed coefficients: for $k=2,\ldots,5$ the residual after the
+$n^{-3}$ term of \eqref{bsw:eq:pfull}, multiplied by $\ee^{k-1}n^4$, is
+nearly the same at $n=100$ and $n=400$, as an $O(n^{-4})$ remainder requires.
+That is evidence, not a proof.
+\end{remark}
 
 \section{Exact factorial cumulants}
 
 Define factorial cumulants $\kappa_r^{(F)}$ by
-\begin{equation}\label{eq:fact-cumulants}
+\begin{equation}\label{bsw:eq:fact-cumulants}
  \log\Phi_{n,k}(v)=\sum_{r\ge1}\kappa_r^{(F)}\frac{v^r}{r!}.
 \end{equation}
 They are particularly natural for a Poisson limit: a Poisson variable of mean
 $\lambda$ has $\kappa_1^{(F)}=\lambda$ and all higher factorial cumulants zero.
 
-\begin{theorem}[First four factorial cumulants]\label{thm:cumulants}
+\begin{theorem}[First four factorial cumulants]\label{bsw:thm:cumulants}
 Let $N=kn$.  Whenever the displayed denominators are nonzero,
 \begin{align}
- \kappa_1^{(F)}&=k-1,\label{eq:kappa1}\\
- \kappa_2^{(F)}&=-\frac{(k-1)^2}{N-1},\label{eq:kappa2}\\
- \kappa_3^{(F)}&=\frac{2(k-2)(k-1)^2}{(N-2)(N-1)},\label{eq:kappa3}\\
+ \kappa_1^{(F)}&=k-1,\label{bsw:eq:kappa1}\\
+ \kappa_2^{(F)}&=-\frac{(k-1)^2}{N-1},\label{bsw:eq:kappa2}\\
+ \kappa_3^{(F)}&=\frac{2(k-2)(k-1)^2}{(N-2)(N-1)},\label{bsw:eq:kappa3}\\
  \kappa_4^{(F)}&=-\frac{6(k-1)^2
  \{N(k^2-6k+7)+4k-6\}}
  {(N-3)(N-2)(N-1)^2}.
- \label{eq:kappa4}
+ \label{bsw:eq:kappa4}
 \end{align}
 In particular,
-\begin{equation}\label{eq:mean-var}
+\begin{equation}\label{bsw:eq:mean-var}
  \boxed{\displaystyle
  \EE X_{n,k}=k-1,
  \qquad
@@ -567,18 +617,18 @@ In particular,
 \end{theorem}
 
 \begin{proof}
-Keep terms through $v^4$ in \eqref{eq:Phi-exact}.  Since
+Keep terms through $v^4$ in \eqref{bsw:eq:Phi-exact}.  Since
 \[
  R_k(z)=1+a_{k,1}z+a_{k,2}z^2+a_{k,3}z^3+a_{k,4}z^4+O(z^5),
 \]
 ordinary multinomial expansion gives the first four factorial moments as
 rational functions of $n$ and $N$.  Taking the formal logarithm and using
-\eqref{eq:akm} simplifies to \eqref{eq:kappa1}--\eqref{eq:kappa4}.  This is
-finite polynomial algebra; Appendix~\ref{app:cumulant-algebra} records a
+\eqref{bsw:eq:akm} simplifies to \eqref{bsw:eq:kappa1}--\eqref{bsw:eq:kappa4}.  This is
+finite polynomial algebra; Appendix~\ref{bsw:app:cumulant-algebra} records a
 reproducible symbolic check.  For any integer-valued random variable,
 $\EE X=\kappa_1^{(F)}$ and
 $\Var X=\kappa_1^{(F)}+\kappa_2^{(F)}$, which gives
-\eqref{eq:mean-var}.
+\eqref{bsw:eq:mean-var}.
 \end{proof}
 
 All higher factorial cumulants tend to zero.  The all-orders theorem gives the
@@ -588,9 +638,9 @@ mod-Poisson pattern that controls local corrections.
 \section{Explicit expansion through third order}
 
 Put $\lambda=k-1$.  Expanding the exact cumulants and applying
-Theorem~\ref{thm:all-orders} gives the following compact logarithmic form.
+Theorem~\ref{bsw:thm:all-orders} gives the following compact logarithmic form.
 
-\begin{theorem}[Logarithmic factorial-PGF expansion]\label{thm:log-pgf}
+\begin{theorem}[Logarithmic factorial-PGF expansion]\label{bsw:thm:log-pgf}
 For fixed $k\ge2$, uniformly for $v$ in compact subsets of $\CC$,
 \begin{align}
  \log\Phi_{n,k}(v)
@@ -601,22 +651,22 @@ For fixed $k\ge2$, uniformly for $v$ in compact subsets of $\CC$,
  \{(k^2-6k+7)v^2-4(k-2)v+2\}}
  {4k^3n^3}
 +O_{k,v}(n^{-4}).
-\label{eq:log-pgf-exp}
+\label{bsw:eq:log-pgf-exp}
 \end{align}
 \end{theorem}
 
 \begin{proof}
-Insert \eqref{eq:kappa2}--\eqref{eq:kappa4} into
-\eqref{eq:fact-cumulants} and expand their denominators in $1/n$.  These terms
+Insert \eqref{bsw:eq:kappa2}--\eqref{bsw:eq:kappa4} into
+\eqref{bsw:eq:fact-cumulants} and expand their denominators in $1/n$.  These terms
 supply every contribution through $n^{-3}$ because the fifth and higher
 factorial cumulants begin at $O_k(n^{-4})$, as follows from
-Theorem~\ref{thm:all-orders}.  Collecting powers of $v$ gives
-\eqref{eq:log-pgf-exp}.
+Theorem~\ref{bsw:thm:all-orders}.  Collecting powers of $v$ gives
+\eqref{bsw:eq:log-pgf-exp}.
 \end{proof}
 
 Setting $v=-1$ produces the no-adjacency probability.
 
-\begin{corollary}[No-adjacency transseries]\label{cor:p-expansion}
+\begin{corollary}[No-adjacency transseries]\label{bsw:cor:p-expansion}
 For fixed $k\ge2$,
 \begin{align}
  \log p_{n,k}
@@ -625,7 +675,7 @@ For fixed $k\ge2$,
 -\frac{(k-1)^2(2k-1)}{6k^2n^2}
 -\frac{(k-1)^4}{4k^3n^3}
 +O_k(n^{-4}),
-\label{eq:logp}\\[0.5em]
+\label{bsw:eq:logp}\\[0.5em]
  p_{n,k}
 ={}&\ee^{-(k-1)}\left[
  1-\frac{(k-1)^2}{2kn}
@@ -633,7 +683,7 @@ For fixed $k\ge2$,
 &\hspace{8em}\left.
  -\frac{(k-1)^4(k^2-10k+17)}{48k^3n^3}
  +O_k(n^{-4})\right].
-\label{eq:pfull}
+\label{bsw:eq:pfull}
 \end{align}
 \end{corollary}
 
@@ -645,9 +695,9 @@ orders.
 
 The expansion describes more than the mass at zero.
 
-\begin{corollary}[Fixed local probabilities]\label{cor:local}
+\begin{corollary}[Fixed local probabilities]\label{bsw:cor:local}
 For each fixed $j\ge0$,
-\begin{equation}\label{eq:local}
+\begin{equation}\label{bsw:eq:local}
  \PP(X_{n,k}=j)
  =\ee^{-\lambda}\frac{\lambda^j}{j!}
  \left[1-\frac{(\lambda-j)^2-j}{2kn}+O_{k,j}(n^{-2})\right].
@@ -655,7 +705,7 @@ For each fixed $j\ge0$,
 \end{corollary}
 
 \begin{proof}
-Exponentiating the first correction in \eqref{eq:log-pgf-exp} gives
+Exponentiating the first correction in \eqref{bsw:eq:log-pgf-exp} gives
 \[
  \Phi_{n,k}(v)=\ee^{\lambda v}
  \left(1-\frac{\lambda^2v^2}{2kn}+O(n^{-2})\right).
@@ -666,31 +716,32 @@ by the Poisson mass gives
  -\frac{\lambda^2}{2kn}
  \left(1-\frac{2j}{\lambda}+\frac{j(j-1)}{\lambda^2}\right),
 \]
-which is \eqref{eq:local}.
+which is \eqref{bsw:eq:local}.
 \end{proof}
 
 \section{Specializations to the OEIS rows}
 
-For $k=2,3,4,5$, \eqref{eq:pfull} becomes
+For $k=2,3,4,5$, \eqref{bsw:eq:pfull} becomes
 \begin{align}
  p_{n,2}&=\ee^{-1}\left(1-\frac1{4n}-\frac3{32n^2}
- -\frac1{384n^3}+O(n^{-4})\right),\label{eq:k2}\\
+ -\frac1{384n^3}+O(n^{-4})\right),\label{bsw:eq:k2}\\
  p_{n,3}&=\ee^{-2}\left(1-\frac2{3n}-\frac4{27n^2}
- +\frac4{81n^3}+O(n^{-4})\right),\label{eq:k3}\\
+ +\frac4{81n^3}+O(n^{-4})\right),\label{bsw:eq:k3}\\
  p_{n,4}&=\ee^{-3}\left(1-\frac9{8n}-\frac3{128n^2}
- +\frac{189}{1024n^3}+O(n^{-4})\right),\label{eq:k4}\\
+ +\frac{189}{1024n^3}+O(n^{-4})\right),\label{bsw:eq:k4}\\
  p_{n,5}&=\ee^{-4}\left(1-\frac8{5n}+\frac8{25n^2}
  +\frac{128}{375n^3}+O(n^{-4})\right).
-\label{eq:k5}
+\label{bsw:eq:k5}
 \end{align}
-Thus \eqref{eq:k2} sharpens the known $\ee^{-1}$ law for A007060,
-\eqref{eq:k3} sharpens the $\ee^{-2}$ law printed on A193624, and
-\eqref{eq:k4} supplies explicit corrections for A330266.
+Thus \eqref{bsw:eq:k2} sharpens the known $\ee^{-1}$ law for
+A007060~\cite{oeis007060}, \eqref{bsw:eq:k3} sharpens the $\ee^{-2}$ law
+printed on A193624~\cite{oeis193624}, and \eqref{bsw:eq:k4} supplies explicit
+corrections for A330266~\cite{oeis330266}.
 
 \subsection{The standard 52-card deck}
 
 For $n=13$ and $k=4$, exact enumeration gives
-\begin{equation}\label{eq:deck-prob}
+\begin{equation}\label{bsw:eq:deck-prob}
  p_{13,4}=
  0.04547628233109430448968591097164118590821040881636\ldots.
 \end{equation}
@@ -701,10 +752,10 @@ The successive approximations are
 approximation & numerical value\\
 \midrule
 $\ee^{-3}$ & $0.04978706836786394298$\\
-through $n^{-1}$ in \eqref{eq:k4} & $0.04547857206679879407$\\
-through $n^{-2}$ in \eqref{eq:k4} & $0.04547166742529067684$\\
-through $n^{-3}$ in \eqref{eq:k4} & $0.04547585004466578632$\\
-exponential of \eqref{eq:logp} through $n^{-3}$
+through $n^{-1}$ in \eqref{bsw:eq:k4} & $0.04547857206679879407$\\
+through $n^{-2}$ in \eqref{bsw:eq:k4} & $0.04547166742529067684$\\
+through $n^{-3}$ in \eqref{bsw:eq:k4} & $0.04547585004466578632$\\
+exponential of \eqref{bsw:eq:logp} through $n^{-3}$
 & $0.04547622509184257975$\\
 exact & $0.04547628233109430449$\\
 \bottomrule
@@ -723,7 +774,7 @@ This quantifies the slight underdispersion relative to a Poisson$(3)$ law.
 
 The following table lists $\ee^{k-1}p_{n,k}$, which tends to $1$.  The final
 column is the signed error after subtracting all three displayed correction
-terms in \eqref{eq:pfull}.
+terms in \eqref{bsw:eq:pfull}.
 \begin{center}
 \begin{tabular}{rrrr}
 \toprule
@@ -750,22 +801,22 @@ of the symbolic expansion.
 \subsection{Logarithmic count transseries}
 
 Let $N=kn$ and $\lambda=k-1$.  Combining Stirling's expansion with
-\eqref{eq:logp} yields
+\eqref{bsw:eq:logp} yields
 \begin{align}
  \log B_{n,k}
 ={}&N(\log N-1)+\frac12\log(2\pi N)-\lambda
  +\frac{A_1}{N}+\frac{A_2}{N^2}+\frac{A_3}{N^3}
  +O_k(N^{-4}),
-\label{eq:logB}
+\label{bsw:eq:logB}
 \end{align}
 where
-\begin{equation}\label{eq:A123}
+\begin{equation}\label{bsw:eq:A123}
  A_1=\frac1{12}-\frac{\lambda^2}{2},\qquad
  A_2=-\frac{\lambda^2(2k-1)}6,\qquad
  A_3=-\frac1{360}-\frac{\lambda^4}{4}.
 \end{equation}
 For multiset words,
-\begin{equation}\label{eq:logS}
+\begin{equation}\label{bsw:eq:logS}
  \log S_{n,k}=\log B_{n,k}-n\log(k!).
 \end{equation}
 These formulas separate the universal factorial growth from the finite
@@ -774,7 +825,7 @@ adjacency penalty.
 \subsection{Successive-term ratios}
 
 For fixed $k$,
-\begin{equation}\label{eq:ratio}
+\begin{equation}\label{bsw:eq:ratio}
  \frac{B_{n+1,k}}{B_{n,k}}
  =\prod_{j=1}^k(kn+j)
  \left[1+\frac{(k-1)^2}{2kn^2}
@@ -789,14 +840,14 @@ useful for checking recurrences attached to individual OEIS rows.
 
 Suppose a large value $Y$ is known and one wants to estimate the index $n$
 for which $B_{n,k}\approx Y$.  Set
-\begin{equation}\label{eq:Linv}
+\begin{equation}\label{bsw:eq:Linv}
  L=\log Y+\lambda,
  \qquad
  N_0=\frac{L}{W_0(L/\ee)}.
 \end{equation}
 Then $N_0(\log N_0-1)=L$.  One Newton correction from the remaining terms in
-\eqref{eq:logB} gives
-\begin{equation}\label{eq:inverse}
+\eqref{bsw:eq:logB} gives
+\begin{equation}\label{bsw:eq:inverse}
  \boxed{\displaystyle
  N=N_0-
  \frac{\tfrac12\log(2\pi N_0)+A_1/N_0+A_2/N_0^2+A_3/N_0^3}
@@ -806,11 +857,27 @@ Then $N_0(\log N_0-1)=L$.  One Newton correction from the remaining terms in
 \end{equation}
 This is an inverse transseries in the same spirit as the inversion examples in
 the ProveIt repository.  Further Newton steps and further terms of
-Theorem~\ref{thm:all-orders} extend it mechanically.
+Theorem~\ref{bsw:thm:all-orders} extend it mechanically.
+[Added 1 October 2026, batch 73O2: the inversion examples meant are those of
+the canonical volume \emph{Transseries and Inversion}~\cite{tai}.  The forward
+map $\log B_{n,k}$ of \eqref{bsw:eq:logB} is the volume's gamma carrier
+(theorem ``All-orders expansion of $\Gamma_+^{-1}$'', label
+\texttt{p6:thm:gamma}) perturbed by the power series in $1/N$ of
+\eqref{bsw:eq:logp}, the situation of its theorem ``Perturbed inversion''
+(\texttt{p0:thm:perturbed-inversion}); the volume's chapter ``The
+subfactorial'' (\texttt{p8:sec:top}) treats the derangement numbers the same
+way.  Normalizations differ: here $L=\log Y+\lambda$ and $N_0=L/W_0(L/\ee)$,
+with $\tfrac12\log(2\pi N_0)$ left in the correction; the volume uses
+$R=\log y-\tfrac12\log(2\pi)$.  Formula \eqref{bsw:eq:inverse} is a
+first-order instance of that apparatus, and no novelty is claimed for it.
+Deciding the integer index from an approximate inverse, as in the deck
+example below and in research question~11 of
+Section~\ref{bsw:sec:questions}, is the subject of the volume's staircase
+theorem (\texttt{p0:thm:staircase}).]
 
-For the exact standard-deck count in \eqref{eq:deck-prob}, with $k=4$, the
+For the exact standard-deck count in \eqref{bsw:eq:deck-prob}, with $k=4$, the
 leading Lambert estimate gives $n\approx13.17720934$.  The correction
-\eqref{eq:inverse} gives
+\eqref{bsw:eq:inverse} gives
 \[
  n\approx12.99979618,
 \]
@@ -821,15 +888,16 @@ which correctly identifies the integer index $13$.
 The coefficients $a_{k,m}=m!\binom{k}{m}\binom{k-1}{m}$ are the familiar
 rook numbers of a rectangular board of dimensions $k$ by $k-1$.  This
 explains why rook-polynomial methods naturally occur in exact deck-shuffle
-enumeration.  Enouen's report on the standard deck develops such a direct
+enumeration.  Enouen's report on the standard deck~\cite{enouen} develops such a direct
 rook-polynomial approach.  The reciprocal polynomial $C_k(z)=R_k(-z)$ packages
 all ranks into the compact power $C_k(z)^n$.
 
 Balanced Smirnov words have also been connected explicitly with Hamiltonian
-paths and cycles in complete multipartite graphs.  Recent work by Mehiri gives
+paths and cycles in complete multipartite graphs.  Recent work by
+Mehiri~\cite{mehiri} gives
 bijections and inclusion--exclusion formulas, including nonuniform part sizes.
 The present asymptotic regime keeps the part size $k$ fixed and lets the number
-of parts $n$ grow.  In this regime, Theorem~\ref{thm:factorial-moments} says:
+of parts $n$ grow.  In this regime, Theorem~\ref{bsw:thm:factorial-moments} says:
 \begin{quote}
 Among all ordered vertex lists of $K_{k,k,\ldots,k}$, the fraction that form
 Hamiltonian paths tends to $\ee^{-(k-1)}$, and the number of forbidden
@@ -846,7 +914,7 @@ arithmetic for probabilities:
 \begin{enumerate}[leftmargin=2em]
 \item constructs $C_k(z)=\sum_m(-1)^ma_{k,m}z^m$;
 \item raises it to the $n$th power by exact polynomial convolution;
-\item evaluates \eqref{eq:grouped-sum};
+\item evaluates \eqref{bsw:eq:grouped-sum};
 \item checks the initial terms of A007060, A193624, and A330266;
 \item verifies the exact 52-card value;
 \item writes the numerical convergence table used above.
@@ -860,11 +928,11 @@ The finite core is especially approachable:
 \begin{enumerate}[leftmargin=2em]
 \item define rank words, runs, and the statistic $X$;
 \item prove the run-compression bijection and finite coefficient identity
-\eqref{eq:coeffA};
-\item prove the polynomial identity \eqref{eq:Pexplicit};
+\eqref{bsw:eq:coeffA};
+\item prove the polynomial identity \eqref{bsw:eq:Pexplicit};
 \item reduce the integral notation to the factorial moment identity
 $\int_0^\infty t^m\ee^{-t}dt=m!$;
-\item prove the exact finite sum \eqref{eq:grouped-sum};
+\item prove the exact finite sum \eqref{bsw:eq:grouped-sum};
 \item establish the leading factorial-moment estimate using polynomial degree
 bounds.
 \end{enumerate}
@@ -886,10 +954,10 @@ ranks, with no equal adjacent ranks, then for each fixed $k\ge2$,
  +O_k(n^{-2})\right).
 \]
 More precisely, the number of equal-rank adjacencies converges to
-$\Pois(k-1)$, and \eqref{eq:pfull} gives three correction terms.
+$\Pois(k-1)$, and \eqref{bsw:eq:pfull} gives three correction terms.
 
 \paragraph{A330266.}
-Add \eqref{eq:k4}, together with the exact variance
+Add \eqref{bsw:eq:k4}, together with the exact variance
 $3-9/(4n-1)$ for the adjacency statistic.  The integral on the entry is the
 $k=4$ instance of
 \[
@@ -898,14 +966,19 @@ $k=4$ instance of
 \]
 
 \paragraph{A007060 and A193624.}
-Add \eqref{eq:k2} and \eqref{eq:k3}, respectively.  Their multiset partners
+Add \eqref{bsw:eq:k2} and \eqref{bsw:eq:k3}, respectively.  Their multiset partners
 A114938 and A193638 have the same normalized probabilities because of
-\eqref{eq:labeled-multiset}.
+\eqref{bsw:eq:labeled-multiset}.
 
 A plain-text version is included as \texttt{oeis\_proposed\_updates.txt}; it
 is explicitly marked as unsubmitted.
+[Added 1 October 2026, batch 73O2: shipped as
+\texttt{data/oeis\_proposed\_updates.txt}, unchanged.  Nothing has been
+submitted to the OEIS.  Its correction terms rest on the sketched step of
+Remark~\ref{bsw:rem:tail-sketch}.]
 
 \section{Further research questions and topics}
+\label{bsw:sec:questions}
 
 \begin{enumerate}[leftmargin=2em]
 \item \textbf{Uniformly growing multiplicity.}
@@ -921,7 +994,7 @@ constant and a computable second-order signed correction.
 
 \item \textbf{Cyclic words and Hamiltonian cycles.}
 Also forbid equality between the last and first ranks.  Find the exact
-analogue of \eqref{eq:log-pgf-exp}, taking proper account of oriented versus
+analogue of \eqref{bsw:eq:log-pgf-exp}, taking proper account of oriented versus
 unoriented cycles and rotational symmetries.
 
 \item \textbf{Unequal multiplicities.}
@@ -942,7 +1015,7 @@ expectation may lead to a saddle-point approximation uniformly for
 $x$ growing with $n$.
 
 \item \textbf{All-order closed forms.}
-The operator rule \eqref{eq:operator-expansion} is constructive.  Find a
+The operator rule \eqref{bsw:eq:operator-expansion} is constructive.  Find a
 canonical Bell-polynomial expression for the coefficient of $n^{-r}$ in
 $\log\Phi_{n,k}(v)$, and study sign or factorization patterns in $k$ and $v$.
 
@@ -954,7 +1027,7 @@ insufficient.
 
 \item \textbf{Differential equations and recurrences.}
 For each fixed $k$, derive minimal-order polynomial recurrences for
-$B_{n,k}$ and compare their asymptotic solutions with \eqref{eq:pfull}.  Seek
+$B_{n,k}$ and compare their asymptotic solutions with \eqref{bsw:eq:pfull}.  Seek
 bounds on recurrence order as a function of $k$.
 
 \item \textbf{New OEIS rows and arrays.}
@@ -963,7 +1036,7 @@ by $k$, including $k=5,6$ and exact kernels $P_k$.  Cross-reference the
 labeled, multiset, rook-polynomial, and multipartite-graph interpretations.
 
 \item \textbf{Rigorous inverse error bounds.}
-Turn \eqref{eq:inverse} into an explicit bracketing theorem for the least
+Turn \eqref{bsw:eq:inverse} into an explicit bracketing theorem for the least
 $n$ with $B_{n,k}\ge Y$, including monotonicity thresholds and certified
 rounding.
 
@@ -986,7 +1059,7 @@ opens a tractable family of cyclic, nonuniform, and growing-multiplicity
 problems.
 
 \appendix
-\section{Cumulant algebra}\label{app:cumulant-algebra}
+\section{Cumulant algebra}\label{bsw:app:cumulant-algebra}
 
 For completeness, write
 \[
@@ -999,7 +1072,7 @@ where
  a_3&=\frac{k(k-3)(k-2)^2(k-1)^2}{6},\\
  a_4&=\frac{k(k-4)(k-3)^2(k-2)^2(k-1)^2}{24}.
 \end{align*}
-The coefficient of $v^r$ in \eqref{eq:Phi-exact} is
+The coefficient of $v^r$ in \eqref{bsw:eq:Phi-exact} is
 $\coef{z^r}R_k(z)^n/\fall Nr$.  Thus, for example,
 \begin{align*}
  \EE\fall X2
@@ -1011,9 +1084,9 @@ $\coef{z^r}R_k(z)^n/\fall Nr$.  Thus, for example,
 The fourth factorial moment is obtained from the five partitions
 $4$, $3+1$, $2+2$, $2+1+1$, and $1+1+1+1$.  Applying the standard
 moment-to-cumulant relations and simplifying gives
-\eqref{eq:kappa1}--\eqref{eq:kappa4}.  The accompanying SymPy script performs
+\eqref{bsw:eq:kappa1}--\eqref{bsw:eq:kappa4}.  The accompanying SymPy script performs
 exactly this finite calculation and verifies that the difference from
-\eqref{eq:log-pgf-exp} is $O(n^{-4})$.
+\eqref{bsw:eq:log-pgf-exp} is $O(n^{-4})$.
 
 \section{Exact initial terms for \texorpdfstring{$k=5$}{k=5}}
 
@@ -1029,6 +1102,67 @@ $P_5(t)=t^5-20t^4+120t^3-240t^2+120t$, and
 $B_{n,5}=\int_0^\infty P_5(t)^n\ee^{-t}\,dt$.
 These terms should be independently cross-checked before creating or editing
 an OEIS entry.
+
+\section{Provenance and editorial notes}\label{bsw:app:provenance}
+
+[Added 1 October 2026, batch 73O2.]
+
+\textbf{Source.}  The report was built from one manuscript, manuscript~57 of
+batch~73 of ProveIt's incoming-reports intake: the archive
+\texttt{ProveIt\_Balanced\_Smirnov\_OEIS.zip} (main file
+\texttt{article.tex}, a 17-page PDF).  It arrived in commit
+\texttt{aa43cc555} and was placed in commit \texttt{6e193dd4f}, which deleted
+the archive from \texttt{docs/incoming}; it survives in \texttt{aa43cc555}.
+The manuscript pins no repository revision and cites no repository file.  It
+has no author or preparer line: its author field is the subtitle ``A research
+note on OEIS A007060, A193624, A330266, and related sequences'', and the
+delivered PDF's author metadata is empty.
+
+\textbf{What the write changed.}
+\begin{itemize}[leftmargin=2em]
+\item Every label gained the prefix \texttt{bsw:}; none was otherwise renamed
+ or removed.  The manuscript had 66 labels.
+\item Citation commands were added: the manuscript listed twelve
+ bibliography entries but cited none of them.  They now stand at the first
+ mentions of the OEIS entries, the Smirnov-word generating function, the
+ Laguerre expansion, and the works of Eriksson--Martin, Enouen and Mehiri.
+\item The authors and dates of the two OEIS contributions are named:
+ S.~Kirgizov's fixed-$k$ conjecture (29 September 2023) and D.~Radcliffe's
+ deduction of the case $k=4$ (9 September 2025).
+\item Added: the editorial note after the scope paragraph,
+ Remark~\ref{bsw:rem:tail-sketch} on the sketched analytic step, a note in
+ the inverse section citing the transseries volume~\cite{tai}, a note on the
+ shipped file of proposed OEIS comments, one
+ bibliography entry, the label \texttt{bsw:sec:questions}, and this section.
+\item Nothing was removed.  Every non-claim of the manuscript is kept: no
+ complete literature search or priority claim, the numerical residuals ``not
+ used as proof'', the cross-check required for the $k=5$ terms, and the
+ unsubmitted status of the proposed OEIS comments.
+\end{itemize}
+
+\textbf{Relation to the companion report.}  The path-forest report
+\texttt{a189281-path-forest-expansions} of this collection (batch~73,
+manuscript~60) follows the same chain of method (exact marked-subset
+generating function, Poisson limit, all-orders $1/n$ expansion of a
+factorial probability generating function, Lambert-$W$ inversion) for
+permutations avoiding a fixed positional and value offset, with limit
+Poisson$(\theta)$, $\theta\in\{1,2\}$.  Neither theorem specializes to the
+other.  In the present model the $n$ ranks give $n$ cliques $K_k$ as the
+``value'' relation, whose number grows with $n$, so the hypotheses of the
+path-forest report (a fixed number of long paths) do not hold.  Its uniform
+factorial-moment bound is the device named in
+Remark~\ref{bsw:rem:tail-sketch}.
+
+\textbf{Checks by the intake.}  The intake reran both shipped programs on a
+copy (the CSV is byte-identical; the deck output equal apart from line
+endings; the symbolic script confirms $\kappa_1^{(F)},\ldots,\kappa_4^{(F)}$
+and the $n^{-3}$ expansion), compared the terms of A007060, A193624 and
+A330266 with an independent dynamic program over rank words, confirmed the
+$k=5$ terms (for $n\le4$ by that program, for $n\le7$ by the formula) and the
+52-card value, checked the variances $4/5$, $6/5$, $6/7$ at
+$(n,k)=(3,2),(2,3),(4,2)$ by full enumeration, and rederived by hand the
+local correction, the ratio bracket and $A_1,A_2,A_3$.  These checks do not
+replace an independent review of the proofs.
 
 \begin{thebibliography}{99}
 
@@ -1096,6 +1230,18 @@ P.~Flajolet and R.~Sedgewick,
 NIST Digital Library of Mathematical Functions,
 chapters on the gamma and Laguerre functions,
 \url{https://dlmf.nist.gov/}, accessed 1 October 2026.
+
+\bibitem{tai}\begingroup\raggedright
+[Added in the batch-73O2 write.] V.~Reshetnikov and contributors,
+\emph{Transseries and Inversion}, canonical volume of the ProveIt
+series-and-transseries collection.  Its source is
+\path{Analysis/Transseries/docs/series-and-transseries/}\allowbreak
+\path{Transseries_And_Inversion/transseries_and_inversion.tex}.  Cited here:
+Part ``Inversion: the apparatus for a rapidly growing function''
+(labels \texttt{p0:thm:perturbed-inversion}, \texttt{p0:thm:staircase}),
+chapter on the increasing inverse of Gamma (\texttt{p6:thm:gamma}) and chapter
+``The subfactorial'' (\texttt{p8:sec:top}).  Repository state of placement
+commit \texttt{6e193dd4f}.\par\endgroup
 
 \end{thebibliography}
 
