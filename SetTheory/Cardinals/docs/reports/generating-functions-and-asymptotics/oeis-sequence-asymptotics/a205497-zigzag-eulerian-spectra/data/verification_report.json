@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "python": "3.13.5",
+  "sympy": "1.14.0",
+  "mpmath": "1.3.0",
+  "exact_checks": {
+    "matrix_determinants": "PASS: m=1..9",
+    "polynomial_gcds": "PASS: 820 unordered pairs through 40",
+    "weak_words": "PASS: 28 pairs, m=1..4 and n=0..6",
+    "permutation_counts": "PASS: direct alternating permutation enumeration n=0..9",
+    "finite_row_log_concavity": "PASS: all rows n=0..100; finite evidence only",
+    "rational_certificates": "PASS: columns k=0..12; exact polynomial gcd and identities",
+    "displayed_oeis_numerators": "PASS: columns 2 and 4 agree; column 3 has the documented A205497 sign error: numerator ends +x^14, not -x^14. The corrected sign is already printed by Xin--Zhong, Example 5.11."
+  },
+  "numerical_diagnostics": {
+    "precision_decimal_digits": 100,
+    "max_spectral_relative_error": "2.964583046e-100",
+    "samples": [
+      {
+        "n": 50,
+        "k": 2,
+        "relative_error": "3.6222620281777e-6",
+        "rigorous_formula_bound_evaluated_numerically": "8.1075766667797e-5",
+        "log_concavity_log_ratio": "4.044100735384"
+      },
+      {
+        "n": 100,
+        "k": 5,
+        "relative_error": "6.1534008102721e-6",
+        "rigorous_formula_bound_evaluated_numerically": "4.5336792424553e-5",
+        "log_concavity_log_ratio": "2.3611663268603"
+      },
+      {
+        "n": 200,
+        "k": 10,
+        "relative_error": "2.5979371393194e-6",
+        "rigorous_formula_bound_evaluated_numerically": "1.1561826560478e-5",
+        "log_concavity_log_ratio": "1.511072665902"
+      },
+      {
+        "n": 500,
+        "k": 20,
+        "relative_error": "2.3031229397083e-8",
+        "rigorous_formula_bound_evaluated_numerically": "8.0443147446121e-8",
+        "log_concavity_log_ratio": "1.0814031176125"
+      },
+      {
+        "n": 1000,
+        "k": 40,
+        "relative_error": "2.5624191637925e-8",
+        "rigorous_formula_bound_evaluated_numerically": "6.8831340425883e-8",
+        "log_concavity_log_ratio": "0.58059730664683"
+      },
+      {
+        "n": 2000,
+        "k": 80,
+        "relative_error": "3.7855203621851e-8",
+        "rigorous_formula_bound_evaluated_numerically": "8.8119842265301e-8",
+        "log_concavity_log_ratio": "0.30109756011781"
+      }
+    ]
+  },
+  "limits": [
+    "Finite checks do not prove unbounded assertions.",
+    "The article supplies ordinary mathematical proofs, not Lean certificates.",
+    "No OEIS edit, repository change, or claim of exhaustive priority search was made."
+  ]
+}

@@ -1,0 +1,1884 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{mathtools,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{graphicx,float}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+ pdftitle={Three Exceptions Before Every Square},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov},
+ pdfsubject={Sharp asymptotics and inverse expansions for OEIS A097356 and related partitions},
+ pdfkeywords={OEIS, A097356, restricted partitions, saddle point, asymptotic expansion, inversion}
+}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Square-root-restricted partitions}
+\fancyhead[R]{\small OEIS research report}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\dist}{dist}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathcal E}
+\newcommand{\G}{\mathcal G}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\fracpart}[1]{\left\{#1\right\}}
+\newcommand{\coeff}[2]{\left[#1\right]#2}
+\newcommand{\oeis}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,frame=single}
+
+\title{\textbf{Three Exceptions Before Every Square}\\[5pt]
+\large Sharp OEIS partition asymptotics, an all-orders coefficient calculus,\\
+and phase-sensitive inverse transseries}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{October 1, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $A(N)$ count the partitions of $N$ whose parts do not exceed
+$\lfloor\sqrt N\rfloor$; this is OEIS A097356. A posted conjecture identifies
+$0.088154883798697116\ldots$ as its lower asymptotic constant. We prove that
+this is exactly the sharp limit-inferior constant, while distinguishing that
+statement from a literal lower-bound inequality. The latter is eventually
+false at precisely three indices in every square block: the three integers
+immediately preceding the next square.
+
+The proof is obtained from a uniform, all-orders expansion for
+$p_m(\alpha m^2+\sigma m+\tau)$, where $p_m$ counts partitions with parts at
+most $m$. An explicit finite Gaussian coefficient operator generates every
+correction. For A097356 the expansion has a nonvanishing phase factor
+$\rho^{\{\sqrt N\}}$ and polynomial corrections. We derive its cluster set,
+limiting distribution, summatory asymptotic, and inverse staircase. A
+Lambert-$W_{-1}$ core suffices for the square subsequence, but the full
+sequence requires an additional piecewise-linear phase map: omitting it
+can cause an index error of order $\log Y$, whereas including it gives an
+$O(1)$ error. The shifted quadratic sequences A206227 and A206240 are
+covered by the same calculus.
+
+The leading restricted-partition asymptotic is classical Szekeres theory,
+not a new discovery here. The endpoint classification and the detailed
+coefficient and inverse refinements are developed explicitly in this
+report. Analytic proofs, exact rational sign certificates, and
+high-precision checks are separated throughout. No complete
+exponentially improved transseries, effective last exceptional block,
+or machine-checked formalization is claimed.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Included artifacts.} Editable \LaTeX, compiled PDF, two figures,
+reproducible Python code, exact rational certificates, and numerical tables.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{The OEIS question and the scope of the result}
+\label{sec:scope}
+
+\subsection{Why this family is a worthwhile target}
+The restricted partition function
+\begin{equation}
+ p_m(N)=[q^N]P_m(q),\qquad
+ P_m(q)=\prod_{j=1}^m(1-q^j)^{-1},
+ \label{eq:definition}
+\end{equation}
+is a basic object in enumerative combinatorics. The cutoff $m\asymp\sqrt N$
+is a natural two-parameter regime, not an artificially selected sparse
+sequence. In particular,
+\begin{equation}
+ A(N)=p_{\lfloor\sqrt N\rfloor}(N)\quad(N\ge1),\qquad A(0)=1
+ \label{eq:A}
+\end{equation}
+is \oeis{A097356}. Its mild block oscillation comes from a deterministic
+integer cutoff; it is not erratic behavior of unknown origin.
+
+The entry, inspected on October 1, 2026, credits V\'aclav Kote\v{s}ovec with a
+January 8, 2024 formula giving the square-subsequence constants and a
+conjectured lower constant for the complete sequence \cite{oeisA}. The
+wording makes two mathematically different readings possible:
+\begin{align}
+ \liminf_{N\to\infty}N A(N)d^{-\sqrt N}&=C_-,
+ \label{eq:liminf-reading}\\
+ A(N)&\ge C_-\frac{d^{\sqrt N}}{N}
+ \quad\hbox{for every sufficiently large }N.
+ \label{eq:literal-reading}
+\end{align}
+This report proves \eqref{eq:liminf-reading} and disproves
+\eqref{eq:literal-reading}, with an exact eventual classification of its
+violations. An asymptotic envelope need not be an eventual inequality;
+that distinction is the central mathematical point.
+
+Three related entries supply useful comparisons:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Entry & Definition & Role here\\
+\midrule
+\oeis{A206226} & $p_m(m^2)$ & square subsequence\\
+\oeis{A206227} & $p_m(m^2+m)$ & positive linear shift\\
+\oeis{A206240} & $p_m(m^2-m)$ & negative linear shift\\
+\bottomrule
+\end{tabular}
+\end{center}
+Their leading constants were already recorded in 2014
+\cite{oeisSquare,oeisPlus,oeisMinus}. Notice that
+$p_m(m^2-m)$ is \emph{not} $A(m^2-m)$: the latter generally has cutoff
+$m-1$. Keeping this indexing distinction prevents a misleading
+identification of the lower-envelope constant.
+
+\subsection{What is classical, what is proved here, and what is not claimed}
+Szekeres' restricted-partition asymptotic is developed in Canfield's
+recursion-based proof and in Romik's probabilistic proof
+\cite{canfield,romik}. Our leading term is a specialization of that
+classical theory. OEIS A206226 also already records the family
+$p_m(jm^2)\sim c(j)d(j)^m/m^2$ and a dilogarithmic equation for $d(j)$
+\cite{oeisSquare}. We therefore do not count recovery of that leading
+term, by itself, as a new theorem of independent priority.
+
+The specific results developed here are a uniform bounded-offset
+all-orders formula with an executable coefficient operator, its complete
+floor-phase conversion, the three-exception endpoint theorem, and
+phase-sensitive inverse formulas. The summatory law and the limiting
+distribution are additional consequences. The consulted sources do not
+supply these particular refinements in the form proved below; this is
+not an exhaustive priority certification of the entire literature.
+
+The work follows the organization of ProveIt's transseries program:
+separate the dominant core, unit-series coefficients, remainder
+transport, and integer staircase. The inspected repository checkpoint is
+\nolinkurl{1f1981f682b2878bde51a6ad40c22777f362fc05}. Its transseries README
+identifies relevant coefficient, Lambert-core, remainder-transport, and
+staircase modules \cite{proveit}. This report supplies conventional
+mathematical proofs and executable checks, not a new Lean development.
+None of the analytic estimates below is assumed to follow automatically
+from that repository inventory.
+
+\paragraph{Precise meaning of ``all orders.''}
+For every fixed $K$, the stated approximation has a proved remainder
+of the next indicated order. No convergence of the infinite correction
+series is asserted. The floor-dependent expansion is a phase-parametrized
+Poincar\'e expansion, not an ordinary power--logarithmic transseries of a
+smooth germ. Noncentral arcs are smaller than every algebraic order
+relative to the leading saddle, but their separate exponential sectors
+and Stokes data are not determined here.
+
+\section{Main results at a glance}
+\label{sec:main}
+
+Let $u>0$ be the unique solution of
+\begin{equation}
+ \int_0^1\frac{x}{\e^{ux}-1}\dd x=1.
+ \label{eq:u-one}
+\end{equation}
+Set
+\begin{equation}
+ \rho=1-\e^{-u},\qquad
+ H=2u-\log\rho,\qquad d=\e^H,\qquad
+ C=\frac{u}{2\pi\sqrt{2-3\e^{-u}}},\qquad C_-=C\rho.
+ \label{eq:constants-one}
+\end{equation}
+The square root in $C$ is positive by the variance identity proved in
+\cref{sec:saddle}. Numerical values, included for orientation rather
+than as definitions, are
+\begin{align*}
+ u&=0.814651136747611096956850553134\ldots,\\
+ H&=2.214122138515842343608904165265\ldots,\\
+ d&=9.153370192454122461948530292401\ldots,\\
+ C&=0.158208720267250414976631099924\ldots,\\
+ \rho&=0.557206225104302225757470174656\ldots,\\
+ C_-&=0.088154883798697116516927278293\ldots.
+\end{align*}
+The value of $d$ agrees with \oeis{A258268} \cite{oeisD}.
+
+\begin{theorem}[Phase expansion and sharp envelopes]
+\label{thm:main-phase}
+Put $t=\sqrt N$ and $\theta=\{\sqrt N\}$. For every fixed $K\ge0$ there are
+explicit polynomials $P_k$, with $P_0=1$ and $\deg P_k\le2k$, such that
+\begin{equation}
+ A(N)=\frac{C\e^{Ht}}{t^2}\rho^\theta
+ \left(\sum_{k=0}^K\frac{P_k(\theta)}{t^k}
+       +O(t^{-K-1})\right),
+ \label{eq:main-phase}
+\end{equation}
+uniformly for all integer $N\to\infty$. In particular, for
+$R(N)=N A(N)\e^{-H\sqrt N}$,
+\begin{equation}
+ \liminf R(N)=C_-,\qquad \limsup R(N)=C,
+ \label{eq:sharp-limits}
+\end{equation}
+and the full set of subsequential limits is $[C_-,C]$.
+\end{theorem}
+
+\begin{theorem}[Exactly three lower-envelope violations]
+\label{thm:three}
+For every sufficiently large integer $m$, and every integer
+$m^2\le N<(m+1)^2$,
+\begin{equation}
+ A(N)<C_-\frac{d^{\sqrt N}}{N}
+ \quad\Longleftrightarrow\quad
+ N\in\{(m+1)^2-3,(m+1)^2-2,(m+1)^2-1\}.
+ \label{eq:three}
+\end{equation}
+Furthermore $A(N)<C d^{\sqrt N}/N$ for all sufficiently large $N$.
+The number of violations of the lower inequality up to $X$ is
+$3\sqrt X+O(1)$.
+\end{theorem}
+
+The phrase ``sufficiently large'' is essential. The proof gives existence
+of a cutoff, not a certified smallest cutoff. For example, the numerical
+checks in \cref{sec:numerics} show that the third-last point is still
+\emph{above} the lower envelope in the block $m=64$, and below it in the
+block $m=128$.
+
+\begin{theorem}[Global phase-sensitive inverse]
+\label{thm:main-inverse}
+Let $Q(Y)=\min\{N\ge0:A(N)\ge Y\}$ and define the large-branch Lambert core
+\begin{equation}
+ X(Y)=-\frac2H W_{-1}\left(-\frac H2\sqrt{\frac CY}\right),
+ \qquad \gamma=\frac{2u}{H}=0.735868290711\ldots.
+ \label{eq:core}
+\end{equation}
+For $x=k+\eta$, $k=\lfloor x\rfloor$ and $0\le\eta<1$, define
+\begin{equation}
+ T(x)=k+\min\left(\frac\eta\gamma,1\right).
+ \label{eq:T}
+\end{equation}
+Then uniformly as $Y\to\infty$,
+\begin{equation}
+ \sqrt{Q(Y)}=T(X(Y))+O(X(Y)^{-1}),\qquad
+ Q(Y)=T(X(Y))^2+O(1).
+ \label{eq:global-inverse}
+\end{equation}
+Replacing $T(X)$ by $X$ can instead incur an index error of order
+$X\asymp\log Y$. Away from the phase transition points, the inverse has
+explicit all-orders interior expansions and exact square plateaus.
+\end{theorem}
+
+The rest of the report proves these statements, explains how to generate
+their coefficients, and records reproducible checks.
+
+\section{The saddle and the classical leading term}
+\label{sec:saddle}
+
+For the more general regime $N=\alpha m^2+\sigma m+\tau$, define
+\begin{align}
+ F(z)&=-\int_0^1\log(1-\e^{-zx})\dd x
+      =\frac{\zeta(2)-\Li_2(\e^{-z})}{z},
+ \label{eq:F}\\
+ J(u)&=\int_0^1\frac{x}{\e^{ux}-1}\dd x=-F'(u),
+ \label{eq:J}\\
+ \ell(z)&=\frac12\log\frac{z}{1-\e^{-z}}.
+ \label{eq:ell}
+\end{align}
+For real positive $z$ these are unambiguous real functions. Analytic
+continuations used below are restricted to a small complex neighborhood
+of a positive saddle, with the branches continued from positive reals.
+
+\begin{lemma}[Existence, positivity, and useful identities]
+\label{lem:saddle}
+For every $\alpha>0$ there is a unique $u=u(\alpha)>0$ satisfying
+$J(u)=\alpha$. It depends real-analytically on $\alpha$. Define
+\begin{equation}
+ V=F''(u),\quad H=\alpha u+F(u),\quad
+ C=\frac{\e^{\ell(u)}}{2\pi\sqrt V},\quad \rho=1-\e^{-u}.
+ \label{eq:general-constants}
+\end{equation}
+Then $V>0$, and
+\begin{align}
+ F(u)&=\alpha u-\log\rho,
+ & H&=2\alpha u-\log\rho,\label{eq:F-identity}\\
+ uV&=2\alpha-\frac1{\e^u-1},
+ & C&=\frac{u}{2\pi\sqrt{2\alpha-(2\alpha+1)\e^{-u}}}.
+ \label{eq:variance-identity}
+\end{align}
+\end{lemma}
+\begin{proof}
+Differentiation under the integral gives
+\[
+ J'(u)=-\int_0^1\frac{x^2\e^{ux}}{(\e^{ux}-1)^2}\dd x<0,
+ \qquad V=-J'(u)>0.
+\]
+The integral satisfies $J(u)\sim1/u$ at zero, and
+$J(u)\le u^{-2}\int_0^\infty y/(\e^y-1)\dd y\to0$ at infinity.
+Existence and uniqueness follow by continuity, and analytic dependence
+follows from the implicit function theorem because $J'(u)\ne0$.
+
+Integration by parts in $F$ gives
+$F(u)=-\log(1-\e^{-u})+uJ(u)$; the boundary term at $x=0$ is zero since
+$x\log x\to0$. Write
+$J(u)=u^{-2}\int_0^u y/(\e^y-1)\dd y$ and differentiate to obtain
+$J'(u)=-2J(u)/u+1/[u(\e^u-1)]$. This proves the variance identity.
+Substitution into $\e^{\ell(u)}/(2\pi\sqrt V)$ gives the displayed
+expression for $C$. Positivity of its radicand is therefore a consequence
+of $V>0$, not a numerical assumption.
+\end{proof}
+
+\paragraph{Comparison with the existing dilogarithmic constant.}
+If $r=\e^u$, differentiation and the value at $u=0$ show
+\begin{equation}
+ \Li_2(1-\e^u)
+ =-\frac{u^2}{2}-\int_0^u\frac{x}{\e^x-1}\dd x
+ =-(\alpha+\tfrac12)u^2.
+ \label{eq:dilog-match}
+\end{equation}
+Consequently $r$ solves
+$\Li_2(1-r)+(\alpha+1/2)\log^2r=0$, and
+\begin{equation}
+ \e^H=\frac{r^{2\alpha+1}}{r-1}.
+ \label{eq:d-match}
+\end{equation}
+This is the same parametrization recorded in A206226
+\cite{oeisSquare}. In Szekeres' usual variable $t=m/\sqrt N$, the leading
+case has $t=\alpha^{-1/2}$; the relation
+$t^2=u^2/\int_0^u x/(\e^x-1)\dd x$ in Canfield's formulation is exactly
+$J(u)=\alpha$ \cite{canfield}. These identities explicitly reconcile our
+normalization with prior theory.
+
+\section{Euler--Maclaurin expansion of the finite partition product}
+\label{sec:EM}
+
+The apparent singularity at the origin must be removed before applying
+Euler--Maclaurin. Put
+\begin{equation}
+ h(z)=\log\frac{z}{1-\e^{-z}},\qquad h(0)=0.
+ \label{eq:h}
+\end{equation}
+This function is analytic near zero, and along a small neighborhood of any
+compact positive-real segment.
+
+\begin{proposition}[All-orders logarithmic product]
+\label{prop:product}
+For every $R\ge0$, uniformly in a sufficiently small fixed complex
+neighborhood of a positive saddle,
+\begin{align}
+ \log P_m(\e^{-z/m})
+ &=mF(z)-\frac12\log(2\pi m)+\ell(z)
+   +\sum_{r=1}^R\frac{E_{2r-1}(z)}{m^{2r-1}}
+   +O(m^{-2R-1}),\label{eq:EM}\\
+ E_{2r-1}(z)
+ &=-\frac{B_{2r}}{(2r)!}z^{2r-1}\Li_{2-2r}(\e^{-z})
+   -\mathbf1_{r=1}\frac z{24}.
+ \label{eq:E}
+\end{align}
+The same estimate holds after any fixed number of local $z$-derivatives,
+with a possibly smaller neighborhood. The first two terms are
+\begin{equation}
+ E_1(z)=-\frac z{24}\coth\frac z2,
+ \qquad E_3(z)=\frac{z^3}{720}\Li_{-2}(\e^{-z}).
+ \label{eq:Efirst}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Separate the logarithmic singularity exactly:
+\begin{equation}
+ \log P_m(\e^{-z/m})
+ =-m\log(z/m)-\log(m!)+\sum_{j=1}^m h(zj/m).
+ \label{eq:regularization}
+\end{equation}
+Apply Euler--Maclaurin to the last sum. Its integral term is
+$m\int_0^1h(zx)\dd x$, its endpoint term is $h(z)/2$, and its
+$m^{-(2r-1)}$ term is
+\[
+ \frac{B_{2r}}{(2r)!}z^{2r-1}
+ \bigl(h^{(2r-1)}(z)-h^{(2r-1)}(0)\bigr).
+\]
+Stirling's expansion of $\log(m!)$ contributes
+$-B_{2r}/[2r(2r-1)]$ at the same order. Also
+$1-\log z+\int_0^1h(zx)\dd x=F(z)$.
+
+For odd $p=2r-1$,
+\[
+ h^{(p)}(z)=\frac{(p-1)!}{z^p}-\Li_{1-p}(\e^{-z}),
+ \qquad
+ h^{(p)}(0)=\begin{cases}1/2,&p=1,\\0,&p\ge3.\end{cases}
+\]
+The factorial term cancels the Stirling term exactly. The remaining
+terms are \eqref{eq:E}. Taking Euler--Maclaurin and Stirling sufficiently
+far gives the displayed remainder; the next omitted odd power is
+$m^{-2R-1}$. All relevant derivatives are bounded on a fixed compact
+complex neighborhood. Uniformity follows from their remainder formulas,
+and differentiated versions follow by Cauchy's estimates on a slightly
+larger neighborhood. The formulas for $E_1,E_3$ follow from
+$B_2=1/6$, $B_4=-1/30$ and
+$\Li_0(\e^{-z})=1/(\e^z-1)$.
+\end{proof}
+
+The special $-z/24$ in $E_1$ is easy to miss. Omitting it changes the
+first correction and can invalidate the very small sign margin that
+separates the third-last and fourth-last points of a block.
+
+\section{An explicit all-orders coefficient calculus}
+\label{sec:coefficients}
+
+\begin{theorem}[Uniform bounded-offset expansion]
+\label{thm:allorders}
+Fix a compact interval $I\subset(0,\infty)$ and $M>0$. For
+$\alpha\in I$, $|\sigma|,|\tau|\le M$, and integer
+$N=\alpha m^2+\sigma m+\tau\ge0$, one has, for every fixed $K\ge0$,
+\begin{equation}
+ p_m(N)=\frac{C\e^{Hm+\sigma u}}{m^2}
+ \left(\sum_{k=0}^K\frac{D_k(\alpha;\sigma,\tau)}{m^k}
+       +O(m^{-K-1})\right).
+ \label{eq:allorders}
+\end{equation}
+Here $u,H,C,V$ are as in \cref{lem:saddle}, $D_0=1$, and the remainder is
+uniform over all the indicated parameters. Each $D_k$ is analytic in
+$\alpha$ and polynomial in $\sigma,\tau$ of weighted degree at most $2k$,
+where $\sigma$ has weight $1$ and $\tau$ has weight $2$.
+\end{theorem}
+
+We first give a finite formula for every coefficient; the analytic proof
+of the expansion follows in \cref{sec:proof-saddle}.
+
+\subsection{The Gaussian functional}
+Define a linear functional on polynomials in $y$ by
+\begin{equation}
+ \G(y^{2j})=(-1)^j\frac{(2j)!}{2^j j!},\qquad
+ \G(y^{2j+1})=0.
+ \label{eq:gaussian}
+\end{equation}
+Equivalently, $\G(f)=\mathbb E[f(\ii Z)]$ for a standard normal real
+variable $Z$. The alternating sign is essential: this is a vertical
+saddle contour, not a real Laplace maximum with every even moment
+positive.
+
+Let $v$ be a formal variable, to be substituted by $m^{-1/2}$. All
+functions and derivatives in the following definition are evaluated at
+$u$ unless an argument is displayed:
+\begin{align}
+ \E(v,y)={}&
+ \sum_{r\ge3}\frac{F^{(r)}(u)y^r}{r!V^{r/2}}v^{r-2}
+ +\sum_{r\ge1}\frac{\ell^{(r)}(u)y^r}{r!V^{r/2}}v^r
+ +\frac{\sigma y}{\sqrt V}v \notag\\
+ &+\tau\left(u+\frac{vy}{\sqrt V}\right)v^2
+ +\sum_{r\ge1}E_{2r-1}\left(u+\frac{vy}{\sqrt V}\right)v^{4r-2}.
+ \label{eq:formal-exponent}
+\end{align}
+Then the coefficient formula is
+\begin{equation}
+ \boxed{\quad D_k(\alpha;\sigma,\tau)
+       =\G\left([v^{2k}]\exp\E(v,y)\right).\quad}
+ \label{eq:D-operator}
+\end{equation}
+For fixed $k$, this is a finite calculation. Only the finitely many terms
+of $\E$ through degree $2k$ are needed; in particular no derivative of
+$F$ beyond order $2k+2$ occurs.
+
+\subsection{A recurrence that avoids symbolic exponentiation}
+Write $\E=\sum_{j\ge1}e_j(y)v^j$ and
+$\exp\E=\sum_{n\ge0}R_n(y)v^n$. Differentiating the latter identity gives
+\begin{equation}
+ R_0=1,\qquad
+ R_n=\frac1n\sum_{j=1}^n j\,e_jR_{n-j},\qquad
+ D_k=\G(R_{2k}).
+ \label{eq:exp-recursion}
+\end{equation}
+This is the recurrence implemented by the included coefficient generator.
+Parity in \eqref{eq:formal-exponent} implies that $R_n$ is odd in $y$
+when $n$ is odd. Hence all half-integer orders vanish after applying
+$\G$. Assigning weights $1,2$ to $\sigma,\tau$ proves the degree bound:
+no parameter monomial of weight above $n$ can occur in $R_n$.
+
+\subsection{The first correction in closed form}
+\begin{proposition}
+\label{prop:D1}
+With every derivative evaluated at $u$,
+\begin{align}
+ D_1(\alpha;\sigma,\tau)={}&E_1+\tau u
+ -\frac{\ell''+(\ell'+\sigma)^2}{2V}
+ +\frac{F'''(\ell'+\sigma)}{2V^2}\notag\\
+ &+\frac{F''''}{8V^2}
+ -\frac{5(F''')^2}{24V^3}.
+ \label{eq:D1}
+\end{align}
+\end{proposition}
+\begin{proof}
+The first two exponent polynomials are
+\begin{align*}
+ e_1(y)&=\frac{F'''y^3}{6V^{3/2}}
+       +\frac{(\ell'+\sigma)y}{\sqrt V},\\
+ e_2(y)&=\frac{F''''y^4}{24V^2}
+       +\frac{\ell''y^2}{2V}+\tau u+E_1.
+\end{align*}
+Thus $D_1=\G(e_2+e_1^2/2)$. Substitute
+$\G(y^2)=-1$, $\G(y^4)=3$, and $\G(y^6)=-15$.
+\end{proof}
+
+\subsection{Quadratic subsequences}
+Hereafter, unless stated otherwise, $\alpha=1$, and its argument is
+suppressed in $D_k$. For $s\in\{-1,0,1\}$,
+\begin{equation}
+ p_m(m^2+sm)=\frac{C\e^{su}d^m}{m^2}
+ \left(\sum_{k=0}^K D_k(s,0)m^{-k}+O(m^{-K-1})\right).
+ \label{eq:shifted}
+\end{equation}
+The three amplitudes are
+\begin{align*}
+ C\e^{-u}&=0.070053836468553298459703821631\ldots,\\
+ C&=0.158208720267250414976631099924\ldots,\\
+ C\e^{u}&=0.357296622574509427027918801595\ldots.
+\end{align*}
+These agree with the existing OEIS leading constants
+\cite{oeisMinus,oeisSquare,oeisPlus}; the corrections are given below.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{r r r r}
+\toprule
+$k$ & $D_k(-1,0)$ & $D_k(0,0)$ & $D_k(1,0)$\\
+\midrule
+1 & $0.278435069142632$ & $-0.374524459843658$ & $-1.703356625147841$\\
+2 & $0.163412124668439$ & $0.073021917936842$ & $2.310863729199545$\\
+3 & $0.083388796626141$ & $-0.011224827729668$ & $-2.892483136425176$\\
+4 & $0.032699494081358$ & $0.005120280302845$ & $3.473238845599285$\\
+\bottomrule
+\end{tabular}
+\caption{Numerical values of exact coefficients defined by
+\eqref{eq:D-operator}. The code evaluates them at arbitrary working
+precision; their decimal displays are not the definitions.}
+\label{tab:D}
+\end{table}
+
+\section{Proof of the uniform saddle expansion}
+\label{sec:proof-saddle}
+
+A formal local saddle expansion is not, by itself, a proof of coefficient
+asymptotics. The remaining contour must be bounded, uniformly in the
+parameters. We provide that argument explicitly.
+
+\subsection{A trigonometric estimate}
+\begin{lemma}
+\label{lem:trig}
+There exist $c>0$ and $m_0$ such that for $m\ge m_0$ and $|\theta|\le\pi$,
+\begin{equation}
+ \sum_{j=\lceil m/2\rceil}^m(1-\cos(j\theta))
+ \ge c m\min(1,m^2\theta^2).
+ \label{eq:trig}
+\end{equation}
+\end{lemma}
+\begin{proof}
+When $|\theta|\le1/m$, use $1-\cos x\ge c_0x^2$ for $|x|\le1$ and
+$\sum_{j=\lceil m/2\rceil}^m j^2\ge c_1m^3$.
+For $|\theta|\ge K/m$, a finite geometric sum gives
+\[
+ \left|\sum_{j=\lceil m/2\rceil}^m\e^{\ii j\theta}\right|
+ \le\frac1{|\sin(\theta/2)|}\le\frac\pi{|\theta|}.
+\]
+Choose a fixed sufficiently large $K$. The number of summands is at
+least $m/2$, so subtracting the real part of this sum gives a positive
+multiple of $m$.
+
+For the remaining compact range $1/m\le|\theta|\le K/m$, put
+$z=m|\theta|$. Uniform Riemann-sum convergence identifies the sum divided
+by $m$ with
+$\int_{1/2}^1(1-\cos zx)\dd x+O(1/m)$, uniformly for $1\le z\le K$.
+This continuous integral is strictly positive for every $z>0$: its
+nonnegative integrand could have zero integral only if $\cos zx=1$
+throughout an interval. Its minimum on $[1,K]$ is therefore positive.
+Combining the three ranges proves the claim.
+\end{proof}
+
+\subsection{Suppression away from the central saddle}
+Let $r_m=\e^{-u/m}$. Directly from the Euler product,
+\begin{equation}
+ \frac{|P_m(r_m\e^{\ii\theta})|}{P_m(r_m)}
+ =\prod_{j=1}^m
+ \left(1+
+ \frac{2r_m^j(1-\cos j\theta)}{(1-r_m^j)^2}\right)^{-1/2}.
+ \label{eq:modulus}
+\end{equation}
+If $\alpha$ ranges over a compact subset of $(0,\infty)$, the associated
+$u$ ranges over a compact subset of $(0,\infty)$. On
+$m/2\le j\le m$ the quantities
+$2r_m^j/(1-r_m^j)^2$ have positive uniform lower and finite upper bounds.
+Since $0\le1-\cos j\theta\le2$, taking logarithms in
+\eqref{eq:modulus} and retaining just these factors gives
+\begin{equation}
+ \frac{|P_m(r_m\e^{\ii\theta})|}{P_m(r_m)}
+ \le\exp\{-c m\min(1,m^2\theta^2)\}.
+ \label{eq:minor-arcs}
+\end{equation}
+The coefficient integral is
+\begin{equation}
+ p_m(N)=\frac{r_m^{-N}}{2\pi}
+ \int_{-\pi}^{\pi}P_m(r_m\e^{\ii\theta})\e^{-\ii N\theta}\dd\theta.
+ \label{eq:cauchy}
+\end{equation}
+For fixed $0<\varepsilon<1/6$, the portion
+$|\theta|\ge m^{-3/2+\varepsilon}$ is bounded in modulus by
+$r_m^{-N}P_m(r_m)\exp(-c m^{2\varepsilon})$. The leading coefficient
+scale is a constant multiple of
+$r_m^{-N}P_m(r_m)m^{-3/2}$. Their ratio is consequently smaller than
+$m^{-L}$ for every fixed $L$.
+
+This estimate controls \emph{all} the other arcs simultaneously; no
+unproved assumption that the positive real saddle is the only relevant
+contribution has been made.
+
+\subsection{Central expansion and its remainder}
+Write $z=u+\ii w$ in the equivalent vertical contour, so the integrand
+contains
+\[
+ \exp\{m(F(z)+\alpha z)+\sigma z+\tau z/m\}
+ (2\pi m)^{-1/2}\exp\left\{\ell(z)+
+ \sum_{r\ge1}E_{2r-1}(z)m^{-(2r-1)}\right\}.
+\]
+At $z=u$, $F'(u)+\alpha=0$ and $F''(u)=V>0$. Put
+$z=u+\ii Z/\sqrt{mV}$. The quadratic term is $-Z^2/2$; all remaining
+terms in the exponent are precisely \eqref{eq:formal-exponent} with
+$v=m^{-1/2}$ and $y=\ii Z$. The constant factors and the Jacobian combine
+to
+\[
+ \frac{\e^{mH+\sigma u+\ell(u)}}{2\pi m^2\sqrt V}
+ =\frac{C\e^{mH+\sigma u}}{m^2}.
+\]
+
+For completeness, the usual Taylor integration can be made uniform as
+follows. Work first in the range $|Z|\le c_2m^\varepsilon$, expand through
+$v^{2K+1}$, and take \cref{prop:product} to sufficiently high order.
+The analyticity bounds on a fixed neighborhood show that the remainder,
+after factoring out $\e^{-Z^2/2}$, is bounded by
+\[
+ C_K m^{-K-1}(1+|Z|^{M_K})\e^{Z^2/4}
+\]
+for some fixed integer $M_K$ and all sufficiently large $m$. Indeed the
+first omitted Taylor terms have polynomial growth in $Z$, while the
+nonquadratic exponential is bounded by
+$\exp(Cm^{-1/2}|Z|^3+C m^{-1/2}|Z|+\cdots)$; on this range it can be
+absorbed into $\e^{Z^2/4}$ after adjusting a constant near $Z=0$.
+If necessary, reduce $\varepsilon$ depending on $K$ to justify each
+finite Taylor remainder uniformly. The bound is integrable against the
+remaining $\e^{-Z^2/2}$.
+
+The tails of the corresponding Gaussian polynomial integrals are
+superpolynomially small. Terms of odd degree in $v$ are odd in $Z$ and
+integrate to zero on the symmetric central interval. Thus termwise
+integration gives \eqref{eq:D-operator} and a relative
+$O(m^{-K-1})$ remainder. Together with \eqref{eq:minor-arcs}, this proves
+\cref{thm:allorders}, including its uniformity and analyticity assertions.
+
+\section{Converting to the floor-dependent expansion}
+\label{sec:floor}
+
+Let $t=\sqrt N$, $m=\lfloor t\rfloor$, and $\theta=t-m$. The exact identity
+\begin{equation}
+ N=m^2+2\theta m+\theta^2
+ \label{eq:phase-substitution}
+\end{equation}
+allows us to apply \cref{thm:allorders} with
+$\sigma=2\theta$, $\tau=\theta^2$. Since $0\le\theta<1$, these parameters
+stay in a fixed compact set. Also
+\begin{equation}
+ \e^{Hm+2u\theta}
+ =\e^{Ht}\e^{(2u-H)\theta}
+ =\e^{Ht}\rho^\theta.
+ \label{eq:phasefactor}
+\end{equation}
+Expanding $(t-\theta)^{-r-2}$ produces an exact coefficient conversion:
+\begin{equation}
+ \boxed{\quad
+ P_k(\theta)=\sum_{r=0}^k
+ \binom{k+1}{k-r}\theta^{k-r}D_r(2\theta,\theta^2).
+ \quad}
+ \label{eq:Pformula}
+\end{equation}
+Indeed,
+$(1-\theta/t)^{-r-2}=\sum_{j\ge0}\binom{r+j+1}{j}(\theta/t)^j$,
+and the coefficient with $r+j=k$ has the binomial factor in
+\eqref{eq:Pformula}. The uniform remainder is preserved because
+$\theta\in[0,1]$ and $m/t\to1$ uniformly.
+
+This proves the expansion in \cref{thm:main-phase}. The degree bound
+follows from the weighted degree bound for $D_r$: the $r$th summand has
+degree at most $k-r+2r\le2k$.
+
+\subsection{The first phase polynomials}
+Write
+\begin{equation}
+ P_1(\theta)=a+b\theta+c\theta^2,
+ \label{eq:P1}
+\end{equation}
+where
+\begin{align}
+ a&=D_1(0,0),\notag\\
+ b&=2-\frac{2\ell'}V+\frac{F'''}{V^2},
+ &c&=u-\frac2V.
+ \label{eq:abc}
+\end{align}
+The exact rational certificate in \cref{sec:certificate} encloses these
+numbers and proves the signs needed later. Numerically,
+\begin{align*}
+ a&=-0.374524459843658314982205940095\ldots,\\
+ b&=\phantom{-}0.018208305709526932360906301901\ldots,\\
+ c&=-0.537094135888174449037648667866\ldots.
+\end{align*}
+The next two polynomials are
+\begin{align}
+ P_2(\theta)\approx{}&
+ 0.0730219179368424
+ -0.0264113291147978\theta
+ +0.1866844187588720\theta^2\notag\\
+ &-0.3763383203913017\theta^3
+ +0.1442350554027324\theta^4,
+ \label{eq:P2-decimal}\\
+ P_3(\theta)\approx{}&
+ -0.0112248277296679
+ +0.0107773123530353\theta
+ -0.1424357689179466\theta^2\notag\\
+ &+0.1481869144022084\theta^3
+ -0.2653950748358948\theta^4
+ +0.1995028290093696\theta^5\notag\\
+ &-0.0258226008154378\theta^6.
+ \label{eq:P3-decimal}
+\end{align}
+Equations \eqref{eq:P2-decimal}--\eqref{eq:P3-decimal} display rounded
+coefficients, not exact equalities of decimals to the mathematical
+coefficients; their exact definitions are \eqref{eq:Pformula} and
+\eqref{eq:D-operator}. The data file stores longer numerical evaluations.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\textwidth]{figures/phase_profile.pdf}
+\caption{The normalized sequence within $128^2\le N<129^2$.
+The exact counts and the first corrected expansion nearly coincide at
+this scale. The leading phase factor varies by a fixed, nonvanishing
+amount as the block is traversed.}
+\label{fig:phase}
+\end{figure}
+
+\subsection{Sharp envelopes and the absence of a single constant}
+The leading uniform formula gives
+\begin{equation}
+ R(N)=C\rho^\theta(1+O(t^{-1})).
+ \label{eq:Rleading}
+\end{equation}
+Since $0<\rho<1$, every cluster value lies in $[C\rho,C]$. Squares have
+$\theta=0$ and yield $C$; the integers immediately before squares have
+$\theta\to1$ and yield $C\rho$. Every intermediate phase is approached
+by choosing integers nearest $(m+\theta_0)^2$ for fixed
+$0<\theta_0<1$. This proves the remaining parts of
+\cref{thm:main-phase}.
+
+It also proves that no constant $c_0$ can satisfy
+$A(N)\sim c_0d^{\sqrt N}/N$ on the whole sequence. A power-series
+correction with constant coefficients cannot repair this: the missing
+factor $\rho^\theta$ is of order one, not a small remainder. Finally,
+\begin{equation}
+ C_-=C(1-\e^{-u})=C-C\e^{-u}.
+ \label{eq:amplitude-difference}
+\end{equation}
+Thus the conjectured lower constant is the difference of the previously
+recorded leading amplitudes of A206226 and A206240. This identity is a
+relation among amplitudes, not an assertion of a termwise identity of
+the integer sequences.
+
+\section{Why exactly three integers fall below the lower envelope}
+\label{sec:threeproof}
+
+\subsection{Strict decrease of the normalized values within each block}
+\begin{lemma}
+\label{lem:block-decrease}
+For every sufficiently large $m$, the function
+$N\mapsto R(N)$ is strictly decreasing on the integers in
+$[m^2,(m+1)^2-1]$.
+\end{lemma}
+\begin{proof}
+Write $N=m^2+\sigma m$, where $0\le\sigma\le2$. The all-orders theorem
+with $K=1$ and $\tau=0$ gives, uniformly in $\sigma$,
+\[
+ \log p_m(N)=Hm+\sigma u-2\log m+\log C
+             +\frac{D_1(\sigma,0)}m+O(m^{-2}).
+\]
+When $N,N+1$ stay in the same block, $\sigma$ increases by $1/m$.
+Since $D_1$ is a fixed polynomial with bounded derivative on this range,
+\[
+ \log\frac{p_m(N+1)}{p_m(N)}=\frac um+O(m^{-2}).
+\]
+No differentiation of an unknown remainder is used: subtracting two
+uniform $O(m^{-2})$ remainders remains $O(m^{-2})$. Also
+$\log((N+1)/N)=O(m^{-2})$ and
+$\sqrt{N+1}-\sqrt N=1/(2m)+O(m^{-2})$. Hence
+\begin{equation}
+ \log\frac{R(N+1)}{R(N)}
+ =\frac{u-H/2}{m}+O(m^{-2})
+ =\frac{\log\rho}{2m}+O(m^{-2})<0
+ \label{eq:block-ratio}
+\end{equation}
+for all sufficiently large $m$, uniformly within the block.
+\end{proof}
+
+\subsection{An endpoint expansion with a decisive first correction}
+\begin{proposition}
+\label{prop:endpoint}
+For every fixed positive integer $r$, let $N_{m,r}=(m+1)^2-r$. Then
+\begin{equation}
+ \frac{R(N_{m,r})}{C_-}
+ =1+\frac{\kappa_r}{m}+O(m^{-2}),\qquad
+ \kappa_r=P_1(1)+\frac r2(H-2u).
+ \label{eq:kappa}
+\end{equation}
+In particular, $\kappa_3<0<\kappa_4$.
+\end{proposition}
+\begin{proof}
+For fixed $r$,
+\[
+ t=\sqrt{(m+1)^2-r}=m+1-\frac r{2m}+O(m^{-2}),
+ \qquad \theta=1-\frac r{2m}+O(m^{-2}).
+\]
+Use \eqref{eq:main-phase} with $K=1$. The phase factor relative to its
+lower limiting value is
+\[
+ \rho^{\theta-1}
+ =1-\frac{r\log\rho}{2m}+O(m^{-2}),
+\]
+and $P_1(\theta)/t=P_1(1)/m+O(m^{-2})$. Their product yields
+\eqref{eq:kappa}. The identity $-\log\rho=H-2u$ gives its stated form.
+The inequalities $\kappa_3<0<\kappa_4$ are certified by exact rational
+interval arithmetic using the analytic bounds in
+\cref{sec:certificate}. The resulting enclosures are
+\begin{align}
+ -0.01618049251495
+ &<\kappa_3<-0.01618049246590,\notag\\
+ 0.27622943999435
+ &<\kappa_4<0.27622944004564.
+ \label{eq:kappa-certified}
+\end{align}
+In particular, the negative sign of $\kappa_3$ is not being inferred
+from an uncertified floating-point evaluation near zero.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:three}]
+By \cref{prop:endpoint}, for every sufficiently large $m$, the third-last
+point is strictly below $C_-$ and the fourth-last point is strictly
+above $C_-$. By \cref{lem:block-decrease}, all earlier points lie above
+$C_-$, and all later points lie below $C_-$. This proves exactly
+\eqref{eq:three}.
+
+For the upper envelope, the rational certificate gives $c<0$ and
+$a+\max(b,0)<0$. Consequently $P_1(\theta)\le-\delta$ for a fixed
+$\delta>0$ throughout $0\le\theta\le1$. The uniform expansion gives
+\[
+ R(N)=C\rho^\theta\bigl(1+P_1(\theta)/t+O(t^{-2})\bigr)<C
+\]
+for all sufficiently large $N$.
+
+There are exactly three lower-envelope violations in every sufficiently
+large complete block. The number of complete blocks before $X$ is
+$\sqrt X+O(1)$, and the final incomplete block contributes at most three.
+Finitely many initial blocks affect only the $O(1)$ constant. Thus the
+violation count is $3\sqrt X+O(1)$.
+\end{proof}
+
+\paragraph{Interpretation of the OEIS conjecture.}
+The sharp lower \emph{asymptotic constant} is correct. A literal eventual
+inequality with that exact constant is false infinitely often, but only
+at a set of natural density zero. Replacing $C_-$ by any smaller positive
+constant gives an eventual lower inequality by the proved limit inferior.
+No statement here asserts that Kote\v{s}ovec intended the stronger
+interpretation rather than an asymptotic envelope.
+
+\section{A limiting distribution for the normalized coefficients}
+\label{sec:distribution}
+
+\begin{lemma}[Elementary phase equidistribution]
+\label{lem:equidist}
+Uniformly for $0\le s\le1$,
+\begin{equation}
+ \#\{1\le N\le M:\{\sqrt N\}\le s\}=sM+O(\sqrt M).
+ \label{eq:equidistribution}
+\end{equation}
+\end{lemma}
+\begin{proof}
+In a complete block $m^2\le N<(m+1)^2$, the count with phase at most $s$
+is $\lfloor2ms+s^2\rfloor+1$, except for the harmless endpoint adjustment
+at $s=1$. It differs from $s(2m+1)$ by $O(1)$ uniformly in $s$.
+There are $O(\sqrt M)$ complete blocks, and the final incomplete block
+contains $O(\sqrt M)$ indices. Sum these estimates; removing $N=0$
+changes the result by at most one.
+\end{proof}
+
+\begin{theorem}[Log-uniform limiting law]
+\label{thm:distribution}
+In empirical distribution over $1\le N\le M$, $R(N)/C$ converges to
+$\rho^U$, where $U$ is uniform on $[0,1]$. Its cumulative distribution
+function on $[\rho,1]$ is
+\begin{equation}
+ F_*(z)=1-\frac{\log z}{\log\rho},
+ \qquad f_*(z)=-\frac1{z\log\rho}.
+ \label{eq:distribution}
+\end{equation}
+For every real $p\ne0$,
+\begin{equation}
+ \lim_{M\to\infty}\frac1M\sum_{N=1}^M R(N)^p
+ =C^p\frac{\rho^p-1}{p\log\rho}.
+ \label{eq:moments}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equation \eqref{eq:Rleading} approximates $R(N)/C$ by
+$\rho^{\{\sqrt N\}}$ with error tending uniformly to zero outside a fixed
+finite initial segment. Apply \cref{lem:equidist} to continuous test
+functions of the phase, then use uniform continuity to replace the
+phase expression by the normalized coefficients. Since $\rho^U$ is a
+strictly decreasing continuous transformation of $U$, its distribution
+function is as displayed. Integrating $C^p\rho^{ps}$ over $0\le s\le1$
+gives \eqref{eq:moments}. Negative moments are allowed because the
+normalized sequence stays bounded away from zero for large $N$; the
+finitely many initial positive terms have vanishing empirical weight.
+\end{proof}
+
+The description as a distribution does not posit a random model for
+$A(N)$. It describes deterministic frequencies of its normalized values.
+The three lower-envelope exceptions per large block are compatible with
+this law: they have density zero and approach its lower endpoint.
+
+\section{Summation across square blocks}
+\label{sec:summation}
+
+The unsmoothed coefficients jump at squares because the allowed part
+size increases. Their partial sums have a different phase law.
+
+\begin{theorem}[Summatory asymptotic]
+\label{thm:sum}
+Let $S(N)=\sum_{n=0}^N A(n)$, $m=\lfloor\sqrt N\rfloor$, and
+$\theta=\sqrt N-m$. Then uniformly in $\theta\in[0,1)$,
+\begin{equation}
+ S(N)=\frac{C\e^{Hm}}{u m}
+ \left(\e^{2u\theta}-1+
+       \frac{\e^{2u}-1}{\e^H-1}\right)
+ \left(1+O(m^{-1})\right).
+ \label{eq:sum}
+\end{equation}
+\end{theorem}
+\begin{proof}
+In block $m$, the leading bounded-offset formula is
+\[
+ A(m^2+j)=\frac{C\e^{Hm}}{m^2}\e^{uj/m}(1+O(m^{-1})),
+ \qquad 0\le j\le2m,
+\]
+uniformly in $j$. With $J=N-m^2=2m\theta+\theta^2$, summing the geometric
+progression through $j=J$ gives
+\begin{equation}
+ \sum_{j=0}^{J}A(m^2+j)
+ =\frac{C\e^{Hm}}{u m}(\e^{2u\theta}-1)
+   +O(\e^{Hm}/m^2).
+ \label{eq:partial-block}
+\end{equation}
+This is an additive error estimate, valid even when $\theta=0$ and its
+displayed leading term vanishes. A complete earlier block $k$ contributes
+\[
+ \frac{C\e^{Hk}}{u k}(\e^{2u}-1)
+ +O(\e^{Hk}/k^2).
+\]
+For $m/2\le k=m-l<m$, replace $m/k$ by $1+O(l/m)$ and use the convergent
+sums $\sum_{l\ge1}\e^{-Hl}$ and $\sum_{l\ge1}l\e^{-Hl}$. This yields
+\[
+ \sum_{k<m}\sum_{n=k^2}^{(k+1)^2-1}A(n)
+ =\frac{C\e^{Hm}}{u m}\frac{\e^{2u}-1}{\e^H-1}
+  +O(\e^{Hm}/m^2).
+\]
+The blocks $k<m/2$ are exponentially smaller: the same leading bound
+controls all sufficiently large such $k$, and the remaining finite
+initial segment is negligible. This justifies the summation without an
+uncontrolled interchange of a nonuniform asymptotic series.
+
+Add \eqref{eq:partial-block}. The bracket in \eqref{eq:sum} is bounded
+below by the positive constant $(\e^{2u}-1)/(\e^H-1)$, so the additive
+error may be written as the stated relative error uniformly.
+\end{proof}
+
+The leading expression glues continuously across a square. If
+$B=(\e^{2u}-1)/(\e^H-1)$, then
+$\e^{2u}-1+B=\e^H B$. Thus the limiting value at the end of one block
+matches the next block's leading value, after the common change in its
+$\e^{Hm}$ scale. This is a useful example of summation removing a jump
+while retaining a nonconstant phase profile.
+
+\section{Inverting the square subsequence}
+\label{sec:square-inverse}
+
+First remove the floor phase by considering $b(m)=p_m(m^2)$.
+Write $D_j=D_j(0,0)$ and define its logarithmic coefficients by
+\begin{equation}
+ \log\left(1+\sum_{j\ge1}D_j z^j\right)=\sum_{j\ge1}L_j z^j.
+ \label{eq:Ldef}
+\end{equation}
+A finite recurrence is
+\begin{equation}
+ L_n=D_n-\frac1n\sum_{j=1}^{n-1}jL_jD_{n-j}.
+ \label{eq:Lrec}
+\end{equation}
+For example $L_1=D_1$, $L_2=D_2-D_1^2/2$, and
+$L_3=D_3-D_1D_2+D_1^3/3$.
+
+\subsection{The Lambert core and formal reversion}
+The dominant real equation is
+\begin{equation}
+ \frac{C\e^{HX}}{X^2}=Y,
+ \qquad HX-2\log X=\log Y-\log C.
+ \label{eq:core-equation}
+\end{equation}
+For $X>2/H$ it is strictly increasing and has the inverse
+\eqref{eq:core}, using $W_{-1}$, not $W_0$. The principal branch would
+select the small solution of the same algebraic rearrangement and is
+not the desired asymptotic inverse.
+
+\begin{proposition}[All-orders inverse coefficients]
+\label{prop:inverse-coeff}
+The formal inverse of the square-subsequence expansion has the unique
+form
+\begin{equation}
+ \widehat x(Y)=X(Y)+\sum_{r\ge1}q_rX(Y)^{-r}.
+ \label{eq:inverse-series}
+\end{equation}
+If $\Delta_{r-1}(X)=\sum_{j=1}^{r-1}q_jX^{-j}$, then
+\begin{equation}
+ q_r=-\frac1H[X^{-r}]
+ \left\{-2\log\left(1+\frac{\Delta_{r-1}}X\right)
+ +\sum_{j=1}^r L_j(X+\Delta_{r-1})^{-j}\right\}.
+ \label{eq:qrec}
+\end{equation}
+In particular,
+\begin{align}
+ q_1&=-L_1/H,\notag\\
+ q_2&=-2L_1/H^2-L_2/H,\notag\\
+ q_3&=(2q_2+L_1q_1-L_3)/H.
+ \label{eq:qfirst}
+\end{align}
+\end{proposition}
+\begin{proof}
+Put $x=X+\Delta$ in
+$Hx-2\log x+\sum_{j\ge1}L_jx^{-j}=\log Y-\log C$ and subtract
+\eqref{eq:core-equation}. The resulting equation is
+\[
+ H\Delta-2\log(1+\Delta/X)+\sum_{j\ge1}L_j(X+\Delta)^{-j}=0.
+\]
+At order $X^{-r}$ the previously unknown coefficient occurs only as
+$Hq_r$, since all its occurrences in the logarithm and inverse powers
+carry at least one additional negative power of $X$. This proves both
+uniqueness and the recurrence. Equating the first three coefficients
+gives \eqref{eq:qfirst}.
+\end{proof}
+
+Numerically the first coefficients are
+\begin{align*}
+ q_1&=0.169152574435079450236784971776\ldots,\\
+ q_2&=0.151490069409063238951250698423\ldots,\\
+ q_3&=0.108853991540605915550641858907\ldots,\\
+ q_4&=0.058606290184968379522730931714\ldots.
+\end{align*}
+To express the same expansion using only iterated logarithms, put
+$\Lambda=\log(Y/(CH^2))$. Reversion of
+$HX-2\log(HX)=\Lambda$ and inclusion of the first correction give
+\begin{equation}
+ \widehat x(Y)=\frac1H\left(
+ \Lambda+2\log\Lambda+
+ \frac{4\log\Lambda-HL_1}{\Lambda}
+ +O\left(\frac{(\log\Lambda)^2}{\Lambda^2}\right)\right).
+ \label{eq:log-inverse}
+\end{equation}
+The Lambert form keeps the entire leading power--logarithmic core
+unexpanded and is usually more accurate at a given truncation order.
+
+\subsection{What a real inverse means for an integer sequence}
+The integer data $b(m)$ do not specify a canonical smooth interpolation.
+To state a rigorous analytic meaning without inventing one, fix $K$ and
+use the explicit smooth approximation
+\begin{equation}
+ B_K(x)=\frac{C\e^{Hx}}{x^2}
+ \left(1+\sum_{j=1}^K D_jx^{-j}\right).
+ \label{eq:BK}
+\end{equation}
+It is positive and strictly increasing for sufficiently large $x$, since
+$(\log B_K)'(x)=H-2/x+O(x^{-2})$. Let $x_K(Y)$ denote its unique large
+inverse. The formal calculation and the mean value theorem show
+\begin{equation}
+ x_K(Y)=X(Y)+\sum_{j=1}^K q_jX(Y)^{-j}+O(X(Y)^{-K-1}).
+ \label{eq:real-inverse}
+\end{equation}
+Indeed substitution of the right-hand truncation leaves a logarithmic
+residual of order $X^{-K-1}$, and the derivative of the logarithmic
+left-hand side is bounded away from zero near the root.
+
+\begin{proposition}[Transport to a discrete threshold]
+\label{prop:ceil}
+Let $M(Y)=\min\{m\ge0:b(m)\ge Y\}$. There is a constant $c_K>0$ such that,
+for all sufficiently large $Y$, with
+$\delta_K=c_Kx_K(Y)^{-K-1}$,
+\begin{equation}
+ \ceil{x_K(Y)-\delta_K}\ \le M(Y)\le\
+ \ceil{x_K(Y)+\delta_K}.
+ \label{eq:ceil-brackets}
+\end{equation}
+The same type of brackets holds with $x_K$ replaced by the explicit
+truncation in \eqref{eq:real-inverse}, after enlarging $c_K$.
+\end{proposition}
+\begin{proof}
+At integer $m$, \cref{thm:allorders} gives
+$\log b(m)-\log B_K(m)=O(m^{-K-1})$. Near $x_K$, the logarithmic
+derivative of $B_K$ is at least $H/2$ for large $Y$. Displacing the
+argument by a sufficiently large constant times $x_K^{-K-1}$ therefore
+makes the sign of $\log b(m)-\log Y$ certain on either side of the
+bracket. Monotonicity of $b(m)$ excludes more distant threshold values.
+Taking ceilings yields \eqref{eq:ceil-brackets}. The real approximation
+error \eqref{eq:real-inverse} has the same order and can be absorbed by
+increasing the constant.
+\end{proof}
+
+A ceiling cannot in general be pulled through an $O(\cdot)$ term.
+An exact formula $M(Y)=\lceil x_K(Y)\rceil$ follows from
+\eqref{eq:ceil-brackets} only under a separation condition that ensures
+both endpoint ceilings agree, for example
+$\dist(x_K(Y),\mathbb Z)>\delta_K$. Arbitrarily small real errors can
+change a ceiling near an integer. This is the reason to keep the real
+inverse and the staircase statement distinct, as in ProveIt's
+remainder-transport and staircase organization \cite{proveit}.
+
+For $p_m(m^2+sm)$ with $s=\pm1$, replace $C$ by $C\e^{su}$ and $D_j$ by
+$D_j(s,0)$. All the same reversion and threshold arguments apply.
+
+\section{Inverting the complete floor-dependent sequence}
+\label{sec:full-inverse}
+
+\subsection{Monotonicity and the geometry of a square block}
+The sequence $A(N)$ is nondecreasing: append a part of size one to a
+partition counted at $N$; the resulting partition is allowed at $N+1$
+because the cutoff cannot decrease. The map is injective. Since
+$A(m^2)\sim Cd^m/m^2\to\infty$, the inverse threshold $Q(Y)$ is finite.
+
+For a real phase $s\in[0,1)$ and integer points with $\sqrt N=m+s$, the
+leading logarithm is
+\begin{equation}
+ \log A(N)=\log C+Hm+2us-2\log m+O(m^{-1}).
+ \label{eq:log-block}
+\end{equation}
+As a block is traversed, this logarithm increases by about $2u$; at the
+next square, the leading jump is $H-2u=-\log\rho>0$. Thus a positive
+fraction of large target logarithms lie in gaps crossed at a single
+square. A smooth phase-blind inverse cannot see these plateaus.
+
+\subsection{Proof of the global inverse approximation}
+\begin{proof}[Proof of \cref{thm:main-inverse}]
+The core $X=X(Y)$ satisfies
+$\log Y=\log C+HX-2\log X$. Uniform bounds on the phase factor in
+\eqref{eq:main-phase} first imply
+\begin{equation}
+ \sqrt{Q(Y)}=X+O(1).
+ \label{eq:coarse-inverse}
+\end{equation}
+For example, changing $t$ by a sufficiently large fixed constant changes
+$Ht-2\log t$ by more than the bounded phase correction, and comparison
+with the nearest available integer index brackets the threshold.
+
+It is therefore enough to consider $t=X+O(1)$, where
+$\log\lfloor t\rfloor=\log X+O(X^{-1})$. Define the right-continuous
+increasing comparison function
+\begin{equation}
+ g_X(t)=\log C-2\log X+H\lfloor t\rfloor
+        +2u\{t\}.
+ \label{eq:gX}
+\end{equation}
+At the available grid points $t=\sqrt N$ near $X$,
+\eqref{eq:log-block} gives
+$\log A(N)=g_X(t)+O(X^{-1})$, uniformly. The generalized real inverse
+of $g_X$ at $\log Y$ is exactly $T(X)$: if $X=k+\eta$, then the target
+increment in block $k$ is $H\eta$; it is attained at phase
+$\eta/\gamma$ when $\eta\le\gamma$, and otherwise the first crossing is
+at $k+1$.
+
+The map $T$ is continuous and nondecreasing, with slopes $1/\gamma$
+and $0$ on its linear pieces. The generalized inverse of $g_X$ is
+therefore globally Lipschitz as a function of the target logarithm,
+with constant $1/(2u)$. A perturbation of that logarithm by
+$O(X^{-1})$ displaces its inverse by $O(X^{-1})$, even at the beginning
+or end of a plateau. The grid spacing
+$\sqrt{N+1}-\sqrt N$ near $X$ is also $O(X^{-1})$. Comparing the target
+with $g_X\pm c/X$ and then moving to the neighboring grid points proves
+\[
+ \sqrt{Q(Y)}=T(X)+O(X^{-1}).
+\]
+Since $T(X)=X+O(1)$, squaring changes the error to $O(1)$, as stated.
+\end{proof}
+
+Write
+\begin{equation}
+ \psi(\eta)=\min(\eta/\gamma,1)-\eta
+ =\begin{cases}
+ (1/\gamma-1)\eta,&0\le\eta\le\gamma,\\
+ 1-\eta,&\gamma\le\eta\le1.
+ \end{cases}
+ \label{eq:tent}
+\end{equation}
+Then $T(X)=X+\psi(\{X\})$, and the global inverse theorem gives
+\begin{equation}
+ Q(Y)-X(Y)^2=2X(Y)\psi(\{X(Y)\})+O(1).
+ \label{eq:inverse-missing-term}
+\end{equation}
+For a fixed phase $\eta_0\in(0,1)$, set
+$Y_k=C\e^{H(k+\eta_0)}/(k+\eta_0)^2$. Then $X(Y_k)=k+\eta_0$ and
+$\psi(\eta_0)>0$. Along these targets the omitted term has size
+$\Theta(X)$. Rounding $Y_k$ to a nearby integer changes $X$ by an
+exponentially small amount and does not alter this conclusion. The
+phase-blind error is thus genuinely of order $\log Y$, not just a loose
+upper bound or a one-integer rounding issue.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\textwidth]{figures/inverse_phase.pdf}
+\caption{The tent-shaped correction $\psi(\eta)=T(X)-X$. Its maximum is
+$1-\gamma=0.264131709289\ldots$. The flat pieces of $T$, not of $\psi$,
+correspond to target ranges whose inverse is the next perfect square.}
+\label{fig:inverse}
+\end{figure}
+
+\subsection{Exact plateaus away from the transition layers}
+\begin{proposition}
+\label{prop:plateaus}
+Fix a compact interval $J\subset(\gamma,1)$. If $X(Y)=k+\eta$ with
+$\eta\in J$, then for all sufficiently large $k$,
+\begin{equation}
+ Q(Y)=(k+1)^2.
+ \label{eq:plateaus}
+\end{equation}
+\end{proposition}
+\begin{proof}
+At the last index of block $k$,
+\[
+ \log A((k+1)^2-1)=\log C+Hk+2u-2\log k+O(k^{-1}).
+\]
+At the next square,
+\[
+ \log A((k+1)^2)=\log C+H(k+1)-2\log(k+1)+O(k^{-1}).
+\]
+The target logarithm is
+$\log C+Hk+H\eta-2\log k+O(k^{-1})$. On $J$, both
+$H\eta-2u$ and $H(1-\eta)$ have positive lower bounds. Thus the target
+lies strictly between these two adjacent values for large $k$.
+Monotonicity proves the result.
+\end{proof}
+
+\subsection{The first interior correction}
+Fix instead a compact interval $J\subset(0,\gamma)$. Let $X=k+\eta$ with
+$\eta\in J$, and put
+\begin{equation}
+ \sigma_0(\eta)=\frac{H\eta}{u},\qquad
+ \tau_0(\eta)=\frac{-2\eta-D_1(\sigma_0(\eta),0)}{u}.
+ \label{eq:interior-coeff}
+\end{equation}
+Consider the real approximation
+\begin{equation}
+ n_*(Y)=k^2+\sigma_0(\eta)k+\tau_0(\eta).
+ \label{eq:interior-root}
+\end{equation}
+It is useful for locating the integer threshold even though no canonical
+interpolation of $A(N)$ is being specified.
+
+\begin{proposition}[Interior threshold brackets]
+\label{prop:interior}
+Uniformly for $\eta\in J$, there is a constant $c_J>0$ such that for all
+sufficiently large $k$,
+\begin{equation}
+ \ceil{n_*(Y)-c_J/k}\le Q(Y)\le\ceil{n_*(Y)+c_J/k}.
+ \label{eq:interior-bracket}
+\end{equation}
+In particular $Q(Y)=\lceil n_*(Y)\rceil$ whenever the endpoint ceilings
+in \eqref{eq:interior-bracket} agree.
+\end{proposition}
+\begin{proof}
+For $N=k^2+\sigma_0k+\tau$,
+\cref{thm:allorders} gives
+\[
+ \log p_k(N)=\log C+Hk-2\log k+u\sigma_0
+ +\frac{u\tau+D_1(\sigma_0,0)}k+O(k^{-2}).
+\]
+The target has expansion
+\[
+ \log Y=\log C+Hk-2\log k+H\eta-\frac{2\eta}{k}
+ +O(k^{-2}).
+\]
+Matching its constant and $k^{-1}$ terms gives
+\eqref{eq:interior-coeff}. The slope of the logarithmic asymptotic
+approximation with respect to $N$ is $u/k+O(k^{-2})>0$. Hence a
+logarithmic residual $O(k^{-2})$ gives a real index displacement
+$O(k^{-1})$. Equivalently, evaluating at integer points a sufficiently
+large constant times $1/k$ on either side of $n_*$ makes the signs
+certain. The compact separation from $0$ and $\gamma$ keeps these points
+in block $k$ and away from its jumps. Monotonicity and ceilings yield
+\eqref{eq:interior-bracket}.
+\end{proof}
+
+\subsection{An all-orders interior recurrence}
+Let
+\begin{equation}
+ \log\left(1+\sum_{j\ge1}D_j(\sigma,0)w^j\right)
+ =\sum_{j\ge1}L_j(\sigma)w^j.
+ \label{eq:Lj-sigma}
+\end{equation}
+Every $L_j(\sigma)$ is a polynomial obtained from
+\eqref{eq:Lrec}. Define a formal series
+$\sigma(w,\eta)=\sum_{r\ge0}\sigma_r(\eta)w^r$, beginning with
+$\sigma_0=H\eta/u$. The equation to be solved is
+\begin{equation}
+ u\sigma(w,\eta)+\sum_{j\ge1}L_j(\sigma(w,\eta))w^j
+ =H\eta-2\log(1+\eta w).
+ \label{eq:interior-equation}
+\end{equation}
+If $\sigma^{<r}(w,\eta)=\sum_{v=0}^{r-1}\sigma_v(\eta)w^v$, the next
+coefficient is explicitly
+\begin{equation}
+ \sigma_r(\eta)=\frac1u\left\{
+ \frac{2(-1)^r\eta^r}{r}
+ -[w^r]\sum_{j=1}^r L_j(\sigma^{<r}(w,\eta))w^j
+ \right\},\qquad r\ge1.
+ \label{eq:interior-recurrence}
+\end{equation}
+The unknown $\sigma_r$ occurs only through $u\sigma_r$ at order $w^r$;
+this proves formal uniqueness. At $r=1$ it gives precisely $\tau_0$.
+For a truncation through $r=R$ put
+\[
+ n_R(Y)=k^2+k\sum_{r=0}^R\sigma_r(\eta)k^{-r}.
+\]
+The analytic remainder argument used in \cref{prop:interior}, now with
+\cref{thm:allorders} at higher order, yields uniform brackets
+\begin{equation}
+ \ceil{n_R(Y)-c_{J,R}k^{-R}}
+ \le Q(Y)\le
+ \ceil{n_R(Y)+c_{J,R}k^{-R}}.
+ \label{eq:interior-allorders}
+\end{equation}
+Indeed the logarithmic residual is $O(k^{-R-1})$ and the local logarithmic
+slope is comparable to $1/k$. This proves an all-orders inverse
+expansion on every compact interior phase interval.
+
+No all-orders assertion is made here uniformly through $\eta=0$ or
+$\eta=\gamma$. Those switching layers require their own scaled
+coordinates. The coarse global formula \eqref{eq:global-inverse}
+\emph{does} remain uniform through both transitions.
+
+\section{Exact and high-precision computational checks}
+\label{sec:numerics}
+
+\subsection{What was computed}
+The included run used Python with \texttt{mpmath} 1.3.0 at 80 decimal
+digits. The counts themselves were not computed by floating point.
+They were generated by the exact recurrence that adds the allowed parts
+one at a time:
+\begin{equation}
+ p_m(N)=p_{m-1}(N)+p_m(N-m),
+ \label{eq:DP}
+\end{equation}
+with $p_0(0)=1$, $p_0(N)=0$ for $N>0$, and zero values at negative
+arguments. In-place updates run over increasing $N$ for each new $m$.
+The final run produced all A097356 values through $N=66048$ and the
+three quadratic subsequences through $m=256$.
+
+As transcription checks, the first 54 terms of A097356 and first 17
+terms of A206226 were compared with the inspected OEIS entries
+\cite{oeisA,oeisSquare}. All agreed. All 66048 consecutive monotonicity
+comparisons passed. The coefficient generator was independently checked
+against the closed formula \eqref{eq:D1} at nine choices of $\sigma$.
+The exact rational checks described in \cref{sec:certificate} also
+passed. These are finite checks of the supplied implementation and
+specific signs; they do not replace the all-orders analytic proof.
+
+\subsection{Square-subsequence accuracy}
+\Cref{tab:errors} records relative errors
+$(\text{approximation}/p_m(m^2))-1$ using the truncation through $D_K$.
+The rapid improvement is consistent with the successive proved powers
+of $1/m$.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{r r r r r r}
+\toprule
+$m$ & $K=0$ & $K=1$ & $K=2$ & $K=3$ & $K=4$\\
+\midrule
+16  & $2.37\,10^{-2}$ & $-2.89\,10^{-4}$ & $2.71\,10^{-6}$ & $-9.65\,10^{-8}$ & $-1.65\,10^{-8}$\\
+32  & $1.18\,10^{-2}$ & $-7.18\,10^{-5}$ & $3.42\,10^{-7}$ & $-4.88\,10^{-9}$ & $5.60\,10^{-11}$\\
+64  & $5.87\,10^{-3}$ & $-1.79\,10^{-5}$ & $4.28\,10^{-8}$ & $-3.05\,10^{-10}$ & $1.74\,10^{-12}$\\
+128 & $2.93\,10^{-3}$ & $-4.46\,10^{-6}$ & $5.35\,10^{-9}$ & $-1.91\,10^{-11}$ & $5.42\,10^{-14}$\\
+256 & $1.46\,10^{-3}$ & $-1.12\,10^{-6}$ & $6.69\,10^{-10}$ & $-1.19\,10^{-12}$ & $1.69\,10^{-15}$\\
+\bottomrule
+\end{tabular}
+\caption{Relative errors for A206226. The CSV files retain more digits.
+Here $a\,10^{-j}$ means $a\times10^{-j}$.}
+\label{tab:errors}
+\end{table}
+
+A single small-$m$ accuracy pattern does not prove convergence of the
+asymptotic series or identify secondary saddles. For example, the
+$m=16$ row need not follow the eventual algebraic error ratios as cleanly
+as the larger rows. No inference about exponentially small sectors is
+based on that observation.
+
+\subsection{The third-last point is a subtle case}
+The table below shows
+$R((m+1)^2-r)/C_- -1$ near the end of a block.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{r r r r r}
+\toprule
+$m$ & $r=1$ & $r=2$ & $r=3$ & $r=4$\\
+\midrule
+16 & $-0.03435127$ & $-0.01580701$ & $0.003070873$ & $0.02228763$\\
+32 & $-0.01793700$ & $-0.008717003$ & $0.000586331$ & $0.009973718$\\
+64 & $-0.009173963$ & $-0.004582366$ & $0.0000300765$ & $0.004663456$\\
+128 & $-0.004640419$ & $-0.002350006$ & $-0.0000543790$ & $0.002246474$\\
+256 & $-0.002333841$ & $-0.001190087$ & $-0.0000450293$ & $0.001101334$\\
+\bottomrule
+\end{tabular}
+\caption{The third-last index changes sign later than the last two.
+The eventual theorem rests on the certified $\kappa_3<0$, not on
+extrapolation from these samples.}
+\label{tab:endpoints}
+\end{table}
+
+The four limiting coefficients in \eqref{eq:kappa} are approximately
+\[
+ (\kappa_1,\kappa_2,\kappa_3,\kappa_4)
+ =(-0.60100036,-0.30859043,-0.01618049,0.27622944).
+\]
+In particular, the small absolute size of $\kappa_3$ explains why an
+initial data inspection could miss the eventual third exception.
+
+\subsection{Inverse accuracy and the plateaus}
+For the inverse tests, target values were chosen as integers near
+$C\e^{H(k+\eta)}/(k+\eta)^2$; thresholds were then found by binary search
+in the exact integer table. \Cref{tab:inverse-errors} gives the block
+$k=128$ results. ``Interior ceiling'' means the value
+$\lceil n_*(Y)\rceil$ from \eqref{eq:interior-root}; it is only used on
+interior phases.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{r r r r r}
+\toprule
+$\eta$ & Exact $Q(Y)$ & $X^2-Q(Y)$ & $T(X)^2-Q(Y)$ & Interior ceiling error\\
+\midrule
+0.10 & 16420 & $-10.3900$ & $-1.1927$ & 0\\
+0.30 & 16490 & $-29.1100$ & $-1.4673$ & 0\\
+0.50 & 16560 & $-47.7500$ & $-1.5942$ & 0\\
+0.70 & 16631 & $-67.3100$ & $-2.5733$ & 0\\
+0.80 & 16641 & $-51.5600$ & $0$ & plateau\\
+0.95 & 16641 & $-12.8975$ & $0$ & plateau\\
+\bottomrule
+\end{tabular}
+\caption{An ordinary smooth inverse misses dozens of indices; the
+phase map has a bounded error, and the first interior correction locates
+the exact integer thresholds in these tests. Exact rounding in arbitrary
+cases still requires the separation condition in the theorem.}
+\label{tab:inverse-errors}
+\end{table}
+
+\subsection{Reproduction and interpretation of the outputs}
+From the directory containing the scripts, run
+\begin{lstlisting}
+python certificate.py
+python verify.py --max-m 256 --output results
+\end{lstlisting}
+The first command uses only the Python standard library and performs
+exact rational interval computations. The second needs \texttt{mpmath}
+and reruns the coefficient evaluation and integer checks. Its time cost
+is dominated by $O(m_{\max}^3)$ arbitrary-precision integer additions;
+storage is $O(m_{\max}^2)$ integers. These are operation counts, not
+constant-time bit-complexity bounds.
+
+The data directory contains coefficient JSON files and separate CSV
+files for quadratic expansions, floor expansions, endpoint values,
+the last-four classification, inverse thresholds, and summatory
+approximations. \texttt{verification\_summary.json} records the completed
+run. The figures use a saved subset of the exact-count comparison data;
+they are illustrations, not substitutes for the numerical tables or
+proofs.
+
+\section{Further research questions and a formalization route}
+\label{sec:future}
+
+The results suggest several nontrivial continuations. The following are
+proposals, not claims that their conclusions have been proved here.
+
+\subsection{Effective determination of the first stable three-exception block}
+The analytic proof gives a finite but unspecified $m_0$. An effective
+version would bound the $m^{-2}$ remainder in the endpoint formula and
+in the block-ratio estimate, then combine it with certified computation
+for the finite initial range. The small margin
+$|\kappa_3|\approx0.01618$ makes a crude uniform bound potentially
+inefficient. A useful target is the \emph{least} $m_0$ such that exactly
+three exceptions occur in every block $m\ge m_0$, together with a proof
+that no later reversals occur. Uncertified testing of a large interval
+would not settle the latter requirement.
+
+\subsection{All-orders switching layers for the inverse}
+The global inverse error is bounded, and the interior inverse has all
+orders, but the transition regions have only been covered at coarse
+order. Resolve the layers
+$\eta=O(1/k)$ and $\eta-\gamma=O(1/k)$ by comparing corrected block
+endpoints and square values. A complete formulation should give the
+shifted jump thresholds, integer ceiling brackets, and a uniform
+matching rule between interior roots and exact plateaus. This would
+extend the phase-sensitive inverse from an atlas with excluded
+transition layers to a uniformly corrected global description.
+
+\subsection{Exponential sectors and optimal truncation}
+The minor-arc proof only shows contributions smaller than every fixed
+algebraic order. It does not identify their leading exponential scales.
+A genuinely exponentially improved expansion should identify the
+relevant rational-angle or complex saddles, compare their actions, and
+describe any changes of dominance. One should also study the growth of
+$D_k$ as $k\to\infty$, whether a Gevrey bound holds, and how optimal
+truncation relates to the first omitted saddle. Calling the present
+Poincar\'e series a complete resurgent transseries would skip these
+unresolved steps.
+
+\subsection{Other moving cutoffs and their endpoint defect counts}
+For $A_c(N)=p_{\lfloor c\sqrt N\rfloor}(N)$ with fixed $c>0$, the saddle
+has $\alpha=c^{-2}$. The current uniform theorem supplies the analytic
+input for a related phase calculus, but the arithmetic block endpoints
+need not be integer squares. Determine whether the number of points
+violating a sharp asymptotic lower envelope stabilizes, becomes
+periodic, or has a phase-dependent distribution. The sign of a first
+endpoint correction can change with $c$, producing transitions in that
+count. Rational and irrational $c^2$ may lead to genuinely different
+endpoint arithmetic.
+
+\subsection{Two simultaneous restrictions}
+Partitions constrained both in largest part and number of parts are
+encoded by Gaussian binomial coefficients. Jiang and Wang provide a
+generalized Hardy--Ramanujan formula in a two-restriction regime
+\cite{jiangwang}. A natural continuation is a two-phase all-orders
+calculus when both boundaries involve floors of multiples of $\sqrt N$.
+The inverse could then have interacting plateau mechanisms rather than
+a single tent correction. The one-dimensional proof should not be
+assumed to establish this extension without new uniform saddle and
+boundary estimates.
+
+\subsection{Uniform limits as the saddle moves to zero or infinity}
+Our theorem is uniform only for $\alpha$ in compact subsets of
+$(0,\infty)$. The limits $\alpha\to0$ and $\alpha\to\infty$ move the
+saddle to a boundary of this range. A useful next problem is to match
+the present expansions with other partition regimes and determine how
+many derivatives and remainder constants remain controlled when
+$\alpha=\alpha(m)$ varies. Existing leading formulas do not by themselves
+justify termwise passage of all our corrections to those boundary
+regimes.
+
+\subsection{All-orders summation and arithmetic statistics}
+The summatory formula was proved only to relative order $1/m$. Applying
+Euler--Maclaurin to each finite block and then summing the exponentially
+weighted previous blocks should produce higher phase corrections.
+Explicitly derive them, with uniform control at $\theta=0$, and study
+whether successive integrations remove higher-order phase
+irregularities. Another direction is an effective error term for the
+limiting distribution of $R(N)$, including the deterministic displacement
+of its endpoints and the sparse lower-envelope violations.
+
+\subsection{A modular Lean formalization}
+A practical route separates algebraic, finite, and analytic components.
+The repository's documented transseries modules already distinguish
+coefficient identities, asymptotic scales, inverse cores, and discrete
+thresholds \cite{proveit}. A corresponding development here would
+proceed through the following dependency layers:
+\begin{enumerate}[leftmargin=2em,itemsep=3pt]
+\item Formalize the exact finite coefficient operator and
+\eqref{eq:exp-recursion}, the weighted-degree bound, and the conversion
+\eqref{eq:Pformula}. These are finite polynomial identities, independent
+of contour analysis.
+\item Formalize the rational sign certificate, including the Bernoulli
+and logarithmic remainder bounds. This certifies the endpoint signs but
+not yet the partition asymptotic.
+\item Establish the analytic Euler--Maclaurin product expansion, the
+uniform trigonometric bound, and the saddle integration theorem with
+explicit parameter domains.
+\item Derive the floor expansion, the block monotonicity, and the
+three-exception theorem from those analytic estimates and finite signs.
+Then formalize the generalized inverse comparison and ceiling brackets.
+\end{enumerate}
+This division makes the missing obligations explicit. The supplied
+Python program is not a substitute for a kernel-checked proof, and no
+current theorem is labeled machine-formalized in this report.
+
+\section{Conclusion}
+The natural partition sequence A097356 has a rigid asymptotic structure:
+one positive real saddle, an order-one floor phase, polynomial
+corrections, and a staircase inverse with macroscopic phase effects.
+The conjectured lower constant is exactly right as a limit inferior,
+but the associated literal lower inequality has exactly three
+violations before every sufficiently large square. The distinction
+only becomes visible after retaining the first correction and proving
+its endpoint signs.
+
+The analysis yields more than an isolated constant evaluation. One
+finite coefficient operator handles a compact family of quadratic
+restrictions, recovers the existing OEIS amplitudes, generates all
+algebraic correction orders, and supports both smooth and discrete
+inverse statements. It also exposes the limits of the result: effective
+cutoffs, switching layers, exponentially small sectors, and formal
+verification remain separate research tasks rather than hidden
+assumptions.
+
+\appendix
+\section{Exact rational sign certificates}
+\label{sec:certificate}
+
+The delicate claim $\kappa_3<0$ deserves a reproducible certificate whose
+validity does not depend on trusting a floating-point root finder.
+This appendix supplies the analytic bounds used by
+\texttt{certificate.py}; the script then performs only exact rational
+arithmetic.
+
+\subsection{Power series with controlled derivatives}
+For $|u|<2\pi$, the Bernoulli expansion gives
+\begin{align}
+ F(u)&=1-\log u+\frac u4
+ -\sum_{r\ge1}\frac{B_{2r}u^{2r}}
+ {(2r)(2r)!(2r+1)},\label{eq:Fseries}\\
+ \ell(u)&=\frac u4
+ -\sum_{r\ge1}\frac{B_{2r}u^{2r}}{2(2r)(2r)!},
+ \label{eq:ellseries}\\
+ E_1(u)&=-\frac1{12}
+ -\frac1{12}\sum_{r\ge1}\frac{B_{2r}u^{2r}}{(2r)!}.
+ \label{eq:E1series}
+\end{align}
+These follow from the generating function
+$u/(\e^u-1)=\sum_{n\ge0}B_nu^n/n!$ by integration and the identity
+$E_1=-u\coth(u/2)/24$.
+
+The classical Bernoulli--zeta identity, equivalently the Bernoulli
+Fourier series, is \cite{dlmfBernoulli}
+\begin{equation}
+ \frac{|B_{2r}|}{(2r)!}
+ =\frac{2\zeta(2r)}{(2\pi)^{2r}}
+ <\frac4{6^{2r}}.
+ \label{eq:Bbound}
+\end{equation}
+Here $\zeta(2r)<2$ and $\pi>3$ suffice; high-precision values of either
+constant are unnecessary. On $4/5\le u\le1$, the absolute value of any
+of the first four derivatives of a tail monomial in
+\eqref{eq:Fseries}--\eqref{eq:E1series} is at most
+$4(2r)^4/6^{2r}$, after discarding the additional denominators that would
+only improve the estimate. For a truncation through $r=R=16$, the ratio
+of successive such majorants is less than $1/2$. Therefore the omitted
+series and each derivative through order four are bounded in absolute
+value by the explicit rational number
+\begin{equation}
+ \varepsilon_R=\frac{8(2R+2)^4}{6^{2R+2}},\qquad R=16.
+ \label{eq:eps}
+\end{equation}
+The elementary terms involving $\log u$ and powers of $u^{-1}$ are
+handled separately and exactly as interval expressions.
+
+For $\log u$, put $w=(1-u)/(1+u)$. Since $u\in[4/5,1]$, $0\le w\le1/9$.
+For $T=24$,
+\begin{equation}
+ \log u=-2\sum_{j=0}^{T-1}\frac{w^{2j+1}}{2j+1}+\epsilon_T,
+ \qquad
+ |\epsilon_T|\le
+ \frac{2w^{2T+1}}{(2T+1)(1-w^2)}.
+ \label{eq:log-bound}
+\end{equation}
+This follows by bounding the positive tail of the series for
+$\operatorname{arctanh}w$. All evaluations use rational interval
+endpoints, with the error bounds widened outward.
+
+\subsection{Bracketing the saddle}
+Set
+\begin{equation}
+ u_- =\frac{814651136747}{10^{12}},\qquad
+ u_+ =\frac{814651136748}{10^{12}}.
+ \label{eq:ubracket}
+\end{equation}
+Evaluate $J=-F'$ from \eqref{eq:Fseries}, with its derivative remainder
+bounded by \eqref{eq:eps}. Exact rational arithmetic gives
+\begin{align}
+ 0.00000000000090&<J(u_-)-1<0.00000000000091,\notag\\
+ -0.00000000000058&<J(u_+)-1<-0.00000000000057.
+ \label{eq:Jbracket}
+\end{align}
+Since $J$ is strictly decreasing by \cref{lem:saddle}, its root lies in
+$[u_-,u_+]$. The use of a rational root bracket, rather than a decimal
+root asserted to be accurate, is what permits an exact finite
+certificate.
+
+\subsection{Propagating the interval through the formulas}
+The script evaluates $F$, its first four derivatives, $\ell'$,
+$\ell''$, and $E_1$ on $[u_-,u_+]$, adding the rigorous series-tail
+bounds. It then substitutes these intervals into \eqref{eq:D1} and
+\eqref{eq:abc}. Division is only performed when the denominator
+interval is separated from zero; in particular the interval for $V$ is
+positive. The results below have been rounded outward for display.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{l r r}
+\toprule
+Quantity & Certified lower endpoint & Certified upper endpoint\\
+\midrule
+$H$ & $2.21412213851459$ & $2.21412213851710$\\
+$V$ & $1.47956870313163$ & $1.47956870313535$\\
+$a$ & $-0.37452445985485$ & $-0.37452445983240$\\
+$b$ & $0.01820830570211$ & $0.01820830571759$\\
+$c$ & $-0.53709413589011$ & $-0.53709413588571$\\
+$\kappa_1$ & $-0.60100035753254$ & $-0.60100035749000$\\
+$\kappa_3$ & $-0.01618049251495$ & $-0.01618049246590$\\
+$\kappa_4$ & $0.27622943999435$ & $0.27622944004564$\\
+\bottomrule
+\end{tabular}
+\caption{Outward-rounded rational interval enclosures. Each displayed
+bound is weaker than the exact rational inequality checked by the code.}
+\label{tab:certificate}
+\end{table}
+
+The code also checks the simple inequalities
+\[
+ a+\max(b,0)<0,\qquad c<0,\qquad \kappa_3<0<\kappa_4.
+\]
+They are the complete finite sign input to the upper-envelope and
+three-exception theorems. No unexplained approximate evaluation of
+$\pi$, a polylogarithm, or an exponential occurs in this certificate:
+$H=u+F(u)$ at $\alpha=1$ and all other quantities are evaluated from the
+bounded power series above.
+
+\paragraph{Trust boundary.}
+This is an exact-arithmetic certificate with a written analytic
+justification. Its implementation uses Python's arbitrary-precision
+integers and \texttt{fractions.Fraction}. It is independently rerunnable,
+but it has not been proved correct inside a proof assistant. The saddle
+and contour arguments remain conventional mathematical proofs.
+
+\section{Artifact inventory and source audit}
+\label{sec:artifacts}
+
+\subsection{Package contents}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+File or directory & Purpose\\
+\midrule
+\texttt{article.tex}, \texttt{article.pdf} & Editable source and compiled report.\\
+\texttt{partition\_asymptotics.py} & Saddle constants, all-orders coefficient
+operator, phase polynomials, inverse coefficients, exact partition tables.\\
+\texttt{certificate.py} & Standard-library-only rational interval proof checks.\\
+\texttt{verify.py} & Reproduction driver for exact counts and numerical comparisons.\\
+\texttt{make\_figures.py} & Recreates the two figures from the saved data.\\
+\texttt{results/} & JSON coefficients, sign enclosures, CSV comparisons, run summary.\\
+\texttt{figures/} & Two PDF figures and PNG previews.\\
+\texttt{README.md} & Build and reproduction instructions; limitations.\\
+\texttt{PROVENANCE.md} & Repository checkpoint, consulted sources, attribution scope.\\
+\texttt{requirements.txt} & Numerical dependency used in the completed run.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+To rebuild the document, run \texttt{latexmk -pdf article.tex} in this
+directory, or run \texttt{pdflatex article.tex} repeatedly until the
+references stabilize. The PDF figures are included so that rebuilding
+the article does not require recalculating the integer tables.
+
+\subsection{Source and novelty audit}
+The public OEIS entries were checked on October 1, 2026. The source audit
+records the actual scope of the reading: A097356 and its conjectured
+constant, the three quadratic restricted-partition entries, A258268,
+Canfield's and Romik's treatments of Szekeres' asymptotic, and the
+repository's transseries documentation. The wider two-restriction work
+of Jiang--Wang is cited as a research continuation, not as a theorem
+used silently in the proof. The Bernoulli Fourier identity is used
+explicitly for the certificate tail bound.
+
+A repository search and the inspected recursive tree did not locate an
+A097356-specific item at the checked checkpoint. This does not establish
+that no related argument exists somewhere in its broader corpus or in
+unindexed literature. The report is consequently framed as a proved
+solution of a precise posted asymptotic question and a set of explicit
+refinements, rather than as a certified claim of first discovery of
+restricted-partition asymptotics.
+
+\begingroup
+\small
+\begin{thebibliography}{99}
+\setlength{\itemsep}{2pt}
+\bibitem{oeisA}
+The OEIS Foundation Inc., \emph{A097356: Number of partitions of $n$ into
+parts not greater than $\sqrt n$}. Entry by Reinhard Zumkeller; asymptotic
+comment by V\'aclav Kote\v{s}ovec, January 8, 2024. Inspected October 1,
+2026. \url{https://oeis.org/A097356}.
+
+\bibitem{oeisSquare}
+The OEIS Foundation Inc., \emph{A206226: Number of partitions of $n^2$
+into parts not greater than $n$}. Entry by Paul D. Hanna; leading
+asymptotic and general-$j$ formulas by V\'aclav Kote\v{s}ovec,
+2014--2015. Inspected October 1, 2026.
+\url{https://oeis.org/A206226}.
+
+\bibitem{oeisPlus}
+The OEIS Foundation Inc., \emph{A206227: Number of partitions of $n^2+n$
+into parts not greater than $n$}. Leading asymptotic recorded September
+7, 2014. Inspected October 1, 2026.
+\url{https://oeis.org/A206227}.
+
+\bibitem{oeisMinus}
+The OEIS Foundation Inc., \emph{A206240: Number of partitions of $n^2-n$
+into parts not greater than $n$}. Leading asymptotic recorded September
+7, 2014. Inspected October 1, 2026.
+\url{https://oeis.org/A206240}.
+
+\bibitem{oeisD}
+The OEIS Foundation Inc., \emph{A258268: Decimal expansion of the constant
+appearing in the asymptotic growth of A206226}. Inspected October 1,
+2026. \url{https://oeis.org/A258268}.
+
+\bibitem{canfield}
+E. Rodney Canfield, \emph{From recursions to asymptotics: On Szekeres'
+formula for the number of partitions}, Electronic Journal of
+Combinatorics \textbf{4}(2) (1997), R6, 16 pp.
+\url{https://www.combinatorics.org/ojs/index.php/eljc/article/view/v4i2r6}.
+
+\bibitem{romik}
+Dan Romik, \emph{Partitions of $n$ into $t\sqrt n$ parts}, European
+Journal of Combinatorics \textbf{26}(1) (2005), 1--17.
+DOI: \href{https://doi.org/10.1016/j.ejc.2004.02.005}{10.1016/j.ejc.2004.02.005}.
+Author's copy: \url{https://www.math.ucdavis.edu/~romik/data/uploads/papers/pofnk.pdf}.
+
+\bibitem{jiangwang}
+Tiefeng Jiang and Ke Wang, \emph{A generalized Hardy--Ramanujan formula
+for the number of restricted integer partitions}, arXiv:1805.06108.
+\url{https://arxiv.org/abs/1805.06108}.
+
+\bibitem{dlmfBernoulli}
+NIST Digital Library of Mathematical Functions, \S24.8, \emph{Series
+expansions}, Bernoulli Fourier series. Inspected October 1, 2026.
+\url{https://dlmf.nist.gov/24.8}.
+
+\bibitem{proveit}
+Vladimir Reshetnikov, \emph{ProveIt}, repository checkpoint
+\nolinkurl{1f1981f682b2878bde51a6ad40c22777f362fc05}, inspected October 1, 2026.
+Relevant documentation: \nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/1f1981f682b2878bde51a6ad40c22777f362fc05/Analysis/Transseries}.
+\end{thebibliography}
+\endgroup
+\end{document}

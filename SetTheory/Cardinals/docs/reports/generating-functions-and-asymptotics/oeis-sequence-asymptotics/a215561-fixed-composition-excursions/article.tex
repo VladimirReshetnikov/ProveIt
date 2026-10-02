@@ -1,0 +1,1505 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\usepackage{enumitem}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Fixed-composition excursions: D-finiteness, transcendence, and all-order asymptotics for OEIS A215561},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Fixed-composition excursions}
+\fancyhead[R]{\small OEIS A215561}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\A}{\overline{\mathbb Q}}
+\newcommand{\ct}{\operatorname{CT}}
+\newcommand{\diag}{\operatorname{Diag}}
+\newcommand{\E}{\mathcal E}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Exp}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\coeff}[2]{[#1]#2}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\one}{\boldsymbol 1}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Res}{Res}
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{14mm}
+{\large OEIS RESEARCH REPORT\par}
+\vspace{11mm}
+{\LARGE\bfseries Fixed-composition excursions\par}
+\vspace{5mm}
+{\Large D-finiteness, transcendence, and all-order\par asymptotics for OEIS A215561\par}
+\vspace{12mm}
+{\large With an explicit correction for A215570\par and asymptotic inversion\par}
+\vspace{14mm}
+{Prepared for Vladimir Reshetnikov\par}
+{October 1, 2026\par}
+\vspace{10mm}
+\begin{minipage}{0.89\textwidth}
+\begin{abstract}
+Let $A_r(n)$ count words containing $n$ copies of each letter in
+$\{1,\ldots,r\}$ whose every prefix has sum at most its average over all
+such words. We prove the fixed-row asymptotic conjecture recorded in
+OEIS A215561, identify its constant as a positive algebraic number, and
+establish a complete expansion in inverse powers of $n$. The central
+formula is
+\[
+ A_r(n)\sim \frac{\kappa_r}{rn}\frac{(rn)!}{(n!)^r},
+ \qquad
+ \kappa_r=\exp\!\left(\sum_{m\ge1}\frac{\Prob(S_m=0)}m\right),
+\]
+where $S_m$ is the centered, uniformly weighted walk associated with the
+alphabet. A finite kernel-root product computes $\kappa_r$.
+
+We also prove that every fixed row is D-finite, while its ordinary
+generating function is transcendental for every $r\ge3$. This separates
+recurrence existence from algebraicity and from the still-unproved
+specific recurrence conjecture for A215570. An explicit first correction
+for that sequence, a fixed-composition contact law, and an all-order
+Lambert-$W$ inversion procedure are derived. Exact enumeration and
+symbolic checks accompany the proofs.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.89\textwidth}\small
+\textbf{Status.} This is a newly written mathematical research manuscript,
+not a peer-reviewed publication or a Lean-verified development. Classical
+kernel and diagonal theorems are credited separately from the applications
+and deductions proved here. No claim of exhaustive bibliographic priority
+is made. The particular order-three recurrence conjecture of Kauers and
+Koutschan is \emph{not} claimed to be proved.
+\end{minipage}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{The problem, its significance, and the source audit}
+\subsection{A natural multiset-permutation family}
+For a fixed integer $r\ge2$, let $A_r(n)$ be the number of words
+$w=w_1\cdots w_{rn}$ containing exactly $n$ occurrences of each letter
+$1,\ldots,r$ and satisfying
+\begin{equation}\label{eq:prefix}
+ \sum_{j=1}^k w_j\le \frac{r+1}{2}k\qquad(0\le k\le rn).
+\end{equation}
+These are rows of the array A215561. The average on the right is exact:
+in a uniformly chosen multiset permutation, each position has expected
+letter $(r+1)/2$. This family includes Catalan numbers and a balanced
+Motzkin-word enumeration, but already the fourth and fifth rows lead to
+substantially more difficult coefficient extraction.
+
+The relevant sequence identifiers are
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+$r$ & OEIS entry & Description of the row \\
+\midrule
+2&A000108&Catalan numbers\\
+3&A007004&Balanced three-letter excursions\\
+4&A215562&Four-letter prefix-average words\\
+5&A215570&Five-letter prefix-average words\\
+6&A215571&Six-letter prefix-average words\\
+7&A215593&Seven-letter prefix-average words\\
+\bottomrule
+\end{tabular}
+\end{center}
+The array entry records Kotesovec's 2016 conjecture that, for each fixed
+$r>1$,
+\begin{equation}\label{eq:oeisconj}
+ A_r(n)\sim c(r)\frac{r^{rn}}{\pi^{(r-1)/2}n^{(r+1)/2}}.
+\end{equation}
+The fourth and fifth entries already supply explicit leading constants;
+those constants are credited to Kotesovec, rather than presented here as
+new discoveries \cite{oeisarray,oeis4,oeis5}.
+
+\subsection{What is and is not resolved}
+Kauers and Koutschan discuss A215570 and A215562 in Section 6.1 of their
+2023 paper. Their finite transfer matrices grow with $n$, which prevents
+their argument from proving D-finiteness. They leave a particular
+order-three recurrence for A215570 conjectural and ask for a provably
+correct recurrence for A215562 \cite{kk}. We replace the growing matrix
+by a fixed algebraic generating function in composition-marking variables.
+
+The main results below establish the existence of polynomial-coefficient
+recurrences for \emph{every} fixed row. They do not print a recurrence for
+the fourth row and do not certify the particular guessed operator for
+the fifth. Recurrence existence, an explicit annihilating operator, and
+minimality of that operator are three different assertions.
+
+The source check used the live OEIS entries, the cited 2023 paper, the
+classical directed-path kernel theory, and targeted searches for the
+sequence identifiers. The fixed-row asymptotic was still labelled a
+conjecture in A215561 when checked. No proof of the precise results below
+was identified in that search. This is a bounded source audit, not a
+proof that no such result exists anywhere in the literature.
+
+\subsection{Relationship to ProveIt}
+The inspected ProveIt snapshot was
+\begin{center}\small\texttt{40b17f2fc79a10a6fc1a50ca9c0c3d6f77be69e5}.\end{center}
+Its transseries-and-inversion documentation distinguishes exact cores,
+finite-order expansions, remainder transport, and discrete staircase
+inversion. We follow that organization in Section~\ref{sec:inverse}.
+The current path inspected was
+\begin{quote}\small\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}.
+\end{quote}
+The document's own formalization inventory is deliberately narrower than
+its mathematical exposition \cite{proveit}. No repository theorem is
+silently imported as a formal proof of our excursion results. Searches
+for A215561 and A215562 returned no repository matches; that limited check
+is not an audit of every file or of other identifiers for the same problem.
+
+\section{Main theorems}
+Put
+\begin{equation}\label{eq:steps}
+ g_r=\gcd(2,r-1),\quad
+ s_i=\frac{2i-r-1}{g_r},\quad
+ h=-s_1,\quad
+ P_r(u)=\frac1r\sum_{i=1}^r u^{s_i}.
+\end{equation}
+For odd $r=2h+1$, the steps are $-h,-h+1,\ldots,h$. For even $r$, they
+are the odd integers $-(r-1),-(r-3),\ldots,r-1$. Let $S_m$ be the sum of
+$m$ independent steps chosen uniformly from this set.
+
+\begin{theorem}[All fixed rows: leading term and complete expansion]\label{thm:main}
+For every fixed $r\ge2$, the series
+\begin{equation}\label{eq:kappaseries}
+ \log\kappa_r=\sum_{m\ge1}\frac{\Prob(S_m=0)}m
+\end{equation}
+converges, and $\kappa_r$ is a positive real algebraic number. For each
+integer $M\ge0$ there are real algebraic numbers $\alpha_{r,1},\ldots,
+\alpha_{r,M}$ such that
+\begin{equation}\label{eq:full}
+ A_r(n)=K_r\frac{r^{rn}}{n^{(r+1)/2}}
+ \left(1+\sum_{j=1}^M\frac{\alpha_{r,j}}{n^j}
+       +O_{r,M}(n^{-M-1})\right),
+\end{equation}
+where
+\begin{equation}\label{eq:constant}
+ K_r=\frac{\kappa_r}{\sqrt r\,(2\pi)^{(r-1)/2}},\qquad
+ c(r)=\frac{\kappa_r}{\sqrt r\,2^{(r-1)/2}}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:probability}
+ \frac{A_r(n)}{(rn)!/(n!)^r}\sim\frac{\kappa_r}{rn}.
+\end{equation}
+All coefficients in \eqref{eq:full} are computable by finite algebraic
+operations on kernel expansions and Gaussian moments.
+\end{theorem}
+The constants implied by the $O$-notation are allowed to depend on $r$
+and $M$. Nothing in this statement is uniform when the alphabet size
+grows with $n$.
+
+\begin{theorem}[Algebraic ambient series; transcendental row series]\label{thm:class}
+The multivariate generating function counting nonnegative excursions
+with steps \eqref{eq:steps}, marking every step type independently, is
+algebraic over $\Q(x_1,\ldots,x_r)$. Consequently
+\[
+ F_r(z)=\sum_{n\ge0}A_r(n)z^n
+\]
+is D-finite for every fixed $r$. The function $F_r$ is transcendental over
+$\Q(z)$ for every $r\ge3$. For $r=2$ it is the algebraic Catalan generating
+function.
+\end{theorem}
+Thus taking a diagonal preserves D-finiteness here, but does not preserve
+algebraicity. The transcendence assertion uses not just the growth
+exponent but, for even $r$, the power of $\pi$ in the leading constant.
+
+\begin{theorem}[An explicit next term for A215570]\label{thm:five}
+For the fifth row,
+\begin{equation}\label{eq:fivecorrection}
+ A_5(n)=\frac{3\sqrt5-5}{8\pi^2}\frac{5^{5n}}{n^3}
+ \left(1-\frac{13(5-\sqrt5)}{50n}+O(n^{-2})\right).
+\end{equation}
+Moreover every coefficient $\alpha_{5,j}$ in its full expansion belongs
+to $\Q(\sqrt5)$.
+\end{theorem}
+The leading factor in \eqref{eq:fivecorrection} is the previously posted
+OEIS factor. The proof and the correction are developed below without
+assuming the conjectured recurrence.
+
+\section{The exact excursion generating function}
+\subsection{Encoding the prefix condition}
+Replacing a letter $i$ by $r+1-i$ reverses the prefix inequality and preserves
+the multiset. It is therefore equivalent to count words whose centered
+partial sums, using steps $s_i$, are \emph{nonnegative}. The total centered
+sum is zero. These are one-dimensional excursions with prescribed numbers
+of the individual steps.
+
+For a count vector $\boldsymbol k=(k_1,\ldots,k_r)$ write
+$|\boldsymbol k|=\sum_i k_i$ and
+$\boldsymbol x^{\boldsymbol k}=\prod_i x_i^{k_i}$.
+Let $e_{\boldsymbol k}$ count nonnegative excursions with that composition,
+and set
+\begin{equation}\label{eq:ambient}
+ \E(\boldsymbol x)=\sum_{\boldsymbol k\ge0}
+ e_{\boldsymbol k}\boldsymbol x^{\boldsymbol k}.
+\end{equation}
+The empty excursion contributes one. A nonzero coefficient requires
+$\sum_i s_i k_i=0$, and
+\begin{equation}\label{eq:diag}
+ F_r(z)=\diag\E(z)
+ :=\sum_{n\ge0}[x_1^n\cdots x_r^n]\E(\boldsymbol x)z^n.
+\end{equation}
+In particular, the dimension of this ambient generating function is fixed
+when $r$ is fixed.
+
+\subsection{The small-root formula, with a proof}
+Temporarily mark total length by $t$, and write
+\[
+ P_{\boldsymbol x}(u)=\sum_{i=1}^r x_i u^{s_i}.
+\]
+The kernel equation is
+\begin{equation}\label{eq:kernel}
+ u^h\bigl(1-tP_{\boldsymbol x}(u)\bigr)=0.
+\end{equation}
+Of its $2h$ roots, exactly $h$ tend to zero as $t\to0$; these are called
+small roots. This description may be understood in a Puiseux extension
+with generic step weights.
+
+\begin{lemma}[Kernel product]\label{lem:kernel}
+If $u_1(t),\ldots,u_h(t)$ are the small roots, then
+\begin{equation}\label{eq:rootproduct}
+ \E(t\boldsymbol x)=
+ \frac{(-1)^{h+1}}{t x_1}\prod_{j=1}^h u_j(t).
+\end{equation}
+Consequently $\E$ is an algebraic multivariate formal power series.
+\end{lemma}
+\begin{proof}
+Let $G_j(t)$ count nonnegative paths ending at height $j$, and put
+$G(t,u)=\sum_{j\ge0}G_j(t)u^j$. Appending one step gives
+\[
+ (1-tP_{\boldsymbol x}(u))G(t,u)
+ =1-t\sum_{s_i<0}x_i\sum_{j=0}^{-s_i-1}G_j(t)u^{j+s_i}.
+\]
+After multiplication by $u^h$, the right-hand side is a monic polynomial
+$N(t,u)$ of degree $h$. Substitution of any small root is legitimate in
+the formal path equation and gives $N(t,u_j(t))=0$. Hence
+$N(t,u)=\prod_{j=1}^h(u-u_j(t))$. Its constant coefficient is
+$-t x_1G_0(t)$: only the most negative step, followed from height zero,
+contributes to that coefficient. Equating constant coefficients proves
+\eqref{eq:rootproduct}, since $G_0(t)=\E(t\boldsymbol x)$.
+
+The roots are algebraic over $\Q(t,\boldsymbol x)$, so their product is
+algebraic. An algebraic relation for $\E(t\boldsymbol x)$ can be specialized
+to $t=1$ after removing any common factor $t-1$ from its coefficients.
+The specialization is valid coefficientwise in the $\boldsymbol x$-adic
+topology and yields a nonzero polynomial relation for $\E(\boldsymbol x)$.
+\end{proof}
+This is the classical directed-path kernel construction, included here to
+make the composition marking explicit; its general development is due to
+the directed-path literature, notably Banderier and Flajolet \cite{bf}.
+
+\subsection{Why D-finiteness follows}
+An algebraic multivariate formal series in characteristic zero is
+D-finite: its derivatives belong to its finite algebraic function field,
+so they span a finite-dimensional vector space over the rational function
+field. Lipshitz's diagonal theorem then implies that the complete diagonal
+\eqref{eq:diag} is D-finite \cite{lipshitz}.
+
+Equivalently, for each fixed $r$ there exist polynomials
+$q_0(n),\ldots,q_d(n)\in\Q[n]$, not all zero, with
+\[
+ \sum_{j=0}^d q_j(n)A_r(n+j)=0
+\]
+for all sufficiently large $n$. This proves the D-finiteness portion of
+Theorem~\ref{thm:class}. Closure algorithms make this an effective existence
+result, but they do not imply a small order, a small degree, or a fast
+calculation of a useful recurrence.
+
+\subsection{A concrete algebraic certificate for the fifth alphabet}
+For steps $-2,-1,0,1,2$, give the weights the names $a,b,c,d,e$ respectively.
+The ambient excursion series $X=\E(a,b,c,d,e)$ is the unique formal solution
+with constant coefficient one of
+\begin{align}\label{eq:sextic}
+0={}&a^3e^3X^6+a^2e^2(c-1)X^5+(abde-a^2e^2)X^4\notag\\
+ &+\bigl(ad^2+b^2e+2ae(1-c)\bigr)X^3
+ +(bd-ae)X^2+(c-1)X+1.
+\end{align}
+Here the zero-step weight $c$ is a variable, not the OEIS asymptotic constant.
+
+To verify the equation, factor the quartic kernel as
+\[
+ e(u^2-vu+q)(u^2-wu+q')
+ =eu^4+du^3+(c-1)u^2+bu+a.
+\]
+The two small roots have product $q=-aX$, while
+$q'=-1/(eX)$. Comparing the cubic and linear coefficients gives
+\[
+ v+w=-d/e,\qquad vq'+wq=-b/e.
+\]
+Solve these two equations for $v,w$, and substitute into
+$q+q'+vw=(c-1)/e$. Clearing denominators gives \eqref{eq:sextic}.
+This calculation is valid first for generic weights, and hence as a
+polynomial identity. At $a=b=c=d=e=0$ the equation reduces to $1-X=0$,
+with nonzero derivative in $X$; the formal implicit function theorem
+therefore selects a unique branch. The fifth row is the complete diagonal
+of this explicitly specified algebraic branch.
+
+\section{The bridge logarithm and the algebraic constant}
+\subsection{An exact identity retaining every composition}
+Define the bridge generating function
+\[
+ B(t;\boldsymbol x)=\ct_u\frac{1}{1-tP_{\boldsymbol x}(u)}.
+\]
+Unlike excursions, bridges have no sign restriction on their intermediate
+heights. Their composition coefficients are multinomial coefficients.
+
+\begin{lemma}[Bridge logarithm]\label{lem:bridge}
+As formal power series,
+\begin{equation}\label{eq:bridgeidentity}
+ B(t;\boldsymbol x)=1+t\frac{\mathrm d}{\mathrm dt}
+             \log\E(t\boldsymbol x),
+\end{equation}
+and consequently
+\begin{equation}\label{eq:logcoeff}
+ \log\E(\boldsymbol x)=
+ \sum_{\substack{\boldsymbol k\ne0\\\sum_i s_i k_i=0}}
+ \frac{(|\boldsymbol k|-1)!}{\prod_i k_i!}
+ \boldsymbol x^{\boldsymbol k}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:exactreference}
+ [x_1^n\cdots x_r^n]\log\E(\boldsymbol x)
+ =\frac{1}{rn}\frac{(rn)!}{(n!)^r}\qquad(n\ge1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For small positive numerical weights and sufficiently small $t$, constant
+term extraction is a contour integral. Its residues at the small kernel
+roots give
+\[
+ B(t;\boldsymbol x)
+ =\sum_{j=1}^h\frac{-1}{t u_jP'_{\boldsymbol x}(u_j)}
+ =t\sum_{j=1}^h\frac{u_j'(t)}{u_j(t)}.
+\]
+The second equality follows by differentiating
+$tP_{\boldsymbol x}(u_j(t))=1$. Taking the logarithmic derivative of
+\eqref{eq:rootproduct} proves \eqref{eq:bridgeidentity}. The identity
+extends formally to arbitrary weights.
+
+Expanding $B$ in powers of $t$ and then expanding
+$P_{\boldsymbol x}(u)^m$ gives the coefficient
+$m!/\prod k_i!$ precisely when $|\boldsymbol k|=m$ and
+$\sum s_i k_i=0$. Integrating $(B-1)/t$ supplies the factor $1/m$ and
+proves \eqref{eq:logcoeff}. Its balanced specialization gives
+\eqref{eq:exactreference}.
+\end{proof}
+The bridge--excursion relation is classical \cite{bf}. Its usefulness here
+is that the diagonal of the logarithm is \emph{known exactly}. We can
+calibrate a multivariate saddle calculation against that coefficient and
+thereby avoid an unjustified guess about cyclic rotations or lattice
+periods.
+
+\subsection{The critical value}
+Set $\boldsymbol p=(1/r,\ldots,1/r)$. In the probability normalization,
+\[
+ B(t;\boldsymbol p)=\sum_{m\ge0}\Prob(S_m=0)t^m.
+\]
+A finite-support, nondegenerate centered lattice walk has
+$\Prob(S_m=0)=O(m^{-1/2})$. For completeness, this bound follows by Fourier
+inversion: the characteristic function has quadratic modulus decay near
+the finitely many points where its modulus is one, and has modulus bounded
+strictly below one on their complement. The integral near each such point
+is bounded by a Gaussian integral. Thus \eqref{eq:kappaseries} converges.
+By monotone convergence in the nonnegative coefficient series,
+\begin{equation}\label{eq:criticalvalue}
+ \kappa_r=\lim_{t\uparrow1}\E(t\boldsymbol p)
+ =\E(\boldsymbol p)>1.
+\end{equation}
+
+\begin{proposition}[Finite algebraic formula]\label{prop:kappa}
+Let
+\begin{equation}\label{eq:Q}
+ Q_r(u)=\sum_{i=1}^r u^{s_i+h}-r u^h.
+\end{equation}
+The root $u=1$ has multiplicity exactly two. Apart from that root,
+$Q_r$ has $h-1$ roots strictly inside the unit disk and $h-1$ strictly
+outside, counting multiplicities. If the inside roots are
+$\alpha_1,\ldots,\alpha_{h-1}$, then
+\begin{equation}\label{eq:finiteconstant}
+ \kappa_r=(-1)^{h+1}r\prod_{j=1}^{h-1}\alpha_j.
+\end{equation}
+An empty product is one.
+\end{proposition}
+\begin{proof}
+At $u=1$, $P_r(1)=1$, $P'_r(1)=0$, and
+$P''_r(1)=\sum_i p_i s_i^2>0$. Hence the multiplicity is exactly two.
+If $|u|=1$ and $P_r(u)=1$, equality in the triangle inequality forces
+$u^{s_i}=1$ for every $i$. The normalized step set has gcd one, so $u=1$.
+There are no other roots on the unit circle.
+
+For $0<t<1$, Rouch\'e's theorem applied on $|u|=1$ shows that
+$u^h(1-tP_r(u))$ has exactly $h$ roots inside. Near $t=1$, its two roots
+near one split as $1\pm c\sqrt{1-t}+O(1-t)$ with $c>0$; one is inside
+and one outside. This leaves $h-1$ strictly inside in the limit. Formula
+\eqref{eq:finiteconstant} is now the limit of \eqref{eq:rootproduct}.
+It also proves algebraicity. Positivity was already obtained from
+\eqref{eq:criticalvalue}.
+\end{proof}
+Internal multiple roots, should they occur, cause no difficulty: the
+product of a separated cluster is analytic even when individual root
+labels cannot be chosen analytically.
+
+For the symmetric step sets in this paper one also has the real integral
+\begin{equation}\label{eq:integralconstant}
+ \log\kappa_r=-\frac1{2\pi}\int_0^{2\pi}
+                       \log\bigl(1-P_r(e^{i\theta})\bigr)\dd\theta.
+\end{equation}
+Indeed, expand first with a factor $t<1$, integrate term by term, and let
+$t\uparrow1$. The logarithmic singularity at $\theta=0$ is integrable.
+The integrand is real because $P_r(e^{i\theta})$ is real and at most one.
+Equation~\eqref{eq:integralconstant} is an alternative numerical expression,
+not a replacement for the algebraic proof.
+
+\section{Fixed-composition singularity analysis}\label{sec:saddle}
+\subsection{Removing the two linear constraints}
+Let $d=r-2$ and mark only the first $d$ step types in addition to total
+length. Use logarithmic markers $\boldsymbol y=(y_1,\ldots,y_d)$ and set
+\begin{align}
+ P_{\boldsymbol y}(u)
+ &=\sum_{i=1}^r p_i e^{y_i^*}u^{s_i},
+ &y_i^*&=\begin{cases}y_i&i\le d,\\0&i>d.\end{cases}\label{eq:markedP}
+\end{align}
+If total length is $N$ and the first $d$ counts are known, the remaining
+two counts are uniquely determined by length and total height zero,
+because $s_{r-1}\ne s_r$. At $N=rn$, extracting $n$ occurrences of each
+marked type therefore extracts the complete balanced composition.
+
+The relevant coefficient functional is
+\begin{equation}\label{eq:coefficientfunctional}
+ \mathcal C_N(U)=[t^N z_1^n\cdots z_d^n]\,
+ U\bigl(tp_1z_1,\ldots,tp_dz_d,tp_{r-1},tp_r\bigr),\quad N=rn.
+\end{equation}
+For $d=0$ the $z$ extraction is absent. Thus
+\[
+ \mathcal C_N(\E)=r^{-N}A_r(n),\qquad
+ \mathcal C_N(\log\E)=r^{-N}\frac{(rn)!}{rn(n!)^r}.
+\]
+
+\subsection{The moving critical point and its Hessian}
+The analytic implicit function theorem gives a unique $\tau(\boldsymbol y)$
+near one solving
+\begin{equation}\label{eq:criticalmoving}
+ (u\partial_u)P_{\boldsymbol y}(u)\big|_{u=\tau(\boldsymbol y)}=0,
+ \qquad \tau(0)=1.
+\end{equation}
+The required derivative in $\log u$ is the positive variance
+\[
+ V=\sum_i p_i s_i^2.
+\]
+Define
+\begin{align}
+ \rho(\boldsymbol y)&=P_{\boldsymbol y}(\tau(\boldsymbol y))^{-1},\notag\\
+ \psi(\boldsymbol y)&=\log P_{\boldsymbol y}(\tau(\boldsymbol y)),\notag\\
+ \Phi(\boldsymbol y)&=\psi(\boldsymbol y)-\sum_{a=1}^d p_a y_a.
+ \label{eq:phase}
+\end{align}
+Then $\nabla\Phi(0)=0$. Its Hessian is
+\begin{equation}\label{eq:H}
+ H_{ab}=p_a\delta_{ab}-p_ap_b-
+            \frac{p_as_a\,p_bs_b}{V}\qquad(1\le a,b\le d).
+\end{equation}
+
+\begin{lemma}[Nondegenerate composition saddle]\label{lem:hessian}
+The matrix $H$ is positive definite, and, with
+$\delta=s_r-s_{r-1}=2/g_r$,
+\begin{equation}\label{eq:detH}
+ \det H=\frac{\delta^2}{V}\prod_{i=1}^r p_i.
+\end{equation}
+For $d=0$, the determinant convention is $\det H=1$.
+\end{lemma}
+\begin{proof}
+For numbers $v_1,\ldots,v_d$, extend $f_i=v_i$ for $i\le d$ by
+$f_{r-1}=f_r=0$. Direct differentiation in \eqref{eq:criticalmoving} gives
+\[
+ v^{\mathsf T}Hv=\Var_p(f)-\frac{\Cov_p(f,s)^2}{V}.
+\]
+Cauchy--Schwarz makes this nonnegative. Equality would require $f_i=a+bs_i$
+for every $i$. The two distinct steps with $f_i=0$ force $a=b=0$, hence
+$v=0$.
+
+For the determinant, let the random vector $X$ have components
+$(\boldsymbol1_{\{i=1\}},\ldots,\boldsymbol1_{\{i=d\}},s_i)$ with
+probability $p_i$. Its covariance matrix has Schur complement $H$ in the
+last entry $V$, so its determinant is $V\det H$. A random vector supported
+on $r$ affinely independent points in dimension $r-1$ has covariance
+determinant equal to the product of its $r$ probabilities times the square
+of the affine-simplex determinant. This identity follows by adjoining a
+row of ones to the support matrix and applying the Schur complement to
+its weighted Gram matrix. Here that affine determinant is, up to sign,
+$s_r-s_{r-1}=\delta$. This proves \eqref{eq:detH}.
+\end{proof}
+
+\subsection{A uniform square-root expansion}
+Put
+\begin{equation}\label{eq:tiltedprob}
+ q_i(\boldsymbol y)=
+ \frac{p_i e^{y_i^*}\tau(\boldsymbol y)^{s_i}}
+      {P_{\boldsymbol y}(\tau(\boldsymbol y))},\qquad
+ V(\boldsymbol y)=\sum_i q_i(\boldsymbol y)s_i^2.
+\end{equation}
+The $q_i$ sum to one and have mean step zero. Multiplying weights by
+$\tau^{s_i}$ does not change any excursion weight, so the critical value is
+\[
+ \kappa(\boldsymbol y)=\E(\boldsymbol q(\boldsymbol y)).
+\]
+It is analytic near $\boldsymbol y=0$ as a critical root-cluster product,
+and $\kappa(0)=\kappa_r$.
+
+Let $x=1-t/\rho(\boldsymbol y)$. The small root which reaches the critical
+point has the expansion
+\[
+ u_0(t,\boldsymbol y)=\tau(\boldsymbol y)
+ \left(1-c(\boldsymbol y)x^{1/2}+O(x)\right),\qquad
+ c(\boldsymbol y)=\sqrt{\frac{2}{V(\boldsymbol y)}}.
+\]
+All the other small roots are a separated cluster. Their product, and the
+factor $1/t$ in the kernel formula, are analytic at the critical point.
+Therefore, uniformly for complex $\boldsymbol y$ sufficiently near zero,
+\begin{align}
+ \E(t;\boldsymbol y)
+ &=\kappa(\boldsymbol y)
+       \left(1-c(\boldsymbol y)x^{1/2}+O(x)\right),\label{eq:Elocal}\\
+ \Lcal(t;\boldsymbol y):=\log\E(t;\boldsymbol y)
+ &=\log\kappa(\boldsymbol y)-c(\boldsymbol y)x^{1/2}+O(x).
+ \label{eq:Llocal}
+\end{align}
+Each expansion continues to arbitrary order in $x^{1/2}$. The notation
+$\E(t;\boldsymbol y)$ means the marked specialization in
+\eqref{eq:coefficientfunctional}, with $z_a=e^{y_a}$.
+
+The square-root coefficients differ by exactly
+$\kappa(\boldsymbol y)$. This analytic fact is the reason that the exact
+logarithmic reference coefficient in \eqref{eq:exactreference} identifies
+the fixed-composition leading constant.
+
+\subsection{Why other phases do not contribute}
+An asymptotic proof must control the full marker torus, not just a local
+expansion. Here this control is particularly simple.
+
+Suppose $|t|=|u|=|z_a|=1$ and a kernel root lies on $|u|=1$. Equality in
+\[
+ \left|t\sum_i p_i z_i^*u^{s_i}\right|\le1
+\]
+forces $t z_i^*u^{s_i}=1$ for every $i$. The last two unmarked types imply
+$u^{\delta}=1$. All step differences are multiples of $\delta$, so then
+$z_a=1$ for every marked type. If $r$ is odd, $\delta=1$ and $t=u=1$.
+If $r$ is even, $\delta=2$ and the two possibilities are $(t,u)=(1,1)$
+and $(-1,-1)$.
+
+Thus the only marker saddle is $\boldsymbol z=\one$. The only length
+period is
+\begin{equation}\label{eq:period}
+ \nu=\begin{cases}1&r\text{ odd},\\2&r\text{ even},\end{cases}
+ \qquad\text{so that }\nu=\delta.
+\end{equation}
+In the even case every excursion has even length, and the two length
+singularities give identical contributions on the admissible subsequence
+$N=rn$.
+
+More explicitly, on any compact part of the marker torus separated from
+$\one$, no kernel root can cross $|u|=1$ for $|t|\le1$. By compactness
+this remains true for $|t|<1+\epsilon$ with some uniform $\epsilon>0$.
+The small-root product is analytic there, even if roots within that
+cluster collide. It is nonzero away from $t=0$, since the kernel has
+nonzero constant term for $t\ne0$. The removable value at $t=0$ is one.
+Consequently both $\E$ and its logarithm have uniform analytic
+continuations on that disk. Cauchy estimates make this part of the
+coefficient integral exponentially smaller than the main term.
+
+\subsection{Transfer and the Gaussian integral}
+For a half-integer $\gamma$ which is not a nonnegative integer,
+\begin{equation}\label{eq:transfer}
+ [t^N](1-t/\rho)^\gamma
+ =\rho^{-N}\frac{\Gamma(N-\gamma)}{\Gamma(-\gamma)\Gamma(N+1)}.
+\end{equation}
+The gamma quotient has a complete inverse-power expansion. Applying
+\eqref{eq:transfer} to \eqref{eq:Elocal}--\eqref{eq:Llocal} gives local
+leading amplitudes
+\begin{equation}\label{eq:amplitudes}
+ g_L(\boldsymbol y)=\frac{c(\boldsymbol y)}{2\sqrt\pi},\qquad
+ g_E(\boldsymbol y)=\kappa(\boldsymbol y)g_L(\boldsymbol y),
+\end{equation}
+multiplying $\rho(\boldsymbol y)^{-N}N^{-3/2}$ and the period factor $\nu$.
+
+For marker extraction put $\boldsymbol y=i\boldsymbol\theta$. The
+exponential in the Cauchy integral is
+\[
+ \exp\bigl(N\Phi(i\boldsymbol\theta)\bigr),\qquad
+ \Phi(i\boldsymbol\theta)=-\tfrac12\boldsymbol\theta^{\mathsf T}
+ H\boldsymbol\theta+O(|\boldsymbol\theta|^3).
+\]
+The Hessian is positive definite. The leading Gaussian integral thus gives
+\begin{align}
+ \mathcal C_N(\Lcal)
+ &\sim\frac{\nu g_L(0)}{(2\pi)^{d/2}\sqrt{\det H}}
+                   N^{-(d+3)/2},\label{eq:Lcoefficient}\\
+ \mathcal C_N(\E)
+ &\sim\kappa_r\frac{\nu g_L(0)}{(2\pi)^{d/2}\sqrt{\det H}}
+                   N^{-(d+3)/2}.
+ \label{eq:Ecoefficient}
+\end{align}
+The ratio is therefore $\kappa_r$. Substituting the exact logarithmic
+coefficient proves \eqref{eq:probability}.
+
+There is also a useful independent normalization check. From
+\eqref{eq:detH} and \eqref{eq:period},
+\[
+ \frac{\nu g_L(0)}{(2\pi)^{d/2}\sqrt{\det H}}
+ =\frac{\nu}{\delta}\frac{1}{(2\pi)^{(r-1)/2}\sqrt{\prod_i p_i}}
+ =\frac{r^{r/2}}{(2\pi)^{(r-1)/2}}.
+\]
+This is exactly the leading Stirling coefficient of
+$r^{-N}(rn)!/(rn(n!)^r)$ when $N=rn$. In particular, no hidden period-two
+factor is lost in the even alphabets.
+
+\subsection{Remainders and all orders}\label{subsec:allorders}
+We spell out why the preceding calculation proves more than a leading
+heuristic. Fix any requested order $M$. The local kernel factorization
+provides Puiseux expansions to an arbitrarily high finite order,
+with analytic coefficient functions and uniform remainder estimates on
+a common dented neighborhood of the moving singularity. This follows
+from analytic factorization of the double root and analytic separation
+of the other root clusters. The same neighborhoods work for sufficiently
+small complex marker values.
+
+After the length coefficient is extracted, Taylor-expand its analytic
+amplitudes and the phase $\Phi$ to a finite order larger than that needed
+for $N^{-M-1}$. In a neighborhood
+$|\boldsymbol\theta|\le N^{-1/2+\varepsilon}$, substitute
+$\boldsymbol\theta=\boldsymbol x/\sqrt N$. Taylor's theorem and the
+positive-definite Gaussian majorant bound every discarded term by an
+integrable polynomial times a Gaussian, with the specified inverse power
+of $N$. One may first fix a sufficiently small $\varepsilon>0$ depending
+on the requested truncation and then take sufficiently many Taylor
+terms. In the remainder of the small marker neighborhood, the real part
+of the phase is at most $-c|\boldsymbol\theta|^2$, giving an error smaller
+than every power of $N^{-1}$. The compact complement was handled by the
+analytic-continuation argument above.
+
+Gaussian moments of odd total degree vanish. The half-integer powers in
+the length expansion differ by integers after coefficient transfer.
+Consequently only integer powers of $N^{-1}$ remain after the common
+factor $N^{-(r+1)/2}$ is removed. This proves a full expansion with an
+$O(N^{-M-1})$ relative remainder after $M$ corrections.
+
+All finite Taylor jets involved are algebraic. Indeed, after replacing
+$e^{y_a}$ by independent variables, the critical point solves polynomial
+kernel and derivative equations with algebraic base values. Exponential
+reparametrization has rational Taylor coefficients. Half-integer gamma
+factors contribute one common $\sqrt\pi$, and Gaussian moments contribute
+rational expressions in $H^{-1}$ times a common determinant factor.
+After division by the leading coefficient, every correction is algebraic.
+
+Finally, Stirling's expansion in
+\eqref{eq:probability}, or directly \eqref{eq:Ecoefficient}, yields
+\eqref{eq:full} and \eqref{eq:constant}. This proves
+Theorem~\ref{thm:main}, including its all-order and algebraicity assertions.
+
+\begin{remark}[What ``all orders'' means here]
+Equation~\eqref{eq:full} determines the dominant exponential--power sector
+with a proved finite-order remainder for every fixed truncation. It does
+not assert convergence of the inverse-power series, identify every
+exponentially small contribution, or establish Borel summability.
+Those are separate questions.
+\end{remark}
+
+\section{Explicit leading constants}
+The following values are obtained from the finite product, not from
+fitting a growth curve:
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+$r$ & $\kappa_r$ & $c(r)$ in \eqref{eq:oeisconj}\\
+\midrule
+2&2.000000000000000&1.000000000000000\\
+3&3.000000000000000&0.866025403784439\\
+4&1.384057356943304&0.244669085661435\\
+5&1.909830056250526&0.213525491562421\\
+6&1.239095083832872&0.089423985025306\\
+7&1.583896616939167&0.074832081265314\\
+8&1.173744890362129&0.036679527823817\\
+\bottomrule
+\end{tabular}
+\end{center}
+The printed decimals are numerical evaluations; the exact definition is
+\eqref{eq:finiteconstant}.
+
+For $r=2,3$, $h=1$, so the product is empty and $\kappa_2=2$,
+$\kappa_3=3$. Directly,
+\[
+ A_2(n)=\frac{(2n)!}{n!(n+1)!},\qquad
+ A_3(n)=\frac{(3n)!}{(n!)^3(n+1)}.
+\]
+For the second formula, remove the $n$ zero steps from a balanced Motzkin
+excursion, obtaining a Dyck path with $n$ up and $n$ down steps; reinsert
+the zero steps in $\binom{3n}{n}$ ways. These formulas give the checks
+\[
+ \alpha_{2,1}=-\frac98,\qquad \alpha_{3,1}=-\frac{11}{9}.
+\]
+
+For the fourth row,
+\[
+ Q_4(u)=(u-1)^2(u^4+2u^3+4u^2+2u+1).
+\]
+The quartic is reciprocal. On dividing by $u^2$ and putting $v=u+u^{-1}$,
+it becomes $v^2+2v+2=0$. Pair the two roots strictly inside the unit disk
+and multiply them. If $\varphi=(1+\sqrt5)/2$, the result is
+\[
+ \kappa_4=4(\varphi-\sqrt\varphi),\qquad
+ c(4)=\frac{\varphi-\sqrt\varphi}{\sqrt2}.
+\]
+Substitution in \eqref{eq:full} reproduces the formula credited in the
+OEIS entry to Kotesovec \cite{oeis4}.
+
+For the fifth row,
+\[
+ Q_5(u)=(u-1)^2(u^2+3u+1).
+\]
+The unique strict inside root is $\alpha=(-3+\sqrt5)/2$. Hence
+\[
+ \kappa_5=\frac52(3-\sqrt5),\qquad c(5)=\frac{3\sqrt5-5}{8}.
+\]
+This is the leading constant already recorded in A215570 \cite{oeis5}.
+For reproducibility, two larger reduced kernels are
+\begin{align*}
+ \frac{Q_6(u)}{(u-1)^2}
+ &=u^8+2u^7+4u^6+6u^5+9u^4+6u^3+4u^2+2u+1,\\
+ \frac{Q_7(u)}{(u-1)^2}
+ &=u^4+3u^3+6u^2+3u+1.
+\end{align*}
+Together with the inside-root selection, these give exact algebraic
+specifications of the constants for A215571 and A215593, whose checked
+entries did not give asymptotic formulas \cite{oeis6,oeis7}.
+
+\section{Why every nontrivial higher row is transcendental}\label{sec:transcendence}
+The exponent and constant in Theorem~\ref{thm:main} imply a complete
+algebraicity classification for the row generating functions.
+
+\begin{proof}[Proof of the transcendence assertion in Theorem~\ref{thm:class}]
+Set $R=r^{-r}$ and $G(x)=F_r(Rx)$. Its coefficients satisfy
+\[
+ [x^n]G(x)\sim K_r n^{-(r+1)/2},\qquad K_r>0.
+\]
+Assume for contradiction that $G$ is algebraic over $\Q(x)$. Every
+ordinary derivative of $G$ is then algebraic and, near the algebraic
+point $x=1$, has a Puiseux expansion with algebraic coefficients.
+
+First let $r=2k+1\ge3$. Then
+\[
+ G^{(k)}(x)\sim K_r\log\frac1{1-x}\qquad(x\uparrow1).
+\]
+To justify this Abelian estimate, its coefficient sequence is asymptotic
+to $K_r/n$ up to the harmless derivative index shift. Compare it, outside
+any fixed finite initial segment, with $(K_r\pm\epsilon)/n$ and use
+$\sum_{n\ge1}x^n/n=-\log(1-x)$. No Puiseux series can have a leading
+logarithmic divergence. This is a contradiction.
+
+Next let $r=2k\ge4$. Differentiation $k$ times gives coefficients
+asymptotic to $K_r n^{-1/2}$. The same comparison argument and the
+Gaussian integral, or a Riemann-sum estimate with $x=e^{-t}$, yield
+\begin{equation}\label{eq:evenobstruction}
+ G^{(k)}(x)\sim K_r\sqrt\pi\,(1-x)^{-1/2}.
+\end{equation}
+The leading Puiseux coefficient of an algebraic function over $\Q(x)$
+at $x=1$ must be algebraic. But
+\[
+ K_r\sqrt\pi
+ =\frac{\kappa_r}{\sqrt r\,2^{k-1/2}}\,\pi^{-(k-1)}
+\]
+is transcendental: its prefactor is nonzero algebraic, and $k-1$ is a
+positive integer. If this number were algebraic, then $\pi^{k-1}$ and
+hence $\pi$ would be algebraic, contradicting Lindemann's theorem
+\cite{lindemann}. This contradicts \eqref{eq:evenobstruction}.
+
+Finally $F_2(z)=(1-\sqrt{1-4z})/(2z)$ is algebraic, as expected.
+\end{proof}
+The argument is not a generic claim that all diagonals are transcendental.
+It uses the particular positive leading asymptotic and its algebraic
+constant. It also explains why the even rows require an arithmetic
+argument in addition to their half-integer growth exponent.
+
+\section{The first correction for the fifth row}\label{sec:correction}
+\subsection{A differential formula for the ratio correction}
+This section makes the all-order construction concrete. Its calculation
+is independent of the conjectured A215570 recurrence.
+
+Use the phase and marker notation from Section~\ref{sec:saddle}, and let
+$C=H^{-1}$. Repeated indices in the formulas below are summed from $1$ to
+$d$. Put
+\[
+ \ell(\boldsymbol y)=\log\kappa(\boldsymbol y),\qquad
+ h_c(\boldsymbol y)=\log c(\boldsymbol y),\qquad
+ T_{abc}=\partial_a\partial_b\partial_c\Phi(0).
+\]
+All derivatives without an argument are evaluated at zero.
+For an analytic amplitude $g$, the order-$N^{-1}$ contribution in its
+Gaussian saddle integral is
+\[
+ -\tfrac12 C_{ab}g_{ab}
+ +\tfrac12 g_aT_{bcd}C_{ab}C_{cd}
+ +g\,J,
+\]
+where $J$ is independent of the amplitude. This follows by expanding
+$g(i\boldsymbol x/\sqrt N)$ and the cubic and quartic terms of
+$N\Phi(i\boldsymbol x/\sqrt N)$, then using Gaussian moments. The signs
+come from $i^2=-1$; in particular the second derivative term is negative.
+
+Subtracting the normalized correction for $g_L$ from that for
+$g_E=\kappa g_L$ cancels $J$ and gives
+\begin{equation}\label{eq:saddlecorrection}
+ \mathcal S=-\tfrac12 C_{ab}(\ell_{ab}+\ell_a\ell_b)
+             -C_{ab}\ell_a(h_c)_b
+             +\tfrac12\ell_aT_{bcd}C_{ab}C_{cd}.
+\end{equation}
+There is a second correction from the length singularity itself. Write
+at $\boldsymbol y=0$
+\begin{align*}
+ \E(t)&=\kappa_r(1-cx^{1/2}+D x+E_3x^{3/2}+O(x^2)),\\
+ \log\E(t)&=\log\kappa_r-cx^{1/2}+L_2x+L_3x^{3/2}+O(x^2),
+ \qquad x=1-t.
+\end{align*}
+Then $D=L_2+c^2/2$. In the coefficient transfer formula the universal
+$3/(8N)$ term cancels between the two functions, and
+$\Gamma(-1/2)/\Gamma(-3/2)=-3/2$. It follows that the difference of their
+relative length corrections is
+\begin{equation}\label{eq:lengthcorrection}
+ \mathcal B=-\frac32L_2-\frac{c^2}{4}.
+\end{equation}
+Combining the two extractions,
+\begin{equation}\label{eq:ratiofirst}
+ A_r(n)=\frac{\kappa_r}{rn}\frac{(rn)!}{(n!)^r}
+ \left(1+\frac{\Delta_r}{rn}+O(n^{-2})\right),
+ \qquad \Delta_r=\mathcal B+\mathcal S.
+\end{equation}
+Stirling's first correction then gives
+\begin{equation}\label{eq:alphafirst}
+ \alpha_{r,1}=\frac{1/r-r}{12}+\frac{\Delta_r}{r}.
+\end{equation}
+Equations~\eqref{eq:saddlecorrection}--\eqref{eq:alphafirst} are also an
+implementable recipe for other fixed rows.
+
+\subsection{Exact ingredients for \texorpdfstring{$r=5$}{r=5}}
+Here $s=(-2,-1,0,1,2)$, $p_i=1/5$, $d=3$, and $V=2$. The Hessian and
+inverse are
+\[
+ H=\begin{pmatrix}
+ 2/25&-2/25&-1/25\\
+ -2/25&7/50&-1/25\\
+ -1/25&-1/25&4/25
+ \end{pmatrix},\qquad
+ C=\begin{pmatrix}
+ 130&90&55\\90&70&40\\55&40&30
+ \end{pmatrix}.
+\]
+The large entries in $C$ are a consequence of marking the first three
+letters while reconstructing the final two. They are not evidence of a
+degenerate saddle: $H$ is strictly positive definite.
+
+For compact formulas define the centered residual markers
+\begin{equation}\label{eq:residualmarkers}
+ R_a(i)=\boldsymbol1_{\{i=a\}}-p_a-\frac{p_as_a}{V}s_i.
+\end{equation}
+Then
+\begin{equation}\label{eq:thirdandh}
+ T_{abc}=\sum_i p_iR_a(i)R_b(i)R_c(i),\qquad
+ (h_c)_a=-\frac{1}{2V}\sum_i p_i s_i^2R_a(i).
+\end{equation}
+The cubic identity is the third derivative of the profiled log moment
+generating function in \eqref{eq:phase}; derivatives of the optimized
+height coordinate cancel because each residual marker is orthogonal to
+the height step.
+
+There is an especially simple formula for $\kappa(\boldsymbol q)$ for
+nearby centered five-step probabilities. Write
+\[
+ A=q_{-2},\quad E=q_{2},\quad B=q_1+2q_2=q_{-1}+2q_{-2}.
+\]
+The equality for $B$ is the zero-drift condition. The critical kernel
+factors as
+\[
+ \sum_{s=-2}^2q_su^{s+2}-u^2=(u-1)^2(Eu^2+Bu+A),
+\]
+so
+\begin{equation}\label{eq:kappafivegeneral}
+ \kappa(\boldsymbol q)=\frac{2}{B+\sqrt{B^2-4AE}}.
+\end{equation}
+The square root is positive at the uniform probabilities and continued
+analytically nearby.
+
+For transparency, let $v=\log\tau$. Differentiating the zero-drift equation
+and \eqref{eq:tiltedprob} gives
+\begin{align}
+ v_a&=-p_as_a/V, &
+ v_{ab}&=-V^{-1}\sum_i p_i s_iR_a(i)R_b(i),\notag\\
+ (q_i)_a&=p_iR_a(i),&
+ (q_i)_{ab}&=p_i\bigl(R_a(i)R_b(i)+s_i v_{ab}-H_{ab}\bigr).
+ \label{eq:qjets}
+\end{align}
+Equations~\eqref{eq:kappafivegeneral}--\eqref{eq:qjets} determine the needed
+derivatives using only rational arithmetic and $\sqrt5$. Their values are
+\[
+ (\ell_a)=\left(-\frac3{10}+\frac{\sqrt5}{10},\quad
+                   \frac15-\frac{\sqrt5}{10},\quad\frac15\right),
+ \qquad ((h_c)_a)=\left(-\frac1{10},\frac1{20},\frac1{10}\right),
+\]
+and
+\[
+ (\ell_{ab})=\begin{pmatrix}
+ \frac2{25}-\frac{4\sqrt5}{125}&-\frac2{25}+\frac{11\sqrt5}{250}&-\frac1{25}\\[2pt]
+ -\frac2{25}+\frac{11\sqrt5}{250}&\frac7{50}-\frac{17\sqrt5}{250}&-\frac1{25}\\[2pt]
+ -\frac1{25}&-\frac1{25}&\frac4{25}
+ \end{pmatrix}.
+\]
+Substitution in \eqref{eq:saddlecorrection}, using \eqref{eq:thirdandh},
+now gives the exact contraction
+\begin{equation}\label{eq:Sfive}
+ \mathcal S=-\frac{11}{4}+\sqrt5.
+\end{equation}
+
+To obtain $L_2$, note that the uniform law is symmetric. The logarithm of
+the critical small root has no $x$ term: in the coordinate $u=e^w$,
+$P(e^w)$ is even in $w$, so $w=-c\sqrt{x}+O(x^{3/2})$. The other small
+root is $\alpha=(-3+\sqrt5)/2$. Differentiating its kernel equation yields
+\[
+ L_2=1+\frac{1}{\alpha P'_5(\alpha)}=1-\frac{\sqrt5}{5}.
+\]
+Since $c^2=2/V=1$, equation~\eqref{eq:lengthcorrection} gives
+\[
+ \mathcal B=-\frac74+\frac{3\sqrt5}{10},\qquad
+ \Delta_5=-\frac92+\frac{13\sqrt5}{10}.
+\]
+Finally \eqref{eq:alphafirst} gives
+\[
+ \alpha_{5,1}=-\frac{13}{10}+\frac{13\sqrt5}{50}
+             =-\frac{13(5-\sqrt5)}{50}.
+\]
+This proves \eqref{eq:fivecorrection}.
+
+All higher finite jets at the uniform point stay in $\Q(\sqrt5)$:
+the critical root-cluster data have that field, $c=1$, and all implicit
+recursions have nonzero denominators in the same field. Gaussian and
+Stirling corrections introduce only rational operations. This proves the
+field assertion in Theorem~\ref{thm:five}.
+
+\section{A fixed-composition contact law}
+The same saddle comparison provides distributional information, not only
+total enumeration. An \emph{arch} is a nonempty excursion with no interior
+return to height zero. A zero step at height zero is itself an arch.
+Every nonempty excursion decomposes uniquely into a sequence of arches.
+Hence the arch generating function is
+\[
+ H_0(\boldsymbol x)=1-\E(\boldsymbol x)^{-1}.
+\]
+Let $J_n$ be the number of arches of a uniformly chosen balanced
+$r$-letter excursion, and let $C_n=J_n-1$ be its number of interior
+returns to zero.
+
+\begin{theorem}[Contact limit under exact composition]\label{thm:contacts}
+For each fixed $r\ge2$ and $k\ge0$,
+\begin{equation}\label{eq:contactlaw}
+ \Prob(C_n=k)\longrightarrow
+ \frac{k+1}{\kappa_r^2}\left(1-\frac1{\kappa_r}\right)^k.
+\end{equation}
+The probability generating functions converge in a complex neighborhood
+of $v=1$, and
+\begin{equation}\label{eq:meancontacts}
+ \Exp C_n\longrightarrow 2(\kappa_r-1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For any analytic function $f$ near $\kappa_r$, the leading square-root
+coefficient of $f(\E)$ is $f'(\kappa_r)$ times that of $\E$. The same
+coefficient-extraction proof therefore gives the leading ratio
+$f'(\kappa_r)$, provided the composition is analytic on the necessary
+neighborhoods. For fixed $k$, apply this with
+$f(E)=(1-E^{-1})^{k+1}$. It counts exactly $k+1$ arches, and the ratio is
+\[
+ f'(\kappa_r)=\frac{k+1}{\kappa_r^2}
+                    (1-\kappa_r^{-1})^k.
+\]
+These nonnegative limiting probabilities sum to one.
+
+For the stronger generating-function statement, mark arches by $v$:
+\[
+ \E_v=\frac{1}{1-vH_0}.
+\]
+At the critical weights, $H_0=\eta:=1-\kappa_r^{-1}<1$. On the closed
+coefficient polydisk, nonnegative coefficients give $|H_0|\le\eta$.
+For $|v|<1/\eta$ the denominator is consequently bounded away from zero;
+this remains true in a suitable local continuation. The preceding
+analysis is therefore uniform for $v$ near one. Its derivative ratio is
+\[
+ \Exp(v^{J_n})\longrightarrow
+ \frac{v}{\kappa_r^2(1-\eta v)^2}.
+\]
+Divide by $v$ and differentiate at one to obtain \eqref{eq:meancontacts}.
+\end{proof}
+A related negative-binomial contact law is classical when only length is
+conditioned \cite{bf}. The statement here imposes the complete step
+composition. Its proof explains why the same critical value survives this
+additional conditioning.
+
+\section{Inverting the asymptotic expansion}\label{sec:inverse}
+\subsection{An exact Lambert core}
+For fixed $r$ define
+\[
+ \lambda=r\log r,\qquad \beta=\frac{r+1}{2},\qquad K=K_r.
+\]
+Then the proved expansion has the form
+\begin{equation}\label{eq:genericexpansion}
+ A_r(n)\sim K e^{\lambda n}n^{-\beta}
+          \left(1+\frac{\alpha_1}{n}+\frac{\alpha_2}{n^2}+\cdots\right).
+\end{equation}
+The large real solution of the \emph{leading model}
+$Y=Ke^{\lambda x}x^{-\beta}$ is exactly
+\begin{equation}\label{eq:lambertcore}
+ x_0(Y)=-\frac{\beta}{\lambda}
+ W_{-1}\!\left(-\frac{\lambda}{\beta}
+                  \left(\frac K Y\right)^{1/\beta}\right).
+\end{equation}
+The lower real branch $W_{-1}$ is essential: it selects $x_0\to\infty$.
+The argument lies in $(-e^{-1},0)$ for all sufficiently large $Y$.
+This exact-core organization parallels the inversion framework inspected
+in ProveIt \cite{proveit}; no unverified asymptotic interpolation is needed.
+
+\subsection{Corrections and a remainder statement}
+Write the formal logarithm of the unit correction as
+\[
+ \log\left(1+\sum_{j\ge1}\alpha_jx^{-j}\right)
+       =\sum_{j\ge1}b_jx^{-j},\qquad
+ b_1=\alpha_1,\quad b_2=\alpha_2-\tfrac12\alpha_1^2.
+\]
+Seek $x=x_0+\sum_{j\ge1}d_jx_0^{-j}$ in
+\begin{equation}\label{eq:inversecorrectioneq}
+ \lambda(x-x_0)-\beta\log(x/x_0)+\sum_{j\ge1}b_jx^{-j}=0.
+\end{equation}
+At every order the new coefficient occurs with nonzero multiplier
+$\lambda$, so the recursion is triangular. Its first terms are
+\begin{equation}\label{eq:inversefirst}
+ x=x_0-\frac{b_1}{\lambda x_0}
+ -\frac{b_2/\lambda+\beta b_1/\lambda^2}{x_0^2}
+ +O(x_0^{-3}).
+\end{equation}
+
+This has a precise interpretation on the original sequence. Given any
+fixed order, evaluate the truncated inverse at $Y=A_r(n)$. The forward
+expansion has a controlled logarithmic residual, while the derivative of
+$\lambda x-\beta\log x$ is $\lambda-\beta/x$, bounded below by
+$\lambda/2$ for large $x$. The mean value theorem transports the residual
+to an error of the same inverse-power order in the recovered $n$.
+Thus the inversion is a theorem about the sequence values and their
+asymptotic inverse, rather than a claim that a canonical analytic
+interpolation of the integers has been constructed.
+
+For the fifth row, \eqref{eq:inversefirst} begins
+\begin{equation}\label{eq:inversefive}
+ n=x_0+\frac{13(5-\sqrt5)}{250\log5}\frac1{x_0}
+                  +O(x_0^{-2}),\qquad Y=A_5(n),
+\end{equation}
+where $\beta=3$, $\lambda=5\log5$, and
+$K=(3\sqrt5-5)/(8\pi^2)$ in \eqref{eq:lambertcore}.
+
+\subsection{Integer thresholds are a separate operation}
+For arbitrary real $Y$, define
+\[
+ T_r(Y)=\min\{n\ge0:A_r(n)\ge Y\}.
+\]
+Appending a fixed balanced excursion block containing one of each step
+is an injection from the $n$th class into the $(n+1)$st. Hence $A_r(n)$
+is nondecreasing; its proved asymptotic also gives
+$A_r(n+1)/A_r(n)\to r^r>1$, so it is eventually strictly increasing.
+
+The continuous inverse predicts $T_r(Y)$ to bounded additive error.
+Taking a ceiling gives the exact threshold when an explicit inverse-error
+bound separates the predicted value from the relevant integers. Without
+that separation there is no universally valid exact rounding rule: $Y$
+can be arbitrarily close to a jump value $A_r(n)$. This is the discrete
+staircase issue emphasized in the repository's inversion documentation,
+and it must not be hidden in an $o(1)$ statement about a continuous model.
+
+\section{Unequal but centered compositions}
+The main construction is not restricted to equal multiplicities. Keep the
+step set \eqref{eq:steps}, and let $p_1,\ldots,p_r$ be fixed positive
+rational numbers with
+\[
+ \sum_i p_i=1,\qquad \sum_i p_i s_i=0.
+\]
+For admissible $N$, let $e(N\boldsymbol p)$ count excursions with exactly
+$Np_i$ occurrences of step $i$. Define
+$\kappa(\boldsymbol p)=\E(\boldsymbol p)$ by the same critical kernel
+product, now using these probabilities.
+
+\begin{corollary}[Centered rational rays]\label{cor:rays}
+Along integers $N$ for which all $Np_i$ are integral,
+\begin{equation}\label{eq:ray}
+ e(N\boldsymbol p)\sim
+ \frac{\kappa(\boldsymbol p)}{N}\frac{N!}{\prod_i(Np_i)!}.
+\end{equation}
+There is a full inverse-power expansion in $N$ with algebraic normalized
+coefficients. The coefficient series on every fixed positive integral
+ray is D-finite.
+\end{corollary}
+\begin{proof}
+Replace the uniform probabilities everywhere in Section~\ref{sec:saddle}
+by the specified $p_i$. Centering keeps the critical height coordinate at
+one. The Hessian proof, its determinant, and the marker-torus equality
+argument are unchanged. The exact coefficient of $\log\E$ is again the
+multinomial divided by $N$. Its ratio with the excursion coefficient gives
+\eqref{eq:ray}, and the finite-jet argument gives all orders.
+
+For the final statement, a fixed rational-ray extraction can be implemented
+by coefficient sections and a diagonal. Sections are finite root-of-unity
+filters after a monomial substitution; algebraicity is preserved by these
+operations, and the subsequent diagonal is D-finite. Equivalently one
+may use the multivariate D-finite residue closure for the fixed linear
+coefficient constraints. The dimensions and integer ray vector remain
+fixed.
+\end{proof}
+This extension concerns excursions relative to the \emph{same} height
+functional $s_i$. Centering ensures the final height is zero. Compositions
+with nonzero mean would describe a different endpoint problem and are
+not covered by this statement.
+
+\section{Reproducible checks and their scope}\label{sec:checks}
+\subsection{Exact finite enumeration}
+The accompanying program \path{code/verify.py} uses a direct composition
+recurrence. For a count vector $\boldsymbol k$, let $D(\boldsymbol k)$
+count nonnegative paths with that composition, regardless of final height.
+Then
+\[
+ D(\boldsymbol0)=1,\qquad
+ D(\boldsymbol k)=0\ \text{if }\sum_i s_i k_i<0,
+\]
+and for every other nonempty vector,
+\[
+ D(\boldsymbol k)=\sum_{i:k_i>0}D(\boldsymbol k-\boldsymbol e_i).
+\]
+The recurrence follows by deleting the last step. Its implementation stores
+a finite rectangular count-vector box in mixed-radix order, so every
+predecessor is already available. The diagonal gives $A_r(n)$.
+
+The executed ranges were
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$r$&Independently generated $n$&Rectangular states\\
+\midrule
+2&0--24&625\\
+3&0--24&15,625\\
+4&0--18&130,321\\
+5&0--16&1,419,857\\
+6&0--6&117,649\\
+7&0--4&78,125\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first two rows were compared with their factorial formulas. The other
+rows were compared with the available initial values in the corresponding
+OEIS entries. All comparisons passed.
+
+An independent exact check of the bridge logarithm uses the identity
+$D_{\rm Euler}\E=\E D_{\rm Euler}\log\E$. Coefficientwise this is
+\begin{equation}\label{eq:expcheck}
+ |\boldsymbol k|e_{\boldsymbol k}
+ =\sum_{\substack{0<\boldsymbol j\le\boldsymbol k\\s\cdot\boldsymbol j=0}}
+ \frac{|\boldsymbol j|!}{\prod_i j_i!}\,
+ e_{\boldsymbol k-\boldsymbol j}.
+\end{equation}
+Exact rational arithmetic in this identity agreed with the direct path
+recurrence for 120 nonempty balanced vectors across five test boxes.
+A separate height-based weighted enumeration verified the sextic
+\eqref{eq:sextic} through length 24 at weights $(2,3,5,7,11)$.
+The polynomial elimination proving that sextic is also reproduced in
+\path{code/derive_alpha5.py}.
+
+\subsection{Asymptotic and inverse diagnostics}
+For $A_5$, write
+$L_5(n)=K_5 5^{5n}n^{-3}$ and $R_n=A_5(n)/L_5(n)$. The following values
+illustrate the independently derived first correction:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$n$&$R_n$&$n(R_n-1)$&$n^2(R_n-1-\alpha_{5,1}/n)$\\
+\midrule
+4&0.838539713679&-0.645841145284&0.291124722264\\
+8&0.914884186065&-0.680926511482&0.301566514946\\
+12&0.942234769960&-0.693182760477&0.305274784481\\
+16&0.956285986890&-0.699424209762&0.307169857409\\
+20&0.964839683966&-0.703206320687&0.308320103255\\
+50&0.985752002111&-0.712399894449&0.311121570077\\
+\bottomrule
+\end{tabular}
+\end{center}
+The predicted limit of the middle diagnostic is
+\[
+ \alpha_{5,1}=-0.7186223258500546789\ldots.
+\]
+The values for $n\le16$ were generated independently by the supplied
+program. The $n=20,50$ values were read from the published OEIS b-file;
+they were \emph{not} independently enumerated here \cite{bfile5}.
+The last column is a numerical check of a second-order residual, not a
+claimed formula or a numerical certificate for $\alpha_{5,2}$.
+
+At $Y=A_5(n)$, the Lambert core and its first correction give
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+$n$&$x_0(Y)-n$&$x_0(Y)-\alpha_{5,1}/(5\log5\,x_0(Y))-n$\\
+\midrule
+8&$-1.1595249025\cdot10^{-2}$&$-4.1641746283\cdot10^{-4}$\\
+16&$-5.6870504107\cdot10^{-3}$&$-1.0375143173\cdot10^{-4}$\\
+50&$-1.7966866816\cdot10^{-3}$&$-1.0601877690\cdot10^{-5}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The observed scales are consistent with the proved first- and second-order
+inverse errors. Numerical agreement is a useful implementation check,
+not a substitute for the asymptotic proof.
+
+\subsection{What the computations do not certify}
+The package does not verify a Lean formalization, prove the guessed
+A215570 recurrence, find the minimal recurrence for any higher row, or
+supply interval-certified decimal enclosures for every kernel root.
+Its exact tests validate finite combinatorial and algebraic calculations.
+Its root computations and asymptotic tables are high-precision numerical
+diagnostics. The infinite statements are supported by the mathematical
+proofs above.
+
+\section{Further research questions and topics}\label{sec:future}
+\subsection{Certify the explicit A215570 recurrence}
+The sextic \eqref{eq:sextic}, its specified formal branch, and a diagonal
+representation give a concrete input for creative telescoping. The next
+objective is to compute a certified annihilator and prove that the
+order-three operator in Kauers--Koutschan Conjecture 15 is a right factor
+annihilating the same solution, with all initial conditions and singular
+indices checked. Merely matching additional terms would not accomplish
+this. A useful outcome would be a compact certificate independently
+checkable without a large symbolic-computation environment.
+
+\subsection{Find and explain the fourth-row recurrence}
+A215562 is D-finite by the proof here, but its minimal recurrence and its
+computational complexity remain to be determined. The even-step parity
+and the larger kernel degree should be incorporated before elimination,
+not left for a generic telescoper to rediscover. What upper bounds on
+recurrence order and coefficient degree can be proved as functions of $r$?
+Do the even and odd alphabets have qualitatively different minimal orders?
+
+\subsection{Automate all-order coefficient extraction}
+The proof supplies finite algebraic operations, but a practical system
+should exploit residual-marker coordinates, symmetry, and Wick
+contractions to avoid dense high-dimensional tensors. An immediate target
+is exact $\alpha_{r,1},\alpha_{r,2},\alpha_{r,3}$ for $r=4,6,7,8$, together
+with machine-readable algebraic-number specifications. For $r=5$, the
+field $\Q(\sqrt5)$ makes an especially clean regression suite.
+
+\subsection{Determine the exponentially small sectors}
+The dominant expansion does not identify subdominant critical points,
+connection constants, or Stokes phenomena. Once an explicit differential
+or recurrence operator is available, compare its formal solutions with
+complex kernel saddles. Which exponentially small contributions are
+actually present in the combinatorial solution? Can optimal truncation
+and rigorous exponentially improved error bounds be obtained without
+first computing a minimal recurrence?
+
+\subsection{Let the alphabet grow}
+Our estimates keep $r$ fixed. When $r=r(n)$ grows, kernel-root separation,
+Gaussian dimension, and constants in the remainder estimates all change.
+Determine useful uniform ranges, and analyze the large-$r$ behavior of
+$\kappa_r$ separately along even and odd alphabets. This would connect the
+fixed-row problem to the less regular column direction of A215561.
+
+\subsection{Approach the boundary of the composition simplex}
+In Corollary~\ref{cor:rays}, positivity of all probabilities is essential
+for the full-dimensional saddle. If some $p_i$ tend to zero, the determinant
+in \eqref{eq:detH} degenerates and the effective alphabet may change.
+Find uniform transition formulas interpolating between adjacent alphabet
+sizes and identify the scaling regimes in which a different asymptotic
+power appears.
+
+\subsection{Refine path statistics under exact composition}
+The contact law is only one consequence of the marked kernel. Natural
+next targets are its finite-$n$ corrections, the maximum height, the area
+under the excursion, and functional convergence after diffusive scaling.
+These require additional arguments: neither the count asymptotic nor the
+contact law alone proves a Brownian-excursion limit or independence of
+other statistics.
+
+\subsection{Formalize the exact-to-analytic interface}
+A staged ProveIt development could first formalize the word--walk
+bijection, the finite-state recurrences, the bridge coefficient identity,
+and the formal algebraic kernel relation. A second stage would address
+algebraic-series diagonal closure and critical-root selection. The most
+substantial analytic stage is a reusable uniform marked square-root
+transfer theorem with a nondegenerate composition saddle and explicit
+lattice periods. Keeping these stages separate would prevent finite
+computations from being mistaken for proofs of analytic hypotheses.
+
+\section{Conclusion}
+The fixed-row problem is governed by a finite one-dimensional step set,
+not by an intrinsically growing transfer matrix. Marking composition
+before taking a diagonal makes this structure visible. The resulting
+algebraic ambient series gives D-finiteness; its bridge logarithm gives
+an exact reference coefficient; and a marked critical-point calculation
+converts that coefficient into the conjectured row asymptotic with an
+algebraic constant.
+
+The same analysis yields a complete dominant inverse-power expansion,
+a concrete correction for A215570, a contact distribution, and an
+asymptotic inversion procedure. A separate arithmetic argument shows
+that every row generating function above the Catalan case is
+transcendental. These results settle the stated fixed-row growth
+conjecture and the recurrence-existence issue while leaving the explicit
+recurrence certificates and exponentially small sectors as sharply
+specified next problems.
+
+\appendix
+\section{A reproducible all-order construction}\label{app:algorithm}
+For clarity, the finite procedure implicit in the proof can be organized
+as follows. The input is a fixed $r$ and a requested relative order $M$.
+
+\paragraph{Critical algebraic data.}
+Construct $Q_r$, remove $(u-1)^2$, and isolate the strict inside cluster.
+Represent its symmetric functions in an algebraic number field. Solve
+\eqref{eq:criticalmoving} recursively for a finite Taylor jet of
+$\tau(\boldsymbol y)$; obtain $\rho$, $\Phi$, and the tilted probabilities.
+Internal root collisions can be handled by the coefficients of the
+cluster factor instead of individual root labels.
+
+\paragraph{Puiseux data.}
+Set $t=\rho(\boldsymbol y)(1-w^2)$. Substitute
+$u_0=\tau(\boldsymbol y)(1+\sum_{j\ge1}a_j(\boldsymbol y)w^j)$ in the
+kernel, choosing $a_1=-\sqrt{2/V(\boldsymbol y)}$. The remaining
+coefficients are obtained recursively. Multiply by the analytic
+noncritical cluster product and the factor $1/t$ to form the needed
+Puiseux jet of $\E$ and, independently, of $\log\E$.
+
+\paragraph{Length coefficients.}
+For every odd power $w^{2j+1}$, use \eqref{eq:transfer} and the gamma-ratio
+expansion. The even powers belong to the local analytic part. Retain
+enough terms for the requested order, and include the length-period
+factor $\nu$.
+
+\paragraph{Composition coefficients.}
+Expand the phase about zero, substitute
+$\boldsymbol y=i\boldsymbol x/\sqrt N$, and multiply the amplitude jets.
+Replace each even monomial by its centered Gaussian moment with covariance
+$H^{-1}$; discard odd monomials. Wick's rule evaluates these moments as
+finite sums over pairings. The determinant and common $\pi$ factor are
+kept outside the normalized series.
+
+\paragraph{Calibration and inversion.}
+Divide the resulting excursion expansion by the logarithmic reference
+expansion if desired. The exact coefficient \eqref{eq:exactreference}
+and Stirling's series are an independent normalization check. Convert
+$N=rn$, compute the formal logarithm of the unit series, and use
+\eqref{eq:inversecorrectioneq} for inverse coefficients.
+
+Every stage is finite at fixed $r,M$. The procedure proves computability,
+not an optimal complexity bound or a claim that a complete general-purpose
+implementation is included in this package. The supplied exact symbolic
+implementation covers the first correction for $r=5$.
+
+\section{Package contents and build instructions}
+The archive contains this editable source and its compiled PDF, the two
+Python programs, their saved outputs, and source/provenance notes.
+From the package directory, run
+\begin{quote}\ttfamily
+python -m pip install -r requirements.txt\\
+python code/verify.py\\
+python code/derive\_alpha5.py\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The computations use arbitrary-precision integers, rational arithmetic,
+SymPy, and mpmath. They need no network access. Source URLs and the origin
+of the two externally supplied large-index values are recorded in
+\path{SOURCES.md}. No external paper is redistributed in the archive.
+
+\begin{thebibliography}{99}
+\bibitem{oeisarray}
+The OEIS Foundation Inc., \emph{A215561}, array of prefix-average multiset
+permutations. Entry by Alois P. Heinz; fixed-row asymptotic conjecture by
+Vaclav Kotesovec, September 7, 2016.
+\url{https://oeis.org/A215561}. Checked October 1, 2026.
+
+\bibitem{oeis4}
+The OEIS Foundation Inc., \emph{A215562}. Leading asymptotic formula by
+Vaclav Kotesovec, January 31, 2015.
+\url{https://oeis.org/A215562}. Checked October 1, 2026.
+
+\bibitem{oeis5}
+The OEIS Foundation Inc., \emph{A215570}. Leading asymptotic formula by
+Vaclav Kotesovec, September 6, 2016; recurrence conjecture by Manuel
+Kauers and Christoph Koutschan, March 2, 2023.
+\url{https://oeis.org/A215570}. Checked October 1, 2026.
+
+\bibitem{oeis6}
+The OEIS Foundation Inc., \emph{A215571}.
+\url{https://oeis.org/A215571}. Checked October 1, 2026.
+
+\bibitem{oeis7}
+The OEIS Foundation Inc., \emph{A215593}.
+\url{https://oeis.org/A215593}. Checked October 1, 2026.
+
+\bibitem{bfile5}
+Manuel Kauers and Christoph Koutschan, with terms 0--47 credited in the
+OEIS entry to Vaclav Kotesovec, \emph{Table of A215570, $0\le n\le50$}.
+\url{https://oeis.org/A215570/b215570.txt}. Checked October 1, 2026.
+
+\bibitem{kk}
+M. Kauers and C. Koutschan,
+\emph{Some D-finite and some possibly D-finite sequences in the OEIS},
+Journal of Integer Sequences \textbf{26} (2023), Article 23.4.5,
+especially Section 6.1 and Conjecture 15, pp.~29--30.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL26/Koutschan/kout4.pdf}.
+Also arXiv:2303.02793.
+
+\bibitem{bf}
+C. Banderier and P. Flajolet,
+\emph{Basic analytic combinatorics of directed lattice paths},
+Theoretical Computer Science \textbf{281} (2002), 37--80.
+DOI: \href{https://doi.org/10.1016/S0304-3975(02)00007-5}{10.1016/S0304-3975(02)00007-5}.
+\url{https://www-lipn.univ-paris13.fr/~banderier/Papers/tcs_banderier_flajolet_2002.pdf}.
+
+\bibitem{lipshitz}
+L. Lipshitz,
+\emph{The diagonal of a D-finite power series is D-finite},
+Journal of Algebra \textbf{113} (1988), 373--378.
+DOI: \href{https://doi.org/10.1016/0021-8693(88)90166-4}{10.1016/0021-8693(88)90166-4}.
+
+\bibitem{lindemann}
+F. Lindemann, \emph{Ueber die Zahl $\pi$},
+Mathematische Annalen \textbf{20} (1882), 213--225.
+DOI: \href{https://doi.org/10.1007/BF01446522}{10.1007/BF01446522}.
+
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt}. Repository snapshot:\\
+{\small\texttt{40b17f2fc79a10a6fc1a50ca9c0c3d6f77be69e5}}.\par
+Inspected source: the transseries-and-inversion README, at the path
+identified in Section~1.3.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/40b17f2fc79a10a6fc1a50ca9c0c3d6f77be69e5/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion}.
+Accessed through the GitHub connector on October 1, 2026.
+\end{thebibliography}
+\end{document}

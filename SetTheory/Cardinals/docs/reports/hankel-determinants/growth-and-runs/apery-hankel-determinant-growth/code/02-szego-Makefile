@@ -1,0 +1,29 @@
+PYTHON ?= python3
+CXX ?= g++
+CXXFLAGS ?= -O3 -std=c++17
+
+.PHONY: all pdf exact moments density figures clean
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error apery_hankel_refinement.tex
+
+exact:
+	$(PYTHON) code/verify_exact.py
+
+moment_norms: code/moment_norms.cpp
+	$(CXX) $(CXXFLAGS) $< -lgmpxx -lgmp -o $@
+
+moments: moment_norms
+	./moment_norms 200 4096 > data/norms.csv
+	./moment_norms 200 3072 > data/norms_3072.csv
+
+density:
+	$(PYTHON) code/density_constant.py --dps 40 --output data/constant.json
+
+figures:
+	$(PYTHON) code/make_figures.py
+
+clean:
+	latexmk -c apery_hankel_refinement.tex
+	rm -f moment_norms

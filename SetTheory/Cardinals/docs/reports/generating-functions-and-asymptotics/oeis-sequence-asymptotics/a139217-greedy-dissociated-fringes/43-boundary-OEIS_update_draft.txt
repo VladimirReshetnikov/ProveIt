@@ -1,0 +1,66 @@
+PROPOSED OEIS UPDATES (UNREFEREED DRAFT)
+Prepared October 1, 2026
+
+A139217
+========
+Formula:
+For n >= 3,
+  a(n) = 3*2^(n-2) + 1,  if n == 0 or 1 (mod 3),
+  a(n) = 3*2^(n-2) - 2,  if n == 2 (mod 3).
+Hence a(n) = a(n-1) + a(n-2) + 2*a(n-3) for n >= 6.
+The currently displayed range n>4 is false at n=5, since
+22 != 13 + 7 + 2*4 = 28.
+
+Structural comment:
+Let S_n = Sum_{k=1..n} a(k). For every n >= 3, the signed-sum set
+  {Sum_{k=1..n} eps_k*a(k) : eps_k in {-1,0,1}}
+is exactly the integer interval [-S_n,S_n] with only
+  +(S_n-3) and -(S_n-3)
+removed. This invariant proves the greedy formula.
+
+Generating function:
+  Sum_{n>=1} a(n)*x^n =
+  (x + 3*x^2 + 2*x^3 - 6*x^5)/(1 - x - x^2 - 2*x^3).
+
+Partial sums:
+For n >= 3,
+  S_n = 3*2^(n-1) + q_n,
+where q_n = 0,1,-1 according as n == 0,1,2 (mod 3).
+
+A139218
+========
+Formula:
+For n >= 4,
+  a(n) = (39/56)*2^n - 25/7, if n == 0 (mod 3),
+  a(n) = (39/56)*2^n + 20/7, if n == 1 (mod 3),
+  a(n) = (39/56)*2^n +  5/7, if n == 2 (mod 3).
+Equivalently,
+  a(n) = (39*2^(n-3)-25)/7, if n == 0 (mod 3),
+  a(n) = (39*2^(n-3)+20)/7, if n == 1 (mod 3),
+  a(n) = (39*2^(n-3)+ 5)/7, if n == 2 (mod 3).
+Hence a(n) = a(n-1) + a(n-2) + 2*a(n-3) for n >= 7,
+which proves the currently conjectured range n>6.
+
+Structural comment:
+Let S_n = Sum_{k=1..n} a(k). For every n >= 3, the signed-sum set
+  {Sum_{k=1..n} eps_k*a(k) : eps_k in {-1,0,1}}
+is exactly the integer interval [-S_n,S_n] with precisely
+  +/-(S_n-1), +/-(S_n-3), +/-(S_n-6), +/-(S_n-11)
+removed.
+
+Generating function:
+  Sum_{n>=1} a(n)*x^n =
+  (2*x + 3*x^2 + x^3 - 3*x^4 - 9*x^5 - 12*x^6)
+  /(1 - x - x^2 - 2*x^3).
+
+Partial sums:
+For n >= 4,
+  S_n = (39/28)*2^n + s_n,
+where s_n = 27/7, 47/7, 52/7 according as n == 0,1,2 (mod 3).
+
+STATUS / ATTRIBUTION NOTE
+=========================
+The proofs and proposed formulas are contained in the accompanying research
+article. This package is an unrefereed draft and has not yet been independently
+peer reviewed or formalized in Lean. A targeted literature search did not find
+an existing proof, but this is not an exhaustive priority claim.

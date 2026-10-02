@@ -1,0 +1,1218 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Proving Two Arithmetic Conjectures for OEIS A321941},
+ pdfauthor={ChatGPT},pdfsubject={Integrality, congruences, formal series, asymptotic inversion}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Arithmetic of OEIS A321941}
+\fancyhead[R]{\small Research draft | 1 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{leftmargin=*,itemsep=5pt,topsep=4pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Eop}{\mathcal E}
+\newcommand{\Oop}{\mathcal O}
+\newcommand{\Hop}{\mathcal H}
+\newcommand{\coeff}[1]{\left[#1\right]}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\den}{\operatorname{den}}
+\newcommand{\Cat}{\operatorname{Cat}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\dif}{\,\mathrm d}
+\newcommand{\repoSHA}{\texttt{0a6d798c5f39775b2fb4d85fef643fef996c87cf}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{9mm}
+{\small\sffamily OEIS RESEARCH \quad / \quad SPECIAL FUNCTIONS AND FORMAL ARITHMETIC\par}
+\vspace{12mm}
+{\LARGE\bfseries Proving Two Arithmetic Conjectures\par}
+\vspace{3mm}
+{\LARGE\bfseries for OEIS A321941\par}
+\vspace{8mm}
+{\large A nonlinear product identity, integral polynomial deformations,\par
+sharp denominator bounds, and asymptotic inversion\par}
+\vspace{10mm}
+{\normalsize ChatGPT\par Research draft prepared for the ProveIt research program\par
+1 October 2026\par}
+\vspace{9mm}
+\begin{abstract}
+Brent, Glasser, and Guttmann introduced rational coefficients $d_k$ in the
+all-orders asymptotic expansion of a Hadamard product involving the exponential
+integral. They conjectured that $r_k=64^kd_k$ is always an integer, and observed
+that $r_k\equiv\binom{2k}{k}\pmod{32}$ for $k\ge3$. This article proves both
+arithmetic assertions. The key is to retain a quadratic invariant of the
+underlying second-order recurrence instead of using only its linear
+symmetric-square recurrence. After scaling, the invariant gives a triangular
+nonlinear equation with integer shift operators. An evenness induction removes
+all coefficient-index divisions.
+
+The construction extends to polynomials $P_k(t)\in\Z[t]$ with $P_k(1)=r_k$,
+$P_k(t)\in2\Z[t]$ for $k>0$, and a coefficientwise congruence modulo $32$.
+Both the leading coefficient and the constant term of $P_k$ have closed forms.
+Consequences include the minimality of the scale $64$, sharp denominator bounds
+at infinitely many indices, and exact denominator formulas whenever the index
+has at most four nonzero binary digits. Finally, the product expansion is
+inverted to all algebraic orders; after normalization, the inverse coefficients
+have no denominator primes other than $3$.
+
+The analytic existence of the original expansion is the published theorem of
+Brent--Glasser--Guttmann. The new arithmetic arguments are proved here. Their
+separate negativity conjecture is not proved. Exact finite checks accompany the
+article but do not replace its proofs.
+\end{abstract}
+\vfill
+\small
+\textbf{Review status.} This is an original research draft with human-readable
+proofs and executable checks, not a peer-reviewed publication or a Lean/Rocq
+formalization. The literature and repository comparison is targeted, not
+exhaustive. No repository files or OEIS entries have been modified.
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{The problem and the results}
+\label{sec:introduction}
+
+Define
+\begin{equation}\label{eq:generating-functions}
+ f_0(z)=\exp\!\left(\frac{z}{1-z}\right),\qquad
+ f_1(z)=\exp\!\left(\frac1{1-z}\right)E_1\!\left(\frac1{1-z}\right),
+\end{equation}
+where $E_1(x)=\int_x^\infty e^{-u}u^{-1}\dif u$ for $x>0$, and write
+\[
+ a_n=[z^n]f_0(z),\qquad b_n=[z^n]f_1(z),\qquad \rho_n=a_nb_n.
+\]
+These sequences arise naturally from special functions and combinatorics.
+For example, $n!a_n$ counts partitions of an $n$-element labelled set into
+nonempty linearly ordered blocks, the classical sequence A000262
+\cite{oeis262}. The second sequence is a recessive companion of the same
+second-order recurrence. Their product cancels the opposite stretched
+exponentials and exposes a more subtle arithmetic structure.
+
+Brent, Glasser, and Guttmann proved that
+\begin{equation}\label{eq:known-asymptotics}
+ \rho_n\sim-\frac1{2n^{3/2}}\sum_{k\ge0}d_kn^{-k},\qquad d_0=1,
+ \qquad d_k\in\Q.
+\end{equation}
+Here and throughout, an all-orders expansion is meant in the Poincar\'e sense:
+for each fixed $M\ge0$, truncation after $d_M$ has normalized remainder
+$O(n^{-M-1})$. We use the analytic existence statement from their Corollary~9;
+we do not claim to rediscover it \cite{BGG}.
+
+Their Conjecture~10 asserts that $r_k=64^kd_k$ is integral. Their Remark~11
+records two additional observations for $3\le k\le1000$: negativity and the
+congruence $r_k\equiv\binom{2k}{k}\pmod{32}$. Their proved Theorem~17 is the
+weaker statement $k!r_k\in\Z$ \cite{BGG}. The OEIS entry A321941 still describes
+integrality as conjectural in the entry inspected on 1 October 2026
+\cite{oeis321941}. Its theorem numbers refer to an earlier preprint; our
+numbers refer to the final 2019 journal article.
+
+\begin{theorem}[Integrality and the full mod-$32$ statement]\label{thm:main}
+For the coefficients in \eqref{eq:known-asymptotics},
+\begin{equation}\label{eq:main-even}
+ r_0=1,\qquad r_k=64^kd_k\in2\Z\quad(k\ge1).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:main-congruence}
+ r_k\equiv\binom{2k}{k}+16\ind_{\{1,2\}}(k)\pmod{32}
+ \qquad(k\ge0).
+\end{equation}
+Thus the integrality conjecture and the congruence part of the stronger
+observation are true at every index.
+\end{theorem}
+
+The exceptional corrections in \eqref{eq:main-congruence} are necessary:
+$r_1=-14$ and $r_2=86$, whereas the corresponding central binomial
+coefficients are $2$ and $6$.
+
+\begin{theorem}[Denominators]\label{thm:denominators-summary}
+The positive integers $B$ for which $B^kd_k\in\Z$ for every $k\ge0$ are
+exactly the multiples of $64$. For every $k\ge1$,
+\begin{equation}\label{eq:denominator-bound}
+ \den(d_k)\mid 2^{6k-1}.
+\end{equation}
+If $s_2(k)$ denotes the number of ones in the binary expansion of $k$, then
+\begin{equation}\label{eq:exact-denominator}
+ \den(d_k)=2^{6k-s_2(k)}\qquad\text{whenever }1\le s_2(k)\le4.
+\end{equation}
+In particular, \eqref{eq:denominator-bound} is attained whenever $k$ is a
+power of two.
+\end{theorem}
+
+Theorem~\ref{thm:main} is proved in Sections~\ref{sec:integrality}
+and~\ref{sec:congruence}. Theorem~\ref{thm:denominators-summary} is proved in
+Section~\ref{sec:denominators}. We also construct an integral polynomial family
+in Section~\ref{sec:polynomials} and invert the asymptotic expansion in
+Section~\ref{sec:inversion}.
+
+\subsection{What is new, and what is not claimed}
+
+The contribution is an arithmetic mechanism for this published conjecture,
+not the invention of asymptotic series, Lagrange inversion, or products of
+solutions of second-order equations. The crucial change is to use a
+\emph{quadratic} product identity carrying the Wronskian, rather than only a
+\emph{linear} recurrence for the product. In the new equation, the unknown
+coefficient is multiplied by $2$, not by its index. Evenness then makes the
+only division exact.
+
+The proof also yields a polynomial deformation and congruences that are not
+asserted in the cited source. These are presented as results established in
+this draft; global literature priority has not been certified. A targeted
+search for A321941 and for the published conjecture found the original paper
+and OEIS entry, but no subsequent proof. A repository code search for
+\texttt{A321941} returned no matches; this is not a proof of absence from every
+file in the repository.
+
+The separate assertion $r_k<0$ for all $k\ge3$ remains open in this work.
+No convergence, optimal truncation theorem, or exponentially small completion
+of \eqref{eq:known-asymptotics} is inferred from formal coefficient arithmetic.
+
+\section{The recurrence and its quadratic product invariant}
+\label{sec:invariant}
+
+\subsection{A unit-determinant normalization}
+
+Put $G=eE_1(1)$. Direct differentiation of \eqref{eq:generating-functions}
+gives
+\begin{equation}\label{eq:odes}
+ (1-z)^2f_0'(z)-f_0(z)=0,\qquad
+ (1-z)^2f_1'(z)-f_1(z)=z-1.
+\end{equation}
+For the second identity, use $E_1'(x)=-e^{-x}/x$ and
+$x=(1-z)^{-1}$. Coefficient extraction yields
+\begin{equation}\label{eq:original-recurrence}
+ (n+1)u_{n+1}-(2n+1)u_n+(n-1)u_{n-1}=0\qquad(n\ge2)
+\end{equation}
+for both $u=a$ and $u=b$. The initial values are
+\[
+ a_1=1,\quad a_2=\frac32,\qquad
+ b_1=G-1,\quad b_2=\frac{3G-2}{2}.
+\]
+Set
+\begin{equation}\label{eq:normalized-solutions}
+ x_n=na_n,\qquad y_n=-nb_n,\qquad p_n=x_ny_n=-n^2\rho_n.
+\end{equation}
+Then both normalized solutions satisfy
+\begin{equation}\label{eq:unimodular-recurrence}
+ u_{n+1}=q_nu_n-u_{n-1},\qquad q_n=2+\frac1n\qquad(n\ge2).
+\end{equation}
+Their discrete Wronskian
+\[
+ W_n=x_ny_{n+1}-x_{n+1}y_n
+\]
+is constant: substituting \eqref{eq:unimodular-recurrence} shows
+$W_n=W_{n-1}$. The initial values give
+\[
+ W_1=1(2-3G)-3(1-G)=-1.
+\]
+The exact value $W_n^2=1$ is the normalization needed below.
+
+For completeness, $p_n>0$ for $n\ge1$. The coefficients $a_n$ are positive.
+For the other factor, the integral formula
+\begin{equation}\label{eq:b-integral}
+ b_n=-\int_0^1 e^{-s/(1-s)}s^{n-1}\dif s\qquad(n\ge1)
+\end{equation}
+shows $b_n<0$. One derivation starts from
+$e^xE_1(x)=\int_0^\infty e^{-u}(x+u)^{-1}\dif u$, extracts the coefficient
+of $z^n$ at $x=(1-z)^{-1}$, and substitutes $s=u/(1+u)$.
+
+\subsection{A general algebraic identity}
+
+\begin{lemma}[Quadratic invariant]\label{lem:invariant}
+Suppose $x_{n+1}=q_nx_n-x_{n-1}$ and
+$y_{n+1}=q_ny_n-y_{n-1}$. Write $p_n=x_ny_n$ and
+$W=x_ny_{n+1}-x_{n+1}y_n$. Then
+\begin{equation}\label{eq:invariant}
+ q_n^4p_n^2-2q_n^2p_n(p_{n+1}+p_{n-1})
+ +(p_{n+1}-p_{n-1})^2=q_n^2W^2.
+\end{equation}
+This is a polynomial identity; no division by $p_n$ or $q_n$ is required.
+\end{lemma}
+
+\begin{proof}
+Define $C_n=x_{n+1}y_n+x_ny_{n+1}$. The difference-of-squares identity gives
+\[
+ C_n^2-4p_np_{n+1}=W^2.
+\]
+Using $x_{n-1}=q_nx_n-x_{n+1}$ and the analogous identity for $y$ gives
+\[
+ p_{n-1}=q_n^2p_n-q_nC_n+p_{n+1},
+\]
+so $q_nC_n=q_n^2p_n+p_{n+1}-p_{n-1}$. Multiply the first equation by $q_n^2$
+and substitute this expression. Expanding and collecting terms proves
+\eqref{eq:invariant}.
+\end{proof}
+
+The Wronskian condition supplies the inhomogeneous constant on the right.
+Discarding it would leave an unnecessarily ambiguous formal product equation.
+In our application, \eqref{eq:invariant} holds for every integer $n\ge2$,
+with $q_n=2+1/n$ and $W^2=1$.
+
+\section{From the exact recurrence to a formal master equation}
+\label{sec:master}
+
+Let
+\begin{equation}\label{eq:D-definition}
+ D(h)=\sum_{k\ge0}d_kh^k\in\Q[[h]],\qquad D(0)=1.
+\end{equation}
+This is a formal series: we do not evaluate an infinite convergent sum at
+$h=1/n$. Equation~\eqref{eq:known-asymptotics} says that
+$p_n\sim\frac12\sqrt n\,D(1/n)$ in the all-orders sense.
+
+For any formal series $D$, define the two shifted expressions
+\begin{equation}\label{eq:shift-U}
+ U_\pm(h)=(1\pm h)^{1/2}D\!\left(\frac h{1\pm h}\right).
+\end{equation}
+They encode $p_{n\pm1}$ after the common factor $\frac12\sqrt n$ is removed.
+Substitution into \eqref{eq:invariant} gives, with $q=2+h$,
+\begin{equation}\label{eq:unscaled-invariant}
+ q^2D^2-2D(U_++U_-)+\frac{(U_+-U_-)^2}{q^2}=4h.
+\end{equation}
+
+\begin{lemma}[Justification of the formal identity]\label{lem:formal-bridge}
+The coefficients from the published expansion satisfy
+\eqref{eq:unscaled-invariant} as an identity in $\Q[[h]]$.
+\end{lemma}
+
+\begin{proof}
+Fix an arbitrary finite target order. Expand $p_n$ and $p_{n\pm1}$ to
+sufficiently many additional orders in the exact identity
+\eqref{eq:invariant}. Shifts by a fixed integer preserve Poincar\'e
+expansions; the substitution $1/(n\pm1)=h/(1\pm h)$ and the binomial expansion
+of $(1\pm h)^{1/2}$ give precisely \eqref{eq:shift-U}. Products and division
+by the unit $q^2=(2+h)^2$ preserve finite-order expansions. After removing the
+common factor $n/4$, the exact identity gives
+\eqref{eq:unscaled-invariant} through the chosen order. A first nonzero formal
+coefficient would contradict this conclusion at its order. Since the target
+order was arbitrary, every coefficient agrees.
+\end{proof}
+
+The even and odd parts of the shift make cancellation explicit. Put
+\begin{equation}\label{eq:unscaled-operators}
+ E(D)=\frac{U_++U_--2D}{h^2},\qquad
+ O(D)=\frac{U_+-U_-}{h}.
+\end{equation}
+Both quotients are formal series, because the indicated numerators have the
+required orders. Since
+\[
+ U_\pm=\sum_{j\ge0}d_jh^j(1\pm h)^{1/2-j},
+\]
+their coefficients can be written explicitly using half-integral binomial
+coefficients. Inserting \eqref{eq:unscaled-operators} into
+\eqref{eq:unscaled-invariant}, and using $q^2-4=4h+h^2$, gives
+\begin{equation}\label{eq:D-master}
+ D^2=1-\frac h4D^2+\frac h2DE(D)
+       -\frac{h}{4(2+h)^2}O(D)^2.
+\end{equation}
+The cancellation of one factor $h$ is legitimate in $\Q[[h]]$.
+
+Now scale
+\begin{equation}\label{eq:R-definition}
+ R(z)=D(64z)=\sum_{k\ge0}r_kz^k.
+\end{equation}
+For $j,\ell\ge0$, define rational weights
+\begin{equation}\label{eq:weights}
+ e_{j,\ell}=8\cdot64^{2\ell}\binom{1/2-j}{2\ell+2},\qquad
+ o_{j,\ell}=2\cdot64^{2\ell}\binom{1/2-j}{2\ell+1}.
+\end{equation}
+For a series $F(z)=\sum_{j\ge0}f_jz^j$, set
+\begin{equation}\label{eq:scaled-operators}
+ \Eop F=\sum_{j,\ell\ge0}e_{j,\ell}f_jz^{j+2\ell},\qquad
+ \Oop F=\sum_{j,\ell\ge0}o_{j,\ell}f_jz^{j+2\ell}.
+\end{equation}
+Each coefficient is a finite sum. Directly from the definitions,
+$\Eop R=4E(D)(64z)$ and $\Oop R=O(D)(64z)$.
+
+\begin{proposition}[The scaled master equation]\label{prop:master}
+The series $R$ satisfies
+\begin{equation}\label{eq:master}
+ \boxed{\displaystyle
+ R^2=1+4z\left(-4R^2+2R\Eop R
+              -\frac{(\Oop R)^2}{(1+32z)^2}\right).}
+\end{equation}
+Conversely, among formal series in $\Q[[z]]$ with constant term $1$,
+\eqref{eq:master} has at most one solution.
+\end{proposition}
+
+\begin{proof}
+The identity is the substitution $h=64z$ in \eqref{eq:D-master}. For
+uniqueness, the coefficient of $z^k$ on the left is $2r_k$ plus an expression
+in earlier coefficients. The coefficient of $z^k$ on the right depends only
+on coefficients through $r_{k-1}$: there is an external factor $z$, and the
+operators never decrease degree. Therefore $r_k$ is determined recursively.
+\end{proof}
+
+\section{Integral shift operators and the integrality proof}
+\label{sec:integrality}
+
+\subsection{The exact powers of two in the shift weights}
+
+\begin{lemma}[Half-binomial arithmetic]\label{lem:half-binomial}
+For integers $j\ge0$ and $m\ge1$, the number
+$\binom{1/2-j}{m}$ is dyadic, and
+\begin{equation}\label{eq:half-valuation}
+ v_2\!\binom{1/2-j}{m}=-m-v_2(m!)=-2m+s_2(m).
+\end{equation}
+Consequently, all weights in \eqref{eq:weights} are integers. More precisely,
+\begin{align}
+ e_{j,0}&=4j^2-1,&o_{j,0}&=1-2j,\label{eq:diagonal-weights}\\
+ 256&\mid e_{j,\ell},&512&\mid o_{j,\ell}\qquad(\ell\ge1).
+ \label{eq:offdiagonal-divisibility}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The elementary formula
+\[
+ \binom{1/2}{m}=\frac{(-1)^{m-1}\Cat_{m-1}}{2^{2m-1}}\qquad(m\ge1),
+ \qquad \Cat_r=\frac1{r+1}\binom{2r}{r}\in\Z,
+\]
+shows that the coefficients of $(1+x)^{1/2}$ are dyadic. Multiplication by
+$(1+x)^{-j}\in\Z[[x]]$ proves the same for
+$\binom{1/2-j}{m}$. Alternatively, this is the finite Vandermonde convolution.
+In the product
+\[
+ \binom{1/2-j}{m}
+ =\frac{\prod_{i=0}^{m-1}(1-2j-2i)}{2^m m!},
+\]
+the numerator is odd. This proves the first equality in
+\eqref{eq:half-valuation}. The identity
+$v_2(m!)=m-s_2(m)$ gives the second.
+
+For the even and odd weights, respectively, substitution yields
+\begin{equation}\label{eq:weight-valuations}
+ v_2(e_{j,\ell})=8\ell-1+s_2(\ell+1),\qquad
+ v_2(o_{j,\ell})=8\ell+s_2(\ell).
+\end{equation}
+For $\ell=0$, both valuations are zero, and direct calculation gives
+\eqref{eq:diagonal-weights}. For $\ell\ge1$, the valuations are at least $8$
+and $9$, respectively. Dyadicity together with these nonnegative valuations
+proves integrality, not merely the absence of a factor $2$ in a denominator.
+\end{proof}
+
+Writing $\theta=z\frac{\mathrm d}{\mathrm dz}$, the lemma implies, for every
+$F\in\Z[[z]]$,
+\begin{equation}\label{eq:operator-congruences}
+ \Eop F-(4\theta^2-1)F\in256z^2\Z[[z]],\qquad
+ \Oop F-(1-2\theta)F\in512z^2\Z[[z]].
+\end{equation}
+These stronger divisibilities will be used for the congruence theorem.
+
+\subsection{The triangular recurrence}
+
+Define
+\begin{equation}\label{eq:H-definition}
+ \Hop(F)=-4F^2+2F\Eop F-\left(\frac{\Oop F}{1+32z}\right)^2.
+\end{equation}
+Lemma~\ref{lem:half-binomial} shows that $\Hop$ maps integral series to
+integral series. Let $R_{<k}=\sum_{j=0}^{k-1}r_jz^j$. Extracting $z^k$ from
+\eqref{eq:master} gives
+\begin{equation}\label{eq:triangular-recurrence}
+ \boxed{\displaystyle
+ r_k=2[z^{k-1}]\Hop(R_{<k})
+     -\frac12\sum_{j=1}^{k-1}r_jr_{k-j}.}
+\end{equation}
+This expression depends only on already determined coefficients.
+
+\begin{proof}[Proof of the integrality assertion in Theorem~\ref{thm:main}]
+Start with $r_0=1$. Suppose $r_j\in2\Z$ for $1\le j<k$. Then
+$[z^{k-1}]\Hop(R_{<k})$ is an integer. Every summand in the convolution in
+\eqref{eq:triangular-recurrence} is divisible by $4$, so half of the whole sum
+is an even integer. Both terms on the right are therefore even integers.
+This proves $r_k\in2\Z$ by induction. Proposition~\ref{prop:master} and
+Lemma~\ref{lem:formal-bridge} identify this recursively constructed series
+with the coefficients of the analytic expansion.
+\end{proof}
+
+The original index division has disappeared. This is why the quadratic
+identity proves more than the published linear recurrence, whose direct
+arithmetic consequence was $k!r_k\in\Z$. The proof establishes actual
+integrality of $r_k$; it does not assume the finite OEIS values are integers
+and extrapolate.
+
+The first steps illustrate the mechanism. At constant order,
+$\Eop1=-1+O(z^2)$ and $\Oop1=1+O(z^2)$, so
+$\Hop(1)=-7+O(z)$. Thus $r_1=2(-7)=-14$.
+Subsequent applications give $r_2=86$, $r_3=-3660$, and the table in
+Section~\ref{sec:checks}.
+
+\subsection{A Catalan fixed-point interpretation}
+
+There is also a useful division-free formulation. The formal identity
+\begin{equation}\label{eq:catalan-square-root}
+ \sqrt{1+4X}=1+2\sum_{m\ge1}(-1)^{m-1}\Cat_{m-1}X^m
+\end{equation}
+has integer coefficients. Thus the map
+\[
+ \Phi(F)=1+2\sum_{m\ge1}(-1)^{m-1}\Cat_{m-1}
+                 \bigl(z\Hop(F)\bigr)^m
+\]
+maps $\Z[[z]]$ into $1+2z\Z[[z]]$. Because the operators in
+$\Hop$ do not decrease degree, agreement of $F$ and $G$ through degree $k-1$
+implies agreement of $\Phi(F)$ and $\Phi(G)$ through degree $k$.
+Successive substitution therefore determines a unique formal fixed point.
+Over $\Q[[z]]$, squaring identifies its equation with \eqref{eq:master}.
+
+This interpretation explains why Catalan arithmetic is relevant. It also
+suggests a particularly clean formalization route: construct the fixed point
+by finite coefficient truncations and use the Catalan convolution, rather
+than formal square-root analysis.
+
+\section{An integral polynomial deformation}
+\label{sec:polynomials}
+
+The same proof works with an indeterminate parameter. This is more than an
+integer sequence coincidence: the coefficient arithmetic survives a
+one-parameter deformation of the discrete equation.
+
+\subsection{Definition and integrality}
+
+Let $t$ be an indeterminate. For $F=\sum f_j(t)z^j$, define
+\begin{equation}\label{eq:parameter-operators}
+ \Eop_tF=\sum_{j,\ell\ge0}e_{j,\ell}t^\ell f_j(t)z^{j+2\ell},\qquad
+ \Oop_tF=\sum_{j,\ell\ge0}o_{j,\ell}t^\ell f_j(t)z^{j+2\ell}.
+\end{equation}
+These are well-defined, degree-nondecreasing linear operators on
+$\Z[t][[z]]$. Put
+\begin{equation}\label{eq:H-parameter}
+ \Hop_t(F)=-4tF^2+2F\Eop_tF
+          -\left(\frac{\Oop_tF}{1+32tz}\right)^2.
+\end{equation}
+
+\begin{theorem}[Polynomial master series]\label{thm:polynomial-integrality}
+There is a unique series $R_t\in1+z\Q[t][[z]]$ satisfying
+\begin{equation}\label{eq:parameter-master}
+ R_t^2=1+4z\Hop_t(R_t).
+\end{equation}
+Writing $R_t(z)=\sum_{k\ge0}P_k(t)z^k$, one has
+\begin{equation}\label{eq:polynomial-integrality}
+ P_0(t)=1,\qquad P_k(t)\in2\Z[t]\quad(k\ge1),\qquad P_k(1)=r_k.
+\end{equation}
+Every $P_k$ has degree exactly $k$, with
+\begin{equation}\label{eq:leading-polynomial}
+ [t^k]P_k(t)=(-4)^k\binom{2k}{k}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The recurrence \eqref{eq:triangular-recurrence}, with $\Hop$ replaced by
+$\Hop_t$, determines each coefficient from its predecessors. The evenness
+induction works coefficientwise over $\Z[t]$ and proves existence and
+\eqref{eq:polynomial-integrality}. Uniqueness over $\Q[t]$ follows from the
+coefficient $2P_k$ on the left. At $t=1$, the equation is
+\eqref{eq:master}, proving $P_k(1)=r_k$.
+
+Inductively, assume $\deg P_j\le j$. In the coefficient of $z^m$ in
+$\Eop_tR_t$ or $\Oop_tR_t$, a summand with $j+2\ell=m$ has degree at most
+$j+\ell\le m$. The same degree bound is preserved by multiplication and by
+$(1+32tz)^{-1}$. Consequently, the recurrence gives $\deg P_k\le k$.
+
+In total bidegree $t^kz^k$, the terms $8zR_t\Eop_tR_t$ and
+$-4z(\Oop_tR_t/(1+32tz))^2$ have insufficient $t$-degree. If
+$S(w)=\sum_{k\ge0}[t^k]P_k(t)w^k$, the diagonal terms of
+\eqref{eq:parameter-master} therefore satisfy
+\[
+ S(w)^2=1-16wS(w)^2.
+\]
+The branch with constant term $1$ is $S(w)=(1+16w)^{-1/2}$, whose $k$th
+coefficient is $(-4)^k\binom{2k}{k}\ne0$. This proves both the degree and
+\eqref{eq:leading-polynomial}.
+\end{proof}
+
+The first polynomials are
+\begin{align*}
+ P_1(t)&=-8t-6,\\
+ P_2(t)&=96t^2+80t-90,\\
+ P_3(t)&=-1280t^3+2240t^2+1680t-6300,\\
+ P_4(t)&=17920t^4-161280t^3-57792t^2+151200t-992250.
+\end{align*}
+The alternating and mixed signs already show why integrality alone does not
+prove the separate negativity assertion at $t=1$.
+
+\subsection{The constant edge has a closed form}
+
+\begin{theorem}[Constant coefficients]\label{thm:constant-edge}
+For every $k\ge1$,
+\begin{equation}\label{eq:constant-polynomial}
+ P_k(0)=-\binom{2k}{k}(2k-3)!!(2k+1)!!,
+\end{equation}
+where $(-1)!!=1$. In particular, this edge of the polynomial family is
+strictly negative at every positive index.
+\end{theorem}
+
+\begin{proof}
+Set $S(z)=R_0(z)$. At $t=0$, only the diagonal operator weights survive:
+$\Eop_0S=(4\theta^2-1)S$ and $\Oop_0S=(1-2\theta)S$. Hence
+\begin{equation}\label{eq:constant-edge-nonlinear}
+ S^2=1+4z\bigl(-3S^2+4S\theta S+8S\theta^2S-4(\theta S)^2\bigr).
+\end{equation}
+Apply $\theta$ to both sides. If the parenthesized expression is denoted by
+$F$, its derivative satisfies
+\[
+ F+\theta F
+ =S\bigl(-3S-2\theta S+12\theta^2S+8\theta^3S\bigr).
+\]
+Cancel the unit $S$ to obtain
+\begin{equation}\label{eq:constant-edge-linear}
+ \theta S=2z(2\theta+3)(2\theta-1)(2\theta+1)S.
+\end{equation}
+Coefficient extraction gives
+\begin{equation}\label{eq:constant-edge-recurrence}
+ kP_k(0)=2(2k+1)(2k-3)(2k-1)P_{k-1}(0).
+\end{equation}
+The expression on the right of \eqref{eq:constant-polynomial} has initial
+value $-6$ at $k=1$ and the same consecutive ratio. Since $P_0(0)=1$,
+\eqref{eq:constant-edge-recurrence} proves the formula by induction.
+\end{proof}
+
+Thus the extreme coefficients of each polynomial are explicit, although the
+interior coefficients need not have one sign. Formula
+\eqref{eq:constant-edge-linear} is a useful linear equation at this special
+parameter, not a replacement for the nonlinear integrality argument at
+$t=1$.
+
+\subsection{Why this deformation is natural}
+
+Consider the recurrence $u_{n+1}=(2+\lambda/n)u_n-u_{n-1}$ over a field
+containing a nonzero parameter $\lambda$ and a square root of $\lambda$.
+Seek a formal solution of the quadratic identity, with Wronskian square $1$,
+of the form
+\[
+ p_n\sim\frac{\sqrt n}{2\sqrt\lambda}D_\lambda(1/n),
+ \qquad D_\lambda(0)=1.
+\]
+Here ``formal product'' means the normalized solution of the quadratic
+identity; analytic existence for all parameters is not assumed. Repeating
+the calculation of Section~\ref{sec:master} gives
+\begin{equation}\label{eq:lambda-master}
+ D_\lambda^2=1-\frac{\lambda h}{4}D_\lambda^2
+ +\frac{h}{2\lambda}D_\lambda E(D_\lambda)
+ -\frac{h}{4\lambda(2+\lambda h)^2}O(D_\lambda)^2.
+\end{equation}
+Set $h=64\lambda z$ and $t=\lambda^2$. The even and odd shift weights then
+become exactly \eqref{eq:parameter-operators}, and
+\eqref{eq:lambda-master} becomes \eqref{eq:parameter-master}. Therefore
+\begin{equation}\label{eq:lambda-coefficients}
+ [h^k]D_\lambda(h)=\frac{P_k(\lambda^2)}{(64\lambda)^k}.
+\end{equation}
+This is an unconditional statement about the unique normalized formal
+solution. Whenever an actual normalized product has an all-orders expansion,
+the formal-bridge argument identifies its coefficients with
+\eqref{eq:lambda-coefficients}. The case $\lambda=1$ is established by the
+published analytic theorem. The specialization $t=0$ in
+Theorem~\ref{thm:constant-edge} is a formal polynomial specialization; it is
+not a claimed uniform analytic limit as $\lambda\to0$.
+
+\section{The congruence modulo 32}
+\label{sec:congruence}
+
+The large off-diagonal powers of two in Lemma~\ref{lem:half-binomial} allow a
+short reduction of the entire master equation. We prove the stronger
+polynomial statement first.
+
+\begin{theorem}[Polynomial congruence]\label{thm:polynomial-congruence}
+For every $k\ge0$, coefficientwise in $\Z[t]$,
+\begin{equation}\label{eq:polynomial-congruence}
+ P_k(t)\equiv(-1)^k(4t+3)^k\binom{2k}{k}
+             +16\ind_{\{2\}}(k)\pmod{32}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:series-congruence}
+ R_t(z)\equiv(1+(16t+12)z)^{-1/2}+16z^2\pmod{32}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $R=R_t$ temporarily. The operator congruences
+\eqref{eq:operator-congruences} remain valid over $\Z[t]$, and
+$(1+32tz)^{-2}\equiv1\pmod{64}$. Reducing
+\eqref{eq:parameter-master} modulo $64$ gives
+\begin{equation}\label{eq:mod64-intermediate}
+ R^2\equiv1+4z\bigl(-(4t+3)R^2+4R\theta R
+                 +8R\theta^2R-4(\theta R)^2\bigr)\pmod{64}.
+\end{equation}
+Theorem~\ref{thm:polynomial-integrality} shows that both $\theta R$ and
+$\theta^2R$ are even series. Hence the last two terms, after multiplication
+by $4z$, vanish modulo $64$. With $\alpha=16t+12$, we obtain
+\begin{equation}\label{eq:reduced-equation}
+ (1+\alpha z)R^2\equiv1+16zR\theta R\pmod{64}.
+\end{equation}
+
+Let $C=(1+\alpha z)^{-1/2}$. Its coefficients are
+$(-1)^k(4t+3)^k\binom{2k}{k}$, so $C\in1+2z\Z[t][[z]]$. Define
+$S=C+16z^2$. Since $C\equiv1\pmod2$ and $\alpha\equiv0\pmod4$,
+\begin{align*}
+ (1+\alpha z)S^2&\equiv1+32z^2\pmod{64},\\
+ 16zS\theta S&\equiv16zC\theta C
+       =-\frac{8\alpha z^2}{(1+\alpha z)^2}
+       \equiv32z^2\pmod{64}.
+\end{align*}
+For the last congruence, $-8\alpha\equiv32\pmod{64}$, and
+$(1+\alpha z)^{-2}\equiv1\pmod2$. Thus $S$ satisfies the same reduced
+equation as $R$.
+
+We now justify the loss of exactly one power of two when taking the square
+root; no division by $2$ in $\Z/64\Z$ is being assumed. Both $R$ and $S$
+have constant term $1$ and even higher coefficients. Suppose their
+coefficients below degree $k$ agree modulo $32$. In degree $k$,
+$R^2-S^2$ is $2([z^k]R-[z^k]S)$ modulo $64$: every remaining product
+contains an even nonconstant coefficient and a difference divisible by $32$.
+The term $\alpha z(R^2-S^2)$ and the difference
+$16z(R\theta R-S\theta S)$ depend only on lower degrees and vanish modulo
+$64$. Subtracting their two instances of \eqref{eq:reduced-equation}
+therefore gives
+\[
+ 2([z^k]R-[z^k]S)\equiv0\pmod{64}.
+\]
+Thus $[z^k]R\equiv[z^k]S\pmod{32}$. Induction proves
+\eqref{eq:series-congruence}, and coefficient extraction gives
+\eqref{eq:polynomial-congruence}.
+\end{proof}
+
+\begin{proof}[Proof of the congruence assertion in Theorem~\ref{thm:main}]
+Specialize \eqref{eq:series-congruence} to $t=1$:
+\[
+ R(z)\equiv(1+28z)^{-1/2}+16z^2\pmod{32}.
+\]
+Factor $1+28z=(1-4z)(1+32z/(1-4z))$. The binomial expansion gives
+\[
+ (1+28z)^{-1/2}
+ \equiv(1-4z)^{-1/2}-16z(1-4z)^{-3/2}\pmod{32}.
+\]
+All terms of second and higher degree in $32z/(1-4z)$ vanish modulo $32$;
+this follows directly from their half-binomial valuations. The nonconstant
+coefficients of $(1-4z)^{-3/2}$ are even: its $k$th coefficient is
+$(2k+1)\binom{2k}{k}$. Consequently,
+\begin{equation}\label{eq:final-R-congruence}
+ R(z)\equiv(1-4z)^{-1/2}+16z+16z^2\pmod{32}.
+\end{equation}
+Using $[z^k](1-4z)^{-1/2}=\binom{2k}{k}$ proves
+\eqref{eq:main-congruence} at all indices, including the exceptions.
+\end{proof}
+
+The proof demonstrates why a central binomial sequence appears: modulo a
+small power of two, the nonlocal shift equation collapses to a differential
+quadratic equation whose solution is an inverse square root, up to two
+low-degree corrections.
+
+\section{Minimal scaling and exact denominators}
+\label{sec:denominators}
+
+\begin{proof}[Proof of Theorem~\ref{thm:denominators-summary}]
+Since $r_k$ is even for $k\ge1$, the denominator of $d_k=r_k/2^{6k}$ divides
+$2^{6k-1}$. The computed value
+\[
+ d_2=\frac{43}{2048}=\frac{43}{2^{11}}
+\]
+shows that $B^2d_2\in\Z$ forces $2v_2(B)\ge11$, hence $v_2(B)\ge6$.
+Thus every permissible positive $B$ is divisible by $64$. Conversely,
+$B=64m$ gives $B^kd_k=m^kr_k\in\Z$, proving the exact classification of
+scales.
+
+The factorial identity $v_2(k!)=k-s_2(k)$ gives
+\begin{equation}\label{eq:central-valuation}
+ v_2\binom{2k}{k}
+ =(2k-s_2(2k))-2(k-s_2(k))=s_2(k).
+\end{equation}
+For $k\ge3$ with $s_2(k)\le4$, the congruence
+$r_k\equiv\binom{2k}{k}\pmod{32}$ forces
+$v_2(r_k)=s_2(k)$. Indeed, adding a multiple of $2^5$ cannot change a
+valuation strictly less than $5$. The indices $k=1,2$ are checked directly:
+$r_1=-14$ and $r_2=86$ both have valuation $1=s_2(k)$. Cancelling the exact
+power of two in $d_k=r_k/2^{6k}$ proves
+\eqref{eq:exact-denominator}. For $k=2^m$, $s_2(k)=1$, so the bound is
+attained at every such index.
+\end{proof}
+
+This separates two notions of optimality. The base $64$ is the smallest
+integer exponential scale making every coefficient integral. The additional
+factor $2$ available at every positive index improves the denominator bound,
+but cannot reduce that exponential base. The equality at infinitely many
+powers of two shows that the improved bound is not merely an artifact of the
+proof.
+
+For indices with at least five binary ones, the mod-$32$ congruence only
+forces $32\mid r_k$ and does not determine the exact valuation. In particular,
+we do not extrapolate \eqref{eq:exact-denominator} to all indices.
+
+\section{All-orders inversion of the product expansion}
+\label{sec:inversion}
+
+The arithmetic series also supports an explicit inverse expansion. It is
+important to specify what is being inverted: a continuous global inverse of
+an interpolation of the sequence has not been chosen.
+
+Define the positive real sequence
+\begin{equation}\label{eq:y-definition}
+ y_n=(-2\rho_n)^{-2/3}.
+\end{equation}
+Positivity follows from \eqref{eq:b-integral}. The known product expansion
+gives
+\begin{equation}\label{eq:forward-inversion}
+ y_n\sim nD(1/n)^{-2/3},\qquad y_n\sim n.
+\end{equation}
+
+\begin{theorem}[Inverse expansion]\label{thm:inverse}
+Define
+\begin{equation}\label{eq:inverse-coefficients}
+ \beta_0=\frac23d_1,\qquad
+ \beta_k=-\frac1k[h^{k+1}]D(h)^{-2k/3}\quad(k\ge1).
+\end{equation}
+Then, for each fixed $M\ge0$,
+\begin{equation}\label{eq:inverse-expansion}
+ n=y_n+\beta_0+\sum_{k=1}^{M}\beta_ky_n^{-k}
+      +O(y_n^{-M-1})\qquad(n\to\infty).
+\end{equation}
+In particular,
+\begin{align}\label{eq:displayed-inverse}
+ n={}&y_n-\frac7{48}-\frac{29}{2304y_n}
+       -\frac{3719}{331776y_n^2}-\frac{1565}{32768y_n^3}\notag\\
+    &-\frac{36355159}{191102976y_n^4}+O(y_n^{-5}).
+\end{align}
+Moreover,
+\begin{equation}\label{eq:inverse-arithmetic}
+ 64^{k+1}\beta_k\in\Z[1/3]\qquad(k\ge0).
+\end{equation}
+Thus every inverse coefficient has denominator supported only at the primes
+$2$ and $3$, and after the displayed normalization only $3$ remains.
+\end{theorem}
+
+\begin{proof}
+Let $h=1/n$ and formally put $u=1/y$. The forward relation becomes
+\[
+ u=hD(h)^{2/3},\qquad h=u\psi(h),\qquad\psi(h)=D(h)^{-2/3}.
+\]
+The series $u=h+O(h^2)$ has a unique formal compositional inverse. For $k\ge1$,
+Lagrange inversion applied to the Laurent function $h^{-1}$ gives
+\[
+ [u^k]\frac1{h(u)}=-\frac1k[h^{k+1}]\psi(h)^k,
+\]
+which is \eqref{eq:inverse-coefficients}. This Laurent version follows, for
+example, by changing variables in the coefficient residue and integrating a
+formal derivative; it has the same finite coefficient meaning as the usual
+power-series version. The constant term is obtained separately from
+$h=u+\psi'(0)u^2+O(u^3)$: it is $-\psi'(0)=2d_1/3$.
+
+For the asymptotic assertion, use the published expansion to enough fixed
+orders and form \eqref{eq:forward-inversion} by finite-order Taylor
+expansion around $1$. Substitute the truncated forward expansion into the
+formal inverse. All coefficients through $y^{-M}$ cancel by construction.
+Since $y_n\sim n$, the uncancelled terms and transported remainders are
+$O(y_n^{-M-1})$. No global invertibility or monotonicity assumption is needed
+for this composition along the sequence. Extracting the first coefficients
+gives \eqref{eq:displayed-inverse}.
+
+For arithmetic, introduce $X=64n$, $Y=64y$ and $z=1/X$. The normalized
+forward relation is
+\[
+ Y=XR(1/X)^{-2/3},\qquad Y^{-1}=zR(z)^{2/3}.
+\]
+Because $R\in\Z[[z]]$, the unit $F=R^{2/3}$ belongs to
+$\Z[1/3][[z]]$: solve $F^3=R^2$ coefficient by coefficient, dividing only
+by $3$. A monic series $zF(z)=z+O(z^2)$ has a compositional inverse over the
+same ring, and reciprocating that inverse gives
+\[
+ X(Y)\in Y+\Z[1/3][[Y^{-1}]].
+\]
+Since the coefficient of $Y^{-k}$ in $X(Y)-Y$ is
+$64^{k+1}\beta_k$, this proves \eqref{eq:inverse-arithmetic}.
+\end{proof}
+
+\subsection{The boundary between an expansion and a transseries}
+
+Theorem~\ref{thm:inverse} gives the complete algebraic sector of an inverse
+asymptotic description. It does not specify exponentially small corrections.
+Two functions differing by a term smaller than every inverse power have the
+same formal series, so coefficient arithmetic cannot recover such a term.
+This distinction is especially relevant here: the individual factors have
+opposite stretched-exponential behavior, while their product has an
+ordinary inverse-power expansion.
+
+Similarly, an $O(y_n^{-M-1})$ statement supplies no numerical error constant
+at a specified $n$. Rigorous rounding of an inverse estimate to an integer
+would require an effective remainder bound. The numerical checks below
+illustrate the expansion but are not interval error certificates.
+
+\section{Reproducible exact and numerical checks}
+\label{sec:checks}
+
+The accompanying program \texttt{verify.py} uses two different coefficient
+recurrences. The new method computes $r_k$ using integer arithmetic and the
+quadratic master equation. The independent method uses rational arithmetic
+and the published linear coefficient recurrence. Agreement is a useful check
+on normalization, signs, and indexing; the all-orders proofs above do not
+depend on how far the calculations are run.
+
+\subsection{An explicit implementation form}
+
+Let
+\[
+ R=\sum r_nz^n,\qquad \Eop_tR=\sum E_nz^n,\qquad
+ \Oop_tR=\sum O_nz^n,\qquad
+ \frac{\Oop_tR}{1+32tz}=\sum T_nz^n.
+\]
+Starting with $r_0=1$, $E_0=-1$, $O_0=T_0=1$, the integer recurrence is
+\begin{align}
+ H_{n-1}&=-4t\sum_{i=0}^{n-1}r_ir_{n-1-i}
+          +2\sum_{i=0}^{n-1}r_iE_{n-1-i}
+          -\sum_{i=0}^{n-1}T_iT_{n-1-i},\label{eq:algorithm-H}\\
+ r_n&=2H_{n-1}-\frac12\sum_{i=1}^{n-1}r_ir_{n-i},\label{eq:algorithm-r}\\
+ E_n&=\sum_{\ell=0}^{\lfloor n/2\rfloor}
+        e_{n-2\ell,\ell}t^\ell r_{n-2\ell},\qquad
+ O_n=\sum_{\ell=0}^{\lfloor n/2\rfloor}
+        o_{n-2\ell,\ell}t^\ell r_{n-2\ell},\label{eq:algorithm-EO}\\
+ T_n&=O_n-32tT_{n-1}.\label{eq:algorithm-T}
+\end{align}
+The order matters: compute $r_n$ from earlier arrays, then append
+$E_n,O_n,T_n$. The division by two in \eqref{eq:algorithm-r} is always exact,
+and its quotient is even. The code asserts this at each step.
+
+For comparison, the independent recurrence from \cite[Lemma~14]{BGG} is
+\begin{equation}\label{eq:independent-recurrence}
+ 8k d_k=-\sum_{j=0}^{k-1}d_j[h^{k+2-j}]
+ \left(\frac{B(h)}{(1-h)^{j+1/2}}+
+       \frac{C(h)}{(1-2h)^{j+1/2}}+
+       \frac{J(h)}{(1-3h)^{j+1/2}}\right),
+\end{equation}
+where
+\[
+ \begin{aligned}
+ B(h)&=-6+13h-7h^2+h^3,\\
+ C(h)&=6-19h+17h^2-3h^3,\\
+ J(h)&=-2+11h-17h^2+6h^3.
+ \end{aligned}
+\]
+The source calls the last polynomial $D$; we rename it $J$ to avoid collision
+with the asymptotic series. This second implementation does not use
+\eqref{eq:algorithm-r} or its integrality conclusion.
+
+\subsection{Initial coefficients}
+
+\begin{table}[ht]
+\centering
+\caption{Exact initial coefficients. The normalized product is
+$-2n^{3/2}\rho_n\sim\sum d_kn^{-k}$.}
+\label{tab:coefficients}
+\begin{tabular}{r r r}
+\toprule
+$k$ & $r_k$ & $d_k$ in lowest terms\\
+\midrule
+0 & $1$ & $1$\\
+1 & $-14$ & $-7/32$\\
+2 & $86$ & $43/2048$\\
+3 & $-3660$ & $-915/65536$\\
+4 & $-1042202$ & $-521101/8388608$\\
+5 & $-247948260$ & $-61987065/268435456$\\
+6 & $-108448540420$ & $-27112135105/17179869184$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The archived run used Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0. It
+verified integrality/evenness, the mod-$32$ formula, and all applicable
+valuation formulas through $k=256$; independent agreement with
+\eqref{eq:independent-recurrence} through $k=128$; all thirteen displayed
+OEIS terms; the polynomial identities through degree $8$; and the parameter
+congruence through $k=48$ at $t=-3,-1,0,2,5$. It also checked the bilinear
+invariant symbolically and composed the displayed inverse series directly.
+
+The check that $r_k<0$ for $3\le k\le256$ is explicitly logged as an
+\emph{observation}, not a proof. It does not extend the range already reported
+in the 2019 paper and is not presented as a computational record.
+
+\subsection{Numerical asymptotic checks}
+
+For numerical evaluation we used the exact special-function expression
+\begin{equation}\label{eq:kummer-numerical}
+ \rho_n=-e^{-1}\Gamma(n)M(n+1,2,1)U(n,0,1),
+\end{equation}
+with the standard Kummer functions, as in \cite{BGG}. This avoids computing
+the recessive $b_n$ by unstable forward propagation from nearly cancelling
+initial data. Table~\ref{tab:numerical} shows the signed errors from the
+published product and our inverse expansion.
+
+\begin{table}[ht]
+\centering
+\caption{Numerical diagnostics, not rigorous remainder bounds. Product error:
+$-2n^{3/2}\rho_n-\sum_{k=0}^{5}d_kn^{-k}$. Inverse error: the right side of
+\eqref{eq:displayed-inverse}, without its $O$ term, minus $n$.}
+\label{tab:numerical}
+\begin{tabular}{r r r}
+\toprule
+$n$ & Product error & Inverse error\\
+\midrule
+25 & $-1.16668669188\times10^{-8}$ & $2.14328374121\times10^{-7}$\\
+100 & $-1.75696329807\times10^{-12}$ & $1.34214874476\times10^{-10}$\\
+400 & $-3.95020779621\times10^{-16}$ & $1.21710421134\times10^{-13}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The recorded numerical strings were unchanged when working precision was
+increased from $80$ to $120$ decimal digits. This tests numerical stability
+of the reported digits but is not interval arithmetic. Exact assertions are
+separate from these numerical diagnostics.
+
+To reproduce the archived run, execute
+\begin{verbatim}
+python verify.py --order 256 --independent-order 128
+\end{verbatim}
+The main exact checks require only the Python standard library. Installing
+SymPy and mpmath enables the additional checks; missing optional packages
+produce explicit skip messages. The files \texttt{verification\_output.txt}
+and \texttt{verification\_metadata.json} record what actually ran.
+
+\section{Connection with ProveIt and a formalization plan}
+\label{sec:proveit}
+
+The repository inspection was pinned to commit \repoSHA. The canonical
+transseries-and-inversion README describes formal coefficient uniqueness,
+quadratic/Catalan coefficients, remainder transport, and the distinction
+between algebraic expansions and flat corrections \cite{proveit-volume}.
+The source file \texttt{QuadraticCoreCatalan.lean} was also inspected
+\cite{proveit-catalan}. It contains the Catalan description of
+$\binom{1/2}{m}$ and finite convolution identities. It explicitly distinguishes
+those finite algebraic results from a complete formal-power-series
+existence/uniqueness package.
+
+These are useful building blocks, not certificates for this article. In
+particular, no claim here relies on a repository statement about A321941,
+and no Lean or Rocq build was run for these new theorems.
+
+A sensible formalization separates three layers. The first is finite
+algebra: prove the Wronskian identity over a commutative ring and the
+half-binomial weight formulas over $\Q$. The second is formal arithmetic:
+define the coefficient arrays over $\Z[t]$, prove evenness, establish
+uniqueness after coercion to $\Q[t]$, and formalize the modulo-$64$ argument
+that descends to modulo $32$. The third is the analytic bridge: connect
+actual Kummer/exponential-integral coefficients to the formal product
+series by a full Poincar\'e expansion theorem.
+
+The arithmetic layer can be formalized before the analytic one. Its theorem
+would say that the uniquely defined formal solution has integral even
+coefficients and the stated congruence. It should not be advertised as the
+full analytic A321941 theorem until the expansion-identification bridge is
+also verified. This separation makes the remaining trusted assumptions
+visible rather than hiding them inside an informal numerical definition.
+
+For implementation, \eqref{eq:algorithm-H}--\eqref{eq:algorithm-T} provide
+finite sums only. The first proof can use a parity invariant asserting that
+all stored coefficients except the constant term are even. The congruence
+proof needs a second invariant tracking equality modulo $32$ while comparing
+squares modulo $64$. The inspected Catalan module supports the alternative
+fixed-point construction in \eqref{eq:catalan-square-root}. The inverse
+arithmetic theorem requires only unit inversion, monic compositional
+inversion, and the recursion $F^3=R^2$ over $\Z[1/3]$.
+
+\section{Further research questions and topics}
+\label{sec:future}
+
+The following questions are not asserted as solved. They are arranged from
+immediate extensions of the present arithmetic to broader analytic and
+structural problems.
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item \textbf{Prove the remaining negativity conjecture.}
+Establish $P_k(1)<0$ for all $k\ge3$. The exact formula for $P_k(0)$ gives a
+negative reference edge, but mixed signs in the interior prevent a direct
+coefficientwise argument. A positive integral representation for $-r_k$, a
+sign-preserving reformulation, or an effective comparison with the constant
+edge would resolve the missing assertion in the published Remark~11.
+
+\item \textbf{Determine all exact $2$-adic valuations.}
+Theorem~\ref{thm:denominators-summary} handles indices with at most four
+binary ones. Determine $v_2(r_k)$ at the remaining indices, including whether
+there is a rule in terms of binary carries and a finite amount of additional
+state. The existing proof gives a route through successively higher
+moduli, but no such complete rule has been established here.
+
+\item \textbf{Lift the universal congruence to higher powers of two.}
+Find an effective description of $R_t$ modulo $2^m$ for arbitrary fixed $m$.
+The valuations in \eqref{eq:weight-valuations} imply that only finitely many
+shift distances are visible modulo each fixed power of two. Can this be
+organized into a finite differential system, a recursive correction to an
+algebraic series, or an efficient modular coefficient algorithm with proved
+complexity?
+
+\item \textbf{Study large-order growth of the coefficients themselves.}
+The expansion parameter is $n\to\infty$, but the coefficient index
+$k\to\infty$ is a different asymptotic problem. Determine a sharp growth law
+for $r_k$ and the location and type of singularities of a suitable Borel
+transform. The exact edge \eqref{eq:constant-polynomial} suggests a useful
+comparison scale, but does not by itself prove the growth of $P_k(1)$.
+Such a result would guide optimal truncation and could help prove eventual
+negativity, leaving only finitely many indices.
+
+\item \textbf{Give effective analytic remainders and inverse certification.}
+Combine the arithmetic recurrences with explicit bounds for the product of
+Kummer functions. Determine an error bound after a specified truncation that
+is valid for all $n$ above a computable threshold. Transport it through the
+inverse map to obtain certified integer reconstruction or rounding. The
+current all-orders theorem and high-precision checks do not supply these
+constants.
+
+\item \textbf{Analyze the parameter polynomials.}
+Investigate the real zeros, sign intervals, coefficient triangles, and
+large-$k$ asymptotics of $P_k(t)$. Determine for which fixed real or integer
+$t$ the signs eventually stabilize. Establish analytic realizations of
+\eqref{eq:lambda-coefficients} with uniform control in $\lambda$ away from
+zero, and distinguish those from any singular scaling limit as
+$\lambda\to0$.
+
+\item \textbf{Extend the arithmetic mechanism to other recurrences.}
+For normalized equations with $q_n=2+\lambda/n+\mu/n^2+\cdots$, classify the
+potentials and normalizations for which the diagonal-product equation admits
+integral coefficient operators after a single exponential scaling. The
+quadratic invariant survives unchanged; the challenge is the arithmetic of
+the shifted normalization and the resulting triangular equation. This is a
+systematic source of further OEIS-related integrality problems rather than a
+collection of isolated coefficient guesses.
+
+\item \textbf{Find a signed combinatorial interpretation.}
+The Catalan fixed point expresses the coefficients using trees built from
+integer-weighted operations, but this is not yet a natural combinatorial
+model for A321941. A model with a sign-reversing involution could explain both
+dyadic scaling and the conjectured negative sign. It should account for the
+parameter $t$ and the central-binomial reduction, not merely encode an
+arbitrary integer recurrence tautologically.
+
+\item \textbf{Complete a machine-checked proof and an independently reviewed edition.}
+Formalize the finite arithmetic layer first, then the formal-analytic bridge.
+An independent mathematical review should focus on the normalized Wronskian,
+the cancellation leading to \eqref{eq:D-master}, the exact valuations of
+shift weights, and the induction from modulus $64$ to modulus $32$. A
+reviewed proof can then support a precise OEIS update distinguishing the
+settled arithmetic assertions from the remaining sign question.
+\end{enumerate}
+
+\section{Conclusion}
+
+The conjectural integrality of A321941 is not an accidental cancellation
+visible only in a long list of coefficients. It follows from an exact
+quadratic identity, integral rescaled shift operators, and a parity
+induction. The same identity reduces modulo $64$ to a simple equation that
+proves the central-binomial congruence modulo $32$.
+
+The resulting structure is stronger than the original sequence statement:
+it gives even integral parameter polynomials, explicit extreme coefficients,
+minimal exponential scaling, infinitely many sharp denominator instances,
+and an arithmetic restriction on an all-orders inverse expansion. The proof
+is independent of finite verification ranges, while the accompanying checks
+provide reproducible tests of every normalization used in the argument.
+
+\appendix
+\section{A short dependency and status ledger}
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.40\textwidth}p{0.29\textwidth}@{}}
+\toprule
+Statement & Dependency & Status in this article\\
+\midrule
+\endhead
+Original all-orders product expansion & Brent--Glasser--Guttmann,
+Corollary 9 & Published input; cited, not re-proved\\
+Quadratic identity & Elementary polynomial algebra & Fully proved here;
+symbolic finite identity check included\\
+Integral even $r_k$ & Formal bridge, weight arithmetic, triangular recurrence &
+Fully proved here for every index\\
+Congruence modulo $32$ & Evenness, operator valuations, reduction modulo $64$ &
+Fully proved here for every index\\
+Polynomial deformation & Parameterized formal equation & Fully proved here;
+analytic identification only where an expansion is established\\
+Denominator claims & Integrality, mod-$32$ result, factorial valuations &
+Fully proved here within the stated binary-digit range\\
+Inverse expansion & Published product expansion and formal reversion &
+All fixed algebraic orders proved; no effective remainder constants\\
+Negativity for $k\ge3$ & Would require additional sign arguments &
+Not proved; finite observations only\\
+Exponentially small sectors & Would require further analytic information &
+Not determined\\
+Lean/Rocq certification & Would require new formal developments and builds &
+Not performed; a proposed route is described\\
+\bottomrule
+\end{longtable}
+
+\section{Source audit and reproducibility scope}
+
+The source audit inspected the final journal PDF of \cite{BGG}, including
+the conjecture and congruence on its printed page 10; the live A321941 entry;
+the repository's transseries README; and the Catalan source module at the
+pinned commit. Web searches included the exact sequence identifier with
+``proof'', ``integrality'', and ``congruence'', as well as the authors and
+paper title. This is a reproducible targeted audit, not an exhaustive search
+of all publications, preprints, communications, or repository history.
+
+The package contains the editable \LaTeX\ source, the compiled PDF, a
+standalone verification script, the actual check log, coefficient data,
+parameter-polynomial data, numerical diagnostics, and source notes. No
+third-party paper or font file is redistributed. The script writes generated
+outputs to its own directory by default; use \texttt{--out} to select another
+location. Its main exact arithmetic does not require network access.
+
+\begin{thebibliography}{9}
+
+\bibitem{BGG}
+R. P. Brent, M. L. Glasser, and A. J. Guttmann,
+\emph{A conjectured integer sequence arising from the exponential integral},
+Journal of Integer Sequences \textbf{22} (2019), Article 19.4.7.
+\href{https://cs.uwaterloo.ca/journals/JIS/VOL22/Brent/brent21.html}{Journal page};
+\href{https://cs.uwaterloo.ca/journals/JIS/VOL22/Brent/brent21.pdf}{final journal PDF};
+\href{https://arxiv.org/abs/1812.00316}{arXiv:1812.00316}.
+Theorem numbering in this article follows the journal version.
+
+\bibitem{oeis321941}
+The OEIS Foundation Inc.,
+\emph{A321941: Scaled numerators in the asymptotic expansion of the Maclaurin
+coefficients in a Hadamard product involving the exponential integral}.
+Entry contributed by Richard P. Brent, 2018.
+\url{https://oeis.org/A321941}. Inspected 1 October 2026.
+
+\bibitem{oeis262}
+The OEIS Foundation Inc.,
+\emph{A000262}, partitions into linearly ordered blocks (``sets of lists'').
+\url{https://oeis.org/A000262}. Inspected 1 October 2026.
+
+\bibitem{proveit-volume}
+V. Reshetnikov and contributors, \emph{ProveIt},
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}.
+Pinned commit: \repoSHA.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0a6d798c5f39775b2fb4d85fef643fef996c87cf/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}{Pinned repository source}.
+Inspected 1 October 2026. The README, rather than the complete consolidated
+volume, was used for the targeted comparison.
+
+\bibitem{proveit-catalan}
+V. Reshetnikov and contributors, \emph{ProveIt},
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/QuadraticCoreCatalan.lean},
+same commit as \cite{proveit-volume}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0a6d798c5f39775b2fb4d85fef643fef996c87cf/Analysis/FabiusFunction/Lean/FabiusFunction/QuadraticCoreCatalan.lean}{Pinned source module}.
+Source inspected; no new formal build performed for this article.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,106 @@
+PROPOSED OEIS CORRECTIONS — RESEARCH DRAFT, NOT SUBMITTED
+Prepared October 1, 2026
+
+Mathematical object
+-------------------
+For n >= 4, let Phi(n) be the number of permutations sigma of Z/nZ such that
+sigma(i)-i mod n belongs to {0,1,2,3} for every i. Equivalently,
+Phi(n) = permanent(I + P + P^2 + P^3), with P the cyclic shift matrix.
+
+Exact result
+------------
+Let L(n) be A001644, with L(0)=3, L(1)=1, L(2)=3 and
+L(n)=L(n-1)+L(n-2)+L(n-3). Then
+
+  Phi(n) = 2*(L(n)+1),  n >= 4.
+
+The winding-sector counts are (1,L(n),L(n),1). Hence
+
+  Phi(n) = Phi(n-1)+Phi(n-2)+Phi(n-3)-4,  n >= 7,
+  Phi(n) = 2*Phi(n-1)-Phi(n-4),           n >= 8.
+
+The true values from n=4 are
+
+  24, 44, 80, 144, 264, 484, 888, 1632, 3000, 5516, 10144, ...
+
+and the true quarter-count is
+
+  6, 11, 20, 36, 66, 121, 222, 408, 750, 1379, 2536, ... .
+
+A000382
+-------
+1. Delete or correct the comment "The fourth column of A008305, divided by 4."
+   The first failure is n=8: A000382(8)=65, while T(8,4)/4=264/4=66.
+
+2. The listed sequence is instead the quarter of the sequence produced by
+   Mendelsohn's displayed equation (4): for n >= 5,
+
+     M(n) = F(n-1)+F(n-3)+F(n-4)+1,
+
+   where F(0)=1, F(1)=1, F(2)=2 and F(n)=F(n-1)+F(n-2)+F(n-3), together with
+   M(4)=6.
+
+3. For this formula-defined sequence the currently conjectured recurrence is
+   provable:
+
+     M(n)=M(n-1)+M(n-2)+M(n-3)-2,  n >= 8.
+
+4. Clarify that the displayed rational function is the shifted tail generating
+   function sum_{m>=0} M(m+4) z^m:
+
+     (6-z-2z^2-4z^3-z^4)/(1-2z+z^4).
+
+5. The exact correction from A000382 to the true quarter-count R(n)=Phi(n)/4 is
+
+     sum_{n>=4} (R(n)-M(n)) z^(n-4) = z^4/(1-2z+z^4),
+
+   so for n >= 8,
+
+     R(n)-M(n) = sum_{j=0}^{n-8} F(j)
+               = 1,2,4,8,15,28,52,96,177,... .
+
+A000496
+-------
+1. The values through n=7 agree with the restricted-permutation count, but the
+   entry first fails at n=8: it has 260 instead of 264.
+
+2. Add that the tail is 4*A000382 and should not be identified with
+   permanent(I+P+P^2+P^3) or the fourth column of A008305.
+
+3. Clarify that the displayed rational function starts with the n=4 term; it is
+   not the ordinary generating function with offset 0 unless multiplied by
+   z^4 and supplemented with 1+z+2z^2+6z^3.
+
+A008305
+-------
+In the cross-reference line for the fourth column, remove "4*A000382". Retain
+A004306. A direct formula is
+
+  T(n,4)=2*(A001644(n)+1), n >= 4.
+
+A004306
+-------
+The current values, recurrence, and Tribonacci formula are correct. Suggested
+additional comments:
+
+  If alpha,beta,gamma are the roots of x^3-x^2-x-1, then
+    a(n)=2*(1+alpha^n+beta^n+gamma^n), n >= 4.
+
+  If alpha=1.83928675521416113255..., then
+    a(n)/4 = nearest_integer((alpha^n+1)/2), n >= 4.
+
+  A winding-number decomposition gives sector sizes
+    (1,A001644(n),A001644(n),1).
+
+Historical note
+---------------
+Mendelsohn's 1961 equation (4), his printed table, and the actual permanent are
+three different sequences at n=8 and n=9:
+
+  n                         8    9   10
+  actual permanent         264  484  888
+  displayed equation (4)  260  476  872
+  printed table            256  472  872
+
+Independent review of attribution and of the original scan is recommended
+before submission.

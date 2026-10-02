@@ -1,0 +1,37 @@
+{
+  "verdict": "approved",
+  "scope": "binary epsilon-free NFAs; nonempty initial/final sets; rank(epsilon)=1 when accepted; empty hull maximum 0",
+  "proof_checks": [
+    "greedy optimality",
+    "exact boundary operators and residue phases",
+    "reachable positive-cycle criterion",
+    "zero-weight cycle-erasure witness cutoff",
+    "complete labeled enumeration and symmetry weights",
+    "empty language, epsilon, at-most-state and epsilon-elimination conventions"
+  ],
+  "producer_source_sha256": {
+    "producer/exact-finite-rank-algorithm.md": "f357d082939e9310f020f74109400f31cc9d3e70295871938494298b75f3f079",
+    "producer/census.cpp": "836896a2d32f3a90957b0b1ae1e88202abd37bc28cd1f17db1699526bddba2d4",
+    "producer/exact_rank.py": "a56b217608b1745dfbb3f48d5d3033d30e26de25931ebe28fe1866d847b35a76",
+    "producer/census_graph.cpp": "18c60e0aaf734c9f42bd8b51f9b00f21f6d808505e17dde1af120c91a7ed2947"
+  },
+  "independent_algorithm": "direct labeled enumeration; forward/backward pair periodicity; explicit boundary/core graph; SCC condensation and longest paths",
+  "expected_two_state_counts": {
+    "0": 128,
+    "1": 1612,
+    "2": 188,
+    "infinite": 376
+  },
+  "expected_three_state_counts": {
+    "0": 270336,
+    "1": 8680660,
+    "2": 2239104,
+    "3": 111984,
+    "4": 2016,
+    "5": 72,
+    "infinite": 1540884
+  },
+  "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+  "python": "Python 3.12.14",
+  "note": "Pointwise and literal receipts are separate files. This audit is mathematical/computational, not a formal proof-assistant certificate."
+}
