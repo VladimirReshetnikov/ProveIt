@@ -1029,11 +1029,409 @@ undefined references or citations, no multiply defined labels, no duplicate
 destinations, no overfull boxes. Build in a scratch copy; do not commit the
 auxiliary files.
 
-## Rerun instructions, reconstruction and discrepancies
+## Rerun the checks
 
-Rerun instructions, how to retrieve or rebuild every delivered file that is not
-shipped, the licence notice for third-party data, and the list of delivery names
-and discrepancies are added in the last step of this intake (4/4). Until then:
-every delivered file that is not shipped is in the arrival commit `f8c3a392a`
-(`git show f8c3a392a:docs/incoming/<archive>.zip > <archive>.zip`, then unzip),
-and no delivered driver runs inside this directory.
+The shipped files are renamed and flattened, and every delivered driver
+(`verify.py`, `verify_all.py`) first checks the full package against its
+checksum ledger, which is not shipped. **Rerun every package from its
+reconstructed delivered layout, never inside this directory** (see the next
+section): the drivers write receipts into the package (`receipts/` of source
+25, `verification-receipt.json` of source 20, `local-replay.json` of sources
+22 and 23), and source 34's `proof-check/check.py` writes `receipt.json`
+beside itself unless an output path is given. Times are those measured at
+intake on a shared Windows laptop (5–18 times slower than the producers'
+recorded times).
+
+| Source | Command (in the reconstructed package) | Notes from intake |
+|---|---|---|
+| 25 | `python3 verify_all.py` | needs Python 3, SymPy, `g++` (C++17); with GCC 16 add `-include cassert` (or a `CPATH` shim), since `certify.cpp`, `certify_min_size.cpp` and `exhaust*.cpp` call `assert` without `<cassert>`; `small-check/exhaust` built with `-O3` crashed after finishing its order-8 census (`exhaust7` at `-O0` reproduced every count through seven), so that census was not rerun; every other step passed when run singly, outputs equal modulo CRLF and `seconds` fields |
+| 16 | `cd reproducibility && python verify.py --mode fast` (`--mode full` adds the bounded-core enumerations; `--mode hashes` checks integrity only) | about an hour here (3.5 min recorded); on Windows the wrapper's `text.replace('/workspace/shared', str(W))` writes backslashes into Python source and fails — run on Linux/WSL or replace `str(W)` by `W.as_posix()` in a copy. At intake the template-26 identity (36 s), the one-attachment algebra, the four-attachment face coverage, the template-9 correction and the representatives were replayed and equal the delivered outputs (modulo CRLF); the two-attachment positivity audit did not finish in the time allowed |
+| 23 | `python verify.py` (`--verify-dependency` also replays archive 31) | same Windows path bug in `stage`; with it fixed in memory: pass, 5.6 s, counts equal the receipts. Needs the embedded `dependencies/weighted-degree-three-package.zip` (archive 31), present in the reconstructed package |
+| 20 | `python3 verify.py` | Python ≥ 3.9, SymPy, GCC (C++17) with `-include cassert` on GCC 16 (`CXX` wrapper); pass, 73 s |
+| 12 | `PYTHONDONTWRITEBYTECODE=1 python3 verify.py` | standard library; receipts reproduced exactly |
+| 11 | `PYTHONDONTWRITEBYTECODE=1 python3 verify.py` | standard library; replays its embedded copy of source 12; receipts reproduced exactly |
+| 15 | `PYTHONDONTWRITEBYTECODE=1 python3 verify.py` | SymPy 1.14.0 for one checker; receipts reproduced exactly |
+| 22 | `python verify.py` | Python 3 and a C++17 compiler; more than three minutes, not run whole at intake; its sub-checkers were (final Rayleigh certificate 0.8 s; complete-hybrid coverage, certificates and aggregate; side-1565 package; two-attachment and marked-five modules) — counts equal the ledger |
+| 14 | `python verify.py --output <out.json>` | standard library; the producer passed alone (104 s), the independent checker did not finish in the time allowed; `--mode hashes` passes |
+| 10 | `python verify.py --output <out.json>` | standard library; pass, 46 s, receipt equal modulo time fields |
+| 34 | `python verify.py --workers 4 --output <out.json>` | standard library; all 9,608 certificates passed (run in two halves), aggregate equal to the delivered manifest; counterexample checker reproduced |
+| 06 | `python verify.py --workers 4 --output <out.json>` | needs about 2 GB of temporary disk; not run whole at intake: all 12,652 certificate members were authenticated against the audit manifests and 40 certificates replayed; `check_ordinary_lemmas.py` reproduced its receipt |
+
+Two checks run from shipped files, on scratch copies:
+
+```
+# source 22's final all-real Rayleigh certificate: the checker reads the certificate beside itself
+mkdir -p /tmp/s1565
+cp code/22-independent-role-proofs-final-rayleigh-verify_side1565_rayleigh.py /tmp/s1565/verify_side1565_rayleigh.py
+cp data/22-independent-role-proofs-final-rayleigh-side1565_rayleigh_0_9_certificate.json /tmp/s1565/side1565_rayleigh_0_9_certificate.json
+python /tmp/s1565/verify_side1565_rayleigh.py
+# source 34's 9,608 certificates from the derived container (always pass the output path)
+mkdir -p /tmp/c34 && tar -xJf data/34-five-core-certificate-data.tar.xz -C /tmp/c34
+python code/34-five-core-proof-check-check.py /tmp/c34/certificate-data /tmp/c34/receipt.json 4
+```
+
+Regenerated text outputs on Windows differ from the delivered ones by CRLF
+line endings only; compare modulo line endings. Do not use `python -O`:
+several drivers rely on assertions and refuse to run without them.
+
+## Reconstructing what is not shipped
+
+Everything that is not shipped is in the arrival commit `f8c3a392a`, byte
+for byte, and can be retrieved exactly (`git` in a clone of ProveIt):
+
+```
+mkdir pgr-arrival && cd pgr-arrival
+for k in 1 2 3 4; do git show f8c3a392a:docs/incoming/preorder-degree-four-part-$k-of-4.zip > pd4-$k.zip; done
+mkdir pd4 && for k in 1 2 3 4; do unzip -o -q pd4-$k.zip -d pd4; done                 # source 16: 268 files, both manifests verify
+for k in 1 2; do git show f8c3a392a:docs/incoming/universal-sink-five-core-boundary-package-part-$k.zip > b-$k.zip; done
+mkdir boundary && for k in 1 2; do unzip -o -q b-$k.zip -d boundary; done             # source 06: 52 files
+for z in preorder-gamma-degree-three-package template26-structural-supplement role-cover-package \
+         three-core-rayleigh-result physical-cover-three-result bipartite-and-pendant-support-result \
+         independent-role-degree-three-package universal-sink-last-gap-package universal-sink-all-degrees-package \
+         universal-sink-five-core-package weighted-degree-three-package universal-sink-degree-four-package; do
+  git show f8c3a392a:docs/incoming/$z.zip > $z.zip && mkdir $z && unzip -q $z.zip -d $z
+done
+```
+
+The last two archives are the superseded versions 31 and 13. Each
+extracted package carries its own README, checksum ledger and PDF. The
+reconstructed packages are the delivered layouts in which the commands of
+the previous section run.
+
+**Not regenerable, kept only in the arrival commit.** Source 16's files
+larger than 2 MB, notably `reproducibility/sources/preorder-gamma-degree4/three-attachment/certificates.jsonl`
+(93.7 MB, LP-found certificates of the three-attachment branch, needed for
+degree four), `four-attachment/global_integer_sextic_shifted_gmp_26.json`
+(29.4 MB; template 26, last gap; replaced in the report by source 23's
+route, replayed exactly at intake in 36 s), `gmp_19` (8.5 MB) and `gmp_0`
+(5.0 MB), the two-attachment `quartic_sos_certificates.jsonl` (8.1 MB), the
+medium-face certificates, sources and normalized faces, and the face and
+alias tables listed below; the kernel data `two-attachment/a2_polynomials.jsonl`
+(20.7 MB) and `pendant10_coefficients.csv` (10.1 MB), regenerable only by
+the full-mode enumerations; and source 06's bounded-sink certificates
+`four-sink-certificates-a.tar.xz` (13.0 MB, archive 07) and
+`four-sink-certificates-b.tar.xz` (15.6 MB, archive 06) with their 3.5 MB
+manifest `audits/four-sink-certificate-manifest.json` — these carry the
+bounded-four-sink branch of source 06's first inequality (9,608 classes,
+1,755,474 squares).
+
+**Regenerable outputs, not shipped** (they are also in the arrival commit):
+
+- source 16, `three-attachment/normalized_faces.jsonl` (69.7 MB): for each
+  line `c` of `three-attachment/certificates.jsonl`, expand the polynomial
+  `Σ w · x^m · root²` over `c.terms.squares` — for `c.kind == "binomial"` a
+  square spec `[m, a, b, u, v]` has `root = u·x^a − v·x^b`, otherwise
+  `[m, pairs]` has `root = Σ c_e x^e` — plus the monomials
+  `c.terms.monomials`, with exact rationals; drop zero coefficients, sort
+  the terms by exponent vector, and write
+  `{"id": …, "variables": n, "polynomial": [[e, coefficient], …]}` as
+  compact JSON (`separators=(',', ':')`) with a final newline. At intake
+  this regenerated the whole file byte for byte (SHA-256
+  `e144e79b4cb66aeecb52816f5f6ef544f356998a39844bb3de4ba4cb1bac5840`,
+  the value pinned in its positivity audit);
+- source 16, the coverage ledgers written by the audits of fast mode:
+  `audit-positivity-independent/coverage_ledger.jsonl` (26.1 MB, two
+  attachments; not regenerated at intake: the audit did not finish in the
+  time allowed), `independent-audit/three-attachment/positivity_coverage.jsonl`
+  (9.2 MB; not run at intake) and
+  `independent-audit/four-attachment/face_orbit_coverage.jsonl` (2.3 MB;
+  regenerated, equal modulo CRLF); their SHA-256 values are recorded in the
+  shipped receipts;
+- source 16, the full-mode representatives
+  `independent-audit/two-attachment/representatives.tsv` (12.6 MB) and
+  `independent-audit/{three,four}-attachment/representatives.txt`
+  (3.9 MB, 4.4 MB): `prepare_representatives.py` and `prepare.py` of the
+  corresponding audits; regenerated at intake, equal modulo CRLF;
+- source 34, `audits/certificate-manifest.json` (2.75 MB): the output of
+  `proof-check/check.py`; regenerated at intake, equal as JSON.
+
+**The derived container** `data/34-five-core-certificate-data.tar.xz`
+(187,056 bytes) holds source 34's 9,610 files `certificate-data/catalog.json`,
+`certificate-data/cores.txt` and `certificate-data/cubic-two/certificate_0.json`
+… `certificate_9607.json` (45.9 MB unpacked), byte-identical to the
+delivered members. It was made at placement from the delivered zip, not by
+the producer: members sorted by name, USTAR format, mtime 0, uid and gid 0,
+empty user and group names, mode 0644, xz preset 9 extreme with CRC64,
+built twice to identical bytes and checked member by member against the
+zip (the helper script is not shipped). `tar -xJf` restores
+`certificate-data/` exactly as delivered; the commands above run source
+34's checker on it.
+
+Every delivered file that is not shipped, by archive (source 34's 9,610
+certificate files are in the container; the 245 files of archive 13 and the
+28 of archive 31 are the superseded versions, retrievable whole):
+
+| Archive | Delivered path | Why not shipped |
+|---|---|---|
+| 06 | `README.md` | delivery README; provenance goes into the report README |
+| 06 | `four-sink-certificates-b.tar.xz` | proof-carrying bounded-sink certificates (15571880 bytes, already xz-solid), > 10 MB; FLAG; retrieve from f8c3a392a universal-sink-five-core-boundary-package-part-2.zip (§9 R1) |
+| 07 | `README.md` | delivery README; provenance goes into the report README |
+| 07 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 07 | `article/build-pass1.log` | LaTeX build log of the unshipped delivered PDF |
+| 07 | `article/build-pass2.log` | LaTeX build log of the unshipped delivered PDF |
+| 07 | `article/core-appendix.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 07 | `article/universal-sink-five-core-boundary.pdf` | PDF; survives in f8c3a392a |
+| 07 | `article/universal-sink-five-core-boundary.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 07 | `audits/four-sink-certificate-manifest.json` | per-certificate hash/stat manifest of the unstaged four-sink tars (3.5 MB); travels with them (§9 R1) |
+| 07 | `audits/primary-literature-check.json` | byte-identical to data/34-five-core-audits-primary-literature-check.json, staged once |
+| 07 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 07 | `catalogs/cores.txt` | byte-identical to data/34-five-core-discovery-cores.txt, staged once |
+| 07 | `discovery/cores.txt` | byte-identical to data/34-five-core-discovery-cores.txt, staged once |
+| 07 | `discovery/four_active_cores.txt` | byte-identical to data/06-five-core-boundary-catalogs-four_active_cores.txt, staged once |
+| 07 | `discovery/kernel.py` | byte-identical to code/34-five-core-discovery-kernel.py, staged once |
+| 07 | `discovery/orbits_five.cpp` | byte-identical to code/34-five-core-discovery-orbits.cpp, staged once |
+| 07 | `discovery/pair_tools.py` | byte-identical to code/34-five-core-discovery-pair_tools.py, staged once |
+| 07 | `discovery/poly.py` | byte-identical to code/34-five-core-discovery-poly.py, staged once |
+| 07 | `discovery/precise_sos.py` | byte-identical to code/10-sink-all-degrees-discovery-precise_sos.py, staged once |
+| 07 | `four-sink-certificates-a.tar.xz` | proof-carrying bounded-sink certificates (13041816 bytes, already xz-solid), > 10 MB; FLAG; retrieve from f8c3a392a universal-sink-five-core-boundary-package-part-1.zip (§9 R1) |
+| 07 | `qa/page-1.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-2.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-3.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-4.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-5.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-6.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-7.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `README.txt` | delivery README; provenance goes into the report README |
+| 10 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 10 | `article/build-pass1.log` | LaTeX build log of the unshipped delivered PDF |
+| 10 | `article/build-pass2.log` | LaTeX build log of the unshipped delivered PDF |
+| 10 | `article/universal-sink-all-degrees.pdf` | PDF; survives in f8c3a392a |
+| 10 | `article/universal-sink-all-degrees.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 10 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 10 | `qa/checked-page-1.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/checked-page-2.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/checked-page-3.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/checked-page-4.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/checked-page-5.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/render-checked.log` | empty file |
+| 11 | `README.md` | delivery README; provenance goes into the report README |
+| 11 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 11 | `article/physical-cover-three.pdf` | PDF; survives in f8c3a392a |
+| 11 | `article/physical-cover-three.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 11 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 11 | `dependency/README.md` | delivery note on the embedded copy of archive 12 (not staged) |
+| 11 | `dependency/three-core-rayleigh-result.zip` | embedded exact copy of archive 12 (handed over by C1; staged as files from 12) |
+| 11 | `dependency/three-core-rayleigh.pdf` | embedded exact copy of archive 12's PDF |
+| 12 | `README.md` | delivery README; provenance goes into the report README |
+| 12 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 12 | `article/three-core-rayleigh.pdf` | PDF; survives in f8c3a392a |
+| 12 | `article/three-core-rayleigh.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 12 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 14 | `README.txt` | delivery README; provenance goes into the report README |
+| 14 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 14 | `article/build-pass1.log` | LaTeX build log of the unshipped delivered PDF |
+| 14 | `article/build-pass2.log` | LaTeX build log of the unshipped delivered PDF |
+| 14 | `article/universal-sink-last-gap.pdf` | PDF; survives in f8c3a392a |
+| 14 | `article/universal-sink-last-gap.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 14 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 14 | `qa/page-1.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 14 | `qa/page-2.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 14 | `qa/page-3.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 14 | `qa/page-4.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 14 | `qa/render.log` | empty file |
+| 15 | `README.md` | delivery README; provenance goes into the report README |
+| 15 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 15 | `article/support-polynomials.pdf` | PDF; survives in f8c3a392a |
+| 15 | `article/support-polynomials.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 15 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 16 | `ASSEMBLY.txt` | four-part assembly note of the delivery |
+| 16 | `README.md` | delivery README; provenance goes into the report README |
+| 16 | `reproducibility/dependencies/degree-three.zip` | embedded exact copy of archive 25 (blob already in f8c3a392a) |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/BALANCED_REAL_ROOTEDNESS_PROOF.md` | byte-identical to 20-role-cover-proofs-BALANCED_REAL_ROOTEDNESS_PROOF.md, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/disjoint_core_edges_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ic-ia-disjoint_core_edges_audit_receipt.json, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/role_cover_standalone_integration_audit.json` | byte-identical to data/20-role-cover-final-audit-review_receipt.json, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/role_cover_standalone_verification.json` | byte-identical to data/20-role-cover-final-audit-independent_verification.json, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/FREE_PRODUCT_COROLLARY_AUDIT.md` | byte-identical to 20-role-cover-proofs-ia-FREE_PRODUCT_COROLLARY_AUDIT.md, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/check_disjoint_monomer.cpp` | byte-identical to code/20-role-cover-proofs-ia-check_disjoint_monomer.cpp, staged once |
+| 16 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/face_orbit_coverage.jsonl` | regenerable checker output (a4 face audit; equal mod CRLF at intake; §9 R2) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_core_correction_audit.json` | byte-identical to data/16-degree-four-ia-a4-global_gap3_coreE_batch3_receipt.json, staged once |
+| 16 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_template26_receipt.json` | byte-identical to data/16-degree-four-ia-a4-global_binomial_square_audit.json, staged once |
+| 16 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/two-attachment/representatives.tsv` | regenerable full-mode input (prepare_representatives.py; equal mod CRLF at intake; §9 R2) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_0.json` | proof data > 2 MB (4975110 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_19.json` | proof data > 2 MB (8522028 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/medium-faces/certificates_checkpoint2.jsonl` | proof data > 2 MB (6396304 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/medium-faces/normalized_faces.jsonl` | proof data > 2 MB (4929616 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/pendant10_coefficients.csv` | kernel data, 10.1 MB, byte-regenerated by recount_hall.cpp in full mode (not rerun); retrieve from f8c3a392a part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/face_aliases.json` | proof data > 2 MB (5294853 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/gap2_unresolved_faces.jsonl` | proof data > 2 MB (4574929 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 17 | `ASSEMBLY.txt` | four-part assembly note of the delivery |
+| 17 | `MANIFEST.json` | checksum ledger (sha256 of every file), verified at intake (266/266, 260/260), retired |
+| 17 | `README.md` | delivery README; provenance goes into the report README |
+| 17 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 17 | `reproducibility/dependencies/bipartite-rank-four.zip` | embedded exact copy of C1 archive 26 matching-rank-four-package.zip (blob a664be1fc); staged by C1 |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/TWO_BY_TWO_ROLE_COVER_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ic-ia-TWO_BY_TWO_ROLE_COVER_INDEPENDENT_AUDIT.md, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/check_disjoint_rayleigh_aggregate.py` | byte-identical to code/20-role-cover-proofs-ic-ia-check_disjoint_rayleigh_aggregate.py, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/star_core_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ic-ia-star_core_audit_receipt.json, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/BALANCED_REAL_ROOTEDNESS_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ia-BALANCED_REAL_ROOTEDNESS_INDEPENDENT_AUDIT.md, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/balanced_real_rootedness_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ia-balanced_real_rootedness_audit_receipt.json, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/check_missing_edge_monomer.cpp` | byte-identical to code/20-role-cover-proofs-ia-check_missing_edge_monomer.cpp, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/check_star_monomer.cpp` | byte-identical to code/20-role-cover-proofs-ia-check_star_monomer.cpp, staged once |
+| 17 | `reproducibility/sources/preorder-gamma-degree3/GALLAI_EDMONDS_REDUCTION.md` | byte-identical to 22-independent-role-proofs-gallai-edmonds-GALLAI_EDMONDS_REDUCTION.md, staged once |
+| 17 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/positivity_coverage.jsonl` | regenerable checker output (a3 positivity audit; §9 R2) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/a4_gaps.jsonl` | proof data > 2 MB (3909211 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/face_orbits.json` | proof data > 2 MB (2671015 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/medium-faces/source_faces.jsonl` | proof data > 2 MB (5043294 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/a3_unique_gamma.jsonl` | proof data > 2 MB (3694204 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/normalized_faces.jsonl` | regenerable: byte-identical expansion of a3 certificates.jsonl (reproduced whole, §9 R2) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/a2_polynomials.jsonl` | kernel data from shipped enumerate.cpp, 20.7 MB (byte regeneration not verified); retrieve from f8c3a392a part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/canonical.inc` | byte-identical to code/16-degree-four-a3-canonical.inc, staged once |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_sos_certificates.jsonl` | proof data > 2 MB (8113421 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 18 | `ASSEMBLY.txt` | four-part assembly note of the delivery |
+| 18 | `README.md` | delivery README; provenance goes into the report README |
+| 18 | `article/preorder-degree-four.pdf` | PDF; survives in f8c3a392a |
+| 18 | `reproducibility/MANIFEST.json` | checksum ledger (sha256 of every file), verified at intake (266/266, 260/260), retired |
+| 18 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/ONE_MISSING_EDGE_REAL_ROOTEDNESS.md` | byte-identical to 20-role-cover-proofs-ic-ONE_MISSING_EDGE_REAL_ROOTEDNESS.md, staged once |
+| 18 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/TWO_BY_TWO_ROLE_COVER_THEOREM.md` | byte-identical to 20-role-cover-proofs-ic-TWO_BY_TWO_ROLE_COVER_THEOREM.md, staged once |
+| 18 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/DISJOINT_CORE_EDGES_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ic-ia-DISJOINT_CORE_EDGES_INDEPENDENT_AUDIT.md, staged once |
+| 18 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/STAR_CORE_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ic-ia-STAR_CORE_INDEPENDENT_AUDIT.md, staged once |
+| 18 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/representatives.txt` | regenerable full-mode input (prepare.py; equal mod CRLF at intake; §9 R2) |
+| 18 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/two-attachment/audited_canonical.inc` | byte-identical to code/16-degree-four-a3-canonical.inc, staged once |
+| 18 | `reproducibility/sources/preorder-gamma-degree4/audit-positivity-independent/coverage_ledger.jsonl` | regenerable checker output (a2 positivity audit, verify.py fast mode; §9 R2) |
+| 18 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/certificates.jsonl` | proof-carrying a=3 SOS certificates, 93.7 MB, LP-found, not regenerable; FLAG: too large to stage; retrieve from f8c3a392a part-2-of-4.zip (§9 R1) |
+| 19 | `ASSEMBLY.txt` | four-part assembly note of the delivery |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/DISJOINT_CORE_EDGES_REAL_ROOTEDNESS.md` | byte-identical to 20-role-cover-proofs-ic-DISJOINT_CORE_EDGES_REAL_ROOTEDNESS.md, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/STAR_CORE_REAL_ROOTEDNESS.md` | byte-identical to 20-role-cover-proofs-ic-STAR_CORE_REAL_ROOTEDNESS.md, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/ONE_MISSING_EDGE_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ic-ia-ONE_MISSING_EDGE_INDEPENDENT_AUDIT.md, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/check_rayleigh_aggregate.py` | byte-identical to code/20-role-cover-proofs-ic-ia-check_rayleigh_aggregate.py, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/one_missing_edge_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ic-ia-one_missing_edge_audit_receipt.json, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/two_by_two_role_cover_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ic-ia-two_by_two_role_cover_audit_receipt.json, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/check_full_monomer.cpp` | byte-identical to code/20-role-cover-proofs-ia-check_full_monomer.cpp, staged once |
+| 19 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/representatives.txt` | regenerable full-mode input (prepare.py; equal mod CRLF at intake; §9 R2) |
+| 19 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_26.json` | template-26 last-gap certificate, 29.4 MB; replaced in the report by archive 23's smaller route; original retrievable from f8c3a392a part-1-of-4.zip (§9 R1) |
+| 19 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/a3_polynomials.jsonl` | proof data > 2 MB (4717383 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-1-of-4.zip (§9 R1) |
+| 19 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_sos_aliases.json` | proof data > 2 MB (2970747 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-1-of-4.zip (§9 R1) |
+| 20 | `README.md` | delivery README; provenance goes into the report README |
+| 20 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 20 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 20 | `proofs/independent-audit/check_full_monomer_sanitized.log` | byte-identical to data/20-role-cover-proofs-ia-check_full_monomer.log, staged once |
+| 20 | `proofs/independent-audit/check_full_monomer_sanitized.stderr` | empty file |
+| 20 | `role-cover.pdf` | PDF; survives in f8c3a392a |
+| 20 | `role-cover.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 22 | `README.txt` | delivery README; provenance goes into the report README |
+| 22 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 22 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 22 | `checker/role-cover-package.zip` | embedded exact copy of archive 20 (staged as files from 20) |
+| 22 | `independent-role-degree-three.pdf` | PDF; survives in f8c3a392a |
+| 22 | `independent-role-degree-three.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 22 | `proofs/role-cover.pdf` | embedded exact copy of archive 20's PDF |
+| 22 | `proofs/role-cover.tex` | embedded exact copy of archive 20's manuscript |
+| 22 | `qa/build-output.txt` | LaTeX build log of the unshipped delivered PDF |
+| 23 | `README.md` | delivery README; provenance goes into the report README |
+| 23 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 23 | `article/template26-last-gap.pdf` | PDF; survives in f8c3a392a |
+| 23 | `article/template26-last-gap.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 23 | `dependencies/weighted-degree-three-package.zip` | embedded exact copy of archive 31 (superseded by 22; §D D5) |
+| 23 | `sources/preorder-gamma-degree4/four-attachment/a4_polynomials.jsonl` | byte-identical to data/16-degree-four-a4-a4_polynomials.jsonl, staged once |
+| 25 | `README.md` | delivery README; provenance goes into the report README |
+| 25 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 25 | `article/preorder-gamma-degree-three.pdf` | PDF; survives in f8c3a392a |
+| 25 | `article/preorder-gamma-degree-three.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 25 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 25 | `code/minimum/independent-audit/a1_pairs.csv` | byte-identical to data/25-degree-three-code-minimum-a1_min_size_pairs.csv, staged once |
+| 25 | `code/one-attachment/pairs.csv` | byte-identical to data/25-degree-three-code-minimum-a1_min_size_pairs.csv, staged once |
+| 25 | `requirements.txt` | byte-identical to data/15-pendant-support-requirements.txt, staged once |
+| 34 | `README.md` | delivery README; provenance goes into the report README |
+| 34 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 34 | `article/build-pass1.log` | LaTeX build log of the unshipped delivered PDF |
+| 34 | `article/build-pass2.log` | LaTeX build log of the unshipped delivered PDF |
+| 34 | `article/universal-sink-five-core.pdf` | PDF; survives in f8c3a392a |
+| 34 | `article/universal-sink-five-core.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 34 | `audits/certificate-manifest.json` | regenerable output of proof-check/check.py (JSON-equal at intake; §9 R2) |
+| 34 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 34 | `qa/page-1.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-2.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-3.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-4.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-5.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-6.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+
+## Third-party data: Kummer–Sert notice
+
+`data/22-independent-role-checker-role-degree-three-audit-package.zip`
+contains, four times and unmodified, the file `n9r4Hpp.txt` (523,875 bytes,
+SHA-256 `a3c7a6eaebe02ef50998710282542be2751b218a6713853cdd2eecadbe1f1f86`,
+MD5 `c73d80267112a960df5485f159ab56e0`, equal to the publisher's), the
+certified-positive list of rank-four nine-element matroids with the
+half-plane property of
+
+> Mario Kummer and Büşra Sert, supplementary data to *Matroids on Eight
+> Elements with the Half-plane Property and Related Concepts*, Zenodo,
+> doi:[10.5281/zenodo.6108027](https://doi.org/10.5281/zenodo.6108027),
+> licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+It is redistributed here unmodified, as delivered, at these member paths:
+
+```
+complete-hybrid-audit-package.zip!/dependencies/one_tail_published_nine_side/n9r4Hpp.txt
+complete-hybrid-audit-package.zip!/dependencies/one_tail_published_nine_side/nine-side-matroid-audit-package.zip!/n9r4Hpp.txt
+complete-hybrid-audit-package.zip!/dependencies/side1565_all_real_rayleigh/side1565-final-case-audit-package.zip!/proper-minors-audit-package.zip!/n9r4Hpp.txt
+complete-hybrid-audit-package.zip!/dependencies/side1565_all_real_rayleigh/side1565-final-case-audit-package.zip!/proper-minors-audit-package.zip!/published-list-dependency.zip!/n9r4Hpp.txt
+```
+
+The delivered package attributes the file (source 22's bibliography and its
+audit records) but states no licence; this notice supplies it. The rest
+of the report is MIT-0 like the repository.
+
+## Delivery names and discrepancies
+
+- **Delivered paths in shipped files.** All shipped code, receipts, audits
+  and proof notes use their delivered paths (for example
+  `reproducibility/sources/…`, `code/two-attachment/…`,
+  `checker/role-cover-package.zip`), and many receipts record SHA-256
+  values of package files; they are kept byte for byte. The checkers
+  address files by the delivered layout, so they run only in the
+  reconstructed packages.
+- **Absolute container paths.** Forty-five shipped files of source 16,
+  eight of source 23, source 20's `verify.py` and three of its receipts,
+  and source 06's `audits/four-active-compression.json` record paths such as
+  `/workspace/shared/…` or `/tmp/degree4-independent-package-O4TFzS`; the
+  delivered wrappers map the `/workspace/shared` prefix. The unshipped
+  `build.sh` files and LaTeX build logs refer to
+  `/tmp/hamiltonian-rank-build` and `/usr/share/texlive`.
+- **Files named but not delivered.** Source 16's notes and checkers name
+  files that were never delivered, among them `degree4_certificates.zip`
+  (patched out by its `verify.py`), `classify_quartics.py`,
+  `certify_quartics.py`, `certify_exceptions.py`, `finish_exception.py`,
+  `exhaust8.cpp`, `exhaust8.log`, `verify_supports.py`,
+  `exhaust9_canonical.cpp`, `audit_canonical.cpp`, `hall_recount.log`,
+  `hall_pairs.csv`, `exhaust10_regenerated.log`, `recount.log`,
+  `verify_certificates.log`, the producers of the normalized face and
+  alias tables, and `sparse_squares_degree4/6.jsonl`; source 10's checker
+  mentions the producer's `all-cloud-cubic` directory. These are producer
+  traces; no shipped proof step reads them.
+- **Historical receipts.** Source 16's
+  `package_fast_replay_71_coverage.json` ("full a4 positivity remains
+  open"), `face_orbit_audit.json`, `article_scope_audit_provisional.json`
+  and `global_binomial_square_audit.json` (the template-26-only output of
+  the checker) are checkpoint receipts superseded by the final coverage;
+  the delivered wrapper deletes historical receipts before a replay.
+  Source 23's `audits/integration_approval.json` says "this is not a final
+  ZIP approval" (its release boundary was pending). Source 22 notes that
+  some provenance notes keep draft-status wording. Source 34's
+  `ORDINARY_PROOFS.md` line 13 ("No claim that this reduced polynomial is
+  always nonnegative is made by this note") predates the certificates that
+  prove it (dated note in Part III).
+- **CRLF.** Source 25's `data/25-degree-three-code-a1-quadratic_certificates.csv`
+  has CRLF line endings throughout, as delivered (`csv.writer` without
+  `newline=''`); a `-text` line in `SetTheory/Cardinals/.gitattributes`
+  keeps its bytes. All other shipped text files are LF.
+- **Byte copies shipped once.** Files delivered in several packages are
+  shipped under the first owner's prefix: source 16's 24 role-cover files
+  under `20-role-cover-`, its `GALLAI_EDMONDS_REDUCTION.md` under
+  `22-independent-role-`, its `a4_polynomials.jsonl` once (source 23's copy
+  not shipped), source 23's two files of archive 31 under
+  `23-template26-`, and the shared discovery files and catalogues of
+  sources 34 and 06 under `34-five-core-`. Embedded exact copies of whole
+  packages (source 25 and manuscript 26 inside source 16, source 20 inside
+  source 22 and archive 31, archive 31 inside source 23, source 12 inside
+  source 11) are not shipped.
+- **Corrections in the text.** Source 20's appendix has "labels0,1" for
+  "labels $0,1$" (corrected as in source 16). Source 16 lists the authors of
+  arXiv:2605.26916 as "Chapoton and Athanasiadis", source 25 as
+  "Athanasiadis and Chapoton"; the bibliography uses the latter and notes
+  the former. Source 16's citation of "the previously established weighted
+  bipartite rank-at-most-four theorem" is supplemented by the stronger
+  `mrn:w:rf:cor:rankfive`.
+- **Credits.** The PDF metadata of sources 11, 12, 15, 16, 20, 22 and 25
+  credits OpenAI; their visible title pages do not. Source 23 has no author
+  line.
