@@ -5,6 +5,7 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{microtype,booktabs,longtable,array,graphicx}
 \usepackage{enumitem,fancyhdr}
+\usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \hypersetup{pdftitle={Spectral Collisions and Boundary Asymptotics for Zig-zag Eulerian Numbers},
@@ -86,7 +87,7 @@ search is not an exhaustive priority certification.
 \newpage
 
 \section{The problem and the contribution}
-\label{sec:intro}
+\label{zz:sec:intro}
 The zig-zag Eulerian triangle is a particularly suitable OEIS research target:
 it combines a concrete permutation statistic, rational generating functions,
 explicit matrix spectra, and a genuine outstanding shape conjecture.
@@ -129,26 +130,26 @@ All polynomial greatest common divisors and least common multiples are
 normalized to have constant coefficient~$1$.
 
 \begin{theorem}[Main algebraic result]
-\label{thm:main-alg}
+\label{zz:thm:main-alg}
 For every $k\ge0$, the reduced denominator of
 $C_k(x)=\sum_{i\ge0}M_{i,k}x^i$ is exactly
-\begin{equation}\label{eq:main-lcm}
+\begin{equation}\label{zz:eq:main-lcm}
  R_k(x)=\lcm_{1\le m\le k+1}D_m(x)^{k+2-m}.
 \end{equation}
 Its degree $r_k$ is the minimum possible order of a homogeneous
 constant-coefficient recurrence, even when the recurrence is required only
 eventually.  An explicit totient formula is given in
-\cref{thm:degree}; in particular,
-\begin{equation}\label{eq:main-order}
+\cref{zz:thm:degree}; in particular,
+\begin{equation}\label{zz:eq:main-order}
  r_k=\frac{40}{27\pi^2}(k+1)^3+O\bigl((k+1)^2\log(k+2)\bigr).
 \end{equation}
 For $k\ge1$, the reduced numerator has degree $r_k-k-3$.
 \end{theorem}
 
 \begin{theorem}[Main analytic results]
-\label{thm:main-analysis}
+\label{zz:thm:main-analysis}
 Put
-\begin{equation}\label{eq:rho-alpha-intro}
+\begin{equation}\label{zz:eq:rho-alpha-intro}
  t_m=\frac{\pi}{4m+2},\qquad
  \rho_m=\frac{1}{2\sin t_m},\qquad
  \alpha_m=\frac{4\rho_m\cos^2t_m}{2m+1}.
@@ -159,12 +160,12 @@ Then:
 $z(n,k)\sim\alpha_{k+1}\rho_{k+1}^{\,n}$ uniformly over
 $0\le k$ with $k+1\le c n/\log n$.
 \item If $n/(k+3/2)-\log n\to s\in\R$, then
-\begin{equation}\label{eq:main-crossover}
+\begin{equation}\label{zz:eq:main-crossover}
  \frac{z(n,k)}{\alpha_{k+1}\rho_{k+1}^{\,n}}
  \longrightarrow \exp(-e^{-s}).
 \end{equation}
 \item For every fixed $0<c<1/2$, all sufficiently large $n$ satisfy
-\begin{equation}\label{eq:main-lc}
+\begin{equation}\label{zz:eq:main-lc}
  z(n,k)^2>z(n,k-1)z(n,k+1)
  \quad\text{whenever}\quad 1\le k,\quad k+2\le\frac{cn}{\log n}.
 \end{equation}
@@ -187,8 +188,20 @@ and the Python certificates do not masquerade as kernel-checked proofs.
 The contribution is standalone and ready for review or later formalization,
 not a claim that the repository already contains these results.
 
+\emph{[Write note, batch 73O2, 1 October 2026.]} This manuscript is
+placed in ProveIt as the report \texttt{a205497-zigzag-eulerian-spectra}
+(Section~\ref{zz:sec:provenance}). The repository contains no other work on
+A205497 or on fence linear extensions. Its volume \emph{Combinatorial
+Transseries and Their Inverses} \cite{cti} treats two related but different
+objects: the Euler zigzag numbers A000111 (its chapter \texttt{ct:ch:zigzag} on
+alternating permutations), which are the row sums $\sum_kz(n,k)$ of A205497, and the
+columns of the classical Eulerian triangle A008292 (its proposition
+\texttt{t1:prop:eulerian}). A205497 is the descent refinement of the linear
+extensions of the fence, not either of those; nothing here depends on, or
+is implied by, that volume.
+
 \section{Definitions and the order-polynomial bridge}
-\label{sec:definitions}
+\label{zz:sec:definitions}
 Let $P_n$ be the fence poset with underlying vertices
 $v_1,\ldots,v_n$ and relations
 \[
@@ -203,7 +216,7 @@ let $\des$ be its number of adjacent descents.  Define
 For $n=0$ set $A_0(t)=1$.  This convention also gives
 $A_1(t)=A_2(t)=1$.  For $n\ge2$, the degree is $n-2$, and the established
 symmetry is
-\begin{equation}\label{eq:symmetry}
+\begin{equation}\label{zz:eq:symmetry}
  z(n,k)=z(n,n-2-k).
 \end{equation}
 We use this known symmetry only to transfer left-edge statements to the
@@ -215,17 +228,18 @@ For $m\ge1$, let $\Om_n(m)$ count words $a_1\cdots a_n$ over $[m]$ with
  a_1\le a_2\ge a_3\le a_4\ge\cdots.
 \]
 Set $\Om_0(m)=1$.  These are precisely the order-preserving maps
-$P_n\to[m]$.
+$P_n\to[m]$.  (The array of these counts is OEIS A050446 \cite{oeis50446},
+up to the indexing conventions reconciled in \cite{pz,xz}.)
 \end{definition}
 
 \begin{proposition}[Order-polynomial identity]
-\label{prop:p-partitions}
+\label{zz:prop:p-partitions}
 For every $n\ge0$,
-\begin{equation}\label{eq:p-partition}
+\begin{equation}\label{zz:eq:p-partition}
  \frac{tA_n(t)}{(1-t)^{n+1}}=\sum_{m\ge1}\Om_n(m)t^m.
 \end{equation}
 Consequently, for every $k\ge0$,
-\begin{equation}\label{eq:extraction}
+\begin{equation}\label{zz:eq:extraction}
  z(n,k)=\sum_{j=0}^{k}(-1)^j\binom{n+1}{j}\Om_n(k+1-j),
 \end{equation}
 where $\binom{n+1}{j}=0$ for $j>n+1$.
@@ -239,9 +253,9 @@ Subtracting the number of preceding compulsory increases gives
 $\binom{m+n-1-d}{n}$ possibilities, interpreted as zero when $m\le d$.
 The generating function of these numbers over $m\ge1$ is
 $t^{d+1}/(1-t)^{n+1}$.  Summing over extensions proves
-\eqref{eq:p-partition}.  The case $n=0$ follows from the geometric series.
+\eqref{zz:eq:p-partition}.  The case $n=0$ follows from the geometric series.
 Multiplication by $(1-t)^{n+1}$ and coefficient extraction prove
-\eqref{eq:extraction}.
+\eqref{zz:eq:extraction}.
 \end{proof}
 
 This is the standard $P$-partition mechanism; its use for this triangle and
@@ -266,12 +280,12 @@ $n$ & $(z(n,0),z(n,1),\ldots)$\\
 \end{tabular}
 \end{center}
 The indexing distinction is essential:
-\begin{equation}\label{eq:indexing}
+\begin{equation}\label{zz:eq:indexing}
  M_{i,k}=z(i+k+2,k),\qquad
  C_k(x)=\sum_{i\ge0}z(i+k+2,k)x^i.
 \end{equation}
 If $B_k(x)=\sum_{n\ge0}z(n,k)x^n$, then
-\begin{equation}\label{eq:shift}
+\begin{equation}\label{zz:eq:shift}
  C_k(x)=x^{-k-2}B_k(x)\quad(k\ge1),\qquad
  C_0(x)=B_0(x)=\frac1{1-x}.
 \end{equation}
@@ -279,15 +293,15 @@ For $k\ge1$, all the apparently negative powers in the first expression
 vanish.  The separate $k=0$ formula prevents a spurious boundary error.
 
 \section{A complete spectral expansion}
-\label{sec:spectrum}
+\label{zz:sec:spectrum}
 The spectrum of the unit-primitive matrix is known; see \cite{xz}.
 We give a proof including the endpoint weights needed for uniform estimates
 and for excluding pole cancellation.
 
 \begin{lemma}[The walk model]
-\label{lem:walk}
+\label{zz:lem:walk}
 For $n\ge1$,
-\begin{equation}\label{eq:walk}
+\begin{equation}\label{zz:eq:walk}
  \Om_n(m)=\one^T H_m^{n-1}\one.
 \end{equation}
 Moreover, $H_m$ is invertible,
@@ -297,7 +311,7 @@ $H_m^{-1}\one=e_m$, and $(H_m^2)_{ij}=\min(i,j)$.
 Reflect each odd-position letter of a weak alternating word:
 $b_i=m+1-a_i$ for odd $i$, and $b_i=a_i$ for even $i$.
 Every adjacent inequality becomes $b_i+b_{i+1}\ge m+1$.
-Thus the transformed word is a walk counted by \eqref{eq:walk}.
+Thus the transformed word is a walk counted by \eqref{zz:eq:walk}.
 Let $L$ be the lower-triangular all-ones matrix and $J$ the reversal matrix.
 Then $H_m=LJ$, so $\det H_m=\det J=\pm1$.
 The last column of $H_m$ is $\one$, giving $H_m^{-1}\one=e_m$.
@@ -306,7 +320,7 @@ $r\ge\max(m+1-i,m+1-j)$, of which there are $\min(i,j)$.
 \end{proof}
 
 \begin{theorem}[Spectrum with nonzero weights]
-\label{thm:spectral}
+\label{zz:thm:spectral}
 For $1\le r\le m$, put
 \[
  \theta_{m,r}=\frac{(2r-1)\pi}{2m+1},\qquad
@@ -315,12 +329,12 @@ For $1\le r\le m$, put
 \]
 The $\lambda_{m,r}$ are the distinct eigenvalues of $H_m$ and are arranged in
 strictly decreasing absolute value.  Every $c_{m,r}$ is nonzero, and
-\begin{equation}\label{eq:full-spectrum}
+\begin{equation}\label{zz:eq:full-spectrum}
  \Om_n(m)=\sum_{r=1}^m c_{m,r}\lambda_{m,r}^{\,n}
  \quad(n\ge0).
 \end{equation}
 Furthermore,
-\begin{equation}\label{eq:weight-sums}
+\begin{equation}\label{zz:eq:weight-sums}
  \sum_r c_{m,r}=1,\qquad \sum_r\frac{c_{m,r}}{\lambda_{m,r}}=1.
 \end{equation}
 \end{theorem}
@@ -348,7 +362,7 @@ Also,
 \]
 For example, the last identity follows by summing the nontrivial
 $(2m+1)$st roots of unity in symmetric pairs.
-Orthogonal spectral decomposition of \eqref{eq:walk} now gives
+Orthogonal spectral decomposition of \eqref{zz:eq:walk} now gives
 \[
  \one^TH_m^{n-1}\one
  =\sum_r\frac{(\one^Tv_r)^2}{\|v_r\|^2}\lambda_{m,r}^{n-1},
@@ -358,27 +372,27 @@ Invertibility permits the same expression at $n=0$, because
 $\one^TH_m^{-1}\one=\one^Te_m=1$.
 Likewise,
 $\one^TH_m^{-2}\one=\|H_m^{-1}\one\|^2=1$, proving the second
-identity in \eqref{eq:weight-sums}.  Nonvanishing and the ordering of absolute
+identity in \eqref{zz:eq:weight-sums}.  Nonvanishing and the ordering of absolute
 values follow directly from the trigonometric expressions.
 \end{proof}
 
 The Perron eigenvalue and its coefficient are
 $\lambda_{m,1}=\rho_m$ and $c_{m,1}=\alpha_m$ as in
-\eqref{eq:rho-alpha-intro}.
+\eqref{zz:eq:rho-alpha-intro}.
 For $F_m(x)=\sum_{n\ge0}\Om_n(m)x^n$, the theorem gives
-\begin{equation}\label{eq:F-spectrum}
+\begin{equation}\label{zz:eq:F-spectrum}
  F_m(x)=\sum_{r=1}^m\frac{c_{m,r}}{1-\lambda_{m,r}x}.
 \end{equation}
 Every pole is present, so its reduced denominator is $D_m$.
-The numerator has degree $m-1$, and \eqref{eq:weight-sums} gives
-\begin{equation}\label{eq:F-infinity}
+The numerator has degree $m-1$, and \eqref{zz:eq:weight-sums} gives
+\begin{equation}\label{zz:eq:F-infinity}
  F_m(x)=-x^{-1}+O(x^{-2})\qquad(x\to\infty).
 \end{equation}
 
 For efficient exact computation we also use the established identity
 $F_m(x)=1/(F_{m-1}(-x)-x)$, $m\ge2$ \cite[Theorem~3.15]{pz}.
 Combined with the pole count above, induction yields
-\begin{equation}\label{eq:D-recurrence}
+\begin{equation}\label{zz:eq:D-recurrence}
  D_0=1,\quad D_1=1-x,\quad
  D_m(x)=D_{m-2}(x)-xD_{m-1}(-x),\qquad
  F_m(x)=\frac{D_{m-1}(-x)}{D_m(x)}.
@@ -387,13 +401,13 @@ There can be no canceled factor in this induction, since the reduced
 denominator already has degree~$m$.
 
 \section{Exact column formulas and minimality}
-\label{sec:minimal}
-Combining \eqref{eq:extraction} and \eqref{eq:full-spectrum} gives an exact,
+\label{zz:sec:minimal}
+Combining \eqref{zz:eq:extraction} and \eqref{zz:eq:full-spectrum} gives an exact,
 finite expression rather than only an asymptotic expansion.
 \begin{proposition}[Exponential-polynomial expression]
-\label{prop:exp-poly}
+\label{zz:prop:exp-poly}
 For $n,k\ge0$,
-\begin{equation}\label{eq:exp-poly}
+\begin{equation}\label{zz:eq:exp-poly}
  z(n,k)=\sum_{m=1}^{k+1}\sum_{r=1}^m
  (-1)^{k+1-m}c_{m,r}
  \binom{n+1}{k+1-m}\lambda_{m,r}^{\,n}.
@@ -405,40 +419,40 @@ eigenvalue may occur at several sizes, but the polynomial multipliers then
 have \emph{different degrees}.
 
 For $j\ge0$ define
-\begin{equation}\label{eq:Psi}
+\begin{equation}\label{zz:eq:Psi}
  \Psi_0(u)=\frac1{1-u},\qquad
  \Psi_j(u)=\frac{u^{j-1}}{(1-u)^{j+1}}\quad(j\ge1).
 \end{equation}
 The binomial-series identity
 $\sum_{n\ge0}\binom{n+1}{j}u^n=\Psi_j(u)$ gives
-\begin{equation}\label{eq:B-explicit}
+\begin{equation}\label{zz:eq:B-explicit}
  B_k(x)=\sum_{m=1}^{k+1}\sum_{r=1}^m
  (-1)^{k+1-m}c_{m,r}\Psi_{k+1-m}(\lambda_{m,r}x).
 \end{equation}
 Alternatively, setting $\vartheta=x\,d/dx$,
-\begin{equation}\label{eq:B-differential}
+\begin{equation}\label{zz:eq:B-differential}
  B_k(x)=\sum_{j=0}^k(-1)^j\binom{\vartheta+1}{j}F_{k+1-j}(x).
 \end{equation}
 The operator binomial is a polynomial in $\vartheta$, divided by $j!$.
 Both identities hold as formal rational identities.
 
-\begin{proof}[Proof of the exact-denominator assertion in \cref{thm:main-alg}]
+\begin{proof}[Proof of the exact-denominator assertion in \cref{zz:thm:main-alg}]
 Fix an eigenvalue $\lambda$ occurring among sizes $1,\ldots,k+1$.
-In \eqref{eq:B-explicit}, its occurrence at size $m$ has a pole of order
+In \eqref{zz:eq:B-explicit}, its occurrence at size $m$ has a pole of order
 $j+1=k+2-m$ at $x=1/\lambda$.
 The numerator of $\Psi_j$ is $1$ at that point, and the coefficient $c_{m,r}$
 is nonzero.  Within one size, all eigenvalues are distinct.
 Among all sizes sharing $\lambda$, the smallest size $m_0$ therefore
 contributes a \emph{unique} highest-order pole.  Lower-order terms cannot
 cancel it.  Its order is exactly $k+2-m_0$, the maximum of the exponents
-assigned to that root by the factors in \eqref{eq:main-lcm}.
+assigned to that root by the factors in \eqref{zz:eq:main-lcm}.
 This proves the denominator formula for $B_k$.  For $k\ge1$, multiplication
 by $x^{-k-2}$ neither removes nor changes any nonzero pole, and the origin is
-removable by \eqref{eq:shift}.  The $k=0$ case is direct.
+removable by \eqref{zz:eq:shift}.  The $k=0$ case is direct.
 \end{proof}
 
 \begin{lemma}[Denominators and recurrence order]
-\label{lem:rec-order}
+\label{zz:lem:rec-order}
 Let $C(x)=N(x)/R(x)$ with $N,R\in\Q[x]$, $R(0)=1$,
 $\gcd(N,R)=1$, and $\deg N<\deg R=r$.
 Then the coefficient sequence satisfies a recurrence of order~$r$.
@@ -456,23 +470,23 @@ $Q$.  This latter argument also covers complex recurrence coefficients.
 \end{proof}
 
 \begin{proposition}[Numerator degree]
-\label{prop:numdegree}
+\label{zz:prop:numdegree}
 Let
 \[
  \mathcal P_k(x)=\prod_{m=1}^{k+1}D_m(x)^{k+2-m}.
 \]
 For $k\ge1$, writing $C_k=N_k/R_k=G_k/\mathcal P_k$, one has
 \begin{align}
- \deg N_k&=r_k-k-3,\label{eq:reduced-num}\\
+ \deg N_k&=r_k-k-3,\label{zz:eq:reduced-num}\\
  \deg G_k&=\binom{k+3}{3}-k-3
-          =\frac{(k-1)(k+3)(k+4)}6.\label{eq:old-num}
+          =\frac{(k-1)(k+3)(k+4)}6.\label{zz:eq:old-num}
 \end{align}
 Moreover, $C_k(x)=-x^{-k-3}+O(x^{-k-4})$ at infinity.
 \end{proposition}
 \begin{proof}
-In \eqref{eq:B-explicit}, all terms with $j\ge1$ are $O(x^{-2})$ at infinity.
+In \eqref{zz:eq:B-explicit}, all terms with $j\ge1$ are $O(x^{-2})$ at infinity.
 The $j=0$ terms form $F_{k+1}(x)$, which is $-x^{-1}+O(x^{-2})$ by
-\eqref{eq:F-infinity}.  Use \eqref{eq:shift}.  The asserted degrees follow
+\eqref{zz:eq:F-infinity}.  Use \eqref{zz:eq:shift}.  The asserted degrees follow
 from the nonzero leading Laurent coefficient and
 $\deg\mathcal P_k=\sum_{m=1}^{k+1}m(k+2-m)=\binom{k+3}{3}$.
 \end{proof}
@@ -480,10 +494,10 @@ The unreduced degree formula is already in \cite{xz}; its reduced counterpart
 now follows from exact minimality.
 
 \section{All spectral collisions and the order formula}
-\label{sec:collisions}
+\label{zz:sec:collisions}
 \subsection{A greatest-common-divisor theorem}
 The reciprocal eigenvalues have the especially useful description
-\begin{equation}\label{eq:roots-D}
+\begin{equation}\label{zz:eq:roots-D}
  \{x:D_m(x)=0\}
  =\left\{(-1)^m2\cos\frac{2\pi j}{2m+1}:1\le j\le m\right\}.
 \end{equation}
@@ -494,23 +508,23 @@ For even $\ell$ use $j=\ell/2$; for odd $\ell$ use
 $j=(2m+1-\ell)/2$.  These indices exhaust $1,\ldots,m$.
 
 \begin{theorem}[Complete collision classification]
-\label{thm:gcd}
+\label{zz:thm:gcd}
 If $m,n\ge1$ have opposite parity, then $\gcd(D_m,D_n)=1$.
 If they have the same parity, put
 \[
  g=\gcd(2m+1,2n+1),\qquad r=(g-1)/2.
 \]
 Then
-\begin{equation}\label{eq:gcd}
+\begin{equation}\label{zz:eq:gcd}
  \gcd(D_m(x),D_n(x))=D_r\bigl((-1)^{m-r}x\bigr).
 \end{equation}
 \end{theorem}
 \begin{proof}
-All angles in \eqref{eq:roots-D} lie strictly between $0$ and $\pi$.
+All angles in \eqref{zz:eq:roots-D} lie strictly between $0$ and $\pi$.
 For the same sign, equality of cosines is therefore equality of angles.
 Common fractions $j/(2m+1)=\ell/(2n+1)$ are exactly $a/g$,
 $1\le a\le(g-1)/2$.  Their roots have sign $(-1)^m$,
-which is the root set of the right side of \eqref{eq:gcd}.
+which is the root set of the right side of \eqref{zz:eq:gcd}.
 All roots are simple and both polynomials have constant term~$1$.
 For opposite signs, equality would instead require the two angles to sum
 to $\pi$.  That gives
@@ -527,14 +541,14 @@ For an odd integer $d\ge3$, let
 \]
 This is the real cyclotomic polynomial, of degree $\varphi(d)/2$.
 For $\eps\in\{1,-1\}$ define
-\begin{equation}\label{eq:Qfactor}
+\begin{equation}\label{zz:eq:Qfactor}
  Q_{d,\eps}(x)=\frac{\mathcal C_d(\eps x)}{\mathcal C_d(0)},\qquad
  \sigma_d=(-1)^{(d-1)/2}.
 \end{equation}
 The factors are normalized to have constant term~$1$.
 
 \begin{lemma}
-\label{lem:cyclotomic}
+\label{zz:lem:cyclotomic}
 The $Q_{d,\eps}$ lie in $\Z[x]$, are irreducible over $\Q$, and are pairwise
 coprime as $(d,\eps)$ varies.  The first occurrence of
 $Q_{d,\sigma_d}$ among the $D_m$ is at $m=(d-1)/2$;
@@ -552,12 +566,12 @@ For completeness, this last identity follows from
 $\Phi_d(-x)=\Phi_{2d}(x)$ and the elementary evaluation
 $\Phi_N(1)=1$ when $N>1$ is not a prime power; that evaluation follows
 inductively from $N=\prod_{e\mid N,e>1}\Phi_e(1)$.
-Thus normalization in \eqref{eq:Qfactor} preserves integral coefficients
+Thus normalization in \eqref{zz:eq:Qfactor} preserves integral coefficients
 and irreducibility.
 
 Distinct primitive odd denominators cannot give the same positive-sign
 cosine: the corresponding reduced fractions would coincide.  Opposite signs
-cannot coincide by the parity argument in \cref{thm:gcd}.
+cannot coincide by the parity argument in \cref{zz:thm:gcd}.
 To locate a factor in $D_m$, write $2m+1=\ell d$ with $\ell$ odd.
 Then
 \[
@@ -569,9 +583,9 @@ $\ell=3$, proving the claim.
 \end{proof}
 
 \begin{theorem}[Factorization of the minimal denominator]
-\label{thm:factorization}
+\label{zz:thm:factorization}
 Put $M=k+1$.  Then
-\begin{align}\label{eq:Rfactor}
+\begin{align}\label{zz:eq:Rfactor}
  R_k(x)={}&
  \prod_{\substack{d\ge3\ \mathrm{odd}\\d\le2M+1}}
  Q_{d,\sigma_d}(x)^{M+1-(d-1)/2}\notag\\[-1mm]
@@ -583,13 +597,13 @@ Put $M=k+1$.  Then
 \begin{proof}
 The exponent of a factor in the least common multiple is the exponent at its
 first occurrence, because $M+1-m$ strictly decreases with $m$.
-Apply \cref{lem:cyclotomic} to \eqref{eq:main-lcm}.
+Apply \cref{zz:lem:cyclotomic} to \eqref{zz:eq:main-lcm}.
 \end{proof}
 
 \begin{theorem}[Exact recurrence order]
-\label{thm:degree}
+\label{zz:thm:degree}
 With $M=k+1$,
-\begin{align}\label{eq:degree-sums}
+\begin{align}\label{zz:eq:degree-sums}
  r_k={}&\frac12\sum_{\substack{3\le d\le2M+1\\d\ \mathrm{odd}}}
  \varphi(d)\left(M+1-\frac{d-1}{2}\right)\notag\\
  &+\frac12\sum_{\substack{3\le d\le(2M+1)/3\\d\ \mathrm{odd}}}
@@ -597,25 +611,25 @@ With $M=k+1$,
 \end{align}
 Equivalently, the number $b_m$ of new reciprocal eigenvalues first appearing
 at size $m$ is
-\begin{equation}\label{eq:births}
+\begin{equation}\label{zz:eq:births}
  b_m=\frac{\varphi(2m+1)}2+
  \mathbf{1}_{\{3\mid 2m+1,\,2m+1\ge9\}}
  \frac{\varphi((2m+1)/3)}2,
 \end{equation}
 and
-\begin{equation}\label{eq:degree-births}
+\begin{equation}\label{zz:eq:degree-births}
  r_k=\sum_{m=1}^{k+1}(k+2-m)b_m.
 \end{equation}
 \end{theorem}
 \begin{proof}
-Take degrees in \eqref{eq:Rfactor}.  The equivalent formulation groups
+Take degrees in \eqref{zz:eq:Rfactor}.  The equivalent formulation groups
 primitive factors by their first appearance; every new root contributes a
 pole of order $k+2-m$.
 \end{proof}
 
 \subsection{The cubic asymptotic and compression ratio}
 \begin{lemma}[Odd totients]
-\label{lem:totient}
+\label{zz:lem:totient}
 As $X\to\infty$,
 \[
  S(X):=\sum_{\substack{1\le d\le X\\d\ \mathrm{odd}}}\varphi(d)
@@ -639,14 +653,14 @@ Finally,
 which gives the result.
 \end{proof}
 
-\begin{proof}[Proof of \eqref{eq:main-order}]
+\begin{proof}[Proof of \eqref{zz:eq:main-order}]
 A summation of $S(t)$ gives
 \[
  \sum_{\substack{d\le X\\d\ \mathrm{odd}}}\varphi(d)(X-d)
  =\int_0^X S(t)\,dt
  =\frac{2X^3}{3\pi^2}+O(X^2\log(X+2)).
 \]
-In the first sum in \eqref{eq:degree-sums}, set $X=2M+3$; the multiplier
+In the first sum in \eqref{zz:eq:degree-sums}, set $X=2M+3$; the multiplier
 becomes $(X-d)/4$.  Adding a possible zero-weight endpoint is harmless,
 and deleting $d=1$ costs only $O(M)$.
 The main term is therefore $4M^3/(3\pi^2)$.
@@ -655,7 +669,7 @@ $3(X-d)/4$, giving $4M^3/(27\pi^2)$.
 Their sum is $40M^3/(27\pi^2)$ with the asserted error.
 \end{proof}
 Since the unreduced denominator has degree $\binom{k+3}{3}$,
-\begin{equation}\label{eq:compression}
+\begin{equation}\label{zz:eq:compression}
  \frac{r_k}{\binom{k+3}{3}}\longrightarrow
  \frac{80}{9\pi^2}=0.9006327434\ldots.
 \end{equation}
@@ -688,18 +702,18 @@ $k$ & $\deg\mathcal P_k$ & $r_k$ & Excess & $\deg N_k$\\
 15 & 816 & 784 & 32 & 766 \\
 \bottomrule
 \end{tabular}
-\label{tab:orders}
+\label{zz:tab:orders}
 \end{table}
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.91\linewidth]{data/order_ratio.pdf}
 \caption{The recurrence-order ratio computed from the exact totient formula,
 not from numerical root finding.  The dashed line is the proved limit.}
-\label{fig:ratio}
+\label{zz:fig:ratio}
 \end{figure}
 
 \section{Consequences and corrections for the OEIS entries}
-\label{sec:oeis}
+\label{zz:sec:oeis}
 This section concerns presentation and indexing in the entries retrieved on
 1 October 2026; it does not claim the underlying fixed-column formulas as new.
 
@@ -716,12 +730,12 @@ Consequently,
 and
 $R_7=\mathcal P_7/(1-x)^2$, $r_7=118<120$.
 The latter cancellation was already noticed in \cite[Remark~5.7]{xz}.
-\Cref{thm:factorization} gives the complete all-column replacement for a
+\Cref{zz:thm:factorization} gives the complete all-column replacement for a
 case-by-case cancellation check.
 
 \subsection{A numerator-degree index shift}
 A005586 has value $a(u)=u(u+4)(u+5)/6$ at index~$u$ \cite{oeis5586}.
-The unreduced numerator degree in \eqref{eq:old-num} is therefore
+The unreduced numerator degree in \eqref{zz:eq:old-num} is therefore
 \[
  \deg G_k=\mathrm{A005586}(k-1)\qquad(k\ge1),
 \]
@@ -732,7 +746,7 @@ The explicit polynomial degree formula itself is already present in
 
 \subsection{The sign of the last coefficient in column three}
 The numerator of $C_3$ is
-\begin{align}\label{eq:N3}
+\begin{align}\label{zz:eq:N3}
  N_3(x)={}&1+x-6x^2-15x^3+21x^4+35x^5-13x^6-51x^7\notag\\
  &+3x^8+21x^9+5x^{10}+x^{11}-5x^{12}-x^{13}+x^{14}.
 \end{align}
@@ -751,7 +765,7 @@ numerators, rather than silently replacing the source data.
 
 \subsection{The known limit as a corollary of a stronger expansion}
 The Chebyshev expression in the old column-ratio conjecture equals
-\begin{equation}\label{eq:ratio-old}
+\begin{equation}\label{zz:eq:ratio-old}
  \rho_{k+1}=\frac1{2\sin(\pi/(4k+6))}
  =U_k\left(\cos\frac{\pi}{2k+3}\right).
 \end{equation}
@@ -762,20 +776,20 @@ The next section supplies error estimates and secondary terms rather than
 reclaiming this established limit.
 
 \section{Uniform spectral estimates}
-\label{sec:uniform}
+\label{zz:sec:uniform}
 \subsection{Bounds independent of matrix size}
 The key simplification is that the leading eigenvalue dominates all other
 ones by a factor bounded away from~$1$, uniformly in the alphabet size.
 
 \begin{lemma}[Uniform order-polynomial estimate]
-\label{lem:uniform-omega}
+\label{zz:lem:uniform-omega}
 For every $m,n\ge1$,
-\begin{equation}\label{eq:omega-uniform}
+\begin{equation}\label{zz:eq:omega-uniform}
  \left|\frac{\Om_n(m)}{\alpha_m\rho_m^n}-1\right|
  \le4\,2^{-n}.
 \end{equation}
 Also
-\begin{equation}\label{eq:uniform-constants}
+\begin{equation}\label{zz:eq:uniform-constants}
  \frac3\pi\le\alpha_m\le\frac43,\qquad
  0<\Om_n(m)\le\frac\pi2\rho_m^n.
 \end{equation}
@@ -818,9 +832,9 @@ Write $y=u+1/2$, $t=\pi/(4y)$, and
 \]
 
 \begin{lemma}[Derivative bounds]
-\label{lem:derivatives}
+\label{zz:lem:derivatives}
 For $u\ge1$,
-\begin{equation}\label{eq:deriv-bounds}
+\begin{equation}\label{zz:eq:deriv-bounds}
  \begin{gathered}
  f'(u)>0,\qquad
  -\frac2{(u+1/2)^2}\le f''(u)\le-\frac1{2(u+1/2)^2},\\
@@ -828,11 +842,11 @@ For $u\ge1$,
  \end{gathered}
 \end{equation}
 In particular, for integers $1\le m\le M$,
-\begin{equation}\label{eq:eigen-ratio}
+\begin{equation}\label{zz:eq:eigen-ratio}
  \rho_m/\rho_M\le e^{-(M-m)\delta_M}.
 \end{equation}
 As $u\to\infty$,
-\begin{equation}\label{eq:delta-asympt}
+\begin{equation}\label{zz:eq:delta-asympt}
  \delta_u=\frac1{u+1/2}+O(u^{-3}).
 \end{equation}
 \end{lemma}
@@ -862,30 +876,30 @@ Its absolute value is at most
     +\frac{2\pi^2}{27}<7.
 \]
 Since $f'$ is decreasing, integrating it from $m$ to $M$ yields
-\eqref{eq:eigen-ratio}.  Finally $t\cot t=1+O(t^2)$ proves
-\eqref{eq:delta-asympt}.
+\eqref{zz:eq:eigen-ratio}.  Finally $t\cot t=1+O(t^2)$ proves
+\eqref{zz:eq:delta-asympt}.
 \end{proof}
 
 \subsection{An explicit relative-error bound}
 \begin{theorem}[Uniform coefficient approximation]
-\label{thm:uniform-bound}
+\label{zz:thm:uniform-bound}
 For $n\ge1$, $k\ge0$, $M=k+1$, and $q=e^{-n\delta_M}$,
-\begin{equation}\label{eq:error-exact}
+\begin{equation}\label{zz:eq:error-exact}
  \left|\frac{z(n,k)}{\alpha_M\rho_M^n}-1\right|
  \le4\,2^{-n}+2\bigl((1+q)^{n+1}-1\bigr).
 \end{equation}
 If $(n+1)q\le1$, the right side is at most
-\begin{equation}\label{eq:error-simple}
+\begin{equation}\label{zz:eq:error-simple}
  E(n,M):=4\,2^{-n}+4(n+1)e^{-n\delta_M}.
 \end{equation}
 For every fixed $0<c<1$, this error tends to zero uniformly for
 $M\le c n/\log n$.
 \end{theorem}
 \begin{proof}
-Separate the $j=0$ term in \eqref{eq:extraction}.  Its relative error is bounded
-by \cref{lem:uniform-omega}.  For $j\ge1$, the upper bound in
-\eqref{eq:uniform-constants}, the lower bound on $\alpha_M$, and
-\eqref{eq:eigen-ratio} give
+Separate the $j=0$ term in \eqref{zz:eq:extraction}.  Its relative error is bounded
+by \cref{zz:lem:uniform-omega}.  For $j\ge1$, the upper bound in
+\eqref{zz:eq:uniform-constants}, the lower bound on $\alpha_M$, and
+\eqref{zz:eq:eigen-ratio} give
 \[
  \frac{\binom{n+1}{j}\Om_n(M-j)}{\alpha_M\rho_M^n}
  \le\frac{\pi^2}{6}\binom{n+1}{j}q^j
@@ -905,15 +919,15 @@ uniformly over $M\le L$.  This also guarantees the hypothesis for the simpler
 bound once $n$ is sufficiently large.
 \end{proof}
 
-This proves part~(i) of \cref{thm:main-analysis}.  It also shows why the fixed
+This proves part~(i) of \cref{zz:thm:main-analysis}.  It also shows why the fixed
 column limit by itself is not enough for shape questions: the growing
-binomial coefficients in \eqref{eq:extraction} must be controlled uniformly.
+binomial coefficients in \eqref{zz:eq:extraction} must be controlled uniformly.
 
 \subsection{Two spectral terms for fixed columns}
 \begin{proposition}
-\label{prop:two-term}
+\label{zz:prop:two-term}
 For each fixed $k\ge2$,
-\begin{equation}\label{eq:two-term}
+\begin{equation}\label{zz:eq:two-term}
  z(n,k)=\alpha_{k+1}\rho_{k+1}^{n}
  -(n+1)\alpha_k\rho_k^n
  +O_k(n^2\rho_{k-1}^n).
@@ -922,7 +936,7 @@ For $k=1$ the exact formula is
 $z(n,1)=F_{n+2}-(n+1)$, where $F_0=0,F_1=1$ are the Fibonacci numbers.
 \end{proposition}
 \begin{proof}
-The Perron terms at $m=k+1$ and $m=k$ in \eqref{eq:exp-poly} give the two
+The Perron terms at $m=k+1$ and $m=k$ in \eqref{zz:eq:exp-poly} give the two
 terms displayed.  The Perron term at $m=k-1$ is of order
 $n^2\rho_{k-1}^n$.  Every Perron term at a smaller size has a strictly smaller
 exponential base, so its fixed polynomial factor can be absorbed in that
@@ -936,34 +950,34 @@ absolute value is $1/(2\sin(3\pi/(4k+6)))$, and
 Indeed the two angles lie in $(0,\pi/2)$ and the first is larger.
 All remaining spectral terms are therefore absorbed as well.
 For $k=1$, use $\Om_n(2)=F_{n+2}$ and $\Om_n(1)=1$ in
-\eqref{eq:extraction}.
+\eqref{zz:eq:extraction}.
 \end{proof}
 
 \section{The crossover at \texorpdfstring{$k\asymp n/\log n$}{k of order n/log n}}
-\label{sec:crossover}
+\label{zz:sec:crossover}
 The uniform bound identifies a transition scale.  At that scale it is no
 longer correct simply to discard all terms with $j\ge1$ in
-\eqref{eq:extraction}.  Their combined effect has a closed limiting form.
+\eqref{zz:eq:extraction}.  Their combined effect has a closed limiting form.
 
 \begin{theorem}[Crossover law]
-\label{thm:crossover}
+\label{zz:thm:crossover}
 Let $k=k(n)$ be nonnegative integers such that
-\begin{equation}\label{eq:crossover-hyp}
+\begin{equation}\label{zz:eq:crossover-hyp}
  s_n:=\frac{n}{k+3/2}-\log n\longrightarrow s\in\R.
 \end{equation}
 Then
-\begin{equation}\label{eq:crossover-limit}
+\begin{equation}\label{zz:eq:crossover-limit}
  \frac{z(n,k)}{\alpha_{k+1}\rho_{k+1}^n}\longrightarrow e^{-e^{-s}}.
 \end{equation}
 Equivalently,
-\begin{equation}\label{eq:crossover-elementary}
+\begin{equation}\label{zz:eq:crossover-elementary}
  z(n,k)\sim\frac4\pi
  \left(\frac{2k+3}{\pi}\right)^n e^{-e^{-s}}.
 \end{equation}
 \end{theorem}
 \begin{proof}
 Put $M=k+1$.  The hypothesis implies $M\sim n/\log n$, so
-$n/M^2\to0$, and \eqref{eq:delta-asympt} gives
+$n/M^2\to0$, and \eqref{zz:eq:delta-asympt} gives
 \[
  n\delta_M-\log n=s_n+o(1)\to s.
 \]
@@ -974,12 +988,12 @@ $[M-j,M]$ gives
  =-nj\delta_M+O_j(n/M^2).
 \]
 Also $\alpha_{M-j}/\alpha_M\to1$, and
-\cref{lem:uniform-omega} is uniform in the changing size $M-j$.
+\cref{zz:lem:uniform-omega} is uniform in the changing size $M-j$.
 It follows that the absolute value of the $j$th normalized summand in
-\eqref{eq:extraction} tends to $e^{-js}/j!$.
+\eqref{zz:eq:extraction} tends to $e^{-js}/j!$.
 
 To justify summing these limits, define summands to be zero for $j\ge M$.
-For all $j\ge0$, the same estimate used in \cref{thm:uniform-bound} gives
+For all $j\ge0$, the same estimate used in \cref{zz:thm:uniform-bound} gives
 \[
  \frac{\binom{n+1}{j}\Om_n(M-j)}{\alpha_M\rho_M^n}
  \le2\frac{((n+1)e^{-n\delta_M})^j}{j!}
@@ -997,7 +1011,7 @@ Finally, $\alpha_M\to4/\pi$ and
  \rho_M=\frac{2M+1}{\pi}\bigl(1+O(M^{-2})\bigr).
 \]
 Since $n/M^2\to0$, taking the $n$th power leaves a relative factor tending
-to~$1$.  This proves \eqref{eq:crossover-elementary}.
+to~$1$.  This proves \eqref{zz:eq:crossover-elementary}.
 \end{proof}
 
 The function $e^{-e^{-s}}$ is the familiar Gumbel distribution function.
@@ -1008,26 +1022,26 @@ Thus the theorem describes precisely a regime where an unqualified leading
 Perron approximation would have a persistent relative error.
 
 \begin{corollary}
-\label{cor:simple-asympt}
+\label{zz:cor:simple-asympt}
 If $k/\sqrt n\to\infty$ and $k\log n/n\to0$, then
 \[
  z(n,k)\sim\frac4\pi\left(\frac{2k+3}{\pi}\right)^n.
 \]
 \end{corollary}
 \begin{proof}
-Use \cref{thm:uniform-bound}, $\alpha_{k+1}\to4/\pi$, and
+Use \cref{zz:thm:uniform-bound}, $\alpha_{k+1}\to4/\pi$, and
 $n/(k+1)^2\to0$ in the expansion of $\rho_{k+1}$.
 \end{proof}
 
 \section{A growing part of the log-concavity conjecture}
-\label{sec:logconcavity}
+\label{zz:sec:logconcavity}
 It is essential to distinguish uniformity in $k$ from a separate eventual
 statement for every fixed $k$.  The theorem below supplies the former.
 
 \begin{lemma}[Curvature of the leading approximation]
-\label{lem:leading-curvature}
+\label{zz:lem:leading-curvature}
 For every integer $m\ge2$ and $n\ge160$,
-\begin{equation}\label{eq:leading-curvature}
+\begin{equation}\label{zz:eq:leading-curvature}
  \log\frac{(\alpha_m\rho_m^n)^2}
  {\alpha_{m-1}\rho_{m-1}^n\,\alpha_{m+1}\rho_{m+1}^n}
  \ge\frac{n}{4(m+3/2)^2}.
@@ -1039,7 +1053,7 @@ For any twice continuously differentiable function $h$,
  2h(m)-h(m-1)-h(m+1)
  =-\int_{-1}^1(1-|v|)h''(m+v)\,dv.
 \]
-Apply \cref{lem:derivatives} to $h=nf+g$.  The result is bounded below by
+Apply \cref{zz:lem:derivatives} to $h=nf+g$.  The result is bounded below by
 \[
  \frac{n}{2(m+3/2)^2}-\frac7{(m-1/2)^2}.
 \]
@@ -1051,7 +1065,7 @@ For $m\ge2$, $(m+3/2)/(m-1/2)\le7/3$, so the last expression is at least
 \end{proof}
 
 \begin{theorem}[Growing-edge strict log-concavity]
-\label{thm:edge-lc}
+\label{zz:thm:edge-lc}
 Fix $0<c<1/2$.  There exists $n_0(c)$ such that every $n\ge n_0(c)$ and
 integer $k\ge1$ with $k+2\le cn/\log n$ satisfy
 \[
@@ -1061,7 +1075,7 @@ For the same $n$, this also holds at $n-2-k$.
 \end{theorem}
 \begin{proof}
 Let $L=cn/\log n$ and consider all three alphabet sizes
-$k,k+1,k+2\le L$ simultaneously.  By \cref{thm:uniform-bound}, their
+$k,k+1,k+2\le L$ simultaneously.  By \cref{zz:thm:uniform-bound}, their
 relative errors are at most
 \[
  E_L=4\,2^{-n}+4(n+1)e^{-n\delta_L}.
@@ -1069,9 +1083,9 @@ relative errors are at most
 For sufficiently large $n$, $E_L<1/2$.  Since
 $|\log(1+u)|\le2|u|$ for $|u|\le1/2$, the difference between the actual
 log-concavity logarithm and the leading one in
-\eqref{eq:leading-curvature} has absolute value at most $8E_L$.
+\eqref{zz:eq:leading-curvature} has absolute value at most $8E_L$.
 Consequently the actual logarithm is at least
-\begin{equation}\label{eq:lc-lower}
+\begin{equation}\label{zz:eq:lc-lower}
  \frac{n}{4(k+5/2)^2}-8E_L.
 \end{equation}
 The ratio of the second term to a constant multiple of the first is bounded
@@ -1083,12 +1097,12 @@ by a constant times
  =n^{2-1/c+o(1)}\,O((\log n)^{-2})+o(1).
 \]
 This tends to zero because $c<1/2$.
-Thus \eqref{eq:lc-lower} is positive uniformly over all allowed $k$.
-The reflected statement follows from \eqref{eq:symmetry}.
+Thus \eqref{zz:eq:lc-lower} is positive uniformly over all allowed $k$.
+The reflected statement follows from \eqref{zz:eq:symmetry}.
 \end{proof}
 
 \begin{remark}[What is and is not resolved]
-\label{rem:not-full}
+\label{zz:rem:not-full}
 The theorem proves infinitely many inequalities in a region whose width
 increases like $n/\log n$.  It is strictly stronger than eventual
 log-concavity at each fixed distance from an edge.
@@ -1108,22 +1122,23 @@ For each fixed integer $k\ge1$,
 and this quotient tends to infinity.
 \end{corollary}
 \begin{proof}
-Apply the fixed-index cases of \cref{thm:uniform-bound}.
+Apply the fixed-index cases of \cref{zz:thm:uniform-bound}.
 Strict concavity of $\log\rho_u$ implies
 $\rho_{k+1}^2>\rho_k\rho_{k+2}$.
 \end{proof}
 
 \section{Reproducible exact checks and numerical diagnostics}
-\label{sec:verification}
+\label{zz:sec:verification}
 The accompanying scripts use no network access.  Their roles are deliberately
 separated: integer and rational identities test algebraic implementation,
 while floating-point evaluations illustrate analytic results.
 
 \subsection{Exact checks}
-The default run of \texttt{verify.py} completed the following checks:
+The default run of \texttt{verify.py} (shipped as \texttt{code/verify.py})
+completed the following checks:
 \begin{enumerate}[label=(\arabic*)]
-\item Direct symbolic determinants agree with \eqref{eq:D-recurrence} for
-$m=1,\ldots,9$.  Exact polynomial gcds agree with \cref{thm:gcd} for all
+\item Direct symbolic determinants agree with \eqref{zz:eq:D-recurrence} for
+$m=1,\ldots,9$.  Exact polynomial gcds agree with \cref{zz:thm:gcd} for all
 $820$ unordered pairs $1\le m,n\le40$.
 \item Direct enumeration of weak alternating words agrees with the matrix
 walk count for $m=1,\ldots,4$ and $n=0,\ldots,6$.  Direct enumeration of
@@ -1138,7 +1153,7 @@ full conjecture.  The specified OEIS numerator discrepancy is also tested.
 \end{enumerate}
 No check failed in the final run.  The initial comparison against the printed
 column-three numerator detected the sign discrepancy explained in
-\cref{sec:oeis}; the final test records that discrepancy explicitly.
+\cref{zz:sec:oeis}; the final test records that discrepancy explicitly.
 
 The certificates are in \texttt{data/rational\_certificates.json}, with
 coefficients in ascending powers of $x$.
@@ -1150,7 +1165,7 @@ been assigned.  The full machine-readable result is
 \subsection{How the rational certificates are constructed}
 For $F_m=E_m/D_m$, one may avoid large symbolic expression simplifications.
 For $j\ge1$,
-\begin{equation}\label{eq:derivative-certificate}
+\begin{equation}\label{zz:eq:derivative-certificate}
  \sum_{n\ge0}\binom{n+1}{j}\Om_n(m)x^n
  =\frac{x^{j-1}}{j!}\frac{d^j}{dx^j}\bigl(xF_m(x)\bigr).
 \end{equation}
@@ -1174,9 +1189,9 @@ but the approximate $9.94\%$ degree reduction alone does not establish the
 best wall-clock algorithm.
 
 \subsection{Uniform-approximation diagnostics}
-\Cref{tab:asymptotic} uses exact integer $z(n,k)$ and high-precision evaluation
+\Cref{zz:tab:asymptotic} uses exact integer $z(n,k)$ and high-precision evaluation
 of the formulas.  The error-bound column evaluates the rigorous expression
-\eqref{eq:error-exact}, but its decimal evaluation is not interval-certified.
+\eqref{zz:eq:error-exact}, but its decimal evaluation is not interval-certified.
 \begin{table}[ht]
 \centering\small
 \caption{Relative Perron errors and log-concavity logarithms.  The last column
@@ -1193,11 +1208,11 @@ $n$ & $k$ & Actual relative error & Bound expression & Logarithm\\
 2000 & 80 & 3.786e-08 & 8.812e-08 & 0.301098 \\
 \bottomrule
 \end{tabular}
-\label{tab:asymptotic}
+\label{zz:tab:asymptotic}
 \end{table}
 
 \subsection{Crossover diagnostics}
-\Cref{tab:crossover} illustrates \cref{thm:crossover}.  Let
+\Cref{zz:tab:crossover} illustrates \cref{zz:thm:crossover}.  Let
 $W=z(n,k)/(\alpha_{k+1}\rho_{k+1}^n)$.  For these larger sizes we compute its
 finite alternating Perron sum, rather than construct the enormous exact
 integer.  The omitted tail and the non-Perron contribution have explicit
@@ -1231,11 +1246,11 @@ $n$ & $k$ & $s_n$ & $W$ & $e^{-e^{-s_n}}$\\
 100000 & 7990 & 1.00037 & 0.69241787 & 0.69229481 \\
 \bottomrule
 \end{tabular}
-\label{tab:crossover}
+\label{zz:tab:crossover}
 \end{table}
 
 \section{A formalization route for ProveIt}
-\label{sec:formalization}
+\label{zz:sec:formalization}
 A practical formalization should keep three boundaries separate.
 \paragraph{Finite combinatorics and algebra.}
 Define weak alternating words, the matrix $H_m$, and the suffix-sum evaluator.
@@ -1256,14 +1271,14 @@ for the crossover, and finite-difference curvature bound can be developed
 independently of a full theory of roots of zig-zag Eulerian polynomials.
 Their statements should retain quantifiers over growing index ranges;
 replacing a uniform theorem by a pointwise limit would lose the essential
-content of \cref{thm:edge-lc}.
+content of \cref{zz:thm:edge-lc}.
 
 The included files are not untested Lean code presented as a formal proof.
 A future formalization should report exactly which of these boundaries has
 been crossed, and which imported results or analytic facts remain assumptions.
 
 \section{Further research questions}
-\label{sec:questions}
+\label{zz:sec:questions}
 The results suggest several concrete projects.  They are deliberately stated
 as questions or proposed programs, not as established consequences.
 
@@ -1285,7 +1300,7 @@ errors may vary smoothly enough for much better cancellation in that second
 difference.  An explicit theorem for $c\ge1/2$ is a well-defined next target.
 
 \subsection{A quantitative crossover expansion}
-Prove a rate and additional terms in \cref{thm:crossover}, uniformly for $s_n$
+Prove a rate and additional terms in \cref{zz:thm:crossover}, uniformly for $s_n$
 in a fixed compact interval.  The fixed-$j$ expansion involves
 $n j^2/(k+3/2)^2$, which is of order $(\log n)^2/n$ at crossover.
 One can expect the next terms to arise from exponential sums of $j$, $j^2$,
@@ -1312,7 +1327,7 @@ A correct answer must not infer a polynomial second term from a short table.
 \subsection{Minimal realizations and fast exact generation}
 The degree $r_k$ determines the minimum linear state dimension over a field,
 but a dense recurrence need not be the fastest realization over the integers.
-Can the factor decomposition in \eqref{eq:Rfactor} be exploited by modular
+Can the factor decomposition in \eqref{zz:eq:Rfactor} be exploited by modular
 polynomial arithmetic, block recurrences, or rational reconstruction?
 The target is a proved bit-complexity bound and a reproducible comparison
 against suffix-sum dynamic programming, with output size accounted for.
@@ -1323,7 +1338,7 @@ down comparisons.  The order-polynomial transfer matrix becomes a product of
 upper and lower summation matrices.
 Which patterns retain an explicit spectrum, and which permit a first-occurrence
 classification strong enough to determine every fixed-descent minimal
-recurrence?  The noncancellation principle from \cref{sec:minimal} survives
+recurrence?  The noncancellation principle from \cref{zz:sec:minimal} survives
 whenever the spectral weights and the polynomial multipliers can be controlled;
 the difficult part is identifying and comparing the spectra.
 
@@ -1355,24 +1370,24 @@ breakthrough.
 
 \appendix
 \section{A finite, explicit log-concavity certificate from the bounds}
-\label{app:finite-criterion}
-The existence statement in \cref{thm:edge-lc} can be used without guessing
+\label{zz:app:finite-criterion}
+The existence statement in \cref{zz:thm:edge-lc} can be used without guessing
 $n_0(c)$.  For given integers $n\ge160$ and $k\ge1$, put $L=k+2$ and
 $q_L=e^{-n\delta_L}$.  If
-\begin{equation}\label{eq:finite-criterion}
+\begin{equation}\label{zz:eq:finite-criterion}
  (n+1)q_L\le1,\quad E(n,L)<\frac12,\quad
  8E(n,L)<\frac{n}{4(k+5/2)^2},
 \end{equation}
 then $z(n,k)^2>z(n,k-1)z(n,k+1)$.
 Indeed, the errors at all three sizes are bounded by $E(n,L)$ because
-$\delta_u$ decreases, and \eqref{eq:lc-lower} is positive.
+$\delta_u$ decreases, and \eqref{zz:eq:lc-lower} is positive.
 These inequalities involve elementary real functions only; an interval
 implementation could make a formally checkable numerical certificate for
 specific ranges.  The decimal diagnostics supplied here do not implement
 that interval certification.
 
 \section{Package contents and reproduction}
-\label{app:package}
+\label{zz:app:package}
 The main source is \texttt{zigzag\_spectral\_research.tex}; its bibliography is
 embedded below, so no external bibliography database is required.
 \begin{verbatim}
@@ -1388,6 +1403,33 @@ The exact checks can be rerun separately from \texttt{illustrate.py}.
 The generated plot, small typeset tables, machine-readable certificates,
 triangle values, and numerical diagnostics are in \texttt{data/}.
 No font files or external copyrighted articles are included.
+
+\emph{[Write note, batch 73O2, 1 October 2026.]} The paragraph above
+describes the delivered package. In ProveIt the source is
+\texttt{article.tex}, the scripts and both build wrappers are in
+\texttt{code/}, and the recorded outputs and \texttt{requirements.txt} are
+in \texttt{data/}. The delivered commands, and \texttt{build.sh} and
+\texttt{build.ps1}, rewrite the recorded files in \texttt{data/}, and after
+the move \texttt{code/verify.py} by default writes to \texttt{code/data/};
+the report's \texttt{README.md} gives commands that run on a copy. The
+figure \texttt{data/order\_ratio.pdf} was regenerated from the unmodified
+\texttt{illustrate.py} with TrueType instead of Type~3 fonts; its content is
+unchanged (see the README).
+
+\section{Provenance}
+\label{zz:sec:provenance}
+This report is one manuscript, number~36 of batch 73O2 of ProveIt's
+incoming-reports intake: the archive \texttt{zigzag\_oeis\_research.zip}
+(main file \texttt{zigzag\_spectral\_research.tex}, 22-page PDF), dated
+1 October 2026, which arrived in commit \texttt{f8c3a392a} and was placed by
+commit \texttt{6e193dd4f}. It cites no repository revision: its only
+repository source is the ProveIt README, inspected on 1 October 2026. The
+text is as delivered except for the label prefix \texttt{zz:}, the citation
+of A050446 (listed but uncited in the delivered bibliography) in
+Section~\ref{zz:sec:definitions}, the shipped path of the verification
+script in Section~\ref{zz:sec:verification}, this appendix, the
+repository bibliography entry, and the dated write notes in
+Section~\ref{zz:sec:intro} and Appendix~\ref{zz:app:package}.
 
 \begin{thebibliography}{9}
 \bibitem{oeis205497}
@@ -1425,5 +1467,11 @@ Accessible version: arXiv:2403.07181v4, 9 September 2024.
 \bibitem{proveit}
 V. Reshetnikov, \emph{ProveIt}, repository README, inspected 1 October 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{cti}
+ProveIt, \emph{Combinatorial Transseries and Their Inverses},
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/}.
+Cited in the write
+(batch 73O2), not by the manuscript.
 \end{thebibliography}
 \end{document}
