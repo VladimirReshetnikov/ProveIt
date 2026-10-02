@@ -37,6 +37,15 @@ The sandpile source loses three witnesses/rows per vertex; a forced membrane
 prefix removes2,811 witnesses at external bounded horizon. These are finite
 certificate reductions, with no change to the universal87-operation bound.
 
+The [combined direct U15 compiler](Papers/research-wip/native-stream-queue/u15_packed_joint_affine536.md)
+now costs **536=219M+317A operations**, with87 positive witnesses and31
+comparisons including ordinary input; the raw interface costs338. Fifteen
+positive loader definitions, reused powers, normalized tape residuals and
+joint affine sharing save75 operations from611. The full positive-zero
+bijection and immediate-parent polynomial identity have separate source
+certificates and an [independent review](Papers/research-wip/native-stream-queue/review_u15_joint536.md).
+Exact degree1936 is retained. The overall87-operation universal bound is unchanged.
+
 The [centered-state U15 compiler](Papers/research-wip/native-stream-queue/u15_packed_centered_states611.md)
 further reduces this direct tape route to **611=239M+372A operations**,102
 positive witnesses and46 comparisons, including ordinary input; raw368.

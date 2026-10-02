@@ -105,12 +105,13 @@ excluded these defects.
 
 ## Current research frontier
 
-The independent [centered U15 compiler](u15_packed_centered_states611.md)
-now evaluates its complete direct ordinary-input tape construction in
-**611=239M+372A operations**, or 368 at the raw half-tape interface. It retains
-102 positive witnesses, 46 comparisons and exact degree 1936. The source and
-full polynomial identities received an [independent review](review_u15_centered611.md).
-This is an improvement to that direct tape route; the overall universal
+The subsequent [combined direct U15 compiler](u15_packed_joint_affine536.md)
+evaluates the complete ordinary-input tape construction in
+**536=219M+317A operations**, or 338 at the raw half-tape interface. It has
+87 positive witnesses, 31 comparisons and exact degree 1936. Its
+[independent review](review_u15_joint536.md) checks the full arithmetic identity
+and inherited positive graph correspondence. It saves 75 operations from the
+previously reviewed 611 direct-tape source. The overall universal
 **87-operation** polynomial and separate **75-operation** certificate remain
 the comparison bounds.
 

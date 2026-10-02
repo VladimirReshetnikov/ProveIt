@@ -66,7 +66,24 @@
 > Commit and push reviewed packets frequently. These finite improvements
 > do not establish a global optimum or finish the open research goal.
 >
-> The [centered-state compiler](u15_packed_centered_states611.md) reduces the
+> The [combined direct U15 compiler](u15_packed_joint_affine536.md) now costs
+> **536=219M+317A**, with87 positive witnesses and31 comparisons; raw338.
+> The independently reviewed [downstream stage](u15_packed_downstream561.md)
+> saves50 ordinary operations by reusing powers, halving two tape residuals
+> and computing15 positive loader fields. The [affine rewrite](u15_packed_joint_affine586.md)
+> saves25 more additions with an exact full-polynomial identity. The complete
+> [536 review](review_u15_joint536.md) checks their composition and public APIs.
+> Exact degree1936 transfers; the global87-operation bound is unchanged.
+> A concrete followup is to audit unit-product finalization of the now
+> computed ordinary-loader kernels. Count the entire compiler and prove all
+> recovered unit signs and positive sections before claiming a saving; the
+> current536 source remains the reviewed SOS construction.
+> Keep its immediate561 arithmetic parent distinct from its611 graph ancestor.
+> The original parent SOS on restoration equals the new SOS plus three times
+> the sum of the two normalized tape-residual squares. No unknown-duration
+> interface or ordinary input cost was discarded.
+>
+> The preceding [centered-state compiler](u15_packed_centered_states611.md) reduces the
 > direct U15 tape route further to611 ordinary/368 raw operations. Its exact
 > all-value residual/output identities preserve102/51 witnesses and46/11
 > comparisons; exact degree1936 transfers from the separate ancestor proof.

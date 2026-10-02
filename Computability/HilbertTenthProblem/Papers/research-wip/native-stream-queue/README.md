@@ -37,6 +37,15 @@ with29 witnesses and degree2. These are complete single-step relations;
 ordinary multiplication of packed histories would convolve time cells, so
 neither scalar count is an unbounded universal-polynomial bound.
 
+The [combined direct U15 compiler](u15_packed_joint_affine536.md)
+now costs **536=219M+317A operations**, with87 positive witnesses and31
+comparisons including ordinary input; the raw interface costs338. Fifteen
+positive loader definitions, reused powers, normalized tape residuals and
+joint affine sharing save75 operations from611. The full positive-zero
+bijection and immediate-parent polynomial identity have separate source
+certificates and an [independent review](review_u15_joint536.md).
+Exact degree1936 is retained. The overall87-operation universal bound is unchanged.
+
 The [centered-state U15 compiler](u15_packed_centered_states611.md)
 further reduces this direct tape route to **611=239M+372A operations**,102
 positive witnesses and46 comparisons, including ordinary input; raw368.
