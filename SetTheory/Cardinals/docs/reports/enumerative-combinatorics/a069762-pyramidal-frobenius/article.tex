@@ -1,0 +1,1517 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\definecolor{inkblue}{RGB}{28,57,83}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={Three Consecutive Square-Pyramidal Numbers: Exact Frobenius Formulas, Gap Laws, and Algebraic Inversion},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{An explicit solution for OEIS A069762}}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Ap}{\operatorname{Ap}}
+\newcommand{\Gap}{\operatorname{Gap}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\Bern}{\mathrm B}
+\title{\vspace{-1.0cm}\color{inkblue}\LARGE\bfseries
+Three Consecutive Square-Pyramidal Numbers\\[5pt]
+\Large Exact Frobenius Formulas, Gap Laws,\\and Algebraic Inversion}
+\author{\normalsize Research report prepared for Vladimir Reshetnikov}
+\date{October 1, 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+Let $s_n=n(n+1)(2n+1)/6$ and let $F_n$ be the largest integer not in
+$\langle s_n,s_{n+1},s_{n+2}\rangle$. This is OEIS A069762. We give an explicit
+solution: $F_n$ is a degree-five quasipolynomial of least eventual period six,
+with exactly six exceptional indices, the last being $23$. In particular,
+$F_n=n^5/9+8n^4/9+O(n^3)$, and all subsequent terms are given exactly.
+
+The proof does considerably more than evaluate a maximum. Two elementary gcd
+reductions expose a linear-size Ap\'ery set controlled by the relation
+$kC-\ell A=5B$, with $k,\ell\leq6$. This yields a direct membership and
+representation algorithm, exact genus and symmetry formulas, and exact
+quasipolynomials for every fixed power sum of the gaps. A general transfer
+principle converts limits of normalized Ap\'ery sets into limits of gap
+measures. Applied here, a uniformly chosen gap divided by $F_n$ converges to
+the density $2(1-x)$ on $[0,1]$, with a uniform $O(n^{-1})$ error in the
+cumulative distribution. The ordinary generating function has minimal
+denominator $(1-x)^6(1+x)^4(1+x+x^2)^4$, hence a minimal eventual recurrence
+of order $18$.
+
+Finally, each residue-class polynomial admits a convergent all-orders
+Puiseux inverse. We give its first coefficients, a coefficient-extraction
+formula, a uniform sufficient convergence region, and an exact rule for
+recovering the discrete inverse. All main claims are proved in the text;
+exact computational checks and symbolic moment-generation programs accompany
+the report. The explicit formulas are proposed as additions to the inspected
+OEIS entry; literature priority is not certified.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Scope of the claim.} This is an independently derived research
+report, not a claim that a famous named conjecture has been settled. General
+eventual quasipolynomiality is established literature. The contribution is the
+explicit formula, complete normal form, quantitative gap law, and effective
+consequences for this particular canonical family. No Lean or Rocq
+formalization of these results is claimed.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The target, the literature, and the proof boundary}
+
+The inspected version of OEIS A069762 defines the Frobenius numbers generated
+by three consecutive square-pyramidal numbers, supplies values for
+$n=2,\ldots,35$, and gives the example
+$F(5,14,30)=51$. It contains no explicit general formula or asymptotic
+formula \cite{oeis}. Its displayed definition is not labelled a conjecture.
+Thus the precise problem addressed here is to supply a missing explicit
+solution and its proof, rather than to reclassify an OEIS omission as a
+well-established open conjecture.
+
+This is a natural parametric Frobenius problem, not an artificial sequence
+chosen solely because a few terms interpolate. Frobenius numbers for three
+consecutive squares and cubes were explicitly analyzed by Lepilov,
+O'Rourke, and Swanson \cite{los}. Related work of Robles-P\'erez and Rosales
+studies consecutive triangular and tetrahedral numbers \cite{rr}. Those
+families provide relevant context, but square-pyramidal numbers are a
+different polynomial family. Roune and Woods proved eventual
+quasipolynomiality for parametric Frobenius problems with at most three
+generators \cite{rw}; Shen established the broader polynomial-parametric
+result \cite{shen}. We do not claim eventual quasipolynomiality itself as new.
+
+The source check for this report used the OEIS entry, the cited primary
+literature, searches for A069762 and for Frobenius numbers of square-pyramidal
+numbers, and a scoped inspection of the ProveIt repository. No publication
+containing the formula below was located. This is a bounded literature
+check, not a proof of priority. A prior equivalent formula, perhaps under
+different terminology, could change the novelty assessment without changing
+the mathematical statements proved here.
+
+The connection to ProveIt is methodological rather than a dependency on an
+unverified repository theorem. Its README separates exploratory computations
+from the trusted boundary of formal mathematics \cite{proveit}. We follow
+that separation: computation suggested the formula, but the proof is the
+explicit normal form developed below. The accompanying programs provide
+independent finite checks and algebraic audits. They are neither a proof of
+literature novelty nor a kernel-checked formalization. The repository snapshot
+used for this inspection is recorded in the bibliography; the repository
+was not modified.
+
+\paragraph{What is established here.}
+The main output is an exact answer for \emph{every} $n\geq2$, not just a fitted
+asymptotic equivalent. The proof also determines all missing integers through
+a constant-description family of residue representatives. The distribution
+and moment results explain the global shape of the gaps, while the inverse
+results address the associated threshold problem. These additional results
+make the normal form reusable beyond a single OEIS formula.
+
+\section{An exact formula for A069762}\label{sec:main}
+
+For $n\geq2$, put
+\begin{equation}\label{eq:defs}
+s_n=\sum_{j=1}^n j^2=\frac{n(n+1)(2n+1)}6,
+\qquad S_n=\langle s_n,s_{n+1},s_{n+2}\rangle,
+\qquad F_n=\max(\N\setminus S_n).
+\end{equation}
+Here $\langle a,b,c\rangle=\{ua+vb+wc:u,v,w\in\N\}$.
+Define the periodic integer
+\begin{equation}\label{eq:h}
+h_n=3\ind_{\{n\text{ odd}\}}+2\ind_{\{n\equiv2\pmod3\}}.
+\end{equation}
+Its values for residues $0,1,2,3,4,5$ modulo six are
+$0,3,2,3,0,5$.
+For $h\in\{0,2,3,5\}$ define
+\begin{align}\label{eq:Ph}
+P_h(X)=\frac1{36}\bigl(&4X^5+32X^4+(101-10h)X^3\notag\\
+ &+(175-45h)X^2+(102-65h)X-36-30h\bigr).
+\end{align}
+Equivalently,
+\begin{equation}\label{eq:compactP}
+P_h(X)=P_0(X)-\frac{5h}{36}(X+1)(X+2)(2X+3).
+\end{equation}
+
+\begin{samepage}
+\begin{theorem}[Exact Frobenius formula]\label{thm:main}
+For every integer $n\geq2$,
+\begin{equation}\label{eq:F}
+\boxed{\ F_n=P_{h_n}(n)+\eps_n\ },
+\end{equation}
+where $\eps_n=0$ except at the six indices in Table~\ref{tab:exceptions}.
+Consequently $F_n=P_{h_n}(n)$ for all $n\geq24$, and $24$ is the least
+uniform cutoff for this quasipolynomial. Its least eventual period is six.
+\end{theorem}
+\end{samepage}
+
+\begin{table}[ht]
+\centering
+\caption{The four polynomial branches. The common numerator begins
+$4n^5+32n^4$ and is divided by $36$.}\label{tab:branches}
+\begin{tabular}{ccrrrr}
+\toprule
+$n\bmod6$ & $h_n$ & coefficient of $n^3$ & of $n^2$ & of $n$ & constant\\
+\midrule
+$0,4$ & 0 & 101 & 175 & 102 & $-36$\\
+$1,3$ & 3 & 71 & 40 & $-93$ & $-126$\\
+$2$   & 2 & 81 & 85 & $-28$ & $-96$\\
+$5$   & 5 & 51 & $-50$ & $-223$ & $-186$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{All exceptions: the correction is positive in each case.}\label{tab:exceptions}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $P_{h_n}(n)$ & $\eps_n$ & $F_n$\\
+\midrule
+2 & 41 & 10 & 51\\
+3 & 151 & 40 & 191\\
+5 & 1009 & 315 & 1324\\
+11 & 32553 & 1612 & 34165\\
+17 & 238451 & 3135 & 241586\\
+23 & 980251 & 2400 & 982651\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The exact formula immediately yields
+\begin{equation}\label{eq:asympF}
+F_n=\frac{n^5}{9}+\frac{8n^4}{9}
+ +\frac{101-10h_n}{36}n^3
+ +\frac{175-45h_n}{36}n^2
+ +\frac{102-65h_n}{36}n-1-\frac{5h_n}{6}
+\end{equation}
+for $n\geq24$. This is a complete finite asymptotic expansion with periodic
+coefficients: there is no remainder after the constant term. On each residue
+class it is simply a polynomial identity. In particular,
+$F_n\sim n^5/9$. A single constant coefficient at order $n^3$ would be
+incorrect; the first oscillatory term occurs at precisely that order.
+
+The exact formula and the exception list are proved in
+Sections~\ref{sec:reduction}--\ref{sec:max}. Minimality of the period is
+proved in Section~\ref{sec:gf}.
+
+\section{Ap\'ery sets and two elementary reductions}\label{sec:reduction}
+
+\subsection{The residue description of all gaps}
+
+A numerical semigroup is an additive submonoid of $\N$ with finite
+complement. Positive integers with gcd one generate such a semigroup:
+modulo any one generator, their residues generate the entire finite cyclic
+group, and a submonoid of a finite group is a subgroup. Thus each residue
+has a nonnegative representative; adding multiples of the chosen generator
+proves cofiniteness.
+
+For a numerical semigroup $S$ and $m\in S\setminus\{0\}$, let $w_r$ be the
+least element of $S$ congruent to $r$ modulo $m$, for $0\leq r<m$. The
+Ap\'ery set is
+\[
+\Ap(S;m)=\{w_0,\ldots,w_{m-1}\}.
+\]
+In residue $r$, the gaps are exactly
+\begin{equation}\label{eq:resgaps}
+r,\ r+m,\ldots,\ w_r-m,
+\end{equation}
+with the list empty when $w_r=r$. In particular $w_0=0$, so zero is never
+counted as a gap. It follows directly that
+\begin{equation}\label{eq:apfacts}
+F(S)=\max_r w_r-m,
+\qquad
+ g(S)=\#(\N\setminus S)=\frac1m\sum_r w_r-\frac{m-1}{2},
+\end{equation}
+and, as a formal power series,
+\begin{equation}\label{eq:hilbert}
+H_S(z):=\sum_{s\in S}z^s
+=\frac{\sum_{w\in\Ap(S;m)}z^w}{1-z^m}.
+\end{equation}
+These facts are standard in numerical-semigroup theory; the short derivation
+above fixes all indexing conventions used in this report. The gcd reduction
+below is the mechanism behind the classical Johnson Frobenius reduction
+recalled in \cite{rr}, but we prove the full normal form needed here.
+
+\subsection{A rectangular lifting lemma}
+
+\begin{lemma}[Two-stage normal form]\label{lem:lift}
+Let $a,b,c$ be positive integers with gcd one. Set
+\[
+d=\gcd(a,b),\quad e=\gcd(b,c),\quad
+ A=a/d,\quad B=b/(de),\quad C=c/e.
+\]
+Then $d,e$ are coprime, the displayed quantities are positive integers, and
+with $T=\langle A,B,C\rangle$ one has the disjoint decomposition
+\begin{equation}\label{eq:rect}
+\langle a,b,c\rangle
+=\bigsqcup_{\substack{0\leq i<e\\0\leq j<d}}
+\bigl(ia+jc+de\,T\bigr).
+\end{equation}
+The offsets give all residues modulo $de$. Moreover,
+\begin{equation}\label{eq:liftap}
+\Ap(\langle a,b,c\rangle;b)
+=\{de\,w+ia+jc:w\in\Ap(T;B),\ 0\leq i<e,\ 0\leq j<d\}.
+\end{equation}
+Consequently,
+\begin{align}
+F(\langle a,b,c\rangle)
+ &=deF(T)+(e-1)a+(d-1)c,\label{eq:johnson}\\
+g(\langle a,b,c\rangle)
+ &=de\,g(T)+\frac{(e-1)a+(d-1)c-de+1}{2}.\label{eq:genuslift}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Any common divisor of $d,e$ divides $a,b,c$, hence $\gcd(d,e)=1$ and
+$de\mid b$. Also $\gcd(d,c)=\gcd(e,A)=1$.
+In a representation $ua+vb+wc$, reduce the coefficient $w$ modulo $d$.
+This gives uniquely a residue $0\leq j<d$ and a remainder in
+$d\langle A,eB,c\rangle$. In that remainder reduce the coefficient of $A$
+modulo $e$. This gives $0\leq i<e$ and a remainder in
+$e\langle A,B,C\rangle$. Conversely, every expression on the right of
+\eqref{eq:rect} is a nonnegative combination of $a,b,c$, since
+$deA=ea$, $deB=b$, and $deC=dc$.
+
+If two offsets are equal modulo $de$, reduction modulo $d$ first forces
+their $j$ values to agree, because $c$ is invertible modulo $d$. After
+division by $d$, reduction modulo $e$ forces their $i$ values to agree,
+because $A$ is invertible modulo $e$. This proves disjointness and shows
+that all $de$ residues occur. For each fixed offset, minimizing further
+modulo $b=deB$ is exactly the Ap\'ery minimization in $T$ modulo $B$.
+This proves \eqref{eq:liftap}.
+
+Taking the maximum in \eqref{eq:liftap} proves \eqref{eq:johnson}.
+Its sum is
+\[
+(de)^2\sum_{w\in\Ap(T;B)}w
++Bde\left(\frac{e-1}{2}a+\frac{d-1}{2}c\right).
+\]
+Apply \eqref{eq:apfacts}, with modulus $deB$, to obtain
+\eqref{eq:genuslift}.
+\end{proof}
+
+\subsection{The gcds of consecutive square-pyramidal numbers}
+
+Throughout the remainder of the paper, unless otherwise specified,
+\begin{equation}\label{eq:params}
+\begin{gathered}
+a=s_n,\qquad b=s_{n+1},\qquad c=s_{n+2},\\
+k=\gcd(n+1,6),\quad \ell=\gcd(n+2,6),\qquad
+ d=\frac{n+1}{k},\quad e=\frac{n+2}{\ell},\\
+A=\frac{k n(2n+1)}6,\qquad
+B=\frac{k\ell(2n+3)}6,\qquad
+C=\frac{\ell(n+3)(2n+5)}6.
+\end{gathered}
+\end{equation}
+The relation between these symbols and Lemma~\ref{lem:lift} is exact.
+
+\begin{lemma}\label{lem:gcd}
+One has $\gcd(a,b)=d$, $\gcd(b,c)=e$, and $\gcd(a,b,c)=1$.
+The values of $k,\ell,B$ are given by Table~\ref{tab:params}. In particular,
+$\gcd(k,\ell)=1$, $B$ is odd, and $B\equiv1\pmod{k}$.
+\end{lemma}
+
+\begin{proof}
+For $m=n+1$,
+\[
+\gcd(s_{m-1},s_m)=\gcd\left(\frac{(m-1)m(2m-1)}6,m^2\right).
+\]
+If a prime $p\geq5$ divides $m$, neither $m-1$ nor $2m-1$ is divisible by
+$p$, so the $p$-adic valuation of this gcd is $v_p(m)$. If $2\mid m$,
+the other two factors are odd and the valuation is $v_2(m)-1$; if
+$3\mid m$, the valuation is $v_3(m)-1$. Primes not dividing $m$ do not
+contribute. Thus the gcd is $m/\gcd(m,6)$, proving the two adjacent-gcd
+formulas. A common divisor of $a,b,c$ divides both
+$b-a=(n+1)^2$ and $c-b=(n+2)^2$, which are coprime. The table is obtained
+by evaluating two gcds modulo six. Its remaining assertions follow at once.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\caption{The reduced parameters. The linear modulus $B$ replaces the
+original cubic modulus $b$.}\label{tab:params}
+\begin{tabular}{ccccc}
+\toprule
+$n\bmod6$ & $k$ & $\ell$ & $B$ & gaps of $\langle k,\ell\rangle$\\
+\midrule
+0 & 1 & 2 & $(2n+3)/3$ & none\\
+1 & 2 & 3 & $2n+3$ & $\{1\}$\\
+2 & 3 & 2 & $2n+3$ & $\{1\}$\\
+3 & 2 & 1 & $(2n+3)/3$ & none\\
+4 & 1 & 6 & $2n+3$ & none\\
+5 & 6 & 1 & $2n+3$ & none\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The decisive identities are
+\begin{equation}\label{eq:key}
+\boxed{\ kC-\ell A=5B\ },\qquad
+2A\equiv k\pmod B,\qquad 2C\equiv\ell\pmod B.
+\end{equation}
+For completeness, exact forms of the congruences are
+\begin{equation}\label{eq:exactcong}
+2A-k=B\frac{2(n-1)}{\ell},\qquad
+2C-\ell=B\frac{2(n+4)}k.
+\end{equation}
+Both quotients are integers in each row of Table~\ref{tab:params}.
+The first identity follows by subtracting the two quadratic expressions in
+\eqref{eq:params}. No approximation is involved in these reductions.
+
+\section{A bounded-coefficient Ap\'ery theorem}\label{sec:apery}
+
+\subsection{A reusable reduction principle}
+
+\begin{lemma}[Least auxiliary residue principle]\label{lem:aux}
+Let $A,B,C,k,\ell,H$ be positive integers with $\gcd(k,\ell)=1$. Suppose
+\[
+kC-\ell A=HB,
+\qquad tA\equiv k\pmod B,\qquad tC\equiv\ell\pmod B,
+\qquad \gcd(t,B)=1.
+\]
+Assume $A>H(k-1)$. For each residue modulo $B$, take the least nonnegative
+member $L$ of $\langle k,\ell\rangle$ in that residue. Let
+\[
+0\leq v(L)<k,\quad \ell v(L)\equiv L\pmod k,
+\qquad u(L)=\frac{L-\ell v(L)}k.
+\]
+Then
+\begin{equation}\label{eq:weightgeneral}
+\Ap(\langle A,B,C\rangle;B)
+=\left\{Au(L)+Cv(L)\right\}
+=\left\{\frac{AL+HBv(L)}k\right\},
+\end{equation}
+where $L$ runs through the selected $B$ auxiliary representatives.
+\end{lemma}
+
+\begin{proof}
+Every candidate for a least residue representative can be written using
+$A,C$ only, because a positive coefficient of $B$ can be removed. Replacing
+$kC$ by $\ell A$ lowers the value by $HB$ without changing its residue
+modulo $B$. Thus a minimizing representation has its coefficient of $C$
+in $[0,k-1]$.
+
+For a normalized representation $uA+vC$, set $L=ku+\ell v$.
+The congruence class of $L$ modulo $B$ is $t(uA+vC)$, so auxiliary residues
+and value residues correspond bijectively. For any representable $L$, the
+normalized coefficient $v(L)$ is unique, and its coefficient $u(L)$ is
+nonnegative: normalize any nonnegative representation of $L$ in
+$\langle k,\ell\rangle$ by reducing its coefficient of $\ell$ modulo $k$.
+The relation gives the second formula in \eqref{eq:weightgeneral}.
+
+Let $L$ be the least representable auxiliary integer in a fixed residue.
+Every other representable auxiliary integer there is $L+qB$, with $q\geq1$.
+The corresponding difference of normalized weights is
+\[
+\frac{B}{k}\left(Aq+H\bigl(v(L+qB)-v(L)\bigr)\right)
+\geq\frac{B}{k}\bigl(A-H(k-1)\bigr)>0.
+\]
+Hence the least auxiliary integer gives the least value. There is one such
+integer in every residue because $\langle k,\ell\rangle$ has gcd one.
+This proves both completeness and minimality.
+\end{proof}
+
+The point of this lemma is not merely to reduce the number of generators.
+It replaces an unbounded coefficient search by a bounded coefficient
+$0\leq v<k$ and a least-residue problem in a fixed, very small semigroup.
+The constant $H$ need not equal five, and the parameter family need not be
+square-pyramidal.
+
+\subsection{The complete reduced Ap\'ery set}
+
+For the parameters \eqref{eq:params}, define
+\begin{equation}\label{eq:Lset}
+\mathcal L_n=
+\begin{cases}
+\bigl(\{0,1,\ldots,B-1\}\setminus\{1\}\bigr)\cup\{B+1\},
+   & n\equiv1,2\pmod6,\\
+\{0,1,\ldots,B-1\},&\text{otherwise}.
+\end{cases}
+\end{equation}
+For $L\in\mathcal L_n$, put
+\begin{equation}\label{eq:vuw}
+\begin{gathered}
+v(L)\in\{0,\ldots,k-1\},\qquad \ell v(L)\equiv L\pmod k,\\
+u(L)=\frac{L-\ell v(L)}k,\qquad
+w(L)=Au(L)+Cv(L)=\frac{AL+5Bv(L)}k.
+\end{gathered}
+\end{equation}
+When $k=1$, the definition means simply $v(L)=0$.
+
+\begin{theorem}[Explicit Ap\'ery normal form]\label{thm:apery}
+For every $n\geq2$,
+\begin{equation}\label{eq:smallap}
+\Ap(\langle A,B,C\rangle;B)=\{w(L):L\in\mathcal L_n\},
+\end{equation}
+and
+\begin{equation}\label{eq:fullap}
+\boxed{\ \Ap(S_n;b)=
+\{de\,w(L)+ia+jc:L\in\mathcal L_n,\ 0\leq i<e,\ 0\leq j<d\}\ }.
+\end{equation}
+All the representatives in \eqref{eq:fullap} have different residues
+modulo $b$. Thus this formula gives every gap by \eqref{eq:resgaps}.
+\end{theorem}
+
+\begin{proof}
+Table~\ref{tab:params} shows that the only missing auxiliary integer is
+$1$, precisely in the two rows with generators $2,3$. This proves that
+\eqref{eq:Lset} consists of the least representable auxiliary integers in
+each residue modulo $B$.
+
+For $n\geq3$, one has $A>5(k-1)$. For $k=1$ the assertion is immediate.
+For $k=2$ the smallest relevant $n$ is $3$, giving $A=7>5$; for $k=3$
+it is $8$, giving $A=68>10$; and for $k=6$ it is $5$, giving
+$A=55>25$. In each of these rows $A$ increases with $n$.
+Apply Lemma~\ref{lem:aux} with $H=5$ and $t=2$, using that $B$ is odd.
+This proves \eqref{eq:smallap} for $n\geq3$.
+
+At $n=2$, the parameters are $(A,B,C)=(5,7,15)$ and
+$\mathcal L_2=\{0,2,3,4,5,6,8\}$. The corresponding weights are
+$0,15,5,30,20,10,25$, exactly the set
+$\{0,5,10,15,20,25,30\}=\Ap(\langle5,7\rangle;7)$.
+Since $15=3\cdot5$, this is also the required Ap\'ery set for
+$\langle5,7,15\rangle$. This explicit check covers the only value for
+which the sufficient inequality in Lemma~\ref{lem:aux} fails.
+Finally apply Lemma~\ref{lem:lift}.
+\end{proof}
+
+\section{Taking the maximum and explaining all six exceptions}\label{sec:max}
+
+Write $M=\max_{L\in\mathcal L_n}w(L)$. The Frobenius number of the reduced
+semigroup is $M-B$, and \eqref{eq:johnson} gives
+\begin{equation}\label{eq:FfromM}
+F_n=de(M-B)+(e-1)a+(d-1)c.
+\end{equation}
+The only task remaining for the largest gap is to identify $M$.
+
+\begin{table}[ht]
+\centering
+\caption{Exact maximum candidates; both candidates are needed at the small
+exceptional indices.}\label{tab:max}
+\begin{tabular}{cp{0.71\textwidth}}
+\toprule
+$n\bmod6$ & $M$\\
+\midrule
+$0,4$ & $A(B-1)$\\[4pt]
+$1$ & $\max\{A(B+1)/2,\ A(B-5)/2+C\}$\\[4pt]
+$2$ & $\max\{A(B-1)/3+C,\ A(B-7)/3+2C\}$\\[4pt]
+$3$ & $\max\{A(B-1)/2,\ A(B-3)/2+C\}$\\[4pt]
+$5$ & $\max\{A(B-1)/6,\ A(B-7)/6+5C\}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+To verify Table~\ref{tab:max}, fix $v$. The weight $Au+Cv$ increases with
+$u$, so only the largest allowed $u$ matters. Since $B\equiv1\pmod k$,
+that largest value, before the possible extra auxiliary integer $B+1$, is
+\begin{equation}\label{eq:U}
+U_v=\frac{B-1}{k}-\ceil{\frac{\ell v}{k}}.
+\end{equation}
+For residue $1$, the extra $B+1$ has $v=0$ and supplies the first candidate.
+For residue $2$, it has $v=1$ and supplies the first candidate; the $v=0$
+candidate is smaller by $C$. For residue $5$, all $v=1,\ldots,5$ have
+$u=(B-7)/6$, so only $v=5$ competes with $v=0$. The other rows are
+immediate. This derives every candidate rather than inferring it from data.
+
+The second candidate minus the first is, respectively,
+\begin{equation}\label{eq:signs}
+\begin{array}{c|c|c}
+n\bmod6 & \text{difference} & \text{first candidate wins from}\\ \hline
+1 & C-3A=(5B-3A)/2 & n=7\\
+2 & C-2A=(5B-4A)/3 & n=8\\
+3 & C-A=(5B-A)/2 & n=9\\
+5 & 5C-A=(25B-A)/6 & n=29.
+\end{array}
+\end{equation}
+Here ``from'' means along the indicated residue class. The signs reduce to
+quadratic inequalities. In the first row the numerator $5B-3A$ is
+$-2n^2+9n+15$; in the second, $5B-4A=-4n^2+8n+15$; in the third,
+$5B-A=(-2n^2+9n+15)/3$; and in the fourth,
+$25B-A=-2n^2+49n+75$. These are negative at and beyond the listed
+thresholds. They are positive at the earlier allowed indices, namely
+$2$, $3$, and $5,11,17,23$ in the last three rows. There are no earlier
+allowed indices in the first row because $n\geq2$.
+
+Substituting the first candidates into \eqref{eq:FfromM} and simplifying
+gives the four polynomials in Table~\ref{tab:branches}. At an exceptional
+index the correction is $de$ times the positive difference in
+\eqref{eq:signs}. This gives exactly Table~\ref{tab:exceptions}, proving
+the formula and the sharp cutoff in Theorem~\ref{thm:main}.
+
+\paragraph{Why early interpolation is hazardous.}
+The exceptional behavior is caused by a genuine change of maximizing
+Ap\'ery element, not by an indexing error. In residue class five the
+exceptional branch persists through $n=23$. A polynomial fitted only to
+small values in that residue can therefore look consistent while describing
+the wrong eventual branch. The normal form identifies the exact competition
+and proves where it ends.
+
+\section{All gaps, constructive membership, and a worked example}\label{sec:membership}
+
+\subsection{Membership without constructing the Ap\'ery set}
+
+The normal form yields a bounded-operation membership procedure. Given an
+integer $x$, choose
+\begin{equation}\label{eq:decode}
+\begin{gathered}
+0\leq j<d,\qquad jc\equiv x\pmod d,\qquad
+ y=\frac{x-jc}{d},\\
+0\leq i<e,\qquad iA\equiv y\pmod e,\qquad
+ z=\frac{y-iA}{e}.
+\end{gathered}
+\end{equation}
+The congruences have unique solutions because of the coprimalities proved
+in Lemma~\ref{lem:lift}. A congruence modulo one simply selects zero.
+Let $L_0$ be the least residue of $2z$ modulo $B$. Set $L=L_0$, except that
+$L=B+1$ when $L_0=1$ and $n\equiv1,2\pmod6$.
+
+\begin{corollary}[Membership and representation certificate]\label{cor:membership}
+With the definitions above,
+\begin{equation}\label{eq:membership}
+x\in S_n\quad\Longleftrightarrow\quad z\geq w(L).
+\end{equation}
+When membership holds, $q=(z-w(L))/B$ is a nonnegative integer and
+\begin{equation}\label{eq:repr}
+\boxed{\ x=(i+e\,u(L))a+q b+(j+d\,v(L))c\ }.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The decoding recovers the unique offset class in \eqref{eq:rect}, even when
+$x$ or an intermediate quotient is negative. The congruences in
+\eqref{eq:key} imply $2w(L)\equiv L\equiv2z\pmod B$, so $w(L)$ is the
+least reduced representative in the residue of $z$. Since $2$ is invertible
+modulo $B$, the difference $z-w(L)$ is a multiple of $B$. Theorem~\ref{thm:apery}
+now proves \eqref{eq:membership}; substituting the definitions proves
+\eqref{eq:repr}. All its coefficients are nonnegative.
+\end{proof}
+
+For fixed $n$, the two modular inverses can be precomputed. Each subsequent
+membership query uses a bounded number of exact arithmetic operations,
+independent of $b$ and $F_n$. This is an arithmetic-operation statement, not
+a claim that arbitrarily large integers take constant bit time. The program
+\texttt{representation} in \texttt{verify.py} implements the formula and
+returns either a nonnegative coefficient triple or \texttt{None}.
+
+\subsection{The complete generating function of the semigroup}
+
+Writing $R_m(t)=1+t+\cdots+t^{m-1}$, \eqref{eq:fullap} gives
+\begin{equation}\label{eq:fullhilbert}
+H_{S_n}(z)=
+\frac{R_e(z^a)R_d(z^c)}{1-z^b}
+\sum_{L\in\mathcal L_n}z^{de\,w(L)}.
+\end{equation}
+Consequently the \emph{gap polynomial} is exactly
+\begin{equation}\label{eq:gappoly}
+\sum_{t\in\Gap(S_n)}z^t=\frac1{1-z}-H_{S_n}(z).
+\end{equation}
+The right side is a polynomial despite its displayed rational form: the
+residue description proves that all sufficiently large coefficients cancel.
+This is a full description of the complement, not just an estimate for its
+largest element.
+
+\subsection{The exceptional case \texorpdfstring{$n=5$}{n=5}}
+
+Here $(a,b,c)=(55,91,140)$, $(d,e)=(1,7)$, $(k,\ell)=(6,1)$, and
+$(A,B,C)=(55,13,20)$. The relation is $6\cdot20-55=5\cdot13$.
+For $L=0,\ldots,12$, the reduced weights are
+\[
+0,20,40,60,80,100,55,75,95,115,135,155,110.
+\]
+Their maximum is $155$ at $L=11$, not the eventual-branch candidate
+$110$ at $L=12$. Hence
+\[
+F(\langle55,13,20\rangle)=155-13=142,
+\qquad F_5=7\cdot142+6\cdot55=1324.
+\]
+The largest original Ap\'ery representative is
+$7\cdot155+6\cdot55=1415$, and subtracting $b=91$ gives the same
+Frobenius number. The reduced sum is $1040$, so its genus is
+$1040/13-6=74$; the original genus is
+$7\cdot74+(330-7+1)/2=680$.
+The entire exception is therefore explained by a single visible change of
+maximum in a thirteen-element set.
+
+\section{The genus, symmetry, and every gap moment}\label{sec:moments}
+
+\subsection{A genus formula with no exceptions}
+
+Let $g_n=\#\Gap(S_n)$, and define the six-periodic sequence
+\begin{equation}\label{eq:J}
+J_n=(0,9,8,9,0,5)_{n\bmod6}.
+\end{equation}
+
+\begin{theorem}[Exact genus]\label{thm:genus}
+For every $n\geq2$,
+\begin{equation}\label{eq:genus}
+\boxed{\
+g_n=\frac{n(n+1)(4n^3+28n^2+73n+102)
+             -5J_n(n+1)(n+2)}{72}\ }.
+\end{equation}
+There are no exceptional indices. In particular,
+\begin{equation}\label{eq:genusexp}
+g_n=\frac{n^5}{18}+\frac{4n^4}{9}+\frac{101n^3}{72}
++\frac{175-5J_n}{72}n^2+\frac{102-15J_n}{72}n-\frac{5J_n}{36}.
+\end{equation}
+Thus the first three coefficients are independent of the residue class.
+\end{theorem}
+
+\begin{proof}
+Put $\eta=1$ in residues $1,2$ and $\eta=0$ otherwise. Directly from
+\eqref{eq:Lset},
+\[
+\sum_{L\in\mathcal L_n}L=\frac{B(B-1)}2+B\eta.
+\]
+The sum $V=\sum_{L\in\mathcal L_n}v(L)$ is
+\begin{equation}\label{eq:V}
+\begin{array}{c|rrrrrr}
+n\bmod6&0&1&2&3&4&5\\ \hline
+V&0&(B-3)/2&B-2&(B-1)/2&0&5(B-1)/2.
+\end{array}
+\end{equation}
+For example, in residue $2$ the unmodified interval contributes $B-1$;
+removing $L=1$ removes $v=2$, and adding $L=B+1$ adds $v=1$.
+In residue $1$ the analogous change removes one. The other rows just sum
+complete periods of $v(L)$.
+
+Using \eqref{eq:vuw} and \eqref{eq:apfacts}, the reduced genus is
+\begin{equation}\label{eq:redgenus}
+g(T)=\frac Ak\left(\frac{B-1}{2}+\eta\right)
+       +\frac5k V-\frac{B-1}{2}.
+\end{equation}
+Insert this into \eqref{eq:genuslift} and use
+\eqref{eq:params}. The result in each of the six rows is
+\eqref{eq:genus}. All identities remain valid at $n=2$ by the explicit
+Ap\'ery set already proved in Theorem~\ref{thm:apery}.
+\end{proof}
+
+\begin{corollary}[Exact symmetry classification]\label{cor:symmetry}
+The semigroup $S_n$ is symmetric if and only if
+\begin{equation}\label{eq:symmetric}
+n=2\quad\text{or}\quad n\equiv0,4\pmod6.
+\end{equation}
+For every other $n\geq2$, it is nonsymmetric, although
+$g_n/F_n\longrightarrow1/2$.
+\end{corollary}
+
+\begin{proof}
+A numerical semigroup is symmetric when for every integer $t$ exactly one
+of $t,F-t$ belongs to it. Pairing the integers in $[0,F]$ shows the standard
+equivalence with $2g=F+1$: both members of a pair cannot be in the
+semigroup, and equality means there are no pairs with both members gaps.
+Here direct subtraction gives
+\begin{equation}\label{eq:defect}
+2g_n-F_n-1=
+\begin{cases}
+0,&n\equiv0,4\pmod6,\\
+\dfrac{5n(n+1)(n+2)}6-\eps_n,&n\equiv1,3\pmod6,\\
+\dfrac{5(n+1)(n+2)(2n-1)}{18}-\eps_n,&n\equiv2\pmod6,\\
+\dfrac{25(n+1)^2(n+2)}{18}-\eps_n,&n\equiv5\pmod6.
+\end{cases}
+\end{equation}
+At the exceptional indices $2,3,5,11,17,23$, the actual defects are
+$0,10,35,988,5415,17600$. Outside them the nonzero branches are positive.
+This proves the classification. The asymptotic ratio follows from the
+leading terms of \eqref{eq:asympF} and \eqref{eq:genusexp}.
+\end{proof}
+
+\subsection{A closed formula for every power sum}
+
+For an integer $p\geq0$, define
+\[
+M_p(n)=\sum_{t\in\Gap(S_n)}t^p,
+\qquad M_0(n)=g_n.
+\]
+Let $\Bern_j(X)$ be the Bernoulli polynomials in the convention
+\[
+\frac{u e^{Xu}}{e^u-1}=\sum_{j\geq0}\Bern_j(X)\frac{u^j}{j!},
+\qquad \beta_j=\Bern_j(0),\quad \beta_1=-\frac12.
+\]
+
+\begin{proposition}[Ap\'ery--Bernoulli moment formula]\label{prop:bernoulli}
+For a numerical semigroup $S$ and $m\in S\setminus\{0\}$,
+\begin{equation}\label{eq:moment}
+\boxed{\ \sum_{t\in\Gap(S)}t^p
+=\frac{m^p}{p+1}\sum_{w\in\Ap(S;m)}
+       \Bern_{p+1}(w/m)-\frac{\beta_{p+1}}{p+1}\ }.
+\end{equation}
+In particular, for $S=S_n$, the representatives in
+Theorem~\ref{thm:apery} give a finite exact formula for every $M_p(n)$.
+\end{proposition}
+
+\begin{proof}
+Write $w_r=r+m q_r$. Summing powers in the arithmetic progression
+\eqref{eq:resgaps} gives
+\[
+\sum_{j=0}^{q_r-1}(r+mj)^p
+=\frac{m^p}{p+1}
+ \left(\Bern_{p+1}(w_r/m)-\Bern_{p+1}(r/m)\right).
+\]
+The Bernoulli multiplication identity
+$\sum_{r=0}^{m-1}\Bern_{p+1}(r/m)=m^{-p}\beta_{p+1}$
+follows immediately by summing the defining generating functions.
+Now sum over $r$.
+\end{proof}
+
+The classical power-sum identity in this proposition is not a novelty claim.
+What makes it effective here is the complete uniform description of its
+Ap\'ery input. The next theorem gives a global consequence for all moment
+orders, without requiring each polynomial to be separately guessed.
+
+\begin{theorem}[Exact all-orders moment quasipolynomials]\label{thm:allmoments}
+For every fixed integer $p\geq0$, $M_p(n)$ is a quasipolynomial of period
+dividing six for all $n\geq2$. Each residue-class polynomial has degree
+$5(p+1)$ and leading coefficient
+\begin{equation}\label{eq:momentleading}
+\frac{1}{9^{p+1}(p+1)(p+2)}.
+\end{equation}
+Thus every moment has a complete finite asymptotic expansion with periodic
+coefficients. No exceptional corrections are needed for the moments.
+\end{theorem}
+
+\begin{proof}
+First prove quasipolynomiality. Fix $n\bmod6$, so $k,\ell$ are constant.
+For each $v=0,\ldots,k-1$, the representable auxiliary integers in
+$[0,B-1]$ have $L=ku+\ell v$, with $0\leq u\leq U_v$ from
+\eqref{eq:U}. In residues $1,2$, add the single extra weight at $B+1$.
+Consequently, for any $j\geq0$,
+\begin{equation}\label{eq:redsums}
+\sum_{L\in\mathcal L_n}w(L)^j
+=\sum_{v=0}^{k-1}\sum_{u=0}^{U_v}(Au+Cv)^j
+ +\eta\,w(B+1)^j.
+\end{equation}
+When $\eta=0$ the last term is omitted. Every $U_v$, $d$, and $e$ is an
+affine function of $n$ on the fixed residue class. All their relevant
+values and all displayed ranges are valid for the allowed $n\geq2$.
+Expanding powers and summing ordinary powers proves that every power sum
+of the full representatives $de\,w+ia+jc$ is a polynomial in $n$ on that
+residue class. Formula \eqref{eq:moment} therefore expresses $M_p(n)$ as a
+\emph{rational function} of $n$ with rational coefficients.
+
+There is a useful elementary integrality argument to remove the possible
+denominator. If $R(q)\in\Q(q)$ is integral for all sufficiently large
+integers $q$, perform polynomial division $R=Q+U$, with
+$Q\in\Q[q]$ and $U(q)\to0$. A fixed integer $D>0$ clears all coefficients
+of $Q$, so $U(q)\in D^{-1}\Z$ at those integer arguments. For large $q$,
+$|U(q)|<1/D$, hence $U(q)=0$. A rational function with infinitely many
+zeros is identically zero. Thus $R$ is a polynomial. Apply this to
+$n=6q+r$ and $M_p(6q+r)$. Since the rational formula was already valid
+for every allowed $n\geq2$, its polynomial simplification is valid at
+all those indices, not merely eventually.
+
+The degree and leading coefficient follow from the independently proved
+limit law in Section~\ref{sec:limit}, which uses only the Ap\'ery normal
+form and the Frobenius formula, not the present quasipolynomiality claim.
+Specifically it gives
+\[
+M_p(n)\sim\frac{F_n^{p+1}}{(p+1)(p+2)}
+\sim\frac{n^{5p+5}}{9^{p+1}(p+1)(p+2)}.
+\]
+A polynomial with this positive asymptotic leading term has exactly the
+stated degree and leading coefficient in every residue class.
+\end{proof}
+
+For example, the first gap-power sum starts
+\begin{equation}\label{eq:firstmomexp}
+M_1(n)=\frac{n^{10}}{486}+\frac{29n^9}{972}
+       +\frac{395n^8}{1944}+c_{n\bmod6}n^7+O(n^6),
+\end{equation}
+where
+\[
+(c_0,c_1,c_2,c_3,c_4,c_5)
+=\frac1{3888}(3455,3185,3215,3185,3455,3305).
+\]
+Appendix~\ref{app:firstmoment} gives all terms exactly.
+The program \texttt{derive\_moments.py} implements \eqref{eq:redsums}, the
+rectangular lift, and \eqref{eq:moment}; it generates the polynomial
+for a requested order by symbolic summation, not interpolation. Exact
+order-one and order-two outputs accompany the report.
+
+\section{A general gap-limit principle and the triangular law}\label{sec:limit}
+
+\subsection{Transferring a limit of Ap\'ery sets}
+
+Let $S_j$ be a sequence of numerical semigroups with Frobenius numbers
+$F_j\to\infty$. Choose any $m_j\in S_j\setminus\{0\}$ such that
+$m_j/F_j\to0$. Define the normalized empirical Ap\'ery measure
+\[
+\nu_j=\frac1{m_j}\sum_{w\in\Ap(S_j;m_j)}\delta_{w/F_j}.
+\]
+Its support is contained in $[0,1+m_j/F_j]$, since the maximum Ap\'ery
+element is $F_j+m_j$.
+
+\begin{samepage}
+\begin{theorem}[Gap-limit transfer principle]\label{thm:transfer}
+Suppose $\nu_j$ converges weakly to a probability measure $\nu$ on $[0,1]$.
+Put $\mu=\int t\dd\nu(t)$. Then $\mu\geq1/2$, and the cumulative
+distribution of a uniformly chosen gap divided by $F_j$ converges uniformly
+on $[0,1]$ to
+\begin{equation}\label{eq:transfer}
+G(x)=\frac{\displaystyle\int_0^1\min(x,t)\dd\nu(t)}{\mu}.
+\end{equation}
+The limit is absolutely continuous and has a nonincreasing density
+\begin{equation}\label{eq:transferdensity}
+g(x)=\frac{\nu((x,1])}{\mu}\quad\text{for almost every }x\in(0,1),
+\qquad 0\leq g(x)\leq2.
+\end{equation}
+Thus its cumulative distribution is concave.
+\end{theorem}
+\end{samepage}
+
+\begin{proof}
+For $0\leq x\leq1$, count the gaps in each residue class using
+\eqref{eq:resgaps}. The number in residue $r$ not exceeding $xF_j$ differs
+from $\min(xF_j,w_r)/m_j$ by at most an absolute constant. Hence, uniformly
+in $x$,
+\begin{equation}\label{eq:count}
+\#\{t\in\Gap(S_j):t\leq xF_j\}
+=F_j\int\min(x,t)\dd\nu_j(t)+O(m_j).
+\end{equation}
+At $x=1$ this, or the exact genus formula, gives
+$g(S_j)/F_j\to\mu$.
+Pairing $t$ and $F_j-t$ shows $g(S_j)\geq(F_j+1)/2$, so $\mu\geq1/2$.
+
+The integrands $\min(x,t)$ are uniformly bounded and uniformly Lipschitz
+in both variables on the relevant compact interval. Weak convergence,
+a finite mesh in $x$, and the Lipschitz bound therefore give uniform
+convergence of their integrals. Divide \eqref{eq:count} by the genus to
+obtain \eqref{eq:transfer}. Finally,
+\[
+\int\min(x,t)\dd\nu(t)=\int_0^x\nu((u,1])\dd u.
+\]
+This identity follows by integrating the indicator $\ind_{\{u<t\}}$ and
+interchanging two nonnegative integrals. It proves absolute continuity,
+the density formula, monotonicity, and the bound $g\leq1/\mu\leq2$.
+\end{proof}
+
+The transfer principle gives a useful necessary shape constraint for
+limiting gap distributions whenever a semigroup modulus is negligible
+relative to the Frobenius number. By compactness, every subsequential
+limit can be treated after extracting a subsequence of the Ap\'ery
+measures. This concerns the \emph{sizes of the gaps}; it is not a
+statement about distributions of factorization lengths or about random
+choice of a numerical semigroup.
+
+\subsection{Uniform Ap\'ery distribution for square-pyramidal generators}
+
+\begin{theorem}[Quantitative triangular gap law]\label{thm:triangular}
+Let $X_n$ be uniformly distributed on $\Gap(S_n)$. There is an absolute
+constant $C$ such that for every $n\geq2$,
+\begin{equation}\label{eq:triangle}
+\boxed{\ \sup_{0\leq x\leq1}
+\left|\Prob\!\left(\frac{X_n}{F_n}\leq x\right)-(2x-x^2)\right|
+\leq\frac Cn\ }.
+\end{equation}
+In particular, $X_n/F_n$ converges to the probability density
+$2(1-x)$ on $[0,1]$. For each fixed integer $p\geq0$,
+\begin{align}
+\E\left[\left(\frac{X_n}{F_n}\right)^p\right]
+ &=\frac{2}{(p+1)(p+2)}+O_p(n^{-1}),\label{eq:normalizedmom}\\
+M_p(n)&=\frac{n^{5p+5}}{9^{p+1}(p+1)(p+2)}
+           +O_p(n^{5p+4}).\label{eq:momasympt}
+\end{align}
+The limiting normalized mean and variance are $1/3$ and $1/18$.
+\end{theorem}
+
+\begin{proof}
+Use the original modulus $m=b$, so $m=O(n^3)$ and
+$m/F_n=O(n^{-2})$. Write a full representative as
+$W=de\,w(L)+ia+jc$. Define the residue-independent polynomial
+\begin{equation}\label{eq:Tscale}
+T_n:=\frac{deAB}{k}
+=\frac{n(n+1)(n+2)(2n+1)(2n+3)}{36}.
+\end{equation}
+Then \eqref{eq:vuw} gives
+\[
+W=T_n\frac LB+\frac{5deB}{k}v(L)+ia+jc.
+\]
+Here $v(L)\leq5$, $d,e=O(n)$, $A,C=O(n^2)$,
+$B\asymp n$, and $a,c=O(n^3)$, uniformly over all six residues.
+Thus the last three terms are $O(n^4)$, while
+$F_n\asymp n^5$ and $T_n/F_n=1+O(n^{-1})$. Since
+$0\leq L\leq B+1$, it follows that
+\begin{equation}\label{eq:coupling}
+\left|\frac W{F_n}-\frac LB\right|=O(n^{-1})
+\end{equation}
+uniformly over \emph{every} representative in \eqref{eq:fullap}.
+
+Each $L$ occurs with exactly the same multiplicity $de$. The empirical
+measure on the numbers $L/B$ differs from the uniform grid
+$0,1/B,\ldots,(B-1)/B$ by at most one replacement. Its integral against a
+bounded Lipschitz function therefore differs from the integral against
+uniform measure on $[0,1]$ by $O(1/B)=O(1/n)$.
+For the uniformly bounded $1$-Lipschitz functions $t\mapsto\min(x,t)$,
+\eqref{eq:coupling} gives, uniformly in $x\in[0,1]$,
+\begin{equation}\label{eq:minlimit}
+\frac1b\sum_{W\in\Ap(S_n;b)}\min(x,W/F_n)
+=\int_0^1\min(x,t)\dd t+O(n^{-1})
+=x-\frac{x^2}{2}+O(n^{-1}).
+\end{equation}
+Apply \eqref{eq:count}. The genus satisfies
+$g_n/F_n=1/2+O(n^{-1})$ (indeed the exact formulas give a stronger error).
+Division gives \eqref{eq:triangle} for all sufficiently large $n$.
+Enlarging the constant covers the finitely many smaller values.
+
+Integrating against $x^p$ yields
+$\int_0^1 2x^p(1-x)\dd x=2/((p+1)(p+2))$.
+The uniform cumulative-distribution error gives the same $O_p(n^{-1})$
+error for each fixed moment; at $p=0$ the identity is exact. Multiply by
+$g_nF_n^p$ and use the leading Frobenius and genus terms to prove
+\eqref{eq:momasympt}. The mean and variance follow from the first two
+normalized moments.
+\end{proof}
+
+The limit theorem is not based on a histogram. It follows from a uniform
+comparison of every normalized Ap\'ery representative with a regular grid.
+The $O(n^{-1})$ estimate is deliberately robust; determining optimal
+second-order corrections is a separate research question.
+
+\section{The rational generating function and the minimal recurrence}\label{sec:gf}
+
+Let $\Theta=x\,\mathrm d/\mathrm dx$ and set
+\begin{equation}\label{eq:Hperiod}
+U(x)=\frac1{1-x},\qquad
+H(x)=\frac{3x}{1-x^2}+\frac{2x^2}{1-x^3},
+\end{equation}
+so that $H(x)=\sum_{n\geq0}h_nx^n$. The correction polynomial is
+\begin{equation}\label{eq:Epoly}
+E(x)=10x^2+40x^3+315x^5+1612x^{11}+3135x^{17}+2400x^{23}.
+\end{equation}
+
+\begin{theorem}[Exact generating function and minimal denominator]\label{thm:gf}
+The ordinary generating function $\Phi(x)=\sum_{n\geq2}F_nx^n$ is
+\begin{align}\label{eq:GF}
+\Phi(x)={}&\frac1{36}
+ (4\Theta^5+32\Theta^4+101\Theta^3+175\Theta^2+102\Theta-36)U(x)\notag\\
+&-\frac5{36}(\Theta+1)(\Theta+2)(2\Theta+3)H(x)
+ +1+2x+E(x).
+\end{align}
+In reduced form its denominator is exactly
+\begin{equation}\label{eq:D}
+\boxed{\ D(x)=(1-x)^6(1+x)^4(1+x+x^2)^4\ }.
+\end{equation}
+Its numerator has degree $41$. The least eventual quasiperiod of $F_n$ is
+six, and its minimal eventual homogeneous constant-coefficient recurrence
+has order $18$.
+\end{theorem}
+
+\begin{proof}
+Multiplication of the $n$th coefficient by $n$ is the action of $\Theta$.
+Thus \eqref{eq:GF} follows termwise from \eqref{eq:compactP} and
+\eqref{eq:F}. The extended quasipolynomial has coefficients $-1,-2$ at
+$n=0,1$, respectively, explaining the terms $1+2x$.
+
+The $U$ term has a pole of order six at $x=1$, with nonzero leading
+coefficient. The $H$ term has order at most four there and cannot cancel
+it. At $x=-1$, the first summand of $H$ has a nonzero simple pole;
+applying the degree-three differential operator in \eqref{eq:GF} raises
+it to a pole of order four, with nonzero leading term. The second summand
+of $H$ is regular there. At each primitive cube root of unity the second
+summand similarly produces a pole of order four, while the first is
+regular. There are no other poles, and the added polynomials do not affect
+them. This proves that \eqref{eq:D} is the exact reduced denominator.
+
+An eventual quasipolynomial of period $q$ has poles only at $q$th roots
+of unity. The poles at $-1$ and the primitive cube roots force $6\mid q$;
+period six is already supplied by \eqref{eq:F}. The pole multiplicities
+likewise force every eventual recurrence denominator to contain
+\eqref{eq:D}; its degree is $6+4+8=18$. Conversely this denominator
+provides such a recurrence.
+
+The highest-degree polynomial correction is $2400x^{23}$. Multiplying
+it by $D(x)$, whose degree is $18$ and leading coefficient is one,
+produces the nonzero coefficient $2400x^{41}$. All other terms have lower
+degree after multiplication by $D$, proving the numerator degree.
+\end{proof}
+
+Writing $D(x)=\sum_{j=0}^{18}d_jx^j$, the coefficients in increasing order
+of $j$ are
+\begin{equation}\label{eq:Dcoeff}
+\begin{split}
+(d_0,\ldots,d_{18})={}&(1,2,-1,-8,-9,6,23,16,-14,-32,\\
+ &\hspace{15mm}-14,16,23,6,-9,-8,-1,2,1).
+\end{split}
+\end{equation}
+Therefore the explicit recurrence is
+\begin{equation}\label{eq:recurrence}
+\boxed{\ \sum_{j=0}^{18}d_jF_{n-j}=0\qquad(n\geq42)\ }.
+\end{equation}
+At $n=41$ the left side is $2400$, so the starting point is sharp for this
+recurrence. The absence of primitive sixth-root poles is worth noting:
+period six arises by combining frequencies of periods two and three,
+not by requiring all sixth roots. A generic denominator
+$(1-x^6)^6$ would therefore be far from minimal.
+
+\section{All-orders algebraic inversion}\label{sec:inverse}
+
+\subsection{The continuous branches}
+
+For $h\in\{0,2,3,5\}$, let $N_h(y)$ be the large positive solution of
+$P_h(N_h(y))=y$. Set
+\begin{equation}\label{eq:tyR}
+t=(9y)^{1/5},\qquad
+R_h(u)=1+8u+\frac{101-10h}{4}u^2+\frac{175-45h}{4}u^3
+ +\frac{102-65h}{4}u^4-\frac{36+30h}{4}u^5.
+\end{equation}
+Then $9P_h(N)=N^5R_h(1/N)$.
+
+\begin{theorem}[Convergent Puiseux inverse]\label{thm:inverse}
+For sufficiently large positive $y$,
+\begin{equation}\label{eq:inverseall}
+N_h(y)=t-\frac85+\sum_{m\geq1}c_m(h)t^{-m},
+\qquad
+c_m(h)=-\frac1m[u^{m+1}]R_h(u)^{m/5}.
+\end{equation}
+This series is convergent, not merely a formal asymptotic expansion.
+In particular,
+\begin{align}\label{eq:inversefirst}
+N_h(y)={}&t-\frac85+\frac{50h+7}{100t}
+ -\frac{3(25h+149)}{500t^2}\notag\\
+&+\frac{2500h^2-400h+37817}{10000t^3}
+ -\frac{3(6250h^2+37125h+17199)}{250000t^4}
+ +O(t^{-6}).
+\end{align}
+There is no $t^{-5}$ term. More generally,
+\begin{equation}\label{eq:lacunarity}
+\boxed{\ c_{5j}(h)=0\qquad(j\geq1)\ }.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $z=1/t$ and $u=1/N$. The defining equation becomes
+\begin{equation}\label{eq:implicit}
+u=z\,R_h(u)^{1/5},
+\end{equation}
+using the analytic fifth root equal to one at $u=0$. The implicit-function
+theorem gives a unique analytic solution $u(z)=z+O(z^2)$ near zero.
+Thus $1/u(z)$ has a convergent Laurent expansion with leading term $z^{-1}$.
+
+For clarity, the coefficient calculation can be seen directly from
+Lagrange inversion. Write $\varphi(u)=R_h(u)^{1/5}$.
+For $m\geq1$, the change of variable $z=u/\varphi(u)$ in coefficient
+extraction gives
+\begin{align*}
+[z^m]\frac1{u(z)}
+&=[u^{m+1}]\varphi(u)^m-[u^m]\varphi(u)^{m-1}\varphi'(u)\\
+&=-\frac1m[u^{m+1}]\varphi(u)^m.
+\end{align*}
+The constant coefficient is $-\varphi'(0)=-8/5$.
+This proves \eqref{eq:inverseall}; ordinary binomial expansion yields
+\eqref{eq:inversefirst}. For $m=5j$, the expression $R_h(u)^j$ is a
+polynomial of degree $5j$, so its coefficient at $u^{5j+1}$ vanishes.
+This proves \eqref{eq:lacunarity} and explains the $O(t^{-6})$ remainder
+after the fourth inverse-power term.
+\end{proof}
+
+The missing coefficients are a general consequence of inverting a
+polynomial at infinity: the same argument for a monic degree-$d$ polynomial
+shows that the coefficients of $t^{-dj}$ vanish. This is a useful
+Lagrange-inversion corollary, not a claim of a new general inversion theorem.
+For the present problem it provides an all-orders structural check on
+symbolic calculations.
+
+\begin{proposition}[A uniform sufficient convergence region]\label{prop:radius}
+The Laurent series in \eqref{eq:inverseall} converges for real $t>100$,
+uniformly over the four allowed $h$ values. If it is truncated after
+$c_m(h)t^{-m}$, with $m\geq0$ and $m=0$ meaning $t-8/5$, the error is at
+most
+\begin{equation}\label{eq:tail}
+\frac{2\cdot100^{m+2}}{t^{m+1}(1-100/t)}.
+\end{equation}
+This is a conservative bound, not an estimate of the actual convergence
+radius or the actual numerical error.
+\end{proposition}
+
+\begin{proof}
+On $|u|\leq1/50$, the coefficient bounds in \eqref{eq:tyR} give
+$|R_h(u)-1|<0.18$ and $|R'_h(u)|<9.2$ for every allowed $h$.
+The principal fifth root is analytic on this disk. For $|z|\leq1/100$,
+the map $u\mapsto zR_h(u)^{1/5}$ maps the disk strictly into itself and
+has derivative in modulus less than $0.03$. Its iterates from zero
+converge uniformly, so the fixed point is analytic in $z$.
+The analytic function $V(z)=z/u(z)=R_h(u(z))^{-1/5}$ satisfies $|V(z)|<2$.
+Cauchy's coefficient estimate on the circle $|z|=1/100$, followed by a
+geometric-series bound, bounds the remainder of $z^{-1}V(z)$ after its
+$z^m$ term by \eqref{eq:tail}.
+\end{proof}
+
+No logarithmic or exponentially small sectors are needed in this problem.
+The forward expansion is a finite exact quasipolynomial, and each inverse
+branch is an algebraic function with a convergent Puiseux expansion. This
+is stronger information than a purely formal transseries ansatz.
+
+\subsection{The exact discrete inverse}
+
+Define
+\[
+I(y)=\max\{n\geq2:F_n\leq y\},
+\]
+whenever the set is nonempty. First note that $P_h(X)$ is strictly increasing
+for $X\geq2$. Indeed, its derivative is minimized among the allowed $h$
+by $h=5$, and
+\[
+36P'_5(X)=20X^4+128X^3+153X^2-100X-223>0\qquad(X\geq2).
+\]
+For the last inequality,
+$153X^2-100X-223=(X-2)(153X+206)+189>0$.
+The entire sequence $F_n$ is also strictly increasing. The finite range
+$2\leq n<24$ is checked directly from \eqref{eq:F}; for $n\geq24$,
+Appendix~\ref{app:monotone} gives positive-coefficient polynomial
+certificates for all six adjacent differences.
+
+\begin{corollary}[Residue-aware inverse rounding]\label{cor:inverse}
+For $y\geq F_{29}=2940909$,
+\begin{equation}\label{eq:discreteinverse}
+\boxed{\ I(y)=\max_{0\leq r<6}
+\left\{r+6\floor{\frac{N_{h_r}(y)-r}{6}}\right\}\ },
+\qquad (h_0,\ldots,h_5)=(0,3,2,3,0,5).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+For this range of $y$, every residue class has an eligible index at least
+$24+r$. On those tails the exceptional corrections have disappeared, and
+the relevant continuous polynomial is strictly increasing. Its largest
+eligible integer in residue $r$ is therefore exactly the lattice floor
+in \eqref{eq:discreteinverse}. Taking the largest of the six candidates
+proves the result; smaller exceptional indices cannot affect the maximum.
+\end{proof}
+
+A single continuous inverse followed by ordinary rounding would in general
+ignore the periodic correction. Formula \eqref{eq:discreteinverse} keeps
+that information. For numerical use, evaluate an inverse expansion to
+suggest a candidate and then certify it using exact comparisons with
+\eqref{eq:F}; near a lattice boundary, the exact comparison is essential.
+The included \texttt{inverse\_index} routine instead uses monotone binary
+search and exact integer arithmetic, so it has no floating-point rounding
+ambiguity.
+
+\section{Reproducibility and limits of the computational audit}\label{sec:audit}
+
+The accompanying code uses two genuinely different descriptions. The new
+normal form constructs a short reduced Ap\'ery set and lifts it. An
+independent Dijkstra implementation finds least representatives as shortest
+path distances in the residue graph: a generator gives an edge of that
+weight from $r$ to $r+g$ modulo the chosen modulus. It knows nothing about
+the quasipolynomial or the maximum-candidate table.
+
+\begin{table}[ht]
+\centering
+\caption{Executed exact checks. These supplement the infinite proofs.}\label{tab:audit}
+\begin{tabularx}{\textwidth}{@{}p{0.25\textwidth}X@{}}
+\toprule
+Range & Check\\
+\midrule
+$n=2,\ldots,35$ & All 34 values displayed in the inspected OEIS entry.\\
+$n=2,\ldots,1000$ & Reduced Ap\'ery set against independent Dijkstra;
+ gcd identities; Frobenius and genus lifting.\\
+$n=2,\ldots,60$ & Frobenius and genus from the original three generators,
+ with no gcd reduction.\\
+$n=2,\ldots,30$ & Every lifted Ap\'ery representative against Dijkstra
+ modulo the original $b$.\\
+$n=2,\ldots,200$ & Constructive representation checks, largest-gap and
+ conductor boundary checks; direct membership comparisons through $n=30$.\\
+$n=2,\ldots,12$ & Gap moments of orders $0,1,2,3$ against direct dynamic
+ programming enumeration of the gaps.\\
+$n=42,\ldots,1000$ & The order-18 recurrence; the boundary residual at
+ $n=41$ is checked to be $2400$.\\
+$n=2,\ldots,300$ & Exact inverse at the left and right ends of each
+ interval $[F_n,F_{n+1})$.\\
+Symbolic & Six residue identities for the reductions and genus; positivity
+ certificates; denominator and coprimality; the first inverse coefficients.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The random membership samples use a fixed seed, so they are reproducible.
+The boundary checks are deterministic. The main verification run and the
+symbolic derivations for moment orders one and two all passed. The exact
+console outputs are preserved in the package. The programs generate a CSV
+with $F_n$, genus, and symmetry defect through $n=1000$.
+
+To reproduce the main audit in a Python environment with SymPy installed,
+run
+\begin{quote}\ttfamily
+python verify.py --symbolic\\
+python derive\_moments.py --power 1\\
+python derive\_moments.py --power 2
+\end{quote}
+The first command without \texttt{--symbolic} uses only the Python standard
+library. The manuscript compiles with two runs of \texttt{pdflatex}.
+
+\paragraph{What was not established by computation.}
+No finite range, however large, proves the eventual formula, the completeness
+of the exception list, or the limiting distribution. Those claims rest on
+the proofs above. No machine-checked theorem prover was run for this report.
+No OEIS edit or GitHub commit was submitted. The mathematical claims are
+therefore conventional proved statements in an unrefereed manuscript,
+with reproducible computational support and an explicitly limited novelty
+assessment.
+
+\section{Further research questions}\label{sec:future}
+
+The following directions concern extensions not proved in this report.
+They are presented as research questions, not as conjectures whose truth
+has been silently assumed.
+
+\paragraph{1. Higher sums of powers.}
+Replace $s_n$ by $s_n^{(r)}=\sum_{j=1}^n j^r$ for a fixed $r\geq3$.
+Three consecutive values still have gcd one, because consecutive
+differences are coprime powers. Determine the adjacent-gcd structure,
+minimal quasiperiods, degrees, and effective cutoffs of their Frobenius
+quasipolynomials. The present argument suggests searching first for a
+reduced relation with bounded coefficients, but it does not predict a
+universal degree without further work.
+
+\paragraph{2. More consecutive generators.}
+Determine exact Frobenius formulas for
+$\langle s_n,s_{n+1},\ldots,s_{n+r}\rangle$ with fixed $r\geq3$.
+Does adding a fourth generator lower the growth exponent, alter only the
+leading constant, or create new residue-dependent regimes? A useful
+solution should include an explicit normal form rather than only invoke
+general eventual quasipolynomiality.
+
+\paragraph{3. A classification of bounded-relation families.}
+Characterize polynomial triples which, after gcd reductions, satisfy a
+relation $kC-\ell A=HB$ with bounded $k,\ell,H$, together with compatible
+residue scalings. Develop an effective criterion that recognizes when
+Lemma~\ref{lem:aux} yields the full Ap\'ery set. This would turn the
+successful structure here into a systematic proof-generation method.
+
+\paragraph{4. Optimal and second-order gap limits.}
+Determine the optimal uniform rate in \eqref{eq:triangle}. More finely,
+does a residue-dependent second-order expansion exist for the cumulative
+gap count, away from boundary layers and arithmetic discontinuities?
+The explicit rectangular lift exposes several scales, of orders
+$n^{-1}$ and $n^{-2}$ after normalization, whose interactions should be
+analyzed rather than averaged away.
+
+\paragraph{5. Realizable limiting gap densities.}
+Theorem~\ref{thm:transfer} forces a nonincreasing density bounded by two
+when a semigroup modulus is $o(F)$. Which such densities actually arise
+from numerical semigroups? What additional restrictions does addition
+closure place on the candidate Ap\'ery limit measure? In particular,
+characterize the circumstances giving uniform, triangular, or
+piecewise-polynomial gap limits.
+
+\paragraph{6. Minimal recurrences for higher moments.}
+For each fixed $p$, determine the exact pole orders of the generating
+function of $M_p(n)$, not just the generic bound supplied by its degree and
+period. The first three coefficients of $g_n$ and of $M_1(n)$ are
+residue independent, so systematic cancellations occur. A theorem giving
+the minimal recurrence order as a function of $p$ would sharpen the
+all-orders moment result.
+
+\paragraph{7. The rest of the semigroup invariants.}
+Use the explicit Ap\'ery order to determine pseudo-Frobenius numbers,
+semigroup type, and minimal defining relations for all six residue
+classes. The symmetry classification is only the first structural
+invariant. It remains to identify how the small maximum-switching
+exceptions interact with these finer algebraic invariants.
+
+\paragraph{8. Fast rank and selection among the gaps.}
+Membership has a bounded-operation description, but a direct use of
+\eqref{eq:resgaps} for gap rank still scans many residues. Derive a compact
+floor-sum algorithm for counting gaps below an arbitrary threshold and
+for selecting the $j$th gap. A useful target is logarithmic-depth integer
+arithmetic after parameter preprocessing, with explicit certificates for
+the returned rank or gap.
+
+\paragraph{9. Certified inverse evaluation.}
+Find the actual nearest complex singularity of each algebraic inverse
+branch, replacing the conservative convergence region in
+Proposition~\ref{prop:radius}. Combine this with interval arithmetic to
+obtain short, guaranteed inverse evaluations even when $y$ is close to a
+residue-lattice boundary. The exact polynomial comparisons provide an
+independent correctness check.
+
+\paragraph{10. Formalization and an OEIS proof artifact.}
+Formalize the rectangular lifting lemma and the least auxiliary residue
+principle once, and specialize them to the six rows by exact arithmetic.
+A desirable deliverable is a checked theorem giving both membership
+certificates and the largest-gap formula, not only a finite table.
+Only after independent review should the exact formula and its references
+be proposed as an OEIS update. The separate
+\texttt{oeis\_submission.txt} file is a draft for that purpose, not a
+record of a submitted change.
+
+\appendix
+\section{The exact sum of the gaps}\label{app:firstmoment}
+
+For every $n\geq2$, the first gap moment is given by the following four
+polynomials. As with the genus, no exceptional correction is necessary.
+For $n\equiv0,4\pmod6$,
+\begin{align}\label{eq:M10}
+M_1(n)=\frac{n(n+1)(n+2)(2n+1)}{3888}\bigl(&4n^6+44n^5+227n^4
+ +775n^3\notag\\&+1848n^2+2853n+2322\bigr).
+\end{align}
+For $n\equiv1,3\pmod6$,
+\begin{align}\label{eq:M11}
+M_1(n)=\frac{(n+1)(n+2)(n+3)}{3888}\bigl(&8n^7+68n^6+294n^5
+ +625n^4\notag\\&+841n^3+441n^2-576n+405\bigr).
+\end{align}
+For $n\equiv2\pmod6$,
+\begin{align}\label{eq:M12}
+M_1(n)=\frac{(n+1)(n+2)(2n+5)}{3888}\bigl(&4n^7+36n^6+159n^5
+ +371n^4\notag\\&+548n^3+337n^2-474n+96\bigr).
+\end{align}
+For $n\equiv5\pmod6$,
+\begin{align}\label{eq:M15}
+M_1(n)=\frac{(n+1)(n+2)}{3888}\bigl(&8n^8+92n^7+498n^6+1627n^5
+ +3446n^4\notag\\&+5079n^3+4697n^2+1872n+1425\bigr).
+\end{align}
+
+Here is a compact derivation sufficient to reproduce every coefficient.
+For $m=b$ and $\mathcal A=\Ap(S_n;b)$, the $p=1$ case of
+\eqref{eq:moment} reads
+\begin{equation}\label{eq:M1derive}
+M_1(n)=\frac1{2b}\sum_{W\in\mathcal A}W^2
+        -\frac12\sum_{W\in\mathcal A}W+\frac{b^2-1}{12}.
+\end{equation}
+Expand $W=de\,w+ia+jc$ and sum over the rectangular ranges. If
+$T_j=\sum_{L\in\mathcal L_n}w(L)^j$, then for any $j\geq0$,
+\begin{equation}\label{eq:liftsums}
+\sum_{W\in\mathcal A}W^j
+=\sum_{j_1+j_2+j_3=j}\binom{j}{j_1,j_2,j_3}
+ (de)^{j_1}T_{j_1}a^{j_2}c^{j_3}
+ \left(\sum_{i=0}^{e-1}i^{j_2}\right)
+ \left(\sum_{v=0}^{d-1}v^{j_3}\right).
+\end{equation}
+Use \eqref{eq:redsums} for $T_0,T_1,T_2$, with
+$\sum_{u=0}^q u=q(q+1)/2$ and
+$\sum_{u=0}^q u^2=q(q+1)(2q+1)/6$.
+Substitution into \eqref{eq:M1derive} yields
+\eqref{eq:M10}--\eqref{eq:M15}. The accompanying symbolic script performs
+exactly these operations and checks the results against independently
+enumerated gap sums. The same multinomial identity is used for every
+higher moment.
+
+\section{Positive-coefficient monotonicity certificates}\label{app:monotone}
+
+For $r=0,\ldots,5$, put $n=24+r+6q$ with $q\geq0$.
+The exact difference $F_{n+1}-F_n$ is
+\[
+720q^4+A_rq^3+B_rq^2+C_rq+D_r,
+\]
+where Table~\ref{tab:monotone} gives positive integer coefficients.
+Thus all these differences are positive for $q\geq0$.
+The remaining consecutive differences, from $n=2$ through $n=23$,
+are positive by direct evaluation of \eqref{eq:F}.
+
+\begin{table}[ht]
+\centering
+\caption{Exact monotonicity certificates on the six tails.}\label{tab:monotone}
+\begin{tabular}{rrrrr}
+\toprule
+$r$ & $A_r$ & $B_r$ & $C_r$ & $D_r$\\
+\midrule
+0 & 12348 & 79366 & 226585 & 242435\\
+1 & 13068 & 88870 & 268396 & 303739\\
+2 & 13428 & 93844 & 291280 & 338798\\
+3 & 14148 & 104188 & 340807 & 417830\\
+4 & 14148 & 104152 & 340422 & 416808\\
+5 & 15228 & 120646 & 424390 & 559300\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Provenance and package contents}\label{app:package}
+
+The package contains the manuscript source and compiled PDF, the main exact
+verification program and its executed output, a symbolic moment generator,
+exact first- and second-moment polynomial files and their outputs, a CSV of
+values through $n=1000$, a machine-readable numerator and denominator for
+$\Phi(x)$, a draft OEIS contribution, and a README with reproduction
+instructions. No external paper PDFs or font files are bundled.
+
+The source inspection was performed for this report on October 1, 2026.
+The relevant negative finding is limited: the inspected A069762 entry did
+not supply the formula, and the cited primary-source search did not locate
+it. This report should therefore be cited as an unrefereed explicit
+derivation until its proofs and literature status have been independently
+reviewed. Its exact assertions do not depend on any empirical extrapolation
+or any unproved result in ProveIt.
+
+\begingroup
+\raggedright
+\begin{thebibliography}{9}
+
+\bibitem{oeis}
+The OEIS Foundation Inc.,
+\emph{A069762: Frobenius number of the numerical semigroup generated by
+three consecutive pyramidal numbers}.
+Entry attributed to Victoria A. Sapko (2002), with a displayed extension by
+Sean A. Irvine (2024). Inspected October 1, 2026.
+\url{https://oeis.org/A069762}.
+
+\bibitem{los}
+M. Lepilov, J. O'Rourke, and I. Swanson,
+\emph{Frobenius numbers of numerical semigroups generated by three
+consecutive squares or cubes},
+Semigroup Forum \textbf{91} (2015), 238--259.
+DOI: \href{https://doi.org/10.1007/s00233-014-9687-8}{10.1007/s00233-014-9687-8}.
+Author manuscript dated October 22, 2014:
+\url{https://www.math.purdue.edu/~iswanso/LepilovORourkeSwanson.pdf}.
+
+\bibitem{rr}
+A. M. Robles-P\'erez and J. C. Rosales,
+\emph{The Frobenius number for sequences of triangular and tetrahedral
+numbers}, Journal of Number Theory \textbf{186} (2018), 473--492.
+\url{https://arxiv.org/abs/1706.04378}.
+
+\bibitem{rw}
+B. H. Roune and K. Woods,
+\emph{The parametric Frobenius problem},
+Electronic Journal of Combinatorics \textbf{22}(2) (2015), P2.36.
+DOI: \href{https://doi.org/10.37236/5112}{10.37236/5112}.
+\url{https://arxiv.org/abs/1502.06009}.
+
+\bibitem{shen}
+B. Shen,
+\emph{The parametric Frobenius problem and parametric exclusion},
+arXiv:1510.01349, first posted 2015; version 3 consulted.
+\url{https://arxiv.org/abs/1510.01349}.
+
+\bibitem{proveit}
+V. Reshetnikov,
+\emph{ProveIt: machine-checked mathematics in Lean 4 and Rocq/Coq,
+organized by subject}, repository README and Combinatorics directory.
+Inspected root-tree snapshot
+\texttt{29aca108ed25d714f31b1316512777fbbdc8e006}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\end{thebibliography}
+\endgroup
+\end{document}
