@@ -42,6 +42,27 @@
 \newcommand{\cO}{\mathcal O}
 \newcommand{\W}{\operatorname{W}}
 \DeclareMathOperator{\GammaDist}{Gamma}
+% [batch-77P5 write] wider section-number box in the contents for the
+% Part II numbers II.1, II.A, ...; used only from Part II on.
+\makeatletter
+\newcommand{\bswwidetoc}{%
+  \renewcommand*\l@section[2]{%
+    \ifnum \c@tocdepth >\z@
+      \addpenalty\@secpenalty
+      \addvspace{1.0em \@plus\p@}%
+      \setlength\@tempdima{2.6em}%
+      \begingroup
+        \parindent \z@ \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \leavevmode \bfseries
+        \advance\leftskip\@tempdima
+        \hskip -\leftskip
+        ##1\nobreak\hfil
+        \nobreak\hb@xt@\@pnumwidth{\hss ##2%
+                                   \kern-\p@\kern\p@}\par
+      \endgroup
+    \fi}}
+\makeatother
 
 \lstset{
   language=Python,
@@ -132,7 +153,10 @@ the OEIS contributors, notes marked ``[Added 1 October 2026, batch 73O2]'',
 Remark~\ref{bsw:rem:tail-sketch}, one bibliography entry and
 Appendix~\ref{bsw:app:provenance}.  The analytic tail step of
 Theorem~\ref{bsw:thm:all-orders} is a sketch; the fixed-$k$ limit law does
-not depend on it.\par}
+not depend on it.
+[2 October 2026, batch 77P5.]  Part~II, from manuscript~11 of batch~77,
+proves that step for fixed $k$ (Remark~\ref{bsw:rp:rem:settles}); Sections
+1--15 and Appendices A--C form Part~I.\par}
 \vspace{-0.5em}
 \setcounter{tocdepth}{1}
 \tableofcontents
@@ -585,6 +609,20 @@ displayed coefficients: for $k=2,\ldots,5$ the residual after the
 $n^{-3}$ term of \eqref{bsw:eq:pfull}, multiplied by $\ee^{k-1}n^4$, is
 nearly the same at $n=100$ and $n=400$, as an $O(n^{-4})$ remainder requires.
 That is evidence, not a proof.
+
+[2 October 2026, batch 77P5.]  The gap is closed in Part~II, for fixed $k$.
+Theorem~\ref{bsw:rp:thm:bound} proves the exact factorial-moment bound
+$\EE\fall{X_{n,k}}M\le(k-1)^M$ for the present model, the device asked for
+above, proved directly rather than imported from the path-forest report.
+Theorem~\ref{bsw:rp:thm:operator} turns it into an explicit remainder,
+uniform for $|v|\le V$; Corollary~\ref{bsw:rp:cor:all} gives the
+integer-power expansion without any cancellation of half-powers; and
+Theorem~\ref{bsw:rp:thm:cumulant} proves the scale
+$\kappa_r^{(F)}=O_{k,r}(n^{1-r})$.  Appendix~\ref{bsw:rp:app:gamma}
+verifies the gamma-tail route of the proof above.  Every item listed above
+as resting on the sketched step is therefore proved for fixed $k$
+(Remark~\ref{bsw:rp:rem:settles}).  Nothing uniform in $k$ is proved;
+research question~1 of Section~\ref{bsw:sec:questions} is untouched.
 \end{remark}
 
 \section{Exact factorial cumulants}
@@ -634,6 +672,9 @@ $\Var X=\kappa_1^{(F)}+\kappa_2^{(F)}$, which gives
 All higher factorial cumulants tend to zero.  The all-orders theorem gives the
 sharper scale $\kappa_r^{(F)}=O_{k,r}(n^{1-r})$ for fixed $r\ge2$, a
 mod-Poisson pattern that controls local corrections.
+[2 October 2026, batch 77P5: this scale does not follow from the existence
+of the expansion alone; it is proved as Theorem~\ref{bsw:rp:thm:cumulant}
+of Part~II.]
 
 \section{Explicit expansion through third order}
 
@@ -662,6 +703,10 @@ supply every contribution through $n^{-3}$ because the fifth and higher
 factorial cumulants begin at $O_k(n^{-4})$, as follows from
 Theorem~\ref{bsw:thm:all-orders}.  Collecting powers of $v$ gives
 \eqref{bsw:eq:log-pgf-exp}.
+[2 October 2026, batch 77P5: the step on the fifth and higher factorial
+cumulants is Theorem~\ref{bsw:rp:thm:cumulant} of Part~II, and
+\eqref{bsw:rp:eq:q123} there re-derives the three displayed coefficients
+from the full operator.]
 \end{proof}
 
 Setting $v=-1$ produces the no-adjacency probability.
@@ -874,6 +919,12 @@ Deciding the integer index from an approximate inverse, as in the deck
 example below and in research question~11 of
 Section~\ref{bsw:sec:questions}, is the subject of the volume's staircase
 theorem (\texttt{p0:thm:staircase}).]
+[2 October 2026, batch 77P5: retaining $A_2,A_3$ in a single Newton step
+does not by itself give the corresponding extra accuracy, since omitted
+quadratic Newton terms can be larger.  Part~II proves the sharper error
+$O_k(1/(N_0\log N_0))$ along the exact count sequence,
+\eqref{bsw:rp:eq:inverse}, which implies the error stated in
+\eqref{bsw:eq:inverse}.]
 
 For the exact standard-deck count in \eqref{bsw:eq:deck-prob}, with $k=4$, the
 leading Lambert estimate gives $n\approx13.17720934$.  The correction
@@ -976,6 +1027,9 @@ is explicitly marked as unsubmitted.
 \texttt{data/oeis\_proposed\_updates.txt}, unchanged.  Nothing has been
 submitted to the OEIS.  Its correction terms rest on the sketched step of
 Remark~\ref{bsw:rem:tail-sketch}.]
+[2 October 2026, batch 77P5: that step is now proved for fixed $k$ in
+Part~II (Remark~\ref{bsw:rp:rem:settles}); the comments remain
+unsubmitted.]
 
 \section{Further research questions and topics}
 \label{bsw:sec:questions}
@@ -1018,6 +1072,11 @@ $x$ growing with $n$.
 The operator rule \eqref{bsw:eq:operator-expansion} is constructive.  Find a
 canonical Bell-polynomial expression for the coefficient of $n^{-r}$ in
 $\log\Phi_{n,k}(v)$, and study sign or factorization patterns in $k$ and $v$.
+[2 October 2026, batch 77P5: re-scoped.  Part~II gives the coefficients by
+the finite formula \eqref{bsw:rp:eq:Ps} and proves that the coefficient
+$q_s(v)$ of $N^{-s}$ has degree at most $s+1$ in $v$
+(Theorem~\ref{bsw:rp:thm:cumulant}); a canonical Bell-polynomial closed
+form and the sign and factorization patterns remain open.]
 
 \item \textbf{Laguerre-zero geometry.}
 Clarify how the real zeros of $L_k^{(-1)}$ govern recurrences, cancellations,
@@ -1039,6 +1098,11 @@ labeled, multiset, rook-polynomial, and multipartite-graph interpretations.
 Turn \eqref{bsw:eq:inverse} into an explicit bracketing theorem for the least
 $n$ with $B_{n,k}\ge Y$, including monotonicity thresholds and certified
 rounding.
+[2 October 2026, batch 77P5: re-scoped.  Part~II proves the error
+$O_k(1/(N_0\log N_0))$ along the exact count sequence
+\eqref{bsw:rp:eq:inverse}, and states explicitly that this certifies no
+finite integer index; the bracketing theorem asked for here remains
+open.]
 
 \item \textbf{Machine-checked asymptotics.}
 Formalize the finite identities in Lean, then isolate a reusable theorem that
@@ -1164,6 +1228,767 @@ $(n,k)=(3,2),(2,3),(4,2)$ by full enumeration, and rederived by hand the
 local correction, the ratio bracket and $A_1,A_2,A_3$.  These checks do not
 replace an independent review of the proofs.
 
+\textbf{Part~II.}  [Added 2 October 2026, batch 77P5.]  Part~II was added
+from a second manuscript, manuscript~11 of batch~77, which pins this report
+at commit \texttt{4b874cea0}; its provenance, the choices of the merge and
+the intake's checks are in Section~\ref{bsw:rp:sec:provenance}.  Besides
+Part~II, the batch-77 write added the dated notes of 2 October 2026 in
+this Part and two bibliography entries (Gessel, Taylor), and changed no
+earlier text.
+
+% ======================================================================
+% Part II (batch 77P5, manuscript 11): a rigorous uniform remainder
+% ======================================================================
+\clearpage
+\setcounter{part}{1}
+\part{A rigorous uniform remainder for balanced Smirnov asymptotics}
+\label{bsw:rp:part}
+\addtocontents{toc}{\protect\bswwidetoc}
+\setcounter{section}{0}
+\renewcommand{\thesection}{II.\arabic{section}}
+\renewcommand{\theHsection}{rp.\arabic{section}}
+
+{\small\textbf{Editorial note (2 October 2026, batch 77P5).}
+Part~II is manuscript~11 of batch~77 of ProveIt's incoming-reports intake,
+\emph{A rigorous uniform remainder for balanced Smirnov asymptotics}, dated
+2 October 2026, whose author line reads ``Mathematical repair and
+reproducibility report''.  It arrived in the archive
+\texttt{balanced-smirnov-repair-reproducibility.zip}; AI-assisted,
+unrefereed, not formalized.  It audits this report as it stood at commit
+\texttt{4b874cea0} and proves the analytic step that
+Remark~\ref{bsw:rem:tail-sketch} records as a sketch.  Sections 1--15 and
+Appendices A--C above form Part~I, unchanged except for notes dated
+2 October 2026.  The write prefixed every label of the manuscript with
+\texttt{bsw:rp:}, replaced its citations of ``Theorem~6.2'', ``Remark~6.3''
+and ``Theorem~4.1'' of the pinned source by cross-references, renamed the
+symbols listed in Section~\ref{bsw:rp:sec:notation}, printed once the
+formulas that Part~I already displays (Section~\ref{bsw:rp:sec:verified}),
+and collected the source pin and the provenance in
+Section~\ref{bsw:rp:sec:provenance}.\par}
+
+\paragraph{Summary (the manuscript's abstract).}
+For a uniform shuffle of $n$ ranks of $k$ cards, with fixed $k\ge2$, let $X$
+count equal-rank adjacencies and put $N=kn$.  We prove the exact bound
+$\EE\fall{X}{M}\le(k-1)^M$ and use it to justify the full
+factorial-probability-generating-function expansion uniformly on compact
+subsets of the complex plane.  The remainder has an explicit
+Poisson-weighted bound.  A separate formal-operator argument proves the
+degree cancellations needed for all-orders factorial-cumulant scaling.  This
+closes the analytic gap in Theorem~\ref{bsw:thm:all-orders} of Part~I.  We
+verify its displayed third-order formulas, give the local, count and ratio
+consequences, and state the inverse approximation with its necessary scope.
+The existing combinatorial formulas and displayed coefficients are credited
+to their sources; no claim of historical novelty is made.
+
+\section{Notation of Part II}\label{bsw:rp:sec:notation}
+
+[Added at the write, 2 October 2026.]  Part~II keeps Part~I's notation
+wherever the two agree: $N=kn$, $\lambda=k-1$, $a_{k,m}$ and $R_k(z)$ of
+\eqref{bsw:eq:akm}--\eqref{bsw:eq:Rk}, $\fall xM$, $p_{n,k}$, $B_{n,k}$,
+$S_{n,k}$, $H_r(M)$ of \eqref{bsw:eq:Hr-def}, $D=v\,d/dv$, the factorial
+cumulants $\kappa_r^{(F)}$ of \eqref{bsw:eq:fact-cumulants}, $A_1,A_2,A_3$
+of \eqref{bsw:eq:A123}, and $L=\log Y+\lambda$, $N_0$ of
+\eqref{bsw:eq:Linv}.  The manuscript wrote $\Phi_n$ for Part~I's
+$\Phi_{n,k}$ of \eqref{bsw:eq:Phi-def} and $e$ for $\ee$; Part~II uses
+Part~I's forms.  The other symbols of the manuscript that collide with
+Part~I, or with each other, were renamed as follows.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.56\textwidth}}
+\toprule
+Part~II & manuscript & meaning, and the reading to avoid\\
+\midrule
+$c_{n,M}$ & $c_{n,M}$ & $\EE\binom XM=r_{n,M}/\fall NM$, with
+ $r_{n,M}=\coef{z^M}{R_k(z)^n}$ as in the proof of
+ Theorem~\ref{bsw:thm:all-orders}; not the carrier constant $c_k$ of
+ Section~\ref{bsw:rp:sec:inverse}\\
+$d$ & $d$ & $n(k-1)$, the largest possible value of $X$; not the $d$ of
+ $d/dv$\\
+$\sigma_j(M)$ & $p_j(M)$ & the power sum $\sum_{i<M}i^j$; not the
+ probability $p_{n,k}$\\
+$F_N(v)$ & $F_N(v)$ & $R_k(v/N)^n$, the bracket in
+ \eqref{bsw:eq:operator-expansion}; not the gamma density $f_N(t)$ of
+ \eqref{bsw:eq:gamma-density}\\
+$\mathcal P_s(v)$ & $P_s(v)$ & the coefficient polynomials of
+ $\ee^{-\lambda v}\Phi_{n,k}(v)$ in powers of $N^{-1}$; \emph{not} the
+ Laguerre kernels $P_k(t)$ and $P_{k,u}(t)$ of
+ \eqref{bsw:eq:Pku}--\eqref{bsw:eq:Pk}: $\mathcal P_2(v)\ne P_2(t)=t^2-2t$\\
+$J$ & $L$ & the truncation order; $L$ stays $\log Y+\lambda$ as in
+ \eqref{bsw:eq:Linv}\\
+$\mathcal C_{k,V,J}$ & $C_{k,V,L}$ & the remainder constant of
+ Theorem~\ref{bsw:rp:thm:operator}; not the reciprocal polynomial $C_k(z)$
+ of \eqref{bsw:eq:Ck}\\
+$\mathcal T_j(a)$ & $\mathcal T_j(a)$ & the $j$th Touchard polynomial; not
+ the gamma variable $T_N$\\
+$\mathcal H_w$ & $T_w$ & the formal operator $\sum_r H_r(D)w^r$; at
+ $w=1/N$ it is an operator, \emph{not} the gamma variable $T_N$ of
+ \eqref{bsw:eq:gamma-density}\\
+$\mathcal A_w(D)$ & $A_w(D)$ & the generator
+ $\sum_{j\ge1}w^j\sigma_j(D)/j$; not the Stirling constants $A_1,A_2,A_3$\\
+$\Sigma(t,w,v)$, $\Sigma_s(t,v)$ & $S$, $S_s$ & the formal logarithm along
+ the operator flow; not the multiset count $S_{n,k}$\\
+$\mathcal B_a$ & $B_a$ & $\ee^{-\Sigma}D^a\ee^{\Sigma}$; not the count
+ $B_{n,k}$\\
+$\gamma_j$ & $c_j$ & $(b_{j+1}/k)v^{j+1}$, an abbreviation in
+ Section~\ref{bsw:rp:sec:verified}\\
+$\psi(x)$, $g(x)$ & $f(x)$, $h(x)$ & the inverse carrier $x(\log x-1)$ and
+ its correction; renamed because $f_s$ and $h_s$ denote other objects\\
+$M_N$ & $J$ & the cut $\lfloor N^{1/3}\rfloor$ of
+ Appendix~\ref{bsw:rp:app:gamma}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Normalization: the manuscript expands in powers of $N^{-1}=(kn)^{-1}$,
+Part~I in powers of $n^{-1}$; a coefficient of $N^{-s}$ is $k^{-s}$ times
+the corresponding coefficient of $n^{-s}$.  Two readings are excluded
+explicitly below: Theorem~\ref{bsw:rp:thm:bound} is factorial-moment
+domination, not stochastic domination by a Poisson variable; and
+$\kappa_r^{(F)}$ are \emph{factorial} cumulants, not ordinary cumulants
+(Remark~\ref{bsw:rp:rem:factorial}).
+
+\section{Scope and the gap being repaired}\label{bsw:rp:sec:scope}
+
+Part~I considers \emph{fixed multiplicity}: $k$ is fixed while the number
+$n$ of ranks tends to infinity.  Its Theorem~\ref{bsw:thm:all-orders} gives
+a formal coefficientwise operator expansion, but the transition to
+compact-complex-uniform asymptotics sketches three steps: weighted
+gamma-tail control, suppression of large coefficient degrees, and
+cancellation of odd half-powers.  Its editorial
+Remark~\ref{bsw:rem:tail-sketch} explicitly identifies this gap.  The exact
+generating functions, exact first four factorial cumulants, Poisson limit
+and leading no-adjacency limit do not require that step.
+
+The proof below supplies a direct quantitative remainder, avoiding a saddle
+expansion.  It also supplies a separate all-orders logarithmic degree
+argument: existence of a uniform expansion alone would not prove the
+asserted factorial-cumulant scaling.  Appendix~\ref{bsw:rp:app:gamma}
+additionally verifies the weighted gamma-tail assertion.  No long-path
+hypothesis from the neighboring path-forest report
+\texttt{a189281-path-forest-expansions} is used; its theorem cannot simply
+be imported into this growing collection of rank cliques.
+
+All asymptotic statements below fix $k$.  Constants may depend on $k$, the
+compact set and the truncation order.  Nothing here asserts uniformity for
+growing $k$, or a uniform relative local approximation for growing
+adjacency count.
+
+\section{Exact model and factorial-moment domination}\label{bsw:rp:sec:model}
+
+There are $n\ge1$ ranks, each with $k\ge2$ distinct cards.  Choose a
+permutation of the $N=kn$ cards uniformly.  Let $X=X_{n,k}$ be the number
+of positions $j<N$ at which cards $j,j+1$ have the same rank.  Equivalently
+choose a multiset word uniformly with $k$ copies of each of $n$ letters.
+Write
+\[
+ \lambda=k-1,\qquad d=n(k-1),\qquad
+ \Phi_{n,k}(v)=\EE(1+v)^X,\qquad p_{n,k}=\PP(X=0).
+\]
+The labeled no-adjacency count is $B_{n,k}=N!\,p_{n,k}$; the multiset count
+is $S_{n,k}=B_{n,k}/(k!)^n$.  We have $0\le X\le d<N$.  For $k=2,3,4$,
+respectively, the labeled counts are OEIS A007060, A193624 and
+A330266~\cite{oeis007060,oeis193624,oeis330266}; the corresponding
+multiset-word counts are A114938, A193638 and
+A321633~\cite{oeis114938,oeis193638,oeis321633}.  The probability is
+common to both models, but the counts are different.
+
+With $\fall a0=1$, $a_{k,m}$ and $R_k$ as in
+\eqref{bsw:eq:akm}--\eqref{bsw:eq:Rk} (the manuscript writes
+$a_{k,m}=\binom{k-1}m\fall km$, the same number), put
+\begin{equation}\label{bsw:rp:eq:c}
+ r_{n,M}=\coef{z^M}{R_k(z)^n},\qquad
+ c_{n,M}=\EE\binom XM=\frac{r_{n,M}}{\fall NM}\quad(0\le M\le d).
+\end{equation}
+Set $r_{n,M}=c_{n,M}=0$ for $M>d$; do not evaluate the quotient outside its
+stated support.  The exact identity
+\[
+ \Phi_{n,k}(v)=\sum_{M=0}^d\frac{\coef{z^M}{R_k(z)^n}}{\fall NM}v^M
+\]
+is \eqref{bsw:eq:Phi-exact} of Theorem~\ref{bsw:thm:exact-sum}, which
+Part~I obtains by weighted run transforms.
+
+\begin{proof}[Second proof of \eqref{bsw:eq:Phi-exact} (manuscript 11)]
+For completeness, there is a direct contraction proof.  Canonically number
+the occurrences of each letter from left to right.  The $k-1$ possible bonds
+for a letter join consecutive occurrences; a bond is present when those
+occurrences are adjacent.  Select $m_i$ bonds for letter $i$ and contract
+them.  The contracted words have $k-m_i$ copies of letter $i$, and expansion
+according to the selected components is inverse to contraction.  If
+$M=\sum_i m_i$, the number of such words is $(N-M)!/\prod_i(k-m_i)!$.
+Double counting words with $M$ selected present bonds and dividing by
+$N!/(k!)^n$ gives \eqref{bsw:rp:eq:c}.
+\end{proof}
+
+The Laguerre and rook-polynomial machinery is older: Gessel's
+linear-permutation construction~\cite{gessel} (its Section~6 treats linear
+permutations), Taylor's Theorem~2.1 and run generating
+function~\cite{taylor} (his Theorem~2.1 credits Gessel's exact Carlitz-word
+formula; his Lemma~2.2 gives the classical generating function), and
+Enouen's standard-deck application~\cite{enouen} (its Sections~3--4 give
+the rook-polynomial solution and the exact standard-deck count) give
+relevant precedents.  Eriksson and Martin~\cite{eriksson-martin} enumerate
+the same Carlitz multipermutation family.  This Part repairs a specified
+proof, rather than claiming priority for those formulas.
+
+\begin{theorem}[Exact Poisson factorial domination]\label{bsw:rp:thm:bound}
+For all $n\ge1$ and integers $M\ge0$,
+\begin{equation}\label{bsw:rp:eq:bound}
+ 0\le c_{n,M}\le\frac{\lambda^M}{M!},
+ \qquad\text{equivalently}\qquad \EE\fall XM\le\lambda^M.
+\end{equation}
+Consequently $|\Phi_{n,k}(v)|\le\ee^{\lambda|v|}$ for every complex $v$.
+\end{theorem}
+
+\begin{proof}
+Since $\fall km\le k^m$, nonnegative coefficients give
+\[
+ R_k(z)\preceq(1+kz)^{k-1},\qquad
+ r_{n,M}\le k^M\binom dM.
+\]
+Here $\preceq$ means coefficientwise inequality.  For $0\le M\le d$,
+\[
+ c_{n,M}\le\frac{k^M}{M!}\prod_{j=0}^{M-1}\frac{d-j}{N-j}
+ \le\frac{k^M}{M!}\left(\frac dN\right)^M
+ =\frac{\lambda^M}{M!},
+\]
+since $(d-j)/(N-j)\le d/N$.  Empty products include $M=0$, and the zero
+convention includes $M>d$.  Sum the absolute coefficients to obtain the
+last assertion.
+\end{proof}
+
+\begin{remark}
+This is factorial-moment domination; it is not a claim of stochastic
+domination by a Poisson random variable.  It includes $n=1$, when $X=k-1$
+deterministically.  [Added at the write: it is the analogue, for the
+present model, of the uniform factorial-moment bound of the path-forest
+report that Remark~\ref{bsw:rem:tail-sketch} names, proved here directly.]
+\end{remark}
+
+\section{The explicit uniform operator remainder}\label{bsw:rp:sec:operator}
+
+For a finite list of nonnegative variables let $h_s$ denote the complete
+homogeneous symmetric polynomial.  Set $h_0=1$; for the empty list set
+$h_s=0$ when $s>0$.  For integers $M,r\ge0$ define
+\[
+ H_r(M)=h_r(0,1,\ldots,M-1),\qquad
+ Q_M(x)=\prod_{j=0}^{M-1}(1-jx)^{-1},
+\]
+in agreement with \eqref{bsw:eq:Hr-def}.  The list for $M=0$ is empty.
+Both $M=0$ and $M=1$ give $Q_M=1$ and $H_r(M)=0$ for $r\ge1$.
+
+\begin{lemma}[Complete-homogeneous remainder]\label{bsw:rp:lem:h}
+For nonnegative integers $a,b$, $h_{a+b}\le h_a h_b$ on nonnegative
+variables.  Consequently, for an integer $J\ge0$ and $0\le x<1/(M-1)$ when
+$M\ge2$,
+\begin{equation}\label{bsw:rp:eq:hrem}
+ 0\le Q_M(x)-\sum_{r=0}^JH_r(M)x^r
+ \le x^{J+1}H_{J+1}(M)Q_M(x).
+\end{equation}
+The inequality holds without restriction on $x\ge0$ for $M=0,1$.  For
+every integer $s\ge1$,
+\begin{equation}\label{bsw:rp:eq:hbound}
+ H_s(M)\le\left(\frac{M(M-1)}2\right)^s\le M^{2s}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+A term of $h_{a+b}$ is indexed by a nondecreasing string of $a+b$ indices.
+Splitting after $a$ entries injects its terms, with unchanged weights, into
+the pairs of strings counted by $h_a h_b$.  Thus
+$H_{J+1+t}(M)\le H_{J+1}(M)H_t(M)$.  The convergent expansion
+$Q_M(x)=\sum_{r\ge0}H_r(M)x^r$ now gives \eqref{bsw:rp:eq:hrem} by summing
+over $t\ge0$.  Finally, the multinomial expansion of the sum of the
+variables raised to $s$ counts each weak monomial with coefficient at least
+one; this proves \eqref{bsw:rp:eq:hbound}.
+\end{proof}
+
+Put $F_N(v)=R_k(v/N)^n$.  The symbol $H_r(D)$ denotes a polynomial in the
+Euler differential operator $D=v\,d/dv$.  Indeed, if
+\[
+ \sigma_j(M)=\sum_{i=0}^{M-1}i^j,
+\]
+then
+\begin{equation}\label{bsw:rp:eq:formalh}
+ \sum_{r\ge0}H_r(M)x^r
+ =\exp\left(\sum_{j\ge1}\frac{x^j}{j}\sigma_j(M)\right).
+\end{equation}
+Faulhaber's formula gives $\deg\sigma_j=j+1$; coefficient extraction shows
+that $H_r(M)$ is a polynomial in $M$ of degree at most $2r$, with the
+stated values also at $M=0$.
+
+\begin{theorem}[Quantitative compact-complex remainder]\label{bsw:rp:thm:operator}
+For every integer $J\ge0$ and real $V\ge0$, for all $n\ge1$,
+\begin{equation}\label{bsw:rp:eq:operr}
+ \sup_{|v|\le V}\left|\Phi_{n,k}(v)-\sum_{r=0}^J N^{-r}H_r(D)F_N(v)\right|
+ \le \frac{\mathcal C_{k,V,J}}{N^{J+1}},
+\end{equation}
+where, with $a=\lambda V$,
+\begin{equation}\label{bsw:rp:eq:constant}
+ \mathcal C_{k,V,J}=\sum_{M=0}^{\infty}H_{J+1}(M)\frac{a^M}{M!}
+ \le \ee^a\mathcal T_{2J+2}(a)<\infty.
+\end{equation}
+Here $\mathcal T_j(a)=\ee^{-a}\sum_{M\ge0}M^j a^M/M!$ is the $j$th
+Touchard polynomial.  For $V=0$ the constant is zero.
+\end{theorem}
+
+\begin{proof}
+The exact finite identity \eqref{bsw:eq:Phi-exact} reads
+\[
+ \Phi_{n,k}(v)=\sum_{M=0}^d r_{n,M}(v/N)^M Q_M(1/N).
+\]
+Every $M$ in this sum satisfies $M\le d<N$, so Lemma~\ref{bsw:rp:lem:h}
+applies.  Since $D(v^M)=Mv^M$, subtract the finite operator sum, take
+absolute values, and use nonnegativity to obtain
+\begin{align*}
+ \text{error}
+ &\le N^{-J-1}\sum_{M=0}^d H_{J+1}(M)r_{n,M}(V/N)^M Q_M(1/N)\\
+ &=N^{-J-1}\sum_{M=0}^d H_{J+1}(M)c_{n,M}V^M\\
+ &\le N^{-J-1}\mathcal C_{k,V,J}.
+\end{align*}
+The last step uses Theorem~\ref{bsw:rp:thm:bound}.  The bound
+\eqref{bsw:rp:eq:hbound} proves finiteness and the Touchard upper bound.
+In particular there is no need to control $Q_M(1/N)$ uniformly in $M$: its
+entire value converts the majorant back into an exact factorial-moment
+coefficient.
+\end{proof}
+
+\section{Integer powers and the normalized logarithm}\label{bsw:rp:sec:integer}
+
+Choose the analytic germ
+\[
+ \log R_k(z)=\sum_{j\ge1}b_jz^j,\qquad \log R_k(0)=0,
+ \qquad b_1=k\lambda.
+\]
+For $w$ near zero set
+\begin{equation}\label{bsw:rp:eq:Fwv}
+ F(w,v)=\exp\left(\frac{\log R_k(wv)}{kw}\right),
+ \qquad F(0,v)=\ee^{\lambda v}.
+\end{equation}
+On each fixed $v$-disk the singularity at $w=0$ is removable and the
+function is jointly analytic for sufficiently small $|w|$.  At $w=1/N$ it
+equals $F_N(v)$ exactly, since $N/k=n$ is integral.  Its expansion is
+\begin{align}
+ F(w,v)&=\ee^{\lambda v}\sum_{s\ge0}f_s(v)w^s,\qquad f_0=1,
+ \label{bsw:rp:eq:f}\\
+ f_s(v)&=\sum_{\substack{m_1,\ldots,m_s\ge0\\\sum j m_j=s}}
+ \prod_{j=1}^s\frac{\bigl((b_{j+1}/k)v^{j+1}\bigr)^{m_j}}{m_j!}.
+ \label{bsw:rp:eq:fs}
+\end{align}
+Thus $f_s$ is a polynomial of degree at most $2s$.  Analyticity on a
+slightly larger $v$-disk and Cauchy's estimates justify differentiating each
+fixed-order Taylor remainder finitely many times, uniformly on $|v|\le V$.
+
+\begin{corollary}[All-orders expansion]\label{bsw:rp:cor:all}
+For each fixed integer $J\ge0$,
+\begin{equation}\label{bsw:rp:eq:all}
+ \Phi_{n,k}(v)=\ee^{\lambda v}\sum_{s=0}^J \mathcal P_s(v)N^{-s}
+ +O_{k,V,J}(N^{-J-1}),\qquad |v|\le V,
+\end{equation}
+where $\mathcal P_0=1$ and
+\begin{equation}\label{bsw:rp:eq:Ps}
+ \mathcal P_s(v)=\ee^{-\lambda v}\sum_{r=0}^s
+ H_r(D)\bigl(\ee^{\lambda v}f_{s-r}(v)\bigr).
+\end{equation}
+Each $\mathcal P_s$ is a polynomial in $v$, with rational-in-$k$
+coefficients.
+\end{corollary}
+
+\begin{proof}
+In Theorem~\ref{bsw:rp:thm:operator}, expand the $r$th differentiated
+bracket through $w^{J-r}$.  Its multiplied remainder is $O(w^{J+1})$,
+uniformly on the disk.  Summing finitely many such remainders gives
+\eqref{bsw:rp:eq:all}.  All powers are integer powers from analytic Taylor
+series; no half-power cancellation is assumed.
+\end{proof}
+
+On a fixed disk, $\ee^{-\lambda v}\Phi_{n,k}(v)=1+O(N^{-1})$.  Hence for
+sufficiently large $n$ it lies within distance $1/2$ of $1$, on a
+neighborhood of that disk.  Define
+\begin{equation}\label{bsw:rp:eq:logbranch}
+ \log\Phi_{n,k}(v):=\lambda v+\log\bigl(\ee^{-\lambda v}\Phi_{n,k}(v)\bigr),
+\end{equation}
+where the second logarithm is the analytic branch near $1$.  This branch has
+value zero at $v=0$.  It has a uniform integer-power expansion.  An
+unspecified principal logarithm on a large complex disk would not give the
+same statement.
+
+\section{The all-orders factorial-cumulant degree argument}\label{bsw:rp:sec:cumulant}
+
+The next argument is separate from existence of the uniform expansion.  It
+proves the degree cancellations needed to control all factorial cumulants.
+
+Work formally in $w$; all operator expressions have finitely many
+contributions to any fixed coefficient.  By \eqref{bsw:rp:eq:formalh},
+\begin{equation}\label{bsw:rp:eq:Tw}
+ \mathcal H_w:=\sum_{r\ge0}H_r(D)w^r=\exp\mathcal A_w(D),
+ \qquad \mathcal A_w(D)=\sum_{j\ge1}\frac{w^j}{j}\sigma_j(D).
+\end{equation}
+This may be checked on each monomial $v^M$ using the scalar identity for
+$Q_M(w)$.  No convergence of the infinite operator series at nonzero $w$ is
+asserted.
+
+Introduce a formal flow parameter $t$ and write
+\[
+ \ee^{t\mathcal A_w(D)}F(w,v)=\ee^{\Sigma(t,w,v)},\qquad
+ \Sigma(t,w,v)=\lambda v+\sum_{s\ge1}\Sigma_s(t,v)w^s.
+\]
+After removal of $\ee^{\lambda v}$, this is a formal $w$-series with
+polynomial coefficients in $v,t$ and constant term $1$; its formal logarithm
+is uniquely defined.  Initially,
+\[
+ \Sigma_s(0,v)=\frac{b_{s+1}}k v^{s+1}.
+\]
+
+\begin{theorem}[Logarithmic degree and factorial cumulants]\label{bsw:rp:thm:cumulant}
+The expansion of the normalized logarithm \eqref{bsw:rp:eq:logbranch} has
+the form
+\begin{equation}\label{bsw:rp:eq:q}
+ \log\Phi_{n,k}(v)=\lambda v+\sum_{s=1}^J q_s(v)N^{-s}
+ +O_{k,V,J}(N^{-J-1}),\qquad \deg_v q_s\le s+1.
+\end{equation}
+Consequently, for each fixed $r\ge2$,
+\[
+ \kappa_r^{(F)}:=\left.\frac{d^r}{dv^r}\log\Phi_{n,k}(v)\right|_{v=0}
+ =O_{k,r}(N^{1-r})=O_{k,r}(n^{1-r}).
+\]
+Also $\kappa_1^{(F)}=\EE X=\lambda$ exactly.
+\end{theorem}
+
+\begin{proof}
+The formal flow satisfies
+\[
+ \partial_t\Sigma=\ee^{-\Sigma}\mathcal A_w(D)\ee^{\Sigma},
+\]
+where the conjugated operator on the right acts on $1$.  Put
+$\mathcal B_a=\ee^{-\Sigma}D^a\ee^{\Sigma}$.  Then $\mathcal B_0=1$ and
+\[
+ \mathcal B_{a+1}=D\mathcal B_a+(D\Sigma)\mathcal B_a.
+\]
+Thus each monomial of $\mathcal B_a$ is a product of at most $a$ factors
+$D^\ell\Sigma$, $\ell\ge1$, apart from the constant for $a=0$.
+
+We induct on $s$ to prove $\deg_v\Sigma_s(t,v)\le s+1$.  To extract $w^s$
+from the $j$th summand of the generator, $1\le j\le s$, the orders $s_i$ of
+these factors sum to $s-j$.  Each is strictly less than $s$.  Because
+$\sigma_j$ has degree at most $j+1$, there are at most $b\le j+1$ factors.
+The Euler derivative does not increase polynomial degree.  The induction
+hypotheses, including $\Sigma_0=\lambda v$, give total degree at most
+\[
+ \sum_{i=1}^b(s_i+1)=s-j+b\le s+1.
+\]
+The zero-factor case causes no problem.  Therefore $\partial_t\Sigma_s$ has
+this degree bound, and the initial value does too.  Integration in $t$
+proves the induction.  At $t=1$, the coefficients are those of
+$\mathcal H_wF$, which Corollary~\ref{bsw:rp:cor:all} has already
+identified as the analytic asymptotic expansion of $\Phi_{n,k}$.  Finite
+logarithmic-series algebra identifies $q_s=\Sigma_s(1,v)$.
+
+For a fixed $r\ge2$, take $J=r-2$ in \eqref{bsw:rp:eq:q} on a disk about
+zero.  All retained polynomials have degree less than $r$.  Cauchy's
+coefficient formula applied to the uniform remainder gives the claimed
+bound.  The exact mean follows from \eqref{bsw:rp:eq:c} with $M=1$.
+\end{proof}
+
+\begin{remark}\label{bsw:rp:rem:factorial}
+These are \emph{factorial} cumulants, using derivatives in $v$ of
+$\log\EE(1+v)^X$.  Ordinary cumulants use $\log\EE\ee^{tX}$ and converge to
+the Poisson value $\lambda$; they do not have the displayed decay.
+\end{remark}
+
+\begin{remark}[What this settles in Part~I]\label{bsw:rp:rem:settles}
+[Added at the write.]  Theorem~\ref{bsw:rp:thm:operator} and
+Corollary~\ref{bsw:rp:cor:all} prove Theorem~\ref{bsw:thm:all-orders}:
+\eqref{bsw:rp:eq:operr} is the operator rule
+\eqref{bsw:eq:operator-expansion} with an explicit remainder, uniform for
+$|v|\le V$.  Theorem~\ref{bsw:rp:thm:cumulant} proves the scale
+$\kappa_r^{(F)}=O_{k,r}(n^{1-r})$ stated after
+Theorem~\ref{bsw:thm:cumulants}, and with it the step ``the fifth and
+higher factorial cumulants begin at $O_k(n^{-4})$'' in the proof of
+Theorem~\ref{bsw:thm:log-pgf} ($r=5$ gives $O_k(n^{-4})$).  Hence every
+item that Remark~\ref{bsw:rem:tail-sketch} lists as resting on the sketched
+step is now proved, for fixed $k$; nothing uniform in $k$ is claimed.
+\end{remark}
+
+\section{Verified formulas and consequences}\label{bsw:rp:sec:verified}
+
+The coefficients in this section are those displayed in Part~I; the
+contribution here is the proved remainder and independent algebraic
+verification.  The reproducibility scripts compute them from the full
+operator, rather than assuming that four cumulants exhaust third order.
+[Write: formulas that Part~I already displays are cited, not printed a
+second time; the manuscript reprinted them in the variable $N$, and they
+agree term by term.]
+
+The first kernel-log coefficients are
+\begin{align*}
+ b_1&=k\lambda,& b_2&=-k\lambda^2,\\
+ b_3&=\frac{k\lambda^2(5k-6)}3,&
+ b_4&=-\frac{k\lambda^2(7k^2-18k+12)}2.
+\end{align*}
+If $\gamma_j=(b_{j+1}/k)v^{j+1}$, then
+\[
+ f_1=\gamma_1,\qquad f_2=\gamma_2+\tfrac12\gamma_1^2,\qquad
+ f_3=\gamma_3+\gamma_1\gamma_2+\tfrac16\gamma_1^3.
+\]
+Use $\ee^{-\lambda v}D(\ee^{\lambda v}p)=vp'+\lambda vp$ in
+\eqref{bsw:rp:eq:Ps}; logarithmic-series algebra gives
+\begin{equation}\label{bsw:rp:eq:q123}
+ q_1=-\frac{\lambda^2v^2}{2},\qquad
+ q_2=\frac{\lambda^2v^2\{2(k-2)v-3\}}{6},\qquad
+ q_3=-\frac{\lambda^2v^2\{(k^2-6k+7)v^2-4(k-2)v+2\}}{4},
+\end{equation}
+so that \eqref{bsw:rp:eq:q} with $J=3$ and $N=kn$ is exactly
+\eqref{bsw:eq:log-pgf-exp} of Theorem~\ref{bsw:thm:log-pgf}, with the
+branch \eqref{bsw:rp:eq:logbranch} and uniformity on $|v|\le V$.  This
+verifies the cancellations of possible $v^5,v^6$ terms directly.
+
+\subsection{No-adjacency probability and local masses}
+
+Setting $v=-1$ gives \eqref{bsw:eq:logp} and \eqref{bsw:eq:pfull} of
+Corollary~\ref{bsw:cor:p-expansion}; the verified coefficients of
+$n^{-1},n^{-2},n^{-3}$ in $\ee^{k-1}p_{n,k}$ for $k=2,3,4,5$ are those of
+\eqref{bsw:eq:k2}--\eqref{bsw:eq:k5}, which the manuscript tabulates again.
+For each fixed integer $j\ge0$, Cauchy's formula on a fixed circle in $u$,
+with $v=u-1$, gives \eqref{bsw:eq:local} of Corollary~\ref{bsw:cor:local}.
+
+\begin{proof}[Second derivation of the local correction (manuscript 11)]
+The first correction is $-\lambda^2(u-1)^2/(2N)$ times the Poisson PGF.
+Dividing its $u^j$ coefficient by the Poisson mass gives
+$-[\lambda^2-2\lambda j+j(j-1)]/(2N)$, including $j=0,1$.
+\end{proof}
+
+\subsection{Counts and successive ratios}
+
+Stirling's formula and \eqref{bsw:eq:logp} yield \eqref{bsw:eq:logB}, with
+the constants $A_1,A_2,A_3$ of \eqref{bsw:eq:A123}.  The multiset count
+satisfies $\log S_{n,k}=\log B_{n,k}-n\log(k!)$ exactly
+\eqref{bsw:eq:logS}.  In particular its leading growth is
+$N(\log N-1-\log(k!)/k)$, rather than the labeled carrier in
+\eqref{bsw:eq:logB}.  For fixed $k$ the ratio expansion
+\eqref{bsw:eq:ratio} holds.
+
+\begin{proof}[Second proof of \eqref{bsw:eq:ratio} (manuscript 11)]
+To see this without differentiating a discrete remainder, if
+$\log p_{n,k}=-\lambda+a/n+b/n^2+c/n^3+O(n^{-4})$, subtraction at
+consecutive integers gives $-a/n^2+(a-2b)/n^3+O(n^{-4})$.  Exponentiation
+does not change those two terms, and the factorial ratio is exact.
+\end{proof}
+
+\subsection{Carefully scoped Lambert inverse}\label{bsw:rp:sec:inverse}
+
+This subsection inverts the labeled count $B_{n,k}$, not the multiset count
+$S_{n,k}$.  For $Y=B_{n,k}$ along the exact count sequence, define $L$ and
+$N_0$ as in \eqref{bsw:eq:Linv}:
+\[
+ L=\log Y+\lambda,\qquad N_0=\frac{L}{W_0(L/\ee)}.
+\]
+Thus $N_0(\log N_0-1)=L$.  With
+\[
+ g(x)=\tfrac12\log(2\pi x)+A_1/x+A_2/x^2+A_3/x^3,
+\]
+the following holds as $n\to\infty$:
+\begin{equation}\label{bsw:rp:eq:inverse}
+ N=N_0-\frac{g(N_0)}{\log N_0}
+ +O_k\left(\frac1{N_0\log N_0}\right),\qquad n=N/k.
+\end{equation}
+In particular it implies the coarser $O_k(N_0^{-1})$ error of
+\eqref{bsw:eq:inverse}.  Put $\psi(x)=x(\log x-1)$.  Equation
+\eqref{bsw:eq:logB} says $\psi(N)+g(N)=\psi(N_0)+O(N^{-4})$.  First
+$N\sim N_0$; then $\psi'=\log x$ and $g(N)=O(\log N)$ give $N-N_0=O(1)$.
+Taylor expansion of these explicit smooth functions, using
+$\psi''(x)=1/x$ and $g'(x)=O(1/x)$, gives
+\[
+ (N-N_0)\log N_0+g(N_0)=O(1/N_0),
+\]
+which proves \eqref{bsw:rp:eq:inverse} without differentiating the discrete
+error.
+
+For arbitrary $Y$ off the sequence, a continuous interpolation or an
+integer-threshold convention must be specified.  Asymptotic notation alone
+does not certify recovery of a particular finite integer index.  Retaining
+$A_2,A_3$ in a single Newton correction does not by itself yield the
+corresponding extra inversion accuracy: omitted quadratic Newton terms can
+be larger.  For a multiset-count inverse, the leading carrier instead uses
+$c_k=1+\log(k!)/k$ and $N_0=L/W_0(L\ee^{-c_k})$, with Newton denominator
+$\log N_0-\log(k!)/k$.  The same proof applies after making those
+replacements.  The inversion apparatus itself is not claimed to be new.
+[Added at the write: as the note in Part~I's inverse section says, the
+forward map is the gamma carrier of the transseries volume~\cite{tai}
+(\texttt{p6:thm:gamma}) perturbed by a power series in $1/N$, the setting
+of its theorem ``Perturbed inversion''
+(\texttt{p0:thm:perturbed-inversion}); the carrier equation
+$\psi(N_0)=L$ is solved by $W_0$ directly rather than through the
+dominant-block form $aX+b\log X=L$ of \texttt{p0:thm:lambert-core}.  The
+interpolation and integer-threshold conventions asked for above are the
+subject of its staircase theorem (\texttt{p0:thm:staircase}).  No novelty
+is claimed for \eqref{bsw:rp:eq:inverse}.]
+
+\section{Reproducibility and review}\label{bsw:rp:sec:repro}
+\begingroup\setlength{\emergencystretch}{3em}
+
+[Rewritten at the write to name the shipped files.]  The delivered archive
+contained the editable \LaTeX{} source and a 10-page PDF of this Part, two
+independent Python checks, their exact outputs, a mathematical audit,
+provenance, replay instructions and a clean replay script.  It does not
+redistribute the source manuscript (Part~I) or third-party papers; pinned
+links and hashes are provided instead.  This report ships the following
+delivered files.
+\begin{center}\small
+\begin{tabular}{ll}
+\toprule
+shipped file & content\\
+\midrule
+\texttt{code/02-repair-check\_operator.py} & the operator check\\
+\texttt{code/02-repair-check\_independent.py} & the independent check\\
+\texttt{code/02-repair-replay.sh} & the replay script\\
+\texttt{data/02-repair-operator.txt} & recorded output of the operator check\\
+\texttt{data/02-repair-independent.txt} & recorded output of the independent check\\
+\texttt{data/02-repair-clean-replay.txt} & record of the delivery's clean replay\\
+\texttt{data/02-repair-environment.txt} & the delivery's software environment\\
+\texttt{data/02-repair-requirements.txt} & the SymPy pin\\
+\texttt{data/02-repair-sources.json} & source pin, checksums, literature links\\
+\texttt{02-repair-mathematical-audit.md} & the mathematical audit\\
+\texttt{02-repair-integrated-review.md} & the integrated review\\
+\texttt{02-repair-visual-qa.md} & visual check of the delivered PDF\\
+\bottomrule
+\end{tabular}
+\end{center}
+The manuscript source and PDF (merged here as Part~II), the PDF build
+script, its build log and the checksum ledger are not shipped; the README
+says how to rerun the checks.
+
+The operator check constructs $b_j$, $f_s$, the complete operators $H_r(D)$
+and the logarithm through order $N^{-3}$, and asserts the displayed
+identities.  The independent check enumerates adjacency histograms by exact
+multiset-word dynamic programming for $k=2,\ldots,5$, $n=1,\ldots,5$;
+verifies every factorial moment through two indices past support; checks
+the remainder inequalities with rational arithmetic; and independently
+derives the symbolic coefficients.  All assertions passed with SymPy~1.14.0.
+Finite checks support reproducibility but are not substitutes for the
+proofs above.
+
+The accompanying mathematical audit found no substantive defect in the
+uniform remainder, formal degree argument, dependent formulas or optional
+gamma-tail proof.  This is an AI-assisted, independently cross-checked
+mathematical report, not a peer-reviewed publication or a formal
+proof-assistant development.  The targeted literature check is not
+exhaustive and establishes no historical novelty.
+
+\section{Provenance of Part II}\label{bsw:rp:sec:provenance}
+
+[Added 2 October 2026, batch 77P5; the first paragraph is the manuscript's
+``Source pin'' appendix.]
+
+\textbf{Source pin.}  The audited ProveIt commit is
+\begin{center}\small\texttt{4b874cea0012c51a6841ad9c58f6e20fa57c71da}.\end{center}
+\begin{sloppypar}\noindent
+The report directory is that of this report.  The provenance file
+\texttt{data/02-repair-sources.json} gives its complete repository path,
+full pinned URLs and SHA-256 checksums for the inspected
+\texttt{article.tex} and editorial \texttt{README.md}.  The full
+third-party source files are not bundled.  [Write: those checksums identify
+the two files as they stood at \texttt{4b874cea0}, which is also their
+state after the batch-73O2 write \texttt{728773045}; this write changed
+both files, so the checksums no longer match the current ones.]
+\end{sloppypar}
+
+\textbf{Intake record.}  Manuscript~11 of batch~77 (cluster~P5), from the
+archive named in the editorial note at the start of this Part; arrival
+commit \texttt{096ee7b87}; placement commit \texttt{4f11bc9c0}, which staged twelve
+delivered files with the prefix \texttt{02-repair-} and removed the archive
+from \texttt{docs/incoming} (it survives in \texttt{096ee7b87}).  The
+manuscript's own pin is \texttt{4b874cea0}.  Its bibliography item for the
+source report is this report itself and is replaced by internal
+references; its items for Eriksson--Martin and Enouen are Part~I's
+\cite{eriksson-martin,enouen}; Gessel~\cite{gessel} and
+Taylor~\cite{taylor} were added to the bibliography.
+
+\textbf{Where the merge had to choose.}
+\begin{itemize}[leftmargin=2em]
+\item Formulas already displayed in Part~I (the third-order logarithmic
+ expansion, $\log p_{n,k}$, $p_{n,k}$, the $k=2,\ldots,5$ coefficients, the
+ local masses, $\log B_{n,k}$ with $A_1,A_2,A_3$, the ratio) are cited, not
+ reprinted; the manuscript's derivations of them are kept, and its
+ contraction proof of \eqref{bsw:eq:Phi-exact}, its ratio argument and its
+ local computation appear as marked second proofs.  The new polynomials
+ $q_1,q_2,q_3$ are printed in \eqref{bsw:rp:eq:q123}.
+\item Symbols were renamed as listed in Section~\ref{bsw:rp:sec:notation};
+ no formula changed its content.
+\item The manuscript's Section~7 described its archive; it is rewritten to
+ name the shipped files.
+\item Nothing of the manuscript's mathematics, scope statements or
+ disclaimers was removed.
+\end{itemize}
+
+\textbf{Checks by the intake.}  The intake reran both checks on a copy
+(SymPy 1.14.0 under Python 3.13.5 and 3.14.4 on Windows); their outputs
+equal the recorded ones apart from line endings.  Independently of the delivered scripts it
+confirmed $c_{n,M}\le\lambda^M/M!$ in exact arithmetic for $k=2,\ldots,7$,
+$n\le40$; the inequality of Theorem~\ref{bsw:rp:thm:operator} at sixteen
+points of $|v|=2$ for $k=2,4$, $n=5,20$, $J=0,1,2$; that
+$\deg_vq_s=s+1$ exactly for $s=1,\ldots,4$ and $k=3,4$ (so the degree bound
+of Theorem~\ref{bsw:rp:thm:cumulant} is attained); that $q_3$ equals the
+$n^{-3}$ term of \eqref{bsw:eq:log-pgf-exp}; and that the third-order
+residual of $\log\Phi_{n,k}(v)$ times $N^4$ is nearly constant at
+$n=60,120,240$ for $k=2,\ldots,5$ and several $v$.  A naive principal
+logarithm failed at $k=5$, $v=i$, which shows that the branch convention
+\eqref{bsw:rp:eq:logbranch} is needed.  These checks do not replace an
+independent review of the proofs.
+\par\endgroup
+
+\appendix
+\setcounter{section}{0}
+\renewcommand{\thesection}{II.\Alph{section}}
+\renewcommand{\theHsection}{rpapp.\Alph{section}}
+\section{Direct verification of the weighted gamma tail}\label{bsw:rp:app:gamma}
+
+This appendix is unnecessary for Theorem~\ref{bsw:rp:thm:operator}, but
+verifies the tail assertion in the original approach of
+Theorem~\ref{bsw:thm:all-orders}.  Let $T_N\sim\GammaDist(N+1,1)$, with
+density $t^N\ee^{-t}/N!$.  The exact representation
+\eqref{bsw:eq:gamma-rep} is
+\[
+ \Phi_{n,k}(v)=\EE R_k(v/T_N)^n.
+\]
+For $E_N=\{t:|t-N|>N^{2/3}\}$, positivity and finite expansion give
+\begin{equation}\label{bsw:rp:eq:mixture}
+ \EE\bigl[|R_k(v/T_N)|^n\mathbf1_{E_N}(T_N)\bigr]
+ \le\sum_{M=0}^d c_{n,M}V^M
+ \PP\{\GammaDist(N-M+1,1)\in E_N\},\quad |v|\le V.
+\end{equation}
+Multiplying the original density by $t^{-M}$ changes its shape to $N-M+1$,
+with normalizing factor $(N-M)!/N!$, which proves
+\eqref{bsw:rp:eq:mixture}.  All shapes are positive.
+
+Split at $M_N=\lfloor N^{1/3}\rfloor$.  For $M\le M_N$, the new mean
+$q=N-M+1$ is within $M_N+1$ of $N$.  For all large $N$, membership in $E_N$
+implies deviation from $q$ by more than $N^{2/3}/2$.  The gamma
+moment-generating function $(1-s)^{-q}$ and Chernoff optimization give
+\[
+ \PP(T-q\ge a)\le\ee^{-a^2/[2(q+a)]},\qquad
+ \PP(T-q\le-a)\le\ee^{-a^2/(2q)}\quad(0<a<q).
+\]
+For the upper bound optimize at $s=a/(q+a)$; for the lower, at
+$s=-a/(q-a)$.  The resulting rate functions dominate the stated quadratic
+expressions by integrating their derivatives.  Thus the $M\le M_N$
+contribution in \eqref{bsw:rp:eq:mixture} is at most
+$2\ee^{\lambda V-cN^{1/3}}$ for an absolute $c>0$ and sufficiently large
+$N$.
+
+The other terms total at most $\sum_{M>M_N}(\lambda V)^M/M!$.  For fixed
+$a=\lambda V>0$, once $M_N+2\ge2a$ this is bounded by
+\[
+ \frac{2a^{M_N+1}}{(M_N+1)!}
+ \le 2\left(\frac{\ee a}{M_N+1}\right)^{M_N+1}
+ =\exp\{-\Omega(N^{1/3}\log N)\}.
+\]
+For $V=0$ it vanishes.  The entire weighted complement is therefore smaller
+than every power of $N^{-1}$, uniformly on the disk.  The same factorial
+bound for degrees $M\ge\varepsilon N$, fixed $\varepsilon>0$, gives
+$\exp\{-\varepsilon N\log N+O(N)\}$ (or zero if beyond support).  No
+uncontrolled prefactor $C^n$ is introduced.
+
+
 \begin{thebibliography}{99}
 
 \bibitem{oeis330266}
@@ -1217,6 +2042,21 @@ E.-M.~Mehiri,
 \emph{Bijections Between Smirnov Words and Hamiltonian Cycles in Complete
 Multipartite Graphs}, arXiv:2510.26597v2, 2026.
 
+\bibitem{gessel}
+[Added in the batch-77P5 write, from Part~II.]
+I.~M.~Gessel,
+\emph{Generalized rook polynomials and orthogonal polynomials}, in
+\emph{q-Series and Partitions}, IMA Vol.~18, Springer, 1989, pp.~159--176.
+Author-hosted manuscript revised 30 September 1988:
+\url{https://people.brandeis.edu/~gessel/homepage/papers/rookp.pdf}.
+
+\bibitem{taylor}
+[Added in the batch-77P5 write, from Part~II.]
+J.~Taylor,
+\emph{Counting words with Laguerre series}, Electronic Journal of
+Combinatorics 21(2), P2.1, 2014.
+\url{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v21i2p1/pdf/}.
+
 \bibitem{stanley}
 R.~P.~Stanley,
 \emph{Enumerative Combinatorics, Volume 1}, second edition,
@@ -1238,7 +2078,8 @@ series-and-transseries collection.  Its source is
 \path{Analysis/Transseries/docs/series-and-transseries/}\allowbreak
 \path{Transseries_And_Inversion/transseries_and_inversion.tex}.  Cited here:
 Part ``Inversion: the apparatus for a rapidly growing function''
-(labels \texttt{p0:thm:perturbed-inversion}, \texttt{p0:thm:staircase}),
+(labels \texttt{p0:thm:perturbed-inversion}, \texttt{p0:thm:staircase};
+Part~II also names \texttt{p0:thm:lambert-core}),
 chapter on the increasing inverse of Gamma (\texttt{p6:thm:gamma}) and chapter
 ``The subfactorial'' (\texttt{p8:sec:top}).  Repository state of placement
 commit \texttt{6e193dd4f}.\par\endgroup
