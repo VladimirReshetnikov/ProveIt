@@ -448,7 +448,8 @@ halting of quantum controllers is `Σ⁰₁`-complete and almost-sure halting
 reduced word of length `n` has denominator exactly `5^n`, decoded in
 polynomial time; a finite presentation compiles to rational `SO(4)` gates
 whose group is the image of the Mihailova fiber product, dense when the
-presentation is nontrivial (Section 84). Source 11's instantiation has
+relator kernel is nontrivial, as ensured by the stated dummy-generator
+padding (Section 84). Source 11's instantiation has
 polynomial-time rational-matrix membership and c.e.-complete state transfer
 from a fixed rational vector, with hard targets satisfying an order-five
 recurrence and no recursive precision bound (Sections 81, 85–90); source 16's
@@ -509,8 +510,10 @@ and a specialized constant-flow quartic with 17 witnesses and 15 residuals
   proposed `RobustReachability` and 18's `PolynomialFlow`/`KineticFlow` module names are not repository declarations.
 - **No explicit universal polynomial.** None of the fixed MRDP polynomials
   (Theorems 4.3, 22.1, 26.3, 160.1, Corollaries 29.2, 160.2, and the MRDP statements of
-  Parts V–VII) is expanded, and none has a stated degree, witness count or
-  multiplicity. The explicit polynomials are size-indexed families; their
+  Parts V–VII) is expanded or given a numerical witness or operation count.
+  Standard circuit quadratization gives fixed degree at most four where
+  stated, including Corollary 160.2; it does not control the multiplicity
+  of the original MRDP witnesses. The explicit polynomials are size-indexed families; their
   sizes may not be transferred to the fixed-arity polynomials (Remark 2.1).
   No universal machine table, interpreter, Higman presentation, transducer or
   network weight list is printed (sources 11, 12, 13, 14, 16 say so).
