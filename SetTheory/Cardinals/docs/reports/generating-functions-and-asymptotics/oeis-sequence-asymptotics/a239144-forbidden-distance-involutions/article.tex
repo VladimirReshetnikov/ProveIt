@@ -1,0 +1,468 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Fixed forbidden distances in involutions}\fancyhead[R]{\small Research note}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Prb}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}\newcommand{\Pois}{\operatorname{Poisson}}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\N}{\mathbb N}
+\title{Fixed Forbidden Distances in Involutions\\\large Uniform expansions and two Gaussian sectors}
+\author{Research article and reproducibility companion}
+\date{October 2, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The fixed columns of OEIS A239144 count involutions whose transpositions have distance greater than a fixed integer $r$. We give a self-contained adaptation of classical matching-polynomial and Gaussian-duality methods that produces their asymptotic expansions to every prescribed finite order. The underlying theorem is uniform over all forbidden graphs of fixed bounded degree, with coefficients evaluated at the graph's actual normalized matching-root moments. It supplies a complex probability-generating-function expansion and exponentially weighted signed-probability error bounds. For avoidance counts, two explicitly cutoff-defined positive Gaussian sectors have separately controlled expansions, with relative weights $e^{\sqrt n}$ and $e^{-\sqrt n}$. A connected-cluster argument proves exact eventual affine dependence of each fixed-distance local statistic, turning the general moving-statistic expansion into constant-coefficient column expansions. We derive first corrections and distinguish smooth, log-linear, and integer-threshold inverses. The exact Gaussian identity, root-moment technique, and high-order structural-correction methodology are established prior work; the present scope is an explicit involution-family refinement, without a worldwide-priority claim.
+\end{abstract}
+
+\section{The fixed distance problem and its precedents}
+An involution on $[n]=\{1,\ldots,n\}$ consists of fixed points and disjoint transpositions. Write $I_n$ for the number of all involutions, with $I_0=I_1=1$ and
+\begin{equation}\label{eq:Irec}
+ I_n=I_{n-1}+(n-1)I_{n-2}.
+\end{equation}
+For a fixed nonnegative integer $r$, let $A_{n,r}$ count those involutions for which every transposition $(i,j)$ satisfies $|i-j|>r$. Thus
+\[
+ A_{n,r}=T(n,r)\quad\hbox{in OEIS A239144},\qquad
+ A_{n,0}=I_n,\quad A_{n,1}=\mathrm{A170941}(n).
+\]
+This is the existing Arndt--Heinz counting family recorded in 2014, not a newly defined sequence \cite{oeis239144}. The statements below take $n\to\infty$ with $r$ fixed. They make no assertion about the triangular diagonal or an increasing $r=r(n)$.
+
+The first practical consequence of the analysis is
+\begin{equation}\label{eq:main-column}
+ \frac{A_{n,r}}{I_n}=e^{-r}\left[1+\frac r{\sqrt n}-\frac r{2n}
+ -\frac{r(8r^2-12r+3)}{24n^{3/2}}+O_r(n^{-2})\right].
+\end{equation}
+Every higher coefficient is effectively computable. For a fixed finite set $S$ of forbidden positive distances, rather than all distances $1,\ldots,r$, the same all-orders conclusion holds, with different computable constants.
+
+\subsection{Historical boundary}
+The machinery used here has a substantial history. Heilmann and Lieb established the real-rootedness and root bounds for matching polynomials \cite{heilmannlieb}. Godsil developed matching duality and the connection between matching roots and walks in rooted path trees \cite{godsilduality,godsilwalks}. Lass's exposition explicitly attributes the shifted Gaussian duality to Godsil's 1981 Theorem 2.4 and states it in a form whose evaluation at $1$ is exactly the all-matchings complement identity used here \cite{lass}. The shift by $1$ is therefore already classical.
+
+Godsil and McKay use bounded matching roots, walk power sums, and saddle integration to obtain structural asymptotic corrections \cite{godsil-mckay}. Especially close prior work is McLeod's 2007 thesis, Chapter 4, and its 2010 journal continuation \cite{mcleodthesis,mcleod}. The thesis's Theorem 4.17 gives explicit corrections through $n^{-5}$ and an $O(k^6/n^6)$ remainder in the exponent for perfect matchings in the complement of a $k$-regular graph on $2n$ vertices, with $k=O(n^{1-\delta})$. Theorem 4.18 expresses structural terms through short subgraphs. These are substantial high-order local-statistic results, not merely leading equivalents. The corresponding theorem pages were checked in the primary thesis PDF. The final journal text has not been compared word for word with that precursor.
+
+For adjacent avoidance, Ganjtabesh and Steyaert already give the selected-pair counting formula and prove $A_{n,1}/I_n\to e^{-1}$ \cite{ganjtabesh}. Kotesovec's 2014 contribution to A170941 records the first absolute correction $31/(24\sqrt n)$ \cite{oeis170941}. Li's 2026 manuscript proves convergence of the full adjacent-transposition count to $\Pois(1)$ \cite{li}. Neither the leading $1/e$ nor the first adjacent correction is asserted as new here.
+
+The useful scope of this article is the combined uniform, arbitrary-finite-order unrestricted-involution result: arbitrary bounded-degree forbidden graphs with moving local statistics, complex PGFs, weighted signed-law errors, and separately controlled unequal Gaussian sectors; together with fixed-distance stabilization and carefully specified inverses. A bounded inspection of the sources just named did not locate that combined theorem. This is a statement of inspected scope, not proof of global novelty. In particular, related perfect-matching Poisson limits \cite{deng}, finite-order partial-matching estimates \cite{greenhill}, and root-moment algorithms \cite{wanless} are important precedents. No claim is made that this article invents the integral representation, root-moment method, or high-order structural-correction approach.
+
+\section{Exact identities and finite local statistics}
+Let $G$ be a simple graph on $n\ge1$ vertices and let $\Delta(G)\le\Delta$, where $\Delta$ is fixed independently of $n$. The edges of $G$ are forbidden transpositions. Let $M_k=M_k(G)$ be the number of $k$-edge matchings, with $M_0=1$, and define
+\[
+ \mu_G(y)=\sum_k(-1)^k M_k y^{n-2k},\qquad
+ F_{G,w}(y)=\sum_k M_k w^k y^{n-2k}.
+\]
+Let $X=X_G$ count edges of $G$ occurring as transpositions in a uniformly chosen involution. The avoidance count is $A_G=I_n\Prb(X=0)$.
+
+\begin{lemma}[Marking and Gaussian duality]\label{lem:marking}
+For every complex $w$,
+\begin{equation}\label{eq:marking}
+ I_n\E(1+w)^X=\sum_k M_k w^k I_{n-2k}
+ =\E F_{G,w}(1+Z),\qquad Z\sim N(0,1).
+\end{equation}
+In particular $A_G=\E\mu_G(1+Z)$.
+\end{lemma}
+\begin{proof}
+Expand $(1+w)^X$ by selecting a subset of occurring forbidden edges. A selected $k$-matching has $I_{n-2k}$ completions. Summing over the $M_k$ selected matchings proves the first equality. The finite identity $I_m=\E(1+Z)^m$ follows from Gaussian moments or the exponential generating function $\exp(t+t^2/2)$. This proves the second equality without an infinite-series interchange. The avoidance identity is the specialization $w=-1$ of the classical matching duality discussed above.
+\end{proof}
+
+Write the $n$ roots of $\mu_G$, with multiplicity, as $\rho_1,\ldots,\rho_n$. The Heilmann--Lieb bound allows the conservative common choice
+\begin{equation}\label{eq:B}
+ B=2\sqrt{\max(\Delta-1,1)},\qquad |\rho_i|\le B.
+\end{equation}
+The convention covers degrees $0$ and $1$ as well as the usual degree-at-least-two case. Define
+\begin{equation}\label{eq:aj}
+ a_j(G)=\frac1{2jn}\sum_{i=1}^n\rho_i^{2j},\qquad
+ 0\le a_j(G)\le\frac{B^{2j}}{2j}\quad(j\ge1).
+\end{equation}
+If $\nu$ is the maximum matching size, parity and real-rootedness give
+\begin{equation}\label{eq:paired}
+ \mu_G(y)=y^{n-2\nu}\prod_{i=1}^{\nu}(y^2-\eta_i^2),\qquad
+ F_{G,w}(y)=y^{n-2\nu}\prod_{i=1}^{\nu}(y^2+w\eta_i^2),
+\end{equation}
+where the positive roots $\eta_i$ are listed with multiplicity. Consequently
+\begin{align}
+ \log\mu_G(y)&=n\log y-n\sum_{j\ge1}a_j(G)y^{-2j}\quad(y>B),\label{eq:logroot}\\
+ [z^j]\log\!\left(\sum_k M_kz^k\right)&=(-1)^{j+1}n a_j(G).\label{eq:logmatching}
+\end{align}
+The second formula is a formal identity and computes the $a_j$ by rational arithmetic without numerical roots. If $m=|E(G)|$ and $W=\sum_v\binom{d(v)}2$, then
+\begin{equation}\label{eq:a12}
+ a_1=\frac mn,\qquad a_2=\frac{m/2+W}{n}.
+\end{equation}
+Indeed $M_2=\binom m2-W$, so $n a_2=m^2/2-M_2$.
+
+Godsil's root-moment interpretation identifies $\sum_i\rho_i^{2j}$ with the sum over roots $v$ of length-$2j$ returning walks in the rooted path tree of $G$ at $v$ \cite{godsilwalks}. Its vertices are simple paths starting at $v$, with adjacency by one-step extension or deletion. A returning walk of length $2j$ reaches depth at most $j$, so its contribution depends only on the radius-$j$ neighborhood of $v$. These are path-tree walks, not arbitrary closed walks in $G$. This explains the finite-local-statistic nature of \eqref{eq:aj}.
+
+\begin{lemma}[Global factorial moment domination]\label{lem:factorial}
+For every integer $k\ge0$,
+\begin{equation}\label{eq:factorial}
+ \E(X)_k=k!M_k\frac{I_{n-2k}}{I_n}\le(\Delta/2)^k,
+\end{equation}
+where the left side is zero when $2k>n$. Thus
+$|\E(1+w)^X|\le\exp(\Delta|w|/2)$ for every $w\in\C$.
+\end{lemma}
+\begin{proof}
+At the $i$th stage of an ordered matching-edge selection, at most $\Delta(n-2i)/2$ edges remain. Hence
+$k!M_k\le\prod_{i=0}^{k-1}\Delta(n-2i)/2$.
+The sequence $I_N$ is nondecreasing, and \eqref{eq:Irec} gives
+$I_N\ge N I_{N-2}$ for $N\ge2$.
+Iterating cancels the factors $n-2i$. The $k=0$ case is $1$, including $\Delta=0$. Expanding the finite binomial-moment sum and taking absolute values proves the last assertion.
+\end{proof}
+This bound is valid over the whole possible moment range. The main proof below uses direct analytic estimates; it does not infer a uniform infinite-tail estimate from fixed-$k$ asymptotics.
+
+\section{The uniform expansion and its coefficient generator}
+Put $\eps=n^{-1/2}$. In this section the numbers $a_j$ always mean the actual statistics $a_j(G)$ at the current $n$.
+
+\begin{theorem}[Uniform complex PGF expansion]\label{thm:pgf}
+There are universal rational polynomials
+$P_h(w;a_1,\ldots,a_{\lfloor h/2\rfloor+1})$, with $P_0=1$ and degree at most $h$ in $w$, such that, for each fixed integer $J\ge0$ and real $R\ge0$,
+\begin{equation}\label{eq:pgf}
+ \E(1+w)^X=e^{a_1w}\left\{\sum_{h=0}^J P_h(w;a(G))\eps^h
+ +O_{\Delta,J,R}(\eps^{J+1})\right\}
+\end{equation}
+uniformly over all $G$ on $n$ vertices of maximum degree at most $\Delta$, and all $|w|\le R$. No convergence or expansion of $a_j(G)$ is assumed.
+\end{theorem}
+The first coefficients are
+\begin{align}
+ P_1&=-a_1w,\notag\\
+ P_2&=\tfrac32a_1w+(\tfrac32a_1^2-a_2)w^2,\label{eq:P123}\\
+ P_3&=-\tfrac{11}{8}a_1w+(2a_2-4a_1^2)w^2
+ +(a_1a_2-\tfrac76a_1^3)w^3.\notag
+\end{align}
+
+\begin{corollary}[Exponentially weighted signed errors]\label{cor:weighted}
+Let
+\[
+ q_{n,J}(\ell)=[z^\ell]\left[e^{a_1(z-1)}
+ \sum_{h=0}^J P_h(z-1;a(G))\eps^h\right].
+\]
+For every fixed $q\ge0$,
+\begin{equation}\label{eq:weighted}
+ \sum_{\ell\ge0}q^\ell\big|\Prb(X=\ell)-q_{n,J}(\ell)\big|
+ =O_{\Delta,J,q}(\eps^{J+1}).
+\end{equation}
+At $q=0$, use $0^0=1$.
+\end{corollary}
+\begin{proof}
+Choose a fixed $S>q$. On $|z|=S$, the PGF theorem with $w=z-1$ bounds the analytic remainder by $C\eps^{J+1}$. Cauchy's estimate bounds its $\ell$th coefficient by $C\eps^{J+1}S^{-\ell}$. The geometric sum is finite, giving \eqref{eq:weighted}.
+\end{proof}
+The $q_{n,J}(\ell)$ may be negative. This is a signed asymptotic approximation, not a claim that truncation defines a probability law. For $J=0$ it gives a uniform $O_\Delta(n^{-1/2})$ approximation to $\Pois(a_1(G))$ in total variation. If $a_1(G_n)\to\lambda$, this implies a Poisson limit. If those parameters oscillate, \eqref{eq:pgf} remains valid but there need not be a single limiting law or constant-coefficient expansion. Nor does \eqref{eq:weighted} assert a smooth all-orders expansion of total-variation distance through parameter values at which the relevant absolute values change branches, including integer Poisson means.
+
+\subsection{Two explicitly defined exterior sectors}
+Let $\phi(x)=(2\pi)^{-1/2}e^{-x^2/2}$ and use the fixed bound $B$ from \eqref{eq:B}. Define
+\begin{align}
+ K_G^\sigma&=\int_B^\infty\mu_G(y)\phi(y-\sigma)\dd y
+ \quad(\sigma\in\{+1,-1\}),\label{eq:K}\\
+ C_G&=\int_{-B}^B\mu_G(y)\phi(y-1)\dd y.\notag
+\end{align}
+Both $K_G^\sigma$ are nonnegative. Reflection and parity give the exact identity
+\begin{equation}\label{eq:split}
+ A_G=K_G^+ +(-1)^nK_G^-+C_G,\qquad |C_G|\le B^n.
+\end{equation}
+The bound follows from \eqref{eq:paired}: on $[-B,B]$, each paired factor has magnitude at most $B^2$ and each zero-root factor at most $B$.
+
+\begin{theorem}[Separate all-orders sector estimates]\label{thm:sectors}
+There are universal rational polynomials $D_h(a_1,\ldots,a_{\lfloor h/2\rfloor+1})$, with $D_0=1$, such that for each fixed $J\ge0$,
+\begin{equation}\label{eq:sectors}
+ K_G^\sigma=L_n^\sigma
+ \left\{\sum_{h=0}^J\sigma^hD_h(a(G))\eps^h
+ +O_{\Delta,J}(\eps^{J+1})\right\},
+\end{equation}
+uniformly over the graph family and both signs, where
+\begin{equation}\label{eq:L}
+ L_n^\sigma=\frac1{\sqrt2}\left(\frac ne\right)^{n/2}
+ \exp\left(\sigma\sqrt n-\frac14-a_1\right).
+\end{equation}
+The central term in \eqref{eq:split} is smaller than either sector scale by every fixed inverse power of $n$.
+\end{theorem}
+In particular,
+\begin{align}
+ D_1&=\tfrac7{24}+a_1,\notag\\
+ D_2&=-\tfrac{119}{1152}-\tfrac{29}{24}a_1+\tfrac32a_1^2-a_2,\label{eq:D123}\\
+ D_3&=-\tfrac{7933}{414720}+\tfrac{961}{1152}a_1
+ -\tfrac{57}{16}a_1^2+\tfrac76a_1^3+\tfrac{41}{24}a_2-a_1a_2.\notag
+\end{align}
+The negative sector has its own relative remainder, even though it is smaller than the positive one by $e^{-2\sqrt n}$. The error from truncating the positive-sector series at a fixed algebraic order is much larger than the negative sector. Thus two-sector resolution refers to separate controlled integrals, not to numerical recovery of the smaller term from a single finitely truncated total asymptotic series.
+
+\begin{remark}[The cutoff is a convention]
+Changing $B$ to another fixed common root bound changes the exact sectors by at most $O(C^n)$ for a fixed $C$. It does not change their algebraic asymptotic coefficients. We do not assert that the exact sector decomposition is canonically unique under arbitrary cutoff choices.
+\end{remark}
+
+\subsection{An all-orders rational algorithm}
+Let $U\sim N(1/2,1/2)$. For $h\ge1$, set
+\begin{equation}\label{eq:ph}
+ p_h(u;a)=\frac{(-1)^{h+1}u^{h+2}}{h+2}
+ -\sum_{j=1}^{\lfloor(h+2)/2\rfloor}
+ a_j(-1)^{h-2j+2}\binom{h+1}{h-2j+2}u^{h-2j+2}.
+\end{equation}
+Define polynomial sequences by
+\begin{equation}\label{eq:brec}
+ b_0=1,\qquad b_r=\frac1r\sum_{h=1}^r h p_h b_{r-h},
+ \qquad D_r(a)=\E b_r(U;a).
+\end{equation}
+All expectations are exact rational operations. The moments are generated by
+\[
+ \mu_0=1,\quad\mu_1=\tfrac12,\qquad
+ \mu_k=\tfrac12\mu_{k-1}+\tfrac{k-1}{2}\mu_{k-2}.
+\]
+For PGF coefficients put $A_r=D_r(0,\ldots,0)$ and
+\[
+ H_r(w;a)=D_r(-a_1w,a_2w^2,-a_3w^3,\ldots).
+\]
+Then formal division gives
+\begin{equation}\label{eq:Prec}
+ P_0=1,\qquad P_r=H_r-\sum_{k=1}^r A_kP_{r-k}.
+\end{equation}
+Equations \eqref{eq:ph}--\eqref{eq:Prec} specify any prescribed finite order. They do not assert convergence of the infinite asymptotic series.
+
+\section{Uniform remainder proof}
+We prove the sector theorem first and then the complex PGF theorem. Constants may depend on the displayed fixed parameters, but never on the particular graph or its local statistics.
+
+\subsection{Local expansion at the positive saddle}
+For $y>B$, put $y=\sqrt n+u$ and use \eqref{eq:logroot}. Apart from the normalizing constant in \eqref{eq:L}, the integrand is the Gaussian $e^{-(u-\sigma/2)^2}$ times the exponential of
+\begin{equation}\label{eq:exponent}
+ \sum_{h\ge1}\frac{(-1)^{h+1}u^{h+2}}{h+2}\eps^h
+ -\sum_{j\ge1}a_j\eps^{2j-2}(1+\eps u)^{-2j}+a_1.
+\end{equation}
+The remaining factor $\sqrt\pi/\sqrt{2\pi}=1/\sqrt2$ gives exactly \eqref{eq:L}. On the window $|u|\le n^{1/12}$, one has $|\eps u|\le n^{-5/12}$ and the nonconstant exponent is $O_\Delta(\eps(1+|u|^3))=o(1)$.
+
+For completeness, the following elementary estimate makes the uniformity explicit.
+\begin{lemma}[Gaussian window expansion]\label{lem:window}
+For each fixed $J$, on $|u|\le n^{1/12}$ the exponential of \eqref{eq:exponent} equals
+\[
+ \sum_{h=0}^J b_h(u;a)\eps^h+\mathcal R_{n,J}(u;a),
+ \qquad
+ |\mathcal R_{n,J}(u;a)|\le C_{\Delta,J}\eps^{J+1}(1+|u|^N),
+\]
+for some fixed integer $N=N(J)$ and all sufficiently large $n$ uniformly in $G$. The same assertion holds when $a_j$ is replaced by $(-1)^ja_jw^j$, uniformly for $|w|\le R$, with constants also depending on $R$.
+\end{lemma}
+\begin{proof}
+In the logarithmic series retain powers through $\eps^J$; Taylor's remainder for $\log(1+\eps u)$, after division by $\eps^2$, is bounded by $C_J\eps^{J+1}|u|^{J+3}$ when $|\eps u|\le1/2$. In the root sum it suffices to retain $j\le\lfloor(J+2)/2\rfloor$. Indeed \eqref{eq:aj} and $1+\eps u\ge1/2$ bound the omitted $j$ terms by a geometric series starting at order at least $\eps^{J+1}$. Expanding each retained $(1+\eps u)^{-2j}$ gives a remainder bounded by $C_{\Delta,J}\eps^{J+1}(1+|u|^{J+1})$. This proves a polynomial-envelope remainder for the exponent, whose coefficients through order $J$ are exactly \eqref{eq:ph}.
+
+Both the exact nonconstant exponent and its retained polynomial are uniformly $o(1)$ on this window. Taylor's formula for their exponentials therefore has a bounded exponential factor. Truncating the exponential of the retained polynomial by total $\eps$ degree gives \eqref{eq:brec}. Terms of higher degree and the exponential Taylor remainder are bounded by $C\eps^{J+1}(1+|u|^N)$ for a fixed $N$, by finite multiplication and the estimate $O(\eps(1+|u|^3))$. The bounds for complex $w$ follow by replacing the geometric-series ratio by a constant multiple depending on $R$.
+\end{proof}
+Multiplying the remainder by $e^{-(u-\sigma/2)^2}$ and integrating gives $O(\eps^{J+1})$, since every polynomial is integrable against that Gaussian. Extending the coefficient integrals from the local window to the whole real line costs a superalgebraically small amount. For $\sigma=+1$ this produces $D_h$. Each monomial in $p_h$ has the parity of $h$ in $u$, so $b_h(-u)=(-1)^hb_h(u)$. Reflection of $N(-1/2,1/2)$ into $N(1/2,1/2)$ gives $\sigma^hD_h$ for both signs.
+
+\subsection{Tails of the exterior integrals}
+For $y>B$, $0\le\mu_G(y)\le y^n$. The exponent
+\[
+ f_\sigma(y)=n\log y-(y-\sigma)^2/2
+\]
+has $f_\sigma''(y)=-n/y^2-1\le-1$ and maximizer $\sqrt n+O(1)$. On $y\ge\sqrt n/2$, strong concavity shows that removing $|y-\sqrt n|\le n^{1/12}$ costs $O(\exp(-c n^{1/6}))$ relative to the saddle scale, uniformly for either sign. On $B\le y\le\sqrt n/2$, the crude bound $y^n\le(\sqrt n/2)^n$ and interval length $O(\sqrt n)$ give a relative bound of the form
+\[
+ O_\Delta\!\left(n^{1/2}(e/4)^{n/2}e^{O(\sqrt n)}\right),
+\]
+which is exponentially small. Finally $B^n/L_n^\sigma$ has logarithm $-(n/2)\log n+O_\Delta(n)$, proving the central-error assertion. This completes Theorem \ref{thm:sectors}.
+
+\subsection{Uniform complex marking}
+For real $y$ and $|w|\le R$, \eqref{eq:paired} gives
+\begin{equation}\label{eq:complexbound}
+ |F_{G,w}(y)|\le(y^2+RB^2)^{n/2}.
+\end{equation}
+On $|y|\le\sqrt n/2$ the integral is exponentially negligible relative to the positive saddle by the same $e/4$ comparison. On $|y|\ge\sqrt n/2$, the right side of \eqref{eq:complexbound} is at most
+$|y|^n\exp(2RB^2)$, so the previous Gaussian tail estimates apply. In the two local windows, $|w|\eta_i^2/y^2<1$ uniformly for large $n$, making the logarithmic expansion legitimate. The replacement is precisely
+\[
+ a_j\longmapsto(-1)^ja_jw^j,
+\]
+and the positive leading factor becomes $e^{a_1w}$. Lemma \ref{lem:window} proves the uniform local expansion. The negative window is smaller than the positive scale by $e^{-2\sqrt n}$ times a uniformly bounded factor and hence is beyond every fixed algebraic order.
+
+The corresponding unrestricted involution expansion is obtained by setting all $a_j=0$. Its leading positive factor is nonzero and its series begins at $1$. Dividing the marked expansion by it proves \eqref{eq:pgf}, with \eqref{eq:Prec}. The $w$ degree bound follows because, after extracting $e^{a_1w}$, an $a_1w$ term first occurs at order $\eps$, and a term $a_jw^j$ for $j\ge2$ first occurs at order $\eps^{2j-2}$, whose exponent is at least $j$. Products and division by a scalar series preserve the degree bound. This proves Theorem \ref{thm:pgf}.
+
+\section{Fixed distance stabilization and A239144}
+Let $S$ be a fixed nonempty finite set of positive integers and $r=\max S$. Define $G_n(S)$ on $[n]$ by $\{i,j\}\in E$ if $|i-j|\in S$. Its maximum degree is at most $2|S|$.
+
+\begin{theorem}[Exact eventual affine statistics]\label{thm:affine}
+For each fixed $j\ge1$ there are effectively computable rational numbers $\alpha_j(S),\beta_j(S)$ such that
+\begin{equation}\label{eq:affine}
+ a_j(G_n(S))=\alpha_j(S)+\frac{\beta_j(S)}n
+ \qquad(n>jr).
+\end{equation}
+Consequently every prescribed finite-order PGF or avoidance expansion for this family has constant coefficients after extracting its fixed leading exponential.
+\end{theorem}
+\begin{proof}
+Introduce one variable $x_e$ for each edge and the multivariate matching polynomial
+\[
+ Z_G(x)=\sum_{M\text{ matching}}\prod_{e\in M}x_e.
+\]
+Its constant term is $1$, so $\log Z_G$ is a formal power series. The coefficient of a monomial $\prod_ex_e^{m_e}$ depends only on the incompatibility graph of its support $H=\{e:m_e>0\}$, namely the induced line graph on those edges: set every other variable to zero. If this incompatibility graph is disconnected, its matching polynomial factors over its components and its logarithm is a sum. A monomial involving multiple components therefore has zero coefficient.
+
+Only supports connected in the line graph contribute to total degree $j$. Such a support has at most $j$ edges, each of length at most $r$. Its largest and smallest vertices differ by at most $jr$: a connected chain of support edges joins them, and the sum of its edge lengths is at most $jr$. Translate its smallest vertex to zero. There are only finitely many resulting patterns $P$, including positive edge multiplicities totaling $j$. Let $\ell(P)$ be the span and $c(P)$ its rational logarithmic coefficient. When $n>jr$, the pattern occurs in exactly $n-\ell(P)$ translates. Therefore
+\begin{equation}\label{eq:clusters}
+ [z^j]\log\!\left(\sum_k M_k(G_n(S))z^k\right)
+ =\sum_P c(P)(n-\ell(P))=u_jn+v_j.
+\end{equation}
+Setting every $x_e=z$ proves the first equality; \eqref{eq:logmatching} proves \eqref{eq:affine}. The finite pattern sum is an algorithm. Alternatively, after the theorem has justified affine dependence, two consecutive exact evaluations at $n>jr$ recover $u_j,v_j$; a third is a useful implementation check. Substituting \eqref{eq:affine} with $1/n=\eps^2$ into the universal generator proves the constant-coefficient conclusion.
+\end{proof}
+For $S=\varnothing$ the graph is empty and the assertion is immediate. The proof is structural; observing empirical linearity at a few values would not be a substitute.
+
+\subsection{First path power corrections}
+For $S=\{1,\ldots,r\}$, write $G_n=P_n^r$. For sufficiently large $n$,
+\[
+ m=rn-\frac{r(r+1)}2,\qquad
+ \frac Wn=r(2r-1)+O_r(n^{-1}),
+\]
+so
+\[
+ a_1=r-\frac{r(r+1)}{2n},\qquad
+ a_2=2r^2-\frac r2+O_r(n^{-1}).
+\]
+Insert these in \eqref{eq:P123} at $w=-1$, including the factor $e^{-a_1}$, to obtain \eqref{eq:main-column}. The $n^{-3/2}$ coefficients inside the square brackets are
+\[
+ r=1:\ \frac1{24},\qquad r=2:\ -\frac{11}{12},\qquad
+ r=3:\ -\frac{39}{8}.
+\]
+For the full marked distribution, the first two constant-parameter corrections are
+\begin{equation}\label{eq:fixedpgf}
+ \E(1+w)^X=e^{rw}\left[1-rw\eps+
+ \left\{\frac{r(2-r)}2w-\frac{r(r-1)}2w^2\right\}\eps^2
+ +O_{r,R}(\eps^3)\right]
+\end{equation}
+uniformly for $|w|\le R$.
+
+Taking formal logarithms of the positive sector (the other terms being superalgebraically smaller), define
+\begin{align}
+ L_{r,J}(x)&=\frac x2(\log x-1)+\sqrt x-\frac{\log2}2-\frac14-r
+ +\sum_{j=1}^J\gamma_{r,j}x^{-j/2},\label{eq:logL}\\
+ \log A_{n,r}&=L_{r,J}(n)+O_{r,J}(n^{-(J+1)/2}).\label{eq:logA}
+\end{align}
+The first coefficients are
+\begin{equation}\label{eq:gammas}
+ \gamma_{r,1}=r+\frac7{24},\qquad
+ \gamma_{r,2}=-\frac{r(r+1)}2-\frac7{48},\qquad
+ \gamma_{r,3}=r^2-\frac r8+\frac{37}{1920}.
+\end{equation}
+For $r=1$ these are $31/24,-55/48,1717/1920$. In particular the first absolute correction agrees with the previously recorded Kotesovec coefficient. For $r=0$ they recover the unrestricted-involution coefficients. The companion scripts give exact coefficients through order six for $r=0,1,2,3$; the recurrence, rather than a table truncated at six, is the all-orders specification.
+
+\section{Three inverse conventions}
+An integer sequence has no unique smooth inverse. We keep three conventions separate and restrict all claims here to fixed $r$. The moving-statistic theorem for arbitrary graph sequences by itself does not imply any comparable inverse theorem.
+
+\subsection{The smooth asymptotic root}
+Fix $r,J$. Since
+\[
+ L_{r,J}'(x)=\tfrac12\log x+O_r(x^{-1/2})>0
+\]
+for all sufficiently large $x$, the equation $L_{r,J}(x)=\log y$ has a unique sufficiently large root, denoted $x_{r,J}(y)$. It is an asymptotic convention, not an asserted exact analytic continuation of $A_{n,r}$. From \eqref{eq:logA} and the mean-value theorem,
+\begin{equation}\label{eq:nodeinv}
+ x_{r,J}(A_{n,r})=n+O_{r,J}\!\left(\frac{n^{-(J+1)/2}}{\log n}\right).
+\end{equation}
+
+There is a finite explicit algorithm reaching this precision. Put $b=\log y$, use the positive real branch of Lambert $W$, and set
+\begin{equation}\label{eq:newton}
+ x_0=\frac{2b}{W(2b/e)},\qquad
+ x_{k+1}=x_k-\frac{L_{r,J}(x_k)-b}{L_{r,J}'(x_k)}.
+\end{equation}
+The seed solves $x(\log x-1)/2=b$ exactly, while
+$x_{r,J}(y)-x_0=O_r(\sqrt{x_0}/\log x_0)$.
+On that neighborhood $L'=\Theta(\log x_0)$ and $L''=O(1/x_0)$. If $e_k=x_k-x_{r,J}(y)$, Taylor's theorem gives
+\[
+ e_{k+1}=O_{r,J}\!\left(\frac{e_k^2}{x_0\log x_0}\right),\qquad
+ e_k=O_{r,J,k}\!\left(
+ \frac{x_0^{1-2^{k-1}}}{(\log x_0)^{2^{k+1}-1}}\right).
+\]
+For a fixed desired order, $k=\lceil\log_2(J+3)\rceil$ updates therefore give error
+$o(x_0^{-(J+1)/2}/\log x_0)$, smaller than the intrinsic asymptotic-log error. The number of updates need not grow with $y$.
+
+\subsection{The integer threshold}
+Define
+\[
+ N_r(y)=\min\{n\ge0:A_{n,r}\ge y\}.
+\]
+Adjoining a fixed terminal label embeds the objects on $[n-1]$ into those on $[n]$. For $n\ge r+2$, the transposition $(1,n)$ with every other vertex fixed is an additional allowed object, so the sequence is strictly increasing from that point.
+
+\begin{proposition}[Two ceiling enclosure]\label{prop:ceil}
+For fixed $r,J$ there are constants $C_{r,J},y_{r,J}>0$ such that, for $y\ge y_{r,J}$, if $x=x_{r,J}(y)$ and
+$\delta=C_{r,J}x^{-(J+1)/2}/\log x$, then
+\begin{equation}\label{eq:ceil}
+ \lceil x-\delta\rceil\le N_r(y)\le\lceil x+\delta\rceil.
+\end{equation}
+A finite Newton approximation from \eqref{eq:newton} can replace $x$ after enlarging the constant.
+\end{proposition}
+\begin{proof}
+Write $\alpha=(J+1)/2$ and bound the error in \eqref{eq:logA} by $B_0m^{-\alpha}$. In a fixed neighborhood of $x$, take $L'\ge(\log x)/4$ and $m^{-\alpha}\le2^\alpha x^{-\alpha}$. Choose $C>4\cdot2^\alpha B_0$. At
+$m_- =\lceil x-\delta\rceil-1<x-\delta$ and
+$m_+=\lceil x+\delta\rceil\ge x+\delta$,
+the mean-value theorem implies
+$\log A_{m_-,r}<\log y<\log A_{m_+,r}$ for sufficiently large $y$. Eventual strict monotonicity gives \eqref{eq:ceil}.
+\end{proof}
+The constants are asserted to exist; they are not supplied as certified numerical bounds at explicit finite inputs. There is no unconditional single-ceiling formula, because $y$ may be arbitrarily close to an exact sequence value.
+
+\subsection{The exact log linear convention}
+For $x=m+\theta$ in the eventually increasing range, $0\le\theta\le1$, define
+\begin{align*}
+ \log\mathcal A_r(m+\theta)&=(1-\theta)\log A_{m,r}
+                  +\theta\log A_{m+1,r},\\
+ \widetilde L_{r,J}(m+\theta)&=(1-\theta)L_{r,J}(m)
+                  +\theta L_{r,J}(m+1).
+\end{align*}
+This specifies an actual interpolation convention for the original sequence. If the consecutive values $L_{r,J}(m),L_{r,J}(m+1)$ bracket $\log y$, its approximate chord inverse is
+\begin{equation}\label{eq:chordinv}
+ \widetilde x_{r,J}(y)=m+
+ \frac{\log y-L_{r,J}(m)}{L_{r,J}(m+1)-L_{r,J}(m)}.
+\end{equation}
+Endpoint errors in \eqref{eq:logA} extend uniformly by convex interpolation; both interpolants have slopes $\Theta(\log x)$. It follows, including across a knot by their local lower slope bound, that
+\begin{equation}\label{eq:actualchordinv}
+ \mathcal A_r^{-1}(y)=\widetilde x_{r,J}(y)
+ +O_{r,J}\!\left(\frac{\widetilde x_{r,J}(y)^{-(J+1)/2}}
+ {\log\widetilde x_{r,J}(y)}\right).
+\end{equation}
+The interpolation defect of the smooth $L$ is $O(\sup|L''|)=O(1/x)$. Thus the smooth and chord roots generally differ by $O(1/(x\log x))$. One cannot silently identify these two inverses at arbitrary order; the chord construction is required for the exact log-linear convention.
+
+\section{Reproducible checks and limitations}
+The companion archive contains the article source, a build script, a portable mathematical replay, exact coefficient generation, independent symbolic and finite-graph tests, and reference outputs. It contains no third-party full papers. Bibliographic links identify the sources without redistributing them.
+
+The producer calculation uses the recurrence \eqref{eq:brec}, Gaussian moment recursion, and a finite-frontier matching counter. The independent calculation instead expands the exponent directly, forms a product of truncated exponential series, uses a closed Gaussian moment formula, and divides by a finite geometric inverse. All universal sector and PGF coefficients through order six agree symbolically. A vertex-subset recurrence independently checks 120 path-power matching-count cases, including direct complement counts, for $0\le n\le14$. Exact factorial-moment inequalities and \eqref{eq:a12} pass for 1,199 graphs: all simple graphs with $1\le n\le5$, plus 100 seeded random graphs of orders $6$ through $10$.
+
+Fixed-range tests verify 100 exact local-statistic values across $r=1,\ldots,5$, $j=1,\ldots,4$, starting immediately above $n=jr$. The separate inverse tests use the exact affine statistics, compute logarithmic coefficients through order six for $r=0,1,2,3$, and check smooth roots at sequence nodes and chord roots at fractional indices. Numerical sector tests for disjoint triangles check both signs at $n=60,150,300,600$.
+
+The following values illustrate the order-six avoidance approximation. Here $E_6$ is exact $A_{n,r}/I_n$ minus the truncation of \eqref{eq:pgf} through $h=6$ with the actual graph statistics. Displayed decimals are rounded; the archive preserves higher-precision data.
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$r$&$n$&$A_{n,r}/I_n$&$n^{7/2}E_6$\\
+\midrule
+1&100&0.402851003599&$-1.83708$\\
+1&500&0.383965373246&$-1.92108$\\
+2&100&0.160924606641&$-3.38493$\\
+2&500&0.147158392484&$-3.24595$\\
+3&100&0.0637215724335&$1.11376$\\
+3&500&0.0562953604037&$2.07702$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These checks corroborate the derivation; they are not proofs of uniform asymptotic remainders or effective error constants. The mathematical proof is analytic and finite-order. It does not certify a convergent expansion, growing-degree uniformity, or numerical threshold enclosures at an explicit starting value. The independent review is human-readable mathematical review supported by exact computation, not formal proof-assistant verification.
+
+\section{Questions opened by the refinement}
+Several next questions are substantive while remaining distinct from the established results.
+\begin{enumerate}
+\item \textbf{Growing forbidden degree.} What explicit relation between $\Delta(n)$, the requested order, and $n$ preserves a useful complex-PGF expansion? The geometric root-tail control and the local exponential estimates expose where fixed-degree constants enter. McLeod's wider degree range in the regular perfect-matching model is a relevant benchmark, not an automatic extension.
+\item \textbf{Effective error constants.} Can the Gaussian-window and tail estimates be optimized into explicit constants and a computable validity threshold, sufficient to certify particular integer inversions?
+\item \textbf{Efficient fixed-distance coefficients.} How can connected-support enumeration, transfer matrices, or path-tree recursions compute $\alpha_j(S),\beta_j(S)$ efficiently for large order or nonconsecutive distance sets? The proof gives an effective finite procedure but no optimal complexity bound.
+\item \textbf{Several overlapping forbidden classes.} Can the same root-based analytic control give multivariate all-orders weighted laws for overlapping edge classes? Existing joint perfect-matching Poisson results provide a natural comparison, but the single-variable matching-root factorization used here does not immediately settle that problem.
+\item \textbf{Exponentially improved approximation.} What controlled truncation or resummation recovers the smaller sector from the total count at a precision beyond every fixed algebraic order? The exact two-integral definition alone does not answer that numerical question.
+\end{enumerate}
+Before making a publication-level novelty claim, a direct comparison with the final McLeod journal version and the full Wanless paper remains appropriate. The article's mathematical statements and its usefulness as a reproducible refinement do not depend on a claim of priority.
+
+\begin{thebibliography}{99}
+\bibitem{oeis239144} OEIS Foundation, \emph{A239144}, involutions whose transposition distances exceed a prescribed bound; entry credited to J. Arndt and A. Heinz (2014). \url{https://oeis.org/A239144}.
+\bibitem{oeis170941} OEIS Foundation, \emph{A170941}, involutions without adjacent transpositions; includes V. Kotesovec's 2014 asymptotic correction. \url{https://oeis.org/A170941}.
+\bibitem{heilmannlieb} O. J. Heilmann and E. H. Lieb, Theory of monomer-dimer systems, \emph{Commun. Math. Phys.} \textbf{25} (1972), 190--232. \url{https://doi.org/10.1007/BF01877590}.
+\bibitem{godsilduality} C. D. Godsil, Hermite polynomials and a duality relation for matchings polynomials, \emph{Combinatorica} \textbf{1} (1981), 257--262. \url{https://doi.org/10.1007/BF02579331}.
+\bibitem{godsilwalks} C. D. Godsil, Matchings and walks in graphs, \emph{J. Graph Theory} \textbf{5} (1981), 285--297. \url{https://doi.org/10.1002/jgt.3190050310}.
+\bibitem{lass} B. Lass, Matching polynomials and duality, \emph{Combinatorica} \textbf{24} (2004), 427--440. Inspected author manuscript, especially introductory attribution on p. 3 and duality in \S3, p. 8. \url{https://math.univ-lyon1.fr/homes-www/lass/articles/pub4godsil.pdf}.
+\bibitem{godsil-mckay} C. D. Godsil and B. D. McKay, Asymptotic enumeration of Latin rectangles, \emph{J. Combin. Theory Ser. B} \textbf{48} (1990), 19--44. \url{https://users.cecs.anu.edu.au/~bdm/papers/LatinRectangles.pdf}.
+\bibitem{mcleodthesis} J. C. McLeod, \emph{Methods in Asymptotic Combinatorics}, PhD thesis, Australian National University, February 2007. Chapter 4, especially Theorems 4.17--4.18, printed pp. 80--81. \url{https://hdl.handle.net/1885/150677}.
+\bibitem{mcleod} J. C. McLeod, Asymptotic enumeration of $k$-edge-colored $k$-regular graphs, \emph{SIAM J. Discrete Math.} \textbf{23}(4) (2010), 2178--2197. \url{https://doi.org/10.1137/080725556}. The primary thesis precursor was inspected; the final article was not compared word for word.
+\bibitem{ganjtabesh} M. Ganjtabesh and J.-M. Steyaert, Enumerating RNA structures, including pseudoknots of any topology, \emph{MATCH Commun. Math. Comput. Chem.} \textbf{66} (2011), 399--414. Equation (17) and Theorem 3. \url{https://match.pmf.kg.ac.rs/electronic_versions/Match66/n1/match66n1_399-414.pdf}.
+\bibitem{li} A. C. Li, \emph{Ballot-Admissible Fibonacci Ribbon Tableaux: Complete Enumeration for Arbitrary Alphabet Size and Fixed-Rank Asymptotics}, 2026 manuscript; stable-involution Poisson theorem in the inspected repository source. \url{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7368879}; source repository \url{https://github.com/crabsatellite/fibonacci-ribbon-ballot-enumeration}. Titles vary between the listing and manuscript.
+\bibitem{deng} B. Deng, Deranged perfect matchings on complete graph and balanced complete $r$-partite graph, 2025 preprint, especially Theorem 3.1 and \S5. \url{https://arxiv.org/abs/2505.13799}.
+\bibitem{greenhill} C. Greenhill and B. D. McKay, Counting loopy graphs with given degrees, \emph{Linear Algebra Appl.} \textbf{436} (2012), 901--926. \url{https://arxiv.org/abs/1103.0080}.
+\bibitem{wanless} I. M. Wanless, Counting matchings and tree-like walks in regular graphs, \emph{Combin. Probab. Comput.} \textbf{19} (2010), 463--480. \url{https://doi.org/10.1017/S0963548309990678}. Bibliographic/abstract scope checked; full-paper comparison remains open.
+\end{thebibliography}
+\end{document}

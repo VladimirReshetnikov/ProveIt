@@ -1,0 +1,833 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,
+pdftitle={Full asymptotic expansions for partition sums of acyclic orientations}}
+\setlength{\parskip}{.35em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\AO}{\operatorname{AO}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\title{Full asymptotic expansions for partition sums of acyclic orientations}
+\author{}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We obtain the full prefactors and arbitrary finite orders of the asymptotic
+expansions for OEIS A372395 and A370613, which sum acyclic orientations of
+complete multipartite graphs over unrestricted and distinct-part integer
+partitions. The normalized counts have the respective forms
+$A_+n^{-1}e^{C_+\sqrt n}$ and $A_-n^{-3/4}e^{C_-\sqrt n}$, with corrections
+in powers of $n^{-1/2}$. The constants $C_\pm$ were previously identified
+by Sun. The amplitudes include a nontrivial contribution from a tilted
+Gamma integral. A uniform quadratic majorant supplies relative-precision
+tail control despite the signed polynomial integral representation.
+We give a finite coefficient algorithm, explicit first and second
+corrections, reproducible exact checks through $n=300$, and controlled
+Lambert-$W$ inverse expansions. The result is an all-orders Poincar\'e
+expansion; it does not assert an exponentially complete transseries.
+\end{abstract}
+
+\section{Results and relation to prior work}
+
+For an integer partition $\lambda$ of $n$, let $K_\lambda$ be the complete
+multipartite graph with part sizes $\lambda_1,\lambda_2,\ldots$. Define
+\[
+ B_+(n)=\sum_{\lambda\vdash n}\AO(K_\lambda),\qquad
+ B_-(n)=\sum_{\substack{\lambda\vdash n\\\lambda\text{ distinct}}}\AO(K_\lambda).
+\]
+These are OEIS A372395 and A370613 \cite{oeisb,oeisf}. Each partition
+profile occurs once; there is no additional multinomial choice of vertex
+sets. We set both empty counts equal to one.
+
+Sun \cite{sun} derives the exact Gamma representation used below and proves
+$\log(B_\pm(n)/n!)\sim C_\pm\sqrt n$. His Section 11 explicitly asks for
+the prefactors and complete expansions. The new refinement here is at
+relative precision: the amplitudes, every algebraic correction, and the
+associated inverse. The main additional estimate is a uniform quadratic
+majorant which removes the large-part cutoff without losing an
+$e^{o(\sqrt n)}$ factor.
+
+Use $\eta=+1$ for unrestricted partitions and $\eta=-1$ for distinct parts.
+For real $c$ in its natural domain, put
+\begin{align}
+ \rho_\eta(x;c)&=\frac1{e^{cx+x^2/2}-\eta},\label{eq:rho}\\
+ J_\eta(c)&=-\eta\int_0^\infty
+       \log(1-\eta e^{-cx-x^2/2})\dd x,\\
+ M_j(c)&=\int_0^\infty x^j\rho_\eta(x;c)\dd x,\qquad j\ge1.
+\end{align}
+The Bose case requires $c>0$; the Fermi case allows every real $c$.
+There is a unique $c=c_\eta$ such that $M_1(c)=1$. Indeed $M_1$ is
+continuous and strictly decreasing, with limits infinity and zero at the
+two endpoints of its domain. In the Bose case the divergence as
+$c\downarrow0$ is logarithmic at the origin; in the Fermi case it follows
+from the interval where $cx+x^2/2<0$ as $c\to-\infty$.
+
+All unlabelled $M_j,J$ below are evaluated at this saddle unless their
+argument is shown. Set
+\begin{gather}
+ C=c+J(c),\qquad
+ V=J''(c)=\int_0^\infty x^2\rho(1+\eta\rho)\dd x>0,\label{eq:CV}\\
+ E_0=\exp\left(\frac12-\frac{M_3}{3}+\frac{M_2^2}{8}\right),\label{eq:E0}\\
+ p_+=1,\quad A_+=\frac{\sqrt{c_+}\,E_{0,+}}{2\pi\sqrt{V_+}},
+ \qquad
+ p_-=\frac34,\quad A_-=\frac{E_{0,-}}{2\sqrt{\pi V_-}}.\label{eq:A}
+\end{gather}
+
+\begin{theorem}\label{thm:main}
+For each $\eta\in\{+1,-1\}$ there are real constants $a_{\eta,j}$,
+with $a_{\eta,0}=1$, such that for every fixed integer $L\ge0$,
+\begin{equation}\label{eq:main}
+ B_\eta(n)=A_\eta n!n^{-p_\eta}e^{C_\eta\sqrt n}
+ \left(\sum_{j=0}^{L}a_{\eta,j}n^{-j/2}
+             +O_L(n^{-(L+1)/2})\right).
+\end{equation}
+Section~\ref{sec:generator} gives a finite algorithm for every coefficient.
+\end{theorem}
+
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+ & Unrestricted & Distinct parts\\
+\midrule
+$c_\eta$ & $0.764996442279544302$ & $-0.323697314095031872$\\
+$C_\eta$ & $2.158752005657785532$ & $0.905729821720199018$\\
+$A_\eta$ & $0.164817523964420504$ & $0.217999212918202522$\\
+$a_{\eta,1}$ & $-0.307565333551633697$ & $0.230950213208614981$\\
+$a_{\eta,2}$ & $0.018726632258564924$ & $-0.004247066120392843$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The power series in \eqref{eq:main} is asymptotic in the finite-order
+sense. No convergence of its infinite sum is needed or claimed. Numerical
+constants in this table are evaluations of the integral and finite
+coefficient formulas, rather than fitted parameters.
+
+\section{Exact representations and their signs}
+
+Let $S(k,j)$ denote the Stirling numbers of the second kind, and define
+\[
+ P_k(t)=\sum_{j=0}^k(-1)^{k-j}S(k,j)t^j,\qquad R_k(t)=\frac{P_k(t)}{t^k}.
+\]
+Their exponential generating function is
+\begin{equation}\label{eq:Pegf}
+ \sum_{k\ge0}P_k(t)\frac{z^k}{k!}=\exp(t(1-e^{-z})).
+\end{equation}
+A proper coloring partitions each independent vertex part into nonempty
+monochromatic blocks, and different parts must use different colors.
+Thus, writing $q^{\underline j}$ for a falling factorial,
+\[
+ \chi_{K_\lambda}(q)=\sum_{j_1,\ldots,j_r}
+ q^{\underline{j_1+\cdots+j_r}}\prod_iS(\lambda_i,j_i).
+\]
+Stanley's identity $\AO(G)=(-1)^{|V(G)|}\chi_G(-1)$ \cite{stanley},
+followed by the Gamma integral for $(j_1+\cdots+j_r)!$, proves
+\begin{equation}\label{eq:exact}
+ \AO(K_\lambda)=\int_0^\infty e^{-t}\prod_iP_{\lambda_i}(t)\dd t.
+\end{equation}
+This is also Sun's exact multipartite integral. Its integrand can have
+either sign. Infinite products formed from it are interpreted
+coefficientwise, not as globally convergent analytic products.
+
+For a finite part cutoff $K$, put
+\[
+ F_{\eta,K}(q,t)=\prod_{k=1}^K(1-\eta q^kR_k(t))^{-\eta}.
+\]
+If $B_{\eta,K}$ denotes the sum restricted to largest part at most $K$,
+then, for $T\sim\operatorname{Gamma}(n+1,1)$,
+\begin{equation}\label{eq:expectation}
+ \frac{B_{\eta,K}(n)}{n!}=\E_T\coeff qn F_{\eta,K}(q,T).
+\end{equation}
+Coefficient extraction comes first. Every selected profile has total size
+$n$, so the removed powers of $t$ contribute exactly $t^n$, producing
+the Gamma density in \eqref{eq:expectation}. This finite identity makes
+no positivity assumption about the polynomials on the whole half-line.
+
+\section{A uniform quadratic majorant}\label{sec:majorant}
+
+\begin{lemma}\label{lem:roots}
+The roots of $P_k$ are distinct and nonnegative, including zero. If
+$p_r(k)$ is their $r$th power sum, then it is a polynomial in $k$ of
+degree at most $r+1$, determined by
+\begin{equation}\label{eq:powerrec}
+ p_r(k+1)-p_r(k)=-r\coeff ur
+ \log\left(1-ku-\sum_{j\ge1}p_j(k)u^{j+1}\right),\quad p_r(0)=0.
+\end{equation}
+In particular, the largest root is $O(k^{5/4})$.
+\end{lemma}
+\begin{proof}
+The Stirling recurrence gives
+$P_{k+1}(t)=t(P_k(t)-P'_k(t))$, with $P_1(t)=t$.
+At consecutive roots of $P_k$, the values of $P_k-P'_k$ alternate in
+sign. There is one root in each intervening interval and one to the
+right of the largest root; all are positive. Multiplication by $t$
+completes the induction.
+
+Writing $\mathcal R_k(u)=\prod_i(1-r_i u)$, we have
+$\mathcal R_{k+1}=(1-ku)\mathcal R_k+u^2\mathcal R'_k$.
+Taking logarithms yields \eqref{eq:powerrec}. Only $p_j$ with $j<r$
+is needed to compute the right side. Its degree in $k$ is at most $r$,
+so finite summation proves the degree bound. Explicitly,
+\begin{align}
+ p_1(k)&=\frac{k(k-1)}2,\qquad
+ p_2(k)=\frac{k(k-1)(4k-5)}6,\\
+ p_3(k)&=\frac{k(k-1)(9k^2-25k+18)}8,\\
+ p_4(k)&=\frac{k(k-1)(64k^3-291k^2+459k-251)}{30}.
+ \label{eq:p4}
+\end{align}
+All roots are nonnegative, so their maximum is at most $p_4(k)^{1/4}$.
+\end{proof}
+
+\begin{theorem}\label{thm:majorant}
+Fix $3/4<\beta<4/5$. There is a constant $C_0$ such that, uniformly over
+partitions $\lambda$ of $n$ whose largest part is at most $n^\beta$,
+\begin{equation}\label{eq:majorant}
+ \frac{\AO(K_\lambda)}{n!}\le C_0
+      \exp\left(-\frac{Q(\lambda)-n}{2n}\right),\qquad
+ Q(\lambda)=\sum_i\lambda_i^2.
+\end{equation}
+The central integral also has Gaussian suppression in
+$z=(t-n)/\sqrt n$, uniformly over these profiles.
+\end{theorem}
+\begin{proof}
+Put
+\[
+ A=\frac{Q-n}{2},\qquad
+ B=\sum_i\frac{\lambda_i(\lambda_i-1)(4\lambda_i-5)}{12}.
+\]
+Lemma~\ref{lem:roots} and $\beta<4/5$ imply that every relevant root is
+$o(n)$. All factors are therefore positive on $[n/2,2n]$. The exact
+inequality $\log(1-v)\le-v-v^2/2$ gives
+\begin{equation}\label{eq:rootmajorant}
+ \prod_iP_{\lambda_i}(t)\le t^n\exp(-A/t-B/t^2).
+\end{equation}
+Weighted Cauchy--Schwarz, followed by a termwise inequality, gives
+\[
+ \frac{A^2}{n}\le\sum_i\frac{\lambda_i(\lambda_i-1)^2}{4}\le B.
+\]
+The difference in the second inequality for a part $k$ is
+$k(k-1)(k-2)/12\ge0$.
+
+Let $x=t/n$, $a=A/n^2$ and $g(x)=\log x-x+1$. Relative to
+$n^ne^{-n-A/n}$, the integrand is bounded by
+\[
+ \exp\{n[g(x)+a(1-1/x)-a^2/x^2]\}.
+\]
+For $x\le1$ the two $a$ terms are nonpositive. For $x\ge1$ their
+supremum over $a\ge0$ equals $(x-1)^2/4$. On $[1/2,2]$ there is a
+constant $\delta>0$ with
+\begin{equation}\label{eq:gaussmajorant}
+ g(x)+(x-1)^2/4\le-\delta(x-1)^2.
+\end{equation}
+Indeed its derivative is $(x-1)(1/2-1/x)$; its value at 2 is
+$\log2-3/4<0$, and division by $(x-1)^2$ has limiting value $-1/4$
+at 1. Integrating the resulting Gaussian bound and using Stirling's
+formula proves \eqref{eq:majorant} for the central integral. The same
+calculation gives the pointwise factor $e^{-\delta z^2}$.
+
+It remains to control signs outside that interval. Unsigned first-kind
+Stirling numbers dominate the second-kind ones: specifying a cyclic
+order on each block of a set partition produces a permutation. If
+$M=\max_i\lambda_i$, then, for $t\ge0$,
+\[
+ |P_k(t)|\le\sum_jS(k,j)t^j
+ \le t(t+1)\cdots(t+k-1)\le(t+M)^k.
+\]
+Hence the absolute tail integral is bounded by
+\[
+ \int_{t\notin[n/2,2n]}e^{-t}(t+M)^n\dd t
+      =n!\exp(-\Omega(n)+O(M)).
+\]
+Substitution of $t+M$ and elementary Gamma Chernoff bounds justify this
+uniformly for $M=o(n)$. Since $A/n\le M/2$, the tail is negligible
+relative to $n!e^{-A/n}$. Positivity of the orientation count and the
+triangle inequality complete the proof.
+\end{proof}
+
+\section{Relative precision cutoff removal}\label{sec:cutoff}
+
+Write $s=\sqrt n$ and choose $K=\lfloor s\log n\rfloor$. For the
+intermediate range $K<\max\lambda\le n^\beta$, the majorant reduces the
+sum to a positive weighted partition model, with
+\[
+ w_k=e^{-k^2/(2n)},\qquad q_0=e^{-c/s},\qquad
+ \mathcal F_\eta(q_0)=\prod_{k\ge1}(1-\eta w_kq_0^k)^{-\eta}.
+\]
+For the unrestricted model all geometric ratios are below one. In the
+distinct model some ratios exceed one, but each factor remains positive
+and defines a Bernoulli distribution. A union bound bounds the weighted
+coefficient containing a part greater than $K$ by
+\begin{equation}\label{eq:union}
+ q_0^{-n}\mathcal F_\eta(q_0)
+ \begin{cases}
+ \displaystyle\sum_{k>K}\frac{w_kq_0^k}{1-w_kq_0^k},&\eta=+1,\\[1ex]
+ \displaystyle\sum_{k>K}w_kq_0^k,&\eta=-1.
+ \end{cases}
+\end{equation}
+The sums are bounded by $\exp(-\Omega(\log^2 n))$ times a polynomial.
+The Euler--Maclaurin calculation below, already at leading order, gives
+$q_0^{-n}\mathcal F_\eta(q_0)=\exp(Cs+O(\log n))$.
+Thus this range is negligible relative to $e^{Cs}$ times any fixed
+inverse power of $n$.
+
+For the remaining range let $L=\max\lambda>n^\beta$. Splitting every
+other part into singleton parts adds edges, so deletion--contraction
+implies
+\[
+ \AO(K_\lambda)\le\AO(K_{L,1,\ldots,1})=(n-L)!(n-L+1)^L.
+\]
+The formula follows by ordering the singleton vertices and placing each
+of the $L$ labeled remaining vertices into one of the $n-L+1$ gaps.
+There is an exact bound valid for every $0\le L\le n$:
+\begin{align}
+ \frac{(n-L)!(n-L+1)^L}{n!}
+ &=\prod_{j=1}^L\left(1+\frac{j-1}{n-L+1}\right)^{-1}\\
+ &\le\exp\left(-\frac{L(L-1)}{2n}\right).
+ \label{eq:fartail}
+\end{align}
+Use $\log(1+x)\ge x/(1+x)$ and $n-L+j\le n$.
+Since $2\beta-1>1/2$, multiplication by the standard bound
+$p(n)\le e^{O(\sqrt n)}$ leaves a negligible tail.
+
+The Gamma variable can also be restricted to
+\begin{equation}\label{eq:gammawindow}
+ |T-n|\le s\log^2 n.
+\end{equation}
+For profiles with largest part at most $K$, the pointwise form of
+\eqref{eq:gaussmajorant} gives suppression $e^{-\delta z^2}$ on
+$[n/2,2n]$, in addition to the weight $e^{-(Q-n)/(2n)}$. Summing these
+fixed-total weights gives the same positive weighted-partition
+coefficient as above. The complement of \eqref{eq:gammawindow} is
+therefore smaller than every algebraic order on the main scale.
+Outside $[n/2,2n]$ the absolute signed-tail estimate applies.
+This argument uses positivity only where it was proved.
+
+\section{The local product and Euler--Maclaurin expansion}\label{sec:EM}
+
+Set $\eps=1/s$ and $T=s^2+sz$. On the cutoffs already justified,
+\begin{equation}\label{eq:rootseries}
+ \log R_k(T)=-\sum_{r\ge1}\frac{p_r(k)}{rT^r}.
+\end{equation}
+This convergent root expansion has a useful finite remainder bound:
+after $r=R$, its absolute remainder is at most
+\begin{equation}\label{eq:rooterror}
+ \frac{p_{R+1}(k)}{(R+1)T^{R+1}(1-r_{\max}/T)}.
+\end{equation}
+Here $r_{\max}/T=o(1)$ uniformly and
+$p_{R+1}(k)=O_R((1+k)^{R+2})$. Consequently, with $x=k\eps$,
+\[
+ \log R_k(s^2+sz)=-x^2/2+\sum_{j\ge1}\eps^j\ell_j(x,z)
+\]
+is a controlled arbitrary finite expansion. Each $\ell_j$ is a
+polynomial vanishing at $x=0$. The first two are
+\begin{align}
+ \ell_1&=x/2+zx^2/2-x^3/3,\label{eq:ell1}\\
+ \ell_2&=-zx/2-z^2x^2/2+2zx^3/3+3x^2/4-3x^4/8.
+ \label{eq:ell2}
+\end{align}
+
+Define $f_j$ by formal coefficient extraction in
+\begin{equation}\label{eq:fj}
+ -\eta\log\left(1-\eta\exp\left[-cx-x^2/2+
+                  \sum_{j\ge1}\eps^j\ell_j(x,z)\right]\right)
+ =f_0(x;c)+\sum_{j\ge1}\eps^jf_j(x;c,z).
+\end{equation}
+For $j\ge1$, $f_j$ is smooth at zero, including in the Bose case.
+The $m$th derivative of the outer logarithm has a pole of order at most
+$m$, whereas a product of $m$ perturbation factors vanishes to at least
+order $m$. At infinity all relevant derivatives decay as a Gaussian
+times a polynomial. These properties persist for $c$ in a sufficiently
+small complex neighborhood of its real saddle, with polynomial bounds
+in $z$.
+
+In the Fermi case $f_0$ is smooth and $f_0(0)=\log2$. In the Bose case
+subtract $f_{\rm std}(x;c)=-\log(1-e^{-cx})$ and put
+$d_0(x;c)=f_0-f_{\rm std}$. Then $d_0$ is smooth with $d_0(0)=0$.
+The standard product expansion is
+\begin{equation}\label{eq:eta}
+ \sum_{k\ge1}f_{\rm std}(k\eps;c)
+ =\frac{\pi^2}{6c\eps}+\frac12\log\frac{c\eps}{2\pi}
+       -\frac{c\eps}{24}+O_R(\eps^R)
+\end{equation}
+for every fixed $R$. One proof uses Mellin inversion with kernel
+$\Gamma(v)\zeta(v)\zeta(v+1)$. Apart from $v=1,0,-1$, the poles at
+negative integers cancel by the trivial zeta zeros; moving the contour
+to any fixed negative line proves the stated finite-order version.
+Only this version is required here.
+
+Euler--Maclaurin now gives
+\begin{equation}\label{eq:productexp}
+ \log F_{\eta,K}(e^{-c\eps},T)
+ =\frac{J(c)}\eps+r_\eta\log\eps+d_\eta(c)
+          +\sum_{j\ge0}\eps^jH_j(c,z),
+\end{equation}
+where
+\begin{align}
+ r_+&=\tfrac12,&d_+(c)&=\tfrac12\log(c/(2\pi)),\\
+ r_-&=0,&d_-(c)&=-\tfrac12\log2,\\
+ H_0(c,z)&=\frac{M_1(c)}2+\frac{zM_2(c)}2-\frac{M_3(c)}3.
+ \label{eq:H0}
+\end{align}
+For $j\ge1$ the explicit coefficient formula is
+\begin{equation}\label{eq:Hj}
+ H_j=\int_0^\infty f_{j+1}\dd x-\frac{f_j(0)}2
+ -\sum_{m=1}^{\lfloor j/2\rfloor}\frac{\mathsf B_{2m}}{(2m)!}
+        f_{j-2m+1}^{(2m-1)}(0)+E_j(c),
+\end{equation}
+where $\mathsf B_j$ are Bernoulli numbers, and superscripts on $f_j$
+in \eqref{eq:Hj} mean $x$ derivatives.
+For the Fermi case,
+\[
+ E_{2m}=0,\qquad E_j=-\frac{\mathsf B_{j+1}}{(j+1)!}f_0^{(j)}(0)
+ \quad(j\text{ odd}).
+\]
+For the Bose case,
+\[
+ E_{2m}=0,\qquad E_1=\frac{1/c-c}{24},\qquad
+ E_j=-\frac{\mathsf B_{j+1}}{(j+1)!}d_0^{(j)}(0)
+ \quad(j\ge3\text{ odd}).
+\]
+Thus only finitely many polynomials, integrals and endpoint derivatives
+are needed for any prescribed order. The formal coefficient functions
+can be extended to $k>K$ because their Gaussian tails are smaller than
+every algebraic order; this does not extend the original signed infinite
+product as an analytic object.
+
+\section{Fourier localization and the prefactors}\label{sec:fourier}
+
+For a central value of $T$, every $P_k(T)$ in the cutoff product is
+positive. On $q=q_0e^{\ii\theta}$ the product ratio is a characteristic
+function of independent geometric or Bernoulli variables. Choose a fixed
+interval $as\le k\le bs$ with $0<a<b$. Its parameters stay uniformly
+away from degeneracy, so for some positive constants $d,d'$,
+\begin{align}
+ \frac{|F(q_0e^{\ii\theta},T)|}{F(q_0,T)}
+ &\le\exp\left(-d\sum_{as\le k\le bs}(1-\cos(k\theta))\right)\\
+ &\le\exp(-d'\min(s^3\theta^2,s)),\qquad |\theta|\le\pi.
+ \label{eq:arcs}
+\end{align}
+For $|\theta|\le c_0/s$, use the quadratic bound on $1-\cos(k\theta)$.
+For $c_0/s\le|\theta|\le C_0/s$, use compactness and the nonzero
+limiting integral of $1-\cos(xv)$. For $|\theta|\ge C_0/s$, the
+geometric-sum estimate for $\sum e^{\ii k\theta}$ gives a positive
+fraction of the interval length when $C_0$ is large enough. This covers
+the full circle, including possible rational angles.
+
+Only $|\theta|\le s^{-3/2}\log^2 n$ contributes at algebraic order.
+Write $\theta=us^{-3/2}$. In \eqref{eq:productexp} this replaces $c$ by
+$c'=c-\ii u\sqrt\eps$. The linear phase from $q^{-n}$ cancels because
+$J'(c)=-M_1(c)=-1$, and the quadratic phase is $-Vu^2/2$.
+
+The density of $z=(T-n)/s$ has the finite expansion
+\begin{align}\label{eq:gammadensity}
+ \frac{e^{-z^2/2}}{\sqrt{2\pi}}
+ \exp\bigg(&\sum_{j\ge1}\frac{(-1)^{j+1}}{j+2}\eps^jz^{j+2}
+ \\
+ &-\sum_{m\ge1}\frac{\mathsf B_{2m}}{2m(2m-1)}\eps^{4m-2}\bigg).
+ \nonumber
+\end{align}
+It is obtained directly from the Gamma density and Stirling's formula;
+in particular its first correction is $\eps z^3/3$, with no linear
+$z$ term when centering at $n$.
+
+At the saddle, the constant product amplitude is
+\[
+ e^{H_0}=\exp(1/2-M_3/3)\exp(zM_2/2).
+\]
+Integration against the normal density contributes
+$\exp(1/2-M_3/3+M_2^2/8)=E_0$.
+The Fourier integral contributes $(2\pi s^3V)^{-1/2}$. The
+Euler--Maclaurin boundary contributes $\sqrt{c/(2\pi s)}$ for Bose
+and $1/\sqrt2$ for Fermi. Their product is exactly \eqref{eq:A},
+with the powers $n^{-1}$ and $n^{-3/4}$. Omitting the Gamma tilt or
+the cubic Stirling-transform contribution would change the amplitudes.
+
+\section{A finite coefficient algorithm at every order}\label{sec:generator}
+
+Let $U$ and $Z$ be independent Gaussian variables with
+\[
+ U\sim N(0,V^{-1}),\qquad Z\sim N(\alpha,1),\qquad\alpha=M_2/2.
+\]
+Use $\sqrt\eps$ as a formal variable and set $\Delta=-\ii U\sqrt\eps$.
+Define the formal exponent
+\begin{align}
+ \mathcal Q(\eps,U,Z)={}&
+ \sum_{r\ge3}\frac{J^{(r)}(c)}{r!}(-\ii U)^r\eps^{r/2-1}
+ +d(c+\Delta)-d(c)\nonumber\\
+ &+H_0(c+\Delta,Z)-H_0(c,Z)
+ +\sum_{j\ge1}\eps^jH_j(c+\Delta,Z)\nonumber\\
+ &+\sum_{j\ge1}\frac{(-1)^{j+1}}{j+2}\eps^jZ^{j+2}
+ -\sum_{m\ge1}\frac{\mathsf B_{2m}}{2m(2m-1)}\eps^{4m-2}.
+ \label{eq:masterQ}
+\end{align}
+The complete coefficient prescription is
+\begin{equation}\label{eq:master}
+ \boxed{\displaystyle a_j=\coeff\eps j\E\exp(\mathcal Q(\eps,U,Z)).}
+\end{equation}
+For fixed $j$, this requires only finite truncations of
+\eqref{eq:powerrec}, \eqref{eq:fj}, \eqref{eq:Hj} and
+\eqref{eq:masterQ}, followed by Gaussian moments. Odd half-integer
+powers integrate to zero because their integrands are odd in $U$.
+This proves that the expansion scale is $n^{-1/2}$ with no extra
+logarithmic factors.
+
+\subsection{Uniform remainder control}
+
+The cutoffs in largest part and Gamma variable have already been removed
+at relative precision in Section~\ref{sec:cutoff}. Bound \eqref{eq:arcs}
+is uniform in the remaining Gamma window. In the local product, the
+positive-root remainder \eqref{eq:rooterror} allows arbitrarily many
+terms to be retained. After removing the Bose logarithmic endpoint,
+Euler--Maclaurin remainders are controlled by integrals of derivatives;
+these are finite and at most polynomial in $|z|$, uniformly in a fixed
+complex neighborhood of $c$.
+
+A further detail is important. The fixed-total profile majorant by
+itself does not bound the integrand $F(q_0,T)$, which includes all total
+sizes. Its joint Gaussian envelope follows instead from the local
+product expansion. Uniformly for $|z|\le\log^2 n$,
+\begin{equation}\label{eq:envelopeproduct}
+ \log F(q_0,T)=sJ+r_\eta\log\eps+d_\eta+H_0(c,z)
+                 +O(\eps(1+z^2)).
+\end{equation}
+For completeness, \eqref{eq:rootseries} gives on the cutoff range
+\[
+ \log R_k+x^2/2=\eps\ell_1+O(\eps^2(1+z^2)P(x)),\qquad P(0)=0,
+\]
+for a fixed polynomial $P$. The endpoint factor follows from the
+vanishing of the root power-sum polynomials at $k=0$. The outer
+logarithm's linear derivative times $P$ and quadratic derivative times
+$\ell_1^2$ are integrable even in the Bose case. Summation over the
+mesh multiplies this bound by $s$; Gaussian decay in $x$ controls all
+polynomial factors. Endpoint corrections have the same bound, proving
+\eqref{eq:envelopeproduct}.
+
+Because $H_0$ is affine in $z$, multiplication by the exact Gamma
+density gives, after extracting common scale factors, an upper bound
+\[
+ C_1\exp\{-z^2/2+\alpha z+O(\eps(1+|z|^3))\}
+          \le C_2e^{-z^2/4}.
+\]
+The error is absorbed since $\eps\log^2 n\to0$. Together with
+\eqref{eq:arcs}, this supplies a joint Gaussian envelope in $u,z$.
+Finite Taylor remainders can therefore be bounded by a fixed polynomial
+in $|u|+|z|$ times the target power of $\eps$, multiplied by
+$e^{-d_2u^2-d_3z^2}$ for positive constants $d_2,d_3$.
+The resulting integrals are bounded independently of $n$.
+Expanding a few extra orders if necessary and integrating the next odd
+half-power, which vanishes exactly, gives an $O_L(\eps^{L+1})$
+remainder. No logarithmic cutoff losses remain. This justifies
+\eqref{eq:master} at every fixed order and completes the proof of
+Theorem~\ref{thm:main}.
+
+\section{First corrections and executable calculations}
+
+Define the cumulant integrals
+\[
+ K_j=\int_0^\infty x^j\rho(1+\eta\rho)\dd x.
+\]
+Then the first product correction is the quadratic polynomial
+\begin{align}
+ H_1(z)={}&e_\eta+\frac{3M_2}{4}-\frac{3M_4}{8}
+            +\frac{K_2}{8}-\frac{K_4}{6}+\frac{K_6}{18}\nonumber\\
+ &+z\left(-\frac{M_1}{2}+\frac{2M_3}{3}
+                         +\frac{K_3}{4}-\frac{K_5}{6}\right)
+ +z^2\left(-\frac{M_2}{2}+\frac{K_4}{8}\right),\label{eq:H1}\\
+ e_+={}&-\frac c{24}-\frac5{24c},\qquad e_- =\frac c{24}.
+ \nonumber
+\end{align}
+Let $A_0(c,z)=e^{d(c)+H_0(c,z)}$, with $c$ left variable while
+differentiating. The Fourier correction is
+\begin{equation}\label{eq:D}
+ D(z)=-\frac{(A_0)_{cc}}{2VA_0}
+ +\frac{J'''(A_0)_c}{2V^2A_0}
+ +\frac{J''''}{8V^2}-\frac{5(J''')^2}{24V^3}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:a1}
+ a_1=\E_{Z\sim N(\alpha,1)}\left[H_1(Z)+Z^3/3+D(Z)\right].
+\end{equation}
+This provides an independent short route to the first coefficient.
+The script \texttt{first\_correction.py} evaluates it by
+one-dimensional integrals and exact Gaussian moments.
+
+The separate script \texttt{generic\_second\_correction.py} implements
+\eqref{eq:master} through $a_2$ without using the hand-expanded
+\eqref{eq:H1} or \eqref{eq:D}. It uses the displayed root polynomials
+to construct the $\ell_j$, cumulants, and all needed $c$ derivatives. It
+reproduces both $a_1$ values and gives the $a_2$ values in the table.
+Higher orders use the same finite algorithm; the supplied executable
+is tested through second order rather than advertised as a fully
+optimized arbitrary-order software package.
+
+\section{Controlled smooth inverses}\label{sec:inverse}
+
+The sequence itself has only integer arguments. We first specify the
+sense of a smooth inverse. Let $G(x)$ be a smooth realization of its
+full logarithmic asymptotic expansion, with termwise differentiable
+asymptotics. Such a realization is obtained by multiplying successive
+terms by fixed smooth cutoffs at sufficiently rapidly increasing
+radii, chosen inductively to control finitely many additional
+derivatives at each step.
+
+If exact interpolation is desired, choose a smooth bump $\phi$ supported
+in $(-1/3,1/3)$ with $\phi(0)=1$ and define
+\begin{equation}\label{eq:interpolant}
+ \log F(x)=G(x)+\sum_{\substack{m\text{ integer}\\m\text{ sufficiently large}}}
+       (\log B(m)-G(m))\phi(x-m).
+\end{equation}
+The supports are disjoint, and the correction coefficients and all
+their bump derivatives are smaller than every inverse power by
+Theorem~\ref{thm:main}. Thus $F(m)=B(m)$, $F$ is positive, and
+$(\log F)'(x)=\log x+O(x^{-1/2})$. It is eventually strictly increasing.
+All such realizations have the same inverse expansion to every
+displayed order. No canonical analytic continuation is asserted.
+
+Let
+\[
+ \log\left(1+\sum_{j\ge1}a_jx^{-j/2}\right)
+       =\sum_{j\ge1}b_jx^{-j/2}.
+\]
+Stirling's formula gives
+\begin{equation}\label{eq:logmodel}
+ \log F(x)=x(\log x-1)+C\sqrt x+\alpha_0\log x+d_0
+                         +\sum_{j\ge1}\beta_jx^{-j/2},
+\end{equation}
+where $\alpha_0=1/2-p$, $d_0=\log(A\sqrt{2\pi})$,
+$\beta_1=a_1$, and $\beta_2=b_2+1/12$.
+For $Y\to\infty$, put
+\[
+ L=\log Y,\qquad N=\frac{L}{W(L/e)},\qquad\ell=\log N,
+\]
+with the positive real branch of Lambert $W$.
+
+\begin{theorem}\label{thm:inverse}
+The smooth inverse admits a finite-order expansion of the form
+\[
+ F^{-1}(Y)=N+\sum_{j\ge-1}N^{-j/2}r_j(1/\ell),
+\]
+where each $r_j$ is a polynomial in $1/\ell$, computed recursively
+from \eqref{eq:logmodel}. In particular,
+\begin{align}\label{eq:inverse}
+ F^{-1}(Y)={}&N-\frac{C\sqrt N}{\ell}-\alpha_0-\frac{d_0}{\ell}
+ +\frac{C^2}{2\ell^2}-\frac{C^2}{2\ell^3}
+ +O\left(\frac1{\sqrt N\ell}\right).
+\end{align}
+The constant shifts are $+1/2$ for unrestricted partitions and
+$+1/4$ for distinct parts.
+\end{theorem}
+\begin{proof}
+Substitute $x=N+\Delta$ in \eqref{eq:logmodel} and use
+$N(\log N-1)=L$. At each new power of $N^{-1/2}$, the unknown
+coefficient occurs multiplied by $\ell$, so it is determined uniquely
+by division by $\ell$. Taylor expansion first cancels the
+$\sqrt N$ term, then the constant term, yielding \eqref{eq:inverse}.
+All remaining operations preserve polynomials in $1/\ell$.
+
+For quantitative control, substitute a finite inverse truncation $X$
+into the logarithmic expansion and compute its residual to one more
+order. If $\log F(X)-L=O(N^{-r/2})$, the mean-value theorem and
+$(\log F)'\sim\log N$ give inverse error
+$O(N^{-r/2}/\log N)$. This proves each prescribed finite order;
+it does not invert only the leading equivalent.
+\end{proof}
+
+A useful next term can be obtained without a large expanded polynomial.
+Define
+\begin{gather}
+ a=-C/\ell,\qquad
+ b=-\alpha_0-d_0/\ell+C^2/(2\ell^2)-C^2/(2\ell^3),\nonumber\\
+ d=-\frac{(a+C/2)b-a^3/6-Ca^2/8+\alpha_0a+\beta_1}{\ell}.
+ \label{eq:inversenext}
+\end{gather}
+Then $N+\sqrt N a+b+d/\sqrt N$ has error $O(1/(N\ell))$.
+
+For the integer threshold $\tau(Y)=\min\{n:B(n)\ge Y\}$,
+eventual monotonicity follows from the main expansion. With an exact
+increasing interpolant as in \eqref{eq:interpolant},
+$\tau(Y)=\lceil F^{-1}(Y)\rceil$ for sufficiently large $Y$.
+A finite approximation $X(Y)$ with a valid error bound $e(Y)$ gives
+only the rigorous envelope
+\begin{equation}\label{eq:threshold}
+ \lceil X(Y)-e(Y)\rceil\le\tau(Y)\le\lceil X(Y)+e(Y)\rceil.
+\end{equation}
+Exact rounding follows when the endpoints coincide, not unconditionally
+from a finite asymptotic formula.
+
+\section{Exact checks and reproducibility}
+
+The program \texttt{exact\_check.py} computes both sequences by positive
+Touchard polynomial arithmetic followed by one exact alternating
+factorial evaluation. Let $Q_k(t)=\sum_jS(k,j)t^j$. Compute
+\[
+ H_{+,n}(t)=\coeff qn\prod_{k=1}^n(1-q^kQ_k(t))^{-1},\qquad
+ H_{-,n}(t)=\coeff qn\prod_{k=1}^n(1+q^kQ_k(t)).
+\]
+If $h_{n,j}$ are their coefficients, then
+$B_\eta(n)=\sum_j(-1)^{n-j}h_{n,j}j!$.
+All intermediate $h_{n,j}$ are nonnegative. For a fixed profile the
+sum of its coefficients is at most the Bell number $\operatorname{Bell}(n)$:
+its blockwise set partitions inject into set partitions of a fixed
+$n$-set. Hence
+\[
+ h_{n,j}\le p(n)\operatorname{Bell}(n)\le2^n n^n.
+\]
+The binary base in the Kronecker encoding is chosen above this bound,
+so no polynomial digit can carry. All sequence values are exact Python
+integers; cancellation occurs only in the final exact evaluation.
+
+Separate runs at maximum sizes 150 and 300 agree on every overlapping
+value, and all 21 initial OEIS terms used in the check agree. Let
+\[
+ R_\eta(n)=\frac{B_\eta(n)}{A_\eta n!n^{-p_\eta}e^{C_\eta\sqrt n}},\qquad
+ T_\eta(n)=n^{3/2}\left(R_\eta(n)-1-\frac{a_{\eta,1}}{\sqrt n}
+                                      -\frac{a_{\eta,2}}n\right).
+\]
+Representative exact-data residuals are
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$n$ & $R_+(n)$ & $T_+(n)$ & $R_-(n)$ & $T_-(n)$\\
+\midrule
+100 & 0.9694277210 & -0.00301198 & 1.0230946532 & 0.04210253\\
+150 & 0.9750093079 & -0.00538650 & 1.0188567728 & 0.05158749\\
+200 & 0.9783435022 & -0.00559355 & 1.0163242684 & 0.04202347\\
+250 & 0.9806213569 & -0.00557333 & 1.0146001519 & 0.04176652\\
+300 & 0.9823040643 & -0.00553406 & 1.0133277008 & 0.04126194\\
+\bottomrule
+\end{tabular}
+\end{center}
+The slower and mildly oscillatory finite-size behavior in the distinct
+case does not enter the proof. These checks support, but do not replace,
+the analytic argument.
+
+The verification script also tests the inverse at $Y=B_\eta(300)$.
+Formula \eqref{eq:inverse} differs from 300 by approximately
+$0.00350453$ and $0.00380904$, respectively. Including
+\eqref{eq:inversenext} changes these to approximately
+$-0.0000155943$ and $0.0000217153$.
+These are numerical residual checks, not certified threshold bounds.
+
+The reproducibility package contains the TeX source, PDF, proof source,
+exact arrays, numerical outputs, verification scripts and review record.
+Its \texttt{README.md} specifies the short replay and full exact replay.
+The second-order executable uses Python with \texttt{sympy} and
+\texttt{mpmath}; no proprietary algebra system is required.
+
+\section{A fixed positive chromatic parameter}
+
+The proof also treats the natural chromatic specialization
+$H_v(G)=(-1)^{|V(G)|}\chi_G(-v)$ for fixed $v>0$.
+Let $B_{\eta,v}(n)$ sum $H_v(K_\lambda)$ over the same two partition
+families. This section asserts uniformity only when $v$ ranges over a
+fixed compact subset of $(0,\infty)$.
+
+\begin{corollary}\label{cor:chromatic}
+The constants $A_\eta,C_\eta,p_\eta$ in Theorem~\ref{thm:main} are
+unchanged, and
+\begin{equation}\label{eq:chromatic}
+ B_{\eta,v}(n)=\frac{\Gamma(n+v)}{\Gamma(v)}
+ A_\eta n^{-p_\eta}e^{C_\eta\sqrt n}
+ \left(\sum_{j=0}^L a_{\eta,j}(v)n^{-j/2}
+                   +O_L(n^{-(L+1)/2})\right).
+\end{equation}
+The coefficients have the same finite construction, and
+\[
+ a_{\eta,1}(v)=a_{\eta,1}(1)+(v-1)M_2/2.
+\]
+\end{corollary}
+\begin{proof}
+Replace \eqref{eq:exact} by the exact identity
+\[
+ H_v(K_\lambda)=\frac1{\Gamma(v)}\int_0^\infty
+ e^{-t}t^{v-1}\prod_iP_{\lambda_i}(t)\dd t.
+\]
+The normalized expectation uses $T\sim\operatorname{Gamma}(n+v,1)$.
+In the formal exponent \eqref{eq:masterQ}, replace the Gamma part by
+\begin{align*}
+ &\sum_{j\ge1}\frac{(-1)^{j+1}}{j+2}\eps^jZ^{j+2}
+ +(v-1)\log(1+\eps Z)\\
+ &\hspace{1cm}
+ -\sum_{r\ge1}\frac{(-1)^{r+1}\mathsf B_{r+1}(v)}{r(r+1)}\eps^{2r},
+\end{align*}
+where $\mathsf B_r(v)$ is a Bernoulli polynomial. This follows from
+generalized Stirling expansion of $\Gamma(n+v)$. The only first-order
+change is $(v-1)Z$, with tilted mean $(v-1)M_2/2$.
+
+On the central interval $t/n\in[1/2,2]$, the extra factor $t^{v-1}$
+is uniformly comparable to $n^{v-1}$, and
+$\Gamma(n+v)\asymp n!n^{v-1}$. All majorants remain uniform. For the
+lower signed tail, including $0<v<1$, do not bound $t^{v-1}$ pointwise
+near zero. Instead $e^{-t}(t+M)^n$ is increasing on $[0,n/2]$ for large
+$n$, and its endpoint bound is multiplied by
+$\int_0^{n/2}t^{v-1}\dd t=(n/2)^v/v$. This gives the same exponential
+suppression uniformly for $v$ bounded away from zero. The upper tail
+is unchanged by fixed powers.
+
+Finally $H_v$ is positive: chromatic coefficients have alternating
+nonnegative signs. Deletion--contraction gives
+$H_v(G+e)=H_v(G)+H_v(G/e)$, hence edge monotonicity. With $m=n-L$,
+\[
+ H_v(K_{L,1,\ldots,1})=\frac{\Gamma(m+v)}{\Gamma(v)}(m+v)^L.
+\]
+Dividing by $\Gamma(n+v)/\Gamma(v)$ gives, by the same logarithmic
+inequality as \eqref{eq:fartail}, the bound
+$\exp(-L(L-1)/(2(n+v-1)))$. The far-part tail and every local estimate
+therefore transfer to compact positive $v$ sets.
+\end{proof}
+
+For the inverse, normalize \eqref{eq:chromatic} relative to
+$n!n^{v-1}$. In \eqref{eq:logmodel} this changes the constants to
+\[
+ \alpha_0=v-\tfrac12-p_\eta,\qquad
+ d_0=\log\left(\frac{A_\eta\sqrt{2\pi}}{\Gamma(v)}\right).
+\]
+The same Lambert-$W$ core and recursion apply. The Gamma-ratio series
+affects $\beta_2$ and higher terms, but not
+$\beta_1=a_{\eta,1}(v)$.
+
+\section{Further questions}
+
+The complete algebraic expansion leaves several substantial questions.
+First, one can study the late growth of its coefficients and the
+exponentially small sectors arising from noncentral coefficient
+contours; the present theorem does not identify these sectors or a
+summation prescription. Second, the dominant weighted partition model
+suggests limit laws for the largest part and for profile statistics
+under orientation weighting. Turning this into uniform distributional
+results requires additional marked-parameter estimates. Third, a
+chromatic parameter growing with $n$ could change the Gamma tilt and
+the saddle regime; compact-parameter arguments do not cover that
+transition. Finally, explicit effective constants in the full
+remainder would turn the inverse threshold envelope into a practical
+certified numerical algorithm.
+
+\begin{thebibliography}{9}
+\bibitem{oeisb} The OEIS Foundation,
+\href{https://oeis.org/A372395}{A372395}, total acyclic orientations over
+complete multipartite graphs indexed by integer partitions.
+Accessed 1 October 2026.
+\bibitem{oeisf} The OEIS Foundation,
+\href{https://oeis.org/A370613}{A370613}, the corresponding distinct-part
+partition sum. Accessed 1 October 2026.
+\bibitem{stanley} R.~P.~Stanley, Acyclic orientations of graphs,
+\emph{Discrete Mathematics} \textbf{5} (1973), 171--178.
+\href{https://doi.org/10.1016/0012-365X(73)90108-8}{doi:10.1016/0012-365X(73)90108-8}.
+\bibitem{sun} Z.~Sun, Saddle-Point Asymptotics for Chromatic and Tutte
+Polynomial Evaluations of Complete Multipartite Graphs,
+\href{https://arxiv.org/abs/2605.04006v1}{arXiv:2605.04006v1} (2026),
+especially Sections 2, 7--9 and 11.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,623 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{nosep}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Ord}{\mathcal O}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\asympJ}{\underset{J}{\sim}}
+\title{Log periodic factors in radix layer partition asymptotics}
+\author{Research report}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For an integer $b\ge2$, let $a_b(n)$ be the coefficient of $z^n$ in
+$\prod_{j\ge0,i\ge1}(1+z^{i b^j})$. The leading term is a smooth stretched exponential multiplied by a positive analytic function of $\log_b\sqrt n$. This periodic function is nonconstant for every integer $b>2$. In particular, the plain asymptotic equivalents recorded in OEIS A174065 and A393565 omit a persistent factor, although their smooth constants are correct. We give a Mellin expansion with sectorial remainder, a short independent contradiction to any constant-only equivalent, and a coefficient expansion to every fixed order with explicit differential operators. We also determine the complete interval of subsequential ratios, give asymptotic inverse formulas and integer enclosures, prove eventual strict increase and log concavity, and give an exact positive-real reciprocal identity with exponentially small radial remainder. The accompanying computation package checks exact coefficients, finite-order approximations, and inversion. The analytic methods are classical; the claim is a correction and explicit treatment of this family, not worldwide priority for the underlying methods.
+\end{abstract}
+
+\section{The family and the correction}
+\label{sec:intro}
+Throughout the article $b$ is a fixed integer at least $2$, logarithms without a subscript are natural, and an asymptotic statement in $n$ means $n\to\infty$ through integers. Define
+\begin{equation}\label{eq:product}
+ F_b(z)=\prod_{j\ge0}\prod_{i\ge1}(1+z^{i b^j})
+       =\sum_{n\ge0}a_b(n)z^n,\qquad |z|<1.
+\end{equation}
+A part of size $k$ has $1+v_b(k)$ distinguishable colors, where
+$v_b(k)=\max\{j\ge0:b^j\mid k\}$; each colored part is used at most once. This interpretation is valid even when $b$ is composite. In particular, all coefficients are nonnegative.
+
+When $b=2^m$ there is a simpler interpretation:
+\begin{equation}\label{eq:telescope}
+ F_{2^m}(z)=\prod_{\substack{k\ge1\\v_2(k)\equiv0\pmod m}}(1-z^k)^{-1}.
+\end{equation}
+Indeed $1+z^k=(1-z^{2k})/(1-z^k)$. At a size of $2$-adic valuation $v$, the net exponent of $(1-z^k)^{-1}$ is
+$\lceil(v+1)/m\rceil-\lceil v/m\rceil$, which equals $1$ exactly when $m\mid v$. Thus $b=2$ gives ordinary partitions, $b=4$ gives A174065, and $b=8$ gives A393565. This makes the family useful as a natural restriction of ordinary partitions, as well as a colored distinct-part model.
+
+\subsection{Constants and the periodic factor}
+Put
+\begin{align}
+ L&=\log b, & a&=\log2, & A&=\frac{\pi^2b}{12(b-1)}, & \beta&=\frac a{2L},\label{eq:constants1}\\
+ C&=-\beta\log(2\pi)-\frac a4+\frac{a^2}{4L}, &
+ d&=\frac1{24(b-1)}, &
+ \kappa&=\frac\beta2+\frac34, &
+ K&=\frac{\ee^C A^{\beta/2+1/4}}{2\sqrt\pi}.\label{eq:constants2}
+\end{align}
+For $k\in\Z\setminus\{0\}$ set
+\begin{equation}\label{eq:ck}
+ s_k=\frac{2\pi\ii k}{L},\qquad
+ c_k=\frac{\Gamma(s_k)\zeta(1+s_k)\zeta(s_k)(1-2^{-s_k})}{L}.
+\end{equation}
+The functions central to the correction are
+\begin{equation}\label{eq:PH}
+ P(u)=\sum_{k\ne0}c_k\ee^{2\pi\ii k u},\qquad H(u)=\ee^{P(u)}.
+\end{equation}
+Both are $1$-periodic and analytic on $|\Im u|<\pi/(2L)$. On the real axis $P$ is real and $H$ is positive. The normalization is that $P$ has mean zero; the mean of $H$ need not be $1$.
+
+Write $D=L^{-1}\,d/du$ and define the differential operators
+\begin{equation}\label{eq:R}
+ R_0(D)=1,\qquad
+ R_j(D)=\frac{(-1)^j}{16^j j!}
+  \prod_{\ell=1}^j\bigl(4(\beta+1-D)^2-(2\ell-1)^2\bigr)\quad(j\ge1).
+\end{equation}
+They are polynomials in $D$ of degree $2j$.
+
+\begin{theorem}[Uniform expansion to every fixed order]\label{thm:main}
+Let $N=n-d$ and $u=\log_b\sqrt{N/A}$. For every fixed integer $J\ge0$,
+\begin{equation}\label{eq:main}
+\boxed{\quad
+ a_b(n)=K N^{-\kappa}\ee^{2\sqrt{AN}}
+ \left\{\sum_{j=0}^J(AN)^{-j/2}R_j(D)H(u)
+       +\Ord_{b,J}\bigl(N^{-(J+1)/2}\bigr)\right\}.
+ \quad}
+\end{equation}
+The bracket error is absolute and uniform in $u\bmod1$. Since $H$ has a positive minimum, the leading-order error can equally be expressed relatively. For $b=2$, $H\equiv1$. For every integer $b>2$, $H$ is nonconstant.
+\end{theorem}
+In particular,
+\begin{equation}\label{eq:leading}
+ a_b(n)=K n^{-\kappa}\ee^{2\sqrt{An}}
+ H\left(\log_b\sqrt{n/A}\right)\bigl(1+\Ord_b(n^{-1/2})\bigr).
+\end{equation}
+The shift by $d$ matters for the first and higher corrections, even though it does not change this equivalent.
+
+\subsection{The two OEIS formulas}
+The source snapshots retrieved on 2 October 2026 record the following plain equivalents \cite{oeis4,oeis8}:
+\begin{center}
+\begin{tabular}{@{}ccl@{}}
+\toprule
+Radix & Sequence & Recorded smooth equivalent \\
+\midrule
+$4$ & A174065 & $\displaystyle\frac{\exp(2\pi\sqrt n/3)}{2^{11/8}3^{3/4}n^{7/8}}$ \\[6pt]
+$8$ & A393565 & $\displaystyle\frac{\exp(\pi\sqrt{8n/21})}{2\,21^{1/3}n^{5/6}}$ \\[4pt]
+\bottomrule
+\end{tabular}
+\end{center}
+The constants in this table agree exactly with \eqref{eq:constants1}--\eqref{eq:constants2}. Each row must be multiplied by
+$H(\log_b\sqrt{n/A})$ to become a genuine equivalent. Replacing its constant by another positive constant cannot repair it. Section~\ref{sec:abelian} establishes that last fact without using Theorem~\ref{thm:main}.
+
+A174065 was retrieved as revision \#34, dated 24 February 2026, with the formula attributed there to V\'aclav Kotesovec on 24 September 2019. A393565 was retrieved as revision \#12, dated 7 March 2026, with the formula attributed there to Kotesovec on that date. These statements concern the retrieved versions; no OEIS edit or submission was made in preparing this report. The package preserves a short factual transcription and source links, not copies of entire third-party papers.
+
+\section{Mellin analysis and a nonzero Fourier coefficient}
+\label{sec:mellin}
+For $\Re t>0$, choose the analytic logarithm of $F_b(\ee^{-t})$ given by its absolutely convergent logarithmic series and use the principal $\Log t$.
+
+\begin{lemma}[Sectorial Mellin expansion]\label{lem:mellin}
+For every $M>0$ and $\varepsilon>0$, uniformly as $t\to0$ in
+$|\arg t|\le\pi/2-\varepsilon$,
+\begin{equation}\label{eq:mellinexp}
+ \log F_b(\ee^{-t})=
+ \frac At+\beta\Log t+C+P\bigl(\log_b(1/t)\bigr)-dt
+ +\Ord_{b,M,\varepsilon}(|t|^M).
+\end{equation}
+For any fixed number of derivatives the remainder can also be differentiated, losing the corresponding powers of $|t|$, on a slightly smaller closed sector.
+\end{lemma}
+\begin{proof}
+For $c>1$, Mellin inversion of $\log(1+\ee^{-x})$ and absolute summation over $i,j$ give
+\begin{equation}\label{eq:mellinintegral}
+ \log F_b(\ee^{-t})=
+ \frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}M_b(s)t^{-s}\,ds,
+ \qquad
+ M_b(s)=\frac{\Gamma(s)\zeta(s+1)\zeta(s)(1-2^{-s})}{1-b^{-s}}.
+\end{equation}
+For example, expand $\log(1+\ee^{-x})=\sum_{h\ge1}(-1)^{h-1}\ee^{-hx}/h$. On $\Re s=c>1$, the absolute triple Dirichlet sum is finite; its factors are $\zeta(s)$, $(1-b^{-s})^{-1}$, and $(1-2^{-s})\zeta(s+1)$. The identity extends to $\Re t>0$ by analyticity and the convergent Mellin integral.
+
+The residue at $s=1$ is $A$. Near zero,
+\begin{align*}
+ \Gamma(s)\zeta(1+s)&=s^{-2}+\Ord(1),\\
+ \zeta(s)&=-\tfrac12-\tfrac12\log(2\pi)s+\Ord(s^2),\\
+ \frac{1-2^{-s}}{1-b^{-s}}
+ &=\frac aL\left(1+\frac{L-a}{2}s+\Ord(s^2)\right).
+\end{align*}
+Consequently $M_b(s)=-\beta s^{-2}+Cs^{-1}+\Ord(1)$, and its contribution after multiplication by $t^{-s}$ is $\beta\Log t+C$. The sign of this logarithm is positive. At $s=-1$ the residue of $M_b$ is $-d$, contributing $-dt$. All negative integer poles at or below $-2$ are canceled: at even negative integers by $\zeta(s)$, and at odd negative integers by $\zeta(s+1)$. There are no other poles with negative real part.
+
+The nonzero imaginary-axis points $s_k$ are the zeros of $1-b^{-s}$. Its derivative there is $L$, giving residue $c_k$; a zero numerator makes the point removable. Thus their total contribution is the series in \eqref{eq:PH}.
+
+For completeness, fix a nonintegral $R>M$ and shift the contour to $\Re s=-R$. On that line the denominator is bounded away from zero. Choose horizontal heights
+$T_q=2\pi(q+1/2)/L$. For $s=\sigma\pm\ii T_q$ one has $b^{-s}=-b^{-\sigma}$, so the same denominator stays bounded away from zero throughout the finite horizontal strip. Standard zeta bounds in any fixed vertical strip are polynomial in $|\Im s|$. Stirling's estimate contributes $\exp(-\pi|\Im s|/2)$, while $t^{-s}$ contributes at most $|t|^{-\Re s}\exp((\pi/2-\varepsilon)|\Im s|)$. The horizontal integrals tend to zero, and the remaining vertical integral is $\Ord(|t|^R)$ uniformly in the stated sector.
+
+The residue sum converges normally on closed substrips of
+$|\Im u|<\pi/(2L)$: the coefficients have at most a polynomial factor times
+$\exp(-\pi^2|k|/L)$. The same estimate applies after any fixed number of $u$-derivatives. It justifies the infinite contour shift and the analyticity asserted above. Cauchy estimates on a slightly larger sector prove the differentiated remainder statement. Relevant standard formulas are collected in \cite{dlmf,mellin}.
+\end{proof}
+
+\begin{proposition}[The modulation is genuinely nonconstant]\label{prop:nonzero}
+For every integer $b>2$, the coefficient $c_1$ in \eqref{eq:ck} is nonzero. For $b=2$ every $c_k$ vanishes. If $b=2^m$, precisely the modes with $m\mid k$ vanish.
+\end{proposition}
+\begin{proof}
+The gamma function has no zeros. The classical zero-free line gives
+$\zeta(1+\ii y)\ne0$ for real $y\ne0$; the functional equation then gives
+$\zeta(\ii y)\ne0$ as well. These are unconditional statements and do not require the Riemann hypothesis. For $b>2$,
+$0<a/L<1$, so $1-\exp(-2\pi\ii a/L)\ne0$. This proves $c_1\ne0$. Since $c_{-k}=\overline{c_k}$, $P$ is real on the real axis. Uniqueness of its absolutely convergent Fourier series proves that $P$, hence its real exponential $H$, is nonconstant. When $b=2^m$, the final factor in \eqref{eq:ck} is $1-\exp(-2\pi\ii k/m)$; all the other factors are nonzero, which proves the remaining assertions.
+\end{proof}
+The first Fourier coefficient has a small but fixed size. Numerically,
+\begin{align*}
+ c_1\bigm|_{b=4}&\approx-0.000284672849849852
+             +0.000552269321104923\,\ii,\\
+ c_1\bigm|_{b=8}&\approx\phantom{-}0.00288292901606687
+             -0.000603349972848565\,\ii.
+\end{align*}
+The first-harmonic amplitudes in $P$ are approximately $0.00124264$ and $0.00589078$, respectively. These decimals are checks, not the proof of nonconstancy, and are not rigorous bounds for the range of the full function $H$.
+
+\section{Exact radial reciprocity and reflection symmetry}
+\label{sec:reciprocity}
+On the positive real axis the Mellin remainder admits an exact description. Put
+\[
+ \mathcal L_b(t)=\log F_b(\ee^{-t}),\qquad B=2\pi^2b,\qquad
+ G_b(t)=A/t+\beta\log t+C+P(\log_b(1/t))-dt.
+\]
+\begin{theorem}[Exact positive real completion]\label{thm:reciprocity}
+For every real $t>0$,
+\begin{align}
+ \mathcal L_b(t)&=G_b(t)+\mathcal L_b(B/t),\label{eq:reciprocitylog}\\
+ F_b(\ee^{-t})&=\ee^C t^\beta\exp(A/t-dt)
+ H(\log_b(1/t))F_b(\ee^{-B/t}).\label{eq:reciprocityproduct}
+\end{align}
+In particular, as $t\downarrow0$,
+\begin{equation}\label{eq:radialexp}
+ \mathcal L_b(t)-G_b(t)=\ee^{-B/t}+\Ord_b(\ee^{-2B/t}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $\mathcal Q(t)=\prod_{k\ge1}(1-\ee^{-kt})^{-1}$ and
+$\mathcal D(t)=\log\prod_{k\ge1}(1+\ee^{-kt})$.
+The classical Dedekind eta transformation \cite[\S\S23.18, 27.14]{dlmf} gives
+\[
+ \log\mathcal Q(t)=\frac{\pi^2}{6t}
+ +\frac12\log\frac{t}{2\pi}-\frac t{24}
+ +\log\mathcal Q(4\pi^2/t).
+\]
+Subtract the same identity at $2t$ and use
+$\prod_{k\ge1}(1+\ee^{-kt})=\mathcal Q(t)/\mathcal Q(2t)$ to obtain
+\begin{equation}\label{eq:distincteta}
+ \mathcal D(t)=\frac{\pi^2}{12t}-\frac{\log2}{2}
+ +\frac t{24}-\mathcal D(2\pi^2/t).
+\end{equation}
+The radix product gives
+$\mathcal L_b(t)-\mathcal L_b(bt)=\mathcal D(t)$.
+By periodicity and the definitions of $A,\beta,d$,
+\[
+ G_b(t)-G_b(bt)=\frac{\pi^2}{12t}-\frac{\log2}{2}+\frac t{24}.
+\]
+Thus $E_b=\mathcal L_b-G_b$ satisfies
+$E_b(t)=E_b(t/b)+\mathcal D(B/t)$. Iterating toward zero yields
+\[
+ E_b(t)=E_b(t/b^h)+\sum_{j=1}^h\mathcal D(2\pi^2b^j/t).
+\]
+The first term tends to zero by Lemma~\ref{lem:mellin}. The absolutely convergent sum tends to $\mathcal L_b(B/t)$, proving \eqref{eq:reciprocitylog} and \eqref{eq:reciprocityproduct} for every $t>0$.
+
+For $T\ge1$, use $\log(1+x)\le x$ and $b^j\ge j+1$ to get
+\[
+ 0<\mathcal L_b(T)
+ \le\sum_{j\ge0}\frac{\ee^{-b^jT}}{1-\ee^{-b^jT}}
+ \le\frac{\ee^{-T}}{(1-\ee^{-T})^2}.
+\]
+The unique term with exponent $T$ is
+$\log(1+\ee^{-T})=\ee^{-T}+\Ord(\ee^{-2T})$; all other terms total $\Ord_b(\ee^{-2T})$. Taking $T=B/t$ proves \eqref{eq:radialexp}.
+\end{proof}
+The bound in this proof is an elementary effective radial bound. It does not supply the separate coefficient-error constants needed for an effective inverse certificate. Nor does the exact positive-real identity by itself establish an exponentially complete coefficient expansion; extracting such sectors would require additional contour and root-of-unity analysis.
+
+\begin{corollary}[Reflection symmetry]\label{cor:reflection}
+For every real $u$,
+\begin{equation}\label{eq:reflection}
+ P(u)+P(-u-\log_bB)=0.
+\end{equation}
+Consequently $\max P=-\min P$ and
+\begin{equation}\label{eq:reciprocalendpoints}
+ (\min H)(\max H)=1.
+\end{equation}
+The two reflection-fixed phases $u=-\tfrac12\log_bB\pmod{1/2}$ have $P(u)=0$ and $H(u)=1$.
+\end{corollary}
+\begin{proof}
+Apply \eqref{eq:reciprocitylog} at $t$ and at $B/t$ to obtain
+$G_b(t)+G_b(B/t)=0$. The elementary terms cancel because $A=dB$ and $2C+\beta\log B=0$. Substituting $u=\log_b(1/t)$ gives \eqref{eq:reflection}. The conclusions follow because this reflection permutes a full period of the real line.
+\end{proof}
+
+\section{A contradiction independent of coefficient transfer}
+\label{sec:abelian}
+\begin{lemma}[An elementary Abelian calculation]\label{lem:abelian}
+Let $A_0,K_0>0$ and $p\in\R$. If a nonnegative sequence satisfies
+$a_n\sim K_0 n^{-p}\exp(2\sqrt{A_0n})$, then, as $t\downarrow0$,
+\begin{equation}\label{eq:abelian}
+ \sum_{n\ge0}a_n\ee^{-nt}\sim
+ 2\sqrt\pi K_0 A_0^{1/2-p}
+ t^{2p-3/2}\ee^{A_0/t}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The exponent $2\sqrt{A_0n}-tn$ is maximized at $n_*=A_0/t^2$. With
+$n=n_*+x t^{-3/2}$, its difference from the maximum tends to
+$-x^2/(4A_0)$, uniformly on compact $x$-intervals, while
+$n^{-p}\sim A_0^{-p}t^{2p}$. The lattice spacing in $x$ is $t^{3/2}$, so the central sum is a Riemann sum with Gaussian integral
+$\int_\R\exp(-x^2/(4A_0))\,dx=2\sqrt{\pi A_0}$.
+
+The tail estimate follows directly from the exact identity, for $s=n/n_*$,
+\[
+ 2\sqrt{A_0n}-tn=\frac{A_0}{t}\bigl(1-(\sqrt s-1)^2\bigr).
+\]
+On a fixed compact neighborhood of $s=1$ this gives a Gaussian majorant for the scaled variable; outside that neighborhood it gives exponential suppression, with the far tail controlled by $\exp(-tn/2)$ after increasing the cutoff. Polynomial factors do not affect either conclusion. Finitely many initial terms are negligible. Finally the assumed equivalent bounds all sufficiently large $a_n$ between $(1\pm\delta)K_0n^{-p}\exp(2\sqrt{A_0n})$. Apply the established sum estimate to both bounds and let $\delta\downarrow0$.
+\end{proof}
+
+Suppose, for any $K'>0$, that
+$a_b(n)\sim K'n^{-\kappa}\exp(2\sqrt{An})$. Since $2\kappa-3/2=\beta$, Lemma~\ref{lem:abelian} would force
+\[
+ t^{-\beta}\ee^{-A/t}F_b(\ee^{-t})
+ \longrightarrow 2\sqrt\pi K'A^{1/2-\kappa}.
+\]
+But Lemma~\ref{lem:mellin} makes the same expression
+$\exp(C+P(\log_b(1/t)))(1+\Ord(t))$. Along $t_q=b^{-q-u}$ its limit is $\exp(C+P(u))$. Proposition~\ref{prop:nonzero} says these limits differ when $b>2$. This contradiction rules out every constant-only equivalent of the displayed shape. It isolates the correction from any reliance on the more detailed saddle-point analysis that follows.
+
+\section{Coefficient transfer with uniform remainders}
+\label{sec:transfer}
+We prove Theorem~\ref{thm:main} without summing asymptotic formulas over unbounded complex Bessel orders.
+
+\subsection{A global minor arc estimate}
+\begin{lemma}\label{lem:minor}
+There is $c>0$ such that, for every sufficiently small real $r>0$ and all $|\theta|\le\pi$,
+\begin{equation}\label{eq:minor}
+ \frac{|F_b(\ee^{-r-\ii\theta})|}{F_b(\ee^{-r})}
+ \le\exp\left[-c\min\left(\frac{\theta^2}{r^3},\frac1r\right)\right].
+\end{equation}
+\end{lemma}
+\begin{proof}
+Every factor's modulus ratio is at most $1$, so it suffices to keep the $j=0$ subproduct. For $q_i=\ee^{-ir}$,
+\[
+ \left|\frac{1+q_i\ee^{-\ii i\theta}}{1+q_i}\right|^2
+ =1-\frac{4q_i}{(1+q_i)^2}\sin^2(i\theta/2).
+\]
+For $1\le i\le M=\lfloor1/r\rfloor$, the coefficient of the sine square is bounded below by an absolute positive constant. Using $1-x\le\ee^{-x}$, it remains to show
+\begin{equation}\label{eq:sinesum}
+ \sum_{i=1}^M\sin^2(i\theta/2)
+ \ge c_0\min(M^3\theta^2,M).
+\end{equation}
+If $|\theta|\le1/M$, the inequality $|\sin(i\theta/2)|\ge c_1i|\theta|$ proves it. If $|\theta|\ge C/M$, use
+\[
+ \sum_{i=1}^M\sin^2(i\theta/2)
+ =\frac M2-\frac12\Re\sum_{i=1}^M\ee^{\ii i\theta},
+ \qquad
+ \left|\sum_{i=1}^M\ee^{\ii i\theta}\right|
+ \le\frac1{|\sin(\theta/2)|}\le\frac\pi{|\theta|}.
+\]
+Choosing a sufficiently large fixed $C$ makes the sum at least $M/4$. On the remaining interval $1/M\le|\theta|\le C/M$, set $v=M|\theta|$. The normalized sum converges uniformly for $1\le v\le C$ to
+$\int_0^1\sin^2(vx/2)\,dx$, a continuous positive function on that compact interval. A smaller constant covers all sufficiently large $M$. This proves \eqref{eq:sinesum} and hence \eqref{eq:minor}. No other root-of-unity arc is left uncontrolled.
+\end{proof}
+
+\subsection{The retained arc and its Taylor remainder}
+Cauchy's formula, with $t=r+\ii\theta$, is
+\begin{equation}\label{eq:cauchy}
+ a_b(n)=\frac1{2\pi}\int_{-\pi}^{\pi}
+ F_b(\ee^{-t})\ee^{nt}\,d\theta.
+\end{equation}
+Choose $r=\sqrt{A/N}$, where $N=n-d$. All $|\theta|\ge r^{5/4}$ have relative modulus at most $\exp(-c r^{-1/2})$. More directly, Lemma~\ref{lem:minor} shows that the entire part outside
+\begin{equation}\label{eq:centralwindow}
+ |\theta|\le \frac{r^{3/2}}{\sqrt A}\,T,
+ \qquad T=\log(1/r),
+\end{equation}
+is negligible compared with the main term times any fixed power of $r$. To see the normalization explicitly, Lemma~\ref{lem:mellin} gives
+$F_b(\ee^{-r})\ee^{nr}=\Ord_b(r^\beta\ee^{2A/r})$; the main term has the additional factor $r^{3/2}$. The bound $\exp(-c' T^2)$ absorbs that factor and every fixed power of $r$.
+
+On \eqref{eq:centralwindow}, Lemma~\ref{lem:mellin} can be exponentiated uniformly:
+\begin{equation}\label{eq:localform}
+ F_b(\ee^{-t})\ee^{nt}
+ =\ee^C\exp(A/t+Nt)t^\beta
+ H\bigl(\log_b(1/t)\bigr)\bigl(1+\Ord_{b,M}(r^M)\bigr).
+\end{equation}
+The arbitrary $M$ will be chosen larger than the required expansion order.
+
+Set
+\[
+ q=\sqrt{r/A},\qquad x=\theta\sqrt{A/r^3},\qquad
+ u=\log_b(1/r),\qquad t=r(1+\ii qx).
+\]
+The exact saddle identity is
+\begin{equation}\label{eq:exactphase}
+ A/t+Nt=2A/r-\frac{x^2}{1+\ii qx}.
+\end{equation}
+Define the normalized integrand
+\begin{equation}\label{eq:integrand}
+ B(q,x,u)=
+ \exp\left(-\frac{x^2}{1+\ii qx}\right)
+ (1+\ii qx)^\beta
+ H\left(u-\frac{\Log(1+\ii qx)}L\right).
+\end{equation}
+For $|x|\le T$ and every real $q'$ between $0$ and $q$, one has $|q'x|\le1/2$ once $r$ is small. The argument of $H$ stays in a fixed closed substrip of its analytic domain, uniformly in the real phase $u$. Also
+\[
+ \Re\left(-\frac{x^2}{1+\ii q'x}\right)
+ =-\frac{x^2}{1+(q'x)^2}\le-\frac45x^2.
+\]
+For each fixed integer $h$, repeated differentiation of \eqref{eq:integrand} therefore gives a bound
+\begin{equation}\label{eq:taylorbound}
+ |\partial_q^h B(q',x,u)|
+ \le C_{b,h}(1+|x|)^{m_h}\ee^{-4x^2/5}
+\end{equation}
+for some finite integer $m_h$, uniformly in $u$. Each derivative only contributes powers of $x$, bounded powers of $(1+\ii q'x)^{-1}$, and bounded derivatives of $H$.
+
+Taylor's theorem through degree $2J+1$, followed by \eqref{eq:taylorbound}, now bounds the integrated remainder by
+\[
+ C_{b,J}q^{2J+2}\int_\R(1+|x|)^{m_{2J+2}}\ee^{-4x^2/5}\,dx
+ =\Ord_{b,J}(r^{J+1}).
+\]
+This is a log-free bound despite the growing cutoff $T$. At $q=0$ each coefficient is a polynomial in $x$ times $\ee^{-x^2}$ and a finite linear combination of derivatives of $H(u)$. The identity $B(q,-x,u)=B(-q,x,u)$ makes every odd coefficient integrate to zero on the symmetric interval. Extending each even coefficient's integral from $[-T,T]$ to $\R$ changes it by less than every power of $r$. The Mellin remainder in \eqref{eq:localform}, bounded against the same Gaussian, is $\Ord(r^M)$ relatively. Thus a uniform expansion in powers of $r$, with error $\Ord(r^{J+1})$, has been proved using only finitely many derivatives of $H$.
+
+\subsection{Identification of every coefficient operator}
+At order $q^{2j}$, the preceding calculation is a constant-coefficient differential operator of degree at most $2j$ on the amplitude, with dependence on $\beta$ polynomial as well. It is enough to identify the corresponding polynomial on a test amplitude $t^\lambda$, for each fixed complex $\lambda$.
+
+The local saddle expansion of
+$(2\pi\ii)^{-1}\int\exp(A/t+Nt)t^\lambda\,dt$
+is the large-positive-argument expansion associated with
+\[
+ (A/N)^{(\lambda+1)/2} I_{-\lambda-1}(2\sqrt{AN}).
+\]
+Here only the local expansion at the positive saddle is used. The standard fixed-order Bessel expansion \cite[\S10.40]{dlmf}, equivalently the same Gaussian Taylor calculation for this monomial, is
+\begin{align}
+ &\frac{\ee^{2\sqrt{AN}}}{2\sqrt\pi}
+ A^{\lambda/2+1/4}N^{-\lambda/2-3/4}\notag\\[-2pt]
+ &\quad\times\left\{
+ \sum_{j=0}^J
+ \frac{(-1)^j\prod_{\ell=1}^j\bigl(4(\lambda+1)^2-(2\ell-1)^2\bigr)}
+ {16^j j!(AN)^{j/2}}
+ +\Ord_{\lambda,J}(N^{-(J+1)/2})\right\}.
+ \label{eq:monomial}
+\end{align}
+The equality of coefficient polynomials for every fixed $\lambda$ identifies the local differential operator. On
+$t^\beta H(\log_b(1/t))$, the Euler operator $t\,d/dt$ acts as $\beta-D$ on $H$. Substitution $\lambda=\beta-D$ in the polynomial in \eqref{eq:monomial} gives exactly $R_j(D)$.
+
+Finally, the main prefactor from \eqref{eq:cauchy} and the $x$ substitution is
+\[
+ \frac{\ee^C}{2\sqrt\pi\sqrt A}r^{\beta+3/2}\ee^{2A/r}
+ =K N^{-\kappa}\ee^{2\sqrt{AN}}.
+\]
+Since $q^{2j}=(AN)^{-j/2}$ and $r^{J+1}=\Ord_b(N^{-(J+1)/2})$, this proves Theorem~\ref{thm:main}. This reasoning does not require a Bessel asymptotic uniform over the infinite set $\lambda=\beta-s_k$; that unjustified interchange has been avoided by the finite-derivative bounds above.
+
+\section{First correction and the full set of ratio limits}
+\label{sec:corrections}
+The first two operator polynomials are
+\begin{align}
+ R_1(D)&=-\frac14\left((\beta+1-D)^2-\frac14\right),\label{eq:R1}\\
+ R_2(D)&=\frac1{512}
+ \bigl(4(\beta+1-D)^2-1\bigr)
+ \bigl(4(\beta+1-D)^2-9\bigr).\label{eq:R2}
+\end{align}
+To express the first correction without a shifted index, put
+\[
+ \theta_n=\log_b\sqrt{n/A},\qquad
+ q_1=\beta-\frac{P'(\theta_n)}L,\qquad
+ q_2=\frac{P''(\theta_n)}{L^2}.
+\]
+Then
+\begin{equation}\label{eq:firstunshifted}
+ a_b(n)=K n^{-\kappa}\ee^{2\sqrt{An}+P(\theta_n)}
+ \left(1+\frac{c(\theta_n)}{\sqrt{An}}+\Ord_b(n^{-1})\right),
+\end{equation}
+where
+\begin{equation}\label{eq:firstc}
+ c(\theta)=-dA-
+ \frac{(2q_1+1)(2q_1+3)+4q_2}{16}.
+\end{equation}
+Here $q_1,q_2$ in \eqref{eq:firstc} are evaluated at $\theta$. Indeed
+$D^2H/H=(DP)^2+D^2P$, so \eqref{eq:R1} yields the second term. The contribution $-dA$ comes from expanding
+$\exp(2\sqrt{A(n-d)})/\exp(2\sqrt{An})$; shifting the power and phase first affects order $n^{-1}$.
+
+\begin{corollary}[The interval of subsequential limits]\label{cor:limits}
+The set of subsequential limits of
+\begin{equation}\label{eq:ratios}
+ \frac{a_b(n)}{K n^{-\kappa}\exp(2\sqrt{An})}
+\end{equation}
+is exactly $[\min_{u\in[0,1]}H(u),\max_{u\in[0,1]}H(u)]$. This interval is nondegenerate for $b>2$.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:main} places every limit in the image of $H$ on its compact period circle. Conversely, for fixed $u\in[0,1]$, choose $n_j$ to be a nearest integer to $A b^{2(j+u)}+d$. Then
+$\log_b\sqrt{(n_j-d)/A}=j+u+o(1)$. The corresponding ratios tend to $H(u)$. A continuous real function on the circle has image the interval between its minimum and maximum. Nondegeneracy follows from Proposition~\ref{prop:nonzero}.
+\end{proof}
+By Corollary~\ref{cor:reflection}, the limiting interval has reciprocal endpoints. In that precise sense the nominal OEIS constant is its geometric center, although it does not define an asymptotic equivalent. No equidistribution result or numerical phase sampling is needed. The oscillation persists even when its amplitude is too small to be apparent in a short coefficient table.
+
+\section{Inverse asymptotics and honest integer enclosures}
+\label{sec:inverse}
+\subsection{Logarithmic form and periodic inverse terms}
+For $N=n-d$, set
+\begin{equation}\label{eq:inversevars}
+ X=2\sqrt{AN},\quad \nu=2\kappa=\beta+\tfrac32,\quad
+ v=\log_b\frac{X}{2A},\quad c_0=\log K+\kappa\log(4A).
+\end{equation}
+Define
+\begin{equation}\label{eq:Uell}
+ U_j(v)=\frac{2^jR_j(D)H(v)}{H(v)},\qquad
+ \log\left(1+\sum_{j\ge1}U_j(v)z^j\right)
+ =\sum_{j\ge1}\ell_j(v)z^j
+\end{equation}
+as formal power series. All these functions are smooth and periodic. They are fully explicit: $\ell_1=U_1$, $\ell_2=U_2-U_1^2/2$, and generally
+\begin{equation}\label{eq:ellrecurrence}
+ \ell_j=U_j-\frac1j\sum_{k=1}^{j-1}k\ell_kU_{j-k}.
+\end{equation}
+Taking the logarithm of Theorem~\ref{thm:main} gives, for each fixed $J\ge0$,
+\begin{equation}\label{eq:logcount}
+ \log a_b(n)=X-\nu\log X+c_0+P(v)
+     +\sum_{j=1}^J\ell_j(v)X^{-j}
+     +\Ord_{b,J}(X^{-J-1}).
+\end{equation}
+For a real target $y\to\infty$, write $Y=\log y$. The first two inverse orders are
+\begin{align}
+ X&=Y+\nu\log Y-c_0-P\left(\log_b\frac{Y}{2A}\right)
+        +\Ord_b\left(\frac{\log Y}{Y}\right),\label{eq:Xinverse}\\
+ n&=\frac{Y^2}{4A}+
+ \frac{Y}{2A}\left\{\nu\log Y-c_0-P\left(\log_b\frac{Y}{2A}\right)\right\}
+ +\Ord_b((\log Y)^2).\label{eq:ninverse}
+\end{align}
+The exact relation for the continuous index is $n=d+X^2/(4A)$. In \eqref{eq:ninverse} the constant $d$ is absorbed by the displayed error. The periodic inverse contribution is of order $Y=\log y$ in the index and cannot be omitted in a high-precision inversion.
+
+\subsection{An explicit all orders inversion algorithm}
+For fixed $J$, let $X_J^*$ be the large root obtained by setting the truncated right side of \eqref{eq:logcount} equal to $Y$. Equivalently it is a fixed point of
+\begin{equation}\label{eq:fixedpoint}
+ \Phi_J(X)=Y+\nu\log X-c_0-P\left(\log_b\frac X{2A}\right)
+ -\sum_{j=1}^J\ell_j\left(\log_b\frac X{2A}\right)X^{-j}.
+\end{equation}
+On $|X-Y|\le C\log Y$, for a sufficiently large fixed $C$, this map takes the interval into itself and has derivative $\Ord_{b,J}(1/Y)$. The reason is that each periodic derivative is bounded and differentiation of its phase contributes $1/(LX)$. Thus it is a contraction for large $Y$.
+
+Starting with $X_0=Y$, make $J+2$ substitutions $X_{r+1}=\Phi_J(X_r)$. The initial error is $\Ord(\log Y)$, and every step gains a factor $\Ord(1/Y)$; hence
+\begin{equation}\label{eq:iterationerror}
+ X_{J+2}-X_J^*=\Ord_{b,J}\left(\frac{\log Y}{Y^{J+2}}\right).
+\end{equation}
+The intrinsic residual in \eqref{eq:logcount} is $\Ord(Y^{-J-1})$, which dominates \eqref{eq:iterationerror} and corresponds to an index uncertainty $\Ord(Y^{-J})$. Expanding the substitutions algebraically yields periodic coefficient functions multiplied by polynomials in $\log Y$, to any requested fixed order. The stronger exponent $J+2$ in \eqref{eq:iterationerror} is needed to state this index precision without an extraneous logarithm.
+
+There is no canonical noninteger extension of the counting sequence. Statements about the continuous inverse here mean roots of these smooth asymptotic approximations and their consistency to the stated error, not an assertion that the discrete sequence itself has real-valued arguments.
+
+\subsection{From a smooth root to the first qualifying integer}
+Let $f_J(x)$ denote the positive smooth right side of \eqref{eq:main} truncated after $j=J$, interpreted at real $x$ with $N=x-d$, and let $x_J$ be its large solution of $f_J(x_J)=y$. It is eventually positive because its bracket is $H+\Ord(x^{-1/2})$, and
+\begin{equation}\label{eq:smoothderivative}
+ \frac{f_J'(x)}{f_J(x)}=\sqrt A\,x^{-1/2}+\Ord_{b,J}(x^{-1})>0
+\end{equation}
+for large $x$. The sequence itself is eventually strictly increasing, as proved in Section~\ref{sec:regularity}. For sufficiently large $y$ define $M(y)=\min\{n\ge0:a_b(n)\ge y\}$; its first crossing is then in that monotone tail.
+
+\begin{corollary}[Asymptotic integer enclosure]\label{cor:integer}
+For each fixed $J\ge0$ there are constants $C_{b,J}>0$ and $y_{b,J}$ such that, for $y\ge y_{b,J}$,
+\begin{equation}\label{eq:integerbracket}
+ \left\lceil x_J-C_{b,J}x_J^{-J/2}\right\rceil
+ \ \le M(y)\le\
+ \left\lceil x_J+C_{b,J}x_J^{-J/2}\right\rceil.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The logarithmic count error is $\Ord(x^{-(J+1)/2})$ at integers. By \eqref{eq:smoothderivative}, moving $x$ by a sufficiently large constant times $x_J^{-J/2}$ changes $\log f_J(x)$ by more than that error, with the appropriate sign. Every integer below the lower ceiling therefore fails the threshold, while the integer at the upper ceiling passes it. The derivative bound continues to hold on the intervening bounded neighborhood, so taking ceilings preserves these conclusions.
+\end{proof}
+An exact integer answer follows when the two ceilings agree, or after the candidate integer values have been evaluated. An exact ceiling of the central approximation alone is not justified: it may lie arbitrarily close to an integer. Moreover, \eqref{eq:integerbracket} is an \emph{asymptotic} enclosure. This article does not provide numerical remainder constants and starting thresholds, so it does not present that enclosure as an effective numerical certificate.
+
+\section{Regularity despite the periodic factor}
+\label{sec:regularity}
+\begin{corollary}\label{cor:regularity}
+For every fixed integer $b\ge2$, $a_b(n)$ is eventually strictly increasing and eventually strictly log concave.
+\end{corollary}
+\begin{proof}
+The $J=1$ expansion and bounded periodic derivatives give
+\begin{equation}\label{eq:ratioinc}
+ \frac{a_b(n)}{a_b(n-1)}=1+\sqrt{A/n}+\Ord_b(n^{-1})>1
+\end{equation}
+for all sufficiently large $n$. Indeed the logarithm of the smooth approximation has derivative $\sqrt A\,x^{-1/2}+\Ord(x^{-1})$, while the difference of its two discrete remainder values is at most $\Ord(n^{-1})$. For $b=2^m$, nondecrease at every index also follows combinatorially by appending a part $1$ in \eqref{eq:telescope}; eventual strict increase is the analytic conclusion needed above.
+
+For strict log concavity, let $g(x)=\log f_3(x)$, where $f_3$ is the $J=3$ approximation. Smoothness and periodic boundedness yield
+\begin{align*}
+ g'(x)&=\sqrt A\,x^{-1/2}
+ +\frac{-\kappa+P'(\log_b\sqrt{x/A})/(2L)}x
+ +\Ord_b(x^{-3/2}),\\
+ g''(x)&=-\frac{\sqrt A}{2}x^{-3/2}+\Ord_b(x^{-2}).
+\end{align*}
+Theorem~\ref{thm:main} gives $\log a_b(n)=g(n)+\Ord(n^{-2})$. The second difference of these error values is at most $\Ord(n^{-2})$; no differentiability of the discrete error is assumed. On the other hand,
+\[
+ g(n+1)-2g(n)+g(n-1)
+ =\int_{-1}^1(1-|h|)g''(n+h)\,dh
+ =-\frac{\sqrt A}{2}n^{-3/2}+\Ord_b(n^{-2}).
+\]
+The leading term is negative, proving
+$a_b(n)^2>a_b(n-1)a_b(n+1)$ eventually. This argument independently checks that the persistent modulation does not compromise the asserted regularity.
+\end{proof}
+
+\section{Computational checks and reproducibility}
+\label{sec:checks}
+The proofs above are analytic. Numerical evaluations play three limited roles: checking constants and signs, testing the finite-order operators against exact coefficients, and illustrating why inverse precision notices a small persistent modulation. They do not prove nonconstancy, certify a Fourier truncation uniformly, or supply effective constants for Corollary~\ref{cor:integer}.
+
+\subsection{Exact coefficients and approximation tests}
+For $b=4,8$, exact integers are computed from \eqref{eq:telescope} by the standard unrestricted-part dynamic program. Start with $v_0=1$, $v_n=0$ for $n>0$; for each allowed part $k$, replace $v_n$ by $v_n+v_{n-k}$ in increasing order of $n$. A separate finite product calculation uses the colored distinct-part interpretation with decreasing-order updates. Independently, logarithmic differentiation gives the integer recurrence
+\[
+ n a_b(n)=\sum_{k=1}^n q_b(k)a_b(n-k),\qquad
+ q_b(k)=\sum_{d\mid k}(1+v_b(d))d(-1)^{k/d-1}.
+\]
+The exact script checks agreement of these constructions through $n=400$. The package also checks the ordinary partition case $b=2$ and the general colored model at $b=3$.
+
+The Fourier coefficients are evaluated with arbitrary-precision arithmetic. Derivatives of $H=\exp P$ are obtained by the complete exponential Bell recurrence
+\[
+ h_0=1,\qquad
+ h_j=\frac{D^jH}{H}
+ =\sum_{k=1}^j\binom{j-1}{k-1}(D^kP)h_{j-k}.
+\]
+The rational coefficient polynomials $R_j$ are generated symbolically. Coefficients through $n=10000$ are computed exactly; selected indices are checked against truncation orders $0$ through $4$. The sign convention for a relative error in the tables is $(\text{approximation})/a_b(n)-1$.
+
+\input{numerical_tables.tex}
+
+\subsection{What the replay does}
+The companion archive contains the TeX source and PDF, the exact and high-precision calculation scripts, their recorded JSON results, exact reciprocity checks, a small factual source snapshot, a bibliography and provenance summary, dependency information, and SHA-256 manifests. It excludes private coordination records and full third-party papers. The standalone replay is invoked with \texttt{bash replay.sh}; it does not rely on executable permission bits surviving ZIP extraction. It recomputes the tests in a fresh directory, verifies the included frozen file manifest, and rebuilds the PDF with \texttt{pdflatex}. The README gives a Python \texttt{zipfile} extraction example and the required external tools.
+
+A successful replay checks the implemented identities and numerical tolerances. It is not a machine-checked formal proof of the analysis. Runtime version differences can change the final printed decimal digits or PDF bytes; the manifest certifies the files supplied in this package, while the replay verifies numerical agreement to documented tolerances and that the source builds successfully.
+
+\section{Relation to existing methods and scope of the claim}
+\label{sec:history}
+Mellin transforms turn lattice poles into periodic functions of logarithms; this is a standard analytic phenomenon, discussed systematically by Flajolet, Gourdon, and Dumas \cite{mellin}. Digital partition problems and saddle-point expansions have a long history. Madritsch and Wagner's 2010 work on integer partitions with digital restrictions \cite{madritsch} is an important precedent for the combination of digital restrictions, Mellin analysis, and periodic asymptotics. Its presence precludes presenting that methodology as new here.
+
+The 2024 general partition asymptotic framework of Bridges, Brindle, Bringmann, and Franke \cite{bridges} is also relevant context. Its stated real-pole hypotheses do not directly cover the nonzero imaginary pole lattice in \eqref{eq:mellinintegral}. It therefore cannot simply be invoked to discard or bypass the factor $H$ in this family. This is a scope distinction, not a claim that the paper's theorems are incorrect.
+
+The inspected ProveIt material \cite{proveit} contains digital spectral and Fabius-related methods with methodological overlap. The inspection used commit \texttt{4b874cea0012}, complete inventories of four relevant subtrees, a content scan of 129 generating-function report files, and targeted reading of the close Fabius spectral reports. It was not a content scan of the whole repository. The bounded inspection does not establish worldwide priority, and repository absence would not establish mathematical novelty. No claim is made that Mellin residues, digital oscillations, or all-order saddle expansions originate in this report. The precise contribution documented here is the missing periodic factor in the retrieved two OEIS formulas, its exact nonvanishing in the general radix family, the explicit coefficient operators, and the resulting inverse and regularity consequences, with a self-contained proof and reproducible checks. A formal proof-assistant verification and a fully effective inverse certificate remain outside the present scope.
+
+\begin{thebibliography}{9}
+\bibitem{oeis4}
+OEIS Foundation Inc., \emph{A174065}, internal-format entry, revision \#34, 24 February 2026; retrieved 2 October 2026.
+\url{https://oeis.org/A174065/internal}.
+
+\bibitem{oeis8}
+OEIS Foundation Inc., \emph{A393565}, internal-format entry, revision \#12, 7 March 2026; retrieved 2 October 2026.
+\url{https://oeis.org/A393565/internal}.
+
+\bibitem{dlmf}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical Functions}, especially \S\S5.11, 10.40, 23.18, 25.4, 25.10, and 27.14.
+\url{https://dlmf.nist.gov/}.
+
+\bibitem{mellin}
+P. Flajolet, X. Gourdon, and P. Dumas,
+\emph{Mellin transforms and asymptotics: Harmonic sums},
+Theoretical Computer Science \textbf{144} (1995), 3--58.
+\url{https://doi.org/10.1016/0304-3975(95)00002-E}.
+
+\bibitem{madritsch}
+M. G. Madritsch and S. Wagner,
+\emph{A central limit theorem for integer partitions},
+Monatshefte f\"ur Mathematik \textbf{161} (2010), 85--114.
+\url{https://doi.org/10.1007/s00605-009-0126-y}.
+
+\bibitem{bridges}
+W. Bridges, B. Brindle, K. Bringmann, and J. Franke,
+\emph{Asymptotic expansions for partitions generated by infinite products},
+Mathematische Annalen \textbf{390} (2024), 2593--2632.
+\url{https://doi.org/10.1007/s00208-024-02807-x}.
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt} repository, main commit
+\texttt{4b874cea0012}, inspected 2 October 2026; in particular the digital spectral geometry and log periodic saddle reports under the Fabius function research directory.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\end{thebibliography}
+\end{document}

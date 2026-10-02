@@ -1,0 +1,656 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem,fancyhdr,xcolor}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!50!black]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={All fixed order asymptotics for distinct parabolic double cosets},pdfauthor={Research manuscript},pdfsubject={A260700 and Browning's higher order conjecture}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Distinct parabolic double cosets}\fancyhead[R]{\small Research manuscript}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\fall}[2]{(#1)_{#2}}
+\newcommand{\stirone}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\stirtwo}[2]{\genfrac{\{} {\}}{0pt}{}{#1}{#2}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\rhoo}{\rho}
+\DeclareMathOperator{\Poi}{Poi}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\ceil}{ceil}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,frame=none,showstringspaces=false}
+\title{All fixed order asymptotics for distinct parabolic double cosets}
+\author{Research manuscript with reproducible computations}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $p_n$ count the distinct subsets of the symmetric group $S_n$ that arise as double cosets of standard parabolic subgroups. Starting from Browning's exact enumeration, we prove a Poincar\'e expansion to every fixed inverse power of $n$. We explicitly determine the first four correction polynomials. In particular, the first correction proves Browning's higher-order conjecture with $c=0.10819705289392157158\ldots$. The leading equivalent is Browning's previously established theorem. The proof supplies uniform generalized-Fubini pole extraction, summable bounds for the signed inner defects, and a joint bound for all omitted long-cycle configurations in the outer Stirling transform. We also give a finite exact coefficient algorithm, smooth asymptotic inverse models, Newton error estimates, and qualified brackets for the integer threshold. Exact computations and actual group-coset enumeration provide independent diagnostics. No claim of convergence, optimal truncation, exponential improvement, or exhaustive literature novelty is made.
+\end{abstract}
+\setcounter{tocdepth}{1}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The counting problem and the main result}
+For $n\geq1$, let $S_n$ be the symmetric group on $\{1,\ldots,n\}$ with adjacent transpositions $s_i=(i,i+1)$. For $I\subseteq\{1,\ldots,n-1\}$, write $W_I=\langle s_i:i\in I\rangle$. Define
+\[
+ p_n=\left|\{W_IwW_J:I,J\subseteq\{1,\ldots,n-1\},\ w\in S_n\}\right|,
+\]
+where the outer set identifies equal subsets of $S_n$, even if they have different presentations. Set $p_0=1$. These are the numbers recorded as OEIS A260700 \cite{oeis}, beginning
+\[
+ p_1,p_2,p_3,p_4,p_5,p_6=1,3,19,167,1791,22715.
+\]
+For example, in $S_2=\{e,s_1\}$ the distinct subsets are $\{e\}$, $\{s_1\}$ and $S_2$. This distinction is essential: summing double-quotient sizes over separately chosen subgroups retains duplicate presentations. Arbitrary contingency tables with no zero rows or columns form the different sequence A120733, whose value at $n=2$ is $5$ \cite{tables}.
+
+Throughout, put
+\begin{equation}\label{eq:constants}
+ \rho=\log 2,\qquad K=\frac{e^{-\rho^2/2}}{4\rho^2}
+ =0.40922300504774271232\ldots.
+\end{equation}
+Browning proved $p_n\sim K n!\rho^{-2n}$ \cite{browning}. His higher-order conjecture asks whether
+\begin{equation}\label{eq:conjecture}
+ \frac{p_n\rho^{2n}}{n!}=K-\frac{c}{n}+O(n^{-2})
+ \quad\text{for some }c>0.
+\end{equation}
+It is Conjecture 5.1 in the arXiv version and Conjecture 41 in the journal version, Section 5.1 in both. The following result settles that stated conjecture within this manuscript's proof.
+
+\begin{theorem}\label{thm:main}
+There are explicitly computable polynomials $B_m(r)\in\Q[r]$, independent of the chosen truncation order, such that for every fixed integer $M\geq0$,
+\begin{equation}\label{eq:main}
+ p_n=K n!\rho^{-2n}\left(\sum_{m=0}^M\frac{B_m(\rho)}{n^m}
+              +O_M(n^{-M-1})\right).
+\end{equation}
+The first three polynomials are $B_0(r)=1$ and
+\begin{align}
+ B_1(r)&=\frac{r^2}{2}-r^3-\frac{11r^4}{12}+\frac{r^5}{4},\label{eq:B1}\\
+ B_2(r)&=\frac{r^4}{288}\left(9r^6-66r^5+25r^4+552r^3
+                    -360r^2-720r+264\right).\label{eq:B2}
+\end{align}
+Consequently \eqref{eq:conjecture} holds with
+\begin{equation}\label{eq:c}
+ c=-K B_1(\rho)=0.108197052893921571585327453732\ldots>0.
+\end{equation}
+\end{theorem}
+
+The quantifier ``every fixed $M$'' matters. The theorem does not assert any bound uniform in $M$, convergence of the infinite series, or a valid choice of $M$ growing with $n$. Its contribution beyond the cited leading term consists of explicit corrections, justified uniform remainders at all fixed orders, and the inverse consequences developed below. The exact enumerative identities remain attributed to Browning; the analytic proof here begins from them.
+
+A bounded primary-source search through 2 October 2026 did not locate a later resolution of this precise correction conjecture. Section~\ref{sec:literature} records the scope and neighboring problems. This observation is not a certification of universal novelty or a claim of external peer review.
+
+\section{The exact enumeration and normalization}
+\label{sec:exact}
+Use the falling factorial $\fall{x}{j}=x(x-1)\cdots(x-j+1)$, with $\fall{x}{0}=1$. Write $\stirone{n}{m}$ and $\stirtwo{n}{m}$ for unsigned Stirling numbers of the first and second kinds. For $a\geq1$, let
+\[
+ S_a(x)=\sum_{i=0}^{x-1}i^a
+\]
+mean the Faulhaber polynomial, so this notation also makes sense at noninteger $x$.
+
+A weak order is an ordered set partition. Let $f_{N,j}$ count weak orders of an $N$-element set in which $j$ specified elements must each occupy a singleton block. Then
+\begin{align}
+ f_{N,j}&=\sum_{\ell=j}^{N}\ell!\stirtwo{N-j}{\ell-j},\label{eq:fubini-sum}\\
+ f_{N,j}&=j!(N-j)!\coef{z}{N-j}(2-e^z)^{-j-1}.\label{eq:fubini-egf}
+\end{align}
+For \eqref{eq:fubini-sum}, first partition the other $N-j$ elements into $\ell-j$ blocks and then order all $\ell$ blocks. To obtain \eqref{eq:fubini-egf}, use the exponential generating function of set partitions and
+\[
+ \sum_{a\geq0}\frac{(a+j)!}{a!}u^a=j!(1-u)^{-j-1},\qquad u=e^z-1.
+\]
+In particular $0\leq f_{N,j}\leq f_{N,0}$.
+
+The exact identities we use are Browning's Theorem 3.18, Proposition 3.19 and Section 4.1 in arXiv numbering \cite{browning}:
+\begin{align}
+ p_n&=\frac1{n!}\sum_{m=0}^n\stirone{n}{m}q_m,\label{eq:p-exact}\\
+ q_n&=\sum_{\substack{c,t\geq0\\2c\leq t\leq n}}
+ \binom nt h_{t,c}\sum_{j=0}^c
+ \frac{f_{n-t+c,j}f_{n-t+c,c-j}}{j!(c-j)!},\label{eq:q-exact}\\
+ h_{t,c}&=(-2)^c t!\coef{z}{t}(\cosh z-1)^c.\label{eq:h-exact}
+\end{align}
+The last identity follows from Browning's interpretation of $(-1)^ch_{t,c}/2^c$ as ordered partitions into $c$ even, nonempty blocks. His $q_n$ counts pairs of weak orders without consecutive embeddings; hence
+\begin{equation}\label{eq:qbound}
+ 0\leq q_n\leq f_{n,0}^2.
+\end{equation}
+We use the count and this bound, rather than assume that cancellation in \eqref{eq:q-exact} preserves a termwise sign. The identities include $n=0$ with the usual empty-object conventions.
+
+Normalize by
+\begin{equation}\label{eq:normalizations}
+ L_n=\frac{n!^2}{4\rho^{2n+2}},\qquad
+ Q(n)=\frac{q_n}{L_n},\qquad
+ H_j(N)=\frac{f_{N,j}}{N!/(2^{j+1}\rho^{N+1})}.
+\end{equation}
+The simple pole of $(2-e^z)^{-1}$ at $z=\rho$ gives, after adjusting finitely many indices,
+\begin{equation}\label{eq:fbound}
+ f_{N,0}\leq C N!\rho^{-N-1}\qquad(N\geq0)
+\end{equation}
+for an absolute constant $C$. This also follows from the next lemma with $j=0$.
+
+\section{Uniform generalized Fubini asymptotics}
+\label{sec:poles}
+The extraction must remain uniform for logarithmically growing $j$. A fixed-$j$ asymptotic would not justify the later sums. Define the analytic germ
+\begin{equation}\label{eq:A}
+ A(x)=\frac{\rho x}{1-e^{-\rho x}},\qquad
+ a_s(j)=\coef{x}{s}A(x)^{j+1}.
+\end{equation}
+Here $A(0)=1$, and
+\[
+ A(x)=1+\frac{\rho x}{2}+\frac{\rho^2x^2}{12}+O(x^4).
+\]
+For fixed $s$, the coefficient $a_s(j)$ is a polynomial in $j$ and $\rho$ with rational coefficients and degree at most $s$ in $j$. Indeed, expand $(1+(A-1))^{j+1}$, retaining only the finitely many powers up to $s$.
+
+\begin{lemma}\label{lem:pole}
+Fix $C_0>0$. Uniformly for integers $0\leq j\leq C_0\log n$ and $N=n+O(\log n)$,
+\begin{equation}\label{eq:pole-full}
+ H_j(N)=\sum_{s=0}^j a_s(j)\frac{\fall{j}{s}}{\fall{N}{s}}
+                 +O\!\left(e^{-\eta n+O((\log n)^2)}\right)
+\end{equation}
+for some $\eta>0$. For every fixed $M$, the same sum truncated at $s\leq M$ has error
+\begin{equation}\label{eq:pole-error}
+ O_M\!\left(n^{-M-1}(j+1)^{2M+2}\right)
+       +O\!\left(e^{-\eta n+O((\log n)^2)}\right).
+\end{equation}
+In particular, $H_j(N)=O(1)$ in this range and
+\begin{equation}\label{eq:pole-first}
+ H_j(N)=1+\frac{\rho j(j+1)}{2N}
+                 +O\!\left(n^{-2}(j+1)^4\right).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose a fixed radius $R$ with
+\[
+ \rho<R<\sqrt{\rho^2+4\pi^2}.
+\]
+The poles of $F(z)=(2-e^z)^{-1}$ are $\rho+2\pi i\ell$, $\ell\in\mathbb Z$, so only $\rho$ lies inside $|z|=R$. Near $\rho$, with $x=1-z/\rho$,
+\[
+ F(z)^{j+1}=(2\rho)^{-j-1}x^{-j-1}A(x)^{j+1}.
+\]
+Its principal part is therefore
+\[
+ (2\rho)^{-j-1}\sum_{s=0}^j a_s(j)(1-z/\rho)^{-j-1+s}.
+\]
+Deform the coefficient contour for $\coef{z}{N-j}F(z)^{j+1}$ to $|z|=R$. Extracting the residue contribution from this principal part and multiplying by $j!(N-j)!$ gives the normalized coefficient ratio
+\[
+ \frac{\binom{N-s}{j-s}}{\binom Nj}
+       =\frac{\fall{j}{s}}{\fall{N}{s}}.
+\]
+On the outer circle, the coefficient integral is at most $R^{-N+j}C_R^{j+1}$ in absolute value. After the normalization in \eqref{eq:normalizations}, all remaining factorial and exponential factors contribute at most $\exp(O(j\log n+j\log(j+1)))$. Since $(\rho/R)^N$ decays exponentially, this proves \eqref{eq:pole-full}. This argument uses contour deformation; no global analytic subtraction of the principal part is needed.
+
+For the finite principal-part tail, take a small fixed $\delta>0$. On $|x|=\delta/(j+1)$, the bound $\log A(x)=O(x)$ gives $|A(x)^{j+1}|\leq C$. Cauchy's bound yields
+\[
+ |a_s(j)|\leq C\bigl(C(j+1)\bigr)^s.
+\]
+For $s\leq j$ and large $n$,
+\[
+ \left|\frac{\fall{j}{s}}{\fall{N}{s}}\right|
+ \leq\left(\frac{j}{N-j}\right)^s.
+\]
+The terms $s\geq M+1$ are thus bounded by a geometric tail with ratio $O((j+1)^2/n)$, proving \eqref{eq:pole-error}. If $j<M$, the extra falling-factorial terms vanish. Every retained reciprocal falling factorial can be expanded to a fixed order with a polynomial bound in $j$ and the $O(\log n)$ shift of $N$. Finally $a_1(j)=\rho(j+1)/2$, giving \eqref{eq:pole-first}.
+\end{proof}
+
+\section{The signed inner defect expansion}
+\label{sec:inner}
+Set
+\begin{equation}\label{eq:inner-defs}
+ J(z)=\frac{2(\cosh z-1)}{z^2},\quad
+ C_d(c)=\coef{z}{d}J(z)^c,\quad
+ R(n,c,d)=n^d\frac{\fall{n}{2c+d}}{\fall{n}{c+d}^2}.
+\end{equation}
+The removable value is $J(0)=1$. All coefficients of $J$ are nonnegative, $C_d(c)=0$ for odd $d$, $C_0(c)=1$ and $C_2(c)=c/12$. For each fixed even $d$, $C_d(c)$ is a rational polynomial in $c$ of degree at most $d/2$.
+
+With $d=t-2c$, formula \eqref{eq:h-exact} becomes
+\[
+ h_{2c+d,c}=(-1)^c(2c+d)!C_d(c).
+\]
+Substitution into \eqref{eq:q-exact}, followed by the normalizations, gives the exact identity
+\begin{equation}\label{eq:inner-exact}
+ Q(n)=\sum_{\substack{c,d\geq0\\2c+d\leq n}}
+ \frac{(-\rho^2)^c}{c!}\frac{\rho^{2d}C_d(c)}{n^d}
+ \E_{j\sim\Bin(c,1/2)}
+ \left[R(n,c,d)H_j(n-c-d)H_{c-j}(n-c-d)\right].
+\end{equation}
+The $2^{-c}\binom cj$ in the binomial expectation is precisely the factor left by the two normalized Fubini quantities and $j!(c-j)!$.
+
+\subsection{A positive bound for all large signed defects}
+We first discard large $t=2c+d$ using the original exact sum, before invoking any local expansion. If $2c\leq t\leq n$, then
+\begin{equation}\label{eq:factorial-bound}
+ \binom nt\left(\frac{(n-t+c)!}{n!}\right)^2\leq\frac1{t!}.
+\end{equation}
+Indeed, $2(n-t+c)\leq(n-t)+n$, and monotonicity and log-convexity of factorials give $(n-t+c)!^2\leq(n-t)!n!$. Using $f_{N,j}\leq f_{N,0}$, \eqref{eq:fbound}, and $0<\rho<1$, the absolute normalized contribution of a given $(t,c)$ in \eqref{eq:q-exact} is at most
+\begin{equation}\label{eq:inner-majorant}
+ C\frac{2^c|h_{t,c}|}{c!t!}.
+\end{equation}
+For every fixed $u>0$, the positive series has the entire generating function
+\begin{equation}\label{eq:entire-tail}
+ \sum_{t,c\geq0}\frac{2^c|h_{t,c}|}{c!t!}u^t
+        =\exp\bigl(4(\cosh u-1)\bigr)<\infty.
+\end{equation}
+Hence for $u>1$ the sum over $t>T$ is $O_u(u^{-T})$. Given $M$, choose $T=C_M\log n$ sufficiently large to make this $O_M(n^{-M-2})$. Derivatives of the entire generating function show that every fixed polynomial weight in $t,c$ is summable as well. This is an absolute estimate for a signed sum; dominated convergence alone would not supply the required all-orders error.
+
+\subsection{Local expansion and the remaining defect tail}
+On $t\leq T$ the convergent logarithmic expansion is
+\begin{equation}\label{eq:Rlog}
+ \log R(n,c,d)
+ =-\sum_{a\geq1}\frac{S_a(2c+d)-2S_a(c+d)}{a n^a}.
+\end{equation}
+It follows by expanding $\log(1-i/n)$ in each falling factorial. Uniformly in this range, $R(n,c,d)\leq\exp(Ct^2/n)=O(1)$. Truncating \eqref{eq:Rlog} and exponentiating to a fixed order gives an error bounded by $n^{-M-1}$ times a fixed polynomial in $t$, times $\exp(Ct^2/n)$.
+
+Lemma~\ref{lem:pole} also gives $H_j(n-c-d)=O(1)$ uniformly here. Terms with $d>M$ in \eqref{eq:inner-exact} are bounded by $O_M(n^{-M-1})$, because
+\begin{equation}\label{eq:second-majorant}
+ \sum_{c,d\geq0}\frac{\rho^{2c+2d}}{c!}C_d(c)
+             =\exp\bigl(\rho^2 J(\rho^2)\bigr)<\infty.
+\end{equation}
+The argument of $J$ is $\rho^2$. More generally
+\[
+ \sum_{c,d\geq0}\frac{\rho^{2c+2d}}{c!}C_d(c)v^c u^d
+             =\exp\bigl(v\rho^2J(u\rho^2)\bigr)
+\]
+is entire in both variables. Thus polynomial weights in $c,d$ are summable.
+
+For each even $d\leq M$, substitute the finite expansions from Lemma~\ref{lem:pole} and \eqref{eq:Rlog} into \eqref{eq:inner-exact}. Every coefficient is a polynomial in $c,j,\rho$, and the error has a summable polynomial weight times $n^{-M-1}$. At each retained $d$, extending the coefficient sums from $c\leq(T-d)/2$ to all $c\geq0$ adds a superfactorially decaying tail: a polynomial times $\rho^{2c}/c!$ beyond a constant multiple of $\log n$ is smaller than every fixed inverse power of $n$.
+
+\begin{proposition}\label{prop:inner}
+For every fixed $M$,
+\begin{equation}\label{eq:Qexp}
+ Q(n)=e^{-\rho^2}\left(\sum_{m=0}^M D_m(\rho)n^{-m}
+                               +O_M(n^{-M-1})\right),
+\end{equation}
+where $D_m(r)\in\Q[r]$ and $D_0=1$.
+\end{proposition}
+\begin{proof}
+All error estimates have just been established. To evaluate coefficients, convert powers of $j$ to falling factorials and use
+\[
+ \E_{j\sim\Bin(c,1/2)}\fall{j}{a}=2^{-a}\fall{c}{a}.
+\]
+The remaining polynomial in $c$ is summed against $\mu^c/c!$ with $\mu=-\rho^2$. For a nonnegative integer $a$, the Touchard identity is
+\begin{equation}\label{eq:touchard}
+ e^{-\mu}\sum_{c\geq0}\frac{\mu^c c^a}{c!}
+ =T_a(\mu)=\sum_{b=0}^a\stirtwo{a}{b}\mu^b.
+\end{equation}
+It is an entire identity in $\mu$, so it also holds at the negative argument. Absolute summability justifies its use; a ``signed Poisson average'' is an algebraic functional, not a probability distribution. Equation~\eqref{eq:Qexp} follows.
+\end{proof}
+
+\section{The outer Stirling transform}
+\label{sec:outer}
+The exact normalized form of \eqref{eq:p-exact} is
+\begin{equation}\label{eq:outer-exact}
+ \frac{p_n}{n!/(4\rho^{2n+2})}
+ =\sum_{k=0}^n\rho^{2k}
+          \frac{\stirone{n}{n-k}}{\fall{n}{k}^2}\,Q(n-k).
+\end{equation}
+We need both a global tail estimate and a local expansion that handles all omitted cycle types together.
+
+\subsection{Global tail of the outer defect}
+The Stirling number is an elementary symmetric polynomial in $0,1,\ldots,n-1$. Consequently
+\[
+ \stirone{n}{n-k}\leq\frac{n^{2k}}{2^k k!}.
+\]
+By \eqref{eq:qbound} and \eqref{eq:fbound}, $Q(m)$ is bounded uniformly in $m$. For $n\geq k\geq1$, the product
+\[
+ \frac{n^{2k}(n-k)!^2}{n!^2}
+   =\prod_{i=0}^{k-1}\left(\frac{n}{n-i}\right)^2
+\]
+is decreasing in $n$ and at most $k^{2k}/(k!)^2$. Thus the absolute $k$th summand of \eqref{eq:outer-exact} is bounded by
+\begin{equation}\label{eq:outer-majorant}
+ C\frac{\rho^{2k}k^{2k}}{2^k(k!)^3},
+\end{equation}
+with the $k=0$ factor interpreted as $1$. This sequence has every exponential moment: multiplying by $u^k$ for any fixed $u>0$ leaves a convergent series, by Stirling's formula. As in Section~\ref{sec:inner}, terms $k>C_M\log n$ can therefore be discarded at any prescribed fixed inverse-power order.
+
+\subsection{Cycle configurations and their joint remainder}
+For $k\leq C_M\log n$, choose multiplicities $m_\ell$ of cycles of lengths $\ell\geq3$, and put
+\begin{equation}\label{eq:cycle-defects}
+ a=\sum_{\ell\geq3}(\ell-2)m_\ell,\qquad
+ L=\sum_{\ell\geq3}(\ell-1)m_\ell,\qquad m_2=k-L.
+\end{equation}
+The total number of moved labels is $2k-a$. The usual permutation cycle count yields
+\begin{equation}\label{eq:cycle-exact}
+ \frac{2^k k!\stirone{n}{n-k}}{\fall{n}{k}^2}
+ =\sum_{\substack{(m_\ell)_{\ell\geq3}\\ L\leq k}}
+ \frac{2^L\fall{k}{L}}{\prod_{\ell\geq3}\ell^{m_\ell}m_\ell!}\cdot
+ \frac{\fall{n}{2k-a}}{\fall{n}{k}^2}.
+\end{equation}
+Here $2k<n$ for large $n$, so every listed support is feasible.
+
+For a fixed configuration with $a\leq M$, the ratio is
+\begin{equation}\label{eq:outer-ratio}
+ \frac{\fall{n}{2k-a}}{\fall{n}{k}^2}
+ =n^{-a}\exp\left(-\sum_{b\geq1}
+              \frac{S_b(2k-a)-2S_b(k)}{b n^b}\right).
+\end{equation}
+There are finitely many such configurations, all with $\ell\leq M+2$. Their fixed-order expansions have polynomial coefficients in $k$. Although a polynomial formula may be extended to all integers $k\geq0$, the factor $\fall{k}{L}$ vanishes whenever $k<L$, so that this extension inserts no false contribution.
+
+To bound all configurations with $a>M$ simultaneously, the factorial ratio in \eqref{eq:cycle-exact} is at most
+\[
+ n^{-a}\exp(Ck^2/n),
+\]
+and the combinatorial prefactor is at most
+\[
+ \prod_{\ell\geq3}\frac{(2^{\ell-1}k^{\ell-1}/\ell)^{m_\ell}}{m_\ell!}.
+\]
+Use $\ell-1\leq2(\ell-2)$ and $2^{\ell-1}\leq4^{\ell-2}$. With $x=4k^2/n$, the sum at a given total excess $a$ is bounded by the degree-$a$ term in
+\begin{equation}\label{eq:long-cycle-majorant}
+ \exp\left(\sum_{h\geq1}\frac{x^h}{h+2}\right).
+\end{equation}
+This power series has nonnegative coefficients and is analytic for $|x|<1$. For $0\leq x\leq1/4$, its tail after degree $M$ is $O_M(x^{M+1})$. Therefore the omitted part of \eqref{eq:cycle-exact} is
+\begin{equation}\label{eq:cycle-tail}
+ O_M\!\left(n^{-M-1}(k+1)^{2M+2}e^{Ck^2/n}\right).
+\end{equation}
+This joint bound is necessary; expansions of each fixed cycle type alone would not control the infinite family of omitted types.
+
+It follows that there are polynomials $U_m(k)\in\Q[k]$ such that, uniformly in the logarithmic range,
+\begin{equation}\label{eq:Uexp}
+ \frac{2^k k!\stirone{n}{n-k}}{\fall{n}{k}^2}
+ =\sum_{m=0}^M U_m(k)n^{-m}
+     +O_M\!\left(n^{-M-1}(1+k)^{A_M}\right)
+\end{equation}
+for some finite exponent $A_M$. The first three are
+\begin{equation}\label{eq:U012}
+ U_0(k)=1,\quad U_1(k)=\frac{k(k-4)}3,\quad
+ U_2(k)=\frac{k^2(k-5)(k-1)}{18}.
+\end{equation}
+
+\subsection{Completion of the main proof}
+Insert \eqref{eq:Qexp} and \eqref{eq:Uexp} into \eqref{eq:outer-exact}, and expand
+\[
+ (n-k)^{-i}=n^{-i}(1-k/n)^{-i}
+\]
+to the required fixed order. All resulting error bounds are $n^{-M-1}$ times polynomial weights in $k$, summable against $\lambda^k/k!$ with $\lambda=\rho^2/2$. Extending the coefficient sums to all $k\geq0$ adds another superfactorial tail. Their moments are $e^\lambda T_a(\lambda)$. The prefactors combine as
+\[
+ e^{-\rho^2}e^{\rho^2/2}=e^{-\rho^2/2},
+\]
+giving \eqref{eq:main} and $B_m\in\Q[r]$. Expansions at successive truncation orders are compatible; alternatively uniqueness of a Poincar\'e expansion shows the polynomials evaluated at $\rho$ do not depend on the chosen cutoff. The finite algebraic construction below chooses a single compatible polynomial $B_m(r)$ at every order. This proves the all-orders part of Theorem~\ref{thm:main}.
+
+\section{Finite coefficient computation and the first corrections}
+\label{sec:algorithm}
+The proof is constructive. Here is a precise finite algorithm using the formal variable $t=1/n$ and polynomial arithmetic over $\Q[r]$. All series in this section are truncated modulo $t^{M+1}$.
+
+For a polynomial $P(c)$ define the moment functional
+\[
+ \mathcal T_\mu(P)=\sum_{a\geq0}[c^a]P(c)\,T_a(\mu).
+\]
+The sum is finite. Define $\mathcal B_c$ on polynomials in $j$ by
+\[
+ \mathcal B_c(\fall{j}{a})=2^{-a}\fall{c}{a}.
+\]
+For each even $0\leq d\leq M$, compute $C_d(c)$ from $J$ and form
+\begin{align*}
+ \mathcal R_{c,d}(t)
+ &=\exp\left(-\sum_{a=1}^M
+       \frac{S_a(2c+d)-2S_a(c+d)}a t^a\right),\\
+ \mathcal H_j(c+d;t)
+ &=\sum_{s=0}^M a_s(j)\fall{j}{s}t^s
+      \prod_{i=0}^{s-1}(1-(c+d+i)t)^{-1}.
+\end{align*}
+Then the inner coefficients satisfy
+\begin{equation}\label{eq:algorithm-D}
+ \sum_{m=0}^M D_m(r)t^m
+ =\mathcal T_{-r^2}\!\left[
+ \sum_{\substack{0\leq d\leq M\\d\text{ even}}}
+ r^{2d}C_d(c)t^d\,
+ \mathcal B_c\!\left(\mathcal R_{c,d}(t)
+ \mathcal H_j(c+d;t)\mathcal H_{c-j}(c+d;t)\right)\right].
+\end{equation}
+Here $a_s(j)$ is computed with the formal parameter $r$ in place of $\rho$.
+
+For the outer coefficients, enumerate the finitely many configurations with $a\leq M$ in \eqref{eq:cycle-defects} and compute
+\begin{equation}\label{eq:algorithm-U}
+ \sum_{m=0}^M U_m(k)t^m
+ =\sum_{a\leq M}\ 
+ \frac{2^L\fall{k}{L}t^a}{\prod_{\ell\geq3}\ell^{m_\ell}m_\ell!}
+ \exp\left(-\sum_{b=1}^M
+       \frac{S_b(2k-a)-2S_b(k)}b t^b\right),
+\end{equation}
+where the sum is over those configurations. Finally,
+\begin{equation}\label{eq:algorithm-B}
+ B_m(r)=\mathcal T_{r^2/2}\!\left(
+ [t^m]\left\{\left(\sum_{a=0}^M U_a(k)t^a\right)
+ \left(\sum_{i=0}^M D_i(r)t^i(1-kt)^{-i}\right)\right\}\right),
+\end{equation}
+now interpreting the moment functional on the variable $k$. Equations \eqref{eq:algorithm-D}--\eqref{eq:algorithm-B} are an arbitrary-fixed-order algorithm, not a fit to numerical sequence values.
+
+\subsection{A direct derivation of the first correction}
+Only $d=0$ is needed through order $n^{-1}$. From \eqref{eq:Rlog},
+\[
+ R(n,c,0)=1-\frac{c^2}{n}+O(n^{-2}\operatorname{poly}(c)).
+\]
+The binomial average of the two Fubini corrections is
+\[
+ \frac{\rho}{2}\E\bigl(j(j+1)+(c-j)(c-j+1)\bigr)
+       =\frac{\rho(c^2+3c)}4.
+\]
+Taking signed moments at $\mu=-\rho^2$ gives
+\begin{align}
+ D_1(\rho)&=-(\mu^2+\mu)+\frac\rho4(\mu^2+4\mu)\notag\\
+           &=\rho^2-\rho^3-\rho^4+\frac{\rho^5}4.\label{eq:D1}
+\end{align}
+For the outer term, the all-transposition configuration contributes $-k^2$ at first order, and one $3$-cycle contributes $4k(k-1)/3$. Their sum is $U_1(k)=k(k-4)/3$. At $\lambda=\rho^2/2$,
+\[
+ \mathcal T_\lambda(U_1)=\frac{\lambda^2-3\lambda}{3}
+             =\frac{\rho^4}{12}-\frac{\rho^2}{2}.
+\]
+Adding this to \eqref{eq:D1} gives \eqref{eq:B1}. Finally $2/3<\rho<1$ and
+\[
+ \frac{B_1(\rho)}{\rho^2}
+   =\frac12-\rho-\rho^2\left(\frac{11}{12}-\frac\rho4\right)
+   <\frac12-\frac23<0.
+\]
+For completeness, $\log2>2/3$ follows by integrating the strictly convex function $1/x$ on $[1,2]$ and comparing with its midpoint value; $\log2<1$ follows from $1/x<1$ for $1<x\leq2$. Thus $c>0$ is proved without a numerical sign test.
+
+\subsection{Second and higher corrections}
+At second order the first nonzero extra inner defect is $d=2$, contributing $r^4c/12$ before the signed moment. The exact algorithm gives
+\[
+ D_2(r)=\frac{r^4}{96}\left(3r^6-24r^5+16r^4+192r^3
+                         -128r^2-240r+96\right).
+\]
+Including the shift from $Q(n-k)$, the second outer expression is
+\[
+ D_2+D_1(k+U_1(k))+U_2(k).
+\]
+Applying $\mathcal T_{r^2/2}$ gives \eqref{eq:B2}. Appendix~\ref{app:coeff} records $B_3,B_4$; all $D_m,U_m,B_m$ through order four are in the accompanying exact JSON data. Numerically,
+\begin{align*}
+ B_1(\rho)&=-0.26439631095836993468\ldots,\\
+ B_2(\rho)&=-0.18273691798917761621\ldots,\\
+ B_3(\rho)&=-0.32435913595799104018\ldots,\\
+ B_4(\rho)&=-0.69063295859309244992\ldots.
+\end{align*}
+These first signs do not establish a sign pattern for all coefficients.
+
+\section{Smooth inverse models and integer thresholds}
+\label{sec:inverse}
+For each fixed $M$, let
+\begin{equation}\label{eq:FM}
+ P_M(t)=\sum_{m=0}^M B_m(\rho)t^m,\qquad
+ F_M(x)=K\Gamma(x+1)\rho^{-2x}P_M(1/x).
+\end{equation}
+These functions are positive for all sufficiently large real $x$, and
+\begin{equation}\label{eq:logderivative}
+ \frac{d}{dx}\log F_M(x)
+ =\psi(x+1)-2\log\rho-\frac{P_M'(1/x)}{x^2P_M(1/x)}
+ =\log(x/\rho^2)+O(1/x)>0.
+\end{equation}
+Here $\psi$ is the digamma function. Let $x_M(y)$ denote their eventual increasing inverse. This definition makes no choice of a canonical smooth interpolation of the discrete sequence.
+
+\begin{proposition}\label{prop:inverse-stability}
+As $y\to\infty$,
+\begin{equation}\label{eq:inverse-stability}
+ x_M(y)-x_{M+1}(y)
+       =O_M\!\left(\frac{x_M(y)^{-M-1}}{\log x_M(y)}\right).
+\end{equation}
+The same error scale holds between $x_M$ and the inverse of any positive, eventually strictly increasing smooth interpolation that differs from $F_M(x)$ by a relative $O(x^{-M-1})$.
+\end{proposition}
+\begin{proof}
+The two logarithms differ by $O(x^{-M-1})$. By \eqref{eq:logderivative}, changing $x$ near the model root changes $\log F_M$ at a rate comparable to $\log x$. Apply the mean value theorem to $\log F_M$ at the two roots. For the interpolation statement, monotonicity is an explicit hypothesis ensuring an eventual inverse; relative value closeness alone would not ensure it.
+\end{proof}
+
+\subsection{Lambert W seed and explicit corrections}
+Let $Y=\log y$ and use the positive real branch of the Lambert $W$ function. Define
+\begin{equation}\label{eq:seed}
+ w=W\!\left(\frac{Y}{e\rho^2}\right),\qquad
+ x_0=\frac{Y}{w},\qquad D=1+w,
+\end{equation}
+so $x_0(\log x_0-1-2\log\rho)=Y$. Set
+\[
+ A=\tfrac12\log(2\pi x_0)+\log K,\qquad
+ C_1=\tfrac1{12}+B_1(\rho).
+\]
+For every model retaining $B_1$, that is $M\geq1$, its inverse begins
+\begin{equation}\label{eq:inverse-explicit}
+ x_M(y)=x_0-\frac AD
+ -\frac{A^2/(2D^2)-A/(2D)+C_1}{x_0D}
+ +O_M\!\left(\frac1{x_0^2\log x_0}\right).
+\end{equation}
+To verify this, write the logarithm of \eqref{eq:FM} using Stirling's expansion:
+\[
+ \log F_M(x)=x(\log x-1-2\log\rho)
+   +\tfrac12\log(2\pi x)+\log K+\frac{C_1}{x}+O_M(x^{-2}).
+\]
+The first two derivatives of the leading term at $x_0$ are $D$ and $1/x_0$. Put $x=x_0+\delta$. The first cancellation is $D\delta+A=0$, giving $\delta_0=-A/D=O(1)$. The next residual is
+\[
+ \frac1{x_0}\left(\frac{\delta_0^2}{2}+
+                           \frac{\delta_0}{2}+C_1\right),
+\]
+which gives the second correction displayed in \eqref{eq:inverse-explicit}. The remaining logarithmic error is $O_M(x_0^{-2})$; division by a derivative comparable to $\log x_0$ gives the stated inverse error.
+
+Arbitrary fixed orders follow by retaining more of the forward coefficients, the Stirling series for $\log\Gamma$, and ordinary Taylor series. The next proposition is also an explicit all-fixed-order numerical inversion algorithm with an error estimate.
+
+\begin{proposition}\label{prop:newton}
+Let $G_M(x)=\log F_M(x)-Y$ and start $X_0=x_0$. Define
+\begin{equation}\label{eq:newton}
+ X_{s+1}=X_s-\frac{G_M(X_s)}{G_M'(X_s)}.
+\end{equation}
+For every fixed $M$ and $s$, these iterates are well defined for all sufficiently large $Y$, remain within an $O(1)$ neighborhood of $x_0$, and satisfy
+\begin{equation}\label{eq:newton-error}
+ X_s-x_M(y)=O_{M,s}\!\left((x_0\log x_0)^{-(2^s-1)}\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The root is $x_0+O(1)$ by the preceding logarithmic expansion. In a fixed neighborhood containing it, $G_M'(x)\asymp\log x_0$ and $G_M''(x)=O(1/x_0)$. For $e_s=X_s-x_M$, Taylor's theorem gives
+\[
+ |e_{s+1}|\leq \frac{C|e_s|^2}{x_0\log x_0}.
+\]
+Starting with $e_0=O(1)$, induction gives the exponent $2^s-1$. It also keeps every iterate in the neighborhood for large $Y$.
+\end{proof}
+Choosing $2^s-1\geq M+1$ makes the numerical iteration error no larger than the forward-model uncertainty in \eqref{eq:inverse-stability}. Expanding these same Newton iterates symbolically yields inverse expansions to any prescribed fixed order. An asymptotic existence statement is distinct from an effective finite-$y$ certificate: this manuscript does not extract global numerical constants or starting points for these bounds.
+
+\subsection{The integer threshold requires a rounding margin}
+Define the actual sequence threshold
+\[
+ N(y)=\min\{n\geq0:p_n\geq y\}.
+\]
+For $n\geq1$, $p_{n+1}>p_n$. Indeed, embed each parabolic double coset of $S_n$ into $S_{n+1}$ as a subset fixing $n+1$, using the same generators and embedded representative. The images remain distinct standard parabolic double cosets. The singleton consisting of $(n,n+1)$ is an additional coset. Alternatively, eventual monotonicity follows from Theorem~\ref{thm:main}.
+
+\begin{corollary}\label{cor:threshold}
+For each fixed $M$, there is a constant $C_M>0$ such that for all sufficiently large $y$,
+\begin{equation}\label{eq:bracket}
+ \left\lceil x_M(y)-\varepsilon_M(y)\right\rceil
+ \leq N(y)\leq
+ \left\lceil x_M(y)+\varepsilon_M(y)\right\rceil,
+ \qquad
+ \varepsilon_M(y)=\frac{C_M x_M(y)^{-M-1}}{\log x_M(y)}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:main} gives $\log p_n-\log F_M(n)=O_M(n^{-M-1})$. On a bounded neighborhood of $x_M(y)$, the derivative of $\log F_M$ is comparable to $\log x_M(y)$. Choose $C_M$ strictly larger than the required error bound. Then every integer below $x_M-\varepsilon_M$ has $p_n<y$, and every integer at or above $x_M+\varepsilon_M$ has $p_n\geq y$. Monotonicity and the fact that finite initial indices cannot reach sufficiently large $y$ complete the assertion.
+\end{proof}
+If the two ceiling endpoints agree, their common value is the threshold. Without an effective value of $C_M$ and starting point, \eqref{eq:bracket} is an asymptotic theorem, not a ready finite-input rounding test. An unconditional claim $N(y)=\lceil x_M(y)\rceil$ would be false. The reproducible example $y=p_{25}+1$ has true threshold $26$ but $\lceil x_1(y)\rceil=25$: a one-unit change in $y$ is much smaller than the forward approximation error.
+
+\section{Exact and numerical checks}
+\label{sec:checks}
+The accompanying programs use integer or exact rational arithmetic for enumeration and coefficient generation. Floating-point arithmetic is reserved for numerical evaluation and inverse diagnostics. These checks test implementation, normalization and model identification; the remainder proofs above do not depend on numerical agreement.
+
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item The finite exact formula \eqref{eq:p-exact}--\eqref{eq:h-exact} reproduces every OEIS b-file value for $1\leq n\leq400$. The package includes the locally recomputed $p_n,q_n$ and the separately attributed numerical reference data.
+\item Independent enumeration of actual subsets $W_IwW_J$ in $S_n$, by connected components under the left and right adjacent-transposition actions, gives $1,3,19,167,1791$ for $1\leq n\leq5$. Presentations are deduplicated as sets of permutations. This checks that the finite formula is applied to the intended distinct-subset problem.
+\item Exact cycle-count checks verify 259 cases with $n\leq40$ and small defects $k$. The symbolic coefficient generator uses exact rational operations and reproduces all displayed $B_m$, $m\leq4$.
+\item Numerical residuals use 90-digit arithmetic; inverse checks use 150 digits, sufficient to distinguish $p_{25}$ from $p_{25}+1$. No floating-point fit is used to infer any coefficient.
+\end{enumerate}
+
+For $R_n=p_n/(Kn!\rho^{-2n})$, define
+\[
+ E_m(n)=n^{m+1}\left(R_n-\sum_{i=0}^mB_i(\rho)n^{-i}\right).
+\]
+The theorem predicts $E_m(n)\to B_{m+1}(\rho)$. The recorded values are:
+\begin{center}
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $E_0(n)$ & $E_1(n)$ & $E_2(n)$ & $E_3(n)$\\
+\midrule
+100 & $-0.2662568242$ & $-0.1860513214$ & $-0.3314403386$ & $-0.7081202633$\\
+200 & $-0.2653181919$ & $-0.1843761950$ & $-0.3278554103$ & $-0.6992548747$\\
+400 & $-0.2648551914$ & $-0.1835521590$ & $-0.3260964214$ & $-0.6949141602$\\
+\midrule
+Limit & $-0.2643963110$ & $-0.1827369180$ & $-0.3243591360$ & $-0.6906329586$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $y=p_{100}$, the first three Newton updates for $F_4$ reduce the seed error from approximately $0.4356$ to $1.7600\cdot10^{-4}$, $2.8841\cdot10^{-11}$ and $7.7446\cdot10^{-25}$. This illustrates rapid model inversion, while the distinction between that model and the exact discrete threshold remains in force.
+
+\section{Literature boundary and further questions}
+\label{sec:literature}
+The exact counting formula, weak-order framework and leading constant are from Browning \cite{browning}. The neighboring Stirling-transform approach to table enumeration also appears in Kot\v{e}\v{s}ovec's work on A120733 \cite{kotesovec}; neither Stirling transforms nor general singularity analysis is introduced here as a new technique.
+
+The bounded search checked the sequence identifier, the paper title and correction-conjecture wording, later double-coset work, and Browning's current publication listing \cite{writings}. In particular, Schwob's later paper \cite{schwob} studies prescribed subgroup pairs and aggregates including A321652 and A178718; it does not identify equal double-coset subsets across all presentations in the way required for A260700. Diaconis and Simper \cite{diaconis} study distributions for specified subgroup pairs, including contingency tables with prescribed margins. Renteln \cite{renteln} studies Sylow subgroup double quotients. Munarini, Poneti and Rinaldi \cite{matrix} develop matrix compositions, including fixed-row regimes. These distinctions prevent transferring a neighboring asymptotic result to the present sequence without further work.
+
+Several precise questions remain beyond the theorem proved here.
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item \textbf{Effective bounds.} Track explicit constants in the contour estimates, logarithmic cutoffs and Taylor remainders to obtain certified finite-$n$ bounds and computable integer-threshold brackets. This would turn the present asymptotic inverse result into a usable certified algorithm.
+\item \textbf{Growth of correction coefficients.} Determine the growth and eventual sign behavior of $B_m(\rho)$ as $m\to\infty$. The four negative corrections computed here do not settle either question. Such estimates are prerequisites for any justified order growing with $n$.
+\item \textbf{Exponentially small contributions.} The Fubini generating function has additional poles at $\rho\pm2\pi i,\ldots$, but tracking their contributions through both defect sums requires new uniform analysis. Their existence alone does not prove a transseries, optimal truncation formula, or exponentially improved error for $p_n$.
+\item \textbf{Combinatorial meaning of corrections.} The proof separates singleton restrictions, even-block excesses and nontransposition cycles. A direct combinatorial or probabilistic explanation for the cancellations producing the coefficients could clarify the negative first correction and suggest extensions to other Coxeter types.
+\item \textbf{Other parabolic families.} An analogous all-orders theorem for distinct parabolic coset subsets in another Coxeter family first requires the correct duplicate-identification enumeration. Results for prescribed subgroup pairs cannot substitute for that input.
+\end{enumerate}
+None of these further questions is claimed solved by the present calculations.
+
+\appendix
+\section{Third and fourth correction polynomials}
+\label{app:coeff}
+The finite exact algorithm gives
+\begin{align*}
+ B_3(r)=\frac{r^4}{51840}\bigl(&135r^{11}-1485r^{10}+2745r^9+21335r^8\\
+ &-73620r^7-58680r^6+318600r^5-17172r^4\\
+ &-203040r^3+2160r^2-129600r+47520\bigr),
+\end{align*}
+\begin{align*}
+ B_4(r)=\frac{r^4}{2488320}\bigl(&405r^{16}-5940r^{15}+19710r^{14}+110220r^{13}\\
+ &-791515r^{12}+281640r^{11}+7063176r^{10}\\
+ &-10232784r^9-17774352r^8+28817856r^7\\
+ &+4124736r^6+16329600r^5+969408r^4\\
+ &-38776320r^3+6531840r^2-6220800r+2280960\bigr).
+\end{align*}
+The JSON coefficient file stores rational expressions for $D_0,\ldots,D_4$, $U_0,\ldots,U_4$ and $B_0,\ldots,B_4$, together with decimal evaluations. The symbolic expressions, rather than the rounded evaluations, are authoritative.
+
+\section{Reproducing the computations}
+\label{app:reproduction}
+The companion ZIP is self-contained for computational replay after installing Python 3, SymPy and mpmath. It contains this editable \LaTeX{} source, the PDF, original programs, reference numerical data with source attribution, generated exact data, and a SHA-256 manifest. It contains no full third-party papers. From the extracted package root, run:
+\begin{lstlisting}
+python -m pip install -r requirements.txt
+python code/replay.py --quick
+python code/replay.py --full
+\end{lstlisting}
+The quick replay checks exact enumeration through $n=40$ and recomputes coefficients through order four; the full replay recomputes all values through $n=400$. Both enumerate the actual coset subsets through $n=5$, check the cycle identity, verify exact coefficient expressions, and run inverse diagnostics. Generated replay outputs go to a separate directory and are compared with the supplied data. To request another fixed coefficient order, run:
+\begin{lstlisting}
+python code/coefficients.py 5 --output-dir replay-order5
+\end{lstlisting}
+Runtime and expression size grow with the requested order. There is no claim that arbitrary orders have a bounded practical runtime. To rebuild the article, use a standard \LaTeX{} installation with the listed common packages:
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+Numerical checks do not determine rigorous finite-input values for the constants in $O_M(\cdot)$. The machine-readable results expressly label the inverse examples as diagnostics.
+
+\begin{thebibliography}{10}
+\bibitem{browning} Thomas Browning, \emph{Counting parabolic double cosets in symmetric groups}, Electronic Journal of Combinatorics \textbf{28}(3) (2021), P3.40. \href{https://doi.org/10.37236/9988}{doi:10.37236/9988}. Primary preprint: \url{https://arxiv.org/abs/2010.13256}. Exact identities cited using arXiv numbering; the higher-order conjecture is journal Conjecture 41.
+\bibitem{oeis} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A260700, distinct parabolic double cosets in $S_n$. \url{https://oeis.org/A260700}. Numerical reference: \url{https://oeis.org/A260700/b260700.txt}. Accessed 2 October 2026.
+\bibitem{tables} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A120733, nonnegative matrices of total sum $n$ without zero rows or columns. \url{https://oeis.org/A120733}. Accessed 2 October 2026.
+\bibitem{kotesovec} V\'aclav Kot\v{e}\v{s}ovec, \emph{Asymptotics of the sequence A120733} (2015). \url{https://oeis.org/A120733/a120733.pdf}.
+\bibitem{schwob} Ludovic Schwob, \emph{On the enumeration of double cosets and self-inverse double cosets}, Advances in Applied Mathematics (2026), article 102982. \href{https://doi.org/10.1016/j.aam.2025.102982}{doi:10.1016/j.aam.2025.102982}. Preprint: \url{https://arxiv.org/abs/2506.04007}.
+\bibitem{diaconis} Persi Diaconis and Mackenzie Simper, \emph{Statistical enumeration of groups by double cosets}, Journal of Algebra \textbf{607} (2022), 214--246. \href{https://doi.org/10.1016/j.jalgebra.2021.05.010}{doi:10.1016/j.jalgebra.2021.05.010}.
+\bibitem{renteln} Paul Renteln, \emph{Counting Sylow double cosets in the symmetric group}, Discrete Mathematics \textbf{347}(10) (2024), 114109. \href{https://doi.org/10.1016/j.disc.2024.114109}{doi:10.1016/j.disc.2024.114109}.
+\bibitem{matrix} Emanuele Munarini, Maddalena Poneti and Simone Rinaldi, \emph{Matrix compositions}, Journal of Integer Sequences \textbf{12} (2009), Article 09.4.8. \url{https://cs.uwaterloo.ca/journals/JIS/VOL12/Rinaldi/rinaldi.html}.
+\bibitem{writings} Thomas Browning, \emph{Mathematical writings}. \url{https://math.berkeley.edu/~tb65536/math.html}. Accessed 2 October 2026; used only as bounded negative evidence in the literature search.
+\end{thebibliography}
+\end{document}
