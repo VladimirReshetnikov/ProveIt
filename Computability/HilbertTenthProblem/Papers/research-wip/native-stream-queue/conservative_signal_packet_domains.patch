@@ -1,0 +1,85 @@
+--- a/code/quadratic_packet.py
++++ b/code/quadratic_packet.py
+@@ -12,11 +12,32 @@
+ from pathlib import Path
+ import json
+ 
++def exact_vector(values, dimension=None, *, natural=False):
++    values=tuple(values)
++    if (dimension is not None and len(values)!=dimension
++        or any(type(v) is not int or natural and v<0 for v in values)):
++        raise ValueError('Expected exact integer vector of the declared dimension')
++    return values
++
++
++def packet_interface(branches, x, y):
++    branches=tuple(branches);x=exact_vector(x,natural=True)
++    y=exact_vector(y,len(x),natural=True)
++    if not x or any(type(b) is not Branch or len(b.matrix)!=len(x) for b in branches):
++        raise ValueError('Branch and endpoint dimensions must agree and be positive')
++    return branches,x,y
++
++
+ @dataclass(frozen=True)
+ class Guard:
+     kind: str                     # eq, gt, ge
+     coeff: tuple[int, ...]
++    def __post_init__(self):
++        if self.kind not in ('eq','gt','ge'):
++            raise ValueError('Unknown guard kind')
++        object.__setattr__(self,'coeff',exact_vector(self.coeff))
+     def value(self, x):
++        x=exact_vector(x,len(self.coeff))
+         return sum(a*b for a,b in zip(self.coeff, x))
+     def holds(self, x):
+         z=self.value(x)
+@@ -28,9 +49,22 @@
+     guards: tuple[Guard,...]
+     mode: tuple[str,...]=()
+     tied_edges: tuple[int,...]=()
++    def __post_init__(self):
++        matrix=tuple(tuple(row) for row in self.matrix);d=len(matrix)
++        if d<1:raise ValueError('Branch dimension must be positive')
++        matrix=tuple(exact_vector(row,d) for row in matrix)
++        guards=tuple(self.guards)
++        if any(type(g) is not Guard or len(g.coeff)!=d for g in guards):
++            raise ValueError('Guard dimension must match the matrix')
++        object.__setattr__(self,'matrix',matrix)
++        object.__setattr__(self,'guards',guards)
++        object.__setattr__(self,'mode',tuple(self.mode))
++        object.__setattr__(self,'tied_edges',tuple(self.tied_edges))
+     def output(self, x):
++        x=exact_vector(x,len(self.matrix))
+         return tuple(sum(a*b for a,b in zip(row,x)) for row in self.matrix)
+     def holds(self, x):
++        x=exact_vector(x,len(self.matrix),natural=True)
+         return all(g.holds(x) for g in self.guards)
+ 
+ 
+@@ -109,6 +143,7 @@
+ 
+ 
+ def canonical_witness(branches,x,y):
++    branches,x,y=packet_interface(branches,x,y)
+     active=[r for r,b in enumerate(branches) if b.holds(x)]
+     if len(active)>1:raise ValueError('Branch guards are not disjoint')
+     if not active or branches[active[0]].output(x)!=tuple(y):return None
+@@ -123,10 +158,15 @@
+ 
+ def packet_terms(branches,x,y,witness):
+     """Return every affine residual and every complementarity product."""
++    branches,x,y=packet_interface(branches,x,y)
+     selectors,copies,slacks=witness;d=len(x);B=len(branches)
+-    assert len(selectors)==len(copies)==len(slacks)==B
+-    assert all(isinstance(v,int) and v>=0 for v in selectors)
+-    assert all(len(z)==d and all(isinstance(v,int) and v>=0 for v in z) for z in copies)
++    selectors=exact_vector(selectors,B,natural=True)
++    copies=tuple(exact_vector(z,d,natural=True) for z in copies)
++    slacks=tuple(tuple(row) for row in slacks)
++    if len(copies)!=B or len(slacks)!=B:
++        raise ValueError('One copy and slack row required per branch')
++    slacks=tuple(exact_vector(row,sum(g.kind!='eq' for g in b.guards),natural=True)
++                 for row,b in zip(slacks,branches))
+     residuals=[sum(selectors)-1]
+     residuals.extend(x[i]-sum(z[i] for z in copies) for i in range(d))
+     residuals.extend(y[i]-sum(branches[r].output(copies[r])[i] for r in range(B)) for i in range(d))
