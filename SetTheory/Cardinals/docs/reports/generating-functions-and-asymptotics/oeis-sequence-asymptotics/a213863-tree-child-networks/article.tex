@@ -1,0 +1,406 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,booktabs,enumitem,xurl}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{bookmark}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{2em}\allowdisplaybreaks[2]
+\newcommand{\Ai}{\operatorname{Ai}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ip}[2]{\langle#1,#2\rangle}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ee}{\mathrm e}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\hypersetup{pdftitle={Airy asymptotics for fixed combining degree tree child networks},pdfauthor={},pdfsubject={Positive amplitude, all finite orders and inversion for maximal reticulation}}
+\title{Airy asymptotics for fixed combining degree\\tree child networks}
+\author{}\date{2 October 2026}
+\begin{document}\maketitle\vspace{-1.3em}
+\begin{abstract}
+For every fixed integer $d\ge2$, we prove a positive limiting amplitude and expansions to every finite Airy order for maximally reticulated $d$-combining tree-child networks. A shifted partial-sum recurrence gives an exact contractive Jacobi reduction with a finite-product edge weight. Global spectral confinement, a parity singular gap, summable adjoint drift and Catalan boundary smoothing establish the positive limit. Polynomial--Airy profiles and a zero-limit bootstrap transfer every finite formal order to the exact counts. We provide ternary-combining coefficients and Lambert $W$ inversion. For total counts at $d\ge3$, only the leading equivalent is claimed. The amplitude has a convergent exact definition; numerical diagnostics are not certified enclosures. This research report includes reproducible algebra and an independent mathematical audit, but does not claim external peer review or publication.
+\end{abstract}
+\begingroup\small\setlength{\parskip}{0pt}
+\makeatletter\renewcommand\l@section{\@dottedtocline{1}{0em}{1.5em}}\makeatother
+\tableofcontents\endgroup\newpage
+\section{Results and enumeration context}
+Fix an integer $d\ge2$. Every implicit constant may depend on $d$ and the requested finite order; no uniformity for unbounded $d$ is asserted. Set
+\begin{align}
+ \Lambda&=\frac{(d+1)^{d-1}}{(d-1)!},& \Gamma&=4\Lambda,
+ &c&=\frac{2(d-1)}{d+1},\\
+ \ell&=c^{2/3}z,&\eta&=\frac{(d-1)^2}{2(d+1)},
+ &\rho&=-\eta-\frac12,\\
+ B&=3z\left(\frac{d-1}{d+1}\right)^{2/3},&&
+ \alpha=-\frac{d(3d-1)}{2(d+1)},
+\end{align}
+where $z=-2.338107410459767\ldots$ is the largest negative zero of $\Ai$.
+Let $T_{n,k}^{(d)}$ count tree-child networks with $n$ labeled leaves and $k$ reticulations under the root convention of Chang et al.\ \cite{Chang}. Their exact maximal-word sequence is denoted here by $a_n$, with $a_0=1$.
+
+\begin{theorem}\label{main}
+There is $\gamma_d>0$ and uniquely constructible $C_{d,r}\in\mathbb Q[B]$ such that, for each integer $M\ge0$,
+\begin{equation}\label{forward}
+ a_n=\gamma_d(n!)^{d-1}\Gamma^n\ee^{Bn^{1/3}}n^\rho
+ \left(1+\sum_{r=1}^M C_{d,r}n^{-r/3}
+       +O_{d,M}(n^{-(M+1)/3})\right).
+\end{equation}
+Moreover $T_{n,n-1}^{(d)}=n!a_{n-1}$ has an expansion to every finite order with leading term
+\begin{equation}\label{maximal}
+ T_{n,n-1}^{(d)}\sim\frac{\gamma_d}{\Gamma}(n!)^d\Gamma^n
+          \ee^{Bn^{1/3}}n^\alpha.
+\end{equation}
+For $d\ge3$, the total count $T_n^{(d)}$ has the same leading equivalent as \eqref{maximal}.
+\end{theorem}
+The all-orders assertion means a family of finite Poincar\'e expansions. Neither convergence of the infinite series nor higher-order total-count corrections is claimed.
+
+Chang et al., Theorem 1.8, prove the corresponding two-sided $\Theta$ scale. Their Corollary 1.11 gives $T_n^{(d)}/T_{n,n-1}^{(d)}\to1$ for $d\ge3$; Remark 1.12 explicitly notes that their method does not give the leading equivalent. The lower half of their two-sided bound is the only external enumeration-asymptotic input to our positive-amplitude argument.
+
+\section{Exact recurrence and index conversion}
+Proposition 3.7 and equation (17) of \cite{Chang} give
+\begin{equation}\label{brec}
+ b_{n,m}=\binom{dn+m-2}{d-1}\sum_{j=1}^m b_{n-1,j},
+ \quad b_{1,1}=1,\quad a_n=\sum_{m=1}^n b_{n,m},
+\end{equation}
+where entries outside $1\le m\le n$ vanish. Their Theorem 3.4 gives $T_{n,n-1}^{(d)}=n!a_{n-1}$. Define
+\[
+ q_{n,m}=\frac{b_{n,m}}{\binom{dn+m-2}{d-1}},\qquad
+ A_{n,k}=q_{n+1,k+1}\quad(0\le k\le n).
+\]
+Subtracting adjacent partial sums proves exactly
+\begin{align}
+ A_{n,k}&=A_{n,k-1}+\binom{dn+k-1}{d-1}A_{n-1,k},
+           &&1\le k\le n,\label{Arec}\\
+ A_{n,0}&=\prod_{i=1}^n\binom{di-1}{d-1},& A_{0,0}&=1,
+ \qquad A_{n-1,n}=0.\notag
+\end{align}
+The right boundary is explicitly
+\[
+ q_{n+1,n+1}=q_{n+1,n}=\sum_{j=1}^n b_{n,j}=a_n,
+ \qquad A_{n,n}=A_{n,n-1}=a_n\quad(n\ge1).
+\]
+At $d=2$, this is the A213863 triangle. For $d=3$, the diagonal starts
+\[
+ 1,1,25,2305,482825,183500625,111174597625,98734811198625.
+\]
+No $d\ge3$ OEIS accession is asserted.
+
+The source uses the leaf variable $v$. Put $v=n+1$ in its two-sided bound and divide by $(n+1)!$. The factorial becomes $(n!)^{d-1}(n+1)^{d-1}$, the exponential base acquires the constant $\Gamma$, and
+$\exp(B((n+1)^{1/3}-n^{1/3}))\to1$. Since
+\[
+ \alpha+d-1=-\frac{d^2-d+2}{2(d+1)}=\rho,
+\]
+both halves of the source bound give
+\begin{equation}\label{theta}
+ a_n=\Theta_d\left((n!)^{d-1}\Gamma^n\ee^{Bn^{1/3}}n^\rho\right).
+\end{equation}
+
+\section{Exact contractive Jacobi reduction}
+Put $N=n+k$, $j=n-k$ and
+\[
+ D_N(j)=\frac{A_{n,k}}{\Lambda^n(n!)^{d-1}}
+ \quad(0\le j\le N,\ j\equiv N\pmod2),
+\]
+with zero elsewhere. Equation \eqref{Arec} gives
+\begin{align}
+ D_N(j)&=D_{N-1}(j+1)+p_N(j)D_{N-1}(j-1),\label{Drec}\\
+ p_N(j)&=\prod_{h=1}^{d-1}
+       \left(1-\frac{2(j+h)}{(d+1)(N+j)}\right),\qquad D_0=e_0.
+ \label{productp}
+\end{align}
+The downward term is absent at $j=0$. The upper physical edge $j=N$ reproduces the initial column, so there is no omitted boundary source. Also
+\begin{equation}\label{recover}
+ a_n=\Lambda^n(n!)^{d-1}D_{2n}(0).
+\end{equation}
+For $N,j\ge1$, every factor of \eqref{productp} lies in $[1/(d+1),1]$. The lower bound is equivalent to $dN+(d-2)j\ge2h$, which holds for $h\le d-1$. Each factor has positive $N$ derivative
+\[
+ \frac{2(j+h)}{(d+1)(N+j)^2}.
+\]
+Define $G_N(0)=1$ and $G_N(j)^2=\prod_{k=1}^j p_N(k)$. On $0,\ldots,N+1$, let $S_N$ have edges $b_{N,j}=\sqrt{p_N(j)}$, and zero-pad outside. For $N\ge2$ put $Q_N(j)=G_{N-1}(j)/G_N(j)$ there and zero outside; let $Q_1$ project onto $e_0$. Then
+\begin{equation}\label{cocycle}
+ v_N=G_N^{-1}D_N=S_NQ_Nv_{N-1}.
+\end{equation}
+The product formula defines $G$ at the artificial endpoints as well. Monotonicity makes $Q_N$ a positive contraction. If $J$ is half-line adjacency and $\lambda_N$ the Perron eigenvalue of $S_N$, then
+\begin{equation}\label{dom}
+ 0\le S_NQ_N\le J\text{ entrywise},\qquad
+ \norm{S_NQ_N}\le\lambda_N.
+\end{equation}
+For $N=1$, $p_1(1)=1/\Lambda$, and \eqref{cocycle} gives $v_1=e_1/\sqrt\Lambda$, as required.
+
+\section{Global Airy spectrum and parity gap}
+Let $\eps=N^{-1/3}$, $x_j=(j+1)\eps$, and
+$F(x)=\Ai(z+c^{1/3}x)$. Then $F(0)=0$ and $F''=(cx+\ell)F$. With $b_j=b_{N,j}$, the exact form is
+\begin{align}\label{form}
+ \ip v{(2I-S_N)v}={}&\sum_{j=0}^N b_{j+1}|v_{j+1}-v_j|^2
+ +(2-b_1)|v_0|^2\notag\\
+ &+\sum_{j=1}^N(2-b_j-b_{j+1})|v_j|^2
+ +(2-b_{N+1})|v_{N+1}|^2.
+\end{align}
+Split $2-b_1=1+(1-b_1)$ to retain the fictitious Dirichlet interval. The fixed-$d$ edge lower bound and
+\[
+ 1-b_j\ge\frac{1-p_N(j)}2\ge\frac{j+1}{(d+1)(N+j)}
+\]
+give scaled confinement
+\[
+ \eps^{-2}\ip v{(2I-S_N)v}\ge c_d\sum_jx_j|v_j|^2
+\]
+for a positive constant $c_d$ and all sufficiently large $N$.
+Interpolate with nodal values $\eps^{-1/2}v_j$ and zero at $x=0$. Bounded scaled energy gives local $H^1$ bounds, and confinement makes the $L^2$ tails uniformly small. Thus local compactness gives global strong $L^2$ compactness. The first interval forces zero trace. On compact scaled windows the edges tend to one and
+$\eps^{-2}(2-b_j-b_{j+1})\to cx_j$ uniformly. The limiting lower form is
+\[
+ \int_0^\infty(|f'|^2+cx|f|^2)\,dx.
+\]
+Sampling compactly supported smooth Dirichlet functions supplies the reverse upper bound. The min--max principle therefore gives convergence of each fixed low eigenvalue to that of $-\partial_x^2+cx$. If $z=z_1>z_2>\cdots$ are the Airy zeros,
+\begin{equation}\label{gap}
+ \lambda_N=2+\ell\eps^2+o(\eps^2),\qquad
+ \lambda_N-\lambda_{2,N}\sim c^{2/3}(z-z_2)\eps^2.
+\end{equation}
+The spectrum is symmetric under parity. Hence a full spectral-radius gap would be false. Between opposite parity subspaces, singular values are the positive eigenvalues; removal of the Perron singular direction leaves norm at most $\lambda_N(1-a_dN^{-2/3})$.
+
+\section{Finite quasimodes and quantitative drift}
+The exact scaled left edge is
+\begin{equation}\label{scaledp}
+ p_-(\eps,x)=\prod_{h=1}^{d-1}
+ \left(1-\frac{2(x\eps^2+(h-1)\eps^3)}{(d+1)(1+x\eps^2-\eps^3)}\right),
+ \qquad p_+(\eps,x)=p_-(\eps,x+\eps).
+\end{equation}
+Writing $k_0=(d-1)(d-2)/(d+1)$ gives
+$p_-=1-cx\eps^2-k_0\eps^3+O(\eps^4)$. Thus
+\begin{align*}
+ \sqrt{p_-}F(x-\eps)+\sqrt{p_+}F(x+\eps)
+ =2F+\eps^2(F''-cxF)-(c/2+k_0)\eps^3F+O(\eps^4).
+\end{align*}
+Since $c/2+k_0=2\eta$, the next scalar coefficient is $-2\eta$.
+
+All finite frozen corrections exist by a polynomial inverse. For $L=\partial_x^2-cx-\ell$,
+\begin{equation}\label{airyalg}
+ L(PF+QF')=(P''+2(cx+\ell)Q'+cQ)F+(2P'+Q'')F'.
+\end{equation}
+To solve $L(PF+QF')=RF+TF'$, eliminate $P'=(T-Q'')/2$:
+\begin{equation}\label{triangular}
+ -Q'''/2+2(cx+\ell)Q'+cQ=R-T'/2.
+\end{equation}
+On polynomials, this is triangular with nonzero diagonal $c(2j+1)$ on $x^j$. A new scalar eigenvalue coefficient changes $Q$ by a nonzero constant; choose it to force $Q(0)=0$. The integration constant of $P$ then forces $P(0)+Q'(0)=0$. These are the boundary and derivative-normalization conditions.
+
+Construct the frozen profiles through degree five and cut off smoothly at $j\le2\sqrt N$, identically one up to $\sqrt N$. Taylor remainders have a fixed polynomial--Airy envelope times $\eps^6$; cutoff errors are exponentially small in $N^{1/4}$. After sample normalization, the residual is $O_d(\eps^6)$. The global gap identifies the eigenvalue and bounds the eigenvector error by $O_d(\eps^4)$. In particular,
+\begin{align}
+ \lambda_N&=2+\ell N^{-2/3}-2\eta N^{-1}+O_d(N^{-4/3}),\label{lambda}\\
+ \norm{\psi_N-\psi_{N-1}}&=O_d(N^{-1}),\qquad
+ \psi_N(0)=\sqrt c\,N^{-1/2}(1+O_d(N^{-1/3})).\label{drift}
+\end{align}
+For the first drift bound, normalized explicit samples have continuous-$N$ derivative $O(N^{-1})$, and the quasimode errors are smaller. The endpoint follows from
+\begin{equation}\label{normF}
+ I:=\int_0^\infty F^2=c^{-1/3}\Ai'(z)^2,
+ \qquad F'(0)/\sqrt I=\sqrt c,
+\end{equation}
+choosing the positive sign. The pointwise error is bounded by the smaller global quasimode error.
+
+Logarithmic differentiation of \eqref{productp} and summation over the gauge product give, on the cutoff support,
+\[
+ 0\le1-Q_N(j)\le C_d\frac{j(j+d)}{N^2},\qquad
+ -\log G_N(j)\le C_d\frac{j(j+d)}N.
+\]
+Consequently, by polynomial--Airy moments and contraction on the approximation error,
+\begin{equation}\label{Qdrift}
+ \norm{(I-Q_N)\psi_N}+\norm{(I-Q_N)\psi_{N-1}}=O_d(N^{-4/3}).
+\end{equation}
+The inverse gauge is uniformly bounded on the cutoff support.
+
+\section{A convergent positive scalar amplitude}
+Set
+\[
+ P_N=\prod_{i=1}^N\lambda_i,\quad u_N=v_N/P_N,\quad
+ M_N=S_NQ_N/\lambda_N.
+\]
+Then $u_N=M_Nu_{N-1}$ and $\norm{u_N}\le1$. The Perron vector has equal mass on both parities, by taking inner products in each part of $S_N\psi_N=\lambda_N\psi_N$. Let $g_N,h_N$ be $\sqrt2$ times its restrictions to current and preceding parity respectively. They have unit norm and $S_Nh_N=\lambda_Ng_N$. From \eqref{drift}--\eqref{Qdrift},
+\begin{align}
+ \norm{h_N-g_{N-1}}&=O(N^{-1}),\notag\\
+ \norm{(I-Q_N)h_N}+\norm{(I-Q_N)g_{N-1}}&=O(N^{-4/3}).\label{paritydrift}
+\end{align}
+Write $u_N=A_Ng_N+w_N$, $w_N\perp g_N$. The parity singular gap gives
+\[
+ \norm{w_N}\le(1-a_dN^{-2/3})\norm{w_{N-1}}+C_dN^{-1},
+ \qquad \norm{w_N}=O_d(N^{-1/3}).
+\]
+We use throughout the elementary convolution bound
+\begin{equation}\label{conv}
+ \sum_{k=N_0}^N k^{-r}\prod_{i=k+1}^N(1-a_di^{-2/3})
+ =O_{d,r}(N^{2/3-r}).
+\end{equation}
+Split at $N/2$: the first portion is exponentially small in $N^{1/3}$ times a polynomial, and the later portion is a geometric sum of scale $N^{2/3}$.
+
+The exact adjoint identity $M_N^*g_N=Q_Nh_N$ gives
+\[
+ A_N=t_NA_{N-1}+\ip{Q_Nh_N-g_{N-1}}{w_{N-1}},\qquad
+ t_N=\ip{Q_Nh_N}{g_{N-1}}.
+\]
+The unit-vector identity $\ip hg=1-\norm{h-g}^2/2$ and \eqref{paritydrift} give $t_N=1+O(N^{-4/3})$, while the other inner-product factor has norm $O(N^{-1})$. Hence
+\begin{equation}\label{Alimit}
+ A_N=A_\infty+O_d(N^{-1/3}),\qquad A_\infty\ge0.
+\end{equation}
+Nonnegativity follows from positivity of $u_N$ and $g_N$. Strict positivity requires boundary recovery.
+
+For $U(N,k)=M_N\cdots M_{k+1}$, entrywise domination and the Catalan identity give, for $0\le L\le N^{2/3}$,
+\begin{align}
+ \norm{e_0^TU(N,N-L)}_2
+ &\le\frac{\norm{e_0^TJ^L}_2}{\lambda_{N-L+1}\cdots\lambda_N}
+ \le C_d(L+1)^{-3/4}.\label{smoothing}
+\end{align}
+Indeed $\norm{e_0^TJ^L}_2^2=(J^{2L})_{0,0}=\binom{2L}L/(L+1)$, and \eqref{lambda} bounds the denominator correction by $\exp(C_dLN^{-2/3})$. The exact $w_N$ recurrence has forcing $A_{N-1}M_Ng_{N-1}-A_Ng_N$ of norm $O(N^{-1})$. Duhamel over $L=\lfloor N^{2/3}\rfloor$ yields
+\begin{equation}\label{wend}
+ |w_N(0)|\le CL^{-3/4}N^{-1/3}
+       +CN^{-1}\sum_{l<L}(l+1)^{-3/4}=O_d(N^{-5/6}).
+\end{equation}
+Summing \eqref{lambda} logarithmically gives
+\begin{equation}\label{PN}
+ P_N=\kappa_d2^N\exp((3\ell/2)N^{1/3})N^{-\eta}
+        (1+O_d(N^{-1/3})),\qquad\kappa_d>0,
+\end{equation}
+with convergent definition
+\begin{equation}\label{kappa}
+ \log\kappa_d=\frac\ell2\zeta(2/3)-\eta\gamma_E
+ +\sum_{N=1}^\infty\left[\log(\lambda_N/2)-\frac\ell2N^{-2/3}+\frac\eta N\right].
+\end{equation}
+For even $N$, combining \eqref{drift}, \eqref{Alimit}, \eqref{wend} and \eqref{PN} gives
+\begin{align}\label{endpoint}
+ D_N(0)={}&\kappa_d\sqrt{2c}\,A_\infty
+       2^N\ee^{(3\ell/2)N^{1/3}}N^\rho\notag\\
+ &+O_d\left(2^N\ee^{(3\ell/2)N^{1/3}}N^{\rho-1/3}\right).
+\end{align}
+If $A_\infty=0$, this contradicts the lower half of \eqref{theta} through \eqref{recover}. Therefore
+\begin{equation}\label{gamma}
+ \gamma_d=\kappa_dA_\infty\sqrt c\,2^{-\eta}>0.
+\end{equation}
+This proves a convergent amplitude with a relative $O_d(n^{-1/3})$ error; no numerical fit is used.
+
+\section{Every finite formal order}
+Return to \eqref{Drec} and seek
+\begin{equation}\label{formal}
+ Z_N(j)=H_N\sum_{r\ge0}\eps^rF_r(x_j),\qquad
+ \frac{H_N}{H_{N-1}}\sim2\left(1+\sum_{m\ge2}s_m\eps^m\right),
+\end{equation}
+where $F_0=F$ and $F_r(0)=F_r'(0)=0$ for $r\ge1$. At the preceding time the arguments are $(x\pm\eps)(1-\eps^3)^{-1/3}$, and profile powers acquire $(1-\eps^3)^{-r/3}$. At degree $m$ the new equation has the form
+\[
+ LF_{m-2}-2s_mF+R_mF+T_mF'=0,
+\]
+where $R_m,T_m$ are known polynomials. The same inverse \eqref{triangular} determines uniquely the new scalar and normalized profile. In particular
+\[
+ s_2=\ell/2,\qquad s_3=-\eta-1/6.
+\]
+For an independent check, the order-three forcing is $-k_0F+(c+2/3)xF'$. Since $\int xFF'=-\frac12\int F^2$, solvability gives $2s_3=-k_0-c/2-1/3$.
+
+Choose a genuine finite scalar expression
+\begin{equation}\label{H}
+ \log H_N=N\log2+\frac{3\ell}2N^{1/3}
+       +(-\eta-1/6)\log N+\sum_{r=1}^J h_rN^{-r/3}.
+\end{equation}
+The coefficient $h_r$ enters logarithmic one-step matching at degree $\eps^{r+3}$ with nonzero coefficient $-r/3$. Its multiplicative leading constant is fixed to one at every truncation. Thus all scalar orders exist without logarithmic resonances.
+
+For any prescribed $p>1$, retain enough terms, cut off at $j\le2\sqrt N$, and \emph{restrict $Z_N$ to $j\equiv N\pmod2$}, setting the other coordinates to zero. Put $z_N=G_N^{-1}Z_N/P_N$. Then
+\begin{equation}\label{residual}
+ \norm{z_N}=O_d(1),\qquad r_N:=z_N-M_Nz_{N-1}=O_{d,p}(N^{-p})
+ \quad\hbox{in }\ell^2.
+\end{equation}
+Here the inverse gauge is bounded on the cutoff support and, on fixed scaled windows, is $1+O_d(N^{-1/3}(1+x)^2)$. Finite Taylor remainders for the product coefficient, dilation and profiles have fixed polynomial--Airy envelopes times the required inverse power. The cutoff error is exponentially small in $N^{1/4}$. Finally
+\[
+ H_N/P_N\sim\kappa_d^{-1}N^{-1/6},
+\]
+which cancels the parity sample norm $N^{1/6}\sqrt{I/2}$. The same estimates give the common positive limit
+\begin{equation}\label{q0}
+ \ip{g_N}{z_N}\longrightarrow q_0:=\kappa_d^{-1}\sqrt{I/2}.
+\end{equation}
+
+\section{Transfer to the exact sequence}
+Put $C=A_\infty/q_0$ and $e_N=u_N-Cz_N$. Then $e_N=M_Ne_{N-1}-Cr_N$, and its ground projection tends to zero. Write $e_N=\alpha_Ng_N+W_N$, $W_N\perp g_N$. The already proved gap and adjoint estimates give
+\begin{align}\label{boot}
+ \norm{W_N}&\le(1-a_dN^{-2/3})\norm{W_{N-1}}
+        +CN^{-1}|\alpha_{N-1}|+CN^{-p},\notag\\
+ |\alpha_N-\alpha_{N-1}|&\le CN^{-4/3}|\alpha_{N-1}|
+        +CN^{-1}\norm{W_{N-1}}+CN^{-p}.
+\end{align}
+If $\alpha_N=O(N^{-q})$ for $q\ge0$, convolution gives
+$\norm{W_N}=O(N^{-q-1/3}+N^{2/3-p})$. Summing the second inequality backwards from its zero limit improves this to
+\[
+ \alpha_N=O(N^{-q-1/3}+N^{1-p}).
+\]
+Starting at $q=0$, finitely many repetitions imply $\norm{e_N}=O(N^{1-p})$ and $\norm{W_N}=O(N^{2/3-p})$. Apply Duhamel and \eqref{smoothing} over $L=\lfloor N^{2/3}\rfloor$:
+\[
+ |e_N(0)|\le CL^{-3/4}N^{1-p}
+       +CN^{-p}\sum_{l<L}(l+1)^{-3/4}=O(N^{1/2-p}).
+\]
+The leading normalized endpoint is of order $N^{-1/2}$, so the relative error is $O(N^{1-p})$. Since $p$ is arbitrary, every finite formal order transfers to the exact sequence with the same positive multiplier. This proves \eqref{forward}.
+
+For the coefficient field, use $t=(N/2)^{-1/3}$ and $y=(j+1)t$. Then
+\[
+ \widetilde F''=\left(\frac{d-1}{d+1}y+\frac B3\right)\widetilde F.
+\]
+The transformed recurrence, polynomial inverses, time dilation and scalar matching have rational coefficients for fixed integer $d$. The endpoint derivative cancels after normalization. Hence every $C_{d,r}$ lies in $\mathbb Q[B]$.
+
+\section{Network counts and ternary coefficients}
+The exact leaf shift $T_{n,n-1}^{(d)}=n!a_{n-1}$ transfers every finite order in \eqref{forward}. The factorial shift contributes $n^{-(d-1)}$, the base contributes $\Gamma^{-1}$, and the remaining factors have finite Taylor expansions. Therefore
+\begin{equation}\label{netall}
+ T_{n,n-1}^{(d)}=\frac{\gamma_d}{\Gamma}(n!)^d\Gamma^n\ee^{Bn^{1/3}}n^\alpha
+ \left(1+\sum_{r=1}^M E_{d,r}n^{-r/3}+O_{d,M}(n^{-(M+1)/3})\right).
+\end{equation}
+For $d\ge3$, the published ratio $T_n^{(d)}/T_{n,n-1}^{(d)}\to1$ gives only the leading total-count equivalent. A separate uniform deficit argument is needed for higher total-count corrections; the binary Pons--Batle identity is not imported here.
+
+For $d=3$, $\Gamma=32$, $\rho=-1$ and $B=3z/2^{2/3}$. The exact polynomial recursion through degree six yields
+\begin{align}\label{ternary}
+ \log\frac{a_n}{\gamma_3(n!)^2 32^n\ee^{Bn^{1/3}}n^{-1}}
+ ={}&\frac{B^2}{162}n^{-1/3}+\frac{11B}{324}n^{-2/3}\notag\\
+ &+\left(\frac{4B^3}{6561}-\frac3{16}\right)n^{-1}+O(n^{-4/3}).
+\end{align}
+In time $N$, these logarithmic coefficients are $\ell^2/36$, $11\ell/108$ and $(16\ell^3-729)/1944$. At $d=2$, replay instead gives $\ell^2/4$, $0$ and $-2/9$, agreeing with the binary report \cite{Binary}. These are symbolic identities, not fitted coefficients.
+
+\section{Asymptotic inversion}
+For either $a_n$ or $T_{n,n-1}^{(d)}$, let the factorial power be $p=d-1$ or $d$, the polynomial exponent be $r=\rho$ or $\alpha$, and the amplitude be $A=\gamma_d$ or $\gamma_d/\Gamma$. Stirling's expansion gives the logarithmic smooth model
+\begin{equation}\label{loginv}
+ f(x)=px\log x+(\log\Gamma-p)x+Bx^{1/3}
+ +(r+p/2)\log x+K+\sum_{j\ge1}L_jx^{-j/3},
+\end{equation}
+where $K=\log A+(p/2)\log(2\pi)$, and Stirling terms are included in $L_j$. This denotes any required finite smooth truncation, not a differentiated unknown remainder of the discrete sequence.
+
+For $y=\log(\text{target})$, put $a=\log\Gamma-p$. The seed
+\begin{equation}\label{seed}
+ x_0=\frac{y/p}{W_0(\ee^{a/p}y/p)}
+\end{equation}
+solves $px_0\log x_0+ax_0=y$ exactly. Since $f'(x)=p\log x+\log\Gamma+o(1)>0$, Newton or Taylor reversion gives every finite inverse order. The first correction is
+\begin{equation}\label{inverse}
+ x=x_0-\frac{Bx_0^{1/3}+(r+p/2)\log x_0+K}
+                     {p\log x_0+\log\Gamma}
+       +O_d\left(\frac{x_0^{-1/3}}{\log x_0}\right).
+\end{equation}
+The error includes the first omitted Airy term; quadratic reversion is smaller by logarithmic factors. More explicitly, increasing the smooth-model truncation and iterating Newton's map makes its root error smaller than any prescribed finite algebraic order. A logarithmic truncation error $O(x^{-R/3})$ produces a root uncertainty $O(x^{-R/3}/\log x)$ by the mean-value theorem applied to that explicit smooth model.
+
+The sequence is strictly increasing eventually: for the diagonal, \eqref{Arec} gives
+$a_n\ge\binom{(d+1)n-2}{d-1}a_{n-1}$, and the network leaf factor preserves this property. Integer thresholds must be bracketed using neighboring integer counts or rigorous upper and lower approximations. An unconditional ceiling rule is invalid when an approximate root lies within its uncertainty of an integer. The present amplitude existence proof does not supply certified amplitude digits or remainder constants, so \eqref{inverse} alone is not a certified numerical threshold algorithm.
+
+\section{Source status and remaining questions}
+The source scope was checked against the 2024 primary paper, the 2026-listed Chang dissertation \cite{Thesis}, and recent binary enumeration discussions already screened with the binary report. The dissertation repeats the missing-equivalent issue (Remark 35, printed page 137). A bounded search found no later fixed-$d$ amplitude proof. This is a bounded negative finding, not a certification of universal novelty.
+
+A213863 is the $d=2$ specialization. Phrase and initial-term searches did not verify a $d\ge3$ OEIS accession; none is assigned or submitted here. Natural remaining questions are:
+\begin{enumerate}[itemsep=2pt]
+\item Establishing uniform deficit expansions that transfer every finite order to total counts for $d\ge3$.
+\item Obtaining certified numerical enclosures for $\gamma_d$ and effective remainder constants.
+\item Quantifying a joint regime in which $d$ grows with $n$; the present proof fixes $d$.
+\item Studying exponentially small corrections beyond finite Poincar\'e orders.
+\end{enumerate}
+The exact shifted recurrence and the factorwise contractive gauge are essential. The proof has not presumed that the original two-weight recurrence automatically inherits the binary argument.
+
+\section{Reproducibility and review record}
+The companion archive contains the editable TeX, PDF, the expanded proof notes, exact recurrence and gauge checks, symbolic coefficient scripts and outputs, ordinary floating diagnostics, an independent audit, and a file manifest with SHA-256 hashes. No frozen binary artifact is changed.
+
+Exact finite checks compare the source $b$ array with the shifted $A$ array for $d=2,\ldots,8$; an independent source-array calculation checks the normalized recurrence through $N=20$ for $d=2,\ldots,12$. Symbolic replay at $d=2,3$ cancels the frozen and nonautonomous residuals through degree six. These finite checks verify the identities and implementation, while the analytic argument establishes the asymptotic conclusions.
+
+The independent mathematical audit found no substantive analytic obstruction and requested two precision repairs: the boundary identity in Section 2 and explicit occupied-parity restriction in Section 7. Both are incorporated here, together with the interpolation normalization. The audit is included in readable form. Independent review here does not mean external peer review, publication, formal proof-assistant verification, or numerical certification.
+
+\begin{thebibliography}{9}\small\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+\bibitem{Chang} Y.-S. Chang, M. Fuchs, H. Liu, M. Wallner and G.-R. Yu,
+\emph{Enumerative and Distributional Results for $d$-combining Tree-Child Networks},
+Advances in Applied Mathematics 157 (2024), 102704.
+\href{https://web.math.nccu.edu.tw/mfuchs/d-comb-journal-rev.pdf}{Primary manuscript, 25 March 2024}.
+\bibitem{Thesis} Y.-S. Chang, dissertation on enumeration and probability for classes of phylogenetic networks, title page 31 December 2025, listed by the author as 2026.
+\href{https://web.math.nccu.edu.tw/mfuchs/Yu-Sheng-Thesis.pdf}{Primary dissertation PDF}.
+\bibitem{Binary} \emph{Asymptotic amplitude and all orders for tree child networks}, accompanying binary A213863 research report, 2 October 2026. Used for comparison and algebraic regression; the present analytic argument is self-contained.
+\end{thebibliography}
+\end{document}

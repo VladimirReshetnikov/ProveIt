@@ -1,0 +1,688 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,citecolor=blue!50!black]{hyperref}
+\usepackage{xcolor,enumitem,fancyhdr}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Takeuchi asymptotics}\fancyhead[R]{\small Research manuscript}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\hypersetup{pdftitle={Asymptotic expansions of the Takeuchi numbers},pdfsubject={Fixed order expansions, quantitative recurrence stability, and inverse bounds},pdfauthor={Research report}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Pp}{\mathbb P}
+\newcommand{\TV}{\operatorname{TV}}\newcommand{\Pois}{\operatorname{Pois}}
+\newcommand{\cS}{\mathcal S}\newcommand{\cL}{\mathcal L}
+\newcommand{\dd}{\mathrm d}\newcommand{\OO}{\mathcal O}
+\allowdisplaybreaks[2]
+\title{Asymptotic expansions of the Takeuchi numbers}
+\author{A self contained research report}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+An exact positive recurrence is used to construct and justify finite asymptotic models for the Takeuchi numbers. The first three logarithmic correction functions are explicit rational functions. A descending-chain coupling transfers a summable local recurrence defect to a quantitative error for the true solution. A finite coefficient algorithm followed by one convergent quadrature at each order gives an arbitrary fixed-order extension. The normalizing constant is defined by a positive limit; no certified numerical enclosure for it is supplied. Explicit leading-model reversion and a controlled finite Newton hierarchy invert the finite models. We distinguish those real inverses from rounding an integer threshold. The leading equivalent was announced by Prellberg in 2002, and higher formal terms were already known. This report makes no priority claim for those formulas. It is a research manuscript, not a peer-reviewed publication.
+\end{abstract}
+\setcounter{tocdepth}{1}\tableofcontents
+\newpage
+
+\section{Result and scope}
+Let $W(x)>0$ denote the positive real solution of $W(x)e^{W(x)}=x$ for $x>0$. Write $w=W(n)$ and define
+\begin{align}
+ F(n)&=e^w(w^2-w+1), &g(w)&=\frac{w^2}{2}-\frac12\log(1+w),\label{eq:Fg}\\
+ p_1(w)&=-\frac{w^2(26w^2+67w+46)}{24(1+w)^3},\label{eq:p1}\\
+ p_2(w)&=-\frac{w^2(12w^6+100w^5+310w^4+457w^3+310w^2+36w-54)}{48(1+w)^6}.\label{eq:p2}
+\end{align}
+All asymptotic estimates in this report are as $n\to\infty$; constants may depend on a fixed truncation order, but never on $n$.
+
+\begin{theorem}[Two explicit corrections]\label{thm:two}
+There is a constant $C\in(0,\infty)$ such that
+\begin{equation}
+ \log T_n=F(n)+g(w)+\log C+\frac{p_1(w)}n+\frac{p_2(w)}{n^2}
+             +O\!\left(\frac{(1+w)^8}{n^3}\right).\label{eq:two}
+\end{equation}
+The constant can be defined without reference to any numerical approximation by
+\begin{equation}
+ C=\lim_{n\to\infty}T_n\exp\{-F(n)-g(W(n))\}.\label{eq:C}
+\end{equation}
+\end{theorem}
+The error in \eqref{eq:two} is $o(e^{-2w})$, since $n=we^w$. Thus the displayed functions are corrections for the actual sequence, not merely coefficients of a formally consistent model. The proof below does not assume the previously announced leading equivalent.
+
+\begin{theorem}[An arbitrary fixed number of corrections]\label{thm:all}
+There is a canonical sequence of smooth functions $p_j$ on $[1,\infty)$, each of whose fixed derivatives has polynomial growth, with $p_1,p_2$ given by \eqref{eq:p1}--\eqref{eq:p2}. For every fixed integer $J\geq0$ there is a finite exponent $A_J\geq1$ for which
+\begin{equation}
+ \log T_n=F(n)+g(w)+\log C+\sum_{j=1}^J\frac{p_j(w)}{n^j}
+       +O_J\!\left(\frac{(1+w)^{A_J}}{n^{J+1}}\right).\label{eq:all}
+\end{equation}
+The same positive constant $C$ occurs for every $J$. Section~\ref{sec:algorithm} gives a finite differential and polynomial algorithm followed by a convergent one-dimensional quadrature for each $p_j$.
+\end{theorem}
+Theorem~\ref{thm:all} is a fixed-order hierarchy with slowly varying coefficient functions. It makes no assertion that the infinite series converges, that every $p_j$ is rational, or that the hierarchy captures exponentially small terms. The explicit exponent $8$ in Theorem~\ref{thm:two} is sharper information than the unspecified finite $A_2$ in the general construction.
+
+\section{Exact recurrence and literature boundary}\label{sec:framework}
+Set $T_0=0$, and for $n\geq1$ let
+\begin{equation}
+ b_n=\sum_{r=1}^n\frac1{r+1}\binom{2r}{r},\qquad
+ c(n,k)=\left(1-\frac{k}{n}\right)\binom{n+k-1}{k}\quad(0\leq k<n).
+\end{equation}
+Knuth's recurrence, with this indexing, is
+\begin{equation}
+ T_n=\sum_{k=0}^{n-1}c(n,k)T_{n-k-1}+b_n.\label{eq:rec}
+\end{equation}
+The coefficients and $b_n$ are positive, and the initial values are
+\[
+ 0,1,4,14,53,223,1034,5221,28437,165859,\ldots.
+\]
+In particular, $T_n\geq T_{n-1}+b_n>T_{n-1}$ for $n\geq1$. The recurrence also gives an exact integer computation, since
+\[
+ c(n,k)=\binom{n+k-1}{k}-\binom{n+k-1}{k-1},
+\]
+where a binomial coefficient with bottom entry $-1$ is zero.
+
+For context, the formal ordinary generating series satisfies
+\begin{align}
+ T(z)&=f(z)T(f(z))+\frac{\mathsf C(z)-1}{1-z}, &
+ f(z)&=z\mathsf C(z), &\mathsf C(z)&=\frac{1-\sqrt{1-4z}}{2z},\label{eq:ogf}\\
+ T(z-z^2)&=zT(z)+\frac{z}{(1-z)(1-z+z^2)}.\nonumber
+\end{align}
+These are identities of formal power series; $T(z)$ has zero radius of convergence. The arguments that follow use \eqref{eq:rec}, not analytic convergence of \eqref{eq:ogf}.
+
+Prellberg's 2000 paper \cite{prellberg2000} presents a heuristic leading asymptotic and a first-correction conjecture. His FPSAC 2002 slides \cite{prellberg2002} state the leading equivalent as a theorem/application; the seminar report \cite{mishna2005}, Section~3.2, reports the same result. Therefore the leading equivalent should not be described as a newly solved open problem. The last slide also records that further asymptotic terms had been computed by a non-rigorous method. No novelty is claimed here for any displayed coefficient or for the existence of earlier formal higher terms.
+
+A scoped search of the primary materials cited here did not locate a later proof of the first correction or a certified enclosure for the limiting constant. This is a search result, not evidence that no such proof exists. The proof developed in this report is supplied in full so that it can be evaluated independently of any priority question.
+
+\subsection{A limitation of the printed general theorem}
+The broad theorem printed in the 2002 sources should not be used as a black-box quantitative transfer theorem. A simple example shows that its displayed hypotheses omit a restriction or normalization. Let
+\[
+ f(z)=\frac{z}{1-z},\qquad a(z)=z,\qquad b(z)=1,
+\]
+and let $B(z)$ be the formal ordinary generating series of the Bell numbers. Since $B(z)=1+f(z)B(f(z))$, the exact solution of
+$X(z)=a(z)X(f(z))+b(z)$ is
+\[
+ X(z)=1+zB(z),\qquad X_n=B_{n-1}\quad(n\geq1).
+\]
+The printed analytic and positivity conditions hold, with the displayed coefficients $c=d=a_1=1$, while the printed equivalent would require a nonzero constant multiple of $B_n$. But $B_{n-1}/B_n\sim W(n)/n\to0$. Setting that constant to zero cannot give an asymptotic equivalent. This observation concerns the breadth of the printed outline. It neither disproves nor reclassifies the specific Takeuchi leading result, whose application has $a=f$.
+
+\section{Local expansion of the exact recurrence}\label{sec:local}
+For the moment let
+\begin{equation}
+ v(n)=\exp\left\{F(n)+g(w)+\frac{p_1(w)}n+\frac{p_2(w)}{n^2}\right\}\quad(n\geq1),\label{eq:v2}
+\end{equation}
+and choose any fixed $v_0>0$. Multiplication of every eventual value by a positive constant and alteration of finitely many positive values do not affect the estimates below.
+
+\subsection{Derivative and coefficient identities}
+Put $h=1/n$ and $d(w)=w/(1+w)$. Direct differentiation gives
+\begin{equation}
+ \frac{\dd w}{\dd n}=\frac{d(w)}n,\qquad F'(n)=w,
+ \qquad D=hd(w)\partial_w-h^2\partial_h.\label{eq:D}
+\end{equation}
+The last operator differentiates any expression in $w$ and $h$ along $w=W(n)$ and $h=1/n$.
+The exact finite product
+\begin{equation}
+ c(n,k)=\frac{n^k}{k!}\left(1-\frac kn\right)
+                   \prod_{r=0}^{k-1}\left(1+\frac rn\right)\label{eq:product}
+\end{equation}
+has logarithmic coefficients
+\begin{align}
+ \ell_1(k)&=\frac{k(k-3)}2,&
+ \ell_2(k)&=-\frac{k(2k^2+3k+1)}{12},&
+ \ell_3(k)&=\frac{k^2(k^2-6k+1)}{12}.\label{eq:ell123}
+\end{align}
+Write $j=k+1$ and, only in this subsection, abbreviate
+\begin{align*}
+ a&=dg',& b&=dp_1'-p_1,& c&=dp_2'-2p_2,\\
+ u&=da'-a,& v&=dd'-d.
+\end{align*}
+Here primes denote differentiation in $w$, and the scalar $v$ on this line is not the model sequence $v(n)$. Taylor expansion gives the following three log coefficients:
+\begin{align}
+ A_1&=\ell_1-ja+\frac{j^2d}{2},\label{eq:A123}\\
+ A_2&=\ell_2-jb+\frac{j^2u}{2}-\frac{j^3v}{6},\nonumber\\
+ A_3&=\ell_3-jc+\frac{j^2(db'-2b)}2
+                   -\frac{j^3(du'-2u)}6+\frac{j^4(dv'-2v)}{24}.\nonumber
+\end{align}
+The leading factor is exact: $n^ke^{-(k+1)w}=e^{-w}w^k$. Thus, with $\pi_w(k)=e^{-w}w^k/k!$,
+\begin{equation}
+ \frac{c(n,k)v(n-k-1)}{v(n)}
+  =\pi_w(k)\exp\{n^{-1}A_1+n^{-2}A_2+n^{-3}A_3+\text{remainder}\}\label{eq:central}
+\end{equation}
+in the central range made precise below.
+
+Let $K\sim\Pois(w)$. The moments $\E K^r$ are the Touchard polynomials; they follow, for example, by differentiating
+$\E e^{tK}=\exp(w(e^t-1))$. Polynomial expansion in $k$ gives the exact rational identities
+\begin{align}
+ \E A_1&=0,\label{eq:cancels}\\
+ \E(A_2+A_1^2/2)&=0,\nonumber\\
+ \E(A_3+A_1A_2+A_1^3/6)
+   &=-wp_2'+2(w+1)p_2+H_2(w)=0,\nonumber
+\end{align}
+where
+\begin{equation}
+ H_2(w)=\frac{24w^{10}+224w^9+848w^8+1654w^7+1665w^6+561w^5-476w^4-468w^3}
+                {48(1+w)^7}.\label{eq:H2}
+\end{equation}
+These identities require no floating-point approximation. The formulas \eqref{eq:ell123}--\eqref{eq:H2}, together with $\E K^r=\sum_{s=0}^r\genfrac{\{} {\}} {0pt} {} {r} {s}w^s$, constitute finite polynomial verifications. Two independently organized exact-rational scripts in the accompanying package check them. Computer algebra is a convenient reproducibility aid, rather than a substitute for the analytic estimates that follow.
+
+\subsection{Uniform remainder and both tails}
+\begin{lemma}[Two-correction local defect]\label{lem:local}
+For the model \eqref{eq:v2},
+\begin{equation}
+ \frac{\sum_{k=0}^{n-1}c(n,k)v_{n-k-1}+b_n}{v_n}
+       =1+O\!\left(\frac{(1+w)^8}{n^4}\right).\label{eq:localres}
+\end{equation}
+The contribution of $k>w^2$, as well as $b_n/v_n$, is $O_M(n^{-M})$ for every fixed $M>0$.
+\end{lemma}
+\begin{proof}
+For $0\leq k\leq w^2$, all shifted arguments are in $[n/2,n]$ for sufficiently large $n$. Taylor's theorem in \eqref{eq:product} and in $\log v$ gives a fourth-order log remainder bounded by
+\[
+ C\frac{(1+w+k)^5}{n^4}.
+\]
+For clarity, the derivatives involved can all be bounded directly from \eqref{eq:D}. For $t\geq2$, write $F^{(t)}(n)=n^{1-t}\phi_t(w)$, where
+$\phi_2=d$ and $\phi_{t+1}=d\phi_t'-(t-1)\phi_t$.
+The other terms in $\log v$ are the displayed rational functions and $g$; repeated use of $D$ bounds the required derivatives on $[n/2,n]$. Taylor's theorem for each logarithm in \eqref{eq:product} gives the corresponding power-sum bound in $k$.
+
+The explicit coefficients satisfy $|A_r|\leq C_r(1+w+k)^{r+1}$ for $r=1,2,3$. Since $(1+w+k)^2/n=o(1)$ uniformly on this range, exponentiating through order three leaves an error at most
+$C(1+w+k)^8/n^4$. Its Poisson expectation is $O((1+w)^8/n^4)$, because each fixed Poisson moment is a polynomial of its degree in $w$.
+
+For $w^2<k\leq n/2-1$, the product after $n^k/k!$ in \eqref{eq:product} is at most $e^{k/2}$. Also
+\[
+ (\log v)'(x)=W(x)+O\!\left(\frac{(1+W(x))^2}{x}\right).
+\]
+Since $W'(x)\leq1/x$, this derivative is at least $w-\log2-1$ on $[n/2,n]$ for large $n$. It follows that, for an absolute $A>0$, every normalized summand in this range is at most $C(Aw)^k/k!$. Stirling's bound and the ratio of consecutive terms show that
+\[
+ \sum_{k>w^2}\frac{(Aw)^k}{k!}
+       =\exp\{-w^2\log w+O(w^2)\}.
+\]
+This is smaller than every fixed inverse power of $n$, since $\log n=w+\log w$. A fixed polynomial factor in $k,w$ does not change this conclusion, so the tails of the polynomial Poisson expectations used in \eqref{eq:cancels} are equally negligible.
+
+For $k\geq n/2-1$, use $c(n,k)\leq4^n$. Eventual monotonicity of $v$ and its divergence to infinity absorb all finitely many exceptional model values. Moreover,
+\[
+ \log\frac{v_{\lceil n/2\rceil}}{v_n}\leq-\frac13 n\log n
+\]
+for large $n$, by integrating the preceding derivative bound. Hence the entire far tail is at most $n4^n\exp(-n\log n/3)$ and is superpolynomially small.
+Finally $b_n\leq n4^n$, whereas
+\[
+ \log v_n=n\log n-n\log\log n-n
+                +O\!\left(\frac{n\log\log n}{\log n}\right),
+\]
+so $b_n/v_n$ has the same required negligibility. Summing \eqref{eq:central}, using $\sum_k\pi_w(k)=1$ and the three cancellations, proves \eqref{eq:localres}.
+\end{proof}
+
+\section{Quantitative stability for descending chains}\label{sec:coupling}
+The essential transfer statement does not follow just from positivity or a local residual. We prove it separately. Let $Q_r$ be a probability distribution on the integer jumps $1,\ldots,r$. A chain at state $r$ moves to $r-J$ with $J\sim Q_r$; zero is absorbing. Total variation is the supremum of differences of probabilities of events, equivalently half the $\ell^1$ distance of probability mass functions.
+
+\begin{lemma}[Rapid coupling]\label{lem:coupling}
+Assume that for all sufficiently large $r$, some fixed $p,C_0<\infty$ satisfy
+\begin{equation}
+ \TV\bigl(\cL_{Q_r}(J-1),\Pois(W(r))\bigr)
+       \leq C_0\frac{(\log r)^p}{r},\label{eq:tvassume}
+\end{equation}
+and for every $B>0$ there are $a_B,C_B<\infty$ with
+\begin{equation}
+ Q_r\{J>a_B\log r\}\leq C_Br^{-B}.\label{eq:tailassume}
+\end{equation}
+For every fixed $D>0$, descending chains from any two finite integers $m\geq n$ can be coupled, allowing either chain to wait, so that they meet at a state greater than $\lfloor n/2\rfloor$ except with probability at most $C_Dn^{-D}$. The bound is uniform in $m\geq n$. Removing waiting times leaves each original chain law.
+\end{lemma}
+
+\begin{proof}
+\textit{Shift overlap.} If $Z\sim\Pois(\lambda)$ and $d$ is a nonnegative integer, unimodality and telescoping give
+\begin{align*}
+ \TV(\cL(Z),\cL(Z+1))&=\max_k\Pp(Z=k),\\
+ \TV(\cL(Z),\cL(Z+d))&\leq d\max_k\Pp(Z=k)\leq\frac d{\sqrt\lambda}
+\end{align*}
+for $\lambda\geq1$. For the last bound, if $\lambda\geq2$, Stirling at the mode $k=\lfloor\lambda\rfloor\geq\lambda/2$ gives
+$\Pp(Z=k)\leq(2\pi k)^{-1/2}\leq\lambda^{-1/2}$; its remaining exponential factor is at most one by $\log x\leq x-1$. For $1\leq\lambda<2$ the maximum is $\lambda e^{-\lambda}\leq1/e<1/\sqrt2$.
+
+Fix $D$, choose $B>D+3$, and enlarge the tail constant in \eqref{eq:tailassume} so that $a=a_B\geq1$. Put
+\begin{equation}
+ H=\lfloor n/2\rfloor,\quad h=2a\log n,\quad
+ L=\lceil128a^2\log n\rceil,\quad
+ R=\left\lceil\frac{(D+2)\log n}{\log2}\right\rceil.\label{eq:blocks}
+\end{equation}
+Consider aligned states $s,t\in[3n/4,n]$ with $|s-t|\leq h$. Kill each chain on first reaching a state at most $H$, holding its actual attained state for the rest of an $L$-step block. Set $\lambda=LW(s)$. For large $n$, $W(s)\geq(\log n)/2$, so
+\[
+ \lambda\geq64a^2(\log n)^2,\qquad |s-t|/\sqrt\lambda\leq1/4.
+\]
+
+\textit{Localization of a block.} If no jump of a chain violates $J\leq a\log r$, its total descent over a block is at most $La\log n=O((\log n)^2)$ and it does not reach $H$. The probability of a violation before killing is at most $LC_BH^{-B}$. Throughout the localized region the current parameter differs from $W(s)$ by at most
+$C(h+La\log n)/n$, because $W'(x)\leq1/x$.
+Poisson thinning gives $\TV(\Pois(x),\Pois(y))\leq|x-y|$. Consequently a stepwise coupling of each localized chain to independent jumps $1+\Pois(W(s))$ bounds its endpoint error by
+\begin{equation}
+ CL\left(\frac{(\log n)^p}{n}+\frac{h+La\log n}{n}\right)
+       +LC_BH^{-B}=o(1).\label{eq:blockerror}
+\end{equation}
+The same estimate applies to a chain started at $t$. Their exact killed endpoint laws are therefore within $1/4+o(1)$ total variation, by comparison with
+$s-L-\Pois(\lambda)$ and $t-L-\Pois(\lambda)$. In particular they have overlap at least $1/2$ for all large $n$.
+
+Couple those two exact endpoints maximally, then sample each internal path conditional on its endpoint according to its exact Markov bridge law. Each coordinate has precisely its own killed $L$-step path distribution. This endpoint-first construction is the smoothing trial.
+
+\textit{Alignment and repetition.} Starting from $m\geq n$, hold the lower chain fixed and run the higher one until it first reaches or crosses the lower state. An exact hit is success. Call a jump from $r>H$ bad if $J>a\log r$. Abort if a bad jump occurs or the boundary is reached before success. For an alignment these decisions are made after each ordinary transition.
+
+On a good first alignment, the crossing jump must depart from $r<2n$: for large $n$, $r-a\log r>n$ whenever $r\geq2n$. Thus the overshoot is at most $a\log(2n)\leq h$, and the aligned states lie in $[n-h,n]$.
+
+Run a smoothing trial. Crucially, finish both sampled killed paths for all $L$ steps before making a joint stop or continue decision. Then abort if either sampled path has a bad jump or either endpoint is at most $H$. If the endpoints agree, succeed. Otherwise freeze the new lower state and align the higher path again. On a good alignment the separation is again at most $h$. Repeat up to $R$ smoothing trials.
+
+Each good trial lowers the smaller state by at most $La\log n$; a subsequent good alignment lowers it by at most $h$. Hence the smaller state during the construction is at least
+\[
+ n-h-R(La\log n+h)=n-O_D((\log n)^3)\geq3n/4
+\]
+for large $n$. Thus every good trial is in the region in which \eqref{eq:blockerror} was proved, and a good construction cannot terminate at $H$.
+
+\textit{Failure probability.} During an alignment a descending path visits each departure state at most once. Conditional on its starting states, its bad-jump probability is bounded by
+\[
+ \sum_{r>H}C_Br^{-B}=O_B(n^{1-B}),
+\]
+uniformly even in an arbitrarily large finite starting state $m$. There are at most $R+1$ alignments. Within a smoothing block each coordinate has its exact killed path marginal, so a union bound gives at most $LC_BH^{-B}$ for that coordinate's bad jumps. There are at most $2R$ coordinate blocks. Therefore
+\[
+ \Pp(\hbox{some bad jump})
+       =O_B((R+1)n^{1-B}+RLn^{-B})=O_D(n^{-D}).
+\]
+No assertion about a joint filtration inside the sampled bridges is needed here.
+
+Conditional on any good history reaching a trial, the two endpoints agree with probability at least $1/2$. The probability of ``unsuccessful and still good'' is at most the probability of unsuccessful endpoint coupling, hence at most $1/2$. Thus $R$ unsuccessful good trials have probability at most
+$2^{-R}\leq n^{-D-2}$. After meeting, continue the chains together; after an abort, use fresh correct kernels from the attained states. This supplies full descending-chain marginals. Together the estimates prove the lemma. The $o(1)$ approximation in \eqref{eq:blockerror} only established a fixed overlap; it was not added as a failure probability at each trial.
+\end{proof}
+
+\begin{corollary}[Summable forcing]\label{cor:forcing}
+Suppose the hypotheses of Lemma~\ref{lem:coupling} hold and a bounded real sequence $u$ satisfies, for all large $r$,
+\begin{equation}
+ u_r=\sum_jQ_r(j)u_{r-j}+f_r,\qquad \sum_r|f_r|<\infty.\label{eq:additive}
+\end{equation}
+For every $D>0$, uniformly for finite $m\geq n$ sufficiently large,
+\begin{equation}
+ |u_m-u_n|\leq2\sum_{r>\lfloor n/2\rfloor}|f_r|
+                +2\|u\|_\infty C_Dn^{-D}.\label{eq:stability}
+\end{equation}
+In particular $u_n$ has a finite limit, and the same bound applies to its difference from that limit.
+\end{corollary}
+\begin{proof}
+For an ordinary transition, \eqref{eq:additive} is the exact expectation identity with the departure forcing added. For an alignment, iterate the identity up to its stopping state. There are only finitely many descending transitions, so no unbounded optional-stopping assertion is required.
+
+Treat each smoothing block atomically. Conditional on its starting pair, each coordinate's full sampled path has its correct killed Markov marginal. For either coordinate, iteration over that entire path gives
+\[
+ u_{\rm start}=\E\left[u_{\rm endpoint}+\sum f_{\rm departure}\right],
+\]
+where the sum contains only actual jumps before killing. Holding an absorbed or waiting coordinate contributes nothing. The rule that postpones every joint decision until the whole block is finished is essential to this use of the marginal law. Concatenating the finite adaptive sequence of whole blocks and alignments gives the same identity for the complete construction.
+
+All forcing sums use distinct departure states greater than $H=\lfloor n/2\rfloor$. Each sum is therefore bounded in absolute value by $\sum_{r>H}|f_r|$. On successful coupling the two terminal $u$ values agree; on failure their difference is at most $2\|u\|_\infty$. Subtract the two expectation identities and use Lemma~\ref{lem:coupling}. This proves \eqref{eq:stability}; its right side tends to zero, proving the Cauchy property and the limit assertion.
+\end{proof}
+
+\section{Transfer to the Takeuchi sequence}\label{sec:transfer}
+Define the positive weights, row sum, and forcing by
+\begin{equation}
+ P_n(k)=\frac{c(n,k)v_{n-k-1}}{v_n},\qquad S_n=\sum_{k=0}^{n-1}P_n(k),
+ \qquad\beta_n=\frac{b_n}{v_n},\qquad Q_n(k+1)=\frac{P_n(k)}{S_n}.\label{eq:normalize}
+\end{equation}
+Lemma~\ref{lem:local} gives
+\begin{equation}
+ S_n-1=O((1+w)^8/n^4),\qquad \beta_n=O_M(n^{-M})\quad\hbox{for every fixed }M.\label{eq:rows}
+\end{equation}
+We first check all the chain hypotheses, then boundedness and positivity of the limiting ratio.
+
+\subsection{Verification of the probability bounds}
+For $0\leq k\leq w^2$, \eqref{eq:central} implies
+\[
+ P_n(k)=\pi_w(k)e^{E_n(k)},\qquad
+ |E_n(k)|\leq C(1+w+k)^2/n,
+\]
+and the latter bound is uniformly $o(1)$. To see the displayed simplification, use the polynomial bounds on $A_r$ and the remainder and then $(1+w+k)/n=o(1)$ on the central range. Hence
+\[
+ \sum_{k\leq w^2}|P_n(k)-\pi_w(k)|
+ \leq \frac Cn\E(1+w+K)^2=O((1+w)^2/n).
+\]
+The remaining mass of each measure is superpolynomially small, by Lemma~\ref{lem:local} and the same Poisson-tail estimate. Dividing by $S_n=1+o(1)$ yields
+\begin{equation}
+ \TV\bigl(\cL_{Q_n}(J-1),\Pois(w)\bigr)=O((1+w)^2/n).\label{eq:tv}
+\end{equation}
+For any fixed $B$, choose $A>1$ with $A\log A-A+1>B+2$. In the range $Aw\leq k\leq w^2$, we have $P_n(k)\leq2\pi_w(k)$ for sufficiently large $n$. The Poisson Chernoff inequality gives
+\[
+ \Pp\{K\geq Aw\}\leq\exp\{-w(A\log A-A+1)\}=O(n^{-B-1}),
+\]
+because $w/\log n\to1$. Adding the tail beyond $w^2$, dividing by $S_n$, and enlarging the threshold to account for $J=k+1$ proves \eqref{eq:tailassume}. Thus Lemma~\ref{lem:coupling} applies, for example with $p=2$.
+
+\subsection{Boundedness and an exact additive defect}
+Let $u_n=T_n/v_n$, with $u_0=0$. The exact recurrence is
+\begin{equation}
+ u_n=S_n\sum_jQ_n(j)u_{n-j}+\beta_n.\label{eq:uexact}
+\end{equation}
+For large $N$, write $e_n=|S_n-1|$ for $n>N$. Both $\sum e_n$ and $\sum\beta_n$ converge. If $M_n=\max_{0\leq r\leq n}u_r$, positivity gives
+\[
+ M_n\leq(1+e_n)M_{n-1}+\beta_n\quad(n>N).
+\]
+Iteration bounds $M_n$ by a finite constant times $M_N+\sum_{r>N}\beta_r$, because $\prod_{r>N}(1+e_r)<\infty$. Thus $u$ is bounded.
+
+Now define the exact deterministic forcing
+\[
+ f_n=(S_n-1)\sum_jQ_n(j)u_{n-j}+\beta_n.
+\]
+Equation~\eqref{eq:additive} holds identically and
+$|f_n|\leq\|u\|_\infty|S_n-1|+\beta_n=O((1+w)^8/n^4)$.
+Applying Corollary~\ref{cor:forcing} with $D=4$ gives
+\begin{equation}
+ |u_m-u_n|=O((1+W(n))^8/n^3),\qquad m\geq n.\label{eq:ratioerror}
+\end{equation}
+Here we used the elementary tail bound
+$\sum_{r>n/2}(\log r)^8/r^4=O((\log n)^8/n^3)$ and $W(n)\asymp\log n$. Hence $u_n$ has a finite limit with the error in \eqref{eq:ratioerror}.
+
+\subsection{Why the limit is strictly positive}
+The weight to state zero, $P_n(n-1)$, is superpolynomially small by the far-tail estimate. Therefore the sum of weights to positive states is
+\[
+ S_n^+=\sum_{k=0}^{n-2}P_n(k)=1+O((1+w)^8/n^4).
+\]
+Choose $N\geq1$ and a summable sequence $d_n\in[0,1/2]$ such that $S_n^+\geq1-d_n$ for $n>N$. Each $u_r$ for $r\geq1$ is positive because $b_r>0$, so $c_0=\min_{1\leq r\leq N}u_r>0$. Induction in \eqref{eq:uexact}, dropping the nonnegative forcing and the transition to zero, gives
+\[
+ u_n\geq c_0\prod_{r=N+1}^n(1-d_r).
+\]
+Indeed all preceding positive-index values are at least the preceding partial product times $c_0$. The infinite product is positive, so the limiting ratio is positive. Taking logarithms in \eqref{eq:ratioerror} proves Theorem~\ref{thm:two}. Since $p_1/n+p_2/n^2\to0$, its normalization agrees with \eqref{eq:C}.
+
+\section{The coefficient algorithm at every fixed order}\label{sec:algorithm}
+Let $\cS$ be the smooth functions on $[1,\infty)$ such that every fixed derivative is bounded by some polynomial in $w$. The bound and degree may depend on the derivative. The class is closed under finite sums, products, differentiation, and multiplication by rational functions without poles on $[1,\infty)$. It is also closed under taking Poisson expectations of polynomials in $k$ with coefficients in $\cS$.
+
+For fixed $J$ define the eventual real model
+\begin{equation}
+ L_J(x)=F(x)+g(W(x))+\sum_{j=1}^J\frac{p_j(W(x))}{x^j},\qquad
+ v_J(x)=e^{L_J(x)}.\label{eq:LJ}
+\end{equation}
+Assign arbitrary positive values at the finitely many integer arguments where this formula is not used, including zero.
+
+\subsection{A finite formal calculation}
+Every coefficient needed at any chosen order can be computed as follows. Work in truncated powers of $h$, with coefficient functions in $\cS$ and polynomials in $k$. The exact coefficient-product logarithm has coefficient
+\begin{equation}
+ \ell_r(k)=\frac{-k^r+(-1)^{r+1}\sum_{i=0}^{k-1}i^r}{r}\quad(r\geq1).\label{eq:ellgeneral}
+\end{equation}
+The sum is a polynomial in $k$ by the usual finite power-sum identity. With $j=k+1$, expand
+\begin{equation}
+ \sum_{r\geq1}\ell_r(k)h^r
+  +\sum_{t\geq1}\frac{(-j)^t}{t!}\frac{\dd^t L_J(n)}{\dd n^t}+jw
+    =\sum_{r\geq1}A_r(w,k)h^r.\label{eq:Aalgorithm}
+\end{equation}
+Only finitely many terms can contribute to a prescribed power of $h$. Handle $F'$ as $w$ and generate all further derivatives with $D$ from \eqref{eq:D}. In particular,
+\[
+ D(h^q a(w))=h^{q+1}(da'-qa).
+\]
+At fixed order, every $A_r$ is a polynomial in $k$ with coefficients in $\cS$.
+
+To exponentiate, define polynomials $B_0=1$ and
+\begin{equation}
+ B_m=\frac1m\sum_{r=1}^m rA_rB_{m-r}\quad(m\geq1).\label{eq:Balgorithm}
+\end{equation}
+This is obtained by differentiating the formal identity
+$\sum B_mh^m=\exp(\sum A_rh^r)$ with respect to $h$. The coefficient of $n^{-m}$ in the expected recurrence row is $\E B_m(w,K)$, calculated by replacing each $K^r$ with its Touchard polynomial. Equations~\eqref{eq:ellgeneral}--\eqref{eq:Balgorithm} are an exact finite algorithm at every fixed requested order.
+
+\subsection{The canonical quadrature}
+The choice of $g$ already makes $\E B_1=0$. Suppose $p_1,\ldots,p_{j-1}$ have canceled the coefficients through $n^{-j}$. Let $H_j(w)$ be the coefficient of $n^{-j-1}$ computed before $p_j$ is inserted. The first contribution from $p_j(w)n^{-j}$ to the shifted logarithm is
+\[
+ -(k+1)(dp_j'-jp_j)n^{-j-1}.
+\]
+It first appears at this order, so exponentiation does not multiply it by lower nonconstant terms at the same order. Since $\E(K+1)=w+1$, the next expected coefficient is
+\begin{equation}
+ H_j(w)-wp_j'(w)+j(w+1)p_j(w).\label{eq:ODE}
+\end{equation}
+It vanishes if we set
+\begin{equation}
+ \boxed{\displaystyle
+ p_j(w)=-e^{jw}w^j\int_w^\infty e^{-js}s^{-j-1}H_j(s)\,\dd s.}\label{eq:quadrature}
+\end{equation}
+Differentiation of the convergent integral directly verifies \eqref{eq:ODE}. In particular the minus sign in \eqref{eq:quadrature} is necessary.
+
+This operation preserves $\cS$. Indeed, substituting $s=w+u$ rewrites it as
+\begin{equation}
+ p_j(w)=-\int_0^\infty e^{-ju}\frac{w^j}{(w+u)^{j+1}}H_j(w+u)\,\dd u.\label{eq:quadrature2}
+\end{equation}
+For $w\geq1$, every fixed $w$ derivative of the integrand is bounded by $e^{-ju}$ times a polynomial in $w,u$, using the defining derivative bounds for $H_j$. An integrable bound on each compact $w$ interval justifies differentiation under the integral. Integrating the polynomial bound against $e^{-ju}$ proves polynomial growth of every derivative. Since all earlier operations preserve $\cS$, induction constructs all $p_j$.
+
+The homogeneous equation associated with \eqref{eq:ODE} has solutions $ce^{jw}w^j$. None but zero has polynomial growth. Therefore \eqref{eq:quadrature} is the unique solution in $\cS$. Also $e^{jw}w^j/n^j=1$ when $w=W(n)$, so the excluded homogeneous freedom would only change the global log normalization. The rational functions \eqref{eq:p1}--\eqref{eq:p2} satisfy their cancellation equations and have polynomial growth; uniqueness identifies them with the first two canonical quadratures. Rationality at higher orders is unnecessary for the construction.
+
+\section{Uniform proof of the arbitrary order expansion}\label{sec:allproof}
+\begin{lemma}[Arbitrary order local defect]\label{lem:alllocal}
+For each fixed $J$, the canonically constructed model satisfies, for some finite $A_J\geq1$,
+\begin{equation}
+ \frac{\sum_{k=0}^{n-1}c(n,k)v_J(n-k-1)+b_n}{v_J(n)}
+ =1+O_J((1+w)^{A_J}n^{-J-2}).\label{eq:alllocal}
+\end{equation}
+Its normalized probability kernel satisfies \eqref{eq:tvassume} for some fixed finite exponent $p$ depending on $J$, and \eqref{eq:tailassume} for every $B>0$.
+\end{lemma}
+\begin{proof}
+In the range $k\leq w^2$, Taylor's theorem is uniform because all arguments are in $[n/2,n]$. Every fixed derivative of $p_j$ has polynomial growth. The derivative description following \eqref{eq:D} handles $F$, and $g$ has the same required polynomial derivative bounds. A truncation of the log summand through $n^{-J-1}$ consequently leaves a remainder bounded by $n^{-J-2}$ times a fixed polynomial in $w,k$.
+
+Here the powers of $n^{-1}$ can be justified explicitly: a derivative of $n^{-j}p_j(w)$ adds one such power by $D$, and the $t$th derivative of $F$ contributes $n^{1-t}$. The finite Taylor remainders have exactly the next unretained power, multiplied by a bounded-on-$[n/2,n]$ polynomial in $w$ and a power of $k+1$. The coefficient-product logarithms have the same property by their finite power sums.
+
+All retained nonconstant log terms are $o(1)$ uniformly for $k\leq w^2$, because each is a fixed polynomial in $w,k$ times a positive inverse power of $n$. The exponential Taylor remainder is therefore of order $n^{-J-2}$ times another fixed polynomial. Its Poisson expectation is $O_J((1+w)^{A_J}n^{-J-2})$ after enlarging a finite exponent $A_J$. The coefficients through $n^{-J-1}$ vanish by construction.
+
+For the intermediate tail, the full logarithmic derivative obeys
+\[
+ L_J'(x)=W(x)+O_J((1+W(x))^{M_J}/x)
+\]
+for a finite $M_J$. It is at least $w-\log2-1$ on $[n/2,n]$ for sufficiently large $n$. The same bound $C(Aw)^k/k!$ as in Lemma~\ref{lem:local} applies for $w^2<k\leq n/2-1$. It is superpolynomially small after summation. In the far tail the model is eventually increasing and
+$\log(v_J(\lceil n/2\rceil)/v_J(n))\leq-n\log n/3$ eventually; the bound $c(n,k)\leq4^n$ again suffices. Finite exceptional model values are absorbed because $v_J(n)\to\infty$. The forcing $b_n/v_J(n)$ is superpolynomially small as before. This proves \eqref{eq:alllocal}.
+
+For completeness the same central Taylor estimate gives
+$P_{J,n}(k)=\pi_w(k)\exp(E_{J,n}(k))$, where
+$|E_{J,n}(k)|\leq n^{-1}P_J(w,k)$ for a fixed polynomial bound and $\sup_{k\leq w^2}|E_{J,n}(k)|=o(1)$. Poisson expectation then bounds total variation by $O_J((1+w)^{M}/n)$ for some finite $M$. The row normalization tends to one. On $Aw\leq k\leq w^2$ the pointwise bound $P_{J,n}(k)\leq2\pi_w(k)$ still holds. The Chernoff and far-tail arguments from Section~\ref{sec:transfer} prove arbitrary polynomial jump-tail bounds. Thus both hypotheses of Lemma~\ref{lem:coupling} hold.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:all}]
+Apply the boundedness argument of Section~\ref{sec:transfer} to $u_{J,n}=T_n/v_J(n)$. The row defect in \eqref{eq:alllocal} is summable even when $J=0$, and the positive forcing is negligible. The exact additive defect is
+$O_J((1+w)^{A_J}n^{-J-2})$. Apply Corollary~\ref{cor:forcing} with $D>J+1$ and use
+\[
+ \sum_{r>n/2}\frac{(1+W(r))^{A_J}}{r^{J+2}}
+     =O_J\!\left(\frac{(1+W(n))^{A_J}}{n^{J+1}}\right).
+\]
+This gives a finite limiting ratio $C_J$ and the stated error. The argument using the positive-state row sum from Section~\ref{sec:transfer} applies without change, showing $C_J>0$.
+
+Each $p_j$ has polynomial growth, so $\sum_{j=1}^Jp_j(w)n^{-j}\to0$. Hence $v_J(n)/v_0(n)\to1$, where here $v_0(n)=e^{F(n)+g(w)}$ denotes the zero-correction model, not its assigned value at index zero. All $C_J$ are therefore the same constant $C$ from \eqref{eq:C}. Taking logarithms gives \eqref{eq:all}.
+\end{proof}
+
+\section{An explicit third coefficient}\label{sec:p3}
+The finite algorithm also gives a third rational coefficient. Before inserting $p_3$, the order-$n^{-4}$ expected residual is
+\begin{align}
+ H_3(w)&=-\frac{w^4 P(w)}{5760(1+w)^{10}},\label{eq:H3}\\
+ P(w)&=240w^{11}-432w^{10}-30420w^9-225880w^8\nonumber\\
+ &\quad-844658w^7-1925812w^6-2813239w^5-2533360w^4\nonumber\\
+ &\quad-1073820w^3+334112w^2+728528w+367728.\nonumber
+\end{align}
+The polynomial-growth solution of $-wp_3'+3(w+1)p_3+H_3=0$ is
+\begin{align}
+ p_3(w)&=\frac{w^3 Q(w)}{17280(1+w)^9},\label{eq:p3}\\
+ Q(w)&=240w^{10}-592w^9-29028w^8-188952w^7\nonumber\\
+ &\quad-607146w^6-1152408w^5-1338579w^4-884496w^3\nonumber\\
+ &\quad-205104w^2+133296w+103040.\nonumber
+\end{align}
+Substitution verifies the ODE exactly, so the uniqueness argument in Section~\ref{sec:algorithm} identifies \eqref{eq:p3} with the canonical third quadrature. The numerator has degree $13$ and $p_3(w)\sim w^4/72$. In particular it would be incorrect to infer from the first two coefficients that $p_j(w)=O(w^j)$ always. The coefficient of $e^{-3w}$ is $p_3(w)/w^3$, which grows linearly.
+
+For an independent, finite way to verify \eqref{eq:H3}, retain the notation $a,b,c,u,v$ from Section~\ref{sec:local} and put
+\begin{align*}
+ b_1&=db'-2b,& c_1&=dc'-3c,&u_1&=du'-2u,&v_1&=dv'-2v,\\
+ b_2&=db_1'-3b_1,&u_2&=du_1'-3u_1,&v_2&=dv_1'-3v_1.
+\end{align*}
+With $j=k+1$, the next log coefficient before inserting $p_3$ is
+\begin{align*}
+ A_4&=\ell_4+\frac{j^2c_1}{2}-\frac{j^3b_2}{6}
+                   +\frac{j^4u_2}{24}-\frac{j^5v_2}{120},\\
+ \ell_4&=-\frac{6k^5+15k^4+10k^3-k}{120}.
+\end{align*}
+Then
+\[
+ H_3=\E\left(A_4+A_1A_3+\frac{A_2^2}{2}
+                    +\frac{A_1^2A_2}{2}+\frac{A_1^4}{24}\right).
+\]
+This identity and the ODE are checked separately from the generic residual generator in the accompanying exact scripts.
+
+\begin{corollary}[Three explicit corrections]\label{cor:three}
+With \eqref{eq:p3}, the common normalizing constant satisfies
+\begin{equation}
+ \log T_n=F(n)+g(w)+\log C+\sum_{j=1}^3\frac{p_j(w)}{n^j}
+              +O\!\left(\frac{(1+w)^{10}}{n^4}\right).\label{eq:three}
+\end{equation}
+Its eventual real inverse at sequence values has error $O((1+w)^9/n^4)$.
+\end{corollary}
+\begin{proof}
+The exact fourth-order cancellation was just established. For $X=1+w+k$ on $k\leq w^2$, the four retained log coefficients satisfy $|A_r|\leq C_rX^{r+1}$. The fifth-order log remainder is $O(X^6/n^5)$. To verify the latter bound term by term, write $j=k+1$. The product contributes $O(k^6/n^5)$; the sixth derivative remainder from $F$ contributes $O(j^6/n^5)$; the fifth derivative remainder from $g$ contributes $O(j^5(1+w)/n^5)$; and the fourth, third, and second derivative remainders from $p_1/n,p_2/n^2,p_3/n^3$ contribute respectively
+\[
+ O(j^4(1+w)/n^5),\qquad O(j^3(1+w)^2/n^5),\qquad O(j^2(1+w)^4/n^5).
+\]
+All bounds are uniform on $[n-k-1,n]\subset[n/2,n]$, by the rational formulas and $D$. Each numerator is bounded by a constant times $X^6$.
+
+Since $X^2/n=o(1)$ uniformly, exponentiating through degree four leaves $O(X^{10}/n^5)$. Poisson expectation gives $O((1+w)^{10}/n^5)$. Both tails and the forcing are superpolynomially small by the proof of Lemma~\ref{lem:alllocal}. Thus this is the third model's local row defect. The transfer proof in Section~\ref{sec:allproof} yields \eqref{eq:three}, with the same $C$. Division of its log error by the slope $\sim W(n)$ gives the stated inverse error.
+\end{proof}
+
+\section{Comparison with the historical Bell normalization}\label{sec:bell}
+This section uses the classical Bell expansion as quoted in \cite[Eq.~(12)]{prellberg2000}; it is not an additional hypothesis in the Takeuchi proof. In the same variable $w=W(n)$ it is
+\begin{align}
+ \log B_n={}&F(n)-\frac12\log(1+w)-1+b_1(w)e^{-w}+b_2(w)e^{-2w}+O(e^{-3w}),\label{eq:bell}\\
+ b_1(w)={}&-\frac{w(2w^2+7w+10)}{24(1+w)^3},\nonumber\\
+ b_2(w)={}&-\frac{w(2w^4+12w^3+29w^2+40w+36)}{48(1+w)^6}.\nonumber
+\end{align}
+Set $C_T=eC$. Since $n^{-1}=e^{-w}/w$, subtraction in Theorem~\ref{thm:two} yields
+\begin{align}
+ \log\frac{T_n}{C_T B_ne^{w^2/2}}
+  ={}&r_1(w)e^{-w}+r_2(w)e^{-2w}
+          +O((1+w)^8/n^3),\label{eq:bellratio}\\
+ r_1(w)={}&-\frac{w(2w+3)}{2(1+w)^2},\nonumber\\
+ r_2(w)={}&-\frac{6w^5+43w^4+106w^3+108w^2+27w-27}{24(1+w)^5}.\nonumber
+\end{align}
+The Bell remainder has been absorbed into the displayed, weaker common bound. In particular $r_2$ is bounded at infinity, and \eqref{eq:bellratio} implies the historical first-correction form
+\begin{equation}
+ \log\frac{T_n}{C_TB_ne^{w^2/2}}
+   =-\frac{w(2w+3)}{2(1+w)^2}e^{-w}+O(e^{-2w}).\label{eq:firsthistorical}
+\end{equation}
+Prellberg reported a numerical value near $2.239433104005260731754785$ for $C_T$. Those digits may be used as explicitly non-certified diagnostics; this report supplies no interval guaranteed to contain $C_T$, and does not identify \eqref{eq:C} with a separately evaluated contour integral or conjectural constant series.
+
+\section{Finite model inversion and integer thresholds}\label{sec:inverse}
+For a fixed $J$, define
+\begin{equation}
+ \Phi_J(x)=C\exp\left\{F(x)+g(W(x))+\sum_{j=1}^Jp_j(W(x))x^{-j}\right\}.
+\end{equation}
+Since
+\begin{equation}
+ (\log\Phi_J)'(x)=W(x)+O_J((1+W(x))^{M_J}/x)\sim W(x)>0,\label{eq:slope}
+\end{equation}
+this is strictly increasing on a sufficiently large real branch. Its eventual inverse $x_J(y)$ is the unique solution of $\Phi_J(x)=y$ on that branch. This definition is exact and involves only a finite model. It can be solved numerically, for example in the coordinate $x=we^w$, once the required coefficient functions and constant are known to sufficient accuracy.
+
+\subsection{Explicit reversion and a finite Newton hierarchy}
+Write $t=\log y$, and let $v=F^{-1}(t)$ on its increasing real branch. With $\omega=W(v)$, this leading-model inverse is equivalently the unique large solution of
+\[
+ e^\omega(\omega^2-\omega+1)=t,\qquad v=\omega e^\omega.
+\]
+This removes only the leading term before reversion; the corrections below are explicit. Put
+\begin{equation}
+ q(w)=g(w)+\log C,\qquad a(w)=d(w)g'(w),\qquad
+ B(w)=\frac{a(w)q(w)}{w^2}-\frac{d(w)q(w)^2}{2w^3}-\frac{p_1(w)}w.
+ \label{eq:inverseB}
+\end{equation}
+
+\begin{proposition}[Explicit finite-model reversion]\label{prop:reversion}
+For every fixed $J\geq1$, as $y\to\infty$,
+\begin{align}
+ x_J(y)
+ &=v-\frac{q(\omega)}{\omega}+\frac{B(\omega)}v
+       +O_J\!\left(\frac{(1+\omega)^2}{v^2}\right),\label{eq:reversion}\\
+ &=v-\frac\omega2+\frac{\log(1+\omega)}{2\omega}
+          -\frac{\log C}{\omega}
+       +O_J\!\left(\frac{1+\omega}{v}\right).\label{eq:firstinverse}
+\end{align}
+In particular the error in the second line tends to zero in absolute index. Also $B(w)\sim3w/8$.
+\end{proposition}
+\begin{proof}
+The slope estimate \eqref{eq:slope} and $q(w)=O((1+w)^2)$ first locate $x_J(y)$ within $O_J(1+\omega)$ of $v$. Uniformly in such an interval,
+\[
+ F'(v)=\omega,\quad F''(v)=d(\omega)/v,\quad
+ (q(W(x)))'\big|_{x=v}=a(\omega)/v.
+\]
+Set $\delta_0=-q(\omega)/\omega$ and $\delta_1=B(\omega)/v$; both $\delta_0$ and $v\delta_1$ are $O(1+\omega)$. Taylor expansion of $\log\Phi_J(v+\delta_0+\delta_1)-t$ cancels its order-one contribution. The coefficient at $v^{-1}$ is
+\[
+ \omega B(\omega)+\frac{d(\omega)\delta_0^2}{2}
+                   +a(\omega)\delta_0+p_1(\omega)=0.
+\]
+The remaining log residual is $O_J((1+\omega)^3/v^2)$. Indeed, the cubic remainder from $F$ and the quadratic remainder from $q$ have that bound; the variation of $p_1(W(x))/x$ and the $p_2$ term, if present, are smaller. Every fixed later correction has polynomial growth and an additional inverse power of $v$, so it is absorbed as well. The cross terms involving $\delta_1$ obey the same bound. Dividing by the uniformly comparable slope $\omega$ proves \eqref{eq:reversion}. Finally $a(w)\sim w$, $q(w)\sim w^2/2$, $d(w)\to1$, and $p_1(w)=O(w)$ give $B(w)\sim3w/8$, proving \eqref{eq:firstinverse}.
+\end{proof}
+
+There is also a finite algorithm to reach any prescribed inverse order. For the same fixed $J$, put $h_J=\log\Phi_J$ and use exact model evaluations to define
+\begin{equation}
+ z_0=v,\qquad z_{r+1}=z_r-\frac{h_J(z_r)-t}{h_J'(z_r)}.
+ \label{eq:newton}
+\end{equation}
+For every fixed nonnegative integer $r$,
+\begin{equation}
+ z_r-x_J(y)=O_{J,r}\!\left(\frac{1+\omega}{v^{\,2^r-1}}\right).
+ \label{eq:newtonerror}
+\end{equation}
+To verify this, choose a fixed interval $|x-v|\leq M(1+\omega)$ containing the root and $v$ with margin. On this interval $h_J'(x)\asymp\omega$ and $h_J''(x)=O_J(1/v)$. Taylor's theorem at the root gives the Newton error estimate
+\[
+ |z_{r+1}-x_J(y)|\leq\frac{C_J}{v\omega}|z_r-x_J(y)|^2.
+\]
+The initial error is $O_J(1+\omega)$. For sufficiently large $y$, the estimate keeps the iterates in the chosen interval, and induction proves \eqref{eq:newtonerror}. This is a controlled finite-order inversion procedure, not an assertion that an infinite formal inverse series converges. The exact constant $C$ is still required.
+
+\subsection{Localization at sequence values and integer thresholds}
+
+\begin{proposition}[Real localization]\label{prop:inverse}
+At sequence values, Theorem~\ref{thm:all} implies
+\begin{equation}
+ x_J(T_n)=n+O_J\!\left(\frac{(1+W(n))^{A_J-1}}{n^{J+1}}\right).\label{eq:inverseerror}
+\end{equation}
+For $J=2$, Theorem~\ref{thm:two} gives the explicit bound $O((1+W(n))^7/n^3)$. At $y=T_n$, one has $v\sim n$ and $\omega\sim W(n)$. Choosing $2^r-1>J+1$ in \eqref{eq:newtonerror} makes the finite Newton error smaller than the localization scale in \eqref{eq:inverseerror}.
+\end{proposition}
+\begin{proof}
+At $n$ the log model error is $O_J((1+W(n))^{A_J}/n^{J+1})$. On $[n/2,2n]$, the slope in \eqref{eq:slope} is bounded below by a positive constant times $W(n)$ for all large $n$. The model changes in log value by far more than the error before reaching either endpoint of this interval, so $x_J(T_n)$ lies inside it. The mean-value theorem divides the log error by that lower slope, proving \eqref{eq:inverseerror}.
+\end{proof}
+
+For an arbitrary large real $y$, let
+\[
+ N(y)=\min\{n\geq1:T_n\geq y\}.
+\]
+The strict monotonicity of $T_n$ established in Section~\ref{sec:framework} makes this threshold unambiguous. Put $h_J=\log\Phi_J$ and choose a sufficiently large uniform error constant $K$ so that
+\[
+ E(x)=K(1+W(x))^{A_J}x^{-J-1},\qquad h_\pm(x)=h_J(x)\pm E(x)
+\]
+satisfy $h_-(n)\leq\log T_n\leq h_+(n)$ for all sufficiently large integers. Both real envelopes are eventually increasing: $E'(x)=O(E(x)/x)$, whereas $h_J'(x)\sim W(x)$. Their exact inverse bounds give
+\begin{equation}
+ \left\lceil h_+^{-1}(\log y)\right\rceil\leq N(y)
+                 \leq\left\lceil h_-^{-1}(\log y)\right\rceil.\label{eq:envelopes}
+\end{equation}
+For the lower bound, any integer strictly below $h_+^{-1}(\log y)$ has $\log T_n\leq h_+(n)<\log y$. For the upper bound, the first integer at or above $h_-^{-1}(\log y)$ has $\log T_n\geq h_-(n)\geq\log y$. Finite earlier indices are irrelevant once $y$ is large enough.
+
+Writing $x=x_J(y)$, the same mean-value argument as in Proposition~\ref{prop:inverse} shows that the two envelope inverses differ from $x$ by at most
+\[
+ \eta(x)=K_J\frac{(1+W(x))^{A_J-1}}{x^{J+1}}
+\]
+for a sufficiently large uniform constant $K_J$. Thus
+\begin{equation}
+ \left\lceil x-\eta(x)\right\rceil\leq N(y)
+                   \leq\left\lceil x+\eta(x)\right\rceil.\label{eq:rounding}
+\end{equation}
+The two ceilings need not agree, even though $\eta(x)\to0$. An arbitrarily small real-index error does not by itself permit unconditional ceiling or nearest-integer rounding for arbitrary targets, especially near sequence thresholds. If an effective interval and the constant are certified and the two ceilings agree, they do certify the integer threshold. Otherwise the remaining candidate integers must be tested by a certified forward calculation. If a target is known in advance to be exactly $T_n$, nearest-integer rounding of $x_J(T_n)$ is eventually mathematically valid once the error in \eqref{eq:inverseerror} is below $1/2$; no certified numerical onset is provided here.
+
+There is a separate numerical obstruction: $C$ is exact by \eqref{eq:C}, but not numerically enclosed here. Replacing it by $\widehat C$ adds the log error $\log\widehat C-\log C$. At first order, this moves the real model inverse by approximately its negative divided by $W(x)$. Therefore unproved digits of the constant cannot be used to advertise a certified numerical inversion algorithm. The asymptotic inverse error statements above use the exact $C$.
+
+\section{Reproducibility and remaining questions}\label{sec:repro}
+The companion package contains the source of this report, a PDF, portable Python checks, and run receipts. The two-correction verifier constructs the logarithmic jets, takes exact Poisson polynomial expectations, and confirms the first three cancellations. An independently organized verifier differentiates the full explicit log model and checks the Bell coefficient subtraction. No fitted coefficients are used by these verifiers. Numerical examples, when run, are diagnostics using exact sequence integers followed by arbitrary-precision floating-point evaluation; they are not remainder proofs or constant enclosures.
+
+Several concrete questions remain.
+\begin{enumerate}
+\item \textbf{Effective constants.} Make the thresholds and constants in the local remainder, overlap, and transfer bounds explicit enough to enclose $C$. The present proof establishes existence and asymptotic rates but does not provide a practical numerical certificate.
+\item \textbf{Sharper transfer.} The coupling bound charges every state in a tail. The typical jump is of order $W(n)$; a refined occupation estimate might improve accumulated local error by that factor. Such an improvement is not used or claimed here.
+\item \textbf{Coefficient structure.} Determine whether every canonical quadrature is rational, locate possible poles, and obtain uniform degree or coefficient-growth bounds as $j\to\infty$.
+\item \textbf{Optimal truncation.} Investigate divergence, possible Gevrey bounds, optimal truncation, and effects smaller than all algebraic orders. Fixed-order estimates alone settle none of these issues.
+\item \textbf{Constant formulas.} Relate the positive limit to a fully justified contour or series representation, then rigorously evaluate it. A decimal agreement with a formal formula is not such an identification.
+\item \textbf{Historical and external review.} Recover full hypotheses of the 2002 general theorem, check subsequent literature more broadly, and obtain specialist scrutiny of the coupling and uniform expansion before any priority or publication claim.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\small
+\bibitem{prellberg2000}
+T. Prellberg, \emph{On the Asymptotics of Takeuchi Numbers}, arXiv:math/0005008 (2000), especially Eqs.~(3), (12), and Conjecture~1.\newline
+\url{https://arxiv.org/abs/math/0005008}
+\bibitem{prellberg2002}
+T. Prellberg, \emph{On the asymptotic analysis of a class of linear recurrences}, FPSAC 2002 slides, numbered slides 22, 25, and 26. The PDF includes animation overlays.\newline
+\url{https://webspace.maths.qmul.ac.uk/t.prellberg/talks/recurrence.pdf}
+\bibitem{mishna2005}
+M. Mishna, summary of T. Prellberg's seminar of 23 September 2002, \emph{On the Asymptotic Analysis of a Class of Linear Recurrences}, in F. Chyzak (ed.), \emph{Algorithms Seminar 2002--2004}, INRIA (2005), pp.~47--50, especially Theorem~1 and Section~3.2.\newline
+\url{https://algo.inria.fr/seminars/summary/Prellberg2002a.pdf}
+\bibitem{knuth1991}
+D. E. Knuth, \emph{Textbook examples of recursion}, in \emph{Artificial Intelligence and Mathematical Theory of Computation}, Academic Press (1991), pp.~207--229. The recurrence is also reproduced in \cite{prellberg2000,mishna2005}.
+\bibitem{oeis}
+OEIS Foundation, sequence A000651, Takeuchi numbers.\newline
+\url{https://oeis.org/A000651}
+\end{thebibliography}
+\end{document}

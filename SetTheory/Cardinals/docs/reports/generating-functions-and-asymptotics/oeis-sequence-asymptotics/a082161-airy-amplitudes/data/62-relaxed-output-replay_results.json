@@ -1,0 +1,116 @@
+{
+  "status": "passed",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "parameters": {
+    "max_n": 20000,
+    "order": 8
+  },
+  "tests": [
+    {
+      "name": "exact_recurrence",
+      "returncode": 0,
+      "seconds": 0.03641,
+      "manifest_verification": {
+        "files_verified": 13,
+        "manifest_sha256": "0a05cdd7a44e27c971e8d494559777c5ac3ef56114435462648c9f2b674eb9d9"
+      },
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/exact_recurrence.py",
+        "--output",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/output/exact_recurrence.json"
+      ],
+      "fixture_check": "passed",
+      "output_sha256": "87b7d7896bec947228db2da88eed9b050faa184791d52c0df7ced693088937bd"
+    },
+    {
+      "name": "frozen_quasimode",
+      "returncode": 0,
+      "seconds": 0.719326,
+      "manifest_verification": {
+        "files_verified": 13,
+        "manifest_sha256": "0a05cdd7a44e27c971e8d494559777c5ac3ef56114435462648c9f2b674eb9d9"
+      },
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/frozen_quasimode.py",
+        "--output",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/output/frozen_quasimode.json"
+      ],
+      "fixture_check": "passed",
+      "output_sha256": "ee6438c3848f1bd19a890a4253e02cf6469f96ac6af6fbbe8bf763ab558fa1d4"
+    },
+    {
+      "name": "coefficients",
+      "returncode": 0,
+      "seconds": 1.854933,
+      "manifest_verification": {
+        "files_verified": 13,
+        "manifest_sha256": "0a05cdd7a44e27c971e8d494559777c5ac3ef56114435462648c9f2b674eb9d9"
+      },
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/coefficients.py",
+        "--order",
+        "8",
+        "--output",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/output/coefficients.json"
+      ],
+      "fixture_check": "passed",
+      "output_sha256": "517148795dade072dd1d3600bfd8636d1e23d9551676e89d8fb32091e1b55703"
+    },
+    {
+      "name": "inverse_checks",
+      "returncode": 0,
+      "seconds": 0.883027,
+      "manifest_verification": {
+        "files_verified": 13,
+        "manifest_sha256": "0a05cdd7a44e27c971e8d494559777c5ac3ef56114435462648c9f2b674eb9d9"
+      },
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/inverse_checks.py",
+        "--output",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/output/inverse_checks.json"
+      ],
+      "fixture_check": "passed",
+      "output_sha256": "5e3c621177825a4806fd2e1de0fbee57959469b4488a89a153e08945924423b8"
+    },
+    {
+      "name": "forward_evidence",
+      "returncode": 0,
+      "seconds": 4.39527,
+      "manifest_verification": {
+        "files_verified": 13,
+        "manifest_sha256": "0a05cdd7a44e27c971e8d494559777c5ac3ef56114435462648c9f2b674eb9d9"
+      },
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/forward_evidence.py",
+        "--max-n",
+        "20000",
+        "--output",
+        "/workspace/shared/oeis-relaxed-dag-final-replay-20261002-v3/output/forward_evidence.json"
+      ],
+      "fixture_check": "passed",
+      "output_sha256": "50dc26595874b51bd52580ecbcfcd1d1297b8d4b43e7e497bf84f3d8bb8676cf"
+    }
+  ],
+  "limitations": "Formal/exact finite tests and floating-point diagnostics do not certify the analytic theorem, gamma, or forward remainder bounds",
+  "initial_manifest_verification": {
+    "files_verified": 13,
+    "manifest_sha256": "0a05cdd7a44e27c971e8d494559777c5ac3ef56114435462648c9f2b674eb9d9"
+  },
+  "dependency_versions": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0"
+  },
+  "final_manifest_verification": {
+    "files_verified": 13,
+    "manifest_sha256": "0a05cdd7a44e27c971e8d494559777c5ac3ef56114435462648c9f2b674eb9d9"
+  },
+  "total_seconds": 8.109955
+}

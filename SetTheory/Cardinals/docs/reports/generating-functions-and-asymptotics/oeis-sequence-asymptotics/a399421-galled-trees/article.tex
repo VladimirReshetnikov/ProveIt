@@ -1,0 +1,778 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue!45!black,breaklinks=true]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\hypersetup{pdftitle={Positive density asymptotics for unlabeled simplex time consistent galled trees},pdfauthor={},pdfsubject={OEIS A399421 and A397952}}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Positive density asymptotics for galled trees}
+\fancyhead[R]{\small A399421 and A397952}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\rhoo}{\rho}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=none}
+\title{\bfseries Positive density asymptotics for unlabeled simplex time consistent galled trees}
+\author{Mathematical research report}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $g_{n,k}$ count rooted binary nonplane unlabeled simplex time-consistent galled trees with $n$ leaves and $k$ galls. This is the triangle OEIS A399421; its row sums form A397952. We prove a uniform asymptotic expansion to every fixed relative order when the actual density $k/n$ lies in a compact subset of $(0,1/2)$. The leading term has the form $C(k/n)\exp\{n\Lambda(k/n)\}/n^2$, with an explicit positive amplitude and a uniquely determined positive saddle. The central model-specific steps are global analyticity of the nested P\'olya term, strict positivity of the tilted variance, the full interior density range, and separation of every nontrivial phase on the critical bitorus. We give finite coefficient generators, local Gaussian and precise large-deviation consequences, and explicitly defined inverse models with correctly spaced integer brackets.
+
+The generating function, fixed-gall asymptotics, scalar leading term, and more accurate scalar amplitude are prior work. Standard singularity and saddle-point methods are also credited. Computed values and cutoff tests are reproducible high-precision evidence, not interval certificates. The results do not claim endpoint uniformity, an unmodulated inverse for floor rays, or worldwide novelty.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The counting problem and the main result}
+\subsection{Exact convention}
+A rooted binary phylogenetic network is a simple directed acyclic graph with one root of indegree zero and outdegree two, tree vertices of indegree one and outdegree two, leaves of indegree one and outdegree zero, and reticulation vertices of indegree two and outdegree one. A gall consists of two otherwise vertex-disjoint directed paths from a common top vertex to a common reticulation vertex. In a galled tree, no vertex lies in two galls. The time-consistent condition requires both paths in a gall to contain at least two edges; for galled trees this is the normal condition. The simplex condition requires the child of every reticulation vertex to be a leaf. These conventions are those of Agranat-Tamir et al.~\cite{comparison}.
+
+All vertices, including leaves, are unlabeled. Networks are nonplane: interchanging the two children of an ordinary branch, or the two sides of a gall, does not create a new object. The single leaf is included as a degenerate one-leaf object. In particular, no factor $n!$ is used. We write
+\begin{equation}\label{eq:G}
+G(z,u)=\sum_{n\geq1}\sum_{k\geq0}g_{n,k}z^n u^k,
+\qquad a_n(u)=[z^n]G(z,u),\qquad a_n=a_n(1).
+\end{equation}
+The coefficient $g_{n,k}$ is A399421; the total $a_n$ is A397952, with $a_0=0$~\cite{oeis399421,oeis397952}. Here and below $z$ marks leaves and $u$ marks galls.
+
+\subsection{The published functional equation}
+Put $B(z,u)=G(z^2,u^2)$ and define
+\begin{equation}\label{eq:F}
+F(z,u,y)=z+\frac{y^2+B(z,u)}2
+ +\frac{zu}{2}\left\{\frac{y^2}{(1-y)^2}+\frac{B(z,u)}{1-B(z,u)}\right\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:implicit}
+G(z,u)=F(z,u,G(z,u)),\qquad G(0,u)=0.
+\end{equation}
+This is the known ordinary generating function, equation (47) of the inspected arXiv version of~\cite{comparison}, Section 5.4. The two halves encode unordered pairs through their cycle index. An ordinary root has an unordered pair of descendant objects. A gall root has an unordered pair of nonempty sequences of descendant objects, one sequence along each side, and contributes the extra factor $zu$ for its reticulation leaf and its gall.
+
+For exact computation it is convenient to write $S=G/(1-G)$. Equations~\eqref{eq:F}--\eqref{eq:implicit} become
+\begin{equation}\label{eq:GS}
+\begin{split}
+G&=z+\frac{G^2+G(z^2,u^2)}2
+       +\frac{zu}{2}\bigl(S^2+S(z^2,u^2)\bigr),\\
+S&=G+GS.
+\end{split}
+\end{equation}
+First compute the leaf-degree coefficient $G_n(u)=[z^n]G$ from smaller leaf degrees of $G$ and $S$. Then compute $S_n(u)$ from $G_n(u)$ and smaller degrees using the second equation. Thus these equations specify a unique formal series and an exact integer recursion.
+
+\begin{proposition}[Support]\label{prop:support}
+The support of $G$ is exactly
+\begin{equation}\label{eq:support}
+ n\geq1,\qquad 0\leq k\leq\left\lfloor\frac{n-1}2\right\rfloor.
+\end{equation}
+In particular the support contains $(1,0),(2,0),(3,1)$, and, for every $n\geq3$, the set of permitted gall counts has lattice span one.
+\end{proposition}
+\begin{proof}
+The inequality $n\geq2k+1$ is preserved by the constructors. At an ordinary binary root the sum of the two inequalities gives $n\geq2k+2$. At a gall root the two nonempty sides carry at least two descendant objects in total, and the additional leaf and gall give $n\geq2k+1$. The diagonal P\'olya terms represent the same objects with equal sides and obey the same inequality.
+
+Conversely, replace every internal branching vertex of a rooted nonplane binary tree with a minimal gall. A binary tree with $k+1$ leaves has $k$ internal vertices; this construction gives $k$ galls and $2k+1$ leaves. Deleting the reticulation leaves and contracting each minimal gall recovers the original tree, so the construction is injective. Attaching an ordinary binary root with one additional leaf increases $n$ by one without changing $k$. Every pair in~\eqref{eq:support} is therefore attained.
+\end{proof}
+
+\subsection{Statement of the positive density theorem}
+For $u>0$, let $\rho(u)$ be the leaf-variable radius of $G(z,u)$ and let $\tau(u)=G(\rho(u),u)$. All partial derivatives of $F$ below include its explicit nested function $B$, but treat the separate argument $y$ as independent. Set
+\begin{equation}\label{eq:fgamma}
+ f(s)=-\log\rho(e^s),\quad \alpha(s)=f'(s),\quad \beta(s)=f''(s),\quad
+ \gamma(u)=\sqrt{\frac{2\rho(u)F_z}{F_{yy}}},
+\end{equation}
+where $F_z,F_{yy}$ in the last expression are evaluated at $(\rho(u),u,\tau(u))$.
+
+\begin{theorem}[Uniform positive density expansion]\label{thm:main}
+The functions $\rho,\tau,\gamma$ are positive and real analytic on $(0,\infty)$, with $0<\tau(u)<1$. Moreover $\beta(s)>0$ on $\R$, and $s\mapsto\alpha(s)$ is an analytic increasing bijection from $\R$ onto $(0,1/2)$.
+
+Fix a compact set $J\subset(0,1/2)$ and an integer $M\geq0$. For every integer pair $(n,k)$ with the actual ratio $a=k/n\in J$, let $s=s(a)$ solve $f'(s)=a$ and put $u=e^s$. There are real-analytic functions $Q_j(s)$ such that, uniformly for these pairs as $n\to\infty$,
+\begin{equation}\label{eq:main}
+ g_{n,k}=\frac{\rho(u)^{-n}u^{-k}}{\sqrt{2\pi\beta(s)}\,n^2}
+ \left\{\sum_{j=0}^M\frac{Q_j(s)}{n^j}
+                  +O_{J,M}(n^{-M-1})\right\},
+ \qquad Q_0(s)=\frac{\gamma(e^s)}{2\sqrt\pi}>0.
+\end{equation}
+The functions $Q_j$ are given by finite coefficient extraction and Gaussian moments in Section~\ref{sec:density}. In particular,
+\begin{equation}\label{eq:leading}
+ g_{n,k}\sim\frac{\gamma(u)}{2\pi\sqrt{2\beta(s)}}
+                 \frac{\rho(u)^{-n}u^{-k}}{n^2}.
+\end{equation}
+\end{theorem}
+
+The leading positive amplitude is bounded away from zero on compact density sets, so~\eqref{eq:main} is also an all-fixed-order \emph{relative} expansion. The quantifiers matter: $J$ and $M$ are fixed before $n\to\infty$. The statement supplies neither estimates at $a=0,1/2$ nor a uniform boundary-layer approximation when $a$ approaches either endpoint with $n$.
+
+The theorem is stronger than a gall-count central limit theorem. It applies to atypical counts proportional to $n$, throughout every compact interior density interval, and supplies the local exponential rate, amplitude, and corrections. The contribution established here is the model-specific proof of these uniform statements for the combined \emph{unlabeled simplex time-consistent} class. The bounded source search and the established neighboring results are discussed in Section~\ref{sec:prior}.
+
+\section{Positive majorants and the real critical point}\label{sec:real}
+\subsection{Global analyticity of the nested term}
+Let $U(z)$ count rooted nonplane binary trees by leaves, and let $R$ be its radius. The classical Wedderburn--Etherington theory gives $0<R<1$ (numerically $R\simeq0.40270$); in particular $U(z)=z+(U(z)^2+U(z^2))/2$~\cite{FS,comparison}.
+
+\begin{lemma}[Strict nested subcriticality]\label{lem:nested}
+For every finite $u>0$,
+\begin{equation}\label{eq:radiusbounds}
+0<\rho(u)\leq R<1,\qquad \rho(u)\sqrt u\leq\sqrt R<1,
+\end{equation}
+and
+\begin{equation}\label{eq:nestedgap}
+\rho(u^2)\geq\frac{\rho(u)}{\max(1,\sqrt u)}>\rho(u)^2.
+\end{equation}
+Consequently $B(z,u)=G(z^2,u^2)$ is jointly analytic in a complex neighborhood of each positive critical pair $(\rho(u),u)$ and of its full modulus bitorus.
+\end{lemma}
+\begin{proof}
+An ordered plane version dominates the unordered class coefficientwise. Its generating function is bounded by the nonnegative solution of
+\begin{equation}\label{eq:majorant}
+ H=z+H^2+zu\left(\frac{H}{1-H}\right)^2.
+\end{equation}
+The analytic implicit function theorem at $z=H=0$ gives a positive radius at each fixed finite $u$, proving $\rho(u)>0$. Gall-free objects give $\rho(u)\leq R$. The injective minimal-gall construction in Proposition~\ref{prop:support} embeds the subseries
+\[
+ \sum_{k\geq0}[z^{k+1}]U(z)\,z^{2k+1}u^k
+       =\frac{U(uz^2)}{uz}
+\]
+(with its removable value at $z=0$), which has radius $\sqrt{R/u}$. This proves the second bound in~\eqref{eq:radiusbounds}.
+
+By support and positivity,
+\[
+ a_n(u^2)\leq\max\bigl(1,u^{(n-1)/2}\bigr)a_n(u).
+\]
+Taking $n$th roots proves the weak inequality in~\eqref{eq:nestedgap}. The strict inequality follows from $\rho(u)<1$ for $u\leq1$, and from $\rho(u)\sqrt u<1$ for $u\geq1$.
+
+It remains to justify joint analyticity without presupposing radius continuity. For any $v,v_0>0$, support gives
+\begin{equation}\label{eq:weightcomparison}
+ a_n(v)\leq a_n(v_0)\max\left(1,(v/v_0)^{(n-1)/2}\right).
+\end{equation}
+A strict interior convergence inequality therefore persists in a neighborhood of $(|z|,|u|)$. Apply this at the squared pair $(\rho(u)^2,u^2)$, which is strictly interior by~\eqref{eq:nestedgap}. Nonnegative coefficients dominate complex arguments by their moduli. The resulting absolute convergence on a slightly larger polydisc proves the asserted joint analyticity, including every phase on the modulus bitorus.
+\end{proof}
+
+\subsection{The critical point belongs to the counting branch}
+\begin{proposition}[Existence and analytic dependence]\label{prop:critical}
+For each $u>0$, the solution selected by the counting series has a finite boundary value $\tau(u)\in(0,1)$ and satisfies
+\begin{equation}\label{eq:critical}
+ \tau=F(\rho,u,\tau),\qquad 1=F_y(\rho,u,\tau)
+       =\tau+\rho u\frac{\tau}{(1-\tau)^3}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:rhotau}
+ \rho=\frac{(1-\tau)^4}{u\tau}.
+\end{equation}
+The characteristic point is locally unique and real analytic as a function of positive $u$, and has a local holomorphic extension around each such $u$.
+\end{proposition}
+\begin{proof}
+For $0<z<\rho(u)$ the nonnegative solution has $G(z,u)<1$: otherwise continuity forces it to reach the pole at one, while the gall contribution in~\eqref{eq:F} diverges. The inner value $B(z,u)$ also lies below one because $z^2<\rho(u^2)$ and the same argument applies at tilt $u^2$. Differentiation in the convergence disk gives
+\[
+ (1-F_y)G_z=F_z>0,
+\]
+so $F_y<1$. Here $G_z>0$ is finite in that disk and all contributions to $F_z$ are nonnegative, including the derivative of the nested series. The explicit derivatives are
+\begin{equation}\label{eq:yderivatives}
+ F_y=y+zu\frac{y}{(1-y)^3},\qquad
+ F_{yy}=1+zu\frac{1+2y}{(1-y)^4}>0.
+\end{equation}
+For $z$ bounded away from zero, $F_y<1$ bounds $G(z,u)$ uniformly away from one. Monotone convergence thus gives a finite $\tau<1$.
+
+Lemma~\ref{lem:nested} makes $B$ analytic at $z=\rho$, with $B(\rho,u)<1$. If $F_y(\rho,u,\tau)<1$, the analytic implicit function theorem would continue $G$ through its positive radius, contradicting Pringsheim's theorem. Hence~\eqref{eq:critical} holds, and rearrangement gives~\eqref{eq:rhotau}.
+
+For the system $F(z,u,y)-y=0$, $F_y(z,u,y)-1=0$, the Jacobian in $(z,y)$ at the characteristic point has determinant $F_zF_{yy}>0$. The implicit function theorem gives the locally unique holomorphic branch. The branch is the one reached from the positive counting series, rather than an arbitrary root found numerically. To identify nearby radii with this branch, apply~\eqref{eq:weightcomparison} in both directions: $\log\rho(u)$ is locally Lipschitz in $\log u$. The critical equation $F_y=1$, which is strictly increasing in $y$, then makes $\tau(u)$ continuous as well. Local uniqueness identifies these continuous characteristic pairs with the holomorphic branch. The local descriptions agree on overlaps, giving real analyticity on $(0,\infty)$.
+\end{proof}
+
+\section{Phase separation and uniform complex continuation}\label{sec:phase}
+A real square-root singularity alone does not prove a local coefficient theorem in the gall variable. The necessary extra fact is that no competing complex phase survives on the critical bitorus.
+
+\begin{lemma}[Unique critical phase]\label{lem:phase}
+For fixed $u>0$, at any point
+\[
+ (z,v)=(\rho(u)e^{\ii\theta},u e^{\ii\phi})
+\]
+other than $(\theta,\phi)=(0,0)$ modulo $2\pi$, the series $G$ is analytic in a neighborhood of that point. On the bitorus,
+\begin{equation}\label{eq:strictmod}
+ |G(\rho e^{\ii\theta},ue^{\ii\phi})|<\tau
+ \quad\text{unless}\quad \theta=\phi=0\pmod{2\pi}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The positive boundary sum equals $\tau<\infty$, so it converges absolutely at all these phase points. Equality in the triangle inequality would force the phases of all supported monomials $z^nu^k$ to agree. The three support points $(1,0),(2,0),(3,1)$ would then imply
+\[
+ \theta=2\theta=3\theta+\phi\pmod{2\pi},
+\]
+so $\theta=\phi=0$. This proves~\eqref{eq:strictmod}.
+
+The nested term is analytic near the whole bitorus by Lemma~\ref{lem:nested} and satisfies $|B|\leq B(\rho,u)<1$ there. With $y=G(z,v)$, positivity and~\eqref{eq:yderivatives} give
+\[
+ |F_y(z,v,y)|\leq |y|+\rho u\frac{|y|}{(1-|y|)^3}
+ <\tau+\rho u\frac{\tau}{(1-\tau)^3}=1
+\]
+at each nontrivial phase. The complex implicit function theorem supplies continuation through that point.
+\end{proof}
+
+\begin{corollary}[Off-axis coefficient bound]\label{cor:offaxis}
+Let $K\subset(0,\infty)$ be compact and $\delta>0$. For some $\eps>0$ and $C<\infty$, uniformly for $u\in K$ and $\delta\leq|\phi|\leq\pi$,
+\begin{equation}\label{eq:offaxis}
+ \bigl|[z^n]G(z,ue^{\ii\phi})\bigr|
+ \leq C\bigl((1+\eps)\rho(u)\bigr)^{-n}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The branch is analytic inside $|z|<\rho(u)$ by absolute convergence. Lemma~\ref{lem:phase} continues it across every point on that circle when $|\phi|\geq\delta$. The continuations agree with the original branch on their interior overlaps. Compactness of the positive tilt interval and of the phase sets gives a common relative enlargement of the circle and a common bound there. Cauchy's coefficient estimate proves~\eqref{eq:offaxis}.
+\end{proof}
+
+Near $\phi=0$, Proposition~\ref{prop:critical} instead provides the local analytic critical branch $\rho(ue^{\ii\phi}),\tau(ue^{\ii\phi})$. Nonzero $F_z$ and $F_{yy}$ give a square-root preparation in a common dented domain around the moving singularity. The other parts of the $z$ contour are continued by Lemma~\ref{lem:phase}. On a compact interval of real tilts, finitely many such neighborhoods yield uniform transfer contours and analytic parameter bounds. This is the complex-uniform setting used below. It does not require a globally single-valued critical branch at all complex tilts.
+
+\section{Puiseux coefficients and all fixed orders of transfer}\label{sec:puiseux}
+\subsection{A finite recursive coefficient generator}
+The local counting branch has a convergent expansion
+\begin{equation}\label{eq:puiseux}
+ G(z,u)=\tau(u)+\sum_{j\geq1}c_j(u)X^{j/2},\qquad
+ X=1-z/\rho(u),\qquad c_1(u)=-\gamma(u).
+\end{equation}
+The negative square-root branch is selected because $G(z,u)<\tau(u)$ on the real approach from below. All coefficients are holomorphic locally around any positive tilt.
+
+For a direct generator set $t=\sqrt X$ and
+\[
+ \mathcal H(t,y)=F(\rho(1-t^2),u,y)-y.
+\]
+After solving the characteristic equations, start with $c_1=-\sqrt{2\rho F_z/F_{yy}}$. For $j\geq2$,
+\begin{equation}\label{eq:cgen}
+ c_j=-\frac{[t^{j+1}]\mathcal H\!\left(t,\tau+\sum_{\ell=1}^{j-1}c_\ell t^\ell\right)}{F_{yy}c_1}.
+\end{equation}
+To verify this, note that $\mathcal H_y(0,\tau)=0$. In degree $j+1$ the new term $c_jt^j$ first couples with $c_1t$ through the quadratic derivative; its multiplier is $F_{yy}c_1\ne0$. All other terms of that degree involve already known coefficients. Only finitely many derivatives of the analytic nested series enter any prescribed finite order.
+
+\subsection{Transfer with parameter uniformity}
+Define the transfer polynomials $q_\ell(a)$ through the formal identity
+\begin{equation}\label{eq:qgen}
+ \exp\left\{\sum_{m\geq1}
+ \frac{(-1)^{m+1}\bigl(B_{m+1}(-a)-B_{m+1}(1)\bigr)}{m(m+1)}t^m\right\}
+ =\sum_{\ell\geq0}q_\ell(a)t^\ell,
+\end{equation}
+where $B_m(x)$ is the Bernoulli polynomial. For example $q_0(a)=1$ and $q_1(1/2)=3/8$. The exact coefficient identity
+\begin{equation}\label{eq:gammaratio}
+ [z^n](1-z/\rho)^a
+ =\rho^{-n}\frac{\Gamma(n-a)}{\Gamma(-a)\Gamma(n+1)}
+\end{equation}
+for nonintegral $a$ shows that~\eqref{eq:qgen} generates its inverse-power correction terms.
+
+\begin{proposition}[Univariate all-order expansion]\label{prop:transfer}
+For every compact $K\subset(0,\infty)$ and fixed $M\geq0$,
+\begin{equation}\label{eq:univ}
+ a_n(u)=\rho(u)^{-n}n^{-3/2}
+ \left\{\sum_{j=0}^M\frac{h_j(u)}{n^j}+O_{K,M}(n^{-M-1})\right\},
+\end{equation}
+uniformly on $K$ and locally uniformly on its sufficiently small complex neighborhoods. Here
+\begin{equation}\label{eq:hgen}
+ h_j(u)=\sum_{\ell=0}^j
+ \frac{c_{2\ell+1}(u)q_{j-\ell}(\ell+1/2)}{\Gamma(-\ell-1/2)},
+ \qquad h_0(u)=\frac{\gamma(u)}{2\sqrt\pi}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Use the convergent Puiseux expansion to an arbitrarily high fixed order on the uniform dented neighborhoods of Section~\ref{sec:phase}. The odd powers in~\eqref{eq:puiseux} give~\eqref{eq:gammaratio}; expansion of the gamma ratio gives~\eqref{eq:hgen}. Each retained even power is an integer power of $1-z/\rho$, hence a polynomial in $z$ and makes no eventual algebraic coefficient contribution. A sufficiently long local expansion bounds the omitted singular terms at the order required in~\eqref{eq:univ}. The rest of the transfer contour contributes exponentially smaller quantities by the analytic continuation. All coefficients and contour bounds are uniform on the indicated compact parameter sets. This is the parameter-uniform form of standard singularity analysis~\cite{FS}.
+\end{proof}
+
+The proposition extends the scalar expansion to arbitrary fixed order, but this transfer mechanism is standard. The crucial input for the density theorem is its availability around \emph{every} positive gall tilt, with the off-axis control of Section~\ref{sec:phase}.
+
+\section{Strict variance and the full interior density range}\label{sec:variance}
+\subsection{A root atom probability law}
+Expand the analytic root function, including its nested part, as
+\[
+ F(z,u,y)=\sum_{m,k,\ell\geq0} b_{m,k,\ell}z^m u^k y^\ell,
+ \qquad b_{m,k,\ell}\geq0.
+\]
+At the positive characteristic point define a probability law on these root monomials by
+\begin{equation}\label{eq:patoms}
+ p_{m,k,\ell}=b_{m,k,\ell}\rho^m u^k\tau^{\ell-1}.
+\end{equation}
+The characteristic equations say
+\begin{equation}\label{eq:moments}
+ \sum p_{m,k,\ell}=F/\tau=1,\qquad \E\ell=F_y=1.
+\end{equation}
+Some monomials have $m=0$, but $\E m>0$ because the leaf monomial $z$ has positive mass. Strict nested analyticity and $\tau<1$ give a common larger positive polydisc at each point, so the root law has all exponential moments used in the following differentiations. This auxiliary law is a proof device attached to a single root decomposition; it is not an independence assertion about all vertices of a random network.
+
+Write $s=\log u$ and $\eta(s)=\dd\log\tau(e^s)/\dd s$. The logarithmic derivative of a root mass is the score
+\begin{equation}\label{eq:score}
+ D_{m,k,\ell}=k-\alpha(s)m+(\ell-1)\eta(s).
+\end{equation}
+Differentiating the normalization and then using $\E(\ell-1)=0$ gives
+\[
+ 0=\E D=\E k-\alpha\E m,
+ \qquad \alpha(s)=\frac{\E k}{\E m}.
+\]
+Differentiating once more yields
+\[
+ 0=\E D^2-\beta(s)\E m+\eta'(s)\E(\ell-1).
+\]
+Consequently
+\begin{equation}\label{eq:varianceidentity}
+ \boxed{\displaystyle
+ \beta(s)=\frac{\E\bigl[(k-\alpha(s)m+(\ell-1)\eta(s))^2\bigr]}{\E m}.}
+\end{equation}
+
+\begin{proposition}[Strict curvature]\label{prop:strictbeta}
+For every real $s$, $\beta(s)>0$.
+\end{proposition}
+\begin{proof}
+The monomials $y^2/2$, $z$, and $zu y^2/2$ all have positive coefficients in $F$. If the numerator in~\eqref{eq:varianceidentity} were zero, the score would vanish on each of them. The first forces $\eta=0$; the second then forces $\alpha=0$; the third would give $1=0$. This contradiction proves strict positivity.
+\end{proof}
+
+\subsection{The endpoint slopes without endpoint asymptotics}
+For $s\leq0$, positivity and the gall-free subclass imply
+\[
+ -\log R\leq f(s)\leq f(0).
+\]
+Convexity then forces $f'(s)\to0$ as $s\to-\infty$. For $s\geq0$, the support comparison with $u=1$ and the minimal-gall subclass imply
+\begin{equation}\label{eq:endpointbounds}
+ \rho(1)e^{-s/2}\leq\rho(e^s)\leq\sqrt R\,e^{-s/2}.
+\end{equation}
+Thus $f(s)=s/2+O(1)$ as $s\to+\infty$, and convexity forces $f'(s)\to1/2$. Together with $f''>0$ this proves that $f'$ is an increasing bijection from $\R$ to $(0,1/2)$. Its inverse is analytic by the inverse function theorem. In particular, a compact density set has a compact saddle-tilt set; no saddle escapes to zero or infinity within the theorem's uniformity range.
+
+These bounds only identify limiting slopes. They do not provide asymptotic expansions for the critical pair as $u\downarrow0$ or $u\uparrow\infty$, nor do they control a density approaching an endpoint at an $n$-dependent speed.
+
+\section{The second saddle and its correction generator}\label{sec:density}
+Let $H_j(s)=h_j(e^s)$. Fix the actual density $a=k/n$ and choose $s$ so that $f'(s)=a$. Cauchy's formula in the gall variable gives
+\begin{equation}\label{eq:cintegral}
+ g_{n,k}=\frac{u^{-k}}{2\pi}\int_{-\pi}^{\pi}
+ a_n(ue^{\ii\phi})e^{-\ii k\phi}\,\dd\phi.
+\end{equation}
+Insert the complex-uniform expansion of Proposition~\ref{prop:transfer}. The exponential part, after factoring out $\rho(u)^{-n}$, is
+\begin{equation}\label{eq:phaseexpand}
+ n\{f(s+\ii\phi)-f(s)-\ii a\phi\}
+ =-\frac{n\beta(s)\phi^2}2
+ +n\sum_{m\geq3}\frac{f^{(m)}(s)(\ii\phi)^m}{m!}.
+\end{equation}
+Strict curvature is exactly the nondegeneracy needed for this saddle.
+
+\subsection{All orders by Gaussian moments}
+Let $X$ be a real centered Gaussian variable with variance $1/\beta(s)$. Then the correction coefficients in Theorem~\ref{thm:main} are
+\begin{equation}\label{eq:Qgen}
+\begin{split}
+Q_j(s)=\E\,[t^{2j}]\bigg(&\sum_{\ell=0}^j t^{2\ell}H_\ell(s+\ii Xt)\\[-2pt]
+ &\times\exp\left\{\sum_{m=3}^{2j+2}
+ \frac{f^{(m)}(s)(\ii X)^m}{m!}t^{m-2}\right\}\bigg).
+\end{split}
+\end{equation}
+For $j=0$ the exponential sum is empty. Every operation here is finite: Taylor-expand each amplitude only to the degree needed to extract $t^{2j}$, then use
+\[
+ \E X^{2m}=(2m-1)!!\,\beta^{-m},\qquad \E X^{2m+1}=0.
+\]
+In particular $Q_j$ is real and analytic. The first correction is
+\begin{equation}\label{eq:Q1}
+ Q_1=H_1-\frac{H_0''}{2\beta}
+ +\frac{H_0'f'''}{2\beta^2}
+ +\frac{H_0 f''''}{8\beta^2}
+ -\frac{5H_0(f''')^2}{24\beta^3},
+\end{equation}
+where primes denote $s$ derivatives. Formula~\eqref{eq:Q1} displays separately the univariate transfer correction, amplitude curvature, the amplitude-phase cross term, and the quartic and squared cubic phase terms.
+
+\subsection{Uniform remainder proof}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The real-analytic and range assertions were proved in Sections~\ref{sec:real} and~\ref{sec:variance}. For the coefficient assertion, the compact density set corresponds to a compact positive tilt interval. In~\eqref{eq:cintegral}, the region $|\phi|\geq\delta$ is exponentially negligible uniformly by Corollary~\ref{cor:offaxis}. On $|\phi|<\delta$, take a common complex neighborhood on which the critical branch and transfer amplitudes are analytic. Since the linear term is purely imaginary and $\beta$ has a positive minimum, shrinking $\delta$ if necessary gives
+\[
+ \Re\{f(s+\ii\phi)-f(s)\}\leq-c\phi^2
+\]
+with one $c>0$ throughout the compact interval. The portion $n^{-2/5}\leq|\phi|<\delta$ is therefore exponentially small in $n^{1/5}$, up to polynomial factors.
+
+On $|\phi|<n^{-2/5}$ put $x=\sqrt n\,\phi$. The leading integrand becomes $\exp(-\beta x^2/2)$, the univariate factor is $n^{-3/2}$, and $\dd\phi$ supplies $n^{-1/2}$. Their product explains $n^{-2}$. Analytic Taylor bounds on the common neighborhood, with sufficiently many extra retained orders, bound the integrated remainders by $O(n^{-M-1})$ after the leading normalization. One may justify termwise integration first on a growing bounded $x$ window, dominate the remainder by a Gaussian times a polynomial, and then use the Gaussian tail for its complement. Retaining two extra orders avoids losing an order when odd terms cancel. The univariate transfer remainder is controlled in the same Gaussian integral using its complex-uniform bound.
+
+The Gaussian integral contributes $1/\sqrt{2\pi\beta}$; collecting the even powers of $n^{-1/2}$ gives precisely~\eqref{eq:Qgen}. All omitted terms have a common integrable bound on the compact tilt set. This proves~\eqref{eq:main}, hence~\eqref{eq:leading}.
+\end{proof}
+
+\subsection{Why the actual integer ratio must be used}\label{sec:floor}
+For a fixed $a\in(0,1/2)$ define
+\[
+ \Lambda(a)=f(s(a))-a s(a),\qquad
+ C(a)=\frac{H_0(s(a))}{\sqrt{2\pi\beta(s(a))}}.
+\]
+Then the leading term at actual density $a_n=k_n/n$ is $C(a_n)e^{n\Lambda(a_n)}n^{-2}$. Suppose $k_n=an+\delta_n$ with bounded $\delta_n$. Since $\Lambda'(a)=-s(a)$,
+\begin{equation}\label{eq:floorfactor}
+ g_{n,k_n}=C(a)e^{n\Lambda(a)}n^{-2}
+              u(a)^{-\delta_n}\bigl(1+O(n^{-1})\bigr).
+\end{equation}
+For $k_n=\lfloor an\rfloor$, this is the persistent factor
+\[
+ u(a)^{an-\lfloor an\rfloor}.
+\]
+Except when $u(a)=1$ or on a specially fixed residue, it cannot be absorbed into a relative error tending to zero. Higher corrections on a bounded-offset ray can be obtained by expanding~\eqref{eq:main} at $a+\delta_n/n$, retaining $\delta_n$ in every coefficient. For rational $a$, the offsets are periodic and may be separated by residue class. For irrational $a$, there is no finite residue decomposition.
+
+\section{Distributional consequences}\label{sec:distribution}
+\subsection{Central limit and cumulant expansions}
+Let $K_n$ be the number of galls in a uniformly chosen $n$-leaf object. Its moment generating function is
+\[
+ \E e^{sK_n}=\frac{a_n(e^s)}{a_n(1)}.
+\]
+The complex-uniform transfer expansion near $s=0$ gives
+\begin{equation}\label{eq:logmgf}
+\begin{split}
+ \log\E e^{sK_n}
+ &=n\{f(s)-f(0)\}+\log\frac{H_0(s)}{H_0(0)}\\
+ &\quad+\sum_{j=1}^M\frac{L_j(s)-L_j(0)}{n^j}
+ +O(n^{-M-1}),
+\end{split}
+\end{equation}
+where
+\[
+ L_j(s)=[t^j]\log\left(1+\sum_{\ell\geq1}\frac{H_\ell(s)}{H_0(s)}t^\ell\right).
+\]
+The remainder is analytic and uniform on a fixed complex neighborhood, so Cauchy's derivative estimate permits termwise differentiation for every fixed cumulant order. In particular, with $\mu=f'(0)$ and $\sigma^2=f''(0)>0$,
+\begin{align}
+ \E K_n&=\mu n+(\log H_0)'(0)+O(n^{-1}),\label{eq:mean}\\
+ \Var K_n&=\sigma^2n+(\log H_0)''(0)+O(n^{-1}),\label{eq:var}\\
+ \frac{K_n-\mu n}{\sqrt{\sigma^2n}}&\ \xrightarrow{\ d\ }\ N(0,1).\label{eq:clt}
+\end{align}
+This is an application of the usual quasi-powers principle~\cite{FS,Drmota}. Each fixed higher cumulant has leading coefficient $f^{(r)}(0)n$ and a complete inverse-power expansion from~\eqref{eq:logmgf}.
+
+The phase separation already proved gives a span-one local Gaussian limit. For example, uniformly for bounded real
+$x=(k-\mu n)/\sqrt{\sigma^2n}$ at integral $k$,
+\begin{equation}\label{eq:lclt}
+ \Pp(K_n=k)=\frac{e^{-x^2/2}}{\sqrt{2\pi\sigma^2n}}
+                       \bigl(1+O(n^{-1/2})\bigr).
+\end{equation}
+Taylor expansion of the same analytic quantities gives every fixed Edgeworth correction on compact $x$ intervals. This is a central specialization of the density analysis, not a substitute for its global positive-tilt proof.
+
+\subsection{Precise interior large deviations}
+Define
+\begin{equation}\label{eq:rate}
+ I(a)=a s(a)-f(s(a))+f(0),\qquad 0<a<1/2.
+\end{equation}
+Then $I'(a)=s(a)$ and
+\[
+ I''(a)=\frac1{\beta(s(a))}>0.
+\]
+Its unique minimum is $I(\mu)=0$. Dividing the leading density count by the total count gives, at the \emph{actual} ratio $a=k/n$,
+\begin{equation}\label{eq:ldp}
+ \Pp(K_n=k)\sim
+ \frac{H_0(s(a))}{H_0(0)\sqrt{2\pi\beta(s(a))n}}
+ e^{-nI(a)},
+\end{equation}
+uniformly on compact subsets of $(0,1/2)$. Division of the two complete expansions produces arbitrary fixed relative corrections as well. Formula~\eqref{eq:ldp} is a precise point-probability large-deviation law in the interior. It makes no assertion about endpoint probabilities or moving endpoint layers.
+
+\section{Explicit inverse models and integer threshold brackets}\label{sec:inversion}
+\subsection{A general exponential count model}
+Consider an eventually increasing sequence, possibly restricted to a leaf lattice, with a full fixed-order expansion
+\begin{equation}\label{eq:bn}
+ b_n=C e^{Ln}n^{-p}\left(1+\sum_{j=1}^M d_jn^{-j}+O(n^{-M-1})\right),
+ \quad C,L,p>0.
+\end{equation}
+Put
+\[
+ \ell_j=[t^j]\log\left(1+\sum_{j\geq1}d_jt^j\right).
+\]
+The inverse of the leading continuous expression $Ce^{Ln}n^{-p}$, on its increasing large-$n$ branch, is
+\begin{equation}\label{eq:W}
+ n_0(X)=-\frac pL W_{-1}\!\left(-\frac Lp(C/X)^{1/p}\right).
+\end{equation}
+The branch $W_{-1}$ is essential: it gives $n_0(X)\to\infty$ as $X\to\infty$.
+
+An arbitrary smooth interpolation of the discrete sequence need not have controlled derivatives. We therefore define the approximation to be inverted explicitly.
+\begin{definition}[Logarithmic inverse model]\label{def:inverse}
+For fixed $M\geq0$, let $N_M(X)$ be the sufficiently large real solution of
+\begin{equation}\label{eq:NM}
+ \log C+Lx-p\log x+\sum_{j=1}^M\ell_jx^{-j}=\log X.
+\end{equation}
+\end{definition}
+The derivative of the left side tends to $L>0$, so this root exists uniquely for all sufficiently large $X$. The count expansion and the mean-value theorem yield
+\begin{equation}\label{eq:inverseerror}
+ N_M(b_n)=n+O(n^{-M-1})
+\end{equation}
+on the specified lattice. No derivative estimate for an unchosen interpolation is needed.
+
+There is a computable expansion
+\begin{equation}\label{eq:inversepowers}
+ N_M(X)=n_0(X)+\sum_{j=1}^M e_jn_0(X)^{-j}
+                         +O(n_0(X)^{-M-1}).
+\end{equation}
+To generate it, use $E(t)=\sum_{j\geq1}e_jt^j$ and solve formally
+\begin{equation}\label{eq:egen}
+ LE(t)-p\log(1+tE(t))
+       +\sum_{j\geq1}\ell_jt^j(1+tE(t))^{-j}=0.
+\end{equation}
+Each new $e_j$ occurs with the nonzero coefficient $L$. In particular,
+\begin{equation}\label{eq:e12}
+ e_1=-\frac{d_1}L,\qquad
+ e_2=-\frac{d_2-d_1^2/2}{L}-\frac{p d_1}{L^2}.
+\end{equation}
+Only $\ell_1,\ldots,\ell_M$ are needed for~\eqref{eq:inversepowers}. These are standard analytic inversion and Lambert-$W$ tools; their role here is to give a precisely chosen model and an honest discrete rounding statement.
+
+\subsection{Total counts and exact rational density rays}
+For the row sum A397952, Proposition~\ref{prop:transfer} gives
+\begin{equation}\label{eq:totalinverseparams}
+ b_n=a_n,\quad p=\tfrac32,\quad C=h_0(1),\quad
+ L=-\log\rho(1),\quad d_j=h_j(1)/h_0(1).
+\end{equation}
+The ratio $a_{n+1}/a_n\to e^L>1$ proves eventual monotonicity.
+
+For an exact rational density $a=p_0/q\in(0,1/2)$ in lowest terms, restrict to
+\[
+ n=qm,\qquad k=p_0m.
+\]
+In~\eqref{eq:bn} the exponent parameter is $p=2$ (distinct from the integer numerator $p_0$), and
+\begin{equation}\label{eq:rayparams}
+ C=\frac{Q_0(s(a))}{\sqrt{2\pi\beta(s(a))}},\quad
+ L=f(s(a))-a s(a),\quad d_j=\frac{Q_j(s(a))}{Q_0(s(a))}.
+\end{equation}
+To see that $L>0$, put $A=-\log R>0$. The two subclasses used earlier imply for all real $s$
+\[
+ f(s)\geq\max(A,s/2+A/2).
+\]
+The minimum over $s$ of the right side minus $as$ is $A(1-a)$, attained at the intersection $s=A$. Hence
+\begin{equation}\label{eq:Lpositive}
+ L\geq A(1-a)>0.
+\end{equation}
+The ratio along this lattice tends to $e^{qL}>1$. The exact rational subsequence is therefore eventually increasing, and its leaf spacing is $q$.
+
+\subsection{Threshold brackets with the correct spacing}
+Let $n_\star(X)$ be the least leaf count on the specified eventually increasing tail lattice at which $b_n\geq X$. For large $X$, including or excluding finitely many initial terms makes no difference.
+\begin{proposition}[Asymptotic lattice brackets]\label{prop:brackets}
+For total counts take $q=1$; for the exact rational ray use its reduced denominator $q$. For every fixed $M$, there is $K_M>0$ such that, for all sufficiently large $X$, with
+\[
+ \eps_M(X)=K_M N_M(X)^{-M-1},
+\]
+one has
+\begin{equation}\label{eq:brackets}
+ q\left\lceil\frac{N_M(X)-\eps_M(X)}q\right\rceil
+ \leq n_\star(X)\leq
+ q\left\lceil\frac{N_M(X)+\eps_M(X)}q\right\rceil.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $\mathcal L_M(x)$ denote the left side of~\eqref{eq:NM}. The logarithm of~\eqref{eq:bn} differs from $\mathcal L_M(n)$ by $O(n^{-M-1})$. Since $\mathcal L_M'(x)\to L>0$, choosing a sufficiently large constant in $\eps_M$ ensures the following: every lattice point $n<N_M(X)-\eps_M$ has $b_n<X$, while every lattice point $n\geq N_M(X)+\eps_M$ has $b_n\geq X$. For the two nearby rounding points, $n=N_M(X)+O(q+1)$, so their error scale can uniformly be replaced by $N_M(X)^{-M-1}$. Farther points follow by eventual monotonicity. Rounding the first admissible lattice point in each direction gives~\eqref{eq:brackets}.
+\end{proof}
+
+The bounds coincide unless $N_M(X)$ lies within $\eps_M(X)$ of a multiple of $q$. An exact ceiling of a truncated expansion is generally unjustified arbitrarily close to a threshold. The constants $K_M$ and the sufficiently large threshold are existence bounds from asymptotic remainders; no numerical interval procedure for them has been executed here.
+
+\subsection{Why arbitrary floor rays are different}
+If $b_n=g_{n,\lfloor an\rfloor}$, then~\eqref{eq:floorfactor} gives a bounded, persistent modulation. The increment of $\lfloor an\rfloor$ is either zero or one. Along the respective step subsequences the successive ratios approach
+\begin{equation}\label{eq:floorsteps}
+ \rho(u)^{-1}\quad\hbox{or}\quad (\rho(u)u)^{-1}.
+\end{equation}
+The latter may be less than one: from~\eqref{eq:endpointbounds}, $\rho(u)u\geq\rho(1)\sqrt u\to\infty$ as $u\to\infty$. Thus sufficiently high-density floor rays need not be eventually increasing. No monotone threshold theorem for arbitrary floor rays follows from the present analysis.
+
+For rational $a$, one may treat separate residues of $n$ modulo $q$ and retain each constant offset; their lattice brackets are shifted accordingly. For the unshifted exact ray the bracket is precisely~\eqref{eq:brackets}. For irrational floor rays no single constant-amplitude all-orders inverse is asserted. The safe general counting formula remains Theorem~\ref{thm:main} at $k/n$.
+
+\section{Numerical values and reproducible checks}\label{sec:numerics}
+\subsection{Unrestricted constants}
+The following values are rounded conservatively from high-precision computations using the exact integer rows through $n=160$:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Quantity & Computed value\\
+\midrule
+$\rho(1)$ & $0.234447605596238$\\
+$\tau(1)$ & $0.434916210181836$\\
+$\gamma(1)$ & $0.383575886662828$\\
+$h_0(1)$ & $0.108204759877631$\\
+$\mu$ & $0.197414310082877$\\
+$\sigma^2$ & $0.055485880717940$\\
+$(\log H_0)'(0)$ & $-0.116723116959526$\\
+$(\log H_0)''(0)$ & $-0.029094400740879$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular the typical gall count is about $0.19741431n$, with standard deviation about $\sqrt{0.05548588n}$. These decimal values are numerical approximations, not proved interval enclosures.
+
+Writing $h_j(1)=h_0(1)d_j$, the first five scalar corrections are
+\begin{center}
+\begin{tabular}{@{}rl@{}}
+\toprule
+$j$ & $d_j$\\\midrule
+1 & $0.280647240980743$\\
+2 & $0.191363741008110$\\
+3 & $0.301790464724205$\\
+4 & $1.043442439907384$\\
+5 & $5.730516744105851$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The univariate generator computes through $c_{13}$ and $d_5$. With corrections through $d_4$, the relative error, defined throughout as approximation divided by exact value minus one, is approximately
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n=20$ & $n=40$ & $n=80$ & $n=160$\\\midrule
+$-3.20\cdot10^{-6}$ & $-6.82\cdot10^{-8}$ & $-1.92\cdot10^{-9}$ & $-5.71\cdot10^{-11}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The observed accuracy is consistent with the analytic expansion. It is not a proof of the remainder bounds.
+
+\subsection{Positive density checks}
+The bivariate check evaluates the implicit saddle and its derivatives independently of any fit to coefficients. Each tested $n$ is a multiple of ten, so the densities $0.1,0.2,0.3$ are exact ratios. The numerical calculation uses 55 decimal digits internally.
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$a=k/n$ & $u(a)$ & $\beta(s(a))$ & $Q_1/Q_0$\\\midrule
+$0.1$ & $0.1267620998$ & $0.03706869128$ & $-0.1267311875$\\
+$0.2$ & $1.0475975420$ & $0.05572585182$ & $0.07004571663$\\
+$0.3$ & $6.0366672418$ & $0.05541887305$ & $0.2017485876$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $n=160$ the observed relative errors are
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$a$ & Leading term & Through $Q_1/n$\\\midrule
+$0.1$ & $+8.03951\cdot10^{-4}$ & $+1.12446\cdot10^{-5}$\\
+$0.2$ & $-4.40082\cdot10^{-4}$ & $-2.48932\cdot10^{-6}$\\
+$0.3$ & $-1.27630\cdot10^{-3}$ & $-1.69759\cdot10^{-5}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $n=20,40,80,160$, multiplication of the first-corrected relative error by $n^2$ gives
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$a$ & 20 & 40 & 80 & 160\\\midrule
+$0.1$ & $0.247918$ & $0.272173$ & $0.282936$ & $0.287861$\\
+$0.2$ & $-0.095541$ & $-0.075625$ & $-0.067475$ & $-0.063727$\\
+$0.3$ & $-0.491353$ & $-0.455837$ & $-0.441341$ & $-0.434582$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The stabilization is consistent with the next $n^{-2}$ correction.
+
+\subsection{Exact rows and precision stability}
+The integer recurrence~\eqref{eq:GS} checks evenness before every division by two. The resulting rows through $n=160$ reproduce all 28 displayed A397952 terms ($n=0,\ldots,27$) and all 49 displayed A399421 cells (13 rows) in the inspected source records. The latter record was the individually retrieved OEIS-data mirror revision dated 2 September 2026; direct access to its canonical entry was unavailable during that check. Values beyond those displayed terms are generated from the recurrence, rather than externally verified against a complete b-file.
+
+At $u=1$, rerunning the scalar calculation with row cutoffs 120 and 160 at 80-digit working precision changes $d_1,\ldots,d_5$ by at most about $4.69\cdot10^{-67}$. Rerunning cutoff 160 at 60 versus 80 digits changes them by at most about $3.83\cdot10^{-59}$. For $\rho,\gamma,\mu,\sigma^2$, the precision comparison is below $6\cdot10^{-62}$; the cutoff difference is below the resolution of the stored 75-digit output. These are \emph{stability tests}. Zero in a rounded comparison does not mean a rigorously zero truncation error.
+
+A route to certification exists but was not executed. At $u=1,z=0.15$, the plane majorant~\eqref{eq:majorant} has supersolution $H\leq0.3$, because
+\[
+ 0.15+0.3^2+0.15(0.3/0.7)^2<0.3.
+\]
+Therefore $a_n(1)\leq0.3(0.15)^{-n}$. At a rigorously enclosed $\rho$, the inner series tail after $N$ can be bounded by
+\[
+ \frac{0.3q^{N+1}}{1-q},\qquad q=\rho^2/0.15<1,
+\]
+with analogous weighted tails for derivatives. Rational interval arithmetic and interval Newton applied to the characteristic system could then certify constants. Neither the stability tests nor this proposed certification route supplies interval enclosures or effective constants for Theorem~\ref{thm:main} or Proposition~\ref{prop:brackets}.
+
+\subsection{The previously recorded amplitude and a source diagnostic}\label{sec:diagnostic}
+OEIS A397952 already credits V\'aclav Kote\v{s}ovec with the more accurate scalar amplitude $\gamma=0.3835758866628\ldots$~\cite{oeis397952}. The independent calculation here reproduces that value. It is not presented as a new correction.
+
+For precision about versions, the inspected author PDF and arXiv text of~\cite{comparison} print $\gamma\simeq0.3846$ and an intermediate derivative about $1.6716$. Direct evaluation of their defining equation gives instead
+\[
+ F_z\simeq1.662818196900732,\qquad
+ F_{yy}\simeq5.299293465244503.
+\]
+The stated backward finite difference with step $0.001$ gives an inner derivative about $1.130794803867$; direct differentiation gives about $1.132245037790$. Inserting the backward-difference value into the displayed derivative formula yields $\gamma\simeq0.383526298426890$, so finite-difference error alone does not explain the printed $0.3846$. This is an independently reproduced diagnostic of an intermediate numerical inconsistency in the inspected versions. The source of that arithmetic discrepancy is not established. The journal text was not obtained, and no journal erratum is asserted or verified.
+
+\section{Prior work and the scope of the result}\label{sec:prior}
+\subsection{Established results for the exact class}
+Agranat-Tamir, Fuchs, Gittenberger, Rosenberg and Seetharaman~\cite{comparison} derive the bivariate ordinary generating function in Section 5.4, fixed-gall asymptotics in Section 5.5, and the leading scalar asymptotic in Section 5.6. Their article is listed in \emph{Advances in Applied Mathematics} 180 (2026), 103131. The versions inspected for this report were arXiv v1 and the author-hosted PDF; equation and page numbers can differ from the journal version.
+
+In particular, with $R$ the binary-tree radius and $\gamma_U$ its square-root coefficient, the known fixed-$k$ statement recorded by A399421 is
+\begin{equation}\label{eq:fixedkprior}
+ g_{n,k}\sim
+ \frac{2^{2k-1}}{(2k)!\,\gamma_U^{4k-1}\sqrt\pi}\,
+ n^{2k-3/2}R^{-n+k},\qquad k\text{ fixed},
+\end{equation}
+where $R\simeq0.40270$ and $\gamma_U\simeq1.13003$. A fixed-$k$ equivalent does not justify substitution of $k\asymp n$ without new uniform estimates. The theorem of this report addresses that different regime.
+
+\subsection{Neighboring distributional theorems}
+A gall-count central limit law is already known for normal unlabeled galled trees without the simplex restriction: Agranat-Tamir, Mathur and Rosenberg~\cite{normal2024}, Section 5.6, derive linear mean and variance through the general implicit schema. Fuchs and Yu~\cite{semisimplex}, Theorem 24, give a gall-count CLT for leaf-labeled semi-simplex general galled trees, while their Remark 25 records an ordinary simplex labeled counterpart. These are important methodological neighbors. Their classes differ from the present combined class, and the labeled generating functions use exponential rather than ordinary normalization.
+
+Fuchs and Gittenberger~\cite{sackin} distinguish general, simplex and normal galled trees in their work on Sackin indices; those Airy-type index limits concern a different statistic. The words ``simplex,'' ``normal,'' ``galled tree,'' and ``galled network'' must not be interchanged when transferring statements between models.
+
+The analytic tools used here, including smooth implicit schemas, Puiseux expansions, parameter-uniform transfer, quasi-powers, Gaussian saddles, and inverse asymptotic series, are standard~\cite{FS,Drmota}. In addition, the pinned ProveIt sources~\cite{proveittrans,proveitcomposition} already contain extensive scalar rooted-tree Puiseux and transfer machinery, Lambert-$W$ inversion with remainder, and Gaussian-moment methods for fixed composition. Those techniques are credited as prior methodology, not claimed as innovations of this report.
+
+\subsection{Bounded novelty assessment}
+A targeted source inspection found no matching uniform positive-density all-orders theorem for the exact unlabeled simplex time-consistent class. Besides the primary papers and OEIS records above, the inspection rescanned the contents of 185 previously selected individual ProveIt text files at commit \texttt{4b874cea}\allowbreak\texttt{0012c51a6841ad9c58f6e20fa57c71da}, including the relevant canonical asymptotic material. This is a bounded negative result, not a proof that no equivalent theorem exists anywhere. Unindexed work, inaccessible versions, unpublished results, and uninspected repository contents remain outside that assessment.
+
+The substantive mathematical claim of this report is therefore the proved package of model-specific global nested analyticity, full-range nondegenerate density saddles, complex phase separation, and uniform coefficient expansion~\eqref{eq:main}. The report does not claim novelty for the known generating function, fixed-$k$ estimate, scalar leading term, corrected amplitude, or the general analytic machinery.
+
+\section{Questions suggested by the theorem}\label{sec:questions}
+The following questions lie outside the scope of this report. They are not consequences of the compact-interior theorem; no claim is made here that each remains unresolved in other work.
+\begin{enumerate}[leftmargin=*,itemsep=5pt]
+\item \textbf{Matching low density to fixed gall count.} Can one derive explicit small-$u$ expansions for $\rho(u)$, $\tau(u)$, $\beta(\log u)$ and the amplitudes, and identify a uniform overlap with the known fixed-$k$ formula~\eqref{eq:fixedkprior}? A regime with $k\to\infty$ but $k=o(n)$ is a natural candidate for such matching, but this report does not establish its width or a crossover law. In particular one must not insert $k/n\to0$ into~\eqref{eq:main} without new error control.
+\item \textbf{Near maximal gall count.} What is the appropriate scaled model when the deficit $n-1-2k$ is fixed or grows slowly? The maximal-density boundary has a distinct combinatorial structure. The present limit $\alpha\uparrow1/2$ identifies only the possible slope, not a boundary law.
+\item \textbf{Certified constants and effective thresholds.} Can a rational interval implementation of the nested-series tail bounds certify $\rho,\gamma,\mu,\sigma^2$, and can complex-contour bounds be made effective enough to supply explicit numerical constants in the density remainder and inverse brackets? The first task is much smaller than the second.
+\item \textbf{Higher local corrections in practice.} The finite Gaussian generator gives any fixed $Q_j$ symbolically. An implementation based on automatic differentiation and truncated series could extend the current numerical $Q_1$ checks to higher orders and a wider compact density grid, with careful conditioning checks at the chosen tilts.
+\item \textbf{Floor-ray threshold behavior.} The two step ratios in~\eqref{eq:floorsteps} suggest studying running maxima or residue-resolved thresholds instead of assuming monotonicity. A useful theorem would need to retain the phase and specify the exact threshold convention. No universal floor-ray inverse is proposed here.
+\end{enumerate}
+
+\appendix
+\section{Reproducibility guide}\label{app:replay}
+The companion archive contains this editable \LaTeX{} source, its PDF, exact numeric reference inputs, Python generators, stored numerical results, a replay wrapper and a SHA-256 manifest. It contains no third-party paper copies or private research notes.
+
+The exact enumerator uses only the Python standard library. The high-precision calculations require \texttt{mpmath} and \texttt{sympy}; the dependency file records the tested versions. A PDF rebuild requires \texttt{pdflatex} with the standard packages loaded at the beginning of the source. The replay guide explains the complete command and available output-directory choices. The wrapper selects \texttt{python3} by default and respects a \texttt{PYTHON} override. No machine-specific absolute file paths are needed.
+
+The complete replay regenerates the integer rows through $n=160$, recomputes the scalar constants and corrections, evaluates the three positive-density examples, and reruns both cutoff and precision stability variants. It compares exact integer data exactly and numerical outputs at documented tolerances appropriate to their working precision. Computed output is written separately from stored reference output. The multi-pass PDF build resolves the contents, equation and bibliography references. A clean extraction and replay is part of the artifact verification; the package manifest records the files distributed with this report.
+
+The algorithms numerically truncate the analytic nested series. Their usefulness rests on the proved subcriticality, and their finite-precision outputs are corroborating checks. The proof of the theorem is in the preceding sections, independently of decimal fitting or the success of any one numerical run.
+
+\begin{thebibliography}{99}
+\bibitem{comparison}
+L. Agranat-Tamir, M. Fuchs, B. Gittenberger, N. A. Rosenberg and K. V. Seetharaman.
+\emph{Combinatorial comparison of general galled trees, time-consistent galled trees, and simplex time-consistent galled trees}.
+Advances in Applied Mathematics \textbf{180} (2026), 103131.
+\href{https://doi.org/10.1016/j.aam.2026.103131}{DOI: 10.1016/j.aam.2026.103131}.
+Inspected versions: \href{https://arxiv.org/html/2601.08062v1}{arXiv:2601.08062v1} and
+\href{https://web.math.nccu.edu.tw/mfuchs/gen-galled-trees-sub.pdf}{author PDF}.
+
+\bibitem{oeis399421}
+The OEIS Foundation Inc. \emph{A399421}, rooted binary unlabeled simplex time-consistent galled trees by leaves and galls.
+\href{https://oeis.org/A399421}{Canonical entry}; inspected
+\href{https://raw.githubusercontent.com/oeis/oeisdata/main/seq/A399/A399421.seq}{OEIS-data mirror}, revision 7 dated 2 September 2026. Access checked 2 October 2026.
+
+\bibitem{oeis397952}
+The OEIS Foundation Inc. \emph{A397952}, rooted binary unlabeled simplex time-consistent galled trees by leaves.
+\href{https://oeis.org/A397952}{Canonical entry}. Access checked 2 October 2026. The more accurate scalar constants are credited there to V. Kote\v{s}ovec.
+
+\bibitem{FS}
+P. Flajolet and R. Sedgewick. \emph{Analytic Combinatorics}.
+Cambridge University Press, 2009. Especially Chapters VI--IX.
+\href{https://ac.cs.princeton.edu/home/}{Authors' book site}.
+
+\bibitem{Drmota}
+M. Drmota. \emph{Random Trees: An Interplay between Combinatorics and Probability}.
+Springer, 2009. \href{https://doi.org/10.1007/978-3-211-75357-6}{DOI: 10.1007/978-3-211-75357-6}.
+
+\bibitem{normal2024}
+L. Agranat-Tamir, S. Mathur and N. A. Rosenberg.
+\emph{Enumeration of rooted binary unlabeled galled trees}.
+Bulletin of Mathematical Biology \textbf{86} (2024), article 45.
+\href{https://web.stanford.edu/group/rosenberglab/papers/AgranatTamirEtAl2024-BMB.pdf}{Author-hosted paper}. Gall-count CLT: Section 5.6.
+
+\bibitem{semisimplex}
+M. Fuchs and T.-C. Yu.
+\emph{Semi-Simplex Phylogenetic Networks: Tree-Child Networks and Galled Trees}.
+AofA 2026.
+\href{https://web.math.nccu.edu.tw/mfuchs/SSTC-AofA2026.pdf}{Author-hosted paper}. See Theorem 24 and Remark 25.
+
+\bibitem{sackin}
+M. Fuchs and B. Gittenberger.
+\emph{Sackin indices for labeled and unlabeled classes of galled trees}.
+Journal of Mathematical Biology \textbf{90} (2025), article 42.
+\href{https://arxiv.org/html/2407.13892v1}{arXiv:2407.13892v1}.
+
+\bibitem{proveittrans}
+V. Reshetnikov, ProveIt repository.
+\emph{Transseries and Inversion}, rooted-tree material.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4b874cea0012c51a6841ad9c58f6e20fa57c71da/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}{Pinned source at commit 4b874cea}, inspected 2 October 2026.
+
+\bibitem{proveitcomposition}
+V. Reshetnikov, ProveIt repository.
+\emph{A215561 fixed-composition excursions report}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4b874cea0012c51a6841ad9c58f6e20fa57c71da/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a215561-fixed-composition-excursions/article.tex}{Pinned source at commit 4b874cea}, inspected 2 October 2026.
+\end{thebibliography}
+\end{document}

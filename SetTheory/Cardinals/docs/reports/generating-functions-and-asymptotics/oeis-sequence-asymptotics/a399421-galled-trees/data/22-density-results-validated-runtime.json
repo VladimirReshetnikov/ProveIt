@@ -1,0 +1,73 @@
+{
+  "python": "3.12.14",
+  "implementation": "CPython",
+  "platform": "Linux",
+  "machine": "x86_64",
+  "dependencies": {
+    "mpmath": "1.3.0",
+    "sympy": "1.14.0"
+  },
+  "mode": "full",
+  "stages": [
+    {
+      "name": "Exact integer rows",
+      "script": "independent_rows.py",
+      "seconds": 2.221,
+      "exit_code": 0,
+      "log": "rows.log"
+    },
+    {
+      "name": "Constants: cutoff 160, 80 digits",
+      "script": "derive.py",
+      "seconds": 0.894,
+      "exit_code": 0,
+      "log": "numerics.txt"
+    },
+    {
+      "name": "Stability: cutoff 120, 80 digits",
+      "script": "derive.py",
+      "seconds": 0.606,
+      "exit_code": 0,
+      "log": "stability/cutoff120-dps80.log"
+    },
+    {
+      "name": "Stability: cutoff 160, 60 digits",
+      "script": "derive.py",
+      "seconds": 0.822,
+      "exit_code": 0,
+      "log": "stability/cutoff160-dps60.log"
+    },
+    {
+      "name": "Density checks: 55 digits",
+      "script": "density_checks.py",
+      "seconds": 40.408,
+      "exit_code": 0,
+      "log": "density-numerics.txt"
+    },
+    {
+      "name": "Independent scalar amplitude: 85 digits",
+      "script": "check_amplitude.py",
+      "seconds": 0.131,
+      "exit_code": 0,
+      "log": "amplitude.log"
+    },
+    {
+      "name": "Verify exact terms and numerical tolerances",
+      "script": "verify_results.py",
+      "seconds": 0.034,
+      "exit_code": 0,
+      "log": "verification.log"
+    }
+  ],
+  "precision": {
+    "constants": 80,
+    "density": 55,
+    "stability": [
+      80,
+      60
+    ],
+    "amplitude": 85
+  },
+  "status": "passed",
+  "total_seconds": 45.119
+}

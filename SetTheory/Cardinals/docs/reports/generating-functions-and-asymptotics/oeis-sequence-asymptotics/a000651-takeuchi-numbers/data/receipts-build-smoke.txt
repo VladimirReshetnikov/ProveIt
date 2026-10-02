@@ -1,0 +1,12 @@
+Final isolated PDF build smoke test: PASS
+
+Input source SHA-256: 40d52eb680316dd97f9c5c39fd208c341bc15c1c4301169da86f22d1d0751ad3
+Compared deliverable PDF SHA-256: c85426482011fadfe29f33136dc4462e6226b4416d68a5300413c58923b8a9ed
+
+Copied only the final takeuchi-asymptotics.tex and build.sh into a new empty directory, then ran sh build.sh.
+The script regenerated missing local TeX format/font-map caches from installed packages and built the PDF in three passes.
+Result: 17 pages; no LaTeX warnings, overfull boxes, underfull boxes, or undefined references.
+Poppler layout text extraction is byte-identical to the final delivered PDF's extraction.
+The regenerated PDF may differ in metadata and file identifier; bitwise-identical PDF serialization is not asserted.
+
+The final build log is included as latex-final.log. Only the build-directory prefix was normalized to [isolated-build] for portability; the compiler output is otherwise preserved.
