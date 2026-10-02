@@ -61,7 +61,20 @@ reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
 natural witness tuple and passed independent review. Their arity depends
 on the external horizon; the fixed universal bound remains 87 operations.
 
-The [coupled-index compiler](research-wip/native-stream-queue/gpcp_coupled_index_units754.md)
+The [computed-history-field compiler](research-wip/native-stream-queue/gpcp_history_computed_fields744.md)
+gives **721 certificate /744=349M+395A operations**, eight comparisons,
+122 positive witnesses and exact formal degree187625. It computes three
+private history AND fields from the retained ports, saving3M+7A and three
+witnesses. Their positivity follows from the actual global bound and reserved
+top regions before any AND/history typing. Restoration bijects the new
+positive zeros with the754 parent's history-checksum-positive slice;
+normalizing the other history sign gives exactly two parent preimages per
+new zero. Recoder fields remain supplied. All eight complete sources,
+positive-domain proofs, signed graph identities, exact degrees and guarded
+APIs passed independent review. Supplied initial data costs747 operations,
+123 witnesses and degree8481. The separate universal bound remains87.
+
+The preceding [coupled-index compiler](research-wip/native-stream-queue/gpcp_coupled_index_units754.md)
 gives **728 certificate /754=352M+402A operations**, nine comparisons,
 125 positive witnesses and exact formal degree205777. Reusing each first
 index removes three additions. An explicit positive projection to757 has

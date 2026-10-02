@@ -45,9 +45,10 @@
 > query, program recipe, wrong-power residues and input-height proof.
 > The particular asymmetric Y=sq² shortcuts are now refuted on actual
 > compiler slices; further scale weakenings need fresh soundness arguments.
-> The complete sparse-TM route reaches754 with coupled indices. Its positive
-> projection has four preimages per parent zero; the older64-base frontier
-> retains its scope.
+> The complete sparse-TM route reaches744 by computing three history fields.
+> It has122 positive witnesses and exact degree187625. Restoration bijects
+> the754 history-checksum-positive slice; parent normalization is two-to-one.
+> The older64-base frontier retains its scope.
 > The C2 route reaches378, with its reviewed32-base transport/query frontier.
 > These reviewed packets are linked below.
 > Further grouped sources must retain their proved positive sections:
@@ -1010,7 +1011,20 @@ reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
 natural witness tuple and passed independent review. Their arity depends
 on the external horizon; the fixed universal bound remains 87 operations.
 
-The [coupled-index compiler](gpcp_coupled_index_units754.md)
+The [computed-history-field compiler](gpcp_history_computed_fields744.md)
+gives **721 certificate /744=349M+395A operations**, eight comparisons,
+122 positive witnesses and exact formal degree187625. It computes three
+private history AND fields from the retained ports, saving3M+7A and three
+witnesses. Their positivity follows from the actual global bound and reserved
+top regions before any AND/history typing. Restoration bijects the new
+positive zeros with the754 parent's history-checksum-positive slice;
+normalizing the other history sign gives exactly two parent preimages per
+new zero. Recoder fields remain supplied. All eight complete sources,
+positive-domain proofs, signed graph identities, exact degrees and guarded
+APIs passed independent review. Supplied initial data costs747 operations,
+123 witnesses and degree8481. The separate universal bound remains87.
+
+The preceding [coupled-index compiler](gpcp_coupled_index_units754.md)
 gives **728 certificate /754=352M+402A operations**, nine comparisons,
 125 positive witnesses and exact formal degree205777. Reusing each first
 index removes three additions. An explicit positive projection to757 has
