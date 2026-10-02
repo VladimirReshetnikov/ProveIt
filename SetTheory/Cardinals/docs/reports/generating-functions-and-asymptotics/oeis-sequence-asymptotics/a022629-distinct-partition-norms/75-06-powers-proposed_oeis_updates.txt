@@ -1,0 +1,40 @@
+DRAFT FORMULA NOTES — NOT SUBMITTED
+
+Please review the attached proofs and broaden the priority search before using
+these notes as a published contribution. The source is the accompanying report,
+"Norm-weighted distinct partitions", October 1, 2026. It is not peer reviewed
+or formalized in a proof assistant.
+
+1. Entries A022629, A092484, A265840, A265841, A265842
+
+Put r=1,2,3,4,5 respectively, m=sqrt(2*n), L=log(m), u=Pi^2/r^2.
+The elementary theorem gives
+
+    log(a(n)) = r*m*(L-1) + O(m/L).
+
+This proves and sharpens each posted leading asymptotic conjecture. The refined
+formula is
+
+    log(a(n)) = r*m*(L-1 + u/(6*L) + u/(6*L^2)
+                     + u*(12-u)/(72*L^3)
+                     + u*(3*u+20)/(120*L^4) + O(L^(-5))).
+
+An all-order coefficient generator and eight explicit correction coefficients
+are given in Section 6. The leading conjectures are credited to Vaclav Kotesovec:
+May 8, 2018 for A022629, and December 27, 2020 for the other four entries.
+
+2. Positive fixed columns of A292189
+
+The same formula applies to every fixed positive integer column index r.
+It is not uniform when r grows with n, and does not apply to column r=0.
+
+3. Positive fixed columns of A297321
+
+For fixed positive integer column index s, put m=sqrt(2*n/s), L=log(m), u=Pi^2.
+Then replace r*m in the displayed formula by s*m. The first 32 positive columns
+are cross-referenced by A297321 to A022629 through A022660.
+
+IMPORTANT: These are logarithmic asymptotic expansions. Exponentiating any
+fixed truncation does not generally yield a relative asymptotic equivalent.
+For a relative coefficient expansion use Section 5 of the report, with the exact
+saddle, logarithmic product, variance, and cumulants.

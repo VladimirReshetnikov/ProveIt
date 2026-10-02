@@ -8,9 +8,13 @@ The script verifies:
   * the all-orders late-term coefficients phi_j by two recursions;
   * the normalized, logarithmic, centered, and lambda-deformed expansions;
   * the monotone global bounds and inverse-transseries tables used in the paper.
+ed. (2026-10-01): the tables go to rerun/verification_output.txt unless
+--output is given (the recorded verification_output.txt is not overwritten by
+default), and the file is written with LF line endings on every platform.
 """
 from __future__ import annotations
 
+import argparse
 from math import factorial
 from pathlib import Path
 
@@ -222,10 +226,20 @@ def write_tables(path: Path, N: int = 500) -> None:
         vals = [inverse_estimate(a[n], C, order=j) - n for j in range(4)]
         lines.append(f"{n:3d}  " + "  ".join(f"{mp.nstr(v, 12):>13}" for v in vals))
 
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    # ed. (2026-10-01): newline="\n" so the file is LF on Windows too.
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
 
 
 def main() -> None:
+    # ed. (2026-10-01): the default leaves the recorded verification_output.txt untouched.
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--output", type=Path,
+        default=Path(__file__).resolve().parent / "rerun" / "verification_output.txt",
+        help="output file (default: rerun/verification_output.txt; "
+             "pass verification_output.txt to overwrite the recorded file)",
+    )
+    args = parser.parse_args()
     verify_exact_identities(80)
     verify_symbolic_expansions()
     verify_numeric_bounds(500)
@@ -238,7 +252,8 @@ def main() -> None:
         sp.Rational(-3157977156, 275),
     ]
     assert phi[: len(expected)] == expected
-    out = Path(__file__).with_name("verification_output.txt")
+    out = args.output
+    out.parent.mkdir(parents=True, exist_ok=True)
     write_tables(out)
     print("PASS: exact identities through n=80")
     print("PASS: phi coefficients through j=11")

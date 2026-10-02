@@ -95,9 +95,19 @@ entries, and \cref{spf:app:provenance}, which records the provenance and every
 editorial change. The rational-collapse statement of \cref{spf:sec:collapse}
 remains a conjecture.
 
+\paragraph{Editorial note (1 October 2026, batch 74).}
+Since batch~74 the report has two Parts. Part~I is manuscript~60, as
+described above. Part~II (\cref{fga:sec:front}) adds manuscript~03 of
+batch~74, an independent second derivation of Part~I's main theorems, and
+prints only what it adds: uniformity over forest shapes, comparison bounds,
+closed forms of $c_3(r,s)$, and proved integrality for the oriented one-path
+family. Its labels carry the prefix \texttt{fga:}.
+
 \newpage
 \tableofcontents
 \newpage
+
+\part{Unconditional all-orders asymptotics for two OEIS permutation sequences}
 
 \section{The target and the precise contribution}
 \label{spf:sec:target}
@@ -718,6 +728,12 @@ The proof also works for any fixed numbers $r,s$ of paths whose shortest
 length is bounded below by a positive multiple of $n$. It does not assert
 uniformity for arbitrarily growing offsets or for forests with a bounded
 short path.
+[Added 1 October 2026, batch 74: Part~II proves the expansion uniformly
+over forest shapes, on the disk $|1+u|\le1$, whenever the shortest path has
+at least $K_n\asymp\log n/\log\log n$ vertices
+(\cref{fga:thm:allorders,fga:cor:shortest}); \cref{fga:rem:partI-shapes}
+notes that the proof above already gives this on every disk $|u|\le U$
+with $T_n$ in place of $K_n$.]
 
 \section{Arithmetic, first corrections, and the full distribution}
 \label{spf:sec:arithmetic}
@@ -1383,6 +1399,9 @@ of $n$ beyond the moment index. A failure at some later $h$ would also be
 informative, because the first discrepancy would identify a missing component
 interaction. The all-orders integrality issue for the oriented family remains
 separate until such a proof exists.
+[Added 1 October 2026, batch 74: for the oriented one-path subfamily,
+$r=1$ or $s=1$, all-orders integrality is proved in Part~II
+(\cref{fga:cor:integrality}); the case $(2,2)$ of A189281 remains open.]
 
 \paragraph{2. Connect the asymptotic theorem to the specific guessed operators.}
 A proved asymptotic expansion does not establish the A189281 or A110128
@@ -1418,6 +1437,10 @@ first corrections. Determine the largest growth range in which a useful
 uniform expansion persists, and the transition law when path lengths become
 comparable to $\log n/\log\log n$. This question requires new uniform estimates;
 it is not an immediate corollary of the fixed-offset theorem.
+[Added 1 October 2026, batch 74: for fixed $r,s$, Part~II shows that the
+expansion survives whenever the shortest path is long compared with
+$\log n/\log\log n$ (\cref{fga:cor:shortest}); the transition at that scale
+remains open (\cref{fga:sec:questions}, question~2).]
 
 \paragraph{6. Extend from paths to several forbidden offsets and to cycles.}
 For several allowed differences, selected components can branch or contain
@@ -1464,6 +1487,779 @@ proved results and posed as a specific next problem. That distinction is
 central to the usefulness of the report: the established theorems can be
 used now, while the remaining conjectures have explicit, testable targets.
 
+\part{Fixed-gap asymptotics: a second derivation and its own results}
+\label{fga:part}
+
+\section{Provenance, scope and notation of Part II}
+\label{fga:sec:front}
+
+[Added 1 October 2026, batch 74.] Part~II was added in the write of
+batch~74. It is built from manuscript~03 of that batch and prints only what
+that manuscript adds to Part~I. Where the two manuscripts prove the same
+statement, the statement is printed once, in Part~I, and manuscript~03's
+route is recorded in \cref{fga:sec:routes}. Everything in Part~II is
+written in Part~I's notation (\cref{fga:tab:dictionary}).
+
+\subsection{Provenance}
+\label{fga:sec:provenance}
+
+Manuscript~03 of batch~74 is the archive
+\nolinkurl{ProveIt_Fixed_Gap_Asymptotics.zip}, which arrived in commit
+\texttt{c664fc2f0} and was placed in this report by commit
+\texttt{b669cff87}. Its article is titled \emph{All-Orders Asymptotics and
+Boundary Universality for Fixed-Gap Permutations} (25~pages, dated
+October~1, 2026); its title page reads ``Prepared for Vladimir
+Reshetnikov'' and its PDF metadata names ``ChatGPT, research report
+prepared for Vladimir Reshetnikov'' as author. Its pinned repository commit
+is \texttt{291fbe6bb4477e0cb2131f1e041b12a9abe363fd} (2026-10-01, 18:10;
+\cite{fgaProveIt}).
+
+It was written without sight of manuscript~60, the source of Part~I, and
+proves Part~I's main theorems in independent text: its structure,
+notation, constants and several proof devices differ throughout, and the
+two texts share about 1.1\,\% of their word 8-grams, almost all of them
+bibliography entries and the digits of the coefficient list. Every number
+the two manuscripts share agrees exactly: the coefficients of A189281 and
+A110128 through order twelve, the general second correction in $r,s$ for
+both orientations, the polynomials $B_1,B_2,B_3$ at $(r,s)=(2,2)$, the
+logarithmic coefficients and the first inverse coefficients.
+
+[Added 1 October 2026, batch 74: manuscript~03 states that ``a repository
+code search for A189281 returned no match at the time of the audit'', and
+its delivered \texttt{02-fixed-gap-sources.md} repeats it. The pinned
+commit \texttt{291fbe6bb} already held the archive of manuscript~60,
+\texttt{docs/incoming/oeis\_path\_forests.zip} (arrival commit
+\texttt{aa43cc555}), which code search cannot read; that archive was placed
+an hour later as Part~I of this report (commit \texttt{6e193dd4f}). Part~II
+is an independent derivation of the same theorems plus the results listed
+below.]
+
+\paragraph{Scope and non-claims of manuscript~03, kept.} Its contribution
+is ``the explicit stable-profile and finite-defect framework, the uniform
+error analysis, and the quantitative comparison of whole laws''. The
+leading Poisson behaviour, Tauraso's first correction and the
+matching-of-tilings inclusion--exclusion of Spahn and Zeilberger are
+credited as prior work. The proofs are ordinary mathematics, not a
+Lean-certified development, and no publication priority is claimed. ``All
+orders'' means a remainder theorem at each fixed order, not a convergent or
+resurgent completion; no Borel summability, optimal truncation, Stokes
+constant or complete family of exponentially small sectors is asserted. The
+conjectured OEIS recurrences of A189281 and A110128 are not proved, and
+neither is all-orders integrality when both component counts exceed one.
+Its numerical tables are not interval certificates, and its values of
+A189281 at $n=80,120$ are b-file inputs, not regenerated. It made no OEIS
+submission and modified no repository file.
+
+\subsection{What Part II adds, and how it compares with Part I}
+\label{fga:sec:claims}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.2\textwidth}>{\raggedright\arraybackslash}p{.36\textwidth}>{\raggedright\arraybackslash}p{.36\textwidth}@{}}
+\toprule
+Topic & Part I (manuscript 60) & Part II (manuscript 03)\\
+\midrule
+All-orders remainder &
+fixed offsets $r,s$; uniform on every disk $|u|\le U$
+(\cref{spf:thm:main}) &
+only on $|1+u|\le1$, i.e.\ $|u|\le2$, but uniform over all forest shapes
+whose shortest path has at least $K_n\asymp\log n/\log\log n$ vertices
+(\cref{fga:thm:allorders,fga:cor:shortest})\\
+Coefficients &
+$B_J$ through order 16, $(2J)!B_J\in\Z[u]$ (Proposition~\ref{spf:prop:arithmetic}) &
+same values through order 12 (not new); $B_J$ polynomial in $r,s$ of total
+degree at most $J$ (\cref{fga:prop:rs-degree}); closed forms of
+$c_3^{(\theta)}(r,s)$ (\cref{fga:prop:c3})\\
+Integrality &
+for $(2,2)$ oriented only conditional on Conjecture~\ref{spf:conj:collapse} &
+\emph{proved} for the oriented case with $r=1$ or $s=1$
+(\cref{fga:cor:integrality}); $(2,2)$ untouched\\
+Universality &
+total variation bound (\cref{spf:thm:universality}) &
+bounds for the whole generating function and the avoidance probability,
+a second total-variation bound, and an $n=12$ example
+(\cref{fga:thm:universal,fga:rem:n12})\\
+Whole law &
+$\ell^1$ approximation of the law (Corollary~\ref{spf:cor:distribution}) &
+explicit first-order local laws at $(2,2)$ \eqref{fga:eq:localdirect}--\eqref{fga:eq:localabsolute}\\
+Inverse &
+all orders in the coordinates $z,w$ (\cref{spf:thm:inverse-all}) &
+explicit terms through $N^{-3}$ in a coordinate absorbing $\kappa_\theta$;
+$a_2,a_3$ for A110128 (\cref{fga:prop:inverse})\\
+Certificates &
+certified Bonferroni intervals (\cref{spf:tab:certificates}) &
+uncertified decimals only (\cref{fga:sec:numerics})\\
+\bottomrule
+\end{tabular}
+\caption{Part II against Part I. The remainder theorem of Part~II is weaker
+in $u$ and stronger in geometry; see also \cref{fga:rem:partI-shapes}.}
+\label{fga:tab:claims}
+\end{table}
+
+\subsection{Notation}
+\label{fga:sec:notation}
+
+Manuscript~03 and Part~I use several letters for different objects, and
+manuscript~03 overloads $D$, $w$, $T$, $A$ and $B$ internally.
+\Cref{fga:tab:dictionary} fixes the convention: Part~II uses Part~I's names
+for every shared object and new names ($K_n$, $D_{n,k}$, $\Lambda$, $N$,
+$\Delta$, $\omega_j$, $\varepsilon_M$, $\alpha$) for the rest. No
+normalization is changed.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.33\textwidth}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.32\textwidth}@{}}
+\toprule
+Notion & Part I and Part II & Manuscript 03\\
+\midrule
+orientation weight ($1$ or $2$) & $\theta$ & $\eta$ (Part~I's $\eta$ is a
+length proportion)\\
+length proportion & $\alpha$ (Part~II); $\eta$ in \cref{spf:thm:universality} & $\alpha$\\
+generating function & $G(1+u)=\E(1+u)^X$ & $G(w)$, $w=1+z$, $z=u$\\
+$\E\binom Xk$ & $\mu_k$ & $S_k$ (Part~I's $S_j$ are Bonferroni sums)\\
+profile, multiplicity factorial & $\mathbf b=(b_\ell)$, $\bfac$ & $\mathbf m=(m_j)$, $\mathbf m!$\\
+tiling count & $C_{\mathcal P}(\mathbf b)$ & $T_{\mathcal F}(\mathbf m)$\\
+stable tiling polynomial & $F_r(n;\mathbf b)$ & $\bfac^{\,-1}F_r$ is its $T_r(n;\mathbf m)$\\
+formal root & $1+W$, $\mathcal D^{-1}$ & $\lambda$, $A$\\
+dimers; long profile & $m$; $\boldsymbol\beta$, $C$, $K$ & $h$; $\mathbf m$, $c_0$, $k_0$\\
+normalized profile kernel & $Q_{\mathbf b}(x)$ & $H_h(t)$ (\emph{not} Part~I's $H_h$)\\
+Charlier polynomials & $H_h(q;\theta)$ & $Q_m(j;\eta)$ (\emph{not} Part~I's $Q_{\mathbf b}$)\\
+correction polynomials & $B_J^{(\theta)}(u;r,s)$ & $C_J(r,s;\eta,z)$\\
+avoidance coefficients & $c_J^{(\theta)}(r,s)$ & $c_J^{(\eta)}(r,s)$ (same)\\
+moment cutoff & $T_n$ (Part~I), $K_n$ (Part~II) & $K$ (Part~I's $K$ is an edge degree)\\
+$(1-2k/n)^{-2k}$ & $D_{n,k}$ & $D_{n,k}$ (its $D$ is also $\log N$)\\
+logarithmic coefficients & $a_j$ & $d_j$ (Part~I's $d_j$ are inverse coefficients)\\
+$\tfrac12\log(2\pi)-\theta$ & $\kappa_\theta$ & $\gamma$\\
+inverse coordinates & $\Lambda$, $N$, $\Delta=\log N$ (Part~II) & $L$, $N$, $D$\\
+inverse coefficients & $\omega_j(\Delta)$ & $u_j(D)$\\
+unscaled truncation error & $\varepsilon_M(n)$ & $E_M(n)$ (Part~I's $E_M$ is scaled by $n^{M+1}$)\\
+\bottomrule
+\end{tabular}
+\caption{Notation of manuscript~03 against Part~I. Part~II uses the middle
+column throughout.}
+\label{fga:tab:dictionary}
+\end{table}
+
+\section{Manuscript 03's second routes to Part I's theorems}
+\label{fga:sec:routes}
+
+\Cref{fga:tab:routes} records, for each result of Part~I that
+manuscript~03 proves again, the device its proof uses. None of these
+statements is reprinted. Where a device is also needed for a new result
+of Part~II, it is stated there.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.66\textwidth}@{}}
+\toprule
+Part I & Manuscript 03's route\\
+\midrule
+Proposition~\ref{spf:prop:exact} &
+the same matching-of-tilings argument, stated for binomial moments $\mu_k$,
+with the same orientation lemma (weight $\theta^c$, not $\theta^k$); adds
+the symmetry $A_{r,s}=A_{s,r}$ via $\pi\mapsto\pi^{-1}$\\
+\eqref{spf:eq:lagrange-id} &
+a formal residue identity for the root $\lambda=1+\sum_\ell
+z_\ell\lambda^{1-\ell}$, with $A=(1+\sum(\ell-1)z_\ell\lambda^{-\ell})^{-1}$;
+here $\lambda=1+W$ and $A=\mathcal D^{-1}$\\
+\cref{spf:thm:stable} &
+the identical polynomial, written $T_r(n;\mathbf m)=F_r(n;\mathbf b)/\bfac$\\
+Lemma~\ref{spf:lem:moment-bound} &
+$\mu_k\le\theta^kD_{n,k}/k!$ for $1\le k<n/2$ (\cref{fga:lem:momentbound}):
+sharper for $k\ll n$, Part~I's holds for every $k$\\
+\eqref{spf:eq:moment-tail} &
+a Taylor remainder on the unit disk $|1+u|\le1$ (\cref{fga:lem:taylor}),
+not an exponential-series tail\\
+\cref{spf:thm:universality} &
+total variation through Parseval and Cauchy--Schwarz
+(\cref{fga:thm:universal}); the $\exp(-\delta n\log n+O(n))$ form is
+Part~I's last assertion with $\eta'$ renamed $\delta$\\
+Definition~\ref{spf:def:B} &
+the same finite formula; the dimer sum is evaluated by Touchard polynomials,
+$e^{-x}\sum_mx^mm^q/m!=T_q(x)$ with $T_{q+1}=x(T_q+T_q')$, instead of
+finite differences, and the denominator by exponentials of power sums\\
+Proposition~\ref{spf:prop:arithmetic} &
+$B_0=1$, $\deg_uB_J\le2J$, $B_J(0)=0$ and symmetry; adds the degree in
+$r,s$ (\cref{fga:prop:rs-degree}); Part~I's denominator theorem is not in
+manuscript~03\\
+\eqref{spf:eq:B1}, \eqref{spf:eq:B2-oriented}, \eqref{spf:eq:B2-absolute} &
+$B_1$ by the same two-profile hand calculation; general $B_2$ and $B_3$ in
+symbolic $r,s$ in \nolinkurl{data/02-fixed-gap-general_pgf_first_three.txt};
+$B_2$ agrees with Part~I identically in $r,s,u$\\
+\cref{spf:thm:main} &
+\cref{fga:thm:allorders}: a defect-sensitive moment bound and a kernel
+bound on $|x|\le1/(D(1+k)^2)$ in place of Lemma~\ref{spf:lem:Qbound}\\
+\eqref{spf:eq:A189281}, \eqref{spf:eq:A110128}, \cref{spf:tab:extra} &
+the coefficients of both sequences through order~12, equal to Part~I's
+(see below)\\
+residue classes (\cref{spf:sec:target}) &
+the same explanation by \cref{spf:thm:stable}\\
+\eqref{spf:eq:exact-mean} &
+the same count; adds
+$\E X=\theta+\theta(1-r-s)/n+\theta(r-1)(s-1)\sum_{q\ge2}n^{-q}$\\
+\eqref{spf:eq:logA}, \cref{spf:thm:inverse-first,spf:thm:inverse-all} &
+the same logarithmic series; the inverse in a coordinate absorbing
+$\kappa_\theta$ (\cref{fga:prop:inverse})\\
+\cref{spf:sec:inverse}, last subsection &
+the same smooth carrier $\mathcal A_M$ and threshold bracket\\
+\bottomrule
+\end{tabular}
+\caption{Results of Part~I proved again by manuscript~03, and the device of
+each second route.}
+\label{fga:tab:routes}
+\end{table}
+
+\paragraph{Order twelve is not new.} Manuscript~03 presents its
+coefficients through order twelve as an extension of the OEIS lists
+(``extend them through order twelve'') and proposes appending
+\[
+ -\frac{59103}{n^{11}}-\frac{9448}{n^{12}}\ \text{to A189281},\qquad
+ \frac{2620164054016}{155925\,n^{11}}+\frac{61699558213516}{467775\,n^{12}}
+ \ \text{to A110128}.
+\]
+[Added 1 October 2026, batch 74: Part~I's \cref{spf:tab:extra} already
+gives orders 11 to~16 of both sequences. Manuscript~03's values at orders
+0 to~12, computed independently by its own engine, agree with Part~I's
+exactly; they confirm Part~I's table and are not new.]
+
+\paragraph{The inverse is not new as a method.} As for Part~I
+(Remark~\ref{spf:rem:inverse-apparatus}), manuscript~03's inverse is an instance
+of the transseries volume's apparatus~\cite{tai}: its coordinates are those
+of \texttt{p6:thm:gamma} with $\log Y$ shifted by $\theta$, its inverse
+expansion is a perturbed inversion around that gamma carrier
+(\texttt{p0:thm:perturbed-inversion}), and its threshold bracket is
+\texttt{p0:thm:staircase}. No novelty is claimed for the method.
+
+\section{Uniformity over forest shapes}
+\label{fga:sec:shapes}
+
+Throughout this section $\mathcal P$ and $\mathcal V$ are arbitrary
+directed path forests on $n$ vertices with $r$ and $s$ paths, as in
+\cref{spf:sec:tilings}, and
+\begin{equation}
+ D_{n,k}=\Bigl(1-\frac{2k}n\Bigr)^{-2k}\qquad(1\le k<n/2).
+ \label{fga:eq:Dnk}
+\end{equation}
+
+\begin{lemma}[A sharper binomial-moment bound; manuscript~03]
+\label[lemma]{fga:lem:momentbound}
+For either statistic and arbitrary path forests,
+$\mu_k\le\theta^kD_{n,k}/k!$ for $1\le k<n/2$.
+\end{lemma}
+\begin{proof}[Proof (manuscript~03)]
+As in Lemma~\ref{spf:lem:moment-bound}, a selected set of $k$ position edges
+with $c$ components has probability at most $\theta^cn^c/\fall n{k+c}$. Since
+$c\le k$ and $k+c\le2k$, this is at most $\theta^kn^{-k}D_{n,k}$; there are
+at most $n^k/k!$ such sets.
+\end{proof}
+
+\begin{lemma}[Taylor remainder on the unit disk; manuscript~03]
+\label[lemma]{fga:lem:taylor}
+For $|1+u|\le1$ and every integer $K\ge1$,
+\begin{equation}
+ \Bigl|G(1+u)-\sum_{k=0}^{K-1}\mu_ku^k\Bigr|\le|u|^K\mu_K.
+ \label{fga:eq:taylor}
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof (manuscript~03)]
+For an integer $x\ge K$, Taylor's integral remainder for $w^x$ about $w=1$
+along the segment from $1$ to $w=1+u$, which stays in the closed unit disk,
+has modulus at most $\binom xK|u|^K$; for $x<K$ it vanishes. Take
+expectations.
+\end{proof}
+
+\begin{theorem}[Quantitative boundary universality; manuscript~03]
+\label{fga:thm:universal}
+Let $(\mathcal P,\mathcal V)$ and $(\widetilde{\mathcal P},\widetilde{\mathcal V})$
+be two pairs of forests on $n$ vertices with $r$ position and $s$ value
+paths, every path of all four having at least $K$ vertices, $1\le K<n/2$,
+and let $X,\widetilde X$ be their statistics for the same $\theta$. Then
+$\mu_k=\widetilde\mu_k$ for $0\le k\le K$, and
+\begin{align}
+ \sup_{|w|\le1}\bigl|G(w)-\widetilde G(w)\bigr|
+ &\le\frac{2(2\theta)^K}{K!}D_{n,K},\label{fga:eq:universalpgf}\\
+ \bigl|\Pp(X=0)-\Pp(\widetilde X=0)\bigr|
+ &\le\frac{2\theta^K}{K!}D_{n,K},\label{fga:eq:universalavoid}\\
+ \TV\bigl(\mathcal L(X),\mathcal L(\widetilde X)\bigr)
+ &\le\sqrt{n+1}\,\frac{(2\theta)^K}{K!}D_{n,K}.\label{fga:eq:universaltv}
+\end{align}
+If every path has at least $\alpha n$ vertices, all three are at most
+$\exp\{-\delta n\log n+O_{\alpha,\delta,\theta}(n)\}$ for every fixed
+$0<\delta<\min(\alpha,1/2)$.
+\end{theorem}
+\begin{proof}[Proof (manuscript~03)]
+Moments of order $k\le K$ are stable in all four forests and agree by
+Corollary~\ref{spf:cor:stable-moments}. Subtract the common Taylor polynomial of
+degree $K-1$ and apply \cref{fga:lem:taylor,fga:lem:momentbound} to both
+remainders, with $|u|=|w-1|\le2$ on the disk and $|u|=1$ at $w=0$. For the
+total variation, write $G-\widetilde G=\sum_{j\le n}q_jw^j$; Parseval on
+the unit circle gives $\sum|q_j|^2\le\sup_{|w|=1}|G-\widetilde G|^2$, and
+Cauchy--Schwarz gives
+$\frac12\sum|q_j|\le\frac12\sqrt{n+1}\sup|G-\widetilde G|$. For the last
+assertion take $K=\lfloor\delta n\rfloor$: $\log D_{n,K}=O(n)$ and
+$\log K!=\delta n\log n+O(n)$.
+\end{proof}
+
+The bounds \eqref{fga:eq:universalpgf}--\eqref{fga:eq:universalavoid} on
+the whole generating function and on the avoidance probability are new
+here; \eqref{fga:eq:universaltv} and the $\exp(-\delta n\log n)$ form are a
+second route to \cref{spf:thm:universality}. Boundary placement can change
+the exact count, but, when all components are long, its normalized
+influence is smaller than every power of $1/n$; the theorem compares
+shape-dependent corrections and does not identify an exponentially small
+expansion for a single sequence.
+
+\begin{remark}[Agreement of moments is not equality of laws; manuscript~03]
+\label[remark]{fga:rem:n12}
+At $n=12$ compare the position and value path lengths $(6,6)/(6,6)$ with
+$(5,7)/(4,8)$. Their moments agree through $k=4$ and first differ at $k=5$.
+The oriented avoidance counts are $222822578$ and $222822556$, the absolute
+ones $91310696$ and $91284560$, by manuscript~03's independent exact tiling
+routine. ``All algebraic orders agree'' must not be read as ``the finite
+distributions are identical''.
+\end{remark}
+
+\begin{lemma}[A defect-sensitive moment bound; manuscript~03]
+\label[lemma]{fga:lem:defect}
+Let $\mu_{k,c}$ be the part of $\mu_k$ from selected sets with exactly $c$
+components, so $d=k-c$. For $1\le c\le k<n/2$,
+\begin{equation}
+ \mu_{k,c}\le\frac{\theta^c}{c!}\binom{k-1}{c-1}n^{-d}D_{n,k}
+ \le\frac{\theta^k}{k!}\Bigl(\frac{k^2}n\Bigr)^dD_{n,k}.
+ \label{fga:eq:defect}
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof (manuscript~03)]
+There are at most $\frac{n^c}{c!}\binom{k-1}{c-1}$ selected sets with $c$
+components and $k$ edges: choose the $c$ initial vertices, order them, and
+give them a composition of $k$ into $c$ positive edge counts (overlaps
+are overcounted). Each has probability at most
+$\theta^cn^c/\fall n{k+c}\le\theta^cn^{-k}D_{n,k}$, because
+$\fall n{k+c}\ge n^{k+c}(1-2k/n)^{2k}$ as in \cref{fga:lem:momentbound}.
+Multiplying, and using $n^c\cdot n^{-k}=n^{-d}$, gives the first bound.
+For the second,
+$\binom{k-1}{c-1}=\binom{k-1}d\le k^d$, $k!/c!\le k^d$ and $\theta\ge1$.
+\end{proof}
+
+\begin{theorem}[All orders, uniformly over forest shapes; manuscript~03]
+\label{fga:thm:allorders}
+Fix $r,s\ge1$, $\theta\in\{1,2\}$ and $M\ge0$, and for large $n$ put
+\begin{equation}
+ K_n=\Bigl\lfloor\frac{(M+4)\log n}{\log\log n}\Bigr\rfloor.
+ \label{fga:eq:Kn}
+\end{equation}
+For every pair of path forests on $n$ vertices with $r$ and $s$ paths, each
+path having at least $K_n$ vertices,
+\begin{equation}
+ G(1+u)=e^{\theta u}\sum_{J=0}^{M}\frac{B_J^{(\theta)}(u;r,s)}{n^J}
+ +\bigO_{M,r,s}(n^{-M-1}),\qquad|1+u|\le1,
+ \label{fga:eq:allorders}
+\end{equation}
+with $B_J$ the polynomials of \eqref{spf:eq:Bformula}. The implied constant
+does not depend on the individual path lengths.
+\end{theorem}
+\begin{proof}[Proof (manuscript~03, condensed)]
+\emph{Tail.} By \cref{fga:lem:taylor,fga:lem:momentbound} with $|u|\le2$,
+truncating at $k<K_n$ costs at most $(2\theta)^{K_n}D_{n,K_n}/K_n!$. Since
+$K_n^2/n\to0$, $D_{n,K_n}=\exp(\bigO(K_n^2/n))$, and
+$\log K_n!=(M+4+\smallo(1))\log n$; so the cost is $\smallo(n^{-M-1})$. Every
+retained profile has $k<K_n$ edges and is stable in both forests
+(Corollary~\ref{spf:cor:stable-moments}).
+
+\emph{High defect.} By \cref{fga:lem:defect}, with $k^2/n<1/2$ for $k<K_n$,
+the retained profiles of defect $d\ge M+1$ contribute at most
+$\bigO(n^{-M-1})\sum_{k\ge1}(2\theta)^kk^{2M+2}/k!=\bigO_M(n^{-M-1})$,
+uniformly in $u$ and in the path lengths.
+
+\emph{Low defect.} For each of the finitely many long profiles
+$\boldsymbol\beta$ of defect $d\le M$, expand the normalized kernel
+$Q_{(m,\boldsymbol\beta)}(1/n)$ of \eqref{spf:eq:Q} through order $M-d$.
+Manuscript~03 proves that the kernel is analytic and bounded by a constant
+depending only on $r,s$ on $|x|\le1/(D_0(1+k)^2)$ for a suitable $D_0$,
+which is the role of Lemma~\ref{spf:lem:Qbound}; Cauchy's estimate gives a
+remainder $\bigO((1+k)^{2(M-d)+2}n^{-(M-d)-1})$, summable against the
+weights $(\theta|u|)^m/m!$ of the dimers.
+
+\emph{Completion.} Extending each retained dimer sum from $m+K<K_n$ to all
+$m\ge0$ adds tails of order $\exp(-K_n\log K_n+\bigO(K_n))=\smallo(n^{-M-1})$.
+The completed sums are the Poisson transforms \eqref{spf:eq:poisson-transform}
+of the polynomials \eqref{spf:eq:P}, and collecting the powers of $1/n$
+gives \eqref{spf:eq:Bformula}. No step uses the path lengths beyond the
+stability of the retained profiles.
+\end{proof}
+
+\begin{corollary}[How long is long enough; manuscript~03]
+\label[corollary]{fga:cor:shortest}
+For fixed $r,s$, the expansion \eqref{fga:eq:allorders} holds to every fixed
+order for every family of forests whose shortest path length
+$L_{\min}(n)$ satisfies
+\begin{equation}
+ \frac{L_{\min}(n)\log\log n}{\log n}\longrightarrow\infty.
+ \label{fga:eq:weaklength}
+\end{equation}
+In particular the paths need not have lengths proportional to $n$.
+\end{corollary}
+\begin{proof}[Proof (manuscript~03)]
+For each fixed $M$, \eqref{fga:eq:weaklength} eventually gives
+$L_{\min}(n)\ge K_n$.
+\end{proof}
+
+\begin{remark}[Part~I's proof gives the same uniformity on every disk]
+\label[remark]{fga:rem:partI-shapes}
+[Added 1 October 2026, batch 74; this observation is the write's, not
+either manuscript's.] The remark after the proof of \cref{spf:thm:main}
+claims the theorem for forests whose shortest path is a positive multiple
+of $n$. Its proof uses the path lengths only to know that every retained
+profile, of edge degree at most
+$T_n=\lfloor(2M+4)\log n/\log\log n\rfloor$, is stable: the moment tail
+\eqref{spf:eq:moment-tail}, the kernel bound Lemma~\ref{spf:lem:Qbound} and
+the defect majorant \eqref{spf:eq:defect-majorant} hold for arbitrary
+forests. Read so, it gives \cref{spf:thm:main} uniformly on $|u|\le U$ for
+all forests whose shortest path has at least $T_n$ vertices, which also
+covers the condition \eqref{fga:eq:weaklength}. Manuscript~03 states and
+proves the shape-uniform form, on the unit disk only.
+\end{remark}
+
+The theorem gives a remainder at each fixed order; it does not assert that
+the series in $1/n$ converges, and its proof provides no small optimized
+numerical constant for a given finite $n$.
+
+\section{The correction polynomials as polynomials in the offsets}
+\label{fga:sec:offsets}
+
+\begin{proposition}[Degree in the offsets; manuscript~03]
+\label[proposition]{fga:prop:rs-degree}
+For every $J$ and $\theta$ there is a polynomial in $\Q[r,s,u]$ of total
+degree at most $J$ in $(r,s)$ whose values at positive integers $r,s$ are
+$B_J^{(\theta)}(u;r,s)$; it is symmetric in $r,s$ and has degree at most
+$2J$ in $u$.
+\end{proposition}
+\begin{proof}[Proof (manuscript~03, in Part~I's notation)]
+In \eqref{spf:eq:Q}, the offset $r$ enters $f_{r,\mathbf b}(x)$ only
+through the rising factorials $\rise{(r-1)}h$, of degree $h$ in $r$, and
+each is accompanied by $x^h$; so $[x^j]f_{r,\mathbf b}$ has degree at most
+$j$ in $r$, and likewise for $s$. Hence
+$P_{\boldsymbol\beta,j}=[x^j]Q_{(m,\boldsymbol\beta)}$ has total degree at
+most $j$ in $(r,s)$, and \eqref{spf:eq:Bformula} uses
+$P_{\boldsymbol\beta,J-d}$ with $d\ge0$. The other assertions are
+Proposition~\ref{spf:prop:arithmetic}.
+\end{proof}
+
+\begin{proposition}[The third avoidance coefficient; manuscript~03]
+\label[proposition]{fga:prop:c3}
+For all positive integers $r,s$,
+\begin{align}
+ c_1^{(1)}&=r+s-1, & c_1^{(2)}&=2(r+s-2),\notag\\
+ c_2^{(1)}&=\tfrac12(r^2-r+s^2-s), & c_2^{(2)}&=2(r^2+rs-2r+s^2-2s),\notag\\
+ c_3^{(1)}&=\tfrac16(r+s-1)(r^2-4rs+4r+s^2+4s-6),\label{fga:eq:c3}\\
+ c_3^{(2)}&=\tfrac23\bigl(2r^3+3r^2+9rs-17r+2s^3+3s^2-17s+10\bigr).\notag
+\end{align}
+\end{proposition}
+
+The first four are Part~I's \eqref{spf:eq:avoidance-expansion},
+\eqref{spf:eq:B2-oriented} and \eqref{spf:eq:B2-absolute} at $u=-1$; the
+closed forms of $c_3^{(\theta)}(r,s)$ are new. Manuscript~03 obtains them by
+evaluating its finite formula symbolically in $r,s$ (the full $B_3$ for both
+orientations is in \texttt{data/02-fixed-gap-general\_pgf\_first\_three.txt});
+this write checked both against Part~I's generator at
+$(r,s)=(1,1),(1,3),(2,3),(3,3),(2,5)$. At $r=s=d$, $c_1^{(2)}=4(d-1)$ is
+Tauraso's correction \eqref{spf:eq:tauraso}.
+
+\section{The oriented one-path family: proved integrality}
+\label{fga:sec:onepath}
+
+\begin{proposition}[Rational collapse for one path; manuscript~03]
+\label[proposition]{fga:prop:onepath}
+Let the position forest be a single path ($r=1$), the value forest have $s$
+paths, and $\theta=1$. Then
+\begin{equation}
+ n!\,\mu_k=\binom{n-s}k(n-k)!\qquad(0\le k\le n-s),
+ \label{fga:eq:onepathmoment}
+\end{equation}
+so that
+$G(1+u)=\frac1{\fall ns}\sum_{k=0}^{n-s}\frac{u^k}{k!}\fall{(n-k)}s$, and,
+for $|u|\le2$ and a suitable constant $C_s$,
+\begin{equation}
+ G(1+u)=\frac{e^u}{\fall ns}\sum_{t\ge0}\frac{\Delta^tp_n(0)}{t!}u^t
+ +\bigO\bigl(\exp\{-n\log n+C_sn\}\bigr),
+ \qquad p_n(m)=\fall{(n-m)}s.
+ \label{fga:eq:onepathrational}
+\end{equation}
+For $s=1$ the rational factor is $1-u/n$; for $s=2$ it is
+$1-2u/n+u^2/(n(n-1))$.
+\end{proposition}
+\begin{proof}[Proof (manuscript~03)]
+Work on the value side. Any $k$ of its $n-s$ edges contract the value set
+to $n-k$ blocks, and these blocks can be laid along the position path in
+$(n-k)!$ ways, with no further restriction; this is
+\eqref{fga:eq:onepathmoment}. Then use
+$\fall{(n-s)}k/\fall nk=\fall{(n-k)}s/\fall ns$. Completing the sum to all
+$k\ge0$ adds only zero terms through $k=n$ and a factorial tail bounded by
+a degree-$s$ polynomial times $2^k/k!$, divided by $\fall ns$; the completed
+sum is $e^u$ times the finite-difference Poisson transform
+\eqref{spf:eq:poisson-transform} of $p_n$, a polynomial of degree $s$ in
+$m$.
+\end{proof}
+
+\begin{corollary}[An integrality subfamily; manuscript~03]
+\label[corollary]{fga:cor:integrality}
+In the oriented case, if $r=1$ or $s=1$, then
+$B_J^{(1)}(u;r,s)\in\Z[u]$ for every $J$, and every avoidance coefficient
+$c_J^{(1)}(r,s)$ is an integer.
+\end{corollary}
+\begin{proof}[Proof (manuscript~03)]
+The finite sum in \eqref{fga:eq:onepathrational} is
+$\sum_qa_q(n)T_q(u)$, where $p_n(m)=\sum_qa_q(n)m^q$ has integer
+coefficients and $T_q(u)=e^{-u}\sum_{m\ge0}u^mm^q/m!$ are the Touchard
+polynomials, which have integer coefficients; so it is an integer
+polynomial in $n$ and $u$ of degree $s$ in $n$. Dividing by
+$\fall ns=n^s\prod_{i<s}(1-i/n)$ and expanding
+$\prod_{i<s}(1-i/n)^{-1}$, whose power-series coefficients are integers,
+gives an expansion in $1/n$ with coefficients in $\Z[u]$. By uniqueness of
+asymptotic coefficients it is $\sum_JB_J^{(1)}(u;1,s)n^{-J}$. The case
+$s=1$ follows by the symmetry $B_J(u;r,s)=B_J(u;s,r)$.
+\end{proof}
+
+This proves integrality only for the oriented one-path subfamily. It says
+nothing about the case $(2,2)$ of A189281, whose all-orders integrality
+remains conditional on Conjecture~\ref{spf:conj:collapse}
+(Proposition~\ref{spf:prop:collapse-implication}); manuscript~03 likewise warns that
+the subfamily does not justify extrapolating convergence, termination or
+integrality to two paths on both sides. At $(r,s)=(1,1)$ the factor
+$1-u/n$ gives $c_J^{(1)}(1,1)=1,1,0,0,\ldots$, the values found in
+Remark~\ref{spf:rem:offsets-one-one}.
+
+\section{Fixed local probabilities}
+\label{fga:sec:local}
+
+For fixed $j$ and $M$, coefficient extraction from \eqref{spf:eq:main} on a
+fixed circle gives
+\begin{equation}
+ \Pp(X=j)=e^{-\theta}\frac{\theta^j}{j!}\Bigl\{\sum_{J=0}^M\frac1{n^J}
+ \sum_hb_{J,h}H_h(j;\theta)+\bigO_j(n^{-M-1})\Bigr\},
+ \label{fga:eq:localall}
+\end{equation}
+with $B_J=\sum_hb_{J,h}u^h$ and the Charlier polynomials
+\eqref{spf:eq:Charlier}. This is the pointwise form of
+Corollary~\ref{spf:cor:distribution}, which is the stronger statement (it controls
+the summed $\ell^1$ error); it asserts no relative-error expansion
+uniformly for $j$ growing with $n$. Manuscript~03 makes the first order
+explicit for the two sequences: from $B_1^{(1)}=-3u$ and
+$B_1^{(2)}=-6u-2u^2$ at $(r,s)=(2,2)$,
+\begin{align}
+ \Pp(X^{(1)}_{2,2,n}=j)&=\frac{e^{-1}}{j!}
+ \Bigl\{1+\frac{3(1-j)}n+\bigO_j(n^{-2})\Bigr\},
+ \label{fga:eq:localdirect}\\
+ \Pp(X^{(2)}_{2,2,n}=j)&=e^{-2}\frac{2^j}{j!}
+ \Bigl\{1+\frac{4-j(j+1)/2}n+\bigO_j(n^{-2})\Bigr\}.
+ \label{fga:eq:localabsolute}
+\end{align}
+At $j=0$ these are the first avoidance corrections; at $j=1,2$ they show
+how probability mass is redistributed, which an avoidance count alone does
+not.
+
+\section{The inverse in a coordinate absorbing the constant}
+\label{fga:sec:inverse}
+
+For A189281 and A110128 the logarithmic coefficients \eqref{spf:eq:a-coeff}
+are
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Sequence & $a_1$ & $a_2$ & $a_3$\\
+\midrule
+A189281 & $37/12$ & $-5/2$ & $1439/360$\\
+A110128 & $49/12$ & $0$ & $4319/360$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first row and $a_1$ for A110128 are in \cref{spf:sec:inverse}; $a_2$ and
+$a_3$ for A110128 are added by manuscript~03.
+
+Manuscript~03 inverts \eqref{spf:eq:logA} in coordinates that absorb
+$\kappa_\theta$. For large $Y$ put
+\begin{equation}
+ \Lambda=\log Y-\kappa_\theta,\qquad N=\frac\Lambda{W_0(\Lambda/e)}
+ =\exp\bigl(W_0(\Lambda/e)+1\bigr),\qquad\Delta=\log N,
+ \label{fga:eq:coords}
+\end{equation}
+so that $N(\log N-1)=\Lambda$ exactly. Part~I's coordinates
+\eqref{spf:eq:Lambert} are the same construction with $\log Y$ in place of
+$\Lambda$; so $N(Y)$ is Part~I's $z$ evaluated at $e^{-\kappa_\theta}Y$.
+
+\begin{proposition}[First inverse corrections; manuscript~03]
+\label[proposition]{fga:prop:inverse}
+The formal inverse $n_*(Y)$ of \eqref{spf:eq:logA} satisfies
+\begin{equation}
+ n_*(Y)=N-\frac12+\frac{1/8-a_1}{N\Delta}
+ +\frac{1/24-a_1/2-a_2}{N^2\Delta}+\bigO\Bigl(\frac1{N^3\Delta}\Bigr),
+ \label{fga:eq:inverse}
+\end{equation}
+and to every fixed order
+$n_*(Y)=N-\frac12+\sum_{j\le J}\omega_j(\Delta)N^{-j}+\bigO(N^{-J-1}\Delta^{-1})$,
+with each $\omega_j$ rational in $\Delta$ and computable from
+$a_1,\ldots,a_j$; for instance
+\begin{equation}
+ \omega_3(\Delta)=-\frac1\Delta\Bigl\{\frac{(1/8-a_1)^2}\Delta
+ +\frac{(1/8-a_1)^2}{2\Delta^2}+\frac{a_1}4+a_2+a_3-\frac1{64}\Bigr\}.
+ \label{fga:eq:omega3}
+\end{equation}
+For the two sequences,
+\begin{equation}
+ n_*(Y)=N-\frac12-\frac{71}{24N\Delta}+\frac1{N^2\Delta}+\cdots,
+ \qquad
+ n_*(Y)=N-\frac12-\frac{95}{24N\Delta}-\frac2{N^2\Delta}+\cdots,
+ \label{fga:eq:inverse-ab}
+\end{equation}
+with $\kappa_1$ and $\kappa_2$ respectively in \eqref{fga:eq:coords}.
+\end{proposition}
+\begin{proof}[Proof (manuscript~03)]
+Put $n=N+\delta$. The dominant part $x\log x-x$ has derivative $\Delta$
+and second derivative $1/N$ at $N$; after subtracting $\Lambda$ the
+equation becomes
+$0=\Delta\delta+\frac{\delta^2}{2N}-\frac{\delta^3}{6N^2}+\cdots+\frac\Delta2
++\frac12\log(1+\delta/N)+\sum_ja_j(N+\delta)^{-j}$. The constant term gives
+$\delta=-\frac12+\bigO(1/(N\Delta))$; with $\delta=-\frac12+\sum_j\omega_jN^{-j}$
+the next two orders read $\Delta\omega_1+a_1-\frac18=0$ and
+$\Delta\omega_2+\frac12a_1+a_2-\frac1{24}=0$. At each later order the new
+coefficient enters only as $\Delta\omega_j$. For a fixed truncation the
+uncancelled residual is $\bigO(N^{-J-1})$ and the derivative of the smooth
+carrier is $\Delta+\bigO(1/N)$, so the mean value theorem divides it by a
+quantity asymptotic to $\Delta$.
+\end{proof}
+
+The first coefficient agrees with Part~I: $1/8-a_1=1/24-c_1$ is the
+coefficient $-(c_1-1/24)$ of \cref{spf:thm:inverse-first}, which in
+Part~I's coordinates also carries the terms in $\kappa_\theta$ that are
+absorbed here. Manuscript~03 interprets $n_*$ as the inverse of the same
+smooth carrier as Part~I, with $X_M(A(n))=n+\bigO(n^{-M-1}/\log n)$, and
+brackets the integer threshold $\nu(Y)=\min\{n:A(n)\ge Y\}$ between
+$\lceil X_M(Y)\mp\epsilon_Y\rceil$, $\epsilon_Y=\bigO(N^{-M-1}/\log N)$, with
+an existence constant only; this bracket is \texttt{p0:thm:staircase} of
+\cite{tai}. It notes that expanding $W_0$ in logarithms would give the
+familiar nested logarithmic transseries in $Y$, and that $\Lambda$ depends on
+$\theta$, so one $\Lambda$ must not be reused for both sequences.
+
+\section{Manuscript 03's computations}
+\label{fga:sec:numerics}
+
+Manuscript~03's \texttt{verify.py} (shipped as
+\texttt{code/02-fixed-gap-verify.py}) checks, with assertions: 90 avoidance
+counts and 90 complete histograms against brute-force permutations for
+$n=0,\ldots,8$ and the offset pairs $(1,1),(1,2),(2,2),(2,3),(3,3)$, both
+orientations; its exact tiling enumerator against A189281 for
+$n=0,\ldots,26$ and $n=40$; 132 stable-profile identities and a
+nonrealizable zero case; the moment agreement and disagreement of
+\cref{fga:rem:n12}; 50 one-path identities \eqref{fga:eq:onepathmoment};
+all posted coefficients of both sequences through order ten, and orders 11
+and~12; the general first correction and the mean through order three; and
+that the residual of \eqref{fga:eq:inverse-ab} vanishes through $N^{-3}$.
+Its exact enumerator and its coefficient engine are independent of each
+other and of Part~I's programs. At order twelve the engine enumerates the
+77 long profiles of defect twelve, 272 of defect at most twelve, with the
+number of dimers summed exactly.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $\varepsilon_2(n)$ & $\varepsilon_5(n)$ & $\varepsilon_{10}(n)$ & $\varepsilon_{12}(n)$\\
+\midrule
+20  & $1.2642\cdot10^{-4}$ & $4.8572\cdot10^{-7}$ & $-2.3683\cdot10^{-10}$ & $5.4066\cdot10^{-11}$\\
+40  & $1.5661\cdot10^{-5}$ & $6.9763\cdot10^{-9}$ & $-1.3658\cdot10^{-13}$ & $4.8917\cdot10^{-15}$\\
+80  & $1.9541\cdot10^{-6}$ & $1.0406\cdot10^{-10}$ & $-6.8418\cdot10^{-17}$ & $5.2425\cdot10^{-19}$\\
+120 & $5.7883\cdot10^{-7}$ & $8.9918\cdot10^{-12}$ & $-7.9394\cdot10^{-19}$ & $2.5777\cdot10^{-21}$\\
+\bottomrule
+\end{tabular}
+\caption{Manuscript~03: the unscaled errors
+$\varepsilon_M(n)=e\,\Aone(n)/n!-\sum_{j\le M}c_j^{(1)}(2,2)n^{-j}$, at
+110-digit working precision, rounded. The values $\Aone(80)$ and
+$\Aone(120)$ are b-file inputs~\cite{fgaBfile}, not regenerated. These are
+uncertified decimals; Part~I's \cref{spf:tab:certificates} gives certified
+intervals for the scaled errors at $n=80,160,320$.}
+\label{fga:tab:errors}
+\end{table}
+
+[Added 1 October 2026, batch 74: scaled by $n^{M+1}$, the last two columns
+are consistent with Part~I's higher coefficients:
+$n^{11}\varepsilon_{10}(n)=-58771$ and $-58990$ at $n=80,120$, against
+$c_{11}^{(1)}(2,2)=-59103$; $n^{13}\varepsilon_{12}(n)=2.882\cdot10^6$ and
+$2.758\cdot10^6$, approaching $c_{13}^{(1)}(2,2)=2525459$ from above as the
+next term $c_{14}^{(1)}/n$ with $c_{14}^{(1)}=26632378$ predicts
+($2525459+26632378/80\approx2.858\cdot10^6$).] The four-term inverse
+\eqref{fga:eq:inverse-ab} at $Y=\Aone(n)$ misses $n$ by about
+$2.0566\cdot10^{-4}$, $1.9555\cdot10^{-5}$, $1.9282\cdot10^{-6}$ and
+$5.0462\cdot10^{-7}$ at $n=20,40,80,120$; the signs are not predicted by
+the theorem. Manuscript~03 records its run as ``Completed in 22.44
+seconds'' and its README speaks of ``tens of seconds''. On this
+repository's machine the order-twelve run took more than 170~seconds at the
+intake and 104~seconds at the write, and an order-nine run 72~seconds.
+The run time depends on the machine and its load.
+
+\section{Further questions raised by manuscript 03}
+\label{fga:sec:questions}
+
+Manuscript~03 poses twelve research questions, as proposals only. Six
+overlap \cref{spf:sec:questions}: a certificate for the particular
+recurrence (Part~I's question~2); integrality beyond the one-path case,
+which asks whether $B_J^{(1)}(u;r,s)\in\Z[u]$ for all $r,s$ and so whether
+all $c_J^{(1)}(2,2)$ are integers (question~1, and \cref{fga:cor:integrality}
+for what is proved); large-order growth (question~4); growing gaps and
+component counts (question~5); cycles and other sparse constraint graphs
+(question~6); and a small formal package, starting from the profile
+identity, the stable polynomial, a verified coefficient checker and the
+universality bound (question~7). The other six are new here.
+\begin{enumerate}
+\item \emph{A sharper oriented degree bound.} Does
+$\deg_uB_J^{(1)}(u;r,s)\le J$ hold at every order, sharpening $2J$? The
+explicit polynomials through order three show the cancellation; such a
+bound would constrain the factorial cumulants of $X$.
+\item \emph{Sharp short-path thresholds.} Condition
+\eqref{fga:eq:weaklength} is sufficient, not shown optimal. What is the
+first shape-dependent term when a shortest path has fixed length, or grows
+like $c\log n/\log\log n$?
+\item \emph{Optimal quantitative universality.} Find the correct constant
+in the $n\log n$ exponent of \cref{fga:thm:universal} for given
+proportions, and the path balances that maximize the difference.
+\item \emph{Several gaps simultaneously.} The joint law of violations for
+several position/value gap pairs, with interacting edge colours and
+components containing cycles; a first target is two pairs sharing one gap.
+\item \emph{Growing local counts and moderate deviations.} Extend
+\eqref{fga:eq:localall} to a quantified range $j=j(n)\to\infty$.
+\item \emph{Faster generation and certified errors.} Reduce the cost of
+many orders through profile symmetries, falling-factorial bases or direct
+Touchard operations, and extract explicit constants from
+\cref{fga:thm:allorders} to obtain a certified finite-input threshold
+algorithm (compare Part~I's question~8).
+\end{enumerate}
+
+\paragraph{OEIS and formalization, as manuscript~03 proposes them.} It
+suggests an OEIS addition stating that the expansions through $n^{-10}$
+have a recurrence-independent proof, appending orders 11 and~12, and
+keeping the recurrences' conjectural status; it submitted nothing, and
+Part~I already has orders 11 to~16. It proposes a formalization in three
+layers (finite combinatorics; algebra of the stable polynomial and
+coefficient generation; analysis), with a coefficient checker that
+verifies equality with the finite formula rather than with a guessed
+recurrence. It supplies no Lean source, and nothing in Part~II is
+formalized.
+
+\paragraph{The shipped files of manuscript~03.}
+The ten files of manuscript~03 carry the prefix \texttt{02-fixed-gap-}:
+its two scripts in \texttt{code/}, its six recorded outputs and
+\texttt{requirements.txt} in \texttt{data/}, and \texttt{sources.md} at the
+report root, all byte-identical to the delivery. \texttt{verify.py}
+imports its sibling by the delivered name (\texttt{from fixed\_gap import
+\ldots}) and writes unprefixed files into \texttt{data/} beside its own
+directory; run from \texttt{code/} it would fail to import, and if made to
+run it would write beside Part~I's files under unprefixed names. The report
+README gives a copy-based recipe.
+
+\addcontentsline{toc}{part}{Appendices}
+
 \appendix
 \section{Proof dependencies and archive guide}
 
@@ -1509,6 +2305,9 @@ deleted the archive from \texttt{docs/incoming}; it survives in
 repository only by the path of the Fabius completion audit~\cite{proveit},
 which it uses as an editorial example and calls ``not a dependency''. This
 report does not continue that audit, and nothing was filed in the Fabius tree.
+[Added 1 October 2026, batch 74: since batch~74 the report is built from
+two manuscripts; Part~II and the paragraph ``Part~II (batch~74)'' below
+describe the second.]
 
 \paragraph{What the write changed.}
 \begin{itemize}
@@ -1556,6 +2355,42 @@ compared the two order-ten expansions with the OEIS entries digit for digit,
 rederived $d_1$ in \cref{spf:thm:inverse-first} by hand, and made the
 $(1,1)$ checks of Remark~\ref{spf:rem:offsets-one-one}. These checks do not
 replace an independent review of the proofs.
+
+\paragraph{Part~II (batch 74).}
+[Added 1 October 2026, batch 74.] Part~II is built from manuscript~03 of
+batch~74, the archive \nolinkurl{ProveIt_Fixed_Gap_Asymptotics.zip}
+(14~files, a 25-page PDF), which arrived in commit \texttt{c664fc2f0} and
+was placed in commit \texttt{b669cff87}. Its pinned commit is
+\texttt{291fbe6bb}~\cite{fgaProveIt}. Its article, README, PDF and checksum
+ledger \texttt{SHA256SUMS.txt} (13/13 verified at placement) are not
+shipped; its other ten files are, byte-identical, with the prefix
+\texttt{02-fixed-gap-}: \texttt{code/fixed\_gap.py} and
+\texttt{code/verify.py} in \texttt{code/}; the six files of its
+\texttt{data/} and \texttt{requirements.txt} in \texttt{data/}; and
+\texttt{sources.md} at the report root. Those files use the delivery names.
+
+\paragraph{Where the batch-74 merge had to choose.} Manuscript~60 stays the
+base, being the more general in $u$ and the stronger in arithmetic
+(denominator theorem, order sixteen), in the whole-law statement and in
+its certificates. Manuscript~03's re-derivations of Part~I's theorems are
+recorded as second routes in \cref{fga:tab:routes} and not reprinted; its
+own results form Part~II, printed after Part~I's conclusion so that no
+existing number changes. Its symbols are renamed into Part~I's notation
+(\cref{fga:tab:dictionary}); the devices its new proofs need (the moment
+bound with $D_{n,k}$, the unit-disk Taylor bound, the defect-sensitive
+bound) are printed with them. Its coefficients through order twelve are
+printed only as a confirmation of \cref{spf:tab:extra}.
+
+\paragraph{What the batch-74 write changed.} It added the part headings,
+the editorial note after the batch-73O2 one, bracketed notes marked
+``[Added 1 October 2026, batch 74]'' after the proof of \cref{spf:thm:main},
+in questions~1 and~5 of \cref{spf:sec:questions} and in this appendix,
+Part~II (\cref{fga:sec:front} to \cref{fga:sec:questions}), two bibliography
+entries, and a table-of-contents line for the appendices. All its labels
+carry the prefix \texttt{fga:}. No existing label was renamed or removed,
+no existing number changed, and no delivered sentence of manuscript~60 was
+changed or removed. Manuscript~03's text is restated in Part~I's notation,
+with some proofs condensed; none of its statements was strengthened.
 
 \begin{thebibliography}{99}
 \bibitem{oeis189281}
@@ -1631,5 +2466,18 @@ Part ``Inversion: the apparatus for a rapidly growing function''
 chapter on the increasing inverse of Gamma (\texttt{p6:thm:gamma}) and chapter
 ``The subfactorial'' (\texttt{p8:sec:top}). Repository state of placement
 commit \texttt{6e193dd4f}.\par\endgroup
+
+\bibitem{fgaBfile}
+[Added in the batch-74 write, from manuscript 03.] R. Matsuo, V. Kotesovec
+and C. Koutschan, \emph{Table of A189281 for $n=0,\ldots,300$}, with the
+authorship of ranges given in the OEIS entry.
+\url{https://oeis.org/A189281/b189281.txt}. Accessed by manuscript~03 on
+1 October 2026.
+
+\bibitem{fgaProveIt}\begingroup\raggedright
+[Added in the batch-74 write, from manuscript 03.] V. Reshetnikov,
+\emph{ProveIt}, repository and README, inspected 1 October 2026 at commit
+\nolinkurl{291fbe6bb4477e0cb2131f1e041b12a9abe363fd}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.\par\endgroup
 \end{thebibliography}
 \end{document}

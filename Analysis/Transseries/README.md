@@ -10,8 +10,8 @@ This project holds the transseries development independently of
 - [`docs/series-and-transseries/`](docs/series-and-transseries/) contains the
   canonical transseries and inversion volume, its combinatorial companion,
   their PDFs, the source verification programs, and fifty-two unmerged
-  arrivals of 2026-09-29 to 2026-10-01 filed whole beside them, the first
-  fifty-one with editorial amendments (2026-09-29 and 2026-09-30).
+  arrivals of 2026-09-29 to 2026-10-01 filed whole beside them, all with
+  editorial amendments (2026-09-29 to 2026-10-01).
 
 The generic Lean declarations retain their existing `Fabius` namespace for
 source compatibility; their module paths now start with `Transseries`.

@@ -221,6 +221,14 @@ membership in the fraction field of `E_Γ(F)`, and `isc:cp:ex:geometric`
 rank in that fraction field. A "Related (batch 34)" paragraph after
 Proposition 4.1 records this; no result here uses it.
 
+[Real-vector-space structure](../../surreal/real-vector-space-structure/)
+(`rvs:`, batch 73): its Section 12 (`rvs:w:sec:completion`, from its source
+52) is the diagonal case `V = R^(Γ)` of Section 4. Under
+`ι(Σ x_γ t^γ) = Σ t^γ x_γ e_γ` its `Fin_Γ` and `Lf_Γ` are the preimages of
+`E_Γ(V)` and `C_Γ(V)`, and its Theorems 12.1–12.3 are Theorems 4.2, 4.5, 4.6
+and 10.1 pulled back; its Theorem 12.4 is a real-valued counterpart of
+Theorem 6.4. A dated note after Theorem 4.6 records this; no result here uses it.
+
 ## Build
 
 ```sh

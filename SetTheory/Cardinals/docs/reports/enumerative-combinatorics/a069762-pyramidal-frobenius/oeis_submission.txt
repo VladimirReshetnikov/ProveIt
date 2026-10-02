@@ -1,0 +1,50 @@
+DRAFT ONLY -- NOT SUBMITTED
+Proposed mathematical additions for OEIS A069762
+
+FORMULA
+For n >= 2, let h(n) = 3*[n is odd] + 2*[n == 2 (mod 3)]. Then
+
+a(n) = (4*n^5 + 32*n^4 + (101-10*h(n))*n^3
+        + (175-45*h(n))*n^2 + (102-65*h(n))*n
+        - 36 - 30*h(n))/36 + e(n),
+
+where e(2)=10, e(3)=40, e(5)=315, e(11)=1612,
+e(17)=3135, e(23)=2400, and e(n)=0 otherwise.
+
+In particular,
+a(n) = n^5/9 + 8*n^4/9 + (101-10*h(n))*n^3/36 + O(n^2),
+and the full expansion is the exact quasipolynomial displayed above.
+The least eventual quasiperiod is 6, with sharp uniform cutoff n=24.
+
+RECURRENCE
+For n >= 42,
+sum(d(j)*a(n-j), j=0..18)=0, where d(0)..d(18) are
+1,2,-1,-8,-9,6,23,16,-14,-32,-14,16,23,6,-9,-8,-1,2,1.
+This recurrence has minimal eventual order 18.
+
+The minimal reduced generating-function denominator is
+(1-x)^6*(1+x)^4*(1+x+x^2)^4.
+The exact numerator is supplied in rational_gf.json.
+
+PYTHON
+
+def a(n):
+    if n < 2:
+        raise ValueError('n must be at least 2')
+    h = (0, 3, 2, 3, 0, 5)[n % 6]
+    numerator = (4*n**5 + 32*n**4 + (101-10*h)*n**3
+                 + (175-45*h)*n**2 + (102-65*h)*n - 36-30*h)
+    correction = {2: 10, 3: 40, 5: 315, 11: 1612,
+                  17: 3135, 23: 2400}.get(n, 0)
+    return numerator // 36 + correction
+
+PROOF REFERENCE
+The accompanying unrefereed manuscript:
+"Three Consecutive Square-Pyramidal Numbers: Exact Frobenius Formulas,
+Gap Laws, and Algebraic Inversion", October 1, 2026.
+
+Sections 3--5 give a complete Apery-set proof, including all exceptional
+indices. Section 9 proves the minimal generating-function denominator and
+recurrence. Independent review should precede submission. Replace this
+local reference with an actual stable public manuscript link after review;
+no such public posting or OEIS submission is asserted here.

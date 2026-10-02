@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **64 research reports in five families**. Start with the
+This collection has **65 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -15,6 +15,28 @@ formal verification of the collection is claimed. Each report records its
 hypotheses, limitations and provenance.
 
 ## Newest reports
+
+Batch 73 (placed in `26abf259b`, written in `9265235fd`, with reciprocal
+notes in `5cbcc029f`) adds one report,
+[the surreals as a real vector space](surreal/real-vector-space-structure/),
+merged from three manuscripts written independently on one day in answer to
+one question: what is the natural basis of `No` over `ℝ`? The monomials
+`ω^γ` are its canonical Hahn basis and the basis of every layer of the
+associated graded algebra, but a Hamel basis only of the finite-support
+subspace; no set spans `No`, and in NBG with global choice a class Hamel
+basis exists but must contain a proper class of infinite-support vectors.
+The report also describes the canonical linear structure (support
+projections, strong linear maps and the strong real dual) and, in Part IV,
+the Euler quotient. The shared theorems are printed once, with the other
+manuscripts' proofs as second and third routes, and results that re-prove
+[three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/)
+and [exponential automorphism rigidity](surreal/exponential-automorphism-rigidity/)
+are pointers. Reciprocal notes went to those two reports, to
+[omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/)
+and [omnific Diophantine geometry](surreal/omnific-diophantine-geometry/),
+and to the notation guide. The new report is not yet indexed in the
+formalization ledger; nothing in it is formalized, and its independent
+proof review is pending.
 
 Batches 58 and 59 (placed in `b30441a` and `f2cb203`, written in `4e12835`
 and `da05b41`) add one report,
@@ -206,7 +228,7 @@ not extend their earlier proof-review scope.
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: twenty-four reports
+## Surreal numbers: twenty-five reports
 
 | Report | Question or main subject |
 |---|---|
@@ -224,6 +246,7 @@ not extend their earlier proof-review scope.
 | [Transcendence over bounded support](surreal/transcendence-over-bounded-support/) | `2^cf(G)` algebraically independent Hahn series over the fraction field of bounded-support series, and linear-disjointness descent; transcendence from the support, not the coefficients |
 | [Matrix scaling at surreal scales](surreal/matrix-scaling-at-surreal-scales/) | Fixed-margin diagonal scaling of positive Hahn matrices; the spanning-tree deletion gap is the exact gain; no Sinkhorn convergence claim |
 | [Polytopes at surreal scales](surreal/polytopes-at-surreal-scales/) | Finite polytopes over set-sized real closed `K ⊇ ℝ`: all-scale lifting compression to at most `n−d−1` real layers with exact germ degrees, coordinate-truncation histories, affine residues and mixed-volume scales, lattice counts with non-quasipolynomial Ehrhart functions, extension complexity invisible to all-order jets, mixed-volume tomography and realization (a Fano obstruction), exponential contact depth of moving vertices, omnific integer hulls with a rational-normal dichotomy, and set-sized presentations; twelve manuscripts; no Lean verification |
+| [The surreals as a real vector space](surreal/real-vector-space-structure/) | `No` over `ℝ`: the monomials as canonical Hahn basis and layer basis of `gr No ≅ ℝ[No]`, but a Hamel basis only of the finite-support subspace; no set spans `No`, and class Hamel bases (NBG with global choice) need a proper class of infinite-support vectors; window dimensions, strong linear maps and the strong real dual, the vanishing order-bounded dual, and the Euler quotient as a continuum-dimensional `ℝ(X)`-space; three manuscripts; no Lean verification |
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)`; Part V: compact groups over `No`, whose universal set-sized quotient exists exactly in the semisimple case |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |

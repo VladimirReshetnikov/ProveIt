@@ -60,6 +60,9 @@
 % into ProveIt's research-report collection.
 \newcommand{\writenote}[1]{\par\smallskip\noindent
  \textit{[Write note, batch 73O1, 1 October 2026.]}\ #1\par\smallskip}
+% Batch 74: notes added when manuscript 02 of batch 74 was merged.
+\newcommand{\writenotefour}[1]{\par\smallskip\noindent
+ \textit{[Write note, batch 74, 1 October 2026.]}\ #1\par\smallskip}
 
 \title{\textbf{Three Exceptions Before Every Square}\\[5pt]
 \large Sharp OEIS partition asymptotics, an all-orders coefficient calculus,\\
@@ -114,6 +117,16 @@ are phase-parametrized Poincar\'e expansions (the paragraph ``Precise
 meaning of `all orders'\,'' in \cref{srp:sec:scope} says so); and the
 discrete threshold proposition, \cref{srp:prop:ceil}, is an instance of a
 theorem the repository already proves (see the note after it).}
+
+\writenotefour{A second manuscript, number~02 of batch~74, proves the
+three main theorems independently and with the same constants. It is
+merged as \cref{srp:se:sec:second}, after the conclusion: the shared
+theorems are printed once, in their places below, with its proofs as
+marked second routes, and its own results (a classical first-order route,
+exact degrees, second-order envelope constants, the exact phase loss of
+the uncorrected inverse, a Fourier identity) are printed there. Its rate
+for the log-uniform law stands beside \cref{srp:thm:distribution}.
+Provenance of both manuscripts is in \cref{srp:app:provenance}.}
 
 \newpage
 \tableofcontents
@@ -300,6 +313,11 @@ Replacing $T(X)$ by $X$ can instead incur an index error of order
 $X\asymp\log Y$. Away from the phase transition points, the inverse has
 explicit all-orders interior expansions and exact square plateaus.
 \end{theorem}
+
+\writenotefour{The index error of order $X\asymp\log Y$ has an exact
+constant: $\limsup(Q(Y)-X(Y)^2)/\log Y=2\beta/H^2=0.2385882\ldots$ with
+$\beta=H-2u$, and the $\liminf$ is $0$
+(\cref{srp:se:prop:phase-loss}, from manuscript~02 of batch~74).}
 
 The rest of the report proves these statements, explains how to generate
 their coefficients, and records reproducible checks.
@@ -978,6 +996,71 @@ $A(N)$. It describes deterministic frequencies of its normalized values.
 The three lower-envelope exceptions per large block are compatible with
 this law: they have density zero and approach its lower endpoint.
 
+\writenotefour{The lemma and theorem below come from manuscript~02 of
+batch~74 (\cref{srp:se:sec:second}). They add a rate to
+\cref{srp:thm:distribution} for Lipschitz test functions. Write
+$\beta=-\log\rho=H-2u$.}
+
+\begin{lemma}[Phase equidistribution with a rate; manuscript~02]
+\label[lemma]{srp:se:lem:equidist}
+For every Lipschitz function $f:[0,1]\to\R$,
+\begin{equation}
+ \frac1M\sum_{N=1}^Mf(\{\sqrt N\})=\int_0^1f(x)\dd x+O_f(M^{-1/2}).
+ \label{srp:se:eq:equidist}
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof (manuscript~02)]
+On a complete block $k^2\le N<(k+1)^2$, comparing a Riemann sum with its
+integral gives
+$\sum_{N=k^2}^{(k+1)^2-1}f(\sqrt N-k)=\int_0^1f(x)\,2(k+x)\dd x+O_f(1)$,
+because $f(\sqrt y-k)$ varies by $O_f(k^{-1})$ across each of the $2k+1$
+unit intervals. Summing the blocks $k<K$ gives
+$K^2\int_0^1f+O_f(K)$, since the bounded part $2x$ of the weight changes
+each block sum by $O_f(1)$. The final incomplete block has
+$O(\sqrt M)$ terms. Divide by $M$.
+\end{proof}
+
+As this write adds, the lemma also follows from \cref{srp:lem:equidist}:
+writing the average as
+a Stieltjes integral of $f$ against the empirical distribution function of
+the phases and integrating by parts, the discrepancy $O(M^{-1/2})$ of
+\eqref{srp:eq:equidistribution} becomes an error $O(\operatorname{Lip}(f)M^{-1/2})$.
+
+\begin{theorem}[Rate in the log-uniform law; manuscript~02]
+\label{srp:se:thm:law}
+For every Lipschitz function $\varphi$ on a compact interval containing
+$[C_-,C]$ and all the values $R(N)$, $N\ge1$,
+\begin{equation}
+ \frac1M\sum_{N=1}^M\varphi(R(N))
+ =\frac1\beta\int_{C_-}^{C}\frac{\varphi(r)}r\dd r+O_\varphi(M^{-1/2}).
+ \label{srp:se:eq:law}
+\end{equation}
+Changing finitely many initial terms does not affect the statement. The
+limiting density is $1/(\beta r)$ on $[C_-,C]$, the distribution of
+\eqref{srp:eq:distribution}, and
+\begin{equation}
+ \lim_{M\to\infty}\frac1M\sum_{N=1}^M\log R(N)=\log C-\frac\beta2.
+ \label{srp:se:eq:logmean}
+\end{equation}
+\end{theorem}
+\begin{proof}[Proof (manuscript~02)]
+By \eqref{srp:eq:Rleading}, $R(N)-C\rho^{\{\sqrt N\}}=O(N^{-1/2})$ for large
+$N$. The average change of a Lipschitz test function is therefore at most a
+constant times $M^{-1}\sum_{N\le M}N^{-1/2}=O(M^{-1/2})$, the finitely many
+initial terms contributing $O(M^{-1})$. Apply \cref{srp:se:lem:equidist}
+to $f(x)=\varphi(C\rho^x)$ and substitute $r=C\rho^x$,
+$\dd x=-\dd r/(\beta r)$. For \eqref{srp:se:eq:logmean} take
+$\varphi=\log$, Lipschitz on a compact interval of positive reals that
+contains every $R(N)$ (all are positive, and they converge to
+$[C_-,C]$), and integrate.
+\end{proof}
+
+Manuscript~02 also derives the moments \eqref{srp:eq:moments}, in the form
+$C^q(1-\rho^q)/(q\beta)$. Neither the arithmetic nor the geometric mean of
+$R(N)$ is the upper or lower limiting constant. The theorem bears on the
+question about an effective error term in \cref{srp:sec:future}; see the
+note there.
+
 \section{Summation across square blocks}
 \label{srp:sec:summation}
 
@@ -1590,6 +1673,21 @@ three exceptions occur in every block $m\ge m_0$, together with a proof
 that no later reversals occur. Uncertified testing of a large interval
 would not settle the latter requirement.
 
+\writenotefour{Manuscript~02 of batch~74 records the third-last point
+below the envelope in the blocks $m=79$, $99$ and $139$
+(\texttt{data/02-sharp-boundary\_defects.csv}; it labels them by the upper
+squares $k=80,100,140$), consistent with \cref{srp:tab:endpoints}
+($m=64$ above, $m=128$ below). A computation made for this write (exact
+counts by \eqref{srp:eq:DP}; the comparison with $C_-d^{\sqrt N}/N$ in
+50-digit arithmetic, not interval-certified; not shipped) narrows this
+further: for $60\le m\le71$ exactly the last two indices of the block are
+below the envelope, and for every $72\le m\le200$ exactly the last three.
+At $m=71$ and $m=72$ the third-last point lies at relative distance
+$+2.8\cdot10^{-6}$ and $-3.0\cdot10^{-7}$ from it. So $m_0=72$ is the
+least value compatible with these data. Proving that no reversal occurs
+after $m=200$, the second half of the question, is untouched, and nothing
+here is certified.}
+
 \subsection{All-orders switching layers for the inverse}
 The global inverse error is bounded, and the interior inverse has all
 orders, but the transition regions have only been covered at coarse
@@ -1644,6 +1742,23 @@ $\alpha=\alpha(m)$ varies. Existing leading formulas do not by themselves
 justify termwise passage of all our corrections to those boundary
 regimes.
 
+\par\smallskip\noindent
+[Added 1 October 2026, batch~74: the report
+\texttt{a238016-\allowbreak restricted-\allowbreak partitions-\allowbreak
+cubic-\allowbreak boundary} of this collection (batch~74, manuscript~05)
+studies the same counts $p_m(N)$ at the cubic scale $N\asymp m^3$, where
+$\alpha=N/m^2\asymp m\to\infty$, so it bears on the end $\alpha\to\infty$ of
+this question. Its Theorem~2.3 (label \texttt{rpc:thm:iff}) proves that, for
+every sequence $N=N(m)$, the volume law
+$p_m(N)\sim N^{m-1}/(m!\,(m-1)!)$ holds as $m\to\infty$ if and only if
+$N/m^3\to\infty$; sufficiency is the classical Erd\H{o}s--Lehner estimate,
+necessity is that report's own. At $N\sim cm^3$ the ratio of $p_m(N)$ to
+the volume tends to $\e^{1/(4c)}$ (its Corollary~4.1). This locates the
+scale at which the volume law takes over as $\alpha$ grows; it does not
+answer the question. No expansion there is matched uniformly to the
+compact-$\alpha$ regime of this report, the two reports share no
+proposition, and the question stays open as stated.]\par\smallskip
+
 \subsection{All-orders summation and arithmetic statistics}
 The summatory formula was proved only to relative order $1/m$. Applying
 Euler--Maclaurin to each finite block and then summing the exponentially
@@ -1653,6 +1768,13 @@ whether successive integrations remove higher-order phase
 irregularities. Another direction is an effective error term for the
 limiting distribution of $R(N)$, including the deterministic displacement
 of its endpoints and the sparse lower-envelope violations.
+
+\writenotefour{Partly answered by manuscript~02 of batch~74: for Lipschitz
+test functions the empirical law of $R(N)$ converges at rate
+$O(M^{-1/2})$ (\cref{srp:se:thm:law}). The Kolmogorov distance (indicator
+test functions), the deterministic displacement of the endpoints, the
+sparse lower-envelope violations and the sharpness of the rate remain
+open.}
 
 \subsection{A modular Lean formalization}
 A practical route separates algebraic, finite, and analytic components.
@@ -1706,6 +1828,740 @@ inverse statements. It also exposes the limits of the result: effective
 cutoffs, switching layers, exponentially small sectors, and formal
 verification remain separate research tasks rather than hidden
 assumptions.
+
+\section{Addendum (batch 74): a second, independent derivation}
+\label{srp:se:sec:second}
+% Tables of this section are numbered 16.n so that the tables of the
+% appendices keep their numbers; restored at the end of the section.
+
+\newcounter{srpsavedtable}\setcounter{srpsavedtable}{\value{table}}
+\setcounter{table}{0}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+\renewcommand{\theHtable}{se.\arabic{table}}
+
+\writenotefour{This section was added in the write of batch~74. Everything
+in it comes from manuscript~02 of that batch (provenance in
+\cref{srp:se:sec:provenance} and \cref{srp:app:provenance}), restated in
+this report's notation (\cref{srp:se:tab:dictionary}). Sections~1--15 and
+the appendices remain the primary text: where the two manuscripts prove
+the same statement, that statement is printed once, in its earlier place,
+and manuscript~02's proof is recorded here as a marked second route. The
+section stands after the conclusion so that no existing section, statement,
+equation, table or figure number changes. Its lemma and theorem on the rate
+of the log-uniform law stand beside \cref{srp:thm:distribution} in
+\cref{srp:sec:distribution}.}
+
+\subsection{Provenance and scope of the second derivation}
+\label{srp:se:sec:provenance}
+
+Manuscript~02 of batch~74 is the archive
+\nolinkurl{A097356_Sharp_Envelopes_Transseries_Inversion.zip}, which
+arrived in commit \texttt{c664fc2f0} and was placed in this report by
+commit \texttt{b669cff87}. Its article is titled \emph{Square-Root
+Restricted Partitions: Sharp Envelopes, All-Orders Phase Expansions, and
+Quantized Inversion} (29~pages, dated October~1, 2026); its title page
+reads ``Prepared for Vladimir Reshetnikov'' and its PDF metadata names
+``OpenAI, prepared for Vladimir Reshetnikov'' as author. Its pinned
+repository commit is
+\nolinkurl{905bdc785424922c79fc24f56d27960ecb1085dd} \cite{seProveIt}.
+
+It was written without sight of manuscript~38, the source of
+Sections~1--15. The pinned commit already contained 38's archive
+(\texttt{OEIS\_SquareRoot\_Partition\_Research.zip}, arrival commit
+\texttt{f8c3a392a}) unopened in the repository's intake directory; the two
+texts share 0.7\,\% of their word 8-grams (bibliography, preamble and
+formula fragments). The two derivations agree on every shared constant to
+every digit both print: $u$, $\rho$, $H$, $d$, $C$ and $C_-$ to 28~digits,
+$\gamma$ to 12, the coefficients $a,b,c$ of $P_1$ to 20;
+$\kappa_1=-0.60100035751199575681\ldots$; and the endpoint coefficients
+$\kappa_3=-0.0161804924913756\ldots$ and $\kappa_4=0.2762294400189\ldots$,
+which lie inside the enclosures \eqref{srp:eq:kappa-certified}.
+
+Manuscript~02 states its own scope as follows, and these statements are
+kept. The existence of a leading restricted-partition saddle asymptotic is
+classical (Szekeres \cite{seSzekeresI,seSzekeresII}, Canfield
+\cite{canfield}, Romik \cite{romik}); the first-order envelope already
+follows from the Szekeres--Canfield formula
+(\cref{srp:se:prop:classical}). The sequence-specific envelope constant,
+the distinction between a limiting envelope and an eventual inequality,
+the uniform expansion to every algebraic order and the phase-dependent
+inverse are proved, but ``their novelty as independently published
+results is not asserted''. Its outcome ledger records as \emph{not proved}
+a complete exponentially small saddle decomposition and as \emph{not
+performed} a Lean verification. Its README adds: no convergence of the
+expansion as the truncation order grows; no explicit universal starting
+index for the eventual three-term defect and no universal numerical
+constant in the inverse's $O(1)$; the rational certificate certifies sign
+inequalities, not the contour proof; no repository or OEIS edits; the
+report is unreviewed and ``should receive independent mathematical review
+before publication or entry updates''. It consulted only the metadata and
+abstract of Romik's article and attributes Szekeres' papers through
+Canfield's bibliography.
+
+\writenotefour{Two sentences of manuscript~02 are stale. It says that ``a
+repository code search for \texttt{A097356} returned no matches'' and
+that searches ``did not locate a source stating these particular
+second-order and inverse formulas''. The pinned commit
+\texttt{905bdc785} already held the archive of an independent report on
+the same sequence (\texttt{OEIS\_SquareRoot\_Partition\_Research.zip}),
+placed as this report's primary text in commit \texttt{9df4ba51a}; it
+proves the same three main theorems, the first correction and the clipped
+inverse. Manuscript~02 is therefore an independent second derivation, and
+its delivered \texttt{02-sharp-SOURCES.md} keeps the stale sentence.}
+
+The archive's name contains the word ``Transseries'', but manuscript~02's
+own analysis (\cref{srp:se:sec:classification}) concludes that the
+expansion is shellwise and not an ordinary transseries, and its
+``inversion'' is integer-threshold inversion. It is therefore filed with
+this report and not in the repository's transseries tree. Its inverse
+statements are instances of that tree's inversion apparatus
+\cite{proveitTI}: the passage from a real approximation to the integer
+threshold in its global inverse and in its interior rounding formula is
+parts~(1)--(2) of Theorem \texttt{p0:thm:staircase}, as noted after
+\cref{srp:prop:ceil}, and its two-term inverse of the square subsequence is
+a perturbed inversion around the Lambert core in the sense of Theorem
+\texttt{p0:thm:perturbed-inversion} of the same volume. Neither
+manuscript~02 nor this section claims novelty for that apparatus.
+
+\subsection{Notation}
+\label{srp:se:sec:notation}
+
+Manuscript~02 uses several of this report's letters for other objects.
+Every statement below is written in this report's notation;
+\cref{srp:se:tab:dictionary} lists each renamed symbol. Two symbols are
+new: $\beta=-\log\rho=H-2u$ and $\lambda=[\sigma]D_1(\sigma,0)$. No
+normalization changes, except that manuscript~02's Gaussian functional
+$\mathcal G_V$ has variance $1/V$ where \eqref{srp:eq:gaussian} has unit
+variance: $\mathcal G_V(w^{2r})=\G(y^{2r})/V^r$ under $y=\sqrt V\,w$.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Notion & This report & Manuscript~02\\
+\midrule
+saddle, $J(u)=1$ & $u=0.8146511\ldots$ & $v$\\
+$1-\e^{-u}=0.5572062\ldots$ & $\rho$ & $s$ (its $\rho$ is our $\gamma$)\\
+$2u/H=0.7358682\ldots$ & $\gamma$ & $\rho$ (\emph{not} our $\rho$)\\
+$-\log\rho=H-2u=0.5848198\ldots$ & $\beta$ (new symbol) & $\beta$\\
+exponential rate & $H$ & $g$ (its $H$ is our tent $\psi$)\\
+$F''(u)$ & $V$ & $B$\\
+$\tfrac12\log\bigl(z/(1-\e^{-z})\bigr)$ & $\ell(z)$ & $h(z)$ (our $h$ is $2\ell$)\\
+Euler--Maclaurin coefficients & $E_{2r-1}(z)$ & $c_r(z)$\\
+shell coefficients ($\alpha=1$, $\tau=0$) & $D_k(\sigma,0)$ & $P_j(t)$ (\emph{not} our $P_k$)\\
+phase polynomials & $P_k(\theta)$ & $Q_j(\delta)$\\
+$\{\sqrt N\}$, $\sqrt N$ & $\theta$, $t$ & $\delta$, $x$\\
+$D_1(0,0)$ & $a$ & $d_0$\\
+$[\sigma]D_1(\sigma,0)$ & $\lambda$ (new symbol) & $\eta$ (\emph{not} our $\eta$)\\
+$P_1(1)+\beta/2$ & $\kappa_1$ & $\kappa$\\
+normalized sequence, lower constant & $R(N)$, $C_-$ & $R_n$, $Cs$\\
+Lambert core, threshold, inverse phase & $X(Y)$, $Q(Y)$, $\eta=\{X\}$ & $x_0(y)$, $\nu(y)$, $\theta$\\
+tent $\min(\eta/\gamma,1)-\eta$ & $\psi(\eta)$ & $H(\theta)$\\
+Canfield's variable $m/\sqrt N$ & $\mu$ (new symbol) & $u$\\
+\bottomrule
+\end{tabular}
+\caption{Notation of manuscript~02 against this report. The left column
+is used throughout this section. Manuscript~02 indexes a block by its
+upper square: its shell $(k-1)^2\le n<k^2$ is our block $m=k-1$.}
+\label{srp:se:tab:dictionary}
+\end{table}
+
+\subsection{The shared theorems, and manuscript~02's second routes}
+\label{srp:se:sec:shared}
+
+\Cref{srp:se:tab:shared} lists the statements both manuscripts prove. They
+are printed once, in Sections~2--12, and not again here.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}
+ >{\raggedright\arraybackslash}p{.2\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Statement & This report & Manuscript~02, and how its proof relates\\
+\midrule
+Saddle, $V>0$, constants &
+\cref{srp:lem:saddle}, \eqref{srp:eq:dilog-match} &
+its Lemma 3.1 and (19)--(21); adds $0<u<1$ and $\Li_2(\rho)=u^2$
+(\cref{srp:se:lem:saddle})\\
+Phase expansion, sharp envelopes &
+\cref{srp:thm:main-phase} &
+its Theorems 2.1--2.2; second routes \cref{srp:se:prop:classical}
+(first order) and \cref{srp:se:prop:Q} (all orders); adds the
+second-order constants (\cref{srp:se:thm:second-order})\\
+Uniform shell expansion at $\alpha=1$, $\tau=0$ &
+\cref{srp:thm:allorders}, \cref{srp:prop:product} &
+its Theorem 5.1 with Lemmas 6.1, 7.1 and Corollary 7.2; same three steps
+(see below); adds the exact degree (\cref{srp:se:prop:degree})\\
+First correction &
+\cref{srp:prop:D1}, \eqref{srp:eq:abc} &
+its (44)--(45); adds closed forms in $\e^u$
+(\cref{srp:se:prop:rational})\\
+Three exceptions per block &
+\cref{srp:thm:three}, \cref{srp:prop:endpoint} &
+its Theorem 11.3 and (60); same proof: its block-ratio display is
+\eqref{srp:eq:block-ratio}, its endpoint signs are
+$\kappa_3<0<\kappa_4$\\
+Log-uniform law, moments &
+\cref{srp:thm:distribution} &
+its Theorem 12.2; adds the rate (\cref{srp:se:thm:law})\\
+Global inverse, plateaus &
+\cref{srp:thm:main-inverse}, \cref{srp:prop:plateaus} &
+its Theorem 2.3; same proof: generalized inverse of the jump profile
+$H\lfloor z\rfloor+2u\{z\}$, Lipschitz with constant $1/(2u)$; adds the
+exact phase loss (\cref{srp:se:prop:phase-loss})\\
+Interior threshold &
+\cref{srp:prop:interior} &
+its Proposition 15.2 (first order only; ours has all orders)\\
+Square-subsequence inverse &
+\cref{srp:prop:inverse-coeff} &
+its (85): $q_1,q_2$ of \eqref{srp:eq:qfirst} (ours has all orders)\\
+Companion amplitudes and $D_1(\pm1,0)$ &
+\eqref{srp:eq:shifted}, \cref{srp:tab:D} &
+its (72) and table; adds the ratio form (\cref{srp:se:prop:ratio})\\
+Sign certificate &
+\cref{srp:sec:certificate} &
+an independent second certificate (\cref{srp:se:sec:certificate})\\
+\bottomrule
+\end{tabularx}
+\caption{Statements proved by both manuscripts. Numbers in the right
+column are manuscript~02's own, which is not shipped; they locate the
+statements for anyone reading its archive.}
+\label{srp:se:tab:shared}
+\end{table}
+
+\paragraph{Second routes recorded only by pointer.} Manuscript~02 proves the
+uniform shell expansion by the same three steps as
+\cref{srp:sec:EM,srp:sec:coefficients,srp:sec:proof-saddle}: the
+regularized Euler--Maclaurin expansion (its $c_r$ equal our
+$E_{2r-1}$, including $c_1=-\tfrac z{24}\coth\tfrac z2$), a product-modulus
+bound proved through
+$\sum_{\lceil m/2\rceil\le j\le m}\sin^2(j\vartheta/2)\ge c\,m\min(m^2\vartheta^2,1)$
+in place of \cref{srp:lem:trig} (the same sum, since
+$1-\cos x=2\sin^2(x/2)$), and a Gaussian recurrence identical to
+\eqref{srp:eq:exp-recursion} up to the variance normalization above. The
+three-exception theorem and the global inverse are proved as here. These
+proofs are not reprinted.
+
+\begin{proposition}[The classical route to first order; manuscript~02]
+\label[proposition]{srp:se:prop:classical}
+For $\mu>0$ let $u(\mu^{-2})$ be the saddle of \cref{srp:lem:saddle} with
+$\alpha=\mu^{-2}$, and put
+\[
+ G_{\mathrm{Sz}}(\mu)=\frac{2u}\mu-\mu\log(1-\e^{-u}),\qquad
+ f_{\mathrm{Sz}}(\mu)=\frac{u}{2^{3/2}\pi\mu}
+ \Bigl(1-\e^{-u}-\tfrac12\mu^2\e^{-u}\Bigr)^{-1/2},
+ \qquad u=u(\mu^{-2}).
+\]
+Then $G_{\mathrm{Sz}}(1)=H$, $f_{\mathrm{Sz}}(1)=C$,
+$G_{\mathrm{Sz}}'(\mu)=-\log(1-\e^{-u(\mu^{-2})})$, and the
+Szekeres--Canfield formula
+\begin{equation}
+ p_m(N)=\frac{f_{\mathrm{Sz}}(\mu)}{N}
+ \exp\bigl\{\sqrt N\,G_{\mathrm{Sz}}(\mu)+o(1)\bigr\},
+ \qquad \mu=\frac m{\sqrt N},
+ \label{srp:se:eq:canfield}
+\end{equation}
+uniform for $\mu$ in compact subsets of $(0,\infty)$ \cite[theorem on
+p.~2]{canfield}, gives $R(N)=C\rho^\theta(1+o(1))$, hence the cluster set
+$[C_-,C]$ of \cref{srp:thm:main-phase}.
+\end{proposition}
+\begin{proof}[Proof (manuscript~02)]
+Canfield's auxiliary $v(\mu)$ is defined by $I(v)=v^2/\mu^2$ with
+$I(v)=\int_0^vx/(\e^x-1)\dd x=v^2J(v)$; so $J(v)=\mu^{-2}$ and $v(\mu)$ is
+our $u(\mu^{-2})$. At $\mu=1$ this is $u$, and
+$G_{\mathrm{Sz}}(1)=2u-\log\rho=H$,
+$f_{\mathrm{Sz}}(1)=u/(2\pi\sqrt{2-3\e^{-u}})=C$. Next,
+$G_{\mathrm{Sz}}(\mu)=\mu F(v)+v/\mu$ by the integration by parts in the
+proof of \cref{srp:lem:saddle}; differentiating, the terms in $v'(\mu)$
+cancel because $\partial_v(\mu F(v)+v/\mu)=-\mu J(v)+1/\mu=0$, leaving
+$G'_{\mathrm{Sz}}(\mu)=F(v)-v/\mu^2=-\log(1-\e^{-v})$. Now take
+$t=\sqrt N$, $m=t-\theta$, so $\mu=1-\theta/t$. Then
+$tG_{\mathrm{Sz}}(\mu)=Ht-\beta\theta+O(t^{-1})$ and
+$f_{\mathrm{Sz}}(\mu)=C+O(t^{-1})$, and \eqref{srp:se:eq:canfield} gives
+$R(N)=C\e^{-\beta\theta}(1+o(1))=C\rho^\theta(1+o(1))$. Squares give $C$,
+the integers just before squares give $C_-$, and integers nearest
+$(m+\theta_0)^2$ give every value between.
+\end{proof}
+
+This route explains why the first-order OEIS question is a consequence of
+existing theory. As manuscript~02 notes, it determines neither the sign of
+the first correction nor the inverse; for those a uniform expansion with a
+proved remainder is needed, as in \cref{srp:thm:allorders}.
+
+\begin{proposition}[Phase polynomials by a generating function; manuscript~02]
+\label[proposition]{srp:se:prop:Q}
+Put $D_j(\sigma)=D_j(1;\sigma,0)$. The phase polynomials of
+\cref{srp:thm:main-phase} satisfy the formal identity
+\begin{equation}
+ \sum_{k\ge0}P_k(\theta)z^k
+ =(1-\theta z)^{-2}\exp\Bigl(\frac{u\theta^2z}{1-\theta z}\Bigr)
+ \sum_{j\ge0}D_j\Bigl(2\theta+\frac{\theta^2z}{1-\theta z}\Bigr)
+ \Bigl(\frac z{1-\theta z}\Bigr)^j,
+ \label{srp:se:eq:Qtransform}
+\end{equation}
+where each coefficient of $z$ needs only finitely many $D_j$. In
+particular $P_1(\theta)=2\theta+u\theta^2+D_1(2\theta)$, which is
+\eqref{srp:eq:P1}--\eqref{srp:eq:abc}, and
+\begin{equation}
+ P_2(\theta)=D_2(2\theta)+\theta^2D_1'(2\theta)
+ +(3\theta+u\theta^2)D_1(2\theta)
+ +3\theta^2+3u\theta^3+\tfrac12u^2\theta^4.
+ \label{srp:se:eq:Q2}
+\end{equation}
+\end{proposition}
+\begin{proof}[Proof (manuscript~02; a second route to \eqref{srp:eq:Pformula})]
+Instead of the two offsets $\sigma=2\theta$, $\tau=\theta^2$, use the single
+real shell coordinate $N=m^2+\sigma m$ with
+$\sigma=(N-m^2)/m=2\theta+\theta^2/(t-\theta)$, which lies in $[0,2]$ for
+every integer $N$. The case $\tau=0$ of \cref{srp:thm:allorders}, uniform
+for $\sigma\in[0,2]$, applies. With $m=t-\theta$,
+\[
+ Hm+u\sigma=Ht-\beta\theta+\frac{u\theta^2}{t-\theta},
+ \qquad m^{-2}=t^{-2}(1-\theta/t)^{-2},
+\]
+and $\e^{-\beta\theta}=\rho^\theta$. Putting $z=1/t$ gives
+\eqref{srp:se:eq:Qtransform}. All factors are analytic in $z$ near $0$
+with bounds uniform for $0\le\theta<1$, so the shell remainder transports
+to the uniform phase remainder. Reading off $z^1$ and $z^2$ gives the two
+displayed formulas.
+\end{proof}
+
+The route needs only the one-parameter family $D_j(\sigma,0)$, not the
+$\tau$-dependence of $D_j$. Formula \eqref{srp:se:eq:Q2} reproduces the
+decimals \eqref{srp:eq:P2-decimal}; manuscript~02 verifies both displayed
+formulas symbolically (file \texttt{data/02-sharp-symbolic\_checks.txt}).
+
+\subsection{Results of the second derivation not proved in Sections 1--15}
+\label{srp:se:sec:new}
+
+\begin{lemma}[Saddle facts; manuscript~02]
+\label[lemma]{srp:se:lem:saddle}
+At $\alpha=1$ one has $0<u<1$,
+$V=(3\rho-1)/(u\rho)$, hence $\rho>1/3$, and $\Li_2(\rho)=u^2$.
+\end{lemma}
+\begin{proof}[Proof (manuscript~02)]
+$J$ decreases strictly and $J(1)=\int_0^1x/(\e^x-1)\dd x<1$ because
+$\e^x-1>x$; so $u<1$. The variance identity \eqref{srp:eq:variance-identity}
+at $\alpha=1$ with $1/(\e^u-1)=(1-\rho)/\rho$ gives
+$V=(3\rho-1)/(u\rho)$, and $V>0$ forces $\rho>1/3$. Finally
+$\frac{\dd}{\dd z}\Li_2(1-\e^{-z})=z/(\e^z-1)$ and both sides vanish at
+$z=0$, so $\Li_2(\rho)=\int_0^ux/(\e^x-1)\dd x=u^2J(u)=u^2$.
+\end{proof}
+
+\begin{proposition}[Exact degree of the shell coefficients; manuscript~02]
+\label[proposition]{srp:se:prop:degree}
+For every $k\ge0$, $D_k(1;\sigma,0)$ has degree exactly $2k$ in $\sigma$,
+with leading coefficient
+\begin{equation}
+ [\sigma^{2k}]D_k(1;\sigma,0)=\frac{(-1)^k}{k!\,(2V)^k}.
+ \label{srp:se:eq:degree}
+\end{equation}
+\end{proposition}
+\begin{proof}[Proof (manuscript~02)]
+In \eqref{srp:eq:formal-exponent} with $\tau=0$, $\sigma$ occurs only in the
+term $\sigma yv/\sqrt V$. A monomial $\sigma^{2k}$ in $[v^{2k}]\exp\E$
+therefore arises only from $(\sigma yv/\sqrt V)^{2k}/(2k)!$, and
+\eqref{srp:eq:gaussian} gives
+$\G(y^{2k})\sigma^{2k}/(V^k(2k)!)=(-1)^k\sigma^{2k}/(2^kk!V^k)\ne0$.
+\end{proof}
+
+For $k=1$ this is the coefficient $-1/(2V)$ of \eqref{srp:eq:D1}; for
+$k=2$ it is $0.0571004775654123\ldots$. The degree bound of
+\cref{srp:thm:allorders} is thus attained on the line $\tau=0$.
+
+\begin{proposition}[Closed forms of the first correction; manuscript~02]
+\label[proposition]{srp:se:prop:rational}
+Put $\xi=1/(\e^u-1)=0.79466767409644816\ldots$. At $\alpha=1$,
+\begin{align*}
+ V&=\frac{2-\xi}u, & \ell'(u)&=\frac{u^{-1}-\xi}2,\\
+ \ell''(u)&=\frac{-u^{-2}+\xi(1+\xi)}2, &
+ F'''(u)&=\frac{3\xi-6}{u^2}+\frac{\xi(1+\xi)}u,\\
+ F''''(u)&=\frac{24-12\xi}{u^3}-\frac{4\xi(1+\xi)}{u^2}
+ -\frac{\xi(1+\xi)(1+2\xi)}u,
+\end{align*}
+and the coefficients $a=D_1(0,0)$ and $\lambda=[\sigma]D_1(\sigma,0)$ of
+$D_1(\sigma,0)=a+\lambda\sigma-\sigma^2/(2V)$ are
+\begin{align}
+ \lambda&=\frac{3\xi u+4\xi-8}{2(\xi-2)^2}
+ =-0.99089584714523653382\ldots,
+ \label{srp:se:eq:lambda}\\
+ a&=\frac{13\xi^2u^2+36\xi^2u+12\xi^2+17\xi u^2-72\xi u-48\xi+4u^2+48}
+ {12u(\xi-2)^3}.
+ \label{srp:se:eq:a-rational}
+\end{align}
+Consequently $b=2+2\lambda$ and $c=u-2/V$ in \eqref{srp:eq:abc}.
+\end{proposition}
+\begin{proof}[Proof (manuscript~02)]
+Differentiate $J(z)=z^{-2}\int_0^zx/(\e^x-1)\dd x$ and
+$\ell(z)=\tfrac12\log(z/(1-\e^{-z}))$ repeatedly, \emph{then} impose
+$\int_0^ux/(\e^x-1)\dd x=u^2$; imposing it first gives wrong derivatives.
+Substitute into \eqref{srp:eq:D1}. Manuscript~02 checks the two closed
+forms in exact SymPy arithmetic; this write rechecked all seven
+displays to 40 digits.
+\end{proof}
+
+\begin{theorem}[Second-order envelopes; manuscript~02]
+\label{srp:se:thm:second-order}
+With $a=D_1(0,0)$ and $\kappa_1=P_1(1)+\beta/2$,
+\begin{equation}
+ \limsup_{N\to\infty}\sqrt N\Bigl(\frac{R(N)}C-1\Bigr)=a,
+ \qquad
+ \liminf_{N\to\infty}\sqrt N\Bigl(\frac{R(N)}{C_-}-1\Bigr)=\kappa_1,
+ \label{srp:se:eq:second-order}
+\end{equation}
+the first attained along squares and the second along $N=k^2-1$, where
+$R(k^2-1)=C_-(1+\kappa_1/k+O(k^{-2}))$.
+\end{theorem}
+\begin{proof}[Proof (manuscript~02)]
+By \eqref{srp:eq:main-phase} with $K=1$,
+$R(N)=C\rho^\theta(1+P_1(\theta)/t+O(t^{-2}))$ uniformly. For large $t$ the
+function $U_t(\theta)=\rho^\theta(1+P_1(\theta)/t)$ is strictly decreasing
+on $[0,1]$: its derivative is
+$\rho^\theta[-\beta+(P_1'(\theta)-\beta P_1(\theta))/t]$. Hence
+$R(N)/C\le1+a/t+O(t^{-2})$ uniformly, with equality to this order on
+squares; this is the first limit.
+
+For the second, put $e=1-\theta$. As $N$ is an integer below the next
+square, $e\ge e_{\min}(t)=\sqrt{t^2+1}-t=1/(2t)+O(t^{-3})$, with equality
+at $N=k^2-1$ (and $e=1$ at squares). Now
+$R(N)/C_-=\e^{\beta e}\bigl(1+P_1(1-e)/t+O(t^{-2})\bigr)$, and the
+error-free part increases with $e$ for large $t$ (its derivative has
+leading term $\beta\e^{\beta e}$). So
+$R(N)/C_-\ge1+(P_1(1)+\beta/2)/t+O(t^{-2})$, in the sense that a fixed
+multiple of $t^{-2}$ may be subtracted from the right side to obtain an
+inequality, with equality to this order at $N=k^2-1$, where
+$t=k-1/(2k)+O(k^{-3})$.
+\end{proof}
+
+With the certified signs $a<0$ and $\kappa_1<0$ (\cref{srp:tab:certificate}),
+the theorem recovers the eventual upper inequality $R(N)<C$ and the
+pre-square defect $R(k^2-1)<C_-$ of \cref{srp:thm:three}.
+
+\begin{proposition}[Forward boundary layer; manuscript~02]
+\label[proposition]{srp:se:prop:boundary}
+For each fixed integer $r\ge0$,
+\begin{equation}
+ \frac{R(k^2+r)}C=1+\frac{a-\beta r/2}k+O_r(k^{-2}).
+ \label{srp:se:eq:boundaryplus}
+\end{equation}
+\end{proposition}
+\begin{proof}[Proof (manuscript~02)]
+$\sqrt{k^2+r}=k+r/(2k)+O_r(k^{-3})$, so $\theta=r/(2k)+O_r(k^{-3})$; insert
+into \eqref{srp:eq:main-phase} with $K=1$.
+\end{proof}
+
+The pre-square side, $R(k^2-r)/C_-=1+(P_1(1)+\beta r/2)/k+O_r(k^{-2})$, is
+\cref{srp:prop:endpoint} (with $k=m+1$; manuscript~02 proves it the same
+way).
+
+\begin{proposition}[Ordinary steps and square jumps; manuscript~02]
+\label[proposition]{srp:se:prop:jump}
+If $N$ and $N+1$ lie in the same block $m$, then
+$A(N+1)/A(N)=\exp\{u/m+O(m^{-2})\}$ uniformly. At a square,
+\begin{equation}
+ \frac{A(k^2)}{A(k^2-1)}\longrightarrow\frac1\rho
+ =1.79466767409644816350\ldots.
+ \label{srp:se:eq:jump}
+\end{equation}
+\end{proposition}
+\begin{proof}[Proof (manuscript~02)]
+Inside a block, $\sigma$ moves by $1/m$ in \cref{srp:thm:allorders} and the
+polynomial amplitude changes by a factor $1+O(m^{-2})$, uniformly for
+$\sigma\in[0,2]$. At a square, compare the square and pre-square forms of
+\eqref{srp:eq:main-phase}: the smooth factors $C\e^{Ht}/t^2$ have ratio
+tending to one, and the phase factors are $1$ and $\rho^{\theta}$ with
+$\theta\to1$.
+\end{proof}
+
+The ordinary ratio tends to one while the square ratio does not: the jumps
+are regular and explicit, not erratic arithmetic fluctuations. (Note that
+$1/\rho=1+\xi$ with $\xi$ of \cref{srp:se:prop:rational}.)
+
+\begin{proposition}[Exact phase loss of the uncorrected inverse; manuscript~02]
+\label[proposition]{srp:se:prop:phase-loss}
+Over real $Y\to\infty$, and equally over integer $Y$,
+\begin{equation}
+ \liminf\frac{Q(Y)-X(Y)^2}{\log Y}=0,\qquad
+ \limsup\frac{Q(Y)-X(Y)^2}{\log Y}=\frac{2(1-\gamma)}H=\frac{2\beta}{H^2},
+ \label{srp:se:eq:inverse-limsup}
+\end{equation}
+and $2\beta/H^2=0.23858820134102227824\ldots$.
+\end{proposition}
+\begin{proof}[Proof (manuscript~02)]
+By \eqref{srp:eq:inverse-missing-term},
+$Q(Y)-X(Y)^2=2X(Y)\psi(\{X(Y)\})+O(1)$, where $\psi$ of \eqref{srp:eq:tent}
+takes values in $[0,1-\gamma]$, vanishes at $\eta=0$ and is maximal at
+$\eta=\gamma$. Also $X(Y)/\log Y\to1/H$, and every phase $\eta_0$ is
+attained by $Y=C\e^{H(k+\eta_0)}/(k+\eta_0)^2$. Rounding $Y$ to an integer
+moves $X$ by an exponentially small amount. Finally
+$1-\gamma=(H-2u)/H=\beta/H$.
+\end{proof}
+
+This sharpens the statement after \cref{srp:thm:main-inverse} that
+replacing $T(X)$ by $X$ ``can incur an index error of order
+$X\asymp\log Y$'': the error is at most $(2\beta/H^2+o(1))\log Y$, and
+that constant is attained.
+
+\begin{proposition}[Ratio form of the companion expansions; manuscript~02]
+\label[proposition]{srp:se:prop:ratio}
+For every fixed real $\sigma$, along indices with $m^2+\sigma m$ integral,
+\begin{equation}
+ \frac{p_m(m^2+\sigma m)}{p_m(m^2)}
+ =\e^{u\sigma}\Bigl(1+\frac{\lambda\sigma-\sigma^2/(2V)}m+O_\sigma(m^{-2})\Bigr).
+ \label{srp:se:eq:shiftratio}
+\end{equation}
+\end{proposition}
+\begin{proof}[Proof (manuscript~02)]
+Divide the two cases of \cref{srp:thm:allorders} with $K=1$ and use
+$D_1(\sigma,0)-D_1(0,0)=\lambda\sigma-\sigma^2/(2V)$.
+\end{proof}
+
+The quadratic term is the local Gaussian cost of moving the coefficient
+index, and the linear term records the moving saddle amplitude; this is
+why the top coefficients \eqref{srp:se:eq:degree} are Gaussian.
+
+\begin{remark}[A206240 as partitions into exactly $m$ parts; manuscript~02]
+\label[remark]{srp:se:rem:A206240}
+By conjugation, $p_m(m^2-m)$ counts partitions of $m^2-m$ into at most $m$
+parts. Pad to $m$ entries with zeros and add one to each entry: this is a
+bijection onto the partitions of $m^2$ into exactly $m$ positive parts,
+which explains the alternative description in the OEIS entry \oeis{A206240}
+without another generating function.
+\end{remark}
+
+\subsection{What kind of expansion is this?}
+\label{srp:se:sec:classification}
+
+In logarithmic form the result reads
+\begin{equation}
+ \log A(N)=Ht-\log N+\log C-\beta\theta+\frac{P_1(\theta)}t+O(N^{-1}),
+ \qquad t=\sqrt N,\ \theta=\{t\}.
+ \label{srp:se:eq:logphase}
+\end{equation}
+No equivalent $K\e^{H\sqrt N}/N$ with a constant $K$ exists, because the
+subsequential limits $C$ and $C_-$ differ; replacing the floor by a smooth
+parameter is not an innocuous simplification. The dominant sector is a
+phase-dependent, shellwise expansion: polynomials in a bounded phase,
+multiplied by $\rho^\theta$, reset at each square. Manuscript~02 states
+that this is ``not a claim that an ordinary constant-coefficient
+power--logarithmic transseries represents the sequence globally''
+(compare the paragraph ``Precise meaning of `all orders'\,'' in
+\cref{srp:sec:scope}).
+
+For an exact description of the phase factor, let
+$\Phi(x)=\e^{-\beta\{x\}}=\rho^{\{x\}}$, right-continuous at integers. Its
+Fourier coefficients are
+$\int_0^1\e^{-(\beta+2\pi\ii j)x}\dd x=(1-\rho)/(\beta+2\pi\ii j)$,
+$j\in\mathbb Z$, and symmetric summation gives
+\begin{equation}
+ \Phi(\sqrt N)=(1-\rho)\lim_{M\to\infty}\sum_{j=-M}^{M}
+ \frac{\e^{2\pi\ii j\sqrt N}}{\beta+2\pi\ii j}
+ +\frac{1-\rho}2\,\mathbf 1_{\{N\text{ is a square}\}}.
+ \label{srp:se:eq:fourier}
+\end{equation}
+At a nonsquare the periodic function is smooth near $\sqrt N$ and its
+Fourier series converges to its value; at a square it converges to the
+mean $(1+\rho)/2$ of the one-sided limits, so the correction term is
+needed (Dirichlet-kernel convergence for piecewise $C^1$ periodic
+functions). The series does not converge absolutely, and its oscillatory
+terms all have comparable size, so it is not a well-ordered chain of
+successively smaller real monomials. Manuscript~02 offers
+\eqref{srp:se:eq:fourier} as an explanation, not as a replacement for the
+uniformly controlled expansion. The minor-arc bound suppresses the
+nonlocal contour to every algebraic order; it identifies no exponentially
+small sector, and it proves neither Borel summability nor optimal
+truncation. Those stronger meanings of ``complete transseries'' remain
+outside both manuscripts' theorems.
+
+\subsection{An independent second sign certificate}
+\label{srp:se:sec:certificate}
+
+Manuscript~02's \texttt{certify.py} (shipped as
+\texttt{code/02-sharp-certify.py}) is a second, independently written
+rational interval certificate of the signs used in
+\cref{srp:thm:three}. It brackets
+$0.814651136747611<u<0.814651136747612$ and evaluates the series
+\eqref{srp:eq:Fseries} with the common tail majorant
+\[
+ \frac{16}{15}\cdot\frac{4(2R+2)^4}{36^{R+1}},\qquad R\ge20,
+\]
+for derivative orders one to four (from $|B_{2r}|/(2r)!<4/36^r$, using
+$\pi>3$ and $\zeta(2r)<2$; successive majorant terms have ratio below
+$1/16$ for $r\ge21$). Logarithms and exponentials are bounded by positive
+series, and every operation is rounded outward on a grid of denominator
+$10^{45}$. Its recorded output, \texttt{data/02-sharp-certified\_signs.txt},
+encloses
+\begin{gather*}
+ V\in[1.479568703133,\,1.479568703134],\qquad
+ a\in[-0.374524459844,\,-0.374524459843],\\
+ b\in[0.018208305709,\,0.018208305710],\qquad
+ c\in[-0.537094135889,\,-0.537094135888],\\
+ \beta\in[0.584819865020,\,0.584819865021],\qquad
+ \kappa_1\in[-0.601000357513,\,-0.601000357511],
+\end{gather*}
+all inside \cref{srp:tab:certificate}, and checks $P_1(\theta)<0$ on
+$[0,1]$ (the article states $P_1\le-0.356315$ there), $\kappa_1<0$, and
+$\kappa_3=\kappa_1+\beta<0<\kappa_1+\tfrac32\beta=\kappa_4$. The two
+certificates use different tail bounds, truncation points and logarithm
+series; they agree. Like the first, the second certifies sign
+inequalities only, not the contour proof, and is not a proof-assistant
+check.
+
+\subsection{Manuscript~02's computations}
+\label{srp:se:sec:numerics}
+
+Manuscript~02 enumerates A097356 exactly through $N=20000$ by
+\eqref{srp:eq:DP}, compares the first 54 terms of A097356 and the first 24
+terms of each of A206226, A206227 and A206240 with reference prefixes
+embedded in its \texttt{verify.py}, checks monotonicity, cross-checks
+$D_1(\sigma,0)$ against \cref{srp:se:prop:rational} and the top
+coefficients \eqref{srp:se:eq:degree} through $k=4$ at 80-digit precision,
+and verifies \cref{srp:se:prop:rational} and \eqref{srp:se:eq:Q2}
+symbolically. \Cref{srp:se:tab:shell,srp:se:tab:boundary,srp:se:tab:inverse}
+reproduce its three displayed tables in this report's notation; the
+shipped \texttt{data/02-sharp-*.csv} files hold all rows. None of these
+numbers is interval-certified, and none is used in a proof.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rr rrr}
+\toprule
+$m$ & $\sigma$ & $K=0$ & $K=2$ & $K=4$\\
+\midrule
+20 & 0 & $1.88955\cdot10^{-2}$ & $1.39738\cdot10^{-6}$ & $3.72310\cdot10^{-10}$\\
+20 & 2 & $1.92926\cdot10^{-1}$ & $3.70343\cdot10^{-3}$ & $5.41083\cdot10^{-5}$\\
+40 & 0 & $9.40528\cdot10^{-3}$ & $1.75037\cdot10^{-7}$ & $1.82977\cdot10^{-11}$\\
+40 & 2 & $9.45908\cdot10^{-2}$ & $4.49486\cdot10^{-4}$ & $1.63615\cdot10^{-6}$\\
+80 & 0 & $4.69208\cdot10^{-3}$ & $2.19013\cdot10^{-8}$ & $5.69068\cdot10^{-13}$\\
+80 & 2 & $4.68242\cdot10^{-2}$ & $5.53391\cdot10^{-5}$ & $5.02678\cdot10^{-8}$\\
+140 & 0 & $2.67861\cdot10^{-3}$ & $4.08831\cdot10^{-9}$ & $3.46005\cdot10^{-14}$\\
+140 & 2 & $2.66409\cdot10^{-2}$ & $1.02577\cdot10^{-5}$ & $3.04007\cdot10^{-9}$\\
+\bottomrule
+\end{tabular}
+\caption{Manuscript~02: signed relative error
+$\text{approximation}/p_m(m^2+\sigma m)-1$ of the truncation of
+\eqref{srp:eq:allorders} ($\alpha=1$, $\tau=0$) through $D_K$. The file
+\texttt{data/02-sharp-shell\_errors.csv} also has $K=1,3$ and
+$\sigma=\pm1$. The improvement by about one power of $1/m$ per order is
+consistent with the theorem; it asserts nothing about unbounded $K$.}
+\label{srp:se:tab:shell}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{r rr}
+\toprule
+$r$ & $k\bigl(R(k^2-r)/C_--1\bigr)$, $k=140$ & $\kappa_r=P_1(1)+\beta r/2$\\
+\midrule
+1 & $-0.598799991760$ & $-0.601000357512$\\
+2 & $-0.303576004443$ & $-0.308590425002$\\
+3 & $-0.007732948956$ & $-0.016180492491$\\
+4 & $0.288730458876$ & $0.276229440019$\\
+5 & $0.585815505856$ & $0.568639372529$\\
+6 & $0.883523481429$ & $0.861049305040$\\
+\bottomrule
+\end{tabular}
+\caption{Manuscript~02: scaled defects at the end of the block $m=139$
+($k=m+1=140$), against the limits of \cref{srp:prop:endpoint}. The
+approach at $r=3$ is slow because $|\kappa_3|$ is small. The file
+\texttt{data/02-sharp-boundary\_defects.csv} also covers $k=10,20,40,80,100$.}
+\label{srp:se:tab:boundary}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{r rrrrr}
+\toprule
+$k\backslash\eta$ & $0.1$ & $0.5$ & $0.7$ & $0.8$ & $0.95$\\
+\midrule
+20 & $1.5457775$ & $1.3595445$ & $2.0448223$ & $0$ & $0$\\
+40 & $1.1100221$ & $2.1807678$ & $1.9945348$ & $0$ & $0$\\
+80 & $1.2385114$ & $1.8232143$ & $1.8939599$ & $0$ & $0$\\
+120 & $1.3670007$ & $1.4656607$ & $1.7933850$ & $0$ & $0$\\
+\bottomrule
+\end{tabular}
+\caption{Manuscript~02: $Q(Y)-T(X(Y))^2$ for the integer targets
+$Y=\lceil C\e^{H(k+\eta)}/(k+\eta)^2\rceil$, with $Q(Y)$ found by binary
+search in the exact table. The zeros are the plateaus of
+\cref{srp:prop:plateaus}. (\Cref{srp:tab:inverse-errors} prints the
+opposite sign, $T(X)^2-Q(Y)$, at $k=128$.) The largest observed error is
+not a proven bound.}
+\label{srp:se:tab:inverse}
+\end{table}
+
+Manuscript~02's boundary data also bear on the first stable
+three-exception block; see the note in
+\cref{srp:sec:future} (first subsection).
+
+\subsection{Further questions raised by manuscript~02}
+\label{srp:se:sec:questions}
+
+Manuscript~02 proposes eight research directions, as proposals and not as
+results. Four coincide with questions of \cref{srp:sec:future}: effective
+thresholds (it adds that the same explicit constants would turn the
+inverse's $O(1)$ into a short certified candidate interval, and that the
+distance-three boundary, not the last pre-square term, is the critical
+case); Gevrey bounds, optimal truncation and the exponentially small
+contour sectors; two simultaneous restrictions; and a formalization route
+(it adds that the rational sign certificate could become a proof-producing
+checker over exact interval expressions, which would certify only the
+sign claims unless connected to the analytic expansion). The other four
+are new here.
+\begin{enumerate}[leftmargin=2em,itemsep=3pt]
+\item \emph{Shifted square-root cutoffs.} Replace $\lfloor\sqrt N\rfloor$ by
+$\lfloor c\sqrt N+c'\rfloor$ with fixed $c>0$ and $c'\in\R$ (this extends
+the question ``Other moving cutoffs'' of \cref{srp:sec:future} by the shift
+$c'$). Derive the uniform phase expansion, the limiting density and the
+clipped inverse; determine how the number of terms below a limiting
+envelope depends on $(c,c')$, and which parameters force a higher-order
+sign decision because the first boundary coefficient vanishes.
+\item \emph{Growing shifts and moderate deviations.} The expansion is
+uniform for bounded $\sigma=(N-m^2)/m$. For $\sigma$ of order $\sqrt m$ the
+Gaussian factor must be resummed rather than expanded; construct a uniform
+formula in that window, match it to the bounded-$\sigma$ expansion and to
+the moving-saddle large-deviation formula, and identify which error bounds
+survive.
+\item \emph{Several coupled phases.} For two independently rounded
+cutoffs, decide when the phases are jointly equidistributed, correlated or
+resonant, and whether the amplitude law keeps a simple density or acquires
+singular components; \cref{srp:se:thm:law} is a baseline only.
+\item \emph{A combinatorial explanation of the boundary count.} The factor
+$1/\rho$ is the asymptotic effect of opening one more part size
+(\cref{srp:se:prop:jump}). Is there a combinatorial or probabilistic proof
+of the three-term classification that avoids fourth derivatives of the
+saddle phase, or at least a structural explanation of the sign and small
+size of $\kappa_3=P_1(1)+3\beta/2$?
+\end{enumerate}
+
+\paragraph{Suggested OEIS statements.} Manuscript~02 closes with draft
+statements for a reviewed update of A097356 and its companions: the
+equivalent $A(N)\sim C\rho^{\{\sqrt N\}}d^{\sqrt N}/N$ with the classical
+reference, the pre-square expansion
+$R(k^2-1)=C_-(1-0.60100035751199575681\ldots/k+O(k^{-2}))$, the
+qualification of ``lower bound'' as a limiting envelope, and
+\eqref{srp:eq:shifted} with $D_1(\pm1,0)$ for the companions. It records
+that no OEIS submission was made, and asks that any update separate the
+proved formulas from bibliographic novelty and keep the classical
+references.
+
+\subsection{The shipped files of manuscript~02}
+\label{srp:se:sec:files}
+
+The 17 files of manuscript~02 carry the prefix \texttt{02-sharp-}: its four
+scripts and Makefile in \texttt{code/}, its nine recorded outputs and
+\texttt{requirements.txt} in \texttt{data/}, and its \texttt{SOURCES.md}
+and \texttt{VERIFICATION.md} at the report root, all byte-identical to the
+delivery. The scripts import each other and write their outputs under the
+\emph{delivery} names (\texttt{verification/} beside \texttt{data/}); run
+from \texttt{code/}, \texttt{02-sharp-verify.py} would fail to import its
+sibling module, and if made to run it would overwrite this report's own
+\texttt{data/inverse\_checks.csv}. The report README gives a copy-based
+rerun recipe. At this write the recipe reproduced every recorded output:
+four byte for byte and five apart from line ends.
+
+\setcounter{table}{\value{srpsavedtable}}
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\theHtable}{\arabic{table}}
 
 \appendix
 \crefalias{section}{appendix}% write (batch 73O1): references print "appendix"
@@ -1912,6 +2768,11 @@ is a commit (2026-10-01). The delivered author line, kept on the title
 page, names no assistant; like every manuscript of the intake, the
 report is AI-assisted and unrefereed.
 
+\writenotefour{Since batch~74 the report is built from two manuscripts:
+38, described in this paragraph, and 02 of batch~74, described in the
+paragraphs ``Second manuscript (batch 74)'' and ``Where the merge had to
+choose'' below.}
+
 \paragraph{What the write changed.} Every one of the 125 delivered
 labels received the prefix \texttt{srp:}, and every reference was
 updated with it; this appendix adds one label. The write added the
@@ -1957,6 +2818,57 @@ Gaussian binomial at real argument in its Theorem
 lemma for a different object, not the same theorem. No repository
 report treats A097356, A206226, A206227, A206240 or A258268, and none
 of this report's statements is formalized.
+
+\writenotefour{The next three paragraphs were added in the write of
+batch~74.}
+
+\paragraph{Second manuscript (batch 74).} Manuscript~02 of batch~74, the archive
+\nolinkurl{A097356_Sharp_Envelopes_Transseries_Inversion.zip} (20~files,
+a 29-page PDF), arrived in commit \texttt{c664fc2f0} and was placed by
+commit \texttt{b669cff87}. Its pinned commit is
+\nolinkurl{905bdc785424922c79fc24f56d27960ecb1085dd} (2026-10-01). It
+proves the three main theorems of this report independently
+(\cref{srp:se:tab:shared}) and contributes the results of
+\cref{srp:se:sec:new}, the rate \cref{srp:se:thm:law}, a second sign
+certificate, its computations and four research questions. Its article,
+README and PDF are not shipped; its other 17 files are, byte-identical,
+with the prefix \texttt{02-sharp-}: \texttt{verification/certify.py},
+\texttt{expansion.py}, \texttt{symbolic\_checks.py}, \texttt{verify.py}
+and the \texttt{Makefile} in \texttt{code/}; the nine files of its
+\texttt{data/} and its \texttt{requirements.txt} in \texttt{data/}; and
+\texttt{SOURCES.md} and \texttt{VERIFICATION.md} at the report root. Those
+files still use the delivery layout (\texttt{verification/},
+\texttt{data/}) and the delivery names.
+
+\paragraph{Where the merge had to choose.} Manuscript~38 stays the primary
+text, being the stronger on the inverse (all orders), the interior
+recurrence, the summatory law and the computations. The shared theorems
+are printed once, as 38's; manuscript~02's proofs appear as second routes,
+in full where they differ (\cref{srp:se:prop:classical,srp:se:prop:Q}) and
+as pointers where they follow the same steps. Manuscript~02's own results
+form one section, not a Part, because most of the manuscript restates
+results printed here, and the section follows the conclusion so that every
+existing number is kept. The rate for the log-uniform law is placed beside
+the law it sharpens. Its symbols are renamed into this report's notation
+(\cref{srp:se:tab:dictionary}). It is not filed in the transseries tree
+(\cref{srp:se:sec:provenance}).
+
+\paragraph{What the batch-74 write changed.} It added
+\cref{srp:se:sec:second}, the lemma and theorem with their proofs at the
+end of \cref{srp:sec:distribution}, write notes after the abstract, after
+\cref{srp:thm:main-inverse}, in \cref{srp:sec:distribution}, in two
+subsections of \cref{srp:sec:future} and here, the \verb|\writenotefour|
+macro, and three bibliography entries
+(\cite{seSzekeresI,seSzekeresII,seProveIt}). All new labels carry the
+prefix \texttt{srp:se:}. No existing label was renamed or removed, no
+existing number changed, and no delivered sentence of manuscript~38 was
+changed or removed. Manuscript~02's text is restated in this report's
+notation, with some proofs condensed; no statement of it was
+strengthened. A later reciprocal note of batch~74, marked
+``[Added 1 October 2026, batch~74: \dots]'', at the end of the subsection
+``Uniform limits as the saddle moves to zero or infinity'' of
+\cref{srp:sec:future}, points to the cubic-boundary report; it adds no
+label.
 
 \begingroup
 \small
@@ -2037,6 +2949,28 @@ declarations \texttt{Fabius.staircase\_ceil} and
 Coefficient Calculus},
 \nolinkurl{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/Gaussian_Coefficient_Calculus.tex},
 Theorem \texttt{q3:thm:double-scaling}.
+
+\bibitem{seSzekeresI}
+[Added in the batch-74 write, from manuscript 02.] G. Szekeres, \emph{An
+asymptotic formula in the theory of partitions}, Quarterly Journal of
+Mathematics, Oxford Series (2) \textbf{2} (1951), 85--108. Bibliographic
+details and attribution checked by manuscript~02 against Canfield's
+bibliography \cite{canfield}; the original was not inspected.
+
+\bibitem{seSzekeresII}
+[Added in the batch-74 write, from manuscript 02.] G. Szekeres, \emph{Some
+asymptotic formulae in the theory of partitions (II)}, Quarterly Journal of
+Mathematics, Oxford Series (2) \textbf{4} (1953), 96--111. Checked in the
+same way. (Manuscript~02 also cites Canfield's article by its DOI,
+\href{https://doi.org/10.37236/1321}{10.37236/1321}, noting online
+publication on November~21, 1996.)
+
+\bibitem{seProveIt}
+[Added in the batch-74 write, from manuscript 02.] Vladimir Reshetnikov,
+\emph{ProveIt}, commit
+\nolinkurl{905bdc785424922c79fc24f56d27960ecb1085dd}, consulted October~1,
+2026: the root README, \nolinkurl{Analysis/Transseries/README.md} and
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/README.md}.
 \end{thebibliography}
 \endgroup
 \end{document}

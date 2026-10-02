@@ -1,9 +1,10 @@
 # Normalization by the Matching Number for Weighted Matching-Support Polynomials
 
-**Small ranks, unit and one-shore counterexamples, rank six, and eventual scaling**
+**Small ranks, unit and one-shore counterexamples, rank six, eventual scaling, and three-tail boundaries**
 
-This is a research report dated 1 October 2026, merged from the 27
-manuscripts of batch 72, cluster C, of ProveIt's incoming-report intake:
+This is a research report dated 1 October 2026, merged from 31
+manuscripts of ProveIt's incoming-report intake, in five Parts. Parts I–IV
+come from the 27 manuscripts of batch 72, cluster C:
 26 archives that arrived in `1512ef835` and one manuscript (08s,
 *Top Conditional Gaps and the Rank Seven Reduction*) that was delivered only
 inside archive 08. They study whether the bipartite matching-support
@@ -55,6 +56,45 @@ its Part XI; `4a3b6991d` is `4a3b6991d0cc12cc09b884e22728e2128a54c6e3`, the
 commit that wrote Part XI. Sources with no pin cite their siblings by
 archive name only. Every manuscript is dated 1 October 2026.
 
+**Part V (batch 73).** Four manuscripts of batch 73, cluster C1, arrived in
+`f8c3a392a` and were placed in `5e4f1263c` as Part V, *Second routes and
+boundaries*. They are numbered 77–80, continuing this report's local
+sequence in order of dependency (their batch-73 manuscript numbers are 26,
+08, 02 and 01; prefix `78-` has nothing to do with batch 72's retired
+archive 78). They were written in parallel with batch 72: 77 on 30 September,
+78 and 79 early on 1 October, all three before batch 72 arrived, and 80
+after it; only 80 read batch-72 material (the raw archives of sources 74, 10
+and 05). Author lines: 77 "Research note prepared with OpenAI for Vladimir
+Reshetnikov"; 78 "Research manuscript prepared for Vladimir Reshetnikov"
+(PDF author field "Research manuscript prepared with OpenAI"); 79 and 80
+"Research note".
+
+| Source | Batch-73 manuscript | Archive (`docs/incoming/…` at `f8c3a392a`) | Pin | Placed | Printed as |
+|---|---|---|---|---|---|
+| 77 | 26 | `matching-rank-four-package.zip` (*Weighted Matching Support Rank Normalization Through Rank Four*, revision 2, 16 pp., Letter) | `d5e863bba` (article blob `2b952dfcf`) | `5e4f1263c` | Part V, Section 40 |
+| 78 | 08 | `all-two-by-three-cores-result.zip` (*Weighted matching supports with a two plus three core*, 6 pp.) | none | `5e4f1263c` | Part V, Section 41 |
+| 79 | 02 | `two-element-matroid-lorentzian-result.zip` (*A two-element Lorentzian deformation of every matroid basis polynomial*, 6 pp.) | none | `5e4f1263c` | Part V, Section 42 |
+| 80 | 01 | `sharp-weighted-rank-boundary-result.zip` (*Weighted matching-rank boundaries: independent verification and Lorentzian obstructions*, 9 pp.) | `1512ef835` | `5e4f1263c` | Part V, Section 43; its Appendix A is Section 42.2 |
+
+`d5e863bba` is `d5e863bba6b40738af292b45005a0cf0495903e4`, the batch-70 write
+of Part XII of `preorder-root-polytopes` (source 77 read that report there,
+before its Part XIII and before this report existed); `1512ef835` is
+`1512ef8356d10fef99e7caaa2753620f0c900c83`, the arrival of batch 72. Sources
+78 and 79 cite only their batch-73 siblings, by archive name.
+
+Six other archives of the cluster are duplicates and are not sources (they
+survive only in `f8c3a392a`): `matching-rank-four-package (1).zip` (27) is the
+first edition of source 77; `complete-two-by-three-result.zip` (09) is source
+75's theorem at `s = 3` and the core mask 63 of source 78;
+`weighted-bipartite-rank-five-result.zip` (03) proves source 74's theorem by a
+third route and is generalized by source 79; `two-pair-exterior-result.zip`
+(05) and `twin-core-lorentzian-result.zip` (04) prove special cases of source
+74's theorem; `common-path-rank-package (1).zip` (24) belongs to
+`constrained-crossover-closure`. Three directed-support archives of the
+cluster (`physical-cover-three-result.zip`, `three-core-rayleigh-result.zip`,
+`bipartite-and-pendant-support-result.zip`) were handed to the batch's
+directed-support placement (73C2), not to this report.
+
 **Status: AI-assisted, unrefereed, not formalized.** The sources give
 ordinary mathematical proofs supported by exact finite checks. Nothing here
 is formalized in Lean or Rocq, and no Lean or Rocq development in the
@@ -64,7 +104,7 @@ repository states or uses these results.
 
 ```
 article.tex                                                              the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf                                                              the compiled report, 192 pages, A4
+article.pdf                                                              the compiled report, 236 pages, A4
 README.md                                                                this guide
 05-second-newton-VERIFICATION.md                                         source 05, Part III: delivered `VERIFICATION.md`
 10-three-vertex-VERIFICATION.md                                          source 10, Part III: delivered `VERIFICATION.md`
@@ -85,6 +125,33 @@ README.md                                                                this gu
 74-weighted-rank-five-PROOF_STATUS.md                                    source 74, Part I: delivered `ProveIt_Weighted_Rank_Five/PROOF_STATUS.md`
 76-rank-four-PROOF_STATUS.md                                             source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/PROOF_STATUS.md`
 76-rank-four-SOURCES.md                                                  source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/SOURCES.md`
+77-rank-four-REVISION.md                                                  source 77, Part V: delivered `REVISION.md`
+77-rank-four-SOURCE.txt                                                   source 77, Part V: delivered `SOURCE.txt`
+78-two-three-star-audits-all-mask-audit.md                                source 78, Part V: delivered `all-two-by-three-cores-result/audits/all-mask-audit.md`
+78-two-three-star-audits-integrated-review.md                             source 78, Part V: delivered `all-two-by-three-cores-result/audits/integrated-review.md`
+78-two-three-star-audits-star-audit.md                                    source 78, Part V: delivered `all-two-by-three-cores-result/audits/star-audit.md`
+78-two-three-star-proof-notes-ALL_CORE_MASKS_ULC.md                       source 78, Part V: delivered `all-two-by-three-cores-result/proof-notes/ALL_CORE_MASKS_ULC.md`
+78-two-three-star-proof-notes-CORE_KERNEL_AND_LAST_GAP.md                 source 78, Part V: delivered `all-two-by-three-cores-result/proof-notes/CORE_KERNEL_AND_LAST_GAP.md`
+78-two-three-star-proof-notes-STAR_CORE_REAL_ROOTEDNESS.md                source 78, Part V: delivered `all-two-by-three-cores-result/proof-notes/STAR_CORE_REAL_ROOTEDNESS.md`
+79-two-element-audits-INTEGRATED_REVIEW.md                                source 79, Part V: delivered `two-element-matroid-lorentzian-result/audits/INTEGRATED_REVIEW.md`
+79-two-element-audits-abstract-AUDIT.md                                   source 79, Part V: delivered `two-element-matroid-lorentzian-result/audits/abstract/AUDIT.md`
+79-two-element-audits-abstract-PADDING_AUDIT.md                           source 79, Part V: delivered `two-element-matroid-lorentzian-result/audits/abstract/PADDING_AUDIT.md`
+79-two-element-audits-represented-AUDIT.md                                source 79, Part V: delivered `two-element-matroid-lorentzian-result/audits/represented/AUDIT.md`
+79-two-element-proof-notes-ALL_MATROIDS_EXTENSION.md                      source 79, Part V: delivered `two-element-matroid-lorentzian-result/proof-notes/ALL_MATROIDS_EXTENSION.md`
+79-two-element-proof-notes-FULL_SELECTED_TAIL_THEOREM.md                  source 79, Part V: delivered `two-element-matroid-lorentzian-result/proof-notes/FULL_SELECTED_TAIL_THEOREM.md`
+79-two-element-proof-notes-OLD_SPANNING_REMOVAL.md                        source 79, Part V: delivered `two-element-matroid-lorentzian-result/proof-notes/OLD_SPANNING_REMOVAL.md`
+80-three-tail-INTAKE_COMPARISON.md                                        source 80, Part V: delivered `sharp-weighted-rank-boundary-result/INTAKE_COMPARISON.md`
+80-three-tail-audits-INTEGRATED_REVIEW.md                                 source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/INTEGRATED_REVIEW.md`
+80-three-tail-audits-direct-union-INDEPENDENT_REVIEW.md                   source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/direct-union/INDEPENDENT_REVIEW.md`
+80-three-tail-audits-first-layer-CUBIC_REVIEW.md                          source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/first-layer/CUBIC_REVIEW.md`
+80-three-tail-audits-first-layer-ROOT_REVIEW.md                           source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/first-layer/ROOT_REVIEW.md`
+80-three-tail-audits-obstruction-AUDIT.md                                 source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/obstruction/AUDIT.md`
+80-three-tail-audits-scalar-AUDIT.md                                      source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/scalar/AUDIT.md`
+80-three-tail-proof-notes-DIRECT_UNION_PROOF.md                           source 80, Part V: delivered `sharp-weighted-rank-boundary-result/proof-notes/DIRECT_UNION_PROOF.md`
+80-three-tail-proof-notes-GENERAL_FIRST_LAYER.md                          source 80, Part V: delivered `sharp-weighted-rank-boundary-result/proof-notes/GENERAL_FIRST_LAYER.md`
+80-three-tail-proof-notes-SCALAR_COUNTEREXAMPLE.md                        source 80, Part V: delivered `sharp-weighted-rank-boundary-result/proof-notes/SCALAR_COUNTEREXAMPLE.md`
+80-three-tail-proof-notes-THREE_TAIL_CUBIC_COROLLARY.md                   source 80, Part V: delivered `sharp-weighted-rank-boundary-result/proof-notes/THREE_TAIL_CUBIC_COROLLARY.md`
+80-three-tail-proof-notes-THREE_TAIL_OBSTRUCTION.md                       source 80, Part V: delivered `sharp-weighted-rank-boundary-result/proof-notes/THREE_TAIL_OBSTRUCTION.md`
 code/01-rank-eight-independent-check_minor_supports.py                   source 01, Part IV: delivered `code/independent/check_minor_supports.py`
 code/01-rank-eight-independent-check_transition.py                       source 01, Part IV: delivered `code/independent/check_transition.py`
 code/01-rank-eight-independent-replay_hyperplane.py                      source 01, Part IV: delivered `code/independent/replay_hyperplane.py`
@@ -216,6 +283,33 @@ code/76-rank-four-Makefile                                               source 
 code/76-rank-four-verify_boundary.py                                     source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/verify_boundary.py`
 code/76-rank-four-verify_complete_core.py                                source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/verify_complete_core.py`
 code/76-rank-four-verify_covariance.py                                   source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/verify_covariance.py`
+code/77-rank-four-build.sh                                                source 77, Part V: delivered `build.sh`
+code/77-rank-four-check_rank_five_certificate.py                          source 77, Part V: delivered `check_rank_five_certificate.py`
+code/77-rank-four-check_rank_three_bijections.py                          source 77, Part V: delivered `check_rank_three_bijections.py`
+code/77-rank-four-check_rank_three_minimum.py                             source 77, Part V: delivered `check_rank_three_minimum.py`
+code/77-rank-four-check_weighted_rank_four.py                             source 77, Part V: delivered `check_weighted_rank_four.py`
+code/77-rank-four-generate_rank_five_certificate.py                       source 77, Part V: delivered `generate_rank_five_certificate.py`
+code/77-rank-four-support_kernels.py                                      source 77, Part V: delivered `support_kernels.py`
+code/78-two-three-star-build.sh                                           source 78, Part V: delivered `all-two-by-three-cores-result/build.sh`
+code/78-two-three-star-independent-middles-check.py                       source 78, Part V: delivered `all-two-by-three-cores-result/reproducibility/independent-middles/check.py`
+code/78-two-three-star-independent-stars-check.py                         source 78, Part V: delivered `all-two-by-three-cores-result/reproducibility/independent-stars/check.py`
+code/78-two-three-star-producer-replay_core_certificates.py               source 78, Part V: delivered `all-two-by-three-cores-result/reproducibility/producer/replay_core_certificates.py`
+code/78-two-three-star-verify.py                                          source 78, Part V: delivered `all-two-by-three-cores-result/verify.py`
+code/79-two-element-abstract-check.py                                     source 79, Part V: delivered `two-element-matroid-lorentzian-result/reproducibility/abstract/check.py`
+code/79-two-element-build.sh                                              source 79, Part V: delivered `two-element-matroid-lorentzian-result/build.sh`
+code/79-two-element-padding-check_padding.py                              source 79, Part V: delivered `two-element-matroid-lorentzian-result/reproducibility/padding/check_padding.py`
+code/79-two-element-producer-check_full_variables.py                      source 79, Part V: delivered `two-element-matroid-lorentzian-result/reproducibility/producer/check_full_variables.py`
+code/79-two-element-represented-check.py                                  source 79, Part V: delivered `two-element-matroid-lorentzian-result/reproducibility/represented/check.py`
+code/79-two-element-verify.py                                             source 79, Part V: delivered `two-element-matroid-lorentzian-result/verify.py`
+code/80-three-tail-build.sh                                               source 80, Part V: delivered `sharp-weighted-rank-boundary-result/build.sh`
+code/80-three-tail-direct-union-check.py                                  source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/direct-union/check.py`
+code/80-three-tail-first-layer-check.py                                   source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/first-layer/check.py`
+code/80-three-tail-first-layer-check_general.py                           source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/first-layer/check_general.py`
+code/80-three-tail-obstruction-check.py                                   source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/obstruction/check.py`
+code/80-three-tail-obstruction-check_abstract.py                          source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/obstruction/check_abstract.py`
+code/80-three-tail-obstruction-check_diagonal.py                          source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/obstruction/check_diagonal.py`
+code/80-three-tail-scalar-check.py                                        source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/scalar/check.py`
+code/80-three-tail-verify.py                                              source 80, Part V: delivered `sharp-weighted-rank-boundary-result/verify.py`
 data/01-rank-eight-independent_hyperplane_certificate.json               source 01, Part IV: delivered `data/independent_hyperplane_certificate.json`
 data/01-rank-eight-minor_support_result.json                             source 01, Part IV: delivered `data/minor_support_result.json`
 data/01-rank-eight-primary-check_hyperplane_transition.json              source 01, Part IV: delivered `code/primary/check_hyperplane_transition.json`
@@ -503,6 +597,73 @@ data/76-rank-four-complete_core_verification.json                        source 
 data/76-rank-four-covariance_verification.json                           source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/covariance_verification.json`
 data/76-rank-four-qa_report.json                                         source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/qa_report.json`
 data/76-rank-four-requirements.txt                                       source 76, Part I: delivered `ProveIt_Weighted_Rank_Four_Stability/requirements.txt`
+data/77-rank-four-rank-five-certificate.json                              source 77, Part V: delivered `rank-five-certificate.json`
+data/77-rank-four-rank-five-generation.json                               source 77, Part V: delivered `rank-five-generation.json`
+data/77-rank-four-rank-five-verification.json                             source 77, Part V: delivered `rank-five-verification.json`
+data/77-rank-four-rank-three-bijections-verification.json                 source 77, Part V: delivered `rank-three-bijections-verification.json`
+data/77-rank-four-rank-three-minimum-verification.json                    source 77, Part V: delivered `rank-three-minimum-verification.json`
+data/77-rank-four-requirements.txt                                        source 77, Part V: delivered `requirements.txt`
+data/77-rank-four-verification.json                                       source 77, Part V: delivered `verification.json`
+data/78-two-three-star-audits-all-mask-approval.json                      source 78, Part V: delivered `all-two-by-three-cores-result/audits/all-mask-approval.json`
+data/78-two-three-star-audits-integrated-approval.json                    source 78, Part V: delivered `all-two-by-three-cores-result/audits/integrated-approval.json`
+data/78-two-three-star-audits-star-approval.json                          source 78, Part V: delivered `all-two-by-three-cores-result/audits/star-approval.json`
+data/78-two-three-star-certificates-core_0_gap_2.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_0_gap_2.json`
+data/78-two-three-star-certificates-core_0_gap_3.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_0_gap_3.json`
+data/78-two-three-star-certificates-core_10_gap_2.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_10_gap_2.json`
+data/78-two-three-star-certificates-core_10_gap_3.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_10_gap_3.json`
+data/78-two-three-star-certificates-core_11_gap_2.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_11_gap_2.json`
+data/78-two-three-star-certificates-core_11_gap_3.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_11_gap_3.json`
+data/78-two-three-star-certificates-core_14_gap_2.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_14_gap_2.json`
+data/78-two-three-star-certificates-core_14_gap_3.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_14_gap_3.json`
+data/78-two-three-star-certificates-core_15_gap_2.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_15_gap_2.json`
+data/78-two-three-star-certificates-core_15_gap_3.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_15_gap_3.json`
+data/78-two-three-star-certificates-core_1_gap_2.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_1_gap_2.json`
+data/78-two-three-star-certificates-core_1_gap_3.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_1_gap_3.json`
+data/78-two-three-star-certificates-core_27_gap_2.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_27_gap_2.json`
+data/78-two-three-star-certificates-core_27_gap_3.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_27_gap_3.json`
+data/78-two-three-star-certificates-core_29_gap_2.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_29_gap_2.json`
+data/78-two-three-star-certificates-core_29_gap_3.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_29_gap_3.json`
+data/78-two-three-star-certificates-core_31_gap_2.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_31_gap_2.json`
+data/78-two-three-star-certificates-core_31_gap_3.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_31_gap_3.json`
+data/78-two-three-star-certificates-core_3_gap_2.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_3_gap_2.json`
+data/78-two-three-star-certificates-core_3_gap_3.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_3_gap_3.json`
+data/78-two-three-star-certificates-core_63_gap_2.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_63_gap_2.json`
+data/78-two-three-star-certificates-core_63_gap_3.json                    source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_63_gap_3.json`
+data/78-two-three-star-certificates-core_7_gap_2.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_7_gap_2.json`
+data/78-two-three-star-certificates-core_7_gap_3.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_7_gap_3.json`
+data/78-two-three-star-certificates-core_9_gap_2.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_9_gap_2.json`
+data/78-two-three-star-certificates-core_9_gap_3.json                     source 78, Part V: delivered `all-two-by-three-cores-result/certificates/core_9_gap_3.json`
+data/78-two-three-star-independent-middles-independent_receipt.json       source 78, Part V: delivered `all-two-by-three-cores-result/reproducibility/independent-middles/independent_receipt.json`
+data/78-two-three-star-independent-stars-independent_receipt.json         source 78, Part V: delivered `all-two-by-three-cores-result/reproducibility/independent-stars/independent_receipt.json`
+data/78-two-three-star-producer-core_exact_replay.json                    source 78, Part V: delivered `all-two-by-three-cores-result/reproducibility/producer/core_exact_replay.json`
+data/78-two-three-star-qa-visual-qa.json                                  source 78, Part V: delivered `all-two-by-three-cores-result/qa/visual-qa.json`
+data/78-two-three-star-requirements.txt                                   source 78, Part V: delivered `all-two-by-three-cores-result/requirements.txt`
+data/79-two-element-abstract-independent_receipt.json                     source 79, Part V: delivered `two-element-matroid-lorentzian-result/reproducibility/abstract/independent_receipt.json`
+data/79-two-element-audits-abstract-approval_receipt.json                 source 79, Part V: delivered `two-element-matroid-lorentzian-result/audits/abstract/approval_receipt.json`
+data/79-two-element-audits-abstract-padding_approval_receipt.json         source 79, Part V: delivered `two-element-matroid-lorentzian-result/audits/abstract/padding_approval_receipt.json`
+data/79-two-element-audits-integrated-approval.json                       source 79, Part V: delivered `two-element-matroid-lorentzian-result/audits/integrated-approval.json`
+data/79-two-element-audits-represented-approval_receipt.json              source 79, Part V: delivered `two-element-matroid-lorentzian-result/audits/represented/approval_receipt.json`
+data/79-two-element-audits-represented-root_review.json                   source 79, Part V: delivered `two-element-matroid-lorentzian-result/audits/represented/root_review.json`
+data/79-two-element-padding-padding_receipt.json                          source 79, Part V: delivered `two-element-matroid-lorentzian-result/reproducibility/padding/padding_receipt.json`
+data/79-two-element-producer-verification.json                            source 79, Part V: delivered `two-element-matroid-lorentzian-result/reproducibility/producer/verification.json`
+data/79-two-element-qa-visual-qa.json                                     source 79, Part V: delivered `two-element-matroid-lorentzian-result/qa/visual-qa.json`
+data/79-two-element-represented-independent_receipt.json                  source 79, Part V: delivered `two-element-matroid-lorentzian-result/reproducibility/represented/independent_receipt.json`
+data/79-two-element-requirements.txt                                      source 79, Part V: delivered `two-element-matroid-lorentzian-result/requirements.txt`
+data/80-three-tail-audits-direct-union-approval.json                      source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/direct-union/approval.json`
+data/80-three-tail-audits-first-layer-cubic_approval.json                 source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/first-layer/cubic_approval.json`
+data/80-three-tail-audits-first-layer-root_approval.json                  source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/first-layer/root_approval.json`
+data/80-three-tail-audits-integrated-approval.json                        source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/integrated-approval.json`
+data/80-three-tail-audits-obstruction-approval.json                       source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/obstruction/approval.json`
+data/80-three-tail-audits-scalar-approval.json                            source 80, Part V: delivered `sharp-weighted-rank-boundary-result/audits/scalar/approval.json`
+data/80-three-tail-direct-union-verification.json                         source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/direct-union/verification.json`
+data/80-three-tail-first-layer-general_verification.json                  source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/first-layer/general_verification.json`
+data/80-three-tail-first-layer-verification.json                          source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/first-layer/verification.json`
+data/80-three-tail-obstruction-abstract_verification.json                 source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/obstruction/abstract_verification.json`
+data/80-three-tail-obstruction-diagonal_verification.json                 source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/obstruction/diagonal_verification.json`
+data/80-three-tail-obstruction-verification.json                          source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/obstruction/verification.json`
+data/80-three-tail-qa-visual-qa.json                                      source 80, Part V: delivered `sharp-weighted-rank-boundary-result/qa/visual-qa.json`
+data/80-three-tail-requirements.txt                                       source 80, Part V: delivered `sharp-weighted-rank-boundary-result/requirements.txt`
+data/80-three-tail-scalar-verification.json                               source 80, Part V: delivered `sharp-weighted-rank-boundary-result/reproducibility/scalar/verification.json`
 ```
 
 Every file except `article.tex`, `article.pdf` and this README is
@@ -518,6 +679,21 @@ the tracked
 [`code/15-leaf-compression-build_local.sh`](../../enumerative-combinatorics/preorder-root-polytopes/code/15-leaf-compression-build_local.sh)
 of `preorder-root-polytopes`), the embedded copies of sibling archives, and
 everything of archive 78. They survive in the archives of `1512ef835`.
+
+Part V (batch 73) ships 121 files under the prefixes `77-rank-four-` (16),
+`78-two-three-star-` (45), `79-two-element-` (24) and `80-three-tail-` (36),
+placed in `5e4f1263c`. Prefixes `01-`…`76-` are batch-72 manuscript numbers;
+`77-`…`80-` continue the report's local sequence. The delivered top directory
+and `reproducibility/` are dropped and the remaining subdirectories flattened
+into the name (for example `reproducibility/first-layer/check_general.py` of
+source 80 is `code/80-three-tail-first-layer-check_general.py`). Not shipped:
+the four manuscripts, their PDFs, delivery READMEs and checksum ledgers (all
+verified at placement); source 78's `dependency/` (an exact copy of the
+retired archive `complete-two-by-three-result.zip`, its release approval, its
+README, and the PDFs of that archive and of source 77) and source 80's
+`dependencies/` (an exact copy of source 79's archive and of its PDF, the
+latter misnamed `rank-five-proof.pdf`); and every file of the six batch-73
+duplicates listed above. They survive in the archives of `f8c3a392a`.
 Source 74's `article.tex` was delivered with eight section files
 (`first_gap.tex`, `forced_core.tex`, `full_lift.tex`,
 `geometric_corollary.tex`, `negative_ranks.tex`, `scaling_threshold.tex`,
@@ -537,10 +713,19 @@ source NN becomes `mrn:<part>:<slug>:X`:
 | II (`mrn:u:`) | 71 `uw`, 73 `os`, 55 `ep`, 47 `ag`, 51 `sp` |
 | III (`mrn:s:`) | 60 `rb`, 10 `tv`, 23 `rs`, 13 `lg`, 05 `sn`, 69 `ce`, 63 `ne` |
 | IV (`mrn:e:`) | 08s `tg`, 21 `ec`, 43 `cc`, 38 `mh`, 35 `tr`, 32 `tc`, 29 `se`, 08 `r7`, 03 `fp`, 02 `ff`, 01 `r8` |
+| V (`mrn:v:`) | 77 `rf4`, 78 `st`, 79 `te`, 80 `tt` |
 
-The article has 455 labels: 84 under `mrn:w:`,
+The article has 554 labels: 84 under `mrn:w:`,
 72 under `mrn:u:`, 88 under `mrn:s:`, 170 under
-`mrn:e:` and 41 others. Labels were added to unlabelled delivered
+`mrn:e:`, 94 under `mrn:v:` and 46 others. Batch 73 (Part V) added 99
+labels and removed none: the 86 delivered labels of sources 77–80 (38, 12,
+14 and 22), seven labels on unlabelled delivered sections
+(`mrn:v:st:sec:boolean`, `mrn:v:st:sec:outer`, `mrn:v:te:sec:constructions`,
+`mrn:v:tt:sec:threshold`, `mrn:v:tt:sec:scalar`, `mrn:v:tt:sec:graph13`,
+`mrn:v:tt:sec:identify`; three of them replace literal section numbers of
+the delivered text, the others serve the merge notes), and
+`mrn:part:five`, `mrn:src:77`…`mrn:src:80` and `mrn:v:sec:questions`. In
+Parts I–IV, labels were added to unlabelled delivered
 sections or statements so that the merge could refer to them:
 `mrn:w:rf:sec:lorentz` and `mrn:w:rf:sec:tworow` (source 74; its text
 "Section 3" became a reference) and `mrn:w:sb:sec:tools` (source 76), `mrn:u:sp:thm:separation` (source 51's unlabelled theorem), `mrn:s:tv:cor:starsix` (source 10's unlabelled corollary) and `mrn:s:rs:sec:obstruction` (source 23).
@@ -660,6 +845,51 @@ sufficiently large `λ`):
   in `[9, 38]` (01; the upper end is source 55's 864-vertex graph). Source 02
   also shows that the unrestricted upper incidence bound is false.
 
+Part V (batch 73; independent activities on both shores unless stated). New:
+
+- **Source 77 (unit activities).** Among bipartite graphs with matching
+  number exactly three and all activities one, the least order with a
+  non-real-rooted support polynomial is 15; the 15-vertex example (three
+  centres, four vertices of each pair-neighbourhood type,
+  `1+24t+162t²+208t³`, discriminant −2592) is unique up to isomorphism and
+  shore exchange (Theorem 40.6; computer-assisted: a structural reduction by
+  the `1+2`-cover lemma and König, then an exhaustive count of 30,699 and
+  18,288 population vectors, done by two implementations). The family
+  `p_n = 1+6nt+3n(7n−1)/2·t²+(4n³−3n²)t³` has discriminant
+  `−27n³(n³−3n²−3n−1)/2`; `n ≥ 3` unit common twins cannot be replaced by two
+  real weights.
+- **Source 78.** If the core of a `2+3` graph with complete exterior blocks
+  has matching number at most one, its signed monomer polynomial is real
+  stable, so `p_G` is real-rooted (Theorem 41.2); new is the exceptional
+  two-neighbour seed (discriminant `m²(m−1)(m+7)/4`), the other cases being
+  Corollary 94.3 of `preorder-root-polytopes`.
+- **Source 79.** For every finite matroid of rank `q` on `E ⊔ {A, B}` and
+  three nonnegative populations, the degree-`(q+2)` polynomial `F_M` is
+  Lorentzian (Theorem 42.1), with source 80's matroid-union proof and source
+  79's seed-and-contraction proof.
+- **Source 80.** For `r` left vertices and any nonnegative right activities,
+  the matrix `N_ii = (r−1)R_i²`, `N_ij = (r−1)R_iR_j − rR_ij` is positive
+  semidefinite, so the first layer of the selected-tail polynomial has one
+  positive eigenvalue (Theorem 43.3); this proves source 10's three-vertex
+  theorem without its 5,339-monomial certificate (Corollary 43.4). The
+  three-element analogue of source 79's deformation is not Lorentzian
+  (Proposition 43.2), and a 13-vertex, 14-edge graph of matching number six
+  with a `3+3` cover has non-Lorentzian selected-tail and three-variable
+  homogenizations although its scalar sequences are strictly `ULC_6`
+  (Sections 43.3.2 and 43.4).
+
+Second routes and restatements in Part V (not new): source 77's weighted
+rank four (source 76's Corollary 15.2, source 74's Corollary 2.2), its
+`2+2` real-rootedness (the univariate part of source 76's Theorem 15.1, by
+weighted paths, Hermitian Gram determinants and a PSD block matrix), its
+`1+2` lemma (Theorem 207.1 of `preorder-root-polytopes`) and its strict
+rank-five block family (source 75's Theorem 16.1, by a certificate); source
+78's ULC theorem for `2×3` cores with complete exteriors (sources 74 and 72,
+by 26 exact certificates); source 79's graph corollaries (source 74); source
+80's scalar rank-six family and higher ranks (Part XI's Theorem 177.1 of
+`preorder-root-polytopes`, source 74), with two extra numerical instances
+(86 and 72 vertices).
+
 ## What is not claimed
 
 - Source 74's theorem asserts neither real-rootedness nor stability of the
@@ -694,6 +924,18 @@ sufficiently large `λ`):
   and 02 do not claim a complete rank-eight theorem. Source 08s's statement
   that Choe–Wagner's printed counts are wrong is its own and was not checked
   against the publication in this merge.
+- Part V: source 77's minimum is for unit activities and matching number
+  three only (at matching number four `preorder-root-polytopes`' theta graph
+  has eight vertices); it is computer-assisted and makes no priority claim;
+  its rank-five theorem covers block-constant activities only. Source 78's
+  theorem is computer-assisted, its complete-exterior hypothesis is
+  essential, the full core can have nonreal zeros, and the
+  two-tail/three-head role cover stays open. Source 79 makes no joint
+  Lorentzian claim in its population parameters and none for physical
+  tail/head roles or `3+3` covers. Source 80's obstructions are multivariate
+  (the scalar sequences stay `ULC`), it gives no unweighted counterexample and
+  no minimum-vertex bound, and its first-layer theorem does not assert full
+  Lorentzianity for more than three left vertices.
 - No source claims global priority, Lean certification or referee review.
 
 What `preorder-root-polytopes` already proves is cited, not claimed: the
@@ -732,6 +974,18 @@ its incidence lemma is a pointer to source 13's printed copy of it.
 | RQ 101 `mr:q:bimatroid` | in part: rank-two exterior blocks with ordinary columns (source 60) |
 | RQ 37 `lor:q:first` (Part V) | weighted: holds through `nu = 5`, fails from 6; unit and one-shore: fail (sources 71, 73) |
 
+Part V answers none of these anew. Source 77 claims RQ 93, RQ 95 and the
+rank-three and rank-four parts of RQ 86 against its pin; they were already
+answered (Part XIII of `preorder-root-polytopes`, source 74), and its proofs
+are further routes. Section 44 of the article lists the questions Part V
+leaves open: a Lorentzian homogenization for three-tail covers, under
+restrictions that exclude `H_{3,33}`, avoiding source 80's obstructions; the
+two-tail/three-head role cover (source 78); and larger aggregate Hermitian
+realizations (source 77). The least order of a unit-weight nonreal zero is
+special to matching number three: for `nu ≥ 4` it is `2nu` (the theta graph of
+`preorder-root-polytopes` plus disjoint edges), as a merge note in Section 40
+records.
+
 ## Relation to neighbouring reports and formal projects
 
 - [`preorder-root-polytopes`](../../enumerative-combinatorics/preorder-root-polytopes)
@@ -741,9 +995,25 @@ its incidence lemma is a pointer to source 13's printed copy of it.
   This report answers several of its research questions (table above);
   that report receives dated pointers to this one in a separate
   reciprocal-notes commit of the same write.
+- Part V's rank-three minimum (source 77) sharpens, at unit weights, the
+  real-rootedness picture of Parts XII–XIII of `preorder-root-polytopes`
+  (`mr:thm:rankthree`, `lc:thm:real`): `1+2` covers are real-rooted, and the
+  least graph of matching number three with a nonreal zero has 15 vertices.
+  That report has no note on it yet. [Updated 1 October 2026, batch 73: it
+  now has one, after its Theorem 207.1.]
+- [`preorder-gamma-rank-ulc`](../preorder-gamma-rank-ulc) (batch 73, cluster C2) is the directed and
+  preorder counterpart: its Theorem 5.10 generalizes Theorem 15.1
+  (`mrn:w:sb:thm:main`) to overlapping two-by-two role covers of directed
+  relations, its Section 3 rests on Part V's Theorem 40.1 for bipartite
+  components (Corollary 2.2, `mrn:w:rf:cor:rankfive`, already covers
+  them), and its Theorem 2.9 finds the graph of Theorem 40.6 to be the
+  least nonreal case among all preorders of gamma degree three. Its
+  reciprocal-notes commit adds two further notes marked "Added 1 October
+  2026, batch 73" here, on the first two points, after the existing notes
+  at Theorem 15.1 and Corollary 2.2.
 - Placement in this collection beside other work confers no formal status.
   No Lean or Rocq declaration in the repository concerns matching-support
-  polynomials; nothing in this report is formalized.
+  polynomials; nothing in this report, Part V included, is formalized.
 
 ## Build
 
@@ -810,6 +1080,33 @@ passed, except that three long certificates were replayed only in part:
 source 05's full mode, ranks 30–38 of source 47's certificate, and source
 02's complete driver (its parts pass separately). Regenerated outputs equal
 the shipped ones apart from line endings and timing fields.
+
+**Part V (batch 73).** Use the same recipe with the batch-73 arrival commit:
+`git -C /path/to/ProveIt show f8c3a392a:docs/incoming/<ARCHIVE>.zip`. Do not
+run these scripts in this directory either: by default every checker of
+sources 78–80 writes its receipt beside itself (`verification.json`,
+`independent_receipt.json`, …), and the drivers expect the delivered
+`SHA256SUMS`, PDFs, `dependency/` or `dependencies/`, which are not shipped.
+Run with assertions enabled (never `python -O`; the drivers check that `-O`
+is rejected).
+
+| Source | Archive / inner directory | Command | Time (placement run) |
+|---|---|---|---|
+| 77 | `matching-rank-four-package` / (archive root) | `python check_weighted_rank_four.py > verification-new.json` (SymPy 1.14.0); `python check_rank_three_minimum.py > rank-three-minimum-new.json`, `python check_rank_three_bijections.py > rank-three-bijections-new.json`, `python check_rank_five_certificate.py > rank-five-new.json` (standard library); compare each with the shipped receipt; optional `python generate_rank_five_certificate.py --output build/rank-five-certificate.generated.json` (SymPy) | 49 s; 4, 22 and 6 s; the regeneration did not finish within 170 s and was not reproduced |
+| 78 | `all-two-by-three-cores-result` / `all-two-by-three-cores-result` | `PYTHONDONTWRITEBYTECODE=1 python verify.py` (SymPy 1.14.0; also replays the embedded archive 09 and, inside it, source 77's archive) | over 3 min, not run in full at placement; its three checkers passed separately (3, 11 and 112 s) |
+| 79 | `two-element-matroid-lorentzian-result` / same | `python verify.py` (SymPy 1.14.0) | over 170 s; it passed the hashes, pins and two checkers before the cap, and the other two passed standalone (27 s and 4 s) |
+| 80 | `sharp-weighted-rank-boundary-result` / same | `python verify.py` (replays source 79's embedded archive) | over 3 min, not run in full at placement; its seven checkers passed standalone (3–32 s) |
+
+To run one checker alone, copy it into a scratch directory of the
+delivered-layout copy and pass `--output-dir <scratch>` together with the
+source option its driver passes: `--source-note proof-notes/<NOTE>.md` for
+the represented, abstract and padding checkers of source 79;
+`--source-dir proof-notes` for source 78's star checker, and `--data-dir` a
+directory holding source 78's certificates and proof notes for its middle
+checker (where its producer `replay_core_certificates.py`, which has no
+output option, must also be run). Each receipt then equals the shipped one
+apart from its timing field; source 77's receipts, written to standard
+output, have CRLF line endings on Windows.
 
 ## Delivery names and discrepancies
 
@@ -894,3 +1191,49 @@ the shipped ones apart from line endings and timing fields.
   `data/01-rank-eight-transition_result.json` have no final newline (as
   delivered). The eight `.log` files are tracked despite the repository's
   `*.log` ignore rule.
+- Part V (batch 73): `77-rank-four-SOURCE.txt` records commit `d5e863bba`,
+  article blob `2b952dfcf` and the source lines it read, all exact at that
+  commit, and a "SHA-256 of inspected source article" `bc614324…` that the
+  pinned blob does not reproduce: the blob hashes to `20e080cf…` (and to
+  neither value with CRLF line endings or without the final newline). The
+  pin itself is right; the hash is of some other local copy. The file is kept
+  as delivered. It also says that source 77 resolves `mr:q:weighted`,
+  `mr:q:rankfour` and parts of `hb:q:rank` of `preorder-root-polytopes`;
+  those were already answered when it arrived (see above).
+- `77-rank-four-REVISION.md` names a local `versions/v1/` (the first edition,
+  archive 27, which is not shipped) and calls general weighted rank five and
+  the unit-weight all-rank question unresolved; source 74 (Part I) settles
+  the first and source 71 (Part II) the second. Source 77's delivered README
+  (not shipped) says that the least weighted failure rank is five or six; it
+  is exactly six. `data/77-rank-four-rank-five-certificate.json` has no final
+  newline (as delivered).
+- The proof notes `78-two-three-star-proof-notes-*.md`,
+  `79-two-element-proof-notes-*.md` and `80-three-tail-proof-notes-*.md`
+  keep status lines such as "proposed …, awaiting independent review" or
+  "submitted for … review"; the shipped audits and approval receipts
+  supersede them. They are hash-pinned by those receipts and kept as
+  delivered. The audits and receipts also record SHA-256 pins and historical
+  absolute paths (`/workspace/shared/…`), which are also the default source
+  paths of several checkers; they are not paths in this repository. Several
+  audits print numerals glued to the preceding word ("at15:47",
+  "verifies10,060"), as delivered.
+- Source 78's text says that source 77's "frozen proof package is included
+  inside the dependency archive", and its README and driver use
+  `dependency/`; source 80's README calls source 79's archive "the
+  unchanged, previously approved ordinary rank-five proof package" and its
+  `dependencies/rank-five-proof.pdf` is source 79's paper. None of these
+  dependencies is shipped (see Files), and source 74, not source 79, first
+  proved weighted rank five. Source 78's delivered README (not shipped) says
+  that general rank-five graphs remain open.
+- `80-three-tail-INTAKE_COMPARISON.md` compares source 80 with the raw
+  batch-72 archives of sources 74 and 10 at `1512ef835`, not with this report
+  or `preorder-root-polytopes`; it therefore misses that source 80's scalar
+  family and factorization are Part XI's Theorem 177.1 there. The article
+  adds that attribution.
+- The QA records `data/78-two-three-star-qa-visual-qa.json`,
+  `data/79-two-element-qa-visual-qa.json` and
+  `data/80-three-tail-qa-visual-qa.json` describe the delivered PDFs, which
+  are not shipped. `code/77-rank-four-build.sh`, `code/78-two-three-star-build.sh`,
+  `code/79-two-element-build.sh` and `code/80-three-tail-build.sh` build the
+  unshipped manuscripts. The four `requirements.txt` of Part V
+  (`sympy==1.14.0`) are identical, each kept beside its own checkers.

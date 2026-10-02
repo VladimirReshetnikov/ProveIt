@@ -1,0 +1,46 @@
+A022629 research package — build and validation record
+
+Report date: October 1, 2026 (America/Los_Angeles)
+
+MATHEMATICAL STATUS
+Conventional analytic proofs, accompanied by exact finite computations.
+Not independently peer reviewed; not Lean/Rocq verified.
+Literature review is targeted, not an exhaustive priority certification.
+
+BUILD
+Engine: pdfTeX 1.40.26, three successive halt-on-error passes.
+Final PDF: 20 pages, A4, embedded subset fonts, no external figure dependency.
+No compilation errors, undefined references, overfull boxes, or bookmark warnings.
+Two harmless underfull-box diagnostics occur in a narrow table column.
+All pages rendered; first-generation 20 pages visually reviewed, with final
+changed pages checked again after the editorial rebuild.
+
+COMPUTATIONS PERFORMED
+Exact DP: s=1 through n=10000; s=2 and s=3 through n=2500.
+Initial s=1 terms agree with the OEIS entry.
+Independent signed divisor recurrence agrees through n=200 for s=1,2,3.
+Exact monotonicity and strict-log-concavity inequalities checked over the
+stored ranges; complete failure lists retained.
+Exact rational Jensen-polynomial real-root counts for degrees 2,3,4,5 at
+n=100,1000,5000, including squarefreeness checks.
+Exact rational symbolic verification of the five displayed forward and
+inverse correction coefficients.
+Third saddle correction generated from the universal multi-index formula.
+Saddle comparisons at 40 digits; n=10000, s=1 repeated at 60 digits.
+Maximum difference between stored 40/60-digit relative errors: about 7e-38.
+Fully converged Gaussian inverse at a_1(10000), not only a linearized shift.
+Python syntax/import smoke checks and small exact coefficient examples passed.
+
+SELECTED RESULTS
+At s=1, n=10000, relative errors A_J/a-1 for J=0,1,2,3:
+  6.0203833e-4, 2.7580788e-7, 3.1199882e-10, 4.6659965e-13.
+At s=3, n=2500, the J=3 error is about +5.0159672e-2.
+Last tested strict-log-concavity failure for s=1: n=76.
+This is not a proof that all n>=77 satisfy the inequality.
+Gaussian inverse at a_1(10000):
+  9999.983829109422837183252093012803811522.
+
+NUMERICAL LIMITATIONS
+Arbitrary precision plus a conservative tail cutoff, not interval arithmetic.
+No finite-input rounding guarantee or effective universal onset bound.
+No theorem uniform in s or in growing Jensen degree.

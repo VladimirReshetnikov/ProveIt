@@ -233,6 +233,13 @@ its centralizer among all field automorphisms (`dsup:thm:centralizer`) and the
 non-conjugacy of distinct rational dilations (`dsup:thm:nonconjugate`). Question
 13.1 is untouched there.
 
+[real-vector-space-structure](../real-vector-space-structure/) (`rvs:`, batch
+73) proves the class-level converse of Proposition 8.3 with positive real
+characters: its Theorem 18.1 (`rvs:thm:monomial-aut`) shows that the strong
+R-linear ordered-field automorphisms of No permuting the monomial lines are
+exactly the maps `ω^γ ↦ χ(γ)ω^{φ(γ)}`, of which the canonical lift is the case
+`χ = 1`. A dated note after Proposition 8.3 records this; no result here uses it.
+
 ## What it does NOT claim
 
 - **Rigidity here means faithfulness, not triviality.** The article states

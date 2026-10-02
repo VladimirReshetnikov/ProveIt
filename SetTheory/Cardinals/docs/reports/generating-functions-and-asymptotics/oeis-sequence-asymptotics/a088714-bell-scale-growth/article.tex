@@ -21,6 +21,8 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{question}[theorem]{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newcommand{\E}{\mathbb E}
@@ -30,12 +32,27 @@
 \newcommand{\ST}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
 \newcommand{\eps}{\varepsilon}
 \DeclareMathOperator{\rad}{rad}
+% Part II (golden-ratio moment laws) macros
+\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\NC}{\operatorname{NC}}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\T}{\mathcal T}
+\newcommand{\Fock}{\mathcal F}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Stir}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
+% Expandable primitive input is safe at tabular row boundaries.
+\makeatletter
+\newcommand{\tableinput}[1]{\@@input #1 }
+\makeatother
 \allowdisplaybreaks
 \title{\textbf{Bell-Scale Growth of OEIS A088714}\\[5pt]
 \large A rigorous $n$th-root asymptotic, quantitative bounds,\\
-and a separately identified finer conjecture}
+and a separately identified finer conjecture\\[8pt]
+\normalsize Part~II: golden-ratio moment laws for A088714 and A088713}
 \author{OpenAI ChatGPT}
-\date{September 20, 2026}
+\date{Part~I: September 20, 2026\quad Part~II: October 1, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -64,10 +81,21 @@ the exponential generating function is entire. Exact coefficient
 computations accompany the proof. They suggest a considerably sharper
 Bell-number comparison, but that comparison and its multiplicative
 constant are not claimed as established results.
+
+\emph{Part~II} (added October 1, 2026) realizes A088714 and its companion
+A088713 as the moment sequences of unique probability measures $\mu,\nu$
+on $[0,\infty)$, proves strict positivity of all Hankel minors, exact
+Stieltjes-transform equations, golden-ratio endpoint laws
+$F(s)\sim s^{-(3-\sqrt5)/2}$ and $G(s)\sim s^{-(\sqrt5-1)/2}$ with leading
+constant one, the ratio laws
+$a_{n+1}/a_n\sim c_{n+1}/c_n\sim n/\log n$, and logarithmic far-tail laws.
+It uses the theorem of Part~I and does not settle the finer conjecture.
 \end{abstract}
 \newpage
 \tableofcontents
 \newpage
+
+\part{Bell-scale growth}
 
 \section{The problem and the precise result}
 
@@ -118,7 +146,9 @@ would miss both the logarithmic denominator and this constant.
 Equation \eqref{eq:expform} is not the multiplicative equivalent
 $a_n\sim(n/(e\log n))^n$. The error in its logarithm is $o(n)$, but it
 need not tend to zero. Likewise, an $n$th-root equivalent does not by
-itself imply an equivalent for $a_n/a_{n-1}$. Section~\ref{sec:finer}
+itself imply an equivalent for $a_n/a_{n-1}$. (2026-10-01: Part~II proves
+$a_{n+1}/a_n\sim n/\log n$ through the Stieltjes-moment representation
+and log-convexity, Theorem~\ref{gml:thm:maintail}.) Section~\ref{sec:finer}
 discusses a finer numerical pattern without confusing it with the theorem.
 
 A useful feature of the argument is that it gives bounds for every index,
@@ -706,7 +736,10 @@ Define
 The notation $D_n^{\mathrm{num}}$ is distinct from the Poisson moment
 difference $D_n(k)$ in Section~\ref{sec:poisson}. The main theorem proves
 $Q_n\to1$. The quantities $R_n$ and $D_n^{\mathrm{num}}$ examine finer
-behavior not established by that theorem.
+behavior not established by that theorem. (2026-10-01: the first-order
+law $R_n\sim n/\log n$ is now proved in Part~II,
+Theorem~\ref{gml:thm:maintail}; $D_n^{\mathrm{num}}$ and
+Conjecture~\ref{conj:finer} remain open.)
 
 \input{data/diagnostics_table.tex}
 
@@ -917,6 +950,1390 @@ settles the convergence classification of both generating functions.
 The finer proposed factor $\exp(W(n)^2+3W(n))$ remains explicitly
 separate from the proved theorem.
 
+\clearpage
+\part{Golden-ratio moment laws for A088714 and A088713}\label{gml:part}
+
+\section{Source, scope and notation of Part~II}\label{gml:sec:source}
+
+\paragraph{Summary.}
+Let $A(z)=\sum a_nz^n$ be the formal solution of
+$A(z)=1+zA(z)^2A(zA(z))$, and let $C(z)=(1-zA(z))^{-1}=\sum c_nz^n$.
+These are OEIS A088714 and A088713. Part~II constructs unique probability
+measures $\mu,\nu$ on $[0,\infty)$ with moments $a_n,c_n$. The construction
+factors a nonlinear series transformation into two positivity-preserving
+operator constructions. It proves strict total positivity of both Hankel
+matrices, and strict log-convexity after any finite number of iterations of
+the log-convexity operator.
+Their Stieltjes transforms $F(s)$ and $G(s)$ satisfy exact identities
+$F(s)=1-sF(s)^2F(sF(s))$ and $G(s)=(1+sF(s))^{-1}$ for $s>0$.
+Writing $\alpha=(3-\sqrt5)/2$ and $\beta=(\sqrt5-1)/2$, Part~II proves
+$F(s)\sim s^{-\alpha}$ and $G(s)\sim s^{-\beta}$, including the leading
+constants. Consequently the distribution functions at zero are asymptotic
+to $\sin(\pi\alpha)t^\alpha/(\pi\alpha)$ and
+$\sin(\pi\beta)t^\beta/(\pi\beta)$, respectively. Compact algebraic
+approximants bracket $F$ monotonically; their exponents are ratios of
+Fibonacci numbers.
+Combining the moment structure with the Bell-scale growth bound of Part~I
+(Theorem~\ref{thm:main}) yields $a_{n+1}/a_n\sim c_{n+1}/c_n\sim n/\log n$
+and $\log\mu([x,\infty))\sim\log\nu([x,\infty))\sim-x\log x$.
+The package includes independent exact checks, outward-rounded orbit
+enclosures, and a research agenda. These are written mathematical proofs,
+not Lean-checked theorems; historical priority is not asserted as certified.
+
+\paragraph{Provenance.}
+Part~II is manuscript~35 of batch~73 of the repository's incoming-reports
+intake (cluster O2): \emph{Golden-ratio moment laws for OEIS A088714 and
+A088713. Positive operators, strict Hankel positivity, ratio asymptotics,
+and two endpoint laws}, by OpenAI ChatGPT, prepared for Vladimir
+Reshetnikov and dated October~1, 2026 (a 1{,}524-line source and a
+23-page PDF). It arrived as \texttt{golden\_moment\_laws.zip} in commit
+\texttt{f8c3a392a} and was placed in commit \texttt{6e193dd4f}. The
+manuscript pins the repository at commit
+\texttt{1f1981f682b2878bde51a6ad40c22777f362fc05} and identifies Part~I by
+the Git blob \texttt{ccb50ef335ac4de27bd98a5a152fb48c978c7a96} of its
+source; that blob was still the source of this report at the placement
+commit, so the manuscript read the text now printed as Part~I. Its code,
+data and source audit are shipped with the prefix
+\texttt{02-golden-moments-}; its own \LaTeX\ source, README and PDF are not
+shipped and survive in the archive of the arrival commit. Part~I was
+written independently, on September~20, 2026; the two Parts share no text.
+
+\paragraph{What is not reprinted.}
+Part~I proves the Bell-scale growth theorem
+(Theorem~\ref{thm:main}, with the finite bounds of
+Theorem~\ref{thm:finite}); the golden-moment manuscript re-proves it in an
+appendix that is not reprinted here. That appendix runs through Part~I's
+Sections~2--5 step for step: the triangular recurrence
+\eqref{eq:triangularsum}, the lower bound of Lemma~\ref{lem:powerlower},
+the Poisson comparison of Lemma~\ref{lem:poisson} with the same
+polynomials $H_n$, $K_n$ and the same initial values, the merge inequality
+\eqref{eq:mergeineq}, and the parameter choice \eqref{eq:parameters}. It
+states nothing that Part~I does not, and the manuscript itself calls it
+``not claimed as new work''. The manuscript included it so that its
+deductions would not depend on accepting the earlier report; inside one
+report that purpose lapses, and every use of the growth bound below refers
+to Part~I. Everything else in the manuscript is printed: all sections, all
+proofs, remarks and research questions, and its dependency and novelty
+audit (Appendix~\ref{gml:app:audit}).
+
+\paragraph{Editorial changes.}
+Section~$k$ of the manuscript is Section~$k+11$ here, and its Appendix~B
+is Appendix~\ref{gml:app:audit}; every label carries the prefix
+\texttt{gml:}. References to ``the earlier ProveIt article'' now point to
+Part~I, and the manuscript's link to a GitHub copy of Part~I at the pin is
+replaced by an internal reference. The table fragments and file names in
+Section~\ref{gml:sec:computation} are the shipped
+\texttt{02-golden-moments-} files. The manuscript's bibliography entry
+for A088714 is merged with Part~I's. Nothing else in the mathematics was
+changed. Two dated notes in Part~I (Section~\ref{sec:finer} and the
+paragraph after Theorem~\ref{thm:main}) record what Part~II settles;
+Conjecture~\ref{conj:finer} is not settled by it
+(Section~\ref{gml:sec:research}).
+
+\paragraph{Status.}
+Part~II, like Part~I, is AI-assisted and unrefereed, and it is not
+formalized: no Lean or Rocq development checks any statement of this
+report, and placement in this collection confers no formal status. Its
+novelty audit is bounded (Section~\ref{gml:sec:scope} and
+Appendix~\ref{gml:app:audit}).
+
+\paragraph{Related repository material.}
+The positive inverse $U^{-1}(t)=t(1+U(t))$ of
+Theorem~\ref{gml:thm:mainmoment} and the determinacy argument through an
+entire exponential generating function belong to the circle of ideas of
+the transseries package \emph{Moment Determinacy and Nonlinear Transseries}
+in the directory
+\begin{quote}\small\ttfamily
+Analysis/Transseries/docs/series-and-transseries/\\
+Moment\_Determinacy\_Nonlinear\_Transseries/
+\end{quote}
+which treats general positive Stieltjes inverses $T(y)=yS(T(y))$. That package does not
+mention A088714 or A088713, and Part~II does not depend on it.
+
+\paragraph{Notation.}
+The two Parts were written independently and reuse letters. Every symbol
+of Part~II is local to Part~II; Table~\ref{gml:tab:notation} lists each
+letter that also occurs in Part~I with both meanings. No symbol of the
+manuscript was renamed.
+
+\begin{table}[ht]
+\centering\small
+\caption{Letters used in both Parts.}\label{gml:tab:notation}
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{0.38\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}@{}}
+\toprule
+letter & Part~I & Part~II\\
+\midrule
+$c$, $C$ & $c_{n,k}=[x^n]F_k(x)$, coefficients of the composition
+ iterates \eqref{eq:Fk}; $C$ is the constant of
+ Conjecture~\ref{conj:finer}
+ & $c_n$ is A088713 and $C(z)=\sum c_nz^n=(1-zA(z))^{-1}$\\
+$F$, $G$ & $F_k(x)=B^{\circ k}(x)/x$, formal series; $F_1=A$
+ & $F(s)$, $G(s)$, $F_r(s)$, $G_r(s)$ are Stieltjes transforms, functions
+ of $s>0$; $F(s)$ has the asymptotic expansion
+ $\sum(-1)^ja_js^j$ as $s\downarrow0$. Part~II's
+ $F_1(s)=2/(1+\sqrt{1+4s})$ is \emph{not} Part~I's $F_1(x)=A(x)$\\
+$B$ & $B(x)=xA(x)$
+ & $B(z)$ is a moment series (Lemma~\ref{gml:lem:renewal}); the iterates
+ $B_r$ of \eqref{gml:eq:iterations} approximate $A$, not $xA$\\
+$T$ & $T_n(\lambda)$, Touchard polynomials
+ & $\T$ is the nonlinear transform \eqref{gml:eq:T}; $T$ is a
+ multiplication operator inside proofs\\
+$D$ & $D_n(k)$, Poisson differences \eqref{eq:DS};
+ $D_n^{\mathrm{num}}$ \eqref{eq:Dnum}
+ & $D_n^{(h)}(m)$, Hankel determinants (Proposition~\ref{gml:prop:detbridge})\\
+$H$, $K$, $S$, $M$ & polynomials $H_n$, $K_n$ in $\lambda$; shifted
+ Poisson moments $M_n(k)$ and convolutions $S_n(k)$
+ & $H(s)$ and $K$ in Lemma~\ref{gml:lem:tauberian}; kernels $H_M$, $S_M$;
+ moment series $M(z)$\\
+$R$, $r$ & $R_n=a_n/a_{n-1}$ \eqref{eq:R}
+ & $R(z)$ is the renewal series \eqref{gml:eq:renewal};
+ $r_n=m_{n+1}/m_n$ is a \emph{forward} ratio, so Part~I's $R_n$ is
+ $r_{n-1}$ for $m=a$\\
+$Q$, $X$ & $Q_n$ \eqref{eq:Q}; $X$ a Poisson variable
+ & $Q$ and $X$ are positive operators (Lemmas~\ref{gml:lem:renewal}
+ and~\ref{gml:lem:fock})\\
+$\gamma$, $L$, $r$ & $\gamma=1+2/\lambda$; $L=\log n$ and $r=L-2\ell$
+ \eqref{eq:parameters}
+ & $\gamma$ is a Tauberian exponent; $\LL$ is the log-convexity operator;
+ $r$ indexes the iterates $B_r$, $F_r$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{The sequences, the contribution, and its scope}
+\subsection{Formal definitions and the earlier result}
+Throughout, $a_0=c_0=1$, logarithms are natural, and a power series without
+an explicitly specified analytic domain is a \emph{formal} power series.
+The defining equations are
+\begin{align}
+ A(z)&=1+zA(z)^2A(zA(z)),\label{gml:eq:A}\\
+ C(z)&=\frac1{1-zA(z)},\qquad A(z)=C(zA(z)).\label{gml:eq:C}
+\end{align}
+The second identity in \eqref{gml:eq:C} follows from \eqref{gml:eq:A}; it is also
+recorded in the OEIS entries \cite{oeis-a088714,oeisC}. Coefficients are determined
+successively because the right side of \eqref{gml:eq:A} at degree $n\ge1$
+uses only coefficients of $A$ of degrees below $n$. Thus there is exactly
+one solution with constant term $1$; its coefficients are positive integers.
+The initial values are
+\[
+\begin{array}{c|rrrrrrrr}
+n&0&1&2&3&4&5&6&7\\\hline
+a_n&1&1&3&13&69&419&2809&20353\\
+c_n&1&1&2&6&24&118&674&4308.
+\end{array}
+\]
+The notation $C$ is used here for the generating function called $A$ in
+OEIS A088713, whose defining identity is $C(z/C(z))=(1-z)^{-1}$.
+For verification, put $B=zA$. Equation \eqref{gml:eq:A} gives
+$B^{\langle-1\rangle}(z)=z-z^2A(z)=z/C(z)$. Composing $A=C\circ B$
+with this inverse and substituting in \eqref{gml:eq:C} proves the identity for $C$.
+
+Part~I of this report, \emph{Bell-Scale Growth of OEIS A088714},
+proves (Theorem~\ref{thm:main})
+\begin{equation}\label{gml:eq:oldgrowth}
+ \log a_n=n\log n-n\log\log n-n+
+ O\left(\frac{n\log\log n}{\log n}\right).
+\end{equation}
+Part~I explicitly separates this result from consecutive-coefficient
+asymptotics and from a finer multiplicative Bell-number conjecture.
+The golden-moment manuscript re-proves this bound, with the finite bounds
+of Theorem~\ref{thm:finite}, in an appendix that is not reprinted here
+(Section~\ref{gml:sec:source}). Part~I's proof uses no numerical
+evidence, so the deductions below rest on written proofs only.
+
+\subsection{Main results}
+A normalized Stieltjes moment sequence is a sequence
+$m_n=\int_{[0,\infty)}t^n\dd\sigma(t)$ for a probability measure $\sigma$
+with all moments finite. It is \emph{determinate} when this measure is unique.
+Define
+\begin{equation}\label{gml:eq:exponents}
+ \alpha=\frac{3-\sqrt5}{2},\qquad
+ \beta=\frac{\sqrt5-1}{2},\qquad
+ \alpha+\beta=1,\quad\beta^2+\beta=1.
+\end{equation}
+
+\begin{theorem}[Moment and analytic structure]\label{gml:thm:mainmoment}
+There are unique probability measures $\mu,\nu$ on $[0,\infty)$ such that
+\begin{equation}\label{gml:eq:moments}
+ a_n=\int t^n\dd\mu(t),\qquad c_n=\int t^n\dd\nu(t)\qquad(n\ge0).
+\end{equation}
+Both have all positive exponential moments finite. Their supports are
+unbounded, and all minors of their infinite Hankel matrices with strictly
+increasing row and column index lists are strictly positive. For
+$(\LL m)_n=m_nm_{n+2}-m_{n+1}^2$, every $\LL^k a$ and $\LL^k c$, $k\ge1$,
+is a Stieltjes moment sequence with strictly positive entries.
+
+For $s>0$, set
+\begin{equation}\label{gml:eq:FG}
+ F(s)=\int\frac{\dd\mu(t)}{1+st},\qquad
+ G(s)=\int\frac{\dd\nu(t)}{1+st}.
+\end{equation}
+These transforms satisfy
+\begin{equation}\label{gml:eq:functions}
+ F(s)=1-sF(s)^2F(sF(s)),\qquad G(s)=\frac1{1+sF(s)}.
+\end{equation}
+Moreover, $U(s)=sF(s)$ is an increasing homeomorphism of $(0,\infty)$ onto
+itself and has inverse
+\begin{equation}\label{gml:eq:Uinverse}
+ U^{-1}(t)=t(1+U(t)).
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Golden-ratio endpoint laws]\label{gml:thm:mainendpoint}
+As $s\to\infty$,
+\begin{equation}\label{gml:eq:transformpower}
+ F(s)\sim s^{-\alpha},\qquad G(s)\sim s^{-\beta}.
+\end{equation}
+As $t\downarrow0$,
+\begin{equation}\label{gml:eq:CDF}
+ \mu([0,t])\sim\frac{\sin(\pi\alpha)}{\pi\alpha}t^\alpha,
+ \qquad
+ \nu([0,t])\sim\frac{\sin(\pi\beta)}{\pi\beta}t^\beta.
+\end{equation}
+Neither measure has an atom at zero. For $q>0$, its negative $q$th moment
+is finite precisely when $q<\alpha$ for $\mu$, or $q<\beta$ for $\nu$.
+\end{theorem}
+
+\begin{theorem}[Consecutive ratios and the opposite tail]\label{gml:thm:maintail}
+The two sequences satisfy
+\begin{equation}\label{gml:eq:ratios}
+ \frac{a_{n+1}}{a_n}\sim\frac{n}{\log n},\qquad
+ \frac{c_{n+1}}{c_n}\sim\frac{n}{\log n}.
+\end{equation}
+Their representing measures satisfy
+\begin{equation}\label{gml:eq:tails}
+ \lim_{x\to\infty}\frac{\log\mu([x,\infty))}{x\log x}
+ =\lim_{x\to\infty}\frac{\log\nu([x,\infty))}{x\log x}=-1.
+\end{equation}
+\end{theorem}
+
+These statements concern entire infinite families of inequalities and
+asymptotic regimes, rather than additional finite entries in an OEIS table.
+The two ends of the same measures are quite different: an irrational power
+law at zero and a logarithmically Poisson-scale tail at infinity.
+
+\subsection{Attribution and limitations}\label{gml:sec:scope}
+The sequence definitions and reversion identities are established OEIS
+material \cite{oeis-a088714,oeisC}. Bound \eqref{gml:eq:oldgrowth} is the
+theorem of Part~I, not a new theorem of Part~II. Fock-space models for noncrossing
+moments are standard \cite{nica}; so are the general implications from
+Stieltjes moments to infinite log-convexity \cite{wangzhu} and the relevant
+Tauberian principle \cite{langer}. We give the particular proofs needed,
+including positivity of the operators and the Tauberian constant.
+
+The contributions developed here are the application of these constructions
+to this nonlinear fixed point, its determinate positive-measure realization,
+the exact negative-axis equations and certified approximants, the
+constant-one golden-ratio laws, and the ratio and tail deductions. The
+selected repository report (Part~I) and targeted searches did not reveal
+these specific conclusions. That is a bounded novelty audit, not an exhaustive
+priority determination. The new statements are unrefereed written proofs;
+no formal verification is claimed. We do not prove absolute continuity of
+either measure, and do not settle the earlier finer Bell-number conjecture.
+
+\section{Two operator constructions that preserve positivity}\label{gml:sec:operators}
+This section supplies the central existence mechanism. All operators here
+are bounded: input measures have compact support. Unbounded support is
+introduced only by taking weak limits in Section~\ref{gml:sec:limit}.
+
+\subsection{The renewal transformation}
+\begin{lemma}[A positive block operator]\label{gml:lem:renewal}
+Let $\xi$ be a compactly supported probability measure on $[0,\infty)$,
+and write $B(z)=\int(1-zt)^{-1}\dd\xi(t)$ near zero. Then
+\begin{equation}\label{gml:eq:renewal}
+ R(z)=\frac1{1-zB(z)}
+\end{equation}
+is the moment series of a compactly supported probability measure on
+$[0,\infty)$.
+\end{lemma}
+\begin{proof}
+On $K=\C\oplus L^2(\xi)$ let $T$ be multiplication by $t$ and put
+\[
+ Q=\begin{pmatrix}1&\langle\sqrt t,\cdot\rangle\\
+                     \sqrt t&T\end{pmatrix}.
+\]
+For $(u,v)\in K$, its quadratic form is
+\[
+ \langle (u,v),Q(u,v)\rangle
+   =\int|u+\sqrt t\,v(t)|^2\dd\xi(t)\ge0.
+\]
+The mass-one assumption on $\xi$ is used in the coefficient of $|u|^2$.
+Thus $Q$ is bounded, self-adjoint and positive. Its spectral measure in
+the unit vector $e_0=(1,0)$ is a compactly supported probability measure
+on $[0,\infty)$. A Schur complement, initially for sufficiently small $z$,
+gives its moment series as
+\begin{align*}
+ \langle e_0,(I-zQ)^{-1}e_0\rangle
+ &=\frac1{1-z-z^2\int t(1-zt)^{-1}\dd\xi(t)}\\
+ &=\frac1{1-zB(z)}.
+\end{align*}
+The identity $B(z)=1+z\int t(1-zt)^{-1}\dd\xi(t)$ proves the last step.
+\end{proof}
+
+In coefficients, if $B=\sum b_nz^n$ and $R=\sum d_nz^n$, then
+\begin{equation}\label{gml:eq:renewalrec}
+ d_0=1,\qquad d_n=\sum_{j=0}^{n-1}b_jd_{n-1-j}.
+\end{equation}
+Positivity of these coefficients alone would not prove the moment property;
+the positive operator is the stronger ingredient.
+
+\subsection{From a positive moment sequence to noncrossing moments}
+Let $\NC(n)$ denote the partitions of $\{1,\ldots,n\}$ with no two distinct
+blocks containing $i<j<k<\ell$ with $i,k$ in one block and $j,\ell$ in the
+other. These are the noncrossing partitions. The empty partition has weight $1$.
+
+\begin{lemma}[A positive full-Fock operator]\label{gml:lem:fock}
+Suppose $d_n=\int t^n\dd\rho(t)$, where $\rho$ is a compactly supported
+probability measure on $[0,\infty)$. Put
+\begin{equation}\label{gml:eq:ncmoments}
+ m_0=1,\qquad
+ m_n=\sum_{\pi\in\NC(n)}\prod_{V\in\pi}d_{|V|}.
+\end{equation}
+Then $(m_n)$ is also a compactly supported Stieltjes moment sequence.
+Writing $R(z)=\sum d_nz^n$, its moment series is the unique formal solution
+\begin{equation}\label{gml:eq:ncseries}
+ M(z)=R(zM(z)),\qquad M(0)=1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $H=L^2(\rho)$ and let $T$ be multiplication by $t$. The full Fock space is
+\[
+ \Fock(H)=\C\Omega\oplus\bigoplus_{k\ge1}H^{\otimes k}.
+\]
+The vector $\Omega$ is the vacuum. Define maps to $H\otimes\Fock(H)$ by
+\[
+ D\Omega=0,\quad D(h_1\otimes\cdots\otimes h_k)
+       =h_1\otimes(h_2\otimes\cdots\otimes h_k),\qquad
+ J\psi=1\otimes\psi.
+\]
+The empty tail means $\Omega$. Both maps have norm $1$, and
+\begin{equation}\label{gml:eq:Xpositive}
+ X=(D+J)^*(T\otimes I)(D+J)\ge0.
+\end{equation}
+It is bounded. Expanding gives four operations: multiplication by $T$ on
+the first tensor factor of a nonempty word; creation of a first factor
+$t$; annihilation by the linear functional $\langle t,\cdot\rangle$; and
+$d_1I$. The gauge operation vanishes on $\Omega$.
+
+We verify the vacuum moments, not merely positivity. Expand $X^n$ into
+words in these four operations and apply them from right to left.
+A term contributing to the vacuum never attempts to remove a factor from
+an empty word and ends at tensor length zero. Match each created tensor
+factor with its eventual annihilation, using the last-in, first-out order
+of first tensor factors. Gauges acting on that factor, together with its
+creation and annihilation, form a block. Scalar operations form singleton
+blocks. Operations acting on factors above it form nested blocks.
+This correspondence is a bijection with noncrossing partitions; reading
+such a partition from one end reconstructs the operator choices and the
+stack of active factors.
+
+A block of size $r\ge2$ has weight
+$\langle t,T^{r-2}t\rangle=\int t^r\dd\rho(t)=d_r$; a singleton has
+weight $d_1$. Nested closed pieces leave the lower tensor factors untouched
+and contribute their own scalar weights. Thus
+$\langle\Omega,X^n\Omega\rangle$ is exactly \eqref{gml:eq:ncmoments}.
+The positive spectral measure of $X$ at $\Omega$ proves the assertion.
+
+Finally, consider the block containing the first point of a noncrossing
+partition. If its size is $r$, its weight is $d_r$, and there are $r$
+independent intervening or final intervals, each carrying a noncrossing
+partition. Consequently
+\[
+ M(z)=1+\sum_{r\ge1}d_r z^rM(z)^r=R(zM(z)).
+\]
+The degree-$n$ equation determines $m_n$ from earlier $m_j$, proving uniqueness.
+\end{proof}
+
+For example, $m_1=d_1$, $m_2=d_1^2+d_2$, and
+$m_3=d_1^3+3d_1d_2+d_3$. In free-probability terminology, this is the
+rate-one free compound Poisson construction with jump law $\rho$; the
+operator proof above is sufficient without adopting that terminology.
+
+\subsection{The nonlinear transform}
+Combining the two lemmas gives the following general result.
+\begin{theorem}[Moment-preserving nonlinear transform]\label{gml:thm:transform}
+For a compact Stieltjes moment series $B$ with $B(0)=1$, the unique formal
+solution $M=\T(B)$ of
+\begin{equation}\label{gml:eq:T}
+ M(z)=1+zM(z)^2B(zM(z)),\qquad M(0)=1,
+\end{equation}
+is again a compact Stieltjes moment series.
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{gml:lem:renewal} to obtain $R=(1-zB)^{-1}$, and then
+Lemma~\ref{gml:lem:fock} to obtain $M=R(zM)$. The resulting identity is
+$M=(1-zMB(zM))^{-1}$, which is equivalent to \eqref{gml:eq:T}.
+\end{proof}
+\begin{corollary}[Removal of compact support]
+The same transformation preserves normalized Stieltjes moment sequences
+with all moments finite, without a compact-support assumption.
+\end{corollary}
+\begin{proof}
+Replace an input random variable $X\ge0$ by $\min(X,R)$. Its moments
+converge to the input moments. Every output moment in the two lemmas is a
+fixed polynomial in finitely many input moments, so the output moments
+converge as well. The output first moment is $1$, and bounds on each next
+moment give tightness and uniform integrability. A weak subsequential
+limit therefore represents all output moments. No assertion of determinacy
+is needed for this preservation statement.
+\end{proof}
+This is a preservation statement on an entire class of series. The
+special feature of A088714 is that it is the coefficientwise attracting
+fixed point of this transformation.
+
+\section{The fixed point as a determinate moment law}\label{gml:sec:limit}
+\subsection{Exact coefficient stabilization}
+Start with $B_0(z)=1$, the moment series of $\delta_0$, and define
+\begin{equation}\label{gml:eq:iterations}
+ B_{r+1}=\T(B_r),\qquad C_r=(1-zB_r)^{-1}.
+\end{equation}
+Let $\mu_r,\nu_r$ be the compact probability measures supplied above for
+$B_r,C_r$, respectively. All have nonnegative support.
+
+\begin{lemma}[One additional correct coefficient per step]\label{gml:lem:stable}
+If $B-\widetilde B$ is divisible by $z^N$, $N\ge1$, then
+$\T(B)-\T(\widetilde B)$ is divisible by $z^{N+1}$. In particular,
+\begin{equation}\label{gml:eq:stable}
+ B_r\equiv A\pmod{z^{r+1}},\qquad C_r\equiv C\pmod{z^{r+2}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $M=\T(B)$, the coefficient $m_n$, $n\ge1$, depends only on
+$b_0,\ldots,b_{n-1}$ and $m_0,\ldots,m_{n-1}$. Induction on $n\le N$
+therefore proves agreement. Since $B_0$ and $A$ agree at degree zero,
+iteration proves the first congruence. Equation \eqref{gml:eq:renewalrec}
+proves the second.
+\end{proof}
+
+\subsection{Existence and uniqueness of the limiting measures}
+The first moment of $\mu_r$ is $1$ for $r\ge1$. Hence
+$\mu_r([R,\infty))\le1/R$; the measures are tight. Every subsequential
+weak limit has all moments $a_n$. Indeed, for fixed $n$, the moments of
+orders $n$ and $n+1$ eventually stabilize, and
+\[
+ \int_{[R,\infty)}t^n\dd\mu_r(t)\le\frac{a_{n+1}}R
+\]
+for sufficiently large $r$. Bounded continuous cutoffs, followed by
+$R\to\infty$, justify passage of the $n$th moment to the limit.
+Denote one such limit by $\mu$.
+
+Bound \eqref{gml:eq:oldgrowth} and
+$\log(n!)=n\log n-n+O(\log n)$ imply
+\begin{equation}\label{gml:eq:entire}
+ \left(\frac{a_n}{n!}\right)^{1/n}\longrightarrow0.
+\end{equation}
+Thus for every $v>0$, monotone convergence gives
+\[
+ \int e^{vt}\dd\mu(t)=\sum_{n\ge0}\frac{a_nv^n}{n!}<\infty.
+\]
+The same argument applies to any measure with these moments. Its
+characteristic function is then the absolutely justified moment expansion
+$\sum a_n(iu)^n/n!$. Equality of characteristic functions determines the
+probability measure. Thus $\mu$ is unique, and the whole sequence
+$\mu_r$ converges weakly to it.
+
+For $\nu_r$, the first moment is again $1$, and its moments converge
+coefficientwise to $c_n$. Tightness and uniform integrability give a
+representing measure $\nu$. To prove uniqueness, observe first that the
+moments of a nonnegative random variable satisfy
+\begin{equation}\label{gml:eq:supermult}
+ a_i a_j\le a_{i+j}.
+\end{equation}
+For example, take independent copies $X,Y$ with law $\mu$ and use
+$\E[(X^i-Y^i)(X^j-Y^j)]\ge0$. Also $a_j\le a_{j+1}$: log-convexity
+of moments follows from Cauchy--Schwarz, and the initial ratio is
+$a_1/a_0=1$.
+Expanding the geometric series in \eqref{gml:eq:C}, for $n\ge1$ we obtain
+\begin{equation}\label{gml:eq:compositions}
+ c_n=\sum_{k=1}^n\ 
+ \sum_{\substack{s_1+\cdots+s_k=n\\s_i\ge1}}
+       \prod_{i=1}^k a_{s_i-1}.
+\end{equation}
+Each product is at most $a_{n-k}\le a_{n-1}$, and there are
+$2^{n-1}$ compositions of $n$. Therefore
+\begin{equation}\label{gml:eq:crudeC}
+ a_{n-1}\le c_n\le2^{n-1}a_{n-1}.
+\end{equation}
+It follows that $\sum c_nv^n/n!$ is entire, proving determinacy and all
+positive exponential moments for $\nu$ as well. Consequently
+$\nu_r\Rightarrow\nu$.
+
+Finally, \eqref{gml:eq:oldgrowth} gives $a_n^{1/n}\to\infty$. The moments of
+a probability measure supported in $[0,R]$ are at most $R^n$. Thus $\mu$
+has unbounded support. Inequality \eqref{gml:eq:crudeC} proves the same for $\nu$.
+
+\section{Strict Hankel positivity and iterated log-convexity}\label{gml:sec:hankel}
+We provide the strict statements explicitly, since existence of a
+representing measure alone only guarantees nonnegative minors in general.
+
+\begin{lemma}[Generalized Vandermonde positivity]\label{gml:lem:vander}
+If $0\le e_1<\cdots<e_k$ are integers and
+$0<t_1<\cdots<t_k$, then $\det[t_j^{e_i}]_{i,j=1}^k>0$.
+\end{lemma}
+\begin{proof}
+A nonzero linear combination of $k$ distinct nonnegative powers has at
+most $k-1$ distinct positive zeros. This follows by induction: divide by
+the smallest power, differentiate, and use Rolle's theorem. Consequently
+the determinant cannot vanish in the connected chamber
+$0<t_1<\cdots<t_k$, so its sign is constant. Letting the nodes approach
+a common positive point identifies its sign with that of the Wronskian
+\[
+ t^{\sum e_i-k(k-1)/2}\prod_{i<j}(e_j-e_i)>0
+\]
+times a positive ordinary Vandermonde factor. This proves the sign.
+\end{proof}
+
+\begin{theorem}[Strict total positivity]\label{gml:thm:hankel}
+Let $m_n$ be the moments of a probability measure $\sigma$ on $[0,\infty)$
+with all moments finite and infinitely many positive support points. For
+any strictly increasing nonnegative index lists $i_1<\cdots<i_k$ and
+$j_1<\cdots<j_k$,
+\begin{equation}\label{gml:eq:minor}
+ \det[m_{i_p+j_q}]_{p,q=1}^k>0.
+\end{equation}
+In particular this holds for both $(a_n)$ and $(c_n)$.
+\end{theorem}
+\begin{proof}
+Expanding two determinants and integrating termwise gives
+\begin{equation}\label{gml:eq:andreief}
+ \det[m_{i_p+j_q}]=\frac1{k!}
+ \int\cdots\int
+  \det[t_\ell^{i_p}]_{p,\ell}
+  \det[t_\ell^{j_q}]_{q,\ell}
+  \prod_{\ell=1}^k\dd\sigma(t_\ell).
+\end{equation}
+All terms are integrable since all moments are finite. The product is
+unchanged by a permutation of the $t_\ell$, and is nonnegative everywhere:
+on distinct positive points this follows from Lemma~\ref{gml:lem:vander};
+on repeated points it vanishes, and at zero it follows by continuity.
+Choose $k$ separated positive support points and disjoint small ordered
+neighborhoods. Each neighborhood has positive mass, and the integrand is
+strictly positive on their product. Thus the integral is strictly positive.
+Both measures constructed above have unbounded support, so the hypothesis
+holds for every $k$.
+\end{proof}
+
+\begin{theorem}[Strict infinite log-convexity]\label{gml:thm:infiniteLC}
+For $m=a$ or $m=c$, every $\LL^k m$, $k\ge1$, is a Stieltjes moment
+sequence with an unbounded positive support representation. In particular,
+$(\LL^k m)_n>0$ for every $n\ge0$.
+\end{theorem}
+\begin{proof}
+If $m_n=\int t^n\dd\sigma(t)$, then
+\begin{equation}\label{gml:eq:Lmeasure}
+ m_nm_{n+2}-m_{n+1}^2
+ =\frac12\int\!\int (xy)^n(x-y)^2\dd\sigma(x)\dd\sigma(y).
+\end{equation}
+Thus $\LL m$ is the moment sequence of the pushforward under
+$(x,y)\mapsto xy$ of the finite positive measure
+$\tfrac12(x-y)^2\dd\sigma(x)\dd\sigma(y)$. All moments remain finite.
+If $\sigma$ has unbounded support and a positive support point $y_0$,
+choose support points $x_j\to\infty$. Small product neighborhoods of
+$(x_j,y_0)$ have positive weighted mass and yield arbitrarily large
+positive product support points. Therefore the new measure also has
+unbounded support and positive total mass. Repeat this argument.
+The representing measures after the first iteration need not have mass
+one, but identity \eqref{gml:eq:Lmeasure} does not require normalization.
+\end{proof}
+The general preservation phenomenon is known \cite{wangzhu}; its use here
+is justified by the newly constructed representing measures. Ordinary
+strict log-convexity, $a_na_{n+2}>a_{n+1}^2$, is only the first layer.
+
+\subsection{An exact determinant bridge between the two sequences}
+For a sequence $m$, write
+$D_n^{(h)}(m)=\det[m_{i+j+h}]_{i,j=0}^{n-1}$, with $D_0^{(h)}=1$.
+The following identities explain the repeated determinants in the numerical tables.
+\begin{proposition}[Renewal Hankel identities]\label{gml:prop:detbridge}
+For every $n\ge1$,
+\begin{equation}\label{gml:eq:detbridge}
+ D_n^{(1)}(c)=D_n^{(0)}(a),\qquad
+ D_n^{(0)}(c)=D_{n-1}^{(1)}(a).
+\end{equation}
+These are algebraic consequences of $C=(1-zA)^{-1}$, independent of
+moment positivity.
+\end{proposition}
+\begin{proof}
+For a series $M=\sum m_nz^n$, its two bivariate Hankel kernels are
+\[
+ H_M(x,y)=\frac{xM(x)-yM(y)}{x-y},\qquad
+ S_M(x,y)=\frac{M(x)-M(y)}{x-y}.
+\]
+They have coefficients $m_{i+j}$ and $m_{i+j+1}$, respectively.
+A direct substitution gives
+\[
+ S_C(x,y)=C(x)C(y)H_A(x,y),\qquad
+ H_C(x,y)=C(x)C(y)\bigl(1+xyS_A(x,y)\bigr).
+\]
+Multiplication of a bivariate kernel by $C(x)C(y)$ is congruence by a
+lower-triangular Toeplitz matrix with diagonal entries $c_0=1$.
+Its finite leading determinants are unchanged. The first kernel identity
+proves the first formula; in the second identity the inside leading
+matrix is the block diagonal matrix with blocks $1$ and the leading
+$(n-1)\times(n-1)$ shifted Hankel matrix of $a$. This proves the second.
+\end{proof}
+
+\section{Exact functions behind the divergent series}\label{gml:sec:analytic}
+\subsection{Passing the nonlinear identity to the limit}
+Let
+\[
+ F_r(s)=\int\frac{\dd\mu_r(t)}{1+st},\qquad
+ G_r(s)=\int\frac{\dd\nu_r(t)}{1+st}.
+\]
+For the compact measures, the formal identities become analytic identities
+near $s=0$:
+\begin{equation}\label{gml:eq:finiteanalytic}
+ F_{r+1}(s)=1-sF_{r+1}(s)^2F_r(sF_{r+1}(s)),\qquad
+ G_r(s)=\frac1{1+sF_r(s)}.
+\end{equation}
+They hold for every $s>0$. Indeed, both sides are real-analytic on this
+connected interval, their composed arguments remain positive, and they
+agree on an initial interval. This continuation argument concerns compact
+approximants, not the divergent limiting power series.
+
+Weak convergence gives $F_r(s)\to F(s)$ and $G_r(s)\to G(s)$ for each
+$s>0$. It also permits the variable-argument passage in
+\eqref{gml:eq:finiteanalytic}. For example, on any interval $s\ge\delta>0$,
+\[
+ |F_r'(s)|=\int\frac{t}{(1+st)^2}\dd\mu_r(t)\le\frac1{4\delta}.
+\]
+Since $sF_{r+1}(s)\to sF(s)>0$, this equicontinuity bound and pointwise
+convergence imply
+$F_r(sF_{r+1}(s))\to F(sF(s))$. Thus \eqref{gml:eq:functions} follows.
+
+\subsection{The inverse equation and absence of an atom}
+For every $s>0$, $0<F(s)<1$ because $\mu$ has positive mass away from zero.
+Moreover
+\begin{equation}\label{gml:eq:Uderivative}
+ U'(s)=\int\frac{\dd\mu(t)}{(1+st)^2}>0,
+ \qquad U(s)<s.
+\end{equation}
+The first identity in \eqref{gml:eq:functions} is equivalent to
+\begin{equation}\label{gml:eq:Ucomposition}
+ s=U(s)\bigl(1+U(U(s))\bigr).
+\end{equation}
+If $U$ were bounded, its right side would be bounded, which is impossible.
+As $U(0+)=0$, strict monotonicity proves it is a homeomorphism onto
+$(0,\infty)$, and \eqref{gml:eq:Uinverse} follows.
+
+Also $F(s)\downarrow\mu(\{0\})$. A positive limit $p$ would give
+$sF(s)^2F(sF(s))\ge sp^3$, contradicting \eqref{gml:eq:functions}.
+Hence $F(s)\to0$. Since $U(s)\to\infty$, $G(s)=(1+U(s))^{-1}\to0$
+as well. This proves the absence of atoms at zero for both measures.
+
+\subsection{Asymptotic series with explicit remainders}
+The identity for a finite geometric sum gives, for every integer $N\ge0$
+and every $s>0$,
+\begin{equation}\label{gml:eq:remainder}
+ F(s)=\sum_{j=0}^N(-1)^ja_js^j
+ +(-1)^{N+1}s^{N+1}\int\frac{t^{N+1}}{1+st}\dd\mu(t).
+\end{equation}
+In particular, the remainder has its displayed sign and absolute value
+at most $a_{N+1}s^{N+1}$. The analogous statement holds for $G$ with $c_j$.
+Thus the alternating formal series is a genuine Poincar\'e asymptotic
+expansion as $s\downarrow0$, with finite-order upper and lower bounds,
+even though its infinite sum has radius zero.
+
+The entire functions
+\[
+ E_a(z)=\sum_{n\ge0}\frac{a_nz^n}{n!},\qquad
+ E_c(z)=\sum_{n\ge0}\frac{c_nz^n}{n!}
+\]
+are the exponential moment transforms of $\mu,\nu$. Consequently
+\begin{equation}\label{gml:eq:borel}
+ F(s)=\int_0^\infty e^{-v}E_a(-sv)\dd v,
+ \qquad G(s)=\int_0^\infty e^{-v}E_c(-sv)\dd v\qquad(s>0).
+\end{equation}
+To justify this, first use exponential integrability to identify
+$E_a(-u)=\int e^{-ut}\dd\mu(t)$, and then use Tonelli's theorem in
+\eqref{gml:eq:borel}. The integrand $E_a(-sv)$ lies between $0$ and $1$.
+This is a Borel--Laplace representation on the negative real axis.
+It means integrating the \emph{whole entire function}; exchanging its
+infinite series with this integral is not justified and would recover
+the divergent ordinary series.
+
+These constructions select canonical transforms from the moment problem.
+They do not assert uniqueness among every possible smooth, non-Stieltjes
+solution of the nonlinear equation.
+
+\section{Certified algebraic approximants and Fibonacci exponents}\label{gml:sec:approximants}
+\subsection{Alternating pointwise bounds}
+\begin{proposition}[Order reversal]\label{gml:prop:order}
+Given the Stieltjes transform $H$ of a probability measure on $[0,\infty)$,
+the equation
+\begin{equation}\label{gml:eq:rootmap}
+ y+sy^2H(sy)=1
+\end{equation}
+has exactly one solution in $(0,1)$ for each $s>0$. Increasing $H$
+pointwise decreases this solution pointwise.
+\end{proposition}
+\begin{proof}
+The left side is continuous, is $0$ at $y=0$, exceeds $1$ at $y=1$, and
+is strictly increasing. For the last assertion, each function
+$y^2/(1+sty)$ has derivative
+$y(2+sty)/(1+sty)^2>0$ on $y>0$, so its average is increasing.
+If $H\ge\widetilde H$, the left side for $H$ is at least that for
+$\widetilde H$ at every $y$, and its unique crossing occurs no later.
+\end{proof}
+
+Since $F_0=1\ge F$, repeated order reversal in
+\eqref{gml:eq:finiteanalytic} gives
+\begin{equation}\label{gml:eq:brackets}
+ F_1\le F_3\le F_5\le\cdots\le F
+ \le\cdots\le F_4\le F_2\le F_0
+ \qquad\text{on }(0,\infty).
+\end{equation}
+For nesting, start with $F_2\le F_0$ and apply the same reversal
+successively. Section~\ref{gml:sec:limit} proves that both bounding sequences
+converge to $F$. The convergence is uniform on compact subintervals of
+$(0,\infty)$ by monotonicity and continuity.
+
+Every $B_r$ is algebraic. Indeed, if $C_r$ satisfies a nonzero polynomial
+relation $P(z,C_r(z))=0$, then $B_{r+1}=C_r(zB_{r+1})$ satisfies
+$P(zB_{r+1},B_{r+1})=0$. The substitution $z^iy^j\mapsto z^iy^{i+j}$
+is injective on polynomials, so this relation is nonzero. Start with
+$B_0=1$ and use $C_r=(1-zB_r)^{-1}$.
+
+The first two bounds are especially simple:
+\begin{equation}\label{gml:eq:firstbounds}
+ \frac{2}{1+\sqrt{1+4s}}=F_1(s)\le F(s)\le F_2(s),
+ \qquad F_2(s)+sF_2(s)^3=1.
+\end{equation}
+The upper bound is the unique positive root of the cubic. To derive it,
+write $v=F_1(sy)$, so that $v+syv^2=1$ and $1-y=sy^2v$; eliminating $v$
+gives $1-y=sy^3$. Therefore \eqref{gml:eq:brackets} is also an effective route
+to certified bounds using algebraic root isolation or nested interval
+bisection, without truncating a divergent ordinary series at large $s$.
+
+\subsection{The Fibonacci pattern}
+Let $f_0=0$, $f_1=1$, and $f_{r+2}=f_{r+1}+f_r$ be the Fibonacci numbers.
+\begin{theorem}[Endpoint exponents of every approximant]\label{gml:thm:fibonacci}
+For each fixed $r\ge0$,
+\begin{equation}\label{gml:eq:fibpower}
+ F_r(s)\sim s^{-\alpha_r},\qquad
+ \alpha_r=\frac{f_r}{f_{r+2}},\qquad s\to\infty.
+\end{equation}
+Every leading constant is $1$. The exponents alternate around $\alpha$
+and converge to it:
+\[
+ 0,\quad \frac12,\quad\frac13,\quad\frac25,\quad\frac38,
+ \quad\frac5{13},\quad\frac8{21},\ldots\longrightarrow\alpha.
+\]
+\end{theorem}
+\begin{proof}
+Put $U_r(s)=sF_r(s)$. The finite identity yields
+\[
+ U_{r+1}^{-1}(t)=t(1+U_r(t)),\qquad U_0(t)=t.
+\]
+This inverse relation also proves inductively that every $U_r$ is an
+increasing homeomorphism onto $(0,\infty)$. If $U_r(t)\sim t^{b_r}$,
+then its successor's inverse is asymptotic to $t^{1+b_r}$, so
+$U_{r+1}(s)\sim s^{1/(1+b_r)}$. With $b_0=1$, this gives
+$b_r=f_{r+1}/f_{r+2}$, including the constant $1$. Since
+$\alpha_r=1-b_r$, the formula follows. The elementary recurrence
+$b\mapsto1/(1+b)$ has fixed point $\beta$ and reverses the order around
+it, giving the stated alternating convergence.
+\end{proof}
+
+The brackets and this theorem alone determine
+$\log F(s)/\log s\to-\alpha$. They do \emph{not} justify the full
+constant-one equivalent by interchanging $r\to\infty$ with
+$s\to\infty$. The next section supplies a separate rigidity argument
+that closes precisely this gap.
+
+\section{Why the golden-ratio law has leading constant one}\label{gml:sec:golden}
+The derivation below avoids assuming regular variation or differentiable
+asymptotics. Its conclusion is stronger than simply guessing a power in
+the nonlinear equation.
+
+\begin{lemma}[An asymptotic iteration rigidity principle]\label{gml:lem:rigidity}
+Suppose $g:\R\to\R$ is increasing and continuous, $g(x)<x$,
+$g(x)\to\infty$ as $x\to\infty$, and
+\begin{equation}\label{gml:eq:gconstraint}
+ g(g(x))+g(x)=x-\eps(x),\qquad \eps(x)\to0.
+\end{equation}
+Then $g(x)-\beta x\to0$, where $\beta^2+\beta=1$ and $\beta>0$.
+\end{lemma}
+\begin{proof}
+Put $d(x)=g(x)-\beta x$. Substitution in \eqref{gml:eq:gconstraint} gives
+\begin{equation}\label{gml:eq:dcontraction}
+ d(x)=-\beta d(g(x))-\beta\eps(x).
+\end{equation}
+Fix a sufficiently large real $X$. For $x>X$, iterate $g$ until it first
+reaches a point at most $X$, and let $N=N(x)$ be that number of steps.
+It is finite: otherwise the decreasing orbit has a limit at least $X$,
+and continuity makes that limit a fixed point, contrary to $g(y)<y$.
+By monotonicity, the exit point lies in $[g(X),X]$. Also $N(x)\to\infty$
+as $x\to\infty$, because every fixed finite iterate of $g$ tends to infinity.
+
+Let $M_X=\sup_{[g(X),X]}|d|$ and
+$E_X=\sup_{y\ge X}|\eps(y)|$. Iterating \eqref{gml:eq:dcontraction} gives
+\[
+ |d(x)|\le\beta^{N(x)}M_X+
+           \frac{\beta}{1-\beta}E_X.
+\]
+Take the limit superior as $x\to\infty$, then let $X\to\infty$.
+The result is zero, proving the lemma.
+\end{proof}
+
+Apply this lemma to
+\begin{equation}\label{gml:eq:gdef}
+ g(x)=\log U(e^x).
+\end{equation}
+The properties of $U$ prove all its monotonicity, continuity and range
+hypotheses. From \eqref{gml:eq:Ucomposition},
+\[
+ U(U(s))=\frac{s}{U(s)}-1
+        =\frac{s}{U(s)}(1-F(s)).
+\]
+Taking logarithms at $s=e^x$ yields
+\[
+ g(g(x))+g(x)=x+\log(1-F(e^x)).
+\]
+Thus $\eps(x)=-\log(1-F(e^x))\to0$, since $F(e^x)\to0$.
+Lemma~\ref{gml:lem:rigidity} now gives
+\[
+ \log\frac{U(s)}{s^\beta}\longrightarrow0.
+\]
+Exponentiating proves $U(s)\sim s^\beta$, hence
+$F(s)=U(s)/s\sim s^{-\alpha}$. Finally
+$G(s)=(1+U(s))^{-1}\sim s^{-\beta}$.
+This proves \eqref{gml:eq:transformpower}, with no unspecified multiplicative
+constant and no exchange of the two limits in the preceding section.
+
+\section{Recovering the measures near zero}\label{gml:sec:tauberian}
+For completeness we prove the precise special case of the Stieltjes
+Tauberian theorem used here. General versions and their history are
+available in \cite{langer}. The normalization of the transform matters.
+
+\begin{lemma}[Power-law Stieltjes Tauberian lemma]\label{gml:lem:tauberian}
+Let $\sigma$ be a probability measure on $[0,\infty)$ and
+$H(s)=\int(1+st)^{-1}\dd\sigma(t)$. If
+\[
+ H(s)\sim K s^{-\gamma}\quad(s\to\infty),\qquad
+ K>0,\quad0<\gamma<1,
+\]
+then
+\begin{equation}\label{gml:eq:tauberian}
+ \sigma([0,t])\sim
+ K\frac{\sin(\pi\gamma)}{\pi\gamma}t^\gamma
+ \qquad(t\downarrow0).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $\eta_s$ be the probability measure of the rescaled variable $y=st$,
+weighted by $(1+st)^{-1}/H(s)$. Regard it as a measure on the compact
+interval $[0,1]$ using the coordinate $w=y/(1+y)$, with $y=\infty$
+corresponding to $w=1$. For $u>0$,
+\begin{equation}\label{gml:eq:etas}
+ \int\frac{1+y}{1+uy}\dd\eta_s(y)
+   =\frac{H(us)}{H(s)}\longrightarrow u^{-\gamma}.
+\end{equation}
+The integrand is the bounded continuous function
+$[1+(u-1)w]^{-1}$ on $[0,1]$.
+
+Consider the probability measure on $(0,\infty)$ with density
+\begin{equation}\label{gml:eq:etadensity}
+ \frac{\sin(\pi\gamma)}\pi\frac{y^{\gamma-1}}{1+y}.
+\end{equation}
+Euler's beta integral
+$\int_0^\infty y^{\gamma-1}(1+y)^{-1}\dd y=\pi/\sin(\pi\gamma)$
+normalizes it. Substitution $v=uy$ shows that its integral in
+\eqref{gml:eq:etas} is $u^{-\gamma}$. This probability measure is the unique
+one on the compact $w$-interval with those integrals. Indeed, for
+$|u-1|<1$ expand $[1+(u-1)w]^{-1}$ uniformly as a power series. The
+integrals determine all moments of $w$; polynomials are dense in
+continuous functions on $[0,1]$, so these moments determine the measure.
+
+Every subsequential weak limit of $\eta_s$ therefore equals
+\eqref{gml:eq:etadensity}. Compactness proves convergence of the whole family.
+In particular, the limit has no mass at $y=1$ or at either compactification
+endpoint. The bounded function $(1+y)\mathbf1_{\{y\le1\}}$ is continuous
+except at $y=1$, so weak convergence gives
+\[
+ \frac{\sigma([0,1/s])}{H(s)}
+ =\int_{y\le1}(1+y)\dd\eta_s(y)
+ \longrightarrow\frac{\sin(\pi\gamma)}\pi
+                   \int_0^1y^{\gamma-1}\dd y
+ =\frac{\sin(\pi\gamma)}{\pi\gamma}.
+\]
+Using the assumed equivalent for $H(s)$ proves \eqref{gml:eq:tauberian}.
+\end{proof}
+
+Apply the lemma to $F$ with $(K,\gamma)=(1,\alpha)$ and to $G$ with
+$(K,\gamma)=(1,\beta)$. This proves \eqref{gml:eq:CDF}.
+In particular, arbitrarily small positive intervals adjacent to zero
+have positive mass. The result is about \emph{distribution functions}:
+it does not justify differentiating the equivalent or asserting a density.
+
+\begin{corollary}[Sharp negative-moment thresholds]\label{gml:cor:negative}
+For $q>0$,
+\[
+ \int t^{-q}\dd\mu(t)<\infty\ \Longleftrightarrow\ q<\alpha,
+ \qquad
+ \int t^{-q}\dd\nu(t)<\infty\ \Longleftrightarrow\ q<\beta.
+\]
+At the critical exponent $\gamma$ for either law $\sigma$,
+\begin{equation}\label{gml:eq:critical}
+ \int_{[\varepsilon,1]}t^{-\gamma}\dd\sigma(t)
+ \sim\frac{\sin(\pi\gamma)}\pi\log\frac1\varepsilon.
+\end{equation}
+\end{corollary}
+\begin{proof}
+For $0<x\le1$,
+$x^{-q}=1+q\int_x^1t^{-q-1}\dd t$. Tonelli's theorem reduces finiteness
+near zero to that of $\int_0^1t^{-q-1}\sigma([0,t])\dd t$.
+The distribution-function equivalent makes this the elementary integral
+of $t^{\gamma-q-1}$. The part on $[1,\infty)$ is bounded by the total
+mass. At $q=\gamma$, integration by parts on $[\varepsilon,1]$ gives a
+bounded endpoint term plus
+$\gamma\int_\varepsilon^1t^{-\gamma-1}\sigma([0,t])\dd t$.
+Its equivalent is the asserted logarithm. Possible endpoint atoms do not
+alter it: the distribution-function equivalent makes their scaled
+contribution bounded, hence negligible relative to the logarithm.
+\end{proof}
+
+\section{From global growth to consecutive-coefficient asymptotics}\label{gml:sec:ratios}
+The earlier root equivalent by itself cannot control neighboring ratios.
+The moment construction supplies the missing convexity.
+
+\begin{lemma}[A convex-slope principle]\label{gml:lem:slopes}
+Suppose $m_n>0$ is log-convex and
+\begin{equation}\label{gml:eq:slopeshyp}
+ \log m_n=n\log n-n\log\log n-n+o(n).
+\end{equation}
+Then $m_{n+1}/m_n\sim n/\log n$.
+\end{lemma}
+\begin{proof}
+Let $h(n)=\log m_n$, and interpolate linearly between integers. Log-convexity
+makes this interpolation convex. Fix $0<\delta<1$. The forward slope
+$h(n+1)-h(n)$ is bounded below by the secant from
+$\lfloor(1-\delta)n\rfloor$ to $n$, and above by the secant from $n$
+to $\lceil(1+\delta)n\rceil$. Inserting \eqref{gml:eq:slopeshyp}, accounting
+for rounding by $o(1)$ in the quotients, gives
+\begin{align*}
+ \liminf_{n\to\infty}\left(h(n+1)-h(n)-\log n+\log\log n\right)
+ &\ge -\frac{1-\delta}{\delta}\log(1-\delta)-1,\\
+ \limsup_{n\to\infty}\left(h(n+1)-h(n)-\log n+\log\log n\right)
+ &\le \frac{1+\delta}{\delta}\log(1+\delta)-1.
+\end{align*}
+Both right sides tend to zero as $\delta\downarrow0$. Hence the expression
+inside parentheses tends to zero. Exponentiation proves the result.
+\end{proof}
+
+Strict log-convexity from Section~\ref{gml:sec:hankel} and
+\eqref{gml:eq:oldgrowth} immediately prove the first equivalent in
+\eqref{gml:eq:ratios}. It remains to transfer the sharp logarithmic growth to $c_n$;
+the factor $2^{n-1}$ in \eqref{gml:eq:crudeC} is too large for this purpose.
+
+\begin{proposition}[Sharper comparison for the companion sequence]\label{gml:prop:companion}
+As $n\to\infty$,
+\begin{equation}\label{gml:eq:Clog}
+ \log c_n=\log a_{n-1}+O(\log n)
+ =n\log n-n\log\log n-n+
+ O\left(\frac{n\log\log n}{\log n}\right).
+\end{equation}
+Consequently $c_{n+1}/c_n\sim n/\log n$.
+\end{proposition}
+\begin{proof}
+Keeping track of the number of parts in \eqref{gml:eq:compositions}, and
+using \eqref{gml:eq:supermult}, gives
+\begin{equation}\label{gml:eq:binomialC}
+ a_{n-1}\le c_n\le\sum_{j=0}^{n-1}\binom{n-1}{j}a_j.
+\end{equation}
+Write $r_j=a_{j+1}/a_j$, which is increasing and satisfies
+$r_j\sim j/\log j$. Put $m=\lfloor(n-1)/2\rfloor$.
+The part $j\le m$ of the upper sum is at most $2^{n-1}a_m=o(a_{n-1})$
+by \eqref{gml:eq:oldgrowth}. For $j>m$, monotonicity of $r_j$ gives
+\[
+ a_j\le a_{n-1}r_m^{-(n-1-j)}.
+\]
+Thus the rest of the sum is bounded by
+\[
+ a_{n-1}(1+1/r_m)^{n-1}
+ \le a_{n-1}\exp((n-1)/r_m)
+ =a_{n-1}\exp(O(\log n)).
+\]
+Together with the lower bound this proves the first equality in
+\eqref{gml:eq:Clog}. The second follows from \eqref{gml:eq:oldgrowth} and
+$\log r_{n-1}=O(\log n)$. Finally apply Lemma~\ref{gml:lem:slopes} to $c$,
+whose log-convexity has already been proved.
+\end{proof}
+
+\begin{corollary}[A quantitative, though slow, ratio estimate]
+For $m=a$ or $m=c$,
+\[
+ \frac{m_{n+1}}{m_n}
+ =\frac{n}{\log n}\left(1+
+ O\left(\sqrt{\frac{\log\log n}{\log n}}\right)\right).
+\]
+\end{corollary}
+\begin{proof}
+Let $h_0(t)=t\log t-t\log\log t-t$ and
+$e_n=\log\log n/\log n$. On $[n/2,2n]$, the available logarithmic
+estimate has error $O(ne_n)$, uniformly. For secants over length
+$\delta n$, this contributes $O(e_n/\delta)$. Since
+$h_0''(t)=O(1/n)$ there, the secant differs from $h_0'(n)$ by
+$O(\delta)$; also $h_0'(n)=\log n-\log\log n+O(1/\log n)$.
+Take $\delta=\sqrt{e_n}$ in the convex-slope bounds. Rounding endpoints
+contributes only $O(\log n/(\delta n))$. Exponentiation gives the result.
+\end{proof}
+This is not a proof that $c_n\sim a_{n-1}$. The polynomial-factor
+comparison is sufficient for the asserted logarithmic and ratio laws,
+and no stronger equivalent is used below.
+
+\section{The far tails from size-biased concentration}\label{gml:sec:tails}
+We prove a general lemma and then apply it to both measures. This keeps the
+lower-tail-bound argument separate from an insufficient Markov upper bound.
+
+\begin{lemma}[A moment-growth tail principle]\label{gml:lem:tails}
+Let $\sigma$ be a probability measure on $[0,\infty)$ with positive
+moments $m_n$, unbounded support, and
+\[
+ \log m_n=n\log n-n\log\log n-n+o(n),\qquad
+ r_n:=m_{n+1}/m_n\sim n/\log n.
+\]
+Then $\log\sigma([x,\infty))\sim-x\log x$.
+\end{lemma}
+\begin{proof}
+For the upper bound, Markov's inequality gives
+$\sigma([x,\infty))\le m_n/x^n$. Choose
+$n=\lfloor x\log x\rfloor$. Then
+$\log n-\log\log n=\log x+o(1)$, and consequently
+\begin{equation}\label{gml:eq:tailupper}
+ \log\sigma([x,\infty))\le-(1+o(1))x\log x.
+\end{equation}
+
+For the reverse inequality define the probability measure
+\[
+ \dd\sigma_n(t)=\frac{t^n}{m_n}\dd\sigma(t).
+\]
+Its mean is $r_n$ and its relative variance is
+\[
+ \frac{\operatorname{Var}_{\sigma_n}(t)}{r_n^2}
+   =\frac{r_{n+1}}{r_n}-1\longrightarrow0.
+\]
+The last limit follows directly from the ratio equivalent at $n$ and $n+1$.
+Thus for each fixed $0<\eps<1$,
+\begin{equation}\label{gml:eq:concentrate}
+ \sigma_n([(1-\eps)r_n,(1+\eps)r_n])\longrightarrow1.
+\end{equation}
+Fix $\delta>0$ and choose $\eps>0$ so small that
+$(1-\eps)(1+\delta)>1$. Now take
+$n=\lfloor(1+\delta)x\log x\rfloor$.
+Then $r_n\sim(1+\delta)x$, so the interval in \eqref{gml:eq:concentrate}
+lies in $[x,\infty)$ for large $x$. On it, $t^n\le((1+\eps)r_n)^n$,
+which implies
+\[
+ \sigma([x,\infty))\ge
+ \frac{m_n}{((1+\eps)r_n)^n}
+ \sigma_n([(1-\eps)r_n,(1+\eps)r_n]).
+\]
+Taking logarithms and using both hypotheses gives
+\[
+ \liminf_{x\to\infty}\frac{\log\sigma([x,\infty))}{x\log x}
+ \ge-(1+\delta)(1+\log(1+\eps)).
+\]
+Let $\delta\downarrow0$ with admissible $\eps\downarrow0$, and combine
+with \eqref{gml:eq:tailupper}. This proves the limit.
+\end{proof}
+
+Apply the lemma to $\mu$ using \eqref{gml:eq:oldgrowth} and to $\nu$ using
+\eqref{gml:eq:Clog}, with their already proved ratio laws. This proves
+Theorem~\ref{gml:thm:maintail}. Equivalently, for every fixed $\eps>0$,
+for sufficiently large $x$ each tail lies between
+$\exp(-(1+\eps)x\log x)$ and $\exp(-(1-\eps)x\log x)$.
+Nothing here supplies a multiplicative tail equivalent or a density.
+
+\section{Computational audits and certified orbit enclosures}\label{gml:sec:computation}
+\subsection{Exact calculations actually performed}
+The computations are checks of implementations and finite instances, not
+substitutes for the all-index proofs. The file \texttt{code/02-golden-moments-verify.py}
+uses only the Python standard library and performs the following tasks.
+It independently generates $a_0,\ldots,a_{401}$ by the triangular recurrence
+\eqref{eq:triangularsum} of Part~I (whose $c_{n,k}$ are not the $c_n$ of
+A088713), obtains $c_0,\ldots,c_{401}$ by
+\eqref{gml:eq:renewalrec}, and checks all 21 displayed A088714 terms and all
+22 displayed A088713 terms retrieved from the OEIS entries.
+
+Two different formal calculations check the defining functional equation
+and the noncrossing relation $A=C(zA)$ through degree $30$.
+The compact transform iteration is separately checked through stage $16$,
+including its exact stabilization property. A direct rational-arithmetic
+implementation of the full-Fock operator for
+$\rho=\tfrac12(\delta_1+\delta_3)$ agrees with the noncrossing formula
+through moment $10$. In that calculation the tensor factors are functions
+on $\{1,3\}$, with their weighted inner product; no square-root or
+floating-point approximation enters.
+
+For both sequences, every minor of order $1$ through $4$ whose row and
+column indices lie in $\{0,\ldots,7\}$ was checked: $17{,}768$ minors in
+total, all strictly positive. An exact fraction-free determinant algorithm
+also checks all 40 leading and once-shifted determinants of orders $1$
+through $10$ and all 20 determinant identities in
+Proposition~\ref{gml:prop:detbridge} for those orders. Six iterations of
+$\LL$ on the first 101 moments of each sequence give 1,128 strictly
+positive values. Complete outputs are in the files
+\begin{quote}\ttfamily\small
+data/02-golden-moments-verification.json\\
+data/02-golden-moments-verification.txt
+\end{quote}
+
+Some exact determinants are displayed below. Large integers have been
+computed directly, not inferred from the determinant identities.
+\begin{center}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{r|rrrr}
+\toprule
+$n$&$D_n^{(0)}(a)$&$D_n^{(1)}(a)$&$D_n^{(0)}(c)$&$D_n^{(1)}(c)$\\
+\midrule
+\tableinput{data/02-golden-moments-hankel_table.tex}
+\bottomrule
+\end{tabular}
+\end{center}
+The repetition is explained exactly by \eqref{gml:eq:detbridge}.
+
+The next table shows the scaled consecutive ratios. These are rounded
+floating-point diagnostics obtained only after the integer coefficients
+were computed exactly. The theorem gives the limit $1$; the table makes
+clear that the convergence is still slow at the displayed indices.
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$n$&$\dfrac{a_{n+1}}{a_n}\dfrac{\log n}{n}$
+   &$\dfrac{c_{n+1}}{c_n}\dfrac{\log n}{n}$\\[5pt]
+\midrule
+\tableinput{data/02-golden-moments-ratio_table.tex}
+\bottomrule
+\end{tabular}
+\end{center}
+No monotonicity of these \emph{scaled} ratios is asserted from this table.
+
+\subsection{Enclosures far beyond the range of a power-series evaluation}
+Equation \eqref{gml:eq:Uinverse} has a useful exact numerical consequence.
+Choose $s_0>0$, set $s_{-1}=U(s_0)$, and define
+\begin{equation}\label{gml:eq:orbit}
+ s_{k+1}=s_k(1+s_{k-1})\qquad(k\ge0).
+\end{equation}
+Then $U(s_k)=s_{k-1}$ for every $k\ge0$. Indeed,
+$U^{-1}(s_k)=s_k(1+U(s_k))=s_k(1+s_{k-1})$.
+Thus values of the true transform can be transported along its inverse
+orbit without any approximation to the functional equation.
+
+For a rigorous seed, take $s_0=1/100$. Equation \eqref{gml:eq:remainder} gives
+\begin{equation}\label{gml:eq:seedbounds}
+ \sum_{j=0}^{31}(-1)^ja_js_0^j\le F(s_0)
+ \le\sum_{j=0}^{30}(-1)^ja_js_0^j.
+\end{equation}
+Both endpoints are rational and computed exactly. Positive additions and
+multiplications preserve lower and upper enclosures under
+\eqref{gml:eq:orbit}. The script \texttt{code/02-golden-moments-orbit\_bounds.py} propagates
+these enclosures with 100-digit Decimal arithmetic, rounding down for
+lower endpoints and up for upper endpoints. Correctly rounded logarithms,
+square roots and exponentials are enlarged by one adjacent representable
+value on each side before they are used in an enclosure \cite{decimal}.
+Subtracted products are rounded in the opposite direction before subtraction.
+
+For each row in the following table there is a true inverse-orbit point
+$s_k$ in the full logarithmic interval recorded in
+\texttt{data/02-golden-moments-orbit\_bounds.json}. The middle column is only a rounded
+location; the last column is a widened outward enclosure of
+\[
+ s_k^\alpha F(s_k)=\frac{s_{k-1}}{s_k^\beta}.
+\]
+The enclosure concerns that true point, not every point in the interval.
+\begin{center}
+\small
+\begin{tabular}{r r l}
+\toprule
+$k$&approximate $\log s_k$&enclosure of $s_k^\alpha F(s_k)$\\
+\midrule
+\tableinput{data/02-golden-moments-orbit_table.tex}
+\bottomrule
+\end{tabular}
+\end{center}
+These are finite computational enclosures conditional only on the exact
+identities proved above and the correctly rounded arithmetic operations.
+They illustrate the constant-one law at extremely large arguments. They
+are not its proof: Lemma~\ref{gml:lem:rigidity} proves that law at all sufficiently
+large arguments, not merely along the selected orbit.
+
+\subsection{Reproduction and complexity}
+In the delivered package layout, where the three scripts and their data
+files carry no prefix, the checks and the delivered three-pass build were
+\begin{quote}\ttfamily\small
+python3 code/verify.py --n 401\\
+python3 code/orbit\_bounds.py\\
+python3 code/make\_tables.py\\
+sh build.sh
+\end{quote}
+The scripts write their outputs under those unprefixed names, not over the
+shipped files with the prefix \texttt{02-golden-moments-}; the report's
+README gives the commands for rerunning them on a copy. The PDF of this
+report is built by its \texttt{Makefile}.
+The coefficient generator uses
+$N(N+1)(N+2)/6$ integer products and $O(N^2)$ integer storage cells.
+These are arithmetic-operation counts, not unit-cost bit-complexity
+claims: the coefficients grow rapidly. The small formal-series, Fock,
+and determinant checks use independent formulas to reduce the chance of
+an indexing or recurrence error. The PDF build requires a normal
+pdfLaTeX installation and the packages listed in the preamble; the
+mathematical checks do not require a computer algebra system.
+
+\section{Further research questions and concrete next steps}\label{gml:sec:research}
+The moment representation changes the available methods: it allows
+orthogonal polynomials, resolvent bounds, probability tilting, and
+Tauberian arguments to be used alongside formal reversion. The following
+questions are not treated as established consequences of finite data.
+They are follow-up tasks for this construction, not claims that every item
+is a previously recognized open problem; existing general theorems may
+resolve some of them once their hypotheses are checked.
+
+\begin{question}[Regularity and the support of the two laws]
+Are $\mu$ and $\nu$ absolutely continuous on $(0,\infty)$? Do their supports
+fill all of $[0,\infty)$, or can gaps or positive atoms occur?
+\end{question}
+The present proof gives unbounded support, no atom at zero, and precise
+mass near zero, but none of these excludes gaps or a singular component.
+A concrete first step is to check applicable free-convolution regularity
+theorems, and then continue the coupled Cauchy-transform identities
+into the upper half-plane and analyze boundary values. Any proposed
+density asymptotic must include a regularity argument; differentiating
+\eqref{gml:eq:CDF} is not sufficient.
+
+\begin{question}[A full asymptotic equivalent for the coefficients]
+What is the multiplicative asymptotic equivalent of $a_n$? In particular,
+does the finer Bell-number normalization proposed in Part~I
+(Conjecture~\ref{conj:finer}) converge to a finite positive constant?
+\end{question}
+Part~I proposes a correction involving
+$\exp(W(n)^2+3W(n))$ relative to Bell numbers. The ratio law proved here
+is weaker: an error tending to zero in a single ratio can still accumulate
+into an unbounded logarithmic error. A practical next step is to derive a
+uniform expansion of the tilted-law mean beyond $n/\log n$, with a
+summable remainder after the proposed normalization.
+
+\begin{question}[Second-order golden-ratio asymptotics]
+Can $F(s)=s^{-\alpha}(1+o(1))$ be sharpened to an explicit second-order
+expansion, and does its correction exhibit oscillation under the inverse
+iteration $s_{k+1}=s_k(1+s_{k-1})$?
+\end{question}
+The exact equation
+$d(x)=-\beta d(g(x))-\beta\eps(x)$ is a suitable starting point.
+Its negative contraction coefficient makes orbit-dependent alternating
+corrections plausible, but the present proof does not establish a global
+oscillatory profile or an optimal error rate.
+
+\begin{question}[Effective convergence of the certified approximants]
+How quickly do $F_{2r}(s)-F_{2r+1}(s)$ tend to zero, uniformly when $s$
+varies over a growing interval? Can one obtain practical a priori
+stopping bounds for numerical evaluation?
+\end{question}
+The proof gives monotone convergence on fixed compact intervals, but
+not a useful global complexity estimate. The known finite-stage Fibonacci
+exponents indicate why the limits $r\to\infty$ and $s\to\infty$ require
+care. Interval evaluation with adaptive algebraic root isolation is a
+concrete computational approach.
+
+\begin{question}[Orthogonal polynomials and continued fractions]
+What are the asymptotics of the Jacobi or Stieltjes continued-fraction
+coefficients associated with $\mu$ and $\nu$?
+\end{question}
+Strict Hankel positivity guarantees nondegeneracy of every finite
+orthogonalization step, while \eqref{gml:eq:detbridge} ties the two systems
+together. Exact determinant tables can generate candidate recurrence
+coefficients, but the main challenge is to prove their large-degree
+behavior and connect it to the two endpoint laws.
+
+\begin{question}[Sharper comparison of the companion sequence]
+Does $c_n/a_{n-1}\to1$, and what is the first correction if it does?
+\end{question}
+Proposition~\ref{gml:prop:companion} supplies only a polynomial-factor bound.
+The renewal recurrence suggests that endpoint terms should dominate its
+convolutions. Turning that observation into a uniform bound on the entire
+convolution, rather than on a fixed number of terms, would resolve the
+question without assuming the full asymptotics of $a_n$.
+
+\begin{question}[Other reversion fixed points and positivity-preserving maps]
+Which variants of
+$M=1+zM^pB(zM^q)$ preserve normalized Stieltjes moment sequences, and
+which OEIS reversion sequences have fixed points of such maps?
+\end{question}
+The factorization in Section~\ref{gml:sec:operators} proves the case
+$(p,q)=(2,1)$. It is not a proof for arbitrary $p,q$. Positive block
+operators and noncrossing transforms offer testable sufficient mechanisms;
+negative Hankel minors provide exact obstructions in unsuccessful cases.
+
+\begin{question}[A modular formalization in ProveIt]
+Can the proof be formalized with reusable lemmas for formal transforms,
+positive kernels, compact moment limits, and iteration rigidity?
+\end{question}
+A feasible first stage is the formal coefficient stabilization and the
+bivariate determinant identities, followed by the finite-remainder formula
+and the convex-slope lemma. The operator-to-measure limit is a separate
+analytic component. The scalar rigidity lemma is comparatively isolated
+and could be formalized independently. No code included here is presented
+as a completed Lean formalization.
+
+\section{Conclusion}
+A088714 and A088713 are not merely two rapidly growing coefficient lists.
+They are the determinate moment sequences of a coupled pair of positive
+measures. This representation proves every strict Hankel inequality,
+provides monotone algebraic bounds for the associated transforms, and
+makes their divergent ordinary generating functions meaningful on the
+negative axis through explicit Stieltjes and Borel--Laplace formulas.
+
+The nonlinear inverse relation $U^{-1}(t)=t(1+U(t))$ forces complementary
+golden-ratio exponents, including their leading constants. Part~I's
+Bell-scale coefficient bound, together with the new convexity, determines
+consecutive ratios and the far-tail logarithmic law. The resulting picture
+is rigorous at both endpoints while leaving the finer coefficient
+normalization, measure regularity, and second-order behavior clearly open.
+
+\appendix
+\section{Dependency and novelty audit}\label{gml:app:audit}
+The main logical dependencies are as follows. The formal equation and
+the two compact positive-operator constructions prove existence of a
+limiting moment measure. The inherited growth bound supplies exponential
+integrability and determinacy, and also rules out bounded support.
+Moment positivity proves the strict Hankel and log-convexity statements.
+Weak convergence of compact approximants proves the real functional
+equation. Its inverse form, independently of any ratio asymptotics,
+proves the golden-ratio transform law. The self-contained Tauberian lemma
+then proves the small-$t$ distribution-function laws. Separately,
+log-convexity plus the inherited growth bound proves the consecutive
+ratios, and these prove the far tails by size-biasing.
+
+This separation avoids several invalid shortcuts: no divergent ordinary
+series is substituted at a positive real argument; no neighboring ratio
+is deduced just from an $n$th-root equivalent; no infinite zero or
+positivity statement is inferred from finite determinants; no cumulative
+mass asymptotic is differentiated to invent a density; and no numerical
+agreement is used to exchange the compact-approximation and large-argument
+limits.
+
+The repository snapshot inspected for the source article (Part~I) was commit
+\begin{quote}\small\ttfamily
+1f1981f682b2878bde51a6ad40c22777f362fc05
+\end{quote}
+The selected prior TeX file has Git blob identifier
+\begin{quote}\small\ttfamily
+ccb50ef335ac4de27bd98a5a152fb48c978c7a96
+\end{quote}
+and is located under
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+generating-functions-and-asymptotics/\\
+oeis-sequence-asymptotics/a088714-bell-scale-growth/
+\end{quote}
+The paper's own source and tests are independent deliverables, not changes
+to that repository. (Placement note, 2026-10-01: they now form Part~II of
+that report, beside the unchanged Part~I; see
+Section~\ref{gml:sec:source}.) The accompanying source audit, shipped as
+\texttt{02-golden-moments-SOURCE\_AUDIT.md}, records the
+scope of the literature check and the distinction between prior general
+machinery and the sequence-specific deductions made here.
+
 \begin{thebibliography}{9}
 \bibitem{oeis-a088714}
 The OEIS Foundation Inc., \emph{A088714: G.f. satisfies
@@ -924,7 +2341,7 @@ $A(x)=1+xA(x)^2A(xA(x))$}, entry attributed to Paul D. Hanna,
 with subsequent contributions.
 \url{https://oeis.org/A088714}.
 Text form consulted: \url{https://oeis.org/search?q=id:A088714&fmt=text}.
-Accessed September 20, 2026.
+Accessed September 20, 2026 (Part~I) and October 1, 2026 (Part~II).
 
 \bibitem{oeis-a067145}
 The OEIS Foundation Inc., \emph{A067145: Shifts left under reversion},
@@ -944,5 +2361,40 @@ NIST Digital Library of Mathematical Functions,
 \emph{Section 4.13: Lambert $W$-Function}.
 \url{https://dlmf.nist.gov/4.13}.
 Accessed September 20, 2026.
+
+\bibitem{oeisC}
+The OEIS Foundation Inc. and contributors,
+\emph{A088713: G.f. $A(x)$ satisfies $A(x/A(x))=1/(1-x)$}.
+Entry by Paul D. Hanna, with subsequent contributions.
+\url{https://oeis.org/A088713}. Accessed October 1, 2026.
+
+\bibitem{nica}
+A. Nica and R. Speicher,
+\emph{Lectures on the Combinatorics of Free Probability},
+London Mathematical Society Lecture Note Series 335,
+Cambridge University Press, 2006; especially Lecture 21,
+``The full Fock space model for the $R$-transform.''
+\href{https://doi.org/10.1017/CBO9780511735127}{doi:10.1017/CBO9780511735127}.
+
+\bibitem{wangzhu}
+Y. Wang and B.-X. Zhu,
+``Log-convex and Stieltjes moment sequences,''
+\emph{Advances in Applied Mathematics} \textbf{81} (2016), 115--127.
+\href{https://doi.org/10.1016/j.aam.2016.06.008}{doi:10.1016/j.aam.2016.06.008};
+\url{https://arxiv.org/abs/1612.04114}.
+
+\bibitem{langer}
+M. Langer and H. Woracek,
+``Karamata's theorem for regularized Cauchy transforms,''
+\emph{Proceedings of the Royal Society of Edinburgh Section A:
+Mathematics} \textbf{155}(4) (2025), 1431--1491;
+first published online January 26, 2024.
+\href{https://doi.org/10.1017/prm.2023.128}{doi:10.1017/prm.2023.128}.
+\bibitem{decimal}
+Python Software Foundation,
+\emph{Decimal fixed-point and floating-point arithmetic}, Python documentation.
+\url{https://docs.python.org/3/library/decimal.html}.
+Accessed October 1, 2026. Used for the rounding guarantees in the
+supplementary interval calculations.
 \end{thebibliography}
 \end{document}
