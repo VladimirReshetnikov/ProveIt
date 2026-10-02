@@ -90,6 +90,13 @@ A checked patch rejects noninteger symbol aliases that generated dangling witnes
 names. Its nine-row feature system uses polynomial witnesses; it gives no new
 ordinary integer bound. All valid saved JSON exports are preserved.
 
+The [boundary/sandpile review](review_boundary_sandpile_060e08a07.md) passes
+both complete written proofs and all four original author entry points. A
+checked boundary patch requires exact Boolean clock modes. Exact substitution
+in the sandpile source removes three witnesses and three residuals per vertex:
+8n+12m witnesses and9n+16m rows, or44 fields and57 local rows in3D, preserving
+complete natural zeros. These are source/field reductions, with no gate claim.
+
 The [complete Waterfall review](waterfall_report_review_24a743255.md)
 validates the fixed 46-clock universal-machine frontend and all eight original
 replays. A checked patch repairs exact integer input contracts and mutable

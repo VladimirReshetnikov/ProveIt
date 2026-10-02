@@ -1,0 +1,38 @@
+--- a/code/boundary_transport.py
++++ b/code/boundary_transport.py
+@@ -159,6 +159,8 @@
+ 
+ 
+ def history(program: Program, path: Iterable[Config], clocked: bool = True) -> list[Poly]:
++    if type(clocked) is not bool:
++        raise ValueError("clocked must be an exact Boolean")
+     out: list[Poly] = [{} for _ in program.instructions]
+     for t, c in enumerate(path):
+         program.validate_config(c)
+@@ -170,6 +172,8 @@
+ 
+ def residual(program: Program, start: Config, h: list[Poly],
+              clocked: bool = True, modulus: int | None = None) -> list[Poly]:
++    if type(clocked) is not bool:
++        raise ValueError("clocked must be an exact Boolean")
+     program.validate_config(start)
+     u = program.transport(h, modulus)
+     out = [add(p, shift(v, (0, 0, int(clocked)), -1), modulus=modulus)
+@@ -203,6 +207,8 @@
+ 
+     def evaluate(self, witness: Mapping[str, Poly], modulus: int | None = None,
+                  enforce_sorts: bool = True) -> list[Poly]:
++        if type(enforce_sorts) is not bool:
++            raise ValueError("enforce_sorts must be an exact Boolean")
+         if set(witness) != set(self.sorts):
+             raise ValueError('witness variable names differ from the system')
+         w = {k: clean(v, modulus) for k, v in witness.items()}
+@@ -231,6 +237,8 @@
+ 
+ 
+ def compile_system(program: Program, start: Config, clocked: bool = True) -> LinearSystem:
++    if type(clocked) is not bool:
++        raise ValueError("clocked must be an exact Boolean")
+     program.validate_config(start)
+     n = len(program.instructions)
+     base = frozenset((0, 1, 2) if clocked else (0, 1))
