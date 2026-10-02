@@ -5,6 +5,21 @@ from fractions import Fraction as F
 import json
 import math
 
+# ed. (2026-10-01): the receipt printed below is also written to
+# <output-dir>/nested-verification.json, by default rerun/ beside this program, with LF line
+# endings (as delivered it went only to standard output, and a shell
+# redirection on Windows writes CRLF). Pass --output-dir with this program's
+# own directory, on a copy, to regenerate the recorded receipt.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 
 def conv(a,b):
     out=defaultdict(F)
@@ -49,4 +64,7 @@ data={
     'defect_ratio_rows':rows,
     'not_computed':['optimal distance Delta2','the actual density w','chi-square integral value','second-order limiting coefficient'],
 }
-print(json.dumps(data,indent=2))
+# ed. (2026-10-01): the receipt is also written by _ed_write (see above).
+_ed_text=json.dumps(data,indent=2)
+_ed_write('nested-verification.json', _ed_text+'\n')
+print(_ed_text)

@@ -43,6 +43,10 @@
 \newcommand{\Bop}{\mathcal B_\alpha}
 \newcommand{\Top}{\mathcal T}
 \newcommand{\ind}{\mathbf 1}
+% Batch 75: sources 75-01 and 75-06 (written 2 October 2026).
+\newcommand{\mergenoteb}[1]{\par\smallskip\noindent\textbf{[Merge note, batch 75.]}\ #1\par\smallskip}
+\newcommand{\writenote}[1]{\par\smallskip\noindent\textit{[Batch 75, 2 October 2026.]}\ #1\par\smallskip}
+\newcommand{\epsh}{\varepsilon_{\sharp}}
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
@@ -58,7 +62,9 @@
 {\large October 1, 2026\par}
 \vspace{3mm}
 {\normalsize Merged with an independent manuscript on A022629\par
-(batch 73O1: base source 40, member source 48)\par}
+(batch 73O1: base source 40, member source 48)\par
+and with two further independent manuscripts\par
+(batch 75: sources 75-01 and 75-06)\par}
 \vspace{12mm}
 \hrule\vspace{6mm}
 \noindent\textbf{Central family}
@@ -119,6 +125,18 @@ centring of the Gumbel law in $\log\sqrt{2n}$, the radius of convergence of
 $\log A_\alpha$ at the origin, the logarithm of the largest single weight, the
 entropy factor $\log(a_\alpha(n)/\max\normp^\alpha)\sim\pi^2K/(6\alpha r)$,
 exact data to $n=6400$ and its own research questions.
+
+Two further manuscripts of batch 75, sources 75-01 and 75-06, prove the same
+theorems a third and a fourth time, with identical coefficients; those
+duplicates are recorded in one table, not reprinted.  Their new material forms
+Sections~\ref{dpn:jh:sec:sharp}--\ref{dpn:cp:sec:powers}: sharp signed
+cumulant scales, a saddle remainder $O((\alpha Ms)^{-J-1})$ with first
+correction $\sim-3/(8\alpha Ms)$, localization of the integer threshold to
+$1+o(1)$, eventual strict log-concavity and fixed-degree Jensen hyperbolicity
+(source 75-01); and the convolution powers $\prod(1+k^\alpha q^k)^\mu$
+(\OEIS{A297321}, \OEIS{A022630}, \OEIS{A022631}) with $\mu$-independent
+coefficients, two further inverse coefficients, and an exact rational check
+of $P_8$ (source 75-06).
 \end{abstract}
 \setcounter{tocdepth}{1}
 \begingroup
@@ -254,6 +272,12 @@ sequences; this report is the first.  Its methodological relative is the
 partition-number chapter of the volume
 \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion},
 which treats $p(n)$ (A000041); nothing is imported from it.}
+\mergenoteb{Sources 75-01 and 75-06 (Section~\ref{dpn:sec:b75}) inspected the
+ProveIt commit \texttt{29aca108e}, which held the archives of sources 40 and
+48 unopened and predates their placement.  Source 75-01's statement that a
+repository search for A022629 found nothing was true of that snapshot only;
+this report is the repository's treatment, and both sources are merged into
+it.}
 
 \subsection{The two sources and this merge}\label{dpn:sec:merge}
 This report is built from two manuscripts of batch 73O1 of ProveIt's
@@ -289,6 +313,14 @@ of Section~\ref{dpn:48:sec:computations}, its questions, its OEIS wording, and
 Appendix~\ref{dpn:48:app:audit}.  Text added in the merge is marked
 \textbf{[Merge note, batch 73O1.]}.  Appendix~\ref{dpn:app:prov} records the
 provenance and every choice the merge made.
+\mergenoteb{Batch 75 added two further independent manuscripts, sources
+75-01 and 75-06.  Their shared results are recorded once, in
+Table~\ref{dpn:tab:b75dup} of Section~\ref{dpn:sec:b75}, and their new
+material is Sections~\ref{dpn:jh:sec:sharp}--\ref{dpn:sec:b75questions}
+(marked \src{75-01} and \src{75-06}).  Text added in that merge is marked
+\textbf{[Merge note, batch 75.]}, and dated notes on earlier text
+\textit{[Batch 75, 2 October 2026.]}.  Earlier sections are otherwise
+unchanged, so their numbering is that of the batch-73O1 report.}
 
 \subsection{Notation across the two sources}\label{dpn:sec:notation}
 The two manuscripts use the same letters for different objects.  This report
@@ -343,6 +375,67 @@ small exponent in proofs & $\sigma$, $\beta$ & $\alpha$\\
       Here $1+\sum_{\ell<J}\mathcal E_\ell$ is source 48's $\mathcal E_J$.
 \end{itemize}
 
+\mergenoteb{Sources 75-01 and 75-06 are translated as follows.  The
+layer count $\mu$, the sharp parameter $\epsh$, the Gaussian inverse
+$n_*$, the inverse coefficients $\Delta_j$ and the Jensen and Hermite
+symbols are new in this report.}
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{3.2cm}}
+\toprule
+Notion & This report & Source 75-01 & Source 75-06\\
+\midrule
+power in the weight & $\alpha$ & $s$ \textbf{(renamed)} & $r$ \textbf{(renamed)}\\
+number of layers & $\mu$ & --- & $s$ \textbf{(renamed)}\\
+generating function, coefficients & $A_\alpha(q)^\mu$, $a_{\alpha,\mu}(n)$; $a_\alpha(n)$ & $F_s(q)$, $a_s(n)$ & $F_{r,s}(q)$, $a_{r,s}(n)$\\
+$\sqrt{2n}$, $\log\sqrt{2n}$ & $K$, $r$; $K_\mu=\sqrt{2n/\mu}$, $r_\mu$ & $N$, $\ell$ & $m=\sqrt{2n/s}$, $L$\\
+$\pi^2/(6\alpha^2)$; coefficients & $c$; $P_j(c)$ & $P/6$, $P=\pi^2/s^2$; $c_j(P)$ & $u/6$, $u=\pi^2/r^2$; $b_j(u)$\\
+log transition coordinate, site & $s$, $M=e^s$ & $L$, $M$ & $v$, $K$\\
+log generating function & $F(t)$, $\mu F(t)$ & $\Phi_s(t)$ & $\mathcal L(t)$\\
+Bernoulli cumulant polynomials & $b_j(p)$ & $P_j(p)$ & $B_j(p)$\\
+Edgeworth terms & $\mathcal E_\ell$, $\mathcal E^{(\mu)}_\ell$ & $E_r$ & $Q_j$\\
+small parameters & $\eps=s/M$; $\epsh=1/(\alpha Ms)$ & $\eps=1/(sML)$ & $\eps=v/K$\\
+truncation orders (log, Edgeworth) & $R$, $J$ & $K$, $J$ & $M$, $J$\\
+boundary-inverse derivatives & $U_m(s)$ & $u_L^{(m)}(0)$, $a=L-1$ & $Y_v^{(m)}(0)$\\
+boundary and mean series & $d_\alpha(s)$, $Q_\alpha(s)$ & $h_s(L)-\frac L2+1$, $2B_s(L)$ & $c(v)$, $1+d(v)$\\
+log threshold; Lambert data & $Y$; $w$, $R_0$, $K_0$, $n_0$ & $\log A$; $w$, $z_0$, $N_0$, $n_0$ & $\log Y$; $w$, $L_0$, $m_0$, $n_0$\\
+threshold index & $N_\alpha(Y)$, $N_{\alpha,\mu}(Y)$ & $\mathcal N_s(e^Y)$ & $N_{r,s}(e^Y)$\\
+inverse coefficients & $\Delta_j(c)$ & coefficients of $\mathcal N_s/n_0$ & $d_j(u)$\\
+Gaussian inverse & $\Psi_0$, $n_*(Y)$ & $\Psi_0$, $x_0(A)$ & ---\\
+Jensen, Hermite, local data & $\mathcal J^{d,n}_\alpha$, $\mathsf H_d$; $\delta_n$, $\tau_n$, $\gamma_k$ & $J^{d,n}_s$, $H_d$; $\delta_n$, $A_n$, $g_k$ & ---\\
+largest part; centring & $L_n$; $b$ & --- & $M_n$; $b_n$\\
+smoothing kernel & $g(v)$ & $R(v)$ & $h(U)$\\
+divisor sum in \eqref{dpn:eq:exactrec} & $C_\alpha(m)$ & $b_s(m)$ & $\beta_r(m)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent\textbf{Readings to avoid (batch 75).}
+\begin{itemize}
+\item Source 75-01's $s$ and source 75-06's $r$ are the \emph{power} $\alpha$;
+      source 75-06's $s$ is the \emph{number of layers} $\mu$.  Neither is
+      this report's $s=-W_{-1}(-t/\alpha)$, which source 75-01 calls $L$ and
+      source 75-06 calls $v$.
+\item Source 75-06's $K$ is the transition site $M$, not $\sqrt{2n}$; its
+      $L$ is $\log\sqrt{2n/\mu}$ (here $r_\mu$).  Source 75-01's $K$ is a
+      truncation order and its $L$ is $s$.
+\item Source 75-01's $P_j(p)$ are cumulant polynomials (here $b_j(p)$), not
+      the coefficients $P_j(c)$; source 75-06's $b_j(u)$ are the coefficients
+      ($b_j(6c)=P_j(c)$), not the cumulant polynomials $b_j(p)$.
+\item Source 75-06's $c(v)$ is $d_\alpha(s)$ and its $d(v)$ is
+      $Q_\alpha(s)-1$; its $d_j(u)$ are the inverse coefficients $\Delta_j(c)$
+      (at $u=6c$), unrelated to $d_\alpha(s)$.
+\item Source 75-01's $\eps=1/(\alpha Ms)$ is written $\epsh$ here;
+      $\eps=s/M$ keeps the meaning of \eqref{dpn:eq:normcumulants}, and
+      $\epsh=\eps/(\alpha s^2)$.
+\item Source 75-01's $x_0(A)$ is the Gaussian inverse, written $n_*(\log A)$
+      here; it is not source 48's $x_0$ ($=K_0$).
+\item Source 75-01's Hermite $H_d$ is written $\mathsf H_d$; $H$ remains the
+      transition width.  Its $E_r$ and source 75-06's $Q_j$ are the
+      Edgeworth terms $\mathcal E_\ell$, not $Q_\alpha(s)$.
+\item Source 75-06's $U(x)=tx-r\log x$ is minus the log odds; it is not the
+      Lagrange coefficient $U_m(s)$.
+\end{itemize}
+
 \section{Main results and the hierarchy of scales}
 Throughout the paper, $\alpha>0$ is fixed. Constants in $O$-terms may depend on
 $\alpha$ and on the indicated truncation order. Put
@@ -394,6 +487,12 @@ the displayed OEIS conjecture, and the first nonzero correction is positive:
 Third, all-order statements in this report mean: \emph{for each fixed
 truncation order, the asserted remainder bound holds}.  No convergence of the
 infinite inverse-logarithmic series is assumed \src{48}.
+\mergenoteb{Sources 75-01 (its Theorem~1.1, five coefficients $c_j(P)$,
+$P=6c$) and 75-06 (its Theorem~6.1, eight coefficients $b_j(u)$, $u=6c$)
+prove Theorem~\ref{dpn:thm:log} independently; $c_j(6c)=b_j(6c)=P_j(c)$
+(Table~\ref{dpn:tab:b75dup}).  Source 75-06 proves it also for the convolution
+powers $A_\alpha(q)^\mu$, with the same $P_j$
+(Theorem~\ref{dpn:cp:thm:log}).}
 
 For a different level of precision, define
 \begin{equation}\label{dpn:eq:F}
@@ -482,10 +581,27 @@ exact saddle and exact convergent sums.  Its numerical routines are
 independent checks, not substitutes for the proofs; they use
 arbitrary-precision arithmetic but not directed-rounding interval
 certification \src{48}.
+\mergenoteb{Sources 75-01 and 75-06 prove Theorems~\ref{dpn:thm:saddle},
+\ref{dpn:thm:inverse} and (75-06) \ref{dpn:thm:geometry} independently
+(Table~\ref{dpn:tab:b75dup}).  Source 75-01 sharpens the remainder of
+Theorem~\ref{dpn:thm:saddle} to $O((\alpha Ms)^{-J})$
+(Theorem~\ref{dpn:jh:thm:saddle}) and localizes the threshold of
+Theorem~\ref{dpn:thm:inverse} to $1+o(1)$
+(Theorem~\ref{dpn:jh:thm:threshold}); source 75-06 proves
+Theorems~\ref{dpn:thm:inverse} and~\ref{dpn:thm:geometry} for $\mu$ layers
+(Section~\ref{dpn:cp:sec:powers}).  Both draw the same line between the
+logarithmic block, the relative expansion and the unresolved exponentially
+small sectors.}
 
 \section{A short proof of all five posted conjectures}
 This section already proves the formulas that are explicitly conjectural in the
 OEIS entries. Later sections supply the stronger refinements.
+\mergenoteb{Sources 75-01 (Proposition~2.3 with Lemma~2.2) and 75-06
+(Theorem~2.1) give a third and a fourth proof of
+Proposition~\ref{dpn:prop:elementary}: the same lower-bound partition, and an
+upper bound by Lemma~\ref{dpn:lem:rough} (75-01) or by the positive-part
+splitting of source 48's second proof (75-06, for $\mu$ layers,
+Theorem~\ref{dpn:cp:thm:log}).}
 
 \begin{lemma}[A useful continuum estimate]\label{dpn:lem:rough}
 For $s\to\infty$, $M=e^s$, and $t=\alpha s/M$,
@@ -785,6 +901,10 @@ Consequently, with $\eps=s/M$,
 \end{equation}
 These bounds are deliberately conservative; signed cancellations can make
 individual corrections smaller. They suffice for all fixed Edgeworth orders.
+\mergenoteb{Sources 75-01 and 75-06 determine those cancellations:
+$\kappa_j\sim\frac{j!}2M^{j+1}/(\alpha s)^{j-1}$, so the normalized cumulants
+are $O(\epsh^{(j-2)/2})$ with $\epsh=1/(\alpha Ms)$
+(Lemma~\ref{dpn:jh:lem:cumulants} and Theorem~\ref{dpn:jh:thm:saddle}).}
 
 \section{The local limit theorem, including noncentral arcs}\label{dpn:sec:llt}
 \subsection{An elementary consecutive-block inequality}
@@ -1353,6 +1473,12 @@ The same algorithm gives
 The continuum quadrature script checks the approach of the remainder after
 $P_7$, multiplied by $r^8$, to this polynomial. It does not replace the
 preceding proof or evaluate integer coefficients at those enormous sizes.
+\mergenoteb{Source 75-06 prints
+$b_8(u)=u(157813u^3+3664584u^2+3916080u+181440)/1088640$, which equals
+\eqref{dpn:eq:P8} at $u=6c$, and its \file{code/75-06-powers-formal.py}
+derives it by exact arithmetic over $\mathbb Q[u]$.  So $P_8$ is now also
+confirmed exactly, independently of source 40's algorithm, not only by the
+continuum diagnostic.}
 
 \subsection{The same elimination in operator form \src{48}}\label{dpn:48:sec:formal}
 At the exact saddle, Lemma~\ref{dpn:48:lem:sommerfeld} gives, to every finite
@@ -1559,6 +1685,14 @@ A022629 ($\alpha=1$, $2c=\pi^2/3$) this begins
 The distinction between inversion in $Y=\log a(n)$ and inversion in $a(n)$ is
 essential; replacing $Y$ by the original threshold would give a wholly wrong
 scale \src{48}.
+\mergenoteb{Source 75-01 proves Theorem~\ref{dpn:thm:inverse} through
+$R_0^{-5}$ and source 75-06 through $R_0^{-8}$, for $\mu$ layers; the
+coefficients of $R_0^{-7}$ and $R_0^{-8}$ in \eqref{dpn:eq:inverseE2} are
+$\Delta_7$ and $\Delta_8$ of Table~\ref{dpn:cp:tab:inverse}.  The core
+equation is an instance of the dominant-block theorem of the
+transseries-and-inversion volume \cite{tai}, and
+Theorem~\ref{dpn:jh:thm:threshold} replaces the $O(1)$ rounding bracket by a
+$1+o(1)$ localization from the exact saddle.}
 
 \section{Conditioned geometry: a logistic boundary and a Gumbel maximum}
 Conditioning the Bernoulli law \eqref{dpn:eq:pk} on $S=n$ gives exactly
@@ -1758,6 +1892,10 @@ source 40's $x=(k-M)/H$ have the same limit, and its proof is the argument
 around \eqref{dpn:eq:pattern}: the log odds at $k_j$ are $-u_j+o(1)$, and
 fixing finitely many indicators moves the remaining target by $O_\alpha(M)$
 and removes variance $O_\alpha(M^2)$, both negligible.
+\mergenoteb{Source 75-06 proves both parts of Theorem~\ref{dpn:thm:geometry}
+independently, for any number $\mu$ of layers
+(Theorem~\ref{dpn:cp:thm:geometry}); at $\mu=1$ its centring equation is
+\eqref{dpn:eq:bdef}.}
 
 \section{A proved exponential scale from Fourier resonances}\label{dpn:sec:resonance}
 The bound \eqref{dpn:eq:noncentral} suggests an exponentially small scale not
@@ -1865,6 +2003,9 @@ is plainly not accurate, and adding central corrections does not repair it.
 This is evidence about finite-size behavior, not a contradiction of a
 fixed-parameter limit. In particular, these tests must not be advertised as
 numerical confirmation of rapid convergence for all five columns.
+\mergenoteb{Source 75-01's tests at $\alpha=2,3$, $n=2500$ show the same
+effect, with residuals that do not change from $J=1$ to $J=3$: a noncentral
+contribution, not slow Edgeworth convergence (Section~\ref{dpn:jh:sec:numerics}).}
 
 The resonance diagnostic computes the exact product modulus at
 $\theta=2\pi/M$, using the same numerical saddle:
@@ -2113,6 +2254,13 @@ Table~\ref{dpn:48:tab:numerics} suggests.  Determine the sharp first relative
 correction, its complete expansion, and the optimal error after each
 correction.  This would improve both numerical evaluation and rigorous
 inverse brackets.
+\writenote{Partly answered by Section~\ref{dpn:jh:sec:sharp}
+(sources 75-01 and 75-06): the sharp signed scales
+$\kappa_j\sim\frac{j!}2M^{j+1}/(\alpha s)^{j-1}$, the sharp first correction
+$\mathcal E_1\sim-3/(8\alpha Ms)$, and the error $O((\alpha Ms)^{-J-1})$ after
+each correction, with the threshold localization of
+Theorem~\ref{dpn:jh:thm:threshold}.  A complete expansion of $\mathcal E_1$ in
+$1/s$, and optimality beyond these orders, remain open.}
 \item \textbf{Effective inversion and formalization} (overlaps project 8).
 Turn the asymptotic $O$ constants into explicit bounds, combine them with
 finite exact verification, and produce a certified algorithm for
@@ -2120,6 +2268,9 @@ $N_\alpha(Y)$.  A suitable ProveIt formalization can separate finite
 coefficient algebra, the positive product measure, the block minor-arc
 estimate, remainder transport, and integer-threshold bracketing.  None of
 those formalization tasks should be replaced by unchecked numerical fits.
+\writenote{Theorem~\ref{dpn:jh:thm:threshold} \src{75-01} localizes
+$N_\alpha(Y)$ to within $1+o(1)$ of an exact-saddle inverse, but with implicit
+constants; the explicit bounds asked for here are still open.}
 \item \textbf{OEIS and literature follow-through.}
 Submit a concise, independently reviewed proof of \eqref{dpn:eq:conjecture}
 and the first sharper correction to the OEIS editors.  Continue the
@@ -2157,6 +2308,1001 @@ accuracy, and proved mathematics versus formal-machine verification---are
 essential parts of the result rather than editorial qualifications
 \src{48}.
 
+\mergenoteb{Sources 75-01 and 75-06 reach the same conclusions a third and a
+fourth time and add what follows: the sharp saddle scale and threshold
+(Section~\ref{dpn:jh:sec:sharp}), the eventual shape of the sequence
+(Section~\ref{dpn:jh:sec:shape}), and the convolution powers
+(Section~\ref{dpn:cp:sec:powers}).}
+
+%% ---------------------------------------------------------------------
+%% Batch 75: sources 75-01 and 75-06 (written 2 October 2026)
+%% ---------------------------------------------------------------------
+\section{Addendum (batch 75): two further independent sources}\label{dpn:sec:b75}
+Batch 75 of ProveIt's incoming-reports intake delivered two more manuscripts
+on the family $\prod_{k\ge1}(1+k^\alpha q^k)$, both dated October 1, 2026 and
+both pinned to the ProveIt commit \texttt{29aca108e}.  Neither cites sources 40
+or 48, and neither cites the other.
+\begin{itemize}
+\item \textbf{Source 75-01} (batch-75 manuscript 01), \emph{Norm-weighted
+  distinct partitions: A proof of the A022629 growth conjecture, all-order
+  asymptotics, Lambert inversion, and eventual Jensen hyperbolicity}: the
+  family for real power $s>0$ (here $\alpha$), five printed logarithmic
+  coefficients, an exact-saddle expansion with a sharp remainder, two
+  inversions, eventual strict log-concavity, fixed-degree Jensen
+  hyperbolicity, and exact data to $n=10000$.
+\item \textbf{Source 75-06} (batch-75 manuscript 06), \emph{Norm-weighted
+  distinct partitions: A022629, all-order expansions, and inversion}: the
+  two-parameter family $\prod_{k\ge1}(1+k^rq^k)^s$, real power $r>0$ (here
+  $\alpha$) and integer number of layers $s\ge1$ (here $\mu$), eight printed
+  logarithmic and seven printed inverse coefficients, the relative saddle
+  expansion, and logistic and Gumbel laws, all for every number of layers.
+\end{itemize}
+These are the third and fourth independent proofs in this report of
+Proposition~\ref{dpn:prop:elementary} and
+Theorems~\ref{dpn:thm:log}, \ref{dpn:thm:saddle}, \ref{dpn:thm:inverse}
+(and, for source 75-06, \ref{dpn:thm:geometry}), with identical coefficients.
+Following Section~\ref{dpn:sec:merge}, none of these results is printed
+again.  Table~\ref{dpn:tab:b75dup} records where each source proves them;
+Section~\ref{dpn:sec:b75routes} keeps the parts of their proofs and remarks
+that differ from the routes already printed.  The genuinely new material
+follows in Sections~\ref{dpn:jh:sec:sharp} (sharp saddle scales and the
+near-integer threshold), \ref{dpn:jh:sec:shape} (log-concavity and Jensen
+polynomials) and~\ref{dpn:cp:sec:powers} (convolution powers), and the two
+sources' research questions in Section~\ref{dpn:sec:b75questions}.  Their
+notation is translated by the second table of Section~\ref{dpn:sec:notation}.
+Source 75-01 is not a version of source 48, although their archive names
+differ only in letter case (\file{A022629_research_package.zip} and
+\file{A022629_Research_Package.zip}): their texts share 0.87\,\% of their
+word 8-grams in each direction, and their theorem sets are different.
+
+\subsection{Same results, further independent derivations}\label{dpn:sec:b75dup}
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{3.8cm}}
+\toprule
+Result in this report & Source 75-01 & Source 75-06 & Relation\\
+\midrule
+Proposition~\ref{dpn:prop:elementary} (two-term growth; the five OEIS conjectures) &
+ Prop.~2.3 with Lemma~2.2 & Thm.~2.1 ($\mu$ layers) &
+ same lower-bound partition $1,\dots,k-1,k+d$ as sources 40 and 48; third and
+ fourth routes\\
+Lemma~\ref{dpn:lem:rough} & Lemma~2.2 & proof of Thm.~2.1 & same estimate\\
+Strict monotonicity (Section~\ref{dpn:sec:inverse}) & Prop.~2.1 & Section~7.1 &
+ same injection; 75-06 adds $\mu\ge2$ (Section~\ref{dpn:cp:sec:powers})\\
+Recurrence \eqref{dpn:eq:exactrec} & (8), $b_s(m)=C_\alpha(m)$ &
+ (10.1), factor $\mu$ & identical\\
+Lemma~\ref{dpn:lem:scales}, \eqref{dpn:eq:mombound} & used in Section~4.2 &
+ Lemma~3.1 & same; signed version new (Lemma~\ref{dpn:jh:lem:cumulants})\\
+Lemma~\ref{dpn:lem:block}, \eqref{dpn:eq:centralbound},
+ \eqref{dpn:eq:noncentral} & Section~4.1 & Lemma~5.1, (5.3)--(5.4) &
+ same geometric-sum proof and bounds\\
+Theorem~\ref{dpn:thm:saddle}, \eqref{dpn:eq:edgepoly}, \eqref{dpn:eq:E1},
+ \eqref{dpn:eq:E2} & Thm.~4.1, $E_r$, $E_1$, $E_2$ identical &
+ Thm.~5.2, $Q_j$, $Q_1$ identical & same expansion; 75-01's remainder is
+ sharper (Theorem~\ref{dpn:jh:thm:saddle})\\
+\eqref{dpn:eq:logsaddle} & proof of Thm.~1.1 & Cor.~5.3 & same\\
+Lemma~\ref{dpn:lem:smoothing}, \eqref{dpn:eq:Ulagrange}--\eqref{dpn:eq:kernelmom} &
+ Lemma~5.1, $u_L^{(m)}(0)$ with $a=s-1$ & Prop.~4.1, $Y_v^{(m)}(0)=U_m(s)$ &
+ same; 75-01's Taylor remainder by Cauchy bounds
+ (Section~\ref{dpn:sec:b75routes})\\
+Mean relation \eqref{dpn:eq:Q}, \eqref{dpn:48:eq:mseries} & $B_s=Q_\alpha/2$ &
+ Prop.~4.2, $1+d(v)=Q_\alpha$ & same; 75-06 proves the mean directly, as source
+ 48 does\\
+\eqref{dpn:eq:rfroms}, \eqref{dpn:eq:formalH}, \eqref{dpn:48:eq:sfirst} &
+ Section~5.2, $G_s=\asym$ & (6.4)--(6.7) & identical construction\\
+Theorem~\ref{dpn:thm:log}, $P_1,\dots,P_8$ & Thm.~1.1, $c_j(6c)=P_j(c)$,
+ $j\le5$ & Thm.~6.1, $b_j(6c)=P_j(c)$, $j\le8$ & identical; 75-06's $b_8$ is
+ an exact check of \eqref{dpn:eq:P8}\\
+\eqref{dpn:48:eq:firstlimit} & (6) & (6.3) & same\\
+Theorem~\ref{dpn:thm:inverse}, \eqref{dpn:eq:inverseE2},
+ \eqref{dpn:48:eq:inversefull} & Thm.~6.1, through $R_0^{-5}$ &
+ Thm.~7.1, $\Delta_2,\dots,\Delta_8$ & identical through $R_0^{-6}$;
+ $\Delta_7,\Delta_8$ new (Theorem~\ref{dpn:cp:thm:inverse})\\
+Theorem~\ref{dpn:thm:geometry}, logistic part & --- & Thm.~8.2 &
+ same at $\mu=1$\\
+Theorem~\ref{dpn:thm:geometry}, Gumbel part, $L_n/K\to1+1/\alpha$ & --- &
+ Thm.~9.1 & same centring equation at $\mu=1$\\
+Remark on the two Lambert branches & Section~1.3 & Section~7.2 & same\\
+Signed cumulant scales and $\mathcal E_1\sim-3/(8\alpha Ms)$ & Lemma~3.1,
+ Thm.~4.1 & Prop.~5.4 & each other's duplicate; new here
+ (Section~\ref{dpn:jh:sec:sharp})\\
+\bottomrule
+\end{tabular}
+\caption{Results of sources 75-01 and 75-06 that this report already proves.
+Statement numbers are those of the delivered manuscripts; equation numbers
+in parentheses are the sources' own.}\label{dpn:tab:b75dup}
+\end{table}
+
+\mergenoteb{The intake checked the agreements of Table~\ref{dpn:tab:b75dup}
+in exact rational arithmetic: $b_j(6c)=P_j(c)$ for $j\le8$ and
+$c_j(6c)=P_j(c)$ for $j\le5$; and, solving \eqref{dpn:eq:Einverse} afresh with
+$P_1,\dots,P_8$, the coefficients of $E^2$ through $R_0^{-8}$, which equal
+source 75-06's $d_j(6c)$ for $j\le8$ and source 75-01's inverse coefficients
+for $j\le5$.  Source 75-01's exact A022629 table
+(\file{data/75-01-jensen-exact_s1.json}) equals both earlier tables on their
+ranges; its tables for $\alpha=2,3$ to $n=2500$ equal source 40's
+\file{data/40-norm-moments-A092484_computed.txt} and
+\file{data/40-norm-moments-A265840_computed.txt} there and are not shipped.
+Source 75-06's relative errors at $n=100,500,1000,5000,10000$
+(Table~\ref{dpn:jh:tab:errors}) coincide with source 75-01's to all printed
+digits, and their $n=100$ values with those of sources 40 and 48.}
+
+\paragraph{Stale statements and priority caveats.}
+Both pins are the ProveIt commit \texttt{29aca108e} (1 October 2026, 19:03;
+full identifier in Appendix~\ref{dpn:app:prov}).
+It already contained the archives of sources 40 and 48, unopened, and predates
+their placement (\texttt{9df4ba51a}).  Source 75-01's sentence ``A repository
+code search for A022629 returned no match'' was accurate for that snapshot and
+is stale now: the repository's treatment is this report.  Source 75-06 makes
+no such statement, but its repository reading was blind to the same two
+archives.  Likewise, the proof
+of the five Kote\v{s}ovec conjectures that both sources present as their
+principal contribution is, in this report, the third and fourth proof; their
+new contributions are those of Sections~\ref{dpn:jh:sec:sharp}--\ref{dpn:cp:sec:powers}.
+Both keep explicit priority caveats, which this report keeps.  Source 75-01:
+its search ``located no prior proof of these precise fixed-$s$ statements'',
+which is ``not a claim that no such proof exists anywhere, nor a claim that a
+longstanding major conjecture in partition theory has been settled''; Kumar
+and Rana's 2026 article on statistical inequalities for norm moments
+\cite{kumar} ``should also be considered in any eventual publication-level
+priority review''; the Hermite-limit mechanism is Griffin, Ono, Rolen and
+Zagier's \cite{gorz}, and no new general Hermite-limit theorem is claimed.
+Source 75-06: its targeted search ``does not establish bibliographic
+priority''; Lagarias and Sun's reciprocal-supernorm ensemble \cite{lagarias}
+is a different ensemble and not a proof of these results; the conditioning
+method is Fristedt's \cite{fristedt}, applied with every estimate proved for
+this model.  Source 75-06 read the repository's \file{Analysis/Transseries}
+README, and source 75-01 the repository map and the Lambert-$W$ drafts of the
+Fabius tree \cite{proveit01}; neither uses a repository theorem as a premise, and neither
+claims Lean or Rocq verification.
+
+\subsection{Second routes and remarks that differ}\label{dpn:sec:b75routes}
+\paragraph{Analytic inverse and Cauchy bounds \src{75-01}.}
+Source 75-01's proof of Lemma~\ref{dpn:lem:smoothing} controls the Taylor
+remainder of the boundary inverse by analyticity rather than by repeated use
+of \eqref{dpn:eq:Urec}.  The local inverse $u_s(v)$ of $h_s$ is analytic on
+$|v|\le cs$ for a fixed small $c>0$: either by the inverse function theorem with
+uniform bounds on $u\in[1/2,3/2]$, or by solving $u-1=(v+\log u)/s$ by
+contraction on a fixed complex disk around $1$.  Cauchy's estimates then bound
+the remainder after $m$ Taylor terms of $u_s'$ by a constant times
+$s^{-m-1}|v|^m$, and truncating the $v$-integral at $cs$ loses an
+exponentially small quantity.  Derivatives in $s$ are handled by
+differentiating the localized integral and its explicit remainder before
+estimating, so no differentiability of an unqualified remainder is assumed.
+
+\paragraph{The mean without differentiating a remainder \src{75-06}.}
+Source 75-06 proves the mean relation \eqref{dpn:eq:Q} directly, as source 48
+does (Lemma~\ref{dpn:48:lem:sommerfeld}): the odd kernel
+$(1+e^U)^{-1}-\ind_{U<0}$ has moments $2(2j+1)!\,\eta(2j+2)$, and the identity
+$\partial_tX=-XX'$ for the upper inverse $X(U)$ of $tx-\alpha\log x$ shows that
+the directly justified moment series equals the formal negative $t$-derivative
+of the boundary expansion.  Its first terms reproduce
+\eqref{dpn:48:eq:Bfirst}, including the vanishing coefficient of $s^{-4}$ in
+$Q_\alpha(s)-1$ (equivalently of $s^{-2}$ in $\Bop$), which source 75-06 calls
+``a useful algebraic check''.
+
+\paragraph{Coefficient structure \src{75-06}.}
+The formal construction gives $P_j(0)=0$ and
+$\deg_cP_j\le\lfloor(j+1)/2\rfloor$.  Source 75-06 tracks this by assigning
+degree $2$ to $c$: a term of $c$-degree $a$ in the normalized entropy cannot
+begin before $r^{-(2a-1)}$; the initial inverse-derivative series has that
+filtration, and multiplication, composition and the square-root reversion
+preserve it.  These identities in a formal parameter do not make the analytic
+theorem uniform as $\alpha\downarrow0$.  $P_1,\dots,P_8$ attain the bound
+(checked by the intake).
+
+\paragraph{Prefactor bookkeeping \src{75-06}.}
+At the saddle,
+$\log a_\alpha(n)=F(t_n)+nt_n-\tfrac12\log(2\pi B)+O(s/M)$, so the probability
+prefactor contributes only $O(s)$ to the logarithm, below every scale
+$K/r^R$ (source 75-06's Corollary~5.3; compare \eqref{dpn:eq:logsaddle}).
+
+\paragraph{Two finite-size readings of the logarithmic block.}
+For $\alpha=1$, $n=10000$, source 75-01 records
+$\log a_1(10000)=613.21132139736055145\ldots$.  The leading expression
+$K(r-1)$ is low by about $54.3504$; adding the first inverse-logarithmic
+correction leaves about $7.37119$; the five-term truncation is high by about
+$4.65395$.  Source 75-06 records the normalized first correction
+$\mathcal R(n)=(r/K)(\log a_1(n)-K(r-1))$, whose limit is $\pi^2/6\approx1.6449$
+by \eqref{dpn:48:eq:firstlimit}: exact values give $\mathcal R(100)\approx1.5450$,
+$\mathcal R(1000)\approx1.8190$ and $\mathcal R(10000)\approx1.9030$, and
+saddle evaluations at $n=10^6,10^8,10^{10}$ give about $1.8800$, $1.8274$ and
+$1.7900$.  The last three are saddle estimates, not comparisons with exact
+coefficients.  Both sources draw the conclusion of
+Section~\ref{dpn:sec:checks}: the logarithmic block is not a high-accuracy
+numerical exponent at these sizes, and plots alone can obscure the correct
+next coefficient.
+
+%% ---------------------------------------------------------------------
+\section{Sharp saddle scales and near-integer thresholds}\label{dpn:jh:sec:sharp}
+This section is source 75-01's Sections~3, 4 and~6.2, translated into the
+notation of this report, with source 75-06's Proposition~5.4 as a second proof
+of the cumulant scales.  Throughout, $t$, $s$, $M$ and $H$ are as in
+\eqref{dpn:eq:phase}, and, beside the safe parameter $\eps=s/M$ of
+\eqref{dpn:eq:normcumulants}, we use the \emph{sharp} parameter
+\begin{equation}\label{dpn:jh:eq:epsh}
+ \epsh=\frac1{\alpha Ms}=\frac{\eps}{\alpha s^2}.
+\end{equation}
+
+\subsection{Signed cumulant scales}
+\begin{lemma}[Signed cumulant scales; sources 75-01 and 75-06]\label{dpn:jh:lem:cumulants}
+For fixed $\alpha>0$, as $s\to\infty$ with $t=\alpha s/M$,
+\begin{equation}\label{dpn:jh:eq:cumscale}
+ \kappa_1\sim\frac{M^2}{2},\qquad
+ \kappa_j\sim\frac{j!}{2}\,\frac{M^{j+1}}{(\alpha s)^{j-1}}\quad(j\ge2\text{ fixed}).
+\end{equation}
+Consequently, at the exact saddle,
+\begin{equation}\label{dpn:jh:eq:normalized}
+ \frac{\kappa_j}{B^{j/2}}=O_{\alpha,j}\bigl(\epsh^{(j-2)/2}\bigr),\qquad j\ge3.
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof \src{75-01}]
+Sum--integral comparison for $x^jb_j(p(x))$, where
+$p(x)=(1+e^{tx-\alpha\log x})^{-1}$, has error $O_{\alpha,j}(M^j)$:
+differentiate the summand in $x$, split at $M/2$ and $2M$, and use exponential
+decay beyond $2M$.  For $j\ge2$, $b_j$ has a factor $p(1-p)$ and its other
+factors are bounded on $[0,1]$.  For $j=1$ the bulk integral is
+$\int_0^Mx\dd x=M^2/2$ up to lower-order errors, which is
+\eqref{dpn:eq:meanleading}.
+
+For $j\ge2$ the upper moving edge supplies the leading term.  On $x\ge M/2$
+the substitution $y=tx-\alpha\log x$ is increasing for large $s$; let $x(y)$
+be its inverse there and $w(y)=e^y/(1+e^y)^2$.  Since $p=(1+e^y)^{-1}$ and
+$\mathrm dp/\mathrm dy=-p(1-p)$, the recursion
+$b_{j+1}(p)=p(1-p)b_j'(p)$ gives
+\[
+ b_j\bigl((1+e^y)^{-1}\bigr)=(-1)^{j-2}w^{(j-2)}(y),\qquad j\ge2.
+\]
+Integration by parts $j-2$ times transfers all these derivatives to
+$x(y)^jx'(y)$, and the signs cancel.  The boundary terms at $M/2$ are
+exponentially smaller in $s$ than the edge term, and those at infinity
+vanish.  For bounded $y$,
+\[
+ x(y)=M\{1+O_{\alpha,y}(s^{-1})\},\qquad
+ x'(y)=\frac M{\alpha s}\{1+O_{\alpha,y}(s^{-1})\}.
+\]
+Repeated differentiation, using $x'=1/(t-\alpha/x)$, gives
+\[
+ \frac{\mathrm d^{j-2}}{\mathrm dy^{j-2}}\bigl\{x(y)^jx'(y)\bigr\}
+ =\frac{j!}{2}\,\frac{M^{j+1}}{(\alpha s)^{j-1}}\bigl(1+o_{\alpha,j}(1)\bigr):
+\]
+the leading operator is $t^{-1}\mathrm d/\mathrm dx$, and differentiating its
+denominator costs a relative $O_{\alpha,j}(s^{-1})$.  The kernel $w$ has
+integral one and exponential tails; localization first to $|y|\le C\log s$,
+then $C\to\infty$, justifies integrating the expansion.
+
+The region below $M/2$ contributes $O_{\alpha,j}(M^{j+1-c_\alpha}s^{C_j})$ for
+some $c_\alpha>0$ (split again at $x=M^{1/2}$ and use $p(1-p)$ above it), which
+is smaller than $M^{j+1}/s^{j-1}$, and so is the sum--integral error.  This
+proves \eqref{dpn:jh:eq:cumscale}, and dividing by $B^{j/2}$, with
+$B=\kappa_2\sim M^3/(\alpha s)$, gives \eqref{dpn:jh:eq:normalized}.
+\end{proof}
+
+\begin{proof}[Second proof of \eqref{dpn:jh:eq:cumscale} \src{75-06}]
+After the same reduction to the upper branch and the same $j-2$ integrations
+by parts, the integrand is
+$\frac{\mathrm d^{j-2}}{\mathrm dy^{j-2}}(x(y)^jx'(y))\,w(y)$.  On bounded
+$y$-intervals $x\sim M$ and $x'\sim A:=M/(\alpha s)$, and every occurrence of a
+higher derivative of $x$ costs a further factor $O(1/s)$.  So the leading term
+comes from the affine function $x=M+Ay$:
+\[
+ \frac{\mathrm d^{j-2}}{\mathrm dy^{j-2}}\bigl((M+Ay)^jA\bigr)\Big|_{y=0}
+ =\frac{j!}{2}\,M^2A^{j-1}
+ =\frac{j!}{2}\,\frac{M^{j+1}}{(\alpha s)^{j-1}}.
+\]
+Exponential decay of $w$, whose integral is $1$, permits restriction to a
+growing bounded neighbourhood followed by dominated estimates.
+\end{proof}
+
+\begin{remark}[Why the absolute cumulant bound is not sharp; source 75-01]\label{dpn:jh:rem:naive}
+Taking absolute values before the integrations by parts loses the
+cancellations in $b_j$ and gives $M^{j+1}/s$, which is
+\eqref{dpn:eq:mombound}, instead of $M^{j+1}/s^{j-1}$.  The signed estimate is
+what identifies $\epsh=(\alpha Ms)^{-1}$, rather than $\eps=s/M$, as the
+algebraic saddle parameter.  The weaker absolute estimate is still the right
+tool for a high-order Taylor remainder, but not for the retained coefficients.
+\end{remark}
+
+\subsection{The sharp exact-saddle remainder}
+\begin{theorem}[Sharp exact-saddle expansion; source 75-01]\label{dpn:jh:thm:saddle}
+For fixed $\alpha>0$ and every fixed integer $J\ge0$, at the exact saddle
+$t=t_n$,
+\begin{equation}\label{dpn:jh:eq:rel}
+ a_\alpha(n)=\frac{\exp(F(t_n)+nt_n)}{\sqrt{2\pi B}}
+ \left(1+\sum_{\ell=1}^{J}\mathcal E_\ell+O_{\alpha,J}\bigl(\epsh^{J+1}\bigr)\right),
+\end{equation}
+with $\mathcal E_\ell$ as in \eqref{dpn:eq:edgepoly}.  Here
+$\mathcal E_\ell=O_{\alpha,\ell}(\epsh^\ell)$ and
+\begin{equation}\label{dpn:jh:eq:E1lead}
+ \mathcal E_1\sim-\frac{3}{8\alpha Ms}\sim-\frac{3}{8\alpha Kr}.
+\end{equation}
+\end{theorem}
+\begin{proof}[Proof \src{75-01}]
+The Fourier reduction and the bounds \eqref{dpn:eq:centralbound} and
+\eqref{dpn:eq:noncentral} are those of Section~\ref{dpn:sec:llt}; outside
+$|\theta|\le c_0/M$ the integral is smaller than $B^{-1/2}\epsh^A$ for every
+fixed $A$.  This is an eventual estimate: its unspecified $\alpha$-dependent
+constant is not a useful finite-$n$ accuracy certificate.
+
+In the central interval put $x=\theta\sqrt B$.  The exponent is
+$-x^2/2+\sum_{j=3}^{R-1}\kappa_j(\ii x)^j/(j!B^{j/2})$ plus a Taylor
+remainder.  For each fixed $R\ge2$ the absolute $R$th derivative on
+$|\theta|\le c_0/M$ is $O_{\alpha,R}(M^{R+1}/s)$: for $k\le2M$ the complex
+Bernoulli denominators stay comparable to their positive values, and for
+$k>2M$ the odds are small and exponentially decreasing.  Hence the normalized
+remainder is at most $C_{\alpha,R}(s/M)^{R/2-1}|x|^R$.  For the expansion
+through order $J$ choose $R=2J+6$; then $(s/M)^{J+2}=o_\alpha(\epsh^{J+1})$,
+since $s^{2J+3}/M\to0$.
+
+Restrict first to $|x|\le\sqrt{C\log M}$.  By \eqref{dpn:jh:eq:normalized}
+and the remainder bound, the exponential may be expanded with an integrable
+Gaussian majorant.  Give the $j$th normalized cumulant weight $j-2$: a monomial
+of weight $w$ is $O(\epsh^{w/2})$ times a fixed polynomial in $x$.  Retain
+weights through $2J+1$.  Odd weights give odd polynomials, which integrate to
+zero on the symmetric interval; the first discarded even weight is $2J+2$,
+which contributes $O_{\alpha,J}(\epsh^{J+1})$.  Expanding sufficiently many
+ordinary Taylor terms makes this a finite remainder estimate.  The rest of
+$|\theta|\le c_0/M$ is algebraically negligible by
+\eqref{dpn:eq:centralbound}, for $C$ large.  The Gaussian moments
+$(2\pi)^{-1/2}\int e^{-x^2/2}(\ii x)^T\dd x=(-1)^{T/2}(T-1)!!$ for even $T$
+give exactly \eqref{dpn:eq:edgepoly}, and the bound on $\mathcal E_\ell$
+follows from its weight.  Finally, Lemma~\ref{dpn:jh:lem:cumulants} gives
+\[
+ \mathcal E_1=\frac{\kappa_4}{8B^2}-\frac{5\kappa_3^2}{24B^3}
+ \sim\frac{12}{8\alpha Ms}-\frac{45}{24\alpha Ms}=-\frac{3}{8\alpha Ms}.
+\]
+\end{proof}
+
+Theorem~\ref{dpn:jh:thm:saddle} sharpens Theorem~\ref{dpn:thm:saddle}: after
+the corrections $\mathcal E_1,\dots,\mathcal E_{J-1}$ the relative error is
+$O(\epsh^J)=O((\alpha Ms)^{-J})$ rather than $O((s/M)^J)$, a gain of
+$(\alpha s^2)^J$, and the first correction is negative, of exact order
+$3/(8\alpha Kr)$, so the bare Gaussian factor overestimates $a_\alpha(n)$.  At
+one layer, source 75-06's Proposition~5.4 states the first refinement
+\[
+ a_\alpha(n)=\frac{\exp(F(t_n)+nt_n)}{\sqrt{2\pi B}}
+ \left(1-\frac{3+o(1)}{8\alpha Ms}\right),
+\]
+deduced from its remainder $O(\eps^2)=o(\epsh)$; Section~\ref{dpn:cp:sec:powers}
+gives its version for $\mu$ layers.  The second correction $\mathcal E_2$ is
+\eqref{dpn:eq:E2} (source 75-01 prints the same display), and source 75-01's
+program computes $\mathcal E_3$ from the general formula
+\eqref{dpn:eq:edgepoly} rather than from a hard-coded expression.
+
+\writenote{This theorem and Lemma~\ref{dpn:jh:lem:cumulants} partly answer
+source 48's project~48.6, ``Optimal saddle remainder scales''
+(Section~\ref{dpn:sec:future}): they give the sharp signed scales, the sharp
+first relative correction, and the error order $\epsh^{J+1}$ after each
+correction.  Neither source gives the complete expansion of $\mathcal E_1$ in
+powers of $1/s$, nor any optimality statement beyond these orders; that part
+of the question stays open.}
+
+\subsection{Saddle accuracy at finite size}\label{dpn:jh:sec:numerics}
+Let $G_J(n)=G\sum_{\ell=0}^J\mathcal E_\ell(t_n)$ with $\mathcal E_0=1$ and
+$G$ as in Section~\ref{dpn:sec:checks}.  Table~\ref{dpn:jh:tab:errors} gives
+source 75-01's signed relative errors $G_J(n)/a_1(n)-1$, computed with $40$
+decimal digits in the finite sums, together with the two extra rows of source
+75-06.  A $60$-digit rerun at $n=10000$ changes the recorded errors by at most
+$7.0\times10^{-38}$; this stability test is not an interval-arithmetic
+certificate, and neither source's floating-point computation is
+directed-rounding certified.
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $J=0$ & $J=1$ & $J=2$ & $J=3$\\
+\midrule
+100   & $1.09591\cdot10^{-2}$ & $1.73317\cdot10^{-4}$ & $9.14176\cdot10^{-5}$ & $9.01486\cdot10^{-5}$\\
+200\textsuperscript{*}  & $6.90519\cdot10^{-3}$ & $2.59790\cdot10^{-5}$ & & \\
+500   & $3.84109\cdot10^{-3}$ & $1.07637\cdot10^{-5}$ & $1.45599\cdot10^{-7}$ & $8.06153\cdot10^{-8}$\\
+1000  & $2.47981\cdot10^{-3}$ & $4.50477\cdot10^{-6}$ & $1.57836\cdot10^{-8}$ & $-2.77601\cdot10^{-9}$\\
+2000\textsuperscript{*} & $1.60998\cdot10^{-3}$ & $1.92292\cdot10^{-6}$ & & \\
+2500  & $1.40254\cdot10^{-3}$ & $1.46485\cdot10^{-6}$ & $3.61741\cdot10^{-9}$ & $1.17092\cdot10^{-11}$\\
+5000  & $9.16761\cdot10^{-4}$ & $6.32944\cdot10^{-7}$ & $1.05783\cdot10^{-9}$ & $2.22571\cdot10^{-12}$\\
+10000 & $6.02038\cdot10^{-4}$ & $2.75808\cdot10^{-7}$ & $3.11999\cdot10^{-10}$ & $4.66600\cdot10^{-13}$\\
+\bottomrule
+\end{tabular}
+\caption{Signed relative errors $G_J(n)/a_1(n)-1$ for A022629 ($\alpha=1$),
+source 75-01; rows marked * are source 75-06's ($J\le1$ only).  At $n=100$, $500$,
+$1000$, $5000$ and $10000$ source 75-06's $J=0,1$ values agree with these to
+every printed digit.}
+\label{dpn:jh:tab:errors}
+\end{table}
+
+For larger powers the picture changes.  At $\alpha=2$, $n=2500$, source 75-01
+finds $G_J/a_2-1\approx-2.2561\cdot10^{-4}$, $-2.2601\cdot10^{-4}$ and
+$-2.2601\cdot10^{-4}$ for $J=1,2,3$; at $\alpha=3$, $n=2500$, the errors for
+$J=0,1,2,3$ are about $0.05070$, $0.05016$, $0.05016$ and $0.05016$.  Source
+75-01 reads this as slow convergence (``Higher powers can converge slowly'')
+and states that the residuals ``have not been decomposed here into separate
+oscillatory sectors''.
+\mergenoteb{The residual is independent of $J$ once $\mathcal E_1$ is included,
+so it is not a truncation effect of the central Edgeworth series, which the
+corrections already resolve to $10^{-9}$.  It is the noncentral contribution
+that Theorem~\ref{dpn:thm:resonance} and Remark~\ref{dpn:rem:effective}
+identify, invisible to every central correction.  It agrees in sign and
+order of magnitude with source 40's rows $\alpha=2,3$ at $n=5000$ in
+Section~\ref{dpn:sec:checks} (there $G(1+\mathcal E_1)/a_\alpha-1\approx
+-3.6\cdot10^{-5}$ and $+0.040$), whose growth with $\alpha$ the resonance moduli
+of that section track.  Neither source computes the phases that would turn
+this identification into a formula.}
+
+\subsection{Near-integer localization of the threshold}\label{dpn:jh:sec:threshold}
+For real $x>0$ let $t(x)$ be the unique solution of $-F'(t(x))=x$, so that
+$t_n=t(n)$.  The inverse function theorem gives the exact rules
+\begin{equation}\label{dpn:jh:eq:xder}
+ \frac{\mathrm dt}{\mathrm dx}=-\frac1B,\qquad
+ \frac{\mathrm d\kappa_j(t(x))}{\mathrm dx}=\frac{\kappa_{j+1}}{B}.
+\end{equation}
+Define the Gaussian inverse
+\begin{equation}\label{dpn:jh:eq:psi0}
+\begin{aligned}
+ \Psi_0(x)&=xt(x)+F(t(x))-\tfrac12\log\bigl(2\pi B(t(x))\bigr),\\
+ \Psi_0'(x)&=t(x)-\frac{\kappa_3}{2B^2}
+ =t(x)+O_\alpha(M^{-2})\sim\frac{\alpha s}{M}>0,
+\end{aligned}
+\end{equation}
+and let $n_*(Y)$ be the unique sufficiently large solution of
+$\Psi_0(n_*(Y))=Y$.  As in Theorem~\ref{dpn:thm:inverse}, $N_\alpha(Y)$ is the
+least $n$ with $\log a_\alpha(n)\ge Y$ (source 75-01 writes
+$\mathcal N_s(A)$ with $A=e^Y$).
+
+\begin{theorem}[Near-integer localization; source 75-01]\label{dpn:jh:thm:threshold}
+For fixed $\alpha>0$, as $Y\to\infty$,
+\begin{equation}\label{dpn:jh:eq:threshold}
+ |N_\alpha(Y)-n_*(Y)|\le1+o(1).
+\end{equation}
+More precisely, at an exact sequence value, with $s$ taken at $t_n$,
+\begin{equation}\label{dpn:jh:eq:atvalue}
+ n_*\bigl(\log a_\alpha(n)\bigr)-n=-\frac{3}{8\alpha^2s^2}\bigl(1+o_\alpha(1)\bigr).
+\end{equation}
+If $\Psi_0$ is replaced by $\Psi_1=\Psi_0+\mathcal E_1(t(x))$, the displacement
+at $Y=\log a_\alpha(n)$ is $O_\alpha(M^{-1}s^{-3})$.
+\end{theorem}
+\begin{proof}[Proof \src{75-01}]
+Theorem~\ref{dpn:jh:thm:saddle} with $J=1$ gives
+$\log a_\alpha(n)=\Psi_0(n)+\mathcal E_1(t_n)+O_\alpha(\epsh^2)$.  Divide this
+logarithmic error by the slope \eqref{dpn:jh:eq:psi0} and apply the mean value
+theorem in an $o(1)$ neighbourhood of $n$: the leading displacement is
+\[
+ \frac{-3/(8\alpha Ms)}{\alpha s/M}=-\frac{3}{8\alpha^2s^2},
+\]
+which proves \eqref{dpn:jh:eq:atvalue}.  With $\Psi_1$ the logarithmic error is
+$O_\alpha(\epsh^2)$, giving $O_\alpha(M^{-1}s^{-3})$ after division by the
+slope.  For general $Y$ put $m=N_\alpha(Y)$, so that
+$\log a_\alpha(m-1)<Y\le\log a_\alpha(m)$.  Monotonicity of the eventual
+inverse $n_*$ places $n_*(Y)$ between $m-1+o(1)$ and $m+o(1)$, proving
+\eqref{dpn:jh:eq:threshold}.
+\end{proof}
+
+No universal rounding instruction follows from \eqref{dpn:jh:eq:threshold}: a
+height arbitrarily close to a coefficient threshold can require deciding on
+which side it lies.  An effective finite-input certificate would also need
+explicit error constants and validated numerical evaluation; source 75-01's
+inverse routine solves the approximating equation, not that certification
+problem.
+\mergenoteb{The two steps are instances of the transseries-and-inversion
+volume \cite{tai}: the passage from the logarithmic residual to the
+displacement is its residual-to-root conversion
+(\texttt{p0:thm:backward-error}) with slope bounds
+$\Psi_0'\asymp\alpha s/M$, and the passage to the integer threshold is its
+staircase theorem (\texttt{p0:thm:staircase}, parts (1)--(2)), whose
+separation condition is exactly the obstruction to a universal rounding rule
+just described.  That separation step is formalized in Lean as
+\texttt{Fabius.staircase\_separation} (with \texttt{Fabius.staircase\_ceil})
+\cite{proveitLean}; nothing else in this section is formalized.  Compared with
+Section~\ref{dpn:sec:inverse}, whose brackets carry the fixed-order
+inverse-logarithmic errors plus an $O(1)$ rounding, the exact-saddle inverse
+localizes the threshold to $1+o(1)$, at the price of evaluating the exact
+saddle.  It does not answer project~48.7, which asks for explicit constants.}
+
+For computation one can solve directly in $t$: with
+$Z(t)=F(t)+t\kappa_1(t)-\tfrac12\log(2\pi B(t))$ and
+$Z'(t)=-tB+\kappa_3/(2B)$, Newton iteration for $Z(t)=Y$, initialized by
+\eqref{dpn:eq:Wlead}, returns $n_*=\kappa_1(t)$.  This uses only positive real
+sums, not the inversion of a long truncated power series.  At
+$Y=\log a_1(10000)$, source 75-01 finds
+\[
+ n_*(Y)=9999.9838291094228371832520930128038\ldots,
+\]
+a displacement of about $-0.0161708905772$, which is $1.02387586805\ldots$
+times the predicted leading value $-3/(8s^2)$ at the saddle.  This is
+consistent with \eqref{dpn:jh:eq:atvalue}, but a single ratio is not a proof
+of its limit.  (The recorded saddle tables
+\file{data/75-01-jensen-saddle_s2_dps40.csv} and
+\file{data/75-01-jensen-saddle_s3_dps40.csv} also list this scaled displacement for $\alpha=2,3$:
+about $1.69$ and $0.83$ at $\alpha=2$, $n=1000,2500$, and about $52$ and $118$
+at $\alpha=3$, the finite-size residual of Section~\ref{dpn:jh:sec:numerics}
+seen through the inverse.)
+
+%% ---------------------------------------------------------------------
+\section{Eventual log-concavity and Jensen hyperbolicity}\label{dpn:jh:sec:shape}
+This section is source 75-01's Section~7.  It needs errors much smaller than
+those of the logarithmic block, and differentiating a pointwise $O$-term for
+$\log a_\alpha(n)$ would not be legitimate.  Instead a smooth approximant is
+built from exact cumulants, and the discrete error is controlled separately.
+
+Let
+\begin{equation}\label{dpn:jh:eq:Dr}
+ D_r(t)=[z^r]\log\Bigl(1+\sum_{j\ge1}\mathcal E_j(t)z^j\Bigr),\qquad
+ \mathcal L_J(x)=\Psi_0(x)+\sum_{r=1}^JD_r(t(x)).
+\end{equation}
+Thus $D_1=\mathcal E_1$, $D_2=\mathcal E_2-\mathcal E_1^2/2$, and every $D_r$ is
+a finite expression.  (Here $r$ is a summation index, not $\log K$.)  For each
+fixed $J$, Theorem~\ref{dpn:jh:thm:saddle} gives
+\begin{equation}\label{dpn:jh:eq:smootherror}
+ \log a_\alpha(n)=\mathcal L_J(n)+O_{\alpha,J}\bigl(\epsh^{J+1}\bigr).
+\end{equation}
+Equations \eqref{dpn:jh:eq:xder} and \eqref{dpn:jh:eq:cumscale} give, for
+fixed $r$ and $k$,
+\begin{equation}\label{dpn:jh:eq:Eder}
+ \frac{\mathrm d^k}{\mathrm dx^k}\mathcal E_r(t(x)),\
+ \frac{\mathrm d^k}{\mathrm dx^k}D_r(t(x))
+ =O_{\alpha,r,k}\bigl(\epsh^rM^{-2k}\bigr):
+\end{equation}
+differentiate each finite cumulant monomial with
+$\mathrm d\kappa_j/\mathrm dx=\kappa_{j+1}/B$; every differentiation costs
+$O_{\alpha,j}(M^{-2})$.  If $S(x)=xt(x)+F(t(x))$, then $S'=t$ and $S''=-1/B$,
+so
+\begin{equation}\label{dpn:jh:eq:Lder}
+ \mathcal L_J'(x)=t+O_\alpha(M^{-2}),\qquad
+ \mathcal L_J''(x)=-B^{-1}+O_\alpha(M^{-4}),\qquad
+ \mathcal L_J^{(k)}(x)=O_{\alpha,J,k}(sM^{1-2k})\ (k\ge2),
+\end{equation}
+locally uniformly when $x$ changes by a bounded amount.
+
+\subsection{Strict log-concavity}
+\begin{theorem}[Eventual strict log-concavity; source 75-01]\label{dpn:jh:thm:concavity}
+For every fixed $\alpha>0$,
+\begin{equation}\label{dpn:jh:eq:gap}
+ \log\frac{a_\alpha(n)^2}{a_\alpha(n-1)a_\alpha(n+1)}
+ \sim\frac1{B(t_n)}\sim\frac{\alpha\log\sqrt{2n}}{(2n)^{3/2}}.
+\end{equation}
+In particular $a_\alpha(n)$ is strictly log-concave for all sufficiently large
+$n$.
+\end{theorem}
+\begin{proof}[Proof \src{75-01}]
+Take $J=3$ in \eqref{dpn:jh:eq:smootherror}; the error is
+$O_\alpha(\epsh^4)=o_\alpha(s/M^3)$.  Taylor's formula and
+\eqref{dpn:jh:eq:Lder} give
+\[
+ 2\mathcal L_3(n)-\mathcal L_3(n-1)-\mathcal L_3(n+1)
+ =B^{-1}+O_\alpha(M^{-4})+O_\alpha(sM^{-7}).
+\]
+Adding the three discrete errors does not change the leading term, and
+$B\sim M^3/(\alpha s)$, $M\sim K$, $s\sim r$ give \eqref{dpn:jh:eq:gap}.
+\end{proof}
+
+\subsection{Hermite limits of Jensen polynomials}
+For integers $d\ge1$ and $n\ge0$ define the Jensen polynomials
+\begin{equation}\label{dpn:jh:eq:jensen}
+ \mathcal J_\alpha^{d,n}(X)=\sum_{j=0}^d\binom dj a_\alpha(n+j)X^j,
+\end{equation}
+and the Hermite polynomials $\mathsf H_d$ by
+$e^{Xz-z^2}=\sum_{d\ge0}\mathsf H_d(X)z^d/d!$, so that $\mathsf H_0=1$,
+$\mathsf H_1=X$, $\mathsf H_2=X^2-2$, $\mathsf H_3=X^3-6X$.  ($\mathsf H_d$ is
+not the transition width $H$.)
+
+\begin{theorem}[Fixed-degree Jensen hyperbolicity; source 75-01]\label{dpn:jh:thm:jensen}
+For every fixed $\alpha>0$ and fixed integer $d\ge1$, let
+$\delta_n=(2B(t_n))^{-1/2}$.  Then, coefficientwise in $X$,
+\begin{equation}\label{dpn:jh:eq:hermite}
+ \frac{\mathcal J_\alpha^{d,n}\bigl(e^{-t_n}(\delta_nX-1)\bigr)}{a_\alpha(n)\,\delta_n^d}
+ \longrightarrow\mathsf H_d(X).
+\end{equation}
+Consequently $\mathcal J_\alpha^{d,n}$ has $d$ distinct negative real roots for
+all sufficiently large $n$.
+\end{theorem}
+\begin{proof}[Proof \src{75-01}]
+Choose $J$ with $J+1>3d/2$; then the discrete error in
+\eqref{dpn:jh:eq:smootherror} is $o_\alpha(\delta_n^d)$.  Put
+$\tau_n=\mathcal L_J'(n)$ and $\tilde\delta_n^2=-\tfrac12\mathcal L_J''(n)>0$ for
+large $n$.  Taylor expansion for each $0\le j\le d$ gives
+\[
+ \log\frac{a_\alpha(n+j)}{a_\alpha(n)}
+ =\tau_nj-\tilde\delta_n^2j^2+\sum_{k=3}^d\gamma_k(n)j^k+o_\alpha(\tilde\delta_n^d),
+ \qquad \gamma_k=\frac{\mathcal L_J^{(k)}(n)}{k!},
+\]
+where the next Taylor derivative contributes $o(\delta_n^d)$, and
+$\gamma_k(n)/\tilde\delta_n^k=O_{\alpha,k}((Ms)^{1-k/2})\to0$ for $k\ge3$.  These
+are the hypotheses of the Hermite-limit criterion of Griffin, Ono, Rolen and
+Zagier \cite[Theorem~3]{gorz}.
+
+The mechanism can also be seen directly.  Expand the exponential of the last
+display as a polynomial in $j$ through degree $d$.  The coefficient of $j^k$,
+divided by $\tilde\delta_n^k$, tends to the coefficient of $z^k$ in $e^{-z^2}$.
+In the normalized Jensen sum the $d$th finite difference annihilates every
+polynomial of degree below $d$, and the surviving coefficients combine to
+$\mathsf H_d(X)$; the local $o(\tilde\delta_n^d)$ error is exactly what this
+cancellation needs.  Finally \eqref{dpn:jh:eq:Lder} gives
+$\tilde\delta_n/\delta_n\to1$ and $(\tau_n-t_n)/\delta_n\to0$, so the affine
+change of normalized variable tends to the identity and $\tau_n$,
+$\tilde\delta_n$ may be replaced by $t_n$, $\delta_n$.  Hermite polynomials
+have distinct real roots; on disjoint small intervals around them the endpoint
+signs alternate, coefficientwise convergence preserves those signs, and degree
+$d$ allows no further roots.  The Jensen polynomial has positive coefficients
+and a nonzero constant term, so its real roots are negative.
+\end{proof}
+
+Neither the theorem nor its proof gives a bound uniform in $d$.  It does not
+assert that every Jensen polynomial of every degree is hyperbolic at one fixed
+index, and it should not be conflated with infinite iterated log-concavity of
+the sequence.  Source 75-01's contribution here is the verification of the
+Griffin--Ono--Rolen--Zagier hypotheses, including an error scale small enough
+to survive finite differences; the Hermite-limit mechanism itself is theirs.
+
+\subsection{Exact finite data}
+Source 75-01 evaluates the positive product recursion exactly through $n=10000$
+for $\alpha=1$ and through $n=2500$ for $\alpha=2,3$, and checks the signed
+recurrence \eqref{dpn:eq:exactrec} against it through $n=200$ for each of
+$\alpha=1,2,3$.  For $\alpha=1$, among the tested indices $1\le n\le9999$,
+strict log-concavity fails exactly at
+\[
+ n=1,2,4,6,8,11,13,16,17,19,23,26,29,32,34,38,40,41,43,46,53,59,64,76,
+\]
+so every tested index from $77$ through $9999$ is strictly log-concave.  This
+does \emph{not} prove that $77$ is the eventual threshold.  For $\alpha=2$ the
+tested range $1\le n\le2499$ has $162$ failures, the last at $n=1033$; for
+$\alpha=3$ it has $904$ failures, persisting to $n=2499$, the end of the range
+(counts from \file{data/75-01-jensen-exact_audit_s2.json} and
+\file{data/75-01-jensen-exact_audit_s3.json}).  These observations caution against uniformity in the
+power.
+
+Exact rational real-root counting gives the numbers of real roots of
+$\mathcal J_1^{d,n}$ in Table~\ref{dpn:jh:tab:roots}; every polynomial there was
+also checked to be squarefree.
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $d=2$ & $d=3$ & $d=4$ & $d=5$\\
+\midrule
+100 & 2 & 1 & 0 & 1\\
+1000 & 2 & 3 & 4 & 1\\
+5000 & 2 & 3 & 4 & 5\\
+\bottomrule
+\end{tabular}
+\caption{Real roots of the Jensen polynomials $\mathcal J_1^{d,n}$ (source
+75-01): the onset of hyperbolicity depends on the degree.}\label{dpn:jh:tab:roots}
+\end{table}
+\writenote{Source 75-06's research question on shape inequalities
+(Section~\ref{dpn:sec:b75questions}, item 75-06.9) asks for eventual
+log-concavity; Theorem~\ref{dpn:jh:thm:concavity} answers that part for one
+layer.  Ratio monotonicity, higher finite-difference inequalities, and the
+case of $\mu\ge2$ layers stay open.}
+
+%% ---------------------------------------------------------------------
+\section{Convolution powers}\label{dpn:cp:sec:powers}
+This section is source 75-06's two-parameter extension (its Sections~1.2, 2
+and~4--9 for more than one layer), translated: source 75-06's power $r$ is
+$\alpha$ here and its number of layers $s$ is $\mu$.  For fixed $\alpha>0$ and
+a fixed integer $\mu\ge1$ put
+\begin{equation}\label{dpn:cp:eq:family}
+ A_\alpha(q)^\mu=\prod_{k\ge1}(1+k^\alpha q^k)^\mu=\sum_{n\ge0}a_{\alpha,\mu}(n)q^n,
+ \qquad K_\mu=\sqrt{2n/\mu},\qquad r_\mu=\log K_\mu .
+\end{equation}
+For $\mu=1$ this is $a_\alpha(n)$, with $K_1=K$, $r_1=r$.  An object is an
+ordered $\mu$-tuple of distinct partitions of total size $n$, weighted by the
+product of their $\alpha$th norm powers; for integral $\alpha$ the weights
+count colourings.  The analysis also applies to real $\alpha>0$, when the
+coefficients are positive reals.
+
+\paragraph{OEIS identifications \src{75-06}.}
+For $\alpha=1$ and $\mu=2,3$ the coefficients are \OEIS{A022630} and
+\OEIS{A022631} \cite{oeis22630}; for $\alpha=1$ and fixed $\mu\ge1$ they are
+the positive columns of the array \OEIS{A297321} \cite{oeis297321}; for integer
+$\alpha\ge1$ and $\mu=1$ they are the positive columns of \OEIS{A292189}
+\cite{oeisarray}.  Every statement below is column by column, with the column
+index fixed; no uniform assertion is made for a growing index.
+\mergenoteb{The intake confirmed on 2 October 2026 that the OEIS names of
+A022630 and A022631 are $\prod_{m\ge1}(1+mq^m)^2$ and $(\cdots)^3$, that their
+first fifteen terms equal the coefficients computed from the product, and
+that A297321's column $k$ is $\prod_{j\ge1}(1+jx^j)^k$.  Source 75-06's
+proposed-notes file further says A297321 cross-references its first 32
+columns to A022629--A022660; the intake did not check that.}
+
+\paragraph{The $\mu$-layer model.}
+Let $X_{k,i}$ ($k\ge1$, $1\le i\le\mu$) be independent Bernoulli variables with
+parameter $p_k$ of \eqref{dpn:eq:pk}, and $S=\sum_{k,i}kX_{k,i}$.  Then
+$\log\E e^{-\cdot}$ is $\mu F(t)$, the cumulants are $\mu\kappa_j$, and
+$a_{\alpha,\mu}(n)=e^{\mu F(t)+nt}\Prob_t(S=n)$; the conditional law given
+$S=n$ is the weighted law on $\mu$-layer objects of size $n$.  The saddle
+equation is $-\mu F'(t)=n$.
+\mergenoteb{So the $\mu$-layer saddle at $n$ is the one-layer saddle
+$t(n/\mu)$ of Section~\ref{dpn:jh:sec:threshold} at the real argument $n/\mu$,
+and $s$, $M$, $H$ are its one-layer values there.  This is why the logarithmic
+coefficients below do not depend on $\mu$.  Source 75-06 does not phrase it
+this way; its proofs treat $\mu$ layers directly.}
+
+\begin{theorem}[Growth and all orders for $\mu$ layers; source 75-06]\label{dpn:cp:thm:log}
+Fix $\alpha>0$ and an integer $\mu\ge1$.
+\begin{enumerate}
+\item $\log a_{\alpha,\mu}(n)=\mu\alpha K_\mu(r_\mu-1)+O_{\alpha,\mu}(K_\mu/r_\mu)$.
+\item For every fixed $R\ge1$, with the polynomials $P_j(c)$ of
+  Theorem~\ref{dpn:thm:log},
+  \begin{equation}\label{dpn:cp:eq:logall}
+  \log a_{\alpha,\mu}(n)=\mu\alpha K_\mu\left(r_\mu-1+\sum_{j=1}^R\frac{P_j(c)}{r_\mu^j}
+  +O_{\alpha,\mu,R}(r_\mu^{-R-1})\right).
+  \end{equation}
+\end{enumerate}
+\end{theorem}
+\begin{proof}[Proof \src{75-06}]
+(1) Lower bound: split $n$ into $\mu$ integers $N_1,\dots,N_\mu$ differing by
+at most one, and use the partition $1,2,\dots,k-1,k+d$ of
+Proposition~\ref{dpn:prop:elementary} in each layer.  Each layer contributes
+$\alpha\log k!=\alpha\sqrt{2N_i}(\log\sqrt{2N_i}-1)+O_\alpha(\log n)$, and the
+sum is $\mu\alpha K_\mu(r_\mu-1)-O_{\alpha,\mu}(r_\mu)$.  Upper bound: with
+$t=\alpha r_\mu/K_\mu$, positivity gives $\log a_{\alpha,\mu}(n)\le nt+\mu F(t)$.
+Write $\log(1+e^u)=u_++\log(1+e^{-|u|})$ with $u=\alpha\log x-tx$: the
+positive part integrates to $\alpha K_\mu(r_\mu/2-1)+O_\alpha(1)$; on
+$x\ge K_\mu/2$ the slope bound $|u'|\ge\alpha(r_\mu-2)/K_\mu$ makes the
+smoothing integral $O_\alpha(K_\mu/r_\mu)$; on $0<x\le\sqrt{K_\mu}$ use
+$\log2$; on $\sqrt{K_\mu}\le x\le K_\mu/2$ convexity gives
+$u\le-\alpha r_\mu/2+O_\alpha(1)$ and a contribution $O(K_\mu^{1-\alpha/2})$.
+With the sum--integral error $O_\alpha(r_\mu)$ this gives
+$\mu F(t)=\mu\alpha K_\mu(r_\mu/2-1)+O(K_\mu/r_\mu)$, and $nt=\mu\alpha
+K_\mu r_\mu/2$.
+
+(2) The boundary and mean expansions of Sections~\ref{dpn:sec:sommerfeld}
+and~\ref{dpn:sec:eliminate} hold for $\mu F$ and $-\mu F'$ with the factor
+$\mu$; at the saddle $K_\mu^2=M^2Q_\alpha(s)$, which is \eqref{dpn:eq:rfroms}
+with $r_\mu$ for $r$, and $\mu F(t)+nt=\mu\alpha K_\mu\asym(r_\mu)$ to every
+fixed order.  The local probability contributes $O(s)$ to the logarithm
+(source 75-06's Corollary~5.3), below every scale $K_\mu/r_\mu^R$.  Taking
+enough guard terms in the two independently proved expansions gives the
+remainder.
+\end{proof}
+
+\begin{theorem}[Relative expansion for $\mu$ layers; source 75-06]\label{dpn:cp:thm:saddle}
+Fix $\alpha>0$, an integer $\mu\ge1$ and $J\ge0$.  At the exact saddle
+$-\mu F'(t_n)=n$, with $\eps=s/M$,
+\begin{equation}\label{dpn:cp:eq:rel}
+ a_{\alpha,\mu}(n)=\frac{e^{\mu F(t_n)+nt_n}}{\sqrt{2\pi\mu B}}
+ \left(1+\sum_{\ell=1}^J\mathcal E^{(\mu)}_\ell+O_{\alpha,\mu,J}(\eps^{J+1})\right),
+\end{equation}
+where $\mathcal E^{(\mu)}_\ell$ is \eqref{dpn:eq:edgepoly} with every $\kappa_j$
+(including $B=\kappa_2$) replaced by $\mu\kappa_j$, and
+$\mathcal E^{(\mu)}_\ell=O(\eps^\ell)$.  Moreover
+$\mu\kappa_j\sim\mu\,\tfrac{j!}2M^{j+1}/(\alpha s)^{j-1}$ and
+\begin{equation}\label{dpn:cp:eq:E1}
+ \mathcal E^{(\mu)}_1\sim-\frac{3}{8\mu\alpha Ms},\qquad
+ a_{\alpha,\mu}(n)=\frac{e^{\mu F(t_n)+nt_n}}{\sqrt{2\pi\mu B}}
+ \left(1-\frac{3+o(1)}{8\mu\alpha Ms}\right).
+\end{equation}
+\end{theorem}
+The proof is that of Theorem~\ref{dpn:thm:saddle} and
+Lemma~\ref{dpn:jh:lem:cumulants}: a consecutive block of length $\asymp M/s$
+around $M$ in any one layer gives \eqref{dpn:eq:centralbound} and
+\eqref{dpn:eq:noncentral}, and the Taylor estimates are summed over the $\mu$
+copies.
+\mergenoteb{Each monomial of \eqref{dpn:eq:edgepoly} has
+$\sum_jm_j-T/2=-\ell$, so $\mathcal E^{(\mu)}_\ell(t)=\mu^{-\ell}\mathcal
+E_\ell(t)$: the $\mu$-layer corrections are the one-layer ones at $t(n/\mu)$,
+divided by $\mu^\ell$.  Source 75-06 states the remainder with the safe
+parameter $\eps$; the sharp remainder of Theorem~\ref{dpn:jh:thm:saddle} is
+proved only for $\mu=1$.}
+
+\paragraph{Monotonicity and exact computation \src{75-06}.}
+For $\mu=1$ and $n\ge1$, $a_{\alpha,1}(n+1)>a_{\alpha,1}(n)$ by the injection
+of Section~\ref{dpn:sec:inverse}; convolution with a positive nondecreasing
+sequence preserves nondecrease, and the extra summand and the strict
+inequalities give eventual strict increase for every fixed $\mu$.  For
+integers $\alpha,\mu\ge1$ the coefficients through degree $N$ follow from the
+finite product: for each $k$, repeat $\mu$ times the descending update
+$A[n]\leftarrow A[n]+k^\alpha A[n-k]$ ($n=N,\dots,k$), which costs
+$O(\mu N^2)$ integer operations and $O(N)$ stored integers (an arithmetic
+count, not a bit-complexity bound).  Logarithmic differentiation gives
+\begin{equation}\label{dpn:cp:eq:rec}
+ n\,a_{\alpha,\mu}(n)=\mu\sum_{m=1}^nC_\alpha(m)\,a_{\alpha,\mu}(n-m),
+\end{equation}
+with $C_\alpha$ as in \eqref{dpn:eq:exactB}, also as an identity of real formal
+power series; the alternating divisor sum can be badly conditioned in floating
+point.  Source 75-06's \file{code/75-06-powers-checks.py} checks the product
+against \eqref{dpn:cp:eq:rec} through $n=120$ for $\alpha,\mu\in\{1,2,3\}$ and
+the two-layer product against the self-convolution through $n=200$.
+
+\begin{theorem}[Threshold inversion for $\mu$ layers; source 75-06]\label{dpn:cp:thm:inverse}
+Let $N_{\alpha,\mu}(Y)$ be the least $n$ with $\log a_{\alpha,\mu}(n)\ge Y$, and put
+\[
+ w=W_0\Bigl(\frac{Y}{\mu\alpha e}\Bigr),\qquad R_0=1+w,\qquad
+ K_0=\frac{Y}{\mu\alpha w}=e^{R_0},\qquad n_0=\frac{\mu K_0^2}2 .
+\]
+For every fixed $R\ge2$, as $Y\to\infty$,
+\begin{equation}\label{dpn:cp:eq:inverse}
+ N_{\alpha,\mu}(Y)=n_0\left(1+\sum_{j=2}^R\frac{\Delta_j(c)}{R_0^j}
+ +O_{\alpha,\mu,R}(R_0^{-R-1})\right),
+\end{equation}
+with the polynomials of Table~\ref{dpn:cp:tab:inverse}.
+\end{theorem}
+\begin{table}[!htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cll}
+\toprule
+$j$ & $\Delta_j(c)$ & source 75-06's $d_j(u)$, $u=6c$\\
+\midrule
+2 & $-2c$ & $-u/3$\\
+3 & $-2c$ & $-u/3$\\
+4 & $4c^2-2c$ & $u(u-3)/9$\\
+5 & $\tfrac65c^2-2c$ & $u(u-10)/30$\\
+6 & $-2c-\tfrac{77}5c^2-8c^3$ & $-u(20u^2+231u+180)/540$\\
+7 & $-2c-57c^2-\tfrac{1336}{105}c^3$ & $-u(668u^2+17955u+3780)/11340$\\
+8 & $-2c-138c^2-\tfrac{6226}{35}c^3+16c^4$ & $u(140u^3-9339u^2-43470u-3780)/11340$\\
+\bottomrule
+\end{tabular}
+\caption{Inverse coefficients.  $\Delta_2,\dots,\Delta_6$ are those of
+\eqref{dpn:eq:inverseE2} and \eqref{dpn:48:eq:inversefull}; $\Delta_7$ and
+$\Delta_8$ are new.  Source 75-06's $d_j(u)$ are unrelated to $d_\alpha(s)$.}
+\label{dpn:cp:tab:inverse}
+\end{table}
+\begin{proof}[Proof \src{75-06}]
+Write $B(r)=\sum_{j\ge1}P_j(c)r^{-j}$ and $K_\mu=K_0e^h$.  The formal inverse
+equation is $e^h(R_0+h-1+B(R_0+h))=R_0-1$, that is
+\eqref{dpn:eq:Einverse} with $E=e^h$, or
+\[
+ h=-\log\Bigl(1+\frac{h+B(R_0+h)}{R_0-1}\Bigr).
+\]
+It has a unique formal solution $h=O(R_0^{-2})$, since the right side has
+formal derivative $O(1/R_0)$ in $h$, and $N_{\alpha,\mu}/n_0=e^{2h}$ gives
+Table~\ref{dpn:cp:tab:inverse}.  For the integer threshold, use a high finite
+truncation of Theorem~\ref{dpn:cp:thm:log}: its smooth main term has
+$n$-derivative asymptotic to $\alpha r_\mu/K_\mu>0$; moving $n$ by a large
+constant times $n_0/R_0^{R+1}$ changes it by order $K_0/R_0^R$, enough to
+bracket the retained residual and the forward remainder; monotonicity then
+brackets the threshold between neighbouring integers, and the $O(1)$ rounding
+is absorbed.  Only explicit smooth approximants are differentiated.
+\end{proof}
+\mergenoteb{The intake recomputed $\Delta_2,\dots,\Delta_8$ by solving
+\eqref{dpn:eq:Einverse} with $P_1,\dots,P_8$ in exact rational arithmetic; they
+equal source 75-06's $d_j(6c)$.  As in Section~\ref{dpn:sec:inverse}, the core
+$K(\log K-1)=Y/(\mu\alpha)$ is, after taking logarithms with
+$w=\log K-1$, the equation $w+\log w=\log(Y/(\mu\alpha e))$, an instance of the
+dominant-block theorem \texttt{p0:thm:lambert-core} of \cite{tai} on the
+principal branch; the corrections are its perturbed inversion
+(\texttt{p0:thm:perturbed-inversion}) and the integer step its staircase
+theorem.  The principal branch $W_0$ inverts the growth; the lower branch
+$W_{-1}$ parametrizes the moving boundary.}
+
+\begin{theorem}[Boundary profile and largest part for $\mu$ layers; source 75-06]\label{dpn:cp:thm:geometry}
+Let $\Prob_n$ be the weighted law on $\mu$-layer objects of total size $n$, at
+the saddle of Theorem~\ref{dpn:cp:thm:saddle}.
+\begin{enumerate}
+\item Fix distinct reals $x_1,\dots,x_d$ and layers $i_1,\dots,i_d$, and let
+  $k_{n,j}=\lfloor M+Hx_j\rfloor$.  The occupation indicators of these
+  site--layer pairs converge jointly to independent Bernoulli variables with
+  parameters $(1+e^{x_j})^{-1}$; the same holds for any fixed collection of
+  distinct site--layer pairs with convergent rescaled positions, including
+  different layers at one site.  A site $\lfloor yM\rfloor$ is occupied with
+  probability tending to $1$ for fixed $0<y<1$ and to $0$ for fixed $y>1$.
+\item Let $L_n$ be the largest occupied size in any layer, and $b$ the large
+  solution of
+  \begin{equation}\label{dpn:cp:eq:bcenter}
+   \frac{\mu}{t}\,b^\alpha e^{-tb}=1,\qquad
+   b=-\frac\alpha t\,W_{-1}\Bigl(-\frac t\alpha\Bigl(\frac t\mu\Bigr)^{1/\alpha}\Bigr).
+  \end{equation}
+  Then $\Prob_n\{t_n(L_n-b)\le x\}\to\exp(-e^{-x})$ for every real $x$, and
+  $L_n/K_\mu\to1+1/\alpha$ in probability; for the A022629 ensemble the limit
+  is $2$.
+\end{enumerate}
+\end{theorem}
+At $\mu=1$ this is Theorem~\ref{dpn:thm:geometry}, and its proof is the proof
+given there, with the following changes \src{75-06}.  The local limit estimate
+of Section~\ref{dpn:sec:uniform} survives deleting finitely many site--layer
+variables at sizes $O(M)$ (choose a longest surviving subinterval of the
+central block, still a fixed fraction of $M/s$ long), or every variable above
+a cutoff $m$ with $m/M\to\gamma>1$ and deleted variance $O(M^2)$; the target
+may move by $o(\sqrt{\mu B})$.  For the maximum, $tb\to\infty$ and
+$b/M\to(\alpha+1)/\alpha$, the tail intensity is
+$\mu\sum_{k>m}p_k=(\mu/t)m^\alpha e^{-tm}(1+O(1/(tm)+t)+o(1))\to e^{-x}$ for
+$m=b+x/t$, and the no-tail probability is $\prod_{k>m}(1-p_k)^\mu\to
+e^{-e^{-x}}$; the deleted tail has mean $O(M)$ and variance $O(M^2)$.  The two
+scales differ for the reason given after Theorem~\ref{dpn:thm:geometry}: a site
+at $yM$ with $y>1$ is occupied with probability about $M^{-\alpha(y-1)}$, there
+are order $M/s$ sites in an extreme window, and the balance occurs at
+$y=1+1/\alpha$.
+
+\paragraph{Finite-size checks \src{75-06}.}
+At $n=500$ the first-corrected relative errors for
+$(\alpha,\mu)=(1,2),(1,3),(2,1)$ are about $6.36\cdot10^{-6}$,
+$4.72\cdot10^{-6}$ and $1.76\cdot10^{-3}$.  The less impressive last case is
+kept deliberately: finite-$n$ behaviour depends on the parameters, and the
+theorems are not uniform small-$n$ guarantees.
+
+%% ---------------------------------------------------------------------
+\section{Research questions of sources 75-01 and 75-06}\label{dpn:sec:b75questions}
+Both sources close with research directions, kept here with their own
+numbers; overlaps with Section~\ref{dpn:sec:future} are marked, and questions
+answered in this report are re-scoped.  They are proposed tasks, not claims
+that the problems are globally open.
+
+\paragraph{Source 75-01.}
+\begin{enumerate}[label=\textbf{75-01.\arabic*}, leftmargin=*]
+\item \textbf{Is 77 the exact log-concavity threshold for A022629?}
+  Theorem~\ref{dpn:jh:thm:concavity} reduces this to effective analytic bounds
+  plus a finite check, but its constants are implicit; an explicit minor-arc
+  bound is the main bottleneck.  For the other columns, find the minimal
+  thresholds and their dependence on $\alpha$.
+\item \textbf{How fast may the Jensen degree grow?}  Find a nontrivial
+  $d(n)\to\infty$ for which hyperbolicity is still guaranteed; this needs
+  simultaneous control of high cumulants, remainders and Hermite root spacing.
+\item \textbf{The crossover as $\alpha\downarrow0$} (overlaps project~3 and
+  48.2): connect the central limit regime near zero tilt to the moving edge,
+  for example when $\alpha\log n=O(1)$.
+\item \textbf{Growing moment order} (overlaps project~4): the diagonal
+  \OEIS{A292190} of A292189 is covered by no theorem here; determine where a
+  continuum edge stops being accurate and maximizing partitions take over.
+\item \textbf{The subdominant Fourier sectors} (overlaps project~1): locate the
+  noncentral saddle contributions, their phases and amplitudes, and explain
+  the finite-size residuals at $\alpha=2,3$
+  (Section~\ref{dpn:jh:sec:numerics}).  Theorem~\ref{dpn:thm:resonance}, which
+  source 75-01 did not have, supplies the action at each fixed resonance.
+\item \textbf{Extend the weight class} (overlaps project~7 and 48.5), e.g.\
+  $k^\alpha(\log(k+1))^\beta$ or regularly varying weights, preserving the
+  cumulant scale, the local expansion and eventual Jensen hyperbolicity.
+\item \textbf{Joint limit laws under norm weighting} (overlaps project~6,
+  48.3 and 48.4): number of parts and largest part, with the correct
+  conditional fluctuation scales.
+\item \textbf{A validated inverse} (overlaps 48.7 and project~8): combine the
+  tail bound below with interval evaluation and explicit constants in
+  Theorem~\ref{dpn:jh:thm:saddle}, returning the exact threshold or a
+  certified pair of candidates without all earlier coefficients.  Source
+  75-01's tail bound: for $b\ge0$ and $k_0+1\ge2b/t$,
+  $\sum_{k>k_0}k^be^{-tk}\le(k_0+1)^be^{-t(k_0+1)}/(1-e^{-t/2})$.
+\item \textbf{Formalize the finite algebra, then the analysis} (overlaps
+  project~8): the coefficient recurrence, the Bernoulli-cumulant recursion,
+  the formula for $\mathcal E_r$, the Lagrange coefficients and the formal
+  inverse recurrence first; then the block bound, the sum--integral estimates
+  and the local Fourier remainder.  No such formalization is claimed.
+\item \textbf{The signed companion.}  \OEIS{A022661}, $\prod_{k\ge1}(1-kq^k)$,
+  asks whether its coefficient at $n=9$ is its only zero (Robert Israel,
+  June 2, 2015) \cite{oeissigned}.  The positivity method does not settle it;
+  competing phases make it a substantially different target.
+\end{enumerate}
+
+\paragraph{Source 75-06.}
+\begin{enumerate}[label=\textbf{75-06.\arabic*}, leftmargin=*]
+\item \textbf{Complete the lower-scale transseries} (overlaps project~2 and
+  48.1): determine the endpoint, discretization and determinant terms jointly;
+  appending only $-\frac12\log(2\pi B)$ would be incorrect.
+\item \textbf{Large-order growth and optimal truncation} (overlaps project~2):
+  growth of $P_j(c)$ for fixed $c$, a Gevrey bound, control by the complex
+  singularities of the boundary inverse, Borel summability and resurgence.
+\item \textbf{Weak norm weighting} (overlaps project~3 and 48.2):
+  $\alpha=\alpha(n)\downarrow0$ with $\alpha\log n$ bounded or slowly growing.
+\item \textbf{Growing moments and growing layer counts} (overlaps project~4):
+  $\alpha$ or $\mu$ depending on $n$; the width $M/(\alpha(s-1))$ may stop
+  diverging, and diagonal entries of both arrays are not covered.
+\item \textbf{Slowly varying activities} (overlaps project~7 and 48.5):
+  $k^\alpha\ell(k)$, persistence of the logistic and Gumbel laws, multiscale
+  forward and inverse expansions.
+\item \textbf{Fluctuations in the number of parts} (overlaps project~6 and
+  48.3): a two-dimensional local theorem for $\prod(1+zk^\alpha q^k)^\mu$; no
+  conditional variance formula is asserted.
+\item \textbf{The full extreme point process} (overlaps project~5 and 48.4),
+  including multiplicities across layers and joint convergence with the
+  boundary occupations.
+\item \textbf{Quantitative error bounds and certified computation} (overlaps
+  project~8 and 48.7), including when saddle evaluation beats the quadratic
+  exact product.
+\item \textbf{Shape inequalities and discrete regularity}: eventual
+  log-concavity, ratio monotonicity, higher finite-difference inequalities.
+  \textit{[Batch 75, 2 October 2026.]} Eventual strict log-concavity and
+  fixed-degree Jensen hyperbolicity are proved for $\mu=1$ by source 75-01
+  (Theorems~\ref{dpn:jh:thm:concavity} and~\ref{dpn:jh:thm:jensen}); the rest
+  stays open.
+\item \textbf{Large deviations for the norm}: a joint theory for size and log
+  norm, with rate functions under uniform and norm-tilted measures, first
+  uniformly in $\alpha$ on compact intervals.
+\item \textbf{Formal verification in ProveIt} (overlaps project~8): exact
+  identities and rational reversion first; formalizing the elementary proof
+  would give a checked resolution of the leading conjecture before the
+  probability theory.
+\item \textbf{OEIS and bibliographic follow-through} (overlaps 48.8): formula
+  updates with exact quantifiers, and a broader search (norm-weighted strict
+  partitions, multiplicative statistics, variable-activity fermionic products)
+  before any novelty claim; independent review is the next validation step.
+\end{enumerate}
+
 \appendix
 \section{Reproduction guide and file manifest}
 Besides this source, its compiled PDF and the README, the report directory
@@ -2178,6 +3324,15 @@ File & Purpose\\
 \file{code/48-a022629-Makefile} & Source 48's build and verify targets (delivery layout).\\
 \file{data/48-a022629-*} & Source 48's exact table, recorded checks, symbolic output, table fragment, and requirements.\\
 \file{48-a022629-PROVENANCE.md} & Source 48's sources and verification record.\\
+\file{code/75-01-jensen-verify.py} & Source 75-01's exact tables, log-concavity audits and saddle comparisons.\\
+\file{code/75-01-jensen-derive_series.py} & Source 75-01's exact check of five forward and five inverse coefficients.\\
+\file{code/75-01-jensen-extra_checks.py} & Source 75-01's recurrence, Jensen root counts, precision comparison and Gaussian inverse.\\
+\file{data/75-01-jensen-*} & Source 75-01's exact table to $n=10000$, audits, saddle tables, symbolic output and requirements.\\
+\file{75-01-jensen-BUILD_AND_VALIDATION.txt}, \file{75-01-jensen-OEIS_PROPOSED_NOTES.md} & Source 75-01's build record and draft OEIS notes.\\
+\file{code/75-06-powers-formal.py} & Source 75-06's exact formal algebra: eight forward, seven inverse coefficients.\\
+\file{code/75-06-powers-numerics.py}, \file{code/75-06-powers-checks.py} & Source 75-06's exact coefficients and saddle estimates; recurrence and convolution checks.\\
+\file{data/75-06-powers-*} & Source 75-06's coefficient, numerical, verification and source-audit records and requirements.\\
+\file{75-06-powers-proposed_oeis_updates.txt} & Source 75-06's draft OEIS notes.\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -2196,6 +3351,24 @@ two \texttt{pdflatex} passes; source 48's were
 \texttt{python code/coefficients.py -{}-order 6} and
 \texttt{python code/verify.py -{}-max-n 6400 -{}-dps 45}.  The shipped names are
 those above; the delivered READMEs are replaced by the report README.}
+\mergenoteb{Source 75-01's appendix and source 75-06's Section~10.4 give
+these commands, in their delivered layouts:}
+\begin{lstlisting}
+python code/verify.py --exact --s 1 --nmax 10000      # 75-01; also --s 2, --s 3 with --nmax 2500
+python code/verify.py --s 1 --dps 40
+python code/verify.py --s 1 --samples 10000 --dps 60
+python code/verify.py --s 2 --samples 1000,2500 --dps 40   # and --s 3
+python code/derive_series.py
+python code/extra_checks.py
+python formal.py --order 8                            # 75-06
+python checks.py
+python numerics.py
+bash build.sh
+\end{lstlisting}
+Their manuscripts, PDFs and READMEs, source 75-01's \file{exact_s2.json} and
+\file{exact_s3.json}, and source 75-06's \file{build.sh} and
+\file{SHA256SUMS.txt} are not shipped; the README says how to rerun the
+programs on a copy.
 
 \section{Compact proposed OEIS formula updates}
 For the entry corresponding to $\alpha=1,\ldots,5$, write
@@ -2236,6 +3409,22 @@ upper bound.  Splitting the logarithm into its positive-part contribution and
 a smoothing remainder of width $O(\sqrt n/\log n)$ finishes the argument; see
 Section~\ref{dpn:48:sec:elementary}.
 \mergenote{The ``accompanying research report'' is now this report.}
+
+\subsection*{Sources 75-01 and 75-06's suggested notes}
+Both sources ship draft OEIS notes, not submitted or approved:
+\file{75-01-jensen-OEIS_PROPOSED_NOTES.md} and
+\file{75-06-powers-proposed_oeis_updates.txt}.  Beyond the expansion above
+(source 75-01 through $r^{-5}$, source 75-06 through $r^{-4}$, both in the
+form $\pi^{2j}$ or $u^j$), source 75-01 proposes for A022629 the log-concavity
+gap $\log(a(n)^2/(a(n-1)a(n+1)))\sim\log\sqrt{2n}/(2n)^{3/2}$, eventual
+hyperbolicity of fixed-degree Jensen polynomials (by the
+Griffin--Ono--Rolen--Zagier mechanism, which is not new), and the finite
+observation that $n=77,\dots,9999$ are strictly log-concave, explicitly not a
+proof that $77$ is the threshold.  Source 75-06 proposes the same formula for
+the positive columns of A292189 and, with $\mu K_\mu$ for $\alpha K$ and
+$u=\pi^2$, for the positive columns of A297321.  Both insist that a fixed
+truncation of a logarithmic expansion is not a relative asymptotic, and both
+ask for review and a broader priority search before use.
 
 \section{Verification boundaries and source audit of source 48}\label{dpn:48:app:audit}
 \begin{center}
@@ -2285,6 +3474,12 @@ Source & Archive (arrival commit) & Main file, PDF & Pin & Author line\\
   \file{article.tex}, 20 pp. & \texttt{dc1a7242d} & Research report prepared
   for Vladimir Reshetnikov; developed with AI assistance; proofs and
   computations supplied for review\\
+75-01 & \file{A022629_research_package.zip} (\texttt{4b874cea0}) &
+  \file{article.tex}, 20 pp. & \texttt{29aca108e} & Research report prepared
+  for Vladimir Reshetnikov (no AI wording)\\
+75-06 & \file{OEIS_Norm_Weighted_Partitions.zip} (\texttt{4b874cea0}) &
+  \file{article.tex}, 26 pp. & \texttt{29aca108e} & Prepared for Vladimir
+  Reshetnikov (no AI wording)\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -2326,6 +3521,61 @@ A022629 forms; its computations, projects, OEIS wording and audit table.
 \item Both data tables of A022629 are shipped (they agree on $n\le5000$).
 \item The two bibliographies are merged; source 48's OEIS item is source 40's
       \cite{oeis1}.
+\end{itemize}
+
+\paragraph{Batch 75.}
+Sources 75-01 and 75-06 are manuscripts 01 and 06 of batch 75 of the intake,
+both in the arrival commit \texttt{4b874cea0}; the placement commit
+\texttt{6ea60e367} staged their files under the prefixes \file{75-01-jensen-}
+and \file{75-06-powers-} and deleted the archives, which survive in the
+arrival commit.  The prefixes continue this report's source-numbered scheme,
+with the batch named so that \file{01-} and \file{06-} cannot be read as
+batch-73 manuscript numbers.  Both pin
+\texttt{29aca108ed25d714f31b1316512777fbbdc8e006} (1 October 2026), which
+already held the archives of sources 40 and 48 unopened.  Their texts share
+$0.55$--$1.41\,\%$ of their word 8-grams with sources 40 and 48 and with each
+other (preamble, OEIS references and standard displays): they are independent.
+
+\emph{What each contributed.}  Source 75-01: Lemma~\ref{dpn:jh:lem:cumulants}
+and Remark~\ref{dpn:jh:rem:naive}, Theorems~\ref{dpn:jh:thm:saddle},
+\ref{dpn:jh:thm:threshold}, \ref{dpn:jh:thm:concavity} and~\ref{dpn:jh:thm:jensen},
+the smooth approximant of Section~\ref{dpn:jh:sec:shape}, the finite data of
+Tables~\ref{dpn:jh:tab:errors} and~\ref{dpn:jh:tab:roots}, the analytic-inverse
+route of Section~\ref{dpn:sec:b75routes}, ten research questions and its OEIS
+notes.  Source 75-06: the second proof of
+Lemma~\ref{dpn:jh:lem:cumulants}, Section~\ref{dpn:cp:sec:powers} (the
+$\mu$-layer theorems, $\Delta_7$, $\Delta_8$, the OEIS identifications), the
+exact $b_8$, the coefficient-structure remark, the finite-size readings,
+twelve research questions and its OEIS notes.
+
+\emph{Where the batch-75 merge chose.}
+\begin{itemize}
+\item Placement: both sources were added to this report rather than filed
+      separately; a separate report would have repeated Sections~2--10.  The
+      convolution powers were not split off either: their coefficients are
+      the same $P_j$, and every proof is this report's at $n/\mu$.
+\item Duplicates: every result already proved here is recorded in
+      Table~\ref{dpn:tab:b75dup} and not reprinted; second-route text is kept
+      only where the argument differs (Section~\ref{dpn:sec:b75routes}, the
+      second proof of Lemma~\ref{dpn:jh:lem:cumulants}, and the $\mu$-layer
+      modifications of Section~\ref{dpn:cp:sec:powers}).
+\item Placement in the text: the new sections follow the conclusion, so that
+      every earlier section, theorem, equation and table keeps its number;
+      unnumbered merge notes in the earlier sections point forward.
+\item Base for the shared new results: source 75-01 for the sharp cumulant
+      scales and the remainder theorem (it proves the full remainder),
+      source 75-06's Proposition~5.4 as the second proof.
+\item Notation: this report's throughout; both sources' symbols are renamed as
+      in the second table of Section~\ref{dpn:sec:notation}.  New symbols:
+      $\mu$, $K_\mu$, $r_\mu$, $\epsh$, $n_*$, $\Delta_j$, $\mathcal J$,
+      $\mathsf H_d$, $\tau_n$, $\gamma_k$, $\mathcal R(n)$.
+\item Source 75-01's finite-size residuals at $\alpha=2,3$, which it reads as
+      slow convergence, are kept with its own words and identified by a merge
+      note as the noncentral contribution of Section~\ref{dpn:sec:resonance}.
+\item Both sources' novelty paragraphs and abstracts are replaced by
+      Section~\ref{dpn:sec:b75}; their priority caveats are kept there.
+\item Source 75-01's tables for $\alpha=2,3$ duplicate source 40's and are not
+      shipped; its $\alpha=1$ table, which extends the range to $n=10000$, is.
 \end{itemize}
 
 \clearpage
@@ -2405,6 +3655,52 @@ Consulted October 1, 2026.
 \bibitem{DLMFFermi} NIST Digital Library of Mathematical Functions,
 \emph{Section 25.12: Polylogarithms}, especially the Fermi--Dirac integral
 representations. \url{https://dlmf.nist.gov/25.12}. Consulted October 1, 2026.
+\bibitem{gorz} M. Griffin, K. Ono, L. Rolen, and D. Zagier, \emph{Jensen
+polynomials for the Riemann zeta function and other sequences}, Proceedings of
+the National Academy of Sciences \textbf{116}(23) (2019), 11103--11110.
+\href{https://doi.org/10.1073/pnas.1902572116}{doi:10.1073/pnas.1902572116};
+\url{https://arxiv.org/abs/1902.07321}.  Cited by source 75-01.
+\bibitem{kumar} A. Kumar and M. Rana, \emph{Statistical inequalities on
+partition norms}, The Ramanujan Journal \textbf{69} (2026), article 79,
+published March 3, 2026.
+\href{https://doi.org/10.1007/s11139-026-01350-4}{doi:10.1007/s11139-026-01350-4}.
+Source 75-01 inspected the publisher abstract and record only.
+\bibitem{fristedt} B. Fristedt, \emph{The structure of random partitions of
+large integers}, Transactions of the American Mathematical Society
+\textbf{337} (1993), 703--735.
+\url{https://doi.org/10.1090/S0002-9947-1993-1094553-1}.  Cited by source 75-06.
+\bibitem{lagarias} J. C. Lagarias and C. Sun, \emph{Asymptotics of reciprocal
+supernorm partition statistics}, The Ramanujan Journal \textbf{65} (2024),
+487--520. \url{https://doi.org/10.1007/s11139-024-00893-8}; preprint
+\url{https://arxiv.org/abs/2308.15303}.  Cited by source 75-06.
+\bibitem{oeis22630} OEIS Foundation Inc., \emph{A022630: Expansion of
+$\prod_{m\ge1}(1+mq^m)^2$} and \emph{A022631: Expansion of
+$\prod_{m\ge1}(1+mq^m)^3$}. \url{https://oeis.org/A022630},
+\url{https://oeis.org/A022631}.  Consulted October 2, 2026 (intake).
+\bibitem{oeis297321} OEIS Foundation Inc., \emph{A297321: Square array whose
+column $k$ is the expansion of $\prod_{j\ge1}(1+jx^j)^k$}.
+\url{https://oeis.org/A297321}.  Retrieved by source 75-06 through indexed
+OEIS content on October 1, 2026; definition confirmed by the intake on
+October 2, 2026.
+\bibitem{oeissigned} OEIS Foundation Inc., \emph{A022661: Expansion of
+$\prod_{m\ge1}(1-mq^m)$}, including the zero question attributed to Robert
+Israel, June 2, 2015. \url{https://oeis.org/A022661}.  Inspected by source
+75-01, October 1, 2026.
+\bibitem{proveit01} V. Reshetnikov, \emph{ProveIt}, repository map and the
+Lambert-$W$ drafts directory
+\nolinkurl{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/lambert-w/},
+as inspected by source 75-01 on October 1, 2026 (tree
+\texttt{29aca108ed25d714f31b1316512777fbbdc8e006}).
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{tai} [Added in the batch-75 merge.] ProveIt, \emph{Transseries and
+Inversion} volume,
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+Theorems \texttt{p0:thm:lambert-core}, \texttt{p0:thm:perturbed-inversion},
+\texttt{p0:thm:staircase} and \texttt{p0:thm:backward-error}.
+\bibitem{proveitLean} [Added in the batch-75 merge.] ProveIt, Lean file
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean},
+declarations \texttt{Fabius.staircase\_ceil} and
+\texttt{Fabius.staircase\_separation}.
 \end{thebibliography}
 }
 \end{document}

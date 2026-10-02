@@ -5,8 +5,9 @@ Research manuscript prepared for the ProveIt programme, 28 September 2026.
 
 ## Files
 
-- `article.pdf` — the 26-page article, including complete written proofs,
-  ten further research questions, a verification ledger, and references.
+- `article.pdf` — the 27-page article (since the editorial amendments of
+  2026-10-01 below), including complete written proofs, ten further
+  research questions, a verification ledger, and references.
 - `article.tex` — the self-contained LaTeX source used to generate that PDF.
 - `verify.py` — deterministic exact finite regression tests; standard library only.
 - `verification_results.json` — the successful run's machine-readable output.
@@ -172,3 +173,55 @@ Made in the editorial pass after batches 69 and 70 of `docs/incoming/` (see
   underfull box; no Type 3 font. The pages carrying the notes were rendered
   and inspected.
 - `README.md`: this section.
+
+## Editorial amendments (ProveIt, 2026-10-01)
+
+Made in the editorial pass after batch 73 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-10-01)`, every change to `verify.py` and the `Makefile`
+`ed. (2026-10-01)`. The mathematical text is unchanged.
+
+- `article.tex`: a third unnumbered environment `ednotethird` ("Editorial
+  note (ProveIt, 2026-10-01)") is defined after `ednotelater`. Two notes
+  cite the later unreviewed draft
+  `../Wasserstein_Contact_Orders_Uniform_Factor_Resonances/` (batch 73,
+  2026-10-01), which credits Proposition 3.9 (`prop:wasserstein`) and the
+  question "Optimal approximate factorization":
+  - after Proposition 3.9 and the leading-coefficient formula (24): that
+    draft's Lemma 2.1 compares Fourier derivatives instead of values (for
+    `mu` supported in `[-R, R]` and `eta` with finite first moment,
+    `|(hat mu)'(t) - (hat eta)'(t)| <= 2 pi (1 + 2 pi |t| R) W_1(mu, eta)`). When the
+    target zero is simple (`r = 1`, that is `A_1` does not divide `t_0`), the
+    factor's zero has order at least two, and the lemma gives
+    `W_1(mu_A, D_{1/m} mu_B * nu) >= a_1 / (2 pi (1 + 2 pi t_0 R_A))` for
+    every probability `nu`, linear in `a_1`, whereas (23) at the largest
+    admissible `h = a_1/(2 D_1)` is `a_1^2 / (8 pi D_1 (t_0 + h))`. The draft
+    has no analogue for `r >= 2` and no upper bound for ladder targets;
+  - after the 2026-09-30 note to "Optimal approximate factorization": the
+    rate left open there is known. `inf_nu W_1(mu_q, U_{1/2} * U_{1/3} * nu)`
+    is of exact first order at `q = 1/2`, with one-sided coefficients between
+    `|P|/(6 pi (1 + 12 pi))` (about `6.33e-5`;
+    `P = prod_{k>=2} sinc(6 * 2^(-k)) = -0.0462...` in this article's
+    normalized `sinc`) and `1/4`, and at most `|q - 1/2|/4` for every `q`;
+    for `U_{1/B} * U_{B^-j}` (fixed integers `B >= 2`, `j >= 1`) it is of
+    exact order `|q - 1/B|^j` on both sides of `1/B`. The question itself,
+    for divisibility-ladder targets, remains open.
+- `article.pdf`: rebuilt from the amended source by three `pdflatex` passes
+  (MiKTeX 26.2, pdfTeX 1.40.29), on a copy: 27 pages (26 before), 554,705
+  bytes, A4; no error, undefined reference, multiply defined label,
+  duplicate destination, overfull or underfull box; every font embedded, no
+  Type 3 font. The pages carrying the notes were rendered and inspected.
+  The source is now 1,853 lines/90,077 bytes.
+- `verify.py`: without `--output` it now writes
+  `rerun/verification_results.json` beside itself (as delivered it wrote
+  `verification_results.json` in the current directory), and it writes LF
+  line endings on every platform (as delivered, CRLF on Windows). The
+  command under "Reproduce", run in this directory, still overwrites the
+  recorded file: run it on a copy, or omit `--output`. A rerun on a copy
+  (2026-10-01, `py verify.py`, Python 3.14.4) passed and wrote a file equal
+  to `verification_results.json` byte for byte. On the ProveIt machine use
+  `py` for `python3`.
+- `Makefile`: its `verify` target now writes `rerun/verification_results.json`;
+  its `pdf` target still compiles in this directory and overwrites the filed
+  PDF, so build on a copy.
+- `README.md`: the page count under "Files", and this section.

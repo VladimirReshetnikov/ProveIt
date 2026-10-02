@@ -606,6 +606,27 @@ is a fixed pair of uniforms, so neither statement contains the other. That
 article's question ``Optimal approximate factorization'' now carries a note
 pointing to \cref{thm:metric,thm:perturbation}.
 \end{ednote}
+% ed. (2026-10-01): the exponent near q = 1/2 is settled by a later draft (batch 73)
+\begin{ednotelater}
+For $N=2$, $M=3$ the exponent is now known near $q=1/2$. The later
+unreviewed draft
+\path{../Wasserstein_Contact_Orders_Uniform_Factor_Resonances/}
+of this group (batch~73 of the repository's \path{docs/incoming/},
+2026-10-01), written in this article's normalization, compares Fourier
+\emph{derivatives} at the double zero rather than values just beyond it.
+Since $\mu_q$ is supported in $[-R_q,R_q]$, $R_q=1/(2(1-q))$, and the
+transform of $\sigma*\nu$ has derivative zero at $T$ for every $\nu$ with
+finite first moment, its Lemma~2.1 (\texttt{lem:derivative}) and
+inequality~(2) give, under the hypotheses of \cref{thm:metric},
+\[
+ W_1(\mu_q,\sigma*\nu)\ \ge\ \frac{D_q}{2\pi(1+2\pi TR_q)},
+\]
+linear in $D_q$ where \eqref{eq:metric-bound} is quadratic. Near $q=1/2$,
+where $D_q\sim|P|\,|q-1/2|/3$ with $P=\prod_{k\ge2}\sinc(6\pi2^{-k})\approx-0.0462$,
+\eqref{eq:metric-bound} is of order $(q-1/2)^2$ and this bound of order
+$|q-1/2|$, which is the exact order (see the note after the question
+``Sharp distance to a resonance'' in \cref{sec:questions}).
+\end{ednotelater}
 
 \section{Exact factorability can vanish under small perturbations}\label{sec:perturbation}
 \begin{theorem}[An explicit resonant/nonresonant transition]\label{thm:perturbation}
@@ -652,6 +673,26 @@ The function $\Delta$ is locally Lipschitz on $(0,1)$ and satisfies
 Distance to any fixed nonempty subset in a metric space is a one-Lipschitz function of the point. Apply this fact to the subset $\{\sigma*\nu:\nu\in\mathcal P_1(\R)\}$ and use \eqref{eq:coupling}.
 \end{proof}
 The discontinuity here is in the yes/no property of \emph{exact} factorability, not in the distance function. In particular, no uniform positive separation survives as the nonresonant parameters approach the displayed resonance. This distinction matters when interpreting numerical evidence for a putative factorization.
+% ed. (2026-10-01): a smaller upper bound for every q, from a later draft (batch 73)
+\begin{ednotelater}
+The bound \eqref{eq:transition-upper} is improved for every $q$ in
+\path{../Wasserstein_Contact_Orders_Uniform_Factor_Resonances/}
+(batch~73, unreviewed; its Theorem~1.1, \texttt{thm:linear}) by adapting
+the whole remainder to $q$ instead of keeping the remainder of
+\eqref{eq:dyadic-example}. Split source coordinate~$0$ as
+$U_0=U'/3+D_3$; then $\mu_q$ is the law of
+$U'/3+D_3+qU_1+\sum_{k\ge2}q^kU_k$, and replacing $qU_1$ by $U_1/2$
+gives the law $\sigma*\nu_q$, $\nu_q=\Law(D_3+\sum_{k\ge2}q^kU_k)$, at
+coupling cost $|q-1/2|\,\E|U_1|$. Hence
+\[
+ \Delta(q)\le\frac{|q-1/2|}{4}\qquad(0<q<1),
+\]
+smaller than \eqref{eq:transition-upper} for every $q$, since
+$2(1-q)<4$. The same theorem gives
+$\Delta(q)\ge|\Phi_q'(6)|/(2\pi(1+12\pi R_q))$ for every $q$ (the note
+after Remark~8.2), so along the sequence of \cref{thm:perturbation}
+$\Delta(q_j)$ is of exact order $1/j$.
+\end{ednotelater}
 
 \section{Regularity of remainders: a sharp conceptual warning}\label{sec:regularity}
 The arithmetic criteria decide whether a remainder is a probability measure. They do not force that remainder to have a smooth density. This section separates a sufficient smoothing condition from a classical singular example.
@@ -846,6 +887,36 @@ The present first-zero argument starts with a whole uniform zero lattice. Arbitr
 Determine the asymptotic order of $\Delta(q)$ from \cref{thm:perturbation} as $q\to1/2$ along a specified nonresonant family. Is the shared-coordinate upper bound of first order sharp, or can the remainder be adjusted to cancel the leading perturbation?
 \end{question}
 The lower bound in \cref{thm:metric} is deliberately robust rather than optimal. Several formerly coincident source zeros can split at different orders, so an exact asymptotic requires more than inserting $q$ into a single derivative product.
+% ed. (2026-10-01): answered by a later draft (batch 73)
+\begin{ednotelater}
+Answered, for every approach to $1/2$ and not only along a nonresonant
+family, by the later unreviewed draft
+\path{../Wasserstein_Contact_Orders_Uniform_Factor_Resonances/}
+(batch~73 of the repository's \path{docs/incoming/}, 2026-10-01), which
+cites this question: the shared-coordinate upper bound is of the sharp
+first order, and adapting the remainder cannot cancel the leading
+perturbation. By its Theorem~1.1 (\texttt{thm:linear}) there are
+constants $c_+,c_-$ with
+\[
+ \frac{|P|}{6\pi(1+12\pi)}\le c_\pm\le\frac14,\qquad
+ \Delta(1/2\pm t)=c_\pm t+o(t)\quad(t\downarrow0),
+\]
+where $P=\prod_{k\ge2}\sinc(6\pi2^{-k})\approx-0.0462$ (the lower
+constant is about $6.33\cdot10^{-5}$), and $\Delta(q)\le|q-1/2|/4$ for
+every $q$. The coefficients are the $L^1$ distances of $\pm v$, the
+derivative at $q=1/2$ of the distribution function of $\mu_q$, to the
+closed cone generated by the differences $F_{\sigma*\nu}-F_{\mu_{1/2}}$;
+they are not evaluated, and whether $c_+=c_-$ is left open there. The
+lower bound compares Fourier derivatives at the double zero $t=6$ (the
+note after Remark~8.2); the upper bound is the coupling in the note after
+Corollary~\ref{cor:distance-continuity}. The same draft shows (its Theorem~1.2,
+\texttt{thm:hierarchy}) that for $\sigma=\Un_{1/B}*\Un_{B^{-j}}$, with
+fixed integers $B\ge2$ and $j\ge1$, the distance is of exact order
+$|q-1/B|^j$ on both sides of $1/B$, by constructing probability
+remainders; no estimate uniform in $B$ or $j$ is claimed. It gives
+$\Delta\le6259(q-1/2)^2$ for $\Un_{1/2}*\Un_{1/4}$ when
+$|q-1/2|\le1/100$ (its Theorem~1.3).
+\end{ednotelater}
 
 \begin{question}[Stable finite-band inverse problems]
 If a measured transform approximately equals a prescribed uniform product times a characteristic function on $[-T,T]$, what quantitative lower bounds on rational separation are needed to recover source-coordinate assignments reliably? Formulate a theorem in which measurement tolerance, frequency range, and Diophantine separation all appear explicitly.

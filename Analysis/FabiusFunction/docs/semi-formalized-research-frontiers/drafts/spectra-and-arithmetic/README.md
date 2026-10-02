@@ -234,8 +234,8 @@ Manuscript theorem labels do not imply Lean proof status.
 
 Archival arrival of 2026-09-28:
 [`Arithmetic_Convolution_Factors_Fabius_Type_Laws/`](Arithmetic_Convolution_Factors_Fabius_Type_Laws/),
-*Arithmetic Convolution Factors of Fabius-Type Laws* (26-page A4 PDF,
-1,813-line source, an exact standard-library regression program), filed by
+*Arithmetic Convolution Factors of Fabius-Type Laws* (27-page A4 PDF,
+1,853-line source, an exact standard-library regression program), filed by
 a quick archival intake from the repository-level `docs/incoming/` drop
 zone.  It classifies scaled convolution factorizations
 `μ_A = D_c μ_B * ν` of laws of `Σ_k U_k/A_k` along divisibility ladders:
@@ -252,7 +252,11 @@ item 1 of the reciprocal-integer report's `conj:general-base` for every
 integer base (that report now carries a note of 2026-09-30 saying so).
 Editorial notes of 2026-09-30 point its questions "Beyond divisibility
 ladders", "Two arbitrary geometric ratios" and "Optimal approximate
-factorization" to the off-resonance article below.
+factorization" to the off-resonance article below.  Notes of 2026-10-01
+record that the Wasserstein contact-order arrival below credits its
+Wasserstein proposition, sharpens its simple-zero case, and settles, for
+geometric targets, the rate that the 2026-09-30 note left open (its
+question on divisibility-ladder targets stays open).
 Unreviewed; no Lean statement.
 
 Archival arrival of 2026-09-29:
@@ -280,7 +284,7 @@ records this.  Unreviewed; no Lean statement.
 
 Archival arrival of 2026-09-30:
 [`Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/`](Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/),
-*Arithmetic Rigidity off Resonance* (25-page US Letter PDF, 949-line
+*Arithmetic Rigidity off Resonance* (26-page US Letter PDF, 1,020-line
 source, an exact standard-library certificate program), filed by a
 quick archival intake from the repository-level `docs/incoming/` drop
 zone and amended editorially the same day and on 2026-10-01 (its README
@@ -309,7 +313,11 @@ re-proved, uncited, by
 when no power of `q` is rational), and two other notes of that series
 carry out the finite Laurent-polynomial step of its question "Composite
 reciprocal returns" for finite sources; editorial notes of 2026-10-01
-record both.  Unreviewed; no Lean statement.
+record both.  Its question "Sharp distance to a resonance" is answered
+by the arrival below (exact first order at `q = 1/2`, and at most
+`|q − 1/2|/4` for every `q`, below its bound `|q − 1/2|/(2(1 − q))`);
+three further notes of 2026-10-01 record this.  Unreviewed; no Lean
+statement.
 
 Archival arrival of 2026-10-01:
 [`Wasserstein_Contact_Orders_Uniform_Factor_Resonances/`](Wasserstein_Contact_Orders_Uniform_Factor_Resonances/),
@@ -328,8 +336,14 @@ both sides, for every fixed integer base `B ≥ 2` and depth `j ≥ 1`:
 every positive integer contact order occurs.  The lower bounds compare
 Fourier derivatives at a double zero; the upper bounds construct
 genuine probability remainders.  It credits the arithmetic-factor
-article's `prop:wasserstein` and the article above.  Unreviewed; no
-Lean statement.
+article's `prop:wasserstein` and the article above.  An editorial pass
+the same day recorded in its README the unfiled first edition, an
+attribution note (the contact-order mechanism itself is in those two
+articles; the derivative comparison at the zero and the constructive
+upper bounds are new), and the Lean counterparts of its transform
+identity and first-coordinate split, placed reciprocal notes in both
+articles, and made its checkers also write their receipts to `rerun/`.
+Unreviewed; no Lean statement.
 
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
