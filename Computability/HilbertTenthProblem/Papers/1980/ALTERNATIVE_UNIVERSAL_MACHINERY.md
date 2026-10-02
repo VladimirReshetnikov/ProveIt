@@ -27,6 +27,18 @@ full surjectivity, with no bijection claim. Supplied-initial770 has126
 witnesses and exact degree9484; single-pair769 forms retain useful degree
 tradeoffs. These save four additions while increasing degree.
 
+The [complete signed-bound factor family](../research-wip/native-stream-queue/gpcp_bound_factor_partitions.md)
+checks64 bases and960 optimal literal ledgers. With125 witnesses its
+operation/exact-degree frontier is **767/228339,768/154765,769/153683,
+770/119410,772/110164,774/101326**. With126 witnesses it is **770/9484,
+771/7280,772/6198,773/6156,774/5074,775/4106,776/3384,777/3304,782/3046**.
+The geometry index unit must share its group with another enabled bound
+unit or the global unit to give the proved positive section at index gap1.
+The floors101326 and3046 are exact for this64-base admissible family.
+At fixed strong treatment the slack map is a full positive surjection;
+changing strong treatment preserves only the outer projection with fresh
+private auxiliaries. No unrestricted-factor or all-circuit optimum is claimed.
+
 The preceding [checksum/global-unit sparse-TM compiler](../research-wip/native-stream-queue/gpcp_checksum_global_units771.md)
 gives **706 certificate /771=352M+419A operations**,22 comparisons,
 125 positive witnesses, three positive program parameters, ordinary input
@@ -290,7 +302,23 @@ These are exact finite propagated minima, not exact degrees or unrestricted
 lower bounds. Across strong/scale bases, the accepted outer relation is
 preserved by explicit scale maps and canonical private strong extensions.
 
-The [typed upper-transport C2 compiler](../research-wip/native-stream-queue/tseytin_upper_transport_unit381.md)
+The [all-unit query C2 compiler](../research-wip/native-stream-queue/tseytin_query_unit378.md)
+gives **377 certificate /378=175M+203A operations**, one comparison,
+62 positive witnesses, one fixed positive program parameter and ordinary
+input, with degree at most4713. Exact residues exclude both query-unit
+signs at the wrong power, then force+1 at the correct power before history
+typing. The last ordinary comparison disappears, so the complete default
+polynomial is its unit product minus1. The full supplied positive zero
+set equals its380 parent on valid program slices; its SOS form costs379.
+
+The intervening [lower-transport compiler380](../research-wip/native-stream-queue/tseytin_lower_transport_unit380.md)
+shifts the private initial coordinate by1 and uses delimiter conservation
+to exclude a negative lower sign after chronology is recovered. Its full
+valid-slice bijection with381 is I_parent=I_new+1; the378 step keeps that
+shifted coordinate unchanged. This distinction prevents applying the
+initial shift twice when composing the two proofs.
+
+The preceding [typed upper-transport C2 compiler](../research-wip/native-stream-queue/tseytin_upper_transport_unit381.md)
 gives **373 certificate /381=176M+205A operations**, three comparisons,
 62 positive witnesses, one fixed positive program parameter and ordinary
 input, with degree at most4717. The recovered history digit range excludes
