@@ -21,6 +21,9 @@ logarithms of huge integers, external sequence files, or network access are used
 Numerical residuals illustrate fixed-order asymptotics; they are not rigorous
 finite-k error bounds or evidence of a uniform optimal-truncation theorem.
 All results are deterministic. Output paths default to this project's results/.
+ed. (2026-10-02): JSON files (also those of inverse_checks.py, which uses
+write_json) are written with LF line endings on every platform (as delivered,
+the platform's, so CRLF on Windows); the CSV files always were LF.
 """
 
 from __future__ import annotations
@@ -236,8 +239,9 @@ def polynomial_string(coefficients: list[int]) -> str:
 
 def write_json(path: Path, value: object) -> None:
     """Write readable UTF-8 JSON with deterministic ordering and newline."""
+    # ed. (2026-10-02): newline="\n" so the file is LF on Windows too.
     path.write_text(json.dumps(value, indent=2, ensure_ascii=True) + "\n",
-                    encoding="utf-8")
+                    encoding="utf-8", newline="\n")
 
 
 def write_csv(path: Path, rows: list[dict[str, object]]) -> None:

@@ -14,6 +14,8 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-10-02): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-02)}
 \newcommand{\E}{\mathbb E}
 \newcommand{\e}{\mathrm e}
 \newcommand{\ii}{\mathrm i}
@@ -515,6 +517,18 @@ $N_d(x)=\min\{j\ge j_0:d_j\ge x\}$ is well defined for large $x$. For some $C'>0
 \end{equation}
 The same comparison argument proves this enclosure. Hence $N_d(x)=r_d(x)+\Ord(1)$, rather than an unqualified $o(1)$ claim for an integer-valued inverse. For large targets a finite initial set of coefficients has no effect. Neither $j_0$ nor the enclosure constants are made effective by this proof.
 
+% ed. (2026-10-02): names the repository apparatus that this section re-derives without citing it (batch-77 placement dossier).
+\begin{ednote}
+Both inverses of this section are cases of the inversion apparatus of the canonical transseries volume \cite{ed:tai}, which the article does not cite; the method is the volume's, and only the coefficients of \eqref{eq:ra} and \eqref{eq:J} are new to the repository.
+The core $N(\log N-1)=Y$ of \eqref{eq:inverseN} is the volume's factorial core, Proposition~J.27 (\path{p0:prop:factorial-core}), with $\kappa=1$, $d=-1$, whose solution $\exp(v+1)$, $v=W_0(Y/\e)$, is $Y/W(Y/\e)$; it is also the core $T(\log T-1)=R$ of the volume's gamma inverse (Section~Q.5, \path{p6:sec:gamma}). The core of \eqref{eq:J} is the same proposition with $\kappa=1$, $d=-1-\log4$.
+In the displacement $n=N(1+E)$ the finite model \eqref{eq:loga} becomes
+$LE+[(1+E)\log(1+E)-E]+f(t,E)=0$ with $t=N^{-1/2}$ and
+$f=4t(1+E)^{1/2}+\frac{55}{24}t^3(1+E)^{-1/2}-\frac{37}{96}t^4(1+E)^{-1}$,
+which is the volume's reversion about an arbitrary core, Theorem~J.33 (\path{p0:thm:core-reversion}), with $\Lambda=L$ and the kernel $h$ of its gamma and double-factorial instances (Remark~J.34, \path{p0:rem:core-instances}); its triangular recurrence returns $A$, $B$, $C$ above. The late-coefficient inverse is the same theorem with $\Lambda=L_d$, $t=1/J$ and $f=-\frac12t\bigl(\log J+\log(1+E)\bigr)+\frac1{12}t^2(1+E)^{-1}$, whose first coefficient is $\log J/(2L_d)$.
+The editors repeated both reversions symbolically: $A=-4/L$, $B=8/L^2-8/L^3$, the coefficient of $N^{-1/2}$ in \eqref{eq:ra} (also through the intermediate formula for $C$), and the residual $(\delta^2/2-\delta/2+1/12)/J$ of the late inverse agree.
+The mean-value steps are the volume's residual-to-root conversion, Theorem~J.47 (\path{p0:thm:backward-error}). The enclosures \eqref{eq:thresholda} and \eqref{eq:thresholdd} are the separation condition of its staircase theorem, Theorem~J.43(2) (\path{p0:thm:staircase}): if $|x_\ast-\nu(x)|\le\eta$ for the inverse $\nu$ of an admissible interpolation (Definition~J.41, \path{p0:def:three-inverses}) and $\lceil x_\ast-\eta\rceil=\lceil x_\ast+\eta\rceil$, the threshold is that common value. The article avoids choosing an interpolation by comparing the discrete values with the smooth model directly, which is why its enclosures carry two ceilings.
+\end{ednote}
+
 \section{A fixed number of colors}
 The same leading argument has a useful counting generalization. For each fixed positive integer $q$, define
 \[
@@ -608,6 +622,11 @@ The two precision runs differ by at most $1.04\times10^{-196}$ under the metric 
 
 The package's README gives one-command replay and PDF rebuild instructions. The manifest checks the distributed files, and the replay compares regenerated result files. All paths are relative. The exact arithmetic outputs are exact; stability under higher precision is evidence about the floating-point calculations, not an interval certificate.
 
+% ed. (2026-10-02): the checksum manifest was not kept on filing, so the delivered one-command replay stops at its first step.
+\begin{ednote}
+In ProveIt the manifest \texttt{MANIFEST.sha256} is not shipped: it was verified in full on filing and retired, as the repository does for every checksum ledger. The delivered \texttt{reproduce.sh} calls \texttt{scripts/verify\_manifest.py} first, so it stops there; the package README says how to run the replay and compare its results without it. Since 2026-10-02 the replay writes its result files with LF line endings on every platform; as delivered it used the platform's, so the comparison of regenerated results failed on Windows.
+\end{ednote}
+
 \section{Sources and boundaries of the conclusion}
 The input definitions and conjecture were read from accessible indexed OEIS entry content on 2 October 2026. Direct entry, sequence-text and b-file retrieval attempts did not produce a fresh downloadable source snapshot: direct requests returned access errors and b-file requests failed. The exact finite checks here therefore validate the internally derived rational coefficients and displayed entry examples, not raw OEIS b-files. The package includes source links and a short retrieval account, not third-party full texts.
 
@@ -634,6 +653,8 @@ Several questions remain beyond the established scope:
 \bibitem{dlmfgamma} NIST Digital Library of Mathematical Functions, 5.9.2, reciprocal-Gamma Hankel integral, \url{https://dlmf.nist.gov/5.9.E2}.
 \bibitem{dlmfstirling} NIST Digital Library of Mathematical Functions, \S5.11, especially 5.11.8, shifted logarithmic Gamma expansion, \url{https://dlmf.nist.gov/5.11.E8}.
 \bibitem{borinsky} M. Borinsky, \emph{Generating asymptotics for factorially divergent sequences}, Electron. J. Combin. \textbf{25}(4) (2018), Paper 4.1. Proposition 22, Theorem 35 and Lemma 37; version 4, \url{https://arxiv.org/html/1603.01236v4}.
+% ed. (2026-10-02): entry for the editorial note in the section on asymptotic inverses (key prefixed ed:).
+\bibitem{ed:tai} [Editorial addition, ProveIt, 2026-10-02.] ProveIt, \emph{Transseries: the polynomial-logarithmic calculus, series reversal at infinity, and inversion} (canonical volume), \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}, Part~X (chapter \path{p0:sec:top}) and Section~Q.5 (\path{p6:sec:gamma}).
 \end{thebibliography}
 \endgroup
 \end{document}

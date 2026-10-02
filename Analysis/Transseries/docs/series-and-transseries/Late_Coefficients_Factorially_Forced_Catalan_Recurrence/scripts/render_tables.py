@@ -60,7 +60,9 @@ def render_tables(output: Path) -> Path:
                   r"\caption{Lambert seed and selected smooth-model inverse errors at $y=c_k$. Here $x_J^{\rm G}$ solves $\Gamma(x)\rho^{-x}Q_J((x-1)^{-1})=y$, while $x_*$ is the Lambert seed. These are numerical smooth-model errors, not integer-threshold error certificates.}",
                   r"\label{tab:inverse-checks}", r"\end{table}", ""]
     path = output / "numerical_tables.tex"
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    # ed. (2026-10-02): newline="\n" so the file is LF on Windows too (as
+    # delivered, the platform's line endings).
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
     return path
 
 

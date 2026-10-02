@@ -52,5 +52,7 @@ for n in [10,20,30]:
     assert abs(est-n)<m.mpf('0.1')/n**3, ('original moment inverse sanity',n,est-n)
     orig.append({'n':n,'estimate':m.nstr(est,35),'error':m.nstr(est-n,20)})
 r={'assertion_scope':'Finite consistency checks: density relative error <1e-50; 0<J<1; J four-term error <N^-4 for N>=5; late-index inverse error <2/n^2; original-moment inverse error <0.1/n^3. Inverse-sector family (36c-h) is not numerically tested.', 'moment_density_checks':rows,'late_index_inverse_checks':inv,'original_moment_inverse_checks':orig}
-(D/'analytic_verification.json').write_text(json.dumps(r,indent=2)+'\n')
+# ed. (2026-10-02): newline='\n' so the file is LF on Windows too (as delivered,
+# the platform's line endings). It is written beside this script; run it on a copy.
+(D/'analytic_verification.json').write_text(json.dumps(r,indent=2)+'\n',newline='\n')
 print(json.dumps(r,indent=2))

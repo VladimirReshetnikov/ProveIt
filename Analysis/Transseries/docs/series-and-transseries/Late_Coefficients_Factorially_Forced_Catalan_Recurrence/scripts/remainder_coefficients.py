@@ -39,6 +39,8 @@ for t in range(1,J+2):
   z=mul(inverse_falling(u,J+1),inverse_falling(t-1-u,J+1),J+1)
   for k in range(J+1):odd[k]+=b[t]*z[k]
 x={'b':b[1:],'even':[str(z) for z in even[:J+1]],'odd':[str(z) for z in odd[:J+1]]}
-(P/'scalar-coefficients.json').write_text(json.dumps(x,indent=2)+'\n')
+# ed. (2026-10-02): newline='\n' so the file is LF on Windows too (as delivered,
+# the platform's line endings).
+(P/'scalar-coefficients.json').write_text(json.dumps(x,indent=2)+'\n',newline='\n')
 
 print("Wrote scalar-coefficients.json")

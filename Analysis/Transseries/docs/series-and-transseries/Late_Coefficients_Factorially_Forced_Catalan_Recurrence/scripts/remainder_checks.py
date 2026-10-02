@@ -54,6 +54,8 @@ for n in [40,41,100,101,200,201,400,401,1000,1001]:
   row['errors'][str(J)]=dec(rat-model)
  num.append(row)
 out={'exact_checks':checks,'numerical_checks':num}
-(P/'remainder-checks.json').write_text(json.dumps(out,indent=2)+'\n')
+# ed. (2026-10-02): newline='\n' so the file is LF on Windows too (as delivered,
+# the platform's line endings).
+(P/'remainder-checks.json').write_text(json.dumps(out,indent=2)+'\n',newline='\n')
 
 print("Wrote remainder-checks.json")

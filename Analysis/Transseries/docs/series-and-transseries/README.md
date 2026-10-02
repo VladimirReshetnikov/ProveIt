@@ -4,9 +4,8 @@ This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
 2026-09-04 (see the end of this file). Beside them are fifty-five unmerged
 arrivals, fifty of 2026-09-29, one of 2026-09-30, one of 2026-10-01 and
-three of 2026-10-02, each filed whole with its PDF, the first fifty-two
-then amended editorially (see "Arrivals of 2026-09-29 to 2026-10-02"
-below).
+three of 2026-10-02, each filed whole with its PDF and then amended
+editorially (see "Arrivals of 2026-09-29 to 2026-10-02" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -1952,7 +1951,7 @@ leaves the Borel singularities at actions 2, 3, … open (article.tex:621-623)
 and is not formalized.
 
 [`Late_Growth_Bessel_Counting_Coefficients/`](Late_Growth_Bessel_Counting_Coefficients/)
-holds *Late growth of Bessel counting coefficients* (639-line source, its
+holds *Late growth of Bessel counting coefficients* (660-line source, its
 PDF, an exact check suite). For A336293, `a_n = Σ C(n,k)² C(2k,k) (n−k)!`,
 and its half-power coefficients `d_j` (A395976/A395977) it proves
 `d_j = (2e²/(π 4^j)) {Σ_{m<M} 16^m c_m Γ(j−2m) + O(Γ(j−2M))}` with a finite
@@ -1964,7 +1963,7 @@ apparatus for a rapidly growing function" (`p0:sec:top`); its
 factorial-series algebra is Borinsky's; not formalized.
 
 [`Late_Coefficients_Three_Letter_Abelian_Squares/`](Late_Coefficients_Three_Letter_Abelian_Squares/)
-holds *Late coefficients of three letter abelian squares* (889-line source,
+holds *Late coefficients of three letter abelian squares* (938-line source,
 its PDF, check programs). It proves A274600's conjectured
 `a_n ~ (2/log 3)^n (n−1)!/(π√3)` with every fixed correction, the exact
 normalized Borel transform, the median-Laplace representation and a nonzero
@@ -1976,7 +1975,7 @@ of `p0:thm:lambert-core`; not formalized.
 
 [`Late_Coefficients_Factorially_Forced_Catalan_Recurrence/`](Late_Coefficients_Factorially_Forced_Catalan_Recurrence/)
 holds *Late coefficients of the factorially forced Catalan recurrence*
-(720-line source, its PDF, check programs). For A229741,
+(753-line source, its PDF, check programs). For A229741,
 `a_n = n! + Σ a_i a_{n−1−i}`, it proves the A260879 conjecture
 `c_k ~ Γ(k)/(log 2)^k` with every fixed correction, an exact positive
 Stirling transform, smooth inverses and threshold enclosures for both
@@ -2110,9 +2109,11 @@ CRLF on Windows; the diagnostics CSV was always LF).
 The eleventh delivery has no carriage return in any file, and since its
 editorial pass its program writes LF on every platform (as delivered, it
 used the platform's line endings, CRLF on Windows).
-The twelfth delivery has no carriage return in any file; as delivered, its
-programs use the platform's line endings (CRLF on Windows), so their byte
-comparisons fail on Windows until an editorial pass makes them write LF.
+The twelfth delivery has no carriage return in any file, and since its
+editorial pass its programs write LF on every platform (as delivered, they
+used the platform's line endings, CRLF on Windows, so their byte
+comparisons failed on Windows; a rerun of the amended programs reproduced
+all twenty recorded outputs of the three packages byte for byte).
 
 The inverse-harmonic package's `verification/run.log` and
 `verification/certification.log` are byte-identical to its `results.json`

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """Exact arithmetic checks for the A274600 proof; no network required."""
+# ed. (2026-10-02): both output files are written with LF line endings on every
+# platform (as delivered, the platform's, so CRLF on Windows, where the cmp of
+# replay.sh then failed). They are written beside this script; run it on a copy.
 from fractions import Fraction as Q
 from math import factorial,comb
 from pathlib import Path
@@ -68,7 +71,8 @@ def main():
             row['errors'][str(r)]=mp.nstr(exact-est,18)
         stats.append(row)
     report={'first_terms_verified':len(first),'independent_germ_terms_verified':31,'largest_index_generated':500,'d_coefficients':[str(x) for x in d],'asymptotic_checks':stats}
-    (D/'verification.json').write_text(json.dumps(report,indent=2)+'\n')
-    (D/'coefficients_0_500.txt').write_text('\n'.join(f'{n} {v}' for n,v in enumerate(a))+'\n')
+    # ed. (2026-10-02): newline='\n' in both writes.
+    (D/'verification.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
+    (D/'coefficients_0_500.txt').write_text('\n'.join(f'{n} {v}' for n,v in enumerate(a))+'\n',newline='\n')
     print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

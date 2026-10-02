@@ -4,6 +4,9 @@
 Run from any working directory: python path/to/scripts/replay.py
 Requires Python >=3.10 and mpmath==1.3.0; no external data or network used.
 Output paths are resolved relative to this script; JSON is deterministic.
+ed. (2026-10-02): every output file is written with LF line endings on every
+platform (as delivered, the platform's, so CRLF on Windows). The outputs still
+go into results/ beside the recorded files and replace them; run on a copy.
 """
 from fractions import Fraction as Q
 import json
@@ -21,7 +24,9 @@ RESULTS.mkdir(exist_ok=True)
 
 
 def save(name, payload):
-    (RESULTS / name).write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
+    # ed. (2026-10-02): newline='\n' so the file is LF on Windows too.
+    (RESULTS / name).write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8',
+                                newline='\n')
 
 
 def fmt(x, digits=70):
@@ -208,7 +213,9 @@ def write_tables(late_rows, original_rows, inverse_rows):
         lines.append(f"{row['j']} & {short(row['first_corrected_minus_j'])} & "
                      f"{short(row['model_root_minus_j'], 8)} " + r'\\')
     lines += [r'\end{tabular}', '']
-    (RESULTS / 'numerical_tables.tex').write_text('\n'.join(lines), encoding='utf-8')
+    # ed. (2026-10-02): newline='\n' so the file is LF on Windows too.
+    (RESULTS / 'numerical_tables.tex').write_text('\n'.join(lines), encoding='utf-8',
+                                                  newline='\n')
 
 
 def main():

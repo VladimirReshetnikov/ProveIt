@@ -16,6 +16,9 @@
 \setlist{itemsep=3pt,topsep=5pt}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \allowdisplaybreaks[2]
+% ed. (2026-10-02): unnumbered environment for ProveIt editorial notes (no counter is used; upright body).
+\theoremstyle{remark}
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-02)}
 \title{\textbf{Late coefficients of three letter\\abelian squares}\\[0.5em]\large All fixed late orders and exact inverse Stokes sectors}
 \author{A274600 research note}
 \date{2 October 2026}
@@ -706,6 +709,52 @@ distinguishes the physical inverse from the mean of the two lateral
 inverses. The exact sector generator concerns this specified lateral
 family; it does not assert that all possible distant-sheet sectors of
 the original Borel transform have been classified.
+
+% ed. (2026-10-02): names the repository apparatus that the three inversions re-derive without citing it (batch-77 placement dossier).
+\begin{ednote}
+The three inversions (31)--(34), (35)--(36) and (36c) are cases of the
+inversion apparatus of ProveIt's canonical transseries volume,
+\emph{Transseries: the polynomial-logarithmic calculus, series reversal
+at infinity, and inversion} (Part~X, chapter \path{p0:sec:top}), which
+the article does not cite (its repository searches in
+Section~\ref{provenance-and-scope-of-the-novelty-check} looked for the
+sequence numbers and ``honeycomb''); the method is the volume's, and only
+the coefficients are new to the repository. The volume's source is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+
+\emph{Late coefficients.} The seed (31) solves the volume's factorial core,
+Proposition~J.27 (\path{p0:prop:factorial-core}), with \(\kappa=1\),
+\(d=\log\kappa-1\). In the displacement \(n=t_0(1+E)\), (33) becomes
+\(hE+[(1+E)\log(1+E)-E]+f(t,E)=0\) with \(t=1/t_0\) and
+\(f=-\tfrac12t\bigl(\log t_0+\log(1+E)\bigr)+\sum_{j\ge1}c_jt^{j+1}(1+E)^{-j}\),
+which is its reversion about an arbitrary core, Theorem~J.33
+(\path{p0:thm:core-reversion}), with \(\Lambda=h\); its first two
+coefficients are \(b\) and \((b/2-b^2/2-c_1)/h\), the terms of (32), which
+the editors recomputed symbolically. Recovering \(n\) by rounding when
+\(y=a_n\) is part~(3) of the volume's staircase theorem, Theorem~J.43
+(\path{p0:thm:staircase}): an approximation within \(\eta<\tfrac12\) of the
+interpolated inverse at \(y=A_n\) rounds to \(n\).
+
+\emph{Original moments.} Since \(\log M(s)=\log C_0+Ls-\log s+Q(1/s)\)
+with \(Q(t)=-t/4+t^2/32+O(t^3)\), (35) is the volume's exact solution of
+the dominant block, Theorem~J.23 (\path{p0:thm:lambert-core}), with
+\(a=L\), \(b=-1\), the large root lying on the branch \(W_{-1}\) by its
+branch rule (Corollary~J.25, \path{p0:cor:branch-rule}); and (36) is its
+all-orders reversion around the Lambert core, Theorem~J.29
+(\path{p0:thm:lambert-centered}), whose Bell recurrence gives
+\(c_1=-q_1/a=1/(4L)\) and \(c_2=-(bc_1+q_2)/a=1/(4L^2)-1/(32L)\), the
+coefficients of (36).
+
+\emph{Sectors.} (36c) is the volume's perturbed inversion, Theorem~J.21
+(\path{p0:thm:perturbed-inversion}), with \(F=M\), \(E=D\),
+\(\varepsilon=t\) and \(\mu_0=\phi(y)\): its derivation
+\(\mathcal D=F'(\mu)^{-1}\,d/d\mu\) is \(d/dy\), so its term of order
+\(k\) (index \(M\) there),
+\(\frac{(-t)^k}{k!}\mathcal D^{k-1}\bigl(D(\mu_0)^k/M'(\mu_0)\bigr)\), is
+the \(k\)th term of (36c). The theorem is local; the radius \(csy\) of the
+\(t\)-disk, and with it the remainder (36d), is the article's own Rouché
+estimate.
+\end{ednote}
 
 \section{Exact replay and independent finite
 checks}\label{exact-replay-and-independent-finite-checks}

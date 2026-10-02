@@ -17,6 +17,8 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-10-02): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-02)}
 \newcommand{\E}{\mathbb E}
 \newcommand{\Prob}{\mathbb P}
 \newcommand{\R}{\mathbb R}
@@ -212,6 +214,15 @@ Choose
 \]
 The minimum exceeds one by continuity and compactness. Subtract the displayed principal part. The difference is analytic in each disk $|z|\le\lambda\rho(v)$; the removed pole is interpreted by its removable value. On the circles $z=\lambda\rho(v)\e^{\ii t}$ the remainder is jointly continuous in $(v,t)$ and therefore uniformly bounded. Cauchy's estimate gives an error $\Ord((\lambda\rho(v))^{-N})$ in its $z^N$ coefficient. Dividing by the principal coefficient $1/((1+v)\rho(v)^{N+1})$ leaves $\Ord_\eta(\lambda^{-N})$, proving the assertion after multiplication by $N!$.
 \end{proof}
+
+% ed. (2026-10-02): gives the printed numbers of the volume results that Section 1.1 and Section 11 credit by label, and the exact form of the lemma (batch-77 placement dossier).
+\begin{ednote}
+The chapter credited in Section~\ref{sec:sources}, ``The Fubini numbers: an exact pole lattice'' of the canonical volume \cite{proveit} (Appendix~V, \path{q2:sec:fubini}), proves the exact form of this lemma. Its Theorem~V.6 (\path{q2:thm:weighted}) gives, for every $v>0$ and $N\ge1$,
+\[
+ M_N(v)=\frac{N!}{1+v}\sum_{m\in\mathbb Z}\bigl(\rho(v)+2\pi\ii m\bigr)^{-N-1},
+\]
+an absolutely convergent identity, and at $v=1$ it is Theorem~V.1 (\path{q2:thm:fubini}). The term $m=0$ is the main term of \eqref{eq:uniform}, and the other terms are smaller by the factors $\bigl(\rho(v)/|\rho(v)+2\pi\ii m|\bigr)^{N+1}$; on $[\eta,1]$ these are largest at $v=\eta$, where $\rho(v)$ is largest, so the volume's pole-tail bounds (Theorem~V.4, \path{q2:thm:pole-tail}) with $\rho$ replaced by $\rho(\eta)$ give the uniform remainder, with $\theta_\eta=\rho(\eta)/|\rho(\eta)+2\pi\ii|$. The volume's Remark~V.7 (\path{q2:rem:weighted}) says the opposite: that the leading-pole approximation degrades as the weight tends to infinity and that a compact weight interval needs the bound with the minimum of $\rho$. Since $\rho(v)/|\rho(v)+2\pi\ii m|$ tends to $0$ as $v\to\infty$ and to $1$ as $v\to0$, it is the maximum, and the restriction $v\ge\eta$ made here is the one that is needed. The lemma's contour proof is independent of the volume; only its uniformity statement, and the lower tail bound of Lemma~\ref{lem:tail} built on it, go beyond what the volume states.
+\end{ednote}
 
 \begin{lemma}\label{lem:tail}
 There are fixed constants $\epsilon,c,C>0$ such that
@@ -454,6 +465,15 @@ The mean-value proof of Corollary~\ref{cor:threshold} therefore gives constants 
 \end{equation}
 As before, the constants are existential; the common rounded answer is justified when the model inverse is farther than $\delta_J$ from every integer. This corollary uses only the proven fixed-order expansion and does not choose a canonical interpolation of $a_n$.
 
+% ed. (2026-10-02): names the repository apparatus that this section re-derives without citing it (batch-77 placement dossier).
+\begin{ednote}
+Both inverses of this section are cases of the inversion apparatus of the canonical transseries volume \cite{ed:tai}, which the article cites only for its Fubini chapter; the method is the volume's, and only the A260879 and A229741 data are new to the repository.
+The seeds solve the volume's factorial core, Proposition~J.27 (\path{p0:prop:factorial-core}): $x_*\log(x_*/(\e\rho))=Y$ with $\kappa=1$, $d=-1-\log\rho$, and $u_*(\log u_*-1)=Y$ with $\kappa=1$, $d=-1$.
+In the displacement $x=x_*(1+E)$, Stirling's series turns $g_J(x)=Y$ into $(1+w)E+[(1+E)\log(1+E)-E]+f(t,E)=0$ with $t=1/x_*$ and $f=-\frac t2\bigl(\log x_*+\log(1+E)-\log(2\pi)\bigr)+\Ord(t^2)$, which is the volume's reversion about an arbitrary core, Theorem~J.33 (\path{p0:thm:core-reversion}), with $\Lambda=1+w$; its first coefficient is the shift of \eqref{eq:first-inverse}, and the same computation with $\Lambda=1+v$ and $f=\frac t2\bigl(\log u_*+\log(1+E)+\log(2\pi)\bigr)+\Ord(t^2)$ gives that of \eqref{eq:original-inverse}. The editors recomputed both shifts.
+For $J=0$ the carrier of \eqref{eq:original-model} is $\Gamma(x+1)$ and $u_0(y)=\Gamma_+^{-1}(y)-1$ is the volume's gamma inverse, Theorem~Q.25 (\path{p6:thm:gamma}): with $R=\log y-\frac12\log(2\pi)$ and $T(\log T-1)=R$ it gives $u_0=T-\frac12+\Ord(T^{-1})$, and $T=u_*-\log(2\pi)/(2\log u_*)+\Ord(u_*^{-1})$ makes this \eqref{eq:original-inverse}. The same dictionary, for the other factorially forced quadratic recurrence (A006014), is in the editorial note of the sibling package \path{Factorial_Transseries_OEIS_A006014} beside this one.
+The residual-to-root steps are the volume's Theorem~J.47 (\path{p0:thm:backward-error}). The final sentence of Corollary~\ref{cor:threshold}, and its analogue for $N_a$, is the separation condition of the volume's staircase theorem, Theorem~J.43(2) (\path{p0:thm:staircase}), read with the smooth model in place of an admissible interpolation (Definition~J.41, \path{p0:def:three-inverses}); as there, it can fail for arbitrarily small $\varepsilon_J$, which is why the enclosures keep two ceilings.
+\end{ednote}
+
 \section{A positive exponential remainder in the factorial basis}
 \label{sec:half}
 There is also a genuine exponentially small remainder theorem for a specified truncation rule. It concerns the factorial basis $d_j(n-j)!$, with cutoff $j<n/2$. This is distinct from truncating the inverse-power expansion at its least term $k\approx\rho n$.
@@ -648,6 +668,11 @@ The exact initial data are compared with the displayed OEIS terms available from
 
 The archive includes the article source and PDF, portable calculation scripts, recorded outputs, source provenance, build instructions, and a SHA-256 manifest. The replay checks the manifest before recomputing exact and numerical results and rebuilding the PDF. A standard-library-only path checks the exact algebra; the inverse calculation additionally uses the pinned \texttt{mpmath} dependency. The manuscript's analytic proof is indispensable: finite checks cannot certify a limit or the uniform remainder estimates in Sections~\ref{sec:poles}--\ref{sec:moments}.
 
+% ed. (2026-10-02): the SHA-256 manifest was not kept on filing, so the delivered replay stops at its first step.
+\begin{ednote}
+In ProveIt the manifest \texttt{SHA256SUMS} is not shipped: it was verified in full on filing and retired, as the repository does for every checksum ledger. The delivered \texttt{replay.sh} calls \texttt{scripts/verify\_manifest.py} first, so it stops there; the package README says how to run the scripts and compare their outputs without it. Since 2026-10-02 the scripts write their JSON and \TeX{} outputs with LF line endings on every platform; as delivered they used the platform's, so on Windows the byte comparison of the replay failed for those files.
+\end{ednote}
+
 \section{Further questions and limits}
 \label{sec:questions}
 \subsection{The least formal term is not a remainder theorem}
@@ -716,5 +741,13 @@ M. Borinsky, \emph{Generating asymptotics for factorially divergent sequences}, 
 \bibitem{proveit}
 ProveIt repository, \emph{Transseries and Inversion}, canonical source, chapter ``The Fubini numbers: an exact pole lattice'', labels \texttt{q2:sec:fubini}, \texttt{q2:thm:fubini}, and \texttt{q2:thm:weighted}. Revision pinned in Section~\ref{sec:sources}.\newline
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/4b874cea0012c51a6841ad9c58f6e20fa57c71da/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}{Canonical source at the inspected revision}.
+
+% ed. (2026-10-02): entry for the editorial note in the section on smooth inverses (key prefixed ed:).
+\bibitem{ed:tai}
+[Editorial addition, ProveIt, 2026-10-02.] ProveIt, \emph{Transseries: the
+polynomial-logarithmic calculus, series reversal at infinity, and
+inversion} (canonical volume, the source of \cite{proveit}),
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+Part~X (chapter \path{p0:sec:top}) and Section~Q.5 (\path{p6:sec:gamma}).
 \end{thebibliography}
 \end{document}
