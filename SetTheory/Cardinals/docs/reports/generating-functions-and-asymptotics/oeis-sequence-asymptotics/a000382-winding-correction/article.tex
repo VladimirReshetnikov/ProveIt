@@ -6,7 +6,9 @@
 \usepackage{booktabs,longtable,array}
 \usepackage{microtype}
 \usepackage{xcolor}
+\usepackage{xurl}
 \usepackage{hyperref}
+\newcommand{\file}[1]{\nolinkurl{#1}}
 \usepackage{fancyhdr}
 \usepackage{listings}
 \usepackage{enumitem}
@@ -95,6 +97,8 @@ We give a short direct proof of the exact formula
   \qquad L_0=3,\ L_1=1,\ L_2=3,
   \qquad L_n=L_{n-1}+L_{n-2}+L_{n-3}.
 \]
+(The formula itself is already printed in OEIS A004306, as
+``Equals 2*(A001644(n)+1), n>3''; what is new here is its bijective proof.)
 The proof partitions every allowed permutation by its integer winding number.
 A constant-cut lemma shows that winding-one permutations are precisely cyclic
 tilings by monomers, dimers, and trimers; reflection-complementation identifies
@@ -122,7 +126,7 @@ checked before an OEIS or journal submission.
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \clearpage
 
-\section{The problem, the discrepancy, and the result}
+\section{The problem, the discrepancy, and the result}\label{wdc:sec:intro}
 
 \subsection{The cyclic restricted-permutation count}
 
@@ -133,13 +137,13 @@ $\{0,1,\dots,n-1\}$ satisfying
   \sigma(i)=i+d_i\pmod n.
 \]
 For $n\ge4$ define
-\begin{equation}\label{eq:Phi-definition}
+\begin{equation}\label{wdc:eq:Phi-definition}
   \Phi_n
   :=\#\bigl\{\sigma\in S(\Zn):d_i\in\{0,1,2,3\}
        \text{ for every }i\bigr\}.
 \end{equation}
 If $P$ is the permutation matrix for the clockwise cyclic shift, then
-\begin{equation}\label{eq:permanent}
+\begin{equation}\label{wdc:eq:permanent}
   \Phi_n=\per(I+P+P^2+P^3).
 \end{equation}
 This is Mendelsohn's $\phi(n,4)$ in the notation of his 1961 paper
@@ -147,13 +151,21 @@ This is Mendelsohn's $\phi(n,4)$ in the notation of his 1961 paper
 \cite{oeisA008305}.
 
 The first values obtained from the definition are
-\begin{equation}\label{eq:true-first-values}
+\begin{equation}\label{wdc:eq:true-first-values}
   24,44,80,144,264,484,888,1632,3000,5516,10144,\dots
   \qquad(n=4,5,6,\dots).
 \end{equation}
 They are recorded in OEIS A004306, whose current entry gives the recurrence
 $a(n)=2a(n-1)-a(n-4)$ and a Tribonacci formula
-\cite{oeisA004306}.  The purpose of this report is not to rediscover that
+\cite{oeisA004306}.  \emph{[Write note, batch 73O2, 1 October 2026.]}
+Its cross-reference line already records the equivalent form
+$a(n)=2(A001644(n)+1)$ for $n>3$, and a tribonacci formula is credited there
+to N.~L. Skirrow (February 2026); Theorem~\ref{wdc:thm:main} supplies a
+bijective proof of that form.  The formula
+$\Phi_n=2(A001644(n)+1)$ is therefore not new; the contributions of this
+report are its proof by winding sectors, the general outer-sector theorem,
+and the diagnosis of A000382 and A000496 (Section~\ref{wdc:sec:new}).
+The purpose of this report is not to rediscover that
 recorded recurrence by sequence fitting.  It is to give a transparent
 bijection explaining it, to separate three historically entangled sequences,
 and to derive several consequences that do not appear in the checked entries.
@@ -180,7 +192,11 @@ $n=8,9,10$, and A004306 gives the same values
 
 The divergence is summarized below.  ``Equation (4)'' means the sequence
 obtained by evaluating Mendelsohn's displayed formula, while ``printed table''
-means the values printed on page 32 of the same paper.
+means the values printed on page 32 of the same paper.  \emph{[Write note,
+batch 73O2:} the two Mendelsohn rows are as read from a scan of the 1961
+paper; the scan is not in the repository, and those values were not
+re-checked when the report was placed.  The other two rows were recomputed
+from the definition and from the OEIS snapshots.\emph{]}
 
 \begin{center}
 \begin{tabular}{c@{\quad}rrrrrrr}
@@ -207,33 +223,37 @@ The issue is not a matter of offset convention.
 \subsection{Main theorem}
 
 Let $L_n$ denote the Tribonacci--Lucas sequence
-\begin{equation}\label{eq:Lucas-def}
+\begin{equation}\label{wdc:eq:Lucas-def}
   L_0=3,\qquad L_1=1,\qquad L_2=3,
   \qquad L_n=L_{n-1}+L_{n-2}+L_{n-3}.
 \end{equation}
 This is OEIS A001644 \cite{oeisA001644}.
 
-\begin{theorem}[Exact four-displacement enumeration]\label{thm:main}
+\begin{theorem}[Exact four-displacement enumeration]\label{wdc:thm:main}
 For every $n\ge4$,
-\begin{equation}\label{eq:main-formula}
+\begin{equation}\label{wdc:eq:main-formula}
   \boxed{\Phi_n=2(L_n+1).}
 \end{equation}
 More precisely, if the allowed permutations are sorted by winding number
 $q\in\{0,1,2,3\}$, then the four sector sizes are
-\begin{equation}\label{eq:sector-vector}
+\begin{equation}\label{wdc:eq:sector-vector}
   (1,L_n,L_n,1).
 \end{equation}
 \end{theorem}
 
-The proof occupies Sections~\ref{sec:winding}--\ref{sec:specialization}.
+The proof occupies Sections~\ref{wdc:sec:winding}--\ref{wdc:sec:specialization}.
 It uses only a conservation law and a cyclic-tiling bijection.
 
-\subsection{What is new here, and what is not claimed}
+\subsection{What is new here, and what is not claimed}\label{wdc:sec:new}
 
 The recurrence and generating function for the correct count are already
 present in A004306, and related transfer-matrix formulae occur in the classical
 literature on permanents of cyclic $(0,1)$ matrices
-\cite{metropolis1969,beker1987}.  The contributions of this report are:
+\cite{metropolis1969,beker1987}.  \emph{[Write note, batch 73O2:} so is the
+formula $\Phi_n=2(A001644(n)+1)$ of Theorem~\ref{wdc:thm:main}, in the
+cross-reference line of A004306, together with Skirrow's tribonacci formula;
+item~(i) below is a proof of a recorded formula, not a new formula.\emph{]}
+The contributions of this report are:
 
 \begin{enumerate}[label=(\roman*),leftmargin=2.4em]
 \item a direct winding-sector proof of the exact formula;
@@ -252,11 +272,11 @@ literature.  The literature search was targeted rather than exhaustive.  The
 OEIS statements quoted here are snapshots and may be corrected after the date
 of this report.
 
-\section{Winding sectors and a constant-cut law}\label{sec:winding}
+\section{Winding sectors and a constant-cut law}\label{wdc:sec:winding}
 
 It is useful to treat a slightly more general problem.  Fix integers
 $n\ge r\ge2$, and define
-\begin{equation}\label{eq:Phi-nr}
+\begin{equation}\label{wdc:eq:Phi-nr}
   \Phi_{n,r}
   :=\#\bigl\{\sigma\in S(\Zn):
        \sigma(i)-i\pmod n\in\{0,1,\dots,r-1\}\bigr\}.
@@ -264,9 +284,9 @@ $n\ge r\ge2$, and define
 For every allowed permutation choose the representatives
 $d_i\in\{0,1,\dots,r-1\}$.
 
-\begin{lemma}[Integral winding number]\label{lem:winding-integral}
+\begin{lemma}[Integral winding number]\label{wdc:lem:winding-integral}
 For every allowed permutation,
-\begin{equation}\label{eq:q-def}
+\begin{equation}\label{wdc:eq:q-def}
   q(\sigma):=\frac1n\sum_{i=0}^{n-1}d_i
 \end{equation}
 is an integer in $\{0,1,\dots,r-1\}$.
@@ -286,9 +306,9 @@ $i\mapsto i+d_i$ by the clockwise arc that traverses exactly $d_i$ elementary
 cuts.  Let cut $k$ be the gap from $k$ to $k+1$, and let $c_k$ be the number
 of nontrivial arcs crossing that cut.
 
-\begin{lemma}[Constant-cut law]\label{lem:constant-cut}
+\begin{lemma}[Constant-cut law]\label{wdc:lem:constant-cut}
 Every cut is crossed by exactly $q(\sigma)$ arcs:
-\begin{equation}\label{eq:constant-cut}
+\begin{equation}\label{wdc:eq:constant-cut}
   c_0=c_1=\cdots=c_{n-1}=q(\sigma).
 \end{equation}
 \end{lemma}
@@ -313,16 +333,16 @@ a modular displacement condition into a covering problem on a circle.
 \subsection{Reflection-complementation}
 
 Define an operation on allowed permutations by
-\begin{equation}\label{eq:complement-map}
+\begin{equation}\label{wdc:eq:complement-map}
   (\calC_r\sigma)(x):=r-1-\sigma(-x)\pmod n.
 \end{equation}
 It is the composition of reflection in the domain, the permutation $\sigma$,
 and an affine reflection in the codomain.
 
-\begin{lemma}[Sector symmetry]\label{lem:sector-symmetry}
+\begin{lemma}[Sector symmetry]\label{wdc:lem:sector-symmetry}
 The map $\calC_r$ is an involution, and it sends winding sector $q$ to winding
 sector $r-1-q$.  In particular, the winding-sector polynomial
-\begin{equation}\label{eq:sector-polynomial}
+\begin{equation}\label{wdc:eq:sector-polynomial}
   W_{n,r}(u):=\sum_{\sigma}u^{q(\sigma)}
 \end{equation}
 is palindromic of degree $r-1$.
@@ -342,7 +362,7 @@ $\sigma$.
 
 The extreme sectors are immediate.
 
-\begin{lemma}[Outer singleton sectors]\label{lem:outer-singletons}
+\begin{lemma}[Outer singleton sectors]\label{wdc:lem:outer-singletons}
 The winding-$0$ sector consists only of the identity, and the winding-$(r-1)$
 sector consists only of the shift $i\mapsto i+r-1$.
 \end{lemma}
@@ -352,34 +372,34 @@ An average of numbers in $[0,r-1]$ equals $0$ only when every number is $0$,
 and it equals $r-1$ only when every number is $r-1$.
 \end{proof}
 
-\section{Winding one is a cyclic-tiling problem}\label{sec:tilings}
+\section{Winding one is a cyclic-tiling problem}\label{wdc:sec:tilings}
 
 Let $k=r-1$.  A cyclic tiling of a labeled $n$-cycle by tiles of lengths
 $1,2,\dots,k$ is a partition of its elementary cuts into clockwise intervals
 of those lengths.  A tile has a distinguished initial vertex, so the labels
 and orientation are retained.
 
-\begin{theorem}[Outer-sector tiling theorem]\label{thm:outer-sector}
+\begin{theorem}[Outer-sector tiling theorem]\label{wdc:thm:outer-sector}
 For $n\ge r$, the winding-$1$ permutations counted by $\Phi_{n,r}$ are in
 bijection with cyclic tilings of a labeled $n$-cycle by tiles of lengths
 $1,2,\dots,r-1$.
 
 Under the bijection, a tile of length $j$ becomes the displacement block
-\begin{equation}\label{eq:tile-block-general}
+\begin{equation}\label{wdc:eq:tile-block-general}
   j\,\underbrace{00\cdots0}_{j-1\text{ zeros}}.
 \end{equation}
 The winding-$(r-2)$ sector has the same size by
-Lemma~\ref{lem:sector-symmetry}.
+Lemma~\ref{wdc:lem:sector-symmetry}.
 \end{theorem}
 
 \begin{proof}
-By Lemma~\ref{lem:constant-cut}, every cut is covered by exactly one arc in a
+By Lemma~\ref{wdc:lem:constant-cut}, every cut is covered by exactly one arc in a
 winding-$1$ permutation.  Consequently, the cut intervals traversed by its
 nonloop arcs are pairwise disjoint and cover the cycle.  If an arc starts at
 $i$ and has length $j$, then no nonloop arc can start at an internal vertex
 $i+1,\dots,i+j-1$, because its first cut would already be covered.  Those
 internal vertices are therefore loops, giving the block in
-\eqref{eq:tile-block-general}.  The nonloop arcs thus define a cyclic tiling.
+\eqref{wdc:eq:tile-block-general}.  The nonloop arcs thus define a cyclic tiling.
 
 Conversely, replace each tile of length $j$ by an arc from its initial vertex
 to its terminal vertex, and put loops on the $j-1$ internal vertices.  Every
@@ -390,7 +410,7 @@ its winding number is $1$.  The two constructions are inverse.
 \end{proof}
 
 For $r=4$, the three tile blocks are particularly simple:
-\begin{equation}\label{eq:blocks-123}
+\begin{equation}\label{wdc:eq:blocks-123}
   1,\qquad 20,\qquad 300.
 \end{equation}
 For example, the cyclic composition $8=3+2+1+2$ gives the displacement word
@@ -402,26 +422,26 @@ For example, the cyclic composition $8=3+2+1+2$ gives the displacement word
 
 Let $F_m^{(k)}$ be the number of linear tilings of length $m$ with tile lengths
 $1,\dots,k$.  Set $F_0^{(k)}=1$ and $F_m^{(k)}=0$ for $m<0$.  Then
-\begin{equation}\label{eq:kbonacci-compositions}
+\begin{equation}\label{wdc:eq:kbonacci-compositions}
   F_m^{(k)}=\sum_{j=1}^k F_{m-j}^{(k)},
   \qquad
   \sum_{m\ge0}F_m^{(k)}z^m=\frac1{1-z-z^2-\cdots-z^k}.
 \end{equation}
 
-\begin{proposition}[Cyclic-tiling count]\label{prop:cyclic-count}
+\begin{proposition}[Cyclic-tiling count]\label{wdc:prop:cyclic-count}
 Let $C_{n,k}$ be the number of cyclic tilings of a labeled $n$-cycle with tile
 lengths $1,\dots,k$.  Then, for $n\ge1$,
-\begin{equation}\label{eq:C-general}
+\begin{equation}\label{wdc:eq:C-general}
   C_{n,k}=\sum_{j=1}^k jF_{n-j}^{(k)}.
 \end{equation}
 It satisfies the same order-$k$ recurrence as $F_m^{(k)}$ once the initial
 range has passed.  Equivalently, if $\lambda_1,\dots,\lambda_k$ are the roots
 of
-\begin{equation}\label{eq:k-characteristic}
+\begin{equation}\label{wdc:eq:k-characteristic}
   x^k-x^{k-1}-\cdots-x-1=0,
 \end{equation}
 then
-\begin{equation}\label{eq:power-sum-general}
+\begin{equation}\label{wdc:eq:power-sum-general}
   C_{n,k}=\lambda_1^n+\cdots+\lambda_k^n.
 \end{equation}
 \end{proposition}
@@ -430,50 +450,50 @@ then
 Focus on the unique tile containing vertex $0$.  If that tile has length $j$,
 then vertex $0$ can occupy any of its $j$ labeled positions.  Removing it
 leaves a line of length $n-j$, which can be tiled in $F_{n-j}^{(k)}$ ways.
-This proves \eqref{eq:C-general}.
+This proves \eqref{wdc:eq:C-general}.
 
-The power sums in \eqref{eq:power-sum-general} obey the recurrence associated
-with \eqref{eq:k-characteristic}.  Newton's identities give the same initial
-values as \eqref{eq:C-general}; alternatively, both sides are the trace of the
+The power sums in \eqref{wdc:eq:power-sum-general} obey the recurrence associated
+with \eqref{wdc:eq:k-characteristic}.  Newton's identities give the same initial
+values as \eqref{wdc:eq:C-general}; alternatively, both sides are the trace of the
 $n$th power of the standard composition automaton.  Hence they agree.
 \end{proof}
 
-The dominant root $\lambda_k$ of \eqref{eq:k-characteristic} is real, simple,
+The dominant root $\lambda_k$ of \eqref{wdc:eq:k-characteristic} is real, simple,
 and lies in $(1,2)$.  Multiplication by $x-1$ shows that it is the nontrivial
 root in $(1,2)$ of
-\begin{equation}\label{eq:Mendelsohn-root-general}
+\begin{equation}\label{wdc:eq:Mendelsohn-root-general}
   x^{k+1}-2x^k+1=0.
 \end{equation}
 Thus the outer winding sector already explains why generalized Fibonacci roots
 appear in confined-displacement problems.
 
-\section{Complete solution for four displacements}\label{sec:specialization}
+\section{Complete solution for four displacements}\label{wdc:sec:specialization}
 
 Set $r=4$ and $k=3$.  The possible winding numbers are $0,1,2,3$.  There are no
 unaccounted-for inner sectors: winding $0$ and $3$ are singletons, winding $1$
 is the cyclic-tiling sector, and winding $2$ is its reflected complement.
 
 Write simply $F_m=F_m^{(3)}$.  Thus
-\begin{equation}\label{eq:F-initial}
+\begin{equation}\label{wdc:eq:F-initial}
   F_0=1,\quad F_1=1,\quad F_2=2,\quad
   F_m=F_{m-1}+F_{m-2}+F_{m-3}.
 \end{equation}
-By Proposition~\ref{prop:cyclic-count},
-\begin{equation}\label{eq:C123}
+By Proposition~\ref{wdc:prop:cyclic-count},
+\begin{equation}\label{wdc:eq:C123}
   C_n=F_{n-1}+2F_{n-2}+3F_{n-3}.
 \end{equation}
 The initial values are
 \[
   C_0=3,\qquad C_1=1,\qquad C_2=3,
 \]
-and therefore $C_n=L_n$ from \eqref{eq:Lucas-def}.  This proves
-Theorem~\ref{thm:main}.
+and therefore $C_n=L_n$ from \eqref{wdc:eq:Lucas-def}.  This proves
+Theorem~\ref{wdc:thm:main}.
 
 A compact refinement is the full winding polynomial.
 
-\begin{corollary}[Sector polynomial]\label{cor:sector-poly-r4}
+\begin{corollary}[Sector polynomial]\label{wdc:cor:sector-poly-r4}
 For $n\ge4$,
-\begin{equation}\label{eq:sector-poly-r4}
+\begin{equation}\label{wdc:eq:sector-poly-r4}
   W_{n,4}(u)=1+L_nu+L_nu^2+u^3.
 \end{equation}
 \end{corollary}
@@ -482,32 +502,32 @@ For $n\ge4$,
 
 Substituting $L_n=(\Phi_n-2)/2$ into the Tribonacci recurrence gives the affine
 order-three recurrence
-\begin{equation}\label{eq:true-affine-recurrence}
+\begin{equation}\label{wdc:eq:true-affine-recurrence}
   \boxed{\Phi_n=\Phi_{n-1}+\Phi_{n-2}+\Phi_{n-3}-4}
   \qquad(n\ge7),
 \end{equation}
 with $\Phi_4=24,\Phi_5=44,\Phi_6=80$.  Subtracting two consecutive instances
 gives the homogeneous order-four recurrence
-\begin{equation}\label{eq:true-homogeneous-recurrence}
+\begin{equation}\label{wdc:eq:true-homogeneous-recurrence}
   \boxed{\Phi_n=2\Phi_{n-1}-\Phi_{n-4}}
   \qquad(n\ge8).
 \end{equation}
 
 The Tribonacci--Lucas numbers are odd: the first three are odd, and each later
 term is a sum of three odd terms.  Hence the theorem also proves
-\begin{equation}\label{eq:divisibility4}
+\begin{equation}\label{wdc:eq:divisibility4}
   4\mid\Phi_n\qquad(n\ge4).
 \end{equation}
 Define the corrected quarter sequence
-\begin{equation}\label{eq:R-def}
+\begin{equation}\label{wdc:eq:R-def}
   R_n:=\frac{\Phi_n}{4}=\frac{L_n+1}{2}.
 \end{equation}
 It begins
-\begin{equation}\label{eq:R-values}
+\begin{equation}\label{wdc:eq:R-values}
   6,11,20,36,66,121,222,408,750,1379,2536,4664,\dots
 \end{equation}
 and satisfies
-\begin{equation}\label{eq:R-affine}
+\begin{equation}\label{wdc:eq:R-affine}
   R_n=R_{n-1}+R_{n-2}+R_{n-3}-1
   \qquad(n\ge7).
 \end{equation}
@@ -515,14 +535,14 @@ and satisfies
 \subsection{Generating functions}
 
 Let the tail variable start at $n=4$.  From
-\eqref{eq:true-homogeneous-recurrence},
+\eqref{wdc:eq:true-homogeneous-recurrence},
 \begin{align}
   \sum_{m\ge0}\Phi_{m+4}z^m
-  &=\frac{24-4z-8z^2-16z^3}{1-2z+z^4} \label{eq:Phi-tail-gf}\\
+  &=\frac{24-4z-8z^2-16z^3}{1-2z+z^4} \label{wdc:eq:Phi-tail-gf}\\
   &=\frac{4(6-z-2z^2-4z^3)}{(1-z)(1-z-z^2-z^3)}.\nonumber
 \end{align}
 Dividing by four gives
-\begin{equation}\label{eq:R-tail-gf}
+\begin{equation}\label{wdc:eq:R-tail-gf}
   \boxed{
   \sum_{m\ge0}R_{m+4}z^m
   =\frac{6-z-2z^2-4z^3}{1-2z+z^4}.}
@@ -530,13 +550,13 @@ Dividing by four gives
 
 If one includes the exceptional small-$n$ values
 $1,1,2,6$ appearing in A004306, then
-\begin{equation}\label{eq:A004306-full-gf}
+\begin{equation}\label{wdc:eq:A004306-full-gf}
  \sum_{n\ge0}A004306(n)z^n
  =\frac{1-z+2z^3+13z^4-3z^5-6z^6-10z^7}{1-2z+z^4},
 \end{equation}
 which agrees with the current A004306 entry \cite{oeisA004306}.
 
-\section{The Mendelsohn formula sequence and A000382}\label{sec:ghost}
+\section{The Mendelsohn formula sequence and A000382}\label{wdc:sec:ghost}
 
 This section separates a valid recurrence identity from an invalid
 combinatorial identification.
@@ -550,7 +570,7 @@ Mendelsohn defines the third-order Fibonacci sequence in his indexing as
 With our
 $F_0=1,F_1=1,F_2=2,\dots$, his displayed equation (4), divided by four, gives
 for $n\ge5$
-\begin{equation}\label{eq:M-def}
+\begin{equation}\label{wdc:eq:M-def}
   M_n=F_{n-1}+F_{n-3}+F_{n-4}+1,
 \end{equation}
 with the separately correct value $M_4=6$.  The sequence $M_n$ is exactly the
@@ -558,58 +578,58 @@ current A000382 tail and $4M_n$ is the current A000496 tail.
 
 There is a harmless typographical issue in the preceding paragraph's display
 in some text extractions of the 1961 scan; the sequence meant is the one
-printed in the paper and used in \eqref{eq:M-def}.  The numerical evaluation
+printed in the paper and used in \eqref{wdc:eq:M-def}.  The numerical evaluation
 is unambiguous: $M_8=65,M_9=119,M_{10}=218$.
 
-\begin{theorem}[Resolution of the A000382 recurrence]\label{thm:ghost-recurrence}
+\begin{theorem}[Resolution of the A000382 recurrence]\label{wdc:thm:ghost-recurrence}
 The formula-defined sequence $M_n$ satisfies
-\begin{equation}\label{eq:ghost-affine}
+\begin{equation}\label{wdc:eq:ghost-affine}
   \boxed{M_n=M_{n-1}+M_{n-2}+M_{n-3}-2}
   \qquad(n\ge8).
 \end{equation}
 Its shifted generating function is
-\begin{equation}\label{eq:ghost-gf}
+\begin{equation}\label{wdc:eq:ghost-gf}
   \boxed{
   \sum_{m\ge0}M_{m+4}z^m
   =\frac{6-z-2z^2-4z^3-z^4}{1-2z+z^4}.}
 \end{equation}
 Thus the recurrence marked conjectural in A000382 is a theorem for the
-sequence defined by \eqref{eq:M-def}.  It is not the recurrence of the actual
+sequence defined by \eqref{wdc:eq:M-def}.  It is not the recurrence of the actual
 quarter-count $R_n$.
 \end{theorem}
 
 \begin{proof}
 The sequence $M_n-1$ is a fixed linear combination of three shifts of $F_n$,
 so it obeys the homogeneous Tribonacci recurrence whenever all shifted
-instances of \eqref{eq:M-def} are valid.  Therefore
+instances of \eqref{wdc:eq:M-def} are valid.  Therefore
 \[
  M_n-1=(M_{n-1}-1)+(M_{n-2}-1)+(M_{n-3}-1),
 \]
-which is \eqref{eq:ghost-affine}.  The initial tail
-$6,11,20,36,65$ then gives the numerator in \eqref{eq:ghost-gf} after
+which is \eqref{wdc:eq:ghost-affine}.  The initial tail
+$6,11,20,36,65$ then gives the numerator in \eqref{wdc:eq:ghost-gf} after
 multiplication by $1-2z+z^4$.
 \end{proof}
 
 The homogeneous recurrence $M_n=2M_{n-1}-M_{n-4}$ begins only at $n=9$;
-it fails at $n=8$ because the numerator in \eqref{eq:ghost-gf} contains a
+it fails at $n=8$ because the numerator in \eqref{wdc:eq:ghost-gf} contains a
 nonzero $z^4$ term.  This one-step distinction is another useful check on
 indexing.
 
 \subsection{The exact correction kernel}
 
-Subtracting \eqref{eq:ghost-gf} from \eqref{eq:R-tail-gf} gives the central
+Subtracting \eqref{wdc:eq:ghost-gf} from \eqref{wdc:eq:R-tail-gf} gives the central
 provenance identity.
 
-\begin{theorem}[Exact correction to A000382 and A000496]\label{thm:correction}
+\begin{theorem}[Exact correction to A000382 and A000496]\label{wdc:thm:correction}
 For the current A000382 tail $M_n$ and the true quarter-count $R_n$,
-\begin{equation}\label{eq:correction-gf}
+\begin{equation}\label{wdc:eq:correction-gf}
   \boxed{
   \sum_{n\ge4}(R_n-M_n)z^{n-4}
   =\frac{z^4}{1-2z+z^4}
   =\frac{z^4}{(1-z)(1-z-z^2-z^3)}.}
 \end{equation}
 Consequently,
-\begin{equation}\label{eq:correction-sum}
+\begin{equation}\label{wdc:eq:correction-sum}
   R_n-M_n=
   \begin{cases}
     0,&4\le n\le7,\\[2mm]
@@ -620,14 +640,14 @@ For A000496, the correction is four times this amount.
 \end{theorem}
 
 The first nonzero corrections to A000382 are therefore
-\begin{equation}\label{eq:correction-values}
+\begin{equation}\label{wdc:eq:correction-values}
   1,2,4,8,15,28,52,96,177,\dots\qquad(n=8,9,10,\dots).
 \end{equation}
 They are not a finite transcription error: they grow exponentially at the same
 Tribonacci rate as the two compared sequences.
 
 A useful closed form for the cumulative composition numbers is
-\begin{equation}\label{eq:cumulative-F}
+\begin{equation}\label{wdc:eq:cumulative-F}
   \sum_{j=0}^{m}F_j=\frac{F_{m+2}+F_m-1}{2}.
 \end{equation}
 It follows either by induction or by multiplying generating functions.
@@ -637,7 +657,8 @@ It follows either by induction or by multiplying generating functions.
 Mendelsohn's paper gives the correct definition of $\phi(n,r)$ and presents
 its evaluation via permanents \cite{mendelsohn1961}.  For $r=4$, however,
 its displayed equation (4) produces $260,476,872$ at $n=8,9,10$, while its
-printed table gives $256,472,872$.  The permanent gives $264,484,888$.
+printed table gives $256,472,872$ (as read from the scan; see the note in
+Section~\ref{wdc:sec:intro}).  The permanent gives $264,484,888$.
 The agreement through $n=7$ explains how the formula-defined sequence could
 remain attached to the intended combinatorial description.
 
@@ -647,35 +668,35 @@ available at the time \cite{plouffe2009}.  Its rational generating function
 correctly captures the inherited A000382 terms; it cannot repair a prior error
 in those terms without returning to the underlying definition.
 
-\section{Exact roots, asymptotics, and nearest integers}\label{sec:asymptotics}
+\section{Exact roots, asymptotics, and nearest integers}\label{wdc:sec:asymptotics}
 
 Let $\alpha$ be the real root of
-\begin{equation}\label{eq:trib-polynomial}
+\begin{equation}\label{wdc:eq:trib-polynomial}
   x^3-x^2-x-1=0,
 \end{equation}
 and let $\beta,\gamma$ be the two nonreal roots.  Numerically,
 \begin{align}
- \alpha&=1.8392867552141611325518525646532866004\dots,\label{eq:alpha-num}\\
+ \alpha&=1.8392867552141611325518525646532866004\dots,\label{wdc:eq:alpha-num}\\
  \beta&=\rho\e^{\ii\theta},\qquad
  \gamma=\rho\e^{-\ii\theta},\nonumber\\
  \rho&=\alpha^{-1/2}
-      =0.7373527057603276752017596505081211233\dots,\label{eq:rho-num}\\
- \theta&=2.1762335454918703984542598307236195688\dots.\label{eq:theta-num}
+      =0.7373527057603276752017596505081211233\dots,\label{wdc:eq:rho-num}\\
+ \theta&=2.1762335454918703984542598307236195688\dots.\label{wdc:eq:theta-num}
 \end{align}
 Indeed $\alpha\beta\gamma=1$, so $\abs\beta=\abs\gamma=\alpha^{-1/2}$, and
-\begin{equation}\label{eq:theta-exact}
+\begin{equation}\label{wdc:eq:theta-exact}
   \cos\theta=\frac{(1-\alpha)\sqrt\alpha}{2}.
 \end{equation}
 
-\begin{theorem}[Exact Binet form]\label{thm:Binet}
+\begin{theorem}[Exact Binet form]\label{wdc:thm:Binet}
 For every $n\ge4$,
 \begin{align}
   \Phi_n
-  &=2\bigl(1+\alpha^n+\beta^n+\gamma^n\bigr)\label{eq:Binet-complex}\\
-  &=2\alpha^n+2+4\alpha^{-n/2}\cos(n\theta).\label{eq:Binet-real}
+  &=2\bigl(1+\alpha^n+\beta^n+\gamma^n\bigr)\label{wdc:eq:Binet-complex}\\
+  &=2\alpha^n+2+4\alpha^{-n/2}\cos(n\theta).\label{wdc:eq:Binet-real}
 \end{align}
 In particular,
-\begin{equation}\label{eq:sharp-error}
+\begin{equation}\label{wdc:eq:sharp-error}
   \abs{\Phi_n-(2\alpha^n+2)}\le4\alpha^{-n/2},
   \qquad
   \Phi_n\sim2\alpha^n.
@@ -685,16 +706,16 @@ In particular,
 \begin{proof}
 The power sum $\alpha^n+\beta^n+\gamma^n$ has initial values $3,1,3$ by
 Newton's identities and obeys the Tribonacci recurrence.  Hence it is $L_n$.
-Now apply Theorem~\ref{thm:main}.
+Now apply Theorem~\ref{wdc:thm:main}.
 \end{proof}
 
 The result is stronger than a conventional asymptotic expansion: it is an
 exact three-scale exponential representation.  The subdominant pair produces
 a decaying oscillation rather than a monotone error.
 
-\begin{corollary}[Nearest-integer formula]\label{cor:nearest}
+\begin{corollary}[Nearest-integer formula]\label{wdc:cor:nearest}
 For every $n\ge4$,
-\begin{equation}\label{eq:nearest-quarter}
+\begin{equation}\label{wdc:eq:nearest-quarter}
   \boxed{
   \frac{\Phi_n}{4}
   =\operatorname{nint}\!\left(\frac{\alpha^n+1}{2}\right),}
@@ -703,21 +724,21 @@ where $\operatorname{nint}$ denotes the unique nearest integer.
 \end{corollary}
 
 \begin{proof}
-By \eqref{eq:Binet-real}, the difference between the two sides before rounding
+By \eqref{wdc:eq:Binet-real}, the difference between the two sides before rounding
 is $\rho^n\cos(n\theta)$, whose absolute value is at most $\rho^n<1/2$ for
 $n\ge3$.
 \end{proof}
 
 \subsection{A convergent logarithmic transseries}
 
-Factoring the dominant term in \eqref{eq:Binet-real} gives
-\begin{equation}\label{eq:factor-Phi}
+Factoring the dominant term in \eqref{wdc:eq:Binet-real} gives
+\begin{equation}\label{wdc:eq:factor-Phi}
  \Phi_n=2\alpha^n
  \left(1+\alpha^{-n}+2\alpha^{-3n/2}\cos(n\theta)\right).
 \end{equation}
 Therefore, for all sufficiently large $n$ (and in fact already in the stated
 range after direct checking),
-\begin{equation}\label{eq:log-all-orders}
+\begin{equation}\label{wdc:eq:log-all-orders}
  \log\Phi_n
  =n\log\alpha+\log2+
  \sum_{m\ge1}\frac{(-1)^{m+1}}m
@@ -731,7 +752,7 @@ layers are
  -\frac12\alpha^{-2n}\nonumber\\
  &-2\alpha^{-5n/2}\cos(n\theta)
  +\left(\frac13-2\cos^2(n\theta)\right)\alpha^{-3n}
- +\bigO(\alpha^{-7n/2}).\label{eq:log-expanded}
+ +\bigO(\alpha^{-7n/2}).\label{wdc:eq:log-expanded}
 \end{align}
 The half-integer exponential scales arise from the modulus
 $\abs\beta=\alpha^{-1/2}$.
@@ -739,58 +760,78 @@ $\abs\beta=\alpha^{-1/2}$.
 \subsection{Asymptotics of the erroneous formula sequence}
 
 The composition numbers have the exact root expansion
-\begin{equation}\label{eq:F-root-expansion}
+\begin{equation}\label{wdc:eq:F-root-expansion}
   F_n=\sum_{\lambda\in\{\alpha,\beta,\gamma\}}
   \frac{\lambda^{n+3}}{\lambda^2+2\lambda+3}.
 \end{equation}
-Substitution into \eqref{eq:M-def} yields, for $n\ge5$,
-\begin{equation}\label{eq:M-root-expansion}
+Substitution into \eqref{wdc:eq:M-def} yields, for $n\ge5$,
+\begin{equation}\label{wdc:eq:M-root-expansion}
  M_n=1+\sum_{\lambda\in\{\alpha,\beta,\gamma\}}
  \frac{\lambda^{n-1}(\lambda^2+2\lambda+2)}
       {\lambda^2+2\lambda+3}.
 \end{equation}
 Thus
-\begin{equation}\label{eq:M-asymptotic}
+\begin{equation}\label{wdc:eq:M-asymptotic}
  M_n\sim
  \frac{\alpha^2+2\alpha+2}
       {\alpha(\alpha^2+2\alpha+3)}\,\alpha^n
  =0.4896527010215867240\dots\,\alpha^n.
 \end{equation}
 Since $R_n\sim\frac12\alpha^n$, the limiting relative undercount is
-\begin{equation}\label{eq:relative-undercount}
+\begin{equation}\label{wdc:eq:relative-undercount}
   1-\lim_{n\to\infty}\frac{M_n}{R_n}
   =0.0206945979568265519\dots.
 \end{equation}
 So the discrepancy is small enough to be visually deceptive, but it does not
 vanish relatively.
 
-\section{Inverting the exact asymptotic transseries}\label{sec:inverse}
+\section{Inverting the exact asymptotic transseries}\label{wdc:sec:inverse}
 
 The exact root formula permits a precise continuous inverse and, through it,
 a discrete threshold formula.
 
 Define the real interpolation
-\begin{equation}\label{eq:continuous-Phi}
+\begin{equation}\label{wdc:eq:continuous-Phi}
   \widetilde\Phi(x)
   :=2+2\alpha^x+4\alpha^{-x/2}\cos(\theta x),
   \qquad x\ge4.
 \end{equation}
 It agrees with $\Phi_n$ at every integer $n\ge4$.
 
-\begin{lemma}[Monotonicity of the interpolation]\label{lem:interpolation-monotone}
+\emph{[Write note, batch 73O2, 1 October 2026.]} Two remarks on this
+section. (1) Notation: the delivered text wrote $L$ for $\log\alpha$ here,
+which collides with the Tribonacci--Lucas numbers $L_n$ of
+Theorem~\ref{wdc:thm:main}; it is written $\Lambda=\log\alpha$ below.
+(2) Interpolation and provenance: $\widetilde\Phi$ is one choice of real
+interpolation, and the continuous inverse $x(y)$ of
+Theorem~\ref{wdc:thm:inverse} is the inverse of that choice. Between the
+values $y=\Phi_n$ its log-periodic coefficients $a_m(\psi)$ depend on the
+interpolation and are not determined by the sequence; what is intrinsic is
+the discrete inverse $N(y)$ of Corollary~\ref{wdc:cor:discrete-inverse}, which
+equals $\lceil x(y)\rceil$ for \emph{every} strictly increasing interpolation.
+This is the dichotomy of Proposition \texttt{p9:prop:intrinsic} of the
+repository's canonical transseries volume \cite{tai}, stated there for the
+Fibonacci numbers. The mechanism itself, a dominant exponential with a
+complex-conjugate subdominant pair producing log-periodic inverse
+coefficients, is that volume's Chapter~p9 (Theorem \texttt{p9:thm:product}
+and Remark \texttt{p9:rem:shape}); no novelty is claimed for it here. The
+sequence-specific content is the explicit coefficients and the monotonicity
+of this interpolation.
+
+\begin{lemma}[Monotonicity of the interpolation]\label{wdc:lem:interpolation-monotone}
 The function $\widetilde\Phi$ is strictly increasing on $[4,\infty)$.
 \end{lemma}
 
 \begin{proof}
-Put $L=\log\alpha$ and
-$B=\sqrt{(L/2)^2+\theta^2}$.  Then
+Put $\Lambda=\log\alpha$ and
+$B=\sqrt{(\Lambda/2)^2+\theta^2}$.  Then
 \[
  \widetilde\Phi'(x)
- \ge 2L\alpha^x-4B\alpha^{-x/2}.
+ \ge 2\Lambda\alpha^x-4B\alpha^{-x/2}.
 \]
-The polynomial in \eqref{eq:trib-polynomial} is increasing for $x>1$ and
+The polynomial in \eqref{wdc:eq:trib-polynomial} is increasing for $x>1$ and
 changes sign between $1.8$ and $2$, so $1.8<\alpha<2$.  Hence
-$L>0.58$, while $\theta<\pi$ and
+$\Lambda>0.58$, while $\theta<\pi$ and
 $B<\sqrt{(\log 2/2)^2+\pi^2}<3.17$.  At $x=4$ the displayed lower bound is
 therefore greater than
 \[
@@ -803,27 +844,27 @@ positive.
 
 For $y\ge24$, let $x(y)$ be the unique real solution of
 $\widetilde\Phi(x)=y$.  Set
-\begin{align}\label{eq:inverse-variables}
-  Y&:=\frac{y-2}{2},\qquad L:=\log\alpha,\\
-  \omega&:=\frac{\theta}{L}
+\begin{align}\label{wdc:eq:inverse-variables}
+  Y&:=\frac{y-2}{2},\qquad \Lambda :=\log\alpha,\\
+  \omega&:=\frac{\theta}{\Lambda}
   =3.5712382678640038805657341982470\dots,
   \qquad \psi:=\omega\log Y.\nonumber
 \end{align}
 
-\begin{theorem}[Inverse log-periodic transseries]\label{thm:inverse}
+\begin{theorem}[Inverse log-periodic transseries]\label{wdc:thm:inverse}
 As $y\to\infty$,
 \begin{align}
- x(y)={}&\frac{\log Y}{L}
- -\frac{2\cos\psi}{L}Y^{-3/2}\nonumber\\
+ x(y)={}&\frac{\log Y}{\Lambda}
+ -\frac{2\cos\psi}{\Lambda}Y^{-3/2}\nonumber\\
  &-\left(
-   \frac{4\cos^2\psi}{L}
-   +\frac{4\theta\cos\psi\sin\psi}{L^2}
+   \frac{4\cos^2\psi}{\Lambda}
+   +\frac{4\theta\cos\psi\sin\psi}{\Lambda^2}
    \right)Y^{-3}
- +\bigO(Y^{-9/2}).\label{eq:inverse-expansion}
+ +\bigO(Y^{-9/2}).\label{wdc:eq:inverse-expansion}
 \end{align}
 More generally, there is an all-orders expansion
-\begin{equation}\label{eq:inverse-all-orders}
- x(y)=\frac{\log Y}{L}
+\begin{equation}\label{wdc:eq:inverse-all-orders}
+ x(y)=\frac{\log Y}{\Lambda}
       +\sum_{m\ge1}a_m(\psi)Y^{-3m/2},
 \end{equation}
 where each $a_m$ is a real-analytic $2\pi$-periodic function computable
@@ -833,55 +874,56 @@ recursively.
 \begin{proof}
 Write
 \[
-  x=\frac{\log Y}{L}+\delta,
+  x=\frac{\log Y}{\Lambda}+\delta,
   \qquad t=Y^{-3/2}.
 \]
 Dividing the equation $Y=\alpha^x+2\alpha^{-x/2}\cos(\theta x)$ by $Y$ gives
-\begin{equation}\label{eq:inverse-implicit}
-  1=\e^{L\delta}
-    +2t\e^{-L\delta/2}\cos(\psi+\theta\delta).
+\begin{equation}\label{wdc:eq:inverse-implicit}
+  1=\e^{\Lambda\delta}
+    +2t\e^{-\Lambda\delta/2}\cos(\psi+\theta\delta).
 \end{equation}
 At $t=0$ the solution is $\delta=0$, and the derivative of the right side
-with respect to $\delta$ is $L\ne0$.  The analytic implicit-function theorem
+with respect to $\delta$ is $\Lambda\ne0$.  The analytic implicit-function theorem
 therefore produces a convergent power series
 $\delta=\sum_{m\ge1}a_m(\psi)t^m$ for small $t$, uniformly in the phase.
 
 Substitute $\delta=a_1t+a_2t^2+\bigO(t^3)$ into
-\eqref{eq:inverse-implicit}.  Comparing the coefficient of $t$ gives
+\eqref{wdc:eq:inverse-implicit}.  Comparing the coefficient of $t$ gives
 \[
-  La_1+2\cos\psi=0.
+  \Lambda a_1+2\cos\psi=0.
 \]
 Comparing the coefficient of $t^2$ then gives
 \[
-  La_2+4\cos^2\psi
-  +\frac{4\theta}{L}\cos\psi\sin\psi=0.
+  \Lambda a_2+4\cos^2\psi
+  +\frac{4\theta}{\Lambda}\cos\psi\sin\psi=0.
 \]
 These are exactly the two displayed correction terms.
 \end{proof}
 
-\begin{corollary}[Discrete inverse]\label{cor:discrete-inverse}
+\begin{corollary}[Discrete inverse]\label{wdc:cor:discrete-inverse}
 For $y\ge24$, define
 \[
  N(y):=\min\{n\ge4:\Phi_n\ge y\}.
 \]
 Then
-\begin{equation}\label{eq:discrete-inverse}
+\begin{equation}\label{wdc:eq:discrete-inverse}
   \boxed{N(y)=\ceil{x(y)}.}
 \end{equation}
-Consequently, inserting \eqref{eq:inverse-expansion} gives an asymptotically
+Consequently, inserting \eqref{wdc:eq:inverse-expansion} gives an asymptotically
 sharp threshold formula with a first correction of order $y^{-3/2}$ and a
 log-periodic phase.
 \end{corollary}
 
 \begin{proof}
-Lemma~\ref{lem:interpolation-monotone} shows that
+Lemma~\ref{wdc:lem:interpolation-monotone} shows that
 $\widetilde\Phi(n)\ge y$ if and only if $n\ge x(y)$.  Since
 $\widetilde\Phi(n)=\Phi_n$, the least such integer is $\ceil{x(y)}$.
 \end{proof}
 
-\section{Independent exact verification}\label{sec:verification}
+\section{Independent exact verification}\label{wdc:sec:verification}
 
-The supplied file \texttt{verify.py} performs an independent calculation using
+The supplied file \file{verify.py} (shipped as \file{code/verify.py})
+performs an independent calculation using
 only the Python standard library.  It does not use the recurrence proved in
 this article to compute the permanent.
 
@@ -927,9 +969,10 @@ The script also checks:
 \item the nearest-integer identity through $n=100$ using an 80-digit Newton
       solve for $\alpha$.
 \end{itemize}
-The captured output is included as \texttt{verification\_output.txt}.
+The captured output is included as \file{verification_output.txt}
+(shipped as \file{data/verification_output.txt}).
 
-\section{Proposed OEIS corrections}\label{sec:oeis-corrections}
+\section{Proposed OEIS corrections}\label{wdc:sec:oeis-corrections}
 
 The following are mathematical recommendations, not submissions.  Attribution,
 formatting, and historical priority should be reviewed by OEIS editors.
@@ -942,7 +985,7 @@ formatting, and historical priority should be reviewed by OEIS editors.
 \item Either rename the entry as the sequence defined by Mendelsohn's displayed
       formula (4), divided by $4$, or mark the historical provenance explicitly.
 \item Replace ``conjectured'' on the affine recurrence by a proof reference to
-      Theorem~\ref{thm:ghost-recurrence}, provided the formula-defined meaning
+      Theorem~\ref{wdc:thm:ghost-recurrence}, provided the formula-defined meaning
       is adopted.
 \item Label the rational function as the shifted tail generating function
       $\sum_{m\ge0}a(m+4)z^m$.
@@ -965,10 +1008,14 @@ formatting, and historical priority should be reviewed by OEIS editors.
 
 In the cross-reference line for the fourth column, remove ``$4*$A000382'' and
 retain A004306.  A direct comment may state that for $n\ge4$
-\begin{equation}\label{eq:oeis-direct-comment}
+\begin{equation}\label{wdc:eq:oeis-direct-comment}
   T(n,4)=2(A001644(n)+1),
 \end{equation}
 with sector sizes $(1,A001644(n),A001644(n),1)$.
+\emph{[Write note, batch 73O2:} the identity \eqref{wdc:eq:oeis-direct-comment}
+is already recorded in A004306 (``Equals 2*(A001644(n)+1), n>3''), so the
+proposal for A008305 amounts to cross-referencing the existing A004306
+identity, with the sector sizes and a pointer to its proof.\emph{]}
 
 \subsection{A004306}
 
@@ -980,11 +1027,19 @@ Tribonacci formula.  Useful additions would be:
  &=\operatorname{nint}\left(\frac{\alpha^n+1}{2}\right),\qquad n\ge4,
 \end{align*}
 and the winding-sector tiling interpretation from this report.
+\emph{[Write note, batch 73O2:} the entry's cross-reference line already
+gives $2(A001644(n)+1)$ for $n>3$ and its formula line credits a tribonacci
+formula to Skirrow; the Binet and nearest-integer forms above restate that
+identity through $A001644(n)=\alpha^n+\beta^n+\gamma^n$, and the proposal is
+to cross-reference the existing identity and add the proof and the sector
+interpretation.\emph{]}
 
 A plain-text draft suitable for editing is included as
-\texttt{oeis\_corrections.txt}.
+\file{oeis_corrections.txt} (shipped as
+\file{data/oeis_corrections.txt}; it predates these notes and does not
+mention the existing A004306 cross-reference).
 
-\section{Further research questions and topics}\label{sec:further}
+\section{Further research questions and topics}\label{wdc:sec:further}
 
 The winding decomposition is complete for $r=4$ but exposes a larger program.
 The following problems are intended to be concrete enough for computation,
@@ -1064,18 +1119,27 @@ action might generalize to divisibility properties of $\Phi_{n,r}$.
 \end{question}
 
 \begin{question}[Inverse transseries for general rational recurrences]
-The inverse in Section~\ref{sec:inverse} has periodic coefficients because the
+The inverse in Section~\ref{wdc:sec:inverse} has periodic coefficients because the
 subdominant roots are a complex conjugate pair.  Develop an automated theorem
 that takes a positive linear recurrence with a simple dominant root and
 returns the inverse transseries, including resonances among subdominant root
 moduli and phases.
+\emph{[Write note, batch 73O2:} partly re-scoped. Chapter~p9 of the
+repository's canonical transseries volume \cite{tai} already inverts a
+dominant exponential times finitely many exponentially small factors in
+closed form (Theorem \texttt{p9:thm:product}), explains the log-periodicity
+produced by a conjugate pair (Remark \texttt{p9:rem:shape}), and separates
+the forced part of the inverse from the interpolation-dependent part
+(Proposition \texttt{p9:prop:intrinsic}). What remains is the automated
+statement for an arbitrary positive linear recurrence, with its
+resonances.\emph{]}
 \end{question}
 
 \begin{question}[Formal verification]
 Formalize the constant-cut lemma, tiling bijection, and recurrence in Lean.
 The proof requires only finite sums, permutations of \texttt{Fin n}, modular
 arithmetic, and cyclic interval bookkeeping, making it a realistic addition to
-the ProveIt formalization program.
+the ProveIt formalization program \cite{proveit}.
 \end{question}
 
 \begin{question}[Automated provenance audits]
@@ -1119,12 +1183,12 @@ $6,11,20,36,66,\dots$, these coefficients are
 \[
  6,-1,-2,-4,0,0,\dots,
 \]
-which proves \eqref{eq:R-tail-gf}.  For the A000382 tail
+which proves \eqref{wdc:eq:R-tail-gf}.  For the A000382 tail
 $6,11,20,36,65,\dots$, they are
 \[
  6,-1,-2,-4,-1,0,0,\dots,
 \]
-which proves \eqref{eq:ghost-gf}.  Their difference is exactly $z^4$ over the
+which proves \eqref{wdc:eq:ghost-gf}.  Their difference is exactly $z^4$ over the
 common denominator.
 
 \section{Reproduction instructions}
@@ -1147,6 +1211,31 @@ pdflatex -interaction=nonstopmode article.tex
 pdflatex -interaction=nonstopmode article.tex
 \end{lstlisting}
 or use the PDF build command documented in the README.
+
+\emph{[Write note, batch 73O2, 1 October 2026.]} The list above describes
+the delivered archive. In ProveIt the report ships \file{article.tex},
+\texttt{article.pdf}, a report \file{README.md} (replacing the delivered
+one), \file{code/verify.py}, \file{code/Makefile},
+\file{data/verification_output.txt} and
+\file{data/oeis_corrections.txt}. The delivered README's PDF build
+command and the \texttt{pdf} target of the \texttt{Makefile} call a script
+in the delivery environment that does not exist here; build with the two
+\texttt{pdflatex} commands above. Run the verifier as
+\texttt{python code/verify.py}; it writes only to standard output.
+
+\section{Provenance}\label{wdc:sec:provenance}
+This report is one manuscript, number~55 of batch 73O2 of ProveIt's
+incoming-reports intake: the archive
+\texttt{ProveIt\_A000382\_winding\_correction.zip} (19-page PDF), dated
+October 1, 2026, which arrived in commit \texttt{58dbe2cd3} and was placed by
+commit \texttt{6e193dd4f}. It cites no repository revision. The text is as
+delivered except for the label prefix \texttt{wdc:}, the renaming of
+$\log\alpha$ from $L$ to $\Lambda$ in Section~\ref{wdc:sec:inverse}, the
+citation of the repository (listed but uncited in the delivered
+bibliography), the shipped file names, this appendix, one bibliography
+entry, and the dated write notes, which record that A004306 already prints
+$\Phi_n=2(A001644(n)+1)$, that Mendelsohn's values are read from a scan, and
+the interpolation dependence and repository provenance of the inverse.
 
 \begin{thebibliography}{99}
 
@@ -1206,6 +1295,13 @@ snapshot checked October 1, 2026.
 V. Reshetnikov,
 \emph{ProveIt}, GitHub repository.
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{tai}
+ProveIt, \emph{Transseries: the polynomial-logarithmic calculus, series
+reversal at infinity, and inversion},
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/},
+Chapter~p9 (\emph{A real-argument Fibonacci function}). Cited in the write
+(batch 73O2), not by the manuscript.
 
 \end{thebibliography}
 
