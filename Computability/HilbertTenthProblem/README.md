@@ -29,7 +29,15 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate independent-gamma87 candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
-The [2 October computational-substrate review](Papers/research-wip/native-stream-queue/imported_substrate_review_20261002.md)
+The [new archive review](Papers/research-wip/native-stream-queue/incoming_substrate_review_6914ccca6.md)
+checks the van Kampen, three-Heisenberg-phase and infinite-quantum-run reports
+delivered at6914ccca6. It reproduces two van Kampen input-validation defects,
+including a corrupted integer-polynomial export, and derives smaller
+area-budget and canonical inverse certificates. Their integer/natural
+domains, fixed-size limits and universal quantifiers are tracked explicitly;
+none changes the87-operation universal bound.
+
+The [earlier 2 October computational-substrate review](Papers/research-wip/native-stream-queue/imported_substrate_review_20261002.md)
 covers three imported report collections and 25 fresh test entry points,
 with two corrected README claims. Its [bounded FRACTRAN transfer](Papers/research-wip/native-stream-queue/fractran_divisibility_residual_projection.md)
 saves nine operations per fraction-step in a declared literal evaluator

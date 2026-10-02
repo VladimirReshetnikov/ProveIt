@@ -1,0 +1,132 @@
+--- a/code/van_kampen.py
++++ b/code/van_kampen.py
+@@ -18,6 +18,15 @@
+ B: Mat = (1, 0, 2, 1)
+ 
+ 
++
++def _integer_vector(values, length: int, label: str) -> tuple[int, ...]:
++    if type(values) not in (tuple, list) or len(values) != length:
++        raise ValueError(f"{label} requires exactly {length} integer entries")
++    if any(type(value) is not int for value in values):
++        raise ValueError(f"{label} entries must be exact integers, not floats or Booleans")
++    return tuple(values)
++
++
+ def mul(x: Mat, y: Mat) -> Mat:
+     a, b, c, d = x
+     e, f, g, h = y
+@@ -85,20 +94,18 @@
+ 
+ 
+ def chart(c: Sequence[int]) -> Mat:
+-    if len(c) != 4:
+-        raise ValueError("four chart coordinates required")
+-    x, y, z, t = c
++    x, y, z, t = _integer_vector(c, 4, "chart")
+     return (1+4*x, 2*y, 2*z, 1+4*t)
+ 
+ 
+ def chart_residual(c: Sequence[int]) -> int:
+-    x, y, z, t = c
++    x, y, z, t = _integer_vector(c, 4, "chart")
+     return x+t+4*x*t-y*z
+ 
+ 
+ def unchart(u: Mat) -> tuple[int, int, int, int]:
+-    a, b, c, d = u
+-    if det(u) != 1 or (a-1) % 4 or b % 2 or c % 2 or (d-1) % 4:
++    a, b, c, d = _integer_vector(u, 4, "Sanov matrix")
++    if det((a, b, c, d)) != 1 or (a-1) % 4 or b % 2 or c % 2 or (d-1) % 4:
+         raise ValueError("matrix is not in the Sanov chart")
+     return ((a-1)//4, b//2, c//2, (d-1)//4)
+ 
+@@ -175,7 +182,7 @@
+     us, es, ps, vs = [], [], [], []
+     p = I
+     for label, u in zip(labels, conjugators):
+-        if not 0 <= label < len(table):
++        if type(label) is not int or not 0 <= label < len(table):
+             raise ValueError("relator label out of range")
+         us.append(unchart(u))
+         es.append([int(j == label) for j in range(len(table))])
+@@ -188,12 +195,24 @@
+ def budget_residuals(relators: Sequence[str], witness: BudgetWitness) -> list[int]:
+     """Direct numerical implementation, separate from the symbolic compiler."""
+     table = relator_table(relators)
++    if type(witness) is not BudgetWitness:
++        raise ValueError("a BudgetWitness is required")
++    arrays = (witness.charts, witness.selectors, witness.products, witness.intermediates)
++    if any(type(values) is not list for values in arrays):
++        raise ValueError("witness arrays must be lists")
++    boundary = _integer_vector(witness.boundary, 4, "boundary matrix")
+     m = len(witness.charts)
++    if (len(witness.selectors) != m or len(witness.products) != m
++            or len(witness.intermediates) != max(m-1, 0)):
++        raise ValueError("inconsistent witness dimensions")
++    for coords in witness.charts:
++        _integer_vector(coords, 4, "chart")
++    for selectors in witness.selectors:
++        _integer_vector(selectors, len(table), "selector vector")
++    for matrix in witness.products + witness.intermediates:
++        _integer_vector(matrix, 4, "witness matrix")
+     if not m:
+-        return list(sub(witness.boundary, I))
+-    if (len(witness.selectors) != m or len(witness.products) != m
+-            or len(witness.intermediates) != m-1):
+-        raise ValueError("inconsistent witness dimensions")
++        return list(sub(boundary, I))
+     ps = [I] + witness.intermediates + [witness.boundary]
+     residuals: list[int] = []
+     for i in range(m):
+@@ -226,14 +245,27 @@
+     def export(self, path: str | Path) -> None:
+         """Sparse JSON for quadratic residuals, with an exact SOS finalizer."""
+         import sympy as sp
++        if (type(self.parameters) is not tuple or type(self.variables) is not tuple
++                or type(self.residuals) is not tuple):
++            raise ValueError("polynomial arrays must be tuples")
+         names = self.parameters + self.variables
++        if (not names or len(set(names)) != len(names)
++                or any(type(name) is not sp.Symbol or not name.is_integer for name in names)):
++            raise ValueError("distinct integer polynomial symbols required")
++        sparse_residuals = []
++        for residual in self.residuals:
++            expr = sp.sympify(residual)
++            if expr.atoms(sp.Float):
++                raise ValueError("floating polynomial coefficients are not permitted")
++            poly = sp.Poly(expr, *names)
++            if any(not coef.is_Integer for coef in poly.coeffs()):
++                raise ValueError("every polynomial coefficient must be an exact integer")
++            sparse_residuals.append([[list(mon), int(coef)] for mon, coef in poly.terms()])
+         data = dict(self.metadata)
+         data.update(domain="integers", parameters=[str(s) for s in self.parameters],
+                     variables=[str(s) for s in self.variables],
+                     finalizer="sum of squares of all listed residuals",
+-                    residuals=[[[list(mon), int(coef)]
+-                                for mon, coef in sp.Poly(r, *names).terms()]
+-                               for r in self.residuals])
++                    residuals=sparse_residuals)
+         Path(path).write_text(json.dumps(data, indent=2)+"\n", encoding="utf-8")
+ 
+ 
+@@ -246,8 +278,8 @@
+ def compile_budget(relators: Sequence[str], m: int) -> PolynomialSystem:
+     """Compile the all-label area-at-most-m relation, using (2s+13)m-4 vars."""
+     import sympy as sp
+-    if m < 0:
+-        raise ValueError("negative area budget")
++    if type(m) is not int or m < 0:
++        raise ValueError("area budget must be an exact nonnegative integer")
+     w = sp.symbols("w00 w01 w10 w11", integer=True)
+     W = sp.Matrix(2, 2, w)
+     if m == 0:
+@@ -336,7 +368,7 @@
+     for i, node in enumerate(nodes):
+         if node.kind not in arities or len(node.children) != arities[node.kind]:
+             raise ValueError("bad node kind or arity")
+-        if any(j < 0 or j >= i for j in node.children):
++        if any(type(j) is not int or j < 0 or j >= i for j in node.children):
+             raise ValueError("DAG must be topologically ordered and acyclic")
+         if node.kind == "leaf" and node.word not in allowed:
+             raise ValueError("leaf is not a specified relator or its inverse")
