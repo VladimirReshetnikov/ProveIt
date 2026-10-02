@@ -66,6 +66,12 @@
 > Commit and push reviewed packets frequently. These finite improvements
 > do not establish a global optimum or finish the open research goal.
 >
+> The [centered-state compiler](u15_packed_centered_states611.md) reduces the
+> direct U15 tape route further to611 ordinary/368 raw operations. Its exact
+> all-value residual/output identities preserve102/51 witnesses and46/11
+> comparisons; exact degree1936 transfers from the separate ancestor proof.
+> Independent review passed. No overall87 improvement is claimed.
+>
 > The [grouped U15 compiler](u15_packed_grouped_projections621.md) now costs621
 > including ordinary input, or378 on raw half tapes. Fourteen shared paid sums
 > save25 additions and preserve the entire646 parent polynomial on all tuples.

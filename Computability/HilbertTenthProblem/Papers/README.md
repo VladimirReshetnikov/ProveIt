@@ -39,6 +39,15 @@ supplies87=48M+39A with19 positive witnesses and exact degree169. Its
 X=wq³ to X=wq preserves each frozen parent's full positive zero set through
 a proved integer coordinate bijection at zeros.
 
+The [centered-state U15 compiler](research-wip/native-stream-queue/u15_packed_centered_states611.md)
+further reduces this direct tape route to **611=239M+372A operations**,102
+positive witnesses and46 comparisons, including ordinary input; raw368.
+Symmetric state-code differences and the computed identity P=(B-1)J+1 save
+another10 operations while preserving every residual and the full polynomial
+on all tuples. The [independent review](research-wip/native-stream-queue/review_u15_centered611.md) checks
+actual emitted identities and complete costs. Exact degree1936 transfers;
+the overall87-operation universal bound remains unchanged.
+
 The [grouped U15 compiler](research-wip/native-stream-queue/u15_packed_grouped_projections621.md)
 reduces this direct tape route to **621=252M+369A operations**, with102 positive
 witnesses and46 comparisons, including ordinary input. Its raw interface costs378.
