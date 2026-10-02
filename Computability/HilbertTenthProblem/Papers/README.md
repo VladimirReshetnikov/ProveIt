@@ -39,6 +39,14 @@ supplies87=48M+39A with19 positive witnesses and exact degree169. Its
 X=wq³ to X=wq preserves each frozen parent's full positive zero set through
 a proved integer coordinate bijection at zeros.
 
+The [completed nine-report review](research-wip/native-stream-queue/incoming_substrate_review_2a8a39599.md)
+validates the recent spectral, clock, polynomial-history, boundary, sandpile,
+conservative-signal and membrane constructions within their stated domains.
+Original replays and checked repairs are preserved with exact receipts.
+The sandpile source loses three witnesses/rows per vertex; a forced membrane
+prefix removes2,811 witnesses at external bounded horizon. These are finite
+certificate reductions, with no change to the universal87-operation bound.
+
 The [centered-state U15 compiler](research-wip/native-stream-queue/u15_packed_centered_states611.md)
 further reduces this direct tape route to **611=239M+372A operations**,102
 positive witnesses and46 comparisons, including ordinary input; raw368.

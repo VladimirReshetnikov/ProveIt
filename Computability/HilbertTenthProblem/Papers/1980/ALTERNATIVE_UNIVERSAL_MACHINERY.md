@@ -26,6 +26,14 @@ with29 witnesses and degree2. These are complete single-step relations;
 ordinary multiplication of packed histories would convolve time cells, so
 neither scalar count is an unbounded universal-polynomial bound.
 
+The [completed nine-report review](../research-wip/native-stream-queue/incoming_substrate_review_2a8a39599.md)
+validates the recent spectral, clock, polynomial-history, boundary, sandpile,
+conservative-signal and membrane constructions within their stated domains.
+Original replays and checked repairs are preserved with exact receipts.
+The sandpile source loses three witnesses/rows per vertex; a forced membrane
+prefix removes2,811 witnesses at external bounded horizon. These are finite
+certificate reductions, with no change to the universal87-operation bound.
+
 The [centered-state U15 compiler](../research-wip/native-stream-queue/u15_packed_centered_states611.md)
 further reduces this direct tape route to **611=239M+372A operations**,102
 positive witnesses and46 comparisons, including ordinary input; raw368.

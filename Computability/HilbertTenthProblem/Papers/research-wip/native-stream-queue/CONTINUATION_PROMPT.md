@@ -78,12 +78,12 @@
 > Its102 ordinary positive witnesses,46 comparisons and exact degree1936 remain.
 > The independent review passed; no87-operation improvement is claimed.
 >
-> Next full report review: [nine new archives](incoming_substrate_intake_2a8a39599.md)
-> at `060e08a07` and `2a8a39599`. Intake authenticates231 files and54 Python
-> modules; it is not a full proof/test review. Preserve the distinctions between
-> ordinary integer witnesses, finite-support polynomial/field witnesses,
-> functional exponentiation and external horizon bounds. The spectral/clock,
-> polynomial/boundary/sandpile and signal/membrane groups are under review.
+> The [nine-report review](incoming_substrate_review_2a8a39599.md) is complete
+> for arrivals `060e08a07` and `2a8a39599`: all nine proof/source reviews and
+> original author replays pass within their stated hypotheses. The historical
+> intake pins231 files/54 Python modules; full reviews, repairs and receipts
+> are linked from the new index. Keep ordinary scalar witnesses, polynomial
+> witnesses, power atoms and external horizon parameters distinct.
 > The [three spectral reviews](review_spectral_060e08a07.md) are complete with
 > five focused implementation repairs and all18 original/repaired author replays.
 > Keep fixed-base power atoms, external bit widths and infinite clock quantifiers
@@ -96,6 +96,16 @@
 > the written N[X,Y] construction passes, all three author CLIs reproduce on
 > original and repaired sources, and a checked patch rejects symbol aliases that
 > generate nonexistent witness names. Keep polynomial and scalar arity distinct.
+>
+> The [conservative-signal review](review_conservative_signal_2a8a39599.md)
+> independently audits49,700 modes/80,501 branches and the complete compact
+> quadratic ledger, with a checked packet-domain repair. The [membrane review](review_membrane_reports_2a8a.md)
+> passes18 original suites and two loader checks; its forced scratch-prefix
+> projection saves2,811 witnesses/five squares/761 products only at external
+> bounded horizon. Neither supplies fixed-arity unknown-duration compression.
+> The [canonical integration review](review_canonical_revision_cb8238b64.md)
+> checks the older cubic sandpile Part XVI, preserves50 delivered files, and
+> records its corrected organization table and rebuilt452-page PDF.
 >
 > The seven-report review at `808b53ed8`/`48ee077c7` is now linked below.
 > The Waterfall packet at `24a743255` now has a complete proof/source review

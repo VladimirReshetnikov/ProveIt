@@ -80,10 +80,13 @@ check every emitted residual, the full source composition and the positive
 soundness/converse proof. This is a direct tape alternative to the GPCP history
 route; the global87-operation universal bound remains unchanged.
 
-The [nine-report intake](incoming_substrate_intake_2a8a39599.md) authenticates
-new spectral, clock, polynomial-history, boundary, sandpile, conservative-signal
-and membrane archives at060e08a07/2a8a39599. Full reviews are in progress;
-the intake record states each claimed witness domain and external parameter.
+The [completed nine-report review](incoming_substrate_review_2a8a39599.md) covers
+the spectral, clock, polynomial-history, boundary, sandpile, conservative-signal
+and membrane archives at060e08a07/2a8a39599. All written constructions and
+original author replays pass within their stated domains; the linked reviews
+record executable checker repairs, exact receipts and finite source reductions.
+The earlier [intake](incoming_substrate_intake_2a8a39599.md) remains a historical
+inventory. None of these report-level results lowers the universal87 bound.
 The [polynomial-history review](review_unique_polynomial_histories.md) verifies
 the complete coefficientwise proof and all three original/repaired author CLIs.
 A checked patch rejects noninteger symbol aliases that generated dangling witness
@@ -103,6 +106,17 @@ checked boundary patch requires exact Boolean clock modes. Exact substitution
 in the sandpile source removes three witnesses and three residuals per vertex:
 8n+12m witnesses and9n+16m rows, or44 fields and57 local rows in3D, preserving
 complete natural zeros. These are source/field reductions, with no gate claim.
+
+The [conservative-signal review](review_conservative_signal_2a8a39599.md)
+independently verifies the complete49,700-mode/80,501-branch closure and the
+quadratic packet ledger. A checked exact-domain and immutable-input patch
+preserves all17 original JSON exports. The [two membrane reviews](review_membrane_reports_2a8a.md)
+pass all18 author suites and two loader checks. The forced initial scratch test
+has a proved bounded projection removing2,811 witnesses, five squares and761
+products; a production compiler and fixed-arity unbounded interface remain open.
+The [canonical Part XVI integration review](review_canonical_revision_cb8238b64.md)
+checks50 preserved files and the cubic sandpile boundary; its missing table row
+is corrected and the452-page PDF rebuilt.
 
 The [complete Waterfall review](waterfall_report_review_24a743255.md)
 validates the fixed 46-clock universal-machine frontend and all eight original
