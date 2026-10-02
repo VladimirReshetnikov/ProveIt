@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and thirty-nine independent mathematical research packages, unpacked
+One hundred and seventy-eight independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and thirty-nine reports, names the problem each one attacks
+numbers all one hundred and seventy-eight reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -17,20 +17,20 @@ records what each report claims rather than verifying it.
 
 | Category | Reports |
 |---|---:|
-| [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences | 19 |
+| [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences, lexicographic orders of the well-orderings of the reals | 20 |
 | [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions, polyomino growth, first pattern failures, pyramidal Frobenius numbers, valley-monotone bargraphs | 25 |
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy, matching-rank normalization, preorder gamma polynomials | 14 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, integrality of asymptotic coefficients, valuations and periodicity | 11 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
-| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants, L-convex polyominoes), Apéry arrays | 34 |
-| [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 7 |
+| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants, L-convex polyominoes, pattern-avoiding ascent sequences, iterated Bell diagonals, corner polyhedra, powered Catalan and Mahonian numbers, divisor-weighted products, phylogenetic trees and networks, Airy amplitudes of trees and automata, historic and identity trees, Takeuchi numbers, tournament scores, involutions, parabolic cosets and signed permutations, rook paths, cyclic word covers, colored and radix-layer partitions, acyclic orientations, chess placements, football seasons, vincular avoiders, Beta renewals, signed moments, moving zeros and fugacities), Apéry arrays | 67 |
+| [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity, counting accessible and strongly connected automata | 8 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
-| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting | 3 |
-| **Total** | **139** |
+| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates | 7 |
+| **Total** | **178** |
 
 ## Later deliveries
 
@@ -346,6 +346,164 @@ report's theorems, with identical coefficients, and about two thirds of the
 A215570 manuscript re-proves results of the A215561 report's Parts I–II.
 These re-proofs are listed in one table per report, not reprinted. No
 archive of batch 75 was superseded.
+
+Batch 76, seven archives in one arrival commit, opened two reports.
+[`lexicographic-well-orderings-of-reals`](ordinals-and-order-types/lexicographic-well-orderings-of-reals)
+merges three independent manuscripts on one question, the lexicographic
+order of all well-orderings of the reals (size `2^𝔠`, universal for orders of
+size `𝔠`, coding length and representation rank `𝔠⁺`, exact character and gap
+spectra).
+[`group-theoretic-substrates`](hilbert-tenth-problem/group-theoretic-substrates)
+joins two manuscripts on groups as Diophantine substrates (quartics for van
+Kampen area; three free abelian subgroups of a Heisenberg power with
+c.e.-complete product membership); batch 78 added its Parts III–IV. Batch 76
+also added a Part III to `a088714-bell-scale-growth` (`liminf (r_n −
+n/W(n)) ≥ 3/2`, and a reduction of the finer Bell conjecture to one scalar
+defect estimate) and a Part IX to
+`probabilistic-quantum-and-continuous-computation` (stopping laws of rational
+quantum loops). Duplicates: the three well-ordering manuscripts are
+independent texts that prove the same core three times, and each answers a
+question another leaves open; each shared theorem is printed once, with the
+other proofs as second routes. One of them re-proves a corollary of
+[`point-separating-game-values`](ordinals-and-order-types/games-on-ordinals/point-separating-game-values),
+which now points back; the Bell manuscript re-derives Part I's conditional
+reduction, and the quantum manuscript repeats three arguments of its host.
+These are printed as pointers. Four files of the Bell archive equal
+repository files and were not staged. No archive of batch 76 was
+superseded.
+
+Batch 77, seventy-one archives in one arrival commit, was placed in six
+clusters and opened thirty-four reports. One is in
+`automata-and-formal-languages`:
+[`accessible-and-strong-automata`](automata-and-formal-languages/accessible-and-strong-automata)
+(accessible and strongly connected automata to every fixed order). The other
+thirty-three are single-sequence studies in
+[`oeis-sequence-asymptotics`](generating-functions-and-asymptotics/oeis-sequence-asymptotics):
+
+- ascent sequences and a surjection diagonal (77P1):
+  [`a202061-ascent-120-deficit`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202061-ascent-120-deficit)
+  (the deficit `Θ(n^(1/3)(log n)^(2/3))` to every inverse-logarithmic order,
+  from five chained manuscripts),
+  [`a202058-ascent-000-growth`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202058-ascent-000-growth)
+  (the factorial constant `8/(3π²)`),
+  [`a202062-ascent-201-enumeration`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202062-ascent-201-enumeration)
+  (the Guttmann–Kotěšovec cubic generating function) and
+  [`a122399-surjection-diagonal`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a122399-surjection-diagonal);
+- (77P2)
+  [`a139383-iterated-bell-diagonals`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a139383-iterated-bell-diagonals)
+  (Prellberg's 2002 formula has priority),
+  [`a377922-corner-polyhedra-schnyder`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a377922-corner-polyhedra-schnyder)
+  (Fusy–Narmanli–Schaeffer's Conjecture 25),
+  [`a113227-powered-catalan`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a113227-powered-catalan)
+  (Elizalde's question on the pattern 1-23-4),
+  [`a380274-mahonian-growing-powers`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a380274-mahonian-growing-powers),
+  [`a301746-divisor-weighted-asymptotics`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a301746-divisor-weighted-asymptotics)
+  (Kotěšovec's A301746 conjecture, and A294363) and
+  [`a294220-ascent-multiplicity-caps`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a294220-ascent-multiplicity-caps);
+- trees, networks and automata of finite languages (77P3):
+  [`a399421-galled-trees`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a399421-galled-trees)
+  (three gall-count regimes),
+  [`a082161-airy-amplitudes`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a082161-airy-amplitudes)
+  (positive Airy amplitudes for relaxed and compacted trees and minimal
+  automata, every fixed arity; six manuscripts),
+  [`a213863-tree-child-networks`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a213863-tree-child-networks),
+  [`a333497-historic-trees`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a333497-historic-trees)
+  (Burghart–Wagner's Conjecture 1 fails for every order `r ≥ 30`),
+  [`a000651-takeuchi-numbers`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a000651-takeuchi-numbers),
+  [`a116379-bounded-identity-trees`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a116379-bounded-identity-trees)
+  and
+  [`a000571-tournament-score-sequences`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a000571-tournament-score-sequences);
+- words, permutations, partitions and placements (77P4):
+  [`a239144-forbidden-distance-involutions`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a239144-forbidden-distance-involutions),
+  [`a260700-parabolic-double-cosets`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260700-parabolic-double-cosets)
+  (Browning's higher-order conjecture),
+  [`a260952-full-support-signed-permutations`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260952-full-support-signed-permutations),
+  [`a227578-ordered-rook-paths`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a227578-ordered-rook-paths),
+  [`a108242-regular-cyclic-word-covers`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a108242-regular-cyclic-word-covers),
+  [`a301981-unitary-divisor-partitions`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a301981-unitary-divisor-partitions)
+  (the recorded OEIS equivalents of A301981 and A301982 are false),
+  [`a174065-radix-layer-partitions`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a174065-radix-layer-partitions)
+  (those of A174065 and A393565 omit a log-periodic factor),
+  [`a372395-acyclic-orientation-partitions`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a372395-acyclic-orientation-partitions),
+  [`a201513-sparse-chess-placements`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a201513-sparse-chess-placements)
+  and
+  [`a380592-tied-football-seasons`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a380592-tied-football-seasons);
+- moments, renewals and moving parameters (77P5):
+  [`a292507-binomial-partition-transform`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a292507-binomial-partition-transform),
+  [`a113226-vincular-avoiders`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a113226-vincular-avoiders)
+  (Bevan–Cheon–Kitaev's Conjectures 13 and 14 with exact constants),
+  [`a124380-signed-moment-asymptotics`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a124380-signed-moment-asymptotics),
+  [`a047909-beta-renewal-subsequences`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a047909-beta-renewal-subsequences),
+  [`cooper-level-15-moving-zeros`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/cooper-level-15-moving-zeros)
+  (the constants of Cooper's Table 8) and
+  [`a291698-moving-fugacity-partitions`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a291698-moving-fugacity-partitions).
+
+It extended seven reports: Section 14 of `preorder-gamma-rank-ulc` (77U: the
+five-vertex universal-sink cores are rank-ULC at every actual degree); a
+Part III of `apery-hankel-determinant-growth` (full equivalents for
+proportionally shifted determinants), Parts II of `a330266-balanced-smirnov-poisson`
+(the uniform remainder Part I sketched) and `a126764-lconvex-polyominoes` (the
+all-orders coefficient theorem), and a third route for
+`a279619-level-seven-gamma-constant` (77P5); a fifth source for
+`a022629-distinct-partition-norms` (slot multiplicities and Kotěšovec's
+A266891 conjecture) and a Part V of `a215561-fixed-composition-excursions`
+(the A215562 first correction) (77P2). Three 77P5 manuscripts on late
+coefficients of divergent series went whole to `Analysis/Transseries`.
+
+Vladimir asked again for vigilance about duplicates. Three archives of
+batch 77 were superseded and nothing of them was placed: the first edition of
+the iterated-Bell manuscript, which differs only in its credit to Prellberg;
+the earlier release of the galled-tree crossover manuscript; and the
+involution manuscript before its attribution revision. Several archives nest
+their predecessors byte for byte — the A202061 chain of five, the A202058
+chain, and the iterated-Bell, corner-polyhedra and powered-Catalan addenda —
+and each paper was staged once; the 77U archive repeats 27 files and five
+whole companion archives of batch 73, which were not staged again. Same
+theorems: the A022629 manuscript is a fifth independent proof of that
+report's theorems, the A215561 manuscript a fourth proof of its main
+theorems, the level-seven manuscript a third proof of the A279619 constant,
+the second L-convex manuscript re-proves Part I's three corrections, and the
+shifted Apéry manuscript re-proves Part I's linear-shift law; these are
+tabulated or printed as routes, not reprinted as new results. Inside the
+batch, the two forbidden-distance manuscripts share the case `r = 1` with
+the same coefficients, the ternary Airy manuscript is the `k = 3` case and
+base proof of the fixed-arity one, the finite-language automaton manuscript
+repeats a compacted-tree manuscript's appendix, and a later A202061 paper
+restates Part I; each shared result is printed once. Heavy regenerable
+artifacts were excluded with rebuild recipes in the report READMEs: 18 page
+renders of the A202058 chain, five galled-triangle files and two
+exact-value tables of the A113226 report. The five-core certificate shards
+of `preorder-gamma-rank-ulc` (95.1 MB) cannot be regenerated by any shipped
+program; they stay in the arrival commit, and that report's README says how
+to retrieve and replay them.
+
+Batch 78, fourteen archives in four arrival commits, opened three reports in
+[`hilbert-tenth-problem`](hilbert-tenth-problem):
+[`signal-machine-collision-certificates`](hilbert-tenth-problem/signal-machine-collision-certificates)
+(degree-two sums of squares with one witness per realization of a collision
+history),
+[`stochastic-and-thermal-exactness`](hilbert-tenth-problem/stochastic-and-thermal-exactness)
+(undecidable exact events in uniformly convergent stochastic and thermal
+systems) and
+[`quadratic-orthant-certificates`](hilbert-tenth-problem/quadratic-orthant-certificates)
+(degree-two orthant certificates for maximal parallel rounds, timed races and
+a fixed Waterfall universal machine). It added Parts XV and XVI to
+`canonical-diophantine-certificates` (interaction-combinator wiring with a
+sharp `2/5`–`2/3` loop-parity separation; sandpile odometer certificates
+without toppling histories) and Parts III–IV to `group-theoretic-substrates`
+(pair counts in Heisenberg words; affine inputs to subgroup membership).
+Duplicates: the two signal-machine manuscripts prove one theorem by two
+routes, both printed; two of the three interaction-combinator manuscripts
+prove one compiler theorem by one method, which is stated once; results of
+`canonical-diophantine-certificates` Parts V and XI that several manuscripts
+re-prove are printed as pointers; and the Waterfall manuscript rediscovers an
+erratum in the Neary–Woods machine table that the Hilbert's-tenth research
+tree had already found. No archive of batch 78 was superseded. Two
+certificate files of the stochastic-game manuscript (11.9 and 21.8 MB) are
+regenerated by its own program and not shipped. The two Waterfall
+machine-data files of `quadratic-orthant-certificates` are third-party data with no upstream licence
+observed, staged with a provenance note and not covered by the repository's
+MIT-0 licence.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

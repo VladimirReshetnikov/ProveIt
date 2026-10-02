@@ -126,9 +126,9 @@ for `a_b(n)`: `Fabius.staircase_ceil` and `Fabius.staircase_separation` in
   treat this product or the two OEIS formulas.
 - `a301981-unitary-divisor-partitions` (same batch): another pure OEIS
   equivalent that misses a nonconstant factor, there driven by zeta zeros.
-- (Pointers made here only; those reports are not edited. A one-line
-  reciprocal pointer in `a033552-catalan-partitions` is proposed for a
-  separate commit.)
+- (The write made these pointers here only and edited none of those
+  reports. A one-line reciprocal pointer in `a033552-catalan-partitions`
+  was added in a separate commit, `222291f94`.)
 
 ## Notation
 
