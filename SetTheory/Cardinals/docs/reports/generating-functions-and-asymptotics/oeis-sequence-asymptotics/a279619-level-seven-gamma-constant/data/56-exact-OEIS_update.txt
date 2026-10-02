@@ -1,0 +1,29 @@
+Suggested mathematical update for OEIS A279619
+Prepared 1 October 2026; not submitted to OEIS.
+Independent review is recommended before submission.
+
+Let G7 = Gamma(1/7)*Gamma(2/7)*Gamma(4/7). Then
+
+a(n) ~ sqrt(3*Pi)/G7 * 27^n * n^(-3/2).
+
+More precisely,
+
+a(n) = sqrt(3*Pi)/G7 * 27^n * n^(-3/2)
+       * (1 - 215/(1008*n) - 1265/(290304*n^2)
+          + 4683055/(877879296*n^3) + O(n^(-4))).
+
+For A(x) = Sum_{n>=0} a(n)*x^n,
+
+A(1/27)  = 3*G7/(8*Pi^2),
+A(1/125) = 5*G7/(16*Pi^2).
+
+At the dominant singularity,
+
+A(x) = 3*G7/(8*Pi^2)
+       - 2*Pi*sqrt(3)/G7 * sqrt(1-27*x)
+       + O(1-27*x).
+
+The asymptotic constant is therefore
+
+sqrt(3*Pi)/(Gamma(1/7)*Gamma(2/7)*Gamma(4/7))
+= 0.09552230526812671465130791078702962567279466665100717986699482349...

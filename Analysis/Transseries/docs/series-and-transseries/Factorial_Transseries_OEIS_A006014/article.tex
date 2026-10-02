@@ -1,0 +1,1276 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=25mm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{caption}
+
+\definecolor{deepblue}{HTML}{17365D}
+\definecolor{teal}{HTML}{176B73}
+\definecolor{warmgray}{HTML}{F4F2EE}
+\definecolor{softblue}{HTML}{EAF2F8}
+\definecolor{softgreen}{HTML}{EAF6F1}
+\definecolor{softamber}{HTML}{FFF4DB}
+\definecolor{softred}{HTML}{FDEDEC}
+\definecolor{codegray}{HTML}{F6F7F8}
+\definecolor{linkblue}{HTML}{1B4F72}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=teal,
+  urlcolor=linkblue,
+  pdftitle={Factorial Transseries for OEIS A006014},
+  pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI},
+  pdfsubject={OEIS A006014, hypergeometric linearization, factorial asymptotics, Borel analysis, transseries, inverse asymptotics}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Factorial transseries for OEIS A006014}
+\fancyhead[R]{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+\setlist[itemize]{leftmargin=2em,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=2pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1.5pt minus 1pt}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newtcolorbox{resultbox}[1][]{
+  enhanced, breakable,
+  colback=softblue, colframe=deepblue,
+  boxrule=0.8pt, arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1}, fonttitle=\bfseries
+}
+\newtcolorbox{statusbox}[1][]{
+  enhanced, breakable,
+  colback=softamber, colframe=orange!70!black,
+  boxrule=0.8pt, arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1}, fonttitle=\bfseries
+}
+\newtcolorbox{proofbox}[1][]{
+  enhanced, breakable,
+  colback=softgreen, colframe=teal,
+  boxrule=0.7pt, arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1}, fonttitle=\bfseries
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced, breakable,
+  colback=softred, colframe=red!65!black,
+  boxrule=0.8pt, arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  title={#1}, fonttitle=\bfseries
+}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{gray!35},
+  numbers=left,
+  numberstyle=\tiny\color{gray!70!black},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  columns=fullflexible,
+  keywordstyle=\color{deepblue}\bfseries,
+  commentstyle=\color{teal!80!black},
+  stringstyle=\color{red!55!black}
+}
+
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\smallo}{o}
+\newcommand{\fall}[2]{(#1)_{#2}^{\underline{\phantom{x}}}}
+\newcommand{\poch}[2]{(#1)_{#2}}
+\newcommand{\Borel}{\mathcal{B}}
+\newcommand{\Laplace}{\mathcal{L}}
+\newcommand{\Aseq}{\mathrm{A006014}}
+\newcommand{\Useq}{\mathrm{A130032}}
+\newcommand{\constC}{\mathcal{C}}
+\DeclareMathOperator{\Disc}{Disc}
+\DeclareMathOperator{\Res}{Res}
+
+\title{\vspace{-1.5em}\textbf{Factorial Transseries for OEIS A006014}\\[0.35em]
+\large Hypergeometric linearization, an exact A130032 bridge, a proof of the factorial constant, all-orders late terms, and Lambert--\(W\) inversion}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let \(a_1=1\) and
+\[
+ a_{n+1}=(n+1)a_n+\sum_{k=1}^{n-1}a_k a_{n-k}
+ \qquad(n\ge 1),
+\]
+the recurrence defining OEIS A006014.  The OEIS records the factorial estimate
+\[
+ a_n\sim \frac{\cosh(\pi\sqrt3/2)}{\pi}\,n!,
+\]
+but gives no proof with the entry.  This note supplies a proof and a substantially finer structure theorem.
+
+The divergent ordinary generating series \(A(x)=\sum_{n\ge1}a_nx^n\) admits the exact formal linearization
+\[
+ A(x)=x\frac{d}{dx}\log U(x),\qquad
+ U(x)={}_2F_0\!\left(\frac{1+\ii\sqrt3}{2},\frac{1-\ii\sqrt3}{2};\,;x\right).
+\]
+Moreover \(n![x^n]U(x)\) is exactly OEIS A130032.  This bridge yields elementary monotonicity and global bounds, including
+\[
+ \frac{a_n}{n!}\nearrow
+ \constC:=\frac{1}{\Gamma(\frac{1+\ii\sqrt3}{2})
+                         \Gamma(\frac{1-\ii\sqrt3}{2})}
+ =\frac{\cosh(\pi\sqrt3/2)}{\pi}.
+\]
+The zero-balanced Borel transform \({}_2F_1(\alpha,\bar\alpha;1;t)\) then exposes the full rank-one resurgent structure.  We obtain an all-orders factorial expansion
+\[
+ a_n\sim \constC\sum_{j\ge0}\phi_j\Gamma(n+1-j),
+\]
+with a compact coefficient generator
+\[
+ \sum_{j\ge0}\phi_jx^{j-1}
+ =\frac{1}{x}\frac{U(-x)}{U(x)}
+  +x\frac{d}{dx}\frac{U(-x)}{U(x)}.
+\]
+The first terms are
+\[
+ a_n\sim\constC\left(n!-2(n-1)!-2(n-3)!-8(n-4)!-\frac{204}{5}(n-5)!-\cdots\right).
+\]
+We also derive a Lambert--\(W\) inverse transseries, an exact one-parameter deformation, numerical certificates, a proposed OEIS update, and a research program for combinatorial, resurgent, arithmetic, and formalized extensions.
+\end{abstract}
+
+\begin{statusbox}[Status and scope]
+This is an AI-assisted, unrefereed research note.  The elementary leading-asymptotic argument is self-contained.  The all-orders expansion is supported by two routes: zero-balanced hypergeometric continuation and an endpoint expansion of the normalized recurrence.  The accompanying script checks every exact identity through \(n=80\), regenerates the displayed coefficients, and reproduces the numerical tables.  Independent mathematical review is recommended before the new formulas are submitted to the OEIS or described as published results.
+\end{statusbox}
+
+\tableofcontents
+\bigskip
+
+\section{The sequence and the questions addressed}
+
+\subsection{Definition and combinatorial occurrence}
+
+We use the offset of the OEIS entry:
+\begin{equation}\label{eq:recurrence}
+ a_1=1,
+ \qquad
+ a_{n+1}=(n+1)a_n+\sum_{k=1}^{n-1}a_k a_{n-k}
+ \quad(n\ge1).
+\end{equation}
+The first values are
+\[
+ 1,\ 2,\ 7,\ 32,\ 178,\ 1160,\ 8653,\ 72704,\ 679798,\ 7005632,\ldots.
+\]
+The sequence is OEIS A006014 \cite{OEISA006014}.  Devillet and Teheux showed that it counts semilattice orders on an \(n\)-element chain that are internal for the natural order and have the linear-filter property; their Proposition A.1 gives the shifted form of \eqref{eq:recurrence} \cite{DevilletTeheux}.  Their appendix does not give the hypergeometric representation derived below.  (An explicit closed-form question immediately preceding that appendix concerns a different semilattice sequence, beginning \(1,1,2,7,36,247\), not A006014.)  The same OEIS entry points to a fighting-fish occurrence \cite{DuchiEtAl}.
+
+Let
+\begin{equation}\label{eq:Adef}
+ A(x):=\sum_{n\ge1}a_nx^n\in x\Z[[x]].
+\end{equation}
+Because \(a_n\) has factorial growth, \(A\) has radius of convergence zero.  Every generating-function identity below is therefore initially an identity in the formal ring \(\C[[x]]\).  Analytic statements use Borel--Laplace summation and are labeled accordingly.
+
+Multiplying \eqref{eq:recurrence} by \(x^{n+1}\) and summing gives the Riccati equation recorded in the OEIS:
+\begin{equation}\label{eq:Riccati}
+ A=x\bigl(1+A+A^2+xA'\bigr).
+\end{equation}
+
+\subsection{What the OEIS records, and what is proved here}
+
+As of the repository and OEIS snapshot inspected on 1 October 2026, A006014 records
+\begin{equation}\label{eq:oeis-leading}
+ a_n\sim \frac{\cosh(\pi\sqrt3/2)}{\pi}\,n!,
+\end{equation}
+credited there to V. Kotesovec in 2024, without an accompanying proof in the entry \cite{OEISA006014}.  The exact A006014 identifier does not occur in the inspected ProveIt main-branch code-search index; the repository already contains many neighboring OEIS asymptotic reports, so the present target was chosen to avoid duplicating those analyses.
+
+The results established in this note are:
+\begin{enumerate}
+\item an exact logarithmic-derivative closed form in terms of a \({}_2F_0\) carrier;
+\item an exact coefficient bridge to A130032;
+\item a self-contained proof of \eqref{eq:oeis-leading}, including monotone convergence and explicit global bounds;
+\item a complete algorithm for the all-orders factorial expansion, with eleven displayed late-term coefficients;
+\item an exact transseries family and the first Stokes jump;
+\item an explicit asymptotic inverse through three correction levels;
+\item a one-parameter deformation that preserves the hypergeometric mechanism.
+\end{enumerate}
+
+\begin{resultbox}[Main theorem in compact form]
+Put
+\begin{equation}\label{eq:alphabeta}
+ \alpha:=\frac{1+\ii\sqrt3}{2},\qquad
+ \beta:=\frac{1-\ii\sqrt3}{2},\qquad
+ \constC:=\frac{1}{\Gamma(\alpha)\Gamma(\beta)}.
+\end{equation}
+Then, as formal power series,
+\begin{align}
+ U(x)&:={}_2F_0(\alpha,\beta;;x)
+      =\sum_{n\ge0}\frac{(\alpha)_n(\beta)_n}{n!}x^n,\label{eq:Udef}\\
+ A(x)&=x\frac{U'(x)}{U(x)}.\label{eq:AlogU}
+\end{align}
+Furthermore,
+\begin{equation}\label{eq:mainlimit}
+ \frac{a_n}{n!}\nearrow\constC
+ =\frac{\cosh(\pi\sqrt3/2)}{\pi},
+\end{equation}
+and for every fixed \(N\ge1\),
+\begin{equation}\label{eq:mainallorders}
+ a_n=\constC\sum_{j=0}^{N-1}\phi_j\Gamma(n+1-j)
+      +\bigO_N\!\bigl(\Gamma(n+1-N)\bigr),
+\end{equation}
+where
+\begin{equation}\label{eq:Phigenerator-preview}
+ \sum_{j\ge0}\phi_jx^{j-1}
+ =\frac{R(x)}{x}+xR'(x),
+ \qquad R(x):=\frac{U(-x)}{U(x)}.
+\end{equation}
+\end{resultbox}
+
+\section{Exact hypergeometric linearization}
+
+\subsection{From the Riccati equation to a second-order equation}
+
+The standard logarithmic-derivative substitution is unexpectedly effective here.
+
+\begin{theorem}[Exact formal linearization]\label{thm:linearization}
+There is a unique \(U(x)\in1+x\C[[x]]\) such that
+\begin{equation}\label{eq:substitution}
+ A(x)=x\frac{U'(x)}{U(x)}.
+\end{equation}
+It satisfies
+\begin{equation}\label{eq:Uode}
+ x^2U''+(2x-1)U'+U=0,
+ \qquad U(0)=1,\qquad U'(0)=1.
+\end{equation}
+Conversely, the logarithmic derivative of the unique formal solution of \eqref{eq:Uode} solves \eqref{eq:Riccati}.
+\end{theorem}
+
+\begin{proof}
+Substitute \(A=xU'/U\) into the right side of \eqref{eq:Riccati}.  The quadratic terms cancel:
+\[
+ x\bigl(1+A+A^2+xA'\bigr)
+ =x+2x^2\frac{U'}{U}+x^3\frac{U''}{U}.
+\]
+Equating this with \(xU'/U\), multiplying by \(U/x\), and rearranging gives \eqref{eq:Uode}.  Since its coefficient recurrence determines \(u_{n+1}\) from \(u_n\), the normalization \(U(0)=1\) gives uniqueness.  The reverse calculation is identical.
+\end{proof}
+
+Write
+\[
+ U(x)=\sum_{n\ge0}u_nx^n.
+\]
+The coefficient of \(x^n\) in \eqref{eq:Uode} gives
+\begin{equation}\label{eq:urecurrence}
+ u_0=1,
+ \qquad
+ u_{n+1}=\frac{n^2+n+1}{n+1}\,u_n.
+\end{equation}
+Since \(n^2+n+1=(n+\alpha)(n+\beta)\), we obtain the carrier in closed form.
+
+\begin{corollary}[Hypergeometric carrier]\label{cor:carrier}
+With \(\alpha,\beta\) from \eqref{eq:alphabeta},
+\begin{equation}\label{eq:un}
+ u_n=\frac{(\alpha)_n(\beta)_n}{n!}
+ =\frac{\Gamma(n+\alpha)\Gamma(n+\beta)}
+        {\Gamma(\alpha)\Gamma(\beta)\Gamma(n+1)}.
+\end{equation}
+Thus \eqref{eq:Udef} and \eqref{eq:AlogU} hold exactly in \(\C[[x]]\).
+\end{corollary}
+
+\subsection{The exact bridge to OEIS A130032}
+
+OEIS A130032 is
+\begin{equation}\label{eq:A130032}
+ p_n:=\prod_{k=0}^{n}(k^2-k+1)
+ \qquad(n\ge0).
+\end{equation}
+It has the same limiting constant \(\constC\) in its recorded asymptotics \cite{OEISA130032}.  The coincidence is structural rather than accidental.
+
+\begin{theorem}[A006014--A130032 bridge]\label{thm:bridge}
+For every \(n\ge0\),
+\begin{equation}\label{eq:bridge}
+ n!u_n=p_n=\prod_{j=0}^{n-1}(j^2+j+1).
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:bridge-log}
+ \sum_{n\ge1}a_nx^n
+ =x\frac{d}{dx}\log\left(
+   \sum_{n\ge0}\frac{p_n}{n!}x^n\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Iterating \eqref{eq:urecurrence} yields
+\[
+ n!u_n=\prod_{j=0}^{n-1}(j^2+j+1).
+\]
+Replacing \(j\) by \(k-1\) shows this is \(\prod_{k=1}^{n}(k^2-k+1)\), and the omitted \(k=0\) factor is \(1\).  Equation \eqref{eq:bridge-log} is \eqref{eq:AlogU}.
+\end{proof}
+
+\begin{remark}[Moments and cumulants]
+The relation \(A=x(\log U)'\) is the ordinary-series analogue of passing from moments to cumulants: \(u_n\) is the carrier sequence and \(a_n/n\) is the coefficient of \(\log U\).  A direct combinatorial explanation of this transform for the semilattice objects would be especially valuable; see Question \ref{q:bijection}.
+\end{remark}
+
+\subsection{Exact coefficient formulas}
+
+Multiplying \eqref{eq:AlogU} by \(U\) gives a triangular identity.
+
+\begin{proposition}[Triangular convolution]\label{prop:triangular}
+For every \(n\ge1\),
+\begin{equation}\label{eq:triangular}
+ \sum_{k=1}^{n}a_k u_{n-k}=n u_n,
+\end{equation}
+so that
+\begin{equation}\label{eq:triangular-rec}
+ a_n=n u_n-\sum_{k=1}^{n-1}a_k u_{n-k}.
+\end{equation}
+\end{proposition}
+
+This gives exact finite formulas in compositions or Bell polynomials.
+
+\begin{corollary}[Composition and Bell-polynomial formulas]\label{cor:exactformulas}
+For \(n\ge1\),
+\begin{equation}\label{eq:composition}
+ a_n=n\sum_{m=1}^{n}\frac{(-1)^{m-1}}{m}
+ \sum_{\substack{n_1+\cdots+n_m=n\\ n_i\ge1}}
+ u_{n_1}\cdots u_{n_m}.
+\end{equation}
+Equivalently, with \(B_{n,m}\) the partial exponential Bell polynomial,
+\begin{equation}\label{eq:Bellformula}
+ a_n=\frac{1}{(n-1)!}
+ \sum_{m=1}^{n}(-1)^{m-1}(m-1)!
+ B_{n,m}(1!u_1,2!u_2,\ldots).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Expand \(\log(1+(U-1))\) and extract \([x^n]\), then multiply by \(n\).  The standard Bell-polynomial form of the logarithm gives \eqref{eq:Bellformula}.
+\end{proof}
+
+These are exact closed forms in finite sums.  They complement, rather than replace, the recurrence: the main advantage is that the hypergeometric carrier makes asymptotic analysis transparent.
+
+\section{A self-contained proof of the OEIS asymptotic}
+
+This section proves \eqref{eq:mainlimit} without Borel summation.
+
+\subsection{Normalized recurrence}
+
+Define
+\begin{equation}\label{eq:bn}
+ b_n:=\frac{a_n}{n!}.
+\end{equation}
+Dividing \eqref{eq:recurrence} by \((n+1)!\) gives
+\begin{equation}\label{eq:bnrecurrence}
+ b_{n+1}-b_n
+ =\frac{1}{n+1}\sum_{k=1}^{n-1}
+   \frac{b_kb_{n-k}}{\binom{n}{k}}.
+\end{equation}
+Every term is nonnegative, so \(b_n\) is nondecreasing; it is strictly increasing from \(b_2\) onward.
+
+The carrier supplies a sharp comparison sequence:
+\begin{equation}\label{eq:rn}
+ r_n:=\frac{n u_n}{n!}=\frac{u_n}{(n-1)!}
+ =\frac{p_n}{n!(n-1)!}
+ \qquad(n\ge1).
+\end{equation}
+By \eqref{eq:urecurrence},
+\begin{equation}\label{eq:rnratio}
+ \frac{r_{n+1}}{r_n}=1+\frac{1}{n(n+1)},
+\end{equation}
+whence
+\begin{equation}\label{eq:rnproduct}
+ r_n=\prod_{j=1}^{n-1}\left(1+\frac{1}{j(j+1)}\right).
+\end{equation}
+
+\begin{lemma}[Evaluation of the carrier constant]\label{lem:C}
+The increasing sequence \(r_n\) converges to
+\begin{equation}\label{eq:Cproduct}
+ \constC=\prod_{j=1}^{\infty}\left(1+\frac{1}{j(j+1)}\right)
+ =\frac{1}{\Gamma(\alpha)\Gamma(\beta)}
+ =\frac{\cosh(\pi\sqrt3/2)}{\pi}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The product converges because \(\sum j^{-2}<\infty\).  From \eqref{eq:un},
+\[
+ r_n=\frac{\Gamma(n+\alpha)\Gamma(n+\beta)}
+ {\Gamma(\alpha)\Gamma(\beta)\Gamma(n+1)\Gamma(n)}
+ \longrightarrow\frac{1}{\Gamma(\alpha)\Gamma(\beta)},
+\]
+using \(\alpha+\beta=1\) and the standard gamma-ratio asymptotic.  Finally,
+\[
+ \Gamma\!\left(\frac12+\ii y\right)
+ \Gamma\!\left(\frac12-\ii y\right)
+ =\frac{\pi}{\cosh(\pi y)},
+\]
+with \(y=\sqrt3/2\) \cite{DLMFGamma}.
+\end{proof}
+
+\subsection{Monotone convergence and explicit bounds}
+
+\begin{theorem}[Proof of the recorded leading asymptotic]\label{thm:leading}
+For all \(n\ge2\),
+\begin{equation}\label{eq:globalupper}
+ 0<b_n<r_n<\constC.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:gapbound}
+ 0<r_n-b_n<\frac{2\constC^2}{n},
+\end{equation}
+and therefore
+\begin{equation}\label{eq:bnlimit}
+ b_n\nearrow\constC.
+\end{equation}
+Equivalently,
+\[
+ a_n\sim\constC\,n!
+ =\frac{\cosh(\pi\sqrt3/2)}{\pi}\,n!.
+\]
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:triangular-rec} and positivity imply \(a_n<n u_n\) for \(n\ge2\), hence \(b_n<r_n<\constC\).  Thus \(b_n\) has a limit \(L\le\constC\).
+
+The exact gap is
+\begin{equation}\label{eq:exactgap}
+ r_n-b_n
+ =\frac{1}{n!}\sum_{k=1}^{n-1}a_k u_{n-k}.
+\end{equation}
+The bounds \(a_k<\constC k!\) and \(u_m<\constC(m-1)!\) give
+\begin{align*}
+ r_n-b_n
+ &<\constC^2\sum_{k=1}^{n-1}
+ \frac{k!(n-k-1)!}{n!}\\
+ &=\constC^2\sum_{k=1}^{n-1}
+ \frac{1}{(n-k)\binom{n}{k}}
+ =\constC^2\sum_{j=1}^{n-1}
+ \frac{1}{j\binom{n}{j}}.
+\end{align*}
+Using
+\[
+ \frac{1}{j\binom{n}{j}}
+ =\frac{1}{n\binom{n-1}{j-1}}
+\]
+after changing index, we obtain
+\[
+ \sum_{j=1}^{n-1}\frac{1}{j\binom{n}{j}}
+ =\frac1n\sum_{m=0}^{n-2}\frac{1}{\binom{n-1}{m}}
+ <\frac{2}{n}.
+\]
+Indeed, the first summand is \(1\), and each of the remaining \(n-2\) summands is at most \(1/(n-1)\).  This proves \eqref{eq:gapbound}.  Since \(r_n\to\constC\), the gap tends to zero, so \(L=\constC\).
+\end{proof}
+
+\begin{corollary}[A fully explicit global error estimate]\label{cor:globalerror}
+For \(n\ge2\),
+\begin{equation}\label{eq:explicitglobalerror}
+ 0<\constC-\frac{a_n}{n!}
+ <\constC\bigl(\e^{1/n}-1\bigr)+\frac{2\constC^2}{n}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The product tail satisfies
+\[
+ \log\frac{\constC}{r_n}
+ =\sum_{j=n}^{\infty}\log\left(1+\frac{1}{j(j+1)}\right)
+ <\sum_{j=n}^{\infty}\frac{1}{j(j+1)}=\frac1n.
+\]
+Thus \(\constC-r_n<\constC(\e^{1/n}-1)\).  Add \eqref{eq:gapbound}.
+\end{proof}
+
+\begin{remark}
+The bound in \eqref{eq:explicitglobalerror} is deliberately elementary rather than asymptotically sharp.  Section \ref{sec:allorders} proves
+\[
+ \constC-\frac{a_n}{n!}=\frac{2\constC}{n}+\bigO(n^{-3}),
+\]
+including the notable absence of an \(n^{-2}\) term.
+\end{remark}
+
+\section{Borel geometry and the exact transseries family}\label{sec:borel}
+
+The leading theorem required only positive coefficients.  The finer expansion is encoded by the singular geometry of the hypergeometric carrier.
+
+\subsection{Zero-balanced Borel transform}
+
+For a formal series \(F(x)=\sum_{n\ge0}f_nx^n\), use the standard Borel transform
+\begin{equation}\label{eq:Borel}
+ \widehat F(t):=\Borel F(t)=\sum_{n\ge0}\frac{f_n}{n!}t^n.
+\end{equation}
+The corresponding Laplace sum is normalized as
+\[
+ \mathcal S_\theta F(x)=\frac1x\int_0^{\e^{\ii\theta}\infty}
+ \e^{-t/x}\widehat F(t)\,dt,
+\]
+whenever the integral exists, with lateral limits on a singular ray.
+From \eqref{eq:Udef},
+\begin{equation}\label{eq:Uhat}
+ \widehat U(t)={}_2F_1(\alpha,\beta;1;t).
+\end{equation}
+Because \(\alpha+\beta=1\), this is a zero-balanced Gauss function.  Around \(t=1\), the classical continuation formula is
+\begin{equation}\label{eq:zerobalanced}
+ \widehat U(t)=\constC\sum_{m\ge0}
+ \frac{(\alpha)_m(\beta)_m}{(m!)^2}(1-t)^m
+ \left(h_m-\log(1-t)\right),
+\end{equation}
+where
+\begin{equation}\label{eq:hm}
+ h_m:=2\psi(m+1)-\psi(m+\alpha)-\psi(m+\beta).
+\end{equation}
+See the zero-balanced continuation formulas in the NIST DLMF \cite{DLMFHypergeometric}.  The only finite singular point of the Gauss equation away from the origin is \(t=1\), and it is logarithmic.
+
+For \(x\) in a sufficiently narrow sector about the positive real axis, let \(U_+(x)\) and \(U_-(x)\) denote the lateral Laplace sums using contours above and below the positive Borel ray.  With this convention, \eqref{eq:zerobalanced} gives
+\begin{equation}\label{eq:Ujump}
+ U_+(x)-U_-(x)
+ =2\pi\ii\constC\,\e^{-1/x}U(-x).
+\end{equation}
+The sign follows from the principal logarithm: for \(t=1+s\), the upper and lower values of \(\log(1-t)\) differ by \(-2\pi\ii\).  Reversing the definition of the discontinuity reverses the displayed sign.
+
+\subsection{The companion solution and transseries parameter}
+
+\begin{lemma}[Exact companion solution]\label{lem:companion}
+If \(U(x)\) is the formal solution of \eqref{eq:Uode}, then
+\begin{equation}\label{eq:Vdef}
+ V(x):=\e^{-1/x}U(-x)
+\end{equation}
+is the second formal transseries solution of the same linear equation.
+\end{lemma}
+
+\begin{proof}
+Set \(G(x)=U(-x)\).  The equation for \(U\) at \(-x\) becomes
+\[
+ x^2G''+(2x+1)G'+G=0.
+\]
+A direct differentiation of \(V=\e^{-1/x}G\) reduces \(x^2V''+(2x-1)V'+V\) to the left side of this equation.
+\end{proof}
+
+Thus every formal transseries solution of the linear equation in this rank-one family is \(U+\sigma V\).  Taking its logarithmic derivative gives an exact nonlinear family.
+
+\begin{theorem}[Exact one-parameter transseries family]\label{thm:transseries}
+For a formal parameter \(\sigma\), define
+\begin{equation}\label{eq:Asigma}
+ A(x;\sigma):=x\frac{d}{dx}\log\left(U(x)+\sigma\e^{-1/x}U(-x)\right).
+\end{equation}
+Then \(A(x;\sigma)\) solves the Riccati equation \eqref{eq:Riccati} as a transseries.  Put
+\begin{equation}\label{eq:Rphi}
+ R(x):=\frac{U(-x)}{U(x)},
+ \qquad
+ \Phi(x):=\frac{R(x)}{x}+xR'(x).
+\end{equation}
+Then
+\begin{equation}\label{eq:multisector}
+ A(x;\sigma)=A(x)+\sum_{m\ge1}(-1)^{m-1}
+ \sigma^m\e^{-m/x}R(x)^{m-1}\Phi(x).
+\end{equation}
+Across the positive Stokes direction, the carrier jump \eqref{eq:Ujump} acts on the transseries parameter by
+\[
+ \sigma_+=\sigma_- -2\pi\ii\constC
+\]
+when the same analytic solution is represented in the upper and lower lateral bases.
+\end{theorem}
+
+\begin{proof}
+The first assertion follows from Theorem \ref{thm:linearization}.  For the expansion, write
+\[
+ A(x;\sigma)=A(x)+x\frac{d}{dx}
+ \log\left(1+\sigma\e^{-1/x}R(x)\right)
+\]
+and expand the logarithm.  Since
+\[
+ \frac{x}{m}\frac{d}{dx}
+ \left(\e^{-m/x}R(x)^m\right)
+ =\e^{-m/x}R(x)^{m-1}\left(\frac{R(x)}{x}+xR'(x)\right),
+\]
+we obtain \eqref{eq:multisector}.  For a fixed analytic solution,
+\(U_++\sigma_+V=U_-+\sigma_-V\); inserting \eqref{eq:Ujump} gives the displayed parameter translation.
+\end{proof}
+
+\begin{remark}
+Equation \eqref{eq:multisector} is stronger than a leading asymptotic statement: it displays every exponential scale \(\e^{-m/x}\) and reduces every fluctuation series to powers of the single ratio \(R=U(-x)/U(x)\).  A complete description of the singularity at Borel actions \(2,3,\ldots\), including logarithmic resonance data, remains open in this note.
+\end{remark}
+
+\section{All-orders factorial asymptotics}\label{sec:allorders}
+
+\subsection{Coefficient generator}
+
+Expand
+\begin{equation}\label{eq:Rseries}
+ R(x)=\sum_{j\ge0}\rho_jx^j,
+ \qquad
+ \Phi(x)=\sum_{j\ge0}\phi_jx^{j-1}.
+\end{equation}
+Since \(R(0)=1\), \(\phi_0=1\).  The coefficients are rational even though \(\alpha\) and \(\beta\) are nonreal, because \eqref{eq:urecurrence} is rational.
+
+\begin{theorem}[All-orders late-term expansion]\label{thm:allorders}
+For each fixed \(N\ge1\), as \(n\to\infty\),
+\begin{equation}\label{eq:allorders}
+ a_n=\constC\sum_{j=0}^{N-1}\phi_j\Gamma(n+1-j)
+ +\bigO_N\!\left(\Gamma(n+1-N)\right),
+\end{equation}
+where \(\phi_j\) is defined by \eqref{eq:Rphi}--\eqref{eq:Rseries}.
+Equivalently,
+\begin{equation}\label{eq:normalizedfactorial}
+ \frac{a_n}{\constC n!}
+ \sim\sum_{j\ge0}\frac{\phi_j}
+ {n(n-1)\cdots(n-j+1)},
+\end{equation}
+with the empty product interpreted as \(1\).
+\end{theorem}
+
+\begin{proof}
+We first give a coefficient proof, and then identify its generator with the Borel singular minor.
+
+\textit{Endpoint construction.}
+Normalize by \(b_n=a_n/n!\).  For a fixed integer \(K\), split the convolution in \eqref{eq:bnrecurrence} into the two endpoint ranges \(k<K\), \(n-k<K\), and the middle.  The reciprocal-binomial tail satisfies
+\begin{equation}\label{eq:reciprocal-binomial-tail}
+ \sum_{k=K}^{n-K}\binom{n}{k}^{-1}=\bigO_K(n^{-K}).
+\end{equation}
+Indeed, the finitely many terms \(K\le k<2K\) and their reflections are \(\bigO_K(n^{-K})\), while the remaining at most \(n\) terms are bounded by \(\binom{n}{2K}^{-1}=\bigO_K(n^{-2K})\).  Since \(0<b_j<\constC\), the middle of \eqref{eq:bnrecurrence} is therefore \(\bigO_K(n^{-K-1})\).
+
+The two endpoint pieces contain only the fixed numbers \(b_1,\ldots,b_{K-1}\) and finite products of factors \((1-r/n)^{-1}\).  Starting with \(b_n/\constC=1+\bigO(n^{-1})\), which follows from Theorem \ref{thm:leading}, expansion of those endpoint pieces followed by summation of the difference equation from \(n\) to infinity gives, inductively, a unique Poincar\'e expansion through every prescribed power of \(1/n\), with a remainder one power smaller.  Appendix A writes this induction explicitly.
+
+It remains to identify the coefficients in the factorial basis.  In the original recurrence, the middle convolution is \(\bigO_K(\Gamma(n+1-K))\), by \eqref{eq:reciprocal-binomial-tail}.  For any fixed coefficient index \(m\), choose \(K>m\).  Substituting
+\[
+ a_n\sim\constC\sum_{j\ge0}\phi_j\Gamma(n+1-j)
+\]
+and matching the two endpoint ranges gives, for \(m\ge1\),
+\begin{equation}\label{eq:phi-direct-recurrence}
+ m\phi_m+2\sum_{k=1}^{m}a_k\phi_{m-k}=0,
+ \qquad \phi_0=1.
+\end{equation}
+Here the left side uses
+\(\Gamma(n+2-j)-(n+1)\Gamma(n+1-j)=-j\Gamma(n+1-j)\),
+and the factor \(2\) comes from the two endpoints.  Thus the endpoint induction proves \eqref{eq:allorders} and determines every \(\phi_m\) uniquely.
+
+\textit{Generator and Borel route.}
+The first transseries fluctuation satisfies the equation obtained by linearizing \eqref{eq:Riccati} about \(A\):
+\begin{equation}\label{eq:Phi-linearized}
+ x\Phi'(x)+(1+2A(x))\Phi(x)=0,
+ \qquad \Phi(x)=x^{-1}+\bigO(1).
+\end{equation}
+Coefficient extraction from \eqref{eq:Phi-linearized} is exactly \eqref{eq:phi-direct-recurrence}.  On the other hand, differentiating the exact expression in \eqref{eq:Rphi}, or equivalently taking the first term of \eqref{eq:multisector}, shows that \(R/x+xR'\) satisfies \eqref{eq:Phi-linearized} with the required leading term.  Uniqueness therefore gives the stated generator.
+
+Finally, the zero-balanced continuation \eqref{eq:zerobalanced} identifies this same \(\Phi\) as the first singular minor of \(A=x(\log U)'\) at Borel action \(1\).  Darboux--Watson transfer recovers \eqref{eq:allorders} directly and explains the factorial basis; see \cite{Balser,Costin}.  This second route also links the algebraic expansion to the exact Stokes family of Theorem \ref{thm:transseries}.
+\end{proof}
+
+\subsection{A rational recursion for every coefficient}
+
+The generator requires only rational arithmetic.
+
+\begin{algorithm}[Late-term coefficient recursion]\label{alg:phi}
+Compute \(u_j\) from \eqref{eq:urecurrence}.  Set \(\rho_0=1\), and for \(n\ge1\) define
+\begin{equation}\label{eq:rhorecurrence}
+ \rho_n=(-1)^nu_n-\sum_{k=1}^{n}u_k\rho_{n-k}.
+\end{equation}
+Then
+\begin{equation}\label{eq:phirecurrence}
+ \phi_0=1,
+ \qquad
+ \phi_j=\rho_j+(j-1)\rho_{j-1}
+ \quad(j\ge1).
+\end{equation}
+Equivalently, once the exact values \(a_k\) are available, the shorter triangular recursion
+\begin{equation}\label{eq:phi-short}
+ \phi_m=-\frac{2}{m}\sum_{k=1}^{m}a_k\phi_{m-k}
+ \quad(m\ge1)
+\end{equation}
+follows directly from \eqref{eq:phi-direct-recurrence}.
+\end{algorithm}
+
+\begin{proof}
+Equation \eqref{eq:rhorecurrence} is coefficient extraction from \(U(x)R(x)=U(-x)\).  Equation \eqref{eq:phirecurrence} follows from \(\Phi=R/x+xR'\).
+\end{proof}
+
+The first values are
+\begin{equation}\label{eq:philist}
+\begin{split}
+(\phi_0,\ldots,\phi_{11})={}&\left(
+1,-2,0,-2,-8,-\frac{204}{5},-\frac{1222}{5},-1682,
+-\frac{65412}{5},\right.\\
+&\left.-\frac{1703944}{15},-\frac{81792476}{75},
+-\frac{3157977156}{275}\right).
+\end{split}
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:factorialdisplay}
+\begin{split}
+ a_n\sim\constC\bigg(&n!-2(n-1)!-2(n-3)!-8(n-4)!\\
+ &-\frac{204}{5}(n-5)!-\frac{1222}{5}(n-6)!-1682(n-7)!\\
+ &-\frac{65412}{5}(n-8)!-\frac{1703944}{15}(n-9)!-\cdots\bigg).
+\end{split}
+\end{equation}
+
+\subsection{Power and logarithmic forms}
+
+Expanding falling factorials in powers of \(n^{-1}\) gives
+\begin{equation}\label{eq:ratioexpansion}
+\begin{split}
+ \frac{a_n}{\constC n!}\sim{}&1-\frac{2}{n}-\frac{2}{n^3}-\frac{14}{n^4}
+ -\frac{514}{5n^5}-\frac{4412}{5n^6}-\frac{8782}{n^7}\\
+ &-\frac{497172}{5n^8}-\frac{18919774}{15n^9}
+ -\frac{1328641736}{75n^{10}}-\cdots.
+\end{split}
+\end{equation}
+In particular, the coefficient of \(n^{-2}\) is exactly zero.  Taking logarithms yields
+\begin{equation}\label{eq:logratio}
+\begin{split}
+ \log\frac{a_n}{\constC n!}\sim{}&-\frac2n-\frac2{n^2}-\frac{14}{3n^3}
+ -\frac{22}{n^4}-\frac{726}{5n^5}-\frac{3518}{3n^6}\\
+ &-\frac{78094}{7n^7}-\frac{122110}{n^8}
+ -\frac{67926286}{45n^9}-\frac{103886522}{5n^{10}}-\cdots.
+\end{split}
+\end{equation}
+Combining this with Stirling's expansion gives a convenient logarithmic transseries:
+\begin{equation}\label{eq:loga}
+\begin{split}
+ \log\frac{a_n}{\constC}
+ \sim{}&n(\log n-1)+\frac12\log(2\pi n)
+ -\frac{23}{12n}-\frac2{n^2}-\frac{1681}{360n^3}\\
+ &-\frac{22}{n^4}-\frac{182951}{1260n^5}-\cdots.
+\end{split}
+\end{equation}
+
+\subsection{Numerical performance}
+
+The following values were generated directly from the integer recurrence and 80-digit arithmetic.  The fourth column tests the first correction \(-2/n\); the fifth tests the next nonzero correction \(-2/n^3\).
+
+\begin{table}[ht]
+\centering
+\caption{Convergence of \(b_n=a_n/n!\) to \(\constC\).}
+\label{tab:convergence}
+\small
+\begin{tabular}{rcccc}
+\toprule
+\(n\)&\(b_n\)&\(b_n/\constC\)&\(n(1-b_n/\constC)\)&\(n^3(b_n/\constC-1+2/n)\)\\
+\midrule
+10  &1.930564373897707&0.7950632114&2.0493678864&-4.9367886400\\
+20  &2.184395053666858&0.8995981536&2.0080369271&-3.2147708562\\
+50  &2.331016938633008&0.9599813599&2.0009320067&-2.3300166885\\
+100 &2.379620772585351&0.9799978487&2.0002151262&-2.1512616348\\
+200 &2.403907265068472&0.9899997409&2.0000518172&-2.0726861207\\
+500 &2.418476993527396&0.9959999838&2.0000081137&-2.0284184030\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table \ref{tab:errors} gives the absolute relative error after retaining \(J\) terms of \eqref{eq:allorders}.  At \(n=100\), twelve terms reach about \(3.1\times10^{-16}\).
+
+\begin{table}[ht]
+\centering
+\caption{Absolute relative error of the truncated factorial expansion.}
+\label{tab:errors}
+\scriptsize
+\setlength{\tabcolsep}{4.1pt}
+\begin{tabular}{rccccccc}
+\toprule
+\(n\)&\(J=1\)&\(J=2\)&\(J=4\)&\(J=6\)&\(J=8\)&\(J=10\)&\(J=12\)\\
+\midrule
+20  &1.1161e-1&4.4670e-4&1.2166e-4&2.0809e-5&6.2881e-6&1.3531e-6&2.3591e-6\\
+50  &4.1687e-2&1.9417e-5&1.7014e-6&2.6534e-8&8.0183e-10&4.2125e-11&3.6260e-12\\
+100 &2.0410e-2&2.1952e-6&9.1665e-8&3.1381e-10&1.9672e-12&2.0100e-14&3.1184e-16\\
+200 &1.0101e-2&2.6170e-7&5.3450e-9&4.3145e-12&6.2316e-15&1.4319e-17&4.8718e-20\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The slight deterioration at \(n=20,J=12\) is the expected onset of divergence: an asymptotic series is optimized by truncation near its least term, not by taking every available coefficient.
+
+\section{Asymptotic inversion}
+
+Because \(a_n\) is strictly increasing, it is natural to invert its growth.  Let \(Y\) be large and seek the real solution \(\nu(Y)\) of the asymptotic interpolation \(a_\nu=Y\).  The integer threshold can then be found by checking the two or three integers nearest \(\nu(Y)\).
+
+\subsection{A shifted Stirling form}
+
+Set
+\begin{equation}\label{eq:mshift}
+ m:=n+\frac12.
+\end{equation}
+Using \eqref{eq:logratio} and the centered Stirling series gives
+\begin{equation}\label{eq:centeredlog}
+\begin{split}
+ \log\frac{a_n}{\constC}
+ \sim{}&m(\log m-1)+\frac12\log(2\pi)
+ -\frac{49}{24m}-\frac3{m^2}-\frac{20633}{2880m^3}\\
+ &-\frac{123}{4m^4}-\frac{7956175}{40320m^5}-\cdots.
+\end{split}
+\end{equation}
+The half-shift removes the large \(\frac12\log n\) correction from the inversion carrier.
+
+\subsection{\texorpdfstring{Lambert--\(W\)}{Lambert-W} carrier and corrections}
+
+Define
+\begin{equation}\label{eq:inverse-defs}
+ L:=\log\frac{Y}{\constC},\qquad
+ X:=L-\frac12\log(2\pi),\qquad
+ w:=W_0(X/\e),
+\end{equation}
+\begin{equation}\label{eq:Mdef}
+ M:=\frac{X}{w},\qquad q:=\log M=w+1.
+\end{equation}
+Then \(M(\log M-1)=X\).  Reversion of \eqref{eq:centeredlog} yields the following.
+
+\begin{theorem}[Inverse transseries]\label{thm:inverse}
+As \(Y\to\infty\), the real inverse has the expansion
+\begin{equation}\label{eq:inverse}
+\begin{split}
+ \nu(Y)={}&M-\frac12
+ +\frac{49}{24Mq}+\frac{3}{M^2q}\\
+ &+\frac{41266q^2-24010q-12005}
+ {5760M^3q^3}+\bigO(M^{-4}).
+\end{split}
+\end{equation}
+Every further coefficient is obtained by formal substitution into \eqref{eq:centeredlog}; it is a rational function of \(q\).
+\end{theorem}
+
+\begin{proof}
+Write \(m=M+A_1M^{-1}+A_2M^{-2}+A_3M^{-3}+\cdots\).  Since the derivative of \(m(\log m-1)\) at \(M\) is \(q\), matching successive powers gives
+\[
+ A_1=\frac{49}{24q},\qquad A_2=\frac3q,
+\]
+and
+\[
+ A_3=\frac{20633}{2880q}-\frac{2401}{576q^2}-\frac{2401}{1152q^3}
+ =\frac{41266q^2-24010q-12005}{5760q^3}.
+\]
+Finally \(n=m-1/2\).
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\caption{Error \(\nu(a_N)-N\) after successive inverse corrections.}
+\label{tab:inverse}
+\small
+\begin{tabular}{rcccc}
+\toprule
+\(N\)&carrier&\(+M^{-1}\)&\(+M^{-2}\)&\(+M^{-3}\)\\
+\midrule
+10  &-9.9419e-2&-1.5596e-2&-3.7532e-3&-1.8538e-3\\
+20  &-3.5714e-2&-2.6637e-3&-2.9064e-4&-7.5933e-5\\
+50  &-1.0624e-2&-3.1308e-4&-1.2993e-5&-1.1741e-6\\
+100 &-4.4726e-3&-6.5812e-5&-1.3774e-6&-6.0484e-8\\
+200 &-1.9353e-3&-1.4229e-5&-1.5082e-7&-3.2708e-9\\
+500 &-6.5823e-4&-1.9351e-6&-8.3354e-9&-7.1818e-11\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This inversion is useful when a counting threshold \(Y\) is prescribed and only the index is sought.  It also makes the relation with the inverse-gamma and power--log transseries elsewhere in ProveIt explicit.
+
+\section{A one-parameter hypergeometric universality class}
+
+The mechanism is not isolated.  Let \(\lambda>0\), set \(a^{(\lambda)}_1=\lambda\), and retain the same nonlinear recurrence:
+\begin{equation}\label{eq:lambdarec}
+ a^{(\lambda)}_{n+1}=(n+1)a^{(\lambda)}_n
+ +\sum_{k=1}^{n-1}a^{(\lambda)}_ka^{(\lambda)}_{n-k}.
+\end{equation}
+Its generating series obeys
+\begin{equation}\label{eq:lambdaRiccati}
+ A_\lambda=x\bigl(\lambda+A_\lambda+A_\lambda^2+xA_\lambda'\bigr).
+\end{equation}
+
+\begin{theorem}[Deformed family]\label{thm:lambda}
+Let \(\alpha_\lambda,\beta_\lambda\) be the roots of
+\begin{equation}\label{eq:lambdaroots}
+ z^2-z+\lambda=0,
+ \qquad
+ \alpha_\lambda+\beta_\lambda=1,
+ \quad \alpha_\lambda\beta_\lambda=\lambda.
+\end{equation}
+Then
+\begin{equation}\label{eq:lambdaU}
+ U_\lambda(x)={}_2F_0(\alpha_\lambda,\beta_\lambda;;x),
+ \qquad
+ A_\lambda=x\frac{U_\lambda'}{U_\lambda}.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:lambdalimit}
+ \frac{a_n^{(\lambda)}}{n!}\nearrow
+ \constC_\lambda:=\frac{1}{\Gamma(\alpha_\lambda)
+                              \Gamma(\beta_\lambda)},
+\end{equation}
+and the all-orders coefficients are generated by
+\begin{equation}\label{eq:lambdaPhi}
+ \Phi_\lambda(x)=\frac{R_\lambda(x)}{x}+xR_\lambda'(x),
+ \qquad
+ R_\lambda(x)=\frac{U_\lambda(-x)}{U_\lambda(x)}.
+\end{equation}
+For integer \(\lambda\ge1\), all \(a_n^{(\lambda)}\) are positive integers.
+\end{theorem}
+
+\begin{proof}
+The substitution \(A_\lambda=xU_\lambda'/U_\lambda\) reduces \eqref{eq:lambdaRiccati} to
+\[
+ x^2U_\lambda''+(2x-1)U_\lambda'+\lambda U_\lambda=0.
+\]
+Thus
+\[
+ u_{n+1}^{(\lambda)}=\frac{n^2+n+\lambda}{n+1}u_n^{(\lambda)},
+\]
+whose numerator factors as \((n+\alpha_\lambda)(n+\beta_\lambda)\).  The proof of Theorem \ref{thm:leading} carries over verbatim.  Indeed,
+\[
+ r_n^{(\lambda)}:=\frac{nu_n^{(\lambda)}}{n!},
+ \qquad
+ \frac{r_{n+1}^{(\lambda)}}{r_n^{(\lambda)}}
+ =1+\frac{\lambda}{n(n+1)},
+\]
+and its limit is \(\constC_\lambda\).  The zero-balanced condition \(\alpha_\lambda+\beta_\lambda=1\) persists, so the Borel and all-orders arguments do as well.  Integrality follows directly from \eqref{eq:lambdarec}.
+\end{proof}
+
+The first deformed late-term coefficients are
+\begin{equation}\label{eq:lambdaphi}
+\begin{split}
+ \phi_0(\lambda)&=1,\\
+ \phi_1(\lambda)&=-2\lambda,\\
+ \phi_2(\lambda)&=2\lambda(\lambda-1),\\
+ \phi_3(\lambda)&=-\frac{2\lambda}{3}(2\lambda^2-5\lambda+6),\\
+ \phi_4(\lambda)&=\frac{2\lambda}{3}(\lambda-3)(\lambda^2-\lambda+6).
+\end{split}
+\end{equation}
+At \(\lambda=1\), the factor \(\lambda-1\) explains the missing \(n^{-2}\) term in \eqref{eq:ratioexpansion} at the factorial-basis level.
+
+\section{Verification, reproducibility, and proof audit}
+
+\subsection{What the shipped script checks}
+
+The archive contains \texttt{verify.py}, requiring only Python, SymPy, and mpmath.  It performs the following exact or high-precision checks:
+\begin{enumerate}
+\item generates A006014 from \eqref{eq:recurrence} and \(u_n\) from \eqref{eq:urecurrence};
+\item checks \(n!u_n=p_n\) and \eqref{eq:triangular} through \(n=80\);
+\item derives \(\rho_j\) and \(\phi_j\) exactly through \(j=14\), and independently checks the endpoint recursion \eqref{eq:phi-short};
+\item verifies every displayed normalized, logarithmic, centered, and \(\lambda\)-deformed coefficient;
+\item checks monotonicity and the global inequalities of Theorem \ref{thm:leading} through \(n=500\);
+\item regenerates Tables \ref{tab:convergence}--\ref{tab:inverse} at 80-digit precision.
+\end{enumerate}
+The recorded run is in \texttt{verification\_output.txt}.
+
+\subsection{Minimal independent implementation}
+
+The complete script is shipped; the mathematical core is short enough to display.
+
+\begin{lstlisting}[style=pythonstyle,caption={Exact carrier and late-term recursions.}]
+from fractions import Fraction
+
+def carrier_u(N):
+    u = [Fraction(1)]
+    for n in range(N):
+        u.append(u[-1] * Fraction(n*n+n+1, n+1))
+    return u
+
+def late_terms(N):
+    u = carrier_u(N)
+    rho = [Fraction(1)]
+    for n in range(1, N+1):
+        rho_n = (-1)**n * u[n]
+        rho_n -= sum(u[k] * rho[n-k] for k in range(1, n+1))
+        rho.append(rho_n)
+    phi = [rho[0]]
+    for j in range(1, N+1):
+        phi.append(rho[j] + (j-1) * rho[j-1])
+    return phi
+\end{lstlisting}
+
+\subsection{Claim-by-claim audit}
+
+\begin{longtable}{p{0.27\textwidth}p{0.42\textwidth}p{0.23\textwidth}}
+\caption{Audit of principal claims.}\label{tab:audit}\\
+\toprule
+Claim & Proof route & Computational check\\
+\midrule
+\endfirsthead
+\toprule
+Claim & Proof route & Computational check\\
+\midrule
+\endhead
+Riccati linearization & Direct substitution, Theorem \ref{thm:linearization} & Coefficients agree through \(n=80\)\\
+A130032 bridge & Product iteration, Theorem \ref{thm:bridge} & Exact integer equality through \(n=80\)\\
+Leading constant & Positive comparison and gamma product, Theorem \ref{thm:leading} & Convergence table through \(n=500\)\\
+All-orders coefficients & Zero-balanced Borel minor plus endpoint recurrence, Theorem \ref{thm:allorders} & Exact rational coefficients; error table\\
+Stokes jump & Hypergeometric continuation at \(t=1\) & Numerical lateral summation not required for coefficient claims\\
+Inverse transseries & Formal reversion of centered logarithm, Theorem \ref{thm:inverse} & Errors at six exact sequence values\\
+\(\lambda\)-family & Same substitution and comparison proof & Symbolic coefficients checked by shipped script\\
+\bottomrule
+\end{longtable}
+
+\begin{warningbox}[Boundary of the present result]
+The note does not prove the separate OEIS conjecture
+\[
+ a(n)=\sum_{k=0}^{2^{n-1}-1}\mathrm{A379818}(k).
+\]
+Nor does it construct a direct bijection between A006014 objects and A130032 objects.  The bridge proved here is an exact analytic/formal-series identity.  These distinctions matter for any future OEIS submission.
+\end{warningbox}
+
+\section{Proposed OEIS additions}
+
+The following text is intended as a mathematically checkable draft, not as an automatic submission.
+
+\begin{resultbox}[Suggested FORMULA/COMMENT addition for A006014]
+Let
+\[
+ \alpha=(1+\ii\sqrt3)/2,\qquad \beta=(1-\ii\sqrt3)/2,
+\]
+and let \({}_2F_0\) be interpreted as a formal power series.  Then
+\[
+ \sum_{n\ge1}a(n)x^n
+ =x\frac{d}{dx}\log{}_2F_0(\alpha,\beta;;x).
+\]
+If \(u_n=(\alpha)_n(\beta)_n/n!\), then
+\[
+ n!u_n=\mathrm{A130032}(n),\qquad
+ \sum_{k=1}^{n}a(k)u_{n-k}=nu_n.
+\]
+Moreover
+\[
+ \frac{a(n)}{n!}\nearrow
+ \frac{1}{\Gamma(\alpha)\Gamma(\beta)}
+ =\frac{\cosh(\pi\sqrt3/2)}{\pi}.
+\]
+An all-orders expansion begins
+\[
+ a(n)\sim\frac{\cosh(\pi\sqrt3/2)}{\pi}
+ \left(n!-2(n-1)!-2(n-3)!-8(n-4)!-\frac{204}{5}(n-5)!-\cdots\right).
+\]
+The later coefficients are generated by
+\[
+ R(x)=\frac{U(-x)}{U(x)},\qquad
+ \sum_{j\ge0}\phi_jx^{j-1}=R(x)/x+xR'(x),
+\]
+where \(U={}_2F_0(\alpha,\beta;;x)\).
+\end{resultbox}
+
+\begin{resultbox}[Suggested CROSSREF addition]
+Cf. A130032: its normalized product is the hypergeometric carrier whose logarithmic derivative produces A006014.  Cf. A073017 for the limiting constant.
+\end{resultbox}
+
+Any submission should link a stable, independently reviewed manuscript and state clearly that \({}_2F_0\) is formal (or Borel summed sectorially), because the ordinary generating series has radius zero.
+
+\section{Further research questions and topics}\label{sec:questions}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+\item \label{q:bijection}\textbf{A combinatorial explanation of the logarithm.}
+Can the identity \(A=x(\log U)'\) be realized directly on the semilattice objects?  In particular, is there a natural class counted by A130032 whose connected or indecomposable components are the A006014 objects in an ordinary-cumulant sense?
+
+\item \textbf{A direct A006014--A130032 bijection.}
+The present bridge is analytic.  A weight-preserving bijection, sign-reversing involution, or species-level construction would turn the most surprising formula in this note into a combinatorial theorem.
+
+\item \textbf{Resolve the A379818 partial-sum conjecture.}
+The OEIS conjectures that \(a(n)\) is a dyadic partial sum of A379818.  Can that claim be proved from a common tree decomposition, or disproved beyond the currently tabulated range?  The hypergeometric representation may provide a strong independent consistency check.
+
+\item \textbf{Closed coefficient forms.}
+Formula \eqref{eq:composition} is finite but composition-heavy.  Is there a single-sum expression, a determinant with recognizable minors, or a special-function coefficient identity that is demonstrably simpler?
+
+\item \textbf{Second and higher Borel singularities.}
+Determine the exact local structure of the Borel transform of \(A\) at actions \(2,3,\ldots\).  The transseries family predicts the fluctuation sectors, but resonant logarithms and connection constants should be derived explicitly.
+
+\item \textbf{Optimal truncation and hyperasymptotics.}
+Prove a uniform exponentially improved remainder estimate after truncating \eqref{eq:allorders} near its least term.  Quantify the contribution of the action-2 sector and construct a practical hyperasymptotic evaluator for \(a_n\).
+
+\item \textbf{Signs and growth of \(\phi_j\).}
+Except for \(\phi_2=0\), the displayed nonleading coefficients are negative.  Is \(\phi_j<0\) for every \(j\ge3\)?  What is the large-\(j\) transseries of \(\phi_j\), and which singularities of \(R(x)\) control it?
+
+\item \textbf{The deformed integer families.}
+For integer \(\lambda\ge2\), find natural objects counted by \(a_n^{(\lambda)}\).  The recurrence suggests colored or rooted enrichments of the A006014 decomposition, while the constant \(1/(\Gamma(\alpha_\lambda)\Gamma(\beta_\lambda))\) predicts their factorial density.
+
+\item \textbf{Arithmetic properties.}
+Study congruences, valuations, and divisibility of \(a_n\).  Does the logarithmic-derivative bridge transfer useful congruence information from the product sequence A130032?
+
+\item \textbf{Probability on random semilattice orders.}
+The asymptotic count is now sharp to all algebraic orders.  Can the root decomposition behind \eqref{eq:recurrence} be used to derive limit laws for the top element, number of children, height, or other statistics of a uniformly random internal linear-filter semilattice?
+
+\item \textbf{Formalization in Lean.}
+A first ProveIt formalization target is the elementary core: the Riccati-to-linear substitution in formal power series, the A130032 product identity, monotonicity of \(b_n\), and the squeeze proof \(b_n\to\constC\).  The Borel analysis can remain outside the initial formal boundary.
+
+\item \textbf{Automated factorial-transseries extraction.}
+Generalize Algorithm \ref{alg:phi} into a reusable package: given a nonlinear differential equation with a rank-one linearization, automatically compute the carrier, Stokes fluctuation, late-term coefficients, log expansion, and Lambert--\(W\) inverse.
+\end{enumerate}
+
+\section{Conclusion}
+
+A006014 is a useful example of a sequence whose elementary recurrence hides a rigid analytic structure.  The nonlinear ordinary generating equation is exactly linearizable; its linear carrier is the divergent hypergeometric series \({}_2F_0(\alpha,\bar\alpha;;x)\); and that carrier is precisely A130032 after factorial normalization.  Positivity alone then proves the factorial constant recorded in the OEIS, while the zero-balanced Borel transform upgrades the result to an all-orders factorial transseries.
+
+The main formulas are short:
+\[
+ A=x(\log U)',\qquad
+ U={}_2F_0(\alpha,\bar\alpha;;x),\qquad
+ \constC=\frac{1}{\Gamma(\alpha)\Gamma(\bar\alpha)},
+\]
+\[
+ \Phi=\frac{1}{x}\frac{U(-x)}{U(x)}
+ +x\frac{d}{dx}\frac{U(-x)}{U(x)}.
+\]
+Together they explain the constant, provide exact finite formulas, generate every algebraic correction, expose the exponentially small sectors, and support a precise inverse.  The remaining challenge is to find the combinatorial explanation that makes this analytic bridge inevitable.
+
+\appendix
+
+\section{Derivation of the normalized endpoint expansion}
+
+This appendix gives more detail on the elementary route behind Theorem \ref{thm:allorders}.  Put
+\[
+ f_n:=\frac{b_n}{\constC}.
+\]
+Then \(f_n\to1\) and \eqref{eq:bnrecurrence} becomes
+\begin{equation}\label{eq:fnrec}
+ f_{n+1}-f_n
+ =\frac{1}{n+1}\sum_{k=1}^{n-1}
+ \frac{b_k f_{n-k}}{\binom{n}{k}}.
+\end{equation}
+Fix \(K\ge1\).  By symmetry of the summand,
+\begin{equation}\label{eq:endpointsplit}
+ f_{n+1}-f_n
+ =\frac{2}{n+1}\sum_{k=1}^{K}
+ \frac{b_k f_{n-k}}{\binom{n}{k}}+\bigO_K(n^{-K-2}),
+\end{equation}
+provided \(n>4(K+1)\).  For the remainder, use \(b_k,f_k\le\max(\constC,1)\) and apply \eqref{eq:reciprocal-binomial-tail} with \(K+1\).  Explicitly, separate the finitely many terms \(K+1\le k<2K+2\) and their reflections, each \(\bigO_K(n^{-K-1})\), from the central range \(2K+2\le k\le n-2K-2\), whose total is at most \(n/\binom{n}{2K+2}=\bigO_K(n^{-2K-1})\).  Multiplication by \(1/(n+1)\) gives the displayed error.
+
+Assume inductively
+\[
+ f_n=1+\frac{q_1}{n}+\cdots+\frac{q_{K-1}}{n^{K-1}}
+ +\bigO(n^{-K}).
+\]
+Each fixed-\(k\) factor in \eqref{eq:endpointsplit} has a power expansion:
+\[
+ f_{n-k}=1+\sum_{j<K}q_j(n-k)^{-j}+\bigO(n^{-K}),
+\]
+\[
+ \binom{n}{k}^{-1}
+ =\frac{k!}{n^k}\prod_{r=0}^{k-1}\left(1-\frac{r}{n}\right)^{-1}.
+\]
+Thus the right side is explicit through \(n^{-K-1}\), with remainder \(\bigO(n^{-K-2})\).  Summing the difference equation from \(n\) to infinity determines the next coefficient uniquely and gives a remainder \(\bigO(n^{-K-1})\).  Starting with \(f_n\to1\), together with the explicit \(O(n^{-1})\) bound from Theorem \ref{thm:leading}, proves the expansion by induction.
+
+For A006014 the first ordinary-power coefficients are
+\[
+ q_0=1,\ q_1=-2,\ q_2=0,\ q_3=-2,\ q_4=-14,\\
+ q_5=-\frac{514}{5},\ q_6=-\frac{4412}{5},\ldots.
+\]
+The triangular change of basis
+\[
+ \frac{1}{n(n-1)\cdots(n-j+1)}
+ =\frac{1}{n^j}\prod_{r=0}^{j-1}\left(1-\frac{r}{n}\right)^{-1}
+\]
+then gives the \(\phi_j\) of \eqref{eq:philist}.  Direct substitution shows that the quotient formula \eqref{eq:Rphi} generates the same unique coefficients.
+
+\section{Centered logarithmic coefficients used in inversion}
+
+For reference, the ratio expansion gives
+\begin{equation}\label{eq:logQappendix}
+\begin{split}
+ \log\frac{a_n}{\constC\Gamma(n+1)}\sim{}&
+ -\frac2n-\frac2{n^2}-\frac{14}{3n^3}-\frac{22}{n^4}
+ -\frac{726}{5n^5}-\frac{3518}{3n^6}\\
+ &-\frac{78094}{7n^7}-\frac{122110}{n^8}
+ -\frac{67926286}{45n^9}-\frac{103886522}{5n^{10}}-\cdots.
+\end{split}
+\end{equation}
+After \(m=n+1/2\),
+\begin{equation}\label{eq:logQmappendix}
+\begin{split}
+ \log\frac{a_n}{\constC\Gamma(n+1)}\sim{}&
+ -\frac2m-\frac3{m^2}-\frac{43}{6m^3}-\frac{123}{4m^4}
+ -\frac{7893}{40m^5}\\
+ &-\frac{25555}{16m^6}-\frac{3422399}{224m^7}-\cdots.
+\end{split}
+\end{equation}
+The centered Stirling expansion
+\[
+ \log\Gamma\left(m+\frac12\right)
+ \sim m(\log m-1)+\frac12\log(2\pi)
+ -\frac{1}{24m}+\frac{7}{2880m^3}
+ -\frac{31}{40320m^5}+\cdots
+\]
+combines with \eqref{eq:logQmappendix} to produce \eqref{eq:centeredlog}.
+
+\section{Repository and literature search note}
+
+The target was selected after inspecting the current ProveIt main branch and its large collection of OEIS reports.  The repository contains extensive work on A290268, A293239, restricted partitions, Bell-type sequences, and many other asymptotic questions; an exact search for A006014 returned no hit in the indexed snapshot.  A targeted literature search located the recurrence and combinatorial interpretation in Devillet--Teheux, the OEIS formula and asymptotic comment, and standard hypergeometric continuation formulas.  It did not locate a published proof of the specific hypergeometric logarithmic-derivative identity or the all-orders expansion presented here.  This is a search report, not a guarantee of absolute novelty.
+
+\begin{thebibliography}{99}
+
+\bibitem{OEISA006014}
+N. J. A. Sloane et al.,
+\emph{The On-Line Encyclopedia of Integer Sequences, A006014},
+\url{https://oeis.org/A006014}, accessed 1 October 2026.
+
+\bibitem{OEISA130032}
+N. J. A. Sloane et al.,
+\emph{The On-Line Encyclopedia of Integer Sequences, A130032},
+\url{https://oeis.org/A130032}, accessed 1 October 2026.
+
+\bibitem{OEISA073017}
+N. J. A. Sloane et al.,
+\emph{The On-Line Encyclopedia of Integer Sequences, A073017},
+\url{https://oeis.org/A073017}, accessed 1 October 2026.
+
+\bibitem{DevilletTeheux}
+J. Devillet and B. Teheux,
+\emph{Associative, idempotent, symmetric, and order-preserving operations on chains},
+arXiv:1805.11936 [math.RA], 2018.
+\url{https://arxiv.org/abs/1805.11936}
+
+\bibitem{DuchiEtAl}
+E. Duchi, V. Guerrini, S. Rinaldi, and G. Schaeffer,
+\emph{Fighting fish},
+Journal of Physics A: Mathematical and Theoretical 50 (2017), 024002.
+
+\bibitem{DLMFGamma}
+NIST Digital Library of Mathematical Functions,
+Chapter 5, \emph{Gamma Function}, especially the conjugate-product identities.
+\url{https://dlmf.nist.gov/5}
+
+\bibitem{DLMFHypergeometric}
+NIST Digital Library of Mathematical Functions,
+Chapter 15, \emph{Hypergeometric Function}, especially the continuation formulas for the zero-balanced case.
+\url{https://dlmf.nist.gov/15}
+
+\bibitem{Balser}
+W. Balser,
+\emph{From Divergent Power Series to Analytic Functions},
+Lecture Notes in Mathematics 1582, Springer, 1994.
+
+\bibitem{Costin}
+O. Costin,
+\emph{Asymptotics and Borel Summability},
+Chapman \& Hall/CRC Monographs and Surveys in Pure and Applied Mathematics 141, 2009.
+
+\bibitem{CorlessEtAl}
+R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth,
+\emph{On the Lambert W function},
+Advances in Computational Mathematics 5 (1996), 329--359.
+
+\bibitem{FlajoletSedgewick}
+P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics},
+Cambridge University Press, 2009.
+
+\end{thebibliography}
+
+\end{document}

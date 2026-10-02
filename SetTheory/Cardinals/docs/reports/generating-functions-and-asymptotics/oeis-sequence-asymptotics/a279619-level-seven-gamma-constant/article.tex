@@ -1,0 +1,1244 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath,microtype,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={An exact gamma constant for A279619},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\usepackage{bookmark}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}\allowdisplaybreaks[2]
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small A279619: an exact gamma constant}
+\fancyhead[R]{\small Research report}\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\G}{\mathcal G_7}\newcommand{\Ast}{A_\star}
+\newcommand{\Q}{\mathbb Q}\newcommand{\tht}{\vartheta}
+\newcommand{\hyp}[4]{{}_2F_1\!\left(\begin{matrix}#1,#2\\#3\end{matrix};#4\right)}
+\newtcolorbox{resultbox}{enhanced,breakable,colback=blue!3,colframe=MidnightBlue!65,
+ boxrule=.5pt,arc=1pt,left=10pt,right=10pt,top=7pt,bottom=7pt}
+\begin{document}
+\begin{titlepage}
+\vspace*{.4in}
+{\large\sffamily\color{MidnightBlue} OEIS RESEARCH \quad / \quad LEVEL SEVEN}\par
+\vspace{.3in}
+{\huge\bfseries An exact gamma constant\par for an Ap\'ery-like sequence}\par
+\vspace{.2in}
+{\Large A279619, all-orders asymptotics,\par and its recessive companion}\par
+\vspace{.3in}
+{\large Research report prepared for Vladimir Reshetnikov}\par
+{\large October 1, 2026}\par
+\vspace{.3in}
+\begin{resultbox}
+\[
+ a_n\sim\frac{\sqrt{3\pi}}{\Gamma(1/7)\Gamma(2/7)\Gamma(4/7)}
+               \frac{27^n}{n^{3/2}}.
+\]
+The leading constant is evaluated exactly, the displayed OEIS asymptotic
+is proved, and the expansion is extended to arbitrary fixed order with a
+rigorous remainder. A rationally normalized companion exposes an
+exponentially smaller alternating scale.
+\end{resultbox}
+\vspace{.2in}
+\noindent\textbf{Abstract.}
+We study the level-seven Ap\'ery-like sequence A279619, defined by a
+second-order polynomial recurrence. Its OEIS entry displays a conjectural
+asymptotic with a numerical constant. We prove that asymptotic and identify
+the constant as a reciprocal product of three gamma values. A rational
+parameter removes the square roots in the known hypergeometric generating
+function, making its singular connection coefficient explicit. Classical
+elliptic-period and Ramanujan identities reduce this coefficient to its
+gamma-product form. Frobenius expansion and singularity analysis give all
+algebraic correction terms, with rational coefficients and fixed-order
+error bounds. We also construct a companion continued fraction, prove
+exact rational bracketing, and determine the amplitude and every correction
+term of its recessive solution. Applications include convolution powers,
+A183204, eventual log-convexity, and Lambert-$W$ inversion with a separate
+treatment of integer rounding. Exact symbolic certificates and rational
+enclosures accompany numerical experiments. Classical inputs, previously
+calculated terms, sequence-specific deductions, and unsettled questions
+are explicitly distinguished.
+\vfill
+\noindent\small
+Deliverables: TeX source, compiled PDF, executable verification program,
+rational certificates, numerical tables, and a source audit.\\
+These are conventional mathematical proofs with computer-algebra checks,
+not Lean-certified theorems. Global priority is not claimed.
+\end{titlepage}
+\tableofcontents\newpage
+
+\section{The target and the scope of the contribution}
+The sequence begins
+\[
+1,\ 2,\ 22,\ 336,\ 6006,\ 117348,\ 2428272,\ 52303680,\ldots
+\]
+and satisfies
+\begin{equation}\label{eq:rec}
+(n+1)^2a_{n+1}=(26n^2+13n+2)a_n+3(3n-1)(3n-2)a_{n-1},\qquad n\ge1,
+\end{equation}
+with $a_0=1$, $a_1=2$. Throughout, set
+\begin{equation}\label{eq:defs}
+ A(z)=\sum_{n\ge0}a_nz^n,\qquad \rho=1/27,\qquad
+ \G=\Gamma(1/7)\Gamma(2/7)\Gamma(4/7).
+\end{equation}
+This is A279619; $A(z)^2$ is the generating function of A183204
+\cite{oeis279619,oeis183204}. Its connections with modular forms,
+hypergeometric functions, and another Ap\'ery-like sequence make it a
+structured target rather than an isolated numerical curiosity.
+
+\subsection{What is already known}
+The OEIS entry consulted on October 1, 2026 labels its leading asymptotic
+as conjectural and supplies a numerical constant. O'Brien's thesis
+\cite[\S8.4, pp.~63--67]{obrien} estimates that constant and formally
+calculates the first three correction terms. Those three terms are
+\emph{not new here}. The hypergeometric representation is also recorded
+in OEIS in code attributed to V\'aclav Kote\v{s}ovec in 2018
+\cite{oeis279619}. We prove and rationalize that representation before
+using it analytically.
+
+The contribution is not a new general method of asymptotic analysis.
+It is an exact connection-constant evaluation, a rigorous all-orders
+fixed-order expansion, and an explicit recessive companion with a proved
+error amplitude. Standard machinery is used to close the displayed
+asymptotic question.
+\begin{center}
+\begin{tabular}{p{.30\textwidth}p{.61\textwidth}}
+\toprule
+Item & Status in this report\\\midrule
+Recurrence and hypergeometric function & Existing input; the latter
+receives a rational differential-equation certificate.\\
+Leading scale and first three corrections & Previously conjectured or
+formally calculated; now given a remainder proof.\\
+Gamma-product constant & Exact sequence-specific evaluation deduced
+from classical special values.\\
+Companion continued fraction & Constructed with exact bracketing and
+all-orders recessive asymptotics; global priority not asserted.\\
+Convolution and inverse expansions & Deductions with explicit formulas
+and integer-rounding bounds.\\
+Lucas congruences & Not resolved or used here.\\\bottomrule
+\end{tabular}
+\end{center}
+A targeted search did not locate an earlier proof of this particular
+constant formula. This is not an exhaustive priority search. In
+particular, recent work of Cohen and Zudilin on continued fractions for
+Chowla--Selberg quotients \cite{cohenzudilin} shows that the broader area
+is active. We do not claim a first continued fraction for a gamma
+quotient, an identification of the companion limit with such a quotient,
+or an irrationality measure.
+
+\subsection{Relation to ProveIt}
+The repository's \texttt{Analysis/Transseries} project separates
+asymptotic scales, flatness, power--logarithmic expressions, and inversion
+from the Fabius-function development \cite{proveit}. This report follows
+that separation: an analytic existence proof precedes exact coefficient
+recursions and inverse expansions. No unverified repository theorem is
+needed. The inspected snapshot was
+\texttt{a5ad4ac2e2d4e642a6c015836a70492d40fcbc71}; inspection was not an
+exhaustive review of archived reports.
+
+\section{Principal results}
+\begin{theorem}[Dominant asymptotics and the exact constant]\label{th:main}
+Put
+\begin{equation}\label{eq:C}
+ C=\frac{\sqrt{3\pi}}{\G},\qquad \Ast=\frac{3\G}{8\pi^2}.
+\end{equation}
+Then $A(\rho)=\Ast$. For every fixed $M\ge0$,
+\begin{equation}\label{eq:dominant}
+ a_n=C\frac{27^n}{n^{3/2}}
+ \left(\sum_{j=0}^M\frac{c_j}{n^j}+O_M(n^{-M-1})\right),
+\end{equation}
+where the $c_j$ are uniquely determined rational numbers with $c_0=1$.
+In particular,
+\begin{align}\label{eq:cvalues}
+ c_1&=-\frac{215}{1008},&c_2&=-\frac{1265}{290304},&
+ c_3&=\frac{4683055}{877879296},\notag\\
+ c_4&=\frac{924908071}{3539609321472},&
+ c_5&=-\frac{6088275239005}{3567926196043776}.
+\end{align}
+An exact triangular algorithm computes every coefficient.
+\end{theorem}
+The theorem also evaluates a convergent boundary sum:
+\begin{equation}\label{eq:boundarysum}
+ \sum_{n=0}^{\infty}\frac{a_n}{27^n}
+ =\frac{3\Gamma(1/7)\Gamma(2/7)\Gamma(4/7)}{8\pi^2},
+ \qquad C\Ast=\frac{3\sqrt3}{8\pi^{3/2}}.
+\end{equation}
+The gamma product in the boundary value cancels against its reciprocal
+in the coefficient amplitude.
+
+\begin{theorem}[An exact recessive companion]\label{th:companion}
+Let $b_0=0$, $b_1=1$, and impose \eqref{eq:rec} on $b_n$ for $n\ge1$.
+Then the limit
+\begin{equation}\label{eq:L}
+ L=\lim_{n\to\infty}\frac{b_n}{a_n}
+ =0.46721176888437312394211005141309126172410854995971\ldots
+\end{equation}
+exists and satisfies
+\begin{equation}\label{eq:bracket}
+ \frac{b_{2m}}{a_{2m}}<L<\frac{b_{2m+1}}{a_{2m+1}},\qquad m\ge0.
+\end{equation}
+For $e_n=b_n-La_n$ and every fixed $M\ge0$,
+\begin{equation}\label{eq:minimal}
+ e_n=(-1)^{n+1}\frac{\sqrt3}{56\pi C}\,n^{-3/2}
+ \left(\sum_{j=0}^M\frac{d_j}{n^j}+O_M(n^{-M-1})\right),
+\end{equation}
+where $d_0=1$ and
+\begin{equation}\label{eq:dvalues}
+ d_1=-\frac{57}{112},\quad d_2=\frac{655}{3584},\quad
+ d_3=-\frac{13365}{401408},\quad d_4=-\frac{3627123}{179830784}.
+\end{equation}
+The $d_j$ are rational and computable to arbitrary order. Consequently,
+\begin{equation}\label{eq:CFerror}
+ L-\frac{b_n}{a_n}\sim(-1)^n\frac{\sqrt3}{56\pi C^2}\,27^{-n}.
+\end{equation}
+\end{theorem}
+The two scales are $27^nn^{-3/2}$ and $(-1)^nn^{-3/2}$. The second is
+exponentially small \emph{relative} to the first, not in absolute
+magnitude. We do not assign an unproved canonical subdominant coefficient
+to the asymptotic expansion of $a_n$ itself.
+
+\section{From the recurrence to a controlled singularity}
+\subsection{Positivity, growth, and the differential equation}
+The recurrence immediately gives $a_n>0$. Induction also gives
+$a_n\le27^n$, since
+\[
+26n^2+13n+2+\frac{3(3n-1)(3n-2)}{27}
+=27n^2+12n+\frac{20}{9}<27(n+1)^2.
+\]
+Thus $A$ is analytic in $|z|<\rho$. Multiplying the recurrence by $z^n$
+and summing, including $a_1=2a_0$, gives
+\begin{equation}\label{eq:ODE}
+ zD(z)A''+(1-39z-54z^2)A'-(2+6z)A=0,
+ \qquad D(z)=(1-27z)(1+z).
+\end{equation}
+The coefficient of $z^n$ on the left is the recurrence residual, so the
+analytic solution normalized by $A(0)=1$ is unique. Outside
+$0,\rho,-1$, the equation is ordinary; analytic continuation along paths
+avoiding these points follows from linear differential-equation theory.
+
+\subsection{The local exponents}
+In $s=1-27z$, the equation becomes
+\begin{equation}\label{eq:sODE}
+ s(1-s)(28-s)y''+(14-43s+2s^2)y'-\frac{20-2s}{9}y=0.
+\end{equation}
+The indicial equation is $14\alpha(2\alpha-1)=0$. Its exponents $0,1/2$
+have nonintegral difference, hence Frobenius theory gives a convergent
+local expansion
+\begin{equation}\label{eq:puiseux}
+ A(z)=U(s)+B\sqrt{s}\,V(s),\qquad V(0)=1,
+\end{equation}
+where $U,V$ are analytic at $0$. Branches are positive for $0<z<\rho$.
+Below we show $B<0$, so the singularity is not removable.
+
+The self-adjoint form provides a useful sign check:
+\begin{equation}\label{eq:flux}
+ \bigl(z\sqrt{D(z)}A'(z)\bigr)'
+   =\frac{2+6z}{\sqrt{D(z)}}A(z),\qquad 0<z<\rho.
+\end{equation}
+Frobenius theory makes $A(\rho)$ finite. Positivity of the right side
+implies that the limiting flux is positive, whereas \eqref{eq:puiseux}
+identifies it as $-\tfrac12\sqrt{28/27}\,B$.
+
+There is no other singularity on $|z|=\rho$. The chosen solution extends
+to a dented disk of radius greater than $\rho$, cut to the right from
+$\rho$. This supplies the global analytic condition for singularity
+analysis, not just a formal local expansion \cite[Chapter VI]{flajolet}.
+
+\section{A rational certificate for the generating function}
+Set
+\begin{equation}\label{eq:w}
+ w=\sqrt{\frac{1-27z}{1+z}},\qquad z=\frac{1-w^2}{27+w^2}.
+\end{equation}
+The points $0,\rho$ correspond to $w=1,0$. Define
+\begin{align}\label{eq:PTJ}
+ T(w)&=15w^2+96w+85,\notag\\
+ P(w)&=\left(\frac{7(w^2+27)}{T(w)}\right)^{1/4},\notag\\
+ J(w)&=\frac{1728(1-w)^7(1+w)}{(w^2+27)T(w)^3},\qquad
+ F(x)=\hyp{1/12}{5/12}{1}{x}.
+\end{align}
+Fourth roots are positive on $[0,1]$.
+\begin{proposition}\label{prop:pullback}
+As analytic germs near $w=1$, and throughout $0\le w\le1$,
+\begin{equation}\label{eq:GF}
+ A\!\left(\frac{1-w^2}{27+w^2}\right)=P(w)F(J(w)).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The equation for $y(w)=A(z(w))$ is $y''+p y'+q y=0$, where
+\begin{equation}\label{eq:wpq}
+ p=\frac{2w}{(w-1)(w+1)},\qquad
+ q=-\frac{16(w^2-15)}{(w-1)(w+1)(w^2+27)^2}.
+\end{equation}
+Let $h=P'/P=\tfrac14(2w/(w^2+27)-T'/T)$. The hypergeometric equation
+\cite[\S15.10]{dlmf} is
+\begin{equation}\label{eq:hypODE}
+ x(1-x)F''+(1-\tfrac32x)F'-\tfrac5{144}F=0.
+\end{equation}
+Substitution of $y=PF(J)$, followed by eliminating $F''$, reduces the
+claim to two rational identities:
+\begin{align}\label{eq:certs}
+ J''+(2h+p)J'+(J')^2\frac{3J/2-1}{J(1-J)}&=0,\notag\\
+ h'+h^2+ph+q+\frac5{144}\frac{(J')^2}{J(1-J)}&=0.
+\end{align}
+Clearing denominators and expanding proves both; the attached code
+checks them identically in $\Q(w)$. This is an exact certificate rather
+than a fit to finitely many coefficients.
+At $w=1$, $P=1$, $J=0$, and $z'(1)\ne0$. The right side is analytic
+there and normalized to $1$. Uniqueness at $z=0$ proves the germ identity.
+For $0\le w<1$,
+\[
+\frac{J'}J=-\frac7{1-w}+\frac1{1+w}-\frac{2w}{w^2+27}
+                       -3\frac{30w+96}{T(w)}<0.
+\]
+Thus $0\le J(w)\le J(0)=64/85^3<1$, and every expression continues
+regularly along the interval, proving the full claim.
+\end{proof}
+Differentiation at a singular $z$-value has now become ordinary
+differentiation at the regular parameter value $w=0$.
+
+\section{Evaluating the connection constant}
+\subsection{An explicit hypergeometric expression}
+Put
+\begin{equation}\label{eq:q0}
+ q_0=\frac{64}{85^3},\qquad P_0=\left(\frac{189}{85}\right)^{1/4}.
+\end{equation}
+As $s\to0$,
+\[
+ w=\sqrt{\frac{27s}{28-s}}
+   =\sqrt{\frac{27}{28}}\sqrt s\,(1+O(s)).
+\]
+At $w=0$ we have $P'/P_0=-24/85$ and $J'/q_0=-798/85$. Hence
+\begin{equation}\label{eq:B}
+ B=-\sqrt{\frac{27}{28}}\frac{P_0}{85}
+           \bigl(24F(q_0)+798q_0F'(q_0)\bigr)<0.
+\end{equation}
+Positivity follows from the positive hypergeometric coefficients.
+Coefficient transfer for $\sqrt{1-27z}$ and
+$\Gamma(-1/2)=-2\sqrt\pi$ gives
+\begin{equation}\label{eq:Chyper}
+ C=-\frac{B}{2\sqrt\pi}
+ =\sqrt{\frac{27}{28}}\frac{P_0}{170\sqrt\pi}
+      \bigl(24F(q_0)+798q_0F'(q_0)\bigr).
+\end{equation}
+This already gives an explicit positive constant. The following
+special-value reductions explain its unexpectedly simple form.
+
+\subsection{Ramanujan's identity removes the derivative}
+The relevant Clausen identity is
+\begin{equation}\label{eq:Clausen}
+ F(q)^2=H(q):=\sum_{n\ge0}
+      \frac{(1/6)_n(1/2)_n(5/6)_n}{(n!)^3}q^n.
+\end{equation}
+It follows directly from differential equations: the symmetric square
+of \eqref{eq:hypODE} is
+\[
+ [\tht^3-q(\tht+1/6)(\tht+1/2)(\tht+5/6)]H=0,
+ \qquad\tht=q\frac{d}{dq},
+\]
+whose analytic solution with $H(0)=1$ is unique. The rational
+coefficients of this symmetric-square identity are checked in the code.
+
+The classical level-seven Ramanujan identity, reproduced and obtained
+by the construction in \cite[Eq.~(98)]{hemmecke}, is
+\begin{equation}\label{eq:Ramanujan}
+ \sum_{n\ge0}(133n+8)
+   \frac{(1/6)_n(1/2)_n(5/6)_n}{(n!)^3}q_0^n
+      =\frac{85\sqrt{255}}{54\pi}.
+\end{equation}
+The source uses the coefficient $(6n)!/((3n)!(n!)^3)$, which is $1728^n$
+times the coefficient here, and $1728/255^3=64/85^3$. This normalization
+check is essential. Equation \eqref{eq:Ramanujan} is a cited established
+identity, not an equality inferred from numerical recognition.
+Using \eqref{eq:Clausen}, it becomes
+\[
+ 8F(q_0)^2+266q_0F(q_0)F'(q_0)=\frac{85\sqrt{255}}{54\pi}.
+\]
+Multiply by $3/F(q_0)$ and substitute into \eqref{eq:Chyper}. Since
+$\Ast=P_0F(q_0)$ by Proposition~\ref{prop:pullback}, this yields
+\begin{equation}\label{eq:Creciprocal}
+ C=\frac{3\sqrt3}{8\pi^{3/2}P_0F(q_0)}
+   =\frac{3\sqrt3}{8\pi^{3/2}\Ast}.
+\end{equation}
+
+\subsection{An elliptic period supplies the gamma product}
+Let
+\begin{equation}\label{eq:m7}
+ m_7=\frac{8-3\sqrt7}{16},\qquad k_7=\sqrt{m_7},\qquad
+ K(k)=\int_0^{\pi/2}\frac{d\theta}{\sqrt{1-k^2\sin^2\theta}}.
+\end{equation}
+Here $K$ takes the \emph{modulus} $k$, not the parameter $m=k^2$.
+The classical singular-period evaluation is
+\begin{equation}\label{eq:Kgamma}
+ K(k_7)=\frac{\G}{4\pi7^{1/4}}.
+\end{equation}
+This is an established complex-multiplication special value
+\cite{borweinzucker,beta}, not a new identity claimed here.
+Appendix~\ref{app:beta} explicitly reduces the beta-function form in
+Zucker's table to this normalization.
+
+The required hypergeometric transformation is
+\begin{equation}\label{eq:elliptictransform}
+ F\!\left(\frac{27m^2(1-m)^2}{4(1-m+m^2)^3}\right)
+ =(1-m+m^2)^{1/4}\hyp{1/2}{1/2}{1}{m}.
+\end{equation}
+For a direct verification put $Q(m)=1-m+m^2$ and
+$j(m)=27m^2(1-m)^2/(4Q(m)^3)$. Then $Q^{-1/4}F(j)$ satisfies
+\[
+ m(1-m)y''+(1-2m)y'-\tfrac14y=0.
+\]
+Substituting and clearing denominators proves two rational identities,
+exactly as in \eqref{eq:certs}. Both solutions are analytic at $0$ and
+equal to $1$, proving the transformation near $0$. Continuation on
+$[0,m_7]$ proves the value used here. The program verifies both identities.
+
+At $m=m_7$,
+\[
+ m_7(1-m_7)=1/256,\qquad Q(m_7)=255/256,\qquad j(m_7)=q_0.
+\]
+Euler's integral gives
+${}_2F_1(1/2,1/2;1;m_7)=2K(k_7)/\pi$. Therefore
+\begin{align*}
+ \Ast=P_0F(q_0)
+ &=\left(\frac{189}{85}\frac{255}{256}\right)^{1/4}
+                       \frac{2K(k_7)}\pi\\
+ &=\frac{3\,7^{1/4}}4\frac2\pi
+                       \frac{\G}{4\pi7^{1/4}}
+ =\frac{3\G}{8\pi^2}.
+\end{align*}
+Combining this with \eqref{eq:Creciprocal} proves $C=\sqrt{3\pi}/\G$.
+Since the coefficients are positive, the finite limit at $\rho$ also
+gives the boundary sum \eqref{eq:boundarysum}, by monotone convergence.
+
+\begin{remark}[Dependencies of the exact evaluation]
+The two non-elementary special values are \eqref{eq:Ramanujan} and
+\eqref{eq:Kgamma}; both are classical inputs. The recurrence
+manipulations, rational pullbacks, connection-coefficient extraction,
+and asymptotic deductions are proved here. We do not purport to give a
+new derivation of Chowla--Selberg theory or of Ramanujan's general
+$1/\pi$ formulas.
+\end{remark}
+
+\section{All orders: existence, remainders, and coefficients}
+\subsection{The convergent local expansion}
+Write $V(s)=\sum_{j\ge0}v_js^j$, $v_0=1$, $v_{-1}=0$.
+Substitution of $s^{1/2}V(s)$ into \eqref{eq:sODE} gives
+\begin{equation}\label{eq:vrec}
+\begin{split}
+28j(j+\tfrac12)v_j={}&
+ \left(29(j-\tfrac12)^2+14(j-\tfrac12)+\frac{20}{9}\right)v_{j-1}\\
+ &-\left((j-\tfrac32)^2+(j-\tfrac32)+\frac29\right)v_{j-2},\qquad j\ge1.
+\end{split}
+\end{equation}
+Thus all $v_j$ are rational, with $v_1=593/1512$. Frobenius theory makes
+this a \emph{convergent local} power series, not merely a formal solution
+at infinity.
+For nonintegral $\alpha$, the exact coefficient formula is
+\begin{equation}\label{eq:transferexact}
+ [z^n](1-27z)^\alpha
+ =27^n\frac{\Gamma(n-\alpha)}{\Gamma(-\alpha)\Gamma(n+1)}.
+\end{equation}
+Apply it to $B\sum_{j=0}^M v_j(1-27z)^{j+1/2}$ and expand each gamma
+ratio \cite[\S5.11]{dlmf}. Singularity analysis in the dented disk from
+Section~3 transfers the remainder. The locally analytic part contributes
+no algebraic terms from this singularity. Equivalently one may subtract
+arbitrarily many Taylor terms of $U$ before applying the transfer theorem.
+The first omitted nonintegral power is $(1-27z)^{M+3/2}$, and its
+coefficient is $O(27^nn^{-M-5/2})$. This proves
+\eqref{eq:dominant} for every fixed $M$.
+
+The first correction is transparent: the gamma ratio for $\alpha=1/2$
+contributes $3/(8n)$; the $s^{3/2}$ term contributes $-3v_1/(2n)$,
+relative to the leading term. Hence
+\[
+ c_1=\frac38-\frac32\frac{593}{1512}=-\frac{215}{1008}.
+\]
+No numerical fitting of the coefficients is needed.
+
+\subsection{A triangular recurrence at infinity}
+For efficient computation insert $u_n=r^nn^{-3/2}S(1/n)$ in the
+recurrence, with $r\in\{27,-1\}$. The corresponding formal operator is
+\begin{equation}\label{eq:formalE}
+\begin{split}
+ \mathcal E_r[S](t)={}&r(1+t)^{1/2}S\!\left(\frac{t}{1+t}\right)
+ -(26+13t+2t^2)S(t)\\
+ &-\frac{27-27t+6t^2}{r}(1-t)^{-3/2}
+                  S\!\left(\frac{t}{1-t}\right).
+\end{split}
+\end{equation}
+The characteristic equation is $r^2-26r-27=0$, with roots $27,-1$.
+\begin{proposition}[Exact coefficient algorithm]\label{prop:coeffalgo}
+For either root there is a unique formal series
+$S_r(t)=1+\sum_{j\ge1}\gamma_jt^j$ with $\mathcal E_r[S_r]=0$.
+Writing $S_{m-1}=\sum_{j=0}^{m-1}\gamma_jt^j$, one has
+\begin{equation}\label{eq:triangular}
+ \gamma_m=\frac{[t^{m+1}]\mathcal E_r[S_{m-1}](t)}{m(r+27/r)},\qquad m\ge1.
+\end{equation}
+All coefficients are rational; the denominators in the recursion are
+$28m$ and $-28m$, respectively.
+\end{proposition}
+\begin{proof}
+A newly inserted $\gamma_mt^m$ contributes zero in order $m$, by the
+characteristic equation. Its coefficient in order $m+1$ is
+\[
+ r(\tfrac12-m)-13-\frac{27}{r}(\tfrac12+m)=-m(r+27/r).
+\]
+This is nonzero, giving the assertion inductively. At the first two
+orders the normalization is compatible with both characteristic roots.
+\end{proof}
+For $r=27$, the analytic existence proof above identifies this formal
+series with the asymptotic series of $a_n/C$. For $r=-1$, Section~8 will
+construct a genuine solution realizing the series. Formal coefficient
+generation alone is not used to assert existence of an asymptotic
+expansion.
+
+\subsection{Logarithms, ratios, and convexity}
+Let $\log S_{27}(t)=\sum_{j\ge1}\ell_jt^j$. Then
+\begin{equation}\label{eq:logexp}
+ \log a_n=n\log27-\frac32\log n+\log C
+             +\sum_{j=1}^M\frac{\ell_j}{n^j}+O_M(n^{-M-1}),
+\end{equation}
+with
+\begin{equation}\label{eq:ellvalues}
+ \ell_1=-\frac{215}{1008},\quad\ell_2=-\frac{85}{3136},\quad
+ \ell_3=\frac{99905}{85349376},\quad\ell_4=\frac{1657}{2458624}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:ratio}
+ \frac{a_{n+1}}{a_n}
+ =27\left(1-\frac{3}{2n}+\frac{2105}{1008n^2}+O(n^{-3})\right).
+\end{equation}
+The sequence is strictly increasing, since the coefficient of $a_n$ in
+\eqref{eq:rec} already exceeds $1$ for $n\ge1$, and $a_1>a_0$.
+Taking sufficiently many terms before forming second differences gives
+\[
+ \log a_{n+1}-2\log a_n+\log a_{n-1}
+ =\frac{3}{2n^2}+O(n^{-3})>0
+\]
+for sufficiently large $n$. Thus it is eventually strictly log-convex.
+No explicit smallest threshold is asserted.
+
+\section{A continued fraction and exact rational bracketing}
+\subsection{The discrete Wronskian}
+Let $b_n$ be as in Theorem~\ref{th:companion} and set
+$W_n=a_nb_{n+1}-a_{n+1}b_n$. Eliminating the two forward terms gives
+\[
+ W_n=-\frac{3(3n-1)(3n-2)}{(n+1)^2}W_{n-1},\qquad W_0=1.
+\]
+Grouping factors by residue modulo $3$ yields the exact formula
+\begin{equation}\label{eq:Wexact}
+ W_n=(-1)^n\frac{(3n)!}{n!(n+1)!^2}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:delta}
+ \delta_n:=\frac{b_{n+1}}{a_{n+1}}-\frac{b_n}{a_n}
+ =(-1)^n\frac{(3n)!}{n!(n+1)!^2a_na_{n+1}}.
+\end{equation}
+Its magnitude decreases strictly because
+\[
+ \left|\frac{\delta_{n+1}}{\delta_n}\right|
+ =\frac{3(3n+2)(3n+1)a_n}{(n+2)^2a_{n+2}}<1.
+\]
+The numerator is one positive summand in the recurrence for the
+denominator. The ratio tends to $1/27$ by Theorem~\ref{th:main}.
+Thus $\sum\delta_n$ converges absolutely, and its alternating tails
+prove the existence of $L$ and the brackets \eqref{eq:bracket}.
+Even approximants increase and odd approximants decrease; consecutive
+ones enclose $L$ with the exact width
+\begin{equation}\label{eq:width}
+ \left|\frac{b_{n+1}}{a_{n+1}}-\frac{b_n}{a_n}\right|
+ =\frac{(3n)!}{n!(n+1)!^2a_na_{n+1}}.
+\end{equation}
+No unknown constants enter this stopping criterion.
+
+\subsection{Polynomial continued-fraction coefficients}
+The rescaled sequences $\mathcal H_n=(n!)^2a_n$ and
+$\mathcal K_n=(n!)^2b_n$ satisfy
+\begin{equation}\label{eq:integerrec}
+ u_{n+1}=P_nu_n+Q_nu_{n-1},\qquad
+ P_n=26n^2+13n+2,\quad Q_n=3n^2(3n-1)(3n-2),
+\end{equation}
+with initial pairs $(1,2)$ and $(0,1)$. Their integrality follows directly
+from this recurrence, independently of integrality of the unscaled
+sequence. The continuant recurrence gives
+\begin{equation}\label{eq:CF}
+ L=\cfrac1{2+\cfrac6{41+\cfrac{240}{132+\cfrac{1512}{275+\ddots}}}}.
+\end{equation}
+The convergent with $n$ denominator levels is
+$\mathcal K_n/\mathcal H_n=b_n/a_n$.
+
+\begin{remark}[The initial relation matters]
+The companion satisfies the recurrence only for $n\ge1$;
+$b_1=2b_0$ is false. Its generating function
+$\mathcal B(z)=\sum b_nz^n$ therefore satisfies \eqref{eq:ODE} with right
+side $1$, not $0$. The same holds for $\mathcal B-LA$.
+These must not be called second analytic solutions of the homogeneous
+equation at $0$. The two-dimensional solution space here consists of
+sequences satisfying the recurrence for $n\ge1$.
+\end{remark}
+
+\section{The recessive scale and its full expansion}
+Stirling's formula in \eqref{eq:Wexact} gives
+\begin{equation}\label{eq:Wasym}
+ W_n=(-1)^n\frac{\sqrt3}{2\pi}\frac{27^n}{n^3}(1+O(n^{-1})).
+\end{equation}
+Together with the dominant asymptotic this yields
+\begin{equation}\label{eq:deltaasym}
+ \delta_n=(-1)^n\frac{\sqrt3}{54\pi C^2}\,27^{-n}(1+O(n^{-1})).
+\end{equation}
+The exact tail identities are
+\begin{equation}\label{eq:etail}
+ L-\frac{b_n}{a_n}=\sum_{j\ge0}\delta_{n+j},\qquad
+ e_n=-a_n\sum_{j\ge0}\delta_{n+j}.
+\end{equation}
+Since $\sum_{j\ge0}(-1/27)^j=27/28$, the leading terms of
+\eqref{eq:CFerror} and \eqref{eq:minimal} follow. The recessive amplitude
+can also be written
+\begin{equation}\label{eq:Dgamma}
+ D_{\min}=\frac{\sqrt3}{56\pi C}=\frac{\G}{56\pi^{3/2}}.
+\end{equation}
+
+\subsection{A remainder proof for the geometric tail}
+The full Stirling expansion and Theorem~\ref{th:main} imply, for each
+fixed $M$,
+\[
+ \delta_n=(-1)^nK_0\,27^{-n}
+ \left(\sum_{k=0}^M\eta_kn^{-k}+O_M(n^{-M-1})\right),
+ \qquad K_0=\frac{\sqrt3}{54\pi C^2},\quad\eta_0=1,
+\]
+where all $\eta_k$ are rational. The error bound is valid for all
+sufficiently large integer arguments, hence also at $n+j$ uniformly in
+$j\ge0$, with a bound by a constant times $27^{-j}n^{-M-1}$ after
+factoring out $27^{-n}$.
+Expand $(n+j)^{-k}$ for $0\le j\le n/2$ by Taylor's formula, retaining
+its bounded remainder. The range $j>n/2$ is exponentially small, even
+with any fixed polynomial weight. Every coefficient involves moments
+\[
+ \sum_{j\ge0}j^h(-1/27)^j,
+\]
+which are rational: apply $(q\,d/dq)^h$ to $1/(1-q)$ and set $q=-1/27$.
+Thus the tail in \eqref{eq:etail} has an expansion to every fixed order
+with a controlled error and rational normalized coefficients.
+Multiplication by the expansion of $a_n$ proves existence of
+\eqref{eq:minimal}. Since $e_n$ satisfies the recurrence,
+Proposition~\ref{prop:coeffalgo} with $r=-1$ proves that its coefficients
+are precisely the $d_j$ already given. This completes the proof of
+Theorem~\ref{th:companion}.
+
+\subsection{What the two-scale expansion does and does not say}
+Because $W_n\ne0$, $a_n$ and $e_n$ form an exact basis of the recurrence
+solutions for $n\ge1$. Every solution has a unique form
+$u_n=\alpha a_n+\beta e_n$. In this specified basis its two asymptotic
+scales are
+\begin{equation}\label{eq:twoscale}
+\begin{split}
+ u_n\sim{}&\alpha C\,27^nn^{-3/2}\sum_{j\ge0}c_jn^{-j}\\
+          &+\beta(-1)^{n+1}D_{\min}n^{-3/2}\sum_{j\ge0}d_jn^{-j}.
+\end{split}
+\end{equation}
+Each exact basis sequence has its own fixed-order expansion. A finite
+truncation of the dominant expansion generally has an error far larger
+than the entire recessive term. Equation \eqref{eq:twoscale} is therefore
+not a claim that two finite sums resolve exponentially small effects in
+a generic solution. A canonical exponentially improved expansion of
+$a_n$ alone would require additional summation or Stokes data; that
+question is left open.
+
+\section{Convolution powers and A183204}
+
+For a fixed positive integer $m$, let
+\[
+ a_n^{\langle m\rangle}=[z^n]A(z)^m
+ =\sum_{n_1+\cdots+n_m=n}a_{n_1}\cdots a_{n_m}.
+\]
+The exact boundary value controls this family as well as the original
+sequence.
+
+\begin{theorem}[Convolution asymptotics]\label{th:convolution}
+For every fixed $m\ge1$,
+\begin{equation}\label{eq:convmain}
+ a_n^{\langle m\rangle}
+ =m\Ast^{m-1}C\frac{27^n}{n^{3/2}}
+ \left(1+\frac{c_1^{\langle m\rangle}}n+O_m(n^{-2})\right),
+\end{equation}
+where
+\begin{equation}\label{eq:convc1}
+ c_1^{\langle m\rangle}
+ =-\frac{215}{1008}-\frac5{21}(m-1)
+   -\pi\frac{C^2}{\Ast^2}(m-1)(m-2).
+\end{equation}
+There is a computable expansion to every fixed order, and all its
+normalized coefficients lie in $\Q(\pi C^2/\Ast^2)$.
+\end{theorem}
+
+\begin{proof}
+The analytic part of \eqref{eq:puiseux} satisfies
+\[
+ U(s)=\Ast\left(1+\frac{10}{63}s+O(s^2)\right),
+\]
+as the constant coefficient of \eqref{eq:sODE} shows. Its subsequent
+normalized coefficients are rational. The singular part is
+$B\sqrt{s}(1+v_1s+\cdots)$, with $B=-2\sqrt\pi C$ and
+$v_1=593/1512$. In the $m$th power the coefficient of $\sqrt{s}$ is
+$m\Ast^{m-1}B$. Relative to that coefficient, the coefficient of
+$s^{3/2}$ is
+\[
+ v_1+(m-1)\frac{10}{63}
+       +\frac{(m-1)(m-2)}6\frac{B^2}{\Ast^2}.
+\]
+Transfer as in Section~6 gives \eqref{eq:convc1}. At higher orders only
+odd powers of $B$ multiply half-integral powers of $s$. After division
+by the leading singular coefficient, the remaining expressions are
+polynomials in $B^2/\Ast^2=4\pi C^2/\Ast^2$ with rational coefficients.
+The convergent Puiseux expansion and the same dented domain provide the
+fixed-order remainder estimates.
+\end{proof}
+
+For $m=2$ this is A183204, and the first two terms simplify to
+\begin{equation}\label{eq:183204}
+ [z^n]A(z)^2=
+ \frac{3\sqrt3}{4\pi^{3/2}}\frac{27^n}{n^{3/2}}
+ \left(1-\frac{65}{144n}+O(n^{-2})\right).
+\end{equation}
+The leading formula is already recorded in its OEIS entry
+\cite{oeis183204}; it is recovered here, not claimed as new.
+The cancellation of gamma factors at this convolution power is a useful
+check on the evaluation of $C$.
+
+For an algebraic check of the generating-function identification, the
+symmetric-square equation of \eqref{eq:ODE} is
+\begin{equation}\label{eq:squareODE}
+\begin{split}
+ (-z^2+26z^3+27z^4)Y'''&+(-3z+117z^2+162z^3)Y''\\
+ &+(-1+86z+186z^2)Y'+(4+24z)Y=0.
+\end{split}
+\end{equation}
+This is the equation recorded for A183204, and its normalized analytic
+solution is unique. The program verifies this symmetric-square identity
+and checks the convolution against
+\[
+ \sum_{k=0}^{n}\binom nk^2\binom{n+k}{n}\binom{2n-k}{n}
+\]
+for $0\le n\le40$. The finite check supplements the differential-equation
+argument; it does not replace it.
+
+\section{Inversion and the integer-rounding boundary}
+
+Put $\lambda=\log27$ and $\beta=3/2$. The leading smooth model is
+$Y=C e^{\lambda x}x^{-\beta}$. Its large positive solution is
+\begin{equation}\label{eq:x0}
+ x_0(Y)=-\frac{\beta}{\lambda}
+ W_{-1}\!\left(-\frac{\lambda}{\beta}(C/Y)^{1/\beta}\right),
+\end{equation}
+where $W_{-1}$ is the real negative branch of Lambert's function.
+The principal branch selects the small solution and is inappropriate
+for inversion of the large-$n$ sequence \cite[\S4.13]{dlmf}.
+
+\subsection{A triangular inverse expansion}
+
+Seek
+\begin{equation}\label{eq:inverse}
+ x_M(Y)=x_0+\sum_{j=1}^{M}\frac{q_j}{x_0^j}.
+\end{equation}
+Writing $\delta=x-x_0$, the formal equation determining the coefficients
+is
+\begin{equation}\label{eq:inverseeq}
+ \lambda\delta-\beta\log(1+\delta/x_0)
+       +\sum_{k\ge1}\ell_k(x_0+\delta)^{-k}=0.
+\end{equation}
+The newly introduced coefficient $q_j$ has multiplier $\lambda$, so
+this is triangular at every order. The first coefficients are
+\begin{align}\label{eq:qvalues}
+ q_1&=-\frac{\ell_1}{\lambda}
+       =\frac{215}{1008\lambda},\notag\\
+ q_2&=\frac{\beta q_1-\ell_2}{\lambda}
+       =\frac{215}{672\lambda^2}+\frac{85}{3136\lambda},\notag\\
+ q_3&=\frac{\beta q_2+\ell_1q_1-\ell_3}{\lambda}.
+\end{align}
+All $q_j$ belong to $\Q(\lambda)$.
+
+An expansion involving only logarithms follows by putting
+$X=\log(Y/C)$:
+\begin{equation}\label{eq:pureloginverse}
+\begin{split}
+ x(Y)={}&\frac1\lambda\left\{
+ X+\beta\log\frac X\lambda
+ +\frac{\beta^2\log(X/\lambda)-\lambda\ell_1}{X}\right\}\\
+ &\hspace{2em}+O\!\left(\frac{(\log X)^2}{X^2}\right).
+\end{split}
+\end{equation}
+Here $x(Y)$ denotes the asymptotic inverse scale, not a previously
+specified analytic interpolation of the integer sequence. Formula
+\eqref{eq:x0} is often more accurate numerically because it retains the
+entire leading model instead of truncating its logarithmic inversion.
+
+\subsection{A rigorous discrete statement}
+
+Define
+\[
+ N(Y)=\min\{n\ge0:a_n\ge Y\}.
+\]
+The sequence is strictly increasing and unbounded, so this is well-defined
+for $Y>1$. An inverse approximation cannot uniformly remove the
+ambiguity when its value is exceptionally close to an integer.
+
+\begin{proposition}[Rounding brackets]\label{prop:rounding}
+For every fixed $M\ge0$ there exist $K_M>0$ and $Y_M$ such that, for
+$Y\ge Y_M$,
+\begin{equation}\label{eq:rounding}
+ \left\lceil x_M-K_Mx_M^{-M-1}\right\rceil
+ \le N(Y)\le
+ \left\lceil x_M+K_Mx_M^{-M-1}\right\rceil.
+\end{equation}
+When the two ceilings coincide, they determine the discrete inverse
+exactly. For $M=0$, $x_M$ means $x_0$.
+\end{proposition}
+
+\begin{proof}
+Use the smooth finite model
+\[
+ g_M(x)=\log C+\lambda x-\beta\log x+
+                      \sum_{k=1}^{M}\ell_kx^{-k}.
+\]
+The all-orders theorem gives
+$\log a_n=g_M(n)+O_M(n^{-M-1})$. Also
+$g_M'(x)=\lambda+O(x^{-1})$, so it is bounded away from zero for large
+$x$. Let $t_M$ be the large solution of $g_M(t_M)=\log Y$.
+Formal substitution of \eqref{eq:inverse} into $g_M$, with ordinary
+finite Taylor remainders, gives
+$g_M(x_M)-\log Y=O_M(x_M^{-M-1})$. The mean value theorem therefore
+implies $t_M-x_M=O_M(x_M^{-M-1})$.
+
+For integers near $t_M$, comparison of $g_M(n)$ with $g_M(t_M)$,
+using its derivative lower bound and the error in $\log a_n$, shows
+that integers sufficiently below $t_M$ cannot reach $Y$, whereas
+integers sufficiently above it do reach $Y$. Enlarge the constant to
+absorb $t_M-x_M$, and use monotonicity of $a_n$ for all remaining
+integers. This gives the two ceilings in \eqref{eq:rounding}.
+\end{proof}
+
+The proposition asserts the existence of fixed-order constants, not
+explicit numerical values of $K_M$ or $Y_M$. Computing certified,
+practical values is one of the research directions below. No claim
+that $N(Y)=\lceil x_M(Y)\rceil$ holds uniformly is made.
+
+\section{Reproducible computations and certified constants}
+
+Build and run instructions are in the accompanying \texttt{README.md};
+the source audit is in \texttt{SOURCE\_AUDIT.md}. The PDF can be built
+without running Python, since its numerical tables are part of the TeX
+source. The accompanying program uses exact integers and rational functions for
+its algebraic checks. Arbitrary-precision floating-point arithmetic is
+used separately for numerical diagnostics. It requires only Python,
+SymPy, and mpmath, and makes no network requests.
+
+\subsection{Certificates and reproducible output}
+
+The following assertions were executed successfully: eight rational
+identities for the two pullbacks and two symmetric squares; coefficient
+recurrences through order $12$ for both characteristic roots; exact
+recurrence evaluation through $n=1000$; $100$ discrete Wronskian
+identities; and $41$ comparisons with the binomial sum for A183204.
+The division in the $a_n$ recurrence is exact at every tested index.
+This last computation is a finite integrality check, not an independent
+proof of integrality for all indices.
+
+The constants are
+\begin{align*}
+ C&=0.09552230526812671465130791078702962567279466665100\ldots,\\
+ \Ast&=1.22113109746756666928422458568599346237582705637935\ldots,\\
+ L&=0.46721176888437312394211005141309126172410854995971\ldots,\\
+ D_{\min}&=0.10306659600794607491874204424062776206902297866964\ldots.
+\end{align*}
+The first displayed value is not inferred by integer-relation searching:
+its gamma formula is proved in Section~5, and the following interval
+method supplies independent certified decimal evaluation.
+
+\subsection{A rational enclosure for the asymptotic constant}
+
+Write $F(q_0)=\sum_{j\ge0}h_j$. Its positive terms satisfy
+\[
+ \frac{h_{j+1}}{h_j}
+ =q_0\frac{(12j+1)(12j+5)}{144(j+1)^2}<q_0<1.
+\]
+Hence, for $S_N=\sum_{j=0}^{N-1}h_j$,
+\begin{equation}\label{eq:Fbound}
+ S_N\le F(q_0)\le S_N+\frac{h_N}{1-q_0}.
+\end{equation}
+Every quantity in this enclosure is rational. The implementation bounds
+$\pi$ using Machin's identity
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239)
+\]
+and exact alternating-series bounds. Square and fourth roots are
+bracketed by rational numbers using integer root extraction on a fixed
+decimal grid. Combining positive upper and lower bounds in
+\eqref{eq:Creciprocal} gives a rational enclosure for $C$ of width less
+than $10^{-120}$. Outward rounding produces the following interval of
+width $10^{-100}$; each row continues on its second line.
+
+\begin{center}\small\ttfamily
+\begin{tabular}{ll}
+Lower:&0.09552230526812671465130791078702962567279466665100\\
+      &71798669948234917659264524531457675812093972181446\\[3pt]
+Upper:&0.09552230526812671465130791078702962567279466665100\\
+      &71798669948234917659264524531457675812093972181447
+\end{tabular}
+\end{center}
+
+For $L$ the enclosure uses no transcendental functions at all:
+$b_{90}/a_{90}<L<b_{91}/a_{91}$, with exact rational endpoints whose
+difference is less than $10^{-125}$. The full endpoints and their
+100-place decimal enclosures are stored in
+\texttt{data/verification.json}. The JSON also records every coefficient
+through order $12$ and the zero values of all eight rational certificates.
+
+\subsection{Numerical diagnostics}
+
+For Table~\ref{tab:dominant}, the relative error is
+\[
+ \frac{C27^nn^{-3/2}\sum_{j=0}^{M}c_jn^{-j}}{a_n}-1.
+\]
+The values are rounded floating-point diagnostics, not new rigorous
+upper bounds on the asymptotic remainder. All were computed with
+190 decimal digits of working precision.
+
+\begin{table}[htbp]\centering\small
+\caption{Dominant expansion: signed relative errors.}\label{tab:dominant}
+\begin{tabular}{rllll}\toprule
+$n$ & $M=0$ & $M=3$ & $M=6$ & $M=12$\\\midrule
+20 & $1.079\times10^{-2}$ & $-1.143\times10^{-9}$ & $-5.413\times10^{-12}$ & $2.818\times10^{-19}$\\
+100 & $2.138\times10^{-3}$ & $-2.449\times10^{-12}$ & $-6.609\times10^{-17}$ & $6.083\times10^{-28}$\\
+1000 & $2.133\times10^{-4}$ & $-2.597\times10^{-16}$ & $-6.536\times10^{-24}$ & $6.727\times10^{-41}$\\
+\bottomrule\end{tabular}\end{table}
+
+The normalized recessive error in Table~\ref{tab:minimal} is
+$\sum_{j=0}^{M}d_jn^{-j}-e_n/[(-1)^{n+1}D_{\min}n^{-3/2}]$.
+The value of $L$ used in this diagnostic is the midpoint of the exact
+$r_{150},r_{151}$ enclosure, where $r_n=b_n/a_n$. Its error remains
+negligible after multiplication by $a_n$ at the displayed indices.
+
+\begin{table}[htbp]\centering\small
+\caption{Recessive expansion: signed normalized errors.}\label{tab:minimal}
+\begin{tabular}{rlll}\toprule
+$n$ & $M=0$ & $M=3$ & $M=6$\\\midrule
+10 & $4.910\times10^{-2}$ & $1.721\times10^{-6}$ & $-1.532\times10^{-9}$\\
+30 & $1.676\times10^{-2}$ & $2.361\times10^{-8}$ & $-6.532\times10^{-13}$\\
+75 & $6.753\times10^{-3}$ & $6.240\times10^{-10}$ & $-1.036\times10^{-15}$\\
+\bottomrule\end{tabular}\end{table}
+
+Table~\ref{tab:inverse} tests inversion at $Y=a_n$. It reports the signed
+continuous error $x_M(a_n)-n$, not an integer rounding error. The
+uncorrected Lambert-$W$ scale is already accurate; the algebraic
+corrections produce the predicted further improvement.
+
+\begin{table}[htbp]\centering\small
+\caption{Inverse expansion at exact sequence values.}\label{tab:inverse}
+\begin{tabular}{rlll}\toprule
+$n$ & $x_0(a_n)-n$ & $x_1(a_n)-n$ & $x_3(a_n)-n$\\\midrule
+20 & $-3.332\times10^{-3}$ & $-9.581\times10^{-5}$ & $-6.315\times10^{-9}$\\
+100 & $-6.509\times10^{-4}$ & $-3.780\times10^{-6}$ & $-1.064\times10^{-11}$\\
+1000 & $-6.475\times10^{-5}$ & $-3.769\times10^{-8}$ & $-1.075\times10^{-15}$\\
+\bottomrule\end{tabular}\end{table}
+
+\section{Further research questions and topics}
+
+The questions below are concrete extensions of the proved results.
+They are not assertions that every item is globally open: before a
+priority claim, the relevant modular-form and continued-fraction
+literature should be checked in greater depth.
+
+\subsection{Explicit remainder constants}
+Theorems~\ref{th:main} and \ref{th:companion} give remainders at every
+fixed order but not practical values of the constants. Construct
+computable $K_M,N_M$ such that
+\[
+ \left|\frac{a_n n^{3/2}}{C27^n}-\sum_{j=0}^{M}c_jn^{-j}\right|
+ \le K_M n^{-M-1}\qquad(n\ge N_M).
+\]
+One route is to bound the analytic Frobenius functions on a specified
+complex neighborhood and make the transfer contour explicit. A second
+is to construct upper and lower recurrence solutions from truncated
+series plus a controlled correction. The latter may give smaller
+thresholds and could turn the inverse brackets into a practical
+certified algorithm.
+
+\subsection{Late-order growth and optimal truncation}
+Determine the large-$j$ behavior of $c_j$ and $d_j$. The proof of
+fixed-order asymptotics does not imply convergence of the series in
+$1/n$. A useful target is a sharp factorial-over-power law, with its
+constant and phase, or a proof of a specified Gevrey bound. This would
+identify an optimal truncation index and quantify what accuracy is
+available before the recessive scale becomes relevant.
+
+\subsection{Canonical exponentially improved asymptotics}
+The exact basis $a_n,e_n$ removes ambiguity from
+\eqref{eq:twoscale}, but it does not specify a canonical summation of the
+dominant formal series. Develop a Borel or contour normalization and
+compute the associated connection data between the singularities
+$\rho$ and $-1$. The desired result is an error theorem resolving the
+alternating contribution after optimal truncation, not merely a formal
+addition of a second exponential scale.
+
+\subsection{Recognizing the continued-fraction limit}
+Find an exact special-value expression for $L$. The inhomogeneous
+operator in the remark following \eqref{eq:CF} provides a starting point:
+variation of parameters expresses its solutions through integrals
+involving $A$ and algebraic functions. The condition that the
+$\sqrt{1-27z}$ coefficient vanish selects $\mathcal B-LA$ and hence $L$.
+A successful reduction might involve an elliptic integral, an iterated
+modular integral, or a special $L$-value. No such identification is
+proved in this report.
+
+\subsection{Arithmetic strength of the approximants}
+Does the continued fraction prove irrationality of $L$, or a useful
+irrationality measure? The exponential error $27^{-n}$ alone is not
+enough: the natural continuant denominators contain factorial growth.
+The first step is to analyze the reduced denominators and common
+factors of $\mathcal H_n$ and $\mathcal K_n$. Any arithmetic conclusion
+must compare the error with the actual denominator after cancellation.
+The general results in \cite{cohenzudilin} are relevant context, but
+do not automatically apply to the specific limit constructed here.
+
+\subsection{The arithmetic conjecture in the entry}
+The OEIS entry also displays Lucas congruences for primes in the
+specified residue classes modulo $7$ \cite{oeis279619}. The present
+asymptotic argument neither proves nor disproves them. A separate
+project should first audit subsequent work on the Chan--Cooper--Sica
+conjecture and then exploit the modular parametrization or the
+functional equation added to OEIS in 2026. This is a different target
+from the asymptotic conjecture resolved here; analytic evidence should
+not be substituted for an arithmetic proof.
+
+\subsection{Coefficient fields for convolution powers}
+Theorem~\ref{th:convolution} bounds the coefficient field by
+$\Q(\pi C^2/\Ast^2)$. Determine exactly which convolution powers and
+which correction orders eliminate the period ratio. The square is
+special at its first correction, and its third-order differential
+equation may expose cancellations more systematically. A symbolic
+classification would clarify when a convolution inherits purely
+rational normalized corrections and when new period combinations
+necessarily appear.
+
+\subsection{Noninteger powers and growing convolution order}
+Extend the convolution theorem to a specified branch of $A(z)^u$ for
+noninteger real or complex $u$. Zero avoidance and possible additional
+singularities must be addressed rather than assumed. A separate
+uniform problem lets the integer $m=m(n)$ grow. The fixed-$m$ proof
+is then insufficient because powers of the analytic boundary part
+and the singular part can compete. Determine the applicable uniform
+ranges and the transition scales from the actual local expansion.
+
+\subsection{Positive integral representations}
+Find a direct integral or moment representation for $a_n$ that makes
+positivity and possible stronger inequalities transparent. A compact
+real support reflecting both characteristic roots would be especially
+informative, but such a representation and positivity of its density
+are not established here. Potential consequences include explicit
+log-convexity thresholds, Hankel determinant signs, and alternative
+error bounds for coefficient asymptotics.
+
+\subsection{Automated connection-constant recognition}
+For families of quadratic-coefficient recurrences with two distinct
+characteristic roots, combine three exact procedures: derive the
+Fuchsian equation, certify a rational hypergeometric pullback, and test
+whether a singular endpoint is a known complex-multiplication value.
+The intended output should include a symbolic certificate and a branch
+check, not just a high-precision guess. A279619 is a compact test case
+because the rational parameter turns the dominant endpoint into $w=0$.
+
+\subsection{A direct modular proof of the product identity}
+Can the product $C\Ast=3\sqrt3/(8\pi^{3/2})$ be obtained directly from a
+single level-seven modular relation? The proof here combines a
+Ramanujan identity with a period evaluation. A direct connection or
+Wronskian argument on the modular side may unify the two normalizations
+and generalize to other Ap\'ery-like equations. Such a proof could also
+explain which sequences exhibit reciprocal boundary and singular
+periods.
+
+\subsection{Machine-checked certificates and analytic infrastructure}
+A staged Lean development can begin with the recurrence, positivity,
+integer continuants, and the exact Wronskian. These statements need only
+algebra and induction. The rational identities in
+\eqref{eq:certs} and the triangular coefficient algorithm form a second
+self-contained layer. A later analytic layer must connect convergent
+local solutions to coefficient asymptotics, including branch choices
+and remainder estimates. The complex-multiplication identities should
+be stated as explicit dependencies until they too are formalized.
+This separation prevents an exact symbolic certificate from being
+mistaken for a proof of analytic continuation or of a special value.
+
+\section{Integration roadmap and conclusion}
+
+A natural repository layout separates four components: sequence
+recurrences and exact certificates; local analytic representation;
+asymptotic coefficient calculus; and inverse expansions. The first and
+third components can be tested independently of modular-form machinery.
+The second supplies the analytic existence and connection constants
+that formal manipulations alone cannot establish. The fourth should
+retain an explicit distinction between a continuous inverse scale and
+an integer threshold function.
+
+No existing Lean declaration is assumed to certify the special-function
+steps of this report. A useful first integration milestone is a
+machine-checked discrete Wronskian with rational bracketing of $L$.
+The next is a generic formal-series lemma giving
+\eqref{eq:triangular}; both are substantially smaller than a full
+formalization of the gamma constant. The supplied Python verification
+program is a reproducible algebraic audit and a source of test data,
+not a replacement for that formalization.
+
+The principal outcome is a precise resolution of the asymptotic
+statement displayed for A279619:
+\[
+ \boxed{\displaystyle
+ a_n\sim\frac{\sqrt{3\pi}}{\Gamma(1/7)\Gamma(2/7)\Gamma(4/7)}
+                    \frac{27^n}{n^{3/2}}.}
+\]
+The same argument supplies the boundary sum, every algebraic correction
+with a fixed-order error bound, and a useful convolution calculus.
+The independent companion construction reveals an alternating
+recessive solution with an exact gamma-product amplitude. Inversion
+then yields a Lambert-$W$ scale and rigorous rounding brackets. The
+remaining questions concern sharper effective bounds, canonical
+exponentially improved expansions, arithmetic properties, and broader
+families, rather than the existence or value of the leading asymptotic
+constant proved here.
+
+\appendix
+\section{Checking the classical period normalization}\label{app:beta}
+
+The table in Zucker's singular-value notes \cite[Table~1]{beta} uses
+$K[N]=K(k_N)$ with $K(k_N')/K(k_N)=\sqrt N$. At $N=7$ it gives
+\begin{equation}\label{eq:betatable}
+ K[7]=\frac{2^{5/7}7^{3/4}}{14}
+ \frac{\beta(1/7)\beta(2/7)}{\beta(1/14)},\qquad
+ k_7^2=\frac{8-3\sqrt7}{16},
+\end{equation}
+where $\beta(t)=\Gamma(t)^2/\Gamma(2t)$. We spell out the simplification
+because confusing the elliptic modulus with its square would give an
+incorrect constant.
+
+Set $g_1=\Gamma(1/7)$, $g_2=\Gamma(2/7)$, $g_4=\Gamma(4/7)$, and
+$g_{1/2}=\Gamma(1/14)$. Then
+\[
+ \frac{\beta(1/7)\beta(2/7)}{\beta(1/14)}
+ =\frac{g_1^3g_2}{g_4g_{1/2}^2}.
+\]
+The gamma duplication formula at $1/14$ is
+\[
+ g_{1/2}g_4=2^{6/7}\sqrt\pi\,g_1.
+\]
+It follows that the beta quotient is
+$g_1g_2g_4/(2^{12/7}\pi)=\G/(2^{12/7}\pi)$. Substitution into
+\eqref{eq:betatable} gives
+\[
+ K[7]=\frac{7^{3/4}\G}{28\pi}
+      =\frac{\G}{4\pi7^{1/4}},
+\]
+which is exactly \eqref{eq:Kgamma}. The classical table evaluation is
+an external input; the algebraic conversion here checks that its
+normalization matches the one used in the proof.
+
+\section{A possible OEIS formula update}
+
+The following is suggested mathematical content for an update after
+independent review. No edit to OEIS or to the user's repository has
+been made as part of this task.
+
+\begin{resultbox}
+Let $G=\Gamma(1/7)\Gamma(2/7)\Gamma(4/7)$. Then
+\[
+ a(n)\sim\frac{\sqrt{3\pi}}{G}\frac{27^n}{n^{3/2}},\qquad
+ \sum_{n\ge0}\frac{a(n)}{27^n}=\frac{3G}{8\pi^2}.
+\]
+More precisely, for every fixed truncation order there is an asymptotic
+expansion with a remainder of the next order. Its first corrections are
+\[
+ 1-\frac{215}{1008n}-\frac{1265}{290304n^2}
+   +\frac{4683055}{877879296n^3}+O(n^{-4}).
+\]
+The first three corrections were already calculated formally by
+O'Brien \cite{obrien}.
+\end{resultbox}
+
+The separate Lucas-congruence statement is not affected by this report.
+
+\clearpage
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{oeis279619}
+The OEIS Foundation Inc., \emph{A279619: Expansion of the generating
+function of A002652 in powers of the generating function of A279618}.
+Entry by Lynette O'Brien, with later contributions; consulted October 1,
+2026. The displayed entry revision was August 22, 2026.
+\url{https://oeis.org/A279619/internal}.
+
+\bibitem{oeis183204}
+The OEIS Foundation Inc., \emph{A183204}, recurrence, differential
+equation, generating-function relations, and asymptotic formula.
+Consulted October 1, 2026.
+\url{https://oeis.org/A183204/internal}.
+
+\bibitem{obrien}
+L.~O'Brien, \emph{Modular forms and two new integer sequences at level 7},
+Master of Science thesis, Massey University, 2016.
+Especially Theorem~6.1 and Section~8.4, pp.~63--67.
+\url{https://oeis.org/A279619/a279619.pdf}.
+
+\bibitem{hemmecke}
+R.~Hemmecke, P.~Paule, and C.-S.~Radu,
+\emph{Computer-assisted construction of Ramanujan--Sato series for
+1 over $\pi$}, manuscript dated January 31, 2025.
+Equation~(98), p.~32, is the level-seven identity used here.
+\url{https://www3.risc.jku.at/publications/download/risc_7134/.RamanujanSatoOneOverPi.pdf}.
+
+\bibitem{borweinzucker}
+J.~M.~Borwein and I.~J.~Zucker,
+``Fast evaluation of the gamma function for small rational fractions
+using complete elliptic integrals of the first kind,''
+\emph{IMA Journal of Numerical Analysis} \textbf{12} (1992), 519--526.
+\url{https://academic.oup.com/imajna/article-abstract/12/4/519/690281}.
+
+\bibitem{beta}
+I.~J.~Zucker, \emph{Singular value theory}, exercise notes in
+Jonathan Borwein's archived materials, Table~1, entry $K[7]$.
+The notes refer to Borwein and Zucker's elliptic-integral evaluations;
+consulted October 1, 2026.
+\url{https://carmamaths.org/jon/Preprints/Books/EMA/Exercises/For%20others/K-beta.pdf}.
+
+\bibitem{flajolet}
+P.~Flajolet and R.~Sedgewick, \emph{Analytic Combinatorics}, Cambridge
+University Press, 2009. Chapter~VI: singularity analysis and transfer
+of local expansions.
+
+\bibitem{dlmf}
+F.~W.~J.~Olver et al., eds., \emph{NIST Digital Library of Mathematical
+Functions}, Sections~4.13, 5.11, and 15.10: Lambert's $W$ function,
+gamma asymptotics, and the hypergeometric differential equation.
+Consulted October 1, 2026.
+\url{https://dlmf.nist.gov/}.
+
+\bibitem{cohenzudilin}
+H.~Cohen and W.~Zudilin,
+\emph{Continued fractions and irrationality measures for
+Chowla--Selberg gamma quotients}, arXiv:2510.00215, 2025, revised
+versions through 2026. Related work, not a theorem dependency here.
+\url{https://arxiv.org/abs/2510.00215}.
+
+\bibitem{proveit}
+V.~Reshetnikov, \emph{ProveIt},
+\texttt{Analysis/Transseries/README.md}, repository snapshot
+\texttt{a5ad4ac2e2d4e642a6c015836a70492d40fcbc71}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Transseries}.
+
+\end{thebibliography}
+\end{document}

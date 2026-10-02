@@ -1,0 +1,1212 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{graphicx}
+
+\definecolor{inkblue}{RGB}{27,57,88}
+\definecolor{quietgray}{RGB}{85,85,85}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=inkblue,
+  citecolor=inkblue,
+  urlcolor=inkblue,
+  pdftitle={Winding Sectors and the Four-Displacement Restricted-Permutation Problem},
+  pdfauthor={Research report for the ProveIt project}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Four-displacement restricted permutations}}
+\fancyhead[R]{\small October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Research question}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Zn}{\Z/n\Z}
+\newcommand{\per}{\operatorname{per}}
+\newcommand{\GF}{\mathcal G}
+\newcommand{\W}{\mathcal W}
+\newcommand{\calC}{\mathcal C}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\oeis}[1]{\texttt{#1}}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\lstset{
+  basicstyle=\small\ttfamily,
+  breaklines=true,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{quietgray},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  showstringspaces=false
+}
+
+\title{\textbf{Winding Sectors and the Four-Displacement\\Restricted-Permutation Problem}\\[0.7em]
+\large A direct Tribonacci--Lucas enumeration, an inverse transseries,\\
+and corrections to OEIS A000382, A000496, and A008305}
+\author{Research report for the ProveIt project}
+\date{October 1, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For $n\ge4$, let $\Phi_n$ be the number of permutations $\sigma$ of
+$\Z/n\Z$ for which every clockwise displacement
+$\sigma(i)-i\pmod n$ belongs to $\{0,1,2,3\}$.  Equivalently,
+$\Phi_n=\per(I+P+P^2+P^3)$ for the cyclic shift matrix $P$.  This is the
+fourth column of OEIS A008305 and the tail of A004306.  Current OEIS entries
+also identify it with A000496 and with four times A000382, but those sequences
+first disagree at $n=8$.
+
+We give a short direct proof of the exact formula
+\[
+  \Phi_n=2(L_n+1),
+  \qquad L_0=3,\ L_1=1,\ L_2=3,
+  \qquad L_n=L_{n-1}+L_{n-2}+L_{n-3}.
+\]
+The proof partitions every allowed permutation by its integer winding number.
+A constant-cut lemma shows that winding-one permutations are precisely cyclic
+tilings by monomers, dimers, and trimers; reflection-complementation identifies
+the winding-two sector with the winding-one sector, while the two outer
+sectors are singletons.  The method extends to the outer winding sectors for
+all displacement widths.
+
+Consequences include the corrected recurrence and rational generating
+function, an exact Binet formula, exponentially sharp asymptotics, a
+nearest-integer formula, and an all-orders logarithmically oscillatory inverse
+transseries.  We also prove the recurrence currently marked ``conjectured''
+in A000382, but for a different reason: it is an identity for the sequence
+produced by Mendelsohn's displayed 1961 formula, not for the restricted-
+permutation count.  The exact correction is
+\[
+ \sum_{n\ge4}\left(\frac{\Phi_n}{4}-A000382(n)\right)z^{n-4}
+ =\frac{z^4}{1-2z+z^4}.
+\]
+An independent subset-dynamic-programming verifier is included.  This is a
+research draft; the historical and novelty claims should be independently
+checked before an OEIS or journal submission.
+\end{abstract}
+
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{The problem, the discrepancy, and the result}
+
+\subsection{The cyclic restricted-permutation count}
+
+Write the elements of $\Zn$ as $0,1,\dots,n-1$.  For a permutation
+$\sigma\colon\Zn\to\Zn$, let $d_i$ be the unique integer in
+$\{0,1,\dots,n-1\}$ satisfying
+\[
+  \sigma(i)=i+d_i\pmod n.
+\]
+For $n\ge4$ define
+\begin{equation}\label{eq:Phi-definition}
+  \Phi_n
+  :=\#\bigl\{\sigma\in S(\Zn):d_i\in\{0,1,2,3\}
+       \text{ for every }i\bigr\}.
+\end{equation}
+If $P$ is the permutation matrix for the clockwise cyclic shift, then
+\begin{equation}\label{eq:permanent}
+  \Phi_n=\per(I+P+P^2+P^3).
+\end{equation}
+This is Mendelsohn's $\phi(n,4)$ in the notation of his 1961 paper
+\cite{mendelsohn1961}; it is also $T(n,4)$ in OEIS A008305
+\cite{oeisA008305}.
+
+The first values obtained from the definition are
+\begin{equation}\label{eq:true-first-values}
+  24,44,80,144,264,484,888,1632,3000,5516,10144,\dots
+  \qquad(n=4,5,6,\dots).
+\end{equation}
+They are recorded in OEIS A004306, whose current entry gives the recurrence
+$a(n)=2a(n-1)-a(n-4)$ and a Tribonacci formula
+\cite{oeisA004306}.  The purpose of this report is not to rediscover that
+recorded recurrence by sequence fitting.  It is to give a transparent
+bijection explaining it, to separate three historically entangled sequences,
+and to derive several consequences that do not appear in the checked entries.
+
+\subsection{Three sequences that agree only through n=7}
+
+As of October 1, 2026, OEIS A000382 begins
+\[
+ 6,11,20,36,65,119,218,400,735,\dots
+\]
+with offset $4$, and says that it is the fourth column of A008305 divided by
+$4$; it also marks
+\[
+ a(n)=a(n-1)+a(n-2)+a(n-3)-2
+\]
+as conjectural \cite{oeisA000382}.  A000496 begins
+\[
+ 1,1,2,6,24,44,80,144,260,476,872,\dots
+\]
+and is likewise named ``Restricted permutations'' \cite{oeisA000496}.
+However, A008305 itself gives $264,484,888$ in the relevant column at
+$n=8,9,10$, and A004306 gives the same values
+\cite{oeisA008305,oeisA004306}.
+
+The divergence is summarized below.  ``Equation (4)'' means the sequence
+obtained by evaluating Mendelsohn's displayed formula, while ``printed table''
+means the values printed on page 32 of the same paper.
+
+\begin{center}
+\begin{tabular}{c@{\quad}rrrrrrr}
+\toprule
+$n$ & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+\midrule
+actual $\Phi_n$ & 24 & 44 & 80 & 144 & 264 & 484 & 888\\
+Mendelsohn equation (4) & 24 & 44 & 80 & 144 & 260 & 476 & 872\\
+Mendelsohn printed table & 24 & 44 & 80 & 144 & 256 & 472 & 872\\
+$4\,A000382(n)=A000496(n)$ & 24 & 44 & 80 & 144 & 260 & 476 & 872\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus the source formula, the source table, and the permanent are three distinct
+objects.  The first discrepancy between the current A000382 comment and the
+actual fourth column occurs at
+\[
+  n=8:\qquad A000382(8)=65,
+  \qquad \frac{T(8,4)}4=\frac{264}{4}=66.
+\]
+The issue is not a matter of offset convention.
+
+\subsection{Main theorem}
+
+Let $L_n$ denote the Tribonacci--Lucas sequence
+\begin{equation}\label{eq:Lucas-def}
+  L_0=3,\qquad L_1=1,\qquad L_2=3,
+  \qquad L_n=L_{n-1}+L_{n-2}+L_{n-3}.
+\end{equation}
+This is OEIS A001644 \cite{oeisA001644}.
+
+\begin{theorem}[Exact four-displacement enumeration]\label{thm:main}
+For every $n\ge4$,
+\begin{equation}\label{eq:main-formula}
+  \boxed{\Phi_n=2(L_n+1).}
+\end{equation}
+More precisely, if the allowed permutations are sorted by winding number
+$q\in\{0,1,2,3\}$, then the four sector sizes are
+\begin{equation}\label{eq:sector-vector}
+  (1,L_n,L_n,1).
+\end{equation}
+\end{theorem}
+
+The proof occupies Sections~\ref{sec:winding}--\ref{sec:specialization}.
+It uses only a conservation law and a cyclic-tiling bijection.
+
+\subsection{What is new here, and what is not claimed}
+
+The recurrence and generating function for the correct count are already
+present in A004306, and related transfer-matrix formulae occur in the classical
+literature on permanents of cyclic $(0,1)$ matrices
+\cite{metropolis1969,beker1987}.  The contributions of this report are:
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item a direct winding-sector proof of the exact formula;
+\item a general theorem identifying the outer winding sectors for every fixed
+      displacement width;
+\item a source-level diagnosis of the A000382/A000496 discrepancy;
+\item a proof of the A000382 recurrence for the formula-defined, rather than
+      permutation-defined, sequence;
+\item the exact correction kernel and its asymptotics;
+\item exact and all-orders asymptotic formulae, including an inverse
+      log-periodic transseries.
+\end{enumerate}
+
+No claim is made that no equivalent bijection has ever appeared in the wider
+literature.  The literature search was targeted rather than exhaustive.  The
+OEIS statements quoted here are snapshots and may be corrected after the date
+of this report.
+
+\section{Winding sectors and a constant-cut law}\label{sec:winding}
+
+It is useful to treat a slightly more general problem.  Fix integers
+$n\ge r\ge2$, and define
+\begin{equation}\label{eq:Phi-nr}
+  \Phi_{n,r}
+  :=\#\bigl\{\sigma\in S(\Zn):
+       \sigma(i)-i\pmod n\in\{0,1,\dots,r-1\}\bigr\}.
+\end{equation}
+For every allowed permutation choose the representatives
+$d_i\in\{0,1,\dots,r-1\}$.
+
+\begin{lemma}[Integral winding number]\label{lem:winding-integral}
+For every allowed permutation,
+\begin{equation}\label{eq:q-def}
+  q(\sigma):=\frac1n\sum_{i=0}^{n-1}d_i
+\end{equation}
+is an integer in $\{0,1,\dots,r-1\}$.
+\end{lemma}
+
+\begin{proof}
+Because $\sigma$ is a permutation,
+\[
+ \sum_i\sigma(i)\equiv\sum_i i\pmod n.
+\]
+Hence $\sum_i d_i\equiv0\pmod n$.  The bounds
+$0\le d_i\le r-1$ give $0\le q\le r-1$.
+\end{proof}
+
+Draw the vertices $0,1,\dots,n-1$ clockwise on a circle.  Represent the arrow
+$i\mapsto i+d_i$ by the clockwise arc that traverses exactly $d_i$ elementary
+cuts.  Let cut $k$ be the gap from $k$ to $k+1$, and let $c_k$ be the number
+of nontrivial arcs crossing that cut.
+
+\begin{lemma}[Constant-cut law]\label{lem:constant-cut}
+Every cut is crossed by exactly $q(\sigma)$ arcs:
+\begin{equation}\label{eq:constant-cut}
+  c_0=c_1=\cdots=c_{n-1}=q(\sigma).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Moving from cut $k-1$ to cut $k$, the crossing count gains one if a nonloop
+arc starts at $k$ and loses one if a nonloop arc ends at $k$.  There is one
+outgoing and one incoming arrow at every vertex.  Moreover, the outgoing arrow
+at $k$ is a loop if and only if the incoming arrow at $k$ is that same loop:
+if $\sigma(k)=k$, no other arrow can end at $k$, and conversely.  Therefore the
+number of nonloop starts at $k$ equals the number of nonloop ends at $k$, so
+$c_k-c_{k-1}=0$.
+
+The sum of the $n$ cut counts is the total number of elementary cuts traversed
+by all arcs, namely $\sum_i d_i=qn$.  Since the cut counts are constant, each
+is $q$.
+\end{proof}
+
+This elementary observation is the structural core of the argument.  It turns
+a modular displacement condition into a covering problem on a circle.
+
+\subsection{Reflection-complementation}
+
+Define an operation on allowed permutations by
+\begin{equation}\label{eq:complement-map}
+  (\calC_r\sigma)(x):=r-1-\sigma(-x)\pmod n.
+\end{equation}
+It is the composition of reflection in the domain, the permutation $\sigma$,
+and an affine reflection in the codomain.
+
+\begin{lemma}[Sector symmetry]\label{lem:sector-symmetry}
+The map $\calC_r$ is an involution, and it sends winding sector $q$ to winding
+sector $r-1-q$.  In particular, the winding-sector polynomial
+\begin{equation}\label{eq:sector-polynomial}
+  W_{n,r}(u):=\sum_{\sigma}u^{q(\sigma)}
+\end{equation}
+is palindromic of degree $r-1$.
+\end{lemma}
+
+\begin{proof}
+If $d_{-x}$ is the displacement of $\sigma$ at $-x$, then
+\[
+ (\calC_r\sigma)(x)-x
+ \equiv r-1-\sigma(-x)-x
+ \equiv r-1-d_{-x}\pmod n.
+\]
+The displayed integer already lies in $\{0,\dots,r-1\}$.  Summing over $x$
+changes $qn$ into $(r-1)n-qn$.  A second application of $\calC_r$ returns
+$\sigma$.
+\end{proof}
+
+The extreme sectors are immediate.
+
+\begin{lemma}[Outer singleton sectors]\label{lem:outer-singletons}
+The winding-$0$ sector consists only of the identity, and the winding-$(r-1)$
+sector consists only of the shift $i\mapsto i+r-1$.
+\end{lemma}
+
+\begin{proof}
+An average of numbers in $[0,r-1]$ equals $0$ only when every number is $0$,
+and it equals $r-1$ only when every number is $r-1$.
+\end{proof}
+
+\section{Winding one is a cyclic-tiling problem}\label{sec:tilings}
+
+Let $k=r-1$.  A cyclic tiling of a labeled $n$-cycle by tiles of lengths
+$1,2,\dots,k$ is a partition of its elementary cuts into clockwise intervals
+of those lengths.  A tile has a distinguished initial vertex, so the labels
+and orientation are retained.
+
+\begin{theorem}[Outer-sector tiling theorem]\label{thm:outer-sector}
+For $n\ge r$, the winding-$1$ permutations counted by $\Phi_{n,r}$ are in
+bijection with cyclic tilings of a labeled $n$-cycle by tiles of lengths
+$1,2,\dots,r-1$.
+
+Under the bijection, a tile of length $j$ becomes the displacement block
+\begin{equation}\label{eq:tile-block-general}
+  j\,\underbrace{00\cdots0}_{j-1\text{ zeros}}.
+\end{equation}
+The winding-$(r-2)$ sector has the same size by
+Lemma~\ref{lem:sector-symmetry}.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:constant-cut}, every cut is covered by exactly one arc in a
+winding-$1$ permutation.  Consequently, the cut intervals traversed by its
+nonloop arcs are pairwise disjoint and cover the cycle.  If an arc starts at
+$i$ and has length $j$, then no nonloop arc can start at an internal vertex
+$i+1,\dots,i+j-1$, because its first cut would already be covered.  Those
+internal vertices are therefore loops, giving the block in
+\eqref{eq:tile-block-general}.  The nonloop arcs thus define a cyclic tiling.
+
+Conversely, replace each tile of length $j$ by an arc from its initial vertex
+to its terminal vertex, and put loops on the $j-1$ internal vertices.  Every
+internal vertex is its own target, while every tile initial vertex is the
+target of the preceding tile's arc.  Thus every vertex has exactly one
+preimage and the construction is a permutation.  Each cut is crossed once, so
+its winding number is $1$.  The two constructions are inverse.
+\end{proof}
+
+For $r=4$, the three tile blocks are particularly simple:
+\begin{equation}\label{eq:blocks-123}
+  1,\qquad 20,\qquad 300.
+\end{equation}
+For example, the cyclic composition $8=3+2+1+2$ gives the displacement word
+\[
+  300\,20\,1\,20=30020120.
+\]
+
+\subsection{Counting the cyclic tilings}
+
+Let $F_m^{(k)}$ be the number of linear tilings of length $m$ with tile lengths
+$1,\dots,k$.  Set $F_0^{(k)}=1$ and $F_m^{(k)}=0$ for $m<0$.  Then
+\begin{equation}\label{eq:kbonacci-compositions}
+  F_m^{(k)}=\sum_{j=1}^k F_{m-j}^{(k)},
+  \qquad
+  \sum_{m\ge0}F_m^{(k)}z^m=\frac1{1-z-z^2-\cdots-z^k}.
+\end{equation}
+
+\begin{proposition}[Cyclic-tiling count]\label{prop:cyclic-count}
+Let $C_{n,k}$ be the number of cyclic tilings of a labeled $n$-cycle with tile
+lengths $1,\dots,k$.  Then, for $n\ge1$,
+\begin{equation}\label{eq:C-general}
+  C_{n,k}=\sum_{j=1}^k jF_{n-j}^{(k)}.
+\end{equation}
+It satisfies the same order-$k$ recurrence as $F_m^{(k)}$ once the initial
+range has passed.  Equivalently, if $\lambda_1,\dots,\lambda_k$ are the roots
+of
+\begin{equation}\label{eq:k-characteristic}
+  x^k-x^{k-1}-\cdots-x-1=0,
+\end{equation}
+then
+\begin{equation}\label{eq:power-sum-general}
+  C_{n,k}=\lambda_1^n+\cdots+\lambda_k^n.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Focus on the unique tile containing vertex $0$.  If that tile has length $j$,
+then vertex $0$ can occupy any of its $j$ labeled positions.  Removing it
+leaves a line of length $n-j$, which can be tiled in $F_{n-j}^{(k)}$ ways.
+This proves \eqref{eq:C-general}.
+
+The power sums in \eqref{eq:power-sum-general} obey the recurrence associated
+with \eqref{eq:k-characteristic}.  Newton's identities give the same initial
+values as \eqref{eq:C-general}; alternatively, both sides are the trace of the
+$n$th power of the standard composition automaton.  Hence they agree.
+\end{proof}
+
+The dominant root $\lambda_k$ of \eqref{eq:k-characteristic} is real, simple,
+and lies in $(1,2)$.  Multiplication by $x-1$ shows that it is the nontrivial
+root in $(1,2)$ of
+\begin{equation}\label{eq:Mendelsohn-root-general}
+  x^{k+1}-2x^k+1=0.
+\end{equation}
+Thus the outer winding sector already explains why generalized Fibonacci roots
+appear in confined-displacement problems.
+
+\section{Complete solution for four displacements}\label{sec:specialization}
+
+Set $r=4$ and $k=3$.  The possible winding numbers are $0,1,2,3$.  There are no
+unaccounted-for inner sectors: winding $0$ and $3$ are singletons, winding $1$
+is the cyclic-tiling sector, and winding $2$ is its reflected complement.
+
+Write simply $F_m=F_m^{(3)}$.  Thus
+\begin{equation}\label{eq:F-initial}
+  F_0=1,\quad F_1=1,\quad F_2=2,\quad
+  F_m=F_{m-1}+F_{m-2}+F_{m-3}.
+\end{equation}
+By Proposition~\ref{prop:cyclic-count},
+\begin{equation}\label{eq:C123}
+  C_n=F_{n-1}+2F_{n-2}+3F_{n-3}.
+\end{equation}
+The initial values are
+\[
+  C_0=3,\qquad C_1=1,\qquad C_2=3,
+\]
+and therefore $C_n=L_n$ from \eqref{eq:Lucas-def}.  This proves
+Theorem~\ref{thm:main}.
+
+A compact refinement is the full winding polynomial.
+
+\begin{corollary}[Sector polynomial]\label{cor:sector-poly-r4}
+For $n\ge4$,
+\begin{equation}\label{eq:sector-poly-r4}
+  W_{n,4}(u)=1+L_nu+L_nu^2+u^3.
+\end{equation}
+\end{corollary}
+
+\subsection{Recurrences}
+
+Substituting $L_n=(\Phi_n-2)/2$ into the Tribonacci recurrence gives the affine
+order-three recurrence
+\begin{equation}\label{eq:true-affine-recurrence}
+  \boxed{\Phi_n=\Phi_{n-1}+\Phi_{n-2}+\Phi_{n-3}-4}
+  \qquad(n\ge7),
+\end{equation}
+with $\Phi_4=24,\Phi_5=44,\Phi_6=80$.  Subtracting two consecutive instances
+gives the homogeneous order-four recurrence
+\begin{equation}\label{eq:true-homogeneous-recurrence}
+  \boxed{\Phi_n=2\Phi_{n-1}-\Phi_{n-4}}
+  \qquad(n\ge8).
+\end{equation}
+
+The Tribonacci--Lucas numbers are odd: the first three are odd, and each later
+term is a sum of three odd terms.  Hence the theorem also proves
+\begin{equation}\label{eq:divisibility4}
+  4\mid\Phi_n\qquad(n\ge4).
+\end{equation}
+Define the corrected quarter sequence
+\begin{equation}\label{eq:R-def}
+  R_n:=\frac{\Phi_n}{4}=\frac{L_n+1}{2}.
+\end{equation}
+It begins
+\begin{equation}\label{eq:R-values}
+  6,11,20,36,66,121,222,408,750,1379,2536,4664,\dots
+\end{equation}
+and satisfies
+\begin{equation}\label{eq:R-affine}
+  R_n=R_{n-1}+R_{n-2}+R_{n-3}-1
+  \qquad(n\ge7).
+\end{equation}
+
+\subsection{Generating functions}
+
+Let the tail variable start at $n=4$.  From
+\eqref{eq:true-homogeneous-recurrence},
+\begin{align}
+  \sum_{m\ge0}\Phi_{m+4}z^m
+  &=\frac{24-4z-8z^2-16z^3}{1-2z+z^4} \label{eq:Phi-tail-gf}\\
+  &=\frac{4(6-z-2z^2-4z^3)}{(1-z)(1-z-z^2-z^3)}.\nonumber
+\end{align}
+Dividing by four gives
+\begin{equation}\label{eq:R-tail-gf}
+  \boxed{
+  \sum_{m\ge0}R_{m+4}z^m
+  =\frac{6-z-2z^2-4z^3}{1-2z+z^4}.}
+\end{equation}
+
+If one includes the exceptional small-$n$ values
+$1,1,2,6$ appearing in A004306, then
+\begin{equation}\label{eq:A004306-full-gf}
+ \sum_{n\ge0}A004306(n)z^n
+ =\frac{1-z+2z^3+13z^4-3z^5-6z^6-10z^7}{1-2z+z^4},
+\end{equation}
+which agrees with the current A004306 entry \cite{oeisA004306}.
+
+\section{The Mendelsohn formula sequence and A000382}\label{sec:ghost}
+
+This section separates a valid recurrence identity from an invalid
+combinatorial identification.
+
+\subsection{The formula-defined sequence}
+
+Mendelsohn defines the third-order Fibonacci sequence in his indexing as
+\[
+  1,2,4,7,13,24,44,81,149,\dots
+\]
+With our
+$F_0=1,F_1=1,F_2=2,\dots$, his displayed equation (4), divided by four, gives
+for $n\ge5$
+\begin{equation}\label{eq:M-def}
+  M_n=F_{n-1}+F_{n-3}+F_{n-4}+1,
+\end{equation}
+with the separately correct value $M_4=6$.  The sequence $M_n$ is exactly the
+current A000382 tail and $4M_n$ is the current A000496 tail.
+
+There is a harmless typographical issue in the preceding paragraph's display
+in some text extractions of the 1961 scan; the sequence meant is the one
+printed in the paper and used in \eqref{eq:M-def}.  The numerical evaluation
+is unambiguous: $M_8=65,M_9=119,M_{10}=218$.
+
+\begin{theorem}[Resolution of the A000382 recurrence]\label{thm:ghost-recurrence}
+The formula-defined sequence $M_n$ satisfies
+\begin{equation}\label{eq:ghost-affine}
+  \boxed{M_n=M_{n-1}+M_{n-2}+M_{n-3}-2}
+  \qquad(n\ge8).
+\end{equation}
+Its shifted generating function is
+\begin{equation}\label{eq:ghost-gf}
+  \boxed{
+  \sum_{m\ge0}M_{m+4}z^m
+  =\frac{6-z-2z^2-4z^3-z^4}{1-2z+z^4}.}
+\end{equation}
+Thus the recurrence marked conjectural in A000382 is a theorem for the
+sequence defined by \eqref{eq:M-def}.  It is not the recurrence of the actual
+quarter-count $R_n$.
+\end{theorem}
+
+\begin{proof}
+The sequence $M_n-1$ is a fixed linear combination of three shifts of $F_n$,
+so it obeys the homogeneous Tribonacci recurrence whenever all shifted
+instances of \eqref{eq:M-def} are valid.  Therefore
+\[
+ M_n-1=(M_{n-1}-1)+(M_{n-2}-1)+(M_{n-3}-1),
+\]
+which is \eqref{eq:ghost-affine}.  The initial tail
+$6,11,20,36,65$ then gives the numerator in \eqref{eq:ghost-gf} after
+multiplication by $1-2z+z^4$.
+\end{proof}
+
+The homogeneous recurrence $M_n=2M_{n-1}-M_{n-4}$ begins only at $n=9$;
+it fails at $n=8$ because the numerator in \eqref{eq:ghost-gf} contains a
+nonzero $z^4$ term.  This one-step distinction is another useful check on
+indexing.
+
+\subsection{The exact correction kernel}
+
+Subtracting \eqref{eq:ghost-gf} from \eqref{eq:R-tail-gf} gives the central
+provenance identity.
+
+\begin{theorem}[Exact correction to A000382 and A000496]\label{thm:correction}
+For the current A000382 tail $M_n$ and the true quarter-count $R_n$,
+\begin{equation}\label{eq:correction-gf}
+  \boxed{
+  \sum_{n\ge4}(R_n-M_n)z^{n-4}
+  =\frac{z^4}{1-2z+z^4}
+  =\frac{z^4}{(1-z)(1-z-z^2-z^3)}.}
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:correction-sum}
+  R_n-M_n=
+  \begin{cases}
+    0,&4\le n\le7,\\[2mm]
+    \displaystyle\sum_{j=0}^{n-8}F_j,&n\ge8.
+  \end{cases}
+\end{equation}
+For A000496, the correction is four times this amount.
+\end{theorem}
+
+The first nonzero corrections to A000382 are therefore
+\begin{equation}\label{eq:correction-values}
+  1,2,4,8,15,28,52,96,177,\dots\qquad(n=8,9,10,\dots).
+\end{equation}
+They are not a finite transcription error: they grow exponentially at the same
+Tribonacci rate as the two compared sequences.
+
+A useful closed form for the cumulative composition numbers is
+\begin{equation}\label{eq:cumulative-F}
+  \sum_{j=0}^{m}F_j=\frac{F_{m+2}+F_m-1}{2}.
+\end{equation}
+It follows either by induction or by multiplying generating functions.
+
+\subsection{What the 1961 source actually contains}
+
+Mendelsohn's paper gives the correct definition of $\phi(n,r)$ and presents
+its evaluation via permanents \cite{mendelsohn1961}.  For $r=4$, however,
+its displayed equation (4) produces $260,476,872$ at $n=8,9,10$, while its
+printed table gives $256,472,872$.  The permanent gives $264,484,888$.
+The agreement through $n=7$ explains how the formula-defined sequence could
+remain attached to the intended combinatorial description.
+
+Plouffe's 1992/2009 collection explicitly describes its formulae as
+computer-generated approximations and conjectures from the sequence database
+available at the time \cite{plouffe2009}.  Its rational generating function
+correctly captures the inherited A000382 terms; it cannot repair a prior error
+in those terms without returning to the underlying definition.
+
+\section{Exact roots, asymptotics, and nearest integers}\label{sec:asymptotics}
+
+Let $\alpha$ be the real root of
+\begin{equation}\label{eq:trib-polynomial}
+  x^3-x^2-x-1=0,
+\end{equation}
+and let $\beta,\gamma$ be the two nonreal roots.  Numerically,
+\begin{align}
+ \alpha&=1.8392867552141611325518525646532866004\dots,\label{eq:alpha-num}\\
+ \beta&=\rho\e^{\ii\theta},\qquad
+ \gamma=\rho\e^{-\ii\theta},\nonumber\\
+ \rho&=\alpha^{-1/2}
+      =0.7373527057603276752017596505081211233\dots,\label{eq:rho-num}\\
+ \theta&=2.1762335454918703984542598307236195688\dots.\label{eq:theta-num}
+\end{align}
+Indeed $\alpha\beta\gamma=1$, so $\abs\beta=\abs\gamma=\alpha^{-1/2}$, and
+\begin{equation}\label{eq:theta-exact}
+  \cos\theta=\frac{(1-\alpha)\sqrt\alpha}{2}.
+\end{equation}
+
+\begin{theorem}[Exact Binet form]\label{thm:Binet}
+For every $n\ge4$,
+\begin{align}
+  \Phi_n
+  &=2\bigl(1+\alpha^n+\beta^n+\gamma^n\bigr)\label{eq:Binet-complex}\\
+  &=2\alpha^n+2+4\alpha^{-n/2}\cos(n\theta).\label{eq:Binet-real}
+\end{align}
+In particular,
+\begin{equation}\label{eq:sharp-error}
+  \abs{\Phi_n-(2\alpha^n+2)}\le4\alpha^{-n/2},
+  \qquad
+  \Phi_n\sim2\alpha^n.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The power sum $\alpha^n+\beta^n+\gamma^n$ has initial values $3,1,3$ by
+Newton's identities and obeys the Tribonacci recurrence.  Hence it is $L_n$.
+Now apply Theorem~\ref{thm:main}.
+\end{proof}
+
+The result is stronger than a conventional asymptotic expansion: it is an
+exact three-scale exponential representation.  The subdominant pair produces
+a decaying oscillation rather than a monotone error.
+
+\begin{corollary}[Nearest-integer formula]\label{cor:nearest}
+For every $n\ge4$,
+\begin{equation}\label{eq:nearest-quarter}
+  \boxed{
+  \frac{\Phi_n}{4}
+  =\operatorname{nint}\!\left(\frac{\alpha^n+1}{2}\right),}
+\end{equation}
+where $\operatorname{nint}$ denotes the unique nearest integer.
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:Binet-real}, the difference between the two sides before rounding
+is $\rho^n\cos(n\theta)$, whose absolute value is at most $\rho^n<1/2$ for
+$n\ge3$.
+\end{proof}
+
+\subsection{A convergent logarithmic transseries}
+
+Factoring the dominant term in \eqref{eq:Binet-real} gives
+\begin{equation}\label{eq:factor-Phi}
+ \Phi_n=2\alpha^n
+ \left(1+\alpha^{-n}+2\alpha^{-3n/2}\cos(n\theta)\right).
+\end{equation}
+Therefore, for all sufficiently large $n$ (and in fact already in the stated
+range after direct checking),
+\begin{equation}\label{eq:log-all-orders}
+ \log\Phi_n
+ =n\log\alpha+\log2+
+ \sum_{m\ge1}\frac{(-1)^{m+1}}m
+ \left(\alpha^{-n}+2\alpha^{-3n/2}\cos(n\theta)\right)^m.
+\end{equation}
+This is a convergent all-orders expansion, not merely a formal one.  Its first
+layers are
+\begin{align}
+ \log\Phi_n={}&n\log\alpha+\log2
+ +\alpha^{-n}+2\alpha^{-3n/2}\cos(n\theta)
+ -\frac12\alpha^{-2n}\nonumber\\
+ &-2\alpha^{-5n/2}\cos(n\theta)
+ +\left(\frac13-2\cos^2(n\theta)\right)\alpha^{-3n}
+ +\bigO(\alpha^{-7n/2}).\label{eq:log-expanded}
+\end{align}
+The half-integer exponential scales arise from the modulus
+$\abs\beta=\alpha^{-1/2}$.
+
+\subsection{Asymptotics of the erroneous formula sequence}
+
+The composition numbers have the exact root expansion
+\begin{equation}\label{eq:F-root-expansion}
+  F_n=\sum_{\lambda\in\{\alpha,\beta,\gamma\}}
+  \frac{\lambda^{n+3}}{\lambda^2+2\lambda+3}.
+\end{equation}
+Substitution into \eqref{eq:M-def} yields, for $n\ge5$,
+\begin{equation}\label{eq:M-root-expansion}
+ M_n=1+\sum_{\lambda\in\{\alpha,\beta,\gamma\}}
+ \frac{\lambda^{n-1}(\lambda^2+2\lambda+2)}
+      {\lambda^2+2\lambda+3}.
+\end{equation}
+Thus
+\begin{equation}\label{eq:M-asymptotic}
+ M_n\sim
+ \frac{\alpha^2+2\alpha+2}
+      {\alpha(\alpha^2+2\alpha+3)}\,\alpha^n
+ =0.4896527010215867240\dots\,\alpha^n.
+\end{equation}
+Since $R_n\sim\frac12\alpha^n$, the limiting relative undercount is
+\begin{equation}\label{eq:relative-undercount}
+  1-\lim_{n\to\infty}\frac{M_n}{R_n}
+  =0.0206945979568265519\dots.
+\end{equation}
+So the discrepancy is small enough to be visually deceptive, but it does not
+vanish relatively.
+
+\section{Inverting the exact asymptotic transseries}\label{sec:inverse}
+
+The exact root formula permits a precise continuous inverse and, through it,
+a discrete threshold formula.
+
+Define the real interpolation
+\begin{equation}\label{eq:continuous-Phi}
+  \widetilde\Phi(x)
+  :=2+2\alpha^x+4\alpha^{-x/2}\cos(\theta x),
+  \qquad x\ge4.
+\end{equation}
+It agrees with $\Phi_n$ at every integer $n\ge4$.
+
+\begin{lemma}[Monotonicity of the interpolation]\label{lem:interpolation-monotone}
+The function $\widetilde\Phi$ is strictly increasing on $[4,\infty)$.
+\end{lemma}
+
+\begin{proof}
+Put $L=\log\alpha$ and
+$B=\sqrt{(L/2)^2+\theta^2}$.  Then
+\[
+ \widetilde\Phi'(x)
+ \ge 2L\alpha^x-4B\alpha^{-x/2}.
+\]
+The polynomial in \eqref{eq:trib-polynomial} is increasing for $x>1$ and
+changes sign between $1.8$ and $2$, so $1.8<\alpha<2$.  Hence
+$L>0.58$, while $\theta<\pi$ and
+$B<\sqrt{(\log 2/2)^2+\pi^2}<3.17$.  At $x=4$ the displayed lower bound is
+therefore greater than
+\[
+  2(0.58)(1.8)^4-4(3.17)(1.8)^{-2}>8.2.
+\]
+The ratio of the possible negative term to the positive term decreases by a
+factor $\alpha^{-3/2}$ per unit increase of $x$, so the derivative remains
+positive.
+\end{proof}
+
+For $y\ge24$, let $x(y)$ be the unique real solution of
+$\widetilde\Phi(x)=y$.  Set
+\begin{align}\label{eq:inverse-variables}
+  Y&:=\frac{y-2}{2},\qquad L:=\log\alpha,\\
+  \omega&:=\frac{\theta}{L}
+  =3.5712382678640038805657341982470\dots,
+  \qquad \psi:=\omega\log Y.\nonumber
+\end{align}
+
+\begin{theorem}[Inverse log-periodic transseries]\label{thm:inverse}
+As $y\to\infty$,
+\begin{align}
+ x(y)={}&\frac{\log Y}{L}
+ -\frac{2\cos\psi}{L}Y^{-3/2}\nonumber\\
+ &-\left(
+   \frac{4\cos^2\psi}{L}
+   +\frac{4\theta\cos\psi\sin\psi}{L^2}
+   \right)Y^{-3}
+ +\bigO(Y^{-9/2}).\label{eq:inverse-expansion}
+\end{align}
+More generally, there is an all-orders expansion
+\begin{equation}\label{eq:inverse-all-orders}
+ x(y)=\frac{\log Y}{L}
+      +\sum_{m\ge1}a_m(\psi)Y^{-3m/2},
+\end{equation}
+where each $a_m$ is a real-analytic $2\pi$-periodic function computable
+recursively.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+  x=\frac{\log Y}{L}+\delta,
+  \qquad t=Y^{-3/2}.
+\]
+Dividing the equation $Y=\alpha^x+2\alpha^{-x/2}\cos(\theta x)$ by $Y$ gives
+\begin{equation}\label{eq:inverse-implicit}
+  1=\e^{L\delta}
+    +2t\e^{-L\delta/2}\cos(\psi+\theta\delta).
+\end{equation}
+At $t=0$ the solution is $\delta=0$, and the derivative of the right side
+with respect to $\delta$ is $L\ne0$.  The analytic implicit-function theorem
+therefore produces a convergent power series
+$\delta=\sum_{m\ge1}a_m(\psi)t^m$ for small $t$, uniformly in the phase.
+
+Substitute $\delta=a_1t+a_2t^2+\bigO(t^3)$ into
+\eqref{eq:inverse-implicit}.  Comparing the coefficient of $t$ gives
+\[
+  La_1+2\cos\psi=0.
+\]
+Comparing the coefficient of $t^2$ then gives
+\[
+  La_2+4\cos^2\psi
+  +\frac{4\theta}{L}\cos\psi\sin\psi=0.
+\]
+These are exactly the two displayed correction terms.
+\end{proof}
+
+\begin{corollary}[Discrete inverse]\label{cor:discrete-inverse}
+For $y\ge24$, define
+\[
+ N(y):=\min\{n\ge4:\Phi_n\ge y\}.
+\]
+Then
+\begin{equation}\label{eq:discrete-inverse}
+  \boxed{N(y)=\ceil{x(y)}.}
+\end{equation}
+Consequently, inserting \eqref{eq:inverse-expansion} gives an asymptotically
+sharp threshold formula with a first correction of order $y^{-3/2}$ and a
+log-periodic phase.
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:interpolation-monotone} shows that
+$\widetilde\Phi(n)\ge y$ if and only if $n\ge x(y)$.  Since
+$\widetilde\Phi(n)=\Phi_n$, the least such integer is $\ceil{x(y)}$.
+\end{proof}
+
+\section{Independent exact verification}\label{sec:verification}
+
+The supplied file \texttt{verify.py} performs an independent calculation using
+only the Python standard library.  It does not use the recurrence proved in
+this article to compute the permanent.
+
+For row $i$, a dynamic-programming state records:
+\begin{enumerate}[label=(\alph*),leftmargin=2.3em]
+\item the bit mask of already used target columns;
+\item the exact integer sum $d_0+\cdots+d_i$.
+\end{enumerate}
+Each transition chooses one of the four allowed targets
+$i,i+1,i+2,i+3\pmod n$, provided that target has not been used.  At the final
+row, the displacement sum is divided by $n$ to recover the winding sector.
+All arithmetic is integral.
+
+The computation through $n=16$ returns:
+\begin{center}
+\begin{tabular}{r@{\quad}r@{\quad}r@{\quad}r@{\quad}r@{\quad}r}
+\toprule
+$n$ & $q=0$ & $q=1$ & $q=2$ & $q=3$ & total\\
+\midrule
+4  &1&11&11&1&24\\
+5  &1&21&21&1&44\\
+6  &1&39&39&1&80\\
+7  &1&71&71&1&144\\
+8  &1&131&131&1&264\\
+9  &1&241&241&1&484\\
+10 &1&443&443&1&888\\
+11 &1&815&815&1&1632\\
+12 &1&1499&1499&1&3000\\
+13 &1&2757&2757&1&5516\\
+14 &1&5071&5071&1&10144\\
+15 &1&9327&9327&1&18656\\
+16 &1&17155&17155&1&34312\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The script also checks:
+\begin{itemize}[leftmargin=2em]
+\item both exact recurrences for the true count;
+\item the A000382 recurrence for the formula-defined sequence;
+\item both shifted generating-function numerators;
+\item the correction kernel coefficient by coefficient;
+\item the nearest-integer identity through $n=100$ using an 80-digit Newton
+      solve for $\alpha$.
+\end{itemize}
+The captured output is included as \texttt{verification\_output.txt}.
+
+\section{Proposed OEIS corrections}\label{sec:oeis-corrections}
+
+The following are mathematical recommendations, not submissions.  Attribution,
+formatting, and historical priority should be reviewed by OEIS editors.
+
+\subsection{A000382}
+
+\begin{enumerate}[leftmargin=2.2em]
+\item Remove the comment ``The fourth column of A008305, divided by 4.''  It is
+      false beginning at $n=8$.
+\item Either rename the entry as the sequence defined by Mendelsohn's displayed
+      formula (4), divided by $4$, or mark the historical provenance explicitly.
+\item Replace ``conjectured'' on the affine recurrence by a proof reference to
+      Theorem~\ref{thm:ghost-recurrence}, provided the formula-defined meaning
+      is adopted.
+\item Label the rational function as the shifted tail generating function
+      $\sum_{m\ge0}a(m+4)z^m$.
+\item Cross-reference the corrected quarter-count $R_n=(A001644(n)+1)/2$ for
+      $n\ge4$ and A004306 for the undivided count.
+\end{enumerate}
+
+\subsection{A000496}
+
+\begin{enumerate}[leftmargin=2.2em]
+\item Add that the terms from $n=8$ onward are not the permanent
+      $\per(I+P+P^2+P^3)$ and are not the fourth column of A008305.
+\item Clarify that the displayed rational function is a tail generating
+      function, not the ordinary generating function beginning at offset $0$.
+\item Retain the historical sequence if desired, but distinguish it from
+      A004306.
+\end{enumerate}
+
+\subsection{A008305}
+
+In the cross-reference line for the fourth column, remove ``$4*$A000382'' and
+retain A004306.  A direct comment may state that for $n\ge4$
+\begin{equation}\label{eq:oeis-direct-comment}
+  T(n,4)=2(A001644(n)+1),
+\end{equation}
+with sector sizes $(1,A001644(n),A001644(n),1)$.
+
+\subsection{A004306}
+
+The current entry already contains the correct recurrence and the equivalent
+Tribonacci formula.  Useful additions would be:
+\begin{align*}
+ A004306(n)&=2\left(1+\alpha^n+\beta^n+\gamma^n\right),\qquad n\ge4,\\
+ \frac{A004306(n)}4
+ &=\operatorname{nint}\left(\frac{\alpha^n+1}{2}\right),\qquad n\ge4,
+\end{align*}
+and the winding-sector tiling interpretation from this report.
+
+A plain-text draft suitable for editing is included as
+\texttt{oeis\_corrections.txt}.
+
+\section{Further research questions and topics}\label{sec:further}
+
+The winding decomposition is complete for $r=4$ but exposes a larger program.
+The following problems are intended to be concrete enough for computation,
+proof, or formalization.
+
+\begin{question}[Inner winding sectors for $r\ge5$]
+For fixed $r$, determine the numbers
+\[
+  N_{n,r}(q):=\#\{\sigma:q(\sigma)=q\}
+\]
+for $2\le q\le r-3$.  The constant-cut law turns this into the enumeration of
+$q$-fold covers of a labeled cycle by intervals of lengths at most $r-1$ with
+the additional bijectivity constraints at endpoints.  Find a canonical local
+object---multitilings, cylindric paths, or a finite-state model---that makes
+those constraints transparent.
+\end{question}
+
+\begin{question}[Sector polynomial shape]
+The involution proves that $W_{n,r}(u)$ is palindromic.  Is it unimodal or
+log-concave for all $n\ge r$?  Is there a stability, real-rootedness, or
+$\gamma$-positivity phenomenon after a natural normalization?  Small cases
+should be classified before making a universal conjecture.
+\end{question}
+
+\begin{question}[Minimal recurrences at fixed width]
+Classical transfer-matrix theory implies rational generating functions in $n$
+for each fixed $r$, but the minimal denominator and its factorization can be
+subtle.  Determine the minimal recurrence for each individual sector and for
+the total $\Phi_{n,r}$, and explain cancellations bijectively.
+\end{question}
+
+\begin{question}[Dominant winding sector]
+For $r\ge5$, which sector controls the exponential growth of $\Phi_{n,r}$?
+Does the maximizing sector concentrate near $(r-1)/2$?  Obtain the exponential
+rate and leading constant from a Perron--Frobenius operator, then compare with
+Mendelsohn's general asymptotic claim.
+\end{question}
+
+\begin{question}[Weighted displacement enumerators]
+Study
+\[
+ \per\!\left(w_0I+w_1P+\cdots+w_{r-1}P^{r-1}\right)
+\]
+sector by sector.  For $r=4$, the winding-one sector becomes a weighted cyclic
+composition polynomial.  Determine whether the full four-sector formula has a
+useful multivariate factorization and whether it yields refined statistics on
+fixed points and jump lengths.
+\end{question}
+
+\begin{question}[Arbitrary displacement sets]
+Replace $\{0,1,\dots,r-1\}$ by an arbitrary subset $S\subset\Zn$.  Characterize
+those $S$ for which an extreme nonzero winding sector is a tiling language, and
+those for which the permanent admits a low-order recurrence independent of
+$n$.
+\end{question}
+
+\begin{question}[Other finite groups]
+Mendelsohn formulated displacements in abelian groups but specialized much of
+the computation to cyclic groups.  Develop an analogue of the cut-flow
+argument on products of cycles, where cuts become codimension-one tori and the
+winding number becomes a homology class.  Even the first nontrivial case
+$\Z_m\times\Z_n$ may reveal a useful higher-dimensional tiling model.
+\end{question}
+
+\begin{question}[A natural model for the historical ``ghost'' sequence]
+The A000382 tail has a perfectly valid positive recurrence and differs from the
+true quarter-count by cumulative Tribonacci numbers.  Is there a natural class
+of cyclic tilings with a marked defect, boundary condition, or forbidden wrap
+that is counted by $M_n$?  A satisfactory model would preserve the historical
+sequence while preventing future confusion about its meaning.
+\end{question}
+
+\begin{question}[Divisibility without recurrence]
+The formula proves $4\mid\Phi_n$.  Find a direct free action or sign-reversing
+argument that partitions the allowed permutations into quadruples.  Such an
+action might generalize to divisibility properties of $\Phi_{n,r}$.
+\end{question}
+
+\begin{question}[Inverse transseries for general rational recurrences]
+The inverse in Section~\ref{sec:inverse} has periodic coefficients because the
+subdominant roots are a complex conjugate pair.  Develop an automated theorem
+that takes a positive linear recurrence with a simple dominant root and
+returns the inverse transseries, including resonances among subdominant root
+moduli and phases.
+\end{question}
+
+\begin{question}[Formal verification]
+Formalize the constant-cut lemma, tiling bijection, and recurrence in Lean.
+The proof requires only finite sums, permutations of \texttt{Fin n}, modular
+arithmetic, and cyclic interval bookkeeping, making it a realistic addition to
+the ProveIt formalization program.
+\end{question}
+
+\begin{question}[Automated provenance audits]
+Build a reproducible tool that compares an OEIS definition against its b-file,
+formulae, cited tables, and independently computed terms.  The present example
+shows why matching a long recurrence to inherited terms is not a substitute
+for recomputing the defining combinatorial object.
+\end{question}
+
+\section{Conclusion}
+
+The four-displacement problem is governed by a simple topological statistic.
+The sum of clockwise displacements, divided by $n$, is an integer winding
+number, and local flow conservation forces every cut to have the same
+multiplicity.  At winding one this turns the permutation into a cyclic tiling;
+for four allowed displacements, symmetry accounts for every remaining sector.
+The resulting exact count is
+\[
+  \Phi_n=2(L_n+1),
+\]
+not the sequence currently attached to A000382 and A000496.
+
+The historical error is unusually instructive.  A published formula, a table
+in the same paper, and a later machine-guessed generating function all agree
+long enough to look persuasive, yet none of them replaces evaluation of the
+original permanent.  Once the combinatorial structure is recovered, the
+correct recurrence, generating function, Binet formula, asymptotics, and
+inverse expansion all follow with little ambiguity.
+
+\appendix
+
+\section{Proof details for the generating functions}
+
+For reference, multiplying a tail sequence $a_0,a_1,\dots$ by
+$1-2z+z^4$ produces coefficients
+\[
+ a_m-2a_{m-1}+a_{m-4},
+\]
+where missing terms are zero.  For the true quarter-tail
+$6,11,20,36,66,\dots$, these coefficients are
+\[
+ 6,-1,-2,-4,0,0,\dots,
+\]
+which proves \eqref{eq:R-tail-gf}.  For the A000382 tail
+$6,11,20,36,65,\dots$, they are
+\[
+ 6,-1,-2,-4,-1,0,0,\dots,
+\]
+which proves \eqref{eq:ghost-gf}.  Their difference is exactly $z^4$ over the
+common denominator.
+
+\section{Reproduction instructions}
+
+The archive contains:
+\begin{description}[leftmargin=2.8cm,style=nextline]
+\item[\texttt{article.tex}] this source file;
+\item[\texttt{article.pdf}] the compiled report;
+\item[\texttt{verify.py}] independent exact enumeration and checks;
+\item[\texttt{verification\_output.txt}] captured verifier output;
+\item[\texttt{oeis\_corrections.txt}] editable proposed OEIS notes;
+\item[\texttt{README.md}] a concise file guide and build command;
+\item[\texttt{Makefile}] convenience targets for verification and compilation.
+\end{description}
+
+Run
+\begin{lstlisting}[language=bash]
+python3 verify.py
+pdflatex -interaction=nonstopmode article.tex
+pdflatex -interaction=nonstopmode article.tex
+\end{lstlisting}
+or use the PDF build command documented in the README.
+
+\begin{thebibliography}{99}
+
+\bibitem{mendelsohn1961}
+N.~S. Mendelsohn,
+\emph{Permutations with confined displacements},
+Canadian Mathematical Bulletin \textbf{4} (1961), 29--38.
+\url{https://doi.org/10.4153/CMB-1961-005-4}.
+
+\bibitem{metropolis1969}
+N. Metropolis, M.~L. Stein, and P.~R. Stein,
+\emph{Permanents of cyclic $(0,1)$ matrices},
+Journal of Combinatorial Theory \textbf{7} (1969), 291--321.
+\url{https://doi.org/10.1016/S0021-9800(69)80058-X}.
+
+\bibitem{beker1987}
+H. Beker and C. Mitchell,
+\emph{Permutations with restricted displacement},
+SIAM Journal on Algebraic Discrete Methods \textbf{8} (1987), 338--363.
+\url{https://doi.org/10.1137/0608029}.
+
+\bibitem{plouffe2009}
+S. Plouffe,
+\emph{Approximations of generating functions and a few conjectures},
+arXiv:0911.4975, 2009; based on a 1992 dissertation and formula collection.
+\url{https://arxiv.org/abs/0911.4975}.
+
+\bibitem{oeisA000382}
+OEIS Foundation Inc.,
+\emph{A000382: Restricted permutations}, snapshot checked October 1, 2026.
+\url{https://oeis.org/A000382}.
+
+\bibitem{oeisA000496}
+OEIS Foundation Inc.,
+\emph{A000496: Restricted permutations}, snapshot checked October 1, 2026.
+\url{https://oeis.org/A000496}.
+
+\bibitem{oeisA004306}
+OEIS Foundation Inc.,
+\emph{A004306: Rook polynomials; fourth column of A008305},
+snapshot checked October 1, 2026.
+\url{https://oeis.org/A004306}.
+
+\bibitem{oeisA008305}
+OEIS Foundation Inc.,
+\emph{A008305: permutations with cyclic restricted displacements},
+snapshot checked October 1, 2026.
+\url{https://oeis.org/A008305}.
+
+\bibitem{oeisA001644}
+OEIS Foundation Inc.,
+\emph{A001644: Tribonacci--Lucas numbers},
+snapshot checked October 1, 2026.
+\url{https://oeis.org/A001644}.
+
+\bibitem{proveit}
+V. Reshetnikov,
+\emph{ProveIt}, GitHub repository.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\end{thebibliography}
+
+\end{document}

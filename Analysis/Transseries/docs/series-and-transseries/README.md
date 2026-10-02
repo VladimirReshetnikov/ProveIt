@@ -2,10 +2,10 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are fifty-one unmerged
-arrivals, fifty of 2026-09-29 and one of 2026-09-30, each filed whole
-with its PDF and then amended editorially (see
-"Arrivals of 2026-09-29 and 2026-09-30" below).
+2026-09-04 (see the end of this file). Beside them are fifty-two unmerged
+arrivals, fifty of 2026-09-29, one of 2026-09-30 and one of 2026-10-01,
+each filed whole with its PDF, the first fifty-one then amended
+editorially (see "Arrivals of 2026-09-29 to 2026-10-01" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -262,7 +262,7 @@ natural follow-up.  Note for future filing: on Windows a directory named
 deleted `combinatorial_transseries_and_inverses/`, which is why the
 companion's directory omits the "And".
 
-## Arrivals of 2026-09-29 and 2026-09-30 (unmerged)
+## Arrivals of 2026-09-29 to 2026-10-01 (unmerged)
 
 Fifty-one research packages arrived through the repository drop zone
 `docs/incoming/`: fifty on 2026-09-29, in nine deliveries (its batches 45
@@ -363,6 +363,12 @@ games, becomes Part IV of the research-report collection's
 *Open-Query Membership Games*, under
 `SetTheory/Cardinals/docs/reports/ordinals-and-order-types/games-on-ordinals/open-query-membership-games/`.
 
+The eleventh delivery (2026-10-01, the drop zone's batch 73) brought one
+transseries package among sixty-two archives, the factorial-transseries
+article on OEIS A006014 below. It cites no repository revision and no
+package of this group, and does not cite Vladimir's library. The other
+sixty-one archives are not transseries work.
+
 All fifty-two packages of the nine deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
 pass on 2026-09-29. Unnumbered "Editorial note (ProveIt, 2026-09-29)"
@@ -391,7 +397,7 @@ recording it were added to two earlier packages (the exact-degree and
 residue-obstruction packages).
 The tenth delivery was amended in the same way on 2026-09-30, and notes
 recording it were added to one earlier package (the subexponential-cost
-package).
+package).  The eleventh delivery has not yet been amended.
 
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
@@ -1902,6 +1908,29 @@ the form of the path-sensitive lemma and of the Hahn–Fuchsian
 `dim ker B^{d+1}`. Their conventions (`Λ`, `A`, `A_0`; `P` for the gauge in
 the first two, for a polynomial block in the third; `N`, `q`, `r` and `ρ_j`
 in the triangular article) need a dictionary first.
+
+[`Factorial_Transseries_OEIS_A006014/`](Factorial_Transseries_OEIS_A006014/)
+holds *Factorial Transseries for OEIS A006014: hypergeometric
+linearization, an exact A130032 bridge, a proof of the factorial
+constant, all-orders late terms, and Lambert-W inversion* (22-page A4
+PDF, 1,276-line source, an exact/80-digit check program and its recorded
+output, an unsubmitted OEIS update draft). For `a_{n+1} = (n+1)a_n +
+Σ_{k=1}^{n−1} a_k a_{n−k}` it proves `A = x U′/U` with
+`U = ₂F₀(α, ᾱ;; x)`, `α = (1 + i√3)/2`, that `n![xⁿ]U` is A130032, that
+`a_n/n!` increases to `C = 1/(Γ(α)Γ(ᾱ)) = cosh(π√3/2)/π` (the OEIS
+estimate credited to Kotesovec, 2024, now with explicit global bounds), an
+exact one-parameter transseries family `x (log(U + σ e^{−1/x} U(−x)))′`
+with every sector `e^{−m/x}` and the Stokes jump `σ₊ = σ₋ − 2πiC`, the
+all-orders factorial expansion `a_n ~ C Σ φ_j Γ(n+1−j)` with generator
+`R/x + xR′`, `R = U(−x)/U(x)`, a Lambert-W inverse through `M^{−3}`, and
+a one-parameter deformation. It is a new sequence case for the canonical
+volume's Part "Inversion: the apparatus for a rapidly growing function"
+(`Transseries_And_Inversion/transseries_and_inversion.tex:37288`,
+`p0:sec:top`) and sits beside its chapter "The subfactorial" (`:53222`,
+`p8:sec:top`), the volume's other factorially growing sequence; its
+inverse re-derives that apparatus for its own core without citing it. It
+leaves the Borel singularities at actions 2, 3, … open (article.tex:615-618)
+and is not formalized.
 
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
 theta-resolved, certified inversion, gamma core, inverse harmonic and the
