@@ -40,7 +40,7 @@ Every file except `README.md`, `article.tex` and `article.pdf` is byte-identical
 
 ## Labels
 
-Every label carries the prefix `spf:`. The manuscript's 78 labels are kept, unchanged after the prefix. The write added three: `spf:rem:offsets-one-one`, `spf:rem:inverse-apparatus` and `spf:app:provenance` (81 in all).
+Every label carries the prefix `spf:`. The manuscript's 78 labels are kept, unchanged after the prefix. The write added three: `spf:rem:offsets-one-one`, `spf:rem:inverse-apparatus` and `spf:app:provenance` (81). A later reciprocal note added `spf:rem:clique-analogue` (82 in all).
 
 ## What is claimed
 
@@ -64,7 +64,7 @@ Every label carries the prefix `spf:`. The manuscript's 78 labels are kept, unch
 
 ## Relation to neighbouring material
 
-- **Sibling report** [`a330266-balanced-smirnov-poisson`](../a330266-balanced-smirnov-poisson/) (batch 73, manuscript 57): the same chain of method (exact marked-subset generating function, Poisson limit, all-orders 1/n expansion of E(1+v)^X, Lambert-W inversion) for a different model, equal-rank adjacencies in balanced multiset words with limit Poisson(k−1). Neither theorem specializes to the other, so the two are separate reports. That report's all-orders expansion rests on a sketched tail estimate, for which this report's uniform factorial-moment bound (`spf:lem:moment-bound`) is the natural device.
+- **Sibling report** [`a330266-balanced-smirnov-poisson`](../a330266-balanced-smirnov-poisson/) (batch 73, manuscript 57): the same chain of method (exact marked-subset generating function, Poisson limit, all-orders 1/n expansion of E(1+v)^X, Lambert-W inversion) for a different model, equal-rank adjacencies in balanced multiset words with limit Poisson(k−1). Neither theorem specializes to the other, so the two are separate reports. That report's tail estimate is a sketch; its README names this report's uniform factorial-moment bound (`spf:lem:moment-bound`) as the device that would make it rigorous. Remark 7.4 here (`spf:rem:clique-analogue`, a reciprocal note) points to that report's first-order local law for P(X = j) (its Corollary 8.3, `bsw:cor:local`) as the clique-model analogue of the case M = 1 of Corollary 7.3 here.
 - **Transseries volume** `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`: the inversion apparatus cited above, and its chapter "The subfactorial" (`p8:sec:top`), the closest analogue (derangements, by citing the same gamma carrier).
 - **Fabius audit** `Analysis/FabiusFunction/docs/ASYMPTOTIC_COMPLETION_AUDIT.md`: cited by the manuscript as context only; not continued.
 - **Formal status.** Placement in the collection confers no formal status, and no formal development continues this report; none of its statements is formalized. The only Lean declaration the report mentions (in a bracketed note at the end of Section 9), `Fabius.staircase_separation` (`Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`), formalizes the separation step of the staircase theorem in general; it verifies nothing specific to this report.
@@ -111,5 +111,5 @@ Compare the outputs with the shipped `data/` files. On Windows the regenerated t
 - **Not shipped:** the delivered README (replaced by this one), the delivered 21-page PDF (replaced by a build of the edited text) and the checksum ledger `SHA256SUMS` (verified 19/19 at placement and retired).
 - **Moved files.** The delivered `build.sh` is shipped as `code/build.sh` and `requirements-optional.txt` as `data/requirements-optional.txt`. The delivered README placed both at the archive root.
 - **Delivery wording in shipped text.** The article's "the archive", "the accompanying JSON" and "the archive's README" mean this directory, `data/coefficients_order16.json` and this README; bracketed notes say so. `SOURCES.md` refers to "Section 11" for the rational collapse, which is still Section 11.
-- **Edited text.** `article.tex` is the delivered manuscript with the label prefix, the editorial note after the status paragraph, Remarks 7.2 and 9.1, bracketed notes marked "[Added 1 October 2026, batch 73O2]", three bibliography entries (A000255, A002464, the transseries volume) and Appendix B (provenance). Nothing was removed.
+- **Edited text.** `article.tex` is the delivered manuscript with the label prefix, the editorial note after the status paragraph, Remarks 7.2 and 9.1, bracketed notes marked "[Added 1 October 2026, batch 73O2]", three bibliography entries (A000255, A002464, the transseries volume) and Appendix B (provenance), and, in a separate reciprocal note, Remark 7.4. Nothing was removed.
 - **Overloaded letters** (kept, listed in Appendix B): C, K, d and D each carry two or more meanings in different sections.

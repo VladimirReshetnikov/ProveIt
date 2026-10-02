@@ -875,6 +875,27 @@ For $M\ge1$, $p_M$ need not be nonnegative at every $q$, so it is a signed
 asymptotic approximation, not a new probability model. It nevertheless has
 total mass one, because $B_0(0)=1$ and $B_J(0)=0$ for $J>0$.
 
+\begin{remark}[A clique-model analogue]
+\label{spf:rem:clique-analogue}
+[Added 1 October 2026, batch 73O2, reciprocal note.] The companion report
+\texttt{a330266-balanced-smirnov-poisson} of this collection (batch~73,
+manuscript~57) studies the number $X_{n,k}$ of equal-rank adjacencies in a
+uniform shuffle of $kn$ cards, $k$ in each of $n$ ranks. There the value
+relation is $n$ cliques $K_k$, not a fixed number of long paths, so the
+hypotheses of this report do not apply, and the limit is
+$\mathrm{Poisson}(\lambda)$ with $\lambda=k-1$. Its first-order local law
+(Corollary~8.3 there, label \texttt{bsw:cor:local}),
+\begin{equation*}
+ \Pp(X_{n,k}=j)=e^{-\lambda}\frac{\lambda^j}{j!}
+ \left[1-\frac{(\lambda-j)^2-j}{2kn}+\bigO_{k,j}(n^{-2})\right],
+\end{equation*}
+is the analogue of the case $M=1$ of \eqref{spf:eq:pmf}--\eqref{spf:eq:l1}.
+That report proves it at first order only, and the analytic step behind its
+expansion is sketched; its Remark~6.3 names a uniform factorial-moment bound
+of the type of Lemma~\ref{spf:lem:moment-bound} as the device that would make
+it rigorous.
+\end{remark}
+
 \section{The two OEIS expansions, unconditionally}
 \label{spf:sec:OEIS-results}
 
@@ -1498,7 +1519,8 @@ report does not continue that audit, and nothing was filed in the Fabius tree.
  A002464); Remark~\ref{spf:rem:inverse-apparatus} on the repository's inversion
  apparatus; bracketed notes on Padhi's preprint, on integer thresholds and on
  the shipped files; three bibliography entries~\cite{oeis000255,oeis002464,tai};
- and this section.
+ and this section. A separate reciprocal note, Remark~\ref{spf:rem:clique-analogue},
+ points to the local law of the companion report on balanced Smirnov words.
 \item Nothing was removed. Every non-claim of the manuscript is kept: the status
  paragraph, the Poincar\'e-only reading of Table~\ref{spf:tab:extra}, the
  limitation after \cref{spf:thm:universality}, the fixed-offset limitation
