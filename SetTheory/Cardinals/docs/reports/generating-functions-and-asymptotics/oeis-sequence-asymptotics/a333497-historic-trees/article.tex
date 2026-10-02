@@ -26,6 +26,9 @@
 \newcommand{\la}{\lambda}
 \newcommand{\lab}{{\overline{\lambda}}}
 \numberwithin{equation}{section}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Historic tree asymptotics\\and a high order obstruction}
 \author{Research article and reproducibility report}
 \date{2 October 2026}
@@ -38,22 +41,22 @@ For the all-one family $H_r^{(r)}=H_r^2$, we prove the $m=2$ and $m=3$ instances
 {\small\tableofcontents}
 \newpage
 
-\section{The counting problem and the results}
+\section{The counting problem and the results}\label{his:sec:results}
 \subsection{The published target}
 Burghart and Wagner's model of reduced $(2m+1)$-historic trees has exponential generating function
-\begin{equation}\label{eq:family}
+\begin{equation}\label{his:eq:family}
  H^{(m+1)}=H^2,\qquad H^{(j)}(0)=1\quad(0\le j\le m).
 \end{equation}
 A reduced tree of size $n$ corresponds to a B-tree history of length $n+m$. Their Conjecture~1 predicts
-\begin{equation}\label{eq:conjecture}
+\begin{equation}\label{his:eq:conjecture}
  h_n\sim\frac{(2m+1)!}{(m!)^2}(n+m)!\rho_m^{-n-m-1}.
 \end{equation}
 The journal statement appears in Section~4 of \cite{bw2026}; its predecessor is Conjecture~10 of \cite{bw2024}. The detailed argument in Sections~2--7 addresses $m=2$, for which
-\begin{equation}\label{eq:ivp}
+\begin{equation}\label{his:eq:ivp}
  H'''(z)=H(z)^2,\qquad H(0)=H'(0)=H''(0)=1.
 \end{equation}
 Equating exponential coefficients gives
-\begin{equation}\label{eq:recurrence}
+\begin{equation}\label{his:eq:recurrence}
  h_0=h_1=h_2=1,\qquad
  h_{n+3}=\sum_{j=0}^n\binom njh_jh_{n-j},\qquad
  H(z)=\sum_{n\ge0}h_n\frac{z^n}{n!}.
@@ -80,7 +83,7 @@ The first two cases also admit eventual inverse brackets. Their real-axis leadin
 
 \subsection{The third order theorem}
 Throughout, powers of $t=\rho-z$ use a logarithm that is real on $t>0$. Put
-\begin{equation}\label{eq:exponents}
+\begin{equation}\label{his:eq:exponents}
  \la=\frac{13+i\sqrt{71}}2,\qquad
  \lab=\frac{13-i\sqrt{71}}2,\qquad
  \alpha=\frac{13}{2},\quad \omega=\frac{\sqrt{71}}2,\quad
@@ -88,13 +91,13 @@ Throughout, powers of $t=\rho-z$ use a logarithm that is real on $t>0$. Put
 \end{equation}
 A \emph{grade} means the total degree $k+l$ in the two local complex powers. It is held fixed when $n\to\infty$.
 
-\begin{theorem}[Counting asymptotics and convergent local expansion]\label{thm:main}
-The solution of \eqref{eq:ivp} has a finite positive blowup point $\rho$, satisfying
-\begin{equation}\label{eq:rho-bounds}
+\begin{theorem}[Counting asymptotics and convergent local expansion]\label{his:thm:main}
+The solution of \eqref{his:eq:ivp} has a finite positive blowup point $\rho$, satisfying
+\begin{equation}\label{his:eq:rho-bounds}
  180^{1/4}\le\rho\le60^{1/3}.
 \end{equation}
 Its Taylor series at zero has radius $\rho$, with no other singularity on $|z|=\rho$. There is a uniquely normalized $C\in\C\setminus\{0\}$ such that
-\begin{equation}\label{eq:local}
+\begin{equation}\label{his:eq:local}
  H(z)=60t^{-3}\mathcal F(Ct^\la,\overline C t^\lab),\qquad
  \mathcal F(X,Y)=\sum_{k,l\ge0}a_{kl}X^kY^l,
 \end{equation}
@@ -102,15 +105,15 @@ where $\mathcal F$ is holomorphic in a bidisk at $(0,0)$,
 \[
  a_{00}=a_{10}=a_{01}=1,\qquad a_{lk}=\overline{a_{kl}}.
 \]
-For each fixed finite angular interval on a chosen logarithmic sheet, \eqref{eq:local} converges for all sufficiently small $|t|$, uniformly on closed subsectors.
+For each fixed finite angular interval on a chosen logarithmic sheet, \eqref{his:eq:local} converges for all sufficiently small $|t|$, uniformly on closed subsectors.
 
 For every fixed integer $d\ge0$,
-\begin{equation}\label{eq:count-theorem}
+\begin{equation}\label{his:eq:count-theorem}
  \frac{h_n}{30(n+2)!\rho^{-n-3}}
  =Q_d(n)+O_d\bigl(n^{-\alpha(d+1)}\bigr),
 \end{equation}
 where, for all sufficiently large real $x$,
-\begin{equation}\label{eq:Q}
+\begin{equation}\label{his:eq:Q}
  Q_d(x)=1+
  \sum_{\substack{1\le k+l\le d\\k\ne l}}
  \frac{2a_{kl}C^k\overline C^{\,l}\rho^{\nu_{kl}}}{\Gamma(3-\nu_{kl})}
@@ -118,23 +121,23 @@ where, for all sufficiently large real $x$,
 \end{equation}
 In particular, $h_n\sim30(n+2)!\rho^{-n-3}$.
 \end{theorem}
-The factor $2$ in each summand of \eqref{eq:Q} is present before conjugate pairing. Both $(k,l)$ and $(l,k)$ are included. All diagonal terms $k=l\ge1$ are excluded because they are analytic monomials at the singularity. The exact Gamma ratios preserve every integer inverse-$n$ correction belonging to a retained grade.
+The factor $2$ in each summand of \eqref{his:eq:Q} is present before conjugate pairing. Both $(k,l)$ and $(l,k)$ are included. All diagonal terms $k=l\ge1$ are excluded because they are analytic monomials at the singularity. The exact Gamma ratios preserve every integer inverse-$n$ correction belonging to a retained grade.
 
-\begin{corollary}[A nonzero logarithmic oscillation]\label{cor:oscillation}
+\begin{corollary}[A nonzero logarithmic oscillation]\label{his:cor:oscillation}
 With
-\begin{equation}\label{eq:K}
+\begin{equation}\label{his:eq:K}
  K=\frac{2C\rho^\la}{\Gamma(3-\la)}\ne0,\qquad
  R_n=\frac{h_n}{30(n+2)!\rho^{-n-3}},
 \end{equation}
 one has
 \begin{align}
  R_n&=1+2\Rea\left\{K\frac{\Gamma(n+3-\la)}{\Gamma(n+3)}\right\}
-       +O(n^{-13}),\label{eq:first-exact}\\
+       +O(n^{-13}),\label{his:eq:first-exact}\\
  &=1+2|K|n^{-13/2}\cos(\arg K-\omega\log n)
-       +O(n^{-15/2}).\label{eq:first-simple}
+       +O(n^{-15/2}).\label{his:eq:first-simple}
 \end{align}
 Consequently,
-\begin{equation}\label{eq:limsup}
+\begin{equation}\label{his:eq:limsup}
  \limsup_{n\to\infty}n^{13/2}(R_n-1)=2|K|,
  \qquad
  \liminf_{n\to\infty}n^{13/2}(R_n-1)=-2|K|.
@@ -146,37 +149,98 @@ The error $R_n-1$ changes sign infinitely often and is not $O(n^{-7})$.
 Astashova's Theorem~3 \cite{astashova2013} already gives the real-axis law
 $H(x)\sim60(\rho-x)^{-3}$ for positive blowup solutions of this third-order equation. Her theorem covers orders $3$ and $4$ under the stated Emden--Fowler hypotheses; it is not a theorem for all orders. The self-contained real argument below also proves finite blowup for our selected initial data. It is an alternate derivation, not a claim of priority for the real-axis law.
 
-Real-axis blowup alone does not justify individual coefficient asymptotics. The remaining work is to obtain a convergent holomorphic local representation, prove that the first complex amplitude cannot vanish, exclude competing singularities on the convergence circle, and establish a domain in which singularity analysis applies. Holomorphic Poincar\'e linearization \cite{iy2008}, Pringsheim's theorem, and the standard transfer theorems \cite{fs2009} are used in their usual forms. The fourth-order extension and the high-order obstruction follow in Sections~\ref{sec:r4} and \ref{sec:obstruction}. The arguments are conventional analytic proofs accompanied by exact checks, not proof-assistant formalizations.
+Real-axis blowup alone does not justify individual coefficient asymptotics. The remaining work is to obtain a convergent holomorphic local representation, prove that the first complex amplitude cannot vanish, exclude competing singularities on the convergence circle, and establish a domain in which singularity analysis applies. Holomorphic Poincar\'e linearization \cite{iy2008}, Pringsheim's theorem, and the standard transfer theorems \cite{fs2009} are used in their usual forms. The fourth-order extension and the high-order obstruction follow in Sections~\ref{his:sec:r4} and \ref{his:sec:obstruction}. The arguments are conventional analytic proofs accompanied by exact checks, not proof-assistant formalizations.
 
-\section{A global real solution and finite blowup}
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~24 of
+batch~77 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{historic-\allowbreak tree-\allowbreak report.zip} (wrapper directory
+\texttt{historic-\allowbreak tree-\allowbreak release/}) in commit
+\texttt{096ee7b87}, and placed in commit \texttt{34f1acd4b} in the
+research-report collection, among the OEIS-sequence asymptotics reports. Its
+main file \texttt{historic-trees.tex} is now \texttt{article.tex}; the
+\verb|\input| file \texttt{extensions.tex} (Sections~\ref{his:sec:r4}
+and~\ref{his:sec:obstruction}) and \texttt{references.bib} stay beside it. The
+manuscript names no ProveIt commit and continues no repository path, so it has
+no pin; its author line (above) names neither an author nor a tool, and its PDF
+metadata leave the author empty. Nothing in this report is formalized in Lean or
+Rocq, and placement in the collection confers no formal status on any
+statement here. No other report of the repository treats historic trees,
+A333497, A336009 or the Burghart--Wagner conjectures. The writing step prefixed
+every label (in both \texttt{.tex} files) with \texttt{his:}, added section
+labels, and added these \textsf{[write]} notes; no statement, proof or number of the manuscript was altered.
+
+\emph{Claims about external sources.} Theorem~\ref{his:thm:counterexample}
+(Burghart and Wagner's Conjecture~1 fails for every $m\ge29$) and the remark in
+Section~\ref{his:sec:scope} that the journal's Table~1 mislabels $\rho_m$ as
+$\rho_m^{-1}$ are this manuscript's claims about a published paper. The intake
+checked the conjectured constants $30=5!/(2!)^2$ and $140=7!/(3!)^2$, the exact
+gaps $20/2997$ and $392864/776223$ of Section~\ref{his:sec:phase}, and reran the
+exact certificates; it did not re-read the journal's table, and the theorem
+itself is an unrefereed proof.
+
+\emph{Notation.} The manuscript reuses several letters with section-local
+meanings. Each symbol is printed as delivered; the table fixes its meaning by
+section, with the tempting false readings. (Sections~\ref{his:sec:results}--\ref{his:sec:inverse}
+treat $r=3$, Section~\ref{his:sec:r4} treats $r=4$, Section~\ref{his:sec:obstruction}
+treats a general order $r$.)
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.13\linewidth}p{0.81\linewidth}@{}}
+\toprule
+symbol & meaning here (and what it is \emph{not})\\
+\midrule
+$m$, $r$ & $m$ is Burghart--Wagner's parameter, $r=m+1$ the ODE order, $2m+1=2r-1$ the historic-tree order. ``$m\ge29$'' and ``$r\ge30$'' are the same range; the trees at $r=30$ are $59$-historic.\\
+$\rho$, $\rho_m$, $\rho_4$ & $\rho$ is the blowup point of A333497 ($r=3$) in Sections~\ref{his:sec:results}--\ref{his:sec:inverse}, \ref{his:sec:repro}; $\rho_m$ is the conjecture's singularity in \eqref{his:eq:conjecture}; $\rho_4$ belongs to A336009; in Section~\ref{his:sec:obstruction}, $\rho$ is the radius in the \emph{alleged} equivalent \eqref{his:eq:false-equivalent} and in the jet \eqref{his:eq:bjet}. None of them is a reciprocal (see the Table~1 remark in Section~\ref{his:sec:scope}).\\
+$h_n$, $b_n$, $b_j$, $b(a)$, $b_*$ & $h_n$ are exponential coefficients ($H=\sum h_nz^n/n!$); $b_n$ are the \emph{ordinary} Taylor coefficients of Section~\ref{his:sec:circle}; $b_j$ is the initial jet \eqref{his:eq:bjet}; $b(a)$ the imaginary part solving \eqref{his:eq:phase}; $b_*=228/25$.\\
+$a$, $a_{kl}$, $a_4$ & $a=p_*/3=60^{-1/3}$ (Section~\ref{his:sec:local}); $a_{kl}$ the universal coefficients of $\mathcal F$; $a_4=840^{-1/4}$; $a\in[0,1]$ is a real part in Section~\ref{his:sec:phase}. They are unrelated.\\
+$A$, $A_4$, $A_r$ & $A=4/3$ in the proof of Lemma~\ref{his:lem:lyapunov}; the Jacobian $A$ of \eqref{his:eq:jacobian} and $A_4$ of \eqref{his:eq:r4jac}; $A_r=(r)_r$ of \eqref{his:eq:Ar}, a number.\\
+$B$, $\mathcal B$, $\mathcal B_4$ & $B=5/3$ in the proof of Lemma~\ref{his:lem:lyapunov}; $B(u)$ the time series \eqref{his:eq:Btime}; $\mathcal B(x)$, $\mathcal B_4(x)$ the main terms of the inverse problem.\\
+$C$, $C_4$, $\mathcal C_3$ & $C$, $C_4$ the complex amplitudes; $\mathcal C_3$ the sign-variation cone \eqref{his:eq:cone}; $\C$ the complex numbers.\\
+$D$, $D(\nu)$, $D_4$ & $D(\nu)$ the indicial polynomial \eqref{his:eq:D}; $D=-1/18052070400$ the real-mode coefficient of A336009 (Theorem~\ref{his:thm:r4}); $D_4(\nu)$ its indicial polynomial.\\
+$K$, $K_\pm$, $K_4$ & $K$ of \eqref{his:eq:K} is the oscillation amplitude; $K_\pm$ in \eqref{his:eq:constants} are orbit constants, \emph{not} $K$; $K_4$ is the order-four amplitude.\\
+$P$, $P_s$, $P_r$, $p$ & $P(u)$ the linearized coordinate \eqref{his:eq:linearization}; $P_s$ the exact pole solutions (Section~\ref{his:sec:real}); $P(u)$ the arctangent polynomial of the finite bridge (Section~\ref{his:sec:phase}); $P_r(\mu)$ the product polynomial; $p$, $p_j$ the desingularized coordinates.\\
+$Q_d$, $Q(v)$, $q$ & $Q_d$, $Q^{(4)}_d$ the fixed-grade correction factors; $Q(v)$ the logarithm polynomial of the finite bridge; $q$ a desingularized coordinate, and also the quotient $\chi_{30}/(\mu-1)$.\\
+$G$, $G_r$ & $G=H_4$ is the A336009 generating function (Section~\ref{his:sec:r4}); $G_r(x)=A_r(\rho-x)^{-r}$ in Section~\ref{his:sec:obstruction} is the comparison pole, not a solution of the ODE.\\
+$R$, $R_n$, $\mathcal R$ & $R_n$ the normalized ratio \eqref{his:eq:K}; $R$ the Taylor radius (Section~\ref{his:sec:circle}) and the implicit unknown at order four; $\mathcal R(\eta)$ the implicit function of Section~\ref{his:sec:local}.\\
+$W$, $Z$, $Y$ & $W(\cdot)$ is Lambert's function in \eqref{his:eq:y0}; $W=Y-\mathbf 1$ at order four and $Z=Y-\mathbf 1$ at order $r$ are deviations of the normalized jet $Y$; $Z(u)$ is also the backward trajectory in Section~\ref{his:sec:r4}.\\
+$s$, $S$, $s^-$ & $s=\log(\rho/t)$ (Sections~\ref{his:sec:r4}--\ref{his:sec:obstruction}); $S(u)$ the homological solution \eqref{his:eq:S}; $S$ a finite time in the Metzler argument; $s^-(v)$ the number of sign changes.\\
+$L$, $L_r$, $L_8$, $\mathcal L$ & $L=\log X$ (Section~\ref{his:sec:inverse}); $L_r(a)$ the logarithmic modulus \eqref{his:eq:logmod}; $L_8$ a rational lower bound for $\log 2$; $\mathcal L$ the Euler operator.\\
+$\eta$, $\eps$ & $\eta_\pm$, $\eta_j$ the local variables of the implicit equation; $\eta>0$ the width of the Delta domain \eqref{his:eq:delta}. $\eps$ is a majorization margin; $\eps_d(X)$ the inverse window \eqref{his:eq:epsilon-inverse}.\\
+$\la$, $\la_j$, $\alpha$ & $\la=(13+i\sqrt{71})/2$, $\la_\pm$ the pair $\la,\lab$; at order four $\la_4=(11+i\sqrt{159})/2$ and $\la_0=12$. $\alpha=13/2$ and $\alpha_4=11/2$ are grade weights, not exponents of a single term.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+\section{A global real solution and finite blowup}\label{his:sec:real}
 \subsection{Desingularization}
 For a positive solution set
-\begin{equation}\label{eq:coordinates}
+\begin{equation}\label{his:eq:coordinates}
  p=H'H^{-4/3},\qquad q=H''H^{-5/3},\qquad
  \frac{\dd\tau}{\dd x}=H^{1/3}.
 \end{equation}
 Direct differentiation gives the autonomous planar system
-\begin{equation}\label{eq:planar}
+\begin{equation}\label{his:eq:planar}
  \dot p=q-\frac43p^2,\qquad
  \dot q=1-\frac53pq,\qquad (p(0),q(0))=(1,1),
 \end{equation}
 where dots mean $\tau$ derivatives. Its positive quadrant is forward invariant: on $p=0$ the first component equals $q>0$, and on $q=0$ the second equals $1>0$. The unique positive equilibrium is
-\begin{equation}\label{eq:equilibrium}
+\begin{equation}\label{his:eq:equilibrium}
  p_*=(9/20)^{1/3},\qquad q_*=\frac43p_*^2,
  \qquad p_*q_*=\frac35.
 \end{equation}
 
-\begin{lemma}[Strict Lyapunov dissipation]\label{lem:lyapunov}
+\begin{lemma}[Strict Lyapunov dissipation]\label{his:lem:lyapunov}
 On $p\ge0$, $q>0$, let
-\begin{equation}\label{eq:V}
+\begin{equation}\label{his:eq:V}
  V(p,q)=\frac56(p-p_*)^2+q-q_*-q_*\log(q/q_*).
 \end{equation}
 Then $V\ge0$, vanishing only at the equilibrium, and
-\begin{equation}\label{eq:Vdot}
+\begin{equation}\label{his:eq:Vdot}
  \dot V=-\frac{20}{9}(p-p_*)^2(p+p_*)
         -\frac53p_*\frac{(q-q_*)^2}{q}.
 \end{equation}
-The orbit in \eqref{eq:planar} exists for every $\tau\ge0$ and converges to $(p_*,q_*)$.
+The orbit in \eqref{his:eq:planar} exists for every $\tau\ge0$ and converges to $(p_*,q_*)$.
 \end{lemma}
 \begin{proof}
 Write $A=4/3$ and $B=5/3$. At the equilibrium,
@@ -184,31 +248,31 @@ Write $A=4/3$ and $B=5/3$. At the equilibrium,
  \dot p=(q-q_*)-A(p^2-p_*^2),\qquad
  \dot q=-B\{q(p-p_*)+p_*(q-q_*)\}.
 \]
-Multiply these equations by $B(p-p_*)$ and $1-q_*/q$, respectively. Their cross terms cancel, giving \eqref{eq:Vdot}. The logarithmic term in $V$ tends to infinity both as $q\downarrow0$ and as $q\to\infty$; the quadratic term bounds $p$ above. Thus the orbit stays in a compact sublevel in $p\ge0$, $q>0$. Such a set may meet $p=0$, but the polynomial vector field is regular there and points inward. This causes no loss of continuation.
+Multiply these equations by $B(p-p_*)$ and $1-q_*/q$, respectively. Their cross terms cancel, giving \eqref{his:eq:Vdot}. The logarithmic term in $V$ tends to infinity both as $q\downarrow0$ and as $q\to\infty$; the quadratic term bounds $p$ above. Thus the orbit stays in a compact sublevel in $p\ge0$, $q>0$. Such a set may meet $p=0$, but the polynomial vector field is regular there and points inward. This causes no loss of continuation.
 
-On this sublevel, \eqref{eq:Vdot} bounds the integrals of $(p-p_*)^2$ and $(q-q_*)^2$. Their derivatives are bounded, hence the squared deviations are uniformly continuous. A nonnegative uniformly continuous integrable function tends to zero: otherwise separated intervals of fixed positive area contradict integrability. Applying this observation twice proves convergence. Equivalently, LaSalle's invariance principle applies because the zero set of \eqref{eq:Vdot} is a single point.
+On this sublevel, \eqref{his:eq:Vdot} bounds the integrals of $(p-p_*)^2$ and $(q-q_*)^2$. Their derivatives are bounded, hence the squared deviations are uniformly continuous. A nonnegative uniformly continuous integrable function tends to zero: otherwise separated intervals of fixed positive area contradict integrability. Applying this observation twice proves convergence. Equivalently, LaSalle's invariance principle applies because the zero set of \eqref{his:eq:Vdot} is a single point.
 \end{proof}
 
 \subsection{Reconstruction of the original time}
 The construction can be reversed without any blowup assumption. Define
-\begin{equation}\label{eq:reconstruction}
+\begin{equation}\label{his:eq:reconstruction}
  H(\tau)=\exp\!\left(\int_0^\tau p(s)\dd s\right),\qquad
  x(\tau)=\int_0^\tau H(s)^{-1/3}\dd s.
 \end{equation}
-For $x=x(\tau)$, direct differentiation using \eqref{eq:planar} verifies \eqref{eq:ivp} and its initial data. Since $p(\tau)\to p_*>0$, $H$ grows exponentially in $\tau$, and
-\begin{equation}\label{eq:rho}
+For $x=x(\tau)$, direct differentiation using \eqref{his:eq:planar} verifies \eqref{his:eq:ivp} and its initial data. Since $p(\tau)\to p_*>0$, $H$ grows exponentially in $\tau$, and
+\begin{equation}\label{his:eq:rho}
  0<\rho:=\int_0^\infty H(s)^{-1/3}\dd s<\infty.
 \end{equation}
 Thus $x(\tau)\uparrow\rho$ and $H(x)\to\infty$. No earlier real obstruction occurs.
 
 Put $v=H^{-1/3}$. In the original variable,
-\begin{equation}\label{eq:vprime}
+\begin{equation}\label{his:eq:vprime}
  v'(x)=-\frac{p(x)}3,\qquad
  v(x)=\frac13\int_x^\rho p(s)\dd s
  \sim\frac{p_*}3(\rho-x).
 \end{equation}
 Here $p(x)$ means $p(\tau(x))$. It follows that
-\begin{equation}\label{eq:real-leading}
+\begin{equation}\label{his:eq:real-leading}
  H(x)\sim\left(\frac3{p_*}\right)^3(\rho-x)^{-3}
        =60(\rho-x)^{-3}.
 \end{equation}
@@ -216,7 +280,7 @@ All three components required in Astashova's real-axis hypotheses diverge, since
 
 \subsection{Analytic bounds for the radius}
 The rectangle
-\begin{equation}\label{eq:rectangle}
+\begin{equation}\label{his:eq:rectangle}
  \frac35\le p\le1,\qquad \frac{12}{25}\le q\le1
 \end{equation}
 is forward invariant and contains $(1,1)$. On its four faces,
@@ -226,8 +290,8 @@ is forward invariant and contains $(1,1)$. On its four faces,
  \dot q\big|_{q=12/25}=1-4p/5\ge1/5,\quad
  \dot q\big|_{q=1}\le0.
 \]
-Integrating \eqref{eq:vprime} gives the useful tail bounds
-\begin{equation}\label{eq:tail-bounds}
+Integrating \eqref{his:eq:vprime} gives the useful tail bounds
+\begin{equation}\label{his:eq:tail-bounds}
  x+3H(x)^{-1/3}\le\rho\le x+5H(x)^{-1/3}
  \qquad(0\le x<\rho).
 \end{equation}
@@ -242,28 +306,28 @@ For $s=180^{1/4}$ this initial vector dominates $(1,1,1)$ componentwise; for $s=
 \[
  (H,H',H'')'=(H',H'',H^2)
 \]
-is cooperative in the nonnegative octant. Its comparison principle, up to the first blowup of either solution, therefore yields \eqref{eq:rho-bounds}. Numerically, only for orientation,
+is cooperative in the nonnegative octant. Its comparison principle, up to the first blowup of either solution, therefore yields \eqref{his:eq:rho-bounds}. Numerically, only for orientation,
 \[
  3.66284150148\ldots\le\rho\le3.91486764116\ldots.
 \]
 These bounds are analytic and independent of every fitted value below.
 
-\section{A convergent expansion at the singularity}
+\section{A convergent expansion at the singularity}\label{his:sec:local}
 \subsection{Holomorphic linearization}
-The Jacobian of \eqref{eq:planar} at the equilibrium is
-\begin{equation}\label{eq:jacobian}
+The Jacobian of \eqref{his:eq:planar} at the equilibrium is
+\begin{equation}\label{his:eq:jacobian}
  A=\begin{pmatrix}-8p_*/3&1\\-5q_*/3&-5p_*/3\end{pmatrix},\qquad
  \det(\mu I-A)=\mu^2+\frac{13p_*}{3}\mu+\frac{20p_*^2}{3}.
 \end{equation}
 Its eigenvalues are $p_*(-13\pm i\sqrt{71})/6$. Put
-\begin{equation}\label{eq:a}
+\begin{equation}\label{his:eq:a}
  a=\frac{p_*}3=60^{-1/3}.
 \end{equation}
 Label the eigenvalues $-a\la$ and $-a\lab$. Their convex hull excludes zero. A resonance of degree $k+l\ge2$ would require
 $k(-a\la)+l(-a\lab)$ to equal one eigenvalue; equality of real parts would force $k+l=1$. Thus no resonance exists.
 
 The holomorphic Poincar\'e linearization theorem \cite{iy2008} gives holomorphic coordinates $u_+,u_-$ near the equilibrium with
-\begin{equation}\label{eq:linearization}
+\begin{equation}\label{his:eq:linearization}
  \dot u_+=-a\la u_+,\qquad \dot u_-=-a\lab u_-,\qquad
  p=p_*+P(u),\quad P(u)=u_++u_-+O(\|u\|^2).
 \end{equation}
@@ -271,11 +335,11 @@ Every eigenvector of $A$ has a nonzero first component, so this normalization is
 
 \subsection{Removing the multiplicative correction}
 The variable $v=H^{-1/3}$ satisfies
-\begin{equation}\label{eq:vdot}
+\begin{equation}\label{his:eq:vdot}
  \dot v=-\bigl(a+P(u)/3\bigr)v.
 \end{equation}
 Let $\mathcal L=\la u_+\partial_{u_+}+\lab u_-\partial_{u_-}$. The homological equation
-\begin{equation}\label{eq:S}
+\begin{equation}\label{his:eq:S}
  \mathcal L S=-P/p_*,\qquad S(0)=0
 \end{equation}
 has the unique holomorphic solution
@@ -283,33 +347,33 @@ has the unique holomorphic solution
  S_{kl}=-\frac{P_{kl}}{p_*(k\la+l\lab)}\quad(k+l\ge1).
 \]
 Indeed, the real part of each denominator apart from $p_*$ is $\alpha(k+l)$, so division preserves convergence of the power series. Now
-\begin{equation}\label{eq:w}
+\begin{equation}\label{his:eq:w}
  w=v\exp S(u)\quad\Longrightarrow\quad \dot w=-aw.
 \end{equation}
 For a sufficiently late point on the real orbit, $w>0$ and
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{his:eq:constants}
  u_+=K_+w^\la,\qquad u_-=K_-w^\lab,\qquad K_- =\overline{K_+}.
 \end{equation}
 If either constant vanished, both would vanish, making the local orbit the equilibrium. Uniqueness would then make the whole planar orbit the equilibrium, contradicting $(p(0),q(0))=(1,1)$. Hence both constants are nonzero.
 
 Let $E(u)=\exp[-S(u)]$ and define
-\begin{equation}\label{eq:Btime}
+\begin{equation}\label{his:eq:Btime}
  B(u)=\sum_{k,l\ge0}\frac{E_{kl}}{1+k\la+l\lab}u_+^ku_-^l.
 \end{equation}
 Again the denominators preserve convergence; $B(0)=1$ and $(1+\mathcal L)B=E$. The remaining original time is exactly
-\begin{equation}\label{eq:time-exact}
+\begin{equation}\label{his:eq:time-exact}
  t=\rho-x=\int_\tau^\infty v(s)\dd s=\frac{w}{a}B(u).
 \end{equation}
 For example, differentiating the right-hand side gives $-wE=-v$, and its limit at infinity is zero. This proves the identity without a merely formal integration.
 
 \subsection{Analytic inversion and a nonzero linear term}
-Set $\eta_+=K_+(at)^\la$, $\eta_-=K_-(at)^\lab$ and seek $w=at\mathcal R(\eta)$. Equation \eqref{eq:time-exact} becomes
-\begin{equation}\label{eq:implicit}
+Set $\eta_+=K_+(at)^\la$, $\eta_-=K_-(at)^\lab$ and seek $w=at\mathcal R(\eta)$. Equation \eqref{his:eq:time-exact} becomes
+\begin{equation}\label{his:eq:implicit}
  \mathcal R\,B\bigl(\eta_+\mathcal R^\la,\eta_-\mathcal R^\lab\bigr)=1.
 \end{equation}
 Powers of $\mathcal R$ use the holomorphic logarithm near $1$. At $(\mathcal R,\eta)=(1,0)$ the derivative with respect to $\mathcal R$ equals $1$. The analytic implicit-function theorem gives a unique holomorphic $\mathcal R$ with $\mathcal R(0)=1$. Therefore
 \begin{align}
- H&=60t^{-3}F(\eta),\label{eq:Fraw}\\
+ H&=60t^{-3}F(\eta),\label{his:eq:Fraw}\\
  F(\eta)&=\mathcal R(\eta)^{-3}
  \exp\!\left[3S\bigl(\eta_+\mathcal R(\eta)^\la,
                          \eta_-\mathcal R(\eta)^\lab\bigr)\right].\nonumber
@@ -317,37 +381,37 @@ Powers of $\mathcal R$ use the holomorphic logarithm near $1$. At $(\mathcal R,\
 This is a holomorphic function of two independent variables near zero.
 
 The linear coefficients, with $e_j$ denoting a coordinate multi-index, are
-\begin{equation}\label{eq:linearcoeff}
+\begin{equation}\label{his:eq:linearcoeff}
  S_{e_j}=-\frac1{p_*\la_j},\qquad
  B_{e_j}=\frac1{p_*\la_j(1+\la_j)},\qquad
  F_{e_j}=-\frac3{p_*(1+\la_j)},
 \end{equation}
 where $\la_+=\la$, $\la_-=\lab$. Thus
-\begin{equation}\label{eq:Cnonzero}
+\begin{equation}\label{his:eq:Cnonzero}
  C=-\frac{3K_+a^\la}{p_*(1+\la)}\ne0.
 \end{equation}
-Absorbing these two nonzero linear coefficients into the arguments of $F$ produces exactly the normalization $\mathcal F$ in \eqref{eq:local}.
+Absorbing these two nonzero linear coefficients into the arguments of $F$ produces exactly the normalization $\mathcal F$ in \eqref{his:eq:local}.
 
 On every bounded interval of $\arg t$ on a logarithmic sheet,
 \[
  |t^{\la_j}|=|t|^{13/2}\exp(-\Ima(\la_j)\arg t)\longrightarrow0.
 \]
 Hence the two-variable Taylor series converges throughout a sufficiently small corresponding sector. It agrees with the original solution along the positive real approach and therefore, by analytic uniqueness, on their common complex domain. The radius may shrink with the chosen angular interval; no radius uniform over arbitrarily many logarithmic sheets is claimed. In particular,
-\begin{equation}\label{eq:first-local}
+\begin{equation}\label{his:eq:first-local}
  H(z)=60t^{-3}\left(1+Ct^\la+\overline C t^\lab+O(|t|^{13})\right).
 \end{equation}
 The normalization and distinct exponents determine $C$ uniquely on the specified branch.
 
-\section{Universal coefficients and analytic diagonal terms}
-Substitution of \eqref{eq:local} into $H'''=H^2$ is justified by local convergence. For a monomial $t^{\nu-3}$, three $z$ derivatives multiply it by
+\section{Universal coefficients and analytic diagonal terms}\label{his:sec:coeffs}
+Substitution of \eqref{his:eq:local} into $H'''=H^2$ is justified by local convergence. For a monomial $t^{\nu-3}$, three $z$ derivatives multiply it by
 $(3-\nu)(4-\nu)(5-\nu)$ and reduce its exponent by $3$. Isolating the two products with the constant term gives, for $k+l\ge2$,
-\begin{equation}\label{eq:akl}
+\begin{equation}\label{his:eq:akl}
  D(\nu_{kl})a_{kl}
  =60\!\sum_{\substack{0\le i\le k,\ 0\le j\le l\\
                    (i,j)\ne(0,0),(k,l)}}a_{ij}a_{k-i,l-j},
 \end{equation}
 where
-\begin{equation}\label{eq:D}
+\begin{equation}\label{his:eq:D}
  D(\nu)=(3-\nu)(4-\nu)(5-\nu)-120
        =-(\nu+1)(\nu-\la)(\nu-\lab).
 \end{equation}
@@ -356,7 +420,7 @@ This recurrence is universal: initial data select $\rho$ and $C$, whereas the no
 For example,
 \begin{align}
  a_{11}&=-\frac17,&
- a_{20}&=\frac{359+57i\sqrt{71}}{17978},\label{eq:first-coeffs}\\
+ a_{20}&=\frac{359+57i\sqrt{71}}{17978},\label{his:eq:first-coeffs}\\
  a_{30}&=\frac{-17559+4223i\sqrt{71}}{78725662},&
  a_{21}&=\frac{2571}{1312394}
            -\frac{42477i\sqrt{71}}{119427854}.\nonumber
@@ -364,7 +428,7 @@ For example,
 The reflected coefficients are their conjugates. The code calculates and checks exact values through degree four and numerical values through degree six.
 
 The diagonal is exceptional for coefficient transfer. If $k=l\ge1$, then
-\begin{equation}\label{eq:diagonal}
+\begin{equation}\label{his:eq:diagonal}
  \nu_{kk}=13k,\qquad
  60a_{kk}|C|^{2k}t^{13k-3}
 \end{equation}
@@ -372,10 +436,10 @@ is an analytic polynomial in $z$ of degree $13k-3$. Its $n$th Taylor coefficient
 
 The indexing $(k,l)\mapsto\nu_{kl}$ is injective: its real and imaginary parts determine $k+l$ and $k-l$. Later, after integer inverse-$n$ corrections are introduced, different labels can have equal final exponents because $\la+\lab=13$. Such coefficients must be combined; the coincidence introduces no logarithms.
 
-\section{The dominant circle and a transfer domain}
+\section{The dominant circle and a transfer domain}\label{his:sec:circle}
 \subsection{Identification of the radius}
 Write $H(z)=\sum_{n\ge0}b_nz^n$ to avoid confusing ordinary coefficients with $a_{kl}$. Then
-\begin{equation}\label{eq:ordinary}
+\begin{equation}\label{his:eq:ordinary}
  b_0=b_1=1,\quad b_2=\frac12,\qquad
  b_{n+3}=\frac{\sum_{j=0}^nb_jb_{n-j}}{(n+1)(n+2)(n+3)}.
 \end{equation}
@@ -383,45 +447,45 @@ Every $b_n$ is strictly positive. The radius $R$ of this Taylor series equals $\
 
 \subsection{Strict majorization away from the positive point}
 Fix $0<r<\rho$ and $\theta\notin2\pi\mathbb Z$. Each of $H,H',H''$ has strictly positive coefficients at all powers, including consecutive powers. Equality in the triangle inequality is therefore impossible, and
-\begin{equation}\label{eq:strict}
+\begin{equation}\label{his:eq:strict}
  |H^{(j)}(re^{i\theta})|<H^{(j)}(r)\qquad(j=0,1,2).
 \end{equation}
 By continuity, choose one $0<\eps<r$ so that all three left sides are at most $H^{(j)}(r-\eps)$.
 
-Let $z_0=re^{i\theta}$. The Taylor recurrence at $z_0$ has the same polynomial convolution form as \eqref{eq:ordinary}. Its first three coefficients, after taking absolute values, are bounded by those of $H(r-\eps+w)$. Induction in the recurrence gives coefficientwise domination at every degree. The real-centered comparison series has nonnegative coefficients and radius $\rho-r+\eps$: this follows from the same real continuation, blowup, and Pringsheim argument used above. The series at $z_0$ consequently converges in
-\begin{equation}\label{eq:disk}
+Let $z_0=re^{i\theta}$. The Taylor recurrence at $z_0$ has the same polynomial convolution form as \eqref{his:eq:ordinary}. Its first three coefficients, after taking absolute values, are bounded by those of $H(r-\eps+w)$. Induction in the recurrence gives coefficientwise domination at every degree. The real-centered comparison series has nonnegative coefficients and radius $\rho-r+\eps$: this follows from the same real continuation, blowup, and Pringsheim argument used above. The series at $z_0$ consequently converges in
+\begin{equation}\label{his:eq:disk}
  |z-z_0|<\rho-r+\eps.
 \end{equation}
 Since $|\rho e^{i\theta}-z_0|=\rho-r$, this disk contains $\rho e^{i\theta}$ in its interior. Every point on the dominant circle other than $\rho$ is regular.
 
 \subsection{Gluing into a single dented domain}
-The continued germs from \eqref{eq:disk} agree with the original solution on their intersections with $|z|<\rho$. By uniqueness they agree on sufficiently small overlapping neighborhoods along the circle. Any compact arc avoiding $\rho$ has a finite covering by such neighborhoods and hence an analytic collar. Near $\rho$, the convergent representation of Section~3 supplies the needed punctured sector. Shrinking the collar and the sector and using compactness gives some $\eta>0$ and $0<\vartheta<\pi/2$ such that $H$ is single-valued and holomorphic in the standard Delta domain
-\begin{equation}\label{eq:delta}
+The continued germs from \eqref{his:eq:disk} agree with the original solution on their intersections with $|z|<\rho$. By uniqueness they agree on sufficiently small overlapping neighborhoods along the circle. Any compact arc avoiding $\rho$ has a finite covering by such neighborhoods and hence an analytic collar. Near $\rho$, the convergent representation of Section~3 supplies the needed punctured sector. Shrinking the collar and the sector and using compactness gives some $\eta>0$ and $0<\vartheta<\pi/2$ such that $H$ is single-valued and holomorphic in the standard Delta domain
+\begin{equation}\label{his:eq:delta}
  \{z:|z|<\rho+\eta,\ z\ne\rho,\ |\arg(z-\rho)|>\vartheta\}.
 \end{equation}
 The excluded wedge points outwards along the positive real axis. This local-to-global collar argument is sufficient for every fixed-order transfer. It makes no classification of more distant singularities.
 
-\section{All fixed coefficient grades and the oscillation}
+\section{All fixed coefficient grades and the oscillation}\label{his:sec:grades}
 \subsection{Exact transfer of each retained monomial}
 For a noninteger complex $\nu$, the binomial identity gives
-\begin{equation}\label{eq:gamma-transfer}
+\begin{equation}\label{his:eq:gamma-transfer}
  [z^n](\rho-z)^{\nu-3}
  =\rho^{\nu-3-n}\frac{\Gamma(n+3-\nu)}{
                          \Gamma(3-\nu)\Gamma(n+1)}.
 \end{equation}
 All off-diagonal $\nu_{kl}$ are nonreal, so this identity applies directly. The leading pole has coefficient
-\begin{equation}\label{eq:pole-transfer}
+\begin{equation}\label{his:eq:pole-transfer}
  [z^n]60(\rho-z)^{-3}
  =30(n+1)(n+2)\rho^{-n-3}.
 \end{equation}
-Multiplying \eqref{eq:gamma-transfer} by $60a_{kl}C^k\overline C^{\,l}$ and dividing by \eqref{eq:pole-transfer} gives each summand of \eqref{eq:Q}, including its factor $2$. Multiplication by $n!$ then gives the exact factorial normalization in \eqref{eq:count-theorem}.
+Multiplying \eqref{his:eq:gamma-transfer} by $60a_{kl}C^k\overline C^{\,l}$ and dividing by \eqref{his:eq:pole-transfer} gives each summand of \eqref{his:eq:Q}, including its factor $2$. Multiplication by $n!$ then gives the exact factorial normalization in \eqref{his:eq:count-theorem}.
 
 \subsection{A remainder valid for every fixed grade}
 Fix $d\ge0$. Expand the convergent $\mathcal F$ through degree $d+1$, one grade beyond the desired truncation. Every off-diagonal term of degree $d+1$ has coefficient
 \[
  O_d\bigl(\rho^{-n}n^{2-\alpha(d+1)}\bigr),
 \]
-by \eqref{eq:gamma-transfer} and the standard Gamma-ratio estimate. Every diagonal term is eventually zero. The remaining analytic-sector tail is
+by \eqref{his:eq:gamma-transfer} and the standard Gamma-ratio estimate. Every diagonal term is eventually zero. The remaining analytic-sector tail is
 \[
  O_d\bigl(|t|^{\alpha(d+2)-3}\bigr).
 \]
@@ -430,104 +494,127 @@ Choose a real noninteger $\beta$ strictly between $\alpha(d+1)-3$ and $\alpha(d+
  O_d(\rho^{-n}n^{-\beta-1})
  =o_d\bigl(\rho^{-n}n^{2-\alpha(d+1)}\bigr).
 \]
-After division by the exact pole coefficient, this proves \eqref{eq:count-theorem}. Keeping one extra grade and using a noninteger tail avoids any borderline integer-exponent transfer convention.
+After division by the exact pole coefficient, this proves \eqref{his:eq:count-theorem}. Keeping one extra grade and using a noninteger tail avoids any borderline integer-exponent transfer convention.
 
 The quantifier is important. The local two-variable series converges near the singularity, but the infinite sum obtained by transferring all grades is \emph{not asserted to converge at fixed $n$}. The theorem is an all-fixed-grade asymptotic result.
 
 \subsection{Nonvanishing and phase winding}
-Take $d=1$ in \eqref{eq:count-theorem}. Conjugate pairing gives \eqref{eq:first-exact}. Since $C\ne0$, $\rho>0$, and the Gamma function has no zeros or pole at $3-\la$, one has $K\ne0$. The fixed-parameter expansion
-\begin{equation}\label{eq:gamma-first}
+Take $d=1$ in \eqref{his:eq:count-theorem}. Conjugate pairing gives \eqref{his:eq:first-exact}. Since $C\ne0$, $\rho>0$, and the Gamma function has no zeros or pole at $3-\la$, one has $K\ne0$. The fixed-parameter expansion
+\begin{equation}\label{his:eq:gamma-first}
  \frac{\Gamma(n+3-\la)}{\Gamma(n+3)}
  =n^{-\la}\left(1+\frac{\la(\la-5)}{2n}+O(n^{-2})\right)
 \end{equation}
-proves \eqref{eq:first-simple}. The phase $\arg K-\omega\log n$ winds without bound, while its increment tends to zero. Integers nearest the exponential targets for phase $0$ or $\pi$ approach those phases along subsequences. The cosine therefore has limsup $1$ and liminf $-1$, proving \eqref{eq:limsup} and the sign changes.
+proves \eqref{his:eq:first-simple}. The phase $\arg K-\omega\log n$ winds without bound, while its increment tends to zero. Integers nearest the exponential targets for phase $0$ or $\pi$ approach those phases along subsequences. The cosine therefore has limsup $1$ and liminf $-1$, proving \eqref{his:eq:limsup} and the sign changes.
 
 No pure integer inverse-$n$ corrections precede this oscillation when the exact factor $(n+2)!$ is retained. Expanding that factorial by Stirling would introduce the usual separate Stirling corrections. In contrast, expanding every exact Gamma ratio to any fixed order supplies all requested relative algebraic orders of the form
-\begin{equation}\label{eq:flattened}
+\begin{equation}\label{his:eq:flattened}
  \nu_{kl}+j,\qquad k+l\ge1,\quad k\ne l,\quad j\ge0.
 \end{equation}
-Only finitely many grades and integer corrections are needed below any fixed real-order cutoff. Coincident exponents in \eqref{eq:flattened} are combined as noted in Section~4.
+Only finitely many grades and integer corrections are needed below any fixed real-order cutoff. Coincident exponents in \eqref{his:eq:flattened} are combined as noted in Section~4.
 
-\section{Inverse thresholds with controlled rounding}
+\section{Inverse thresholds with controlled rounding}\label{his:sec:inverse}
 \subsection{An eventual inverse bracket}
 The coefficient equivalent implies
 \[
  \frac{h_{n+1}}{h_n}\sim\frac{n+3}{\rho}>1,
 \]
 so choose $n_0$ after which $h_n$ is strictly increasing. For sufficiently large $X$, define
-\begin{equation}\label{eq:inverse}
+\begin{equation}\label{his:eq:inverse}
  N(X)=\min\{n\ge n_0:h_n\ge X\}.
 \end{equation}
 Put
-\begin{equation}\label{eq:Fd}
+\begin{equation}\label{his:eq:Fd}
  \mathcal B(x)=30\Gamma(x+3)\rho^{-x-3},\qquad
  F_d(x)=\log\mathcal B(x)+\log Q_d(x).
 \end{equation}
 For fixed $d$, $Q_d(x)=1+O(x^{-13/2})>0$ eventually and
-\begin{equation}\label{eq:Fderivative}
+\begin{equation}\label{his:eq:Fderivative}
  F_d'(x)=\psi(x+3)-\log\rho+O_d(x^{-15/2})
  \sim\log(x/\rho)>0.
 \end{equation}
 Thus there is a unique sufficiently large root $x_d=x_d(X)$ of $F_d(x_d)=\log X$.
 
-\begin{theorem}[Eventual shrinking ceiling window]\label{thm:inverse}
+\begin{theorem}[Eventual shrinking ceiling window]\label{his:thm:inverse}
 For each fixed $d\ge0$, there are constants $M_d>0$ and $X_d$ such that, for $X\ge X_d$, setting
-\begin{equation}\label{eq:epsilon-inverse}
+\begin{equation}\label{his:eq:epsilon-inverse}
  \eps_d(X)=M_d\frac{x_d(X)^{-\alpha(d+1)}}{\log x_d(X)}
 \end{equation}
 gives
-\begin{equation}\label{eq:ceil}
+\begin{equation}\label{his:eq:ceil}
  \left\lceil x_d(X)-\eps_d(X)\right\rceil
  \le N(X)\le
  \left\lceil x_d(X)+\eps_d(X)\right\rceil.
 \end{equation}
 \end{theorem}
 \begin{proof}
-Taking logarithms in \eqref{eq:count-theorem}, with $Q_d$ bounded away from zero, gives
+Taking logarithms in \eqref{his:eq:count-theorem}, with $Q_d$ bounded away from zero, gives
 $\log h_n=F_d(n)+O_d(n^{-\alpha(d+1)})$.
-For integers near $x_d$, the mean value theorem and \eqref{eq:Fderivative} show that displacement of size a sufficiently large constant times
+For integers near $x_d$, the mean value theorem and \eqref{his:eq:Fderivative} show that displacement of size a sufficiently large constant times
 $x_d^{-\alpha(d+1)}/\log x_d$ dominates this error. Thus integers strictly below the lower endpoint have $h_n<X$, and integers at or above the upper endpoint have $h_n\ge X$, after increasing the constant if needed. Eventual monotonicity handles all more distant integers, proving the stated ceiling window.
 \end{proof}
-The constants $M_d$ and $X_d$ are existence constants here. This is not a certified finite-$X$ numerical enclosure. If $x_d$ lies exceptionally near an integer, its ceiling alone need not equal $N(X)$; both sides of \eqref{eq:ceil} must be retained. The theorem is deliberately formulated to avoid an unjustified rounding rule.
+The constants $M_d$ and $X_d$ are existence constants here. This is not a certified finite-$X$ numerical enclosure. If $x_d$ lies exceptionally near an integer, its ceiling alone need not equal $N(X)$; both sides of \eqref{his:eq:ceil} must be retained. The theorem is deliberately formulated to avoid an unjustified rounding rule.
 
 \subsection{A Lambert W starting point}
 For a simple initial estimate, write $L=\log X$ and use the positive branch of Lambert $W$:
-\begin{equation}\label{eq:y0}
+\begin{equation}\label{his:eq:y0}
  y_0=\frac{L}{W(L/(e\rho))},\qquad
  c=\log(30\sqrt{2\pi})-3\log\rho.
 \end{equation}
 The shifted Stirling expansion is
-\begin{equation}\label{eq:stirling}
+\begin{equation}\label{his:eq:stirling}
  \log\mathcal B(x)=x\bigl(\log(x/\rho)-1\bigr)
  +\frac52\log x+c+\frac{37}{12x}+O(x^{-2}).
 \end{equation}
 The coefficient is $37/12$, not the unshifted $1/12$; equivalently it is $B_2(3)/2$. Since $y_0(\log(y_0/\rho)-1)=L$, one correction gives
-\begin{equation}\label{eq:y1}
+\begin{equation}\label{his:eq:y1}
  y_1=y_0-\frac{(5/2)\log y_0+c}{\log(y_0/\rho)},\qquad
  x_0=y_1+O\!\left(\frac1{y_0\log y_0}\right).
 \end{equation}
-Indeed $y_1-y_0=O(1)$, and the residual after this step in \eqref{eq:stirling} is $O(1/y_0)$, while the derivative is asymptotic to $\log y_0$.
+Indeed $y_1-y_0=O(1)$, and the residual after this step in \eqref{his:eq:stirling} is $O(1/y_0)$, while the derivative is asymptotic to $\log y_0$.
 
 \subsection{The first oscillatory displacement}
 Let $x_0$ solve the exact main equation $\log\mathcal B(x_0)=L$ and let $x_1$ solve $F_1(x_1)=L$. Expansion of $\log Q_1$ and the mean value theorem yield
-\begin{equation}\label{eq:inverse-oscillation}
+\begin{equation}\label{his:eq:inverse-oscillation}
  x_1-x_0=
  -\frac{2\Rea\{K\Gamma(x_0+3-\la)/\Gamma(x_0+3)\}}
         {\psi(x_0+3)-\log\rho}
  +O\!\left(\frac{x_0^{-13}}{\log x_0}\right).
 \end{equation}
-The squared first correction is $O(x_0^{-13})$ in the logarithm. Evaluation shifts and derivative corrections are smaller at this scale. Higher grades are handled by the exact $F_d$ equations, or by fixed-order Newton expansions. The inverse accuracy improves with every fixed grade, while integer recovery continues to obey \eqref{eq:ceil}.
+The squared first correction is $O(x_0^{-13})$ in the logarithm. Evaluation shifts and derivative corrections are smaller at this scale. Higher grades are handled by the exact $F_d$ equations, or by fixed-order Newton expansions. The inverse accuracy improves with every fixed grade, while integer recovery continues to obey \eqref{his:eq:ceil}.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+The inversion steps of this section are instances of general results of the
+repository's transseries volume (\texttt{Analysis/\allowbreak Transseries/\allowbreak docs/\allowbreak series-\allowbreak and-\allowbreak transseries/\allowbreak Transseries\_And\_Inversion/}), and no novelty is claimed for
+them. The Lambert start \eqref{his:eq:y0} is the case $a=b=1$ of
+\texttt{p0:thm:lambert-core} applied to $u=\log(x/(e\rho))$: the equation
+$x(\log(x/\rho)-1)=L$ becomes $u+\log u=\log(L/(e\rho))$, whose positive root
+is $u=W_0(L/(e\rho))$, branch $W_0$. The ceiling window of
+Theorem~\ref{his:thm:inverse} has the form of the separation condition, part~(2)
+of \texttt{p0:thm:staircase}, with $x_\ast=x_d(X)$ and $\eta=\eps_d(X)$: when
+the two ceilings in \eqref{his:eq:ceil} coincide, $N(X)$ is their common value.
+Part~(1) of that theorem (exact rounding) is not used, because $F_d$ is a model
+of $\log h_n$ rather than an interpolation of it, which is why the manuscript
+keeps both ceilings. The first oscillatory displacement \eqref{his:eq:inverse-oscillation}
+is the first-order term $-\varepsilon E/F'$ of \texttt{p0:thm:perturbed-inversion}
+with $F=\log\mathcal B$ and $\varepsilon E=\log Q_1$. The generic staircase
+arithmetic is formalized in Lean as \texttt{Fabius.staircase\_ceil} and
+\texttt{Fabius.staircase\_separation} (file
+\texttt{Analysis/\allowbreak FabiusFunction/\allowbreak Lean/\allowbreak FabiusFunction/\allowbreak StaircaseInversion.lean});
+those lemmas concern an arbitrary monotone function, not $h_n$, and give this
+report no formal status. The same remarks apply to the order-four inverse of
+Section~\ref{his:sec:r4inverse}.
+\end{writenote}
 
 \input{extensions}
 
-\section{Reproducibility and numerical evidence}
+\section{Reproducibility and numerical evidence}\label{his:sec:repro}
 \subsection{Exact checks and independent calculations}
 The accompanying archive contains the article, its LaTeX and bibliography, original research code and data, adapted replay paths, and build instructions. It omits third-party papers and raw working material. The checks have different evidential roles:
 \begin{enumerate}
- \item \textbf{Exact symbolic checks.} Rational and algebraic arithmetic verifies the Lyapunov identity modulo $p_*^3=9/20$, the indicial factorization, conjugation of $a_{kl}$, $a_{11}=-1/7$, and the degree-four coefficient recurrence. A second implementation checks the Jacobian characteristic polynomial and $37/12$ in \eqref{eq:stirling}.
- \item \textbf{Exact integer checks.} One implementation computes \eqref{eq:recurrence} through $n=202$ and agrees with a rational ordinary-EGF recurrence through $n=72$. An independent implementation uses multiplicatively updated binomial coefficients through $n=600$, agreeing with a separate rational recurrence through $n=80$. The first $29$ terms agree with the inspected OEIS record.
+ \item \textbf{Exact symbolic checks.} Rational and algebraic arithmetic verifies the Lyapunov identity modulo $p_*^3=9/20$, the indicial factorization, conjugation of $a_{kl}$, $a_{11}=-1/7$, and the degree-four coefficient recurrence. A second implementation checks the Jacobian characteristic polynomial and $37/12$ in \eqref{his:eq:stirling}.
+ \item \textbf{Exact integer checks.} One implementation computes \eqref{his:eq:recurrence} through $n=202$ and agrees with a rational ordinary-EGF recurrence through $n=72$. An independent implementation uses multiplicatively updated binomial coefficients through $n=600$, agreeing with a separate rational recurrence through $n=80$. The first $29$ terms agree with the inspected OEIS record.
  \item \textbf{Fourth-order exact checks.} A separate script verifies the normalized Jacobian spectrum, both indicial factorizations, the conserved energy and its value $1/6$, the exact real-mode coefficient $D$, the alternating real-mode vector, and two independent exact count recurrences through $n=100$.
- \item \textbf{High-order exact certificates.} Two independent rational implementations check all eight finite phase/modulus pairs for $30\le r\le37$. Exact rational checks verify the infinite-range margins in \eqref{eq:infinitephase}--\eqref{eq:infinitemod}. Supplemental Routh tables, polynomial greatest-common-divisor checks, exact complex root counts, and the order-$30$ compound graph are replayed separately.
+ \item \textbf{High-order exact certificates.} Two independent rational implementations check all eight finite phase/modulus pairs for $30\le r\le37$. Exact rational checks verify the infinite-range margins in \eqref{his:eq:infinitephase}--\eqref{his:eq:infinitemod}. Supplemental Routh tables, polynomial greatest-common-divisor checks, exact complex root counts, and the order-$30$ compound graph are replayed separately.
  \item \textbf{Exploratory numerical checks.} High-precision coefficient calculations fit $\rho$, $\Rea C$, and $\Ima C$ at three training indices. Disjoint testing indices and changed training sets check consistency. A separate DOP853 integration of the desingularized system estimates $\rho$. Neither procedure gives interval certificates.
 \end{enumerate}
 The exact file of $h_0,\ldots,h_{600}$, one index and integer per line, has SHA-256
@@ -539,17 +626,17 @@ The replay checks this file and the archived exact JSON outputs. Exact arithmeti
 \subsection{Fitted constants and held-out indices}
 The numerical illustration in this subsection concerns the third-order sequence A333497 only. The arithmetic precisions are $120$ and $150$ decimal digits. Both runs retain grade four in the fit; their respective training sets are $\{400,550,700\}$ and $\{450,650,850\}$. The displayed fitted constants are deliberately rounded:
 \begin{align}
- \rho&\approx3.77462757572068,\label{eq:rho-numeric}\\
+ \rho&\approx3.77462757572068,\label{his:eq:rho-numeric}\\
  C&\approx-7.35007549061487\times10^{-6}
           -5.54631650011815\times10^{-6}i,\nonumber\\
  K&\approx-15603.3656213-1986.37940722i.\nonumber
 \end{align}
-They are exploratory approximations, not certified digits. Agreement between high-precision fits is eventually limited by omitted grades and finite-$n$ effects, not solely by arithmetic precision. Printing all working digits would not turn them into proven constants. The proof of $C\ne0$ is \eqref{eq:Cnonzero}, not a numerical fit.
+They are exploratory approximations, not certified digits. Agreement between high-precision fits is eventually limited by omitted grades and finite-$n$ effects, not solely by arithmetic precision. Printing all working digits would not turn them into proven constants. The proof of $C\ne0$ is \eqref{his:eq:Cnonzero}, not a numerical fit.
 
-The independent floating-point ODE calculation gives $\rho\approx3.774627575720685$, consistent with \eqref{eq:rho-numeric}. Table~\ref{tab:checks} reports errors using the $150$-digit fit and independently computed exact integers; all listed indices are outside that fit's training set.
+The independent floating-point ODE calculation gives $\rho\approx3.774627575720685$, consistent with \eqref{his:eq:rho-numeric}. Table~\ref{his:tab:checks} reports errors using the $150$-digit fit and independently computed exact integers; all listed indices are outside that fit's training set.
 \begin{table}[htbp]
 \centering
-\caption{Exploratory relative discrepancies at held-out indices. $R_n$ is defined in \eqref{eq:K}; $Q_1$ retains the exact first Gamma ratio. The normalization uses fitted constants.}\label{tab:checks}
+\caption{Exploratory relative discrepancies at held-out indices. $R_n$ is defined in \eqref{his:eq:K}; $Q_1$ retains the exact first Gamma ratio. The normalization uses fitted constants.}\label{his:tab:checks}
 \begin{tabular}{r rr}
 \toprule
 $n$ & $R_n-1$ & $R_n-Q_1(n)$\\
@@ -568,7 +655,7 @@ $n$ & $R_n-1$ & $R_n-Q_1(n)$\\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/oscillation.pdf}
-\caption{Exploratory illustration using exact counts for every integer $80\le n\le600$ and the fitted constants in \eqref{eq:rho-numeric}. The upper panel shows the logarithmically oscillating normalized discrepancy (solid) and its leading cosine (dashed). The lower panel scales the residual after the exact first Gamma-ratio correction by $n^{13}$. The figure illustrates the proven orders but does not certify the constants or a uniform numerical bound.}\label{fig:oscillation}
+\caption{Exploratory illustration using exact counts for every integer $80\le n\le600$ and the fitted constants in \eqref{his:eq:rho-numeric}. The upper panel shows the logarithmically oscillating normalized discrepancy (solid) and its leading cosine (dashed). The lower panel scales the residual after the exact first Gamma-ratio correction by $n^{13}$. The figure illustrates the proven orders but does not certify the constants or a uniform numerical bound.}\label{his:fig:oscillation}
 \end{figure}
 
 Finite-$n$ error is not necessarily monotone in truncation degree, particularly at small indices. Near a zero of an oscillatory term, the error can also look unusually small. At very high grades, uncertainty in the fitted constants sets a floor. These effects are consistent with a fixed-grade theorem and should not be presented as failures or numerical proofs of its asymptotic remainder.
@@ -585,11 +672,31 @@ The first uses Python~3 with \texttt{mpmath}, \texttt{sympy}, and \texttt{scipy}
 
 The second uses pdfLaTeX and BibTeX. If the TeX installation has its package tree but lacks a prebuilt format or standard font map, the script creates the missing format and map inside the package-local \texttt{.build} directory. It does not change the system TeX installation. The build fixes the source date for stable PDF metadata. A manifest records the released file hashes; check it before replay with \texttt{sha256sum -c MANIFEST.sha256}. Reproducibility of exact data is byte-for-byte. Floating-point comparisons are reported separately, and cross-platform last digits are not claimed to be invariant.
 
-\section{Scope and further questions}
+\begin{writenote}[Added 2 October 2026, batch~77]
+This section describes the delivered archive. In the repository the files keep
+their bytes but not their places: \texttt{replay.sh}, \texttt{build.sh} and
+\texttt{make\_figure.py} are in \texttt{code/}, the scripts of
+\texttt{code/extensions/} are \texttt{code/extensions-*.py}, the data
+subdirectories are flattened to \texttt{data/producer-*},
+\texttt{data/independent-*} and \texttt{data/extensions-*} (the file of
+$h_0,\ldots,h_{600}$ above is \texttt{data/independent-exact\_h\_0\_600.txt},
+with the stated SHA-256), and the requirements files are in \texttt{data/}.
+The manifest \texttt{MANIFEST.sha256} and the delivered PDF were verified at
+placement and not shipped; both survive in the arrival commit. The scripts
+expect the delivered layout, so the report's \texttt{README.md} rebuilds it on a
+scratch copy before replaying. On Windows the producers write CRLF line endings,
+so the driver's byte comparison reports a mismatch although the content agrees;
+the intake's rerun (2 October 2026) matched all twelve exact artifacts after
+CRLF was stripped. The article's \verb|bash build.sh| compiles
+\texttt{historic-trees.tex}; the report is built from \texttt{article.tex}
+instead (see the README).
+\end{writenote}
+
+\section{Scope and further questions}\label{his:sec:scope}
 \subsection{What has been established}
 The $m=2$ and $m=3$ instances of the published coefficient conjecture hold, with nonzero oscillatory corrections, convergent local expansions, all fixed coefficient grades, and qualified eventual inverses. Every instance with $m\ge29$ is false for its specified all-one sequence. These results leave the intervening orders unresolved here, make no claim that $29$ is the first failing parameter, and do not settle the separate even-order historic-tree Conjecture~2.
 
-The journal's Table~1 is headed by $\rho_m^{-1}$ but lists $3.7746$ at $m=2$. Under its definition of $\rho_m$ as the positive singularity, the independent recurrence and ODE computations agree with that number as the radius rather than its reciprocal. This appears to be a reciprocal-label error. The intrinsic definition \eqref{eq:rho} and analytic bounds \eqref{eq:rho-bounds} remove any dependence on that convention.
+The journal's Table~1 is headed by $\rho_m^{-1}$ but lists $3.7746$ at $m=2$. Under its definition of $\rho_m$ as the positive singularity, the independent recurrence and ODE computations agree with that number as the radius rather than its reciprocal. This appears to be a reciprocal-label error. The intrinsic definition \eqref{his:eq:rho} and analytic bounds \eqref{his:eq:rho-bounds} remove any dependence on that convention.
 
 A bounded source check on 2 October 2026 considered the primary journal paper, its predecessor, accessible OEIS records, the cited Emden--Fowler literature, B-urns, and relevant public repository searches. It located no prior resolution of the specific counting statements presented here. That is a bounded negative finding, not an exhaustive priority certificate. The real-axis results, underlying spectral family, sign-regularity results, linearization, and transfer methods are explicitly credited.
 
@@ -603,15 +710,15 @@ A bounded source check on 2 October 2026 considered the primary journal paper, i
 \end{enumerate}
 
 \appendix
-\section{A compact verification guide}
+\section{A compact verification guide}\label{his:sec:guide}
 The detailed third-order proof dependencies can be checked in the following order.
 \begin{enumerate}
- \item Verify the change of variables \eqref{eq:coordinates} and the exact cancellation in \eqref{eq:Vdot}. Compactness must allow the harmless boundary $p=0$, while keeping $q$ away from zero.
- \item Reconstruct the real solution by \eqref{eq:reconstruction}. Finite $\rho$ and the constant $60$ follow without a numerical approximation.
- \item Check the nonresonant Poincar\'e hypotheses for \eqref{eq:jacobian}; a smooth or formal linearization would not suffice for the claimed convergence.
- \item Check the signs in \eqref{eq:S} and \eqref{eq:w}, then the exact time identity \eqref{eq:time-exact}. The coefficient denominators in $S$ and $B$ have real parts growing with total degree.
- \item Apply analytic implicit inversion at $(\mathcal R,\eta)=(1,0)$, where the derivative is $1$. Nonzero orbit constants and \eqref{eq:linearcoeff} prove $C\ne0$.
- \item Separate the proof of the radius from the proof of uniqueness on the circle. Strict positivity for each of $H,H',H''$ gives the common margin in \eqref{eq:strict} and the dominating disk \eqref{eq:disk}.
+ \item Verify the change of variables \eqref{his:eq:coordinates} and the exact cancellation in \eqref{his:eq:Vdot}. Compactness must allow the harmless boundary $p=0$, while keeping $q$ away from zero.
+ \item Reconstruct the real solution by \eqref{his:eq:reconstruction}. Finite $\rho$ and the constant $60$ follow without a numerical approximation.
+ \item Check the nonresonant Poincar\'e hypotheses for \eqref{his:eq:jacobian}; a smooth or formal linearization would not suffice for the claimed convergence.
+ \item Check the signs in \eqref{his:eq:S} and \eqref{his:eq:w}, then the exact time identity \eqref{his:eq:time-exact}. The coefficient denominators in $S$ and $B$ have real parts growing with total degree.
+ \item Apply analytic implicit inversion at $(\mathcal R,\eta)=(1,0)$, where the derivative is $1$. Nonzero orbit constants and \eqref{his:eq:linearcoeff} prove $C\ne0$.
+ \item Separate the proof of the radius from the proof of uniqueness on the circle. Strict positivity for each of $H,H',H''$ gives the common margin in \eqref{his:eq:strict} and the dominating disk \eqref{his:eq:disk}.
  \item Transfer finitely many terms only. Remove analytic diagonal monomials, retain exact Gamma ratios, and expand one extra grade to justify the noninteger-tail remainder.
  \item Invert the logarithmic expansion using monotonicity and a ceiling window. Neither fitted constants nor a root extremely near an integer justify dropping that window.
 \end{enumerate}
