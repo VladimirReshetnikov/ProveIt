@@ -509,8 +509,10 @@ and a specialized constant-flow quartic with 17 witnesses and 15 residuals
   proposed `RobustReachability` and 18's `PolynomialFlow`/`KineticFlow` module names are not repository declarations.
 - **No explicit universal polynomial.** None of the fixed MRDP polynomials
   (Theorems 4.3, 22.1, 26.3, 160.1, Corollaries 29.2, 160.2, and the MRDP statements of
-  Parts V–VII) is expanded, and none has a stated degree, witness count or
-  multiplicity. The explicit polynomials are size-indexed families; their
+  Parts V–VII) is expanded or given a numerical witness or operation count.
+  Standard circuit quadratization gives fixed degree at most four where
+  stated, including Corollary 160.2; it does not control the multiplicity
+  of the original MRDP witnesses. The explicit polynomials are size-indexed families; their
   sizes may not be transferred to the fixed-arity polynomials (Remark 2.1).
   No universal machine table, interpreter, Higman presentation, transducer or
   network weight list is printed (sources 11, 12, 13, 14, 16 say so).
