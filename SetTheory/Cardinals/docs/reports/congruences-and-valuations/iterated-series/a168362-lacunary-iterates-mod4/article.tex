@@ -127,6 +127,10 @@ checks direct truncated composition modulo $4$ through degree and iterate
 $256$, checks the published initial terms, and regenerates all residue tables.
 No claim of formal verification in Lean or of publication priority is made.
 Independent mathematical review is recommended before an OEIS submission.
+
+\smallskip
+[Write note, batch 73O1: filed in ProveIt's research-report collection;
+provenance and status in \cref{lim:sec:collection}.]
 \end{minipage}}
 \end{center}
 
@@ -136,7 +140,7 @@ Independent mathematical review is recommended before an OEIS submission.
 
 The sequence A168362 is defined by the main diagonal of the iteration table of
 $F(x)=\sum_{j\ge0}x^{2^j}$:
-\begin{equation}\label{eq:def-a}
+\begin{equation}\label{lim:eq:def-a}
   a(n)=\coef{n}{F^{\circ n}(x)}.
 \end{equation}
 Its initial values are
@@ -144,18 +148,18 @@ Its initial values are
 1,2,6,34,280,3010,39984,634040,11704548,\ldots.
 \]
 The current OEIS entry records the conjectural ratio
-\begin{equation}\label{eq:ratio-conj}
+\begin{equation}\label{lim:eq:ratio-conj}
   \frac{a(n+1)}{a(n)}\sim en
 \end{equation}
 and the observed congruence pattern
-\begin{equation}\label{eq:oeis-mod4-observation}
+\begin{equation}\label{lim:eq:oeis-mod4-observation}
   a(n)\equiv2\pmod4
   \quad\text{at }n=2,3,4,6,20,24,40,68,136,260,520,\ldots,
 \end{equation}
 with apparent divisibility by $4$ elsewhere; see~\cite{OEIS-A168362}.
 
 The purpose of this article is arithmetic rather than asymptotic.  The ratio
-problem~\eqref{eq:ratio-conj} remains open here.  The modulo-four observation,
+problem~\eqref{lim:eq:ratio-conj} remains open here.  The modulo-four observation,
 however, is completely resolved.  The result is stronger than a list of
 indices: it gives a short bitwise decision procedure, describes every entry of
 the two-dimensional iteration table modulo $4$, and yields an asymptotic law
@@ -166,7 +170,7 @@ for the number of exceptions.
 For nonnegative integers $u,v$, $u\band v$ and $u\bor v$ denote bitwise AND
 and OR.  Let $\wt(u)$ be the binary Hamming weight.  For $s\ge1$, put
 $M_s=2^s-1$ and define a subset $R_s\subseteq\mathbb Z/2^s\mathbb Z$ by
-\begin{equation}\label{eq:R-def-intro}
+\begin{equation}\label{lim:eq:R-def-intro}
 \ind_{d\in R_s}
  \equiv
  \ind_{d\equiv0\ (2^s)}
@@ -177,7 +181,7 @@ $M_s=2^s-1$ and define a subset $R_s\subseteq\mathbb Z/2^s\mathbb Z$ by
 This is an exact finite definition involving only $s+2$ Boolean tests.
 
 \begin{theorem}[Complete modulo-four classification for A168362]
-\label{thm:diagonal-classification}
+\label{lim:thm:diagonal-classification}
 For $n>1$, $a(n)$ is even.  Moreover, $a(n)\equiv2\pmod4$ if and only if
 one of the following holds:
 \begin{enumerate}[label=\textup{(\roman*)}]
@@ -205,28 +209,84 @@ For example, $s=2$ gives the particularly simple family
 \]
 This produces $20,68,260,1028,4100,16388,\ldots$.
 
+\emph{[Write note, batch 73O1.]} Since $R_1=\varnothing$, case~(ii) of
+\cref{lim:thm:diagonal-classification} never holds with $s=1$: the
+exceptional two-bit indices all have $s\ge2$. The condition is stated as
+$r>s\ge1$ in the source and is kept.
+
 \subsection{A theorem for the whole iteration array}
 
 The diagonal theorem follows from a more general statement.  Write
-\begin{equation}\label{eq:gmn}
+\begin{equation}\label{lim:eq:gmn}
   g_m(N)=\coef{N}{G_m(x)},\qquad G_m(x)=F^{\circ m}(x).
 \end{equation}
 
 \begin{theorem}[Binary-weight support modulo four]
-\label{thm:whole-array-support}
+\label{lim:thm:whole-array-support}
 For every $m,N\ge1$,
 \[
   \wt(N)\ge3\quad\Longrightarrow\quad g_m(N)\equiv0\pmod4.
 \]
 In addition, $g_m(N)$ is odd only when $N$ is a power of two.  Exact formulas
 for the remaining one-bit and two-bit exponents are given in
-\Cref{thm:full-array-formula}.
+\Cref{lim:thm:full-array-formula}.
 \end{theorem}
 
 This support theorem is not a numerical coincidence.  It is a consequence of
 the fact that, modulo $4$, the only cross terms that survive a $2^k$-th power
 are balanced products of two monomials.  That two-adic fact is the core of the
 proof.
+
+\subsection{Place in the ProveIt collection}
+\label{lim:sec:collection}
+
+\emph{[Write note, batch 73O1, 1 October 2026.]} This report is filed in
+ProveIt's research-report collection, in the directory
+\begin{center}\small
+\nolinkurl{SetTheory/Cardinals/docs/reports/congruences-and-valuations/}\\
+\nolinkurl{iterated-series/a168362-lacunary-iterates-mod4}.
+\end{center}
+Its README there is the guide to the files.
+
+\emph{Provenance.} The report is built from one manuscript: manuscript~49
+of batch~73 (cluster O1) of ProveIt's incoming-reports intake, the archive
+\texttt{ProveIt\_A168362\_Mod4\_Theorem.zip}, which arrived in commit
+\texttt{3a9518c52} and was placed by commit \texttt{9df4ba51a}. The
+manuscript names no pinned commit; it says the repository~\cite{ProveIt}
+was inspected on 1 October 2026. The text is printed as delivered. The
+write changed only the label names, which now carry the prefix
+\texttt{lim:}, and added the notes marked \emph{[Write note]}. Nothing was
+merged into it; no other manuscript of the batch treats this sequence.
+The delivered bibliography also lists two general references, on formal
+power series~\cite{StanleyEC1} and on analytic
+combinatorics~\cite{FlajoletSedgewick}, which the delivered text never
+cites; they are kept as background.
+
+\emph{Status.} The manuscript was prepared with OpenAI. It is unrefereed,
+and nothing in it is formalized in Lean or any other proof assistant. The
+intake reran the shipped verifier on a copy (exit code~0; the three data
+files it writes equal the shipped ones, up to line endings). Independently
+of the delivered code, it composed $F$ modulo~$4$ to degree and iterate
+$1100$: the diagonal exceptions are $2,3,4,6,20,24,40,68,136,260,520,1028,1032$,
+as \cref{lim:thm:diagonal-classification} predicts, and
+\cref{lim:thm:whole-array-support} holds for $m\le300$, $N\le1100$. It
+also recomputed $a(1),\ldots,a(10)$, the sets $R_1,\ldots,R_8$, the tail
+bound of the series for $\kappa$, and the row $n=20$ of
+\cref{lim:tab:ratio-data}. It did not re-derive every proof. The OEIS
+statements quoted here (the comments of 22 May 2026 on A168362, and the
+entries A112317, A122888 and A086753) were confirmed on the live entries on
+1 October 2026.
+
+\emph{Neighbouring reports.} In the same collection:
+\begin{itemize}
+\item the two other reports in \texttt{iterated-series} prove congruences
+  for compositional iterates of other series:\newline
+  \texttt{a396807-self-iterating-series} and\newline
+  \texttt{compositional-tree-series-congruences};
+\item \texttt{a000139-binary-carries-parity} uses the same binary-carry
+  (Kummer--Lucas) technique for a different sequence.
+\end{itemize}
+There is no overlap, and no statement here depends on them.
 
 \section{Formal-series setup and binary lifts}
 
@@ -240,7 +300,7 @@ For a binary series $P=\sum p_nx^n\in\Ftwo[[x]]$, let
 \]
 denote the canonical lift, where $\widetilde p_n\in\{0,1\}$.  Every series
 $H\in\Zfour[[x]]$ has a unique binary decomposition
-\begin{equation}\label{eq:binary-decomposition}
+\begin{equation}\label{lim:eq:binary-decomposition}
   H=[P]+2[Q],\qquad P,Q\in\Ftwo[[x]].
 \end{equation}
 The first component records coefficient parity, while the second records the
@@ -262,10 +322,10 @@ $1+T+T^2+\cdots$.
 \subsection{A multinomial valuation lemma}
 
 \begin{lemma}[Only balanced pairs survive]
-\label{lem:balanced-pairs}
+\label{lim:lem:balanced-pairs}
 Let $z_1,z_2,\ldots$ be commuting indeterminates of positive degree.  For
 $k\ge1$,
-\begin{equation}\label{eq:balanced-pairs}
+\begin{equation}\label{lim:eq:balanced-pairs}
  \left(\sum_j z_j\right)^{2^k}
  \equiv
  \sum_j z_j^{2^k}
@@ -287,17 +347,17 @@ the total binary digit sum of the nonzero exponents is two.  Since their sum is
 a single power of two, this forces exactly two nonzero exponents, both equal to
 $2^{k-1}$.  Every other multinomial coefficient is divisible by $4$.
 The balanced binomial coefficient has valuation one, hence is congruent to
-$2$ modulo $4$.  This proves~\eqref{eq:balanced-pairs}.
+$2$ modulo $4$.  This proves~\eqref{lim:eq:balanced-pairs}.
 \end{proof}
 
 \subsection{Polarizing the lacunary operator}
 
-Summing \Cref{lem:balanced-pairs} over $k$ gives a compact identity.
+Summing \Cref{lim:lem:balanced-pairs} over $k$ gives a compact identity.
 
 \begin{corollary}[Lacunary polarization]
-\label{cor:lacunary-polarization}
+\label{lim:cor:lacunary-polarization}
 For positive-degree monomials $z_j$,
-\begin{equation}\label{eq:lacunary-polarization}
+\begin{equation}\label{lim:eq:lacunary-polarization}
  F\!\left(\sum_jz_j\right)
  \equiv
  \sum_jF(z_j)+2\sum_{i<j}F(z_iz_j)
@@ -308,9 +368,9 @@ For positive-degree monomials $z_j$,
 A second elementary fact explains how the $2[Q]$ component propagates.
 
 \begin{lemma}[The high binary digit is carried unchanged]
-\label{lem:q-passes}
+\label{lim:lem:q-passes}
 For $P,Q\in\Ftwo[[x]]$,
-\begin{equation}\label{eq:q-passes}
+\begin{equation}\label{lim:eq:q-passes}
   F([P]+2[Q])\equiv F([P])+2[Q]\pmod4.
 \end{equation}
 \end{lemma}
@@ -334,30 +394,30 @@ For $r\ge0$, define the prefix count
 \]
 
 \begin{definition}[Carry transform]
-\label{def:carry-transform}
+\label{lim:def:carry-transform}
 The binary series $\mathcal C(P_S)$ is defined by
 \begin{align}
  \coef{2^r}{\mathcal C(P_S)}
    &=\binom{N_S(r)}2\pmod2,
-   \label{eq:carry-one-bit}\\
+   \label{lim:eq:carry-one-bit}\\
  \coef{2^r+2^s}{\mathcal C(P_S)}
    &=\sum_{i=0}^{s}\ind_{i\in S}\ind_{i+r-s\in S}\pmod2,
    \qquad r>s,
-   \label{eq:carry-two-bit}
+   \label{lim:eq:carry-two-bit}
 \end{align}
 and all coefficients at exponents of binary weight at least three are zero.
 \end{definition}
 
 \begin{proposition}[Exact lift of one lacunary step]
-\label{prop:one-step-lift}
+\label{lim:prop:one-step-lift}
 For every $S$,
-\begin{equation}\label{eq:one-step-lift}
+\begin{equation}\label{lim:eq:one-step-lift}
   F([P_S])\equiv [F(P_S)]+2[\mathcal C(P_S)]\pmod4.
 \end{equation}
 \end{proposition}
 
 \begin{proof}
-By \Cref{cor:lacunary-polarization},
+By \Cref{lim:cor:lacunary-polarization},
 \[
  F([P_S])\equiv
  \sum_{j\in S}F(x^{2^j})
@@ -369,22 +429,22 @@ digit is $N_S(r)\bmod2$, and its next digit is
  \left\lfloor\frac{N_S(r)}2\right\rfloor
  \equiv\binom{N_S(r)}2\pmod2.
 \]
-This gives~\eqref{eq:carry-one-bit}.  In the second sum, the exponent
+This gives~\eqref{lim:eq:carry-one-bit}.  In the second sum, the exponent
 $2^r+2^s$ occurs from a pair $(i,j)$ precisely when
 $(i,j)=(s-k,r-k)$ for some $0\le k\le s$.  Reindexing by $i=s-k$ gives
-\eqref{eq:carry-two-bit}.  No exponent with three binary $1$'s can occur.
+\eqref{lim:eq:carry-two-bit}.  No exponent with three binary $1$'s can occur.
 \end{proof}
 
 \section{Closed form for the parity iterates}
 
 Write
-\begin{equation}\label{eq:PQ-iterates}
+\begin{equation}\label{lim:eq:PQ-iterates}
   G_m(x)\equiv[P_m(x)]+2[Q_m(x)]\pmod4,
   \qquad P_m,Q_m\in\Ftwo[[x]].
 \end{equation}
-Starting with $P_0=x$ and $Q_0=0$, \Cref{lem:q-passes,prop:one-step-lift}
+Starting with $P_0=x$ and $Q_0=0$, \Cref{lim:lem:q-passes,lim:prop:one-step-lift}
 give
-\begin{equation}\label{eq:PQ-recurrence}
+\begin{equation}\label{lim:eq:PQ-recurrence}
   P_{m+1}=F(P_m),
   \qquad
   Q_{m+1}=Q_m+\mathcal C(P_m)
@@ -392,9 +452,9 @@ give
 \end{equation}
 
 \begin{proposition}[Negative-binomial parity formula]
-\label{prop:P-closed}
+\label{lim:prop:P-closed}
 For $m\ge1$,
-\begin{equation}\label{eq:P-closed}
+\begin{equation}\label{lim:eq:P-closed}
   P_m(x)=\sum_{j\ge0}\binom{m+j-1}{j}x^{2^j}
   \quad\text{in }\Ftwo[[x]].
 \end{equation}
@@ -411,7 +471,7 @@ Over $\Ftwo[[x]]$, $F=(1+T)^{-1}$.  Therefore
  P_m=(1+T)^{-m}x
  =\sum_{j\ge0}\binom{m+j-1}{j}T^jx,
 \]
-which is~\eqref{eq:P-closed}.  Lucas's theorem, or equivalently the no-carry
+which is~\eqref{lim:eq:P-closed}.  Lucas's theorem, or equivalently the no-carry
 form of Kummer's theorem, says that
 $\binom{m+j-1}{j}$ is odd exactly when the addition of $j$ and $m-1$ has no
 binary carry, namely when $j\band(m-1)=0$; see~\cite{Fine1947}.
@@ -421,13 +481,13 @@ Combining the recurrence with the closed form gives the promised theorem for
 the complete array.
 
 \begin{theorem}[Exact array formula modulo four]
-\label{thm:full-array-formula}
+\label{lim:thm:full-array-formula}
 Let $m\ge1$.
 \begin{enumerate}[label=\textup{(\alph*)}]
 \item If $\wt(N)\ge3$, then $g_m(N)\equiv0\pmod4$.
 \item If $N$ is not a power of two, then $g_m(N)$ is even.
 \item For $N=2^r$,
-\begin{equation}\label{eq:array-power-formula}
+\begin{equation}\label{lim:eq:array-power-formula}
  g_m(2^r)\equiv
  \binom{m+r-1}{r}
  +2\sum_{\ell=1}^{m-1}
@@ -435,12 +495,12 @@ Let $m\ge1$.
  \pmod4.
 \end{equation}
 \item For $N=2^r+2^s$ with $r>s\ge0$, put $d=r-s$ and
-\begin{equation}\label{eq:E-def}
+\begin{equation}\label{lim:eq:E-def}
  E(M,B)=\#\{0\le t\le M:t\band B=0\}\pmod2,
  \qquad E(M,B)=0\text{ for }M<0.
 \end{equation}
 Then
-\begin{equation}\label{eq:array-two-bit-formula}
+\begin{equation}\label{lim:eq:array-two-bit-formula}
   g_m(2^r+2^s)
   \equiv
   2\sum_{i=0}^{s}E(m-2,\,i\bor(i+d))
@@ -450,30 +510,30 @@ Then
 \end{theorem}
 
 \begin{proof}
-By~\eqref{eq:PQ-recurrence},
+By~\eqref{lim:eq:PQ-recurrence},
 $Q_m=\sum_{\ell=0}^{m-1}\mathcal C(P_\ell)$; the $\ell=0$ carry is zero.
 Every $P_\ell$ is supported at one-bit exponents, and every
 $\mathcal C(P_\ell)$ is supported at exponents of weight at most two.
-This proves (a) and (b).  Formula~\eqref{eq:array-power-formula} follows from
-\eqref{eq:carry-one-bit} and \Cref{prop:P-closed}.
+This proves (a) and (b).  Formula~\eqref{lim:eq:array-power-formula} follows from
+\eqref{lim:eq:carry-one-bit} and \Cref{lim:prop:P-closed}.
 
 For a two-bit exponent, substitute $S_\ell$ into
-\eqref{eq:carry-two-bit}.  With $t=\ell-1$, membership of both $i$ and $i+d$
+\eqref{lim:eq:carry-two-bit}.  With $t=\ell-1$, membership of both $i$ and $i+d$
 in $S_\ell$ is equivalent to
 \[
  t\band i=0,
  \qquad t\band(i+d)=0,
 \]
 and hence to $t\band(i\bor(i+d))=0$.  Summing $0\le t\le m-2$ gives
-\eqref{eq:array-two-bit-formula}.
+\eqref{lim:eq:array-two-bit-formula}.
 \end{proof}
 
 \begin{remark}[A logarithmic-time evaluation of $E$]
-\label{rem:E-fast}
-The parity in~\eqref{eq:E-def} can be evaluated without enumeration.  Every
+\label{lim:rem:E-fast}
+The parity in~\eqref{lim:eq:E-def} can be evaluated without enumeration.  Every
 admissible $t\le M$ is either the tight word $t=M$ or has a highest bit $j$ at
 which $M_j=1$ and $t_j=0$.  Hence
-\begin{equation}\label{eq:E-first-difference}
+\begin{equation}\label{lim:eq:E-first-difference}
  E(M,B)=\ind_{M\band B=0}
  \mathbin{\oplus}
  \bigoplus_{\substack{j:M_j=1;\\
@@ -491,13 +551,13 @@ We now set $m=N=n$.
 \subsection{All noninitial diagonal terms are even}
 
 \begin{proposition}[Diagonal parity]
-\label{prop:diagonal-even}
+\label{lim:prop:diagonal-even}
 For every $n>1$, $a(n)$ is even.
 \end{proposition}
 
 \begin{proof}
 If $n$ is not a power of two, this follows from
-\Cref{thm:full-array-formula}(b).  If $n=2^r$ with $r\ge1$, the parity is
+\Cref{lim:thm:full-array-formula}(b).  If $n=2^r$ with $r\ge1$, the parity is
 \[
  \binom{2^r+r-1}{r}\pmod2.
 \]
@@ -509,7 +569,7 @@ $r\band(2^r-1)=r\ne0$.
 \subsection{Powers of two}
 
 \begin{proposition}[The one-bit diagonal]
-\label{prop:power-diagonal}
+\label{lim:prop:power-diagonal}
 For $r\ge1$,
 \[
   a(2^r)\equiv2\pmod4
@@ -523,13 +583,13 @@ For $t=0,1,\ldots,2^r-2$, put
 \[
  N_t=\#\{0\le j\le r:j\band t=0\}.
 \]
-By~\eqref{eq:array-power-formula} and \Cref{prop:diagonal-even}, the second
+By~\eqref{lim:eq:array-power-formula} and \Cref{lim:prop:diagonal-even}, the second
 binary digit of $a(2^r)$ is
 \[
  \sum_{t=0}^{2^r-2}\binom{N_t}{2}\pmod2.
 \]
 Interchange the sum over $t$ with the choice of a pair $0\le i<j\le r$:
-\begin{equation}\label{eq:power-pair-swap}
+\begin{equation}\label{lim:eq:power-pair-swap}
  \sum_{0\le i<j\le r}
  \#\{0\le t\le2^r-2:t\band(i\bor j)=0\}\pmod2.
 \end{equation}
@@ -543,21 +603,21 @@ than $2^r-1$.  This proves the claim.
 
 \subsection{Two-bit exponents}
 
-For $n=2^r+2^s$, $r>s\ge0$, \Cref{thm:full-array-formula} gives the exact
+For $n=2^r+2^s$, $r>s\ge0$, \Cref{lim:thm:full-array-formula} gives the exact
 criterion
-\begin{equation}\label{eq:q-general-diagonal}
+\begin{equation}\label{lim:eq:q-general-diagonal}
  \frac{a(n)}2
  \equiv
  \sum_{i=0}^{s}E(n-2,\,i\bor(i+r-s))
  \pmod2.
 \end{equation}
 The following elementary evaluation is what turns this into
-\Cref{thm:diagonal-classification}.
+\Cref{lim:thm:diagonal-classification}.
 
 \begin{lemma}[A nearly complete binary interval]
-\label{lem:nearly-complete}
+\label{lim:lem:nearly-complete}
 For $s\ge1$ and $B\ge0$,
-\begin{equation}\label{eq:nearly-complete}
+\begin{equation}\label{lim:eq:nearly-complete}
  E(2^s-2,B)=1
  \quad\Longleftrightarrow\quad
  B\bmod2^s\in\{0,2^s-1\}.
@@ -572,17 +632,17 @@ $0\le t\le2^s-2$ removes the all-ones value, and that removed value is
 disjoint from $B$ exactly when the low $s$ bits of $B$ are all $0$.
 \end{proof}
 
-\begin{proof}[Proof of \Cref{thm:diagonal-classification}]
-Parity was proved in \Cref{prop:diagonal-even}.  Exponents with at least three
-binary $1$'s are divisible by $4$ by \Cref{thm:whole-array-support}; powers of
-two were settled in \Cref{prop:power-diagonal}.
+\begin{proof}[Proof of \Cref{lim:thm:diagonal-classification}]
+Parity was proved in \Cref{lim:prop:diagonal-even}.  Exponents with at least three
+binary $1$'s are divisible by $4$ by \Cref{lim:thm:whole-array-support}; powers of
+two were settled in \Cref{lim:prop:power-diagonal}.
 
 Suppose $n=2^r+2^s$, $r>s\ge0$.  If $s=0$, then
-$n-2=2^r-1$ and~\eqref{eq:q-general-diagonal} has the single mask $B=r$.
+$n-2=2^r-1$ and~\eqref{lim:eq:q-general-diagonal} has the single mask $B=r$.
 The count over all $r$-bit values is odd only when $r=2^r-1$, which occurs
 only at $r=1$.  This gives $n=3$.
 The remaining small case $(r,s)=(2,1)$ gives $n=6$ by direct substitution in
-\eqref{eq:q-general-diagonal}.
+\eqref{lim:eq:q-general-diagonal}.
 
 Now assume $r\ge3$ and $s\ge1$, and put $d=r-s$.  Split
 $0\le t\le n-2=2^r+2^s-2$ into
@@ -595,18 +655,18 @@ For $B_i=i\bor(i+d)$, the first block has even cardinality: both $i$ and
 $i+d$ are at most $r$, so $B_i<2^r-1$ when $r\ge3$, and the number of
 $r$-bit values disjoint from $B_i$ is an even power of two.  In the second
 block, bit $r$ of $B_i$ is zero, so the parity is
-$E(2^s-2,B_i)$.  By \Cref{lem:nearly-complete}, this is one exactly when the
+$E(2^s-2,B_i)$.  By \Cref{lim:lem:nearly-complete}, this is one exactly when the
 low $s$ bits of $B_i$ are all zero or all one.  The all-zero case occurs
 exactly when $i=0$ and $d\equiv0\pmod{2^s}$.  The all-one cases are exactly
-the tests in~\eqref{eq:R-def-intro}.  Their XOR is the definition of $R_s$.
+the tests in~\eqref{lim:eq:R-def-intro}.  Their XOR is the definition of $R_s$.
 \end{proof}
 
 \section{Constructing the residue sets}
 
-Definition~\eqref{eq:R-def-intro} already yields an $\Oh(s)$ membership test.
+Definition~\eqref{lim:eq:R-def-intro} already yields an $\Oh(s)$ membership test.
 For enumeration and counting, a symmetric-difference description is more
 convenient.  For $0\le i\le s$, let
-\begin{equation}\label{eq:Dsi}
+\begin{equation}\label{lim:eq:Dsi}
  D_{s,i}=\left\{
   \bigl(((M_s\mathbin{\mathrm{xor}}i)\bor u)-i\bigr)\bmod2^s:
   u\text{ is a bitwise submask of }i
@@ -616,18 +676,18 @@ Here $M_s\mathbin{\mathrm{xor}}i=M_s-i$ because $M_s$ consists entirely of
 $1$'s.
 
 \begin{proposition}[Symmetric-difference construction]
-\label{prop:R-symmetric-difference}
-\begin{equation}\label{eq:R-symmetric-difference}
+\label{lim:prop:R-symmetric-difference}
+\begin{equation}\label{lim:eq:R-symmetric-difference}
   R_s=\{0\}\xor D_{s,0}\xor D_{s,1}\xor\cdots\xor D_{s,s},
 \end{equation}
 where $\xor$ denotes symmetric difference.
 Furthermore,
-\begin{equation}\label{eq:R-card-bound}
+\begin{equation}\label{lim:eq:R-card-bound}
   |R_s|\le1+\sum_{i=0}^{s}2^{\wt(i)}
   \le1+\frac{(s+1)(s+2)}2.
 \end{equation}
 For $s\ge3$, every nonzero $d\in R_s$ satisfies
-\begin{equation}\label{eq:R-min-bound}
+\begin{equation}\label{lim:eq:R-min-bound}
   d\ge2^s-1-2s.
 \end{equation}
 \end{proposition}
@@ -636,18 +696,18 @@ For $s\ge3$, every nonzero $d\in R_s$ satisfies
 Fix $i$.  Put $y=(i+d)\bmod2^s$.  The condition $i\bor y=M_s$ forces all
 zero bits of $i$ to be one in $y$, while the one bits of $i$ are free.
 Thus $y=(M_s\mathbin{\mathrm{xor}}i)\bor u$ with $u$ a submask of $i$.
-This proves~\eqref{eq:R-symmetric-difference}.
+This proves~\eqref{lim:eq:R-symmetric-difference}.
 There are $2^{\wt(i)}$ such submasks.  Since the least nonnegative integer
 with $k$ one-bits is $2^k-1$, one has $2^{\wt(i)}\le i+1$, giving
-\eqref{eq:R-card-bound}.
+\eqref{lim:eq:R-card-bound}.
 Finally, every such $y$ is at least $M_s-i$, so for $s\ge3$,
-$y-i\ge M_s-2s>0$.  This proves~\eqref{eq:R-min-bound}.
+$y-i\ge M_s-2s>0$.  This proves~\eqref{lim:eq:R-min-bound}.
 \end{proof}
 
 \begin{table}[ht]
 \centering
 \caption{The first residue sets and their sizes.}
-\label{tab:residue-sets}
+\label{lim:tab:residue-sets}
 \begin{tabular}{c c l}
 \toprule
 $s$ & $|R_s|$ & $R_s$\\
@@ -664,13 +724,13 @@ $s$ & $|R_s|$ & $R_s$\\
 \end{tabular}
 \end{table}
 
-The lower bound~\eqref{eq:R-min-bound} explains why only small $s$ appear in
+The lower bound~\eqref{lim:eq:R-min-bound} explains why only small $s$ appear in
 the early exception list.  Although $R_s$ is periodic modulo $2^s$, its
 nonzero residues lie in a short interval near the top of that modulus.
 
 \section{The infinite exception sequence}
 
-Applying \Cref{thm:diagonal-classification} gives
+Applying \Cref{lim:thm:diagonal-classification} gives
 \begin{align*}
 &2,3,4,6,20,24,40,68,136,260,520,1028,1032,2056,2064,\\
 &4100,4104,8200,8208,16388,16400,32776,32784,65540,65552,\\
@@ -684,7 +744,7 @@ The next two predictions are
 followed by $2056$ and $2064$.
 
 \begin{corollary}[A compact family description]
-\label{cor:families}
+\label{lim:cor:families}
 For every $r\ge3$,
 \begin{align*}
  a(2^r+4)&\equiv2\pmod4
@@ -699,30 +759,30 @@ period $2^s$.
 \section{How many exceptions are there?}
 
 Define
-\begin{equation}\label{eq:E-X}
+\begin{equation}\label{lim:eq:E-X}
   \mathcal E(X)=\#\{2\le n\le X:a(n)\equiv2\pmod4\}.
 \end{equation}
 The residue classification yields a convergent density constant on the
 logarithmic scale.
 
 \begin{definition}
-\label{def:kappa}
+\label{lim:def:kappa}
 Let
-\begin{equation}\label{eq:kappa}
+\begin{equation}\label{lim:eq:kappa}
   \kappa=\sum_{s\ge1}\frac{|R_s|}{2^s}.
 \end{equation}
-The series converges absolutely by~\eqref{eq:R-card-bound}.
+The series converges absolutely by~\eqref{lim:eq:R-card-bound}.
 \end{definition}
 
 \begin{theorem}[Logarithmic counting law]
-\label{thm:counting-law}
+\label{lim:thm:counting-law}
 As $X\to\infty$,
-\begin{equation}\label{eq:counting-law}
+\begin{equation}\label{lim:eq:counting-law}
   \mathcal E(X)
   =\kappa\log_2X+\Oh\bigl((\log\log X)^3\bigr).
 \end{equation}
 Numerically,
-\begin{equation}\label{eq:kappa-decimal}
+\begin{equation}\label{lim:eq:kappa-decimal}
   \kappa=2.323930059308106\ldots.
 \end{equation}
 \end{theorem}
@@ -732,31 +792,31 @@ First take $X=2^L-1$.  Apart from the four isolated exceptions
 $2,3,4,6$, every exceptional index has the form
 $n=2^{s+d}+2^s$ with $s\ge2$, $d\ge1$, $s+d\le L-1$, and
 $d\bmod2^s\in R_s$.  Hence
-\begin{equation}\label{eq:dyadic-count}
+\begin{equation}\label{lim:eq:dyadic-count}
  \mathcal E(2^L-1)
  =4+\sum_{s=2}^{L-2}
    \#\{1\le d\le L-1-s:d\bmod2^s\in R_s\}.
 \end{equation}
 For fixed $s$ and $Y\ge0$, periodic counting gives
-\begin{equation}\label{eq:periodic-count}
+\begin{equation}\label{lim:eq:periodic-count}
  \#\{1\le d\le Y:d\bmod2^s\in R_s\}
  =\frac{|R_s|}{2^s}Y+\Oh(|R_s|).
 \end{equation}
-By~\eqref{eq:R-min-bound}, a summand is zero once
+By~\eqref{lim:eq:R-min-bound}, a summand is zero once
 $2^s-1-2s>Y$ and $2^s>Y$.  Thus only $s=\Oh(\log L)$ contribute.
-Summing the error in~\eqref{eq:periodic-count} and using
+Summing the error in~\eqref{lim:eq:periodic-count} and using
 $|R_s|=\Oh(s^2)$ gives $\Oh((\log L)^3)$.  Replacing $Y=L-1-s$ by $L$
 changes the main sum by a bounded amount because
-$\sum s|R_s|/2^s$ converges.  The tail of~\eqref{eq:kappa} beyond
+$\sum s|R_s|/2^s$ converges.  The tail of~\eqref{lim:eq:kappa} beyond
 $s=2\lceil\log_2L\rceil$ contributes $o(1)$ after multiplication by $L$.
 This proves
 \[
   \mathcal E(2^L-1)=\kappa L+\Oh((\log L)^3).
 \]
 For arbitrary $X\in[2^L,2^{L+1})$, only exponents with top bit $L$ can be
-added.  Again~\eqref{eq:R-min-bound} restricts their lower-bit positions to
+added.  Again~\eqref{lim:eq:R-min-bound} restricts their lower-bit positions to
 $\Oh(\log L)$ possibilities.  This is absorbed by the same error term, and
-$L=\log_2X+\Oh(1)$ proves~\eqref{eq:counting-law}.
+$L=\log_2X+\Oh(1)$ proves~\eqref{lim:eq:counting-law}.
 
 For the decimal, summing through $s=64$ gives
 \[
@@ -764,7 +824,7 @@ For the decimal, summing through $s=64$ gives
  =\frac{10717235762314325637}{4611686018427387904}
  =2.323930059308106699\ldots.
 \]
-From~\eqref{eq:R-card-bound}, the remaining tail is at most
+From~\eqref{lim:eq:R-card-bound}, the remaining tail is at most
 \[
  \sum_{s>64}\frac{1+(s+1)(s+2)/2}{2^s}
  =\frac{64^2+7\cdot64+16}{2^{65}}
@@ -775,11 +835,21 @@ From~\eqref{eq:R-card-bound}, the remaining tail is at most
 \begin{remark}
 The exceptional set has natural density zero for the trivial reason that it
 is contained in the integers of binary weight at most two.  Theorem
-\ref{thm:counting-law} is sharper: among the $\asymp(\log X)^2$ integers of
+\ref{lim:thm:counting-law} is sharper: among the $\asymp(\log X)^2$ integers of
 binary weight two below $X$, only $\asymp\log X$ are exceptional.
 \end{remark}
 
 \section{Independent exact verification}
+\label{lim:sec:verification}
+
+\emph{[Write note, batch 73O1.]} By default the program writes into the
+\texttt{data/} directory beside its own parent directory, so a run in the
+collection would overwrite the shipped records; its option
+\texttt{--root} selects another directory. The README gives a rerun on a
+copy. The file \texttt{data/verification\_run.txt} is the captured
+standard output of the recorded run, which prints the same JSON record;
+it is byte-identical to \texttt{data/verification.json}.
+
 
 The archive contains \texttt{code/verify\_a168362.py}.  It uses only the
 Python standard library and has two deliberately separate layers.
@@ -792,10 +862,10 @@ iterate $256$, it checks:
   \item the diagonal classification;
   \item divisibility by $4$ at every exponent of binary weight at least three;
   \item the parity formula at powers of two;
-  \item the exact two-bit formula~\eqref{eq:array-two-bit-formula}.
+  \item the exact two-bit formula~\eqref{lim:eq:array-two-bit-formula}.
   \end{itemize}
 \item It independently regenerates the sets $R_s$ from the symmetric
-  difference~\eqref{eq:R-symmetric-difference}, the first exceptions through
+  difference~\eqref{lim:eq:R-symmetric-difference}, the first exceptions through
   $10^7$, and the partial sum for $\kappa$.
 \end{enumerate}
 
@@ -816,7 +886,7 @@ and writes the machine-readable files
 
 \section{What the result says about the ratio conjecture}
 
-The congruence theorem does not prove~\eqref{eq:ratio-conj}; the arithmetic
+The congruence theorem does not prove~\eqref{lim:eq:ratio-conj}; the arithmetic
 and asymptotic questions live at different scales.  Still, a few rigorous
 comparisons and numerical observations help delimit the next problem.
 
@@ -830,7 +900,7 @@ coefficients.  Since
   H^{\circ n}(x)=\frac{x}{1-nx},
 \]
 we obtain
-\begin{equation}\label{eq:upper-bound}
+\begin{equation}\label{lim:eq:upper-bound}
   a(n)\le n^{n-1}.
 \end{equation}
 The lower comparator
@@ -842,7 +912,7 @@ interpretation: $\coef{k}{B^{\circ n}(x)}$ counts words of length $k-1$ on
 $[n]$ in which two occurrences of $i$ are separated by a larger letter
 \cite{OEIS-A122888}.  Every word of length $n-1$ with distinct letters is
 admissible, and there are $n!$ such words.  Therefore
-\begin{equation}\label{eq:basic-growth-bounds}
+\begin{equation}\label{lim:eq:basic-growth-bounds}
   n!\le b(n)\le a(n)\le n^{n-1}.
 \end{equation}
 In particular,
@@ -860,7 +930,7 @@ Here
 \begin{table}[ht]
 \centering
 \caption{Numerical orientation for the unresolved ratio problem.}
-\label{tab:ratio-data}
+\label{lim:tab:ratio-data}
 \begin{tabular}{rcc}
 \toprule
 $n$ & $R_n$ & $C_n$\\
@@ -875,12 +945,18 @@ $n$ & $R_n$ & $C_n$\\
 \bottomrule
 \end{tabular}
 \end{table}
+\emph{[Write note, batch 73O1.]} \Cref{lim:tab:ratio-data} is not
+produced by the shipped verifier, and no program that produced it was
+delivered; it is numerical orientation only. The intake recomputed the row
+$n=20$ exactly and agrees to all printed digits; the other rows were not
+reproduced.
+
 The ratio data strongly support the OEIS conjecture, but the slow drift of
 $C_n$ does not distinguish a finite limiting constant from a slowly varying
 factor.  This motivates the following deliberately cautious refinement.
 
 \begin{conjecture}[Refined diagonal asymptotic]
-\label{conj:refined-asymptotic}
+\label{lim:conj:refined-asymptotic}
 There is a positive slowly varying function $L(n)$ such that
 \[
   a(n)=n^{n-2}L(n),
@@ -906,13 +982,13 @@ lift from $\mathbb F_2$ coefficients to $\mathbb Z/4\mathbb Z$.
 first formalization, this can be replaced by an induction on repeated
 squaring modulo $4$, avoiding a general multinomial valuation library.
 \item Define the carry transform $\mathcal C$ on finite truncations and prove
-\Cref{prop:one-step-lift}.
+\Cref{lim:prop:one-step-lift}.
 \item Prove $(1+T)^{-m}$ coefficient extraction and discharge the parity
 condition with the existing Lucas-theorem infrastructure, or with a direct
 bit-carry lemma.
-\item Prove \Cref{thm:full-array-formula} and then the three diagonal cases.
+\item Prove \Cref{lim:thm:full-array-formula} and then the three diagonal cases.
 \item Define $R_s$ as a finite set and prove equivalence of
-\eqref{eq:R-def-intro} and~\eqref{eq:R-symmetric-difference}.
+\eqref{lim:eq:R-def-intro} and~\eqref{lim:eq:R-symmetric-difference}.
 \item Formalize the counting theorem separately; it uses only elementary
 periodic counting and geometric-series tail bounds.
 \end{enumerate}
@@ -922,6 +998,7 @@ symbolic; computation is useful only as regression protection and for printing
 examples.
 
 \section{Further research questions and topics}
+\label{lim:sec:questions}
 
 \begin{question}[The ratio conjecture]
 Prove $a(n+1)/a(n)\sim en$.  Determine whether $a(n)/n^{n-2}$ converges, and
@@ -953,11 +1030,11 @@ Study the sequence $|R_s|$ and the two-parameter predicate
 $d\bmod2^s\in R_s$.  Is the resulting set two-automatic in a suitable paired
 encoding of $(s,d)$?  Can $\kappa$ be represented as the value of a rational
 or algebraic generating function, rather than only as the rapidly convergent
-series~\eqref{eq:kappa}?
+series~\eqref{lim:eq:kappa}?
 \end{question}
 
 \begin{question}[Other diagonals]
-Use \Cref{thm:full-array-formula} to classify
+Use \Cref{lim:thm:full-array-formula} to classify
 \[
   \coef{n}{F^{\circ(n+c)}(x)}\pmod4
 \]
@@ -984,6 +1061,11 @@ an interval-product identity between factorial ratios.  Controlling the total
 number of nontrivial collisions, rather than only individual collision
 families, remains an attractive Diophantine-asymptotic problem.
 \end{question}
+
+\emph{[Write note, batch 73O1.]} The last question is an aside: A086753
+has no connection with A168362 or with the methods of this report. The
+conjectural asymptotic $(n^2+6n-12)/12$ in that OEIS entry is Vladimir
+Reshetnikov's.
 
 \section{Conclusion}
 
@@ -1025,6 +1107,16 @@ $\kappa=\sum_{s\ge1}|R_s|/2^s=2.323930059308106\ldots$.
 \end{quote}
 
 \section{Artifact inventory}
+\label{lim:app:inventory}
+
+\emph{[Write note, batch 73O1.]} In the collection, \texttt{article.tex}
+is the delivered source with prefixed labels and these notes,
+\texttt{article.pdf} is a build of it, and \texttt{README.md} is the
+collection README;
+the delivered PDF and README, a file list \texttt{MANIFEST.txt} and the
+checksum list \texttt{SHA256SUMS.txt} are not shipped. The other files
+below are shipped under the names shown, byte-identical to the delivery.
+
 
 The accompanying archive contains:
 \begin{center}
