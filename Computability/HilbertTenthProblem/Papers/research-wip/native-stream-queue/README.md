@@ -14,10 +14,12 @@ Three independent full integration reviews passed; this is a mathematical
 proof with symbolic and finite checks, not a Lean formalization.
 
 The separate universal polynomial bound is **87=48M+39A operations**,
-with19 positive witnesses and exact degree203; see the
-[normalized strong-witness proof](complete75_normalized_strong87.md).
-The88-operation degree151 construction remains a lower-degree alternative.
-The latest
+with19 positive witnesses and exact degree169; see the
+[asymmetric-scale proof](complete75_asymmetric_scale_tradeoffs.md).
+The88-operation alternative has exact degree125. Each source has a full
+positive-zero bijection to its frozen parent, with both ratios and the
+strong equation retained.
+The preceding
 [complete fixed-table matrix compiler](group_projective_label_aligned_lanes.md)
 has an illustrative **228-operation certificate / 245-operation polynomial
 (104M+141A), 6 equations, 36 positive witnesses and degree3504**. The
@@ -26,21 +28,84 @@ numerical universal alphabet remains uninstantiated. Mortality now has
 [a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
 the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
-The separate [three-core normalized GPCP compiler](gpcp_normalized_strong_compiler.md)
-has57 physical tiles and a paid ordinary-input bridge:
-**734 certificate /805=352M+453A polynomial operations**,24 comparisons,
-125 positive witnesses, three positive program parameters and degree205092.
-Supplying the initial history value gives808 operations,25 comparisons,
-126 witnesses and degree8532. A [fixed rule permutation](gpcp_ordered_sparse_tm.md)
-first saves two additions, then three normalized strong witnesses save
-three polynomial operations while retaining the separate history checksum.
-The unnormalized ordered808/degree130394 and supplied811/degree5204
-versions remain lower-degree alternatives. The [sparse810 predecessor](gpcp_sparse_tm_compiler.md)
-and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
-remain reproducible. These are alternative universal bounds above75/87;
-the matrix alphabet remains abstract.
+The [shared-selector sparse-TM/GPCP compiler](gpcp_shared_selectors774.md)
+gives **703 certificate /774=352M+422A polynomial operations**,
+24 comparisons,125 positive witnesses, three positive program parameters,
+ordinary positive input and exact degree205092. Supplying the initial
+history value gives777=353M+424A,25 comparisons,126 witnesses and exact
+degree8532. A disjoint cover by25 already-paid scalar registers saves31
+additions from the [normalized805/808 parent](gpcp_normalized_strong_compiler.md).
+Both complete polynomials, domains and program numerals remain identical
+to their respective parents. The actual57-tile U15,2 compiler and input
+bridge are retained. These are separate universal bounds above75/87;
+no arithmetic-circuit optimum is claimed.
 
-The latest explicit [terminal-bound U9 polynomial](neary_woods_universal_terminal_bound255.md)
+The [asymmetric squared-scale refutation](complete75_asymmetric_squared_scale_refutation.md)
+shows why deleting the remaining cube does not yield a new86-operation
+bound. Both resulting normalized86 and ordinary87 sources accept every
+positive input on every actual modified compiler slice, including a
+fixed empty-language program. The construction uses the actual masks,
+aligns the half-binomial index R, and supplies all nineteen positive
+coordinates, including the shared-gamma split. These particular shortcuts
+are refuted; the sound75/87 results above are unchanged.
+
+The [asymmetric linear-input and positive-gap search](complete75_asymmetric_linear_gap_tradeoffs.md)
+extends X=wq to ten more factor/comparison bases and eleven frozen direct
+schedules. Its union with the [three-base grouping family](complete75_asymmetric_factor_partitions.md)
+has the exact operation/degree frontier **87/169,88/125,89/113,90/109,
+91/104,92/92,93/72,94/62,95/60,96/50,97/48,98/44**, with19 positive
+witnesses. The proof establishes computed auxiliary positivity before
+using its Pell index and restores w_old=w_new/q² as a positive integer.
+Each direct scale transfer is a full positive-zero bijection with its
+own frozen parent; every grouping preserves its fixed base's positive
+zeros. The ten-base search exhausts20,474 partitions and102,902
+SOS/anchor choices. These are exact finite-family degrees and optima,
+not unrestricted arithmetic or universal-degree lower bounds.
+
+The latest [product-scale group compiler](group_projective_product_radix_scale.md)
+saves one multiplication by using q=32BP^a to type both history radices,
+then simplifying the top AND mask to2. The illustrative ten-letter table
+has **227 certificate /244=103M+141A operations**,6 comparisons,36 witnesses
+and degree at most3396. It preserves the complete fixed-table accepted
+relation with fresh native witnesses. The numerical universal subgroup
+alphabet remains uninstantiated, so244 is not a numerical universal bound.
+
+The latest [product-scale U9 polynomial](neary_woods_universal_product_scale253.md)
+gives **252 certificate /253=132M+121A operations**, one comparison,
+43 positive witnesses, four fixed program parameters and degree at most1147.
+Its paid product b*P^9 types both history radices; fixed top tags2,1 let a
+private multiplication disappear. The same valid ordinary-input relation
+is proved with fresh private native witnesses, without a same-tuple claim.
+The [exact sixteen-base partition search](neary_woods_universal_product_scale_partitions.md)
+gives the frontier253/1147,255/1013,256/967,257/710,258/664,259/488,
+261/372,263/302,264/272,265/228,266/212. The first seven use43 witnesses;
+the rest44. The finite propagated-objective floors are372 with43 witnesses
+and212 overall, attained at261 and266 operations. Fixed45 ends269/212.
+These optimize the stated finite objective, not exact degree or all circuits.
+
+The preceding [paid native bound](neary_woods_universal_native_bound254.md)
+gives254/1203 by reusing r=(q-1)S in X=q(S+beta)>r. Its triangular
+coordinate map is a positive-zero bijection on valid slices. The preceding
+[complete native-bound repartitioning](neary_woods_universal_native_bound_partitions.md)
+reaches258/742 and fixed43-witness259/696, ending262/392 with43 witnesses
+or266/212 with44. Those sources and their original scope remain unchanged.
+
+The preceding explicit [language-bound U9 polynomial](neary_woods_universal_initial_bound254.md)
+gives **253 certificate /254=133M+121A polynomial operations**,
+one comparison,43 positive witnesses, four positive program parameters
+and degree **at most1379**. The supplied height is used directly. Native
+typing first recovers the initial residue; the bounded zero runs of the
+actual valid input word then exclude radix wraparound. The inverse parent
+height gap is at least2 at valid zeros, giving a positive-zero bijection
+on those slices. The paid ordinary-input loader and duration floor remain
+unchanged. The [new exact finite partition search](neary_woods_universal_initial_bound_partitions.md)
+checks every factor partition and allowed anchor in all sixteen inherited
+bases. Six operation counts gain smaller degree bounds, including
+**258/854**, **262/408** and **265/228**. Endpoints remain **266/212 with44
+witnesses**, or **262/456 with43**. The degree212 floor applies only to
+this propagated-bound objective; it is not a global circuit lower bound.
+
+The preceding explicit [terminal-bound U9 polynomial](neary_woods_universal_terminal_bound255.md)
 gives **254 certificate /255=133M+122A polynomial operations**,
 one comparison,43 positive witnesses, four positive program parameters
 and degree **at most1384**. Only the initial word remains in the paid
@@ -135,6 +200,17 @@ two input classes modulo4 are excluded. The latter is a scoped necessary
 condition, not a blanket theorem for other even-width input bridges.
 The established75/87 constructions and distinct86 statuses remain unchanged.
 
+The [positive-complement86 all-input collapse](complete75_positive_complement86_all_input_collapse.md)
+refutes that candidate on actual modified helical compiler slices: it accepts
+**every positive input**, including input1 for the exact rejecting compiler.
+A coprime prime progression, CRT, irrational rotation and the complete
+normalized auxiliary lift specify all19 positive coordinates, with all eight
+factors1, R>q^4,C=0 and negative reconstructed F. This is an existence
+proof with finite algebra/congruence checks, not a materialized giant zero.
+The earlier [scalar obstruction](complete75_positive_complement86_obstruction.md)
+and its exact ratio certificate remain unchanged. Candidate86=48M+38A,
+degree203 is not a universal bound; the established75/87 results are intact.
+
 A different [multiplicative-gamma86 shortcut](complete75_multiplicative_gamma86_obstruction.md)
 replaces gamma=rho+sigma by rho*sigma and costs86=48M+38A with19 witnesses.
 Its valid compiler slices are **EMPTY**, including accepted inputs: a
@@ -189,7 +265,147 @@ with44 witnesses; the fixed43-witness family reaches272/1344. These
 remain optima only for the stated finite propagated-degree objective.
 The established75/87 frontier is unchanged.
 
-The independent [U21 counter-unit compiler](korec_packed_counter_units.md)
+The latest [repunit-factored U21 compiler](korec_packed_repunit376.md)
+gives **375 certificate /376=143M+233A operations**, one comparison,
+50 positive witnesses, one fixed program parameter and degree at most21549.
+Factoring the eight-register repunit saves two operations (+2M,−4A)
+from the [selector-pair378 source](korec_packed_selector_sharing378.md),
+with exactly the same integer polynomial and supplied coordinates.
+The separate two-program interface gives **375=144M+231A**, degree at most40706.
+The [complete transported factor frontier](korec_packed_repunit_partitions.md)
+reaches **384/7704 with50 witnesses** or **387/3896 with51**; corresponding
+two-program endpoints are383/14552 and386/7352. Every allowed grouping
+and anchor saves two operations with unchanged degree dictionaries.
+These are exact finite propagated minima, not exact degrees or unrestricted
+lower bounds. Across strong/scale bases, the accepted outer relation is
+preserved by explicit scale maps and canonical private strong extensions.
+
+The [global-bound unit Tseytin compiler](tseytin_global_bound_unit385.md)
+gives **374 certificate /385=178M+207A operations**, four comparisons,
+62 positive witnesses, one fixed positive program parameter and ordinary
+positive input, with degree at most4714. The preceding
+[shared-offset identity](tseytin_shared_offsets386.md) first reduces387
+to386 by reusing a paid selector prefix, with identical complete polynomials.
+The385 step then turns the global bound comparison into a unit factor.
+Before its sign is known, the ten positive ports still fit the scalar
+lanes. Reserved binary digits exclude the negative native index, which
+forces the global unit to+1. Adding1 to the global-bound witness is a
+full positive-zero bijection with386 on valid program slices; the inverse
+is strictly positive. This step changes the polynomial off zero.
+
+The [four-base global/equality factor family](tseytin_global_unit_factor_partitions.md)
+gives the operation/degree-bound frontier **385/4714,386/4134,387/4132,
+388/2900,390/2210,392/1664**, with62 witnesses throughout. It retains
+both normalized/ordinary strong treatments and both global-bound forms.
+The387/4132 point keeps the old equality. Each fixed base has the same
+full supplied positive zero set across groupings; global forms use the
+proved one-unit slack shift, while strong treatments may require fresh
+five-coordinate extensions. The finite propagated objectives are exact
+within these bases; the bounds are not exact expanded degrees or global
+circuit lower bounds.
+
+The preceding [permuted-digit Tseytin construction](tseytin_permuted_digits387.md) gives
+**373 certificate /387=179M+208A operations**, five comparisons,
+62 positive witnesses, one fixed positive program parameter, ordinary
+positive input, and degree at most4712. It uses the actual fixed C2
+semigroup with five generators and nine relations. Assign a,b,c,d,e,#
+the digits0,3,1,2,4,5 and sort copy tiles by descending digit. The
+[zero-a388 step](tseytin_zero_a388.md) makes the shared aaa offset
+vanish and computes copy offsets with four paid-prefix additions.
+The final permutation makes one common offset1 and pairs commuting-rule
+corrections, saving one further multiplication after its full correction
+cost. The query and program numeral are recompiled; binary zero runs
+have length at most10, within the16-bit margin, and both wrong-power
+residues stay nonzero. Native pretyping precedes height recovery and
+chronological word extraction. Recoded histories and fresh native witnesses
+preserve accepted inputs; no same-tuple identity across encodings is claimed.
+
+The [387 factor-partition family](tseytin_permuted_factor_partitions.md)
+gives the operation/degree-bound frontier **387/4712,388/4132,390/2900,
+392/2210,394/1664**, with62 witnesses throughout. Both strong bases are
+rebuilt from the complete source. The ordinary proof uses pretyping
+implicit fields and X>r, then restores only five private coordinates.
+Every factor is+1 on valid recompiled program slices, so all groupings
+preserve the full positive zero set within each base. Across strong bases,
+keep existential equivalence with fresh private extensions. These are
+exact finite optima of propagated bounds, not exact expanded universal
+degrees or unrestricted lower bounds.
+
+The [120-permutation search](tseytin_zero_a_permutation_search.md)
+keeps a=0, permutes the other five digits and sorts copy tiles by digit.
+It emits every complete circuit within one explicit shared-offset and
+correction-group architecture. Its exact minimum is387, attained by16
+permutations. The proof and literal source counts agree for all120;
+loader residues and the zero-run bound are checked for every encoding.
+This is a finite architecture optimum, not an unrestricted circuit bound.
+
+The preceding [388 partition family](tseytin_zero_a_factor_partitions.md)
+runs388/4712 through395/1664; the [399 family](tseytin_computed_factor_partitions.md)
+runs399/4712 through406/1664 on its earlier encoding. The
+[paid-prefix395 step](tseytin_copy_prefix395.md) saves four
+multiplications by a whole-polynomial identity; the
+[zero-delimiter394 alternative](tseytin_zero_delimiter394.md)
+recodes only # and saves one further addition. The387 separate-power
+form costs389 with degree bound4752; its merged and separate SOS forms
+have bounds9396 and9288 at their respective operation counts.
+The [425 baseline](tseytin_universal425.md) pays the52-operation
+exponent relation and ten-gate query loader. Intermediate savings include
+[shared repunits](tseytin_repunit_sharing418.md),
+[recovered endpoint bounds](tseytin_free_height415.md), the
+[product scale](tseytin_product_scale412.md),
+[computed fields and the factored index](tseytin_computed_fields401.md),
+and [adjacent update coefficients](tseytin_adjacent_coefficients399.md).
+The older [425 partition family](tseytin_universal_factor_partitions.md)
+remains frozen at425/5868 through432/2012, with65 witnesses.
+
+Effective group embedding and the primary Tseytin reduction compile
+every c.e. positive set into one program numeral, with no alphabet-size
+bound. The external embedding algorithm and full giant Pell witnesses
+are not numerically materialized. The
+[group-completion obstruction](tseytin_group_completion_obstruction.md)
+remains valid: direct invertible-matrix interpretations collapse this
+semigroup. The construction retains its noninvertible rewrite history
+and pays its ordinary-input loader. The overall75/87 operation bounds
+are unchanged.
+
+The [independent gamma-period audit](complete75_independent_gamma87_local_filters.md)
+reimplements the already established Lucas filter with three comparison
+states and checks coarse prime-power caps. The earlier compiler/order
+packet has stronger parity/mod3 bounds. The audit's additional main-kernel
+fixture R=753407,q=32 certifies a=6 modulo7 and a=31 modulo127. On any actual
+history with these residues,7 divides the period gcd and five-power-width
+aliases must respect x=x0 modulo7.
+This is not an actual compiled history or a full false-input zero; the
+independent-gamma87 candidate remains unresolved and the75/87 bounds hold.
+
+The preceding [combined-range U21 compiler](korec_packed_zero_range397.md)
+gives **396 certificate /397=141M+256A operations**, one comparison,
+50 positive witnesses, one fixed program parameter and degree at most21549.
+The two-program radix interface gives **396=142M+254A**, degree at most40706.
+A selected zero branch clears one register from the counter range mask;
+the global scalar bound uses that same narrower mask before native typing.
+One submask then enforces both range and zero tests. Specialized port
+factoring and the paid scale B*P^35 save eight gates from the
+[minimal-radix405/404 parent](korec_packed_minimal_radix405.md).
+The [factored406/405 predecessor](korec_packed_factored_ports406.md)
+saves four additions by an identical-polynomial rewrite; the later radix
+and mask changes preserve accepted ordinary inputs with fresh private
+witnesses. The one- and two-program interfaces remain distinct.
+
+The preceding [positive-program U21 compiler](korec_packed_positive_program410.md)
+gives **409 certificate /410=147M+263A polynomial operations**, one
+comparison,50 witnesses, one fixed program parameter and degree at most42589.
+Exact symbolic loops show that programs0 and2 both diverge on every input;
+the effective replacement0→2 permits a positive program coordinate and
+removes its private subtraction. The direct proof includes height slack1.
+A [fixed program-radix tradeoff](korec_packed_program_radix409.md)
+uses **two fixed program parameters** E,C and gives **408 certificate
+/409=148M+261A operations**, the same50 witnesses and uniform degree at
+most80458. Fix dyadic C>=4 with C>E, then use h=x+eta,D=Ch. One C serves
+all ordinary inputs; the proof includes h=2. Fixed-C algebraic maps may
+leave the positive domain and do not assert identical supplied zeros.
+
+The preceding [U21 counter-unit compiler](korec_packed_counter_units.md)
 gives **410 certificate /411=147M+264A polynomial operations**, one
 comparison,50 positive witnesses and degree **at most42589**. Its literal
 strongly universal table uses one positive program parameter and ordinary
@@ -210,7 +426,26 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
-The latest [terminal-bound sparse compiler](residue_affine_sparse_terminal537.md)
+The latest single-program-parameter [coded sparse compiler](residue_affine_sparse_control_codes.md)
+gives **485 certificate /505=177M+328A polynomial operations**,
+seven comparisons,67 positive witnesses and degree **at most5091**.
+Injective state codes reuse paid prime/action selector sums and two partial
+sums in the target expression, saving32 gates across the complete control
+transport. After unchanged native typing, coded digit equality is exactly
+the original state chronology. The complete supplied positive zero set
+agrees with537, including arbitrary positive program/input parameters;
+the fixed recipe E=3^e retains universality on ordinary positive x.
+
+A separate [program-radix tradeoff](residue_affine_sparse_program_radix504.md)
+uses **two fixed program parameters** E,C and gives **484 certificate
+/504=177M+327A polynomial operations**, seven comparisons,67 witnesses
+and uniform degree **at most5160**. Fix dyadic C>=64 with C>E=3^e;
+then h=x+eta and B=Ch remove one addition. The same C works for every
+ordinary input of that program. Direct soundness and completeness include
+h=2 and a positive packed slack; the supplied positive zero sets are not
+claimed identical. The505 option above retains its one-parameter interface.
+
+The preceding [terminal-bound sparse compiler](residue_affine_sparse_terminal537.md)
 gives **517 certificate /537=193M+344A polynomial operations**,
 seven comparisons,67 positive witnesses and degree **at most5091**.
 It removes the final payload F from the height: h=E+x+eta. Native typing
@@ -594,7 +829,7 @@ The [local target CRT theorem](complete75_linear_strong87_target_crt.md)
 shows that the weakened linear-strength auxiliary system admits arbitrary
 positive targets, including R=p+4 within the preliminary first-index
 bounds. These are not full polynomial zeros. The87-operation candidate
-of degree183 remains unresolved; the established87/degree203 theorem
+of degree183 remains unresolved; the historical87/degree203 theorem
 retains its full strong equation.
 
 The [signed-projection refinement](complete75_signed_projection_elimination101.md)
@@ -1461,7 +1696,7 @@ geometry halving is assumed universally. The composition separates fresh
 positive geometry witnesses from an exact packing identity. These
 illustrations do not instantiate the universal alphabet or improve75/87.
 
-The latest [label-aligned lane planner](group_projective_label_aligned_lanes.md)
+The preceding [label-aligned lane planner](group_projective_label_aligned_lanes.md)
 keeps m fixed and chooses among at most six storage injections, paying
 all new packing gates and retaining the preceding source if none is
 cheaper. Physical edge IDs, action order, state flow, masks and scales
@@ -1510,7 +1745,7 @@ The packet imports the named257/283 factored-index illustration; composing
 with the shifted-quotient theorem gives the280-operation illustration,
 and the shared-history/strong-unit successors give279 at degree3502.
 The joint-bound/shared-flow composition gave276 and the idle-free stage
-gave261. The latest lane-planning compiler retains245 at degree3504
+gave261. The preceding lane-planning compiler retains245 at degree3504
 under the same existence equivalence.
 This uniform existence reduction does not certify a separately supplied
 arbitrary mortality word or fix its duration and reset positions.
@@ -1529,7 +1764,7 @@ exactly the universal endpoint query. The scalar values differ from the
 older rank-nine series, so that rank bound does not apply.
 
 The6D packet keeps its named279-operation endpoint import stable. The
-latest245 compiler also composes with its existence theorem; this transfers a
+preceding245 compiler also composes with its existence theorem; this transfers a
 paid endpoint predicate, not a certificate for an arbitrary supplied6D
 word, duration or reset placement. No mortality-dimension minimum or
 smaller numerical75/87 bound is asserted.
@@ -1662,7 +1897,22 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
-| [Label-aligned controller lanes](group_projective_label_aligned_lanes.md) | Latest fixed-m planner retains the ten-letter245 default; nonaligned8 improves242 to227, unbalanced12 improves273 to270, reversed16 improves294 to281. | Storage lanes alone are permuted; physical word/state flow stay fixed. Fresh native witnesses prove input equivalence; distinct tables are not universal numerical instances. |
+| [Actual positive-complement86 collapse](complete75_positive_complement86_all_input_collapse.md) | The specific86-operation candidate accepts every positive input on every actual modified compiler slice. | Full19-positive-coordinate existence proof and exact rejecting-program corollary; Dirichlet/CRT/rotation plus complete normalized lift. No giant zero materialized;75/87 unchanged. |
+| [Two more paid U21 selector pairs](korec_packed_selector_sharing378.md) | **378=141M+237A**,50w,one program,degree at most21549; two-program377/40706. | Two exact1A prefix replacements retain complete integer polynomials, supplied coordinates and degree dictionaries. |
+| [Shifted U21 factor frontier](korec_packed_selector_reuse_partitions.md) | **386/7704 with50w or389/3896 with51w**; two-program385/14552 or388/7352. | All68 parent group-count winners lose2A; unchanged weights transport exact finite optima and attained floors. |
+| [Exact U21 selector reuse](korec_packed_selector_sharing380.md) | **380=141M+239A**,50w,one program,degree at most21549; two-program379/40706. | Five paid disjoint control sums save17 additions with identical whole polynomials and supplied positive zero sets. |
+| [Complete U21 factor partitions](korec_packed_factor_partitions.md) | **388/7704 with50w or391/3896 with51w**; two-program387/14552 or390/7352. | Four complete strong/scale bases per interface, exact finite partitions/anchors and attained propagated floors. Same-base supplied zeros; cross-base accepted-input equivalence. |
+| [Literal Tseytin word-table obstruction](tseytin_group_completion_obstruction.md) | Numerical five-generator/nine-relation universal word substrate; exact effective primary query map. | Universal group is trivial, so direct invertible-matrix substitution loses the language. Raw positional loader is exponential; no paid universal arithmetic count. |
+| [Independent gamma-period audit and7 fixture](complete75_independent_gamma87_local_filters.md) | Three-state reimplementation of the prior Lucas filter; R753407/q32 certifies a7-local order divisor. | Earlier parity/mod3 caps are stronger. Fixture meets main-kernel prerequisites only; no actual history/full false zero; independent-gamma87 remains unresolved. |
+| [Combined U21 range/zero mask](korec_packed_zero_range397.md) | **397=141M+256A**,1eq50w,one program,degree at most21549; two-program396/40706. | Narrow the global bound to the zero-cleared mask before native typing, specialize A=Z+4, and use paid B*P^35. Accepted-input equivalence with fresh native witnesses. |
+| [Minimal U21 time radix](korec_packed_minimal_radix405.md) | One-program405/36165; two-program404/68314; both50w. | B=D^8 deletes one M; paid S supplies X=q(S+beta). Direct chronology and fresh extension; bound-only triangular map applies at the new B. |
+| [Exact U21 port factorization](korec_packed_factored_ports406.md) | One-program406; two-program405; four additions saved. | Complete polynomial identity on identical integer coordinates; same degree dictionaries and supplied positive zeros. |
+| [Product U9 history scale](neary_woods_universal_product_scale253.md) | **253=132M+121A**,1eq43w,four program parameters,degree at most1147. | Paid b*P^9 and top tags2,1; pretyping/sign proof precedes dyadic factor recovery. Fresh private joint-native extension. |
+| [Exact U9 product-scale partitions](neary_woods_universal_product_scale_partitions.md) | **253/1147 to261/372 with43w;266/212 with44w**. New partition gains257/710,258/664. | All sixteen bases and all partitions/anchors,480 literal ledgers. Finite propagated-objective floors372 and212; no exact-degree or global lower-bound claim. |
+| [Exact U9 native-bound partitions](neary_woods_universal_native_bound_partitions.md) | Historical254/1203,258/742,259/696 with43w; floors392 fixed43 and212 overall. | Exhaustive sixteen-base predecessor before the product-scale change; original sources remain unchanged. |
+| [Positive q-F coordinate obstruction](complete75_positive_complement86_obstruction.md) | Candidate86=48M+38A,19w,degree203; not a universal bound. | Infinite complete positive scalar-contract zeros with R>q^4,C=0 and negative restored F. Exact ratio certificate and canonical auxiliary lift. Historical scalar scope; the separate successor above proves an actual all-input collapse. |
+| [Product native group scale](group_projective_product_radix_scale.md) | Illustrative **227 certificate /244=103M+141A**,6eq36w,degree at most3396; aligned8 gives226/2132. | Prescribed q=32BP^a types B,P before the top AND test. One M saved; same fixed-table input predicate with fresh native witnesses. Numerical universal alphabet remains uninstantiated. |
+| [Label-aligned controller lanes](group_projective_label_aligned_lanes.md) | Preceding fixed-m planner retains the ten-letter245 default; nonaligned8 improves242 to227, unbalanced12 improves273 to270, reversed16 improves294 to281. | Storage lanes alone are permuted; physical word/state flow stay fixed. Fresh native witnesses prove input equivalence; distinct tables are not universal numerical instances. |
 | [Radix4 input recoder](native_binary_input_dilation129.md) | Complete129=65M+64A relation,49 positive witnesses,34 equations; polynomial230,degree40. | Weaker raw geometry uses J>=9,J>q directly. Different function and polynomial from radix16/130. |
 | [Norm-unit input recoder](native_binary_input_dilation_unit179.md) | Radix4:135 certificate /179=86M+93A polynomial,15 comparisons,36 witnesses,degree186; keeping P gives182/degree132. Radix16:180/degree240. | Exact positive coordinate bijections; strong auxiliary comparisons retained. Genericwidth polynomial178+mu(k),degree27k+132. Degree40 parents remain alternatives. |
 | [Uniform selected affine-pair history](pcp_uniform_affine_pair_history.md) | Complete arbitrary positive-duration word certificate H,19 comparisons,3s+26 witnesses; polynomial H+56,degree24N+16 for either paid layout. | Fixed positive slopes/nonnegative offsets; example161/217 is not a universal tile table. No external word typing or geometry remains. |
@@ -1680,7 +1930,12 @@ New research and the completed75-operation construction:
 | [Explicit U15 universal tag polynomial](neary_woods_universal_tag557.md) | **483 certificate /557=351M+206A polynomial**,25eq,69w,five positive program parameters; degree at most496070855427922989652813345268287100. | Fixed binary table and production, effective ordinary-input slices, exact counter and complete positive native converse. Huge fixed numerals have exact recipes;75/87 unchanged. |
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
+| [Positive U21 program index](korec_packed_positive_program410.md) | **409 certificate /410=147M+263A**,1eq50w,one fixed program parameter,degree at most42589. | Symbolic nonhalting loops justify replacing index0 by2; a positive direct program coordinate removes one subtraction. Direct proof at height slack1. |
+| [Fixed U21 program radix](korec_packed_program_radix409.md) | **408 certificate /409=148M+261A**,1eq50w,two fixed program parameters E,C,uniform degree at most80458. | C dyadic>=4,C>E gives h=x+eta,D=Ch. Direct h=2 soundness and completeness at fixed C; one-parameter410 remains distinct. |
 | [U21 counter chronology units](korec_packed_counter_units.md) | **410 certificate /411=147M+264A**,1eq50w,one positive program parameter plus raw x,degree at most42589; SOS412/85178. | Literal strongly universal21-instruction table; shared control codes, positive computed truth fields and three signed transport/range factors with complete positive converse. |
+| [Paid U9 native bound](neary_woods_universal_native_bound254.md) | **253 certificate /254=133M+121A**,1eq43w,four program parameters,degree at most1203. Mapped43w examples258/756,260/514,262/392. | Reuse r=(q-1)S to set X=q(S+beta)>r. Triangular positive-zero bijection on valid slices; eight supported bases; the separate native-bound and product-scale partition packets above now optimize the changed weights. |
+| [Reoptimized U9 initial-bound partitions](neary_woods_universal_initial_bound_partitions.md) | **254/1379/43w to266/212/44w**; improved258/854,261/454,262/408,263/302,264/272,265/228. Fixed43 ends262/456. | Exact finite objective across sixteen bases, every disjoint factor partition and optional anchor;480 literal ledgers across both bound interfaces. Propagated degree bounds only, not a global circuit optimum. |
+| [Recovered U9 initial bound](neary_woods_universal_initial_bound254.md) | **253 certificate /254=133M+121A**,1eq43w,four program parameters,degree at most1379; mapped266/212/44w and262/456/43w. | Native typing and the actual input language exclude radix wraparound; a triangular coordinate map gives a positive-zero bijection on valid slices. Historical mapped schedules; the linked partition packet above reoptimizes the finite family. |
 | [Derived U9 terminal bounds](neary_woods_universal_terminal_bound255.md) | **254 certificate /255=133M+122A**,1eq43w,four positive program parameters,degree at most1384; inherited frontier267/212/44w, fixed43w263/456. | Typed updates and chronological transports force terminal digits below the radix. Initial-only height, direct valid-slice soundness and positive completeness; no positive inverse claim. |
 | [Dominated U9 endpoint height](neary_woods_universal_height256.md) | **255 certificate /256=133M+123A**,1eq43w,four positive program parameters,degree at most1384; inherited frontier268/212/44w, fixed43w264/456. | Terminal endpoint domination deletes one height addition. Direct soundness and positive completeness on valid shifted slices; exact integer affine identity, without a positive inverse claim. |
 | [Positive U9 history scale](neary_woods_universal_history_scale257.md) | **256 certificate /257=133M+124A**,1eq43w,four positive program parameters,degree at most1384. | History scale becomes the positive global sum; native typing precedes the repunit sign proof. beta_new=beta_parent+1 is a positive-zero bijection on valid program/input slices; no arbitrary-point identity. |
@@ -1689,6 +1944,8 @@ New research and the completed75-operation construction:
 | [Shifted U9 program offset](neary_woods_universal_offset258.md) | **257 certificate /258=133M+125A**,1eq43w,four positive program parameters,degree at most3861; mapped269/608/44w and266/1344/43w. | E'=E−1 changes valid program recipes; accepted ordinary inputs preserved, not an all-tuple positive bijection. Selected mapped family only. |
 | [U9 lower-history unit](neary_woods_universal_lower_unit259.md) | **258 certificate /259=133M+126A**,1eq43w,four positive program parameters,degree at most3861. | Same supplied coordinates and positive zeros on valid program/input slices; negative lower sign contradicts the actual sentinel suffix. |
 | [All-factor U9 history-unit partitions](neary_woods_universal_history_unit_partitions.md) | Older-E frontier259/3861/43w;266/1106,267/1060,268/738,270/608 with44w. Fixed43w reaches267/1344. | Exact finite32-base partition/anchor objective, including optional lower unit; no automatic transfer to the new E' interface or global arithmetic optimum. |
+| [Fixed sparse program radix](residue_affine_sparse_program_radix504.md) | **484 certificate /504=177M+327A**,7eq67w, two fixed program parameters E,C plus raw x,uniform degree at most5160. | C dyadic>=64 and C>E=3^e permits h=x+eta, B=Ch. One C serves all inputs; direct soundness/completeness includes h=2. A parameter tradeoff, not an identical supplied-zero-set rewrite. |
+| [Paid sparse control codes](residue_affine_sparse_control_codes.md) | **485 certificate /505=177M+328A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Reuse paid selector sums and prefixes in injective current/target codes. Complete control cost106→74; identical positive zeros with537 after unchanged typing and exact chronology. |
 | [Derived sparse terminal bound](residue_affine_sparse_terminal537.md) | **517 certificate /537=193M+344A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Initial-only height h=E+x+eta; typed payload transport derives F below the radix. Positive parent extension and direct soundness preserve the universal relation; inverse height gap may be nonpositive. |
 | [Positive computed sparse scale](residue_affine_sparse_scale538.md) | **518 certificate /538=193M+345A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Local native power recovery precedes the Mersenne repunit sign proof. Identical positive zeros with540; actual U21 and paid input/control/payload chronology. |
 | [Dominated sparse bounds](residue_affine_sparse_bound540.md) | **517 certificate /540=193M+347A**,8eq67w,degree at most10052. | Eleven additions removed using nonnegative domination and the retained remainder equation before typing. Same-form positive-zero slack bijection with551; inverse may be nonpositive off zero. |
@@ -1772,7 +2029,7 @@ New research and the completed75-operation construction:
 | [Complete binary input recoder](native_binary_input_dilation130.md) | Complete130=67M+63A relation,49 positive witnesses,34 equations; polynomial231,degree40. | Exact polynomial identity with132 parent. Paid radix16 primitive used by the separate complete GPCP composition. |
 | [Idle-free macro paths](group_projective_idle_free_paths.md) | Every nonempty table can remove edge0 after frozen padding. Default244 certificate / 261=113M+148A polynomial,6 equations,36 witnesses,degree3504. | Exact parent specialization; same input projection needs fresh shorter histories and native witnesses. Full m-lane geometry remains; empty tables keep the parent. |
 | [Frozen duplicate idle lanes](group_projective_frozen_idle_padding.md) | Saves at least2k operations and k witnesses for k redundant idle lanes. Default247 certificate / 264=113M+151A polynomial,6 equations,37 witnesses,degree3504. | Both repunit/packing plans are paid; completeness relabels idles to edge0 and rebuilds the native extension. Numerical75/87 unchanged. |
-| [4D weighted-reset mortality](group_weighted_reset_mortality4.md) | Unrestricted mortality with one rank-one nonnegative quadratic input matrix loaded in3=2M+1A. | Whole-space bridge scalars prevent independent block erasure. Stable279 endpoint import; latest245 composes only for existence. |
+| [4D weighted-reset mortality](group_weighted_reset_mortality4.md) | Unrestricted mortality with one rank-one nonnegative quadratic input matrix loaded in3=2M+1A. | Whole-space bridge scalars prevent independent block erasure. Stable279 endpoint import; preceding245 composes only for existence. |
 | [5D affine alternating-block mortality](group_affine_bipartite_mortality5.md) | Unrestricted mortality with one rank-two nonnegative affine input matrix loaded in2=1M+1A. | Arbitrary-word parity formulas handle singular input letters. No free word restriction, minimality claim or separate supplied-word certificate. |
 | [Shared flow target](group_projective_shared_flow_target.md) | Saves1A whenever a macro has length at least3, with every retained residual and output polynomial identical. Joint default259 certificate / 276=117M+159A polynomial,6 equations,42 witnesses,degree3504. | Complete fixed-table theorem; numerical universal alphabet remains uninstantiated and75/87 unchanged. |
 | [Joint-bound unit](group_projective_joint_bound_unit.md) | One further polynomial addition saved: default260/277,6 equations,42 witnesses,degree3504 before shared-flow composition. | Native sign/population proof restores the scalar bound on the same positive coordinate vector. |
@@ -1830,6 +2087,19 @@ New research and the completed75-operation construction:
 | [Regular macro controller](group_regular_macro_controller.md) | **7m+3h+p+60**,25 equations,m+22 auxiliaries; pays edge typing, ordered adjacency and physical selectors. | Its component theorem assumes dyadic B,P; the complete compiler supplies them independently. |
 | [Canonical matrix history47](group_four_register_canonical_history47.md) | **47=15M+32A**,21 history fields, five equations; one global bound recovers every history digit. | Selected products, regular control and geometry are supplied by the complete compiler. |
 | [Binary AND and selected-source successor63](native_binary_masked_selection63.md) | AND63/64; eight selections117/119. Exclusive prescribed batch119 uses23 auxiliaries and17 equations. | Canonical zero digits are allowed. The exclusive completeness bound is proved from the actual small history digits and mutual exclusion. |
+| [Asymmetric linear-input/gap exact frontier](complete75_asymmetric_linear_gap_tradeoffs.md) | **89/113,90/109,92/92,94/62,95/60,96/50,97/48,98/44** join the frozen87/169,88/125,91/104,93/72 points;19w. | Ten explicit bases; computed-y positivity before the auxiliary index; complete positive-zero bijections and exact finite SOS/anchor degrees. |
+| [Global-bound unit C2 compiler](tseytin_global_bound_unit385.md) | **374 certificate /385=178M+207A**,4eq,62w,degree at most4714. | Reserved low bits exclude the negative index before fixing the global unit; full positive-zero bijection with386 shifts one witness by1. |
+| [Global/equality C2 factor frontier](tseytin_global_unit_factor_partitions.md) | **385/4714,386/4134,387/4132,388/2900,390/2210,392/1664**,62w. | Four complete bases; same-base supplied zeros, positive global-slack shift, and fresh strong extensions as needed. |
+| [Shared-offset C2 identity](tseytin_shared_offsets386.md) | **372 certificate /386=178M+208A**,5eq,62w,degree at most4712. | Reuse a paid selector subtotal; identical complete integer polynomials, coordinates and program recipe with387. |
+| [Shared-selector sparse-TM compiler](gpcp_shared_selectors774.md) | **703 certificate /774=352M+422A**,24eq,125w,exact degree205092; supplied777/126w/8532. | A25-block disjoint cover of57 selectors saves31 additions; exact complete polynomial identity with normalized805/808. |
+| [Asymmetric squared-scale refutation](complete75_asymmetric_squared_scale_refutation.md) | Specified86/87 shortcuts accept every input of every actual modified compiler. | Actual masks, main-index alignment and all nineteen positive coordinates; no new universal bound. |
+| [Permuted-digit C2 compiler](tseytin_permuted_digits387.md) | **373 certificate /387=179M+208A**,5eq,62w,one recompiled program numeral,degree at most4712. | Pair equal commutation corrections and remove a common multiplier1; preserve universal inputs by literal recoding and fresh native extensions. |
+| [Permuted-digit C2 factor frontier](tseytin_permuted_factor_partitions.md) | **387/4712,388/4132,390/2900,392/2210,394/1664**,62w. | Exact finite propagated-bound objective with full positive-zero equality within each fixed strong base on valid recompiled slices. |
+| [Zero-a digit architecture search](tseytin_zero_a_permutation_search.md) | **387 minimum among120 emitted circuits,16 minimizers**. | Same positive-digit set and sorted-copy order; explicit shared-offset/grouped-correction architecture, paid loader and all120 valid-program proofs. |
+| [Zero-a C2 compiler](tseytin_zero_a388.md) | **374 certificate /388=180M+208A**,5eq,62w,one recompiled program numeral,degree at most4712. | Reverse copy order; eliminate zero aaa offset; prove query zero-run10 and unchanged sign residues, then recode finite histories. |
+| [Zero-a C2 factor frontier](tseytin_zero_a_factor_partitions.md) | **388/4712,389/4132,391/2900,393/2210,395/1664**,62w. | Guard complete native/field ancestry; exact finite propagated-bound objective, full positive zeros within each strong base on valid slices. |
+| [Exact asymmetric grouping frontier](complete75_asymmetric_factor_partitions.md) | **91/degree104,93/degree72,95/degree64**,19 witnesses. | Exhaust all three guarded bases and every SOS/anchor partition; exact degrees and full positive-zero equality within each base. |
+| [Asymmetric complete87/88 scales](complete75_asymmetric_scale_tradeoffs.md) | **87/degree169** or **88/degree125**,19 positive witnesses. | Keep Y=sq³ and use X=wq. Main power recovery makes the exact inverse w_old=w_new/q² a positive integer; each full positive zero set is in bijection with its frozen parent. |
 | [Normalized strong-witness universal polynomial](complete75_normalized_strong87.md) | **87=48M+39A**,19 positive witnesses,degree203. | Positive embedding into coupled88 and canonical reconstruction preserve the full ordinary-input projection. All packed bounds, both ratios and the full strong square remain proved. The88/151 alternative has lower degree. |
 | [Coupled index/linear universal polynomial](complete75_coupled_index_linear88.md) | **88=47M+41A**, 19 positive witnesses and exact degree151. One shared expression saves a subtraction; a compiler-mask population contradiction excludes the extra sign. | Positive zero-set equivalence uses the full compiled mask contract. The75 comparison bound and89/135 tradeoff remain separate. |
 | [Coupled-unit degree tradeoffs](complete75_coupled88_degree_tradeoffs.md) | **91/degree130** and **93/degree90**, each with19 positive witnesses and identical positive zeros to coupled88. | Exact partition bounds concern the seven fixed factors with the full strong equation retained separately. The compiler-specific sign proof is inherited intact. |

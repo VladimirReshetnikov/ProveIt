@@ -1,5 +1,10 @@
 # Deriving the terminal radix bounds gives255 operations
 
+> The [initial-language successor](neary_woods_universal_initial_bound254.md)
+> gives254 operations and degree at most1379 with the same43 witnesses.
+> Its valid-word zero-run bound recovers the initial height condition and
+> gives a positive-zero bijection on valid slices; this255 theorem remains.
+
 The [literal source](neary_woods_universal_terminal_bound255.py) removes one
 more height addition from the [256-operation compiler](neary_woods_universal_height256.md).
 The default complete polynomial costs **255=133M+122A**, with **43 positive

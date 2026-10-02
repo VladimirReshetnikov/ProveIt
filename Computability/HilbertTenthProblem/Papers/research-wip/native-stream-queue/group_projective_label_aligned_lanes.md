@@ -1,5 +1,10 @@
 # Label-aligned controller lanes within the existing geometry
 
+> The [product-scale successor](group_projective_product_radix_scale.md)
+> saves one multiplication in the canonical nonempty joint family. Its
+> ten-letter illustrative ledger is244/degree-at-most3396; the numerical
+> universal subgroup alphabet remains uninstantiated.
+
 The controller's packed lane order need not match its physical edge-ID
 order. This packet chooses among finitely many lane assignments, pays
 their complete packing expressions, and retains the

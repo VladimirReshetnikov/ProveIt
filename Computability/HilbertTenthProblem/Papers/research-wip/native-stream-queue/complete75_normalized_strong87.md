@@ -1,5 +1,11 @@
 # A normalized strong auxiliary witness gives 87 operations
 
+> The [asymmetric-scale successor](complete75_asymmetric_scale_tradeoffs.md)
+> retains the87/88 operation counts and19 witnesses while lowering their
+> exact degrees to169/125. Each successor has a full positive-zero bijection
+> to its respective parent. The source and degree analysis below remain
+> the reproducible historical construction.
+
 > Another rejected shortcut, [reusing H as the input modulus](complete75_input_modulus_register_obstruction.md),
 > keeps87 operations and formally lowers degree to187 but leaves every
 > valid compiler slice empty. Its scoped modulo-eight tests for eight

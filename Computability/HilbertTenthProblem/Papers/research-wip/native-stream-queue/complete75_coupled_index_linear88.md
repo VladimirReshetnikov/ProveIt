@@ -1,5 +1,11 @@
 # Coupled index and linear units give an 88-operation universal polynomial
 
+> The [asymmetric-scale successor](complete75_asymmetric_scale_tradeoffs.md)
+> retains the87/88 operation counts and19 witnesses while lowering their
+> exact degrees to169/125. Each successor has a full positive-zero bijection
+> to its respective parent. The source and degree analysis below remain
+> the reproducible historical construction.
+
 For every computably enumerable set of positive integers, the fixed
 complete75 compiler now gives a single integer polynomial evaluated by
 **88=47 multiplications+41 additions/subtractions**, with **19 strictly

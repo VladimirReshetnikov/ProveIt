@@ -1,5 +1,10 @@
 # Deriving the terminal digit bound gives sparse universality in537 operations
 
+> The [coded-control successor](residue_affine_sparse_control_codes.md)
+> gives505 operations with the same67 witnesses, seven comparisons and
+> degree bound5091. Paid selector sharing changes only the state codes;
+> after typing, its supplied positive zeros agree with this537 construction.
+
 The [literal source](residue_affine_sparse_terminal537.py) improves the
 [538-operation sparse compiler](residue_affine_sparse_scale538.md) to
 **537=193M+344A**, with **67 positive witnesses**, **seven comparisons**

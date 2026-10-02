@@ -1,0 +1,616 @@
+{
+  "status": "PASS_PELL_FIXED_AFFINE_EXPONENT52",
+  "ledger": {
+    "operations": 52,
+    "multiplications": 31,
+    "additions_subtractions": 21,
+    "certificate": 51,
+    "certificate_multiplications": 31,
+    "certificate_additions": 20,
+    "equations": 1,
+    "witnesses": 12,
+    "parameters": 1,
+    "degree_bound": 54
+  },
+  "sos_ledger": {
+    "operations": 53,
+    "multiplications": 32,
+    "additions_subtractions": 21,
+    "certificate": 51,
+    "certificate_multiplications": 31,
+    "certificate_additions": 20,
+    "equations": 1,
+    "witnesses": 12,
+    "parameters": 1,
+    "degree_bound": 108
+  },
+  "parameters": [
+    "x"
+  ],
+  "auxiliaries": [
+    "delta",
+    "s",
+    "eta",
+    "zeta",
+    "g",
+    "gamma",
+    "f",
+    "i",
+    "j",
+    "o",
+    "y",
+    "h"
+  ],
+  "interfaces": {
+    "input": "x",
+    "power": "Q",
+    "exponent": "r"
+  },
+  "source": [
+    [
+      "r",
+      "*",
+      48,
+      "x"
+    ],
+    [
+      "Q",
+      "+",
+      "r",
+      "delta"
+    ],
+    [
+      "X",
+      "*",
+      2,
+      "Q"
+    ],
+    [
+      "E",
+      "*",
+      "X",
+      "s"
+    ],
+    [
+      "k",
+      "+",
+      "eta",
+      "zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "s"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "eta"
+    ],
+    [
+      "a",
+      "+",
+      "E",
+      "s"
+    ],
+    [
+      "four_a",
+      "*",
+      4,
+      "a"
+    ],
+    [
+      "H",
+      "+",
+      "four_a",
+      3
+    ],
+    [
+      "a2",
+      "*",
+      "a",
+      "a"
+    ],
+    [
+      "Delta",
+      "+",
+      "a2",
+      "H"
+    ],
+    [
+      "ac",
+      "*",
+      "a",
+      "c"
+    ],
+    [
+      "gammaH",
+      "*",
+      "gamma",
+      "H"
+    ],
+    [
+      "L",
+      "+",
+      "X",
+      "gammaH"
+    ],
+    [
+      "D",
+      "+",
+      "L",
+      "ac"
+    ],
+    [
+      "D2",
+      "*",
+      "D",
+      "D"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "Delta_c2",
+      "*",
+      "Delta",
+      "c2"
+    ],
+    [
+      "N1",
+      "-",
+      "D2",
+      "Delta_c2"
+    ],
+    [
+      "g2",
+      "*",
+      "g",
+      "g"
+    ],
+    [
+      "first_base",
+      "*",
+      "E",
+      "kY"
+    ],
+    [
+      "g_minus_k",
+      "-",
+      "g",
+      "k"
+    ],
+    [
+      "first_cross",
+      "*",
+      "first_base",
+      "g_minus_k"
+    ],
+    [
+      "four_cross",
+      "*",
+      4,
+      "first_cross"
+    ],
+    [
+      "N0",
+      "+",
+      "g2",
+      "four_cross"
+    ],
+    [
+      "t",
+      "*",
+      "i",
+      "c2"
+    ],
+    [
+      "t2",
+      "*",
+      "t",
+      "t"
+    ],
+    [
+      "strong_Q",
+      "*",
+      "Delta",
+      "t2"
+    ],
+    [
+      "f2",
+      "*",
+      "f",
+      "f"
+    ],
+    [
+      "Ns",
+      "-",
+      "f2",
+      "strong_Q"
+    ],
+    [
+      "aux_K",
+      "*",
+      "Delta",
+      "strong_Q"
+    ],
+    [
+      "of",
+      "*",
+      "o",
+      "f"
+    ],
+    [
+      "V",
+      "+",
+      "of",
+      "c"
+    ],
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "aux_gap",
+      "-",
+      "V2",
+      "y2"
+    ],
+    [
+      "aux_product",
+      "*",
+      "aux_K",
+      "aux_gap"
+    ],
+    [
+      "N3",
+      "+",
+      "aux_product",
+      "y2"
+    ],
+    [
+      "hE",
+      "*",
+      "h",
+      "E"
+    ],
+    [
+      "K",
+      "-",
+      "k",
+      "hE"
+    ],
+    [
+      "Nk",
+      "-",
+      "K",
+      "r"
+    ],
+    [
+      "jc",
+      "*",
+      "j",
+      "c"
+    ],
+    [
+      "linear_gap",
+      "-",
+      "jc",
+      "V"
+    ],
+    [
+      "twice_K",
+      "+",
+      "K",
+      "K"
+    ],
+    [
+      "Nl",
+      "+",
+      "linear_gap",
+      "twice_K"
+    ],
+    [
+      "factor_product_1",
+      "*",
+      "N0",
+      "N1"
+    ],
+    [
+      "factor_product_2",
+      "*",
+      "factor_product_1",
+      "Ns"
+    ],
+    [
+      "factor_product_3",
+      "*",
+      "factor_product_2",
+      "N3"
+    ],
+    [
+      "factor_product_4",
+      "*",
+      "factor_product_3",
+      "Nk"
+    ],
+    [
+      "factor_product_5",
+      "*",
+      "factor_product_4",
+      "Nl"
+    ],
+    [
+      "output",
+      "-",
+      "factor_product_5",
+      1
+    ]
+  ],
+  "output": "output",
+  "source_sha256": "5b2c61f5145f530f8566be20b3964df3c5e309c12f3969fdf234b77aa12bcff7",
+  "exact_factor_degrees": {
+    "N0": 5,
+    "N1": 7,
+    "Ns": 14,
+    "N3": 22,
+    "Nk": 3,
+    "Nl": 3
+  },
+  "symbolic_factor_identities": 6,
+  "main_cancellation_identity": true,
+  "assignments": 256,
+  "signed": 128,
+  "complete_outputs": 512,
+  "pretyping_bound_cases": 1560,
+  "no_p_less_E_corner": {
+    "r": 48,
+    "E": 98,
+    "p_candidate": 99,
+    "first_wrapped_index": 147
+  },
+  "plus_quotient_identity_cases": [
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      9
+    ],
+    [
+      2,
+      13
+    ],
+    [
+      2,
+      17
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      3,
+      9
+    ],
+    [
+      3,
+      13
+    ],
+    [
+      3,
+      17
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      4,
+      9
+    ],
+    [
+      4,
+      13
+    ],
+    [
+      4,
+      17
+    ],
+    [
+      5,
+      5
+    ],
+    [
+      5,
+      9
+    ],
+    [
+      5,
+      13
+    ],
+    [
+      5,
+      17
+    ],
+    [
+      6,
+      5
+    ],
+    [
+      6,
+      9
+    ],
+    [
+      6,
+      13
+    ],
+    [
+      6,
+      17
+    ],
+    [
+      7,
+      5
+    ],
+    [
+      7,
+      9
+    ],
+    [
+      7,
+      13
+    ],
+    [
+      7,
+      17
+    ],
+    [
+      8,
+      5
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      8,
+      13
+    ],
+    [
+      8,
+      17
+    ],
+    [
+      9,
+      5
+    ],
+    [
+      9,
+      9
+    ],
+    [
+      9,
+      13
+    ],
+    [
+      9,
+      17
+    ]
+  ],
+  "canonical_main": [
+    {
+      "x": 1,
+      "epsilon": 1,
+      "r": 48,
+      "effective_r": 48,
+      "first_index": 49,
+      "main_index": 97,
+      "positive_coordinates": true,
+      "first_main_index_equalities": true,
+      "Q_bits": 97,
+      "Y_bits": 4657,
+      "c_bits": 456385,
+      "coordinate_bits": {
+        "x": 1,
+        "delta": 96,
+        "s": 4657,
+        "eta": 451724,
+        "zeta": 451728,
+        "g": 451729,
+        "gamma": 451631,
+        "h": 446976
+      },
+      "scope": "Actual first/main coordinates for the indicated signed branch, not a full large auxiliary zero."
+    },
+    {
+      "x": 1,
+      "epsilon": -1,
+      "r": 48,
+      "effective_r": 46,
+      "first_index": 47,
+      "main_index": 93,
+      "positive_coordinates": true,
+      "first_main_index_equalities": true,
+      "Q_bits": 93,
+      "Y_bits": 4279,
+      "c_bits": 402225,
+      "coordinate_bits": {
+        "x": 1,
+        "delta": 92,
+        "s": 4279,
+        "eta": 397942,
+        "zeta": 397946,
+        "g": 397947,
+        "gamma": 397853,
+        "h": 393576
+      },
+      "scope": "Actual first/main coordinates for the indicated signed branch, not a full large auxiliary zero."
+    }
+  ],
+  "canonical_auxiliary": [
+    {
+      "A": 2,
+      "p": 5,
+      "m": 2090,
+      "positive_five_coordinates": true,
+      "three_auxiliary_equations": true,
+      "coordinate_bits": {
+        "f": 3970,
+        "i": 3954,
+        "j": 15880,
+        "o": 11917,
+        "y": 15887
+      },
+      "scope": "Local plus-congruence auxiliary block; not a full x>=1 source zero."
+    },
+    {
+      "A": 3,
+      "p": 5,
+      "m": 11890,
+      "positive_five_coordinates": true,
+      "three_auxiliary_equations": true,
+      "coordinate_bits": {
+        "f": 30237,
+        "i": 30215,
+        "j": 120946,
+        "o": 90720,
+        "y": 120957
+      },
+      "scope": "Local plus-congruence auxiliary block; not a full x>=1 source zero."
+    },
+    {
+      "A": 4,
+      "p": 5,
+      "m": 39050,
+      "positive_five_coordinates": true,
+      "three_auxiliary_equations": true,
+      "coordinate_bits": {
+        "f": 116248,
+        "i": 116222,
+        "j": 464990,
+        "o": 348754,
+        "y": 465002
+      },
+      "scope": "Local plus-congruence auxiliary block; not a full x>=1 source zero."
+    }
+  ],
+  "rejected_mutations": 9,
+  "theorem": "Every positive x has a positive zero; computed Q=8^(32*x) at every positive zero.",
+  "signed_projection": "If the six-factor product is epsilon in {-1,1}, Q=2^(96*x+2*epsilon-2).",
+  "scope": "Paid exponent component with fresh witnesses; no universal compiler count or full giant Pell materialization."
+}

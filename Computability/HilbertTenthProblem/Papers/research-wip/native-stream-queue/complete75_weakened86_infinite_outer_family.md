@@ -212,7 +212,11 @@ Both ratio slacks are consequently positive:
 The source's first-root slack is also positive:
 
     tau_gap=chi_P(n)-XY^2*k
-           =2psi_P(n)-psi_P(n-1)>0.                    (13)
+           =psi_P(n)-psi_P(n-1)>0.                     (13)
+
+Here k=2psi_P(n) and P-1=2XY^2; substituting
+chi_P(n)=P*psi_P(n)-psi_P(n-1) gives the displayed difference.
+Strict growth of the positive Pell sequence proves its positivity.
 
 Equations(7),(12),(13) pay the actual first/main norms and positive
 outer coordinates, not just formal real asymptotics. Together with(4),

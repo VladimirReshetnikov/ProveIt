@@ -1,0 +1,507 @@
+{
+  "status": "PASS_PELL_FIXED_AFFINE_EXPONENT",
+  "ledger": {
+    "operations": 53,
+    "multiplications": 31,
+    "additions_subtractions": 22,
+    "certificate": 52,
+    "certificate_multiplications": 31,
+    "certificate_additions": 21,
+    "equations": 1,
+    "witnesses": 12,
+    "parameters": 1,
+    "degree_bound": 54
+  },
+  "sos_ledger": {
+    "operations": 54,
+    "multiplications": 32,
+    "additions_subtractions": 22,
+    "certificate": 52,
+    "certificate_multiplications": 31,
+    "certificate_additions": 21,
+    "equations": 1,
+    "witnesses": 12,
+    "parameters": 1,
+    "degree_bound": 108
+  },
+  "parameters": [
+    "x"
+  ],
+  "auxiliaries": [
+    "delta",
+    "s",
+    "eta",
+    "zeta",
+    "g",
+    "gamma",
+    "f",
+    "i",
+    "j",
+    "o",
+    "y",
+    "h"
+  ],
+  "interfaces": {
+    "input": "x",
+    "power": "Q",
+    "exponent": "r"
+  },
+  "source": [
+    [
+      "r_scaled",
+      "*",
+      48,
+      "x"
+    ],
+    [
+      "r",
+      "+",
+      "r_scaled",
+      15
+    ],
+    [
+      "Q",
+      "+",
+      "x",
+      "delta"
+    ],
+    [
+      "X",
+      "*",
+      2147483648,
+      "Q"
+    ],
+    [
+      "E",
+      "*",
+      "X",
+      "s"
+    ],
+    [
+      "k",
+      "+",
+      "eta",
+      "zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "s"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "eta"
+    ],
+    [
+      "a",
+      "+",
+      "E",
+      "s"
+    ],
+    [
+      "four_a",
+      "*",
+      4,
+      "a"
+    ],
+    [
+      "H",
+      "+",
+      "four_a",
+      3
+    ],
+    [
+      "a2",
+      "*",
+      "a",
+      "a"
+    ],
+    [
+      "Delta",
+      "+",
+      "a2",
+      "H"
+    ],
+    [
+      "ac",
+      "*",
+      "a",
+      "c"
+    ],
+    [
+      "gammaH",
+      "*",
+      "gamma",
+      "H"
+    ],
+    [
+      "L",
+      "+",
+      "X",
+      "gammaH"
+    ],
+    [
+      "D",
+      "+",
+      "L",
+      "ac"
+    ],
+    [
+      "D2",
+      "*",
+      "D",
+      "D"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "Delta_c2",
+      "*",
+      "Delta",
+      "c2"
+    ],
+    [
+      "N1",
+      "-",
+      "D2",
+      "Delta_c2"
+    ],
+    [
+      "g2",
+      "*",
+      "g",
+      "g"
+    ],
+    [
+      "first_base",
+      "*",
+      "E",
+      "kY"
+    ],
+    [
+      "g_minus_k",
+      "-",
+      "g",
+      "k"
+    ],
+    [
+      "first_cross",
+      "*",
+      "first_base",
+      "g_minus_k"
+    ],
+    [
+      "four_cross",
+      "*",
+      4,
+      "first_cross"
+    ],
+    [
+      "N0",
+      "+",
+      "g2",
+      "four_cross"
+    ],
+    [
+      "t",
+      "*",
+      "i",
+      "c2"
+    ],
+    [
+      "t2",
+      "*",
+      "t",
+      "t"
+    ],
+    [
+      "strong_Q",
+      "*",
+      "Delta",
+      "t2"
+    ],
+    [
+      "f2",
+      "*",
+      "f",
+      "f"
+    ],
+    [
+      "Ns",
+      "-",
+      "f2",
+      "strong_Q"
+    ],
+    [
+      "aux_K",
+      "*",
+      "Delta",
+      "strong_Q"
+    ],
+    [
+      "of",
+      "*",
+      "o",
+      "f"
+    ],
+    [
+      "V",
+      "-",
+      "of",
+      "c"
+    ],
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "aux_gap",
+      "-",
+      "V2",
+      "y2"
+    ],
+    [
+      "aux_product",
+      "*",
+      "aux_K",
+      "aux_gap"
+    ],
+    [
+      "N3",
+      "+",
+      "aux_product",
+      "y2"
+    ],
+    [
+      "hE",
+      "*",
+      "h",
+      "E"
+    ],
+    [
+      "K",
+      "-",
+      "k",
+      "hE"
+    ],
+    [
+      "Nk",
+      "-",
+      "K",
+      "r"
+    ],
+    [
+      "jc",
+      "*",
+      "j",
+      "c"
+    ],
+    [
+      "linear_gap",
+      "-",
+      "V",
+      "jc"
+    ],
+    [
+      "twice_K",
+      "+",
+      "K",
+      "K"
+    ],
+    [
+      "Nl",
+      "+",
+      "linear_gap",
+      "twice_K"
+    ],
+    [
+      "factor_product_1",
+      "*",
+      "N0",
+      "N1"
+    ],
+    [
+      "factor_product_2",
+      "*",
+      "factor_product_1",
+      "Ns"
+    ],
+    [
+      "factor_product_3",
+      "*",
+      "factor_product_2",
+      "N3"
+    ],
+    [
+      "factor_product_4",
+      "*",
+      "factor_product_3",
+      "Nk"
+    ],
+    [
+      "factor_product_5",
+      "*",
+      "factor_product_4",
+      "Nl"
+    ],
+    [
+      "output",
+      "-",
+      "factor_product_5",
+      1
+    ]
+  ],
+  "output": "output",
+  "source_sha256": "c9b8997d4ffa78bd885b958fe9f47085b47d6012e043228897addc17c656d65c",
+  "exact_factor_degrees": {
+    "N0": 5,
+    "N1": 7,
+    "Ns": 14,
+    "N3": 22,
+    "Nk": 3,
+    "Nl": 3
+  },
+  "symbolic_factor_identities": 6,
+  "main_cancellation_identity": true,
+  "assignments": 256,
+  "signed": 128,
+  "complete_outputs": 512,
+  "sign_residues": 512,
+  "pretyping_bound_cases": 258,
+  "modular_recurrences": 640,
+  "canonical_main": [
+    {
+      "x": 1,
+      "r": 63,
+      "p": 127,
+      "all_main_coordinates_positive": true,
+      "first_main_index_equalities": true,
+      "Q_bits": 97,
+      "Y_bits": 8002,
+      "c_bits": 1024255,
+      "first_index": 64,
+      "main_index": 127,
+      "Y_valuation": 6,
+      "witness_bit_lengths": {
+        "x": 1,
+        "delta": 96,
+        "s": 8002,
+        "eta": 1016249,
+        "zeta": 1016253,
+        "g": 1016254,
+        "gamma": 1016126,
+        "h": 1008126
+      },
+      "scope": "Actual main/first coordinates; normalized auxiliary coordinates not materialized."
+    }
+  ],
+  "canonical_auxiliary": [
+    {
+      "A": 3,
+      "p": 3,
+      "m": 210,
+      "positive_five_coordinates": true,
+      "three_auxiliary_relations": true,
+      "bit_lengths": {
+        "f": 534,
+        "i": 522,
+        "j": 1066,
+        "o": 539,
+        "y": 1072
+      },
+      "scope": "Local normalized auxiliary block, not a full x>=1 gadget zero."
+    },
+    {
+      "A": 4,
+      "p": 3,
+      "m": 378,
+      "positive_five_coordinates": true,
+      "three_auxiliary_relations": true,
+      "bit_lengths": {
+        "f": 1125,
+        "i": 1111,
+        "j": 2249,
+        "o": 1131,
+        "y": 2255
+      },
+      "scope": "Local normalized auxiliary block, not a full x>=1 gadget zero."
+    },
+    {
+      "A": 5,
+      "p": 3,
+      "m": 594,
+      "positive_five_coordinates": true,
+      "three_auxiliary_relations": true,
+      "bit_lengths": {
+        "f": 1964,
+        "i": 1948,
+        "j": 3928,
+        "o": 1971,
+        "y": 3934
+      },
+      "scope": "Local normalized auxiliary block, not a full x>=1 gadget zero."
+    },
+    {
+      "A": 6,
+      "p": 3,
+      "m": 858,
+      "positive_five_coordinates": true,
+      "three_auxiliary_relations": true,
+      "bit_lengths": {
+        "f": 3067,
+        "i": 3050,
+        "j": 6133,
+        "o": 3074,
+        "y": 6140
+      },
+      "scope": "Local normalized auxiliary block, not a full x>=1 gadget zero."
+    },
+    {
+      "A": 7,
+      "p": 3,
+      "m": 1170,
+      "positive_five_coordinates": true,
+      "three_auxiliary_relations": true,
+      "bit_lengths": {
+        "f": 4445,
+        "i": 4427,
+        "j": 8890,
+        "o": 4453,
+        "y": 8898
+      },
+      "scope": "Local normalized auxiliary block, not a full x>=1 gadget zero."
+    },
+    {
+      "A": 8,
+      "p": 3,
+      "m": 1530,
+      "positive_five_coordinates": true,
+      "three_auxiliary_relations": true,
+      "bit_lengths": {
+        "f": 6111,
+        "i": 6092,
+        "j": 12221,
+        "o": 6119,
+        "y": 12229
+      },
+      "scope": "Local normalized auxiliary block, not a full x>=1 gadget zero."
+    }
+  ],
+  "theorem": "For every positive x, the positive zero set projects exactly to computed Q=8^(32*x).",
+  "scope": "Standalone exponent component, not a universal compiler or a numerical full huge Pell witness."
+}

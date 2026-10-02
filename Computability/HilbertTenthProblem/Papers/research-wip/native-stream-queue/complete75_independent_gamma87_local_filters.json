@@ -1,0 +1,119 @@
+{
+  "status": "PASS_INDEPENDENT_GAMMA87_LOCAL_FILTERS",
+  "source": {
+    "source_sha256": "871663bcf1c9354efb09cc6cefad2eca778b4bf7e46272878fea3ba277344175",
+    "polynomial_operations": 87,
+    "multiplications": 47,
+    "additions_subtractions": 40,
+    "positive_witnesses": 19,
+    "exact_degree": 151,
+    "source_changed": false,
+    "candidate_status": "unresolved",
+    "established_independent_bounds": "75-operation comparison certificate; normalized87 polynomial of degree203."
+  },
+  "digit_DP": {
+    "direct_exact_binomial_residue_checks": 896,
+    "large_index_tail_reciprocity_checks": 20
+  },
+  "prime_power_order_obstruction": {
+    "checks": {
+      "factorization_free_excluded_components": 799,
+      "Delta_prime_power_components_checked": 1966,
+      "small_exact_order_hosts": 600,
+      "positive_order_components_with_explicit_prime_witness": 105
+    },
+    "examples": [
+      {
+        "a": 6,
+        "H": 27,
+        "p": 7,
+        "k": 1,
+        "side": 1,
+        "lower_bound": 48
+      },
+      {
+        "a": 12,
+        "H": 51,
+        "p": 13,
+        "k": 1,
+        "side": 1,
+        "lower_bound": 168
+      },
+      {
+        "a": 18,
+        "H": 75,
+        "p": 19,
+        "k": 1,
+        "side": 1,
+        "lower_bound": 360
+      },
+      {
+        "a": 24,
+        "H": 99,
+        "p": 5,
+        "k": 2,
+        "side": 1,
+        "lower_bound": 624
+      },
+      {
+        "a": 30,
+        "H": 123,
+        "p": 31,
+        "k": 1,
+        "side": 1,
+        "lower_bound": 960
+      },
+      {
+        "a": 36,
+        "H": 147,
+        "p": 37,
+        "k": 1,
+        "side": 1,
+        "lower_bound": 1368
+      },
+      {
+        "a": 42,
+        "H": 171,
+        "p": 43,
+        "k": 1,
+        "side": 1,
+        "lower_bound": 1848
+      },
+      {
+        "a": 48,
+        "H": 195,
+        "p": 7,
+        "k": 2,
+        "side": 1,
+        "lower_bound": 2400
+      }
+    ],
+    "scope": "Small arithmetic hosts check the uniform implication. They are not complete main kernels or compiler histories."
+  },
+  "seven_local_fixture": {
+    "R": 753407,
+    "q": 32,
+    "scalar_width": 5,
+    "popcount_R": 17,
+    "r0": 376703,
+    "a_residues": {
+      "7": 6,
+      "127": 31
+    },
+    "prime_modulus": 127,
+    "exact_order_of_two": 7,
+    "forced_alias_divisor": 7,
+    "prior_two_state_evaluator_agrees": true,
+    "explicit_upper_half_Lucas_terms": 753408,
+    "full_half_binomial_kernel_recipe": "X=2^R; Y=(sum_(j=0)^r0 binom(2r0,r0+j)X^j)/2; D0=q^3. The reviewed half-binomial theorem gives the positive main/first/strong extension.",
+    "actual_width_consequence": "For any actual compiler history meeting these residue tests, d is a power of5, so every history-preserving ordinary-input alias satisfies x=x0 mod7.",
+    "scope": "The fixed R,q meet the full main-kernel range and population prerequisites. No masks, transport, actual compiled history or full candidate zero are supplied; giant X,Y,H are not materialized."
+  },
+  "audited_coarse_implication": "For p>=5 and p^k|Delta, a shared order component forces H>=(p^k+1)(p^k-1) if p^k|a+1, or H>=(p^k+1)(p^k-9) if p^k|a+3. These caps are weaker than the earlier parity/mod3 bounds. The three-state Lucas implementation independently evaluates the same known half-binomial residue.",
+  "prior_result": {
+    "packet": "complete75_gamma87_compiler_order_filters",
+    "scope": "Already proves the two-state digit method, strictly stronger prime-power caps, actual compiler residue restrictions, and proper-factor certificates. The present packet adds an independent implementation/audit and a seven-local kernel fixture."
+  },
+  "reason_Dirichlet_transfer_fails": "The retained positive width and complete main kernel force X=2^R and the unique half-binomial Y; H cannot be varied independently after fixing R.",
+  "scope": "Independent audit of previously proved local filters, with an additional seven-local kernel fixture; no actual compiled false-input witness, universality proof or new universal operation bound."
+}
