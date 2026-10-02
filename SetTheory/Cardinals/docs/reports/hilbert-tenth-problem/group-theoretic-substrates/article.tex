@@ -1,0 +1,1153 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,needspace}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\hypersetup{pdftitle={Arithmetic van Kampen Certificates},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Quartic Diophantine compilation, group word problems, filling area and proof-DAG compression}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Arithmetic van Kampen Certificates}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=0.3em,topsep=0.4em}
+\emergencystretch=2em
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pp}{\mathcal P}
+\newcommand{\F}{F(a,b)}
+\newcommand{\San}{\mathcal S}
+\newcommand{\Area}{\operatorname{Area}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\cost}{\operatorname{cost}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\smallmat}[4]{\begin{pmatrix}#1&#2\\#3&#4\end{pmatrix}}
+\newcommand{\sha}{\texttt{c58206ca101d4744a015a0f0104646109357d943}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},xleftmargin=0.3em,xrightmargin=0.3em}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.45in}
+\noindent{\color{MidnightBlue}\large PROVEIT RESEARCH EXTENSION}\par
+\vspace{0.35in}
+\noindent{\Huge\bfseries Arithmetic van Kampen\\[0.12em] Certificates}\par
+\vspace{0.25in}
+\noindent{\LARGE Quartic equations, exact filling area,\\[0.15em] and optimal proof-DAG compression}\par
+\vspace{0.3in}
+\noindent{\large A history-free Diophantine compiler for group-theoretic computation}\par
+\vspace{0.55in}
+\noindent Research report prepared for Vladimir Reshetnikov\par
+\noindent October 2, 2026\par
+\vspace{0.35in}
+\begin{abstract}
+For a fixed two-generator finite group presentation with $s$ relators, we construct an explicit family of integer polynomials of degree at most four whose solvability at a boundary word is equivalent to filling that word with at most $m$ conjugates of defining relators. The compiler allocates exactly $(2s+13)m-4$ integer witnesses for $m\geq1$. Fixing the ordered relator choices reduces this to $8m-4$. A classical arithmetic description of a free subgroup of $\SL_2(\Z)$ eliminates conjugator-word histories: each conjugator is represented by four integers satisfying a single quadratic equation.
+
+We give a small-witness bound, identify the minimum allocated arity of the area compiler with the presentation's filling area, and derive the precise obstruction to a computable complete area cutoff. We then compile shared group-proof circuits into quartics without expanding their relator occurrences. For
+$[a^{2^k},b^{2^\ell}]$ in $\langle a,b\mid[a,b]\rangle$, the area is $2^{k+\ell}$, whereas the minimum number of product gates in the specified proof calculus is exactly $k+\ell$. The resulting fixed-conjugator quartic uses only $8(k+\ell)-4$ witnesses when $k+\ell\geq1$. A more general addition-chain sandwich bounds rectangular commutator proof complexity.
+
+The report provides complete proofs of the compiler and compression statements, exact-arithmetic software, adversarial examples, and a formalization and research agenda. Classical inputs are identified explicitly. Priority for the particular synthesis is not established; no unrestricted finite-fold MRDP theorem, universal arithmetic-operation record, or new Lean verification is claimed.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Artifact boundary.} The mathematical development is a research draft with executable checks. It is not a kernel-checked extension of ProveIt. The repository snapshot used for comparison is\par
+\noindent\small\sha.
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{The problem addressed and the contribution boundary}
+
+The broad assertion that an effectively simulable computational substrate has a Diophantine acceptance relation is already covered by MRDP. Repeating that assertion for another model of computation is usually less useful than preserving a resource that the model makes mathematically meaningful. Here that resource is \emph{filling area}: the number of relator applications needed to establish a word identity.
+
+Our computational substrate is a finitely presented group. The finite presentation is the program, a word is the instance, and an expression of that word as a product of conjugates of defining relators is an accepting proof. This viewpoint includes systems with undecidable word problem through classical constructions. Its advantage for Diophantine compilation is that free-group elements admit a particularly economical arithmetic representation.
+
+The central distinction is between three different resources:
+\begin{equation}\label{eq:three-resources}
+ \text{conjugator word length},\qquad
+ \text{expanded relator area},\qquad
+ \text{shared proof-circuit size}.
+\end{equation}
+The first compiler charges for the second resource but not the first. The second compiler charges for the third, without expanding the second. Integer magnitude and coefficient bit length remain separate costs throughout.
+
+\subsection{What has been established here}
+
+The following table is a contribution ledger, not a claim of historical priority. All numerical variable counts refer to the literal compilers specified in this report, before optional elimination or simplification.
+
+\begin{center}
+\begin{tabular}{L{0.24\textwidth}L{0.42\textwidth}L{0.23\textwidth}}
+\toprule
+Result & Content & Status\\
+\midrule
+Arithmetic free-group chart & Four integral coordinates and one quadratic determinant equation & Classical Sanov theorem; proof included\\
+Fixed-itinerary compiler & $8m-4$ variables, $5m$ quadratic residuals & Explicit construction and proof here\\
+Area-budget compiler & $(2s+13)m-4$ variables, $(2s+11)m$ residuals & Explicit construction and proof here\\
+Witness height & An elementary height bound for at least one witness at every accepting budget & Uses a cited classical conjugator bound\\
+Native arity profile & Exact affine recovery of filling area and Dehn function & Consequence for the defined compiler\\
+Proof-DAG compiler & Linear allocation in the number of circuit nodes, not expanded leaves & Explicit construction and proof here\\
+Optimal dyadic grids & Area $2^{k+\ell}$; exactly $k+\ell$ product gates & Sharp theorem in the specified calculus\\
+Addition-chain bounds & A lower signed-chain bound and an upper ordinary-chain bound & Proved here as a refinement\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The main question resolved within this program is therefore concrete: \emph{can one give an explicit low-degree Diophantine certificate whose visible resource is group-theoretic proof area, and can shared proofs compress that resource with a sharp, provable gain?} The answer is yes, with the formulas and exact counts above. This is not presented as a resolution of a famous previously named open problem. The broader novelty and publication significance require further specialist comparison.
+
+\subsection{Relationship to the repository}
+
+ProveIt's documented MRDP endpoint produces a fixed finite polynomial representation for a recursively enumerable subset of the natural numbers; its public statement does not itself specify a practical compiler or a numerical degree or witness bound \cite{repo-mrdp}. The repository also contains an extensive native-stream/queue compiler program. In particular, the inspected group-projective note optimizes the storage positions of signed-shear controller lanes while preserving chronological macro execution \cite{repo-group}. That is a packed-history construction, not the relator-area compiler developed below.
+
+The present work is a complementary semantic front end. We do not transfer the repository's formal-verification status to the new theorems, and we do not claim an improvement to its arithmetic-operation records. The exact chart, local matrix equations, and proof-circuit semantics below are proved directly. Only the final fixed-arity existence discussion invokes the MRDP interface at an abstract level.
+
+\subsection{Conventions that prevent misleading conclusions}
+
+All existential variables in the displayed compilers range over $\Z$, not over positive integers. The budget $m$ and the shape of a proof circuit are external finite data used to construct a polynomial; they do not index a variable number of quantified variables inside a single formula. Equality of boundary and proof words is equality in the free group, not merely in the quotient group.
+
+A bijection between polynomial zeros and \emph{semantic proof witnesses} does not mean that an input has only one proof. Indeed, the direct compilers generally have infinitely many zeros over a single accepted input. We prove that explicitly in Section~\ref{sec:fold}. Finally, the sharp circuit lower bound is a lower bound in our stated group-proof calculus, not a lower bound for arbitrary Diophantine representations or arbitrary arithmetic circuits.
+
+\section{Finite presentations as proof-producing computational substrates}
+
+Let $\F$ be the free group on $a,b$. A word uses the alphabet
+$\{a,a^{-1},b,b^{-1}\}$; $|w|$ denotes the length of its freely reduced representative. Fix a finite presentation
+\begin{equation}\label{eq:presentation}
+ \Pp=\langle a,b\mid r_1,\ldots,r_s\rangle,
+ \qquad G_{\Pp}=\F/\langle\!\langle r_1,\ldots,r_s\rangle\!\rangle.
+\end{equation}
+The relators are fixed words. Repeated or freely trivial relators are permitted, though they are normally removed in applications.
+
+\begin{definition}[Area and its zero case]\label{def:area}
+For $w\in\F$, let $\Area_{\Pp}(w)$ be the least $m\in\N$ such that
+\begin{equation}\label{eq:normal-product}
+ w=\prod_{i=1}^{m}u_i r_{j_i}^{\epsilon_i}u_i^{-1}
+ \quad\text{in }\F,
+ \qquad u_i\in\F,\quad \epsilon_i\in\{1,-1\}.
+\end{equation}
+Set the area to $+\infty$ if no such expression exists. The empty product is $1$, so the only element of area zero is the identity of $\F$.
+\end{definition}
+
+Thus $w=1$ in $G_{\Pp}$ if and only if $\Area_{\Pp}(w)<\infty$. This is the algebraic formulation of van Kampen area. It is particularly convenient here because it specifies exactly what the arithmetic witnesses must recover.
+
+To encode a budget rather than an exact nonpadded length, introduce the fixed label table
+\begin{equation}\label{eq:labels}
+ t_0=1,\quad t_{2j-1}=r_j,\quad t_{2j}=r_j^{-1}
+ \quad(1\leq j\leq s),\qquad q=2s+1.
+\end{equation}
+A \emph{padded factorization of length $m$} is an expression
+$w=\prod_{i=1}^{m}u_it_{\lambda_i}u_i^{-1}$ with
+$0\leq\lambda_i<q$. Such a factorization exists exactly when
+$\Area_{\Pp}(w)\leq m$. Identity padding is intentional and will also explain some witness multiplicities.
+
+\begin{definition}[Presentation-dependent Dehn function]
+\begin{equation}\label{eq:dehn}
+ \delta_{\Pp}(n)=\max\{\Area_{\Pp}(w): |w|\leq n,\ w=1\text{ in }G_{\Pp}\}.
+\end{equation}
+The maximum is over finitely many reduced words and includes $1$. It is a finite natural number for every $n$, even when it is not a computable function of $n$.
+\end{definition}
+
+\subsection{Why two generators do not remove undecidable examples}
+
+Classical work on the group word problem supplies finitely presented groups with undecidable word problem \cite{boone}. The Higman--Neumann--Neumann embedding construction effectively embeds a finitely presented group into a two-generator finitely presented group \cite{hnn}; a detailed account with an explicit substitution appears in \cite[Section~2.3]{bridson}. Consequently, the present two-generator framework includes fixed presentations with undecidable word problem. The finite substitution also transfers the relevant word-problem reduction.
+
+This observation is an applicability result, not an explicit machine-to-presentation compiler in the delivered software. We do not instantiate a particular universal machine's full relator table here. Nor do we claim that the embedding preserves the original presentation's area exactly. All exact area identities in this report refer to the specified two-generator presentation itself.
+
+One may think of the group substrate as an unconventional proof machine. Its accepting computations are normal-closure certificates rather than time-ordered configurations. This changes which structural resource can survive arithmetic compilation.
+
+\section{An exact quadratic arithmetic chart for the free group}\label{sec:chart}
+
+Set
+\begin{equation}\label{eq:shears}
+ A=\smallmat{1}{2}{0}{1},\qquad
+ B=\smallmat{1}{0}{2}{1},\qquad
+ \rho:\F\longrightarrow\SL_2(\Z),\quad \rho(a)=A,\ \rho(b)=B.
+\end{equation}
+For four integers $x,y,z,t$, write
+\begin{equation}\label{eq:chart}
+ U(x,y,z,t)=\smallmat{1+4x}{2y}{2z}{1+4t},\qquad
+ E(x,y,z,t)=x+t+4xt-yz.
+\end{equation}
+A direct expansion gives
+\begin{equation}\label{eq:det-chart}
+ \det U=1+4E.
+\end{equation}
+
+\begin{theorem}[Sanov's chart]\label{thm:sanov}
+The map $\rho$ is injective, and its image is exactly
+\begin{equation}\label{eq:San}
+ \San=\{U(x,y,z,t):(x,y,z,t)\in\Z^4,\ E(x,y,z,t)=0\}.
+\end{equation}
+Consequently, the integral points of $E=0$ are in bijection with elements of $\F$.
+\end{theorem}
+
+These are classical theorems of Sanov \cite{sanov}; the two statements, with precisely these congruence conditions, are also recorded in \cite[Theorems~1--2]{chorna}. We include proofs so that the compiler's key semantic dependency is visible.
+
+\begin{proof}[Proof of injectivity]
+On nonzero vectors in $\R^2$, define
+\[
+ X_A=\{(x,y):|x|>|y|\},\qquad X_B=\{(x,y):|y|>|x|\}.
+\]
+For every nonzero integer $h$,
+\[
+ A^h X_B\subseteq X_A,\qquad B^h X_A\subseteq X_B.
+\]
+For example, if $|y|>|x|$, then
+$|x+2hy|\geq2|y|-|x|>|y|$.
+
+A nonempty reduced word consisting of a single syllable is a nontrivial power of $A$ or $B$. An alternating syllable word whose first and last syllables are both powers of $A$ sends $X_B$ into $X_A$; one beginning and ending in powers of $B$ sends $X_A$ into $X_B$. Such a word cannot act as the identity. If its first and last syllables use different generators, conjugate it by a nonzero power of the first generator chosen not to cancel the first syllable. The resulting reduced syllable word begins and ends with that generator, and so is nontrivial by the preceding argument. Conjugation preserves whether a matrix is the identity. This proves that no nonempty reduced word maps to the identity.
+\end{proof}
+
+\begin{proof}[Proof of the image description]
+Matrices of the stated congruence form with determinant one are closed under multiplication and inverse: the off-diagonal entries remain even and the diagonal entries remain $1$ modulo $4$. Both $A$ and $B$ have that form. Thus $\rho(\F)\subseteq\San$.
+
+For the converse take
+$M=\smallmat{\alpha}{\beta}{\gamma}{\eta}\in\San$.
+Its first-column entries satisfy $\alpha\equiv1\pmod4$ and
+$\gamma\equiv0\pmod2$. In particular $\alpha\ne0$, and
+$|\alpha|\ne|\gamma|$.
+If $\gamma\ne0$ and $|\alpha|>|\gamma|$, choose an integer $h$ nearest to $\alpha/(2\gamma)$ and left-multiply by $A^{-h}$. This replaces $\alpha$ by $\alpha-2h\gamma$, whose absolute value is at most $|\gamma|$. Equality is impossible because the former is odd and the latter even. If instead $|\gamma|>|\alpha|$, left multiplication by $B^{-h}$ with $h$ nearest to $\gamma/(2\alpha)$ replaces $\gamma$ by a value of absolute value strictly less than $|\alpha|$.
+
+Each step decreases the positive integer
+$\max(|\alpha|,|\gamma|)$ and preserves membership in $\San$.
+The process terminates with $\gamma=0$. Determinant one then forces
+$\alpha\eta=1$; since both diagonal entries are $1$ modulo $4$, they are both $1$. The remaining matrix is $A^{\beta/2}$.
+Reversing the elementary left multiplications expresses $M$ as a product of powers of $A$ and $B$.
+
+Finally, the four chart coordinates are uniquely read from the matrix entries, and injectivity of $\rho$ identifies a unique free-group element. This proves the asserted bijection.
+\end{proof}
+
+\subsection{What is compressed by this chart}
+
+An arbitrary conjugator $u\in\F$ is now represented by four integers and the equation $E=0$. No word length, list of letters, or matrix multiplication history for $u$ is needed in the existential certificate. This is an arity saving, not a claim that all conjugators have short binary encodings. For instance, $A^N$ has a compact matrix even when the literal word $a^N$ is long; other words can produce exponentially large entries in their length.
+
+The descent in the proof is implemented by \texttt{decode\_sanov}. It returns powers as compressed syllables rather than expanding them into letters. No claim about an optimal bit-complexity bound for decoding is needed below.
+
+\subsection{Two indispensable hypotheses}
+
+\begin{example}[Omitting determinant one produces false proofs]\label{ex:det}
+Consider $\langle a,b\mid a^5\rangle$, the boundary word $a$, and
+$U=\smallmat{1}{0}{0}{5}$. This matrix has the congruence form in
+\eqref{eq:chart}, with coordinates $(0,0,0,1)$, and satisfies
+\[
+ U A^5=A U.
+\]
+Thus a compiler using the cross-multiplied conjugacy equation but omitting $E=0$ would accept $a$ with one use of $a^5$. That is false: mapping $a$ to a generator of the cyclic group of order $5$ and $b$ to the identity proves that $a$ is nontrivial in the presented group. Here $\det U=5$ and $E=1$; the determinant residual rejects the spurious certificate.
+\end{example}
+
+\begin{example}[Arbitrary unimodular conjugators also produce false proofs]\label{ex:congruence}
+Let $J=\smallmat{0}{-1}{1}{0}$. It has determinant one, but
+\[
+ JAJ^{-1}=B^{-1}.
+\]
+For $\langle a,b\mid a\rangle$, this would falsely give a one-relator proof of $b^{-1}$. The quotient is infinite cyclic generated by $b$, so that boundary is nontrivial. The defect is that $J\notin\San$: it is not the image of a free-group conjugator under $\rho$.
+\end{example}
+
+The exact arithmetic image, rather than mere matrix invertibility, is therefore essential. The same congruence shortcut must not be assumed for other shear parameters; the situation for parameters at least $3$ is different \cite[Theorem~3]{chorna}.
+
+\section{A quartic compiler for a fixed relator itinerary}\label{sec:itinerary}
+
+Fix a list of words $(t_{\lambda_1},\ldots,t_{\lambda_m})$ from
+\eqref{eq:labels}; the choices and signs are part of the compiler input, not existential variables. Put
+\[
+ R_i=\rho(t_{\lambda_i}),\qquad W=\rho(w).
+\]
+The boundary $W$ may first be regarded as four polynomial parameters. For $m\geq1$, allocate a chart matrix $U_i$ for each factor, and unrestricted matrices $P_1,\ldots,P_{m-1}$. Set $P_0=I$ and $P_m=W$ without allocating variables for them.
+
+Use the equations
+\begin{align}
+ E(U_i)&=0, &&1\leq i\leq m,\label{eq:itinerary-det}\\
+ P_{i-1}U_iR_i-P_iU_i&=0, &&1\leq i\leq m.\label{eq:itinerary-step}
+\end{align}
+A matrix equation denotes four scalar equations. The notation $E(U_i)$ means $E$ applied to the four chart coordinates of $U_i$.
+
+\begin{theorem}[Fixed-itinerary compiler]\label{thm:itinerary}
+For $m\geq1$, the sum of squares of all scalar residuals in
+\eqref{eq:itinerary-det}--\eqref{eq:itinerary-step} is an explicitly computable integer polynomial $Q_{\boldsymbol\lambda}(W;\boldsymbol z)$ of degree at most four, with exactly
+\begin{equation}\label{eq:itinerary-counts}
+ N_{\mathrm{it}}(m)=8m-4\quad\text{integer witnesses},\qquad
+ M_{\mathrm{it}}(m)=5m\quad\text{scalar residuals}.
+\end{equation}
+For every $w\in\F$,
+\begin{equation}\label{eq:itinerary-iff}
+ \exists\boldsymbol z\in\Z^{8m-4}\ Q_{\boldsymbol\lambda}(\rho(w);\boldsymbol z)=0
+ \iff
+ \exists u_1,\ldots,u_m\in\F\quad
+ w=\prod_{i=1}^{m}u_it_{\lambda_i}u_i^{-1}.
+\end{equation}
+For a fixed boundary, its zero tuples are in bijection with the ordered tuples of conjugator group elements satisfying the right-hand side.
+\end{theorem}
+
+\begin{proof}
+Each $R_i$ is constant, and each $U_i$ is affine-linear in its four coordinates. Thus each entry of \eqref{eq:itinerary-step} has degree at most two, as does $E$. Their squared sum has degree at most four. It vanishes over the integers exactly when every residual vanishes, since squares are nonnegative.
+
+At a zero, Theorem~\ref{thm:sanov} gives a unique $u_i\in\F$ with $U_i=\rho(u_i)$. In particular $U_i$ is invertible. Equation~\eqref{eq:itinerary-step} implies
+\[
+ P_i=P_{i-1}U_iR_iU_i^{-1}.
+\]
+Induction starting at $P_0=I$ yields
+$W=\prod_iU_iR_iU_i^{-1}$.
+Injectivity of $\rho$ gives the word identity in \eqref{eq:itinerary-iff}.
+
+Conversely, given the conjugator elements, take their unique chart coordinates and let $P_i$ be the successive matrix products. Every residual vanishes. The $P_i$ are uniquely determined, so the correspondence is bijective. The allocated count is $4m+4(m-1)=8m-4$, and each factor contributes one determinant residual and four matrix residuals.
+\end{proof}
+
+\begin{remark}[Why the cross-multiplied equation matters]
+Writing $P_i=P_{i-1}U_iR_i\adj(U_i)$ directly would generally introduce cubic entries and hence a degree-six squared sum. Equation~\eqref{eq:itinerary-step} moves the inverse across the equality, retaining degree two without any new inverse variables. The determinant equation justifies that move. Determinant conditions for $P_i$ are unnecessary: they follow inductively from the recovered factorization.
+\end{remark}
+
+For $m=0$, use
+\begin{equation}\label{eq:zero-budget}
+ Q_0(W)=(W_{11}-1)^2+W_{12}^2+W_{21}^2+(W_{22}-1)^2.
+\end{equation}
+It has no existential variables and accepts precisely the free-group identity at boundary inputs of the form $\rho(w)$.
+
+\section{A uniform all-relator area-budget quartic}\label{sec:budget}
+
+An itinerary may be unknown. We now encode its choices by integer one-hot selectors without letting the polynomial degree exceed four. Let
+$R_j=\rho(t_j)$ for $0\leq j<q$, where $q=2s+1$.
+
+For each $i=1,\ldots,m$, allocate a chart matrix $U_i$, an unrestricted matrix $V_i$, and selector integers $e_{i0},\ldots,e_{i,q-1}$.
+Also allocate $P_1,\ldots,P_{m-1}$, and again set $P_0=I$, $P_m=W$.
+The selected matrix is the expression
+\begin{equation}\label{eq:selected}
+ C_i=\sum_{j=0}^{q-1}e_{ij}R_j;
+\end{equation}
+its entries are not additional variables.
+
+The complete residual list is
+\begin{align}
+ E(U_i)&=0,\label{eq:budget-det}\\
+ e_{ij}(e_{ij}-1)&=0 &&(0\leq j<q),\label{eq:budget-bool}\\
+ \sum_{j=0}^{q-1}e_{ij}-1&=0,\label{eq:budget-one}\\
+ V_i-P_{i-1}U_i&=0,\label{eq:budget-v}\\
+ V_iC_i-P_iU_i&=0,\label{eq:budget-step}
+\end{align}
+for each $1\leq i\leq m$. Let $Q_{\Pp,m}$ be the sum of squares of the scalar residuals. The matrix $V_i$ is the degree-control device: it separates the potentially cubic expression $P_{i-1}U_iC_i$ into two quadratic constraints.
+
+\begin{theorem}[Area-budget equivalence and exact ledger]\label{thm:budget}
+For every fixed presentation \eqref{eq:presentation} and $m\geq1$, the construction gives an integer polynomial of degree at most four with exactly
+\begin{align}
+ N_{\Pp}(m)&=(q+12)m-4=(2s+13)m-4,\label{eq:budget-vars}\\
+ M_{\Pp}(m)&=(q+10)m=(2s+11)m\label{eq:budget-residuals}
+\end{align}
+allocated integer witnesses and scalar residuals, respectively. For every word $w$,
+\begin{equation}\label{eq:budget-iff}
+ \exists\boldsymbol z\in\Z^{N_{\Pp}(m)}\quad
+ Q_{\Pp,m}(\rho(w);\boldsymbol z)=0
+ \quad\Longleftrightarrow\quad \Area_{\Pp}(w)\leq m.
+\end{equation}
+The integer zero tuples are in bijection with ordered padded factorizations of length $m$, where a semantic factorization records both its label indices and its conjugator group elements.
+\end{theorem}
+
+\begin{proof}
+The equations $e(e-1)=0$ over $\Z$ force each selector to be $0$ or $1$. Their sum is $1$, so there is a unique selected index $\lambda_i$ and $C_i=R_{\lambda_i}$. The chart equation supplies a unique group element $u_i$ with matrix $U_i$.
+
+Substitution of \eqref{eq:budget-v} into \eqref{eq:budget-step} gives
+$P_{i-1}U_iR_{\lambda_i}=P_iU_i$.
+The proof of Theorem~\ref{thm:itinerary} now recovers the padded factorization and hence area at most $m$.
+
+Conversely, start with any padded factorization. Set its selector vectors to the associated standard basis vectors, use the unique chart coordinates of the conjugators, set the $P_i$ to partial products, and take $V_i=P_{i-1}U_i$. These choices satisfy every residual and are uniquely determined. Repeated relators in the table do not destroy the claimed bijection because the semantic witness records label indices, not just selected matrices.
+
+All residuals are at most quadratic. Each cell allocates four chart variables, four $V_i$ entries, and $q$ selectors; the $m-1$ internal $P_i$ matrices add $4(m-1)$. This gives \eqref{eq:budget-vars}. Per cell there are $1+q+1+4+4=q+10$ residuals, giving \eqref{eq:budget-residuals}. The sum-of-squares argument completes the proof.
+\end{proof}
+
+\subsection{Sparsity, boundary typing, and presentation size}
+
+No promise about $W$ is necessary to define the polynomial. In fact, any zero forces $W\in\San$ by the soundness induction. The word interpretation uses $W=\rho(w)$ so that the accepted input is unambiguous.
+
+For fixed $\Pp$, the number of residuals and the number of monomials in their expanded squared sum are $O_{\Pp}(m)$. A local residual uses only
+\[
+ P_{i-1},\ P_i,\ U_i,\ V_i,\ e_{i0},\ldots,e_{i,q-1}.
+\]
+Treating the boundary entries as fixed parameters, these sets form bags in a path decomposition of the variable-interaction graph. Each bag has at most $q+16$ variables, so the pathwidth is at most $q+15$. Squaring a residual does not introduce variables from a different bag. This is a structural description, not a tractability theorem for integer feasibility on such graphs.
+
+Let $L=\max(1,|r_1|,\ldots,|r_s|)$. Since the matrix norm bound proved below gives relator and boundary entry bit lengths $O(L)$ and $O(|w|)$, the coefficients after substituting $W=\rho(w)$ have bit length
+$O(|w|+L+\log(m+1))$, with presentation-dependent constants. The logarithmic term allows coefficients such as the sum of the $m$ selector-normalization constants. Arity, coefficient height, and the cost of computing the boundary are therefore all explicitly separated.
+
+\subsection{A complete one-cell example}
+
+For $\Pp_{\mathrm{ab}}=\langle a,b\mid[a,b]\rangle$, use
+$[x,y]=xyx^{-1}y^{-1}$ and
+\begin{equation}\label{eq:commutator-matrix}
+ R=\rho([a,b])=\smallmat{21}{-8}{8}{-3},\qquad
+ R^{-1}=\smallmat{-3}{8}{-8}{21}.
+\end{equation}
+The $m=1$ budget system has $11$ variables and $13$ residuals:
+$U$ contributes four coordinates, $V$ four entries, and $(e_0,e_1,e_2)$ three selectors. In matrix notation the non-Boolean equations are
+\[
+ E(U)=0,\qquad V=U,\qquad
+ V(e_0I+e_1R+e_2R^{-1})=WU.
+\]
+The polynomial is exactly the squared sum of these residuals and the four selector residuals. For $w=[a,b]$, the zero with $U=V=I$ and $(e_0,e_1,e_2)=(0,1,0)$ is immediate. The fixed-itinerary compiler for the single label $R$ uses only four witnesses and five residuals.
+
+For comparison, allocating the budget compiler at $m=2$ gives $26$ variables, and at $m=4$ gives $56$. Section~\ref{sec:grid} will encode the area-four boundary $[a^2,b^2]$ with a shared proof using only $12$ variables.
+
+\section{A small-witness theorem and decidable area slices}\label{sec:height}
+
+An existential polynomial representation does not automatically give a decision procedure. In this compiler, however, a specified area budget also gives an explicit bound on at least one accepting witness. The needed geometric input is classical.
+
+\begin{lemma}[Bounded conjugators; classical]\label{lem:conjugators}
+Let $w$ have length $n$ and finite area $\alpha$ in a presentation whose relators have length at most $L$. There is a factorization of the form \eqref{eq:normal-product} with $\alpha$ factors such that every conjugator has length at most $n+L\alpha$.
+\end{lemma}
+
+This is Lemma~2.D.2 of Cornulier--Tessera \cite{cornulier}. Its diagrammatic argument bounds basepoint-to-face paths in a van Kampen diagram by boundary length plus the total face-perimeter budget. We use this statement as an identified external lemma; it is not a new filling-length theorem. The ensuing arithmetic height estimate is derived explicitly.
+
+For a real $2\times2$ matrix, let $\norm{M}_\infty$ be the maximum absolute row sum. It is submultiplicative. Each of $A^{\pm1},B^{\pm1}$ has this norm equal to $3$, so
+\begin{equation}\label{eq:word-norm}
+ \norm{\rho(v)}_\infty\leq3^{|v|}
+ \qquad(v\in\F).
+\end{equation}
+
+\begin{theorem}[One bounded witness exists]\label{thm:height}
+Let $m\geq1$, $|w|=n$, and $L=\max(1,|r_1|,\ldots,|r_s|)$. Define
+\begin{equation}\label{eq:height}
+ C=n+mL,\qquad
+ H_{\Pp}(n,m)=3^{\,m(2C+L)+C+1}.
+\end{equation}
+If $\Area_{\Pp}(w)\leq m$, then $Q_{\Pp,m}(\rho(w);\boldsymbol z)=0$ has an integer solution with
+\begin{equation}\label{eq:height-bound}
+ |z_j|\leq H_{\Pp}(n,m)\qquad\text{for every allocated coordinate }j.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $\alpha=\Area_{\Pp}(w)\leq m$. If $\alpha>0$, apply Lemma~\ref{lem:conjugators}; if $\alpha=0$, start with the empty factorization. Pad to length $m$ using the identity label and identity conjugators. We obtain conjugators of length at most $C$ and selected relators of length at most $L$.
+
+Equation~\eqref{eq:word-norm} gives $\norm{U_i}_\infty\leq3^C$ and
+$\norm{U_iR_{\lambda_i}U_i^{-1}}_\infty\leq3^{2C+L}$.
+Consequently,
+\[
+ \norm{P_i}_\infty\leq3^{i(2C+L)},\qquad
+ \norm{V_i}_\infty\leq3^{(i-1)(2C+L)+C}.
+\]
+Every matrix entry is bounded by its row-sum norm. The chart coordinates recovered by dividing the off-diagonal entries by $2$ or subtracting $1$ and dividing the diagonal entries by $4$ have absolute values at most $3^C$. The selectors are $0$ or $1$. The exponent in \eqref{eq:height} safely dominates all these bounds. Completeness of Theorem~\ref{thm:budget} supplies the corresponding zero tuple.
+\end{proof}
+
+\begin{remark}[Scope of the height assertion]
+The theorem bounds \emph{some} solution, not all solutions. It is stated for the all-label budget compiler, whose itinerary can be chosen from a short-conjugator factorization. It is not a claimed bound for an arbitrarily prescribed itinerary. Restricting the order of relators can change the available factorizations, so the classical lemma must not silently be applied after such a restriction.
+\end{remark}
+
+\begin{corollary}[Effective bounded-area decision]\label{cor:slice}
+For a fixed finite presentation, the predicate
+$\Area_{\Pp}(w)\leq m$ is decidable uniformly in $w,m$. In fact, the displayed compiler and height bound give a primitive-recursive finite search procedure.
+\end{corollary}
+
+\begin{proof}
+Freely reduce $w$, compute $W=\rho(w)$, and handle $m=0$ by $W=I$. For $m\geq1$, compute the finite list of residuals and $H_{\Pp}(|w|,m)$, then enumerate the integer cube
+$[-H,H]^{N_{\Pp}(m)}$ and test every tuple. A zero is sound by Theorem~\ref{thm:budget}; if the area is at most $m$, Theorem~\ref{thm:height} places a zero in that cube. All bounds are explicit finite arithmetic expressions.
+\end{proof}
+
+This decision procedure is not proposed as an efficient solver. It is useful because it exposes exactly why an area cutoff is enough to decide the word problem. It also shows that the possible noncomputability of \eqref{eq:dehn} does not arise within a fixed finite area slice.
+
+\subsection{Bit costs and the unary-budget qualification}
+
+For fixed presentation and $m\geq1$, the logarithm of the height bound is
+\[
+ O\bigl(m(n+mL+1)\bigr).
+\]
+Multiplying by the $O_{\Pp}(m)$ coordinates gives a total witness bit bound
+\begin{equation}\label{eq:bitbound}
+ O_{\Pp}\bigl(m^2(n+mL+1)\bigr).
+\end{equation}
+The integer arithmetic needed to check the residuals is polynomial in their written bit size. Therefore this construction supplies polynomial-size arithmetic certificates when $m$ is measured as a unary budget and words are supplied explicitly. It does \emph{not} give polynomial-size certificates in $n+\log m$ for the uncompressed budget family. The family has $\Theta(m)$ allocated coordinates before their magnitudes are even considered.
+
+\section{The exact native arity profile and the cutoff obstruction}\label{sec:dehn}
+
+For an accepted word $w$, let $\nu_{\Pp}(w)$ be the smallest number of variables \emph{allocated by the all-label compiler} at a budget accepting $w$. The zero-budget case allocates zero variables. This defines a deliberately compiler-relative resource, not an invariant of all possible Diophantine descriptions.
+
+\begin{theorem}[Area is exactly visible in allocated arity]\label{thm:arity}
+For a word of finite area $\alpha$,
+\begin{equation}\label{eq:arity-area}
+ \nu_{\Pp}(w)=
+ \begin{cases}
+ 0,&\alpha=0,\\
+ (2s+13)\alpha-4,&\alpha\geq1.
+ \end{cases}
+\end{equation}
+If $\nu_{\Pp}^{\max}(n)$ is the maximum of this quantity over null words of length at most $n$, then
+\begin{equation}\label{eq:arity-dehn}
+ \nu_{\Pp}^{\max}(n)=
+ \begin{cases}
+ 0,&\delta_{\Pp}(n)=0,\\
+ (2s+13)\delta_{\Pp}(n)-4,&\delta_{\Pp}(n)\geq1.
+ \end{cases}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The accepting budgets are exactly those with $m\geq\alpha$ by Theorem~\ref{thm:budget}. The allocation $(2s+13)m-4$ is strictly increasing for $m\geq1$. Thus the smallest accepting allocation occurs at $m=\alpha$, except for the separately treated zero case. Taking the maximum over the finite set of null words gives the second formula.
+\end{proof}
+
+The content is not that Diophantine variables intrinsically measure area. The content is that this particular transparent compiler preserves that resource exactly, whereas a general MRDP compression need not.
+
+\begin{theorem}[Computable cutoff equivalence]\label{thm:cutoff}
+For a fixed finite presentation $\Pp$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item The word problem of $G_{\Pp}$ is decidable.
+\item $\delta_{\Pp}$ has a total computable upper bound.
+\item $\delta_{\Pp}$ itself is a total computable function.
+\item The maximum native allocation $\nu_{\Pp}^{\max}$ has a total computable upper bound.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Assume (i). Enumerate the finitely many reduced words of length at most $n$ and use the word-problem decider to select precisely the null words. For each such word, test budgets $m=0,1,2,\ldots$ by Corollary~\ref{cor:slice} until the first success. Each of these searches terminates and computes its exact area. Their maximum computes $\delta_{\Pp}(n)$, proving (iii). Clearly (iii) implies (ii).
+
+If $f(n)$ is a computable upper bound as in (ii), decide whether $w$ is null by deciding the single bounded-area question $\Area_{\Pp}(w)\leq f(|w|)$. This proves (i). Finally, \eqref{eq:arity-dehn} converts a computable bound in either (ii) or (iv) to a bound in the other. For example, a bound on $\nu_{\Pp}^{\max}$ also bounds $\delta_{\Pp}$ after adding a harmless constant.
+\end{proof}
+
+This equivalence is a classical feature of Dehn functions expressed through the new compiler. Its proof here makes no appeal to a solver for unrestricted Diophantine equations.
+
+\begin{corollary}[No recursive complete area or native-arity budget]\label{cor:nonrecursive}
+Choose a fixed two-generator finite presentation with undecidable word problem. For every total computable $f:\N\to\N$, there are infinitely many $n$ such that
+\[
+ \delta_{\Pp}(n)>f(n).
+\]
+The same absence of a computable upper bound holds for $\nu_{\Pp}^{\max}$.
+\end{corollary}
+
+\begin{proof}
+A computable bound would contradict Theorem~\ref{thm:cutoff}. If there were only finitely many exceptions to $\delta_{\Pp}(n)\leq f(n)$, their finite maximum could be incorporated as a constant into a total computable upper bound. Therefore exceptions occur infinitely often.
+\end{proof}
+
+The corollary asserts infinitely many exceedances, not eventual domination of every computable function. Confusing those two statements would strengthen the conclusion without justification.
+
+\section{Shared relator-proof circuits}\label{sec:dag-semantics}
+
+An ordinary van Kampen factorization repeats every relator occurrence. A proof may instead reuse an established subexpression. We formalize that possibility with an acyclic circuit over the normal closure.
+
+\begin{definition}[Relator-proof DAG]\label{def:dag}
+A relator-proof DAG for $\Pp$ is a finite directed acyclic graph in topological order, with a distinguished output node and all nodes reachable from it by following dependency edges. Its permitted node types are:
+\begin{enumerate}[label=(\alph*)]
+\item a leaf equal to $1$ or to one of the fixed words $r_j^{\pm1}$;
+\item a product node $Z=XY$, referring to two earlier nodes, which may coincide;
+\item an inverse node $Z=X^{-1}$;
+\item a conjugation node $Z=uXu^{-1}$, where $u\in\F$ is a semantic witness;
+\item a fixed conjugation node $Z=dXd^{-1}$, where $d\in\F$ is supplied as part of the circuit.
+\end{enumerate}
+Its value is computed in the free group. Its product complexity is the number $p$ of product nodes. The other nodes are not charged in this particular complexity measure, but are charged by the arithmetic compiler below.
+\end{definition}
+
+A fixed conjugator may be supplied by its Sanov matrix, provided membership in $\San$ is checked. Such a matrix identifies a unique free-group element. Supplying an arbitrary element of $\SL_2(\Z)$ instead would repeat the error in Example~\ref{ex:congruence}.
+
+\begin{definition}[Expanded relator cost]
+Assign cost $0$ to an identity leaf and cost $1$ to a relator leaf. A product node has the sum of the two child costs; an inverse or either kind of conjugation inherits the cost of its child. If both input edges of a product refer to the same child, its cost is counted twice. Write $c(D)$ for the output cost.
+\end{definition}
+
+Cost is a structural integer determined by the DAG. It can be evaluated in topological order without expanding a proof tree. No auxiliary arithmetic witnesses are needed merely to state that integer.
+
+\begin{lemma}[Expansion soundness]\label{lem:dag-area}
+If a proof DAG $D$ evaluates to $w$, then
+\begin{equation}\label{eq:dag-area}
+ \Area_{\Pp}(w)\leq c(D).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Induct on the nodes. A relator has a one-factor expression and the identity has the empty expression. Products concatenate factorizations. Inverting a product of conjugates reverses their order and inverts each relator, without changing the number of factors. Conjugating a product by $u$ replaces every factor conjugator $v$ by $uv$, again preserving the number of factors. A repeated dependency is copied when the DAG is unfolded, exactly as required by the additive cost definition.
+\end{proof}
+
+\begin{lemma}[Doubling bound]\label{lem:dag-doubling}
+A proof DAG with $p$ product nodes satisfies
+\begin{equation}\label{eq:dag-doubling}
+ c(D)\leq2^p.
+\end{equation}
+This includes $p=0$, when the possible costs are $0$ and $1$.
+\end{lemma}
+
+\begin{proof}
+Before any product node, all costs are at most $1$. After the first $j-1$ product nodes in a topological ordering, all costs are at most $2^{j-1}$: intervening unary nodes do not increase cost. The $j$th product adds two previously available costs, so it is at most $2^j$. Induction gives the bound.
+\end{proof}
+
+\begin{remark}[Acyclicity is a semantic condition]
+One cannot replace a DAG by an arbitrary cyclic system of equations and retain Lemma~\ref{lem:dag-area}. A self-reference such as $Z=Z$ imposes no proof obligation and could admit any boundary without a relator leaf. The compiler and software validate topological order, permissible leaf labels, and reachability. These are not optional metadata checks.
+\end{remark}
+
+\section{Quartic compilation of proof DAGs}\label{sec:dag-compiler}
+
+For each nonleaf node, allocate an unrestricted $2\times2$ output matrix, except at the distinguished output, whose matrix is the boundary parameter $W$. Leaves use their fixed matrices. For a free conjugation node also allocate a chart matrix $U$.
+
+The matrix residuals for the four nonleaf types are
+\begin{align}
+ Z-XY&=0 &&\text{(product)},\label{eq:dag-product}\\
+ Z-\adj(X)&=0 &&\text{(inverse)},\label{eq:dag-inverse}\\
+ E(U)=0,\qquad ZU-UX&=0 &&\text{(free conjugation)},\label{eq:dag-conj}\\
+ ZD-DX&=0 &&\text{(fixed conjugation)}.\label{eq:dag-fixed}
+\end{align}
+Here $D\in\San$ is a fixed matrix. For a $2\times2$ matrix the adjugate is linear in its entries, so \eqref{eq:dag-inverse} is linear. The assertion that it is the inverse is recovered by induction, rather than assumed for unrestricted matrices.
+
+\begin{theorem}[Proof-DAG quartic compiler]\label{thm:dag-compiler}
+Let a valid proof DAG have $p$ product nodes, $h$ free conjugation nodes, $j$ inverse nodes, and $h_c$ fixed conjugation nodes. Suppose it has at least one nonleaf node. The squared sum of residuals \eqref{eq:dag-product}--\eqref{eq:dag-fixed} is an integer polynomial of degree at most four with exactly
+\begin{align}
+ N_D&=4p+8h+4j+4h_c-4,\label{eq:dag-vars}\\
+ M_D&=4p+5h+4j+4h_c\label{eq:dag-residuals}
+\end{align}
+allocated integer witnesses and scalar residuals. At a boundary $W=\rho(w)$ it has a zero if and only if some assignment of its free conjugator group elements makes the DAG evaluate to $w$ in $\F$.
+
+Zero tuples are in bijection with those semantic conjugator assignments. Every accepted boundary satisfies $\Area_{\Pp}(w)\leq c(D)\leq2^p$.
+\end{theorem}
+
+\begin{proof}
+Proceed in topological order. Leaf matrices are in $\San$. At a product node the residual forces the output to be the product of already recovered matrices, hence again in $\San$. At an inverse node, the child has determinant one by induction, so its adjugate is its inverse and lies in $\San$.
+
+At a free conjugation node, $E(U)=0$ gives a unique free-group conjugator and an invertible matrix $U$. The residual $ZU=UX$ forces $Z=UXU^{-1}$, which is the intended conjugate and is in $\San$. A fixed conjugation is the same argument with a verified constant $D$. Thus every node has exactly the required semantic value, and the boundary equality is equality in the free group by injectivity of $\rho$.
+
+Conversely, given an assignment to the free conjugators, evaluate the DAG and insert its matrices into the allocated coordinates. All residuals vanish. Each chart coordinate and each internal output is unique once the semantic assignment is fixed, establishing the bijection.
+
+There are $p+h+j+h_c$ nonleaf output matrices, with four boundary coordinates supplied rather than allocated. This contributes $4(p+h+j+h_c)-4$ variables. The $h$ free conjugators add $4h$. All nonleaf nodes contribute four matrix residuals, and each free conjugator contributes one more. These are the stated counts. Residual degree is at most two, so the squared sum has degree at most four. The area and doubling bounds follow from Lemmas~\ref{lem:dag-area} and \ref{lem:dag-doubling}.
+\end{proof}
+
+If the circuit consists only of a leaf, use the four entry residuals $W-R$ and no auxiliary variables. The formula \eqref{eq:dag-vars} is not applied to this exceptional case.
+
+\subsection{Compression does not hide uncounted inverse histories}
+
+The construction relies specifically on $2\times2$ matrices and the exact chart. The adjugate of a $2\times2$ matrix is linear; no determinant-solving subroutine or sequence of inverse operations is concealed in \eqref{eq:dag-inverse}. Likewise, an arbitrary free conjugator is represented by its chart rather than by a guessed length and a word trace. However, its integer coordinates can be large, and the cost of searching for them is not included in the node count.
+
+The algebra also shows why an arbitrary satisfying tuple cannot contain a nonunimodular internal output: the first such node in a topological ordering would have only genuine earlier inputs and hence a genuine output. This is the precise inductive argument that permits us to omit redundant determinant equations on internal matrices.
+
+\section{Sharp exponential compression for rectangular commutators}\label{sec:grid}
+
+Consider
+\begin{equation}\label{eq:abelian-presentation}
+ \Pp_{\mathrm{ab}}=\langle a,b\mid r\rangle,
+ \qquad r=[a,b]=aba^{-1}b^{-1}.
+\end{equation}
+Its quotient is $\Z^2$. We will measure the area and proof-DAG product complexity of a word that is trivial in this quotient but nontrivial in the ambient free group.
+
+\subsection{An elementary area detector}
+
+Use the integral Heisenberg group in coordinates
+\[
+ H=\Z^3,\qquad
+ (x,y,z)(x',y',z')=(x+x',y+y',z+z'+xy').
+\]
+Associativity follows by expanding the third coordinate of a triple product, and
+$(x,y,z)^{-1}=(-x,-y,-z+xy)$. The elements $(0,0,z)$ are central. Map $a$ to $(1,0,0)$ and $b$ to $(0,1,0)$. This defines a homomorphism from the free group, not from the quotient in \eqref{eq:abelian-presentation}. Direct computation gives
+\begin{equation}\label{eq:heisenberg}
+ r\longmapsto(0,0,1),\qquad
+ [a^u,b^v]\longmapsto(0,0,uv).
+\end{equation}
+Every conjugate of $r^{\pm1}$ therefore contributes $\pm1$ to the third coordinate. A product with $m$ relator occurrences has third coordinate of absolute value at most $m$.
+
+\begin{proposition}[Exact rectangular area]\label{prop:rectangle-area}
+For positive integers $u,v$,
+\begin{equation}\label{eq:rectangle-area}
+ \Area_{\Pp_{\mathrm{ab}}}([a^u,b^v])=uv.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The Heisenberg homomorphism gives the lower bound $uv$. For the upper bound, use the free-group identities
+\begin{align}
+ [xy,z]&=x[y,z]x^{-1}[x,z],\label{eq:comm-id1}\\
+ [x,yz]&=[x,y]\,y[x,z]y^{-1}.\label{eq:comm-id2}
+\end{align}
+Both follow by multiplying out and cancelling adjacent inverse pairs. First iterate \eqref{eq:comm-id1} to express $[a^u,b]$ as a product of $u$ conjugates of $r$. Then iterate \eqref{eq:comm-id2} to express $[a^u,b^v]$ as a product of $v$ conjugates of that word. Expanding gives exactly $uv$ conjugates of $r$.
+\end{proof}
+
+This elementary area calculation is a familiar central-extension argument. The sharp compression theorem adds a circuit-optimality statement and an explicit quartic allocation.
+
+\Needspace{13\baselineskip}
+\begin{theorem}[Optimal dyadic proof compression]\label{thm:grid}
+Let $k,\ell\geq0$, put $d=k+\ell$, and set
+\[
+ w_{k,\ell}=[a^{2^k},b^{2^\ell}].
+\]
+In presentation \eqref{eq:abelian-presentation}:
+\begin{enumerate}[label=(\roman*)]
+\item $\Area(w_{k,\ell})=2^d$.
+\item Among all relator-proof DAGs of Definition~\ref{def:dag} evaluating to $w_{k,\ell}$, the minimum number of product nodes is exactly $d$.
+\item There is such a DAG with $d$ product nodes and $d$ fixed conjugation nodes and no free conjugation or inverse nodes.
+\item For $d\geq1$, its quartic compiler allocates exactly $8d-4$ integer witnesses and $8d$ scalar residuals. In contrast, the minimum accepting allocation in the direct all-label area compiler is $15\cdot2^d-4$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Part (i) follows from Proposition~\ref{prop:rectangle-area}.
+For the construction, start with $C=[a,b]$. If the current word is
+$C=[a^u,b^v]$, equation~\eqref{eq:comm-id1} gives
+\begin{equation}\label{eq:double-a}
+ [a^{2u},b^v]=a^uCa^{-u}\,C.
+\end{equation}
+This uses one fixed conjugation node and one product node referring to the old node twice. After $k$ such steps the value is $[a^{2^k},b]$.
+Likewise, \eqref{eq:comm-id2} gives
+\begin{equation}\label{eq:double-b}
+ [a^u,b^{2v}]=C\,b^vCb^{-v}.
+\end{equation}
+After $\ell$ additional steps the required output is reached. Each step doubles expanded cost; the starting cost is one. There are exactly $d$ products and $d$ fixed conjugations.
+
+For optimality, any competing DAG with $p$ product nodes satisfies
+\[
+ 2^d=\Area(w_{k,\ell})\leq c(D)\leq2^p
+\]
+by Lemmas~\ref{lem:dag-area} and \ref{lem:dag-doubling}. Hence $p\geq d$, even when arbitrary free conjugations and inverses are allowed. The construction attains equality.
+
+Theorem~\ref{thm:dag-compiler} with $p=h_c=d$, $h=j=0$ gives $8d-4$ witnesses and $8d$ residuals. The direct compiler has $s=1$ and minimum budget $2^d$, hence allocation $15\cdot2^d-4$. At $d=0$ the DAG is just the relator leaf and uses no auxiliary variables.
+\end{proof}
+
+\subsection{All boundary matrices are explicit}
+
+For arbitrary integers $u,v$, direct multiplication gives
+\begin{equation}\label{eq:rectangle-matrix}
+ \rho([a^u,b^v])=
+ \begin{pmatrix}
+ 1+4uv+16u^2v^2&-8u^2v\\
+ 8uv^2&1-4uv
+ \end{pmatrix}.
+\end{equation}
+The fixed conjugators in \eqref{eq:double-a} are
+$A^{2^i}=\smallmat{1}{2^{i+1}}{0}{1}$; those in
+\eqref{eq:double-b} are
+$B^{2^j}=\smallmat{1}{0}{2^{j+1}}{1}$.
+Thus neither the boundary nor the constant conjugators require an expanded word representation.
+
+Every intermediate entry in the constructed dyadic proof has $O(d+1)$ bits. There are $O(d+1)$ matrices and coefficients to write, so the total written data and the exhibited witness have $O((d+1)^2)$ bits. We assert linear \emph{variable count}, not linear total bit length.
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$d=k+\ell$ & Exact area & Optimal products & Direct variables & Shared variables\\
+\midrule
+0 & 1 & 0 & 11 & 0\\
+1 & 2 & 1 & 26 & 4\\
+2 & 4 & 2 & 56 & 12\\
+5 & 32 & 5 & 476 & 36\\
+10 & 1,024 & 10 & 15,356 & 76\\
+20 & 1,048,576 & 20 & 15,728,636 & 156\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[The parameter in ``exponential'']
+The gap is exponential in $d$, the binary-exponent description parameter and the optimal product count. The literal boundary word has length $2(2^k+2^\ell)$. Thus this is not a claim of exponential area in literal word length for $\Z^2$; for balanced exponents its area is quadratic in that length. The result compares proof representations of the same boundary, while making their input encodings explicit.
+\end{remark}
+
+\subsection{A twelve-variable area-four certificate}
+
+Take $k=\ell=1$. The circuit is
+\[
+ C_0=R,\quad C_1=AC_0A^{-1},\quad C_2=C_1C_0,
+ \quad C_3=BC_2B^{-1},\quad W=C_2C_3.
+\]
+Only $C_1,C_2,C_3$ are allocated matrices. Its sixteen residuals are the entries of
+\begin{equation}\label{eq:grid-small}
+ \begin{gathered}
+ C_1A-AR,\qquad C_2-C_1R,\\
+ C_3B-BC_2,\qquad W-C_2C_3.
+ \end{gathered}
+\end{equation}
+For avoidance of doubt, the first residual block in \eqref{eq:grid-small} is also a $2\times2$ matrix; each of the four blocks contributes four scalar equations. The fixed boundary is
+\[
+ W=\rho([a^2,b^2])=\smallmat{273}{-64}{64}{-15}.
+\]
+A complete zero is obtained with
+\[
+ C_1=\smallmat{37}{-88}{8}{-19},\quad
+ C_2=\smallmat{73}{-32}{16}{-7},\quad
+ C_3=\smallmat{137}{-32}{304}{-71}.
+\]
+The squared sum of the sixteen entries is a quartic in twelve variables. This is an explicit, fully numerical polynomial specification; the accompanying sparse JSON file lists every residual coefficient. The area lower bound is four, but no list of four independent factor-conjugator witnesses occurs in this encoding.
+
+\section{A more general addition-chain sandwich}\label{sec:addition-chain}
+
+The dyadic theorem is exact because its area is an exact power of two. For other rectangular boundaries, ordinary and signed addition chains give a useful refinement rather than an unjustified guess at the optimum.
+
+\begin{definition}[Chain lengths]
+For $n\geq1$, let $\ell_+(n)$ be the least number of additions needed to produce $n$ starting from $1$, each addition using two earlier available values, with reuse allowed. Thus $\ell_+(1)=0$.
+
+Let $\ell_{\pm}(n)$ be the least number of binary additions needed when sign changes are free: a new value can be $\epsilon x+\eta y$ for earlier values $x,y$ and signs $\epsilon,\eta\in\{1,-1\}$. The values $0$ and $1$ are available initially. Reuse and intermediate negative values are allowed. This explicit convention avoids relying on differing conventions for addition--subtraction chains.
+\end{definition}
+
+Write $\pc_{\Pp}(w)$ for the minimum product-node count among all relator-proof DAGs evaluating to a null word $w$. No bound on the number of unary nodes is built into this definition; the minimum is still a well-defined natural number because ordinary finite factorizations give proof DAGs.
+
+\begin{theorem}[Rectangular addition-chain bounds]\label{thm:addition}
+For positive integers $u,v$,
+\begin{equation}\label{eq:chain-sandwich}
+ \ell_{\pm}(uv)\ \leq\
+ \pc_{\Pp_{\mathrm{ab}}}([a^u,b^v])\ \leq\
+ \ell_+(u)+\ell_+(v).
+\end{equation}
+Given ordinary addition chains of lengths $L_u$ and $L_v$ for $u$ and $v$, there is a proof using at most $L_u+L_v$ products and at most $L_u+L_v$ fixed conjugations. Unless $u=v=1$, it gives a quartic with at most $8(L_u+L_v)-4$ allocated witnesses.
+\end{theorem}
+
+\begin{proof}
+For the lower bound, apply the Heisenberg map of \eqref{eq:heisenberg} to every node of any candidate proof. Every node image is central: this is true for the relator leaves and is preserved by products, inverses, and conjugations. Record only its third coordinate. Leaves supply $0$ or $\pm1$; a product adds two earlier coordinates; inversion changes a sign; conjugation leaves the coordinate unchanged. Deleting copied values and free sign changes therefore gives a signed chain for $uv$ using at most the number of product nodes in the proof. This proves the left inequality.
+
+For the upper bound, suppose an addition-chain step computes $r+s$ from earlier positive values. Maintain the already proved words $C_t=[a^t,b]$. Equation~\eqref{eq:comm-id1} yields
+\[
+ C_{r+s}=a^rC_sa^{-r}\,C_r,
+\]
+which uses one fixed conjugation and one product. Starting from the relator $C_1$, the chain for $u$ produces $[a^u,b]$.
+
+Next maintain $D_t=[a^u,b^t]$, starting with that final word. Equation~\eqref{eq:comm-id2} yields
+\[
+ D_{r+s}=D_r\,b^rD_sb^{-r}.
+\]
+The addition chain for $v$ thus adds one fixed conjugation and one product per step. Any unused nodes can be discarded; for minimal chains they can already be chosen to contribute to the target. The retained circuit has $K\leq L_u+L_v$ products and the same number of fixed conjugations. For $K\geq1$, Theorem~\ref{thm:dag-compiler} gives $8K-4\leq8(L_u+L_v)-4$ allocated witnesses. If $u=v=1$, the relator leaf suffices.
+\end{proof}
+
+\begin{remark}[Exact versus upper-bound wording]
+For ordinary addition chains conventionally written with increasing positive entries, every step used in the target derivation can be retained and extraneous steps omitted. The exact allocation $8K-4$ applies to the retained $K$-step construction. Supplying unneeded chain entries does not improve the upper bound. The delivered software implements the dyadic specialization, not an optimizer for minimal addition chains.
+\end{remark}
+
+The elementary growth argument for a signed chain gives
+$\ell_{\pm}(n)\geq\lceil\log_2n\rceil$. For a power of two, repeated doubling meets this bound. Hence \eqref{eq:chain-sandwich} independently recovers Theorem~\ref{thm:grid}'s exact product count.
+
+There is also a completely constructive upper bound without solving a chain-minimization problem. Reading the binary digits of $n$ from left to right gives an ordinary chain of length
+\[
+ \lfloor\log_2n\rfloor+\operatorname{popcount}(n)-1.
+\]
+Therefore the product complexity of a positive rectangular commutator is at most the sum of these two expressions for $u$ and $v$. This bound and the Heisenberg signed-chain lower bound need not coincide. Determining when they do is a natural, nontrivial continuation of the project.
+
+\section{Limits of compression and of witness-fiber claims}\label{sec:fold}
+
+\subsection{Sharing cannot give a computable complete proof budget}
+
+For a fixed presentation define the worst-case compressed product profile
+\begin{equation}\label{eq:gamma}
+ \gamma_{\Pp}(n)=\max\{\pc_{\Pp}(w):|w|\leq n,\ w=1\text{ in }G_{\Pp}\}.
+\end{equation}
+
+\begin{proposition}[Comparison with the Dehn profile]\label{prop:gamma}
+If $\delta_{\Pp}(n)\geq1$, then
+\begin{equation}\label{eq:gamma-bounds}
+ \left\lceil\log_2\delta_{\Pp}(n)\right\rceil
+ \leq\gamma_{\Pp}(n)
+ \leq\max(\delta_{\Pp}(n)-1,0).
+\end{equation}
+If $\delta_{\Pp}(n)=0$, then $\gamma_{\Pp}(n)=0$.
+\end{proposition}
+
+\begin{proof}
+Choose a word attaining $\delta_{\Pp}(n)$. Any proof of it with $p$ products has area at most $2^p$, so its product count is at least the logarithmic lower bound. For the upper bound, a word of positive area $\alpha$ has an ordinary factorization with $\alpha$ factors. Represent each factor by a relator leaf and a conjugation, then combine them with $\alpha-1$ products. The free-group identity needs no product.
+\end{proof}
+
+\begin{theorem}[No computable general sharing bound]\label{thm:no-sharing-cutoff}
+If $G_{\Pp}$ has undecidable word problem, then $\gamma_{\Pp}$ has no total computable upper bound. More explicitly, for every total computable $f:\N\to\N$, there are infinitely many $n$ with $\gamma_{\Pp}(n)>f(n)$.
+\end{theorem}
+
+\begin{proof}
+If all null words of length at most $n$ had proofs with at most $f(n)$ products, Lemmas~\ref{lem:dag-area} and \ref{lem:dag-doubling} would give
+$\delta_{\Pp}(n)\leq2^{f(n)}$.
+This is a computable Dehn bound, contradicting Theorem~\ref{thm:cutoff}. Finitely many exceptions to a proposed upper bound can again be absorbed into a constant, proving infinitely many exceedances.
+\end{proof}
+
+This theorem remains true although conjugator length, conjugator magnitude, and the number of unary nodes are not charged in $\pc$. It is therefore a genuine limitation on this proof-sharing calculus, not merely a complaint that an implementation has insufficient memory. On the other hand, it does not diminish the exact compression on the rectangular family: selected structured instances and worst-case completeness are different questions.
+
+\subsection{Semantic uniqueness is not single-fold Diophantineness}
+
+\begin{proposition}[Infinite fibers in the native compiler]\label{prop:infinite-fibers}
+Suppose the relator table includes a nontrivial element $r\in\F$. The fixed-itinerary compiler with one selected factor $r$ and boundary $r$ has infinitely many integer zero tuples. The same is true of the all-label compiler at that boundary and budget one.
+\end{proposition}
+
+\begin{proof}
+For every integer $h$, take the conjugator $u=r^h$. Then $uru^{-1}=r$. Nontrivial elements of a free group have infinite order: write such an element as a conjugate of a nonempty cyclically reduced word; its nonzero powers have nonempty freely reduced representatives. Hence the elements $r^h$ are distinct. By Theorem~\ref{thm:sanov}, they have distinct chart tuples, producing infinitely many distinct polynomial zeros.
+\end{proof}
+
+More generally, right multiplication of a conjugator $u$ by any power of the selected nontrivial relator leaves $uru^{-1}$ unchanged. Identity padding creates an even larger freedom: every conjugator acts identically on the identity factor.
+
+The bijections in Theorems~\ref{thm:itinerary}, \ref{thm:budget}, and \ref{thm:dag-compiler} mean that no extra \emph{arithmetic} ambiguity is added once all semantic conjugator choices are fixed. They do not make semantic proofs unique. Thus this construction does not establish finite-fold or single-fold representability of unrestricted group word problems, let alone the general finite-fold MRDP conjecture.
+
+\subsection{Where fixed-arity MRDP enters, and what it does not preserve}
+
+Encode words by natural numbers in any explicit effective way. The relation
+\[
+ w=1\text{ in }G_{\Pp}
+ \quad\Longleftrightarrow\quad
+ \exists m\geq0\ \exists\boldsymbol z\ 
+ Q_{\Pp,m}(\rho(w);\boldsymbol z)=0
+\]
+is a countable union of effectively decidable budget slices. This display abbreviates a computably enumerable relation; it is \emph{not} one first-order polynomial formula with $m$ controlling the number of variables.
+
+MRDP then supplies a separate fixed polynomial with a fixed finite witness tuple for the encoded unbounded relation. The repository's documented endpoint states exactly that fixed-arity existence principle for natural inputs and witnesses \cite{repo-mrdp}. It can be used after proving the relevant enumerable-predicate adapter. Nothing in the present explicit family identifies the resulting fixed polynomial, preserves its witness fibers, or transfers the exact area/arity ledger to it.
+
+The native compilers here use signed integer witnesses. A simple existential conversion to natural witnesses replaces each $z$ by $z^+-z^-$, with $z^+,z^-\in\N$; substitution preserves the quartic degree but doubles the allocated coordinates and introduces nonunique decompositions. This elementary conversion is sufficient for discussing the interface and emphatically does not preserve the zero-set bijections or improve fold properties.
+
+\section{Executable evidence and reproducibility}\label{sec:software}
+
+The accompanying package contains an exact-integer implementation and symbolic residual generators. Its validation record is in
+\texttt{verification/receipt.json}; the tests were actually executed with Python~3.13.5 and SymPy~1.14.0. They all passed. These are finite computations, not a substitute for the parametric proofs or a claim of Lean/Rocq verification.
+
+\subsection{Implemented components}
+
+The module \texttt{code/van\_kampen.py} implements matrix arithmetic, word evaluation and free reduction, Sanov chart encoding and even-Euclidean decoding, direct numeric budget residuals, the fixed-itinerary symbolic compiler, the all-label symbolic compiler, a general validated proof-DAG compiler, and the optimal dyadic grid construction.
+
+Symbolic output is a sparse JSON description of the quadratic residuals together with the instruction to sum their squares. This is an exact polynomial specification, not a call to an unspecified solver. Each residual is stored as integer coefficients and exponent vectors relative to an explicit ordered parameter-and-variable list. Keeping the squared-sum form avoids a needless expansion of a large quartic while retaining every coefficient needed for reproducibility.
+
+The generic DAG implementation checks legal relator leaves, acyclic topological references, and output reachability. Fixed conjugating matrices must pass the exact chart test. Integer arithmetic uses Python's arbitrary-precision integers; no floating-point tolerance is used in the tests.
+
+\subsection{The test ledger}
+
+\begin{center}
+\begin{tabular}{L{0.72\textwidth}r}
+\toprule
+Check & Count\\
+\midrule
+Freely reduced words through length $8$: distinct matrices, chart and decoder round trips & 13,121\\
+Chart-coordinate tuples in $[-8,8]^4$ examined & 83,521\\
+Integral points among those tuples, all decoded & 417\\
+Additional deterministic random word round trips & 1,000\\
+Valid area-budget certificates with budgets $1,2,3$ & 3,615\\
+Corrupted product, selector, and boundary certificates rejected & 10,845\\
+Symbolic all-label systems checked for degree and exact ledger & 9\\
+Symbolic/numeric budget evaluations cross-checked & 72\\
+Fixed-itinerary symbolic systems checked & 5\\
+Omitted-hypothesis false-positive constructions verified & 2\\
+Dyadic grid certificates for $0\leq k,\ell\leq20$ & 441\\
+Grid symbolic systems checked, including the leaf-only case & 6\\
+Mixed free-conjugation/inverse/product DAG zero tuples checked & 100\\
+Malformed DAGs rejected & 3\\
+Symbolic rectangular boundary identity verified & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+An additional large grid with $(k,\ell)=(100,100)$ was checked without expanding its $2^{200}$ relator occurrences. Its expanded cost has $201$ binary digits. This illustrates the implemented sharing behavior; it does not constitute an exhaustive lower-bound search. The proof of optimality is Theorem~\ref{thm:grid}.
+
+For the small-budget certificate family, the $15$ choices per cell combine three relator labels with five conjugators $1,a,a^{-1},b,b^{-1}$. The number of genuine certificates tested is therefore
+$15+15^2+15^3=3615$. For each one, three deterministic corruptions were tested. The numerical evaluator and symbolic generator are separate implementations in the same delivered codebase, not independently audited external software.
+
+\subsection{Reproduction commands}
+
+From the package root, install the declared symbolic dependency and run:
+\begin{lstlisting}
+python -m pip install -r requirements.txt
+python code/verify.py --receipt verification/receipt.json
+python code/van_kampen.py budget 1 --relator abAB \
+  --output examples/commutator_budget_1.json
+python code/van_kampen.py grid 1 1 \
+  --output examples/grid_1_1.json
+pdflatex -interaction=nonstopmode -halt-on-error arithmetic_van_kampen.tex
+pdflatex -interaction=nonstopmode -halt-on-error arithmetic_van_kampen.tex
+\end{lstlisting}
+The capital letters \texttt{A} and \texttt{B} in software words mean $a^{-1}$ and $b^{-1}$; they are not additional generators. The matrix constants named \texttt{A} and \texttt{B} in the Python module are the positive shear generators, matching \eqref{eq:shears}.
+
+\subsection{What has not been tested or implemented}
+
+The software does not search the enormous cube in Theorem~\ref{thm:height} on substantial examples, construct a universal machine's explicit finite group presentation, optimize arbitrary proof DAGs, find minimum addition chains, or call a general integer-polynomial solver. It generates and verifies concrete systems and supplied witnesses. There is no Lean source in the archive because no new Lean development was built or checked for this report.
+
+\section{A formalization route into ProveIt}\label{sec:formalization}
+
+The natural trusted boundary is the compiler correctness theorem, rather than the Python compiler or the numerical examples. A useful implementation would return both a finite polynomial syntax object and a theorem connecting its evaluation to the semantic proof relation. The following modules separate the obligations.
+
+\subsection{Free words and the arithmetic chart}
+
+Start with a normal-form representation of the free group, its evaluation into $2\times2$ integer matrices, and the subgroup specified by the congruences in \eqref{eq:chart}. Prove closure and the determinant identity by ring normalization. Formalize ping-pong injectivity and the even-Euclidean termination measure separately. The decoder correctness theorem should return equality of matrix evaluations and a chart-membership equivalence; it need not expose an expanded word of a huge power.
+
+The descent proof requires attention to signed division, nearest-integer selection, and parity-based strictness. These are small but essential obligations. Replacing nearest-integer division by truncation toward zero without rechecking the inequalities would invalidate the proof.
+
+\subsection{Area witnesses and their semantics}
+
+Define a padded factorization as a finite list of pairs consisting of a label and a free-group element. Prove that its existence at length $m$ is equivalent to area at most $m$. Keep identity padding explicit, because it affects both completeness and the description of fibers.
+
+The fixed-itinerary and budget compilers can then be formalized as finite vectors of quadratic polynomials. A generic sum-of-squares lemma over integers connects simultaneous residual vanishing to the single quartic. The central induction reconstructs $P_i$ and proves their determinant and chart membership; extra hypotheses on those intermediate matrices should not be inserted accidentally.
+
+\subsection{Proof DAGs and their compilation}
+
+Use a topologically indexed node datatype with child indices strictly smaller than the current index. This makes acyclicity structural rather than an unproved Boolean side condition. Label legality and chart membership of supplied constants are proof-carrying fields. Prove the cost bound and the semantic area inequality independently of the arithmetic compiler.
+
+Next prove the local matrix semantics of each gate and compose them by the same topological induction. The product-count optimum for dyadic grids can be formalized without the full general Dehn-function machinery: it needs the Heisenberg homomorphism, the commutator identities, the circuit construction, and the doubling lemma.
+
+\subsection{The external dependency ledger}
+
+The only substantive geometric input not reproved fully here is Lemma~\ref{lem:conjugators}; it is needed for the displayed height bound and the direct bounded-search procedure. A formal project should either prove it from a van Kampen diagram library or record it as an explicit temporary assumption. It is not needed for the chart theorem, either quartic soundness/completeness theorem, DAG semantics, the dyadic optimum, or the addition-chain sandwich.
+
+Classical undecidable-group existence and the two-generator embedding theorem are needed only to instantiate the noncomputability corollaries. The core compiler is valid for every supplied two-generator finite presentation without those existence inputs. MRDP is needed only to pass from the unbounded enumerable relation to a separate fixed-arity polynomial; it is not used to justify any displayed quartic.
+
+This separation permits useful formally checked endpoints well before the deepest surrounding group-theoretic libraries are completed. In particular, a kernel-checked twelve-variable polynomial for $[a^2,b^2]$, a proved generic fixed-itinerary compiler, and a proved parametric dyadic optimality theorem are realistic independent milestones.
+
+\section{Further research questions and proposed projects}\label{sec:questions}
+
+The following questions are proposed as continuations, not as claims that the associated problems have been settled or that every item is a recognized open problem in the literature.
+
+\begin{question}[Verified arithmetic free-group chart]
+Can the full Sanov chart equivalence, including a terminating decoder to compressed syllables, be added to the repository with no new mathematical axioms? The immediate target is a theorem equating integral points of $x+t+4xt-yz=0$ with free-group elements, followed by certified compilation of the fixed-itinerary system.
+\end{question}
+
+\begin{question}[Lower allocation at fixed quartic degree]
+Can the all-label construction beat $(2s+13)m-4$ variables while retaining an explicit semantic bijection and degree at most four? A successful improvement must account for selector typing, the triple-product obstruction, and the determinant condition. This is an upper-bound improvement problem; the present counts are not claimed optimal among quartics.
+\end{question}
+
+\begin{question}[Exact rectangular proof complexity]
+When does
+$\pc([a^u,b^v])=\ell_{\pm}(uv)$ hold, and when is a larger value forced by free-group information invisible to the Heisenberg quotient? Theorem~\ref{thm:addition} leaves a specific interval. Small non-dyadic rectangles are an accessible source of candidate identities and counterexamples, but a search over a bounded set of conjugators alone cannot certify a global lower bound.
+\end{question}
+
+\begin{question}[Stronger arithmetic lower-bound detectors]
+Can higher nilpotent quotients, several central coordinates, or suitably controlled invariants give proof-DAG lower bounds stronger than the scalar area/doubling bound? One would want an invariant whose update under each allowed node is explicitly bounded, so that a certificate for the lower bound can itself be checked mechanically.
+\end{question}
+
+\begin{question}[Proof-sharing profiles beyond the abelian presentation]
+For presentations with large Dehn functions, how close can
+$\gamma_{\Pp}(n)$ be to the logarithmic lower bound in
+\eqref{eq:gamma-bounds}? Which families admit near-maximal reuse, and which force close to the unshared number of products? The metric must continue to state whether arbitrary conjugations, inverse nodes, and coefficient magnitude are charged.
+\end{question}
+
+\begin{question}[Centralizer-normalized witnesses]
+Can one quotient conjugators by the evident right-centralizer symmetry and impose a canonical representative in a comparably small arithmetic language? Even a solution for one-relator bounded-area slices would be useful. It would not automatically settle unrestricted finite-fold MRDP: normalizing individual factors does not make whole factorizations finite or unique.
+\end{question}
+
+\begin{question}[A native higher-rank chart]
+Can a useful finite-generator free group be represented by a similarly exact low-dimensional arithmetic chart without first embedding its presentation into a two-generator group? An embedding may preserve the word problem while changing area substantially. A higher-rank chart with a quantitative area-preserving interface would allow more direct comparisons with machine-to-group constructions.
+\end{question}
+
+\begin{question}[Concrete universal substrate front end]
+Select a published, fully explicit finite presentation with an effective machine-simulation theorem, instantiate every relator, and connect the simulator's accepting condition to the quartic compiler. The deliverable should include the actual relator table, the input-word map, and the two directions of correctness. Merely citing the existence of an undecidable presentation is not that deliverable.
+\end{question}
+
+\begin{question}[Automatic discovery of reusable group proofs]
+Can an optimizer propose repeated conjugate patterns in a known proof and produce a validated DAG with a substantially smaller polynomial? A safe design treats heuristic discovery as untrusted and has a small semantic checker certify the transformed proof. The area and product-count annotations should be checked along with the boundary.
+\end{question}
+
+\begin{question}[Compiler interoperability and fair metrics]
+Can the repository's packed-history representations and the present area/DAG representations share a common verified input boundary? Comparisons should report variables, maximum degree, arithmetic operations, coefficient bit size, witness height, and whether a numerical universal instance is actually instantiated. A saving in one metric need not improve the others.
+\end{question}
+
+\begin{question}[Fixed-arity compression retaining area information]
+Can a fixed-arity Diophantine representation retain a recognizable area parameter or a controllable relationship between witness size and filling area? The present family does not do this: its arity changes with $m$. Any proposed packing must prove both integer soundness and completeness, and state separately what happens to witness fibers.
+\end{question}
+
+\begin{question}[Structure-aware certificate solving]
+Can practical search exploit the Sanov chart, central invariants, and the path decomposition rather than treating the final squared sum as an opaque polynomial? Useful benchmarks include finding a one-factor conjugacy proof, recovering small area budgets, and verifying or improving shared rectangular circuits. Solver performance should be measured separately from certificate size.
+\end{question}
+
+\section{Conclusion}
+
+The principal construction is explicit: a free-group conjugator is a point on one integral quadric; a relator application is a small matrix identity; summing squares produces a quartic. For a fixed itinerary, the allocated count is $8m-4$, and for an unknown itinerary drawn from $s$ relators it is $(2s+13)m-4$. The resulting family preserves filling area exactly as a compiler-relative arity resource.
+
+The second construction exposes a different resource. A proof DAG can reuse a whole normal-closure proof, and its quartic need not duplicate the reused relator occurrences. The dyadic rectangular words give an exact theorem: area $2^{k+\ell}$, optimal product count $k+\ell$, and a fixed-conjugator quartic with $8(k+\ell)-4$ witnesses outside the leaf-only case. The Heisenberg detector and addition-chain refinement make the lower-bound mechanism as explicit as the upper construction.
+
+These results do not evade undecidability or the distinction between a variable-arity family and a fixed polynomial. There is no computable complete area or sharing cutoff for presentations with undecidable word problem, and the native witness fibers are generally infinite. The productive next step is therefore not an overbroad universality claim, but a verified compiler with an honest resource ledger, followed by a concrete machine-to-presentation instance and sharper proof-sharing theorems.
+
+\appendix
+\section{Scalar templates and an independent specification}\label{app:scalar}
+
+All matrix residuals in the report can be expanded without any matrix library. For
+$X=\smallmat{x_{11}}{x_{12}}{x_{21}}{x_{22}}$ and
+$Y=\smallmat{y_{11}}{y_{12}}{y_{21}}{y_{22}}$,
+\begin{equation}\label{eq:scalar-product}
+ XY=\begin{pmatrix}
+ x_{11}y_{11}+x_{12}y_{21}&x_{11}y_{12}+x_{12}y_{22}\\
+ x_{21}y_{11}+x_{22}y_{21}&x_{21}y_{12}+x_{22}y_{22}
+ \end{pmatrix}.
+\end{equation}
+For a free-conjugation gate with child $X$, output $Z$, and chart coordinates $(x,y,z,t)$, the four residuals $ZU-UX$ are
+\begin{align*}
+ &(1+4x)Z_{11}+2zZ_{12}-(1+4x)X_{11}-2yX_{21},\\
+ &2yZ_{11}+(1+4t)Z_{12}-(1+4x)X_{12}-2yX_{22},\\
+ &(1+4x)Z_{21}+2zZ_{22}-2zX_{11}-(1+4t)X_{21},\\
+ &2yZ_{21}+(1+4t)Z_{22}-2zX_{12}-(1+4t)X_{22}.
+\end{align*}
+Together with $x+t+4xt-yz$, these are the complete local scalar specification. The inverse residuals are
+\[
+ Z_{11}-X_{22},\quad Z_{12}+X_{12},\quad
+ Z_{21}+X_{21},\quad Z_{22}-X_{11}.
+\]
+These templates show that no hidden division, exponentiation of a variable, or nonpolynomial matrix inverse appears in the final compiler.
+
+\section{A compact theorem-dependency map}\label{app:dependencies}
+
+\begin{center}
+\begin{tabular}{L{0.29\textwidth}L{0.57\textwidth}}
+\toprule
+Endpoint & Dependencies beyond elementary arithmetic and definitions\\
+\midrule
+Sanov chart & Ping-pong and the explicitly proved integer descent\\
+Fixed-itinerary quartic & Sanov chart, sum-of-squares zero criterion\\
+Budget quartic & Fixed-itinerary induction, integer Boolean selectors\\
+Height bound & Classical bounded-conjugator lemma, matrix norm estimate\\
+Native arity identity & Budget equivalence and literal allocation count\\
+Computable cutoff equivalence & Height-bound decision procedure, finite enumeration\\
+DAG quartic & Sanov chart and topological induction\\
+Dyadic product optimum & Heisenberg homomorphism, commutator identities, doubling bound\\
+Addition-chain sandwich & Central-coordinate evaluation and commutator identities\\
+Noncomputability examples & A classical undecidable finite presentation and two-generator embedding\\
+Separate fixed-arity existence & An enumerable-predicate adapter and MRDP\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Source and novelty audit}\label{app:audit}
+
+The repository review was restricted to the relevant Hilbert-tenth material and the identified comparison note, rather than a complete certification of every result in ProveIt. The snapshot used in the citations is \sha. The source list records the public MRDP documentation and the group-projective controller-lane note that was inspected. The formal builds reported by the repository were not rerun as part of this work.
+
+Sanov's free subgroup and arithmetic image are classical. The bounded-conjugator estimate is imported from an identified lemma. Undecidable finite presentations, effective two-generator embeddings, and the general MRDP consequence are also classical. The report's proposed contribution is the explicit composition of those tools into the area-native and DAG-native quartic compilers, their literal ledgers and semantic bijections, and the sharp product-count analysis in the specified calculus. The elementary area proof and the basic Dehn/decidability equivalence are not presented as newly discovered group theory.
+
+The literature check supports the dependency attributions, but does not establish priority for the compiler formulas or compression theorem. These are proved constructions whose historical novelty still requires specialist review.
+
+\clearpage
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{10}
+
+\bibitem{sanov}
+I.~N. Sanov,
+\emph{A property of a representation of a free group},
+Doklady Akademii Nauk SSSR (N.S.) \textbf{57} (1947), 657--659.
+Classical source for the faithful shear representation and its arithmetic image; the statements are reproduced in \cite{chorna}.
+
+\bibitem{chorna}
+A. Chorna, K. Geller, and V. Shpilrain,
+\emph{On two-generator subgroups in $\SL_2(\Z)$, $\SL_2(\mathbb Q)$, and $\SL_2(\mathbb R)$},
+arXiv:1605.05226v4, February 5, 2017.
+\url{https://arxiv.org/abs/1605.05226}.
+Theorems 1--2 are the exact classical inputs used here; Theorem 3 warns against extending the same membership shortcut to larger integral shear parameters.
+
+\bibitem{cornulier}
+Y. Cornulier and R. Tessera,
+\emph{Geometric presentations of Lie groups and their Dehn functions},
+arXiv:1310.5373v2, November 26, 2016.
+\url{https://arxiv.org/abs/1310.5373}.
+Lemma 2.D.2, page 28, supplies the bound $|g_i|\leq n+L\alpha$ on factor conjugators.
+
+\bibitem{boone}
+W.~W. Boone,
+\emph{The word problem},
+Annals of Mathematics (2) \textbf{70} (1959), 207--265.
+\url{https://www.jstor.org/stable/1970103}.
+Used only for the classical existence of finitely presented groups with undecidable word problem, not for any explicit numerical presentation in the software.
+
+\bibitem{hnn}
+G. Higman, B.~H. Neumann, and H. Neumann,
+\emph{Embedding theorems for groups},
+Journal of the London Mathematical Society \textbf{24} (1949), 247--254.
+Theorem IV is the classical two-generator embedding result. A detailed account and effective substitution are given in \cite{bridson}.
+
+\bibitem{bridson}
+M.~R. Bridson and C.-F. Nyberg-Brodda,
+\emph{HNN extensions and embedding theorems for groups},
+arXiv:2512.10800.
+\url{https://arxiv.org/abs/2512.10800}.
+The public version consulted on October 2, 2026 contains the explicit finite-presentation discussion in Section 2.3 and the word-problem history in Section 3.1. No later development is needed for the compiler proofs.
+
+\bibitem{repo-mrdp}
+V. Reshetnikov, \emph{ProveIt: MRDP---recursively enumerable if and only if Diophantine}, repository documentation, snapshot \sha.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/c58206ca101d4744a015a0f0104646109357d943/Computability/HilbertTenthProblem/Lean/MRDP.md}.
+The public endpoints and their claimed formal boundary are documented here; no repository build is claimed in this report.
+
+\bibitem{repo-group}
+V. Reshetnikov, \emph{ProveIt: Label-aligned controller lanes within the existing geometry}, research note, snapshot \sha.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/c58206ca101d4744a015a0f0104646109357d943/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/group_projective_label_aligned_lanes.md}.
+Inspected to distinguish the present area/DAG compiler from the repository's packed group-projective history work.
+
+\end{thebibliography}
+\end{document}
