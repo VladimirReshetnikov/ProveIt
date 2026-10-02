@@ -66,22 +66,33 @@
 > Commit and push reviewed packets frequently. These finite improvements
 > do not establish a global optimum or finish the open research goal.
 >
-> The [combined direct U15 compiler](u15_packed_joint_affine536.md) now costs
-> **536=219M+317A**, with87 positive witnesses and31 comparisons; raw338.
-> The independently reviewed [downstream stage](u15_packed_downstream561.md)
-> saves50 ordinary operations by reusing powers, halving two tape residuals
-> and computing15 positive loader fields. The [affine rewrite](u15_packed_joint_affine586.md)
-> saves25 more additions with an exact full-polynomial identity. The complete
-> [536 review](review_u15_joint536.md) checks their composition and public APIs.
-> Exact degree1936 transfers; the global87-operation bound is unchanged.
-> A concrete followup is to audit unit-product finalization of the now
-> computed ordinary-loader kernels. Count the entire compiler and prove all
-> recovered unit signs and positive sections before claiming a saving; the
-> current536 source remains the reviewed SOS construction.
-> Keep its immediate561 arithmetic parent distinct from its611 graph ancestor.
-> The original parent SOS on restoration equals the new SOS plus three times
-> the sum of the two normalized tape-residual squares. No unknown-duration
-> interface or ordinary input cost was discarded.
+> The [composed direct U15 compiler](u15_packed_composed_units511.md) now costs
+> **511=211M+300A**, with87 positive witnesses,25 comparisons and exact
+> degree4881; raw323 has exact degree3464. Its ungrouped523/raw325 sources
+> retain the identical degree1936 polynomial. The
+> [independent composition review](review_u15_composed511.md) checks all four
+> modes. The [index factorization](u15_packed_factored_index532.md) saves4A,
+> [binary affine sharing](u15_joint_binary_affine_rewrite.md) saves8M+1A,
+> and [unit grouping](u15_packed_unit_product524.md) saves12A ordinary/2A raw.
+> Every source and the full finalizer is paid. Six protected norms exclude−1
+> modulo4; the sole unprotected loader checksum is forced+1 after the others.
+> Grouped sources have exactly the same integer zeros; off-zero polynomial
+> equality holds only for the ungrouped arithmetic stages. The raw default
+> is groupedSOS, ordinary default is the positive anchor U*(1+S)−1.
+> The current unit audit guards actual cancellation rows before claiming degree.
+> A concrete next step is exact set-partition/anchor optimization over the
+> seven paid unit factors, preserving the current integer sign proof and
+> charging every regrouped finalizer. Also inspect shared native arithmetic.
+> The new [complete87 shear scout](complete87_discriminant_shear_scout.md)
+> checks3,249 explicit full schedules: none beats87; the best changed form
+> costs88. This finite family is not an unrestricted arithmetic lower bound.
+>
+> The preceding [536 compiler](u15_packed_joint_affine536.md) combined the
+> positive loader graph projection with the earlier99-gate affine schedule.
+> Keep immediate arithmetic parents distinct from the original611 graph
+> ancestor. Its fifteen-field positive restoration and weighted tape-residual
+> correction remain the inherited graph proof, not an off-zero equality
+> between the new unit-product polynomial and611.
 >
 > The preceding [centered-state compiler](u15_packed_centered_states611.md) reduces the
 > direct U15 tape route further to611 ordinary/368 raw operations. Its exact

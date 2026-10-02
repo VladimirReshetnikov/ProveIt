@@ -1,5 +1,16 @@
 # WIP: native queue streams and research continuation
 
+The [composed direct U15 compiler](u15_packed_composed_units511.md)
+now costs **511=211M+300A operations**, with87 positive witnesses,25
+comparisons and exact degree4881; raw323 has exact degree3464.
+The optional523-operation source retains the identical degree1936 polynomial.
+Factoring the history index, sharing signed binary affine planes and combining
+protected native units save25 operations from536, or100 from611.
+The [independent review](review_u15_composed511.md) verifies all four
+modes and the complete integer-zero equivalence. Ordinary input and unbounded
+duration remain paid. The overall87-operation benchmark is unchanged.
+
+
 The [native unit-product transfer](u15_packed_unit_product524.md), with its
 [independent review](review_u15_unit524.md), lowers536 to524 ordinary/336 raw
 by exact integer-zero equivalence. All witnesses remain; exact degrees rise
