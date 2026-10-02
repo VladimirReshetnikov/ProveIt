@@ -1,0 +1,1664 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage{booktabs,array,longtable}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Theta Asymptotics for High-Power Ballot Sums},
+ pdfauthor={Research article prepared with ChatGPT}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Theta asymptotics for ballot sums}
+\fancyhead[R]{\small OEIS A357825 and A357871}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Acal}{\mathcal A}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\bcont}{\mathfrak b}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\OO}{\mathcal O}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\TV}{TV}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\seq}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\setcounter{tocdepth}{2}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{7mm}
+\noindent{\small\sffamily\color{MidnightBlue} RESEARCH ARTICLE \hfill 1 OCTOBER 2026}
+\vspace{14mm}
+\begin{flushleft}
+{\Huge\bfseries Theta Asymptotics for\\[3pt] High-Power Ballot Sums\par}
+\vspace{7mm}
+{\Large OEIS A357825, A357871, and the\\growing-power array A357824\par}
+\vspace{7mm}
+{\large Exact oscillation envelopes, all-orders expansions,\\
+exponential multiset corrections, and inverse asymptotics\par}
+\end{flushleft}
+\vspace{8mm}
+\noindent\rule{\textwidth}{0.5pt}
+\begin{abstract}
+Let $B(n,h)$ count nonnegative unit-step paths of length $n$ ending at height
+$h$, and let $a_n=\sum_h B(n,h)^n$. The OEIS records the leading root growth
+of this sequence and the failure of a natural normalized ratio to converge.
+We derive its missing multiplicative structure: the ratio is a Jacobi theta
+function evaluated at a drifting parity-sensitive square-root phase, times
+$\ee^{-5/6}$. A uniform all-orders expansion expresses every subsequent
+coefficient as a Gaussian-weighted polynomial sum, equivalently a finite
+linear combination of theta derivatives. We prove the exact lower and upper
+limiting constants, identify the entire cluster interval and limiting phase
+law, and obtain oscillatory adjacent-ratio and Tur\'an asymptotics. In
+particular, the sequence is eventually strictly log-convex.
+
+The multiset counterpart $b_n=\sum_h\binom{B(n,h)+n-1}{n}$ has the same
+algebraic asymptotic expansion after multiplication by $n!$, but differs by
+an explicitly determined first exponential sector of relative order
+$n^3 2^{-n}$. An exact rising-factorial identity supplies every fixed
+exponential sector. We also treat the array $\sum_hB(n,h)^k$: its transition
+from a continuous Gaussian approximation to a finite-width lattice theta
+sum occurs at $k\asymp n$. An exact two-endpoint estimate covers all larger
+powers and yields a second, near-square logistic transition at
+$k\asymp n^{3/2}$. Finally, we derive parity-sensitive inverse
+expansions and explain their precise relation to integer thresholds.
+The proofs are accompanied by independent exact integer checks, symbolic
+coefficient generation, and high-precision numerical experiments.
+\end{abstract}
+\vfill
+\noindent\fcolorbox{MidnightBlue}{MidnightBlue!3}{%
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Status and scope.} This is a self-contained mathematical research
+report, not a Lean formalization or an independently refereed paper.
+The asymptotic formulas below are proved here; computational checks support
+but do not replace those proofs. No claim of established publication
+priority is made. The prime-power supercongruence recorded for A357825 is
+\emph{not} resolved in this report.
+\end{minipage}}
+\vspace{5mm}
+\noindent{\small Prepared with ChatGPT as a proposed contribution to the ProveIt research corpus.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The question, the contribution, and its provenance}\label{sec:context}
+
+\subsection{What the OEIS already records}
+For a nonnegative integer $n$ and an admissible height
+$h\in\{n,n-2,\ldots,n-2\lfloor n/2\rfloor\}$, put
+\begin{equation}\label{eq:ballot}
+ B(n,h)=\binom{n}{(n-h)/2}-\binom{n}{(n-h)/2-1},
+\end{equation}
+where a binomial coefficient with lower index $-1$ is zero. These are the
+ballot numbers in \seq{A008315}. Reflection at the first visit to height
+$-1$ gives the interpretation as nonnegative paths with steps $+1$ and
+$-1$. Define
+\begin{equation}\label{eq:definitions}
+ S_{n,k}=\sum_h B(n,h)^k,\qquad
+ a_n=S_{n,n},\qquad
+ b_n=\sum_h\binom{B(n,h)+n-1}{n}.
+\end{equation}
+The array $S_{n,k}$ is \seq{A357824}, its diagonal $a_n$ is
+\seq{A357825}, and $b_n$ is \seq{A357871}
+\cite{oeisballot,oeisarray,oeisa,oeisb}. The powers count ordered tuples
+sharing a common endpoint; the binomial coefficients count multisets
+sharing a common endpoint. The first values are
+\[
+ (a_n)_{n=0}^6=(1,1,2,9,98,4150,562692),\qquad
+ (b_n)_{n=0}^6=(1,1,2,5,21,183,3424).
+\]
+
+For $n\ge1$, set
+\begin{align}
+ K_n&=\frac{2^{n+3/2}}{\sqrt{\pi\ee}\,n},&
+ \Acal_n&=K_n^n
+ =\frac{2^{n^2+3n/2}}{\pi^{n/2}\ee^{n/2}n^n},\label{eq:normalizations-a}\\
+ \Bcal_n&=\frac{\ee^{n/2}2^{n^2+3n/2}}
+ {\pi^{n/2}n^{2n+1/2}}.\label{eq:normalizations-b}
+\end{align}
+Kotesovec's entries from November 2022 state $a_n^{1/n}\sim K_n$ and
+that $a_n/\Acal_n$ has no limit. The multiset entry gives the analogous
+root asymptotic and nonconvergence for $b_n/\Bcal_n$
+\cite{oeisa,oeisb}. Those observations are the starting point, not claims
+of this report's discovery. The natural next questions are: what replaces
+the missing constant, how large are the oscillations, and is there a
+uniform expansion beyond their leading shape?
+
+\subsection{What is established here}
+The main result is
+\begin{equation}\label{eq:main-preview}
+ \frac{a_n}{\Acal_n}
+ =\ee^{-5/6}\!\left\{\Theta(\alpha_n)
+ +\frac{F_1(\alpha_n)}{\sqrt{n+1}}
+ +\frac{F_2(\alpha_n)}{n+1}+\cdots\right\},
+\end{equation}
+with a proved remainder after every fixed number of terms. Here
+\[
+ \alpha_n=\frac{\sqrt{n+1}-((n+1)\bmod2)}2,
+ \qquad
+ \Theta(\alpha)=\sum_{j\in\Z}\ee^{-4(j-\alpha)^2}.
+\]
+The coefficient functions are periodic and explicitly computable. The
+oscillations are therefore organized by a simple phase, not erratic noise.
+The main extensions are an exact limiting interval and distribution,
+eventual log-convexity, the $k\asymp n$ transition for the entire array,
+all fixed exponential sectors connecting the tuple and multiset counts,
+and an inverse expansion retaining the same phase.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.29\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Question or assertion & Status in this report\\
+\midrule
+Root growth and absence of a limit & Already recorded by OEIS; proved and sharpened here.\\
+Theta factor and every algebraic order & Explicit formulas with a uniform localization proof.\\
+Multiset exponential corrections & Exact finite identity and every fixed-sector remainder.\\
+Growing powers and inverse formulas & Proved in the parameter ranges stated below.\\
+Global log-convexity at every index & Not claimed; only eventual strict log-convexity is proved.\\
+Bala's prime-power supercongruence & Left open; no arithmetic conclusion is inferred from asymptotics.\\
+Lean verification and publication priority & Neither is claimed.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Relation to the literature and ProveIt}
+Catalan-triangle moments and fixed powers are part of an established
+literature; Miana and Romero study such moments, closed expressions in
+several cases, and divisibility questions \cite{miana}. The present
+asymptotic regime instead lets the exponent grow with the row index.
+Discrete Laplace methods are also established; a recent systematic
+formulation is given by Helton, Hughes, and Schlosser \cite{discretelaplace}.
+The point here is not to rename that method as new, but to retain the
+lattice when its mesh does \emph{not} become small relative to the peak
+width. Standard Stirling and theta identities are used with attribution
+\cite{dlmfgamma,dlmfpolygamma,dlmftheta,dlmftransform}.
+
+Repository inspection used ProveIt commit
+\begin{center}\small\texttt{50f93367b2859b2727c34c68cf87684c101768cc}\end{center}
+and its combinatorics map \cite{proveit}. No existing repository theorem is required for the
+proofs below. This article is a proposed additional research case study;
+it does not promote a repository computation into a formal theorem.
+A repository code search for A357825 and targeted public searches for the
+sequence identifiers and theta/high-power ballot asymptotics did not
+identify a matching all-orders formula in the material reviewed. That is
+a limited search result, not a proof of novelty. The source-status audit
+and bibliography are dated 1 October 2026.
+
+\section{The shifted ballot identity and the main theorem}\label{sec:main}
+
+\subsection{Why the shift by one matters}
+Put
+\begin{equation}\label{eq:shift}
+ m=n+1,\qquad r=h+1,\qquad \eps_n=m\bmod2\in\{0,1\}.
+\end{equation}
+Then $r$ ranges over the positive integers of parity $m$ with $r\le m$.
+A binomial simplification gives the exact identity
+\begin{equation}\label{eq:shifted-ballot}
+ B(n,h)=\frac r m\binom{m}{(m-r)/2}.
+\end{equation}
+Define the continuous positive interpolation, only as an analytic tool,
+by
+\begin{equation}\label{eq:gamma-interpolation}
+ \bcont_m(r)=\frac r m\,
+ \frac{\Gamma(m+1)}
+ {\Gamma((m-r)/2+1)\Gamma((m+r)/2+1)},\qquad 0<r\le m,
+\end{equation}
+and introduce
+\begin{equation}\label{eq:V}
+ V_m=\frac{2^m}{m}\sqrt{\frac2{\pi\ee}}
+ =K_n\frac n m.
+\end{equation}
+The maximum of the leading continuous shape is at $r=\sqrt m$.
+Writing
+\begin{equation}\label{eq:phase-u}
+ \alpha_n=\frac{\sqrt m-\eps_n}{2},\qquad
+ u=r-\sqrt m=2(j-\alpha_n),
+\end{equation}
+turns the summation into a translated lattice of fixed spacing $2$.
+The phase can be reduced modulo $1$ whenever a periodic function is
+applied to it. Keeping $m=n+1$, rather than replacing it prematurely by
+$n$, is necessary for the correct constant and correction terms.
+
+\begin{definition}[Theta sums and Gaussian moments]
+For $\tau>0$ and $p\ge0$, let
+\begin{equation}\label{eq:theta}
+ \Theta_\tau(\alpha)=\sum_{j\in\Z}\ee^{-4\tau(j-\alpha)^2},\qquad
+ M_{p,\tau}(\alpha)=\sum_{j\in\Z}[2(j-\alpha)]^p
+                         \ee^{-4\tau(j-\alpha)^2}.
+\end{equation}
+Write $\Theta=\Theta_1$ and $M_p=M_{p,1}$. These sums and all of their
+phase derivatives converge absolutely and locally uniformly in $\tau>0$.
+They are smooth, $1$-periodic functions of $\alpha$.
+\end{definition}
+
+\begin{theorem}[All-orders diagonal expansion]\label{thm:main}
+There are explicitly computable polynomials $R_j\in\mathbb Q[u]$, with
+$R_0=1$, $\deg R_j\le3j$, and
+$R_j(-u)=(-1)^jR_j(u)$, such that for every fixed $J\ge0$,
+\begin{equation}\label{eq:allorders}
+ \frac{a_n}{\Acal_n}
+ =\ee^{-5/6}\left\{
+ \sum_{j=0}^J m^{-j/2}F_j(\alpha_n)
+ +\OO_J\!\left(m^{-(J+1)/2}\right)\right\},
+ \qquad m=n+1,
+\end{equation}
+where
+\begin{equation}\label{eq:F}
+ F_j(\alpha)=\sum_{\ell\in\Z}\ee^{-u_\ell^2}R_j(u_\ell),
+ \qquad u_\ell=2(\ell-\alpha).
+\end{equation}
+The implied constant is independent of the phase. In particular
+$F_0=\Theta$, and the same order holds as a relative error after division
+by the leading term.
+\end{theorem}
+
+The first two correction polynomials are
+\begin{align}
+ R_1(u)&=\frac{u^3}{3}+\frac{2u}{3},\label{eq:R1}\\
+ R_2(u)&=\frac{u^6}{18}-\frac{u^4}{36}
+            +\frac{11u^2}{9}+\frac{13}{60}.\label{eq:R2}
+\end{align}
+Consequently
+\begin{align}
+ F_1&=\frac13M_3+\frac23M_1
+       =\frac1{192}\Theta'''+\frac7{24}\Theta',\label{eq:F1-derivative}\\
+ F_2&=\frac1{18}M_6-\frac1{36}M_4
+                   +\frac{11}{9}M_2+\frac{13}{60}\Theta.\label{eq:F2}
+\end{align}
+All derivatives here are with respect to $\alpha$.
+At integer and half-integer phases $F_1$ vanishes by symmetry. Away from
+those phases an $m^{-1/2}$ term is generally present; restricting an ansatz
+to integral powers of $1/n$ loses genuine information.
+
+\begin{remark}[Meaning of ``all orders'']
+Equation \eqref{eq:allorders} is a Poincar\'e asymptotic expansion: $J$ is
+fixed while $n\to\infty$. No convergence of the infinite series, optimal
+truncation theorem, or resurgent description is asserted. Because its
+coefficients are periodic functions of a drifting phase, it is an
+\emph{oscillatory} expansion, not an ordinary real logarithmic-exponential
+transseries with constant coefficients. The additional exponential sectors
+in Section~\ref{sec:multisets} give a separate, precise beyond-all-orders
+statement.
+\end{remark}
+
+\section{Uniform localization and the proof of the expansion}\label{sec:proof}
+
+\subsection{A Stirling expansion with a moving argument}
+Define
+\begin{equation}\label{eq:f}
+ f(x)=\log x-\frac{x^2-1}{2},\qquad x>0.
+\end{equation}
+It has a unique maximum $0$ at $x=1$, with $f''(1)=-2$.
+The logarithmic Stirling expansion for $\Gamma$ gives the following
+uniform form.
+
+\begin{lemma}[Uniform local logarithm]\label{lem:stirling}
+For every compact interval $I\subset(0,\infty)$ and every integer $L\ge0$,
+\begin{equation}\label{eq:log-stirling}
+ \log\frac{\bcont_m(\sqrt m\,x)}{V_m}
+ =f(x)+\sum_{\ell=1}^{L}A_\ell(x)m^{-\ell}
+       +\OO_{I,L}(m^{-L-1}),\qquad x\in I,
+\end{equation}
+for all sufficiently large $m$. The estimate may be differentiated any
+fixed number of times in $x$, after increasing the finite Stirling
+truncation used to establish it. Here
+\begin{align}\label{eq:Aformula}
+ A_\ell(x)={}&-\frac{x^{2\ell+2}}{(2\ell+2)(2\ell+1)}
+              +\frac{x^{2\ell}}{2\ell}\notag\\
+ &+\sum_{j=1}^{\lfloor(\ell+1)/2\rfloor}
+ \frac{B_{2j}}{2j(2j-1)}
+ \left[
+ \ind_{\ell=2j-1}
+ -2^{2j}\binom{2\ell-2j}{2\ell-4j+2}
+                      x^{2\ell-4j+2}
+ \right],
+\end{align}
+where $B_{2j}$ denotes a Bernoulli number, with $B_2=1/6$.
+\end{lemma}
+
+\begin{proof}
+Set $z=x/\sqrt m$, and insert the logarithmic Stirling formula into
+\eqref{eq:gamma-interpolation}. The exponential part of the binomial
+coefficient is controlled by
+\[
+ \frac{(1+z)\log(1+z)+(1-z)\log(1-z)}2
+ =\sum_{q\ge1}\frac{z^{2q}}{2q(2q-1)}.
+\]
+Its $q=1$ term gives $-x^2/2$, and its higher terms give the first term
+of \eqref{eq:Aformula}. The square-root prefactor contributes
+$-\frac12\log(1-z^2)$, producing the second term.
+
+For a Bernoulli term with $p=2j-1$, subtraction of the two denominator
+corrections produces
+\[
+ \frac{B_{2j}}{2jp}\,m^{-p}
+ \bigl[1-2^p\{(1-z)^{-p}+(1+z)^{-p}\}\bigr].
+\]
+The even Taylor coefficient of $z^{2k}$ in the braces is
+$2\binom{p+2k-1}{2k}$. Setting $k=\ell-p$ yields the summation in
+\eqref{eq:Aformula}. The leading prefactors, together with $r/m$, are
+exactly $V_m\exp f(x)$.
+
+For $x$ in a fixed compact interval, both denominator arguments are
+$m/2+\OO(\sqrt m)$, hence are bounded below by a positive multiple of
+$m$. Finite Stirling remainder bounds and finite Taylor remainders are
+therefore uniform. The corresponding digamma and polygamma expansions
+supply the same conclusion after any fixed number of differentiations;
+see \cite{dlmfgamma,dlmfpolygamma}. This proves the finite asymptotic
+statement, without requiring convergence of the displayed infinite
+Taylor or Stirling series outside their use as coefficient generators.
+\end{proof}
+
+For example,
+\begin{align}
+ A_1(x)&=-\frac{x^4}{12}+\frac{x^2}{2}-\frac14,\notag\\
+ A_2(x)&=-\frac{x^6}{30}+\frac{x^4}{4}-\frac{x^2}{3},\label{eq:Aexamples}\\
+ A_3(x)&=-\frac{x^8}{56}+\frac{x^6}{6}-\frac{x^4}{3}+\frac1{24}.
+ \notag
+\end{align}
+In particular $A_1(1)=1/6$ and $A_1'(1)=2/3$.
+
+\subsection{A global Gaussian bound}
+A local Stirling calculation alone does not justify exchanging an
+asymptotic expansion with a sum whose range grows. The necessary tail
+control follows from global concavity.
+
+\begin{lemma}[Uniform Gaussian domination]\label{lem:gaussian}
+There are constants $C,c>0$ such that, for all sufficiently large $n$ and
+all $0<r\le m=n+1$,
+\begin{equation}\label{eq:global-envelope}
+ n\log\frac{\bcont_m(r)}{K_n}\le C-c(r-\sqrt m)^2.
+\end{equation}
+In particular the normalized summands of $a_n$ have a phase-uniform
+summable Gaussian envelope.
+\end{lemma}
+
+\begin{proof}
+Write $\ell_m(r)=\log\bcont_m(r)$. Direct differentiation gives
+\begin{equation}\label{eq:concavity}
+ \ell_m''(r)=-\frac1{r^2}
+ -\frac14\left[
+ \psi_1\!\left(\frac{m-r}2+1\right)
+ +\psi_1\!\left(\frac{m+r}2+1\right)\right],
+\end{equation}
+where $\psi_1$ is the trigamma function. For $z>0$ its positive series
+satisfies
+\[
+ \psi_1(z)=\sum_{q=0}^{\infty}(z+q)^{-2}
+ \ge\int_0^\infty(z+t)^{-2}\dd t=\frac1z.
+\]
+The two arguments in \eqref{eq:concavity} sum to $m+2$, so their
+reciprocals sum to at least $4/(m+2)$. Thus
+$\ell_m''(r)\le-1/(m+2)$ everywhere on the stated interval.
+
+Lemma~\ref{lem:stirling}, including its differentiated form, gives
+\[
+ \ell_m'(\sqrt m)=\frac{2}{3m^{3/2}}+\OO(m^{-5/2}),\qquad
+ n\log\frac{\bcont_m(\sqrt m)}{K_n}=\OO(1).
+\]
+Taylor's theorem with the global upper bound on the second derivative
+now gives, with $u=r-\sqrt m$,
+\[
+ n\log\frac{\bcont_m(r)}{K_n}
+ \le C+\OO(m^{-1/2})u-\frac{n}{2(m+2)}u^2.
+\]
+Completing the square absorbs the linear term and proves
+\eqref{eq:global-envelope}.
+\end{proof}
+
+For $|u|>m^{1/12}$, the total contribution is
+\[\OO\!\left(\exp(-c' m^{1/6})\right),\]
+uniformly in the lattice translate, by the Gaussian envelope. This is smaller than every fixed algebraic power of $m^{-1}$.
+It also controls every fixed polynomial moment of the tails.
+
+\subsection{The coefficient engine}
+Let $t=m^{-1/2}$ and introduce a formal series in $t$ whose coefficients
+are polynomials in $u$:
+\begin{align}\label{eq:master}
+ \mathscr L(t,u)={}&-1+(t^{-2}-1)
+ \left[f(1+ut)+\sum_{\ell\ge1}A_\ell(1+ut)t^{2\ell}\right]
+ +\sum_{\ell\ge1}\frac{t^{2\ell}}{\ell(\ell+1)}\notag\\
+ ={}&-\frac56-u^2+\sum_{j\ge1}D_j(u)t^j.
+\end{align}
+Only finitely many terms are required to obtain any specified coefficient.
+The last sum appears because
+\begin{equation}\label{eq:normalization-shift}
+ (m-1)\log(1-1/m)
+ =-1+\sum_{\ell\ge1}\frac{m^{-\ell}}{\ell(\ell+1)}.
+\end{equation}
+Thus $\mathscr L$ generates precisely the expansion of
+$n\log(\bcont_m(\sqrt m+u)/K_n)$.
+The first exponent polynomials are
+\begin{align}
+ D_1(u)&=\frac{u^3}{3}+\frac{2u}{3},\notag\\
+ D_2(u)&=-\frac{u^4}{4}+u^2+\frac{13}{60},\notag\\
+ D_3(u)&=\frac{u^5}{5}-\frac{2u^3}{3}-\frac{8u}{15},\label{eq:Dexamples}\\
+ D_4(u)&=-\frac{u^6}{6}+\frac{u^4}{6}
+                         +\frac{2u^2}{3}+\frac{59}{420}.\notag
+\end{align}
+Exponentiation gives the exact polynomial recurrence
+\begin{equation}\label{eq:Rrecurrence}
+ R_0(u)=1,\qquad
+ R_j(u)=\frac1j\sum_{i=1}^j iD_i(u)R_{j-i}(u)\quad(j\ge1).
+\end{equation}
+Indeed it is the coefficient recurrence for
+$\exp(\sum_{i\ge1}D_i t^i)=\sum_{j\ge0}R_jt^j$.
+Each $D_i$ has parity $i$ and degree at most $i+2$. Any product
+contributing to weight $j$ therefore has degree at most $3j$ and parity
+$j$, proving the structural assertions of Theorem~\ref{thm:main}.
+
+The constant $-5/6$ is worth isolating. Raising the peak's Stirling
+correction to the $n$th power contributes $+1/6$ to the logarithm.
+Converting $V_m^n$ to $K_n^n$ contributes $-1$. Their sum is $-5/6$;
+omitting either effect gives the wrong oscillation envelope.
+
+\subsection{A summable remainder and completion of the proof}
+Fix $J$. On $|u|\le m^{1/12}$, apply Lemma~\ref{lem:stirling} with a
+finite truncation larger than the order needed for $t^{J+1}$, and apply
+Taylor's theorem to the finitely many functions at $x=1+ut$. Since
+$|ut|\le m^{-5/12}$, these Taylor expansions are uniform. The first
+nonconstant perturbation of the Gaussian exponent is bounded by
+$C t(1+|u|^3)$, which is $o(1)$ on this window. Finite Taylor's theorem
+for the exponential consequently gives some integer $d_J$ and constants
+$C_J,c_J>0$ such that
+\begin{align}\label{eq:local-remainder}
+ &\left|\left(\frac{\bcont_m(\sqrt m+u)}{K_n}\right)^n
+ -\ee^{-5/6-u^2}\sum_{j=0}^Jm^{-j/2}R_j(u)\right|\notag\\
+ &\hspace{25mm}\le C_Jm^{-(J+1)/2}(1+|u|)^{d_J}\ee^{-c_Ju^2}.
+\end{align}
+To see why increasing the Stirling truncation suffices, its remainder
+before multiplication by $n$ is $\OO(m^{-L-1})$ uniformly for $x$ near
+$1$; after multiplication it is $\OO(m^{-L})$. Choosing
+$L\ge\lceil(J+1)/2\rceil$ and retaining the required Taylor terms makes
+it no larger than the requested order, with any extra polynomial factors
+absorbed into $(1+|u|)^{d_J}$. The finitely many exponentiation remainders
+have the same form.
+
+For every $p\ge0$ and $c>0$,
+\[
+ \sup_{\alpha\in[0,1]}
+ \sum_{j\in\Z}(1+|2(j-\alpha)|)^p\ee^{-c[2(j-\alpha)]^2}<\infty.
+\]
+Summing \eqref{eq:local-remainder} over the translated lattice therefore
+preserves its algebraic order. Lemma~\ref{lem:gaussian} controls the
+omitted actual summands outside the window. The polynomial-Gaussian
+approximants have tails of the same negligible kind. Extending the
+finite admissible lattice to all of $\Z$ adds only such tails, since both
+endpoints are a growing distance from $\sqrt m$. This proves
+\eqref{eq:allorders}. Finally, the nearest lattice point has $|u|\le1$,
+so $\Theta(\alpha)\ge\ee^{-1}$ uniformly; absolute and relative versions
+of the theorem are equivalent. \hfill$\square$
+
+\section{Theta geometry, exact envelopes, and phase distribution}\label{sec:theta}
+
+\subsection{Theta identities and extrema}
+Poisson summation of a Gaussian gives
+\begin{equation}\label{eq:poisson}
+ \Theta_\tau(\alpha)=\frac{\sqrt\pi}{2\sqrt\tau}
+ \sum_{q\in\Z}\exp\!\left(-\frac{\pi^2q^2}{4\tau}\right)
+                         \ee^{2\pi i q\alpha}.
+\end{equation}
+This also follows from the standard theta transformation
+\cite{dlmftransform}. Termwise differentiation of \eqref{eq:theta} gives
+\begin{equation}\label{eq:momentrec}
+ M_{p,\tau}'=-2pM_{p-1,\tau}+4\tau M_{p+1,\tau}.
+\end{equation}
+For $\tau=1$, iteration expresses every $F_j$ as a finite rational
+linear combination of derivatives of $\Theta$. This is an alternative
+all-orders representation to the rapidly convergent moment sums.
+
+\begin{lemma}[Strict extrema]\label{lem:theta-extrema}
+For each $\tau>0$, $\Theta_\tau$ is strictly decreasing on $(0,1/2)$.
+Its global maximum is at integer phases and its global minimum is at
+half-integer phases.
+\end{lemma}
+\begin{proof}
+Let $q=\exp(-\pi^2/(4\tau))\in(0,1)$. Apart from the positive constant
+in \eqref{eq:poisson}, the Jacobi product is
+\[
+ \prod_{j\ge1}(1-q^{2j})
+ \bigl(1+2q^{2j-1}\cos(2\pi\alpha)+q^{4j-2}\bigr).
+\]
+Every phase-dependent factor is positive. Its logarithmic derivative is
+strictly negative when $0<\alpha<1/2$. The derivative series converges
+locally uniformly there, so the logarithmic derivative of the product
+is negative. Periodicity and reflection symmetry finish the proof.
+The product identity is standard \cite{dlmftheta}.
+\end{proof}
+
+\begin{theorem}[Exact limiting interval]\label{thm:envelope}
+The cluster set of $a_n/\Acal_n$ is precisely $[C_-,C_+]$, where
+\begin{align}
+ C_-&=\ee^{-5/6}\sum_{j\in\Z}\ee^{-(2j-1)^2}
+       =0.31986675953099572612\ldots,\label{eq:Cminus}\\
+ C_+&=\ee^{-5/6}\sum_{j\in\Z}\ee^{-4j^2}
+       =0.45051819401966197435\ldots.\label{eq:Cplus}
+\end{align}
+In particular these are respectively the liminf and limsup, and no
+constant $C$ satisfies $a_n\sim C\Acal_n$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:main} reduces the claim to the range of $\Theta$ along
+the phases. Lemma~\ref{lem:theta-extrema} supplies universal limiting
+bounds. For $n=s^2-1$, the phase is an integer exactly, so this subsequence
+converges to $C_+$. For $n=s^2$, the phase tends modulo one to $1/2$, so
+that subsequence converges to $C_-$. Proposition~\ref{prop:equidist}
+below proves that every phase occurs as a subsequential limit. Continuity
+of $\Theta$ then fills the entire interval and excludes other cluster
+values.
+\end{proof}
+
+\begin{figure}[tb]
+\centering\includegraphics[width=0.97\textwidth]{figures/phase_collapse.pdf}
+\caption{The apparent oscillation collapses onto a single theta curve
+when plotted against the phase. Dots are high-precision localized
+log-Gamma evaluations for $600\le n\le1200$, not interval-certified
+values. The discrepancy is explained by the $m^{-1/2}$ and higher terms.}
+\label{fig:phase}
+\end{figure}
+
+\subsection{An elementary equidistribution proof}
+\begin{proposition}[Effective phase distribution]\label{prop:equidist}
+For every interval $I\subset[0,1)$,
+\begin{equation}\label{eq:equidist}
+ \#\{1\le n\le N:\{\alpha_n\}\in I\}
+ =N|I|+\OO(\sqrt N).
+\end{equation}
+The implied constant can be chosen independently of $I$. The same
+assertion holds on either parity class, with its own number of terms
+in place of $N$.
+\end{proposition}
+\begin{proof}
+Fix $\eps\in\{0,1\}$ and restrict $m=n+1$ to that parity. For
+$I=[a,b)$, the condition is equivalent to membership in the union of
+intervals
+\[
+ (2j+\eps+2a)^2\le m<(2j+\eps+2b)^2,
+\]
+apart from finitely many harmless initial endpoints. The number of
+integers of a specified parity in an interval of length $L$ is
+$L/2+\OO(1)$. The displayed interval has length
+\[
+ 8j(b-a)+4\eps(b-a)+4(b^2-a^2).
+\]
+There are $\OO(\sqrt N)$ complete intervals up to $N+1$.
+Summing their main terms gives $(b-a)$ times the number of admissible
+$m$ up to $N+1$, with error $\OO(\sqrt N)$: the terms linear in $j$
+produce the quadratic main term, and all endpoint and linear-size
+corrections are of order $\sqrt N$. A final partial interval also has
+length $\OO(\sqrt N)$ and obeys the same bound. All constants are
+uniform for $0\le a\le b\le1$. Summing the two parity classes proves
+\eqref{eq:equidist}.
+\end{proof}
+
+\begin{corollary}[Limiting law and mean]\label{cor:law}
+If an index is chosen uniformly from $1,\ldots,N$, then
+$a_n/\Acal_n$ converges in distribution to $\ee^{-5/6}\Theta(U)$,
+where $U$ is uniform on $[0,1]$. Moreover
+\begin{equation}\label{eq:mean}
+ \frac1N\sum_{n=1}^N\frac{a_n}{\Acal_n}
+ =\ee^{-5/6}\frac{\sqrt\pi}{2}+\OO(N^{-1/2})
+ =0.38515263413250459606\ldots+\OO(N^{-1/2}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Continuity and equidistribution prove convergence in distribution.
+Integrating the discrepancy bound against the smooth function
+$\Theta$ gives an $\OO(N^{-1/2})$ error in its average. The average of
+the uniform $\OO(n^{-1/2})$ remainder in Theorem~\ref{thm:main} has the
+same order. Finally
+\[
+ \int_0^1\Theta(\alpha)\dd\alpha
+ =\frac12\int_{-\infty}^{\infty}\ee^{-u^2}\dd u
+ =\frac{\sqrt\pi}{2}.
+\]
+\end{proof}
+
+The root asymptotic in the OEIS follows immediately: $a_n/\Acal_n$ is
+bounded above and bounded away from zero, so
+$a_n^{1/n}/K_n=(a_n/\Acal_n)^{1/n}\to1$.
+The multiplicative oscillation survives in the ratio but disappears
+under the $n$th root.
+
+\section{Adjacent quotients, log-convexity, and recurrence obstructions}\label{sec:ratios}
+
+Put
+\begin{equation}\label{eq:g}
+ \lambda=\log2,\qquad c=\frac32\log2-\frac{1+\log\pi}{2},\qquad
+ g(x)=\lambda x^2-x\log x+cx.
+\end{equation}
+Then $g(n)=\log\Acal_n$. Consecutive phases satisfy
+\begin{equation}\label{eq:adjacent-phase}
+ \alpha_{n\pm1}=\alpha_n+\frac12+\OO(n^{-1/2})\pmod1.
+\end{equation}
+Thus averaging away the phase before forming an adjacent quotient would
+lose an order-one factor.
+
+\begin{theorem}[Adjacent and Tur\'an quotients]\label{thm:ratios}
+As $n\to\infty$,
+\begin{align}
+ \frac{a_{n+1}}{a_n}
+ &=\frac{2^{2n+5/2}}{\sqrt\pi\,\ee^{3/2}n}
+   \frac{\Theta(\alpha_n+1/2)}{\Theta(\alpha_n)}
+   \bigl(1+\OO(n^{-1/2})\bigr),\label{eq:adjacent-ratio}\\
+ \frac{a_{n-1}a_{n+1}}{a_n^2}
+ &=4\left(\frac{\Theta(\alpha_n+1/2)}{\Theta(\alpha_n)}\right)^2
+   +\OO(n^{-1/2}).\label{eq:turan}
+\end{align}
+The second quotient has lower and upper limits
+\begin{align}
+ T_-&=4\left(\frac{\Theta(1/2)}{\Theta(0)}\right)^2
+       =2.01638539749423251125\ldots,\label{eq:turan-lower}\\
+ T_+&=4\left(\frac{\Theta(0)}{\Theta(1/2)}\right)^2
+       =7.93499100910135656311\ldots.\label{eq:turan-upper}
+\end{align}
+In particular $a_n$ is strictly log-convex for all sufficiently large $n$.
+\end{theorem}
+\begin{proof}
+Taylor expansion of $g$ gives
+\[
+ \ee^{g(n+1)-g(n)}
+ =\frac{2^{2n+5/2}}{\sqrt\pi\,\ee^{3/2}n}(1+\OO(n^{-1})),
+ \qquad
+ \ee^{g(n-1)+g(n+1)-2g(n)}=4(1+\OO(n^{-1})).
+\]
+Use Theorem~\ref{thm:main}, \eqref{eq:adjacent-phase}, smoothness, and
+positivity of $\Theta$. The ratio of two theta values is bounded by
+$\Theta(1/2)/\Theta(0)$ and its reciprocal. Both bounds are attained at
+phases $0$ and $1/2$, which occur as subsequential limits.
+
+The strict inequality $T_->1$ need not rest on floating-point decimals.
+For instance $\Theta(1/2)\ge2/\ee>2/3$, while
+\[
+ \Theta(0)=1+2\sum_{j\ge1}\ee^{-4j^2}
+ \le1+\frac{2\ee^{-4}}{1-\ee^{-12}}<\frac{11}{10}.
+\]
+The last elementary bound follows already from $\ee>8/3$.
+Consequently $T_->4(20/33)^2>1$, a positive gap from the
+log-convexity threshold. Equation \eqref{eq:turan} proves the final
+assertion.
+\end{proof}
+
+A rapidly growing sequence need not automatically be log-convex:
+oscillatory multipliers can interfere with a second difference. Here the
+theta quotient is explicitly controlled, so the conclusion has a genuine
+proof rather than following from growth alone. The theorem does not
+specify the least index from which log-convexity holds.
+
+\begin{proposition}[No polynomial-coefficient linear recurrence]\label{prop:nonprecursive}
+Neither $(a_n)$ nor $(b_n)$ is P-recursive over $\mathbb C$. Equivalently,
+neither ordinary generating series is D-finite as a formal power series.
+Both ordinary generating series have radius of convergence zero.
+\end{proposition}
+\begin{proof}
+A sequence $u_n$ satisfying a nonzero polynomial-coefficient recurrence
+$\sum_{j=0}^r p_j(n)u_{n+j}=0$ can, for all large $n$, be solved for the
+term with largest nonzero index. Ratios of its polynomial coefficients
+are bounded in magnitude by $Cn^d$ for some integer $d\ge0$.
+If $M_N=\max(1,|u_0|,\ldots,|u_N|)$, it follows that
+$M_{N+1}\le C' N^dM_N$ after adjusting constants and ignoring a finite
+initial segment. Hence
+\[
+ |u_n|\le C_0C_1^n(n!)^d,\qquad \log^+|u_n|=\OO(n\log n).
+\]
+A recurrence of order zero would force eventual vanishing and is also
+impossible here. Theorem~\ref{thm:main} gives
+$\log a_n=\lambda n^2+\OO(n\log n)$. Theorem~\ref{thm:sectors}
+below gives the same quadratic leading logarithm for $b_n$.
+Both contradict the recurrence bound. The equivalence with formal
+D-finiteness follows by coefficient extraction from a linear differential
+equation and the converse conversion of a recurrence to such an equation.
+Finally $a_n^{1/n}$ and $b_n^{1/n}$ tend to infinity, so the radius
+assertion follows from the root test.
+\end{proof}
+
+\section{The growing-power array and two localization transitions}\label{sec:array}
+
+The scale of the exponent determines whether the lattice can be replaced
+by an integral. This section treats $S_{n,k}$ for real $k>0$ analytically;
+integer $k$ gives the OEIS array. The parameter $m=n+1$ is always retained.
+
+\subsection{Fixed powers and the broad Gaussian regime}
+\begin{proposition}[Fixed and subcritical powers]\label{prop:subcritical}
+For each fixed $k>0$,
+\begin{equation}\label{eq:fixed-k}
+ S_{n,k}\sim V_m^k\frac{\sqrt m}{4}\,
+ \ee^{k/2}\left(\frac2k\right)^{(k+1)/2}
+ \Gamma\!\left(\frac{k+1}{2}\right).
+\end{equation}
+If $k=k(n)\to\infty$ and $k=o(m)$, then
+\begin{equation}\label{eq:subcritical}
+ S_{n,k}\sim V_m^k\frac{\sqrt{\pi m/k}}2.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For fixed $k$, use $x=r/\sqrt m$. Its lattice mesh is $2/\sqrt m$.
+Lemma~\ref{lem:stirling} gives pointwise convergence of
+$(\bcont_m(\sqrt m x)/V_m)^k$ to
+$\ee^{kf(x)}=\ee^{k/2}x^k\ee^{-kx^2/2}$. The concavity proof gives a
+uniform integrable Gaussian bound in $x-1$; compact-interval convergence
+and this tail bound justify the Riemann sum. Thus
+\[
+ S_{n,k}/V_m^k\sim\frac{\sqrt m}{2}\int_0^\infty
+          \ee^{k/2}x^k\ee^{-kx^2/2}\dd x,
+\]
+whose integral is \eqref{eq:fixed-k}.
+
+For growing $k=o(m)$, use the finer local variable
+$v=(r-\sqrt m)\sqrt{k/m}$. The mesh $2\sqrt{k/m}$ tends to zero,
+while
+\[
+ kf(1+v/\sqrt k)\longrightarrow-v^2,
+ \qquad kA_1(1+v/\sqrt k)/m\longrightarrow0
+\]
+uniformly for bounded $v$. The same concavity argument gives a uniform
+Gaussian tail in $v$. The Riemann-sum limit is therefore
+$\frac12\sqrt{m/k}\int_{\R}\ee^{-v^2}\dd v$, proving
+\eqref{eq:subcritical}.
+\end{proof}
+
+For orientation, the first two integral powers also have exact familiar
+identities:
+\[
+ S_{n,1}=\binom{n}{\lfloor n/2\rfloor},\qquad
+ S_{n,2}=\frac1{n+1}\binom{2n}{n}.
+\]
+The first telescopes in \eqref{eq:ballot}. For the second, join a pair of
+nonnegative $n$-step paths with common height by following the first and
+then the reverse of the second. This is a bijection with Dyck paths of
+length $2n$. These columns are already identified by the OEIS
+\cite{oeisarray}; they are consistency checks, not new enumeration claims.
+
+\subsection{The critical theta regime}
+\begin{theorem}[Critical growing powers]\label{thm:critical}
+Let $\tau=k/m$ stay in a compact subinterval of $(0,\infty)$. Uniformly
+in $\tau$ and in the phase,
+\begin{equation}\label{eq:critical}
+ S_{n,k}=V_m^k\ee^{\tau/6}
+ \left[\Theta_\tau(\alpha_n)+\OO(m^{-1/2})\right].
+\end{equation}
+There is an expansion to every fixed order in $m^{-1/2}$, with
+coefficients that are polynomial-Gaussian sums and smooth in $\tau$.
+Its first correction inside the brackets is
+\begin{equation}\label{eq:critical-first}
+ \frac{\tau}{\sqrt m}\sum_{j\in\Z}
+ \left(\frac{u_j^3}{3}+\frac{2u_j}{3}\right)\ee^{-\tau u_j^2},
+ \qquad u_j=2(j-\alpha_n).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Replace the factor $n=m-1$ in the local logarithmic analysis by
+$k=\tau m$. Lemma~\ref{lem:stirling} gives
+\[
+ k\log\frac{\bcont_m(\sqrt m+u)}{V_m}
+ =\tau\left(\frac16-u^2\right)
+ +\frac{\tau}{\sqrt m}\left(\frac{u^3}{3}+\frac{2u}{3}\right)
+ +\OO\!\left(m^{-1}(1+|u|)^4\right)
+\]
+on bounded windows, uniformly for $\tau$ in the given compact interval.
+All higher coefficients follow by the same finite Taylor procedure.
+The global concavity bound, now multiplied by $k$, gives a summable
+Gaussian with constants uniform on that interval. The argument of
+\eqref{eq:local-remainder} therefore applies without change.
+\end{proof}
+
+The width in $r$ is of order $\sqrt{m/k}$. It is large in
+\eqref{eq:subcritical}, but of order one in \eqref{eq:critical}.
+This explains the first localization transition, $k\asymp m$.
+
+For a probabilistic formulation, choose an endpoint with probability
+$\mathbb P_{n,k}(h)=B(n,h)^k/S_{n,k}$. After writing $u=h+1-\sqrt m$,
+the critical law is approximated in total variation, with error
+$\OO(m^{-1/2})$, by the phase-shifted discrete Gaussian
+\begin{equation}\label{eq:discrete-law}
+ \mathbb P\{u=2(j-\alpha_n)\}
+ =\frac{\ee^{-4\tau(j-\alpha_n)^2}}{\Theta_\tau(\alpha_n)}.
+\end{equation}
+Here the comparison extends the admissible finite lattice to all integers;
+the added tail is negligible. The weighted remainder bound in the proof
+also yields
+\begin{equation}\label{eq:mean-endpoint}
+ \mathbb E_{n,k}[h+1-\sqrt m]
+ =\frac{\Theta_\tau'(\alpha_n)}{4\tau\Theta_\tau(\alpha_n)}
+  +\OO(m^{-1/2}).
+\end{equation}
+The limit is not a single continuous Gaussian: subsequences with different
+phases have different discrete endpoint laws.
+
+\subsection{Exact modes and a uniform two-endpoint theorem}
+An exact ratio gives more than a truncated Stirling approximation in the
+supercritical regime. From \eqref{eq:shifted-ballot},
+\begin{equation}\label{eq:exact-ratio}
+ \rho_m(r):=\frac{(r+2)(m-r)}{r(m+r+2)},\qquad 0<r<m.
+\end{equation}
+It equals $\bcont_m(r+2)/\bcont_m(r)$ when both arguments lie in
+$(0,m]$, and equals $1$ exactly when $m=r(r+2)$.
+
+\begin{theorem}[Exact modes and all supercritical powers]\label{thm:two-sites}
+For $m\ge3$, set $y=\sqrt{m+1}$, and let $r_-$ be the largest positive
+integer of parity $m$ satisfying $r_-\le y$. Put $r_+=r_-+2$ and
+$W_\pm=\bcont_m(r_\pm)$.
+
+The maximum ballot entry occurs at the admissible $r$ nearest to $y$.
+There are exactly two tied maxima if and only if $m+1=s^2$ for an integer
+$s\ge2$; then their locations are $r=s-1,s+1$.
+For every real $k>0$,
+\begin{equation}\label{eq:two-site-bound}
+ 0\le\frac{S_{n,k}}{W_-^k+W_+^k}-1
+ \le\sum_{\ell\ge1}\exp\!\left(-\frac{2k\ell^2}{m+1}\right).
+\end{equation}
+Consequently, whenever $k/m\to\infty$, with \emph{no upper bound} on $k$,
+\begin{equation}\label{eq:supercritical-exact}
+ S_{n,k}=(W_-^k+W_+^k)
+ \left[1+\OO\!\left(\ee^{-2k/(m+1)}\right)\right],
+\end{equation}
+uniformly in the phase.
+\end{theorem}
+\begin{proof}
+The sign of $\rho_m(r)-1$ is the sign of $m-r(r+2)$, so adjacent
+entries increase up to the midpoint criterion $r+1=y$ and decrease
+after it. This proves the nearest-point and exact-tie statements.
+The candidate pair lies within $0<r\le m$ for $m\ge3$.
+
+For the uniform remainder, differentiate the logarithm of the exact
+ratio:
+\begin{align*}
+ \frac{\dd}{\dd r}\log\rho_m(r)
+ &=-\frac{2}{r(r+2)}-\frac1{m-r}-\frac1{m+r+2}\\
+ &\le-\frac{2}{m+1},\qquad 0<r<m.
+\end{align*}
+The last inequality follows because
+$(m-r)(m+r+2)=(m+1)^2-(r+1)^2\le(m+1)^2$.
+Also $\log\rho_m(y-1)=0$.
+
+For the $i$th ratio to the left of $r_-$, the distance from its argument
+$r_--2i$ to $y-1$ is at least $2i-1$. Integrating the derivative bound
+and summing the ratios therefore gives
+\[
+ \frac{\bcont_m(r_--2\ell)}{W_-}
+ \le\exp\!\left(-\frac{2\ell^2}{m+1}\right)
+\]
+whenever that lattice point is admissible. The ratios to the right of
+$r_+$ obey the same estimate relative to $W_+$. Raising to $k$ and
+summing both tails proves \eqref{eq:two-site-bound}. Finally, with
+$t=k/(m+1)$,
+\[
+ \sum_{\ell\ge1}\ee^{-2t\ell^2}
+ \le\frac{\ee^{-2t}}{1-\ee^{-6t}},
+\]
+which proves the claimed supercritical order as $t\to\infty$.
+\end{proof}
+
+This theorem keeps the two dominant ballot entries \emph{exact}. It is
+therefore valid even when errors from raising a Stirling approximation
+to an extremely large power would be unacceptable. It also identifies a
+small but consequential distinction: the leading continuous saddle is
+$\sqrt m$, whereas the exact discrete mode is selected by
+$\sqrt{m+1}$. A shift negligible at $k\asymp m$ need not be negligible
+at a much larger exponent.
+
+The two main terms can equivalently be written
+\begin{equation}\label{eq:cosh-exact}
+ W_-^k+W_+^k
+ =2(W_-W_+)^{k/2}\cosh\!\left(\frac{k}{2}
+                         \log\frac{W_+}{W_-}\right).
+\end{equation}
+Thus the precise crossover is governed by $k\log(W_+/W_-)$, not by an
+uncontrolled choice of one approximate maximum.
+
+\subsection{A second transition near square-index ties}
+\begin{corollary}[Near-square logistic limit]\label{cor:logistic}
+Fix an integer $d$ and $\kappa>0$. Along
+\begin{equation}\label{eq:square-window}
+ n=s^2-2+2d,\qquad k/s^3\longrightarrow\kappa,
+ \qquad s\to\infty,
+\end{equation}
+the endpoint law concentrates on $h=s-2$ and $h=s$, and
+\begin{equation}\label{eq:logistic}
+ \mathbb P_{n,k}\{h=s\}\longrightarrow
+ \frac{1}{1+\ee^{-4\kappa d}},\qquad
+ \mathbb P_{n,k}\{h=s-2\}\longrightarrow
+ \frac{1}{1+\ee^{4\kappa d}}.
+\end{equation}
+For $k=\kappa s^3+\OO(1)$ the errors are $\OO(s^{-2})$.
+\end{corollary}
+\begin{proof}
+For fixed $d$ and large $s$, the bracketing admissible points are
+$r_-=s-1$ and $r_+=s+1$. The factor $2d$ in
+\eqref{eq:square-window} preserves their parity; replacing it by an
+arbitrary odd shift would change the endpoint lattice. Substitution into
+\eqref{eq:exact-ratio} gives the exact identity
+\begin{equation}\label{eq:square-ratio}
+ \frac{W_+}{W_-}
+ =1+\frac{4d}{(s-1)(s^2+s+2d)},
+ \qquad
+ \log\frac{W_+}{W_-}=\frac{4d}{s^3}+\OO_d(s^{-5}).
+\end{equation}
+Since $k/m\sim\kappa s\to\infty$,
+Theorem~\ref{thm:two-sites} makes the other endpoints exponentially
+negligible. The upper endpoint probability is therefore
+$\rho^k/(1+\rho^k)$ plus an exponentially small error. Equation
+\eqref{eq:square-ratio} yields \eqref{eq:logistic} and its error bound.
+\end{proof}
+
+The first transition, at $k\asymp n$, changes a broad Gaussian sum into
+a finite-width lattice sum. The second, at $k\asymp n^{3/2}$ near
+square-index ties, resolves two neighboring entries whose logarithms
+differ by only order $n^{-3/2}$. At $d=0$ the exact tie persists and the
+two limiting probabilities are $1/2$. This second transition is not an
+assumption about the phase: it follows from the exact ballot ratio.
+
+\section{Multisets and exponentially small sectors}\label{sec:multisets}
+
+\subsection{An exact bridge between the two sequences}
+Let $E_q(n)=e_q(0,1,\ldots,n-1)$ be an elementary symmetric polynomial,
+so that
+\begin{equation}\label{eq:rising}
+ \prod_{j=0}^{n-1}(X+j)=\sum_{q=0}^{n}E_q(n)X^{n-q}.
+\end{equation}
+In particular $E_0=1$, $E_1=\binom n2$, and $E_n=0$ for $n\ge1$.
+Multiplying each multiset binomial by $n!$ and summing yields the exact
+identity
+\begin{equation}\label{eq:sector-identity}
+ \boxed{\displaystyle n!b_n=
+       \sum_{q=0}^{n}E_q(n)S_{n,n-q}.}
+\end{equation}
+This identity separates the dominant tuple count from its successive
+corrections without approximating individual small ballot entries.
+
+\begin{theorem}[Every fixed exponential sector]\label{thm:sectors}
+For each fixed $Q\ge0$, as $n\to\infty$,
+\begin{equation}\label{eq:sector-remainder}
+ \frac{n!b_n}{a_n}
+ =\sum_{q=0}^{Q}E_q(n)\frac{S_{n,n-q}}{a_n}
+ +\OO_Q\!\left(n^{2Q+2}V_m^{-Q-1}\right).
+\end{equation}
+For each fixed $q$, the quotient $S_{n,n-q}/a_n$ has a phase-uniform
+expansion to every algebraic order, with leading term $V_m^{-q}$.
+Thus \eqref{eq:sector-remainder} is an expansion in successive
+exponentially small scales, each with its own algebraic expansion.
+\end{theorem}
+\begin{proof}
+Nonnegativity and the multinomial expansion give
+\[
+ 0\le E_q(n)\le\frac{E_1(n)^q}{q!}.
+\]
+For $0\le q\le n/2$, Theorems~\ref{thm:main} and \ref{thm:critical},
+uniformly for the exponent ratio in a fixed interval around $[1/2,1]$,
+imply
+\[
+ \frac{S_{n,n-q}}{a_n}\le C V_m^{-q}.
+\]
+For the remaining indices, let $M$ be the largest ballot entry. The
+nearest-point estimate and the local expansion give
+$M/V_m=\exp(\OO(1/m))$. Since there are at most $n+1$ summands and
+$a_n\ge M^n$,
+\[
+ \frac{S_{n,n-q}}{a_n}\le(n+1)M^{-q}\le CnV_m^{-q}.
+\]
+Put $x=E_1/V_m$, which tends to zero exponentially. Summing the first
+bound over $q\ge Q+1$ through $n/2$ gives $\OO_Q(x^{Q+1})$.
+The remaining tail is at most
+$Cn\sum_{q>n/2}x^q/q!$, smaller than every fixed power of $x$ for large
+$n$. The exact identity \eqref{eq:sector-identity} proves the remainder.
+
+For fixed $q$, apply the all-orders form of Theorem~\ref{thm:critical}
+with $\tau=(n-q)/m=1-(q+1)/m$ and Taylor-expand its smooth coefficient
+functions in $\tau$. Divide by the positive all-orders denominator from
+Theorem~\ref{thm:main}. Formal series division is justified at each
+finite order because the leading theta factor is bounded below.
+The leading factors cancel except for $V_m^{-q}$.
+\end{proof}
+
+\subsection{The first sector and its phase correction}
+\begin{theorem}[Explicit leading multiset correction]\label{thm:first-sector}
+Let
+\begin{equation}\label{eq:Lambda}
+ \Lambda(\alpha)=\frac{M_2(\alpha)}{\Theta(\alpha)}-\frac16.
+\end{equation}
+Then
+\begin{align}
+ \frac{n!b_n}{a_n}
+ ={}&1+\frac{\binom n2}{V_m}
+       \left[1+\frac{\Lambda(\alpha_n)}m
+                    +\OO(m^{-3/2})\right]
+       +\OO(n^4/V_m^2).\label{eq:first-sector}
+\end{align}
+In particular,
+\begin{equation}\label{eq:exponential-leading}
+ \boxed{\displaystyle
+ \frac{n!b_n}{a_n}
+ =1+\frac{\sqrt{\pi\ee}}{4\sqrt2}\,n^3 2^{-n}
+                         \left(1+\OO(n^{-1})\right).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Under the probability measure proportional to $B(n,h)^n$, the ratio
+$S_{n,n-1}/a_n$ is the expectation of $B(n,h)^{-1}$.
+The local logarithmic expansion gives
+\[
+ \log\frac{\bcont_m(\sqrt m+u)}{V_m}
+ =\frac{1/6-u^2}{m}+\OO\!\left(m^{-3/2}(1+|u|)^3\right)
+\]
+in the summable expansion sense proved in Section~\ref{sec:proof}.
+Consequently
+\[
+ \frac{S_{n,n-1}}{a_n}
+ =V_m^{-1}\left[1+
+   \frac{M_2(\alpha_n)/\Theta(\alpha_n)-1/6}{m}
+   +\OO(m^{-3/2})\right].
+\]
+There is no $m^{-1/2}$ term in this quotient: the reciprocal ballot
+entry differs from $V_m^{-1}$ first at order $m^{-1}$, and the
+$m^{-1/2}$ change in its weighting affects the expectation only at
+order $m^{-3/2}$. Polynomial-weighted Gaussian tail control justifies
+this multiplication and expectation.
+
+Take $Q=1$ in Theorem~\ref{thm:sectors}. Finally,
+\[
+ \frac{\binom n2}{V_m}
+ =\frac{\sqrt{\pi\ee}}{4\sqrt2}(n^3-n)2^{-n}.
+\]
+The boundedness of $\Lambda$ and the smaller next sector yield
+\eqref{eq:exponential-leading}.
+\end{proof}
+
+This proves that $b_n\sim a_n/n!$ with an exponentially small relative
+error, not merely with an unspecified $o(1)$ error. It also prevents a
+misleading conclusion: although the two sequences share every algebraic
+asymptotic order after multiplication by $n!$, they are not identical
+beyond all orders.
+
+\subsection{The OEIS normalization for the multiset sequence}
+The ordinary reciprocal Stirling expansion gives
+\begin{equation}\label{eq:scales-related}
+ \frac{\Acal_n}{n!}
+ =\frac{\Bcal_n}{\sqrt{2\pi}}
+   \left[1-\frac1{12n}+\OO(n^{-2})\right].
+\end{equation}
+Combining this with the diagonal expansion and the exponential estimate
+shows
+\begin{align}\label{eq:b-normalized}
+ \frac{b_n}{\Bcal_n}
+ =\frac{\ee^{-5/6}}{\sqrt{2\pi}}
+ \bigg[\Theta(\alpha_n)&+m^{-1/2}F_1(\alpha_n)\notag\\
+ &+m^{-1}\left(F_2(\alpha_n)-\frac{\Theta(\alpha_n)}{12}\right)
+ +\OO(m^{-3/2})\bigg].
+\end{align}
+An all-orders version follows by multiplication of the two finite
+asymptotic expansions. Its exact limiting interval is
+$[C_-/\sqrt{2\pi},C_+/\sqrt{2\pi}]$, and its normalized limiting law is
+that in Corollary~\ref{cor:law} scaled by $1/\sqrt{2\pi}$.
+This proves and refines the nonconvergence recorded for A357871.
+It also gives
+\[
+ b_n^{1/n}\sim
+ \frac{\ee^{1/2}2^{n+3/2}}{\sqrt\pi\,n^2},
+\]
+agreeing with the existing root formula \cite{oeisb}.
+
+Finally, the Tur\'an quotient for $b_n$ differs from that of $a_n$ by
+$n/(n+1)$ times an exponentially small relative perturbation. Its
+liminf and limsup are therefore also $T_-$ and $T_+$. In particular
+$b_n$ is eventually strictly log-convex as well.
+
+\section{Inverting the oscillatory expansion}\label{sec:inverse}
+
+\subsection{Why an inverse must specify a parity branch}
+An integer sequence does not come with a canonical continuous inverse.
+Moreover $\alpha_n$ contains a parity switch, so interpolating its two
+parity classes by a single differentiable phase is inappropriate.
+We instead define explicit asymptotic models and quantify how accurately
+their inverses recover the original integer data.
+
+For $\sigma\in\{0,1\}$ and real $x>0$, set
+\begin{equation}\label{eq:branch-phase}
+ \alpha_\sigma(x)=\frac{\sqrt{x+1}-\sigma}{2}.
+\end{equation}
+The branch appropriate to an integer $n$ has
+$\sigma=(n+1)\bmod2$. For each fixed $J\ge0$, define
+\begin{equation}\label{eq:inverse-model}
+ A_{\sigma,J}(x)=\exp(g(x))\,\ee^{-5/6}
+ \sum_{j=0}^J(x+1)^{-j/2}F_j(\alpha_\sigma(x)).
+\end{equation}
+This is a definition of a smooth approximating function, not a claim
+that the exact counting sequence has that interpolation.
+
+\begin{proposition}[Matched inverse accuracy]\label{prop:inverse-accuracy}
+For each fixed $J$ and $\sigma$, $A_{\sigma,J}$ is positive and strictly
+increasing for all sufficiently large $x$. If $r_{\sigma,J}(L)$ is the
+large solution of $\log A_{\sigma,J}(x)=L$, then, for integers $n$ of
+the matching parity,
+\begin{equation}\label{eq:inverse-error}
+ r_{\sigma,J}(\log a_n)-n=\OO_J(n^{-(J+3)/2}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Positivity follows from the positive lower bound on $\Theta$ and the
+boundedness of all coefficient functions. Differentiating
+\eqref{eq:inverse-model}, and using
+$\alpha_\sigma'(x)=1/(4\sqrt{x+1})$, gives
+\[
+ \frac{\dd}{\dd x}\log A_{\sigma,J}(x)
+ =2\lambda x-\log x-1+c+\OO(x^{-1/2})
+ =2\lambda x+\OO(\log x)>0.
+\]
+Theorem~\ref{thm:main} gives a logarithmic residual at $x=n$ of order
+$n^{-(J+1)/2}$. The mean value theorem divides that residual by a
+quantity comparable to $n$, proving \eqref{eq:inverse-error}.
+\end{proof}
+
+Define the first logarithmic coefficient functions
+\begin{equation}\label{eq:d-functions}
+ d_0(\alpha)=-\frac56+\log\Theta(\alpha),\qquad
+ d_1(\alpha)=\frac{F_1(\alpha)}{\Theta(\alpha)}.
+\end{equation}
+Thus
+\[
+ \log a_n=g(n)+d_0(\alpha_n)
+                  +m^{-1/2}d_1(\alpha_n)+\OO(m^{-1}).
+\]
+Higher logarithmic coefficients are obtained by ordinary finite series
+expansion of the logarithm; for example
+$d_2=F_2/\Theta-F_1^2/(2\Theta^2)$.
+
+\subsection{An explicit inverse through the first oscillatory orders}
+\begin{theorem}[Parity-sensitive inverse expansion]\label{thm:inverse}
+Let $L\to\infty$, and write
+\begin{equation}\label{eq:inverse-variables}
+ s=\sqrt{\frac{L}{\lambda}},\qquad
+ d=\frac{\log s-c}{2\lambda},\qquad
+ \beta=\alpha_\sigma(s+d).
+\end{equation}
+For any fixed $J\ge1$,
+\begin{align}\label{eq:explicit-inverse}
+ r_{\sigma,J}(L)
+ ={}&s+d+\frac{\lambda d^2+d-d_0(\beta)}{2\lambda s}
+       -\frac{d_1(\beta)}{2\lambda s^{3/2}}
+       +\OO\!\left(\frac{(\log s)^2}{s^2}\right).
+\end{align}
+The implied constant is uniform in the two parity branches.
+\end{theorem}
+\begin{proof}
+Since $\lambda s^2=L$ and $2\lambda d=\log s-c$,
+Taylor expansion gives
+\[
+ g(s+d)-L=-\lambda d^2-d+\OO(d^2/s),
+ \qquad g'(s+d)=2\lambda s-1+\OO(d/s).
+\]
+The logarithm of the model at $s+d$ adds
+$d_0(\beta)+s^{-1/2}d_1(\beta)+\OO((1+d)/s)$.
+A Newton correction using the leading derivative $2\lambda s$ is
+exactly the two displayed correction terms in
+\eqref{eq:explicit-inverse}. Its remaining logarithmic residual is
+$\OO((1+d)^2/s)$, including the derivative correction and the omitted
+model terms. Phase drift during this correction is bounded by the
+correction times $\OO(s^{-1/2})$ and is smaller than this residual.
+Dividing once more by a derivative comparable to $s$ proves the stated
+error, because $d=\OO(\log s)$.
+\end{proof}
+
+The phase in this formula is evaluated at $s+d$, not merely at $s$.
+That choice incorporates the logarithmic shift before applying the
+oscillatory correction. Dropping $d_0(\beta)$ discards an order-$s^{-1}$
+term; replacing it by its average cannot recover individual inverse
+values at that order.
+
+For any requested finite accuracy, compute more $F_j$, form the
+logarithm of \eqref{eq:inverse-model}, and apply Newton iteration or
+formal coefficient reversion. At large $x$, the derivative is of order
+$x$ and the second derivative is bounded. Hence a Newton step with an
+input error $e=o(x)$ has output error $\OO(e^2/x)$ relative to the
+chosen model root. Along with Proposition~\ref{prop:inverse-accuracy},
+this gives an effective all-orders inversion procedure. It does not
+assert convergence of an infinite formal inverse expansion.
+
+\subsection{Integer thresholds and the multiset inverse}
+For $y>1$, let
+\[
+ N(y)=\min\{n\ge1:a_n\ge y\}.
+\]
+The sequence is strictly increasing from $n=1$ onward. One direct
+injection extends every path in an ordered $n$-tuple by an up-step and
+adds a duplicate of the first extended path as the last component.
+The original tuple is recovered from the first $n$ components. For
+$n\ge1$, a tuple of $(n+1)$-step paths ending in a down-step exists and
+is outside the image, proving strictness. Also $a_0=a_1=1$.
+
+The two model roots provide candidate thresholds on their respective
+parity lattices. Rounding a model root upward to the matching parity is
+correct whenever its distance from the relevant integer boundary
+exceeds the root error bound. Near a boundary, an exact comparison is
+needed. Thus \eqref{eq:inverse-error} is a subinteger accuracy statement
+for matched continuous models, \emph{not} an unconditional exact
+rounding theorem for all real $y$.
+
+For the multiset sequence the large logarithmic scale becomes
+\begin{equation}\label{eq:gb}
+ g_b(x)=\lambda x^2-2x\log x+(c+1)x
+        -\frac12\log x-\frac12\log(2\pi).
+\end{equation}
+One combines it with the same $d_0,d_1$, the reciprocal-Stirling
+corrections, and, when required, the logarithm of the exponential-sector
+factor in \eqref{eq:first-sector}. Its derivative is again
+$2\lambda x+\OO(\log x)$, so the same branchwise inversion and error
+argument applies. An exponential relative correction of order
+$x^3 2^{-x}$ changes the inverse by order $x^2 2^{-x}$, smaller than
+every algebraic inverse term.
+
+\section{Computational verification and reproducibility}\label{sec:computations}
+
+\subsection{What was checked exactly}
+The companion program \code{code/verify.py} separates exact integer
+assertions, symbolic algebra, and high-precision numerical calculations.
+All reported checks completed successfully. An independent dynamic
+program for nonnegative paths was compared with the reflection formula
+and the shifted binomial formula through $n=100$: this tests $2601$
+ballot entries. The first $15$ entries of each target sequence were
+compared with the OEIS data \cite{oeisa,oeisb,dataa,datab}.
+The rising-factorial identity was tested exactly through $n=25$;
+the fixed-power identities for $k=1,2$ through $n=100$; and the
+adjacent-entry ratio through $n=100$. Exact tied maxima were checked
+for every $n=s^2-2$ with $2\le s\le20$.
+
+The coefficient generator uses rational symbolic arithmetic for
+\eqref{eq:Aformula}, \eqref{eq:master}, and \eqref{eq:Rrecurrence}.
+It produces $R_0,\ldots,R_6$, verifies their parities, and checks the
+first displayed polynomial formulas. These finite checks can catch an
+index shift or transcription error, but do not establish a uniform
+asymptotic theorem. The Gaussian bounds in Section~\ref{sec:proof}
+are the mathematical justification of that theorem.
+
+\subsection{Accuracy of the all-orders approximation}
+For selected indices, the numerical reference is the full sum over
+\emph{all} endpoints, using exact integer ballot entries as bases and
+$75$-decimal-digit logarithmic evaluation. The approximate value is the
+truncated expansion in Theorem~\ref{thm:main}. The signed error below
+is approximation divided by numerical reference, minus one. These are
+high-precision experiments, not interval-arithmetic certificates.
+
+\begin{table}[htb]
+\centering\small
+\begin{tabular}{@{}r r r r r@{}}
+\toprule
+$n$ & $J=0$ & $J=2$ & $J=4$ & $J=6$\\
+\midrule
+25 & $-5.892\cdot10^{-2}$ & $-1.503\cdot10^{-4}$ & $2.293\cdot10^{-5}$ & $2.462\cdot10^{-6}$\\
+50 & $-6.268\cdot10^{-3}$ & $-5.377\cdot10^{-4}$ & $-1.202\cdot10^{-5}$ & $-3.373\cdot10^{-7}$\\
+100 & $-1.608\cdot10^{-2}$ & $-1.198\cdot10^{-5}$ & $3.781\cdot10^{-7}$ & $1.145\cdot10^{-8}$\\
+200 & $-1.075\cdot10^{-2}$ & $6.415\cdot10^{-5}$ & $4.041\cdot10^{-7}$ & $2.464\cdot10^{-9}$\\
+400 & $-4.115\cdot10^{-3}$ & $-7.936\cdot10^{-7}$ & $5.982\cdot10^{-9}$ & $4.673\cdot10^{-11}$\\
+800 & $-4.439\cdot10^{-3}$ & $1.415\cdot10^{-5}$ & $2.023\cdot10^{-8}$ & $2.850\cdot10^{-11}$\\
+1200 & $-2.722\cdot10^{-3}$ & $6.828\cdot10^{-6}$ & $6.878\cdot10^{-9}$ & $7.520\cdot10^{-12}$\\
+\bottomrule
+\end{tabular}
+\caption{Signed relative errors for truncations through order $m^{-J/2}$.}
+\label{tab:errors}
+\end{table}
+
+At $n=1200$ the order-$6$ approximation has relative error about
+$7.52\cdot10^{-12}$. At square-adjacent indices some odd coefficient
+functions are small, and errors can be unusually favorable. No monotone
+improvement in $J$ for every individual $n$ is asserted. An asymptotic
+expansion controls fixed orders as $n$ grows, not arbitrary truncation
+at a fixed small index.
+
+\begin{figure}[tb]
+\centering\includegraphics[width=0.98\textwidth]{figures/oscillation.pdf}
+\caption{The normalized diagonal sequence and its leading approximation.
+Connecting the even and odd indices separately reveals the two smooth
+parity strands. The index-dependent widening of an oscillation is
+consistent with the square-root phase. Plotting computations use a
+localized log-Gamma sum; the full-sum tests are reported separately.}
+\label{fig:oscillation}
+\end{figure}
+
+\subsection{Exponential corrections, near-square transitions, and inverses}
+The first exponential sector was checked using exact integers for
+$a_n$, $b_n$, and $n!$. For $n=20,30,40,60,80,100$, the ratio of the
+exact relative correction to
+$\sqrt{\pi\ee}\,n^3 2^{-n}/(4\sqrt2)$ ranges from approximately
+$0.99969$ to $1.01631$. Its order-$1/n$ phase dependence, rather than a
+single monotone convergence curve, is predicted by
+\eqref{eq:first-sector}. The complete values are in
+\code{data/exponential\_sector.csv}.
+
+For the second localization transition, the code evaluates full sums
+at $s=8,16,32$, $d=-2,-1,0,1,2$, and
+$k=\operatorname{round}(0.3s^3)$. The resulting upper-endpoint
+probabilities are compared with
+$(1+\exp(-1.2d))^{-1}$ in \code{data/square\_transition.csv}.
+The precise choice of the parity-preserving window
+$n=s^2-2+2d$ is tested rather than replaced by a nearby generic index.
+
+The inverse computations use $L=\log a_n$ from the full endpoint sum.
+They compare \eqref{eq:explicit-inverse} with a numerical root of the
+order-$6$ model of matching parity. Representative signed errors are:
+\begin{center}
+\small
+\begin{tabular}{@{}r r r@{}}
+\toprule
+$n$ & Explicit inverse minus $n$ & Order-$6$ model root minus $n$\\
+\midrule
+100 & $-9.714\cdot10^{-4}$ & $-8.609\cdot10^{-11}$\\
+200 & $-3.112\cdot10^{-4}$ & $-9.096\cdot10^{-12}$\\
+400 & $-9.734\cdot10^{-5}$ & $-8.535\cdot10^{-14}$\\
+800 & $-2.994\cdot10^{-5}$ & $-2.588\cdot10^{-14}$\\
+1200 & $-1.506\cdot10^{-5}$ & $-4.543\cdot10^{-15}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These measurements illustrate the extra factor of order $1/n$ gained
+when a logarithmic approximation is inverted. They do not provide a
+certified least threshold for the big-$\OO$ statements.
+
+\subsection{Reproducing the files}
+From the extracted archive, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify.py --all
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The code uses Python 3.10 or newer with SymPy, mpmath, and matplotlib.
+The verification itself does not require network access; the OEIS values
+used in exact comparisons are embedded with their provenance. The first
+command is only for installing missing dependencies. Alternatively,
+\code{build.sh} compiles the article when the dependencies are already
+installed. The archive includes the figures used by the TeX source,
+raw CSV tables, generated coefficient polynomials, and the actual
+verification-status JSON.
+
+No Lean file is included, because no formal proof was compiled for this
+report. No interval certificate is implied by a large working precision.
+The existing repo was inspected but not modified.
+
+\section{Further research questions and concrete next steps}\label{sec:research}
+
+The following questions are distinguished from the theorems already
+proved. They suggest a program extending the results rather than
+merely repeating the missing-constant question.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{Q\arabic*.}]
+\item \textbf{Effective remainders and certified OEIS additions.}
+Make the constants in \eqref{eq:local-remainder} explicit at orders
+$J=0,2,4$, and combine them with interval evaluation of the theta sums.
+This would yield rigorous numerical enclosures for every sufficiently
+large index, an explicit log-convexity threshold, and certified threshold
+inversion. A finite exact check could then bridge the remaining initial
+range. The global trigamma estimate and the explicit two-site bound
+already provide useful non-asymptotic ingredients.
+
+\item \textbf{Global strict log-convexity.}
+Do $a_{n-1}a_{n+1}>a_n^2$ and $b_{n-1}b_{n+1}>b_n^2$ hold at every
+$n\ge1$? The limiting Tur\'an gap proves eventual strictness, but does
+not settle the finite range without explicit error constants. A direct
+injection, total-positivity argument, or inequality linking adjacent
+ballot rows might prove the global statement without enumeration.
+
+\item \textbf{Uniform secondary transition expansions.}
+The exact two-site formula resolves the entire supercritical regime,
+and Corollary~\ref{cor:logistic} resolves bounded square-window shifts.
+Develop uniform expansions when the integer displacement $d$ grows with
+$s$, or when $k/s^3$ tends to zero or infinity simultaneously with $d$.
+The controlling variable is the exact $k\log\rho$, so a meaningful goal
+is a hierarchy of elementary scaled formulas with explicit error domains,
+not replacing an exact expression by an uncontrolled Taylor truncation.
+
+\item \textbf{Optimal truncation and additional exponential scales.}
+The all-orders diagonal expansion is not an optimal-truncation theorem.
+Determine the large-order growth of the polynomials and theta-derivative
+coefficients, and whether a rigorously optimally truncated remainder can
+be decomposed into further exponential contributions. This problem is
+separate from the rigorously established tuple--multiset sectors; it
+should not be called resurgence without additional analysis.
+
+\item \textbf{A growing number of multiset sectors.}
+Theorem~\ref{thm:sectors} keeps $Q$ fixed. Find useful ranges of
+$Q=Q(n)$ with uniform coefficient and remainder control, and study
+multisets whose size differs from the path length. The elementary
+symmetric coefficients of $0,\ldots,n-1$ and the ratio $k/m$ then
+interact in a two-parameter problem. An exact rising-factorial bridge
+remains available, but uniform asymptotic division requires new estimates.
+
+\item \textbf{A reusable lattice-peak theorem for other path models.}
+Formulate sufficient hypotheses on a positive triangular array
+$C_{n,h}$ for a high-power sum to have a phase-dependent theta expansion.
+The proof here suggests the required data: a uniformly concave local
+logarithm, a growing interior peak, a fixed endpoint lattice, derivative
+expansions, and global tail domination. Apply such a theorem to weighted
+meanders and finite-step walks, then to multidimensional endpoint
+lattices where theta functions are associated with quadratic forms.
+This is the clearest route from the present OEIS case to a broad tool.
+
+\item \textbf{Joint phase laws and higher discrete differences.}
+Determine effective joint laws of several neighboring normalized terms,
+and use them to analyze higher logarithmic differences or Jensen
+polynomials. Adjacent terms undergo a half-period shift rather than an
+independent random phase. The second difference is positive because its
+explicit theta quotient has a gap; analogous sign or hyperbolicity
+claims at higher orders require separate proofs.
+
+\item \textbf{Sharper averaging errors.}
+The elementary discrepancy proof gives $\OO(\sqrt N)$ counting error.
+For smooth periodic test functions, exploit the square-root phase,
+parity cancellation, and vanishing odd corrections to seek sharper
+Ces\`aro expansions. Such expansions may contain boundary-phase terms
+rather than a universal constant at the next order. An unsmoothed
+interval discrepancy and a smooth weighted average need not have the
+same best error term.
+
+\item \textbf{The separate arithmetic conjecture.}
+The OEIS records Bala's conjecture
+$a_{2p-1}\equiv1\pmod{p^3}$ for primes $p\ge5$ \cite{oeisa}.
+Nothing in the present asymptotic proof establishes it. The exact shifted
+ballot formula gives a possible starting point for a prime-adic analysis,
+but real asymptotic errors, even exponentially small relative errors,
+have no direct force modulo $p^3$. A future arithmetic report should
+maintain that distinction explicitly.
+
+\item \textbf{Formalization with a visible theorem boundary.}
+Start with exact path semantics, reflection, shifted binomial identities,
+the adjacent-entry ratio, and the rising-factorial bridge. Next formalize
+the discrete two-site tail bound, which avoids Stirling theory. Only then
+build the analytic layer: gamma remainders, summable Gaussian bounds,
+phase-uniform termwise expansion, and theta identities. This staged plan
+could produce useful Lean theorems before the entire analytic result is
+available, without labeling the unformalized remainder as checked.
+\end{enumerate}
+
+\section{Conclusion}
+The central obstacle was not the exponential scale of the counts. That
+scale was already visible in the OEIS. The missing information lay in
+the interaction between a moving ballot peak and an endpoint lattice
+that remains coarse after taking a power proportional to the row index.
+Keeping that lattice produces an explicit theta multiplier, not a
+constant, and supports a complete algebraic expansion with uniform
+remainders.
+
+The same analysis produces exact fluctuation envelopes and phase laws,
+strict eventual log-convexity, and stable branchwise inverse formulas.
+An exact adjacent-entry ratio further identifies the mode and controls
+all supercritical powers, including a second near-square transition.
+Finally, an exact symmetric-polynomial identity places the multiset
+sequence into a hierarchy of exponentially small corrections to the
+ordered-tuple sequence. Together these results turn a recorded
+nonconvergence phenomenon into a coherent analytic and combinatorial
+structure, while leaving the distinct arithmetic and formalization
+questions clearly identified.
+
+\appendix
+\section{Additional explicit coefficients}\label{app:coefficients}
+For direct implementation, the next two multiplier polynomials are
+\begin{align}
+ R_3(u)={}&\frac{u^9}{162}-\frac{5u^7}{108}
+ +\frac{119u^5}{270}+\frac{197u^3}{1620}-\frac{7u}{18},
+ \label{eq:R3}\\
+ R_4(u)={}&\frac{u^{12}}{1944}-\frac{19u^{10}}{1944}
+ +\frac{1429u^8}{12960}-\frac{3017u^6}{9720}\notag\\
+ &+\frac{5227u^4}{19440}+\frac{311u^2}{540}
+ +\frac{8263}{50400}.\label{eq:R4}
+\end{align}
+The next two Stirling coefficient polynomials are
+\begin{align}
+ A_4(x)&=-\frac{x^{10}}{90}+\frac{x^8}{8}-\frac{x^6}{3}
+                           +\frac{4x^2}{15},\label{eq:A4}\\
+ A_5(x)&=-\frac{x^{12}}{132}+\frac{x^{10}}{10}-\frac{x^8}{3}
+                           +\frac{2x^4}{3}-\frac1{20}.\label{eq:A5}
+\end{align}
+The archive supplies $D_j$ and $R_j$ through $j=6$ in
+\code{data/coefficients.json}. The source function
+\code{symbolic(order)} can generate higher specified orders; its
+numerical evaluator is intentionally configured for the supplied orders
+$0$ through $6$ and rejects unsupported numerical truncations.
+
+The following identities can be used instead of differentiating theta
+series numerically:
+\[
+ M_1=\frac{\Theta'}4,\qquad
+ M_2=\frac{\Theta''}{16}+\frac{\Theta}{2},\qquad
+ M_3=\frac{\Theta'''}{64}+\frac{3\Theta'}8.
+\]
+For $\tau$ near $1$, direct Gaussian sums are especially efficient.
+For small $\tau$, the Fourier representation \eqref{eq:poisson} is
+preferable because its nonzero modes are exponentially suppressed.
+Whichever representation is used, rigorously certified computation
+requires an explicit tail bound and rounding control; the numerical
+script uses high precision but does not claim interval certification.
+
+\section{A compact dependency and trust map}\label{app:trust}
+The logical dependency chain is:
+\[
+ \text{ballot identity}\ \longrightarrow\
+ \begin{cases}
+  \text{Stirling expansion + concavity}\ \longrightarrow\ \text{theta expansion},\\
+  \text{exact entry ratio}\ \longrightarrow\ \text{two-site theorem},\\
+  \text{rising factorial}\ \longrightarrow\ \text{multiset sectors}.
+ \end{cases}
+\]
+The theta expansion plus elementary square-root phase counting proves
+the limiting interval, distribution, and quotient statements. Smooth
+finite model inversion proves the inverse results. The multiset-sector
+proof also uses the uniform critical estimate. No finite numerical test
+is an assumption in these implications.
+
+The exact computations test definitions and coefficient algebra; the
+numerical tables test consequences. Neither is a premise of an analytic
+theorem. The standard gamma and theta inputs are cited explicitly.
+No conjecture from ProveIt or OEIS is imported as a lemma.
+
+\begin{thebibliography}{99}
+\small
+\setlength{\parskip}{0pt}
+\setlength{\itemsep}{3pt}
+\urlstyle{same}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{oeisa}
+The OEIS Foundation Inc., \emph{A357825: Total number of $n$-tuples of
+semi-Dyck paths with a common endpoint}, entry by Alois P. Heinz;
+asymptotic observations by Vaclav Kotesovec (17 November 2022),
+supercongruence conjecture by Peter Bala (20 March 2023).
+\url{https://oeis.org/A357825}. Accessed 1 October 2026.
+
+\bibitem{oeisb}
+The OEIS Foundation Inc., \emph{A357871: Total number of $n$-multisets
+of semi-Dyck paths with a common endpoint}, entry by Alois P. Heinz;
+asymptotic observations by Vaclav Kotesovec (19 November 2022).
+\url{https://oeis.org/A357871}. Accessed 1 October 2026.
+
+\bibitem{oeisarray}
+The OEIS Foundation Inc., \emph{A357824: Array of common-endpoint
+$k$-tuples of semi-Dyck paths}, entry by Alois P. Heinz.
+\url{https://oeis.org/A357824}. Accessed 1 October 2026.
+
+\bibitem{oeisballot}
+The OEIS Foundation Inc., \emph{A008315: Ballot-number triangle}.
+\url{https://oeis.org/A008315}. Accessed 1 October 2026.
+
+\bibitem{dataa}
+Alois P. Heinz, \emph{Table of A357825}.
+\url{https://oeis.org/A357825/b357825.txt}.
+The verification script embeds entries $n=0,\ldots,14$.
+
+\bibitem{datab}
+Alois P. Heinz, \emph{Table of A357871}.
+\url{https://oeis.org/A357871/b357871.txt}.
+The verification script embeds entries $n=0,\ldots,14$.
+
+\bibitem{miana}
+Pedro J. Miana and Natalia Romero, \emph{Moments of Catalan Triangle
+Numbers}, in \emph{Number Theory and Its Applications}, edited by
+Cheon Seoung Ryoo, IntechOpen, 22 April 2020.
+DOI: 10.5772/intechopen.92046.
+\url{https://www.intechopen.com/chapters/71899}.
+
+\bibitem{discretelaplace}
+J. William Helton, Jared A. Hughes, and Peter Schlosser,
+\emph{The discrete Laplace asymptotic method and its application to the
+3XOR satisfiability problem}, arXiv:2509.16420v1, 19 September 2025.
+\url{https://arxiv.org/html/2509.16420v1}.
+
+\bibitem{dlmfgamma}
+NIST Digital Library of Mathematical Functions,
+\S5.11, \emph{Asymptotic Expansions} for the gamma function.
+\url{https://dlmf.nist.gov/5.11}. Accessed 1 October 2026.
+
+\bibitem{dlmfpolygamma}
+NIST Digital Library of Mathematical Functions,
+\S5.15, \emph{Polygamma Functions}.
+\url{https://dlmf.nist.gov/5.15}. Accessed 1 October 2026.
+
+\bibitem{dlmftheta}
+NIST Digital Library of Mathematical Functions,
+\S20.5, \emph{Infinite Products and Related Results} for theta functions.
+\url{https://dlmf.nist.gov/20.5}. Accessed 1 October 2026.
+
+\bibitem{dlmftransform}
+NIST Digital Library of Mathematical Functions,
+\S20.7, \emph{Identities}, including theta transformations.
+\url{https://dlmf.nist.gov/20.7}. Accessed 1 October 2026.
+
+\bibitem{proveit}
+Vladimir Reshetnikov, \emph{ProveIt}, repository and combinatorics map,
+inspected at commit
+\texttt{50f93367b2859b2727c34c68cf87684c101768cc}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/50f93367b2859b2727c34c68cf87684c101768cc/Combinatorics/README.md}{Combinatorics map at the inspected commit}.
+Accessed 1 October 2026.
+
+\end{thebibliography}
+\end{document}

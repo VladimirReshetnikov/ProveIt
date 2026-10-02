@@ -1,0 +1,1336 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype,xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\usepackage{listings}
+\hypersetup{pdftitle={Five OEIS Asymptotic Conjectures for Distinct-Partition Norms},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Weighted distinct partitions, asymptotic expansions, Lambert W inversion, Gumbel laws}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Distinct-partition norms}
+\fancyhead[R]{\small OEIS research report}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}\newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
+\newcommand{\normp}{\operatorname{N}}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\OEIS}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\newcommand{\asym}{\mathscr H_{\alpha}}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\sech}{sech}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,framerule=.3pt,showstringspaces=false}
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{12mm}
+{\large\sffamily OEIS \; / \; ASYMPTOTIC ANALYSIS}\par
+\vspace{11mm}
+{\huge\bfseries Five OEIS Asymptotic Conjectures\par for Distinct-Partition Norms\par}
+\vspace{7mm}
+{\Large Proofs, all-orders logarithmic expansions,\par exact-saddle corrections, and inverse\par and extreme-value laws\par}
+\vspace{13mm}
+{\large Research report prepared for Vladimir Reshetnikov\par}
+{\large October 1, 2026\par}
+\vspace{12mm}
+\hrule\vspace{6mm}
+\noindent\textbf{Central family}
+\[
+ A_\alpha(q)=\prod_{k\ge1}(1+k^\alpha q^k),\qquad
+ a_\alpha(n)=\coef{q}{n}A_\alpha(q),\qquad \alpha>0.
+\]
+\noindent The cases $\alpha=1,2,3,4,5$ are \OEIS{A022629},
+\OEIS{A092484}, \OEIS{A265840}, \OEIS{A265841}, and \OEIS{A265842}.
+All five consulted entries label their leading logarithmic asymptotic as a
+conjecture. This report proves those formulas and develops a single refinement
+mechanism for every fixed positive $\alpha$.
+\vspace{6mm}\hrule
+\vfill
+\noindent\textbf{Scope and verification.} The results below have detailed English
+proofs and accompanying exact and numerical checks. They are not claimed to be
+Lean-verified or peer-reviewed. The literature comparison is targeted, not an
+exhaustive priority certification. The complete exponentially improved
+coefficient transseries is not claimed: the report distinguishes its proved
+logarithmic block, exact-saddle expansion, and Fourier-resonance scale.
+\end{titlepage}
+
+\begin{abstract}
+For a partition $\lambda$ into distinct parts, let $\normp(\lambda)$ be the
+product of its parts. We analyze the fixed positive norm moments
+$a_\alpha(n)=\sum_{\lambda\vdash n\text{ distinct}}\normp(\lambda)^\alpha$.
+A direct argument proves the logarithmic growth formulas still marked
+conjectural in five OEIS entries. With $K=\sqrt{2n}$, $r=\log K$, and
+$c=\pi^2/(6\alpha^2)$, we then prove, to every fixed order,
+\[
+ \log a_\alpha(n)=\alpha K\left(r-1+\frac c r+\frac c{r^2}
+ +\frac{c-c^2/2}{r^3}+\cdots\right).
+\]
+An explicit inverse-function construction generates all coefficients; seven are
+printed. A separate local-limit argument gives multiplicatively accurate
+exact-saddle asymptotics and all fixed Edgeworth orders. This separation matters:
+exponentiating a fixed truncation of the logarithmic expansion does not give a
+relative asymptotic equivalent. We invert the dominant block using the principal
+Lambert function and obtain asymptotics for the first index attaining a large
+value. Under the norm-biased measure, the occupation boundary has a logistic
+profile, while the largest part has a Gumbel limit and is asymptotic to
+$(1+1/\alpha)\sqrt{2n}$. Finally, we prove that the first Fourier resonances have
+logarithmic modulus of order $-K/(\alpha^3(\log K)^3)$, explaining a striking
+finite-size limitation visible in the exact computations. Reproducible scripts,
+source-status notes, and further research questions accompany the proofs.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\begingroup
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The problem, its significance, and the source audit}
+\subsection{Five conjectures in one natural family}
+Let $\mathcal D_n$ be the set of partitions of $n$ into distinct positive parts.
+The empty partition has norm $1$. For fixed $\alpha>0$, define
+\begin{equation}\label{eq:def}
+ \normp(\lambda)=\prod_{k\in\lambda}k,
+ \qquad a_\alpha(n)=\sum_{\lambda\in\mathcal D_n}\normp(\lambda)^\alpha.
+\end{equation}
+Choosing whether each part occurs gives the locally uniformly convergent product
+\begin{equation}\label{eq:product}
+ A_\alpha(q)=\sum_{n\ge0}a_\alpha(n)q^n
+ =\prod_{k\ge1}(1+k^\alpha q^k),\qquad |q|<1.
+\end{equation}
+For integral $\alpha$ the coefficients are integers. One may interpret $k^\alpha$
+as the number of colors available for a part of size $k$, with at most one part
+of each \emph{size}, regardless of color. This is not the product
+$\prod_k(1+q^k)^{k^\alpha}$, which allows several differently colored copies of
+the same size.
+
+The OEIS entries consulted on October 1, 2026 have the following status
+\cite{oeis1,oeis2,oeis3,oeis4,oeis5}.
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+$\alpha$ & Sequence & Date of the conjectural formula\\
+\midrule
+1 & \OEIS{A022629} & May 8, 2018\\
+2 & \OEIS{A092484} & December 27, 2020\\
+3 & \OEIS{A265840} & December 27, 2020\\
+4 & \OEIS{A265841} & December 27, 2020\\
+5 & \OEIS{A265842} & December 27, 2020\\
+\bottomrule
+\end{tabular}
+\end{center}
+All five formulas are attributed there to V\'aclav Kote\v{s}ovec and have the
+unified form
+\begin{equation}\label{eq:conjecture}
+ \log a_\alpha(n)\sim
+ \alpha\sqrt{\frac n2}\bigl(\log(2n)-2\bigr).
+\end{equation}
+The full array of nonnegative integral moments is \OEIS{A292189}; its columns
+$0,1,\ldots,5$ are identified in that entry \cite{oeisarray}. The zeroth column
+is the ordinary distinct-partition function, but $\alpha=0$ is a different
+asymptotic regime and is excluded from our fixed-positive-parameter theorems.
+
+These sequences are not arbitrary numerical constructions. They simultaneously
+encode weighted enumeration, moments of a fundamental multiplicative partition
+statistic, and a conditioned model of independent binary occupancies. Their
+common structure makes a family theorem more informative than five separate
+fits to numerical data.
+
+\subsection{What is established here, and what is not a priority claim}
+The conjectural labels in the consulted entries are verifiable facts; the claim
+that no proof has ever appeared anywhere would be much stronger and is not made.
+This report supplies self-contained proofs of the displayed formulas, followed
+by explicit refinements and probabilistic consequences. Novelty of the
+refinements should be assessed against the broader literature before publication.
+
+Schneider and Sills survey partition norms, including extremal norms over
+distinct partitions and their connection with triangular numbers
+\cite{schneider}. Bridges and Craig study norm distributions and moments for
+\emph{unrestricted} partitions \cite{bridges}; repeated parts change the
+analytic problem substantially. Rana, Kaur, and Kumar give recurrences and
+related norm identities for distinct partitions \cite{rana}. None of those
+results is used as an unproved asymptotic input here.
+
+A particularly relevant recent source is Gikunda's March 2026 dissertation
+\cite{gikunda}. Its Chapter 4 uses
+$\prod_k(1+u^{\log k}q^k)^{b_k}$ and proves log-norm central limit theorems.
+For $b_k=1$ and $u=e^\alpha$ this is our generating family. However, the
+coefficient estimate in Proposition 4.2.5 and the surrounding analysis use a
+\emph{shrinking} tilt $\log u=O(t^\delta)$ as the saddle parameter $t$ tends
+to zero. Our tilt $\alpha>0$ stays fixed. Thus that estimate does not directly
+supply the fixed-tilt results below. This is a distinction between asymptotic
+regimes, not a claim that the underlying family has not previously been studied.
+
+\subsection{Relation to the ProveIt repository}
+The repository snapshot consulted was
+\texttt{1f1981f682b2878bde51a6ad40c22777f362fc05}.
+Its \texttt{Analysis/Transseries/README.md} describes the transseries and
+inversion volumes, accompanying verification programs, and the separate Lean
+library for asymptotic scales and power-logarithmic monomials \cite{proveit}.
+The present report follows that program by separating three precision levels:
+a logarithmic asymptotic block, a relative exact-saddle expansion, and flat
+Fourier contributions. Its Lambert-$W$ inversion is given explicitly rather
+than left as a formal instruction to ``reverse the series.''
+
+No repository theorem is assumed here without proof. In particular, the
+existence of general transseries infrastructure is not treated as a formal
+certificate for our analytic remainder estimates. The new material is an
+independent, reproducible research contribution suitable for integration after
+review; it does not modify the repository.
+
+\section{Main results and the hierarchy of scales}
+Throughout the paper, $\alpha>0$ is fixed. Constants in $O$-terms may depend on
+$\alpha$ and on the indicated truncation order. Put
+\begin{equation}\label{eq:Kr}
+ K=\sqrt{2n},\qquad r=\log K,\qquad c=\frac{\pi^2}{6\alpha^2}.
+\end{equation}
+
+\begin{theorem}[All-orders logarithmic expansion]\label{thm:log}
+There are explicit polynomials $P_j(c)\in\mathbb Q[c]$ such that, for every
+fixed integer $R\ge1$,
+\begin{equation}\label{eq:logall}
+ \log a_\alpha(n)=\alpha K\left(r-1+
+       \sum_{j=1}^R\frac{P_j(c)}{r^j}
+       +O_{\alpha,R}(r^{-R-1})\right).
+\end{equation}
+The first seven are
+\begin{align}
+ P_1(c)&=c,&P_2(c)&=c,\notag\\
+ P_3(c)&=c-\tfrac12c^2,&
+ P_4(c)&=c+\tfrac9{10}c^2,\notag\\
+ P_5(c)&=c+\tfrac{41}5c^2+\tfrac12c^3,\label{eq:P}\\
+ P_6(c)&=c+27c^2+\tfrac{1973}{210}c^3,\notag\\
+ P_7(c)&=c+\tfrac{129}2c^2+\tfrac{8109}{70}c^3-\tfrac58c^4.\notag
+\end{align}
+Equations \eqref{eq:dformal}--\eqref{eq:formalH} below generate every $P_j$.
+\end{theorem}
+In particular,
+\begin{align}\label{eq:firstterms}
+ \log a_\alpha(n)
+ ={}&\alpha K(r-1)+\frac{\pi^2K}{6\alpha r}
+     +\frac{\pi^2K}{6\alpha r^2}\notag\\
+ &+\left(\frac{\pi^2}{6\alpha}-\frac{\pi^4}{72\alpha^3}\right)
+       \frac K{r^3}+O_\alpha(K/r^4).
+\end{align}
+This proves \eqref{eq:conjecture} for all five OEIS sequences, and more strongly
+identifies the $-\alpha K$ term with an error $O_\alpha(K/r)$.
+
+For a different level of precision, define
+\begin{equation}\label{eq:F}
+ F(t)=\sum_{k\ge1}\log(1+k^\alpha e^{-tk}),\qquad t>0,
+\end{equation}
+and let $t=t_n$ be the unique solution of $-F'(t)=n$. Set
+\begin{equation}\label{eq:phase}
+ s=-W_{-1}(-t/\alpha),\qquad M=e^s,
+ \qquad t=\alpha s/M,\qquad H=\frac M{\alpha(s-1)}.
+\end{equation}
+These definitions use the large real branch $s>1$, valid for all sufficiently
+large $n$. Let $B=F''(t)$ and $\kappa_j=(-1)^jF^{(j)}(t)$.
+
+\begin{theorem}[Exact-saddle coefficient expansion]\label{thm:saddle}
+As $n\to\infty$,
+\[
+ M\sim K,\quad s\sim r,\quad B\sim\frac{M^3}{\alpha s},
+ \quad
+ a_\alpha(n)\sim\frac{\exp(F(t_n)+nt_n)}{\sqrt{2\pi B}}.
+\]
+More precisely, for every fixed $J\ge1$,
+\begin{equation}\label{eq:edgeworth}
+ a_\alpha(n)=\frac{\exp(F(t_n)+nt_n)}{\sqrt{2\pi B}}
+ \left(1+\sum_{\ell=1}^{J-1}\mathcal E_\ell
+       +O_{\alpha,J}((s/M)^J)\right),
+\end{equation}
+where each $\mathcal E_\ell=O_{\alpha,\ell}((s/M)^\ell)$ is given explicitly
+in \eqref{eq:edgepoly}. The first correction is
+\begin{equation}\label{eq:E1}
+ \mathcal E_1=\frac{\kappa_4}{8B^2}
+                    -\frac{5\kappa_3^2}{24B^3}.
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Asymptotic inversion]\label{thm:inverse}
+For $Y\to\infty$, let $N_\alpha(Y)$ be the least integer $n$ such that
+$a_\alpha(n)\ge e^Y$. Define
+\begin{equation}\label{eq:Wlead}
+ w=W_0\left(\frac{Y}{\alpha e}\right),\qquad R_0=1+w,
+ \qquad K_0=\frac{Y}{\alpha w}.
+\end{equation}
+Then
+\begin{equation}\label{eq:inverselead}
+ N_\alpha(Y)=\frac{K_0^2}{2}\left(
+ 1-\frac{2c}{R_0^2}-\frac{2c}{R_0^3}
+ +\frac{4c^2-2c}{R_0^4}+O_\alpha(R_0^{-5})\right).
+\end{equation}
+A formal recurrence in Section~\ref{sec:inverse} gives all inverse-logarithmic
+orders, with a remainder at every fixed order.
+\end{theorem}
+
+\begin{theorem}[Logistic boundary and Gumbel extreme]\label{thm:geometry}
+Give $\mathcal D_n$ the probability law
+$\Prob_n(\lambda)=\normp(\lambda)^\alpha/a_\alpha(n)$.
+For each fixed $x\in\R$, a part near $M+xH$ has limiting occupation probability
+$(1+e^x)^{-1}$; any fixed finite collection of distinct such sites is
+asymptotically independent. If $L_n$ is the largest part, define
+\begin{equation}\label{eq:bdef}
+ b=b(t_n)>\alpha/t_n,\qquad
+ \frac{b^\alpha e^{-t_nb}}{t_n}=1.
+\end{equation}
+Then, for every fixed real $x$,
+\begin{equation}\label{eq:gumbel}
+ \Prob_n\{t_n(L_n-b)\le x\}\longrightarrow \exp(-e^{-x}),
+ \qquad \frac{L_n}{\sqrt{2n}}\longrightarrow 1+\frac1\alpha
+ \quad\text{in probability}.
+\end{equation}
+\end{theorem}
+
+\paragraph{A precision warning.}
+The error in \eqref{eq:logall} is $O(K/r^{R+1})$, which still grows without
+bound for fixed $R$. Consequently, exponentiating a fixed truncation need not
+approximate $a_\alpha(n)$ to relative error $o(1)$. Formula
+\eqref{eq:edgeworth} does, because it retains the \emph{exact} saddle and the
+\emph{exact} infinite sums. There is also a smaller exponential scale from
+noncentral Fourier arcs; Section~\ref{sec:resonance} identifies it. We do not
+conflate these three statements into an unjustified single explicit
+coefficient transseries.
+
+\section{A short proof of all five posted conjectures}
+This section already proves the formulas that are explicitly conjectural in the
+OEIS entries. Later sections supply the stronger refinements.
+
+\begin{lemma}[A useful continuum estimate]\label{lem:rough}
+For $s\to\infty$, $M=e^s$, and $t=\alpha s/M$,
+\begin{equation}\label{eq:roughF}
+ F(t)=\alpha M(s/2-1)+O_\alpha(M/s).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The function $f_t(x)=\log(1+x^\alpha e^{-tx})$ is nonnegative and unimodal
+on $(0,\infty)$, tends to zero at both ends, and has maximum $O_\alpha(s)$.
+For a nonnegative unimodal function, comparison on unit intervals gives
+\[
+ \left|\sum_{k\ge1}f_t(k)-\int_0^\infty f_t(x)\dd x\right|
+ \le 2\sup_x f_t(x)=O_\alpha(s).
+\]
+With $x=Mu$, the exponent is $\alpha[s(1-u)+\log u]$. Replacing
+$\log(1+e^z)$ by $\max(z,0)$ changes the integral by $O_\alpha(M/s)$:
+in a fixed neighborhood of $u=1$, the derivative of $s(u-1)-\log u$
+is comparable with $s$, and
+$\int_\R\log(1+e^{-|v|})\dd v<\infty$.
+Outside that neighborhood, split off $0<u<e^{-s/2}$; its integral is
+exponentially small times a polynomial in $s$. On the remaining region
+away from $1$, the absolute exponent grows linearly in $s$, except for the
+negligible small lower crossing. Thus the remaining error is smaller than
+$M/s$. The lower crossing changes the following signed baseline by $O(1)$:
+\[
+ \alpha M\int_0^1\bigl(s(1-u)+\log u\bigr)\dd u
+       =\alpha M(s/2-1).
+\]
+The lattice error $O(s)$ is also $O(M/s)$.
+\end{proof}
+
+\begin{proposition}\label{prop:elementary}
+For every fixed $\alpha>0$,
+\begin{equation}\label{eq:twoterms}
+ \log a_\alpha(n)=\alpha\sqrt{2n}\bigl(\log\sqrt{2n}-1\bigr)
+                   +O_\alpha\left(\frac{\sqrt n}{\log n}\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $m$ be maximal with $m(m+1)/2\le n$, and write
+$d=n-m(m+1)/2$, so $0\le d\le m$. The distinct partition
+\[
+ 1+2+\cdots+(m-1)+(m+d)
+\]
+has norm at least $m!$. Therefore
+\[
+ \log a_\alpha(n)\ge\alpha\log(m!)
+   =\alpha K(r-1)+O_\alpha(r),
+\]
+where $m=K+O(1)$ and the usual integral bounds, or Stirling's formula, give
+$\log(m!)=m\log m-m+O(\log m)$.
+
+For the upper bound, nonnegative coefficients give
+$a_\alpha(n)\le\exp(F(t)+nt)$ for every $t>0$.
+Choose $t=\alpha r/K$, that is, $M=K$ and $s=r$ in
+Lemma~\ref{lem:rough}. Since $n=K^2/2$,
+\[
+ F(t)+nt=\alpha K(r/2-1)+\alpha Kr/2+O_\alpha(K/r)
+        =\alpha K(r-1)+O_\alpha(K/r).
+\]
+The two bounds prove \eqref{eq:twoterms}.
+\end{proof}
+
+\begin{remark}
+The lower-bound partition need not maximize the norm. An exact maximizer is
+unnecessary. Also, a bare asymptotic equivalence to $\alpha K(r-1)$ would not
+by itself certify $-\alpha K$ as the second term; the error in
+\eqref{eq:twoterms} does certify it.
+\end{remark}
+
+\section{The exact probabilistic saddle and its scales}\label{sec:saddle}
+For fixed $t>0$, let $X_k$ be independent Bernoulli random variables with
+\begin{equation}\label{eq:pk}
+ p_k=\Prob_t(X_k=1)=\frac{k^\alpha e^{-tk}}{1+k^\alpha e^{-tk}},
+ \qquad S=\sum_{k\ge1}kX_k.
+\end{equation}
+The sum is finite almost surely because $\sum p_k<\infty$. Multiplying the
+Bernoulli probabilities gives the exact identity
+\begin{equation}\label{eq:tiltidentity}
+ \Prob_t(S=n)=a_\alpha(n)e^{-nt-F(t)}.
+\end{equation}
+Differentiation under the absolutely convergent sums shows
+\[
+ \E_tS=-F'(t)=\sum k p_k,\qquad
+ \Var_t S=F''(t)=\sum k^2p_k(1-p_k)>0.
+\]
+The mean is continuous and strictly decreasing from $\infty$ to $0$ as $t$
+increases from $0$ to $\infty$. Hence the saddle equation has a unique solution
+for every $n>0$.
+
+The large crossing $k^\alpha e^{-tk}=1$ occurs at $k=M$ in
+\eqref{eq:phase}. Its logarithmic derivative there is
+\[
+ \frac\alpha M-t=-\frac{\alpha(s-1)}M=-H^{-1}.
+\]
+Thus $H$ is the width of the transition from predominantly occupied to
+predominantly unoccupied sites.
+
+\begin{lemma}[Transition estimates]\label{lem:scales}
+For fixed $\alpha>0$, as $s\to\infty$,
+\begin{align}
+ \sum_{k\ge1}kp_k&\sim M^2/2,\label{eq:meanleading}\\
+ \sum_{k\ge1}k^2p_k(1-p_k)&\sim M^2H
+                    \sim M^3/(\alpha s).\label{eq:varianceleading}
+\end{align}
+For each fixed integer $j\ge2$,
+\begin{equation}\label{eq:mombound}
+ \sum_{k\ge1}k^j p_k(1-p_k)=O_{\alpha,j}(M^{j+1}/s).
+\end{equation}
+Moreover, for every fixed nonnegative integer $h$,
+\begin{equation}\label{eq:profilemoment}
+ \frac1{H^{h+1}}\sum_{k\ge1}|k-M|^h p_k(1-p_k)
+ \longrightarrow
+ \int_\R |x|^h\frac{e^x}{(1+e^x)^2}\dd x.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $k=M+xH$ with $x$ in a fixed bounded interval,
+\[
+ \alpha\log k-tk
+ =\alpha\log(1+xH/M)-\alpha s xH/M
+ =-x+O_{\alpha,x}(s^{-2}).
+\]
+Here and below rounding $k$ to an integer changes the scaled coordinate by
+$O(H^{-1})=o(1)$. Thus $p_k$ converges to $(1+e^x)^{-1}$.
+Since $H\to\infty$, sums over any fixed $x$-interval are Riemann sums.
+The limiting variance density has integral $1$.
+
+We record a tail justification so that this argument is not just a local
+heuristic. On $k/M\in[1/2,3/2]$, the derivative of the log odds is
+negative and comparable to $-1/H$ for large $s$; the variance density is
+therefore bounded by $C_\alpha e^{-c_\alpha|k-M|/H}$.
+On $k\ge3M/2$, the odds themselves are exponentially small in $s$ and then
+in $tk$. On $k\le M/2$, use
+$p_k(1-p_k)\le\min(1,k^{-\alpha}e^{tk})$, and split at $M/s$.
+The range $M/s<k\le M/2$ is exponentially small in $s$ after scaling by
+any of the powers of $M$ above. On $k\le M/s$, the crude bound is
+$O_\alpha(k^{-\alpha})$; its contribution to \eqref{eq:profilemoment},
+even with $|k-M|^h\le M^h$, is $o(H^{h+1})$.
+Indeed the resulting ratio is bounded by a fixed power of $s$ times
+$M^{-\min(\alpha,1)}$, with an extra logarithm when $\alpha=1$.
+These bounds establish uniform integrability for every fixed moment.
+They also prove \eqref{eq:mombound} and \eqref{eq:varianceleading}.
+
+Finally, $p_{\lfloor Mu\rfloor}\to1$ for $0<u<1$ and tends to zero for
+$u>1$. The same tail bounds and a Riemann sum give
+$M^{-2}\sum k p_k\to\int_0^1u\dd u=1/2$.
+\end{proof}
+
+At the exact saddle, \eqref{eq:meanleading} gives $M\sim K$ and $s\sim r$.
+For cumulants, write $b_1(p)=p$ and
+$b_{j+1}(p)=p(1-p)b_j'(p)$. Then
+\begin{equation}\label{eq:cumulants}
+ \kappa_j=\sum_{k\ge1}k^j b_j(p_k),\qquad
+ |b_j(p)|\le C_jp(1-p)\quad(j\ge2).
+\end{equation}
+Consequently, with $\eps=s/M$,
+\begin{equation}\label{eq:normcumulants}
+ \frac{|\kappa_j|}{B^{j/2}}
+      =O_{\alpha,j}(\eps^{(j-2)/2}),\qquad j\ge3.
+\end{equation}
+These bounds are deliberately conservative; signed cancellations can make
+individual corrections smaller. They suffice for all fixed Edgeworth orders.
+
+\section{The local limit theorem, including noncentral arcs}\label{sec:llt}
+\subsection{An elementary consecutive-block inequality}
+\begin{lemma}\label{lem:block}
+There is an absolute constant $c_0>0$ such that for every integer $h\ge2$,
+every integer $a$, and every $|\theta|\le\pi$,
+\begin{equation}\label{eq:block}
+ \sum_{k=a}^{a+h-1}\sin^2(k\theta/2)
+       \ge c_0\min(h,h^3\theta^2).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The geometric-sum formula gives
+\[
+ \sum_{k=a}^{a+h-1}\sin^2(k\theta/2)
+ \ge\frac12\left(h-
+       \left|\frac{\sin(h\theta/2)}{\sin(\theta/2)}\right|\right).
+\]
+When $h|\theta|\le1$, Taylor bounds for sine show that the difference in
+parentheses is at least $c h(h^2-1)\theta^2$.
+For $h|\theta|\ge2\pi$, the bound
+$|\sin(\theta/2)|\ge|\theta|/\pi$ makes the ratio at most $h/2$.
+On the intermediate range $1\le h|\theta|\le2\pi$, its ratio to $h$ is
+uniformly less than one. To see the uniformity, let $h\to\infty$ and use
+uniform convergence to $|\sin(x/2)/(x/2)|<1$ on $1\le x\le2\pi$;
+the finitely many remaining $h$ have the same strict inequality by the
+strict triangle inequality for a nonconstant geometric progression.
+Taking the minimum of the resulting positive constants proves the lemma.
+\end{proof}
+
+\subsection{Fourier decay and the central Gaussian}
+Let $\phi_t(\theta)=\E_t e^{\ii\theta(S-\E_tS)}$. The modulus identity
+for one Bernoulli factor implies
+\begin{equation}\label{eq:phibound}
+ |\phi_t(\theta)|\le
+ \exp\left(-2\sum_{k\ge1}p_k(1-p_k)\sin^2(k\theta/2)\right).
+\end{equation}
+In a consecutive block of length $h\asymp_\alpha M/s$ centered at $M$,
+all $p_k(1-p_k)$ are bounded below by a positive constant. On
+$|\theta|\le c_1/M$, this block gives
+\begin{equation}\label{eq:centralbound}
+ |\phi_t(\theta)|\le e^{-c_2 B\theta^2}.
+\end{equation}
+Indeed $k\asymp M$ on the block, and $\sin(k\theta/2)$ is comparable with
+$k\theta$ for sufficiently small $c_1$.
+On its complement in $[-\pi,\pi]$, Lemma~\ref{lem:block} gives
+\begin{equation}\label{eq:noncentral}
+ |\phi_t(\theta)|\le
+ \exp(-c_3M/s^3),\qquad c_1/M\le|\theta|\le\pi.
+\end{equation}
+All constants here may depend on $\alpha$. Notice the power $s^3$, rather
+than $s$: the random part sizes lie in a relatively narrow consecutive block,
+so one must control possible near-resonances. An argument checking only a
+neighborhood of zero would leave a genuine gap.
+
+At the saddle, Fourier inversion gives
+\[
+ \Prob_t(S=n)=\frac1{2\pi}\int_{-\pi}^{\pi}\phi_t(\theta)\dd\theta.
+\]
+For bounded $x=\theta\sqrt B$, Taylor expansion and
+\eqref{eq:normcumulants} give
+$\phi_t(x/\sqrt B)\to e^{-x^2/2}$.
+The central bound dominates this integrand by $e^{-c x^2}$.
+The noncentral integral, even after multiplication by $\sqrt B$, is
+$O(\sqrt B e^{-c_3M/s^3})=o(1)$. Thus
+\begin{equation}\label{eq:llt}
+ \Prob_t(S=n)\sim(2\pi B)^{-1/2}.
+\end{equation}
+Together with \eqref{eq:tiltidentity}, this proves the leading part of
+Theorem~\ref{thm:saddle}. In particular,
+\begin{equation}\label{eq:logsaddle}
+ \log a_\alpha(n)=F(t_n)+nt_n+O_\alpha(s),
+\end{equation}
+since $\log B=O(s)$.
+
+\subsection{A uniform variant used for conditioning}\label{sec:uniform}
+The same proof gives the following useful extension. Delete either a fixed
+number of sites $k=O(M)$, or all sites above a cutoff $m$ for which
+$m/M\to\gamma>1$ and the deleted mean and variance are $O(M)$ and $O(M^2)$.
+The central consecutive block remains available, the retained variance is
+$B(1+o(1))$, and the cumulant bounds remain valid. If an integer target differs
+from the retained mean by $o(\sqrt B)$, its point probability is
+\begin{equation}\label{eq:uniformllt}
+ (2\pi B)^{-1/2}(1+o(1)).
+\end{equation}
+This follows in the central integral by inserting
+$e^{-\ii x(m-\E S)/\sqrt B}\to1$; all the dominating estimates are unchanged.
+In the fixed-site deletion case, the deleted variance is automatically
+$O(M^2)$. The assertion is uniform for boundedly many deletions and shifts
+bounded by a fixed multiple of $M$.
+
+\section{The all-orders coefficient correction}\label{sec:edgeworth}
+The normalized Fourier integrand has the expansion
+\begin{equation}\label{eq:centralseries}
+ \phi_t(x/\sqrt B)
+ =e^{-x^2/2}\exp\left(
+       \sum_{j\ge3}\frac{\kappa_j(\ii x)^j}{j!B^{j/2}}\right).
+\end{equation}
+Assign weight $j-2$ to the $j$th normalized cumulant. Every monomial of odd
+weight has odd total power of $x$ and integrates to zero. A monomial of weight
+$2\ell$ has order $O(\eps^\ell)$ by \eqref{eq:normcumulants}.
+Gaussian integration therefore gives
+\begin{equation}\label{eq:edgepoly}
+ \mathcal E_\ell=
+ \sum_{\substack{m_3,\ldots,m_{2\ell+2}\ge0\\
+                  \sum_{j=3}^{2\ell+2}(j-2)m_j=2\ell}}
+ \frac{(-1)^{T/2}(T-1)!!}{B^{T/2}}
+ \prod_{j=3}^{2\ell+2}
+       \frac{\kappa_j^{m_j}}{(j!)^{m_j}m_j!},
+ \qquad T=\sum_{j=3}^{2\ell+2}jm_j.
+\end{equation}
+Here $T$ is automatically even. Besides \eqref{eq:E1}, the next term is
+\begin{align}\label{eq:E2}
+ \mathcal E_2={}&-\frac{\kappa_6}{48B^3}
+ +\frac{7\kappa_3\kappa_5}{48B^4}
+ +\frac{35\kappa_4^2}{384B^4}\notag\\
+ &-\frac{35\kappa_3^2\kappa_4}{64B^5}
+ +\frac{385\kappa_3^4}{1152B^6}.
+\end{align}
+
+For completeness, the formal expansion above has the needed integrated
+remainder. On $|\theta|\le c/M$, derivatives of order $j\ge2$ of
+$\log\E_t e^{\ii\theta S}$ have absolute value at most
+$C_{\alpha,j}M^{j+1}/s$. For $k\le2M$, take $c$ sufficiently small so that
+the Bernoulli denominators have modulus comparable with $1+k^\alpha e^{-tk}$.
+For $k>2M$, the odds tend uniformly to zero; the denominators are bounded
+away from zero and the exponentially decreasing tails give the same bound.
+These observations justify Taylor's formula with controlled remainders.
+
+Fix $J$, choose a small $\delta>0$ depending on $J$, and first restrict the
+normalized integral to $|x|\le\eps^{-\delta}$. Expand through weight $2J-1$,
+using Taylor's formula for the exponential. The terms of weight $2J$ and
+higher have an integrable bound of the form
+$C_J\eps^J(1+|x|^{C_J})e^{-x^2/4}$, after choosing $\delta$ small enough.
+The omitted odd-weight terms integrate to zero on the symmetric interval.
+Between this interval and $c\sqrt B/M$, \eqref{eq:centralbound} makes the
+integral smaller than every power of $\eps$. The remaining Fourier range is
+bounded by \eqref{eq:noncentral}, with the same conclusion. This proves
+\eqref{eq:edgeworth} and its error for every fixed $J$.
+
+\begin{remark}[What an effective finite-size bound would contain]\label{rem:effective}
+Before absorbing flat terms into the asymptotic $O$-term, the proof contains
+an additional relative bound of the shape
+$C_\alpha\sqrt B\exp(-c_\alpha M/s^3)$ for noncentral arcs.
+This can be much larger than the central Edgeworth corrections at attainable
+$n$, especially for larger $\alpha$. The theorem is not a claim that its
+first few terms have small relative error uniformly in $\alpha$ or for all
+moderate $n$.
+\end{remark}
+
+\section{Continuum smoothing to every logarithmic order}\label{sec:sommerfeld}
+\subsection{The inverse at the occupation boundary}
+Define
+\begin{equation}\label{eq:hs}
+ h_s(u)=s(u-1)-\log u.
+\end{equation}
+Near $u=1$ it is strictly increasing. Let $u_s(v)$ be its inverse with
+$u_s(0)=1$, and put
+\begin{equation}\label{eq:U}
+ U_m(s)=u_s^{(m)}(0).
+\end{equation}
+The derivative operator along the inverse is
+\begin{equation}\label{eq:Urec}
+ \frac\dd{\dd v}=\frac1{s-1/u}\frac\dd{\dd u}.
+\end{equation}
+Starting with $u$ and applying \eqref{eq:Urec} repeatedly, then setting $u=1$,
+gives an effective rational-function recursion. Equivalently, Lagrange
+inversion gives
+\begin{equation}\label{eq:Ulagrange}
+ U_m(s)=(m-1)!\,[z^{m-1}]
+       \left(\frac{z}{sz-\log(1+z)}\right)^m.
+\end{equation}
+The first required odd derivatives are
+\begin{align}\label{eq:Uexplicit}
+ U_1(s)&=\frac1{s-1},\notag\\
+ U_3(s)&=\frac{2s+1}{(s-1)^5},\notag\\
+ U_5(s)&=\frac{24s^3+58s^2+22s+1}{(s-1)^9},\\
+ U_7(s)&=\frac{720s^5+3708s^4+4400s^3+1452s^2+114s+1}
+                    {(s-1)^{13}}.\notag
+\end{align}
+
+Write $\eta(z)=(1-2^{1-z})\zeta(z)$. The elementary even kernel
+$g(v)=\log(1+e^{-|v|})$ has moments
+\begin{equation}\label{eq:kernelmom}
+ \int_\R v^{2j}g(v)\dd v=2(2j)!\eta(2j+2),\qquad j\ge0.
+\end{equation}
+Indeed expand the logarithm on $(0,\infty)$ and integrate each exponentially
+decaying term. Odd moments vanish.
+
+\begin{lemma}[Boundary smoothing expansion]\label{lem:smoothing}
+For every fixed $J\ge1$,
+\begin{align}\label{eq:smoothing}
+ \int_0^\infty\log(1+x^\alpha e^{-tx})\dd x
+ =M\left(\alpha(s/2-1)+
+      \sum_{j=1}^J\frac{2\eta(2j)}{\alpha^{2j-1}}U_{2j-1}(s)
+      +O_{\alpha,J}(s^{-2J-1})\right),
+\end{align}
+where $t=\alpha s e^{-s}$. The expansion may be differentiated with respect
+to $s$ any fixed number of times, retaining a remainder smaller than any
+prescribed inverse power of $s$ by taking sufficiently many terms first.
+\end{lemma}
+\begin{proof}
+After $x=Mu$, the integrand is $\log(1+e^{-\alpha h_s(u)})$.
+The baseline is
+$\alpha M\int_0^1[s(1-u)+\log u]\dd u=\alpha M(s/2-1)$.
+The discrepancy between this signed baseline and the positive-part baseline
+is confined to the small lower crossing and is exponentially small in $s$
+before multiplication by $M$.
+
+Choose a fixed small $\rho>0$ and restrict initially to
+$|u-1|<\rho$. Replacing the original integrand by its positive-part baseline
+leaves $g(\alpha h_s(u))$. On a symmetric $v$-interval $|v|<\gamma s$
+inside the image of this neighborhood, changing variables $v=h_s(u)$ gives
+\[
+ \int g(\alpha v)u_s'(v)\dd v.
+\]
+The omitted portions have exponentially small tails. Taylor-expand
+$u_s'(v)$ through degree $2J-1$. On the chosen interval, repeated use of
+\eqref{eq:Urec} bounds the derivative of order $2J$ of $u_s'$ by
+$O_J(s^{-2J-1})$. The Taylor remainder is thus bounded by
+$C_Js^{-2J-1}|v|^{2J}$, whose product with $g(\alpha v)$ is integrable.
+After extending the polynomial terms to the whole real line, odd terms
+vanish, and \eqref{eq:kernelmom} supplies exactly
+$2\eta(2j)U_{2j-1}(s)/\alpha^{2j-1}$.
+
+Here is a more explicit treatment of the region near zero, which must not
+be mistaken for part of the main boundary. On $0<u<e^{-s/2}$, both the
+original integrand and the absolute baseline have integral at most
+$C_\alpha s e^{-s/2}$. On
+$e^{-s/2}\le u\le1-\rho$, the concavity of
+$s(1-u)+\log u$ puts it above a positive multiple of $s$ for large $s$.
+The smoothing error there is exponentially small. On $u\ge1+\rho$ the
+log odds are negative and decrease at rate comparable with $s$.
+All these contributions are $O_{\alpha,J}(s^{-2J-1})$ for every fixed $J$.
+
+Differentiation with respect to $s$ inserts powers of $1-u$ and derivatives
+of the same logistic kernel. On the boundary interval the inverse derivatives
+still have polynomial bounds in $s^{-1}$; away from it, exponential tail bounds
+remain after multiplication by any fixed polynomial. Taylor expansion to a
+higher order therefore gives the differentiated version with any prescribed
+inverse-power precision. No assumption about differentiating an arbitrary
+$O$-term is being used.
+\end{proof}
+
+\subsection{From the continuum to the lattice}
+As in Lemma~\ref{lem:rough}, the difference between $F(t)$ and its continuum
+integral is $O_\alpha(s)$. We also need the mean. The function
+\[
+ x\longmapsto \frac{x^{\alpha+1}e^{-tx}}{1+x^\alpha e^{-tx}}=xp(x)
+\]
+is unimodal and has maximum $O_\alpha(M)$. To verify unimodality, its derivative
+has the sign of $1+(\alpha-tx)(1-p(x))$. This is positive for
+$x\le\alpha/t$. For $x>\alpha/t$, the function
+$(tx-\alpha)(1-p(x))$ increases strictly from zero to infinity. Thus
+\begin{equation}\label{eq:meanlattice}
+ \sum_{k\ge1}kp_k=\int_0^\infty xp(x)\dd x+O_\alpha(M).
+\end{equation}
+This exact lattice error is negligible at every fixed inverse-logarithmic
+order relative to the mean $M^2$.
+
+Introduce the formal Laurent series at $s=\infty$
+\begin{equation}\label{eq:dformal}
+ d_\alpha(s)=\sum_{j\ge1}
+       \frac{2\eta(2j)}{\alpha^{2j}}U_{2j-1}(s).
+\end{equation}
+The notation is asymptotic/formal: no convergence of the infinite sum in $j$
+is asserted. Each coefficient of $s^{-1}$ uses only finitely many summands,
+since $U_m(s)=O_m(s^{-m})$. The expansion begins
+\begin{align}\label{eq:dseries}
+ d_\alpha(s)={}&\frac c s+\frac c{s^2}+\frac c{s^3}
+ +\frac{c+7c^2/5}{s^4}
+ +\frac{c+77c^2/10}{s^5}\notag\\
+ &+\frac{c+49c^2/2+372c^3/35}{s^6}+\cdots.
+\end{align}
+In the all-orders logarithmic sense,
+\begin{equation}\label{eq:Fformal}
+ F(t)\sim\alpha M\bigl(s/2-1+d_\alpha(s)\bigr).
+\end{equation}
+The lattice error $O(s)$ and the non-boundary continuum pieces are smaller
+than $M/s^R$ for every fixed $R$. They are \emph{not} thereby zero and must
+not be discarded when a multiplicative coefficient equivalent is wanted.
+
+\section{Eliminating the saddle and generating all coefficients}\label{sec:eliminate}
+Since $\dd t/\dd s=-\alpha(s-1)/M$, differentiating the continuum expansion
+and using \eqref{eq:meanlattice} gives the formal mean relation
+\begin{equation}\label{eq:Q}
+ n\sim\frac{M^2}{2}Q_\alpha(s),\qquad
+ Q_\alpha(s)=1+\frac{2(d_\alpha(s)+d_\alpha'(s))}{s-1}.
+\end{equation}
+Here $d_\alpha'$ denotes formal differentiation. Thus
+\begin{equation}\label{eq:rfroms}
+ r=s+\tfrac12\log Q_\alpha(s).
+\end{equation}
+Because $Q_\alpha(s)=1+O(s^{-2})$, this has a unique formal inverse
+$s=r+O(r^{-2})$. It is computed recursively, for example by iterating
+$s\leftarrow r-\frac12\log Q_\alpha(s)$ in the ring of formal series in
+$r^{-1}$. Every iteration determines additional coefficients.
+
+Substitution in $F(t)+nt$ gives
+\begin{equation}\label{eq:formalH}
+ \asym(r)=
+ \frac{s(Q_\alpha(s)+1)/2-1+d_\alpha(s)}{\sqrt{Q_\alpha(s)}},
+ \qquad r=s+\tfrac12\log Q_\alpha(s).
+\end{equation}
+By construction,
+\begin{equation}\label{eq:Hseries}
+ \asym(r)=r-1+\sum_{j\ge1}P_j(c)r^{-j}.
+\end{equation}
+Equations \eqref{eq:Urec}, \eqref{eq:dformal}, \eqref{eq:Q}, and
+\eqref{eq:formalH} are an all-orders algorithm involving only rational
+operations and expansions of logarithms and square roots. Since even zeta
+values are rational multiples of powers of $\pi^2$, the coefficients are
+polynomials over $\mathbb Q$ in $c$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:log}]
+Fix the desired order $R$. Apply Lemma~\ref{lem:smoothing} and its mean
+version with more than enough terms that both remainders, after all
+operations, are $O_{\alpha,R}(r^{-R-1})$ in the normalized entropy.
+The exact mean relation has an additional error $O(M)$, negligible compared
+with $M^2r^{-A}$ for every fixed $A$. Inverting
+\eqref{eq:rfroms} is stable because its derivative is $1+O(s^{-3})$.
+Finite Taylor substitution is consequently legitimate with remainders, not
+only as a formal manipulation.
+
+We obtain
+\[
+ F(t_n)+nt_n=\alpha K\left(r-1+\sum_{j=1}^R P_j(c)r^{-j}
+                         +O_{\alpha,R}(r^{-R-1})\right).
+\]
+Equation \eqref{eq:logsaddle} contributes only $O(s)$, which is
+$o(Kr^{-R-1})$. This proves \eqref{eq:logall}. Direct expansion gives
+\eqref{eq:P}; the supplied symbolic script reproduces those coefficients.
+\end{proof}
+
+\paragraph{One further coefficient for an independent check.}
+The same algorithm gives
+\begin{equation}\label{eq:P8}
+ P_8(c)=c+\frac{259}2c^2+\frac{7271}{10}c^3
+                  +\frac{157813}{840}c^4.
+\end{equation}
+The continuum quadrature script checks the approach of the remainder after
+$P_7$, multiplied by $r^8$, to this polynomial. It does not replace the
+preceding proof or evaluate integer coefficients at those enormous sizes.
+
+\section{\texorpdfstring{Lambert-$W$}{Lambert-W} inversion with an error theorem}\label{sec:inverse}
+The coefficients are strictly increasing for $n\ge1$. Indeed, increasing the
+largest part of a distinct partition by one is an injection into distinct
+partitions of $n+1$, and strictly increases each positive norm weight.
+Thus the threshold index $N_\alpha(Y)$ in Theorem~\ref{thm:inverse} is
+well-defined for large $Y$.
+
+The dominant inversion problem is
+\[
+ Y=\alpha K(\log K-1).
+\]
+Writing $w=\log K-1$ gives $we^w=Y/(\alpha e)$, proving
+\eqref{eq:Wlead}. In particular $\log K_0=R_0$.
+Set $K=K_0E$. The all-orders formal inversion is the single equation
+\begin{equation}\label{eq:Einverse}
+ E\,\asym(R_0+\log E)=R_0-1,
+ \qquad E=1+O(R_0^{-2}).
+\end{equation}
+The derivative with respect to $E$ is $R_0+O(1)$ at $E=1$, so successive
+coefficients are uniquely determined. In terms of $c$, they are
+\begin{align}\label{eq:inverseE}
+ E={}&1-\frac c{R_0^2}-\frac c{R_0^3}
+       +\frac{3c^2/2-c}{R_0^4}
+       -\frac{c+2c^2/5}{R_0^5}\notag\\
+ &-\frac{c+46c^2/5+5c^3/2}{R_0^6}+\cdots,
+\end{align}
+and hence
+\begin{align}\label{eq:inverseE2}
+ E^2={}&1-\frac{2c}{R_0^2}-\frac{2c}{R_0^3}
+       +\frac{4c^2-2c}{R_0^4}
+       +\frac{6c^2/5-2c}{R_0^5}\notag\\
+ &-\frac{2c+77c^2/5+8c^3}{R_0^6}+\cdots.
+\end{align}
+The asymptotic index is $K_0^2E^2/2$.
+
+To justify inversion of the sequence rather than just of a formal expression,
+fix an order, use Theorem~\ref{thm:log} two orders farther than needed, and
+bracket the target by the corresponding smooth functions with the two signs
+of its error bound. Their derivatives with respect to $K$ are
+$\alpha r(1+o(1))>0$. An entropy error $O(Kr^{-R-1})$ therefore changes $K$
+by $O(Kr^{-R-2})$, and changes $n=K^2/2$ by
+$O(K^2r^{-R-2})$. These bounds transfer the formal inversion to the actual
+threshold by monotonicity. Rounding the brackets to integers costs $O(1)$,
+smaller than all of these fixed-order error scales. This proves
+Theorem~\ref{thm:inverse} and its all-orders extension.
+
+\begin{remark}[Two different Lambert branches]
+The saddle phase uses $W_{-1}$ because $s\to\infty$ solves
+$se^{-s}=t/\alpha\to0^+$. The threshold inverse uses $W_0$ at a positive
+argument. Interchanging the branches would destroy the relevant scale.
+If inversion in elementary logarithms is desired, the usual formal solution
+of $w+\log w=\log(Y/(\alpha e))$ can be substituted into
+\eqref{eq:inverseE2}; retaining $W_0$ is shorter and preserves more precision.
+\end{remark}
+
+\section{Conditioned geometry: a logistic boundary and a Gumbel maximum}
+Conditioning the Bernoulli law \eqref{eq:pk} on $S=n$ gives exactly
+\begin{equation}\label{eq:conditioned}
+ \Prob_n(\lambda)=\frac{\normp(\lambda)^\alpha}{a_\alpha(n)}.
+\end{equation}
+No approximation is involved in this identification.
+
+\subsection{The boundary profile}
+Fix distinct integer sites $k_{1,n},\ldots,k_{d,n}$ with
+$(k_{j,n}-M)/H\to x_j\in\R$. Their unconditioned probabilities tend to
+$p(x_j)=(1+e^{x_j})^{-1}$ by Lemma~\ref{lem:scales}.
+For any prescribed pattern $\epsilon_j\in\{0,1\}$, independence gives
+\begin{align}\label{eq:pattern}
+ &\Prob_n(X_{k_{j,n}}=\epsilon_j\text{ for all }j)\notag\\
+ &\quad=\prod_{j=1}^d p_{k_{j,n}}^{\epsilon_j}
+                       (1-p_{k_{j,n}})^{1-\epsilon_j}
+ \frac{\Prob_t\{S^{\rm rem}=n-\sum_jk_{j,n}\epsilon_j\}}
+      {\Prob_t(S=n)}.
+\end{align}
+The shifted target differs from the remaining mean by $O(M)=o(\sqrt B)$.
+The uniform local limit theorem in Section~\ref{sec:uniform} makes the ratio
+of point probabilities tend to one. This proves both the logistic limit and
+finite-site asymptotic independence. Similarly, a site at $\gamma M$ has
+limiting occupation $1$ for $0<\gamma<1$, and $0$ for $\gamma>1$.
+
+\subsection{The correct centering of the maximum}
+The large solution of \eqref{eq:bdef} exists uniquely for sufficiently small
+$t$. With $z=tb$, the equation is $z^\alpha e^{-z}=t^{\alpha+1}$, so
+\begin{equation}\label{eq:blambert}
+ b(t)=-\frac\alpha t\,
+ W_{-1}\left(-\frac{t^{1+1/\alpha}}\alpha\right).
+\end{equation}
+Solving its logarithm,
+$z-\alpha\log z=-(\alpha+1)\log t$, with $t=\alpha s e^{-s}$ yields
+\begin{align}\label{eq:bexpand}
+ \frac bM={}&1+\frac1\alpha
+ +\frac{-\log s+\alpha\log(\alpha+1)-(\alpha+1)\log\alpha}
+                {\alpha s}
+ +O_\alpha\left(\frac{\log s}{s^2}\right).
+\end{align}
+Keeping only $b\sim(1+1/\alpha)M$ is not adequate for the Gumbel
+centering: the omitted shift has size $M\log s/s$, larger than $1/t$.
+Keeping all the displayed terms in \eqref{eq:bexpand} does give an
+$o(1/t)$ centering error. The exact definition \eqref{eq:bdef} or
+\eqref{eq:blambert} avoids this truncation bookkeeping altogether.
+
+\begin{proof}[Proof of the maximum assertion in Theorem~\ref{thm:geometry}]
+Fix $x\in\R$ and put $m=\lfloor b+x/t\rfloor$. Then $tm\to\infty$ and
+$m/M\to1+1/\alpha>1$. In the tail $k>m$, all odds tend uniformly to zero.
+A sum--integral comparison followed by integration by parts gives
+\begin{align}\label{eq:tailint}
+ \sum_{k>m}p_k
+ &\sim\sum_{k>m}k^\alpha e^{-tk}
+ \sim\frac{m^\alpha e^{-tm}}t
+ \longrightarrow e^{-x}.
+\end{align}
+For the second equivalence, substitute $v=tx$ in the integral and use
+$\int_z^\infty v^\alpha e^{-v}\dd v
+=z^\alpha e^{-z}(1+O_\alpha(z^{-1}))$.
+The endpoint discretization has relative size $O(t)$.
+The last limit follows from $b^\alpha e^{-tb}/t=1$ and
+$m/b\to1$. Also, $\sup_{k>m}p_k=O(t)$, so $\sum_{k>m}p_k^2=o(1)$.
+Therefore the unconditioned probability of no part above $m$ is
+\begin{equation}\label{eq:tailzero}
+ \prod_{k>m}(1-p_k)\longrightarrow e^{-e^{-x}}.
+\end{equation}
+
+It remains to justify conditioning, rather than silently replacing one
+ensemble by another. The removed mean and variance satisfy
+\[
+ \sum_{k>m}kp_k=O(M),\qquad
+ \sum_{k>m}k^2p_k(1-p_k)=O(M^2).
+\]
+These bounds follow from the same tail-integral calculation with one or two
+extra powers of $k$. The remaining sum $S_{\le m}$ thus has mean
+$n-O(M)$ and variance $B(1+o(1))$. Its central block around $M$ is intact.
+The uniform local limit estimate gives
+\[
+ \frac{\Prob_t(S_{\le m}=n)}{\Prob_t(S=n)}\longrightarrow1.
+\]
+Independence of the retained and removed sites now gives
+\[
+ \Prob_n(L_n\le m)=
+       \prod_{k>m}(1-p_k)
+       \frac{\Prob_t(S_{\le m}=n)}{\Prob_t(S=n)}
+       \longrightarrow e^{-e^{-x}}.
+\]
+This proves the Gumbel limit. Its tightness, \eqref{eq:bexpand},
+$M\sim K$, and $(tM)^{-1}=1/(\alpha s)\to0$ imply
+$L_n/K\to1+1/\alpha$ in probability.
+\end{proof}
+
+\paragraph{The two locations are genuinely different.}
+The occupation boundary lies near $M\sim\sqrt{2n}$, while the maximum lies
+near $(1+1/\alpha)M$. For $\alpha=1$, a typical largest part is asymptotic
+to $2\sqrt{2n}$, not to $\sqrt{2n}$. Individual occupancies far above the
+boundary are small, but there are enough possible sites to move the extreme
+by a macroscopic multiple of $M$. This is why a boundary profile alone does
+not determine the largest part.
+
+\section{A proved exponential scale from Fourier resonances}\label{sec:resonance}
+The bound \eqref{eq:noncentral} suggests an exponentially small scale not
+visible in either the logarithmic block or the central Edgeworth series.
+We can identify its constant at each fixed integer resonance.
+
+\begin{theorem}[Fixed-resonance modulus]\label{thm:resonance}
+For every fixed nonzero integer $\ell$, with $\phi_t$ as in
+Section~\ref{sec:llt},
+\begin{equation}\label{eq:resonance}
+ -\log\left|\phi_t\left(\frac{2\pi\ell}{M}\right)\right|
+ \sim\frac{2\pi^4\ell^2}{3}\frac{H^3}{M^2}
+ \sim\frac{2\pi^4\ell^2}{3\alpha^3}\frac M{s^3}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact modulus formula is
+\[
+ \log|\phi_t(\theta)|
+  =\frac12\sum_{k\ge1}\log\left(1-4p_k(1-p_k)
+                                    \sin^2(k\theta/2)\right).
+\]
+At $\theta=2\pi\ell/M$, write $k=M+xH$. For bounded $x$,
+\[
+ \sin^2(\pi\ell k/M)
+ =\pi^2\ell^2 x^2H^2/M^2+O_\ell(x^4H^4/M^4).
+\]
+The logarithm is therefore $-4p_k(1-p_k)$ times this sine square to leading
+order. Lemma~\ref{lem:scales}, applied with moments $2$ and $4$, gives
+\[
+ -\log|\phi_t(2\pi\ell/M)|
+ \sim\frac{2\pi^2\ell^2H^3}{M^2}
+     \int_\R x^2\frac{e^x}{(1+e^x)^2}\dd x.
+\]
+One may first restrict to $|x|\le s^\delta$ with small fixed $\delta>0$;
+Taylor remainders are then uniformly controlled. Outside this interval,
+the exponential boundary tails and the lower-endpoint bounds in
+Lemma~\ref{lem:scales} are negligible at the displayed scale. The quadratic
+logarithm error is $O(H^5/M^4)=o(H^3/M^2)$.
+Finally,
+\[
+ \int_\R x^2\frac{e^x}{(1+e^x)^2}\dd x
+ =4\sum_{j\ge1}\frac{(-1)^{j-1}}{j^2}=\frac{\pi^2}{3},
+\]
+by expansion on the positive half-line. This proves the theorem.
+\end{proof}
+
+For fixed $\alpha$, the scale $\exp[-C_\alpha M/s^3]$ is smaller than
+every power of $s/M$, because $M/s^3$ dominates $\log M$. However, its
+constant deteriorates as $\alpha^{-3}$. This makes the fixed-$\alpha$
+asymptotic theorem compatible with large visible resonances at moderate $n$.
+
+The theorem concerns the \emph{modulus at a specified point}. It does not
+yet determine the shifted secondary saddles, their phases, or the contribution
+of their full neighborhoods to the coefficient integral. Calling it a
+complete multi-saddle transseries would be incorrect. It does identify a
+rigorous exponential scale and a concrete next target for exponential
+improvement.
+
+\section{Reproducible computation and finite-size diagnostics}\label{sec:checks}
+\subsection{Exact calculations}
+The supplied \texttt{verify.py} computes the five integer sequences through
+$n=5000$ by descending polynomial multiplication. It compares their initial
+sixteen terms against the consulted OEIS entries and independently checks
+$n\le150$ by a logarithmic-derivative recurrence. Explicitly, define
+\begin{equation}\label{eq:exactB}
+ C_\alpha(m)=\sum_{d\mid m}(-1)^{m/d+1}d^{1+\alpha m/d}.
+\end{equation}
+Then $a_\alpha(0)=1$ and
+\begin{equation}\label{eq:exactrec}
+ n a_\alpha(n)=\sum_{m=1}^n C_\alpha(m)a_\alpha(n-m).
+\end{equation}
+This follows by expanding $qA_\alpha'(q)/A_\alpha(q)$ formally. The two
+algorithms have different arithmetic paths, so their agreement is a useful
+implementation check. It is not a proof of the asymptotic theorems.
+
+All five exact prefix checks, all recurrence checks through $150$, and strict
+monotonicity checks through $5000$ passed. The complete computed lists are
+included as plain text. They were independently generated here, not copied
+from OEIS b-files.
+
+\subsection{The central approximation is excellent for one column, not all}
+Let $G=e^{F(t_n)+nt_n}/\sqrt{2\pi B}$, with the infinite sums evaluated by
+high-precision truncation. The following are numerical diagnostics, not
+interval-certified bounds. Values shown are rounded from the included CSV.
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$\alpha$ & $n$ & $a_\alpha(n)/G$ & $a_\alpha(n)/(G(1+\mathcal E_1))$
+ & $a_\alpha(n)/(G(1+\mathcal E_1+\mathcal E_2))$\\
+\midrule
+1 & 100 & 0.989159702 & 0.999826713 & 0.999908591\\
+1 & 1000 & 0.997526322 & 0.999995495 & 0.999999984\\
+1 & 5000 & 0.999084078 & 0.999999367 & 0.999999999\\
+2 & 5000 & 0.999545155 & 1.000036354 & 1.000036527\\
+3 & 5000 & 0.961625508 & 0.961944240 & 0.961944315\\
+4 & 5000 & 1.230518103 & 1.230825332 & 1.230825386\\
+5 & 5000 & 1.581097698 & 1.581414178 & 1.581414223\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $\alpha=1,n=5000$, two central corrections reduce the relative error to
+about $1.1\times10^{-9}$. At $\alpha=5,n=5000$, the central approximation
+is plainly not accurate, and adding central corrections does not repair it.
+This is evidence about finite-size behavior, not a contradiction of a
+fixed-parameter limit. In particular, these tests must not be advertised as
+numerical confirmation of rapid convergence for all five columns.
+
+The resonance diagnostic computes the exact product modulus at
+$\theta=2\pi/M$, using the same numerical saddle:
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+$\alpha$ & $n$ & $|\phi_t(2\pi/M)|$\\
+\midrule
+1 & 5000 & $2.33482\times10^{-15}$\\
+2 & 5000 & $2.72621\times10^{-5}$\\
+3 & 5000 & $0.0173352$\\
+4 & 5000 & $0.150645$\\
+5 & 5000 & $0.361805$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The increase in these noncentral moduli is consistent with the observed
+failure of a central-only approximation. Their values do not by themselves
+predict the sign of the coefficient error; the omitted phases matter.
+
+\subsection{Logarithmic expansions are not monotone numerical improvements}
+For $\alpha=1,n=5000$, the exact logarithm is approximately
+$401.567349464797$. Subtracting the leading expression $K(r-1)$ leaves
+$41.05033086599$. Subtracting the expansion through $P_3$ instead leaves
+$-2.72431695876$, while truncating through $P_7$ leaves $-7.67561845406$.
+The additional terms are not a promise of monotone improvement at a fixed
+small $r$. The missing prefactor and endpoint contributions are also on
+scales suppressed by the logarithmic theorem but relevant numerically.
+
+An independent continuum check evaluates the integral and mean in
+Lemma~\ref{lem:smoothing}, without using the rational-function expansion,
+and compares the normalized remainder after $P_7$ with $P_8$:
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+$\alpha$ & $s$ & Scaled remainder $r^8(\text{entropy}/(\alpha K)-\mathscr H_{\alpha,7}(r))$\\
+\midrule
+1 & 24 & 7881.08213\\
+1 & 48 & 5997.09948\\
+1 & 96 & 5424.47363\\
+\multicolumn{2}{r}{Predicted limit $P_8(\pi^2/6)$:} & 4963.76905\\
+3 & 24 & 15.7012553\\
+3 & 48 & 9.85270737\\
+3 & 96 & 9.49113831\\
+\multicolumn{2}{r}{Predicted limit $P_8(\pi^2/54)$:} & 9.15764483\\
+\bottomrule
+\end{tabular}
+\end{center}
+The approach is slow, but has the expected direction in these samples.
+These are continuum diagnostics at nonintegral implied $n$, not exact
+integer-sequence computations at exponentially large indices.
+
+\subsection{What the numerical implementation guarantees}
+The integer arithmetic and recurrence comparisons are exact. For the saddle
+calculations, the program uses arbitrary-precision arithmetic and chooses a
+cutoff from a geometric majorant for
+$\sum k^{\alpha+6}e^{-tk}$. This bounds the tails relevant to all cumulants
+through order six, apart from harmless fixed constants. The test used
+50 requested decimal digits with guard digits; the saved mean residuals are
+far smaller than the displayed precision. Nevertheless, the majorant and
+Newton iteration are evaluated in floating point, not outward-rounded
+interval arithmetic. Accordingly, the CSV values are diagnostics rather than
+certificates of rigorous numerical error bounds.
+
+\section{Further research questions and proposed projects}\label{sec:future}
+The proved results leave several substantial and concrete directions.
+
+\paragraph{1. An effective multi-saddle expansion.}
+Locate the secondary saddles near $2\pi\ell/M$, compute their phases and
+Gaussian factors, and sum the relevant arcs with a uniform remainder. Theorem
+\ref{thm:resonance} supplies the first exponential action but not the full
+contribution. The moderate-$n$ failures for $\alpha=3,4,5$ make this a practical
+as well as theoretical priority.
+
+\paragraph{2. A complete two-scale coefficient transseries.}
+Refine the continuum-to-lattice passage sufficiently to retain endpoint terms,
+Euler--Maclaurin corrections, the central determinant, and the resonance
+sectors in one consistent normalization. Determine which of these expansions
+are Gevrey and whether optimal truncation produces a useful exponential
+improvement. The present all-logarithmic series alone does not settle this.
+
+\paragraph{3. The crossover as the tilt vanishes.}
+The fixed-$\alpha$ expansion is singular as $\alpha\downarrow0$, while the
+unweighted distinct-partition count has a different growth law. A natural
+crossover parameter is $\alpha\log K$. Derive a uniform family of saddle
+profiles when this parameter stays bounded, and match it to both the
+unweighted regime and the fixed-positive-tilt regime. The shrinking-tilt
+analysis in Gikunda's thesis provides an important comparison point
+\cite{gikunda}, but matching the full regimes still requires work.
+
+\paragraph{4. Growing moments and concentration near maximal norm.}
+Allow $\alpha=\alpha(n)\to\infty$. The fluctuation width $H$ and resonance
+action show that several thresholds can occur before the model collapses onto
+maximal-norm partitions. Determine the sharp parameter ranges for a local
+limit theorem, for single-saddle dominance, and for localization near an
+extremal partition. The fixed-$\alpha$ proof does not justify substituting an
+arbitrary growing parameter.
+
+\paragraph{5. The joint law of the largest several parts.}
+The independent tail calculation suggests a Poisson process with intensity
+$e^{-x}\dd x$ for the rescaled upper parts. Prove its conditioned point-process
+limit and obtain joint distributions of the largest $j$ parts, including
+second-order corrections to their centering. The maximum theorem is the
+one-dimensional starting point, not a substitute for tightness of the process.
+
+\paragraph{6. Fluctuations of the number of parts and of the log norm.}
+A multivariate conditioned local limit theorem should describe the number of
+occupied sites and the logarithm of the norm under fixed positive tilt.
+Conditioning removes a covariance direction and can cancel a leading
+variance term; computing the surviving scale requires more than plugging the
+unconditioned variance into a Gaussian formula.
+
+\paragraph{7. More general weights.}
+Replace $k^\alpha$ by $k^\alpha(\log k)^\beta$ away from the harmless small
+indices, or by a smooth regularly varying weight. Identify hypotheses that
+preserve a single large crossing, the logistic boundary, and a computable
+inverse expansion. Arithmetic thinning of the allowed part sizes would also
+require a replacement for the consecutive-block lemma and may introduce
+persistent lattice obstructions.
+
+\paragraph{8. Certified numerics and formal verification.}
+Give explicit constants in the Fourier bounds, add interval-enclosed saddle
+solving, and certify a chosen relative-error target at a stated $n$ and
+$\alpha$. For Lean, a sensible modular route is: the formal Euler product and
+recurrence; the Bernoulli coefficient identity; the consecutive-block
+inequality; an abstract triangular-array local-limit theorem; and finally the
+boundary smoothing lemma. The algebraic generation of $P_j$ and the inverse
+coefficients can be separately certified by finite polynomial identities.
+This would connect directly to the repository's transseries infrastructure
+without pretending that formal algebra alone proves analytic asymptotics.
+
+\section{Conclusion}
+The five checked OEIS conjectures share a single analytic mechanism. Filling
+parts up to a moving boundary produces the dominant factorial-scale entropy;
+smoothing that boundary produces the $\pi^2$ correction and its all-orders
+inverse-logarithmic successors. A conditioned Bernoulli model supplies the
+local probability that converts this entropy into an actual coefficient,
+and also gives logistic occupation and a Gumbel extreme. Lambert-$W$
+inversion turns the same expansion into a quantitative threshold law.
+
+The resulting package contains explicit proofs rather than numerical
+extrapolation. It also records an important limitation: central asymptotics
+can converge extremely slowly for higher moments because noncentral
+resonances are only suppressed on the scale $\exp[-C_\alpha K/(\log K)^3]$.
+That proved scale and the visible finite-size discrepancies identify a
+well-defined next research problem: a phase-sensitive, exponentially
+improved multi-saddle expansion.
+
+\appendix
+\section{Reproduction guide and file manifest}
+The archive contains this source and its compiled PDF, together with:
+\begin{center}
+\begin{tabular}{p{.38\linewidth}p{.53\linewidth}}
+\toprule
+File & Purpose\\
+\midrule
+\texttt{verify.py} & Exact integer sequences, independent recurrence, and numerical saddle/Edgeworth diagnostics.\\
+\texttt{derive\_series.py} & Symbolic generation of the boundary derivatives and logarithmic coefficients.\\
+\texttt{derive\_inverse.py} & Symbolic reversion through six inverse-logarithmic orders.\\
+\texttt{check\_continuum.py} & Independent continuum quadrature diagnostics.\\
+\texttt{check\_resonances.py} & Direct numerical product moduli at the first resonance.\\
+\texttt{data/} & Computed integer lists, CSV diagnostics, symbolic output, and execution logs.\\
+\texttt{README.md}, \texttt{requirements.txt} & Build and reproduction instructions, scope, and dependencies.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The mathematical proofs do not require running the programs. To reproduce:\par\medskip
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}
+python -m pip install -r requirements.txt
+python verify.py --max-n 5000 --dps 50
+python derive_series.py
+python derive_inverse.py
+python check_continuum.py
+python check_resonances.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+\end{minipage}\par\medskip
+The source uses standard LaTeX packages and no external bibliography processor.
+No Lean code or machine-checked proof is bundled or implied.
+
+\section{Compact proposed OEIS formula updates}
+For the entry corresponding to $\alpha=1,\ldots,5$, write
+$K=\sqrt{2n}$ and $r=\log K$. The following common formula is proved in
+Theorem~\ref{thm:log}:
+\[
+ \log a_\alpha(n)=\alpha K(r-1)
+       +\frac{\pi^2K}{6\alpha r}
+       +\frac{\pi^2K}{6\alpha r^2}
+       +O_\alpha(K/r^3).
+\]
+It is appropriate to link a reviewed proof before changing a database's
+conjectural status. This report has not submitted or edited any OEIS entry.
+For the array \OEIS{A292189}, the result holds down every fixed positive
+column; it makes no uniform assertion about the main diagonal or columns
+whose index grows with the row.
+
+\clearpage
+{\small\raggedright
+\begin{thebibliography}{99}
+\bibitem{oeis1} OEIS Foundation Inc., \emph{A022629: Expansion of
+$\prod_{m\ge1}(1+mq^m)$}. Conjectural formula attributed to V. Kote\v{s}ovec,
+May 8, 2018. Internal entry consulted October 1, 2026; sequence revision
+\#54, March 13, 2026. \url{https://oeis.org/A022629/internal}.
+\bibitem{oeis2} OEIS Foundation Inc., \emph{A092484: Expansion of
+$\prod_{m\ge1}(1+m^2q^m)$}. Conjectural formula attributed to V. Kote\v{s}ovec,
+December 27, 2020. Consulted October 1, 2026.
+\url{https://oeis.org/A092484}.
+\bibitem{oeis3} OEIS Foundation Inc., \emph{A265840: Expansion of
+$\prod_{k\ge1}(1+k^3q^k)$}. Conjectural formula attributed to V. Kote\v{s}ovec,
+December 27, 2020. Consulted October 1, 2026.
+\url{https://oeis.org/A265840}.
+\bibitem{oeis4} OEIS Foundation Inc., \emph{A265841: Expansion of
+$\prod_{k\ge1}(1+k^4q^k)$}. Conjectural formula attributed to V. Kote\v{s}ovec,
+December 27, 2020. Consulted October 1, 2026.
+\url{https://oeis.org/A265841}.
+\bibitem{oeis5} OEIS Foundation Inc., \emph{A265842: Expansion of
+$\prod_{k\ge1}(1+k^5q^k)$}. Conjectural formula attributed to V. Kote\v{s}ovec,
+December 27, 2020. Consulted October 1, 2026.
+\url{https://oeis.org/A265842}.
+\bibitem{oeisarray} OEIS Foundation Inc., \emph{A292189: Square array of
+coefficients of $\prod_{j\ge1}(1+j^kq^j)$}. Consulted October 1, 2026.
+\url{https://oeis.org/A292189}.
+\bibitem{schneider} R. Schneider and A. V. Sills,
+\emph{The product of parts or ``norm'' of a partition}, Integers
+\textbf{20A} (2020), Article A13. Author version:
+\url{https://arxiv.org/html/1904.08004v2}.
+\bibitem{bridges} W. Bridges and W. Craig,
+\emph{On the distribution of the norm of partitions}, The Ramanujan Journal
+\textbf{66} (2025), Article 40. DOI:
+\href{https://doi.org/10.1007/s11139-024-00969-5}{10.1007/s11139-024-00969-5}.
+Author version: \url{https://arxiv.org/html/2308.00123v1}.
+\bibitem{rana} M. Rana, H. Kaur, and A. Kumar,
+\emph{On the sum of partition norms and its connection to norms of partitions
+with parts greater than one}, Notes on Number Theory and Discrete Mathematics
+\textbf{31} (2025), no. 4, 908--915. DOI:
+\href{https://doi.org/10.7546/nntdm.2025.31.4.908-915}{10.7546/nntdm.2025.31.4.908-915}.
+\url{https://nntdm.net/papers/nntdm-31/NNTDM-31-4-908-915.pdf}.
+\bibitem{gikunda} D. K. Gikunda,
+\emph{The Distribution of the Product of Parts in Integer Partitions},
+Ph.D. dissertation, Stellenbosch University, March 2026, Chapter 4,
+especially Section 4.2 and Proposition 4.2.5. Author-uploaded text consulted
+October 1, 2026. DOI:
+\href{https://doi.org/10.13140/RG.2.2.22314.07368}{10.13140/RG.2.2.22314.07368}.
+Repository record: \url{https://scholar.sun.ac.za/handle/10019.1/136012}.
+\bibitem{proveit} V. Reshetnikov,
+\emph{ProveIt}, repository snapshot
+\texttt{1f1981f682b2878bde51a6ad40c22777f362fc05},
+\texttt{Analysis/Transseries/README.md}, consulted October 1, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\end{thebibliography}
+}
+\end{document}

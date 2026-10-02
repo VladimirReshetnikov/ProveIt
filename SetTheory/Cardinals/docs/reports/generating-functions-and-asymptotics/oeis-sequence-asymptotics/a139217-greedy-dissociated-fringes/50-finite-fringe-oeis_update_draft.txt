@@ -1,0 +1,111 @@
+DRAFT ONLY — NOT SUBMITTED TO OEIS
+Prepared 1 October 2026. Independent review and a stable public manuscript
+link are recommended before submission.
+
+Relevant entries: A139217 and A139218.
+
+======================================================================
+A139217
+======================================================================
+
+PROPOSED COMMENT
+Let S_n = Sum_{j=1..n} a(j), and let
+D_n = {Sum_{j=1..n} e_j a(j) : e_j in {-1,0,1}}.
+For every n >= 3,
+
+  D_n = ([-S_n,S_n] intersect Z) \ {-(S_n-3), S_n-3}.
+
+Thus the complete signed subset-sum difference set is an interval with one
+reflected pair of holes.
+
+PROPOSED FORMULAS
+For n >= 3,
+
+  a(n) = 3*2^(n-2) + 1,  if n == 0 or 1 (mod 3),
+  a(n) = 3*2^(n-2) - 2,  if n == 2 (mod 3).
+
+Equivalently,
+
+  a(n) = (3/4)*2^n - 2*cos(2*Pi*(n+1)/3).
+
+For n >= 3,
+
+  a(n+1)-2*a(n) = -1, -4, 5
+
+according as n == 0, 1, 2 (mod 3). Therefore
+
+  a(n) = a(n-1) + a(n-2) + 2*a(n-3)  for n >= 6.
+
+The currently displayed range "n>4" is false at n=5:
+
+  a(5)=22, but a(4)+a(3)+2*a(2)=13+7+8=28.
+
+Ordinary generating function, with A(x)=Sum_{n>=1} a(n)x^n:
+
+  A(x) = (x + 3*x^2 + 2*x^3 - 6*x^5)/(1-x-x^2-2*x^3).
+
+ASYMPTOTIC
+
+  a(n) ~ (3/4)*2^n.
+
+======================================================================
+A139218
+======================================================================
+
+PROPOSED COMMENT
+Let S_n = Sum_{j=1..n} a(j), and let
+D_n = {Sum_{j=1..n} e_j a(j) : e_j in {-1,0,1}}.
+For every n >= 3,
+
+  D_n = ([-S_n,S_n] intersect Z)
+        \ {+/- (S_n-h) : h in {1,3,6,11}}.
+
+Thus the complete signed subset-sum difference set is an interval with four
+reflected pairs of holes.
+
+PROPOSED FORMULAS
+For n >= 4,
+
+  a(n) = (39*2^n - 200)/56,  if n == 0 (mod 3),
+  a(n) = (39*2^n + 160)/56,  if n == 1 (mod 3),
+  a(n) = (39*2^n +  40)/56,  if n == 2 (mod 3).
+
+For n >= 4,
+
+  a(n+1)-2*a(n) = 10, -5, -5
+
+according as n == 0, 1, 2 (mod 3). Therefore
+
+  a(n) = a(n-1) + a(n-2) + 2*a(n-3)  for n >= 7.
+
+Ordinary generating function, with A(x)=Sum_{n>=1} a(n)x^n:
+
+  A(x) = (2*x + 3*x^2 + x^3 - 3*x^4 - 9*x^5 - 12*x^6)
+         /(1-x-x^2-2*x^3).
+
+ASYMPTOTIC
+
+  a(n) ~ (39/56)*2^n.
+
+======================================================================
+PROOF IDEA
+======================================================================
+
+For a finite selected set A with total S, define
+
+  E(A) = {Sum delta_a*a : delta_a in {0,1,2}} = S + D(A).
+
+For A139217 at n=3,
+
+  E({1,4,7}) = [0,24] \ {3,21}.
+
+For A139218 at n=3,
+
+  E({2,5,8}) = [0,30] \ {1,3,6,11,19,24,27,29}.
+
+If E(A) is a full interval except for a finite fringe H and its reflection,
+then adding b replaces it by three translates E, b+E, 2b+E. A short interval
+overlap argument proves that the same fringe persists whenever the high holes
+of one translate do not align with the low holes of the next. The two seed
+fringes satisfy this condition forever. The greedy choice is then determined
+by a finite residue table modulo 3, giving the formulas above.
