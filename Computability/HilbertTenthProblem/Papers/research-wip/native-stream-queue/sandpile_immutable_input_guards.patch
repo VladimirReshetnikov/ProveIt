@@ -1,0 +1,70 @@
+--- a/sandpile_cubic.py
++++ b/sandpile_cubic.py
+@@ -29,6 +29,14 @@
+     d: tuple[int, ...]
+ 
+     def __post_init__(self) -> None:
++        # Freeze caller-owned containers before checking the graph hypotheses.
++        try:
++            a = tuple(tuple(row) for row in self.a)
++            d = tuple(self.d)
++        except TypeError as exc:
++            raise ValueError("adjacency rows and degrees must be finite sequences") from exc
++        object.__setattr__(self, "a", a)
++        object.__setattr__(self, "d", d)
+         n = len(self.d)
+         if n == 0 or len(self.a) != n or any(len(row) != n for row in self.a):
+             raise ValueError("nonempty square adjacency and matching degrees required")
+--- a/sandpile_spatial.py
++++ b/sandpile_spatial.py
+@@ -27,6 +27,16 @@
+     overrides: tuple[tuple[tuple[int, ...], int], ...] = ()
+ 
+     def __post_init__(self) -> None:
++        # A frozen record must not retain mutable periodic or defect tables.
++        try:
++            periods = tuple(self.periods)
++            background = tuple(self.background)
++            overrides = tuple((tuple(x), value) for x, value in self.overrides)
++        except (TypeError, ValueError) as exc:
++            raise ValueError("periodic input requires finite coordinate and height tables") from exc
++        object.__setattr__(self, "periods", periods)
++        object.__setattr__(self, "background", background)
++        object.__setattr__(self, "overrides", overrides)
+         if not self.periods or any(type(p) is not int or p < 1 for p in self.periods):
+             raise ValueError("periods must be positive Python integers")
+         if len(self.background) != prod(self.periods):
+@@ -81,9 +91,33 @@
+     sites: tuple[tuple[int, ...], ...]
+     collar: tuple[tuple[int, ...], ...]
+ 
++    def __post_init__(self) -> None:
++        if type(self.source) is not PeriodicInput or type(self.graph) is not Graph:
++            raise ValueError("a validated PeriodicInput and Graph are required")
++        natural(self.radius, "radius")
++        natural(self.minimum_radius, "R0")
++        if self.minimum_radius < self.source.defect_radius or self.radius < self.minimum_radius:
++            raise ValueError("require radius >= R0 >= defect radius")
++        try:
++            sites = tuple(tuple(x) for x in self.sites)
++            collar = tuple(tuple(x) for x in self.collar)
++        except TypeError as exc:
++            raise ValueError("sites and collar must contain integer coordinate sequences") from exc
++        if any(len(x) != self.source.dimension or any(type(v) is not int for v in x)
++               for x in sites+collar):
++            raise ValueError("sites and collar require exact integer coordinates of the input dimension")
++        expected_graph, expected_sites = box_graph(self.source.dimension, self.radius)
++        expected_collar = tuple(sorted({y for x in expected_sites for y in neighbors(x)}-set(expected_sites)))
++        if (self.graph != expected_graph or sites != expected_sites or collar != expected_collar):
++            raise ValueError("graph, site order and collar must match the canonical lattice box")
++        object.__setattr__(self, "sites", sites)
++        object.__setattr__(self, "collar", collar)
++
+     @classmethod
+     def build(cls, source: PeriodicInput, radius: int,
+               minimum_radius: int | None = None) -> SpatialInstance:
++        if type(source) is not PeriodicInput:
++            raise ValueError("a validated PeriodicInput is required")
+         natural(radius, "radius")
+         R0 = source.defect_radius if minimum_radius is None else natural(minimum_radius, "R0")
+         if R0 < source.defect_radius or radius < R0:

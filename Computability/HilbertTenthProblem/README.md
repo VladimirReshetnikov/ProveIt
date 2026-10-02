@@ -29,7 +29,19 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate independent-gamma87 candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
-The [new archive review](Papers/research-wip/native-stream-queue/incoming_substrate_review_6914ccca6.md)
+The [latest six-report review](Papers/research-wip/native-stream-queue/incoming_substrate_review_1977e6ea6.md)
+covers exact wiring, interaction-net topology, cyclic wires, stochastic erasure,
+thermal arithmetic and sandpiles delivered at1977e6ea6. All18 original
+verifier/CLI entry points replay. Checked patches repair three sandpile
+constructor bypasses and invalid low-level thermal DAG descriptors while
+preserving valid exported examples. The original archives remain unchanged.
+Source-derived natural-domain reductions give **169→147 orbit residuals**,
+**23→15 local topology rows (17→15 helpers)** and **144→134 memory rows**.
+Their complete rewritten production interfaces and operation ledgers remain
+next work. The reports preserve finite-horizon/spatial and static-representation
+scope; neither their counts nor the repairs change the87-operation bound.
+
+The [preceding archive review](Papers/research-wip/native-stream-queue/incoming_substrate_review_6914ccca6.md)
 checks the van Kampen, three-Heisenberg-phase and infinite-quantum-run reports
 delivered at6914ccca6. It reproduces two van Kampen input-validation defects
 and a mutable Heisenberg-constructor defect; tested repairs are applied to
