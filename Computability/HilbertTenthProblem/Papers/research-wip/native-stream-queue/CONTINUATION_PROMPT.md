@@ -16,22 +16,28 @@
 > Both ratios, packed bounds and the full strong equation remain paid.
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
-> The [exact asymmetric grouping search](complete75_asymmetric_factor_partitions.md)
-> adds **91/degree104,93/degree72 and95/degree64**, all with19 positive
-> witnesses. It exhausts normalized and ordinary unit bases plus the full
-> ordinary strong-comparison base:9,157 partitions and46,434 SOS/anchor
-> choices. Degrees are exact, and each base preserves its full supplied
-> positive zero set. These are finite-family optima, not unrestricted
-> arithmetic or universal degree lower bounds.
+> The [asymmetric linear-input and positive-gap search](complete75_asymmetric_linear_gap_tradeoffs.md)
+> extends X=wq to ten more factor/comparison bases and eleven frozen direct
+> schedules. Its union with the [three-base grouping family](complete75_asymmetric_factor_partitions.md)
+> has the exact operation/degree frontier **87/169,88/125,89/113,90/109,
+> 91/104,92/92,93/72,94/62,95/60,96/50,97/48,98/44**, with19 positive
+> witnesses. The proof establishes computed auxiliary positivity before
+> using its Pell index and restores w_old=w_new/q² as a positive integer.
+> Each direct scale transfer is a full positive-zero bijection with its
+> own frozen parent; every grouping preserves its fixed base's positive
+> zeros. The ten-base search exhausts20,474 partitions and102,902
+> SOS/anchor choices. These are exact finite-family degrees and optima,
+> not unrestricted arithmetic or universal-degree lower bounds.
 >
-> Next bounded work: transfer X=wq to the separately guarded linear-input-
-> modulus and positive auxiliary-gap families, retaining their own positivity
-> proofs; those circuits have not been included in the new three-base search.
-> Rebuild the Tseytin factor-partition family from399, rechecking the ordinary
-> strong alternative after computed-field elimination. The425 partition
-> certificate does not automatically certify that newer source. Keep seeking
-> operation savings in other universal substrates; neither this batch nor its
-> finite grouping minima establish global optimality.
+> Next bounded work: extend beyond the120 zero-a/sorted-copy digit family
+> to other tile orders, shared linear forms and universal substrates. Each
+> new encoding needs its sparse query, program recipe, wrong-power residues
+> and input-height proof rechecked. Transport factor families only after the
+> complete source is independently reviewed. Any weakening of
+> Y=sq³ also needs the actual decoder's population threshold and the initial
+> index-wrap proof; smaller formal degrees alone do not certify a compiler.
+> Continue exploring other universal substrates; these finite families do
+> not establish a global optimum or finish the open research goal.
 >
 > The latest [product-scale group compiler](group_projective_product_radix_scale.md)
 > saves one multiplication by using q=32BP^a to type both history radices,
@@ -265,39 +271,59 @@
 > lower bounds. Across strong/scale bases, the accepted outer relation is
 > preserved by explicit scale maps and canonical private strong extensions.
 >
-> The [current Tseytin construction](tseytin_adjacent_coefficients399.md) gives
-> **385 certificate /399=186M+213A operations**, five comparisons,
+> The [permuted-digit Tseytin construction](tseytin_permuted_digits387.md) gives
+> **373 certificate /387=179M+208A operations**, five comparisons,
 > 62 positive witnesses, one fixed positive program parameter, ordinary
 > positive input, and degree at most4712. It uses the actual fixed C2
-> semigroup with five generators and nine relations. The
-> [425 baseline](tseytin_universal425.md) pays the52-operation exponent
-> relation and ten-gate query loader; its exact parity residues justify
-> merging the exponent and word unit products. Then
-> [shared repunits](tseytin_repunit_sharing418.md) save seven operations,
-> [recovered endpoint bounds](tseytin_free_height415.md) save three
-> additions, and the [product scale](tseytin_product_scale412.md) saves
-> three more multiplications. The native scale16B*P^34 types both history
-> radices; fixed top tags2,1 recover the same lower lanes. The valid query's
-> bounded zero runs recover the initial bound, while paid transports
-> recover terminal bounds.
+> semigroup with five generators and nine relations. Assign a,b,c,d,e,#
+> the digits0,3,1,2,4,5 and sort copy tiles by descending digit. The
+> [zero-a388 step](tseytin_zero_a388.md) makes the shared aaa offset
+> vanish and computes copy offsets with four paid-prefix additions.
+> The final permutation makes one common offset1 and pairs commuting-rule
+> corrections, saving one further multiplication after its full correction
+> cost. The query and program numeral are recompiled; binary zero runs
+> have length at most10, within the16-bit margin, and both wrong-power
+> residues stay nonzero. Native pretyping precedes height recovery and
+> chronological word extraction. Recoded histories and fresh native witnesses
+> preserve accepted inputs; no same-tuple identity across encodings is claimed.
 >
-> The [computed-field and factored-index step](tseytin_computed_fields401.md)
-> then saves11 operations and three witnesses. Its strict bound X=q(S+beta)
-> with r=(q−1)S is sufficient for an explicit local rank/sign/power proof;
-> the old positive bound gap is restored after exponent typing. It gives a
-> bijection to the parent's checksum-one slice, with positive normalization
-> of the other branch. Finally,399 reuses two paid selector sums in
-> 316a+317b=317(a+b)−a, preserving the full401 polynomial on identical
-> coordinates. Keeping power units separate gives401 with degree at most4752.
-> The merged and separate SOS bounds are9396 and9288 at the same respective
-> operation counts. All changes retain the literal program/input recipe.
+> The [387 factor-partition family](tseytin_permuted_factor_partitions.md)
+> gives the operation/degree-bound frontier **387/4712,388/4132,390/2900,
+> 392/2210,394/1664**, with62 witnesses throughout. Both strong bases are
+> rebuilt from the complete source. The ordinary proof uses pretyping
+> implicit fields and X>r, then restores only five private coordinates.
+> Every factor is+1 on valid recompiled program slices, so all groupings
+> preserve the full positive zero set within each base. Across strong bases,
+> keep existential equivalence with fresh private extensions. These are
+> exact finite optima of propagated bounds, not exact expanded universal
+> degrees or unrestricted lower bounds.
 >
-> The [exact factor-partition search on425](tseytin_universal_factor_partitions.md)
-> independently gives425/5868,426/5140,428/3578,430/2720 and432/2012,
-> with65 witnesses. It searches normalized and ordinary strong bases with
-> the52-operation exponent filter retained; these are exact finite minima
-> of proved degree bounds, not exact degrees or unrestricted lower bounds.
-> Its grouping/source family is frozen at425 rather than the smaller399.
+> The [120-permutation search](tseytin_zero_a_permutation_search.md)
+> keeps a=0, permutes the other five digits and sorts copy tiles by digit.
+> It emits every complete circuit within one explicit shared-offset and
+> correction-group architecture. Its exact minimum is387, attained by16
+> permutations. The proof and literal source counts agree for all120;
+> loader residues and the zero-run bound are checked for every encoding.
+> This is a finite architecture optimum, not an unrestricted circuit bound.
+>
+> The preceding [388 partition family](tseytin_zero_a_factor_partitions.md)
+> runs388/4712 through395/1664; the [399 family](tseytin_computed_factor_partitions.md)
+> runs399/4712 through406/1664 on its earlier encoding. The
+> [paid-prefix395 step](tseytin_copy_prefix395.md) saves four
+> multiplications by a whole-polynomial identity; the
+> [zero-delimiter394 alternative](tseytin_zero_delimiter394.md)
+> recodes only # and saves one further addition. The387 separate-power
+> form costs389 with degree bound4752; its merged and separate SOS forms
+> have bounds9396 and9288 at their respective operation counts.
+> The [425 baseline](tseytin_universal425.md) pays the52-operation
+> exponent relation and ten-gate query loader. Intermediate savings include
+> [shared repunits](tseytin_repunit_sharing418.md),
+> [recovered endpoint bounds](tseytin_free_height415.md), the
+> [product scale](tseytin_product_scale412.md),
+> [computed fields and the factored index](tseytin_computed_fields401.md),
+> and [adjacent update coefficients](tseytin_adjacent_coefficients399.md).
+> The older [425 partition family](tseytin_universal_factor_partitions.md)
+> remains frozen at425/5868 through432/2012, with65 witnesses.
 >
 > Effective group embedding and the primary Tseytin reduction compile
 > every c.e. positive set into one program numeral, with no alphabet-size

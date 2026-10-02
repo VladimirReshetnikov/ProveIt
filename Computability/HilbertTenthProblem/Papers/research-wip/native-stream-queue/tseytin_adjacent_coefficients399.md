@@ -1,5 +1,10 @@
 # Two paid selector sums give a399-operation Tseytin polynomial
 
+> The later [digit-permutation construction](tseytin_permuted_digits387.md)
+> reaches387 operations with62 witnesses and degree at most4712.
+> It recompiles program numerals and histories. This note retains the
+> distinct source and precise equivalence claim of its own stage.
+
 The [literal source](tseytin_adjacent_coefficients399.py) removes two
 multiplications from the [computed-field401 compiler](tseytin_computed_fields401.md).
 The complete universal polynomial costs **399=186M+213A**, with385

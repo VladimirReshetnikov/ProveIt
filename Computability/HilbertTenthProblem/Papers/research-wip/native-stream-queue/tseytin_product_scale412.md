@@ -1,8 +1,10 @@
 # A product scale gives a412-operation Tseytin universal polynomial
 
-> The [current coefficient-sharing successor](tseytin_adjacent_coefficients399.md)
-> gives399 operations,62 witnesses and degree at most4712. The source
-> and transfer proof below remain the reproducible preceding stage.
+> The [reviewed digit-permutation successor](tseytin_permuted_digits387.md)
+> gives387 operations,62 witnesses and degree at most4712; its
+> [factor family](tseytin_permuted_factor_partitions.md) reaches394/1664.
+> The program recipe and histories are recoded in the successor. The
+> source, encoding and transfer proof below remain this frozen stage.
 
 The [source](tseytin_product_scale412.py) removes three multiplications
 from the [free-height415 compiler](tseytin_free_height415.md). The complete

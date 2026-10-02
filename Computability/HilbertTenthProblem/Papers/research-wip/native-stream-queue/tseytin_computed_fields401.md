@@ -1,8 +1,10 @@
 # Computed truth fields and a factored native bound give401 operations
 
-> The [current coefficient-sharing successor](tseytin_adjacent_coefficients399.md)
-> gives399 operations,62 witnesses and degree at most4712. The source
-> and transfer proof below remain the reproducible preceding stage.
+> The [reviewed digit-permutation successor](tseytin_permuted_digits387.md)
+> gives387 operations,62 witnesses and degree at most4712; its
+> [factor family](tseytin_permuted_factor_partitions.md) reaches394/1664.
+> The program recipe and histories are recoded in the successor. The
+> source, encoding and transfer proof below remain this frozen stage.
 
 The [literal source](tseytin_computed_fields401.py) reduces the complete
 [product-scale412 compiler](tseytin_product_scale412.md) to

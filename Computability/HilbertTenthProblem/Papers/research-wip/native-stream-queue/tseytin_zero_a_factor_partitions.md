@@ -417,4 +417,3 @@ Root separately read the complete proof and source, passed fresh replay
 winners with an independent scalar executor. No findings; the canonical
 388 dependency and all claimed semantic scopes were checked. These finite
 audits do not materialize complete native Pell zeros.
-

@@ -1,11 +1,12 @@
 # A complete 425-operation universal equation with a fused query endpoint
 
-> The [current successor](tseytin_adjacent_coefficients399.md) gives399
-> operations,62 witnesses and degree at most4712. Repunit sharing, recovered
-> endpoint bounds, the product scale and computed native fields are intermediate
-> savings; the source and proof below remain the frozen425 stage.
-> The [factor-partition family](tseytin_universal_factor_partitions.md)
-> independently reaches432/degree-at-most2012 from the frozen425 source.
+> The [reviewed digit-permutation successor](tseytin_permuted_digits387.md)
+> gives387 operations,62 witnesses and degree at most4712; its
+> [factor family](tseytin_permuted_factor_partitions.md) reaches394/1664.
+> The program recipe and histories are recoded in the successor. The
+> source, encoding and transfer proof below remain this frozen stage.
+> Its [frozen425 factor family](tseytin_universal_factor_partitions.md)
+> separately remains432 operations with degree bound2012.
 
 The [literal source](tseytin_universal425.py) is a fixed universal integer
 polynomial with **425=199M+226A operations**,405 certificate gates,

@@ -1,5 +1,10 @@
 # A zero delimiter gives394 universal polynomial operations
 
+> The later [digit-permutation construction](tseytin_permuted_digits387.md)
+> reaches387 operations with62 witnesses and degree at most4712.
+> It recompiles program numerals and histories. This note retains the
+> distinct source and precise equivalence claim of its own stage.
+
 The [source](tseytin_zero_delimiter394.py) changes the delimiter's digit
 from6 to0 in the [paid-prefix395 compiler](tseytin_copy_prefix395.md).
 It saves one addition, giving **394=182M+212A**,380 certificate gates,

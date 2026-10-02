@@ -1,5 +1,10 @@
 # Paid copy-selector prefixes give395 universal operations
 
+> The later [digit-permutation construction](tseytin_permuted_digits387.md)
+> reaches387 operations with62 witnesses and degree at most4712.
+> It recompiles program numerals and histories. This note retains the
+> distinct source and precise equivalence claim of its own stage.
+
 The [literal source](tseytin_copy_prefix395.py) saves four multiplications
 in the [399-operation compiler](tseytin_adjacent_coefficients399.md),
 giving **395=182M+213A**,381 certificate operations, five comparisons,

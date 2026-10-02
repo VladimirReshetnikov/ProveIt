@@ -1,8 +1,9 @@
 # Asymmetric scales lower the complete87/88 degrees to169/125
 
-> The [exact grouping successor](complete75_asymmetric_factor_partitions.md)
-> adds91/degree104,93/degree72 and95/degree64 with the same19 witnesses.
-> The87/169 and88/125 endpoints below remain unchanged.
+> The [linear-input/gap and grouping extension](complete75_asymmetric_linear_gap_tradeoffs.md)
+> gives the combined exact frontier87/169,88/125,89/113,90/109,91/104,
+> 92/92,93/72,94/62,95/60,96/50,97/48,98/44, with19 witnesses.
+> The87/169 and88/125 endpoints and their proofs below remain unchanged.
 
 Change only `X=w*q^3` to **`X=w*q`**, keeping `Y=s*q^3`, in the
 [normalized87](complete75_normalized_strong87.md) and

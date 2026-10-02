@@ -1,5 +1,10 @@
 # Zero a and reversed copies give388 universal polynomial operations
 
+> The later [digit-permutation construction](tseytin_permuted_digits387.md)
+> reaches387 operations with62 witnesses and degree at most4712.
+> It recompiles program numerals and histories. This note retains the
+> distinct source and precise equivalence claim of its own stage.
+
 The [source](tseytin_zero_a388.py) changes the six digit codes and the
 order of the copy tiles in the [paid-prefix395 compiler](tseytin_copy_prefix395.md).
 It reaches **388=180M+208A**,374 certificate gates, five comparisons,
