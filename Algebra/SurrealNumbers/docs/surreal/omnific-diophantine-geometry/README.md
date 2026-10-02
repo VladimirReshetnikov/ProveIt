@@ -16,7 +16,7 @@ prefix `16-`), and one more dated 23 September 2026 (batch-33 manuscript 07, pla
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 228 pages
+article.pdf                        the compiled report, 229 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -1504,6 +1504,12 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   `ρ_n` decreasing to 0) of `Oz` and `Oz[i]`, algebraically independent over
   the compositum of two full Hahn fields; each has constant coefficient 1, as
   Proposition 4.5 requires (note after that proposition).
+- [`real-vector-space-structure`](../real-vector-space-structure/) (`rvs:`;
+  batch 73): its Theorem 18.5 (`rvs:thm:diagonal-derivation`) proves on all of
+  `No` that the strong R-linear derivations diagonal on monomials are exactly
+  the `D_d`, `ω^γ ↦ d(γ)ω^γ` with `d` additive, the class form of (7.1); the
+  converse is new there (note after Lemma 7.1). Its Euler operator `𝔇` is
+  `∂_λ` of (16.1) with `λ = −id`.
 
 ## Build and reproduce
 
@@ -1516,7 +1522,7 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The current build gives 228 pages with no errors, warnings, undefined
+The current build gives 229 pages with no errors, warnings, undefined
 references, multiply defined labels or overfull boxes. The batch-32
 cross-report notes (after Theorem 2.7 and (3.3), after Question 21.10 and in the
 non-claim on polynomial lifting) are unnumbered and changed no label number
@@ -1529,7 +1535,8 @@ and after the paragraph following Example 19.5) did not change the page count (2
 and change no label number (all 553 compared against a build of the
 committed text). The batch-35 note on the independent-copies report (after
 Proposition 4.5) likewise leaves 227 pages and all 553 label numbers
-unchanged. The text before
+unchanged. The batch-73 note after Lemma 7.1 leaves the committed text's 229
+pages and all 553 label and 65 citation numbers unchanged. The text before
 source C17 was integrated built to 202 pages with the same zero counts, and every one of
 its 942 `.aux` label entries has the same number in the present build. The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16
