@@ -1,8 +1,8 @@
 # Aligned Fragments and Constrained Crossover
 
-**Undecidability, exact generation depth, and rational growth of context-free recombination closures; with Part II, PSPACE-complete finite stabilization of regular seeds, Part III, decidable regularity and exact stabilization of crossover closures, Part IV, quadratic finite rank, and Part V, rational rank slopes**
+**Undecidability, exact generation depth, and rational growth of context-free recombination closures; with Part II, PSPACE-complete finite stabilization of regular seeds, Part III, decidable regularity and exact stabilization of crossover closures, Part IV, quadratic finite rank, Part V, rational rank slopes, and Part VI, finite crossover stabilization for deterministic automata**
 
-This is a research report in five Parts, built from five manuscripts.
+This is a research report in six Parts, built from six manuscripts.
 Part I (29 September 2026) answers a question that Charles E. Hughes left
 open in arXiv:2608.27755v1: the complexity of deciding `L ⊗_c L = L` for a
 context-free language `L`, where `⊗_c` is constrained crossover (see "Which
@@ -17,16 +17,20 @@ recognized by an `s`-state NFA is quadratic, `(s−3)² ≤ F(s) ≤ (2s+5)²` f
 V (1 October 2026, batch 73) answers Part II's Question 24.3: on every live
 residue the largest rank of a length-`n` hull word is `σ_r n + O(1)` with a
 rational, effectively computable slope `σ_r`; it also lowers the finite-rank
-bound to `2(s−1)² + 3`, so `(s−3)² ≤ F(s) ≤ 2(s−1)² + 3`. All five are
-AI-assisted research drafts. The title pages and PDF metadata of
+bound to `2(s−1)² + 3`, so `(s−3)² ≤ F(s) ≤ 2(s−1)² + 3`. Part VI (1
+October 2026, batch 73) answers Part II's Question 24.1 and Part IV's
+Question 53.2: finite stabilization of an explicit complete binary DFA is
+coNP-complete, and the largest finite rank `F_DFA(s)` of an `s`-state
+complete binary DFA satisfies `(s−7)² + 2 ≤ F_DFA(s) ≤ s² + 3` for `s ≥ 8`,
+so `F_DFA(s)/s² → 1`. All six are AI-assisted research drafts. The title pages and PDF metadata of
 Parts I-III name ChatGPT as the drafting assistant and Vladimir Reshetnikov
 as the person they were prepared for (Part I: "Research draft prepared with
 ChatGPT for Vladimir Reshetnikov"; Part II the same; Part III "Research
 manuscript prepared with ChatGPT for Vladimir Reshetnikov"); the title
-pages and metadata of Parts IV and V read "Research note prepared with
+pages and metadata of Parts IV-VI read "Research note prepared with
 OpenAI for Vladimir Reshetnikov". That wording
 stays on Part I's title page and in the provenance records (here and the
-opening sections of Parts II-V) only.
+opening sections of Parts II-VI) only.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -35,13 +39,15 @@ opening sections of Parts II-V) only.
 | 03 | batch 66, manuscript 03 | `ProveIt_Crossover_Classification` (*Decidable Regularity and Exact Stabilization of Crossover Closures: arithmetic invariants, sparse-marker trichotomies, and immediate loss of context-freeness*; arrived in `9ad899cbe`; 23-page US-letter PDF) | `b8b0fa218` | `4fee1cd07` | Part III: Sections 29-45 |
 | 04 | batch 71, manuscript 01 | `quadratic-finite-rank-package` (inner directory `quadratic-finite-rank`; *Quadratic Finite Rank for Constrained Crossover*; arrived in `aee32ad45`; 8-page US-letter PDF) | `1bd730779` | `427bca743` | Part IV: Sections 46-54 |
 | 05 | batch 73, manuscript 33 | `rational-rank-slopes-package` (inner directory `rational-rank-slopes`; *Rational Rank Slopes for Constrained Crossover*; arrived in `f8c3a392a`; 11-page US-letter PDF) | `1bd730779` | `5e4f1263c` | Part V: Sections 55-65 |
+| 06 | batch 73, manuscript 29 | `dfa-crossover-package` (inner directory `dfa-crossover`; *Finite Crossover Stabilization for Deterministic Automata*, revised edition; arrived in `f8c3a392a`; 12-page US-letter PDF) | `1bd730779` | `26abf259b` | Part VI: Sections 66-74 |
 
 The pins are ProveIt commits `9b24a3a8d545af9624f6ac455f5b548be62818b6`
 (source 01, recorded in its Section 1.1 and in `provenance.md`),
 `b8b0fa2184a044d46ce9ed0f25f88d7bb60fa042` (sources 02 and 03, recorded in
 Sections 14.1 and 30.1 and in their audit notes) and
-`1bd730779e8bc44c8976dcd9f38cad86a0d21c26` (sources 04 and 05, recorded in
-their bibliographies and delivery READMEs, and in Sections 46.1 and 55.1). At `b8b0fa218` Part
+`1bd730779e8bc44c8976dcd9f38cad86a0d21c26` (sources 04-06, recorded in
+their bibliographies and delivery READMEs, and in Sections 46.1, 55.1 and
+66.1). At `b8b0fa218` Part
 I's `article.tex` had the blob `eb4f427f`, which is also the blob at the
 placement commit `4fee1cd07`, so everything the two batch-66 manuscripts
 say about "the inspected report" refers to Part I as printed. They were
@@ -52,7 +58,16 @@ report" and "Part II" are Parts I-III and Part II as printed here. Source 05
 has the same pin and therefore reads Parts I-III the same way; it links lines
 3109-3120 of that blob, which are exactly Question 24.3 and its comment, and
 it knew Part IV only as the separate manuscript it calls "the companion
-note".
+note". Source 06 has the same pin and links lines 3079-3090 of the same
+blob: Question 24.1 (lines 3080-3083) and the comment after it; it knew
+Parts IV and V only as separate manuscripts. **Superseded and not shipped:**
+batch-73 manuscript 32, `dfa-crossover-package (1).zip`, the earlier
+10-page edition of source 06 (same pin, also arrived in `f8c3a392a`). It
+lacks source 06's Section 7 (the bound `s² + 3`, with Lemmas 73.2-73.3),
+takes the upper bound `2(s−1)² + 3` from source 05 and so concludes only
+`F_DFA(s) = Θ(s²)`; its nine support files are byte-identical to source
+06's. Nothing of it is printed or shipped; it survives in the arrival
+commit, and Section 66.1 describes it.
 
 **Status.** AI-assisted and unrefereed. **Not formalized**: no statement of
 any Part has a Lean or Rocq proof, and none of the manuscripts claims one.
@@ -63,11 +78,11 @@ Lean and Rocq developments; that placement gives it no formal status (see
 
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf        the compiled report, 104 US-letter pages (unnumbered title page, contents pp. 1-4,
-                   Part I Sections 1-12 pp. 5-27, Part II Sections 13-28 pp. 28-51,
-                   Part III Sections 29-45 pp. 52-75, Part IV Sections 46-54 pp. 76-85,
-                   Part V Sections 55-65 pp. 86-98,
-                   Part I's Appendices A-D pp. 99-102, references pp. 102-103)
+article.pdf        the compiled report, 121 US-letter pages (unnumbered title page, contents pp. 1-4,
+                   Part I Sections 1-12 pp. 5-28, Part II Sections 13-28 pp. 29-52,
+                   Part III Sections 29-45 pp. 53-76, Part IV Sections 46-54 pp. 77-87,
+                   Part V Sections 55-65 pp. 88-100, Part VI Sections 66-74 pp. 101-115,
+                   Part I's Appendices A-D pp. 116-119, references pp. 119-120)
 README.md          this guide
 provenance.md      Part I: the manuscript's source record and bounded novelty audit, as delivered
 proof-audit.md     Part I: the manuscript's author-side proof and edge-case audit, as delivered
@@ -88,6 +103,11 @@ code/04-quadratic-finite-rank-build.sh      Part IV: the delivered two-pass pdfL
 code/05-rational-slopes-verify_greedy.py    Part V: literal seed-partition oracle against the subset-reset parser (standard library; prints JSON)
 code/05-rational-slopes-check_boundaries.py Part V: checker of the two boundary examples of Section 64.1 (standard library; prints JSON)
 code/05-rational-slopes-build.sh            Part V: the delivered two-pass pdfLaTeX build script
+code/06-dfa-crossover-check_stripes_exhaustive.py  Part VI: safe core against stripe criterion, all complete binary DFAs on 1-3 states
+code/06-dfa-crossover-check_stripes_random.py      Part VI: the same on 1,519 seeded random complete binary DFAs on 1-8 states
+code/06-dfa-crossover-check_rank_family.py         Part VI: rank witnesses of the deterministic gate family, literal seed checks
+code/06-dfa-crossover-check_gate_completion.py     Part VI: independent gate-completion and witness checks
+code/06-dfa-crossover-build.sh                     Part VI: the delivered two-pass pdfLaTeX build script
 data/verification.json   Part I: the delivered receipt, PASS, 1,766,639 checks
 data/verification.txt    Part I: console output of the delivered run
 data/02-pspace-stabilization-verification.json  Part II: the delivered receipt, PASS (Python 3.13.5)
@@ -105,7 +125,10 @@ data/04-quadratic-finite-rank-verification.json     Part IV: the delivered recor
 data/05-rational-slopes-verification.json           Part V: the delivered parser record, PASS (2,604 automata,
                                                     14,407 nonempty slices, 309,574 rank comparisons; seed 20261001)
 data/05-rational-slopes-boundary-verification.json  Part V: the delivered record of the two boundary examples
-code/06-dfa-crossover-*, data/06-dfa-crossover-*   5 + 4 files placed in 26abf259b for Part VI, not yet written in
+data/06-dfa-crossover-stripes-exhaustive.json      Part VI: PASS, 2 + 64 + 5,832 = 5,898 DFAs, 26,881 live residues
+data/06-dfa-crossover-stripes-random.txt           Part VI: one line, 1,519 random DFAs passed
+data/06-dfa-crossover-rank-family.json             Part VI: PASS, 24 path witnesses (m = 2..25, top rank 578), 14,308 seed checks
+data/06-dfa-crossover-gate-completion.json         Part VI: PASS, 1,829 gate-state completions, 19 witnesses (m = 2..20)
 code/07-sharp-constant-*, data/07-sharp-constant-* 22 + 23 files placed in 5e4f1263c for Part VII, not yet written in
 ```
 
@@ -142,12 +165,20 @@ deliveries. Delivery names and shipped paths:
   `boundary-verification.json` -> `data/05-rational-slopes-*`. The package had
   no audit or provenance notes; its checksum list `SHA256SUMS` (8 entries, all
   verified at placement) was retired by repository policy.
-- **Not shipped**, for all five: the delivered manuscript (`article.tex`, for
-  Part IV `quadratic-finite-rank.tex`, for Part V `rational-rank-slopes.tex`;
-  printed in the report), its PDF (this directory's PDF is a build of the
-  written `article.tex`) and `README.md` (replaced by this file). They survive
-  in the arrival commits `ae28ea2db`, `9ad899cbe`, `aee32ad45` and
-  `f8c3a392a`.
+- **Part VI:** `check_stripes_exhaustive.py`, `check_stripes_random.py`,
+  `check_rank_family.py`, `check_gate_completion.py` and `build.sh` ->
+  `code/06-dfa-crossover-*`; `stripes-exhaustive.json`, `stripes-random.txt`,
+  `rank-family.json`, `gate-completion.json` -> `data/06-dfa-crossover-*`.
+  The package had no audit or provenance notes; its revision note
+  `REVISION.md` is not shipped (its content is in Section 66.1 and above),
+  and its checksum list `SHA256SUMS` (13 entries, all verified at placement)
+  was retired by repository policy.
+- **Not shipped**, for all six: the delivered manuscript (`article.tex`, for
+  Part IV `quadratic-finite-rank.tex`, for Part V `rational-rank-slopes.tex`,
+  for Part VI `dfa-crossover-stabilization.tex`; printed in the report), its
+  PDF (this directory's PDF is a build of the written `article.tex`) and
+  `README.md` (replaced by this file). They survive in the arrival commits
+  `ae28ea2db`, `9ad899cbe`, `aee32ad45` and `f8c3a392a`.
 
 Delivered files whose text still uses delivery names or describes the
 package rather than this report:
@@ -217,11 +248,22 @@ package rather than this report:
   printed as Part V and not shipped) with output in `build/`, and copies the
   PDF beside itself; there it would fail. Both checkers use `assert` for their
   comparisons.
+- Part VI's Section 74 describes its four checkers and their outputs by
+  their delivery names and says to run them without `-O`; a
+  `[write, batch 73]` note there gives the shipped paths. Its delivered
+  README's rerun recipe (`python3 check_... > ...-new.json; diff -u ...`) is
+  written for the delivered layout. `code/06-dfa-crossover-build.sh` changes
+  to its own directory, runs `pdflatex` twice on
+  `dfa-crossover-stabilization.tex` (the delivered manuscript, not shipped)
+  with output in `build/`, and copies the PDF beside itself; there it would
+  fail. `data/06-dfa-crossover-stripes-random.txt` contains an en dash
+  ("1–8 states"), as delivered.
 
 ## Labels
 
 Every label carries the prefix `ccc:`; Part II's carry `ccc:ps:`, Part
-III's `ccc:cl:`, Part IV's `ccc:qr:` and Part V's `ccc:rs:`. **295 labels in total** (pattern
+III's `ccc:cl:`, Part IV's `ccc:qr:`, Part V's `ccc:rs:` and Part VI's
+`ccc:dc:`. **332 labels in total** (pattern
 `\label(\[[^]]*\])?\{`, no `\label[...]` form occurs):
 
 - **Part I, 80.** The 76 labels of the batch-44 write, unchanged: none was
@@ -249,6 +291,11 @@ III's `ccc:cl:`, Part IV's `ccc:qr:` and Part V's `ccc:rs:`. **295 labels in tot
   (`sec:provenance`, `sec:source`, `sec:abstract`, `sec:notation`) and four
   new on the questions of its closing sentence, now Questions 65.1-65.4
   (`q:complexity`, `q:denominator`, `q:period`, `q:error`).
+- **Part VI, 37** (`ccc:dc:`): all 29 labels of batch-73 manuscript 29,
+  prefixed, every `\ref` and `\eqref` updated; four new sections as in
+  Part V and four new on the questions of its sentence of open refinements,
+  now Questions 74.1-74.4 (`q:exact`, `q:lower-order`, `q:family`,
+  `q:individual`).
 
 The raw manuscripts collided with each other (`app:audit`, `eq:hull`,
 `sec:examples`, `sec:hardness`, `sec:questions`) but not with Part I; the
@@ -262,7 +309,11 @@ removed no label, and a comparison of the `.aux` files of the committed and
 the new build shows all 262 earlier labels with the same numbers (those of
 Parts I and III fall one page later, because the contents grew by a page,
 those of Parts II and IV one or two pages, because of the dated notes, and
-the appendices fourteen pages later).
+the appendices fourteen pages later). The write of Part VI renamed and
+removed no label either; all 295 earlier labels keep their numbers (Part I's
+stay on their pages or fall one page later, those of Parts II-IV one or two
+pages, those of Part V two, because of the dated notes, and the appendices
+seventeen pages later).
 
 ## Which question of Hughes
 
@@ -473,6 +524,43 @@ period `t, p`, stable layers `S_{r,a}` and letters `C_{r,a}`, `M_L(n)`):
   comparisons of the parser with a literal seed-partition oracle; the two
   boundary examples with their seed slices and witnesses.
 
+**Part VI** (source 06), for complete DFAs `(Q, Σ, δ, q_in, F)`, with
+`F_DFA(s)` the largest finite `R(L)` over complete binary DFAs with at most
+`s` states:
+
+- **Decision complexity** (Theorem 67.1): deciding finite stabilization of an
+  explicit complete binary DFA is coNP-complete under polynomial-time
+  many-one reductions, for the parallel and the frozen-source clock;
+  nonstabilization is NP-complete; the coNP upper bound holds over every
+  explicit finite alphabet. This answers Part II's Question 24.1.
+- The upper bound: cyclic SCCs `H` with period `d_H` and cyclic classes
+  define at most `s` stripes `W(H, h)`; a stripe is wholly viable or not
+  (Lemma 69.1); internal edges are permitted (Lemma 69.2); one safe vertex
+  forces its stripe (Lemma 69.3); a live residue has a nonempty safe core iff
+  some viable stripe has no permitted exit from its SCC (Theorem 69.4);
+  hence a polynomial certificate of nonstabilization (Proposition 70.1).
+- The lower bound: Stockmeyer-Meyer prime-residue testers on unary cycles
+  behind a binary selector, with monochromatic branches `00`, `11`; the DFA
+  stabilizes iff the 3CNF formula is unsatisfiable (Lemma 71.1).
+- **Rank order for DFAs** (Theorem 67.2): for `m ≥ 2` a complete binary DFA
+  with one initial state and `m + 6` states has
+  `(m−1)² + 2 ≤ R(L^dfa_m) ≤ (m−1)² + 4` (gate lengths and a common
+  completion of length `(m−1)² + 1`, Lemma 72.1; Proposition 72.2), and every
+  finite-rank complete `s`-state DFA over any finite alphabet has
+  `R(L) ≤ s² + 3` (Theorem 73.1, via Lemma 73.2, actual letters lie in the
+  stable alphabets after `s` positions, and Lemma 73.3, the joint entry and
+  exit budget `h + β ≤ (s − c)d`); so `(s−7)² + 2 ≤ F_DFA(s) ≤ s² + 3` for
+  `s ≥ 8`, `F_DFA(s)/s² → 1`, the largest finite parallel index for complete
+  binary DFAs is `2 log₂ s + O(1)` and the frozen one is asymptotic to `s²`.
+  This answers Part IV's Question 53.2.
+- **Audit** (Section 74): the delivered records, PASS: the stripe criterion
+  against repeated-deletion safe cores on all 5,898 labelled complete binary
+  DFAs with fixed initial state on one to three states (26,881 live
+  residues) and on 1,519 seeded random ones on one to eight states (seed
+  153735); 24 path-based witnesses of the family for `2 ≤ m ≤ 25` (largest
+  rank 578) with 14,308 literal seed-membership tests; 1,829 gate-completion
+  cases for `2 ≤ m ≤ 60` and 19 witnesses for `m ≤ 20`.
+
 ## What is not claimed
 
 **Part I**, kept from the manuscript: an unrefereed draft, not a
@@ -506,7 +594,8 @@ lower bound to `(s−3)²` for NFAs, so the order is quadratic, while the
 constant and the DFA case stay open) or the residue-wise slopes (*batch
 73:* Part V determines them, and bounds the constant by two); the
 safe-core algorithm is polynomial only in the expanded period, not in the
-DFA; the four-letter delimiter reduction is credited to Part I's amplifier;
+DFA (*batch 73:* Part VI settles the DFA complexity, coNP-complete, and the
+DFA rank order); the four-letter delimiter reduction is credited to Part I's amplifier;
 the reference solver stores explicit graphs and is not an implementation of
 the polynomial-space bound; finite audits prove no universal statement and
 do not infer PSPACE-hardness.
@@ -535,7 +624,8 @@ report's, and related represented-interval crossover machinery is credited
 to Manzoni, Vanneschi and Mauri (2012); the two-cycle graph is classical
 (Wielandt, Neufeld); **the leading constant, the exact `F(s)` and the order
 for DFAs are not determined** (`liminf F(s)/s² ≥ 1`, `limsup ≤ 4`;
-Questions 53.1-53.2; *batch 73:* Part V lowers the `limsup` to at most 2);
+Questions 53.1-53.2; *batch 73:* Part V lowers the `limsup` to at most 2,
+and Part VI determines the order for complete DFAs);
 the construction is genuinely nondeterministic; the finite checks do not
 prove the all-`m` theorem, exhaust all `s`-state NFAs, prove the inherited
 upper bound, determine `F(s)` or verify novelty.
@@ -554,6 +644,23 @@ large); the two boundary examples rule out two transient-only shortcuts, not
 a state-count constant one; the finite checks do not prove the slope theorem,
 exhaust all NFAs or verify Schwarz's theorem, and test hull targets only (no
 systematic test of infinite-rank inputs or of the empty-word branch).
+
+**Part VI**, kept from batch-73 manuscript 29 and its delivery README:
+unrefereed, no Lean or other proof-assistant formalization; no global novelty
+or worldwide priority claim, and no comprehensive search for equivalent
+earlier crossover results; the rank clocks, periodic interiors,
+deterministic safe cores, CRT arithmetic and clause testers (Stockmeyer-Meyer),
+selector-to-cycle devices (Gawrychowski et al.) and the relation-power bound
+(Schwarz) are credited background; **the bound `s² + 3` is proved for
+complete DFAs only, not for NFAs** (its proof uses determinism); the lower
+witness is not asserted to attain the maximal rank of its language, whose
+exact rank is open (`(m−1)² + 2 ≤ R ≤ (m−1)² + 4`); state counts include the
+selector and the rejecting sink; the exact `F_DFA(s)`, the lower-order terms,
+and the complexity of the exact rank or least stabilization generation of one
+DFA are not determined (Questions 74.1-74.4); the finite tests do not prove
+the stripe lemmas, the complexity classification, every CRT reduction
+instance or the asymptotic rank bounds, and no finite test exercises
+`s² + 3`.
 
 ## Questions answered or re-scoped by the batch-66 Parts
 
@@ -619,20 +726,41 @@ article.
   `p(2^s − 1)` and its Question 65.3; neither is answered. Part V adds
   Questions 65.1-65.4 (complexity of the slope, denominators, distinguishing
   period, periodicity of the bounded error).
-- Part II's Question 24.1 (DFA decision complexity) is unaffected. For Part
-  IV's Question 53.2 (order for DFAs) the upper bound becomes `2(s−1)² + 3`
-  as well, since Corollary 64.2 holds for every NFA (note after the
-  question); the lower order for complete DFAs stays Part II's linear one.
-- Part I's conclusion, its Appendix A note (the appendices follow Part V
-  too) and Appendix D gain one dated note each. The title page gains none
-  (it is full).
+- Part II's **Question 24.1** ("Exact complexity for DFA input"): answered
+  by Part VI (Theorem 67.1): coNP-complete, for both clocks; with it the DFA
+  parts of Part I's Question 11.2 and Part III's Question 42.3 are settled
+  (42.3 keeps the gap between explicit automata and succinct ray inputs).
+  Notes after Part I's Corollary 7.4 and Question 11.2 and in its
+  conclusion, in Part II's opening, delivered status, comparison table
+  (Section 14.3), Section 21 ("no matching DFA lower bound"), after Question
+  24.1 and in its conclusion, in Part III after its complexity remark
+  (Section 39), after Question 42.3 and in its conclusion, and in Part IV's
+  opening, its "Not affected" item and after its remark on the DFA decision
+  question (Section 53) say so.
+- Part IV's **Question 53.2** ("Order for DFAs"): answered by Part VI
+  (Theorems 67.2 and 73.1): quadratic with leading constant one,
+  `(s−7)² + 2 ≤ F_DFA(s) ≤ s² + 3` for `s ≥ 8` (before: Part II's linear
+  lower bound; Part V had lowered the upper bound to `2(s−1)² + 3`, note after
+  the question). Notes after Question 53.2, after Questions 24.2 and 53.1 (the
+  NFA constant stays open) and after the comment on Part II's Theorem 22.1
+  say so.
+- Part II's **Question 24.5** (compressed periods and certificates): bears,
+  for DFAs, by the write's observation: stripes are polynomial-size names
+  and nonstabilization has a polynomial certificate, while a polynomial
+  certificate of stabilization would give NP = coNP. Not answered.
+- Part VI adds Questions 74.1-74.4 (exact `F_DFA(s)`, lower-order terms,
+  exact rank of its family, complexity for one DFA).
+- Part I's conclusion, its Appendix A note (the appendices follow Parts V
+  and VI too) and Appendix D gain one dated note each for each of Parts V and
+  VI (the Appendix A note is one sentence). The title page gains none (it is
+  full).
 
 ## Notation
 
 Article Section 1.5 has Part I's table (no symbol of manuscript 01 was
 renamed). Sections 13.3 and 29.3 have the tables for Parts II and III. Ten
 symbols of the batch-66 manuscripts were renamed, with no change of
-normalization (and one each of Parts IV and V):
+normalization (and one of Part IV, one of Part V and two of Part VI):
 
 - Part II: the coordinate hull `𝓗(L)` is printed as Part I's `Rec(L)`;
   the regular delimiter languages `G(K)`, `B(K)` of Section 20.3 as
@@ -658,6 +786,17 @@ normalization (and one each of Parts IV and V):
   of a phase word, not the rank `ρ_L`; its `H_{r,a_0}(m)` is a maximal rank,
   not Part IV's set `H_m`; its `L_3`, `L_4` are slices `L ∩ Σ^n`, not Part
   II's family `L_m`.
+- Part VI (Section 66.3 has its table): the deterministic gate language
+  `L_m` as `L^dfa_m` (Part II's `L_m` is the one-`1` family, Part IV's gate
+  language `L^gate_m`), and the initial state `r` of its gate automaton
+  (manuscript Section 6) as `q_in`, the manuscript's own name for an initial
+  state, because `r` is a residue. **Easy to misread, and kept as
+  delivered:** `C_{r,a}` is a stable alphabet but `C` in Section 73 an SCC;
+  `d` is an SCC period (Sections 69, 73), a number of selector bits
+  (Section 71) and the sink state (Section 72); its `t, p` in (88) are Part
+  II's `T_s, p_s`, but in Section 73 a Schwarz transient and enlarged period;
+  `κ_H` are cyclic classes, not Part V's relation-power index `κ`; `B`, `K`,
+  `D` are not Part II's `B_s`, `K_s`, `D_L(n)`.
 
 To watch: `⊗_c` is Hughes's constrained crossover (his `⊗_u` contains
 concatenation); `L^[k]` is the parallel iteration, whereas Hughes's iterated
@@ -691,7 +830,7 @@ being positions `i+1..j` in Part I's one-based letter count.
   counterpart here is the frozen-source iteration (Theorem 3.8). Hughes's
   singleton conjecture (that report's Question 21.1) stays open. Article
   Section 1.4 sets this out; that report carries a dated reciprocal remark
-  under its scope sentence. Parts II-V concern crossover only and use
+  under its scope sentence. Parts II-VI concern crossover only and use
   nothing from that report. A dated batch-66 note there (after its
   Corollary 4.3, commit `8140a0967`) extends that remark to Parts II and
   III, citing the `(2s+5)²` rank bound as "a quadratic bound"; it does not
@@ -699,7 +838,12 @@ being positions `i+1..j` in Part I's one-based letter count.
   for NFAs and changes nothing it says), and Part IV bears on nothing about
   insertion degrees, so no reciprocal note was added there in batch 71.
   The same holds for Part V (batch 73): its bound `2(s−1)² + 3` improves the
-  quadratic bound that note cites without making the note false.
+  quadratic bound that note cites without making the note false. That note
+  also says that Part II places DFA input in PSPACE "whose exact complexity
+  it leaves open"; this remains true of Part II, and Part VI (batch 73) now
+  settles the DFA complexity (coNP-complete). No note was added there in
+  this write; whether that dated note gains a further pointer is left to the
+  catalogue step.
 - No other report of the research-report or surreal collections treats
   crossover of languages or cites Hughes's preprint (searched: crossover,
   Hughes, 2608.27755; the other reports using the word "crossover" use it in
@@ -735,7 +879,14 @@ Part V needs, besides finite automata, Schwarz's index bound for powers of
 a binary relation and maximum cycle means of finite weighted graphs; no
 ProveIt Lean or Rocq file treats either (searched: "cycle mean", "relation
 power"; the Lean files naming Schwarz use the Cauchy-Schwarz inequality).
-**Not formalized:** every statement of all five Parts. No Lean build was
+Part VI needs strongly connected components and their periods, the
+Chinese remainder theorem, and the complexity classes NP and coNP with
+3SAT; ProveIt has no formal development of complexity classes or of
+reductions (`git grep` for coNP, 3SAT, NP-complete and Cook-Levin over the
+tracked Lean and Rocq files outside `lib/` finds only
+`plon_NP_complete` in `Logic/Modal/Coq/CorsiVF.v`, a frame-completeness
+theorem for a modal logic named NP, unrelated).
+**Not formalized:** every statement of all six Parts. No Lean build was
 run for this report.
 
 ## Building
@@ -746,7 +897,7 @@ In a scratch directory holding a copy of `article.tex`:
 
 The committed PDF was built this way with MiKTeX pdfLaTeX (packages include
 newtx, `shuffle`, fancyhdr, listings, tikz with the `automata` library,
-hyperref; no BibTeX step): 104 US-letter pages, 0 errors, 0 warnings, 0
+hyperref; no BibTeX step): 121 US-letter pages, 0 errors, 0 warnings, 0
 overfull or underfull boxes, no undefined or multiply-defined references or
 citations and no duplicate destinations. The title page is excluded from
 page anchors. All fonts are embedded; the two Type 3 fonts are the
@@ -754,8 +905,9 @@ page anchors. All fonts are embedded; the two Type 3 fonts are the
 `make pdf` or `make clean` (`code/Makefile`,
 `code/03-closure-classification-Makefile`),
 `code/02-pspace-stabilization-build.sh`,
-`code/04-quadratic-finite-rank-build.sh` or
-`code/05-rational-slopes-build.sh` in this directory: they would leave
+`code/04-quadratic-finite-rank-build.sh`,
+`code/05-rational-slopes-build.sh` or `code/06-dfa-crossover-build.sh` in
+this directory: they would leave
 auxiliary files here, or fail. GNU `make` is not installed on the reference
 machine anyway.
 
@@ -853,16 +1005,36 @@ endings (Windows standard output); compare after normalizing them, or as
 JSON. The records have no timing or version fields. Do not run
 `code/05-rational-slopes-build.sh` (see "Building").
 
+**Part VI:** the four checkers import nothing from the package, write no file
+and print their records to standard output:
+
+    py code/06-dfa-crossover-check_stripes_exhaustive.py > <scratch>/stripes-exhaustive-new.json
+    py code/06-dfa-crossover-check_rank_family.py > <scratch>/rank-family-new.json
+    py code/06-dfa-crossover-check_gate_completion.py > <scratch>/gate-completion-new.json
+    py code/06-dfa-crossover-check_stripes_random.py > <scratch>/stripes-random-new.txt
+
+(`python3` elsewhere; never `python -O`, the comparisons are `assert`s).
+When the batch was placed the first three ran on a copy with Python 3.14.4
+in 7, 8 and 11 seconds and printed the bytes of their shipped records apart
+from CRLF line endings (compare after normalizing them, or as JSON). The
+random checker takes about six minutes on that machine and prints its one
+line only at the end (the two eight-state cases alone take about 72 and 149
+seconds), so a run under a three-minute limit is not a hang; it was run in
+three parts with the same random stream, and all 1,519 automata passed. The
+delivered README's `diff -u` recipe reports spurious differences on Windows
+because of CRLF. Do not run `code/06-dfa-crossover-build.sh` (see
+"Building").
+
 ## Other discrepancies
 
 - The delivered PDFs were 23 pages each for Parts I-III, 8 pages for
-  Part IV, 11 for Part V; this build is 104, because the five are one document
+  Part IV, 11 for Part V and 12 for Part VI; this build is 121, because the six are one document
   with `[write]` text (Part I's Sections 1.4-1.5, its notes on the title
   page, in Sections 1.1, 2, 7, 10, 11 and 12 and in Appendices A and D;
-  Sections 13, 29, 46 and 55; notes in Parts II-V). The page size stays US letter. The
-  contents list Parts II-V by section only (`tocdepth` 1 from Part II on);
+  Sections 13, 29, 46, 55 and 66; notes in Parts II-VI). The page size stays US letter. The
+  contents list Parts II-VI by section only (`tocdepth` 1 from Part II on);
   Part I's appendices are listed under "Appendices to Part I" and are
-  printed after Part V.
+  printed after Part VI.
 - Part IV's bibliography cited this report as `ProveIt` (Part II, Question
   24.2, at the pin); those citations were replaced by internal references.
   Its `To` entry is the report's `To` (same paper; the manuscript adds the
@@ -928,5 +1100,24 @@ JSON. The records have no timing or version fields. Do not run
   `"finite_rank_upper_bound": 5` for it, an upper bound, not the value.
 - Part V's closing sentence of next questions is printed as Questions
   65.1-65.4, in the same order and words, with titles added by the write.
-- Batch-73 notes are dated 1 October 2026, the date of the manuscript and of
+- Part VI's delivered source lost a `\rm` in one display (the sum over cyclic
+  SCCs in Section 69, equation (91)): `\sum_{H\ {` and, on the next line,
+  `m cyclic}}`, so its PDF prints the subscript as "H mcyclic"; the write
+  prints `\sum_{H\ \mathrm{cyclic}}` and says so in a note.
+- Part VI's bibliography cited this report as `ProveIt` (Part II, Question
+  24.1, at the pin) and the manuscripts of Parts IV and V as `Quadratic` and
+  `Slopes`; all were replaced by internal references. Its `Schwarz` entry is
+  Part V's; `SM` (Stockmeyer-Meyer, STOC 1973) and `GLRSS` (Gawrychowski et
+  al., arXiv:1702.03961v5) were added in the report's style. No DOI or arXiv
+  version was checked online.
+- Part VI's macros `\NP` and `\coNP` were added, and `\Ldfa` for the renamed
+  language; its `lmodern` and `amssymb` packages are not loaded.
+- Part VI's sentence of open refinements is printed as Questions 74.1-74.4,
+  in the same order and words, with titles added by the write. Its gate
+  lemma (Lemma 72.1) keeps its proof, although its first two assertions are
+  Part IV's Lemmas 49.1-49.2 for a differently labelled gate; the note
+  before it says so.
+- Part VI's two lemmas on actual alphabets and on the joint entry and exit
+  budget (Lemmas 73.2 and 73.3) are printed once, here, with their proofs.
+- Batch-73 notes are dated 1 October 2026, the date of the manuscripts and of
   the write.

@@ -88,6 +88,10 @@
 % their opening sections); \waddsevthree prints a dated note.
 \newcommand{\wsevthree}{\textup{[write, batch~73]}}
 \newcommand{\waddsevthree}[1]{\textup{[}Added 1 October 2026, batch~73: #1\textup{]}}
+% [write, batch 73] macros of Part VI.
+\newcommand{\NP}{\mathsf{NP}}
+\newcommand{\coNP}{\mathsf{coNP}}
+\newcommand{\Ldfa}[1]{L^{\mathrm{dfa}}_{#1}}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
  breaklines=true,frame=single,rulecolor=\color{black!20},
  xleftmargin=4pt,xrightmargin=4pt}
@@ -1068,6 +1072,7 @@ every stabilizing $s$-state NFA language has rank at most $(2s+5)^2$
 (Corollary~\ref{ccc:ps:cor:cutoff}). The exact complexity for DFA input stays
 open. The EXPSPACE bound stated here remains true; Part~II is unrefereed and
 not formalized.}
+\waddsevthree{Part~VI settles the exact complexity for DFA input: finite stabilization of an explicit complete DFA is coNP-complete, already over a binary alphabet (Theorem~\ref{ccc:dc:thm:complexity}).}
 
 When limitedness holds, the least stabilization stage is also computable.
 Indeed, each finite iterate of a regular language is effectively regular by
@@ -1623,6 +1628,8 @@ and a safe-core criterion (Theorem~\ref{ccc:ps:thm:core}); the exact DFA
 complexity stays open (Question~\ref{ccc:ps:q:dfa}). Part~III's
 Theorem~\ref{ccc:cl:thm:complexity} gives coNP-completeness of a depth
 threshold for succinct ray inputs, a different input format.}
+\waddsevthree{Part~VI settles the exact complexity for DFA input: finite stabilization of an explicit complete DFA is coNP-complete, already over a binary alphabet (Theorem~\ref{ccc:dc:thm:complexity}); so for DFAs the PSPACE bound is not tight
+unless $\coNP=\PSPACE$. The question is now answered for both input types.}
 
 \begin{question}[Two-letter undecidability]
 Can Theorems~\ref{ccc:thm:cfgclosure} and~\ref{ccc:thm:eventual} be proved over a
@@ -1784,6 +1791,10 @@ equally unrefereed and unformalized.}
 nonstabilizing regular seed grows with a rational, computable slope, and
 lowers the quadratic rank bound to $2(s-1)^2+3$. It is equally unrefereed and
 unformalized.}
+\waddsevthree{Part~VI shows that finite stabilization of an explicit complete
+DFA is coNP-complete and that the largest finite rank of an $s$-state
+complete binary DFA is $s^2+O(s)$, with leading constant one. It is equally
+unrefereed and unformalized.}
 
 %% =====================================================================
 %% [write] Batch-66 addition 02: manuscript 01 of batch 66, "Finite
@@ -1809,7 +1820,8 @@ quadratically in the stabilizing case. It thereby answers the NFA half of
 Part~I's Question~\ref{ccc:q:regular} and improves the EXPSPACE bound of
 Corollary~\ref{ccc:cor:regularstability} to PSPACE; the exact complexity for
 DFA input stays open. Section~\ref{ccc:ps:sec:provenance} records the
-provenance and fixes the notation of the addition.}
+provenance and fixes the notation of the addition.
+\waddsevthree{the DFA complexity is coNP-complete (Part~VI).}}
 
 \section{\texorpdfstring{\wsix\ }{}Provenance and notation of Part~II}
 \label{ccc:ps:sec:provenance}
@@ -1879,6 +1891,10 @@ measured against a pinned repository revision.
 \waddsevone{the order of the optimal rank bound has since been settled for
 NFAs in Part~IV: it is quadratic (Theorem~\ref{ccc:qr:thm:main}); its
 constant, and the order for DFAs, are not.}
+\waddsevthree{Part~VI settles both DFA questions: the exact DFA complexity is
+coNP-complete (Theorem~\ref{ccc:dc:thm:complexity}), and the order for
+complete DFAs is quadratic with leading constant one
+(Theorem~\ref{ccc:dc:thm:rank}).}
 
 \subsection{Notation beside Part~I and Part~III}\label{ccc:ps:sec:notation}
 
@@ -2015,6 +2031,8 @@ Exact DFA complexity & Open in the report & Still not settled here\\
 \bottomrule
 \end{tabular}
 \end{center}
+\waddsevthree{The last row, and item~(4) of Theorem~\ref{ccc:ps:thm:main},
+which leaves the exact DFA complexity undetermined, are out of date. Part~VI settles the exact complexity for DFA input: finite stabilization of an explicit complete DFA is coNP-complete, already over a binary alphabet (Theorem~\ref{ccc:dc:thm:complexity}).}
 
 The article's mathematical claims are accompanied by proofs rather than an
 assertion that no equivalent theorem has ever appeared. The bounded source
@@ -2839,6 +2857,10 @@ periodic presentation}. Since $p$ can be exponentially large relative to
 the original state count, this is not a polynomial-time algorithm for
 arbitrary DFA input. The PSPACE upper bound still follows from
 Theorem~\ref{ccc:ps:thm:pspace-upper}; no matching DFA lower bound is claimed.
+\waddsevthree{Part~VI proves the problem coNP-complete for explicit complete
+DFAs (Theorem~\ref{ccc:dc:thm:complexity}), with a polynomial certificate of
+nonstabilization built from SCC stripes rather than from the expanded
+phase graph (Proposition~\ref{ccc:dc:prop:conp}).}
 
 \begin{example}[Why the deterministic argument cannot be used on NFAs]
 \label{ccc:ps:ex:nondeterministic}
@@ -2894,6 +2916,9 @@ constant is open), and the parallel index of order $\Theta(\log s)$ is
 $2\log_2s+O(1)$ (Section~\ref{ccc:qr:sec:upper}). The family $L_m$ above has
 a complete DFA; for DFAs the lower order in this report stays linear
 (Question~\ref{ccc:qr:q:dfa}).}
+\waddsevthree{Part~VI gives complete binary DFAs with $m+6$ states and
+finite maximal rank at least $(m-1)^2+2$ (Theorem~\ref{ccc:dc:thm:rank}), so
+the lower order for DFAs is quadratic as well, with leading constant one.}
 
 \subsection{A regular language with a repairable boundary}
 
@@ -3125,6 +3150,13 @@ subset branching once the phases are explicit. The remaining issue is
 whether the exponentially long unary phase structure can be manipulated
 more economically, or can encode a matching hard problem. An algorithm
 polynomial in $p$ does not answer this question.
+\waddsevthree{Answered in Part~VI (Theorem~\ref{ccc:dc:thm:complexity}):
+coNP-complete under polynomial-time many-one reductions, for both clocks;
+nonstabilization is NP-complete, and the coNP upper bound holds over every
+explicit finite alphabet. The exponentially long phase structure is avoided
+by naming SCC stripes, of which there are at most $s$
+(Theorem~\ref{ccc:dc:thm:stripe}); the hardness encodes 3SAT through
+Chinese-remainder length testers (Lemma~\ref{ccc:dc:lem:reduction}).}
 
 \begin{question}[The optimal finite rank bound]\label{ccc:ps:q:rank}
 Let $F(s)$ be the largest finite $R(L)$ among binary languages recognized
@@ -3154,6 +3186,9 @@ one above. The leading constant and the exact $F(s)$ stay open
 \waddsevthree{Part~V lowers the upper bound to $2(s-1)^2+3$
 (Corollary~\ref{ccc:rs:cor:upper}), so that $(s-3)^2\le F(s)\le2(s-1)^2+3$
 and the leading constant lies in $[1,2]$.}
+\waddsevthree{For complete DFAs Part~VI determines the order and the
+constant: $(s-7)^2+2\le F_{\rm DFA}(s)\le s^2+3$ for $s\ge8$
+(Theorem~\ref{ccc:dc:thm:rank}).}
 
 \begin{question}[Exact residue-wise rank slope]\label{ccc:ps:q:slope}
 On a bad residue, does $M_L(n)/n$ always have a limit, perhaps after
@@ -3197,6 +3232,13 @@ would need to establish universality in every live phase system, not
 merely exhibit a few successful runs. A negative certificate can already
 be represented by one forbidden interior word and periodic exterior
 padding, but that word may itself be exponentially long.
+\waddsevthree{For DFAs Part~VI gives polynomial-size data of this kind in one
+direction: the stripes $(H,h)$ of Section~\ref{ccc:dc:sec:stripes} have
+polynomial-size names, and nonstabilization has a polynomial certificate
+(Proposition~\ref{ccc:dc:prop:conp}). A polynomial certificate of
+stabilization for all DFAs would give $\NP=\coNP$, by
+Theorem~\ref{ccc:dc:thm:complexity}. This is the write's observation; the
+manuscript of Part~VI does not discuss this question.}
 
 \begin{question}[Context-free finite stabilization]\label{ccc:ps:q:cfg}
 \wsix\ This is Part~I's Question~\ref{ccc:q:arithmetical}, printed there:
@@ -3317,6 +3359,9 @@ remain.}
 rational and effectively computable (Part~V,
 Theorem~\ref{ccc:rs:thm:slope}), and the constant of the rank order is at
 most two (Corollary~\ref{ccc:rs:cor:upper}).}
+\waddsevthree{The exact DFA complexity is coNP-complete, and the rank order
+for complete DFAs is quadratic with constant one (Part~VI,
+Theorems~\ref{ccc:dc:thm:complexity} and~\ref{ccc:dc:thm:rank}).}
 
 \section{Proof and edge-case audit}\label{ccc:ps:app:audit}
 
@@ -4525,6 +4570,9 @@ conflict: Part~II decides whether stabilization happens at all for an
 explicit automaton, whereas Theorem~\ref{ccc:cl:thm:complexity} thresholds the
 exact depth for a succinct list of rays, whose periods can force
 exponentially large automata.
+\waddsevthree{Part~VI settles the exact complexity for DFA input: finite stabilization of an explicit complete DFA is coNP-complete, already over a binary alphabet (Theorem~\ref{ccc:dc:thm:complexity}). It is a coNP-completeness result too, but for
+another input and another problem: whether stabilization happens at all, for
+an explicit DFA, by a 3SAT reduction.}
 
 \section{Explicit examples and arbitrary finite depths}\label{ccc:cl:sec:examples}
 
@@ -4818,6 +4866,8 @@ upper bound (Theorem~\ref{ccc:ps:thm:pspace-upper}) and a safe-core criterion
 DFA complexity is open, and is Part~II's Question~\ref{ccc:ps:q:dfa}. What
 remains of this question is that DFA case and the gap between explicit
 automata and the succinct ray inputs of Theorem~\ref{ccc:cl:thm:complexity}.}
+\waddsevthree{Part~VI settles the exact complexity for DFA input: finite stabilization of an explicit complete DFA is coNP-complete, already over a binary alphabet (Theorem~\ref{ccc:dc:thm:complexity}). What remains is the gap between explicit
+automata and succinct ray inputs.}
 
 \begin{question}[Minimum regular representations and certificates]\label{ccc:cl:q:minimal}
 When a full closure is regular, how large must its minimal DFA be in
@@ -4907,6 +4957,7 @@ certificates.
 \wadd{Of these, the explicit-automata complexity has since been settled for
 NFA input in Part~II; see the note after
 Question~\ref{ccc:cl:q:explicit}.}
+\waddsevthree{And for DFA input in Part~VI (coNP-complete).}
 
 \section{Proof audit and boundary cases}\label{ccc:cl:app:audit}
 
@@ -5050,7 +5101,8 @@ replaces Part~II's linear lower bound $\lfloor(s-3)/2\rfloor$, and the upper
 bound is Part~II's (Corollary~\ref{ccc:ps:cor:cutoff}), imported, not
 reproved. The leading constant, the exact $F(s)$ and the order for DFAs stay
 open. Section~\ref{ccc:qr:sec:provenance} records the provenance and fixes
-the notation of the addition.}
+the notation of the addition.
+\waddsevthree{the order for DFAs is settled in Part~VI.}}
 
 \section{\texorpdfstring{\wsevone\ }{}Provenance and notation of Part~IV}
 \label{ccc:qr:sec:provenance}
@@ -5129,6 +5181,7 @@ report. No theorem was strengthened or weakened.
  order is open (Question~\ref{ccc:qr:q:dfa}). Part~II's
  Question~\ref{ccc:ps:q:dfa} on the decision complexity for DFA input, Part~I's
  questions and Part~III's questions are untouched.
+ \waddsevthree{Both DFA questions are answered in Part~VI.}
 \item \emph{Restated:} Proposition~\ref{ccc:qr:prop:clocks} is Part~I's rank
  calculus (Theorems~\ref{ccc:thm:contraction}, \ref{ccc:thm:generation}
  and~\ref{ccc:thm:frozen}, Corollary~\ref{ccc:cor:stages}) in the form of
@@ -5664,6 +5717,9 @@ What is the best leading constant, or the exact function $F(s)$?
 \waddsevthree{Part~V narrows the leading constant to $[1,2]$:
 $(s-3)^2\le F(s)\le2(s-1)^2+3$ for $s\ge4$
 (Corollary~\ref{ccc:rs:cor:upper}).}
+\waddsevthree{For complete DFAs, Part~VI proves leading constant one:
+$(s-7)^2+2\le F_{\rm DFA}(s)\le s^2+3$ (Theorem~\ref{ccc:dc:thm:rank}). Its
+proof of the upper bound uses determinism and does not apply to NFAs.}
 
 \begin{question}[Order for DFAs]\label{ccc:qr:q:dfa}
 What is the optimal finite-rank order for binary DFAs? The construction here
@@ -5678,6 +5734,12 @@ a complete DFA with at most $2m+3$ states, $m$ being that family's index)
 and $(2s+5)^2$ (every DFA is an NFA).
 \waddsevthree{Part~V lowers that upper bound to $2(s-1)^2+3$, for every NFA
 and so for every DFA (Corollary~\ref{ccc:rs:cor:upper}).}
+\waddsevthree{Answered in Part~VI: the order is quadratic with leading
+constant one, $(s-7)^2+2\le F_{\rm DFA}(s)\le s^2+3$ for $s\ge8$
+(Theorems~\ref{ccc:dc:thm:rank} and~\ref{ccc:dc:thm:leading-one}), by a
+deterministic variant of the gate with a selector and distinct letters on
+the two exits of $q_{m-1}$. Its exact value and lower-order terms are
+Questions~\ref{ccc:dc:q:exact} and~\ref{ccc:dc:q:lower-order}.}
 
 \begin{question}[Tightness of the transfer principle]\label{ccc:qr:q:transfer}
 How tightly can a general cofinite unary automaton's last missing length
@@ -5696,6 +5758,7 @@ construction; no statement of this report is formalized.
 The report's separate question about the exact decision complexity for DFA
 input also remains unaffected.
 \wsevone\ That is Part~II's Question~\ref{ccc:ps:q:dfa}.
+\waddsevthree{It is answered in Part~VI (Theorem~\ref{ccc:dc:thm:complexity}).}
 
 \section{Reproducible finite checks}\label{ccc:qr:sec:checks}
 
@@ -6401,6 +6464,713 @@ here as Part~V and is not shipped; it must not be run in \texttt{code/}.
 
 
 
+%% =====================================================================
+%% [write] Batch-73 addition 06: manuscript 29 of batch 73 (cluster X),
+%% "Finite Crossover Stabilization for Deterministic Automata", revised
+%% edition. Every label of this Part carries the prefix ccc:dc:
+%% (deterministic crossover).
+%% =====================================================================
+\clearpage
+\phantomsection\part*{Part VI.\quad Finite crossover stabilization for deterministic automata}
+\addcontentsline{toc}{part}{Part VI.\texorpdfstring{\quad}{ } Finite crossover stabilization for deterministic automata}
+
+\noindent\emph{\wsevthree\ Part~VI was added on 1 October 2026 in batch~73,
+from one manuscript written against Parts~I--III as printed above; it knew
+Parts~IV and~V only as separate manuscripts. It answers Part~II's
+Question~\ref{ccc:ps:q:dfa}: for an explicit complete binary DFA, finite
+stabilization is coNP-complete, under either clock. It also answers
+Part~IV's Question~\ref{ccc:qr:q:dfa}: the largest finite rank of a complete
+binary DFA with $s$ states satisfies $(s-7)^2+2\le F_{\rm DFA}(s)\le s^2+3$
+for $s\ge8$, so $F_{\rm DFA}(s)/s^2\to1$. Section~\ref{ccc:dc:sec:provenance}
+records the provenance and fixes the notation of the addition.}
+
+\section{\texorpdfstring{\wsevthree\ }{}Provenance and notation of Part~VI}
+\label{ccc:dc:sec:provenance}
+
+\subsection{One manuscript, one addition}\label{ccc:dc:sec:source}
+
+Part~VI is batch-73 manuscript~29, \emph{Finite Crossover Stabilization for
+Deterministic Automata}, dated 1 October 2026 and marked ``Revised edition
+with sharp leading rank constant'' (12 US-letter pages as delivered). It is
+an AI-assisted research note: its title page and PDF metadata read ``Research
+note prepared with OpenAI for Vladimir Reshetnikov'', quoted here and in the
+report's README only. It arrived as the archive
+\texttt{dfa-crossover-package.zip} (inner directory \texttt{dfa-crossover})
+in ProveIt commit \texttt{f8c3a392a} and was placed in commit
+\texttt{26abf259b}. It was written against ProveIt commit \texttt{1bd730779}
+(in full \nolinkurl{1bd730779e8bc44c8976dcd9f38cad86a0d21c26}), the pin of
+Parts~IV and~V as well, where this report's \texttt{article.tex} held
+Parts~I--III as printed above (blob \texttt{ff492c83}). The manuscript cites
+its pin through a link to lines 3079--3090 of that \texttt{article.tex};
+Question~\ref{ccc:ps:q:dfa} occupies lines 3080--3083 there, line 3079 is
+blank, and lines 3084--3090 are the comment after the question. It cites the manuscripts of Parts~IV and~V as
+companion notes.
+
+\paragraph{The earlier edition.} The same batch delivered an earlier edition
+of this manuscript, batch-73 manuscript~32 (archive
+\texttt{dfa-crossover-package~(1).zip}, 10 pages, also pinned at
+\texttt{1bd730779}). It lacks the manuscript's Section~7
+(Section~\ref{ccc:dc:sec:leading-one} here, with
+Theorem~\ref{ccc:dc:thm:leading-one} and
+Lemmas~\ref{ccc:dc:lem:early} and~\ref{ccc:dc:lem:budget}), takes its upper
+bound $2(s-1)^2+3$ from the manuscript of Part~V, and concludes only
+$F_{\rm DFA}(s)=\Theta(s^2)$, with ``the optimal leading constant between one
+and two'' among its open refinements; its abstract also says that cyclic
+SCCs ``split'' the viable-phase graph into stripes, which the revised edition
+corrects to ``organize the relevant cyclic part'' of it, since vertices over
+acyclic components lie in no stripe. Nothing of it is missing from the
+revised edition, and its nine support files are byte-identical to the
+revised edition's. It was superseded, is not printed and nothing of it is
+shipped; it survives in the arrival commit. The revision note
+\texttt{REVISION.md} of the revised edition records these changes and says
+that the four finite checkers and their results are unchanged.
+
+Its four checkers, their recorded outputs and its build script are shipped
+beside the files of Parts~I--V with the prefix
+\nolinkurl{06-dfa-crossover-}; its manuscript, delivery
+README, revision note and PDF are not shipped and survive in the arrival
+commit, and its checksum list \texttt{SHA256SUMS} (13 files, all verified at
+placement; the earlier edition's 12 likewise) was retired by the
+repository's policy. Section~\ref{ccc:dc:sec:checks} and the report's README
+list the shipped names. The package contained no audit or provenance notes.
+
+Every result, proof, table, remark, limitation and question of the
+manuscript is printed here, in its order. Its title page and abstract became
+this section; its Sections~1--8 are
+Sections~\ref{ccc:dc:sec:intro}--\ref{ccc:dc:sec:checks} (manuscript
+Section~$n$ is Section~$n+66$); it has no appendix. Its sentence of open
+refinements became
+Questions~\ref{ccc:dc:q:exact}--\ref{ccc:dc:q:individual}. Text marked
+\wsevthree{} was added when the manuscript was written into this report. No
+theorem was strengthened or weakened.
+
+\paragraph{What Part~VI adds, and what it repeats.}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \emph{Answered:} Part~II's Question~\ref{ccc:ps:q:dfa} (``What is the
+ exact complexity of deciding finite stabilization for complete DFAs over a
+ fixed binary alphabet?''): coNP-complete under polynomial-time many-one
+ reductions, for both clocks; nonstabilization is NP-complete; the coNP
+ upper bound holds over every explicit finite alphabet
+ (Theorem~\ref{ccc:dc:thm:complexity}). With it the DFA parts of Part~I's
+ Question~\ref{ccc:q:regular} and Part~III's
+ Question~\ref{ccc:cl:q:explicit} are settled. Part~IV's
+ Question~\ref{ccc:qr:q:dfa} (``What is the optimal finite-rank order for
+ binary DFAs?''): quadratic with leading constant one,
+ $(s-7)^2+2\le F_{\rm DFA}(s)\le s^2+3$ for $s\ge8$
+ (Theorems~\ref{ccc:dc:thm:rank} and~\ref{ccc:dc:thm:leading-one}).
+\item \emph{Sharpened:} for complete DFAs the largest finite parallel
+ stabilization index is $2\log_2s+O(1)$ and the frozen-source index is
+ asymptotic to $s^2$ (comment after the proof of
+ Theorem~\ref{ccc:dc:thm:rank}); before, the report had for DFAs Part~II's
+ order $\Theta(\log s)$ and a linear lower bound for the frozen index.
+\item \emph{New:} the SCC-stripe criterion for a nonempty safe core
+ (Lemmas~\ref{ccc:dc:lem:viability}--\ref{ccc:dc:lem:propagation},
+ Theorem~\ref{ccc:dc:thm:stripe}); the polynomial certificate for
+ nonstabilization (Proposition~\ref{ccc:dc:prop:conp}); the monochromatic
+ cylinder wrapper around classical length testers
+ (Lemma~\ref{ccc:dc:lem:reduction}); the deterministic gate family
+ (Proposition~\ref{ccc:dc:prop:family}); the early inclusion of actual
+ letters in stable alphabets and the joint entry and exit budget
+ (Lemmas~\ref{ccc:dc:lem:early} and~\ref{ccc:dc:lem:budget}); the bound
+ $s^2+3$ (Theorem~\ref{ccc:dc:thm:leading-one}).
+\item \emph{Restated:} Section~\ref{ccc:dc:sec:background} restates Part~I's
+ and Part~II's definitions, Part~II's constants, its interior universality
+ criterion and its safe-core characterization, and recalls the latter's
+ proof; the first two assertions of Lemma~\ref{ccc:dc:lem:gate} are
+ Part~IV's Lemmas~\ref{ccc:qr:lem:returns} and~\ref{ccc:qr:lem:gap} for a
+ differently labelled gate, proved again (the common completion is new).
+\item \emph{Imported and credited:} the prime-residue assignment encoding and
+ clause testers of Stockmeyer and Meyer~\cite{SM}; selector-to-cycle DFA
+ constructions of Gawrychowski et~al.~\cite{GLRSS}; Schwarz's relation-power
+ theorem (Part~V's Theorem~\ref{ccc:rs:thm:schwarz}); the two-generator
+ Frobenius arithmetic (Part~IV's credit to Sylvester).
+\item \emph{Not affected:} the NFA questions. The bound $s^2+3$ is proved for
+ complete DFAs only; the leading constant for NFAs
+ (Question~\ref{ccc:qr:q:constant}) stays in $[1,2]$ by Part~V. Part~III's
+ coNP-completeness (Theorem~\ref{ccc:cl:thm:complexity}) concerns another
+ input and problem (note in Section~\ref{ccc:dc:sec:hardness}).
+\end{itemize}
+
+\subsection{The manuscript's summary and status}\label{ccc:dc:sec:abstract}
+
+\emph{Abstract, as delivered (``the pinned ProveIt report'' is this report
+and its question Part~II's Question~\ref{ccc:ps:q:dfa}).} Finite constrained
+self-crossover stabilization for complete binary DFA seeds is
+$\coNP$-complete, under either parallel or frozen-source iteration. This
+answers the exact DFA-complexity question in the pinned ProveIt report. For
+the upper bound, cyclic strongly connected components organize the relevant
+cyclic part of the exponentially expanded viable-phase graph into at most $s$
+structural stripes. Nonstabilization has a polynomial certificate consisting
+of one live residue and one permitted exit from every viable stripe. For
+hardness, classical Chinese-remainder length testers are embedded in a
+complete binary DFA with monochromatic branches that convert uncovered
+lengths into unbounded rank. Separately, we construct complete binary DFAs
+with $s=m+6$ states and finite maximal rank between $(m-1)^2+2$ and
+$(m-1)^2+4$. A joint entry/exit state-budget argument proves
+$R(L)\le s^2+3$ for every finite-rank complete $s$-state DFA, and
+consequently
+\[
+(s-7)^2+2\le F_{\rm DFA}(s)\le s^2+3\quad(s\ge8),
+\]
+so $F_{\rm DFA}(s)/s^2\to1$. The leading constant is sharp. The
+periodic-interior and safe-core criteria are credited prerequisites; CRT
+coding and cycle testers are classical. Full proofs, finite-check scope, and
+attribution are supplied without a global novelty or formal-verification
+claim.
+
+\emph{Status, as delivered.} The manuscript has no separate status box; its
+abstract ends with the disclaimer above, and
+Section~\ref{ccc:dc:sec:checks} states the scope of its checks and its
+claimed contribution. Its delivery README adds: the lower witness is not
+asserted to attain the constructed language's maximal rank; all state counts
+include the selector and the rejecting sink; the bound $s^2+3$ is not
+asserted for NFAs; the finite tests are implementation and consistency
+checks that do not substitute for the proofs of the SCC-stripe theorem, all
+CRT reduction instances, the complexity result or the asymptotic rank
+bounds, and the new uniform upper bound is proved analytically, not by an
+exhaustive finite test; no proof-assistant formalization is supplied; and no
+exhaustive worldwide priority claim is made. It also says that every page of
+the delivered PDF was visually inspected and that ``the previous delivered
+edition is preserved separately'', which is manuscript~32 above.
+
+\subsection{Notation beside Parts~I--V}\label{ccc:dc:sec:notation}
+
+Part~VI uses the report's operation $\cut$, iterates $\gen Lk$ and $Y_k$,
+rank $\rank_L$, hull $\rec(L)$ and supremum rank $R(L)$, and Part~II's
+$P_i$, $R_j$, $P^\infty_a$, $R^\infty_a$, live residues, $S_{r,a}$,
+$C_{r,a}$, phase-admissible and liftable words and safe cores, for a complete
+DFA $(Q,\Sigma,\delta,q_{\rm in},F)$. Two symbols were renamed when the
+manuscript was written in: its deterministic gate language $L_m$ is printed
+$\Ldfa m$, because Part~II's $L_m$ is the one-$1$ family and Part~IV's gate
+language is $\Lgate m$; and the initial state of its gate automaton, named
+$r$ in the manuscript's Section~6, is printed $q_{\rm in}$, because $r$ is a
+residue. No normalization changed. The manuscript itself reuses several
+letters; the table lists them.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.19\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}>{\raggedright\arraybackslash}p{.35\textwidth}@{}}
+\toprule
+\textbf{In Part~VI} & \textbf{Meaning in Part~VI} & \textbf{Not to be confused with}\\
+\midrule
+$F_{\rm DFA}(s)$ & largest finite $R(L)$ over complete binary DFAs with at most $s$ states & Part~II's $F(s)$, over NFAs; Part~IV's $F_{\rm one}(s)$\\[3pt]
+$\Ldfa m$ & the language of the deterministic gate automaton with $m+6$ states (manuscript $L_m$) & Part~II's family $L_m$; Part~IV's $\Lgate m$ (nondeterministic)\\[3pt]
+$t$, $p$ in \eqref{ccc:dc:eq:constants} & Part~II's $T_s$ and $p_s$ & in Section~\ref{ccc:dc:sec:leading-one}, a Schwarz transient and an enlarged period\\[3pt]
+$H$, $d_H$, $z_H$, $\kappa_H$ & a cyclic SCC, its period, reference vertex and cyclic classes & Part~IV's $H_m$; Part~V's $\kappa$ (a relation-power index)\\[3pt]
+$W(H,h)$ & a stripe, named by $(H,h)$ & Part~V's path weight $W(m)$\\[3pt]
+$C$, $c$, $d$, $\kappa$ (Section~\ref{ccc:dc:sec:leading-one}) & the SCC of a safe stripe, its size, period and classes & the stable alphabets $C_{r,a}$; $c$ also denotes a letter\\[3pt]
+$d$ (Sections~\ref{ccc:dc:sec:hardness}--\ref{ccc:dc:sec:family}) & number of selector bits; the rejecting sink state & the SCC period $d$ of Section~\ref{ccc:dc:sec:leading-one}\\[3pt]
+$K$, $D$, $N$, $p_i$, $B$ & numbers of testers, selector depth, variables; primes; maximal prime & Part~I's $K$; Part~II's $K_s$, $D_L(n)$, $p_s$, $B_s$\\[3pt]
+$S$, $H$, $g$, $B=g+1$ (Section~\ref{ccc:dc:sec:family}) & Part~IV's $S_m$, $H_m$, $g_m$; a completion length & Part~II's $B_s$\\[3pt]
+$a$, $b$, $z$, $o$ (Section~\ref{ccc:dc:sec:family}) & states of the gate automaton & phases $a$, $b$ elsewhere\\[3pt]
+$h$, $\beta$, $u$, $v$, $k$, $A$, $B$ & entry and exit lengths and vertices, internal transient, padded boundaries & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The manuscript's macros for $\N$, $\eps$, $\rank$, $\rec$ and $\cut$ are the
+report's (its $\cut$ carried an outer \verb|\mathbin|, which changes no
+spacing); its \verb|\NP| and \verb|\coNP| were added, and \verb|\Ldfa| for the
+renamed language. Its \texttt{lmodern} and \texttt{amssymb} packages are not
+loaded.
+
+\section{Results and precise conventions}\label{ccc:dc:sec:intro}
+
+\wsevthree\ ``The pinned report'', ``the source report'' and ``the report''
+of this Part are this report as it stood at the pin, Parts~I--III; ``the
+preceding quadratic NFA note'' is the manuscript of Part~IV, and ``the
+companion note'' of Section~\ref{ccc:dc:sec:leading-one} the manuscript of
+Part~V. The manuscript's citations of all three are replaced by internal
+references.
+
+The pinned report asks for the exact complexity of deciding finite stabilization for complete DFAs over a fixed binary alphabet (Part~II, Question~\ref{ccc:ps:q:dfa}). Its NFA result is $\mathsf{PSPACE}$-complete; it leaves the deterministic case open. The first result below classifies that case. The second resolves the related extremal-rank order for complete binary DFAs, which remained open in the preceding quadratic NFA note (Part~IV, Question~\ref{ccc:qr:q:dfa}).
+
+\begin{theorem}[Decision complexity]\label{ccc:dc:thm:complexity}
+Given an explicitly represented complete binary DFA, deciding whether its language has finite constrained self-crossover stabilization is $\coNP$-complete under polynomial-time many-one reductions. This holds for both parallel and frozen-source iterations. Nonstabilization is $\NP$-complete. The $\coNP$ upper bound extends to every explicitly given finite alphabet.
+\end{theorem}
+
+\begin{theorem}[Quadratic finite rank with sharp leading constant]\label{ccc:dc:thm:rank}
+For every $m\ge2$, there is a complete binary DFA with one initial state and exactly $m+6$ states whose language $\Ldfa m$ satisfies
+\[
+(m-1)^2+2\le R(\Ldfa m)\le(m-1)^2+4<\infty.
+\]
+Consequently, if $F_{\rm DFA}(s)$ denotes the maximum finite $R(L)$ among complete binary DFAs with at most $s$ states, then
+\[
+(s-7)^2+2\le F_{\rm DFA}(s)\le s^2+3\qquad(s\ge8).
+\]
+In particular, $F_{\rm DFA}(s)/s^2\to1$ as $s\to\infty$.
+\end{theorem}
+
+The lower witness in Theorem~\ref{ccc:dc:thm:rank} is not asserted to attain the constructed language's maximum rank. The stated two-unit interval is intentional. All state counts include the initial selector, accepting monochromatic states, and rejecting sink.
+
+A complete DFA is $\mathcal A=(Q,\Sigma,\delta,q_{\rm in},F)$, where $|Q|=s$, $\delta:Q\times\Sigma\to Q$ is total, and there are no $\eps$-transitions. Our lower bounds use $\Sigma=\{0,1\}$. All complexity claims concern the original explicit DFA, rather than an already expanded periodic graph.
+
+\section{Rank and the inherited periodic criteria}\label{ccc:dc:sec:background}
+
+For equal-length words $x,y\in\Sigma^n$, aligned one-point crossover at $0\le i\le n$ yields either $x[0:i]y[i:n]$ or $y[0:i]x[i:n]$. For languages $A,B$, let $A\cut B$ contain all such outputs with one parent from each language. Endpoint cuts are allowed. The two iterations are
+\[
+L^{[0]}=L,\quad L^{[k+1]}=L^{[k]}\cut L^{[k]},
+\qquad Y_0=L,\quad Y_{k+1}=Y_k\cut L.
+\]
+
+For $w\in\Sigma^n$, $n>0$, a nonempty interval $[i,j)$ is admissible if a seed $v\in L\cap\Sigma^n$ agrees with $w$ on that interval. Rank $\rank_L(w)$ is the minimum number of such intervals partitioning the target; it is infinite if no partition exists. The coordinate hull $\rec(L)$ consists of the finite-rank words, with $\eps$ included exactly when it is a seed. Set $\rank_L(\eps)=1$ if accepted and infinity otherwise, and
+\[
+R(L)=\sup\bigl(\{1\}\cup\{\rank_L(w):w\in\rec(L)\}\bigr).
+\]
+The report's established fragment formulas are
+\begin{equation}\label{ccc:dc:eq:clocks}
+L^{[k]}=\{w:\rank_L(w)\le2^k\},\qquad
+Y_k=\{w:\rank_L(w)\le k+1\}.
+\end{equation}
+Thus either iteration stabilizes finitely exactly when $R(L)<\infty$; the least indices are $\lceil\log_2R(L)\rceil$ and $R(L)-1$. These are credited background (Part~I's Theorems~\ref{ccc:thm:generation} and~\ref{ccc:thm:frozen} and Corollary~\ref{ccc:cor:stages}; Part~II's Proposition~\ref{ccc:ps:prop:rank-clock} and Corollary~\ref{ccc:ps:cor:bounded}; Part~IV's Proposition~\ref{ccc:qr:prop:clocks}), not new claims of this note.
+\wsevthree\ This section restates the report's definitions in the
+manuscript's words; it defines nothing new. Formula~\eqref{ccc:dc:eq:clocks}
+is Part~II's~\eqref{ccc:ps:eq:clocks}.
+
+Let $E$ be the unlabelled transition relation and define
+\[
+P_i=E^i(\{q_{\rm in}\}),\qquad
+R_j=\{q:\exists f\in F,\ (q,f)\in E^j\}.
+\]
+The source report supplies the common transient and period
+\begin{equation}\label{ccc:dc:eq:constants}
+t=2(s+2)^2+2(s+2),\qquad p=\operatorname{lcm}(1,2,\ldots,s+2),
+\end{equation}
+with $P_{i+p}=P_i$ and $R_{i+p}=R_i$ for $i\ge t$. It derives this polynomial transient from corrected unary automata results; the source dependencies are recorded there. What matters here is that $t$ is polynomial, $\log p=O(s\log(s+2))$, and every cyclic SCC period divides $p$.
+\wsevthree\ These are Part~II's constants $T_s$ and $p_s$
+of~\eqref{ccc:ps:eq:universal-constants} (Lemma~\ref{ccc:ps:lem:quadratic-period},
+from To's corrected unary theorem~\cite{To}); the sets $P_i$, $R_j$, $S_{r,a}$,
+$C_{r,a}$ below are Part~II's \eqref{ccc:ps:eq:PR},
+\eqref{ccc:ps:eq:stable-states} and~\eqref{ccc:ps:eq:stable-letters} for a
+DFA, and the safe family and safe core are
+Definition~\ref{ccc:ps:def:safe-core}.
+
+For a phase $a\bmod p$, write $P^\infty_a=P_i$ and $R^\infty_a=R_i$ for any $i\ge t$ in that phase. A total-length residue $r$ is \emph{live} if $P^\infty_r\cap F\ne\varnothing$. For live $r$, set
+\begin{align}
+S_{r,a}&=P^\infty_a\cap R^\infty_{r-a},\label{ccc:dc:eq:S}\\
+C_{r,a}&=\{c\in\Sigma:\exists q\in S_{r,a},\ \delta(q,c)\in S_{r,a+1}\}.
+\label{ccc:dc:eq:C}
+\end{align}
+All these viable state sets and coordinate alphabets are nonempty. The labelled phase graph has vertices $(a,q)$ for $q\in S_{r,a}$; a permitted letter $c\in C_{r,a}$ advances to $(a+1,\delta(q,c))$ if that vertex is viable. A word is \emph{phase-admissible} when each letter belongs to the corresponding $C_{r,a}$; it is \emph{liftable} if some viable starting state reads it without leaving this graph.
+
+A \emph{safe family} is a family $U_a\subseteq S_{r,a}$ closed under every permitted letter:
+\[
+q\in U_a,\ c\in C_{r,a}\quad\Longrightarrow\quad\delta(q,c)\in U_{a+1}.
+\]
+The greatest such family is the \emph{safe core}. The inherited results used for the complexity proof are:
+\begin{enumerate}
+\item Finite stabilization holds exactly when every live residue has no phase-admissible nonliftable word.
+\item For a DFA, a live residue has no such obstruction exactly when its safe core is nonempty. A nonempty safe core meets every phase.
+\end{enumerate}
+These are the report's \emph{Interior universality criterion} and \emph{Safe-core characterization} (Part~II's Theorems~\ref{ccc:ps:thm:criterion} and~\ref{ccc:ps:thm:core}). To recall why determinism matters in the second statement: if the safe core is empty, every vertex has a permitted continuation that leaves the viable graph. Append a killing continuation for one currently surviving state. Each other state has at most one image, so the surviving-image count drops. After at most $s$ rounds no starting state survives, producing an obstruction. Conversely, a safe vertex at every phase reads every permitted word.
+\wsevthree\ This recalls Part~II's proof of Theorem~\ref{ccc:ps:thm:core}; it is
+not a second route.
+
+For polynomial-time tests of the stable sets, use the representative
+\[
+i_a=t+((a-t)\bmod p).
+\]
+Boolean matrix powering computes $E^{i_a}$ in polynomial time in $s$ and $\log i_a$. Every phase test below uses only polynomially many such operations, without expanding all $p$ phases.
+
+\section{Compressing safe cores into SCC stripes}\label{ccc:dc:sec:stripes}
+
+A \emph{cyclic SCC} is a strongly connected component containing a directed cycle, including a singleton with a self-loop. For each such component $H$, let $d_H$ be the gcd of its closed-walk lengths. Fix a reference vertex $z_H$ and a cyclic-class function
+\[
+\kappa_H:H\to\mathbb Z/d_H\mathbb Z,\qquad\kappa_H(z_H)=0,
+\]
+so that every internal edge $u\to v$ satisfies $\kappa_H(v)=\kappa_H(u)+1$. These data are computable in polynomial time from directed distances and the gcd of the edge discrepancies $\operatorname{dist}(u)+1-\operatorname{dist}(v)$. We have $d_H\le|H|$, hence
+\begin{equation}\label{ccc:dc:eq:stripe-count}
+\sum_{H\ \mathrm{cyclic}}d_H\le s.
+\end{equation}
+In particular $d_H\mid p$ for the period in \eqref{ccc:dc:eq:constants}.
+\wsevthree\ The delivered source of the last display lost a \verb|\rm| at a
+line break and printed the subscript as ``$H\ mcyclic$''; it is printed as
+intended, the sum over the cyclic SCCs.
+
+For $h\in\mathbb Z/d_H\mathbb Z$, define a \emph{stripe}
+\[
+W(H,h)=\{(a,q):q\in H,\ a-\kappa_H(q)\equiv h\pmod{d_H}\},
+\]
+where $a$ ranges over phases modulo $p$. Although a stripe can contain exponentially many phase vertices, it has a polynomial-size name $(H,h)$.
+
+\begin{lemma}[Uniform viability]\label{ccc:dc:lem:viability}
+For fixed live $r$, every stripe is either wholly viable or wholly nonviable. The stripe $W(H,h)$ is viable exactly when $z_H\in S_{r,h}$.
+\end{lemma}
+\begin{proof}
+Let $d=d_H$. Closed-walk lengths at any $q\in H$ contain every sufficiently large multiple of $d$. Indeed, a finite collection of such lengths already has gcd $d$, and its additive semigroup contains all sufficiently large multiples of $d$; concatenating the corresponding walks realizes them. The finite gcd fact follows, after dividing by $d$, by choosing one generator $b$ and a representable value in every residue modulo $b$, then adding sufficiently many copies of $b$.
+
+For every attained residue modulo $d$ of a path from $q_{\rm in}$ to $q$, fix one witnessing path and append the long closed walks at $q$. Hence forward membership at $q$ is eventually $d$-periodic. Prepending these closed walks to witnesses from $q$ to a final state proves the analogous fact for backward membership. Stable values defined with the larger period $p$ therefore factor through residues modulo $d$: evaluate them at arbitrarily large representatives of each $p$-phase. This does not require the smaller period's transient to equal the chosen $t$.
+
+For $q,v\in H$, choose internal paths $q\to v$ of length $\ell$ and $v\to q$ of length $k$. Then $\ell+k\equiv0\pmod d$ and $\ell\equiv\kappa_H(v)-\kappa_H(q)\pmod d$. Concatenating the paths and using eventual $d$-periodicity gives
+\[
+q\in P^\infty_a\iff v\in P^\infty_{a+\ell},\qquad
+q\in R^\infty_{r-a}\iff v\in R^\infty_{r-a-\ell}.
+\]
+Their intersection makes viability constant throughout a stripe. Taking $q=z_H$ and phase $h$ gives the claimed test.
+\end{proof}
+
+\begin{lemma}[Internal edges are permitted]\label{ccc:dc:lem:edges}
+If $(a,q)$ belongs to a viable stripe in $H$ and $\delta(q,c)=v\in H$, then $v\in S_{r,a+1}$ and $c\in C_{r,a}$.
+\end{lemma}
+\begin{proof}
+The edge advances the cyclic class by one, so its endpoints belong to the same stripe. Apply Lemma~\ref{ccc:dc:lem:viability} and \eqref{ccc:dc:eq:C}.
+\end{proof}
+
+\begin{lemma}[One safe vertex forces its stripe]\label{ccc:dc:lem:propagation}
+If a safe family contains one vertex in a cyclic SCC $H$, it contains that vertex's entire stripe.
+\end{lemma}
+\begin{proof}
+Lemma~\ref{ccc:dc:lem:edges} and safety force every internal labelled path from that vertex to remain in the family, with the corresponding phase advance. Paths from $q$ to $v$ inside $H$ exist at all sufficiently large lengths congruent to $\kappa_H(v)-\kappa_H(q)$ modulo $d_H$: take one fixed path and insert sufficiently long closed walks at its start. For any desired compatible target phase $b$, choose such a length congruent to $b-a$ modulo $p$. This is possible because $d_H\mid p$. Every vertex of the stripe is therefore reached.
+\end{proof}
+
+\begin{theorem}[Stripe criterion]\label{ccc:dc:thm:stripe}
+For a live residue $r$, the safe core is nonempty if and only if some stripe $W(H,h)$ is viable and has no permitted exit from its original SCC:
+\begin{equation}\label{ccc:dc:eq:noexit}
+(a,q)\in W(H,h),\ c\in C_{r,a}\quad\Longrightarrow\quad\delta(q,c)\in H.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For sufficiency, a viable stripe satisfying \eqref{ccc:dc:eq:noexit} is itself safe: every internal edge advances the cyclic class and stays in that stripe.
+
+For necessity, consider the original SCCs represented by vertices of a nonempty safe core. Choose a sink among these represented SCCs in the condensation partial order. This need not be a sink SCC of the whole automaton. Every represented phase vertex has a permitted successor, because $C_{r,a}$ is nonempty; safety puts that successor in the core. The sink choice keeps it in the selected component $H$. Thus $H$ is cyclic, since a singleton without a self-loop could not have such a successor. Lemma~\ref{ccc:dc:lem:propagation} forces an entire stripe into the core. A permitted exit from that stripe would, by safety, lead to a strictly lower represented SCC, contradicting the sink choice.
+\end{proof}
+
+The qualification concerning represented SCCs is essential. For example, an accepting $0$-loop in a DFA for $0^*$ can be safe although its forbidden $1$-edge leads to a rejecting bottom component. Safety concerns permitted letters, not all letters at every phase.
+
+\section{A polynomial certificate for nonstabilization}\label{ccc:dc:sec:upper}
+
+\begin{proposition}\label{ccc:dc:prop:conp}
+Finite stabilization for complete DFAs over an explicitly given finite alphabet belongs to $\coNP$.
+\end{proposition}
+\begin{proof}
+A certificate for nonstabilization consists of a live residue $r<p$ and, for every viable stripe $W(H,h)$, a triple $(q,a,c)$ satisfying
+\begin{align*}
+&q\in H,\qquad a<p,\qquad a-\kappa_H(q)\equiv h\pmod{d_H},\\
+&c\in C_{r,a},\qquad \delta(q,c)\notin H.
+\end{align*}
+The verifier computes the cyclic SCCs, their periods and cyclic classes, and all stripe names. It checks that $r$ is live. For each stripe it deterministically tests viability using $z_H\in S_{r,h}$. A nonviable stripe requires no exit witness; for each viable one, it verifies the displayed conditions.
+
+There are at most $s$ stripes by \eqref{ccc:dc:eq:stripe-count}. Every guessed phase uses $O(\log p)$ bits, polynomial in the input. Stable membership and permitted-letter predicates are computable by polynomially many Boolean matrix powers at polynomial-bit exponents. All other checks are elementary graph and modular arithmetic. Therefore certificate size and verification time are polynomial.
+
+The stripe criterion says such exit witnesses exist for exactly those live residues with empty safe core. The inherited criteria in Section~\ref{ccc:dc:sec:background} say that at least one such residue exists exactly when stabilization fails. Hence nonstabilization is in $\NP$, and stabilization is in $\coNP$.
+\end{proof}
+
+This certificate avoids expanding the full phase graph. An exit may lead to another viable or even safe region; that does not invalidate the criterion. If any safe region existed, a lowest represented SCC would supply some stripe with no permitted exit, and the certificate would fail for that stripe.
+
+\section{Binary DFA hardness via length testers}\label{ccc:dc:sec:hardness}
+
+The arithmetic coding in this reduction is classical. Prime-residue assignment encodings and invalid-assignment and clause-falsification testers appear explicitly in Stockmeyer and Meyer's proof of Theorem~6.1 \cite{SM}. Closely related DFA length constructions, including binary selectors feeding unary cycles, appear in Gawrychowski et al.\ \cite[Theorems~5--6]{GLRSS}. We credit those ingredients. The crossover-specific step is the monochromatic/cylinder embedding below, which turns uncovered lengths into high aligned rank.
+\wsevthree\ Part~III's Theorem~\ref{ccc:cl:thm:complexity} is also a
+coNP-completeness result, but for thresholding the exact depth of a succinct
+list of binary-encoded rays, by a CLIQUE reduction; Part~VI decides whether
+stabilization happens at all for an explicit DFA. The two concern different
+inputs and problems, and neither implies the other. The manuscript does not
+cite Part~III.
+
+\subsection{A polynomial family of unary testers}
+
+Start with a 3CNF formula $\varphi$ in variables $x_1,\ldots,x_N$. Remove tautological clauses and repeated literals inside a clause. Add an unused variable when necessary so that $N\ge1$. Choose distinct primes $p_1,\ldots,p_N$, each polynomially bounded in $N$. The first $N$ primes suffice: their largest value is $O(N\log(N+1))$, and a sieve constructs them in polynomial time.
+
+A length $n$ encodes a Boolean assignment when $n\bmod p_i\in\{0,1\}$ for every $i$, with residue one meaning true. Use the following cycle testers:
+\begin{itemize}
+\item For variable $i$, a cycle of modulus $p_i$ marks the residues outside $\{0,1\}$.
+\item For each clause, a cycle whose modulus is the product of its at most three distinct variable primes marks the residue that makes every literal of the clause false. An empty clause uses modulus one and marks every length.
+\end{itemize}
+The Chinese remainder theorem determines the clause residue. Call a tester \emph{active} at $n$ if it marks that total length. If $\varphi$ is unsatisfiable, every length activates some tester: either its residues do not encode an assignment or they encode an assignment falsifying a clause. If $\varphi$ is satisfiable, its satisfying assignment gives an infinite arithmetic progression of lengths activating none, modulo $\prod_i p_i$.
+
+Let $K=N+\#\{\text{clauses}\}\ge1$ and $B=\max_i p_i$. The cycles use at most $KB^3$ states. Their active-residue sets can be computed by enumerating their polynomially many residues. This construction is polynomial in the formula size. A variable tester with modulus two simply has no active residue, which causes no problem.
+
+\subsection{A deterministic binary selector with fragile constant branches}
+
+Build a complete binary DFA whose first two letters select one of four cases:
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+Prefix & Destination\\
+\midrule
+$00$ & Accepting state with a $0$-loop; letter $1$ rejects forever\\
+$11$ & Accepting state with a $1$-loop; letter $0$ rejects forever\\
+$01$ & Fixed-depth binary selector for the $K$ testers\\
+$10$ & Rejecting sink\\
+\bottomrule
+\end{tabular}
+\end{center}
+The selector uses $d=\lceil\log_2 K\rceil$ additional bits, with unused codes going to the sink. All tester entries are at the same total depth
+\[
+D=2+d.
+\]
+For $K=1$, no extra selector bits or decision nodes are needed. Every tester is a directed cycle on which both input letters advance one step. If its modulus is $h$ and its desired set of active total-length residues is $A\subseteq\mathbb Z/h\mathbb Z$, declare cycle position $j$ final exactly when
+\[
+D+j\pmod h\in A.
+\]
+This explicit offset ensures that activity depends on total word length, including the selector. Prefix and selector states are nonfinal, and all unspecified transitions go to a rejecting sink with both loops. The selector has $O(K)$ states, so the whole DFA remains polynomial in size.
+
+The only seeds accepted outside tester branches are $0^n$ and $1^n$ for $n\ge2$. If a tester is active at $n\ge D$, its fixed selector prefix can be followed by \emph{every} binary suffix of length $n-D$ to obtain a seed. Thus it contributes a full suffix cylinder.
+
+\begin{lemma}[Correctness of the crossover embedding]\label{ccc:dc:lem:reduction}
+The constructed DFA stabilizes finitely if and only if $\varphi$ is unsatisfiable.
+\end{lemma}
+\begin{proof}
+If $\varphi$ is satisfiable, there are arbitrarily large $n\ge D$ with no active tester. At each such length the entire seed slice is $\{0^n,1^n\}$. Both symbols occur at every coordinate, so the hull slice is all binary words, but admissible fragments are exactly constant intervals. An alternating target has rank $n$. Hence $R(L)=\infty$ and no finite stabilization occurs.
+
+If $\varphi$ is unsatisfiable, some tester is active at every length. For $n>D$ and any hull target $w$, its first $D$ letters can be supplied as singleton fragments using $0^n$ and $1^n$. The remaining suffix is one admissible aligned fragment supplied by an active tester cylinder. Thus $\rank_L(w)\le D+1$. At $n=D$, omit the empty suffix, obtaining rank at most $D$. At smaller positive lengths, the singleton bound on existing hull slices gives rank at most $n<D$. The length-zero convention is harmless. Therefore $R(L)\le D+1<\infty$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{ccc:dc:thm:complexity}]
+The map from $\varphi$ to its complete binary DFA is polynomial and sends unsatisfiable 3CNF formulas exactly to finitely stabilizing languages. This gives $\coNP$-hardness. Proposition~\ref{ccc:dc:prop:conp} gives membership. Taking complements yields $\NP$-completeness of nonstabilization. Formula~\eqref{ccc:dc:eq:clocks} makes the two iteration clocks equivalent for this decision problem.
+\end{proof}
+
+\section{A deterministic family with quadratic finite rank}\label{ccc:dc:sec:family}
+
+The rank construction is independent of the complexity reduction. It reuses the classical two-cycle graph underlying the earlier NFA family, while assigning different letters to its two branching edges and using a deterministic selector.
+\wsevthree\ The earlier NFA family is Part~IV's gate language $\Lgate m$
+(Section~\ref{ccc:qr:sec:gate}). Below, $S$, $H$ and $g$ are Part~IV's $S_m$,
+$H_m$ and $g_m$ with the index dropped, and the first two assertions of
+Lemma~\ref{ccc:dc:lem:gate} are Part~IV's Lemmas~\ref{ccc:qr:lem:returns}
+and~\ref{ccc:qr:lem:gap} (Sylvester's two-generator Frobenius formula shifted
+by $m$; see the note after Lemma~\ref{ccc:qr:lem:gap}), proved again directly;
+the common completion length is new.
+
+\subsection{The complete automaton}
+Fix $m\ge2$ and use gate states $q_0,\ldots,q_{m-1}$ with
+\[
+\delta(q_i,0)=\delta(q_i,1)=q_{i+1}\quad(0\le i<m-1),
+\]
+\[
+\delta(q_{m-1},0)=q_0,\qquad\delta(q_{m-1},1)=q_1.
+\]
+Only $q_0$ is final inside the gate. Add exactly six states: an initial state $q_{\rm in}$, prefix states $a,b$, accepting monochromatic states $z,o$, and a rejecting sink $d$. Their transitions are
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+State & $0$-successor & $1$-successor\\
+\midrule
+$q_{\rm in}$ & $a$ & $b$\\
+$a$ & $z$ & $q_0$\\
+$b$ & $d$ & $o$\\
+$z$ & $z$ & $d$\\
+$o$ & $d$ & $o$\\
+$d$ & $d$ & $d$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The final set is $\{q_0,z,o\}$ and $q_{\rm in}$ is the sole initial state.
+\wsevthree\ The manuscript names the initial state $r$; it is printed
+$q_{\rm in}$, the manuscript's own name for an initial state in
+Section~\ref{ccc:dc:sec:intro}, because $r$ denotes a residue elsewhere. This is a complete binary DFA with exactly $m+6$ states. Prefix $01$ enters the gate; outside that prefix, the seeds are exactly $0^n,1^n$ for $n\ge2$. In particular the hull consists of every binary word of length at least two; its length-zero and length-one slices are empty.
+
+\subsection{The quadratic missing return length}
+Put
+\[
+S=\langle m,m-1\rangle=\{am+b(m-1):a,b\in\N\},
+\quad H=\{0\}\cup(m+S),\quad g=(m-1)^2.
+\]
+
+\begin{lemma}[Gate lengths and common completion]\label{ccc:dc:lem:gate}
+The lengths of paths from $q_0$ to itself are exactly $H$, whose largest missing nonnegative integer is $g$. From every gate state there is a path to $q_0$ of length exactly $g+1$.
+\end{lemma}
+\begin{proof}
+The unlabelled gate graph has an $m$-cycle and an $(m-1)$-cycle sharing a path. A positive first return to $q_0$ has length $m+b(m-1)$, with $b\ge0$. Concatenating first returns gives exactly $am+b(m-1)$ with $a\ge1$, hence the set $m+S$. Assigning different labels to the two exits from $q_{m-1}$ changes which words label these paths, but not which path lengths exist.
+
+To see that $g\notin H$, an expression $g=m+xm+y(m-1)$ would imply $x\equiv m-2\pmod{m-1}$ and therefore $m+xm\ge m(m-1)>g$. This includes $m=2$, where the modulus is one. If $N\ge g+1$, divide $N-m=q(m-1)+r$, with $0\le r\le m-2$. Then $q\ge m-2\ge r$, so
+\[
+N=m+rm+(q-r)(m-1)\in H.
+\]
+Thus $g$ is the last missing return length.
+
+The semigroup $S$ contains every integer at least $(m-1)(m-2)$: write such an integer as $q(m-1)+r$, $0\le r\le m-2$, and use $rm+(q-r)(m-1)$. For $i\ge1$, the path lengths from $q_i$ to $q_0$ are exactly $(m-i)+S$, by the same first-return decomposition. With $B=g+1$,
+\[
+B-(m-i)=(m-1)(m-2)+i\in S.
+\]
+For $i=0$, $B\in H$ was already shown. Hence every gate state reaches $q_0$ in exactly $B$ steps.
+\end{proof}
+
+\begin{proposition}[Witness and direct finite bound]\label{ccc:dc:prop:family}
+The constructed language satisfies $g+2\le R(\Ldfa m)\le g+4$.
+\end{proposition}
+\begin{proof}
+At total length $n=g+2$, a word beginning with $01$ would require a gate return of length $g$, which is impossible. Hence the full seed slice is exactly $\{0^n,1^n\}$. An alternating target lies in the hull and every admissible fragment is constant, giving rank exactly $n=g+2$.
+
+For the upper bound, put $B=g+1$. Let $w$ have length $n>B+2$. Its central interval $w[2:n-B]$ is nonempty. Read this central word from $q_0$; completeness keeps its unique run inside the gate. Lemma~\ref{ccc:dc:lem:gate} supplies a completion of length $B$ from its last state to $q_0$. Prefixing $01$ produces an accepted length-$n$ seed agreeing with the whole central interval at its proper coordinates. The first two target letters and last $B$ target letters are supplied as singleton fragments by the monochromatic seeds. Consequently
+\[
+\rank_{\Ldfa m}(w)\le2+1+B=g+4.
+\]
+For $2\le n\le B+2$, singletons give rank at most $n\le g+3$. The two shorter hull slices are empty and the baseline value one is below $g+4$. This proves the uniform finite bound without using a safe-core or complexity theorem.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{ccc:dc:thm:rank}]
+Proposition~\ref{ccc:dc:prop:family} gives the stated family and its finiteness. Set $m=s-6$ for $s\ge8$ to obtain $F_{\rm DFA}(s)\ge(s-7)^2+2$. The complete-DFA upper bound $R(L)\le s^2+3$ is proved in Theorem~\ref{ccc:dc:thm:leading-one} below. Together the inequalities give the asserted bound and, after division by $s^2$, the limit one.
+\end{proof}
+
+The largest finite parallel stabilization index for complete binary DFAs is therefore $2\log_2s+O(1)$, and the largest finite frozen-source index is asymptotic to $s^2$, by \eqref{ccc:dc:eq:clocks}. These are extremal asymptotics; the exact rank or least stabilization index of every individual automaton is not determined here.
+
+
+\section{A sharp leading constant for every complete DFA}\label{ccc:dc:sec:leading-one}
+
+The earlier general NFA bound $2(s-1)^2+3$ in the companion note (Part~V, Corollary~\ref{ccc:rs:cor:upper}) charges both boundaries by a global transient. For a DFA, a safe SCC permits a better allocation: the states used before entering that component and after leaving it are disjoint. A separate pumping observation makes the actual target letters compatible with stable alphabets after only $s$ positions at either boundary.
+
+\begin{theorem}[Uniform deterministic rank bound]\label{ccc:dc:thm:leading-one}
+Let $L$ be recognized by a complete $s$-state DFA over a finite nonempty alphabet. If $R(L)<\infty$, then
+\[
+R(L)\le s^2+3.
+\]
+The proof uses determinism and does not establish this bound for general NFAs.
+\end{theorem}
+
+For this proof choose a global transient $t\le(s-1)^2+1$ and a period for $E$ from Schwarz's theorem \cite[Theorem~4.3]{Schwarz}. Enlarge the period $p$ to a multiple of every integer $1,\ldots,s$; this does not change $t$. The resulting period need not be the particular $p$ used for the complexity certificate. Stable sets, live residues, and stripes are defined as before. The source's interior criterion and the stripe results above apply to any such common transient and period.
+
+\begin{lemma}[Actual alphabets enter stable alphabets early]\label{ccc:dc:lem:early}
+If $i\ge s$, then $P_i\subseteq P^\infty_{i\bmod p}$. If $j\ge s$, then $R_j\subseteq R^\infty_{j\bmod p}$. Consequently, for an actual hull word of total length $n$, its letter at position $i$ belongs to $C_{n\bmod p,i\bmod p}$ whenever
+\[
+i\ge s\qquad\text{and}\qquad n-i-1\ge s.
+\]
+The claims are inclusions, not equalities.
+\end{lemma}
+\begin{proof}
+A walk of at least $s$ edges visits a vertex twice and contains a simple directed cycle of length $\ell\le s$. Since $\ell\mid p$, inserting $p/\ell$ extra copies of this cycle adds $p$ edges without changing endpoints. Repeating reaches arbitrarily large lengths in the same phase, proving the forward inclusion. Apply the same argument in the reversed graph for the backward inclusion.
+
+For the letter statement, take its accepting seed witness with transition $q\mathrel{\mathop{\longrightarrow}\limits^c}q'$ at position $i$. Pump the witness prefix and suffix separately. The prefix proves stable forward membership of $q$, and appending $c$ proves stable forward membership of $q'$. The suffix proves stable backward membership of $q'$, and prepending $c$ proves stable backward membership of $q$. Thus both endpoints lie in the correct stable viable layers and $c$ is permitted there.
+\end{proof}
+
+Fix a live residue $r$. Finite rank and the inherited safe-core criterion give a nonempty safe core. Theorem~\ref{ccc:dc:thm:stripe} supplies an entire viable stripe over an original cyclic SCC $C$, closed under every stable-permitted letter at its phase. Write $c=|C|$, $d=d_C$, and $\kappa$ for its cyclic-class function. Full-stripe membership depends only on the class/time offset modulo $d$, even though the phase graph is indexed modulo the possibly much larger $p$.
+
+\begin{lemma}[A joint entry and exit budget]\label{ccc:dc:lem:budget}
+For that stripe there exist an entry vertex $u\in C$, an exit vertex $v\in C$, an actual initial-to-$u$ path of length $h$, and an actual $v$-to-final path of length $\beta$, such that
+\begin{equation}\label{ccc:dc:eq:budget}
+h+\beta\le(s-c)d.
+\end{equation}
+The pair $(h\bmod p,u)$ belongs to the stripe, and for every $n\equiv r\pmod p$,
+\begin{equation}\label{ccc:dc:eq:compatibility}
+n-h-\beta\equiv\kappa(v)-\kappa(u)\pmod d.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Stable viability supplies an actual accepting walk through a stripe vertex at its prescribed phase, of total length $N\equiv r\pmod p$: choose a sufficiently long prefix and suffix from the stable reachability sets. Let $u$ be its first vertex in $C$ and $v$ its last. Between them the walk cannot leave $C$ and return, since any such outside vertex would be mutually reachable with $C$ and hence belong to it. Let the original entry time and exit length be $h_0$ and $\beta_0$.
+
+In the prefix before entry, delete path segments between repeated pairs consisting of an outside state and elapsed time modulo $d$. Each deletion preserves the endpoint and length modulo $d$. The resulting path of length $h\equiv h_0\pmod d$ has distinct outside product vertices at all positions before entry. Shorten the suffix analogously to length $\beta\equiv\beta_0\pmod d$, with distinct outside product vertices at all positions after exit.
+
+The outside states occurring before entry and after exit in the original walk are disjoint. A state occurring in both could reach $C$ and be reached from $C$, contradicting its being outside that SCC. The shortened paths use only these original states. If their outside-state counts are $a$ and $b$, then $h\le ad$, $\beta\le bd$, and $a+b\le s-c$, proving \eqref{ccc:dc:eq:budget}. This also covers zero-length access or exit paths.
+
+The interior segment of the original walk has length congruent to $\kappa(v)-\kappa(u)$ modulo $d$. Because $d\mid p$, the two shortenings yield \eqref{ccc:dc:eq:compatibility}. The original entry pair lies in the stripe by the cyclic-class invariant along the path to the known stripe vertex. Preserving entry time modulo $d$ therefore keeps $(h\bmod p,u)$ in the same \emph{full} stripe, despite a possible change of its phase modulo $p$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{ccc:dc:thm:leading-one}]
+First assume $s\ge2$. For the component $C$, Schwarz's theorem supplies an internal relation-power transient
+\[
+1\le k\le(c-1)^2+1.
+\]
+For every length $\ell\ge k$, an internal walk from $x$ to $y$ exists exactly when $\ell\equiv\kappa(y)-\kappa(x)\pmod d$. To justify using the numerical threshold rather than an unspecified asymptotic one, enlarge its matrix period to a multiple of $d$ and propagate the equality of matrix entries forward from $\ell$ to the sufficiently long regime of the cyclic-class path criterion. The stable value is already attained at $\ell$.
+
+Consider a nonempty hull word $w$ of length $n\ge t$, so its residue $r$ is live. Use the stripe and entry/exit paths above and set
+\[
+A=\max(h,s),\qquad B=\max(\beta+k,s).
+\]
+If $n\le A+B$, singleton fragments already give rank at most $A+B$. Otherwise, pad the $h$-step access path by an arbitrary internal $C$-walk of length $A-h$. Such a walk exists for every nonnegative length because each vertex of the cyclic strongly connected graph has an internal outgoing edge. The padded path reaches a stripe vertex at phase $A$.
+
+Read the target central interval $w[A:n-B]$ from that vertex. Every letter is stable-permitted by Lemma~\ref{ccc:dc:lem:early}: its prefix length is at least $A\ge s$, and even its last letter has suffix length at least $B\ge s$. Stripe safety keeps the deterministic run inside $C$. Let $z$ be its endpoint. Its class is
+\[
+\kappa(z)\equiv\kappa(u)+(A-h)+(n-A-B)
+=\kappa(u)+n-h-B\pmod d.
+\]
+Using \eqref{ccc:dc:eq:compatibility} gives
+\[
+\kappa(v)-\kappa(z)\equiv B-\beta\pmod d.
+\]
+Because $B-\beta\ge k$, there is an internal completion of exactly $B-\beta$ steps to $v$. Append the fixed $\beta$-step exit path. The resulting accepting seed has total length exactly $n$ and agrees with the target on its entire central interval. Hence that interval is one aligned admissible fragment, and
+\begin{align*}
+\rank_L(w)&\le A+B+1\\
+&\le h+\beta+k+2s+1\\
+&\le(s-c)d+(c-1)^2+2s+2\\
+&\le(s-c)c+(c-1)^2+2s+2\\
+&=c(s-2)+2s+3\le s^2+3.
+\end{align*}
+For $n<t$, the singleton bound is at most $n<t\le(s-1)^2+1$. Empty slices require no words to be bounded, and the empty-word convention contributes at most one. Finally a complete one-state DFA accepts either all words or none, so $R(L)=1$ and the asserted estimate also holds for $s=1$.
+\end{proof}
+
+Combining Theorem~\ref{ccc:dc:thm:leading-one} with the deterministic lower family gives
+\[
+\frac{(s-7)^2+2}{s^2}\le\frac{F_{\rm DFA}(s)}{s^2}\le1+\frac3{s^2}
+\quad(s\ge8),
+\]
+and therefore the sharp leading constant one. The result does not determine the optimal lower-order terms or exact extremal function. Determinism enters through the safe-core characterization and its strict survivor-count decrease; nondeterministic images can expand, so this proof does not supply a leading-one NFA bound.
+
+\section{Finite verification and attribution}\label{ccc:dc:sec:checks}
+
+The package contains four Python standard-library checkers and their saved outputs. They have different scopes.
+\begin{itemize}
+\item \texttt{check\_stripes\_exhaustive.py} finds the exact eventual cycle of $(P_i,R_i)$, enlarges its period to include SCC periods, computes the safe core by repeated deletion, and compares it with the stripe criterion. It checks every labelled complete binary DFA with fixed initial state and every final set on one, two, and three states: $2+64+5{,}832=5{,}898$ automata and $26{,}881$ live residues. It also checks uniform stripe viability.
+\item \texttt{check\_stripes\_random.py} checks $1{,}519$ seeded random complete binary DFAs on one to eight states and all their live residues. Its random seed is $153735$.
+\item \texttt{check\_rank\_family.py} verifies $24$ path-based alternating rank witnesses for $2\le m\le25$, reaching rank $578$. It also literally tests $14{,}308$ seed words for $2\le m\le8$ and $2\le n\le10$; these are seed-membership tests, not $14{,}308$ separate rank computations.
+\item \texttt{check\_gate\_completion.py} independently verifies $1{,}829$ gate-state completion cases over $2\le m\le60$, the missing return at $g$, and $19$ alternating rank witnesses for $2\le m\le20$.
+\end{itemize}
+Run the scripts with assertions enabled, without Python's \texttt{-O} option. The tests corroborate the finite constructions and predicates. They do not prove the universal stripe lemmas, the complexity classification, correctness of every CRT reduction instance, or the quadratic asymptotic theorem. The proofs supply those arguments. The new uniform $s^2+3$ bound is an analytic deduction from the joint path budget; no finite test here exhausts that universal claim. No Lean or other proof-assistant formalization is included.
+
+The contribution claimed relative to the pinned source is the SCC-stripe certificate and its $\coNP$ consequence, the crossover wrapper around classical modular testers, the complete-DFA quadratic-rank construction, and the joint entry/exit argument giving its sharp leading constant. The rank clocks, periodic interiors, deterministic safe cores, CRT arithmetic, selector-to-cycle devices, and relation-power bound are credited background. A comprehensive search excluding all equivalent earlier crossover results has not been completed, and no global first-discovery claim is made.
+
+Open refinements include the following.
+\wsevthree\ The manuscript lists them in one sentence; they are printed as
+numbered questions, in the same order and words; their bracketed titles were
+added.
+
+\begin{question}[Exact DFA extremum]\label{ccc:dc:q:exact}
+What is the exact $F_{\rm DFA}(s)$?
+\end{question}
+
+\begin{question}[Lower-order terms]\label{ccc:dc:q:lower-order}
+What are the optimal lower-order terms beyond $s^2$?
+\end{question}
+
+\begin{question}[The deterministic family]\label{ccc:dc:q:family}
+What is the exact rank of the displayed deterministic family?
+\end{question}
+
+\begin{question}[One automaton]\label{ccc:dc:q:individual}
+What is the complexity of computing an individual DFA's exact finite rank or
+least stabilization generation?
+\end{question}
+
+The sharp leading DFA rank constant and the finite-stabilization decision classification are settled by the results above, rather than left on that list.
+\wsevthree\ The window of Theorem~\ref{ccc:dc:thm:rank} has width
+$s^2+3-((s-7)^2+2)=14s-48$; Question~\ref{ccc:dc:q:exact} refines Part~IV's
+Question~\ref{ccc:qr:q:constant} for complete DFAs, and
+Question~\ref{ccc:dc:q:family} asks where in $[g+2,g+4]$ the rank of
+$\Ldfa m$ lies. No statement of this Part is formalized; Part~II's
+Question~\ref{ccc:ps:q:formal} applies to it as well.
+
+\wsevthree\ \emph{Shipped layout.} The paragraphs above describe the delivered
+package. In this report its files are shipped, byte-identical, as follows;
+the manuscript and its PDF are printed or replaced by this report, the
+delivery README and the revision note \texttt{REVISION.md} by the report's
+README, and the checksum list \texttt{SHA256SUMS} was verified and retired.
+\begin{center}\footnotesize
+\begin{tabular}{@{}P{.62\textwidth}P{.32\textwidth}@{}}
+\toprule
+\textbf{Shipped path} & \textbf{Delivered as}\\
+\midrule
+\nolinkurl{code/06-dfa-crossover-check_stripes_exhaustive.py} & \texttt{check\_stripes\_exhaustive.py}\\
+\nolinkurl{data/06-dfa-crossover-stripes-exhaustive.json} & \texttt{stripes-exhaustive.json}\\
+\nolinkurl{code/06-dfa-crossover-check_stripes_random.py} & \texttt{check\_stripes\_random.py}\\
+\nolinkurl{data/06-dfa-crossover-stripes-random.txt} & \texttt{stripes-random.txt}\\
+\nolinkurl{code/06-dfa-crossover-check_rank_family.py} & \texttt{check\_rank\_family.py}\\
+\nolinkurl{data/06-dfa-crossover-rank-family.json} & \texttt{rank-family.json}\\
+\nolinkurl{code/06-dfa-crossover-check_gate_completion.py} & \texttt{check\_gate\_completion.py}\\
+\nolinkurl{data/06-dfa-crossover-gate-completion.json} & \texttt{gate-completion.json}\\
+\nolinkurl{code/06-dfa-crossover-build.sh} & \texttt{build.sh}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The four checkers print their records to standard output and write no file;
+the report's README gives commands that keep the output away from the
+shipped records. When the batch was placed they were rerun on a copy with
+Python~3.14.4. Three took between seven and eleven seconds each and printed
+the bytes of their shipped records apart from CRLF line endings. The random
+stripe checker needs about six minutes on that machine, the two eight-state
+cases alone about 72 and 149 seconds; it was run in three parts with the
+same random stream, and all $1{,}519$ automata passed. The build script
+changes to its own directory and runs \texttt{pdflatex} twice on
+\texttt{dfa-crossover-stabilization.tex}, the delivered manuscript, which is
+printed here as Part~VI and is not shipped; it must not be run in
+\texttt{code/}.
+
 % [write, batch 66] the appendices belong to Part I.
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
@@ -6411,7 +7181,7 @@ here as Part~V and is not shipped; it must not be run in \texttt{code/}.
 belong to Part~I and are printed after Parts~II and~III so that no letter or
 number of Part~I moved.}
 \waddsevone{Part~IV is printed before them too.}
-\waddsevthree{So is Part~V.}
+\waddsevthree{So are Parts~V and~VI.}
 
 For completeness, here is the standard route to the co-r.e.-completeness used
 in Section~\ref{ccc:sec:undecidable}. The foundational undecidable problem is Post
@@ -6628,6 +7398,44 @@ in Part~I's conclusion, in Part~IV's Section~\ref{ccc:qr:sec:scope}, in
 Appendix~\ref{ccc:app:universality} and here; no existing label, theorem,
 section, equation or question number changed.
 
+\paragraph{\waddsevthree{A sixth manuscript.}} On 1 October 2026 batch-73
+manuscript~29, \emph{Finite Crossover Stabilization for Deterministic
+Automata} (archive \texttt{dfa-crossover-package.zip}, revised edition),
+written against Parts~I--III at ProveIt commit \texttt{1bd730779}, which
+arrived in commit \texttt{f8c3a392a} and was placed in commit
+\texttt{26abf259b}, became Part~VI. Its earlier edition, manuscript~32
+(\texttt{dfa-crossover-package~(1).zip}), was superseded and is neither
+printed nor shipped. The report is now built from six manuscripts;
+Section~\ref{ccc:dc:sec:source} gives this one's provenance and what it
+contributed. The choices made were these. Part~VI answers Part~II's
+Question~\ref{ccc:ps:q:dfa} and Part~IV's Question~\ref{ccc:qr:q:dfa} and was
+kept as a Part of its own. Its two lemmas on actual alphabets and on the
+joint entry and exit budget are printed here, with their proofs, once; a
+later manuscript states them for NFAs with the same proofs. Its restatement
+of the report's background is kept with pointers; its gate lemma, whose first
+assertions are Part~IV's, keeps its proof, because its labelling and its
+common completion differ. Its language $L_m$ was renamed $\Ldfa m$ and the
+initial state $r$ of its gate automaton $q_{\rm in}$; a lost \verb|\rm| in
+one display was restored; its sentence of open refinements became four
+numbered questions; every label received the prefix \texttt{ccc:dc:}; its
+bibliography entries for the pinned report and for the manuscripts of
+Parts~IV and~V were replaced by internal references, its Schwarz entry
+identified with \cite{Schwarz}, and two entries (Stockmeyer--Meyer,
+Gawrychowski et~al.) added. Dated notes were added wherever the report
+called the DFA complexity or the DFA order open: in Part~I after
+Corollary~\ref{ccc:cor:regularstability} and Question~\ref{ccc:q:regular}
+and in its conclusion; in Part~II's opening, delivered status, comparison
+table, Section~\ref{ccc:ps:sec:dfa}, the comment after
+Theorem~\ref{ccc:ps:thm:lower-family}, after
+Questions~\ref{ccc:ps:q:dfa}, \ref{ccc:ps:q:rank} and~\ref{ccc:ps:q:period},
+and in its conclusion; in Part~III after its complexity remark, after
+Question~\ref{ccc:cl:q:explicit} and in its conclusion; in Part~IV's
+opening, its list of what it leaves unaffected, after
+Questions~\ref{ccc:qr:q:constant} and~\ref{ccc:qr:q:dfa} and after its
+remark on the DFA decision question; in Appendix~\ref{ccc:app:universality}
+and here. No existing label, theorem, section, equation or question number
+changed.
+
 \begin{thebibliography}{99}
 \small\raggedright\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}\setlength{\parskip}{0pt}
 \bibitem{Hughes}
@@ -6824,5 +7632,21 @@ On the semigroup of binary relations on a finite set.
 Theorem~4.3, p.~653; index definition, p.~634.
 \href{https://doi.org/10.21136/CMJ.1970.100989}{doi:10.21136/CMJ.1970.100989}.
 \href{https://dml.cz/bitstream/handle/10338.dmlcz/100989/CzechMathJ_20-1970-4_9.pdf\#page=23}{Primary full text, theorem page}.
+
+% [write, batch 73] entries cited by Part VI. Its entries for this report and
+% for the manuscripts of Parts IV and V were replaced by internal references;
+% its Schwarz entry is \cite{Schwarz} above.
+\bibitem{SM}
+Larry J. Stockmeyer and Albert R. Meyer.
+Word problems requiring exponential time (preliminary report).
+\emph{Proceedings of the Fifth Annual ACM Symposium on Theory of Computing} (1973), 1--9.
+Theorem~6.1, pp.~7--8.
+\href{https://doi.org/10.1145/800125.804029}{doi:10.1145/800125.804029}.
+\href{https://people.csail.mit.edu/meyer/meyer-stockmeyer-word-probs.pdf}{Author-hosted original text}.
+
+\bibitem{GLRSS}
+Pawe\l{} Gawrychowski, Martin Lange, Narad Rampersad, Jeffrey Shallit, and Marek Szyku\l{}a.
+Existential length universality.
+\href{https://arxiv.org/abs/1702.03961v5}{arXiv:1702.03961v5} (9 March 2020), full version, Theorems~5--6.
 \end{thebibliography}
 \end{document}
