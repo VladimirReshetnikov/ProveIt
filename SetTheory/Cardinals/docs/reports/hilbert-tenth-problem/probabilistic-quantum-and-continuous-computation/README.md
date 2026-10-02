@@ -1,17 +1,17 @@
 # Diophantine Laws of Probabilistic, Quantum and Continuous Computation
 
-**Normalization budgets and unique quartic certificates, four-dimensional quantum mortality, a continuous three-outcome trichotomy, exact probabilities, exact gates, contracting dynamics and polynomial flows**
+**Normalization budgets and unique quartic certificates, four-dimensional quantum mortality, a continuous three-outcome trichotomy, exact probabilities, exact gates, contracting dynamics, polynomial flows and stopping laws of quantum loops**
 
-This is a research report dated 30 September 2026, built from twelve
-manuscripts: three of batch 60 (Parts I–IV), eight of batch 62 (Parts
-V–VII) and one of batch 64 (Part VIII). All were prepared for Vladimir
-Reshetnikov. Of batch 60,
+This is a research report dated 30 September 2026 and extended on 2 October
+2026, built from thirteen manuscripts: three of batch 60 (Parts I–IV), eight
+of batch 62 (Parts V–VII), one of batch 64 (Part VIII) and one of batch 76
+(Part IX). All were prepared for Vladimir Reshetnikov. Of batch 60,
 manuscripts 08 and 09 name ChatGPT as the author of the mathematical
 development and code, and manuscript 07 describes itself as a research
 manuscript with reproducible exact-arithmetic artifacts. The eight batch-62
-manuscripts and the batch-64 manuscript are AI-assisted research
-manuscripts; their title-page wording is recorded in Appendices F.1 and F.2 of
-the article.
+manuscripts, the batch-64 manuscript and the batch-76 manuscript are
+AI-assisted research manuscripts; their title-page wording is recorded in
+Appendices F.1–F.3 of the article (the batch-76 manuscript also names ChatGPT).
 
 | Source | Batch | Archive | Pin | Arrived | Placed | Printed as |
 |---|---|---|---|---|---|---|
@@ -27,18 +27,20 @@ the article.
 | 12 | 62, manuscript 08 | `Diophantine_Contracting_2Adic` (*Exact Diophantine Computation in Contracting 2-adic Dynamics*) | `b6bf6406a` | `b57c0b5ff` | `adeddcecc` | Part VII: Sections 123–133, appendices 146–148, Sections 151.2 and 152.2 |
 | 15 | 62, manuscript 12 | `Precision_Is_Memory_Diophantine_Neural_Computation` (*Precision Is Memory: Quadratic Diophantine Certificates for Neural Computation and the Rational-Synthesis Frontier*) | `526c2557f` | `cb1646dc4` | `adeddcecc` | Part VII: Sections 135–143, appendices 149–150, Sections 151.3 and 152.3 |
 | 18 | 64, manuscript 05 | `Rational_Tubes_Integer_Zeros`, inner directory `rational_tubes_integer_zeros` (*Rational Tubes, Integer Zeros: Complete Diophantine Certificates for Polynomial Flows and Chemical Computation*, 30-page Letter PDF) | `6d04e1e38` | `7747fcfdd` | `3025c15df` | Part VIII: Sections 154–167, appendices 168–169 |
+| 19 | 76, manuscript 04 | `Infinite_Quantum_Runs_Diophantine_Certificates`, inner directory `Infinite_Quantum_Runs` (*Infinite Quantum Runs, Finite Diophantine Certificates: canonical group inverses, all stopping-time moments, and geometric clocks with undecidable supports*, 27-page Letter PDF) | `c58206ca1` | `6914ccca6` | `2a04b60f2` | Part IX: Sections 171–185, appendices 186–188 |
 
-Sources 10–18 are called by their shipped file prefixes, which continue this
-report's sequence after 07–09; their batch-62 and batch-64 manuscript numbers
+Sources 10–19 are called by their shipped file prefixes, which continue this
+report's sequence after 07–09; their batch-62, batch-64 and batch-76 manuscript numbers
 are in the second column. Written sections: 38 (conventions of Part V), 70 and 84–85
 (conventions of Part VI, the shared core of sources 11 and 16, and the
 completion of 11's main proof), 110 and 134 (conventions of Part VII and the
-comparison of sources 14 and 12), 153 (conventions of Part VIII), the
-conclusion and question sections of each Part of batch 62, and Appendices F.1
-and F.2.
+comparison of sources 14 and 12), 153 (conventions of Part VIII), 170
+(conventions of Part IX) and 183.2 (source 19's shipped files and rerun), the
+conclusion and question sections of each Part of batch 62, and Appendices
+F.1–F.3.
 
 Every result, proof, example, remark, research question and limitation of the
-twelve manuscripts is printed. The three batch-60 sources share no theorem.
+thirteen manuscripts is printed. The three batch-60 sources share no theorem.
 Of batch 62, sources 11 and 16 share one arithmetic core (denominator
 rigidity, decoding, rank-*d* embeddings, the spin map, the Mihailova compiler,
 density and approximation), printed once in Section 84 with genuinely
@@ -59,10 +61,28 @@ the paragraph is not printed twice. Its fixed-quartic corollary (160.2) is Part
 I's Lemma 3.3, and its conditional no-bound Proposition 160.5 repeats the
 argument of Corollaries 30.3 and 18.4; both carry pointers.
 
+Source 19 (Part IX, batch 76) is printed in full, except for three arguments
+that it repeats from this report, which are printed as pointers with source
+19's statements and non-claims kept: its no-bound Corollary 179.3 is the
+bounded search of Part II's Corollary 18.4; its paragraph on the
+computable enumerability and MRDP representation of forbidden records is Part
+II's Section 22.1 and Theorem 22.1; and the lower bound in its Proposition
+181.1 (computably scheduled one-dimensional loops) is the probability-zero
+endpoint of Part I (end of Section 9) and Part V (Section 46). None of the three
+arguments differs from the earlier one, so no second route is printed. Two of
+its results extend earlier ones: its Theorem 176.2, retitled *Canonical
+rational quartic compilation*, extends Part VI's Theorem 72.3 from integer to
+rational wires, and its stopped-moment Theorems 174.2 and 175.1 extend Part V's
+remark that absorption probabilities of finite Markov chains are decidable
+rational linear algebra (Section 48). Part II's Theorem 18.2 (dimension four,
+seven outcomes) answers source 19's research question 108 in that dimension;
+the written Corollary 179.4 states the answer, conditional on Part II, and the
+question is re-scoped below dimension four or seven continuation outcomes.
+
 ```
 article.tex                                           the report, standalone LaTeX with an internal bibliography
-article.pdf                                           the compiled report, 309 pages (unnumbered title page,
-                                                      contents pages 1-18, then pages 19-308)
+article.pdf                                           the compiled report, 339 pages (unnumbered title page,
+                                                      contents pages 1-19, then pages 20-338)
 README.md                                             this guide
 07-quantum-mortality-STATUS.md                        source 07's verification and dependency status, as delivered
 09-continuous-barriers-PROVENANCE.md                  source 09's repository inspection, sources and claim boundaries, as delivered
@@ -72,6 +92,7 @@ README.md                                             this guide
 13-quartic-landscapes-PROVENANCE.md                   source 13's provenance and build record, as delivered
 14-strict-contractions-SOURCE_AUDIT.md                source 14's repository and literature audit, as delivered
 17-reversible-equilibria-PROVENANCE.md                source 17's pin, inspected files and literature record, as delivered
+19-quantum-runs-SOURCE_AUDIT.md                       source 19's repository pin, literature checks and claim boundaries, as delivered
 code/07-quantum-mortality-Makefile                    source 07's make targets (pdf, check, clean), delivered paths
 code/07-quantum-mortality-quantum_diophantine.py      source 07's exact matrix arithmetic, Gram factors, instrument and certificate compiler
 code/07-quantum-mortality-run_checks.py               source 07's checks (32,418 assertions); writes examples/ and verification/
@@ -114,6 +135,11 @@ code/18-rational-tubes-quartic.py                     source 18's witness-carryi
 code/18-rational-tubes-run_checks.py                  source 18's checks (SymPy); writes ../results/
 code/18-rational-tubes-tubes.py                       source 18's exact integer tube generator and checker (standard library)
 code/18-rational-tubes-verify_json.py                 source 18's command-line checker for *_certificate.json files
+code/19-quantum-runs-Makefile                         source 19's make targets (all, pdf, check, clean), delivered paths, bare python
+code/19-quantum-runs-quantum_loops.py                 source 19's exact quantum-loop analysis: Hermitian coordinates, (G,P), moments, regulator (SymPy)
+code/19-quantum-runs-quartic.py                       source 19's seven-coordinate wires, quadratic residuals, bounded-order and all-moments certificates
+code/19-quantum-runs-run_checks.py                    source 19's checks (33,708 assertions, SymPy); rewrites ../examples/ and ../verification/
+code/19-quantum-runs-verify_certificate.py            source 19's independent checker (standard library; imports no generator code)
 data/07-quantum-mortality-build_summary.json          source 07's record of its 22-page PDF build
 data/07-quantum-mortality-check_results.json          source 07's recorded run: 32,418 checks in 26 categories
 data/07-quantum-mortality-four_dimensional_instrument.json  the seven integer numerator matrices of Section 19 (denominator 15)
@@ -195,10 +221,19 @@ data/18-rational-tubes-requirements.txt               sympy==1.14.0
 data/18-rational-tubes-specialized_constant_expanded.txt  the specialized quartic expanded (Section 168)
 data/18-rational-tubes-specialized_constant_quartic.json  its 15 residuals and 17-coordinate witness
 data/18-rational-tubes-verification_summary.json      source 18's recorded run (Python 3.13.5, SymPy 1.14.0)
+data/19-quantum-runs-build_info.json                  source 19's record of its own 27-page PDF build
+data/19-quantum-runs-coherent_qubit_all_moments_certificate.json  coherent qubit, all moments by recurrence: 14,258 witnesses, 11,657 residuals
+data/19-quantum-runs-coherent_qubit_certificate.json  coherent qubit, moment orders 0-3: 8,686 witnesses, 7,089 residuals
+data/19-quantum-runs-exact_results.json               the exact matrices, generating functions and moments of Section 182
+data/19-quantum-runs-partial_qubit_certificate.json   partially terminating qubit, orders 0-3: 8,686 witnesses, 7,089 residuals
+data/19-quantum-runs-requirements.txt                 sympy==1.14.0
+data/19-quantum-runs-results.json                     source 19's recorded run (33,708 assertions; Python 3.13.5, SymPy 1.14.0)
+data/19-quantum-runs-results.txt                      the same, as text
+data/19-quantum-runs-scalar_geometric_certificate.json  scalar geometric loop, orders 0-3: 262 witnesses, 213 residuals
 ```
 
-The delivered READMEs and PDFs of the twelve manuscripts, and the batch-62
-and batch-64 checksum manifests (`SHA256SUMS`, `SHA256SUMS.txt`,
+The delivered READMEs and PDFs of the thirteen manuscripts, and the batch-62,
+batch-64 and batch-76 checksum manifests (`SHA256SUMS`, `SHA256SUMS.txt`,
 `MANIFEST.json`, `CHECKSUMS.sha256`, `MANIFEST.sha256`), are not shipped: this README replaces the READMEs, and
 `article.pdf` is a build of the merged text. The batch-60 manuscripts and
 READMEs of 07 and 09 survive in `ccfb084ad` (inside the zips), as do their
@@ -214,6 +249,14 @@ Of batch 64's manuscript 05 (source 18), the 28 files beginning
 `18-rational-tubes-` (7 in `code/`, 21 in `data/`) are shipped; its manuscript,
 delivered README, 30-page PDF and checksum manifest `MANIFEST.sha256` are not,
 and survive in the arrival commit `7747fcfdd` (inside the zip).
+
+Of batch 76's manuscript 04 (source 19), the 15 files beginning
+`19-quantum-runs-` (1 at the report root, 5 in `code/`, 9 in `data/`) are
+shipped, byte-identical; its manuscript, delivered README, 27-page PDF and
+checksum manifest `MANIFEST.sha256` (18 of 18 entries verified at placement)
+are not, and survive in the arrival commit `6914ccca6`:
+`git show "6914ccca6:docs/incoming/Infinite_Quantum_Runs_Diophantine_Certificates.zip" > iqr.zip`
+recovers the archive.
 
 ## Labels and numbering
 
@@ -267,9 +310,18 @@ section labels `pqc:tu:sec:*` and three subsection labels (`sec:repo`,
 `pqc:tu:q:*`; `pqc:app:provenance64`; and labels on two unlabelled research
 questions of Part III, `pqc:cb:q:grids` ("Replace dense grids by small
 inductive regions") and `pqc:cb:q:tradeoff` ("Sharp radius–time
-tradeoffs"). The report now has **1018 labels** (895 + 85 + 38). No existing
-label was renamed or removed, and no existing label's number or bibliography
-number changed (checked against the `.aux` of a build of the previous text).
+tradeoffs"). The report then had 1018 labels (895 + 85 + 38).
+
+Batch 76 (Part IX) kept all 102 delivered labels of source 19, prefixed
+`pqc:iq:`; twelve of them (lemmas, propositions, corollaries) carry cleveref
+type hints. Writing Part IX added 17 labels: `pqc:part:quantumruns`;
+`pqc:iq:conv` and `pqc:iq:conv:relation`, `:letters`, `:macros`;
+`pqc:iq:cor:dimfour` (the written dimension-four corollary);
+`pqc:iq:sec:shipped` and `pqc:iq:sec:conclusion`; eight research-question labels
+`pqc:iq:q:*`; and `pqc:app:provenance76`. The report now has **1137 labels**
+(1018 + 102 + 17). No existing label was renamed or removed, and no existing
+label's number or bibliography number changed (checked against the `.aux` of a
+build of the previous text).
 
 Numbering: source 08's Section *n* is Section *n* + 1 here for *n* = 2–8
 (Part I), and its Sections 9, 10, 11 are Sections 11, 12, 33; source 07's
@@ -304,6 +356,12 @@ source 18's Section *n* is Section 153 + *n* (*n* = 1–14), and its appendices
 A and B are Sections 168 and 169 ("Source 18 appendix"). Its eleven research
 questions, a numbered list in the source, are research questions 93–103.
 
+Part IX is Sections 170–188: Section 170 is written (its conventions); source
+19's Section *n* is Section 170 + *n* (*n* = 1–15), and its appendices A–C are
+Sections 186–188 ("Source 19 appendix"). Its eight research questions Q1–Q8,
+a numbered list in the source, are research questions 104–111. The appendices
+of the report keep their letters A–F; Part IX's provenance is Appendix F.3.
+
 ## Setting and notation
 
 Witnesses are natural numbers, polynomials have integer coefficients and
@@ -321,8 +379,15 @@ is noisy, source 14's exact. Part VIII's Section 153.2 compares source 18's
 letters with Parts III and VII and lists its own double uses (`H` is a
 reciprocal time step, not a target; `N` counts Euler steps; `K`, `B` are
 integers; the rails `p_j` and species `q` are not the initial numerators and
-denominators `p_j/q_j`); it renames nothing. Renamed (Sections 2.4, 38.3,
-70.4, 110.2; no normalization changed):
+denominators `p_j/q_j`); it renames nothing. Part IX's Section 170.2 compares
+source 19's letters with Part II's and lists its own double uses: Part II's
+"dimension four" is a Hilbert dimension, source 19's `d`, while its `D = d²`
+is the size of the continuation matrix `T`; its `w` is the nontermination
+probability, not a word (words are `v`); its `ε` is a killing probability, not
+the empty word; its `A` is `I − T` except for the Kraus operators of Section 179;
+`G` is the group inverse, not a success floor; `B`, `M`, `r`, `a`, `m`, `e`,
+`h` and `ρ` have two or more meanings each. Renamed (Sections 2.4, 38.3,
+70.4, 110.2, 170.3; no normalization changed):
 
 | Here | Source | Where | Reason |
 |---|---|---|---|
@@ -338,6 +403,10 @@ denominators `p_j/q_j`); it renames nothing. Renamed (Sections 2.4, 38.3,
 | spin map `Φ`, evaluation `η` | 11: `Ψ`, `ρ` | Part VI | as in source 16 (`Φ(p,q)z = pzq⁻¹` equals 11's `pv q̄` on unit quaternions); Part III's `ρ` |
 | `ReLU(a)` | 14: `ρ(a)` (its ReLU macro) | Part VII | Part III's critical radius `ρ` |
 | `Hit^ex`, `Safe^ex` | 14: `Hit`, `Safe` | Part VII | Part III's noisy predicates |
+| `H^halt`, `H^halt_n` | 19: `H`, `H_n` (halting Kraus operator) | Part IX, Sections 179, 181, 182 | source 19's own `H = TG` |
+| `Λ` | 19: `H` (integral entry bound) | Part IX, Proposition 177.2, Corollary 177.4 | the same `H = TG`; `𝖧` is already the halt symbol |
+| `Pr` | 19: blackboard `P` | Part IX | this report's convention, as for source 13 |
+| `\boldsymbol` | 19: `\bm` | Part IX, Theorem 176.2 | `bm` is not loaded |
 
 ## What the report claims
 
@@ -502,15 +571,58 @@ counted, 42,044 gates, 126,099 witnesses, 118,099 residuals, not materialized)
 and a specialized constant-flow quartic with 17 witnesses and 15 residuals
 (Sections 163, 168).
 
+**Part IX (source 19).** For a time-homogeneous loop with a completely
+positive trace-nonincreasing continuation map `T` and exit maps on `d × d`
+matrices, all rational (`D = d²`): `T` is power bounded with semisimple
+peripheral spectrum (Lemma 173.1); the four equations `AG + P = I`,
+`GA + P = I`, `AP = 0`, `GP = 0` (`A = I − T`) have exactly one solution, the
+group inverse and the Cesàro projection, with no rank choice (Theorem 173.2);
+the nontermination probability is `w = ℓPx` (Corollary 173.3). Exit maps
+annihilate the peripheral spectrum (Lemma 174.1), so every normalized
+defective factorial moment is `b_{j,k} = e_j G(TG)^k x`, with completely
+positive stopped operator moments (Theorem 174.2); `ℓG(TG)^m x =
+E[C(L, m+1); L < ∞]`, which is `E L` only when `w = 0` (Proposition 174.3); all
+moments obey a `D`-term recurrence from `q(u) = det(I − uTG)`, certified by a
+Faddeev–LeVerrier circuit of size `O(D⁴ + rD²)` (Theorem 175.1). A rational
+number has exactly one seven-coordinate natural wire with a bounded Bézout
+coefficient (Lemma 176.1), and a rational system with unique solution compiles
+to a quartic with `7W + 5a + 3m` natural witnesses, `4W + 6a + 4m + e`
+quadratic residuals and exactly one witness per correct instance (Theorem
+176.2); the supplied dense schedule has `88D³ + 9D² + 14` witnesses and
+`72D³ + 7D² + 10` residuals (Section 176.3). Rank-stratum formulas for `G`
+and `P` from adjugate coefficients and explicit height bounds (Propositions
+177.1–177.2); uniform almost-sure termination iff `P = 0` iff `ρ(T) < 1`, with
+`E L ≤ B` and `Pr(L > 2Bk) ≤ 2^{−k}` (Proposition 177.3, Corollary 177.4). The
+weak clock `T_ε = (1−ε)T` has the exact resolvent `ε⁻¹P + G(I + εTG)⁻¹`, so
+`E L_ε = w/ε + Σ (−ε)^m a*_m` converges (Theorem 178.1), `εL_ε` tends to
+`(1−w)δ₀ + w·Exp(1)` with moments `w·k!` (Theorem 178.2), and `ε(y)` has an
+all-orders rational inverse expansion. The clock `C_i = (3/5)A_i`,
+`H^halt = (4/5)I` on the Eisert–Müller–Gogolin instruments (dimension 15,
+nine continuation outcomes and one halting outcome) gives every device the law
+`Pr(N = n) = (16/25)(9/25)^n` while forbidden-record existence stays
+undecidable (Theorem 179.2), with no computable bound on the shortest one
+(Corollary 179.3); with Part II's Theorem 18.2 the same holds in dimension four
+with seven continuation outcomes (written Corollary 179.4, conditional on
+Part II). The unrestricted reading of Lardizabal's generalized-inverse
+rationality conjecture fails already for a two-state chain (Proposition
+180.1). Computably scheduled one-dimensional loops have no uniform existential
+Diophantine graph of their exact exit probabilities (Proposition 181.1).
+Examples: a scalar geometric loop, a partially terminating qubit (`w = 1/2`),
+a coherent qubit with `E L = 285/128`, and a qutrit whose `Tⁿx` does not
+converge (`w = 5/9`); four certificates with 262/213, 8,686/7,089 (twice) and
+14,258/11,657 witnesses/residuals (Sections 182–183).
+
 ## What the report does not claim
 
 - **No formalization.** No new Lean or Rocq proof was compiled and no
   proof-assistant axiom audit was run for any result here; the formalization
-  sections (35.1–35.3, 51, 62, 102, 122, 133, 142.3, 165) are plans, and 09's
+  sections (35.1–35.3, 51, 62, 102, 122, 133, 142.3, 165, 183.1) are plans, and 09's
   proposed `RobustReachability` and 18's `PolynomialFlow`/`KineticFlow` module names are not repository declarations.
+  Source 19 proposes no module names; its research question 111 asks for the
+  Lean compiler.
 - **No explicit universal polynomial.** None of the fixed MRDP polynomials
-  (Theorems 4.3, 22.1, 26.3, 160.1, Corollaries 29.2, 160.2, and the MRDP statements of
-  Parts V–VII) is expanded or given a numerical witness or operation count.
+  (Theorems 4.3, 22.1, 26.3, 160.1, Corollaries 29.2, 160.2, the MRDP statements of
+  Parts V–VII, and Part IX's forbidden-record representation) is expanded or given a numerical witness or operation count.
   Standard circuit quadratization gives fixed degree at most four where
   stated, including Corollary 160.2; it does not control the multiplicity
   of the original MRDP witnesses. The explicit polynomials are size-indexed families; their
@@ -559,7 +671,34 @@ and a specialized constant-flow quartic with 17 witnesses and 15 residuals
   bounds (Euler steps, `M`, `L`, species and degree) are construction bounds,
   not optimal; its Euler scheme is not claimed to improve on validated
   integration (Immler) and its semidecision procedure is not a δ-decision
-  procedure.
+  procedure. Of batch 76: 19 credits generalized inverses in Markov-chain
+  hitting-time theory, resolvent generating functions, finite-dimensional
+  quantum expected-runtime methods (Liu–Zhou–Barthe–Ying, including the
+  equivalence of almost-sure termination and finite expected time),
+  Cayley–Hamilton, Faddeev–LeVerrier and MRDP as existing mathematics and
+  imports the Eisert–Müller–Gogolin theorem; it establishes no priority for the
+  assembled construction; its dense-core counts are exact for the supplied
+  schedule, not lower bounds or optima (the abstract's "a dense inverse
+  certificate has exactly 88D³ + 9D² + 14 natural witnesses" means that
+  schedule); its tail bound is deliberately crude; and its counterexample
+  concerns only the unrestricted quantifier over generalized inverses, not a
+  canonical inverse, a rational selection algorithm or Lardizabal's
+  hitting-time theorems, and it does not claim that this reading was never
+  noticed.
+- **Part IX's limits (source 19).** Inputs are exact rational coordinates; the
+  loop is finite-dimensional and time-homogeneous, with no unbounded classical
+  memory; physical validity (complete positivity, trace nonincrease) is a
+  promise to the compiler, not certified. The all-moments interface certifies
+  a finite recurrence, not a polynomial graph in a variable moment index. The
+  uniqueness comes from a finite linear-algebra object and is not a
+  single-fold or finite-fold MRDP result; the undecidable forbidden-record
+  problem has an MRDP polynomial with no claimed explicit form, arity or
+  witness count. The geometric clock shows no physical hypercomputation and no
+  limitation of approximate or restricted support questions; the scheduled
+  boundary is a representation boundary, not a quantum advantage. Nothing
+  here compares with or improves the universal-operation counts of
+  `Computability/HilbertTenthProblem`. Corollary 179.4 is only as strong as
+  Part II's unrefereed Theorem 18.2.
 - **Part VIII's limits (source 18).** Local uniqueness of the tube witness
   (fixed `N, R, H, D`) is not a single-fold representation of any r.e. set;
   the fixed quartic comes from MRDP and standard degree reduction and has no
@@ -608,7 +747,12 @@ and a specialized constant-flow quartic with 17 witnesses and 15 residuals
   (eight accepted tubes, six mutated and two further candidates rejected, 4,020
   signed Euclidean and 4,020 ceiling divisions, five generic and one
   specialized quartic, twelve chemical lifts) tests its implementation only;
-  a rejected candidate is not a proof of nonreachability.
+  a rejected candidate is not a proof of nonreachability. Source 19's 33,708
+  assertions include 31,892 single-coordinate mutation rejections of its four
+  exported witnesses (not 31,892 quantum devices); its geometric-support check
+  uses a small test instrument, not the undecidable 15-dimensional family; and
+  its checker checks a supplied polynomial and witness, not the theorem that
+  the generator always builds the right polynomial.
 
 ## Relation to the formal project and to neighbouring reports
 
@@ -651,7 +795,16 @@ description of the guide is current. ProveIt has no formal development of
 ordinary differential equations, flow reachability, validated integration or
 reaction kinetics; source 18's proposed `PolynomialFlow.*` and
 `KineticFlow.*` modules, like source 09's `RobustReachability`, do not exist
-(Section 165 suggests one namespace for both).
+(Section 165 suggests one namespace for both). Source 19 (Part IX) pins
+`c58206ca1`, reads `Diophantine/MRDP.lean` there and describes it accurately
+(one polynomial and witness dimension chosen before the input, input zero
+included: `Diophantine.mrdp`, `Diophantine.mrdp_iff`); that file and
+`Lean/MRDP.md` are unchanged from the pin to the placement commit `2a04b60f2`,
+while the project README, of which it read the opening, has changed since.
+ProveIt has no formal development of quantum channels, group inverses or the
+Faddeev–LeVerrier recursion, and none of Part IX is formalized; its
+formalization path (Section 183.1) is a plan. Part IX makes no claim about the
+project's universal-operation counts.
 
 The sibling report
 [`canonical-diophantine-certificates`](../canonical-diophantine-certificates/README.md),
@@ -696,7 +849,19 @@ realizers, source 12); it bears on 5, 21, 24, 27, 29 and 32; it does not
 answer 26. Batch 64 (source 18) partly answers 11 (open first hits of
 rational polynomial flows; probabilities, deadlines, Zeno and equality events
 stay open) and bears on 25, 27, 30 and 31. Each has a dated note after it, and
-Section 36.4 lists them.
+Section 36.4 lists them. Batch 76 (source 19) answers none of them and bears,
+by analogy, on 6 (operator certificates: rank-free group-inverse and
+characteristic-polynomial data replace spectral bases, for a different
+operator) and 5 (exact infinite histories: certified finite-path statistics of
+time-homogeneous loops, and no uniform graph under computable schedules); both
+have a dated note of 2 October 2026. In the other direction Part II answers
+source 19's question 108 in dimension four with seven continuation outcomes
+(Corollary 179.4, conditional on Theorem 18.2; the question stays open below
+that). Dated pointers to Part IX were also added after Part II's Corollary 18.4,
+Part V's remark on finite Markov chains (Section 48) and Part VI's Theorem
+72.3. Source 19 shares no theorem with the sibling reports
+`canonical-diophantine-certificates` and `liveness-beyond-halting`, and they
+get no note.
 
 ## Build
 
@@ -709,19 +874,22 @@ No external figures, bibliography database or downloads are needed.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build (MiKTeX, pdfTeX) has 309 Letter pages, with no errors,
+The recorded build (MiKTeX, pdfTeX) has 339 Letter pages, with no errors,
 undefined references or citations, multiply defined labels, duplicate
 destinations, LaTeX or package warnings, or overfull boxes; there are 17
 underfull boxes, in narrow table cells and in a few source paragraphs. All
 fonts are embedded Type 1 (the 17 underfull boxes are those of the build
-before Part VIII, which added none). Parts V–VII
+before Part VIII; Parts VIII and IX added none). Part IX shortened the title
+page's list of batches and manuscript numbers, which the source table above
+gives in full, so that the title page still fits one page. Parts V–VII
 widened the contents' section-number and page-number columns (three-digit
 numbers). Source 07's `data/07-quantum-mortality-build_summary.json`, source
 08's `data/08-probabilistic-laws-pdf_preflight.json`, source 10's
 `data/10-coherent-circuits-BUILD_INFO.txt`, source 12's
 `data/12-twoadic-contraction-BUILD_RECEIPT.json` and source 17's
-`data/17-reversible-equilibria-pdf_preflight.json`, and source 18's
-`data/18-rational-tubes-VERIFICATION_RECEIPT.txt` describe the delivered
+`data/17-reversible-equilibria-pdf_preflight.json`, source 18's
+`data/18-rational-tubes-VERIFICATION_RECEIPT.txt` and source 19's
+`data/19-quantum-runs-build_info.json` describe the delivered
 PDFs, which are not shipped; 07's `STATUS.md`, 09's and 13's `PROVENANCE.md`,
 12's `PROOF_STATUS.md` and 14's `SOURCE_AUDIT.md` likewise report builds and
 page inspections of their own PDFs. These production checks do not verify the
@@ -809,6 +977,21 @@ for f in tubes quartic kinetic run_checks constant_example verify_json; do cp co
   && py code/verify_json.py results/*_certificate.json)   # writes results/ (19 files); prints ACCEPT lines
 ```
 
+Batch 76 (source 19; SymPy 1.14.0 for `run_checks.py`, standard library for
+`verify_certificate.py`; use `py` or `uv`, not bare `python`, on Windows; set
+`PYTHONUTF8=1`). `run_checks.py` writes `examples/` and `verification/` in
+the directory above its own, so the copy must keep the delivered `code/`
+layout and names (it imports `quantum_loops`, `quartic` and
+`verify_certificate`):
+
+```sh
+mkdir -p /tmp/r19/code /tmp/r19/shipped
+for f in quantum_loops quartic verify_certificate run_checks; do cp code/19-quantum-runs-$f.py /tmp/r19/code/$f.py; done
+cp data/19-quantum-runs-*_certificate.json /tmp/r19/shipped/
+(cd /tmp/r19 && uv run --no-project --with sympy==1.14.0 python code/run_checks.py \
+  && for f in shipped/*.json; do py code/verify_certificate.py "$f"; done)   # writes examples/ (5), verification/ (2); prints JSON PASS reports
+```
+
 Compare `/tmp/r07/examples/<f>.json` and `/tmp/r07/verification/check_results.json`
 with `data/07-quantum-mortality-<f>.json`, `/tmp/r08/artifacts/<f>` with
 `data/08-probabilistic-laws-<f>`, and `/tmp/r09/results/<f>` with
@@ -840,9 +1023,23 @@ another Python changes those fields. The JSON files contain integers larger
 than 2^53; Python's `json` keeps them exact, but tools that parse JSON numbers
 as doubles do not.
 
+The source-19 recipe was run on 2 October 2026 in a copy (Python 3.13.5 and
+SymPy 1.14.0 under `uv`, `PYTHONUTF8=1`): `run_checks.py` printed
+`PASS: 33708 exact assertions` with the 29 category counts of
+`data/19-quantum-runs-results.txt`; its five `examples/` files equal the shipped
+`data/19-quantum-runs-*.json` apart from CRLF line endings, and its
+`verification/results.json` and `results.txt` differ from the shipped ones only
+in the four recorded certificate sizes (`bytes`), each one byte larger because
+of the CRLF line endings. Both reports record the interpreter and SymPy
+versions, so another Python changes those fields. The checker passed all four
+shipped certificates (213 + 7,089 + 7,089 + 11,657 = 26,048 residuals). The
+`uv run` step, environment set-up included, took about four minutes of wall
+time on a loaded machine; the checker takes seconds.
+
 The delivered Makefiles (`code/07-quantum-mortality-Makefile`,
 `code/08-probabilistic-laws-Makefile`, `code/14-strict-contractions-Makefile`,
-`code/17-reversible-equilibria-Makefile`, `code/18-rational-tubes-Makefile`) and build scripts
+`code/17-reversible-equilibria-Makefile`, `code/18-rational-tubes-Makefile`,
+`code/19-quantum-runs-Makefile`) and build scripts
 (`code/10-coherent-circuits-build.py`, `code/11-rational-rotations-build.sh`,
 `code/12-twoadic-contraction-build.sh`, `code/13-quartic-landscapes-build.sh`,
 `code/16-dense-rotations-build.sh`) name delivered paths (`article.tex`,
@@ -853,7 +1050,10 @@ would build the merged report instead), and 11's and 16's build scripts rerun
 the checks first, rewriting their results in place. 08's `clean` target
 deletes `article.aux`, `article.log`, `article.out`, `article.toc` and
 `code/__pycache__`; 14's and 17's `clean` targets delete their manuscripts'
-auxiliary files.
+auxiliary files, and so does 19's (`article.aux`, `.log`, `.out`, `.toc`,
+`.fdb_latexmk`, `.fls`, and `code/__pycache__`). Source 19's Makefile calls
+bare `python`, and its `check` target runs `run_checks.py`, which rewrites the
+recorded `examples/` and `verification/` files in place.
 
 Small API examples from the delivered READMEs, run from the copies above:
 
@@ -932,6 +1132,10 @@ Delivered path → shipped path (all byte-identical):
 | 18 | `Makefile`, `code/<f>.py` (6) | `code/18-rational-tubes-<name>` |
 | 18 | `results/<f>` (19), `requirements.txt` | `data/18-rational-tubes-<f>` |
 | 18 | `article.tex`, `README.md`, `article.pdf`, `MANIFEST.sha256` | not shipped (in `7747fcfdd`) |
+| 19 | `Makefile`, `code/<f>.py` (4) | `code/19-quantum-runs-<name>` |
+| 19 | `examples/<f>.json` (5), `verification/<f>` (3), `requirements.txt` | `data/19-quantum-runs-<f>` |
+| 19 | `SOURCE_AUDIT.md` | `19-quantum-runs-SOURCE_AUDIT.md` |
+| 19 | `article.tex`, `README.md`, `article.pdf`, `MANIFEST.sha256` | not shipped (in `6914ccca6`) |
 
 Shipped files whose text still uses delivered names or names unshipped
 files: `07-quantum-mortality-STATUS.md` (`code/run_checks.py`,
@@ -963,7 +1167,22 @@ directory would be the report root). `data/13-quartic-landscapes-test_output.txt
 delivery shipped the same JSON under both names.
 `data/08-probabilistic-laws-requirements.txt` and
 `data/17-reversible-equilibria-requirements.txt` are generic `sympy==1.14.0`
-files.
+files, as are `data/18-rational-tubes-requirements.txt` and
+`data/19-quantum-runs-requirements.txt` (the same blob as 08's).
+
+Source 19's shipped files that still use delivered names or name unshipped
+files: its Makefile (`python`, `code/run_checks.py`,
+`examples/coherent_qubit_all_moments_certificate.json` and the unshipped
+`article.tex`); every one of its programs (delivered module names; `run_checks.py`
+writes `examples/` and `verification/` beside `code/`, which in this directory
+would be the report root, and its docstring speaks of "three" horizon-free
+quartic certificates although it exports four); `data/19-quantum-runs-results.json`
+and `results.txt` (the certificates' delivered file names);
+`data/19-quantum-runs-build_info.json` (its unshipped 27-page PDF); and
+`19-quantum-runs-SOURCE_AUDIT.md` (the article, `SHA-256` hashes of the
+unshipped manifest, and the inspected repository paths at `c58206ca1`). The
+audit and source 19's bibliography place Lardizabal's conjecture in "Section
+3"; it is item 3 of the overview in his Introduction (the note in Section 180).
 
 In Parts I–IV of the article the file names were changed to the shipped
 names; 08's archive table (Appendix A.1) and 07's and 09's reproduction
@@ -1083,3 +1302,54 @@ in each source's implementation section gives the shipped names (for source
   (`f608f1cb3`); the guide is unchanged between the pins.
 - The write used the pristine manuscript from the archive in `7747fcfdd` and
   the files staged in `3025c15df`.
+
+**Batch 76 (Part IX, Appendix F.3).**
+
+- **Placement.** Source 19 (batch 76, manuscript 04; pin `c58206ca1`, which
+  follows Part VIII; arrival `6914ccca6`; placed in `2a04b60f2`) names this
+  report's README and source 10's audit as the programme it continues and
+  builds on Part II's benchmark and Part VI's quantifier boundary; its
+  re-proofs and the answer to its question 108 are internal pointers here. It
+  is Part IX, after Part VIII, so that nothing earlier renumbers (checked
+  against the `.aux`). A separate report was considered, because this one
+  already had eight Parts; the rule that a manuscript continuing a report goes
+  to that report decided it.
+- **Duplicates** (pointers, no second routes, because the arguments do not
+  differ): Corollary 179.3 = the argument of Corollary 18.4; the c.e./MRDP
+  paragraph after it = Section 22.1 and Theorem 22.1; the lower bound of
+  Proposition 181.1 = the probability-zero endpoint of Parts I and V. Theorem
+  179.1 is Eisert–Müller–Gogolin, already quoted in Part II.
+- **Extensions.** Theorem 176.2 extends Theorem 72.3 (integer to rational
+  wires) and is retitled *Canonical rational quartic compilation*, since
+  source 19 used Theorem 72.3's title; Theorems 174.2 and 175.1 extend Part V's
+  finite-Markov-chain remark (Section 48).
+- **Written text** (`[write]`): Section 170 (relation to Parts I–VIII, the
+  three pointers and two extensions, letter table and false readings, renames,
+  labels, abstract and status statement, with a note that the abstract's dense
+  count is for the supplied schedule); Corollary 179.4 (dimension four with
+  seven continuation outcomes, conditional on Theorem 18.2) and the dated note
+  re-scoping question 108; the note after Theorem 179.1; the parallel with Part
+  VI's three interfaces (Section 181); the check of Lardizabal's sentence
+  (Section 180); Section 183.2 (shipped files, rerun); pointers after source
+  19's questions; the replaced citations of this report's README and source
+  10's audit. In Parts I–VIII: title page, Sections 1.3 and 1.5, dated notes
+  after Corollary 18.4, research questions 5 and 6, Part V's remark on finite
+  Markov chains, Theorem 72.3's discussion, and a bullet in Section 36.4.
+- **Lardizabal checked.** arXiv:1907.01313v2 was read on 2 October 2026: the
+  conjecture is a parenthetical in item 3 of the overview in Section 1, about
+  his Example 8.2; his generalized inverses are the `AA⁻A = A` ones of
+  Proposition 180.1. The note in Section 180 says so and observes that the
+  same construction applies to every trace-preserving family; source 19's
+  hedges are kept.
+- **Form.** Status statement printed as a paragraph; the eight listed
+  questions as research question environments with unchanged text;
+  appendices as "Source 19 appendix" sections, referred to as Sections; two
+  line breaks lost in the delivered display (172.6) restored; the title-page
+  wording (addressee, AI authorship) is recorded only in Appendix F.3.
+- **Bibliography**: source 19's four entries appended (96 in all now) with keys
+  `b76s19-*`, except Eisert–Müller–Gogolin, which is the existing `emg`, and
+  its entry for this report's README, omitted. Its pinned `MRDP.lean` entry
+  (`c58206ca1`) is kept apart from 08's (`f608f1cb3`); the file is unchanged
+  between the pins.
+- The write used the pristine manuscript from the archive in `6914ccca6` and
+  the files staged in `2a04b60f2`.

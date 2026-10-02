@@ -12,7 +12,7 @@
 \usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
-\hypersetup{pdftitle={Diophantine Laws of Probabilistic, Quantum and Continuous Computation},pdfauthor={Research report merged from twelve AI-assisted manuscripts prepared for Vladimir Reshetnikov},pdfsubject={Normalization budgets, quantum mortality, continuous robust safety, exact probabilities, exact gates, contracting dynamics, polynomial flows, mass-action kinetics, Diophantine certificates}}
+\hypersetup{pdftitle={Diophantine Laws of Probabilistic, Quantum and Continuous Computation},pdfauthor={Research report merged from thirteen AI-assisted manuscripts prepared for Vladimir Reshetnikov},pdfsubject={Normalization budgets, quantum mortality, continuous robust safety, exact probabilities, exact gates, contracting dynamics, polynomial flows, mass-action kinetics, quantum stopping laws, Diophantine certificates}}
 \definecolor{accent}{RGB}{30,62,88}
 \definecolor{light}{RGB}{241,245,248}
 \pagestyle{fancy}
@@ -176,6 +176,10 @@
 % --- batch 64, Part VIII (source 18); see Section pqc:tu:conv:macros ---
 \newcommand{\Cert}{\operatorname{Cert}}
 \newcommand{\ee}{\mathrm e}
+% --- batch 76, Part IX (source 19); see Section pqc:iq:conv:macros ---
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\cT}{\mathcal T}
 \makeatletter
 \renewcommand{\@pnumwidth}{2.2em}
 \renewcommand{\@tocrmarg}{3em}
@@ -193,18 +197,18 @@
 \begin{titlepage}
 \centering
 {\small PROVEIT RESEARCH-REPORT COLLECTION \quad / \quad HILBERT'S TENTH PROBLEM\par}
-\vspace{0.5cm}
+\vspace{0.3cm}
 {\LARGE\bfseries Diophantine Laws of Probabilistic,\\[0.15cm]
 Quantum and Continuous Computation\par}
-\vspace{0.45cm}
+\vspace{0.3cm}
 {\large Normalization budgets and unique quartic certificates,\\
 four-dimensional quantum mortality,
 a continuous three-outcome trichotomy,\\
-exact probabilities, exact gates, contracting dynamics and polynomial flows\par}
-\vspace{0.6cm}
-{\normalsize Research report merged from twelve manuscripts prepared for
-Vladimir Reshetnikov\\ (batch~60, manuscripts 07--09; batch~62,
-manuscripts 06--09 and 11--14; batch~64, manuscript 05; all dated 30 September 2026)\par}
+exact probabilities and gates, contracting dynamics, polynomial flows, stopping laws\par}
+\vspace{0.4cm}
+{\normalsize Research report merged from thirteen manuscripts prepared for
+Vladimir Reshetnikov\\ (batches~60, 62, 64 and~76; dated 30 September 2026,
+the last 2 October 2026)\par}
 {\small AI-assisted mathematical development and reproducible
 exact-arithmetic implementations; unrefereed\par}
 \vspace{0.3cm}
@@ -245,26 +249,29 @@ whose exact transients are c.e.-complete, and exact rational neural networks
 whose precision is unbounded memory (VII). Part~VIII (batch~64) certifies
 open-target visits of rational polynomial flows by canonical integer tubes and
 unique-witness quartics, and lifts the flows to global mass-action kinetics.
+Part~IX (batch~76) certifies the stopping statistics of rational
+finite-dimensional quantum loops by unique-witness quartics.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.93\textwidth}
 \footnotesize
-\textbf{Status.} \wtag\ All twelve manuscripts are AI-assisted and
+\textbf{Status.} \wtag\ All thirteen manuscripts are AI-assisted and
 unrefereed. They give ordinary mathematical proofs, apart from the external
 inputs they name (MRDP; Neary's six-generator matrix-mortality theorem;
 Meyer's and Lagrange's theorems on quadratic forms; the existence of a
 universal Turing machine; the max--min representation of piecewise-affine
 functions; in Parts~V--VII also Higman's embedding theorem, Mihailova's
 construction, Tarski's decision method, Minsky's counter machines and the
-Adamczewski--Bugeaud theorem; in Part~VIII standard ODE existence theory), and finite exact-arithmetic checks. No result of this report is
+Adamczewski--Bugeaud theorem; in Part~VIII standard ODE existence theory; in
+Part~IX the Eisert--M\"uller--Gogolin theorem), and finite exact-arithmetic checks. No result of this report is
 formalized in Lean or Rocq; placement beside ProveIt's Lean project on
 Hilbert's tenth problem confers no formal status
 (Section~\ref{pqc:conv:formal}). No historical priority, minimal dimension
 or optimal constant is claimed, and no general single-fold or finite-fold
 MRDP question is settled. The status statements of the three batch-60
 sources are printed in full in Section~\ref{pqc:conv:status}, and those of the
-nine later sources at the head of Parts~V--VIII.
+ten later sources at the head of Parts~V--IX.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -415,6 +422,17 @@ validated integration or chemical reaction kinetics; the
 \code{PolynomialFlow} and \code{KineticFlow} modules that source~18 proposes do
 not exist.
 
+\wtag\ The batch-76 source of Part~IX (source~19) reads
+\code{Diophantine/MRDP.lean} at the pin \code{c58206ca1} and describes it
+accurately: one integer polynomial and one witness dimension, chosen before the
+input, with input zero included (\code{Diophantine.mrdp},
+\code{Diophantine.mrdp_iff}). That file and the MRDP guide are unchanged from the
+pin to the placement commit \code{2a04b60f2}; the project README, of which
+source~19 read the opening, has changed since. It ships no Lean or Rocq, and
+ProveIt has no formal development of quantum channels, group inverses or the
+Faddeev--LeVerrier recursion; the three formalization layers of
+Section~\ref{pqc:iq:sec:verification} are a plan.
+
 All three manuscripts inspected ProveIt at \snapshot{}. Nothing under
 \code{Computability/} changed between that commit and the placement commit
 \code{7498484af}, so every repository statement quoted in this report is
@@ -557,6 +575,21 @@ trajectories, which it makes explicit, complete and counted; this is credited
 where it is printed. Part~VIII opens with its conventions
 (Section~\ref{pqc:tu:conv}), and its provenance is
 Appendix~\ref{pqc:app:provenance64}.
+
+\paragraph{\wtag\ Batch 76: Part IX.}
+One manuscript of batch~76 (manuscript~04), numbered here source~19 by its
+shipped file prefix, is printed in full as Part~IX, after Part~VIII, so that
+nothing earlier renumbers: \emph{Infinite Quantum Runs, Finite Diophantine
+Certificates}. It certifies the whole stopping law of a time-homogeneous
+finite-dimensional quantum loop with unique natural witnesses, and wraps
+Part~II's benchmark instruments in a geometric clock. Three of its arguments
+repeat Part~II's no-bound corollary, Part~II's MRDP paragraph and the
+probability-zero endpoint of Parts~I and~V, and are printed as pointers; it
+extends Part~VI's canonical quartic compilation to rational wires; and Part~II's
+Theorem~\ref{pqc:qm:thm:47} answers one of its questions in dimension four
+(Corollary~\ref{pqc:iq:cor:dimfour}). Part~IX opens with its conventions
+(Section~\ref{pqc:iq:conv}), and its provenance is
+Appendix~\ref{pqc:app:provenance76}.
 
 \paragraph{Abstract of manuscript 08.}
 The statement that the halting set of an effective computational substrate is
@@ -2384,6 +2417,14 @@ If such a bound were available, calculate it and test every nonempty word up to 
 \end{proof}
 
 In particular, no total computable bound depending only on the bit length of the instrument description can serve this purpose. This concerns a bound guaranteed for every positive instance. It does not exclude useful bounds for restricted matrix classes or for individual examples with separately established invariants.
+
+\par\noindent\wtag\ \emph{Batch-76 note (2 October 2026).} Part~IX adds one
+halting outcome $\frac45I$ to such instruments and scales the others by
+$\frac35$: every instrument then has the same geometric length law, and
+Theorem~\ref{pqc:qm:thm:47} keeps the zero-record question undecidable in
+dimension four with seven continuation outcomes
+(Corollary~\ref{pqc:iq:cor:dimfour}); its no-bound
+Corollary~\ref{pqc:iq:cor:nobound} is the argument above.
 
 \section{A fully explicit interference example}
 \label{pqc:qm:sec:example}
@@ -4493,6 +4534,14 @@ problem, not an automatic consequence of those certificates.
 shows that a periodic binary environment gives a rational stationary root mass,
 computed exactly as the fixed point of an affine map. That is a different
 quantity from $G_\infty$.
+\par\noindent\wtag\ \emph{Batch-76 note (2 October 2026).} Bears on it; not
+answered. For time-homogeneous finite-dimensional quantum loops, source~19
+certifies every finite-path statistic of the infinite run by one finite object
+(Theorems~\ref{pqc:iq:thm:moments} and~\ref{pqc:iq:thm:allmoments}), and its
+Proposition~\ref{pqc:iq:prop:scheduled} shows that an arbitrary computable
+schedule destroys any uniform Diophantine graph even in dimension one. Its
+Question~\ref{pqc:iq:q:schedules} asks this question's ``periodic
+transformations, linear recurrences'' for loops. $G_\infty$ is not treated.
 
 \begin{question}[Operator certificates with controlled multiplicity]\label{pqc:q:operator}
 Can an explicit quartic natural-witness system certify the optimal factors
@@ -4503,6 +4552,15 @@ minor or characteristic-polynomial data replace arbitrary spectral bases?
 The scalar earliest-maximum rule has no immediate analogue for degenerate
 eigenspaces. Any proposed uniqueness theorem must address that issue rather
 than merely add spectral witnesses.
+\par\noindent\wtag\ \emph{Batch-76 note (2 October 2026).} Bears on it, by analogy;
+not answered. For a different operator, the group inverse $G$ and fixed-point
+projection $P$ of $I-T$ for a quantum loop, source~19 replaces spectral bases by
+fixed rank-free data: four quadratic identities with one solution
+(Theorem~\ref{pqc:iq:thm:group}), adjugate coefficients on each rank stratum
+(Proposition~\ref{pqc:iq:prop:rank}) and the Faddeev--LeVerrier
+characteristic coefficients (Theorem~\ref{pqc:iq:thm:allmoments}), with a
+unique-witness quartic. The optimal factors $R_s$ and their support changes are
+not treated.
 
 \begin{question}[Quantum front ends with structural compression]\label{pqc:q:frontend}
 Which circuit classes admit polynomial-size exact Diophantine certificates
@@ -4931,6 +4989,15 @@ Questions~\ref{pqc:q:continuous}, \ref{pqc:q:direct}, \ref{pqc:q:smaller},
 own questions. Its realizations are exact, discontinuous and carry no noise
 radius, so Part~III's robustness statements have no counterpart there; neither
 report proves a theorem of the other.
+\item \wtag\ \emph{Batch 76: Part IX} (dated notes of 2 October 2026):
+source~19 answers none of the questions of Parts~I--VIII. It bears, by
+analogy, on Questions~\ref{pqc:q:operator} and~\ref{pqc:q:histories}, and its
+own questions point to Questions~\ref{pqc:q:smaller}, \ref{pqc:qm:q:smaller},
+\ref{pqc:q:kernel}, \ref{pqc:tu:q:kernel}, \ref{pqc:tu:q:optimization} and
+\ref{pqc:q:instruments}. In the other direction, Part~II's
+Theorem~\ref{pqc:qm:thm:47} answers source~19's Question~\ref{pqc:iq:q:clocks}
+in dimension four with seven continuation outcomes
+(Corollary~\ref{pqc:iq:cor:dimfour}); the question is re-scoped below that.
 \end{itemize}
 
 \section{Conclusions}
@@ -6213,6 +6280,15 @@ nondeterministic schedulers changes the problem substantially: work on
 positive almost-sure termination with such schedulers reaches
 $\Pi^1_1$-completeness \cite{b62s13-majumdar2023}. The scheduler-free
 $\sigtwo$ classification must not be carried over to that different model.
+
+\wtag\ \emph{Batch-76 note (2 October 2026).} Part~IX makes the first sentence
+of the paragraph above explicit and quantum: for a rational,
+finite-dimensional, time-homogeneous quantum loop, exit probabilities, stopped
+output states and all finite-path moments are rational, given by four quadratic
+matrix identities and a finite recurrence, and certified by a quartic with a
+unique natural witness (Sections~\ref{pqc:iq:sec:group}--\ref{pqc:iq:sec:compiler}).
+Its Proposition~\ref{pqc:iq:prop:scheduled} adds that a computable schedule, even
+in dimension one, already brings back the general computability phenomena.
 
 \section{Worked examples and exact artifacts}\label{pqc:ql:sec:examples}
 \srcmark{13}
@@ -8495,6 +8571,12 @@ When desired, a constant of bit length $b$ can instead be constructed from
 $0,1$ with $O(b)$ doubling and addition gates. The latter preserves quadratic
 constraints and canonicality. It does not establish a new optimum for the
 number of variables or coefficients.
+
+\wtag\ \emph{Batch-76 note (2 October 2026).} Part~IX's
+Theorem~\ref{pqc:iq:thm:quartic} (source~19, printed as ``Canonical rational
+quartic compilation'') extends Theorem~\ref{pqc:cc:thm:wires} to rational wires:
+seven natural coordinates per wire, with a bounded B\'ezout coefficient, keep
+one natural encoding of each rational number and so a unique witness.
 
 \begin{remark}[Why a general DAG has no small height bound]
 A chain $z_0=2$, $z_{i+1}=z_i^2$ has $z_i=2^{2^i}$. The bit length is exponential
@@ -19403,6 +19485,1981 @@ shipped names; the symbols of this table are compared with those of Parts~III
 and~VII in Section~\ref{pqc:tu:conv:letters}.
 
 
+\part{Exact stopping laws of finite quantum loops: canonical group-inverse certificates and geometric clocks (source 19)}
+\label{pqc:part:quantumruns}
+
+\section{\wtag\ Conventions of Part IX}
+\label{pqc:iq:conv}
+
+Part~IX prints one manuscript of batch~76 in full: source~19,
+\emph{Infinite Quantum Runs, Finite Diophantine Certificates: canonical group
+inverses, all stopping-time moments, and geometric clocks with undecidable
+supports} (batch-76 manuscript~04, dated 2 October 2026, pin \code{c58206ca1}).
+For a rational, finite-dimensional, time-homogeneous quantum loop it
+characterizes the group inverse $G=(I-T)^\#$ and the Ces\`aro projection $P$ by
+four quadratic matrix identities with a unique solution
+(Theorem~\ref{pqc:iq:thm:group}); derives from them the exit probabilities,
+stopped output states and every finite-path factorial moment
+(Theorem~\ref{pqc:iq:thm:moments}) and a finite recurrence for all of them
+(Theorem~\ref{pqc:iq:thm:allmoments}); compiles these into one quartic with a
+unique natural witness through seven-coordinate canonical rational wires
+(Lemma~\ref{pqc:iq:lem:wire}, Theorem~\ref{pqc:iq:thm:quartic}); gives a
+convergent Laurent law for a weak killing clock (Theorems~\ref{pqc:iq:thm:regulator}
+and~\ref{pqc:iq:thm:mixture}); wraps the Eisert--M\"uller--Gogolin instruments
+in a geometric clock that fixes the whole runtime law while keeping the existence
+of a forbidden completed record undecidable (Theorem~\ref{pqc:iq:thm:geometric});
+and refutes the unrestricted reading of a generalized-inverse rationality
+conjecture (Proposition~\ref{pqc:iq:prop:counterexample}). Everything in
+Sections~\ref{pqc:iq:sec:scope}--\ref{pqc:iq:app:audit} is source~19's text
+except the passages marked \wtag.
+
+\subsection{Relation to Parts I--VIII}
+\label{pqc:iq:conv:relation}
+Source~19 names this report (its README, at the pin \code{c58206ca1}, which
+follows Part~VIII) and source~10's audit as the programme it continues, and it
+reads ProveIt's MRDP interface; it did not read the merged article. Its object,
+the whole stopping law of a time-homogeneous finite-dimensional quantum loop,
+sits between four places of this report:
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+Where & What is there & What Part IX does\\
+\midrule
+Part~II (source 07) & quantum mortality: Eisert--M\"uller--Gogolin in dimension
+fifteen, Theorem~\ref{pqc:qm:thm:47} in dimension four with seven outcomes, the
+full-rank zero test (Lemma~\ref{pqc:qm:lem:fullrank}), no computable word-length
+bound (Corollary~\ref{pqc:qm:cor:nobound}), the semidecider and MRDP
+(Section~\ref{pqc:qm:sec:mrdp}) & adds one halting outcome that makes the runtime
+law exactly geometric and keeps the undecidable zero-word question
+(Theorem~\ref{pqc:iq:thm:geometric}); imports the fifteen-dimensional theorem\\
+Part~V (source 13) & ``a finite-state Markov chain has decidable rational linear
+algebra for its absorption probabilities'' (Section~\ref{pqc:ql:sec:substrates}) &
+the certified quantum, operator-valued, all-moments form of that remark
+(Sections~\ref{pqc:iq:sec:group}--\ref{pqc:iq:sec:compiler})\\
+Part~VI (source 10) & integer canonical signed wires and ``Canonical quartic
+compilation'' (Lemma~\ref{pqc:cc:lem:canonical},
+Theorem~\ref{pqc:cc:thm:wires}); positive and almost-sure halting of quantum
+controllers and three interfaces that must not be conflated
+(Section~\ref{pqc:cc:sec:unbounded}) & rational seven-coordinate wires with a
+bounded B\'ezout coefficient (Theorem~\ref{pqc:iq:thm:quartic}); a three-way
+boundary between aggregate laws, word supports and scheduled probabilities
+(Section~\ref{pqc:iq:sec:scheduled})\\
+Parts~I and~V & the endpoint $p=0$ is $\pione$ (end of
+Section~\ref{pqc:sec:hierarchy}) and $\pione$-complete (Part~V's endpoint table,
+Section~\ref{pqc:ql:sec:normalforms}) & a one-dimensional scheduled loop whose
+probability-zero set is co-c.e.-complete
+(Proposition~\ref{pqc:iq:prop:scheduled})\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\paragraph{Three arguments that are already in this report.} They are printed
+as pointers, not twice:
+\begin{itemize}
+\item Corollary~\ref{pqc:iq:cor:nobound} (no computable bound on the shortest
+forbidden record) is the bounded-search argument of Part~II's
+Corollary~\ref{pqc:qm:cor:nobound}, applied to a new family. The statement is
+printed; the proof is a pointer.
+\item The paragraph after it (forbidden-record existence is c.e., hence
+represented by an MRDP polynomial over an effective coding that first checks
+normalization) is the semidecider and Theorem~\ref{pqc:qm:thm:mrdp} of
+Section~\ref{pqc:qm:sec:mrdp}, for $\QMort_{4,7}$; it is replaced by a pointer
+that keeps source~19's non-claim.
+\item The lower bound in Proposition~\ref{pqc:iq:prop:scheduled} is the
+probability-zero endpoint of Parts~I and~V: a set of indices whose
+probability-zero instances are not c.e.\ has no existential Diophantine graph.
+The scheduled one-dimensional Kraus model, and the construction that puts the
+complement of the halting set into it, are new and are printed; the
+contradiction is a pointer.
+\end{itemize}
+
+\paragraph{Two results that extend earlier ones.} Theorem~\ref{pqc:iq:thm:quartic}
+bore the title of Part~VI's Theorem~\ref{pqc:cc:thm:wires}; it is printed as
+``Canonical rational quartic compilation'' and extends that integer compiler to
+rational wires (the note after it). Theorems~\ref{pqc:iq:thm:moments}
+and~\ref{pqc:iq:thm:allmoments} extend the Part~V remark above from absorption
+probabilities of finite Markov chains to stopped operators and all finite-path
+moments of quantum loops, with a unique-witness certificate.
+
+\paragraph{A question of source 19 that Part~II answers.} Source~19's
+Question~\ref{pqc:iq:q:clocks} asks for the same exact geometric law with fewer
+outcomes or a smaller Hilbert dimension. Source~19 deliberately did not use
+Part~II's four-dimensional theorem. Composing its clock with
+Theorem~\ref{pqc:qm:thm:47} (source~07) gives dimension four with seven
+continuation outcomes and one halting outcome
+(Corollary~\ref{pqc:iq:cor:dimfour}, written here, conditional on Part~II);
+the question is re-scoped in a dated note after it.
+
+\paragraph{Questions of Parts I--VIII.} Source~19 answers none. It bears, by
+analogy, on Question~\ref{pqc:q:operator} (canonical characteristic-polynomial
+data instead of spectral bases) and on Question~\ref{pqc:q:histories} (exact
+infinite histories); dated notes after both say what it does and does not do.
+Its Question~\ref{pqc:iq:q:smaller} is of the kind of
+Questions~\ref{pqc:q:smaller} and~\ref{pqc:qm:q:smaller}, and its
+Question~\ref{pqc:iq:q:formal} of the kind of Question~\ref{pqc:q:kernel}. It
+does not touch Question~\ref{pqc:q:instruments}: its own construction keeps
+dimension fifteen. The sibling reports \code{canonical-diophantine-certificates}
+and \code{liveness-beyond-halting} share no theorem with it.
+
+\subsection{Letters used differently}
+\label{pqc:iq:conv:letters}
+Part~IX keeps source~19's letters except the two renamed below. Many of them
+are Part~II's letters with other meanings, and several are used twice by
+source~19 itself.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+Letter & Part II (source 07) and elsewhere & Part IX (source 19)\\
+\midrule
+$d$, $D$ & $D$: Hilbert dimension of an instrument ($D=4$ in
+Theorem~\ref{pqc:qm:thm:47}); $d$: dimension of the source matrices & $d$: Hilbert
+dimension; $D=d^2$: dimension of the real space of Hermitian matrices, on which
+$T$ acts\\
+$w$, $v$ & $w$: an outcome word & $w$: the nontermination probability; $v$: a
+continuation word (Section~\ref{pqc:iq:sec:geometric})\\
+$\varepsilon$, $\epsilon$ & $\varepsilon$: the empty word & $\epsilon$: the
+killing probability of the weak clock\\
+$A$ & $A_j$: Kraus operators & $A=I-T$ (Sections~\ref{pqc:iq:sec:group}--\ref{pqc:iq:sec:heights}
+and Proposition~\ref{pqc:iq:prop:counterexample}); $A_1,\ldots,A_9$: the
+Eisert--M\"uller--Gogolin Kraus operators (Section~\ref{pqc:iq:sec:geometric});
+$A_0(t)$: a power series (inverse calibration)\\
+$T$ & the $T$ gate (08 in Part~II; Part~VI); the tensor matrices $T_i$ (07) & the
+continuation matrix; $T_\epsilon$ its killed version\\
+$G$, $P$ & $G_s$, $G_\infty$: success floors (Part I) & the group inverse and
+the fixed-point projection of $I-T$\\
+$H$ & the Hadamard gate; numerator matrices $H_j$ & $H=TG$; renamed: the halting
+Kraus operator $H^{\mathrm{halt}}$ (source~19: $H$) and the entry-height bound
+$\Lambda$ (source~19: $H$); $\mathsf H$ is the halt symbol of a record\\
+$L$, $N$ & $L$: a number of gates (08); $N$: a common denominator, $H_j=NA_j$
+(07) & $N$: continuations before exit, $L=N+1$ tests\\
+$B$ & --- & the tail bound $B$ (Corollary~\ref{pqc:iq:cor:tail}); adjugate
+coefficients $B_0,B_1$ (Proposition~\ref{pqc:iq:prop:rank});
+Faddeev--LeVerrier matrices $B_k$ \eqref{pqc:iq:eq:fl}\\
+$M$ & --- & $M(\epsilon)=\E L_\epsilon$; the height constant $M=D!(1+\Lambda)^D$
+(Proposition~\ref{pqc:iq:prop:height}); the matrices $M_k$ of \eqref{pqc:iq:eq:fl}\\
+$r$ & --- & number of exits; nullity (Proposition~\ref{pqc:iq:prop:rank}); a
+signed auxiliary of a gate; residuals $r_i$; $r=1/y$ (inverse calibration)\\
+$a$, $m$, $e$ & --- & $a_{j,n}$ exit probabilities and $a^*_m$ finite parts; the
+gate counts $a$, $m$ and the equality count $e$ of
+Theorem~\ref{pqc:iq:thm:quartic}; $m$ also a moment index; $e_j$ exit rows; $a/b$
+a pinned rational\\
+$h$ & --- & $h=d-1$ in a wire \eqref{pqc:iq:eq:wire}; determinant coefficients
+$h_0,h_1$ \eqref{pqc:iq:eq:coeffexp}\\
+$C$, $Q$ & $Q$: a Gram form & $C/Q=I-T$ with $C$ integral; $C_i=\frac35A_i$
+(Section~\ref{pqc:iq:sec:geometric}); $C$ a constant in \eqref{pqc:iq:eq:exitdecay}\\
+$\rho$ & the critical noise radius (Part III) & the initial density, and
+$\rho(T)$ the spectral radius (source~19 says so)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The tempting false readings are these. ``Dimension four'' in Part~II is a
+\emph{Hilbert} dimension, Part~IX's $d=4$; Part~IX's $D=d^2=16$ is then the size
+of $T$. Part~IX's $w$ is a probability, never a word, and its $\epsilon$ is never
+the empty word. Its $A$ is $I-T$, not a Kraus operator, except in
+Section~\ref{pqc:iq:sec:geometric}. Its $G$ is a matrix, not a success floor, and
+$\ell Gx$ is the finite-path mean $\E[L;L<\infty]$, not the unconditional mean
+when $w>0$ (Proposition~\ref{pqc:iq:prop:finitepart}). Its $H$ is $TG$ wherever it
+is not decorated. The count $88D^3+9D^2+14$ of source~19's abstract is exact for
+the supplied unsimplified dense schedule (Section~\ref{pqc:iq:sec:compiler},
+``Exact dense inverse counts''), not for every dense certificate.
+Theorem~\ref{pqc:iq:thm:quartic}'s wires are rational and have seven
+coordinates; Part~VI's are integers with two. Part~IX's quartic
+$\mathscr Q$ and its displayed wire polynomial $\mathscr R_{a,b}$ are new
+size-indexed families beside $F_{N,m}$, $\mathscr Q_{D,K,n}$, $Q_N$ and
+$P_{I,N}^{E_{\mathrm{in}},J}$ (Remark~\ref{pqc:conv:rem:fixedpoly}); Part~II's
+$\mathscr Q_{D,K,n}$ is a different polynomial.
+
+\subsection{Macros, labels and file names}
+\label{pqc:iq:conv:macros}
+\begin{itemize}
+\item Renamed: the halting Kraus operator $H$ of
+Section~\ref{pqc:iq:sec:geometric}, Proposition~\ref{pqc:iq:prop:scheduled} and
+Section~\ref{pqc:iq:sec:examples} is $H^{\mathrm{halt}}$ (and $H_n$ is
+$H^{\mathrm{halt}}_n$); the integral entry bound $H$ of
+Proposition~\ref{pqc:iq:prop:height} and Corollary~\ref{pqc:iq:cor:tail} is
+$\Lambda$. Source~19's blackboard $\mathbb P$ is printed $\Pr$, this report's
+convention; its \verb|\bm| is \verb|\boldsymbol|. No normalization changed.
+\item \verb|\adj|, \verb|\fall| (falling factorial) and \verb|\cT| are added;
+\verb|\E|, \verb|\tr|, \verb|\im|, \verb|\diag|, \verb|\cE| and the number sets were
+already defined identically, and source~19's \verb|\repo| is this report's
+\verb|\reponame|. Source~19's fonts, colours and title page are not used.
+\item Source~19's labels carry the prefix \code{pqc:iq:}; its lemmas,
+propositions and corollaries carry cleveref type hints, as in Parts~I--VIII.
+Labels were added to its conclusion and to its research questions.
+\item Its eight research questions, a numbered list Q1--Q8 in the source, are
+printed as research questions with unchanged text. Its three appendices are
+the sections titled ``Source 19 appendix'', and its references to them read
+``Section'' rather than ``Appendix''.
+\item Two line breaks of source~19's display \eqref{pqc:iq:eq:survival} had lost
+a backslash in the delivered file (printing the three definitions on one line);
+they are restored.
+\item File names in source~19's text are its delivered names; the shipped names
+are given in Section~\ref{pqc:iq:sec:shipped} and in the README.
+\item Its bibliography is appended to this report's with keys beginning
+\code{b76s19-}; its Eisert--M\"uller--Gogolin entry is this report's existing
+entry \cite{emg}, and its citation of this report's README is a
+cross-reference.
+\end{itemize}
+
+\subsection{Abstract and status statement of source 19}
+\paragraph{Abstract of source 19.}
+% --- source 19, lines 86-110 ---
+An execution can have unbounded duration without requiring an unbounded
+arithmetic certificate for its aggregate stopping statistics. For a rational,
+finite-dimensional, time-homogeneous quantum loop, we characterize the group
+inverse $G=(I-T)^\#$ and fixed-point projection $P$ by four quadratic matrix
+identities. The pair is unique, including on singular and nonterminating
+instances. It gives exact exit probabilities, stopped output states, every
+finite-path factorial moment, and a finite recurrence determining all of them.
+We compile these identities into a single quartic polynomial over natural
+numbers with a unique witness for each correct rational answer. The elementary
+rational-wire construction uses seven natural coordinates; a dense inverse
+certificate has exactly $88D^3+9D^2+14$ natural witnesses for matrix dimension
+$D$, independently of execution duration.
+
+A second result sharply separates runtime from support. Applying an independent
+rational geometric clock to the published quantum measurement-occurrence
+construction yields almost-surely terminating devices with exactly the same
+geometric runtime distribution, yet undecidable existence of a forbidden
+completed measurement record. A weak-clock analysis gives a convergent Laurent
+expansion whose residue is the nontermination probability, whose regular
+coefficients are finite-path binomial moments, and whose inverse has an
+all-orders rational expansion. Finally, we give a counterexample to the
+unrestricted reading of a published generalized-inverse rationality conjecture
+and prove its canonical, rank-stratified replacement. Four quantum examples,
+four exported quartic certificates, and 33,708 exact assertions accompany the
+proofs.
+
+\wtag\ ``A dense inverse certificate'' means the supplied unsimplified dense
+schedule of Section~\ref{pqc:iq:sec:compiler}, for which the count is exact; it
+is not a lower bound for dense certificates in general, as source~19 itself says
+there.
+
+\paragraph{Status statement of source 19.}
+% --- source 19, lines 74-80 ---
+This manuscript provides self-contained proofs for an
+explicit certificate construction and several consequences, together with exact
+arithmetic software and independently checked certificate files. It is
+AI-assisted and unrefereed; no Lean formalization is claimed. Classical
+spectral, quantum-runtime, and undecidability results are identified separately
+from the synthesis developed here. Historical priority for the assembled
+construction is not established.
+
+\wtag\ Source~19's claims and inherited ingredients are listed in
+Section~\ref{pqc:iq:sec:scope}; its limitations there (exact rational inputs,
+time-homogeneity, physical validity a promise, no single-fold or finite-fold
+result, no comparison with the universal-operation bounds), after
+Theorem~\ref{pqc:iq:thm:allmoments} (a recurrence, not a graph in a variable
+moment index), in Section~\ref{pqc:iq:sec:compiler} (``Why this is not a
+single-fold MRDP theorem''), after Corollary~\ref{pqc:iq:cor:tail}, in
+Sections~\ref{pqc:iq:sec:geometric}--\ref{pqc:iq:sec:scheduled} (no physical
+hypercomputation; the counterexample concerns only the unrestricted quantifier;
+no quantum advantage) and in Section~\ref{pqc:iq:sec:verification} (finite
+checks; no formalization).
+
+\section{The research target and what is actually claimed}
+\label{pqc:iq:sec:scope}
+The question motivating this work is not merely whether quantum computation can
+be represented by polynomial equations. For an effectively specified finite
+witness relation, the Matiyasevich--Robinson--Davis--Putnam theorem already gives
+an existential Diophantine representation. The inspected \reponame{} interface
+states precisely a finite integer polynomial with finitely many natural
+witnesses, chosen before the input, and includes input zero
+\cite{b76s19-RepoMRDP}. What that theorem alone does not provide is a small,
+transparent, unique certificate for an \emph{infinite sum of execution
+probabilities}.
+
+The repository's existing coherent-computation report already addresses finite
+circuits, interference, exact rational and cyclotomic arithmetic, and canonical
+witnesses \cite{b76s19-RepoCoherent}. Its larger quantum/probabilistic collection also
+contains measurement mortality, continuous dynamics, and normalization reports
+[\wtag\ this report: Parts~I--III, and Parts~V--VIII]. This manuscript therefore changes the mathematical object:
+the principal certificate concerns the entire stopping law of a finite-state
+quantum loop, not a selected bounded execution.
+
+\wtag\ The ``coherent-computation report'' is source~10, Part~VI of this report
+(Sections~\ref{pqc:cc:sec:wires}--\ref{pqc:cc:sec:unbounded}); its audit is
+shipped here as \code{10-coherent-circuits-SOURCE_AUDIT.md}. The
+``quantum/probabilistic collection'' is this report, whose README source~19 read.
+
+There are two very different meanings of ``unbounded'' here. A loop can repeat
+arbitrarily many times while its unnormalized density matrix evolves in one
+fixed finite-dimensional vector space. Alternatively, an existential question
+can range over arbitrary outcome words; this retains information that is lost
+when all outcomes are summed into one continuation operator. The first admits
+our finite rational summary. The second can remain undecidable even after an
+independent clock makes the length distribution completely elementary.
+
+\subsection{Main contributions and inherited ingredients}
+The principal constructive theorem is the combination of
+Theorems~\ref{pqc:iq:thm:group}, \ref{pqc:iq:thm:allmoments}, and
+\ref{pqc:iq:thm:quartic}: a rank-independent rational certificate, an all-orders
+recurrence, and an explicit unique-witness quartic compiler. Their joint
+purpose is to make infinite-run statistics checkable using ordinary integer
+arithmetic, with exact accounting and no time horizon.
+
+The geometric-clock theorem, Theorem~\ref{pqc:iq:thm:geometric}, is an explicit
+preservation result built on Eisert--M\"uller--Gogolin's published
+undecidability theorem \cite{emg}. The regulator theorem gives the associated
+all-orders singular expansion and a distributional scaling limit. The
+rationality counterexample in Section~\ref{pqc:iq:sec:conjecture} is elementary but
+addresses an actual sentence in the literature: arbitrary generalized-inverse
+selection need not preserve rational dependence on parameters.
+
+We do \emph{not} claim that the following underlying facts originate here:
+generalized inverses in Markov-chain hitting-time theory, resolvent generating
+functions, finite-dimensional quantum expected-runtime methods,
+Cayley--Hamilton recurrences, or MRDP. In particular, Lardizabal already uses
+generalized inverses and generating functions for quantum hitting times
+\cite{b76s19-Lardizabal}; Liu--Zhou--Barthe--Ying prove finite-dimensional quantum
+almost-sure/finite-expected-runtime equivalences and develop symbolic methods
+\cite{b76s19-LZBY}. The contribution is the exact canonical certificate architecture,
+its accounting, and the particular consequences proved below, not a claim that
+infinite quantum paths had never previously been handled.
+
+\subsection{Boundaries that matter}
+Our arithmetic input consists of \emph{exact rational coordinates}, not black-box
+approximations to real numbers. The loop is finite-dimensional and
+\emph{time-homogeneous}; arbitrary unbounded classical memory is not secretly
+included. Physical validity is a promise on the input maps. The quartic itself
+certifies the algebraic equations, not a general quantum-synthesis problem.
+
+For each fixed dimension and requested finite interface there is one finite
+polynomial. A separate all-moments interface encodes an infinite sequence by a
+finite recurrence. Neither construction produces one unique-witness polynomial
+for the halting behavior of every Turing machine. In particular, it does not
+resolve the general single-fold or finite-fold Diophantine representation
+problems. No comparison with the repository's optimized universal-operation
+bounds is intended.
+
+\section{An exact model of a stopping quantum loop}
+\label{pqc:iq:sec:model}
+Let $\mathcal H=\C^d$. A continuation map
+$\cT:M_d(\C)\to M_d(\C)$ is completely positive and trace nonincreasing. Let
+$\cE_1,\ldots,\cE_r$ be completely positive exit maps into finite-dimensional
+matrix spaces, satisfying, for every $X\geq0$,
+\begin{equation}
+ \tr\cT(X)+\sum_{j=1}^r\tr\cE_j(X)=\tr X.
+ \label{pqc:iq:eq:conservation}
+\end{equation}
+At each test the experiment either exits with label $j$ and output
+$\cE_j(X)$, or continues with unnormalized state $\cT(X)$. Normalizing after
+individual outcomes gives the usual conditional states, but the unnormalized
+formalism already includes their probabilities and avoids divisions along
+execution paths.
+
+The initial state $\rho$ is positive semidefinite with trace one. We assume
+that $\rho$ and every map have rational coordinates in the real vector space
+of Hermitian matrices. Use the basis
+\begin{equation}
+ E_{ii},\qquad E_{ij}+E_{ji},\qquad iE_{ij}-iE_{ji}\quad (i<j),
+ \label{pqc:iq:eq:basis}
+\end{equation}
+with diagonals first. Its dimension is $D=d^2$. Write $T\in\Q^{D\times D}$
+for the continuation matrix, $x\in\Q^D$ for $\rho$, and $\ell$ for the trace
+row. Thus $\ell$ has $d$ ones followed by zeros. The scalar exit rows are
+$e_j=\tr\circ\cE_j$, in coordinates, and
+\begin{equation}
+ e_\Sigma:=\sum_j e_j=\ell(I-T).
+ \label{pqc:iq:eq:exitrow}
+\end{equation}
+Rational real or complex-rational Kraus matrices are sufficient for these
+assumptions. Rational superoperators are the actual input class; they need not
+come with a rational Kraus decomposition.
+
+Let $N$ denote the number of continuations before an exit, so $N=0$ means
+immediate exit. Let $L=N+1$ count tests including the terminal test, and put
+$N=L=\infty$ on a divergent execution. Then
+\begin{align}
+ a_{j,n}&:=\Pr(N=n,\text{exit }j)=e_jT^nx,\\
+ s_n&:=\Pr(L>n)=\ell T^nx,\\
+ s_n-s_{n+1}&=\sum_j a_{j,n}.
+ \label{pqc:iq:eq:survival}
+\end{align}
+The numbers $s_n$ decrease from $s_0=1$, so they have a limit $w$, the
+probability of nontermination.
+
+\begin{definition}
+For $k\geq0$, the \emph{normalized defective factorial moment} is
+\begin{equation}
+ b_{j,k}=\sum_{n\geq0}\binom nk a_{j,n}.
+ \label{pqc:iq:eq:binomialmoment}
+\end{equation}
+It is a moment of the finite-exit subprobability measure. Divergent paths are
+excluded from this sum. In particular, $b_{j,0}$ is the exit probability, not
+necessarily one.
+\end{definition}
+When $b_{j,0}>0$, the corresponding conditional factorial moment of $N$ is
+$k!b_{j,k}/b_{j,0}$. Ordinary moments follow from
+$n^m=\sum_{k=0}^m S(m,k)\fall nk$, with $S(m,k)$ the Stirling numbers of the
+second kind. This convention separates finite-path statistics from the
+unconditional expectation, which is infinite as soon as $w>0$.
+
+Finite classical control can be included by replacing $M_d(\C)$ with a finite
+direct sum of matrix algebras. Then $D$ is the sum of the squares of the local
+Hilbert dimensions. The same proofs apply. An unbounded tape or counter,
+however, does not fit in such a fixed direct sum.
+
+\section{The canonical rational inverse certificate}
+\label{pqc:iq:sec:group}
+\begin{lemma}[Power boundedness]
+\label[lemma]{pqc:iq:lem:bounded}
+For every Hermitian $X$ and $n\geq0$,
+$\|\cT^n(X)\|_1\leq\|X\|_1$. Consequently $T$ is power bounded, every
+eigenvalue has modulus at most one, and every eigenvalue of modulus one is
+semisimple.
+\end{lemma}
+\begin{proof}
+Write $X=X_+-X_-$ with $X_\pm\geq0$ and
+$\|X\|_1=\tr X_++\tr X_-$. Positivity and trace nonincrease give
+\[
+ \|\cT^n(X)\|_1\leq\tr\cT^n(X_+)+\tr\cT^n(X_-)
+ \leq\tr X_++\tr X_-.
+\]
+Complexifying the Hermitian space changes a norm bound by at most a fixed
+factor, so the powers are uniformly bounded on the full complex vector space.
+An eigenvalue of modulus greater than one would produce exponential growth.
+A nontrivial Jordan block at modulus one would produce polynomial growth.
+Both contradict that bound.
+\end{proof}
+
+Put $A=I-T$. Zero is therefore a semisimple eigenvalue of $A$ whenever it
+occurs, and
+\begin{equation}
+ \Q^D=\ker A\oplus\im A.
+ \label{pqc:iq:eq:splitting}
+\end{equation}
+The two subspaces have rational bases. On the first summand define $G=0$; on
+the second define $G$ to be the inverse of the restriction of $A$. Let $P$
+be identity on $\ker A$ and zero on $\im A$. This is the group inverse
+$G=A^\#$ and its associated projection.
+
+\begin{theorem}[Four equations, with no rank choice]
+\label{pqc:iq:thm:group}
+For the continuation matrix $T$, there is exactly one rational pair
+$(G,P)\in\Q^{D\times D}\times\Q^{D\times D}$ satisfying
+\begin{equation}
+ \boxed{AG+P=I,\qquad GA+P=I,\qquad AP=0,\qquad GP=0.}
+ \label{pqc:iq:eq:four}
+\end{equation}
+In fact the pair is unique over $\C$. It satisfies
+$P^2=P$, $PG=GP=0$, $TP=PT=P$, and $TG=GT$. Moreover,
+\begin{equation}
+ P=\lim_{m\to\infty}\frac1m\sum_{n=0}^{m-1}T^n.
+ \label{pqc:iq:eq:cesaro}
+\end{equation}
+The same equations characterize a unique pair for any rational $A$ whose
+zero eigenvalue is semisimple, whether or not $A$ arises from a physical map.
+\end{theorem}
+\begin{proof}
+In a basis adapted to \eqref{pqc:iq:eq:splitting}, write
+$A=\diag(0,B)$ with $B$ invertible. The prescribed matrices
+$G=\diag(0,B^{-1})$ and $P=\diag(I,0)$ satisfy all four equations and are
+rational when the basis is rational.
+
+Conversely, the first two equations imply $AG=GA$ and $P=I-AG$.
+Multiplying $GA+P=I$ on the left by $A$ yields $AGA=A$, because $AP=0$.
+Multiplying $AG+P=I$ on the left by $G$ yields $GAG=G$, because $GP=0$.
+Commutation with $A$ forces the off-diagonal blocks of $G$ to vanish in the
+adapted basis. The bottom block is $B^{-1}$, and $GAG=G$ forces its top block
+to be zero. Thus $G$ and then $P$ are uniquely determined. The additional
+identities follow immediately in that basis.
+
+For \eqref{pqc:iq:eq:cesaro}, the Ces\`aro means are identity on the eigenspace of
+$T$ at one. On any other peripheral eigenspace their scalar factors are
+$m^{-1}(1-\lambda^m)/(1-\lambda)$ and tend to zero. On the generalized
+stable eigenspaces they also tend to zero. This proves the limit.
+\end{proof}
+
+The point of \eqref{pqc:iq:eq:four} is its \emph{fixed syntax}. The certifier never
+needs to guess the rank, a nonzero minor, a spectral decomposition, a Jordan
+form, or a limiting time. Such objects may be used by a generator, but they
+are not part of the certificate's interface. Every displayed matrix identity
+is quadratic in its entries.
+
+\begin{corollary}[Exact nontermination]
+\label[corollary]{pqc:iq:cor:nontermination}
+The map represented by $P$ is completely positive and trace nonincreasing.
+For a density coordinate vector $x$,
+\begin{equation}
+ w=\ell Px,\qquad \Pr(L<\infty)=1-\ell Px.
+ \label{pqc:iq:eq:w}
+\end{equation}
+Almost-sure termination on this state is equivalent to $Px=0$.
+\end{corollary}
+\begin{proof}
+The Ces\`aro maps in \eqref{pqc:iq:eq:cesaro} are completely positive and trace
+nonincreasing. These properties are closed under finite-dimensional limits;
+for complete positivity this also follows by taking limits of their positive
+semidefinite Choi matrices. Hence $P\rho\geq0$. The Ces\`aro means of the
+convergent scalar sequence $s_n$ have the same limit $w$, and their limit is
+$\ell Px$. A positive semidefinite matrix has trace zero exactly when it is
+zero.
+\end{proof}
+
+\begin{remark}
+The projection $P$ is a \emph{superoperator} projection. It is not generally
+an orthogonal Hilbert-space projection. The limit $T^n$ itself need not exist;
+only its Ces\`aro average is used. Confusing these two limits would exclude
+legitimate trapped unitary dynamics, including our qutrit example.
+\end{remark}
+
+\section{Stopped kernels and every finite-path moment}
+\label{pqc:iq:sec:moments}
+A singular $I-T$ does not prevent convergence of an exit distribution. What
+matters is the interaction between the exit map and the peripheral spectrum.
+
+\begin{lemma}[Exit maps annihilate the entire peripheral subspace]
+\label[lemma]{pqc:iq:lem:peripheral}
+For every exit map $\cE_j$ and every eigenvector $v$ of the complexified $T$
+with $|\lambda|=1$, one has $\cE_j(v)=0$. Consequently there exist $C>0$
+and $0<\theta<1$ such that
+\begin{equation}
+ \|\cE_jT^n\|\leq C\theta^n\qquad(n\geq0).
+ \label{pqc:iq:eq:exitdecay}
+\end{equation}
+The constants may depend on the maps; no uniform gap is asserted.
+\end{lemma}
+\begin{proof}
+For $X\geq0$, telescoping \eqref{pqc:iq:eq:conservation} gives
+\[
+ \sum_{n\geq0}\|\cE_j\cT^n(X)\|_1
+ =\sum_{n\geq0}\tr\cE_j\cT^n(X)\leq\tr X.
+\]
+Decompose each member of a finite Hermitian basis into its positive and
+negative parts. By the triangle inequality, the same series of norms is
+finite on each basis vector, and therefore on every vector after
+complexification. If $Tv=\lambda v$ and $|\lambda|=1$, its summands are
+$\|\lambda^n\cE_j(v)\|$, which can be summable only when $\cE_j(v)=0$.
+
+All peripheral eigenvalues are semisimple by Lemma~\ref{pqc:iq:lem:bounded}.
+Therefore the remaining terms in $\cE_jT^n$ come from finitely many Jordan
+blocks at eigenvalues of modulus less than one. They are polynomial factors
+in $n$ times exponentially decaying terms; enlarging the exponential rate to
+any number strictly between the largest surviving modulus and one absorbs
+these polynomial factors. Nilpotent blocks contribute only a finite initial
+segment. This proves \eqref{pqc:iq:eq:exitdecay}.
+\end{proof}
+
+Define the stopped output generating function
+\begin{equation}
+ \mathcal F_j(z)=\sum_{n\geq0}z^n\cE_j\cT^n(\rho).
+ \label{pqc:iq:eq:operatorpgf}
+\end{equation}
+For $|z|<1$ this equals $\cE_j(I-zT)^{-1}x$ in coordinates. Although the
+resolvent alone may be singular at $z=1$ or other points of the unit circle,
+Lemma~\ref{pqc:iq:lem:peripheral} cancels every such singularity after applying the
+exit map.
+
+\begin{theorem}[Canonical stopped moments]
+\label{pqc:iq:thm:moments}
+Each $\mathcal F_j$ is a rational matrix-valued function that is analytic in
+some disk $|z|<R_j$ with $R_j>1$. For every integer $k\geq0$,
+\begin{equation}
+ \frac{\mathcal F_j^{(k)}(1)}{k!}
+ =\sum_{n\geq0}\binom nk\cE_j\cT^n(\rho)
+ =\cE_jG(TG)^kx.
+ \label{pqc:iq:eq:operatormoments}
+\end{equation}
+In particular,
+\begin{equation}
+ \boxed{b_{j,k}=e_jG(TG)^kx.}
+ \label{pqc:iq:eq:momentformula}
+\end{equation}
+All finite-path moments are finite and rational. The map
+$\cE_jG(TG)^k$ is completely positive, even though $G$ itself need not be a
+positive map.
+\end{theorem}
+\begin{proof}
+The exponential bound \eqref{pqc:iq:eq:exitdecay} permits termwise differentiation
+in a disk of radius greater than one. Rationality follows from the adjugate
+formula for $(I-zT)^{-1}$ and cancellation of removable singularities.
+
+On a stable generalized eigenspace, $G=(I-T)^{-1}$. Differentiating the
+resolvent gives
+\[
+ \frac1{k!}\frac{d^k}{dz^k}(I-zT)^{-1}
+ =(I-zT)^{-1}\bigl(T(I-zT)^{-1}\bigr)^k.
+\]
+At $z=1$ this is $G(TG)^k$. On the entire peripheral space both sides become
+zero after applying $\cE_j$, by Lemma~\ref{pqc:iq:lem:peripheral}. This proves
+\eqref{pqc:iq:eq:operatormoments} without requiring $T^n$ to converge. Taking traces
+proves \eqref{pqc:iq:eq:momentformula}.
+
+Finally, each partial sum of
+$\sum_n\binom nk\cE_jT^n$ is completely positive, and the series converges
+in operator norm. Its limit is completely positive. Rationality follows from
+Theorem~\ref{pqc:iq:thm:group} and finite rational matrix operations.
+\end{proof}
+
+The zeroth operator moment is the full unnormalized exit state. Dividing it by
+$b_{j,0}>0$ gives the density matrix conditioned on exit $j$. Thus the same
+construction certifies not only numbers but complete stopped output states.
+If an exit has probability zero, no conditional state is defined; the
+unnormalized operator remains exactly zero.
+
+\begin{proposition}[A finite part with a direct probabilistic meaning]
+\label[proposition]{pqc:iq:prop:finitepart}
+For $m\geq0$, set
+\begin{equation}
+ a_m^*=\ell G(TG)^m x.
+ \label{pqc:iq:eq:astar}
+\end{equation}
+Then
+\begin{equation}
+ a_m^*=\E\left[\binom L{m+1};\ L<\infty\right]\geq0.
+ \label{pqc:iq:eq:tailmoments}
+\end{equation}
+In particular,
+\begin{equation}
+ \ell Gx=\sum_{n\geq0}(s_n-w)=\E[L;L<\infty].
+ \label{pqc:iq:eq:finitefirst}
+\end{equation}
+If $w=0$, this is the ordinary expected number of tests. If $w>0$, it is
+not the unconditional expectation, which is infinite.
+\end{proposition}
+\begin{proof}
+Let $H=TG$. Since $AG=I-P$, we have $G=I-P+H$ and $I+H=G+P$.
+The total exit row is $e_\Sigma=\ell A$, so $e_\Sigma G=\ell(I-P)$.
+Pascal's identity and Theorem~\ref{pqc:iq:thm:moments} give
+\begin{align*}
+ \E\left[\binom L{m+1};L<\infty\right]
+ &=e_\Sigma G(H^{m+1}+H^m)x\\
+ &=\ell(I-P)H^m(G+P)x=\ell GH^mx.
+\end{align*}
+Here $PG=GP=0$ and $PH=HP=0$; the formula also holds at $m=0$.
+Alternatively, the elementary tail identity
+$\sum_{n=0}^{L-1}\binom nm=\binom L{m+1}$ gives
+\eqref{pqc:iq:eq:tailmoments} by summing $s_n-w$ with binomial weights. All sums are
+finite or absolutely convergent by the preceding theorem.
+\end{proof}
+
+This proposition is useful when manipulating $G$: individual entries can have
+signs with no direct probability interpretation, while these complete exit
+maps and trace functionals are positive. Dropping the fixed-point contribution
+without identifying the appropriate finite-path quantity would give an
+incorrect interpretation of the answer.
+
+\section{One finite recurrence certifies all orders}
+\label{pqc:iq:sec:allorders}
+Unrolling the recurrence
+\begin{equation}
+ v_0=Gx,\qquad v_{k+1}=GTv_k,\qquad b_{j,k}=e_jv_k
+ \label{pqc:iq:eq:vectorrecurrence}
+\end{equation}
+requires $O(D^3+K D^2+rKD)$ rational arithmetic gates through order $K$,
+including the inverse constraints. But even the moment order can be eliminated
+from the interface by certifying one rational generating function.
+
+\begin{theorem}[Finite all-moments certificate]
+\label{pqc:iq:thm:allmoments}
+Let $H=TG$ and write
+\begin{equation}
+ q(u)=\det(I-uH)=1+c_1u+\cdots+c_Du^D.
+ \label{pqc:iq:eq:q}
+\end{equation}
+For each exit $j$, the first $D$ moments $b_{j,0},\ldots,b_{j,D-1}$ and the
+$D$ coefficients $c_1,\ldots,c_D$ determine every subsequent moment by
+\begin{equation}
+ b_{j,n}+c_1b_{j,n-1}+\cdots+c_Db_{j,n-D}=0\qquad(n\geq D).
+ \label{pqc:iq:eq:momentrecurrence}
+\end{equation}
+More precisely, with $c_0=1$ and
+\begin{equation}
+ p_j(u)=\sum_{n=0}^{D-1}\left(\sum_{i=0}^nc_i b_{j,n-i}\right)u^n,
+ \label{pqc:iq:eq:p}
+\end{equation}
+we have, as rational functions and as power series near zero,
+\begin{equation}
+ \boxed{\sum_{k\geq0}b_{j,k}u^k
+ =e_jG(I-uH)^{-1}x=\frac{p_j(u)}{q(u)}=F_j(1+u),}
+ \label{pqc:iq:eq:allpgf}
+\end{equation}
+where $F_j=\tr\mathcal F_j$. A rational arithmetic circuit of size
+$O(D^4+rD^2)$ certifies this entire finite description, independently of any
+execution horizon or moment order.
+\end{theorem}
+\begin{proof}
+Cayley--Hamilton gives
+$H^D+c_1H^{D-1}+\cdots+c_DI=0$. Multiply by $e_jGH^{n-D}$ and $x$ to get
+\eqref{pqc:iq:eq:momentrecurrence}. Multiplying the generating series by $q(u)$
+then leaves precisely \eqref{pqc:iq:eq:p}. Since $q(0)=1$, these coefficients define
+a unique formal power series; no minimality of $q$ is required.
+
+The matrix geometric series gives the first equality in
+\eqref{pqc:iq:eq:allpgf}. The last follows from the Taylor expansion at one in
+Theorem~\ref{pqc:iq:thm:moments}. Thus the finite data determine not just a list of
+moments but the complete rational stopping generating function and hence its
+probabilities at every finite time.
+
+For the claimed circuit, compute $H$, the first $D$ moment vectors, and the
+coefficients of \eqref{pqc:iq:eq:q} by the following fixed recursion:
+\begin{align}
+ B_0&=I,\qquad M_k=HB_{k-1},\\
+ c_k&=-\frac1k\tr M_k,\qquad B_k=M_k+c_kI
+ \quad(1\leq k\leq D).
+ \label{pqc:iq:eq:fl}
+\end{align}
+This is the Faddeev--LeVerrier recursion, whose verification is included in
+Section~\ref{pqc:iq:app:fl}. The only divisions are by the fixed positive integers
+$1,\ldots,D$; equivalently they are multiplications by pinned rational
+constants. Dense matrix products cost $O(D^4)$ for all $D$ stages. Computing
+the first $D$ moment vectors costs $O(D^3+rD^2)$. The same circuit works on
+every admissible rank stratum.
+\end{proof}
+
+The all-orders interface certifies a finite recurrence and its initial data.
+It does not claim a fixed single-fold polynomial graph with an arbitrary
+moment index $k$ supplied as an additional input.
+
+The denominator may contain factors canceled by $p_j$, for example factors
+arising from a trapped rotating sector. This is harmless. Keeping the
+nonminimal characteristic denominator avoids choices among observable
+subspaces, degrees, and factorization patterns, thereby preserving a simple
+canonical certificate.
+
+\begin{remark}[Whole laws versus individual words]
+The function $F_j$ sums all continuation outcomes at each time. It does not
+record which individual word produced that outcome. Therefore a certificate
+for every coefficient of $F_j$ does not automatically certify the zero/nonzero
+status of every word probability. Section~\ref{pqc:iq:sec:geometric} makes this
+information loss decisive.
+\end{remark}
+
+\section{A unique-witness quartic over natural numbers}
+\label{pqc:iq:sec:compiler}
+All variables in this section are natural numbers including zero unless
+specified otherwise. The construction uses no existential real variables,
+integer inequalities, hidden exponentiation, or nonunique four-square
+representations. Its output is an ordinary integer polynomial displayed
+succinctly as a sum of squares of quadratic residuals.
+
+\subsection{Seven coordinates for one rational number}
+Represent a rational wire by the tuple
+\begin{equation}
+ (p,m,h,u,v_+,v_-,s)\in\N^7,
+ \qquad n=p-m,\quad d=h+1,\quad v=v_+-v_-.
+ \label{pqc:iq:eq:wire}
+\end{equation}
+Impose four equations:
+\begin{equation}
+ pm=0,\qquad v_+v_-=0,\qquad nu-dv=1,\qquad u+s=h.
+ \label{pqc:iq:eq:wireconstraints}
+\end{equation}
+The represented rational number is $n/d$.
+
+\begin{lemma}[Canonical rational wire]
+\label[lemma]{pqc:iq:lem:wire}
+Every rational number has exactly one representation satisfying
+\eqref{pqc:iq:eq:wireconstraints}. All four residuals have degree at most two.
+\end{lemma}
+\begin{proof}
+The sign constraints uniquely encode the signed integers $n$ and $v$ by their
+positive and negative parts. The denominator is positive. The B\'ezout equation
+forces $\gcd(n,d)=1$, and the last equation forces $0\leq u\leq d-1$.
+For a fixed reduced fraction with $d>1$, multiplication by $n$ permutes
+residue classes modulo $d$, so there is a unique $u$ in this interval with
+$nu\equiv1\pmod d$. It uniquely fixes $v=(nu-1)/d$ and $s=d-1-u$.
+For $d=1$, the unique values are $u=s=0$ and $v=-1$. This also handles the
+rational number zero: $n=0,d=1$. Conversely these choices satisfy all four
+constraints. The reduced signed numerator and positive denominator are
+uniquely determined by their rational value.
+\end{proof}
+
+The bounded B\'ezout coefficient is essential. An unbounded B\'ezout pair
+would introduce infinitely many witnesses for the same rational number.
+Likewise the complementary slack $s$ turns the bound into a unique natural
+coordinate rather than a separate inequality.
+
+To pin a wire to a given rational $a/b$, with $b>0$, add
+\begin{equation}
+ bn-ad=0.
+ \label{pqc:iq:eq:pin}
+\end{equation}
+For a polynomial uniform in the input, encode the signed input numerator by
+two natural parameters and write $b=b_0+1$. Equation~\eqref{pqc:iq:eq:pin} remains
+quadratic jointly in input parameters and witnesses. The input fraction need
+not itself be reduced: the internal wire still has a unique canonical value.
+
+\subsection{Quadratic arithmetic gates}
+A signed integer auxiliary $r$ is encoded by two natural rails $r_+,r_-$,
+with $r=r_+-r_-$ and $r_+r_-=0$. Whenever $r$ is prescribed by a quadratic
+expression, this uses two variables and two quadratic residuals, including
+the equation defining $r$.
+
+Suppose wires $a,b,c$ have canonical numerators and denominators
+$n_a,d_a,n_b,d_b,n_c,d_c$. For an addition or subtraction $c=a\pm b$,
+introduce signed auxiliaries $r,t$ and a natural auxiliary $k$:
+\begin{align}
+ r&=n_a d_b,& t&=n_b d_a,& k&=d_a d_b,\\
+ (r\pm t)d_c&=n_c k.
+ \label{pqc:iq:eq:addgate}
+\end{align}
+Together with the two sign constraints, these are six quadratic residuals in
+five new natural variables, in addition to the seven coordinates of the
+output wire. All denominators are positive, so they are equivalent to the
+required rational equality. The auxiliary values are unique.
+
+For a multiplication $c=ab$, introduce signed $r$ and natural $k$:
+\begin{equation}
+ r=n_an_b,\qquad k=d_ad_b,\qquad rd_c=n_ck,
+ \label{pqc:iq:eq:mulgate}
+\end{equation}
+plus the sign constraint for $r$. This uses three new natural variables and
+four quadratic residuals. Equality of two already-encoded rational wires is
+just
+\begin{equation}
+ n_a d_b-n_b d_a=0.
+ \label{pqc:iq:eq:equalgate}
+\end{equation}
+No denominators are allowed to vanish, and no gate relies on canceling an
+unknown expression that could be zero.
+
+\begin{theorem}[Canonical rational quartic compilation]
+\label{pqc:iq:thm:quartic}
+Consider a rational arithmetic system consisting of $W$ wire vertices, $a$
+addition or subtraction gates, $m$ multiplication gates, and $e$ additional
+pins or equalities. Suppose its rational wire assignment is unique for each
+correct input/output instance. Then an explicit polynomial
+\begin{equation}
+ \mathscr Q(\text{input},\text{output},\boldsymbol z)=\sum_{i=1}^{R}r_i^2
+ \label{pqc:iq:eq:quartic}
+\end{equation}
+in integer coefficients has degree at most four, and
+\begin{align}
+ V&=7W+5a+3m,\label{pqc:iq:eq:V}\\
+ R&=4W+6a+4m+e.\label{pqc:iq:eq:R}
+\end{align}
+For fixed rational input/output parameters, $\mathscr Q=0$ has exactly one
+natural witness if the instance is correct, and none if it is incorrect.
+
+Applied to \eqref{pqc:iq:eq:four} and either moment interface above, this gives
+unique-witness quartic certificates for the finite-dimensional quantum-loop
+statistics. Their size depends on dimension and the chosen finite interface,
+not on how long any execution runs.
+\end{theorem}
+\begin{proof}
+Allocate the seven-coordinate block and its four residuals for each wire.
+Allocate the gate auxiliaries and residuals just described, and add all pins
+and rational equalities. The formulas \eqref{pqc:iq:eq:V}--\eqref{pqc:iq:eq:R} are direct
+counts. Every residual is quadratic, including pins when the raw rational
+input and answer are treated as free integer parameters. A sum of integer
+squares vanishes exactly when all residuals vanish.
+
+For soundness, every zero determines genuine reduced rational values, and
+the positive denominators make every gate equality valid in $\Q$. Thus it
+satisfies the original rational system. For completeness, take its correct
+rational solution, use the unique wire encodings, and insert the uniquely
+specified signed products and positive denominator products. Every residual
+then vanishes. Uniqueness follows first for the rational solution, then for
+each canonical wire, then for each auxiliary.
+
+For the application, Theorem~\ref{pqc:iq:thm:group} gives uniqueness of the only
+non-acyclic algebraic component $(G,P)$. Every later arithmetic wire is the
+output of an acyclic rational circuit and is therefore uniquely determined.
+Theorems~\ref{pqc:iq:thm:moments} and \ref{pqc:iq:thm:allmoments} identify the resulting
+values with the claimed statistics.
+\end{proof}
+
+\wtag\ Source~19 titled this theorem ``Canonical quartic compilation'', the
+title of Part~VI's Theorem~\ref{pqc:cc:thm:wires} (source~10), which source~19
+does not cite; the word ``rational'' was added to tell them apart. It extends
+that theorem from integers to rationals. Source~10's canonical signed wire is a
+pair $(z^+,z^-)$ with $z^+z^-=0$ (Lemma~\ref{pqc:cc:lem:canonical}), and an
+integer evaluation network with $N$ wires needs $2N$ variables and $2N$
+residuals. Source~19's wire keeps that pair as $(p,m)$ for the numerator and
+adds a positive denominator $h+1$, a B\'ezout pair bounded by the slack $s$, and
+the sign pair $(v_+,v_-)$, so that a rational number has exactly one natural
+encoding (Lemma~\ref{pqc:iq:lem:wire}); an integer $n$ is the wire
+$(p,m,0,0,0,1,0)$. Both theorems keep a unique witness; source~19 pays seven
+coordinates and four residuals per wire for division-free rational arithmetic.
+Part~I's Lemma~\ref{pqc:lem:quarticlower} lowers degree without uniqueness and is
+not used here.
+
+\subsection{Exact dense inverse counts}
+The supplied generator intentionally uses an unsimplified dense matrix
+schedule. It allocates $D^2$ input entries of $T$, $2D^2$ unknown entries of
+$G,P$, and the two constant wires zero and one. It computes $A=I-T$, the
+four products $AG,GA,AP,GP$, and the two sums $AG+P,GA+P$.
+
+This schedule has
+\begin{align}
+ m&=4D^3,& a&=4D^3-D^2,\\
+ W&=8D^3+2D^2+2,& e&=5D^2+2.
+ \label{pqc:iq:eq:coreledger}
+\end{align}
+The pins are $D^2$ input entries and two constants; the other $4D^2$
+equalities are the four matrix constraints. Consequently
+\begin{equation}
+ \boxed{V_{\rm core}=88D^3+9D^2+14,\qquad
+ R_{\rm core}=72D^3+7D^2+10.}
+ \label{pqc:iq:eq:corecounts}
+\end{equation}
+These are exact counts for this schedule, not lower bounds or optimization
+claims. For $D=1$, they are $111$ variables and $89$ residuals; for a qubit,
+$D=4$, they are $5790$ and $4730$. The degree is four, and the domain is
+$\N$, not all of $\Z$.
+
+Our complete qubit certificate through normalized factorial order three,
+including the initial density, trace and exit rows, moment answers, and
+nontermination probability, has $8686$ natural variables and $7089$
+quadratic residuals. The all-moments qubit version has $14258$ variables and
+$11657$ residuals. Sparse or observable-subspace compilers could be much
+smaller; retaining the dense form makes the ledger independent of accidental
+zeros and exposes every constraint to inspection.
+
+\subsection{Why this is not a single-fold MRDP theorem}
+The system has a unique witness because a \emph{finite rational linear-algebra
+object} is already unique and can be described with bounded algebraic syntax.
+There is no hidden arbitrary computation history in the inverse equations.
+In the undecidable word-existence problem considered later, the word length is
+unbounded and cannot be replaced by this aggregate-state certificate.
+Applying MRDP to that separate existential problem supplies a finite
+Diophantine representation, but does not supply the uniqueness proved here.
+
+\section{Rank strata, witness heights, and computable tails}
+\label{pqc:iq:sec:heights}
+The canonical inverse has more structure than mere rational existence. Its
+entries have explicit rational formulas on each semisimple-zero rank stratum,
+and those formulas control their arithmetic height.
+
+\begin{proposition}[Coefficient formula without a pivot choice]
+\label[proposition]{pqc:iq:prop:rank}
+Let $A$ be a $D\times D$ matrix with semisimple zero and nullity $r\geq1$.
+Write
+\begin{align}
+ \det(A+tI)&=t^r(h_0+h_1t+\cdots),\qquad h_0\ne0,\\
+ \adj(A+tI)&=t^{r-1}(B_0+B_1t+\cdots).
+ \label{pqc:iq:eq:coeffexp}
+\end{align}
+Then
+\begin{equation}
+ P=\frac{B_0}{h_0},\qquad
+ G=\frac{B_1h_0-B_0h_1}{h_0^2}.
+ \label{pqc:iq:eq:rankformula}
+\end{equation}
+For $r=0$, the formulas are simply $P=0$ and $G=A^{-1}$.
+Thus, for a matrix family rational in parameters, the canonical $G$ and $P$
+are rational functions on every fixed-nullity semisimple-zero stratum.
+\end{proposition}
+\begin{proof}
+In the splitting $A=\diag(0,B)$,
+\[
+ (A+tI)^{-1}=t^{-1}P+G-tG^2+t^2G^3-\cdots
+\]
+near $t=0$. Multiplication by $\det(A+tI)$ gives the adjugate, first for
+$t\ne0$ and then as a polynomial identity. Its coefficients at degrees
+$r-1$ and $r$ are respectively $h_0P$ and $h_0G+h_1P$. Solving gives
+\eqref{pqc:iq:eq:rankformula}. Every coefficient in \eqref{pqc:iq:eq:coeffexp} is a
+polynomial in the entries of $A$; rational dependence on the external
+parameters follows wherever $h_0\ne0$.
+\end{proof}
+
+A single rational expression need not extend regularly through a rank change.
+The inverse of $[p]$ already diverges as $p\to0$, while its group inverse at
+$p=0$ is zero. The fixed syntax of \eqref{pqc:iq:eq:four} is rank independent even
+though the values are not continuous across all rank changes.
+
+\begin{proposition}[Explicit height control]
+\label[proposition]{pqc:iq:prop:height}
+Suppose $A=C/Q$, where $C$ is integral, $Q\geq1$ is integral, and
+$|C_{ij}|\leq \Lambda$ with integral $\Lambda\geq1$. Set
+\begin{equation}
+ M=D!(1+\Lambda)^D.
+ \label{pqc:iq:eq:heightM}
+\end{equation}
+If zero is semisimple, each reduced entry of $G=A^\#$ has numerator of
+absolute value at most $2QM^2$ and positive denominator at most $M^2$.
+The entries of $P$ have numerator and denominator bounded by $M$.
+\end{proposition}
+\begin{proof}
+Every coefficient of $\det(C+tI)$ has absolute value at most
+$D!(1+\Lambda)^D$ by expanding the determinant and bounding all coefficient sums.
+Every adjugate coefficient has the smaller analogous bound
+$(D-1)!(1+\Lambda)^{D-1}$ and hence is also bounded by $M$.
+Apply \eqref{pqc:iq:eq:rankformula} to $C$. A nonzero integral $h_0$ has
+$|h_0|\geq1$. The numerator of its inverse formula is bounded by $2M^2$
+and the denominator by $M^2$; the projection formula has both bounded by $M$.
+Finally $(C/Q)^\#=Q C^\#$, while $P$ is unchanged. Reduction of a fraction
+cannot enlarge these bounds. In the invertible case the adjugate/determinant
+formula gives even smaller bounds, still within the stated estimates.
+\end{proof}
+
+Thus the bit lengths of the canonical core witness are polynomial in the
+matrix dimension and rational input bit length. For a fixed reduced wire
+$n/d$, its B\'ezout witness satisfies $u<d$ and $|v|\leq|n|+1$, so the
+canonicalization itself does not introduce a hidden large search. Repeated
+matrix-vector multiplication through order $K$ gives polynomial bit growth
+in $K$, dimension, and input size: common-denominator matrix powers give a
+direct bound linear in the power on logarithmic height. The characteristic
+recursion uses only $D$ matrix stages and fixed reciprocals $1/k$.
+
+These statements are about the displayed finite-dimensional arithmetic
+circuits. They are not bounds on witnesses produced by an arbitrary MRDP
+representation of an undecidable word problem.
+
+\subsection{Uniform almost-sure termination}
+\begin{proposition}[Uniform termination criterion]
+\label[proposition]{pqc:iq:prop:uniform}
+For a finite-dimensional completely positive trace-nonincreasing continuation
+map, the following are equivalent:
+\begin{equation}
+ \text{AST on every density},\qquad P=0,\qquad
+ \det(I-T)\ne0,\qquad \rho(T)<1.
+ \label{pqc:iq:eq:uniform}
+\end{equation}
+Here $\rho(T)$ denotes spectral radius, not an initial state.
+\end{proposition}
+\begin{proof}
+The first condition is equivalent to $P=0$ because positive matrices span the
+Hermitian space and Corollary~\ref{pqc:iq:cor:nontermination} applies to every density.
+The splitting in Theorem~\ref{pqc:iq:thm:group} makes $P=0$ equivalent to the absence
+of eigenvalue one, or to invertibility of $I-T$.
+
+If $P=0$, then $\tr T^nX\to0$ for every $X\geq0$. Its trace is its trace
+norm, so $T^nX\to0$. Positive matrices span; hence $T^n\to0$ on the whole
+finite-dimensional space. There are therefore no eigenvalues of modulus one,
+and Lemma~\ref{pqc:iq:lem:bounded} gives $\rho(T)<1$. The converse follows from
+exponential decay of matrix powers.
+\end{proof}
+
+The equivalence between almost-sure termination and finite expected time in
+finite-dimensional quantum programming is established in earlier work
+\cite{b76s19-LZBY}. The following elementary quantitative version is useful for an
+exact arithmetic interface.
+
+\begin{corollary}[An input-height tail bound]
+\label[corollary]{pqc:iq:cor:tail}
+Assume uniform AST and $I-T=C/Q$ with $C,Q,\Lambda$ as above. For the basis
+\eqref{pqc:iq:eq:basis}, put
+\begin{equation}
+ B=dD Q(D-1)!\Lambda^{D-1}.
+ \label{pqc:iq:eq:B}
+\end{equation}
+Then $\E L\leq B$ for every initial density, and
+\begin{equation}
+ \Pr(L>2Bk)\leq2^{-k}\qquad(k\geq0).
+ \label{pqc:iq:eq:geotail}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Since $C$ is nonsingular integral, $|\det C|\geq1$. Each cofactor is bounded
+by $(D-1)!\Lambda^{D-1}$, so every entry of
+$G=(I-T)^{-1}=QC^{-1}$ is bounded in absolute value by
+$Q(D-1)!\Lambda^{D-1}$. Coordinates of a density in \eqref{pqc:iq:eq:basis} have absolute
+value at most one. Since $\ell$ has $d$ nonzero entries,
+$\E L=\ell Gx\leq B$.
+
+Markov's inequality gives $\Pr(L>2B)\leq1/2$. Condition on survival to
+$2B$: the normalized surviving matrix is again a density, and the same bound
+applies to it because the estimate is uniform over all densities. Repeating
+this argument proves \eqref{pqc:iq:eq:geotail}. If a conditioning event has
+probability zero, the subsequent bound is automatic.
+\end{proof}
+
+The bound is deliberately crude. It is sufficient to show that a computable
+exponential tail can be extracted without a numerical spectral-gap oracle.
+It does not decide whether a particular outcome word has exactly zero
+probability, nor whether some such word exists.
+
+\section{Weak killing: a Laurent law, scaling limit, and inverse}
+\label{pqc:iq:sec:regulator}
+At each test, first terminate independently with probability
+$\epsilon\in(0,1)$; otherwise perform the original test. The new continuation
+matrix is
+\begin{equation}
+ T_\epsilon=(1-\epsilon)T.
+ \label{pqc:iq:eq:regulatedT}
+\end{equation}
+One realization uses a new exit superoperator $X\mapsto\epsilon X$ and
+rescales every old map by $1-\epsilon$. For rational $\epsilon$ these are
+rational superoperators, irrespective of whether a particular Kraus
+square root is rational.
+
+Let $L_\epsilon$ count tests of the modified loop. Equivalently, take an
+independent geometric random variable $R_\epsilon$ on
+$\{1,2,\ldots\}$ with success probability $\epsilon$ and put
+$L_\epsilon=\min(L,R_\epsilon)$. Hence
+\begin{equation}
+ \Pr(L_\epsilon>n)=(1-\epsilon)^ns_n.
+ \label{pqc:iq:eq:regulatedsurvival}
+\end{equation}
+This construction turns every loop into an almost-surely terminating one.
+
+\begin{theorem}[Exact resolvent and all-orders weak-clock law]
+\label{pqc:iq:thm:regulator}
+For $\epsilon\in(0,1)$,
+\begin{align}
+ [I-(1-\epsilon)T]^{-1}
+ &=\epsilon^{-1}P+G[I+\epsilon TG]^{-1},
+ \label{pqc:iq:eq:regresolvent}\\
+ M(\epsilon):=\E L_\epsilon
+ &=\frac{w}{\epsilon}
+ +\sum_{m\geq0}(-\epsilon)^m a_m^*,
+ \label{pqc:iq:eq:laurent}
+\end{align}
+where $a_m^*=\E[\binom L{m+1};L<\infty]$. The series converges in a
+neighborhood of zero after its displayed pole is removed. It is therefore a
+convergent Laurent expansion, not merely a formal asymptotic series. Every
+coefficient is rational and has the canonical certificates above.
+\end{theorem}
+\begin{proof}
+On $\ker A$, the left side of \eqref{pqc:iq:eq:regresolvent} is
+$\epsilon^{-1}I$, and the second term on the right is zero. On $\im A$,
+$A$ is invertible and commutes with $T$; therefore
+\[
+ (A+\epsilon T)^{-1}=G(I+\epsilon TG)^{-1}.
+\]
+This also shows that $I+\epsilon TG$ is invertible for real
+$0<\epsilon<1$: $I-(1-\epsilon)T$ is invertible because the spectral
+radius of $(1-\epsilon)T$ is less than one. Thus
+\eqref{pqc:iq:eq:regresolvent} holds on both summands.
+
+Summing the survival probabilities \eqref{pqc:iq:eq:regulatedsurvival} gives
+$M(\epsilon)=\ell[I-(1-\epsilon)T]^{-1}x$. A Neumann expansion of
+$(I+\epsilon TG)^{-1}$ for sufficiently small $|\epsilon|$ proves
+\eqref{pqc:iq:eq:laurent}; Proposition~\ref{pqc:iq:prop:finitepart} identifies its
+coefficients. For example, $|\epsilon|\|TG\|<1$ in any submultiplicative
+norm is a sufficient convergence condition.
+\end{proof}
+
+The residue is precisely the mass of genuinely infinite executions. The
+regular coefficients describe only finite executions. In particular,
+\begin{equation}
+ M(\epsilon)=\frac{w}{\epsilon}
+ +\E[L;L<\infty]
+ -\epsilon\E\!\left[\binom L2;L<\infty\right]+O(\epsilon^2).
+ \label{pqc:iq:eq:firstlaurent}
+\end{equation}
+A rare independent stopping event reveals both aspects in one observable.
+
+\begin{theorem}[Mixture limit and convergence of moments]
+\label{pqc:iq:thm:mixture}
+As $\epsilon\downarrow0$,
+\begin{equation}
+ \epsilon L_\epsilon\ \Longrightarrow\
+ (1-w)\delta_0+w\operatorname{Exp}(1).
+ \label{pqc:iq:eq:mixture}
+\end{equation}
+For every integer $k\geq1$,
+\begin{equation}
+ \lim_{\epsilon\downarrow0}\E[(\epsilon L_\epsilon)^k]=wk!.
+ \label{pqc:iq:eq:scaledmoments}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $y>0$, let $n=\lfloor y/\epsilon\rfloor$. Equation
+\eqref{pqc:iq:eq:regulatedsurvival} gives
+\[
+ \Pr(\epsilon L_\epsilon>y)
+ =(1-\epsilon)^n s_n\longrightarrow e^{-y}w.
+\]
+This determines the claimed distribution at all its continuity points,
+including the possibility of an atom at zero. The coupling
+$L_\epsilon\leq R_\epsilon$ provides a uniform exponential tail for
+$\epsilon L_\epsilon$: for $0<\epsilon\leq1/2$,
+$(1-\epsilon)^{\lfloor y/\epsilon\rfloor}\leq e^{1/2}e^{-y}$.
+The tail integral formula for moments and dominated convergence then give
+\eqref{pqc:iq:eq:scaledmoments}.
+\end{proof}
+
+There is also an exact factorial identity, useful independently of the limit:
+\begin{equation}
+ \E[\fall{L_\epsilon}{k}]
+ =k!\,\ell T_\epsilon^{k-1}(I-T_\epsilon)^{-k}x
+ \qquad(k\geq1).
+ \label{pqc:iq:eq:regulatedfactorials}
+\end{equation}
+Indeed, $\binom Lk=\sum_{n=0}^{L-1}\binom n{k-1}$, and
+$\sum_{n\geq0}\binom n{k-1}T_\epsilon^n
+=T_\epsilon^{k-1}(I-T_\epsilon)^{-k}$. On the fixed-point summand its
+leading contribution is
+$k!w(1-\epsilon)^{k-1}\epsilon^{-k}$; the complementary contribution is
+analytic at zero.
+
+\subsection{Inverse calibration}
+Suppose $w>0$ and choose a desired large mean duration $y$. Since
+$M(\epsilon)$ is strictly decreasing, there is a unique small positive
+$\epsilon$ with $M(\epsilon)=y$. Put $r=1/y$ and
+$A_0(t)=\sum_{m\geq0}(-t)^m a_m^*$. The inverse equation is
+\begin{equation}
+ \epsilon=r\bigl(w+\epsilon A_0(\epsilon)\bigr).
+ \label{pqc:iq:eq:inversefunctional}
+\end{equation}
+At $(r,\epsilon)=(0,0)$ the derivative of the left side minus the right
+side with respect to $\epsilon$ is one. The analytic implicit-function
+theorem gives a convergent inverse power series. Comparing coefficients
+recursively gives
+\begin{equation}
+ \boxed{\epsilon(y)=\frac{w}{y}
+ +\frac{wa_0^*}{y^2}
+ +\frac{w(a_0^*)^2-w^2a_1^*}{y^3}+O(y^{-4}).}
+ \label{pqc:iq:eq:inverseexpansion}
+\end{equation}
+Every subsequent coefficient is a rational polynomial expression in $w$ and
+finitely many $a_m^*$. Equation~\eqref{pqc:iq:eq:inversefunctional} is also an
+all-orders coefficient algorithm: the coefficient of $r^n$ on the right
+only involves previously determined coefficients of $\epsilon$. This is a
+concrete inversion problem connecting the present certificate construction
+to the repository's broader interest in asymptotic series and their inverses.
+The case $w=0$ has no diverging $1/\epsilon$ scale and is not covered by this
+large-$y$ inversion.
+
+\section{A geometric runtime with undecidable forbidden records}
+\label{pqc:iq:sec:geometric}
+The next construction is where the unconventional computational substrate
+enters essentially. Its source of undecidability is not a divergent mean or
+an unknown convergence rate, but destructive interference inside products
+indexed by arbitrarily long words.
+
+We use the following published theorem as an external input, not as a new
+result of this manuscript.
+
+\begin{theorem}[Eisert--M\"uller--Gogolin, 2012]
+\label{pqc:iq:thm:EMG}
+For devices specified by nine rational real Kraus matrices
+$A_1,\ldots,A_9\in\Q^{15\times15}$ satisfying
+$\sum_i A_i^\dagger A_i=I$, it is undecidable whether some nonempty finite
+word $v=i_1\cdots i_n$ has
+$A_v=A_{i_n}\cdots A_{i_1}=0$.
+Equivalently, from any full-rank density, it is undecidable whether there
+exists a finite measurement record of probability zero.
+\end{theorem}
+This is Theorem~1 of \cite{emg}; its matrix-mortality reduction and rational
+normalization are part of that source. We retain its published dimensions
+rather than depend on unrefereed dimension improvements in the repository.
+
+\wtag\ Theorem~\ref{pqc:iq:thm:EMG} is the benchmark already quoted in Part~II
+(Section~\ref{pqc:qm:sec:scope} and the table after
+Theorem~\ref{pqc:qm:thm:47}); it is printed here because source~19 states it,
+and it adds nothing to Part~II. The ``unrefereed dimension improvements'' are
+Part~II's Theorem~\ref{pqc:qm:thm:47} and Corollary~\ref{pqc:qm:cor:57}; what
+they give in place of Theorem~\ref{pqc:iq:thm:EMG} is
+Corollary~\ref{pqc:iq:cor:dimfour} below.
+
+\begin{theorem}[Geometric-clock preservation]
+\label{pqc:iq:thm:geometric}
+There is an undecidable forbidden-completed-record problem for rational
+quantum instruments on a fixed $15$-dimensional Hilbert space with nine
+continuation outcomes and one terminating outcome, under all of the following
+promises:
+\begin{equation}
+ \Pr(N=n)=\frac{16}{25}\left(\frac9{25}\right)^n
+ \quad(n\geq0),\qquad \E L=\frac{25}{16}.
+ \label{pqc:iq:eq:fixedgeo}
+\end{equation}
+Every instrument is almost surely terminating; its complete length
+distribution and all length moments are identical to those of every other
+instrument in the family. The forbidden records under consideration are
+exactly the syntactically legal words $v\,\mathsf H$, with $v$ a string of
+continuation outcomes and $\mathsf H$ the single final halt symbol.
+\end{theorem}
+\begin{proof}
+Take an instance $A_1,\ldots,A_9$ of Theorem~\ref{pqc:iq:thm:EMG}, fix the
+rational full-rank initial density $\rho=I_{15}/15$, and define
+\begin{equation}
+ C_i=\frac35 A_i\quad(1\leq i\leq9),\qquad
+ H^{\mathrm{halt}}=\frac45 I.
+ \label{pqc:iq:eq:clockkraus}
+\end{equation}
+All matrices remain rational and
+$\sum_i C_i^\dagger C_i+(H^{\mathrm{halt}})^\dagger H^{\mathrm{halt}}=I$.
+Interpret the $H^{\mathrm{halt}}$ outcome as termination, not as another outcome after which
+the device continues.
+
+The summed continuation map is
+$\cT(X)=\frac9{25}\sum_i A_iXA_i^\dagger$, so
+$\tr\cT(X)=\frac9{25}\tr X$ for every $X\geq0$.
+Thus $s_n=(9/25)^n$ independently of the initial density and of all details
+of the $A_i$. The halt probability at the next test is $16/25$, proving
+\eqref{pqc:iq:eq:fixedgeo} and almost-sure termination.
+
+For a particular continuation word $v$ of length $n$, followed by halt, its
+probability from a full-rank density $\rho$ is
+\begin{equation}
+ \Pr(v\mathsf H)
+ =\frac{16}{25}\left(\frac9{25}\right)^n
+    \tr(A_v\rho A_v^\dagger).
+ \label{pqc:iq:eq:wordpreserve}
+\end{equation}
+The scalar factor is strictly positive. Since $\rho$ is positive definite,
+$\tr(A_v\rho A_v^\dagger)=\|A_v\rho^{1/2}\|_{\mathrm F}^2$ vanishes
+exactly when $A_v=0$. A decision procedure for existence of a forbidden
+completed record in the new family would therefore decide the published
+undecidable problem. The empty continuation word has positive halt
+probability and introduces no spurious zero.
+\end{proof}
+
+The restriction to legal records is indispensable: a string containing an
+outcome \emph{after} a halt is syntactically impossible and would make an
+unrestricted question trivial. Equation~\eqref{pqc:iq:eq:wordpreserve} preserves the
+meaningful zero set, not this grammatical artifact.
+
+\begin{corollary}[No computable shortest-forbidden-record bound]
+\label[corollary]{pqc:iq:cor:nobound}
+There is no total computable function of the finite device description
+length that bounds the shortest forbidden legal record whenever one exists
+in the family of Theorem~\ref{pqc:iq:thm:geometric}.
+\end{corollary}
+\begin{proof}[\wtag\ Pointer to the proof]
+This is the argument of Part~II's Corollary~\ref{pqc:qm:cor:nobound}, with
+Theorem~\ref{pqc:iq:thm:geometric} in place of Theorem~\ref{pqc:qm:thm:47}: a
+computable bound would turn the exact evaluation of the finitely many legal
+words up to that length into a decision procedure. Source~19's proof is this
+bounded search and is not reprinted.
+\end{proof}
+
+\wtag\ Source~19 next observes that the existence of a forbidden record is
+computably enumerable, so that an MRDP polynomial represents it uniformly over
+an effective coding of the rational devices \cite{b76s19-RepoMRDP}, and that
+malformed descriptions can be rejected and rational normalization checked
+before the enumeration. That is the semidecider and
+Theorem~\ref{pqc:qm:thm:mrdp} of Section~\ref{pqc:qm:sec:mrdp}, stated there for
+$\QMort_{4,7}$, and the paragraph is not reprinted. Its non-claim is kept:
+``No explicit fixed-arity polynomial or single-fold property for this separate
+problem is claimed here.''
+
+\begin{corollary}[\wtag\ The same clock in dimension four, given Part~II]
+\label[corollary]{pqc:iq:cor:dimfour}
+Assume Theorem~\ref{pqc:qm:thm:47} of Part~II. Then the forbidden-legal-record
+problem is undecidable for rational quantum instruments on a fixed
+$4$-dimensional Hilbert space ($d=4$, $D=16$) with seven continuation outcomes
+and one terminating outcome, under the same promises \eqref{pqc:iq:eq:fixedgeo}:
+every instrument terminates almost surely, and all of them have the same length
+law $\Pr(N=n)=\frac{16}{25}(\frac9{25})^n$. No total computable function of the
+description length bounds the shortest forbidden legal record. Assuming instead
+Corollary~\ref{pqc:qm:cor:57} (Lagrange in place of Meyer), the same holds in
+dimension five with seven continuation outcomes and one terminating outcome.
+\end{corollary}
+\begin{proof}
+Take an instance $A_0,\ldots,A_6\in\Q^{4\times4}$ of Theorem~\ref{pqc:qm:thm:47},
+so that $\sum_jA_j^{\mathsf T}A_j=I_4$, put $\rho=I_4/4$, and define
+$C_j=\frac35A_j$ ($0\leq j\leq6$) and $H^{\mathrm{halt}}=\frac45I_4$, as in
+\eqref{pqc:iq:eq:clockkraus}. The proof of Theorem~\ref{pqc:iq:thm:geometric}
+applies word for word: the summed continuation map multiplies traces by $9/25$,
+which gives the law, and \eqref{pqc:iq:eq:wordpreserve} together with
+Lemma~\ref{pqc:qm:lem:fullrank} shows that the record $v\mathsf H$ with $v$
+nonempty has probability zero exactly when $A_v=0$, while the empty $v$ has
+probability $16/25$. A decision procedure would therefore decide whether some
+nonempty word of the instrument of Theorem~\ref{pqc:qm:thm:47} has probability
+zero. The no-bound statement follows as Corollary~\ref{pqc:iq:cor:nobound}. For
+dimension five, use the instruments of Corollary~\ref{pqc:qm:cor:57}.
+\end{proof}
+
+This corollary is only as strong as Part~II's Theorem~\ref{pqc:qm:thm:47},
+which rests on Neary's published six-generator theorem, Meyer's theorem and
+source~07's unrefereed Gram-packing theorem; source~19, which preferred the
+published fifteen-dimensional input, proves neither. It answers source~19's
+Question~\ref{pqc:iq:q:clocks} for dimension four with seven continuation
+outcomes (the note after that question).
+
+\subsection{What carries the computational hardness?}
+The result does not say that a fixed-dimensional autonomous mixed state stores
+an unbounded classical tape. Rather, an unbounded \emph{word quantifier}
+ranges over a noncommutative matrix semigroup. The summed channel discards
+that word information. Two instruments can consequently share every runtime
+moment while their exact word-support questions have radically different
+answers.
+
+In the geometric family, the entire runtime series is simply
+\[
+ F(z)=\frac{16}{25-9z},\qquad
+ \sum_{k\geq0}\E\binom Nk\,u^k=\frac{1}{1-(9/16)u}.
+\]
+Yet the existence of one zero-probability completed record is undecidable.
+This rules out using aggregate moments, a computable tail estimate, or
+normalization alone as a decision procedure for exact word support.
+It does not imply a limitation on every approximate or restricted support
+question, and it does not establish any form of physical hypercomputation.
+
+\section{An actual rationality conjecture: false unrestricted, true canonically}
+\label{pqc:iq:sec:conjecture}
+In the overview of his generalized-inverse study, Lardizabal observes rational
+parameter dependence for certain examples and conjectures the same behavior
+for every generalized inverse \cite[Section 3]{b76s19-Lardizabal}. Taken literally,
+without specifying how a generalized inverse is selected, this is false.
+The distinction is not about difficult quantum dynamics: it already appears
+in an ergodic two-state classical chain.
+
+\begin{proposition}[Nonrational generalized-inverse selection]
+\label[proposition]{pqc:iq:prop:counterexample}
+For $0<p<1$, let
+\begin{equation}
+ T(p)=\begin{pmatrix}1-p&p\\p&1-p\end{pmatrix},\quad
+ A(p)=I-T(p)=p\begin{pmatrix}1&-1\\-1&1\end{pmatrix}.
+ \label{pqc:iq:eq:counterT}
+\end{equation}
+This is an irreducible aperiodic classical Markov chain. Its canonical pair is
+\begin{equation}
+ P=\frac12\begin{pmatrix}1&1\\1&1\end{pmatrix},\qquad
+ G(p)=\frac1{4p}\begin{pmatrix}1&-1\\-1&1\end{pmatrix}.
+ \label{pqc:iq:eq:counterG}
+\end{equation}
+For every scalar function $f:(0,1)\to\R$,
+\begin{equation}
+ J_f(p)=G(p)+f(p)P
+ \label{pqc:iq:eq:Jf}
+\end{equation}
+is a generalized inverse in the sense
+$A(p)J_f(p)A(p)=A(p)$. With $f(p)=e^p$, its entries are not rational
+functions of $p$.
+\end{proposition}
+\begin{proof}
+All transition probabilities are strictly positive, so the chain is
+irreducible and aperiodic. Direct multiplication gives
+$AP=PA=0$ and $AGA=A$. Hence $A(G+fP)A=A$ for every $f$.
+
+If an entry of $J_{e^p}$ were a rational function, subtracting its rational
+$G$ entry and multiplying by two would make $e^p$ rational on $(0,1)$.
+This is impossible. Indeed, for a nonzero rational function $R=U/V$, the
+identity $R'=R$ would imply the polynomial identity
+$U'V-UV'=UV$. The degree of the left side is smaller than that of the
+nonzero right side. Thus no such rational function exists.
+\end{proof}
+
+The proposition addresses the unrestricted quantifier over generalized
+inverses. It does \emph{not} refute a theorem about a specified canonical
+inverse, nor a rational algorithm for choosing one, nor the validity of the
+hitting-time identities in \cite{b76s19-Lardizabal}. Those distinctions are essential:
+nullspace freedom can import an arbitrary external function into an otherwise
+rational family.
+
+The appropriate corrected statement for our purposes is
+Proposition~\ref{pqc:iq:prop:rank}: the unique group inverse and its projection are
+rational functions on each fixed-nullity semisimple-zero stratum. The four
+equations in Theorem~\ref{pqc:iq:thm:group} eliminate exactly the arbitrary freedom
+that makes \eqref{pqc:iq:eq:Jf} possible. This also explains why canonical choice is
+not a cosmetic preference in a Diophantine compiler: without it, witness
+uniqueness is lost before any integer encoding is attempted.
+
+Our literature search verifies the original statement and supplies the
+counterexample and corrected theorem. It does not establish that this
+interpretational issue had never been noticed, or that any stronger
+well-specified conjecture remains open as of the date of this manuscript.
+
+\wtag\ \emph{The quoted sentence, checked (2 October 2026).} In
+arXiv:1907.01313v2 (dated 9 July 2019) the sentence is not in a Section~3 of
+the paper: it is item~3, ``Computing concrete examples'', of the overview in the
+Introduction (Section~1), and source~19's \code{19-quantum-runs-SOURCE_AUDIT.md}
+repeats the inaccurate location. There Lardizabal writes, of his Example~8.2 (a
+nonunital quantum Markov chain on two vertices depending on $0<p<1$), that the
+entries of certain generalized inverses are rational functions of $p$, and adds
+in parentheses that he conjectures this for every generalized inverse. His
+Section~6 defines a generalized inverse as any $A^-$ with $AA^-A=A$, the
+definition of Proposition~\ref{pqc:iq:prop:counterexample}. That proposition's
+chain is classical, not his Example~8.2; but its construction needs only a
+projection $P\ne0$ with $AP=PA=0$ and some generalized inverse $G$, and every
+trace-preserving $T$ has such a $P$ (the Ces\`aro projection of
+Theorem~\ref{pqc:iq:thm:group}, nonzero because $\ell P=\ell$). So
+$G+f(p)P$ is also a generalized inverse in his example, with entries that are
+not rational functions of $p$ when $f(p)=e^p$, as soon as $P$ has an entry that
+is a nonzero rational function of $p$. Source~19's hedges stand: this concerns
+only the unrestricted reading of the conjecture, not his fundamental matrix or
+his hitting-time theorems.
+
+\section{A sharp boundary: computable time dependence already breaks the graph}
+\label{pqc:iq:sec:scheduled}
+Finite dimension alone is not sufficient for the main theorem. Even a
+one-dimensional quantum system can inherit unbounded computational information
+from a computably specified external schedule.
+
+\begin{proposition}[No uniform Diophantine graph for scheduled exact probabilities]
+\label[proposition]{pqc:iq:prop:scheduled}
+There is a computable family of time-dependent one-dimensional rational
+quantum loops, each using only the two Kraus pairs
+\begin{equation}
+ (K_n,H^{\mathrm{halt}}_n)=(1,0)\quad\text{or}\quad(3/5,4/5),
+ \label{pqc:iq:eq:schedulealphabet}
+\end{equation}
+whose eventual exit probabilities belong to $\{0,1\}$, but whose exact exit
+probability graph has no uniform existential Diophantine representation.
+There is not even an algorithm that, from an arbitrary schedule index in this
+family, produces a finite polynomial representing its exact probability
+relation, with unrestricted degree and witness count.
+\end{proposition}
+\begin{proof}
+Given a Turing-machine index $e$, at test $n$ simulate that machine for $n$
+steps. Choose $(1,0)$ if it has not halted in that time, and $(3/5,4/5)$ if
+it has. This defines a total computable schedule of rational normalized Kraus
+pairs. If the machine never halts, the loop never exits and its exit
+probability is zero. If the machine halts, then from a finite time onward the
+continuation probability at each step is $9/25$, so its eventual exit
+probability is one.
+
+\wtag\ The rest of source~19's proof is the probability-zero endpoint of
+Parts~I and~V, not reprinted. There, $p=0$ is $\pione$ (the end of
+Section~\ref{pqc:sec:hierarchy}) and $\pione$-complete (Part~V's endpoint table
+in Section~\ref{pqc:ql:sec:normalforms}), and an existential Diophantine graph
+makes the probability-zero instances c.e.\ (search for witnesses with the answer
+fixed to zero). Here the probability-zero indices are exactly the complement of
+the halting set. Source~19 adds that the same search also works when an
+algorithm builds a separate polynomial for each $e$, because its coefficients
+and witness arity are then computable from $e$.
+\end{proof}
+
+The external schedule supplies the unbounded computation; the quantum system
+itself has only one dimension and no coherent degrees of freedom. Thus this is
+a representation boundary, not a claim of quantum advantage. It explains why
+one cannot take a finite-horizon simulator, let its horizon ``go to infinity,''
+and assume the resulting exact probability graph remains Diophantine.
+
+Together, the results now give three distinct outcomes. Time-homogeneous
+finite-dimensional aggregate laws have canonical finite certificates.
+Time-homogeneous word-support existence can be undecidable but computably
+enumerable. Computably scheduled exact probability graphs need not even be
+computably enumerable. The observable and its quantifiers are as important as
+the substrate.
+
+\wtag\ Part~VI draws a parallel boundary for algebraic quantum controllers with
+unbounded classical memory (``Three interfaces that must not be conflated'' in
+Section~\ref{pqc:cc:sec:unbounded}): exact finite circuits have canonical
+quartic witnesses, positive halting is c.e.\ (Theorem~\ref{pqc:cc:thm:positivehalting}),
+and almost-sure halting is $\pitwo$-complete (Theorem~\ref{pqc:cc:thm:ast}).
+Source~19's first and second outcomes are the finite-dimensional,
+time-homogeneous counterparts of its first two; its third outcome uses an
+external schedule instead of an unbounded controller.
+
+\section{Four exact examples}
+\label{pqc:iq:sec:examples}
+All numbers in this section were computed as exact rationals and checked by
+substitution. The software also compares the group-inverse moment formula
+with direct derivatives of the rational generating function.
+
+\subsection{A scalar geometric loop}
+Take $T=[9/25]$, $x=[1]$, and exit row $e=[16/25]$. Then
+\[
+ G=[25/16],\quad P=0,\quad F(z)=\frac{16}{25-9z},\quad
+ b_k=\left(\frac9{16}\right)^k.
+\]
+The mean number of tests is $25/16$. Adding the weak clock gives
+\[
+ M(\epsilon)=\frac{25}{16+9\epsilon},
+\]
+which has no pole because the original loop is already almost surely
+terminating. The exported certificate through moment order three has $262$
+natural variables and $213$ residuals.
+
+For a concrete view of canonical arithmetic, the reduced rational $25/16$ is
+encoded by
+\[
+ (p,m,h,u,v_+,v_-,s)=(25,0,15,9,14,0,6).
+\]
+The key B\'ezout residual is $25\cdot9-16\cdot14-1=0$. Both sign residuals
+and the complementary-slack residual also vanish. No alternative natural
+encoding of the same reduced rational satisfies all four equations.
+
+\subsection{A partially terminating qubit}
+Let
+\[
+ K=\diag(1,3/5),\qquad H^{\mathrm{halt}}=\diag(0,4/5),\qquad \rho=I_2/2.
+\]
+Then $K^\dagger K+(H^{\mathrm{halt}})^\dagger H^{\mathrm{halt}}=I$. In the chosen Hermitian basis,
+\[
+ T=\diag(1,9/25,3/5,3/5),\quad
+ G=\diag(0,25/16,5/2,5/2),\quad P=\diag(1,0,0,0).
+\]
+The nontermination probability is $1/2$, while
+\[
+ F(z)=\frac8{25-9z},\qquad
+ (b_0,b_1,b_2,b_3)
+ =\left(\frac12,\frac9{32},\frac{81}{512},\frac{729}{8192}\right).
+\]
+The unconditional mean is infinite. Its finite-path first moment is
+$\ell Gx=25/32$, and
+\[
+ M(\epsilon)=\frac1{2\epsilon}+\frac{25}{2(16+9\epsilon)}.
+\]
+The first term is the trapped half of the state waiting for the artificial
+clock; the second is the contribution from the decaying half. This simple
+example catches the common mistake of labeling $\ell Gx$ an unconditional
+mean on a partially terminating instance.
+
+\subsection{A coherent qubit with nontrivial moment recurrence}
+Let
+\begin{equation}
+ U=\begin{pmatrix}3/5&-4/5\\4/5&3/5\end{pmatrix},\qquad
+ K=\diag(1,3/5)U,\qquad H^{\mathrm{halt}}=\diag(0,4/5)U,
+ \label{pqc:iq:eq:coherentexample}
+\end{equation}
+and take $\rho=\frac12\left(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\right)$.
+Again $K^\dagger K+(H^{\mathrm{halt}})^\dagger H^{\mathrm{halt}}=I$. This time $I-T$ is invertible and
+\begin{equation}
+ F(z)=\frac{1960-512z+600z^2}{3125-1005z+603z^2-675z^3}.
+ \label{pqc:iq:eq:coherentpgf}
+\end{equation}
+Its first normalized factorial moments are
+\begin{equation}
+ (b_0,b_1,b_2,b_3)
+ =\left(1,\frac{157}{128},\frac{17037}{8192},
+                \frac{1590417}{524288}\right),
+ \label{pqc:iq:eq:coherentmoments}
+\end{equation}
+so $\E L=285/128$. The full four-dimensional matrix certificate gives
+\begin{align}
+ q(u)&=1-\frac{153}{64}u+\frac{657}{1024}u^2
+          +\frac{729}{1024}u^3+\frac{2025}{4096}u^4\nonumber\\
+ &=\frac{(3u-2)^2(225u^2+624u+1024)}{4096}.
+ \label{pqc:iq:eq:coherentq}
+\end{align}
+Equations~\eqref{pqc:iq:eq:coherentmoments} and \eqref{pqc:iq:eq:momentrecurrence} with
+this $q$ determine every higher moment. One factor is redundant after
+canceling against the numerator of the scalar generating function; the
+certificate deliberately retains it. This is an explicit all-orders result,
+not a numerical extrapolation from the displayed first four values.
+
+\subsection{A rotating dark sector: matrix powers do not converge}
+On a qutrit, use the same $U$ and set
+\[
+ K=\diag(U,3/5),\qquad H^{\mathrm{halt}}=\diag(0,0,4/5),\qquad
+ \rho=\psi\psi^\dagger,\quad \psi=\frac13(1,2,2)^T.
+\]
+The first two coordinates form a trapped unitary sector of mass $5/9$; the
+third has mass $4/9$ and decays geometrically. The trapped two-dimensional
+rank-one block is not fixed by conjugation with $U$. Its consecutive-iterate
+trace-norm difference is therefore a positive constant, because conjugation
+is an isometry. Hence $T^n x$ does not converge. The bright and cross terms
+decay and cannot cancel this persistent difference.
+
+Nevertheless,
+\begin{align}
+ w&=\frac59,&
+ s_n&=\frac59+\frac49\left(\frac9{25}\right)^n,\\
+ F(z)&=\frac{64}{225-81z},&
+ b_k&=\frac49\left(\frac9{16}\right)^k.
+ \label{pqc:iq:eq:qutritvalues}
+\end{align}
+The weak-clock expansion is particularly transparent:
+\begin{equation}
+ M(\epsilon)=\frac5{9\epsilon}
+ +\frac{100}{9(16+9\epsilon)}
+ =\frac5{9\epsilon}+\frac{25}{36}
+     \sum_{m\geq0}\left(-\frac{9\epsilon}{16}\right)^m.
+ \label{pqc:iq:eq:qutritlaurent}
+\end{equation}
+Thus $a_0^*=25/36$, $a_1^*=25/64$, and inverse calibration begins
+\begin{equation}
+ \epsilon(y)=\frac5{9y}+\frac{125}{324y^2}
+                   +\frac{6875}{46656y^3}+O(y^{-4}).
+ \label{pqc:iq:eq:qutritinverse}
+\end{equation}
+The limiting distribution of $\epsilon L_\epsilon$ has atom $4/9$ at zero
+and exponential component of mass $5/9$. The example simultaneously tests
+partial nontermination, coherent peripheral dynamics, rational aggregate
+statistics, and the singular small-clock limit.
+
+\section{Implementation, reproducibility, and proof status}
+\label{pqc:iq:sec:verification}
+The package contains four Python modules. The exact matrix analyzer uses
+SymPy for rational nullspaces, image bases, inverses, and symbolic generating
+functions. The certificate generator uses Python's exact integer arithmetic
+and reduced \texttt{Fraction} values. The independent checker uses only the
+standard library and imports neither the generator nor the analyzer.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.27\textwidth}p{0.65\textwidth}@{}}
+\toprule
+File & Purpose\\\midrule
+\texttt{quantum\_loops.py} & Rational Hermitian coordinates, continuation maps,
+canonical $(G,P)$, moment and regulator formulas.\\
+\texttt{quartic.py} & Seven-coordinate wires, sparse quadratic residuals,
+complete natural witnesses, bounded-order and all-moments circuits.\\
+\texttt{verify\_certificate.py} & Independent residual evaluation, canonical
+fraction checks, decoded inverse equations, moment recurrences, and
+characteristic coefficients.\\
+\texttt{run\_checks.py} & Exact examples, deterministic randomized gate tests,
+certificate export, mutation rejection, and machine-readable reports.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every exported polynomial is specified as an explicit list of quadratic
+residuals with integer coefficients, together with the instruction to sum
+their squares. This is a complete exact description of a quartic polynomial;
+it is not an appeal to an unspecified MRDP oracle. Avoiding expansion merely
+keeps the files small and preserves the equation structure for audit.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Certificate & Wires & Natural variables & Residuals & Moment data\\\midrule
+Scalar geometric &28&262&213&orders $0$--$3$\\
+Partial qubit &817&8686&7089&orders $0$--$3$\\
+Coherent qubit &817&8686&7089&orders $0$--$3$\\
+Coherent, all moments &1329&14258&11657&finite recurrence\\\bottomrule
+\end{tabular}
+\end{center}
+
+The recorded run used Python 3.13.5 and SymPy 1.14.0 and passed
+\textbf{33,708 exact assertions}. Of these, \textbf{31,892} increment one
+witness coordinate by one and verify rejection by at least one incident
+quadratic residual. This is a mutation test of every coordinate in the four
+exported assignments, not 31,892 different quantum systems. The remaining
+checks include 492 canonical-fraction cases, 492 bounded-B\'ezout uniqueness
+checks, 180 rational gate cases, Kraus normalizations, symbolic derivatives,
+all-moments rational identities, rank-stratum formulas, and exact
+geometric-support preservation on a small test instrument.
+
+The independent checker validates 26,048 residuals across the four files and
+also recomputes the decoded matrix identities. Its small geometric test
+instrument is \emph{not} the published undecidable 15-dimensional family;
+it checks the clock transformation algebra. Undecidability rests on
+Theorem~\ref{pqc:iq:thm:EMG} and the proof of Theorem~\ref{pqc:iq:thm:geometric}, not on
+finite experiments.
+
+From the package directory, reproduce the results with
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/run_checks.py
+python code/verify_certificate.py \
+    examples/coherent_qubit_all_moments_certificate.json
+make pdf
+\end{verbatim}
+The test runner overwrites only its generated example and verification files.
+No network access is used by the mathematical code. The tests check exact
+identities, not floating-point approximations; there are no empirical
+convergence thresholds hidden in the construction.
+
+\subsection{A feasible formalization path}
+The first independent formalization target should be the rational core, not a
+large quantum semantics development. In a finite-dimensional vector space,
+prove the unique solution of \eqref{pqc:iq:eq:four} for semisimple zero, then prove
+canonical wire uniqueness and the gate lemmas over $\N$. Those two results
+already establish soundness, completeness, and uniqueness of the compiler as
+an algebraic theorem.
+
+A second layer would formalize the CP/TNI power bound, Ces\`aro projection,
+peripheral annihilation, and stopped moment identity. The finite recurrence
+then uses standard polynomial matrix identities. A third layer would connect
+the quantum measurement-occurrence reduction to the repository's
+computability infrastructure. These layers should remain distinct: a verified
+integer checker does not by itself prove the spectral theorem, and the
+repository's existing MRDP theorem does not by itself prove this compiler.
+No such formalization or transitive axiom audit was executed for this package.
+
+\subsection{\wtag\ The shipped files and a rerun}
+\label{pqc:iq:sec:shipped}
+In this report source~19's four programs are
+\code{code/19-quantum-runs-quantum_loops.py}, \code{-quartic.py},
+\code{-verify_certificate.py} and \code{-run_checks.py}; its Makefile is
+\code{code/19-quantum-runs-Makefile}. Its \code{examples/*.json} and
+\code{verification/*} files are \code{data/19-quantum-runs-<name>}
+(\code{build_info.json}, \code{results.json} and \code{results.txt} keep their
+names), its \code{requirements.txt} is
+\code{data/19-quantum-runs-requirements.txt}, and its audit is
+\code{19-quantum-runs-SOURCE_AUDIT.md}. The commands above are the delivered
+ones, for the delivered layout: the programs import each other by their
+delivered names, \code{run_checks.py} rewrites \code{examples/} and
+\code{verification/} beside \code{code/}, and \code{make pdf} would build
+source~19's own manuscript, which is not shipped. The README gives commands for
+a copy. Its docstring speaks of ``three horizon-free quartic certificates''; the
+program exports four.
+
+Rerun on 2 October 2026 in such a copy (Python 3.13.5, SymPy 1.14.0):
+\code{run_checks.py} passed all $33{,}708$ assertions in the $29$ categories of
+\code{data/19-quantum-runs-results.txt}, and its five regenerated
+\code{examples/} files equal the shipped ones apart from line endings (Python's
+\code{write_text} writes CRLF on Windows); the two reports differ only in the
+four recorded file sizes, each one byte larger for the same reason. The
+independent checker accepts each of the four shipped certificates, $26{,}048$
+residuals in all. These checks test the implementation; they prove none of the
+theorems.
+
+\section{Further research questions}
+\label{pqc:iq:sec:questions}
+The following questions are concrete continuations, not claims of unresolved
+historical status in every possible formulation. They are chosen to preserve
+the distinction between a proved certificate theorem and an optimization or
+extension problem.
+
+\begin{question}[Smaller rank-independent certificates]\label{pqc:iq:q:smaller}
+Can the dense $O(D^3)$ inverse certificate be replaced by an
+$O(D^\omega)$ arithmetic circuit while retaining canonical rational witnesses
+and exact, rank-independent syntax? Fast matrix multiplication is one route,
+but useful constants, signed products, and the final quartic ledger must all
+be counted. A practical first target is a sparse qubit compiler with an
+independent checker and a substantially smaller variable count.
+\end{question}
+\wtag\ Compare Questions~\ref{pqc:q:smaller} and~\ref{pqc:qm:q:smaller}, which ask the same kind of question for Part~I's $F_{N,m}$ and Part~II's $\mathscr Q_{D,K,n}$, and Question~\ref{pqc:tu:q:optimization}.
+
+\begin{question}[Canonical observable quotients]\label{pqc:iq:q:quotients}
+The all-moments denominator may contain factors invisible to every exit row.
+Can one construct a unique rational certificate for the minimal observable
+quotient of $(T,x,e_1,\ldots,e_r)$, without introducing arbitrary basis choices?
+A canonical row-echelon policy is computable; the open engineering and
+algebraic task is a small certificate whose unique witnesses enforce that
+policy across rank changes.
+\end{question}
+\wtag\ Compare Question~\ref{pqc:q:operator}, which asks whether canonical characteristic-polynomial data can replace spectral bases for Part~II's operator factors.
+
+\begin{question}[Witness-preserving physical-input validation]\label{pqc:iq:q:validation}
+Replace the physical promise by a canonical rational certificate of complete
+positivity and trace nonincrease. Rational positive semidefinite matrices
+admit exact elimination methods, but arbitrary Gram decompositions are
+nonunique and may introduce irrational entries. A useful target is a
+rank-stratified rational factorization with canonical pivot and sign choices,
+compiled without losing the unique-witness property.
+\end{question}
+
+\begin{question}[Perturbations that are not scalar clocks]\label{pqc:iq:q:perturbations}
+For $T_\epsilon=T-\epsilon S$ with positivity preserved for small
+$\epsilon>0$, determine precise hypotheses under which the pole structure of
+$(I-T_\epsilon)^{-1}$ is governed by an effective operator on $\ker(I-T)$.
+Scalar killing gives one simple pole and an exponential mixture. Nonuniform
+killing can produce several rates, and singular effective killing can demand
+higher-order analysis. The certificate should distinguish proved analytic
+expansions from merely formal perturbation calculations.
+\end{question}
+
+\begin{question}[Sharper clocks preserving undecidable support]\label{pqc:iq:q:clocks}
+Theorem~\ref{pqc:iq:thm:geometric} adds exactly one halt outcome and preserves the
+published dimension. Can one preserve the same exact geometric law with fewer
+continuation outcomes or smaller Hilbert dimension under a fully explicit,
+published or independently proved mortality reduction? Any improvement should
+include its rational normalization and a proof that no new zero products were
+introduced.
+\end{question}
+\par\noindent\wtag\ \emph{Batch-76 note (2 October 2026).} Answered for dimension four with
+seven continuation outcomes, by Part~II. Corollary~\ref{pqc:iq:cor:dimfour} composes the clock of
+Theorem~\ref{pqc:iq:thm:geometric} with Theorem~\ref{pqc:qm:thm:47} of source~07, which source~19 set
+aside as unrefereed, and keeps the exact law \eqref{pqc:iq:eq:fixedgeo}; Corollary~\ref{pqc:qm:cor:57}
+gives dimension five with seven continuation outcomes by the elementary route. The answer is as strong
+as Part~II's theorem, whose normalization and absence of new zero products are proved there. The
+question stays open below dimension four, or with fewer than seven continuation outcomes; any answer
+to Part~II's Question~\ref{pqc:q:instruments} (dimension three, or fewer than seven outcomes in
+dimension four) would carry over through the same clock.
+
+\begin{question}[Controlled extensions beyond homogeneous finite state]\label{pqc:iq:q:schedules}
+Proposition~\ref{pqc:iq:prop:scheduled} rules out arbitrary computable schedules.
+Between periodic schedules, which can be folded into finite control, and
+arbitrary schedules, which subclasses still have rational or algebraic
+stopping laws with finite exact certificates? Candidate restrictions include
+finite automaton controllers and explicit algebraic generating functions for
+the schedule. The model must specify whether the controller has unbounded
+memory.
+\end{question}
+\wtag\ Compare Question~\ref{pqc:q:histories} (periodic transformations and linear recurrences for Part~I's infinite histories), and the note after it.
+
+\begin{question}[Exact tail bounds using observable rather than full dimension]\label{pqc:iq:q:tails}
+The cofactor bound in Corollary~\ref{pqc:iq:cor:tail} ignores cancellation and the
+minimal scalar recurrence. Can a checkable rational bound use only the
+observable denominator of $F$ and give useful constants near a dark-state
+transition? An informative first result would compare coefficient-height,
+Lyapunov-functional, and exact root-isolation bounds on the same examples.
+\end{question}
+
+\begin{question}[Formal proof and certified code generation]\label{pqc:iq:q:formal}
+Implement the two-stage theorem ``unique rational system $\Rightarrow$
+unique natural quartic'' in Lean, then instantiate it for \eqref{pqc:iq:eq:four}.
+The success criterion is an exported polynomial plus a theorem of exact
+zero-set equivalence, not merely a verified sample assignment. The supplied
+JSON checker and ledger provide a concrete target format.
+\end{question}
+\wtag\ Compare Questions~\ref{pqc:q:kernel} and~\ref{pqc:tu:q:kernel}: both put a kernel-checked compiler first, for Part~I's and Part~VIII's certificates.
+
+
+\section{Conclusion}\label{pqc:iq:sec:conclusion}
+The useful boundary is not ``classical versus quantum'' or ``finite versus
+infinite execution.'' It is whether the requested observable has a finite
+canonical algebraic summary. A rational homogeneous finite-dimensional loop
+has such a summary: four quadratic matrix identities, a finite moment
+recurrence, and an explicit unique natural witness for one quartic equation.
+The summary remains valid with partial nontermination and with trapped states
+that never converge.
+
+An independent clock exposes the difference between observables. It makes the
+whole runtime distribution geometrically simple without deciding the support
+of individual completed records. A vanishing clock also produces a rational
+Laurent law whose residue is nontermination and whose remaining coefficients
+are exact finite-path moments. Arbitrary computable time dependence crosses a
+further boundary and destroys a uniform Diophantine graph even in dimension
+one. These distinctions supply a concrete extension of the repository's
+Diophantine-substrate program, together with an auditable arithmetic artifact
+rather than a generic appeal to universality.
+
+\section{Source 19 appendix: Verification of the characteristic recursion}
+\label{pqc:iq:app:fl}
+For completeness, here is a direct proof of the recursion used in the
+all-moments certificate. Let
+$q(u)=\det(I-uH)=\sum_{k=0}^D c_ku^k$, $c_0=1$.
+The adjugate identity, or differentiation of the determinant term by term,
+gives the formal identity
+\[
+ \frac{q'(u)}{q(u)}=-\tr\bigl(H(I-uH)^{-1}\bigr)
+ =-\sum_{i\geq1}\tr(H^i)u^{i-1}.
+\]
+Comparing coefficients gives Newton's relation
+\begin{equation}
+ kc_k=-\sum_{i=1}^k c_{k-i}\tr(H^i).
+ \label{pqc:iq:eq:newton}
+\end{equation}
+By induction, the matrices in \eqref{pqc:iq:eq:fl} satisfy
+$B_{k-1}=H^{k-1}+c_1H^{k-2}+\cdots+c_{k-1}I$.
+Thus $-\tr(HB_{k-1})/k$ is exactly the right side of
+\eqref{pqc:iq:eq:newton} divided by $k$. The recursively computed coefficients are
+therefore the coefficients of $q$. Cayley--Hamilton then gives $B_D=0$.
+
+This proof uses divisions only by positive integer constants. Consequently
+its implementation is an arithmetic circuit with additions and
+multiplications after the constants $-1/k$ are pinned. The independent checker
+recomputes those coefficients from the decoded rational $H$ and verifies
+$B_D=0$; the mathematical proof above establishes why this recursion certifies
+the characteristic polynomial for every input, not just the exported example.
+
+\section{Source 19 appendix: A completely displayed canonical rational polynomial}
+\label{pqc:iq:app:wirepoly}
+For a fixed rational $a/b$ with $b>0$, define
+\begin{align}
+ \mathscr R_{a,b}(p,m,h,u,v_+,v_-,s)
+ &=(pm)^2+(v_+v_-)^2\nonumber\\
+ &\quad+\bigl((p-m)u-(h+1)(v_+-v_-)-1\bigr)^2\nonumber\\
+ &\quad+(u+s-h)^2+\bigl(b(p-m)-a(h+1)\bigr)^2.
+ \label{pqc:iq:eq:wirepolynomial}
+\end{align}
+This is an ordinary quartic polynomial over $\Z$ in seven natural variables.
+It has exactly one natural zero for every fixed rational value $a/b$,
+regardless of whether that displayed fraction is reduced. It is the complete
+building block from which the exported larger polynomials are assembled.
+
+The positivity of the denominator is encoded by $h+1$. The sign uniqueness
+comes from products of nonnegative rails equaling zero. The coprimality and
+bounded inverse are encoded by the B\'ezout and slack equations. Each feature
+is necessary to justify the precise witness count and uniqueness statement;
+none may be omitted merely because a generated example happens to satisfy it.
+
+\section{Source 19 appendix: Repository and source audit}
+\label{pqc:iq:app:audit}
+The GitHub connector returned the repository tree at commit
+\begin{center}\small\texttt{c58206ca101d4744a015a0f0104646109357d943}.\end{center}
+The directly relevant inspected resources were the Hilbert-tenth-problem
+README, the combined probabilistic/quantum/continuous report guide, the
+\texttt{Diophantine/MRDP.lean} interface, and the coherent-circuit source audit.
+The last two were explicitly read at the pinned commit. Some code-search
+navigation results were indexed at an older commit; they were not treated as
+a complete audit of the pinned tree. No exhaustive review of all repository
+manuscripts is claimed.
+
+The main external sources were the original quantum measurement-occurrence
+paper, the quantum expected-runtime paper, and Lardizabal's generalized-inverse
+paper. The occurrence theorem's page was inspected as a PDF image, including
+its rational Kraus definition and fixed dimensions. The rationality sentence
+was checked in the original paper's overview. These sources establish the
+inherited results and the conjecture wording, not historical priority for our
+assembled compiler.
+
+The proofs of the four-equation uniqueness theorem, the gate encodings,
+compiler ledger, regulator identities, clock reduction, and scheduled-model
+boundary are printed in this manuscript. The supplied finite tests complement
+those proofs. There was no Lean build, peer review, or external correctness
+certification of the new manuscript. A fuller machine-readable source and
+claim ledger is supplied as \texttt{SOURCE\_AUDIT.md}.
+
+
 \appendix
 \section{Reproduction notes and algorithmic contracts}
 \label{pqc:app:archive}
@@ -19851,6 +21908,99 @@ beginning \code{b64s18-}, except that its Gao--Avigad--Clarke entry is the
 existing \cite{Gao2012}. Its entry for ProveIt's MRDP guide is kept apart from
 \cite{proveit-mrdp-guide}, because it records a different pin
 (\code{6d04e1e38}); the guide is unchanged between the two pins.
+\end{itemize}
+
+\subsection{\wtag\ Batch 76: Part IX}
+\label{pqc:app:provenance76}
+One manuscript of batch~76 was added as Part~IX. It arrived in \code{6914ccca6},
+inside the archive \code{Infinite_Quantum_Runs_Diophantine_Certificates} (inner
+directory \code{Infinite_Quantum_Runs}), and its code, data and audit were placed
+in the placement commit \code{2a04b60f2}; its manuscript, README, 27-page PDF and
+checksum manifest (\code{MANIFEST.sha256}) are not shipped and survive in that
+archive. It is called here source~19, by its shipped file prefix
+\code{19-quantum-runs-}, which continues this report's sequence after
+source~18.
+
+\begin{center}
+\small
+\begin{tabular}{@{}llp{0.42\textwidth}lll@{}}
+\toprule
+Source & Batch 76 & Archive & Arrival & Pin & Placed\\
+\midrule
+19 & 04 & \code{Infinite_Quantum_Runs_Diophantine_Certificates} & \code{6914ccca6} & \code{c58206ca1} & \code{2a04b60f2}\\
+\bottomrule
+\end{tabular}
+\end{center}
+It contributed Part~IX in full: the stopping-loop model and the defective
+factorial moments; power boundedness, the four-equation characterization of the
+group inverse and Ces\`aro projection, exact nontermination; peripheral
+annihilation, the stopped operator moments and the finite part; the
+all-moments recurrence with its Faddeev--LeVerrier circuit; seven-coordinate
+canonical rational wires, quadratic gates, the canonical rational quartic
+compilation and the exact dense-core ledger; the rank-stratum formula, height
+bounds, the uniform termination criterion and a tail bound; the weak-clock
+resolvent, Laurent law, mixture limit, regulated factorial identity and
+inverse calibration; the imported Eisert--M\"uller--Gogolin theorem, the
+geometric-clock theorem and its no-bound corollary; the generalized-inverse
+counterexample; the scheduled one-dimensional boundary; four exact examples,
+four certificates and $33{,}708$ recorded assertions; a formalization path; eight
+questions; three appendices.
+
+Its title page, not printed, read ``Prepared for Vladimir Reshetnikov'' and
+named an AI assistant as the author of the mathematical development, exposition
+and code; its PDF metadata did the same. It is AI-assisted and unrefereed.
+
+Where the merge had to choose:
+\begin{itemize}
+\item \emph{Placement.} Source~19 names this report and source~10's audit as
+the programme it continues, and builds on Part~II's benchmark and Part~VI's
+quantifier boundary; its re-proofs and the answer to its Question~\ref{pqc:iq:q:clocks}
+are internal pointers here. It is a new Part after Part~VIII, so that nothing
+earlier renumbers.
+\item \emph{Duplicates.} Corollary~\ref{pqc:iq:cor:nobound} is the argument of
+Corollary~\ref{pqc:qm:cor:nobound}; the paragraph after it is the semidecider and
+Theorem~\ref{pqc:qm:thm:mrdp} of Section~\ref{pqc:qm:sec:mrdp}; the lower bound
+of Proposition~\ref{pqc:iq:prop:scheduled} is the probability-zero endpoint of
+Parts~I and~V. All three are printed as pointers, with source~19's statement
+and non-claim kept; none of the three arguments differs from the earlier one,
+so no second route is printed. Theorem~\ref{pqc:iq:thm:EMG} is the external
+theorem already quoted in Part~II.
+\item \emph{Extensions.} Theorem~\ref{pqc:iq:thm:quartic} extends
+Theorem~\ref{pqc:cc:thm:wires} and is retitled ``Canonical rational quartic
+compilation''; Theorems~\ref{pqc:iq:thm:moments} and~\ref{pqc:iq:thm:allmoments}
+extend the remark on finite Markov chains in Section~\ref{pqc:ql:sec:substrates}.
+\item \emph{Written results.} Corollary~\ref{pqc:iq:cor:dimfour} (dimension four,
+seven continuation outcomes, conditional on Theorem~\ref{pqc:qm:thm:47}) and the
+dated note after Question~\ref{pqc:iq:q:clocks}, which re-scopes it.
+\item \emph{Checked against the literature.} The location and wording of
+Lardizabal's conjecture (the note after Proposition~\ref{pqc:iq:prop:counterexample}'s
+discussion): it is in the overview of his Introduction, not in a Section~3.
+\item \emph{Labels.} Source~19's 102 labels are prefixed \code{pqc:iq:}; twelve
+carry cleveref type hints. Written labels: \code{pqc:part:quantumruns},
+\code{pqc:iq:conv} and three subsection labels, \code{pqc:iq:cor:dimfour},
+\code{pqc:iq:sec:shipped}, \code{pqc:iq:sec:conclusion}, eight research-question
+labels \code{pqc:iq:q:*} and \code{pqc:app:provenance76}. No existing label was
+renamed or renumbered.
+\item \emph{Symbols.} Two renamed (the halting Kraus operator
+$H^{\mathrm{halt}}$, the entry-height bound $\Lambda$), $\mathbb P$ printed $\Pr$;
+Section~\ref{pqc:iq:conv:letters} tabulates the letters that differ from Part~II
+and source~19's own double uses.
+\item \emph{Form and corrections.} The status statement is printed as a
+paragraph in Section~\ref{pqc:iq:conv}, with a note on the abstract's dense-count
+sentence; the eight listed questions are research question environments with
+unchanged text; the appendices are sections of Part~IX; two line breaks lost
+in the delivered display \eqref{pqc:iq:eq:survival} are restored; ``Appendix'' references read
+``Section''; the citation of this report's README is a cross-reference.
+\item \emph{In-place notes} (dated 2 October 2026, marked \wtag) were added
+after Part~II's Corollary~\ref{pqc:qm:cor:nobound}, after
+Questions~\ref{pqc:q:operator} and~\ref{pqc:q:histories}, after Part~V's remark
+on finite Markov chains, after Part~VI's Theorem~\ref{pqc:cc:thm:wires}, and in
+Sections~\ref{pqc:conv:formal}, \ref{pqc:conv:sources} and~\ref{pqc:conv:qoverlap}.
+\item \emph{Bibliography.} Source~19's entries are appended with keys beginning
+\code{b76s19-}, except that its Eisert--M\"uller--Gogolin entry is the existing
+\cite{emg} and its entry for this report's README is omitted. Its entry for
+\code{MRDP.lean} is kept apart from \cite{proveit-mrdp}, because it records a
+different pin (\code{c58206ca1}); the file is unchanged between the pins.
 \end{itemize}
 
 \begin{thebibliography}{99}
@@ -20470,5 +22620,37 @@ in CiE 2005, Lecture Notes in Computer Science \textbf{3526}, 169--179, 2005.
 \href{https://doi.org/10.1007/11494645_21}{doi:10.1007/11494645\_21}.
 Analytic simulation is not silently identified here with the rational polynomial
 finite-event contract in Definition~\ref{pqc:tu:def:universal}.
+
+\bibitem{b76s19-RepoMRDP}
+Vladimir Reshetnikov, \emph{ProveIt: MRDP theorem interface},
+\code{Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean},
+commit \code{c58206ca101d4744a015a0f0104646109357d943}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/c58206ca101d4744a015a0f0104646109357d943/Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean}.
+Inspected October 2, 2026; no new Lean build performed.
+
+\bibitem{b76s19-RepoCoherent}
+\emph{Diophantine Certificates for Coherent Computation: source and claim
+audit}, in Vladimir Reshetnikov's \reponame{} repository,
+\code{10-coherent-circuits-SOURCE_AUDIT.md}, pinned commit as above.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/c58206ca101d4744a015a0f0104646109357d943/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation/10-coherent-circuits-SOURCE_AUDIT.md}.
+AI-assisted research context, not an independently audited theorem dependency.
+\wtag\ Shipped with this report; source~10 is its Part~VI.
+
+\bibitem{b76s19-LZBY}
+Junyi Liu, Li Zhou, Gilles Barthe, and Mingsheng Ying,
+\emph{Quantum Weakest Preconditions for Reasoning about Expected Runtimes of
+Quantum Programs}, extended version, arXiv:1911.12557v3,
+July 14, 2022. \url{https://arxiv.org/abs/1911.12557}.
+
+\bibitem{b76s19-Lardizabal}
+Carlos F. Lardizabal,
+\emph{Mean hitting times of quantum Markov chains in terms of generalized
+inverses}, arXiv:1907.01313, version 2, July 9, 2019.
+\url{https://arxiv.org/abs/1907.01313}.
+Section 3 contains the parameter-rationality conjecture discussed here;
+Sections 2 and 6 provide the generalized-inverse context.
+\wtag\ The conjecture is in item~3 of the overview in Section~1 (see the note
+in Section~\ref{pqc:iq:sec:conjecture}).
+
 \end{thebibliography}
 \end{document}
