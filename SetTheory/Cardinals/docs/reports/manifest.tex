@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 136 independent mathematical research packages}}
+  pdfsubject={Catalogue of 139 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,7 +53,7 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and thirty-six independent mathematical research packages,\\
+  {\large One hundred and thirty-nine independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
   {\normalsize 1 October 2026}
@@ -63,13 +63,13 @@
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and thirty-six research packages stored
+This document catalogues the one hundred and thirty-nine research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other thirty-four came through ProveIt's incoming-reports procedure
+other thirty-seven came through ProveIt's incoming-reports procedure
 (\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
 and~44, two in batch~60, one each in batches~62 and~70, three in
-batch~72, sixteen in batch~73 and two in batch~74 --- whose archives remain in the repository's history.  Later batches
+batch~72, sixteen in batch~73, two in batch~74 and three in batch~75 --- whose archives remain in the repository's history.  Later batches
 also extended existing reports; their entries name the batch.
 The next paragraphs describe the historical collection before those two
 consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
@@ -147,7 +147,7 @@ original archive names are recorded with every entry.
 \toprule
 \textbf{Category} & \textbf{Subcategory} & \textbf{Reports}\\
 \midrule
-\dir{enumerative-combinatorics} & --- & 23\\
+\dir{enumerative-combinatorics} & --- & 25\\
 \midrule
 \dir{ordinals-and-order-types} & \dir{ordinal-arithmetic} & 3\\
  & \dir{wqo-powersets-and-statures} & 4\\
@@ -156,7 +156,7 @@ original archive names are recorded with every entry.
  & \dir{transfinite-words} & 1\\
  & (top level) & 5\\
 \midrule
-\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 25\\
+\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 26\\
  & \dir{binary-product-coefficient-counts} & 3\\
  & (top level) & 5\\
 \midrule
@@ -185,7 +185,7 @@ original archive names are recorded with every entry.
 \midrule
 \dir{hilbert-tenth-problem} & --- & 3\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{136}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{139}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1862,6 +1862,39 @@ spectral saturation in the irreducible critical case, a square-root law, and an
 all-prefix barrier $\mu_N\ge4.3149$ for Bui's map --- a limit of this method,
 not a lower bound on $\lambda$ and not an improvement on $4.498$.}
 
+\entry{Three consecutive square-pyramidal numbers: exact Frobenius formulas}
+{enumerative-combinatorics/a069762-pyramidal-frobenius}
+{article.pdf}{batch~75: OEIS\_Pyramidal\_Frobenius.zip}
+{For $s_n=n(n+1)(2n+1)/6$, gives the Frobenius number $F_n$ of
+$\langle s_n,s_{n+1},s_{n+2}\rangle$ (OEIS A069762, which had no formula)
+exactly: a quintic quasipolynomial of least eventual period six,
+$F_n=n^5/9+8n^4/9+O(n^3)$, valid for every $n\ge2$ apart from six
+exceptions, the last at $n=23$.  The proof is an explicit Ap\'ery normal
+form after two gcd reductions.  Also the exact genus, quasipolynomials for
+every gap-power sum, a triangular limit law $2(1-x)$ for a uniform gap
+divided by $F_n$, the minimal generating-function denominator with an
+order-18 eventual recurrence, and a convergent Puiseux inverse.  Eventual
+quasipolynomiality itself is Roune--Woods' and Shen's theorem; the claim is
+the explicit formula.  The inversion instantiates the transseries volume's
+Lagrange--B\"urmann and staircase theorems, which the report cites.}
+
+\entry{A pole hierarchy for valley-monotone compositions}
+{enumerative-combinatorics/valley-monotone-bargraphs}
+{article.pdf}{batch~75: OEIS\_Valley\_Monotone\_Bargraphs.zip}
+{Proves Conjecture~2.3 of Fl\'orez, Ram\'irez and Villamizar (JCTA 2024):
+the number $d(n)$ of compositions of $n$ with weakly increasing interior
+valley heights (non-decreasing bargraphs by area) satisfies
+$d(n)=C\lambda^n(1+O(\theta^n))$ with $\theta<1$,
+$\lambda=1.97642067794583\ldots$ and $C=0.60390151906189\ldots$ certified by
+rational interval arithmetic; the digits printed in 2024 are the finite ratio
+at $n=100$.  The input is the stacks generating function of OEIS A001523;
+$d(n)$ itself has no verified OEIS number.  Also infinitely many simple real
+poles increasing to~1, so the generating function is not D-finite, a
+finite-pole expansion to every radius below~1, a central limit theorem for
+bottom-level valleys, a terminal-component law and the asymptotics of the
+pole accumulation.  Whether the real poles exhaust the spectrum is left
+open.}
+
 \section{Generating functions and asymptotics}
 
 \subsection{Coefficient counts of binary products}
@@ -1915,7 +1948,7 @@ Conjecture~6.2 and the asymptotic analysis.}}
 
 \subsection{Single-sequence OEIS studies}
 
-Twenty-five reports on the growth or the closed form of a single OEIS sequence.  One
+Twenty-six reports on the growth or the closed form of a single OEIS sequence.  One
 article counts the terms in the derivatives of three power towers --- $x^{x^x}$,
 $x^{x^2}$ and $x^x$ --- whose three parts reach three different answers by three
 different recurrences, and two reports added in batch~72 sit beside it: one
@@ -1924,10 +1957,14 @@ for $x^x$ and $x^{x^2}$, and the other studies the $x^{x^2}$ coefficients at
 unbounded logarithmic deficit.  Two more reports share a Bell-scale
 saddle-point method on unrelated sequences.  Shared technique is not shared
 theorem, and none of these duplicates another.  Thirteen reports came in
-batch~73 and one in batch~74, the last fourteen entries below.  Four of
-them merge two manuscripts that proved the same theorems independently on
-the same day (A139217, A022629, A215561, A279619): the shared theorems are
-printed once and the other proofs kept as marked second routes.  The four
+batch~73, one in batch~74 and one in batch~75, the last fifteen entries
+below.  Four of them merge two manuscripts that proved the same theorems
+independently on the same day (A139217, A022629, A215561, A279619): the
+shared theorems are printed once and the other proofs kept as marked second
+routes.  Batch~75 brought a third and a fourth independent proof of the
+A022629 theorems, and a manuscript about two thirds of which re-proves
+results of the A215561 report; those duplicates are tabulated in the
+reports, not reprinted, and only their new results were added.  The four
 partition reports (A022629, A033552, A097356, A238016) study different
 products in different saddle regimes and share no proposition; the A189281 and A330266 reports share a method but no theorem.
 Many of these manuscripts invert their asymptotics by Lambert~$W$ and
@@ -2165,7 +2202,7 @@ has are added.}}
 
 \entry{Five OEIS asymptotic conjectures for distinct-partition norms}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a022629-distinct-partition-norms}
-{article.pdf}{batch~73: OEIS\_Distinct\_Partition\_Norms.zip + A022629\_Research\_Package.zip}
+{article.pdf}{batch~73: OEIS\_Distinct\_Partition\_Norms.zip + A022629\_Research\_Package.zip; batch~75: A022629\_research\_package.zip, OEIS\_Norm\_Weighted\_Partitions.zip}
 {For $a_\alpha(n)=\sum N(\lambda)^\alpha$ over partitions $\lambda$ of $n$
 into distinct parts, $N(\lambda)$ the product of the parts, proves the logarithmic
 growth formulas marked conjectural in A022629, A092484 and A265840--A265842,
@@ -2178,7 +2215,17 @@ $(1+1/\alpha)\sqrt{2n}$, and the modulus of the first Fourier resonances.
 \emph{Merged from two independent manuscripts with identical coefficients
 (one treats A022629, the other's $\alpha=1$): shared results printed once,
 with the second proofs, an explicit differential-operator derivation and the
-results only the A022629 manuscript has.}}
+results only the A022629 manuscript has.}  Two batch-75 manuscripts, the
+third and fourth independent proofs of these theorems with identical
+coefficients, are recorded in one table rather than reprinted; their new
+results form Sections~15--19: sharp signed cumulant scales, a saddle
+remainder of every fixed order with first correction
+$\sim-3/(8\alpha Kr)$, localization of the first index attaining a
+large value to within $1+o(1)$ of an explicit inverse, eventual strict log-concavity and
+fixed-degree Jensen hyperbolicity; and the convolution powers
+$\prod(1+k^\alpha q^k)^\mu$ (A297321, A022630, A022631) with
+$\mu$-independent coefficients, two further inverse coefficients and an
+exact check of the eighth forward coefficient.}
 
 \entry{Three exceptions before every square}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a097356-sqrt-restricted-partitions}
@@ -2241,21 +2288,28 @@ Bala's supercongruence stays open.}
 
 \entry{Fixed-composition excursions}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a215561-fixed-composition-excursions}
-{article.pdf}{batch~73: oeis\_balanced\_excursions.zip + late\_growing\_excursions.zip}
+{article.pdf}{batch~73: oeis\_balanced\_excursions.zip + late\_growing\_excursions.zip; batch~75: OEIS\_Fixed\_Content\_Ballot\_Words.zip}
 {For words with $n$ copies of each of $r$ letters whose every prefix sum is
 at most its average (OEIS A215561), proves the fixed-row conjecture
 $A_r(n)\sim\kappa_r(rn)!/(rn\,(n!)^r)$ with $\kappa_r$ a positive algebraic
 number given by a finite kernel-root product, a complete expansion in
 inverse powers of $n$, D-finiteness of every row with a transcendental
 ordinary generating function for $r\ge3$ (the specific A215570 recurrence
-stays unproved), a contact law and a Lambert-$W$ inversion.  Part~II holds
+is proved in Part~IV, batch~75), a contact law and a Lambert-$W$ inversion.  Part~II holds
 the second manuscript's own results: the leading term for every finite
 labelled step set, a second all-orders route, second-order terms for
 $r=2,3$, a giant primitive component, eventual log-convexity and a rounding
 bound.  \emph{Merged from two manuscripts that proved the main theorems
 independently, with constants agreeing to the last digit; shared results
 printed once and credited to both, the different routes kept as second
-proofs.}}
+proofs.}  Part~IV, added in batch~75 from a third manuscript, proves
+Kauers--Koutschan's Conjecture~15, the order-three recurrence for A215570,
+by a positive Legendre-coefficient formula and a rational telescoping
+certificate printed in full, and computes the coefficients
+$\alpha_{5,2},\ldots,\alpha_{5,8}$ of the five-letter row exactly.  About two
+thirds of that manuscript re-proves results of Parts~I--II, its row theorem
+only with relative error $O(n^{-1/5})$; those results are listed in one
+comparison table, not reprinted.}
 
 \entry{An exact gamma constant for an Ap\'ery-like sequence}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a279619-level-seven-gamma-constant}
@@ -2349,6 +2403,23 @@ corrections for A238608, exponential sectors at $N=q^m$, inverse charts and
 a Poisson law for equal adjacent parts.  The cubic scale is the
 $\alpha\to\infty$ end of the A097356 report's saddle question, not an
 answer to it.}
+
+\entry{L-convex polyominoes and a colored-partition comparison}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a126764-lconvex-polyominoes}
+{article.pdf}{batch~75: A126764\_Lconvex\_Research.zip}
+{Proves the Guttmann--Kot\v{e}\v{s}ovec asymptotic recorded as a conjecture
+in OEIS A126764 for fixed L-convex polyominoes of area~$n$,
+$a_n\sim\tfrac{13\sqrt2}{768}\,n^{-3/2}e^{\pi\sqrt{13n/6}}$, with three
+correction terms in closed form and relative error $O(n^{-7/4})$.  The leading term
+and first correction already follow from a squeeze
+$0\le p_n-4a_n\le3(p_n-2p_{n-1}+p_{n-2})$ ($n\ge3$) against the
+coefficients $p_n$ of an eta quotient counting coloured partitions; a
+finite-cut identity and a full-circle estimate give the other two.  Also an
+all-orders radial expansion of the generating function at $q=e^{-t}$ (not a
+coefficient expansion) and a $W_{-1}$ inverse, an instance of the
+transseries volume's Lambert and staircase theorems.  The area generating
+function is a cited input; the manuscript's metadata says it was prepared with
+ChatGPT.}
 
 \subsection{Asymptotics, records and discrepancy}
 

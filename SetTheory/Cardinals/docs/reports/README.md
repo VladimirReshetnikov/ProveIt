@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and thirty-six independent mathematical research packages, unpacked
+One hundred and thirty-nine independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and thirty-six reports, names the problem each one attacks
+numbers all one hundred and thirty-nine reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -18,19 +18,19 @@ records what each report claims rather than verifying it.
 | Category | Reports |
 |---|---:|
 | [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences | 19 |
-| [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions, polyomino growth, first pattern failures | 23 |
+| [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions, polyomino growth, first pattern failures, pyramidal Frobenius numbers, valley-monotone bargraphs | 25 |
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy, matching-rank normalization, preorder gamma polynomials | 14 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, integrality of asymptotic coefficients, valuations and periodicity | 11 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
-| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants), Apéry arrays | 33 |
+| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants, L-convex polyominoes), Apéry arrays | 34 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 7 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
 | [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting | 3 |
-| **Total** | **136** |
+| **Total** | **139** |
 
 ## Later deliveries
 
@@ -327,6 +327,25 @@ manuscript re-proved Part I's A295431 theorem with weaker constants. Each
 shared theorem is printed once, as the earlier report's, with the newcomer's
 proof as a second route; only their own results were added. No archive of
 batch 74 was superseded.
+
+Batch 75, six archives in one arrival commit, opened three reports:
+[`a069762-pyramidal-frobenius`](enumerative-combinatorics/a069762-pyramidal-frobenius)
+(the exact Frobenius number of three consecutive square-pyramidal numbers,
+a period-six quintic quasipolynomial with six exceptions),
+[`valley-monotone-bargraphs`](enumerative-combinatorics/valley-monotone-bargraphs)
+(Flórez–Ramírez–Villamizar's growth conjecture with certified constants, and
+infinitely many real poles) and
+[`a126764-lconvex-polyominoes`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a126764-lconvex-polyominoes)
+(the Guttmann–Kotěšovec asymptotic of A126764 with three corrections). It
+added Sections 15–19 to `a022629-distinct-partition-norms` (sharp saddle
+scales, eventual log-concavity and Jensen hyperbolicity, convolution powers)
+and a Part IV to `a215561-fixed-composition-excursions` (a proof of
+Kauers–Koutschan's Conjecture 15, the A215570 recurrence). Duplicates: the
+two A022629 manuscripts are the third and fourth independent proofs of that
+report's theorems, with identical coefficients, and about two thirds of the
+A215570 manuscript re-proves results of the A215561 report's Parts I–II.
+These re-proofs are listed in one table per report, not reprinted. No
+archive of batch 75 was superseded.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
