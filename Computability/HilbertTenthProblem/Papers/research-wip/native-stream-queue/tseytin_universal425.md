@@ -1,8 +1,9 @@
 # A complete 425-operation universal equation with a fused query endpoint
 
-> The [product-scale successor](tseytin_product_scale412.md) gives412
-> operations and degree at most5662 with the same65-witness interface.
-> Repunit sharing and recovered endpoint bounds are intermediate savings.
+> The [current successor](tseytin_adjacent_coefficients399.md) gives399
+> operations,62 witnesses and degree at most4712. Repunit sharing, recovered
+> endpoint bounds, the product scale and computed native fields are intermediate
+> savings; the source and proof below remain the frozen425 stage.
 > The [factor-partition family](tseytin_universal_factor_partitions.md)
 > independently reaches432/degree-at-most2012 from the frozen425 source.
 

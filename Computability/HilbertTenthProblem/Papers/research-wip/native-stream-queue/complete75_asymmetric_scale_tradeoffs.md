@@ -1,5 +1,9 @@
 # Asymmetric scales lower the complete87/88 degrees to169/125
 
+> The [exact grouping successor](complete75_asymmetric_factor_partitions.md)
+> adds91/degree104,93/degree72 and95/degree64 with the same19 witnesses.
+> The87/169 and88/125 endpoints below remain unchanged.
+
 Change only `X=w*q^3` to **`X=w*q`**, keeping `Y=s*q^3`, in the
 [normalized87](complete75_normalized_strong87.md) and
 [coupled88](complete75_coupled_index_linear88.md) sources. The resulting

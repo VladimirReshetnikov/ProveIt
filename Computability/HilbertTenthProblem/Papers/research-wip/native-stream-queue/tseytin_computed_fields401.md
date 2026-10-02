@@ -1,5 +1,9 @@
 # Computed truth fields and a factored native bound give401 operations
 
+> The [current coefficient-sharing successor](tseytin_adjacent_coefficients399.md)
+> gives399 operations,62 witnesses and degree at most4712. The source
+> and transfer proof below remain the reproducible preceding stage.
+
 The [literal source](tseytin_computed_fields401.py) reduces the complete
 [product-scale412 compiler](tseytin_product_scale412.md) to
 **401=188M+213A**, with387 certificate gates, five comparisons,62 positive

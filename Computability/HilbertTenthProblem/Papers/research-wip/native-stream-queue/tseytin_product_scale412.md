@@ -1,5 +1,9 @@
 # A product scale gives a412-operation Tseytin universal polynomial
 
+> The [current coefficient-sharing successor](tseytin_adjacent_coefficients399.md)
+> gives399 operations,62 witnesses and degree at most4712. The source
+> and transfer proof below remain the reproducible preceding stage.
+
 The [source](tseytin_product_scale412.py) removes three multiplications
 from the [free-height415 compiler](tseytin_free_height415.md). The complete
 universal polynomial has **412=191M+221A** operations,392 certificate
