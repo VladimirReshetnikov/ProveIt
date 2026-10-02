@@ -67,6 +67,13 @@ port gluing preserves cyclic wires. The result rejects only that summary
 abstraction; a topology-aware arithmetic compiler remains open. It changes
 neither the universal87 bound nor the counted sparse-TM route.
 
+The [recoder geometry-deletion counterexample](recoder_geometry_deletion_alias.md)
+retains both repunit equations and the complete prescribed-AND semantics,
+yet maps input 1 to `1+2^4032` at the actual width64. Its 44 literal-source
+fixtures cover both the757 and754 outer interfaces. This excludes deleting
+the synchronization geometry on those grounds alone; it is a standalone
+recoder obstruction, not a full universal false-positive witness.
+
 The preceding [first-padding sparse-TM compiler](gpcp_first_padding_units763.md)
 gives **719 certificate /763=352M+411A operations**,15 comparisons,
 125 positive witnesses and exact formal degree232964. Both first-padding
