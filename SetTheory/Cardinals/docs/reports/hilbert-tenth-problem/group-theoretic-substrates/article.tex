@@ -10,10 +10,11 @@
 \usepackage{listings}
 \usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
-\hypersetup{pdftitle={Arithmetic van Kampen Certificates},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Quartic Diophantine compilation, group word problems, filling area and proof-DAG compression}}
+\hypersetup{pdftitle={Groups as Diophantine Substrates},pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},pdfsubject={Arithmetic van Kampen certificates and three commutative phases: quartic Diophantine compilation through the integral Heisenberg group}}
+\urlstyle{same}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small Arithmetic van Kampen Certificates}
+\fancyhead[L]{\small Groups as Diophantine Substrates}
 \fancyhead[R]{\small Research report}
 \fancyfoot[C]{\thepage}
 \setlength{\parskip}{0.35em}
@@ -32,6 +33,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+% Source 03 (Part I) macros
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\N}{\mathbb N}
 \newcommand{\R}{\mathbb R}
@@ -46,46 +48,207 @@
 \newcommand{\norm}[1]{\left\lVert #1\right\rVert}
 \newcommand{\smallmat}[4]{\begin{pmatrix}#1&#2\\#3&#4\end{pmatrix}}
 \newcommand{\sha}{\texttt{c58206ca101d4744a015a0f0104646109357d943}}
-\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},xleftmargin=0.3em,xrightmargin=0.3em}
+% Source 05 (Part II) macros
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\HH}{\mathsf H}
+\newcommand{\calA}{\mathcal A}
+\newcommand{\calB}{\mathcal B}
+\newcommand{\calT}{\mathcal T}
+\newcommand{\bn}{\mathfrak b}
+\newcommand{\id}{\mathbf 1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\htn}{\operatorname{ht}}
+\DeclareMathOperator{\Fact}{Fact}
+\DeclareMathOperator{\Sol}{Sol}
+% Merge
+\newcommand{\wtag}{\textup{[write]}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!20},xleftmargin=0.3em,xrightmargin=0.3em}
+\setcounter{tocdepth}{2}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{0.45in}
-\noindent{\color{MidnightBlue}\large PROVEIT RESEARCH EXTENSION}\par
+\noindent{\color{MidnightBlue}\large PROVEIT RESEARCH REPORT}\par
 \vspace{0.35in}
-\noindent{\Huge\bfseries Arithmetic van Kampen\\[0.12em] Certificates}\par
+\noindent{\Huge\bfseries Groups as Diophantine\\[0.12em] Substrates}\par
 \vspace{0.25in}
-\noindent{\LARGE Quartic equations, exact filling area,\\[0.15em] and optimal proof-DAG compression}\par
+\noindent{\LARGE Arithmetic van Kampen certificates\\[0.15em] and three commutative phases}\par
 \vspace{0.3in}
-\noindent{\large A history-free Diophantine compiler for group-theoretic computation}\par
+\noindent{\large Quartic certificates through the integral Heisenberg group}\par
 \vspace{0.55in}
-\noindent Research report prepared for Vladimir Reshetnikov\par
-\noindent October 2, 2026\par
+\noindent AI-assisted research report prepared for Vladimir Reshetnikov from two manuscripts\par
+\noindent(batch~76 of ProveIt's incoming reports, manuscripts~03 and~05), October 2, 2026\par
 \vspace{0.35in}
 \begin{abstract}
-For a fixed two-generator finite group presentation with $s$ relators, we construct an explicit family of integer polynomials of degree at most four whose solvability at a boundary word is equivalent to filling that word with at most $m$ conjugates of defining relators. The compiler allocates exactly $(2s+13)m-4$ integer witnesses for $m\geq1$. Fixing the ordered relator choices reduces this to $8m-4$. A classical arithmetic description of a free subgroup of $\SL_2(\Z)$ eliminates conjugator-word histories: each conjugator is represented by four integers satisfying a single quadratic equation.
+Part~I (source~03) treats a fixed two-generator finite presentation as a proof-producing substrate. Through Sanov's arithmetic chart of a free subgroup of $\SL_2(\Z)$, it builds explicit integer polynomials of degree at most four whose solvability is equivalent to filling a word with at most $m$ conjugates of relators, with exactly $(2s+13)m-4$ witnesses for $s$ relators, so that the compiler's minimal allocated arity recovers filling area and the Dehn function exactly. Shared proof DAGs compile without expanding relator occurrences: for $[a^{2^k},b^{2^\ell}]$ in $\langle a,b\mid[a,b]\rangle$ the area is $2^{k+\ell}$ but exactly $k+\ell$ product gates suffice and are necessary, and the quartic has $8(k+\ell)-4$ witnesses.
+
+Part~II (source~05) compiles every finite system of integral quadratic equations into membership in an ordered product of three free abelian subgroups of a power of the discrete Heisenberg group, with an exact bijection between solutions and factorizations. With MRDP this gives three fixed subgroups whose product has computably enumerable complete membership, proposed as a negative answer to the three-subgroup question of K\"onig, Lohrey and Zetzsche and of Roman'kov. Two commuting phases are decidable; for integer exponents this is a special case of known two-subgroup results, which the report credits.
+
+The report is AI-assisted and unrefereed; nothing in it is formalized in Lean or Rocq, and priority is not certified for either Part.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status.} Proofs and executable finite checks; not kernel-checked. Part~II's main theorem is a proposed resolution of a published open problem. Section~\ref{gts:sec:front} states the common setup and what is not claimed; Appendix~\ref{gts:app:provenance} gives the provenance.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\tableofcontents
+\newpage
+
+\section{Scope, common setup and conventions}\label{gts:sec:front}
+
+\wtag\ This section was written when the two manuscripts were merged. Part~\ref{gts:part:vk} and Part~\ref{gts:part:tp} print the two sources; text there without a \wtag\ marker is the source's own.
+
+\subsection{The two Parts}\label{gts:sec:parts}
+
+This report is built from two AI-assisted research manuscripts delivered together as batch~76 of ProveIt's incoming reports (manuscripts~03 and~05; Appendix~\ref{gts:app:provenance} gives the full provenance). They are called \emph{source~03} and \emph{source~05} after the file prefixes of their shipped programs and data. Neither cites the other; they were written from different snapshots of the repository on the same day, and they share no theorem. They are complementary work on one subject: \emph{groups as Diophantine substrates}, with low-degree arithmetic certificates, and both through the integral Heisenberg group.
+
+\begin{itemize}
+\item \textbf{Part~\ref{gts:part:vk} (source~03), \emph{Arithmetic van Kampen certificates}.} The substrate is a finitely presented two-generator group; a word is an instance, and a product of conjugates of relators is an accepting proof. Sanov's arithmetic chart of a free subgroup of $\SL_2(\Z)$ turns each conjugator into four integers on one quadric, and the compilers are sums of squares of quadratic residuals (degree at most four) whose allocated arity records the filling area exactly (Theorems~\ref{gts:vk:thm:itinerary}, \ref{gts:vk:thm:budget} and~\ref{gts:vk:thm:arity}). Shared proof DAGs compress the area exponentially, sharply for dyadic rectangular commutators (Theorem~\ref{gts:vk:thm:grid}). Here the Heisenberg group is an \emph{area detector}: a homomorphism from the free group whose central coordinate counts relator occurrences with sign (Section~\ref{gts:vk:sec:grid}).
+\item \textbf{Part~\ref{gts:part:tp} (source~05), \emph{Three commutative phases are Diophantine-universal}.} The substrate is the ordered product $\calA\calB\calT$ of three free abelian subgroups of a power $\HH^d$ of the Heisenberg group. Every integral quadratic system is compiled into such a product with an exact bijection between solutions and factorizations (Theorem~\ref{gts:tp:thm:fibres}); with MRDP this gives three fixed subgroups with computably enumerable complete product membership (Theorem~\ref{gts:tp:thm:main}), proposed as a negative answer to the three-subgroup question of K\"onig, Lohrey and Zetzsche~\cite{KLZ} and Roman'kov~\cite{Romankov}. Here the Heisenberg group is the \emph{ambient group} of a membership problem.
+\end{itemize}
+
+Both sources use MRDP only as an imported classical theorem, at the last step, and both state explicitly that their constructions do not give finite-fold or single-fold Diophantine representations. Each Part keeps its own definitions, letters and numbering of statements; only the Heisenberg group itself is set up once, in Section~\ref{gts:sec:heis}.
+
+\subsection{The integral Heisenberg group}\label{gts:sec:heis}
+
+Both sources use the same group with the same multiplication convention (source~03 in Section~\ref{gts:vk:sec:grid}, source~05 in Sections~\ref{gts:tp:sec:intro} and~\ref{gts:tp:sec:compiler}). It is printed once here. Write
+\[
+ \HH=\operatorname{UT}_3(\Z)
+ =\left\{h(a,b,c)=
+ \begin{pmatrix}1&a&c\\0&1&b\\0&0&1\end{pmatrix}:a,b,c\in\Z\right\}.
+\]
+Source~03 writes the element $h(x,y,z)$ as the triple $(x,y,z)\in\Z^3$ and calls the group $H$; in this report that group is always written $\HH$, because Part~\ref{gts:part:vk} also uses the letter $H$ for a height bound (Theorem~\ref{gts:vk:thm:height}). The two coordinate conventions coincide: $(x,y,z)=h(x,y,z)$, with no reordering, sign change or normalization. Direct matrix multiplication gives
+\begin{align}
+ h(a,b,c)h(a',b',c')
+   &=h(a+a',b+b',c+c'+ab'),\label{gts:tp:eq:Hmult}\\
+ h(a,b,c)^{-1}&=h(-a,-b,ab-c),\label{gts:tp:eq:Hinv}\\
+ h(a,b,c)^r&=h(ra,rb,rc+ab\bn(r))\quad(r\in\Z),
+ \label{gts:tp:eq:Hpower}
+\end{align}
+where $\bn(r)=\binom r2=r(r-1)/2$ is the integer binomial of Part~\ref{gts:part:tp} (Section~\ref{gts:tp:sec:normal}). In source~03's notation, \eqref{gts:tp:eq:Hmult} reads $(x,y,z)(x',y',z')=(x+x',y+y',z+z'+xy')$ and \eqref{gts:tp:eq:Hinv} reads $(x,y,z)^{-1}=(-x,-y,-z+xy)$.
+
+Associativity follows by expanding the third coordinate of a triple product \textup{(source~03)}. For nonnegative $r$, \eqref{gts:tp:eq:Hpower} follows by induction. For negative $r$, use \eqref{gts:tp:eq:Hinv} and the same formula, or verify that the proposed expression is a homomorphism of the exponent using \eqref{gts:tp:eq:binadd} \textup{(source~05)}.
+
+\wtag\ Two consequences used by both Parts follow from \eqref{gts:tp:eq:Hmult} and \eqref{gts:tp:eq:Hinv}: with $[g,k]=gkg^{-1}k^{-1}$,
+\begin{equation}\label{gts:eq:commutator}
+ [h(a,b,c),h(a',b',c')]=h(0,0,ab'-a'b),
+\end{equation}
+so every commutator is central, and the centre of $\HH$ is $\{h(0,0,c):c\in\Z\}$. In a direct power $\HH^d$ all formulas hold coordinatewise. (The identities \eqref{gts:tp:eq:Hmult}--\eqref{gts:tp:eq:Hpower} and \eqref{gts:eq:commutator} were rechecked symbolically at the write, with $r$ from $-4$ to $4$ in the power law.)
+
+The two Parts use the group differently. Part~\ref{gts:part:vk} uses only the homomorphism $a\mapsto h(1,0,0)$, $b\mapsto h(0,1,0)$ from the free group and reads off the central coordinate (equation~\eqref{gts:vk:eq:heisenberg}). Part~\ref{gts:part:tp} uses the whole group: the three phase homomorphisms \eqref{gts:tp:eq:A}--\eqref{gts:tp:eq:T}, and, for the two-phase theorem, the integral logarithmic coordinate $\lambda(h(a,b,c))=2c-ab$ of Section~\ref{gts:tp:sec:two}.
+
+\subsection{Notions and letters}\label{gts:sec:notation}
+
+Each Part keeps its source's letters. Many letters carry different meanings in the two Parts; Table~\ref{gts:tab:notation} lists every letter used in both, so that a statement of one Part is never read with the other Part's meaning. Inside a Part, the meaning is always the one in that Part's column. The only renamed symbol is source~03's $H$ (the Heisenberg group), written $\HH$; no normalization was changed.
+
+\begin{center}
+\small
+\begin{longtable}{@{}p{.09\textwidth}p{.43\textwidth}p{.40\textwidth}@{}}
+\caption{Letters used in both Parts.}\label{gts:tab:notation}\\
+\toprule
+Letter & Part~I (source 03) & Part~II (source 05)\\
+\midrule
+\endfirsthead
+\toprule
+Letter & Part~I (source 03) & Part~II (source 05)\\
+\midrule
+\endhead
+$\HH$ & the integral Heisenberg group (source: $H=\Z^3$) & the integral Heisenberg group $\operatorname{UT}_3(\Z)$\\
+$H$ & the height bound $H_{\Pp}(n,m)$ of \eqref{gts:vk:eq:height}, and $H$ in its search cube & a height bound $H$ on $\htn(x)$ in Section~\ref{gts:tp:sec:height}\\
+$h$ & number of free conjugation nodes; an integer exponent in proofs & a Heisenberg element $h(a,b,c)$\\
+$A,B$ & the shear matrices $\smallmat1201$, $\smallmat1021$ of \eqref{gts:vk:eq:shears}; in software words, \texttt{A}, \texttt{B} mean $a^{-1}$, $b^{-1}$ & the phase homomorphisms $A(x,u)$, $B(y)$ of \eqref{gts:tp:eq:A}, \eqref{gts:tp:eq:B} (and their small versions \eqref{gts:tp:eq:localA}, \eqref{gts:tp:eq:localB})\\
+$T$, $\calT$ & --- & the third phase $T(r)$ \eqref{gts:tp:eq:T} and its image $\calT$; not a time bound\\
+$C$ & the selected relator matrix $C_i$ \eqref{gts:vk:eq:selected}; the constant $C=n+mL$ \eqref{gts:vk:eq:height}; circuit nodes $C_0,\ldots,C_3$ and $C_t=[a^t,b]$ & the normal-form matrix $C\in\Z^{m\times N}$ \eqref{gts:tp:eq:normal}\\
+$D$ & a proof DAG; a fixed conjugator $D\in\San$; the words $D_t=[a^u,b^t]$ & the linear part $D\in\Z^{m\times n}$ \eqref{gts:tp:eq:normal}\\
+$E$ & the chart equation $E=x+t+4xt-yz$ \eqref{gts:vk:eq:chart} & the reverse quartic $E_t$ \eqref{gts:tp:eq:quartic}; $\mathcal E$ the set of mixed pairs\\
+$L$ & the maximal relator length & the $N\times n$ matrix of linear forms\\
+$N$, $M$ & witness and residual counts $N_{\mathrm{it}}$, $N_{\Pp}(m)$, $N_D$, $M_{\mathrm{it}}$, $M_{\Pp}(m)$, $M_D$ & $N=n+q$ binomial coordinates; $M$ a modulus (Section~\ref{gts:tp:sec:profinite})\\
+$q$ & $q=2s+1$, the number of labels & $q=|\mathcal E|$; a formal variable in $Z_t(q)$\\
+$m$ & the area budget & the number of equations\\
+$n$ & the word length $|w|$ & the number of variables\\
+$s$ & the number of relators & an index of binomial coordinates\\
+$t$ & a chart coordinate; label words $t_j$ & the target $t\in\Z^m$\\
+$r$, $u$ & relators $r_j$; conjugators $u_i$; exponents in $[a^u,b^v]$ & phase parameters $r,u\in\Z^N$\\
+$p$ & the number of product nodes & generators $p_i$; $p=h(1,0,0)$ in a proof\\
+$\lambda$, $\ell$ & label indices $\lambda_i$; chain lengths $\ell_+,\ell_\pm$; an exponent $\ell$ & the logarithmic coordinate $\lambda$; coefficients $\ell_{ji}$; the weight $\ell(x)$\\
+$c$, $d$, $e$ & cost $c(D)$; $d=k+\ell$; selectors $e_{ij}$ & constants $c$; the dimension $d$ of $\HH^d$, coefficients $d_{ji}$; coordinate vectors $e_i$ and the rank $e$ of $\Z^e$\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Five words need the same care.
+\begin{itemize}
+\item \textbf{Phase} (Part~\ref{gts:part:tp}) means one factor of an ordered product of commuting subgroups or submonoids: a \emph{commutative phase} is a family of pairwise commuting matrices that may be used in any order and number before the product moves to the next phase. It is not a complex phase, not a phase of the Fabius or Rvachev functions, and not a stage of the ``four-phase zero test'' in Part~XIII of the report \emph{canonical-diophantine-certificates}.
+\item \textbf{History-free} (the subtitle of Part~\ref{gts:part:vk}) means that the certificate stores no conjugator \emph{word}: no word length, list of letters or matrix-multiplication history, only four chart integers per conjugator (Section~\ref{gts:vk:sec:chart}). The tempting reading is that of Part~XIV of \emph{canonical-diophantine-certificates}, ``history-free routing certificates'', where the certified object is an outcome (firing counts) rather than a time-ordered execution of a chip-routing network. The two senses are related, but they concern different histories.
+\item \textbf{Compiler} in both Parts means an explicit map from a group-theoretic or arithmetic problem instance to polynomials or matrices. It is unrelated to the sparse-machine ``universal compiler'' with arithmetic-operation counts of the repository's Hilbert-tenth-problem research notes; neither Part claims or improves an arithmetic-operation record.
+\item \textbf{Slice}: Corollary~\ref{gts:vk:cor:slice} of Part~I concerns a bounded-\emph{area} slice $\Area_{\Pp}(w)\leq m$; Corollary~\ref{gts:tp:cor:slice} of Part~II concerns a \emph{central} slice of the group $\HH^N\times\Z^m$.
+\item \textbf{Exponents}: in Part~\ref{gts:part:tp}, integer exponents make the phases subgroups, and natural exponents make them submonoids; matrix entries may be negative in both cases.
+\end{itemize}
+
+\subsection{Relation to the repository and to the literature}\label{gts:sec:relation}
+
+Neither source cites the related material below, which was identified at placement; this subsection supplies the cross-references (pins and dates in Appendix~\ref{gts:app:provenance}).
+
+\begin{itemize}
+\item \textbf{Report \emph{probabilistic-quantum-and-continuous-computation}, Part~VI}~\cite{pqc} (sources~11 and~16 there; its Theorem \texttt{pqc:dr:thm:main}). It compiles finite group presentations into rational rotation gates in $\mathrm{SO}(4,\Z[1/5])$ by Mihailova's fibre-product construction, obtains c.e.-complete membership for a fixed finitely generated subgroup, and certifies bounded \emph{words} in that matrix group by quartic synthesis certificates. Part~\ref{gts:part:vk} has the same input (finite presentations and their relators) but a different substrate and resource: words of a free group in $\SL_2(\Z)$, and relator \emph{area} and proof-DAG size. Part~\ref{gts:part:tp} has a statement of the same kind (a fixed c.e.-complete membership problem for fixed integer matrices) for a different object, a product of three abelian subgroups of a unitriangular group, by a different mechanism.
+\item \textbf{The research note \path{group_commutator_universal_substrate.md}}~\cite{repo-comm} of the Hilbert-tenth-problem programme. For every c.e.\ set it computes a finitely generated subgroup of $\SL(4,\Z)$ whose membership along a fixed quadratic matrix curve is that set, by commutator relators, Higman's embedding theorem and Mihailova's construction. This is the same kind of universality statement as Theorem~\ref{gts:tp:thm:everyset}, for subgroup membership in $\SL(4,\Z)$ rather than for a product of three abelian subgroups of $\HH^d$. Neither it nor Part~VI of \cite{pqc} measures relator area or compiles proof DAGs, which is what Part~\ref{gts:part:vk} does.
+\item \textbf{The research note \path{group_unipotent_input_loaders.md}}~\cite{repo-unip}. It proves by ping-pong that $U=\smallmat1401$ and $B=\smallmat1011$ form a free pair in $\SL_2(\Z)$ and uses it to load ordinary inputs into conjugates. Part~\ref{gts:part:vk} uses Sanov's different pair \eqref{gts:vk:eq:shears} and, crucially, its exact arithmetic \emph{image}, the integral points of one quadric (Theorem~\ref{gts:vk:thm:sanov}); the note gives no description of the image of its pair, and Part~\ref{gts:part:vk} warns that the congruence description must not be assumed for other shear parameters (the end of Section~\ref{gts:vk:sec:chart}).
+\item \textbf{The research note \path{heisenberg_two_generator_membership.md}}~\cite{repo-heis}. It decides membership in every submonoid of $\HH^r$ generated by two elements, and in the commuting case it uses the injective coordinates $\ell(a,b,c)=(2a,2b,2c-ab)$, the same device as Part~\ref{gts:part:tp}'s $\lambda=2c-ab$ (Section~\ref{gts:tp:sec:two}). Its commuting case is the special case of Theorem~\ref{gts:tp:thm:two} with one generator in each phase and natural exponents. The note ends: three or more generators are necessary for undecidable membership in this substrate, ``this statement does not claim that three suffice''. \emph{Part~\ref{gts:part:tp} does not answer that question.} The note concerns a submonoid generated by three elements, which contains arbitrary interleaved words; Part~\ref{gts:part:tp} concerns an ordered product of three subgroups or submonoids, each commutative and generated by many elements, with no interleaving across phases. The note's primary source is a different paper of Roman'kov (arXiv:2209.14786, Skolem systems compiled into submonoids), not the paper~\cite{Romankov} cited in Part~\ref{gts:part:tp}.
+\item \textbf{The research note \path{group_projective_label_aligned_lanes.md}}~\cite{repo-group} is source~03's own comparison (Section~\ref{gts:vk:sec:problem}); it is unchanged from source~03's pin to the write.
+\item \textbf{Report \emph{canonical-diophantine-certificates}.} Its compilers go from bounded executions to canonical arithmetic zeros; Part~\ref{gts:part:vk}'s native compiler is explicitly not canonical (Proposition~\ref{gts:vk:prop:infinite-fibers}), and Part~\ref{gts:part:tp} compiles in the reverse direction, from arithmetic to a group, preserving fibres. Its remark that a four-squares conversion ``can introduce many witnesses for one natural value'' (in its research questions) is the same caveat as Part~\ref{gts:part:tp}'s four-square paragraph in Section~\ref{gts:tp:sec:universal}.
+\item \textbf{Bounded search.} Corollary~\ref{gts:vk:cor:nonrecursive}, Theorem~\ref{gts:vk:thm:no-sharing-cutoff} and Proposition~\ref{gts:tp:prop:nobound} use the argument ``a computable bound would give a bounded search, hence a decision procedure'', as do Corollary \texttt{pqc:qm:cor:nobound} of \cite{pqc} and Proposition \texttt{cdc:bd:prop:nobound} of \emph{canonical-diophantine-certificates}. The statements are different (Dehn and sharing profiles, factorization exponents, mortal-word lengths, witness heights), so all are printed.
+\end{itemize}
+
+No result of the three neighbouring reports of this category (\emph{canonical-diophantine-certificates}, \emph{probabilistic-quantum-and-continuous-computation}, \emph{liveness-beyond-halting}) is re-proved in this report, so no proof was replaced by a pointer.
+
+\textbf{Literature credit for the two-phase theorem.} For \emph{integer} exponents, Theorem~\ref{gts:tp:thm:two} is a special case of known results: a product of two subgroups of a polycyclic group is closed in the profinite topology and therefore has decidable membership~\cite[Remark~6.7]{KLZ}, and Roman'kov proves that the product of two subgroups membership problem is decidable in every finitely generated nilpotent group of class two~\cite{Romankov}. The group $\HH^d\times\Z^e$ is both. Source~05 does not cite these results for its two-phase theorem; the credit and a precise statement of what source~05 adds are in Remark~\ref{gts:tp:rem:credit} after the theorem. The three-subgroup statement, Theorem~\ref{gts:tp:thm:main}, is different: both sources~\cite{KLZ,Romankov} state that case as open, and no earlier resolution was found at placement (a check of the arXiv text of~\cite{KLZ} and of the abstract of~\cite{Romankov}); its priority is not certified.
+
+\subsection{Status and what is not claimed}\label{gts:sec:status}
+
+The report is AI-assisted and unrefereed, and \textbf{nothing in it is formalized in Lean or Rocq}. Both sources give conventional proofs together with finite exact-integer checks that are illustrations, not proofs. Part~\ref{gts:part:tp}'s main theorem is a \emph{proposed} resolution of a published open problem, not a peer-reviewed or proof-assistant-checked theorem. Every limitation stated by either source is kept in its Part; collected here, neither Part claims
+\begin{itemize}
+\item historical priority for its constructions (both sources say so; Part~\ref{gts:part:vk}, Appendix~\ref{gts:vk:app:audit}; Part~\ref{gts:part:tp}, Appendix~\ref{gts:tp:app:audit} and Appendix~\ref{gts:tp:app:sources});
+\item a finite-fold or single-fold Diophantine representation of c.e.\ sets, or of group word problems; the native fibres of Part~\ref{gts:part:vk} are generally infinite (Proposition~\ref{gts:vk:prop:infinite-fibers}), and Part~\ref{gts:part:tp} transfers fold bounds only conditionally;
+\item a universal arithmetic-operation record, an improvement of the universal degree-four bound, an optimized ambient dimension, or a numerically instantiated universal presentation, polynomial or matrix table;
+\item that its counts are minimal among all Diophantine representations: they are the literal counts of the stated compilers;
+\item one fixed-arity polynomial with a varying number of variables: in Part~\ref{gts:part:vk} the budget $m$ and the circuit shape are external data, and the passage to a fixed arity is MRDP's, which preserves neither fibres nor the area ledger (Section~\ref{gts:vk:sec:fold});
+\item any new Lean or Rocq verification.
+\end{itemize}
+
+\subsection{Research questions}\label{gts:sec:questions}
+
+Both agendas are printed in full: the twelve questions of Part~I (Section~\ref{gts:vk:sec:questions}) and the nine research directions of Part~II (Section~\ref{gts:tp:sec:future}). Neither Part answers a question of the other, and the placement survey of the repository found none of them answered there. Three pairs are related and should be read together: higher nilpotent invariants as lower-bound detectors for proof DAGs (Question~\ref{gts:vk:q:detectors}) and higher unitriangular groups as substrates for higher-degree compilers (Section~\ref{gts:tp:q:nilpotent}); the first formal milestones, the Sanov chart and fixed-itinerary compiler (Question~\ref{gts:vk:q:chart}) and the exact fibre theorem (Section~\ref{gts:tp:q:formal}), each independent of MRDP; and passing the repository's existing certificate compilers through the new constructions with fair metrics or intact fibres (Question~\ref{gts:vk:q:interop} and Section~\ref{gts:tp:q:counting}).
+
+\part{Arithmetic van Kampen certificates (source 03)}\label{gts:part:vk}
+
+\noindent\wtag\ Part~I prints batch-76 manuscript~03, \emph{Arithmetic van Kampen Certificates: Quartic equations, exact filling area, and optimal proof-DAG compression}, subtitled \emph{A history-free Diophantine compiler for group-theoretic computation} (``history-free'' in the sense of Section~\ref{gts:sec:notation}), research report prepared for Vladimir Reshetnikov, October 2, 2026. Its labels carry the prefix \texttt{gts:vk:}. Its abstract and the artifact boundary of its title page follow.
+
+\begin{quote}\small
+\textbf{Abstract (source 03).} For a fixed two-generator finite group presentation with $s$ relators, we construct an explicit family of integer polynomials of degree at most four whose solvability at a boundary word is equivalent to filling that word with at most $m$ conjugates of defining relators. The compiler allocates exactly $(2s+13)m-4$ integer witnesses for $m\geq1$. Fixing the ordered relator choices reduces this to $8m-4$. A classical arithmetic description of a free subgroup of $\SL_2(\Z)$ eliminates conjugator-word histories: each conjugator is represented by four integers satisfying a single quadratic equation.
 
 We give a small-witness bound, identify the minimum allocated arity of the area compiler with the presentation's filling area, and derive the precise obstruction to a computable complete area cutoff. We then compile shared group-proof circuits into quartics without expanding their relator occurrences. For
 $[a^{2^k},b^{2^\ell}]$ in $\langle a,b\mid[a,b]\rangle$, the area is $2^{k+\ell}$, whereas the minimum number of product gates in the specified proof calculus is exactly $k+\ell$. The resulting fixed-conjugator quartic uses only $8(k+\ell)-4$ witnesses when $k+\ell\geq1$. A more general addition-chain sandwich bounds rectangular commutator proof complexity.
 
 The report provides complete proofs of the compiler and compression statements, exact-arithmetic software, adversarial examples, and a formalization and research agenda. Classical inputs are identified explicitly. Priority for the particular synthesis is not established; no unrestricted finite-fold MRDP theorem, universal arithmetic-operation record, or new Lean verification is claimed.
-\end{abstract}
-\vfill
-\noindent\small\textbf{Artifact boundary.} The mathematical development is a research draft with executable checks. It is not a kernel-checked extension of ProveIt. The repository snapshot used for comparison is\par
-\noindent\small\sha.
-\end{titlepage}
 
-\tableofcontents
-\newpage
+\medskip
+\textbf{Artifact boundary.} The mathematical development is a research draft with executable checks. It is not a kernel-checked extension of ProveIt. The repository snapshot used for comparison is\par
+\sha.
+\end{quote}
 
-\section{The problem addressed and the contribution boundary}
+\section{The problem addressed and the contribution boundary}\label{gts:vk:sec:problem}
 
 The broad assertion that an effectively simulable computational substrate has a Diophantine acceptance relation is already covered by MRDP. Repeating that assertion for another model of computation is usually less useful than preserving a resource that the model makes mathematically meaningful. Here that resource is \emph{filling area}: the number of relator applications needed to establish a word identity.
 
 Our computational substrate is a finitely presented group. The finite presentation is the program, a word is the instance, and an expression of that word as a product of conjugates of defining relators is an accepting proof. This viewpoint includes systems with undecidable word problem through classical constructions. Its advantage for Diophantine compilation is that free-group elements admit a particularly economical arithmetic representation.
 
 The central distinction is between three different resources:
-\begin{equation}\label{eq:three-resources}
+\begin{equation}\label{gts:vk:eq:three-resources}
  \text{conjugator word length},\qquad
  \text{expanded relator area},\qquad
  \text{shared proof-circuit size}.
@@ -121,25 +284,27 @@ ProveIt's documented MRDP endpoint produces a fixed finite polynomial representa
 
 The present work is a complementary semantic front end. We do not transfer the repository's formal-verification status to the new theorems, and we do not claim an improvement to its arithmetic-operation records. The exact chart, local matrix equations, and proof-circuit semantics below are proved directly. Only the final fixed-arity existence discussion invokes the MRDP interface at an abstract level.
 
+\wtag\ This repository relationship is incomplete; Section~\ref{gts:sec:relation} supplies the missing comparisons. The collection's report on probabilistic, quantum and continuous computation (Part~VI of~\cite{pqc}) compiles finite presentations into rational rotation gates by Mihailova's construction and certifies bounded \emph{words} in that matrix group; the research programme's group-commutator note~\cite{repo-comm} obtains universal subgroup membership in $\SL(4,\Z)$, and its unipotent-loader note~\cite{repo-unip} proves a different free pair in $\SL_2(\Z)$ faithful without describing its image arithmetically. None of them measures relator area or compiles proof DAGs. Both repository files cited here are unchanged from the pin \sha\ to this report's write.
+
 \subsection{Conventions that prevent misleading conclusions}
 
 All existential variables in the displayed compilers range over $\Z$, not over positive integers. The budget $m$ and the shape of a proof circuit are external finite data used to construct a polynomial; they do not index a variable number of quantified variables inside a single formula. Equality of boundary and proof words is equality in the free group, not merely in the quotient group.
 
-A bijection between polynomial zeros and \emph{semantic proof witnesses} does not mean that an input has only one proof. Indeed, the direct compilers generally have infinitely many zeros over a single accepted input. We prove that explicitly in Section~\ref{sec:fold}. Finally, the sharp circuit lower bound is a lower bound in our stated group-proof calculus, not a lower bound for arbitrary Diophantine representations or arbitrary arithmetic circuits.
+A bijection between polynomial zeros and \emph{semantic proof witnesses} does not mean that an input has only one proof. Indeed, the direct compilers generally have infinitely many zeros over a single accepted input. We prove that explicitly in Section~\ref{gts:vk:sec:fold}. Finally, the sharp circuit lower bound is a lower bound in our stated group-proof calculus, not a lower bound for arbitrary Diophantine representations or arbitrary arithmetic circuits.
 
 \section{Finite presentations as proof-producing computational substrates}
 
 Let $\F$ be the free group on $a,b$. A word uses the alphabet
 $\{a,a^{-1},b,b^{-1}\}$; $|w|$ denotes the length of its freely reduced representative. Fix a finite presentation
-\begin{equation}\label{eq:presentation}
+\begin{equation}\label{gts:vk:eq:presentation}
  \Pp=\langle a,b\mid r_1,\ldots,r_s\rangle,
  \qquad G_{\Pp}=\F/\langle\!\langle r_1,\ldots,r_s\rangle\!\rangle.
 \end{equation}
 The relators are fixed words. Repeated or freely trivial relators are permitted, though they are normally removed in applications.
 
-\begin{definition}[Area and its zero case]\label{def:area}
+\begin{definition}[Area and its zero case]\label{gts:vk:def:area}
 For $w\in\F$, let $\Area_{\Pp}(w)$ be the least $m\in\N$ such that
-\begin{equation}\label{eq:normal-product}
+\begin{equation}\label{gts:vk:eq:normal-product}
  w=\prod_{i=1}^{m}u_i r_{j_i}^{\epsilon_i}u_i^{-1}
  \quad\text{in }\F,
  \qquad u_i\in\F,\quad \epsilon_i\in\{1,-1\}.
@@ -150,7 +315,7 @@ Set the area to $+\infty$ if no such expression exists. The empty product is $1$
 Thus $w=1$ in $G_{\Pp}$ if and only if $\Area_{\Pp}(w)<\infty$. This is the algebraic formulation of van Kampen area. It is particularly convenient here because it specifies exactly what the arithmetic witnesses must recover.
 
 To encode a budget rather than an exact nonpadded length, introduce the fixed label table
-\begin{equation}\label{eq:labels}
+\begin{equation}\label{gts:vk:eq:labels}
  t_0=1,\quad t_{2j-1}=r_j,\quad t_{2j}=r_j^{-1}
  \quad(1\leq j\leq s),\qquad q=2s+1.
 \end{equation}
@@ -160,7 +325,7 @@ $0\leq\lambda_i<q$. Such a factorization exists exactly when
 $\Area_{\Pp}(w)\leq m$. Identity padding is intentional and will also explain some witness multiplicities.
 
 \begin{definition}[Presentation-dependent Dehn function]
-\begin{equation}\label{eq:dehn}
+\begin{equation}\label{gts:vk:eq:dehn}
  \delta_{\Pp}(n)=\max\{\Area_{\Pp}(w): |w|\leq n,\ w=1\text{ in }G_{\Pp}\}.
 \end{equation}
 The maximum is over finitely many reduced words and includes $1$. It is a finite natural number for every $n$, even when it is not a computable function of $n$.
@@ -174,27 +339,27 @@ This observation is an applicability result, not an explicit machine-to-presenta
 
 One may think of the group substrate as an unconventional proof machine. Its accepting computations are normal-closure certificates rather than time-ordered configurations. This changes which structural resource can survive arithmetic compilation.
 
-\section{An exact quadratic arithmetic chart for the free group}\label{sec:chart}
+\section{An exact quadratic arithmetic chart for the free group}\label{gts:vk:sec:chart}
 
 Set
-\begin{equation}\label{eq:shears}
+\begin{equation}\label{gts:vk:eq:shears}
  A=\smallmat{1}{2}{0}{1},\qquad
  B=\smallmat{1}{0}{2}{1},\qquad
  \rho:\F\longrightarrow\SL_2(\Z),\quad \rho(a)=A,\ \rho(b)=B.
 \end{equation}
 For four integers $x,y,z,t$, write
-\begin{equation}\label{eq:chart}
+\begin{equation}\label{gts:vk:eq:chart}
  U(x,y,z,t)=\smallmat{1+4x}{2y}{2z}{1+4t},\qquad
  E(x,y,z,t)=x+t+4xt-yz.
 \end{equation}
 A direct expansion gives
-\begin{equation}\label{eq:det-chart}
+\begin{equation}\label{gts:vk:eq:det-chart}
  \det U=1+4E.
 \end{equation}
 
-\begin{theorem}[Sanov's chart]\label{thm:sanov}
+\begin{theorem}[Sanov's chart]\label{gts:vk:thm:sanov}
 The map $\rho$ is injective, and its image is exactly
-\begin{equation}\label{eq:San}
+\begin{equation}\label{gts:vk:eq:San}
  \San=\{U(x,y,z,t):(x,y,z,t)\in\Z^4,\ E(x,y,z,t)=0\}.
 \end{equation}
 Consequently, the integral points of $E=0$ are in bijection with elements of $\F$.
@@ -244,17 +409,17 @@ The descent in the proof is implemented by \texttt{decode\_sanov}. It returns po
 
 \subsection{Two indispensable hypotheses}
 
-\begin{example}[Omitting determinant one produces false proofs]\label{ex:det}
+\begin{example}[Omitting determinant one produces false proofs]\label{gts:vk:ex:det}
 Consider $\langle a,b\mid a^5\rangle$, the boundary word $a$, and
 $U=\smallmat{1}{0}{0}{5}$. This matrix has the congruence form in
-\eqref{eq:chart}, with coordinates $(0,0,0,1)$, and satisfies
+\eqref{gts:vk:eq:chart}, with coordinates $(0,0,0,1)$, and satisfies
 \[
  U A^5=A U.
 \]
 Thus a compiler using the cross-multiplied conjugacy equation but omitting $E=0$ would accept $a$ with one use of $a^5$. That is false: mapping $a$ to a generator of the cyclic group of order $5$ and $b$ to the identity proves that $a$ is nontrivial in the presented group. Here $\det U=5$ and $E=1$; the determinant residual rejects the spurious certificate.
 \end{example}
 
-\begin{example}[Arbitrary unimodular conjugators also produce false proofs]\label{ex:congruence}
+\begin{example}[Arbitrary unimodular conjugators also produce false proofs]\label{gts:vk:ex:congruence}
 Let $J=\smallmat{0}{-1}{1}{0}$. It has determinant one, but
 \[
  JAJ^{-1}=B^{-1}.
@@ -264,10 +429,10 @@ For $\langle a,b\mid a\rangle$, this would falsely give a one-relator proof of $
 
 The exact arithmetic image, rather than mere matrix invertibility, is therefore essential. The same congruence shortcut must not be assumed for other shear parameters; the situation for parameters at least $3$ is different \cite[Theorem~3]{chorna}.
 
-\section{A quartic compiler for a fixed relator itinerary}\label{sec:itinerary}
+\section{A quartic compiler for a fixed relator itinerary}\label{gts:vk:sec:itinerary}
 
 Fix a list of words $(t_{\lambda_1},\ldots,t_{\lambda_m})$ from
-\eqref{eq:labels}; the choices and signs are part of the compiler input, not existential variables. Put
+\eqref{gts:vk:eq:labels}; the choices and signs are part of the compiler input, not existential variables. Put
 \[
  R_i=\rho(t_{\lambda_i}),\qquad W=\rho(w).
 \]
@@ -275,20 +440,20 @@ The boundary $W$ may first be regarded as four polynomial parameters. For $m\geq
 
 Use the equations
 \begin{align}
- E(U_i)&=0, &&1\leq i\leq m,\label{eq:itinerary-det}\\
- P_{i-1}U_iR_i-P_iU_i&=0, &&1\leq i\leq m.\label{eq:itinerary-step}
+ E(U_i)&=0, &&1\leq i\leq m,\label{gts:vk:eq:itinerary-det}\\
+ P_{i-1}U_iR_i-P_iU_i&=0, &&1\leq i\leq m.\label{gts:vk:eq:itinerary-step}
 \end{align}
 A matrix equation denotes four scalar equations. The notation $E(U_i)$ means $E$ applied to the four chart coordinates of $U_i$.
 
-\begin{theorem}[Fixed-itinerary compiler]\label{thm:itinerary}
+\begin{theorem}[Fixed-itinerary compiler]\label{gts:vk:thm:itinerary}
 For $m\geq1$, the sum of squares of all scalar residuals in
-\eqref{eq:itinerary-det}--\eqref{eq:itinerary-step} is an explicitly computable integer polynomial $Q_{\boldsymbol\lambda}(W;\boldsymbol z)$ of degree at most four, with exactly
-\begin{equation}\label{eq:itinerary-counts}
+\eqref{gts:vk:eq:itinerary-det}--\eqref{gts:vk:eq:itinerary-step} is an explicitly computable integer polynomial $Q_{\boldsymbol\lambda}(W;\boldsymbol z)$ of degree at most four, with exactly
+\begin{equation}\label{gts:vk:eq:itinerary-counts}
  N_{\mathrm{it}}(m)=8m-4\quad\text{integer witnesses},\qquad
  M_{\mathrm{it}}(m)=5m\quad\text{scalar residuals}.
 \end{equation}
 For every $w\in\F$,
-\begin{equation}\label{eq:itinerary-iff}
+\begin{equation}\label{gts:vk:eq:itinerary-iff}
  \exists\boldsymbol z\in\Z^{8m-4}\ Q_{\boldsymbol\lambda}(\rho(w);\boldsymbol z)=0
  \iff
  \exists u_1,\ldots,u_m\in\F\quad
@@ -298,30 +463,30 @@ For a fixed boundary, its zero tuples are in bijection with the ordered tuples o
 \end{theorem}
 
 \begin{proof}
-Each $R_i$ is constant, and each $U_i$ is affine-linear in its four coordinates. Thus each entry of \eqref{eq:itinerary-step} has degree at most two, as does $E$. Their squared sum has degree at most four. It vanishes over the integers exactly when every residual vanishes, since squares are nonnegative.
+Each $R_i$ is constant, and each $U_i$ is affine-linear in its four coordinates. Thus each entry of \eqref{gts:vk:eq:itinerary-step} has degree at most two, as does $E$. Their squared sum has degree at most four. It vanishes over the integers exactly when every residual vanishes, since squares are nonnegative.
 
-At a zero, Theorem~\ref{thm:sanov} gives a unique $u_i\in\F$ with $U_i=\rho(u_i)$. In particular $U_i$ is invertible. Equation~\eqref{eq:itinerary-step} implies
+At a zero, Theorem~\ref{gts:vk:thm:sanov} gives a unique $u_i\in\F$ with $U_i=\rho(u_i)$. In particular $U_i$ is invertible. Equation~\eqref{gts:vk:eq:itinerary-step} implies
 \[
  P_i=P_{i-1}U_iR_iU_i^{-1}.
 \]
 Induction starting at $P_0=I$ yields
 $W=\prod_iU_iR_iU_i^{-1}$.
-Injectivity of $\rho$ gives the word identity in \eqref{eq:itinerary-iff}.
+Injectivity of $\rho$ gives the word identity in \eqref{gts:vk:eq:itinerary-iff}.
 
 Conversely, given the conjugator elements, take their unique chart coordinates and let $P_i$ be the successive matrix products. Every residual vanishes. The $P_i$ are uniquely determined, so the correspondence is bijective. The allocated count is $4m+4(m-1)=8m-4$, and each factor contributes one determinant residual and four matrix residuals.
 \end{proof}
 
 \begin{remark}[Why the cross-multiplied equation matters]
-Writing $P_i=P_{i-1}U_iR_i\adj(U_i)$ directly would generally introduce cubic entries and hence a degree-six squared sum. Equation~\eqref{eq:itinerary-step} moves the inverse across the equality, retaining degree two without any new inverse variables. The determinant equation justifies that move. Determinant conditions for $P_i$ are unnecessary: they follow inductively from the recovered factorization.
+Writing $P_i=P_{i-1}U_iR_i\adj(U_i)$ directly would generally introduce cubic entries and hence a degree-six squared sum. Equation~\eqref{gts:vk:eq:itinerary-step} moves the inverse across the equality, retaining degree two without any new inverse variables. The determinant equation justifies that move. Determinant conditions for $P_i$ are unnecessary: they follow inductively from the recovered factorization.
 \end{remark}
 
 For $m=0$, use
-\begin{equation}\label{eq:zero-budget}
+\begin{equation}\label{gts:vk:eq:zero-budget}
  Q_0(W)=(W_{11}-1)^2+W_{12}^2+W_{21}^2+(W_{22}-1)^2.
 \end{equation}
 It has no existential variables and accepts precisely the free-group identity at boundary inputs of the form $\rho(w)$.
 
-\section{A uniform all-relator area-budget quartic}\label{sec:budget}
+\section{A uniform all-relator area-budget quartic}\label{gts:vk:sec:budget}
 
 An itinerary may be unknown. We now encode its choices by integer one-hot selectors without letting the polynomial degree exceed four. Let
 $R_j=\rho(t_j)$ for $0\leq j<q$, where $q=2s+1$.
@@ -329,29 +494,29 @@ $R_j=\rho(t_j)$ for $0\leq j<q$, where $q=2s+1$.
 For each $i=1,\ldots,m$, allocate a chart matrix $U_i$, an unrestricted matrix $V_i$, and selector integers $e_{i0},\ldots,e_{i,q-1}$.
 Also allocate $P_1,\ldots,P_{m-1}$, and again set $P_0=I$, $P_m=W$.
 The selected matrix is the expression
-\begin{equation}\label{eq:selected}
+\begin{equation}\label{gts:vk:eq:selected}
  C_i=\sum_{j=0}^{q-1}e_{ij}R_j;
 \end{equation}
 its entries are not additional variables.
 
 The complete residual list is
 \begin{align}
- E(U_i)&=0,\label{eq:budget-det}\\
- e_{ij}(e_{ij}-1)&=0 &&(0\leq j<q),\label{eq:budget-bool}\\
- \sum_{j=0}^{q-1}e_{ij}-1&=0,\label{eq:budget-one}\\
- V_i-P_{i-1}U_i&=0,\label{eq:budget-v}\\
- V_iC_i-P_iU_i&=0,\label{eq:budget-step}
+ E(U_i)&=0,\label{gts:vk:eq:budget-det}\\
+ e_{ij}(e_{ij}-1)&=0 &&(0\leq j<q),\label{gts:vk:eq:budget-bool}\\
+ \sum_{j=0}^{q-1}e_{ij}-1&=0,\label{gts:vk:eq:budget-one}\\
+ V_i-P_{i-1}U_i&=0,\label{gts:vk:eq:budget-v}\\
+ V_iC_i-P_iU_i&=0,\label{gts:vk:eq:budget-step}
 \end{align}
 for each $1\leq i\leq m$. Let $Q_{\Pp,m}$ be the sum of squares of the scalar residuals. The matrix $V_i$ is the degree-control device: it separates the potentially cubic expression $P_{i-1}U_iC_i$ into two quadratic constraints.
 
-\begin{theorem}[Area-budget equivalence and exact ledger]\label{thm:budget}
-For every fixed presentation \eqref{eq:presentation} and $m\geq1$, the construction gives an integer polynomial of degree at most four with exactly
+\begin{theorem}[Area-budget equivalence and exact ledger]\label{gts:vk:thm:budget}
+For every fixed presentation \eqref{gts:vk:eq:presentation} and $m\geq1$, the construction gives an integer polynomial of degree at most four with exactly
 \begin{align}
- N_{\Pp}(m)&=(q+12)m-4=(2s+13)m-4,\label{eq:budget-vars}\\
- M_{\Pp}(m)&=(q+10)m=(2s+11)m\label{eq:budget-residuals}
+ N_{\Pp}(m)&=(q+12)m-4=(2s+13)m-4,\label{gts:vk:eq:budget-vars}\\
+ M_{\Pp}(m)&=(q+10)m=(2s+11)m\label{gts:vk:eq:budget-residuals}
 \end{align}
 allocated integer witnesses and scalar residuals, respectively. For every word $w$,
-\begin{equation}\label{eq:budget-iff}
+\begin{equation}\label{gts:vk:eq:budget-iff}
  \exists\boldsymbol z\in\Z^{N_{\Pp}(m)}\quad
  Q_{\Pp,m}(\rho(w);\boldsymbol z)=0
  \quad\Longleftrightarrow\quad \Area_{\Pp}(w)\leq m.
@@ -362,13 +527,13 @@ The integer zero tuples are in bijection with ordered padded factorizations of l
 \begin{proof}
 The equations $e(e-1)=0$ over $\Z$ force each selector to be $0$ or $1$. Their sum is $1$, so there is a unique selected index $\lambda_i$ and $C_i=R_{\lambda_i}$. The chart equation supplies a unique group element $u_i$ with matrix $U_i$.
 
-Substitution of \eqref{eq:budget-v} into \eqref{eq:budget-step} gives
+Substitution of \eqref{gts:vk:eq:budget-v} into \eqref{gts:vk:eq:budget-step} gives
 $P_{i-1}U_iR_{\lambda_i}=P_iU_i$.
-The proof of Theorem~\ref{thm:itinerary} now recovers the padded factorization and hence area at most $m$.
+The proof of Theorem~\ref{gts:vk:thm:itinerary} now recovers the padded factorization and hence area at most $m$.
 
 Conversely, start with any padded factorization. Set its selector vectors to the associated standard basis vectors, use the unique chart coordinates of the conjugators, set the $P_i$ to partial products, and take $V_i=P_{i-1}U_i$. These choices satisfy every residual and are uniquely determined. Repeated relators in the table do not destroy the claimed bijection because the semantic witness records label indices, not just selected matrices.
 
-All residuals are at most quadratic. Each cell allocates four chart variables, four $V_i$ entries, and $q$ selectors; the $m-1$ internal $P_i$ matrices add $4(m-1)$. This gives \eqref{eq:budget-vars}. Per cell there are $1+q+1+4+4=q+10$ residuals, giving \eqref{eq:budget-residuals}. The sum-of-squares argument completes the proof.
+All residuals are at most quadratic. Each cell allocates four chart variables, four $V_i$ entries, and $q$ selectors; the $m-1$ internal $P_i$ matrices add $4(m-1)$. This gives \eqref{gts:vk:eq:budget-vars}. Per cell there are $1+q+1+4+4=q+10$ residuals, giving \eqref{gts:vk:eq:budget-residuals}. The sum-of-squares argument completes the proof.
 \end{proof}
 
 \subsection{Sparsity, boundary typing, and presentation size}
@@ -388,7 +553,7 @@ $O(|w|+L+\log(m+1))$, with presentation-dependent constants. The logarithmic ter
 
 For $\Pp_{\mathrm{ab}}=\langle a,b\mid[a,b]\rangle$, use
 $[x,y]=xyx^{-1}y^{-1}$ and
-\begin{equation}\label{eq:commutator-matrix}
+\begin{equation}\label{gts:vk:eq:commutator-matrix}
  R=\rho([a,b])=\smallmat{21}{-8}{8}{-3},\qquad
  R^{-1}=\smallmat{-3}{8}{-8}{21}.
 \end{equation}
@@ -400,64 +565,64 @@ $U$ contributes four coordinates, $V$ four entries, and $(e_0,e_1,e_2)$ three se
 \]
 The polynomial is exactly the squared sum of these residuals and the four selector residuals. For $w=[a,b]$, the zero with $U=V=I$ and $(e_0,e_1,e_2)=(0,1,0)$ is immediate. The fixed-itinerary compiler for the single label $R$ uses only four witnesses and five residuals.
 
-For comparison, allocating the budget compiler at $m=2$ gives $26$ variables, and at $m=4$ gives $56$. Section~\ref{sec:grid} will encode the area-four boundary $[a^2,b^2]$ with a shared proof using only $12$ variables.
+For comparison, allocating the budget compiler at $m=2$ gives $26$ variables, and at $m=4$ gives $56$. Section~\ref{gts:vk:sec:grid} will encode the area-four boundary $[a^2,b^2]$ with a shared proof using only $12$ variables.
 
-\section{A small-witness theorem and decidable area slices}\label{sec:height}
+\section{A small-witness theorem and decidable area slices}\label{gts:vk:sec:height}
 
 An existential polynomial representation does not automatically give a decision procedure. In this compiler, however, a specified area budget also gives an explicit bound on at least one accepting witness. The needed geometric input is classical.
 
-\begin{lemma}[Bounded conjugators; classical]\label{lem:conjugators}
-Let $w$ have length $n$ and finite area $\alpha$ in a presentation whose relators have length at most $L$. There is a factorization of the form \eqref{eq:normal-product} with $\alpha$ factors such that every conjugator has length at most $n+L\alpha$.
+\begin{lemma}[Bounded conjugators; classical]\label{gts:vk:lem:conjugators}
+Let $w$ have length $n$ and finite area $\alpha$ in a presentation whose relators have length at most $L$. There is a factorization of the form \eqref{gts:vk:eq:normal-product} with $\alpha$ factors such that every conjugator has length at most $n+L\alpha$.
 \end{lemma}
 
 This is Lemma~2.D.2 of Cornulier--Tessera \cite{cornulier}. Its diagrammatic argument bounds basepoint-to-face paths in a van Kampen diagram by boundary length plus the total face-perimeter budget. We use this statement as an identified external lemma; it is not a new filling-length theorem. The ensuing arithmetic height estimate is derived explicitly.
 
 For a real $2\times2$ matrix, let $\norm{M}_\infty$ be the maximum absolute row sum. It is submultiplicative. Each of $A^{\pm1},B^{\pm1}$ has this norm equal to $3$, so
-\begin{equation}\label{eq:word-norm}
+\begin{equation}\label{gts:vk:eq:word-norm}
  \norm{\rho(v)}_\infty\leq3^{|v|}
  \qquad(v\in\F).
 \end{equation}
 
-\begin{theorem}[One bounded witness exists]\label{thm:height}
+\begin{theorem}[One bounded witness exists]\label{gts:vk:thm:height}
 Let $m\geq1$, $|w|=n$, and $L=\max(1,|r_1|,\ldots,|r_s|)$. Define
-\begin{equation}\label{eq:height}
+\begin{equation}\label{gts:vk:eq:height}
  C=n+mL,\qquad
  H_{\Pp}(n,m)=3^{\,m(2C+L)+C+1}.
 \end{equation}
 If $\Area_{\Pp}(w)\leq m$, then $Q_{\Pp,m}(\rho(w);\boldsymbol z)=0$ has an integer solution with
-\begin{equation}\label{eq:height-bound}
+\begin{equation}\label{gts:vk:eq:height-bound}
  |z_j|\leq H_{\Pp}(n,m)\qquad\text{for every allocated coordinate }j.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-Let $\alpha=\Area_{\Pp}(w)\leq m$. If $\alpha>0$, apply Lemma~\ref{lem:conjugators}; if $\alpha=0$, start with the empty factorization. Pad to length $m$ using the identity label and identity conjugators. We obtain conjugators of length at most $C$ and selected relators of length at most $L$.
+Let $\alpha=\Area_{\Pp}(w)\leq m$. If $\alpha>0$, apply Lemma~\ref{gts:vk:lem:conjugators}; if $\alpha=0$, start with the empty factorization. Pad to length $m$ using the identity label and identity conjugators. We obtain conjugators of length at most $C$ and selected relators of length at most $L$.
 
-Equation~\eqref{eq:word-norm} gives $\norm{U_i}_\infty\leq3^C$ and
+Equation~\eqref{gts:vk:eq:word-norm} gives $\norm{U_i}_\infty\leq3^C$ and
 $\norm{U_iR_{\lambda_i}U_i^{-1}}_\infty\leq3^{2C+L}$.
 Consequently,
 \[
  \norm{P_i}_\infty\leq3^{i(2C+L)},\qquad
  \norm{V_i}_\infty\leq3^{(i-1)(2C+L)+C}.
 \]
-Every matrix entry is bounded by its row-sum norm. The chart coordinates recovered by dividing the off-diagonal entries by $2$ or subtracting $1$ and dividing the diagonal entries by $4$ have absolute values at most $3^C$. The selectors are $0$ or $1$. The exponent in \eqref{eq:height} safely dominates all these bounds. Completeness of Theorem~\ref{thm:budget} supplies the corresponding zero tuple.
+Every matrix entry is bounded by its row-sum norm. The chart coordinates recovered by dividing the off-diagonal entries by $2$ or subtracting $1$ and dividing the diagonal entries by $4$ have absolute values at most $3^C$. The selectors are $0$ or $1$. The exponent in \eqref{gts:vk:eq:height} safely dominates all these bounds. Completeness of Theorem~\ref{gts:vk:thm:budget} supplies the corresponding zero tuple.
 \end{proof}
 
 \begin{remark}[Scope of the height assertion]
 The theorem bounds \emph{some} solution, not all solutions. It is stated for the all-label budget compiler, whose itinerary can be chosen from a short-conjugator factorization. It is not a claimed bound for an arbitrarily prescribed itinerary. Restricting the order of relators can change the available factorizations, so the classical lemma must not silently be applied after such a restriction.
 \end{remark}
 
-\begin{corollary}[Effective bounded-area decision]\label{cor:slice}
+\begin{corollary}[Effective bounded-area decision]\label{gts:vk:cor:slice}
 For a fixed finite presentation, the predicate
 $\Area_{\Pp}(w)\leq m$ is decidable uniformly in $w,m$. In fact, the displayed compiler and height bound give a primitive-recursive finite search procedure.
 \end{corollary}
 
 \begin{proof}
 Freely reduce $w$, compute $W=\rho(w)$, and handle $m=0$ by $W=I$. For $m\geq1$, compute the finite list of residuals and $H_{\Pp}(|w|,m)$, then enumerate the integer cube
-$[-H,H]^{N_{\Pp}(m)}$ and test every tuple. A zero is sound by Theorem~\ref{thm:budget}; if the area is at most $m$, Theorem~\ref{thm:height} places a zero in that cube. All bounds are explicit finite arithmetic expressions.
+$[-H,H]^{N_{\Pp}(m)}$ and test every tuple. A zero is sound by Theorem~\ref{gts:vk:thm:budget}; if the area is at most $m$, Theorem~\ref{gts:vk:thm:height} places a zero in that cube. All bounds are explicit finite arithmetic expressions.
 \end{proof}
 
-This decision procedure is not proposed as an efficient solver. It is useful because it exposes exactly why an area cutoff is enough to decide the word problem. It also shows that the possible noncomputability of \eqref{eq:dehn} does not arise within a fixed finite area slice.
+This decision procedure is not proposed as an efficient solver. It is useful because it exposes exactly why an area cutoff is enough to decide the word problem. It also shows that the possible noncomputability of \eqref{gts:vk:eq:dehn} does not arise within a fixed finite area slice.
 
 \subsection{Bit costs and the unary-budget qualification}
 
@@ -466,18 +631,18 @@ For fixed presentation and $m\geq1$, the logarithm of the height bound is
  O\bigl(m(n+mL+1)\bigr).
 \]
 Multiplying by the $O_{\Pp}(m)$ coordinates gives a total witness bit bound
-\begin{equation}\label{eq:bitbound}
+\begin{equation}\label{gts:vk:eq:bitbound}
  O_{\Pp}\bigl(m^2(n+mL+1)\bigr).
 \end{equation}
 The integer arithmetic needed to check the residuals is polynomial in their written bit size. Therefore this construction supplies polynomial-size arithmetic certificates when $m$ is measured as a unary budget and words are supplied explicitly. It does \emph{not} give polynomial-size certificates in $n+\log m$ for the uncompressed budget family. The family has $\Theta(m)$ allocated coordinates before their magnitudes are even considered.
 
-\section{The exact native arity profile and the cutoff obstruction}\label{sec:dehn}
+\section{The exact native arity profile and the cutoff obstruction}\label{gts:vk:sec:dehn}
 
 For an accepted word $w$, let $\nu_{\Pp}(w)$ be the smallest number of variables \emph{allocated by the all-label compiler} at a budget accepting $w$. The zero-budget case allocates zero variables. This defines a deliberately compiler-relative resource, not an invariant of all possible Diophantine descriptions.
 
-\begin{theorem}[Area is exactly visible in allocated arity]\label{thm:arity}
+\begin{theorem}[Area is exactly visible in allocated arity]\label{gts:vk:thm:arity}
 For a word of finite area $\alpha$,
-\begin{equation}\label{eq:arity-area}
+\begin{equation}\label{gts:vk:eq:arity-area}
  \nu_{\Pp}(w)=
  \begin{cases}
  0,&\alpha=0,\\
@@ -485,7 +650,7 @@ For a word of finite area $\alpha$,
  \end{cases}
 \end{equation}
 If $\nu_{\Pp}^{\max}(n)$ is the maximum of this quantity over null words of length at most $n$, then
-\begin{equation}\label{eq:arity-dehn}
+\begin{equation}\label{gts:vk:eq:arity-dehn}
  \nu_{\Pp}^{\max}(n)=
  \begin{cases}
  0,&\delta_{\Pp}(n)=0,\\
@@ -495,12 +660,12 @@ If $\nu_{\Pp}^{\max}(n)$ is the maximum of this quantity over null words of leng
 \end{theorem}
 
 \begin{proof}
-The accepting budgets are exactly those with $m\geq\alpha$ by Theorem~\ref{thm:budget}. The allocation $(2s+13)m-4$ is strictly increasing for $m\geq1$. Thus the smallest accepting allocation occurs at $m=\alpha$, except for the separately treated zero case. Taking the maximum over the finite set of null words gives the second formula.
+The accepting budgets are exactly those with $m\geq\alpha$ by Theorem~\ref{gts:vk:thm:budget}. The allocation $(2s+13)m-4$ is strictly increasing for $m\geq1$. Thus the smallest accepting allocation occurs at $m=\alpha$, except for the separately treated zero case. Taking the maximum over the finite set of null words gives the second formula.
 \end{proof}
 
 The content is not that Diophantine variables intrinsically measure area. The content is that this particular transparent compiler preserves that resource exactly, whereas a general MRDP compression need not.
 
-\begin{theorem}[Computable cutoff equivalence]\label{thm:cutoff}
+\begin{theorem}[Computable cutoff equivalence]\label{gts:vk:thm:cutoff}
 For a fixed finite presentation $\Pp$, the following are equivalent:
 \begin{enumerate}[label=(\roman*)]
 \item The word problem of $G_{\Pp}$ is decidable.
@@ -511,14 +676,14 @@ For a fixed finite presentation $\Pp$, the following are equivalent:
 \end{theorem}
 
 \begin{proof}
-Assume (i). Enumerate the finitely many reduced words of length at most $n$ and use the word-problem decider to select precisely the null words. For each such word, test budgets $m=0,1,2,\ldots$ by Corollary~\ref{cor:slice} until the first success. Each of these searches terminates and computes its exact area. Their maximum computes $\delta_{\Pp}(n)$, proving (iii). Clearly (iii) implies (ii).
+Assume (i). Enumerate the finitely many reduced words of length at most $n$ and use the word-problem decider to select precisely the null words. For each such word, test budgets $m=0,1,2,\ldots$ by Corollary~\ref{gts:vk:cor:slice} until the first success. Each of these searches terminates and computes its exact area. Their maximum computes $\delta_{\Pp}(n)$, proving (iii). Clearly (iii) implies (ii).
 
-If $f(n)$ is a computable upper bound as in (ii), decide whether $w$ is null by deciding the single bounded-area question $\Area_{\Pp}(w)\leq f(|w|)$. This proves (i). Finally, \eqref{eq:arity-dehn} converts a computable bound in either (ii) or (iv) to a bound in the other. For example, a bound on $\nu_{\Pp}^{\max}$ also bounds $\delta_{\Pp}$ after adding a harmless constant.
+If $f(n)$ is a computable upper bound as in (ii), decide whether $w$ is null by deciding the single bounded-area question $\Area_{\Pp}(w)\leq f(|w|)$. This proves (i). Finally, \eqref{gts:vk:eq:arity-dehn} converts a computable bound in either (ii) or (iv) to a bound in the other. For example, a bound on $\nu_{\Pp}^{\max}$ also bounds $\delta_{\Pp}$ after adding a harmless constant.
 \end{proof}
 
 This equivalence is a classical feature of Dehn functions expressed through the new compiler. Its proof here makes no appeal to a solver for unrestricted Diophantine equations.
 
-\begin{corollary}[No recursive complete area or native-arity budget]\label{cor:nonrecursive}
+\begin{corollary}[No recursive complete area or native-arity budget]\label{gts:vk:cor:nonrecursive}
 Choose a fixed two-generator finite presentation with undecidable word problem. For every total computable $f:\N\to\N$, there are infinitely many $n$ such that
 \[
  \delta_{\Pp}(n)>f(n).
@@ -527,16 +692,16 @@ The same absence of a computable upper bound holds for $\nu_{\Pp}^{\max}$.
 \end{corollary}
 
 \begin{proof}
-A computable bound would contradict Theorem~\ref{thm:cutoff}. If there were only finitely many exceptions to $\delta_{\Pp}(n)\leq f(n)$, their finite maximum could be incorporated as a constant into a total computable upper bound. Therefore exceptions occur infinitely often.
+A computable bound would contradict Theorem~\ref{gts:vk:thm:cutoff}. If there were only finitely many exceptions to $\delta_{\Pp}(n)\leq f(n)$, their finite maximum could be incorporated as a constant into a total computable upper bound. Therefore exceptions occur infinitely often.
 \end{proof}
 
 The corollary asserts infinitely many exceedances, not eventual domination of every computable function. Confusing those two statements would strengthen the conclusion without justification.
 
-\section{Shared relator-proof circuits}\label{sec:dag-semantics}
+\section{Shared relator-proof circuits}\label{gts:vk:sec:dag-semantics}
 
 An ordinary van Kampen factorization repeats every relator occurrence. A proof may instead reuse an established subexpression. We formalize that possibility with an acyclic circuit over the normal closure.
 
-\begin{definition}[Relator-proof DAG]\label{def:dag}
+\begin{definition}[Relator-proof DAG]\label{gts:vk:def:dag}
 A relator-proof DAG for $\Pp$ is a finite directed acyclic graph in topological order, with a distinguished output node and all nodes reachable from it by following dependency edges. Its permitted node types are:
 \begin{enumerate}[label=(\alph*)]
 \item a leaf equal to $1$ or to one of the fixed words $r_j^{\pm1}$;
@@ -548,7 +713,7 @@ A relator-proof DAG for $\Pp$ is a finite directed acyclic graph in topological 
 Its value is computed in the free group. Its product complexity is the number $p$ of product nodes. The other nodes are not charged in this particular complexity measure, but are charged by the arithmetic compiler below.
 \end{definition}
 
-A fixed conjugator may be supplied by its Sanov matrix, provided membership in $\San$ is checked. Such a matrix identifies a unique free-group element. Supplying an arbitrary element of $\SL_2(\Z)$ instead would repeat the error in Example~\ref{ex:congruence}.
+A fixed conjugator may be supplied by its Sanov matrix, provided membership in $\San$ is checked. Such a matrix identifies a unique free-group element. Supplying an arbitrary element of $\SL_2(\Z)$ instead would repeat the error in Example~\ref{gts:vk:ex:congruence}.
 
 \begin{definition}[Expanded relator cost]
 Assign cost $0$ to an identity leaf and cost $1$ to a relator leaf. A product node has the sum of the two child costs; an inverse or either kind of conjugation inherits the cost of its child. If both input edges of a product refer to the same child, its cost is counted twice. Write $c(D)$ for the output cost.
@@ -556,9 +721,9 @@ Assign cost $0$ to an identity leaf and cost $1$ to a relator leaf. A product no
 
 Cost is a structural integer determined by the DAG. It can be evaluated in topological order without expanding a proof tree. No auxiliary arithmetic witnesses are needed merely to state that integer.
 
-\begin{lemma}[Expansion soundness]\label{lem:dag-area}
+\begin{lemma}[Expansion soundness]\label{gts:vk:lem:dag-area}
 If a proof DAG $D$ evaluates to $w$, then
-\begin{equation}\label{eq:dag-area}
+\begin{equation}\label{gts:vk:eq:dag-area}
  \Area_{\Pp}(w)\leq c(D).
 \end{equation}
 \end{lemma}
@@ -567,9 +732,9 @@ If a proof DAG $D$ evaluates to $w$, then
 Induct on the nodes. A relator has a one-factor expression and the identity has the empty expression. Products concatenate factorizations. Inverting a product of conjugates reverses their order and inverts each relator, without changing the number of factors. Conjugating a product by $u$ replaces every factor conjugator $v$ by $uv$, again preserving the number of factors. A repeated dependency is copied when the DAG is unfolded, exactly as required by the additive cost definition.
 \end{proof}
 
-\begin{lemma}[Doubling bound]\label{lem:dag-doubling}
+\begin{lemma}[Doubling bound]\label{gts:vk:lem:dag-doubling}
 A proof DAG with $p$ product nodes satisfies
-\begin{equation}\label{eq:dag-doubling}
+\begin{equation}\label{gts:vk:eq:dag-doubling}
  c(D)\leq2^p.
 \end{equation}
 This includes $p=0$, when the possible costs are $0$ and $1$.
@@ -580,27 +745,27 @@ Before any product node, all costs are at most $1$. After the first $j-1$ produc
 \end{proof}
 
 \begin{remark}[Acyclicity is a semantic condition]
-One cannot replace a DAG by an arbitrary cyclic system of equations and retain Lemma~\ref{lem:dag-area}. A self-reference such as $Z=Z$ imposes no proof obligation and could admit any boundary without a relator leaf. The compiler and software validate topological order, permissible leaf labels, and reachability. These are not optional metadata checks.
+One cannot replace a DAG by an arbitrary cyclic system of equations and retain Lemma~\ref{gts:vk:lem:dag-area}. A self-reference such as $Z=Z$ imposes no proof obligation and could admit any boundary without a relator leaf. The compiler and software validate topological order, permissible leaf labels, and reachability. These are not optional metadata checks.
 \end{remark}
 
-\section{Quartic compilation of proof DAGs}\label{sec:dag-compiler}
+\section{Quartic compilation of proof DAGs}\label{gts:vk:sec:dag-compiler}
 
 For each nonleaf node, allocate an unrestricted $2\times2$ output matrix, except at the distinguished output, whose matrix is the boundary parameter $W$. Leaves use their fixed matrices. For a free conjugation node also allocate a chart matrix $U$.
 
 The matrix residuals for the four nonleaf types are
 \begin{align}
- Z-XY&=0 &&\text{(product)},\label{eq:dag-product}\\
- Z-\adj(X)&=0 &&\text{(inverse)},\label{eq:dag-inverse}\\
- E(U)=0,\qquad ZU-UX&=0 &&\text{(free conjugation)},\label{eq:dag-conj}\\
- ZD-DX&=0 &&\text{(fixed conjugation)}.\label{eq:dag-fixed}
+ Z-XY&=0 &&\text{(product)},\label{gts:vk:eq:dag-product}\\
+ Z-\adj(X)&=0 &&\text{(inverse)},\label{gts:vk:eq:dag-inverse}\\
+ E(U)=0,\qquad ZU-UX&=0 &&\text{(free conjugation)},\label{gts:vk:eq:dag-conj}\\
+ ZD-DX&=0 &&\text{(fixed conjugation)}.\label{gts:vk:eq:dag-fixed}
 \end{align}
-Here $D\in\San$ is a fixed matrix. For a $2\times2$ matrix the adjugate is linear in its entries, so \eqref{eq:dag-inverse} is linear. The assertion that it is the inverse is recovered by induction, rather than assumed for unrestricted matrices.
+Here $D\in\San$ is a fixed matrix. For a $2\times2$ matrix the adjugate is linear in its entries, so \eqref{gts:vk:eq:dag-inverse} is linear. The assertion that it is the inverse is recovered by induction, rather than assumed for unrestricted matrices.
 
-\begin{theorem}[Proof-DAG quartic compiler]\label{thm:dag-compiler}
-Let a valid proof DAG have $p$ product nodes, $h$ free conjugation nodes, $j$ inverse nodes, and $h_c$ fixed conjugation nodes. Suppose it has at least one nonleaf node. The squared sum of residuals \eqref{eq:dag-product}--\eqref{eq:dag-fixed} is an integer polynomial of degree at most four with exactly
+\begin{theorem}[Proof-DAG quartic compiler]\label{gts:vk:thm:dag-compiler}
+Let a valid proof DAG have $p$ product nodes, $h$ free conjugation nodes, $j$ inverse nodes, and $h_c$ fixed conjugation nodes. Suppose it has at least one nonleaf node. The squared sum of residuals \eqref{gts:vk:eq:dag-product}--\eqref{gts:vk:eq:dag-fixed} is an integer polynomial of degree at most four with exactly
 \begin{align}
- N_D&=4p+8h+4j+4h_c-4,\label{eq:dag-vars}\\
- M_D&=4p+5h+4j+4h_c\label{eq:dag-residuals}
+ N_D&=4p+8h+4j+4h_c-4,\label{gts:vk:eq:dag-vars}\\
+ M_D&=4p+5h+4j+4h_c\label{gts:vk:eq:dag-residuals}
 \end{align}
 allocated integer witnesses and scalar residuals. At a boundary $W=\rho(w)$ it has a zero if and only if some assignment of its free conjugator group elements makes the DAG evaluate to $w$ in $\F$.
 
@@ -614,21 +779,21 @@ At a free conjugation node, $E(U)=0$ gives a unique free-group conjugator and an
 
 Conversely, given an assignment to the free conjugators, evaluate the DAG and insert its matrices into the allocated coordinates. All residuals vanish. Each chart coordinate and each internal output is unique once the semantic assignment is fixed, establishing the bijection.
 
-There are $p+h+j+h_c$ nonleaf output matrices, with four boundary coordinates supplied rather than allocated. This contributes $4(p+h+j+h_c)-4$ variables. The $h$ free conjugators add $4h$. All nonleaf nodes contribute four matrix residuals, and each free conjugator contributes one more. These are the stated counts. Residual degree is at most two, so the squared sum has degree at most four. The area and doubling bounds follow from Lemmas~\ref{lem:dag-area} and \ref{lem:dag-doubling}.
+There are $p+h+j+h_c$ nonleaf output matrices, with four boundary coordinates supplied rather than allocated. This contributes $4(p+h+j+h_c)-4$ variables. The $h$ free conjugators add $4h$. All nonleaf nodes contribute four matrix residuals, and each free conjugator contributes one more. These are the stated counts. Residual degree is at most two, so the squared sum has degree at most four. The area and doubling bounds follow from Lemmas~\ref{gts:vk:lem:dag-area} and \ref{gts:vk:lem:dag-doubling}.
 \end{proof}
 
-If the circuit consists only of a leaf, use the four entry residuals $W-R$ and no auxiliary variables. The formula \eqref{eq:dag-vars} is not applied to this exceptional case.
+If the circuit consists only of a leaf, use the four entry residuals $W-R$ and no auxiliary variables. The formula \eqref{gts:vk:eq:dag-vars} is not applied to this exceptional case.
 
 \subsection{Compression does not hide uncounted inverse histories}
 
-The construction relies specifically on $2\times2$ matrices and the exact chart. The adjugate of a $2\times2$ matrix is linear; no determinant-solving subroutine or sequence of inverse operations is concealed in \eqref{eq:dag-inverse}. Likewise, an arbitrary free conjugator is represented by its chart rather than by a guessed length and a word trace. However, its integer coordinates can be large, and the cost of searching for them is not included in the node count.
+The construction relies specifically on $2\times2$ matrices and the exact chart. The adjugate of a $2\times2$ matrix is linear; no determinant-solving subroutine or sequence of inverse operations is concealed in \eqref{gts:vk:eq:dag-inverse}. Likewise, an arbitrary free conjugator is represented by its chart rather than by a guessed length and a word trace. However, its integer coordinates can be large, and the cost of searching for them is not included in the node count.
 
 The algebra also shows why an arbitrary satisfying tuple cannot contain a nonunimodular internal output: the first such node in a topological ordering would have only genuine earlier inputs and hence a genuine output. This is the precise inductive argument that permits us to omit redundant determinant equations on internal matrices.
 
-\section{Sharp exponential compression for rectangular commutators}\label{sec:grid}
+\section{Sharp exponential compression for rectangular commutators}\label{gts:vk:sec:grid}
 
 Consider
-\begin{equation}\label{eq:abelian-presentation}
+\begin{equation}\label{gts:vk:eq:abelian-presentation}
  \Pp_{\mathrm{ab}}=\langle a,b\mid r\rangle,
  \qquad r=[a,b]=aba^{-1}b^{-1}.
 \end{equation}
@@ -636,22 +801,16 @@ Its quotient is $\Z^2$. We will measure the area and proof-DAG product complexit
 
 \subsection{An elementary area detector}
 
-Use the integral Heisenberg group in coordinates
-\[
- H=\Z^3,\qquad
- (x,y,z)(x',y',z')=(x+x',y+y',z+z'+xy').
-\]
-Associativity follows by expanding the third coordinate of a triple product, and
-$(x,y,z)^{-1}=(-x,-y,-z+xy)$. The elements $(0,0,z)$ are central. Map $a$ to $(1,0,0)$ and $b$ to $(0,1,0)$. This defines a homomorphism from the free group, not from the quotient in \eqref{eq:abelian-presentation}. Direct computation gives
-\begin{equation}\label{eq:heisenberg}
+Use the integral Heisenberg group $\HH$ of Section~\ref{gts:sec:heis} in the coordinates $(x,y,z)=h(x,y,z)$, with the product $(x,y,z)(x',y',z')=(x+x',y+y',z+z'+xy')$ of~\eqref{gts:tp:eq:Hmult}. (\wtag\ Source~03 calls this group $H=\Z^3$ and proves associativity and the inverse formula $(x,y,z)^{-1}=(-x,-y,-z+xy)$ at this point; both are printed once, in Section~\ref{gts:sec:heis}.) The elements $(0,0,z)$ are central. Map $a$ to $(1,0,0)$ and $b$ to $(0,1,0)$. This defines a homomorphism from the free group, not from the quotient in \eqref{gts:vk:eq:abelian-presentation}. Direct computation gives
+\begin{equation}\label{gts:vk:eq:heisenberg}
  r\longmapsto(0,0,1),\qquad
  [a^u,b^v]\longmapsto(0,0,uv).
 \end{equation}
 Every conjugate of $r^{\pm1}$ therefore contributes $\pm1$ to the third coordinate. A product with $m$ relator occurrences has third coordinate of absolute value at most $m$.
 
-\begin{proposition}[Exact rectangular area]\label{prop:rectangle-area}
+\begin{proposition}[Exact rectangular area]\label{gts:vk:prop:rectangle-area}
 For positive integers $u,v$,
-\begin{equation}\label{eq:rectangle-area}
+\begin{equation}\label{gts:vk:eq:rectangle-area}
  \Area_{\Pp_{\mathrm{ab}}}([a^u,b^v])=uv.
 \end{equation}
 \end{proposition}
@@ -659,39 +818,39 @@ For positive integers $u,v$,
 \begin{proof}
 The Heisenberg homomorphism gives the lower bound $uv$. For the upper bound, use the free-group identities
 \begin{align}
- [xy,z]&=x[y,z]x^{-1}[x,z],\label{eq:comm-id1}\\
- [x,yz]&=[x,y]\,y[x,z]y^{-1}.\label{eq:comm-id2}
+ [xy,z]&=x[y,z]x^{-1}[x,z],\label{gts:vk:eq:comm-id1}\\
+ [x,yz]&=[x,y]\,y[x,z]y^{-1}.\label{gts:vk:eq:comm-id2}
 \end{align}
-Both follow by multiplying out and cancelling adjacent inverse pairs. First iterate \eqref{eq:comm-id1} to express $[a^u,b]$ as a product of $u$ conjugates of $r$. Then iterate \eqref{eq:comm-id2} to express $[a^u,b^v]$ as a product of $v$ conjugates of that word. Expanding gives exactly $uv$ conjugates of $r$.
+Both follow by multiplying out and cancelling adjacent inverse pairs. First iterate \eqref{gts:vk:eq:comm-id1} to express $[a^u,b]$ as a product of $u$ conjugates of $r$. Then iterate \eqref{gts:vk:eq:comm-id2} to express $[a^u,b^v]$ as a product of $v$ conjugates of that word. Expanding gives exactly $uv$ conjugates of $r$.
 \end{proof}
 
 This elementary area calculation is a familiar central-extension argument. The sharp compression theorem adds a circuit-optimality statement and an explicit quartic allocation.
 
 \Needspace{13\baselineskip}
-\begin{theorem}[Optimal dyadic proof compression]\label{thm:grid}
+\begin{theorem}[Optimal dyadic proof compression]\label{gts:vk:thm:grid}
 Let $k,\ell\geq0$, put $d=k+\ell$, and set
 \[
  w_{k,\ell}=[a^{2^k},b^{2^\ell}].
 \]
-In presentation \eqref{eq:abelian-presentation}:
+In presentation \eqref{gts:vk:eq:abelian-presentation}:
 \begin{enumerate}[label=(\roman*)]
 \item $\Area(w_{k,\ell})=2^d$.
-\item Among all relator-proof DAGs of Definition~\ref{def:dag} evaluating to $w_{k,\ell}$, the minimum number of product nodes is exactly $d$.
+\item Among all relator-proof DAGs of Definition~\ref{gts:vk:def:dag} evaluating to $w_{k,\ell}$, the minimum number of product nodes is exactly $d$.
 \item There is such a DAG with $d$ product nodes and $d$ fixed conjugation nodes and no free conjugation or inverse nodes.
 \item For $d\geq1$, its quartic compiler allocates exactly $8d-4$ integer witnesses and $8d$ scalar residuals. In contrast, the minimum accepting allocation in the direct all-label area compiler is $15\cdot2^d-4$.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-Part (i) follows from Proposition~\ref{prop:rectangle-area}.
+Part (i) follows from Proposition~\ref{gts:vk:prop:rectangle-area}.
 For the construction, start with $C=[a,b]$. If the current word is
-$C=[a^u,b^v]$, equation~\eqref{eq:comm-id1} gives
-\begin{equation}\label{eq:double-a}
+$C=[a^u,b^v]$, equation~\eqref{gts:vk:eq:comm-id1} gives
+\begin{equation}\label{gts:vk:eq:double-a}
  [a^{2u},b^v]=a^uCa^{-u}\,C.
 \end{equation}
 This uses one fixed conjugation node and one product node referring to the old node twice. After $k$ such steps the value is $[a^{2^k},b]$.
-Likewise, \eqref{eq:comm-id2} gives
-\begin{equation}\label{eq:double-b}
+Likewise, \eqref{gts:vk:eq:comm-id2} gives
+\begin{equation}\label{gts:vk:eq:double-b}
  [a^u,b^{2v}]=C\,b^vCb^{-v}.
 \end{equation}
 After $\ell$ additional steps the required output is reached. Each step doubles expanded cost; the starting cost is one. There are exactly $d$ products and $d$ fixed conjugations.
@@ -700,24 +859,24 @@ For optimality, any competing DAG with $p$ product nodes satisfies
 \[
  2^d=\Area(w_{k,\ell})\leq c(D)\leq2^p
 \]
-by Lemmas~\ref{lem:dag-area} and \ref{lem:dag-doubling}. Hence $p\geq d$, even when arbitrary free conjugations and inverses are allowed. The construction attains equality.
+by Lemmas~\ref{gts:vk:lem:dag-area} and \ref{gts:vk:lem:dag-doubling}. Hence $p\geq d$, even when arbitrary free conjugations and inverses are allowed. The construction attains equality.
 
-Theorem~\ref{thm:dag-compiler} with $p=h_c=d$, $h=j=0$ gives $8d-4$ witnesses and $8d$ residuals. The direct compiler has $s=1$ and minimum budget $2^d$, hence allocation $15\cdot2^d-4$. At $d=0$ the DAG is just the relator leaf and uses no auxiliary variables.
+Theorem~\ref{gts:vk:thm:dag-compiler} with $p=h_c=d$, $h=j=0$ gives $8d-4$ witnesses and $8d$ residuals. The direct compiler has $s=1$ and minimum budget $2^d$, hence allocation $15\cdot2^d-4$. At $d=0$ the DAG is just the relator leaf and uses no auxiliary variables.
 \end{proof}
 
 \subsection{All boundary matrices are explicit}
 
 For arbitrary integers $u,v$, direct multiplication gives
-\begin{equation}\label{eq:rectangle-matrix}
+\begin{equation}\label{gts:vk:eq:rectangle-matrix}
  \rho([a^u,b^v])=
  \begin{pmatrix}
  1+4uv+16u^2v^2&-8u^2v\\
  8uv^2&1-4uv
  \end{pmatrix}.
 \end{equation}
-The fixed conjugators in \eqref{eq:double-a} are
+The fixed conjugators in \eqref{gts:vk:eq:double-a} are
 $A^{2^i}=\smallmat{1}{2^{i+1}}{0}{1}$; those in
-\eqref{eq:double-b} are
+\eqref{gts:vk:eq:double-b} are
 $B^{2^j}=\smallmat{1}{0}{2^{j+1}}{1}$.
 Thus neither the boundary nor the constant conjugators require an expanded word representation.
 
@@ -750,13 +909,13 @@ Take $k=\ell=1$. The circuit is
  \quad C_3=BC_2B^{-1},\quad W=C_2C_3.
 \]
 Only $C_1,C_2,C_3$ are allocated matrices. Its sixteen residuals are the entries of
-\begin{equation}\label{eq:grid-small}
+\begin{equation}\label{gts:vk:eq:grid-small}
  \begin{gathered}
  C_1A-AR,\qquad C_2-C_1R,\\
  C_3B-BC_2,\qquad W-C_2C_3.
  \end{gathered}
 \end{equation}
-For avoidance of doubt, the first residual block in \eqref{eq:grid-small} is also a $2\times2$ matrix; each of the four blocks contributes four scalar equations. The fixed boundary is
+For avoidance of doubt, the first residual block in \eqref{gts:vk:eq:grid-small} is also a $2\times2$ matrix; each of the four blocks contributes four scalar equations. The fixed boundary is
 \[
  W=\rho([a^2,b^2])=\smallmat{273}{-64}{64}{-15}.
 \]
@@ -768,7 +927,7 @@ A complete zero is obtained with
 \]
 The squared sum of the sixteen entries is a quartic in twelve variables. This is an explicit, fully numerical polynomial specification; the accompanying sparse JSON file lists every residual coefficient. The area lower bound is four, but no list of four independent factor-conjugator witnesses occurs in this encoding.
 
-\section{A more general addition-chain sandwich}\label{sec:addition-chain}
+\section{A more general addition-chain sandwich}\label{gts:vk:sec:addition-chain}
 
 The dyadic theorem is exact because its area is an exact power of two. For other rectangular boundaries, ordinary and signed addition chains give a useful refinement rather than an unjustified guess at the optimum.
 
@@ -780,9 +939,9 @@ Let $\ell_{\pm}(n)$ be the least number of binary additions needed when sign cha
 
 Write $\pc_{\Pp}(w)$ for the minimum product-node count among all relator-proof DAGs evaluating to a null word $w$. No bound on the number of unary nodes is built into this definition; the minimum is still a well-defined natural number because ordinary finite factorizations give proof DAGs.
 
-\begin{theorem}[Rectangular addition-chain bounds]\label{thm:addition}
+\begin{theorem}[Rectangular addition-chain bounds]\label{gts:vk:thm:addition}
 For positive integers $u,v$,
-\begin{equation}\label{eq:chain-sandwich}
+\begin{equation}\label{gts:vk:eq:chain-sandwich}
  \ell_{\pm}(uv)\ \leq\
  \pc_{\Pp_{\mathrm{ab}}}([a^u,b^v])\ \leq\
  \ell_+(u)+\ell_+(v).
@@ -791,19 +950,19 @@ Given ordinary addition chains of lengths $L_u$ and $L_v$ for $u$ and $v$, there
 \end{theorem}
 
 \begin{proof}
-For the lower bound, apply the Heisenberg map of \eqref{eq:heisenberg} to every node of any candidate proof. Every node image is central: this is true for the relator leaves and is preserved by products, inverses, and conjugations. Record only its third coordinate. Leaves supply $0$ or $\pm1$; a product adds two earlier coordinates; inversion changes a sign; conjugation leaves the coordinate unchanged. Deleting copied values and free sign changes therefore gives a signed chain for $uv$ using at most the number of product nodes in the proof. This proves the left inequality.
+For the lower bound, apply the Heisenberg map of \eqref{gts:vk:eq:heisenberg} to every node of any candidate proof. Every node image is central: this is true for the relator leaves and is preserved by products, inverses, and conjugations. Record only its third coordinate. Leaves supply $0$ or $\pm1$; a product adds two earlier coordinates; inversion changes a sign; conjugation leaves the coordinate unchanged. Deleting copied values and free sign changes therefore gives a signed chain for $uv$ using at most the number of product nodes in the proof. This proves the left inequality.
 
-For the upper bound, suppose an addition-chain step computes $r+s$ from earlier positive values. Maintain the already proved words $C_t=[a^t,b]$. Equation~\eqref{eq:comm-id1} yields
+For the upper bound, suppose an addition-chain step computes $r+s$ from earlier positive values. Maintain the already proved words $C_t=[a^t,b]$. Equation~\eqref{gts:vk:eq:comm-id1} yields
 \[
  C_{r+s}=a^rC_sa^{-r}\,C_r,
 \]
 which uses one fixed conjugation and one product. Starting from the relator $C_1$, the chain for $u$ produces $[a^u,b]$.
 
-Next maintain $D_t=[a^u,b^t]$, starting with that final word. Equation~\eqref{eq:comm-id2} yields
+Next maintain $D_t=[a^u,b^t]$, starting with that final word. Equation~\eqref{gts:vk:eq:comm-id2} yields
 \[
  D_{r+s}=D_r\,b^rD_sb^{-r}.
 \]
-The addition chain for $v$ thus adds one fixed conjugation and one product per step. Any unused nodes can be discarded; for minimal chains they can already be chosen to contribute to the target. The retained circuit has $K\leq L_u+L_v$ products and the same number of fixed conjugations. For $K\geq1$, Theorem~\ref{thm:dag-compiler} gives $8K-4\leq8(L_u+L_v)-4$ allocated witnesses. If $u=v=1$, the relator leaf suffices.
+The addition chain for $v$ thus adds one fixed conjugation and one product per step. Any unused nodes can be discarded; for minimal chains they can already be chosen to contribute to the target. The retained circuit has $K\leq L_u+L_v$ products and the same number of fixed conjugations. For $K\geq1$, Theorem~\ref{gts:vk:thm:dag-compiler} gives $8K-4\leq8(L_u+L_v)-4$ allocated witnesses. If $u=v=1$, the relator leaf suffices.
 \end{proof}
 
 \begin{remark}[Exact versus upper-bound wording]
@@ -811,7 +970,7 @@ For ordinary addition chains conventionally written with increasing positive ent
 \end{remark}
 
 The elementary growth argument for a signed chain gives
-$\ell_{\pm}(n)\geq\lceil\log_2n\rceil$. For a power of two, repeated doubling meets this bound. Hence \eqref{eq:chain-sandwich} independently recovers Theorem~\ref{thm:grid}'s exact product count.
+$\ell_{\pm}(n)\geq\lceil\log_2n\rceil$. For a power of two, repeated doubling meets this bound. Hence \eqref{gts:vk:eq:chain-sandwich} independently recovers Theorem~\ref{gts:vk:thm:grid}'s exact product count.
 
 There is also a completely constructive upper bound without solving a chain-minimization problem. Reading the binary digits of $n$ from left to right gives an ordinary chain of length
 \[
@@ -819,18 +978,18 @@ There is also a completely constructive upper bound without solving a chain-mini
 \]
 Therefore the product complexity of a positive rectangular commutator is at most the sum of these two expressions for $u$ and $v$. This bound and the Heisenberg signed-chain lower bound need not coincide. Determining when they do is a natural, nontrivial continuation of the project.
 
-\section{Limits of compression and of witness-fiber claims}\label{sec:fold}
+\section{Limits of compression and of witness-fiber claims}\label{gts:vk:sec:fold}
 
 \subsection{Sharing cannot give a computable complete proof budget}
 
 For a fixed presentation define the worst-case compressed product profile
-\begin{equation}\label{eq:gamma}
+\begin{equation}\label{gts:vk:eq:gamma}
  \gamma_{\Pp}(n)=\max\{\pc_{\Pp}(w):|w|\leq n,\ w=1\text{ in }G_{\Pp}\}.
 \end{equation}
 
-\begin{proposition}[Comparison with the Dehn profile]\label{prop:gamma}
+\begin{proposition}[Comparison with the Dehn profile]\label{gts:vk:prop:gamma}
 If $\delta_{\Pp}(n)\geq1$, then
-\begin{equation}\label{eq:gamma-bounds}
+\begin{equation}\label{gts:vk:eq:gamma-bounds}
  \left\lceil\log_2\delta_{\Pp}(n)\right\rceil
  \leq\gamma_{\Pp}(n)
  \leq\max(\delta_{\Pp}(n)-1,0).
@@ -842,31 +1001,31 @@ If $\delta_{\Pp}(n)=0$, then $\gamma_{\Pp}(n)=0$.
 Choose a word attaining $\delta_{\Pp}(n)$. Any proof of it with $p$ products has area at most $2^p$, so its product count is at least the logarithmic lower bound. For the upper bound, a word of positive area $\alpha$ has an ordinary factorization with $\alpha$ factors. Represent each factor by a relator leaf and a conjugation, then combine them with $\alpha-1$ products. The free-group identity needs no product.
 \end{proof}
 
-\begin{theorem}[No computable general sharing bound]\label{thm:no-sharing-cutoff}
+\begin{theorem}[No computable general sharing bound]\label{gts:vk:thm:no-sharing-cutoff}
 If $G_{\Pp}$ has undecidable word problem, then $\gamma_{\Pp}$ has no total computable upper bound. More explicitly, for every total computable $f:\N\to\N$, there are infinitely many $n$ with $\gamma_{\Pp}(n)>f(n)$.
 \end{theorem}
 
 \begin{proof}
-If all null words of length at most $n$ had proofs with at most $f(n)$ products, Lemmas~\ref{lem:dag-area} and \ref{lem:dag-doubling} would give
+If all null words of length at most $n$ had proofs with at most $f(n)$ products, Lemmas~\ref{gts:vk:lem:dag-area} and \ref{gts:vk:lem:dag-doubling} would give
 $\delta_{\Pp}(n)\leq2^{f(n)}$.
-This is a computable Dehn bound, contradicting Theorem~\ref{thm:cutoff}. Finitely many exceptions to a proposed upper bound can again be absorbed into a constant, proving infinitely many exceedances.
+This is a computable Dehn bound, contradicting Theorem~\ref{gts:vk:thm:cutoff}. Finitely many exceptions to a proposed upper bound can again be absorbed into a constant, proving infinitely many exceedances.
 \end{proof}
 
 This theorem remains true although conjugator length, conjugator magnitude, and the number of unary nodes are not charged in $\pc$. It is therefore a genuine limitation on this proof-sharing calculus, not merely a complaint that an implementation has insufficient memory. On the other hand, it does not diminish the exact compression on the rectangular family: selected structured instances and worst-case completeness are different questions.
 
 \subsection{Semantic uniqueness is not single-fold Diophantineness}
 
-\begin{proposition}[Infinite fibers in the native compiler]\label{prop:infinite-fibers}
+\begin{proposition}[Infinite fibers in the native compiler]\label{gts:vk:prop:infinite-fibers}
 Suppose the relator table includes a nontrivial element $r\in\F$. The fixed-itinerary compiler with one selected factor $r$ and boundary $r$ has infinitely many integer zero tuples. The same is true of the all-label compiler at that boundary and budget one.
 \end{proposition}
 
 \begin{proof}
-For every integer $h$, take the conjugator $u=r^h$. Then $uru^{-1}=r$. Nontrivial elements of a free group have infinite order: write such an element as a conjugate of a nonempty cyclically reduced word; its nonzero powers have nonempty freely reduced representatives. Hence the elements $r^h$ are distinct. By Theorem~\ref{thm:sanov}, they have distinct chart tuples, producing infinitely many distinct polynomial zeros.
+For every integer $h$, take the conjugator $u=r^h$. Then $uru^{-1}=r$. Nontrivial elements of a free group have infinite order: write such an element as a conjugate of a nonempty cyclically reduced word; its nonzero powers have nonempty freely reduced representatives. Hence the elements $r^h$ are distinct. By Theorem~\ref{gts:vk:thm:sanov}, they have distinct chart tuples, producing infinitely many distinct polynomial zeros.
 \end{proof}
 
 More generally, right multiplication of a conjugator $u$ by any power of the selected nontrivial relator leaves $uru^{-1}$ unchanged. Identity padding creates an even larger freedom: every conjugator acts identically on the identity factor.
 
-The bijections in Theorems~\ref{thm:itinerary}, \ref{thm:budget}, and \ref{thm:dag-compiler} mean that no extra \emph{arithmetic} ambiguity is added once all semantic conjugator choices are fixed. They do not make semantic proofs unique. Thus this construction does not establish finite-fold or single-fold representability of unrestricted group word problems, let alone the general finite-fold MRDP conjecture.
+The bijections in Theorems~\ref{gts:vk:thm:itinerary}, \ref{gts:vk:thm:budget}, and \ref{gts:vk:thm:dag-compiler} mean that no extra \emph{arithmetic} ambiguity is added once all semantic conjugator choices are fixed. They do not make semantic proofs unique. Thus this construction does not establish finite-fold or single-fold representability of unrestricted group word problems, let alone the general finite-fold MRDP conjecture.
 
 \subsection{Where fixed-arity MRDP enters, and what it does not preserve}
 
@@ -883,10 +1042,12 @@ MRDP then supplies a separate fixed polynomial with a fixed finite witness tuple
 
 The native compilers here use signed integer witnesses. A simple existential conversion to natural witnesses replaces each $z$ by $z^+-z^-$, with $z^+,z^-\in\N$; substitution preserves the quartic degree but doubles the allocated coordinates and introduces nonunique decompositions. This elementary conversion is sufficient for discussing the interface and emphatically does not preserve the zero-set bijections or improve fold properties.
 
-\section{Executable evidence and reproducibility}\label{sec:software}
+\section{Executable evidence and reproducibility}\label{gts:vk:sec:software}
 
 The accompanying package contains an exact-integer implementation and symbolic residual generators. Its validation record is in
 \texttt{verification/receipt.json}; the tests were actually executed with Python~3.13.5 and SymPy~1.14.0. They all passed. These are finite computations, not a substitute for the parametric proofs or a claim of Lean/Rocq verification.
+
+\wtag\ In this report the package files are shipped under prefixed names: \path{code/van_kampen.py} and \path{code/verify.py} as \path{code/03-van-kampen-van_kampen.py} and \path{code/03-van-kampen-verify.py}; \texttt{verification/receipt.json}, \texttt{verification/render\_check.json}, \texttt{verification/export\_check.json}, the three \texttt{examples/*.json} files and \texttt{requirements.txt} as \texttt{data/03-van-kampen-*}; and \texttt{SOURCES.md} as \texttt{03-van-kampen-SOURCES.md}. Every count in the ledger below equals the shipped receipt. The suite was rerun at the write on a copy with the delivered names, under Python~3.13.5 and SymPy~1.14.0: it passed, and its receipt and both exported polynomials equal the shipped files apart from line endings.
 
 \subsection{Implemented components}
 
@@ -922,7 +1083,7 @@ Symbolic rectangular boundary identity verified & 1\\
 \end{tabular}
 \end{center}
 
-An additional large grid with $(k,\ell)=(100,100)$ was checked without expanding its $2^{200}$ relator occurrences. Its expanded cost has $201$ binary digits. This illustrates the implemented sharing behavior; it does not constitute an exhaustive lower-bound search. The proof of optimality is Theorem~\ref{thm:grid}.
+An additional large grid with $(k,\ell)=(100,100)$ was checked without expanding its $2^{200}$ relator occurrences. Its expanded cost has $201$ binary digits. This illustrates the implemented sharing behavior; it does not constitute an exhaustive lower-bound search. The proof of optimality is Theorem~\ref{gts:vk:thm:grid}.
 
 For the small-budget certificate family, the $15$ choices per cell combine three relator labels with five conjugators $1,a,a^{-1},b,b^{-1}$. The number of genuine certificates tested is therefore
 $15+15^2+15^3=3615$. For each one, three deterministic corruptions were tested. The numerical evaluator and symbolic generator are separate implementations in the same delivered codebase, not independently audited external software.
@@ -940,19 +1101,21 @@ python code/van_kampen.py grid 1 1 \
 pdflatex -interaction=nonstopmode -halt-on-error arithmetic_van_kampen.tex
 pdflatex -interaction=nonstopmode -halt-on-error arithmetic_van_kampen.tex
 \end{lstlisting}
-The capital letters \texttt{A} and \texttt{B} in software words mean $a^{-1}$ and $b^{-1}$; they are not additional generators. The matrix constants named \texttt{A} and \texttt{B} in the Python module are the positive shear generators, matching \eqref{eq:shears}.
+The capital letters \texttt{A} and \texttt{B} in software words mean $a^{-1}$ and $b^{-1}$; they are not additional generators. The matrix constants named \texttt{A} and \texttt{B} in the Python module are the positive shear generators, matching \eqref{gts:vk:eq:shears}.
+
+\wtag\ These commands use the delivered layout. \path{verify.py} imports \texttt{van\_kampen} by its delivered name, the second, third and fourth commands overwrite recorded files, and \path{arithmetic_van_kampen.tex} is the delivered manuscript, printed here as Part~I and not shipped separately. The README of this report gives a recipe that runs on a copy and leaves the shipped files untouched.
 
 \subsection{What has not been tested or implemented}
 
-The software does not search the enormous cube in Theorem~\ref{thm:height} on substantial examples, construct a universal machine's explicit finite group presentation, optimize arbitrary proof DAGs, find minimum addition chains, or call a general integer-polynomial solver. It generates and verifies concrete systems and supplied witnesses. There is no Lean source in the archive because no new Lean development was built or checked for this report.
+The software does not search the enormous cube in Theorem~\ref{gts:vk:thm:height} on substantial examples, construct a universal machine's explicit finite group presentation, optimize arbitrary proof DAGs, find minimum addition chains, or call a general integer-polynomial solver. It generates and verifies concrete systems and supplied witnesses. There is no Lean source in the archive because no new Lean development was built or checked for this report.
 
-\section{A formalization route into ProveIt}\label{sec:formalization}
+\section{A formalization route into ProveIt}\label{gts:vk:sec:formalization}
 
 The natural trusted boundary is the compiler correctness theorem, rather than the Python compiler or the numerical examples. A useful implementation would return both a finite polynomial syntax object and a theorem connecting its evaluation to the semantic proof relation. The following modules separate the obligations.
 
 \subsection{Free words and the arithmetic chart}
 
-Start with a normal-form representation of the free group, its evaluation into $2\times2$ integer matrices, and the subgroup specified by the congruences in \eqref{eq:chart}. Prove closure and the determinant identity by ring normalization. Formalize ping-pong injectivity and the even-Euclidean termination measure separately. The decoder correctness theorem should return equality of matrix evaluations and a chart-membership equivalence; it need not expose an expanded word of a huge power.
+Start with a normal-form representation of the free group, its evaluation into $2\times2$ integer matrices, and the subgroup specified by the congruences in \eqref{gts:vk:eq:chart}. Prove closure and the determinant identity by ring normalization. Formalize ping-pong injectivity and the even-Euclidean termination measure separately. The decoder correctness theorem should return equality of matrix evaluations and a chart-membership equivalence; it need not expose an expanded word of a huge power.
 
 The descent proof requires attention to signed division, nearest-integer selection, and parity-based strictness. These are small but essential obligations. Replacing nearest-integer division by truncation toward zero without rechecking the inequalities would invalidate the proof.
 
@@ -970,64 +1133,64 @@ Next prove the local matrix semantics of each gate and compose them by the same 
 
 \subsection{The external dependency ledger}
 
-The only substantive geometric input not reproved fully here is Lemma~\ref{lem:conjugators}; it is needed for the displayed height bound and the direct bounded-search procedure. A formal project should either prove it from a van Kampen diagram library or record it as an explicit temporary assumption. It is not needed for the chart theorem, either quartic soundness/completeness theorem, DAG semantics, the dyadic optimum, or the addition-chain sandwich.
+The only substantive geometric input not reproved fully here is Lemma~\ref{gts:vk:lem:conjugators}; it is needed for the displayed height bound and the direct bounded-search procedure. A formal project should either prove it from a van Kampen diagram library or record it as an explicit temporary assumption. It is not needed for the chart theorem, either quartic soundness/completeness theorem, DAG semantics, the dyadic optimum, or the addition-chain sandwich.
 
 Classical undecidable-group existence and the two-generator embedding theorem are needed only to instantiate the noncomputability corollaries. The core compiler is valid for every supplied two-generator finite presentation without those existence inputs. MRDP is needed only to pass from the unbounded enumerable relation to a separate fixed-arity polynomial; it is not used to justify any displayed quartic.
 
 This separation permits useful formally checked endpoints well before the deepest surrounding group-theoretic libraries are completed. In particular, a kernel-checked twelve-variable polynomial for $[a^2,b^2]$, a proved generic fixed-itinerary compiler, and a proved parametric dyadic optimality theorem are realistic independent milestones.
 
-\section{Further research questions and proposed projects}\label{sec:questions}
+\section{Further research questions and proposed projects}\label{gts:vk:sec:questions}
 
 The following questions are proposed as continuations, not as claims that the associated problems have been settled or that every item is a recognized open problem in the literature.
 
-\begin{question}[Verified arithmetic free-group chart]
+\begin{question}[Verified arithmetic free-group chart]\label{gts:vk:q:chart}
 Can the full Sanov chart equivalence, including a terminating decoder to compressed syllables, be added to the repository with no new mathematical axioms? The immediate target is a theorem equating integral points of $x+t+4xt-yz=0$ with free-group elements, followed by certified compilation of the fixed-itinerary system.
 \end{question}
 
-\begin{question}[Lower allocation at fixed quartic degree]
+\begin{question}[Lower allocation at fixed quartic degree]\label{gts:vk:q:allocation}
 Can the all-label construction beat $(2s+13)m-4$ variables while retaining an explicit semantic bijection and degree at most four? A successful improvement must account for selector typing, the triple-product obstruction, and the determinant condition. This is an upper-bound improvement problem; the present counts are not claimed optimal among quartics.
 \end{question}
 
-\begin{question}[Exact rectangular proof complexity]
+\begin{question}[Exact rectangular proof complexity]\label{gts:vk:q:rectangular}
 When does
-$\pc([a^u,b^v])=\ell_{\pm}(uv)$ hold, and when is a larger value forced by free-group information invisible to the Heisenberg quotient? Theorem~\ref{thm:addition} leaves a specific interval. Small non-dyadic rectangles are an accessible source of candidate identities and counterexamples, but a search over a bounded set of conjugators alone cannot certify a global lower bound.
+$\pc([a^u,b^v])=\ell_{\pm}(uv)$ hold, and when is a larger value forced by free-group information invisible to the Heisenberg quotient? Theorem~\ref{gts:vk:thm:addition} leaves a specific interval. Small non-dyadic rectangles are an accessible source of candidate identities and counterexamples, but a search over a bounded set of conjugators alone cannot certify a global lower bound.
 \end{question}
 
-\begin{question}[Stronger arithmetic lower-bound detectors]
+\begin{question}[Stronger arithmetic lower-bound detectors]\label{gts:vk:q:detectors}
 Can higher nilpotent quotients, several central coordinates, or suitably controlled invariants give proof-DAG lower bounds stronger than the scalar area/doubling bound? One would want an invariant whose update under each allowed node is explicitly bounded, so that a certificate for the lower bound can itself be checked mechanically.
 \end{question}
 
-\begin{question}[Proof-sharing profiles beyond the abelian presentation]
+\begin{question}[Proof-sharing profiles beyond the abelian presentation]\label{gts:vk:q:sharing}
 For presentations with large Dehn functions, how close can
 $\gamma_{\Pp}(n)$ be to the logarithmic lower bound in
-\eqref{eq:gamma-bounds}? Which families admit near-maximal reuse, and which force close to the unshared number of products? The metric must continue to state whether arbitrary conjugations, inverse nodes, and coefficient magnitude are charged.
+\eqref{gts:vk:eq:gamma-bounds}? Which families admit near-maximal reuse, and which force close to the unshared number of products? The metric must continue to state whether arbitrary conjugations, inverse nodes, and coefficient magnitude are charged.
 \end{question}
 
-\begin{question}[Centralizer-normalized witnesses]
+\begin{question}[Centralizer-normalized witnesses]\label{gts:vk:q:centralizer}
 Can one quotient conjugators by the evident right-centralizer symmetry and impose a canonical representative in a comparably small arithmetic language? Even a solution for one-relator bounded-area slices would be useful. It would not automatically settle unrestricted finite-fold MRDP: normalizing individual factors does not make whole factorizations finite or unique.
 \end{question}
 
-\begin{question}[A native higher-rank chart]
+\begin{question}[A native higher-rank chart]\label{gts:vk:q:higher-rank}
 Can a useful finite-generator free group be represented by a similarly exact low-dimensional arithmetic chart without first embedding its presentation into a two-generator group? An embedding may preserve the word problem while changing area substantially. A higher-rank chart with a quantitative area-preserving interface would allow more direct comparisons with machine-to-group constructions.
 \end{question}
 
-\begin{question}[Concrete universal substrate front end]
+\begin{question}[Concrete universal substrate front end]\label{gts:vk:q:front-end}
 Select a published, fully explicit finite presentation with an effective machine-simulation theorem, instantiate every relator, and connect the simulator's accepting condition to the quartic compiler. The deliverable should include the actual relator table, the input-word map, and the two directions of correctness. Merely citing the existence of an undecidable presentation is not that deliverable.
 \end{question}
 
-\begin{question}[Automatic discovery of reusable group proofs]
+\begin{question}[Automatic discovery of reusable group proofs]\label{gts:vk:q:discovery}
 Can an optimizer propose repeated conjugate patterns in a known proof and produce a validated DAG with a substantially smaller polynomial? A safe design treats heuristic discovery as untrusted and has a small semantic checker certify the transformed proof. The area and product-count annotations should be checked along with the boundary.
 \end{question}
 
-\begin{question}[Compiler interoperability and fair metrics]
+\begin{question}[Compiler interoperability and fair metrics]\label{gts:vk:q:interop}
 Can the repository's packed-history representations and the present area/DAG representations share a common verified input boundary? Comparisons should report variables, maximum degree, arithmetic operations, coefficient bit size, witness height, and whether a numerical universal instance is actually instantiated. A saving in one metric need not improve the others.
 \end{question}
 
-\begin{question}[Fixed-arity compression retaining area information]
+\begin{question}[Fixed-arity compression retaining area information]\label{gts:vk:q:fixed-arity}
 Can a fixed-arity Diophantine representation retain a recognizable area parameter or a controllable relationship between witness size and filling area? The present family does not do this: its arity changes with $m$. Any proposed packing must prove both integer soundness and completeness, and state separately what happens to witness fibers.
 \end{question}
 
-\begin{question}[Structure-aware certificate solving]
+\begin{question}[Structure-aware certificate solving]\label{gts:vk:q:solving}
 Can practical search exploit the Sanov chart, central invariants, and the path decomposition rather than treating the final squared sum as an opaque polynomial? Useful benchmarks include finding a one-factor conjugacy proof, recovering small area budgets, and verifying or improving shared rectangular circuits. Solver performance should be measured separately from certificate size.
 \end{question}
 
@@ -1039,13 +1202,1228 @@ The second construction exposes a different resource. A proof DAG can reuse a wh
 
 These results do not evade undecidability or the distinction between a variable-arity family and a fixed polynomial. There is no computable complete area or sharing cutoff for presentations with undecidable word problem, and the native witness fibers are generally infinite. The productive next step is therefore not an overbroad universality claim, but a verified compiler with an honest resource ledger, followed by a concrete machine-to-presentation instance and sharper proof-sharing theorems.
 
+\part{Three commutative phases (source 05)}\label{gts:part:tp}
+
+\noindent\wtag\ Part~II prints batch-76 manuscript~05, \emph{Three Commutative Phases Are Diophantine-Universal: A fibre-preserving Heisenberg compiler and a proposed resolution of the three-subgroup problem}, research manuscript prepared for Vladimir Reshetnikov, October 2, 2026. Its labels carry the prefix \texttt{gts:tp:}. Its abstract and its statement of status and scope follow. A \emph{phase} is one commuting factor of an ordered product (Section~\ref{gts:sec:notation}). For integer exponents the ``matching two-phase decidability result'' of the abstract is a special case of known results, credited in Remark~\ref{gts:tp:rem:credit}.
+
+\begin{quote}\small
+\textbf{Abstract (source 05).} We give an explicit construction which represents every finite system of
+integral quadratic equations by membership in a product of three free abelian
+subgroups of a finite direct power of the discrete Heisenberg group. The
+construction preserves the entire solution fibre: arithmetic solutions are in
+bijection with ordered triples of subgroup elements whose product is the
+target. The key device combines the integer-valued polynomial
+$\bn(t)=t(t-1)/2$ with three commuting phases of upper-unitriangular matrices.
+Polarization converts mixed products into linear combinations of binomials of
+linear forms, while central auxiliary generators record these combinations.
+
+Applying classical MRDP and circuit flattening yields three fixed free
+abelian subgroups with computably enumerable complete product membership,
+even when targets lie on a fixed central affine cyclic line. This provides a
+negative answer to the three-subgroup decidability question explicitly left
+open in the literature. We also prove a matching two-phase decidability
+result for commutative phases, a nonnegative-exponent version, an explicit
+quartic reverse representation, quantitative witness bounds, and a small
+three-subgroup product that is not profinitely closed. An executable compiler
+and 190,826 deterministic exact-integer checks accompany the proofs.
+
+\medskip
+\noindent\textbf{Status and scope.}
+This is a proposed research result with full mathematical proofs, not a
+peer-reviewed or proof-assistant-checked theorem. The literature search
+identified the published open question but does not certify historical
+priority. The universal fixed matrices are proved to exist; the attached
+software instantiates arbitrary supplied quadratic systems and explicit
+examples, not a numerically expanded universal MRDP polynomial. None of the
+repository's recent arithmetic-operation records is assumed.
+\end{quote}
+
+\section{The question and the result}
+\label{gts:tp:sec:intro}
+
+\subsection{Why a new substrate is not enough}
+Classical MRDP states that every computably enumerable set of natural numbers
+has a Diophantine representation. Consequently, observing that a finitely
+specified computational substrate can be simulated by a Turing machine
+usually yields a Diophantine existence theorem immediately. Such a statement
+alone does not explain the substrate's structure, control witness
+multiplicity, or improve a known representation boundary.
+
+The construction here addresses all three issues. Its substrate is a product
+of only three commutative families of integer matrices. Every matrix within
+one phase commutes with every other matrix in that phase; arbitrary
+interleaving is forbidden. Arithmetic appears solely from interaction between
+phases. The construction proves both directions by an explicit coordinate
+calculation and recovers every exponent from the original arithmetic
+witness. It also crosses a specific published decidability boundary.
+
+\subsection{The published problem}
+K\"onig, Lohrey, and Zetzsche proved that a fixed product of four abelian
+subgroups of a sufficiently large direct power of the discrete Heisenberg
+group can have undecidable membership. Their Remark~6.7 asks about three
+subgroups~\cite{KLZ}. Roman'kov's later paper, published online on September
+20, 2024 and in print on March 1, 2025, again explicitly leaves the
+three-subgroup case open for nilpotent groups of class two~\cite{Romankov}.
+
+We resolve the stated existence question in the negative by constructing
+three free abelian subgroups. The new argument is the binomial compiler
+below, not the appeal to MRDP at the final step. All claims of resolution
+refer to this proof; independent review and a broader priority investigation
+remain appropriate before publication.
+
+\subsection{A precise main statement}
+Write $\HH=\operatorname{UT}_3(\ZZ)$ for the discrete Heisenberg group of the matrices $h(a,b,c)$ (\wtag\ source~05's defining display is printed in Section~\ref{gts:sec:heis}).
+Natural numbers include zero. A subset of an effectively presented group is
+\emph{computably enumerable complete} when it is computably enumerable and
+every computably enumerable set is many-one reducible to it.
+
+\begin{theorem}[Three fixed subgroups]\label{gts:tp:thm:main}
+There are a fixed positive integer $d$, three fixed finitely generated free
+abelian subgroups $\calA,\calB,\calT\leq\HH^d$, and fixed central elements
+$g_0,g_1\in Z(\HH^d)$, with $g_1$ of infinite order, such that
+\[
+ \{n\in\NN:g_0g_1^n\in\calA\calB\calT\}
+\]
+is computably enumerable complete. The three subgroups have pairwise trivial
+intersections. Thus membership in the fixed set $\calA\calB\calT$ is
+undecidable.
+\end{theorem}
+
+The quantifiers are important. The ambient dimension, every generator, and
+both target elements are chosen once. They do not depend on $n$. Only the
+exponent in $g_0g_1^n$ changes. The assertion concerns a fixed subset of a
+fixed group, not merely a decision problem where the group or the number of
+phases is part of the input.
+
+A stronger structural statement is proved first. Given a quadratic map
+$F:\ZZ^n\to\ZZ^m$, its fibre $F^{-1}(t)$ is exactly the set of ordered
+three-phase factorizations of a corresponding target, under an explicit
+bijection. This includes empty, finite, and infinite fibres. The same
+construction works over $\NN$ with free commutative submonoids.
+
+\subsection{What is and is not obtained}
+The main new output is a three-phase, fibre-preserving representation, and
+its consequence for the stated open problem. The two-phase theorem gives a
+sharp phase count for these commutative matrix systems. The quartic
+representation gives an explicit reverse compiler rather than a new
+universal degree record. Counting statements concern subgroup elements or
+basis-exponent vectors, not all spelling variants of words. Nothing here
+proves that all computably enumerable sets have finite-fold or single-fold
+Diophantine representations.
+
+The computational interpretation is exact target reachability. This is not
+a step-by-step simulation theorem for a physical matrix device, nor does it
+assert robust computation with bounded precision. Unbounded integer
+exponents are essential.
+
+\section{Arithmetic normal forms}
+\label{gts:tp:sec:normal}
+
+\subsection{Integer binomials and polarization}
+Define
+\[
+ \bn(t)=\binom t2=\frac{t(t-1)}2\qquad(t\in\ZZ).
+\]
+This is an integer for every integer $t$, including negative $t$. Moreover,
+$\bn(t)\geq0$ for every integer $t$: either $t\geq1$, or $t\leq0$, and the two
+consecutive factors have the same sign or one is zero.
+
+\begin{lemma}\label{gts:tp:lem:binomial}
+For all $s,t\in\ZZ$,
+\begin{align}
+ \bn(s+t)&=\bn(s)+\bn(t)+st,\label{gts:tp:eq:binadd}\\
+ t^2&=2\bn(t)+t,\label{gts:tp:eq:square}\\
+ st&=\bn(s+t)-\bn(s)-\bn(t).\label{gts:tp:eq:polar}
+\end{align}
+\end{lemma}
+\begin{proof}
+Multiplying each equality by two and expanding gives identical integral
+polynomials on the two sides. The second equality is immediate from the
+definition, and the third is a rearrangement of the first.
+\end{proof}
+
+The use of integer binomials rather than division by two in a lattice is
+important. All generator coordinates below will be integers. The
+coefficients of the normal form will be integers, and negative exponents
+will require no extra parity constraint.
+
+\subsection{A shared family of sparse linear forms}
+Let $F=(F_1,\ldots,F_m):\ZZ^n\to\ZZ^m$ have degree at most two, where
+$n,m\geq1$. Write it uniquely as
+\begin{equation}\label{gts:tp:eq:Fcoef}
+ F_j(x)=c_j+\sum_{i=1}^n\ell_{ji}x_i
+       +\sum_{i=1}^n d_{ji}x_i^2
+       +\sum_{1\leq i<k\leq n}o_{jik}x_ix_k.
+\end{equation}
+All coefficients are integers. Let $\mathcal E$ be the set of unordered
+pairs $\{i,k\}$ whose mixed coefficient is nonzero in at least one row. Put
+$q=|\mathcal E|$ and $N=n+q$.
+
+The $N$ rows of an $N\times n$ matrix $L$ are the $n$ coordinate forms $x_i$,
+followed by the forms $x_i+x_k$ for $\{i,k\}\in\mathcal E$, in a fixed order.
+The first $n$ rows form the identity matrix. In particular,
+\begin{equation}\label{gts:tp:eq:Lproperties}
+ L\text{ is injective},\qquad
+ L(\NN^n)\subseteq\NN^N,\qquad
+ \|Lx\|_\infty\leq2\|x\|_\infty.
+\end{equation}
+
+\begin{proposition}[Integral binomial normal form]\label{gts:tp:prop:normal}
+One can compute integral matrices $C\in\ZZ^{m\times N}$,
+$D\in\ZZ^{m\times n}$ and $c\in\ZZ^m$ such that
+\begin{equation}\label{gts:tp:eq:normal}
+                  F(x)=C\bn(Lx)+Dx+c
+                  \qquad(x\in\ZZ^n),
+\end{equation}
+where $\bn$ is applied coordinatewise. The number of binomial coordinates is
+\[
+                 N=n+q\leq n+\binom n2.
+\]
+An explicit choice is
+\begin{align}
+ D_{ji}&=\ell_{ji}+d_{ji},\label{gts:tp:eq:Dcoef}\\
+ C_{j,i}&=2d_{ji}-\sum_{k<i}o_{jki}-\sum_{k>i}o_{jik},\label{gts:tp:eq:Cunit}\\
+ C_{j,\{i,k\}}&=o_{jik}.\label{gts:tp:eq:Cpair}
+\end{align}
+\end{proposition}
+\begin{proof}
+Replace each square in \eqref{gts:tp:eq:Fcoef} by \eqref{gts:tp:eq:square}, and each mixed
+term by \eqref{gts:tp:eq:polar}. A mixed term contributes its coefficient to the
+row indexed by $x_i+x_k$, and the negative of that coefficient to each of
+the rows indexed by $x_i$ and $x_k$. A square contributes $2d_{ji}$ to
+$\bn(x_i)$ and $d_{ji}$ to $x_i$. These contributions are exactly
+\eqref{gts:tp:eq:Dcoef}--\eqref{gts:tp:eq:Cpair}. No assertion about the existence of
+solutions is used in deriving this identity.
+\end{proof}
+
+Keeping all coordinate forms, even unused ones, costs at most $n$ rows but
+makes witness recovery injective. The same pair form is shared across all
+equations. This avoids compiling every occurrence of a mixed product into a
+separate matrix coordinate.
+
+\subsection{From general polynomials to quadratic systems}
+An arithmetic circuit over $\ZZ$ is a finite acyclic list of constant,
+addition, subtraction and multiplication gates. Introduce one variable for
+every wire, including the freely chosen input wires. The gate creating wire
+$z$ gives one equation of one of the forms
+\[
+ z-a=0,\qquad z-x-y=0,\qquad z-x+y=0,\qquad z-xy=0.
+\]
+A prescribed output is imposed by one additional linear equation.
+
+\begin{lemma}[Unique circuit extension]\label{gts:tp:lem:circuit}
+For any assignment to the free wires, there is exactly one assignment to
+all gate-output wires satisfying the gate equations. It is the ordinary
+circuit evaluation. Therefore imposing output equations preserves the
+solution fibre on the free wires bijectively.
+\end{lemma}
+\begin{proof}
+Order the gates topologically. A constant gate has its output fixed by its
+equation. At every subsequent gate, the values on its input wires have
+already been determined, and its equation determines its output uniquely.
+Induction proves uniqueness and also constructs the assignment.
+\end{proof}
+
+Parameters can be treated as free wires with final linear pinning equations.
+Thus the coefficients of the quadratic system are independent of parameter
+values: parameters appear only in the right-hand-side vector $t$. This will
+supply the fixed-subgroup quantifier in Theorem~\ref{gts:tp:thm:main}.
+
+Over $\NN$, write a polynomial equation as $P^+=P^-$ with nonnegative
+coefficients, evaluate both sides using nonnegative constants, addition and
+multiplication, and equate the outputs. All gate values are then natural.
+Subtraction of two natural quantities is used only in the polynomial
+residual, not as a natural-number gate operation.
+
+\section{The three-phase compiler}
+\label{gts:tp:sec:compiler}
+
+\subsection{Heisenberg coordinates}
+Direct matrix multiplication gives the multiplication, inverse and power formulas \eqref{gts:tp:eq:Hmult}, \eqref{gts:tp:eq:Hinv} and \eqref{gts:tp:eq:Hpower}. (\wtag\ These three formulas and their proof are printed once, in Section~\ref{gts:sec:heis}, with their labels.)
+
+The commutator is central. In particular, elements with $b=0$ commute with
+one another, as do elements with $a=0$. A fixed cyclic direction is also
+commutative. These are exactly the three types of directions we shall use.
+
+Work first in
+\[
+                         G=\HH^N\times\ZZ^m.
+\]
+Products, inverses and powers in the $\HH$ coordinates are componentwise;
+the last $m$ coordinates add. The latter coordinates form a central direct
+factor. They are not additional phases.
+
+\subsection{The three homomorphisms}
+Fix the normal form $F(x)=C\bn(Lx)+Dx+c$ of
+Proposition~\ref{gts:tp:prop:normal}. For $x,y\in\ZZ^n$ and $u,r\in\ZZ^N$, define
+\begin{align}
+ A(x,u)&=\left(\big(h((Lx)_s,0,-u_s)\big)_{s=1}^N,\;Dx+Cu\right),
+ \label{gts:tp:eq:A}\\
+ B(y)&=\left(\big(h(0,(Ly)_s,0)\big)_{s=1}^N,\;0\right),
+ \label{gts:tp:eq:B}\\
+ T(r)&=\left(\big(h(-r_s,-r_s,\bn(r_s))\big)_{s=1}^N,\;0\right).
+ \label{gts:tp:eq:T}
+\end{align}
+The letter $T$ denotes the third phase, not a time bound. Set
+\[
+ \calA=\im A,\qquad \calB=\im B,\qquad \calT=\im T.
+\]
+
+\begin{lemma}[Commuting phases, ranks and intersections]\label{gts:tp:lem:phases}
+The maps $A:\ZZ^{n+N}\to G$, $B:\ZZ^n\to G$ and $T:\ZZ^N\to G$ are
+injective group homomorphisms. Consequently $\calA,\calB,\calT$ are free
+abelian subgroups of ranks $n+N,n,N$, respectively. Their pairwise
+intersections are trivial.
+\end{lemma}
+\begin{proof}
+In a product of two $A$-elements, each Heisenberg cross term is zero because
+the right factor has $b=0$. The remaining coordinates are linear in $(x,u)$.
+Therefore $A(x,u)A(x',u')=A(x+x',u+u')$. For $B$, the cross term is zero
+because the left factor has $a=0$.
+
+For the third phase, \eqref{gts:tp:eq:Hmult} gives central coordinate
+$\bn(r_s)+\bn(r'_s)+r_sr'_s$, which equals $\bn(r_s+r'_s)$ by
+\eqref{gts:tp:eq:binadd}. Thus $T(r)T(r')=T(r+r')$; equivalently, the $s$th
+coordinate is the $r_s$th power of $h(-1,-1,0)$.
+
+If $A(x,u)=1$, then $Lx=0$, whence $x=0$, and its Heisenberg central
+coordinates give $u=0$. The injectivity of $B$ follows from that of $L$,
+and the horizontal coordinates of $T(r)$ recover $r$ directly.
+
+If $A(x,u)=B(y)$, horizontal coordinates give $Lx=Ly=0$, so $x=y=0$;
+central coordinates then give $u=0$. If $A(x,u)=T(r)$, the $b$-coordinates
+give $r=0$, and injectivity gives $x=u=0$. If $B(y)=T(r)$, the
+$a$-coordinates give $r=0$ and then $y=0$.
+\end{proof}
+
+\subsection{Explicit finite generator lists}
+Let $e_i$ denote a coordinate vector in $\ZZ^n$ and $e_s$ one in $\ZZ^N$.
+The generator bases are
+\begin{equation}\label{gts:tp:eq:bases}
+\begin{split}
+ \calA &: A(e_1,0),\ldots,A(e_n,0),
+          A(0,e_1),\ldots,A(0,e_N),\\
+ \calB &: B(e_1),\ldots,B(e_n),\\
+ \calT &: T(e_1),\ldots,T(e_N).
+\end{split}
+\end{equation}
+For clarity, $A(e_i,0)$ has Heisenberg entries $h(L_{si},0,0)$ and abelian
+coordinate $D_{\cdot i}$. The generator $A(0,e_s)$ has one Heisenberg central
+entry $-1$ and abelian coordinate $C_{\cdot s}$. The corresponding $B$
+generator has entries $h(0,L_{si},0)$. The $s$th $T$ generator has
+$h(-1,-1,0)$ in coordinate $s$ and identities elsewhere.
+
+These lists contain no hidden dependence on $t$. The potentially nonlinear
+formula for $T(r)$ is simply a formula for powers of these fixed matrices.
+All noncentral entries of the displayed Heisenberg generators lie in
+$\{-1,0,1\}$.
+
+\subsection{The exact product calculation}
+For vectors, $\odot$ denotes componentwise multiplication. Put $a=Lx$ and
+$b=Ly$. Using \eqref{gts:tp:eq:Hmult} twice gives
+\begin{equation}\label{gts:tp:eq:master}
+ A(x,u)B(y)T(r)=
+ \left(\Big(h\big(a_s-r_s,\ b_s-r_s,
+       -u_s+a_s(b_s-r_s)+\bn(r_s)\big)\Big)_{s=1}^N,
+       \ Dx+Cu\right).
+\end{equation}
+The sign and order in the central coordinate matter. After the first two
+phases the central term is $-u_s+a_sb_s$. Multiplication by the third
+phase adds $\bn(r_s)-a_sr_s$, yielding the expression shown. Reversing two
+phases would define a different compiler.
+
+For $t\in\ZZ^m$ let
+\begin{equation}\label{gts:tp:eq:target}
+                 g(t)=\big(1_{\HH^N},\ t-c\big).
+\end{equation}
+This is central. Define
+\[
+ \Fact_t=\{(a_0,b_0,t_0)\in\calA\times\calB\times\calT:
+                         a_0b_0t_0=g(t)\}.
+\]
+
+\begin{theorem}[Exact fibre equivalence]\label{gts:tp:thm:fibres}
+For every $t\in\ZZ^m$, the map
+\begin{equation}\label{gts:tp:eq:fibermap}
+ \Phi_t:F^{-1}(t)\longrightarrow\Fact_t,\qquad
+ x\longmapsto\big(A(x,\bn(Lx)),B(x),T(Lx)\big)
+\end{equation}
+is a bijection. In particular,
+\[
+                 F(x)=t\text{ has an integer solution}
+                 \quad\Longleftrightarrow\quad
+                 g(t)\in\calA\calB\calT.
+\]
+\end{theorem}
+\begin{proof}
+For a factorization of $g(t)$, injectivity in Lemma~\ref{gts:tp:lem:phases} gives
+unique parameters $(x,u),y,r$ for its three group elements. The first two
+coordinates in every Heisenberg factor of \eqref{gts:tp:eq:master} must vanish.
+Hence
+\[
+                     r=Lx=Ly.
+\]
+Since $L$ is injective, $y=x$. The Heisenberg central coordinates in
+\eqref{gts:tp:eq:master} now reduce to $-u+\bn(Lx)$, so they force
+\[
+                     u=\bn(Lx).
+\]
+The last $m$ coordinates consequently say
+\[
+                   Dx+C\bn(Lx)=t-c,
+\]
+which is equivalent to $F(x)=t$ by \eqref{gts:tp:eq:normal}. Every factorization is
+therefore exactly the displayed image of its unique $x$.
+
+Conversely, if $F(x)=t$, take $y=x$, $r=Lx$ and $u=\bn(Lx)$. Each
+Heisenberg coordinate in \eqref{gts:tp:eq:master} vanishes, and the abelian
+coordinate is $t-c$. Thus the three displayed elements multiply to $g(t)$.
+The two procedures are inverse, proving bijectivity.
+\end{proof}
+
+\begin{corollary}[An exact quadratic image in a central slice]\label{gts:tp:cor:slice}
+For $Z_0=\{1_{\HH^N}\}\times\ZZ^m$,
+\[
+ (\calA\calB\calT)\cap Z_0
+    =\{(1_{\HH^N},F(x)-c):x\in\ZZ^n\}.
+\]
+This is an equality of sets; Theorem~\ref{gts:tp:thm:fibres} additionally describes
+the multiplicity of every point as an ordered factorization.
+\end{corollary}
+
+The theorem has no existential ``slack'' beyond the original $x$: the
+additional parameters $u,y,r$ are uniquely recovered. This feature will
+allow counting, weighted and height statements without a separate
+normalization theorem.
+
+\section{Embedding into a pure Heisenberg power}
+\label{gts:tp:sec:embedding}
+
+The direct abelian factor is convenient for arithmetic but unnecessary for
+the main group-theoretic conclusion.
+
+\begin{proposition}[Two faithful embeddings]\label{gts:tp:prop:embedding}
+There are explicit injective homomorphisms
+\begin{align*}
+ \HH^N\times\ZZ^m&\hookrightarrow\HH^{N+m},\\
+ \HH^N\times\ZZ^m&\hookrightarrow\HH^{N+\lceil m/2\rceil}.
+\end{align*}
+The first takes the whole abelian direct factor to the center of the
+ambient group. Both preserve the exact factorization fibres among the
+images of the three subgroups.
+\end{proposition}
+\begin{proof}
+For the first map, send each extra integer $z_j$ to $h(0,0,z_j)$ in a new
+Heisenberg factor. For the second, pack a pair $(p,q)$ into $h(p,0,q)$;
+when $m$ is odd, append a zero to the last pair. Since $b=0$, the group law
+on each packed pair is addition. The maps are injective by inspection.
+If three image elements multiply to the image target, injectivity implies
+the same equality before applying the embedding. This proves preservation
+in both directions and preserves the tuple bijection.
+\end{proof}
+
+\begin{remark}[Centrality is not preserved by arbitrary packing]
+The packed element $h(p,0,q)$ need not be central in the larger Heisenberg
+factor. Therefore the smaller ambient dimension is not used when claiming
+that targets lie in $Z(\HH^d)$. The central-target version consistently uses
+$N+m$ factors. Confusing centrality in an embedded subgroup with centrality
+in the ambient group would give an incorrect strengthened statement.
+\end{remark}
+
+If one wants literal matrices rather than tuples of $3\times3$ blocks, take
+a block-diagonal matrix with these blocks. This embeds $\HH^d$ in
+$\operatorname{UT}_{3d}(\ZZ)$. It changes neither the number of phases nor
+the factorization relation.
+
+\section{Universality and the three-subgroup problem}
+\label{gts:tp:sec:universal}
+
+\subsection{The imported arithmetic theorem}
+We use classical MRDP in the following standard form. For every computably
+enumerable $S\subseteq\NN$, there exist $k\in\NN$ and an integer polynomial
+$P\in\ZZ[a,w_1,\ldots,w_k]$ such that
+\begin{equation}\label{gts:tp:eq:mrdp}
+ \forall n\in\NN:\qquad
+ n\in S\quad\Longleftrightarrow\quad
+ \exists w\in\NN^k\ P(n,w)=0.
+\end{equation}
+The number of variables and $P$ are fixed for $S$. This is the inherited
+arithmetic foundation, not a theorem newly proved here. A primary formal
+reference is the DPRM entry by Bayer, David, Stock, Pal, Matiyasevich and
+Schleicher~\cite{AFP}. The ProveIt repository has its own MRDP endpoint,
+with a finite polynomial and natural witnesses~\cite{ProveIt}.
+
+For the subgroup version, remove restrictions on arithmetic witness signs.
+Replace each $w_i$ by
+\[
+                    z_{i1}^2+z_{i2}^2+z_{i3}^2+z_{i4}^2.
+\]
+The classical four-square theorem shows that existence over the new integer
+variables is equivalent to existence of the original natural witnesses.
+This preliminary step is existence-preserving, but is not claimed to be
+fibre-preserving relative to $w$: a natural number can have several
+four-square representations. Fibre preservation begins with the resulting
+integer polynomial, and is exact from that point onward. The nonnegative
+submonoid construction in Section~\ref{gts:tp:sec:monoids} avoids this preliminary
+multiplicity change.
+
+\subsection{The fixed-instance argument}
+\begin{theorem}[Every enumerable set on a central line]\label{gts:tp:thm:everyset}
+For every computably enumerable $S\subseteq\NN$, there exist a fixed $d$,
+fixed free abelian subgroups $\calA,\calB,\calT\leq\HH^d$, and fixed central
+$g_0,g_1$ with $g_1$ of infinite order such that
+\begin{equation}\label{gts:tp:eq:universalslice}
+            n\in S\quad\Longleftrightarrow\quad
+            g_0g_1^n\in\calA\calB\calT
+            \qquad(n\in\NN).
+\end{equation}
+The three subgroups have pairwise trivial intersections.
+\end{theorem}
+\begin{proof}
+Choose $P$ as in \eqref{gts:tp:eq:mrdp}, and perform the four-square substitution
+to obtain an integer polynomial $Q(a,z)$. Choose an arithmetic circuit for
+$Q$. Its free wires are $a$ and the coordinates of $z$. Flatten the circuit
+as in Lemma~\ref{gts:tp:lem:circuit}, include the equation setting its final
+output to zero, and add the input equation $a=n$.
+
+Let $x$ be the tuple of all wire variables. Put the gate residuals, the
+output wire and the input wire into one fixed integral quadratic map
+$F:\ZZ^v\to\ZZ^m$, placing the input pinning equation last. The required
+right-hand side is
+\[
+                        t(n)=n e_m.
+\]
+The constant terms of $F$ already include all literal gate constants; they
+are not varying input data. Thus
+\[
+            \exists x\in\ZZ^v\ F(x)=n e_m
+              \quad\Longleftrightarrow\quad n\in S.
+\]
+Apply Theorem~\ref{gts:tp:thm:fibres}. Its three subgroups depend on $F$ only. Its
+target is $(1,n e_m-c)$, which is $g_0g_1^n$ for
+\[
+                    g_0=(1,-c),\qquad g_1=(1,e_m).
+\]
+Both are central, and $g_1$ has infinite order. Use the central embedding
+of Proposition~\ref{gts:tp:prop:embedding} into a pure power of $\HH$. Injectivity
+preserves ranks, pairwise intersections, and membership. This proves all
+claims with data fixed independently of $n$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{gts:tp:thm:main}]
+Take $S$ to be a fixed computably enumerable complete halting set. The
+map $n\mapsto g_0g_1^n$ is computable, so \eqref{gts:tp:eq:universalslice} gives
+many-one hardness. Enumerating all integer exponent tuples in the three
+finite bases enumerates $\calA\calB\calT$; each equality test is exact integer
+matrix arithmetic. Thus this fixed product is computably enumerable, and
+therefore computably enumerable complete. The central-line restriction is
+complete as well, since it is exactly $S$.
+\end{proof}
+
+\subsection{Why this is a resolution rather than an analogy}
+The published question asks whether a product of three finitely generated
+subgroups in a nilpotent group of class two always has decidable membership.
+Theorem~\ref{gts:tp:thm:main} supplies a counterexample inside the particularly
+concrete class $\HH^d$, with each subgroup free abelian. It therefore directly
+answers that question. It does not substitute a rational subset with
+arbitrarily many factors, a subgroup generated by the three phases, a
+variable-dimensional input family, or a semigroup word problem.
+
+The argument supplies an algorithm from any given quadratic system to its
+three generator lists. The attached code implements that algorithm. The
+existence of a suitable fixed universal starting system is supplied by
+MRDP, not by a numerical matrix table in this package. Consequently no
+specific optimized numerical value of $d$ is claimed for the universal
+instance.
+
+\wtag\ The question answered here concerns ordered products of three \emph{subgroups}. It is not the question left open by the repository's two-generator Heisenberg note~\cite{repo-heis}, whether \emph{submonoids} generated by three elements of a Heisenberg power can have undecidable membership; Theorem~\ref{gts:tp:thm:main} does not settle that question (Section~\ref{gts:sec:relation}).
+
+\section{A matching two-phase decidability theorem}
+\label{gts:tp:sec:two}
+
+The third phase is essential for this type of universality. We give a direct
+proof for commuting phases in $\HH^d\times\ZZ^e$; it also handles
+nonnegative and mixed exponent restrictions.
+
+\subsection{Integral logarithmic coordinates}
+Define
+\[
+                      \lambda(h(a,b,c))=2c-ab.
+\]
+Then direct expansion of \eqref{gts:tp:eq:Hmult} gives
+\begin{equation}\label{gts:tp:eq:loglaw}
+ \lambda(hh')=\lambda(h)+\lambda(h')+ab'-ba'.
+\end{equation}
+Two Heisenberg elements commute exactly when $ab'-ba'=0$. Moreover,
+\begin{equation}\label{gts:tp:eq:logpower}
+ a(h^r)=r a(h),\quad b(h^r)=r b(h),\quad
+ \lambda(h^r)=r\lambda(h)\qquad(r\in\ZZ).
+\end{equation}
+In a direct product all these formulas apply coordinatewise.
+
+For a phase generated by pairwise commuting $p_1,\ldots,p_k$, the triple
+$(a,b,\lambda)$ of $p_1^{r_1}\cdots p_k^{r_k}$ is therefore a linear function
+of the exponent vector. Generator independence is unnecessary for this
+observation. The extra abelian coordinates are linear as well.
+
+\begin{theorem}[Two commuting phases are decidable]\label{gts:tp:thm:two}
+Let $G=\HH^d\times\ZZ^e$. Given two finite lists of generators, with each list
+pairwise commuting, and a target $g\in G$, it is decidable whether
+\[
+               p_1^{r_1}\cdots p_k^{r_k}
+               q_1^{s_1}\cdots q_\ell^{s_\ell}=g
+\]
+for exponents in $\ZZ$, in $\NN$, or with any prescribed mixture of these
+two domains. This remains true when $d,e$ and the lists are part of the
+finite input.
+\end{theorem}
+\begin{proof}
+Write the two products as $u$ and $v$. For each Heisenberg coordinate, let
+$(a_g,b_g,\lambda_g)$ be the target coordinates. The horizontal conditions
+are
+\begin{equation}\label{gts:tp:eq:twohorizontal}
+                     a_u+a_v=a_g,\qquad b_u+b_v=b_g.
+\end{equation}
+Substituting $a_v=a_g-a_u$ and $b_v=b_g-b_u$ into
+\eqref{gts:tp:eq:loglaw}, the central condition becomes
+\begin{equation}\label{gts:tp:eq:twolinear}
+             \lambda_g=\lambda_u+\lambda_v+a_u b_g-b_u a_g.
+\end{equation}
+Each term on the right is linear in the phase exponents: $a_g,b_g$ are
+fixed target integers, not unknowns. The extra $e$ coordinates give further
+linear equations. Thus the original problem is equivalent to a finite
+integer linear system in the allowed exponent domains.
+
+Conversely, if these linear equations hold, \eqref{gts:tp:eq:twohorizontal} gives
+the correct horizontal coordinates of $uv$, and \eqref{gts:tp:eq:twolinear} gives
+the correct $\lambda$. Since $2c=\lambda+ab$, this gives equality of the
+central coordinates as well. There is no lost parity condition: both $u,v$
+and $g$ are already integral group elements.
+
+An integer linear system over $\ZZ$ is decidable by Smith normal form.
+With nonnegative restrictions it is an existential Presburger formula,
+hence decidable; unrestricted integer variables can be split into
+differences of nonnegative variables if desired. For completeness, this
+last decidability can also be obtained by finite automata reading binary
+digits with bounded carries for fixed linear coefficients. The finite
+state space records carries and verifies each linear equation; intersection
+handles the finitely many rows, and automaton emptiness handles the
+existential variables. These are decision procedures, not claims of a
+uniform polynomial running time for all domain choices.
+\end{proof}
+
+\begin{remark}[\wtag\ Credit, and what this theorem adds]\label{gts:tp:rem:credit}
+For integer exponents in both phases, Theorem~\ref{gts:tp:thm:two} is a special case of known results, which source~05 does not cite for it. K\"onig, Lohrey and Zetzsche observe that a product of two subgroups of a polycyclic group is closed in the profinite topology and therefore has decidable membership~\cite[Remark~6.7]{KLZ}; Roman'kov proves that the product of two subgroups membership problem is decidable in every finitely generated nilpotent group of class two~\cite{Romankov}. The group $\HH^d\times\ZZ^e$ is polycyclic and nilpotent of class at most two, and two pairwise commuting lists generate two abelian subgroups, so the integer case is covered by either result. What source~05 adds is: (i)~a direct and elementary decision procedure for commuting lists, through the integral logarithmic coordinate $\lambda$, which reduces membership to one explicit integer linear system without an appeal to profinite closure; and (ii)~natural and mixed exponent domains, that is, ordered products of two finitely generated commutative submonoids, or of such a submonoid and an abelian subgroup. These are not products of subgroups, so neither cited result applies to them as stated. For natural exponents the question is a restricted instance of the knapsack problem, which is decidable in $\HH$ but undecidable in sufficiently large direct powers of $\HH$~\cite{KLZ}. No literature on products of submonoids beyond~\cite{KLZ,Romankov} was searched, so no priority is claimed for~(ii). The coordinate $\lambda$ is also the device of the repository's two-generator Heisenberg note~\cite{repo-heis}, whose commuting case is the case of~(ii) with one generator in each phase (Section~\ref{gts:sec:relation}).
+\end{remark}
+
+\subsection{The phase threshold}
+For this family of groups, one commuting phase gives only a linear
+membership problem. Two commuting phases still linearize because the target
+fixes the sum of their horizontal coordinates. A third phase creates a
+closed horizontal triangle whose central coordinate is a quadratic
+function of its size. The central direct-factor generators let different
+such quadratic values be combined without introducing another phase.
+
+Together, Theorems~\ref{gts:tp:thm:main} and \ref{gts:tp:thm:two} give the sharp statement:
+\emph{two commutative phases always have decidable membership, whereas three
+fixed commutative phases can have computably enumerable complete
+membership}. The direct proof above is specifically for commuting phases;
+we do not silently apply it to internally nonabelian subgroup lists.
+
+\wtag\ For integer exponents the decidable half of this sharp statement is not new (Remark~\ref{gts:tp:rem:credit}). What source~05 adds to the comparison is the undecidable half, Theorem~\ref{gts:tp:thm:main}, and the decidable half for natural and mixed exponent domains.
+
+\section{Nonnegative exponents and a computational interpretation}
+\label{gts:tp:sec:monoids}
+
+\subsection{Free commutative monoids}
+Restrict the three maps to nonnegative parameters:
+\begin{align*}
+ \calA_+&=\{A(x,u):x\in\NN^n,u\in\NN^N\},\\
+ \calB_+&=\{B(y):y\in\NN^n\},\\
+ \calT_+&=\{T(r):r\in\NN^N\}.
+\end{align*}
+These are monoids generated by the same finite lists
+\eqref{gts:tp:eq:bases}, using only nonnegative powers. Injectivity makes them free
+commutative monoids. Matrix entries may be negative; it is the exponents
+that are nonnegative.
+
+\begin{theorem}[Natural fibre equivalence]\label{gts:tp:thm:natural}
+For every $t\in\ZZ^m$, restriction of \eqref{gts:tp:eq:fibermap} gives a bijection
+\[
+ \{x\in\NN^n:F(x)=t\}
+ \longleftrightarrow
+ \{(a,b,t_0)\in\calA_+\times\calB_+\times\calT_+:ab t_0=g(t)\}.
+\]
+\end{theorem}
+\begin{proof}
+If $x\in\NN^n$, then $Lx\in\NN^N$, and $\bn(Lx)\in\NN^N$. Hence the
+canonical tuple lies in the three monoids. Conversely every factorization
+in the monoids has nonnegative parameters. The coordinate recovery in
+Theorem~\ref{gts:tp:thm:fibres} applies without change and recovers a natural $x$.
+\end{proof}
+
+\begin{corollary}[Three fixed free commutative monoids]\label{gts:tp:cor:monoid}
+There are a fixed $d$ and three fixed free commutative submonoids of $\HH^d$
+whose ordered product has computably enumerable complete membership, even
+on a fixed central affine cyclic line.
+\end{corollary}
+\begin{proof}
+Use the natural-witness polynomial in \eqref{gts:tp:eq:mrdp} directly. Split it into
+two nonnegative-coefficient polynomials, flatten their natural arithmetic
+circuits, equate the outputs, and pin the input to $n$. Apply
+Theorem~\ref{gts:tp:thm:natural} and the central embedding. Completeness and
+computable enumeration follow as in Theorem~\ref{gts:tp:thm:main}.
+\end{proof}
+
+\subsection{Three-stage matrix reachability}
+One can view the monoid result as a matrix-register substrate with three
+control states. The first state permits the generators of $\calA_+$, in any
+order and any nonnegative number. A switch moves to the second phase, which
+permits the generators of $\calB_+$. A second switch moves to the last phase,
+which permits the generators of $\calT_+$. Acceptance is exact equality of
+the final register with the supplied target. Repetition inside a phase is
+just addition of its exponent counters.
+
+For a fixed set of such operations, this target-reachability problem can
+represent every halting input of a fixed universal machine. It uses only
+unitriangular integer matrices, a fixed block dimension, and two phase
+switches. It does not require a machine that interprets an arbitrary input
+program by dynamically selecting new matrix generators.
+
+This is a reduction-theoretic form of computational universality. There is
+no claim that successful exponents are efficiently obtainable from a
+halting time, that failures have bounded certificates, or that replacing
+exact equality by an error tolerance preserves the theorem. Ordinary
+bounded search remains possible, but no computable uniform sufficient
+bound exists for the universal instance; see Section~\ref{gts:tp:sec:height}.
+
+\section{Worked examples}
+\label{gts:tp:sec:examples}
+
+\subsection{A single multiplication gate}
+Take the quadratic equation $xy-z=t$, with variable vector
+$v=(x,y,z)$. A shared normal form is
+\begin{align*}
+ Lv&=(x,y,z,x+y),\\
+ C&=\begin{pmatrix}-1&-1&0&1\end{pmatrix},\\
+ D&=\begin{pmatrix}0&0&-1\end{pmatrix},\qquad c=0.
+\end{align*}
+Thus $N=4$ and the ambient group is $\HH^4\times\ZZ$. The ranks are
+$7,3,4$. The first phase is
+\[
+ A(v,u)=\left(h(x,0,-u_1),h(y,0,-u_2),h(z,0,-u_3),
+ h(x+y,0,-u_4);\ -z-u_1-u_2+u_4\right).
+\]
+The other phases are $B(v)$ with horizontal $b$-coordinates
+$(x,y,z,x+y)$, and $T(r)$ as defined above.
+
+For $v=(2,3,6)$, the canonical data are
+\[
+                 r=(2,3,6,5),\qquad u=(1,3,15,10).
+\]
+The abelian coordinate is $-6-1-3+10=0$, and every Heisenberg coordinate
+vanishes after the three phases. Therefore the canonical triple multiplies
+to the identity. For $v=(2,3,5)$ it instead multiplies to target $t=1$.
+The variable $u_3$ has coefficient zero in the abelian coordinate, but is
+not a free slack: the third Heisenberg block still forces
+$u_3=\bn(z)$ exactly.
+
+The attached \texttt{examples/multiplication.json} lists all fourteen
+basis matrices by their exact coordinates. The file can be regenerated
+from the smaller \path{multiplication_input.json}. (\wtag\ Shipped as \path{data/05-three-phases-multiplication.json} and \path{data/05-three-phases-multiplication_input.json}.)
+
+\subsection{A circuit with repeated input use}
+Consider a circuit with free wires $a,b$ and gates
+\[
+                 w_2=ab,\qquad w_3=a^2,\qquad w_4=w_2+w_3.
+\]
+The quadratic vector map, including two pinned wires, is
+\[
+ F(a,b,w_2,w_3,w_4)
+   =(w_2-ab,\ w_3-a^2,\ w_4-w_2-w_3,\ a,\ w_4).
+\]
+For prescribed input $a_0$ and output $v_0$, set the target to
+$(0,0,0,a_0,v_0)$. The three-phase factorization fibre is exactly the set of
+integer $b$ satisfying $a_0b+a_0^2=v_0$, with all gate values and auxiliary
+phase coordinates uniquely determined. This illustrates the separation
+between fixed program coefficients and varying pinned input/output values.
+
+For this circuit $n=5$, only the pair $\{a,b\}$ contributes a mixed form,
+so $N=6$, $m=5$ and the phase ranks are $11,5,6$. The central-target
+embedding uses eleven Heisenberg blocks; the more compact embedding uses
+nine, without an ambient centrality guarantee. The software supplies both
+the quadratic specification and the resulting generator coordinates.
+
+\subsection{Constants and impossible fibres}
+Constants need no new matrix interaction. For instance $F(x)=3$ has
+$C=D=0$, $c=3$. The target is $(1,t-3)$. All canonical triples have abelian
+coordinate zero, so the target is attainable exactly when $t=3$. When it
+is attainable, every integer $x$ is a distinct arithmetic witness and a
+distinct factorization. This simple case illustrates why the theorem
+preserves fibres, rather than always manufacturing a unique factorization.
+
+\section{An explicit quartic Diophantine reverse compiler}
+\label{gts:tp:sec:quartic}
+
+A representation should expose its arithmetic certificates in both
+directions. The matrix compiler has a particularly simple reverse map.
+For $a=Lx$ and $b=Ly$ define the integral polynomial
+\begin{align}
+ E_t(x,u,y,r)
+ ={}&\sum_{s=1}^N\Big[(a_s-r_s)^2+(b_s-r_s)^2\notag\\
+ &\hspace{3.2em}
+ +\big(2u_s-2a_s(b_s-r_s)-r_s(r_s-1)\big)^2\Big]\notag\\
+ &+\sum_{j=1}^m\big((Dx+Cu)_j-(t_j-c_j)\big)^2.
+ \label{gts:tp:eq:quartic}
+\end{align}
+Every expression being squared has degree at most two. Thus $E_t$ has
+integer coefficients and total degree at most four, including when $t$
+is regarded as an input variable rather than a fixed value.
+
+\begin{theorem}[Quartic exactness]\label{gts:tp:thm:quartic}
+For integer parameters, and also after restricting every parameter to be
+natural,
+\[
+ E_t(x,u,y,r)=0
+ \quad\Longleftrightarrow\quad
+ A(x,u)B(y)T(r)=g(t).
+\]
+The zero set projects bijectively to $\{x:F(x)=t\}$ in the corresponding
+domain. It uses precisely $2n+2N$ parameter coordinates and no further
+auxiliary variables.
+\end{theorem}
+\begin{proof}
+Let the coordinates of the product in \eqref{gts:tp:eq:master} be $(\alpha_s,
+\beta_s,\gamma_s)$ and $v\in\ZZ^m$. Equation~\eqref{gts:tp:eq:quartic} is the
+literal identity
+\begin{equation}\label{gts:tp:eq:offzero}
+ E_t=\sum_s(\alpha_s^2+\beta_s^2+4\gamma_s^2)
+                     +\sum_j(v_j-(t_j-c_j))^2.
+\end{equation}
+Indeed the quadratic central residual in \eqref{gts:tp:eq:quartic} is
+$-2\gamma_s$. A sum of nonnegative integer squares is zero exactly when
+every summand is zero. This gives the group equality. The fibre statement
+then follows from Theorems~\ref{gts:tp:thm:fibres} and \ref{gts:tp:thm:natural}.
+\end{proof}
+
+For the fixed universal instance, replace $t$ by $ne_m$ to obtain one fixed
+quartic polynomial in the ordinary input $n$ and a fixed finite set of
+witness variables. This is not the assertion that one can encode all
+unbounded computations by a variable-free or time-bounded quartic. The
+fixed witness number comes from starting with one fixed MRDP polynomial
+and one fixed arithmetic circuit.
+
+The construction does not improve the classical universal degree-four
+boundary. Its contribution is the explicit inverse interpretation, the
+three-phase structural restriction, and the absence of additional witness
+multiplicity after the chosen quadratic system.
+
+\section{Counting, weighted fibres, and height}
+\label{gts:tp:sec:height}
+
+\subsection{Exact counting and the finite-fold boundary}
+By Theorem~\ref{gts:tp:thm:fibres}, for any target $t$,
+\[
+                     |F^{-1}(t)|=|\Fact_t|,
+\]
+including infinite cardinality. Each subgroup map is injective, so counting
+ordered triples of subgroup elements is identical to counting the three
+basis-exponent vectors. It is not identical to counting unrestricted words:
+commuting generators can be permuted, and group words can insert cancelling
+pairs without changing their elements.
+
+If a chosen Diophantine representation has at most $k$ witnesses for each
+input, the corresponding factorizations have at most $k$ triples after a
+unique circuit extension and this compiler. If a chosen representation is
+single-fold, its compiled fibres are singletons on positive instances.
+These are conditional transfers. Ordinary MRDP does not supply the
+finite-fold hypothesis. The four-square substitution can also increase
+multiplicity, which is why the strongest counting statement begins after
+that substitution, or uses the natural monoid version directly.
+
+\subsection{Weights in the natural domain}
+For a canonical natural factorization, its basis-exponent length is
+\begin{align}
+ \ell(x)&=\|x\|_1+\|\bn(Lx)\|_1+\|x\|_1+\|Lx\|_1\notag\\
+        &=2\sum_{i=1}^n x_i
+          +\sum_{s=1}^N\frac{(Lx)_s((Lx)_s+1)}2.
+ \label{gts:tp:eq:length}
+\end{align}
+Thus the ordinary count by total phase length is represented by
+\begin{equation}\label{gts:tp:eq:series}
+            Z_t(q)=\sum_{\substack{x\in\NN^n\\F(x)=t}}q^{\ell(x)}.
+\end{equation}
+This is a well-defined formal power series: since $\ell(x)\geq2\sum_i x_i$,
+only finitely many vectors contribute to any fixed coefficient. There is no
+assumption of analytic convergence here. The multivariate series weighted
+only by the recovered source vector is exactly
+\[
+       \sum_{(a,b,t_0)\in\Fact_t^+}z^{\mathrm{source}(a,b,t_0)}
+           =\sum_{\substack{x\in\NN^n\\F(x)=t}}z^x.
+\]
+Every exponent vector has coefficient zero or one in the latter series.
+
+For a fixed universal monoid instance, the coefficient of a specified
+power of $q$ is computable by bounded enumeration. Nevertheless, testing
+whether the entire series is identically zero as its target varies is
+undecidable. This follows directly from Corollary~\ref{gts:tp:cor:monoid}; it does
+not require a claim about transcendence or asymptotics of the series.
+
+\subsection{Explicit witness heights}
+For an integer vector $v$, write $\htn(v)=\|v\|_\infty$. If $\htn(x)\leq H$
+with integer $H\geq1$, then
+\[
+ \htn(y)\leq H,\qquad \htn(r)\leq2H,\qquad
+ \htn(u)\leq2H^2+H
+\]
+for its canonical factorization. The last bound follows because for
+$-2H\leq t\leq2H$, the maximum of $t(t-1)/2$ is $2H^2+H$, attained at
+$t=-2H$. Therefore
+\begin{equation}\label{gts:tp:eq:height}
+ \htn(x)\leq\htn(x,u,y,r)\leq2H^2+H.
+\end{equation}
+The compiler itself has only quadratic height overhead relative to the
+chosen arithmetic witness. In the natural domain, the sharper bound
+$\htn(u)\leq2H^2-H$ holds.
+
+The coordinates of the individual group elements have comparable explicit
+bounds once $C,D$ are fixed. For example, the abelian coordinate of $A$ has
+absolute value at most
+\[
+    H\max_j\sum_i|D_{ji}|+(2H^2+H)\max_j\sum_s|C_{js}|.
+\]
+Such estimates are not bounds in the external input alone: an arithmetic
+witness may be vastly larger than the input.
+
+\begin{proposition}[No computable universal search bound]\label{gts:tp:prop:nobound}
+For the fixed complete instance of Theorem~\ref{gts:tp:thm:main}, there is no total
+computable function $b:\NN\to\NN$ such that every attainable target
+$g_0g_1^n$ has a phase factorization with all basis exponents of absolute
+value at most $b(n)$. The analogous assertion holds for the natural monoid
+instance.
+\end{proposition}
+\begin{proof}
+Such a function would give a decision procedure: compute $b(n)$, enumerate
+all exponent tuples in its finite box, and test their exact products. The
+promised bound guarantees acceptance of every attainable target, and the
+finite search rejects every unattainable target. This decides a
+computably enumerable complete set, a contradiction.
+\end{proof}
+
+One may form a Busy-Beaver-type envelope of minimum successful factorization
+heights up to input $n$. It has no total computable majorant. No eventual
+domination claim is needed: the absence of any computable majorant is the
+precise statement established by the proof.
+
+\section{A small product invisible to every finite quotient}
+\label{gts:tp:sec:profinite}
+
+The universal construction is large when based on a universal polynomial.
+A different application gives a very small explicit example with a
+local--global failure.
+
+\subsection{Four generators in \texorpdfstring{$\HH\times\ZZ$}{H x Z}}
+Let $G=\HH\times\ZZ$ and define
+\begin{align}
+ A(x,u)&=(h(x,0,-u),\ x+12u),\label{gts:tp:eq:localA}\\
+ B(y)&=(h(0,y,0),\ 0),\label{gts:tp:eq:localB}\\
+ T(r)&=(h(-r,-r,\bn(r)),\ 0).\label{gts:tp:eq:localT}
+\end{align}
+These give free abelian subgroups of ranks $2,1,1$, generated respectively
+by
+\[
+ \calA=\langle (h(1,0,0),1),(h(0,0,-1),12)\rangle,\quad
+ \calB=\langle(h(0,1,0),0)\rangle,\quad
+ \calT=\langle(h(-1,-1,0),0)\rangle.
+\]
+The pairwise intersections are trivial. These are the compiler data for
+\[
+        L=(1),\quad C=(12),\quad D=(1),\quad c=0,
+        \qquad F(x)=12\bn(x)+x=6x^2-5x.
+\]
+Take $g=(h(0,0,0),-1)$.
+
+\begin{theorem}[Explicit nonclosed three-subgroup product]\label{gts:tp:thm:nonclosed}
+The element $g$ is not in $\calA\calB\calT$, but its image belongs to the
+image of $\calA\calB\calT$ in every finite quotient of $G$. Consequently
+$\calA\calB\calT$ is not closed in the profinite topology.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{gts:tp:thm:fibres}, a factorization of $g$ would require
+\[
+                6x^2-5x=-1,
+\]
+or equivalently
+\begin{equation}\label{gts:tp:eq:localpoly}
+                    (2x-1)(3x-1)=0.
+\end{equation}
+In the integral domain $\ZZ$, this would force $x=1/2$ or $x=1/3$, neither
+of which is an integer. Thus no factorization exists.
+
+Next fix any integer modulus $M\geq1$ and write $M=2^a b$ with $b$ odd.
+Choose an integer $x$ satisfying
+\[
+ x\equiv3^{-1}\pmod{2^a},\qquad x\equiv2^{-1}\pmod b,
+\]
+where a condition modulo one is omitted. Both inverses exist. The Chinese
+remainder theorem gives such an $x$, because $2^a$ and $b$ are coprime.
+The first factor of \eqref{gts:tp:eq:localpoly} vanishes modulo $b$, while the
+second vanishes modulo $2^a$. Their product is therefore zero modulo $M$.
+Thus $F(x)\equiv-1\pmod M$.
+
+The canonical triple $A(x,\bn(x))B(x)T(x)$ is exactly
+$(h(0,0,0),F(x))$. It is congruent to $g$ modulo $M$ in every coordinate.
+This proves the required inclusion for the coordinate reduction quotient
+$G\to\operatorname{UT}_3(\ZZ/M\ZZ)\times\ZZ/M\ZZ$.
+
+Finally let $\varphi:G\to Q$ be any homomorphism to a finite group. Choose
+$M$ divisible by the orders of all elements of $\varphi(G)$, for example
+$M=|\varphi(G)|$. Let
+\[
+       p=h(1,0,0),\quad q=h(0,1,0),\quad z=h(0,0,1).
+\]
+The identity
+\[
+                      h(a,b,c)=p^a q^b z^{c-ab}
+\]
+shows that an element with all Heisenberg coordinates and its extra integer
+coordinate divisible by $M$ lies in $\ker\varphi$. Hence the kernel of
+coordinate reduction modulo $M$ is contained in $\ker\varphi$. The
+canonical triple constructed for this $M$ has the same image as $g$ under
+$\varphi$, proving the assertion for every finite quotient.
+\end{proof}
+
+\subsection{Interpretation and limits}
+The obstruction is elementary: the rational roots $1/2$ and $1/3$ can be
+chosen differently at different primes, although neither is an integer.
+The CRT construction patches these local choices for every finite modulus.
+The matrix compiler turns this arithmetic failure into an exact failure of
+profinite separability for a product of three subgroups.
+
+This small example is not claimed to be universal. The known decidability
+of knapsack in $\HH\times\ZZ^e$ is consistent with it~\cite{KLZ}: a decision
+procedure need not decide nonmembership by finding a separating finite
+quotient. Embedding the extra integer centrally in another Heisenberg block
+gives the same explicit nonclosed product in $\HH^2$.
+
+\section{Quantitative accounting and reproducible computation}
+\label{gts:tp:sec:implementation}
+
+\subsection{Structural ledger}
+For a quadratic system with $n$ variables, $m$ equations and $q$ distinct
+mixed-variable pairs, the construction has the following exact ledger.
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Value\\
+\midrule
+Binomial coordinates $N$ & $n+q$\\
+Ambient group before packing & $\HH^N\times\ZZ^m$\\
+Central-target pure Heisenberg power & $\HH^{N+m}$\\
+Compact pure Heisenberg power & $\HH^{N+\lceil m/2\rceil}$\\
+First phase rank & $n+N$\\
+Second phase rank & $n$\\
+Third phase rank & $N$\\
+Total basis exponents & $2n+2N$\\
+Degree of reverse SOS polynomial & at most $4$\\
+New freely varying witness coordinates over each $x$ & $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last row means that the auxiliary values are forced, not that their
+coordinate slots disappear from the polynomial.
+
+For a circuit whose multiplication gates supply $q$ distinct off-diagonal
+input pairs, the same formula applies after including all wire variables.
+Gate-output variables are uniquely determined but still count toward $n$.
+Literal constants affect coefficients and target offsets, not the phase
+count. The dimension bound is not asserted to be optimal.
+
+\subsection{What the software implements}
+The standard-library Python module
+\texttt{code/heisenberg\_compiler.py} implements exact Heisenberg group
+arithmetic, the integral binomial normal form, all three phase maps,
+canonical factorizations, the quartic residual, generator bases, JSON
+serialization, and circuit flattening. It accepts signed coefficients and
+negative exponents. Its public JSON loader rejects floating-point values,
+Boolean values masquerading as integers, malformed dimensions, repeated
+cross pairs, and invalid pair indices.
+
+A compact specification describes each quadratic row by a constant,
+linear coefficients, diagonal square coefficients, and a sparse list of
+cross coefficients. Given a specification, the program emits all generator
+coordinates. For example:
+\begin{lstlisting}
+python code/heisenberg_compiler.py \
+  examples/multiplication_input.json multiplication_regenerated.json
+python code/verify.py
+\end{lstlisting}
+The verification program also regenerates the included example files.
+
+\wtag\ In this report the programs are shipped as \path{code/05-three-phases-heisenberg_compiler.py} and \path{code/05-three-phases-verify.py}, and the six examples and \path{verification_receipt.json} as \path{data/05-three-phases-*}. The verification program imports the compiler by its delivered name and rewrites the receipt and all six example files in place, relative to its own directory's parent; it must therefore be run on a copy with the delivered layout (see the README). It was so run at the write, under Python~3.14.4: it passed with 190,826 assertions, and all seven regenerated files equal the shipped ones apart from line endings.
+There is no floating-point computation, numerical tolerance, online query,
+or external proof-assistant dependency.
+
+\subsection{The verification receipt}
+The supplied deterministic run uses random seed $20261002$ and records
+\textbf{190,826 successful exact-integer assertions}. The main test families
+include independent $3\times3$ matrix multiplication and signed powers,
+80 randomly generated quadratic systems with up to five variables and
+four equations, generator commutation, homomorphism identities, canonical
+factorizations, and the off-zero quartic identity \eqref{gts:tp:eq:offzero}.
+
+The tests also enumerate all $15^4=50{,}625$ assignments of $(x,u,y,r)$ in
+$[-7,7]^4$ for a one-variable system. Every assignment is checked both
+against the exact fibre converse and against the quartic equivalence;
+these are not tests restricted to canonical solutions. Perturbation tests
+change one purported binomial witness or one synchronized copy and verify
+rejection. Additional tests check circuit flattening, natural-domain
+closure and weights, two-phase linearization, and the finite-quotient
+example for every modulus $1\leq M\leq2000$.
+
+For the nonclosed product, the unbounded nonexistence proof is
+\eqref{gts:tp:eq:localpoly} in the integral domain $\ZZ$, not the finite check on
+$[-5000,5000]$. Likewise, finite tests cannot prove undecidability or
+universality. Their purpose is to expose sign, indexing, domain and
+implementation errors in a construction whose proof is given above.
+
+\subsection{Repository integration and trust boundary}
+The relevant ProveIt source interface is the MRDP development under
+\path{Computability/HilbertTenthProblem/Lean/Diophantine/}.
+The inspected core file describes its finite-polynomial, natural-witness
+endpoint and its arithmetization route~\cite{ProveIt}. The repository was
+changing during the audit. A confirmed commit reference used for the
+source read is
+\begin{center}\small\texttt{433df1be37188224dd00d0561bfb157949cd6320}.\end{center}
+No full repository build was performed.
+
+\wtag\ The repository relationship in this section names only the MRDP core. Section~\ref{gts:sec:relation} adds the related repository material: Part~VI of the report~\cite{pqc} (Mihailova's compiler into rotation-group membership), the research note on group commutators~\cite{repo-comm} (universal subgroup membership in $\SL(4,\ZZ)$) and the note on two-generator Heisenberg submonoids~\cite{repo-heis} (the same coordinate $\lambda=2c-ab$, decidability for two generators, and an open question for three generators that this Part does not answer). \path{Diophantine/Common/MRDPCore.lean} is unchanged from the pin to this report's write. The project's formal endpoint is the theorem \texttt{Diophantine.mrdp} with its variants \texttt{Diophantine.mrdp\_iff} and \texttt{Diophantine.mrdp\_dioph\_iff} in \path{Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean}; none of this Part's statements is formalized.
+
+A clean integration would add a separate module for Heisenberg coordinates,
+a module for the three subgroup homomorphisms, and a theorem consuming an
+arbitrary quadratic representation. The final MRDP corollary would import
+the existing endpoint. Such a development would not need to reprove the
+repository's optimized native-stream, Pell, or arithmetic-operation
+constructions. It would also not inherit their numerical claims.
+
+The attached code is an executable compiler and test suite, not a Lean
+formalization. The theorem statements in this article should not be marked
+as kernel-checked until the missing formalization is actually written and
+built.
+
+\section{Further research questions}
+\label{gts:tp:sec:future}
+
+\subsection{Minimize the ambient group}\label{gts:tp:q:ambient}
+Determine the least $d$ for which some fixed product of three free abelian
+subgroups of $\HH^d$ has undecidable membership. Our proof gives a
+constructive finite upper bound from a supplied universal quadratic system,
+but does not optimize it. The distinction between retaining central
+targets and using the compact packing is relevant. A first concrete task is
+to expand one well-audited universal polynomial, count its distinct mixed
+pairs, and emit a literal universal matrix table.
+
+\subsection{Optimize the binomial form}\label{gts:tp:q:binomial}
+Our family uses coordinate forms and pair sums. More general integral forms
+could reduce $N$, but one must retain injectivity for fibre recovery. In the
+monoid setting, their coefficients should also preserve nonnegativity, or
+an alternative domain encoding must be proved. The optimization problem is
+a simultaneous integral decomposition of several quadratic forms with
+explicit injectivity and positivity constraints, not merely diagonalizing
+one form over the rationals.
+
+\subsection{Classify decidable triples}\label{gts:tp:q:classify}
+Not every triple generated by the compiler is universal. Identify useful
+conditions on $C,D,L$ under which its quadratic fibres are decidable or have
+semilinear descriptions. Rank restrictions, common definiteness,
+disjoint interaction graphs and bounded numbers of nonlinear equations are
+natural candidates. Any claimed classification should include both
+integer and natural domains and distinguish target-dependent from fixed
+coefficient questions.
+
+\subsection{Machine-check the exact fibre theorem}\label{gts:tp:q:formal}
+The first formal milestone should be Theorem~\ref{gts:tp:thm:fibres}, independently
+of MRDP. A proof assistant must check integer binomial identities for
+negative arguments, injective homomorphisms, the ordered product formula,
+and both directions of the solution bijection. Only then should one add
+circuit flattening and the fixed universal specialization. The profinite
+example provides a smaller end-to-end target including a universal
+statement about finite quotients.
+
+\subsection{Transfer counting without hidden multiplicity}\label{gts:tp:q:counting}
+Investigate which existing repository certificate compilers can be passed
+through this construction with their exact fibres intact. Some have unique
+bounded-history witnesses; others merely have surjective projections.
+Their distinction persists here. A worthwhile result would identify a
+large class of natural certificates with computable weighted generating
+functions, while preserving the boundary between computable coefficients
+and undecidable global nonemptiness.
+
+\subsection{Profinite closure of three-phase products}\label{gts:tp:q:profinite}
+Theorem~\ref{gts:tp:thm:nonclosed} proves nonclosure already in $\HH\times\ZZ$.
+Classify the triples of ranks $(2,1,1)$ for which closure does hold. More
+generally, determine how local solvability of the associated quadratic map
+controls profinite closure of its central slice. Closure of the entire
+product is a stronger question than closure of one chosen slice and should
+not be conflated with it.
+
+\subsection{Other nilpotent substrates and higher degree}\label{gts:tp:q:nilpotent}
+The arithmetic is carried by a class-two central commutator and an integral
+quadratic refinement. It is natural to seek an abstract criterion on a
+class-two lattice that supports the same three-phase compiler. Higher
+unitriangular groups have higher binomial terms in powers; can they give
+fibre-preserving compilers for higher-degree systems with lower dimension,
+or improve rank bounds without increasing the number of phases?
+
+\subsection{Quantitative hardness under restrictions}\label{gts:tp:q:hardness}
+For externally bounded exponents, the problem becomes finite. Determine
+precise complexity under binary versus unary bounds, coefficient bounds,
+and fixed versus variable generator lists. Fibre preservation makes exact
+counting reductions plausible, but a separate reduction and size analysis
+are required before asserting a counting-complexity classification.
+Similarly, study whether useful instance-specific witness bounds can be
+certified without contradicting Proposition~\ref{gts:tp:prop:nobound}.
+
+\subsection{Stable versus exact acceptance}\label{gts:tp:q:stable}
+The present result is exact and arithmetical. Replacing matrix equality by a
+congruence makes every fixed quotient finite; replacing it by an analytic
+tolerance changes the problem in a different way. Characterize which
+acceptance modifications preserve a useful part of the arithmetic
+information. The nonclosed product shows that all finite congruence tests
+together can still miss an obstruction, so modular approximation alone
+cannot be treated as a complete decision procedure.
+
+\section{Conclusion}
+
+The three-phase construction converts a quadratic system into a product of
+three free abelian subgroups without changing its solution fibre. The
+critical mechanism is visible in one Heisenberg coordinate: two phases
+store matching horizontal values, a third cancels both, and its binomial
+power term forces a unique quadratic witness. Central auxiliary generators
+then enforce arbitrary linear combinations of these values without a
+fourth phase.
+
+Classical MRDP makes one fixed instance universal and yields a negative
+answer to the stated three-subgroup decidability question. Two commuting
+phases, in contrast, reduce to integer linear equations. The same compiler
+also supplies free commutative monoid versions, explicit quartic
+certificates, exact counting and weight transfers, and a small profinite
+nonclosure example.
+
+The proof is concrete enough to audit line by line and the generator
+compiler is executable. The remaining validation tasks are independent
+mathematical review, formal verification, and a more exhaustive priority
+check. These tasks concern confidence and attribution; the main
+construction itself is given explicitly in the manuscript rather than
+left as an unproved reduction lemma.
+
 \appendix
-\section{Scalar templates and an independent specification}\label{app:scalar}
+\section{Part I: Scalar templates and an independent specification}\label{gts:vk:app:scalar}
 
 All matrix residuals in the report can be expanded without any matrix library. For
 $X=\smallmat{x_{11}}{x_{12}}{x_{21}}{x_{22}}$ and
 $Y=\smallmat{y_{11}}{y_{12}}{y_{21}}{y_{22}}$,
-\begin{equation}\label{eq:scalar-product}
+\begin{equation}\label{gts:vk:eq:scalar-product}
  XY=\begin{pmatrix}
  x_{11}y_{11}+x_{12}y_{21}&x_{11}y_{12}+x_{12}y_{22}\\
  x_{21}y_{11}+x_{22}y_{21}&x_{21}y_{12}+x_{22}y_{22}
@@ -1065,7 +2443,7 @@ Together with $x+t+4xt-yz$, these are the complete local scalar specification. T
 \]
 These templates show that no hidden division, exponentiation of a variable, or nonpolynomial matrix inverse appears in the final compiler.
 
-\section{A compact theorem-dependency map}\label{app:dependencies}
+\section{Part I: A compact theorem-dependency map}\label{gts:vk:app:dependencies}
 
 \begin{center}
 \begin{tabular}{L{0.29\textwidth}L{0.57\textwidth}}
@@ -1087,7 +2465,7 @@ Separate fixed-arity existence & An enumerable-predicate adapter and MRDP\\
 \end{tabular}
 \end{center}
 
-\section{Source and novelty audit}\label{app:audit}
+\section{Part I: Source and novelty audit}\label{gts:vk:app:audit}
 
 The repository review was restricted to the relevant Hilbert-tenth material and the identified comparison note, rather than a complete certification of every result in ProveIt. The snapshot used in the citations is \sha. The source list records the public MRDP documentation and the group-projective controller-lane note that was inspected. The formal builds reported by the repository were not rerun as part of this work.
 
@@ -1095,9 +2473,135 @@ Sanov's free subgroup and arithmetic image are classical. The bounded-conjugator
 
 The literature check supports the dependency attributions, but does not establish priority for the compiler formulas or compression theorem. These are proved constructions whose historical novelty still requires specialist review.
 
+\section{Part II: A compact independent proof capsule}
+\label{gts:tp:app:capsule}
+
+This appendix collects the essential identities in a form suitable for a
+separate review. Let $L:\ZZ^n\to\ZZ^N$ be injective, and let
+\[
+                      F(x)=C\bn(Lx)+Dx+c.
+\]
+The three maps in $\HH^N\times\ZZ^m$ are
+\begin{align*}
+ A(x,u)&=((Lx,0,-u),Dx+Cu),\\
+ B(y)&=((0,Ly,0),0),\\
+ T(r)&=((-r,-r,\bn(r)),0),
+\end{align*}
+where the triples denote componentwise Heisenberg coordinates. The first
+two maps are homomorphisms because their within-phase cross terms vanish.
+The third is a homomorphism because
+$\bn(r+r')=\bn(r)+\bn(r')+r\odot r'$. All are injective. Direct
+multiplication gives
+\[
+ A(x,u)B(y)T(r)
+   =\big((Lx-r,Ly-r,-u+(Lx)\odot(Ly-r)+\bn(r)),Dx+Cu\big).
+\]
+Equality to $(0,0,0,t-c)$ forces, in order,
+\[
+                  r=Lx=Ly,\qquad y=x,\qquad u=\bn(Lx),
+                  \qquad F(x)=t.
+\]
+Conversely these choices give equality. Every integer quadratic map has
+such a normal form because
+\[
+    x_i^2=2\bn(x_i)+x_i,\qquad
+    x_ix_j=\bn(x_i+x_j)-\bn(x_i)-\bn(x_j),
+\]
+and adding the coordinate forms makes $L$ injective. General polynomial
+systems flatten into quadratic ones with unique gate outputs. A fixed
+MRDP polynomial therefore gives a fixed triple of subgroups, with the
+external input entering only the target. This is the entire dependency
+chain for the main undecidability theorem.
+
+\section{Part II: Domain and claim audit}
+\label{gts:tp:app:audit}
+
+\begin{longtable}{@{}p{.29\textwidth}p{.65\textwidth}@{}}
+\toprule
+Potential ambiguity & Resolution in this manuscript\\
+\midrule
+\endhead
+Negative powers & $\bn(r)=r(r-1)/2$ is defined on all integers; the power and
+homomorphism identities are proved there.\\[.5em]
+Natural exponents & The chosen $L$ has nonnegative entries, so the canonical
+$r$ and $u$ are natural. Negative matrix entries are permitted.\\[.5em]
+Generator dependence & All three displayed maps are injective; their images
+have the stated free ranks.\\[.5em]
+Spurious witnesses & Horizontal coordinates first force $r=Lx=Ly$; central
+coordinates then force $u=\bn(Lx)$.\\[.5em]
+Input-dependent subgroups & The input is a pinned wire on the right-hand
+side. The quadratic map and generator lists are fixed.\\[.5em]
+Pure Heisenberg group & A central embedding into $\HH^{N+m}$ is explicit.
+The smaller packing is not claimed to preserve ambient centrality.\\[.5em]
+Counting & The exact objects counted are ordered subgroup-element triples
+or unique basis-exponent tuples, not arbitrary words.\\[.5em]
+Finite-fold MRDP & No finite-fold hypothesis is derived from ordinary MRDP.
+The four-square preliminary conversion can change multiplicities.\\[.5em]
+Universal numerical record & No optimized numerical ambient dimension or
+fully expanded universal matrix table is claimed.\\[.5em]
+Verification & 190,826 finite exact-integer assertions supplement proofs;
+there is no Lean build or independent referee report.\\[.5em]
+Literature priority & The identified sources state the three-subgroup
+problem. A limited search is not proof of worldwide novelty.\\
+\bottomrule
+\end{longtable}
+
+\section{Part II: Source audit and bibliography notes}\label{gts:tp:app:sources}
+The K\"onig--Lohrey--Zetzsche text was inspected in its accessible arXiv
+version, including Theorem~6.6, Remark~6.7 and Theorem~6.8. Roman'kov's
+institutional publication record supplied the abstract, bibliographic
+metadata, and explicit open question; the full journal paper was not
+accessed. That record gives a 2024 online date and a 2025 print date, which
+accounts for differing year labels in search results. The reference below
+uses the print year.
+
+The ProveIt core source was read through the connected GitHub interface at
+the confirmed commit cited below. Its comments and source were inspected;
+the entire formal development was not rebuilt. The proof of the new
+compiler depends only on ordinary exact algebra plus the classical MRDP
+statement, so repository-specific performance claims play no role.
+
+The external-source search was performed on October 2, 2026. No later
+resolution was identified in that search. This last sentence reports the
+scope of the search, not an assertion that none exists.
+
+\section{Provenance of this report}\label{gts:app:provenance}
+
+\wtag\ The report was built from two manuscripts that arrived together in the archives of commit \texttt{6914ccca6} and were placed by commit \texttt{2a04b60f2}, which staged their programs and data byte-identical to the delivery.
+
+\begin{center}
+\small
+\begin{tabular}{@{}L{0.07\textwidth}L{0.24\textwidth}L{0.2\textwidth}L{0.2\textwidth}L{0.17\textwidth}@{}}
+\toprule
+Source & Archive (batch 76) & Pin & Contributed & Printed as\\
+\midrule
+03 (base) & \path{arithmetic_van_kampen.zip}, manuscript~03; main file \path{arithmetic_van_kampen.tex}, 29-page PDF & \texttt{c58206ca1} & the area and proof-DAG compilers, the dyadic optimum, the addition-chain sandwich, 12 research questions, its audits & Part~I with Appendices~\ref{gts:vk:app:scalar}--\ref{gts:vk:app:audit}\\
+05 & \path{three_commutative_phases_research.zip}, manuscript~05; main file \path{article.tex}, 22-page PDF & \texttt{433df1be3} & the three-phase compiler, the three-subgroup theorem, two-phase decidability, the monoid and quartic versions, the nonclosed product, 9 research directions, its audits & Part~II with Appendices~\ref{gts:tp:app:capsule}--\ref{gts:tp:app:sources}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The full pins are
+\begin{center}\small
+\texttt{c58206ca101d4744a015a0f0104646109357d943} (source~03),\\
+\texttt{433df1be37188224dd00d0561bfb157949cd6320} (source~05).
+\end{center}
+Each pin is the commit that its source names as its repository snapshot: source~03 on its title page and in its bibliography, source~05 in Section~\ref{gts:tp:sec:implementation} and its bibliography. Both are ancestors of the placement commit. The repository files the sources cite (\path{Computability/HilbertTenthProblem/Lean/MRDP.md}, \path{Lean/Diophantine/Common/MRDPCore.lean} and the note \path{group_projective_label_aligned_lanes.md}) are unchanged from the pins to the write, so the sources' descriptions of them remain accurate.
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}
+\item \emph{Base and order.} Source~03 is the base (Part~I): it is the broader framework (an arbitrary finitely presented group as substrate) and the larger manuscript. Source~05 follows as Part~II. Every result, proof, example, remark, research question, audit and limitation of both sources is printed, in the sources' order and with their numbering inside each Part.
+\item \emph{Shared setup.} The Heisenberg group, its matrices, multiplication, inverse and power formulas, and the associativity and power-law proofs, which source~05 prints in Sections~\ref{gts:tp:sec:intro} and~\ref{gts:tp:sec:compiler} and source~03 in Section~\ref{gts:vk:sec:grid}, are printed once, in Section~\ref{gts:sec:heis}, with source~05's equation labels; both places now point there. Source~03's letter $H$ for this group is written $\HH$ (Table~\ref{gts:tab:notation}). Nothing else was renamed, and no normalization changed.
+\item \emph{Front matter.} The two title pages are replaced by one; each source's title, abstract and status statement open its Part verbatim. Section~\ref{gts:sec:front} is new.
+\item \emph{Appendices and bibliography.} Each source's appendices are printed after both Parts, those of source~03 first, with ``Part~I'' or ``Part~II'' added to their titles. The two bibliographies are merged without change of entries; entries~\cite{pqc,repo-comm,repo-unip,repo-heis} were added for the cross-references of Section~\ref{gts:sec:relation}.
+\item \emph{Added text.} Every sentence written in the merge is marked \wtag: Section~\ref{gts:sec:front}; the openings of the two Parts; notes in Part~I in Sections~\ref{gts:vk:sec:problem} (repository relationship), \ref{gts:vk:sec:grid} (the shared setup) and~\ref{gts:vk:sec:software} (shipped file names); notes in Part~II in Sections~\ref{gts:tp:sec:intro}, \ref{gts:tp:sec:compiler} (the shared setup), \ref{gts:tp:sec:universal} (the Heisenberg note), \ref{gts:tp:sec:two} (Remark~\ref{gts:tp:rem:credit} and the phase threshold), \ref{gts:tp:sec:examples} and~\ref{gts:tp:sec:implementation} (shipped file names and the repository relationship); and this appendix. Labels were added to the research questions of both Parts, to the first section and the software section of Part~I, and to the source-audit appendix of Part~II.
+\end{itemize}
+
+\paragraph{Files.} The report directory holds this text (\path{article.tex}, \texttt{article.pdf}), a README, source~03's \path{SOURCES.md} (as \path{03-van-kampen-SOURCES.md}), and the two sources' programs in \path{code/} and recorded outputs in \path{data/}, under the prefixes \path{03-van-kampen-} and \path{05-three-phases-}. The README maps each delivered name to its shipped name and gives rerun instructions that do not overwrite the shipped files. The manuscripts, their PDFs, the delivered READMEs and source~03's checksum ledger (verified, 13 of 13 files, at placement) are not shipped; they survive in the archives of commit \texttt{6914ccca6}.
+
 \clearpage
 \addcontentsline{toc}{section}{References}
-\begin{thebibliography}{10}
+\begin{thebibliography}{99}
 
 \bibitem{sanov}
 I.~N. Sanov,
@@ -1148,6 +2652,50 @@ The public endpoints and their claimed formal boundary are documented here; no r
 V. Reshetnikov, \emph{ProveIt: Label-aligned controller lanes within the existing geometry}, research note, snapshot \sha.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/c58206ca101d4744a015a0f0104646109357d943/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/group_projective_label_aligned_lanes.md}.
 Inspected to distinguish the present area/DAG compiler from the repository's packed group-projective history work.
+
+\bibitem{KLZ}
+Daniel K\"onig, Markus Lohrey, and Georg Zetzsche.
+\emph{Knapsack and subset sum problems in nilpotent, polycyclic, and
+co-context-free groups}. arXiv:1507.05145, 2015.
+See Theorem~6.6, Remark~6.7 and Theorem~6.8.
+\url{https://arxiv.org/abs/1507.05145}.
+
+\bibitem{Romankov}
+Vitaly Roman'kov.
+\emph{On decidability of the product of subgroups membership problem for
+nilpotent groups}. Journal of Group Theory \textbf{28}(2) (2025), 463--473.
+Published online September 20, 2024.
+DOI: \href{https://doi.org/10.1515/jgth-2023-0119}{10.1515/jgth-2023-0119}.
+Abstract and dates checked at the author's institutional record:
+\url{https://sciact.math.nsc.ru/public/article/5627/en}.
+
+\bibitem{AFP}
+Jonas Bayer, Marco David, Benedikt Stock, Abhik Pal, Yuri Matiyasevich,
+and Dierk Schleicher.
+\emph{Diophantine Equations and the DPRM Theorem}.
+Archive of Formal Proofs, June 6, 2022.
+\url{https://isa-afp.org/entries/DPRM_Theorem.html}.
+
+\bibitem{ProveIt}
+Vladimir Reshetnikov and contributors.
+\emph{ProveIt}, HilbertTenthProblem MRDP development.
+Source read: \path{Diophantine/Common/MRDPCore.lean}, under
+\path{Computability/HilbertTenthProblem/Lean/}.
+Confirmed commit:\par\texttt{433df1be37188224dd00d0561bfb157949cd6320},
+October 2, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{pqc}
+\wtag\ ProveIt research report \emph{Probabilistic, quantum and continuous computation}, collection \path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation/}; Part~VI (exact gates; its sources~11 and~16) and Part~II (quantum substrates). Cited by label names, not by page.
+
+\bibitem{repo-comm}
+\wtag\ ProveIt research programme,\emph{An ordinary-input universal substrate from group commutators}, research note \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md}, as at the write of this report.
+
+\bibitem{repo-unip}
+\wtag\ ProveIt research programme,\emph{Faithful free-group matrix embeddings with five-operation ordinary-input loading}, research note \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/group_unipotent_input_loaders.md}, as at the write of this report.
+
+\bibitem{repo-heis}
+\wtag\ ProveIt research programme,\emph{Heisenberg submonoids: a paid two-generator certificate and an order obstruction}, research note \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md}, as at the write of this report; Section~4 decides two-generator submonoids.
 
 \end{thebibliography}
 \end{document}
