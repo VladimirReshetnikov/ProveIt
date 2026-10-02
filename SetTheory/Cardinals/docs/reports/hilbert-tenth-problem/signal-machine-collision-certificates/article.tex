@@ -5,24 +5,28 @@
 \usepackage[margin=1in,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{microtype,booktabs,array,longtable,ragged2e}
-\usepackage{xcolor,tikz}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,calc}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{listings}
+\usepackage{xurl}
 \usepackage{hyperref}
-\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
- urlcolor=blue!45!black,pdftitle={Collision Geometry Is Linear},
- pdfauthor={Research manuscript prepared with ChatGPT for Vladimir Reshetnikov}}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Collision Geometry Is Linear: Diophantine Certificates for Rational Signal Machines},
+ pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},
+ pdfsubject={Event-sparse chambers, canonical quadratic and quartic certificates, and two routes to complete chronology}}
 \urlstyle{same}
 \setlength{\emergencystretch}{2em}
 \setlength{\parskip}{3pt}
 \setlist{itemsep=3pt,topsep=4pt}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small Collision geometry is linear}
-\fancyhead[R]{\small Research manuscript \textbar\ 2 October 2026}
+\fancyhead[L]{\small Collision Geometry Is Linear}
+\fancyhead[R]{\small Research report}
 \fancyfoot[C]{\thepage}
+\numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -32,6 +36,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+% Source 07 (Part I) macros
 \newcommand{\N}{\mathbb N_0}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\Q}{\mathbb Q}
@@ -43,22 +49,216 @@
 \newcommand{\lcm}{\operatorname{lcm}}
 \newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+% Source 11 (Part II) macros; source 11's \N is written \NN here (same rendering)
+\newcommand{\NN}{\mathbb N}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\out}{\operatorname{out}}
+\newcommand{\inset}{\operatorname{in}}
+\newcommand{\nminus}{n_{-}}
+% Merge
+\newcommand{\wtag}{\textup{[write]}}
 \lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
  breaklines=true,frame=single,rulecolor=\color{black!25},
  aboveskip=9pt,belowskip=9pt,showstringspaces=false}
-
-\title{\textbf{Collision Geometry Is Linear}\\[6pt]
-\large Event-Sparse Quadratic Diophantine Certificates\\
-for Rational Signal Machines}
-\author{Research manuscript prepared with ChatGPT\\
-\normalsize for Vladimir Reshetnikov's \texttt{ProveIt} research program}
-\date{2 October 2026}
+\setcounter{tocdepth}{2}
 
 \begin{document}
-\maketitle
-\thispagestyle{empty}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.4in}
+\noindent{\color{MidnightBlue}\large PROVEIT RESEARCH REPORT}\par
+\vspace{0.3in}
+\noindent{\Huge\bfseries Collision Geometry Is Linear}\par
+\vspace{0.2in}
+\noindent{\LARGE Diophantine Certificates for\\[0.15em] Rational Signal Machines}\par
+\vspace{0.25in}
+\noindent{\large Event-sparse chambers, canonical quadratic and quartic certificates,\\ and two routes to complete chronology}\par
+\vspace{0.45in}
+\noindent AI-assisted research report prepared for Vladimir Reshetnikov from two manuscripts\par
+\noindent(batch~78 of ProveIt's incoming reports, manuscripts~07 and~11), 2 October 2026\par
+\vspace{0.3in}
 \begin{abstract}
-A rational signal machine computes by the collisions of finitely many types
+A rational signal machine computes by the collisions of finitely many kinds of particles moving at fixed rational speeds on a line. This report prints two independent manuscripts that prove one theorem by two routes: once a complete finite collision history is fixed, its realizations are exactly the natural zeros of a sum of squares of integer affine residuals, of degree two, with exactly one witness tuple for each realization. In both, typed endpoint conditions on maximal adjacency intervals exclude unrecorded earlier collisions, omitted simultaneous inputs and omitted simultaneous sites, and causal depth controls the denominators of the event coordinates.
+
+Part~I (source~07) eliminates every event coordinate. The realizing initial-gap vectors form a relatively open rational polyhedral cone cut out by at most $3(n-1)+(3m+1)E$ linear conditions, and the only witnesses are the slacks of the strict rows. The chamber geometry yields small integral realizations, an NP upper bound for bounded synthesis, a robustness--codimension criterion, a canonical first-hit quartic for a fixed event budget, exact quasi-polynomial seed counts, an exactly solved first-collision tournament and a four-speed accumulating clock with exponentially growing denominators. Part~II (source~11) keeps batch times and event positions as natural witnesses on a fixed rational grid, adds halting semantics, proves that the witness matrix has full column rank (so the certificate is strictly convex in its witnesses), gives linear witness and residual ledgers and a full-layer reference construction, and bounds the canonical witnesses by $60^K\max(1,M_0)$ for the four-speed interface of Durand-Lose's universal machine.
+
+Neither Part compiles unbounded halting into one fixed-arity polynomial, transcribes the published universal machine, or improves the repository's 75- and 87-operation bounds. Part~I's convex-quadratic barrier is a special case of Part~XI of the collection's report \emph{canonical-diophantine-certificates}. The report is AI-assisted and unrefereed; nothing in it is formalized in Lean or Rocq.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status.} Conventional proofs and finite exact-arithmetic checks; not kernel-checked. Section~\ref{smc:sec:front} compares the two routes and states what is not claimed; Appendix~\ref{smc:app:provenance} gives the provenance.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\tableofcontents
+\newpage
+\section{Scope, the two routes, and conventions}\label{smc:sec:front}
+
+\wtag\ This section was written when the two manuscripts were merged. Part~\ref{smc:part:cg} and Part~\ref{smc:part:sd} print the two sources; text there without a \wtag\ marker is the source's own.
+
+\subsection{The two sources}\label{smc:sec:parts}
+
+This report is built from two AI-assisted research manuscripts that arrived in one delivery as batch~78 of ProveIt's incoming reports (manuscripts~07 and~11; Appendix~\ref{smc:app:provenance} gives the full provenance). They are called \emph{source~07} and \emph{source~11} after their batch-78 manuscript numbers, which are also the file prefixes of their shipped programs and data. Neither cites the other, and a text-overlap check at placement found almost no shared wording (at most 0.5 per cent of either text's eight-word sequences occur in the other). They nevertheless prove the same theorem, by the same mechanism, in two different witness formats (Section~\ref{smc:sec:routes}).
+
+\begin{itemize}
+\item \textbf{Part~\ref{smc:part:cg} (source~07, the base), \emph{Collision geometry is linear}.} Arbitrary rational speeds, of either sign. Every event time and position is eliminated as a rational linear form in the initial gaps, so a complete chronological skeleton becomes a homogeneous rational chamber (Theorem~\ref{smc:cg:thm:chamber}) and a convex quadratic with unique slack witnesses (Theorem~\ref{smc:cg:thm:quadratic}). The chamber geometry then gives denominator and height bounds, small integral realizations, an NP upper bound, robustness and codimension, finite-horizon semilinearity, a canonical first-hit quartic, exact Ehrhart counts, two exact examples and a convex-quadratic barrier.
+\item \textbf{Part~\ref{smc:part:sd} (source~11), \emph{Direct Diophantine certificates}.} Speeds and positions normalized to natural numbers by an external Galilean change of coordinates. Batch times and event positions stay in the certificate as natural witnesses on the grid $B=D^K$, and the certificate has prefix and halting versions (Theorem~\ref{smc:sd:thm:main}). Its additions are the halting semantics with terminal rays, full column rank of the witness matrix and hence strict convexity in the witnesses (Lemma~\ref{smc:sd:lem:rank}), an explicit witness and residual ledger, a full-layer reference construction with exact counts (Section~\ref{smc:sd:sec:fulllayer}), the witness-height bound for Durand-Lose's four-speed interface (Theorem~\ref{smc:sd:thm:height}) and a positive-witness translation.
+\end{itemize}
+
+Source~07 is the base because it assumes less (signed rational speeds, no normalization interface) and proves more about the chamber; source~11 is printed in full as the second route together with its additions. Each Part keeps its source's definitions, letters and numbering of statements. The common theorem is stated in both Parts, because its two statements have different inputs and witnesses; where a lemma of Part~II coincides with one of Part~I, a \wtag\ note at the lemma says so, and source~11's proof is kept as a marked second route.
+
+\subsection{One theorem by two routes}\label{smc:sec:routes}
+
+\textbf{The common theorem.} Fix a rational signal machine, an initial label word and a finite chronological collision history (a \emph{skeleton} in Part~I, a \emph{schema} in Part~II). There is an effective sum of squares of integer affine residuals, in the input coordinates and natural witnesses, whose natural zeros are exactly the realizations of that history, with exactly one witness tuple for each realization; its degree is at most two. This is Theorems~\ref{smc:cg:thm:chamber} and~\ref{smc:cg:thm:quadratic} of Part~I and Theorem~\ref{smc:sd:thm:main} of Part~II (for prefix semantics).
+
+\textbf{The common mechanism.} Both sources record each pair of adjacent signals once, over the maximal interval during which it stays adjacent, and impose a \emph{typed} condition at each end of that interval: equality exactly when both segments are born (or die) at the same collision there, and strict positivity otherwise, including for a pair that survives the last listed batch. Affineness of the gap then excludes every interior meeting (Part~I, Lemma~\ref{smc:cg:lem:endpoint}; Part~II, Lemma~\ref{smc:sd:lem:interior}), and the strict conditions at a batch boundary make the declared blocks exactly the collision sites (the soundness part of the proof of Theorem~\ref{smc:cg:thm:chamber}; Lemma~\ref{smc:sd:lem:boundary}). The two sources then prove the same auxiliary statements: the lifetime count $(n-1)+\sum_e(q_e+1)$ (\eqref{smc:cg:eq:Jbound} and \eqref{smc:sd:eq:Lbound}, where Part~II writes $|\out(e)|$ for $q_e$), causal-depth denominators dividing $D^h$ (Theorem~\ref{smc:cg:thm:denominator}, Lemma~\ref{smc:sd:lem:denom}), and semilinearity of the inputs accepted under a fixed event bound (Theorem~\ref{smc:cg:thm:semilinear}, Proposition~\ref{smc:sd:prop:semilinear}). Table~\ref{smc:tab:routes} compares the two formats.
+
+\begin{center}
+\small
+\begin{longtable}{@{}L{0.2\textwidth}L{0.37\textwidth}L{0.37\textwidth}@{}}
+\caption{The two routes compared.}\label{smc:tab:routes}\\
+\toprule
+ & Part~I (source~07) & Part~II (source~11)\\
+\midrule
+\endfirsthead
+\toprule
+ & Part~I (source~07) & Part~II (source~11)\\
+\midrule
+\endhead
+Speeds & arbitrary rationals, of either sign; time rescaled by $\tau=t/L$ to make them integers (Section~\ref{smc:cg:sec:model}) & natural numbers, after the external change of coordinates \eqref{smc:sd:eq:normalize} (a Galilean shift and two scalings)\\
+Input & the initial gap vector $g$, translation removed; real in the chamber theorem, positive integers in the certificate & the absolute initial positions $\mathbf p$, natural numbers in increasing order\\
+Event times and positions & eliminated: rational linear forms in $g$, computed data (Section~\ref{smc:cg:sec:linear}) & witnesses: natural $T_i$ and $X_e$, scaled to the grid $B=D^K$ \eqref{smc:sd:eq:modulus}\\
+Witnesses & one slack $z_j=\mathsf G_jg-1$ per retained strict row; $s$ in all & batch times $T_i$, time slacks $d_i$, event positions $X_e$, input-order slacks $u_j$, endpoint slacks $h^\pm$; $W\le E+2K+2L+\nminus$\\
+Size & at most $3(n-1)+(3m+1)E$ raw conditions \eqref{smc:cg:eq:Rbound}; a row may be dense in $g$ & $R\le I+K+2L+\nminus\le(r+2s+3)E+3\nminus$ residuals, each of bounded width for a fixed machine \eqref{smc:sd:eq:rawcounts}--\eqref{smc:sd:eq:linearcounts}\\
+Denominators & $D^h$ at an event of causal depth $h$, for the coefficients of its forms & $D^h$ for coordinates of depth $h$; the compiler clears with $D^K$, a multiple of $D^H$\\
+Convexity & convex, Hessian $2A^{\mathsf T}A\succeq0$; unique slack by \eqref{smc:cg:eq:uniqueslack} & strictly convex in the witnesses for fixed input: full column rank over $\R$, even for unrealizable schemas (Lemma~\ref{smc:sd:lem:rank})\\
+Semantics & prefixes: exactly the first $B$ batches; nothing after them & prefixes, and halting realizations certified by terminal rays\\
+Heights & row coefficients at most $2d(1+V)(DK)^h$ (Proposition~\ref{smc:cg:prop:height}); a realizing seed of size at most $d^{d/2}A^d$ (Theorem~\ref{smc:cg:thm:small}) & every canonical input and witness at most $60^K\max(1,M_0)$ for speeds in $\{0,2,3,4\}$ (Theorem~\ref{smc:sd:thm:height})\\
+Shuttle & four-speed clock, speeds $0,2,-1,-2$; denominator exactly $2\cdot3^k$ at event $2k$ for the seed $(1,2)$; Zeno time $S=u+v$ (Section~\ref{smc:cg:sec:clock}) & bounded shuttle, speeds $3,2,4,0$; denominator exactly $3^{k-1}$ at the $k$th left event; Zeno time $2$ (Proposition~\ref{smc:sd:prop:sharpness})\\
+Missed simultaneity & two independent sites, word $P,N,P,N$, gaps $(2,5,2)$ (Section~\ref{smc:cg:sec:simultaneous}) & hidden collision at the final cut, word $d,a,d,a$ at $(0,4,10,14)$ (Section~\ref{smc:sd:sec:finalcut})\\
+Only here & chamber geometry, small realizations, real\,=\,rational\,=\,integer realizability, NP bound, robustness and codimension, first-hit quartic, Ehrhart counts, the tournament, the convex-quadratic barrier & halting semantics, strict convexity, the full-layer construction and its exact counts, the four-speed height bound, positive witnesses\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\textbf{Normalizations.} The two definitions of $D$ agree. Part~I multiplies all speeds by an integer $L$ and leaves their signs; Part~II subtracts a common speed $c$ and multiplies by an integer $m$. A common shift does not change speed differences, so with $m=L$ both take $D$ to be the least common multiple of the same nonzero integer differences. Part~II needs nonnegative speeds and an origin because its inputs are natural absolute positions; Part~I needs neither because its input is the gap vector. Part~I's integer seeds come from homogeneity (scaling a rational chamber point); Part~II fixes the scale outside the witness tuple and warns that a scale witness or variable denominators would not preserve its canonical quadratic claim without a new argument (Section~\ref{smc:sd:sec:normalize}).
+
+\textbf{Two shuttles, one mechanism.} Part~I's clock and Part~II's shuttle are both a particle reflected between two converging walls, each round trip shrinking the remaining time to the accumulation by a factor three, so that the reduced denominators grow exponentially in the number of events while their bit lengths grow linearly. They are different machines: Part~I's has a stationary left wall and a right wall of speed $-1$, and its every finite prefix has the whole positive quadrant as chamber (robust chronology with exponentially growing precision); Part~II's lives entirely in $0<t<2$, $0<x<6$ and is stated for its natural-speed interface. Neither source gives the accumulation point a continuation. Source~07 credits the accumulation phenomenon to Becker et al.~\cite{accumulations}.
+
+\textbf{Two missed simultaneities, one failure mode.} In both examples a proposed batch omits a second, spatially separate collision that happens at the same time, and in both the omitted pair is an unchanged adjacent pair whose gap reaches zero exactly at the last listed boundary. The strict upper endpoint of a surviving pair rejects it: in Part~I through the chamber row that must be positive there, in Part~II through the residual $G(T_1)-h^+-1=-h^+-1$. Part~II adds the observation that weaker conditions (two nonnegative endpoint gaps with positive sum) would accept the false schema.
+
+\textbf{Two meanings of ``sparse''.} In Part~I ``event-sparse'' counts geometric conditions: the bound \eqref{smc:cg:eq:Rbound} is linear in $n$ and $E$, but a propagated intercept may depend on every initial gap, so the rows can be dense and storing them can take $O(dR_\sigma)$ coefficients (the paragraph after Theorem~\ref{smc:cg:thm:rows}). In Part~II the sparse certificate also has residuals of bounded width, because event coordinates are witnesses; its coefficients then contain the grid constant $B=D^K$. \emph{Neither} size statement is a constant arithmetic-operation count for an unbounded computation, as both sources say.
+
+\subsection{Notions and letters}\label{smc:sec:notation}
+
+Each Part keeps its source's letters. Many letters carry different meanings in the two Parts; Table~\ref{smc:tab:notation} lists every letter used in both, so that a statement of one Part is never read with the other Part's meaning. Inside a Part the meaning is always the one in that Part's column. No symbol was renamed and no normalization was changed: source~11's macro for the natural numbers is called \verb|\NN| in this file and still prints $\NN$, and Part~I prints $\N$; both denote $\{0,1,2,\ldots\}$.
+
+\begin{center}
+\small
+\begin{longtable}{@{}L{0.09\textwidth}L{0.43\textwidth}L{0.42\textwidth}@{}}
+\caption{Letters used in both Parts.}\label{smc:tab:notation}\\
+\toprule
+Letter & Part~I (source 07) & Part~II (source 11)\\
+\midrule
+\endfirsthead
+\toprule
+Letter & Part~I (source 07) & Part~II (source 11)\\
+\midrule
+\endhead
+$\N$, $\NN$ & $\N=\{0,1,2,\ldots\}$ & $\NN=\{0,1,2,\ldots\}$ (the same set)\\
+$A$ & coefficient bound \eqref{smc:cg:eq:A}; a matrix in proofs & witness coefficient matrix (Lemma~\ref{smc:sd:lem:rank}); birth-position expression $A_\sigma$; start coordinates $A_{i,j}$\\
+$B$ & number of batches; a nonsingular matrix in the proof of Theorem~\ref{smc:cg:thm:small}; a label of the tournament & the grid modulus $B=D^K$ \eqref{smc:sd:eq:modulus}, \emph{not} a number of batches; a label of the shuttle\\
+$C$ & the chamber $\Ccal$; the count $C(H)$; a label & matrix of input coefficients; end coordinates $C_{i,j}$\\
+$D$ & lcm of nonzero speed differences \eqref{smc:cg:eq:VD} & the same lcm \eqref{smc:sd:eq:modulus} (Section~\ref{smc:sec:routes})\\
+$d$ & $d=n-1$ & time slacks $d_i$; a label\\
+$E$ & number of collision sites; $\mathsf E$ the equality matrix & number of events (a site of Part~I)\\
+$G$ & $\mathsf G$ the strict-row matrix & the gap function $G_{\sigma\tau}(T)$ \eqref{smc:sd:eq:gap}\\
+$g$ & the initial gap vector & number of blocks $g_i$ of a slab (Section~\ref{smc:sd:sec:fulllayer}); a gap in proofs\\
+$H$, $h$ & $h$ causal depth; $H$ the side of a counting box & $h$ a depth bound, $H$ the maximal depth; $h$, $h^\pm$ endpoint slacks\\
+$K$ & $K=2+4V$ (Lemma~\ref{smc:cg:lem:norm}); number of first-hit chambers & number of batches, \emph{not} a number of chambers\\
+$L$ & integer clearing the speeds; a label of the clock & number of recorded lifetimes; a label of the shuttle\\
+$M$ & the label set & largest position $M_j$; $\cM$ the machine\\
+$m$ & number of distinct speeds & the speed multiplier of \eqref{smc:sd:eq:normalize}; number of generators of a linear set\\
+$n$ & number of initial signals & the same; $\nminus=\max(n-1,0)$\\
+$p$, $q$ & $p_e$, $q_e$ incoming and outgoing counts at site $e$ & initial positions $p_j$; the position scale $q$\\
+$R$ & raw row count $R_\sigma$; a label & residual count; a label\\
+$r$, $s$ & numbers of retained equality and strict rows & largest incoming arity and largest fanout; residuals $r_a$\\
+$S$ & the accumulation time $u+v$ of the clock & a label; $\cS$ the schema\\
+$T$ & the site budget & scaled batch times $T_i$\\
+$u$, $v$ & initial gaps of the examples; $v(a)$ a speed & input-order slacks $u_j$; $u(\ell)$ an original speed, $v(\ell)$ a normalized speed\\
+$V$ & $\max(1,\max|v(a)|)$ & the maximal speed (remark after Theorem~\ref{smc:sd:thm:height})\\
+$W$ & $W=3u+2v$ of the clock & number of witnesses\\
+$z$, $y$ & $z$ the slack witnesses & $\mathbf y$ the witnesses; $\mathbf z$ a test vector\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Three words need the same care.
+\begin{itemize}
+\item \textbf{Skeleton} (Part~I) and \textbf{schema} (Part~II) carry the same information: an ordered list of batches, each a set of disjoint contiguous blocks of the live list. A skeleton lists only the collision blocks (at least two members); a schema partitions the whole live list and marks singletons as persisting signals. A \emph{site} of Part~I is an \emph{event} of Part~II.
+\item \textbf{Realization.} Part~I's realization and Part~II's prefix realization are the same notion: exactly the listed batches as the first batches, nothing asserted afterwards. Part~II's \emph{halting} realization additionally excludes every future collision. The ``halting relation'' of Part~I's Section~\ref{smc:cg:sec:barrier} is the undecidable halting of a universal machine, a different thing.
+\item \textbf{Convex.} Part~I's certificate is convex (positive semidefinite Hessian) jointly in seed and slacks; Part~II's is \emph{strictly} convex in the witnesses with the input held fixed, and Part~II states that joint strict convexity is neither needed nor generally true.
+\end{itemize}
+
+\subsection{Relation to the repository and to the literature}\label{smc:sec:relation}
+
+Neither source cites the related material below; this subsection supplies the cross-references (pins and dates in Appendix~\ref{smc:app:provenance}). Reports of the collection are cited by label name, since their labels do not resolve in this file.
+
+\begin{itemize}
+\item \textbf{Report \emph{canonical-diophantine-certificates}, Part~XI}~\cite{cdc}, ``Order-free self-assembly and a positivity-restricted degree threshold''. Its Lemma \texttt{cdc:of:lem:affinezero}, Theorem \texttt{cdc:of:thm:cubicsemilinear} and Theorem \texttt{cdc:of:thm:classification} ($\mathrm D^+_2(k)=\mathrm D^+_3(k)=\mathrm{SL}(k)$) prove, for polynomials of degree at most three that are nonnegative only on the real nonnegative orthant, that the full natural zero set is a finite union of natural solution sets of rational affine systems, hence semilinear and effectively so. Part~I's Theorem~\ref{smc:cg:thm:rigidity} and Corollary~\ref{smc:cg:cor:barrier} are the globally nonnegative quadratic special case; they are printed with source~07's direct proof, as a second route, and credited in Remark~\ref{smc:cg:rem:credit}. No novelty is claimed for them. The same Part's Theorem \texttt{cdc:of:thm:singlefoldsl} (a single-fold orthant-nonnegative quadratic for every semilinear set) bears on Part~I's first-hit quartic; see Remark~\ref{smc:cg:rem:singlefold}. The bounded-search argument at the end of Part~I's Section~\ref{smc:cg:sec:barrier} is the standard one of Proposition \texttt{cdc:bd:prop:nobound} there, for a different statement (site counts of accepting runs).
+\item \textbf{Report \emph{liveness-beyond-halting}}~\cite{lbh}. Its Part~V prints a question of its source~11, ``Optimal degree under stronger geometric restrictions'', which asks for the minimal degree and dimension of a witness-free, binary-branching local polynomial that is globally nonnegative on all real inputs, and remarks that the globally nonnegative quadratic case ``has a much more rigid affine geometry''. Part~I's Theorem~\ref{smc:cg:thm:rigidity} (and, more generally, Part~XI of~\cite{cdc}) states that geometry: such a quadratic has a rational affine zero set. This report does not settle that degree question.
+\item \textbf{The Hilbert-tenth-problem programme has already reviewed both manuscripts.} The review of the delivery of 2 October 2026~\cite{review808}, with its detailed signal-machine part~\cite{reviewsignal}, replayed both suites from the original archives, read both articles in full and reports ``PASS for both reports' stated finite-schema, exact-domain theorems and generated examples'', with no mandatory correction. It also proves and checks two reductions that neither source claims: deleting source~11's identically zero same-birth rows and its same-death rows (differences of retained flight rows), and erasing the initial-order slacks when $K>0$ or the certificate is halting, which takes the worked annihilation from six residuals and five witnesses to four and four (a bijection of natural zero sets, not of nonnegative rational ones, with a rational counterexample); and deleting redundant strict rows, with computed slacks, from the five exported packets of source~07. Those reductions are the review's, are not re-proved here, and do not change any theorem of either Part. This report's intake is therefore not a first review; it adds the merge, the cross-references and the credit of Remark~\ref{smc:cg:rem:credit}.
+\item \textbf{The programme's audits of finite-history models.} Source~07 cites the reversible finite-history audit~\cite{reversible} for its distinction between cheap local relations and a complete computation certificate; that file is unchanged from source~07's pin to the write. A sibling audit~\cite{blockca} notes that ``finite particles can in principle store unbounded values in their separation'' and that ``a new construction would have to establish that interface''. Durand-Lose's halting universal signal machine~\cite{durandlose} uses a finite initial configuration and a halting event (Part~II, Section~\ref{smc:sd:sec:purpose}), so signal machines are a candidate for such an interface, and both Parts compile its finite collision histories in principle; but neither transcribes its universal rule table or its input loader (Part~I, Section~\ref{smc:cg:sec:implementation}; Part~II, Question~\ref{smc:sd:q:universal}), so this report does not establish that interface.
+\item \textbf{The repository's universal bounds.} The project README~\cite{repo} still states the established bounds of 75 operations for a complete certificate and 87 for one universal polynomial. Neither Part improves or bears on them; both say so.
+\item \textbf{Other reports of the category.} No result of \emph{probabilistic-quantum-and-continuous-computation} or \emph{group-theoretic-substrates} is re-proved here. Apart from the programme's review described above, nothing in the repository treated signal machines before this report.
+\end{itemize}
+
+\subsection{Status and what is not claimed}\label{smc:sec:status}
+
+The report is AI-assisted and unrefereed, and \textbf{nothing in it is formalized in Lean or Rocq}. Both sources give conventional proofs together with finite exact-arithmetic checks that are regression evidence, not proofs. Every limitation stated by either source is kept in its Part; collected here, neither Part claims
+\begin{itemize}
+\item historical priority, or exhaustive novelty, for its constructions (Part~I, Section~\ref{smc:cg:sec:intro}; Part~II, Section~\ref{smc:sd:sec:purpose}); Part~II adds that a general linearizability of signal-machine evolution is already in Durand-Lose's linear real-register simulation~\cite{DL07};
+\item one fixed-arity polynomial for unbounded halting, a single-fold or finite-fold Diophantine representation of c.e.\ sets, or a fixed-universal arithmetic-operation bound: the skeleton or schema, the machine and the input length are compiler data, and the row and residual counts are not operation counts;
+\item that the published universal machine (13 meta-signals, 21 non-blank rules) or its input loader has been transcribed, executed or certified;
+\item any semantics at or after an accumulation point; the clock and the shuttle are tests of finite prefixes, and the clock is not a claim to have discovered accumulation;
+\item NP-hardness (Corollary~\ref{smc:cg:cor:NP} is an upper bound), an efficient enumeration of first-hit chambers or of their volumes, or an optimized exhaustive enumerator in the code;
+\item that the denominator-growth examples are lower bounds for arbitrary Diophantine representations: Part~II's is a lower bound for common-grid encodings;
+\item that integer scaling of a rational seed preserves a prescribed physical length or deadline;
+\item that the finite checks are exhaustive, or that the shared simulator of Part~II's two compilers is independently verified;
+\item any Lean or Rocq verification; neither source's code is a verified compiler.
+\end{itemize}
+The report itself claims no novelty for Part~I's convex-quadratic barrier (Remark~\ref{smc:cg:rem:credit}) and none for the reductions of the programme's review.
+
+\subsection{Research questions}\label{smc:sec:questions}
+
+Both agendas are printed in full: the nine research directions of Part~I (Section~\ref{smc:cg:sec:future}) and the five questions of Part~II (Section~\ref{smc:sd:sec:questions}), each in its Part and with its source's wording. Four of Part~II's questions coincide with, or overlap, directions of Part~I; Table~\ref{smc:tab:questions} pairs them, so that the two formulations are read together. None of them is answered by the other source, by the repository, or by the programme's review; the one partial overlap is that Part~II's Question~\ref{smc:sd:q:ledger} begins with causal-depth clearing, which both sources already prove (a \wtag\ note there re-scopes it).
+
+\begin{center}
+\small
+\begin{longtable}{@{}L{0.3\textwidth}L{0.3\textwidth}L{0.32\textwidth}@{}}
+\caption{Concordance of the research questions.}\label{smc:tab:questions}\\
+\toprule
+Part~I (source~07) & Part~II (source~11) & Relation\\
+\midrule
+\endfirsthead
+\toprule
+Part~I (source~07) & Part~II (source~11) & Relation\\
+\midrule
+\endhead
+\ref{smc:cg:q:universal}~An audited universal signal-machine frontend & Q\ref{smc:sd:q:universal}~Instantiate the universal table and input map & the same task\\
+\ref{smc:cg:q:formal}~Formalizing the chronology theorem & Q\ref{smc:sd:q:formal}~Formalize geometric completeness & the same target (endpoint lemma and sweep invariant; typed endpoints and atomic replacement)\\
+\ref{smc:cg:q:denominators}~Sharper denominator invariants; \ref{smc:cg:q:circuits}~From few rows to small arithmetic circuits & Q\ref{smc:sd:q:ledger}~Sharpen the denominator and cost ledger & overlapping: prime-valuation denominators, and a literal gate ledger\\
+\ref{smc:cg:q:firsthit}~Avoiding exhaustive first-hit enumeration & Q\ref{smc:sd:q:compress}~Compress histories without losing canonicality & overlapping: both separate bounded compression from fixed-arity unbounded compression\\
+\ref{smc:cg:q:robust}, \ref{smc:cg:q:counting}, \ref{smc:cg:q:algebraic}, \ref{smc:cg:q:accumulation} & --- & Part~I only\\
+--- & Q\ref{smc:sd:q:conservative}~Exploit conservative bounded populations carefully & Part~II only\\
+\bottomrule
+\end{longtable}
+\end{center}
+\part{Collision geometry is linear (source 07)}\label{smc:part:cg}
+
+\noindent\wtag\ Part~I prints batch-78 manuscript~07, \emph{Collision Geometry Is Linear: Event-Sparse Quadratic Diophantine Certificates for Rational Signal Machines}, ``research manuscript prepared with ChatGPT for Vladimir Reshetnikov's \texttt{ProveIt} research program'', dated 2 October 2026. Its labels carry the prefix \texttt{smc:cg:}; its sections are Sections~\ref{smc:cg:sec:intro}--\ref{smc:cg:sec:conclusion} here and its two appendices are Appendices~\ref{smc:cg:app:example} and~\ref{smc:cg:app:dependency}. Its abstract and keywords follow.
+\begin{quote}\small
+\textbf{Abstract (source 07).} A rational signal machine computes by the collisions of finitely many types
 of particles moving at fixed rational velocities on a line. Its continuous
 geometry seems to require nonlinear arithmetic certificates. We show that,
 once a complete chronological collision skeleton is fixed, the geometry is
@@ -82,24 +282,20 @@ and a four-speed accumulating clock whose denominator size grows
 exponentially in causal depth. Finally, we prove that globally nonnegative
 quadratic certificates cannot be compressed into a single fixed-arity
 universal halting representation without leaving their decidable linear
-zero-set class.
+zero-set class. (\wtag\ This last result is a special case of Part~XI of the collection's report \emph{canonical-diophantine-certificates}~\cite{cdc}; see Remark~\ref{smc:cg:rem:credit}.)
 
 These are manuscript-level results with executable exact-arithmetic checks,
 not proof-assistant-certified theorems. The generic compiler and regression
 suite accompany the article. No priority claim, resolution of finite-fold
 MRDP, or improvement to an existing fixed-universal operation bound is made.
-\end{abstract}
+\end{quote}
 
-\vspace{5pt}
 \noindent\textbf{Keywords.} Diophantine representation; signal machines;
 collision chronology; rational polyhedral cones; Presburger arithmetic;
 Ehrhart quasi-polynomials; Zeno accumulation; exact computation.
-\newpage
-\tableofcontents
-\newpage
 
 \section{The question and the contribution}
-\label{sec:intro}
+\label{smc:cg:sec:intro}
 
 \subsection{A concrete gap between universality and arithmetic}
 
@@ -121,6 +317,9 @@ and halting observations~\cite{repo,reversible}. This article develops an
 analogous complete \emph{geometric frontend} for a different substrate:
 one-dimensional rational signal machines. It does not attempt another
 operation-count reduction for the repository's universal polynomial.
+
+\wtag\ The repository has since reviewed this manuscript, and the related manuscript printed as Part~\ref{smc:part:sd}, in its Hilbert-tenth-problem research tree (Section~\ref{smc:sec:relation}). The reversible-history audit cited here is unchanged from this source's pin to the write.
+
 
 Signal machines are not merely collections of unrelated finite circuits.
 Durand-Lose gives a halting universal construction with 13 signal types and
@@ -154,14 +353,14 @@ real initial-gap vectors realizing that skeleton are exactly
  \Ccal_\sigma=
  \{g\in\R^{n-1}:\mathsf E_\sigma g=0,
                          \ \mathsf G_\sigma g>0\}.
- \label{eq:mainchamber}
+ \label{smc:cg:eq:mainchamber}
 \end{equation}
 Initial gap positivity is included among the strict rows. Every event time
-and position is a rational linear form in $g$. Section~\ref{sec:sparse}
+and position is a rational linear form in $g$. Section~\ref{smc:cg:sec:sparse}
 proves the event-sparse bound
 \begin{equation}
  R_\sigma\le 3(n-1)+(3m+1)E
- \label{eq:mainbound}
+ \label{smc:cg:eq:mainbound}
 \end{equation}
 for the number of raw linear residuals and inequalities.
 
@@ -170,7 +369,7 @@ The corresponding natural-number certificate is
  P_\sigma(g,z)=
  \sum_i(\mathsf E_{\sigma,i}g)^2+
  \sum_j(\mathsf G_{\sigma,j}g-1-z_j)^2.
- \label{eq:mainpoly}
+ \label{smc:cg:eq:mainpoly}
 \end{equation}
 Its degree is at most two, and its entire auxiliary tuple is forced to be
 $z_j=\mathsf G_{\sigma,j}g-1$. This uniqueness concerns a fixed externally
@@ -194,7 +393,7 @@ lemmas in this article. The proofs are intended to stand on their own and
 to be suitable for further independent review.
 
 \section{Rational signal machines and chronological skeletons}
-\label{sec:model}
+\label{smc:cg:sec:model}
 
 \subsection{Particles, velocities, and collision rules}
 
@@ -232,7 +431,7 @@ and write $d=n-1$. Translation invariance lets us put
 \begin{equation}
  x_0=0,\qquad x_i=g_1+\cdots+g_i\quad(1\le i\le d),
  \qquad g_i>0.
- \label{eq:gaps}
+ \label{smc:cg:eq:gaps}
 \end{equation}
 Repeated labels at distinct positions are permitted. We call $g$ the
 \emph{seed geometry}; the label word is separate discrete input.
@@ -272,7 +471,7 @@ At site $e$, write $p_e$ and $q_e$ for the numbers of incoming and outgoing
 signals. Let $m$ be the number of distinct velocities. Then
 \begin{equation}
  2\le p_e\le m,\qquad 0\le q_e\le m,\qquad B\le E.
- \label{eq:arity}
+ \label{smc:cg:eq:arity}
 \end{equation}
 The quantities $B$, $E$, and causal depth are different. Many sites may share
 a batch; many batches may contain events unrelated to a given causal chain.
@@ -292,7 +491,7 @@ realization set. One can encode a statically rejected skeleton by the
 constant polynomial $1$ if a total polynomial-producing interface is desired.
 
 \section{Eliminating every event coordinate}
-\label{sec:linear}
+\label{smc:cg:sec:linear}
 
 \subsection{Intercept propagation}
 
@@ -300,23 +499,23 @@ For each signal segment $s$, let $v_s$ be its fixed velocity and write its
 supporting line as
 \begin{equation}
  x_s(t)=b_s+v_st.
- \label{eq:line}
+ \label{smc:cg:eq:line}
 \end{equation}
 Its intercept $b_s$ need not be its birth position: the birth may occur at a
 positive time. Initially, the $b_s$ are the partial sums in
-\eqref{eq:gaps}, hence homogeneous integer linear forms in $g$.
+\eqref{smc:cg:eq:gaps}, hence homogeneous integer linear forms in $g$.
 
 Suppose an event contains two inputs $s,r$ with $v_s\ne v_r$. Their formal
 meeting time and position are
 \begin{equation}
  t_e=\frac{b_r-b_s}{v_s-v_r},\qquad
  x_e=b_s+v_st_e.
- \label{eq:meet}
+ \label{smc:cg:eq:meet}
 \end{equation}
 For an outgoing label of velocity $w$, its intercept is
 \begin{equation}
  b_{\mathrm{out}}=x_e-wt_e.
- \label{eq:out}
+ \label{smc:cg:eq:out}
 \end{equation}
 The denominator $v_s-v_r$ is fixed by the machine, not a variable.
 Consequently these formulas preserve rational linearity.
@@ -329,7 +528,7 @@ only additional homogeneous rational linear equalities.
 \end{lemma}
 \begin{proof}
 Induct on the ordered batches. Initial intercepts are linear. Equations
-\eqref{eq:meet} and \eqref{eq:out} use only addition and multiplication or
+\eqref{smc:cg:eq:meet} and \eqref{smc:cg:eq:out} use only addition and multiplication or
 division by fixed rational constants. An additional incoming signal $u$
 requires $b_u+v_ut_e=x_e$, again a homogeneous linear equality. Every new
 intercept is then available for subsequent batches. No output of the current
@@ -360,13 +559,13 @@ For events in the same batch, choose the leftmost site's formal time as
 $t_k$. Equate all other site times in that batch to $t_k$, and require
 \begin{equation}
  t_k-t_{k-1}>0,\qquad t_0=0.
- \label{eq:batchorder}
+ \label{smc:cg:eq:batchorder}
 \end{equation}
 These conditions are necessary but still do not exclude an unlisted earlier
 collision. The missing ingredient is a complete spatial-order certificate.
 
 \section{A sparse certificate for complete collision chronology}
-\label{sec:sparse}
+\label{smc:cg:sec:sparse}
 
 \subsection{Maximal adjacency intervals}
 
@@ -389,7 +588,7 @@ checked: their output order is already determined by the distinct velocities.
 Every recorded positive-duration interval has an affine gap
 \begin{equation}
  \Delta_{sr}(t)=b_r-b_s+(v_r-v_s)t.
- \label{eq:gapline}
+ \label{smc:cg:eq:gapline}
 \end{equation}
 At its initial boundary this gap is prescribed to be zero exactly when both
 segments are born at the same collision there. Otherwise it is prescribed
@@ -403,7 +602,7 @@ birth and then meet again without one undergoing an intervening collision.
 Such a proposal is rejected statically. Each surviving interval contributes
 exactly two linear conditions before redundant zero rows are removed.
 
-\begin{lemma}[Endpoint lemma]
+\begin{lemma}[Endpoint lemma]\label{smc:cg:lem:endpoint}
 Let $a<b$ and let $f$ be affine on $[a,b]$. If $f(a),f(b)\ge0$ and at least
 one of them is positive, then $f(t)>0$ for every $a<t<b$.
 \end{lemma}
@@ -412,6 +611,9 @@ For $t=(1-\lambda)a+\lambda b$ with $0<\lambda<1$,
 $f(t)=(1-\lambda)f(a)+\lambda f(b)$ is a positive convex combination of
 nonnegative numbers, at least one of which is positive.
 \end{proof}
+
+
+\wtag\ Part~II proves the same statement, with terminal rays added, as Lemma~\ref{smc:sd:lem:interior}, and the boundary half of the soundness argument below as Lemma~\ref{smc:sd:lem:boundary}.
 
 \begin{figure}[htbp]
 \centering
@@ -436,13 +638,13 @@ nonnegative numbers, at least one of which is positive.
 \end{tikzpicture}
 \caption{The affine gap between adjacent straight segments cannot become
 zero in the interior if its permitted endpoint conditions hold.}
-\label{fig:endpoints}
+\label{smc:cg:fig:endpoints}
 \end{figure}
 
 \subsection{Soundness and completeness}
 
 \begin{theorem}[Exact chronological chamber]
-\label{thm:chamber}
+\label{smc:cg:thm:chamber}
 Fix a rational signal machine, an initial label word, and a finite skeleton
 $\sigma$. There is an effective construction of rational homogeneous linear
 equalities and strict inequalities whose solution set is exactly the set of
@@ -460,9 +662,9 @@ meeting, two incoming lines $s,r$ ordered left to right have gap
 $(v_s-v_r)(t_e-t)>0$ and hence $v_s>v_r$.
 
 Propagate every intercept and event coordinate using
-\eqref{eq:meet}--\eqref{eq:out}. Add the additional incoming-incidence
+\eqref{smc:cg:eq:meet}--\eqref{smc:cg:eq:out}. Add the additional incoming-incidence
 equalities, equal-time conditions within each batch,
-\eqref{eq:batchorder}, initial gap positivity, and all adjacency-interval
+\eqref{smc:cg:eq:batchorder}, initial gap positivity, and all adjacency-interval
 endpoint conditions described above. Every resulting expression is a
 homogeneous rational linear form in $g$.
 
@@ -506,13 +708,13 @@ subspace around each point. All coefficients are rational.
 \subsection{The event-sparse bound}
 
 \begin{theorem}[Linear number of chronology conditions]
-\label{thm:rows}
+\label{smc:cg:thm:rows}
 Let $J$ be the number of positive-duration maximal adjacency intervals used
 by the construction. Then
 \begin{align}
  J&\le (n-1)+\sum_{e=1}^E(q_e+1)
-       \le (n-1)+(m+1)E,\label{eq:Jbound}\\
- R_\sigma&\le 3(n-1)+(3m+1)E.\label{eq:Rbound}
+       \le (n-1)+(m+1)E,\label{smc:cg:eq:Jbound}\\
+ R_\sigma&\le 3(n-1)+(3m+1)E.\label{smc:cg:eq:Rbound}
 \end{align}
 These bounds apply before deduplication or removal of identically zero
 equalities.
@@ -523,7 +725,7 @@ outputs creates at most $q_e-1$ internal output pairs and two external pairs,
 for a total at most $q_e+1$ when $q_e\ge1$. If $q_e=0$, it creates at most one
 bridge pair between the surviving neighbors. At a boundary or when neighboring
 blocks change simultaneously, fewer pairs may be created. Existing unchanged
-pairs need no new interval. This proves \eqref{eq:Jbound}.
+pairs need no new interval. This proves \eqref{smc:cg:eq:Jbound}.
 
 There are $d=n-1$ initial gap inequalities, $B$ positive batch-time
 increments, $\sum_e(p_e-2)$ additional incoming-incidence equalities,
@@ -538,11 +740,13 @@ conditions. Therefore
 \end{align*}
 \end{proof}
 
+\wtag\ The first inequality of \eqref{smc:cg:eq:Jbound} is Part~II's Lemma~\ref{smc:sd:lem:lifetimes}; Part~II's own size ledger \eqref{smc:sd:eq:rawcounts} counts witnesses and residuals in its event-coordinate format.
+
 The word \emph{sparse} here refers to the number of geometric conditions,
 not to the number of nonzero coefficients in each eliminated linear form.
 A deeply propagated intercept may depend on every initial gap. Storing all
 rows densely can take $O(dR_\sigma)$ coefficient slots; compiling them may
-have additional bookkeeping cost. Neither \eqref{eq:Rbound} nor degree two
+have additional bookkeeping cost. Neither \eqref{smc:cg:eq:Rbound} nor degree two
 is a constant arithmetic-operation bound for an unbounded computation.
 
 An implementation may scan the live list at each batch for simplicity.
@@ -551,7 +755,7 @@ can update adjacencies locally, while the attached small implementation
 prioritizes clarity and exact arithmetic over this engineering optimization.
 
 \section{Quadratic Diophantine certificates with unique slacks}
-\label{sec:quadratic}
+\label{smc:cg:sec:quadratic}
 
 \subsection{Positive denominator clearing}
 
@@ -569,13 +773,13 @@ description of the polynomial, even when its expanded quadratic has many
 monomials.
 
 \begin{theorem}[Unique-slack quadratic representation]
-\label{thm:quadratic}
+\label{smc:cg:thm:quadratic}
 For a nonrejected skeleton, define
 \begin{equation}
  P(g,z)=\|\mathsf E g\|_2^2+
         \|\mathsf Gg-\mathbf1-z\|_2^2,
  \qquad (g,z)\in\N^{d+s}.
- \label{eq:P}
+ \label{smc:cg:eq:P}
 \end{equation}
 Then $P$ is an integer polynomial of total degree at most two, globally
 nonnegative and convex on $\R^{d+s}$. Moreover,
@@ -583,12 +787,12 @@ nonnegative and convex on $\R^{d+s}$. Moreover,
  \exists z\in\N^s\ P(g,z)=0
  \quad\Longleftrightarrow\quad
  g\in\Z^d\cap\Ccal_\sigma.
- \label{eq:bijective}
+ \label{smc:cg:eq:bijective}
 \end{equation}
 For every accepted $g$, the auxiliary tuple is unique:
 \begin{equation}
  z=\mathsf Gg-\mathbf1.
- \label{eq:uniqueslack}
+ \label{smc:cg:eq:uniqueslack}
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -600,9 +804,11 @@ squares vanishes precisely when every squared form vanishes. Its zeros
 therefore require $\mathsf E g=0$ and
 $\mathsf G_jg=1+z_j\ge1$ for every strict row. Because these expressions are
 integers, this is equivalent to $\mathsf Gg>0$. The chamber theorem proves
-\eqref{eq:bijective}. The same equations force \eqref{eq:uniqueslack}, which
+\eqref{smc:cg:eq:bijective}. The same equations force \eqref{smc:cg:eq:uniqueslack}, which
 is a nonnegative integer tuple whenever $g$ is accepted.
 \end{proof}
+
+\wtag\ Theorems~\ref{smc:cg:thm:chamber} and~\ref{smc:cg:thm:quadratic} together are the common theorem of the two Parts (Section~\ref{smc:sec:routes}). Part~II proves it again as Theorem~\ref{smc:sd:thm:main}, with batch times and event positions kept as natural witnesses, adds halting semantics, and strengthens uniqueness to full column rank of the witness matrix (Lemma~\ref{smc:sd:lem:rank}).
 
 All event coordinates are reconstructed from $g$ and are absent from the
 auxiliary tuple. This avoids arbitrary rational encodings with multiple
@@ -623,20 +829,20 @@ MRDP to a skeleton verifier does not preserve this uniqueness for free.
 The present result is therefore not a proof that all computably enumerable
 sets admit single-fold or finite-fold Diophantine representations. Its
 stronger-than-usual feature is narrower and fully explicit: for each fixed
-collision skeleton, projection of \emph{all} natural zeros of \eqref{eq:P}
+collision skeleton, projection of \emph{all} natural zeros of \eqref{smc:cg:eq:P}
 onto the initial gaps is a bijection onto the actual integer realizations.
 There are no additional zeros corresponding to incomplete local histories.
 
 \section{Causal depth controls denominators and coefficient size}
-\label{sec:depth}
+\label{smc:cg:sec:depth}
 
 \subsection{A denominator invariant}
 
-Work in the integer-speed normalization of Section~\ref{sec:model}, and set
+Work in the integer-speed normalization of Section~\ref{smc:cg:sec:model}, and set
 \begin{equation}
  V=\max\bigl(1,\max_{a\in M}|v(a)|\bigr),\qquad
  D=\lcm\{|v(a)-v(b)|:v(a)\ne v(b)\}.
- \label{eq:VD}
+ \label{smc:cg:eq:VD}
 \end{equation}
 The least common multiple of an empty set is taken as $1$; in that case no
 collision is possible from a simple initial configuration.
@@ -647,7 +853,7 @@ the depth of its birth event. This is causal depth, not the chronological
 index of the batch.
 
 \begin{theorem}[Causal denominator bound]
-\label{thm:denominator}
+\label{smc:cg:thm:denominator}
 At an event of depth $h$, each coefficient of its time and position forms
 belongs to $D^{-h}\Z$. The same holds for every outgoing intercept. At an
 integer seed, the event coordinates therefore have reduced denominators
@@ -657,12 +863,14 @@ dividing $D^h$.
 Initial intercept coefficients are integral. Suppose an event has depth $h$.
 Its incoming intercepts have denominators dividing powers of $D$ no larger
 than $D^{h-1}$. Put them over the common denominator $D^{h-1}$. Formula
-\eqref{eq:meet} divides their difference by a nonzero integer velocity
+\eqref{smc:cg:eq:meet} divides their difference by a nonzero integer velocity
 difference dividing $D$. Its time coefficients thus belong to $D^{-h}\Z$.
 The position and all output intercepts use only addition and multiplication
 by integer velocities, preserving that lattice. Evaluation at integer gaps
 preserves the same denominator divisibility.
 \end{proof}
+
+\wtag\ Part~II proves the same divisibility for event coordinates as Lemma~\ref{smc:sd:lem:denom}, with its own proof.
 
 Only primes already present in the speed differences can appear in these
 coordinate denominators at an integer seed. At a rational seed, primes in
@@ -671,7 +879,7 @@ do not increase the denominator exponent along an unrelated causal chain.
 
 This is an upper bound, not an assertion that all factors of $D^h$ occur.
 Cancellations and special velocity configurations can make the actual
-precision requirement much smaller. Section~\ref{sec:clock} exhibits an
+precision requirement much smaller. Section~\ref{smc:cg:sec:clock} exhibits an
 explicit case in which exponential denominator magnitude is nevertheless
 unavoidable.
 
@@ -681,7 +889,7 @@ For a rational linear form, use the $\ell^1$ norm of its coefficient vector.
 Put $K=2+4V$. Initial intercepts have norm at most $d$.
 
 \begin{lemma}[Growth of propagated forms]
-\label{lem:norm}
+\label{smc:cg:lem:norm}
 Every intercept of depth at most $h$ has coefficient norm at most $dK^h$.
 Every event time and event position of depth at most $h$ satisfies the same
 bound.
@@ -689,7 +897,7 @@ bound.
 \begin{proof}
 Assume the input intercept norms at a depth-$h$ event are at most
 $M=dK^{h-1}$. A nonzero integer speed difference has absolute value at least
-one, so \eqref{eq:meet} gives $\|t_e\|_1\le2M$. Consequently
+one, so \eqref{smc:cg:eq:meet} gives $\|t_e\|_1\le2M$. Consequently
 \[
  \|x_e\|_1\le(1+2V)M,\qquad
  \|b_{\mathrm{out}}\|_1\le(1+4V)M.
@@ -699,12 +907,12 @@ depth obey the larger bound as well.
 \end{proof}
 
 \begin{proposition}[Integer row height]
-\label{prop:height}
+\label{smc:cg:prop:height}
 If the maximum event depth is $h$, each primitive integer chamber row can
 be chosen with every coefficient of absolute value at most
 \begin{equation}
  A=2d(1+V)(DK)^h.
- \label{eq:A}
+ \label{smc:cg:eq:A}
 \end{equation}
 In particular, for a fixed machine, row coefficient bit lengths are
 $O(h+\log d)$.
@@ -715,12 +923,12 @@ times a batch time. Its coefficient norm is at most
 $2dK^h+2VdK^h=2d(1+V)K^h$. Additional incidence residuals and differences of
 event times satisfy the same bound. Initial gap rows also do.
 All these coefficients have denominators dividing $D^h$ by
-Theorem~\ref{thm:denominator}. Multiplication by $D^h$ bounds every resulting
-integer coefficient by \eqref{eq:A}. Passing to a primitive integer row can
+Theorem~\ref{smc:cg:thm:denominator}. Multiplication by $D^h$ bounds every resulting
+integer coefficient by \eqref{smc:cg:eq:A}. Passing to a primitive integer row can
 only decrease this bound.
 \end{proof}
 
-The exponent in \eqref{eq:A} bounds coefficient \emph{magnitude}; its
+The exponent in \eqref{smc:cg:eq:A} bounds coefficient \emph{magnitude}; its
 logarithm is linear in depth. Exact rational arithmetic can therefore remain
 polynomial in the externally bounded history length even when ordinary
 fixed-precision floating-point simulation becomes unreliable. This is not
@@ -728,17 +936,17 @@ an assertion that the total number of events before acceptance has a
 computable bound in the initial input length.
 
 \section{Small integral realizations and finite-horizon synthesis}
-\label{sec:small}
+\label{smc:cg:sec:small}
 
 \begin{theorem}[Small positive integer seed]
-\label{thm:small}
+\label{smc:cg:thm:small}
 Let $\Ccal=\{g\in\R^d:\mathsf E g=0,\mathsf Gg>0\}$ be a nonempty chamber
 whose strict rows include $g_i>0$. Suppose all matrix coefficients are
 integers of absolute value at most $A\ge1$. Then $\Ccal$ contains a positive
 integer point satisfying
 \begin{equation}
  \max_i g_i\le d^{d/2}A^d.
- \label{eq:small}
+ \label{smc:cg:eq:small}
 \end{equation}
 Thus every realizable collision skeleton has a realization with a seed
 encoding of polynomial bit length in the explicit skeleton and initial
@@ -765,7 +973,7 @@ equalities, and has every strict row at least $\delta\ge1$.
 Each coordinate of $g$ is, up to sign, a determinant in which one column of
 $B$ has been replaced by $c$. Hadamard's inequality bounds its magnitude by
 $d^{d/2}A^d$; using the sharper bound on the replaced column is unnecessary.
-This proves \eqref{eq:small}. Combining it with \eqref{eq:A} gives the stated
+This proves \eqref{smc:cg:eq:small}. Combining it with \eqref{smc:cg:eq:A} gives the stated
 bit-length conclusion.
 \end{proof}
 
@@ -782,7 +990,7 @@ seed necessarily satisfy extra nonhomogeneous requirements such as an
 absolute prescribed distance or a fixed deadline.
 
 \begin{corollary}[An NP upper bound for bounded synthesis]
-\label{cor:NP}
+\label{smc:cg:cor:NP}
 Fix a rational signal machine and a distinguished output label. Given an
 initial label word of length $n$ and a unary bound $T$, the problem of whether
 some positive seed produces the distinguished label within a complete prefix
@@ -794,7 +1002,7 @@ created signal identities. Since $m$ is fixed, its discrete description has
 polynomial length in $n+T$. Guess such a skeleton, check its identities and
 rules, and check that the distinguished label appears in its prefix.
 
-If it is realizable, Theorem~\ref{thm:small} supplies a positive integer seed
+If it is realizable, Theorem~\ref{smc:cg:thm:small} supplies a positive integer seed
 with polynomial bit length: $d=n-1$, $h\le T$, and
 $\log A=O(T+\log n)$ for the fixed machine. Guess that seed as well.
 Propagating rational forms and verifying every chamber row then takes a
@@ -809,7 +1017,7 @@ elapsed physical time. A physical-time bound can contain arbitrarily many
 events and even an accumulation, so it is not interchangeable with $T$.
 
 \section{Robustness and the rank of synchronization constraints}
-\label{sec:robust}
+\label{smc:cg:sec:robust}
 
 The chamber description distinguishes two different sources of numerical
 difficulty. A trace can be sensitive because it demands an exact equality
@@ -818,12 +1026,12 @@ even while its combinatorial pattern is robust. The latter phenomenon will
 occur in the accumulating clock.
 
 \begin{theorem}[Certified perturbation radius and codimension]
-\label{thm:robust}
+\label{smc:cg:thm:robust}
 Let $\Ccal=\{g:\mathsf E g=0,\mathsf Gg>0\}$ be nonempty, with zero strict
 rows removed, and let $g^*\in\Ccal$. Define
 \begin{equation}
  \rho(g^*)=\min_j\frac{\mathsf G_jg^*}{\|\mathsf G_j\|_1}>0.
- \label{eq:rho}
+ \label{smc:cg:eq:rho}
 \end{equation}
 Every perturbation $\eta\in\ker\mathsf E$ with
 $\|\eta\|_\infty<\rho(g^*)$ preserves the skeleton. The chamber has relative
@@ -844,7 +1052,7 @@ zero in $\R^d$. Conversely, when the rank is zero, the finitely many strict
 inequalities define an open neighborhood of each accepted point.
 \end{proof}
 
-The radius in \eqref{eq:rho} is a certified lower bound, not necessarily the
+The radius in \eqref{smc:cg:eq:rho} is a certified lower bound, not necessarily the
 largest possible radius in the equality subspace. Restricting perturbations
 to that subspace can increase the true distance to a forbidden boundary.
 
@@ -864,7 +1072,7 @@ integer seed. Those objects separate an intended robust mechanism from an
 accidental coincidence created by a particular numeric sample.
 
 \section{Finite-horizon acceptance, semilinearity, and counting}
-\label{sec:counting}
+\label{smc:cg:sec:counting}
 
 \subsection{Disjoint first-acceptance chambers}
 
@@ -883,15 +1091,15 @@ for a fixed seed, deterministic complete chronology has just one first
 accepting prefix.
 
 \begin{theorem}[Finite-horizon semilinearity]
-\label{thm:semilinear}
+\label{smc:cg:thm:semilinear}
 The positive integer seed geometries accepted within site budget $T$ form
 an effectively constructible semilinear set. More specifically, they are a
 finite disjoint union of the integer points of rational homogeneous
-chambers of the form \eqref{eq:mainchamber}.
+chambers of the form \eqref{smc:cg:eq:mainchamber}.
 \end{theorem}
 \begin{proof}
 The enumeration above is finite and effective. For each skeleton,
-Theorem~\ref{thm:chamber} gives a complete linear characterization. On integer
+Theorem~\ref{smc:cg:thm:chamber} gives a complete linear characterization. On integer
 points, a strict integer inequality is equivalent to being at least $1$,
 so each chamber is definable in Presburger arithmetic. Finite union remains
 Presburger-definable. The effective equivalence with semilinear sets is the
@@ -901,6 +1109,9 @@ classical theorem of Ginsburg and Spanier~\cite{ginsburgspanier}.
 This use of the classical equivalence is not a new proof of that theorem.
 The new substrate-specific input to it is the exact finite union of
 collision chambers, including chronology and simultaneous-event boundaries.
+
+
+\wtag\ Part~II proves the same statement for its fixed schemas and event bounds, prefix and halting, as Proposition~\ref{smc:sd:prop:semilinear}.
 
 \subsection{A single quartic for an unknown bounded first-hit skeleton}
 
@@ -916,13 +1127,13 @@ vector $z_k$ for each chamber. Define
   +\sum_{k=1}^K\sum_i\bigl(b_k\mathsf E_{k,i}g\bigr)^2\notag\\
   &+\sum_{k=1}^K\sum_j
        \bigl(b_k(\mathsf G_{k,j}g-1)-z_{k,j}\bigr)^2.
- \label{eq:quarticunion}
+ \label{smc:cg:eq:quarticunion}
 \end{align}
 For an empty family, use $Q_T=1$.
 
 \begin{theorem}[Canonical first-hit quartic]
-\label{thm:quarticunion}
-Equation \eqref{eq:quarticunion} is a globally nonnegative integer polynomial
+\label{smc:cg:thm:quarticunion}
+Equation \eqref{smc:cg:eq:quarticunion} is a globally nonnegative integer polynomial
 of degree at most four. Its natural zeros project bijectively onto the
 integer seeds accepted within the fixed event budget. No Boolean equations
 for the selectors and no additional inactive-slack constraints are needed.
@@ -948,6 +1159,10 @@ chambers overlap, it still represents their union, but a seed in several
 chambers has several selector witnesses. First-hit canonicalization is
 therefore mathematically important, not cosmetic.
 
+\begin{remark}[\wtag\ Relation to a single-fold quadratic of another report]\label{smc:cg:rem:singlefold}
+The accepted set of Theorem~\ref{smc:cg:thm:quarticunion} is a finite union of chamber integer points, hence semilinear (Theorem~\ref{smc:cg:thm:semilinear}). The collection's report \emph{canonical-diophantine-certificates}~\cite{cdc} proves in its Part~XI (Theorem \texttt{cdc:of:thm:singlefoldsl}) that every semilinear set has a representation by an integer polynomial of degree at most two that is nonnegative on the real nonnegative orthant, with exactly one natural witness for each member, effectively from a Presburger formula. So, if only orthant nonnegativity is required, the first-hit set has a single-fold quadratic certificate. Theorem~\ref{smc:cg:thm:quarticunion} gives something different: an explicit construction from the chamber matrices, globally nonnegative on all real inputs, whose selector and slacks have the chamber meaning. Within the globally nonnegative class a quadratic has a rational affine zero set (Theorem~\ref{smc:cg:thm:rigidity}), and the selector products of \eqref{smc:cg:eq:quarticunion} leave that class, as the paragraph after Corollary~\ref{smc:cg:cor:barrier} says. Whether a globally nonnegative quadratic suffices for a given first-hit family is not decided here.
+\end{remark}
+
 This theorem removes external skeleton choice for a \emph{bounded} problem;
 it does not remove the bound. The number of candidate skeletons, and hence
 the number of selectors and slacks, may be very large and grows with $T$.
@@ -968,7 +1183,7 @@ many rational faces where one or more required strict expressions vanish.
 The upper box facets remain included.
 
 \begin{theorem}[Exact finite-horizon counting]
-\label{thm:ehrhart}
+\label{smc:cg:thm:ehrhart}
 For fixed machine, initial word, accepting label, and event budget $T$,
 $A_T(H)$ is an exact quasi-polynomial in $H$ for all positive integers $H$.
 It has degree at most $d$. Its ordinary generating function is rational and
@@ -976,7 +1191,7 @@ has poles only at roots of unity. Furthermore,
 \begin{equation}
  \lim_{H\to\infty}\frac{A_T(H)}{H^d}
  =\sum_{\sigma}\vol_d(\Pi_\sigma)\in\Q,
- \label{eq:density}
+ \label{smc:cg:eq:density}
 \end{equation}
 where the sum ranges over the first-acceptance chambers, and
 lower-dimensional terms have zero $d$-dimensional volume.
@@ -1006,7 +1221,7 @@ coefficient of a full-dimensional rational polytope count is its volume;
 removing proper faces does not change it. Equivalently, the same limit follows
 from Riemann sums for a bounded polyhedral set. Rational polytopes have
 rational volume by a rational triangulation and determinant formulas.
-Summing over the disjoint chambers proves \eqref{eq:density}.
+Summing over the disjoint chambers proves \eqref{smc:cg:eq:density}.
 \end{proof}
 
 Thus a finite-horizon seed-counting problem has a particularly rigid
@@ -1029,7 +1244,7 @@ $z$. Across different skeletons this statement uses a tagged disjoint family
 of certificates, not a single unqualified polynomial.
 
 \section{An exact first-collision tournament}
-\label{sec:tournament}
+\label{smc:cg:sec:tournament}
 
 \subsection{Three chambers and a complete polynomial}
 
@@ -1052,7 +1267,7 @@ The possible first events are exactly
  BC&u>2v&v\\
  ABC&u=2v&v=u/2.
  \end{array}
- \label{eq:tournament}
+ \label{smc:cg:eq:tournament}
 \end{equation}
 For instance, the formal $AC$ meeting time is $(u+v)/3$. If $u<2v$, it is
 later than $u/2$; if $u>2v$, it is later than $v$. It cannot be a different
@@ -1062,7 +1277,7 @@ The complete accepting chamber has the particularly small certificate
 \begin{equation}
  P_{AB}(u,v,z_1,z_2,z_3)=
  (u-1-z_1)^2+(v-1-z_2)^2+(2v-u-1-z_3)^2.
- \label{eq:tournamentpoly}
+ \label{smc:cg:eq:tournamentpoly}
 \end{equation}
 All five variables range over $\N$. At $u=v=1$, for example, the unique
 auxiliary tuple is $(0,0,0)$. At $(u,v)=(3,1)$, the third strict condition
@@ -1073,7 +1288,7 @@ For the triple-collision skeleton the compiler instead produces
 \begin{equation}
  P_{ABC}(u,v,z_1,z_2)=
  (u-2v)^2+(u-1-z_1)^2+(v-1-z_2)^2.
- \label{eq:triplepoly}
+ \label{smc:cg:eq:triplepoly}
 \end{equation}
 Its equality rank is one. The two binary-event chambers have rank zero and
 are open in the positive quadrant; the triple-collision chamber is
@@ -1095,7 +1310,7 @@ one-dimensional and requires exact synchronization.
 \end{tikzpicture}
 \caption{The first-event geometry is partitioned into two open cones and a
 synchronization ray. The coordinate axes are excluded.}
-\label{fig:chambers}
+\label{smc:cg:fig:chambers}
 \end{figure}
 
 \subsection{Counting, generating function, and inversion}
@@ -1110,7 +1325,7 @@ $C(0)=0$. Direct summation gives
  \end{cases}\notag\\
  &=\floor{\frac{3H^2+1}{4}}
   =\frac{3H^2}{4}+\frac{1-(-1)^H}{8}.
- \label{eq:count}
+ \label{smc:cg:eq:count}
 \end{align}
 For $H=2m$, split the sum after $v=m$; the odd-number sum contributes $m^2$
 and the remaining $m$ terms contribute $2m^2$. The odd case follows by the
@@ -1127,16 +1342,16 @@ Its ordinary generating function is
 \begin{equation}
  \sum_{H\ge0}C(H)z^H
  =\frac{z(1+z+z^2)}{(1-z)^3(1+z)}.
- \label{eq:gf}
+ \label{smc:cg:eq:gf}
 \end{equation}
 This follows from the standard geometric-series derivatives applied to
-\eqref{eq:count}, or by expanding the displayed rational function.
+\eqref{smc:cg:eq:count}, or by expanding the displayed rational function.
 
 There is also an exact inverse threshold. For every positive integer $y$,
 \begin{equation}
  \min\{H\ge0:C(H)\ge y\}
  =\ceil{\sqrt{\frac{4y-1}{3}}}.
- \label{eq:inverse}
+ \label{smc:cg:eq:inverse}
 \end{equation}
 Indeed, because $y$ is integral,
 $\floor{(3H^2+1)/4}\ge y$ is equivalent to $3H^2+1\ge4y$.
@@ -1148,13 +1363,13 @@ The smooth expression inside the ceiling has the expansion
  -\frac{1}{64\sqrt3}y^{-3/2}
  -\frac{1}{512\sqrt3}y^{-5/2}
  +O(y^{-7/2}).
- \label{eq:inverseasymptotic}
+ \label{smc:cg:eq:inverseasymptotic}
 \end{align}
 The binomial series supplies all further orders. The ceiling in
-\eqref{eq:inverse} is essential: omitting it would incorrectly replace an
+\eqref{smc:cg:eq:inverse} is essential: omitting it would incorrectly replace an
 integer inverse's bounded rounding oscillation by a decaying error.
 
-\subsection{Independent simultaneous sites}
+\subsection{Independent simultaneous sites}\label{smc:cg:sec:simultaneous}
 
 Take the transparent two-speed machine with $v(P)=1$, $v(N)=-1$, and initial
 word $P,N,P,N$. With gaps $(2,5,2)$, the two disjoint pairs $(0,1)$ and
@@ -1169,8 +1384,10 @@ from $2$ to $3$ destroys that equality. This example tests a different
 failure mode from the omitted third input of a multiple collision: the
 missing event is spatially separate, not an extra signal at the same site.
 
+\wtag\ Part~II's hidden collision at the final cut (Section~\ref{smc:sd:sec:finalcut}) is another instance of this failure mode, rejected by the same strict endpoint of a surviving pair (Section~\ref{smc:sec:routes}).
+
 \section{A four-speed clock with exponentially growing denominators}
-\label{sec:clock}
+\label{smc:cg:sec:clock}
 
 \subsection{Rules and a closed-form execution}
 
@@ -1182,7 +1399,7 @@ with rules
 \begin{equation}
  \{P,R\}\longrightarrow\{N,R\},\qquad
  \{L,N\}\longrightarrow\{L,P\},
- \label{eq:clockrules}
+ \label{smc:cg:eq:clockrules}
 \end{equation}
 and transparent defaults. Initially put $L$ at $0$, $P$ at $u$, and $R$ at
 $u+v$, with $u,v>0$. The left boundary is stationary, the right boundary
@@ -1191,15 +1408,15 @@ $2$ and left at speed $2$, reflecting at the boundaries via the two rules.
 
 Write $S=u+v$ and $W=3u+2v$. The collision times are
 \begin{align}
- t_{2k+1}&=S-\frac{W}{3^{k+1}},&&k\ge0,\label{eq:clockodd}\\
- t_{2k}&=S-\frac{W}{2\cdot3^k},&&k\ge1.\label{eq:clockeven}
+ t_{2k+1}&=S-\frac{W}{3^{k+1}},&&k\ge0,\label{smc:cg:eq:clockodd}\\
+ t_{2k}&=S-\frac{W}{2\cdot3^k},&&k\ge1.\label{smc:cg:eq:clockeven}
 \end{align}
 Odd collisions occur on the right boundary at position $S-t_{2k+1}$;
 even collisions occur at position zero.
 
 \begin{proposition}[Clock correctness and common chamber]
-\label{prop:clock}
-For every $u,v>0$, equations \eqref{eq:clockodd}--\eqref{eq:clockeven}
+\label{smc:cg:prop:clock}
+For every $u,v>0$, equations \eqref{smc:cg:eq:clockodd}--\eqref{smc:cg:eq:clockeven}
 describe the actual alternating execution. The collision times strictly
 increase to $S$. Every finite alternating prefix has the whole positive
 $(u,v)$ quadrant as its seed chamber.
@@ -1220,7 +1437,7 @@ all times are less than $S$. Between collisions the moving particle lies
 strictly between the two boundaries. The boundaries themselves meet only at
 $S$, not at any finite indexed event. There is therefore no unlisted
 collision in any finite prefix. The labels alternate exactly as specified
-by \eqref{eq:clockrules}, independently of the positive gaps. This proves
+by \eqref{smc:cg:eq:clockrules}, independently of the positive gaps. This proves
 both correctness and the common-chamber statement.
 \end{proof}
 
@@ -1253,7 +1470,7 @@ both correctness and the common-chamber statement.
 \end{tikzpicture}
 \caption{A four-speed accumulating clock. The drawing displays only a finite
 number of segments; the formulas specify all finite prefixes.}
-\label{fig:clock}
+\label{smc:cg:fig:clock}
 \end{figure}
 
 \subsection{A denominator lower bound without fragile synchronization}
@@ -1273,7 +1490,7 @@ predecessor. Thus denominator magnitude is exponential in causal depth,
 while its bit length is linear in depth.
 
 Here the integer speed differences have least common multiple $D=12$,
-so Theorem~\ref{thm:denominator} correctly gives a divisible upper bound
+so Theorem~\ref{smc:cg:thm:denominator} correctly gives a divisible upper bound
 $12^j$. The example does not make that upper bound sharp in its base, but it
 rules out a depth-independent denominator bound or a polynomial-magnitude
 bound for general rational signal machines.
@@ -1292,8 +1509,11 @@ not a claim to have discovered accumulation. Our compiler verifies every
 ordinary finite prefix before $S$; it assigns no transition or computational
 power to the limiting point at $S$.
 
+
+\wtag\ Part~II's bounded shuttle (Proposition~\ref{smc:sd:prop:sharpness}) uses the same mechanism on a different four-speed machine, with reduced denominators exactly $3^{k-1}$ (Section~\ref{smc:sec:routes}).
+
 \section{Why a fixed universal convex quadratic cannot follow}
-\label{sec:barrier}
+\label{smc:cg:sec:barrier}
 
 A natural question is whether the quadratic frontend can be compressed into
 one fixed polynomial with a fixed number of witnesses for arbitrary
@@ -1302,7 +1522,7 @@ there is an elementary obstruction stronger than a failure of the present
 construction.
 
 \begin{theorem}[Linear zero-set rigidity]
-\label{thm:rigidity}
+\label{smc:cg:thm:rigidity}
 Let $Q(w)$ be a quadratic polynomial with rational coefficients that is
 nonnegative for every $w\in\R^N$. Its real zero set is either empty or a
 rational affine subspace. The projection of its nonnegative integer zeros
@@ -1335,14 +1555,14 @@ Ginsburg--Spanier and Presburger arithmetic~\cite{ginsburgspanier}.
 \end{proof}
 
 \begin{corollary}[Convex-quadratic compression barrier]
-\label{cor:barrier}
+\label{smc:cg:cor:barrier}
 An undecidable halting relation cannot be represented by one fixed globally
 nonnegative rational quadratic with a fixed finite number of natural
 parameters and witnesses, even after a computable input-loading map.
 \end{corollary}
 \begin{proof}
 The projected zero relation would be decidable by
-Theorem~\ref{thm:rigidity}. Its preimage under a computable input-loading map
+Theorem~\ref{smc:cg:thm:rigidity}. Its preimage under a computable input-loading map
 would then be decidable as well, contradicting the assumed undecidability.
 \end{proof}
 
@@ -1353,13 +1573,17 @@ polynomials, or cubic Diophantine representations. For example,
 $x-y^2=0$ is a quadratic equation with a nonlinear zero set, but its
 polynomial is not globally nonnegative and is outside the theorem.
 
-The quartic first-hit construction in \eqref{eq:quarticunion} leaves the
+The quartic first-hit construction in \eqref{smc:cg:eq:quarticunion} leaves the
 convex-quadratic class by multiplying selectors and input-dependent linear
 forms. Its finite-horizon relation remains decidable for other reasons.
 A truly unbounded compiler must additionally encode an unbounded amount of
 discrete chronology into finitely many integer variables. That compression,
 not the local collision geometry, is where the universal Diophantine
 problem re-enters.
+
+\begin{remark}[\wtag\ Credit]\label{smc:cg:rem:credit}
+Theorem~\ref{smc:cg:thm:rigidity} and Corollary~\ref{smc:cg:cor:barrier} are a special case of results already in Part~XI of the collection's report \emph{canonical-diophantine-certificates}~\cite{cdc}, which source~07 does not cite. There, Lemma \texttt{cdc:of:lem:affinezero} shows that a real polynomial $p$ of degree at most three that is nonnegative on an open convex set $O$ and vanishes at $a\in O$ vanishes on $O$ exactly along $a+\ker\nabla^2p(a)$; with $O=\R^N$ this is the affine zero set of Theorem~\ref{smc:cg:thm:rigidity}. Theorem \texttt{cdc:of:thm:cubicsemilinear} shows that the full natural zero set of a \emph{rational} polynomial of degree at most three that is nonnegative only on the real nonnegative orthant is a finite union of natural solution sets of rational affine systems, and Theorem \texttt{cdc:of:thm:classification} that the coordinate projections of such zero sets are exactly the semilinear sets, $\mathrm D^+_2(k)=\mathrm D^+_3(k)=\mathrm{SL}(k)$, effectively. Those results assume less (nonnegativity on the orthant only, degree up to three, no convexity or sum-of-squares hypothesis) and give the same decidable, semilinear conclusion; that report itself notes that its theorem is stronger than the observation that a globally nonnegative polynomial cannot have odd highest degree. Corollary~\ref{smc:cg:cor:barrier} therefore also holds for orthant-nonnegative polynomials of degree at most three. No novelty is claimed here for either statement. Source~07's proof by completing the square is kept as a direct second route for the globally nonnegative quadratic case, and its clause ``even after a computable input-loading map'' is its own: a computable preimage of a decidable set is decidable.
+\end{remark}
 
 \subsection{The classical unbounded existence result remains available}
 
@@ -1386,8 +1610,11 @@ by exact bounded simulation, would decide halting. This explains why the
 bounded chamber theorems and the universal existence theorem coexist without
 contradiction.
 
+
+\wtag\ The last argument is the standard bounded-search argument, used for other statements in Proposition \texttt{cdc:bd:prop:nobound} of~\cite{cdc} and elsewhere in the collection.
+
 \section{Implementation, reproducible checks, and trust boundaries}
-\label{sec:implementation}
+\label{smc:cg:sec:implementation}
 
 \subsection{What the attached code computes}
 
@@ -1415,7 +1642,7 @@ A compiled \texttt{Certificate} contains the complete integer matrices,
 exact rational event forms, causal depths, interval count, and raw row
 ledger. Its \texttt{witnesses(gaps)} method returns the unique natural slack
 tuple, while \texttt{evaluate(gaps, witnesses)} evaluates the full polynomial.
-The \texttt{UnionCertificate} implements \eqref{eq:quarticunion}. Its
+The \texttt{UnionCertificate} implements \eqref{smc:cg:eq:quarticunion}. Its
 constructor does not prove that a supplied family is globally disjoint;
 that is a mathematical precondition for uniqueness. At a supplied seed,
 its witness routine rejects multiple accepting chambers rather than
@@ -1430,7 +1657,7 @@ orders. These checks are part of the semantic contract.
 
 The exported JSON matrices specify full polynomials, not just sample zeros.
 For example, \texttt{tournament\_left.json} contains all rows of
-\eqref{eq:tournamentpoly}, while
+\eqref{smc:cg:eq:tournamentpoly}, while
 \texttt{first\_hit\_quartic\_union.json} supplies every matrix and the exact
 selector formula for a two-chamber union. Expanding these expressions into
 monomials is optional and provides no extra mathematical information.
@@ -1447,9 +1674,12 @@ No Python third-party dependencies are needed. The test command overwrites
 the generated JSON data with deterministic results, including
 \texttt{data/checks.json}.
 
+
+\wtag\ These are the delivered names. In this report the programs are shipped as \path{code/07-collision-geometry-run_checks.py} and \path{code/07-collision-geometry-signal_certificates.py} (with the delivered \path{Makefile} as \path{code/07-collision-geometry-Makefile}), and the seven JSON files of \path{data/} as \path{data/07-collision-geometry-*.json}. The test program imports \texttt{signal\_certificates} by its delivered name and rewrites all seven JSON files in place, relative to its own directory's parent; it must therefore be run on a copy with the delivered layout (see the README). It was so run at the write, under Python~3.14.4 on Windows: it passed with 34,560 assertions, and the seven regenerated files equal the shipped ones apart from line endings. The delivered article PDF is not shipped; this report's PDF replaces it.
+
 The completed run accompanying this manuscript passed \textbf{34,560 exact
 assertions}. Its principal coverage is summarized in
-Table~\ref{tab:tests}. These are finite regression tests, not exhaustive
+Table~\ref{smc:cg:tab:tests}. These are finite regression tests, not exhaustive
 verification of all machines or all input geometries.
 
 \begin{table}[htbp]
@@ -1472,7 +1702,7 @@ Two-chamber quartic-union seed checks & 1,600\\
 \end{tabular}
 \caption{Finite exact test coverage. Individual assertions also check
 witness mutations, denominators, malformed inputs, and table immutability.}
-\label{tab:tests}
+\label{smc:cg:tab:tests}
 \end{table}
 
 The pseudorandom cases include creation, annihilation, and transparent rules.
@@ -1485,7 +1715,7 @@ validity and that inactive slacks are forced to zero.
 
 \subsection{An auditable resource ledger}
 
-Table~\ref{tab:ledger} separates retained conditions from raw generated rows.
+Table~\ref{smc:cg:tab:ledger} separates retained conditions from raw generated rows.
 The generic bound is deliberately loose; redundancy elimination can be
 substantial. The 24-batch clock is a useful example: its entire seed chamber
 reduces to only three retained strict rows, even though its geometric
@@ -1510,7 +1740,7 @@ Clock, 24 batches & 24&24&0&3&122&318\\
 \caption{Exact compiler ledger: $r$ is the retained equality count and $s$
 the retained strict-row count. The rightmost column is
 $3(n-1)+(3m+1)E$, not an arithmetic-operation count.}
-\label{tab:ledger}
+\label{smc:cg:tab:ledger}
 \end{table}
 
 \subsection{What has and has not been verified}
@@ -1538,10 +1768,15 @@ ledgers; none is used as a theorem in the present proofs. The new row counts
 are not comparable to a fixed-universal arithmetic count without a separate
 input and history compression analysis.
 
-\section{Further research questions and a concrete development path}
-\label{sec:future}
 
-\subsection{Formalizing the chronology theorem}
+\wtag\ The pin \texttt{f1edb38f9} is an ancestor of this report's placement commit. The audit blob \texttt{cb31d0a10} is still the current \path{Computability/HilbertTenthProblem/Papers/1980/REVERSIBLE_FINITE_HISTORY_MODELS.md} at the write; the project README~\cite{repo} has gained text since the pin and still states the 75- and 87-operation bounds. The repository's own review of this package~\cite{reviewsignal} is described in Section~\ref{smc:sec:relation}.
+
+\section{Further research questions and a concrete development path}
+\label{smc:cg:sec:future}
+
+\wtag\ Table~\ref{smc:tab:questions} pairs these directions with the questions of Part~II. The first two coincide with Part~II's Questions~\ref{smc:sd:q:formal} and~\ref{smc:sd:q:universal}.
+
+\subsection{Formalizing the chronology theorem}\label{smc:cg:q:formal}
 
 The most direct formalization target is the endpoint lemma followed by the
 sweep invariant: the live list is in strict spatial order on every open
@@ -1558,7 +1793,7 @@ rational event forms. A second is a proof-producing compiler rather than a
 trusted Python translator. Tests that compare two unverified programs should
 remain auxiliary evidence, not be promoted to kernel verification.
 
-\subsection{An audited universal signal-machine frontend}
+\subsection{An audited universal signal-machine frontend}\label{smc:cg:q:universal}
 
 Instantiate a published finite-input universal construction with its exact
 labels, velocities, all required collision rules, transparent defaults, input
@@ -1574,7 +1809,7 @@ end-to-end substrate result. A fixed-arity universal polynomial would still
 require a separate outer compression step and its own complete resource
 ledger.
 
-\subsection{Sharper denominator invariants}
+\subsection{Sharper denominator invariants}\label{smc:cg:q:denominators}
 
 The factor $D^h$ treats all speed differences uniformly. Can one use a
 velocity-labelled dependency graph to compute exact prime-valuation bounds
@@ -1586,11 +1821,11 @@ interaction between arithmetic precision and global dynamics is subtler
 than a least-common-multiple bound alone.
 
 A particularly concrete project is to propagate prime-valuation vectors
-through \eqref{eq:meet} and detect systematic cancellation at each rule.
+through \eqref{smc:cg:eq:meet} and detect systematic cancellation at each rule.
 Any claimed lower bound must use reduced denominators, not merely the
 unreduced fractions produced by a particular implementation.
 
-\subsection{From few rows to small arithmetic circuits}
+\subsection{From few rows to small arithmetic circuits}\label{smc:cg:q:circuits}
 
 The event-sparse theorem controls row count but permits dense coefficient
 vectors. Can common subexpressions in intercept forms give a substantially
@@ -1606,9 +1841,9 @@ degree, coefficient height, and literal addition/multiplication count.
 No one-dimensional comparison such as ``quadratic beats a degree-169
 polynomial'' is meaningful when arity and unbounded-history coding differ.
 
-\subsection{Avoiding exhaustive first-hit enumeration}
+\subsection{Avoiding exhaustive first-hit enumeration}\label{smc:cg:q:firsthit}
 
-The quartic in \eqref{eq:quarticunion} is explicit but can contain an enormous
+The quartic in \eqref{smc:cg:eq:quarticunion} is explicit but can contain an enormous
 number of chambers. Can a local selector circuit encode a bounded unknown
 skeleton with polynomially many variables while retaining canonical first-hit
 uniqueness, including all simultaneous events? A promising direction is to
@@ -1620,7 +1855,7 @@ Even a polynomial-size bounded compiler would not solve fixed-arity
 unbounded compression. Keeping those two improvements distinct will make
 future operation claims interpretable.
 
-\subsection{Robust universality and minimal synchronization rank}
+\subsection{Robust universality and minimal synchronization rank}\label{smc:cg:q:robust}
 
 For a given computational simulation, determine the rank of its required
 input-geometry equalities. Can the same computation be realized on a
@@ -1634,7 +1869,7 @@ The chamber theorem makes that invariant concrete for each finite trace,
 but extending it uniformly over a universal family needs a precise notion
 of simulation and allowed perturbation.
 
-\subsection{Counting complexity and asymptotic structure}
+\subsection{Counting complexity and asymptotic structure}\label{smc:cg:q:counting}
 
 Determine when first-hit chamber counts can be computed without enumerating
 all skeletons. Are there useful machine classes for which a recurrence on
@@ -1649,7 +1884,7 @@ densities. The increasing accepted sets give monotonicity, but a rational
 limit is not automatic. Quantitative tail estimates would be needed for a
 useful approximation theorem and for interchanging input-box and time limits.
 
-\subsection{Algebraic velocities and nonlinear motion}
+\subsection{Algebraic velocities and nonlinear motion}\label{smc:cg:q:algebraic}
 
 With velocities in a fixed algebraic number field, formal event coordinates
 remain linear over that field. However, positivity is no longer a rational
@@ -1659,13 +1894,13 @@ part of the method, but the rational-cone, Presburger, and Ehrhart conclusions
 would require new arguments or additional hypotheses.
 
 If signals accelerate or their velocities depend on variable parameters,
-\eqref{eq:meet} ceases to divide only by a fixed constant. This identifies a
+\eqref{smc:cg:eq:meet} ceases to divide only by a fixed constant. This identifies a
 precise boundary of the present linearization. Studying which broader motion
 laws still admit low-degree complete chronological certificates is a more
 informative problem than assuming every geometric model behaves like the
 fixed-speed case.
 
-\subsection{Accumulation limits without fictitious infinite witnesses}
+\subsection{Accumulation limits without fictitious infinite witnesses}\label{smc:cg:q:accumulation}
 
 The clock gives a finitely described accumulation time, but a generic finite
 prefix certificate cannot assert all events of an infinite run. A separate
@@ -1676,6 +1911,7 @@ silently treat an infinite sequence of successful finite checks as one
 ordinary existential Diophantine witness.
 
 \section{Conclusion}
+\label{smc:cg:sec:conclusion}
 
 For rational fixed-speed signal machines, the continuous coordinates of a
 finite computation are not the difficult nonlinear part. Once a discrete
@@ -1697,15 +1933,439 @@ The unresolved universal task is sharply separated: finitely encode an
 unbounded discrete skeleton together with the ordinary input interface.
 The convex-quadratic rigidity theorem explains why this cannot be achieved
 by merely hiding more geometry inside one fixed globally nonnegative
-quadratic. The present contribution is a complete and auditable geometric
+quadratic. (\wtag\ The rigidity theorem is a special case of Part~XI of \emph{canonical-diophantine-certificates}; Remark~\ref{smc:cg:rem:credit}.) The present contribution is a complete and auditable geometric
 frontend, together with a clear account of which further arithmetic and
 formalization steps remain.
 
-\appendix
-\section{A minimal worked use of the compiler}
-\label{app:example}
+\part{Direct Diophantine certificates (source 11)}\label{smc:part:sd}
 
-The following code can be run from the archive root. It builds the
+\noindent\wtag\ Part~II prints batch-78 manuscript~11, \emph{Direct Diophantine Certificates for Rational Signal Machines: Finite collision schemas with unique quadratic witnesses}, ``research article and exact arithmetic replay'', dated 2 October 2026; its document metadata name the author as ``Research report prepared with OpenAI''. Its labels carry the prefix \texttt{smc:sd:}; its sections are Sections~\ref{smc:sd:sec:purpose}--\ref{smc:sd:sec:conclusion} here and its two appendices are Appendices~\ref{smc:sd:app:replay} and~\ref{smc:sd:app:sources}. It proves the theorem of Part~\ref{smc:part:cg} by a second route (Section~\ref{smc:sec:routes}); it is printed in full, and its lemmas that coincide with lemmas of Part~I carry \wtag\ notes. Its abstract and keywords follow.
+\begin{quote}\small
+\textbf{Abstract (source 11).} A prescribed finite collision history of a rational signal machine admits an explicit Diophantine certificate that retains the machine's geometry. After external normalization, we compile each finite schema into a sum of squares of integer affine residuals. Natural zeros are exactly its realizations, and every admissible input has exactly one witness tuple. The witness coefficient matrix has full column rank, so the polynomial is strictly convex in the witnesses. A sparse construction uses event coordinates, batch times, and typed endpoints of maximal adjacency lifetimes; for bounded collision arity and fanout its size is linear in the initial support and number of events. The endpoint types enforce complete collisions, simultaneous events, and the absence of a hidden collision at the final cut. We prove denominator divisibility and an explicit witness-height bound for the four-speed interface of a known universal signal machine. The construction is a uniform compiler for externally supplied finite schemas, not a fixed-arity representation of unbounded halting. Exact standard-library replays and fully worked examples accompany the proofs.
+\end{quote}
+
+\noindent\textbf{Keywords.} Diophantine representation; signal machine; abstract geometrical computation; finite trace; unique witness; convex quadratic; semilinear set.
+
+\section{Purpose and relation to prior work}\label{smc:sd:sec:purpose}
+Turing-complete substrates can store and transform information in very different ways. Signal machines use a finite collection of particle types moving continuously on a line and interacting at collisions. A direct arithmetization of their geometry should explain both the prescribed events and the absence of all other events. Merely writing down line intersections leaves the latter obligation unresolved.
+
+This article establishes that obligation for each fixed finite collision schema. Its contribution is an explicit integer certificate, including denominator control, canonical witnesses, sparse size bounds, and exact endpoint conditions. No general claim that signal-machine evolution is newly linearizable is intended. Durand-Lose's linear real-register simulation already computes the next delay, updates gaps, and processes simultaneous events by finitely many linear branches \cite[Section~4]{DL07}. Our arithmetic constraints begin after a particular finite branch history has been fixed.
+
+The substrate itself is already Turing universal. Durand-Lose gives a halting construction with 13 meta-signals and 21 \emph{non-blank} collision rules; its four speeds are $-2,0,1,2$ \cite[Theorem~5 and Figure~4]{durandlose}. The construction uses a finite initial configuration and is separate from the paper's weaker, non-halting cellular-automaton simulation with an infinite background. After a Galilean shift the speeds become $0,2,3,4$. The rational normalized placements used in the halting arrangement can be scaled to integer positions, as proved generally below. We have not transcribed or executed that universal collision table. The accompanying replay uses small exact test machines.
+
+The results are deliberately bounded in a precise sense. The machine, input length and labels, schema, and number of batches are compiler data. The polynomial's arity grows with the schema. Nothing here packs unbounded execution into one fixed-arity quadratic, resolves the single-fold Diophantine representation problem, improves a universal-polynomial arithmetic-operation bound, or formalizes the proof in a proof assistant. A targeted literature check supports the stated relation to earlier work; it does not establish exhaustive novelty.
+
+
+\wtag\ Source~11 does not know source~07, printed as Part~\ref{smc:part:cg}, which proves the same theorem with all event coordinates eliminated and allows signed rational speeds; Section~\ref{smc:sec:routes} compares the two routes. The repository has since reviewed this manuscript in its Hilbert-tenth-problem research tree (Section~\ref{smc:sec:relation}).
+
+\section{Model and exact theorem}\label{smc:sd:sec:model}
+Throughout, $\NN=\{0,1,2,\ldots\}$. Inputs and witnesses are natural numbers unless explicitly stated otherwise.
+
+\begin{definition}[Normalized signal machine]
+A machine $\cM$ consists of a finite set of labels, a fixed speed $v(\ell)\in\NN$ for each label, and a deterministic collision table. A legal incoming set has at least two labels with pairwise distinct speeds. Its outgoing set also has pairwise distinct speeds and may be empty. An initial configuration consists of labels $\ell_0,\ldots,\ell_{n-1}$ at positions
+\[
+ 0\le p_0<p_1<\cdots<p_{n-1},\qquad p_j\in\NN.
+\]
+Between collisions a signal follows a straight line of its label's speed. At a collision every incident signal is consumed and the designated outgoing set is emitted at that point.
+\end{definition}
+
+If an incoming set has no rule, the collision is forbidden, unless the model explicitly completes the table by a transparent rule. Such a rule consumes the incident segments and emits the same labels, ordered by speed. The theorem works for either convention after the machine is fixed. The replay scripts use identity completion, so an omitted rule in their input is transparent, not forbidden.
+
+We distinguish labels from \emph{segment identities}. Each initial signal has its own identity, and each emitted signal receives a fresh one, even if a transparent rule reproduces the same label. A segment has one birth and at most one death. Initial signals are born at time zero. This distinction is essential for endpoint typing.
+
+\begin{definition}[Finite collision schema]
+Fix the machine and the initial label list. A schema $\cS$ specifies $K$ nonempty chronological batches. In batch $i$, a partition of the ordered pre-batch live list into consecutive blocks designates each nonsingleton block as an event and each singleton as a persisting signal. Every event uses a legal rule, and its incoming speeds strictly decrease from left to right. Its outputs are ordered by strictly increasing speed. All replacements in a batch are performed atomically. Segment births precede their deaths by at least one batch.
+\end{definition}
+
+The schema fixes no event coordinates or durations. Its events within a batch are ordered from left to right by their incoming blocks. Zero-output events are retained as events. A schema with $K=0$ has no events. No initial collision markers, infinite initial support, or accumulation events are included.
+
+A \emph{prefix realization} has exactly these first $K$ nonempty collision batches and ends immediately after batch $K$. The $K=0$ prefix is the initial configuration alone. A \emph{halting realization} additionally has no future collision. Halting does not require all signals to disappear or stop moving. There is no arbitrary terminal observation time.
+
+Let $E$ be the number of events, $I=\sum_e|\inset(e)|$ the number of incoming incidences, $r$ the largest incoming arity, and $s$ the largest fanout. Set $\nminus=\max(n-1,0)$ and
+\begin{equation}\label{smc:sd:eq:modulus}
+ D=\lcm\{|v-w|:v,w\text{ are machine speeds},\ v\ne w\},\qquad B=D^K,
+\end{equation}
+with the empty least common multiple equal to one.
+
+\noindent\wtag\ Theorem~\ref{smc:sd:thm:main} is, for prefix semantics, the theorem of Part~I's Theorems~\ref{smc:cg:thm:chamber} and~\ref{smc:cg:thm:quadratic}, in a different witness format: natural absolute positions as input, and batch times, event positions and slacks as witnesses on the grid $B$. Its halting version, the full column rank and the size ledger \eqref{smc:sd:eq:rawcounts}--\eqref{smc:sd:eq:linearcounts} are not in Part~I. Source~11's proof is printed in full as the second route.
+
+\begin{theorem}[Sparse canonical certificate]\label{smc:sd:thm:main}
+There is an effective compiler which, for every such fixed schema, produces integer affine residuals $r_1,\ldots,r_R$ in the input coordinates $\mathbf p$ and witnesses $\mathbf y\in\NN^W$, and a polynomial
+\[
+ P_{\cS}(\mathbf p,\mathbf y)=\sum_{a=1}^R r_a(\mathbf p,\mathbf y)^2.
+\]
+For prefix semantics, a natural zero exists exactly when $\mathbf p$ realizes the schema. For halting semantics the same statement holds after the terminal conditions below are included. For every admissible input the witness is unique. The witness coefficient matrix has full column rank; consequently, if $W>0$, the Hessian in the witness variables is positive definite.
+
+If $L$ denotes the number of recorded adjacency lifetimes, including terminal rays when present, then
+\begin{align}
+ L&\le \nminus+\sum_e(|\out(e)|+1),\label{smc:sd:eq:Lbound}\\
+ W&\le E+2K+2L+\nminus,\qquad
+ R\le I+K+2L+\nminus.\label{smc:sd:eq:rawcounts}
+\end{align}
+In particular,
+\begin{equation}\label{smc:sd:eq:linearcounts}
+ W\le(2s+5)E+3\nminus,\qquad
+ R\le(r+2s+3)E+3\nminus.
+\end{equation}
+The polynomial has degree at most two, and degree exactly two whenever its witness vector is nonempty.
+\end{theorem}
+
+Syntactically illegal schemas are rejected before compilation. For the halting version, a final live order with a negative adjacent relative velocity is likewise rejected as impossible. One can instead output the constant polynomial one for these cases; the stated resource ledger concerns the structurally admitted construction. At $K=0$, the prefix compiler may use only input-order checks. For $n\le1$ it has no witnesses and returns zero. This harmless degenerate case is not a strictly convex function on a positive-dimensional space.
+
+\section{Rational normalization and denominator control}\label{smc:sd:sec:normalization}
+\subsection{Normalization is an external interface}\label{smc:sd:sec:normalize}
+Suppose the original speeds are rational numbers $u(\ell)$. Choose a rational $c\le\min_\ell u(\ell)$ and a positive integer $m$ such that every $m(u(\ell)-c)$ is an integer. For a fixed rational input choose a rational translation $a$ and positive integer $q$ so that every $q(x_j+a)$ is a nonnegative integer. The invertible coordinate change
+\begin{equation}\label{smc:sd:eq:normalize}
+ X=q(x+a-ct),\qquad T=\frac{q}{m}t
+\end{equation}
+preserves simultaneous incidence, spatial order at each time, positive time direction, and the collision rules. Its speeds are
+\[
+ \frac{dX}{dT}=m(u(\ell)-c)\in\NN,
+\]
+and its initial coordinates are natural numbers. Thus every finite rational configuration can be put into the theorem's interface.
+
+The constants $a,c,m,q$ are chosen \emph{outside} the existential witness tuple. For a varying input family with fixed denominator and shift, the natural input $p_j=q(x_j+a)$ is the declared coordinate encoding. Allowing an arbitrary additional scale as a witness produces many proportional encodings; allowing raw variable numerators and denominators introduces products when denominators are cleared. Neither change preserves the present canonical, jointly quadratic claim without a new argument. Inputs at arbitrary real coordinates are outside this interface.
+
+
+\wtag\ Part~I needs no Galilean shift: it allows signed integer speeds after the time rescaling $\tau=t/L$ (Section~\ref{smc:cg:sec:model}) and takes the gap vector as input. With $m=L$ the two normalizations give the same speed differences, hence the same $D$ (Section~\ref{smc:sec:routes}).
+
+\subsection{Causal depth and a fixed grid}
+Assign depth zero to initial births. The depth of event $e$ is one plus the maximum depth of the birth events of its incoming segments, with initial births contributing zero. Every birth lies in an earlier batch, so the maximum event depth $H$ satisfies $H\le K$.
+
+\begin{lemma}[Denominator divisibility]\label{smc:sd:lem:denom}
+(\wtag\ The same as Part~I, Theorem~\ref{smc:cg:thm:denominator}, there stated for the coefficient forms in the initial gaps; source~11's proof is kept as a second route because it works with event-coordinate witnesses.) Every event time and position of depth at most $h$ has reduced denominator dividing $D^h$. In particular $D^H$, and hence $B=D^K$, clears every event coordinate and time. It also clears the position of any live segment sampled at an event time.
+\end{lemma}
+\begin{proof}
+Initial birth positions and times are integers. Suppose an event of depth $h$ has incoming lines
+\[
+ x=b_1+v_1(t-a_1),\qquad x=b_2+v_2(t-a_2),\quad v_1\ne v_2.
+\]
+All birth coordinates have denominators dividing $D^{h-1}$ by induction. The intersection time is
+\begin{equation}\label{smc:sd:eq:intersection}
+ t=\frac{b_2-v_2a_2-b_1+v_1a_1}{v_1-v_2}.
+\end{equation}
+The numerator's denominator divides $D^{h-1}$, while $|v_1-v_2|$ divides $D$. Thus the reduced denominator of $t$ divides $D^h$. Substitution into either line gives the same assertion for its position. A multi-signal event is pinned by any two incoming speeds; the remaining incidences are additional equalities. Finally a sampled position is an integer-linear combination of a birth position, birth time and sample time, all cleared by $D^H$.
+\end{proof}
+
+This lemma bounds denominator divisibility, not numerator magnitude. Its practical advantage is that $B$ is a computable constant of the schema. The compiler can use the sharper $D^H$ if desired; the supplied implementation uses $D^K$.
+
+\section{The sparse construction}\label{smc:sd:sec:sparse}
+\subsection{Geometry variables and flight equations}
+Use a natural variable $T_i$ for the scaled time of batch $i$, with $T_0=0$, and a natural variable $X_e$ for the scaled position of each event. Introduce $d_i\in\NN$ and require
+\begin{equation}\label{smc:sd:eq:time}
+ T_i-T_{i-1}-d_i-1=0\qquad(1\le i\le K).
+\end{equation}
+Thus each batch occurs at a strictly later time on the $B$-grid.
+
+For a segment $\sigma$ of speed $v_\sigma$, let $b(\sigma)$ be its birth batch. Define its scaled birth-position expression $A_\sigma$ to be $Bp_j$ for initial segment $j$, and $X_f$ if it is emitted at event $f$. Its position at any relevant batch time is the affine expression
+\begin{equation}\label{smc:sd:eq:position}
+ Z_\sigma(T_i)=A_\sigma+v_\sigma\bigl(T_i-T_{b(\sigma)}\bigr).
+\end{equation}
+If $\sigma$ is consumed by event $e$ in batch $i$, impose the flight residual
+\begin{equation}\label{smc:sd:eq:flight}
+ X_e-Z_\sigma(T_i)=0.
+\end{equation}
+There are $I$ such residuals. All coefficients are integers because the speeds and $B$ are fixed integers. No product of two unknowns appears.
+
+Input order is encoded, rather than silently assumed, by natural slacks $u_j$ and residuals
+\begin{equation}\label{smc:sd:eq:input}
+ p_{j+1}-p_j-u_j-1=0\qquad(0\le j<n-1).
+\end{equation}
+An explicitly restricted ordered-input domain permits these residuals and witnesses to be omitted. We keep them in every count.
+
+\subsection{Maximal adjacency lifetimes}
+Maintain the ordered live list combinatorially. A consecutive ordered pair of segment identities has a lifetime beginning at the first boundary at which it becomes adjacent and ending at the boundary at which it ceases to be adjacent. A pair that remains adjacent across several batches has one lifetime, not a new copy in every slab. Perform all replacements in a simultaneous batch before creating new pairs; pairs appearing only during an arbitrary sequential processing order are never recorded.
+
+For a prefix, close each still-active positive-duration lifetime at the final cut $T_K$. A pair newly born at batch $K$ has no positive-duration finite lifetime and is omitted. For halting semantics, still-active pairs receive infinite terminal lifetimes instead, including pairs born at the final batch. The initial $K=0$ prefix needs no finite lifetimes.
+
+For a pair $(\sigma,\tau)$, left to right, its scaled gap is the affine function
+\begin{equation}\label{smc:sd:eq:gap}
+ G_{\sigma\tau}(T)=Z_\tau(T)-Z_\sigma(T),
+\end{equation}
+whose slope is the fixed relative velocity $v_\tau-v_\sigma$.
+
+\begin{lemma}[Lifetime count]\label{smc:sd:lem:lifetimes}
+(\wtag\ The same as the first inequality of \eqref{smc:cg:eq:Jbound} in Part~I, Theorem~\ref{smc:cg:thm:rows}; source~11's proof is kept as a second route because it works with event-coordinate witnesses.) The number $L$ of recorded lifetimes satisfies \eqref{smc:sd:eq:Lbound}.
+\end{lemma}
+\begin{proof}
+There are at most $\nminus$ initial adjacent pairs. Replacing one consecutive event block by $k$ outputs creates at most $k+1$ new pairs: at most $k-1$ internal output pairs and two outer-neighbor pairs when $k\ge1$, or at most one bridge pair when $k=0$. Boundary events can create fewer. A sequential accounting of the disjoint replacements in a batch therefore counts at most $\sum_e(|\out(e)|+1)$ creations. Some counted pairs may be transient and disappear within the same batch; atomic processing removes those and cannot increase the count. Every lifetime has exactly one creation, including any terminal lifetime. Closing a lifetime does not create an additional one.
+\end{proof}
+
+\subsection{Typed endpoint constraints}\label{smc:sd:sec:endpoints}
+For a finite lifetime from batch $a$ to batch $b>a$, impose two constraints:
+\begin{enumerate}
+\item At the lower endpoint, impose $G(T_a)=0$ if and only if both segments were emitted by the \emph{same event} in batch $a$. Otherwise impose $G(T_a)=h^-+1$ with a fresh $h^-\in\NN$.
+\item At the upper endpoint, impose $G(T_b)=0$ if and only if both segments are consumed by the \emph{same event} in batch $b$. Otherwise impose $G(T_b)=h^++1$ with a fresh $h^+\in\NN$.
+\end{enumerate}
+The ``if and only if'' here specifies which residual the compiler emits from the schema; it is not a new logical connective in the polynomial. Permitted equality means an equality residual, not an arbitrary nonnegative gap. In particular, a surviving pair at the final cut receives a \emph{strict} upper gap.
+
+For a terminal ray starting at batch $a$, require its relative velocity to be nonnegative, a check on machine constants. Impose a zero initial gap only for two same-event outputs at that starting boundary; impose $G(T_a)=h+1$ otherwise. Same-event outputs have strictly increasing speeds, so a zero-gap terminal pair automatically has strictly positive relative velocity. A terminal pair with zero relative velocity must therefore start with positive gap.
+
+Every stated condition is either an integer affine residual or a finite compile-time structural check. Define $P_\cS$ by squaring and adding the residuals \eqref{smc:sd:eq:time}, \eqref{smc:sd:eq:flight}, \eqref{smc:sd:eq:input}, and all endpoint residuals.
+
+\section{Proof of geometric correctness}\label{smc:sd:sec:proof}
+\subsection{Why endpoint types suffice}
+\begin{lemma}[Positive interior gap]\label{smc:sd:lem:interior}
+(\wtag\ The same as Part~I, Lemma~\ref{smc:cg:lem:endpoint} (the endpoint lemma) together with the static rejection of a common birth and a common death that precedes it; source~11's proof is kept as a second route because it works with event-coordinate witnesses, and it adds terminal rays.) Every finite lifetime satisfying its endpoint residuals has strictly positive gap in its open time interval. Every admitted terminal lifetime has strictly positive gap at every time after its start.
+\end{lemma}
+\begin{proof}
+A finite gap is affine. Its endpoint values are nonnegative. If either is strictly positive, every proper convex combination of the endpoint values is strictly positive. If both are zero, the endpoint types say that the pair shares its birth event at the lower boundary and its death event at the upper boundary. Birth ordering gives $v_\sigma<v_\tau$, so
+\[
+ G(T_b)=G(T_a)+(v_\tau-v_\sigma)(T_b-T_a)>0,
+\]
+a contradiction. Thus at least one endpoint is strict, and no extra endpoint-sum residual is needed. On a terminal ray the nonnegative slope preserves a strict initial gap; a zero initial gap has strictly positive slope and becomes positive immediately.
+\end{proof}
+
+It is important that this argument uses segment identities and the exact start and end boundaries. Merely allowing two nonnegative endpoint gaps, even with positive sum, does not exclude an unrecorded meeting at the upper endpoint.
+
+\begin{lemma}[Complete boundaries]\label{smc:sd:lem:boundary}
+At every batch satisfying the residuals, each designated incoming block meets at its event point, distinct designated events have distinct ordered positions, and no persisting signal or signal of another event also meets that point. The post-batch order is valid; its only zero gaps are between outputs of the same event.
+\end{lemma}
+\begin{proof}
+Before the batch, every adjacent pair belongs to a lifetime that has existed for a positive duration. For a pair in one event block, the flight equations place both segments at that event. Any pair across two distinct pre-batch blocks is not consumed by the same event. If its lifetime ends at this boundary, the strict upper endpoint gives a positive gap. If it persists across the boundary and this is an interior point of its lifetime, Lemma~\ref{smc:sd:lem:interior} gives a positive gap. If the boundary is the final cut, a surviving pair has a strict upper endpoint, or lies on an admitted terminal ray. These cases exhaust the pre-batch neighboring pairs.
+
+All positions in an incoming block are equal by the flight equations, whereas successive blocks are strictly separated. Hence the designated blocks are precisely the maximal equality classes at that time. In particular a third incident signal cannot be omitted, two designated events cannot coincide, and a completely erased event still has a position in the strict block order. Replacing each event block at its own point by the prescribed speed-ordered outputs therefore preserves weak spatial order. Across distinct surviving blocks the gap stays strict; within one output fan the gap is zero and the increasing speeds separate it immediately. If erased blocks disappear, the new bridge gap spans one or more former strict block separations, so is positive. The replacements are atomic and introduce no additional intermediate configuration.
+\end{proof}
+
+This proof also explains why final-born prefix pairs can be omitted. Their boundary order is already certified by the incoming block partition and flight equations. Immediately after that boundary, a common output fan separates and all other gaps remain positive for a sufficiently small interval. A prefix does not assert the absence of collisions later in that interval's future.
+
+\subsection{Soundness and completeness}
+\begin{proof}[Proof of the existence assertion in Theorem~\ref{smc:sd:thm:main}]
+For soundness, suppose $P_\cS(\mathbf p,\mathbf y)=0$ with natural inputs and witnesses. Each square is nonnegative, so every residual is zero. The input packet gives strict initial order. Time residuals give strictly increasing batch times. Divide all scaled times and event positions by $B$ and draw the prescribed segments using \eqref{smc:sd:eq:position}.
+
+On each open slab, the combinatorial live list is fixed and every neighboring pair is in an active lifetime. Lemma~\ref{smc:sd:lem:interior} excludes all adjacent meetings. A meeting of nonadjacent signals would force an adjacent equality in the ordered list at or before that meeting, so there are no other meetings either. At the next batch, Lemma~\ref{smc:sd:lem:boundary} proves that the designated events are exactly all collisions and contain every incident signal. Their legal rules are the fixed schema rules. Induction across the $K$ batches gives precisely the prescribed prefix. For halting semantics every final adjacent gap remains positive for all future time by the terminal-ray argument, so no future collision occurs.
+
+For completeness, start with an actual realization. Lemma~\ref{smc:sd:lem:denom} puts every event time, event position and endpoint sample on the $B$-grid. Assign their scaled values to $T_i$ and $X_e$, and set $d_i=B(t_i-t_{i-1})-1$. All are natural. Input gaps determine natural $u_j$. Each lower or upper endpoint at which the schema prescribes equality is an actual common birth or death point. Every other endpoint is strictly separated by the definition of a complete collision history; its positive scaled integer gap minus one supplies the unique natural slack. An actual halting configuration has nonnegative adjacent relative velocities, since a negative one would eventually cause a meeting, and its terminal initial gaps have exactly the required types. All residuals vanish.
+\end{proof}
+
+The argument covers simultaneous multi-signal collisions, disjoint events in the same batch, annihilation, transparent collisions and empty final configurations. Its dependence on complete blocks and typed boundaries is substantive, not a cosmetic choice of encoding.
+
+\section{Canonical witnesses and strict convexity}\label{smc:sd:sec:canonical}
+Uniqueness of integer witnesses alone would not prove strict convexity. We establish the stronger linear-algebra statement directly.
+
+\begin{lemma}[Full column rank]\label{smc:sd:lem:rank}
+Write the residual vector as
+\[
+ \mathbf r(\mathbf p,\mathbf y)=A\mathbf y+C\mathbf p+\mathbf c.
+\]
+For every structurally admitted schema, the matrix $A$ has trivial kernel over $\R$, even if the schema has no realization for the chosen input.
+\end{lemma}
+\begin{proof}
+Let $A\Delta\mathbf y=0$ and hold the input fixed. Initial birth positions have zero variation. Induct on batches. Assume all earlier times and event positions have zero variation. Choose any event $e$ in batch $i$ and two of its incoming segments $\sigma,\tau$ with distinct speeds. The homogeneous flight equations are
+\[
+ \Delta X_e-v_\sigma\Delta T_i=0,\qquad
+ \Delta X_e-v_\tau\Delta T_i=0,
+\]
+because both segments were born in earlier batches. Their difference gives $(v_\sigma-v_\tau)\Delta T_i=0$, hence $\Delta T_i=0$ and $\Delta X_e=0$. Every other event in the batch then has zero position variation from any one of its flight equations. Equation~\eqref{smc:sd:eq:time} gives $\Delta d_i=0$. Induction fixes all geometry variables and time slacks.
+
+Each remaining witness is an input-order or endpoint slack with coefficient $-1$ in its own defining residual. With the geometry and input fixed, that residual forces its variation to be zero. Thus $\Delta\mathbf y=0$.
+\end{proof}
+
+\begin{corollary}[Canonical zero and Hessian]\label{smc:sd:cor:hessian}
+For fixed input there is at most one real solution of the residual system, and hence at most one natural zero of $P_\cS$. The Hessian in witness coordinates is $2A^{\mathsf T}A$, positive definite when $W>0$.
+\end{corollary}
+\begin{proof}
+Two solutions differ by a vector in $\ker A$, which is zero by Lemma~\ref{smc:sd:lem:rank}. Moreover $\mathbf z^{\mathsf T}(2A^{\mathsf T}A)\mathbf z=2\|A\mathbf z\|^2>0$ for every nonzero $\mathbf z$. Existence for admissible inputs was proved above.
+\end{proof}
+
+Strict convexity is asserted in the witness variables with the input held fixed. Joint strict convexity in input and witness coordinates is neither needed nor generally true. The compiler introduces no witness for a schedule choice, denominator choice or arbitrary final observation time. Adding any of those could destroy the canonical property.
+
+\begin{proof}[Proof of the size assertions in Theorem~\ref{smc:sd:thm:main}]
+Geometry uses $E$ event positions, $K$ batch times and $K$ time slacks. A finite lifetime needs at most two slacks and two residuals; a terminal lifetime needs at most one of each. Input order uses $\nminus$ slacks and residuals. Flight and time residual counts are $I$ and $K$. This proves \eqref{smc:sd:eq:rawcounts}. Lemma~\ref{smc:sd:lem:lifetimes}, $I\le rE$, $K\le E$ and $|\out(e)|\le s$ give \eqref{smc:sd:eq:linearcounts}. Squaring affine residuals gives degree at most two. If $W>0$, full column rank forces a nonzero quadratic part.
+\end{proof}
+
+The ledger counts variables and affine residuals. With a fixed machine, every residual has bounded width: an endpoint gap uses only the birth positions and times of two segments, one endpoint time, and possibly a slack. A linear-size arithmetic circuit follows if integer constants are treated as available coefficients. This does not give a literal gate ledger under a model that charges separately for constructing large constants, input loading, multiplication conventions or natural-to-positive conversion. In particular, no improvement to previously studied 75-operation or 87-operation constructions is asserted here.
+
+\section{A full-layer reference construction}\label{smc:sd:sec:fulllayer}
+A denser construction is useful for cross-checking. In slab $i$, let $N_i$ be the number of pre-batch signals and $g_i$ the number of blocks, including singleton through-signals. Introduce natural scaled end coordinates $C_{i,j}$, a duration slack $d_i$, and one gap slack between successive blocks. The scaled start coordinate $A_{i,j}$ is $Bp_j$ initially or an alias of an earlier endpoint. Require
+\begin{align*}
+ C_{i,j}-A_{i,j}-v_j(d_i+1)&=0 &&\text{for every live signal},\\
+ C_{i,j}-C_{i,\mathrm{first}(b)}&=0 &&\text{inside each collision block }b,\\
+ C_{i,\mathrm{first}(b')}-C_{i,\mathrm{first}(b)}-h-1&=0
+ &&\text{for successive blocks }b,b'.
+\end{align*}
+All blocks, including zero-output collisions, participate in the last row. The exact counts, with input-order checks, are
+\begin{equation}\label{smc:sd:eq:baselinecounts}
+ W=\nminus+\sum_i(N_i+g_i),\qquad
+ R=\nminus+\sum_i(2N_i-1).
+\end{equation}
+Indeed each slab uses $N_i+1+(g_i-1)$ witnesses, and $N_i+(N_i-g_i)+(g_i-1)$ residuals.
+
+The two boundary lists have nonnegative adjacent gaps, with strict separation across ending blocks. A pair with zero gap at its starting boundary is a same-event output pair with increasing speeds; it cannot meet again at the ending boundary after positive time. Affineness therefore excludes all interior collisions. The full ending partition supplies completeness at each boundary. Conversely the denominator lemma gives a witness from every realization. The same two-incoming-speed induction fixes each duration, then all endpoints and gap slacks, and proves full witness rank. A halting certificate additionally checks that the final live speeds are nondecreasing; the final boundary order is already certified.
+
+This reference compiler stores coordinates for every live signal at every layer, even if that signal survives unchanged through many layers. The sparse compiler avoids these repetitions by storing only event coordinates and maximal adjacency lifetimes. Both implementations share an exact simulator and small arithmetic utilities; agreement between them is useful evidence, but is not independent formal verification of the common simulator.
+
+\section{Worked examples}\label{smc:sd:sec:examples}
+\subsection{One annihilation with its complete quadratic}
+Consider labels $R,S$ with speeds $2,0$ and the rule $\{R,S\}\mapsto\varnothing$. Let the initial positions be $p_0<p_1$, and specify one event. Here $D=B=2$. Write $T,X,d$ for its scaled time, position and duration slack, $u$ for input order and $h$ for the lower adjacency slack. The compiler gives
+\begin{align}\label{smc:sd:eq:annihilation}
+ P={}&(p_1-p_0-u-1)^2+(T-d-1)^2\notag\\
+ &+(X-2p_0-2T)^2+(X-2p_1)^2\notag\\
+ &+(2p_1-2p_0-h-1)^2+(2p_1-2p_0-2T)^2.
+\end{align}
+The last row is the zero upper gap of the two segments consumed by the same event. Its redundancy with flight equations is harmless. Every $p_0<p_1$ has the unique witness
+\[
+ T=p_1-p_0,\quad X=2p_1,\quad d=u=p_1-p_0-1,
+ \quad h=2(p_1-p_0)-1.
+\]
+For $(p_0,p_1)=(0,1)$ the tuple $(T,X,d,u,h)$ is $(1,2,0,0,1)$, corresponding to physical time $1/2$ and position $1$. There are five witnesses and six residuals. The final state is empty, so the prefix is also halting. Changing any one witness while fixing the others cannot keep all residuals zero.
+
+\subsection{A hidden collision exactly at the final cut}\label{smc:sd:sec:finalcut}
+Use the four-speed interface $\{0,2,3,4\}$, with labels $a,b,c,d$ respectively, and the annihilation rule $\{d,a\}\mapsto\varnothing$. Start with
+\[
+ (\ell_0,\ell_1,\ell_2,\ell_3)=(d,a,d,a),\qquad
+ (p_0,p_1,p_2,p_3)=(0,4,10,14).
+\]
+There are two simultaneous collisions at physical time $1$, at positions $4$ and $14$. Now submit a false one-batch schema containing only the first event and marking the last two signals as through-signals. Since $B=12$, the first event's flight equations force $T_1=12$ and $X_0=48$.
+
+The omitted pair's gap is
+\[
+ G(T)=12(14-10)-4T=48-4T.
+\]
+It is positive before the cut, has lower value $48$, and reaches zero at the cut. Thus conditions of the form $G(0)\ge0$, $G(T_1)\ge0$, and $G(0)+G(T_1)>0$ would accept its endpoints. Our upper endpoint is strict because the pair survives rather than dying in one designated event. Its residual becomes
+\[
+ G(T_1)-h^+-1=-h^+-1,
+\]
+which cannot vanish for $h^+\in\NN$. The false schema has no certificate. The correct simultaneous schema consumes both pairs atomically and has event positions $48$ and $168$ on the scaled grid.
+
+
+\wtag\ Part~I's independent simultaneous sites (Section~\ref{smc:cg:sec:simultaneous}) are another instance of this failure mode: an omitted, spatially separate simultaneous collision, rejected by the strict endpoint of the surviving pair (Section~\ref{smc:sec:routes}).
+
+\subsection{An outgoing fan at a finite cut}
+Replace the annihilation rule in the preceding setup by $\{d,a\}\mapsto\{b,c\}$. Each collision emits speeds $2$ and $3$. At the final cut the two members of each fan have zero gap and immediately separate; they need no zero-duration finite lifetime. In a halting certificate they instead receive terminal rays with zero starting gap and positive relative velocity. The gap between the two different fans is strict at the cut. Its relative velocity is $2-3=-1$, so that terminal ray is rejected: the two fans will interact later. This separates valid finite-prefix geometry from the stronger no-future-collision requirement.
+
+\section{Witness height for the four-speed interface}\label{smc:sd:sec:height}
+Let the normalized machine speeds lie in $\{0,2,3,4\}$, and let $M_j$ be the largest live position immediately after batch $j$, with $M_0=\max_j p_j$ and $\max\varnothing=0$. Let $t_j$ be elapsed physical time, with $t_0=0$.
+
+\begin{lemma}[Geometric growth]\label{smc:sd:lem:growth}
+Whenever batch $j+1$ exists, its delay satisfies $\delta_{j+1}\le M_j$. All positions at that boundary, including erased event positions, are at most $5M_j$. Consequently
+\[
+ M_j\le5^jM_0,\qquad
+ t_j\le M_0\frac{5^j-1}{4}.
+\]
+\end{lemma}
+\begin{proof}
+A next collision must be approached by an adjacent closing pair. The pair has a strictly positive gap $g$ and positive integer closing speed $c\ge1$. Because all live positions are nonnegative, $g\le M_j$; its meeting delay is $g/c\le M_j$. The earliest collision delay is no larger. During this interval every signal advances by at most $4M_j$, so every pre-collision position is at most $5M_j$. Outputs remain at those event positions and deletion cannot increase the maximum. Iterate this bound and sum $\delta_i\le5^{i-1}M_0$ to obtain the stated geometric series.
+\end{proof}
+
+The argument concerns an existing next batch. Empty or singleton configurations have none. Nor does a valid configuration whose maximum position is zero: any coincident outgoing fan has strictly increasing speeds and separates. This avoids dividing by a nonexistent positive gap.
+
+\begin{theorem}[Canonical height]\label{smc:sd:thm:height}
+For $B=12^K$, every canonical input coordinate and witness of the sparse or full-layer compiler is at most
+\begin{equation}\label{smc:sd:eq:height}
+ 60^K\max(1,M_0).
+\end{equation}
+Each such integer therefore has bit length $O(K+\log(M_0+1))$.
+\end{theorem}
+\begin{proof}
+For the full speed set, the nonzero absolute differences are $1,2,3,4$, whose least common multiple is $12$. The same $12$ is a valid clearing modulus for a subset. Up to batch $K$, every live sample and every event position is at most $5^KM_0$, including positions subsequently erased. Multiplication by $12^K$ bounds them by $60^KM_0$. Every endpoint gap is the nonnegative difference of two positions in this range, so its slack is smaller. Input-order slacks are at most $M_0$. The time bound is
+\[
+ 12^Kt_j\le12^KM_0\frac{5^K-1}{4}\le60^KM_0,
+\]
+and the scaled duration minus one is no larger than the corresponding scaled time. The empty and all-zero cases are covered by $\max(1,M_0)$; if $K=0$, all remaining slacks are initial-gap slacks bounded by $M_0$. Taking binary logarithms proves the bit bound.
+\end{proof}
+
+This bounds actual zero witnesses, not arbitrary trial assignments. Degree two alone would supply no such height guarantee. Likewise, the bound is exponential in batch count $K$ as a numerical magnitude while linear in $K$ as a bit length. For a fixed machine with maximal speed $V$, the same argument gives $M_j\le(1+V)^jM_0$; the four-speed constant above is the concrete interface relevant here.
+
+
+\wtag\ Part~I bounds the chamber's row coefficients (Proposition~\ref{smc:cg:prop:height}) and the size of \emph{some} realizing seed (Theorem~\ref{smc:cg:thm:small}); Theorem~\ref{smc:sd:thm:height} bounds the canonical witnesses of every realizing input. The two bounds measure different things and neither implies the other.
+
+\subsection{Exponential denominator growth can be necessary}
+\begin{proposition}[A bounded geometric shuttle]\label{smc:sd:prop:sharpness}
+There is a fixed four-label machine with integer initial positions whose $2k$-batch prefix contains a time of reduced denominator $3^{k-1}$, although every event lies in $0<t<2$ and $0<x<6$. Thus a common integer grid for exact event geometry may require exponentially large scale in the number of batches.
+\end{proposition}
+\begin{proof}
+Give labels $L,R,F,B$ speeds $3,2,4,0$, respectively, and use rules
+\[
+ \{F,R\}\longmapsto\{B,R\},\qquad
+ \{L,B\}\longmapsto\{L,F\}.
+\]
+Start with $L,F,R$ at positions $0,1,2$. The two walls follow $x_L(t)=3t$ and $x_R(t)=2+2t$, so their separation is $2-t$ until they meet at $t=2$. The first right collision occurs at $t_{R,1}=1/2$ and the first left collision at $t_{L,1}=1$. At a left collision at time $a<2$, the outgoing speed-four shuttle catches the right wall after $(2-a)/2$, giving right time $r=1+a/2$. Its speed-zero replacement is then caught by the left wall after $(2-r)/3$, giving the next left time
+\[
+ a'=r+\frac{2-r}{3}=\frac43+\frac a3.
+\]
+These positive delays place the shuttle strictly between the walls between alternating collisions; there are no other earlier meetings. The recurrence and first collision give
+\[
+ t_{L,k}=2-3^{1-k},\qquad
+ t_{R,k}=2-\frac32\,3^{1-k}\qquad(k\ge1).
+\]
+The first six batch times are $1/2,1,3/2,5/3,11/6,17/9$. At the $k$th left event the numerator of $(2\cdot3^{k-1}-1)/3^{k-1}$ is coprime to three, so the reduced denominator is exactly $3^{k-1}$. Event positions lie on a wall before time two and hence are below six. Every finite prefix is valid.
+\end{proof}
+
+This example supplies a lower bound for common-grid geometry encodings: after $2k$ batches a clearing scale is divisible by $3^{k-1}$, and its scaled last time requires $\Omega(k)$ bits. It makes the linear event-count dependence in the witness-bit bound qualitatively sharp for this type of encoding; it is not a lower bound on arbitrary Diophantine representations. The collision times approach a Zeno accumulation at $t=2$. We assert nothing about a continuation at or beyond that accumulation, which is outside the finite-schema theorem. The replay checks 64 batches with exact fractions.
+
+
+\wtag\ Part~I's four-speed clock (Section~\ref{smc:cg:sec:clock}, Proposition~\ref{smc:cg:prop:clock}) is the same shuttle mechanism on a different machine, with speeds $0,2,-1,-2$ and reduced denominators exactly $2\cdot3^k$ at event $2k$ for the seed $(1,2)$. The worked-example receipt shipped as \path{data/11-signal-certificates-expected-worked_examples_receipt.json} records the last left denominator of the 64-batch prefix as $617673396283947=3^{31}$, which is $3^{k-1}$ for $k=32$.
+
+\section{Fixed-schema arithmetic and the unbounded boundary}\label{smc:sd:sec:fixed}
+\begin{proposition}[Semilinear feasible inputs]\label{smc:sd:prop:semilinear}
+(\wtag\ The same as Part~I, Theorem~\ref{smc:cg:thm:semilinear}, for prefix semantics; source~11's proof is kept as a second route because it works with event-coordinate witnesses, and it adds the halting case.) For a fixed normalized machine, fixed initial label list and fixed schema, the set of natural input positions admitting a prefix certificate is semilinear. The same holds for the halting certificate. For a fixed total-event bound, the union over all schemas with that bound is also semilinear, provided the initial length and labels are fixed.
+\end{proposition}
+\begin{proof}
+A zero of a sum of squares is exactly a common zero of its affine residuals. Existence of natural witnesses is therefore an existential formula using only integer constants, addition, order and equality. Such Presburger-definable sets are semilinear \cite[Theorem~1.3]{ginsburgspanier}. Terminal slope checks depend only on the fixed schema; they either remove it or leave the same argument.
+
+For a total-event bound $E_0$, at most $n+sE_0$ segment identities can have been created. A finite label set and bounded finite list admit finitely many consecutive partitions, legal rule choices and batch assignments with at most $E_0$ events. Thus there are finitely many schemas. Finite unions of semilinear sets are semilinear.
+\end{proof}
+
+More concretely, a semilinear set is a finite union of sets $\mathbf a+\sum_{j=1}^m\NN\mathbf b_j$. The proposition describes a strong boundary: a fixed externally supplied finite schema reduces to integer linear feasibility despite its quadratic packaging. Strict convexity does not import undecidability into that fixed finite system.
+
+Enumerating all finite schemas gives an enumerable family of quadratics covering finite-event halting, with varying arities and coefficients. In a deterministic machine an actually halting run has a definite finite sequence of complete nonempty batches. That fact does not encode its arbitrary length into one fixed tuple. A single fixed-arity representation of unbounded halting requires an additional history-packing construction, with its own decoder, arithmetic costs and witness-multiplicity proof. Generic Diophantine representability results do not automatically preserve this compiler's quadratic degree, sparsity, or single witness. Nor does the construction certify continuation through a Zeno accumulation; no finite schema contains infinitely many events.
+
+
+\wtag\ For a fixed event budget, Part~I's Theorem~\ref{smc:cg:thm:quarticunion} packs the finite union over all first-hit skeletons into one quartic with unique selector and slack witnesses; it does not remove the budget either.
+
+\subsection{Strictly positive witnesses}
+If a convention requires witnesses in $\Z_{>0}$, replace every $y_j$ by $Y_j-1$ and define
+\[
+ Q_{\cS}(\mathbf p,\mathbf Y)=P_{\cS}(\mathbf p,\mathbf Y-\mathbf1).
+\]
+This is an integer polynomial of the same degree. The coordinatewise translation is a bijection from positive witness tuples to natural witness tuples and preserves uniqueness and the Hessian. The input-coordinate convention remains unchanged unless it is translated separately and explicitly. This substitution is exact but is not an assertion that conversion is free in an arithmetic-operation ledger.
+
+\section{Verification evidence and research questions}\label{smc:sd:sec:verification}
+The package supplies two exact-arithmetic compilers, a rational event simulator, and deterministic test suites. Arithmetic uses Python integers and \texttt{fractions.Fraction}; no floating-point solver or Diophantine oracle is involved. Table~\ref{smc:sd:tab:replays} summarizes reproduced checks. Counts of certificates include both prefix and halting variants when both are generated; they are not counts of distinct universal-machine programs.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Check & Full layers & Sparse & Additional \\
+\midrule
+Certificates & 122 & 444 & 878 \\
+Exact full-rank tests & 30 & 40 & 12 \\
+Single-coordinate mutations & 4\,229 & 10\,102 & --- \\
+One-layer candidate schedules & 832 & 832 & --- \\
+Terminal certificates & --- & 198 & 372 \\
+Height checks & --- & 444 & 878 \\
+\bottomrule
+\end{tabular}
+\caption{Finite implementation evidence. The sparse suite includes 1\,114 layers, 1\,186 events, 3\,982 lifetimes and a dedicated hidden-final-collision regression. The additional suite covers 506 fixtures and 2\,152 local growth inequalities.}\label{smc:sd:tab:replays}
+\end{table}
+
+The full-layer suite additionally enumerates all 625 natural tuples in a small witness box for a two-signal example and finds its unique zero. The sparse suite's original height test uses a factor-two safety margin; the additional suite checks the sharper constant-one bound \eqref{smc:sd:eq:height}. A release-specific example check verifies the complete annihilation polynomial, the omitted-final-collision obstruction, empty inputs, positive-witness translation, simultaneous events, output fans and the denominator-growth shuttle. Appendix~\ref{smc:sd:app:replay} describes how to reproduce every reported receipt.
+
+These checks can catch coefficient, endpoint and bookkeeping defects. They do not prove an infinite theorem, establish exhaustive novelty, or replace an independent formalization. The mathematical proofs above establish the stated scope.
+
+
+\wtag\ The counts in Table~\ref{smc:sd:tab:replays} equal the four expected receipts shipped as \path{data/11-signal-certificates-expected-*_receipt.json}. The replay was run at the write on a copy with the delivered layout, under Python~3.14.4 on Windows: all four receipts and both coefficient-example files matched. The repository's review~\cite{reviewsignal} replayed it as well and adds independent finite checks (Section~\ref{smc:sec:relation}).
+
+\subsection{Questions with concrete next steps}\label{smc:sd:sec:questions}
+\wtag\ Table~\ref{smc:tab:questions} pairs these questions with the research directions of Part~I: Questions~\ref{smc:sd:q:universal} and~\ref{smc:sd:q:formal} coincide with Sections~\ref{smc:cg:q:universal} and~\ref{smc:cg:q:formal}, and Questions~\ref{smc:sd:q:ledger} and~\ref{smc:sd:q:compress} overlap Sections~\ref{smc:cg:q:denominators}, \ref{smc:cg:q:circuits} and~\ref{smc:cg:q:firsthit}.
+\begin{enumerate}
+\item\label{smc:sd:q:universal} \textbf{Instantiate the universal table and input map.} Transcribe the 13-label, 21-non-blank-rule machine with an explicit convention for every blank collision. Verify the cyclic-tag input encoding and rational halting gadget, then compile and replay complete finite examples. This would connect the present implementation to the cited universal machine rather than only to its speed interface.
+\item\label{smc:sd:q:conservative} \textbf{Exploit conservative bounded populations carefully.} A reversible conservative rational construction is already Turing universal \cite{DL06}. Its positive energy assignment bounds the number of simultaneously live signals for fixed total energy, but not the number of collisions. A direct unbounded representation would need to instantiate its finite transition branches, encode unbounded histories of rational distances, and pay for strict guards and input loading. Conservation alone neither bounds runtime nor excludes accumulation.
+\item\label{smc:sd:q:ledger} \textbf{Sharpen the denominator and cost ledger.} Causal depth can replace batch count in $B$. Further denominator cancellation may depend on the actual branch structure. A useful next result would make such improvements canonical and give a literal arithmetic-gate ledger, including the construction of coefficients and any conversion of input conventions. (\wtag\ Causal-depth clearing itself is proved: Lemma~\ref{smc:sd:lem:denom} shows that $D^H$ suffices, and Part~I, Theorem~\ref{smc:cg:thm:denominator}, gives $D^h$ event by event. What remains open is a canonical choice compatible with the witness format, and the gate ledger.)
+\item\label{smc:sd:q:compress} \textbf{Compress histories without losing canonicality.} The sparse certificate removes repeated geometry, not the unbounded number of events. Can a restricted family of repeated collision motifs be packed with a unique decoder witness and explicit degree, height and operation bounds? Any answer should separate verification of a supplied history from existence of an outcome.
+\item\label{smc:sd:q:formal} \textbf{Formalize geometric completeness.} The most valuable proof-assistant target is the typed-endpoint soundness theorem, including atomic simultaneous replacement and disappearing event blocks. The replay data provide regression fixtures, but the formal objects must model the real semantics, not only the executable's output.
+\end{enumerate}
+
+\section{Conclusion}\label{smc:sd:sec:conclusion}
+A finite signal-machine schema admits a direct, canonical Diophantine encoding because its collision geometry can be expressed by affine integer constraints on a predetermined rational grid. Sparse adjacency lifetimes make the certificate linear in event count and initial support. Correct endpoint types are what turn line-incidence equations into a complete execution certificate. The resulting quadratic is strictly convex in its witness variables, and the four-speed case has an explicit linear witness-bit bound. The remaining unbounded problem is to encode arbitrary schema length without losing the quantitative and multiplicity properties that make this finite construction useful.
+
+\appendix
+\section{Part~I: a minimal worked use of the compiler}
+\label{smc:cg:app:example}
+
+The following code can be run from the archive root. (\wtag\ ``The archive root'' is the delivered layout, with \path{code/signal_certificates.py}; in this report the module is shipped as \path{code/07-collision-geometry-signal_certificates.py}, so the snippet runs in a copy that restores the delivered name (README of this report).) It builds the
 first-collision tournament and constructs a complete certificate without
 using an external algebra system.
 \begin{lstlisting}[language=Python]
@@ -1735,7 +2395,7 @@ match the order used in the displayed mathematical formula. Row order
 changes only the order of slack coordinates, not the represented relation
 or the uniqueness statement.
 
-\section{Dependency map and claim status}
+\section{Part~I: dependency map and claim status}\label{smc:cg:app:dependency}
 
 \begin{longtable}{>{\RaggedRight\arraybackslash}p{0.29\linewidth}>{\RaggedRight\arraybackslash}p{0.38\linewidth}>{\RaggedRight\arraybackslash}p{0.25\linewidth}}
 \toprule
@@ -1769,6 +2429,80 @@ Presburger decidability & Full manuscript proof\\
 \bottomrule
 \end{longtable}
 
+\wtag\ The row ``Global convex-quadratic barrier'' is a special case of Part~XI of~\cite{cdc} (Remark~\ref{smc:cg:rem:credit}); source~07's proof is kept as a second route. The rows ``Exact chronology chamber'', ``Event-sparse row bound'', ``Unique-slack quadratic'', ``Causal denominator and coefficient bounds'' and ``Finite-horizon semilinearity'' have second proofs in Part~II (Section~\ref{smc:sec:routes}).
+
+\section{Part~II: replay and build guide}\label{smc:sd:app:replay}
+The accompanying archive contains this article in editable LaTeX, the compiled PDF, exact Python scripts, expected receipts, example coefficient dictionaries, and a manifest with file hashes. It contains no third-party source PDFs. The scripts require Python 3.10 or later and only the standard library. Assertions must remain enabled; do not run Python with \texttt{-O}.
+
+From the extracted package root run:
+\begin{verbatim}
+python3 scripts/run_replay.py
+\end{verbatim}
+The runner copies the executable scripts into a temporary directory, executes the suites there, compares fresh JSON receipts to the stored expectations, and writes a summary under \texttt{replay-output}. The stored expected receipts and packaged examples are not overwritten. Use \texttt{--output DIR} to select a different result directory. The worked-example receipt also contains its concrete witness and explicit rejection reason for the false final-cut schema.
+
+
+\wtag\ These are the delivered names. In this report the five scripts are shipped as \path{code/11-signal-certificates-*.py}, \path{build.sh} as \path{code/11-signal-certificates-build.sh}, the two example files and the manifest as \path{data/11-signal-certificates-*.json}, and the four expected receipts as \path{data/11-signal-certificates-expected-*_receipt.json}. The runner looks for \path{scripts/}, \path{examples/} and \path{expected_receipts/} in the parent of its own directory and runs the scripts by their delivered names, so it runs only in a copy that restores the delivered layout (see the README); it writes nothing into the shipped files. Of the archive contents listed above, the editable source is printed as this Part rather than shipped separately, and the compiled PDF and the checksum file \path{CHECKSUMS.sha256} are not shipped (the checksum file was verified, 17 of 17 files, at placement); the manifest is shipped, and its payload list still names the delivered paths and the delivered PDF and article source.
+
+The main executable interfaces are:
+\begin{itemize}
+\item \texttt{signal\_geometry.py}: exact simulator, full-layer compiler, polynomial evaluation and rational Gaussian rank calculation;
+\item \texttt{signal\_sparse.py}: event-coordinate and adjacency-lifetime compiler;
+\item \texttt{verify\_additional.py}: separately seeded edge cases and sharp height checks;
+\item \texttt{verify\_examples.py}: the article's explicit examples and convention checks.
+\end{itemize}
+The low-level compilers use assertions to reject malformed schema partitions or structurally impossible collision directions. They are reference mathematical implementations, not hardened parsers for untrusted inputs. JSON residual dictionaries use \texttt{@} for the constant term, \texttt{x0}, \texttt{x1}, and so on for input positions, and the listed variable names for natural witnesses. A certificate evaluates to the sum of the squares of those rows. No expanded polynomial is required to replay it.
+
+To rebuild the article run:
+\begin{verbatim}
+sh build.sh
+\end{verbatim}
+A working TeX Live installation with \texttt{pdflatex}, Latin Modern fonts, AMS packages, \texttt{geometry}, \texttt{microtype}, \texttt{booktabs}, \texttt{enumitem} and \texttt{hyperref} suffices. The build script uses fixed document metadata and a fixed source-date epoch; exact PDF byte equality across different TeX distributions is not promised. The mathematical replay receipts are exact and version-independent within supported Python semantics.
+
+\section{Part~II: claim and source guide}\label{smc:sd:app:sources}
+The source-supported context is limited to the following claims. All certificate theorems and proofs in this article are supplied here rather than attributed to the literature.
+\begin{itemize}
+\item Durand-Lose 2009: finite configurations in Definition~1; integer inputs in Section~2; speeds in Figure~4; cyclic-tag simulation and halting in Section~5 and Theorem~5. Common-denominator rescaling is our inference, proved in \eqref{smc:sd:eq:normalize}.
+\item Durand-Lose 2007: linear-register event simulation in Section~4 of the author version, especially its ninth PDF page; rational models in Section~5. No Diophantine theorem is attributed to it.
+\item Durand-Lose 2006: energy and live-population bounds in Definition~3 and the following paragraph; accumulation qualifications in Sections~2.2 and~6.
+\item Ginsburg and Spanier 1966: equivalence of Presburger-definable and semilinear subsets of $\NN^n$, Theorem~1.3, pp.~288--289.
+\end{itemize}
+Primary sources were checked on 2 October 2026. The bibliography links to the papers or their official bibliographic records; copyright-bearing PDFs are not redistributed in this package.
+
+
+\wtag\ In this report the Durand-Lose 2009 and Ginsburg--Spanier entries are merged with Part~I's entries for the same papers~\cite{durandlose,ginsburgspanier}; the merged entries add source~11's editors and links to Part~I's.
+
+\section{Provenance of this report}\label{smc:app:provenance}
+
+\wtag\ The report was built from two manuscripts that arrived together in the archives of commit \texttt{808b53ed8} (2 October 2026) and were placed by commit \texttt{798b0c5d4}, which staged their programs, data and provenance files byte-identical to the delivery.
+
+\begin{center}
+\small
+\begin{tabular}{@{}L{0.07\textwidth}L{0.26\textwidth}L{0.11\textwidth}L{0.26\textwidth}L{0.17\textwidth}@{}}
+\toprule
+Source & Archive (batch 78) & Pin & Contributed & Printed as\\
+\midrule
+07 (base) & \path{Collision_Geometry_Diophantine_Signal_Machines.zip}, manuscript~07; main file \path{collision_geometry/article.tex}, 29-page PDF & \texttt{f1edb38f9} & the chamber theorem, the event-sparse bound, the unique-slack quadratic, denominators and heights, small realizations, the NP bound, robustness, semilinearity, the first-hit quartic, Ehrhart counts, the tournament, the clock, the barrier, nine research directions & Part~I with Appendices~\ref{smc:cg:app:example} and~\ref{smc:cg:app:dependency}\\
+11 & \path{Signal_Machine_Diophantine_Certificates.zip}, manuscript~11; main file \path{signal-diophantine-release/article.tex}, 15-page PDF & none named & the same theorem with event-coordinate witnesses, halting semantics, full column rank, the size ledgers, the full-layer construction, the four-speed height bound, the bounded shuttle, positive witnesses, five questions & Part~II with Appendices~\ref{smc:sd:app:replay} and~\ref{smc:sd:app:sources}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Source~07's pin is the full commit \texttt{f1edb38f93aa0a362a34b531a600909f6e74608a}, named in its Section~\ref{smc:cg:sec:implementation} and in its delivered \path{PROVENANCE.md} (shipped as \path{07-collision-geometry-PROVENANCE.md}); it is an ancestor of the placement commit, and the audit blob it cites is unchanged at the write. Source~11 names no repository snapshot and cites no repository file; its only repository-related statement, that the 75- and 87-operation constructions are not improved, is true at the write.
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}
+\item \emph{Base and order.} Source~07 is the base (Part~I): it allows signed rational speeds without a normalization interface, proves more about the chamber, and is the longer manuscript. Source~11 follows as Part~II. Every result, proof, example, remark, research question, appendix and limitation of both sources is printed, in the sources' order and with their numbering inside each Part.
+\item \emph{The common theorem.} Its two statements have different inputs and witnesses, so both are printed, each with its proof. The lemmas of Part~II that coincide with lemmas of Part~I (Lemmas~\ref{smc:sd:lem:denom}, \ref{smc:sd:lem:lifetimes} and~\ref{smc:sd:lem:interior}, Proposition~\ref{smc:sd:prop:semilinear}) open with a \wtag\ note naming their Part~I counterpart, and source~11's proofs are kept as second routes. Section~\ref{smc:sec:routes} compares the two routes, including the two shuttles and the two missed-simultaneity examples, which are kept in both Parts because they are different machines.
+\item \emph{A result already in the collection.} Part~I's Theorem~\ref{smc:cg:thm:rigidity} and Corollary~\ref{smc:cg:cor:barrier} are a special case of Part~XI of \emph{canonical-diophantine-certificates}. They are printed with source~07's statements and proofs, as a second route, and credited in Remark~\ref{smc:cg:rem:credit}; credit notes were added to source~07's abstract and conclusion. Remark~\ref{smc:cg:rem:singlefold} relates the first-hit quartic to the same Part.
+\item \emph{Research questions.} Both agendas are printed in their Parts; Table~\ref{smc:tab:questions} pairs the coinciding ones, and one \wtag\ note re-scopes the part of Part~II's Question~\ref{smc:sd:q:ledger} that both sources already prove.
+\item \emph{Front matter and bibliography.} The two title pages are replaced by one; each source's title, author line, abstract and keywords open its Part. Section~\ref{smc:sec:front} is new. The two bibliographies are merged: source~11's keys \texttt{DL09} and \texttt{GS66} are cited as source~07's \texttt{durandlose} and \texttt{ginsburgspanier}, whose entries now carry source~11's editors and links; entries~\cite{cdc,lbh,review808,reviewsignal,blockca} were added for the cross-references.
+\item \emph{Typesetting.} Equations are numbered by section in both Parts (source~07 numbered them consecutively). Source~11's macro \verb|\N| is written \verb|\NN| because source~07's \verb|\N| prints $\N$; both print the natural numbers $\{0,1,2,\ldots\}$ as their sources did. No symbol was renamed in the printed text and no normalization changed.
+\item \emph{Added text.} Every sentence written in the merge is marked \wtag: Section~\ref{smc:sec:front}; the openings of the two Parts; notes in Part~I in Sections~\ref{smc:cg:sec:intro}, \ref{smc:cg:sec:sparse}, \ref{smc:cg:sec:quadratic}, \ref{smc:cg:sec:depth}, \ref{smc:cg:sec:counting} (and Remark~\ref{smc:cg:rem:singlefold}), \ref{smc:cg:sec:tournament}, \ref{smc:cg:sec:clock}, \ref{smc:cg:sec:barrier} (Remark~\ref{smc:cg:rem:credit}), \ref{smc:cg:sec:implementation} (shipped file names, the pin), \ref{smc:cg:sec:future} and \ref{smc:cg:sec:conclusion}, and in its abstract; notes in Part~II in Sections~\ref{smc:sd:sec:purpose}, \ref{smc:sd:sec:model}, \ref{smc:sd:sec:normalization}, \ref{smc:sd:sec:sparse}, \ref{smc:sd:sec:proof}, \ref{smc:sd:sec:examples}, \ref{smc:sd:sec:height}, \ref{smc:sd:sec:fixed} and \ref{smc:sd:sec:verification}; notes in the four source appendices; this appendix; and the bibliography entries marked \wtag. Labels were added to the first lemma of Part~I's Section~\ref{smc:cg:sec:sparse}, to one example subsection, the research directions, the conclusion and the second appendix of Part~I, and to several sections, one corollary, the questions, the conclusion and the second appendix of Part~II.
+\end{itemize}
+
+\paragraph{Files.} The report directory holds this text (\path{article.tex}, \texttt{article.pdf}), a README, source~07's \path{PROVENANCE.md} and source~11's \path{REPRODUCIBILITY.md} (as \path{07-collision-geometry-PROVENANCE.md} and \path{11-signal-certificates-REPRODUCIBILITY.md}), and the two sources' programs in \path{code/} and data in \path{data/}, under the prefixes \path{07-collision-geometry-} and \path{11-signal-certificates-}. The README maps each delivered name to its shipped name and gives rerun instructions that do not overwrite the shipped files. Source~11's manuscript, both PDFs, source~11's delivered README and both checksum ledgers (source~07's \path{SHA256SUMS}, 14 of 14 files, and source~11's \path{CHECKSUMS.sha256}, 17 of 17, both verified at placement) are not shipped; they survive in the archives of commit \texttt{808b53ed8}. Source~07's delivered README was the placed \path{README.md} and has been replaced by the report README.
+\clearpage
+\addcontentsline{toc}{section}{References}
 \begin{thebibliography}{99}
 \RaggedRight
 
@@ -1790,10 +2524,31 @@ Inspected 2 October 2026; blob
 \bibitem{durandlose}
 J\'er\^ome Durand-Lose.
 Small Turing universal signal machines.
+In T.~Neary, D.~Woods, A.~K.~Seda and N.~Murphy, editors,
+\emph{The Complexity of Simple Programs 2008},
 \emph{Electronic Proceedings in Theoretical Computer Science}
 \textbf{1} (2009), 70--80.
 \href{https://doi.org/10.4204/EPTCS.1.7}{doi:10.4204/EPTCS.1.7}.
 \url{https://arxiv.org/abs/0906.3225}.
+(\wtag\ Merged entry: source~07's \texttt{durandlose} and source~11's \texttt{DL09}.)
+
+\bibitem{DL07}
+J\'er\^ome Durand-Lose.
+\newblock Abstract geometrical computation and the linear Blum, Shub and Smale model.
+\newblock In S.~B.~Cooper, B.~L\"owe and A.~Sorbi, editors,
+\emph{Computation and Logic in the Real World}, CiE~2007, LNCS~4497,
+pp.~238--247. Springer, 2007.
+\newblock \href{https://doi.org/10.1007/978-3-540-73001-9_25}{doi:10.1007/978-3-540-73001-9\_25}.
+\href{https://www.univ-orleans.fr/lifo/membres/Jerome.Durand-Lose/Recherche/Publications/2007_CiE.pdf}{Author version}.
+
+\bibitem{DL06}
+J\'er\^ome Durand-Lose.
+\newblock Reversible conservative rational abstract geometrical computation is Turing-universal.
+\newblock In A.~Beckmann, U.~Berger, B.~L\"owe and J.~V.~Tucker, editors,
+\emph{Logical Approaches to Computational Barriers}, CiE~2006, LNCS~3988,
+pp.~163--172. Springer, 2006.
+\newblock \href{https://doi.org/10.1007/11780342_18}{doi:10.1007/11780342\_18}.
+\href{https://www.univ-orleans.fr/lifo/membres/Jerome.Durand-Lose/Recherche/Publications/2006_CiE.pdf}{Author version}.
 
 \bibitem{accumulations}
 Florent Becker, Mathieu Chapelle, J\'er\^ome Durand-Lose,
@@ -1808,7 +2563,9 @@ Seymour Ginsburg and Edwin H.\ Spanier.
 Semigroups, Presburger formulas, and languages.
 \emph{Pacific Journal of Mathematics} \textbf{16}(2) (1966), 285--296.
 \href{https://doi.org/10.2140/pjm.1966.16.285}{doi:10.2140/pjm.1966.16.285}.
-\url{https://msp.org/pjm/1966/16-2/pjm-v16-n2-p09-s.pdf}.
+\url{https://msp.org/pjm/1966/16-2/pjm-v16-n2-p09-s.pdf};
+\href{https://msp.org/pjm/1966/16-2/pjm-v16-n2-p09-p.pdf}{publisher PDF}.
+(\wtag\ Merged entry: source~07's \texttt{ginsburgspanier} and source~11's \texttt{GS66}, with both sources' links.)
 
 \bibitem{beckrobins}
 Matthias Beck and Sinai Robins.
@@ -1831,6 +2588,21 @@ Yuri Matiyasevich, and Dierk Schleicher.
 \emph{Diophantine Equations and the DPRM Theorem}.
 Archive of Formal Proofs, 6 June 2022.
 \url{https://isa-afp.org/entries/DPRM_Theorem.html}.
+
+\bibitem{cdc}
+\wtag\ ProveIt research report \emph{canonical-diophantine-certificates}, collection \path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/}; Part~XI (order-free self-assembly and a positivity-restricted degree threshold) and Part~IX (the boundary of fixed-arity compression). Cited by label names, not by page.
+
+\bibitem{lbh}
+\wtag\ ProveIt research report \emph{liveness-beyond-halting}, collection \path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/liveness-beyond-halting/}; Part~V, the question of its source~11 ``Optimal degree under stronger geometric restrictions''.
+
+\bibitem{review808}
+\wtag\ ProveIt research programme, \emph{Seven incoming computational-substrate reports}, review \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/incoming_substrate_review_808b53ed8.md}, commit \texttt{126028588}, 2 October 2026, with its replay script and receipt in the same directory.
+
+\bibitem{reviewsignal}
+\wtag\ ProveIt research programme, \emph{Independent signal-machine review, arrival 808b53ed8}, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/incoming_signal_review_808b.md}, commit \texttt{126028588}, 2 October 2026.
+
+\bibitem{blockca}
+\wtag\ ProveIt research programme, \emph{Two-state block automata: exact tables and the finite-input gap}, bounded primary-source audit \path{Computability/HilbertTenthProblem/Papers/1980/EXPLORATION_BINARY_BLOCK_CA_AUDIT.md}, as at the write of this report.
 
 \end{thebibliography}
 \end{document}
