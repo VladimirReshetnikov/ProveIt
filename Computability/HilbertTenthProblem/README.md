@@ -51,7 +51,20 @@ reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
 natural witness tuple and passed independent review. Their arity depends
 on the external horizon; the fixed universal bound remains 87 operations.
 
-The [coupled-index compiler](Papers/research-wip/native-stream-queue/gpcp_coupled_index_units754.md)
+The [computed-history-field compiler](Papers/research-wip/native-stream-queue/gpcp_history_computed_fields744.md)
+gives **721 certificate /744=349M+395A operations**, eight comparisons,
+122 positive witnesses and exact formal degree187625. It computes three
+private history AND fields from the retained ports, saving3M+7A and three
+witnesses. Their positivity follows from the actual global bound and reserved
+top regions before any AND/history typing. Restoration bijects the new
+positive zeros with the754 parent's history-checksum-positive slice;
+normalizing the other history sign gives exactly two parent preimages per
+new zero. Recoder fields remain supplied. All eight complete sources,
+positive-domain proofs, signed graph identities, exact degrees and guarded
+APIs passed independent review. Supplied initial data costs747 operations,
+123 witnesses and degree8481. The separate universal bound remains87.
+
+The preceding [coupled-index compiler](Papers/research-wip/native-stream-queue/gpcp_coupled_index_units754.md)
 gives **728 certificate /754=352M+402A operations**, nine comparisons,
 125 positive witnesses and exact formal degree205777. Reusing each first
 index removes three additions. An explicit positive projection to757 has
@@ -78,8 +91,19 @@ The [interaction-combinator wiring obstruction](Papers/research-wip/native-strea
 gives two four-agent nets with identical labelled underlying graph, port-type counts
 and initially active pair, but different agent-free reachability. Exact
 port gluing preserves cyclic wires. The result rejects only that summary
-abstraction; a topology-aware arithmetic compiler remains open. It changes
-neither the universal87 bound nor the counted sparse-TM route.
+abstraction; a fixed-size compiler for the full universal rule set remains open.
+It changes neither the universal87 bound nor the counted sparse-TM route.
+
+The [quadratic topology certificate](Papers/research-wip/native-stream-queue/interaction_combinator_quadratic_topology.md)
+retains the complete port matching and cyclic-wire count for an externally
+selected delta annihilation. Shared routing witnesses give a complete quartic
+at **472=151M+321A operations**,49 residuals,67 supplied source coordinates
+and36 successor/helper coordinates; the fixed two-step history costs484.
+Natural matching row sums replace Boolean constraints, and the helpers are
+unique. A signed counterexample records why this shortcut requires natural
+coordinates. Exhaustive local replay and independent larger-net checks pass.
+The delta-only fragment terminates; all six rules, scheduling, variable-time
+compression and the ordinary-input loader remain unpaid.
 
 The preceding [first-padding sparse-TM compiler](Papers/research-wip/native-stream-queue/gpcp_first_padding_units763.md)
 gives **719 certificate /763=352M+411A operations**,15 comparisons,
@@ -1139,12 +1163,13 @@ retains its full strong equation.
   compiler slices. The established75/87 bounds remain unchanged.
 
   These results are not yet Lean formalized.
-- The [coupled-index sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_coupled_index_units754.md)
-  gives a second complete universal route at **754 operations**,125 positive
-  witnesses and exact degree205777. Its57-tile compiler retains the complete
-  ordinary-input interface. Shared selector sums, paired index/checksum
-  signs, and proved global/native bound projections reduce the
-  complete paid circuit; signed bound factors need not individually be+1.
+- The [computed-history-field sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_history_computed_fields744.md)
+  gives a second complete universal route at **744 operations**,122 positive
+  witnesses and exact degree187625. Its57-tile compiler retains the complete
+  ordinary-input interface. The actual top history regions prove three
+  computed truth fields positive before typing; restoration bijects the754
+  checksum-positive slice and parent normalization has two preimages.
+  Signed bound factors need not individually be+1.
 - The [normalized four-tile tag predicate](Papers/research-wip/native-stream-queue/pcp_normalized_strong_history_units.md)
   costs **196=93M+103A operations**,28 positive witnesses and degree1015,
   including initially halted input. The preceding197-operation degree667
