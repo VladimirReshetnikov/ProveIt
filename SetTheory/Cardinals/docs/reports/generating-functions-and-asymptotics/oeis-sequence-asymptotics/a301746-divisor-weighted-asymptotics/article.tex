@@ -1,11 +1,16 @@
 \documentclass[11pt,letterpaper]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
 \usepackage{lmodern,microtype}
-\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs}
-\usepackage[hidelinks]{hyperref}
-\hypersetup{pdftitle={Asymptotic expansions and inversion for divisor square exclusion partitions}}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
 \usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\setlength{\emergencystretch}{2em}
+\hypersetup{pdftitle={Divisor-weighted partition products and assemblies (OEIS A301746, A294363)},pdfsubject={Logarithmic hierarchies, exact-saddle expansions and inverse localization for OEIS A301746 and A294363: two research reports merged}}
 \setlist{itemsep=2pt,topsep=5pt}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
@@ -14,6 +19,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% Macros of the two sources; every shared name has the same definition in both.
 \newcommand{\dd}{\mathrm d}
 \newcommand{\e}{\mathrm e}
 \newcommand{\ii}{\mathrm i}
@@ -22,19 +28,149 @@
 \newcommand{\R}{\mathbb R}
 \newcommand{\E}{\mathbb E}
 \newcommand{\Prob}{\mathbb P}
+\newcommand{\OO}{\mathcal O}
 \DeclareMathOperator{\Res}{Res}
-\title{Asymptotic expansions and inversion for divisor square exclusion partitions}
-\author{}
-\date{1 October 2026}
+\DeclareMathOperator{\Repart}{Re}
+% Notes added when the two manuscripts were merged (batch 77).
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\title{Divisor-weighted partition products and assemblies\\ (OEIS A301746 and A294363)\\[4pt]
+\large Logarithmic hierarchies, exact-saddle expansions\\ and inverse localization}
+\author{Two research reports, merged into one ProveIt report}
+\date{Both Parts: 1 October 2026\quad merged: 2 October 2026}
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
-Let $a_n$ be the coefficient of $q^n$ in $\prod_{k\ge1}(1+q^k)^{d(k)^2}$, where $d(k)$ is the divisor function. We prove the logarithmic equivalent recorded conjecturally for OEIS A301746 and compute three further inverse-logarithmic corrections, both forward and for the integer threshold inverse. A fourth-order Mellin pole yields an explicit cubic polynomial and an algorithm for every fixed logarithmic order. Separately, a Bernoulli saddle argument gives arbitrary-order relative coefficient expansions in exact cumulants. Their specified positive-real inverses locate the integer threshold within shrinking intervals before rounding. A positive Euler-product factorization establishes global coefficient monotonicity. The explicit logarithmic expansion and the sharper exact-saddle expansion have different error scales; neither is asserted to be a complete exponentially improved transseries.
+This report prints two research manuscripts on generating functions weighted by the divisor function $d(k)$. Part~I treats OEIS A301746, the coefficients $a_n$ of $\prod_{k\ge1}(1+q^k)^{d(k)^2}$. Its Mellin kernel has a fourth-order pole at $s=1$, which gives an explicit cubic polynomial. From it Part~I proves Kote\v{s}ovec's conjectured equivalent $\log a_n\sim\sqrt n(\log n)^{3/2}/(2\sqrt6)$ with three further inverse-logarithmic corrections, and the matching inverse expansion. It also gives an arbitrary-order relative expansion in exact saddle cumulants, global strict monotonicity, and shrinking real-index brackets for the integer threshold. Part~II treats OEIS A294363, $a_n=n![z^n]\exp(\sum_{k\ge1}d(k)z^k)$, whose Mellin kernel has a double pole. It proves an explicit multiplicative equivalent through a shifted Lambert~$W$ saddle, an all-orders relative expansion with coefficients rational in the Lambert parameter, the OEIS logarithmic statement, and a factorial-core inverse whose absolute error tends to zero. The two Parts share a method template (exponential tilting, an elementary minor-arc bound, a Gaussian Edgeworth sum and threshold brackets) but no theorem. Neither manuscript claims priority for its methods. The report is unrefereed, and nothing in it is formalized.
 \end{abstract}
+\hypersetup{pageanchor=true}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
 
+\section*{Guide to this report}\label{dwa:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are two manuscripts of batch~77 (arrival commit \texttt{096ee7b87}, 2~October 2026), placed in this directory by commit \texttt{aa7345800}. They come from the same day and, by their style and audit apparatus, from the same producer:
+\begin{center}
+\small
+\begin{tabular}{@{}l >{\raggedright\arraybackslash}p{0.30\textwidth} >{\raggedright\arraybackslash}p{0.40\textwidth} l@{}}
+\toprule
+Part & Batch-77 manuscript & Delivered title & Sequence\\
+\midrule
+I & 50 (\file{oeis-divisor-square-asymptotics-result}) & Asymptotic expansions and inversion for divisor square exclusion partitions & A301746\\
+II & 49 (\file{oeis-divisor-assembly-result}) & Divisor marked assemblies and their factorial core inverse & A294363\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each Part prints its manuscript's text in full, with every result, proof, remark, question and limitation, and keeps its delivered wording. Part~I keeps exactly the section, statement and equation numbers of its manuscript. In Part~II, delivered Section~$k$ is Section~$k+7$, statement numbers follow their sections, and equations are numbered by section (the delivery numbered them consecutively through the article). Each Part keeps its own symbols; Section~\hyperref[dwa:sec:notation]{``Notation across the two Parts''} lists the symbols that change meaning between them. Notes added when the manuscripts were merged are set in small type and tagged \textbf{[write]}. No delivered statement was changed and no symbol was renamed.
+
+Part~I is printed first because it is the base of the merge: its sequence gives the report its directory name, and it is the longer manuscript, with the higher-order Mellin pole (fourth order, with a factor $1/\zeta(2s)$, against Part~II's double pole). The two Parts are complementary, not overlapping: Part~II says itself (Section~\ref{dwa:as:sec:scope}) that A301746 ``is a different model'' and uses none of its claims.
+
+\section*{What is proved, and where}\label{dwa:sec:status}
+\addcontentsline{toc}{section}{What is proved, and where}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.50\textwidth} >{\raggedright\arraybackslash}p{0.44\textwidth}@{}}
+\toprule
+Statement & Where\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Part~I: A301746, $\prod_{k\ge1}(1+q^k)^{d(k)^2}$}}\\
+Cumulants $\kappa_r(t)=t^{-r-1}P_r(L)+O(t^{-\sigma-r})$ with an explicit cubic $P$; constants $B_1,B_2,B_3$ & Proposition~\ref{dwa:sq:prop:Mellin}, \eqref{dwa:sq:eq:B1}--\eqref{dwa:sq:eq:B3}\\
+Relative expansion of $a_n$ to every order in exact saddle cumulants, remainder $O_R(M^{-R-1})$ & Theorem~\ref{dwa:sq:thm:exact}\\
+$a_{n+1}>a_n$ for all $n\ge1$ & Proposition~\ref{dwa:sq:prop:monotonicity}\\
+Integer threshold between two ceilings, width $O(t^R/L^{3R+3})$; first inverse shift & Theorem~\ref{dwa:sq:thm:inverse}, Corollary~\ref{dwa:sq:cor:inverse-shift}\\
+$\log a_n=\frac{\sqrt nH^{3/2}}{2\sqrt6}\{1+F_1/H+F_2/H^2+F_3/H^3+\cdots\}$, hence the OEIS conjecture & Theorem~\ref{dwa:sq:thm:forward}\\
+$N(y)=\frac{3Y^2}{Z^3}\{1+I_1/Z+I_2/Z^2+I_3/Z^3+\cdots\}$ & Theorem~\ref{dwa:sq:thm:inverse-log}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Part~II: A294363, $n![z^n]\exp(\sum_{k\ge1}d(k)z^k)$}}\\
+$a_n/n!\sim M(n)$ with explicit $R_1,R_2$ & Theorem~\ref{dwa:as:thm:main}\\
+Exact-saddle Poisson Edgeworth expansion to every order & Theorem~\ref{dwa:as:thm:edgeworth}\\
+All-orders expansion with $R_j\in\mathbb Q(u)$; finite recurrence & Theorem~\ref{dwa:as:thm:explicit}\\
+$\log(a_n/n!)\sim\sqrt{2n\log n}$ with its first correction (the OEIS statement) & \eqref{dwa:as:eq:weak}\\
+Factorial-core reversion to every order; absolute-$o(1)$ inverse with the term $+1/4$ & Theorem~\ref{dwa:as:thm:inverse}, Corollary~\ref{dwa:as:cor:o1inverse}\\
+Threshold envelopes and strict increase & Section~\ref{dwa:as:sec:inverse}, ``Threshold caveat''\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Open in the Parts}}\\
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{Part~I: convergence of the formal hierarchies, a complete exponentially improved expansion, the contributions of zeta zeros at $s=\rho/2$, individual arithmetic sectors with a collective remainder (Section~\ref{dwa:sq:sec:scope}). Part~II: effective enclosures and a certified starting index, secondary arcs at roots of unity, a bivariate local limit theorem for size and component count (Section~\ref{dwa:as:sec:questions}). No source of this batch answers any of them.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Exact integer recurrences and exact formal reversions check the displayed coefficients; the high-precision saddle comparisons in both Parts are diagnostics, not interval-certified bounds, and no proof rests on them. The inverse constants are existence constants, not optimized thresholds.
+
+\section*{Notation across the two Parts}\label{dwa:sec:notation}
+\addcontentsline{toc}{section}{Notation across the two Parts}
+Common to both Parts: $d(k)$ is the number of divisors of $k$; $\gamma$ is Euler's constant; $W$ is the principal Lambert function; $\E$ is an expectation; $\dd$, $\ii$ are upright. Everything else is fixed inside each Part, and the following symbols change meaning between them. The tempting false reading is the one that imports a symbol from the other Part.
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.10\textwidth} >{\raggedright\arraybackslash}p{0.40\textwidth} >{\raggedright\arraybackslash}p{0.42\textwidth}@{}}
+\toprule
+Symbol & Part~I (A301746) & Part~II (A294363)\\
+\midrule
+$a_n$, $F$ & $a_n=[q^n]F(q)$, $F(q)=\prod(1+q^k)^{d(k)^2}$ & $a_n=n![z^n]F(z)$, $F(z)=\exp(\sum d(k)z^k)$\\
+$b_k$, $b_n$ & $b_k=d(k)^2$, a multiplicity & $b_n=a_n/n!$, a coefficient\\
+$L$ & $L=\log(1/t)$, a number & $L(t)=\log F(e^{-t})$, a function (Part~I's $f(t)$)\\
+$M$ & $M=t^{-1}L^3$, the expansion scale & $M(x)$, the main equivalent \eqref{dwa:as:eq:main}\\
+$t$, $t_x$ & $t_x$: the exact saddle, $\kappa_1(t_x)=x$ & $t_x=\sqrt{u_x/N_x}$: the shifted Lambert saddle; the exact saddle is $\tau_n$\\
+$E_R$, $E_m$ & $E_R(t)$: the whole corrected factor through order $R$, with $E_0=1$ and $E_1=1+\cdots$ & $E_m(\tau)$: the single term of weight $2m$; $E_1=\frac{K_4}{8K_2^2}-\frac{5K_3^2}{24K_2^3}$ \emph{without} the leading $1$, and $b_n$ uses $\sum_{m\le m_0}E_m$\\
+$\kappa_r$, $V$ / $K_j$ & $\kappa_r=(-1)^rf^{(r)}$, $V=\kappa_2$ & $K_j=(-1)^jL^{(j)}$; $K_2$ plays the role of $V$\\
+$P$ & $P(L)$, the cubic Mellin polynomial; $P_r$ & $P(|x|)$, a fixed polynomial in a remainder bound\\
+$B_j$, $B_J$ & $B_j=(\log h)^{(j)}(1)$, numbers & $B_J(x)$, the smooth model \eqref{dwa:as:eq:model}\\
+$T$, $Q$ & $Q=P+P'$, $T=2P+P'$, polynomials & $T$, a formal variable in \eqref{dwa:as:eq:ell}; $Q_h$, a recurrence\\
+$r$ & cumulant index; and two shifted log-log variables, $r=-3\log H+2B_1+\log96$ (forward) and $r=-3\log Z+B_1+\log6$ (inverse) & $r=e^{-t}$, the Cauchy radius (Lemma~\ref{dwa:as:lem:arcs})\\
+$R$, $R_j$ & $R$, a fixed order; $C_R$ & $R_j(u)\in\mathbb Q(u)$, the correction coefficients\\
+$y$, $Y$, $N$ & $y$ is a \emph{count}, $N(y)=\min\{n:a_n\ge y\}$, $Y=\log y$, $Z=\log Y$ & $y$ is the \emph{logarithm} of a count, $y=\log a_n$; the threshold is $I(Y)=\min\{n:a_n\ge Y\}$; $N_x=x-1/144$\\
+$H$, $H_j$ & $H=\log n$ & $H_j$, the harmonic numbers\\
+$Z$, $Z_j$ & $Z=\log Y$; $Z_j=(\log\zeta)^{(j)}(2)$ & $Z\sim N(0,1)$\\
+$S$ & $S_t$, the tilted random size & $S(x)=(2u_x-1)/t_x$, the exponent of $M$\\
+$D$ & $D_W(\theta)$, a Dirichlet kernel & $D=2u+1$\\
+$u$, $v$, $z$, $\ell$ & $u=\theta\sqrt V$; $z=\ell+B_1$, $v=\ell+B_1+\frac12$, with $\ell$ the model saddle & $u=u_x$, the Lambert parameter; $v$ formal ($v=\sqrt t$); $z$ the EGF variable or a formal symbol; $\ell_j(u)$ the logarithmic corrections\\
+$f$, $g$, $h$ & $f(t)=\log F(\e^{-t})$; $g=\log A_0$ and $h(s)$, $h(x)$ in proofs & $f(x)=x(\log x-1)$, the factorial core; $g_J=\Phi_J-f$\\
+$c$, $c_j$, $c_p$ & $c_j$, recurrence coefficients \eqref{dwa:sq:eq:recurrence} & $c_p=-\zeta(-p)^2/p!$, Mellin coefficients\\
+$W$ & the Lambert function, and the length of a block in Lemma~\ref{dwa:sq:lem:block} & the Lambert function only\\
+\bottomrule
+\end{tabular}
+\end{center}
+Part~I's $E_1$ and Part~II's $1+E_1$ are the same Edgeworth expression, $1+\kappa_4/(8V^2)-5\kappa_3^2/(24V^3)$, evaluated on the respective cumulants.
+
+\section*{Provenance and merge decisions}\label{dwa:sec:provenance}
+\addcontentsline{toc}{section}{Provenance and merge decisions}
+Two manuscripts, both of batch~77 (arrival commit \texttt{096ee7b87}; placement commit \texttt{aa7345800}).
+\begin{itemize}
+\item \textbf{Part~I}, manuscript~50, archive \file{oeis-divisor-square-asymptotics-result.zip}, main file \file{article/divisor-square-partitions.tex} (10 pages), 1~October 2026, empty author line. No pin: the package names no ProveIt commit, and its approval records name only the producer's working directory. It contributes everything about A301746.
+\item \textbf{Part~II}, manuscript~49, archive \file{oeis-divisor-assembly-result.zip}, main file \file{divisor_assembly_asymptotics.tex} (9 pages), 1~October 2026, author line ``Research note for OEIS A294363''. Pin \texttt{f7e7d8607} (the \texttt{search\_snapshot\_commit} of its \file{provenance.json}; an ancestor of the placement commit). It contributes everything about A294363.
+\end{itemize}
+Neither delivery says whether it was AI-assisted, and neither names an author.
+
+Where the merge had to choose:
+\begin{enumerate}
+\item \emph{One report or two.} The manuscripts prove no common theorem and treat different sequences, but they are complementary work on one subject (divisor-weighted Meinardus-type generating functions with higher-order Mellin poles) by one method template. They are merged as two Parts, each with its own definitions and hypotheses.
+\item \emph{Base and order.} Part~I (manuscript~50) is the base and is printed first; Part~II follows.
+\item \emph{Labels.} Every label carries the prefix \texttt{dwa:}; Part~I's delivered labels became \texttt{dwa:sq:\ldots}, Part~II's \texttt{dwa:as:\ldots}. The section labels \texttt{dwa:sq:sec:scope}, \texttt{dwa:as:sec:inverse}, \texttt{dwa:as:sec:scope}, \texttt{dwa:as:sec:questions}, the two Part labels and the five front-matter labels were added.
+\item \emph{Numbering and bibliography.} Part~II's equations are numbered by section (see the Guide). The two bibliographies are merged: both sources cite Ahmadi, G\'omez-A\'iza and Ward, printed once (key \texttt{AGW}), with Part~II's preprint and equation pointers kept; each source's OEIS entry keeps its own item. Hyperlinks are no longer coloured.
+\item \emph{Notes.} The \textbf{[write]} notes give cross-references between the Parts, identify the Lambert-$W$ cores and integer-threshold brackets as instances of the repository's inversion theorems, and point to neighbouring reports. They prove nothing new.
+\end{enumerate}
+
+\section*{Relation to the repository}\label{dwa:sec:repo}
+\addcontentsline{toc}{section}{Relation to the repository}
+Before this report no ProveIt file mentioned A301746 or A294363. Two neighbouring reports of the same collection use the same machinery on other products:
+\begin{itemize}
+\item \file{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a022629-distinct-partition-norms} treats $\prod_k(1+k^\alpha q^k)$. Its consecutive-block inequality (Lemma \texttt{dpn:lem:block}) is Lemma~\ref{dwa:sq:lem:block} here, and its exact-saddle Edgeworth sum (Theorem \texttt{dpn:thm:saddle}) has the same Gaussian-moment formula as \eqref{dwa:sq:eq:ER} and \eqref{dwa:as:eq:edgeworth}. That report's fifth source, batch-77 manuscript~51, came from the same producer on the same day and states Part~I's $E_R$ formula and block lemma again, with the same proof in different words; Part~I's independent audit cites that source's audit (see the README).
+\item \file{.../a301981-unitary-divisor-partitions} treats $\prod(1\mp q^m)^{\mp\sigma^*(m)}$, another divisor-type weight whose Dirichlet series has a zeta denominator. There the zeta-zero poles are strong enough to refute the recorded OEIS equivalents; see the note in Section~\ref{dwa:sq:sec:scope}.
+\end{itemize}
+The Lambert-$W$ starts, reversions and integer brackets of both Parts are instances of the inversion theorems of \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; the \textbf{[write]} notes give the theorem for each. No novelty is claimed for that machinery. Nothing in this report is formalized in Lean or Rocq, and its place in the collection gives it no formal status.
+
+\part{Asymptotic expansions and inversion for divisor square exclusion partitions}\label{dwa:part:sq}
+\partsource{Batch-77 manuscript 50, archive \file{oeis-divisor-square-asymptotics-result.zip} (delivered as \file{article/divisor-square-partitions.tex}, 10 pages), dated 1 October 2026. Delivered author line: empty. Printed as delivered, with \textbf{[write]} notes; section, statement and equation numbers are those of the delivery.}
+\begin{partabstract}
+Let $a_n$ be the coefficient of $q^n$ in $\prod_{k\ge1}(1+q^k)^{d(k)^2}$, where $d(k)$ is the divisor function. We prove the logarithmic equivalent recorded conjecturally for OEIS A301746 and compute three further inverse-logarithmic corrections, both forward and for the integer threshold inverse. A fourth-order Mellin pole yields an explicit cubic polynomial and an algorithm for every fixed logarithmic order. Separately, a Bernoulli saddle argument gives arbitrary-order relative coefficient expansions in exact cumulants. Their specified positive-real inverses locate the integer threshold within shrinking intervals before rounding. A positive Euler-product factorization establishes global coefficient monotonicity. The explicit logarithmic expansion and the sharper exact-saddle expansion have different error scales; neither is asserted to be a complete exponentially improved transseries.
+\end{partabstract}
 \section{The sequence and the two expansion scales}
 Let $d(k)=\sum_{j\mid k}1$ and define
-\begin{equation}\label{eq:product}
+\begin{equation}\label{dwa:sq:eq:product}
  F(q)=\prod_{k\ge1}(1+q^k)^{b_k}=\sum_{n\ge0}a_nq^n,
  \qquad b_k=d(k)^2.
 \end{equation}
@@ -42,14 +178,14 @@ A part of size $k$ has $b_k$ distinguished colors, each of which may occur at mo
 \[
 1,1,4,8,19,35,82,142,291,524,989,1724,3174,\ldots.
 \]
-The inspected OEIS entry A301746~\cite{OEIS} records Kote\v{s}ovec's 2018 conjecture
-\begin{equation}\label{eq:conjecture}
+The inspected OEIS entry A301746~\cite{sqOEIS} records Kote\v{s}ovec's 2018 conjecture
+\begin{equation}\label{dwa:sq:eq:conjecture}
  \log a_n\sim \frac{\sqrt n(\log n)^{3/2}}{2\sqrt6}.
 \end{equation}
 Our proof gives substantially more detailed formulas while keeping their precision explicit.
 
 For $t>0$ set
-\begin{equation}\label{eq:data}
+\begin{equation}\label{dwa:sq:eq:data}
  f(t)=\log F(\e^{-t}),\qquad
  \kappa_r(t)=(-1)^rf^{(r)}(t),\quad V(t)=\kappa_2(t).
 \end{equation}
@@ -63,24 +199,24 @@ The methods have substantial antecedents. Bridges, Brindle, Bringmann and Franke
 
 \section{The cubic Mellin polynomial}
 Define, in a neighborhood of $s=1$,
-\begin{equation}\label{eq:h}
+\begin{equation}\label{dwa:sq:eq:h}
  h(s)=\frac{\Gamma(s)(1-2^{-s})\zeta(s+1)[(s-1)\zeta(s)]^4}{\zeta(2s)},
  \qquad B_j=(\log h)^{(j)}(1)\quad(1\le j\le3).
 \end{equation}
 Since $h(1)=1/2$, the logarithm in this definition is well defined locally. Let
-\begin{equation}\label{eq:P}
+\begin{equation}\label{dwa:sq:eq:P}
  P(L)=\frac{(L+B_1)^3+3B_2(L+B_1)+B_3}{12},\qquad
  P_r=\prod_{j=1}^r\left(\frac{\dd}{\dd L}+j\right)P,
 \end{equation}
 where $P_0=P$.
 
-\begin{proposition}\label{prop:Mellin}
+\begin{proposition}\label{dwa:sq:prop:Mellin}
 For every fixed $1/2<\sigma<1$ and integer $r\ge0$, as $t\downarrow0$,
-\begin{equation}\label{eq:cumulant-poly}
+\begin{equation}\label{dwa:sq:eq:cumulant-poly}
  \kappa_r(t)=t^{-r-1}P_r(L)+O_{\sigma,r}(t^{-\sigma-r}),
 \end{equation}
 where $\kappa_0=f$. In particular,
-\begin{equation}\label{eq:cumulant-leading}
+\begin{equation}\label{dwa:sq:eq:cumulant-leading}
  \kappa_r(t)\sim\frac{r!}{12}t^{-r-1}L^3.
 \end{equation}
 \end{proposition}
@@ -91,7 +227,7 @@ For $|z|<1$, $\sum_{j\ge0}(j+1)^2z^j=(1-z^2)/(1-z)^4$. Multiplying the correspon
  \qquad(\Re s>1).
 \]
 Mellin inversion of $\log(1+\e^{-u})$, followed by absolutely convergent summation, gives for $c>1$
-\begin{equation}\label{eq:Mellin}
+\begin{equation}\label{dwa:sq:eq:Mellin}
  f(t)=\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
  \frac{\Gamma(s)(1-2^{-s})\zeta(s+1)\zeta(s)^4}{\zeta(2s)}t^{-s}\,\dd s.
 \end{equation}
@@ -109,12 +245,12 @@ The constants can be evaluated using Stieltjes constants. Define $\gamma_j$ by
  \zeta(1+u)=\frac1u+\sum_{j\ge0}\frac{(-1)^j\gamma_j}{j!}u^j,
  \qquad \gamma_0=\gamma,
 \]
-and write $Z_j=(\log\zeta)^{(j)}(2)$. Direct logarithmic differentiation of~\eqref{eq:h} yields
+and write $Z_j=(\log\zeta)^{(j)}(2)$. Direct logarithmic differentiation of~\eqref{dwa:sq:eq:h} yields
 \begin{align}
- B_1&=3\gamma+\log2-Z_1,\label{eq:B1}\\
- B_2&=\zeta(2)-2(\log2)^2-3Z_2-8\gamma_1-4\gamma^2,\label{eq:B2}\\
+ B_1&=3\gamma+\log2-Z_1,\label{dwa:sq:eq:B1}\\
+ B_2&=\zeta(2)-2(\log2)^2-3Z_2-8\gamma_1-4\gamma^2,\label{dwa:sq:eq:B2}\\
  B_3&=-2\zeta(3)+6(\log2)^3-7Z_3
-       +12\gamma_2+24\gamma\gamma_1+8\gamma^3.\label{eq:B3}
+       +12\gamma_2+24\gamma\gamma_1+8\gamma^3.\label{dwa:sq:eq:B3}
 \end{align}
 For orientation,
 \[
@@ -133,17 +269,17 @@ These sums converge almost surely because their expectations are finite. Their c
 \]
 and $\kappa_1(t)$ decreases from infinity to zero, there is exactly one $t_x>0$ with $\kappa_1(t_x)=x$ for each $x>0$.
 
-\begin{theorem}\label{thm:exact}
+\begin{theorem}\label{dwa:sq:thm:exact}
 Define
-\begin{equation}\label{eq:A0}
+\begin{equation}\label{dwa:sq:eq:A0}
  A_0(x)=\frac{\exp(f(t_x)+xt_x)}{\sqrt{2\pi V(t_x)}}.
 \end{equation}
 For every fixed integer $R\ge0$,
-\begin{equation}\label{eq:exact-expansion}
+\begin{equation}\label{dwa:sq:eq:exact-expansion}
  a_n=A_0(n)\left\{E_R(t_n)+O_R(M(t_n)^{-R-1})\right\},
 \end{equation}
 where
-\begin{equation}\label{eq:ER}
+\begin{equation}\label{dwa:sq:eq:ER}
  E_R(t)=\sum_{\boldsymbol j}(-1)^{s/2}(s-1)!!
  \prod_{r=3}^{2R+2}\frac1{j_r!}
  \left(\frac{\kappa_r(t)}{r!V(t)^{r/2}}\right)^{j_r}.
@@ -152,7 +288,7 @@ The sum is over nonnegative $j_r$ with $\sum(r-2)j_r\le2R$ and $s=\sum rj_r$ eve
 \begin{align}
  E_0&=1,\nonumber\\
  E_1&=1+\frac{\kappa_4}{8V^2}-\frac{5\kappa_3^2}{24V^3}
- =1-\frac{9t}{4L^3}\left(1+O(L^{-1})\right).\label{eq:E1}
+ =1-\frac{9t}{4L^3}\left(1+O(L^{-1})\right).\label{dwa:sq:eq:E1}
 \end{align}
 \end{theorem}
 
@@ -162,24 +298,24 @@ The elementary prime-power inequality
  (j+1)^2\le\binom{j+3}{3}
 \]
 gives $b_k\le d_4(k)$. Counting ordered products of four positive integers shows
-\begin{equation}\label{eq:summatory}
+\begin{equation}\label{dwa:sq:eq:summatory}
  \sum_{k\le X}b_k\le X(1+\log X)^3\qquad(X\ge1).
 \end{equation}
 The logarithm $f(z)$ is analytic in $\Re z>0$: the factors $1+\e^{-kz}$ have no zeros there, and their logarithmic series converge normally on compact subsets. For $|z-t|\le t/2$ and each fixed $r\ge1$,
-\begin{equation}\label{eq:analytic}
+\begin{equation}\label{dwa:sq:eq:analytic}
  |f^{(r)}(z)|\le\sum_{k\ge1}b_kk^r\sum_{j\ge1}j^{r-1}\e^{-jkt/2}
  =O_r(t^{-r-1}L^3).
 \end{equation}
-For $k\le1/t$, bound the inner sum by $O_r((kt)^{-r})$ and use~\eqref{eq:summatory}. For $k>1/t$, it is $O_r(\e^{-kt/2})$, and partial summation finishes the estimate. Together with Proposition~\ref{prop:Mellin}, this gives
-\begin{equation}\label{eq:normalized}
+For $k\le1/t$, bound the inner sum by $O_r((kt)^{-r})$ and use~\eqref{dwa:sq:eq:summatory}. For $k>1/t$, it is $O_r(\e^{-kt/2})$, and partial summation finishes the estimate. Together with Proposition~\ref{dwa:sq:prop:Mellin}, this gives
+\begin{equation}\label{dwa:sq:eq:normalized}
  V\asymp t^{-2}M,\qquad
  \frac{\kappa_r}{V^{r/2}}=O_r(M^{-(r-2)/2})\quad(r\ge3).
 \end{equation}
 
 \subsection{A consecutive-block estimate}
-\begin{lemma}\label{lem:block}
+\begin{lemma}\label{dwa:sq:lem:block}
 For any interval $I$ of $W$ consecutive integers, $W$ sufficiently large, and $|\theta|\le\pi$,
-\begin{equation}\label{eq:block}
+\begin{equation}\label{dwa:sq:eq:block}
  \sum_{k\in I}\sin^2(k\theta/2)
  \ge cW\min(1,W^2\theta^2),
 \end{equation}
@@ -198,27 +334,30 @@ The Bernoulli product implies
  |\E\e^{\ii\theta S_t}|
  \le\exp\left(-2\sum_kb_kp_k(1-p_k)\sin^2(k\theta/2)\right).
 \]
-For $1/t\le k\le2/t$, $p_k$ stays uniformly away from zero and one, and $b_k\ge1$. Lemma~\ref{lem:block} therefore gives
-\begin{equation}\label{eq:minor}
+For $1/t\le k\le2/t$, $p_k$ stays uniformly away from zero and one, and $b_k\ge1$. Lemma~\ref{dwa:sq:lem:block} therefore gives
+\begin{equation}\label{dwa:sq:eq:minor}
  |\E\e^{\ii\theta S_t}|
  \le\exp\left(-ct^{-1}\min(1,t^{-2}\theta^2)\right),
  \qquad |\theta|\le\pi.
 \end{equation}
-Set $U=M^{1/12}$ and $\theta_0=U/\sqrt V$. Then $\theta_0/t\asymp M^{-5/12}\to0$. On the entire region $\theta_0\le|\theta|\le\pi$, the right side of~\eqref{eq:minor} is bounded by
-\begin{equation}\label{eq:minor-small}
+Set $U=M^{1/12}$ and $\theta_0=U/\sqrt V$. Then $\theta_0/t\asymp M^{-5/12}\to0$. On the entire region $\theta_0\le|\theta|\le\pi$, the right side of~\eqref{dwa:sq:eq:minor} is bounded by
+\begin{equation}\label{dwa:sq:eq:minor-small}
  \exp(-cM^{1/6}/L^3).
 \end{equation}
 This is smaller than every fixed power of $t$, even after multiplication by $\sqrt V$. One slot at each consecutive active size suffices; no equidistribution assertion for $d(k)^2$ is needed.
+\begin{writenote}[2 October 2026]
+The same inequality is Lemma \texttt{dpn:lem:block} of \file{oeis-sequence-asymptotics/a022629-distinct-partition-norms} (its sources 40 and 48), where it controls the noncentral arcs of $\prod(1+k^\alpha q^k)$. That report's fifth source, batch-77 manuscript~51, written on the same day in the same style, states this lemma, with the same proof in different words, and the formula \eqref{dwa:sq:eq:ER} again, for the products $\prod(1+k^\alpha q^k)^{k^\beta}$. In Part~\ref{dwa:part:as}, Lemma~\ref{dwa:as:lem:arcs} plays the same role with the weaker input $d(k)\ge1$ and an exact geometric sum in place of a block.
+\end{writenote}
 
 \subsection{Gaussian expansion}
 At $t=t_n$, exponential tilting and Fourier inversion give
-\begin{equation}\label{eq:Fourier}
+\begin{equation}\label{dwa:sq:eq:Fourier}
  a_n=\e^{f(t)+nt}\Prob(S_t=n)
  =\frac{\e^{f(t)+nt}}{2\pi}
  \int_{-\pi}^{\pi}\E\e^{\ii\theta(S_t-n)}\,\dd\theta.
 \end{equation}
-Outside $[-\theta_0,\theta_0]$, use~\eqref{eq:minor-small}. Inside, set $u=\theta\sqrt V$. The analytic estimate~\eqref{eq:analytic} yields
-\begin{align}\label{eq:local}
+Outside $[-\theta_0,\theta_0]$, use~\eqref{dwa:sq:eq:minor-small}. Inside, set $u=\theta\sqrt V$. The analytic estimate~\eqref{dwa:sq:eq:analytic} yields
+\begin{align}\label{dwa:sq:eq:local}
  \log\E\e^{\ii u(S_t-n)/\sqrt V}
  &=-\frac{u^2}{2}+\sum_{r=3}^{2R+3}
   \frac{\kappa_r(\ii u)^r}{r!V^{r/2}}\\
@@ -229,15 +368,15 @@ Assign weight $r-2$ to the $r$th normalized cumulant. Expand the exponential thr
  \frac1{\sqrt{2\pi}}\int_{\R}(\ii u)^s\e^{-u^2/2}\,\dd u
  =(-1)^{s/2}(s-1)!!.
 \]
-This proves~\eqref{eq:exact-expansion} and~\eqref{eq:ER}. Finally~\eqref{eq:cumulant-leading} gives $\kappa_4/(8V^2)\sim9t/L^3$ and $5\kappa_3^2/(24V^3)\sim45t/(4L^3)$, proving~\eqref{eq:E1}.
+This proves~\eqref{dwa:sq:eq:exact-expansion} and~\eqref{dwa:sq:eq:ER}. Finally~\eqref{dwa:sq:eq:cumulant-leading} gives $\kappa_4/(8V^2)\sim9t/L^3$ and $5\kappa_3^2/(24V^3)\sim45t/(4L^3)$, proving~\eqref{dwa:sq:eq:E1}.
 
 \section{Monotonicity and sharp inverse localization}
-\begin{proposition}\label{prop:monotonicity}
+\begin{proposition}\label{dwa:sq:prop:monotonicity}
 The coefficients satisfy $a_0=a_1=1$ and $a_{n+1}>a_n$ for every $n\ge1$.
 \end{proposition}
 \begin{proof}
 Since $1+q^k=(1-q^{2k})/(1-q^k)$,
-\begin{equation}\label{eq:Euler}
+\begin{equation}\label{dwa:sq:eq:Euler}
  F(q)=\prod_{k\ge1}(1-q^k)^{-w_k},\qquad
  w_k=d(k)^2-\mathbf1_{2\mid k}d(k/2)^2.
 \end{equation}
@@ -249,14 +388,14 @@ Define the integer threshold
  N(y)=\min\{n\ge0:a_n\ge y\}.
 \]
 For fixed $R\ge0$, specify a positive-real model by
-\begin{equation}\label{eq:AR}
+\begin{equation}\label{dwa:sq:eq:AR}
  A_R(x)=A_0(x)E_R(t_x).
 \end{equation}
 The word ``inverse'' below refers to this explicit model, not to an unspecified interpolation of the integer sequence.
 
-\begin{theorem}\label{thm:inverse}
+\begin{theorem}\label{dwa:sq:thm:inverse}
 For every fixed $R$, $A_R$ is positive and strictly increasing for all sufficiently large $x$. Write $x_R(y)$ for its unique large positive-real inverse. There is $C_R>0$ such that, for all sufficiently large $y$,
-\begin{equation}\label{eq:brackets}
+\begin{equation}\label{dwa:sq:eq:brackets}
  \left\lceil x_R(y)-\delta_R(y)\right\rceil
  \le N(y)\le
  \left\lceil x_R(y)+\delta_R(y)\right\rceil,
@@ -272,28 +411,31 @@ Implicit differentiation gives
  \frac{\dd}{\dd x}\kappa_r(t_x)=\frac{\kappa_{r+1}}V.
 \]
 Consequently,
-\begin{equation}\label{eq:slope}
+\begin{equation}\label{dwa:sq:eq:slope}
  \frac{\dd}{\dd x}\log A_0(x)
  =t_x-\frac{\kappa_3}{2V^2}=t_x(1+O(M^{-1})).
 \end{equation}
 Each nonconstant monomial in $E_R$ has size $O_R(M^{-1})$ or smaller. Differentiating it costs a factor $O(t/M)$, so $\frac{\dd}{\dd x}E_R(t_x)=O_R(tM^{-2})$. Since $E_R=1+O_R(M^{-1})$, positivity and $\frac{\dd}{\dd x}\log A_R(x)\sim t_x$ follow.
 
-Theorem~\ref{thm:exact} implies $\log a_n-\log A_R(n)=O_R(M^{-R-1})$. Dividing this logarithmic height error by the slope $\sim t$ bounds its real-index displacement by
+Theorem~\ref{dwa:sq:thm:exact} implies $\log a_n-\log A_R(n)=O_R(M^{-R-1})$. Dividing this logarithmic height error by the slope $\sim t$ bounds its real-index displacement by
 \[
  O_R(M^{-R-1}/t)=O_R(t^R/L^{3R+3}).
 \]
-The saddle data are comparable throughout these shrinking neighborhoods. Proposition~\ref{prop:monotonicity} and integer rounding prove~\eqref{eq:brackets}.
+The saddle data are comparable throughout these shrinking neighborhoods. Proposition~\ref{dwa:sq:prop:monotonicity} and integer rounding prove~\eqref{dwa:sq:eq:brackets}.
 \end{proof}
 Already $R=0$ gives a shrinking $O(L^{-3})$ interval before rounding. If $x_R(y)$ is exceptionally close to an integer, the brackets intentionally leave two neighboring possibilities.
+\begin{writenote}[2 October 2026]
+The two-ceiling bracket \eqref{dwa:sq:eq:brackets}, and its refusal to decide near an integer, is the separation condition of Theorem \texttt{p0:thm:staircase} of the repository's transseries volume (\file{Analysis/Transseries/docs/series-and-transseries/}\allowbreak\file{Transseries_And_Inversion/transseries_and_inversion.tex}), with $x_*=x_R(y)$ and $\eta=\delta_R(y)$. Dividing the logarithmic height error $O_R(M^{-R-1})$ by the slope to get $\delta_R$ is its residual-to-root conversion, Theorem \texttt{p0:thm:backward-error}. No novelty is claimed for this step. Part~\ref{dwa:part:as} states the same kind of bracket for A294363 (Section~\ref{dwa:as:sec:inverse}, ``Threshold caveat'').
+\end{writenote}
 
-\begin{corollary}\label{cor:inverse-shift}
+\begin{corollary}\label{dwa:sq:cor:inverse-shift}
 Let $x_0=A_0^{-1}(y)$, $t=t_{x_0}$, $L=\log(1/t)$, $M=t^{-1}L^3$, and
 \[
  C_1(t)=\frac{\kappa_4}{8V^2}-\frac{5\kappa_3^2}{24V^3}.
 \]
 Then
 \begin{align}
- x_1(y)&=x_0-\frac{C_1(t)}t+O\left(\frac1{tM^2}\right)\label{eq:inverse-shift}\\
+ x_1(y)&=x_0-\frac{C_1(t)}t+O\left(\frac1{tM^2}\right)\label{dwa:sq:eq:inverse-shift}\\
  &=x_0+\frac9{4L^3}\left(1+O(L^{-1})\right).\nonumber
 \end{align}
 In particular, the threshold is between the ceilings of
@@ -309,28 +451,28 @@ Write $g=\log A_0$ and $h(x)=\log(1+C_1(t_x))$. The derivative rules above give 
  =O\left(\frac{t^2}{M}\Delta^2+\frac{t}{M^2}|\Delta|\right)
  =O(M^{-3}).
 \]
-Thus $x_1=x_0-h(x_0)/g'(x_0)+O(1/(tM^3))$. Use $h=C_1+O(M^{-2})$ and~\eqref{eq:slope} to obtain~\eqref{eq:inverse-shift}; then use~\eqref{eq:E1}. The final brackets follow from Theorem~\ref{thm:inverse} with $R=1$. Retaining exact $C_1$ is essential for the $t/L^6$ error scale.
+Thus $x_1=x_0-h(x_0)/g'(x_0)+O(1/(tM^3))$. Use $h=C_1+O(M^{-2})$ and~\eqref{dwa:sq:eq:slope} to obtain~\eqref{dwa:sq:eq:inverse-shift}; then use~\eqref{dwa:sq:eq:E1}. The final brackets follow from Theorem~\ref{dwa:sq:thm:inverse} with $R=1$. Retaining exact $C_1$ is essential for the $t/L^6$ error scale.
 \end{proof}
 
 \section{Explicit forward logarithmic expansions}
 Let
-\begin{equation}\label{eq:QT}
+\begin{equation}\label{dwa:sq:eq:QT}
  Q=P+P',\qquad T=2P+P'.
 \end{equation}
 For sufficiently large $n$, let $\ell=\ell_n$ be the unique large solution of
-\begin{equation}\label{eq:model-saddle}
+\begin{equation}\label{dwa:sq:eq:model-saddle}
  n=\e^{2\ell}Q(\ell).
 \end{equation}
 The polynomials are eventually positive, and this equation is eventually strictly increasing in $\ell$.
 
-\begin{proposition}\label{prop:model}
+\begin{proposition}\label{dwa:sq:prop:model}
 For every fixed $1/2<\sigma<1$,
-\begin{equation}\label{eq:entropy}
+\begin{equation}\label{dwa:sq:eq:entropy}
  \log a_n=\e^\ell T(\ell)+O_\sigma(\e^{\sigma\ell}+\ell).
 \end{equation}
 \end{proposition}
 \begin{proof}
-Put $\widehat t=\e^{-\ell}$. Proposition~\ref{prop:Mellin} with $r=1,2$ and monotonicity of the exact mean give
+Put $\widehat t=\e^{-\ell}$. Proposition~\ref{dwa:sq:prop:Mellin} with $r=1,2$ and monotonicity of the exact mean give
 \[
  t_n-\widehat t=O(\widehat t^{2-\sigma}/\ell^3).
 \]
@@ -339,13 +481,13 @@ For completeness, both exact and model means are asymptotic to $t^{-2}L^3/12$, s
  O\left(\widehat t^{-3}\ell^3(t_n-\widehat t)^2\right)
  =O(\widehat t^{1-2\sigma}/\ell^3)=o(\widehat t^{-\sigma}).
 \]
-The difference between exact and model $f$ is $O(\widehat t^{-\sigma})$. The logarithm of the Gaussian factor in Theorem~\ref{thm:exact} is $O(\ell)$, and its remaining logarithmic error is smaller. At the model saddle the entropy is $\e^\ell(P+Q)(\ell)=\e^\ell T(\ell)$.
+The difference between exact and model $f$ is $O(\widehat t^{-\sigma})$. The logarithm of the Gaussian factor in Theorem~\ref{dwa:sq:thm:exact} is $O(\ell)$, and its remaining logarithmic error is smaller. At the model saddle the entropy is $\e^\ell(P+Q)(\ell)=\e^\ell T(\ell)$.
 \end{proof}
-Since the main term in~\eqref{eq:entropy} is of order $\e^\ell\ell^3$, its error is below every fixed inverse power of $\ell$ relative to that term. This permits arbitrary fixed-depth logarithmic reversion.
+Since the main term in~\eqref{dwa:sq:eq:entropy} is of order $\e^\ell\ell^3$, its error is below every fixed inverse power of $\ell$ relative to that term. This permits arbitrary fixed-depth logarithmic reversion.
 
-\begin{theorem}\label{thm:forward}
+\begin{theorem}\label{dwa:sq:thm:forward}
 Put $H=\log n$ and $r=-3\log H+2B_1+\log96$. Then
-\begin{equation}\label{eq:forward}
+\begin{equation}\label{dwa:sq:eq:forward}
  \log a_n=\frac{\sqrt n H^{3/2}}{2\sqrt6}
  \left\{1+\frac{F_1(r)}H+\frac{F_2(r)}{H^2}+\frac{F_3(r)}{H^3}
  +O\left(\frac{(\log H)^4}{H^4}\right)\right\},
@@ -360,52 +502,55 @@ There is a constructive expansion to every fixed further order of this scale.
 \end{theorem}
 \begin{proof}
 Set $z=\ell+B_1$ and introduce
-\begin{align}\label{eq:qr}
+\begin{align}\label{dwa:sq:eq:qr}
  \mathsf q(z)&=z^3+3z^2+3B_2z+3B_2+B_3,\\
  \mathsf r(z)&=z^3+\frac32z^2+3B_2z+\frac32B_2+B_3.\nonumber
 \end{align}
 Then $Q(\ell)=\mathsf q(z)/12$ and $T(\ell)=\mathsf r(z)/6$. The model saddle is equivalent to
-\begin{equation}\label{eq:forward-revert}
+\begin{equation}\label{dwa:sq:eq:forward-revert}
  2z+3\log z+\log\left(1+\frac3z+\frac{3B_2}{z^2}
  +\frac{3B_2+B_3}{z^3}\right)=H+2B_1+\log12.
 \end{equation}
 Successive substitution gives
-\begin{equation}\label{eq:z-forward}
+\begin{equation}\label{dwa:sq:eq:z-forward}
  z=\frac{H+r}{2}-\frac{3(r+2)}{2H}
  +\frac{3(r^2+10r+24-8B_2)}{4H^2}
  +O\left(\frac{(\log H)^3}{H^3}\right).
 \end{equation}
-More generally insert $z=H/2+r/2+\sum_{j=1}^K u_j(\log H)H^{-j}$ into~\eqref{eq:forward-revert} and annul successive powers of $H^{-1}$. Each new coefficient has multiplier $2$; every $u_j$ is a polynomial in $\log H$. Taylor's theorem, with derivative $2+O(H^{-1})$, turns each formal truncation into an asymptotic expansion with its stated remainder.
+More generally insert $z=H/2+r/2+\sum_{j=1}^K u_j(\log H)H^{-j}$ into~\eqref{dwa:sq:eq:forward-revert} and annul successive powers of $H^{-1}$. Each new coefficient has multiplier $2$; every $u_j$ is a polynomial in $\log H$. Taylor's theorem, with derivative $2+O(H^{-1})$, turns each formal truncation into an asymptotic expansion with its stated remainder.
 
 At this saddle,
 \[
  \e^\ell T(\ell)=\sqrt n\,\frac{T(\ell)}{\sqrt{Q(\ell)}}.
 \]
 Expanding the polynomial quotient gives
-\begin{equation}\label{eq:forward-quotient}
+\begin{equation}\label{dwa:sq:eq:forward-quotient}
  \frac{T(\ell)}{\sqrt{Q(\ell)}}
  =\frac{z^{3/2}}{\sqrt3}\left\{1+\frac{3B_2/2+9/8}{z^2}
  +\frac{B_3/2-27/8}{z^3}+O(z^{-4})\right\}.
 \end{equation}
-Substitution of the recursively obtained saddle coefficients yields the three displayed $F_j$. The same procedure gives every fixed further order. Proposition~\ref{prop:model} absorbs its arithmetic error below all these logarithmic orders.
+Substitution of the recursively obtained saddle coefficients yields the three displayed $F_j$. The same procedure gives every fixed further order. Proposition~\ref{dwa:sq:prop:model} absorbs its arithmetic error below all these logarithmic orders.
 \end{proof}
-In particular,~\eqref{eq:forward} proves~\eqref{eq:conjecture}. A useful Lambert-$W$ starting point is
-\begin{equation}\label{eq:W-forward}
+In particular,~\eqref{dwa:sq:eq:forward} proves~\eqref{dwa:sq:eq:conjecture}. A useful Lambert-$W$ starting point is
+\begin{equation}\label{dwa:sq:eq:W-forward}
  z_* =\frac32 W\left(\frac23(12\e^{2B_1}n)^{1/3}\right),
 \end{equation}
-where $W$ is the positive principal branch. It exactly solves $\e^{2(z_*-B_1)}z_*^3/12=n$. Equation~\eqref{eq:forward-revert} gives $z-z_*=-3/(2z_*)+O(z_*^{-2})$, and a full fixed-depth expansion in $z_*^{-1}$ follows by the same recursion.
+where $W$ is the positive principal branch. It exactly solves $\e^{2(z_*-B_1)}z_*^3/12=n$. Equation~\eqref{dwa:sq:eq:forward-revert} gives $z-z_*=-3/(2z_*)+O(z_*^{-2})$, and a full fixed-depth expansion in $z_*^{-1}$ follows by the same recursion.
+\begin{writenote}[2 October 2026]
+Since $\e^{2(z_*-B_1)}z_*^3/12=n$ reads $2z_*+3\log z_*=\log(12n)+2B_1$, the starting point \eqref{dwa:sq:eq:W-forward} is the exact solution of Theorem \texttt{p0:thm:lambert-core} of the transseries volume with $a=2$, $b=3$, $L=\log(12n)+2B_1$, on the principal branch, and the expansion of $z-z_*$ in powers of $z_*^{-1}$ is an all-orders reversion around that core (Theorem \texttt{p0:thm:lambert-centered}). No novelty is claimed for this inversion.
+\end{writenote}
 
 \section{Explicit inverse logarithmic expansions}
 Let $Y=\log y$ and $Z=\log Y$. Inverting the model entropy is naturally parametric:
-\begin{equation}\label{eq:inverse-parametric}
+\begin{equation}\label{dwa:sq:eq:inverse-parametric}
  Y=\e^\ell T(\ell),\qquad
  n=\e^{2\ell}Q(\ell)=Y^2\frac{Q(\ell)}{T(\ell)^2}.
 \end{equation}
 This model is enough for every fixed logarithmic order, although the exact inverses in Section~4 have much sharper absolute error control.
 
-\begin{theorem}\label{thm:inverse-log}
+\begin{theorem}\label{dwa:sq:thm:inverse-log}
 Put $r=-3\log Z+B_1+\log6$. Then
-\begin{equation}\label{eq:inverse-log}
+\begin{equation}\label{dwa:sq:eq:inverse-log}
  N(y)=\frac{3Y^2}{Z^3}
  \left\{1+\frac{I_1(r)}Z+\frac{I_2(r)}{Z^2}+\frac{I_3(r)}{Z^3}
  +O\left(\frac{(\log Z)^4}{Z^4}\right)\right\},
@@ -420,8 +565,8 @@ where
 The same expansion holds for every fixed $x_R(y)$, and a constructive expansion exists to every fixed further logarithmic order.
 \end{theorem}
 \begin{proof}
-With $z=\ell+B_1$, the first equation in~\eqref{eq:inverse-parametric} reads
-\begin{equation}\label{eq:inverse-revert}
+With $z=\ell+B_1$, the first equation in~\eqref{dwa:sq:eq:inverse-parametric} reads
+\begin{equation}\label{dwa:sq:eq:inverse-revert}
  z+3\log z+\log\left(1+\frac{3}{2z}+\frac{3B_2}{z^2}
  +\frac{3B_2/2+B_3}{z^3}\right)=Z+B_1+\log6.
 \end{equation}
@@ -431,14 +576,14 @@ It gives
  +\frac{3(4r^2+28r+15-8B_2)}{8Z^2}
  +O\left(\frac{(\log Z)^3}{Z^3}\right).
 \]
-The second equation in~\eqref{eq:inverse-parametric} becomes $n=3Y^2\mathsf q(z)/\mathsf r(z)^2$, and
-\begin{equation}\label{eq:inverse-quotient}
+The second equation in~\eqref{dwa:sq:eq:inverse-parametric} becomes $n=3Y^2\mathsf q(z)/\mathsf r(z)^2$, and
+\begin{equation}\label{dwa:sq:eq:inverse-quotient}
  \frac{z^3\mathsf q(z)}{\mathsf r(z)^2}
  =1-\frac{3B_2+9/4}{z^2}+\frac{27/4-B_3}{z^3}+O(z^{-4}).
 \end{equation}
-Substituting the saddle expansion gives the stated $I_j$. At all higher orders, the successive coefficient equation in~\eqref{eq:inverse-revert} has multiplier $1$, so Taylor's theorem again justifies the formal recursion.
+Substituting the saddle expansion gives the stated $I_j$. At all higher orders, the successive coefficient equation in~\eqref{dwa:sq:eq:inverse-revert} has multiplier $1$, so Taylor's theorem again justifies the formal recursion.
 
-It remains to compare this model with the exact inverses. Proposition~\ref{prop:model} and the slope estimate~\eqref{eq:slope} show that the logarithmic height error $O(\e^{\sigma\ell}+\ell)$ creates an index error $O(\e^{(1+\sigma)\ell}+\e^\ell\ell)$. Relative to $n\asymp\e^{2\ell}\ell^3$, this is smaller than every fixed power of $1/\ell$. The correction $E_R$ and the integer rounding in Theorem~\ref{thm:inverse} are smaller still. Thus all the stated inverses share this logarithmic hierarchy.
+It remains to compare this model with the exact inverses. Proposition~\ref{dwa:sq:prop:model} and the slope estimate~\eqref{dwa:sq:eq:slope} show that the logarithmic height error $O(\e^{\sigma\ell}+\ell)$ creates an index error $O(\e^{(1+\sigma)\ell}+\e^\ell\ell)$. Relative to $n\asymp\e^{2\ell}\ell^3$, this is smaller than every fixed power of $1/\ell$. The correction $E_R$ and the integer rounding in Theorem~\ref{dwa:sq:thm:inverse} are smaller still. Thus all the stated inverses share this logarithmic hierarchy.
 \end{proof}
 The leading inverse scale is therefore $N(y)\sim3(\log y)^2/(\log\log y)^3$. Its first correction is explicitly
 \[
@@ -449,18 +594,21 @@ For inversion based on Lambert $W$, one may use $z_*=3W((6\e^{B_1}Y)^{1/3}/3)$, 
  T(\ell)=\frac{v^3+(3B_2-3/4)v+B_3+1/4}{6}.
 \]
 The core
-\begin{equation}\label{eq:W-inverse}
+\begin{equation}\label{dwa:sq:eq:W-inverse}
  v_*=3W\left(\frac{(6\e^{B_1+1/2}Y)^{1/3}}3\right)
 \end{equation}
 satisfies $v-v_*=O(v_*^{-2})$ and supports a recursively computable expansion.
+\begin{writenote}[2 October 2026]
+The leading part of \eqref{dwa:sq:eq:inverse-revert} is $z+3\log z=Z+B_1+\log6$: Theorem \texttt{p0:thm:lambert-core} with $a=1$, $b=3$, $L=Z+B_1+\log6$ gives $z_*=3W(\e^{L/3}/3)=3W((6\e^{B_1}Y)^{1/3}/3)$, since $\e^Z=Y$. For the centred variable the core is $v+3\log v=Z+B_1+\frac12+\log6$, which gives \eqref{dwa:sq:eq:W-inverse}. The recursive corrections are again Theorem \texttt{p0:thm:lambert-centered}. No novelty is claimed.
+\end{writenote}
 
-\section{Numerical checks and the boundary of the result}
+\section{Numerical checks and the boundary of the result}\label{dwa:sq:sec:scope}
 The exact coefficient recurrence
-\begin{equation}\label{eq:recurrence}
+\begin{equation}\label{dwa:sq:eq:recurrence}
  na_n=\sum_{j=1}^n c_j a_{n-j},\qquad
  c_j=\sum_{k\mid j}k\,d(k)^2(-1)^{j/k-1},\qquad a_0=1,
 \end{equation}
-comes from logarithmically differentiating~\eqref{eq:product}. Integer arithmetic through $n=3000$ matches the OEIS initial terms. Independent high-precision evaluations of the exact saddle illustrate the improvement from successive corrections. The entries below are signed residuals relative to $A_0$, so the third column is $a_n/A_0-E_1$, not $a_n/(A_0E_1)-1$.
+comes from logarithmically differentiating~\eqref{dwa:sq:eq:product}. Integer arithmetic through $n=3000$ matches the OEIS initial terms. Independent high-precision evaluations of the exact saddle illustrate the improvement from successive corrections. The entries below are signed residuals relative to $A_0$, so the third column is $a_n/A_0-E_1$, not $a_n/(A_0E_1)-1$.
 \begin{center}
 \begin{tabular}{r r r r}
 \toprule
@@ -476,13 +624,408 @@ $n$ & $a_n/A_0-1$ & $a_n/A_0-E_1$ & $a_n/A_0-E_2$\\
 These are numerical diagnostics, not certified numerical error bounds or ingredients of the proof. At such sizes, $L$ is still small relative to $B_1$, so the explicit logarithmic approximations reach their asymptotic regime much later than the exact-cumulant approximation. The symbolic forward and inverse corrections were also checked by exact formal reversion, rather than fitted to coefficient data.
 
 The continuation of the Mellin kernel explains why the two expansion scales should remain separate. Beyond $\Re s>1/2$, zeros $\rho$ of $\zeta$ can create poles at $s=\rho/2$, subject to cancellations and multiplicities. Such terms are not represented by the cubic polynomial $P$. The exact saddle retains their effect implicitly, whereas a finite logarithmic truncation does not. Even a small numerical value of $f(t)-t^{-1}P(L)$ at moderate $t$ cannot justify a multiplicative equivalent obtained by simply exponentiating the cubic model.
+\begin{writenote}[2 October 2026]
+A sharp instance of this warning is in the neighbouring report \file{oeis-sequence-asymptotics/a301981-unitary-divisor-partitions}, on $\prod(1\mp q^m)^{\mp\sigma^*(m)}$. There the Mellin kernel has the denominator $\zeta(2s-1)$; a zero of least height gives a genuine pole with $3/4\le\Re s_0<1$, and that pole refutes the multiplicative equivalents recorded in OEIS A301981 and A301982. Here the poles at $s=\rho/2$ lie in $0<\Re s<1/2$, to the left of every line $\Re s=\sigma>1/2$ used in Proposition~\ref{dwa:sq:prop:Mellin}, so they affect neither that proposition nor Theorems~\ref{dwa:sq:thm:exact}, \ref{dwa:sq:thm:forward} and~\ref{dwa:sq:thm:inverse-log}; as the paragraph says, they do bear on any multiplicative equivalent built from the cubic model alone. This comparison was added at the merge; neither source makes it.
+\end{writenote}
 
 The results proved here are arbitrary fixed-order logarithmic expansions, arbitrary-order relative expansions in exact saddle data, and explicit inverse localization. No convergence of the full formal series or complete explicit exponentially improved transseries is asserted. Establishing individual arithmetic sectors with a controlled collective remainder is a separate problem.
+\begin{writenote}[2 October 2026]
+No source of this batch addresses the problems left open here. Part~\ref{dwa:part:as} asks the analogous secondary-arc question for A294363 (Section~\ref{dwa:as:sec:questions}, Question~2).
+\end{writenote}
 
-\begin{thebibliography}{9}
-\bibitem{OEIS}
+\part{Divisor marked assemblies and their factorial core inverse}\label{dwa:part:as}
+\partsource{Batch-77 manuscript 49, archive \file{oeis-divisor-assembly-result.zip} (delivered as \file{divisor_assembly_asymptotics.tex}, 9 pages), dated 1 October 2026. Delivered author line: ``Research note for OEIS A294363''. Printed as delivered, with \textbf{[write]} notes. Delivered Section $k$ is Section $k+7$ here; equations are numbered by section (delivered: consecutively). Its ``A301746'' is Part~\ref{dwa:part:sq}.}
+\begin{partabstract}
+Let $a_n=n![z^n]\exp(\sum_{k\ge1}d(k)z^k)$. We prove an explicit multiplicative equivalent, an arbitrary finite relative expansion, and a controlled factorial-core inverse. A shifted Lambert $W$ saddle retains all nested logarithms; the first two relative corrections are rational functions of its parameter. An elementary minor-arc bound and a Poisson Edgeworth expansion supply the error control. The elementary consequence $\log(a_n/n!)\sim\sqrt{2n\log n}$ is not the principal result. These are classical analytic methods applied to this particular assembly, and no priority claim is made.
+\end{partabstract}
+\section{The sequence and the main equivalent}
+Write $b_n=a_n/n!$ and
+\begin{equation}\label{dwa:as:eq:gf}
+ F(z)=\sum_{n\ge0}b_nz^n=\exp\left(\sum_{k\ge1}d(k)z^k\right),\qquad
+ L(t)=\log F(e^{-t})=\sum_{k\ge1}d(k)e^{-kt}.
+\end{equation}
+A component on $k$ distinct labels consists of a linear ordering and a divisor of $k$, so it has $k!d(k)$ realizations. The exponential formula gives \eqref{dwa:as:eq:gf}. Equivalently, choose an ordered factor pair $r c=k$ and put the labels in an $r$ by $c$ rectangular array. Rows and columns retain their positions, the two dimensions are distinguished, and the collection of components is unordered. This is a direct interpretation, not an extra enumerative conjecture.
+
+Throughout, $W=W_0$ is the positive principal Lambert function, $\gamma$ is Euler's constant, and $H_j=\sum_{h=1}^j1/h$, with $H_0=0$. For real $x>1/144$ define
+\begin{equation}\label{dwa:as:eq:params}
+ N_x=x-\frac1{144},\qquad
+ u_x=\frac12W\left(2e^{2\gamma+2}N_x\right),\qquad
+ t_x=\sqrt{\frac{u_x}{N_x}},\qquad D_x=2u_x+1.
+\end{equation}
+These solve
+\begin{equation}\label{dwa:as:eq:saddlecore}
+ u_x=\log(1/t_x)+\gamma+1,\qquad N_xt_x^2=u_x.
+\end{equation}
+Set
+\begin{equation}\label{dwa:as:eq:main}
+ S(x)=\frac{2u_x-1}{t_x},\qquad
+ M(x)=\frac{e^{1/4}t_x^{3/2}}{\sqrt{2\pi D_x}}e^{S(x)}.
+\end{equation}
+
+\begin{theorem}\label{dwa:as:thm:main}
+As $n\to\infty$,
+\begin{equation}\label{dwa:as:eq:equiv}
+ \frac{a_n}{n!}\sim M(n).
+\end{equation}
+More precisely, writing $u=u_n$, $t=t_n$, and $D=2u+1$,
+\begin{align}
+ \frac{b_n}{M(n)}
+ &=1+tR_1(u)+t^2R_2(u)+\OO(t^3),\label{dwa:as:eq:two}\\
+ R_1(u)&=-\frac{36u^2+72u+47}{24D^3},\label{dwa:as:eq:r1}\\
+ R_2(u)&=-\frac{2160u^4+8640u^3+12744u^2+3984u-6409}{1152D^6}.
+ \label{dwa:as:eq:r2}
+\end{align}
+In particular $b_n/M(n)=1+\OO((n\log n)^{-1/2})$.
+\end{theorem}
+The shift $N=n-1/144$ absorbs the first analytic Mellin term. Without that shift a relative term $-t/144$ appears and is larger than the leading Edgeworth correction by a logarithmic factor. All formulas in this note use the stated shift.
+\begin{writenote}[2 October 2026]
+Eliminating $t_x$ from \eqref{dwa:as:eq:saddlecore} gives $2u_x+\log u_x=\log N_x+2\gamma+2$, so \eqref{dwa:as:eq:params} is the exact solution of Theorem \texttt{p0:thm:lambert-core} of the transseries volume (\file{Analysis/Transseries/docs/series-and-transseries/}\allowbreak\file{Transseries_And_Inversion/transseries_and_inversion.tex}) with $a=2$, $b=1$, $L=\log N_x+2\gamma+2$, on the principal branch. No novelty is claimed for the Lambert form; Section~\ref{dwa:as:sec:scope} credits it to \cite{BW}.
+\end{writenote}
+
+\section{Mellin expansion and an elementary minor arc estimate}
+\begin{lemma}\label{dwa:as:lem:mellin}
+For every fixed finite truncation, uniformly in any closed subsector of $\Repart t>0$ as $t\to0$,
+\begin{equation}\label{dwa:as:eq:mellin}
+ L(t)\sim\frac{\log(1/t)+\gamma}{t}+\frac14+
+ \sum_{\substack{p\ge1\\p\ \mathrm{odd}}}c_pt^p,
+ \qquad c_p=-\frac{\zeta(-p)^2}{p!}.
+\end{equation}
+Thus the analytic terms begin
+\[
+ \frac14-\frac{t}{144}-\frac{t^3}{86400}-\frac{t^5}{7620480}.
+\]
+The expansion may be differentiated any fixed number of times, with the corresponding differentiated remainder bounds.
+\end{lemma}
+\begin{proof}
+For $c>1$, Mellin inversion and absolute convergence give
+\[
+ L(t)=\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+       \Gamma(s)\zeta(s)^2t^{-s}\,\dd s.
+\]
+At $s=1$, the Laurent product has coefficients $(s-1)^{-2}+\gamma(s-1)^{-1}$, giving $(\log(1/t)+\gamma)/t$. The residue at zero is $\zeta(0)^2=1/4$. At a negative odd integer $-p$ the residue is $-\zeta(-p)^2t^p/p!$. At each negative even integer the double zeta zero cancels the gamma pole. Move the contour to any chosen negative nonintegral real part. Gamma's exponential decay and the polynomial vertical-strip bounds for zeta justify the move and give the required power remainder uniformly in the stated sector. Inserting the polynomial $(-1)^j(s)_j$ proves the differentiated assertion. This Mellin expansion itself is classical; see also Banerjee--Wilkerson, Theorem 2.2(2) \cite{BW}.
+\end{proof}
+
+Put $K_j(t)=\sum_{k\ge1}k^jd(k)e^{-kt}=(-1)^jL^{(j)}(t)$. For every fixed $j\ge0$, the singular part gives
+\begin{equation}\label{dwa:as:eq:kj}
+ K_j(t)\sim j!\,t^{-j-1}\bigl(\log(1/t)+\gamma+H_j\bigr).
+\end{equation}
+The ratio tends to one, and the same formula with the analytic terms differentiated gives arbitrary depth. In particular,
+\begin{equation}\label{dwa:as:eq:k1k2}
+ K_1(t)=\frac{u}{t^2}+\frac1{144}+\frac{t^2}{28800}+\OO(t^4),
+ \qquad K_2(t)=\frac{2u+1}{t^3}+\OO(t).
+\end{equation}
+
+\begin{lemma}\label{dwa:as:lem:arcs}
+Let $r=e^{-t}$ and $0<t\le1$. For $-\pi\le\theta\le\pi$,
+\begin{align}
+ \Delta(t,\theta)&:=L(t)-\Repart L(t-\ii\theta)\nonumber\\
+ &\ge\frac{r(1+r)(1-\cos\theta)}{(1-r)((1-r)^2+2r(1-\cos\theta))}
+ \ge c\frac{\theta^2}{t(t^2+\theta^2)}\label{dwa:as:eq:minor}
+\end{align}
+for an absolute constant $c>0$. Moreover, for a fixed sufficiently small $c_0>0$ and all small $t$,
+\begin{equation}\label{dwa:as:eq:innerbound}
+ \Delta(t,\theta)\ge\frac14K_2(t)\theta^2
+ \quad (|\theta|\le c_0t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Since $d(k)\ge1$, discard that weight and sum the geometric series for
+$\sum_{k\ge1}r^k(1-\cos k\theta)$. This gives the first lower bound exactly. The second uses $1-r\asymp t$ and $1-\cos\theta\asymp\theta^2$ on $[-\pi,\pi]$. Finally,
+\[
+ \Delta(t,\theta)\ge\frac{K_2(t)\theta^2}{2}
+                          -\frac{K_4(t)\theta^4}{24},
+\]
+and $K_4/K_2=\OO(t^{-2})$ by \eqref{dwa:as:eq:kj}. Choosing $c_0$ small proves \eqref{dwa:as:eq:innerbound}.
+\end{proof}
+No unproved assertion about cancellation near roots of unity is needed. The bound $d(k)\ge1$ suppresses every outer arc by $e^{-c/t}$ once $|\theta|\ge c_0t$.
+
+\section{Exact saddle Edgeworth expansion}
+This section gives a second all-orders formulation with the sharper intrinsic scale. Let $\tau=\tau_n$ be the unique positive solution of $K_1(\tau)=n$. Existence and uniqueness follow from strict decrease from infinity to zero. Define
+\[
+ \varepsilon=\frac{\tau}{\log(1/\tau)}\asymp(n\log n)^{-1/2}.
+\]
+For $m\ge1$, define a finite sum over nonnegative integers $q_3,\ldots,q_{2m+2}$ by
+\begin{equation}\label{dwa:as:eq:edgeworth}
+ E_m(\tau)=
+ \sum_{\sum_{j=3}^{2m+2}(j-2)q_j=2m}
+ (-1)^{J/2}(J-1)!!
+ \prod_{j=3}^{2m+2}\frac1{q_j!}
+       \left(\frac{K_j(\tau)}{j!K_2(\tau)^{j/2}}\right)^{q_j},
+ \quad J=\sum_{j=3}^{2m+2}jq_j.
+\end{equation}
+The constraint makes $J$ even. Take $E_0=1$.
+
+\begin{theorem}\label{dwa:as:thm:edgeworth}
+For every fixed $m_0\ge0$,
+\begin{equation}\label{dwa:as:eq:exactedge}
+ b_n=\frac{e^{L(\tau)+n\tau}}{\sqrt{2\pi K_2(\tau)}}
+ \left(\sum_{m=0}^{m_0}E_m(\tau)+\OO(\varepsilon^{m_0+1})\right),
+ \qquad E_m(\tau)=\OO(\varepsilon^m).
+\end{equation}
+The constants may depend on $m_0$ but not on $n$.
+\end{theorem}
+\begin{proof}
+Cauchy's formula is
+\[
+ b_n=\frac{e^{L(\tau)+n\tau}}{2\pi}
+ \int_{-\pi}^{\pi}\exp\{L(\tau-\ii\theta)-L(\tau)-\ii n\theta\}\,\dd\theta.
+\]
+It is also the local probability formula for independent Poisson variables of means $d(k)e^{-k\tau}$, whose size sum is $\sum kZ_k$. This explains the cumulants $K_j$ but no probabilistic limit theorem is being assumed.
+
+Let $x=\theta\sqrt{K_2(\tau)}$, $\eta=\sqrt\varepsilon$, and take a central cutoff $|x|\le\log(1/\tau)$. By \eqref{dwa:as:eq:kj},
+\[
+ \frac{K_j(\tau)}{K_2(\tau)^{j/2}}=\OO_j(\eta^{j-2})\qquad(j\ge3).
+\]
+Taylor expansion of the phase has quadratic term $-x^2/2$ and terms
+$K_j(\tau)(\ii x)^j/(j!K_2(\tau)^{j/2})$. Expand through weight $2m_0+1$, assigning weight $j-2$ to the $j$th cumulant. The omitted terms are bounded by
+$C\eta^{2m_0+2}P(|x|)e^{-x^2/4}$ after multiplication by the Gaussian, for a fixed polynomial $P$. To see this without a logarithmic loss, use the cumulant bounds above, Taylor's integral remainder through degree $2m_0+3$, and the exponential remainder on the central cutoff, where $\eta(1+|x|^3)=o(1)$. Integrate the polynomial against the Gaussian instead of bounding it by its cutoff value.
+
+All odd-weight monomials are odd in $x$ and integrate to zero. For even weight, the Gaussian moment is $\E X^J=(J-1)!!$, and the factor $\ii^J$ gives \eqref{dwa:as:eq:edgeworth}. The central cutoff can be extended to the full line with error smaller than every power of $\tau$. Indeed, \eqref{dwa:as:eq:innerbound} controls the intermediate region by Gaussian tails, and \eqref{dwa:as:eq:minor} controls $|\theta|\ge c_0\tau$ by $e^{-c/\tau}$. Even after division by the central width $K_2^{-1/2}$ these errors are superpolynomially small. This proves \eqref{dwa:as:eq:exactedge} and the stated orders.
+\end{proof}
+The first correction is the familiar expression
+\[
+ E_1=\frac{K_4}{8K_2^2}-\frac{5K_3^2}{24K_2^3}.
+\]
+This method belongs to the classical saddle-point and Khintchine--Meinardus toolkit. The simple-pole hypotheses in the cited general Meinardus theorems \cite{GSE,GS} do not directly contain $\zeta(s)^2$; that observation is not a claim that double-pole cases or the underlying method are new.
+\begin{writenote}[2 October 2026]
+Here $E_m$ is the single term of weight $2m$, and $E_0=1$. Part~\ref{dwa:part:sq}'s $E_R(t)$ in \eqref{dwa:sq:eq:ER} is the cumulative sum $\sum_{m\le R}E_m$, written in that Part's cumulants, so Part~\ref{dwa:part:sq}'s $E_1$ is $1$ plus the $E_1$ displayed here. The Poisson tilt of this Part and the Bernoulli tilt of Part~\ref{dwa:part:sq} lead to the same Gaussian-moment formula.
+\end{writenote}
+
+\section{An explicit rational coefficient generator}
+The exact saddle formulation is useful for numerical evaluation. The shifted Lambert saddle yields coefficients depending only rationally on $u$ and is better suited to symbolic expansion and inversion.
+
+Let $Z\sim N(0,1)$ and define $D=2u+1$. With a formal variable $v$, set
+\begin{align}\label{dwa:as:eq:generator}
+ \mathcal V(v,Z;u)
+ &=\sum_{j\ge3}\frac{(u+H_j-1)(\ii Z)^j}{D^{j/2}}v^{j-2}\nonumber\\
+ &\quad+\sum_{\substack{p\ge3\\p\ \mathrm{odd}}}
+ c_pv^{2p}\left(1-\frac{\ii vZ}{\sqrt D}\right)^p,\\
+ R_j(u)&=\E\,[v^{2j}]\exp\mathcal V(v,Z;u).\label{dwa:as:eq:Rdef}
+\end{align}
+Each coefficient uses only finitely many summands, and Gaussian moments make $R_j\in\mathbb Q(u)$, with possible poles only at $u=-1/2$.
+
+\begin{theorem}\label{dwa:as:thm:explicit}
+For every fixed $J\ge0$,
+\begin{equation}\label{dwa:as:eq:allorder}
+ b_n=M(n)\left(\sum_{j=0}^Jt_n^jR_j(u_n)+\OO_J(t_n^{J+1})\right).
+\end{equation}
+Here $R_0=1$, $R_1,R_2$ are \eqref{dwa:as:eq:r1}--\eqref{dwa:as:eq:r2}, and $R_3(u)=-1/86400+\OO(u^{-3})$. The latter constant comes from the next Mellin residue.
+\end{theorem}
+\begin{proof}
+Use the Cauchy circle $e^{-t}$ with $t=t_n$, rather than $\tau_n$. Write
+\[
+ L(w)=\frac{\log(1/w)+\gamma}{w}+\frac14-\frac{w}{144}
+        +\sum_{p\ge3,\ p\ \mathrm{odd}}c_pw^p
+\]
+at any required finite depth, with the sector-uniform remainder from Lemma \ref{dwa:as:lem:mellin}. The linear analytic term combines with $nw$ to give $N_nw$, which is exactly stationary at $w=t$ by \eqref{dwa:as:eq:saddlecore}. Put
+\[
+ \theta=\frac{t^{3/2}}{\sqrt D}Z,\qquad v=\sqrt t,
+ \qquad w=t-\ii\theta=t\left(1-\frac{\ii vZ}{\sqrt D}\right).
+\]
+The constant phase is $S(n)+1/4$, the quadratic phase is $-Z^2/2$, and the remaining formal phase is \eqref{dwa:as:eq:generator}. This gives \eqref{dwa:as:eq:Rdef}.
+
+For rigor, use the same central cutoff and arc bounds as in Theorem \ref{dwa:as:thm:edgeworth}; $K_2(t)\sim D/t^3$ suffices and exact stationarity is unnecessary for the modulus bounds. Truncate Mellin to have exponent error $\OO(t^{J+1})$. The coefficients $(u+H_j-1)/D^{j/2}$ are uniformly bounded for $u\ge1$ and fixed $j$, so the Gaussian-integrated Taylor remainder after weight $2J+1$ is $\OO(v^{2J+2})$. Odd powers vanish by symmetry. The tail Mellin monomials are polynomials in $vZ/\sqrt D$ and obey the same estimates. This proves \eqref{dwa:as:eq:allorder}.
+
+For $R_1$, substitute the leading cumulants
+$K_2^0=D/t^3$, $K_3^0=(6u+5)/t^4$, $K_4^0=(24u+26)/t^5$ in $E_1$. For $R_2$, Gaussian moments give
+\begin{align*}
+ t^2R_2={}&-\frac{K_6^0}{48(K_2^0)^3}
+ +\frac{35(K_4^0)^2}{384(K_2^0)^4}
+ +\frac{7K_3^0K_5^0}{48(K_2^0)^4}\\
+ &-\frac{35(K_3^0)^2K_4^0}{64(K_2^0)^5}
+ +\frac{385(K_3^0)^4}{1152(K_2^0)^6}.
+\end{align*}
+This simplifies to \eqref{dwa:as:eq:r2}. At weight six the analytic residue contributes $c_3$, and the core contribution is $\OO(u^{-3})$. Theorem \ref{dwa:as:thm:main} follows, since $t^2/u^2$ and $t^3$ are both $o(t/u)$.
+\end{proof}
+
+\paragraph{A finite recurrence for computation.}
+Replace $\ii Z/\sqrt D$ by a formal symbol $z$. Let $A_k(u,z)$ be the coefficient of $v^k$ in
+\[
+ \sum_{j\ge3}(u+H_j-1)z^jv^{j-2}
+ +\sum_{p\ge3,\ p\ \mathrm{odd}}c_pv^{2p}(1-vz)^p.
+\]
+Compute $Q_0=1$ and $Q_h=h^{-1}\sum_{k=1}^h kA_kQ_{h-k}$. In $Q_{2j}$, replace $z^{2r}$ by $(-1)^r(2r-1)!!/D^r$ and $z^{2r+1}$ by zero. The result is $R_j$. The accompanying code computes through $j=5$ exactly over the rationals; increasing the order is finite algebra.
+
+\section{Logarithmic corrections}
+Define $\ell_j(u)$ by
+\begin{equation}\label{dwa:as:eq:ell}
+ \log\left(1+\sum_{j\ge1}R_j(u)T^j\right)=\sum_{j\ge1}\ell_j(u)T^j.
+\end{equation}
+Thus $\ell_1=R_1$, $\ell_2=R_2-R_1^2/2$, and in general
+$\ell_m=R_m-m^{-1}\sum_{k=1}^{m-1}k\ell_kR_{m-k}$. The all-orders logarithmic form is
+\begin{equation}\label{dwa:as:eq:logall}
+ \log b_n=S(n)+\frac14+\frac32\log t_n-\frac12\log(2\pi D_n)
+ +\sum_{j=1}^Jt_n^j\ell_j(u_n)+\OO_J(t_n^{J+1}).
+\end{equation}
+Writing $w=2u_n=W(2e^{2\gamma+2}N_n)$ makes the logarithmic factors visible:
+\begin{align}\label{dwa:as:eq:logw}
+ \log b_n={}&\sqrt{2N_nw}-\sqrt{2N_n/w}-\frac34\log N_n
+ +\frac14\log w-\frac54\log2-\frac12\log\pi+\frac14\nonumber\\
+ &-\frac12\log(1+1/w)+\sum_{j=1}^Jt_n^j\ell_j(u_n)
+ +\OO_J(t_n^{J+1}).
+\end{align}
+For comparison only, expanding $W$ in ordinary nested logarithms gives
+\begin{equation}\label{dwa:as:eq:weak}
+ \log b_n=\sqrt{2n\log n}
+ +\sqrt{\frac{n}{2\log n}}\bigl(-\log\log n+2\gamma+\log2\bigr)
+ +\OO\left(\frac{\sqrt n(\log\log n)^2}{(\log n)^{3/2}}\right).
+\end{equation}
+This proves the OEIS logarithmic conjecture, but \eqref{dwa:as:eq:weak} is far weaker than \eqref{dwa:as:eq:equiv}. Any fixed ordinary nested-log truncation in the action leaves a diverging additive error in $\log b_n$; it cannot be exponentiated into a multiplicative equivalent. The Lambert function in \eqref{dwa:as:eq:main} retains this entire hierarchy. Standard expansions of $W$ are recorded in DLMF \S4.13 \cite{DLMF}.
+
+\section{The factorial core inverse}\label{dwa:as:sec:inverse}
+A discrete sequence has no unique real inverse. We first specify smooth approximants, then state what they imply for exact values and integer thresholds. For a fixed $J$, put
+\begin{equation}\label{dwa:as:eq:model}
+ B_J(x)=M(x)\sum_{j=0}^Jt_x^jR_j(u_x),\qquad
+ \Phi_J(x)=\log\Gamma(x+1)+\log B_J(x).
+\end{equation}
+These are positive and smooth for all sufficiently large $x$. Their derivative is
+\begin{equation}\label{dwa:as:eq:slope}
+ \Phi_J'(x)=\log x+\OO\left(\sqrt{\frac{\log x}{x}}\right)>0.
+\end{equation}
+Let $x_J(y)$ denote the unique large solution of $\Phi_J(x)=y$. By \eqref{dwa:as:eq:allorder} and the mean value theorem,
+\begin{equation}\label{dwa:as:eq:transport}
+ y=\log a_n\quad\Longrightarrow\quad
+ x_J(y)-n=\OO_J\left(\frac{t_n^{J+1}}{\log n}\right).
+\end{equation}
+For $J=0$ the sharper error is $\OO(n^{-1/2}(\log n)^{-3/2})$, by Theorem \ref{dwa:as:thm:main} and its first correction.
+
+Let
+\begin{equation}\label{dwa:as:eq:factorialcore}
+ X=\frac{y}{W(y/e)},\qquad \Lambda=\log X,
+ \qquad f(x)=x(\log x-1),\qquad g_J(x)=\Phi_J(x)-f(x).
+\end{equation}
+Then $f(X)=y$. This is the factorial core, not the inverse of the much smaller assembly correction.
+
+\begin{theorem}\label{dwa:as:thm:inverse}
+For every fixed positive integer $K$ and fixed $J\ge0$,
+\begin{equation}\label{dwa:as:eq:reversion}
+ x_J(y)=X+\sum_{k=1}^K\frac{(-1)^k}{k!}
+ \left(\frac1{\Lambda}\frac{\dd}{\dd X}\right)^{k-1}
+ \left(\frac{g_J(X)^k}{\Lambda}\right)
+ +\OO_{J,K}\left(X^{(1-K)/2}\Lambda^{-(K+1)/2}\right).
+\end{equation}
+Here the differential operator acts on every $X$-dependent factor to its right. For an exact input $y=\log a_n$, add the error in \eqref{dwa:as:eq:transport}. Choosing $J\ge K$ makes that transport error smaller than the displayed reversion remainder.
+\end{theorem}
+\begin{proof}
+On a fixed sufficiently small complex disk $|x-X|<cX$, choose the branches continuing the positive-real quantities. Stirling's formula and \eqref{dwa:as:eq:params}--\eqref{dwa:as:eq:main} give
+\[
+ |g_J(x)|=\OO(\sqrt{X\Lambda}),\qquad
+ |f(x)-f(X)|\ge c'X\Lambda\quad (|x-X|=cX).
+\]
+The finite correction in $B_J/M$ is uniformly close to one there, so its logarithm has an analytic branch. Also $f$ is univalent on the disk for large $X$: its derivative differs from $\Lambda$ by a bounded amount.
+
+Introduce $f(x)+\lambda g_J(x)=y$. For $|\lambda|<c''\sqrt{X\Lambda}$, Rouch\'e's theorem gives one simple zero in the disk. Hence $x(\lambda)$ is analytic there and $|x(\lambda)-X|\le cX$. Lagrange--B\"urmann in the variable $f(x)$ yields exactly the coefficients in \eqref{dwa:as:eq:reversion}. Cauchy's bound for the Taylor tail at $\lambda=1$ is
+$\OO(X(X\Lambda)^{-(K+1)/2})$, which is the claimed remainder. Evaluation at $\lambda=1$ proves the theorem. The real derivative assertion \eqref{dwa:as:eq:slope} follows directly by differentiating the explicit model, and gives \eqref{dwa:as:eq:transport}.
+\end{proof}
+\begin{writenote}[2 October 2026]
+The core $X=y/W(y/e)$ solves $f(X)=y$. With $V=\log X-1$ this reads $V+\log V=\log(y/e)$, the case $a=b=1$, $L=\log(y/e)$ of Theorem \texttt{p0:thm:lambert-core} of the transseries volume. The coefficients of \eqref{dwa:as:eq:reversion} are Lagrange--B\"urmann coefficients (Theorem \texttt{p0:thm:LB}; as a reversion about a core, Theorem \texttt{p0:thm:core-reversion}). The analytic remainder, by Rouch\'e's theorem and Cauchy's bound, is this Part's own argument. No novelty is claimed for the reversion.
+\end{writenote}
+In particular, using $g_0(x)=\log\Gamma(x+1)-f(x)+\log M(x)$,
+\begin{equation}\label{dwa:as:eq:tworevert}
+ n=X-\frac{g_0(X)}\Lambda
+ +\frac{g_0(X)g_0'(X)}{\Lambda^2}
+ -\frac{g_0(X)^2}{2X\Lambda^3}
+ +\OO\left(X^{-1/2}\Lambda^{-3/2}\right),\qquad y=\log a_n.
+\end{equation}
+All functions in this formula are explicit standard real functions. In particular,
+\[
+ u_x'=\frac{t_x^2}{D_x},\qquad t_x'=-\frac{t_x^3}{D_x},\qquad S'(x)=t_x,
+\]
+so, with $\psi$ the digamma function,
+\begin{equation}\label{dwa:as:eq:gprime}
+ g_0'(x)=\psi(x+1)-\log x+t_x-\frac{3t_x^2}{2D_x}-\frac{t_x^2}{D_x^2}.
+\end{equation}
+
+\begin{corollary}\label{dwa:as:cor:o1inverse}
+For exact inputs $y=\log a_n$, the particularly simple inverse is
+\begin{equation}\label{dwa:as:eq:simpleinverse}
+ n=X-\frac{S(X)}{\log X}+\frac14
+ +\OO\left(\frac{\log\log X}{\log X}\right).
+\end{equation}
+Its absolute error tends to zero.
+\end{corollary}
+\begin{proof}
+From Stirling and \eqref{dwa:as:eq:main},
+\begin{align*}
+ g_0(X)&=S(X)-\frac14\log X
+ +\frac34\log u_X-\frac12\log(2u_X+1)+\frac14+\OO(X^{-1})\\
+ &=S(X)-\frac14\log X+\OO(\log\log X).
+\end{align*}
+The second reversion term is $\OO(1/\log X)$, which proves \eqref{dwa:as:eq:simpleinverse}. The constant $1/4$ results from combining the factorial and saddle prefactors.
+\end{proof}
+Thus rounding \eqref{dwa:as:eq:simpleinverse} to the nearest integer recovers $n$ for all sufficiently large exact sequence-value inputs. No effective starting index is asserted. The weaker substitution $S(X)\sim\sqrt{2X\log X}$ does not preserve the absolute-$o(1)$ property.
+
+\paragraph{Threshold caveat.}
+For arbitrary sufficiently large real $Y$, define $I(Y)=\min\{n\ge1:a_n\ge Y\}$. The sequence is strictly increasing from $n=1$: adding the largest label as a singleton is an injection, and configurations in which it is not a singleton supply additional objects. For a sufficiently large fixed $C$, Theorem \ref{dwa:as:thm:explicit} gives increasing smooth envelopes
+\[
+ \Phi_J^-(x)=\Phi_J(x)-Ct_x^{J+1},\qquad
+ \Phi_J^+(x)=\Phi_J(x)+Ct_x^{J+1},
+ \qquad \Phi_J^-(n)\le\log a_n\le\Phi_J^+(n).
+\]
+Both envelope derivatives are eventually positive by \eqref{dwa:as:eq:slope}; the derivative of $t_x^{J+1}$ is $\OO(t_x^{J+1}/x)$. Let $x_-$ solve $\Phi_J^+(x_-)=\log Y$ and let $x_+$ solve $\Phi_J^-(x_+)=\log Y$. Monotonicity gives
+\[
+ \lceil x_-\rceil\le I(Y)\le\lceil x_+\rceil.
+\]
+If $x=x_J(\log Y)$, the mean value theorem gives $x_\pm=x+\OO(t_x^{J+1}/\log x)$; for $J=0$ one may use the sharper error above in the envelope. Consequently $I(Y)=\lceil x\rceil$ when this enclosure avoids all integers. Close to a jump, no unconditional ceiling rule follows from an asymptotic approximation; exact comparison or a stronger enclosure is needed.
+\begin{writenote}[2 October 2026]
+The bracket $\lceil x_-\rceil\le I(Y)\le\lceil x_+\rceil$ and its failure near a jump are the separation condition of Theorem \texttt{p0:thm:staircase} of the transseries volume; turning the envelope width $Ct_x^{J+1}$ into an index width through the slope \eqref{dwa:as:eq:slope} is Theorem \texttt{p0:thm:backward-error}. Part~\ref{dwa:part:sq}, Theorem~\ref{dwa:sq:thm:inverse}, proves the same kind of bracket for A301746.
+\end{writenote}
+
+\section{Computation and scope}\label{dwa:as:sec:scope}
+Differentiating the generating function gives the exact integer recurrence
+\begin{equation}\label{dwa:as:eq:recurrence}
+ a_0=1,\qquad
+ a_n=\sum_{k=1}^n k\,d(k)\frac{(n-1)!}{(n-k)!}a_{n-k}.
+\end{equation}
+The companion script computes these integers through $n=1200$, derives $R_0,\ldots,R_5$ symbolically, independently checks the two-loop formula for $R_2$, and evaluates the inverse. The following entries are the signed residual
+$b_n/M(n)-\sum_{j=0}^Jt_n^jR_j(u_n)$:
+\begin{center}
+\begin{tabular}{rrrr}\toprule
+$n$ & $J=0$ & $J=2$ & $J=5$\\\midrule
+200 & $-7.9002\cdot10^{-3}$ & $-8.3094\cdot10^{-7}$ & $2.8635\cdot10^{-9}$\\
+400 & $-5.3126\cdot10^{-3}$ & $-2.6254\cdot10^{-7}$ & $-6.1755\cdot10^{-13}$\\
+800 & $-3.5877\cdot10^{-3}$ & $-8.3439\cdot10^{-8}$ & $-9.7377\cdot10^{-14}$\\
+1200 & $-2.8564\cdot10^{-3}$ & $-4.2847\cdot10^{-8}$ & $-2.1768\cdot10^{-14}$\\\bottomrule
+\end{tabular}
+\end{center}
+At $n=1200$ the simple inverse \eqref{dwa:as:eq:simpleinverse} errs by about $-0.10214$ and the two-term inverse \eqref{dwa:as:eq:tworevert} by $3.4802\cdot10^{-5}$. The simple formula converges slowly because its remainder is logarithmic. Small-index oscillations remain visible: at $n=25$ the $J=5$ residual is about $-0.0012445$. All numerical values are diagnostics, not substitutes for the proofs.
+
+\paragraph{Prior art and priority boundary.}
+The Lambert expansion is classical and appears explicitly in \cite{BW}; Poisson conditioning, Mellin inversion, saddle expansions, and reversion are established techniques. Granovsky--Stark--Erlihson \cite{GSE} includes assemblies under simple-pole hypotheses, and Granovsky--Stark \cite{GS} treats several distinct simple poles. Ahmadi--G\'omez A\'iza--Ward \cite{AGW} studies two divisor-weighted product families; its displayed families and theorem scopes are different from the exponential Lambert series here. Its primary manuscript contains no A294363 occurrence. This comparison does not establish novelty. Targeted ID and formula searches on 1 October 2026 did not locate this sequence-specific multiplicative expansion or inverse; priority remains unverified. The current OEIS logarithmic statement alone is not a reliable measure of the surrounding literature.
+
+\paragraph{Repository boundary.}
+Read-only default-branch searches of the authorized ProveIt repository found no A294363 match at the 1 October 2026 checkpoint. A semantic query for ``divisor assembly'' returned unrelated material. The canonical transseries README was read; an earlier full-text scan of the main and companion volumes also found no occurrence. These are scoped negative checks, not a guarantee against every semantic duplicate or incoming change. No repository, OEIS, or other external write was made. The already developed divisor-square exclusion product A301746 is a different model; none of its zeta-denominator or zero-pole claims are used here.
+\begin{writenote}[2 October 2026]
+The ``already developed divisor-square exclusion product A301746'' is Part~\ref{dwa:part:sq} of this report, written on the same day in the same style. At the pin \texttt{f7e7d8607} it was not in the repository, and this Part indeed uses none of it. The negative search statement of this paragraph is still true at the placement commit \texttt{aa7345800}: no other ProveIt file mentions A294363.
+\end{writenote}
+
+\paragraph{What is and is not established.}
+This note gives a human mathematical proof, explicit coefficient and inverse algorithms, and reproducible exact/numerical checks. It does not provide a Lean formalization, effective numerical constants for every remainder, an exponentially improved expansion of secondary root-of-unity contributions, or a claim of a new general asymptotic method. A broad fixed-$\sigma_k$ extension would mostly repeat simple-pole machinery and is not counted as an additional result.
+
+\section{Further questions}\label{dwa:as:sec:questions}
+Three extensions have concrete content beyond repeating a leading equivalent.
+\begin{enumerate}
+\item \emph{Effective enclosures.} Turn the contour and Gaussian remainders into numerical constants and a certified starting index. This would make the ceiling enclosure an implementable algorithm for arbitrary thresholds, including inputs close to a jump.
+\item \emph{Secondary arcs.} Determine the contribution from each low-denominator root of unity, the resulting oscillations, and an optimally truncated exponentially improved expansion. The present minor-arc argument only bounds these terms. The small-$n$ residuals explain why such a refinement could improve numerical range.
+\item \emph{Statistics of the rectangular components.} Mark every component by a variable $v$, giving
+\[
+ F(z,v)=\exp\left(v\sum_{k\ge1}d(k)z^k\right).
+\]
+Prove a uniform bivariate local limit theorem for total size and component count. This is a natural probabilistic refinement of the exact assembly interpretation; the univariate coefficient theorem does not already establish it.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\bibitem{sqOEIS}
 The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A301746, entry by V. Kote\v{s}ovec, 2018.
-\url{https://oeis.org/A301746}. Indexed internal entry inspected 1 October 2026.
+\url{https://oeis.org/A301746}. Indexed internal entry inspected 1 October 2026. [Cited in Part~I.]
+
+\bibitem{asOEIS} The OEIS Foundation, \href{https://oeis.org/A294363}{A294363}, exponential generating function $\exp(\sum_{k\ge1}d(k)z^k)$. [Cited in Part~II.]
+
+\bibitem{AGW}
+L. Ahmadi, R. G\'omez-A\'iza and M. D. Ward,
+\emph{A Unified Treatment of Families of Partition Functions},
+La Matematica \textbf{3} (2024), 1257--1296.
+\url{https://doi.org/10.1007/s44007-024-00134-w}; \href{https://arxiv.org/abs/2303.02240}{primary preprint}, equations (1)--(2) and Theorem 6.3. [Cited in both Parts; the preprint pointer is Part~II's. Part~II spells the second author ``G\'omez A\'iza''.]
 
 \bibitem{BBBF}
 W. Bridges, B. Brindle, K. Bringmann and J. Franke,
@@ -496,10 +1039,12 @@ B. C. Berndt, N. Robles, A. Zaharescu and D. Zeindler,
 Journal of Mathematical Analysis and Applications \textbf{533} (2024), article 127987.
 \url{https://doi.org/10.1016/j.jmaa.2023.127987}.
 
-\bibitem{AGW}
-L. Ahmadi, R. G\'omez-A\'iza and M. D. Ward,
-\emph{A Unified Treatment of Families of Partition Functions},
-La Matematica \textbf{3} (2024), 1257--1296.
-\url{https://doi.org/10.1007/s44007-024-00134-w}.
+\bibitem{BW} S. Banerjee and B. Wilkerson, \emph{Asymptotic expansions of Lambert series and related q-series}, International Journal of Number Theory 13 (2017), 2097--2113. \href{https://doi.org/10.1142/S1793042117501135}{DOI}; primary preprint \href{https://arxiv.org/abs/1602.01085}{arXiv:1602.01085}, titled \emph{Lambert series and q-functions near $q=1$}, Theorem 2.2(2).
+
+\bibitem{GSE} B. L. Granovsky, D. Stark, and M. Erlihson, \emph{Meinardus' theorem on weighted partitions: extensions and a probabilistic proof}, Advances in Applied Mathematics 41 (2008), 307--328. \href{https://arxiv.org/abs/math/0701584}{Primary preprint}.
+
+\bibitem{GS} B. Granovsky and D. Stark, \emph{A Meinardus theorem with multiple singularities}, Communications in Mathematical Physics 314 (2012), 329--350. \href{https://arxiv.org/abs/1102.5608}{Primary preprint}; Condition (I) requires distinct simple positive poles.
+
+\bibitem{DLMF} NIST Digital Library of Mathematical Functions, \href{https://dlmf.nist.gov/4.13}{\S4.13 Lambert $W$-function}.
 \end{thebibliography}
 \end{document}
