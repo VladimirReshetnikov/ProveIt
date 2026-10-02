@@ -1,24 +1,27 @@
 # Canonical Diophantine certificates
 
-**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks and interaction combinators**
+**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators and abelian sandpiles**
 
-This is a research report dated 30 September 2026, with Part XV dated 2 October
-2026, merged from fifteen manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
+This is a research report dated 30 September 2026, with Parts XV and XVI dated 2 October
+2026, merged from sixteen manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
 of batch 61, which is numbered 07 here, four of batch 62 (its
 manuscripts 01, 02, 04 and 05), numbered 08–11 here and added as Parts X–XIII
 after the report had been written, and one of batch 63 (its manuscript 02),
 numbered 12 here and added as Part XIV, and three of batch 78 (its
 manuscripts 01, 04 and 05), numbered 13–15 here and merged into one Part,
-XV. The base is manuscript 05, *Canonical
+XV, and a fourth of batch 78 (its manuscript 06, placed separately in
+cluster H3), numbered 16 here and added as Part XVI. The base is manuscript 05, *Canonical
 Trace Polytopes*; its `article.tex` was staged unprefixed and has been
-replaced in place by the merged text. All fifteen manuscripts prove the same
+replaced in place by the merged text. All sixteen manuscripts prove the same
 kind of theorem: an explicit integer polynomial whose natural zeros are in
 bijection with the bounded executions (or trace classes of executions) of a
 discrete substrate, with exactly one witness each; in 12 the execution is a
 terminating chip-routing run, represented by its outcome (firing counts and
 sink outputs) rather than its history. In 13–15 the executions are
 scheduled reductions of Lafont's interaction combinators, with exact port
-wiring and exact counts of port-free cyclic wires. They continue the Lean
+wiring and exact counts of port-free cyclic wires. In 16 the execution is the
+stabilization of an abelian sandpile on a finite undirected sink graph,
+represented by its odometer and stable endpoint. They continue the Lean
 project `Computability/HilbertTenthProblem`, whose trace interfaces assert
 only that such representations exist. Author lines: "Research report
 prepared for the ProveIt project" (01), "Research manuscript for the ProveIt
@@ -35,9 +38,10 @@ the ProveIt program" (12), "Prepared for Vladimir Reshetnikov" (13 and 15;
 "Research report prepared with ChatGPT for the ProveIt project"; 15's PDF
 metadata reads "OpenAI, research draft prepared for Vladimir Reshetnikov")
 and "Research prepared with ChatGPT for Vladimir Reshetnikov's ProveIt
-program" (14). The article prints the batch-62 and batch-78
+program" (14), and "Research report prepared for the ProveIt project" (16).
+The article prints the batch-62 and batch-78
 author lines in neutral form and records these assistant names only in its
-provenance appendix; 12's author line names no assistant.
+provenance appendix; the author lines of 12 and 16 name no assistant.
 
 | Report no. | Batch, manuscript | Archive | Title | Pin | Arrived | Placed | Printed in |
 |---|---|---|---|---|---|---|---|
@@ -56,6 +60,7 @@ provenance appendix; 12's author line names no assistant.
 | 13 | batch 78, manuscript 01 | `Exact_Wiring_Diophantine_Report`, inner directory `Exact_Wiring_Diophantine` (28-page PDF) | *Exact Wiring in Diophantine Computation: Sharp loop-parity separation and a cycle-preserving compiler for interaction combinators* | `439c0a2d9` | `1977e6ea6` | `aa11f3fef` | Section 3.13 (abstract, package statement, §1); Part XV (§§2–13, Appendix A); provenance appendix (Appendix B) |
 | 14 | batch 78, manuscript 04 | `Topology_Is_Not_Free_Interaction_Nets`, inner directory `Interaction_Net_Diophantine` (23-page PDF) | *Topology Is Not Free: Loop-Sensitive Diophantine Certificates for Interaction Nets* | `6914ccca6` | `1977e6ea6` | `aa11f3fef` | Section 3.14 (title-page box, status, abstract, §1); Part XV (§§2–13, Appendices A–C); provenance appendix (Appendix D) |
 | 15 | batch 78, manuscript 05 | `no_ghost_wires`, inner directory `no_ghost_wires` (25-page PDF) | *No Ghost Wires: Loop-Exact Quartic Certificates for Interaction Combinators* | `928ea9701` | `1977e6ea6` | `aa11f3fef` | Section 3.15 (abstract, status, §1); Part XV (§§2–13, Appendices A–C) |
+| 16 | batch 78, manuscript 06 | `sandpile_diophantine_research`, inner directory `sandpile_diophantine_certificates` (27-page PDF) | *Cubic Diophantine Certificates Without Computation Histories: Canonical sandpile odometers, spatial universality, and exact eventual periods* | `928ea9701` | `1977e6ea6` | `41e7f1189` | Section 3.16 (abstract, package statement, §1); Part XVI (§§2–16, Appendices A–B) |
 
 Section numbers in the last column are those of each manuscript. Manuscripts
 01–07 also contribute to the Introduction and to the back matter
@@ -65,7 +70,9 @@ validation, formalization plans, questions and conclusions inside their
 Parts, and appear in the back matter only in the provenance appendix and
 the bibliography. Manuscripts 13–15 are merged by subject into Part XV,
 which closes with their validation, questions, conclusions and
-appendices; the source audits of 13 and 14 are in the provenance appendix. The Parts are: I Exact commutation and resource algebra;
+appendices; the source audits of 13 and 14 are in the provenance appendix.
+Manuscript 16 is Part XVI in its own order, closing with its validation,
+formalization route, questions, conclusion and appendices. The Parts are: I Exact commutation and resource algebra;
 II Canonical trace classes; III Compressed repetition and accelerators; IV
 Polynomial trajectories; V Memory logs, RAM and graph evaluation; VI Queues:
 tag systems and FIFO networks; VII FRACTRAN, SKI and term rewriting; VIII
@@ -76,7 +83,8 @@ pumping bounds, program-uniform certificates and periodic tails; XIII
 Conservative priority reaction networks and a canonical-fuel form of the
 finite-fold problem; XIV History-free routing certificates: last exits,
 compressed periods and a rank-function bottleneck; XV Interaction
-combinators: exact wiring, loop-exact gluing and bounded quartic frontends.
+combinators: exact wiring, loop-exact gluing and bounded quartic frontends;
+XVI Cubic sandpile certificates, spatial closure and exact periods.
 
 The full pins are `e8bb0931d67f80d9fce87a8cddb0f661ff19f956` (01–06),
 `725d2ebb6909fe11a13a92354c0f47367a3cbbf5` (07),
@@ -84,7 +92,7 @@ The full pins are `e8bb0931d67f80d9fce87a8cddb0f661ff19f956` (01–06),
 `ccfb084adaa2f32e8d2738a25f82a00377fb3a8c`, a later commit it read on the
 live branch) and `e18718e837d43e162252f9a314e8cb797fbd1a1f` (12), and `439c0a2d9c1052595f3de6a29c11511a24fb2e11` (13),
 `6914ccca6685baf53b7a35f25efc89366c76ba74` (14) and
-`928ea97017a25ebe56d240c84f27d2275d818c75` (15). The pin of 07 is the commit
+`928ea97017a25ebe56d240c84f27d2275d818c75` (15 and 16). The pin of 07 is the commit
 in which 01–03 arrived; 07 was written after 04 and 06, names them by title
 as its companion manuscripts, and arrived after this report was placed but
 before it was written. The batch-60 placement commit `7498484af` also placed
@@ -114,6 +122,17 @@ figures that 13 quotes. The other repository files they cite, the research
 note `interaction_combinator_wiring_obstruction.md` (blob `764c98229`) and
 `Lean/Diophantine/MRDP.lean` (blob `74aea8c5e`), are the same at the three
 pins and at the batch-78 write.
+
+Manuscript 16 was written the same morning at `928ea9701`, the pin of 15,
+and arrived in the same commit `1977e6ea6`; it was placed separately, by
+`41e7f1189` (batch 78, cluster H3), after the placement `aa11f3fef` of
+13–15. It read the project README and MRDP guide and this report's
+`12-rle-routing-SOURCES.md`, not the article, so it does not cite Part
+XIV's question on infinite-background abelian computation, which it
+answers, or the Part IX theorems that its single-fold boundary
+instantiates. The files it read are unchanged at the batch-78 write except
+the project README, which still states the 75- and 87-operation figures it
+quotes.
 
 What each manuscript contributes:
 
@@ -232,6 +251,24 @@ What each manuscript contributes:
   compiler for all six rules with an exact ledger (68 parameters, 126
   witnesses and 169 residuals for the repository's example); a finite
   schedule disjunction; and a lasso up to renaming.
+- **16** for a finite loopless undirected multigraph whose components reach
+  a sink: the exact support criterion (a candidate odometer with stable
+  nonnegative endpoint is the true one exactly when the endpoint is
+  burnable on its support); canonical parallel burning ranks characterized
+  by two local comparisons per ordered adjacency; a baseline cubic with
+  `13n+6m = 13n+12E` natural coordinates and `14n+6m` summands and a
+  compact cubic with `10n+6E` and `10n+7E`, each with exactly one natural
+  zero for every input (carrying the odometer, endpoint and ranks), related
+  by explicit inverse maps on their zero sets; a two-site example with an
+  input needing `10^100+6` topplings (26 witnesses); a directed
+  counterexample fixing the scope; on `ℤ^d` with a stable periodic
+  background, an exterior collar certifying global halting exactly and a
+  unique canonical radius; quadratic witness heights in a box; with Cairns's
+  universality theorem, no computable bound on the necessary radius; the
+  single-fold equivalence for Cairns's uniform sandpile relation (an
+  instance of `cdc:bd:thm:universal`); and the exact minimal eventual period
+  `q` of the stabilization along an input ray `a+th`, the least `q` with
+  `qL⁻¹h` integral.
 
 **Status.** The report is AI-assisted and unrefereed. None of its theorems
 is formalized in Lean or Rocq, and no manuscript ships Lean or Rocq files.
@@ -243,7 +280,7 @@ article.
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 338 pages
+article.pdf                              the compiled report, 449 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -261,7 +298,7 @@ README.md                                this guide
 13-exact-wiring-SOURCES.md               manuscript 13's pinned repository and literature audit
 15-no-ghost-wires-CLAIMS.md              manuscript 15's claims and scope ledger
 15-no-ghost-wires-PROVENANCE.md          manuscript 15's repository revision, sources and verification limits
-16-sandpile-SOURCES.md                   placed by 41e7f1189 (batch 78, cluster H3) for a later Part
+16-sandpile-SOURCES.md                   manuscript 16's pinned repository files, literature and novelty boundary
 
 code/01-causal-traces-causal_diophantine.py   exact semantics and the four compiler entry points
 code/01-causal-traces-demo.py            the 11-witness large-count example (prints; writes no file)
@@ -323,13 +360,13 @@ code/15-no-ghost-wires-build.sh          manuscript 15's three-pass PDF build (i
 code/15-no-ghost-wires-check_export.py   independent evaluator of the exported example (prints one line)
 code/15-no-ghost-wires-loop_exact.py     net semantics, templates, orbit certificate, scheduled compiler, witness
 code/15-no-ghost-wires-verify.py         finite checks; rewrites four data files and writes verification.txt
-code/16-sandpile-build.sh                placed by 41e7f1189 (batch 78, cluster H3) for a later Part
-code/16-sandpile-sandpile_compact.py     (the same)
-code/16-sandpile-sandpile_cubic.py       (the same)
-code/16-sandpile-sandpile_spatial.py     (the same)
-code/16-sandpile-verify.py               (the same)
-code/16-sandpile-verify_compact.py       (the same)
-code/16-sandpile-verify_spatial.py       (the same)
+code/16-sandpile-build.sh                manuscript 16's suites-and-PDF build script, delivery paths (do not run it here)
+code/16-sandpile-sandpile_compact.py     compact compiler, five-way gadget, inverse zero-set maps (prints a demo)
+code/16-sandpile-sandpile_cubic.py       baseline compiler, evaluator, certificate constructor, stabilizers, burning ranks
+code/16-sandpile-sandpile_spatial.py     compact spatial polynomial: periodic table, collar, canonical radius (prints a demo)
+code/16-sandpile-verify.py               baseline checks (seed 20261002); writes --output and the --export-dir examples
+code/16-sandpile-verify_compact.py       compact checks (seed 20261003); writes verification_compact.json and example/compact_*
+code/16-sandpile-verify_spatial.py       spatial checks; writes verification_spatial.json
 
 data/01-causal-traces-build_validation.json   build and rendering record of the delivered 29-page PDF
 data/01-causal-traces-canonical_history.json  32-witness, 48-residual causal-history polynomial and certificate
@@ -430,28 +467,27 @@ data/15-no-ghost-wires-endpoints.json              the repository's two distingu
 data/15-no-ghost-wires-quartic_A_schedule.json     the example: 169 residuals, 68 parameters, 126 witnesses
 data/15-no-ghost-wires-verification.json           recorded run of verify.py (with a runtime field)
 data/15-no-ghost-wires-witness_A.json              the unique witness for net A
-data/16-sandpile-BUILD_REPORT.json                 placed by 41e7f1189 (batch 78, cluster H3) for a later Part
-data/16-sandpile-compact_huge_input_certificate.json   (the same)
-data/16-sandpile-compact_two_site_polynomial.json  (the same)
-data/16-sandpile-compact_two_site_polynomial.txt   (the same)
-data/16-sandpile-huge_input_certificate.json       (the same)
-data/16-sandpile-requirements.txt                  (the same)
-data/16-sandpile-two_site_polynomial.json          (the same)
-data/16-sandpile-two_site_polynomial.txt           (the same)
-data/16-sandpile-verification.json                 (the same)
-data/16-sandpile-verification_compact.json         (the same)
-data/16-sandpile-verification_spatial.json         (the same)
+data/16-sandpile-BUILD_REPORT.json                 build record of the delivered 27-page PDF and the three suites
+data/16-sandpile-compact_huge_input_certificate.json   compact 26-coordinate certificate for input (10^100+7, 0)
+data/16-sandpile-compact_two_site_polynomial.json  compact two-site cubic: 26 witnesses, degree 3, 324 monomials
+data/16-sandpile-compact_two_site_polynomial.txt   the same, expanded as text
+data/16-sandpile-huge_input_certificate.json       baseline 38-coordinate certificate for input (10^100+7, 0)
+data/16-sandpile-requirements.txt                  sympy==1.14.0
+data/16-sandpile-two_site_polynomial.json          baseline two-site cubic: 38 witnesses, degree 3, 216 monomials
+data/16-sandpile-two_site_polynomial.txt           the same, expanded as text
+data/16-sandpile-verification.json                 recorded run of verify.py (86,975 odometer candidates, 7,660 rank vectors, ...)
+data/16-sandpile-verification_compact.json         recorded run of verify_compact.py
+data/16-sandpile-verification_spatial.json         recorded run of verify_spatial.py
 ```
 
 The directory holds 196 files: 19 at the root (the article, its PDF, this
 README and sixteen provenance and audit files), 67 in `code/` and 110 in
 `data/`. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
 besides the replaced `article.tex` and `README.md`, 06 15, 07 14, 08 8, 09
-9, 10 14, 11 9, 12 9, 13 9, 14 12 and 15 10. Every file of manuscripts 01–15 except `article.tex`, `article.pdf` and
-`README.md` is byte-identical to the delivery. The nineteen files
-`16-sandpile-*` (1 at the root, 7 in `code/`, 11 in `data/`) were placed by
-`41e7f1189` (batch 78, cluster H3) for a Part that has not been written yet;
-this README does not describe them.
+9, 10 14, 11 9, 12 9, 13 9, 14 12, 15 10 and 16 19 (1 at the root, 7 in
+`code/`, 11 in `data/`). Every file of manuscripts 01–16 except
+`article.tex`, `article.pdf` and `README.md` is byte-identical to the
+delivery.
 
 ## Labels
 
@@ -476,6 +512,7 @@ manuscripts take a sub-prefix:
 | 13 | `cdc:ew:` | `cdc:ew:thm:sharp` |
 | 14 | `cdc:nt:` | `cdc:nt:thm:main` |
 | 15 | `cdc:ng:` | `cdc:ng:thm:orbit` |
+| 16 | `cdc:sp:` | `cdc:sp:thm:support` |
 
 Labels written in the merge use `cdc:conv:` (the Conventions section),
 `cdc:bd:` (merged statements of Part IX, such as the universal-halting
@@ -546,6 +583,20 @@ batch-63 build have the same numbers in the new `.aux` (compared entry by
 entry). Part XV's equations are numbered within its sections, and those of
 Sections 3.13–3.15 within subsections; table numbers after Part XV did not
 move, because no captioned table follows it.
+
+The batch-78 cluster-H3 write (Part XVI) raised the count from 1105 to 1179.
+It adds all 68 labels of manuscript 16, each with the sub-prefix `cdc:sp:`
+and none dropped (its bare `thm:compiler` is also a bare label of
+manuscripts 13 and 15), and 6 written labels: the Part (`cdc:part:sandpile`),
+its conventions section (`cdc:conv:b78-XVI`), the manuscript subsection
+(`cdc:sec:ms16`), two labels on unlabelled statements of the manuscript
+(`cdc:sp:prop:twosite`, the two-site odometer formula;
+`cdc:sp:cor:sites`, no computable bound on the number of toppled sites)
+and one on its first question (`cdc:sp:q:digraphs`). No existing label was
+renamed, removed or renumbered: the 1105 labels of the Part XV build have
+the same numbers and types in the new `.aux` (compared entry by entry).
+Part XVI's equations are numbered within its sections; Section 3.16 has no
+equation, and no captioned table follows Part XVI.
 
 Text written during the merge is marked `[write]` in the article.
 
@@ -828,6 +879,41 @@ sections, 150 13's Appendix A, 151–153 14's Appendices A–C and 154–156
 15's Appendices A–C; 13's Appendix B and 14's Appendix D are subsections
 K.1 and K.2 of the provenance appendix.
 
+**Manuscript 16** (package root `sandpile_diophantine_certificates/`; flat,
+with `example/`)
+
+| Delivered | Shipped |
+|---|---|
+| `SOURCES.md` | `16-sandpile-SOURCES.md` |
+| `build.sh` | `code/16-sandpile-build.sh` |
+| `sandpile_compact.py` | `code/16-sandpile-sandpile_compact.py` |
+| `sandpile_cubic.py` | `code/16-sandpile-sandpile_cubic.py` |
+| `sandpile_spatial.py` | `code/16-sandpile-sandpile_spatial.py` |
+| `verify.py` | `code/16-sandpile-verify.py` |
+| `verify_compact.py` | `code/16-sandpile-verify_compact.py` |
+| `verify_spatial.py` | `code/16-sandpile-verify_spatial.py` |
+| `BUILD_REPORT.json` | `data/16-sandpile-BUILD_REPORT.json` |
+| `example/compact_huge_input_certificate.json` | `data/16-sandpile-compact_huge_input_certificate.json` |
+| `example/compact_two_site_polynomial.json` | `data/16-sandpile-compact_two_site_polynomial.json` |
+| `example/compact_two_site_polynomial.txt` | `data/16-sandpile-compact_two_site_polynomial.txt` |
+| `example/huge_input_certificate.json` | `data/16-sandpile-huge_input_certificate.json` |
+| `example/two_site_polynomial.json` | `data/16-sandpile-two_site_polynomial.json` |
+| `example/two_site_polynomial.txt` | `data/16-sandpile-two_site_polynomial.txt` |
+| `requirements.txt` | `data/16-sandpile-requirements.txt` |
+| `verification.json` | `data/16-sandpile-verification.json` |
+| `verification_compact.json` | `data/16-sandpile-verification_compact.json` |
+| `verification_spatial.json` | `data/16-sandpile-verification_spatial.json` |
+
+Part XVI is Sections 157–174 of the article: 157 its conventions, 158–172
+manuscript 16's Sections 2–16 (its Section `N` is Section `156+N`), and
+173–174 its Appendices A–B; its Section 1 is Section 3.16.1. Its theorem
+and equation numbers `N.k` become `(156+N).k` (for example its Theorem 6.1,
+the baseline compiler, is Theorem 162.1, and equation (6.6) is (162.6)),
+because both are numbered within sections and the write added no numbered
+item. 16's delivered README (not shipped) proves the two-site formula by
+reference to "article.tex, Section 8": that is Section 164 and
+Proposition 164.1 (`cdc:sp:prop:twosite`).
+
 **Not shipped.** The manuscripts (`article.tex`) and delivery READMEs of
 members 01, 02, 03, 04, 06 and 07: they survive in their arrival commits
 (`725d2ebb6` for 01–03, `c1f56f842` for 04 and 06, `b998f70c6` for 07), as
@@ -857,11 +943,18 @@ console copies were not shipped: 14's `data/export_audit_console.txt` and
 `data/verification_console.txt`, byte-identical to `export_audit.json` and
 `verification.json`, and 15's `data/verification.txt`, which is its
 `verification.json` with a two-line header. No file of 13–15 reaches 1 MB,
-so nothing was excluded as a heavy regenerable artifact.
+so nothing was excluded as a heavy regenerable artifact. For the batch-78
+addition 16: its `article.tex`, delivery `README.md` and 27-page
+`article.pdf` survive in the same arrival commit `1977e6ea6`, as members of
+`sandpile_diophantine_research.zip`
+(`git show 1977e6ea6:docs/incoming/sandpile_diophantine_research.zip`); its
+checksum ledger `MANIFEST.sha256` (22/22) was verified and retired at
+placement (`41e7f1189`). Its largest file is 121,573 bytes, so nothing was
+excluded as heavy.
 
 ## What is claimed and what is not
 
-The report claims the theorems of the fifteen manuscripts, with the proofs
+The report claims the theorems of the sixteen manuscripts, with the proofs
 printed in the article: bijections between the natural zeros of explicit
 integer polynomials and bounded executions, trace classes or logs of the
 substrates listed above, with one witness per execution or class, exact
@@ -889,8 +982,14 @@ bounded six-rule quartic family with one witness per legal schedule (with
 13's second presentation), the bounded loader and the transfer theorem;
 15's suppression identity, support bound, path–cycle dictionary, contextual
 completeness, canonical orbit certificate, single-fold gluing certificate,
-scheduled compiler with its exact ledger, disjunction and lasso. It
-does not claim the following. Each item is stated by at least the
+scheduled compiler with its exact ledger, disjunction and lasso. For Part
+XVI: 16's support criterion, canonical-rank characterization, comparison
+and five-way gadgets, the baseline and compact cubic compilers with their
+exact coordinate and summand counts and inverse zero-set maps, the two-site
+formula, the collar and canonical-radius theorems with their spatial counts,
+the box height bound, the no-computable-radius theorem (conditional on
+Cairns's universality theorem), the single-fold equivalence and the exact
+eventual period. It does not claim the following. Each item is stated by at least the
 manuscripts named; the article keeps every one of them.
 
 - **No priority.** No manuscript establishes historical or literature-wide
@@ -921,10 +1020,18 @@ manuscripts named; the article keeps every one of them.
   lemma of 13 and 14 is Part V's (`cdc:mem:lem:fingerprint`), and 14's
   ten-pattern loop formula was also derived independently in the research
   note `interaction_combinator_quadratic_topology.md`; priority is claimed
-  for neither.
+  for neither. 16 has not established worldwide priority for its compilers
+  (abstract, Appendix B, `SOURCES.md`); burning (Dhar), least action
+  (Fey–Levine–Peres; Friedrich–Levine), sandpile universality (Cairns) and
+  the group-periodicity mechanism are prior work, and its single-fold
+  boundary is the pattern of `cdc:bd:thm:universal`, not a new theorem. The
+  write adds the credits to Dhar and Fey–Levine–Peres, which 16 names or
+  omits without citation.
 - **Not formal.** No new Lean, Rocq or Coq proof was written or compiled,
   the repository's Lean build and axiom audits were not rerun, and
-  repository documentation is not treated as a kernel audit (all fifteen).
+  repository documentation is not treated as a kernel audit (all sixteen;
+  16's MRDP axiom audit was not rerun, and its formalization route names
+  "proposed module boundaries, not names of already implemented files").
   The formalization sections of 08, 09, 10, 11 and 12 are likewise
   proposals; 12's five-layer Lean plan names no module as existing, and
   "none of these new layers has been kernel-checked".
@@ -955,7 +1062,11 @@ manuscripts named; the article keeps every one of them.
   relation is classical and does not preserve their unique witnesses,
   degree or size ledgers, and that they resolve neither the single-fold nor
   the finite-fold problem (13's "no illicit single-fold conclusion", 14's
-  Section 10, 15's Section 8.2 and `CLAIMS.md`).
+  Section 10, 15's Section 8.2 and `CLAIMS.md`). 16's single-fold boundary
+  is likewise an equivalence, and it settles neither single-fold nor
+  finite-fold MRDP nor a fixed cubic universal equation; canonical spatial
+  witnesses do not prove single-fold MRDP, because encoding the
+  variable-length tuple introduces new auxiliaries.
 - **Families, not fixed arity.** Every construction is a family indexed by
   a horizon, height, log length or schedule, whose number of variables grows
   with that parameter: 01's causal height `H` is a compiler parameter
@@ -984,7 +1095,13 @@ manuscripts named; the article keeps every one of them.
   dimensions (15's by the whole lifetime schedule); a fixed horizon is not
   fixed arity, and none supplies an ordinary-integer universal loader. 13
   says that it lowers neither the 75- nor the 87-operation figure; 14's
-  ledger and 15's counts decline that comparison.
+  ledger and 15's counts decline that comparison. 16's finite-graph cubics
+  have fixed arity for one graph and are a family indexed by the graph; its
+  spatial cubics are a family indexed by the radius, whose arity grows with
+  it, and the radius has no computable input-only bound. Its counts are
+  coordinates and structured summands, not expanded monomials (the compact
+  two-site cubic has fewer coordinates but more monomials, 324 against
+  216) or arithmetic operations, and it does not improve the 75/87 figures.
 - **13, scope.** The sharp theorem concerns bare labelled matchings and
   all closing matchings: summaries for a restricted family of contexts, or
   overapproximating reachability analyses, are not ruled out. The state-bit
@@ -1019,6 +1136,26 @@ manuscripts named; the article keeps every one of them.
   minimal witness count or optimal circuit. Bounded uniqueness checks and
   single-coordinate mutations are not the uniqueness proof; algorithmic
   independence within one implementation is not external review.
+- **16, scope.** The theorems need finite, loopless, undirected multigraphs
+  whose components reach a sink; general dissipative directed graphs are
+  excluded, and the manuscript's two-vertex directed example shows that
+  burning alone accepts a false odometer there. Natural witnesses are
+  essential; over the integers the weighted squares need not be
+  nonnegative, and the four-square variant is finite-fold of degree six, not
+  single-fold. Cairns's three-dimensional universality is imported, not
+  reproved or implemented: no Turing-machine-to-sandpile loader exists in
+  the package. The radius is a compiler parameter; the spatial compiler
+  takes a finite periodic table and finite overrides, not an oracle. The
+  height bound bounds witnesses in a given box, not the radius. `T₀` is a
+  sufficient transient, not the first periodic time. The implementation is
+  a dense-matrix reference compiler, not an optimized sparse-grid solver.
+  The finite tests do not test all graphs, all witnesses or the universal
+  reduction. The rational generating-function formula asserts no OEIS
+  identity. The planar questions are attributed to Cairns's arXiv version
+  2, without an exhaustive audit of their later status. The delivered
+  constructors accept inputs mutated after validation (three cases found
+  by the research tree's review; see Disclosures); no theorem depends on
+  them.
 - **Real relaxation is not integral.** 05's quadratic has a real zero set
   that is a bounded rational polytope, but that polytope need not be
   integral: its example of a nonempty polytope with no lattice point shows
@@ -1305,6 +1442,36 @@ certificates") is not answered: Part XV supplies a local polynomial compiler
 for the target's own finite steps, not the clock-faithful simulation
 theorem. That report was not edited in this write.
 
+Part XVI (manuscript 16) relies on no formal declaration either. It cites,
+as context only, the MRDP guide `Lean/MRDP.md` (natural witnesses, a fixed
+witness tuple, no numerical complexity bound) and the project README's
+75- and 87-operation figures, which it does not improve; its formalization
+route names proposed modules, none of which exists, and leaves Cairns's
+reduction as a named assumption. The project has no sandpile, chip-firing
+or burning material, and no theorem of Part XVI is formalized in Lean or
+Rocq; placing the manuscript beside the formal project confers no formal
+status on it. The research note `incoming_substrate_review_1977e6ea6.md`
+(`44b28c395`) of the separately maintained research tree reviews this
+archive too: it confirms the support criterion, the coordinate counts, the
+collar and canonical-radius arguments and the eventual period, reproduces
+three constructor defects (see Disclosures) and supplies the patch
+`sandpile_immutable_input_guards.patch` beside it, which is not applied
+here.
+
+**Relations (batch 78, cluster H3).** Part XVI answers Part XIV's question
+"Infinite-background abelian computation" for finite undirected sink graphs
+and finite global stabilization on `ℤ^d` (directed dissipative graphs stay
+open), answers in part the next question, "Explicit preperiods and more
+general abelian processors", and answers in part `cdc:q:restricted` for
+finite sandpiles. Dated notes record this after the three questions, in
+Part XIV's opening ("Batch 78") and after its remark on Cairns, in Part IX
+(after the universal-halting equivalence and in the no-bound
+proposition's specializations), and inside Part XVI, where a note shows
+that Part XI's classification (`cdc:of:thm:classification`,
+`cdc:of:cor:no-cubic-universal`) applies to its orthant-nonnegative cubics,
+so that no fixed-arity cubic of that kind can carry Cairns's universality.
+No neighbouring report was edited in this write.
+
 ## Build
 
 pdfLaTeX, with the packages loaded in `article.tex` (base 05's preamble
@@ -1322,8 +1489,8 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 419 pages (196 before batch 62, 306 before batch 63,
-338 before batch 78),
+The recorded build has 449 pages (196 before batch 62, 306 before batch 63,
+338 before batch 78, 419 after Part XV),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -1331,15 +1498,21 @@ five macros for manuscript 12 (`\rankf`, `\UP`, `\coUP`, `\NP`, `\coNP`) and
 no package. Batch 78 adds five macros for manuscripts 13–15 (`\M`, `\PP`,
 `\multiset`, `\cyc`, `\id`) and no package; the batch-78 build has no
 error, warning or overfull box, and its one underfull line is the one
-above.
+above. Part XVI (batch 78, cluster H3) adds no macro and no package
+(manuscript 16's `\Ccmp`, `\Poly` and `\diag` are written out and its
+`\ind` printed with `\indset`); its build likewise has no error, warning,
+undefined reference, duplicate destination or overfull box, and the same
+single underfull line.
 
 ## Rerunning the checks
 
-Every suite needs Python 3.10 or later and the standard library only. Every
+Every suite needs Python 3.10 or later and the standard library only,
+except 16's three verifiers, which need SymPy 1.14.0
+(`data/16-sandpile-requirements.txt`; the recipe uses `uv`). Every
 suite rewrites its recorded outputs at fixed paths relative to its own
 location, and most scripts import their siblings by delivered name, so run
 them **on a copy with the delivered layout**, never in the report
-directory. The recipes below build such copies, `r01` … `r15`, beside
+directory. The recipes below build such copies, `r01` … `r16`, beside
 `code/` and `data/`: run them in a scratch copy of the report directory
 (copying `code/` and `data/` is enough), not in the collection. Where the
 Windows `python` alias does not resolve, use `py`.
@@ -1435,6 +1608,14 @@ for f in certificates nets verify verify_exports; do cp code/14-net-topology-$f.
 mkdir -p r15/code r15/data
 for f in loop_exact verify check_export; do cp code/15-no-ghost-wires-$f.py r15/code/$f.py; done
 (cd r15 && py code/verify.py > /dev/null && py code/check_export.py)
+
+# 16: writes r16/verification{,_compact,_spatial}.json and six files in r16/example; the demos print only
+mkdir -p r16
+for f in sandpile_cubic sandpile_compact sandpile_spatial verify verify_compact verify_spatial; do cp code/16-sandpile-$f.py r16/$f.py; done
+(cd r16 && uv run --no-project --with sympy==1.14.0 python verify.py --output verification.json --export-dir example \
+  && uv run --no-project --with sympy==1.14.0 python verify_compact.py \
+  && uv run --no-project --with sympy==1.14.0 python verify_spatial.py \
+  && py sandpile_cubic.py && py sandpile_compact.py && py sandpile_spatial.py)
 ```
 
 The recipes for 08–12 use `py`, which resolves on this machine; the
@@ -1493,7 +1674,16 @@ carriage returns. 15's `verify.py` (about 26 seconds) regenerates four
 files that equal the shipped ones after removing carriage returns, except
 the `runtime_seconds` field of `verification.json` (4.019 recorded), and
 `check_export.py` prints `PASS: 68 parameters, 126 witnesses, 169
-residuals, energy 0`.
+residuals, energy 0`. The recipe for 16 was run the same way in the
+batch-78 cluster-H3 write (Python 3.14.4, SymPy 1.14.0 through `uv`,
+Windows; about 37 seconds with `uv` start-up): all three receipts report
+`"all_checks_passed": true`, and the nine regenerated files (three
+receipts, six example files) equal the shipped ones after removing
+carriage returns (no elapsed time or Python version is recorded in them).
+The demos print 38 coordinates, 40 summands and value 0 for the baseline
+`10^100+7` input (`10^100+6` topplings), 26 coordinates, 27 summands and
+value 0 for the compact one, and a spatial certificate of 173 coordinates
+with canonical radius 5 and value 0.
 
 **Hazards.**
 
@@ -1515,6 +1705,21 @@ residuals, energy 0`.
   merged article, and `clean` deletes its auxiliary files) or
   `code/15-no-ghost-wires-build.sh` (it changes to its own directory and
   runs `pdflatex` three times on `article.tex`, which is not there).
+- Batch 78, cluster H3: 16's verifiers write into the **working
+  directory** (`verify.py` where `--output` and `--export-dir` say, by
+  default `verification.json` and `example/`; `verify_compact.py` writes
+  `verification_compact.json` and `example/compact_*`; `verify_spatial.py`
+  `verification_spatial.json`), so run them only inside `r16`. The shipped
+  `code/16-sandpile-*` scripts that import a sibling fail at that import,
+  because the siblings carry prefixes. Do not run
+  `code/16-sandpile-build.sh`: it changes to its own directory and runs
+  `verify.py`, `verify_compact.py` and `verify_spatial.py` there, then
+  `pdflatex` three times on `article.tex`. As shipped it stops at the first
+  step (`code/` holds no `verify.py`); a copy beside unprefixed programs
+  would rewrite their receipts and `example/` and then fail on the missing
+  manuscript source. It also defaults to `python3`, which may not resolve
+  on Windows. Do not run the verifiers with `python -O`: their
+  checks are assertions, and the entry points refuse that mode.
 - Every suite overwrites its recorded outputs at paths fixed relative to the
   script (the parent of the script's directory in 01, 03, 04, 05, 06, 07,
   08, 09 and 10; the working directory in 02; the `--output` paths in 11). The shipped `code/` scripts that import
@@ -1668,6 +1873,52 @@ residuals, energy 0`.
   of 13's code: `Circuit.failures` in `diophantine_memory.py` ignores unused
   trailing coordinates instead of requiring the declared tuple length; the
   polynomial on its declared coordinates is unaffected.
+- **Batch 78, cluster H3 (manuscript 16): shipped text that uses delivery
+  names or names unshipped files.** `16-sandpile-SOURCES.md` calls the
+  bibliography "in `article.tex`" (16's, not shipped; its text is Section
+  3.16 and Part XVI) and names `verification.json`,
+  `verification_compact.json` and `verification_spatial.json` (now
+  `data/16-sandpile-verification*.json`), and describes the delivered PDF's
+  build and rendering check. `data/16-sandpile-BUILD_REPORT.json`
+  names the three receipts by delivered name and describes the delivered
+  27-page PDF and its rendering review, which are not shipped (the PDF
+  survives in `1977e6ea6`); no script writes it. `code/16-sandpile-build.sh`
+  runs `verify.py`, `verify_compact.py`, `verify_spatial.py` and `pdflatex
+  article.tex` by delivered names. The scripts import one another by
+  delivered name (`sandpile_cubic`, `sandpile_compact`, `verify`) and write
+  `verification*.json` and `example/…` into the working directory. The
+  `coefficient_table_sha256` and certificate hashes inside the three
+  receipts hash normalized JSON objects (sorted keys, compact separators),
+  not the bytes of the shipped files; the retired `MANIFEST.sha256` held
+  file-byte hashes. The article prints the shipped names where 16 names its
+  files in prose and keeps its command listing in the delivered layout with
+  a note. `data/16-sandpile-requirements.txt` (`sympy==1.14.0`) has the
+  same bytes as the requirements files of many other reports, among them
+  *group-theoretic-substrates* and
+  *probabilistic-quantum-and-continuous-computation*. Layout: the
+  article sets the two columns of 16's Section-1 claim table ragged right,
+  to avoid two underfull lines; the words are unchanged.
+- **Batch 78, cluster H3: defects of 16's delivered programs.** The review
+  `incoming_substrate_review_1977e6ea6.md` (`44b28c395`) of the
+  Hilbert's-tenth-problem research tree reproduces three input-contract
+  defects in `sandpile_cubic.py` and `sandpile_spatial.py` (shipped as
+  `code/16-sandpile-sandpile_cubic.py` and
+  `code/16-sandpile-sandpile_spatial.py`): `Graph` keeps mutable adjacency
+  and degree lists, so a graph mutated after validation into the directed
+  counterexample yields an accepted certificate for odometer (2,1) at input
+  (0,2), whose true odometer is (0,0); `PeriodicInput` keeps its background
+  list, so a background made unstable after a certificate was built still
+  evaluates to zero; and a directly constructed `SpatialInstance` bypasses
+  the checked builder and can leave a distant defect outside its collar.
+  The review's tested patch `sandpile_immutable_input_guards.patch` (beside
+  the review in
+  `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`)
+  snapshots the inputs and checks direct construction; with it all three
+  suites pass and the recorded files are unchanged. It is **not applied**:
+  the shipped programs are the delivered bytes, and applying it to the
+  prefixed copies (with the file names rewritten) is left to the owner of
+  that tree. No theorem of Part XVI depends on the defects, since each
+  bypasses a hypothesis the theorems state.
 - **Byte-identical duplicates within a manuscript** (checked with `cmp`):
   03's `test_results.json` and `test_run.txt`, `linear_test_results.json`
   and `linear_test_run.txt`, and `example-events.json` and
@@ -1684,7 +1935,9 @@ residuals, energy 0`.
   which a rerun changes; nothing else in the batch-62 records depends on
   the machine. In batch 78, 15's `verification.json` records a
   `runtime_seconds` field and 13's `verification.json` the Python version
-  of its run (13's comparison mode ignores elapsed time).
+  of its run (13's comparison mode ignores elapsed time). 16's three
+  receipts record neither; its `BUILD_REPORT.json` records Python 3.13.5,
+  SymPy 1.14.0 and pdfTeX 1.40.26 of the delivery's own run.
 - **Missing final newlines.** Four of 06's JSON files end without a newline
   and are kept so: `canonical_huge_witness.json`,
   `canonical_multiplication_certificate.json`,
@@ -1705,7 +1958,9 @@ residuals, energy 0`.
   `verification/`) and a `verify_certificates.py`, which is not 04's or
   07's `code/verify_certificate.py`. In batch 78, 13, 14 and 15 each
   deliver a `code/verify.py`, and 14 and 15 each a `data/verification.json`;
-  all are different files, told apart by their prefixes.
+  all are different files, told apart by their prefixes. 16 delivers yet
+  another `verify.py` and `verification.json` (at its package root), and a
+  `build.sh` different from 15's.
 - **Two Cantone–Cuzziol–Omodeo papers.** 02, 04, 05 and 06 cite
   Cantone, Cuzziol and Omodeo, *On Diophantine singlefold specifications*,
   Le Matematiche 79(2) (2024), 585–620 (merged key `cco2024`). 07 cites a
@@ -1733,7 +1988,13 @@ residuals, energy 0`.
   commits). 12 inspected `e18718e83` and cites its README and MRDP guide by
   pinned links; its bibliography key `repo` is not this report's `repo`
   (06's item), so its two repository items are merged into `repo-h10` and
-  `repo-mrdp`, which now also record that pin.
+  `repo-mrdp`, which now also record that pin. 16 inspected `928ea9701`
+  through the GitHub connector (the project README, the MRDP guide and this
+  report's `12-rle-routing-SOURCES.md`); its keys `repo-readme`,
+  `repo-mrdp` and `matiyasevich` are merged into `repo-h10`, `repo-mrdp`
+  and `mat2010`, and its `repo-routing` became the new entry
+  `repo-rtsources`. Its statement that the project README reports
+  75- and 87-operation figures is still true at the write.
 
 ## Merge decisions
 
@@ -1955,6 +2216,43 @@ same decisions.
   Sutherland, Matiyasevich's Scholarpedia article), and the entries for
   Lafont 1997, Matiyasevich 1970 and 2010, Batcher, the project README and
   `MRDP.lean` extended (73 distinct works in all).
+- **Batch 78, cluster H3 (Part XVI).** Manuscript 16 arrived with 13–15
+  but was placed separately (`41e7f1189`) and written after Part XV. It is
+  printed as one Part in its own order (its Sections 2–16 and both
+  appendices), appended after Part XV and before the appendices, so that
+  no existing number changed; its title page, abstract, package statement
+  and Section 1 are Section 3.16 (the Section 3 heading became "The sixteen
+  manuscripts"). The Part opens with its source, its relation to the other
+  Parts, its hypotheses and a conventions table (`L`, `n`, `m`, `E`, `u`,
+  `d`, `r_v`, `D_k`, `K_vw`, `H`, `h`, `ρ`, `U(e,x)`, `π_S`, `c`, `T₀`,
+  "without histories", "global halting"). It duplicates no printed
+  theorem, so nothing is merged; the overlaps are pointers: its
+  least-action lemma is credited to Fey–Levine–Peres with a pointer to
+  `cdc:rt:lem:least`, its burning test to Dhar; its single-fold boundary is
+  printed with a note that it is `cdc:bd:thm:universal` (a)⇔(b) for
+  Cairns's relation; the finite search of its radius theorem is
+  `cdc:bd:prop:nobound`'s, and its corollary repeats the predecessor-path
+  argument of `cdc:of:prop:nocutoff`. A written note observes that its
+  cubics are nonnegative on the real orthant, so Part XI's classification
+  applies and sharpens its "cubic-degree boundary". Its eight questions
+  (unnumbered subsections) are `question` environments at the end of the
+  Part, cross-referenced to Part XIV's and to `cdc:q:repsize`,
+  `cdc:q:verified`, `cdc:q:compression` and `cdc:q:ffprimitives`, not
+  merged. Renamed: its pairing `π` is `π_S` (Part IX's `π` is
+  `(a+b)^2+a`; `π_S = 2π_C`); its `\ind` prints with `\indset`, and
+  `\Ccmp`, `\Poly`, `\diag` are written out. Where it names its files in
+  prose the shipped names are printed. Bibliography keys mapped:
+  `matiyasevich` → `mat2010`, `repo-readme` → `repo-h10`, `repo-mrdp` →
+  `repo-mrdp` (both with 16's pin), `repo-routing` → the new entry
+  `repo-rtsources`; `cairns` and `friedrich-levine` extended; `jarai` and
+  `bayer-david` new; `dhar1990` and `fey-levine-peres` added by the write
+  (78 distinct works in all). Dated `[write]` notes: after Part XIV's
+  questions on infinite-background abelian computation (answered for
+  undirected graphs) and on more general abelian processors (answered in
+  part), after `cdc:q:restricted` (answered in part), in Part XIV's
+  opening and after its Cairns remark, in Part IX, and inside Part XVI on
+  the three constructor defects found by the research tree's review,
+  whose patch is not applied.
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
   different commits), `\repoCommit` (02) and `\reposha` (04) printed as

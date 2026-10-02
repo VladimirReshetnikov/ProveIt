@@ -1948,7 +1948,13 @@ the general reversion is `p0:thm:perturbed-inversion` and the step to the
 integer threshold `p0:thm:staircase`. The method is the volume's; the
 A006014 coefficients are new to the repository. It
 leaves the Borel singularities at actions 2, 3, … open (article.tex:621-623)
-and is not formalized.
+and is not formalized. Its sibling, the other factorially forced quadratic
+recurrence, is the A229741 package
+`Late_Coefficients_Factorially_Forced_Catalan_Recurrence/` below (a
+different sequence, `a_n = n! + Σ a_i a_{n−1−i}`, treated by a pole lattice
+rather than a hypergeometric linearization). The editorial notes of both
+packages give the volume's inversion dictionary, and that package's note
+points to this one; neither author text cites the other.
 
 [`Late_Growth_Bessel_Counting_Coefficients/`](Late_Growth_Bessel_Counting_Coefficients/)
 holds *Late growth of Bessel counting coefficients* (660-line source, its

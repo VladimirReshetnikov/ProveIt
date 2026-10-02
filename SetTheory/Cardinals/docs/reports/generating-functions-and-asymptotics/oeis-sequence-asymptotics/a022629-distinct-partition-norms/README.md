@@ -1,17 +1,19 @@
 # Five OEIS Asymptotic Conjectures for Distinct-Partition Norms
 
-**Proofs, all-orders logarithmic expansions, exact-saddle corrections, inverse and extreme-value laws, eventual log-concavity and Jensen hyperbolicity, and convolution powers for ∏(1 + k^α q^k)^μ: A022629, A092484, A265840, A265841, A265842, A022630, A022631**
+**Proofs, all-orders logarithmic expansions, exact-saddle corrections, inverse and extreme-value laws, eventual log-concavity and Jensen hyperbolicity, convolution powers for ∏(1 + k^α q^k)^μ, and slot multiplicities ∏(1 + k^α q^k)^(k^β): A022629, A092484, A265840, A265841, A265842, A022630, A022631, A266891**
 
-This research report is dated 1 October 2026. It was built from four
+This research report is dated 1 October 2026. It was built from five
 manuscripts of ProveIt's incoming-reports intake, all written independently
 on that day: two of batch 73O1 (cluster O1 of batch 73), merged on
-1 October, and two of batch 75, merged on 2 October 2026. All four prove the
-same core theorems for the same real family (source 48's A022629 is source
-40's α = 1; sources 48 and 75-01 call the power `s`, source 75-06 calls it
-`r`), with identical coefficients. Each shared theorem is printed once and
-credited; the batch-75 duplicates are recorded in one table (Table 2) with
-pointers rather than reprinted, and only genuinely different proofs are kept
-as marked second routes. No manuscript is superseded: each has results the
+1 October, two of batch 75 and one of batch 77 (cluster P2), merged on
+2 October 2026. All five prove the same core theorems for the same real
+family (source 48's A022629 is source 40's α = 1; sources 48 and 75-01 call
+the power `s`, source 75-06 calls it `r`; source 77-51 proves all orders for
+α = 1 and the first two orders for every α), with identical coefficients.
+Each shared theorem is printed once and credited; the batch-75 and batch-77
+duplicates are recorded in two tables (Tables 2 and 6) with pointers rather
+than reprinted, and only genuinely different proofs and forms are kept as
+marked second routes. No manuscript is superseded: each has results the
 others lack.
 
 | Source | Manuscript | Archive (arrival commit) | Pin | Placed | Printed as |
@@ -20,17 +22,21 @@ others lack.
 | member | batch 73O1, no. 48 | `A022629_Research_Package.zip` (`3a9518c52`); `article.tex`, *The A022629 Conjecture: All-Orders Logarithmic Asymptotics, Saddle-Point Expansions, Inverse Growth, and the Largest Part of a Weighted Partition*, 20-page PDF | `dc1a7242d` | `9df4ba51a` | second proofs and credits throughout; Section 3.1, Sections 6.1, 7.3, 8.1–8.2, 9.1, 10.3, 12.5, 13.1, part of Appendix B, Appendix C |
 | addition | batch 75, no. 01 (source 75-01) | `A022629_research_package.zip` (`4b874cea0`); `article.tex`, *Norm-weighted distinct partitions: A proof of the A022629 growth conjecture, all-order asymptotics, Lambert inversion, and eventual Jensen hyperbolicity*, 20-page PDF | `29aca108e` | `6ea60e367` | Table 2 and Section 15.2; Sections 16–17; Section 19 (75-01.1–10); files prefixed `75-01-jensen-` |
 | addition | batch 75, no. 06 (source 75-06) | `OEIS_Norm_Weighted_Partitions.zip` (`4b874cea0`); `article.tex`, *Norm-weighted distinct partitions: A022629, all-order expansions, and inversion*, 26-page PDF | `29aca108e` | `6ea60e367` | Table 2 and Section 15.2; the second proof of Lemma 16.1; Section 18; Section 19 (75-06.1–12); files prefixed `75-06-powers-` |
+| addition | batch 77, no. 51 (source 77-51) | `oeis-fixed-power-asymptotics-result.zip` (`096ee7b87`; no wrapper directory); `article/fixed-power-partition-asymptotics.tex`, *Asymptotic expansions and inversion for fixed power weighted partitions*, 11-page PDF | none | `aa7345800` | Section 20: Table 6, Proposition 20.1 and the routes of Section 20.2, Theorem 20.2, Corollary 20.3 (A266891), Table 7, questions 77-51.1–4; files prefixed `77-51-fp-` |
 
 Author lines as delivered: source 40, "Research report prepared for Vladimir
 Reshetnikov" (no AI wording); source 48, the same, with "Developed with AI
 assistance; proofs and computations supplied for review"; source 75-01,
 "Research report prepared for Vladimir Reshetnikov" (empty PDF author field,
 no AI wording); source 75-06, "Prepared for Vladimir Reshetnikov" (PDF
-author "Research report prepared for Vladimir Reshetnikov", no AI wording).
+author "Research report prepared for Vladimir Reshetnikov", no AI wording);
+source 77-51, "Research report" (PDF author the same, no AI wording).
 The pins are ProveIt commits of 1 October 2026
 (`1f1981f682b2878bde51a6ad40c22777f362fc05`,
 `dc1a7242d2ab4a4496b7dfee63256ee767b21fc9`, and
 `29aca108ed25d714f31b1316512777fbbdc8e006` for both batch-75 sources);
+source 77-51 names no ProveIt commit (its approval records name only the
+producer's working directory) and records no repository search;
 source 48 calls its identifier a "tree response" and says it does not pin
 every later read. The batch-75 pin already held the archives of sources 40
 and 48, unopened, and predates their placement, so source 75-01's "A
@@ -39,10 +45,11 @@ says so (Sections 1.3 and 15.1). No source cites another, and their texts
 share 0.4–1.4 % of their word 8-grams pairwise (source 40/48: 0.4 %; the
 batch-75 pairs: 0.55–1.41 %): they are independent. Source 75-01 is not a
 version of source 48, although the archive names differ only in letter case.
+Source 77-51 shares 0.69 % / 0.11 % of its word 8-grams with this report.
 Each placement commit deleted its archives, which survive in the arrival
 commits.
 
-**Status: AI-assisted (source 48 says so; sources 40, 75-01 and 75-06 do not
+**Status: AI-assisted (source 48 says so; sources 40, 75-01, 75-06 and 77-51 do not
 say), unrefereed, not formalized.** For batch 73O1 the intake recomputed the
 A022629 table to n = 6400, re-derived P_1–P_8 and the inverse coefficients by
 a third route (a Sommerfeld expansion), recomputed source 48's operator
@@ -54,18 +61,37 @@ the report's own inverse equation (they equal source 75-06's d_j(6c), and
 source 75-01's through order 5), compared source 75-01's exact tables with
 the earlier ones, confirmed the OEIS names and first fifteen terms of A022630
 and A022631 and the definition of A297321, and reran every batch-75 program
-on copies (below). It did not referee every proof.
+on copies (below). For batch 77 it checked in exact arithmetic that source
+77-51's d_3, d_4, b_4, b_5 are P_3, P_4, Δ_4, Δ_5 at α = 1 and that its
+family theorem at β = 0 reproduces P_1 = P_2 = c and Δ_2 = Δ_3 = −2c;
+computed ∏(1 + kq^k)^k through q^12 (its first ten coefficients are the
+A266891 prefix recorded in the delivery; the OEIS entry was not re-fetched);
+converted source 77-51's relative errors to the convention of Table 3 and
+found them equal to source 75-01's and 75-06's at n = 200, 1000, 2000
+to within one unit in the last printed digit; and reran its producer check and three independent checkers on
+copies (below). It did not referee every proof.
 
 ## Files
 
 ```
 README.md                                          this guide
 article.tex                                        the merged report (pdfLaTeX, internal bibliography)
-article.pdf                                        the compiled report, 59 pages (title page, then pages 1-58)
+article.pdf                                        the compiled report, 68 pages (title page, then pages 1-67)
 48-a022629-PROVENANCE.md                           source 48's sources and verification record, as delivered
 75-01-jensen-BUILD_AND_VALIDATION.txt              source 75-01's build and computation record, as delivered
 75-01-jensen-OEIS_PROPOSED_NOTES.md                source 75-01's draft OEIS notes (not submitted), as delivered
 75-06-powers-proposed_oeis_updates.txt             source 75-06's draft OEIS notes (not submitted), as delivered
+77-51-fp-QA.md                                     source 77-51's visual review of its delivered 11-page PDF
+77-51-fp-INTEGRATED_REVIEW.md                      source 77-51's integrated transcription review (audits/INTEGRATED_REVIEW.md)
+77-51-fp-ind-AUDIT.md                              source 77-51's independent audit of the A022629 core (audits/independent/)
+77-51-fp-ind-FAMILY_AUDIT.md                       its independent audit of the slot family
+77-51-fp-ind-LOG_HIERARCHY_AUDIT.md                its independent audit of the logarithmic hierarchy
+77-51-fp-ind-SOURCE_CHECK.md                       its supplementary OEIS and literature source check
+77-51-fp-proofs-ALL_LOG_ORDERS.md                  source 77-51's proof snapshots (proofs/): all logarithmic orders
+77-51-fp-proofs-EXACT_SADDLE_EXPANSION.md          exact-saddle expansion
+77-51-fp-proofs-FIXED_POWER_FAMILY.md              slot family
+77-51-fp-proofs-LEADING_AND_INVERSE.md             leading term and inverse
+77-51-fp-proofs-THERMAL_CORRECTION.md              thermal correction
 code/40-norm-moments-verify.py                     exact sequences (alpha = 1..5, n <= 5000), recurrence check, saddle/Edgeworth diagnostics
 code/40-norm-moments-derive_series.py              symbolic boundary derivatives and P_j (SymPy)
 code/40-norm-moments-derive_inverse.py             symbolic reversion through six inverse orders (SymPy)
@@ -80,6 +106,13 @@ code/75-01-jensen-extra_checks.py                  source 75-01's divisor recurr
 code/75-06-powers-formal.py                        source 75-06's exact formal algebra over Q[u]: eight forward, seven inverse coefficients
 code/75-06-powers-numerics.py                      source 75-06's exact A022629 coefficients to 10000 and floating-point saddle estimates (NumPy, SciPy)
 code/75-06-powers-checks.py                        source 75-06's recurrence and convolution checks (imports numerics)
+code/77-51-fp-producer-check.py                    source 77-51's exact A022629 coefficients (2,001), monotonicity, factorial bounds, saddle numerics
+code/77-51-fp-producer-generate_log_series.py      source 77-51's symbolic d_1..d_6, b_2..b_7 (SymPy)
+code/77-51-fp-ind-check.py                         source 77-51's independent core checker (standard library)
+code/77-51-fp-ind-check_family.py                  its independent family checker (standard library)
+code/77-51-fp-ind-check_log_hierarchy.py           its independent hierarchy checker (standard library)
+code/77-51-fp-verify.py                            source 77-51's root driver (delivery layout only; see below)
+code/77-51-fp-build.sh                             source 77-51's PDF build (builds the unshipped manuscript)
 data/40-norm-moments-A022629_computed.txt          a(n), n = 0..5000, alpha = 1 (and A092484, A265840, A265841, A265842 below)
 data/40-norm-moments-A092484_computed.txt
 data/40-norm-moments-A265840_computed.txt
@@ -125,6 +158,21 @@ data/75-06-powers-numerical_results.json           saddle results; exact compari
 data/75-06-powers-verification_results.json        checks.py summary and software versions
 data/75-06-powers-source_audit.json                source 75-06's inspected OEIS entries, conjecture dates and repository tree
 data/75-06-powers-requirements.txt                 numpy==2.3.5, scipy==1.17.0, sympy==1.14.0
+data/77-51-fp-producer-verification.json           source 77-51's producer receipt
+data/77-51-fp-producer-log_series_verification.json  its symbolic receipt
+data/77-51-fp-ind-verification.json                its independent core receipt
+data/77-51-fp-ind-family_verification.json         its independent family receipt
+data/77-51-fp-ind-log_hierarchy_verification.json  its independent hierarchy receipt
+data/77-51-fp-ind-approval.json                    approval of the core proof (pins delivered files)
+data/77-51-fp-ind-family_approval.json             approval of the family proof
+data/77-51-fp-ind-log_hierarchy_approval.json      approval of the hierarchy proof
+data/77-51-fp-ind-source_check.json                source-check receipt
+data/77-51-fp-ind-negative-control.txt             expected stderr under python -O (delivered as optimization-negative-control.txt)
+data/77-51-fp-ind-family-negative-control.txt      the same, family checker (delivered as family-optimization-negative-control.txt)
+data/77-51-fp-ind-log-hierarchy-negative-control.txt  the same, hierarchy checker (delivered as log-hierarchy-optimization-negative-control.txt)
+data/77-51-fp-integrated-approval.json             integrated approval (pins the delivered tex and PDF)
+data/77-51-fp-root-integrated-approval.json        root integrated approval
+data/77-51-fp-requirements.txt                     mpmath>=1.3, sympy>=1.13
 ```
 
 Every file except `README.md`, `article.tex` and `article.pdf` is
@@ -153,7 +201,16 @@ manuscripts and READMEs of sources 48, 75-01 and 75-06, source 40's
 manuscript), and source 75-01's `data/exact_s2.json` and `data/exact_s3.json`
 (α = 2, 3 to n = 2500; value-identical to source 40's A092484 and A265840
 tables on that range, and regenerated in seconds; see the rerun recipe).
-All survive in the arrival commits.
+Source 77-51 (archive without a wrapper directory): `QA.md`, `build.sh`,
+`verify.py`, `requirements.txt` → `77-51-fp-<name>`, `code/77-51-fp-<name>`
+or `data/77-51-fp-<name>`; `audits/X` → `77-51-fp-X` (`.md`) or
+`data/77-51-fp-X`; `audits/independent/X` → `77-51-fp-ind-X` (`.md`),
+`code/77-51-fp-ind-X` (`.py`) or `data/77-51-fp-ind-X`, with the three
+`*-optimization-negative-control.txt` shortened to `*-negative-control.txt`;
+`checks/producer/X` → `code/77-51-fp-producer-X` or
+`data/77-51-fp-producer-X`; `proofs/X` → `77-51-fp-proofs-X`. Not shipped:
+its manuscript (printed in Section 20), PDF, README and `SHA256SUMS` (36/36
+verified, retired). All survive in the arrival commits.
 
 ## Labels, structure and notation
 
@@ -166,12 +223,17 @@ build of the previous text), and added **46**: 28 under `dpn:jh:` (source
 75-01's sharp scales, threshold, log-concavity and Jensen material), 13 under
 `dpn:cp:` (source 75-06's convolution powers) and 5 `dpn:` labels for the
 merge sections and the duplicates table (`sec:b75`, `sec:b75dup`,
-`sec:b75routes`, `sec:b75questions`, `tab:b75dup`): **174** in all. The
-batch-75 sources' own labels were not carried over: their shared results are
-pointers, and their new results were rewritten in this report's notation.
+`sec:b75routes`, `sec:b75questions`, `tab:b75dup`): **174**. The batch-77
+merge again renamed or deleted none and left every existing section,
+theorem, equation and table number unchanged (checked against a build of the
+previous text), and added **21**, all under `dpn:fp:` (source 77-51's
+Section 20: 7 sections, 2 tables, 1 proposition, 1 theorem, 1 corollary,
+9 equations): **195** in all. The batch-75 and batch-77 sources' own labels
+were not carried over: their shared results are pointers, and their new
+results were rewritten in this report's notation.
 
 Section 1.4 says what came from where; Section 1.5 has the notation tables.
-This report's notation (source 40's) is used throughout, and the other three
+This report's notation (source 40's) is used throughout, and the other four
 sources are translated into it. The collisions that matter: the power is α
 here, `s` in sources 48 and 75-01 and `r` in source 75-06; source 75-06's `s`
 is the number of layers, here μ; this report's `s` is the log transition
@@ -184,12 +246,20 @@ source 75-01's cumulant polynomials `P_j(p)` are not the coefficients
 polynomials `b_j(p)`; source 75-06's `d(v)`, `d_j(u)` and source 48's `d_s(λ)`
 are not `d_α(s)`; source 75-01's `x_0(A)` (Gaussian inverse, here n_*) is not
 source 48's `x_0` (= K_0); source 75-01's Hermite `H_d` is written 𝖧_d, since
-`H` is the transition width. Text added in the merges is marked "[Merge note,
-batch 73O1.]" or "[Merge note, batch 75.]"; dated notes on earlier text read
-"[Batch 75, 2 October 2026.]"; material from a single source is marked
-"(source 48)", "(source 75-01)" or "(source 75-06)". The batch-75 material
-follows the conclusion as Sections 15–19, so that the earlier numbering is
-unchanged; merge notes in the earlier sections point forward to it.
+`H` is the transition width. Source 77-51's `s = log y` is the log threshold
+Y here, not the transition coordinate s (its ℓ); its `μ(t)` is the mean, not
+the layer count μ; its `m`, `L` are K, r; its `d_j`, `b_j` are P_j(π²/6),
+Δ_j(π²/6), not source 75-06's `d_j(u)`, `b_j(u)` nor the cumulant polynomials
+b_j(p); its `E_R` includes the leading 1; its slot family is written
+A^[β]_α with scale K^[β] = ((β+2)n)^(1/(β+2)), so as not to collide with
+a_{α,μ} or with the Lambert datum K_0. Text added in the merges is marked
+"[Merge note, batch 73O1.]", "[Merge note, batch 75.]" or "[Merge note,
+batch 77.]"; dated notes on earlier text read "[Batch 75, 2 October 2026.]"
+or "[Batch 77, 2 October 2026.]"; material from a single source is marked
+"(source 48)", "(source 75-01)", "(source 75-06)" or "(source 77-51)". The
+batch-75 material follows the conclusion as Sections 15–19 and the batch-77
+material as Section 20, so that the earlier numbering is unchanged; merge
+notes in the earlier sections point forward to it.
 
 ## What is claimed
 
@@ -236,6 +306,18 @@ s the exact-saddle transition site and its logarithm:
   √(2n/μ), the relative expansion with first correction −3/(8μαMs), the
   threshold inversion, and the logistic and Gumbel laws with centring
   (μ/t)b^α e^{−tb} = 1.
+- Source 77-51 only: the slot family ∏(1 + k^α q^k)^(k^β), α > 0 real,
+  β ≥ 0 integer (Theorem 20.2): two logarithmic orders
+  log a = αK^(β+1)(r/(β+1) − 1/(β+1)²) + π²K^(β+1)/(6α(r − 1)) + O(K^(β+1)/r³)
+  with K = ((β+2)n)^(1/(β+2)), r = log K; the exact-saddle expansion to every
+  fixed order with remainder O((s/M^(β+1))^(R+1)); the threshold inverse with
+  its first correction; strict monotonicity. For (α, β) = (1, 1) this proves
+  Kotěšovec's conjectured leading term n^(2/3)(2 log(3n) − 3)/(4·3^(1/3)) for
+  **A266891** (Corollary 20.3). Also the resummed forms
+  log a_α(n) = αK(r − 1) + π²K/(6α(r − 1)) + O(K/r³) and
+  N_α(Y) = (K_0²/2)(1 − 2c/(R_0(R_0 − 1)) + O(R_0^{−4})) (Proposition 20.1:
+  the same accuracy as the two-term truncations, not sharper), and a further
+  citation (Naranjo–Ramírez 2026).
 
 ## What is not claimed
 
@@ -269,6 +351,16 @@ s the exact-saddle transition site and its logarithm:
   be superseded; Granovsky–Stark's theorem is not claimed to be
   inapplicable in every form; Kumar–Rana 2026 is flagged by source 75-01 for
   any priority review; the Hermite-limit mechanism is not new.
+- Source 77-51: its saddle remainder O(w^{−R−1}), w = M/s, is the
+  conservative scale, not source 75-01's sharp one; its exact-saddle inverse
+  brackets are weaker than Theorem 16.4 and prescribe no rounding near an
+  integer; its constants are not effective and "not asserted to be uniform
+  as α ↓ 0 or β → ∞"; fractional slot multiplicities are outside its
+  theorem; for β ≥ 1 only two logarithmic orders are proved (all orders only
+  for A022629); "neither an exponentially complete transseries nor a
+  literature-wide priority claim is asserted". Its four questions (77-51.1–4)
+  remain open. Its proofs of the A022629 and A092484 conjectures are, here,
+  the fifth.
 - No priority, no Lean or Rocq verification, and no OEIS submission (the
   three shipped OEIS-note files are drafts).
 
@@ -282,6 +374,16 @@ s the exact-saddle transition site and its logarithm:
   (parts at most √N). [`a039831-two-fourier-peaks`](../a039831-two-fourier-peaks/)
   (batch 73O2) is a further sibling: a Fourier-peak and Lambert-W inverse
   study of another product.
+- **Neighbours of batch 77.**
+  [`a301746-divisor-weighted-asymptotics`](../a301746-divisor-weighted-asymptotics/)
+  applies the same exact-saddle sum and consecutive-block lemma to
+  ∏(1 + q^k)^(d(k)²) (source 77-51's sibling of the same day; its Part I's
+  independent audit cites "the independently reviewed A022629 proof", which
+  is `77-51-fp-ind-AUDIT.md` here).
+  [`a291698-moving-fugacity-partitions`](../a291698-moving-fugacity-partitions/)
+  treats distinct partitions with one global fugacity n^α, a different
+  weighting with no result in common. Both pointers are dated notes in
+  Section 20.
 - **Transseries.** The partition-number chapter of
   `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion`
   (`transseries_and_inversion.tex`, label `p3:sec:top`, A000041) is a
@@ -308,8 +410,8 @@ From a scratch copy of this directory, run
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 59 pages (an
-unnumbered title page, then pages 1–58), with no errors, no warnings, no
+pdfLaTeX (MiKTeX 26.2) produced the shipped `article.pdf`: 68 pages (an
+unnumbered title page, then pages 1–67), with no errors, no warnings, no
 undefined references or citations, no multiply defined labels, no duplicate
 destinations and no overfull or underfull boxes. The title page is wrapped in
 `\hypersetup{pageanchor=false}` … `pageanchor=true`. Copy back only
@@ -374,6 +476,37 @@ transcripts `*_run.txt` are the scripts' standard output. Notes:
   unshipped manuscript, so use it only in a re-extraction of the archive
   from `3a9518c52`.
 
+**Source 77-51.** Its five checkers take `--output-dir`, and **default to
+writing beside themselves** (into `code/`), so always pass a fresh directory.
+The three independent checkers need only the standard library (`R` and `U`
+as in the recipe above):
+
+```sh
+W=$(mktemp -d)
+for c in check check_family check_log_hierarchy; do
+  cp "$R/code/77-51-fp-ind-$c.py" "$W/$c.py" && py "$W/$c.py" --output-dir "$W/out"
+done                                                   # about 4 s each
+diff <(tr -d '\r' < "$W/out/verification.json") "$R/data/77-51-fp-ind-verification.json"
+diff <(tr -d '\r' < "$W/out/family_verification.json") "$R/data/77-51-fp-ind-family_verification.json"
+diff <(tr -d '\r' < "$W/out/log_hierarchy_verification.json") "$R/data/77-51-fp-ind-log_hierarchy_verification.json"
+cp "$R/code/77-51-fp-producer-check.py" "$W/check.py"
+$U "$W/check.py" --output-dir "$W/prod"                 # about 30-45 s
+cp "$R/code/77-51-fp-producer-generate_log_series.py" "$W/gen.py"
+$U "$W/gen.py" --output-dir "$W/prod"                   # about 100 s
+```
+
+The independent receipts are reproduced byte for byte (modulo CR); the two
+producer receipts differ only in their `seconds` fields (the intake reran
+the producer check and all three independent checkers on 2 October 2026; the
+symbolic generator was rerun at placement). The root driver
+`code/77-51-fp-verify.py` checks the delivered file manifest
+(`SHA256SUMS`), the approval pins of the delivered manuscript and PDF and
+the `-O` negative controls; it cannot run in this layout. Run it on an
+extraction of the arrival archive (which has no wrapper directory):
+`git show 096ee7b87:docs/incoming/oeis-fixed-power-asymptotics-result.zip >
+"$W/51.zip" && unzip -q "$W/51.zip" -d "$W/51" && (cd "$W/51" && py verify.py)`.
+It did not finish within three minutes at placement on a loaded machine.
+
 ## Disclosures and discrepancies
 
 - `code/40-norm-moments-verify.py` says in its docstring "Run: python
@@ -415,6 +548,21 @@ transcripts `*_run.txt` are the scripts' standard output. Notes:
   proofs (Sections 1.3 and 15.1). Source 75-01's README line "Higher powers
   can converge slowly" (its α = 3, n = 2500 test) is kept in the article with
   its own words and a merge note identifying the residual as noncentral.
+- **Source 77-51's delivered text.** `77-51-fp-QA.md` and
+  `77-51-fp-INTEGRATED_REVIEW.md` describe its delivered eleven-page PDF and
+  manuscript, which are not shipped; its approval JSONs pin those delivered
+  files and `article/…` paths; `code/77-51-fp-build.sh` runs `pdflatex` on
+  `article/fixed-power-partition-asymptotics.tex`; the proof snapshots'
+  status lines ("proposed", "pending") are superseded, by its own README, by
+  the independent approvals. Its abstract and README say it "proves the
+  logarithmic OEIS conjectures for A022629, A092484 and A266891"; here those
+  are the fifth proofs, and only A266891 is new (Section 20, "Stale
+  statements"). It cites Gikunda's thesis at two different ResearchGate
+  addresses (publication 402798449 in the manuscript, 402798310 in
+  `77-51-fp-ind-SOURCE_CHECK.md`); the article keeps the DOI of the existing
+  bibliography item. `77-51-fp-ind-SOURCE_CHECK.md` cites a screening note
+  under the producer's `/workspace/shared/` directory, which was not
+  delivered.
 - **External claims.** The A022629 entry's conjecture text (Kotesovec,
   8 May 2018) was confirmed live on 1 October 2026; on 2 October 2026 the
   intake confirmed the names and first fifteen terms of A022630 and A022631
@@ -425,8 +573,10 @@ transcripts `*_run.txt` are the scripts' standard output. Notes:
   Granovsky–Stark, Griffin–Ono–Rolen–Zagier, Fristedt and Lagarias–Sun were
   not re-checked by the intake.
 - **Abstracts and title pages.** The batch-73O1 abstracts were merged into
-  source 40's with an added paragraph, and a second paragraph summarizes the
-  batch-75 additions; source 48's title page and package-contents paragraph,
+  source 40's with an added paragraph, a second paragraph summarizes the
+  batch-75 additions and a third the batch-77 addition (source 77-51's title,
+  abstract and package description are replaced by Section 20 and this
+  README); source 48's title page and package-contents paragraph,
   and both batch-75 sources' title pages, abstracts, novelty paragraphs and
   package-contents appendices, are replaced by the article's Sections 1.4 and
   15, its provenance appendix and this README.

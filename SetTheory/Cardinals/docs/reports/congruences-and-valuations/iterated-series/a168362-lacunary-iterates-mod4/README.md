@@ -26,7 +26,7 @@ verifier on a copy and recomputed the main predictions independently (see
 ```
 README.md                                this guide
 article.tex                              the report (LaTeX, internal bibliography)
-article.pdf                              the compiled report, 16 pages (numbered 1-16)
+article.pdf                              the compiled report, 17 pages (numbered 1-17)
 oeis_update_draft.txt                    the manuscript's proposed OEIS update text (not submitted), as delivered
 code/verify_a168362.py                   exact standard-library verifier (direct composition mod 4, residue sets, exceptions)
 data/verification.json                   recorded PASS record of the run with --limit 256
@@ -62,6 +62,10 @@ notes marked `[Write note, batch 73O1]`:
 - before Table 2: the table is numerical orientation only;
 - after Research question 13.7: the A086753 aside;
 - Appendix B: which inventory files are shipped.
+
+One later note, marked `[Write note, batch 77P2, 2 October 2026]`, follows
+Conjecture 11.1: a method pointer to the iterated-Bell report (see
+"Relation to neighbouring material"). It adds no label.
 
 No symbol was renamed.
 
@@ -126,6 +130,16 @@ The manuscript's non-claims are all kept in the text:
   (A(x) = x + A^{[5]} A^{[6]} modulo 10 and 100) and
   [`compositional-tree-series-congruences`](../compositional-tree-series-congruences/)
   (A_l = x·exp(A_l^{∘l}) modulo prime powers).
+- **A candidate method for Conjecture 11.1 (pointer only):**
+  [`a139383-iterated-bell-diagonals`](../../../generating-functions-and-asymptotics/oeis-sequence-asymptotics/a139383-iterated-bell-diagonals/)
+  (batch 77) proves all-orders asymptotics for the diagonal
+  `n! [z^n] (e^z − 1)^{∘(n+k)}` of the iterated Bell numbers by a fixed
+  contour, an effective Fatou coordinate and uniform cut estimates. It is a
+  candidate route to the refined asymptotic here, not a proof: `F` is
+  lacunary with natural boundary |x| = 1, its quadratic and cubic Taylor
+  coefficients (1, 0) differ from those of `e^z − 1` (1/2, 1/6), and the
+  normalizations differ. The conjecture stays open (dated note after
+  Conjecture 11.1).
 - **Same technique:**
   [`a000139-binary-carries-parity`](../../a000139-binary-carries-parity/)
   uses binary carries (Kummer–Lucas) for the parity of a different sequence.
@@ -142,7 +156,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 No figures or other inputs are needed. pdfLaTeX (MiKTeX 26.2) produced the
-shipped `article.pdf`: 16 pages, with no errors, no warnings, no undefined
+shipped `article.pdf`: 17 pages, with no errors, no warnings, no undefined
 references or citations, no multiply defined labels, no duplicate
 destinations, and no overfull or underfull boxes. Copy back only
 `article.pdf`.

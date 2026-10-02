@@ -470,7 +470,9 @@ their delivered wording. The changes:
 - the `\pdfmapfile{+lm.map}`, `{+cm.map}` and `{+symbols.map}` lines of
   the four preambles removed. On MiKTeX they only produced 684 "fontmap
   entry already exists" warnings;
-- 23 dated `[write]` notes, plus front matter: a guide, a table of what is
+- 23 dated `[write]` notes (a 24th, in the guide, was added with the
+  batch-77P2 reciprocal notes: the pointer to `a294220-ascent-multiplicity-caps`
+  below), plus front matter: a guide, a table of what is
   proved where, a notation table and a provenance section.
 
 No symbol was renamed. Symbols that change meaning between Parts are
@@ -502,6 +504,13 @@ fingerprint: the SHA-256 `0c5fdcd5…` of `36-fine-padded-barrier-proof.md`.
   ascent sequences of the same Conway–Conway–Elvey Price–Guttmann paper.
   Those sequences grow exponentially and are studied by different methods,
   so the reports share no theorem with this one.
+- `../a294220-ascent-multiplicity-caps/` (batch 77, manuscripts 47 and 52)
+  treats every multiplicity cap `b` (the array A294220; A202058 is `b = 2`):
+  the factorial growth constants `T_b` for every fixed `b ≥ 3`, their
+  large-cap expansion and exact Taylor sectors of `T_b − π²/6`. For `b = 2`
+  it cites this report's Part I (`T_2 = 3π²/8` and the root limit) and uses
+  nothing else from here; no other theorem is shared. Dated `[write]` note
+  in the guide.
 - `../a126764-lconvex-polyominoes/` cites the Guttmann–Kotěšovec paper on
   201-avoiding ascent sequences; it does not treat A202058.
 - Every inverse in this report uses the Lambert-W approximation
