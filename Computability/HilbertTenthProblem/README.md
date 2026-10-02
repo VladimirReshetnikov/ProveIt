@@ -29,6 +29,15 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate independent-gamma87 candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
+The [centered-state U15 compiler](Papers/research-wip/native-stream-queue/u15_packed_centered_states611.md)
+further reduces this direct tape route to **611=239M+372A operations**,102
+positive witnesses and46 comparisons, including ordinary input; raw368.
+Symmetric state-code differences and the computed identity P=(B-1)J+1 save
+another10 operations while preserving every residual and the full polynomial
+on all tuples. The [independent review](Papers/research-wip/native-stream-queue/review_u15_centered611.md) checks
+actual emitted identities and complete costs. Exact degree1936 transfers;
+the overall87-operation universal bound remains unchanged.
+
 The [grouped U15 compiler](Papers/research-wip/native-stream-queue/u15_packed_grouped_projections621.md)
 reduces this direct tape route to **621=252M+369A operations**, with102 positive
 witnesses and46 comparisons, including ordinary input. Its raw interface costs378.
