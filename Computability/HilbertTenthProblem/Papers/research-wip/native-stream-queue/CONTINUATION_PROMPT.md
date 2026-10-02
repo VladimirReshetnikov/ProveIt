@@ -66,6 +66,13 @@
 > Commit and push reviewed packets frequently. These finite improvements
 > do not establish a global optimum or finish the open research goal.
 >
+> Next full report review: [nine new archives](incoming_substrate_intake_2a8a39599.md)
+> at `060e08a07` and `2a8a39599`. Intake authenticates231 files and54 Python
+> modules; it is not a full proof/test review. Preserve the distinctions between
+> ordinary integer witnesses, finite-support polynomial/field witnesses,
+> functional exponentiation and external horizon bounds. The spectral/clock,
+> polynomial/boundary/sandpile and signal/membrane groups are ready for review.
+>
 > The seven-report review at `808b53ed8`/`48ee077c7` is now linked below.
 > The Waterfall packet at `24a743255` now has a complete proof/source review
 > and a paid forced-boundary reduction, linked below. The successor direct
