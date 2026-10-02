@@ -1,0 +1,1637 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype,mathtools,bm}
+\usepackage{booktabs,array,longtable,enumitem,xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr,titlesec}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Midnight,citecolor=Teal,urlcolor=Teal,
+  bookmarksnumbered=true,pdfencoding=auto,psdextra]{hyperref}
+\definecolor{Midnight}{HTML}{19344B}
+\definecolor{Teal}{HTML}{126A70}
+\definecolor{Muted}{HTML}{53616D}
+\definecolor{PaperBlue}{HTML}{EEF4F7}
+\hypersetup{pdftitle={Quadratic Certificates for Maximal Parallelism},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov with ChatGPT},
+ pdfsubject={Diophantine compilation, multiset rewriting, counting, and convexity}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{Muted}QUADRATIC CERTIFICATES FOR MAXIMAL PARALLELISM}
+\fancyfoot[L]{\small\sffamily\color{Muted}ProveIt research continuation \;|\; 2 October 2026}
+\fancyfoot[R]{\small\sffamily\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\titleformat{\section}{\large\sffamily\bfseries\color{Midnight}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\sffamily\bfseries\color{Teal}}{\thesubsection}{0.65em}{}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.1em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rec}{\operatorname{rec}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Max}{\operatorname{Max}}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\size}[1]{\lVert #1\rVert_1}
+\newcommand{\CE}{\mathrm{c.e.}}
+\newcommand{\PP}{\mathsf{\#P}}
+\newcommand{\aff}{\operatorname{aff}}
+\newcommand{\relint}{\operatorname{relint}}
+\newtcolorbox{resultbox}{enhanced,breakable,colback=PaperBlue,colframe=Teal,
+ boxrule=0.5pt,arc=1pt,left=9pt,right=9pt,top=7pt,bottom=7pt}
+\emergencystretch=2em
+
+\begin{document}
+\begin{titlepage}
+\vspace*{8mm}
+{\sffamily\small\bfseries\color{Teal}PROVEIT \; / \; COMPUTABILITY AND DIOPHANTINE GEOMETRY\par}
+\vspace{17mm}
+{\sffamily\bfseries\Huge\color{Midnight}Quadratic Certificates\\[4pt]for Maximal Parallelism\par}
+\vspace{8mm}
+{\Large Exact witnesses, sharp growth bounds,\\and a convexity obstruction\par}
+\vspace{11mm}
+{\large Research manuscript prepared for Vladimir Reshetnikov\par}
+{\normalsize Developed with ChatGPT\par}
+\vspace{4mm}
+{\normalsize 2 October 2026\par}
+\vspace{12mm}
+\begin{resultbox}
+For a fixed multiset-rewriting system, a single polynomial of degree two
+certifies a maximal parallel round with exactly one auxiliary assignment
+per firing multiset. Its size is independent of the population magnitude.
+A resource-cover rank gives the optimal uniform one-round counting exponent.
+Cooperative deadlock already obstructs convex quadratic certificates.
+Allowing stoichiometric coefficients to vary raises the sharp
+orthant-nonnegative degree threshold from two to four.
+\end{resultbox}
+\vspace{8mm}
+\noindent\textbf{Status.} This manuscript supplies conventional proofs and an
+executable exact-integer compiler with finite validation. It is not a
+peer-reviewed publication or a proof-assistant-checked formalization.
+The constructions and quantitative deductions are developed here;
+global priority is not asserted. The classical universality, Presburger
+counting, and MRDP ingredients, and the repository's existing low-degree
+positivity result, are explicitly credited.
+\vfill
+{\small\color{Muted}Package: this article in \texttt{.tex} and \texttt{.pdf}, a
+standard-library Python implementation, an exported example polynomial,
+validation results, a source audit, and reproduction instructions.\par}
+\end{titlepage}
+
+\begin{abstract}
+A maximal parallel multiset-rewriting step is not merely a solution of
+resource-balance equations: its unused reactants must disable every rule.
+We encode this negative condition by shared, uniquely determined threshold
+flags. For fixed consumption and production matrices with $d$ species,
+$m$ rules, and $H$ distinct positive species--threshold pairs, we construct
+an integer polynomial nonnegative on the entire real nonnegative orthant,
+of total degree at most two, using $d+2m+4H$ natural auxiliaries when both
+endpoint states are supplied. Its natural zeros are in bijection with the
+legal firing multisets. Fixed-horizon histories, exact first halting,
+pre-state guards, flat maximality, and selective retention admit compatible
+extensions.
+
+For the consumption matrix $A$, define $\rho(A)$ to be the least rational
+row rank of a set of species meeting every reactant support. We prove that
+the number of maximal firing multisets at population $x$ is
+$O((1+\lVert x\rVert_1)^{m-\rho(A)})$, and that for every $A$ the exponent
+is attained along a suitable integral input ray. At fixed horizon $T$,
+counts along affine input rays are eventually quasipolynomial, of degree at
+most $T(m-\rho(A))$; the bound is sharp across systems. We also obtain a
+parsimonious graph-to-network counting reduction. Finally, no convex
+quadratic with finitely many natural auxiliaries can represent the deadlock
+set of $A+B\to C$, although the quadratic $xy$ does. A program-uniform
+quartic construction and a matching lower bound clarify why fixed-system
+quadratics do not solve fixed-arity unbounded halting or the finite-fold
+problem.
+\end{abstract}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{The questions answered and their provenance}\label{sec:intro}
+\subsection{Why maximal parallelism is a substantive test case}
+Multiset rewriting uses vectors of object counts rather than an ordered
+tape. The same objects can be required by several rules; one round chooses
+how many copies of each rule fire using only the objects present at the
+start of that round. A maximal choice leaves no room for an additional
+rule copy. The distinction between this semantics and arbitrary feasible
+parallel firing is decisive.
+
+Maximally parallel multiset rewriting is an established universal
+computational substrate. Alhazov and Verlan construct a universal system
+with 23 rules \cite{alhazov}. We use that published universality result as
+context, not as a new contribution and not as a claim that 23 is currently
+minimal. Flat maximality, in which each rule is used at most once per
+round, is also an established semantic variant \cite{flat}.
+
+The present task is more specific than proving that a halting set is
+Diophantine. We ask whether maximality can be encoded \emph{explicitly},
+at low degree, without a population cutoff and without multiplying the
+number of witnesses. We then ask what the resulting geometry says about
+counting and about stronger requirements such as convexity.
+
+\subsection{The repository baseline}
+The consulted ProveIt source exposes the finite-polynomial MRDP theorem in
+\path{Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean}
+\cite{repo-mrdp}. Its research-report catalogue already includes
+witness-faithful certificates for Petri traces, priority systems, queues,
+heaps, self-assembly, and routing. It also records that orthant-nonnegative
+polynomials of degree at most three have semilinear projected natural zero
+sets, and that semilinear relations admit single-fold quadratic
+representations \cite{repo-canonical}.
+
+Consequently, neither abstract Diophantine representability nor the
+low-degree semilinearity boundary is advertised here as new. Our focus is
+a direct shared-threshold implementation of maximal parallelism, explicit
+size and uniqueness proofs, the optimal resource-cover exponent, and the
+convexity obstruction. The inspected repository sources were not rebuilt
+in this session. Appendix~\ref{app:provenance} records the snapshot and the
+scope of the inspection.
+
+\subsection{A precise result ledger}
+\begin{resultbox}
+\textbf{Constructive answer.} At fixed system shape and fixed numerical
+stoichiometry, exact maximal-parallel rounds admit population-uniform,
+orthant-nonnegative quadratic certificates with $d+2m+4H$ auxiliaries.
+
+\textbf{Quantitative answer.} The optimal exponent valid uniformly over
+all initial populations is exactly $m-\rho(A)$, in the sense of
+Theorems~\ref{thm:rankupper} and~\ref{thm:ranksharp}.
+
+\textbf{Geometric answer.} Convexity cannot be imposed in general: one
+cooperative reaction already prevents it, regardless of auxiliary dimension
+(Theorem~\ref{thm:convexno}).
+
+\textbf{Uniformity answer.} With numerical stoichiometry supplied as input
+on a fixed support, degree four suffices and is necessary in the class of
+polynomials nonnegative on the whole real orthant
+(Theorem~\ref{thm:programdegree}).
+\end{resultbox}
+
+These are answers to the explicit questions formulated in this manuscript.
+The literature search does not establish that these exact formulations were
+previously published open problems, or that no equivalent theorem exists
+elsewhere. The useful mathematical content is the stated constructions,
+proofs, and sharpness results, rather than an unverified priority label.
+
+\subsection{Three quantifier orders that must not be confused}
+Throughout, $\N=\{0,1,2,\ldots\}$. A fixed-system, fixed-horizon theorem has
+logical form
+\[
+ \forall(A,B,T)\quad \exists Q_{A,B,T}\quad\forall x\quad
+ \{
+ \text{natural zeros of }Q_{A,B,T}(x,\cdot)
+ \}\simeq\{\text{length-$T$ histories from }x\}.
+\]
+Here the number of variables may grow with $T$. A program-uniform theorem
+instead places matrix entries among the input coordinates while keeping
+$d,m,T$ fixed. An unbounded-halting theorem requires one polynomial and
+one finite witness dimension before the running time is known. None of
+these quantifier orders may be substituted for another.
+
+A second distinction concerns uniqueness. The certificate is unique
+\emph{after a firing multiset, or an entire extent history, has been
+specified}. Distinct histories may reach the same endpoint. We do not
+claim one root per reachable endpoint, one root per accepting input of a
+nondeterministic system, or one root per computably enumerable membership
+instance.
+
+\section{Operational semantics}\label{sec:semantics}
+Let
+\[
+ A=(a_{ij}),\ B=(b_{ij})\in\N^{d\times m},\qquad d,m\ge1.
+\]
+Column $j$ of $A$ is the reactant multiset of rule $j$, and column $j$ of
+$B$ is its product multiset. Every column of $A$ is assumed nonzero. The
+assumption excludes spontaneous rules and guarantees finite branching at
+each finite population.
+
+We write $x\in\N^d$ for the current population and $f\in\N^m$ for the
+\emph{extent vector}: $f_j$ copies of rule $j$ fire. All vector inequalities
+are coordinatewise. Define the reactant support
+\[
+ S_j=\{i:a_{ij}>0\},\qquad k_j=|S_j|.
+\]
+
+\begin{definition}[Feasibility and maximality]\label{def:max}
+The extent $f$ is feasible at $x$ if $Af\le x$. Its unused reactants are
+$r=x-Af$. It is maximal if it is feasible and
+\begin{equation}\label{eq:max}
+ \forall j\in\{1,\ldots,m\}\quad
+ \exists i\in S_j\quad r_i<a_{ij}.
+\end{equation}
+The next state is $y=r+Bf$.
+\end{definition}
+
+\begin{lemma}[Local test for global maximality]\label{lem:maxlocal}
+A feasible $f$ is maximal in the coordinatewise order among feasible
+extent vectors if and only if \eqref{eq:max} holds.
+\end{lemma}
+\begin{proof}
+The vector $f+e_j$ is feasible exactly when $A_{\cdot j}\le r$. If some
+larger feasible vector $g\ge f$, $g\ne f$, exists, choose $j$ with $g_j>f_j$.
+Then $f+e_j\le g$, so $f+e_j$ is feasible. Thus excluding all one-copy
+extensions excludes every strict extension.
+\end{proof}
+
+Rule labels are retained: two different labels with identical input and
+output columns still give different extent choices. Individual molecule
+identities and permutations of identical firings are not counted. An
+\emph{extent history} of length $T$ is a sequence
+$(f^0,\ldots,f^{T-1})$ with the corresponding states obtained inductively.
+The state sequence alone need not determine the extents.
+
+\subsection{Three short semantic counterexamples}
+For $A\to\varnothing$ and $2A\to\varnothing$ at population $2A$, both
+$(2,0)$ and $(0,1)$ are maximal. Their total numbers of firings differ.
+Thus maximality is not maximum-cardinality optimization.
+
+For $A\to B$ and $B\to C$ at population $A$, the vector $(1,1)$ is
+illegal. It could occur as two sequential steps but not as one round:
+the $B$ produced in the round cannot be reused immediately. Feasibility
+must be tested using $Af\le x$, not a net-change inequality involving
+$(A-B)f$.
+
+For $A\to A$ at population $3A$, ordinary maximality requires three
+copies of the rule, although the next state is unchanged. The unused
+reactants, not the next state, are the correct place to test maximality.
+
+\subsection{Deadlocks and stuttering}
+A state is deadlocked if $A_{\cdot j}\not\le x$ for every $j$. At such a
+state, the zero extent is the unique maximal extent. Hence the base
+semantics has one stuttering step at every deadlock. This makes all fixed
+lengths well-defined. Section~\ref{sec:firsthalt} separately excludes early
+stuttering when counting \emph{first} halting times.
+
+\section{A unique threshold gadget at degree two}\label{sec:gadget}
+The following gadget is the arithmetic core. It does not use a guessed
+large constant bounding the population.
+
+\begin{lemma}[Canonical threshold comparator]\label{lem:comparator}
+For a fixed integer $a\ge1$, define
+\begin{equation}\label{eq:comparator}
+ C_a(r;b,c,v,w)
+ =(b+c-1)^2+\bigl(r+v-(a-1)-b-w\bigr)^2+bv+cw.
+\end{equation}
+This is nonnegative on the entire real nonnegative orthant and has total
+degree two. For each $r\in\N$ it has exactly one natural zero in
+$(b,c,v,w)$, namely
+\begin{equation}\label{eq:comparatorwitness}
+ (b,c,v,w)=
+ \begin{cases}
+ (0,1,a-1-r,0),&r<a,\\
+ (1,0,0,r-a),&r\ge a.
+ \end{cases}
+\end{equation}
+In particular, $b$ is the truth value of $r\ge a$ and $c$ its complement.
+\end{lemma}
+\begin{proof}
+Every summand in \eqref{eq:comparator} is nonnegative on the real orthant.
+At a natural zero, $b+c=1$, so $(b,c)$ is either $(0,1)$ or $(1,0)$.
+If $(b,c)=(0,1)$, then $cw=0$ forces $w=0$ and the remaining equality is
+$r+v=a-1$. Thus $r<a$ and $v=a-1-r$ uniquely. If $(b,c)=(1,0)$, then
+$bv=0$ forces $v=0$ and the equality becomes $r=a+w$. Thus $r\ge a$ and
+$w=r-a$ uniquely. The displayed tuples also give zeros directly.
+\end{proof}
+
+\begin{remark}[Why inactive slacks matter]
+A disjunction with a slack left unconstrained on the inactive branch
+usually produces infinitely many auxiliary witnesses for one fact.
+The products $bv$ and $cw$ eliminate exactly that defect. They are not
+squared: their nonnegativity on the allowed domain is already enough.
+Squaring them would unnecessarily raise the degree to four.
+\end{remark}
+
+\subsection{Signed affine tests and Boolean combination}
+If $L$ is any integer affine form in natural input coordinates, the
+polynomial
+\begin{equation}\label{eq:signed}
+ (b+c-1)^2+(L+v-b-w)^2+bv+cw
+\end{equation}
+has a unique auxiliary zero. The bit $b$ says $L\ge1$, while $c$ says
+$L\le0$. Although $L$ itself may be negative, it occurs only inside a
+square, so orthant nonnegativity is preserved.
+
+Two already certified bits $a,b$ can be combined canonically. Introduce
+$e,p,q,d\in\N$ and use
+\begin{equation}\label{eq:and}
+ (a-e-p)^2+(b-e-q)^2+pq+(e+d-1)^2.
+\end{equation}
+At a natural zero, $e\le\min(a,b)$ and $pq=0$. If $e$ were strictly
+smaller than both bits, both $p$ and $q$ would be positive. Therefore
+$e=\min(a,b)$, $p=a-e$, $q=b-e$, and $d=1-e$, all uniquely. Complementation
+and De Morgan's law then give unique AND, OR, and NOT circuits of degree
+two. This is a concrete implementation of elementary Boolean arithmetic,
+not a new abstract expressibility theorem.
+
+\subsection{Fixed congruence tests}
+For completeness, a signed affine form $L$ has a canonical Euclidean
+remainder modulo a fixed $a\ge1$. Introduce $q_+,q_-,\rho,\sigma\in\N$
+and impose
+\begin{equation}\label{eq:mod}
+ \bigl(L-a(q_+-q_-)-\rho\bigr)^2
+ +(\rho+\sigma-(a-1))^2+q_+q_-=0.
+\end{equation}
+The signed quotient and its positive/negative split, the remainder
+$0\le\rho<a$, and the slack $\sigma$ are all unique. Equality of $\rho$
+with a selected residue is read by the affine threshold gadgets. Combining
+these constructions with quantifier elimination for fixed Presburger
+formulas gives canonical degree-two guard implementations; the general
+Presburger and semilinear background is inherited
+\cite{woods,repo-canonical}. Our executable implementation covers
+conjunctions of ordinary threshold and absence tests, not a general
+Presburger quantifier-elimination engine.
+
+\section{The shared-threshold compiler}\label{sec:round}
+Define the set of distinct positive species--threshold pairs
+\begin{equation}\label{eq:H}
+ \cH(A)=\{(i,a_{ij}):1\le j\le m,\ a_{ij}>0\},\qquad H=|\cH(A)|.
+\end{equation}
+If several rules require the same amount of the same species, their
+comparison flag is shared. For each $h=(i,a)\in\cH(A)$ introduce
+$\eta_h=(u_h,\bar u_h,v_h,w_h)$ and set
+\[
+ C_h=C_a(r_i;u_h,\bar u_h,v_h,w_h).
+\]
+The new notation $u$ avoids confusing these Boolean flags with entries of
+the production matrix $B$.
+
+Given endpoint coordinates $x,y$, introduce $f\in\N^m$, $r\in\N^d$,
+the comparator variables $\eta$, and $s\in\N^m$. Define
+\begin{align}
+ Q_{A,B}(x,y;f,r,\eta,s)
+ ={}&\sum_{i=1}^d\left(x_i-\sum_{j=1}^m a_{ij}f_j-r_i\right)^2\notag\\
+ &+\sum_{i=1}^d\left(y_i-\sum_{j=1}^m b_{ij}f_j-r_i\right)^2\notag\\
+ &+\sum_{h\in\cH(A)} C_h\notag\\
+ &+\sum_{j=1}^m
+ \left(\sum_{i\in S_j}u_{(i,a_{ij})}+s_j-(k_j-1)\right)^2.
+ \label{eq:roundpoly}
+\end{align}
+
+\begin{theorem}[Exact one-round quadratic]\label{thm:round}
+For fixed $A,B$, the polynomial \eqref{eq:roundpoly} has integer
+coefficients, total degree at most two, and is nonnegative on the entire
+real nonnegative orthant. For every $x,y\in\N^d$, projection to $f$ is a
+bijection
+\[
+ \{(f,r,\eta,s)\in\N^{d+2m+4H}:Q_{A,B}(x,y;f,r,\eta,s)=0\}
+ \longrightarrow
+ \{f: f\text{ is maximal at }x,\ y=x-Af+Bf\}.
+\]
+The certificate uses exactly $d+2m+4H$ auxiliary coordinates,
+$2d+2H+m$ affine squares, and $2H$ nonnegative coordinate products.
+\end{theorem}
+\begin{proof}
+The degree and nonnegativity follow term by term. A natural zero forces
+$r=x-Af\ge0$ and $y=r+Bf$. Lemma~\ref{lem:comparator} makes each flag
+$u_{(i,a)}$ equal to $1$ exactly when $r_i\ge a$. The last equality in
+\eqref{eq:roundpoly} is solvable in $s_j\ge0$ exactly when
+\[
+ \sum_{i\in S_j}u_{(i,a_{ij})}\le k_j-1,
+\]
+which says that at least one resource required by rule $j$ is insufficient.
+Lemma~\ref{lem:maxlocal} now proves maximality.
+
+Conversely, start from a maximal $f$ with the stated endpoint. Set
+$r=x-Af$, use the unique tuples in \eqref{eq:comparatorwitness}, and set
+\begin{equation}\label{eq:s-witness}
+ s_j=k_j-1-\sum_{i\in S_j}u_{(i,a_{ij})}.
+\end{equation}
+All these coordinates are natural and every summand vanishes. The same
+formulas show uniqueness after $f$ has been specified. There are $m$
+extents, $d$ residuals, $4H$ comparator coordinates, and $m$ maximality
+slacks. Counting the summands gives the remaining assertions.
+\end{proof}
+
+\subsection{Population uniformity, sparsity, and height}
+No coefficient in \eqref{eq:roundpoly} depends on a population cutoff.
+Population size changes witness values, not the number of coordinates.
+If the polynomial is stored as the displayed sum, its description uses
+$O(\operatorname{nnz}(A)+\operatorname{nnz}(B)+H+d+m)$ affine-form entries,
+up to the fixed bookkeeping for signs and constants. Full expansion
+remains polynomial-size, but is less sparse and unnecessary for checking.
+
+For a legal step, $\size f\le\size x$, since every firing consumes at least
+one object. Also $0\le r_i\le\size x$. Let
+\[
+ M=\max_{i,j}a_{ij}\ge1,\qquad
+ \beta=\max_j\size{B_{\cdot j}}.
+\]
+Comparator slacks are at most $M+\size x$, flags are bits, and
+$0\le s_j\le k_j-1$. The output satisfies
+$\size y\le(1+\beta)\size x$. Thus witnesses have bit length controlled by
+the bit lengths of the population and coefficients, even when their
+numerical values are large.
+
+\subsection{A fully worked cooperative example}\label{sec:example}
+Take species $(A,B,C)$ and rules
+\[
+ R_1:A+B\longrightarrow C,\qquad R_2:A\longrightarrow B.
+\]
+Then $d=3$, $m=2$, and
+$\cH=\{(A,1),(B,1)\}$, so $H=2$. The endpoint-supplied certificate has
+$3+4+8=15$ auxiliary coordinates. For $x=(2,1,0)$, the maximal extents are
+\[
+ f=(1,1),\quad y=(0,1,1),
+ \qquad\text{and}\qquad
+ f=(0,2),\quad y=(0,3,0).
+\]
+For the first extent, $r=(0,0,0)$. Both threshold tuples equal
+$(u,\bar u,v,w)=(0,1,0,0)$, and the maximality slacks are $(s_1,s_2)=(1,0)$.
+For the second extent, $r=(0,1,0)$; the $A$ flag is $0$, the $B$ flag is
+$1$, and both maximality slacks are zero. The feasible extent $(1,0)$ is
+not maximal because the remaining $A$ permits $R_2$.
+
+The file \texttt{data/example\_certificate.json} supplies both a structured
+and an expanded polynomial for this example, together with the first
+witness. Appendix~\ref{app:expanded} gives its compact mathematical form.
+
+\section{Histories and exact first halting}\label{sec:firsthalt}
+\subsection{Fixed-horizon extent histories}
+Fix $x^0=x$ and $T\in\N$. For every $0\le t<T$, take a fresh copy of the
+one-round variables and identify its endpoints with $x^t,x^{t+1}$. Define
+\begin{equation}\label{eq:tracepoly}
+ Q^{[T]}_{A,B}(x;\mathbf z)
+ =\sum_{t=0}^{T-1}
+ Q_{A,B}(x^t,x^{t+1};f^t,r^t,\eta^t,s^t).
+\end{equation}
+The states $x^1,\ldots,x^T$ are now among the witnesses.
+
+\begin{theorem}[Bounded histories]\label{thm:traces}
+The natural zeros of \eqref{eq:tracepoly} are in bijection with all
+length-$T$ extent histories from $x$. The polynomial is orthant-nonnegative
+and quadratic, and has
+\begin{equation}\label{eq:tracecountvars}
+ N_T=T(2d+2m+4H)
+\end{equation}
+witness coordinates. The statement includes the unique empty history when
+$T=0$.
+\end{theorem}
+\begin{proof}
+Every summand is nonnegative. Their simultaneous vanishing is equivalent
+to a legal maximal step at each time. Once the extent sequence is given,
+the states are determined recursively; Theorem~\ref{thm:round} uniquely
+supplies every remaining coordinate. Each step contributes $d$ new state
+coordinates in addition to its $d+2m+4H$ one-round auxiliaries.
+\end{proof}
+
+Endpoint constraints such as $x^T_i=c$ or $x^T_i\ge c$ can be imposed by
+additional affine squares with unique slacks. A fixed Presburger terminal
+condition can instead use Section~\ref{sec:gadget}. The base count
+\eqref{eq:tracecountvars} excludes such optional conditions.
+
+\subsection{No earlier deadlock}
+To require first halting after exactly $T$ rounds, add, for $0\le t<T$,
+\begin{equation}\label{eq:nonempty}
+ \left(\sum_j f^t_j-1-h_t\right)^2,
+ \qquad h_t\in\N.
+\end{equation}
+At the last state, use a fresh bank of $H$ threshold comparators on
+$x^T$, together with $m$ slacks enforcing
+\[
+ \sum_{i\in S_j}u^T_{(i,a_{ij})}+s^T_j=k_j-1.
+\]
+This terminal certificate introduces no last-round extent or residual.
+
+\begin{corollary}[First-halting certificate]\label{cor:firsthalt}
+First-halting extent histories of exactly $T$ rounds have a root-faithful
+orthant-nonnegative quadratic certificate with
+\begin{equation}\label{eq:firsthaltvars}
+ N_T^{\mathrm{halt}}
+ =T(2d+2m+4H+1)+4H+m
+\end{equation}
+natural witness coordinates. This also holds for $T=0$.
+\end{corollary}
+\begin{proof}
+The terminal bank says precisely that $x^T$ is deadlocked. At any earlier
+state, a zero maximal extent is possible exactly when that state is
+already deadlocked. Equation~\eqref{eq:nonempty} therefore excludes exactly
+the histories that halted earlier. Its slack is uniquely
+$h_t=\sum_jf^t_j-1$. All other uniqueness claims follow from the previous
+theorem and the comparator lemma.
+\end{proof}
+
+\subsection{Witness height at a fixed horizon}
+Induction gives
+\begin{equation}\label{eq:mass}
+ \size{x^t}\le(1+\beta)^t\size{x^0}.
+\end{equation}
+Consequently every coordinate in a base trace certificate is at most a
+constant depending on $A,B,T$ times $1+\size{x^0}$. This establishes
+finite fibers and a linear-in-population height bound at fixed horizon.
+The factor depending on $T$ need not be small; no polynomial-time algorithm
+for unbounded simulation is implied.
+
+\section{Guards, flat maximality, and retention}\label{sec:variants}
+The same arithmetic separates three semantic choices that should not be
+silently conflated: which rules are eligible, how often an eligible rule
+may fire, and what happens to objects not consumed in the round.
+
+\subsection{Promoters and inhibitors read the pre-state}
+Suppose rule $j$ has a fixed eligibility predicate $E_j(x)$, read from the
+\emph{pre-state}. A promoter may require $x_i\ge a$; an inhibitor may
+require $x_i<a$, including absence as $x_i<1$. Let a canonical guard
+certificate provide complementary bits
+\[
+ e_j=\one_{E_j(x)},\qquad d_j=1-e_j.
+\]
+Keep the balance equations and residual threshold flags. Add the
+nonnegative term
+\begin{equation}\label{eq:disable}
+ d_j f_j
+\end{equation}
+to forbid firings of disabled rules. Replace the unguarded maximality
+square by
+\begin{equation}\label{eq:guardmax}
+ \left(\sum_{i\in S_j}u_{(i,a_{ij})}+e_j+s_j-k_j\right)^2.
+\end{equation}
+When $e_j=1$, this enforces a missing residual resource. When $e_j=0$,
+it is automatically satisfiable, with a uniquely determined nonnegative
+slack. Eligibility is not retested after some firings consume a promoter;
+that would be a different semantics.
+
+\begin{proposition}[Guarded maximality]\label{prop:guards}
+If every $E_j$ has a unique auxiliary degree-two orthant-nonnegative
+certificate for its complementary truth bits, then guarded maximal rounds
+have a witness-faithful degree-two certificate. Its extra size is the
+size of the guard circuits and their bits; it is independent of the
+population magnitude.
+\end{proposition}
+\begin{proof}
+Term \eqref{eq:disable} forces $f_j=0$ whenever $e_j=0$. The only possible
+one-copy extensions are enabled rules. For exactly those rules,
+\eqref{eq:guardmax} enforces an insufficient residual resource. Conversely,
+every legal guarded extent gives unique guard bits, unique threshold
+flags, and the unique slack
+$s_j=k_j-e_j-\sum_{i\in S_j}u_{(i,a_{ij})}$.
+\end{proof}
+
+\subsection{Flat maximality}
+In flat semantics, each rule can be used at most once. Introduce $g_j\in\N$
+and impose
+\begin{equation}\label{eq:flatbit}
+ (f_j+g_j-1)^2=0.
+\end{equation}
+Then $f_j,g_j$ are complementary bits. A used rule cannot be appended
+again, even when its reactants remain available. The correct maximality
+condition is therefore
+\begin{equation}\label{eq:flatmax}
+ \left(\sum_{i\in S_j}u_{(i,a_{ij})}+e_j+g_j+s_j-(k_j+1)\right)^2=0.
+\end{equation}
+If $e_j=g_j=1$, the rule is both enabled and unused, so one residual
+resource must be insufficient. In every other case the inequality is
+vacuous. Term \eqref{eq:disable} still excludes used-but-disabled rules.
+
+\begin{proposition}[Flat certificate]\label{prop:flat}
+Equations \eqref{eq:flatbit}--\eqref{eq:flatmax}, together with guarded
+feasibility, give an exact witness-faithful quadratic for flat maximal
+rounds. In the unguarded case the endpoint-supplied auxiliary count is
+$d+3m+4H$.
+\end{proposition}
+\begin{proof}
+The preceding truth-table analysis proves the maximality equivalence.
+The complement $g_j=1-f_j$ is unique, and the last slack is
+\[
+ s_j=k_j+1-e_j-g_j-\sum_{i\in S_j}u_{(i,a_{ij})}.
+\]
+Every other auxiliary is unchanged. The unguarded construction adds exactly
+one $g_j$ per rule to Theorem~\ref{thm:round}.
+\end{proof}
+
+For example, $A\to A$ at $3A$ has extent $3$ in ordinary maximal semantics
+and extent $1$ in flat maximal semantics. Both return the same state, so
+state observations alone can conceal the semantic difference. The
+published flat-maximal literature motivates this variant \cite{flat}; the
+certificate above is for the explicitly stated local semantics.
+
+\subsection{Discarding or selectively retaining unused objects}
+Fix a diagonal matrix $D=\diag(\delta_1,\ldots,\delta_d)$ with
+$\delta_i\in\{0,1\}$. Replace the output equality by
+\begin{equation}\label{eq:retention}
+ y=Dr+Bf.
+\end{equation}
+The case $D=I$ is ordinary retention and $D=0$ discards all unused objects.
+Feasibility and maximality are still tested before this discard, against
+$r=x-Af$. Equation~\eqref{eq:retention} is linear for fixed $D$, so all
+degree and uniqueness results survive unchanged. This statement concerns
+the defined transition relation; it does not assert that all retention
+variants have the same computational power.
+
+\subsection{Fixed membrane topology}
+For a finite fixed membrane topology, replace each object type by a pair
+$(\text{region},\text{symbol})$. A fixed rule that consumes and produces
+specified multisets in these regions becomes one column of $A$ and one
+of $B$. Pre-state promoters and inhibitors fit the guard mechanism above.
+The conversion applies when that membrane model's parallel semantics agrees
+with the resource semantics used here. Unbounded membrane creation,
+division, dissolution, dynamically generated names, or model-specific
+priority rules require additional definitions and are not covered merely
+by changing notation.
+
+\subsection{An explicit guarded register-machine embedding}
+The arithmetic compiler does not require universality, but a small direct
+simulation makes the computational connection transparent. Represent each
+machine label $\ell$ by one control species $L_\ell$ and each register by
+its object count. Exactly one control object is present.
+
+An instruction ``increment register $A$ and go to $k$'' becomes
+\[
+ L_\ell\longrightarrow L_k+A.
+\]
+A zero/decrement instruction becomes the two rules
+\[
+ L_\ell+A\longrightarrow L_k,
+ \qquad
+ L_\ell\longrightarrow L_h\quad\text{inhibited by the presence of }A.
+\]
+If $A>0$, only the first rule is eligible and feasible; if $A=0$, only the
+second is. Each instruction uses the single control object, and the next
+control object is unavailable until the next round. Maximality forces the
+unique applicable instruction. A halt label has no consuming rules.
+
+Induction on steps proves a one-to-one correspondence between machine
+instructions and parallel rounds, with the same register contents and
+halting time. This is an elementary simulation of the familiar register
+model, whose universality is classical \cite{minsky}; it is not an
+improvement on the unguarded universality results of \cite{alhazov}.
+Composing it with our certificate preserves individual deterministic
+histories at every fixed horizon.
+
+\section{The optimal one-round counting exponent}\label{sec:rank}
+We now turn from certificates to a quantitative invariant of the
+consumption matrix. This section concerns \emph{unguarded ordinary}
+maximality. Productions play no role in the number of choices available
+in a single round.
+
+\begin{definition}[Resource covers and their rank]\label{def:rho}
+A set of species $J\subseteq\{1,\ldots,d\}$ is a \emph{resource cover} if
+$J\cap S_j\ne\varnothing$ for every rule $j$. Let $A_J$ denote the submatrix
+formed by its rows. Define
+\begin{equation}\label{eq:rho}
+ \rho(A)=\min_{J\text{ a resource cover}}\rank_{\Q}(A_J).
+\end{equation}
+\end{definition}
+All columns are nonzero, so covers exist and
+$1\le\rho(A)\le\rank A\le m$. A resource cover is not necessarily a
+minimum-cardinality hitting set: linear dependence of its rows matters.
+The number $\rho(A)$ is a property of numerical stoichiometry as well as
+support.
+
+Let
+\[
+ F_A(x)=\#\{f\in\N^m: f\text{ is maximal at }x\}.
+\]
+
+\begin{theorem}[Uniform resource-cover bound]\label{thm:rankupper}
+Put $M=\max_{i,j}a_{ij}\ge1$ and let $\cC(A)$ be the finite collection of
+resource covers. Then for every $x\in\N^d$,
+\begin{equation}\label{eq:rankbound}
+ F_A(x)\le
+ \left(\sum_{J\in\cC(A)}M^{|J|}\right)
+ (1+\size x)^{m-\rho(A)}.
+\end{equation}
+In particular, the leading constant can be replaced by $2^dM^d$.
+\end{theorem}
+\begin{proof}
+For every maximal $f$, choose for each rule one deficient species as in
+\eqref{eq:max}, and let $J$ be the union of these choices. This $J$ is a
+resource cover. Every coordinate $r_i$, $i\in J$, was chosen because
+$r_i<a_{ij}$ for at least one rule, so $0\le r_i<M$. Consequently $f$
+satisfies, for at least one such pair $(J,r_J)$,
+\begin{equation}\label{eq:coverlinear}
+ A_J f=x_J-r_J.
+\end{equation}
+There are at most $M^{|J|}$ possible $r_J$.
+
+Fix $J,r_J$ and write $q=\rank A_J$. Choose $q$ linearly independent
+columns of $A_J$. Once the other $m-q$ entries of $f$ are fixed,
+\eqref{eq:coverlinear} determines the chosen entries uniquely over $\Q$,
+if they exist at all. Feasibility and nonzero consumption give
+$\size f\le\size x$, so each unchosen coordinate has at most
+$1+\size x$ possibilities. The number of solutions for this pair is at
+most $(1+\size x)^{m-q}$, and $q\ge\rho(A)$. Sum over all covers and all
+allowed residual tuples. The sum may overcount a maximal extent, which
+is harmless for an upper bound.
+\end{proof}
+
+The bound is not just sharp for one convenient family. For every
+consumption matrix its exponent is attained by an integral input ray.
+
+\begin{theorem}[Sharpness for every consumption matrix]\label{thm:ranksharp}
+For every $A$ satisfying the standing assumptions, there exists
+$v\in\N^d$ such that
+\begin{equation}\label{eq:ranksharp}
+ F_A(nv)=\Theta\bigl(n^{m-\rho(A)}\bigr)
+ \qquad(n\longrightarrow\infty).
+\end{equation}
+One may choose a rank-minimizing resource cover $J$ and set
+\begin{equation}\label{eq:sharpray}
+ v=A\one+\one_{J^c}.
+\end{equation}
+Thus $m-\rho(A)$ is the smallest exponent that can bound $F_A(x)$ by a
+constant times $(1+\size x)$ to that exponent uniformly over all $x$.
+\end{theorem}
+\begin{proof}
+Let $q=\rho(A)$ and $k=m-q$. The rational kernel of $A_J$ has dimension
+$k$. Choose linearly independent integer vectors
+$z_1,\ldots,z_k\in\Z^m$ spanning it over $\Q$. Such vectors are obtained
+from a rational basis by clearing denominators. If $k=0$, the vector
+$f=n\one$ already gives one maximal extent for every $n$, which is the
+required lower bound.
+
+Suppose $k>0$. For integers $t_1,\ldots,t_k$, set
+\[
+ f=n\one+\sum_{h=1}^k t_hz_h.
+\]
+For sufficiently small fixed $\varepsilon>0$, all choices
+$|t_h|\le\varepsilon n$ make every component of $f$ at least $n/2$.
+Indeed, it suffices to choose $\varepsilon$ smaller than the reciprocal
+of twice the maximum, over coordinates, of
+$\sum_h|(z_h)_j|$. Also choose it small enough that
+\[
+ \left|\sum_h t_h(Az_h)_i\right|\le n/2
+ \quad\text{for every }i\notin J.
+\]
+Zero maxima impose no restriction on this choice.
+
+At $x=nv$, the residual is
+\[
+ r=nv-Af=n\one_{J^c}-\sum_h t_hAz_h.
+\]
+It vanishes on $J$ because $A_Jz_h=0$, and is nonnegative outside $J$ by
+the choice of $\varepsilon$. Thus $f$ is feasible. Every rule consumes a
+positive amount of some species in $J$, whose residual is zero; hence
+$f$ is maximal. The integer basis vectors are linearly independent, so
+different tuples $(t_1,\ldots,t_k)$ give different extents. Their number
+is $(2\lfloor\varepsilon n\rfloor+1)^k=\Omega(n^k)$. The upper bound is
+Theorem~\ref{thm:rankupper}, since $\size{nv}=n\size v$.
+
+If a uniform exponent smaller than $k$ existed, its restriction to this
+ray would contradict the established lower bound.
+\end{proof}
+
+\subsection{Examples and interpretation}
+If all $m$ rules consume one object of the same species, a single row
+covers every rule and $\rho(A)=1$. There can be $m-1$ independent
+large-scale allocation choices. If each rule has its own private
+consumed species and no overlap, the relevant rows have rank $m$,
+$\rho(A)=m$, and the number of maximal choices is uniformly bounded.
+For independent pools with $m_1,\ldots,m_p$ competitors, $\rho(A)=p$ and
+the maximal exponent is $\sum_i(m_i-1)=m-p$.
+
+The rank theorem should not be used with all columns of a guarded system
+without further work. Disabled rules do not need a deficient resource;
+the effective cover condition then involves an enabled submatrix, which
+may vary with the pre-state. This is a genuine extension question, not
+an automatic corollary of the unguarded theorem.
+
+\section{Trace counts, quasipolynomials, and sharp degree bounds}\label{sec:quasi}
+Fix $A,B,T$ and an affine input ray
+\[
+ x(n)=nv+w,\qquad v,w\in\N^d.
+\]
+Let $C_T(n)$ count length-$T$ extent histories from $x(n)$, optionally
+filtered by a fixed Presburger condition on the final state and $n$.
+First-halting counts are included by imposing the conditions of
+Section~\ref{sec:firsthalt}.
+
+\begin{theorem}[Quasipolynomial trace counts]\label{thm:quasi}
+The function $C_T(n)$ is eventually quasipolynomial: there are $q\ge1$,
+$N\ge0$, and rational polynomials $p_0,\ldots,p_{q-1}$ such that
+\[
+ C_T(n)=p_r(n)\quad\text{for }n\ge N,\quad n\equiv r\pmod q.
+\]
+Every nonzero $p_r$ has degree at most
+\begin{equation}\label{eq:trace-degree}
+ T\bigl(m-\rho(A)\bigr).
+\end{equation}
+The generating function $\sum_{n\ge0}C_T(n)z^n$ is rational, with possible
+finite poles only at roots of unity.
+\end{theorem}
+\begin{proof}
+At a fixed horizon, all state recurrences have constant integer
+coefficients. Feasibility is a conjunction of linear inequalities and
+maximality is the finite Boolean combination
+\[
+ \bigwedge_{t,j}\ \bigvee_{i\in S_j}
+ \left(x_i^t-\sum_h a_{ih}f_h^t<a_{ij}\right).
+\]
+The initial state is affine in $n$. Thus the set of pairs consisting of
+$n$ and a valid extent history is Presburger definable. The fibers are
+finite by \eqref{eq:mass}. The Presburger counting theorem of Woods gives
+piecewise quasipolynomiality; in one nonnegative parameter a finite
+polyhedral partition is eventually a single ray, giving the asserted
+eventual form \cite{woods}. The rational generating-function conclusion
+also follows directly by summing polynomial sequences on residue classes.
+
+For the degree bound, set $k=m-\rho(A)$ and
+$K=\sum_{J\in\cC(A)}M^{|J|}$. Along the input ray there is a constant
+$L$ with $1+\size{x(n)}\le L(n+1)$. At time $t$,
+\eqref{eq:mass} gives
+\[
+ 1+\size{x^t}\le (1+\beta)^tL(n+1).
+\]
+Theorem~\ref{thm:rankupper} bounds the branching at that state by
+$K((1+\beta)^tL(n+1))^k$. Multiplying these bounds over $t<T$ gives
+\begin{equation}\label{eq:trace-growth-explicit}
+ C_T(n)\le K^T L^{kT}(1+\beta)^{kT(T-1)/2}(n+1)^{kT}.
+\end{equation}
+A terminal filter only removes histories. An eventual residue polynomial
+of degree larger than $kT$ would violate this estimate along its residue
+class. Therefore all degrees satisfy \eqref{eq:trace-degree}.
+\end{proof}
+
+The quasipolynomial conclusion is an application of established
+Presburger counting theory, not a new replacement for it. The explicit
+resource-cover degree bound and its sharpness are the quantitative input
+proved here. The argument is about fixed $T$; it is not uniform in an
+unbounded time parameter.
+
+\subsection{A family attaining the horizon bound}
+For $m\ge1$, take a shared pool species $A$ and inert output species
+$B_1,\ldots,B_m$, with rules
+\begin{equation}\label{eq:pool}
+ A\longrightarrow A+B_j,\qquad 1\le j\le m.
+\end{equation}
+Start with $nA$ and no output objects. Every maximal round distributes
+exactly $n$ firings among the $m$ labels. The pool size remains $n$, and
+the inert outputs do not constrain subsequent choices. Therefore
+\begin{equation}\label{eq:poolcount}
+ C_T(n)=\binom{n+m-1}{m-1}^{\!T}.
+\end{equation}
+Here $\rho(A)=1$, and the degree is exactly $T(m-1)$. For $m\ge2$ and
+fixed $T$, the leading asymptotic is
+\begin{equation}\label{eq:poolasymptotic}
+ C_T(n)=\frac{n^{T(m-1)}}{((m-1)!)^T}
+ \left(1+\frac{Tm(m-1)}{2n}+O(n^{-2})\right).
+\end{equation}
+In fact \eqref{eq:poolcount} is a polynomial, so all further coefficients
+are obtained by multiplying the finite factors
+$\prod_{h=1}^{m-1}(1+h/n)^T$. This is a transparent extremal example, not
+an assertion of an unresolved OEIS asymptotic.
+
+With $p$ independent pools and $m_i$ competitors for pool $i$, the count is
+\[
+ \prod_{i=1}^p\binom{n+m_i-1}{m_i-1}^{\!T},
+\]
+and the degree is $T(m-p)=T(m-\rho(A))$.
+
+\subsection{Genuine periodicity}
+Two labelled rules both consuming $2A$ and producing nothing have
+$\rho(A)=1$. Maximality forces
+$f_1+f_2=\lfloor n/2\rfloor$ at input $nA$, so
+\begin{equation}\label{eq:periodiccount}
+ C_1(n)=\lfloor n/2\rfloor+1,
+ \qquad
+ \sum_{n\ge0}C_1(n)z^n=\frac{1+z}{(1-z^2)^2}.
+\end{equation}
+The two eventual residue polynomials differ. Thus ``eventually polynomial''
+is too strong even for a one-species example.
+
+\subsection{Flat maximality stabilizes at fixed horizon}
+\begin{proposition}[Eventual constancy in the unguarded flat case]\label{prop:flatconstant}
+For a fixed unguarded flat system and fixed $T$, the number of extent
+histories from $nv+w$ is eventually constant in $n$. The conclusion also
+holds with fixed Boolean combinations of affine threshold guards and
+terminal tests, but need not hold with modular tests.
+\end{proposition}
+\begin{proof}
+There are only $2^{mT}$ candidate flat extent sequences, independently of
+$n$. For each candidate, state recurrence makes every state affine in
+$n$. Feasibility, eligibility, maximality, and the stated terminal tests
+are finite Boolean combinations of affine inequalities in $n$. Every
+one of these inequalities has a stable truth value for sufficiently large
+$n$. Hence each fixed candidate is eventually always accepted or always
+rejected. Take the maximum of the finitely many stabilization thresholds
+and sum the resulting constant indicators.
+\end{proof}
+A guard such as ``the initial count is even'' yields periodic behavior
+instead, explaining the exclusion of modular tests from the constancy
+statement.
+
+\section{Counting roots can remain hard at one round}\label{sec:countinghard}
+Population-uniform low degree does not imply efficient exact counting when
+the network itself is part of the input. The next reduction preserves the
+count exactly and uses only Boolean initial populations and Boolean
+consumption coefficients.
+
+\begin{theorem}[Graph-to-network root bijection]\label{thm:graph}
+Given a finite simple graph $G$ with at least one vertex, one can construct
+in polynomial time an unguarded multiset-rewriting system and a Boolean
+initial population such that its maximal one-round extents are in bijection
+with the independent sets of $G$. Every reactant species occurs in exactly
+two rules, every consumption coefficient is $0$ or $1$, and every
+feasible extent is Boolean. The natural roots of the one-round quadratic,
+with the endpoint allowed to vary, preserve the same count.
+\end{theorem}
+\begin{proof}
+Form a graph $H$ by adding a private leaf $v'$ adjacent only to each
+original vertex $v$. An independent set $S$ of $G$ gives the maximal
+independent set
+\begin{equation}\label{eq:corona}
+ S\cup\{v':v\notin S\}
+\end{equation}
+of $H$. Conversely, a maximal independent set of $H$ must contain exactly
+one of $v,v'$ for every $v$: it cannot contain both, and containing neither
+would allow the leaf to be added. Its original vertices form an
+independent set of $G$. These maps are inverse.
+
+For each edge $e$ of $H$, create one species $X_e$ initially present once.
+For each vertex $u$ of $H$, create a rule consuming all $X_e$ on incident
+edges and producing nothing. There are no isolated vertices in $H$, so
+every rule consumes something and every feasible multiplicity is at most
+one. Two vertex rules can be used together exactly when their vertices
+are nonadjacent. Hence feasible extents are independent sets of $H$,
+and a further rule can be appended exactly when another vertex can be
+adjoined. Maximal extents are therefore precisely its maximal independent
+sets. Each edge species belongs to its two endpoint rules. Compose this
+bijection with \eqref{eq:corona} and Theorem~\ref{thm:round}.
+\end{proof}
+
+\begin{corollary}[Complexity of one-round root counting]\label{cor:sharpP}
+Counting these roots is $\PP$-complete under polynomial-time Turing
+reductions, even under the restrictions in Theorem~\ref{thm:graph}.
+The displayed map from independent-set counting to root counting is
+parsimonious.
+\end{corollary}
+\begin{proof}
+Counting independent sets is $\PP$-complete under the stated reduction
+convention: it is equivalent, by complementation, to counting vertex
+covers, which is counting assignments to a monotone $2$-CNF with one
+clause per edge. This is among Valiant's counting-completeness results
+\cite{valiant}. Theorem~\ref{thm:graph} gives hardness and preserves each
+count exactly.
+
+For membership, guess the Boolean extent, check feasibility and
+maximality, and reconstruct the unique remaining coordinates in polynomial
+time. More generally, for arbitrary binary-encoded numerical populations,
+feasible extents and all canonical auxiliaries have polynomial bit length
+by the bounds following Theorem~\ref{thm:round}. Fixed-length binary
+guesses count each witness once.
+\end{proof}
+
+There is no claim here of parsimonious completeness for arbitrary
+$\PP$ functions. In particular, every finite resource system has at least
+one maximal feasible extent, whereas a satisfiability instance can have
+zero satisfying assignments. The graph-to-network bijection and the
+Turing-reduction completeness statement are different assertions. Nor does
+this reduction bound the number of reactants in a rule: vertex degree
+can be large, even though each species occurs in only two rules.
+
+\section{Why convex quadratic certificates fail}\label{sec:convex}
+The certificates above are quadratic but usually not convex. This is not
+merely an implementation artifact.
+
+\subsection{A structural lemma for convex zero sets}
+\begin{lemma}[Rational polyhedral zeros]\label{lem:convexzeros}
+Let $q(z)=z^{\mathsf T}Hz+\ell^{\mathsf T}z+c$, with $H$ rational symmetric
+positive semidefinite, be nonnegative on $\R_{\ge0}^{N}$. Suppose
+$q(z_0)=0$ for some $z_0\in\Q_{\ge0}^{N}$. Then its orthant zero set is a
+rational polyhedron. More precisely, with $g=2Hz_0+\ell$,
+\begin{equation}\label{eq:convexzeros}
+ \{z\ge0:q(z)=0\}
+ =\{z\ge0:H(z-z_0)=0,\ g^{\mathsf T}z=0\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+At the constrained minimum $z_0$, the directional derivative in a positive
+coordinate direction is nonnegative. If $(z_0)_i>0$, both signs of that
+direction are allowed locally, so $g_i=0$. If $(z_0)_i=0$, we have $g_i\ge0$.
+Thus $g\ge0$ and $g^{\mathsf T}z_0=0$.
+
+Taylor's identity gives
+\[
+ q(z)=g^{\mathsf T}(z-z_0)+(z-z_0)^{\mathsf T}H(z-z_0)
+ =g^{\mathsf T}z+(z-z_0)^{\mathsf T}H(z-z_0).
+\]
+Both terms are nonnegative for $z\ge0$. They vanish together exactly when
+$g^{\mathsf T}z=0$ and $H(z-z_0)=0$, using positive semidefiniteness.
+All displayed coefficients are rational.
+\end{proof}
+
+We also use the elementary recession fact that, if a linear functional
+is unbounded above on a nonempty rational polyhedron, some rational
+recession direction makes that functional strictly positive. One proof
+uses a finite rational vertex-and-ray description: a polyhedron with no
+such ray would give a finite upper bound from its finitely many vertices
+and zero or negative ray contributions. In the nonnegative orthant there
+is no lineality. Clearing denominators gives an integral direction.
+
+\subsection{The cooperative deadlock obstruction}
+\begin{theorem}[No convex quadratic for a two-reactant deadlock]\label{thm:convexno}
+There are no $k\in\N$ and rational quadratic polynomial
+$Q(x,y,z_1,\ldots,z_k)$ that is convex and nonnegative on
+$\R_{\ge0}^{k+2}$ and satisfies
+\begin{equation}\label{eq:axes}
+ \forall x,y\in\N\quad
+ \bigl(\exists z\in\N^k:Q(x,y,z)=0\bigr)
+ \quad\Longleftrightarrow\quad (x=0\ \text{or}\ y=0).
+\end{equation}
+Nevertheless $xy$ is an orthant-nonnegative quadratic with exactly the
+required natural zero set and no auxiliaries.
+\end{theorem}
+\begin{proof}
+Suppose such a convex quadratic exists. Its constant Hessian is positive
+semidefinite: convexity on the orthant already implies this by considering
+small line segments through an interior point. Choose a natural zero
+$z_0$ of the full polynomial projecting to $(0,0)$. By
+Lemma~\ref{lem:convexzeros}, the real orthant zero set $Z$ is a rational
+polyhedron.
+
+The slice $Z\cap\{y=0\}$ contains a natural point with $x=n$ for every
+$n\in\N$, so the coordinate $x$ is unbounded on it. The recession fact
+gives a rational recession vector $u$ with $u_x>0$ and $u_y=0$.
+Every recession direction of a subset of the nonnegative orthant is
+nonnegative. Scaling $u$ by a positive integer makes it integral.
+Similarly, the slice $Z\cap\{x=0\}$ supplies an integral nonnegative
+recession vector $v$ with $v_x=0$ and $v_y>0$.
+
+Both $u$ and $v$ satisfy the homogeneous constraints defining $\rec Z$.
+Hence $z_0+u+v$ is an integral nonnegative point of $Z$. Its projected
+coordinates are both positive, contradicting \eqref{eq:axes}.
+The final assertion is immediate from $xy\ge0$ on the orthant.
+\end{proof}
+
+For the sole reaction $A+B\to C$, let $x,y$ be the counts of its two
+reactants. Deadlock is exactly the union of the coordinate axes.
+Thus arbitrary finite existential integer lifting cannot turn this
+particular deadlock condition into a convex quadratic zero problem.
+The obstruction does not concern a prescribed finite population box,
+and it does not exclude nonconvex quadratic certificates such as ours.
+
+\subsection{A convex subclass that really works}
+\begin{proposition}[Single-species reactant supports]\label{prop:unaryconvex}
+Suppose each $S_j$ has size one. Let $I$ be the species consumed by at
+least one rule, and for each $i\in I$ put
+\[
+ c_i=\min\{a_{ij}:S_j=\{i\}\}.
+\]
+Then maximal rounds have a convex quadratic certificate with
+$d+m+|I|$ natural auxiliaries when both endpoint states are supplied.
+\end{proposition}
+\begin{proof}
+The no-extension condition is now precisely
+$0\le r_i<c_i$ for every $i\in I$. Introduce one slack $t_i$ and impose
+$r_i+t_i=c_i-1$. Together with $x=Af+r$ and $y=Bf+r$, these are affine
+equalities. The sum of their squares is convex and nonnegative on all
+of $\R$. Its variables are $f$ ($m$), $r$ ($d$), and $t$ ($|I|$), and
+all coordinates other than the chosen extent are uniquely determined.
+\end{proof}
+
+This is a sufficient structural condition, not a complete classification.
+Some systems with cooperative rules may have redundant deadlock
+constraints that simplify to convexly representable relations.
+Theorem~\ref{thm:convexno} proves that a general compiler cannot assume
+such a simplification is always available.
+
+\section{Program-uniform quartics and a sharp degree threshold}\label{sec:uniform}
+The fixed numerical matrices are coefficients of our quadratic. If those
+numbers become inputs, multiplication of a rule multiplicity by a
+stoichiometric coefficient becomes a genuine quadratic expression, and its
+square has degree four. This difference is mathematically necessary in
+the orthant-nonnegative setting.
+
+\subsection{A positivity lemma inherited from the repository}
+We first give a self-contained proof of the needed lower-degree fact.
+The semilinearity conclusion is already recorded in the repository's
+order-free certificate report \cite{repo-canonical}; it is not a new
+contribution of the present paper.
+
+\begin{lemma}[Natural zeros of positive cubics]\label{lem:cubic}
+Let $p\in\Q[z_1,\ldots,z_N]$ have total degree at most three and satisfy
+$p\ge0$ on $\R_{\ge0}^N$. Then its natural zero set, and every coordinate
+projection of that set, is semilinear.
+\end{lemma}
+\begin{proof}
+Partition the orthant by exact coordinate support. Fix a support
+$I\subseteq\{1,\ldots,N\}$ whose face contains a natural zero $a$ in its
+relative interior. Work only in the coordinates of $I$; all others are
+zero. The point $a$ is an interior minimum of the restricted polynomial,
+so its gradient is zero and its Hessian $H_a$ is positive semidefinite.
+These derivatives have rational entries because $a$ is integral.
+
+If $b$ is any other zero in the relative interior of the same face,
+consider $q(t)=p(a+t(b-a))$. The line segment lies in the relative interior,
+as do sufficiently small extensions beyond its endpoints. The polynomial
+$q$ is nonnegative on an open interval containing $[0,1]$ and has zeros
+at $0$ and $1$. If $a\ne b$, both zeros have even multiplicity. Since
+$\deg q\le3$, $q$ must vanish identically. Thus
+$(b-a)^{\mathsf T}H_a(b-a)=0$, so $b-a\in\ker H_a$.
+The same kernel conclusion is immediate if $a=b$.
+
+Conversely, let $v\in\ker H_a$. Taylor expansion, using degree at most
+three, has the form
+\[
+ p(a+tv)=t^3R(v)
+\]
+for a homogeneous cubic expression $R$, with $R=0$ in the lower-degree
+case. For sufficiently small positive and negative $t$, the point $a+tv$
+is still in the relative interior. Nonnegativity for both signs forces
+$R(v)=0$. Therefore every point of $a+\ker H_a$ that stays in that relative
+interior is a zero.
+
+The zeros in this face are consequently exactly
+$(a+\ker H_a)\cap\relint(\R_{\ge0}^I)$. Its natural points are described
+by rational affine equations, coordinates at least one on $I$, and zeros
+outside $I$. Clearing denominators gives a Presburger description. Faces
+without any natural zero contribute nothing, and there are only finitely
+many supports. A finite union of these descriptions is Presburger, as
+are its coordinate projections; equivalently, these sets are semilinear
+\cite{woods}.
+\end{proof}
+
+This proof is a structural argument. Choosing an integer zero in every
+nonempty face is not presented as an algorithm for deciding which faces
+have zeros.
+
+\begin{corollary}[Multiplication requires degree at least four]\label{cor:mult}
+The relation $z=kn$ on $\N^3$ cannot be represented as the projection of
+the natural zero set of any finite-variable polynomial of degree at most
+three that is nonnegative on its entire real orthant.
+\end{corollary}
+\begin{proof}
+Such a representation would make the multiplication graph semilinear by
+Lemma~\ref{lem:cubic}. Intersecting with $k=n$ and projecting to $z$ would
+make the set of squares Presburger. Every one-dimensional Presburger set
+is eventually periodic. If positive period $q$ worked for the squares,
+choose $n$ large enough that $n^2$ lies past the eventual threshold and
+$q<2n+1$. Periodicity would make $n^2+q$ a square strictly between $n^2$
+and $(n+1)^2$, a contradiction.
+\end{proof}
+
+\subsection{Uniform construction on a fixed consumption support}
+Fix $d,m$ and a support mask $E\subseteq\{1,\ldots,d\}\times\{1,\ldots,m\}$
+meeting each column. At a mask entry, write
+\[
+ a_{ij}=1+\alpha_{ij},\qquad\alpha_{ij}\in\N,
+\]
+and put $a_{ij}=0$ off the mask. Treat all $\alpha_{ij}$ and all production
+entries $b_{ij}\in\N$ as input coordinates. Let $K=|E|$.
+
+Use the same one-round formula, but give each mask entry its own
+comparator. Its threshold is now $1+\alpha_{ij}$. Numerical thresholds
+that happen to coincide on a particular input are not merged, since
+this compiler must work before the input values are known.
+
+\begin{theorem}[Sharp program-uniform degree]\label{thm:programdegree}
+On every fixed nonempty-column support mask, maximal one-round execution
+has an orthant-nonnegative quartic certificate, uniform in all numerical
+consumption and production entries, with exactly $d+2m+4K$ natural
+auxiliaries when the endpoint states are supplied. Its zeros remain in
+bijection with legal extent vectors. Across this class of systems,
+degree four is optimal among polynomials nonnegative on the entire real
+orthant, even with an arbitrary finite number of auxiliaries.
+\end{theorem}
+\begin{proof}
+The resource and output residuals now contain products
+$\alpha_{ij}f_j$ and $b_{ij}f_j$, so they have degree at most two and their
+squares have degree at most four. The threshold residual is still affine:
+\[
+ r_i+v_{ij}-\alpha_{ij}-u_{ij}-w_{ij}.
+\]
+All complementarity terms are nonnegative coordinate products. Therefore
+the resulting polynomial is orthant-nonnegative of degree at most four.
+For each natural parameter assignment, Theorem~\ref{thm:round}'s proof
+applies without change, using the specified positive thresholds. The
+coordinate count replaces $H$ by $K$.
+
+For necessity, consider just one rule $A\to kB$. At the initial state
+$nA$ with no $B$, maximality forces extent $f=n$ and output $zB$ with
+$z=kn$. A hypothetical program-uniform orthant-nonnegative representation
+of degree at most three would, after fixing the other matrix and state
+coordinates to their constant values, represent multiplication. This
+contradicts Corollary~\ref{cor:mult}.
+\end{proof}
+
+The optimality claim includes the positivity hypothesis. It is not a
+claim about arbitrary cubic Diophantine equations with unrestricted sign,
+nor about an undecidability threshold for all degree-three polynomials.
+Also, program uniformity here fixes the matrix dimensions and support
+mask; it does not encode an arbitrarily large rule table in a fixed
+number of coordinates.
+
+\section{Unbounded computation: what follows and what does not}\label{sec:unbounded}
+\subsection{The ordinary MRDP consequence}
+Finite histories of any fixed effective system can be enumerated and
+checked. Its accepting-input set is therefore computably enumerable.
+The MRDP theorem supplies a single ordinary integer polynomial with a
+fixed finite witness dimension for membership in that set. The repository
+exposes precisely such a finite-polynomial statement in
+\texttt{Diophantine.mrdp} \cite{repo-mrdp}.
+
+The passage from an arbitrary MRDP polynomial to degree four can be made
+explicit at the level of arithmetic circuits. Write its equation as
+$P_+(n,w)=P_-(n,w)$, where both sides have nonnegative coefficients. Compute
+them using addition and multiplication gates, each with a fresh natural
+output coordinate. For addition impose $v-u-w=0$; for multiplication
+impose $v-uw=0$; impose the final equality of the two outputs. The sum of
+the squares of all gate residuals is a globally nonnegative quartic.
+For a given original witness, every gate coordinate is uniquely
+determined. This preserves the number of original witnesses, whatever
+that number was; it does not make those witnesses unique.
+
+\subsection{Why our quadratics cannot compress all time}
+\begin{proposition}[No positive cubic uniform halting certificate]\label{prop:unboundedbarrier}
+Let $H\subseteq\N$ be an undecidable accepting-input set of a fixed
+effective universal computational device. There is no finite-variable
+polynomial of degree at most three, nonnegative on the entire real
+orthant, whose projected natural zero set is $H$.
+\end{proposition}
+\begin{proof}
+Lemma~\ref{lem:cubic} would make $H$ semilinear and hence decidable,
+contrary to the hypothesis.
+\end{proof}
+
+Even a nonuniversal growth example already shows a barrier to the simplest
+kind of horizon compression. The single rule $A\to2A$, starting at one
+$A$, has $2^T$ objects after $T$ maximal rounds. For each fixed $T$, our
+history certificate is quadratic. But a single orthant-nonnegative cubic
+with free input $T$, free output $y$, and fixed witness dimension cannot
+represent $y=2^T$: projecting would make the powers of two eventually
+periodic. Thus the difficulty is not only nondeterministic computation.
+
+\subsection{Finite-fold and single-fold caution}
+A bounded-horizon certificate may have exactly one root for a specified
+deterministic history and still have a number of variables growing with
+the horizon. An unbounded Diophantine representation obtained by MRDP may
+have many or infinitely many witnesses. Neither property implies a
+fixed-arity finite-fold or single-fold representation for every accepting
+input.
+
+Accordingly, this manuscript does not settle the finite-fold or
+single-fold representation questions studied in the repository. It gives
+no elimination of the horizon that preserves our root bijection. Its
+uniform quartic theorem concerns fixed-shape numerical rule parameters,
+not an unbounded history compressed with unique witnesses into a fixed
+tuple. These limitations are essential parts of the theorem statements,
+not exceptions added after the construction.
+
+\subsection{A formalization route}
+The most direct Lean or Rocq development can be divided into three
+independently reusable interfaces. First, formalize a finite multiset
+system as natural matrices and define a maximal extent by the failure of
+all one-copy extensions. Prove Lemma~\ref{lem:maxlocal} without any
+arithmetization. Second, prove the threshold comparator's natural-zero
+classification and its uniqueness, then assemble the one-round and
+history bijections by finite sums of nonnegative terms. Third, formalize
+the resource-cover bound using finite rank and injectivity after a choice
+of pivot columns. The sharpness proof adds an integral kernel basis and
+an explicit coefficient box.
+
+The convexity obstruction and cubic-face lemma require a different
+library layer: rational quadratic forms, positive semidefiniteness,
+polyhedral recession, and Presburger projections. The first comparator
+and compiler layer is a useful initial target because it isolates all
+semantic errors before invoking any substantial geometry. No claim is
+made that these new interfaces have already been checked by a proof
+assistant.
+
+\section{Executable validation and reproducibility}\label{sec:validation}
+\subsection{What is implemented}
+The package contains \texttt{code/parallel\_certificates.py}, a Python
+3.10-or-later implementation using only the standard library. Its
+\texttt{RoundCertificate} class emits the quadratic as a sum of affine
+squares and nonnegative coordinate products, and can export its expanded
+integer monomials. The same implementation supports flat semantics,
+conjunctions of pre-state threshold/absence guards, and selective
+retention. Its constructor returns the canonical witness for a supplied
+legal extent; it is not an integer-root search engine.
+
+\texttt{HistoryCertificate} assembles fixed-horizon and exact-first-halting
+quadratics for the base unguarded, ordinary, retaining semantics, including
+horizon zero. The code also provides an independent extent enumerator,
+exact rational rank, an exhaustive resource-cover search, and fixed-horizon
+trace counting. The cover search is exponential in the number of species;
+no efficient optimization algorithm for $\rho(A)$ is claimed.
+
+The program-uniform quartic, general Presburger guards, geometric lower
+bounds, and formal proof-assistant development are mathematical results
+or proposed work in the article, not features silently claimed for the
+implemented compiler.
+
+\subsection{Actual exact-arithmetic checks}
+The supplied run used Python 3.13.5. All tests passed, with the following
+counts taken from \texttt{data/verification.txt}:
+\begin{center}
+\begin{tabular}{@{}p{0.74\linewidth}r@{}}
+\toprule
+Check & Cases\\
+\midrule
+Threshold-gadget assignments & 160,524\\
+Exhaustive full-polynomial assignments for $A\to2A$ & 32,805\\
+Distinct two-species, two-rule consumption matrices & 64\\
+Candidate one-round extents across those matrices & 7,542\\
+Constructed legal roots across those matrices & 2,488\\
+Single-coordinate witness mutations rejected & 38,496\\
+Guarded, flat, and retention round checks & 72\\
+Exact trace-count and rank-family identities & 124\\
+History and exact-first-halting checks & 328\\
+All labelled simple graphs on 1--4 vertices & 75\\
+Roots constructed for the graph reductions & 599\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The comparator check exhausts thresholds $1\le a\le7$, inputs
+$0\le r\le12$, flags $0\le b,c\le2$, and slacks $0\le v,w\le13$.
+It finds exactly the tuple in Lemma~\ref{lem:comparator} in every case.
+The full-polynomial test exhausts all seven auxiliary coordinates in
+$\{0,1,2\}$ for $A\to2A$, with $0\le x\le2$ and $0\le y\le4$; exactly
+three roots appear, the expected ones.
+
+The network tests include nonmaximal feasible choices, illegal
+same-round reuse of products, and the difference between maximality and
+maximum-cardinality firing. Graph tests enumerate every labelled graph in
+the stated range, build the private-leaf construction, and compare
+independent-set counts with exact polynomial roots. Count identities
+include the sharp shared-pool family, independent pools, and the periodic
+example \eqref{eq:periodiccount}.
+
+These finite checks cannot establish the universal uniqueness, rank
+bound, convexity obstruction, or degree lower bound. Those claims rest
+on the proofs in the corresponding sections. Tests are a reproducible
+check on the arithmetic implementation and on small instances, not a
+substitute for those proofs.
+
+\subsection{Reproduction}
+From the package root, run
+\begin{verbatim}
+python code/verify.py
+python code/parallel_certificates.py > data/example_certificate.json
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The first command rewrites \texttt{data/verification\_counts.json} and
+prints the checks. Redirect its output to refresh the text log. The TeX
+source has an embedded bibliography and requires no BibTeX run. The PDF
+was rendered and visually inspected after compilation.
+
+\section{Further research questions}\label{sec:future}
+The most useful continuations are questions whose proof obligations can
+be separated cleanly from a new assertion of universality.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3.0em]
+\item \textbf{Classify convexly representable maximality relations.}
+Single-species reactant supports suffice; one two-reactant deadlock can
+fail. Find necessary and sufficient conditions on $A$ for the deadlock
+set, and then for the full round relation, to admit a convex quadratic
+with finitely many natural auxiliaries. A useful first subproblem is
+whether a characterization can be read from the minimal resource covers
+and redundant inequalities.
+
+\item \textbf{Determine ray-specific counting degrees.}
+The invariant $m-\rho(A)$ is the optimal exponent uniformly over all
+populations. A fixed ray $nv+w$ can have smaller degree. Describe its
+exact eventual quasipolynomial degrees using the faces
+$\{f\ge0:Af\le v,\ A_Jf=v_J\}$, together with the bounded residual shifts
+and integral congruence obstructions. Any proposed formula must handle
+zero-dimensional and arithmetically empty slices.
+
+\item \textbf{Measure the complexity of computing $\rho(A)$.}
+The definition minimizes rational rank over hitting sets of rows. The
+included exact algorithm enumerates $2^d$ row subsets. Determine the
+complexity of this optimization, and whether useful structural classes
+admit efficient algorithms or certificates of optimality. Minimum row
+count and minimum row rank need not be conflated.
+
+\item \textbf{Extend the rank theory to guards.}
+For pre-state guards, maximality sees only the enabled columns. Seek
+piecewise bounds involving enabled-submatrix ranks, with careful treatment
+of states where no rules are enabled. For fixed Presburger guards, the
+parameter regions are accessible to arithmetic partitioning, but one must
+show that their bounds remain stable under the transition relation.
+
+\item \textbf{Optimize canonical comparison circuits.}
+Four coordinates per distinct threshold are sufficient here. Determine
+whether the count can be reduced while keeping global orthant
+nonnegativity, degree two, no population bound, and unique auxiliaries.
+Shared ordered thresholds on one species may admit further reuse beyond
+identical-threshold sharing. A smaller existential encoding without
+uniqueness would not answer this question.
+
+\item \textbf{Locate bounded-arity counting frontiers.}
+Our hard family has Boolean stoichiometry, Boolean initial populations,
+and reactant occurrence exactly two, but unbounded rule arity. Determine
+sharp complexity boundaries when every rule consumes at most two, three,
+or four species, perhaps with planar or bounded-treewidth incidence
+structure. State the counting reduction convention explicitly.
+
+\item \textbf{Compute periods and chamber data effectively.}
+Theorem~\ref{thm:quasi} supplies eventual quasipolynomiality and an explicit
+degree bound. Develop a practical algorithm that returns the actual
+period, residue polynomials, and validity threshold for small fixed
+systems. Multiple initial population parameters should lead to a chamber
+version with a resource-rank bound on total degree.
+
+\item \textbf{Compile a published small universal system end to end.}
+Instantiate the exact matrices of an independently checked universal
+maximal-parallel system, record $d,m,H,\rho(A)$, and export its concrete
+fixed-horizon polynomial. The published 23-rule construction is an
+interesting target, but its rule count should not be mistaken for a
+certificate-size optimum or a new minimality claim.
+
+\item \textbf{Add dynamic membranes without witness multiplicity.}
+Fresh membrane identifiers and symmetries can multiply certificates for
+one physical computation. A canonical birth-order treatment might combine
+with the repository's heap and fresh-name work, but division and
+simultaneous object transport require a precise, model-specific semantics.
+A result should distinguish histories modulo renaming from histories
+with persistent labels.
+
+\item \textbf{Find restricted history-compression theorems.}
+For systems with ultimately periodic, affine, or otherwise explicitly
+summarizable evolution, determine when a variable horizon can be compressed
+with unique witnesses. The positive-cubic obstruction for $2^T$ is a useful
+negative test. A theorem for a special class must not be promoted to a
+fixed-arity single-fold theorem for universal computation.
+
+\item \textbf{Prove the compiler in Lean or Rocq.}
+Start with the exact comparator, then the shared-threshold one-round
+bijection and its size formula, then history composition. The rank bound
+and its integer-kernel sharpness should be separate theorems rather than
+properties inferred from experiments. The code and exported example in
+this package provide small regression cases for such a formalization.
+\end{enumerate}
+
+\section{Conclusion}
+Maximal parallelism introduces a negative local condition: every unused
+rule must lack a resource. Shared canonical threshold comparisons encode
+that condition at degree two without a population bound. This gives a
+concrete, witness-faithful continuation of the repository's Diophantine
+compilation program rather than another abstract invocation of MRDP.
+
+The same semantics has a sharp quantitative structure. The resource-cover
+rank determines the optimal worst-case one-round exponent for every
+consumption matrix. At fixed horizon, established Presburger counting
+combined with that rank bound yields controlled quasipolynomial growth,
+with sharp examples. Low degree does not make counting easy, and it does
+not guarantee convexity: the cooperative deadlock obstruction is already
+present in one reaction. Finally, numerical program parameters and
+unbounded time expose distinct uniformity barriers. The quartic threshold
+and the explicit limitations on witness compression keep those barriers
+visible.
+
+\appendix
+\section{The compact polynomial in the worked example}\label{app:expanded}
+Write $x=(x_A,x_B,x_C)$, $y=(y_A,y_B,y_C)$, and $r=(r_A,r_B,r_C)$.
+For each $i\in\{A,B\}$ let
+\[
+ D_i=(u_i+\bar u_i-1)^2+(r_i+v_i-u_i-w_i)^2+u_iv_i+\bar u_iw_i.
+\]
+The threshold is $1$, so the term $a-1$ is zero. The example polynomial
+is
+\begin{align*}
+ Q={}&(x_A-f_1-f_2-r_A)^2+(x_B-f_1-r_B)^2+(x_C-r_C)^2\\
+ &+(y_A-r_A)^2+(y_B-f_2-r_B)^2+(y_C-f_1-r_C)^2\\
+ &+D_A+D_B+(u_A+u_B+s_1-1)^2+(u_A+s_2)^2.
+\end{align*}
+There are $12$ affine squares and $4$ nonnegative products, in agreement
+with $2d+2H+m=12$ and $2H=4$. At
+\[
+ x=(2,1,0),\quad f=(1,1),\quad y=(0,1,1),\quad r=(0,0,0),
+\]
+set both comparator tuples to $(0,1,0,0)$ and $(s_1,s_2)=(1,0)$. Every
+summand is zero. In the exported JSON, the comparator fields
+\texttt{b,c,v,w} correspond respectively to $u,\bar u,v,w$ here.
+
+This example also shows why a single maximality slack is not enough by
+itself. The inequality $u_A+u_B\le1$ tests the cooperative rule, whereas
+$u_A=0$ tests the competing unary rule. The shared $u_A$ flag makes the two
+tests consistent without another comparison witness.
+
+\section{A rank computation with independent pools}\label{app:rank}
+Take three input species with respectively two, one, and three competing
+rules. The consumption matrix is
+\[
+ A=\begin{pmatrix}
+ 1&1&0&0&0&0\\
+ 0&0&1&0&0&0\\
+ 0&0&0&1&1&1
+ \end{pmatrix}.
+\]
+Every cover must contain all three rows, whose rank is three. Thus
+$m=6$, $\rho(A)=3$, and the optimal exponent is three. At population
+$(n,n,n)$, maximality requires
+\[
+ f_1+f_2=n,\qquad f_3=n,\qquad f_4+f_5+f_6=n.
+\]
+The exact number is
+\[
+ (n+1)\binom{n+2}{2}=\frac{(n+1)^2(n+2)}2.
+\]
+Its degree attains the rank theorem. If each rule returns the pool object
+it consumes, this count repeats independently at each round and is raised
+to the $T$th power. The same phenomenon is tested in the executable
+validation.
+
+\section{Source audit and scope of novelty}\label{app:provenance}
+\subsection{Repository identifiers}
+The repository tree inspection returned the commit
+\begin{center}
+\texttt{db3b377f0ae3ab8cb585df4eb4b859cbee5ba3c5}.
+\end{center}
+The MRDP interface was also fetched explicitly at that commit. Its blob
+identifier was
+\begin{center}
+\texttt{74aea8c5e75923c7f8b0c041388b91e10e729d65}.
+\end{center}
+The report catalogue consulted on the live branch was
+\begin{quote}\small
+\path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/README.md}.
+\end{quote}
+Repository code search returned an older indexed revision in some
+results. No assertion that all indexed search snippets matched the tree
+snapshot was used in the proofs. No proof status was transferred from an
+existing Lean declaration to any new theorem in this manuscript.
+
+\subsection{What the external sources establish}
+The Alhazov--Verlan source supports established universality and the
+published 23-rule example. Pan--P\u{a}un--Song supplies the flat-maximal
+semantic background. Woods supplies the Presburger counting theorem and
+its rational-generating-function framework. Valiant supplies the counting
+complexity baseline; the relevant definition and theorem were inspected
+in the original paper. Minsky is the classical register-machine source.
+The repository sources establish the interfaces and prior-report claims
+being continued, not independent peer review of those reports.
+
+\subsection{What is proved in this manuscript}
+The shared-threshold formula and its exact counts, the detailed guarded
+and flat extensions, the resource-cover rank bound and its sharpness for
+every matrix, the resulting trace-degree estimate, the graph-to-network
+bijection, and the convex quadratic obstruction are supplied with proofs
+here. The program-uniform quartic and its optimality combine the explicit
+construction with the credited lower-degree positivity lemma, for which a
+self-contained proof is included. None of these statements is labelled a
+verified first occurrence in the literature.
+
+The source search was targeted rather than exhaustive. It did not certify
+a resolution of a named long-standing published conjecture, a new minimal
+universal-rule count, or a general finite-fold/single-fold theorem. The
+article is offered as a concrete research continuation with checkable
+mathematical assertions and clearly delimited uniformity.
+
+\begin{thebibliography}{9}
+\bibitem{alhazov}
+A. Alhazov and S. Verlan,
+\emph{Minimization Strategies for Maximally Parallel Multiset Rewriting
+Systems}, Theoretical Computer Science \textbf{412} (2011), 1581--1591.
+Author preprint, arXiv:1009.2706 (2010).
+\url{https://arxiv.org/abs/1009.2706}.
+
+\bibitem{flat}
+L. Pan, Gh. P\u{a}un, and B. Song,
+\emph{Flat maximal parallelism in P systems with promoters},
+Theoretical Computer Science \textbf{623} (2016), 83--91.
+\url{https://doi.org/10.1016/j.tcs.2015.10.027}.
+
+\bibitem{woods}
+K. Woods,
+\emph{Presburger arithmetic, rational generating functions, and
+quasi-polynomials}, Journal of Symbolic Logic \textbf{80} (2015), 433--449.
+Author version, arXiv:1211.0020v2.
+\url{https://arxiv.org/html/1211.0020v2}.
+
+\bibitem{valiant}
+L. G. Valiant,
+\emph{The complexity of enumeration and reliability problems},
+SIAM Journal on Computing \textbf{8} (1979), 410--421.
+\url{https://doi.org/10.1137/0208032}.
+Original-paper copy inspected at
+\url{https://www.math.cmu.edu/~af1p/Teaching/MCC17/Papers/enumerate.pdf}.
+
+\bibitem{minsky}
+M. L. Minsky,
+\emph{Computation: Finite and Infinite Machines},
+Prentice-Hall, 1967.
+
+\bibitem{repo-mrdp}
+V. Reshetnikov, \emph{ProveIt},
+\path{Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean},
+source inspection at commit
+\texttt{db3b377f0ae3ab8cb585df4eb4b859cbee5ba3c5}, 2 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/db3b377f0ae3ab8cb585df4eb4b859cbee5ba3c5/Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean}.
+
+\bibitem{repo-canonical}
+ProveIt research reports,
+\emph{Canonical Diophantine certificates}, catalogue and provenance
+README, consulted 2 October 2026. In particular, its descriptions of
+canonical trace polytopes and the order-free positivity-restricted
+low-degree classification.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/README.md}.
+\end{thebibliography}
+\end{document}
