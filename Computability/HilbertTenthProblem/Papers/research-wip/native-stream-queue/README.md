@@ -1,5 +1,11 @@
 # WIP: native queue streams and research continuation
 
+The [factored history index](u15_packed_factored_index532.md) removes four
+additions from536 on exactly the same polynomial:532 ordinary/334 raw.
+Its [independent review](review_u15_factored532.md) also verifies composition
+with the binary affine rewrite at523 ordinary/325 raw, retaining degree1936.
+
+
 The [binary affine rewrite](u15_joint_binary_affine_rewrite.md) saves another
 **nine operations** in the direct U15 route: the seven controller projections
 use90=4M+86A gates, giving527 ordinary/329 raw on the frozen536 source.
