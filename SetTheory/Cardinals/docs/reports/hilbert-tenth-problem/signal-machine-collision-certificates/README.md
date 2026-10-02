@@ -237,6 +237,27 @@ treated signal machines before batch 78 apart from the review below.
   restrictions" mentions the "rigid affine geometry" of globally nonnegative
   quadratics; Part I's Theorem 13.1 states that geometry. The question is
   not settled here.
+- **[`quadratic-orthant-certificates`](../quadratic-orthant-certificates)**
+  (dated note of 2 October 2026, batch 78H3; that report was opened by
+  cluster H3 of batch 78 and written in `c51b9880d`): the same format
+  family, no shared theorem. Its three Parts compile fixed finite systems
+  (maximal-parallel multiset rewriting, timed irreversible races, a fixed
+  universal Waterfall program) into one integer polynomial of degree two of
+  the form `Σ A_i² + Σ B_j C_j`, with affine `A_i` and with factors `B_j`,
+  `C_j` that have nonnegative coefficients, so that it is nonnegative on the
+  whole real orthant (its section `qoc:sec:spine`). The common theorem here
+  is the case without product terms, a sum of squares of integer affine
+  residuals. Both reports therefore sit at the level `D⁺₂ = SL` of
+  `cdc:of:thm:classification`, which is why a fixed skeleton, schema or
+  horizon gives semilinear projections in both; this report's first-hit
+  quartic and that report's degree-four variants lie outside the format.
+  The products are where the two differ: that report uses them for
+  negative conditions (maximality, earliest completion, inactive
+  directions), and its Theorem `qoc:mp:thm:convexno` shows that already the
+  deadlock of `A + B → C` has no convex quadratic certificate, whereas the
+  sums of squares here are convex. That report names this one in its
+  relation section (`qoc:sec:relation`); neither report re-proves a theorem
+  of the other.
 - **[`probabilistic-quantum-and-continuous-computation`](../probabilistic-quantum-and-continuous-computation)**
   and **[`group-theoretic-substrates`](../group-theoretic-substrates)**: no
   overlap.

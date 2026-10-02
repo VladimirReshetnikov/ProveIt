@@ -81,8 +81,8 @@ question is re-scoped below dimension four or seven continuation outcomes.
 
 ```
 article.tex                                           the report, standalone LaTeX with an internal bibliography
-article.pdf                                           the compiled report, 339 pages (unnumbered title page,
-                                                      contents pages 1-19, then pages 20-338)
+article.pdf                                           the compiled report, 340 pages (unnumbered title page,
+                                                      contents pages 1-19, then pages 20-339)
 README.md                                             this guide
 07-quantum-mortality-STATUS.md                        source 07's verification and dependency status, as delivered
 09-continuous-barriers-PROVENANCE.md                  source 09's repository inspection, sources and claim boundaries, as delivered
@@ -901,6 +901,21 @@ subsection "Relation to neighbouring reports and to the repository's
 reviews"); the signal-machine report names it
 only to record that none of its results is re-proved there.
 
+**Related reports (batch 78, cluster H3).** Cluster H3 (placement
+`41e7f1189`) added no Part here either. It opened
+[`quadratic-orthant-certificates`](../quadratic-orthant-certificates/README.md)
+(written in `c51b9880d`), which shares no theorem with this report, answers
+none of its questions and gets no note, and added Parts III–IV to
+[`group-theoretic-substrates`](../group-theoretic-substrates/README.md)
+(written in `44983ed7e`). Step 3 of that report's Theorem
+`gts:ai:thm:quadratic` (Part IV, batch-78 manuscript 13) prints the Mihailova
+generators of Part VI's Proposition `pqc:dr:prop:mihailova` (and of Lemma
+`pqc:rr:lem:mihailova`) again, with the relators in the second factor, as a
+marked second route citing both labels. A dated note of 2 October 2026 after
+`pqc:rr:lem:mihailova` records this, and Section 36.4 and Appendix F.4 list
+it. No label was added: the report still has 1138 labels, every label number
+is unchanged (compared in the `.aux`), and the note adds one page.
+
 ## Build
 
 TeX Live or MiKTeX with lmodern, amsmath/amssymb/amsthm, mathtools,
@@ -912,7 +927,7 @@ No external figures, bibliography database or downloads are needed.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build (MiKTeX, pdfTeX) has 339 Letter pages, with no errors,
+The recorded build (MiKTeX, pdfTeX) has 340 Letter pages, with no errors,
 undefined references or citations, multiply defined labels, duplicate
 destinations, LaTeX or package warnings, or overfull boxes; there are 17
 underfull boxes, in narrow table cells and in a few source paragraphs. All

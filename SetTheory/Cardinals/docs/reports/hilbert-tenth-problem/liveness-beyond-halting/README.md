@@ -189,6 +189,26 @@ category. Neither neighbour treats infinite-path predicates.
   Questions of Report B are cross-referenced by label in Section 33
   (`pqc:q:direct`, `pqc:q:smaller`, `pqc:q:continuous`, `pqc:cb:q:extract`,
   `pqc:cb:q:noise`, and "Reduce the three-dimensional realizer").
+- **[`quadratic-orthant-certificates`](../quadratic-orthant-certificates)**
+  (opened by cluster H3 of batch 78, written in `c51b9880d`; dated note of
+  2 October 2026). Research question 33.8, "Other unconventional substrates
+  with timing certificates", appears to be answered partly by that report's
+  Part I (its source 08, batch-78 manuscript 08): its guarded
+  register-machine embedding (`qoc:mp:sec:variants`) simulates a register
+  machine by maximal-parallel multiset rewriting with inhibitors, one round
+  per instruction. Checked against the definition before
+  `lbh:thm:transfer`, it is a computable signal-faithful block simulation
+  with block length one, provided the empty rounds that the target's
+  semantics allows after a deadlock count as termination (as its
+  first-halting certificate `qoc:mp:cor:firsthalt` counts them); the local
+  step compiler is its degree-two guarded-round certificate
+  (`qoc:mp:prop:guards`). Only register-machine sources and this one class
+  of reaction systems are covered: a clock-faithful simulation of this
+  report's own universal systems by register machines is not checked, and
+  guarded histories are not implemented in that report's code. Source 08
+  does not draw the connection. The note is a `[write]` note after the
+  question; it adds no label, and the article still has 95 pages and 227
+  labels, with every label number unchanged (compared in the `.aux`).
 - **The formal project.** The report sits in the collection, not in
   `Computability/HilbertTenthProblem`, and **placement beside a Lean/Rocq
   development confers no formal status**. It cites, as context only:
