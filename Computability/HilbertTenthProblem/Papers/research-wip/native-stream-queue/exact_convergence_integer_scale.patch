@@ -1,0 +1,12 @@
+--- a/code/bellman_diophantine.py
++++ b/code/bellman_diophantine.py
+@@ -87,6 +87,9 @@
+ 
+     def encode(self, state: int, counters: Sequence[int], scale: F = F(1)) -> list[F]:
+         cs = self.validate_config(state, counters)
++        if type(scale) not in (int, F):
++            raise ValueError('scale must be an exact integer or Fraction')
++        scale = F(scale)
+         if scale <= 0:
+             raise ValueError("scale must be positive")
+         return ([scale] + [scale if j == state else F(0)

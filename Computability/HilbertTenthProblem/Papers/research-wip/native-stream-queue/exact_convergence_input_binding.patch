@@ -1,0 +1,136 @@
+--- a/code/check_certificate.py
++++ b/code/check_certificate.py
+@@ -12,11 +12,72 @@
+ from math import lcm
+ 
+ 
++def natural(value, name, positive=False):
++    if type(value) is not int or value < int(positive):
++        raise ValueError(f'{name} must be an exact {"positive" if positive else "nonnegative"} integer')
++    return value
++
++
++def rational(value, name):
++    if type(value) not in (str, int):
++        raise ValueError(f'{name} must be an exact rational string or integer')
++    return Fraction(value)
++
++
++def metadata(meta):
++    N = natural(meta['states'], 'states', True)
++    b = natural(meta['binary_states'], 'binary states')
++    T = natural(meta['horizon'], 'horizon')
++    if b > N:
++        raise ValueError('Too many binary states')
++    D = natural(meta['probability_denominator'], 'probability denominator', True)
++    step = natural(meta['step_denominator'], 'step denominator', True)
++    anum = natural(meta['discount_numerator'], 'discount numerator', True)
++    den = natural(meta['initial_denominator'], 'initial denominator', True)
++    scale = natural(meta['witness_scale'], 'witness scale', True)
++    if step % D:
++        raise ValueError('Invalid step denominator')
++    discount = Fraction(anum, step // D)
++    if not 0 < discount < 1 or discount.numerator != anum or discount.denominator * D != step:
++        raise ValueError('Discount metadata must be reduced and consistent')
++    reward = rational(meta['common_reward'], 'common reward')
++    mode = meta['terminal_mode']
++    if type(mode) is not str or mode not in ('point', 'pair', 'consensus') or reward < 0:
++        raise ValueError('Invalid reward or terminal mode')
++    target = rational(meta['target'], 'target') if mode == 'point' else None
++    if (target is not None and target < 0) or (mode != 'point' and meta['target'] is not None):
++        raise ValueError('Invalid target')
++    multiplier = lcm(reward.denominator, 1 if target is None else target.denominator)
++    inputs, initial = meta['input_numerators'], meta['initial_numerators']
++    if type(inputs) is not list or type(initial) is not list or len(inputs) != N or len(initial) != N:
++        raise ValueError('Wrong initial-vector dimension')
++    for value in inputs + initial:
++        natural(value, 'initial numerator')
++    if scale != den * multiplier or initial != [multiplier * value for value in inputs]:
++        raise ValueError('Scaled initial vector does not encode the declared input')
++    pair = meta['observed_pair']
++    if type(pair) is not list or len(pair) != 2:
++        raise ValueError('Invalid observed pair')
++    if any(natural(i, 'observed state') >= N for i in pair):
++        raise ValueError('Observed state out of range')
++    endpoints = N if mode == 'point' else N - 1 if mode == 'consensus' else 1
++    expected = dict(witnesses=(N+2*b)*T, squares=(N+b)*T+endpoints,
++                    products=b*T, endpoint_squares=endpoints, degree_at_most=2)
++    for key, value in expected.items():
++        if natural(meta[key], key) != value:
++            raise ValueError(f'Incorrect {key} metadata')
++    return N, b, T, D, discount, reward
++
++
+ def check(path, game_path=None):
+     data = json.loads(Path(path).read_text())
+     if data.get('format') != 'natural-quadratic-certificate-v1':
+         raise ValueError('unknown certificate format')
++    if type(data['constant_index']) is not int or data['constant_index'] != -1:
++        raise ValueError('Invalid constant index')
+     labels, values = data['variable_labels'], data['assignment']
++    if type(labels) is not list or any(type(label) is not str for label in labels):
++        raise ValueError('Invalid variable-label types')
+     if len(labels) != len(values) or len(set(labels)) != len(labels):
+         raise ValueError('invalid variable labels')
+     if any(type(v) is not int or v < 0 for v in values):
+@@ -32,30 +93,51 @@
+             s += a*(1 if j == -1 else values[j])
+         total += s*s
+     for u, v in data['nonnegative_products']:
+-        if not 0 <= u < len(values) or not 0 <= v < len(values):
++        if type(u) is not int or type(v) is not int or not 0 <= u < len(values) or not 0 <= v < len(values):
+             raise ValueError('invalid product')
+         total += values[u]*values[v]
+     meta = data['metadata']
+-    N, b, T = meta['states'], meta['binary_states'], meta['horizon']
++    N, b, T, expected_D, expected_discount, expected_reward = metadata(meta)
+     assert len(values) == (N+2*b)*T
+     assert len(data['squared_linear_forms']) == (N+b)*T+meta.get('endpoint_squares',1)
+     assert len(data['nonnegative_products']) == b*T
+     if game_path:
+         game = json.loads(Path(game_path).read_text())
+-        N = game['states']
++        if game.get('format') != 'bellman-game-v1' or natural(game['states'], 'game states', True) != N:
++            raise ValueError('Game and certificate state counts differ')
++        if 'observed_pair' in game and (type(game['observed_pair']) is not list or any(type(i) is not int for i in game['observed_pair']) or game['observed_pair'] != meta['observed_pair']):
++            raise ValueError('Game and certificate observations differ')
+         if 'initial_terminal_payoffs' in game:
+             assert [Fraction(a,meta['initial_denominator']) for a in meta['input_numerators']] == [
+-                Fraction(v) for v in game['initial_terminal_payoffs']]
+-        eta = Fraction(game['common_uniform_reset'])
+-        delta = Fraction(game['discount'])
+-        reward = Fraction(game.get('common_reward','0'))
++                rational(v, 'initial payoff') for v in game['initial_terminal_payoffs']]
++        eta = rational(game['common_uniform_reset'], 'reset')
++        delta = rational(game['discount'], 'discount')
++        reward = rational(game.get('common_reward','0'), 'reward')
++        if not 0 <= eta < 1 or delta != expected_discount or reward != expected_reward:
++            raise ValueError('Game and certificate scaling metadata differ')
++        if type(game['owners']) is not list or type(game['base_actions']) is not list or len(game['owners']) != N or len(game['base_actions']) != N:
++            raise ValueError('Wrong game dimensions')
++        if any(type(o) is not str or o not in ('lin', 'min', 'max') for o in game['owners']) or sum(o != 'lin' for o in game['owners']) != b:
++            raise ValueError('Invalid game owners or binary-state count')
+         rows = []
+-        for actions in game['base_actions']:
++        for owner, actions in zip(game['owners'], game['base_actions']):
++            if type(actions) is not list or len(actions) != (1 if owner == 'lin' else 2):
++                raise ValueError('Wrong action count')
+             ra = []
+             for action in actions:
+                 r = [eta/N]*N
++                destinations = set(); total_probability = Fraction(0)
+                 for j, probability in action:
+-                    r[j] += (1-eta)*Fraction(probability)
++                    if natural(j, 'destination') >= N or j in destinations:
++                        raise ValueError('Invalid or repeated destination')
++                    destinations.add(j)
++                    probability = rational(probability, 'probability')
++                    if probability < 0:
++                        raise ValueError('Negative probability')
++                    total_probability += probability
++                    r[j] += (1-eta)*probability
++                if total_probability != 1:
++                    raise ValueError('Base action is not stochastic')
+                 assert sum(r) == 1 and min(r) >= 0
+                 ra.append(r)
+             rows.append(ra)

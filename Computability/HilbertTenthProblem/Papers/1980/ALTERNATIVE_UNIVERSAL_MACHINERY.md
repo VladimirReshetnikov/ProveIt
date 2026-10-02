@@ -17,7 +17,18 @@ The independent-gamma87
 candidate is still unresolved, with new
 [compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The historical stages below retain their original scope and counts.
-The [latest six-report review](../research-wip/native-stream-queue/incoming_substrate_review_1977e6ea6.md)
+The [latest seven-report review](../research-wip/native-stream-queue/incoming_substrate_review_808b53ed8.md) covers the signal,
+maximal-parallel, exact-order, exact-convergence, irreversible-semantics and
+affine-matrix reports delivered at 808b53ed8 and 48ee077c7. All eleven original
+verifier/CLI entry points pass. Checked patches repair input binding, nested
+input ownership and exact scalar contracts without changing valid exports.
+Verified finite-certificate reductions include **6→4 signal rows (5→4 witnesses)**,
+**8 or 10 fewer finalizer multiplications** in the exact-order quartic, and
+**20→17 matrix dimensions (6→5 added coordinates)** in the affine worked example.
+Their domain qualifications and complete witness correspondences are recorded
+in the review. The universal **87-operation** bound is unchanged.
+
+The [preceding six-report review](../research-wip/native-stream-queue/incoming_substrate_review_1977e6ea6.md)
 covers exact wiring, interaction-net topology, cyclic wires, stochastic erasure,
 thermal arithmetic and sandpiles delivered at1977e6ea6. All18 original
 verifier/CLI entry points replay. Checked patches repair three sandpile

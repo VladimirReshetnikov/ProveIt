@@ -64,6 +64,17 @@
 > Commit and push reviewed packets frequently. These finite improvements
 > do not establish a global optimum or finish the open research goal.
 >
+> The seven-report review at `808b53ed8`/`48ee077c7` is now linked below.
+> Next incoming review: `Waterfall_Diophantine_Certificates.zip` at `24a743255`.
+> Its README/outline intake distinguishes a fixed 46-clock machine from a
+> horizon-indexed certificate with 35k witnesses; no full proof review yet.
+> Inspect its forced first-step selectors as a possible coordinate projection,
+> and keep its unbounded sequence/decoder and ordinary-input costs explicit.
+> Other ready followups are hardened source rewrites for signal endpoint rows
+> and the exact-order finalizer, and a fully charged min/max output projection
+> for the irreversible-catalogue compiler. Their review notes distinguish
+> proved local transformations from shipped general compiler interfaces.
+>
 > The latest [product-scale group compiler](group_projective_product_radix_scale.md)
 > saves one multiplication by using q=32BP^a to type both history radices,
 > then simplifying the top AND mask to2. The illustrative ten-letter table
@@ -989,7 +1000,18 @@ the four copy tiles. An explicit word bijection preserves physical
 chronology. Recompilation saves2A: H574=236M+338A and **728 certificate /
 808=349M+459A polynomial**,27eq,125w,degree130394; supplied811/126w/5204.
 
-The [latest six-report review](incoming_substrate_review_1977e6ea6.md)
+The [latest seven-report review](incoming_substrate_review_808b53ed8.md) covers the signal,
+maximal-parallel, exact-order, exact-convergence, irreversible-semantics and
+affine-matrix reports delivered at 808b53ed8 and 48ee077c7. All eleven original
+verifier/CLI entry points pass. Checked patches repair input binding, nested
+input ownership and exact scalar contracts without changing valid exports.
+Verified finite-certificate reductions include **6→4 signal rows (5→4 witnesses)**,
+**8 or 10 fewer finalizer multiplications** in the exact-order quartic, and
+**20→17 matrix dimensions (6→5 added coordinates)** in the affine worked example.
+Their domain qualifications and complete witness correspondences are recorded
+in the review. The universal **87-operation** bound is unchanged.
+
+The [preceding six-report review](incoming_substrate_review_1977e6ea6.md)
 covers exact wiring, interaction-net topology, cyclic wires, stochastic erasure,
 thermal arithmetic and sandpiles delivered at1977e6ea6. All18 original
 verifier/CLI entry points replay. Checked patches repair three sandpile
