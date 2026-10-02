@@ -1,115 +1,249 @@
-# Asymptotic expansions of the Takeuchi numbers
+# Asymptotic Expansions of the Takeuchi Numbers
 
-Research report, 1 October 2026. The main deliverable is `takeuchi-asymptotics.pdf`; its editable source is `takeuchi-asymptotics.tex`.
+**OEIS A000651: a proof of `log T_n = F(n) + g(w) + log C + p_1(w)/n +
+p_2(w)/n² + O((1+w)^8/n³)`, `w = W(n)`, an every-fixed-order hierarchy, an
+explicit third coefficient, and controlled real and integer inverses**
 
-## What the report establishes
+A research report dated 1 October 2026, built from one manuscript. Its author
+line reads only "A self contained research report" (PDF metadata author:
+"Research report"); the delivery names no author and no tool.
 
-Starting from Knuth's exact positive recurrence, the report gives full proofs of:
+| Source | Manuscript | Archive | Pin | Placed | Printed as |
+|---|---|---|---|---|---|
+| 01 | batch 77, manuscript 65 | `takeuchi-asymptotics-research.zip` (wrapper directory `takeuchi-asymptotics/`), arrival commit `096ee7b87`; main file `takeuchi-asymptotics.tex`, now `article.tex` | none: no ProveIt commit is named and no repository path is continued | `34f1acd4b` | the whole report |
 
-- A two-correction logarithmic asymptotic with error `O((1+W(n))^8/n^3)`
-- A quantitative descending-chain stability theorem, using atomic endpoint-coupled smoothing blocks
-- An arbitrary fixed-order asymptotic hierarchy, with canonically normalized coefficient functions computed by finite exact algebra and one convergent quadrature per order
-- A common strictly positive normalizing constant defined by an exact limit
-- An explicit third coefficient and sharper three-correction log error `O((1+W(n))^10/n^4)`
-- Explicit inverse reversion with absolute error tending to zero, a controlled finite Newton hierarchy, real localization bounds, and rigorous ceiling brackets for the discrete threshold
+**Status:** presumed AI-assisted (the delivery names neither an author nor a
+tool), unrefereed ("a research manuscript, not a peer-reviewed publication"),
+not formalized: no Lean or Rocq declaration exists for any statement of this
+report. Exact SymPy scripts corroborate the finite algebraic identities; the
+analytic remainders and the coupling argument rest on the written proof. The
+leading equivalent is Prellberg's (announced 2002); no priority is claimed for
+any displayed formula.
 
-The third coefficient has growth `p3(w) ~ w^4/72`. Thus the first two coefficients do not justify assuming `pj(w)=O(w^j)` at every order.
+## What it proves
 
-## Scope and limitations
+`T_n` are the Takeuchi numbers (0, 1, 4, 14, 53, 223, 1034, …), defined by
+Knuth's positive recurrence `T_n = Σ_{k<n} c(n,k) T_{n−k−1} + b_n`. Put
+`w = W(n)`, `F(n) = e^w (w² − w + 1)`, `g(w) = w²/2 − ½ log(1+w)`.
 
-This is a research manuscript with independent mathematical checking, not a peer-reviewed publication. The leading equivalent was already announced by Prellberg in 2002; higher formal coefficients were also already reported. No novelty claim is made for the displayed formulas, and the literature search is not proof of absence of another correction theorem.
+- **Theorem 1.1 (two corrections).** `log T_n = F(n) + g(w) + log C +
+  p_1(w)/n + p_2(w)/n² + O((1+w)^8/n³)` with explicit rational `p_1`, `p_2`
+  and `C = lim T_n exp{−F(n) − g(W(n))} ∈ (0,∞)`. The proof does not assume
+  the previously announced leading equivalent.
+- **Theorem 1.2 (every fixed order).** Canonical smooth `p_j` of polynomial
+  growth, each given by a finite exact algorithm and one convergent quadrature,
+  with error `O_J((1+w)^{A_J}/n^{J+1})` and the same `C` at every order.
+- **Lemma 4.1 and Corollary 4.2 (descending-chain coupling).** A quantitative
+  stability theorem for descending Markov chains whose jumps are close to
+  `1 + Pois(W(r))`, with atomic endpoint-coupled smoothing blocks; this is the
+  transfer from a local recurrence defect to the true sequence.
+- **Corollary 8.1 (three corrections).** Explicit rational `p_3`
+  (`p_3(w) ~ w^4/72`, so `p_j = O(w^j)` fails at `j = 3`) and error
+  `O((1+w)^10/n^4)`.
+- **Section 9 (Bell comparison).** With `C_T = eC`, the Takeuchi-minus-Bell
+  coefficients `r_1`, `r_2`, and Prellberg's historical first-correction form.
+- **Propositions 10.1 and 10.2, and (50), (53) (inversion).** Explicit
+  reversion of the finite model with absolute error tending to zero, a finite
+  Newton hierarchy with error `O((1+ω)/v^(2^r − 1))`, real localization
+  `x_J(T_n) = n + O(…)`, and the two-ceiling bracket for
+  `N(y) = min{n : T_n ≥ y}`.
+- **Section 2.1 (external sources).** The broad theorem printed in Prellberg's
+  2002 slides and the seminar summary omits a restriction: `f = z/(1−z)`,
+  `a = z`, `b = 1` gives `X_n = B_{n−1}`, not a nonzero multiple of `B_n`.
+  This is the manuscript's claim about published sources; it does not affect
+  the Takeuchi application (`a = f`).
 
-The constant is not numerically enclosed. Historical decimal digits are used only in clearly labeled diagnostics. The report does not prove convergence of the infinite expansion, rationality of every coefficient, exponentially complete asymptotics, or unconditional exact rounding for arbitrary targets. A shrinking real-index error alone does not settle which side of a discrete threshold a target occupies.
+## What is not claimed
+
+- No priority for the leading equivalent (Prellberg 2002, also Mishna's
+  seminar summary, Section 3.2) or for the existence of earlier formal higher
+  terms; the literature search "is not proof of absence of another correction
+  theorem".
+- `C` is not numerically enclosed; Prellberg's decimal `C_T ≈ 2.2394331040…`
+  is used only in labelled, non-certified diagnostics.
+- No convergence of the infinite expansion, no rationality of every `p_j`, no
+  exponentially small terms, no unconditional exact rounding of the inverse
+  for arbitrary targets; the inverse statements use the exact `C`.
+- The remaining questions of Section 11 (effective constants, sharper
+  transfer, coefficient structure, optimal truncation, constant formulas,
+  specialist review of the 2002 hypotheses) are open.
+- **The inversion is an instance of repository results; no novelty is claimed
+  for the method.** Localization by dividing a log error by the slope is
+  `p0:thm:backward-error`; the two-ceiling bracket has the form of the
+  separation condition, part (2) of `p0:thm:staircase`, and the remark on
+  targets equal to some `T_n` is its part (3); the explicit reversion is a
+  first-order perturbative reversion of the kind `p0:thm:perturbed-inversion`
+  treats. All are in
+  `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`.
+  The leading equation `e^ω(ω²−ω+1) = t` is not of the
+  `p0:thm:lambert-core` form. A dated `[write]` note at the end of Section 10
+  says so.
+
+## Relation to the repository
+
+**Formal status.** No statement of this report is formalized in Lean or Rocq,
+and its place in the collection gives it no formal status; the manuscript used
+no ProveIt theorem. The generic staircase arithmetic named in the Section 10
+note is formalized as `Fabius.staircase_ceil` and `Fabius.staircase_separation`
+in `Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`; those
+lemmas concern an arbitrary monotone function, not `T_n`.
+
+**Neighbouring reports** (same directory, `oeis-sequence-asymptotics/`):
+
+- `a277364-bell-asymptotics` proves `B_n = F(n)(1 − P(r)/n + …)` with
+  `r = W_0(n)`; since `n = re^r`, `−P(r)/n = b_1(r)e^(−r)`, so the first Bell
+  coefficient quoted here (Prellberg 2000, eq. (12)) agrees with it. Its `F(n)`
+  is the Bell leading term, not this report's `F(n) = e^w(w²−w+1)`. Neither
+  report uses the other. Dated note in Section 9.
+- `a139383-iterated-bell-diagonals` (batch-77 iterated-Bell manuscripts,
+  placed in `aa7345800`) gives the same check of Prellberg's printed general
+  theorem; its proportional-depth addendum's literature note (shipped there as
+  `28-proportional-sources-literature.md`) quotes
+  Section 2.1 of this manuscript by an unshipped `/workspace/shared/…` path,
+  and its attribution review checked the limitation against this report. The
+  check is printed once, here (dated note in Section 2.1). That report treats
+  the bivariate iterated-Bell numbers, not `T_n`.
+
+(These pointers are made here only; the neighbouring reports are not edited
+by this write.)
+
+## Notation
+
+The manuscript reuses letters with section-local meanings (`B` four ways; `a`,
+`b`, `c`, `d`, `v`, `u`, `h`, `H`, `J`, `L`, `P`, `Q`, `A`, `K`, `M` two or
+three ways each; the manuscript itself warns about `v`). A table in the first
+`[write]` note (end of Section 1) fixes each symbol by section, with the
+tempting false readings, including the clash of `F(n)` with the Bell report.
+No symbol was renamed.
+
+## Labels
+
+Every label carries the prefix `tak:`. The manuscript's 70 labels were
+prefixed before anything cited them (every `\ref`/`\eqref` updated), and two
+section labels (`tak:sec:results`, `tak:sec:limitation`) were added for the
+notes: 72 labels in all. The writing step also added five dated `[write]`
+notes (Section 1: provenance and notation table; Section 2.1: the
+external-source claim and the iterated-Bell duplicate; Section 9: the Bell
+report; Section 10: the transseries-instance note; Section 11: the shipped
+layout), and loaded `booktabs` and `array` for the table. No statement, proof
+or number of the manuscript was changed.
 
 ## Files
 
-- `takeuchi-asymptotics.pdf`: typeset report, with linked contents and references
-- `takeuchi-asymptotics.tex`: complete self-contained mathematical source
-- `code/derive_residual.py`: portable arbitrary-fixed-order exact residual generator; optional rational ODE solver
-- `code/test_generator.py`: exact regression tests, including a symbolic-function triangular identity
-- `code/check_independent.py`: independently organized fourth-order check and optional stored-data diagnostics
-- `code/check_two_coefficients.py`: exact first- and second-coefficient derivation and cancellation
-- `code/check_bell_comparison.py`: independently differentiated first three residual coefficients and Bell comparison identities
-- `code/check_third_literal.py`: separate literal-formula check of H3, p3, and analytic growth degrees, importing none of the other checkers
-- `replay.py`: one-command checksum verification and isolated computational replay, with optional PDF rebuild
-- `code/check_inverse.py`: independent first-order inverse reversion, leading coefficient, and scaled derivative checks
-- `code/check_numeric.py`: fresh exact recurrence integers and high-precision, non-certified diagnostics
-- `receipts/`: actual symbolic/numerical run outputs, build log, mathematical review, and QA records
-- `build.sh`, `requirements.txt`: reproduction entry points
-- `SHA256SUMS`: digest manifest for the deliverable files
-
-The distribution contains mathematical artifacts and reproducibility data only. It does not include conversation history or private personal notes.
-
-## One-command replay
-
-To verify every distributed checksum and rerun all symbolic and exact-recurrence checks without changing the delivered PDF or recorded receipts:
-
-```sh
-python3 replay.py
+```text
+README.md                               this guide (replaces the delivery README)
+article.tex                             the report (delivered as takeuchi-asymptotics.tex)
+article.pdf                             compiled report, 19 pages
+receipts-QA.md                          delivered artifact-verification receipt (delivery paths; see below)
+receipts-mathematical-review.md         delivered integrated mathematical review (tied to the delivered TeX hash)
+receipts-third-coefficient-review.md    delivered review of the third coefficient
+receipts-inverse-review.md              delivered review of the inversion section
+code/derive_residual.py                 arbitrary-fixed-order exact residual generator
+code/test_generator.py                  exact regression tests of the generator
+code/check_two_coefficients.py          p_1, p_2 derivation and cancellations
+code/check_bell_comparison.py           independently differentiated residuals; Takeuchi-minus-Bell identities
+code/check_independent.py               independent fourth-order check of H_3
+code/check_third_literal.py             literal check of H_3, p_3 and growth degrees
+code/check_inverse.py                   inverse reversion and derivative bounds
+code/check_numeric.py                   exact T_n and non-certified diagnostics
+code/replay.py                          delivered one-command replay (needs the unshipped SHA256SUMS; see below)
+code/build.sh                           delivered PDF build (compiles takeuchi-asymptotics.tex beside it)
+data/receipts-check_two_coefficients.log  recorded output of check_two_coefficients.py
+data/receipts-check_bell_comparison.log   recorded output of check_bell_comparison.py
+data/receipts-derive_residual.log         recorded output of derive_residual.py
+data/receipts-test_generator.log          recorded output of test_generator.py
+data/receipts-check_independent.log       recorded output of check_independent.py
+data/receipts-check_third_literal.log     recorded output of check_third_literal.py
+data/receipts-check_inverse.log           recorded output of check_inverse.py
+data/receipts-check_numeric.log           recorded output of check_numeric.py
+data/receipts-result-recomputed.json    derive_residual.py --include-p3 --order 5 result
+data/receipts-numeric-recomputed.json   check_numeric.py --max-n 1500 result
+data/receipts-replay-summary.json       delivered replay summary (commands, exit codes, times)
+data/receipts-environment.txt           Python 3.12.14, SymPy 1.14.0, mpmath 1.3.0, Linux
+data/receipts-build-smoke.txt           isolated rebuild record
+data/receipts-latex-final.log           final LaTeX log of the delivered PDF
+data/requirements.txt                   sympy>=1.12,<2 and mpmath>=1.3,<2
 ```
 
-With a TeX distribution and a POSIX shell available, also rebuild the PDF in an isolated directory:
+Every file except `README.md`, `article.tex` and `article.pdf` is
+byte-identical to the delivery. Placement renamed `takeuchi-asymptotics.tex`
+to `article.tex`, moved `replay.py` and `build.sh` to `code/`, the run outputs
+of `receipts/` to `data/receipts-*`, the four Markdown records of `receipts/`
+to `receipts-*.md` in this directory, and `requirements.txt` to `data/`.
+Not shipped: the delivered 17-page PDF `takeuchi-asymptotics.pdf` and
+`SHA256SUMS` (a checksum ledger, verified 32/32 at placement and retired).
+Both survive in the archive:
+`git show 096ee7b87:docs/incoming/takeuchi-asymptotics-research.zip > <scratch>/takeuchi-asymptotics-research.zip`.
+Nothing heavy was excluded.
+
+Delivered text that names the delivery layout or unshipped files:
+`code/replay.py` (reads `SHA256SUMS` beside itself and raises if it is
+missing; copies `code/` into a work directory; with `--build-pdf` compiles
+`takeuchi-asymptotics.tex` and compares with `takeuchi-asymptotics.pdf`),
+`code/build.sh` (compiles `takeuchi-asymptotics.tex`, writes `receipts/` and
+`.build/` beside itself), `receipts-QA.md` (`receipts/…`, `replay.py`,
+`SHA256SUMS`, the delivered PDF's hash), the three review records (hashes of
+the delivered TeX and PDF), and Section 11 of the article (dated note). The
+review hashes refer to the delivered `takeuchi-asymptotics.tex`, which is the
+`article.tex` of the placement commit `34f1acd4b`, not the written one. The
+delivery README, which this guide replaces, said the Bell check "can take a
+few minutes"; its receipt records 132.6 s.
+
+## Rerun the checks (on a scratch copy)
+
+`replay.py` cannot run as shipped (no `SHA256SUMS`), and two commands write
+into `receipts/`. Run the eight commands of its list on a copy (Git Bash, from
+this directory):
 
 ```sh
-python3 replay.py --build-pdf
+R=$(mktemp -d) && mkdir -p "$R/code" "$R/receipts" && cp code/*.py "$R/code/" && cd "$R"
+export PYTHONUTF8=1
+PY="uv run --no-project --with sympy==1.14.0 --with mpmath==1.3.0 python"
+$PY code/check_two_coefficients.py > receipts/check_two_coefficients.log
+$PY code/check_bell_comparison.py > receipts/check_bell_comparison.log
+$PY code/derive_residual.py --include-p3 --order 5 --output receipts/result-recomputed.json > receipts/derive_residual.log
+$PY code/test_generator.py > receipts/test_generator.log
+$PY code/check_independent.py > receipts/check_independent.log
+$PY code/check_third_literal.py > receipts/check_third_literal.log
+$PY code/check_inverse.py > receipts/check_inverse.log
+$PY code/check_numeric.py --max-n 1500 --output receipts/numeric-recomputed.json > receipts/check_numeric.log
+for f in receipts/*; do diff -q --strip-trailing-cr "$f" "$OLDPWD/data/receipts-${f#receipts/}"; done
 ```
 
-Replay results are written to a uniquely named directory under `.replay/`. The optional build also checks the page count and compares extracted layout text when Poppler is available; otherwise it explicitly records that those checks were unavailable. The separately differentiated Bell check can take a few minutes. PDF bytes may differ because of metadata and file identifiers; text equivalence is the reproduction criterion.
+Expected differences: elapsed-time fields only (`numeric-recomputed.json`
+records its run time). At intake (2 October 2026, heavily loaded machine)
+seven commands passed with identical output (7.6–50 s each);
+`check_bell_comparison.py` exceeded the 170-second limit there (receipt:
+132.6 s) and passed when split into its two halves, with output identical to
+the receipt. Windows writes CRLF, hence `--strip-trailing-cr`. For the
+one-command replay, recover `SHA256SUMS` from the archive and rebuild the
+delivered layout (`replay.py`, `build.sh`, `requirements.txt`,
+`takeuchi-asymptotics.tex`, `code/`, `receipts/`) on a copy; it writes under
+`.replay/` beside itself.
 
-`SHA256SUMS` covers all distributed files except itself. Check it before modifying files; successful replay records the integrity result along with command exit statuses. The third-coefficient review and integrated mathematical review in `receipts/` are tied to the exact manuscript hashes.
+## Build the PDF
 
-## Reproduce the algebra
-
-Python 3.10 or later and SymPy are sufficient; mpmath is used for the optional diagnostics. The recorded environment used Python 3.12.14 and SymPy 1.14.0. Install the requirements into an environment of your choice, then run from this directory:
+pdfLaTeX (amsmath, amssymb, amsthm, mathtools, microtype, hyperref, xcolor,
+enumitem, fancyhdr, lmodern, booktabs, array); no BibTeX. From this directory:
 
 ```sh
-python3 code/check_two_coefficients.py
-python3 code/check_bell_comparison.py
-python3 code/derive_residual.py --include-p3 --order 5 --output receipts/result-recomputed.json
-python3 code/test_generator.py
-python3 code/check_independent.py
-python3 code/check_third_literal.py
-python3 code/check_inverse.py
-python3 code/check_numeric.py --max-n 1500 --output receipts/numeric-recomputed.json
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The generator operates with exact rational expressions and finite Poisson polynomial moments. It can also accept general symbolic smooth coefficient functions, using SymPy's expression domain. It does not need a rational solution to exist: the report's quadrature is the general coefficient definition. The optional rational solver returns no solution when its specified ansatz is inconsistent or nonunique.
+The committed PDF was built in a scratch directory with MiKTeX: 19 pages, no
+errors or warnings, no undefined references or citations, no multiply defined
+labels, no duplicate PDF destinations, no overfull or underfull boxes. (The
+delivered source built to 17 pages, also clean.) `code/build.sh` is kept as
+delivered; to use it, copy it to a scratch directory together with
+`article.tex` renamed to `takeuchi-asymptotics.tex`.
 
-The order-five run confirms zero residual coefficients through order four after inserting `p1,p2,p3`, and computes the next nonzero residual. The numerical script constructs every sequence value used as an exact integer before evaluating logarithms. Its decimal constant is not a certified enclosure, so its small errors are checks of consistency only.
+## Provenance
 
-## Numerical consistency examples
-
-A fresh exact recurrence computation gives these logarithmic errors when the historical decimal approximation to `C_T` is used:
-
-- At `n=1000`: after two corrections, approximately `-3.1159408e-8`; after three, `-1.1301105e-10`
-- At `n=1500`: after two corrections, approximately `-1.0533872e-8`; after three, `-2.4267707e-11`
-
-These figures are reproduced in `receipts/numeric-recomputed.json` and are explicitly non-certified diagnostics. The proof does not depend on them.
-
-## Rebuild the PDF
-
-A complete TeX Live or MiKTeX installation with pdfLaTeX, Latin Modern, AMS packages, geometry, microtype, hyperref, xcolor, enumitem, and fancyhdr is sufficient:
-
-```sh
-sh build.sh
-```
-
-The document uses US Letter paper and embedded scalable fonts. No external figure files or bibliography processor are required. Cross-references and the contents are resolved with repeated pdfLaTeX runs. If a minimal read-only TeX installation contains the packages but lacks generated format files or font maps, the build script attempts to regenerate the required caches locally in `.build/`, without installing software or changing the TeX distribution.
-
-For visual checking with Poppler:
-
-```sh
-pdfinfo takeuchi-asymptotics.pdf
-pdftoppm -r 110 -png takeuchi-asymptotics.pdf page
-```
-
-Every page of the delivered PDF was rendered and visually inspected during report preparation. Intermediate render images and local TeX caches are not part of the distributable ZIP.
-
-## Primary references
-
-- Thomas Prellberg, *On the Asymptotics of Takeuchi Numbers* (2000): https://arxiv.org/abs/math/0005008
-- Thomas Prellberg, FPSAC 2002 slides, *On the asymptotic analysis of a class of linear recurrences*: https://webspace.maths.qmul.ac.uk/t.prellberg/talks/recurrence.pdf
-- Marni Mishna's summary of Prellberg's 23 September 2002 seminar, INRIA *Algorithms Seminar 2002–2004*, pp. 47–50: https://algo.inria.fr/seminars/summary/Prellberg2002a.pdf
-- OEIS A000651: https://oeis.org/A000651
-
-The report gives precise boundaries between the historical leading theorem, the earlier formal corrections, the new proof developed here, and remaining questions about effective constants and optimal truncation.
+- Prellberg, arXiv:math/0005008 (2000), Eqs. (3), (12), Conjecture 1;
+  Prellberg, FPSAC 2002 slides 22, 25, 26; Mishna's summary of Prellberg's
+  seminar of 23 September 2002, INRIA Algorithms Seminar 2002–2004, pp. 47–50;
+  Knuth, "Textbook examples of recursion" (1991); OEIS A000651.
+- Repository input: none recorded; no pin.
+- Batch 77 of `docs/incoming`, manuscript 65 (cluster P3); arrival
+  `096ee7b87`, placement `34f1acd4b`, written in the batch-77 write phase
+  (2 October 2026). Single source, so the write made no merge choices.
