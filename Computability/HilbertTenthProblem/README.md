@@ -78,8 +78,19 @@ The [interaction-combinator wiring obstruction](Papers/research-wip/native-strea
 gives two four-agent nets with identical labelled underlying graph, port-type counts
 and initially active pair, but different agent-free reachability. Exact
 port gluing preserves cyclic wires. The result rejects only that summary
-abstraction; a topology-aware arithmetic compiler remains open. It changes
-neither the universal87 bound nor the counted sparse-TM route.
+abstraction; a fixed-size compiler for the full universal rule set remains open.
+It changes neither the universal87 bound nor the counted sparse-TM route.
+
+The [quadratic topology certificate](Papers/research-wip/native-stream-queue/interaction_combinator_quadratic_topology.md)
+retains the complete port matching and cyclic-wire count for an externally
+selected delta annihilation. Shared routing witnesses give a complete quartic
+at **472=151M+321A operations**,49 residuals,67 supplied source coordinates
+and36 successor/helper coordinates; the fixed two-step history costs484.
+Natural matching row sums replace Boolean constraints, and the helpers are
+unique. A signed counterexample records why this shortcut requires natural
+coordinates. Exhaustive local replay and independent larger-net checks pass.
+The delta-only fragment terminates; all six rules, scheduling, variable-time
+compression and the ordinary-input loader remain unpaid.
 
 The preceding [first-padding sparse-TM compiler](Papers/research-wip/native-stream-queue/gpcp_first_padding_units763.md)
 gives **719 certificate /763=352M+411A operations**,15 comparisons,
