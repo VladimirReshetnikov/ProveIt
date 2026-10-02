@@ -1,8 +1,8 @@
 # Computed truth fields and a factored native bound give401 operations
 
-> The [reviewed cross-offset successor](tseytin_cross_offsets383.md)
-> gives383 operations,62 witnesses and degree at most4714; its
-> [four-base factor family](tseytin_cross_offset_factor_partitions.md) reaches390/1664.
+> The [reviewed upper-transport successor](tseytin_upper_transport_unit381.md)
+> gives381 operations,62 witnesses and degree at most4717. The preceding
+> [cross-offset factor family](tseytin_cross_offset_factor_partitions.md) reaches390/1664.
 > Its encoding descends from the permuted-digit stage. The source, encoding
 > and transfer proof below remain this frozen stage.
 
