@@ -28,7 +28,17 @@ numerical universal alphabet remains uninstantiated. Mortality now has
 [a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
 the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
-The [checksum/global-unit sparse-TM compiler](gpcp_checksum_global_units771.md)
+The [signed positive-bound sparse-TM compiler](gpcp_positive_bound_units767.md)
+gives **714 certificate /767=352M+415A operations**,18 comparisons,
+125 positive witnesses and exact degree228339, with the same three positive
+program parameters and ordinary input. Both AND bounds and both geometry
+bounds become signed units. Their signs may remain negative: an explicit
+positive projection onto771 and a paired-negative positive section prove
+full surjectivity, with no bijection claim. Supplied-initial770 has126
+witnesses and exact degree9484; single-pair769 forms retain useful degree
+tradeoffs. These save four additions while increasing degree.
+
+The preceding [checksum/global-unit sparse-TM compiler](gpcp_checksum_global_units771.md)
 gives **706 certificate /771=352M+419A operations**,22 comparisons,
 125 positive witnesses, three positive program parameters, ordinary input
 and exact degree209782. The checksum-only stage is772/209715; supplied
@@ -291,7 +301,17 @@ These are exact finite propagated minima, not exact degrees or unrestricted
 lower bounds. Across strong/scale bases, the accepted outer relation is
 preserved by explicit scale maps and canonical private strong extensions.
 
-The [opposite-coordinate offset identity](tseytin_cross_offsets383.md)
+The [typed upper-transport C2 compiler](tseytin_upper_transport_unit381.md)
+gives **373 certificate /381=176M+205A operations**, three comparisons,
+62 positive witnesses, one fixed positive program parameter and ordinary
+input, with degree at most4717. The recovered history digit range excludes
+the upper transport unit's negative sign before either boundary is used.
+It preserves the full supplied positive zero set on valid recompiled
+program slices, with every coordinate unchanged. It saves two additions
+from383; its complete polynomial changes off zero. The equality-bound
+variant costs382 with degree at most4715.
+
+The preceding [opposite-coordinate offset identity](tseytin_cross_offsets383.md)
 gives **372 certificate /383=176M+207A operations**, four comparisons,
 62 positive witnesses, one fixed positive program parameter and ordinary
 positive input, with degree at most4714. Two already-paid slope-class sums

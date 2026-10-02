@@ -45,12 +45,17 @@
 > query, program recipe, wrong-power residues and input-height proof.
 > The particular asymmetric Y=sq² shortcuts are now refuted on actual
 > compiler slices; further scale weakenings need fresh soundness arguments.
-> The former771 GPCP candidate is now a reviewed complete compiler, linked
-> below. Continue with paid shared linear forms, possible grouping of its
-> newly signed factors, and other computational substrates. Each change
-> still needs the complete source, all positivity/sign dependencies and
-> exact ordinary-input interpretation. Keep the larger-degree tradeoffs
-> visible when an operation-saving unit merge adds a polynomial factor.
+> The complete sparse-TM route now reaches767 with signed bound units;
+> the C2 route reaches381 with a typed upper-transport unit. Both reviewed
+> packets are linked below. A factor-grouping follow-up must retain a
+> positive sign section: the geometry index gap can be1, so its unit must
+> have a flexible sign companion in its group for the direct parent map.
+> Continue with paid shared linear forms and other computational substrates.
+> Keep the larger-degree tradeoffs visible when a unit merge adds a factor.
+> The bound-unit shortcut gives no immediate75/87 saving: its current
+> complete polynomial already has only the single eight-unit comparison;
+> every old native slack comparison was projected or absorbed. This is a
+> literal source inventory, not an unrestricted impossibility theorem.
 > Commit and push reviewed packets frequently. These finite improvements
 > do not establish a global optimum or finish the open research goal.
 >
@@ -286,7 +291,17 @@
 > lower bounds. Across strong/scale bases, the accepted outer relation is
 > preserved by explicit scale maps and canonical private strong extensions.
 >
-> The [opposite-coordinate offset identity](tseytin_cross_offsets383.md)
+> The [typed upper-transport C2 compiler](tseytin_upper_transport_unit381.md)
+> gives **373 certificate /381=176M+205A operations**, three comparisons,
+> 62 positive witnesses, one fixed positive program parameter and ordinary
+> input, with degree at most4717. The recovered history digit range excludes
+> the upper transport unit's negative sign before either boundary is used.
+> It preserves the full supplied positive zero set on valid recompiled
+> program slices, with every coordinate unchanged. It saves two additions
+> from383; its complete polynomial changes off zero. The equality-bound
+> variant costs382 with degree at most4715.
+>
+> The preceding [opposite-coordinate offset identity](tseytin_cross_offsets383.md)
 > gives **372 certificate /383=176M+207A operations**, four comparisons,
 > 62 positive witnesses, one fixed positive program parameter and ordinary
 > positive input, with degree at most4714. Two already-paid slope-class sums
@@ -943,7 +958,17 @@ the four copy tiles. An explicit word bijection preserves physical
 chronology. Recompilation saves2A: H574=236M+338A and **728 certificate /
 808=349M+459A polynomial**,27eq,125w,degree130394; supplied811/126w/5204.
 
-The [checksum/global-unit sparse-TM compiler](gpcp_checksum_global_units771.md)
+The [signed positive-bound sparse-TM compiler](gpcp_positive_bound_units767.md)
+gives **714 certificate /767=352M+415A operations**,18 comparisons,
+125 positive witnesses and exact degree228339, with the same three positive
+program parameters and ordinary input. Both AND bounds and both geometry
+bounds become signed units. Their signs may remain negative: an explicit
+positive projection onto771 and a paired-negative positive section prove
+full surjectivity, with no bijection claim. Supplied-initial770 has126
+witnesses and exact degree9484; single-pair769 forms retain useful degree
+tradeoffs. These save four additions while increasing degree.
+
+The preceding [checksum/global-unit sparse-TM compiler](gpcp_checksum_global_units771.md)
 gives **706 certificate /771=352M+419A operations**,22 comparisons,
 125 positive witnesses, three positive program parameters, ordinary input
 and exact degree209782. The checksum-only stage is772/209715; supplied
