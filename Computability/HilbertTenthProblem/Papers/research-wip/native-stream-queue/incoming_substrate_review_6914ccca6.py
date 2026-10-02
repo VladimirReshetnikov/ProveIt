@@ -193,6 +193,70 @@ def quantum_checks(files):
                 equal_zero_cases=zeros, reversed_product_counterexample=dict(A=a, G=g, P=p))
 
 
+def maintained_repair_checks():
+    base = ROOT/'SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/group-theoretic-substrates/code'
+    sources = {
+        '03-van-kampen-van_kampen.py': '8c3eb6cb858fba47525422b95514ee52739b38d79883ff18f523a2c2a22f5dae',
+        '05-three-phases-heisenberg_compiler.py': '495eb191fe878d8c83cb4adfcb14c4b8654a2191e94c45ce5afe7d67aae9f341',
+    }
+    raw = {name: (base/name).read_bytes() for name in sources}
+    assert all(hashlib.sha256(raw[n]).hexdigest() == sha for n, sha in sources.items())
+    v = module(raw, '03-van-kampen-van_kampen.py', '_incoming_review_repaired_van')
+    h = module(raw, '05-three-phases-heisenberg_compiler.py', '_incoming_review_repaired_heisenberg')
+    rejections = 0
+    for bad in ((1.0, 0.0, 0.0, 1.0), (True, 0, 0, 1), (), (1, 0, 0, 1, 0)):
+        try:
+            v.compile_dag([v.Node('leaf', word='ab'*30),
+                v.Node('fixed_conjugate', (0,), matrix=bad)], ['ab'*30])
+        except ValueError:
+            rejections += 1
+        else:
+            raise AssertionError('repaired compiler accepted an invalid fixed matrix')
+    for bad in ((), (1.0, 0, 0, 1), (1, 0, 0, True)):
+        try:
+            v.budget_residuals(['abAB'], v.BudgetWitness([], [], [], [], bad))
+        except ValueError:
+            rejections += 1
+        else:
+            raise AssertionError('repaired numeric checker accepted an invalid boundary')
+    assert v.budget_residuals(['abAB'], v.BudgetWitness([], [], [], [], (1, 0, 0, 1))) == [0]*4
+    import sympy as sp
+    x = sp.Symbol('x', integer=True)
+    with tempfile.TemporaryDirectory() as tmp:
+        target = Path(tmp)/'out.json'
+        for bad in (sp.Float('1.0')*x, sp.Rational(1, 2)*x):
+            try:
+                v.PolynomialSystem((x,), (), (bad,), {}).export(target)
+            except ValueError:
+                rejections += 1
+            else:
+                raise AssertionError('repaired exporter accepted a noninteger coefficient')
+            assert not target.exists()
+        word = 'ab'*30
+        v.compile_dag([v.Node('leaf', word=word),
+            v.Node('fixed_conjugate', (0,), matrix=(1, 0, 0, 1))], [word]).export(target)
+        data = json.loads(target.read_text())
+        boundary = v.evaluate_word(word)
+        for row in data['residuals']:
+            total = 0
+            for exponents, coefficient in row:
+                for value, exponent in zip(boundary, exponents):
+                    coefficient *= value**exponent
+                total += coefficient
+            assert total == 0
+    linear = [1, 2]; diagonal = [0, 0]; cross = [[0, 1, 3]]
+    row = h.QuadraticRow(0, linear, diagonal, cross)
+    compiled = h.compile_quadratics(2, [row])
+    linear[0] = 100; diagonal[0] = 200; cross[0][2] = 300; cross.append([0, 1, 400])
+    assert row.linear == (1, 2) and row.diagonal == (0, 0) and row.cross == ((0, 1, 3),)
+    assert compiled.evaluate([1, 1]) == (6,)
+    a, b, t = compiled.canonical([1, 1])
+    assert a*b*t == compiled.target([6])
+    return dict(patched_source_sha256=sources, malformed_rejections=rejections,
+                valid_large_relator_export=True, valid_zero_budget=True,
+                nested_coefficient_snapshot=True)
+
+
 def verify():
     files = {name: archive(name) for name in ARCHIVES}
     return dict(status='PASS_INCOMING_SUBSTRATE_REVIEW_6914CCCA6', arrival=ARRIVAL,
@@ -201,6 +265,7 @@ def verify():
         van_kampen=van_kampen_checks(files['arithmetic_van_kampen.zip']),
         heisenberg=heisenberg_checks(files['three_commutative_phases_research.zip']),
         quantum=quantum_checks(files['Infinite_Quantum_Runs_Diophantine_Certificates.zip']),
+        maintained_repairs=maintained_repair_checks(),
         scope='Finite independent checks, reviewed proofs, and reproduced API defects; no universal operation bound or formal verification.')
 
 

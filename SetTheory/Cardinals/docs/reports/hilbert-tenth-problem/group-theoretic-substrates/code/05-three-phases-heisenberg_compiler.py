@@ -88,14 +88,19 @@ class QuadraticRow:
 
     def __post_init__(self) -> None:
         integer(self.constant)
-        vector(self.linear)
-        vector(self.diagonal, len(self.linear))
+        linear = vector(self.linear)
+        diagonal = vector(self.diagonal, len(linear))
+        cross = tuple(tuple(term) for term in self.cross)
         seen = set()
-        for i, j, a in self.cross:
+        for i, j, a in cross:
             integer(i); integer(j); integer(a)
             if not 0 <= i < j < len(self.linear) or (i, j) in seen:
                 raise ValueError("Cross pairs must be distinct and satisfy 0 <= i < j < n")
             seen.add((i, j))
+        # Snapshot accepted containers so a frozen row cannot retain caller aliases.
+        object.__setattr__(self, "linear", linear)
+        object.__setattr__(self, "diagonal", diagonal)
+        object.__setattr__(self, "cross", cross)
 
     def evaluate(self, x: Sequence[int]) -> int:
         x = vector(x, len(self.linear))

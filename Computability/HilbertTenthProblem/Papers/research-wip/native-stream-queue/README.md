@@ -30,11 +30,16 @@ the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
 The [new archive review](incoming_substrate_review_6914ccca6.md)
 checks the van Kampen, three-Heisenberg-phase and infinite-quantum-run reports
-delivered at6914ccca6. It reproduces two van Kampen input-validation defects,
-including a corrupted integer-polynomial export, and derives smaller
-area-budget and canonical inverse certificates. Their integer/natural
-domains, fixed-size limits and universal quantifiers are tracked explicitly;
-none changes the87-operation universal bound.
+delivered at6914ccca6. It reproduces two van Kampen input-validation defects
+and a mutable Heisenberg-constructor defect; tested repairs are applied to
+the maintained imported code. Its [selector-sphere compiler](van_kampen_selector_sphere_projection.md)
+reduces the one-cell van Kampen example from11 integer witnesses/13 residuals
+to6/6, with a full integer-zero bijection. Its
+[three-equation inverse compiler](quantum_three_equation_inverse.md)
+reduces the D=4 core from5790 natural witnesses/4730 residuals to4382/3562
+while retaining uniqueness. Both emit complete quartics and pass independent
+review. These are component allocation savings; neither changes the87-operation
+universal bound.
 
 The [earlier 2 October computational-substrate review](imported_substrate_review_20261002.md)
 covers three imported report collections and 25 fresh test entry points,

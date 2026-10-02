@@ -36,6 +36,17 @@ the archive from `docs/incoming` or, if subsequent intake retires it, from
 the tracked arrival commit. Other archives in the same delivery concern
 unrelated subjects and are outside this review.
 
+Concurrent placement commit `2a04b60f2` subsequently retired these archives
+and imported their code into the maintained
+[group-theoretic collection](../../../../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/group-theoretic-substrates/README.md)
+and [quantum collection](../../../../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation/README.md).
+This review's tested repairs are now also applied to the maintained
+[van Kampen module](../../../../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/group-theoretic-substrates/code/03-van-kampen-van_kampen.py)
+and [Heisenberg module](../../../../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/group-theoretic-substrates/code/05-three-phases-heisenberg_compiler.py).
+Their bytes match the independently tested patched sources below. Normal
+review replay both reproduces the original defects from Git history and
+checks that the maintained source prevents them.
+
 | Construction | What is explicit | Boundary for universal operation minimization |
 |---|---|---|
 | van Kampen proofs | Quartic integer certificates for fixed area budgets and fixed proof-DAG shapes; four-coordinate exact free-group conjugators | Area or proof shape still determines the number of witnesses. No numerical universal presentation, ordinary-input loader, or fixed-size unbounded proof decoder is supplied. |
@@ -111,7 +122,8 @@ unchanging exact quadratic system remains valid.
 
 The [van Kampen guard patch](van_kampen_exact_input_guards.patch) and
 [Heisenberg snapshot patch](heisenberg_immutable_rows.patch) are supplied
-as reviewable repairs to extracted source copies. The archives and the
+as reviewable repairs to extracted source copies and are also applied to
+the maintained modules. The historical archives and the
 checker's original counterexamples remain immutable. Both patches were
 applied to private copies and passed the complete respective author suites
 with unchanged mathematical test counts. Focused checks covered 68 malformed
@@ -133,6 +145,10 @@ that extracted review copy. The expected patched Python SHA256 values are:
 ## Arithmetic reductions derived from the reports
 
 ### An integer selector sphere and the first matrix elimination
+
+The [guarded selector-sphere compiler](van_kampen_selector_sphere_projection.md)
+implements the following reduction against the actual pinned source and
+stores complete parent and successor polynomials for 15 source forms.
 
 For a nonempty table of s relators and budget m>=1, the van Kampen source
 allocates q=2s+1 label selectors per cell, including an identity label. Its
@@ -158,7 +174,16 @@ most four after the sum of squares. For one relator and one cell this is
 restoration give a bijection of full integer zero tuples. No integer
 arithmetic-operation schedule is charged by these allocation counts.
 
+Its fresh replay passes 180 signed off-zero corrections, 90 full zero
+round trips, 90 corrupted boundaries, 19,530 selector cases and 150 malformed
+calls. Root integration review independently checks 12 source forms,
+96 corrections and 48 malformed packets.
+
 ### Three matrix equations for the canonical quantum inverse
+
+The [guarded three-equation compiler](quantum_three_equation_inverse.md)
+implements the following canonical reduction with seven complete exported
+inverse-core polynomials. Each export pins a fixed rational input matrix T.
 
 The report uses `A=I−T` and the four equations
 
@@ -191,6 +216,14 @@ At D=4 this is **4,382 witnesses /3,562 residuals**, down from **5,790 /4,730**.
 It saves D³ rational multiplications and D³ rational additions while
 preserving the unique natural extension of each correct rational interface.
 These rational-circuit counts are not an integer-polynomial operation bound.
+
+Its fresh replay rejects 10,187 single-coordinate mutations and 52 malformed
+calls. Independent cross-review confirms the proof, literal source, counts,
+degree and natural uniqueness, with nine rational similarity examples,
+72 complete SOS comparisons, 78,125 canonical-wire cases and 118 malformed
+calls. Root integration independently checked five emitted inputs and
+35 malformed packets. Neither this wrapper nor its count includes the full
+moment compiler or an unbounded measurement-word decoder.
 
 If only existence is needed, canonical rational wires can instead be
 replaced by `n=p−m,d=h+1` with three natural coordinates, omitting both
@@ -256,6 +289,8 @@ The independent integration checker additionally records:
 
 - both van Kampen defects and the full false boundary;
 - the accepted mutable Heisenberg constructor counterexample;
+- the maintained repaired sources, nine malformed-input rejections, valid
+  zero-budget and large-relator cases, and nested coefficient snapshots;
 - 512 randomly generated quadratic normal-form checks, 512 canonical
   factorization checks, 512 off-zero quartic identities, and 844
   within-phase commutations checked using ordinary 3x3 matrix multiplication;
