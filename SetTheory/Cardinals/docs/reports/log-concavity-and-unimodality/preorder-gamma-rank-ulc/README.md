@@ -20,10 +20,10 @@ normalization by its *actual* degree?
 | 11 | 11 (handed over by cluster C1) | `physical-cover-three-result` | *Rank ultra log concavity under a three vertex physical cover* (5) | none | `8f5c53106` | Part II, Section 7 |
 | 15 | 15 (handed over by cluster C1) | `bipartite-and-pendant-support-result` | *Lorentzian and real stable directed support polynomials* (6) | none | `8f5c53106` | Part II, Section 8 |
 | 22 | 22 | `independent-role-degree-three-package` | *Independently weighted preorder support polynomials of actual degree at most three* (21) | none | `8f5c53106` | Part II, Section 9 |
-| 14 | 14 | `universal-sink-last-gap-package` | *Sharp final coefficient bounds for directed cores with universal sinks* (4) | none | `8f5c53106` | Part III, Section (a later step) |
-| 10 | 10 | `universal-sink-all-degrees-package` | *Rank ultra log concavity for four vertex cores with universal sinks* (5) | none | `8f5c53106` | Part III, Section (a later step) |
-| 34 | 34 | `universal-sink-five-core-package` | *Rank five ultra log concavity for five vertex cores with universal sinks* (6) | none | `8f5c53106` | Part III, Section (a later step) |
-| 06 | 07 (part 1, carries the manuscript), 06 (part 2) | `universal-sink-five-core-boundary-package-part-1`, `-part-2` | *The rank four boundary for five vertex cores with universal sinks* (7) | none | `8f5c53106` | Part III, Section (a later step) |
+| 14 | 14 | `universal-sink-last-gap-package` | *Sharp final coefficient bounds for directed cores with universal sinks* (4) | none | `8f5c53106` | Part III, Section 10 |
+| 10 | 10 | `universal-sink-all-degrees-package` | *Rank ultra log concavity for four vertex cores with universal sinks* (5) | none | `8f5c53106` | Part III, Section 11 |
+| 34 | 34 | `universal-sink-five-core-package` | *Rank five ultra log concavity for five vertex cores with universal sinks* (6) | none | `8f5c53106` | Part III, Section 12 |
+| 06 | 07 (part 1, carries the manuscript), 06 (part 2) | `universal-sink-five-core-boundary-package-part-1`, `-part-2` | *The rank four boundary for five vertex cores with universal sinks* (7) | none | `8f5c53106` | Part III, Section 13 |
 | — | 31 | `weighted-degree-three-package` | *Vertex-weighted preorder support polynomials of actual degree at most three* (17) | none | not staged | superseded by 22; its theorem is Corollary 9.14 (the case `u = v`) |
 | — | 13 | `universal-sink-degree-four-package` | *Weighted degree four rank ultra log concavity for universal sink extensions* (5) | none | not staged | superseded by 10; one remark in Part III |
 
@@ -74,7 +74,7 @@ four-part package, for source 06 inside the assembled two-part package).
 
 ```
 article.tex        the report (pdfLaTeX), standalone, internal bibliography
-article.pdf        the compiled report, 85 pages (title page and contents, then the three Parts and Appendix A)
+article.pdf        the compiled report, 105 pages (title page and contents, then the three Parts and Appendix A)
 README.md          this guide
 ```
 
@@ -802,7 +802,7 @@ followed by a source infix and the source's own label: `d3` (25), `d4`
 (16), `t26` (23), `rc` (20), `tc` (12), `pc` (11), `ps` (15), `ir` (22),
 `lg` (14), `ad` (10), `fc` (34), `fb` (06). For example source 22's
 `thm:main` is `pgr:r:ir:thm:main`. The base article (source 16) had 26
-labels as staged; the report has 205 labels. Labels of source passages
+labels as staged; the report has 254 labels. Labels of source passages
 that are printed once elsewhere or replaced by pointers (the degree lemma
 and the first inequality of several sources, source 16's Section 3 and
 Appendix A, the duplicated three-squares identity and moment envelope, the
@@ -931,9 +931,53 @@ membership checks beyond the published Kummer–Sert list (source 22 applies
 the list, it does not rerun its Gram certificates); a minimal-size claim in
 source 22 (source 25 makes it); formalization or priority.
 
-### Part III
+### Part III — universal-sink clouds over an arbitrary directed core
 
-Written in the next step of this intake.
+Setting: a core of `r` vertices with an arbitrary loopless directed relation
+(transitive or not), a finite independent set of universal sinks receiving
+every arc from the core, independent nonnegative activities. With a
+preorder core the whole relation is a preorder.
+
+Claimed:
+
+- **Sharp last gap for every core size** (source 14, `pgr:s:lg:thm:sharp`;
+  ordinary): if `r ≥ 4`, `γ_r > 0` and `m` sinks have positive activity,
+  then `γ_{r−1}² ≥ K(r,m) γ_{r−2} γ_r` with
+  `K(r,m) = 2r²(m−r+2)/((r−1)²(m−r+1))`, sharp for each `m`, with equality
+  characterized; the optimal uniform constant is `2r²/(r−1)²`. For `r = 4`
+  this gives `3γ3² ≥ 8γ2γ4` with slack (`pgr:s:lg:cor:four`).
+- **Four-vertex cores at every actual degree** (source 10,
+  `pgr:s:ad:thm:main`): `γ2² ≥ 3γ1γ3` for all activities
+  (computer-assisted: 218 directed core classes covering all 4,096 labeled
+  cores; 3,532 weighted squares, 64,298 positive remainder monomials), and
+  hence rank-ULC at every actual degree `ρ = 0, …, 4`; the moment envelope
+  `E1 = A+B`, `E2 = AB + B²/2`, `E3 ≤ AB²/2 + B³/6` (`pgr:s:ad:lem:moments`,
+  sharp after closure).
+- **Five-vertex cores at actual degree five** (source 34,
+  `pgr:s:fc:thm:main`): `γ2² ≥ 2γ1γ3` (computer-assisted: 9,608 classes
+  covering all 2²⁰ labeled cores, 57,089 binomial squares) and
+  `γ3² ≥ 2γ2γ4` (ordinary) for all activities; rank-ULC at actual degree
+  five; `γ4² ≥ (25/8)γ3γ5`. The constant three of source 10 fails for
+  five-vertex preorder cores (an exact example with
+  `γ2² − 3γ1γ3 = −1,484,405,775`).
+- **The degree-four boundary of five-vertex cores** (source 06,
+  `pgr:s:fb:thm:main`): on the face `γ5 = 0`, `γ2² ≥ (9/4)γ1γ3`
+  (computer-assisted on two finite domains: 3,044 zero-tail classes with
+  212,319 binomial squares, and 9,608 bounded-sink classes with 1,755,474
+  squares) and `γ3² ≥ (8/3)γ2γ4` (ordinary, in both branches), hence
+  rank-ULC at actual degree four; ordinary coefficientwise core comparisons
+  (the appendix, printed once in source 06's form, which strengthens
+  source 34's).
+
+Not claimed (Part III): sharpness of the cubic constants 3, 2 and 9/4;
+any conclusion at actual degree three for five-vertex cores (source 06
+refuses to infer it from a padded quartic normalization) or at degrees
+below five from source 34's constants; the face `γ_r = 0` in source 14;
+non-universal exterior neighbourhoods or larger cores; real-rootedness or
+stability; that the first comparison is new (it is
+`preorder-root-polytopes`' `mr:thm:first`); novelty or priority. The
+bounded-sink certificates of source 06 are not shipped (they are in the
+arrival commit).
 
 ## Research questions of `preorder-root-polytopes`
 
@@ -980,7 +1024,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX with the standard `amsmath`, `amssymb`, `amsthm`, `mathtools`,
 `lmodern`, `microtype`, `geometry`, `booktabs`, `longtable`, `array`,
 `enumitem`, `fancyhdr`, `xurl` and `hyperref` packages; three passes. The
-committed PDF was built this way with MiKTeX: 85 pages, no errors, no
+committed PDF was built this way with MiKTeX: 105 pages, no errors, no
 undefined references or citations, no multiply defined labels, no duplicate
 destinations, no overfull boxes. Build in a scratch copy; do not commit the
 auxiliary files.

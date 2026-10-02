@@ -3652,6 +3652,963 @@ the five-vertex boundary. Weighted degree four in general remains open.}
 The first-gap method is an application of Motzkin--Straus; the bounded-core reduction uses Gallai--Edmonds; the pure three-tail proof applies Wagner's rank-three Rayleigh theorem; the role-cover companion uses classical real-stability preservers; the side-matroid applications use Kummer--Sert's published classification and certified data; and the final ten-element case applies Wagner--Wei's criterion. The new exact artifacts establish the statements and scopes recorded here. We make no claim that a literature-wide novelty search or a proof-assistant formalization has been completed.
 
 
+\part{Universal-sink clouds over an arbitrary directed core}\label{pgr:part:three}
+
+Every source of this Part works in one setting. A core $C$ of $r$ vertices
+carries an arbitrary loopless directed relation $H$, transitive or not; a
+finite independent set $W$ of \emph{universal sinks} receives every arc
+$C\to W$; there are no other arcs. Core vertices have independent tail and
+head activities $u_i,v_i\ge0$, sinks have head activities $w_x\ge0$, and
+$e_j$, $E_j$ are the elementary symmetric functions of the core tail and
+of the sink head activities. When $H$ is the off-diagonal relation of a
+preorder, adjoining the diagonal gives a preorder, so each theorem below
+covers an unbounded family of weighted preorders. Reversing every arc and
+exchanging the roles gives the universal-source versions.
+\begin{itemize}[leftmargin=*]
+\item Section~\ref{pgr:s:lg:sec} (source~14): the sharp last-coefficient
+  bound $\gamma_{r-1}^2\ge K(r,m)\gamma_{r-2}\gamma_r$ for every
+  $r\ge4$, with equality and sharpness; it contains the last inequalities
+  of sources 10 and~34.
+\item Section~\ref{pgr:s:ad:sec} (source~10): four-vertex cores,
+  $\gamma_2^2\ge3\gamma_1\gamma_3$ (computer-assisted) and rank-ULC at
+  every actual degree.
+\item Section~\ref{pgr:s:fc:sec} (source~34): five-vertex cores, rank-ULC
+  at actual degree five, and a counterexample to the constant three.
+\item Section~\ref{pgr:s:fb:sec} (source~06): five-vertex cores on the face
+  $\gamma_5=0$, rank-ULC at actual degree four.
+\end{itemize}
+\mnote{relation to Parts I and~II. A universal-sink cloud is a single
+exterior type in the sense of source~16's normal form, so with unit
+activities and a preorder core these families are special cases of
+Theorem~\ref{pgr:u:d4:thm:middle} (actual degree at most four); with a
+preorder core and actual degree at most three they are special cases of
+source~22's Theorem~\ref{pgr:r:ir:thm:main}. Neither contains the other in
+general: here the core need not be transitive, the activities are
+independent, and sources 34 and~06 reach five-vertex cores. For five-vertex
+cores actual degree three remains open; the stronger cubic constant three
+of source~10 fails there (source~34). The first comparison
+$(\rho-1)\gamma_1^2\ge2\rho\gamma_2$ that sources 10, 34 and~06 prove is
+Theorem~\ref{pgr:thm:first}. On faces where every vertex used as a tail is
+never used as a head, the relation is bipartite and \mrn, Corollary
+\texttt{mrn:w:rf:cor:rankfive}, applies. Neither \prp{} nor \mrn{} has
+universal-sink material.}
+
+\section{The sharp last gap for every core size (source 14)}\label{pgr:s:lg:sec}
+
+Source~14 is \emph{Sharp final coefficient bounds for directed cores with
+universal sinks} (4 pages as delivered; archive
+\texttt{universal-sink-last-gap-package}; ``Research note''). Its files are
+shipped with the prefix \texttt{14-sink-last-gap-}. It was approved first of
+the four-core sequence 14, 13, 10; archive~13 pins it by its SHA-256.
+
+\paragraph{Abstract of source 14, as delivered.}
+
+For a loopless directed core of size $r\ge4$ with independent universal sinks, we prove a sharp inequality for the last three coefficients of its matching-support polynomial, with arbitrary nonnegative independent tail and head activities. The coefficient counts each feasible ordered pair of disjoint endpoint sets once, not its matching witnesses. With $m\ge r$ positive sink-head activities, the sharp constant is $2r^2(m-r+2)/[(r-1)^2(m-r+1)]$. The proof is ordinary mathematics: a support partition, two coefficientwise comparisons, and Newton's inequalities. Exact computational checks are supplied only as corroboration. The result proves a strengthened last inequality in weighted degree four for this family; its middle inequality remains open here.
+
+\subsection{Statement and normalization}
+Let $C$ be a set of $r\ge4$ vertices and $H$ any loopless directed relation on $C$. Let $W$ be a disjoint independent set. The full relation $D$ has the arcs of $H$ and all arcs $C\to W$, with no other arcs. In particular, no vertex of $W$ can be a tail. No transitivity assumption is imposed.
+
+Assign tail and head activities $u_i,v_i\ge0$ to each core vertex, and head activities $w_x\ge0$ to the sinks. Sink-tail activities are irrelevant. For a set $S\subseteq C$, write $u_S=\prod_{i\in S}u_i$. Define
+\[
+ \Ga_D(t)=\sum_{k\ge0}\gamma_k t^k,\qquad
+ \gamma_k=\sum_{\substack{S\cap T=\varnothing, |S|=|T|=k\\
+                         S\text{ admits a directed perfect matching to }T}}
+ u_S\prod_{j\in T\cap C}v_j\prod_{x\in T\cap W}w_x.
+\]
+The summation is over endpoint pairs, so every feasible pair is counted once. As there are at most $r$ tails, $\deg\Ga_D\le r$.
+
+\begin{theorem}\label{pgr:s:lg:thm:sharp}
+Suppose $\gamma_r>0$, and let $m$ be the number of strictly positive sink-head activities. Then $m\ge r$, the actual degree is $r$, and
+\begin{equation}\label{pgr:s:lg:eq:sharp}
+ \gamma_{r-1}^2\ \ge\ K(r,m)\gamma_{r-2}\gamma_r,
+ \qquad K(r,m)=\frac{2r^2(m-r+2)}{(r-1)^2(m-r+1)}.
+\end{equation}
+For fixed $r,m$, the constant is best possible. Equality holds exactly when all core-tail activities are equal, all positive sink-head activities are equal, and every core head with positive combinatorial indegree has zero head activity.
+\end{theorem}
+
+The optimal constant uniformly over all finite sink counts is $2r^2/(r-1)^2$. It is approached as $m\to\infty$ and is strictly smaller than $K(r,m)$ for every finite $m$.
+
+\begin{corollary}\label{pgr:s:lg:cor:four}
+If $r=4$ and $\gamma_4>0$, then
+\[
+ \gamma_3^2\ge \frac{32(m-2)}{9(m-3)}\gamma_2\gamma_4
+              >\frac{32}{9}\gamma_2\gamma_4
+              >\frac83\gamma_2\gamma_4.
+\]
+Thus $3\gamma_3^2\ge8\gamma_2\gamma_4$, the last rank-ULC inequality at actual degree four, holds with quantitative slack for this family.
+\end{corollary}
+
+
+\mnote{this corollary is the last degree-four inequality that source~10
+(and its earlier version, archive~13) proves again in the weaker form
+$\gamma_3^2\ge\frac{32}{9}\gamma_2\gamma_4$ by the same route, with the
+finite-$m$ factors of \eqref{pgr:s:lg:eq:L0}--\eqref{pgr:s:lg:eq:L2}
+replaced by their limits; source~34's
+$\gamma_4^2\ge\frac{25}{8}\gamma_3\gamma_5$ is the case $r=5$ in the same
+way. Those proofs are replaced by pointers to this theorem
+(Sections~\ref{pgr:s:ad:sec} and~\ref{pgr:s:fc:sec}).}
+
+\subsection{The three top coefficients}
+Put $e_j=\ee_j((u_i)_{i\in C})$ and $E_j=\ee_j((w_x)_{x\in W})$, where $\ee_j$ denotes the elementary symmetric polynomial. Set $E_0=1$ and $E_j=0$ beyond the number of sinks. Write
+\[
+ p=e_r,\qquad q=e_{r-1},\qquad e=e_{r-2}.
+\]
+Let $N^-(j)$ be the in-neighborhood of $j$ in $H$, and define
+\begin{align*}
+ d&=\sum_{j:N^-(j)\ne\varnothing}v_j u_{C\setminus\{j\}},\\
+ c&=\sum_{j\in C}v_j
+       \sum_{\substack{S\subseteq C\setminus\{j\},\ |S|=r-2\\
+                       S\cap N^-(j)\ne\varnothing}}u_S,\\
+ b&=\sum_{\{j,k\}\text{ admissible}}v_jv_k u_{C\setminus\{j,k\}}.
+\end{align*}
+An unordered pair $\{j,k\}$ is admissible if distinct vertices $i,\ell\in C\setminus\{j,k\}$ satisfy $i\to j$ and $\ell\to k$. Each admissible pair contributes once, even if several such injections exist.
+
+\begin{lemma}\label{pgr:s:lg:lem:coeff}
+The exact support identities are
+\begin{align}
+ \gamma_r&=pE_r,\label{pgr:s:lg:eq:top}\\
+ \gamma_{r-1}&=qE_{r-1}+dE_{r-2},\label{pgr:s:lg:eq:next}\\
+ \gamma_{r-2}&=eE_{r-2}+cE_{r-3}+bE_{r-4}.\label{pgr:s:lg:eq:third}
+\end{align}
+\end{lemma}
+\begin{proof}
+A size-$k$ support has $k$ core tails and $h$ core heads. Physical disjointness gives $k+h\le r$, and it has $k-h$ sink heads. Thus the three top ranks permit at most zero, one, and two core heads, respectively. For one core head, the selected tails must contain an in-neighbor. For two, distinct selected tails must cover the two heads. Once these heads have been covered, all remaining selected tails can be matched to the selected universal sinks. Feasibility is Boolean; no choice of witness enters the coefficient.
+\end{proof}
+
+\begin{lemma}\label{pgr:s:lg:lem:core}
+For all nonnegative activities,
+\begin{equation}\label{pgr:s:lg:eq:core}
+ q^2\ge\frac{2r}{r-1}pe,\qquad qd\ge pc,\qquad d^2\ge2pb.
+\end{equation}
+The last two comparisons hold coefficientwise.
+\end{lemma}
+\begin{proof}
+The first is Newton's inequality in exactly $r$ variables. For a division-free proof of the second, a summand of $c$ has the form $v_j u_{C\setminus\{i,j\}}$, with $i\ne j$, and implies $N^-(j)\ne\varnothing$. The summands $u_{C\setminus\{i\}}$ in $q$ and $v_j u_{C\setminus\{j\}}$ in $d$ have product
+\[
+ u_{C\setminus\{i\}}v_j u_{C\setminus\{j\}}
+   =p v_j u_{C\setminus\{i,j\}}.
+\]
+Distinct choices of the omitted vertex $i$ and the head $j$ are distinct product contributions, so these terms cover $pc$.
+
+For every admissible head pair $\{j,k\}$, both heads have positive combinatorial indegree. The two cross terms of $d^2$ give
+\[
+ 2v_jv_k u_{C\setminus\{j\}}u_{C\setminus\{k\}}
+   =2p v_jv_k u_{C\setminus\{j,k\}}.
+\]
+All other terms are nonnegative. Both arguments allow zero activities directly.
+\end{proof}
+
+\subsection{Proof of the sharp bound}
+Delete sinks of zero head activity. By \eqref{pgr:s:lg:eq:top}, the hypothesis $\gamma_r>0$ implies that all core-tail activities are positive and that $m\ge r$. Write $s=m-r\ge0$.
+
+Newton's inequalities say that $A_j=E_j/\binom mj$ is log-concave. Comparing pairs of indices with the same sum gives
+\begin{align}
+ E_{r-1}^2&\ge L_0 E_{r-2}E_r,
+ &L_0&=\frac{r(s+2)}{(r-1)(s+1)},\label{pgr:s:lg:eq:L0}\\
+ E_{r-1}E_{r-2}&\ge L_1 E_{r-3}E_r,
+ &L_1&=\frac{r(s+3)}{(r-2)(s+1)},\label{pgr:s:lg:eq:L1}\\
+ E_{r-2}^2&\ge L_2 E_{r-4}E_r,
+ &L_2&=\frac{r(r-1)(s+4)(s+3)}{(r-2)(r-3)(s+2)(s+1)}.\label{pgr:s:lg:eq:L2}
+\end{align}
+For example, $A_{r-2}A_{r-1}\ge A_{r-3}A_r$ follows from the decreasing consecutive ratios of a positive log-concave sequence. The other two comparisons follow in the same way. The constants above are the respective binomial ratios.
+
+Let $K=K(r,m)=(2r/(r-1))L_0$. Combining Lemma~\ref{pgr:s:lg:lem:core} with \eqref{pgr:s:lg:eq:L0}--\eqref{pgr:s:lg:eq:L2} yields
+\begin{align*}
+ q^2E_{r-1}^2&\ge KpeE_{r-2}E_r,\\
+ 2qdE_{r-1}E_{r-2}&\ge 2L_1pcE_{r-3}E_r,\\
+ d^2E_{r-2}^2&\ge 2L_2pbE_{r-4}E_r.
+\end{align*}
+Both latter constants exceed $K$, because
+\[
+ \frac{2L_1}{K}=\frac{(r-1)^2}{r(r-2)}\frac{s+3}{s+2}>1,
+ \qquad
+ \frac{2L_2}{K}=\frac{(r-1)^3}{r(r-2)(r-3)}
+                     \frac{(s+4)(s+3)}{(s+2)^2}>1.
+\]
+The first core factor exceeds one by $(r-1)^2-r(r-2)=1$; for the second,
+\[
+ (r-1)^3-r(r-2)(r-3)=2r^2-3r-1>0\qquad(r\ge4).
+\]
+Adding the three termwise inequalities and applying \eqref{pgr:s:lg:eq:next}--\eqref{pgr:s:lg:eq:third} proves \eqref{pgr:s:lg:eq:sharp}.
+
+\paragraph{Equality and sharpness.}
+With positive core tails, $c=0$ if and only if $d=0$: every head of positive indegree has an $(r-2)$-element tail set containing an in-neighbor. Since $E_{r-3}>0$ and $2L_1>K$, equality in \eqref{pgr:s:lg:eq:sharp} forces $c=d=0$, and then $b=0$. The two remaining Newton inequalities attain equality precisely when all positive variables in their respective families are equal. Thus the equality conditions in Theorem~\ref{pgr:s:lg:thm:sharp} are necessary and sufficient.
+
+For an edgeless core, equal core-tail activities $u>0$, and $m$ equal sink-head activities $w>0$, one has
+\[
+ \gamma_k=\binom rk\binom mk(uw)^k.
+\]
+Its last coefficient ratio is exactly $K(r,m)$. This proves sharpness for each finite $m$. Letting $m\to\infty$ proves that $2r^2/(r-1)^2$ is the optimal uniform constant.
+
+\subsection{Scope and exact checks}
+If $\gamma_r=0$, the ordinary comparison
+\[
+ (r-1)\gamma_{r-1}^2\ge2r\gamma_{r-2}\gamma_r
+\]
+is immediate, but it does not establish the last Newton inequality at a smaller actual degree. Zero core-head activities are fully permitted in the sharp theorem. Zero sink-head activities are removed before defining the effective count $m$. Reversing all arcs and interchanging tail and head activities gives the corresponding universal-source theorem.
+
+For a preorder core, adjoining universal sinks again gives a preorder, so Corollary~\ref{pgr:s:lg:cor:four} supplies an unbounded weighted degree-four subclass. It does not settle
+\[
+ 4\gamma_2^2\ge9\gamma_1\gamma_3,
+\]
+nor general independent-role rank-ULC in degree four.
+\mnote{the middle inequality is settled for four-vertex cores by source~10
+(Theorem~\ref{pgr:s:ad:thm:main}, in the stronger form
+$\gamma_2^2\ge3\gamma_1\gamma_3$) and for five-vertex cores at actual
+degrees five and four by sources 34 and~06; general independent-role
+rank-ULC in degree four remains open.}
+ No stability, real-rootedness, formalization, or priority claim is made.
+
+The theorem above has an ordinary proof. The accompanying standard-library Python checkers are corroborating tests, not logical dependencies. The producer checker verifies full supports by Hall's condition in 8,312 exact weighted cases, including all 4,096 loopless four-core relations, and separately tests the general formulas and 27 sharp equality examples. An independent checker imports no producer code: its 13,132 weighted instances cover 4,518 configurations and 5,088,496 feasible endpoint pairs, with 10,001 finite-$m$ sharp-bound checks. Both include zero activities and smaller surviving degrees. The supplied driver replays both checkers in fresh temporary directories and reports newly generated receipts; hashes check integrity only.
+
+Newton's inequalities, including their normalization, are classical. A modern primary reference is Br\"and\'en and Huh~\cite{BH}: Proposition~2.2 and Example~2.26 recover the normalized inequalities from the stable bivariate product $\prod_i(z+u_it)$. The support partition and the two coefficientwise comparisons are proved directly here.
+
+
+\section{Four-vertex cores at every actual degree (source 10)}\label{pgr:s:ad:sec}
+
+Source~10 is \emph{Rank ultra log concavity for four vertex cores with
+universal sinks} (5 pages as delivered; archive
+\texttt{universal-sink-all-degrees-package}; ``Research note''). Its files
+are shipped with the prefix \texttt{10-sink-all-degrees-}. It revises
+archive~13 (see the remark after Proposition~\ref{pgr:s:ad:prop:cert}).
+
+\paragraph{Abstract of source 10, as delivered.}
+
+We prove rank ultra log concavity at every actual surviving degree for the matching-support polynomial of any loopless directed four-vertex core with an arbitrary independent set of universal sinks, under independent nonnegative tail and head activities. No transitivity is required, and zero activities are allowed. Each feasible ordered pair of disjoint endpoint sets is counted once, irrespective of its number of matching witnesses. A sharp two-parameter reduction of the sink moments leads to exact rational certificates for the stronger cubic coefficient inequality $\gamma_2^2\ge3\gamma_1\gamma_3$ in all 218 directed core classes. Together with the actual-degree first-coefficient bound and an ordinary last-coefficient argument, this closes degrees zero through four without padding the normalization. The stronger cubic inequality is computer-assisted; all structural reductions and the other inequalities have ordinary proofs.
+
+\subsection{The result and the support convention}
+Let $C=\{0,1,2,3\}$ carry an arbitrary loopless directed relation $H$. Let $W$ be a finite independent set disjoint from $C$. The full relation $D$ has the arcs of $H$ and all arcs $C\to W$, with no other arcs. Give each core vertex independent nonnegative tail and head activities $u_i,v_i$, and give each sink head activity $w_x\ge0$. Sink-tail activities never enter.
+
+For a set $S\subseteq C$, write $u_S=\prod_{i\in S}u_i$. Define
+\[
+ \Ga_D(t)=\sum_{k=0}^4\gamma_k t^k,\qquad
+ \gamma_k=\sum_{\substack{S\cap T=\varnothing, |S|=|T|=k\\
+                         S\text{ admits a directed perfect matching to }T}}
+ u_S\prod_{j\in T\cap C}v_j\prod_{x\in T\cap W}w_x.
+\]
+There are only four possible tails, so the degree is at most four. The empty support gives $\gamma_0=1$.
+
+\begin{theorem}\label{pgr:s:ad:thm:main}
+For every such $D$ and every nonnegative independent activity assignment,
+\begin{equation}\label{pgr:s:ad:eq:middle}
+ \gamma_2^2\ge3\gamma_1\gamma_3.
+\end{equation}
+If $\rho=\deg\Ga_D$, then $0\le\rho\le4$ and the sequence
+\[
+ \left(\frac{\gamma_k}{\binom{\rho}k}\right)_{k=0}^{\rho}
+\]
+is log-concave. The normalization uses the actual surviving degree, including after activities vanish. In degree four, the last comparison admits the stronger bound $\gamma_3^2\ge(32/9)\gamma_2\gamma_4$.
+\end{theorem}
+
+The cubic inequality uses a finite exact certificate collection supplied with this note. The actual-degree first inequality and the quartic last inequality have ordinary proofs below. Reversing every arc and exchanging the two activity roles gives the universal-source version.
+
+\subsection{Boolean support coefficients}
+Write $e_j=\ee_j(u_0,u_1,u_2,u_3)$ and $E_j=\ee_j((w_x)_{x\in W})$, with $E_0=1$ and $E_j=0$ beyond the sink count. Let $N^-(j)$ be the in-neighborhood of $j$ within $H$. Put
+\begin{align*}
+ a&=\sum_{i\to j\text{ in }H}u_i v_j,\\
+ b&=\sum_{\{j,k\}\text{ admissible}}v_jv_k u_{C\setminus\{j,k\}},\\
+ c&=\sum_{j\in C}v_j
+       \sum_{\substack{S\subseteq C\setminus\{j\},\ |S|=2\\
+                       S\cap N^-(j)\ne\varnothing}}u_S,\\
+ d&=\sum_{j:N^-(j)\ne\varnothing}v_j u_{C\setminus\{j\}}.
+\end{align*}
+An unordered pair $\{j,k\}$ is admissible when the two remaining distinct core vertices can cover $j,k$ by directed arcs. Such a pair contributes once to $b$, even if both perfect matchings exist.
+
+\begin{lemma}\label{pgr:s:ad:lem:coeff}
+The exact coefficient formulas are
+\begin{equation}\label{pgr:s:ad:eq:coeff}
+\begin{aligned}
+ \gamma_1&=a+e_1E_1,&\qquad \gamma_2&=b+cE_1+e_2E_2,\\
+ \gamma_3&=dE_2+e_3E_3,& \gamma_4&=e_4E_4.
+\end{aligned}
+\end{equation}
+\end{lemma}
+\begin{proof}
+A size-$k$ support has $k$ tails in $C$ and at most $4-k$ core heads. Any injection of distinct selected tails onto the selected core heads extends to the selected sink heads, because every remaining tail points to every sink. Size two therefore permits zero, one, or two core heads, giving its three summands. Size three permits zero or one, and size four permits none. Size one is immediate. All internal tests are Boolean existence tests, not counts of injections.
+\end{proof}
+
+\subsection{An exact reduction to two sink parameters}
+\begin{lemma}\label{pgr:s:ad:lem:moments}
+For every finite nonnegative sink-head vector there are $A,B\ge0$ such that
+\begin{equation}\label{pgr:s:ad:eq:envelope}
+ E_1=A+B,\qquad E_2=AB+\frac{B^2}{2},\qquad
+ E_3\le\frac{AB^2}{2}+\frac{B^3}{6}.
+\end{equation}
+The displayed triples are sharp after taking the closure over all finite sink counts.
+\end{lemma}
+\begin{proof}
+Set $p_j=\sum_x w_x^j$, $A=\sqrt{p_2}$, and $B=p_1-\sqrt{p_2}$. Since $p_1^2\ge p_2$, both parameters are nonnegative. The elementary identities
+\[
+ E_1=p_1,\qquad 2E_2=p_1^2-p_2,\qquad
+ 6E_3=p_1^3-3p_1p_2+2p_3
+\]
+give the first two equations. Every $w_x\le\sqrt{p_2}=A$, so $p_3\le A p_2=A^3$. Substituting $p_1=A+B$ proves the third. The zero sink vector is included.
+
+Conversely, one sink of activity $A$ and $n$ sinks of activity $B/n$ have $p_1=A+B$, $p_2=A^2+B^2/n$, and $p_3=A^3+B^3/n^2$. Their first three elementary symmetric functions tend to the boundary values in \eqref{pgr:s:ad:eq:envelope} as $n\to\infty$. These are limiting triples, not generally exact finite realizations.
+\end{proof}
+
+
+\mnote{this moment envelope is printed once, here. Source~34 restates it
+with the same proof, and source~06 in the scaled form
+$E_1=A+B$, $2E_2=2AB+B^2$, $6E_3\le3AB^2+B^3$; both now refer to this
+lemma.}
+
+With the core activities and $E_1,E_2$ fixed, the coefficient of $E_3$ in $\gamma_2^2-3\gamma_1\gamma_3$ is
+\[
+ -3(a+e_1E_1)e_3\le0.
+\]
+Thus replacing $E_3$ by its upper bound in \eqref{pgr:s:ad:eq:envelope} can only decrease the cubic gap. Define the integer polynomials
+\begin{align}
+ G_1&=a+e_1(A+B),\notag\\
+ G_2&=2b+2c(A+B)+e_2(2AB+B^2),\label{pgr:s:ad:eq:G}\\
+ G_3&=3d(2AB+B^2)+e_3(3AB^2+B^3),\notag\\
+ Q_H&=G_2^2-2G_1G_3.\label{pgr:s:ad:eq:P}
+\end{align}
+At the boundary substitution, $G_1=\gamma_1$, $G_2=2\gamma_2$, and $G_3=6\gamma_3$. Hence $Q_H$ is four times the boundary cubic gap. Proving $Q_H\ge0$ for all ten nonnegative variables suffices. By the limiting construction, this positivity problem is also equivalent after closure to the cubic inequality for all finite clouds.
+
+\subsection{Complete exact certificates for the reduced polynomials}
+There are $2^{12}=4096$ loopless labeled directed relations on four vertices. Applying all $24$ vertex permutations partitions them into $218$ isomorphism classes. Relabeling a core simultaneously permutes its tail and head activities, so one representative per class suffices. The full directed domain includes all $33$ unlabeled preorder cores; no transitivity is used to discard any case.
+
+Use the variable order
+\[
+ x=(u_0,u_1,u_2,u_3,v_0,v_1,v_2,v_3,A,B).
+\]
+For each representative $H$, the supplied certificate is an exact identity
+\begin{equation}\label{pgr:s:ad:eq:sos}
+ Q_H(x)=\sum_{\ell}q_\ell x^{m_\ell}
+             \left(\sum_{a\in\mathcal A_\ell}c_{\ell,a}x^a\right)^2+R_H(x),
+\end{equation}
+where $q_\ell>0$, all scalar coefficients are rational, all exponent vectors have nonnegative integer coordinates, and every coefficient of $R_H$ is nonnegative. Thus each identity proves nonnegativity on the closed nonnegative orthant.
+
+\begin{proposition}[Finite exact verification]\label{pgr:s:ad:prop:cert}
+The certificate collection covers all $218$ permutation classes. Exact expansion of every identity \eqref{pgr:s:ad:eq:sos} gives a coefficientwise nonnegative remainder. There are $3532$ weighted polynomial-square terms and $64298$ positive remainder monomials in total. Of the $218$ certificates, $127$ use only binomial squares and $91$ also use larger square polynomials. Each squared polynomial has between two and twenty-four monomials.
+\end{proposition}
+\begin{proof}[Verification]
+The independent standard-library checker enumerates all $4096$ row-mask relations and their permutation orbits. For every labeled core, it reconstructs the grouped support polynomial directly from ordered disjoint endpoint sets and Boolean matching existence, checking ranks zero through four against Lemma~\ref{pgr:s:ad:lem:coeff}. It then makes the boundary substitution and forms \eqref{pgr:s:ad:eq:P} independently of the producer code.
+
+For each representative it reads every rational term, checks its signs and exponent domains, expands the squares exactly, and subtracts the complete expansion from $Q_H$. Every resulting coefficient, including coefficients at exponents absent from the original target, is checked to be nonnegative. The remainder is reconstructed rather than trusted as an input. The same run checks that every core orbit is represented exactly once. The accompanying checker and certificate files supply the reproducible finite calculation.
+\end{proof}
+
+
+\mnote{archive~13, \emph{Weighted degree four rank ultra log concavity for
+universal sink extensions}, is the earlier version of this note: the same
+218 core representatives in the same order, the same reduction and
+coefficient lemma, and the same last-gap proof, but the weaker middle
+inequality $4\gamma_2^2\ge9\gamma_1\gamma_3$ (target $2G_2^2-3G_1G_3$),
+certified by 2,830 binomial squares with 75,413 positive remainder
+monomials (45 classes coefficientwise nonnegative), and rank-ULC only at
+actual degree four. Source~10's inequality implies archive~13's on every
+face. Archive~13 also proves the degree-four first gap by grouping tails
+($\gamma_2\le e_2(R_0,\ldots,R_3)\le\frac38\gamma_1^2$ with
+$R_i=u_i\cdot$(head mass out of~$i$)), an argument valid only for that
+constant. Its certificates survive in the arrival commit (README).}
+
+The discovery program used floating-point linear programming to propose the square weights. Those weights were reconstructed as rational numbers, using exact active-system solutions where needed, and accepted only after exact expansion. No numerical optimization result, sampled activity assignment, or numerical tolerance is part of the verification. Combining Proposition~\ref{pgr:s:ad:prop:cert} with Lemma~\ref{pgr:s:ad:lem:moments} proves \eqref{pgr:s:ad:eq:middle} for every finite weighted sink cloud.
+
+\subsection{Ordinary proofs at the actual degree}
+
+\mnote{source~10 first proves the actual-degree inequality
+$(\rho-1)\gamma_1^2\ge2\rho\gamma_2$ for every finite loopless directed
+relation with nonnegative independent role activities, by Motzkin--Straus
+on the graph of positive-weight arcs (removing arcs of zero product
+activity but retaining their physical vertices in every remaining role)
+with the mass-shifting proof of the bound: this is
+Theorem~\ref{pgr:thm:first}, \eqref{pgr:eq:first}. It then proves the last
+inequality $\gamma_3^2\ge\frac{32}{9}\gamma_2\gamma_4$ from the three core
+comparisons $q^2\ge\frac83pe_2$, $qd\ge pc$, $d^2\ge2pb$ (with $p=e_4$,
+$q=e_3$) and the sink inequalities $E_3^2\ge\frac43E_2E_4$,
+$E_2E_3\ge2E_1E_4$, $E_2^2\ge6E_4$: this is source~14's proof at $r=4$ with
+the finite-$m$ factors dropped, and the inequality follows from source~14's
+Corollary~\ref{pgr:s:lg:cor:four} when $\gamma_4>0$ (it is trivial when
+$\gamma_4=0$). Both proofs are replaced by these pointers; ``the
+last-coefficient estimate'' below is that corollary.}
+
+We now use the correct normalization in each surviving degree:
+\begin{itemize}
+\item If $\rho=0$ or $\rho=1$, rank ultra log concavity has no nontrivial inequalities.
+\item If $\rho=2$, \eqref{pgr:eq:first} gives $\gamma_1^2\ge4\gamma_2$.
+\item If $\rho=3$, \eqref{pgr:eq:first} gives $\gamma_1^2\ge3\gamma_2$, and \eqref{pgr:s:ad:eq:middle} gives $\gamma_2^2\ge3\gamma_1\gamma_3$.
+\item If $\rho=4$, \eqref{pgr:eq:first} gives $3\gamma_1^2\ge8\gamma_2$; the stronger cubic bound \eqref{pgr:s:ad:eq:middle} implies $4\gamma_2^2\ge9\gamma_1\gamma_3$; and the last-coefficient estimate implies $3\gamma_3^2\ge8\gamma_2\gamma_4$.
+\end{itemize}
+Submatchings of a positive-weight top support ensure positivity of every earlier coefficient. These degree-specific inequalities prove Theorem~\ref{pgr:s:ad:thm:main}, including all zero-activity faces.
+
+\subsection{Reproduction and scope}
+The package includes all $218$ rational certificates, the complete core catalog, the discovery scripts, the independent verifier, and the separate ordinary-reduction and algebraic audits. Run
+\begin{center}\texttt{python verify.py}\end{center}
+with Python~3.10 or later. Verification uses only the standard library, imports no producer code, and needs neither a numerical solver nor any previous research archive. The driver checks file integrity and runs the independent certificate checker afresh, producing a new receipt. Integrity checking alone is not mathematical verification.
+
+The finite algebraic verification is a logical part of the stronger cubic-inequality proof. In contrast, the moment reduction, the support formulas, and the first and last inequalities are ordinary arguments.
+
+All activities may vanish. The certified cubic inequality holds directly on every nonnegative face, and \eqref{pgr:eq:first} is applied at the resulting actual degree. A vertex with zero tail activity can still be used as a head; it is never deleted merely because one role is inactive. No padded quartic inequality is used to infer a cubic one. No earlier theorem about three active tail roles is needed as a dependency.
+
+
+\mnote{for a preorder core at actual degree at most three this is also a
+case of source~22's Theorem~\ref{pgr:r:ir:thm:main}, and with unit
+activities of source~16's Theorem~\ref{pgr:u:d4:thm:middle}; source~10
+needs neither. Source~10's proof note \texttt{ACTUAL\_DEGREE\_CLOSURE.md}
+likewise says it closes the degree drop without the earlier
+role-matching-rank-three theorem (source~22's corollary).}
+
+When $H$ is the off-diagonal relation of a preorder, adjoining the diagonal to $D$ yields a preorder. Thus the theorem supplies an unbounded weighted preorder subclass at every surviving degree. It does not concern non-universal exterior neighborhoods or larger cores, and therefore does not resolve general weighted degree-four preorders. No real-rootedness, stability, formalization, external publication, or novelty/priority claim is made.
+
+The remaining classical input is Newton's inequality for elementary symmetric functions. As a modern primary reference, Proposition~2.2 and Example~2.26 of Br\"and\'en and Huh~\cite{BH} recover the normalized inequalities from stable products of linear factors. The moment estimate itself is proved above directly from power sums.
+
+
+\section{Five-vertex cores at actual degree five (source 34)}\label{pgr:s:fc:sec}
+
+Source~34 is \emph{Rank five ultra log concavity for five vertex cores with
+universal sinks} (6 pages as delivered; archive
+\texttt{universal-sink-five-core-package}; ``Research note''). Its files are
+shipped with the prefix \texttt{34-five-core-}; its 9,610 certificate files
+are shipped in the derived container
+\texttt{data/34-five-core-certificate-data.tar.xz}, whose members are
+byte-identical to the delivered ones (README).
+
+\paragraph{Abstract of source 34, as delivered.}
+
+We prove rank ultra log concavity at actual degree five for every loopless directed five-vertex core with an arbitrary finite independent set of universal sinks, under independent nonnegative tail and head activities. Each feasible ordered pair of disjoint endpoint sets is counted once, regardless of its matching witnesses. A sharp two-parameter bound on the first three sink moments reduces the first interior coefficient inequality to exact rational certificates for all 9,608 directed core classes. The second interior inequality has an ordinary coefficientwise proof, as do the first and last comparisons. Transitivity is not required. The theorem does not infer the stronger normalizations needed on lower-degree faces. We also give an exact preorder example showing that the stronger cubic constant proved for four-vertex cores fails for five-vertex cores.
+
+\subsection{The theorem and the counting convention}
+Let $C=\{0,1,2,3,4\}$ carry an arbitrary loopless directed relation $H$. Let $W$ be a finite independent set disjoint from $C$. The relation $D$ consists of $H$ and every arc $C\to W$, with no other arcs. Core tail activities $u_i$, core head activities $v_i$, and sink head activities $w_x$ are independent and nonnegative. Sink-tail activities never enter. Put
+\[
+ \Gamma_D(t)=\sum_{k=0}^5\gamma_k t^k,\qquad
+ \gamma_k=\sum_{\substack{S\cap T=\varnothing,\ |S|=|T|=k\\
+ S\text{ admits a directed perfect matching to }T}}
+ \prod_{i\in S}u_i\prod_{j\in T\cap C}v_j\prod_{x\in T\cap W}w_x.
+\]
+Here every tail lies in $C$, the empty support has weight $\gamma_0=1$, and each ordered endpoint pair $(S,T)$ contributes once.
+
+\begin{theorem}\label{pgr:s:fc:thm:main}
+For every such core and every nonnegative activity assignment,
+\begin{equation}\label{pgr:s:fc:eq:interior}
+ \gamma_2^2\ge2\gamma_1\gamma_3,
+ \qquad \gamma_3^2\ge2\gamma_2\gamma_4.
+\end{equation}
+If the actual surviving degree is five, then
+$\bigl(\gamma_k/\binom5k\bigr)_{k=0}^5$ is log-concave. Moreover,
+\begin{equation}\label{pgr:s:fc:eq:last}
+ \gamma_4^2\ge\frac{25}{8}\gamma_3\gamma_5.
+\end{equation}
+The first inequality in \eqref{pgr:s:fc:eq:interior} is computer-assisted by an exact finite certificate collection. The second, the first-coefficient bound, and \eqref{pgr:s:fc:eq:last} have ordinary proofs.
+\end{theorem}
+
+All five core-tail activities must be positive and at least five sink-head activities must be positive for the actual degree to be five; these conditions are also sufficient. Core-head activities may vanish. Reversing all arcs and interchanging the activity roles gives the corresponding universal-source theorem. When $H$ is the off-diagonal relation of a preorder, adjoining the diagonal to $D$ gives a preorder, so this is an unbounded weighted preorder subclass as well.
+
+\subsection{Exact Boolean coefficients}
+Write $u_S=\prod_{i\in S}u_i$, $v_J=\prod_{j\in J}v_j$, and
+$e_r=\ee_r((u_i)_{i\in C})$, $E_r=\ee_r((w_x)_{x\in W})$.
+Define $F_{kr}$ to be the sum of $u_Sv_J$ over disjoint core sets $S,J$ of sizes $k,r$ for which distinct selected tails can cover all selected heads $J$. This is an existence test, not a count of injections. Put
+\[
+ a=F_{11},\quad b=F_{22},\quad c=F_{21},\quad
+ d=F_{31},\quad f=F_{32},\quad g=F_{41}.
+\]
+A support of size $k$ has at most $5-k$ core heads. Any injection covering those heads extends to the selected sink heads. Therefore
+\begin{equation}\label{pgr:s:fc:eq:coeff}
+\begin{aligned}
+ \gamma_1&=a+e_1E_1,& \gamma_2&=b+cE_1+e_2E_2,\\
+ \gamma_3&=fE_1+dE_2+e_3E_3,&
+ \gamma_4&=gE_3+e_4E_4,\qquad \gamma_5=e_5E_5.
+\end{aligned}
+\end{equation}
+In particular $\gamma_5>0$ has exactly the characterization stated above.
+
+For later use write $c=\sum_jv_jc_j$, $d=\sum_jv_jd_j$, and $g=\sum_jv_jg_j$.
+If $N_j$ is the nonempty core in-neighborhood of $j$, then
+\[
+ c_j=\sum_{\substack{S\subset C\setminus j,\ |S|=2\\S\cap N_j\ne\varnothing}}u_S,
+ \quad d_j=\sum_{\substack{S\subset C\setminus j,\ |S|=3\\S\cap N_j\ne\varnothing}}u_S,
+ \quad g_j=u_{C\setminus j};
+\]
+all three are zero for an empty neighborhood. Similarly write
+$b=\sum_{j<k}v_jv_kb_{jk}$ and $f=\sum_{j<k}v_jv_kf_{jk}$.
+The polynomial $f_{jk}$ is either zero or $u_{C\setminus\{j,k\}}$; it is nonzero exactly when $b_{jk}$ is nonzero.
+
+\subsection{The first interior inequality by exact certificates}
+
+For any nonnegative finite sink vector, let $p_r=\sum_xw_x^r$,
+$A=\sqrt{p_2}$, and $B=p_1-\sqrt{p_2}$. By Lemma~\ref{pgr:s:ad:lem:moments}
+of source~10, $A,B\ge0$ and the moment envelope \eqref{pgr:s:ad:eq:envelope}
+holds, sharp after closure over finite sink counts.
+\mnote{source~34 restates the envelope with the same proof (each
+$w_x\le\sqrt{p_2}$, so $p_3\le p_2^{3/2}$; $6E_3=p_1^3-3p_1p_2+2p_3$ and
+$2E_2=p_1^2-p_2$) and the same limiting construction, one sink of activity
+$A$ and $n$ sinks of activity $B/n$; it is printed once, in
+Section~\ref{pgr:s:ad:sec}.}
+
+
+With $E_1,E_2$ and the core activities fixed, the coefficient of $E_3$ in
+$\gamma_2^2-2\gamma_1\gamma_3$ is $-2(a+e_1E_1)e_3\le0$.
+It therefore suffices to prove nonnegativity after substituting the upper bound in \eqref{pgr:s:ad:eq:envelope}. Define
+\begin{align*}
+ G_1&=a+e_1(A+B),\\
+ G_2&=2b+2c(A+B)+e_2(2AB+B^2),\\
+ G_3&=6f(A+B)+3d(2AB+B^2)+e_3(3AB^2+B^3),\\
+ Q_H&=3G_2^2-4G_1G_3.
+\end{align*}
+At this substitution $G_1=\gamma_1,G_2=2\gamma_2,G_3=6\gamma_3$, so
+\begin{equation}\label{pgr:s:fc:eq:scale}
+ Q_H=12(\gamma_2^2-2\gamma_1\gamma_3).
+\end{equation}
+By the limiting construction, nonnegativity of $Q_H$ is also necessary for this inequality to hold for all finite clouds with the fixed core.
+
+There are $2^{20}=1,048,576$ labeled loopless directed relations on five vertices. Simultaneous relabeling of core tails and heads partitions them into $9,608$ classes, including all $139$ preorder classes. In the variable order
+\[
+ x=(u_0,u_1,u_2,u_3,u_4,v_0,v_1,v_2,v_3,v_4,A,B),
+\]
+the supplied certificate for each class is an exact identity
+\begin{equation}\label{pgr:s:fc:eq:certificate}
+ Q_H(x)=\sum_\ell q_\ell x^{m_\ell}
+              (\alpha_\ell x^{r_\ell}+\beta_\ell x^{s_\ell})^2+R_H(x),
+\end{equation}
+where $q_\ell>0$, all scalar coefficients are rational, all exponents are nonnegative integers, and every coefficient of $R_H$ is nonnegative.
+
+\begin{proposition}[Finite exact verification]\label{pgr:s:fc:prop:cert}
+All $9,608$ identities \eqref{pgr:s:fc:eq:certificate} have coefficientwise nonnegative remainders. Their permutation orbits cover all labeled relations exactly once. The collection contains $57,089$ weighted binomial squares; $2,391$ certificates need no square terms.
+\end{proposition}
+\begin{proof}[Verification]
+The independent Python checker reconstructs the Boolean support kernels, forms $Q_H$, expands each rational square, and subtracts it exactly. It checks every remainder coefficient, including at exponents absent from the target. It also checks complete labeled-core coverage under all $120$ vertex permutations. No producer import, numerical optimization tolerance, or sampled activity assignment is used to establish any identity. The certificate data and checker supply the reproducible finite calculation.
+\end{proof}
+
+
+\mnote{dated note, 1~October 2026 (batch-73 intake): the shipped note
+\nolinkurl{34-five-core-ORDINARY_PROOFS.md} says at its line~13 ``No claim
+that this reduced polynomial is always nonnegative is made by this note''.
+That sentence describes the note's own scope before the certificates; the
+reduced polynomial $Q_H$ is proved nonnegative by
+Proposition~\ref{pgr:s:fc:prop:cert}. The delivered note is kept
+unchanged.}
+
+Floating-point linear programming was used only to discover candidates. Exact rational reconstruction and expansion determine acceptance. Proposition~\ref{pgr:s:fc:prop:cert}, \eqref{pgr:s:fc:eq:scale}, and the monotonicity direction above prove the first inequality in \eqref{pgr:s:fc:eq:interior}, including every nonnegative activity face.
+
+\subsection{An ordinary proof of the second interior inequality}
+The following comparisons hold coefficientwise in all core activities:
+\begin{equation}\label{pgr:s:fc:eq:corelemmas}
+ 3fd\ge bg,\qquad
+ 4fe_3+3d^2\ge be_4+4cg,\qquad
+ 2de_3\ge2e_2g+ce_4.
+\end{equation}
+Complete ordinary proofs are given in the appendix.
+\mnote{the three core comparisons are proved without enumeration in
+source~34's appendix; source~06's appendix proves the same comparisons
+with the middle one strengthened to $4fe_3+2d^2\ge be_4+4cg$, which
+implies the form used here because $d^2\ge0$. The appendix is printed
+once, in source~06's stronger form (Section~\ref{pgr:s:fb:app:core}).}
+ For the sink moments, Newton's normalized inequalities and direct elementary expansions give
+\begin{equation}\label{pgr:s:fc:eq:sinklemmas}
+\begin{gathered}
+ E_1E_2\ge3E_3,\quad E_2^2\ge\tfrac32E_1E_3,\quad
+ E_1E_3\ge4E_4,\\
+ E_2E_3\ge2E_1E_4,\qquad E_3^2\ge\tfrac43E_2E_4.
+\end{gathered}
+\end{equation}
+The finite-variable factors in Newton's inequalities only strengthen these bounds. Vanishing-moment cases follow directly. Newton for five tail variables gives $e_3^2\ge2e_2e_4$.
+
+Expand the square using \eqref{pgr:s:fc:eq:coeff}. Its terms obey
+\begin{align*}
+ 2fdE_1E_2&\ge6fdE_3\ge2bgE_3,\\
+ 2fe_3E_1E_3+d^2E_2^2
+ &\ge(2fe_3+\tfrac32d^2)E_1E_3\\
+ &\ge(\tfrac12be_4+2cg)E_1E_3
+ \ge2be_4E_4+2cgE_1E_3,\\
+ 2de_3E_2E_3&\ge2e_2gE_2E_3+ce_4E_2E_3
+ \ge2e_2gE_2E_3+2ce_4E_1E_4,\\
+ e_3^2E_3^2&\ge\tfrac83e_2e_4E_2E_4\ge2e_2e_4E_2E_4.
+\end{align*}
+Adding these comparisons and discarding $f^2E_1^2\ge0$ gives
+\[
+ \gamma_3^2\ge2(b+cE_1+e_2E_2)(gE_3+e_4E_4)=2\gamma_2\gamma_4.
+\]
+This argument has no computational dependency.
+
+
+\subsection{The first and last comparisons}
+
+\mnote{source~34 proves the first comparison $(\rho-1)\gamma_1^2\ge2\rho\gamma_2$
+for every loopless directed relation with independent nonnegative role
+activities by the weighted Motzkin--Straus bound with mass shifting,
+noting that physical vertices with a zero tail role are never deleted from
+their possible head role: this is Theorem~\ref{pgr:thm:first},
+\eqref{pgr:eq:first}. It proves the last comparison
+$\gamma_4^2\ge\frac{25}{8}\gamma_3\gamma_5$ from $q^2\ge\frac52pe_3$,
+$qg\ge pd$, $g^2\ge2pf$ ($p=e_5$, $q=e_4$; for $qg\ge pd$ a feasible
+three-tail summand $v_ju_S$ of $d$ is supplied by $u_{C\setminus i}$ from
+$q$ times $v_ju_{C\setminus j}$ from $g$, and for $g^2\ge2pf$ the two
+ordered cross terms of a feasible head pair) and the sink bounds
+$E_4^2\ge\frac54E_3E_5$, $E_3E_4\ge\frac53E_2E_5$,
+$E_3^2\ge\frac{10}{3}E_1E_5$: this is source~14's proof at $r=5$ with the
+finite-$m$ factors dropped, and \eqref{pgr:s:fc:eq:last} follows from
+Theorem~\ref{pgr:s:lg:thm:sharp}, since $K(5,m)>\frac{25}{8}$, when
+$\gamma_5>0$ (it is trivial when $\gamma_5=0$). Both proofs are replaced
+by these pointers. The package's \texttt{ORDINARY\_PROOFS.md} also cites
+``the ordinary general universal-sink last-gap theorem''.}
+
+At actual degree five, \eqref{pgr:eq:first} gives $2\gamma_1^2\ge5\gamma_2$.
+Together with \eqref{pgr:s:fc:eq:interior} and \eqref{pgr:s:fc:eq:last}, this gives all four binomial-normalized comparisons. A positive-weight top support has positive-weight submatchings of every smaller size, so there are no internal zeros. This proves Theorem~\ref{pgr:s:fc:thm:main}.
+
+\subsection{Scope and an exact limitation of a stronger claim}
+The inequalities proved here hold on closed nonnegative activity faces, but their constants do not automatically prove rank ultra log concavity at smaller actual degrees. Degree four requires $\gamma_2^2\ge\tfrac94\gamma_1\gamma_3$ and $\gamma_3^2\ge\tfrac83\gamma_2\gamma_4$; degree three requires $\gamma_2^2\ge3\gamma_1\gamma_3$. A fifth core vertex with zero tail activity may remain a nonuniversal head, so it cannot simply be deleted to invoke a four-core result.
+
+In fact, the stronger all-cloud cubic bound $\gamma_2^2\ge3\gamma_1\gamma_3$ fails for five-core preorders. Take only the core arc $0\to1$, six universal sinks of head activity one, core tails $(1,1,100,100,100)$ and core heads $(0,240,0,0,0)$. Direct Boolean endpoint-pair enumeration gives
+\[
+ (\gamma_0,\ldots,\gamma_5)
+ =(1,2052,891015,129206000,4830450000,6000000),
+\]
+and
+\[
+ \gamma_2^2-3\gamma_1\gamma_3=-1,484,405,775<0.
+\]
+The relation becomes a preorder upon adjoining the diagonal. Its actual degree is five, and it satisfies the rank-five theorem. This example refutes only the proposed stronger constant three.
+\mnote{this does not contradict source~10's Theorem~\ref{pgr:s:ad:thm:main}:
+the example has five positive core tail activities, and source~10 proves
+the constant three for four-vertex cores only. It was reproduced at intake
+by direct enumeration.}
+
+
+The package's \texttt{python verify.py} command performs a fresh exact replay. File integrity checking alone is not mathematical verification. Optional discovery programs and numerical-search receipts are not proof dependencies. The ordinary core proofs below, the moment reduction, and the first and last arguments are separate from the finite exact calculation. The result makes no claim about arbitrary weighted preorders outside the universal-sink family, no lower-degree closure claim for five cores, and no real-rootedness or stability claim.
+
+
+\mnote{source~34's appendix, ``Ordinary coefficientwise core comparisons'',
+proves \eqref{pgr:s:fc:eq:corelemmas} without finite enumeration. It is
+source~06's appendix (Section~\ref{pgr:s:fb:app:core}) except in the
+comparison involving two head roles: source~34 proves
+$4fe_3+3d^2\ge be_4+4cg$ where source~06 proves the stronger
+$4fe_3+2d^2\ge be_4+4cg$, and correspondingly its coefficient~$6$ of
+$d_jd_k$, of $\epsilon_P\epsilon_Q$, of $\epsilon_PB_V$, of $B_UB_V$ and of
+$sB_V$ is~$4$ in source~06, and its final $5B_UB_V$ is $3B_UB_V$. Its
+other two comparisons and its auxiliary facts on three tails are the same
+text. It is printed once, in source~06's form; the strengthening is
+corroborated exactly by source~06's \texttt{check\_ordinary\_lemmas.py}.}
+
+\section{Five-vertex cores at the degree-four boundary (source 06)}\label{pgr:s:fb:sec}
+
+Source~06 is \emph{The rank four boundary for five vertex cores with
+universal sinks} (7 pages as delivered; archives 07 and~06, the two parts
+of \texttt{universal-sink-five-core-boundary-package}; ``Research note'').
+Its files are shipped with the prefix \texttt{06-five-core-boundary-}. Its
+bounded-sink certificates (two archives of 13.0 and 15.6~MB) and their
+manifest are not shipped; they are in the arrival commit (README).
+
+\paragraph{Abstract of source 06, as delivered.}
+
+We prove rank ultra log concavity at actual degree four for every arbitrary loopless directed five-vertex core with a finite independent cloud of universal sinks and independent nonnegative tail and head activities. This closes the degree-four boundary of the previously studied full-rank-five family. Each feasible ordered pair of disjoint endpoint sets is counted once. The first interior comparison is certified exactly on two finite core domains: 3,044 classes with a retained fifth head-only vertex, and 9,608 classes with a bounded four-sink moment cone. The last comparison has ordinary proofs in both boundary branches. Zero tail activities never justify deleting an otherwise active head role. The normalization is the actual degree four; no general actual-degree-three conclusion is inferred.
+
+\subsection{The boundary theorem}
+Let $C=\{0,1,2,3,4\}$ carry any loopless directed relation $H$. Let $W$ be a finite independent set disjoint from $C$. The full relation $D$ consists of $H$ and all arcs $C\to W$, with no other arcs. Assign independent nonnegative core tail activities $u_i$, core head activities $v_i$, and sink head activities $w_x$. Define
+\[
+ \Gamma_D(t)=\sum_{k=0}^5\gamma_k t^k,\qquad
+ \gamma_k=\sum_{\substack{S\cap T=\varnothing,\ |S|=|T|=k\\
+ S\text{ admits a directed perfect matching to }T}}
+ \prod_{i\in S}u_i\prod_{j\in T\cap C}v_j\prod_{x\in T\cap W}w_x.
+\]
+Every nonempty tail set lies in $C$, $\gamma_0=1$, and a feasible ordered pair $(S,T)$ is counted once, independently of how many matching witnesses it has.
+
+\begin{theorem}\label{pgr:s:fb:thm:main}
+On the entire nonnegative activity face $\gamma_5=0$,
+\begin{equation}\label{pgr:s:fb:eq:gaps}
+ \gamma_2^2\ge\frac94\gamma_1\gamma_3,
+ \qquad \gamma_3^2\ge\frac83\gamma_2\gamma_4.
+\end{equation}
+Consequently, whenever the actual surviving degree is four,
+$\bigl(\gamma_k/\binom4k\bigr)_{k=0}^4$ is log-concave.
+The first inequality in \eqref{pgr:s:fb:eq:gaps} uses exact rational certificates; the second and the first-coefficient comparison have ordinary proofs.
+\end{theorem}
+
+No transitivity is assumed. In particular the theorem applies when $H$ is the off-diagonal relation of a preorder, since adjoining the diagonal to $D$ then gives a preorder. Reversing all arcs and exchanging tail and head roles gives the universal-source version.
+
+\subsection{Boolean coefficients and the two boundary branches}
+For disjoint $S,J\subseteq C$, put $u_S=\prod_{i\in S}u_i$, $v_J=\prod_{j\in J}v_j$. Let $F_{kr}$ sum $u_Sv_J$ over $|S|=k$, $|J|=r$ such that a matching from $S$ covers $J$. This is Boolean feasibility, not the number of injections. Write
+\[
+ a=F_{11},\ b=F_{22},\ c=F_{21},\ d=F_{31},\ f=F_{32},\ g=F_{41},
+ \qquad e_r=\ee_r(u),\quad E_r=\ee_r(w).
+\]
+Every injection covering the selected core heads extends to the selected sink heads. Partitioning supports by the number of core heads therefore gives
+\begin{equation}\label{pgr:s:fb:eq:coeff}
+\begin{aligned}
+ \gamma_1&=a+e_1E_1,& \gamma_2&=b+cE_1+e_2E_2,\\
+ \gamma_3&=fE_1+dE_2+e_3E_3,&
+ \gamma_4&=gE_3+e_4E_4,\qquad \gamma_5=e_5E_5.
+\end{aligned}
+\end{equation}
+Because the activities are nonnegative, $\gamma_5=0$ means either some core tail is zero or at most four sink heads are positive. These give the two proof domains:
+\begin{enumerate}
+\item A zero core-tail activity, relabeled $u_4=0$, with an arbitrary finite sink cloud. The vertex $4$ remains available as a head. Arcs out of it have zero product weight and may be ignored; its incoming arcs cannot be ignored.
+\item At most four positive sink-head activities, with all five core-tail activities allowed. Zeros may be padded to give a four-entry sink vector.
+\end{enumerate}
+Their union contains the entire boundary, including overlaps and further zero activities. At actual degree four there are at least four active tails; if all five are active, there must be three or four active sinks. The proofs below do not require positivity of $\gamma_4$.
+
+\subsection{Two moment reductions for the first interior comparison}
+
+Let $p_r=\sum_xw_x^r$, $A=\sqrt{p_2}$, and $B=p_1-\sqrt{p_2}$. Then $A,B\ge0$ and, by Lemma~\ref{pgr:s:ad:lem:moments} of source~10 in source~06's scaled form,
+\[
+ E_1=A+B,\qquad 2E_2=2AB+B^2,\qquad 6E_3\le3AB^2+B^3.
+\]
+\mnote{source~06 proves this display directly ($p_1^2\ge p_2$, and each
+$w_x\le\sqrt{p_2}$ implies $p_3\le p_2^{3/2}$; substitute into
+$2E_2=p_1^2-p_2$ and $6E_3=p_1^3-3p_1p_2+2p_3$), as its equation
+``envelope''; references to it point to source~10's lemma.}
+
+The coefficient of $E_3$ in $\gamma_2^2-\tfrac94\gamma_1\gamma_3$ is
+$-\tfrac94(a+e_1E_1)e_3\le0$, so replacing $E_3$ by its displayed upper bound can only decrease the gap.
+
+For the zero-tail branch use the variable order
+\[
+ (u_0,\ldots,u_4,v_0,\ldots,v_4,A,B),\qquad u_4=0,
+\]
+and define
+\begin{align*}
+ G_1&=a+e_1(A+B),\\
+ G_2&=2b+2c(A+B)+e_2(2AB+B^2),\\
+ G_3&=6f(A+B)+3d(2AB+B^2)+e_3(3AB^2+B^3).
+\end{align*}
+All core polynomials here are specialized only in the tail role $u_4$; $v_4$ remains an independent variable.
+
+For the bounded-sink branch, Cauchy's inequality on four entries gives $p_1^2\le4p_2$, hence $A\ge B$. Write $A=B+C$ with $C\ge0$. Then
+\begin{equation}\label{pgr:s:fb:eq:bounded}
+ E_1=C+2B,\qquad 2E_2=2BC+3B^2,\qquad 6E_3\le3CB^2+4B^3.
+\end{equation}
+Use the variable order $(u_0,\ldots,u_4,v_0,\ldots,v_4,C,B)$ and the same definitions of $G_k$, with the three scaled moments replaced by \eqref{pgr:s:fb:eq:bounded}. This enlarged nonnegative cone is a sufficient bound; no claim of sharpness or equivalence for a fixed four-sink count is needed.
+
+In both cases the boundary substitution satisfies $G_k=k!\gamma_k$ for $k=1,2,3$, and
+\begin{equation}\label{pgr:s:fb:eq:Q}
+ Q=2G_2^2-3G_1G_3
+   =8\left(\gamma_2^2-\frac94\gamma_1\gamma_3\right).
+\end{equation}
+Thus nonnegativity of the corresponding $Q$ proves the required inequality.
+
+\subsection{Finite exact certificates}
+The zero-tail domain has $16$ relevant arc bits: tails $0,1,2,3$ may point to any different core vertex, including the head-only vertex $4$. All $2^{16}=65,536$ labeled relations split into $3,044$ classes under permutations of the four active-tail labels fixing $4$. The full five-tail domain has $2^{20}=1,048,576$ relations, split into $9,608$ classes under all five-label permutations.
+
+For each representative in each domain the certificate is an exact identity
+\begin{equation}\label{pgr:s:fb:eq:cert}
+ Q(x)=\sum_\ell q_\ell x^{m_\ell}
+          \left(\sum_{r\in\mathcal R_\ell}c_{\ell,r}x^r\right)^2+R(x),
+\end{equation}
+where $q_\ell>0$, all scalar coefficients are rational, every exponent is a nonnegative integer, and $R$ is coefficientwise nonnegative. Such an identity proves nonnegativity on the closed nonnegative orthant.
+
+\begin{proposition}[Finite exact verification]\label{pgr:s:fb:prop:cert}
+The two supplied collections cover all $3,044$ zero-tail classes and all $9,608$ bounded-sink classes. Every exact identity \eqref{pgr:s:fb:eq:cert} has a coefficientwise nonnegative remainder. The zero-tail collection contains $212,319$ binomial-square terms, and $158$ targets are already coefficientwise nonnegative.
+\end{proposition}
+\begin{proof}[Verification]
+The independent checker reconstructs the endpoint-support kernels by Boolean matching existence, forms the appropriate scaled moment polynomial and \eqref{pgr:s:fb:eq:Q}, then expands and subtracts every rational square. It checks every remainder coefficient, including exponents absent from the target. For the zero-tail domain it also checks that $u_4$ occurs in neither targets nor certificate terms. Independently generated relabeling orbits are disjoint and cover the complete labeled graph domains. No producer code is imported. The accompanying data and standard-library checker supply the reproducible finite calculation.
+\end{proof}
+
+
+\mnote{source~06's proposition states square counts for the zero-tail
+collection only. Its README and \texttt{audits/four-sink-receipt.json}
+record those of the bounded-sink collection: 1,755,474 polynomial squares
+of two to 67 terms, with 57 targets already coefficientwise nonnegative.
+At intake all 12,652 certificate members of both collections were
+authenticated against the audit manifests and 40 certificates were
+replayed; the bounded-sink certificates are not shipped with this report
+(README).}
+
+Numerical linear programming served only to propose candidates. Rational reconstruction, exact active-system solutions where needed, and exact expansion determine validity; no numerical tolerance is a proof premise. Proposition~\ref{pgr:s:fb:prop:cert}, the moment bounds, and the correct monotonicity direction prove the first inequality in \eqref{pgr:s:fb:eq:gaps} on the entire boundary.
+
+\subsection{An ordinary last-gap proof with a retained head-only vertex}
+Assume the active-tail set is $I=\{0,1,2,3\}$ and the remaining core vertex is $h=4$. Initially take the four tail activities positive. Put $p=\prod_{i\in I}u_i$, $x_i=1/u_i$, and $t=v_h$. If $h$ has no in-neighbor in $I$, set $t=0$, since its head role then contributes no weight. Define
+\[
+ Z=E_4+tE_3.
+\]
+For each $i\in I$, let $\alpha_i,\beta_i,\delta_i$ indicate whether $I\setminus\{i\}$ can cover, respectively, the head sets $\{h\},\{i\},\{h,i\}$. Set
+\[
+ A_i=E_3+(t\alpha_i+v_i\beta_i)E_2+tv_i\delta_iE_1.
+\]
+For $i\ne j$, let $a,b,c,d,e,f$ indicate whether $S=I\setminus\{i,j\}$ can cover, respectively,
+$\{h\}$, $\{i\}$, $\{j\}$, $\{h,i\}$, $\{h,j\}$, $\{i,j\}$, and put
+\[
+ B_{ij}=E_2+(ta+v_ib+v_jc)E_1+tv_id+tv_je+v_iv_jf.
+\]
+These local Boolean letters are independent of the earlier global core-polynomial names. Partitioning by omitted active tails gives
+\begin{equation}\label{pgr:s:fb:eq:reciprocal}
+ \gamma_4=pZ,\qquad \gamma_3=p\sum_i x_iA_i,
+ \qquad \gamma_2=p\sum_{i<j}x_ix_jB_{ij}.
+\end{equation}
+
+\begin{lemma}\label{pgr:s:fb:lem:pair}
+For every pair $i\ne j$, $A_iA_j\ge ZB_{ij}$.
+\end{lemma}
+\begin{proof}
+If $t=0$ because the extra head has no incoming arc, the comparisons below involving $t$ vanish and the remaining ones follow by retaining matching witnesses. Otherwise the extra head has a nonempty in-neighborhood $N\subseteq I$.
+The relevant Boolean implications are
+\begin{gather*}
+ \alpha_i+\alpha_j\ge1+a,\quad \alpha_i\alpha_j\ge a,
+ \quad \beta_i\ge b,\quad\beta_j\ge c,\\
+ \delta_i\ge d,\quad\beta_i\alpha_j\ge d,
+ \quad\delta_i+\beta_i\alpha_j\ge b,
+ \quad\delta_i\alpha_j\ge d,\\
+ \delta_j\ge e,\quad\beta_j\alpha_i\ge e,
+ \quad\delta_j+\beta_j\alpha_i\ge c,
+ \quad\delta_j\alpha_i\ge e,\\
+ \beta_i\beta_j\ge f,\qquad
+ \delta_i\beta_j+\delta_j\beta_i\ge f.
+\end{gather*}
+Most assertions follow by enlarging a feasible tail set. For $\delta_i+\beta_i\alpha_j\ge b$, choose a source $r\in S$ for $i$. If $\alpha_j=1$, the second term suffices. Otherwise $N=\{j\}$, and $j\to h,r\to i$ prove $\delta_i=1$. The symmetric assertion is identical. For the last implication, if $f=1$ choose distinct $r,s\in S$ with $r\to i,s\to j$. For any $z\in N$, if $z=i$ use $i\to h,s\to j$; if $z=j$ use $j\to h,r\to i$; and if $z\in S$, pair its arc to $h$ with the other matching source. Thus at least one of $\delta_i,\delta_j$ is one.
+
+The coefficients of $A_iA_j-ZB_{ij}$ as a polynomial in $t,v_i,v_j$ are listed below; the rows containing only $v_i$ have symmetric $v_j$ counterparts.
+\[
+\begin{array}{c|l}
+ 1&E_3^2-E_2E_4\\
+ t&(\alpha_i+\alpha_j-1)E_2E_3-aE_1E_4\\
+ v_i&\beta_iE_2E_3-bE_1E_4\\
+ t^2&\alpha_i\alpha_jE_2^2-aE_1E_3\\
+ tv_i&\delta_iE_1E_3+\beta_i\alpha_jE_2^2-bE_1E_3-dE_4\\
+ v_iv_j&\beta_i\beta_jE_2^2-fE_4\\
+ t^2v_i&\delta_i\alpha_jE_1E_2-dE_3\\
+ tv_iv_j&(\delta_i\beta_j+\delta_j\beta_i)E_1E_2-fE_3\\
+ t^2v_iv_j&\delta_i\delta_jE_1^2.
+\end{array}
+\]
+Every coefficient is nonnegative by the Boolean implications and elementary-symmetric log-concavity:
+\[
+ E_3^2\ge E_2E_4,\quad E_2E_3\ge E_1E_4,\quad
+ E_2^2\ge E_1E_3,\quad E_2^2\ge E_4,\quad E_1E_2\ge E_3.
+\]
+For the $tv_i$ coefficient, if $d=1$ then both $\delta_i$ and $\beta_i\alpha_j$ equal one, giving at least $E_2^2-E_4$. If $d=0,b=1$, their sum is at least one and $E_2^2\ge E_1E_3$ suffices; the remaining case is immediate. This also handles the symmetric coefficient.
+\end{proof}
+
+Let $y_i=x_iA_i$. By Lemma~\ref{pgr:s:fb:lem:pair} and \eqref{pgr:s:fb:eq:reciprocal},
+\[
+ \frac{\gamma_2\gamma_4}{p^2}\le\sum_{i<j}y_iy_j,
+ \qquad \frac{\gamma_3}{p}=\sum_i y_i.
+\]
+Cauchy's inequality on four variables gives $(\sum_i y_i)^2\ge\tfrac83\sum_{i<j}y_iy_j$, proving the required last gap. More explicitly,
+\[
+ 3\gamma_3^2-8\gamma_2\gamma_4
+ =p^2\sum_{i<j}(y_i-y_j)^2
+   +8p^2\sum_{i<j}x_ix_j(A_iA_j-ZB_{ij})\ge0.
+\]
+Multiplication by $p^2$ removes all reciprocal denominators; alternatively, continuity includes further zero tails. The fifth physical vertex has retained its head role throughout.
+
+\subsection{An ordinary last-gap proof with at most four sinks}
+For an arbitrary five-core, the following inequalities hold coefficientwise:
+\begin{equation}\label{pgr:s:fb:eq:corelemmas}
+ 3fd\ge bg,\qquad 4fe_3+2d^2\ge be_4+4cg,
+ \qquad 2de_3\ge2e_2g+ce_4.
+\end{equation}
+The appendix supplies complete ordinary proofs. Newton's inequalities in five tail variables give $e_3^2\ge2e_2e_4$. With at most four positive sink heads, pad zeros to four entries and use
+\begin{equation}\label{pgr:s:fb:eq:finiteNewton}
+\begin{gathered}
+ E_1E_2\ge6E_3,\qquad E_2^2\ge\tfrac94E_1E_3,\qquad
+ E_3^2\ge\tfrac83E_2E_4,\\
+ E_1E_3\ge4E_4,\qquad E_2E_3\ge2E_1E_4.
+\end{gathered}
+\end{equation}
+The last two constants can in fact be strengthened to $16$ and $6$. All displayed bounds follow from binomial-normalized Newton inequalities, including zeros~\cite{BH}.
+
+Put $X=fE_1,Y=dE_2,Z=e_3E_3$. Using \eqref{pgr:s:fb:eq:corelemmas}--\eqref{pgr:s:fb:eq:finiteNewton}, the six terms of $\gamma_2\gamma_4$ are bounded in four groups:
+\begin{align*}
+ bgE_3&\le\tfrac12XY,\\
+ be_4E_4+cgE_1E_3
+ &\le(\tfrac14be_4+cg)E_1E_3
+ \le(fe_3+\tfrac12d^2)E_1E_3
+ \le XZ+\tfrac29Y^2,\\
+ ce_4E_1E_4+e_2gE_2E_3
+ &\le(\tfrac12ce_4+e_2g)E_2E_3\le YZ,\\
+ e_2e_4E_2E_4&\le\tfrac{3}{16}Z^2.
+\end{align*}
+Since $\gamma_3=X+Y+Z$, subtraction gives the exact lower bound
+\begin{align*}
+ \gamma_3^2-\tfrac83\gamma_2\gamma_4
+ &\ge X^2+\tfrac23XY+\tfrac{11}{27}Y^2+\tfrac12Z^2
+       -\tfrac23XZ-\tfrac23YZ\\
+ &=\left(X+\frac{Y-Z}{3}\right)^2
+   +\frac8{27}\left(Y-\frac34Z\right)^2+\frac29Z^2\ge0.
+\end{align*}
+This proves the last comparison for the bounded-sink branch without any numerical or computer-assisted premise. Together with the preceding section, it covers all of $\gamma_5=0$.
+
+
+\subsection{Actual degree and reproducibility}
+
+\mnote{source~06 proves here, for every loopless directed relation with
+nonnegative independent roles and actual degree $\rho\ge2$, the first
+comparison $(\rho-1)\gamma_1^2\ge2\rho\gamma_2$ by Motzkin--Straus on the
+graph of positive-weight arcs with mass shifting; this is
+Theorem~\ref{pgr:thm:first} and is replaced by that pointer.}
+
+At actual degree four this gives $3\gamma_1^2\ge8\gamma_2$. Along with \eqref{pgr:s:fb:eq:gaps}, these are precisely the three binomial-normalized inequalities. Positive-weight submatchings of a positive top support show there are no internal zeros, completing Theorem~\ref{pgr:s:fb:thm:main}.
+
+Run \texttt{python verify.py} in the supplied package for a fresh standard-library exact replay. The driver checks integrity, unpacks the compressed certificate data to a fresh temporary directory, and runs the independent support, polynomial, and orbit checks. Neither a numerical solver, a prior research archive, nor network access is needed. Integrity checking by itself is not a proof replay. Separate exact audits corroborate the ordinary Boolean implications and square identities, but the ordinary arguments do not depend on those computations.
+
+The theorem does not infer the degree-three inequality $\gamma_2^2\ge3\gamma_1\gamma_3$ from a padded quartic normalization. It therefore closes the actual-degree-four boundary only. Nonuniversal exterior neighborhoods and larger physical cores are outside its scope. No general weighted-preorder, real-rootedness, stability, or novelty claim is made.
+
+
+\subsection{Appendix of source 06: ordinary coefficientwise core comparisons}\label{pgr:s:fb:app:core}
+\mnote{printed once for sources 34 and~06, in source~06's stronger form;
+see the note at the end of Section~\ref{pgr:s:fc:sec}.}
+
+We prove the three comparisons in \eqref{pgr:s:fb:eq:corelemmas} without finite enumeration.
+
+\subsubsection{The comparison involving three head roles}
+For a repeated-head monomial $v_j^2v_k$, every feasible two-tail set $B$ in $b_{jk}$ makes $B\cup\{k\}$ feasible for head $j$. Thus $f_{jk}d_j\ge b_{jk}g_j$ coefficientwise.
+
+For three distinct heads $j,k,l$, a fixed tail monomial in $bg$ has coefficient at most three, since choosing the head belonging to $g$ determines its four-tail factor and hence its two-tail factor. It suffices to show that each such monomial occurs in $fd$ at least once.
+
+Fix a summand of $b_{jk}g_l$ and a witnessing two-tail matching onto $j,k$, and write $C=\{j,k,l,a,b\}$. If the two tails are $a,b$, choose an in-neighbor $r$ of $l$. If $r$ is one of $a,b$, pair $l$ with the original head whose source is the other tail. If $r$ is one of $j,k$, pair $l$ with the other original head. The resulting head pair has a feasible three-tail complement, and division of the original tail monomial by that complement gives a feasible three-tail set for the remaining head, using its original incoming arc.
+
+Otherwise the two tails are $l,a$, after renaming $a,b$. Relabel $j,k$ so the matching is $l\to j,a\to k$. If $l$ has an in-neighbor in $\{j,k,a\}$, use $f_{jk}d_l$. Otherwise its nonempty neighborhood contains $b$; use $f_{kl}d_j$, with witnesses $a\to k,b\to l$ and $l\to j$. Each product is exactly the original tail monomial. Thus $3fd\ge bg$.
+
+\subsubsection{Elementary facts on three tails}
+For three activities $z_a,z_b,z_c$ write $t=\ee_1(z),s=\ee_2(z),p=\ee_3(z)$.
+For $U\subseteq\{a,b,c\}$ let $L_U=\sum_{i\in U}z_i$ and
+$B_U=\sum_{|S|=2,\ S\cap U\ne\varnothing}z_S$.
+For nonempty $U$,
+\begin{equation}\label{pgr:s:fb:eq:aux}
+ sB_U\ge p(t+L_U),\qquad
+ B_UB_V\ge2pL_{U\cap V},\qquad
+ B_UB_V\ge b(U,V)s,
+\end{equation}
+coefficientwise, where $b(U,V)$ sums pairs that admit distinct representatives in $U,V$.
+For singleton $U$, the first bound follows by expansion; for $|U|\ge2$, use $B_U=s$ and $s^2\ge2pt$. For the second bound, the two ordered products of distinct pairs containing $i\in U\cap V$ supply $2pz_i$. For the last bound, if both neighborhoods have size at least two use $b(U,V)\le s$. If just one is a singleton, the bound is immediate. For distinct singletons $\{a\},\{b\}$ it is
+$z_a(z_b+z_c)z_b(z_a+z_c)=z_az_b(s+z_c^2)\ge z_az_bs$.
+For equal singletons, $b(U,V)=0$.
+
+\subsubsection{The comparison involving two head roles}
+We prove $4fe_3+2d^2\ge be_4+4cg$. For the coefficient of $v_j^2$, it is enough that $d_j^2\ge2c_jg_j$. If $j$ has at least two in-neighbors among its four permitted tails $z$, then $d_j=\ee_3(z)$, $c_j\le\ee_2(z)$, $g_j=\ee_4(z)$, and
+$\ee_3(z)^2\ge2\ee_2(z)\ee_4(z)$ coefficientwise. With just one in-neighbor of activity $a$, use $c_j=at,d_j=as,g_j=ap$ and $s^2\ge2tp$. Empty neighborhoods contribute zero.
+
+For distinct heads $j,k$, put $x=u_j,y=u_k$ and use $t,s,p$ on the remaining set $A$ of three vertices. Let $P,Q\subseteq A$ be their incoming neighborhoods from $A$. If $k\to j$ put $U=A$, otherwise put $U=P$; if $j\to k$ put $V=A$, otherwise put $V=Q$. Write $\epsilon_P=1_{P\ne\varnothing}$, $\epsilon_Q=1_{Q\ne\varnothing}$, $\eta_P=1_{U\ne\varnothing}$, $\eta_Q=1_{V\ne\varnothing}$. Let $\epsilon$ indicate that $P,Q$ admit distinct representatives, and let $b=b(P,Q)$. Then
+\[
+\begin{array}{lll}
+ c_j=B_P+yL_U,&d_j=\epsilon_Pp+yB_U,&g_j=\eta_Pyp,\\
+ c_k=B_Q+xL_V,&d_k=\epsilon_Qp+xB_V,&g_k=\eta_Qxp,
+\end{array}
+\]
+while $f_{jk}=\epsilon p$, $e_3=p+(x+y)s+xyt$, and $e_4=(x+y)p+xys$.
+The desired coefficient is
+\[
+ R=4\epsilon pe_3+4d_jd_k-be_4-4(c_jg_k+c_kg_j).
+\]
+Its constant term is $p^2(4\epsilon+4\epsilon_P\epsilon_Q)\ge0$.
+Its $x$ coefficient divided by $p$ is
+$4\epsilon s+4\epsilon_PB_V-b-4\eta_QB_P$.
+If $\epsilon=1$, use $B_P\le s$ and $b\le B_V$. If $\epsilon=0$, then $b=0$. The expression vanishes unless $\epsilon_P=\eta_Q=1$; in that case either $V=A$, or $P=Q$ is a singleton, so $B_V\ge B_P$. The $y$ coefficient is symmetric.
+
+The $xy$ coefficient is
+\[
+ 4\epsilon pt+4B_UB_V-bs-4p(\eta_QL_U+\eta_PL_V).
+\]
+It vanishes if $\eta_P\eta_Q=0$. Otherwise both indicators are one. If $\epsilon=0$ and one cross arc is present, assume $U=A$ and use $4sB_V\ge4p(t+L_V)$ from \eqref{pgr:s:fb:eq:aux}. If neither cross arc is present, $P=Q$ is a nonempty singleton, and $B_U^2\ge2pL_U$ suffices. Finally, if $\epsilon=1$, use $B_UB_V\ge bs$, $B_UB_V\ge2pL_{U\cap V}$, and $L_U+L_V-t\le L_{U\cap V}$ to obtain
+\[
+ 4B_UB_V-bs+4p(t-L_U-L_V)
+ \ge3B_UB_V-4pL_{U\cap V}\ge0.
+\]
+Thus every coefficient of $R$ is nonnegative.
+
+\subsubsection{The comparison involving one head role}
+Fix a head $j$ and put $x=u_j$. Write $z_r=\ee_r(z)$ for the other four tails. The constant and $x$ coefficients of
+$2d_je_3-2e_2g_j-c_je_4$ are
+\[
+ Q_0=2d_jz_3-(2z_2+c_j)g_j,\qquad
+ Q_1=2d_jz_2-2z_1g_j-c_jz_3.
+\]
+If the neighborhood has at least two vertices, $d_j=z_3,c_j\le z_2$, and the coefficientwise bounds $z_3^2\ge2z_2z_4$ and $z_2z_3\ge3z_1z_4$ prove both comparisons. With a singleton neighborhood of activity $a$, let $t,s,p$ refer to the other three tails. Direct expansion gives
+\[
+ Q_0=a^2(2s^2-3tp),\qquad
+ Q_1=a^2(st-2p)+a(2s^2-3tp),
+\]
+which are coefficientwise nonnegative since $s^2\ge2tp$ and $st\ge3p$. The empty-neighborhood case is zero. Summing over heads proves $2de_3\ge2e_2g+ce_4$.
+
+
 \part*{Appendix}
 \addcontentsline{toc}{part}{Appendix}
 \appendix
