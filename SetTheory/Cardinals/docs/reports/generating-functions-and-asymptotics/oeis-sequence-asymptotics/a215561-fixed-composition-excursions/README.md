@@ -281,6 +281,11 @@ holds for A215562.
 - The bridge–excursion identity is the composition-marked case of
   Corollary `cor:excursion` of
   [`multiple-chain-exponential-formula`](../../../enumerative-combinatorics/multiple-chain-exponential-formula/).
+- [`a399421-galled-trees`](../a399421-galled-trees/) (batch 77P3,
+  dated 2 October 2026): its Part II (source 22 there) credits this
+  report's Gaussian-moment method (Sections 17–18) as prior methodology
+  for its positive-density expansion of the galled-tree triangle A399421.
+  The objects differ; nothing of this report is re-proved there.
 - No other repository report concerns A215561 or its rows. Cluster O2's
   balanced Smirnov words report (A330266) and the theta-ballot power-sum
   report (A357825) use "balanced" and "ballot" in different senses, and
