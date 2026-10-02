@@ -4,6 +4,13 @@ This bounded scout finds a genuine source-level compression and a concrete obstr
 
 More decisively, [the endpoint counterexample](waterfall_endpoint_alias.md) gives a pinned, integer-only counterexample to replacing history with nonnegative firing counts, the full canonical halt endpoint, and the exact time invariant on this very matrix. An extra count vector has `Mv=194·1`, 62 firings and ten controls. Added to the genuine `(L,R)=(6,0)` halt, it passes all those conditions at the false timestamp622 instead of428. The detailed packet states the precise rejected bundle; the report's full quadratic is unaffected.
 
+The subsequent [complete packed U15 tape compiler](u15_packed_two_tape_history.md)
+pays all five obligations left open by Section3 below. It costs410 operations
+for raw half tapes, or653 including ordinary-integer input conversion, with
+fixed arity and unbounded duration. The27-operation interface below remains
+a historical conditional component count. It does not encode Waterfall
+firing count or timestamp as supplied relation arguments.
+
 ## Sources and scope
 
 Read the WIP `waterfall_intake_triage_24a743255.md`, the extracted article's semantics/canonical input/macrostep/quadratic/common-column/endpoint sections and complete matrix appendix, its literal matrix/TM source, and frontend/matrix reconstruction code. Extraction used here is `/tmp/waterfall_intake_triage/waterfall-diophantine`. Archive SHA-256 is `b5d3ee90f9631695afc3c6f34f765b617eb9c631c65ab32705cf3d0e8811a9fc`; matrix SHA-256 is `52cfed3f6cba671ed7b166c126288d555ed687b74622ae5a9aaa5bee1345e46a`. The endpoint packet pins the frontend and article too.

@@ -1,0 +1,21 @@
+# Independent review of the computed-truth U15 compiler
+
+PASS on source `c363ea0679825559d5247608f748d877e75146dbb997b159db42294d9d676eb7`. This review covers the complete emitted raw and ordinary sources, the companion proof, the positive restoration domain, the exact relation to the newly tagged parent, and the distinct relation to the original untagged compiler.
+
+The [checker](review_u15_computed_truth647.py) and [receipt](review_u15_computed_truth647.json) retain the independent source and residual audit. The checker uses the separately reviewed baseline arithmetic evaluator, pinned by its own hash, and independently changes its scalar truth fields. It does not use the new compiler's manual evaluator.
+
+The retained head and aggregate equations imply every joined chunk is below P before the native theorem is invoked. In particular U<=J<P follows from integrality in BU<=BJ+1. The copied range chunks, selected output chunks and controller chunks therefore give 0<=A,M,Z<T=P^34 without presupposing Boolean typing or selection semantics.
+
+The paid tags A'=A+2T and M'=M+T guarantee positive reconstructed native fields before power recovery. Their exact formulas give F1>=16(T+1)+4, F2>=18 and F0>=16((B-5)T+2)-15. The last constant is minus15. These bounds require only the already retained pretyping equations, natural initial tapes and positive supplied coordinates. They do not use the AND conclusion. The other computed native coordinates retain their earlier positive graph theorem because q>0 and F3>=8.
+
+On a new positive zero these restored coordinates satisfy the tagged parent's three deleted comparisons identically. Every other source gate, including the complete strong auxiliary residual, has the same value. Conversely the tagged parent comparisons uniquely determine all three restored fields. Hence deletion/restoration bijects complete positive zeros of the child and tagged parent. The entire sum-of-squares polynomial identity also holds under this restoration for arbitrary signed assignments; positivity away from the pretyping domain is not asserted.
+
+The tagged native theorem then recovers dyadic cap=B*P^34, hence dyadic B,P,T. Disjoint top bits2 and1 give (A+2T) AND (M+T)=A AND M. Both tagged inputs remain below cap since B>=64. This proves equivalence with the original joined predicate. The converse uses fresh full native extensions at the changed ports. It is an equality of projected outer relations, not a pointwise map retaining the old private native witnesses. The ordinary loader, its private witnesses and its four fixed program numerals are unchanged.
+
+All controller, range and tape comparisons remain paid, so the original unbounded fixed-arity soundness/converse argument applies. This review includes that logical composition; finite examples do not establish it by themselves.
+
+The independent structural checker reconstructs both tagged sources from the frozen baseline, then reconstructs the full computed-field sources by inserting exactly five definitions and removing the five private rows and three comparisons. It verifies the three deleted comparisons as formal polynomial identities. On64 complete tuples, including32 signed tuples, it independently checks every one of the11 or46 residuals, all1,824 individual residual values, the complete finalizer, and the full tagged-parent restoration identity. Four actual halting histories also pass the positive helper round trip. Their remaining native coordinates are placeholders, so no full Pell zero is claimed.
+
+The source arithmetic agrees with the stated counts: three tag gates added, five private rows replaced by five definitions, and three comparison finalizers removed, for a net six-operation saving. The resulting404/647 sources have51/102 positive witnesses. The inherited1936 degree metadata is a formal upper bound in these frozen compiler packets. No arithmetic minimum or improvement to the overall87-operation bound follows.
+
+The actual consumed baseline packets are type-sensitive hash-pinned as well as their source file, addressing cached-loader substitution. The positive graph helpers enforce their two pretyping equations; signed projection still enforces the graph comparisons. Root source/proof review found no remaining mathematical, composition, accounting or tested public-contract issue.

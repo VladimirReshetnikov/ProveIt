@@ -28,6 +28,36 @@ numerical universal alphabet remains uninstantiated. Mortality now has
 [a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
 the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
+The [scalar U15 controller](u15_binary_controller_scout.md)
+costs **112=46M+66A operations**, four integer witnesses and exact degree10
+for one transition; shifting every coordinate positive costs121 operations.
+Its integer nonnegativity proof forces all bits and rejects the undefined
+halt and unused state. The grouped one-hot comparators cost142/147 operations
+with29 witnesses and degree2. These are complete single-step relations;
+ordinary multiplication of packed histories would convolve time cells, so
+neither scalar count is an unbounded universal-polynomial bound.
+
+The [computed-truth packed U15 compiler](u15_packed_computed_truth647.md)
+costs **647=253M+394A operations**,102 positive witnesses and46 comparisons,
+including ordinary input. Its raw interface costs404 operations and51 witnesses.
+Three paid disjoint-tag gates allow three native truth witnesses and their
+comparisons to be eliminated. Positivity follows from the retained head and
+aggregate bounds before any AND typing. Exact signed graph restoration is to
+the newly tagged parent; the original outer relation is preserved with fresh
+history-native witnesses. All input, range, controller and unbounded-duration
+costs remain paid. Degree is at most1936; the global87 bound is unchanged.
+
+The [state-relabeled packed U15 tape compiler](u15_packed_state_relabel652.md)
+gives **652=254M+398A operations**, 105 positive witnesses and formal degree
+at most1936, including the ordinary-integer input conversion. Its raw natural
+half-tape interface costs409 operations and54 witnesses. One joined AND pays
+for the29-rule controller, tape ranges and selected fields; the product scale
+recovers an unbounded common run length with fixed arity. The four positive
+program numerals have an effective valid-slice recipe. Independent reviews
+check every emitted residual, the full source composition and the positive
+soundness/converse proof. This is a direct tape alternative to the GPCP history
+route; the global87-operation universal bound remains unchanged.
+
 The [complete Waterfall review](waterfall_report_review_24a743255.md)
 validates the fixed 46-clock universal-machine frontend and all eight original
 replays. A checked patch repairs exact integer input contracts and mutable
@@ -83,7 +113,17 @@ reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
 natural witness tuple and passed independent review. Their arity depends
 on the external horizon; the fixed universal bound remains 87 operations.
 
-The [computed-history-field compiler](gpcp_history_computed_fields744.md)
+The [GPCP program-frame rewrite](gpcp_program_frame741.md)
+reduces that complete U15 route to **741=347M+394A operations**, eight
+comparisons,122 positive witnesses and exact formal degree11237. Three new
+positive fixed program numerals replace the old seven-gate frame by four
+gates, using the retained input-repunit equation. Corresponding positive
+program triples have exactly the same auxiliary positive zeros; arbitrary
+new triples have no asserted program interpretation. All eight complete
+source variants, explicit off-zero corrections and exact degree certificates
+replay. The overall87-operation universal bound is unchanged.
+
+The preceding [computed-history-field compiler](gpcp_history_computed_fields744.md)
 gives **721 certificate /744=349M+395A operations**, eight comparisons,
 122 positive witnesses and exact formal degree187625. It computes three
 private history AND fields from the retained ports, saving3M+7A and three
