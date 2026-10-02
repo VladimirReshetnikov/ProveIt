@@ -45,14 +45,22 @@
 % Expandable primitive input is safe at tabular row boundaries.
 \makeatletter
 \newcommand{\tableinput}[1]{\@@input #1 }
+% Part III macros. The delivered table fragments carry no label;
+% inside a group, \lasttabletarget makes the next label point to the
+% table that was just input.
+\newcommand{\lasttabletarget}{%
+ \edef\@currentlabel{\thetable}\edef\@currentHref{table.\theHtable}}
 \makeatother
+\newcommand{\Var}{\operatorname{Var}}
 \allowdisplaybreaks
 \title{\textbf{Bell-Scale Growth of OEIS A088714}\\[5pt]
 \large A rigorous $n$th-root asymptotic, quantitative bounds,\\
 and a separately identified finer conjecture\\[8pt]
-\normalsize Part~II: golden-ratio moment laws for A088714 and A088713}
-\author{OpenAI ChatGPT}
-\date{Part~I: September 20, 2026\quad Part~II: October 1, 2026}
+\normalsize Part~II: golden-ratio moment laws for A088714 and A088713\\
+\normalsize Part~III: local estimates for the finer Bell comparison}
+\author{OpenAI ChatGPT (Parts~I and~II); Part~III names no author}
+\date{Part~I: September 20, 2026\quad Part~II: October 1, 2026\quad
+Part~III: October 2, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -90,6 +98,18 @@ $F(s)\sim s^{-(3-\sqrt5)/2}$ and $G(s)\sim s^{-(\sqrt5-1)/2}$ with leading
 constant one, the ratio laws
 $a_{n+1}/a_n\sim c_{n+1}/c_n\sim n/\log n$, and logarithmic far-tail laws.
 It uses the theorem of Part~I and does not settle the finer conjecture.
+
+\emph{Part~III} (added October 2, 2026) proves Part~I's formal
+near-endpoint coefficient expansion as a theorem, uniformly in a
+logarithmic window, and combines it with Part~II's log-convexity to prove
+the unconditional one-sided correction
+$\liminf_{n\to\infty}(a_n/a_{n-1}-n/W(n))\ge3/2$; the finer conjecture
+needs the correction $2$. An exact Poisson-weighted endpoint identity
+reduces the conjecture to a single scalar estimate, or to an averaged
+local-curvature estimate together with a complementary-endpoint bound,
+and a tilted-variance estimate is shown to suffice for the former.
+Exact computations through $n=1600$ test each missing estimate. The finer
+conjecture remains open.
 \end{abstract}
 \newpage
 \tableofcontents
@@ -795,7 +815,11 @@ the formal local approximation
   \left(1+\frac{3m(m-1)}{2n}+\cdots\right).
 \end{equation}
 The factor $3/2$ combines the quadratic term of $\log A$ with the
-replacement of $n+1-m$ by $n$.
+replacement of $n+1-m$ by $n$. [Batch 76, 2 October 2026.] This
+expansion is now proved as Lemma~\ref{ble:lem:coef} of Part~III,
+uniformly for $0\le m\le C\log n$ with the error
+$O((1+m)^6/n^2)$ in the bracket, and without any hypothesis on the
+ratios.
 
 Suppose, for this calculation, that the ratio has a smooth expansion
 near $R_n=n/w$, where $w=W(n)$. Put
@@ -891,6 +915,14 @@ summable error level. A proof of such uniform endpoint estimates would
 be a genuine strengthening of the present result. This identifies the
 remaining task without presenting a formal asymptotic calculation as a
 completed proof.
+
+[Batch 76, 2 October 2026.] Part~III reduces the conjecture to the single
+estimate $\mathcal E_n=O(W(n)^q/n^2)$ for the scalar defect
+\eqref{ble:eq:defect} (Theorem~\ref{ble:thm:criterion}), and proves the
+one-sided correction $\liminf_{n\to\infty}(R_n-n/W(n))\ge3/2$
+(Theorem~\ref{ble:thm:lower}), whereas \eqref{eq:neededratio} needs the
+correction $2+W(n)/(2(1+W(n))^2)\to2$. Estimate \eqref{eq:neededratio} and
+Conjecture~\ref{conj:finer} remain open.
 
 \section{Reproducibility and verification scope}
 
@@ -1056,9 +1088,10 @@ of Part~II is local to Part~II; Table~\ref{gml:tab:notation} lists each
 letter that also occurs in Part~I with both meanings. No symbol of the
 manuscript was renamed.
 
-\begin{table}[ht]
-\centering\small
-\caption{Letters used in both Parts.}\label{gml:tab:notation}
+\begin{table}[p]
+\centering\footnotesize
+\caption{Letters used in more than one Part (the lower block was added
+with Part~III).}\label{gml:tab:notation}
 \begin{tabular}{@{}l>{\raggedright\arraybackslash}p{0.38\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}@{}}
 \toprule
 letter & Part~I & Part~II\\
@@ -1096,6 +1129,47 @@ $\gamma$, $L$, $r$ & $\gamma=1+2/\lambda$; $L=\log n$ and $r=L-2\ell$
  \eqref{eq:parameters}
  & $\gamma$ is a Tauberian exponent; $\LL$ is the log-convexity operator;
  $r$ indexes the iterates $B_r$, $F_r$\\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Added with Part~III (Section~\ref{ble:sec:source}):
+ middle column Parts~I and~II, right column Part~III}}\\
+\midrule
+$r$, $R$ & Part~I: $R_n=a_n/a_{n-1}$. Part~II: $r_n=a_{n+1}/a_n$ (forward),
+ $R(z)$ the renewal series
+ & $r_n=a_n/a_{n-1}$, Part~I's $R_n$ and Part~II's $r_{n-1}$;
+ $R(n)=n/w+2+w/(2(1+w)^2)$ is the candidate \eqref{eq:ratiocandidate},
+ \emph{not} a ratio\\
+$w$, $t$, $d$ & Part~I, Section~\ref{sec:finer}: $w=W(n)$, $t=n/R_n$,
+ $d=w/(1+w)$. Part~II: $t$ is the variable of $\mu,\nu$
+ & as in Part~I's Section~\ref{sec:finer}: $w=W(n)$, $t=n/r_n$,
+ $d=w/(1+w)$; $d\mu$ is still the measure differential\\
+$L$ & $L=\log n$ \eqref{eq:parameters}
+ & $L=\lceil16w\rceil$, the endpoint window\\
+$c$, $C$ & as above
+ & $C>0$ bounds the window in Lemma~\ref{ble:lem:coef}; $C_1$ a constant;
+ $C_{n,m}=m!\,b_{n,m}/n^m$ \eqref{ble:eq:C}; $c(w)=3/2+1/(2(1+w))$\\
+$D$ & as above; Part~I's $D_n^{\mathrm{num}}$ \eqref{eq:Dnum}
+ & $D_{n,m}=\prod_{j\le m}r_n/r_{n-j}$ \eqref{ble:eq:D};
+ $D_n^B$ is Part~I's $D_n^{\mathrm{num}}$; $D_n^N=\log(a_n/\mathcal N_n)$\\
+$H$, $K$, $M$ & as above
+ & $H_n(r)$, a decreasing function of $r>0$ \eqref{ble:eq:lowerH};
+ $K$ with $a_j\le K^{j-1}j!$; $M=n+1-m$, or the power in $A(z)^M$\\
+$B$, $b$, $\mathcal N$ & Part~I: $B(x)=xA(x)$, Bell numbers $\mathsf B_n$,
+ normalizer $\mathcal N_n$ \eqref{eq:normalizer}. Part~II: $B(z)$, $B_r$
+ & $b_{n,m}=[z^m]A(z)^{n+1-m}$; Bell numbers $\mathsf B_n$ (printed $B_n$
+ in the table fragments); $\mathcal N_n$ as in Part~I (the manuscript's
+ $N_n$)\\
+$X$, $Z$, $\mu_{n-1}$ & Part~I: $X$ a Poisson variable. Part~II: $X$ an
+ operator; $\sigma_n$ the size-biased law
+ & $Z\sim\operatorname{Poisson}(t)$; $X$ the variable of the tilt
+ $\mu_{n-1}$, which is Part~II's $\sigma_{n-1}$ for $\sigma=\mu$\\
+$p$, $q$, $Q$, $s$ & Part~I: $p$ in \eqref{eq:neededratio}, $Q_n$
+ \eqref{eq:Q}. Part~II: $Q$ an operator, $s>0$ the transform variable
+ & $p,q$ fixed exponents; $p_t(m)$ Poisson weights \eqref{ble:eq:p};
+ $Q=\max(q,6)$; $s$ is a degree count, an index, or $s_n=n/w+c(w)$, and
+ $F(s)$ as in Part~II\\
+$J$, $\mathcal E$, $\Delta$, $\eta$ & not used
+ & $J_n$ \eqref{ble:eq:J}; $\mathcal E_n$ \eqref{ble:eq:defect};
+ $\Delta_n=r_n-R(n)$; $\eta$ an excess degree (the manuscript's $e$)\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2212,6 +2286,14 @@ is weaker: an error tending to zero in a single ratio can still accumulate
 into an unbounded logarithmic error. A practical next step is to derive a
 uniform expansion of the tilted-law mean beyond $n/\log n$, with a
 summable remainder after the proposed normalization.
+[Batch 76, 2 October 2026.] Part~III makes partial progress and does not
+answer the question. It proves
+$\liminf_{n\to\infty}(a_n/a_{n-1}-n/W(n))\ge3/2$, where the proposed
+normalization needs the correction $2$ (Theorem~\ref{ble:thm:lower}),
+reduces convergence of the normalization to the single scalar estimate
+\eqref{ble:eq:defect} (Theorem~\ref{ble:thm:criterion}), and shows that a
+quantitative relative-variance estimate for the tilted law suffices for
+its curvature half (Proposition~\ref{ble:prop:variance}).
 
 \begin{question}[Second-order golden-ratio asymptotics]
 Can $F(s)=s^{-\alpha}(1+o(1))$ be sharpened to an explicit second-order
@@ -2290,7 +2372,656 @@ consecutive ratios and the far-tail logarithmic law. The resulting picture
 is rigorous at both endpoints while leaving the finer coefficient
 normalization, measure regularity, and second-order behavior clearly open.
 
+\clearpage
+\part{Local estimates for the finer Bell comparison}\label{ble:part}
+
+\section{Source, scope and notation of Part~III}\label{ble:sec:source}
+
+\paragraph{Summary.}
+Part~II proves positive-measure realizations and consecutive-ratio
+equivalents for A088714, but does not prove Part~I's finer Bell
+normalization (Conjecture~\ref{conj:finer}). Part~III reconciles the two
+arguments and isolates the extra precision needed. A uniform small-degree
+coefficient expansion is proved without assuming any smoothness of the
+ratios (Lemma~\ref{ble:lem:coef}); it is Part~I's formal near-endpoint
+expansion \eqref{eq:localcoeff}, now a theorem. Combined with the
+log-convexity of Part~II, it yields an unconditional additive lower
+correction tending to $3/2$ (Theorem~\ref{ble:thm:lower}). The
+conjectured correction tends instead to $2$; the missing half is
+generated by curvature of ratios across a logarithmic window. An exact
+Poisson-weighted endpoint identity reduces the conjecture to two
+quantitative estimates, averaged local curvature and the mass outside that
+endpoint (Theorem~\ref{ble:thm:criterion}), or to the single scalar
+estimate $\mathcal E_n=O(W(n)^q/n^2)$ of \eqref{ble:eq:defect}. A
+sufficient tilted-variance estimate is stated explicitly
+(Proposition~\ref{ble:prop:variance}), and every subsequent implication is
+proved. Exact-integer computations test both the proposed normalization
+and the individual missing estimates. The full ratio expansion and the
+existence or value of the normalization constant remain unproved:
+\textbf{Conjecture~\ref{conj:finer} is still open after Part~III.}
+
+\paragraph{Provenance.}
+Part~III is manuscript~01 of batch~76 of the repository's incoming-reports
+intake: \emph{The missing local estimate in the finer Bell comparison. An
+endpoint reduction, a rigorous one-sided correction, and numerical stress
+tests for OEIS A088714}, ``Research continuation prepared for Vladimir
+Reshetnikov'', dated October~2, 2026 (UTC) (a 372-line source and a
+10-page PDF). Its author line names no person and no model. It arrived as
+\nolinkurl{A088714_Bell_Local_Estimates.zip} in commit
+\texttt{6914ccca6} and was placed in commit \texttt{2a04b60f2}. The
+manuscript pins the repository at commit
+\texttt{82afb955918e5af9ccd2a7740424b2a66976f339} (October~1, 2026), a
+descendant of the commit \texttt{0a5908ec0} that wrote Part~II. The source
+of this report is the same at the pin and at the placement commit, so the
+manuscript read Parts~I and~II as printed here, together with Part~II's
+source audit \nolinkurl{02-golden-moments-SOURCE_AUDIT.md}; it also
+consulted library copies of the two delivered articles. Its code and data
+are shipped with the prefix \texttt{03-local-estimates-}. Not shipped, and
+surviving in the archive of the arrival commit: its own \LaTeX\ source,
+README and PDF; its copy of the repository's root \texttt{LICENSE}; its
+copies of Part~I's \nolinkurl{code/coefficients.py},
+\nolinkurl{code/compute_gmp.cpp} and \nolinkurl{data/diagnostics.csv} (the last
+delivered as \nolinkurl{data/prior_diagnostics.csv}), which equal the shipped
+files byte for byte; and its 2.49\,MB table
+\nolinkurl{data/coefficients_snapshot.txt} of $a_0,\ldots,a_{1600}$, which
+is regenerable (see the README) and agrees with
+\nolinkurl{data/02-golden-moments-coefficients.csv} on the overlap
+$n\le401$.
+
+\paragraph{What is not reprinted.}
+The manuscript's Section~2 re-derives Proposition~\ref{prop:conditional}
+without saying that Part~I proves it: it assumes the same ratio estimate
+\eqref{eq:neededratio}, uses the same normalizer \eqref{eq:normalizer}
+and the same quotient expansion \eqref{eq:normratio}, obtained from the
+same derivative identity, and reaches the same summability conclusion.
+That argument is replaced by a pointer in Section~\ref{ble:sec:why}, and
+the manuscript's displays of the defining equation and of the normalizer
+are replaced by \eqref{eq:def} and \eqref{eq:normalizer}. The inherited
+results \eqref{ble:eq:growth}--\eqref{ble:eq:ratio}, which the manuscript
+itself calls ``not new assertions'', are kept as a summary, with pointers
+to the theorems of Parts~I and~II that prove them. Everything else in the
+manuscript is printed: all other sections, proofs and remarks, its status
+table, and its list of next investigations.
+
+\paragraph{Editorial changes.}
+Section~$k$ of the manuscript is Section~$k+25$ here, and every printed
+label carries the prefix \texttt{ble:}. Three symbols were renamed, to
+match Parts~I and~II or to avoid a clash: the manuscript's normalizer $N_n$
+is Part~I's $\mathcal N_n$ (the same function), its Bell number $B_n$ is
+Part~I's $\mathsf B_n$ in the text (the shipped table fragments still
+print $B_n$), and the excess degree called $e$ in the proof of
+Lemma~\ref{ble:lem:coef} is $\eta$, since $e$ is also Euler's number.
+No normalization changed. One sentence of
+Section~\ref{ble:sec:curvature} read ``This proves \eqref{ble:eq:avg}''
+although the deduction uses the hypothesis \eqref{ble:eq:local}; it now
+reads ``Under \eqref{ble:eq:local}, this proves \eqref{ble:eq:avg}.''
+The manuscript defined a theorem environment ``Unproved estimate'' that
+it never used; it is not carried over. File names in
+Section~\ref{ble:sec:numerics} are the shipped ones. In the bibliography,
+the manuscript's entry for the repository is replaced by internal
+references (its caveat is kept below), its OEIS entry is merged with
+Part~I's, and its two remaining entries are added
+\cite{moserwyman,grunwaldserafin}. The manuscript's statement that it
+makes no repository modifications described the delivery. At placement,
+Part~I gained dated notes at \eqref{eq:localcoeff} and after
+Proposition~\ref{prop:conditional}, Part~II gained one after its question
+on a full asymptotic equivalent (Section~\ref{gml:sec:research}), and
+Table~\ref{gml:tab:notation} gained Part~III's letters. Nothing else in
+the mathematics was changed.
+
+\paragraph{Status.}
+Part~III, like Parts~I and~II, is AI-assisted and unrefereed, and it is
+not formalized: no Lean or Rocq development checks any statement of this
+report, and placement in this collection confers no formal status. The
+manuscript treats Parts~I and~II as ``written research reports, not
+assumed to be peer reviewed or formally checked''. It makes no priority
+claim; ``new'' in it means new relative to Parts~I and~II. Its numerical
+tests are finite (all $n\le1600$) and are not used in any proof.
+
+\paragraph{Related repository material.}
+The Bell asymptotic behind $\mathcal N_n$ is \eqref{eq:bellsaddle}
+\cite{dlmf-bell,moserwyman}. An all-orders form of the Bell saddle
+expansion, with $W(n)$ as the saddle $we^w=n$, is Theorem
+\texttt{q2:thm:bell}, with Remark \texttt{q2:rem:bell-scale}, of the
+transseries volume in
+\begin{quote}\small\ttfamily
+Analysis/Transseries/docs/series-and-transseries/\\
+Transseries\_And\_Inversion/
+\end{quote}
+Part~III uses $W(n)$ only as that saddle. The tilt $\mu_{n-1}$ of
+Section~\ref{ble:sec:curvature} is Part~II's size-biased law $\sigma_{n-1}$
+for $\sigma=\mu$ (proof of Lemma~\ref{gml:lem:tails}), and identity
+\eqref{ble:eq:var} is the relative-variance identity of that proof with
+the ratio index shifted by one.
+
+\paragraph{Notation.}
+Part~III uses the letters of Part~I's Section~\ref{sec:finer},
+$w=W(n)$, $t=n/r_n$ and $d=w/(1+w)$, but writes the backward ratio
+$a_n/a_{n-1}$ as $r_n$. Every symbol of Part~III is local to Part~III;
+the lower block of Table~\ref{gml:tab:notation} lists each letter it
+shares with Part~I or Part~II, with all meanings. The tempting false
+readings: $R(n)$ below is the candidate right side of
+\eqref{eq:ratiocandidate}, \emph{not} a ratio, while Part~I's ratio $R_n$
+is Part~III's $r_n$; and Part~II's $r_n=a_{n+1}/a_n$ is a forward ratio,
+Part~III's $r_{n+1}$.
+
+\section{Sources, notation, and current proof status}\label{ble:sec:status}
+Let $A(z)=\sum_{n\ge0}a_nz^n$ be the formal solution of \eqref{eq:def}
+(Part~I writes $x$ for the variable), so that $a_0=1$, $a_1=1$, $a_2=3$,
+$a_3=13$. Throughout Part~III,
+\[
+ r_n=\frac{a_n}{a_{n-1}},\quad w=W(n),\quad
+ R(n)=\frac n w+2+\frac{w}{2(1+w)^2},\quad d=\frac{w}{1+w}.
+\]
+Part~II's source audit, dated October~1, says explicitly that the earlier
+finer Bell normalization is not established. The manuscript inspected
+Part~I (the September~20 Bell-scale article), Part~II (the October~1
+golden-moment work) and that audit at the pin recorded in
+Section~\ref{ble:sec:source}.
+
+The usable conclusions of that work are
+\begin{align}
+ \log a_n&=n\log n-n\log\log n-n+O(n\log\log n/\log n),\label{ble:eq:growth}\\
+ a_n&=\int_0^\infty x^n\,d\mu(x),\label{ble:eq:moment}\\
+ r_n&\sim n/\log n\sim n/W(n),\qquad r_{n+1}\ge r_n.\label{ble:eq:ratio}
+\end{align}
+They are Theorem~\ref{thm:main}, Theorem~\ref{gml:thm:mainmoment}, and
+Theorem~\ref{gml:thm:maintail} with the monotonicity of the ratios given by
+the strict log-convexity of Theorem~\ref{gml:thm:infiniteLC}.
+The probability measure $\mu$ has all positive exponential moments finite.
+Its normalized Stieltjes transform satisfies
+\[
+ F(s)=\int\frac{d\mu(x)}{1+sx},\qquad
+ F(s)=1-sF(s)^2F(sF(s)),
+\]
+and, with $\alpha=(3-\sqrt5)/2$, $F(s)\sim s^{-\alpha}$ as $s\to\infty$
+(Theorem~\ref{gml:thm:mainendpoint}). These are inherited results, not new
+assertions of Part~III.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.28\linewidth}>{\raggedright\arraybackslash}p{.31\linewidth}>{\raggedright\arraybackslash}p{.31\linewidth}}\toprule
+Item & What is proved & What remains needed\\\midrule
+New consecutive ratios & $r_n\sim n/\log n$ & Additive corrections at constant scale\\
+Quantitative ratio bound & Relative error $O(\sqrt{\log\log n/\log n})$ & Additive error $O(w^p/n)$ after $R(n)$\\
+Moment representation & Relative tilted variance tends to zero & Relative variance $d/n$ with error $O(w^q/n^2)$ is a sufficient input\\
+Golden transform law & Mass near zero and its leading constant & Quantitative information about high-moment tilts in the far tail\\
+This continuation & Uniform coefficient expansion; one-sided correction; conditional reduction & Curvature and complementary-endpoint estimates\\\bottomrule
+\end{tabular}\end{center}
+
+\section{Why the new ratio theorem does not settle normalization}\label{ble:sec:why}
+The convex-slope proof (Lemma~\ref{gml:lem:slopes} and the corollary after
+Proposition~\ref{gml:prop:companion}) uses secants over intervals of length
+$\delta n$. The global error in \eqref{ble:eq:growth} contributes
+$O(\log\log n/(\delta\log n))$ to such a secant, and curvature of the
+comparison function contributes $O(\delta)$. Optimizing gives a relative
+ratio error of order $\sqrt{\log\log n/\log n}$. This is much too large even
+to distinguish a constant correction in $r_n$.
+
+In particular, a relative $o(1)$ error in one ratio can accumulate over
+infinitely many ratios. Neither strict Hankel positivity nor strict
+iterated log-convexity provides the particular numerical curvature
+coefficient required below.
+
+The $s\to\infty$ transform law concerns $x\downarrow0$. High moments tilt
+toward $x$ of order $n/W(n)\to\infty$. Improving the former endpoint law
+does not by itself improve the latter regime. The exact transform equation
+still contains the whole sequence, but using it for high moments requires
+a new uniform asymptotic argument; differentiating a cumulative-mass law
+or treating a divergent ordinary series as convergent would not supply
+one.
+
+Part~I's normalizer $\mathcal N_n$ of \eqref{eq:normalizer} satisfies
+$\mathsf B_n\exp(w^2+3w)\sim\mathcal N_n$ by the classical Bell asymptotics
+\eqref{eq:bellsaddle} \cite{moserwyman}. The exact summability threshold
+is Proposition~\ref{prop:conditional}: if
+\[
+ r_n=R(n)+O(w^p/n)
+\]
+for some fixed $p$, which is \eqref{eq:neededratio}, then
+$a_n/\mathcal N_n$ tends to a finite positive constant. (The manuscript
+re-derives this: $\mathcal N_n/\mathcal N_{n-1}=R(n)+O(w^3/n)$ is
+\eqref{eq:normratio}, and the successive differences of
+$\log(a_n/\mathcal N_n)$ are $O(w^{\max(p,3)+1}/n^2)$, as in the proof of
+Proposition~\ref{prop:conditional}.) This argument proves convergence, but
+does not determine the constant from its asymptotic local input.
+
+More generally, absolute summability of
+$|r_n-\mathcal N_n/\mathcal N_{n-1}|/r_n$ suffices. The fixed-power
+condition \eqref{eq:neededratio} is convenient rather than necessary.
+
+\section{A coefficient estimate that can be proved now}\label{ble:sec:coef}
+Direct coefficient extraction in \eqref{eq:def} gives the exact endpoint
+recurrence
+\begin{equation}\label{ble:eq:rec}
+ a_n=\sum_{k=0}^{n-1}a_k[z^{n-1-k}]A(z)^{k+2}
+ =\sum_{m=0}^{n-1}a_{n-1-m}b_{n,m},
+ \quad b_{n,m}=[z^m]A(z)^{n+1-m}.
+\end{equation}
+(The first sum is Part~I's \eqref{eq:directrec}; the second puts
+$m=n-1-k$.) All terms are nonnegative. Only coefficients of finite degree
+are used.
+
+\begin{lemma}[Uniform logarithmic-window coefficient expansion]\label{ble:lem:coef}
+For every fixed $C>0$, uniformly for integers $0\le m\le C\log n$,
+\begin{equation}\label{ble:eq:b}
+ b_{n,m}=\frac{n^m}{m!}\left(1+\frac{3m(m-1)}{2n}
+                    +O\!\left(\frac{(1+m)^6}{n^2}\right)\right).
+\end{equation}
+No local ratio smoothness hypothesis is used.
+\end{lemma}
+\begin{proof}
+Equation \eqref{ble:eq:growth} implies $(a_j/j!)^{1/j}\to0$.
+Consequently there is a finite $K\ge1$ with $a_j\le K^{j-1}j!$ for every
+$j\ge2$.
+Put $M=n+1-m$. The coefficient in question is obtained by choosing
+nonconstant terms from $M$ factors. The contribution using only $m$
+singletons is $(M)_m/m!$. Its normalized value is
+\[
+ \frac{(M)_m}{n^m}
+ =\prod_{h=0}^{m-1}\left(1+\frac{1-m-h}{n}\right)
+ =1-\frac{3m(m-1)}{2n}+O((1+m)^4/n^2).
+\]
+The contribution with one degree-two term and $m-2$ singletons is
+$3(M)_{m-1}/(m-2)!$, whose normalized value is
+\[
+ \frac{3m(m-1)}n\{1+O((1+m)^2/n)\}.
+\]
+The sum of these two contributions supplies the displayed first
+correction.
+
+For completeness, all higher patterns admit a uniform bound. Let $l_j$
+count the chosen degree-$j$ terms for $j\ge2$. Put
+$\eta=\sum_{j\ge2}(j-1)l_j$ and $s=\sum_{j\ge2}jl_j$. The number of chosen
+nonconstant factors is $m-\eta$; there are $m-s$ singletons. After
+normalization by $n^m/m!$, the contribution is at most
+\[
+ n^{-\eta}\frac{m!}{(m-s)!}\prod_{j\ge2}\frac{a_j^{l_j}}{l_j!}
+ \le \left(\frac{K m^3}{n}\right)^{\eta}.
+\]
+Here $s\le2\eta$, $j!\le m^{j-1}$ for $2\le j\le m$, and
+$(M)_{m-\eta}\le n^{m-\eta}$. For fixed $\eta$, the possible lists $(l_j)$
+are partitions of $\eta$, at most $2^\eta$ in number. Summing over
+$\eta\ge2$ bounds their total by a geometric series of order $m^6/n^2$,
+since $m=O(\log n)$. The cases $m=0,1$ are exact. This proves
+\eqref{ble:eq:b}.
+\end{proof}
+
+For two small degrees, exact certificates are
+\[
+ C_{n,2}=1+\frac3n-\frac4{n^2},\qquad
+ C_{n,3}=1+\frac9n+\frac{14}{n^2}-\frac{72}{n^3},
+\]
+where $C_{n,m}=m!\,b_{n,m}/n^m$ as in \eqref{ble:eq:C} below. They agree
+with the coefficient $3m(m-1)/2$ above and are independently checked in
+the supplied code (\nolinkurl{code/03-local-estimates-diagnose.py} asserts
+both as exact integer identities at $n=10$, $100$, $1000$ and $10000$).
+
+This disposes of one previously formal ingredient: the coefficient
+expansion itself, Part~I's \eqref{eq:localcoeff}, is valid uniformly in
+the relevant growing window. The unresolved input is the coefficient ratio
+multiplying it, and the contribution outside the window.
+
+\section{An unconditional one-sided additive correction}\label{ble:sec:lower}
+\begin{theorem}[Lower correction from moment positivity]\label{ble:thm:lower}
+Assuming the inherited results \eqref{ble:eq:growth}--\eqref{ble:eq:ratio},
+\begin{equation}\label{ble:eq:lower}
+ r_n\ge \frac n{W(n)}+\frac32+\frac{1}{2(1+W(n))}
+             -O\!\left(\frac{W(n)^4}{n}\right).
+\end{equation}
+In particular,
+\[
+ \liminf_{n\to\infty}\left(r_n-\frac n{W(n)}\right)\ge\frac32.
+\]
+\end{theorem}
+\begin{proof}
+Let $L=\lceil16w\rceil$ and $t=n/r_n$. For sufficiently large $n$,
+$L<n-1$. Monotonicity of the ratios gives
+\[
+ \frac{a_{n-1-m}}{a_n}=\prod_{j=0}^{m}r_{n-j}^{-1}\ge r_n^{-m-1}.
+\]
+The $k=0$ term of \eqref{ble:eq:rec}, disjoint from $0\le m\le L$, is
+$[z^{n-1}]A^2\ge2a_{n-1}$. Thus Lemma~\ref{ble:lem:coef} implies
+\[
+ 1\ge \frac1{r_n}\sum_{m=0}^L\frac{t^m}{m!}
+ \left(1+\frac{3m(m-1)}{2n}-O(w^6/n^2)\right)+\frac2{r_n}.
+\]
+By \eqref{ble:eq:ratio}, $t/w\to1$. The standard Chernoff estimate,
+obtained by applying Markov's inequality to $e^{uZ}$ for
+$Z\sim\operatorname{Poisson}(t)$, shows that the probability of $Z>L$ and
+its fixed polynomial moments are $O(n^{-10})$. Indeed, for large $n$,
+$t\le2w$ and $L\ge16w$; the exponent at $L/t\ge8$ is at most
+$-(16\log8-16+2)w$, much smaller than $-10\log n$ asymptotically.
+First the preceding lower sum shows $e^t/r_n$ is bounded. Completing the
+Poisson sums is consequently justified with an error smaller than
+$O(w^6/n^2)$, giving
+\begin{equation}\label{ble:eq:lowerH}
+ 1\ge H_n(r_n)-O(w^6/n^2),\qquad
+ H_n(r)=\frac{e^{n/r}}r\left(1+\frac{3n}{2r^2}\right)+\frac2r.
+\end{equation}
+This function is strictly decreasing for $r>0$. Put
+\[
+ s_n=\frac n w+c(w),\qquad
+ c(w)=\frac{2+3w/2}{1+w}=\frac32+\frac1{2(1+w)}.
+\]
+Since $e^w=n/w$, expansion yields
+\[
+ H_n(s_n)=1+O(w^4/n^2),\qquad
+ -H_n'(r)\asymp w^2/n
+\]
+uniformly in a fixed bounded neighborhood of $s_n$.
+For a sufficiently large constant $C_1$, evaluation at $s_n-C_1w^4/n$
+contradicts \eqref{ble:eq:lowerH} if $r_n$ lies below that point.
+Monotonicity handles points further below. This gives the stated error
+$O(w^4/n)$.
+\end{proof}
+
+The gap between this lower correction and the conjectured correction is
+\[
+ \left(2+\frac{w}{2(1+w)^2}\right)
+ -\left(\frac32+\frac1{2(1+w)}\right)
+ =\frac12-\frac1{2(1+w)^2}.
+\]
+It tends to $1/2$. This is precisely the extra contribution supplied by
+the local curvature calculation in the next section. The lower bound does
+not prove the conjectured upper bound.
+
+\section{An exact Poisson reduction and a sharp sufficient lemma}\label{ble:sec:criterion}
+Fix $L=\lceil16w\rceil<n-1$, and define
+\begin{align}
+ p_t(m)&=e^{-t}\frac{t^m}{m!},\quad t=\frac n{r_n},\label{ble:eq:p}\\
+ D_{n,m}&=r_n^{m+1}\frac{a_{n-1-m}}{a_n}
+          =\prod_{j=0}^{m}\frac{r_n}{r_{n-j}},\label{ble:eq:D}\\
+ C_{n,m}&=\frac{m!b_{n,m}}{n^m},\label{ble:eq:C}\\
+ J_n&=\frac1{a_n}\sum_{m=L+1}^{n-1}a_{n-1-m}b_{n,m}.\label{ble:eq:J}
+\end{align}
+Then \eqref{ble:eq:rec} is exactly
+\begin{equation}\label{ble:eq:exact}
+ 1=\frac{e^t}{r_n}\sum_{m=0}^{L}p_t(m)D_{n,m}C_{n,m}+J_n.
+\end{equation}
+There is no infinite-series substitution into $A$ here.
+
+\begin{theorem}[Averaged endpoint criterion]\label{ble:thm:criterion}
+Suppose that for some fixed $q\ge0$ the actual sequence satisfies
+\begin{align}
+ \sum_{m=0}^{L}p_t(m)D_{n,m}C_{n,m}
+ &=1+\frac{(3+d)t^2+2dt}{2n}+O(w^q/n^2),\label{ble:eq:avg}\\
+ J_n&=\frac2{r_n}+O(w^q/n^2).\label{ble:eq:comp}
+\end{align}
+Then \eqref{eq:neededratio} holds for some fixed $p$, and the finer Bell
+normalization converges to a finite strictly positive constant.
+\end{theorem}
+\begin{proof}
+By \eqref{ble:eq:ratio}, $t\asymp w$ and $r_n\asymp n/w$. Equations
+\eqref{ble:eq:exact}--\eqref{ble:eq:comp} first show
+$e^t/r_n=1+O(w^2/n)+O(w^q/n^2)$. Hence
+\[
+ t-\log r_n=O(w^2/n)+O(w^q/n^2).
+\]
+Since $r\mapsto n/r-\log r$ has derivative $-(t+1)/r\asymp-w^2/n$ near its
+zero $n/w$, the mean value theorem implies $r_n=n/w+O(1)$ (fixed powers of
+$w$ divided by $n$ tend to zero).
+Write $r_n=n/w+\delta$, $\delta=O(1)$. Then
+\[
+ \frac{e^t}{r_n}=1-\frac{\delta w(1+w)}n+O(w^4/n^2),\qquad
+ t=w+O(w^2/n).
+\]
+Insert these in \eqref{ble:eq:exact}. With $Q=\max(q,6)$,
+\[
+ \delta w(1+w)=\frac{(3+d)w^2+2dw}{2}+2w+O(w^Q/n).
+\]
+Therefore
+\[
+ \delta=\frac{2+(3+d)w/2+d}{1+w}+O(w^Q/n)
+       =2+\frac{w}{2(1+w)^2}+O(w^Q/n).
+\]
+This is \eqref{eq:neededratio}; Proposition~\ref{prop:conditional}
+completes the proof.
+\end{proof}
+
+The two hypotheses are the missing estimates, not proved conclusions. The
+averaged criterion is weaker than a uniform local expansion: rare values
+of $m$ may behave differently if their weighted contribution is
+controlled. It avoids asking for a density of $\mu$ or a complete tail
+transseries. (In Part~I's terms, under \eqref{ble:eq:avg} and
+\eqref{ble:eq:comp} the exact identity \eqref{ble:eq:exact} is the formal
+balance \eqref{eq:formalbalance} with an error $O(w^q/n^2)$, and the proof
+above is Part~I's formal derivation of \eqref{eq:ratiocandidate} made
+rigorous under those hypotheses.)
+
+There is also a logically minimal scalar defect. Define
+\begin{equation}\label{ble:eq:defect}
+ \mathcal E_n=
+ \frac{e^t}{r_n}\left\{\sum_{m\le L}p_t(m)D_{n,m}C_{n,m}
+ -1-\frac{(3+d)t^2+2dt}{2n}\right\}
+ +J_n-\frac2{r_n}.
+\end{equation}
+The exact identity says
+\[
+ 1=\frac{e^t}{r_n}\left(1+\frac{(3+d)t^2+2dt}{2n}\right)
+       +\frac2{r_n}+\mathcal E_n.
+\]
+Thus the single estimate $\mathcal E_n=O(w^q/n^2)$ suffices. It allows
+cancellation between the two errors, whereas
+\eqref{ble:eq:avg}--\eqref{ble:eq:comp} controls them separately. By
+substituting \eqref{eq:neededratio} into this identity one sees that some
+such fixed-power bound on $\mathcal E_n$ is also necessary for
+\eqref{eq:neededratio}. This scalar reformulation is sharp in precision,
+but the separated estimates explain what must be analyzed.
+
+\section{Local curvature: the moment representation's precise missing input}\label{ble:sec:curvature}
+The following uniform condition is sufficient for the averaged estimate:
+\begin{equation}\label{ble:eq:local}
+ \log r_{n-j}-\log r_n=-\frac{dj}{n}
+                +O\!\left(\frac{w^q}{n^2}\right),
+ \qquad 0\le j\le L,
+\end{equation}
+for a fixed $q$; polynomial factors in $j\le16w+1$ can be absorbed into a
+larger $q$.
+Summing this relation in \eqref{ble:eq:D} gives, uniformly,
+\begin{equation}\label{ble:eq:localD}
+ D_{n,m}=1+\frac{d\,m(m+1)}{2n}+O(w^{q'}/n^2).
+\end{equation}
+Multiply by Lemma~\ref{ble:lem:coef} and use
+\[
+ \E[Z(Z-1)]=t^2,\qquad \E[Z(Z+1)]=t^2+2t,
+ \quad Z\sim\operatorname{Poisson}(t),
+\]
+with the same Chernoff truncation as before. Under \eqref{ble:eq:local},
+this proves \eqref{ble:eq:avg}. It is now clear exactly where the
+coefficient $d$ comes from. Monotonicity alone gives $D_{n,m}\ge1$ and
+loses this contribution.
+
+The moment formulation is especially transparent. Define the probability
+tilt
+\[
+ d\mu_{n-1}(x)=\frac{x^{n-1}}{a_{n-1}}d\mu(x).
+\]
+Then the following identities are exact:
+\begin{equation}\label{ble:eq:var}
+ \E_{\mu_{n-1}}X=r_n,\qquad
+ \frac{\Var_{\mu_{n-1}}X}{r_n^2}
+ =\frac{r_{n+1}}{r_n}-1.
+\end{equation}
+\begin{proposition}[Tilted variance sufficient for local curvature]\label{ble:prop:variance}
+A sufficient input for \eqref{ble:eq:local} is the all-large-index
+estimate
+\begin{equation}\label{ble:eq:varlemma}
+ \frac{\Var_{\mu_{i-1}}X}{r_i^2}
+ =\frac{W(i)}{i(1+W(i))}+O\!\left(\frac{W(i)^q}{i^2}\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Take the logarithm of $1+$ the right side of \eqref{ble:eq:var}:
+\[
+ \log r_{i+1}-\log r_i
+ =\frac{W(i)}{i(1+W(i))}+O(W(i)^{\max(q,0)}/i^2).
+\]
+On $[n-L,n]$, the derivative of $W(x)/(x(1+W(x)))$ is $O(n^{-2})$.
+Telescoping over $j\le L=O(w)$ therefore gives \eqref{ble:eq:local}, after
+enlarging the fixed exponent to absorb $j$ and $j^2$.
+\end{proof}
+
+The golden-moment ratio law gives only $\Var_{\mu_{i-1}}X/r_i^2\to0$.
+Estimate \eqref{ble:eq:varlemma} requires its leading value at scale
+$1/i$, and an error at scale $\operatorname{polylog}(i)/i^2$. Even a
+first-order equivalent at scale $1/i$ is insufficient for the displayed
+summable-error target unless its error is quantified much more sharply.
+The variance condition is a sufficient route, not asserted to be
+necessary: the averaged condition \eqref{ble:eq:avg} could hold without
+it.
+
+A conventional saddle analysis would aim at mean near $n/w$, variance near
+$n/[w(1+w)]$, and higher central moments with uniform errors. But Part~II
+has not proved a density or a local tail law that permits such an
+analysis. Assuming such a density would move the gap rather than close
+it.
+
+\section{The complementary endpoint is an independent missing estimate}\label{ble:sec:complement}
+The $k=0$ term in \eqref{ble:eq:rec} contains $2a_{n-1}$. For
+\eqref{ble:eq:comp} one must bound everything else outside $m\le L$ by
+\begin{equation}\label{ble:eq:remainderlemma}
+ \sum_{m=L+1}^{n-1}a_{n-1-m}b_{n,m}-2a_{n-1}
+       =O\!\left(a_n\frac{w^q}{n^2}\right).
+\end{equation}
+Its left side is nonnegative for sufficiently large $n$, since $k=0$ lies
+in the complementary range. Thus this is a positive upper-bound problem,
+and it cannot rely on cancellation inside that range.
+
+For orientation, degree concentration in the first two outer terms
+supplies a lower-order contribution. The $k=0$ term has
+$2a_{n-1}+2a_1a_{n-2}+\cdots$; the $k=1$ term has $3a_1a_{n-2}+\cdots$.
+Hence, for large enough $n$ that both terms lie outside the endpoint
+window,
+\[
+ J_n-\frac2{r_n}\ge\frac{5a_{n-2}}{a_n}
+ =\frac5{r_nr_{n-1}}\sim\frac{5w^2}{n^2}.
+\]
+This explains why it would be wrong to discard the complementary error as
+smaller than $w^2/n^2$. A bound of that order is compatible with the
+desired normalization.
+
+Similarly, the main Poisson endpoint has second-order contributions from
+two degree-two choices, degree-three choices, and the square of the local
+curvature. Its natural next error is of polynomial-logarithmic order
+divided by $n^2$, which is precisely sufficient after solving for the
+ratio. The current proof establishes the small-degree coefficient part,
+but does not establish a uniform upper bound for all configurations
+containing a large inner coefficient. The inherited $r_n\sim n/\log n$
+controls fixed neighboring ratios but does not automatically justify
+summing a growing number of such configurations.
+
+\section{Numerical stress tests and their limits}\label{ble:sec:numerics}
+The accompanying computation generates $a_0,\ldots,a_{1600}$ as exact
+integers by the inherited triangular recurrence of
+Section~\ref{sec:numerics} (the delivered run used the C adapter
+\nolinkurl{code/03-local-estimates-compute_runtime.c}; its output table is
+not shipped). The script \nolinkurl{code/03-local-estimates-diagnose.py}
+checks a prefix independently with Python, compares against Part~I's
+stored high-precision ratios (\nolinkurl{data/diagnostics.csv}), and checks
+\eqref{eq:def} through degree 35 using independent finite polynomial
+multiplication. Exact Bell numbers are generated with the Bell triangle.
+Decimal logarithms, exponentials and a Newton solution of $we^w=n$ provide
+the diagnostic arithmetic. Runs at 80 and 120 decimal digits agree: all
+reported diagnostics pass the comparison thresholds, with maximum observed
+absolute difference below $2\times10^{-75}$
+(\nolinkurl{data/03-local-estimates-precision_check.json}). This checks
+numerical stability. No limiting claim is derived from those checks.
+
+For each index we record
+\[
+ \Delta_n=r_n-R(n),\quad
+ D_n^{B}=\log(a_n/\mathsf B_n)-w^2-3w,\quad
+ D_n^{N}=\log(a_n/\mathcal N_n).
+\]
+The first normalization uses exact Bell numbers; the second uses the
+smooth leading model. Confusing them at finite $n$ would contaminate a
+remainder fit. ($D_n^B$ is Part~I's $D_n^{\mathrm{num}}$ of
+\eqref{eq:Dnum}; Table~\ref{ble:tab:results}, whose $B_n$ is
+$\mathsf B_n$, agrees with Table~\ref{tab:diagnostics} at $n\le1200$, and
+its column $r_n-R(n)$ is Part~I's $R_n-n/W(n)$ minus
+$2+w/(2(1+w)^2)$.)
+\input{data/03-local-estimates-results_table.tex}
+{\lasttabletarget\label{ble:tab:results}}
+
+The observed scaled ratio residual $n\Delta_n/w^2$ is a diagnostic for a
+candidate $O(w^2/n)$ remainder, considerably stronger than an unscaled
+plot. Its bounded appearance is evidence only. A finite range cannot
+exclude a later term such as $1/w^k$, which would be much larger than any
+fixed $w^p/n$ and could destroy normalization convergence.
+
+For selected indices, the endpoint sum is computed exactly before Decimal
+conversion. Coefficients of $A(z)^M$ are generated by the independent
+recurrence
+\[
+ b_0=1,\qquad s b_s=\sum_{j=1}^{s}\big((M+1)j-s\big)a_jb_{s-j},
+\]
+which follows from $A(A^M)'=MA'A^M$. Every division is checked to have
+zero integer remainder. This directly measures $J_n$ as $1-$ the endpoint
+sum, without assuming endpoint dominance.
+\input{data/03-local-estimates-endpoint_table.tex}
+{\lasttabletarget\label{ble:tab:endpoint}}
+
+The complementary residual's approach to $5$ in its natural scaling
+(Table~\ref{ble:tab:endpoint}) agrees with the two explicit $a_{n-2}$
+contributions above. This does not prove a matching upper bound. We also
+test the curvature average, the local-window log-ratio error, and the
+complete scalar balance defect. Their full values and the cutoffs are in
+the CSV and JSON outputs:
+\begin{itemize}[nosep]
+\item all indices: \nolinkurl{data/03-local-estimates-diagnostics.csv};
+\item the selected indices:
+ \nolinkurl{data/03-local-estimates-endpoint_diagnostics.json};
+\item the window sweep: \nolinkurl{data/03-local-estimates-window_sweep.json}.
+\end{itemize}
+Changing the window coefficient from 16 to 8, 12 and 24 checks sensitivity to truncation.
+Windows with the larger constants can require substantially larger $n$ to
+be asymptotic; the diagnostic does not claim uniformity beyond the stated
+finite values.
+
+The normalization seems compatible with a finite positive limit and with
+the summable ratio remainder. No certified value of that limit is
+supplied. In particular, proximity to $e^{-3}$ in a finite range would not
+prove an exact constant. Initial coefficients affect the normalization
+constant, so a local all-orders expansion alone would not automatically
+identify it.
+
+\section{What has been resolved and the next precise task}\label{ble:sec:resolved}
+The new proof and the old sufficient criterion are consistent. The new
+ratio law is an essential enabling result because it gives monotone
+ratios and a legitimate moment tilt; its error estimate remains far from
+the normalization precision.
+
+This continuation proves the uniform coefficient expansion and the
+additive lower correction \eqref{ble:eq:lower}. It also proves every
+implication from the precise missing estimates to the desired ratio and
+Bell normalization. It does not prove those missing estimates for A088714,
+and therefore does not claim a proof of the full finer comparison.
+
+The sharpest single remaining lemma in this formulation is
+\[
+ \boxed{\mathcal E_n=O(W(n)^q/n^2)\quad\text{for some fixed }q.}
+\]
+The more informative two-part route is \eqref{ble:eq:avg} plus
+\eqref{ble:eq:remainderlemma}. From the moment representation,
+\eqref{ble:eq:varlemma} supplies a concrete sufficient curvature estimate.
+An attack through the endpoint recurrence should prove the complementary
+positive bound and bootstrap the local curvature without presupposing the
+target ratio expansion. Using the target expansion to justify the window
+estimate would be circular.
+
+Useful next investigations are: (i) a positive combinatorial upper bound
+for configurations with a large inner coefficient; (ii) a stability
+theorem for the endpoint balance that controls discrete curvature from the
+exact recurrence; (iii) quantitative high-moment tilt estimates from the
+coupled resolvents, without assuming absolute continuity; and (iv) a
+higher-order calculation retaining the $5a_{n-2}$ term, followed by a
+proved error bound. Only after those steps should one attempt a certified
+interval for the normalization constant or all-orders transseries
+inversion.
+
+\clearpage
 \appendix
+\noindent\emph{Appendix~\ref{gml:app:audit} belongs to Part~II; it follows Part~III only because the appendix closes the report.}
 \section{Dependency and novelty audit}\label{gml:app:audit}
 The main logical dependencies are as follows. The formal equation and
 the two compact positive-operator constructions prove existence of a
@@ -2341,7 +3072,8 @@ $A(x)=1+xA(x)^2A(xA(x))$}, entry attributed to Paul D. Hanna,
 with subsequent contributions.
 \url{https://oeis.org/A088714}.
 Text form consulted: \url{https://oeis.org/search?q=id:A088714&fmt=text}.
-Accessed September 20, 2026 (Part~I) and October 1, 2026 (Part~II).
+Accessed September 20, 2026 (Part~I) and October 1, 2026 (Part~II);
+cited by Part~III for the definition and initial terms.
 
 \bibitem{oeis-a067145}
 The OEIS Foundation Inc., \emph{A067145: Shifts left under reversion},
@@ -2390,6 +3122,21 @@ M. Langer and H. Woracek,
 Mathematics} \textbf{155}(4) (2025), 1431--1491;
 first published online January 26, 2024.
 \href{https://doi.org/10.1017/prm.2023.128}{doi:10.1017/prm.2023.128}.
+\bibitem{moserwyman}
+L. Moser and M. Wyman,
+``An asymptotic formula for the Bell numbers,''
+\emph{Transactions of the Royal Society of Canada, Section III}
+\textbf{49} (1955), 49--54.
+Primary-source scan: \url{https://oeis.org/A000110/a000110_4.pdf}.
+Cited by Part~III.
+
+\bibitem{grunwaldserafin}
+J. Grunwald and G. Serafin,
+\emph{Explicit bounds for Bell numbers and their ratios}, 2024.
+\url{https://arxiv.org/abs/2408.14182}.
+Cited by Part~III as contemporary context for quantitative Bell
+comparisons; no theorem from it is needed for the endpoint reduction.
+
 \bibitem{decimal}
 Python Software Foundation,
 \emph{Decimal fixed-point and floating-point arithmetic}, Python documentation.
