@@ -340,4 +340,9 @@ norm residuals; they check96 complete normalization outputs and positive
 coordinate maps. These are component/algebra fixtures, not materialized
 full giant Pell zeros. Author generation and a separate fresh default
 replay pass. All eight local links and the trio's whitespace check pass.
-Independent review is pending.
+Root independently reviewed the full source, local proof and cited scalar
+ratio dependency and replayed the receipt, with no findings. Its separate
+executor checked288 complete retained-register/manual-finalizer/parent
+output identities(144 signed), all four degree/opcode/closure ledgers
+with independent norm-cancellation propagation, and180 additional
+multi-selector, uneven-global-bound contexts(30 at D=1).
