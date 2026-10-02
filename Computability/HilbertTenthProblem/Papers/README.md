@@ -39,7 +39,22 @@ supplies87=48M+39A with19 positive witnesses and exact degree169. Its
 X=wq³ to X=wq preserves each frozen parent's full positive zero set through
 a proved integer coordinate bijection at zeros.
 
-The [signed positive-bound sparse-TM compiler](research-wip/native-stream-queue/gpcp_positive_bound_units767.md)
+The [first-padding sparse-TM compiler](research-wip/native-stream-queue/gpcp_first_padding_units763.md)
+gives **719 certificate /763=352M+411A operations**,15 comparisons,
+125 positive witnesses and exact formal degree232964. Both first-padding
+signs and both checksum signs are forced positive by a local population
+contradiction before history typing. It has the same full supplied positive
+zero set as its765 parent for every positive program parameter. The
+supplied-initial form costs766 operations with126 witnesses and degree9624.
+
+The intervening [typed upper-transport compiler765](research-wip/native-stream-queue/gpcp_upper_transport_unit765.md)
+saves two additions from767. Its typed low history digit forces the new
+transport factor positive without forcing inherited global/native-bound
+signs. It also preserves all supplied positive zeros, with exact degrees
+228407 computed or9487 supplied. The older partition study below retains
+its stated64-base scope; these newer factors have not been added to it.
+
+The preceding [signed positive-bound sparse-TM compiler](research-wip/native-stream-queue/gpcp_positive_bound_units767.md)
 gives **714 certificate /767=352M+415A operations**,18 comparisons,
 125 positive witnesses and exact degree228339, with the same three positive
 program parameters and ordinary input. Both AND bounds and both geometry
@@ -332,6 +347,16 @@ signs at the wrong power, then force+1 at the correct power before history
 typing. The last ordinary comparison disappears, so the complete default
 polynomial is its unit product minus1. The full supplied positive zero
 set equals its380 parent on valid program slices; its SOS form costs379.
+
+The [complete32-base transport/query family](research-wip/native-stream-queue/tseytin_transport_query_factor_partitions.md)
+exhausts432 group-count optima with62 positive witnesses. Its operation/
+propagated-degree frontier is **378/4713,380/4147,381/4140,382/2900,
+384/2210,386/1664**. The381 winner retains its query comparison. The
+floor1664 is restricted to this finite source/grouping architecture.
+Within a base the full supplied positive zeros agree on valid program
+slices; lower/global choices shift their respective coordinates, while
+strong choices preserve outer projections with fresh private auxiliaries.
+The378 empty-residual anchor is emitted as the product minus1 directly.
 
 The intervening [lower-transport compiler380](research-wip/native-stream-queue/tseytin_lower_transport_unit380.md)
 shifts the private initial coordinate by1 and uses delimiter conservation

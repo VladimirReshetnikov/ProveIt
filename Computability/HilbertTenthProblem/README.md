@@ -29,7 +29,22 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate independent-gamma87 candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
-The [signed positive-bound sparse-TM compiler](Papers/research-wip/native-stream-queue/gpcp_positive_bound_units767.md)
+The [first-padding sparse-TM compiler](Papers/research-wip/native-stream-queue/gpcp_first_padding_units763.md)
+gives **719 certificate /763=352M+411A operations**,15 comparisons,
+125 positive witnesses and exact formal degree232964. Both first-padding
+signs and both checksum signs are forced positive by a local population
+contradiction before history typing. It has the same full supplied positive
+zero set as its765 parent for every positive program parameter. The
+supplied-initial form costs766 operations with126 witnesses and degree9624.
+
+The intervening [typed upper-transport compiler765](Papers/research-wip/native-stream-queue/gpcp_upper_transport_unit765.md)
+saves two additions from767. Its typed low history digit forces the new
+transport factor positive without forcing inherited global/native-bound
+signs. It also preserves all supplied positive zeros, with exact degrees
+228407 computed or9487 supplied. The older partition study below retains
+its stated64-base scope; these newer factors have not been added to it.
+
+The preceding [signed positive-bound sparse-TM compiler](Papers/research-wip/native-stream-queue/gpcp_positive_bound_units767.md)
 gives **714 certificate /767=352M+415A operations**,18 comparisons,
 125 positive witnesses and exact degree228339, with the same three positive
 program parameters and ordinary input. Both AND bounds and both geometry
@@ -322,6 +337,16 @@ signs at the wrong power, then force+1 at the correct power before history
 typing. The last ordinary comparison disappears, so the complete default
 polynomial is its unit product minus1. The full supplied positive zero
 set equals its380 parent on valid program slices; its SOS form costs379.
+
+The [complete32-base transport/query family](Papers/research-wip/native-stream-queue/tseytin_transport_query_factor_partitions.md)
+exhausts432 group-count optima with62 positive witnesses. Its operation/
+propagated-degree frontier is **378/4713,380/4147,381/4140,382/2900,
+384/2210,386/1664**. The381 winner retains its query comparison. The
+floor1664 is restricted to this finite source/grouping architecture.
+Within a base the full supplied positive zeros agree on valid program
+slices; lower/global choices shift their respective coordinates, while
+strong choices preserve outer projections with fresh private auxiliaries.
+The378 empty-residual anchor is emitted as the product minus1 directly.
 
 The intervening [lower-transport compiler380](Papers/research-wip/native-stream-queue/tseytin_lower_transport_unit380.md)
 shifts the private initial coordinate by1 and uses delimiter conservation
@@ -1062,9 +1087,9 @@ retains its full strong equation.
   compiler slices. The established75/87 bounds remain unchanged.
 
   These results are not yet Lean formalized.
-- The [signed-bound sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_positive_bound_units767.md)
-  gives a second complete universal route at **767 operations**,125 positive
-  witnesses and exact degree228339. Its57-tile compiler retains the complete
+- The [first-padding sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_first_padding_units763.md)
+  gives a second complete universal route at **763 operations**,125 positive
+  witnesses and exact degree232964. Its57-tile compiler retains the complete
   ordinary-input interface. Shared selector sums, independently forced
   checksum signs, and proved global/native bound projections reduce the
   complete paid circuit; signed bound factors need not individually be+1.
