@@ -59,6 +59,10 @@
 \newcommand{\tableinput}[1]{\@@input #1 }
 \makeatother
 \newcommand{\smallurl}[1]{{\small\url{#1}}}
+% Collection edition (batch 73O1): notes added when the report was written
+% into ProveIt's research-report collection.
+\newcommand{\writenote}[1]{\par\smallskip\noindent
+ \textit{[Write note, batch 73O1, 1 October 2026.]}\ #1\par\smallskip}
 \title{\textbf{Central Poupard Numbers}\\[0.35em]
 \Large Two OEIS conjectural statements, complete asymptotic sectors,\\
 and a universal transition for shifted moments}
@@ -100,6 +104,17 @@ Worldwide publication priority for the broader extensions has not been
 established.
 \end{abstract}
 
+\writenote{This is the collection edition of the report, written into
+ProveIt's research-report collection from manuscript~47 of batch~73O1
+(provenance in Appendix~\ref{pou:app:edition}). Every label carries the
+prefix \texttt{pou:}; the \texttt{Makefile} now lives in \texttt{code/},
+and \texttt{requirements.txt} and \texttt{BUILD\_REPORT.json} in
+\texttt{data/}. Text added in the write is marked like this note;
+everything else is the delivered text. The OEIS statements quoted here
+(Bala's conjectured fraction, Chapoton's observation, Kotesovec's
+leading term) are as the authors inspected the entry on 1~October 2026;
+the intake did not re-fetch it.}
+
 \clearpage
 \begingroup
 \small
@@ -108,7 +123,7 @@ established.
 \endgroup
 \clearpage
 
-\section{Scope, provenance, and the central results}\label{sec:scope}
+\section{Scope, provenance, and the central results}\label{pou:sec:scope}
 
 The two concrete OEIS targets are the continued fraction labelled
 ``Conjectured g.f.'' by Peter Bala on 15 December 2025, and the observation
@@ -139,6 +154,20 @@ hypothesis here.  Its countable-action model is different from the shifted
 moment integrals below.  No repository result, formalized or otherwise,
 is required for the proofs in this article.  The repository was not modified.
 
+\writenote{The precedent cited as \cite{repochart} is the transseries
+package
+\path{Analysis/Transseries/docs/series-and-transseries/Logarithmic_Critical_Endpoint_Lambert_Charts/};
+nothing is imported from it. At the repository's current state no other
+report or formal development treats A125054, A125053, A000182 or the
+shifted tangent moments $A_n(c)$. One constant recurs: the transition
+parameter $s_*=2+W_0(-2e^{-2})$ of \eqref{pou:eq:starintro} is the
+number called $\tau$ in the collection report on A277364
+\cite{bellreport}, where it solves $\tau/(1-e^{-\tau})=2$ (the same
+equation $2-s=2e^{-s}$) and governs the omitted tail $B_n-a(n)$ of the
+truncated Stirling sum $a(n)=\sum_{k\le n/2}S(n,k)$. The objects differ;
+see the note after the numerical values of $s_*$ and $\tau_*$ in
+Section~\ref{pou:sec:geometry}.}
+
 \subsection{What is known, what is proved here}
 
 The tangent generating function, its classical Stieltjes fraction, the
@@ -154,24 +183,24 @@ These are proved in the article, but a targeted source search is not an
 exhaustive priority determination.
 
 For orientation, the central statements are as follows.  Put
-\begin{equation}\label{eq:definition}
+\begin{equation}\label{pou:eq:definition}
  \alpha=\frac\pi2,\qquad
  T_n=(2n+1)!\,[z^{2n+1}]\tan z,\qquad
  A_n(c)=\sum_{k=0}^n\binom nk c^{n-k}T_k,\qquad a_n=A_n(1).
 \end{equation}
 The structural proofs establish the conjectured fraction and
-\begin{equation}\label{eq:congruenceintro}
+\begin{equation}\label{pou:eq:congruenceintro}
  a_n\equiv3\pmod9\quad(n\ge1).
 \end{equation}
 For fixed $c\ge0$ we obtain the exact sector expansion
-\begin{equation}\label{eq:sectorintro}
+\begin{equation}\label{pou:eq:sectorintro}
  A_n(c)=\frac{2\Gamma(2n+2)}{\alpha^{2n+2}}
  \sum_{\substack{q\ge1\\q\ \mathrm{odd}}}
  q^{-2n-2}H_n(c\alpha^2q^2),\qquad
  H_n(z)=\sum_{j=0}^n\frac{(z/4)^j}{j!\fall{n+\tfrac12}{j}}.
 \end{equation}
 For the large shift $c=\tau n^2$, the transition constant is characterized by
-\begin{equation}\label{eq:starintro}
+\begin{equation}\label{pou:eq:starintro}
  2-s_*=2e^{-s_*},\quad 1<s_*<2,\qquad
  \tau_* =\frac{s_*(2-s_*)}{\alpha^2}.
 \end{equation}
@@ -194,7 +223,7 @@ An infinite continued fraction means its coefficientwise stabilized formal
 expansion, not its evaluation at a small positive real number.  All
 probability statements concern explicitly normalized positive weights.
 
-\section{From the Poupard triangle to tangent moments}\label{sec:poupard}
+\section{From the Poupard triangle to tangent moments}\label{pou:sec:poupard}
 
 The first rows of the relevant Poupard triangle are
 \[
@@ -208,7 +237,7 @@ The first rows of the relevant Poupard triangle are
 To fix indexing without relying on these examples, write $h_{i,j}$ for its
 entry with $i+j=2n$, $i,j\ge0$, and set $h_{i,j}=0$ when $i+j$ is odd.
 The classical bivariate exponential generating function is
-\begin{equation}\label{eq:rhombus}
+\begin{equation}\label{pou:eq:rhombus}
  Z(x,y)=\sum_{i,j\ge0}h_{i,j}\frac{x^iy^j}{i!j!}
        =\cos(x-y)\sec^2(x+y).
 \end{equation}
@@ -218,7 +247,7 @@ This is the secant case of Foata and Han's generating-function theorem
 For completeness, the algebraic content of this representation can also be
 checked directly.  It is symmetric in $x,y$, its boundary value is
 $Z(x,0)=\sec x$, and it satisfies
-\begin{equation}\label{eq:pde}
+\begin{equation}\label{pou:eq:pde}
  (\partial_x-\partial_y)^2Z=-4Z.
 \end{equation}
 Consequently its coefficients satisfy
@@ -228,11 +257,11 @@ Consequently its coefficients satisfy
 The two boundary values of each even row and its prescribed second
 differences determine that row uniquely: the difference of two solutions
 would be an affine function of the position, vanishing at both ends.
-Thus \eqref{eq:rhombus} characterizes the triangle with secant-number edges.
+Thus \eqref{pou:eq:rhombus} characterizes the triangle with secant-number edges.
 The combinatorial interpretation is prior work; the following short
 operator calculation explains the central specialization used here.
 
-\begin{proposition}\label{prop:central}
+\begin{proposition}\label{pou:prop:central}
 The central entry is $h_{n,n}=A_n(1)$.  More generally, the diagonal
 exponential coefficient of
 \[
@@ -256,14 +285,14 @@ The left side is exactly $n!^2[x^ny^n]Z_c(x,y)$.
 
 One exact recurrence useful for checking the normalization comes from
 $\tan'=1+\tan^2$:
-\begin{equation}\label{eq:tangentrec}
+\begin{equation}\label{pou:eq:tangentrec}
  T_0=1,\qquad
  T_n=\sum_{j=0}^{n-1}\binom{2n}{2j+1}T_jT_{n-1-j}\quad(n\ge1).
 \end{equation}
 It gives $T_n=1,2,16,272,7936,\ldots$ (OEIS A000182~\cite{oeis182}), hence
 $a_n=1,3,21,327,9129,\ldots$.
 
-\section{A proof of the conjectured continued fraction}\label{sec:cf}
+\section{A proof of the conjectured continued fraction}\label{pou:sec:cf}
 
 \subsection{Formal contractions and binomial translation}
 
@@ -284,7 +313,7 @@ At any given degree only finitely many levels can contribute.
 The elementary contraction and translation rules are classical
 \cite{bala}; we record their exact indexing.
 
-\begin{lemma}\label{lem:contractions}
+\begin{lemma}\label{pou:lem:contractions}
 The following identities hold formally.
 \begin{enumerate}[label=(\roman*),itemsep=2pt]
 \item The even contraction of $\Sfrac(\gamma;x)$ has
@@ -322,7 +351,7 @@ of $x$ then stabilizes as the finite depth increases.
 
 \subsection{A self-contained route to the tangent fraction}
 
-\begin{lemma}\label{lem:tangentS}
+\begin{lemma}\label{pou:lem:tangentS}
 The tangent moment generating series satisfies
 \[
  \sum_{n\ge0}T_nx^n=\Sfrac(\gamma;x),\qquad \gamma_j=j(j+1).
@@ -345,14 +374,14 @@ weight $j(j+1)$.  First-return decomposition at each height gives
 $S_j=1+\gamma_{j+1}xS_{j+1}S_j$, the defining recursion of the S-fraction.
 \end{proof}
 
-\begin{theorem}[Bala's displayed conjecture]\label{thm:bala}
+\begin{theorem}[Bala's displayed conjecture]\label{pou:thm:bala}
 Let $A(x)=\sum_{n\ge0}a_nx^n$.  Define
-\begin{equation}\label{eq:beta}
+\begin{equation}\label{pou:eq:beta}
  \beta_{2j-1}=(2j+1)^2,\qquad
  \beta_{2j}=4j(j+1)\qquad(j\ge1).
 \end{equation}
 Then, in $\Z[[x]]$,
-\begin{equation}\label{eq:balafinal}
+\begin{equation}\label{pou:eq:balafinal}
  A(x)=\frac{1+2x\Sfrac(\beta;x)}{1-x}.
 \end{equation}
 The successive weights inside $\Sfrac(\beta;x)$ are
@@ -361,9 +390,9 @@ $9,8,25,24,49,48,81,80,\ldots$.
 \begin{proof}
 Let $T(x)=\sum T_nx^n$ and
 $V(x)=(T(x)-1)/(2x)=\sum T_{n+1}x^n/2$.
-Lemma~\ref{lem:contractions}(ii) applied to Lemma~\ref{lem:tangentS}
+Lemma~\ref{pou:lem:contractions}(ii) applied to Lemma~\ref{pou:lem:tangentS}
 gives the J-fraction of $V$:
-\begin{equation}\label{eq:VJ}
+\begin{equation}\label{pou:eq:VJ}
  b_k=8(k+1)^2,\qquad
  \lambda_k=4k(k+1)(2k+1)^2.
 \end{equation}
@@ -374,14 +403,14 @@ $A(x)=(1-x)^{-1}T(x/(1-x))$.  Consequently
       =\frac1{1-x}V\left(\frac{x}{1-x}\right).
 \]
 Its J-diagonals are $8(k+1)^2+1$, with the same $\lambda_k$.
-On the other hand, the even contraction of \eqref{eq:beta} has
+On the other hand, the even contraction of \eqref{pou:eq:beta} has
 $b_0=9$ and, for $k\ge1$,
 \[
  \beta_{2k}+\beta_{2k+1}=8(k+1)^2+1,\qquad
  \beta_{2k-1}\beta_{2k}=4k(k+1)(2k+1)^2.
 \]
 Thus the two J-fractions coincide coefficientwise.  Hence
-$B=\Sfrac(\beta;x)$, which rearranges to \eqref{eq:balafinal}.
+$B=\Sfrac(\beta;x)$, which rearranges to \eqref{pou:eq:balafinal}.
 \end{proof}
 
 \begin{remark}
@@ -391,10 +420,10 @@ it proves exactly the later conjectural formula, with no finite-depth
 assumption or experimental extrapolation.
 \end{remark}
 
-\section{The valuation observation and finite modular structure}\label{sec:modular}
+\section{The valuation observation and finite modular structure}\label{pou:sec:modular}
 
 Even contraction of the tangent fraction and translation by $c$ give
-\begin{equation}\label{eq:AJ}
+\begin{equation}\label{pou:eq:AJ}
  \sum_{n\ge0}A_n(c)x^n=\Jfrac(b,\lambda;x),\qquad
  b_k=8k^2+8k+2+c,\quad \lambda_k=4k^2(4k^2-1).
 \end{equation}
@@ -403,7 +432,7 @@ steps at height $k$ have weight $b_k$, upward steps weight one, and downward
 steps from height $k$ weight $\lambda_k$.  First-return decomposition proves
 this interpretation directly.
 
-\begin{theorem}[An exact congruence]\label{thm:mod9}
+\begin{theorem}[An exact congruence]\label{pou:thm:mod9}
 For every $n\ge1$, $a_n\equiv3\pmod9$.  In particular,
 $v_3(a_n)=1$ for every $n\ge1$.
 \end{theorem}
@@ -425,7 +454,7 @@ Its weight is $12\cdot19^{n-2}\equiv3\pmod9$.
 For $n=1$ the weight is $b_0=3$.  This proves the congruence at every index.
 \end{proof}
 
-\begin{corollary}\label{cor:modrational}
+\begin{corollary}\label{pou:cor:modrational}
 For every positive integer $m$ and integer $c$, the formal series
 $\sum A_n(c)x^n$ is rational over $\Z/m\Z$.  Its coefficient sequence
 modulo $m$ is eventually periodic.
@@ -441,22 +470,22 @@ through a finite state space and is eventually periodic.
 
 The last corollary does not determine a minimal period.  It is a structural
 consequence that can support later, more refined congruence calculations.
-For the particular modulus nine, Theorem~\ref{thm:mod9} says simply
+For the particular modulus nine, Theorem~\ref{pou:thm:mod9} says simply
 $A(x)\equiv1+3x/(1-x)\pmod9$.
 
-\section{Positive measures, uniqueness, and Hankel determinants}\label{sec:moments}
+\section{Positive measures, uniqueness, and Hankel determinants}\label{pou:sec:moments}
 
-\begin{proposition}[Exact moment representation]\label{prop:moment}
+\begin{proposition}[Exact moment representation]\label{pou:prop:moment}
 For every integer $n\ge0$ and real $c\ge0$,
 \begin{align}
  T_n&=\int_0^\infty y^{2n}\frac{y}{\sinh(\alpha y)}\dd y,
- \label{eq:Tmoment}\\
+ \label{pou:eq:Tmoment}\\
  A_n(c)&=\int_0^\infty(c+y^2)^n\frac{y}{\sinh(\alpha y)}\dd y.
- \label{eq:Amoment}
+ \label{pou:eq:Amoment}
 \end{align}
 In particular, $y/\sinh(\alpha y)$ is a probability density on $[0,\infty)$.
 The corresponding Stieltjes measure for $A_n(c)$ is
-\begin{equation}\label{eq:pushforward}
+\begin{equation}\label{pou:eq:pushforward}
  \dd\mu_c(t)=\frac{\ind_{t>c}}{2\sinh(\alpha\sqrt{t-c})}\dd t.
 \end{equation}
 \end{proposition}
@@ -468,30 +497,30 @@ give, for $|z|<\alpha$,
  \frac{2z}{\alpha^2q^2-z^2}.
 \]
 Comparison of Taylor coefficients yields
-\begin{equation}\label{eq:Tdirichlet}
+\begin{equation}\label{pou:eq:Tdirichlet}
  T_n=2\Gamma(2n+2)\alpha^{-2n-2}
        \sum_{q\ \mathrm{odd}\ge1}q^{-2n-2}.
 \end{equation}
 On the positive real axis,
 $1/\sinh(\alpha y)=2\sum_{q\ \mathrm{odd}\ge1}e^{-\alpha qy}$.
 Termwise integration is justified by nonnegativity and gives
-\eqref{eq:Tmoment}.  The binomial theorem gives \eqref{eq:Amoment}.
+\eqref{pou:eq:Tmoment}.  The binomial theorem gives \eqref{pou:eq:Amoment}.
 The case $n=0$ has value $T_0=1$.  Finally, set $t=c+y^2$.
 \end{proof}
 
-The endpoint density in \eqref{eq:pushforward} has an integrable
+The endpoint density in \eqref{pou:eq:pushforward} has an integrable
 $(t-c)^{-1/2}$ singularity.  Its large-$t$ tail is exponential in $\sqrt t$,
 not in $t$; this is why the ordinary moment generating series has zero
 radius but a useful positive integral representation.
 
-\begin{proposition}[Moment determinacy]\label{prop:determinate}
+\begin{proposition}[Moment determinacy]\label{pou:prop:determinate}
 For fixed $c\ge0$, the sequence $(A_n(c))_{n\ge0}$ has exactly one
 representing probability measure on $[0,\infty)$.
 \end{proposition}
 \begin{proof}
 There are constants $C,D>0$, depending on $c$, such that
 $A_n(c)\le C D^{2n}(2n+1)!$.  For example,
-$(c+y^2)^n\le2^n(c^n+y^{2n})$ and \eqref{eq:Tdirichlet} give such a bound.
+$(c+y^2)^n\le2^n(c^n+y^{2n})$ and \eqref{pou:eq:Tdirichlet} give such a bound.
 For any representing measure $\nu$, replace $t$ by the symmetric pair
 $\pm\sqrt t$ to obtain a symmetric probability measure $\widetilde\nu$
 on $\R$.  Its even moments are $A_n(c)$ and its odd moments are zero.
@@ -507,15 +536,15 @@ function and the same measure.  Pushing forward by $x\mapsto x^2$ proves
 uniqueness of $\nu$.
 \end{proof}
 
-\begin{proposition}[Hankel products]\label{prop:hankel}
+\begin{proposition}[Hankel products]\label{pou:prop:hankel}
 For $N\ge1$,
-\begin{equation}\label{eq:hankelA}
+\begin{equation}\label{pou:eq:hankelA}
  \det\bigl(A_{i+j}(c)\bigr)_{0\le i,j<N}
  =\prod_{k=1}^{N-1}\bigl[4k^2(4k^2-1)\bigr]^{N-k}.
 \end{equation}
 If
 $B_n(c)=\frac12\sum_{k=0}^n\binom nk c^{n-k}T_{k+1}$, then
-\begin{equation}\label{eq:hankelB}
+\begin{equation}\label{pou:eq:hankelB}
  \det\bigl(B_{i+j}(c)\bigr)_{0\le i,j<N}
  =\prod_{k=1}^{N-1}\bigl[4k(k+1)(2k+1)^2\bigr]^{N-k}.
 \end{equation}
@@ -535,45 +564,45 @@ form.  Its moments $\langle1,t^n1\rangle$ are exactly the weighted Motzkin
 path sums and hence the coefficients of the J-fraction.
 The change from monomials to monic $p_k$ is unit triangular, so the Hankel
 determinant is $\prod_{k=0}^{N-1}h_k$.
-Apply this to \eqref{eq:AJ} and to the translated version of
-\eqref{eq:VJ}.  The formulas follow without any analytic convergence
+Apply this to \eqref{pou:eq:AJ} and to the translated version of
+\eqref{pou:eq:VJ}.  The formulas follow without any analytic convergence
 assumption on the generating functions.
 \end{proof}
 
 \section{Exact exponential sectors and all-order fixed-shift expansions}
-\label{sec:sectors}
+\label{pou:sec:sectors}
 
 Let
-\begin{equation}\label{eq:FandH}
+\begin{equation}\label{pou:eq:FandH}
  F_n=2\Gamma(2n+2)\alpha^{-2n-2},\qquad
  H_n(z)=\sum_{j=0}^n\frac{(z/4)^j}{j!\fall{n+\tfrac12}{j}},
 \end{equation}
 where $\fall u0=1$.  The smallest factor in a nonempty denominator of
 $H_n$ is at least $3/2$, so no zero denominator occurs.
 
-\begin{theorem}[Exact sectors and an explicit tail bound]\label{thm:sectors}
+\begin{theorem}[Exact sectors and an explicit tail bound]\label{pou:thm:sectors}
 For every $n\ge0$ and $c\ge0$,
-\begin{equation}\label{eq:exactsectors}
+\begin{equation}\label{pou:eq:exactsectors}
  \frac{A_n(c)}{F_n}
  =\sum_{q\ \mathrm{odd}\ge1}q^{-2n-2}H_n(c\alpha^2q^2).
 \end{equation}
 The series is convergent and all its terms are nonnegative.
 If $Q\ge1$ is odd and $R_{n,Q}(c)$ is the contribution to $A_n(c)$
 from $q\ge Q$, then
-\begin{equation}\label{eq:tailbound}
+\begin{equation}\label{pou:eq:tailbound}
  0\le\frac{R_{n,Q}(c)}{F_n}
  \le \left(1+\frac Q2\right)
  Q^{-2n-2}H_n(c\alpha^2Q^2).
 \end{equation}
 \end{theorem}
 \begin{proof}
-Insert \eqref{eq:Tdirichlet} into the binomial transform and put $j=n-k$.
+Insert \eqref{pou:eq:Tdirichlet} into the binomial transform and put $j=n-k$.
 The duplication identity, or cancellation of consecutive factorials, gives
 \[
  \binom nj\frac{\Gamma(2n-2j+2)}{\Gamma(2n+2)}
  =\frac1{4^j j!\fall{n+\tfrac12}{j}}.
 \]
-After factoring $q^{-2n-2}$, this is exactly \eqref{eq:exactsectors}.
+After factoring $q^{-2n-2}$, this is exactly \eqref{pou:eq:exactsectors}.
 At fixed $n$ the last polynomial term decays as $q^{-2}$; every other term
 decays faster, proving convergence.
 For every real $r\ge2$, monotonicity and an integral comparison give
@@ -588,13 +617,13 @@ corresponding exponent is $r=2n+2-2j\ge2$.
 \end{proof}
 
 \begin{theorem}[A coefficient algorithm to every algebraic order]
-\label{thm:Hallorders}
+\label{pou:thm:Hallorders}
 Uniformly for $z$ in each fixed compact subset of $\mathbb C$,
-\begin{equation}\label{eq:Hexpansion}
+\begin{equation}\label{pou:eq:Hexpansion}
  H_n(z)\sim\sum_{r\ge0}\frac{C_r(z)}{n^r},
 \end{equation}
 where
-\begin{equation}\label{eq:Cformula}
+\begin{equation}\label{pou:eq:Cformula}
  C_r(z)=\sum_{j=0}^r\frac{(z/4)^j}{j!}
  [t^{r-j}]\prod_{\ell=0}^{j-1}
        \bigl(1+(\tfrac12-\ell)t\bigr)^{-1}.
@@ -615,7 +644,7 @@ For a fixed $j$ the summand is
  \prod_{\ell=0}^{j-1}
        \left(1+\frac{1/2-\ell}{n}\right)^{-1}.
 \]
-Taylor expansion of the finite product gives \eqref{eq:Cformula}.
+Taylor expansion of the finite product gives \eqref{pou:eq:Cformula}.
 It remains to justify discarding unbounded $j$.
 For $j\le n/2$, every falling-factorial factor is at least $n/2$, so the
 absolute value of the summand is at most $(|z|/(2n))^j/j!$.
@@ -637,16 +666,16 @@ $H_n$ by a fixed-$z$ expansion.
 \subsection{Why the exact sectors matter}
 
 The first exponentially small correction is meaningful in the form
-\begin{equation}\label{eq:threecorrection}
+\begin{equation}\label{pou:eq:threecorrection}
  \frac{A_n(c)}{F_nH_n(c\alpha^2)}
  =1+3^{-2n-2}\frac{H_n(9c\alpha^2)}{H_n(c\alpha^2)}
      +O_c(5^{-2n-2}).
 \end{equation}
 The exact denominator is essential.  Replacing it by a fixed finite
 inverse-power approximation introduces a polynomial error that is much
-larger than $3^{-2n}$.  Formula~\eqref{eq:threecorrection} avoids that
+larger than $3^{-2n}$.  Formula~\eqref{pou:eq:threecorrection} avoids that
 error-order confusion and supplies a rigorous positive residual bound
-through \eqref{eq:tailbound}.
+through \eqref{pou:eq:tailbound}.
 
 \subsection{The logarithmic expansion and the prior leading equivalent}
 
@@ -661,14 +690,14 @@ are
 \]
 For fixed $c\ge0$, Stirling's expansion \cite{dlmfgamma} and the exponentially
 small sectors give
-\begin{equation}\label{eq:logA}
+\begin{equation}\label{pou:eq:logA}
  \log A_n(c)\sim
  2n\log\frac{2n}{\alpha e}+\frac32\log n
  +\log\frac{8\sqrt\pi}{\alpha^2}
  +\sum_{r\ge1}\frac{h_r(c)}{n^r}.
 \end{equation}
 The coefficient rule is
-\begin{equation}\label{eq:hgeneral}
+\begin{equation}\label{pou:eq:hgeneral}
  h_r(c)=\ell_r(c\alpha^2)+\frac{(-1)^{r+1}}{r2^r}
  +\begin{cases}
  \displaystyle\frac{B_{r+1}}{(r+1)r\,2^r},&r\text{ odd},\\[3pt]
@@ -678,7 +707,7 @@ The coefficient rule is
 where $B_j$ are Bernoulli numbers.  For example,
 \begin{align}
  h_1(c)&=\frac{13}{24}+\frac{c\alpha^2}{4},\nonumber\\
- h_2(c)&=-\frac18-\frac{c\alpha^2}{8},\label{eq:firsth}\\
+ h_2(c)&=-\frac18-\frac{c\alpha^2}{8},\label{pou:eq:firsth}\\
  h_3(c)&=\frac{119}{2880}+\frac{c\alpha^2}{16}
                        +\frac{c^2\alpha^4}{32}.\nonumber
 \end{align}
@@ -688,28 +717,28 @@ $\log(1+1/(2n))$, and the remaining correction is the ordinary Stirling
 series at $2n$.
 
 At $c=1$, exponentiating the leading part gives
-\begin{equation}\label{eq:knownleading}
+\begin{equation}\label{pou:eq:knownleading}
  a_n\sim\frac{2^{4n+5}n^{2n+3/2}}{e^{2n}\pi^{2n+3/2}},
 \end{equation}
 which is the leading equivalent already recorded by Kotesovec in 2015
-\cite{oeis125054}.  Formula~\eqref{eq:knownleading} is therefore a
+\cite{oeis125054}.  Formula~\eqref{pou:eq:knownleading} is therefore a
 consistency check, not a newly solved asymptotic problem.  The all-order
 and exponentially resolved refinements above go beyond that leading
 formula in the inspected entry.
 
 \section{Quadratic shifts: the geometry of a first-order transition}
-\label{sec:geometry}
+\label{pou:sec:geometry}
 
 The fixed-$c$ expansion cannot be inserted blindly when $c$ grows like
 $n^2$.  In that regime an entirely different contribution competes with
-the factorial tail.  Set $c=\tau n^2$ in \eqref{eq:Amoment}, then put $y=nu$:
-\begin{equation}\label{eq:scaledintegral}
+the factorial tail.  Set $c=\tau n^2$ in \eqref{pou:eq:Amoment}, then put $y=nu$:
+\begin{equation}\label{pou:eq:scaledintegral}
  A_n(\tau n^2)=n^{2n+2}\int_0^\infty
   (\tau+u^2)^n\frac{u}{\sinh(\alpha nu)}\dd u.
 \end{equation}
 Near a fixed positive $u$, the hyperbolic factor is asymptotic to
 $2e^{-\alpha nu}$; the phase is
-\begin{equation}\label{eq:phase}
+\begin{equation}\label{pou:eq:phase}
  \phi_\tau(u)=\log(\tau+u^2)-\alpha u.
 \end{equation}
 The region $y=O(1)$, equivalently $u=O(1/n)$, is an endpoint contribution
@@ -721,26 +750,26 @@ For $0<\tau<\alpha^{-2}$ the stationary points are
  u_\pm=\frac{1\pm\sqrt{1-\alpha^2\tau}}\alpha.
 \]
 The larger one is a local maximum.  Parameterize it by
-\begin{equation}\label{eq:sparam}
+\begin{equation}\label{pou:eq:sparam}
  s=\alpha u_+=1+\sqrt{1-\alpha^2\tau},\qquad
  \tau=\frac{s(2-s)}{\alpha^2},\qquad 1<s<2.
 \end{equation}
 The saddle's logarithmic advantage over the endpoint is
-\begin{equation}\label{eq:Delta}
+\begin{equation}\label{pou:eq:Delta}
  \Delta(\tau)=\phi_\tau(u_+)-\log\tau
  =\log\frac2{2-s}-s.
 \end{equation}
 As a function of $s$, its derivative is $(s-1)/(2-s)>0$.
 It is negative at $s=1$ and tends to infinity at $s=2$.
-Thus there is a unique $s_*$ in $(1,2)$ solving \eqref{eq:starintro}.
+Thus there is a unique $s_*$ in $(1,2)$ solving \eqref{pou:eq:starintro}.
 
 The curvature, amplitude, and derivative of the phase difference are
 \begin{align}
  \kappa(\tau)&=-\phi_\tau''(u_+)
-        =\alpha^2\frac{s-1}{s},\label{eq:kap}\\
+        =\alpha^2\frac{s-1}{s},\label{pou:eq:kap}\\
  K(\tau)&=2u_+\sqrt{\frac{2\pi}{\kappa(\tau)}}
-        =\frac{2\sqrt{2\pi}s^{3/2}}{\alpha^2\sqrt{s-1}},\label{eq:K}\\
- -\Delta'(\tau)&=\frac{\alpha^2}{2(2-s)}.\label{eq:deltaprime}
+        =\frac{2\sqrt{2\pi}s^{3/2}}{\alpha^2\sqrt{s-1}},\label{pou:eq:K}\\
+ -\Delta'(\tau)&=\frac{\alpha^2}{2(2-s)}.\label{pou:eq:deltaprime}
 \end{align}
 In particular, with $d_*=-\Delta'(\tau_*)$ and $K_*=K(\tau_*)$,
 \begin{align*}
@@ -752,7 +781,16 @@ In particular, with $d_*=-\Delta'(\tau_*)$ and $K_*=K(\tau_*)$,
 These displayed digits are numerical evaluations of exact definitions,
 not interval-certified decimal bounds.
 
-\begin{proposition}[Fixed-parameter regimes]\label{prop:fixedregimes}
+\writenote{Notation across reports: $s_*=2+W_0(-2e^{-2})=1.59362426\ldots$
+is the constant written $\tau$ in the A277364 report \cite{bellreport};
+here $\tau$ is the shift ratio $c/n^2$, and
+$\tau_*=s_*(2-s_*)/\alpha^2=0.26246654\ldots$ is a different number. Do
+not read the A277364 report's $\tau$ as this report's $\tau_*$. The
+shared equation $2-s=2e^{-s}$ arises there from the omitted tail of a
+Stirling sum and here from the endpoint--saddle balance $\Delta(\tau)=0$; neither
+report uses the other's argument.}
+
+\begin{proposition}[Fixed-parameter regimes]\label{pou:prop:fixedregimes}
 If $0<\tau<\tau_*$ is fixed, then
 \[
  A_n(\tau n^2)\sim n^{2n}e^{n\phi_\tau(u_+)}K(\tau)n^{3/2}.
@@ -769,15 +807,15 @@ There are no other local maxima.  For $\tau\ge\alpha^{-2}$ the phase has
 no larger interior value, so the endpoint is the global maximum.
 The endpoint integral tends to one after division by $(\tau n^2)^n$;
 the saddle has amplitude $2n^2u_+$ and Gaussian width $n^{-1/2}$ in $u$,
-giving the factor in \eqref{eq:K}.  The localization argument in the next
+giving the factor in \eqref{pou:eq:K}.  The localization argument in the next
 section supplies uniform errors and proves these leading assertions.
 \end{proof}
 
 The terminology ``first-order'' refers to the discontinuous limiting
 fraction of the binomial sum's active index, proved in
-Section~\ref{sec:probability}.  It is not merely a change in a prefactor.
+Section~\ref{pou:sec:probability}.  It is not merely a change in a prefactor.
 
-\section{A uniform two-contribution expansion to all orders}\label{sec:uniform}
+\section{A uniform two-contribution expansion to all orders}\label{pou:sec:uniform}
 
 Choose a sufficiently small closed interval $I$ about $\tau_*$ contained
 in $(0,\alpha^{-2})$.  All constants implicit in the following theorem may
@@ -786,7 +824,7 @@ For a list $v_1,\ldots,v_r$, let $e_j(v_1,\ldots,v_r)$ denote its elementary
 symmetric polynomial, with $e_0=1$ and $e_j=0$ outside its natural range.
 
 \begin{theorem}[Uniform all-order endpoint--saddle expansion]
-\label{thm:uniform}
+\label{pou:thm:uniform}
 For every fixed integer $M\ge1$, uniformly for $\tau\in I$,
 \begin{align}
  \frac{A_n(\tau n^2)}{(\tau n^2)^n}
@@ -795,16 +833,16 @@ For every fixed integer $M\ge1$, uniformly for $\tau\in I$,
      \sum_{m=0}^{M-1}\frac{L_m(\tau)}{n^m}\nonumber\\
  &+O_{I,M}\!\left(n^{-M}
        \left[1+n^{3/2}e^{n\Delta(\tau)}\right]\right).
- \label{eq:uniform}
+ \label{pou:eq:uniform}
 \end{align}
 Here $E_0=L_0=1$ and
-\begin{equation}\label{eq:Ecoeff}
+\begin{equation}\label{pou:eq:Ecoeff}
  E_m(\tau)=\sum_{k=0}^{m}
  \frac{T_k}{k!\tau^k}(-1)^{m-k}
  e_{m-k}(0,1,\ldots,k-1).
 \end{equation}
 The saddle coefficients have the finite Gaussian coefficient rule
-\begin{equation}\label{eq:Lcoeff}
+\begin{equation}\label{pou:eq:Lcoeff}
  L_m(\tau)=[\eps^{2m}]\E\left[
  \left(1+\frac{\eps Z}{u_+}\right)
  \exp\left\{\sum_{r\ge3}\frac{\phi_\tau^{(r)}(u_+)}{r!}
@@ -814,9 +852,9 @@ where $Z\sim\Normal(0,\kappa(\tau)^{-1})$ and the expectation is applied
 to each polynomial coefficient.  In particular,
 \begin{align}
  E_1(\tau)&=\frac2\tau,&E_2(\tau)&=\frac8{\tau^2},&
- E_3(\tau)&=\frac{136}{3\tau^3}-\frac8{\tau^2},\label{eq:Es}\\
+ E_3(\tau)&=\frac{136}{3\tau^3}-\frac8{\tau^2},\label{pou:eq:Es}\\
  L_1(\tau)&=\frac{2s^3+18s^2-60s+45}{24(s-1)^3}.
- \label{eq:Lone}
+ \label{pou:eq:Lone}
 \end{align}
 \end{theorem}
 
@@ -843,7 +881,7 @@ At each prescribed order, expand
 \]
 For a fixed coefficient of $n^{-m}$, only $k\le m$ can contribute;
 expanding $\fall nk=n^k\prod_{j=0}^{k-1}(1-j/n)$ gives precisely
-\eqref{eq:Ecoeff} after integration.
+\eqref{pou:eq:Ecoeff} after integration.
 
 For a fully uniform remainder bound, introduce the analytic function
 \[
@@ -875,10 +913,10 @@ bounded away from zero.  In this region
  =2e^{-\alpha nu}\bigl(1+O(e^{-\rho n})\bigr)
 \]
 for some $\rho>0$.  Set $u=u_++n^{-1/2}z$ in the first exponential term
-of \eqref{eq:scaledintegral}.  The quadratic term gives the centered
+of \eqref{pou:eq:scaledintegral}.  The quadratic term gives the centered
 Gaussian with variance $\kappa^{-1}$, and the amplitude $u/u_+$ is
 $1+n^{-1/2}z/u_+$.  Taylor's formula for the remaining phase gives
-\eqref{eq:Lcoeff}.  Every coefficient involves only finitely many
+\eqref{pou:eq:Lcoeff}.  Every coefficient involves only finitely many
 derivatives and Gaussian moments.  Odd powers of $n^{-1/2}$ integrate to
 zero.  The standard localized Laplace estimate, obtained by restricting
 first to $|z|\le n^\delta$ and then using Gaussian domination on its
@@ -894,17 +932,17 @@ exponential bound on the unbounded tail.  The compact interval $I$ may be
 reduced so that these gaps remain uniform.
 Thus this complement is exponentially small relative to the larger of
 the two contributions, and is absorbed by the remainder in
-\eqref{eq:uniform}.
+\eqref{pou:eq:uniform}.
 
-Finally, evaluating \eqref{eq:Ecoeff} yields \eqref{eq:Es}.
+Finally, evaluating \eqref{pou:eq:Ecoeff} yields \eqref{pou:eq:Es}.
 For the first saddle correction, Gaussian moments give
 \[
  L_1=\frac{\phi'''(u_+)}{2u_+\kappa^2}
        +\frac{\phi''''(u_+)}{8\kappa^2}
        +\frac{5\phi'''(u_+)^2}{24\kappa^3}.
 \]
-Substitution of \eqref{eq:sparam} and \eqref{eq:kap} simplifies to
-\eqref{eq:Lone}.
+Substitution of \eqref{pou:eq:sparam} and \eqref{pou:eq:kap} simplifies to
+\eqref{pou:eq:Lone}.
 \end{proof}
 
 \begin{remark}[Scope of the uniform expansion]
@@ -912,22 +950,22 @@ This theorem is uniform near the coexistence point, not near the
 coalescing stationary points at $\tau=\alpha^{-2}$.
 It also does not make a fixed-$c$ expansion uniform up to $c\asymp n^2$.
 The two asymptotic problems use different localizations.  If one of the
-terms in \eqref{eq:uniform} is exponentially smaller than the other, a
+terms in \eqref{pou:eq:uniform} is exponentially smaller than the other, a
 finite inverse-power error in the larger term can mask it; the underlying
 localized integrals still have their separate expansions.
 \end{remark}
 
 \section{The moving window and the probability of a macroscopic index}
-\label{sec:probability}
+\label{pou:sec:probability}
 
-\begin{theorem}[Finite-size coexistence window]\label{thm:window}
+\begin{theorem}[Finite-size coexistence window]\label{pou:thm:window}
 For fixed bounded real $w$, define
-\begin{equation}\label{eq:window}
+\begin{equation}\label{pou:eq:window}
  \tau_n(w)=\tau_*+
  \frac{\tfrac32\log n+\log K_*+w}{d_*n}.
 \end{equation}
 Then, uniformly for $w$ in compact real sets,
-\begin{equation}\label{eq:windowlimit}
+\begin{equation}\label{pou:eq:windowlimit}
  \frac{A_n(\tau_n(w)n^2)}{(\tau_n(w)n^2)^n}
  =1+e^{-w}+O\!\left(\frac{(\log n)^2}{n}\right).
 \end{equation}
@@ -943,43 +981,43 @@ Since $\delta_n=O((\log n)/n)$,
  =-w+O((\log n)^2/n).
 \]
 The endpoint factor is $1+O(1/n)$ and the saddle relative correction is
-$1+O(1/n)$ by Theorem~\ref{thm:uniform}.  Combining them proves the result.
+$1+O(1/n)$ by Theorem~\ref{pou:thm:uniform}.  Combining them proves the result.
 \end{proof}
 
 A useful more accurate centering is the unique nearby solution of
-\begin{equation}\label{eq:exactbalance}
+\begin{equation}\label{pou:eq:exactbalance}
  n\Delta(\tau)+\tfrac32\log n+\log K(\tau)=-w.
 \end{equation}
 Its derivative with respect to $\tau$ is $-d_*n+O(\log n)$, so existence
 and uniqueness in the relevant neighborhood follow for large $n$.
 Under this centering the leading saddle factor is exactly $e^{-w}$ and
-the error in \eqref{eq:windowlimit} improves to $O(1/n)$.
+the error in \eqref{pou:eq:windowlimit} improves to $O(1/n)$.
 Using the coefficients $E_m,L_m$ in the balance equation gives successive
-higher-order corrections.  Equation~\eqref{eq:window} is the simple explicit
+higher-order corrections.  Equation~\eqref{pou:eq:window} is the simple explicit
 first approximation, not the most accurate numerical prescription.
 
 \subsection{A positive random-index representation}
 
 For $c>0$ define a random index $K_n\in\{0,\ldots,n\}$ by
-\begin{equation}\label{eq:Klaw}
+\begin{equation}\label{pou:eq:Klaw}
  \Prob_c(K_n=k)=\frac{\binom nk c^{n-k}T_k}{A_n(c)}.
 \end{equation}
 Under the probability measure on $y\ge0$ proportional to
 $(c+y^2)^n y/\sinh(\alpha y)$, conditionally take
-\begin{equation}\label{eq:conditionalbinomial}
+\begin{equation}\label{pou:eq:conditionalbinomial}
  K_n\mid y\ \sim\ \operatorname{Bin}
  \left(n,\frac{y^2}{c+y^2}\right).
 \end{equation}
-Integrating the conditional mass function recovers \eqref{eq:Klaw}, so
+Integrating the conditional mass function recovers \eqref{pou:eq:Klaw}, so
 this is an exact mixture construction, not an approximation.
 
 \begin{theorem}[Discontinuous fraction and critical mixture]
-\label{thm:mixture}
+\label{pou:thm:mixture}
 If $0<\tau<\tau_*$ is fixed and $c=\tau n^2$, then
 $K_n/n\to s(\tau)/2$ in probability.
 If $\tau>\tau_*$ is fixed, then $K_n\to0$ in probability.
-In the moving window \eqref{eq:window},
-\begin{equation}\label{eq:twopoint}
+In the moving window \eqref{pou:eq:window},
+\begin{equation}\label{pou:eq:twopoint}
  \frac{K_n}{n}\ \Longrightarrow\
  \frac1{1+e^{-w}}\delta_0+
  \frac{e^{-w}}{1+e^{-w}}\delta_{s_*/2}.
@@ -996,16 +1034,16 @@ in the saddle region, to
 \[
  \frac{u_+^2}{\tau+u_+^2}=\frac s2.
 \]
-The two relative masses follow from \eqref{eq:uniform} and
-\eqref{eq:windowlimit}.  In the fixed endpoint-dominated regime the stronger
+The two relative masses follow from \eqref{pou:eq:uniform} and
+\eqref{pou:eq:windowlimit}.  In the fixed endpoint-dominated regime the stronger
 claim follows directly from
 $\Prob(K_n=0)=c^n/A_n(c)\to1$.
 \end{proof}
 
 \begin{theorem}[Gaussian fluctuations within the macroscopic component]
-\label{thm:clt}
+\label{pou:thm:clt}
 For fixed $0<\tau<\tau_*$,
-\begin{equation}\label{eq:clt}
+\begin{equation}\label{pou:eq:clt}
  \frac{K_n-ns(\tau)/2}{\sqrt n}
  \ \Longrightarrow\ \Normal\left(0,
    v(\tau)\right),\qquad
@@ -1029,7 +1067,7 @@ the product of the two Gaussian factors, with variance
  p(u_+)(1-p(u_+))+\frac{p'(u_+)^2}{\kappa}.
 \]
 Since $p(u_+)=s/2$ and $p'(u_+)=\alpha(2-s)/2$, simplification gives
-\eqref{eq:clt}.  Endpoint leakage under the stated conditioning tends to
+\eqref{pou:eq:clt}.  Endpoint leakage under the stated conditioning tends to
 zero by the separated concentration regions.  The same localization and
 conditional characteristic-function argument is uniform for
 $\tau_n\to\tau_*$.
@@ -1040,20 +1078,20 @@ width of order $\sqrt n$ around its nonzero point.  A single Gaussian
 approximation to the entire distribution would therefore be incorrect.
 
 \section{A universality theorem for exponentially decaying moment tails}
-\label{sec:universal}
+\label{pou:sec:universal}
 
 In this section $\alpha$ is an arbitrary positive tail rate; in
-Section~\ref{sec:inverse} it again denotes $\pi/2$.
+Section~\ref{pou:sec:inverse} it again denotes $\pi/2$.
 The logarithmic displacement is not specific to tangent numbers.  The
 following result identifies the parameters on which it depends.
 It is a consequence of a competition between an unscaled probability-mass
 contribution and a scaled interior Laplace saddle; it does not assert a new
 general method of asymptotic integration.
 
-\begin{theorem}[Universal shifted-moment transition]\label{thm:universal}
+\begin{theorem}[Universal shifted-moment transition]\label{pou:thm:universal}
 Let $\mu$ be a probability measure on $[0,\infty)$ whose restriction beyond
 some finite point has a density
-\begin{equation}\label{eq:generaltail}
+\begin{equation}\label{pou:eq:generaltail}
  w(y)=Cy^\beta e^{-\alpha y}\bigl(1+O(y^{-1})\bigr),
  \qquad C,\alpha>0,\quad \beta\in\R.
 \end{equation}
@@ -1064,7 +1102,7 @@ Fix $p>1$ and put
        =\int(c+y^p)^n\dd\mu(y).
 \]
 There is a unique $s_p\in(p-1,p)$ such that
-\begin{equation}\label{eq:generalstar}
+\begin{equation}\label{pou:eq:generalstar}
  p-s_p=pe^{-s_p},\qquad
  \tau_{p,*}=\frac{s_p^{p-1}(p-s_p)}{\alpha^p}.
 \end{equation}
@@ -1072,31 +1110,31 @@ Define
 \begin{align}
  \kappa_*&=\alpha^2\frac{s_p-p+1}{s_p},&
  K_{p,*}&=C\left(\frac{s_p}{\alpha}\right)^\beta
-                      \sqrt{\frac{2\pi}{\kappa_*}},\label{eq:generalK}\\
+                      \sqrt{\frac{2\pi}{\kappa_*}},\label{pou:eq:generalK}\\
  d_{p,*}&=\frac{\alpha^p}{p s_p^{p-2}(p-s_p)},&
- b&=\beta+\frac12.\label{eq:generald}
+ b&=\beta+\frac12.\label{pou:eq:generald}
 \end{align}
 For
-\begin{equation}\label{eq:generalwindow}
+\begin{equation}\label{pou:eq:generalwindow}
  \tau_n(w)=\tau_{p,*}+
        \frac{b\log n+\log K_{p,*}+w}{d_{p,*}n},
 \end{equation}
 we have, uniformly for bounded real $w$,
-\begin{equation}\label{eq:generallimit}
+\begin{equation}\label{pou:eq:generallimit}
  \frac{M_n(\tau_n(w)n^p)}{(\tau_n(w)n^p)^n}
  =1+e^{-w}
  +O\left(n^{1-p}+\frac{(\log n)^2}{n}\right).
 \end{equation}
 The random binomial index with masses proportional to
 $\binom nk c^{n-k}m_k$ satisfies
-\begin{equation}\label{eq:generalmixture}
+\begin{equation}\label{pou:eq:generalmixture}
  K_n/n\Longrightarrow
  \frac1{1+e^{-w}}\delta_0+
  \frac{e^{-w}}{1+e^{-w}}\delta_{s_p/p}.
 \end{equation}
 For fixed $0<\tau<\tau_{p,*}$, the centered index
 $(K_n-ns/p)/\sqrt n$ converges to a centered Gaussian with variance
-\begin{equation}\label{eq:generalvariance}
+\begin{equation}\label{pou:eq:generalvariance}
  v_p(\tau)=\frac{s(p-s)}{p^2(s-p+1)},
  \qquad \tau=\frac{s^{p-1}(p-s)}{\alpha^p},\quad p-1<s<p.
 \end{equation}
@@ -1117,13 +1155,13 @@ The larger stationary point has $p-1<s<p$ and negative second derivative
 $-\alpha^2(s-p+1)/s$.  There are at most two positive stationary points,
 because $s^{p-1}(p-s)$ increases up to $p-1$ and then decreases to zero.
 At the larger point the excess over the endpoint phase is
-\begin{equation}\label{eq:generalDelta}
+\begin{equation}\label{pou:eq:generalDelta}
  \Delta_p(\tau)=\log\frac p{p-s}-s.
 \end{equation}
 As a function of $s\in(p-1,p)$, its derivative is
 $(s-p+1)/(p-s)>0$.  Its value at the left endpoint is
 $\log p-(p-1)<0$, while it tends to infinity at the right endpoint.
-This proves existence and uniqueness in \eqref{eq:generalstar}.
+This proves existence and uniqueness in \eqref{pou:eq:generalstar}.
 Differentiating the maximized phase with respect to $\tau$ gives
 $-\Delta_p'(\tau)=\alpha^p/[p s^{p-2}(p-s)]$.
 
@@ -1152,15 +1190,15 @@ contribution is
 The $O(y^{-1})$ error need not be differentiable: a uniform relative bound
 on the localized integral suffices.  The smooth main amplitude has the
 usual Laplace estimate.  The phase gap on the remaining region is handled
-as in Theorem~\ref{thm:uniform}.  Inserting \eqref{eq:generalwindow} and
+as in Theorem~\ref{pou:thm:uniform}.  Inserting \eqref{pou:eq:generalwindow} and
 Taylor expanding $\Delta_p$ and $\log K_p$ proves
-\eqref{eq:generallimit}.  The error $n^{1-p}$ must be retained when
+\eqref{pou:eq:generallimit}.  The error $n^{1-p}$ must be retained when
 $1<p<2$; replacing it by $1/n$ would in general be false.
 
 The exact conditional construction is now
 $K_n\mid y\sim\operatorname{Bin}(n,y^p/(c+y^p))$.
 At the saddle the success probability is $s/p$, so the same concentration
-argument proves \eqref{eq:generalmixture}.
+argument proves \eqref{pou:eq:generalmixture}.
 For the Gaussian fluctuations,
 \[
  p_0=\frac sp,\qquad
@@ -1168,8 +1206,8 @@ For the Gaussian fluctuations,
  \kappa=\alpha^2\frac{s-p+1}{s}.
 \]
 Their variance is $p_0(1-p_0)+(p'_0)^2/\kappa$, which equals
-\eqref{eq:generalvariance}.  The conditional characteristic-function proof
-used in Theorem~\ref{thm:clt} applies unchanged.
+\eqref{pou:eq:generalvariance}.  The conditional characteristic-function proof
+used in Theorem~\ref{pou:thm:clt} applies unchanged.
 \end{proof}
 
 \subsection{What the universality theorem does and does not cover}
@@ -1222,25 +1260,25 @@ tail power is $(\gamma+1)/r-1$.  This is a direct change-of-variable
 corollary, not a separate new universality hypothesis.
 
 \section{Complex zeros from the real transition and positivity}
-\label{sec:zeros}
+\label{pou:sec:zeros}
 
 A useful additional consequence requires no separate deformation to a
 complex saddle.  Positive polynomial coefficients provide the complex
 bounds needed to promote the real limit to an analytic one.
 We state the result for the general moment model of
-Theorem~\ref{thm:universal}.
+Theorem~\ref{pou:thm:universal}.
 
 \begin{theorem}[Complex coexistence limit and a zero array]
-\label{thm:zeros}
-Under the hypotheses of Theorem~\ref{thm:universal}, extend
-$\tau_n(w)$ in \eqref{eq:generalwindow} affinely to complex $w$ and define
+\label{pou:thm:zeros}
+Under the hypotheses of Theorem~\ref{pou:thm:universal}, extend
+$\tau_n(w)$ in \eqref{pou:eq:generalwindow} affinely to complex $w$ and define
 \[
  F_n(w)=\frac{M_n(n^p\tau_n(w))}{(n^p\tau_n(w))^n}.
 \]
 Then $F_n(w)\to1+e^{-w}$ locally uniformly on $\mathbb C$.
 For every fixed integer $j$, and all sufficiently large $n$, there is a
 simple zero $c_{n,j}$ of $M_n(c)$ such that
-\begin{equation}\label{eq:complexzeros}
+\begin{equation}\label{pou:eq:complexzeros}
  \frac{c_{n,j}}{n^p}=\tau_{p,*}+
  \frac{(\beta+\tfrac12)\log n+\log K_{p,*}+(2j+1)\pi i}
       {d_{p,*}n}+o(n^{-1}).
@@ -1261,7 +1299,7 @@ For bounded $w$ we have $b_n=O(1/n)$ and
 Therefore $|\tau_n(w)|=\tau_n(r_n)$ for a real number
 $r_n=\Re w+O(1/n)$, uniformly on the compact set.
 Since $M_n(c)$ has nonnegative coefficients, the triangle inequality gives
-\begin{equation}\label{eq:positivecomplexbound}
+\begin{equation}\label{pou:eq:positivecomplexbound}
  |F_n(w)|\le
  \frac{M_n(n^p|\tau_n(w)|)}{(n^p|\tau_n(w)|)^n}
  =F_n(r_n).
@@ -1271,7 +1309,7 @@ sets.  Cauchy's integral formula now gives uniform derivative bounds on
 smaller compact disks.  By equicontinuity and a diagonal subsequence
 argument, every subsequence has a further subsequence converging locally
 uniformly to an analytic function.  On the real axis that function must
-be $1+e^{-w}$, by Theorem~\ref{thm:universal}.  The identity theorem
+be $1+e^{-w}$, by Theorem~\ref{pou:thm:universal}.  The identity theorem
 therefore identifies every such analytic limit with $1+e^{-w}$.
 This proves locally uniform convergence of the entire sequence.  The
 analytic tools are the usual Cauchy estimates and uniqueness of analytic
@@ -1284,12 +1322,12 @@ theorem then give exactly one zero of $F_n$ in that disk, counting
 multiplicity.  Shrinking the disk proves convergence to $w_j$; count one
 also proves simplicity.  The denominator defining $F_n$ is nonzero
 there, so these are zeros of $M_n$.  Transforming the coordinate back to
-$c$ gives \eqref{eq:complexzeros}.
+$c$ gives \eqref{pou:eq:complexzeros}.
 \end{proof}
 
-\begin{corollary}[Central Poupard polynomial zeros]\label{cor:poupardzeros}
+\begin{corollary}[Central Poupard polynomial zeros]\label{pou:cor:poupardzeros}
 For each fixed $j\in\Z$, $A_n(c)$ has a simple zero with
-\begin{equation}\label{eq:poupardzeros}
+\begin{equation}\label{pou:eq:poupardzeros}
  \frac{c_{n,j}}{n^2}=\tau_*+
  \frac{\tfrac32\log n+\log K_*+(2j+1)\pi i}{d_*n}
  +o(n^{-1}).
@@ -1309,12 +1347,12 @@ real-axis error does not automatically become an identical complex error
 bound.  Higher-order complex zero locations require an additional
 quantitative argument.
 
-\section{Inverting the central Poupard growth}\label{sec:inverse}
+\section{Inverting the central Poupard growth}\label{pou:sec:inverse}
 
 \subsection{A canonical real interpolation}
 
 For real $x\ge0$ define
-\begin{equation}\label{eq:realinterp}
+\begin{equation}\label{pou:eq:realinterp}
  A_x=\int_0^\infty(1+y^2)^x\frac{y}{\sinh(\alpha y)}\dd y.
 \end{equation}
 This agrees with $a_n$ at integer $x=n$, is strictly increasing, starts
@@ -1325,8 +1363,8 @@ compact sets of $x$ its absolute value is bounded by a fixed power of
 $1+y^2$ times an integrable exponential tail.  Only the positive real
 inverse is used below.
 
-\begin{lemma}\label{lem:realexp}
-The fixed-shift logarithmic expansion \eqref{eq:logA}, with $c=1$ and
+\begin{lemma}\label{pou:lem:realexp}
+The fixed-shift logarithmic expansion \eqref{pou:eq:logA}, with $c=1$ and
 $n$ replaced by real $x\to\infty$, holds to every fixed order.
 \end{lemma}
 \begin{proof}
@@ -1346,24 +1384,24 @@ if $\eta$ is sufficiently small; a bounded $y$ region is smaller still.
 The same localization bounds the integrated remainder at the desired
 inverse-power order.  Thus the coefficients $C_r$ and then $\ell_r$
 are unchanged for real $x$.  The other odd exponentials are exponentially
-smaller.  Stirling's real expansion then gives \eqref{eq:logA}.
+smaller.  Stirling's real expansion then gives \eqref{pou:eq:logA}.
 \end{proof}
 
 \begin{theorem}[Lambert inversion through the first two corrections]
-\label{thm:inverse}
+\label{pou:thm:inverse}
 Let $L=\log Y$, let $W$ be the positive real Lambert branch, and set
-\begin{equation}\label{eq:x0}
+\begin{equation}\label{pou:eq:x0}
  w=W\left(\frac{L}{\alpha e}\right),\qquad
  x_0=\frac{L}{2w},\qquad C_0=\log\frac{8\sqrt\pi}{\alpha^2}.
 \end{equation}
 Define
 \begin{align}
- d_0&=-\frac{\tfrac32\log x_0+C_0}{2(w+1)},\label{eq:d0}\\
+ d_0&=-\frac{\tfrac32\log x_0+C_0}{2(w+1)},\label{pou:eq:d0}\\
  d_1&=-\frac{d_0^2+\tfrac32d_0+13/24+\alpha^2/4}
-                 {2x_0(w+1)}.\label{eq:d1}
+                 {2x_0(w+1)}.\label{pou:eq:d1}
 \end{align}
 As $Y\to\infty$,
-\begin{equation}\label{eq:inverseexp}
+\begin{equation}\label{pou:eq:inverseexp}
  x(Y)=x_0+d_0+d_1+O\left(\frac1{x_0^2(w+1)}\right).
 \end{equation}
 In particular, $d_0\to-3/4$.
@@ -1374,7 +1412,7 @@ $\log(2x_0/(\alpha e))=w$, hence
 $2x_0\log(2x_0/(\alpha e))=L$.
 Let $f_0(x)=2x\log(2x/(\alpha e))$.
 Then $f_0'(x_0)=2(w+1)$ and $f_0''(x_0)=2/x_0$.
-Lemma~\ref{lem:realexp} says
+Lemma~\ref{pou:lem:realexp} says
 \[
  \log A_x=f_0(x)+\tfrac32\log x+C_0+
              \frac{13/24+\alpha^2/4}{x}+O(x^{-2}).
@@ -1389,11 +1427,11 @@ The residual after this correction is $O(x_0^{-2})$.
 The derivative of $\log A_x$ is asymptotic to $2\log(2x/\alpha)$;
 this follows either by differentiating the localized integral expansion
 or by inserting $\log(1+y^2)$ into the saddle calculation.
-The mean value theorem therefore gives the error in \eqref{eq:inverseexp}.
-Finally $w=\log x_0+O(1)$, so \eqref{eq:d0} tends to $-3/4$.
+The mean value theorem therefore gives the error in \eqref{pou:eq:inverseexp}.
+Finally $w=\log x_0+O(1)$, so \eqref{pou:eq:d0} tends to $-3/4$.
 \end{proof}
 
-\begin{proposition}[An arbitrary-order inverse procedure]\label{prop:inverseall}
+\begin{proposition}[An arbitrary-order inverse procedure]\label{pou:prop:inverseall}
 For each fixed $M\ge0$, let $\xi_M$ be the sufficiently large solution of
 \[
  f_0(x)+\tfrac32\log x+C_0+\sum_{r=1}^{M}h_r(1)x^{-r}=L.
@@ -1423,14 +1461,14 @@ constructive procedure.
 An exponential correction must again be measured relative to an exact
 sector, not relative to a finitely truncated algebraic approximation.
 Define
-\begin{equation}\label{eq:firstreal}
+\begin{equation}\label{pou:eq:firstreal}
  A_x^{[1]}=2\int_0^\infty(1+y^2)^x y e^{-\alpha y}\dd y,
 \end{equation}
 and let $x_1(Y)$ be its real inverse for sufficiently large $Y$.
 
-\begin{proposition}\label{prop:inverseexponential}
+\begin{proposition}\label{pou:prop:inverseexponential}
 As $Y\to\infty$,
-\begin{equation}\label{eq:inverseexponential}
+\begin{equation}\label{pou:eq:inverseexponential}
  x(Y)-x_1(Y)=
  -\frac{3^{-2x_1-2}}{2\log(2x_1/\alpha)}
        \left(1+O(x_1^{-1})\right).
@@ -1440,7 +1478,7 @@ In particular, the displacement is negative.
 \begin{proof}
 For each fixed odd $q$, the one-exponential integral has the leading
 factor $2\Gamma(2x+2)(\alpha q)^{-2x-2}$ and correction
-$1+O(1/x)$, by the proof of Lemma~\ref{lem:realexp}.
+$1+O(1/x)$, by the proof of Lemma~\ref{pou:lem:realexp}.
 The sum of the terms $q\ge5$ is $O(5^{-2x-2})$ relative to the first
 integral.  To bound it directly, use
 \[
@@ -1457,7 +1495,7 @@ Consequently
 \]
 The derivative of $\log A_x^{[1]}$ is
 $2\log(2x/\alpha)+O(1/x)$.  Evaluating at $x_1$, and applying Taylor's
-formula to the inverse, gives \eqref{eq:inverseexponential}; the change
+formula to the inverse, gives \eqref{pou:eq:inverseexponential}; the change
 in the small correction over this displacement is of strictly smaller
 order.  Positivity of all omitted sectors also gives $A_x>A_x^{[1]}$
 and hence $x(Y)<x_1(Y)$.
@@ -1469,7 +1507,7 @@ It is not valid to floor an uncertified asymptotic approximation near an
 integer.  A numerical implementation needing an exact index must enclose
 $x(Y)$ or compare neighboring exact terms.
 
-\section{Reproducible exact checks and numerical diagnostics}\label{sec:checks}
+\section{Reproducible exact checks and numerical diagnostics}\label{pou:sec:checks}
 
 The accompanying program \path{code/verify.py} uses only integer arithmetic,
 SymPy rational polynomial arithmetic, and mpmath numerical functions.
@@ -1484,22 +1522,22 @@ These tests support the derivation but do not replace its all-index proofs.
 All floating-point tables below use 90 decimal digits internally.  They
 are reproducible diagnostics, not interval enclosures.  Exact integer
 values are used for the fixed-shift and inverse tables.  The large-$n$
-transition values use positive log-sum evaluation of \eqref{eq:Klaw} and
-\eqref{eq:Tdirichlet}; they do not use numerical quadrature at a narrow
+transition values use positive log-sum evaluation of \eqref{pou:eq:Klaw} and
+\eqref{pou:eq:Tdirichlet}; they do not use numerical quadrature at a narrow
 large-$n$ saddle.
 
 \subsection{Fixed-shift accuracy}
 
-Let $\widehat a_n^{(r)}$ be the exponential of \eqref{eq:logA} truncated
+Let $\widehat a_n^{(r)}$ be the exponential of \eqref{pou:eq:logA} truncated
 after $h_r(1)n^{-r}$, and let $r=0$ mean the known leading equivalent.
-Table~\ref{tab:fixed} gives $|\widehat a_n^{(r)}/a_n-1|$.
+Table~\ref{pou:tab:fixed} gives $|\widehat a_n^{(r)}/a_n-1|$.
 The table measures a logarithmic-expansion approximation; it is not a
 comparison of exact odd-pole sectors.
 
 \begin{table}[htbp]
 \centering
 \caption{Relative errors for fixed-shift logarithmic truncations.}
-\label{tab:fixed}
+\label{pou:tab:fixed}
 \begin{tabular}{rcccc}
 \toprule
 $n$ & $r=0$ & $r=1$ & $r=3$ & $r=6$\\
@@ -1511,20 +1549,20 @@ $n$ & $r=0$ & $r=1$ & $r=3$ & $r=6$\\
 
 \subsection{The transition is not already at its limit at moderate size}
 
-The explicit window \eqref{eq:window} converges relatively slowly because
-its error contains $(\log n)^2/n$.  Table~\ref{tab:critical} displays that
+The explicit window \eqref{pou:eq:window} converges relatively slowly because
+its error contains $(\log n)^2/n$.  Table~\ref{pou:tab:critical} displays that
 fact rather than hiding it.  Its final column is the relative error of
 \[
  1+\frac2{\tau n}+
  K(\tau)n^{3/2}e^{n\Delta(\tau)}\left(1+\frac{L_1(\tau)}n\right)
 \]
 against the exact positive sum, evaluated at $\tau=\tau_n(w)$.
-This is Theorem~\ref{thm:uniform} truncated with $M=2$.
+This is Theorem~\ref{pou:thm:uniform} truncated with $M=2$.
 
 \begin{table}[htbp]
 \centering
 \caption{Explicit-window convergence and a two-contribution correction.}
-\label{tab:critical}
+\label{pou:tab:critical}
 \begin{tabular}{rrccc}
 \toprule
 $n$ & $w$ & Normalized moment & $1+e^{-w}$ & Corrected relative error\\
@@ -1538,18 +1576,18 @@ At $w=0$ the normalized moment is about $2.7155$ for $n=128$, not already
 two.  The uniform corrected formula nevertheless has relative error about
 $2.66\times10^{-3}$.  At $n=4096$ that error is about
 $3.39\times10^{-6}$.  An exact-balance centering such as
-\eqref{eq:exactbalance} is preferable when the goal is a precise
+\eqref{pou:eq:exactbalance} is preferable when the goal is a precise
 finite-size coexistence parameter.
 
 \subsection{Inverse accuracy and the exact-sector checks}
 
-For Table~\ref{tab:inverse} the input is $Y=a_n$, so the true interpolated
+For Table~\ref{pou:tab:inverse} the input is $Y=a_n$, so the true interpolated
 inverse is exactly $n$.  The reported errors are absolute errors in the
 index, not relative errors in $Y$.
 \begin{table}[htbp]
 \centering
 \caption{Absolute inverse errors at the exactly known inputs $Y=a_n$.}
-\label{tab:inverse}
+\label{pou:tab:inverse}
 \begin{tabular}{rccc}
 \toprule
 $n$ & $x_0$ & $x_0+d_0$ & $x_0+d_0+d_1$\\
@@ -1562,7 +1600,7 @@ $n$ & $x_0$ & $x_0+d_0$ & $x_0+d_0+d_1$\\
 The verification output additionally records, at $n=8,16,32$, the exact
 integer moment divided by $F_n$, the exact first polynomial sector, the
 $q=3$ sector, and the positive residual bounded by
-\eqref{eq:tailbound} with $Q=5$.  This is a useful way to test the
+\eqref{pou:eq:tailbound} with $Q=5$.  This is a useful way to test the
 beyond-all-orders normalization without subtracting two low-order
 algebraic approximations.  The symbolic and numerical results, precision,
 package versions, and all displayed table data are in
@@ -1570,9 +1608,9 @@ package versions, and all displayed table data are in
 
 \subsection{Complex roots and additional universality checks}
 
-Table~\ref{tab:zeros} follows the root associated with $w=\pi i$ in
-Theorem~\ref{thm:zeros}, using the affine coordinate from
-\eqref{eq:window}.  The coefficients supplied to reverse Horner evaluation
+Table~\ref{pou:tab:zeros} follows the root associated with $w=\pi i$ in
+Theorem~\ref{pou:thm:zeros}, using the affine coordinate from
+\eqref{pou:eq:window}.  The coefficients supplied to reverse Horner evaluation
 are exact integers.  Root solving is numerical; the normalized residuals
 are below $10^{-55}$ at the working precision, but that is not an interval
 certificate of root location or uniqueness.  The all-large-$n$ existence
@@ -1582,7 +1620,7 @@ The limiting real and imaginary parts are $0$ and $\pi$, respectively.
 \begin{table}[htbp]
 \centering
 \caption{The zero associated with $w=\pi i$ in the coexistence coordinate.}
-\label{tab:zeros}
+\label{pou:tab:zeros}
 \begin{tabular}{rcc}
 \toprule
 $n$ & $\Re w_{n,0}$ & $\Im w_{n,0}$\\
@@ -1599,10 +1637,10 @@ endpoint error of order $n^{-1/2}$ when $p=3/2$.
 At $n=4096$ and $w=0$, their normalized moments are approximately
 $2.00822$, $2.00774$, and $2.03211$, respectively, approaching the common
 limit two.  These diagnostics supplement, rather than establish,
-Theorem~\ref{thm:universal}.
+Theorem~\ref{pou:thm:universal}.
 
 \section{Further research questions and a formalization route}
-\label{sec:future}
+\label{pou:sec:future}
 
 The following questions are proposed research directions, not conclusions
 of the present proofs.  They are chosen to extend a structural result or
@@ -1612,14 +1650,14 @@ a calculation whose general coefficient algorithm is already given.
 \begin{question}[A direct combinatorial explanation of the new fraction]
 Can one give a weight-preserving bijection from the appropriate Poupard
 objects, or their marked variants, to Dyck paths with successive weights
-$9,8,25,24,\ldots$?  Theorem~\ref{thm:bala} proves equality through formal
+$9,8,25,24,\ldots$?  Theorem~\ref{pou:thm:bala} proves equality through formal
 contraction.  A bijection would explain the squared-odd and adjacent-even
 weights at the level of objects rather than generating functions.
 \end{question}
 
 \begin{question}[Which shifts admit polynomial S-weights?]
 For which real or integer shifts $c$ does the J-fraction
-\eqref{eq:AJ}, or a fixed Christoffel transform of its moment measure,
+\eqref{pou:eq:AJ}, or a fixed Christoffel transform of its moment measure,
 admit S-weights that are polynomial functions of the index on each parity
 class?  The tangent and Poupard examples suggest a classification problem.
 A complete answer should distinguish positivity of weights, existence of
@@ -1627,7 +1665,7 @@ an algebraic contraction, and a combinatorial interpretation.
 \end{question}
 
 \begin{question}[Minimal modular descriptions]
-Corollary~\ref{cor:modrational} gives an elementary finite-height bound.
+Corollary~\ref{pou:cor:modrational} gives an elementary finite-height bound.
 What is the minimal rational denominator modulo $m$, and what are the
 minimal preperiod and period of $A_n(c)$?  The modulus-nine collapse is
 much smaller than the generic height bound.  Prime-power lifting and
@@ -1646,7 +1684,7 @@ establish a local theorem.
 \end{question}
 
 \begin{question}[Growing-index zero arrays and higher corrections]
-Theorem~\ref{thm:zeros} determines zeros corresponding to each fixed
+Theorem~\ref{pou:thm:zeros} determines zeros corresponding to each fixed
 $w_j=(2j+1)\pi i$.  How large may $j=j(n)$ grow while a uniform analogue
 remains valid, and what are the next corrections to their locations?
 Determine whether this local array joins a global limiting zero curve.
@@ -1655,7 +1693,7 @@ fixed compact sets, not quantitative bounds on expanding complex domains.
 \end{question}
 
 \begin{question}[The boundary $p\downarrow1$]
-In Theorem~\ref{thm:universal}, the critical stationary point approaches
+In Theorem~\ref{pou:thm:universal}, the critical stationary point approaches
 the endpoint as $p$ tends to one.  Determine a joint $n\to\infty$,
 $p\downarrow1$ scaling that connects the separated first-order transition
 to its endpoint-coalescence limit.  Neither the Gaussian expansion nor
@@ -1663,7 +1701,7 @@ the fixed-$p$ error estimate is uniform in this joint limit.
 \end{question}
 
 \begin{question}[Slowly varying and competing tails]
-Extend \eqref{eq:generaltail} to a slowly varying multiplier or to several
+Extend \eqref{pou:eq:generaltail} to a slowly varying multiplier or to several
 competing exponential scales.  A multiplier depending on $n$ at the
 saddle should alter the balance by its logarithm, but a theorem should
 specify sufficient regularity, uniform remainder bounds, and the
@@ -1673,9 +1711,9 @@ decomposition offers a concrete positive model for testing such a theory.
 
 \begin{question}[Certified computation and inverse rounding]
 Develop explicit constants and computable thresholds in
-Theorem~\ref{thm:uniform}, then combine them with interval arithmetic to
+Theorem~\ref{pou:thm:uniform}, then combine them with interval arithmetic to
 certify the coexistence parameter and integer inverse.  The sector bound
-\eqref{eq:tailbound} is already explicit, but the all-order Laplace
+\eqref{pou:eq:tailbound} is already explicit, but the all-order Laplace
 remainders in this article are asymptotic bounds with unspecified
 constants.  A certified implementation must close that gap rather than
 interpret high-precision diagnostics as enclosures.
@@ -1687,8 +1725,8 @@ The finite algebraic layer can be separated from the analytic layer.
 A first formalization target is the path recurrence for $T_n$, formal
 S- and J-fraction truncations, and their coefficient stabilization.
 The contraction lemma and binomial translation then give
-Theorem~\ref{thm:bala}.  Weighted Motzkin paths modulo nine give
-Theorem~\ref{thm:mod9} with a small, local divisibility argument.
+Theorem~\ref{pou:thm:bala}.  Weighted Motzkin paths modulo nine give
+Theorem~\ref{pou:thm:mod9} with a small, local divisibility argument.
 These steps need no asymptotic integration.
 
 A second layer can formalize the gamma cancellation identity, the
@@ -1732,7 +1770,7 @@ zero arrays, joint endpoint limits, local probability laws, or fully
 certified remainder estimates, rather than from finite-data extrapolation.
 
 \appendix
-\section{Coefficient generation and reproduction}\label{sec:reproduce}
+\section{Coefficient generation and reproduction}\label{pou:sec:reproduce}
 
 The formal logarithm coefficients used in the code may be generated without
 symbolic logarithm expansion.  If $C_0=1$ and
@@ -1740,7 +1778,7 @@ $\sum C_rt^r=\exp(\sum_{r\ge1}\ell_rt^r)$, differentiating gives
 \[
  \ell_r=C_r-\frac1r\sum_{j=1}^{r-1}j\ell_jC_{r-j}.
 \]
-Together with \eqref{eq:Cformula} and \eqref{eq:hgeneral}, this is an exact
+Together with \eqref{pou:eq:Cformula} and \eqref{pou:eq:hgeneral}, this is an exact
 rational-polynomial algorithm at every finite order.  The delivered
 verification file contains $C_r$, $\ell_r$, and the logarithmic $h_r$
 through $r=8$; in that file the common symbolic argument is $z=c\alpha^2$.
@@ -1763,12 +1801,29 @@ calculations, and symbolic derivative identities where practical.
 The scripts contain no theorem-prover certificates and do not label
 floating-point output as a rigorous error enclosure.
 
-\section{Source and novelty audit}\label{sec:audit}
+\writenote{In the collection the make file is \path{code/Makefile}
+and the requirements file is \path{data/requirements.txt}. Its targets assume the report root as the
+working directory, so it is invoked as \texttt{make -f code/Makefile}.
+The full command above rewrites the six generated files in the shipped
+\texttt{data/}, because \texttt{code/verify.py} writes by default to the
+\texttt{data/} directory beside \texttt{code/}; the \texttt{verify}
+target does the same and also overwrites
+\texttt{data/verification\_run.txt} with its standard output. Run these
+commands on a copy of the report directory, or pass
+\texttt{--output-dir} with a scratch directory. At intake the full
+command was rerun on a copy: all six generated files were equal to the
+shipped ones apart from Windows line ends, and the standard output
+differed only in the line naming the output directory. That line in the
+shipped \texttt{data/verification\_run.txt} names the authors' working
+directory \texttt{/mnt/data/\ldots}, which is not part of the
+collection.}
+
+\section{Source and novelty audit}\label{pou:sec:audit}
 
 The source review checked the OEIS entries available at inspection for A125054, A125053,
 A000182, and A000364; Bala's continued-fraction note; the primary
 Foata--Han finite-difference paper; the indicated NIST DLMF sections;
-and the ProveIt repository material described in Section~\ref{sec:scope}.
+and the ProveIt repository material described in Section~\ref{pou:sec:scope}.
 Targeted searches for the central Poupard asymptotics, shifted tangent
 moments, and transition terminology did not identify a matching
 publication for the full package of extensions.  Such a search is not
@@ -1789,6 +1844,54 @@ ordinary mathematical proofs with stated asymptotic errors; finite exact
 computations and floating diagnostics are supplementary.  No claim of
 independent peer review, Lean verification, or interval certification is
 made.
+
+\section{Provenance of the collection edition}\label{pou:app:edition}
+
+\writenote{This appendix was added in the write.}
+
+\paragraph{Source.} The report is built from one manuscript, number~47
+of batch~73O1 of ProveIt's incoming-reports intake: the archive
+\texttt{Central\_Poupard\_OEIS.zip} (16~files, a 28-page PDF), which
+arrived in commit \texttt{3a9518c52} and was placed in the collection by
+commit \texttt{9df4ba51a}. Its pinned repository commit is
+\texttt{ef66df0fdb8fc64cbc80756d622cab0e8e85e262} (1~October~2026);
+\path{PROVENANCE.md} also records a later read of
+\texttt{dc1a7242d2ab4a4496b7dfee63256ee767b21fc9}, not used for content.
+The author line is kept as delivered and names no assistant; like every
+manuscript of the intake, the report is AI-assisted and unrefereed.
+
+\paragraph{What the write changed.} Every one of the 108 delivered
+labels received the prefix \texttt{pou:}, and every reference was
+updated with it; this appendix adds one label. The write added the
+\texttt{[Write note]} paragraphs (after the abstract, in
+Sections~\ref{pou:sec:scope} and~\ref{pou:sec:geometry}, in
+Appendix~\ref{pou:sec:reproduce} and here), the bibliography entries
+\cite{bellreport} and \cite{chartpath}, and the \verb|\writenote|
+macro. The \verb|\input| and \verb|\tableinput| paths
+\texttt{data/\ldots} are unchanged. No delivered sentence, statement,
+proof or table was changed or removed.
+
+\paragraph{Delivered names and shipped paths.} \texttt{article.tex},
+\texttt{README.md} (rewritten as the collection's report guide) and
+\path{PROVENANCE.md} are at the report root; \texttt{code/verify.py} and
+the seven files of \texttt{data/} kept their paths; the
+\texttt{Makefile} moved from the package root to \texttt{code/}, and
+\texttt{requirements.txt} and \texttt{BUILD\_REPORT.json} from the
+package root to \texttt{data/}. All but the article and the README are
+byte-identical to the delivery. Not shipped: the delivered
+\texttt{article.pdf} (replaced by a build of this edition) and the
+checksum ledger \texttt{SHA256SUMS} (verified 15/15 at intake, then
+retired). \texttt{data/BUILD\_REPORT.json} describes the delivered
+28-page PDF and the delivered source, which are no longer the shipped
+files.
+
+\paragraph{Relation to repository material.} No other repository report
+or formal development treats A125054 or its analytic model. The
+Lambert-chart transseries package \cite{chartpath} is a methodological
+precedent only, and the shared constant $s_*$ with the A277364 report
+\cite{bellreport} is discussed in the notes in
+Sections~\ref{pou:sec:scope} and~\ref{pou:sec:geometry}. None of the
+statements of this report is formalized.
 
 \begin{thebibliography}{99}
 \small
@@ -1863,6 +1966,16 @@ All-Order Sector Laws, and Sharp Action-Cutoff Corrections},
 ProveIt research report, 29 September 2026, README inspected at the
 snapshot in \cite{repo}.  Methodological context only.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/ef66df0fdb8fc64cbc80756d622cab0e8e85e262/Analysis/Transseries/docs/series-and-transseries/Logarithmic_Critical_Endpoint_Lambert_Charts/README.md}.
+
+\bibitem{chartpath}
+[Added in the write.] The package of \cite{repochart} in the repository:
+\path{Analysis/Transseries/docs/series-and-transseries/Logarithmic_Critical_Endpoint_Lambert_Charts/}.
+
+\bibitem{bellreport}
+[Added in the write.] ProveIt research-report collection,
+\emph{Asymptotics of OEIS A277364},
+\path{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a277364-bell-asymptotics/A277364_asymptotics.tex},
+equation \texttt{eq:taulambert}.
 
 \end{thebibliography}
 \end{document}

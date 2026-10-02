@@ -1,0 +1,1330 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\definecolor{inkblue}{RGB}{28,54,78}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={The Cubic Boundary for Restricted Partitions},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{The cubic boundary for restricted partitions}}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.15em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\Pois}{Poisson}
+\DeclareMathOperator{\Fix}{Fix}
+\DeclareMathOperator{\Var}{Var}
+\numberwithin{equation}{section}
+
+\title{\color{inkblue}\textbf{The Cubic Boundary for Restricted Partitions}\\[5pt]
+\large Sharp volume laws, uniform all-order expansions,\\
+exponentially small corrections, inverse asymptotics,\\
+and a Poisson law for repeated parts}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{1 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $p_m(N)$ count partitions of $N$ into parts at most $m$, equivalently
+partitions into at most $m$ parts. We give an elementary necessary and sufficient
+condition for the volume approximation:
+\[
+ p_m(N)\sim\frac{N^{m-1}}{m!(m-1)!}
+ \quad\Longleftrightarrow\quad \frac{N}{m^3}\longrightarrow\infty,
+ \qquad m\longrightarrow\infty.
+\]
+This proves, and sharpens, a condition still described as conjectural in
+OEIS A238016 and A258670. The sufficiency has classical antecedents and is not
+claimed as a new discovery. At the critical scale $N\sim c m^3$, the ratio to
+volume tends to $e^{1/(4c)}$. We prove a centered expansion uniform for
+$N\ge c_0m^3$, give an all-order coefficient algorithm and five explicit
+corrections for A238608, and derive a second expansion that resolves actual
+exponential sectors for $N=q^m$. Both types are inverted, with careful
+separation of smooth asymptotic charts from integer-valued inverse functions.
+In the conjugate model with at most $m$ parts, the number of equal adjacent
+parts converges to $\Pois(1/(2c))$; its probability generating function has an
+explicit first finite-size correction. Exact computation checks 258 samples,
+including all displayed initial A238608 values, and the package supplies
+symbolic derivation and numerical verification code.
+\end{abstract}
+
+\noindent\textbf{Status.} This is a self-contained proof-and-extension report.
+Its leading partition formulas and first-wave machinery have substantial
+classical precedents. The explicit refinements below are derived here, but no
+exhaustive priority claim is made. The proofs have not been independently
+peer reviewed or formalized in Lean. Exact finite checks corroborate formulas;
+they do not replace the uniform estimates proved in the text.
+
+\clearpage
+\begingroup
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The OEIS problem, the source audit, and the scope of the results}
+
+\subsection{One fundamental family, rather than unrelated sequences}
+
+Throughout, $m$ and $N$ are positive integers and $m\to\infty$. Define
+\begin{equation}\label{eq:gf}
+ F_m(q)=\prod_{j=1}^m\frac1{1-q^j},\qquad
+ p_m(N)=[q^N]F_m(q),\qquad
+ V_m(N)=\frac{N^{m-1}}{m!(m-1)!}.
+\end{equation}
+The equivalence between the two partition interpretations follows by
+conjugating Ferrers diagrams. This is a standard, widely useful family of
+restricted partitions, not an isolated artificial recurrence. The same
+analytic problem occurs when the size $N$ grows polynomially, exponentially,
+or factorially with the allowed number $m$ of parts.
+
+The following are the specific OEIS targets inspected for this report.
+The descriptions and posted leading formulas are recorded in the respective
+entries \cite{oeis238016,oeis238608,oeis238010,oeis258670}.
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.23\textwidth}p{0.28\textwidth}p{0.41\textwidth}@{}}
+\toprule
+Entry or family & Count & Role in this report\\
+\midrule
+A238016 & $p_m(m^k)$, an array & A posted general conjecture; cubic threshold\\
+A238608 & $p_m(m^3)$ & Five corrections and inverse expansion\\
+A258302--A258305 & $p_m(c m^3)$, $c=2,3,4,5$ & Uniform critical-scale family\\
+A238609--A238615 & $p_m(m^k)$, $4\le k\le10$ & All-order power-column expansions\\
+A238010; A237998 & $p_m(q^m)$; $q=2$ & Exponential sectors and their inversion\\
+A238000 & $p_m(m^m)$ & Superexponential sectors and a Lambert chart\\
+A258670 & $p_m((2m)!)$ & Factorial-scale consequence\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The general condition in A238016 is expressed using the nonstandard notation
+$f(m)\ge O(m^4)$. Interpreting the intended assertion as growth at least a
+positive constant times $m^4$, it asserts $p_m(f(m))\sim V_m(f(m))$.
+The exact criterion in Theorem~\ref{thm:iff} is instead $f(m)/m^3\to\infty$.
+It covers, for example, $f(m)=\lceil m^3\log m\rceil$, not merely quartic growth.
+
+\subsection{What is classical, and what this report actually adds}
+
+A condition remaining conjectural on an OEIS page does not establish that
+it is an open problem in the research literature. Canfield's account of
+Szekeres' formula records the Erd\H{o}s--Lehner estimate
+\begin{equation}\label{eq:classical}
+ p_m(N)=\frac1{m!}\binom{N-1}{m-1}
+          \exp\!\left(O(m^3/N)\right),\qquad m=O(N^{1/3}),
+\end{equation}
+in Step 5 and explains its composition-counting origin
+\cite[pp.~4, 9--10]{canfield}. In particular, the sufficiency of
+$N/m^3\to\infty$ is already a classical consequence. The critical leading
+constant for $N=c m^3$ is explicitly posted in A238608 \cite{oeis238608}.
+
+The polynomial part of a restricted partition function, called its first
+Sylvester wave, is also classical. Dilcher and Vignat give explicit formulas
+using higher-order Bernoulli polynomials \cite{dilchervignat}. Sills and
+Zeilberger give an algorithmic quasipolynomial approach \cite{sillszeilberger};
+O'Sullivan studies waves and their asymptotics in a different joint-growth
+regime \cite{osullivan}.
+
+The contribution here is a complete, reusable treatment of the following
+more precise package: finite elementary inequalities proving necessity as
+well as sufficiency; a uniform all-order theorem with all other arcs controlled;
+explicit critical coefficients through order five; an expansion with errors
+small enough to resolve $q^{-m}$ sectors; explicit inverse charts; and a
+probabilistic boundary law with its first correction. The retrieved sources
+were not found to list these particular higher coefficients or this particular
+probability correction. That limited observation is not an exhaustive
+bibliographic novelty certification.
+
+\subsection{Relation to the ProveIt repository}
+
+The inspected repository file
+\begin{quote}\small\ttfamily
+Analysis/FabiusFunction/Lean/FabiusFunction/\\
+PartitionBoundedParts.lean
+\end{quote}
+provides a genuine formal starting point \cite{proveit}. In namespace
+\texttt{Fabius}, it defines \texttt{boundedCount}, identifies restricted
+partitions with multiplicity vectors through
+\texttt{card\_restricted\_le\_eq}, and proves the finite-product generating
+function in \texttt{hasSum\_boundedCount\_mul\_pow}. The present analytic
+arguments can begin from precisely that generating function. We inspected
+the source but did not run the repository's Lean build; none of the new
+asymptotic or probabilistic theorems is represented as already formalized.
+
+\section{An elementary sharp criterion}\label{sec:elementary}
+
+Write $R_m(N)=p_m(N)/V_m(N)$. The scale $m^3$ can be detected without
+saddle points, Bernoulli numbers, or complex analysis.
+
+\begin{lemma}[Lattice-volume bounds]\label{lem:volume}
+For $m\ge1$ and $N\ge1$, put $A_m=m(m+1)/2-1$. Then
+\begin{equation}\label{eq:volume}
+ 1\le R_m(N)\le\left(1+\frac{A_m}{N}\right)^{m-1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The multiplicity of the part $1$ is determined by the other multiplicities.
+Consequently $p_m(N)$ is the number of integer points in
+\[
+ \mathcal S_N=\left\{(x_2,\ldots,x_m)\in\mathbb R_{\ge0}^{m-1}:
+                         \sum_{j=2}^m jx_j\le N\right\}.
+\]
+This simplex has volume $N^{m-1}/((m-1)!\prod_{j=2}^m j)=V_m(N)$.
+Every point of $\mathcal S_N$ lies in the unit box based at its coordinatewise
+floor, a feasible integer point. Conversely, every unit box based at a feasible
+point lies in $\mathcal S_{N+A_m}$. The boxes have disjoint interiors and unit
+volume. Taking volumes proves both bounds. For $m=1$ the statement is the
+zero-dimensional identity $p_1(N)=1$.
+\end{proof}
+
+\begin{lemma}[A transposition lower bound]\label{lem:burnside}
+For $m\ge3$ and $N\ge1$,
+\begin{equation}\label{eq:burnside}
+ R_m(N)\ge
+ \prod_{r=1}^{m-1}\left(1+\frac rN\right)
+ +\frac{m(m-1)^2}{4N}
+ \ge 1+\frac{m(m-1)^2}{4N}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let the symmetric group act on weak compositions
+$(x_1,\ldots,x_m)$ of $N$ by permuting coordinates. Its orbits are partitions
+into at most $m$ parts. Burnside's identity gives
+\[
+ p_m(N)=\frac1{m!}\sum_{\sigma\in S_m}|\Fix(\sigma)|.
+\]
+The identity fixes $\binom{N+m-1}{m-1}$ compositions, which contributes the
+product in \eqref{eq:burnside} after normalization by $V_m(N)$.
+
+A transposition requires two coordinates to be equal. Its fixed-point count
+is the number of solutions of
+\[
+ 2y+z_1+\cdots+z_{m-2}=N,\qquad y,z_i\ge0.
+\]
+Eliminate $z_{m-2}$ and apply the lower unit-box argument to the resulting
+simplex in dimension $m-2$. The count is at least
+$N^{m-2}/(2(m-2)!)$. There are $\binom m2$ transpositions. Their total
+contribution, divided by $m!V_m(N)$, is $m(m-1)^2/(4N)$. All other terms
+in Burnside's sum are nonnegative.
+\end{proof}
+
+\begin{theorem}[Exact threshold]\label{thm:iff}
+For every positive-integer sequence $N=N(m)$,
+\begin{equation}\label{eq:iff}
+ p_m(N)\sim V_m(N)
+ \quad\Longleftrightarrow\quad N/m^3\longrightarrow\infty.
+\end{equation}
+Moreover, when $m^3/N\to0$,
+$R_m(N)=1+O(m^3/N)$, whereas $N/m^3\to0$ implies $R_m(N)\to\infty$.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:volume},
+$0\le\log R_m(N)\le(m-1)A_m/N=O(m^3/N)$.
+This proves sufficiency and its error estimate. If $R_m(N)\to1$,
+\eqref{eq:burnside} forces $m(m-1)^2/N\to0$, which is equivalent to
+$m^3/N\to0$. The same lower bound proves the last assertion.
+\end{proof}
+
+A useful extension of the lower bound also explains the critical exponential.
+For $0\le r\le\lfloor(m-1)/2\rfloor$, retain the permutations consisting of
+$r$ disjoint transpositions and $m-2r$ fixed points. The identical simplex
+argument gives
+\begin{equation}\label{eq:involutions}
+ R_m(N)\ge
+ \sum_{r=0}^{\lfloor(m-1)/2\rfloor}
+ \frac{\fall m{2r}\,\fall{(m-1)}r}{4^r r!N^r}.
+\end{equation}
+Here $\fall xr=x(x-1)\cdots(x-r+1)$ and $\fall x0=1$.
+For $N\sim c m^3$, any fixed finite truncation tends to the corresponding
+truncation of $\exp(1/(4c))$. Thus
+\[
+ \liminf_{m\to\infty}R_m(N)\ge e^{1/(4c)}.
+\]
+An upper bound with the same constant needs more information; it is supplied
+by the uniform expansion below. Formula \eqref{eq:involutions} is not itself
+an assertion that all remaining permutation types can simply be discarded.
+
+\section{A uniform centered expansion to every fixed order}\label{sec:centered}
+
+\subsection{Centering and the coefficient recurrence}
+
+Set
+\begin{equation}\label{eq:center}
+ S_r(m)=\sum_{j=1}^m j^r,\qquad
+ M=N+\frac{S_1(m)}2=N+\frac{m(m+1)}4.
+\end{equation}
+The exact factorization
+\begin{equation}\label{eq:factor}
+ e^{Nt}F_m(e^{-t})=
+ \frac{e^{Mt}}{m!t^m}\mathcal A_m(t),\qquad
+ \mathcal A_m(t)=\prod_{j=1}^m\frac{jt}{2\sinh(jt/2)}
+\end{equation}
+is the reason for choosing this center. The remaining factor is even. Its
+logarithm, in a neighborhood of zero, is
+\begin{equation}\label{eq:bernoulli}
+ \log\mathcal A_m(t)=\sum_{r\ge1}\gamma_r(m)t^{2r},\qquad
+ \gamma_r(m)=-\frac{B_{2r}S_{2r}(m)}{2r(2r)!}.
+\end{equation}
+We use $B_2=1/6$, $B_4=-1/30$, and $B_6=1/42$. Formula
+\eqref{eq:bernoulli} follows by differentiating
+$\log(z/(2\sinh(z/2)))$ and integrating its Bernoulli expansion at zero.
+
+Define $a_j(m)$ by $\mathcal A_m(t)=\sum_{j\ge0}a_j(m)t^{2j}$. Then
+\begin{equation}\label{eq:a-rec}
+ a_0=1,\qquad
+ j a_j=\sum_{r=1}^j r\gamma_r a_{j-r}.
+\end{equation}
+The first coefficients are
+\begin{align}
+ a_1&=-\frac{S_2}{24},\label{eq:a1}\\
+ a_2&=\frac{S_2^2}{1152}+\frac{S_4}{2880},\\
+ a_3&=-\frac{S_2^3}{82944}-\frac{S_2S_4}{69120}
+                         -\frac{S_6}{181440}.
+\end{align}
+Each $a_j$ is a rational polynomial in $m$ of degree at most $3j$.
+Indeed $S_{2r}$ has degree $2r+1\le3r$, and the recurrence preserves the bound.
+
+\begin{theorem}[Uniform centered all-order expansion]\label{thm:centered}
+Fix $c_0>0$ and an integer $K\ge0$. Uniformly over integer pairs with
+$N\ge c_0m^3$, as $m\to\infty$,
+\begin{equation}\label{eq:centered}
+ p_m(N)=\frac{M^{m-1}}{m!(m-1)!}
+ \left\{\sum_{j=0}^K
+  \frac{a_j(m)\fall{(m-1)}{2j}}{M^{2j}}
+       +O_{K,c_0}(m^{-K-1})\right\}.
+\end{equation}
+In particular, the $j$th displayed term is $O_{j,c_0}(m^{-j})$.
+The theorem concerns fixed truncation orders; it does not assert convergence
+of the resulting infinite asymptotic series.
+\end{theorem}
+
+\subsection{The minor-arc estimate, including very large \texorpdfstring{$N$}{N}}
+
+We give the details because a formal expansion at $q=1$ alone does not justify
+\eqref{eq:centered}. Other roots of unity must be controlled uniformly while
+the number of factors grows.
+
+\begin{lemma}[Decay on a Cauchy circle]\label{lem:arcs}
+Let $0<\tau\le C_0m^{-2}$, and put
+\[
+ \rho_m(\theta)=\frac{|F_m(e^{-\tau-\ii\theta})|}{F_m(e^{-\tau})}.
+\]
+For all sufficiently large $m$ there are positive constants $b,\delta,C$,
+with dependence on $C_0$ allowed, such that
+\begin{align}
+ \rho_m(\theta)&\le
+    \left(1+b(\theta/\tau)^2\right)^{-m/2},
+                       &&|\theta|\le1/m,\label{eq:neararc}\\
+ \rho_m(\theta)&\le(Cm\tau)^{\delta m},
+                       &&1/m\le|\theta|\le\pi.\label{eq:fararc}
+\end{align}
+\end{lemma}
+\begin{proof}
+For each factor,
+\[
+ \frac{1-e^{-j\tau}}{|1-e^{-j\tau-\ii j\theta}|}
+ =\left(1+\frac{4e^{-j\tau}\sin^2(j\theta/2)}
+                  {(1-e^{-j\tau})^2}\right)^{-1/2}.
+\]
+If $|\theta|\le1/m$, then $|j\theta|\le1$ and $j\tau=O(1/m)$.
+The inequalities $|\sin(j\theta/2)|\ge c j|\theta|$ and
+$1-e^{-j\tau}\le j\tau$ prove \eqref{eq:neararc} after multiplication.
+
+For \eqref{eq:fararc}, a fixed positive fraction of the indices $j\le m$
+have $|\sin(j\theta/2)|$ bounded away from zero, uniformly in this interval.
+Here is an explicit justification. For $1/m\le|\theta|\le4\pi/m$, choose
+$j$ between $m/(16\pi)$ and $m/(8\pi)$; the arguments stay in a compact
+subinterval of $(0,\pi)$. For $4\pi/m\le|\theta|\le\pi$, the geometric-sum
+bound gives
+\[
+ \sum_{j=1}^m\sin^2(j\theta/2)
+ \ge\frac m2-\frac1{2|\sin(\theta/2)|}\ge\frac{3m}{8}.
+\]
+This forces a positive fraction of the summands to exceed a fixed positive
+constant. Each corresponding factor is at most $Cm\tau$; every other factor
+is at most one. Taking the minimum of the constants from the two cases proves
+the assertion.
+\end{proof}
+
+\subsection{Proof of the uniform theorem}
+\begin{proof}[Proof of Theorem~\ref{thm:centered}]
+Cauchy's formula, with $q=e^{-t}$, is
+\begin{equation}\label{eq:cauchy}
+ p_m(N)=\frac1{2\pi}\int_{-\pi}^{\pi}
+       e^{N(\tau+\ii\theta)}F_m(e^{-\tau-\ii\theta})\dd\theta.
+\end{equation}
+Choose $\tau=m/M$ and the central interval
+$|\theta|\le\tau m^{-2/5}$. We use three estimates.
+
+\paragraph{Analytic Taylor remainder.}
+For a sufficiently small absolute $\varepsilon>0$,
+$\mathcal A_m(t)$ is analytic and uniformly bounded on
+$|t|\le\varepsilon m^{-3/2}$. In fact $j|t|=O(m^{-1/2})$ there, and the
+sum of the absolute logarithmic bounds is
+$O(S_2(m)|t|^2)=O(1)$. Cauchy's coefficient estimate and evenness imply
+\[
+ \mathcal A_m(t)=\sum_{j=0}^K a_j(m)t^{2j}
+        +O_K\!\left(m^{3K+3}|t|^{2K+2}\right)
+\]
+inside half that disk. The central interval is contained in this smaller
+disk for all sufficiently large $m$, uniformly in $N\ge c_0m^3$.
+
+\paragraph{Integrating the central remainder.}
+For fixed nonnegative $r$ and $m>r+2$,
+\[
+ \int_{-\infty}^{\infty}|\tau+\ii\theta|^{-m+r}\dd\theta
+ =\tau^{1-m+r}\sqrt\pi\,
+       \frac{\Gamma((m-r-1)/2)}{\Gamma((m-r)/2)}.
+\]
+The gamma quotient is $O_r(m^{-1/2})$. Together with Stirling's formula,
+this shows that integrating the Taylor remainder in \eqref{eq:factor},
+relative to $M^{m-1}/(m!(m-1)!)$, costs at most
+\[
+ O_K\!\left(m^{3K+3}\tau^{2K+2}\right)
+ =O_{K,c_0}(m^{-K-1}).
+\]
+The elementary inverse-Laplace identity
+\[
+ \frac1{2\pi\ii}\int_{\tau-\ii\infty}^{\tau+\ii\infty}
+       e^{Mt}t^{-d}\dd t=\frac{M^{d-1}}{(d-1)!},\qquad d\ge2,
+\]
+follows by closing the contour to the left and taking the residue at zero.
+Apply it with $d=m-2j$. Extending each central polynomial integral to this
+line changes it by an exponentially small quantity: the gamma kernel outside
+$|\theta|\le\tau m^{-2/5}$ has a tail bounded by
+$\exp(-b_1m^{1/5})$ times its natural integral size. This gives exactly the
+falling factorial in \eqref{eq:centered}.
+
+\paragraph{Discarding the rest of the original circle.}
+On $\tau m^{-2/5}\le|\theta|\le1/m$, \eqref{eq:neararc} and the change
+of variable $v=\theta/\tau$ give a relative contribution
+$O(\exp(-b_2m^{1/5}))$. On the remaining arcs, the relative contribution is
+bounded by
+\begin{equation}\label{eq:far-prefactor}
+ C\frac{\sqrt m}{\tau}(Cm\tau)^{\delta m}.
+\end{equation}
+The factor $\sqrt m/\tau$ comes from normalizing the real-axis integrand by
+its gamma-kernel integral. It cannot be ignored when $N$ is extremely large.
+For $\delta m>1$, the right side is increasing in $\tau$. Substituting
+$\tau\le C_0/m^2$ bounds it by
+$m^{5/2}(C_1/m)^{\delta m}$, which is smaller than every fixed inverse power
+of $m$. Thus the argument is uniform even for factorial or faster growth of
+$N$, rather than merely for $N$ bounded by a power of $m$.
+
+Combining the three estimates proves \eqref{eq:centered}.
+\end{proof}
+
+\begin{remark}[What this theorem does not assert]
+For fixed $m$, the polynomial part of $p_m(N)$ is its first Sylvester wave.
+The coefficient algebra above is consistent with that classical polynomial.
+The theorem gives uniform finite-order asymptotics of the entire count, not
+just of a polynomial formally extracted at one singularity. It does not
+identify each exponentially small root-of-unity wave, provide a Stokes
+analysis, or specify an optimal truncation order growing with $m$.
+\end{remark}
+
+\section{Critical constants and explicit OEIS expansions}\label{sec:critical}
+
+\begin{corollary}[Critical crossover]\label{cor:crossover}
+If $N/m^3\to c\in(0,\infty)$, then
+\begin{equation}\label{eq:crossover}
+ \frac{p_m(N)}{V_m(N)}\longrightarrow e^{1/(4c)}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The $K=0$ case of Theorem~\ref{thm:centered} is
+$p_m(N)=M^{m-1}/(m!(m-1)!)(1+O(1/m))$.
+Furthermore,
+\[
+ (m-1)\log(M/N)
+ =(m-1)\log\left(1+\frac{m(m+1)}{4N}\right)\longrightarrow\frac1{4c}.
+\]
+\end{proof}
+
+\subsection{A general all-order logarithmic expansion}
+
+Write $c=N/m^3$; this notation is permitted even when $c$ varies with $m$.
+For every fixed $K$, uniformly for $c\ge c_0>0$,
+\begin{align}\label{eq:critical-log}
+ \log p_m(c m^3)
+ ={}&(m-3)\log m+2m+(m-1)\log c-\log(2\pi)+\frac1{4c}\notag\\
+ &+\sum_{r=1}^K\frac{L_r(c)}{m^r}+O_{K,c_0}(m^{-K-1}).
+\end{align}
+Here and below the left side is used only when $c m^3$ is an integer.
+The $L_r(c)$ are rational polynomials in $1/c$. Equivalently,
+\begin{equation}\label{eq:critical-relative}
+ p_m(c m^3)=\frac{e^{2m+1/(4c)}c^{m-1}m^{m-3}}{2\pi}
+ \left(\sum_{r=0}^K\frac{b_r(c)}{m^r}+O_{K,c_0}(m^{-K-1})\right),
+\end{equation}
+where
+\begin{equation}\label{eq:b-rec}
+ b_0=1,\qquad k b_k=\sum_{r=1}^k rL_r b_{k-r}.
+\end{equation}
+
+To obtain \eqref{eq:critical-log}, take the logarithm of
+\eqref{eq:centered}, substitute $M=c m^3(1+(m^{-1}+m^{-2})/(4c))$, and
+use the classical Stirling expansion \cite{dlmf}:
+\begin{equation}\label{eq:stirling}
+ \log\Gamma(m+1)+\log\Gamma(m)
+ \sim 2m\log m-2m+\log(2\pi)
+       +2\sum_{r\ge1}\frac{B_{2r}}{2r(2r-1)m^{2r-1}}.
+\end{equation}
+Every operation is justified to a fixed order by Theorem~\ref{thm:centered}.
+Thus the coefficient algorithm is backed by an asymptotic remainder theorem,
+not only by formal manipulation.
+
+The first five logarithmic coefficients are
+\begin{align}
+ L_1(c)&=-\frac{48c^2+13}{288c^2},\label{eq:L1}\\
+ L_2(c)&=-\frac{144c^2+6c-7}{576c^3},\label{eq:L2}\\
+ L_3(c)&=\frac{11520c^4+122400c^2+14400c-8081}{2073600c^4},\\
+ L_4(c)&=\frac{21600c^3-50400c^2-7855c+2861}{2073600c^5},\\
+ L_5(c)&=-\frac{1}{21946982400c^6}\bigl(
+ 34836480c^6+304819200c^4+304819200c^3\notag\\[-2pt]
+ &\hspace{40mm}{}-235282320c^2-42928704c+11425901\bigr).
+\end{align}
+As a short independent check of the first coefficient, the centered shift
+contributes $-1/(32c^2m)$, the $a_1$ term contributes
+$-1/(72c^2m)$, and Stirling contributes $-1/(6m)$.
+Their sum is \eqref{eq:L1}.
+
+\subsection{Five corrections for A238608}
+
+At $c=1$, the result becomes
+\begin{align}\label{eq:A238608}
+ p_m(m^3)=\frac{e^{2m+1/4}m^{m-3}}{2\pi}\Bigg[
+ &1-\frac{61}{288m}-\frac{37463}{165888m^2}
+ +\frac{425075267}{3583180800m^3}\notag\\
+ &-\frac{21833043287}{4127824281600m^4}
+ -\frac{2048618007321713}{58251856261939200m^5}
+ +O(m^{-6})\Bigg].
+\end{align}
+The leading factor is the one already posted in A238608
+\cite{oeis238608}. The additional terms and their remainder are the refinement.
+The logarithmic form is often more stable numerically:
+\begin{align}\label{eq:c1log}
+ \log\!\left(\frac{2\pi p_m(m^3)}{e^{2m+1/4}m^{m-3}}\right)
+ ={}&-\frac{61}{288m}-\frac{143}{576m^2}
+ +\frac{140239}{2073600m^3}\notag\\
+ &-\frac{16897}{1036800m^4}
+ -\frac{377689757}{21946982400m^5}+O(m^{-6}).
+\end{align}
+Substituting $c=2,3,4,5$ in the general formulas immediately gives the same
+order of refinement for A258302--A258305, without separate saddle analyses.
+
+\subsection{Higher power columns and an important rounding issue}
+
+For any fixed integer $k\ge4$, substitute $c=m^{k-3}$ in
+\eqref{eq:critical-log}. One obtains the complete inverse-power expansion of
+\begin{equation}\label{eq:higherpower}
+ p_m(m^k)\sim\frac{e^{2m}m^{(k-2)m-k}}{2\pi},
+\end{equation}
+the leading expression posted in the A238016 family \cite{oeis238016}.
+For example, the quartic column A238609 satisfies
+\begin{align}\label{eq:quartic}
+ \log p_m(m^4)={}&(2m-4)\log m+2m-\log(2\pi)
+       +\frac1{12m}-\frac{139}{480m^3}\notag\\
+       &-\frac1{96m^4}+\frac{1403}{20160m^5}+O(m^{-6}).
+\end{align}
+In particular, its first correction has the opposite sign from the cubic
+column's first correction.
+
+If the intended count is $p_m(\lfloor c m^3\rfloor)$ for a fixed nonintegral
+$c$, use $c_m=\lfloor c m^3\rfloor/m^3$ in \eqref{eq:critical-log}.
+Replacing $c_m$ indiscriminately by $c$ changes the logarithm by $O(m^{-2})$,
+which is large enough to corrupt coefficients beginning at the second
+correction. This is a discrete rounding effect, not a failure of the theorem.
+
+\section{Dilute expansions and genuine exponential sectors}\label{sec:dilute}
+
+The centered theorem is uniform in very large $N$, but its remainder
+$O(m^{-K-1})$ is not small enough to detect a term such as $2^{-m}$.
+A separate expansion in $1/N$, with a remainder measured in $m^3/N$, is needed.
+
+\subsection{The uncentered coefficient system}
+
+Define
+\begin{equation}\label{eq:H}
+ \mathcal H_m(t)=\prod_{j=1}^m\frac{jt}{1-e^{-jt}}
+ =\exp\left(\frac{S_1t}{2}+\sum_{r\ge1}\gamma_rt^{2r}\right)
+ =\sum_{j\ge0}h_j(m)t^j.
+\end{equation}
+Put
+\begin{equation}\label{eq:beta}
+ \beta_j(m)=\fall{(m-1)}j h_j(m),\qquad \beta_0=1.
+\end{equation}
+If $\lambda_1=S_1/2$, $\lambda_{2r}=\gamma_r$, and
+$\lambda_{2r+1}=0$ for $r\ge1$, then
+\begin{equation}\label{eq:h-rec}
+ jh_j=\sum_{r=1}^j r\lambda_r h_{j-r}.
+\end{equation}
+Thus $h_j$ and $\beta_j$ have rational coefficients and degrees at most $2j$
+and $3j$, respectively.
+
+\begin{theorem}[Uniform dilute expansion]\label{thm:dilute}
+There is an absolute $\eta_0>0$ such that, for every fixed $K\ge0$, uniformly
+for $0<\eta=m^3/N\le\eta_0$ and all sufficiently large $m$,
+\begin{equation}\label{eq:dilute}
+ \frac{p_m(N)}{V_m(N)}
+   =\sum_{j=0}^K\frac{\beta_j(m)}{N^j}
+      +O_K\!\left((m^3/N)^{K+1}\right).
+\end{equation}
+In particular, this holds along every sequence for which $m^3/N\to0$.
+\end{theorem}
+\begin{proof}
+Use \eqref{eq:cauchy} with $\tau=m/N=\eta/m^2$. The exact integrand now is
+$e^{Nt}\mathcal H_m(t)/(m!t^m)$. For a sufficiently small fixed $r>0$,
+$\mathcal H_m$ is uniformly bounded on $|t|\le r/m^2$: the linear logarithmic
+term is bounded, and all other terms have total absolute size $O(m^3|t|^2)$.
+Cauchy's estimate gives
+\[
+ \mathcal H_m(t)=\sum_{j=0}^K h_jt^j
+                   +O_K((m^2|t|)^{K+1})
+\]
+on the disk of half this radius. Choose $\eta_0$ sufficiently small that
+$\tau$ lies well inside the disk and integrate over
+$|\theta|\le r/(4m^2)$. The same gamma-kernel calculation as before bounds
+the relative remainder by
+$(m^2\tau)^{K+1}=\eta^{K+1}$. Each polynomial term gives
+$h_j\fall{(m-1)}j/N^j$ by inverse Laplace integration.
+
+For completeness, the omitted arcs are small on this stronger scale, not
+merely small in $1/m$. On $r/(4m^2)\le|\theta|\le1/m$,
+Lemma~\ref{lem:arcs}, after $v=\theta/\tau$, bounds the normalized tails
+by a polynomial factor in $m$ times $(C\eta)^{m-1}$. For sufficiently small
+$\eta_0$ and $m$ sufficiently large relative to $K$, this is
+$O_K(\eta^{K+1})$. On $1/m\le|\theta|\le\pi$, the analogous bound is
+\[
+ C\frac{m^{5/2}}{\eta}\left(\frac{C\eta}{m}\right)^{\delta m}.
+\]
+After division by $\eta^{K+1}$, the positive remaining exponent of $\eta$
+allows substitution of $\eta_0$, leaving a quantity tending rapidly to zero.
+These bounds also justify extending the polynomial integrals to the entire
+vertical line. This proves \eqref{eq:dilute}.
+\end{proof}
+
+Taking the formal logarithm defines rational polynomials $D_j(m)$ through
+\begin{equation}\label{eq:D-rec}
+ D_j=\beta_j-\frac1j\sum_{r=1}^{j-1}rD_r\beta_{j-r}.
+\end{equation}
+Theorem~\ref{thm:dilute} justifies the corresponding logarithmic expansion
+with the same order of remainder. Its first terms are
+\begin{align}
+ D_1(m)&=\frac{m(m^2-1)}4,\label{eq:D1}\\
+ D_2(m)&=-\frac{m(m^2-1)(13m^2+3m-4)}{288}.\label{eq:D2}
+\end{align}
+For example $h_2=S_1^2/8-S_2/24$, so
+$D_2=(m-1)(m-2)h_2-D_1^2/2$, an immediate exact check.
+
+\subsection{Exponential and superexponential specializations}
+
+For a fixed integer $q\ge2$, put $a_q(m)=p_m(q^m)$ and $b=\log q$.
+The full fixed-order expansion is
+\begin{align}\label{eq:exp-transseries}
+ \log a_q(m)={}&b m(m-1)-\log\Gamma(m+1)-\log\Gamma(m)\notag\\
+ &+\sum_{j=1}^K D_j(m)e^{-jbm}
+      +O_K\!\left(m^{3K+3}e^{-(K+1)bm}\right).
+\end{align}
+This is an expansion in genuine exponentially separated sectors, rather than
+only a power series in $1/m$ renamed a transseries. The exact gamma background
+is retained so that its algebraic truncation error does not obscure the
+exponential corrections. In particular,
+\begin{align}\label{eq:exp-two}
+ \log a_q(m)={}&b m(m-1)-\log\Gamma(m+1)-\log\Gamma(m)\notag\\
+ &+\frac{m(m^2-1)}4q^{-m}
+ -\frac{m(m^2-1)(13m^2+3m-4)}{288}q^{-2m}
+ +O(m^9q^{-3m}).
+\end{align}
+The leading term corresponds to A238010 and its columns, including A237998
+when $q=2$ \cite{oeis238010}.
+
+For A238000, put $N=m^m$ in Theorem~\ref{thm:dilute}. The sectors are
+$m^{-jm}=\exp(-jm\log m)$, with the same polynomial coefficients $D_j(m)$.
+For A258670, put $N=(2m)!$; its sectors are $((2m)!)^{-j}$
+\cite{oeis258670}. In particular,
+\[
+ p_m((2m)!)=\frac{((2m)!)^{m-1}}{m!(m-1)!}
+ \left(1+\frac{m(m^2-1)}{4(2m)!}
+       +O\left(\frac{m^6}{((2m)!)^2}\right)\right).
+\]
+There is no need to solve a new saddle equation for each such sequence.
+The full collection follows from one uniform dilute theorem.
+
+\section{Inverting the asymptotic expansions}\label{sec:inverse}
+
+\subsection{What inversion means for an integer sequence}
+
+A sequence has no canonical smooth interpolation. We therefore use an
+\emph{asymptotic inverse chart}: a smooth expression $I(y)$ that, at the exact
+sample values $y=a(m)$, recovers $m$ with a specified asymptotic error.
+The same expression can approximate an integer threshold inverse
+$Q(y)=\min\{m:a(m)\ge y\}$, but generally only up to an $O(1)$ rounding
+ambiguity. An exponentially accurate sample-point chart does not magically
+supply an exponentially accurate integer-valued function for all real $y$.
+
+Each fixed truncation of a forward logarithmic profile is smooth for large
+real $x$ and can be inverted there. Raising the truncation order produces
+consistent inverse coefficients. At sample values the forward remainder,
+divided by the derivative of the leading profile, controls the inverse error.
+This is the precise sense of the all-order inversions used below.
+
+\subsection{The cubic family: Lambert \texorpdfstring{$W$}{W} and two explicit corrections}
+
+Fix $c>0$, and consider $a_c(m)=p_m(c m^3)$ on admissible integer arguments.
+Write
+\[
+ b_c=2+\log c,\qquad D_c=\frac1{4c}-\log(2\pi c).
+\]
+Equation \eqref{eq:critical-log} has the form
+\begin{equation}\label{eq:cubicprofile}
+ \log a_c(m)=m\log m+b_cm-3\log m+D_c
+               +\frac{L_1(c)}m+\frac{L_2(c)}{m^2}+\cdots.
+\end{equation}
+For large $y$, set $L=\log y$ and
+\begin{equation}\label{eq:lambertbase}
+ w=W(c e^2L),\qquad x_0=\frac Lw.
+\end{equation}
+Here $W$ is the positive real solution of $we^w=z$. Then
+$\log x_0+b_c=w$, and consequently
+$x_0\log x_0+b_cx_0=L$ exactly. Define
+\begin{equation}\label{eq:deltas}
+ d_0=\frac{3\log x_0-D_c}{w+1},\qquad
+ d_1=\frac{3d_0-d_0^2/2-L_1(c)}{w+1}.
+\end{equation}
+
+\begin{theorem}[Cubic inverse chart]\label{thm:cubicinverse}
+At $y=a_c(m)$, with $c$ fixed,
+\begin{equation}\label{eq:inverse-cubic}
+ m=x_0+d_0+\frac{d_1}{x_0}+O_c(x_0^{-2}).
+\end{equation}
+There is an all-order expansion
+$x_0+\sum_{r\ge0}d_r(w;c)x_0^{-r}$, in the fixed-order asymptotic sense.
+Its coefficients are obtained recursively by Taylor substitution in
+\eqref{eq:cubicprofile}; they are rational functions of $w$ with constants
+depending on $c$.
+\end{theorem}
+\begin{proof}
+Let $f_0(x)=x\log x+b_cx$. At $x_0$, one has
+$f_0'=w+1$ and $f_0''=1/x_0$. Substitute
+$x=x_0+d_0+d_1/x_0$ in \eqref{eq:cubicprofile}.
+The constant residual is
+$(w+1)d_0-3\log x_0+D_c$, and the coefficient of $x_0^{-1}$ is
+$(w+1)d_1+d_0^2/2-3d_0+L_1(c)$. Both vanish by \eqref{eq:deltas}.
+The remaining residual is $O_c(x_0^{-2})$, whereas the derivative is
+asymptotic to $w+1$. The mean-value theorem proves the stated, slightly
+weaker, $O_c(x_0^{-2})$ inverse error.
+
+At any further fixed order, the new unknown coefficient appears multiplied
+by $w+1$; everything else is already known. Division by $w+1$ completes
+an induction. Since $\log x_0=w-b_c$, the recursion stays within rational
+functions of $w$. The forward expansion can be taken to arbitrarily high
+fixed order by Theorem~\ref{thm:centered}.
+\end{proof}
+
+For A238608 specifically,
+\[
+ d_0=3-\frac{37/4-\log(2\pi)}{w+1},\qquad
+ d_1=\frac{3d_0-d_0^2/2+61/288}{w+1},\qquad w=W(e^2\log y).
+\]
+These corrections are important even for moderately large indices: the raw
+Lambert term can miss the index by nearly two while the corrected expression
+is already accurate to about $10^{-4}$ at $m=60$.
+
+\subsection{Exponential columns: algebraic and invisible corrections}
+
+For $q\ge2$ fixed, define the exact smooth background
+\begin{equation}\label{eq:F0}
+ G_q(x)=b x(x-1)-\log\Gamma(x+1)-\log\Gamma(x),\qquad b=\log q.
+\end{equation}
+Stirling's expansion yields
+\[
+ G_q(x)=b x^2-2x\log x+(2-b)x-\log(2\pi)
+                -\frac1{6x}+\frac1{180x^3}-\cdots.
+\]
+Put
+\begin{equation}\label{eq:sde}
+ s=\sqrt{L/b},\qquad
+ d=\frac{\log s}{b}+\frac{b-2}{2b},\qquad
+ e=\frac{d^2}{2}+\frac db+\frac{\log(2\pi)}{2b}.
+\end{equation}
+Taylor substitution gives the algebraic inverse chart
+\begin{equation}\label{eq:expalginverse}
+ m=s+d+\frac es+O_q\!\left(\frac{(\log s)^3}{s^2}\right),
+                         \qquad y=a_q(m).
+\end{equation}
+For example, the coefficient of $s$ cancels because
+$2bd=2\log s+b-2$, and the constant residual cancels because
+$2be=bd^2+2d+\log(2\pi)$.
+
+To expose an exponentially small inverse correction, let $X$ be the exact
+large solution of $G_q(X)=\log y$. This background inverse is well defined
+for large $y$ since
+\[
+ G_q'(X)=b(2X-1)-\psi(X+1)-\psi(X)\sim2bX>0.
+\]
+Equation \eqref{eq:exp-transseries} and one implicit Taylor step give
+\begin{equation}\label{eq:expinverse}
+ m=X-\frac{D_1(X)e^{-bX}}{G_q'(X)}
+             +O_q(X^5e^{-2bX}),\qquad y=a_q(m).
+\end{equation}
+The sign is negative: the positive count correction raises $\log a_q$ above
+the gamma background, so the corrected index at fixed $y$ is smaller.
+The $O(m^6e^{-2bm})$ forward error divided by $G_q'(m)\asymp m$ gives
+the displayed safe inverse error; the Taylor cross terms are smaller.
+
+All further exponential sectors can be computed recursively. For example,
+write $m=X+u_1(X)e^{-bX}+u_2(X)e^{-2bX}+\cdots$. Then
+\begin{align}\label{eq:inverse-sector-rec}
+ u_1&=-D_1/G_q',\\
+ u_2&=-\frac{D_2+(D_1'-bD_1)u_1+G_q''u_1^2/2}{G_q'}.
+\end{align}
+Theorem~\ref{thm:dilute} supplies the required forward remainder at every
+fixed sector order. Retaining only finitely many terms of Stirling in
+$G_q$ would not justify \eqref{eq:expinverse}: that algebraic error would
+swamp the quantity being resolved.
+
+\subsection{The diagonal sequence A238000}
+
+The same procedure gives a particularly simple leading inverse for A238000.
+Here
+\[
+ \log p_m(m^m)=(m^2-3m)\log m+2m-\log(2\pi)+O(1/m),
+\]
+with exponentially smaller corrections in $m^{-m}$ supplied by
+Section~\ref{sec:dilute}. If
+\[
+ x_0=\sqrt{\frac{2L}{W(2L)}},
+\]
+then $x_0^2\log x_0=L$, and a first correction is
+\begin{equation}\label{eq:diaginverse}
+ m=x_0+\frac{3\log x_0-2}{2\log x_0+1}+O(x_0^{-1})
+                         \quad\text{at }y=p_m(m^m).
+\end{equation}
+This follows by dividing the leading residual $-3x_0\log x_0+2x_0$
+by the derivative $x_0(2\log x_0+1)$. It provides another inverse chart from
+the same partition theorem, rather than an unrelated inversion example.
+
+\section{A Poisson boundary law in the conjugate partition model}
+\label{sec:poisson}
+
+\subsection{Which repeated parts are being counted}
+
+Choose a partition of $N$ into \emph{at most $m$ parts} uniformly, and pad it
+with zeros to obtain
+\[
+ 0\le x_1\le\cdots\le x_m,\qquad x_1+\cdots+x_m=N.
+\]
+This is the conjugate of the original bounded-part-size model.
+The distinction matters: partitions whose part sizes are bounded by $m$
+typically have many repeated small parts, and the theorem below is not a
+claim about those multiplicities.
+
+Set $d_1=x_1$ and $d_i=x_i-x_{i-1}$ for $i\ge2$. Then
+\[
+ \sum_{i=1}^m(m-i+1)d_i=N.
+\]
+Let
+\[
+ Z_m=\#\{i:2\le i\le m,\ d_i=0\},
+\]
+the number of equal adjacent pairs in the padded partition. A gap equal to
+zero corresponds to a zero multiplicity for one of the weights $1,\ldots,m-1$
+in the generating product. Its probability generating function is exactly
+\begin{equation}\label{eq:pgf}
+ \E[u^{Z_m}]=
+ \frac{[q^N]F_m(q)\prod_{j=1}^{m-1}\bigl(u+(1-u)q^j\bigr)}{p_m(N)}.
+\end{equation}
+Indeed for each marked weight the sum over a gap is
+$u+q^j+q^{2j}+\cdots=(u+(1-u)q^j)/(1-q^j)$.
+
+\subsection{A deletion estimate and the limit distribution}
+
+\begin{lemma}[Deleting a fixed number of factors]\label{lem:delete}
+Fix $k$. Uniformly over $k$-element sets $S\subseteq\{1,\ldots,m\}$ and
+$N/m^3$ in a compact subinterval of $(0,\infty)$,
+\begin{equation}\label{eq:delete}
+ \frac{[q^N]F_m(q)\prod_{j\in S}(1-q^j)}{p_m(N)}
+ =\left(\prod_{j\in S}j\right)
+       \frac{\fall{(m-1)}k}{M^k}\left(1+O_k(m^{-1})\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+On the central interval of Section~\ref{sec:centered},
+\[
+ \prod_{j\in S}(1-e^{-jt})
+ =\left(\prod_{j\in S}j\right)t^k(1+O_k(m|t|))
+ =\left(\prod_{j\in S}j\right)t^k(1+O_k(m^{-1})).
+\]
+Inserting this factor in the contour proof changes $t^{-m}$ to $t^{-m+k}$,
+so the inverse-Laplace integral contributes $\fall{(m-1)}k/M^k$.
+Both $\mathcal A_m(t)$ and the denominator count have relative error
+$O(1/m)$ at this precision. On the other arcs the new product has modulus
+at most $2^k$. Since $k$ is fixed and $\tau\asymp m^{-2}$, normalizing by
+the smallest possible main deleted-factor contribution loses only a fixed
+power of $m$, harmless compared with the arc decay. All bounds are uniform
+in the choice of $S$.
+\end{proof}
+
+\begin{theorem}[Poisson repeated-part boundary]\label{thm:poisson}
+If $N/m^3\to c\in(0,\infty)$, then
+\begin{equation}\label{eq:poisson}
+ Z_m\ \xrightarrow{\ d\ }\ \Pois\!\left(\frac1{2c}\right).
+\end{equation}
+With probability tending to one, the partition has exactly $m$ positive
+parts and no part occurs three or more times. Thus $Z_m$ also agrees, with
+probability tending to one, with the number of distinct positive part sizes
+that occur twice.
+\end{theorem}
+\begin{proof}
+For every fixed $k$, the factorial-moment identity from \eqref{eq:pgf} and
+Lemma~\ref{lem:delete} give
+\[
+ \E[\fall{Z_m}k]
+ =k!\,\frac{\fall{(m-1)}k}{M^k}
+   \sum_{\substack{S\subseteq\{1,\ldots,m-1\}\\|S|=k}}
+       \prod_{j\in S}j\,\left(1+O_k(m^{-1})\right).
+\]
+For fixed $k$, the elementary symmetric sum here equals
+\[
+ \frac1{k!}\left(\sum_{j=1}^{m-1}j\right)^k(1+O_k(m^{-1})).
+\]
+To see this, expand the power and remove tuples with a repeated index; their
+relative total is bounded by a constant times
+$\sum j^2/(\sum j)^2=O(1/m)$. Therefore
+\[
+ \E[\fall{Z_m}k]\longrightarrow(1/(2c))^k.
+\]
+These are the factorial moments of the asserted Poisson law. For clarity,
+the first moment gives tightness; the next higher moments give uniform
+integrability of every fixed power along subsequences. Any subsequential
+limit therefore has the Poisson moments. The Poisson distribution is
+moment-determinate, as its moment generating function is finite in a
+neighborhood of zero. This proves \eqref{eq:poisson}.
+
+The event $d_1=0$ is a single deletion of weight $m$, and hence has probability
+$m(m-1)/M\,(1+O(1/m))=O(1/m)$. A triple repetition requires two consecutive
+gaps to vanish. By \eqref{eq:delete}, summing these two-deletion probabilities
+over at most $m$ adjacent pairs costs
+\[
+ O\left(\frac{m^2}{M^2}\sum_{j=1}^{m-1}j(j+1)\right)=O(m^{-1}).
+\]
+Outside these two exceptional events there are $m$ positive parts and only
+double repetitions, proving the last assertion.
+\end{proof}
+
+\subsection{An explicit correction to the Poisson generating function}
+
+The limit can be refined without assuming independence of the gaps.
+
+\begin{theorem}[First finite-size probability correction]\label{thm:pgf}
+Let $c=N/m^3$ range over a compact subinterval of $(0,\infty)$. Uniformly
+for real $0\le u\le1$,
+\begin{equation}\label{eq:pgf-correction}
+ \E[u^{Z_m}]=e^{(u-1)/(2c)}
+ \left[1-\frac1m\left(\frac{u-1}{c}
+             +\frac{7u(u-1)}{24c^2}\right)+O_c(m^{-2})\right].
+\end{equation}
+The constant in the error can be chosen uniformly on the indicated compact
+$c$ interval. In particular,
+\begin{equation}\label{eq:no-repeats}
+ \Prob(Z_m=0)=e^{-1/(2c)}\left(1+\frac1{cm}+O_c(m^{-2})\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $v=u-1$, $S_r'=\sum_{j=1}^{m-1}j^r$, and $M_v=M+vS_1'$.
+Near zero,
+\[
+ \log\prod_{j=1}^{m-1}\bigl(u+(1-u)e^{-jt}\bigr)
+ =vS_1't-\frac{v+v^2}{2}S_2't^2+O(m^4|t|^3),
+\]
+uniformly for $0\le u\le1$. After combining this with
+\eqref{eq:bernoulli}, define
+\[
+ C_v=\frac{S_2}{24}+\frac{v+v^2}{2}S_2'.
+\]
+The same centered contour proof, now at $\tau=m/M_v$, yields for the numerator
+of \eqref{eq:pgf}
+\[
+ \frac{M_v^{m-1}}{m!(m-1)!}
+ \left(1-C_v\frac{(m-1)(m-2)}{M_v^2}+O(m^{-2})\right).
+\]
+The error follows from $m^4|t|^3+m^6|t|^4=O(m^{-2})$ on the central
+scale. The old arc estimates remain valid: for $0\le u\le1$ and
+$|q|\le1$, every multiplier $u+(1-u)q^j$ has modulus at most one.
+Also $M_v=M+O(m^2)>0$ and the change of real-axis normalization costs only
+a bounded factor.
+
+Divide by the same formula at $v=0$ and take a logarithm. With $N=cm^3$,
+\begin{align*}
+ (m-1)\log(M_v/M)
+ &=\frac v{2c}-\frac1m\left(\frac vc+\frac{v+v^2}{8c^2}\right)
+         +O(m^{-2}),\\
+ -C_v\frac{(m-1)(m-2)}{M_v^2}
+ +C_0\frac{(m-1)(m-2)}{M^2}
+ &=-\frac{v+v^2}{6c^2m}+O(m^{-2}).
+\end{align*}
+Since $1/8+1/6=7/24$, exponentiation proves \eqref{eq:pgf-correction}.
+Setting $u=0$ proves \eqref{eq:no-repeats}.
+\end{proof}
+
+There is a useful independent exact identity at $u=0$. Subtract the staircase
+$(0,1,\ldots,m-1)$ from a strictly increasing nonnegative partition. The result
+is an arbitrary weakly increasing nonnegative partition of
+$N-T$, where $T=m(m-1)/2$. Thus
+\begin{equation}\label{eq:staircase}
+ \Prob(Z_m=0)=\frac{p_m(N-T)}{p_m(N)}.
+\end{equation}
+Inserting the centered expansion into this ratio checks both the limit
+$e^{-1/(2c)}$ and the first correction $1/(cm)$.
+Higher pgf corrections can be generated by retaining further terms in
+$\log(u+(1-u)e^{-z})$ and using the same coefficient recursions. We do not
+claim a total-variation rate or a uniform complex-$u$ expansion from the
+real interval estimate alone.
+
+\section{Exact computation and reproducible diagnostics}\label{sec:checks}
+
+\subsection{Independent coefficient extraction}
+
+The package's \texttt{verify.py} computes integer coefficients by the
+standard product update
+\[
+ P_0(0)=1,\quad P_0(n)=0\ (n>0),\qquad
+ P_j(n)=P_{j-1}(n)+P_j(n-j),
+\]
+where negative arguments contribute zero. A second implementation uses the
+logarithmic derivative of \eqref{eq:gf}:
+\begin{equation}\label{eq:independentrec}
+ n p_m(n)=\sum_{r=1}^n
+  \left(\sum_{\substack{d\mid r\\d\le m}}d\right)p_m(n-r).
+\end{equation}
+These two methods agree for $1\le m\le12$ and $0\le n\le200$.
+The finite inequalities in Section~\ref{sec:elementary} are tested after
+clearing denominators, so their verification uses exact integer arithmetic.
+All displayed initial A238608 values through $m=16$ agree with the inspected
+OEIS entry \cite{oeis238608}.
+
+The complete run used 90-decimal-digit floating-point arithmetic only after
+the exact counts were produced. It performed 9,230 exact assertions and
+recorded 258 count samples, with $m\le60$ and coefficient arrays extending
+to $N=320000$. The sample families include $c m^3$ for $1\le c\le5$,
+$m^4$, and $2^m$. These are finite tests; the all-order and uniform statements
+rest on the contour estimates, not on extrapolating the tables.
+
+\subsection{Accuracy of the cubic expansion}
+
+Let $A_K(m)$ be the right side of \eqref{eq:A238608}, truncated after
+$m^{-K}$. The following entries are signed relative errors
+$A_K(m)/p_m(m^3)-1$ from the included exact computation.
+\begin{center}
+\small
+\begin{tabular}{@{}r r r r r@{}}
+\toprule
+$m$ & $K=0$ & $K=1$ & $K=3$ & $K=5$\\
+\midrule
+10 & $2.38780\cdot10^{-2}$ & $2.19166\cdot10^{-3}$ & $8.72320\cdot10^{-7}$ & $-2.93140\cdot10^{-8}$\\
+20 & $1.12656\cdot10^{-2}$ & $5.55991\cdot10^{-4}$ & $4.40927\cdot10^{-8}$ & $-4.51323\cdot10^{-10}$\\
+40 & $5.46413\cdot10^{-3}$ & $1.40056\cdot10^{-4}$ & $2.41567\cdot10^{-9}$ & $-7.04814\cdot10^{-12}$\\
+60 & $3.60523\cdot10^{-3}$ & $6.24068\cdot10^{-5}$ & $4.54363\cdot10^{-10}$ & $-6.18667\cdot10^{-13}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The full CSV includes $K=2$, the normalized exact count, and the other values
+of $c$. A small error at one index alone would not prove an expansion;
+these data are useful as stringent checks on coefficient signs, normalization,
+and omitted shifts.
+
+\subsection{Probability and inverse diagnostics}
+
+For $c=1$, the limiting mean is $1/2$, the limiting zero probability is
+$e^{-1/2}\approx0.60653066$, and the limiting pgf at $u=1/2$ is
+$e^{-1/4}\approx0.77880078$. Exact finite values are
+\begin{center}
+\begin{tabular}{@{}r r r r@{}}
+\toprule
+$m$ & $\E Z_m$ & $\Prob(Z_m=0)$ & $\E[2^{-Z_m}]$\\
+\midrule
+10 & 0.3846890512 & 0.6682085339 & 0.8213708910\\
+20 & 0.4390680097 & 0.6371577383 & 0.8006057040\\
+40 & 0.4686467899 & 0.6217743594 & 0.7898304769\\
+60 & 0.4788932680 & 0.6166760199 & 0.7861818675\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first-corrected pgf at $u=1/2$ has relative error about
+$7.04\cdot10^{-5}$ at $m=60$, consistent with its $O(m^{-2})$ remainder.
+The exact pgf there is calculated using the coefficients of
+$\prod_{j=1}^{m-1}(1+q^j)$, divided by $2^{m-1}$, in \eqref{eq:pgf}.
+
+At $y=p_{60}(60^3)$, the uncorrected Lambert chart has index error
+$-1.96028$, while \eqref{eq:inverse-cubic} has error
+$1.66805\cdot10^{-4}$. At $y=p_{18}(2^{18})$, the exact gamma-background
+inverse $X$ has index error $2.99966\cdot10^{-4}$; adding the exponential
+correction in \eqref{eq:expinverse} reduces it to
+$-1.72742\cdot10^{-8}$. These diagnostics illustrate why algebraic and
+exponential inverse corrections should be treated separately.
+
+\subsection{Reproduction and package contents}
+
+The archive contains the article source and PDF, plus:
+\begin{description}[style=nextline,leftmargin=0pt,labelwidth=0pt,labelsep=0pt]
+\item[\texttt{derive\_coefficients.py}]
+Exact Bernoulli/power-sum derivation of $L_r(c)$ and $b_r(c)$, with a selectable
+fixed order. The default is five.
+\item[\texttt{asymptotics.py}]
+Forward logarithmic profiles, the explicit cubic inverse, numerical inversion
+of a chosen truncated profile, and the first exponential inverse correction.
+\item[\texttt{verify.py}]
+Exact product and divisor-recurrence checks, finite bounds, OEIS initial-value
+checks, probability diagnostics, and inverse diagnostics.
+\item[Data files]
+\texttt{coefficients.json}, \texttt{exact\_values.json},\\
+\texttt{critical\_errors.csv}, \texttt{poisson\_checks.csv},\\
+\texttt{inverse\_checks.csv}, \texttt{verification\_summary.json}.
+\end{description}
+Only SymPy and mpmath are required beyond the Python standard library. The
+article uses standard \LaTeX{} packages and builds with three runs of
+\texttt{pdflatex}. The README supplies the exact commands. No network access
+is required to reproduce the included calculations after dependencies are
+installed.
+
+\section{A formalization route from the existing Lean foundation}
+
+The exact combinatorial foundation already present in ProveIt suggests a
+clean separation into finite and analytic layers. This is a proposed route,
+not a claim of completed code.
+
+The first layer would formalize the weak-composition orbit model and the
+transposition fixed-point injection. These provide an entirely discrete proof
+of the lower obstruction $m(m-1)^2/(4N)$. A companion lattice-simplex volume
+lemma gives the upper bound and the exact threshold. The existing
+multiplicity-vector equivalence can supply the bridge between the two models.
+
+The second layer would formalize coefficient extraction for the finite
+$q$-Pochhammer product, the analytic identity \eqref{eq:factor}, and the
+Bernoulli recurrence \eqref{eq:a-rec}. At each fixed order, the explicit
+coefficient identities reduce to rational polynomial algebra and are good
+candidates for small proof certificates.
+
+The genuinely analytic work is then localized: a uniform trigonometric
+index-count lemma, a Cauchy-circle decay bound, gamma-kernel integral estimates,
+and a uniform analytic Taylor remainder on a shrinking disk. The distinction
+between a fixed parameter and a constant uniform over $N\ge c_0m^3$ must be
+represented explicitly in the quantifiers. Finally, probability is built from
+finite uniform measures on partition sets, coefficient-deletion identities,
+and factorial moments.
+
+The source file inspected in the repository is compatible with this program,
+but neither its availability nor the successful Python checks certify any
+of these future Lean developments. In particular, a formalization must not
+replace the minor-arc estimate with the assertion that $q=1$ is the only
+relevant singularity: the other roots of unity are present and must be bounded.
+
+\section{Further research questions and concrete next steps}\label{sec:research}
+
+The results above leave substantial, sharply formulated problems. The following
+are proposals for further work, not assertions that every one is historically
+open in exactly this form.
+
+\paragraph{1. Optimal truncation and individual waves.}
+Determine how the best order in \eqref{eq:centered} grows with $m$, and compute
+the leading nontrivial root-of-unity contribution in the cubic regime. The
+first target is the $q=-1$ wave, followed by a uniform comparison of all
+remaining orders. This would turn the present fixed-order expansions into
+a substantially more complete transseries.
+
+\paragraph{2. A uniform bridge below the cubic scale.}
+Extend the centered analysis into $m^{5/2}\lesssim N\ll m^3$, where the
+centering factor can be large and the quadratic Bernoulli correction must
+itself be exponentiated. Match the resulting expansion to a small-parameter
+expansion of the Szekeres saddle. The precise validity range and matching
+error are more useful targets than simply recovering a leading logarithm.
+
+\paragraph{3. Structural degree cancellation in logarithmic coefficients.}
+The general construction only immediately gives $\deg D_j\le3j$, while
+$D_1$ and $D_2$ have degrees $3$ and $5$. Investigate a systematic sharper
+degree theorem, its leading coefficients, and a connected-object or cumulant
+interpretation. Such a result could reduce symbolic complexity and improve
+error estimates across many dilute sequences.
+
+\paragraph{4. Higher probability corrections and quantitative convergence.}
+Compute an all-order version of \eqref{eq:pgf-correction}, then prove a
+uniform complex-$u$ domain sufficient for extracting point probabilities
+with explicit error bounds. Obtain a total-variation estimate for the Poisson
+approximation, rather than inferring one from convergence of fixed moments.
+
+\paragraph{5. Rare triple repetitions.}
+The present proof bounds their probability by $O(1/m)$ at the cubic scale.
+Determine its leading constant and joint asymptotics with the number of
+doubletons. At other scales, identify when tripletons develop a nondegenerate
+limit and whether a hierarchy of multiplicity transitions results.
+
+\paragraph{6. Deletions whose number grows.}
+Lemma~\ref{lem:delete} assumes fixed $k$. Find the maximal growing range
+$k=k(m)$ for which a useful uniform coefficient ratio holds. This would give
+moderate-deviation information for $Z_m$, not just a Poisson limit at fixed
+counts.
+
+\paragraph{7. Other weight systems.}
+Replace $1,\ldots,m$ by structured integer weights with an available unit
+weight and controlled power sums. The local expansion generalizes immediately,
+but the global arc estimate depends on the weights' arithmetic distribution.
+Find hypotheses that separate a universal volume/cumulant law from genuine
+periodic obstructions.
+
+\paragraph{8. Certified inverse thresholds.}
+Combine explicit finite constants in the remainder bounds with monotonicity
+to produce intervals enclosing the integer inverse $Q(y)$. A useful algorithm
+must report when its interval straddles two integers, rather than silently
+rounding a smooth chart. This is particularly important when $y$ lies very
+close to an exact sequence value.
+
+\paragraph{9. A proof-producing asymptotic pipeline.}
+Starting from the finite-product generating function, automate power sums,
+Bernoulli coefficients, fixed-order remainder parameters, transseries
+substitution, and inverse reversion. The symbolic output should be a small
+certificate checkable independently, with numerical fitting excluded from
+the proof path.
+
+\paragraph{10. OEIS and literature reconciliation.}
+Prepare a narrowly scoped, source-backed update for the affected entries:
+replace the vague quartic-growth condition by a precise sufficient condition,
+attach the classical attribution, and separately record explicit refinements.
+A useful contribution is improved mathematical traceability, not relabeling
+classical consequences as breakthroughs.
+
+\section{Conclusion}
+
+The restricted-partition family admits one coherent explanation of several
+OEIS asymptotic patterns. The volume approximation has an exact cubic
+threshold, critical growth leaves a nontrivial constant, and larger sizes
+admit polynomial, exponential, or factorial-scale refinements governed by the
+same Bernoulli coefficient system. Uniform contour control is what turns
+formal local algebra into theorems about the whole counting sequence.
+
+The inverse formulas illustrate a second important distinction: an exact
+gamma background is needed before exponentially small corrections can be
+meaningfully inverted. Finally, the conjugate partition model shows that the
+cubic boundary is not merely an artifact of asymptotic notation. It is a
+regime where repeated parts survive in a nondegenerate Poisson law, with a
+computable finite-size correction. The elementary criterion, all-order
+expansions, inverse charts, and probabilistic law form the substantive
+proof package supplied by this report.
+
+\appendix
+\section{A compact all-order coefficient recipe}
+
+For a requested order $K$, the following is a finite exact procedure.
+Compute $S_{2r}(m)$ for $1\le r\le K$ by Faulhaber's formula or finite
+symbolic summation. Form $\gamma_r$, then $a_j$ from \eqref{eq:a-rec}.
+Let $x=1/m$, $h=(x+x^2)/(4c)$, and form, modulo $x^{K+1}$,
+\[
+ Q(x,c)=\sum_{j=0}^K a_j(1/x)
+ \frac{x^{4j}}{c^{2j}}\prod_{i=1}^{2j}(1-ix)\,(1+h)^{-2j}.
+\]
+Although the expression uses $a_j(1/x)$, the combined summand has no negative
+powers: its lowest possible degree is $j$. Then
+\begin{align*}
+ \sum_{r=1}^K L_r(c)x^r\equiv{}&\log Q(x,c)
+ +(x^{-1}-1)\log(1+h)-\frac1{4c}\\
+ &-2\sum_{r\ge1}\frac{B_{2r}}{2r(2r-1)}x^{2r-1}
+                          \pmod{x^{K+1}}.
+\end{align*}
+Only finitely many Stirling terms contribute. Apply \eqref{eq:b-rec} to obtain
+relative coefficients. This is the algorithm implemented in
+\texttt{derive\_coefficients.py}; it uses exact rational arithmetic.
+For dilute coefficients, use \eqref{eq:h-rec}, \eqref{eq:beta}, and
+\eqref{eq:D-rec} instead. No numerical sequence values are needed to discover
+any of the displayed coefficients.
+
+\begingroup
+\small
+\begin{thebibliography}{99}
+\setlength{\itemsep}{3pt}
+\bibitem{oeis238016}
+OEIS Foundation Inc., \emph{A238016: Number of partitions of $n^k$ into parts
+that are at most $n$}. Entry by Alois P.~Heinz; asymptotic comments by
+V.~Kote\v{s}ovec (2015). Retrieved 1 October 2026.
+\url{https://oeis.org/A238016}.
+
+\bibitem{oeis238608}
+OEIS Foundation Inc., \emph{A238608: Number of partitions of $n^3$ into parts
+that are at most $n$}. Entry by Alois P.~Heinz; leading asymptotic and its
+$c n^3$ extension by V.~Kote\v{s}ovec (2015). Retrieved 1 October 2026.
+\url{https://oeis.org/A238608}.
+
+\bibitem{oeis238010}
+OEIS Foundation Inc., \emph{A238010: Number of partitions of $k^n$ into parts
+that are at most $n$}. Entry by Alois P.~Heinz; asymptotic comment by
+V.~Kote\v{s}ovec (2015). Retrieved 1 October 2026.
+\url{https://oeis.org/A238010}.
+
+\bibitem{oeis258670}
+OEIS Foundation Inc., \emph{A258670: Number of partitions of $(2n)!$ into
+parts that are at most $n$}. Retrieved 1 October 2026.
+\url{https://oeis.org/A258670}.
+
+\bibitem{canfield}
+E.~Rodney Canfield, \emph{From recursions to asymptotics: On Szekeres' formula
+for the number of partitions}, Electronic Journal of Combinatorics
+\textbf{4}, no.~2 (1997), Research Paper 6, 16 pp.
+\url{https://doi.org/10.37236/1321}.
+
+\bibitem{dilchervignat}
+Karl Dilcher and Christophe Vignat, \emph{An explicit form of the polynomial
+part of a restricted partition function}, Research in Number Theory
+\textbf{3} (2017), article 1.
+\url{https://doi.org/10.1007/s40993-016-0065-3}.
+
+\bibitem{sillszeilberger}
+Andrew V.~Sills and Doron Zeilberger, \emph{Formulae for the number of
+partitions of $n$ into at most $m$ parts (using the quasi-polynomial ansatz)},
+arXiv:1108.4391 (2011).
+\url{https://arxiv.org/abs/1108.4391}.
+
+\bibitem{osullivan}
+Cormac O'Sullivan, \emph{Partitions and Sylvester waves},
+arXiv:1702.03611 (2017).
+\url{https://arxiv.org/abs/1702.03611}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions, \S5.11,
+\emph{Asymptotic expansions of the gamma function}, especially 5.11.1
+and the remainder bounds in \S5.11(ii). Retrieved 1 October 2026.
+\url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{proveit}
+Vladimir Reshetnikov, \emph{ProveIt repository}, inspected module
+\texttt{PartitionBoundedParts.lean} (full path in Section~1.3),
+main branch, retrieved 1 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\end{thebibliography}
+\endgroup
+\end{document}

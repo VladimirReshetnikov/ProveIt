@@ -11,7 +11,7 @@
 \usepackage[pdfencoding=auto,psdextra]{hyperref}
 \hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
  urlcolor=MidnightBlue,pdftitle={Partitions into Catalan Numbers: All-Orders Asymptotics, Periodic Corrections, and Inverse Growth},
- pdfauthor={Research report prepared with ChatGPT},bookmarksnumbered=true}
+ pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},bookmarksnumbered=true}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
@@ -47,6 +47,10 @@
 \fancyhead[R]{\small OEIS A033552}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
+% Collection edition (batch 73O1): notes added when the report was written
+% into ProveIt's research-report collection.
+\newcommand{\writenote}[1]{\par\smallskip\noindent
+ \textit{[Write note, batch 73O1, 1 October 2026.]}\ #1\par\smallskip}
 \newtcolorbox{resultbox}{enhanced,breakable,colback=blue!2!white,
  colframe=MidnightBlue!65!black,boxrule=.5pt,arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt}
 \title{\vspace{-1.1cm}\textbf{Partitions into Catalan Numbers}\\[5pt]
@@ -90,16 +94,25 @@ constructively determined. Replacing $\Psi_\alpha$ by a constant does
 \emph{not} give an asymptotic equivalent.
 \end{resultbox}
 
+\writenote{This is the collection edition of the report, written into
+ProveIt's research-report collection from manuscript~39 of batch~73O1
+(provenance in \cref{ctp:app:edition}). Every label carries the prefix
+\texttt{ctp:}; \texttt{requirements.txt} now lives in \texttt{data/} and
+\texttt{build.sh} in \texttt{code/}. Text added in the write is marked like
+this note; everything else is the delivered text. As the abstract says,
+the OEIS entry states \emph{no} asymptotic conjecture: this report
+answers no posed question, it supplies the asymptotics the entry lacks.}
+
 \clearpage
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \clearpage
 
 \section{The problem, its status, and the contribution}
-\label{sec:intro}
+\label{ctp:sec:intro}
 
 \subsection{The sequence and the normalization}
 For $k\geq1$ define
-\begin{equation}\label{eq:catalan}
+\begin{equation}\label{ctp:eq:catalan}
  c_k=\frac1{k+1}\binom{2k}{k},\qquad
  F(z)=\prod_{k\geq1}(1-z^{c_k})^{-1},\qquad
  p(n)=[z^n]F(z).
@@ -129,7 +142,7 @@ on a fixed truncation order but not on a fractional phase.
 
 \subsection{What is established here, and what is not}
 The principal contribution is a self-contained chain from the exact product
-\eqref{eq:catalan} to the following results: an all-orders saddle expansion
+\eqref{ctp:eq:catalan} to the following results: an all-orders saddle expansion
 with a contour proof; a completely normalized, phase-resolved explicit
 expansion; a first correction containing derivatives of the periodic
 amplitude; an inverse threshold expansion with error transport; and a
@@ -146,6 +159,16 @@ normalizations needed here rather than importing a vaguely matched theorem.
 The explicit Catalan-part formulas below were derived for this report. A
 limited search found no source giving this complete collection of formulas;
 that observation is not a proof of publication priority.
+
+\writenote{The phenomenon Erd\H{o}s and Richmond name goes back to de
+Bruijn's treatment of Mahler's partition problem \cite{debruijn}, which
+the delivered bibliography did not list: partitions into powers of a
+fixed integer, whose logarithm carries a periodic function of a
+logarithmic variable built from $\Gamma(s)\zeta(1+s)$ on the Mellin
+lattice. The Catalan parts $c_k\sim4^k/(\sqrt\pi k^{3/2})$ are a
+polynomially perturbed geometric sequence of that kind, and
+\cref{ctp:lem:Fourier} is the corresponding Mellin computation; see also
+the note after its proof.}
 
 The manuscript contains conventional mathematical proofs and executable
 checks. It is not a Lean formalization. The numerical checks corroborate,
@@ -168,12 +191,23 @@ then transports residual errors through inversion. Its periodic coefficients
 also make a useful boundary case for a purely polynomial--logarithmic
 transseries calculus: the coefficient algebra must retain a periodic phase.
 
+\writenote{At the repository's current state the search result above
+still holds: no report or formal development treats A033552 or
+partitions into Catalan numbers. The pin quoted above is a commit; the
+delivered \texttt{SOURCE\_NOTES.md} also names
+\texttt{1f1981f682b2878bde51a6ad40c22777f362fc05}, the commit its first
+repository request returned, and calls it ``a tree SHA, not a commit
+SHA''. That is mistaken: it is a ProveIt commit of 1~October~2026 (the
+root tree of \texttt{e6190a945} is the separate object
+\texttt{8e77886c}). Neighbouring material is listed in
+\cref{ctp:app:edition}. No statement of this report is formalized.}
+
 \section{Main asymptotic and inverse formulas}
-\label{sec:main}
+\label{ctp:sec:main}
 
 \subsection{Constants and the periodic amplitude}
 Set
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{ctp:eq:constants}
  \alpha=\log4,\qquad A=\frac{1+3\alpha}{2},\qquad
  \eta=\frac{23}{8},\qquad
  C=\frac14\log2+\frac34\log\pi+\log G(3/2),
@@ -183,13 +217,13 @@ $G(z+1)=\Gamma(z)G(z)$~\cite{dlmfG}.
 For the moment allow $\alpha>0$ to vary, and define
 \begin{align}
  \kappa&=\frac{\pi^2}{12}-\frac{\gamma^2}{2}-\gamma_1,
-       \label{eq:kappa}\\
+       \label{ctp:eq:kappa}\\
  \Psi_\alpha(\theta)
  &=\frac\alpha{12}+\frac\kappa\alpha+
  \frac1\alpha\sum_{\ell\in\Z\setminus\{0\}}
  \Gamma\!\left(\frac{2\pi\ii\ell}{\alpha}\right)
  \zeta\!\left(1+\frac{2\pi\ii\ell}{\alpha}\right)
- \e^{2\pi\ii\ell\theta}.\label{eq:phase-fourier}
+ \e^{2\pi\ii\ell\theta}.\label{ctp:eq:phase-fourier}
 \end{align}
 Here $\gamma$ is Euler's constant and $\gamma_1$ is the first Stieltjes
 constant, with convention
@@ -198,7 +232,7 @@ The Fourier series and all of its derivatives converge absolutely.
 Conjugate terms pair to make $\Psi_\alpha$ real.
 A prime denotes differentiation with respect to $\theta$; a partial
 $\alpha$-derivative holds $\theta$ fixed. The correction is
-\begin{equation}\label{eq:D}
+\begin{equation}\label{ctp:eq:D}
 \boxed{\displaystyle
  D_\alpha(\theta)=\frac16-\frac1{2\alpha}
  -\frac32\partial_\alpha\Psi_\alpha(\theta)
@@ -208,7 +242,7 @@ $\alpha$-derivative holds $\theta$ fixed. The correction is
 Only after taking the partial derivative do we set $\alpha=\log4$.
 
 Define the large real size coordinate
-\begin{equation}\label{eq:mu}
+\begin{equation}\label{ctp:eq:mu}
  n=\frac{4^{\mu(n)}}{\sqrt{\pi\mu(n)}},\qquad
  \mu(n)=-\frac1{2\alpha}W_{-1}\!\left(-\frac{2\alpha}{\pi n^2}\right).
 \end{equation}
@@ -216,27 +250,27 @@ The negative real branch $W_{-1}$ is intended. For sufficiently large $n$
 this is the unique large solution and $\mu(n)\sim(\log n)/\alpha$.
 
 \begin{theorem}[Explicit expansion, including the first correction]
-\label{thm:explicit}
-For the sequence \eqref{eq:catalan}, as $n\to\infty$ through integers,
+\label{ctp:thm:explicit}
+For the sequence \eqref{ctp:eq:catalan}, as $n\to\infty$ through integers,
 \begin{align}
  \log p(n)={}&\frac\alpha2\mu^2-A\mu+\eta\log\mu+C+
  \Psi_\alpha(\mu)+\frac{D_\alpha(\mu)}\mu+O(\mu^{-2}).
- \label{eq:main-log}
+ \label{ctp:eq:main-log}
 \end{align}
 Equivalently,
-\begin{equation}\label{eq:main-multiplicative}
+\begin{equation}\label{ctp:eq:main-multiplicative}
  p(n)=\e^{C+\Psi_\alpha(\mu)}\mu^\eta
  \e^{\alpha\mu^2/2-A\mu}
  \left(1+\frac{D_\alpha(\mu)}\mu+O(\mu^{-2})\right).
 \end{equation}
 For every fixed $J\geq0$ there are smooth, one-periodic functions
 $L_1,\ldots,L_J$, with $L_1=D_\alpha$, such that
-\begin{equation}\label{eq:all-orders-explicit}
+\begin{equation}\label{ctp:eq:all-orders-explicit}
  \log p(n)=\frac\alpha2\mu^2-A\mu+\eta\log\mu+C+
  \Psi_\alpha(\mu)+\sum_{j=1}^J\frac{L_j(\mu)}{\mu^j}
  +O_J(\mu^{-J-1}).
 \end{equation}
-Sections~\ref{sec:saddle}--\ref{sec:explicit-proof} prove this statement and
+Sections~\ref{ctp:sec:saddle}--\ref{ctp:sec:explicit-proof} prove this statement and
 give a finite coefficient-construction procedure at each order.
 \end{theorem}
 
@@ -244,7 +278,7 @@ The phrase ``all orders'' here means a remainder theorem for every fixed
 truncation order. It does not assert convergence of the resulting infinite
 inverse-power series, nor does it resolve exponentially smaller sectors.
 
-\begin{corollary}[An unavoidable periodic factor]\label{cor:oscillation}
+\begin{corollary}[An unavoidable periodic factor]\label[corollary]{ctp:cor:oscillation}
 There is no constant $B$ for which
 \[
  p(n)\sim B\mu(n)^\eta\e^{\alpha\mu(n)^2/2-A\mu(n)}.
@@ -259,12 +293,12 @@ an interval with distinct endpoints.
 \begin{proof}
 The gamma function has no zeros, and $\zeta(1+\ii t)\ne0$ for real
 $t\ne0$~\cite{dlmfzeros}; hence the first Fourier coefficient in
-\eqref{eq:phase-fourier} is nonzero. Thus $\Psi_\alpha$ is nonconstant.
+\eqref{ctp:eq:phase-fourier} is nonzero. Thus $\Psi_\alpha$ is nonconstant.
 For any fixed phase $\theta$, round
 $4^{j+\theta}/\sqrt{\pi(j+\theta)}$ to the nearest integer $n_j$.
-Implicit differentiation of \eqref{eq:mu} shows
+Implicit differentiation of \eqref{ctp:eq:mu} shows
 $\mu(n_j)=j+\theta+o(1)$. Every phase therefore occurs as a subsequential
-limit. Apply \eqref{eq:main-multiplicative} and continuity of $\Psi_\alpha$.
+limit. Apply \eqref{ctp:eq:main-multiplicative} and continuity of $\Psi_\alpha$.
 \end{proof}
 
 The first Fourier harmonic has amplitude approximately
@@ -273,9 +307,9 @@ Its mean is approximately $0.64116608028709$. These are reproducible
 floating-point evaluations, not interval-certified bounds.
 
 \begin{corollary}[The first three logarithmic growth terms]
-\label{cor:logs}
+\label[corollary]{ctp:cor:logs}
 With $X=\log n$,
-\begin{equation}\label{eq:three-logs}
+\begin{equation}\label{ctp:eq:three-logs}
  \log p(n)=\frac{X^2}{2\alpha}+\frac{X\log X}{2\alpha}
  +\left(\frac{\log(\pi/\alpha)-1}{2\alpha}-\frac32\right)X
  +O\bigl((\log X)^2\bigr).
@@ -288,7 +322,7 @@ $X=\alpha\mu-\tfrac12\log\mu-\tfrac12\log\pi$. Hence
  \alpha\mu=X+\tfrac12\log X+\tfrac12\log(\pi/\alpha)
  +O((\log X)/X).
 \]
-Substitute this into \eqref{eq:main-log} and collect terms of orders
+Substitute this into \eqref{ctp:eq:main-log} and collect terms of orders
 $X^2$, $X\log X$, and $X$.
 \end{proof}
 The positive sign of $X\log X$ is a concrete effect of the factor
@@ -297,25 +331,25 @@ that information.
 
 \subsection{The inverse threshold}
 For real $y>1$ define the integer staircase
-\begin{equation}\label{eq:threshold}
+\begin{equation}\label{ctp:eq:threshold}
  N(y)=\min\{n\geq0:p(n)\geq y\}.
 \end{equation}
 Put
-\begin{equation}\label{eq:R-s}
+\begin{equation}\label{ctp:eq:R-s}
  Y=\log y,\qquad R=\sqrt{2\alpha Y},\qquad s=R/\alpha.
 \end{equation}
 
-\begin{theorem}[Inverse growth and its first correction]\label{thm:inverse}
+\begin{theorem}[Inverse growth and its first correction]\label{ctp:thm:inverse}
 As $y\to\infty$,
 \begin{align}
  \log N(y)={}&R+A-\frac12\log s-\frac12\log\pi\notag\\
  &+\frac{\frac12(A^2-A)-\alpha\eta\log s
  -\alpha\{C+\Psi_\alpha(s+A/\alpha)\}}{R}
  +O\!\left(\frac{(\log R)^2}{R^2}\right).
- \label{eq:inverse}
+ \label{ctp:eq:inverse}
 \end{align}
 In particular,
-\begin{equation}\label{eq:inverse-leading}
+\begin{equation}\label{ctp:eq:inverse-leading}
  N(y)\sim
  8\sqrt{\frac{e\alpha}{\pi}}\,
  \frac{\exp\!\left(\sqrt{2\alpha\log y}\right)}
@@ -323,16 +357,16 @@ In particular,
 \end{equation}
 The inverse has an expansion to arbitrary fixed order in $R^{-1}$,
 with coefficients polynomial in $\log R$ and smooth periodic functions of
-$s+A/\alpha$. Section~\ref{sec:inverse-proof} proves the passage from a
+$s+A/\alpha$. Section~\ref{ctp:sec:inverse-proof} proves the passage from a
 smooth asymptotic inverse to the integer threshold.
 \end{theorem}
 
 \section{An all-orders coefficient saddle estimate}
-\label{sec:saddle}
+\label{ctp:sec:saddle}
 
 \subsection{Positive cumulants and the saddle}
 For $t>0$ write
-\begin{equation}\label{eq:H-K}
+\begin{equation}\label{ctp:eq:H-K}
  H(t)=\log F(\e^{-t}),\qquad
  K_j(t)=(-1)^jH^{(j)}(t)
  =\sum_{k\geq1}c_k^j\sum_{\ell\geq1}\ell^{j-1}\e^{-\ell t c_k}
@@ -342,26 +376,26 @@ Absolute convergence on each half-plane $\Rea t\geq t_0>0$ justifies
 termwise differentiation. Since $K_1'(t)=-K_2(t)<0$, $K_1$ decreases
 strictly from infinity to zero. Thus, for each $n>0$, there is a unique
 $t_n>0$ satisfying
-\begin{equation}\label{eq:saddle}
+\begin{equation}\label{ctp:eq:saddle}
  K_1(t_n)=n.
 \end{equation}
 The real logarithmic interpolation of the part sizes is
-\begin{equation}\label{eq:r}
+\begin{equation}\label{ctp:eq:r}
  r(x)=\alpha x-\tfrac12\log\pi+
  \log\Gamma(x+\tfrac12)-\log\Gamma(x+2),\qquad x\geq1.
 \end{equation}
 It obeys $r(k)=\log c_k$. Since $r'(1)=1/2$ and
 $r''(x)=\psi'(x+1/2)-\psi'(x+2)>0$, it is strictly increasing, with
 $r'(x)\to\alpha$. Define
-\begin{equation}\label{eq:m}
+\begin{equation}\label{ctp:eq:m}
  u_n=\log(1/t_n),\qquad m_n=r^{-1}(u_n).
 \end{equation}
 The parameters $m_n$ and $\mu(n)$ are not identical; their small difference
 is responsible for several cancellations in the explicit formula.
 
-\begin{lemma}[Size of the scaled cumulants]\label{lem:cumulants}
+\begin{lemma}[Size of the scaled cumulants]\label[lemma]{ctp:lem:cumulants}
 Let $t=\e^{-r(m)}$ and $m\to\infty$. For each fixed integer $j\geq1$,
-\begin{equation}\label{eq:B}
+\begin{equation}\label{ctp:eq:B}
  B_j(t):=t^jK_j(t)=(j-1)!\,m+O_j(1).
 \end{equation}
 In particular $nt_n\sim m_n$ and $m_n\sim(\log n)/\alpha$.
@@ -372,24 +406,24 @@ For $0<v\leq1$, $f_j(v)=(j-1)!+O_j(v)$, by the elementary Laurent
 expansion of the geometric sum and its derivatives. For $v\geq1$,
 $f_j(v)$ decays exponentially up to a fixed polynomial factor.
 The exact ratio
-\begin{equation}\label{eq:ratio}
+\begin{equation}\label{ctp:eq:ratio}
  \frac{c_{k+1}}{c_k}=\frac{2(2k+1)}{k+2}\in[2,4)
 \end{equation}
 implies $\sum_{tc_k\leq1}tc_k=O(1)$ and a bounded sum of the
 large-$v$ tails. There are exactly $\lfloor m\rfloor$ parts with
-$tc_k\leq1$. Summing $f_j(tc_k)$ proves \eqref{eq:B}.
+$tc_k\leq1$. Summing $f_j(tc_k)$ proves \eqref{ctp:eq:B}.
 At the saddle, $nt=B_1=m+O(1)$, and
 $\log n=r(m)+\log(m+O(1))=\alpha m+O(\log m)$.
 \end{proof}
 
-\begin{theorem}[All-orders saddle expansion]\label{thm:saddle}
+\begin{theorem}[All-orders saddle expansion]\label{ctp:thm:saddle}
 For every fixed $J\geq0$, with all cumulants evaluated at $t=t_n$,
-\begin{equation}\label{eq:saddle-expansion}
+\begin{equation}\label{ctp:eq:saddle-expansion}
  p(n)=\frac{\exp(H(t)+nt)}{\sqrt{2\pi K_2(t)}}
  \left(1+\sum_{j=1}^J E_j(t)+O_J(m_n^{-J-1})\right).
 \end{equation}
 The correction $E_j$ is the finite sum
-\begin{equation}\label{eq:Ej}
+\begin{equation}\label{ctp:eq:Ej}
  E_j=\sum_{\substack{k_3,\ldots,k_{2j+2}\geq0\\
                    \sum_{r=3}^{2j+2}(r-2)k_r=2j}}
  (-1)^{R/2}(R-1)!!
@@ -399,22 +433,22 @@ The correction $E_j$ is the finite sum
 \end{equation}
 Here $R$ is even, and $E_j=O_j(m_n^{-j})$. In particular,
 \begin{align}
- E_1={}&\frac{K_4}{8K_2^2}-\frac{5K_3^2}{24K_2^3},\label{eq:E1}\\
+ E_1={}&\frac{K_4}{8K_2^2}-\frac{5K_3^2}{24K_2^3},\label{ctp:eq:E1}\\
  E_2={}&-\frac{K_6}{48K_2^3}+\frac{7K_3K_5}{48K_2^4}
  +\frac{35K_4^2}{384K_2^4}-\frac{35K_3^2K_4}{64K_2^5}
- +\frac{385K_3^4}{1152K_2^6}.\label{eq:E2}
+ +\frac{385K_3^4}{1152K_2^6}.\label{ctp:eq:E2}
 \end{align}
 \end{theorem}
 
 \subsection{The noncentral arcs: why the coefficient estimate is valid}
 The Cauchy coefficient integral is
-\begin{equation}\label{eq:cauchy}
+\begin{equation}\label{ctp:eq:cauchy}
  p(n)=\frac{\e^{H(t)+nt}}{2\pi}
  \int_{-\pi}^{\pi}
  \exp\{H(t-\ii\theta)-H(t)-\ii n\theta\}\dd\theta.
 \end{equation}
 Its normalized absolute value satisfies the exact identity
-\begin{equation}\label{eq:modulus}
+\begin{equation}\label{ctp:eq:modulus}
  \left|\frac{F(\e^{-t+\ii\theta})}{F(\e^{-t})}\right|
  =\prod_{k\geq1}
  \left(1+\frac{4\e^{-tc_k}\sin^2(c_k\theta/2)}
@@ -428,7 +462,7 @@ held fixed as $m\to\infty$.
 For $|\theta|\leq tm^B$, use every part with $c_k\leq1/(tm^B)$.
 There are $m-O(\log m)$ such parts. For them,
 $|c_k\theta|\leq1$, and elementary sine and exponential estimates give
-\begin{equation}\label{eq:central-tail-bound}
+\begin{equation}\label{ctp:eq:central-tail-bound}
  \left|\frac{F(\e^{-t+\ii\theta})}{F(\e^{-t})}\right|
  \leq\left(1+c(\theta/t)^2\right)^{-c'm}
 \end{equation}
@@ -439,9 +473,9 @@ $tm^B$, it gives $O(tm^B\e^{-c''m})$.
 Both are smaller than $(t/\sqrt m)m^{-L}$ for every fixed $L$.
 
 Next, for $tm^B\leq|\theta|\leq\delta$, select the first $K$ factors and
-choose $\delta c_K\leq1$. Each selected factor in \eqref{eq:modulus} is
+choose $\delta c_K\leq1$. Each selected factor in \eqref{ctp:eq:modulus} is
 at most $C_Kt/|\theta|$. Hence
-\begin{equation}\label{eq:middle-bound}
+\begin{equation}\label{ctp:eq:middle-bound}
  \int_{tm^B\leq|\theta|\leq\delta}
  \left|\frac{F(\e^{-t+\ii\theta})}{F(\e^{-t})}\right|\dd\theta
  =O_K\left(t\,m^{-B(K-1)}\right).
@@ -455,7 +489,7 @@ $\sin(5\theta/2)$ do not vanish simultaneously on this compact set:
 a simultaneous zero would require $\theta\in2\pi\Z$ because
 $\gcd(2,5)=1$. Therefore at least one of the part-$2$ and part-$5$
 factors is uniformly $O_\delta(t)$. Thus
-\begin{equation}\label{eq:outer-bound}
+\begin{equation}\label{ctp:eq:outer-bound}
  \int_{\delta\leq|\theta|\leq\pi}
  \left|\frac{F(\e^{-t+\ii\theta})}{F(\e^{-t})}\right|\dd\theta
  =O_\delta(t^2).
@@ -464,29 +498,29 @@ Since $t=\exp(-\alpha m+O(\log m))$, this is again negligible to every
 inverse power of $m$ relative to $t/\sqrt m$.
 
 These estimates eliminate possible competing root-of-unity arcs at the
-precision claimed in \cref{thm:saddle}. They do not assert that all those
+precision claimed in \cref{ctp:thm:saddle}. They do not assert that all those
 arcs vanish, or identify their exponentially smaller contributions.
 
 \subsection{The central expansion and its remainder}
-At the saddle the linear term in \eqref{eq:cauchy} cancels. With
+At the saddle the linear term in \eqref{ctp:eq:cauchy} cancels. With
 $v=\theta\sqrt{K_2}$, the exponent becomes
-\begin{equation}\label{eq:central-exponent}
+\begin{equation}\label{ctp:eq:central-exponent}
  -\frac{v^2}{2}+
  \sum_{r\geq3}\frac{\ii^rK_r}{r!K_2^{r/2}}v^r.
 \end{equation}
-For each fixed $r$, \cref{lem:cumulants} gives
+For each fixed $r$, \cref{ctp:lem:cumulants} gives
 $K_r/K_2^{r/2}=O_r(m^{-(r-2)/2})$. The central interval
 $|\theta|\leq t\log m/\sqrt m$ corresponds to $|v|\leq C\log m$.
 Taylor estimates for $H(t-\ii\theta)$ follow directly from its absolutely
 convergent sums: the absolute value of a derivative along this vertical
 segment is bounded by the corresponding positive derivative sum at $t$.
 
-Expand the exponential in \eqref{eq:central-exponent}, assigning weight
+Expand the exponential in \eqref{ctp:eq:central-exponent}, assigning weight
 $r-2$ to the term of degree $r$. Retain total weight through $2J+1$.
 The integrated terms of odd weight vanish because their total degree in
 $v$ is odd. The weight-$2j$ terms have Gaussian integral
 $(-1)^{R/2}(R-1)!!$ after division by $\sqrt{2\pi}$, giving
-\eqref{eq:Ej}.
+\eqref{ctp:eq:Ej}.
 
 For completeness, the remainder estimate does not require retaining a
 power of $\log m$. On $|v|\leq C\log m$, the absolute correction to the
@@ -499,16 +533,16 @@ weight $2J+1$ is bounded by
 for a fixed integer $M_J$, after including the Gaussian factor and
 increasing the Taylor order of $H$ to $2J+4$ if necessary. Its integral is
 $O_J(m^{-J-1})$. The omitted Gaussian tails are superpolynomially small.
-Combining this with \eqref{eq:central-tail-bound}--\eqref{eq:outer-bound}
-proves \cref{thm:saddle}.
+Combining this with \eqref{ctp:eq:central-tail-bound}--\eqref{ctp:eq:outer-bound}
+proves \cref{ctp:thm:saddle}.
 
 The leading values of the correction polynomials are useful checks:
-\begin{equation}\label{eq:E-universal}
+\begin{equation}\label{ctp:eq:E-universal}
  E_1=-\frac1{12m}+O(m^{-2}),\qquad
  E_2=\frac1{288m^2}+O(m^{-3}),\qquad
  E_3=\frac{139}{51840m^3}+O(m^{-4}).
 \end{equation}
-They follow by substituting $B_r\sim(r-1)!m$ in \eqref{eq:Ej}.
+They follow by substituting $B_r\sim(r-1)!m$ in \eqref{ctp:eq:Ej}.
 At a finite $m$, using the exact cumulants is preferable to replacing each
 $E_j$ by only its first universal term.
 
@@ -523,11 +557,11 @@ claimed to be necessary. In particular, the proof as stated should not be
 applied unchanged to pure powers of two, whose tail has a nontrivial gcd.
 
 \section{The Catalan product and its moving periodic phase}
-\label{sec:phase}
+\label{ctp:sec:phase}
 
 \subsection{The logarithm of a Catalan number and the Barnes product}
-The standard gamma quotient in \eqref{eq:r} gives the complete expansion
-\begin{equation}\label{eq:r-asymptotic}
+The standard gamma quotient in \eqref{ctp:eq:r} gives the complete expansion
+\begin{equation}\label{ctp:eq:r-asymptotic}
  r(x)=\alpha x-\beta\log x+c+\sum_{j\geq1}b_jx^{-j},
  \quad
  \beta=\frac32,\quad c=-\frac12\log\pi,
@@ -535,7 +569,7 @@ The standard gamma quotient in \eqref{eq:r} gives the complete expansion
 \end{equation}
 The meaning is asymptotic, to every fixed order with differentiated
 remainders. A convenient exact coefficient formula is
-\begin{equation}\label{eq:bj}
+\begin{equation}\label{ctp:eq:bj}
  b_j=\frac{(-1)^{j+1}}{j(j+1)}
  \bigl(B_{j+1}(1/2)-B_{j+1}(2)\bigr),
 \end{equation}
@@ -546,7 +580,7 @@ source for every subsequent step.
 
 For an integer $M\geq0$, put $S(M)=\sum_{k=1}^Mr(k)$. Repeated use of
 $G(z+1)=\Gamma(z)G(z)$ gives the exact identity
-\begin{equation}\label{eq:S-exact}
+\begin{equation}\label{ctp:eq:S-exact}
  S(M)=\frac\alpha2M(M+1)-\frac M2\log\pi+
  \log G(M+3/2)-\log G(M+3)-\log G(3/2).
 \end{equation}
@@ -557,16 +591,16 @@ by the exact identity to fix the constant, yields
  \left(\frac\alpha2-\frac12\log\pi+\frac32\right)M
  -\frac{15}{8}\log M+K \notag\\
  &-\frac{19}{16M}+\frac{65}{128M^2}+O(M^{-3}),
- \label{eq:S-asymptotic}\\
- K={}&-\frac34\log(2\pi)-\log G(3/2).\label{eq:K}
+ \label{ctp:eq:S-asymptotic}\\
+ K={}&-\frac34\log(2\pi)-\log G(3/2).\label{ctp:eq:K}
 \end{align}
 Subtracting the expansion at $M-1$ from the expansion at $M$ recovers
-\eqref{eq:r-asymptotic}; this is a useful local check, but the Barnes
+\eqref{ctp:eq:r-asymptotic}; this is a useful local check, but the Barnes
 identity is what determines the constant $K$.
 
 \subsection{Separating the bulk from a localized lattice sum}
 Let
-\begin{equation}\label{eq:g}
+\begin{equation}\label{ctp:eq:g}
  g(v)=-\log(1-\e^{-\e^v})-(-v)_+,
  \qquad (-v)_+=\max\{-v,0\}.
 \end{equation}
@@ -576,11 +610,11 @@ in its first derivative at zero. This mild kink will cancel against the
 fractional-part polynomial.
 
 For $m\geq1$, let $M=\lfloor m\rfloor$ and $\theta=m-M$. Define
-\begin{equation}\label{eq:Hm}
+\begin{equation}\label{ctp:eq:Hm}
  \HH(m)=H(\e^{-r(m)}).
 \end{equation}
 Then the following identity is exact:
-\begin{equation}\label{eq:exact-decomposition}
+\begin{equation}\label{ctp:eq:exact-decomposition}
  \HH(m)=Mr(m)-S(M)+\sum_{k\geq1}g(r(k)-r(m)).
 \end{equation}
 Indeed, the subtracted linear part $(-v)_+$ contributes $r(m)-r(k)$
@@ -588,7 +622,7 @@ precisely for $k\leq M$. If $m$ is an integer, the boundary term is zero,
 so no convention ambiguity occurs.
 
 Replacing $r(m+d)-r(m)$ by $\alpha d$ in the localized sum suggests
-\begin{equation}\label{eq:phase-lattice}
+\begin{equation}\label{ctp:eq:phase-lattice}
  \Psi_\alpha(\theta)=\frac\alpha2\theta(1-\theta)
        +\sum_{j\in\Z}g(\alpha(j-\theta)),\qquad 0\leq\theta\leq1.
 \end{equation}
@@ -596,9 +630,9 @@ The sum converges absolutely, exponentially fast on the left and faster
 on the right. The polynomial is forced by expansion of $Mr(m)-S(M)$;
 it is not an adjustable normalization.
 
-\begin{lemma}[Fourier representation of the phase]\label{lem:Fourier}
-The lattice formula \eqref{eq:phase-lattice} equals
-\eqref{eq:phase-fourier}. In particular it extends to a smooth,
+\begin{lemma}[Fourier representation of the phase]\label[lemma]{ctp:lem:Fourier}
+The lattice formula \eqref{ctp:eq:phase-lattice} equals
+\eqref{ctp:eq:phase-fourier}. In particular it extends to a smooth,
 nonconstant one-periodic function, and termwise derivatives of its Fourier
 series of every fixed order are legitimate.
 \end{lemma}
@@ -625,24 +659,37 @@ and unfolding the lattice gives
 The coefficient of $\alpha\theta(1-\theta)/2$ is
 $-\alpha/(4\pi^2\ell^2)$, which cancels the contribution of
 $-1/(\alpha s_\ell^2)$. Its mean is $\alpha/12$.
-This proves \eqref{eq:phase-fourier}.
+This proves \eqref{ctp:eq:phase-fourier}.
 The gamma factor has exponential decay on the vertical axis; the zeta
 factor and its fixed-order derivatives have at most polynomial growth
 there, as follows for example from Euler--Maclaurin continuation.
 Hence every differentiated Fourier series converges absolutely.
-Nonconstancy was proved in \cref{cor:oscillation}.
+Nonconstancy was proved in \cref{ctp:cor:oscillation}.
 \end{proof}
 
+\writenote{The same Mellin kernel and the same constant occur elsewhere
+in ProveIt, for a different product. The Fabius-tree compilation
+\emph{Geometric Uniform Convolutions and New Frontiers}
+\cite{fabiusH}, in its section ``Mellin analysis and the hidden
+log-periodic phase'', treats the Laplace product
+$H_q(z)=\prod_{k\ge0}(1-\e^{-zq^k})/(zq^k)$, with kernel
+$g(x)=\log\bigl((1-\e^{-x})/x\bigr)$, Mellin transform
+$-\Gamma(1+s)\zeta(1+s)/s=-\Gamma(s)\zeta(1+s)$, and constant
+$c_1=\pi^2/12-\gamma^2/2-\gamma_1$, which is the $\kappa$ of
+\eqref{ctp:eq:kappa}. Neither text proves the other's theorem: the
+products, the lattices and the normalizations differ, and the
+coincidence is the de Bruijn--Mahler mechanism common to both.}
+
 \subsection{The first two bulk orders, with a uniform remainder}
-\begin{theorem}[Moving-lattice expansion]\label{thm:H}
+\begin{theorem}[Moving-lattice expansion]\label{ctp:thm:H}
 Uniformly in the fractional part of $m$, as $m\to\infty$,
 \begin{align}
  \HH(m)={}&\frac\alpha2m^2-
  \left(\frac32+\frac\alpha2\right)m+
  \frac{15}{8}\log m-\frac98-K+\Psi_\alpha(m)
- +\frac{P_1(m)}m+O(m^{-2}),\label{eq:H-expansion}\\
+ +\frac{P_1(m)}m+O(m^{-2}),\label{ctp:eq:H-expansion}\\
  P_1(\theta)={}&\frac{27}{16}-\frac32\partial_\alpha\Psi_\alpha(\theta).
- \label{eq:P1}
+ \label{ctp:eq:P1}
 \end{align}
 There is a complete extension with $\sum_{j=1}^J P_j(m)m^{-j}$ and
 remainder $O_J(m^{-J-1})$. The $P_j$ are smooth and one-periodic. The
@@ -650,7 +697,7 @@ expansion may be differentiated any fixed number of times if sufficiently
 many terms are retained.
 \end{theorem}
 \begin{proof}
-In \eqref{eq:exact-decomposition}, put $d=k-m$. For a bounded $d$,
+In \eqref{ctp:eq:exact-decomposition}, put $d=k-m$. For a bounded $d$,
 \[
  r(m+d)-r(m)=\alpha d-\frac{\beta d}{m}+O((1+|d|)^2m^{-2}).
 \]
@@ -664,15 +711,15 @@ One-sided values at $d=0$ cause no difficulty because the multiplier $d$
 vanishes. The missing terms with $k\leq0$ in the infinite lattice are
 exponentially small.
 
-Expansion of the exact bulk term using \eqref{eq:r-asymptotic} and
-\eqref{eq:S-asymptotic} gives
+Expansion of the exact bulk term using \eqref{ctp:eq:r-asymptotic} and
+\eqref{ctp:eq:S-asymptotic} gives
 \begin{align*}
  Mr(m)-S(M)={}&\frac\alpha2m^2-(\beta+\alpha/2)m+
  (\beta/2-b_1)\log m+b_1-K\\
  &+\frac\alpha2\theta(1-\theta)
  +\frac{27/16-(\beta/2)\theta(1-\theta)}m+O(m^{-2}).
 \end{align*}
-Combining this with the localized sum gives \eqref{eq:H-expansion}, since
+Combining this with the localized sum gives \eqref{ctp:eq:H-expansion}, since
 \[
  \partial_\alpha\Psi_\alpha(\theta)
  =\tfrac12\theta(1-\theta)
@@ -698,13 +745,13 @@ fixed-order derivatives across the endpoints of a period.
 \end{proof}
 
 \subsection{A constructive rule for every coefficient}
-\label{subsec:coefficient-rule}
+\label{ctp:subsec:coefficient-rule}
 The preceding proof can be made into a finite symbolic recipe. Write
-\begin{equation}\label{eq:Dj}
+\begin{equation}\label{ctp:eq:Dj}
  r(m+d)-r(m)=\alpha d+\sum_{j\geq1}D_j(d)m^{-j},
 \end{equation}
 where
-\begin{equation}\label{eq:Dj-formula}
+\begin{equation}\label{ctp:eq:Dj-formula}
  D_j(d)=\frac{\beta(-1)^jd^j}{j}
  +\sum_{h=1}^{j-1}b_h(-1)^{j-h}
        \binom{j-1}{h-1}d^{j-h}.
@@ -712,7 +759,7 @@ where
 For example, $D_1(d)=-\beta d$ and
 $D_2(d)=\beta d^2/2-b_1d$. The localized contribution to the coefficient
 of $m^{-j}$ is
-\begin{equation}\label{eq:Tj}
+\begin{equation}\label{ctp:eq:Tj}
  T_j(\theta)=\sum_{d\in\Z-\theta}\sum_{\ell=1}^{j}
  \frac{g^{(\ell)}(\alpha d)}{\ell!}
  \sum_{\substack{r_1+\cdots+r_\ell=j\\r_\nu\geq1}}
@@ -722,7 +769,7 @@ Each coefficient is thus an absolutely convergent lattice sum of explicit
 functions. At $d=0$, all $D_j(0)$ vanish, so arbitrary consistent one-sided
 values of the derivatives give the same term, namely zero.
 
-Expand $Mr(m)-S(M)$ with $M=m-\theta$, then add \eqref{eq:Tj}. This
+Expand $Mr(m)-S(M)$ with $M=m-\theta$, then add \eqref{ctp:eq:Tj}. This
 produces $P_j(\theta)$. Bernoulli polynomials supply the bulk coefficients;
 finite compositions of the $D_j$ supply the localized coefficients.
 This is an all-orders construction, not merely a claim that unspecified
@@ -730,65 +777,65 @@ coefficients exist. Fourier transformation can be used afterward to
 replace the localized sums by rapidly convergent Fourier series.
 
 \section{Deriving the explicit coefficient expansion}
-\label{sec:explicit-proof}
+\label{ctp:sec:explicit-proof}
 
 \subsection{The saddle coordinate and its correction}
 Let $t=\e^{-r(m)}$, and define
-\begin{equation}\label{eq:Q}
+\begin{equation}\label{ctp:eq:Q}
  Q(m)=tK_1(t)=\frac{\HH'(m)}{r'(m)}.
 \end{equation}
-Differentiation of \eqref{eq:H-expansion}, followed by series division,
+Differentiation of \eqref{ctp:eq:H-expansion}, followed by series division,
 gives
 \begin{align}
- Q(m)&=m+q_0(m)+\frac{q_1(m)}m+O(m^{-2}),\label{eq:Qexp}\\
+ Q(m)&=m+q_0(m)+\frac{q_1(m)}m+O(m^{-2}),\label{ctp:eq:Qexp}\\
  q_0&=-\frac12+\frac{\Psi_\alpha'}\alpha,
  &q_1&=\frac{P_1'}\alpha+\frac{\beta\Psi_\alpha'}{\alpha^2}.
- \label{eq:q01}
+ \label{ctp:eq:q01}
 \end{align}
 The phase functions on the right are evaluated at $m$.
 The scaled variance satisfies the exact identity
-\begin{equation}\label{eq:B2Q}
+\begin{equation}\label{ctp:eq:B2Q}
  B_2=t^2K_2=Q+\frac{Q'}{r'},
 \end{equation}
 so that
-\begin{equation}\label{eq:B2exp}
+\begin{equation}\label{ctp:eq:B2exp}
  B_2=m+q_0+\frac{1+q_0'}\alpha+O(m^{-1}).
 \end{equation}
 More generally, the recurrence
-\begin{equation}\label{eq:B-recursion}
+\begin{equation}\label{ctp:eq:B-recursion}
  B_{j+1}=jB_j+\frac{B_j'}{r'}
 \end{equation}
 generates every scaled cumulant from $Q$. This is useful both for the
 proof and for the all-orders construction.
 
 At the saddle, $n=\e^{r(m)}Q(m)$. Consequently
-\begin{equation}\label{eq:logn-m}
+\begin{equation}\label{ctp:eq:logn-m}
  \log n=\alpha m-\frac12\log m+c+
  \frac{b_1+q_0(m)}m+
  \frac{b_2+q_1(m)-q_0(m)^2/2}{m^2}+O(m^{-3}).
 \end{equation}
-The core coordinate \eqref{eq:mu} removes precisely the first three
+The core coordinate \eqref{ctp:eq:mu} removes precisely the first three
 terms. Write
-\begin{equation}\label{eq:m-reversion}
+\begin{equation}\label{ctp:eq:m-reversion}
  m=\mu+\frac{a(\mu)}\mu+\frac{b(\mu)}{\mu^2}+O(\mu^{-3}).
 \end{equation}
-Taylor substitution into \eqref{eq:logn-m} gives the explicit functions
+Taylor substitution into \eqref{ctp:eq:logn-m} gives the explicit functions
 \begin{align}
- a&=-\frac{b_1+q_0}{\alpha},\label{eq:a}\\
+ a&=-\frac{b_1+q_0}{\alpha},\label{ctp:eq:a}\\
  b&=\frac{(1/2-q_0')a-(b_2+q_1-q_0^2/2)}\alpha.
- \label{eq:b}
+ \label{ctp:eq:b}
 \end{align}
 All functions here are evaluated at $\mu$.
-The residual derivative in \eqref{eq:logn-m} is $\alpha+O(1/m)$,
+The residual derivative in \eqref{ctp:eq:logn-m} is $\alpha+O(1/m)$,
 which is bounded away from zero. Thus the formal coefficient comparison
 also gives the asserted analytic error by the mean value theorem.
 Repeating the argument proves an all-orders reversion with smooth periodic
 coefficients.
 
 \subsection{The normalization and the first correction}
-Taking logarithms of \eqref{eq:saddle-expansion}, using
-\eqref{eq:E-universal}, and writing $K_2=\e^{2r(m)}B_2$ gives
-\begin{equation}\label{eq:logp-saddle}
+Taking logarithms of \eqref{ctp:eq:saddle-expansion}, using
+\eqref{ctp:eq:E-universal}, and writing $K_2=\e^{2r(m)}B_2$ gives
+\begin{equation}\label{ctp:eq:logp-saddle}
  \log p(n)=\HH(m)+Q(m)-r(m)-\frac12\log(2\pi B_2(m))
  -\frac1{12m}+O(m^{-2}).
 \end{equation}
@@ -796,10 +843,10 @@ Let $d=b_1+q_0$. Substituting the preceding expansions into this equation
 first produces the expression in the \emph{true} saddle coordinate:
 \begin{align}
  \log p(n)={}&\frac\alpha2m^2-Am+\eta\log m+C+
- \Psi_\alpha(m)+d(m)+\frac{U(m)}m+O(m^{-2}),\label{eq:logp-m}\\
+ \Psi_\alpha(m)+d(m)+\frac{U(m)}m+O(m^{-2}),\label{ctp:eq:logp-m}\\
  U={}&P_1+q_1-b_1-\frac{q_0}{2}
  -\frac{1+q_0'}{2\alpha}-\frac1{12}.
- \label{eq:U}
+ \label{ctp:eq:U}
 \end{align}
 The constant simplifies because
 \[
@@ -807,32 +854,32 @@ The constant simplifies because
  =\tfrac14\log2+\tfrac34\log\pi+\log G(3/2)=C.
 \]
 
-Now substitute \eqref{eq:m-reversion}. At order one,
+Now substitute \eqref{ctp:eq:m-reversion}. At order one,
 $\alpha a+d=0$, so the apparently additional phase derivative in $d$
 \emph{cancels}. At order $1/\mu$, the coefficient is
-\begin{equation}\label{eq:D-unsimplified}
+\begin{equation}\label{ctp:eq:D-unsimplified}
  \alpha b+(-A+\Psi_\alpha'+q_0')a+U.
 \end{equation}
-Using \eqref{eq:a}--\eqref{eq:b}, this simplifies first to
+Using \eqref{ctp:eq:a}--\eqref{ctp:eq:b}, this simplifies first to
 \[
  P_1-\frac7{12}-\frac1{2\alpha}
  +(1/2-b_1)q_0-\frac12q_0^2-\frac{q_0'}{2\alpha},
 \]
-and then, with $b_1=-9/8$ and \eqref{eq:P1}, exactly to
-\eqref{eq:D}. In particular the $P_1'$ terms disappear. This explicit
+and then, with $b_1=-9/8$ and \eqref{ctp:eq:P1}, exactly to
+\eqref{ctp:eq:D}. In particular the $P_1'$ terms disappear. This explicit
 cancellation is one reason to distinguish $m$ and $\mu$ throughout.
-Equations~\eqref{eq:main-log} and \eqref{eq:main-multiplicative} follow.
+Equations~\eqref{ctp:eq:main-log} and \eqref{ctp:eq:main-multiplicative} follow.
 
 \subsection{Completion of the all-orders proof}
 For a fixed requested order $J$, use the following finite operations.
-First compute sufficiently many $b_j$ from \eqref{eq:bj}, bulk coefficients
-from \eqref{eq:S-exact}, and $P_j$ from \eqref{eq:Tj}. Next form $Q$ and
-$B_2,B_3,\ldots$ by \eqref{eq:Q} and \eqref{eq:B-recursion}. Substitute
-these in the finite Gaussian polynomials \eqref{eq:Ej} and take the
+First compute sufficiently many $b_j$ from \eqref{ctp:eq:bj}, bulk coefficients
+from \eqref{ctp:eq:S-exact}, and $P_j$ from \eqref{ctp:eq:Tj}. Next form $Q$ and
+$B_2,B_3,\ldots$ by \eqref{ctp:eq:Q} and \eqref{ctp:eq:B-recursion}. Substitute
+these in the finite Gaussian polynomials \eqref{ctp:eq:Ej} and take the
 logarithm of the saddle prefactor and correction. Finally revert
-\eqref{eq:logn-m} about $\mu$ and substitute.
+\eqref{ctp:eq:logn-m} about $\mu$ and substitute.
 
-The derivative-controlled estimates in \cref{thm:H} justify each finite
+The derivative-controlled estimates in \cref{ctp:thm:H} justify each finite
 calculus operation. The saddle theorem supplies the coefficient-extraction
 remainder. The reversion has derivative bounded away from zero, so it
 preserves the desired error once one extra order has been retained before
@@ -841,14 +888,14 @@ addition, multiplication, differentiation, and division by series with
 nonzero constant term in an algebra of smooth periodic functions. Thus
 no new unbounded coefficient, such as $\log\mu$, is generated beyond the
 single displayed $\eta\log\mu$. This proves
-\eqref{eq:all-orders-explicit} and completes \cref{thm:explicit}.
+\eqref{ctp:eq:all-orders-explicit} and completes \cref{ctp:thm:explicit}.
 
 A safe implementation rule is to retain two orders more than the final
 requested order during the $m$-to-$\mu$ substitution. This is a bookkeeping
 rule, not a new analytic assumption.
 
 \section{Inverse growth and the integer staircase}
-\label{sec:inverse-proof}
+\label{ctp:sec:inverse-proof}
 
 \subsection{Reversion of the quadratic logarithmic core}
 Start with $Y=\log y$ and $s=\sqrt{2Y/\alpha}$. The leading quadratic
@@ -857,14 +904,14 @@ term suggests $\mu=s+A/\alpha+o(1)$. Set
  \mu=s+\frac A\alpha+\frac{v(s)}s+
  O\!\left(\frac{(\log s)^2}{s^2}\right).
 \]
-Substitution into \eqref{eq:main-log}, at constant order after the
+Substitution into \eqref{ctp:eq:main-log}, at constant order after the
 quadratic and linear terms cancel, yields
-\begin{equation}\label{eq:v-inverse}
+\begin{equation}\label{ctp:eq:v-inverse}
  v(s)=\frac{A^2}{2\alpha^2}
  -\frac{\eta\log s+C+\Psi_\alpha(s+A/\alpha)}\alpha.
 \end{equation}
 Since $\log n=\alpha\mu-\tfrac12\log\mu-\tfrac12\log\pi$,
-\eqref{eq:inverse} follows by Taylor expansion. The term
+\eqref{ctp:eq:inverse} follows by Taylor expansion. The term
 $D_\alpha(\mu)/\mu$ in $\log p$ first affects the next inverse order,
 not the displayed $1/R$ correction.
 
@@ -882,12 +929,12 @@ $p(n)-p(n-1)$ counts partitions of $n$ without a unit part.
 Every integer $n\geq4$ is a nonnegative combination of $2$ and $5$:
 even $n$ use only $2$, and odd $n\geq5$ use one $5$ and then $2$.
 Therefore $p(n)>p(n-1)$ for all $n\geq4$, and the threshold
-\eqref{eq:threshold} is unambiguous for large $y$.
+\eqref{ctp:eq:threshold} is unambiguous for large $y$.
 
 Let $f_J(x)$ denote the smooth right side of
-\eqref{eq:all-orders-explicit}, with $n$ replaced by a large positive real
+\eqref{ctp:eq:all-orders-explicit}, with $n$ replaced by a large positive real
 $x$. Its derivative with respect to $X=\log x$ satisfies
-\begin{equation}\label{eq:inverse-slope}
+\begin{equation}\label{ctp:eq:inverse-slope}
  \frac{\dd}{\dd X}f_J(\e^X)=\mu(\e^X)+O(1)>0.
 \end{equation}
 The asymptotic theorem says, at integers,
@@ -895,7 +942,7 @@ $\log p(n)=f_J(n)+O(\mu(n)^{-J-1})$ with a uniform constant.
 If $f_J(x)=Y$, a change of $O(\mu^{-J-2})$ in $\log x$ moves $f_J(x)$
 by the entire coefficient error. Bracketing the corresponding real
 arguments by neighboring integers therefore gives
-\begin{equation}\label{eq:inverse-transport}
+\begin{equation}\label{ctp:eq:inverse-transport}
  \log N(y)-\log x
  =O(\mu(x)^{-J-2})+O(x^{-1}),
 \end{equation}
@@ -907,8 +954,8 @@ smaller than every fixed inverse power of $R$. The first term is the
 analytic truncation uncertainty and is much larger at a fixed order.
 Accordingly, the theorem gives an asymptotic formula for the threshold,
 not an exact integer reconstruction algorithm for every $y$.
-Equations~\eqref{eq:v-inverse} and \eqref{eq:inverse-transport} prove
-\cref{thm:inverse}.
+Equations~\eqref{ctp:eq:v-inverse} and \eqref{ctp:eq:inverse-transport} prove
+\cref{ctp:thm:inverse}.
 
 \subsection{A practical caution}
 The expansion parameter is approximately $1/\log n$, not $1/n$.
@@ -917,21 +964,21 @@ $11.36$. The leading inverse equivalent can therefore have a large
 finite-argument error. The first correction helps substantially, but a
 numerical application at moderate size should use the implicit saddle
 formula and invert it numerically, preferably with a certified remainder
-if an integer decision is required. Section~\ref{sec:computation} reports
+if an integer decision is required. Section~\ref{ctp:sec:computation} reports
 actual errors rather than presenting an asymptotic equivalent as a
 uniformly accurate approximation.
 
 \section{The largest Catalan part in a random partition}
-\label{sec:largest}
+\label{ctp:sec:largest}
 Choose uniformly among the $p(n)$ partitions of $n$. Let $J_n$ be the
 largest index $k$ for which a part of size $c_k$ occurs. For $n>0$ this
 is well-defined. It is natural to center $J_n$ at the saddle cutoff, not
 at $\log_4 n$ alone.
 
-\begin{theorem}[A phase-dependent largest-index law]\label{thm:largest}
+\begin{theorem}[A phase-dependent largest-index law]\label{ctp:thm:largest}
 Let $m=m_n$ be the true saddle coordinate, $M=\lfloor m\rfloor$, and
 $\theta_n=m-M$. For every fixed integer $h$,
-\begin{equation}\label{eq:largest-law}
+\begin{equation}\label{ctp:eq:largest-law}
  \PP(J_n\leq M+h)=
  \prod_{j=h+1}^{\infty}\left(1-\exp\{-4^{j-\theta_n}\}\right)
  +O_h(m_n^{-1}).
@@ -939,7 +986,7 @@ $\theta_n=m-M$. For every fixed integer $h$,
 In particular, along any subsequence with $\theta_n\to\theta\in[0,1)$,
 $J_n-M$ converges in distribution to the integer-valued law with cumulative
 probabilities
-\begin{equation}\label{eq:largest-cdf}
+\begin{equation}\label{ctp:eq:largest-cdf}
  G_h(\theta)=\prod_{j=h+1}^{\infty}(1-\e^{-4^{j-\theta}}).
 \end{equation}
 The estimates are for fixed $h$; a growing-$h$ or moment theorem is not
@@ -965,7 +1012,7 @@ $k=M+j$ and use
 \]
 which is bounded away from zero for each fixed starting $j=h+1$ and
 then grows geometrically. The corresponding sums of the functions
-$f_r$ from \cref{lem:cumulants} are bounded. Thus the removed mean is
+$f_r$ from \cref{ctp:lem:cumulants} are bounded. Thus the removed mean is
 $O_h(1/t)$, whereas the full standard deviation is $\asymp\sqrt m/t$.
 
 Apply the same coefficient saddle argument to the prefix product. Its
@@ -976,7 +1023,7 @@ evaluated at $t$ by $O_h(1/m)$. The variance ratio is $1+O_h(1/m)$,
 and the two first saddle correction factors are also $1+O_h(1/m)$.
 The arc estimates remain uniform because the prefix still contains
 $m-O_h(1)$ active parts and all the fixed small factors used in
-Section~\ref{sec:saddle}. Consequently,
+Section~\ref{ctp:sec:saddle}. Consequently,
 \[
  \frac{[z^n]\prod_{k\leq K}(1-z^{c_k})^{-1}}{p(n)}
  =\e^{-H_\mathrm{tail}(t)}\bigl(1+O_h(m^{-1})\bigr)
@@ -995,7 +1042,7 @@ tail factors have a summable, superexponentially decaying majorant
 throughout this range. The range $j-\theta_n>m/2$ contributes a
 superexponentially small tail, and the finitely many negative indices
 are controlled separately. Thus summation replaces the tail product
-by \eqref{eq:largest-cdf} with error $O_h(m^{-1})$. This proves \eqref{eq:largest-law}.
+by \eqref{ctp:eq:largest-cdf} with error $O_h(m^{-1})$. This proves \eqref{ctp:eq:largest-law}.
 For each phase, $G_h\to1$ as $h\to+\infty$ and $G_h\to0$ as
 $h\to-\infty$, so it is the cumulative distribution of a proper
 integer-valued law. Pointwise convergence at the integer cutoffs gives
@@ -1003,21 +1050,21 @@ the distributional assertion.
 \end{proof}
 
 The local scale $4^{j-\theta}$ in this law is the same scale that produces
-the Fourier amplitude in \eqref{eq:phase-fourier}. Both results describe
+the Fourier amplitude in \eqref{ctp:eq:phase-fourier}. Both results describe
 the bounded-width transition between parts that are typically available
 in many copies and parts that are rarely used. The phase is not noise:
 it records where the continuous cutoff falls between two consecutive
 Catalan indices.
 
 \section{A universality statement for polynomially perturbed geometric parts}
-\label{sec:universality}
+\label{ctp:sec:universality}
 The preceding method separates universal local behavior from sequence-specific
 normalization. The following proposition makes that separation precise.
 
 \begin{proposition}[General exponential--polynomial part growth]
-\label{prop:general}
+\label[proposition]{ctp:prop:general}
 Suppose an increasing integer part sequence $a_k$ satisfies the sufficient
-saddle hypotheses at the end of Section~\ref{sec:saddle}. Suppose its logarithm
+saddle hypotheses at the end of Section~\ref{ctp:sec:saddle}. Suppose its logarithm
 has a smooth eventual interpolation with a termwise differentiable expansion
 \[
  r(k)=\alpha k-\beta\log k+c+b_1/k+b_2/k^2+\cdots,\qquad\alpha>0.
@@ -1035,11 +1082,11 @@ the large solution of $n=\e^c\e^{\alpha\mu}\mu^{1-\beta}$. Then
  (1-\beta-3\alpha/2)\mu+
  (3\beta/2-b_1-1/2)\log\mu\notag\\
  &-K_{\aset}-c-\frac12\log(2\pi)+\Psi_\alpha(\mu)+O(\mu^{-1}).
- \label{eq:general}
+ \label{ctp:eq:general}
 \end{align}
 There is an all-orders extension with smooth periodic inverse-power
 coefficients. The function $\Psi_\alpha$ is exactly
-\eqref{eq:phase-fourier}; it depends on $\alpha$, not on $\beta$ or the
+\eqref{ctp:eq:phase-fourier}; it depends on $\alpha$, not on $\beta$ or the
 finite initial segment.
 \end{proposition}
 \begin{proof}
@@ -1060,7 +1107,7 @@ Reversion about $\mu$ again gives
 $m=\mu-(b_1+q_0)/(\alpha\mu)+O(\mu^{-2})$.
 In the logarithm of the saddle estimate, the constant $b_1+q_0$ cancels
 against the quadratic-core displacement just as before. The remaining
-linear, logarithmic, and constant terms are exactly \eqref{eq:general}.
+linear, logarithmic, and constant terms are exactly \eqref{ctp:eq:general}.
 The proof of every higher order is the same finite construction with the
 assumed coefficients $b_j$ in place of their Catalan values.
 \end{proof}
@@ -1072,7 +1119,7 @@ whole initial sequence contributes to $K_{\aset}$. The local periodic
 shape, on the other hand, is determined by the limiting logarithmic gap.
 
 \section{Computation, independent checks, and reproducibility}
-\label{sec:computation}
+\label{ctp:sec:computation}
 
 \subsection{What the supplied programs do}
 The package contains an exact integer dynamic program for $p(0),\ldots,p(N)$,
@@ -1088,7 +1135,7 @@ Exact dynamic programming starts with $p(0)=1$ and $p(n)=0$ for $n>0$.
 For each allowed part $c\leq N$, in increasing order, replace
 $p(n)$ by $p(n)+p(n-c)$ for $n=c,c+1,\ldots,N$. The ascending update
 allows repeated copies of $c$. An independent recurrence is
-\begin{equation}\label{eq:exact-recursion}
+\begin{equation}\label{ctp:eq:exact-recursion}
  np(n)=\sum_{j=1}^n b(j)p(n-j),\qquad
  b(j)=\sum_{c_k\mid j}c_k,
 \end{equation}
@@ -1103,7 +1150,7 @@ identity was checked at $M=0,\ldots,20$. Fourier and real-lattice formulas
 for both $\Psi_\alpha$ and its partial $\alpha$-derivative were compared at
 10 phases; their maximum recorded discrepancy was less than
 $4.8\cdot10^{-59}$. Rational Gaussian algebra gives the first three
-constants in \eqref{eq:E-universal} exactly.
+constants in \eqref{ctp:eq:E-universal} exactly.
 
 These statements describe what was actually executed. Decimal output and
 finite tail cutoffs are not rigorous interval enclosures, and the tests do
@@ -1111,14 +1158,14 @@ not prove the asymptotic estimates. A separate symbolic audit verifies the
 normalization and first-correction cancellation using exact algebra.
 
 \subsection{Coefficient accuracy}
-Let $P_0$ denote the saddle prefactor in \eqref{eq:saddle-expansion},
+Let $P_0$ denote the saddle prefactor in \eqref{ctp:eq:saddle-expansion},
 $P_1=P_0(1+E_1)$, and $P_2=P_0(1+E_1+E_2)$ in this subsection only.
 The table reports signed relative error, $P_j/p(n)-1$.
 
 \begin{table}[htbp]
 \centering
 \caption{Exact-cumulant saddle approximations. Errors are not assumed to be monotone.}
-\label{tab:saddle}
+\label{ctp:tab:saddle}
 \begin{tabular}{rrrrr}
 \toprule
 $n$ & $m_n$ & $P_0$ error & $P_1$ error & $P_2$ error\\
@@ -1142,13 +1189,13 @@ For reference, some exact values from the computation are
 \end{align*}
 The explicit $\mu$ formula is more transparent but converges more slowly
 at these arguments. Exponentiating the right side of
-\eqref{eq:main-log} without, and with, $D_\alpha/\mu$ gives the following
+\eqref{ctp:eq:main-log} without, and with, $D_\alpha/\mu$ gives the following
 signed relative errors.
 
 \begin{table}[htbp]
 \centering
 \caption{Explicit periodic formulas at moderate arguments.}
-\label{tab:explicit}
+\label{ctp:tab:explicit}
 \begin{tabular}{rrr}
 \toprule
 $n$ & Through the periodic constant term & Including $D_\alpha/\mu$\\
@@ -1164,7 +1211,7 @@ $10^6$ & $-0.032146$ & $-0.010559$\\
 
 As a check independent of coefficient extraction, substitute
 $m=10.2,30.2,100.2,300.2$ directly into the exact product logarithm and
-subtract \eqref{eq:H-expansion} through $P_1/m$. The residual multiplied
+subtract \eqref{ctp:eq:H-expansion} through $P_1/m$. The residual multiplied
 by $m^2$ is respectively about
 $-0.1474,-0.2747,-0.3078,-0.3166$. This is consistent with the next
 periodic coefficient at the fixed phase $0.2$. It is not used to infer
@@ -1177,10 +1224,10 @@ This permits an unambiguous inverse test.
 \begin{table}[htbp]
 \centering
 \caption{Signed relative error of the inverse approximations at $y=p(n)$.}
-\label{tab:inverse}
+\label{ctp:tab:inverse}
 \begin{tabular}{rrr}
 \toprule
-$n$ & Leading equivalent \eqref{eq:inverse-leading} & Corrected formula \eqref{eq:inverse}\\
+$n$ & Leading equivalent \eqref{ctp:eq:inverse-leading} & Corrected formula \eqref{ctp:eq:inverse}\\
 \midrule
 $10^3$ & $2.042368$ & $0.133978$\\
 $10^4$ & $1.548609$ & $0.071730$\\
@@ -1196,11 +1243,11 @@ better in this test, but is not a certified integer inversion rule.
 
 At $n=10^6$ we have $M=11$ and $\theta_n\approx0.35639211$.
 Prefix dynamic programs give exact numerators for the event in
-\cref{thm:largest}. The comparison is
+\cref{ctp:thm:largest}. The comparison is
 \begin{table}[htbp]
 \centering
 \caption{Largest-index probabilities at $n=10^6$.}
-\label{tab:largest}
+\label{ctp:tab:largest}
 \begin{tabular}{rrrr}
 \toprule
 $h$ & Cutoff $M+h$ & Exact probability & $G_h(\theta_n)$\\
@@ -1219,7 +1266,7 @@ only a bounded number of indices occupy the transition region.
 \subsection{Numerical safeguards and build instructions}
 The cumulant implementation works with the scaled quantities $B_j=t^jK_j$
 to avoid unnecessary overflow. It evaluates $1-\e^{-y}$ using
-\texttt{-expm1(-y)} near zero. The geometric sums in \eqref{eq:H-K} are
+\texttt{-expm1(-y)} near zero. The geometric sums in \eqref{ctp:eq:H-K} are
 computed as rational functions using Eulerian polynomials, rather than
 by summing a slowly convergent inner series.
 
@@ -1246,8 +1293,23 @@ constants, and additional Gaussian coefficients. The code performs no
 network access. The bibliography and source-audit notes record the external
 provenance separately.
 
+\writenote{In the collection these commands must not be run inside the
+report directory. \texttt{code/verify.py} writes by default to the
+\texttt{data/} directory beside \texttt{code/}, that is to the shipped
+data, unless \texttt{--output} names another directory;
+\texttt{code/symbolic\_audit.py} always writes
+\texttt{../data/symbolic\_audit.json} relative to its own location and
+has no option; and \texttt{code/build.sh} changes into \texttt{code/},
+where there is no \texttt{article.tex}, so it fails as shipped. Rerun
+on a copy of the report directory (the collection README gives the
+commands). At intake both scripts were rerun on such a copy: the three
+CSV files were byte-identical to the delivery,
+\texttt{a033552\_0\_300.txt} and \texttt{symbolic\_audit.json} equal
+apart from Windows line ends, and \texttt{verification.json} equal
+apart from line ends and the recorded Python and platform strings.}
+
 \section{Further research questions and concrete next steps}
-\label{sec:future}
+\label{ctp:sec:future}
 The following directions are deliberately separated from the proved
 statements. Each would improve either the mathematical scope or the
 reliability of computation.
@@ -1263,7 +1325,7 @@ separates two neighboring integer thresholds. This is substantially
 stronger than a fixed-order asymptotic equivalent.
 
 \subsection{A symbolic compiler for periodic asymptotic coefficients}
-Implement \eqref{eq:Tj}, \eqref{eq:B-recursion}, \eqref{eq:Ej}, and the
+Implement \eqref{ctp:eq:Tj}, \eqref{ctp:eq:B-recursion}, \eqref{ctp:eq:Ej}, and the
 $m$-to-$\mu$ reversion in one coefficient algebra. A useful output would
 include $L_2,L_3,L_4$ in a normalized basis of phase derivatives, together
 with exact rational audits. The central design issue is to avoid treating
@@ -1283,7 +1345,7 @@ Poincar\'e expansion established here.
 For finitely many indices $M+j$, the unconditioned geometric variables
 suggest a phase-dependent local product limit. Prove a joint conditional
 limit with an explicit first correction, rather than only the tail-absence
-probability in \cref{thm:largest}. Extend the estimates uniformly in $h$
+probability in \cref{ctp:thm:largest}. Extend the estimates uniformly in $h$
 far enough to justify moment convergence and asymptotics for the expected
 largest index. Neither extension follows automatically from the fixed-$h$
 statement.
@@ -1297,7 +1359,7 @@ Gaussian approximation because the unit-part multiplicity can remain
 macroscopic on the scale $1/t$.
 
 \subsection{Fuss--Catalan and other gamma-quotient part sequences}
-Apply \cref{prop:general} to integer part sequences with a gamma-quotient
+Apply \cref{ctp:prop:general} to integer part sequences with a gamma-quotient
 asymptotic, after checking the initial-part gcd condition and removing
 any duplicated values. Calculate the normalization constant by Barnes
 or multiple-gamma products when possible. The proposition predicts a
@@ -1331,7 +1393,7 @@ The dominant size coordinate is not simply $\log_4 n$: the Catalan
 polynomial factor shifts the saddle and changes both the logarithmic
 power and the inverse growth. Keeping that shift, the exact Barnes
 constant, the local lattice correction, and the Gaussian coefficient
-corrections in one calculation yields \eqref{eq:main-log} and its inverse.
+corrections in one calculation yields \eqref{ctp:eq:main-log} and its inverse.
 
 The main analytic issues have explicit proofs: noncentral coefficient
 arcs are negligible to every fixed inverse-logarithmic order; local
@@ -1344,8 +1406,9 @@ coefficients, secondary exponential sectors, wider statistics, and a
 systematic formalization.
 
 \appendix
+\crefalias{section}{appendix}% write (batch 73O1): references print "appendix"
 \section{A compact audit of the algebra}
-\label{app:audit}
+\label{ctp:app:audit}
 This appendix records the dependency chain for the constants most likely
 to be affected by an indexing or sign error.
 
@@ -1377,14 +1440,14 @@ The cancellation producing $D_\alpha$ is the identity
  +\frac{17}{8\alpha}\Psi_\alpha'
  -\frac{(\Psi_\alpha')^2+\Psi_\alpha''}{2\alpha^2},
 \end{align*}
-with $a,b,q_0,q_1$ as in \eqref{eq:q01} and
-\eqref{eq:a}--\eqref{eq:b}. The supplied symbolic audit treats the phase
+with $a,b,q_0,q_1$ as in \eqref{ctp:eq:q01} and
+\eqref{ctp:eq:a}--\eqref{ctp:eq:b}. The supplied symbolic audit treats the phase
 and its derivatives as independent symbols and verifies this rational
 identity exactly. This check isolates coefficient algebra from the
 separate analytic justification of the asymptotic operations.
 
 \section{Provenance and scope of the search}
-\label{app:provenance}
+\label{ctp:app:provenance}
 The external check was performed on October 1, 2026. It included the OEIS
 entry and linked survey, searches for \texttt{A033552 asymptotic} and
 \texttt{partitions into Catalan numbers asymptotic}, the classical
@@ -1400,6 +1463,63 @@ term. Accordingly the main theorems are stated on their mathematical
 content, and the article does not claim a resolved named conjecture or
 verified historical priority. No repository file or OEIS entry was edited
 as part of this work.
+
+\section{Provenance of the collection edition}
+\label{ctp:app:edition}
+
+\writenote{This appendix was added in the write.}
+
+\paragraph{Source.} The report is built from one manuscript, number~39
+of batch~73O1 of ProveIt's incoming-reports intake: the archive
+\texttt{Catalan\_Partitions\_Research.zip} (17~files, a 21-page PDF),
+which arrived in commit \texttt{f8c3a392a} and was placed in the
+collection by commit \texttt{9df4ba51a}. Its pinned repository commit is
+\texttt{e6190a94552f119e9a2140e5fea8450a045a0837} (1~October~2026); the
+delivered \texttt{SOURCE\_NOTES.md} also names
+\texttt{1f1981f682b2878bde51a6ad40c22777f362fc05} and wrongly calls it a
+tree (see the note in \cref{ctp:sec:intro}). The title-page author line
+is kept as delivered; the delivered PDF metadata read ``Research report
+prepared with ChatGPT'', and the write replaced that field by the
+collection's ``AI-assisted research report prepared for Vladimir
+Reshetnikov''. The report is AI-assisted and unrefereed.
+
+\paragraph{What the write changed.} Every one of the 93 delivered labels
+received the prefix \texttt{ctp:}, and every reference was updated with
+it; this appendix adds one label. The write added the
+\texttt{[Write note]} paragraphs (after the principal-formula box, in
+\cref{ctp:sec:intro} twice, after the proof of \cref{ctp:lem:Fourier},
+in \cref{ctp:sec:computation} and here), the bibliography entries
+\cite{debruijn} and \cite{fabiusH}, the \verb|\writenote| macro, the PDF
+author field above, cleveref type hints (\verb|\label[lemma]|,
+\verb|\label[corollary]|, \verb|\label[proposition]|) on the five labels
+of lemmas, corollaries and propositions, and
+\verb|\crefalias{section}{appendix}| after \verb|\appendix|. These
+environments share the theorem counter, and the delivered PDF printed
+every reference to them as ``theorem''; only those printed names
+changed, no label name or number. No delivered sentence, statement,
+proof or table was changed or removed.
+
+\paragraph{Delivered names and shipped paths.} \texttt{article.tex},
+\texttt{README.md} (rewritten as the collection's report guide) and
+\texttt{SOURCE\_NOTES.md} are at the report root; \texttt{code/} keeps
+its three Python files, and \texttt{build.sh} moved there from the
+package root; \texttt{data/} keeps its seven files, and
+\texttt{requirements.txt} moved there from the package root. All but the
+article and the README are byte-identical to the delivery. Not shipped:
+the delivered \texttt{article.pdf} (replaced by a build of this
+edition) and the checksum ledger \texttt{SHA256SUMS.txt} (verified 16/16
+at intake, then retired). \texttt{data/build\_and\_quality\_checks.json}
+describes the delivered 21-page PDF.
+
+\paragraph{Relation to repository material.} No repository report or
+formal development treats A033552. The Mellin computation of
+\cref{ctp:lem:Fourier} reappears, for a different product, in the
+Fabius-tree compilation cited in the note after it \cite{fabiusH}. The
+batch's other partition reports, on square-root-restricted partitions
+(A097356) and on distinct-partition norms (A022629), study different
+products in different saddle regimes and share only the standard
+saddle, Edgeworth and Lambert-$W$ toolkit; no proposition is proved in
+two of them.
 
 \begin{thebibliography}{9}
 \bibitem{oeis}
@@ -1449,5 +1569,17 @@ mpmath documentation, including Euler--Maclaurin evaluation options.
 \url{https://mpmath.org/doc/1.1.0/functions/zeta.html}.
 The accompanying numerical run used mpmath 1.3.0; see the recorded
 version in \texttt{data/verification.json}.
+
+\bibitem{debruijn}
+[Added in the write.] N.~G. de Bruijn, ``On Mahler's partition
+problem,'' \emph{Indagationes Mathematicae} \textbf{10} (1948),
+210--220.
+
+\bibitem{fabiusH}
+[Added in the write.] ProveIt, Fabius-tree compilation
+\emph{Geometric Uniform Convolutions and New Frontiers},
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/frontier-compilations/Geometric_Uniform_Convolutions_and_New_Frontiers/fabius-frontier-report-H.tex},
+section ``Mellin analysis and the hidden log-periodic phase'' (Lemma
+``Mellin kernel'').
 \end{thebibliography}
 \end{document}

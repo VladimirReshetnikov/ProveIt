@@ -18,13 +18,13 @@
 \definecolor{accent}{HTML}{176B74}
 \definecolor{pale}{HTML}{EDF5F6}
 \hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
- pdftitle={A proof of the Apery Hankel growth conjecture},
+ pdftitle={A proof of the Apery Hankel growth conjecture, with Part II: sharp Szego asymptotics},
  pdfauthor={ChatGPT},pdfsubject={OEIS A228143; exact computations and elementary proofs}}
 \titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
 \titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small\color{ink}Ap\'ery Hankel determinants}
-\fancyhead[R]{\small\color{ink}Research note / 18 September 2026}
+\fancyhead[R]{\small\color{ink}Research note / 18 September 2026; Part II 1 October 2026}
 \fancyfoot[C]{\small\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \setlength{\parskip}{4pt}
@@ -43,12 +43,17 @@
 \newcommand{\N}{\mathbb N}
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\sourceinput}{\textbf{Known input.}}
+% Part II (batch 73O1, manuscript 41) macros.
+\newcommand{\Lam}{\Lambda}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\mean}[1]{\left\langle#1\right\rangle}
+\setcounter{tocdepth}{1}
 \newtcolorbox{resultbox}{colback=pale,colframe=accent,boxrule=0.6pt,
  arc=1.5mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
 \title{\vspace{-1.3em}\color{ink}\textbf{A proof of the Ap\'ery Hankel\texorpdfstring{\\}{ }growth conjecture}\vspace{0.25em}\\
-\large OEIS A228143, linearly shifted determinants,\texorpdfstring{\\}{ }and a non-D-finite generating series}
+\large OEIS A228143, linearly shifted determinants,\texorpdfstring{\\}{ }and a non-D-finite generating series\texorpdfstring{\\[0.4em]}{; }\normalsize with Part II: sharp Szeg\H{o} asymptotics, the ratio constant $K$,\texorpdfstring{\\}{ }and monotone Hankel envelopes}
 \author{Research report prepared with ChatGPT}
-\date{18 September 2026}
+\date{Part I: 18 September 2026\quad Part II: 1 October 2026}
 
 \begin{document}
 \maketitle
@@ -68,6 +73,20 @@ formal ordinary generating series of $D_n$ is not D-finite. The package includes
 exact determinants through $n=200$, independent arithmetic checks, and runnable
 Python and C++/GMP code. The density representation is credited, not reproved;
 the subsequent determinant arguments are given in full.
+
+Part~II, added on 1 October 2026 (batch 73O1), answers the question Part~I
+leaves open: the normalized norms $h_n/\Lambda^{2n}=D_n/(D_{n-1}\Lambda^{2n})$
+converge, to $K=(\pi C/2)\exp\langle\log\varphi\rangle$, an arcsine average
+of Edgar's density ($K\approx0.633427435172$, a numerical evaluation). Hence
+$D_n/D_{n-1}\sim K\Lambda^{2n}$ and
+$\log D_n=n(n+1)\log\Lambda+(n+1)\log K+o(n)$. The proof lifts the density to
+the unit circle and uses a proved Szeg\H{o} minimum principle; it recovers
+Part~I's main theorem only as a corollary. Part~II also gives interleaved
+monotone Hankel envelopes $E_m\downarrow K$ computable in
+$\mathbb Q(\sqrt2)$, sharp constants for fixed polynomial modifications and
+fixed strides and shifts, a two-term inverse-index law, and a conditional
+transfer theorem whose hypothesis is not proved for the Ap\'ery density. The
+full multiplicative prefactor of $D_n$ remains open.
 \end{abstract}
 
 \begin{resultbox}
@@ -89,8 +108,17 @@ This is a proof of the precise assertion still labelled a conjecture in the
 accessed OEIS revision, not a claim that the result has no antecedent anywhere
 in the literature. The essential pre-existing analytic input is G.~A.~Edgar's
 work. This report has not been peer reviewed or formalized in a proof assistant.
+Both Parts are AI-assisted research notes; neither is peer reviewed or
+formalized.
 
 \newpage
+\tableofcontents
+\clearpage
+%% ====================================================================
+%% Part I: the original report of 18 September 2026 (labels bare).
+%% ====================================================================
+\phantomsection\part*{Part I.\quad A proof of the Ap\'ery Hankel growth conjecture}
+\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A proof of the Ap\'ery Hankel growth conjecture}
 \section{The selected problem and the stronger result}
 The Ap\'ery numbers, OEIS A005259, are
 \begin{equation}\label{eq:apery}
@@ -298,6 +326,12 @@ which proves \eqref{eq:ratiomain}.
 The proof does not assert that $h_n/\Lambda^{2n}$ converges. It proves this
 sequence is bounded above and bounded away from zero. Nor does
 \eqref{eq:logmain} give a full multiplicative asymptotic equivalent for $D_n$.
+[Added 1 October 2026, batch~73O1: Part~II proves that $h_n/\Lambda^{2n}$
+converges, to the constant $K\approx0.6334$ of \eqref{szego:eq:arcsine}
+(Theorem~\ref{szego:thm:main}), so $D_n/D_{n-1}\sim K\Lambda^{2n}$ and
+$\log D_n=n(n+1)\log\Lambda+(n+1)\log K+o(n)$. A full multiplicative
+equivalent for $D_n$ is still not established: Part~II determines the
+prefactor only conditionally (Theorem~\ref{szego:thm:transfer}).]
 \end{remark}
 
 \section{An explicit law for linearly shifted determinants}
@@ -668,6 +702,14 @@ positive proof.
 The analysis does not evaluate the best lower-envelope constant $\eta$,
 determine a limit for $h_n/\Lambda^{2n}$, or give a full multiplicative
 asymptotic equivalent such as $D_n\sim K\Lambda^{n^2}B^n n^\gamma$.
+[Added 1 October 2026, batch~73O1: Part~II determines the limit of
+$h_n/\Lambda^{2n}$ and the linear term of $\log D_n$
+(Theorem~\ref{szego:thm:main}); in the notation of this sentence it gives
+$B=\Lambda K$ with $K$ of \eqref{szego:eq:arcsine}, up to a factor
+$e^{o(n)}$. The multiplicative constant, the exponent $\gamma$ (and a
+possible power of $\log n$) remain open, and $\eta$ is not evaluated there
+either; see Remark~\ref{szego:rem:partI} and
+Section~\ref{szego:sec:questions}.]
 None of the other arithmetic assertions on A228143 is being claimed here as
 a newly solved problem. The literature check establishes the status of the
 specific accessed entry, not worldwide priority for every consequence of
@@ -678,8 +720,1126 @@ determinant asymptotics while treating the interior singular point and the
 logarithmic endpoint accurately. The elementary comparisons already settle
 the leading growth questions; finer constants require additional arguments,
 not extrapolation from the data.
+[Added 1 October 2026, batch~73O1: Part~II carries out the first step of this
+continuation, the normalized norms and the linear term, with the
+logarithmic endpoint and the interior singular point handled through the
+Szeg\H{o} condition (Lemma~\ref{szego:lem:szegocond}). The finer prefactor
+and the oscillation caused by the interior singular point remain open
+(Section~\ref{szego:sec:questions}).]
+
+%% ====================================================================
+%% Batch-73O1 addition (manuscript 41, "Sharp Szego asymptotics for
+%% Apery Hankel determinants", 1 October 2026). Every label of Part II
+%% carries the prefix szego: ; Part I keeps its bare labels unchanged.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Sharp Szeg\H{o} asymptotics for Ap\'ery Hankel determinants}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Sharp Szeg\H{o} asymptotics for Ap\'ery Hankel determinants}
+
+\noindent{\large\color{ink}Ratio limits, monotone Hankel envelopes, polynomial
+modifications, and inverse growth}\par\smallskip
+\noindent Research report prepared for the ProveIt project (with ChatGPT),
+dated 1 October 2026; added to this report on 1 October 2026 in batch~73O1
+of ProveIt's incoming-report intake.\par\medskip
+
+\noindent\emph{Sections~1--8 and Appendix~A form the
+original report (Part~I) of 18 September 2026, unchanged except for dated
+notes pointing to this addition, a front matter that now announces both
+Parts, and the place of Appendix~A, which now follows Part~II together with
+Part~II's own appendices. Part~II was written against Part~I as printed above (repository commit
+\texttt{bc4d1fa2b}). It answers the question Part~I left open in the remark
+after its proof of Theorem~\ref{thm:main} and in its Section~8: the normalized
+norms $h_n/\Lambda^{2n}$ converge, and their limit is an explicit integral
+constant~$K$. Section~\ref{szego:sec:provenance} records the provenance and
+fixes the notation of the addition.}
+
+\paragraph{Summary (the manuscript's abstract).}
+Let $A_k=\sum_{j=0}^k\binom{k}{j}^2\binom{k+j}{j}^2$ and
+$D_n=\det(A_{i+j})_{0\leq i,j\leq n}$, the sequence OEIS A228143.
+Part~I proves its quadratic logarithmic growth.
+Part~II identifies the next, linear term and establishes a genuine equivalent for
+$D_n/D_{n-1}$, with an explicit integral constant $K$.
+In the normalization used in the OEIS ratio plot, the limit is
+$\Lam K\approx5.379471608281$, where $\Lam=(17+12\sqrt2)/4$.
+It constructs an interleaved, nonincreasing sequence of finite Hankel expressions
+converging from above to $K$, and expresses the discrepancy of the original
+oscillating ratios by square-summable reflection coefficients.
+Further results give sharp equivalents for every fixed nonnegative polynomial
+modification, fixed strides and shifts, and a two-term inverse-index law.
+An independently proved conditional transfer theorem explains how finer
+reflection-coefficient expansions produce powers of $n$, powers of $\log n$,
+and a lattice correction in inverse asymptotics.
+The analytic input is Edgar's positive moment density; the Szeg\H{o} minimum
+principle and all subsequent reductions used here are proved explicitly.
+Finite exact checks and reproducible high-precision computations accompany
+the Part.
+
+\begin{resultbox}
+\textbf{The principal refinement.} Put $C=17+12\sqrt2$ and $\Lam=C/4$.
+For Edgar's density $\varphi$ on $[0,C]$, define
+\[
+ K=\frac{\pi C}{2}\exp\!\left\{
+ \frac1\pi\int_0^C\frac{\log\varphi(x)}{\sqrt{x(C-x)}}\dd x\right\}.
+\]
+Then $0<K<\infty$ and
+\[
+ \frac{D_n}{D_{n-1}}\sim K\Lam^{2n},\qquad
+ \log D_n=n(n+1)\log\Lam+(n+1)\log K+o(n).
+\]
+The integral gives numerically $K\approx0.633427435172$.
+The decimal is a numerical evaluation, not an interval-certified enclosure.
+\end{resultbox}
+
+\noindent\textbf{Scope and attribution.}
+This is a sharper continuation of the result of Part~I, not a new
+proof claimed for the already-established leading growth limit.
+The general Szeg\H{o} theory is classical. Absolute bibliographic priority for
+these Ap\'ery specializations is not established. The proofs are conventional
+mathematical proofs, not proof-assistant formalizations.
+
+\section{What Part I proved, and what changes}
+\label{szego:sec:target}
+Part~II uses the Ap\'ery numbers $A_k$ and the determinants $D_n$ of
+Part~I, \eqref{eq:apery} and \eqref{eq:det}, with the additional convention
+$D_{-1}=1$. The matrix in $D_n$ has order $n+1$, and the first determinants
+are $1,48,161856,39002646528,\ldots$, in agreement with OEIS A005259 and
+A228143 \cite{oeis-apery,oeis-hankel}.
+
+The OEIS entry accessed on 1 October 2026 still labels
+\[
+ D_n^{1/n^2}\longrightarrow\frac{(1+\sqrt2)^4}{4}
+\]
+as a conjecture. However, Part~I (\emph{A proof of the Ap\'ery Hankel growth
+conjecture}, 18 September 2026) already proves the stronger bound
+\eqref{eq:logmain}, $\log D_n=n(n+1)\log\Lam+O(n)$ with $\Lam=(17+12\sqrt2)/4$,
+through the two-sided estimate \eqref{eq:sandwich} of Theorem~\ref{thm:main}.
+It also handles linearly growing shifts at the leading $n^2$ scale
+(Theorem~\ref{thm:shift}). Re-proving \eqref{eq:logmain} would not constitute
+progress over Part~I.
+
+The present target is the sharper question suggested by the ratio plot
+linked from A228143 \cite{oeisplot}: does a normalized \emph{consecutive ratio}
+converge, and what is its limit? This question is distinct from a separately
+worded conjecture in an OEIS formula field. The plot visibly has oscillations;
+a numerical plateau alone does not identify the limit reliably. In Part~I's
+notation it is the question whether $h_n/\Lambda^{2n}$ converges, which
+Part~I explicitly left open.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.32\textwidth}}
+\toprule
+Quantity & Part I & Part II\\
+\midrule
+$\log D_n$ & Quadratic term, error $O(n)$ & Exact linear coefficient, error $o(n)$\\[3pt]
+$D_n/D_{n-1}$ & Its $2n$-th root converges & A genuine equivalent with constant $K$\\[3pt]
+Ratio fluctuations & Numerical oscillations & Exact monotone-envelope decomposition\\[3pt]
+Fixed modified moments & Leading growth in selected families & Sharp norm constants for polynomial factors, strides and shifts\\[3pt]
+Inverse growth & Not the target of Part I & Constant correction to the inverse index\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Source audit and limits on novelty claims}
+The comparison uses repository commit
+\texttt{bc4d1fa2b849b644461e3b8c597d77aa1c54b9fe} (the manuscript called it a
+``tree''; it is a commit) and the Ap\'ery growth article printed above as
+Part~I, whose source at that commit is the text of 18 September 2026.
+The OEIS entry, its linked plot,
+Edgar's moment-density paper \cite{edgar}, and the classical unit-circle
+orthogonal-polynomial literature \cite{simon} were checked on
+1 October 2026. Searches for Ap\'ery Hankel ratio asymptotics and an Ap\'ery
+Szeg\H{o} constant did not reveal this sharper formula in the material
+examined. This is a bounded literature check, not proof that no prior
+publication contains an equivalent result.
+
+The importance of the refinement is mathematical rather than rhetorical:
+an unknown $O(n)$ term allows an unknown exponential factor in $D_n$.
+The constant $K$ identifies that factor, determines a normalized generating
+function's radius, and fixes a constant shift in the inverse index.
+Part~II does not claim a new general Szeg\H{o} theorem or a field-changing
+breakthrough.
+
+\subsection{Provenance and conventions of Part II}
+\label{szego:sec:provenance}
+Part~II is built from one manuscript, number~41 of batch~73O1:
+\emph{Sharp Szeg\H{o} asymptotics for Ap\'ery Hankel determinants}
+(1 October 2026), delivered as \texttt{apery\_hankel\_research.zip} in
+arrival commit \texttt{bdf1a1a73} (an archive that shares its name, but not
+its content, with the archive that delivered Part~I) and placed in commit
+\texttt{9df4ba51a}; its pin is the commit \texttt{bc4d1fa2b} named above.
+Its programs, data and figures are shipped with the prefix \texttt{02-szego-};
+the README of this report lists them. The merge made the following choices.
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item The manuscript's restatement of Edgar's density input (its \S3, the
+local laws at $0$, $c$ and $C$) and of the definitions of $A_k$ and $D_n$ is
+not repeated: Part~II cites Part~I's Section~\ref{sec:density} instead, and the
+displays \eqref{eq:left}, \eqref{eq:right}, \eqref{eq:interior},
+\eqref{eq:apery}, \eqref{eq:det} and \eqref{eq:logmain} of Part~I stand for the
+manuscript's restated copies (whose labels are therefore not carried over).
+Every theorem, proposition, lemma, corollary, remark, proof, example, table,
+figure and question of the manuscript is printed.
+\item The manuscript's citation of Part~I as an external repository article
+is replaced by references to Part~I's numbered statements; its two OEIS
+references are merged with Part~I's bibliography entries, and its Edgar
+reference with Part~I's.
+\item Part~I's Theorem~\ref{thm:main} is recovered by the Szeg\H{o} route
+only as a corollary (Remark~\ref{szego:rem:partI}); it is not claimed as new.
+\item File names in the text are the shipped names; the delivered programs
+themselves still read and write their delivery names (see the README).
+\end{itemize}
+
+\paragraph{Notation.} Part~II keeps the manuscript's symbols except for the
+two renamings marked $\star$ in Table~\ref{szego:tab:notation}, made because
+Part~I already uses those letters for different objects. Where a letter is
+shared, the table prints the Part~I meaning beside the Part~II one.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols shared by the two Parts.}\label{szego:tab:notation}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.12\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}>{\raggedright\arraybackslash}p{.40\textwidth}}
+\toprule
+Symbol & Part I & Part II\\
+\midrule
+$C,c,\Lambda$ & \eqref{eq:constants} & the same\\
+$h_k$, $H_n^{(m,r)}$, $w_m$ & \eqref{eq:hk}, \eqref{eq:shiftdef}, \eqref{eq:pushforward} & the same objects ($h_n=h_n[1]$; $r$ fixed in Section~\ref{szego:sec:strides})\\
+$K$ & a generic constant in the proof of Theorem~\ref{thm:nonrecursive}; a placeholder in the shape $K\Lambda^{n^2}B^nn^\gamma$ of Section~8 & the Szeg\H{o} ratio constant \eqref{szego:eq:arcsine}, $K\approx0.6334$\\
+$\star\ \mathcal K_m$ & ($K_m$:) the upper constant $w_m\leq K_my^\beta$ in \eqref{eq:twoenvelopes} & the stride constant \eqref{szego:eq:pushdensity}; the manuscript writes $K_m$\\
+$\star\ \xi$ & ($\eta$:) the minorant constant of Lemma~\ref{lem:minorant} & the $\log\log$ exponent \eqref{szego:eq:chi_eta}; the manuscript writes $\eta$\\
+$L$ & a free interval length in Lemma~\ref{lem:legendre} and \eqref{eq:Jdef} & $L=\log\Lambda$, \eqref{szego:eq:constants}\\
+$B$, $B_m$ & a placeholder base in Section~8 & $B=L+\log K$ \eqref{szego:eq:B}; separately $B_m=C^m$ \eqref{szego:eq:pushdensity} ($B_m$ is \emph{not} $B$ at index $m$)\\
+$\Psi$ & $\Psi(\sigma)$ of \eqref{eq:Psi} & $\Psi_C(z)$, the exterior conformal map \eqref{szego:eq:conformal}\\
+$\alpha$ & $\alpha_\pm\in\{0,\frac12,1\}$, Frobenius exponents in \eqref{eq:interior} & $\alpha_j$, reflection coefficients \eqref{szego:eq:opuc}; the exponents are called $\beta_\pm$\\
+$F$ & the generating series $\sum D_nz^n$ (Theorem~\ref{thm:nonrecursive}) & the polygonal interpolation of $\log D_n$ (Section~\ref{szego:sec:inverse}); ${}_2F_1(\frac13,\frac23;1;z)$ in Appendix~\ref{szego:app:density}\\
+$\kappa$, $\eta$ & constants of \eqref{eq:kappa} and Lemma~\ref{lem:minorant} & not used\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent The bracket $\mean{f}_C$ of \eqref{szego:eq:arcsine} is an arcsine
+average, not an average against $\varphi(x)\dd x$; $C_0$ in
+Proposition~\ref{szego:prop:lattice} is a constant term, not $C$.
+
+\section{The sharp asymptotic theorem}
+Set
+\begin{equation}\label{szego:eq:constants}
+ C=17+12\sqrt2,\qquad c=C^{-1},\qquad
+ \Lam=C/4,\qquad L=\log\Lam.
+\end{equation}
+Let $\varphi$ be the positive moment density in Edgar's theorem, so
+$A_k=\int_0^C x^k\varphi(x)\dd x$.
+Write
+\begin{equation}\label{szego:eq:arcsine}
+ \mean{f}_C=\frac1\pi\int_0^C\frac{f(x)}{\sqrt{x(C-x)}}\dd x,
+ \qquad K=\frac{\pi C}{2}\exp\mean{\log\varphi}_C.
+\end{equation}
+The bracket is an average with respect to a probability measure, not an
+average with respect to $\varphi(x)\dd x$.
+
+\begin{theorem}[Sharp Ap\'ery ratio and logarithmic growth]\label{szego:thm:main}
+The integral in \eqref{szego:eq:arcsine} is absolutely convergent, and $0<K\leq2$.
+As $n\to\infty$,
+\begin{align}
+ \frac{D_n}{D_{n-1}}&=K\Lam^{2n}(1+o(1)),\label{szego:eq:sharpnorm}\\
+ \log D_n&=n(n+1)L+(n+1)\log K+o(n),\label{szego:eq:loggrowth}\\
+ \frac{D_{n+1}}{(1+1/\sqrt2)^{8n+4}D_n}&\longrightarrow\Lam K,\label{szego:eq:oeisratio}\\
+ \frac{D_{n+1}D_{n-1}}{D_n^2}&\longrightarrow\Lam^2.\label{szego:eq:curvature}
+\end{align}
+\end{theorem}
+The proof is completed in Sections~\ref{szego:sec:density}--\ref{szego:sec:envelopes}.
+No conjecture about the shape or monotonicity of the plotted ratios is used.
+
+\begin{remark}[A crucial distinction]
+Equation~\eqref{szego:eq:loggrowth} says
+\[
+ D_n=\Lam^{n(n+1)}K^{n+1}\exp(o(n)).
+\]
+It does \emph{not} say $D_n\sim\Lam^{n(n+1)}K^{n+1}$.
+Powers of $n$, powers of $\log n$, and a further multiplicative constant
+are all compatible with the theorem. A full all-orders expansion for
+$D_n$ is not asserted here.
+\end{remark}
+
+\begin{corollary}[Fixed windows and quadratic normalization]\label{szego:cor:windows}
+For each fixed integer $k\geq0$,
+\begin{equation}\label{szego:eq:window}
+ \frac{D_{n+k}}{D_n}\sim K^k\Lam^{2kn+k(k+1)}.
+\end{equation}
+For fixed nonnegative integers $r,s$,
+\begin{equation}\label{szego:eq:cross}
+ \frac{D_{n+r+s}D_n}{D_{n+r}D_{n+s}}\longrightarrow\Lam^{2rs}.
+\end{equation}
+The series
+\begin{equation}\label{szego:eq:qnormal}
+ \mathcal B(z)=\sum_{n\geq0}\frac{D_n}{\Lam^{n(n+1)}}z^n
+\end{equation}
+has radius of convergence $1/K$.
+\end{corollary}
+\begin{proof}
+Multiply the $k$ consecutive instances of \eqref{szego:eq:sharpnorm} to obtain
+\eqref{szego:eq:window}; the sum of their exponents is
+$2\sum_{j=1}^k(n+j)=2kn+k(k+1)$.
+Equation~\eqref{szego:eq:cross} follows by cancellation.
+For $b_n=D_n/\Lam^{n(n+1)}$, \eqref{szego:eq:sharpnorm} gives
+$b_n/b_{n-1}\to K$, hence $b_n^{1/n}\to K$ and the root test proves
+\eqref{szego:eq:qnormal}.
+\end{proof}
+
+\begin{remark}[The Szeg\H{o} route recovers Theorem~\ref{thm:main} of Part~I]\label{szego:rem:partI}
+Theorem~\ref{szego:thm:main} implies Part~I's Theorem~\ref{thm:main} except
+for its explicit sandwich: \eqref{szego:eq:loggrowth} gives
+\eqref{eq:logmain} and hence \eqref{eq:rootmain} and the A228143 limit
+\eqref{eq:conjecture}, and \eqref{szego:eq:sharpnorm} gives
+\eqref{eq:ratiomain}. This is a second route to a result that Part~I proved
+first, and it is printed as a corollary, not as a new result. The two routes
+differ. Part~I compares the density with the polynomial minorant of
+Lemma~\ref{lem:minorant} and with Legendre and Chebyshev norms, which yields
+the two-sided estimate \eqref{eq:sandwich} for every $n$, with an
+existential $\kappa$; Part~II passes to the circle and uses the Szeg\H{o}
+minimum principle (Theorem~\ref{szego:thm:minimum}), which yields the
+constant $K$ but no lower bound at finite $n$, and upper bounds only
+through the envelopes of Theorem~\ref{szego:thm:envelope}. The two are
+consistent: \eqref{eq:kappa} gives $h_n/\Lambda^{2n}\geq\kappa$ for every $n$,
+so every admissible $\kappa$ of Part~I satisfies $\kappa\leq K\approx0.6334$,
+and \eqref{eq:uppernorm} is compatible with $K\leq2$.
+\end{remark}
+
+\section{The moment density satisfies the Szeg\H{o} condition}
+\label{szego:sec:density}
+\textbf{Known analytic input.}
+The input is the one stated in Part~I's Section~\ref{sec:density}, from
+\cite[Theorem 1, Proposition 4, Propositions 25--26, Corollary 27]{edgar}:
+$\varphi$ is integrable and positive on $(0,c)\cup(c,C)$, represents the
+moments $A_k$ by \eqref{eq:moments}, has the endpoint laws \eqref{eq:left} at
+$0$ and \eqref{eq:right} at $C$, and at the interior singularity $c$ its
+one-sided local expansions are nonzero combinations of convergent Frobenius
+solutions beginning with powers $0,1/2,1$. (The manuscript restated these
+displays; they are not repeated here.)
+These facts are used as input; their Heun-function positivity proof is not
+repeated.
+
+\begin{lemma}\label{szego:lem:szegocond}
+One has
+\begin{equation}\label{szego:eq:szegocond}
+ \int_0^C\frac{\abs{\log\varphi(x)}}{\sqrt{x(C-x)}}\dd x<\infty.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Near zero, \eqref{eq:left} gives
+$\log\varphi(x)=\log\log(1/x)+O(1)$. This is integrable against $x^{-1/2}\dd x$,
+as is seen with $x=t^2$.
+Near $C$, \eqref{eq:right} gives
+$\log\varphi(x)=\tfrac12\log(C-x)+O(1)$, which is integrable against
+$(C-x)^{-1/2}\dd x$.
+
+On either side of $c$, select the first nonzero coefficient among the three
+Frobenius branches. Their leading powers are distinct, so cancellation
+cannot remove that first power. Positivity gives
+$\varphi(c\pm t)=a_\pm t^{\beta_\pm}(1+o(1))$ for some $a_\pm>0$ and
+$\beta_\pm\in\{0,1/2,1\}$ (this is \eqref{eq:interior} of Part~I, where the
+exponents are called $\alpha_\pm$). Thus the absolute logarithm is bounded by
+a constant times $1+\abs{\log t}$ there.
+Away from these three points the density is positive and analytic, so its
+logarithm is bounded on compact subintervals. Combining the bounds proves
+\eqref{szego:eq:szegocond}.
+\end{proof}
+
+\subsection{Hankel determinants as products of minimum norms}
+For a nonzero nonnegative polynomial $P$ on $[0,C]$, let
+\begin{align}
+ D_n[P]&=\det\!\left(\int_0^C x^{i+j}P(x)\varphi(x)\dd x\right)_{i,j=0}^n,
+ &D_{-1}[P]&=1,\label{szego:eq:weightedD}\\
+ h_n[P]&=\min_{\substack{p\in\R[x]\text{ monic}\\\deg p=n}}
+            \int_0^C p(x)^2P(x)\varphi(x)\dd x.\label{szego:eq:minnorm}
+\end{align}
+Write $h_n=h_n[1]$. Positivity on an interval makes the polynomial inner
+product positive definite. Its monic orthogonal polynomial $p_n[P]$ realizes
+the minimum: every other monic polynomial is $p_n[P]+q$, with $\deg q<n$,
+and orthogonality separates the squared norms.
+A unitriangular change of basis in the Gram determinant therefore gives
+\begin{equation}\label{szego:eq:gramproduct}
+ D_n[P]=\prod_{j=0}^n h_j[P],\qquad
+ h_n[P]=\frac{D_n[P]}{D_{n-1}[P]}.
+\end{equation}
+In particular, every determinant used below is positive.
+For $P=1$, $h_n[1]$ is Part~I's $h_n$ of \eqref{eq:hk} and
+\eqref{szego:eq:gramproduct} is Part~I's \eqref{eq:product}; the weighted
+version is the same argument.
+
+\section{A proof of the circle minimum principle}
+\label{szego:sec:circle}
+The method is classical Szeg\H{o} theory; see \cite{simon} for its broader
+setting. The precise minimum principle needed here has a short proof.
+It is included to make the normalization and hypotheses explicit.
+
+Let $W>0$ almost everywhere on the unit circle, with
+$\int W(\theta)\dd\theta/(2\pi)<\infty$ and
+$\int\abs{\log W(\theta)}\dd\theta<\infty$. Put
+\begin{equation}\label{szego:eq:prediction}
+ e_m=\min_{q(0)=1,\,\deg q\leq m}
+       \int_{-\pi}^{\pi}\abs{q(e^{i\theta})}^2W(\theta)\frac{\dd\theta}{2\pi},
+ \qquad G=\exp\!\int_{-\pi}^{\pi}\log W(\theta)\frac{\dd\theta}{2\pi}.
+\end{equation}
+Reversing coefficients shows that $e_m$ is also the minimum squared norm
+of a monic polynomial of degree $m$.
+
+\begin{theorem}[Szeg\H{o} minimum principle]\label{szego:thm:minimum}
+The numbers $e_m$ are nonincreasing and converge to $G>0$.
+\end{theorem}
+\begin{proof}
+The admissible spaces in \eqref{szego:eq:prediction} increase with $m$, proving
+monotonicity. For a polynomial $q$ with $q(0)=1$, Jensen's formula gives
+$\int\log\abs{q(e^{i\theta})}\dd\theta/(2\pi)\geq0$.
+The arithmetic--geometric mean inequality applied to $|q|^2W$ then gives
+$\norm{q}_W^2\geq G$. Hence $e_m\geq G$.
+
+For the converse, fix $\varepsilon>0$ and let $W_\varepsilon=W+\varepsilon$,
+$G_\varepsilon=\exp\int\log W_\varepsilon\dd\theta/(2\pi)$.
+Define the zero-free analytic function in the unit disk
+\[
+ D_\varepsilon(z)=\exp\!\left\{\frac1{4\pi}
+ \int_{-\pi}^{\pi}\frac{e^{i\theta}+z}{e^{i\theta}-z}
+                      \log W_\varepsilon(\theta)\dd\theta\right\}.
+\]
+The real part of the kernel is the Poisson kernel. Consequently
+$D_\varepsilon(0)=\sqrt{G_\varepsilon}$,
+$|D_\varepsilon(e^{i\theta})|^2=W_\varepsilon(\theta)$ almost everywhere,
+and $|D_\varepsilon(z)|\geq\sqrt\varepsilon$.
+The standard radial boundary assertion here follows from the Poisson
+boundary theorem and the Hardy-space outer-function construction.
+Equivalently, it can be obtained by first truncating $\log W_\varepsilon$
+and passing to its Poisson integrals.
+
+Thus
+$f(z)=D_\varepsilon(0)/D_\varepsilon(z)$ is bounded analytic, $f(0)=1$,
+and its boundary values satisfy
+\[
+ |f(e^{i\theta})|^2=G_\varepsilon/W_\varepsilon(\theta).
+\]
+For fixed $r<1$, the Taylor polynomials of $f(rz)$ converge uniformly on
+$|z|\leq1$ and have constant term one. They are admissible competitors.
+As $r\uparrow1$, boundedness of $f$ and integrability of $W$ permit dominated
+convergence, giving
+\[
+ \inf_m e_m\leq\int|f|^2W\frac{\dd\theta}{2\pi}
+ =G_\varepsilon\int\frac W{W+\varepsilon}\frac{\dd\theta}{2\pi}
+ \leq G_\varepsilon.
+\]
+Finally $\log(W+\varepsilon)\to\log W$ in integral as $\varepsilon\downarrow0$.
+For $0<\varepsilon\leq1$, the nonnegative difference is dominated by
+$\log(W+1)-\log W$, an integrable function. Hence
+$G_\varepsilon\to G$ and the upper bound follows.
+\end{proof}
+
+\subsection{Reflection coefficients and an exact product}
+Let $\Phi_m(z)$ be the monic orthogonal polynomial for $W$ and write
+$\Phi_m^*(z)=z^m\overline{\Phi_m(1/\bar z)}$.
+Assume from now on that $W$ is even, so all coefficients of $\Phi_m$ are real.
+Define $\alpha_m=-\Phi_{m+1}(0)$.
+
+\begin{lemma}\label{szego:lem:recurrence}
+For $m\geq0$,
+\begin{equation}\label{szego:eq:opuc}
+ \Phi_{m+1}=z\Phi_m-\alpha_m\Phi_m^*,\qquad
+ e_{m+1}=(1-\alpha_m^2)e_m,\qquad |\alpha_m|<1.
+\end{equation}
+If $\int W\dd\theta/(2\pi)=1$, then
+\begin{equation}\label{szego:eq:product}
+ e_m=\prod_{j=0}^{m-1}(1-\alpha_j^2),\quad
+ G=\prod_{j=0}^{\infty}(1-\alpha_j^2),\quad
+ \sum_{j=0}^{\infty}\alpha_j^2<\infty.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Both $\Phi_{m+1}$ and $z\Phi_m$ are orthogonal to
+$z,z^2,\ldots,z^m$. Their difference has degree at most $m$ and therefore
+is a scalar multiple of $\Phi_m^*$, the one-dimensional orthogonal
+complement of those $m$ monomials in that space.
+The constant term gives the scalar $-\alpha_m$.
+The identity $z\Phi_m=\Phi_{m+1}+\alpha_m\Phi_m^*$ is an orthogonal sum;
+its norms give $e_m=e_{m+1}+\alpha_m^2e_m$.
+All norms are positive, proving $|\alpha_m|<1$.
+Iterate and use Theorem~\ref{szego:thm:minimum}.
+Since $-\log(1-t)\geq t$ for $0\leq t<1$, positivity of the limiting
+product implies the final assertion.
+\end{proof}
+
+\section{Exact circle-to-Hankel identities}
+\label{szego:sec:identities}
+Lift the measure $\varphi(x)\dd x$ to the circle by
+\begin{equation}\label{szego:eq:lift}
+ x=\frac C2(1+\cos\theta)=\Lam(z+2+z^{-1}),\quad z=e^{i\theta},\qquad
+ W(\theta)=\frac{\pi C}{2}\varphi(x)|\sin\theta|.
+\end{equation}
+This is an even probability density relative to $\dd\theta/(2\pi)$.
+Indeed, its pushforward under $\theta\mapsto x$ is $\varphi(x)\dd x$.
+Lemma~\ref{szego:lem:szegocond}, together with the integrability of $\log|\sin\theta|$,
+verifies the hypotheses of Theorem~\ref{szego:thm:minimum}.
+Since the mean of $\log|\sin\theta|$ is $-\log2$,
+\begin{equation}\label{szego:eq:K2G}
+ G=\frac{\pi C}{4}\exp\mean{\log\varphi}_C=K/2.
+\end{equation}
+Jensen's inequality and $\int W=1$ also give $G\leq1$.
+
+\begin{lemma}[Reciprocal and anti-reciprocal minimum norms]\label{szego:lem:reciprocal}
+For $m\geq1$, put $a_0=\Phi_m(0)=-\alpha_{m-1}$. The monic polynomials
+\[
+ S_m=\frac{\Phi_m+\Phi_m^*}{1+a_0},\qquad
+ T_m=\frac{\Phi_m-\Phi_m^*}{1-a_0}
+\]
+minimize the norm among real monic reciprocal and anti-reciprocal
+polynomials of degree $m$, respectively. Their squared norms are
+\begin{equation}\label{szego:eq:reciprocalnorms}
+ \norm{S_m}^2=\frac{2e_m}{1-\alpha_{m-1}},\qquad
+ \norm{T_m}^2=\frac{2e_m}{1+\alpha_{m-1}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The denominators are nonzero by Lemma~\ref{szego:lem:recurrence}.
+A variation within either monic constrained space has zero leading and
+constant coefficients and is therefore a polynomial of degree at most $m-1$.
+It is orthogonal to $\Phi_m$. Reciprocity or anti-reciprocity implies it
+is also orthogonal to $\Phi_m^*$: on the circle, use
+$\Phi_m^*=z^m\overline{\Phi_m}$ and $R^*=\pm R$.
+Thus $S_m$ and $T_m$ are orthogonal to their respective variation spaces
+and are the unique minimizers.
+
+Moreover, $\norm{\Phi_m^*}^2=e_m$ and
+$\langle\Phi_m,\Phi_m^*\rangle=a_0e_m$, since the leading coefficient of
+$\Phi_m^*$ is $a_0$. Expanding the squared norms of the sum and difference
+proves \eqref{szego:eq:reciprocalnorms}.
+\end{proof}
+
+Define, with the weighted norms from \eqref{szego:eq:minnorm},
+\begin{align}
+ U_n&=\frac{h_n[1]}{\Lam^{2n}},
+ &V_n&=\frac{h_{n-1}[x(C-x)]}{\Lam^{2n}} &&(n\geq1),\label{szego:eq:UV}\\
+ X_n&=\frac{h_n[x]}{\Lam^{2n+1}},
+ &Y_n&=\frac{h_n[C-x]}{\Lam^{2n+1}} &&(n\geq0).\label{szego:eq:XY}
+\end{align}
+
+\begin{proposition}[Four exact norm identities]\label{szego:prop:four}
+One has
+\begin{align}
+ U_n&=\frac{2e_{2n}}{1-\alpha_{2n-1}},
+ &V_n&=\frac{2e_{2n}}{1+\alpha_{2n-1}},\label{szego:eq:evennorms}\\
+ X_n&=\frac{2e_{2n+1}}{1-\alpha_{2n}},
+ &Y_n&=\frac{2e_{2n+1}}{1+\alpha_{2n}}.\label{szego:eq:oddnorms}
+\end{align}
+\end{proposition}
+\begin{proof}
+Every monic reciprocal polynomial of degree $2n$ has the form
+$z^np(x)/\Lam^n$, where $p$ is monic of degree $n$.
+Every monic anti-reciprocal polynomial of degree $2n$ has the form
+$z^{n-1}(z^2-1)q(x)/\Lam^{n-1}$, with $q$ monic of degree $n-1$.
+These statements follow by expressing symmetric Laurent polynomials as
+polynomials in $z+z^{-1}$.
+Their minimum norms are $U_n$ and $V_n$, because
+\[
+ |z-z^{-1}|^2=4\sin^2\theta=\frac{x(C-x)}{\Lam^2}.
+\]
+For degree $2n+1$, the corresponding forms are
+$z^n(z+1)p(x)/\Lam^n$ and $z^n(z-1)p(x)/\Lam^n$.
+Use
+$|z+1|^2=x/\Lam$ and $|z-1|^2=(C-x)/\Lam$ to obtain $X_n,Y_n$.
+Now apply Lemma~\ref{szego:lem:reciprocal}.
+\end{proof}
+
+\section{Monotone envelopes and the proof of the main theorem}
+\label{szego:sec:envelopes}
+\begin{theorem}[Interleaved Hankel upper envelopes]\label{szego:thm:envelope}
+Set $E_0=2$ and
+\begin{equation}\label{szego:eq:envelopes}
+ E_{2n}=\frac{2U_nV_n}{U_n+V_n}\quad(n\geq1),\qquad
+ E_{2n+1}=\frac{2X_nY_n}{X_n+Y_n}\quad(n\geq0).
+\end{equation}
+Then
+\begin{equation}\label{szego:eq:envelopemain}
+ E_m=2e_m,\qquad E_0\geq E_1\geq E_2\geq\cdots\downarrow K.
+\end{equation}
+In particular, every $E_m$ is a finite expression in moments that is an upper
+bound for the integral constant $K$.
+The reflection coefficients themselves are given exactly by
+\begin{equation}\label{szego:eq:alphahankel}
+ \alpha_{2n-1}=\frac{U_n-V_n}{U_n+V_n},\qquad
+ \alpha_{2n}=\frac{X_n-Y_n}{X_n+Y_n}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Substitute \eqref{szego:eq:evennorms} and \eqref{szego:eq:oddnorms} into the harmonic
+means in \eqref{szego:eq:envelopes}. The result is $2e_m$.
+Theorem~\ref{szego:thm:minimum} and \eqref{szego:eq:K2G} give the limit and monotonicity.
+Subtracting and adding the paired identities gives \eqref{szego:eq:alphahankel}.
+\end{proof}
+
+All entries involved are explicit linear combinations of Ap\'ery numbers:
+for example, the $x(C-x)$-modified moment of degree $k$ is
+$CA_{k+1}-A_{k+2}$. Thus the theorem uses only the field $\mathbb Q(\sqrt2)$
+for its finite expressions. In direct determinant notation its even part is
+\begin{equation}\label{szego:eq:directenvelope}
+ E_{2n}=\frac{2D_n[1]D_{n-1}[x(C-x)]}
+ {\Lam^{2n}\bigl(D_n[1]D_{n-2}[x(C-x)]+D_{n-1}[1]D_{n-1}[x(C-x)]\bigr)}.
+\end{equation}
+Our convention $D_{-1}[P]=1$ includes $n=1$.
+The first simple certificate is
+\begin{equation}\label{szego:eq:E1}
+ K\leq E_1=2\left(1-\left(\frac{10}{C}-1\right)^2\right)
+ =81120\sqrt2-114720.
+\end{equation}
+The radical expression is positive; subtracting its rounded decimal terms
+in low precision is not a reliable way to evaluate it.
+
+\begin{corollary}[Exact product and separation of fluctuations]\label{szego:cor:separation}
+The constant and normalized norms satisfy
+\begin{align}
+ K&=2\prod_{j=0}^{\infty}(1-\alpha_j^2),\label{szego:eq:Kproduct}\\
+ \log\frac{E_m}{K}&=\sum_{j=m}^{\infty}-\log(1-\alpha_j^2),\label{szego:eq:tail}\\
+ \frac{U_n}{K}&=\frac1{1-\alpha_{2n-1}}
+  \exp\!\left\{\sum_{j=2n}^{\infty}-\log(1-\alpha_j^2)\right\}.\label{szego:eq:exacttransfer}
+\end{align}
+Furthermore,
+\begin{equation}\label{szego:eq:squares}
+ \sum_{n\geq1}\left(\frac{U_n}{E_{2n}}-1\right)^2<\infty.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The first two identities follow from \eqref{szego:eq:product} and $K=2G$.
+The third is \eqref{szego:eq:evennorms}. Since $\alpha_j\to0$,
+$U_n/E_{2n}-1=\alpha_{2n-1}/(1-\alpha_{2n-1})$ has a square-summable tail;
+finitely many initial terms cause no problem.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{szego:thm:main}]
+Lemma~\ref{szego:lem:szegocond} proves the integral assertion.
+By \eqref{szego:eq:evennorms}, $e_{2n}\to K/2$ and $\alpha_{2n-1}\to0$, so
+$U_n\to K$. Equations~\eqref{szego:eq:UV} and \eqref{szego:eq:gramproduct} yield
+\eqref{szego:eq:sharpnorm}.
+Summing
+$\log h_j=2jL+\log K+o(1)$ gives \eqref{szego:eq:loggrowth}; the sum of a sequence
+converging to zero is $o(n)$.
+The identity $(1+1/\sqrt2)^4=\Lam$ proves \eqref{szego:eq:oeisratio}, with the
+extra factor $\Lam$ caused by the indexing of the plotted ratio.
+Finally $D_{n+1}D_{n-1}/D_n^2=h_{n+1}/h_n\to\Lam^2$.
+\end{proof}
+
+\begin{remark}[What an upper envelope does not give]
+Monotonicity supplies an exact upper bound for $K$, but not a certified
+error estimate from one finite moment table. Equation~\eqref{szego:eq:tail}
+identifies the missing tail. The numerical values of the envelopes below
+are evaluated in high precision, not by directed interval rounding.
+\end{remark}
+
+\section{All fixed nonnegative polynomial modifications}
+\label{szego:sec:polynomials}
+Let $P(x)=p_d\prod_{j=1}^d(x-\zeta_j)$ be a nonzero real polynomial that is
+nonnegative on $[0,C]$. Its zeros on this interval are permitted.
+Set
+\begin{equation}\label{szego:eq:GP}
+ \mathcal G_C(P)=\exp\mean{\log P}_C.
+\end{equation}
+Zeros are understood in the integrable logarithmic sense.
+
+\begin{theorem}[Polynomial perturbation constants]\label{szego:thm:polynomial}
+For each fixed such $P$,
+\begin{align}
+ h_n[P]&\sim K\mathcal G_C(P)\Lam^{2n},\label{szego:eq:polyh}\\
+ \log D_n[P]&=n(n+1)L+(n+1)\log\bigl(K\mathcal G_C(P)\bigr)+o(n),\label{szego:eq:polyD}\\
+ \frac{h_n[P]}{h_n[1]}&\longrightarrow\mathcal G_C(P),\qquad
+ \left(\frac{D_n[P]}{D_n[1]}\right)^{1/(n+1)}
+ \longrightarrow\mathcal G_C(P).\label{szego:eq:polyratio}
+\end{align}
+\end{theorem}
+\begin{proof}
+The density $P\varphi$ is integrable and positive almost everywhere.
+The logarithm of each polynomial factor has an integrable singularity
+against the arcsine measure, including at the endpoints. Consequently it
+satisfies \eqref{szego:eq:szegocond} with $\log(P\varphi)=\log P+\log\varphi$.
+Repeat the circle minimum argument. A probability normalization is
+unnecessary for the norm limit: it only changed $e_0$ in the product
+formula. The new constant is exactly $K\mathcal G_C(P)$.
+The product identity \eqref{szego:eq:gramproduct} and cancellation prove the rest.
+\end{proof}
+
+\subsection{The constant is explicit from the roots}
+Define the exterior conformal parameter
+\begin{equation}\label{szego:eq:conformal}
+ \Psi_C(z)=\frac{z-C/2+\sqrt{z(z-C)}}{2\Lam},\qquad z\notin[0,C],
+\end{equation}
+where the square root is chosen to be $z-C/2+O(1/z)$ at infinity.
+Then $|\Psi_C(z)|>1$. On the interval, use either boundary value, of modulus
+one, when only its modulus occurs.
+
+\begin{proposition}[Root formula]\label{szego:prop:rootformula}
+For the polynomial above,
+\begin{equation}\label{szego:eq:rootformula}
+ \mathcal G_C(P)=|p_d|\Lam^d\prod_{j=1}^d|\Psi_C(\zeta_j)|.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $w=\Psi_C(\zeta)$, so $\zeta=\Lam(w+2+w^{-1})$ and $|w|\geq1$.
+For $|z|=1$,
+\[
+ \Lam(z+2+z^{-1})-\zeta=\Lam z^{-1}(z-w)(z-w^{-1}).
+\]
+The circle average of $\log|z-a|$ is $\log\max(1,|a|)$ by Jensen's formula
+(or its elementary factorization proof). Hence
+$\mean{\log|x-\zeta|}_C=\log\Lam+\log|w|$.
+This remains true for $|w|=1$, since the boundary logarithmic singularities
+are integrable. Add over the roots and the leading coefficient.
+\end{proof}
+
+A particularly useful consequence is the following location-independence:
+if all roots of $P$ lie in $[0,C]$, then
+\begin{equation}\label{szego:eq:invisible}
+ \mathcal G_C(P)=|p_d|\Lam^d.
+\end{equation}
+Thus a monic square $P(x)=\prod_{j=1}^r(x-t_j)^2$, with fixed
+$t_j\in[0,C]$, changes the exact linear term in $\log D_n$ by
+$2r(n+1)\log\Lam$, independently of the root locations.
+This does not say that the lower-order terms are independent of those locations.
+
+For fixed integers $r,s\geq0$,
+\begin{equation}\label{szego:eq:endpointP}
+ P(x)=x^r(C-x)^s\quad\Longrightarrow\quad
+ \mathcal G_C(P)=\Lam^{r+s}.
+\end{equation}
+For an exterior real point $t>C$,
+$P(x)=t-x$ gives $\mathcal G_C(P)=\Lam\Psi_C(t)$.
+These are finite algebraic expressions when the roots are algebraic.
+All assertions are for a fixed polynomial. No uniformity for growing degree
+or moving roots is implied.
+
+\section{Fixed strides and shifts}
+\label{szego:sec:strides}
+For fixed integers $m\geq1$ and $r\geq0$, consider
+\begin{equation}\label{szego:eq:strideD}
+ H_n^{(m,r)}=\det(A_{m(i+j)+r})_{0\leq i,j\leq n}.
+\end{equation}
+This is Part~I's \eqref{eq:shiftdef} with a shift that does not depend on
+$n$. Part~I already controls these determinants at the leading scale
+(Theorem~\ref{thm:shift}, and for fixed $r$ the remark after its proof:
+$\log H_n^{(m,r)}=n(n+1)\log(C^m/4)+O_{m,r}(n)$). Their norm constants can
+also be identified.
+Put $B_m=C^m$, $\Lam_m=B_m/4$, and, with $w_m$ the pushed-forward density
+of Part~I's \eqref{eq:pushforward},
+\begin{equation}\label{szego:eq:pushdensity}
+ w_m(y)=\frac1m y^{1/m-1}\varphi(y^{1/m}),\qquad
+ \mathcal K_m=\frac{\pi B_m}{2}\exp\mean{\log w_m}_{B_m}.
+\end{equation}
+
+\begin{theorem}[Sharp fixed-stride constants]\label{szego:thm:strides}
+For every fixed $m,r$ as above,
+\begin{align}
+ \frac{H_n^{(m,r)}}{H_{n-1}^{(m,r)}}
+ &\sim \mathcal K_m\Lam_m^{r/m}\Lam_m^{2n},\label{szego:eq:strideh}\\
+ \log H_n^{(m,r)}
+ &=n(n+1)\log\Lam_m
+ +(n+1)\left(\log \mathcal K_m+\frac r m\log\Lam_m\right)+o(n).
+ \label{szego:eq:stridelog}
+\end{align}
+In particular, dividing the consecutive norm ratio for shift $r$ by the
+one for shift zero has limit $\Lam_m^{r/m}$.
+\end{theorem}
+\begin{proof}
+The substitution $y=x^m$ gives
+\[
+ A_{mk+r}=\int_0^{B_m}y^k y^{r/m}w_m(y)\dd y.
+\]
+Near zero,
+$\log w_m(y)=(1/m-1)\log y+\log\log(1/y)+O(1)$.
+At $B_m$ it has the same square-root endpoint order as before, and at
+$c^m$ the same finite-order Frobenius behavior after an analytic change
+of coordinate. The proof of Lemma~\ref{szego:lem:szegocond} therefore applies.
+The further factor $y^{r/m}$ preserves logarithmic integrability.
+The circle argument yields a norm constant multiplied by
+$\exp((r/m)\mean{\log y}_{B_m})=\Lam_m^{r/m}$.
+Summing logarithms proves \eqref{szego:eq:stridelog}.
+\end{proof}
+
+This theorem deliberately keeps $m$ and $r$ fixed. It does not replace
+Part~I's separate varying-shift Theorem~\ref{thm:shift} when $r$ is
+proportional to $n$. An exact linear correction in that varying regime
+remains a further problem.
+
+\begin{remark}[Relation to Part~I]\label{szego:rem:strides}
+The quadratic term $n(n+1)\log\Lambda_m=n(n+1)\log(C^m/4)$ in
+\eqref{szego:eq:stridelog} is Part~I's Theorem~\ref{thm:shift} at $\rho=0$
+(limit $C^m/4$, which is not $(C/4)^m$), in the sharper form of the remark
+after its proof. What Theorem~\ref{szego:thm:strides} adds is the linear
+coefficient $\log\mathcal K_m+(r/m)\log\Lambda_m$. For $m=1$, $r=0$ it is
+Theorem~\ref{szego:thm:main}: $w_1=\varphi$ and $\mathcal K_1=K$.
+\end{remark}
+
+\section{Inverse growth and the integer-index issue}
+\label{szego:sec:inverse}
+Set
+\begin{equation}\label{szego:eq:B}
+ B=L+\log K.
+\end{equation}
+For sufficiently large $n$, $D_{n+1}>D_n$ by \eqref{szego:eq:sharpnorm}.
+Let $F(x)$ be the piecewise-linear interpolation of $\log D_n$ on that
+increasing tail, and let $X(y)$ be its inverse.
+
+\begin{theorem}[Two-term inverse-index law]\label{szego:thm:inverse}
+As $y\to\infty$,
+\begin{equation}\label{szego:eq:inverse}
+ X(y)=\sqrt{\frac yL}-\frac{L+\log K}{2L}+o(1).
+\end{equation}
+For a large threshold $T$, the first index on the increasing tail with
+$D_n\geq T$ is exactly $\lceil X(\log T)\rceil$.
+Equivalently, it has the form
+\begin{equation}\label{szego:eq:integerinverse}
+ \left\lceil\sqrt{\frac{\log T}{L}}-\frac{L+\log K}{2L}
+              +\varepsilon(T)\right\rceil,
+ \qquad \varepsilon(T)\to0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equation~\eqref{szego:eq:loggrowth} gives
+$\log D_n=Ln^2+Bn+o(n)$.
+Linear interpolation changes $Lx^2$ by at most $L/4$, and interpolating
+an $o(n)$ remainder still gives $o(x)$. Thus
+$F(x)=Lx^2+Bx+o(x)$.
+First $X(y)\sim\sqrt{y/L}$. Completing the square gives
+\[
+ y=L\left(X(y)+\frac B{2L}\right)^2+o(X(y)),
+\]
+which implies \eqref{szego:eq:inverse} after division by a quantity of order
+$\sqrt y$. The ceiling statement follows directly from monotonicity and
+the definition of the interpolation.
+\end{proof}
+
+Numerically,
+\[
+ L\approx2.139199986958,\qquad B\approx1.682590155276,
+ \qquad -\frac B{2L}\approx-0.393275562251.
+\]
+Thus the constant missing from the $O(n)$ estimate \eqref{eq:logmain} of Part~I
+produces an explicit constant shift in the inverse.
+One must not remove the ceiling in \eqref{szego:eq:integerinverse} and claim an
+$o(1)$ approximation to an integer-valued staircase. Nor may one drop the
+small term inside the ceiling near an integer without a separate error bound.
+
+\section{A conditional transfer theorem for finer transseries}
+\label{szego:sec:transfer}
+The exact formula \eqref{szego:eq:exacttransfer} separates the remaining analytic
+problem from subsequent asymptotic algebra. Once the reflection coefficients
+are understood, the determinant expansion follows by tail summation.
+The next theorem is an unconditional implication, but its hypothesis is
+\emph{not proved here for the Ap\'ery density}.
+
+\begin{theorem}[Two slow scales of reflection coefficients]\label{szego:thm:transfer}
+For a lifted probability density as above, suppose that some real
+$a,b,d,e$ satisfy, as $j\to\infty$,
+\begin{equation}\label{szego:eq:alphaansatz}
+ \alpha_j=\frac{a+b(-1)^j}{j}
+       +\frac{d+e(-1)^j}{j\log j}
+       +O\!\left(\frac1{j\log^2 j}\right).
+\end{equation}
+Define
+\begin{equation}\label{szego:eq:chi_eta}
+ \chi=\frac{a^2+b^2+a-b}{2},\qquad
+ \xi=ad+be+\frac{d-e}{2}.
+\end{equation}
+Then
+\begin{equation}\label{szego:eq:Uexpansion}
+ \log\frac{U_n}{K}
+ =\frac\chi n+\frac\xi{n\log n}
+  +O\!\left(\frac1{n\log^2n}\right),
+\end{equation}
+and there exists a finite constant $\mathcal A>0$ such that
+\begin{equation}\label{szego:eq:Dconditional}
+ D_n=\mathcal A\,K^{n+1}\Lam^{n(n+1)}n^\chi(\log n)^\xi
+       \left(1+O\!\left(\frac1{\log n}\right)\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Square \eqref{szego:eq:alphaansatz}. The nonalternating terms are
+\[
+ \frac{a^2+b^2}{j^2}+\frac{2(ad+be)}{j^2\log j}
+      +O\!\left(\frac1{j^2\log^2j}\right).
+\]
+The remaining displayed terms alternate and have tail $O(m^{-2})$ from
+$j=m$ onward, by summation by parts. The elementary integral estimates are
+\begin{align*}
+ \sum_{j=m}^\infty j^{-2}&=m^{-1}+O(m^{-2}),\\
+ \sum_{j=m}^\infty\frac1{j^2\log j}
+ &=\frac1{m\log m}+O\!\left(\frac1{m\log^2m}\right).
+\end{align*}
+Also $-\log(1-\alpha_j^2)=\alpha_j^2+O(j^{-4})$.
+Therefore
+\[
+ \sum_{j=m}^\infty-\log(1-\alpha_j^2)
+ =\frac{a^2+b^2}{m}+\frac{2(ad+be)}{m\log m}
+  +O\!\left(\frac1{m\log^2m}\right).
+\]
+In \eqref{szego:eq:exacttransfer}, set $m=2n$ and add
+$-\log(1-\alpha_{2n-1})$.
+Replacing $2n-1$ by $2n$ costs $O(n^{-2})$ in the principal terms, and
+replacing $\log(2n)$ by $\log n$ costs $O(1/(n\log^2n))$.
+The resulting coefficients are exactly \eqref{szego:eq:chi_eta}.
+
+Now sum \eqref{szego:eq:Uexpansion}. The differences between the partial sums
+of $1/n$ and $\log n$, and of $1/(n\log n)$ and $\log\log n$, converge to
+constants. The remainder series converges absolutely, with tail
+$O(1/\log n)$. Exponentiation and \eqref{szego:eq:gramproduct} prove
+\eqref{szego:eq:Dconditional}; finite initial terms are absorbed into $\mathcal A$.
+\end{proof}
+
+\subsection{A next inverse term, including the lattice correction}
+There is a subtle but useful distinction between inverting a smooth
+asymptotic model and inverting the polygonal interpolation of a sequence.
+Let $\tau(u)=\{u\}(1-\{u\})$, a continuous, Lipschitz, period-one function.
+
+\begin{proposition}[Conditional inverse with lattice sector]\label{szego:prop:lattice}
+Suppose
+\begin{equation}\label{szego:eq:loginversehyp}
+ \log D_n=Ln^2+Bn+\chi\log n+\xi\log\log n+C_0+o(1),
+ \qquad L>0.
+\end{equation}
+With the same polygonal inverse $X$ as before, put $s=\sqrt{y/L}$.
+Then
+\begin{equation}\label{szego:eq:latticeinverse}
+ \begin{split}
+ X(y)={}&s-\frac B{2L}\\
+ &+\frac{B^2/(4L)-\chi\log s-\xi\log\log s-C_0
+           -L\tau(s-B/(2L))}{2Ls}
+ +o(s^{-1}).
+ \end{split}
+\end{equation}
+For the inverse of the smooth expression in \eqref{szego:eq:loginversehyp},
+the same formula holds with the $\tau$ term omitted.
+\end{proposition}
+\begin{proof}
+For $x=n+t$, $0\leq t\leq1$, linear interpolation of $n^2$ is exactly
+$x^2+t(1-t)$. Interpolation of the logarithmic terms differs from their
+smooth values by $o(1)$. Thus
+\[
+ F(x)=Lx^2+Bx+\chi\log x+\xi\log\log x+C_0+L\tau(x)+o(1).
+\]
+Substitute $x=s-B/(2L)+v/s$.
+The quadratic and linear terms become
+$y-B^2/(4L)+2Lv+o(1)$ when $v=O(\log s)$.
+All logarithms may be evaluated at $s$ to this accuracy.
+Since $\tau$ is Lipschitz and periodic, it may be evaluated at
+$s-B/(2L)$, even across integer boundaries, with error $o(1)$.
+Equating the residual to zero gives the displayed value of $v$.
+A residual $o(1)$ in $F$ changes its inverse by $o(s^{-1})$, since the
+local slopes are $2Ls+O(1)$.
+\end{proof}
+
+Theorem~\ref{szego:thm:transfer} supplies \eqref{szego:eq:loginversehyp} with
+$B=L+\log K$ and $C_0=\log\mathcal A+\log K$, whenever its
+reflection-coefficient hypothesis is verified.
+This isolates a reusable asymptotic-inversion step and prevents a
+spurious constant term caused by ignoring interpolation.
+
+\section{Computational checks and numerical results}
+\label{szego:sec:computations}
+The package separates exact finite checks from numerical asymptotics.
+Neither substitutes for the analytic proof.
+
+\subsection{Exact algebraic checks}
+The script \texttt{code/02-szego-verify\_exact.py} uses only Python's standard library.
+It implements arithmetic in $\mathbb Q(\sqrt2)$ using pairs of rational
+numbers and exact sign tests. It verifies the following at the included
+cutoff:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item The binomial definition and recurrence for the required Ap\'ery moments,
+and seven independent integer Bareiss determinants, $D_0$ through $D_6$.
+\item Four families of minimum norms through degree six, obtained by exact
+Gram elimination, and fourteen circle minimum norms from an independently
+constructed Toeplitz matrix of Chebyshev moments.
+\item Every applicable identity $E_m=2e_m$, all thirteen intervening norm
+recurrences, and exact nonincrease of the interleaved envelopes.
+\end{enumerate}
+The run completed with every assertion passing.
+For example,
+\[
+ E_1=81120\sqrt2-114720,\qquad
+ E_2=\frac{12989952}{5}-1837056\sqrt2.
+\]
+The output is recorded in \texttt{data/02-szego-exact\_checks.json}.
+These are normalization and algebra checks at finite indices, not a
+formal verification of the infinite-dimensional argument.
+
+\subsection{High-precision moment matrices}
+The C++ program \texttt{code/02-szego-moment\_norms.cpp} uses GMP arithmetic.
+It first forms the exact integer Ap\'ery moments and scales them to
+$M_k=A_k/C^k$, the moments of a measure on $[0,1]$.
+The four moment lists used are
+\[
+ M_k,\qquad M_{k+1},\qquad M_k-M_{k+1},\qquad M_{k+1}-M_{k+2}.
+\]
+Symmetric elimination yields every leading minimum norm without taking
+square roots or separately recomputing each determinant.
+Scaling back gives $U_n,V_n,X_n,Y_n$.
+
+The calculation was run through $n=200$ at both 3072-bit and 4096-bit
+precision. All emitted 70-significant-digit values agreed between the two
+runs. This checks numerical stability at those working precisions; it is
+not interval certification. The program rejects nonpositive pivots and
+violations of the proved interleaved monotonicity.
+
+\begin{center}
+\small
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $U_n$ & $E_{2n}$ & $E_{2n+1}$ & $\Lam U_n$\\
+\midrule
+10 & .633485989362 & .666306510245 & .665096192052 & 5.379968887979\\
+20 & .631012979942 & .650723277428 & .650526912374 & 5.358966507555\\
+50 & .632544044029 & .640453417925 & .640419013866 & 5.371969284714\\
+100 & .632828523882 & .637019913211 & .637012787034 & 5.374385269888\\
+150 & .632966981321 & .635846665253 & .635843846206 & 5.375561139169\\
+200 & .633051776322 & .635253009843 & .635251548628 & 5.376281272648\\
+\bottomrule
+\end{tabular}
+\end{center}
+The final column is the OEIS-style ratio with index $n-1$.
+The difference between the $n=200$ ratio and its limit is still about
+$0.00319$, despite the apparent flattening of parts of the curve.
+
+\noindent[Added 1 October 2026, batch~73O1: the two runs are shipped as
+\texttt{data/02-szego-norms.csv} (4096 bits) and
+\texttt{data/02-szego-norms\_3072.csv}; since every emitted digit agreed, the
+two files are byte-identical. At intake, the value
+$U_{200}=0.633051776322250247495064895880637\ldots$ of this table was
+compared with the column \texttt{normalized\_norm} of Part~I's
+\texttt{data/convergence.csv}, computed from the exact integer determinants
+of Section~\ref{sec:computations}: the two pipelines agree in all 33 digits
+that Part~I prints. Independent 900-digit Hankel eliminations at
+$n=10,20,30$ also agreed with $U_n$ and $E_{2n}$ of the shipped CSV in the
+15 significant digits compared.]
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=.94\textwidth]{figures/02-szego-ratio_limit.pdf}
+\caption{High-precision evaluation of the normalized determinant ratios.
+The horizontal line is the independently evaluated integral constant
+$\Lam K$, not a fitted limit. Theorem~\ref{szego:thm:main} proves convergence;
+the numerical curve alone does not.}
+\label{szego:fig:ratio}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=.94\textwidth]{figures/02-szego-monotone_envelope.pdf}
+\caption{The original normalized norm and the even subsequence of the
+monotone upper envelopes. The omitted odd envelopes lie between consecutive
+even ones by Theorem~\ref{szego:thm:envelope}.}
+\label{szego:fig:envelope}
+\end{figure}
+
+\subsection{Independent density quadrature}
+The script \texttt{code/02-szego-density\_constant.py} evaluates the density by
+hypergeometric continuation, with endpoint expansions to avoid catastrophic
+cancellation. It integrates after $x=C\sin^2(t/2)$, so the arcsine measure
+becomes $\dd t/\pi$. It gives
+\begin{align*}
+ \mean{\log\varphi}_C&\approx-4.433686885050,\\
+ K&\approx0.633427435172,\\
+ \Lam K&\approx5.379471608281.
+\end{align*}
+\begin{samepage}
+As an independent normalization check, quadrature of the density reproduced
+$A_0$ through $A_4$, namely $1,5,73,1445,33001$.
+At 40 decimal working digits, the largest reported absolute discrepancy
+was below $10^{-28}$. Extra digits written to the JSON output are diagnostic;
+there is no rigorous decimal error enclosure in this package.\par
+\end{samepage}
+
+\subsection{An inverse check}
+At $y=\log D_n$, the exact polygonal inverse is $X(y)=n$.
+Using only the proved two-term formula, its numerical error
+$\sqrt{\log D_n/L}-B/(2L)-n$ is approximately
+\[
+\begin{array}{c|rrrr}
+ n&20&50&100&200\\ \hline
+ \text{error}&-0.00279410&-0.00157978&-0.00093813&-0.00055161.
+\end{array}
+\]
+This is consistent with the $o(1)$ error proved in
+Theorem~\ref{szego:thm:inverse}; no stronger rate is inferred from the table.
+
+\section{Further research questions and a concrete route forward}
+\label{szego:sec:questions}
+The proved statements identify a precise next analytic task rather than
+assuming a generic inverse-power expansion. They re-scope the continuation
+proposed at the end of Part~I (Section~8): the limit of $h_n/\Lambda^{2n}$ and
+the linear term of $\log D_n$ are now determined
+(Theorem~\ref{szego:thm:main}); the prefactor, the oscillation and the
+varying-shift linear term are not.
+
+\subsection{Quantitative reflection-coefficient asymptotics}
+Determine the first terms of $\alpha_j$ for the lifted Ap\'ery density.
+Its two endpoint behaviors and its interior singularity must all be retained.
+Can one prove an expansion of the form \eqref{szego:eq:alphaansatz}, with explicit
+$a,b,d,e$ and a uniform remainder? This would immediately unlock
+Theorem~\ref{szego:thm:transfer}, including a polynomial/logarithmic prefactor for
+$D_n$ and the next inverse terms.
+A sharper remainder would propagate through the exact tail formula
+\eqref{szego:eq:exacttransfer} to higher orders.
+
+\subsection{The oscillatory sector and its frequency}
+Let
+\[
+ \theta_*=\arccos(2c/C-1)=\pi-2\arcsin(1/C).
+\]
+The interior singularity maps to circle points $e^{\pm i\theta_*}$.
+Determine whether the leading oscillatory correction is governed by
+$e^{\pm2in\theta_*}$, and calculate its amplitude, phase, and decay exponent.
+The corresponding candidate period in $n$ is
+$\pi/(2\arcsin(1/C))\approx53.3531$.
+The geometry suggests this frequency, but this report does \emph{not}
+prove that it is the leading oscillatory term.
+The visible oscillations make this a more informative target than an
+unqualified fit to powers of $1/n$.
+
+\subsection{A full Hankel prefactor and logarithmic endpoint effects}
+Does there exist $\mathcal A>0$ and a rigorously determined exponent $\chi$
+with
+$D_n\sim\mathcal A K^{n+1}\Lam^{n(n+1)}n^\chi$,
+or is an additional power of $\log n$ required?
+The logarithmic singularity of $\varphi$ at zero means that one must verify,
+not merely assume, the hypotheses of a smooth-background
+Fisher--Hartwig theorem. The general determinant asymptotics in
+\cite{dik} provide a relevant comparison framework, but are not invoked
+here to claim an unproved prefactor.
+
+\subsection{Certified constants and effective upper-envelope tails}
+Construct rigorous interval enclosures for $K$ by combining density
+quadrature with explicit endpoint and interior remainder bounds.
+Alternatively, obtain an effective bound on
+$\sum_{j\geq m}-\log(1-\alpha_j^2)$.
+The exact finite envelopes already supply algebraic upper bounds; a controlled
+tail would turn them into two-sided numerical certificates.
+Closed-form simplifications of $K$ in terms of special values are also worth
+investigating, but no such simplification is asserted.
+
+\subsection{Growing shifts and moving polynomial zeros}
+For $r_n/n\to\rho>0$, Part~I (Theorem~\ref{thm:shift}) determines the leading quadratic
+term for $H_n^{(m,r_n)}$. Identify the next linear term as a function of
+$\rho$, including regimes where a moving equilibrium-support endpoint
+approaches the density's interior singularity.
+Separately, extend Theorem~\ref{szego:thm:polynomial} uniformly to moving roots
+or growing polynomial degree. The fixed-polynomial result alone does not
+justify those limits.
+
+\subsection{Formalization and reuse for other moment sequences}
+The exact determinant/Gram identities and the reciprocal-polynomial
+reductions form a finite-algebraic formalization target. The next layer is
+the circle minimum principle and the transfer of the Szeg\H{o} condition.
+Once these are formalized, the Ap\'ery application has a clean dependency
+on an independently verified moment-density theorem.
+For other OEIS moment sequences, the same pipeline needs three inputs:
+a precise positive density, its interval support, and logarithmic
+integrability against the arcsine measure. The envelope construction then
+uses moments alone.
+
 
 \appendix
+\noindent\emph{Appendix~A belongs to Part~I (and is printed as it was);
+Appendices~\ref{szego:app:density} and~\ref{szego:app:package} belong to
+Part~II.}
+
 \section{Reproducing and auditing the package}
 The supplied files have separate roles. The article contains the proof.
 The file \path{data/determinants_0_200.txt} is not distributed with the
@@ -711,6 +1871,93 @@ determinant algorithm is made. The PDF was compiled from this source and
 rendered for layout inspection. There is no Lean proof or external OEIS
 submission in the package.
 
+\section{Reproducing the density evaluation}
+\label{szego:app:density}
+This appendix specifies the numerical continuation sheet; none of the
+main proofs depends on numerical continuation.
+Let $F(z)={}_2F_1(1/3,2/3;1;z)$ and
+\[
+ q(x)=x^3+30x^2-24x+1,\qquad d(x)=x^2-34x+1.
+\]
+For $0<x<c$, put
+\[
+ \lambda_\pm(x)=\frac{q(x)\pm(x^2-7x+1)\sqrt{d(x)}}{2(x+1)^3}.
+\]
+Edgar's hypergeometric representation gives
+\begin{equation}\label{szego:eq:numericdensityleft}
+ \varphi(x)=\frac{4\sqrt3}{\pi(x+1)}F(\lambda_-(x))F(\lambda_+(x)).
+\end{equation}
+For $c<x<C$, set $s=1/x$, $d_*=i\sqrt{-d(s)}$, and
+\[
+ M(s)=\frac{3-3s-d_*}{2(s+1)^2},\qquad
+ z(s)=\frac{q(s)-(s^2-7s+1)d_*}{2(s+1)^3}.
+\]
+The continuation from the upper boundary of the Stieltjes transform is
+implemented as
+\[
+ \widetilde F(s)=
+ \begin{cases}
+ F(z(s)),&s<(7+3\sqrt5)/2,\\
+ F(z(s))+i\sqrt3 F(1-z(s)),&s>(7+3\sqrt5)/2.
+ \end{cases}
+\]
+Then the evaluated density is
+$-\pi^{-1}\operatorname{Im}(M(s)\widetilde F(s)^2/x)$.
+The additional term accounts for crossing the hypergeometric cut; simply
+using the principal branch everywhere gives an incorrect density.
+These formulas specialize the representation in \cite[Proposition 23]{edgar}.
+
+Near the integration endpoints the implementation uses
+Part~I's \eqref{eq:left} and \eqref{eq:right} at angular distances below $10^{-8}$.
+This avoids subtracting nearly equal algebraic quantities or evaluating a
+zero-balanced hypergeometric function at a rounded argument equal to one.
+The cutoff and its unbounded numerical-error status are recorded explicitly
+in the source and output.
+
+\section{Package contents and reproducibility}
+\label{szego:app:package}
+As delivered, the archive contained the manuscript's \LaTeX{} source and its
+compiled PDF, the two vector figures (with PNG copies), four
+computational/plotting source files and a Makefile, and the exact and
+numerical data described in Section~\ref{szego:sec:computations}.
+No third-party paper, font file, precompiled executable, or proof-assistant
+certificate is included. The manuscript source and PDF are not shipped
+separately: their text is Part~II of this report. The other files are
+shipped with the prefix \texttt{02-szego-}: programs and the Makefile in
+\texttt{code/}, data in \texttt{data/}, figures in \texttt{figures/}.
+
+The delivered programs are kept byte-identical and still use their delivery
+names: \path{code/02-szego-verify_exact.py} writes
+\path{data/exact_checks.json}, \path{code/02-szego-make_figures.py}
+reads \path{data/norms.csv} and \path{data/constant.json} and writes
+\path{figures/ratio_limit.pdf} and \path{figures/monotone_envelope.pdf},
+and \path{code/02-szego-Makefile} builds the unshipped
+\path{apery_hankel_refinement.tex}. Run them on a copy of the delivered
+layout, or pass explicit output paths, so that no shipped file is
+overwritten and no unprefixed file appears in the report. The report itself
+builds with
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode apery_hankel_growth.tex
+\end{verbatim}
+The finite exact test needs Python 3 (on a copy, as above):
+\begin{verbatim}
+python code/02-szego-verify_exact.py
+\end{verbatim}
+The density calculation needs \texttt{mpmath}:
+\begin{verbatim}
+python code/02-szego-density_constant.py --dps 40 \
+       --output <scratch>/constant.json
+\end{verbatim}
+The high-precision matrix calculation needs a C++17 compiler and GMP:
+\begin{verbatim}
+g++ -O3 -std=c++17 code/02-szego-moment_norms.cpp \
+    -lgmpxx -lgmp -o moment_norms
+./moment_norms 200 4096 > <scratch>/norms.csv
+\end{verbatim}
+The source accepts other cutoffs and precisions. For larger matrices the
+precision must grow to counter moment-matrix conditioning; passing the
+positivity checks alone is not a substitute for a precision comparison.
+
 \begin{thebibliography}{9}
 \bibitem{oeis-hankel}
 The OEIS Foundation Inc., \emph{A228143: Hankel-type determinants of the
@@ -718,18 +1965,38 @@ Ap\'ery numbers}. Sequence by Zhi-Wei Sun; growth conjecture attributed to
 Vaclav Kotesovec, 13 September 2026. Internal revision \texttt{\#40},
 13 September 2026, accessed 18 September 2026.
 \url{https://oeis.org/A228143/internal}.
+Part~II: public entry \url{https://oeis.org/A228143}, accessed 1 October 2026.
 
 \bibitem{oeis-apery}
 The OEIS Foundation Inc., \emph{A005259: Ap\'ery numbers}.
-Accessed 18 September 2026.
+Accessed 18 September 2026 (Part~II: 1 October 2026).
 \url{https://oeis.org/A005259}.
 
 \bibitem{edgar}
 G.~A.~Edgar, \emph{The Ap\'ery Numbers as a Stieltjes Moment Sequence},
 arXiv:2005.10733v2, 2 September 2020.
 Theorem~1, Proposition~4, Notation~6, Propositions~25--26, Corollary~27,
-and equation~(1).
+and equation~(1); Part~II also uses Proposition~23. Manuscript dated 2017,
+appendix added 2020.
 \url{https://arxiv.org/abs/2005.10733}.
+
+\bibitem{oeisplot}
+V.~Kotesovec, \emph{Plot of the normalized consecutive ratios for A228143},
+linked from the OEIS entry,
+\url{https://oeis.org/A228143/a228143.jpg}. Accessed 1 October 2026.
+
+\bibitem{simon}
+B.~Simon, \emph{OPUC on one foot},
+Bulletin of the American Mathematical Society \textbf{42} (2005), 431--460.
+DOI: 10.1090/S0273-0979-05-01075-X.
+\url{https://arxiv.org/abs/math/0502485}.
+
+\bibitem{dik}
+P.~Deift, A.~Its and I.~Krasovsky,
+\emph{Asymptotics of Toeplitz, Hankel, and Toeplitz+Hankel determinants with
+Fisher--Hartwig singularities},
+Annals of Mathematics \textbf{174} (2011), 1243--1299.
+\url{https://annals.math.princeton.edu/2011/174-2/p12}.
 
 \bibitem{dlmf}
 NIST Digital Library of Mathematical Functions, \S18.2,

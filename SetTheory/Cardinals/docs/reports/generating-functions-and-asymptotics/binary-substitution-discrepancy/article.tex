@@ -16,8 +16,8 @@
 \definecolor{muted}{HTML}{52646E}
 \definecolor{pale}{HTML}{F1F5F6}
 \hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
- pdftitle={Sharp discrepancy for a family of binary substitutions},
- pdfauthor={ChatGPT},pdfsubject={Counterexamples to OEIS A284365 and A284366}}
+ pdftitle={Sharp discrepancy for two families of binary substitutions},
+ pdfauthor={ChatGPT},pdfsubject={Counterexamples to OEIS A284365 and A284366; sharp envelopes for A284368--A284371}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\textcolor{muted}{Sharp discrepancy for binary substitutions}}
@@ -44,16 +44,24 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\word}{\mathbf{w}}
 \newcommand{\OEIS}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+% Part II (batch 73O1, manuscript 44) macros and boxes.
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\ones}[1]{\lvert#1\rvert_1}
+\newcommand{\zeros}[1]{\lvert#1\rvert_0}
+\definecolor{warm}{HTML}{F7F0E8}
 \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
  keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{muted},
  xleftmargin=4pt,xrightmargin=4pt}
 \newtcolorbox{resultbox}{colback=pale,colframe=ink,boxrule=0.5pt,
  arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
+\newtcolorbox{statusbox}{colback=warm,colframe=BurntOrange,boxrule=0.5pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
 \title{\color{ink}\LARGE Beyond the conjectured bound\\[5pt]
-\Large Sharp discrepancy for a family\\of binary substitutions\\[9pt]
-\large Counterexamples and corrected theorems for\\OEIS A284365 and A284366}
+\Large Sharp discrepancy for two families\\of binary substitutions\\[9pt]
+\large Counterexamples and corrected theorems for\\OEIS A284365 and A284366\\[4pt]
+\normalsize with Part II: exact position-error envelopes\\for quadratic morphic words (OEIS A284368--A284371)}
 \author{Research study prepared with ChatGPT}
-\date{September 19, 2026}
+\date{Part I: September 19, 2026\quad Part II: October 1, 2026}
 
 \begin{document}
 \maketitle
@@ -75,6 +83,17 @@ explicit infinite families of counterexamples, derive rational generating
 functions for their indices, and provide exact-arithmetic random-access
 and verification software. The mathematical proofs are self-contained;
 finite experiments are supporting checks, not substitutes for the proofs.
+
+Part~II, added on October 1, 2026 (batch 73O1), applies the same method to
+the disjoint family $0\mapsto1$, $1\mapsto1\,0^a1^b$ with $a,b\ge1$. It
+proves that prefix discrepancy is bounded exactly when $a\le b+1$
+(logarithmic growth at $a=b+2$, power growth beyond), determines the four
+exact state extrema and the sharp, unattained position-error envelopes
+throughout the bounded regime, and specializes them to the OEIS words
+A284368 ($1\mapsto1011$) and A284369 ($1\mapsto1001$). For A284369 this
+proves the conjectured bounds of A284370 and A284371 with sharper constants;
+for A284368 it recovers, as a calibration, the known $s$-Wythoff floor
+formulas of A184484--A184485.
 \end{abstract}
 
 \begin{resultbox}
@@ -91,6 +110,11 @@ certificates for this family and these particular conjectures.
 \tableofcontents
 \clearpage
 
+%% ====================================================================
+%% Part I: the original report of September 19, 2026 (labels bare).
+%% ====================================================================
+\phantomsection\part*{Part I.\quad Sharp discrepancy for a family of binary substitutions}
+\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Sharp discrepancy for a family of binary substitutions}
 \section{The selected problem and its resolution}\label{sec:problem}
 
 Let $\sigma$ be the substitution
@@ -919,6 +943,12 @@ questions. Nor is the constructed extremal subsequence claimed to enumerate
 all record errors. These distinctions prevent stronger statements from
 being inferred merely from the observed finite data or the interval
 closure result.
+[Added 1 October 2026, batch~73O1: Part~II (research question~3 of
+Section~\ref{qmw:sec:further}) asks the same density question for the
+family $0\mapsto1$, $1\mapsto1\,0^a1^b$; it remains open in both Parts. The
+scope of Part~I is the family $1\mapsto(10)^m$ only; Part~II treats the
+disjoint family $1\mapsto1\,0^a1^b$ by the same method
+(Remark~\ref{qmw:rem:partI}).]
 
 \section{Conclusion}
 A conjecture about an error below $2$ can survive a substantial finite
@@ -933,8 +963,988 @@ $1\mapsto(10)^m$. Density, explicit extremal families, rational
 index-generating functions, and efficient exact verification then follow
 from the same framework.
 
+%% ====================================================================
+%% Batch-73O1 addition (manuscript 44, "Exact position-error envelopes
+%% for quadratic morphic words", 1 October 2026). Every label of Part II
+%% carries the prefix qmw: ; Part I keeps its bare labels unchanged.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Exact position-error envelopes for quadratic morphic words}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Exact position-error envelopes for quadratic morphic words}
+% Part II's tables are numbered II.1, II.2, ... so that Part I's Appendix A
+% (printed after Part II) keeps its Table 3.
+\setcounter{table}{0}
+\renewcommand{\thetable}{II.\arabic{table}}
+\renewcommand{\theHtable}{II.\arabic{table}}
+
+\noindent{\large\color{ink}A two-parameter discrepancy theorem with sharp
+applications to OEIS A284368--A284371}\par\smallskip
+\noindent Research study prepared with ChatGPT, dated October 1, 2026;
+added to this report on 1 October 2026 in batch~73O1 of ProveIt's
+incoming-report intake.\par\medskip
+
+\noindent\emph{Sections~1--10 and Appendix~A form the original report
+(Part~I) of September 19, 2026, unchanged except for dated notes pointing to
+this addition, a front matter (title and abstract) that now announces both
+Parts, and the place of Appendix~A, which now follows Part~II together with
+Part~II's own appendices. Part~II was written as an extension of Part~I's
+method to the family $0\mapsto1$, $1\mapsto1\,0^a1^b$; it neither contains
+nor re-proves Part~I's results. Section~\ref{qmw:sec:provenance} records the
+provenance, fixes the notation of the addition, and compares the two
+families.}
+
+\paragraph{Summary (the manuscript's abstract).}
+We study the fixed point of the binary substitution
+\[
+  \tau_{a,b}(0)=1,\qquad \tau_{a,b}(1)=1\,0^a1^b,
+  \qquad a,b\geq1.
+\]
+Let
+\[
+q=\frac{\sqrt{(b+1)^2+4a}-(b+1)}2.
+\]
+The non-Perron eigenvalue of the incidence matrix is $-q$.  We prove a
+sharp phase transition: prefix discrepancy, and hence the errors in the
+positions of zeros and ones, is bounded exactly when $a\leq b+1$.
+Throughout that bounded regime we determine the four exact state-dependent
+extrema.  Writing
+\[
+ {\widehat C}=\frac{a-q}{1-q^2},
+\]
+the closures of the position-error sets have endpoints
+\[
+q-{\widehat C},\quad q(1+{\widehat C})
+\]
+for positions of ones, and
+\[
+\frac1q-{\widehat C}-1,\quad \frac Cq
+\]
+for positions of zeros.  None of these endpoints is attained, and all are
+subsequential limits.
+
+The specializations $(a,b)=(1,2)$ and $(2,1)$ are OEIS A284368 and A284369.
+For A284368 we recover the sharper bounds
+\[
+\frac{\sqrt{13}-5}{3}<E_1(n)<\frac{\sqrt{13}-2}{3},\qquad
+\frac{1+\sqrt{13}}3<E_0(n)<\frac{4+\sqrt{13}}3.
+\]
+For A284369 we prove
+\[
+-2<E_1(n)<1+\sqrt3,\qquad
+-\frac{3+\sqrt3}{2}<E_0(n)<2+\sqrt3.
+\]
+The latter resolves the still-posted conjectures for its position sequences
+A284370 and A284371, with strictly stronger constants.  In both OEIS cases
+the complete state attractors are intervals, so the displayed endpoints are
+not merely estimates but the exact error-value envelopes.  We also give
+constructive extremal subsequences, rational generating functions for their
+indices, a standard-library exact verifier, and a research program for the
+remaining interval-versus-Cantor and distribution questions.
+
+\begin{statusbox}
+\textbf{Status and claim boundary.}
+This Part extends the method of the existing ProveIt report on
+$0\mapsto1$, $1\mapsto(10)^m$ (Part~I) rather than repackaging its
+A284364--A284366 results.  The OEIS pages cited below still presented the
+A284368 and A284369 position statements as conjectures when checked on
+October 1, 2026.  A284368 is already identified with the generalized
+$s$-Wythoff pair A184484--A184485, so its sharp floor formulas have an
+independent route and are included here as a calibration, not as the main
+novelty.  The principal claims are the two-parameter theorem and the sharp
+A284369--A284371 envelopes.  A limited source search found no proof of the
+A284369 bounds.  No claim of exhaustive literature priority, peer review, or
+proof-assistant verification is made.  The proofs here are self-contained,
+and the included computations use exact quadratic arithmetic.
+\end{statusbox}
+
+\section{Provenance, conventions and relation to Part I}
+\label{qmw:sec:provenance}
+Part~II is built from one manuscript, number~44 of batch~73O1:
+\emph{Exact position-error envelopes for quadratic morphic words}
+(October 1, 2026), delivered as
+\texttt{OEIS\_\allowbreak Quadratic\_\allowbreak Morphic\_\allowbreak Words\_\allowbreak Research\_\allowbreak Package.zip} in arrival
+commit \texttt{c79d64038} and placed in commit \texttt{9df4ba51a}. It names
+no repository commit; it cites Part~I by its repository URL. Its programs,
+data and figures are shipped with the prefix \texttt{02-morphic-}
+(Appendix~\ref{qmw:app:files} and the README). The merge made these choices.
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item Every theorem, corollary, proposition, lemma, remark, proof, table,
+figure and research question of the manuscript is printed. Its section~$n$
+is Section~$n+11$ here, and its Appendices~A, B are Appendices~B, C.
+\item The manuscript cited Part~I as ``V.~Reshetnikov, ProveIt repository,
+\dots, research draft''; Part~I's author line is ``Research study prepared
+with ChatGPT''. The citation is replaced by references to Part~I's
+sections. The manuscript's reference to Adamczewski's 2004 paper is merged
+with Part~I's.
+\item The manuscript's constant $C$ is printed as $\widehat C$
+(Table~\ref{qmw:tab:notation}); nothing else is renamed and no
+normalization changed.
+\item File names in the text are the shipped names; the delivered programs
+themselves still use their delivery names (Appendix~\ref{qmw:app:files}).
+\end{itemize}
+
+\paragraph{Notation.} Part~II uses Part~I's definitions of the prefix weight
+$X$, the next-letter states $S_a$, the counting function $O(N)$ and the
+position errors $E_0(n)=rn-u(n)$, $E_1(n)=sn-v(n)$, for its own word. Where a
+letter is shared with a different meaning, Table~\ref{qmw:tab:notation}
+prints the Part~I meaning beside the Part~II one.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols shared by the two Parts.}\label{qmw:tab:notation}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.11\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}>{\raggedright\arraybackslash}p{.41\textwidth}}
+\toprule
+Symbol & Part I ($\sigma_m$: $1\mapsto(10)^m$) & Part II ($\tau_{a,b}$: $1\mapsto1\,0^a1^b$)\\
+\midrule
+$q,\lambda,r,s$ & \eqref{eq:parameters}: $q=\frac{\sqrt{m^2+4m}-m}2$, $\lambda=m/q$ & \eqref{qmw:eq:q-lambda}, \eqref{qmw:eq:slopes}: $q=\frac{\sqrt{(b+1)^2+4a}-(b+1)}2$, $\lambda=a/q$; $r,s$ by the same formulas\\
+$\widehat C$ vs $C$ & $C=q/(1-q^2)$ \eqref{eq:CH}, the upper end of both position-error intervals & $\widehat C=(a-q)/(1-q^2)$ \eqref{qmw:eq:Cdef}, the manuscript's $C$; it is the largest state-$1$ weight, the role played in Part~I by $H$, \emph{not} by $C$\\
+$H$, $t$ & \eqref{eq:CH}; $t=1-q$ & not used ($t$ is a threshold in research question~3 of Section~\ref{qmw:sec:further})\\
+$M$ & incidence matrix of $\sigma_m$ & incidence matrix of $\tau_{a,b}$ \eqref{qmw:eq:matrix}\\
+$I_0,I_1$ & the intervals \eqref{eq:intervals} & the candidate hulls in each OEIS case, \eqref{qmw:eq:I0-13}, \eqref{qmw:eq:I3}\\
+$K_0,K_1$ & any compact solution in Lemma~\ref{lem:hausdorff} & $K_i=\cl S_i$ (Section~\ref{qmw:sec:states})\\
+$P_j$, $P_k$ & extremal prefixes \eqref{eq:extremal-prefix} & the different cycle \eqref{qmw:eq:Pk}\\
+$T$ & $T=m(m+2)$ (Corollary~\ref{cor:gf}) & $T_k$, a prefix word (Section~\ref{qmw:sec:constructive})\\
+$u$ & $u_m(n)$, position of the $n$th zero & $u(n)$ likewise; $u_i=\max K_i$ in Section~\ref{qmw:sec:extrema} is a state extremum, not a position\\
+$F$ & $F_m(z)$, the characteristic series of the word & $F_0(n),F_1(n)$, the A284369 position errors\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}[The two families, compared]\label{qmw:rem:partI}
+\emph{The families are disjoint.} The word $(10)^m$ has the form
+$1\,0^a1^b$ only for $m=1$, with $(a,b)=(1,0)$, which Part~II excludes
+($a,b\geq1$). So Part~II neither contains, re-proves nor refines Part~I's
+theorems for A284364--A284366, and it does not say it does.
+
+\emph{The same quadratic fields occur.} For $(a,b)=(m,m-1)$ the incidence
+matrix of $\tau_{a,b}$ is $\bigl(\begin{smallmatrix}0&m\\1&m\end{smallmatrix}\bigr)$,
+the matrix of $\sigma_m$, so $q$, $\lambda$, $r$ and $s$ coincide; the words
+and the envelopes differ. For $m=3$, Part~I gives one-position errors in
+$(C-3,C)\approx(-0.8835,2.1165)$ and zero-position errors in
+$((1-C)/q,C)\approx(-1.4110,2.1165)$, while Theorem~\ref{qmw:thm:general}
+for $(a,b)=(3,2)$ gives $(q-\widehat C,q(1+\widehat C))\approx(-5.1165,5.4661)$
+and $(1/q-\widehat C-1,\widehat C/q)\approx(-5.6440,7.4661)$.
+
+\emph{A formal consistency check.} Setting $(a,b)=(1,0)$ in the formulas of
+Theorem~\ref{qmw:thm:general}, outside its hypotheses, gives
+$q=(\sqrt5-1)/2$, $\widehat C=q$, and the interval $(0,1)$ for both letters:
+the complementary Beatty pair of Part~I's case $m=1$
+(Section~\ref{sec:consequences}). Part~II's proof does not cover this case
+(it uses $\widehat C-q^2(\widehat C+1)=qb>0$).
+
+\emph{Method.} Both Parts rest on the contracting weight $X=|P|_0-q|P|_1$
+with $X(\text{image})=-qX$ and on states recording the next letter (Part~I,
+Sections~\ref{sec:weight}--\ref{sec:intervals}; Part~II,
+Sections~\ref{qmw:sec:states}--\ref{qmw:sec:extrema}). Part~II solves a
+four-variable Bellman system for the hulls and treats the question whether
+the attractors fill them separately (Section~\ref{qmw:sec:intervals}),
+whereas in Part~I the intervals are invariant for every $m$.
+
+\emph{Open questions.} Part~II's research question~3 (densities of ranks with
+error above a threshold) is the question Part~I leaves open in
+Section~\ref{sec:consequences}; it is not answered in either Part.
+\end{remark}
+
+\section{The OEIS questions and the new result}\label{qmw:sec:oeis}
+
+\subsection{Two neighboring morphic words}
+
+The fixed point of
+\begin{equation}\label{qmw:eq:sub368}
+0\mapsto1,\qquad 1\mapsto1011
+\end{equation}
+is \OEIS{A284368}.  Its entry identifies the positions of ones and zeros
+with \OEIS{A184484} and \OEIS{A184485}, respectively, and conjectures~\cite{oeis368,oeis184484,oeis184485}
+\begin{equation}\label{qmw:eq:oeis368}
+1<n\frac{5+\sqrt{13}}2-u(n)<3,
+\qquad
+-1<n\frac{\sqrt{13}-1}{2}-v(n)<1.
+\end{equation}
+Here and below $u(n)$ is the position of the $n$th zero and $v(n)$ the
+position of the $n$th one.  The older entries A184484--A184485 describe the
+same complementary pair as an $s$-Wythoff pair.  Thus some consequences can
+also be approached through generalized Beatty theory; our purpose is an
+exact substitution-state analysis that extends uniformly to a larger family.
+
+The neighboring fixed point
+\begin{equation}\label{qmw:eq:sub369}
+0\mapsto1,\qquad 1\mapsto1001
+\end{equation}
+is \OEIS{A284369}~\cite{oeis369}.  The parent entry and the zero-position entry
+\OEIS{A284370} conjecture~\cite{oeis370}
+\begin{equation}\label{qmw:eq:oeis369-zero}
+-3<n\frac{3+\sqrt3}{2}-u(n)<4,
+\end{equation}
+while the parent entry gives the one-position conjecture
+\begin{equation}\label{qmw:eq:oeis369-one}
+-2<n\sqrt3-v(n)<3.
+\end{equation}
+The standalone \OEIS{A284371} page currently omits the term $-a(n)$ in its
+printed inequality, but its title, complement relation, and the parent entry
+make the intended statement \eqref{qmw:eq:oeis369-one} unambiguous~\cite{oeis371}.
+[Added 1 October 2026, batch~73O1: this describes the A284371 page as the
+manuscript saw it on 1 October 2026; it was not re-checked at intake.]
+
+\subsection{Specific resolution}
+
+\begin{theorem}[Sharp OEIS envelopes]\label{qmw:thm:oeis-main}
+For the word A284368, put
+\[
+ E_0(n)=n\frac{5+\sqrt{13}}2-u(n),\qquad
+ E_1(n)=n\frac{\sqrt{13}-1}{2}-v(n).
+\]
+Then, for every $n\geq1$,
+\begin{align}
+\frac{1+\sqrt{13}}3&<E_0(n)<\frac{4+\sqrt{13}}3,
+\label{qmw:eq:sharp368zero}\\
+\frac{\sqrt{13}-5}{3}&<E_1(n)<\frac{\sqrt{13}-2}{3}.
+\label{qmw:eq:sharp368one}
+\end{align}
+The closures of the two error-value sets are the corresponding closed
+intervals, and every displayed endpoint is a subsequential limit.
+Consequently both conjectures in \eqref{qmw:eq:oeis368} hold, with substantial
+room to spare.
+
+For the word A284369, put
+\[
+ F_0(n)=n\frac{3+\sqrt3}{2}-u(n),\qquad
+ F_1(n)=n\sqrt3-v(n).
+\]
+Then, for every $n\geq1$,
+\begin{align}
+-\frac{3+\sqrt3}{2}&<F_0(n)<2+\sqrt3,
+\label{qmw:eq:sharp369zero}\\
+-2&<F_1(n)<1+\sqrt3.
+\label{qmw:eq:sharp369one}
+\end{align}
+Again the closures are exactly the corresponding closed intervals, with all
+four endpoints occurring as subsequential limits.  Hence
+\eqref{qmw:eq:oeis369-zero}--\eqref{qmw:eq:oeis369-one} are true, and the constants
+in them can be sharpened to those above.
+\end{theorem}
+
+The A284368 intervals have width exactly one, so they also recover explicit
+floor formulas.
+
+\begin{corollary}[The generalized-Wythoff specialization]\label{qmw:cor:beatty368}
+For A284368,
+\begin{align}
+v(n)&=\left\lfloor
+ n\frac{\sqrt{13}-1}{2}+\frac{5-\sqrt{13}}3
+\right\rfloor,\label{qmw:eq:floor368one}\\
+u(n)&=\left\lfloor
+ n\frac{5+\sqrt{13}}2-\frac{1+\sqrt{13}}3
+\right\rfloor.\label{qmw:eq:floor368zero}
+\end{align}
+These formulas agree with the OEIS identification of the two position
+sequences as A184484--A184485; no independent priority claim is made for
+this corollary.
+\end{corollary}
+
+\begin{proof}
+For example, \eqref{qmw:eq:sharp368one} says that
+$0<n(\sqrt{13}-1)/2+(5-\sqrt{13})/3-v(n)<1$, which is equivalent to
+\eqref{qmw:eq:floor368one}.  The zero formula follows identically from
+\eqref{qmw:eq:sharp368zero}.
+\end{proof}
+
+The decimal endpoints are summarized in Table~\ref{qmw:tab:bounds}.
+
+\begin{table}[ht]
+\centering
+\caption{Conjectured and sharp position-error envelopes.}
+\label{qmw:tab:bounds}
+\begin{tabular}{@{}llll@{}}
+\toprule
+word & letter & OEIS interval & exact sharp interval \\
+\midrule
+A284368 & $0$ & $(1,3)$ & $(1.5351837584\ldots,\ 2.5351837584\ldots)$ \\
+A284368 & $1$ & $(-1,1)$ & $(-0.4648162415\ldots,\ 0.5351837584\ldots)$ \\
+A284369 & $0$ & $(-3,4)$ & $(-2.3660254037\ldots,\ 3.7320508075\ldots)$ \\
+A284369 & $1$ & $(-2,3)$ & $(-2,\ 2.7320508075\ldots)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The proof comes from a two-parameter theorem.  It is close in spirit to the
+state-dependent contraction used in Part~I for
+$1\mapsto(10)^m$ (Sections~\ref{sec:weight}--\ref{sec:intervals}), but the internal block geometry is different and produces
+a distinct Bellman system.
+
+\section{The two-parameter family}\label{qmw:sec:family}
+
+Fix integers $a,b\geq1$ and define
+\begin{equation}\label{qmw:eq:tauab}
+\tau_{a,b}(0)=1,
+\qquad
+\tau_{a,b}(1)=1\,0^a1^b.
+\end{equation}
+Because the image of $1$ begins with $1$, the iterates
+$\tau_{a,b}^k(1)$ are nested prefixes of a fixed infinite word
+$\word^{(a,b)}$.  The substitution is primitive.  The relation between
+subdominant substitution eigenvalues and discrepancy is classical
+\cite{adam2003,adamczewski}; the point here is to solve the legal-prefix state
+system exactly for this family.
+
+Its incidence matrix, with rows and columns ordered $0,1$, is
+\begin{equation}\label{qmw:eq:matrix}
+M=\begin{pmatrix}0&a\\1&b+1\end{pmatrix}.
+\end{equation}
+Set
+\begin{equation}\label{qmw:eq:q-lambda}
+q=\frac{\sqrt{(b+1)^2+4a}-(b+1)}2,
+\qquad
+\lambda=b+1+q=\frac aq.
+\end{equation}
+Then
+\begin{equation}\label{qmw:eq:qpoly}
+q^2+(b+1)q=a,
+\end{equation}
+and the eigenvalues of $M$ are $\lambda$ and $-q$.  A positive right
+Perron eigenvector is $(q,1)^T$, so the zero and one frequencies are
+\begin{equation}\label{qmw:eq:frequencies}
+\delta=\frac q{1+q},
+\qquad
+\rho=\frac1{1+q}.
+\end{equation}
+The corresponding position slopes are
+\begin{equation}\label{qmw:eq:slopes}
+r=\frac1\delta=1+\frac1q,
+\qquad
+s=\frac1\rho=1+q.
+\end{equation}
+
+The simple inequality
+\[
+q<1
+\quad\Longleftrightarrow\quad
+\sqrt{(b+1)^2+4a}<b+3
+\quad\Longleftrightarrow\quad
+a<b+2
+\]
+gives, for integer parameters,
+\begin{equation}\label{qmw:eq:q-threshold}
+q<1\quad\Longleftrightarrow\quad a\leq b+1.
+\end{equation}
+This is exactly the bounded-discrepancy regime.
+
+\begin{theorem}[General sharp envelope theorem]\label{qmw:thm:general}
+Assume $a,b\geq1$ and $a\leq b+1$.  Define
+\begin{equation}\label{qmw:eq:Cdef}
+{\widehat C}=\frac{a-q}{1-q^2}.
+\end{equation}
+Let $u(n)$ and $v(n)$ be the positions of the $n$th zero and one in
+$\word^{(a,b)}$, and let
+\[
+E_0(n)=\left(1+\frac1q\right)n-u(n),
+\qquad
+E_1(n)=(1+q)n-v(n).
+\]
+Then for every $n\geq1$,
+\begin{align}
+\frac1q-{\widehat C}-1&<E_0(n)<\frac Cq,
+\label{qmw:eq:generalE0}\\
+q-{\widehat C}&<E_1(n)<q(1+{\widehat C}).
+\label{qmw:eq:generalE1}
+\end{align}
+Each endpoint is sharp and is approached by an explicit infinite
+subsequence.  No endpoint is attained at a finite index.
+
+The centered one-count discrepancy satisfies, for every prefix length
+$N\geq0$,
+\begin{equation}\label{qmw:eq:count-discrepancy}
+-\frac{{\widehat C}}{1+q}
+< O(N)-\frac{N}{1+q}
+< \frac{q({\widehat C}+1)}{1+q},
+\end{equation}
+where $O(N)$ counts ones in the first $N$ letters.  Both constants are sharp.
+In particular the densities in \eqref{qmw:eq:frequencies} exist.
+\end{theorem}
+
+\begin{theorem}[Spectral phase transition]\label{qmw:thm:phase}
+For the family \eqref{qmw:eq:tauab}, the prefix discrepancy is bounded if and
+only if $a\leq b+1$.  If $a=b+2$, there are prefixes whose discrepancy grows
+linearly with substitution depth, hence at least logarithmically with prefix
+length.  If $a\geq b+3$, there are prefixes whose discrepancy grows
+geometrically with substitution depth.
+\end{theorem}
+
+Sections~\ref{qmw:sec:states}--\ref{qmw:sec:extrema} prove these theorems.  The
+specific interval attractors needed for Theorem~\ref{qmw:thm:oeis-main} are
+resolved in Section~\ref{qmw:sec:intervals}.
+
+\section{Contracting weights and exact prefix states}\label{qmw:sec:states}
+
+For a finite binary word $P$, define the quadratic weight
+\begin{equation}\label{qmw:eq:weight}
+X(P)=\zeros{P}-q\ones{P}.
+\end{equation}
+It is additive under concatenation.
+
+\begin{lemma}[Weight eigenrelation]\label{qmw:lem:weight}
+For every finite word $P$,
+\begin{equation}\label{qmw:eq:contraction}
+X(\tau_{a,b}(P))=-qX(P).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For the letter $0$, the two sides both equal $-q$.  For the letter $1$,
+\[
+X(1\,0^a1^b)=a-q(b+1)=q^2=-qX(1),
+\]
+using \eqref{qmw:eq:qpoly}.  Additivity proves the identity for any word.
+\end{proof}
+
+A prefix must remember the letter immediately following it.  Let
+\begin{equation}\label{qmw:eq:states}
+S_i=\{X(P):P\text{ is a prefix of }\word^{(a,b)}
+\text{ and the next letter is }i\},
+\qquad i\in\{0,1\},
+\end{equation}
+and let $K_i=\cl S_i$.
+
+\begin{lemma}[Graph-directed state equations]\label{qmw:lem:state-equations}
+If $q<1$, the compact sets $K_0,K_1$ are the unique nonempty compact solution
+of
+\begin{align}
+K_0&=\bigcup_{j=0}^{a-1}\bigl(-qK_1+j-q\bigr),
+\label{qmw:eq:K0}\\
+K_1&=(-qK_0)\ \cup\ (-qK_1)\ \cup\!
+\bigcup_{\ell=1}^{b}\bigl(-qK_1+a-\ell q\bigr).
+\label{qmw:eq:K1}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Let $P$ be a parent prefix and suppose the next parent letter is $1$.
+Inside its image $1\,0^a1^b$, the prefixes immediately before the zeros are
+\[
+1,\ 10,\ \ldots,\ 10^{a-1},
+\]
+with weights $j-q$ for $0\leq j<a$.  The prefixes immediately before the
+initial one and the $b$ trailing ones have weights
+\[
+0,\quad a-q,\quad a-2q,\quad\ldots,\quad a-bq.
+\]
+If the next parent letter is $0$, its image is the single letter $1$, so the
+only transition is to state $1$ with internal weight $0$.  Combining these
+internal weights with Lemma~\ref{qmw:lem:weight} gives
+\eqref{qmw:eq:K0}--\eqref{qmw:eq:K1}.
+
+Conversely, every position lies in one of these image blocks, so no
+transitions are missing.  Since all affine maps have contraction ratio $q<1$,
+the graph-directed Hutchinson operator is a contraction in the maximum
+Hausdorff metric.  It therefore has a unique compact fixed pair, and the
+closures of the actual prefix-state sets form that pair.
+\end{proof}
+
+The relation
+\begin{equation}\label{qmw:eq:min-digit}
+a-bq=q(q+1)>0
+\end{equation}
+follows from \eqref{qmw:eq:qpoly}.  Thus the smallest state-$1$ internal digit is
+$0$ and the largest is $a-q$.  This observation makes the extrema solvable in
+closed form even when the attractors themselves have gaps.
+
+\section{Solving the Bellman extremum system}\label{qmw:sec:extrema}
+
+Write
+\[
+\ell_i=\min K_i,
+\qquad
+u_i=\max K_i.
+\]
+Because multiplication by $-q$ reverses order, equations
+\eqref{qmw:eq:K0}--\eqref{qmw:eq:K1} give
+\begin{align}
+\ell_0&=-qu_1-q,
+&u_0&=-q\ell_1+a-1-q,
+\label{qmw:eq:bellman0}\\
+\ell_1&=\min\{-qu_0,-qu_1\},
+&u_1&=\max\{-q\ell_0,-q\ell_1+a-q\}.
+\label{qmw:eq:bellman1}
+\end{align}
+
+\begin{proposition}[Exact state extrema]\label{qmw:prop:extrema}
+In the bounded regime $q<1$, with ${\widehat C}$ as in \eqref{qmw:eq:Cdef},
+\begin{equation}\label{qmw:eq:state-extrema}
+\boxed{
+\ell_0=-q({\widehat C}+1),\qquad
+u_0={\widehat C}-1,
+\qquad
+\ell_1=-qC,
+\qquad
+u_1={\widehat C}.}
+\end{equation}
+None of these four values belongs to the corresponding unclosed state set
+$S_i$, but each is a limit of values in that state.
+\end{proposition}
+
+\begin{proof}
+The extremum map defined by the right sides of
+\eqref{qmw:eq:bellman0}--\eqref{qmw:eq:bellman1} is $q$-Lipschitz in the supremum
+norm, because minima and maxima are nonexpansive.  It therefore has at most
+one fixed point.
+
+We verify the displayed candidate.  Since $u_1={\widehat C}> {\widehat C}-1=u_0$,
+\[
+\ell_1=-qu_1=-qC.
+\]
+Also
+\[
+-q\ell_1+a-q=q^2{\widehat C}+a-q={\widehat C}
+\]
+by ${\widehat C}(1-q^2)=a-q$.  The competing maximum branch is
+\[
+-q\ell_0=q^2({\widehat C}+1)<{\widehat C},
+\]
+because
+\[
+{\widehat C}-q^2({\widehat C}+1)=a-q-q^2=qb>0.
+\]
+Thus $u_1={\widehat C}$.  The formulas for $\ell_0$ and $u_0$ now follow directly;
+for the latter,
+\[
+-q\ell_1+a-1-q=q^2{\widehat C}+a-q-1={\widehat C}-1.
+\]
+Uniqueness proves \eqref{qmw:eq:state-extrema}.
+
+For nonattainment, suppose first that an actual state-$1$ prefix had weight
+${\widehat C}$.  The strict inequality between the two maximum branches forces its
+parent to have state-$1$ weight $-qC$ and to use the digit $a-q$.  Attaining
+$-qC$ in turn forces a parent of state $1$ and weight ${\widehat C}$, using digit $0$.
+Two desubstitutions therefore return to the same extremal requirement while
+strictly shortening a nonempty prefix, an infinite-descent contradiction.
+The same argument starts from $-qC$.  Attainment of either state-$0$ endpoint
+would force attainment of the corresponding state-$1$ endpoint through
+\eqref{qmw:eq:K0}.  Finally, iterating the two extremizing transitions from the
+empty prefix constructs sequences converging to the endpoints, so they are
+sharp.
+\end{proof}
+
+\subsection{Counting discrepancy}
+
+If $P$ has length $N$, then
+\begin{equation}\label{qmw:eq:Xcount}
+X(P)=N-(1+q)O(N),
+\qquad
+O(N)-\frac{N}{1+q}=-\frac{X(P)}{1+q}.
+\end{equation}
+Across both states, Proposition~\ref{qmw:prop:extrema} gives
+\[
+-q({\widehat C}+1)<X(P)<{\widehat C},
+\]
+which is exactly \eqref{qmw:eq:count-discrepancy}.
+
+\subsection{Position errors}
+
+Suppose a prefix $P$ is immediately followed by the $n$th one.  Then
+$\ones P=n-1$ and $\abs P=v(n)-1$, so
+\begin{equation}\label{qmw:eq:E1X}
+E_1(n)=(1+q)n-v(n)=q-X(P).
+\end{equation}
+Because $X(P)\in S_1$, Proposition~\ref{qmw:prop:extrema} yields
+\[
+q-{\widehat C}<E_1(n)<q+qC=q(1+{\widehat C}).
+\]
+
+Similarly, immediately before the $n$th zero one has
+$\zeros P=n-1$ and $\abs P=u(n)-1$, whence
+\begin{equation}\label{qmw:eq:E0X}
+E_0(n)=\left(1+\frac1q\right)n-u(n)=\frac{X(P)+1}{q}.
+\end{equation}
+Using $X(P)\in S_0$ gives
+\[
+\frac1q-{\widehat C}-1<E_0(n)<\frac Cq.
+\]
+This proves Theorem~\ref{qmw:thm:general}.
+
+\section{The bounded-discrepancy phase transition}\label{qmw:sec:phase}
+
+The preceding contraction proof establishes bounded discrepancy for $q<1$.
+To prove that this condition is necessary, one explicit state-$1$ cycle is
+enough.
+
+Let $P_0$ be the empty prefix and recursively define
+\begin{equation}\label{qmw:eq:Pk}
+P_{k+1}=\tau_{a,b}^2(P_k)\,1\,0^a.
+\end{equation}
+Every $P_k$ is a prefix immediately before a one.  If $x_k=X(P_k)$, then
+\begin{equation}\label{qmw:eq:xrec}
+x_0=0,
+\qquad
+x_{k+1}=q^2x_k+a-q.
+\end{equation}
+The two steps are: use the zero internal digit before the initial one, then
+use the largest state-$1$ digit $a-q$ before the first trailing one.
+
+When $q<1$,
+\begin{equation}\label{qmw:eq:xclosed}
+x_k={\widehat C}(1-q^{2k})\longrightarrow {\widehat C},
+\end{equation}
+which also gives an explicit sharpness sequence.  When $q=1$,
+\[
+x_k=k(a-1)=k(b+1),
+\]
+so discrepancy is unbounded linearly in depth.  When $q>1$, the solution of
+\eqref{qmw:eq:xrec} grows geometrically like $q^{2k}$.  Together with
+\eqref{qmw:eq:q-threshold}, this proves Theorem~\ref{qmw:thm:phase}.
+
+At the boundary $q=1$, substitution lengths grow exponentially in $k$ while
+$x_k$ grows linearly, giving a logarithmic lower bound in the physical prefix
+length.  A matching $O(\log N)$ upper bound follows by desubstituting any
+prefix: every twofold image has length at least $3$, each internal correction
+is bounded, and the multiplier has absolute value one.  For $q>1$, the
+constructed prefixes satisfy $\abs{P_k}\asymp\lambda^{2k}$ and
+$X(P_k)\asymp q^{2k}$, hence exhibit the power law
+$X(P_k)\asymp\abs{P_k}^{\log_\lambda q}$.  A full normalized limit theory is
+left for future work.  These refinements are not needed for the OEIS
+applications.
+
+\section{When the state attractors are full intervals}\label{qmw:sec:intervals}
+
+Proposition~\ref{qmw:prop:extrema} determines the hulls of $K_0,K_1$ for every
+bounded parameter pair.  It does not assert that the compact sets fill their
+hulls.  Indeed, for some larger parameters the first-level images already
+leave gaps.  The two OEIS cases are especially tractable: one is an exact
+tiling and the other has ample overlap.
+
+\subsection{A284368: an exact interval tiling}
+
+Here $(a,b)=(1,2)$,
+\begin{equation}\label{qmw:eq:q13C13}
+q=\frac{\sqrt{13}-3}{2},
+\qquad
+{\widehat C}=\frac{\sqrt{13}+1}{6}.
+\end{equation}
+Proposition~\ref{qmw:prop:extrema} gives the candidate intervals
+\begin{align}
+I_0&=\left[\frac{2-\sqrt{13}}3,\frac{\sqrt{13}-5}{6}\right],
+\label{qmw:eq:I0-13}\\
+I_1&=\left[\frac{\sqrt{13}-5}{6},\frac{\sqrt{13}+1}{6}\right].
+\label{qmw:eq:I1-13}
+\end{align}
+The state-$0$ equation has only one image, $I_0=-qI_1-q$.  The four
+state-$1$ images tile $I_1$ exactly, in the order shown in
+Table~\ref{qmw:tab:tiling13}.
+
+\begin{table}[ht]
+\centering
+\caption{Exact interval tiling for $(a,b)=(1,2)$.  Consecutive endpoints
+coincide.}
+\label{qmw:tab:tiling13}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+source and digit & left endpoint & right endpoint \\
+\midrule
+$-qI_1$ & $(\sqrt{13}-5)/6$ & $-7/3+2\sqrt{13}/3$ \\
+$-qI_0$ & $-7/3+2\sqrt{13}/3$ & $19/6-5\sqrt{13}/6$ \\
+$-qI_1+1-2q$ & $19/6-5\sqrt{13}/6$ & $5/3-\sqrt{13}/3$ \\
+$-qI_1+1-q$ & $5/3-\sqrt{13}/3$ & $(\sqrt{13}+1)/6$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Thus $(I_0,I_1)$ satisfies the graph-directed equations as sets.  Uniqueness
+in Lemma~\ref{qmw:lem:state-equations} proves
+\begin{equation}\label{qmw:eq:Kinterval13}
+K_0=I_0,
+\qquad
+K_1=I_1.
+\end{equation}
+Applying the affine error maps \eqref{qmw:eq:E1X}--\eqref{qmw:eq:E0X} gives exactly
+\eqref{qmw:eq:sharp368zero}--\eqref{qmw:eq:sharp368one} and proves the A284368 half
+of Theorem~\ref{qmw:thm:oeis-main}.
+
+\subsection{A284369: overlapping interval covers}
+
+Here $(a,b)=(2,1)$,
+\begin{equation}\label{qmw:eq:q3C3}
+q=\sqrt3-1,
+\qquad
+{\widehat C}=1+\sqrt3.
+\end{equation}
+The state hulls are
+\begin{equation}\label{qmw:eq:I3}
+I_0=[-1-\sqrt3,\sqrt3],
+\qquad
+I_1=[-2,1+\sqrt3].
+\end{equation}
+For state $0$, the two image intervals are
+\begin{equation}\label{qmw:eq:zero-images3}
+[-1-\sqrt3,\sqrt3-1],
+\qquad
+[-\sqrt3,\sqrt3],
+\end{equation}
+which overlap and cover $I_0$.  For state $1$, the three images are
+\begin{equation}\label{qmw:eq:one-images3}
+[-2,2\sqrt3-2],
+\qquad
+[\sqrt3-3,2],
+\qquad
+[1-\sqrt3,1+\sqrt3].
+\end{equation}
+They overlap consecutively and cover $I_1$.  Therefore the candidate pair is
+again an exact set-valued fixed point, and uniqueness gives
+\begin{equation}\label{qmw:eq:Kinterval3}
+K_0=I_0,
+\qquad
+K_1=I_1.
+\end{equation}
+The position-error maps yield \eqref{qmw:eq:sharp369zero}--\eqref{qmw:eq:sharp369one}.
+This completes the proof of Theorem~\ref{qmw:thm:oeis-main}.
+
+\begin{remark}
+The interval property is not automatic.  For example, at $(a,b)=(2,5)$ the
+two first-level state-$0$ images have a gap, although the extremal formulas
+of Proposition~\ref{qmw:prop:extrema} remain valid.  Classifying exactly when all
+gaps close is one of the main open directions in Section~\ref{qmw:sec:further}.
+\end{remark}
+
+\section{Constructive extremal subsequences and generating functions}
+\label{qmw:sec:constructive}
+
+The cycle \eqref{qmw:eq:Pk} not only proves sharpness but gives explicit indices.
+Let
+\begin{equation}\label{qmw:eq:countvector}
+c_k=\begin{pmatrix}z_k\\o_k\end{pmatrix}
+=\begin{pmatrix}\zeros{P_k}\\\ones{P_k}\end{pmatrix}.
+\end{equation}
+Since the suffix $10^a$ has count vector $(a,1)^T$,
+\begin{equation}\label{qmw:eq:vectorrec}
+c_0=0,
+\qquad
+c_{k+1}=M^2c_k+\begin{pmatrix}a\\1\end{pmatrix}.
+\end{equation}
+The next one has rank $o_k+1$ and position $z_k+o_k+1$.  Its error is
+$q-x_k$, which decreases to $q-{\widehat C}$.  To exhibit all four endpoints explicitly,
+put
+\[
+ Q_k=\tau_{a,b}(P_k),\qquad
+ R_k=\tau_{a,b}(P_k)1,\qquad
+ T_k=\tau_{a,b}(Q_k)1\,0^{a-1}.
+\]
+Then $Q_k$ is in state $1$ with weight $-qx_k\to-qC$, so its one-position
+errors tend to $q(1+{\widehat C})$.  The prefixes $R_k$ and $T_k$ are in state $0$ and
+have respective weights
+\[
+ -qx_k-q\longrightarrow-q({\widehat C}+1),
+ \qquad
+ -qX(Q_k)+a-1-q\longrightarrow {\widehat C}-1.
+\]
+Their zero-position errors therefore tend to $1/q-{\widehat C}-1$ and ${\widehat C}/q$.
+This supplies concrete infinite subsequences for every endpoint in
+Theorem~\ref{qmw:thm:general}.
+
+The vector generating function is rational:
+\begin{equation}\label{qmw:eq:vectorGF}
+\sum_{k\geq0}c_kz^k
+=\frac{z}{1-z}(I-zM^2)^{-1}
+\begin{pmatrix}a\\1\end{pmatrix}.
+\end{equation}
+Let $N_k=z_k+o_k=\abs{P_k}$.  In the two OEIS cases,
+\begin{align}
+\sum_{k\geq0}N_kz^k
+&=\frac{z(2-5z)}{(1-z)(1-11z+z^2)}
+&&\text{for A284368},
+\label{qmw:eq:GF368}\\
+\sum_{k\geq0}N_kz^k
+&=\frac{3z(1-2z)}{(1-z)(1-8z+4z^2)}
+&&\text{for A284369}.
+\label{qmw:eq:GF369}
+\end{align}
+The first terms are
+\begin{align*}
+\text{A284368: }&0,2,19,204,2222,24235,264360,2883722,\ldots,\\
+\text{A284369: }&0,3,21,153,1137,8481,63297,472449,\ldots.
+\end{align*}
+Thus the corresponding homogeneous recurrences are
+\begin{align*}
+N_k&=12N_{k-1}-12N_{k-2}+N_{k-3}
+&&\text{for A284368},\\
+N_k&=9N_{k-1}-12N_{k-2}+4N_{k-3}
+&&\text{for A284369}.
+\end{align*}
+These formulas make the sharpness sequences reproducible without building the
+full fixed words.
+
+\section{Computational audit}\label{qmw:sec:verification}
+
+The verifier \texttt{code/02-morphic-verify.py} uses only the Python standard library.
+It represents every algebraic quantity as $A+B\sqrt D$ with rational
+coefficients, compares signs by integer arithmetic, and never uses a decimal
+to decide an inequality.  Its main checks are:
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item the general Bellman solution for all $119$ parameter pairs
+      $1\leq b\leq14$, $1\leq a\leq b+1$;
+\item exact interval-tiling and overlap identities for the two OEIS cases;
+\item literal generation and comparison with the posted initial OEIS terms;
+\item exact checking of every zero- and one-position error in the first
+      $100\,000$ letters of each word;
+\item the extremal vector recurrences and data tables used above.
+\end{enumerate}
+
+The recorded run (\texttt{data/02-morphic-verification.json}) reports $201\,686$ exact or counting checks.  This finite
+audit is not used in place of the proofs; it is intended to catch indexing,
+letter-order, and algebraic-simplification errors.
+
+Figures~\ref{qmw:fig:errors368} and \ref{qmw:fig:errors369} plot the first
+$180\,000$ letters.  The dashed lines are the exact endpoints, not fitted
+values.  The apparent filling of the vertical bands is explained by the
+interval-attractor proofs in Section~\ref{qmw:sec:intervals}.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/02-morphic-A284368_errors.pdf}
+\caption{Position errors for A284368.  The zero and one errors lie in two
+unit-width sharp intervals; the displayed envelope constants are exact.}
+\label{qmw:fig:errors368}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/02-morphic-A284369_errors.pdf}
+\caption{Position errors for A284369.  The lower one-error endpoint is
+exactly $-2$ but is never attained, proving the strict OEIS inequality.}
+\label{qmw:fig:errors369}
+\end{figure}
+
+\clearpage
+\section{OEIS-ready consequences}\label{qmw:sec:updates}
+
+The following concise statements can be adapted into OEIS comments after
+independent review.
+
+\begin{resultbox}
+\textbf{A284368 / A184484 / A184485.}
+For the fixed point of $0\mapsto1$, $1\mapsto1011$, let $u(n)$ and $v(n)$ be
+the positions of the $n$th zero and one.  Then
+\[
+\frac{1+\sqrt{13}}3
+<n\frac{5+\sqrt{13}}2-u(n)
+<\frac{4+\sqrt{13}}3,
+\]
+\[
+\frac{\sqrt{13}-5}{3}
+<n\frac{\sqrt{13}-1}{2}-v(n)
+<\frac{\sqrt{13}-2}{3}.
+\]
+All four constants are sharp but unattained.  The zero and one densities are
+$(5-\sqrt{13})/6$ and $(1+\sqrt{13})/6$.
+\end{resultbox}
+
+\begin{resultbox}
+\textbf{A284369 / A284370 / A284371.}
+For the fixed point of $0\mapsto1$, $1\mapsto1001$, let $u(n)$ and $v(n)$ be
+the positions of the $n$th zero and one.  Then
+\[
+-\frac{3+\sqrt3}{2}
+<n\frac{3+\sqrt3}{2}-u(n)
+<2+\sqrt3,
+\]
+\[
+-2<n\sqrt3-v(n)<1+\sqrt3.
+\]
+All four constants are sharp but unattained.  The zero and one densities are
+$1-1/\sqrt3$ and $1/\sqrt3$.
+\end{resultbox}
+
+No OEIS edit has been submitted as part of this work.
+
+\section{Further research questions}\label{qmw:sec:further}
+
+The two-state reduction exposes several problems that are both concrete and
+substantially broader than the four resolved inequalities.
+
+\begin{enumerate}[leftmargin=*,itemsep=5pt]
+\item \textbf{Interval-versus-Cantor classification.}
+Determine necessary and sufficient conditions on $(a,b)$, with $a\leq b+1$,
+for $K_0$ and $K_1$ to equal their convex hulls.  First-level overlap gives
+explicit inequalities, but deeper exact overlaps can close apparent gaps.
+A finite-state classification may exist because all translations lie in the
+same quadratic field.
+
+\item \textbf{Invariant error distributions.}
+The present paper identifies the support and its endpoints.  Determine the
+limiting empirical measures of $E_0(n)$ and $E_1(n)$, their continuity or
+singularity, moments, and local dimensions.  In interval cases, decide
+whether the measures are absolutely continuous or have self-similar density
+singularities.
+
+\item \textbf{Threshold densities and record statistics.}
+For a fixed threshold $t$, determine the natural density of ranks with
+$E_i(n)>t$, when it exists.  This directly continues an open direction in
+Part~I (A284364--A284366; Section~\ref{sec:consequences}), where sharp supports are known but violation
+densities are not.
+
+\item \textbf{Exact first-hitting algorithms.}
+Develop automata or Ostrowski-type numeration systems that return the first
+rank at which a prescribed algebraic error interval is entered.  The graph
+system suggests a branch-and-bound algorithm with exact quadratic endpoints.
+
+\item \textbf{Closed forms for A284370 and A284371.}
+A284368 is linked to generalized Wythoff sequences.  Determine whether the
+A284369 position sequences admit finite generalized-Beatty formulas, nested
+floor formulas, or low-complexity transducers.  The broad interval support
+makes a single ordinary Beatty formula impossible, but structured finite
+combinations may remain possible.
+
+\item \textbf{Factor balance rather than prefix balance.}
+Compute the optimal constant controlling the difference in letter counts
+between arbitrary equal-length factors.  Prefix envelopes give immediate
+coarse bounds, but the sharp factor constant requires the difference set
+$K_i-K_j$ together with legal endpoint states.
+
+\item \textbf{Critical and supercritical normalization.}
+At $a=b+2$, determine the exact limsup and liminf after division by
+$\log N$.  For $a\geq b+3$, normalize by the predicted power
+$N^{\log_\lambda q}$ and identify the resulting graph-directed limit sets.
+
+\item \textbf{Automated OEIS survey.}
+Apply the state-equation pipeline to other primitive binary morphisms whose
+OEIS entries contain unproved Beatty-type error bounds.  The steps---incidence
+spectrum, eigenweight, legal internal digits, Bellman extrema, and overlap
+audit---are sufficiently explicit to automate candidate discovery while
+retaining exact proof certificates.
+
+\item \textbf{Formalization in Lean.}
+Formalize finite-word counts, substitution desubstitution, quadratic-field
+order, and the contracting extremum map in ProveIt.  The compact-attractor
+statement can either be formalized directly or replaced, for the extremal
+bounds, by finite-depth inequalities plus a geometric tail estimate.
+\end{enumerate}
+
+\section{Conclusion}
+
+The position conjectures for A284369 are not isolated numerical accidents.
+They are the $(a,b)=(2,1)$ specialization of a two-parameter theorem whose
+constants are forced by a four-variable contracting Bellman system.  The same
+theorem gives an independent, sharper resolution of the neighboring A284368
+bounds and reveals a clean spectral transition at $a=b+2$.
+
+The main structural lesson is that the non-Perron eigenvalue gives the
+contraction rate, but sharp constants require legal prefix states.  Once those
+states are retained, the exact extrema collapse to the single algebraic
+constant ${\widehat C}=(a-q)/(1-q^2)$.  Whether the resulting compact sets fill their
+hulls is a separate overlap problem: it succeeds by exact tiling for A284368,
+by overlap for A284369, and fails already for some nearby parameters.  That
+separation between sharp envelopes and internal fractal geometry provides a
+natural next research program.
+
+
+% End of Part II's main text: Part I's Appendix A keeps its Table 3.
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\theHtable}{\arabic{table}}
+\setcounter{table}{2}
 \clearpage
 \appendix
+\noindent\emph{Appendix~A belongs to Part~I (and is printed as it was);
+Appendices~\ref{qmw:app:checklist} and~\ref{qmw:app:files} belong to
+Part~II.}
+
 \section{Reproducing and inspecting the deliverables}\label{app:reproduce}
 
 All verification code uses only the Python standard library and requires
@@ -995,10 +2005,65 @@ File or directory & Purpose\\
 \caption{Archive contents.}\label{tab:files}
 \end{table}
 
+\section{A compact proof checklist}
+\label{qmw:app:checklist}
+
+For ease of independent checking, the argument can be reduced to the
+following algebraic chain.
+
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item $q^2+(b+1)q=a$ and $X=\#0-q\#1$ imply
+      $X(\tau(P))=-qX(P)$.
+\item Legal internal prefixes give exactly
+      \eqref{qmw:eq:K0}--\eqref{qmw:eq:K1}.
+\item Since $a-bq=q(q+1)>0$, the extreme state-$1$ digits are $0$ and $a-q$.
+\item The extremum operator is $q$-contractive, and
+      \[
+      (-q({\widehat C}+1),\ {\widehat C}-1,\ -qC,\ {\widehat C})
+      \]
+      is its fixed point because ${\widehat C}(1-q^2)=a-q$ and
+      ${\widehat C}-q^2({\widehat C}+1)=qb>0$.
+\item Immediately before the $n$th one and zero, the error maps are
+      $q-X$ and $(X+1)/q$, respectively.
+\item The two-step extremal cycle has affine map
+      $x\mapsto q^2x+a-q$, proving sharpness and the phase transition.
+\end{enumerate}
+
+\section{Reproducibility files}
+\label{qmw:app:files}
+
+The archive delivered with the manuscript contained the files below. The
+manuscript's \texttt{article.tex}, \texttt{article.pdf}, \texttt{README.md}
+and the file list \texttt{MANIFEST.txt} are not shipped (the text is Part~II
+of this report; its checksum ledger was verified and retired). The other
+files are shipped byte-identical under the prefix \texttt{02-morphic-}:
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+shipped file & purpose \\
+\midrule
+\texttt{code/02-morphic-verify.py} & exact standard-library verifier \\
+\texttt{code/02-morphic-make\_figures.py} & deterministic figure generator \\
+\texttt{code/02-morphic-build.sh} & the manuscript's PDF build script \\
+\texttt{data/02-morphic-verification.json} & recorded exact-check output \\
+\texttt{figures/02-morphic-A28436*\_errors.\{pdf,png\}} & vector and raster figures \\
+\texttt{02-morphic-oeis\_proposed\_updates.txt} & concise draft comments, not submitted \\
+\texttt{02-morphic-research\_status.md} & novelty and verification boundaries \\
+\bottomrule
+\end{tabular}
+\end{center}
+The programs still use their delivery names: the verifier writes
+\texttt{data/verification.json}, which in this report is \emph{Part~I's}
+recorded report; the figure script writes unprefixed
+\texttt{figures/A28436*\_errors.*}; and the build script builds
+\texttt{article.tex}, which here is the whole report. Run them on a copy of
+the delivered layout (see the README).
+
 \clearpage
 \phantomsection
 \addcontentsline{toc}{section}{References}
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 \bibitem{oeis364}
 The OEIS Foundation Inc., \emph{A284364: Fixed point of the morphism
 $0\mapsto1$, $1\mapsto101010$}. Entry credited to Clark Kimberling,
@@ -1022,5 +2087,42 @@ B.~Adamczewski, \emph{Symbolic discrepancy and self-similar dynamics},
 Annales de l'Institut Fourier \textbf{54} (2004), no.~7, 2201--2234.
 \href{https://doi.org/10.5802/aif.2079}{doi:10.5802/aif.2079}.
 \url{https://www.numdam.org/item/AIF_2004__54_7_2201_0/}.
+
+\bibitem{adam2003}
+B.~Adamczewski,
+\emph{Balances for fixed points of primitive substitutions},
+Theoretical Computer Science \textbf{307} (2003), 47--75,
+\href{https://doi.org/10.1016/S0304-3975(03)00092-6}
+{doi:10.1016/S0304-3975(03)00092-6}.
+
+\bibitem{oeis368}
+The OEIS Foundation Inc.,
+\emph{A284368: Fixed point of the morphism $0\to1$, $1\to1011$},
+\url{https://oeis.org/A284368}, accessed October 1, 2026.
+
+\bibitem{oeis184484}
+The OEIS Foundation Inc.,
+\emph{A184484: Lower $s$-Wythoff sequence, $s(n)=3n-2$},
+\url{https://oeis.org/A184484}, accessed October 1, 2026.
+
+\bibitem{oeis184485}
+The OEIS Foundation Inc.,
+\emph{A184485: Upper $s$-Wythoff sequence, $s(n)=3n-2$},
+\url{https://oeis.org/A184485}, accessed October 1, 2026.
+
+\bibitem{oeis369}
+The OEIS Foundation Inc.,
+\emph{A284369: Fixed point of the morphism $0\to1$, $1\to1001$},
+\url{https://oeis.org/A284369}, accessed October 1, 2026.
+
+\bibitem{oeis370}
+The OEIS Foundation Inc.,
+\emph{A284370: Positions of 0 in A284369},
+\url{https://oeis.org/A284370}, accessed October 1, 2026.
+
+\bibitem{oeis371}
+The OEIS Foundation Inc.,
+\emph{A284371: Positions of 1 in A284369},
+\url{https://oeis.org/A284371}, accessed October 1, 2026.
 \end{thebibliography}
 \end{document}
