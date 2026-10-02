@@ -167,6 +167,14 @@ asymptotics reports, the closest in method are the partition-type
 `a097356-sqrt-restricted-partitions`, which treat different products. These
 pointers are made here only; those reports are not edited.
 
+**Ascent sequences (batch 77, dated 2 October 2026).** Section 1.1 leaves
+the asymptotics of 201-avoiding ascent sequences, which Guttmann and
+Kotěšovec discuss beside L-convex polyominoes, to other work. The sibling
+report `a202062-ascent-201-enumeration` (batch 77P1) proves their cubic
+generating function for A202062 and its all-orders asymptotics; the two
+problems share only the Guttmann–Kotěšovec paper (dated note in
+Section 1.1).
+
 ## Labels
 
 Part I's labels carry the prefix `lcp:`. The manuscript's 59 labels were
