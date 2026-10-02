@@ -28,6 +28,15 @@ numerical universal alphabet remains uninstantiated. Mortality now has
 [a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
 the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
+The [2 October computational-substrate review](imported_substrate_review_20261002.md)
+covers three imported report collections and 25 fresh test entry points,
+with two corrected README claims. Its [bounded FRACTRAN transfer](fractran_divisibility_residual_projection.md)
+saves nine operations per fraction-step in a declared literal evaluator
+(515 to 407 in the endpoint example). Its [priority-reaction transfer](reaction_priority_residual_projection.md)
+reduces residuals from `616T+62` to `247T+62`. Both preserve every complete
+natural witness tuple and passed independent review. Their arity depends
+on the external horizon; the fixed universal bound remains 87 operations.
+
 The [first-padding sparse-TM compiler](gpcp_first_padding_units763.md)
 gives **719 certificate /763=352M+411A operations**,15 comparisons,
 125 positive witnesses and exact formal degree232964. Both first-padding
