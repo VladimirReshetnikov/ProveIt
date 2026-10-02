@@ -1003,6 +1003,15 @@ the four copy tiles. An explicit word bijection preserves physical
 chronology. Recompilation saves2A: H574=236M+338A and **728 certificate /
 808=349M+459A polynomial**,27eq,125w,degree130394; supplied811/126w/5204.
 
+The [scalar U15 controller](u15_binary_controller_scout.md)
+costs **112=46M+66A operations**, four integer witnesses and exact degree10
+for one transition; shifting every coordinate positive costs121 operations.
+Its integer nonnegativity proof forces all bits and rejects the undefined
+halt and unused state. The grouped one-hot comparators cost142/147 operations
+with29 witnesses and degree2. These are complete single-step relations;
+ordinary multiplication of packed histories would convolve time cells, so
+neither scalar count is an unbounded universal-polynomial bound.
+
 The [complete packed U15 tape compiler](u15_packed_two_tape_history.md)
 gives **653=255M+398A operations**, 105 positive witnesses and formal degree
 at most1936, including the ordinary-integer input conversion. Its raw natural
