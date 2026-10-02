@@ -29,6 +29,9 @@
 \newcommand{\tr}{\operatorname{tr}}
 \newcommand{\dd}{\,\mathrm d}
 \newcommand{\coeff}[2]{[#1^{#2}]}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Ordered Long Jump Rook Paths\\[4pt]\large Exact coefficient identities and fixed dimension asymptotics}
 \author{}
 \date{2 October 2026}
@@ -41,7 +44,7 @@ Let $A(n,k)$ count paths from $(n,\ldots,n)$ to the origin which decrease one co
 \tableofcontents
 \clearpage
 
-\section{The counting problem and main result}
+\section{The counting problem and main result}\label{orp:sec:problem}
 A rook step changes exactly one coordinate by a positive integer; the step length is unrestricted. In the convention of OEIS A227578, the path starts at $(n,\ldots,n)$, ends at $0$, and satisfies $p_1\le\cdots\le p_k$ after every step. Reversing time and reversing coordinate order gives the equivalent increasing model in
 \[
 \mathcal C_k=\{\lambda\in\mathbb Z_{\ge0}^k:\lambda_1\ge\cdots\ge\lambda_k\}.
@@ -49,34 +52,90 @@ A rook step changes exactly one coordinate by a positive integer; the step lengt
 We use this latter model in the proof. The empty path gives $A(0,k)=1$, and $A(1,k)=1$. In particular, the counts are nondecreasing, not globally strictly increasing. The cases $k=0,1$ are elementary; throughout the asymptotic statements $k\ge2$ is fixed.
 
 Put
-\begin{equation}\label{eq:parameters}
+\begin{equation}\label{orp:eq:parameters}
  p=\frac{k(k-1)}2,\qquad d=k-1,\qquad
  \alpha=\frac{k^2-1}2=p+\frac d2,\qquad
  \Lambda=(k+1)^k,\qquad J_k=\prod_{j=0}^{k-1}j!.
 \end{equation}
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{orp:thm:main}
 For every fixed integer $k\ge2$, there are explicitly computable rational numbers $d_j(k)$, with $d_0(k)=1$, such that for every fixed integer $M\ge1$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{orp:eq:main}
  A(n,k)=C_k\Lambda^n n^{-\alpha}
  \left(\sum_{j=0}^{M-1}\frac{d_j(k)}{n^j}+O_{k,M}(n^{-M})\right),
  \qquad n\longrightarrow\infty,
 \end{equation}
 where
-\begin{equation}\label{eq:C}
+\begin{equation}\label{orp:eq:C}
  C_k=\frac{J_k\,k^{-k^2/2+k+1}(k+1)^{k^2-k-1}}
  {(2\pi)^{(k-1)/2}(k+2)^{(k^2-1)/2}}.
 \end{equation}
 The first correction is
-\begin{equation}\label{eq:d1}
+\begin{equation}\label{orp:eq:d1}
  d_1(k)=-\frac{(k-1)(k+1)(2k^4+8k^3+9k^2+6k+12)}{12k(k+2)^2}.
 \end{equation}
-An explicit finite generator for every $d_j(k)$ is given in Theorem~\ref{thm:generator}; Proposition~\ref{prop:d2} also evaluates $d_2(k)$ in closed form.
+An explicit finite generator for every $d_j(k)$ is given in Theorem~\ref{orp:thm:generator}; Proposition~\ref{orp:prop:d2} also evaluates $d_2(k)$ in closed form.
 \end{theorem}
 This is a fixed-dimension, fixed-truncation-order theorem. It does not assert uniformity as $k$ grows, convergence of the complete formal expansion, exponentially small error after optimal truncation, or effective constants in every remainder.
 
 The conjectural scale $C_k(k+1)^{kn}n^{-(k^2-1)/2}$ is recorded in A227578, and the leading constants for $k=2,3,4,5$ were already recorded in the corresponding OEIS columns \cite{oeis,oeis2,oeis3,oeis4,oeis5}. Our proof begins with the actual chamber boundary equation, rather than assuming a reflection principle for long jumps or assuming that a posted recurrence enumerates the paths.
 
-\section{Exact chamber counting}
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~58 of
+batch~77 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{ordered-\allowbreak rook-\allowbreak reproducibility.zip} (wrapper
+directory \texttt{ordered-\allowbreak rook-\allowbreak report/}) in commit
+\texttt{096ee7b87}, main file \texttt{ordered\_rook\_paths.tex}, now
+\texttt{article.tex}, and placed in commit \texttt{d0e6008d9} among the
+OEIS-sequence asymptotics reports of the research-report collection. The
+manuscript names no ProveIt commit and continues no repository path, so it
+has no pin; its author line is empty and the delivery names no tool. Nothing
+here is formalized in Lean or Rocq, and placement in the collection confers
+no formal status on any statement. The writing step prefixed every label
+with \texttt{orp:}, added section labels and these \textsf{[write]} notes and
+two references \cite{orp-tai,orp-cti}; no statement, proof, number or table
+of the manuscript was changed.
+
+\emph{Not the rook of other reports.} Here a \emph{rook step} is a move of
+a lattice path (one coordinate changes by an arbitrary positive amount). The
+collection's other uses of the word are unrelated objects: rook polynomials
+(placements of non-attacking rooks on a board) in
+\texttt{a330266-\allowbreak balanced-\allowbreak smirnov-\allowbreak poisson}
+and \texttt{a000382-\allowbreak winding-\allowbreak correction}, and the
+non-attacking king and knight placements of the batch-77 report
+\texttt{a201513-\allowbreak sparse-\allowbreak chess-\allowbreak placements}.
+No result is shared with any of them.
+
+\emph{Notation.} Several letters carry two or more section-local meanings.
+Each symbol is printed as delivered; the table fixes its meaning by section
+and names the tempting false reading.
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.14\linewidth}p{0.80\linewidth}@{}}
+\toprule
+symbol & meaning here (and what it is \emph{not})\\
+\midrule
+$\Lambda$, $\mu$ & $\Lambda=(k+1)^k$ is the exponential growth rate of $A(n,k)$; $\mu=(k+1)/k^2=h'(0)$, defined in \eqref{orp:eq:qmu}, is a derivative at the critical point, \emph{not} a growth rate.\\
+$p$, $p_i$ & $p=k(k-1)/2$ in \eqref{orp:eq:parameters}; $p_1\le\cdots\le p_k$ are path coordinates (Section~\ref{orp:sec:problem} only).\\
+$d$, $d_j(k)$ & $d=k-1$ is a dimension; $d_j(k)$ are the correction coefficients of \eqref{orp:eq:main}. $d_1$ is not $d$.\\
+$a$, $b$, $c_4$ & $a(\lambda)$ counts chamber paths (Section~\ref{orp:sec:chamber}); from \eqref{orp:eq:qmu} on, $a=h''(0)$, $b=h'''(0)$, $c_4=h^{(4)}(0)$; $c$ is the critical point.\\
+$C_k$, $\mathcal C_k$ & $C_k$ is the leading constant \eqref{orp:eq:C} (written $C$ in Section~\ref{orp:sec:inverse}); $\mathcal C_k$ is the chamber.\\
+$M$ & a truncation order in Theorem~\ref{orp:thm:main}; a \emph{target count} in Section~\ref{orp:sec:inverse} ($x_0(M)$, $N_k(M)$, $M_J$).\\
+$N$, $N_k(M)$ & $N=n+k-1$ is the diagonal extraction index in \eqref{orp:eq:symmetric} and Section~\ref{orp:sec:constant}; $N_k(M)$ is the integer threshold of Corollary~\ref{orp:cor:threshold}, abbreviated $N$ in its proof.\\
+$J$, $J_k$ & $J_k=\prod_{j<k}j!$ in \eqref{orp:eq:parameters}; $J$ is a truncation order (Sections~\ref{orp:sec:generator}, \ref{orp:sec:inverse}).\\
+$D$ & $D(x)=\prod_ir_i^{k-i}$ (Section~\ref{orp:sec:chamber}); $D_k(z)$, the diagonal series; $D_j(K)$, the rational function of Corollary~\ref{orp:cor:rationaldimension}; a total degree $D$ in Section~\ref{orp:sec:second}.\\
+$B$ & $B_i$, the boundary series of \eqref{orp:eq:boundary}; $B_k(t,y)$, the normalized amplitude \eqref{orp:eq:B}; $B_2$, the scalar \eqref{orp:eq:B2}; $B_1,B_2^*,B_3,B_4$, the coefficients of $\log B_k$ in the proof of Proposition~\ref{orp:prop:d2} (the star is the manuscript's).\\
+$\sigma$ & a permutation (Section~\ref{orp:sec:chamber}); the radial branch $\sigma(t,y)$ of \eqref{orp:eq:sigma}.\\
+$H$, $G$, $\mathcal G$ & $H(x)=1-\sum_ir_i$ and $R=H^{-1}$; $G$ is the numerator of \eqref{orp:eq:symmetric} in Section~\ref{orp:sec:smooth} but a Gaussian Hermitian matrix in Section~\ref{orp:sec:first}, where $H_0$ is its trace-zero part; $\mathcal G$ is the Gaussian expectation of \eqref{orp:eq:wickratio}.\\
+$R$, $T$, $P$ & $R$ is also a list of exponents in \eqref{orp:eq:IBP}; $T$ is a scalar trace (Section~\ref{orp:sec:first}), $T_m$ a polynomial (Section~\ref{orp:sec:second}); $P_r$ are power sums, $P(k)$ the polynomial of \eqref{orp:eq:d2}.\\
+$\lambda$, $\lambda_m$ & a chamber point; $\lambda_m=h^{(m)}(0)$ (Section~\ref{orp:sec:second}).\\
+$L$ & $L=\log\Lambda=k\log(k+1)$ (Section~\ref{orp:sec:inverse}). Not the right-hand side $L$ of the core equation in the transseries volume \cite{orp-tai}.\\
+$u_j$, $\ell_j$ & inverse coefficients and logarithmic coefficients (Section~\ref{orp:sec:inverse}); unrelated to $d_j$ except through \eqref{orp:eq:ell}.\\
+$K$ & a symbolic dimension (Corollary~\ref{orp:cor:rationaldimension}); $K_J$ are the constants of \eqref{orp:eq:threshold}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+\section{Exact chamber counting}\label{orp:sec:chamber}
 \subsection{The boundary equation}
 Let $a(\lambda)$ count increasing chamber paths from $0$ to $\lambda\in\mathcal C_k$, and write
 \[
@@ -91,7 +150,7 @@ Appending an arbitrary positive jump in coordinate $i$ contributes $r_iQ$. For $
    \prod_{j\ne i-1,i}x_j^{\lambda_j}.
 \end{align*}
 Consequently,
-\begin{equation}\label{eq:boundary}
+\begin{equation}\label{orp:eq:boundary}
  H(x)Q(x)=1-\sum_{i=2}^k r_i B_i(x),\qquad
  B_i=Q(x_1,\ldots,x_{i-2},x_{i-1}x_i,1,x_{i+1},\ldots,x_k).
 \end{equation}
@@ -104,16 +163,16 @@ For a function of $k$ variables, let
  \qquad D(x)=\prod_{i=1}^k r_i^{k-i},
  \qquad \Delta(x)=\prod_{i<j}(x_i-x_j).
 \]
-Multiply \eqref{eq:boundary} by $D$ and alternate. In $Dr_i$, the powers of $r_{i-1}$ and $r_i$ are both $k-i+1$, so $Dr_iB_i$ is invariant under the adjacent transposition and its alternation vanishes. Since $H$ is symmetric and $\Alt D=\Delta(r)$, we obtain
-\begin{equation}\label{eq:orbit}
+Multiply \eqref{orp:eq:boundary} by $D$ and alternate. In $Dr_i$, the powers of $r_{i-1}$ and $r_i$ are both $k-i+1$, so $Dr_iB_i$ is invariant under the adjacent transposition and its alternation vanishes. Since $H$ is symmetric and $\Alt D=\Delta(r)$, we obtain
+\begin{equation}\label{orp:eq:orbit}
  \sum_{\sigma\in S_k}\operatorname{sgn}(\sigma)
  \frac{D(\sigma x)}{D(x)}Q(\sigma x)
  =\frac{\Delta(r)}{D(x)H(x)}.
 \end{equation}
-The quotients are formal Laurent series with coordinatewise bounded negative exponents, because $r_i^t=x_i^t(1-x_i)^{-t}$ for integral $t$. All coefficient operations in \eqref{eq:orbit} are therefore well defined.
+The quotients are formal Laurent series with coordinatewise bounded negative exponents, because $r_i^t=x_i^t(1-x_i)^{-t}$ for integral $t$. All coefficient operations in \eqref{orp:eq:orbit} are therefore well defined.
 
-\begin{lemma}[Diagonal support exclusion]\label{lem:support}
-For $\sigma\ne\mathrm{id}$, the corresponding summand on the left of \eqref{eq:orbit} has zero coefficient of $x_1^n\cdots x_k^n$.
+\begin{lemma}[Diagonal support exclusion]\label{orp:lem:support}
+For $\sigma\ne\mathrm{id}$, the corresponding summand on the left of \eqref{orp:eq:orbit} has zero coefficient of $x_1^n\cdots x_k^n$.
 \end{lemma}
 \begin{proof}
 Let $\sigma$ send source index $j$ to target index $\sigma(j)$. A monomial of $Q(\sigma x)$ has exponent $b_i=\lambda_{\sigma^{-1}(i)}$, with $\lambda$ weakly decreasing, while
@@ -125,35 +184,35 @@ If $t_i>0$, the minimum exponent of $r_i^{t_i}$ is $t_i$, so contributing to exp
 Take the least moved source index $j$. All smaller indices are fixed, hence $\sigma(j)>j$ and $\ell=\sigma^{-1}(j)>j$. At target $\sigma(j)$ the positive exponent requires $\lambda_j<n$; at target $j$ the negative exponent requires $\lambda_\ell\ge n$. This contradicts $\lambda_j\ge\lambda_\ell$.
 \end{proof}
 
-\begin{proposition}[Exact rational coefficient identities]\label{prop:exact}
+\begin{proposition}[Exact rational coefficient identities]\label{orp:prop:exact}
 For all $n\ge0$ and $k\ge2$,
 \begin{align}
  A(n,k)
- &= [x_1^n\cdots x_k^n]R(x)\frac{\Delta(r)}{D(x)} \label{eq:exact1}\\
+ &= [x_1^n\cdots x_k^n]R(x)\frac{\Delta(r)}{D(x)} \label{orp:eq:exact1}\\
  &= [x_1^{n+k-1}x_2^{n+k-2}\cdots x_k^n]
- \frac{R(x)\Delta(x)}{\prod_{i=1}^k(1-x_i)^{i-1}}. \label{eq:exact2}
+ \frac{R(x)\Delta(x)}{\prod_{i=1}^k(1-x_i)^{i-1}}. \label{orp:eq:exact2}
 \end{align}
 Equivalently, with $N=n+k-1$,
-\begin{equation}\label{eq:symmetric}
+\begin{equation}\label{orp:eq:symmetric}
  A(n,k)=\frac{(-1)^p}{k!}[x_1^N\cdots x_k^N]
  \frac{\Delta(x)^2}{H(x)\prod_{i=1}^k(1-x_i)^{k-1}}.
 \end{equation}
 \end{proposition}
 \begin{proof}
-Lemma~\ref{lem:support} leaves only the identity term of \eqref{eq:orbit}. The identity
+Lemma~\ref{orp:lem:support} leaves only the identity term of \eqref{orp:eq:orbit}. The identity
 \[
  \Delta(r)=\frac{\Delta(x)}{\prod_i(1-x_i)^{k-1}}
 \]
-then gives \eqref{eq:exact2}. To make every extraction index equal to $N$, multiply the numerator by $\prod_i x_i^{i-1}$. The resulting factor next to $\Delta(x)$ is $F=\prod_i r_i^{i-1}$. Symmetry of $R$ and of diagonal extraction allows $F$ to be replaced by $\Alt(F)/k!$. Finally,
+then gives \eqref{orp:eq:exact2}. To make every extraction index equal to $N$, multiply the numerator by $\prod_i x_i^{i-1}$. The resulting factor next to $\Delta(x)$ is $F=\prod_i r_i^{i-1}$. Symmetry of $R$ and of diagonal extraction allows $F$ to be replaced by $\Alt(F)/k!$. Finally,
 \[
  \Alt(F)=\det[r_j^{i-1}]_{i,j=1}^k=(-1)^p\Delta(r),
 \]
-which proves \eqref{eq:symmetric}, including its sign and divisor.
+which proves \eqref{orp:eq:symmetric}, including its sign and divisor.
 \end{proof}
 The boundary-tail cancellation is essential. Ordinary reflection at a wall does not automatically apply to a step which may overshoot that wall by an arbitrary amount.
 
 \subsection{A fixed dimension recurrence existence theorem}
-Let $F_k(x)$ be the rational function inside the extraction in \eqref{eq:symmetric}, and put
+Let $F_k(x)$ be the rational function inside the extraction in \eqref{orp:eq:symmetric}, and put
 \[
  D_k(z)=\sum_{N\ge0}[x_1^N\cdots x_k^N]F_k(x)z^N.
 \]
@@ -164,14 +223,14 @@ Since $\Delta^2$ has total degree $k(k-1)$ and the other factors have ordinary p
 is regular at $0$. A rational series is D-finite, and Lipshitz's diagonal theorem \cite{lipshitz} states that the diagonal of a multivariate D-finite power series over characteristic zero is D-finite. Rational multiplication preserves D-finiteness. Therefore, for every fixed $k$, the ordinary generating function of $A(n,k)$ is D-finite and its coefficients satisfy some linear recurrence with polynomial coefficients. This proves existence of a recurrence; it does not certify any particular recurrence printed in OEIS, nor imply algebraicity for $k\ge3$. The proof correction discussed by Chen and Li \cite{chenli} concerns a reduction in Lipshitz's argument and does not withdraw this closure theorem.
 
 
-\section{The smooth critical point and full expansion}
+\section{The smooth critical point and full expansion}\label{orp:sec:smooth}
 Put
-\begin{equation}\label{eq:qmu}
+\begin{equation}\label{orp:eq:qmu}
  q=\frac1{k+1},\qquad c=(q,\ldots,q),\qquad
  \mu=\frac{k+1}{k^2},\qquad
  a=\frac{(k+1)(k+2)}{k^3},\qquad \beta=\frac a\mu=\frac{k+2}{k}.
 \end{equation}
-In \eqref{eq:symmetric}, write the rational function as $G/H$, with
+In \eqref{orp:eq:symmetric}, write the rational function as $G/H$, with
 $G=\Delta(x)^2\prod_i(1-x_i)^{-(k-1)}$. Both $G$ and $H$ are holomorphic on a polydisc of radius between $q$ and $1$. Near $c$, $H$ has no common divisor with $G$: its smooth hypersurface is not contained in any of the hyperplanes $x_i=x_j$. A zero of the numerator at a point does not cancel a whole hypersurface.
 
 We apply the smooth-point full-expansion theorem of Raichev and Wilson \cite[Definition~3.1 and Theorem~3.2]{rw}. Its assumptions in this setting are checked explicitly below. Here the paper's ambient dimension is $k$, its pole order is $1$, and its coefficient direction is $(1,\ldots,1)$.
@@ -194,35 +253,35 @@ With $x_i=q e^{\ii\theta_i}$ for $i<k$, the local phase is
  f(\theta)=\ii\sum_{i<k}\theta_i+\log(z/q).
 \]
 Direct differentiation gives $f(0)=0$, $\nabla f(0)=0$, and
-\begin{equation}\label{eq:hessian}
+\begin{equation}\label{orp:eq:hessian}
  f''(0)=\beta(I_d+\mathbf1_d\mathbf1_d^{\mathsf T}).
 \end{equation}
 Its eigenvalues are $\beta$ with multiplicity $d-1$ and $k\beta$ once. The Hessian is positive definite, so the point is nondegenerate and locally isolated.
 \end{enumerate}
-For clarity, one way to verify \eqref{eq:hessian} is to set
+For clarity, one way to verify \eqref{orp:eq:hessian} is to set
 $h(w)=qe^w/(1-qe^w)$, so $h'(0)=\mu$ and $h''(0)=a$. If $w_k=\log(z/q)$, differentiating $\sum_i h(w_i)=1$ yields
 $w_k=-\ii\sum_{i<k}\theta_i+\frac\beta2(\sum_{i<k}\theta_i^2+(\sum_{i<k}\theta_i)^2)+O(|\theta|^3)$.
 
-The cited theorem permits the numerator to vanish at $c$. Its local residue amplitude vanishes to degree $2p$ because of $\Delta^2$. Therefore all generic terms preceding order $N^{-d/2-p}$ vanish. Taking sufficiently many terms of the full smooth-point expansion gives a remainder $O(N^{-\alpha-M})$ after $M$ potentially nonzero terms. Section~\ref{sec:constant} evaluates the first term and proves it is positive. Since $N=n+k-1$, finite re-expansion transfers the conclusion to $n$, establishing \eqref{eq:main}. Section~\ref{sec:generator} uses a chart in which the shift cancels exactly.
+The cited theorem permits the numerator to vanish at $c$. Its local residue amplitude vanishes to degree $2p$ because of $\Delta^2$. Therefore all generic terms preceding order $N^{-d/2-p}$ vanish. Taking sufficiently many terms of the full smooth-point expansion gives a remainder $O(N^{-\alpha-M})$ after $M$ potentially nonzero terms. Section~\ref{orp:sec:constant} evaluates the first term and proves it is positive. Since $N=n+k-1$, finite re-expansion transfers the conclusion to $n$, establishing \eqref{orp:eq:main}. Section~\ref{orp:sec:generator} uses a chart in which the shift cancels exactly.
 
 The published paper \cite{rw} lists Alexander Raichev and Mark C. Wilson. The earlier arXiv version 0803.2914v1 lists A. F. M. ter Elst, Alexander Raichev and Mark C. Wilson. The theorem reference above is to the published article, not an amalgamated author list.
 
-\section{Trace zero normalization and the leading constant}\label{sec:constant}
+\section{Trace zero normalization and the leading constant}\label{orp:sec:constant}
 Let
 \[
  V=\{y\in\R^k:\textstyle\sum_i y_i=0\}
 \]
 with its induced Euclidean measure. Use logarithmic coordinates
-\begin{equation}\label{eq:radial}
+\begin{equation}\label{orp:eq:radial}
  x_i=qe^{s+\ii t y_i},\qquad t=n^{-1/2}.
 \end{equation}
 The implicit function theorem gives a unique analytic local branch $s=\sigma(t,y)$ solving
-\begin{equation}\label{eq:sigma}
+\begin{equation}\label{orp:eq:sigma}
  \sum_i\frac{qe^{\sigma+\ii t y_i}}{1-qe^{\sigma+\ii t y_i}}=1,
  \qquad \sigma(0,y)=0.
 \end{equation}
 For each fixed $y$, expansion of $h$ gives
-\begin{equation}\label{eq:sigma2}
+\begin{equation}\label{orp:eq:sigma2}
  \sigma(t,y)=\frac{a}{2k\mu}t^2\sum_i y_i^2+O_y(t^3).
 \end{equation}
 Define, on this branch,
@@ -235,15 +294,15 @@ The factors involving the extraction shift simplify particularly well. Since $N=
 \begin{align}
  \Delta(x)^2&=q^{2p}e^{2p\sigma}\Delta(e^{\ii t y})^2,\nonumber\\
  q^{2p-kN}&=q^{-kn}=\Lambda^n,\qquad
- e^{(2p-kN)\sigma}=e^{-kn\sigma}.\label{eq:shiftcancel}
+ e^{(2p-kN)\sigma}=e^{-kn\sigma}.\label{orp:eq:shiftcancel}
 \end{align}
 The $t$-scaling of the residue measure supplies $t^d$, and
-$\Delta(e^{\ii t y})^2\sim(\ii t)^{2p}\Delta(y)^2$. Its sign $(-1)^p$ cancels the sign in \eqref{eq:symmetric}. Thus the leading term is positive and governed by
+$\Delta(e^{\ii t y})^2\sim(\ii t)^{2p}\Delta(y)^2$. Its sign $(-1)^p$ cancels the sign in \eqref{orp:eq:symmetric}. Thus the leading term is positive and governed by
 \[
  I_k(\beta)=\int_V\Delta(y)^2e^{-\beta|y|^2/2}\dd y.
 \]
-\begin{lemma}[Gaussian Vandermonde integral]\label{lem:mehta}
-\begin{equation}\label{eq:mehta}
+\begin{lemma}[Gaussian Vandermonde integral]\label{orp:lem:mehta}
+\begin{equation}\label{orp:eq:mehta}
  I_k(\beta)=(2\pi)^{(k-1)/2}\left(\prod_{j=1}^k j!\right)\beta^{-\alpha}.
 \end{equation}
 \end{lemma}
@@ -258,11 +317,11 @@ Separate the orthonormal coordinate in the direction $(1,\ldots,1)/\sqrt{k}$. Th
 \end{proof}
 Combining the factors gives
 \begin{align}
- C_k&=\frac{\sqrt{k}}{k!(2\pi)^d k\mu}(1-q)^{-2p}I_k(\beta)\label{eq:Cres}\\
+ C_k&=\frac{\sqrt{k}}{k!(2\pi)^d k\mu}(1-q)^{-2p}I_k(\beta)\label{orp:eq:Cres}\\
  &=\frac{J_k(1-q)^{-2p}\mu^{\alpha-1}}
  {\sqrt{k}(2\pi)^{d/2}a^\alpha},\nonumber
 \end{align}
-which simplifies to \eqref{eq:C}. This completes the existence and leading-normalization parts of Theorem~\ref{thm:main}.
+which simplifies to \eqref{orp:eq:C}. This completes the existence and leading-normalization parts of Theorem~\ref{orp:thm:main}.
 
 \begin{center}
 \begin{tabular}{@{}ccl@{}}\toprule
@@ -274,43 +333,43 @@ $5$ & $12$ & $2\sqrt5\,6^{21}/(5^7 7^{12}\pi^2)$ \\ \bottomrule
 \end{tabular}
 \end{center}
 These agree with the previously recorded OEIS constants. In dimension $2$, the separate algebraic generating function
-\begin{equation}\label{eq:k2gf}
+\begin{equation}\label{orp:eq:k2gf}
  \sum_{n\ge0}A(n,2)z^n
  =\frac{1+3z-\sqrt{1-10z+9z^2}}{8z}
 \end{equation}
 provides another check \cite{oeis2}.
 
-\section{A finite generator for every fixed order}\label{sec:generator}
+\section{A finite generator for every fixed order}\label{orp:sec:generator}
 Let $\E_k$ denote expectation for the probability density
 \[
  I_k(\beta)^{-1}\Delta(y)^2e^{-\beta|y|^2/2}\dd y\quad\text{on }V.
 \]
-\begin{theorem}\label{thm:generator}
-With $\sigma$ and $S$ as in \eqref{eq:sigma}, define the formal series
+\begin{theorem}\label{orp:thm:generator}
+With $\sigma$ and $S$ as in \eqref{orp:eq:sigma}, define the formal series
 \begin{align}
  B_k(t,y)={}&\frac{k\mu}{S(t,y)}
  \left(\frac{\Delta(e^{\ii t y})}{(\ii t)^p\Delta(y)}\right)^2
  \prod_i\left(\frac{1-q}{1-qe^{\sigma+\ii t y_i}}\right)^{k-1}\nonumber\\
  &\hspace{25mm}\times\exp\left(-\frac{k\sigma(t,y)}{t^2}
-                   +\frac{\beta|y|^2}{2}\right).\label{eq:B}
+                   +\frac{\beta|y|^2}{2}\right).\label{orp:eq:B}
 \end{align}
-Then the coefficients in \eqref{eq:main} are
-\begin{equation}\label{eq:generator}
+Then the coefficients in \eqref{orp:eq:main} are
+\begin{equation}\label{orp:eq:generator}
  d_j(k)=\E_k\bigl([t^{2j}]B_k(t,y)\bigr).
 \end{equation}
 For every fixed $k,j$, this is an effective finite computation over rational numbers.
 \end{theorem}
 \begin{proof}
-Insert \eqref{eq:radial} into the local residue integral and use \eqref{eq:shiftcancel}. Dividing by the leading amplitude and Gaussian factor gives exactly \eqref{eq:B}. Equation~\eqref{eq:sigma2} cancels the apparent negative power $t^{-2}$. Each Vandermonde difference quotient is an entire formal series after division by $\ii t(y_i-y_j)$; it has a removable singularity when $y_i=y_j$. The constant term is $B_k(0,y)=1$.
+Insert \eqref{orp:eq:radial} into the local residue integral and use \eqref{orp:eq:shiftcancel}. Dividing by the leading amplitude and Gaussian factor gives exactly \eqref{orp:eq:B}. Equation~\eqref{orp:eq:sigma2} cancels the apparent negative power $t^{-2}$. Each Vandermonde difference quotient is an entire formal series after division by $\ii t(y_i-y_j)$; it has a removable singularity when $y_i=y_j$. The constant term is $B_k(0,y)=1$.
 
-To any fixed degree, solving \eqref{eq:sigma} recursively gives polynomial coefficients in $y$, since the coefficient of the next unknown term is the nonzero number $k\mu$. The remaining series operations preserve this property. The transformation $(t,y)\mapsto(-t,-y)$ leaves the expression unchanged, so odd coefficients are odd functions of $y$ and integrate to zero. The smooth-point expansion and its local remainder control justify these finite Gaussian coefficient integrations; no infinite series is integrated without a truncation argument.
+To any fixed degree, solving \eqref{orp:eq:sigma} recursively gives polynomial coefficients in $y$, since the coefficient of the next unknown term is the nonzero number $k\mu$. The remaining series operations preserve this property. The transformation $(t,y)\mapsto(-t,-y)$ leaves the expression unchanged, so odd coefficients are odd functions of $y$ and integrate to zero. The smooth-point expansion and its local remainder control justify these finite Gaussian coefficient integrations; no infinite series is integrated without a truncation argument.
 
 For an explicit rational integration rule, put $y_k=-\sum_{i<k}y_i$. Under the Gaussian on $V$ without the factor $\Delta^2$, the first $d$ coordinates have covariance
-\begin{equation}\label{eq:cov}
+\begin{equation}\label{orp:eq:cov}
  \Sigma_{ab}=\beta^{-1}(\delta_{ab}-1/k),\qquad 1\le a,b<k.
 \end{equation}
 If $\mathcal G$ is Gaussian expectation with this covariance, then
-\begin{equation}\label{eq:wickratio}
+\begin{equation}\label{orp:eq:wickratio}
  \E_k P=\frac{\mathcal G(P\Delta(y)^2)}{\mathcal G(\Delta(y)^2)}.
 \end{equation}
 Wick's pairing rule evaluates every monomial using finitely many rational additions and multiplications. The denominator is positive. The even coefficients have rational real values, since all $q,\mu,a,\Sigma$ are rational and the powers of $\ii$ combine in pairs.
@@ -321,30 +380,30 @@ To compute through $d_J$, expand $\sigma$ through degree $2J+2$. Write $h(w)=qe^
 \[
  s_m=-r_m/(k\mu).
 \]
-One then computes \eqref{eq:B} through degree $2J$ and applies \eqref{eq:wickratio}. Only finitely many derivatives of $h$ at zero are needed; they are rational. Equivalently, its derivatives are obtained by applying $r\,\mathrm d/\mathrm dr$ repeatedly to $r/(1-r)$ and substituting $r=q$.
+One then computes \eqref{orp:eq:B} through degree $2J$ and applies \eqref{orp:eq:wickratio}. Only finitely many derivatives of $h$ at zero are needed; they are rational. Equivalently, its derivatives are obtained by applying $r\,\mathrm d/\mathrm dr$ repeatedly to $r/(1-r)$ and substituting $r=q$.
 
 For efficiency and to avoid removable divisions, the Vandermonde part may be expanded logarithmically:
-\begin{equation}\label{eq:logvand}
+\begin{equation}\label{orp:eq:logvand}
  2\sum_{i<j}\log\left(\frac{\sinh(\ii t(y_i-y_j)/2)}{\ii t(y_i-y_j)/2}\right).
 \end{equation}
 The omitted exponential factors cancel because $\sum_i y_i=0$. The included Python generator implements this finite polynomial/Wick procedure. It is intended as an exact reference implementation, not as a scalable high-dimensional symbolic engine.
 
-\section{The first correction in closed form}
+\section{The first correction in closed form}\label{orp:sec:first}
 Write $P_r=\sum_i y_i^r$ and introduce
 \[
  b=\frac{(k+1)(k^2+6k+6)}{k^4},\qquad
  c_4=\frac{(k+1)(k^3+14k^2+36k+24)}{k^5}.
 \]
-These are $h'''(0)$ and $h^{(4)}(0)$, respectively. Expanding the logarithm of \eqref{eq:B} gives
-\begin{equation}\label{eq:logB}
+These are $h'''(0)$ and $h^{(4)}(0)$, respectively. Expanding the logarithm of \eqref{orp:eq:B} gives
+\begin{equation}\label{orp:eq:logB}
  \log B_k=-\frac{\ii b}{6\mu}P_3t
  +t^2\left(A_2P_2+B_2P_2^2+\frac{c_4}{24\mu}P_4\right)+O_y(t^3),
 \end{equation}
 where
 \begin{align}
  A_2&=\frac{(k-1)a}{2k\mu}-\frac{(k-1)\mu}{2}-\frac{k}{12}
-      -\frac{a^2}{2k\mu^2}+\frac{b}{2k\mu},\label{eq:A2}\\
- B_2&=\frac{a^3}{8k\mu^3}-\frac{ab}{4k\mu^2}.\label{eq:B2}
+      -\frac{a^2}{2k\mu^2}+\frac{b}{2k\mu},\label{orp:eq:A2}\\
+ B_2&=\frac{a^3}{8k\mu^3}-\frac{ab}{4k\mu^2}.\label{orp:eq:B2}
 \end{align}
 For example, the needed radial coefficients are
 \[
@@ -352,26 +411,26 @@ For example, the needed radial coefficients are
  s_3=\frac{\ii bP_3}{6k\mu},\quad
  s_4=-\frac{as_2^2}{2\mu}+\frac{bs_2P_2}{2k\mu}-\frac{c_4P_4}{24k\mu}.
 \]
-Substitution into the residue, denominator and Vandermonde factors yields \eqref{eq:logB}. The following trace-zero Gaussian Vandermonde moments suffice:
+Substitution into the residue, denominator and Vandermonde factors yields \eqref{orp:eq:logB}. The following trace-zero Gaussian Vandermonde moments suffice:
 \begin{align}
  \E_kP_2&=\frac{k^2-1}{\beta}, &
  \E_kP_2^2&=\frac{(k^2-1)(k^2+1)}{\beta^2},\nonumber\\
  \E_kP_4&=\frac{(k^2-1)(2k^2-3)}{k\beta^2}, &
- \E_kP_3^2&=\frac{3(k^2-1)(k^2-4)}{k\beta^3}.\label{eq:moments}
+ \E_kP_3^2&=\frac{3(k^2-1)(k^2-4)}{k\beta^3}.\label{orp:eq:moments}
 \end{align}
-These follow either directly from \eqref{eq:wickratio} or from the trace-zero Gaussian Hermitian matrix model. In the latter derivation, write a full Gaussian Hermitian matrix as $G=H_0+(T/k)I$, where $H_0$ is trace zero and independent of $T\sim N(0,k/\beta)$. Then $\beta\tr H_0^2$ has a chi-square distribution with $k^2-1$ degrees of freedom. Wick contraction gives
+These follow either directly from \eqref{orp:eq:wickratio} or from the trace-zero Gaussian Hermitian matrix model. In the latter derivation, write a full Gaussian Hermitian matrix as $G=H_0+(T/k)I$, where $H_0$ is trace zero and independent of $T\sim N(0,k/\beta)$. Then $\beta\tr H_0^2$ has a chi-square distribution with $k^2-1$ degrees of freedom. Wick contraction gives
 \[
  \E\tr G^4=\frac{2k^3+k}{\beta^2},\qquad
  \E(\tr G^3)^2=\frac{12k^3+3k}{\beta^3}.
 \]
-Expanding the independent scalar trace part yields \eqref{eq:moments}. The accompanying code independently enumerates the contractions, including the trace-zero covariance subtraction.
+Expanding the independent scalar trace part yields \eqref{orp:eq:moments}. The accompanying code independently enumerates the contractions, including the trace-zero covariance subtraction.
 
-Because exponentiating \eqref{eq:logB} also contributes half the square of its linear term,
-\begin{equation}\label{eq:d1mom}
+Because exponentiating \eqref{orp:eq:logB} also contributes half the square of its linear term,
+\begin{equation}\label{orp:eq:d1mom}
  d_1=A_2\E_kP_2+B_2\E_kP_2^2+\frac{c_4}{24\mu}\E_kP_4
        -\frac{b^2}{72\mu^2}\E_kP_3^2.
 \end{equation}
-Rational simplification proves \eqref{eq:d1}. In particular,
+Rational simplification proves \eqref{orp:eq:d1}. In particular,
 \[
  d_1(2)=-\frac{39}{32},\qquad d_1(3)=-\frac{326}{75},\qquad
  d_1(4)=-\frac{1505}{144},\qquad d_1(5)=-\frac{5034}{245}.
@@ -382,10 +441,10 @@ An independent dimension-three calculation uses the nonsymmetric residue chart $
 \]
 It gives the relative correction $274/75$ in the index $N=n+2$. Since $\alpha=4$, re-expanding $N^{-4}$ changes that correction by $-8$, giving $274/75-8=-326/75$. This check uses the exact rational residue, not a counting recurrence.
 
-\section{The second correction and trace moment recursion}
+\section{The second correction and trace moment recursion}\label{orp:sec:second}
 The same finite generator gives a second explicit coefficient in every fixed dimension.
-\begin{proposition}\label{prop:d2}
-\begin{equation}\label{eq:d2}
+\begin{proposition}\label{orp:prop:d2}
+\begin{equation}\label{orp:eq:d2}
  d_2(k)=\frac{(k^2-1)P(k)}{288k^3(k+2)^5},
 \end{equation}
 where
@@ -409,18 +468,18 @@ With a list $R$ of remaining exponents and $m\ge2$, Gaussian integration by part
  \mathcal M(m,R)={}&\sum_{j=0}^{m-2}\mathcal M(j,m-2-j,R)
         -\frac{m-1}{k}\mathcal M(m-2,R)\nonumber\\
  &+\sum_{r\in R}r\left\{\mathcal M(m+r-2,R\setminus r)
-       -\frac1k\mathcal M(m-1,r-1,R\setminus r)\right\}.\label{eq:IBP}
+       -\frac1k\mathcal M(m-1,r-1,R\setminus r)\right\}.\label{orp:eq:IBP}
 \end{align}
 The sum treats repetitions in the list separately. The initial value is $\mathcal M(\varnothing)=1$; a zero exponent contributes a factor $k$, and an exponent $1$ gives zero. Every recursive term reduces total degree by two. Restoring a general $\beta$ divides a homogeneous moment of total degree $D$ by $\beta^{D/2}$.
 
-To verify \eqref{eq:IBP}, express $P_m$ as $\sum_{a,b}(H_0)_{ab}(H_0^{m-1})_{ba}$ and use
+To verify \eqref{orp:eq:IBP}, express $P_m$ as $\sum_{a,b}(H_0)_{ab}(H_0^{m-1})_{ba}$ and use
 \[
  \E[(H_0)_{ab}(H_0)_{cd}]=\delta_{ad}\delta_{bc}-k^{-1}\delta_{ab}\delta_{cd}.
 \]
 Differentiation of $H_0^{m-1}$ splits its trace into two traces; the subtraction term gives $-(m-1)P_{m-2}/k$. Differentiating one of the other factors $P_r$ joins traces into $P_{m+r-2}$, with the subtraction $P_{m-1}P_{r-1}/k$. This proves the recursion directly, independently of enumerating Wick pairings.
 
-\begin{proof}[Derivation of Proposition~\ref{prop:d2}]
-Let $\lambda_m=h^{(m)}(0)$, obtained by repeated Euler differentiation as in Section~\ref{sec:generator}. Compute $\sigma=\sum_{m=2}^6s_mt^m$ by the triangular residual rule there. Put $P_0=k$, $P_1=0$, and define the finite polynomial
+\begin{proof}[Derivation of Proposition~\ref{orp:prop:d2}]
+Let $\lambda_m=h^{(m)}(0)$, obtained by repeated Euler differentiation as in Section~\ref{orp:sec:generator}. Compute $\sigma=\sum_{m=2}^6s_mt^m$ by the triangular residual rule there. Put $P_0=k$, $P_1=0$, and define the finite polynomial
 \[
  T_m(\sigma,t)=\sum_{j=0}^m\binom mj\sigma^{m-j}(\ii t)^jP_j.
 \]
@@ -433,17 +492,17 @@ For $U=[\sum_{m=1}^4\lambda_{m+1}T_m/m!]/(k\mu)$, the logarithm of the full norm
  -\frac{kP_2t^2}{12}-\frac{(kP_4+3P_2^2)t^4}{1440}\\
  &-\frac{k\sigma}{t^2}+\frac{\beta P_2}{2}.
 \end{align*}
-The two Vandermonde terms follow from \eqref{eq:logvand} and
+The two Vandermonde terms follow from \eqref{orp:eq:logvand} and
 $\sum_{i<j}(y_i-y_j)^2=kP_2$,
 $\sum_{i<j}(y_i-y_j)^4=kP_4+3P_2^2$.
-Write its coefficients as $B_1t+B_2^*t^2+B_3t^3+B_4t^4$; the star distinguishes $B_2^*$ from the scalar in \eqref{eq:B2}. Exponentiation gives
-\begin{equation}\label{eq:secondfinite}
+Write its coefficients as $B_1t+B_2^*t^2+B_3t^3+B_4t^4$; the star distinguishes $B_2^*$ from the scalar in \eqref{orp:eq:B2}. Exponentiation gives
+\begin{equation}\label{orp:eq:secondfinite}
  d_2=\E_k\left(B_4+B_1B_3+\frac{(B_2^*)^2}{2}
                    +\frac{B_1^2B_2^*}{2}+\frac{B_1^4}{24}\right).
 \end{equation}
-Expanding the displayed finite polynomials yields fourteen power-sum monomials, of total degree at most twelve. Applying \eqref{eq:IBP} to each and reducing the rational expression gives \eqref{eq:d2}. These operations use only the displayed recursions, rational arithmetic and finite polynomial multiplication. The package includes both the resulting intermediate polynomials and an independent substitution check of the root equation through degree six, the amplitude through degree four, and all fourteen moments.
+Expanding the displayed finite polynomials yields fourteen power-sum monomials, of total degree at most twelve. Applying \eqref{orp:eq:IBP} to each and reducing the rational expression gives \eqref{orp:eq:d2}. These operations use only the displayed recursions, rational arithmetic and finite polynomial multiplication. The package includes both the resulting intermediate polynomials and an independent substitution check of the root equation through degree six, the amplitude through degree four, and all fourteen moments.
 \end{proof}
-\begin{corollary}[Rational dependence on dimension]\label{cor:rationaldimension}
+\begin{corollary}[Rational dependence on dimension]\label{orp:cor:rationaldimension}
 For every fixed $j\ge0$, there is a single rational function $D_j(K)$ such that $d_j(k)=D_j(k)$ for all integers $k\ge2$. In fact,
 \[
  D_j(K)\in\mathbb Q[K,K^{-1},(K+1)^{-1},(K+2)^{-1}].
@@ -457,11 +516,11 @@ Work over the displayed ring with formal power sums $P_0=K$, $P_1=0$, without im
 \]
 After cancellation of the constant Gaussian term, each coefficient of $B_K$ is a finite polynomial over this ring (with powers of $\ii$ that are real at even order). Its coefficient of $t^{2j}$ needs $\sigma$ only through degree $2j+2$ and moments of total degree at most $6j$: a phase term of $t$-degree $r$ has $y$-degree $r+2$, while each other logarithmic term has degree $r$.
 
-Recursion~\eqref{eq:IBP} lowers the total degree and divides only by $K$; Gaussian scaling further divides by powers of $\beta=(K+2)/K$. It defines every needed moment in the stated ring. At every integer $k\ge2$, these are genuine Gaussian polynomial identities, so their specializations equal the fixed-$k$ generator. No power-sum basis is inverted; small-dimensional relations introduce no exceptions or additional poles. Uniqueness follows because rational functions agreeing at all integers $k\ge2$ agree identically.
+Recursion~\eqref{orp:eq:IBP} lowers the total degree and divides only by $K$; Gaussian scaling further divides by powers of $\beta=(K+2)/K$. It defines every needed moment in the stated ring. At every integer $k\ge2$, these are genuine Gaussian polynomial identities, so their specializations equal the fixed-$k$ generator. No power-sum basis is inverted; small-dimensional relations introduce no exceptions or additional poles. Uniqueness follows because rational functions agreeing at all integers $k\ge2$ agree identically.
 \end{proof}
-This algebraic dependence does not make the remainder in Theorem~\ref{thm:main} uniform in growing dimension. The code's symbolic-dimension option implements precisely this universal finite procedure.
+This algebraic dependence does not make the remainder in Theorem~\ref{orp:thm:main} uniform in growing dimension. The code's symbolic-dimension option implements precisely this universal finite procedure.
 
-As two separate checks, singularity analysis of \eqref{eq:k2gf} gives
+As two separate checks, singularity analysis of \eqref{orp:eq:k2gf} gives
 \[
  d_2(2)=\frac{25}{128}-\frac32\frac{17}{16}\frac{15}{8}
                          +\frac{15}{4}\frac{543}{512}=\frac{2425}{2048}.
@@ -472,39 +531,39 @@ For $k=3$, the different eliminated-coordinate saddle chart described above give
 \]
 Both checks are independent of the posted OEIS recurrence.
 
-\section{Asymptotic inversion and integer thresholds}\label{sec:inverse}
+\section{Asymptotic inversion and integer thresholds}\label{orp:sec:inverse}
 Write $C=C_k$, $L=\log\Lambda>0$, and retain the fixed $k$ convention. The leading continuous model is
 \[
  F_0(x)=Ce^{Lx}x^{-\alpha},\qquad x>\alpha/L.
 \]
 It is strictly increasing on that branch, and for sufficiently large positive $M$ its inverse is exactly
-\begin{equation}\label{eq:lambert}
+\begin{equation}\label{orp:eq:lambert}
  x_0(M)=-\frac\alpha L\,W_{-1}\left(-\frac L\alpha
                     \left(\frac CM\right)^{1/\alpha}\right).
 \end{equation}
-Here $W_{-1}$ is the real branch taking values at most $-1$. This branch is necessary for the inverse tending to infinity. Equation~\eqref{eq:lambert} follows by raising $M/C=e^{Lx}x^{-\alpha}$ to the power $-1/\alpha$ and setting $w=-Lx/\alpha$; standard properties of Lambert's function are discussed in \cite{lambert}.
+Here $W_{-1}$ is the real branch taking values at most $-1$. This branch is necessary for the inverse tending to infinity. Equation~\eqref{orp:eq:lambert} follows by raising $M/C=e^{Lx}x^{-\alpha}$ to the power $-1/\alpha$ and setting $w=-Lx/\alpha$; standard properties of Lambert's function are discussed in \cite{lambert}.
 
 \subsection{Explicit recursive corrections}
 Define formal logarithmic coefficients by
-\begin{equation}\label{eq:ell}
+\begin{equation}\label{orp:eq:ell}
  \log\left(1+\sum_{j\ge1}d_jz^j\right)=\sum_{j\ge1}\ell_jz^j.
 \end{equation}
 Thus $\ell_1=d_1$, $\ell_2=d_2-d_1^2/2$ and
-$\ell_3=d_3-d_1d_2+d_1^3/3$. Every finite truncation of Theorem~\ref{thm:main} gives
-\begin{equation}\label{eq:logcount}
+$\ell_3=d_3-d_1d_2+d_1^3/3$. Every finite truncation of Theorem~\ref{orp:thm:main} gives
+\begin{equation}\label{orp:eq:logcount}
  \log A(n,k)=Ln-\alpha\log n+\log C+
  \sum_{j=1}^{J}\ell_jn^{-j}+O(n^{-J-1}).
 \end{equation}
 The logarithm is legitimate because the normalized count tends to $1$.
 
 Set $z=1/x_0$ and seek $x=x_0+\delta$, where $\delta=\sum_{j\ge1}u_jz^j$. Subtracting the carrier equation yields
-\begin{equation}\label{eq:invformal}
+\begin{equation}\label{orp:eq:invformal}
  L\delta-\alpha\log(1+z\delta)+
  \sum_{r\ge1}\ell_rz^r(1+z\delta)^{-r}=0.
 \end{equation}
 The coefficient of the new unknown $u_j$ at degree $j$ is $L$. Hence, with
 $\delta_{j-1}=\sum_{m=1}^{j-1}u_mz^m$,
-\begin{equation}\label{eq:invrec}
+\begin{equation}\label{orp:eq:invrec}
  u_j=-\frac1L[z^j]\left\{-\alpha\log(1+z\delta_{j-1})+
           \sum_{r=1}^j\ell_rz^r(1+z\delta_{j-1})^{-r}\right\}.
 \end{equation}
@@ -512,24 +571,24 @@ In particular,
 \begin{align}
  u_1&=-\ell_1/L,\nonumber\\
  u_2&=-\ell_2/L-\alpha\ell_1/L^2,\nonumber\\
- u_3&=-\ell_3/L-(\alpha\ell_2+\ell_1^2)/L^2-\alpha^2\ell_1/L^3.\label{eq:firstu}
+ u_3&=-\ell_3/L-(\alpha\ell_2+\ell_1^2)/L^2-\alpha^2\ell_1/L^3.\label{orp:eq:firstu}
 \end{align}
 
-\begin{proposition}[Specified-model inverse]\label{prop:inverse}
+\begin{proposition}[Specified-model inverse]\label{orp:prop:inverse}
 For fixed $J\ge0$, define
 \[
  \Phi_J(x)=Lx-\alpha\log x+\log C+\sum_{j=1}^J\ell_jx^{-j},
  \qquad x_J(M)=x_0(M)+\sum_{j=1}^Ju_jx_0(M)^{-j}.
 \]
 The function $\exp(\Phi_J)$ is positive and strictly increasing for all sufficiently large $x$. Its increasing inverse differs from $x_J(M)$ by $O(x_0^{-J-1})$. At exact count targets,
-\begin{equation}\label{eq:exactinverse}
+\begin{equation}\label{orp:eq:exactinverse}
  x_J(A(n,k))=n+O(n^{-J-1}).
 \end{equation}
 \end{proposition}
 \begin{proof}
-The derivative is $\Phi'_J(x)=L+O(1/x)>L/2$ eventually. Formal cancellation through degree $J$ in \eqref{eq:invformal} gives
+The derivative is $\Phi'_J(x)=L+O(1/x)>L/2$ eventually. Formal cancellation through degree $J$ in \eqref{orp:eq:invformal} gives
 $\Phi_J(x_J(M))-\log M=O(x_0^{-J-1})$.
-The mean-value theorem proves the inverse error. Combining the same derivative bound with \eqref{eq:logcount} proves \eqref{eq:exactinverse}; first-order comparability $x_0(A(n,k))\sim n$ follows directly from the leading model.
+The mean-value theorem proves the inverse error. Combining the same derivative bound with \eqref{orp:eq:logcount} proves \eqref{orp:eq:exactinverse}; first-order comparability $x_0(A(n,k))\sim n$ follows directly from the leading model.
 \end{proof}
 This is an inverse of a specified asymptotic model. A discrete sequence has no uniquely determined analytic interpolation, and none is claimed here. At the first corrected order,
 \[
@@ -544,11 +603,11 @@ At the coarser logarithmic scale, if $Y=\log M$, then
 Keeping the Lambert expression avoids truncating this elementary nested-log part.
 
 \subsection{Integer threshold qualification}
-Define $N_k(M)=\min\{n\ge0:A(n,k)\ge M\}$. Appending unit steps in coordinate order $1,2,\ldots,k$ to an increasing path ending at $(n,\ldots,n)$ preserves the descending chamber and gives an injection into paths ending at $(n+1,\ldots,n+1)$. Stripping those fixed last steps recovers the original path. Thus $A(n,k)$ is nondecreasing; it is unbounded by Theorem~\ref{thm:main}.
+Define $N_k(M)=\min\{n\ge0:A(n,k)\ge M\}$. Appending unit steps in coordinate order $1,2,\ldots,k$ to an increasing path ending at $(n,\ldots,n)$ preserves the descending chamber and gives an injection into paths ending at $(n+1,\ldots,n+1)$. Stripping those fixed last steps recovers the original path. Thus $A(n,k)$ is nondecreasing; it is unbounded by Theorem~\ref{orp:thm:main}.
 
-\begin{corollary}\label{cor:threshold}
+\begin{corollary}\label{orp:cor:threshold}
 For every fixed $J$, constants $K_J,M_J>0$ exist such that for $M\ge M_J$,
-\begin{equation}\label{eq:threshold}
+\begin{equation}\label{orp:eq:threshold}
  \left\lceil x_J(M)-K_Jx_0(M)^{-J-1}\right\rceil
  \le N_k(M)\le
  \left\lceil x_J(M)+K_Jx_0(M)^{-J-1}\right\rceil.
@@ -556,7 +615,7 @@ For every fixed $J$, constants $K_J,M_J>0$ exist such that for $M\ge M_J$,
 The constants are not made effective by this proof.
 \end{corollary}
 \begin{proof}
-Let $g$ be the eventual increasing inverse of $e^{\Phi_J}$ and put $N=N_k(M)$. For large targets, $A(N-1,k)<M\le A(N,k)$. Proposition~\ref{prop:inverse} and its proof give
+Let $g$ be the eventual increasing inverse of $e^{\Phi_J}$ and put $N=N_k(M)$. For large targets, $A(N-1,k)<M\le A(N,k)$. Proposition~\ref{orp:prop:inverse} and its proof give
 \[
  N-1+O(N^{-J-1})<g(M)\le N+O(N^{-J-1}).
 \]
@@ -564,13 +623,45 @@ Also $g(M)\sim N\sim x_0(M)$ and $g(M)=x_J(M)+O(x_0^{-J-1})$. Enlarging a common
 \end{proof}
 If $x_J(M)$ is farther than $K_Jx_0^{-J-1}$ from every integer, the two ceiling values agree and determine the threshold. Without such a separation condition, the unrestricted rounded-index error is only $O(1)$. In particular, a small continuous inverse error must not be advertised as a uniform $o(1)$ error for an arbitrary integer threshold.
 
-\section{Exact checks and reproducibility}
+\begin{writenote}[Added 2 October 2026, batch~77: an instance of repository results]
+The inversion of this section is an instance of the Lambert-centred
+inversion of the transseries-and-inversion volume \cite{orp-tai}, and no
+novelty is claimed for the method. The leading inverse
+\eqref{orp:eq:lambert} is the large solution of $Lx-\alpha\log x=\log(M/C)$,
+which is \texttt{p0:thm:lambert-core} with $a=L=k\log(k+1)$,
+$b=-\alpha=-(k^2-1)/2$ and right-hand side $\log(M/C)$; its branch rule
+($b<0$, large solution) selects $W_{-1}$, as above. The recursion
+\eqref{orp:eq:invformal}--\eqref{orp:eq:invrec} is the all-orders reversion
+around that core, \texttt{p0:thm:lambert-centered}, with the same $a$, $b$
+and $Q(t)=\sum_{j\ge1}\ell_jt^j$; the coefficients \eqref{orp:eq:firstu}
+are its $c_1,c_2,c_3$, and they coincide with the explicit formulas
+\texttt{t2:eq:balanced-first} of \texttt{t2:thm:balanced-inverse} in the
+combinatorial-transseries volume \cite{orp-cti} (there with $a=L$,
+$\beta=-\alpha$). Proposition~\ref{orp:prop:inverse} is the analytic form of
+that reversion for the finite model $\exp(\Phi_J)$. The closing remark on two
+equal ceilings is the separation condition, part~(2) of
+\texttt{p0:thm:staircase}. Part~(1) of that theorem (exact rounding
+$N_*=\lceil\nu\rceil$) is \emph{not} invoked and does not apply as stated:
+$\exp(\Phi_J)$ is an asymptotic model, $\exp(\Phi_J(n))=A(n,k)(1+O(n^{-J-1}))$,
+not an interpolation of $(A(n,k))_n$, which is why
+Corollary~\ref{orp:cor:threshold} is a two-ceiling enclosure with
+non-effective constants. The generic staircase arithmetic is formalized in
+Lean as \texttt{Fabius.staircase\_ceil} and
+\texttt{Fabius.staircase\_separation} in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+those statements concern an arbitrary monotone function and give no formal
+status to anything here. What is specific to this report is the forward
+expansion of Theorem~\ref{orp:thm:main} that feeds the inversion, the
+monotonicity injection, and the enclosure \eqref{orp:eq:threshold}.
+\end{writenote}
+
+\section{Exact checks and reproducibility}\label{orp:sec:checks}
 The accompanying package contains the article source, a PDF, Python code, small data files, and scripts for rebuilding and checking them. It contains no third-party full papers. The main mathematical proof does not depend on any computer-generated recurrence. The checks have distinct purposes:
 \begin{enumerate}[label=\arabic*.]
-\item Direct chamber dynamic programming is compared with the unsymmetrized rational identity \eqref{eq:exact2} and independently with the symmetric identity \eqref{eq:symmetric}. This guards signs, extraction shifts and the $k!$ factor.
+\item Direct chamber dynamic programming is compared with the unsymmetrized rational identity \eqref{orp:eq:exact2} and independently with the symmetric identity \eqref{orp:eq:symmetric}. This guards signs, extraction shifts and the $k!$ factor.
 \item A weighted unit-step-word implementation provides another direct count. Expanding each rook jump into unit steps maps a path to an ordered unit word; each adjacent equal-letter pair may either retain or remove a jump boundary. A word with $r$ such pairs therefore represents $2^r$ rook paths. This is a check, not a new asymptotic input.
-\item The exact finite generator is tested at low orders. General-$k$ Wick contractions and rational simplification check \eqref{eq:d1mom}, while a separate dimension-three residue chart checks $d_1(3)$ and $d_2(3)$. The second correction is also verified with the independent integration-by-parts moment recursion.
-\item Formal inverse substitution checks cancellation through degree four in \eqref{eq:invformal}.
+\item The exact finite generator is tested at low orders. General-$k$ Wick contractions and rational simplification check \eqref{orp:eq:d1mom}, while a separate dimension-three residue chart checks $d_1(3)$ and $d_2(3)$. The second correction is also verified with the independent integration-by-parts moment recursion.
+\item Formal inverse substitution checks cancellation through degree four in \eqref{orp:eq:invformal}.
 \item Larger direct counts are compared with $F_0(n)$ and $F_0(n)(1+d_1/n)$. These numerical comparisons illustrate the scale of the error and do not certify finite-$n$ remainder constants.
 \end{enumerate}
 For example, the exact values include
@@ -585,11 +676,29 @@ Negative first corrections can be substantial at moderate $n$, especially for la
 
 The replay script is invoked as \texttt{bash replay.sh}. It verifies a pinned file manifest, runs the deterministic checks, compares regenerated data with the packaged references, and rebuilds the PDF using \texttt{pdflatex}. Dependencies are pinned in \texttt{requirements.txt}. The archive also includes a safe extraction helper that rejects path traversal, absolute paths and symbolic-link entries before unpacking. The README gives the full procedure and a description of each code file. Computational checks supplement the proof; they are not a proof-assistant certificate.
 
-\section{Attribution and further research}
+\begin{writenote}[Added 2 October 2026, batch~77: the files in the collection]
+In the collection the sixteen Python scripts (including
+\texttt{safe\_extract.py} and \texttt{verify\_manifest.py}),
+\texttt{replay.sh} and \texttt{build.sh} are in \texttt{code/}; the eighteen
+recorded outputs, \texttt{requirements.txt} and the table
+\texttt{numerical\_table.tex} (still \verb|\input| from its delivered path
+\texttt{data/}) are in \texttt{data/}; all are byte-identical to the
+delivery. The manifest \texttt{MANIFEST.sha256} is a checksum ledger that
+the collection does not ship (it was verified, 43 of 43 files, at intake),
+and the delivered PDF is not shipped either; \texttt{replay.sh} needs both
+and the delivered layout, so it does not run in place. The report's
+\texttt{README.md} explains how to rerun the checks on a copy without
+writing into the report directory. At intake every one of the eighteen
+recorded outputs was regenerated on a copy and found equal to the shipped
+file (JSON values, or text up to line endings); the byte-identical PDF
+rebuild was not attempted.
+\end{writenote}
+
+\section{Attribution and further research}\label{orp:sec:attribution}
 \subsection{Scope of the contribution}
 The general fixed-$k$ asymptotic form is an OEIS conjecture, and the explicit $k=2,3,4,5$ leading constants are prior statements \cite{oeis,oeis2,oeis3,oeis4,oeis5}. Orbit sums, antisymmetrization, multivariate smooth-point asymptotics, Gaussian Vandermonde integration, Wick expansion and Lambert inversion are established tools. Large-step orbit methods are developed in broad generality by Bostan, Bousquet-M\'elou and Melczer \cite{bbm}; their stated finite-step framework is not simply invoked as a theorem for the infinite rook step set. The planar Catalan rook-step setting is treated by Kung and de Mier \cite{kung}. Unrestricted high-dimensional rook walks \cite{kz} are a different counting problem.
 
-The precise contribution developed here is the boundary-tail derivation of \eqref{eq:symmetric} for this ordered infinite-step model, followed by an explicit fixed-order asymptotic and inverse calculation. A targeted source search did not establish whether this exact identity has appeared under another description. That is a bounded literature observation, not a claim of worldwide novelty.
+The precise contribution developed here is the boundary-tail derivation of \eqref{orp:eq:symmetric} for this ordered infinite-step model, followed by an explicit fixed-order asymptotic and inverse calculation. A targeted source search did not establish whether this exact identity has appeared under another description. That is a bounded literature observation, not a claim of worldwide novelty.
 
 An earlier probabilistic approach uses a harmonic polynomial obtained from geometric finite differences of the Vandermonde. That polynomial is equivalent to the confluent geometric determinant already represented in Denisov and FitzGerald's work \cite{df}; it is not a new general harmonic construction. Their published paper treats simultaneous independent coordinate increments, whereas the present counting model changes one coordinate at a time. One must not import a transition determinant merely by treating these processes as identical. The exact coefficient proof here bypasses the affine-lattice and parameter-uniform survival estimates that would be required to complete that earlier probability route. No conclusion in this article depends on those unresolved adaptations.
 
@@ -597,7 +706,7 @@ Some OEIS entries also give recurrence code. Numerical agreement of such a recur
 
 \subsection{Further research directions}
 \begin{enumerate}[label=\arabic*.]
-\item \emph{Certified recurrences.} Derive creative-telescoping certificates directly from \eqref{eq:symmetric}, and compare the resulting recurrences with those posted for the low-dimensional columns.
+\item \emph{Certified recurrences.} Derive creative-telescoping certificates directly from \eqref{orp:eq:symmetric}, and compare the resulting recurrences with those posted for the low-dimensional columns.
 \item \emph{Higher correction structure.} Use symmetric-function or trace-invariant bases to compute $d_j(k)$ more efficiently, seeking compact all-$k$ expressions and denominator patterns. The finite generator proves computability, not practical complexity bounds.
 \item \emph{Effective error and thresholds.} Quantify the local saddle remainder and the off-saddle contribution to obtain explicit $K_J,M_J$ and certified finite-target thresholds.
 \item \emph{Growing dimension.} Investigate the regime in which $k$ may grow with $n$. The rapid growth of the first correction indicates that a separate uniform analysis is necessary.
@@ -605,6 +714,7 @@ Some OEIS entries also give recurrence code. Numerical agreement of such a recur
 \item \emph{Probability interpretation.} Reconcile the random-turn geometric process with existing ordered-walk harmonic methods, including affine time cosets and uniform estimates, to obtain probabilistic explanations beyond the diagonal count.
 \end{enumerate}
 
+\begingroup\raggedright
 \begin{thebibliography}{99}
 \bibitem{oeis} OEIS Foundation Inc., \emph{A227578}, entry by Alois P. Heinz, with asymptotic conjecture by V\'aclav Kot\v e\v sovec, 2013. \url{https://oeis.org/A227578}. Accessed 2 October 2026.
 \bibitem{oeis2} OEIS Foundation Inc., \emph{A059231}. \url{https://oeis.org/A059231}. Accessed 2 October 2026.
@@ -619,5 +729,13 @@ Some OEIS entries also give recurrence code. Numerical agreement of such a recur
 \bibitem{kung} J. P. S. Kung and A. de Mier, Catalan lattice paths with rook, bishop and spider steps, \emph{J. Combin. Theory Ser. A} \textbf{120} (2013), 379--389. \url{https://arxiv.org/abs/1109.1806}.
 \bibitem{kz} M. Kauers and D. Zeilberger, The computational challenge of enumerating high-dimensional rook walks, \emph{Adv. Appl. Math.} \textbf{47} (2011), 813--819. \url{https://arxiv.org/abs/1011.4671}.
 \bibitem{df} D. Denisov and W. FitzGerald, Ordered exponential random walks, \emph{ALEA Lat. Am. J. Probab. Math. Stat.} \textbf{20} (2023), 1211--1246. \href{https://doi.org/10.30757/ALEA.v20-45}{doi:10.30757/ALEA.v20-45}. See the geometric-increment discussion at the end of Section 2.2 of the published version.
+\bibitem{orp-tai} [write] ProveIt, \emph{Transseries and inversion}, the
+transseries-and-inversion volume (\texttt{p0:thm:lambert-core},
+\texttt{p0:thm:lambert-centered}, \texttt{p0:thm:staircase}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+\bibitem{orp-cti} [write] ProveIt, \emph{Combinatorial transseries
+inverses} (\texttt{t2:thm:balanced-inverse}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
 \end{thebibliography}
+\endgroup
 \end{document}
