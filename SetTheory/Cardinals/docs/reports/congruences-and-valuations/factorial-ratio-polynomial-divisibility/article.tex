@@ -10,6 +10,7 @@
 \usepackage{listings,needspace}
 \usepackage[most]{tcolorbox}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=teal]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
 \definecolor{ink}{HTML}{19354C}
 \definecolor{accent}{HTML}{147D92}
 \definecolor{pale}{HTML}{F0F6F8}
@@ -47,14 +48,27 @@
 \newcommand{\B}{B}
 \newcommand{\LL}{\mathcal L}
 \newcommand{\hyp}[3]{{}_{8}F_{7}\!\left(\begin{matrix}#1\\#2\end{matrix};#3\right)}
+% Part II (batch 74) macros, from manuscript 01; \vp of the source is printed \nup
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\nup}{\nu_p}
+\newcommand{\OEIS}[1]{\texttt{#1}}
+\newcommand{\T}{\mathsf T}
+\newcommand{\tB}{\widetilde B}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
   frame=single,rulecolor=\color{accent},backgroundcolor=\color{pale},
   showstringspaces=false}
 \tcbset{colback=pale,colframe=accent,boxrule=0.6pt,arc=1mm,left=3mm,right=3mm}
 \hypersetup{pdftitle={Polynomial divisibility of height-one factorial ratios},
- pdfauthor={OpenAI ChatGPT},pdfsubject={Bala conjectures, OEIS A211417 and A295431}}
+ pdfauthor={OpenAI ChatGPT},pdfsubject={Bala conjectures, OEIS A211417 and A295431; Part II: A347854-A347858 and A295432}}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{0.5cm}
 {\color{accent}\large RESEARCH ARTICLE\par}
@@ -63,10 +77,10 @@
 \vspace{0.6cm}
 {\Large Proofs of Bala's uniform-multiplier conjectures,\par
  a complete rational-root criterion,\par and certified optimal constants\par}
-\vspace{0.8cm}
+\vspace{0.5cm}
 {\large A research attempt with reproducible exact certificates\par}
 {\large September 19, 2026\par}
-\vspace{0.8cm}
+\vspace{0.5cm}
 \begin{tcolorbox}[title=Main outcome,fonttitle=\bfseries]
 For
 \[
@@ -93,8 +107,13 @@ optimal. The associated integer sequences admit explicit recurrences,
 hypergeometric generating functions, and all-order asymptotic expansions.
 The archive contains exact certificates, a separate verifier, regression
 tests, and an admissible-denominator atlas for all 52 sporadic examples.
+
+{\small\noindent\textbf{Part II} (October 1, 2026, batch 74): integrality and
+algebraicity for OEIS A347854--A347858 by rational dilation, and the divisor
+$6(6n+1)(12n-1)$ of A295432; its A295431 multipliers re-prove Part~I's.\par}
 \vfill
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \begingroup
 \small
@@ -102,6 +121,9 @@ tests, and an admissible-denominator atlas for all 52 sporadic examples.
 \tableofcontents
 \endgroup
 \newpage
+
+\phantomsection\part*{Part I.\quad Polynomial divisibility of height-one factorial ratios}
+\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Polynomial divisibility of height-one factorial ratios}
 
 \section{The selected problem and its status}
 \subsection{Two exceptional integer sequences}
@@ -1015,7 +1037,7 @@ recurrence in the proof of integrality. A Lean development could split
 naturally into the valuation identity, rational one-sided step lemmas,
 the prime-power cutoff argument, and a generic finite-potential checker.
 
-\subsection{Research directions arising from the proof}
+\subsection{Research directions arising from the proof}\label{ffd:partI:directions}
 A natural continuation is to classify nonsplit polynomial divisors.
 Our necessity proof realizes prescribed rational approach points by
 primes in arithmetic progressions. For higher-degree factors, roots
@@ -1031,6 +1053,1546 @@ uniformly in $r$. Finally, the newly certified sequences invite
 combinatorial models that would explain their integrality without
 prime valuations; no such interpretation is assumed here.
 
+%% ===================================================================
+%% Part II (batch 74, manuscript 01), labels ffd:
+%% ===================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Rational dilation, integrality, and algebraicity of factorial ratios}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Rational dilation, integrality, and algebraicity of factorial ratios}
+
+\noindent{\large Proofs for A347854--A347858, a second route to Part~I's
+A295431 multipliers, and a divisor theorem for A295432\par}
+\smallskip
+
+\section{Part II: source, overlap with Part I, and notation}\label{ffd:sec:preface}
+\subsection{Source and status}\label{ffd:sec:source}
+Part~II is the text of one manuscript, \emph{Rational Dilation, Integrality,
+and Algebraicity of Factorial Ratios} (``Research draft prepared with
+ChatGPT'', dated October 1, 2026), delivered as the archive
+\texttt{OEIS\_Fractional\_Factorial\_Theorems.zip} in commit
+\texttt{c664fc2f0}. It is manuscript~01 of batch~74 of ProveIt's
+incoming-reports intake and was placed beside Part~I in commit
+\texttt{b669cff87}. It names no ProveIt commit as its pin; its only
+repository citation is the root \texttt{README.md} blob
+\texttt{bfe39c17}, introduced by commit \texttt{e37a17848}
+\cite{ffd-proveit}. Every result, proof, remark, limitation and research
+question of the manuscript is printed below. Its abstract reads as follows,
+with the sentence on A295431 corrected as explained in
+\cref{ffd:sec:overlap} and the Lambert branch glossed:
+
+\begin{quote}\small
+We give ordinary mathematical proofs of the integrality and algebraicity
+conjectures attached to the five fractional-factorial sequences
+\OEIS{A347854}--\OEIS{A347858}. The arithmetic argument does not apply
+Landau's criterion to nonintegral factorial arguments. Instead, it first
+cancels the Gamma quotient to an integer arithmetic progression, derives an
+exact residue-dependent prime-valuation formula, and treats primes dividing
+the fractional denominator separately. This yields a general rational-dilation
+theorem, valid for composite as well as prime denominators.
+
+For algebraicity, the fractional subsequences are identified with Frobenius
+solutions of four finite-monodromy hypergeometric equations. Four small,
+positive-definite integral Gram matrices provide exact finiteness certificates.
+We also give a second proof of the specified denominator-clearing conjectures
+posted in August 2025 in \OEIS{A295431}: four specified multipliers, division
+by $12n-1$, and two infinite families with explicit clearing constants. Part~I
+had already proved all of them, with smaller constants and with the four
+multipliers shown least possible. A further product-divisibility conjecture in
+\OEIS{A295432} and the June 2026 conditional refinements of the first two
+fractional sequences follow.
+
+Supplementary results include beta-product moment representations, strict
+Hankel positivity, all-orders asymptotic expansions with effective remainders,
+and inverse expansions based on the negative real branch of Lambert's $W$
+function (the lower real branch $W_{-1}$, with values at most $-1$, which
+yields the large solution). A standard-library Python program checks the
+finite certificates and additional exact-arithmetic identities. These checks
+supplement, rather than replace, the proofs.
+\end{quote}
+
+\noindent\textbf{Status.} Unrefereed research manuscript. No new theorem in this
+package has been checked in Lean or Rocq, and no OEIS submission has been made.
+The classical monodromy results used are identified explicitly. The search
+supports the reported OEIS conjecture status, not a claim of worldwide priority.
+
+\subsection{What Part II re-proves from Part I}\label{ffd:sec:overlap}
+The manuscript was written without reference to Part~I and does not cite
+it. Its statements on A295431 are therefore not new.
+\Cref{ffd:thm:clearing-main} (A295431 part) re-proves results of Part~I:
+\begin{itemize}[itemsep=2pt]
+\item The multipliers $385$, $5$, $1$, $770$ for $n+1$, $2n+1$, $3n+1$ and
+  their product are proved in Part~I and shown least possible there (the
+  table of least multipliers in Section~\ref{sec:sharp} and its finite
+  digit-graph certificates). Part~I's $B(n)$ is the sequence called $U(n)$
+  here.
+\item The negative family is Part~I's Proposition~\ref{prop:negative} with $(R,M)=(B,12)$,
+  whose constant $\LL_r^{|I|}$ divides the constant $D(r)=L_r^r$ used here;
+  its case $r=1$ is the divisibility of $U(n)$ by $12n-1$ with multiplier one.
+\item The positive family is Part~I's unrestricted-product bound
+  \eqref{eq:unrestricted} with $M=12$, whose constant
+  $\bigl(\prod_{i\le r}g_i\bigr)\LL_{12r}^r$ divides the constant
+  $C(k,r)=(kL_{12r})^r$ used here, since every $g_i=(k,i)$ divides $k$.
+\end{itemize}
+The digit-sum proofs of \cref{ffd:sec:specified,ffd:sec:families} are a
+second, independent route to these statements, and are printed as such. The
+proof of $U(n)/(12n-1)\in\Z$ through \cref{ffd:thm:oddrefinement} is a
+third route to that one case.
+
+\subsection{What is new in Part II}\label{ffd:sec:new}
+Relative to Part~I and to the rest of the repository at the time of writing,
+the following are new:
+\begin{itemize}[itemsep=2pt]
+\item integrality and algebraicity of the generating functions of
+  A347854--A347858 (\cref{ffd:thm:main}); Part~I's status notes had left the
+  Gamma-interpolated values of this OEIS family explicitly unsettled;
+\item the rational-dilation theorem with composite denominators
+  (\cref{ffd:thm:general}), the residue-shifted valuation formula, its
+  reduction to slices of the ordinary Landau function, and the treatment of
+  the denominator primes (\cref{ffd:sec:valuation,ffd:sec:arithmetic-proof});
+\item the June 2026 refinements for A347854 and A347855
+  (\cref{ffd:sec:refinements});
+\item the divisor $6(6n+1)(12n-1)$ of A295432, \eqref{ffd:eq:Bdivmain},
+  proved in \cref{ffd:sec:a295432};
+\item the Gram-matrix finite-monodromy certificates, the beta-product moment
+  laws and strict Hankel positivity (\cref{ffd:sec:gram,ffd:sec:moments});
+\item the explicit fixed-order remainder constant $E_J$ in
+  \cref{ffd:thm:asymptotic}.
+\end{itemize}
+The rest of \cref{ffd:sec:asymptotic,ffd:sec:inverse} instantiates
+expansions that are already in the repository: Part~I's factorial-ratio
+expansion \eqref{eq:logasym}, and the gamma-quotient engine and
+balanced inverse theorem of the transseries volumes \cite{ffd-cti,ffd-tai};
+see the notes in those sections. Part~II claims no novelty there.
+
+\subsection{Notation}\label{ffd:sec:notation}
+Each Part keeps its own definitions. Several letters mean different things
+in the two Parts, and some mean two things within Part~II, as in the source.
+The following table fixes the reading. Within Part~II every symbol has its
+Part~II meaning.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{p{0.11\textwidth}p{0.37\textwidth}p{0.42\textwidth}}
+\toprule
+Symbol & Part I & Part II\\
+\midrule
+$B(n)$ & A295431, $(12n)!\,n!/((6n)!(4n)!(3n)!)$ & not used for a sequence; A295432 is $\tB(n)$, and A295431 is $U(n)$\\
+$\tB(n)$ & --- & A295432, $(12n)!(3n)!(2n)!/((6n)!^2(4n)!\,n!)$; the source writes $B(n)$\\
+$U$ & $U_n=42A(n)/((2n+1)(3n+1)(5n+1))$ & $U(n)=$ A295431 $=$ Part~I's $B(n)$; $U_d$ the general ordinary ratio; $U_{\rm I},\dots,U_{\rm IV}$ the four bases\\
+$A$, $B$ & A211417 and A295431 & integer slope parameters in $L=A+B+m$; $A_i(x)$ generating functions\\
+$\LL_s$, $L_r$ & $\LL_s=\lcm(1,\dots,s)$ & $L_r=\lcm(1,\dots,r)$ (the same function); $L$ alone is a slope parameter\\
+valuation & $v_p$ & $\nu_p$ (same meaning)\\
+$\Delta$ & Landau function of $R$ & Landau function of $U_d$, $\Delta_U$, $\Delta_{\tB}$; $\Delta^k$ finite differences in \cref{ffd:thm:moments}\\
+$R$ & a generic factorial ratio & exponential growth constant $R$ (and $R_i$)\\
+$\lambda$, $K$ & $\lambda=2^{14}3^95^5$; $K_R$ & $\lambda$ per base; $K$ amplitude constant\\
+$h$ & height & length of the reduced parameter lists; $\nu_p(n)$ in \cref{ffd:sec:exceptional}\\
+$m$, $m_k(r)$ & $m_k(r)$ counts units & $m$ the integer gap in $L=A+B+m$\\
+$P$, $Q$ & divisor polynomial; $Q=P/c$ & $P(T),Q(T)$ of the operator \eqref{ffd:eq:operator}\\
+$T$ & cutoff in \eqref{eq:Cbound} & polynomial variable; $T_n$ a multinomial; $\T$ transpose\\
+$J$ & jump $J(k)$ & expansion order in \cref{ffd:thm:asymptotic}; base index\\
+$\sigma$, $\gamma$ & $\sigma_{2q-1}$ & $\gamma_{2j-1}$ plays the role of Part~I's $\sigma_{2q-1}$\\
+$\mathsf B$, $B_{2j}$ & $\mathsf B_{2q}$ Bernoulli & $B_{2j}$ Bernoulli; $\mathrm B(\cdot,\cdot)$ the beta function\\
+\bottomrule
+\end{tabular}
+\end{center}
+The tempting false reading is that Part~II's $B$ or $U$ is Part~I's: it is
+not. Part~I's $B$ is Part~II's $U$, and Part~I's $U_n$ does not occur in
+Part~II. The only renaming made in printing the source is $B(n)\mapsto\tB(n)$
+for A295432; the valuation symbol is printed $\nu_p$ throughout, as in the
+source.
+
+\subsection{Reading guide}\label{ffd:sec:reading}
+The arithmetic proof is self-contained in
+\cref{ffd:sec:dilation,ffd:sec:valuation,ffd:sec:arithmetic-proof,ffd:sec:refinements,ffd:sec:denominators}.
+\Cref{ffd:sec:valuation} derives the residue formula from a finite rational
+product; \cref{ffd:sec:arithmetic-proof} treats all primes, including those
+dividing a composite denominator. \Cref{ffd:sec:denominators} proves the
+specified multipliers and the two infinite denominator-clearing families
+(for A295431 a second route to Part~I; see \cref{ffd:sec:overlap}).
+
+The algebraicity proof has a separate dependency: the classical companion-matrix
+ description of hypergeometric monodromy. \Cref{ffd:sec:monodromy}
+explains the fractional Frobenius solutions, and \cref{ffd:sec:gram} gives the
+four exact matrix certificates.
+\Cref{ffd:sec:moments,ffd:sec:asymptotic,ffd:sec:inverse} develop moment laws,
+forward asymptotics, and inverse expansions. The verification discussion in
+\cref{ffd:sec:verification} separates finite proof certificates from finite
+numerical tests.
+
+Appendix~\ref{ffd:app:audit} maps each OEIS target to its proof. The shipped files
+are listed in Appendix~\ref{ffd:app:package}.
+
+\section{The questions and the contribution}\label{ffd:sec:questions}
+\subsection{Five related sequences}
+Throughout, $x!$ for nonintegral $x\ge0$ means $\Gamma(x+1)$. Define
+\begin{align}
+a_1(n)&=\frac{(6n)!(n/2)!}{(3n)!(2n)!(3n/2)!}, & &\OEIS{A347854},\label{ffd:eq:a1}\\
+a_2(n)&=\frac{(4n)!(n/3)!}{(2n)!n!(4n/3)!}, & &\OEIS{A347855},\\
+a_3(n)&=\frac{(6n)!(n/2)!}{(4n)!n!(3n/2)!}, & &\OEIS{A347856},\\
+a_4(n)&=\frac{(6n)!(3n/2)!}{(3n)!(2n)!(5n/2)!}, & &\OEIS{A347857},\\
+a_5(n)&=\frac{(9n)!(n/2)!}{(3n)!(2n)!(9n/2)!}, & &\OEIS{A347858}.
+\end{align}
+Here and below $n$ is a nonnegative integer unless another domain is stated.
+The inspected OEIS entries conjecture that the values are integers and that
+the ordinary generating functions are algebraic
+\cite{ffd-oeis854,ffd-oeis855,ffd-oeis856,ffd-oeis857,ffd-oeis858}.
+
+\begin{theorem}[Five integrality and five algebraicity assertions]\label{ffd:thm:main}
+For $1\le i\le5$ and $n\ge0$, $a_i(n)$ is a positive integer. Each series
+\[
+ A_i(x)=\sum_{n\ge0}a_i(n)x^n
+\]
+is algebraic over $\Q(x)$.
+\end{theorem}
+
+These examples are not isolated numerical curiosities. They are rational
+samplings of four of the sporadic height-one factorial ratios related to
+finite hypergeometric monodromy. The ordinary ratios and their place in that
+family are recorded in \OEIS{A295431} and the cited literature
+\cite{ffd-oeis431,bober,ffd-rv}. Our contribution is the arithmetic and differential
+bridge from ordinary integer arguments to the fractional arguments, together
+with concrete denominator-clearing results.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Sequence & $a_i(1)$ & $a_i(2)$ & $a_i(3)$ & $a_i(4)$\\
+\midrule
+A347854 &40&4620&622336&89237148\\
+A347855 &9&189&4620&120285\\
+A347856 &20&990&56576&3432198\\
+A347857 &24&1386&91392&6374082\\
+A347858 &512&1021020&2399141888&6016814703900\\
+\bottomrule
+\end{tabular}
+\end{center}
+The table fixes the normalization; it is not evidence sufficient for the theorem.
+
+\subsection{Further conjectures: A295431 (a second route to Part~I) and A295432}\label{ffd:sec:further-conj}
+Put
+\begin{equation}
+ U(n)=\frac{(12n)!n!}{(6n)!(4n)!(3n)!},\qquad
+ \tB(n)=\frac{(12n)!(3n)!(2n)!}{(6n)!^2(4n)!n!}.
+ \label{ffd:eq:UB}
+\end{equation}
+These are \OEIS{A295431} and \OEIS{A295432}, respectively.
+The following statements match the relevant denominator and divisibility
+conjectures in those entries \cite{ffd-oeis431,ffd-oeis432}.
+The sequence $U$ is Part~I's $B$; the source writes $B(n)$ for $\tB(n)$
+(\cref{ffd:sec:notation}).
+
+\begin{theorem}[Specified clearing factors and two infinite families; the
+A295431 part is Part~I's]
+\label{ffd:thm:clearing-main}
+For every $n\ge0$, all five quantities
+\begin{equation}
+ \frac{385U(n)}{n+1},\quad
+ \frac{5U(n)}{2n+1},\quad
+ \frac{U(n)}{3n+1},\quad
+ \frac{770U(n)}{(n+1)(2n+1)(3n+1)},\quad
+ \frac{U(n)}{12n-1}
+ \label{ffd:eq:fiveclear}
+\end{equation}
+are integers. For $r\ge1$, define
+\[
+ L_r=\lcm(1,2,\ldots,r),\qquad
+ C(k,r)=(kL_{12r})^r,\qquad D(r)=L_r^r.
+\]
+Then, for $k\in\{1,2,3\}$ and $n\ge0$,
+\begin{equation}
+ \frac{C(k,r)U(n)}{\prod_{i=1}^{r}(kn+i)}\in\Z,
+ \qquad
+ \frac{D(r)U(n)}{
+   \displaystyle\prod_{\substack{1\le i\le r\\(i,12)=1}}(12n-i)}\in\Z.
+ \label{ffd:eq:infiniteclear}
+\end{equation}
+In addition, for $n\ge1$,
+\begin{equation}
+ 6(6n+1)(12n-1)\mid \tB(n).
+ \label{ffd:eq:Bdivmain}
+\end{equation}
+\end{theorem}
+The constants in \eqref{ffd:eq:infiniteclear} are deliberately simple, not claimed
+minimal. The specified multipliers in \eqref{ffd:eq:fiveclear} are the multipliers
+conjectured in the entry; their optimality is not needed or asserted.
+
+\begin{writenote}[Added 1 October 2026, batch~74]
+Everything in \eqref{ffd:eq:fiveclear} and \eqref{ffd:eq:infiniteclear} was
+already proved in Part~I, which the source did not consult. Part~I proves the
+four multipliers least possible (Section~\ref{sec:sharp}), proves
+$U(n)/(12n-1)\in\Z$ as the case $r=1$ of Proposition~\ref{prop:negative}, and gives the
+smaller family constants $\LL_r^{|I|}$ (Proposition~\ref{prop:negative}) and
+$\bigl(\prod_{i\le r}g_i\bigr)\LL_{12r}^{r}$ in \eqref{eq:unrestricted}, which
+divide $D(r)$ and $C(k,r)$ respectively. The proofs in
+\cref{ffd:sec:specified,ffd:sec:families} are a second route
+(\cref{ffd:sec:overlap}). Only \eqref{ffd:eq:Bdivmain}, on A295432, is new.
+\end{writenote}
+
+\subsection{Provenance and boundaries}
+The source audit used the ProveIt repository and the current OEIS entries.
+The repository's distinction between research artifacts, executable checks,
+and trusted formal theorems is adopted here \cite{ffd-proveit}. No theorem from
+an unreviewed repository report is assumed in the arguments below. A repository
+search for the principal target did not return a matching file; this is not
+an exhaustive priority search.
+
+\begin{writenote}[Added 1 October 2026, batch~74]
+The search was right about A347854--A347858 and A295432, which no repository
+file mentioned. It missed this report's Part~I (in the repository since
+September 2026), which proves the A295431 statements of
+\cref{ffd:thm:clearing-main} with smaller constants and with optimality; see
+\cref{ffd:sec:overlap}. The cited repository source \cite{ffd-proveit} is the
+root \texttt{README.md} blob \texttt{bfe39c17} of commit \texttt{e37a17848}.
+The first-party account \cite{ffd-failed} cited next is an external web page,
+not a repository file.
+\end{writenote}
+
+An August 2026 first-party account records a failed proof attempt for the same
+fractional-factorial family, based on applying an integer-parameter floor
+criterion outside its hypotheses \cite{ffd-failed}. The underlying obstruction is
+mathematical, not computational: checking a floor inequality exactly does not
+establish that it computes the valuations of a Gamma ratio. Section~\ref{ffd:sec:valuation}
+provides the missing bridge and handles the exceptional primes explicitly.
+
+The leading asymptotic scale and some moment representations already appear
+in the OEIS material. They are not advertised as discoveries here. The primary
+results are the arithmetic, algebraicity, and denominator-clearing proofs
+(for A295431, a second route to Part~I).
+The supercongruences appearing in these entries are \emph{not} proved in this
+manuscript. Neither explicit minimal algebraic equations nor their degrees
+are determined.
+
+\section{A rational-dilation theorem}\label{ffd:sec:dilation}
+Let $L,A,B,m,c,d$ be positive integers satisfying
+\begin{equation}
+ L=A+B+m,\qquad (c,d)=1.
+ \label{ffd:eq:params}
+\end{equation}
+For real $t\ge0$, define
+\begin{align}
+ V(t)&=\frac{\Gamma(1+Lt)\Gamma(1+ct/d)}
+ {\Gamma(1+At)\Gamma(1+Bt)\Gamma(1+(c/d+m)t)},\label{ffd:eq:V}\\
+ U_d(t)&=V(dt)
+ =\frac{\Gamma(1+dLt)\Gamma(1+ct)}
+ {\Gamma(1+dAt)\Gamma(1+dBt)\Gamma(1+(c+dm)t)}.
+ \label{ffd:eq:Ud}
+\end{align}
+The subscript distinguishes this general ordinary ratio from the particular
+$U$ in \eqref{ffd:eq:UB}.
+
+\begin{theorem}[Rational dilation, including composite denominators]
+\label{ffd:thm:general}
+Assume \eqref{ffd:eq:params} and $U_d(n)\in\Z$ for all $n\ge0$. Then
+\begin{equation}
+ V(n)\in\Z_{>0},\qquad
+ \left(\frac{d}{\gcd(d,n)}\right)^{mn}\mid V(n)
+ \quad(n\ge0).
+ \label{ffd:eq:generalintegral}
+\end{equation}
+Furthermore, $\sum_{n\ge0}V(n)x^n$ is algebraic over $\Q(x)$.
+\end{theorem}
+The arithmetic proof is given in Sections~\ref{ffd:sec:valuation}--\ref{ffd:sec:arithmetic-proof}.
+The algebraicity assertion is proved in Section~\ref{ffd:sec:monodromy}.
+The special orientation of the Gamma quotient in \eqref{ffd:eq:V}, the positive
+integer gap $mn$, and the balance $L=A+B+m$ are essential to the stated proof.
+This is not a criterion for arbitrary rational slopes.
+
+The five sequences correspond to the following parameters.
+\begin{center}
+\begin{tabular}{lrrrrrrc}
+\toprule
+Sequence & $L$ &$A$ &$B$ &$m$ &$c$ &$d$ & ordinary base\\
+\midrule
+A347854&6&3&2&1&1&2&I\\
+A347855&4&2&1&1&1&3&I\\
+A347856&6&4&1&1&1&2&II\\
+A347857&6&3&2&1&3&2&III\\
+A347858&9&3&2&4&1&2&IV\\
+\bottomrule
+\end{tabular}
+\end{center}
+The bases are
+\begin{align}
+ U_{\rm I}(t)&=\frac{(12t)!t!}{(6t)!(4t)!(3t)!},\label{ffd:eq:bases}\\
+ U_{\rm II}(t)&=\frac{(12t)!t!}{(8t)!(2t)!(3t)!},\nonumber\\
+ U_{\rm III}(t)&=\frac{(12t)!(3t)!}{(6t)!(4t)!(5t)!},\nonumber\\
+ U_{\rm IV}(t)&=\frac{(18t)!t!}{(6t)!(4t)!(9t)!}.
+ \nonumber
+\end{align}
+They are \OEIS{A295431}, \OEIS{A295433}, \OEIS{A295435}, and
+\OEIS{A295437}. The relation is $a_i(n)=U_J(n/d)$, with $J,d$ taken
+from the table.
+
+\section{The exact prime-valuation bridge}\label{ffd:sec:valuation}
+\subsection{First eliminate the fractional Gamma arguments}
+For integer $n\ge0$, the functional equation of Gamma gives the finite identity
+\begin{equation}
+ V(n)=\frac{d^{mn}(Ln)!}{(An)!(Bn)!\prod_{j=1}^{mn}(cn+dj)}.
+ \label{ffd:eq:product}
+\end{equation}
+In particular, $V(n)$ is a positive rational number before integrality is proved.
+Every valuation below is a valuation of this rational number. We never assign
+a prime valuation to an individual transcendental Gamma value.
+
+For $s\in\{0,\ldots,d-1\}$ and $0\le x<1$, set
+\begin{equation}
+ F_s(x)=\floor{Lx}-\floor{Ax}-\floor{Bx}
+ -\floor{\frac{(c+dm)x-s}{d}}+\floor{\frac{cx-s}{d}}.
+ \label{ffd:eq:F}
+\end{equation}
+The dependence on $s$ is not optional: it records a congruence class in the
+arithmetic progression in \eqref{ffd:eq:product}.
+
+\begin{lemma}[Exact valuation formula away from the denominator]
+\label[lemma]{ffd:lem:valuation}
+Let $p$ be prime with $p\nmid d$. For each $k\ge1$, put $q=p^k$, write
+$n=qt+r$ with $0\le r<q$, and choose $s_k\in\{0,\ldots,d-1\}$ such that
+\begin{equation}
+ q s_k\equiv cr\pmod d.
+ \label{ffd:eq:shift}
+\end{equation}
+Then
+\begin{equation}
+ \nup(V(n))=\sum_{k\ge1}F_{s_k}\left(\frac{n\bmod p^k}{p^k}\right).
+ \label{ffd:eq:valuation}
+\end{equation}
+Only finitely many summands are nonzero.
+\end{lemma}
+\begin{proof}
+At level $q$, Legendre's formula gives the factorial contribution
+\[
+ \floor{\frac{Ln}{q}}-\floor{\frac{An}{q}}-\floor{\frac{Bn}{q}}
+ =mt+\floor{\frac{Lr}{q}}-\floor{\frac{Ar}{q}}-\floor{\frac{Br}{q}}.
+\]
+For the denominator progression, $q\mid cn+dj$ is equivalent to
+$q\mid cr+dj$. Since $(q,d)=1$, exactly one residue class of $j$ modulo $q$
+is counted. Among $mn=mqt+mr$ consecutive indices there are $mt$ complete
+blocks of length $q$, followed by $mr$ indices.
+
+In the latter block, write $cr+dj=q\ell$. With $x=r/q$, the inequalities
+$1\le j\le mr$ are precisely
+\[
+ cx<\ell\le(c+dm)x.
+\]
+Integrality of $j$ is precisely $\ell\equiv s_k\pmod d$. The number of such
+$\ell$ is
+\[
+ \floor{\frac{(c+dm)x-s_k}{d}}
+ -\floor{\frac{cx-s_k}{d}}.
+\]
+Subtracting this count and the $mt$ complete blocks from the factorial
+contribution gives $F_{s_k}(x)$. Summing over $q=p^k$ proves the identity.
+For $q>\max(L,c+dm)n$, no numerator factorial or progression factor is
+divisible by $q$, so the level contribution vanishes.
+\end{proof}
+
+\subsection{Why a naive rational-slope floor criterion fails}
+For $x\ge0$ one has
+\[
+ \floor{7x/6}-\floor{x/6}-\floor{x}\ge0,
+\]
+because $7x/6=x/6+x$. Nevertheless,
+\[
+ \frac{\Gamma(1+7/6)}{\Gamma(1+1/6)\Gamma(2)}=\frac76\notin\Z.
+\]
+Thus balance and this unshifted floor inequality do not prove integrality of
+the corresponding Gamma quotient. The same counterexample is documented
+in the failed-attempt account \cite{ffd-failed}. Our argument starts with the
+rational identity \eqref{ffd:eq:product}, derives \eqref{ffd:eq:valuation}, and then
+addresses the primes excluded from that formula. Merely increasing the number
+of sampled terms would not repair the invalid shortcut.
+
+\section{Ordinary Landau functions and all denominator primes}
+\label{ffd:sec:arithmetic-proof}
+\subsection{The ordinary criterion, with its hypotheses intact}
+For the integer-slope ratio $U_d$, define the periodic step function
+\begin{equation}
+ \Delta(y)=\floor{dLy}+\floor{cy}
+ -\floor{dAy}-\floor{dBy}-\floor{(c+dm)y}.
+ \label{ffd:eq:Delta}
+\end{equation}
+Balance makes its period equal to $1$. We recall the ordinary factorial-ratio
+criterion, classically due to Landau; see \cite{bober,ffd-rv}.
+
+\begin{lemma}[Integer-slope criterion]\label[lemma]{ffd:lem:landau}
+For $U_d$ in \eqref{ffd:eq:Ud}, $U_d(n)$ is integral for every $n\ge0$ if and only
+if $\Delta(y)\ge0$ for every $0\le y<1$.
+\end{lemma}
+\begin{proof}
+If $\Delta\ge0$, Legendre's formula gives
+$\nup(U_d(n))=\sum_{k\ge1}\Delta(n/p^k)\ge0$ for every prime $p$.
+For the converse, suppose $\Delta$ is negative somewhere. Right-continuity
+and its finite set of jumps give a nonempty open interval $I\subset(0,1)$ on
+which it is negative. Take an arbitrarily large prime $p$ and an integer $n$
+with $n/p\in I$. If $p$ is larger than all integer slopes, every term in the
+valuation formula with $k\ge2$ vanishes, since $n<p$. Then
+$\nup(U_d(n))=\Delta(n/p)<0$, contrary to integrality. No distribution result
+for primes is needed; arbitrarily large primes suffice.
+\end{proof}
+This is Part~I's Lemma~\ref{lem:landau} applied to the ordinary ratio $U_d$; both
+Parts state it as the classical criterion and prove it the same way.
+
+\begin{lemma}[All residue shifts are ordinary slices]\label[lemma]{ffd:lem:slices}
+For $j\in\{0,\ldots,d-1\}$ and $s\equiv-cj\pmod d$, $0\le s<d$,
+\begin{equation}
+ \Delta\left(\frac{j+x}{d}\right)=F_s(x)\qquad(0\le x<1).
+ \label{ffd:eq:slices}
+\end{equation}
+Consequently, $\Delta\ge0$ on $[0,1)$ if and only if every $F_s\ge0$ there.
+\end{lemma}
+\begin{proof}
+Write $cj=da-s$. The three integer-slope floors in the first part of
+\eqref{ffd:eq:Delta} contribute the constant $(L-A-B)j=mj$.
+The remaining two floors have constants $a$ and $a+mj$, respectively.
+They cancel the $mj$, leaving exactly \eqref{ffd:eq:F}. Because $(c,d)=1$, the
+map $j\mapsto-cj\bmod d$ runs through all residues.
+\end{proof}
+Combining these two lemmas with \cref{ffd:lem:valuation} proves
+$\nup(V(n))\ge0$ for all $p\nmid d$ under the hypothesis of
+\cref{ffd:thm:general}.
+
+\subsection{The exceptional primes, including the composite case}\label{ffd:sec:exceptional}
+Let
+\[
+ T_n=\frac{(Ln)!}{(An)!(Bn)!}
+ =\binom{Ln}{An,Bn,mn}(mn)!\in\Z.
+\]
+Fix a prime $p\mid d$, write $e=\nup(d)$, and for $n>0$ write $h=\nup(n)$.
+If $h<e$, every $cn+dj$ has valuation exactly $h$, since $p\nmid c$.
+Equation~\eqref{ffd:eq:product} therefore gives the exact formula
+\begin{equation}
+ \nup(V(n))=mn(e-h)+\nup(T_n)\ge mn(e-h).
+ \label{ffd:eq:exceptional-low}
+\end{equation}
+
+If $h\ge e$, put $d=p^e d_0$ and $n=p^e N$. Replace the parameter tuple by
+\begin{equation}
+ (L',A',B',m',c',d')=(p^eL,p^eA,p^eB,p^em,c,d_0).
+ \label{ffd:eq:reducedtuple}
+\end{equation}
+The corresponding $V'$ satisfies $V'(N)=V(n)$ by direct substitution into
+\eqref{ffd:eq:V}, and its ordinary ratio is exactly the same $U_d(t)$ as before.
+But $p\nmid d'$, so \cref{ffd:lem:valuation,ffd:lem:slices} apply to the new tuple and
+give $\nup(V(n))\ge0$. This includes $d'=1$, where the only shift is $0$.
+
+We have treated every prime. Since $V(n)$ is rational, it is integral. Moreover,
+\eqref{ffd:eq:exceptional-low} proves the divisibility by
+$\prod_{p\mid d}p^{mn\max(\nup(d)-\nup(n),0)}$, which is the factor in
+\eqref{ffd:eq:generalintegral}. The case $n=0$ is immediate from $V(0)=1$.
+This proves the arithmetic part of \cref{ffd:thm:general} without restricting $d$
+to be prime.
+
+\subsection{Small complete certificates for the five cases}\label{ffd:sec:floor-table}
+For these examples, each $F_s$ takes only the values $0$ and $1$. The following
+table gives its complete $1$-set; it is zero elsewhere in $[0,1)$.
+All intervals are left-closed and right-open.
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{lc l}
+\toprule
+Sequence & $s$ & $\{x:F_s(x)=1\}$\\
+\midrule
+A347854&0&$[1/6,2/3)\cup[5/6,1)$\\
+&1&$[1/6,1/3)\cup[5/6,1)$\\
+A347855&0&$[1/4,1)$\\
+&1&$[3/4,1)$\\
+&2&$[1/4,1/2)\cup[3/4,1)$\\
+A347856&0&$[1/6,1/4)\cup[1/3,3/4)\cup[5/6,1)$\\
+&1&$[1/6,1/4)\cup[2/3,3/4)\cup[5/6,1)$\\
+A347857&0&$[1/6,2/5)\cup[2/3,4/5)\cup[5/6,1)$\\
+&1&$[1/6,1/5)\cup[1/3,3/5)\cup[5/6,1)$\\
+A347858&0&$[1/9,1/2)\cup[5/9,2/3)\cup[7/9,1)$\\
+&1&$[2/9,1/3)\cup[4/9,1/2)\cup[8/9,1)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For clarity about its finite nature, a term $\floor{ax+b}$ can jump only at
+$x=(j-b)/a$, $j\in\Z$. Intersect the union of these rational breakpoints with
+$[0,1]$ and evaluate at each left endpoint. Between consecutive breakpoints
+all five floors are constant. This proves the displayed identities on the
+entire domain, including the jump points, rather than only on a numerical grid.
+
+The eleven rows require respectively $6,6,4,4,4,8,8,8,8,10,10$ cells. The
+supplied program regenerates the breakpoints from the parameters and compares
+the resulting sets with the table. By \cref{ffd:lem:slices,ffd:lem:landau}, the table
+also proves integrality of all four ordinary bases, independently of their
+classification. The arithmetic part of \cref{ffd:thm:main} now follows.
+
+\section{Refinements for the fractional sequences}\label{ffd:sec:refinements}
+\subsection{Denominator powers in nonzero residue classes}\label{ffd:sec:powers}
+The general theorem immediately gives
+\begin{equation}
+ 3^n\mid a_2(n)\quad(3\nmid n),\qquad
+ 2^{m_i n}\mid a_i(n)\quad(n\text{ odd},\ i=1,3,4,5),
+ \label{ffd:eq:powers}
+\end{equation}
+where $(m_1,m_3,m_4,m_5)=(1,1,1,4)$. In particular,
+$a_2(3n+1)/3^{3n+1}$ and $a_2(3n+2)/3^{3n+2}$ are integers. These are the
+integrality conditions in the June 28, 2026 refinement of \OEIS{A347855}
+\cite{ffd-oeis855}.
+
+\subsection{A linear divisor and an exact binary valuation}\label{ffd:sec:linear}
+\begin{theorem}\label{ffd:thm:oddrefinement}
+For every $N\ge1$, $6N-1\mid a_1(N)$. For odd $N$,
+\begin{equation}
+ \nu_2(a_1(N))=2N+s_2(N),\qquad
+ \frac{a_1(N)}{2^{2N+1}(6N-1)}\in\Z,
+ \label{ffd:eq:oddrefined}
+\end{equation}
+where $s_2$ is the binary digit sum.
+\end{theorem}
+\begin{proof}
+Let $q=p^k\mid6N-1$. Then $p\ge5$. If $r=N\bmod q$, we have
+$6r=tq+1$, where $t$ is either $1$ or $5$. Indeed, $0\le r<q$ and reduction
+modulo $6$ forces $t$ to be a unit modulo $6$ in the indicated range.
+Consequently
+\[
+ \frac rq\in[1/6,1/3)\ \text{or}\ [5/6,1).
+\]
+The assertion includes the smallest possibility $q=5$. Both intervals belong
+to the $1$-set of \emph{both} $F_0$ and $F_1$ for $a_1$. Thus every level
+$k\le\nup(6N-1)$ contributes $1$ to \eqref{ffd:eq:valuation}; all other contributions
+are nonnegative. This proves the linear divisibility.
+
+When $N$ is odd, all progression factors $N+2j$ are odd, so
+\[
+ \nu_2(a_1(N))=N+\nu_2((6N)!)-\nu_2((3N)!)-\nu_2((2N)!).
+\]
+Using $\nu_2(M!)=M-s_2(M)$ and $s_2(2M)=s_2(M)$ gives
+$2N+s_2(N)$. Since $s_2(N)\ge1$ and $6N-1$ is odd, the two divisors combine.
+\end{proof}
+
+The integer asserted conditionally in the June refinement of \OEIS{A347854}
+can now be exhibited. Direct cancellation of factorials gives
+\begin{equation}
+ a_1(2n+1)=2^{4n+3}(12n+5)
+ \frac{12n+1}{(2n+1)(6n+1)}\tB(n).
+ \label{ffd:eq:oddB}
+\end{equation}
+Taking $N=2n+1$ in \eqref{ffd:eq:oddrefined} proves
+\begin{equation}
+ \frac{12n+1}{(2n+1)(6n+1)}\tB(n)\in\Z\qquad(n\ge0).
+ \label{ffd:eq:Bref}
+\end{equation}
+The identity is recorded in the entry \cite{ffd-oeis854}; alternatively it follows
+from $(j+1/2)!=\sqrt\pi(2j+2)!/(4^{j+1}(j+1)!)$ in the Gamma factors.
+The program checks the identity independently in rational arithmetic.
+
+\section{Denominator clearing for the ordinary ratios}\label{ffd:sec:denominators}
+This section proves \cref{ffd:thm:clearing-main}. The arguments are useful beyond
+an isolated divisibility check: they identify the one-sided neighborhoods of
+rational numbers that account for arbitrarily large prime powers.
+For A295431 they are a second route to Part~I: the step function
+\eqref{ffd:eq:DU} is Part~I's $\Delta_B$ on its twelve grid cells, and the
+covering arguments below are the one-sided grid-interval arguments of
+Part~I's Proposition~\ref{prop:positive} (stated there for $A$) and
+Proposition~\ref{prop:negative}, here completed at the small
+primes $2$ and $3$ by digit sums instead of by Part~I's lcm bound or
+digit-graph certificates.
+
+\subsection{Two step functions and two digit identities}
+For $U$ in \eqref{ffd:eq:UB}, its ordinary valuation function is
+\begin{equation}
+ \Delta_U(x)=\floor{12x}+\floor{x}-\floor{6x}-\floor{4x}-\floor{3x}.
+\end{equation}
+On $[0,1)$ it is the indicator of
+\begin{equation}
+ [1/12,1/3)\ \cup\ [5/12,1/2)\ \cup\ [7/12,2/3)\ \cup\ [11/12,1).
+ \label{ffd:eq:DU}
+\end{equation}
+For $\tB$, the corresponding function is the indicator of
+\begin{equation}
+ [1/12,1/6)\ \cup\ [5/12,1/2)\ \cup\ [7/12,5/6)\ \cup\ [11/12,1).
+ \label{ffd:eq:DB}
+\end{equation}
+Both statements follow by evaluating the twelve cells with endpoints $j/12$.
+In particular both ordinary ratios are integral.
+For every prime $p$,
+\begin{equation}
+ \nup(U(n))=\sum_{e\ge1}\Delta_U\bigl((n\bmod p^e)/p^e\bigr).
+ \label{ffd:eq:Uval}
+\end{equation}
+Legendre's digit formula also gives, for $n\ge0$,
+\begin{equation}
+ \nu_2(U(n))=s_2(3n),\qquad
+ \nu_3(U(n))=\tfrac12s_3(2n).
+ \label{ffd:eq:Udigits}
+\end{equation}
+For example, the first identity follows by replacing each factorial valuation
+by its argument minus its binary digit sum; all terms except $s_2(3n)$ cancel.
+For $\tB$ the same calculation gives
+\begin{equation}
+ \nu_2(\tB(n))=s_2(n),\qquad \nu_3(\tB(n))=\tfrac12s_3(2n).
+ \label{ffd:eq:Bdigits}
+\end{equation}
+Here $s_3(2n)$ is even, since ternary digit sum preserves parity.
+
+\subsection{The four specified multipliers (second route to Part~I)}\label{ffd:sec:specified}
+\begin{proof}[Second proof of the first four assertions in \eqref{ffd:eq:fiveclear}]
+(Manuscript~01. The first proof, with optimality, is Part~I's
+Section~\ref{sec:sharp}.)
+We first prove $385U(n)/(n+1)\in\Z$. For $p\ge5$ and $q=p^e\mid n+1$, the
+residue ratio in \eqref{ffd:eq:Uval} is $1-1/q$. If $q\ge13$, it belongs to
+$[11/12,1)$, so the corresponding contribution is $1$. The only possible
+uncovered levels are $q=5,7,11$, one for each of those primes. The factor
+$385=5\cdot7\cdot11$ covers them.
+
+At $p=2$, put $k=\nu_2(n+1)$. If $k=0$ there is nothing to prove; if $k=1$,
+$n$ is odd and $s_2(3n)\ge1$. If $k\ge2$, write $n=2^k a-1$ and observe
+\[
+ 3n=2^k(3a-1)+(2^k-3),\qquad
+ s_2(3n)=s_2(3a-1)+(k-1)\ge k.
+\]
+At $p=3$, write $n=3^k a-1$, where $k=\nu_3(n+1)\ge1$. Then
+\[
+ 2n=3^k(2a-1)+(3^k-2),\qquad
+ s_3(2n)\ge1+(2k-1)=2k.
+\]
+The digit identities prove the required divisibility at $2$ and $3$.
+
+For $5U(n)/(2n+1)$, the prime $2$ is absent. At $p=3$, if
+$3^k\mid2n+1$, the integer $2n$ ends in $k$ ternary digits equal to $2$,
+so \eqref{ffd:eq:Udigits} supplies at least $k$ factors of $3$.
+For $p\ge5$, $q=p^e\mid2n+1$ gives
+\[
+ (n\bmod q)/q=\tfrac12-\frac1{2q}.
+\]
+This belongs to $[5/12,1/2)$ for $q\ge7$. Only $q=5$ can be uncovered,
+and the prefactor $5$ supplies it.
+
+For $U(n)/(3n+1)$, the prime $3$ is absent. If $2^k\mid3n+1$, then
+$3n$ ends in $k$ binary ones, so $\nu_2(U(n))\ge k$.
+For $p\ge5$ and $q=p^e\mid3n+1$, writing $r=n\bmod q$ gives
+\[
+ r/q=\tfrac13-\frac1{3q}\quad\text{or}\quad
+ r/q=\tfrac23-\frac1{3q}.
+\]
+For $q\ge5$ these belong, respectively, to $[1/12,1/3)$ and $[7/12,2/3)$.
+Every denominator level is therefore supplied by \eqref{ffd:eq:Uval}.
+
+Finally, $n+1$, $2n+1$, and $3n+1$ are pairwise coprime at every odd prime:
+\[
+ \gcd(n+1,2n+1)=\gcd(2n+1,3n+1)=1,\qquad
+ \gcd(n+1,3n+1)\mid2.
+\]
+The preceding bounds show that the odd-prime deficit for their product is
+at most one factor each of $5,7,11$. At $2$, only $n+1$ and $3n+1$ can
+contribute. Their minimum valuation is at most $1$, and $U(n)$ covers the
+larger of the two valuations. One extra factor of $2$ suffices. This gives
+$770=2\cdot385$. The case $n=0$ is immediate.
+\end{proof}
+
+\subsection{Two infinite families with explicit constants (second route to Part~I)}\label{ffd:sec:families}
+\begin{proof}[Second proof of \eqref{ffd:eq:infiniteclear}]
+(Manuscript~01. Part~I proves these families with smaller constants in
+Proposition~\ref{prop:negative} and \eqref{eq:unrestricted}.)
+Fix $r\ge1$ and $k\in\{1,2,3\}$, and let
+$E(n)=\prod_{i=1}^r(kn+i)$. First suppose $p\nmid k$ and $q=p^e>12r$.
+At most one index $i\in[1,r]$ can satisfy $q\mid kn+i$.
+If such an index exists, write $n=qa+b$, $0\le b<q$. Then
+\[
+ kb+i=tq,\qquad 1\le t\le k,\qquad
+ \frac bq=\frac tk-\frac{i}{kq}.
+\]
+For $k=1,2,3$, every $t/k$ has a left neighborhood of width at least $1/12$
+in the $1$-set \eqref{ffd:eq:DU}. Since $i/(kq)<1/12$, we have
+$\Delta_U(b/q)=1$. Therefore every denominator contribution at a level
+$q>12r$ is covered by the corresponding term of \eqref{ffd:eq:Uval}.
+At each of the remaining levels, the denominator count is at most $r$.
+Consequently
+\begin{equation}
+ \nup(E(n))-\nup(U(n))\le r\floor{\log_p(12r)}\qquad(p\nmid k).
+ \label{ffd:eq:smalllevelbound}
+\end{equation}
+The right side is precisely the valuation of $L_{12r}^r$.
+
+When $p\mid k$, either $k=2=p$ or $k=3=p$. Only indices $i=pj$ contribute
+at this prime. With $s=\floor{r/p}$,
+\[
+ \nup(E(n))=s+\nup\left(\prod_{j=1}^{s}(n+j)\right).
+\]
+The already proved $k=1$ case bounds the deficit of the product by
+$s\floor{\log_p(12s)}$ if $s>0$; for $s=0$ it is zero. This is bounded by
+the valuation of $k^rL_{12r}^r$. Thus $C(k,r)$ clears every prime, proving
+the first family.
+
+For the second family put
+\[
+ E_-(n)=\prod_{\substack{1\le i\le r\\(i,12)=1}}(12n-i).
+\]
+No factor is zero, and none is divisible by $2$ or $3$. Let $p\ge5$ and
+$q=p^e>r$. Again, at most one index is counted at level $q$. If
+$q\mid12n-i$ and $b=n\bmod q$, then
+\[
+ 12b-i=tq,\qquad t\in\{1,5,7,11\},\qquad
+ \frac bq=\frac{t}{12}+\frac{i}{12q}.
+\]
+To see the range of $t$, use $q>i$, $0\le b<q$, and reduction modulo $12$;
+$t=0$ is excluded by $(i,12)=1$. Each of the four values $t/12$ has a right
+neighborhood of width at least $1/12$ contained in \eqref{ffd:eq:DU}. Thus the
+level is covered by $\Delta_U$. The remaining levels $q\le r$ contribute a
+deficit of at most $r$ each. Their total is at most
+$r\floor{\log_p r}=\nup(L_r^r)$. This proves the second family, including
+negative factors when $n$ is small, since valuations concern their absolute
+values.
+\end{proof}
+For $r=1$, $D(1)=1$, so the second family gives $U(n)/(12n-1)\in\Z$.
+This also follows by setting $N=2n$ in \cref{ffd:thm:oddrefinement}. Thus the fifth
+assertion in \eqref{ffd:eq:fiveclear} is proved in two compatible ways.
+
+\subsection{The product divisor in A295432}\label{ffd:sec:a295432}
+\begin{proof}[Proof of \eqref{ffd:eq:Bdivmain}]
+Equation~\eqref{ffd:eq:Bdigits} shows $6\mid \tB(n)$ for $n\ge1$.
+Both $6n+1$ and $12n-1$ are coprime to $6$, and their greatest common divisor
+divides $3$ and is therefore $1$.
+
+If $q=p^e\mid6n+1$, then $p\ge5$ and the residue ratio is
+\[
+ (n\bmod q)/q=\tfrac16-\frac1{6q}\quad\text{or}\quad
+ \tfrac56-\frac1{6q}.
+\]
+For $q\ge5$, both lie in the $1$-set \eqref{ffd:eq:DB}. If instead
+$q=p^e\mid12n-1$, the residue ratio is
+\[
+ \frac{t}{12}+\frac1{12q},\qquad t\in\{1,5,7,11\}.
+\]
+These four points also lie in \eqref{ffd:eq:DB}, including at $q=5$.
+The ordinary valuation formula for $\tB$ therefore covers every level of both
+linear factors. The coprimalities noted above let us multiply all three
+divisors, proving the assertion.
+\end{proof}
+
+\section{Algebraicity by fractional Frobenius solutions}\label{ffd:sec:monodromy}
+\subsection{The hypergeometric equations}
+For a balanced ordinary factorial ratio
+\[
+ W(t)=\frac{\prod_{a\in\mathcal A}\Gamma(1+at)}
+ {\prod_{b\in\mathcal B}\Gamma(1+bt)},
+\]
+expand the fractions $j/a$, $1\le j\le a$, for all numerator slopes and the
+analogous denominator fractions, then cancel common fractions with
+multiplicity. In the height-one cases here, the remaining lists
+$\alpha_1,\ldots,\alpha_h$ and $\beta_1,\ldots,\beta_h$ have equal length,
+with $1$ included among the $\beta$'s. Direct use of the Gamma functional
+equation gives
+\begin{equation}
+ \frac{W(t+1)}{W(t)}
+ =\lambda\frac{\prod_{j=1}^{h}(t+\alpha_j)}
+ {\prod_{j=1}^{h}(t+\beta_j)},\qquad
+ \lambda=\frac{\prod_{a\in\mathcal A}a^a}
+ {\prod_{b\in\mathcal B}b^b}.
+ \label{ffd:eq:hyperrec}
+\end{equation}
+For the four bases, the complete lists are as follows. They agree with the
+ordinary-ratio parameters recorded in the OEIS cross-reference table
+\cite{ffd-oeis431}, and can also be obtained by the cancellation just described.
+\begin{center}
+\small\renewcommand{\arraystretch}{1.45}
+\begin{tabular}{cllc}
+\toprule
+Base & $\alpha$ & $\beta$ (including $1$) & $\lambda$\\
+\midrule
+I&$\frac1{12},\frac5{12},\frac7{12},\frac{11}{12}$
+ &$\frac13,\frac12,\frac23,1$ &$27648$\\
+II&$\frac1{12},\frac16,\frac5{12},\frac7{12},\frac56,\frac{11}{12}$
+ &$\frac18,\frac38,\frac12,\frac58,\frac78,1$ &$19683/4$\\
+III&$\frac1{12},\frac13,\frac5{12},\frac7{12},\frac23,\frac{11}{12}$
+ &$\frac15,\frac25,\frac12,\frac35,\frac45,1$ &$2^{10}3^9/5^5$\\
+IV&$\frac1{18},\frac5{18},\frac7{18},\frac{11}{18},\frac{13}{18},\frac{17}{18}$
+ &$\frac14,\frac13,\frac12,\frac23,\frac34,1$ &$2^4 3^{12}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Let $\theta=z\,d/dz$ and define
+\begin{equation}
+ Q(T)=\prod_j(T+\beta_j-1),\qquad
+ P(T)=\prod_j(T+\alpha_j),\qquad
+ \mathcal L=Q(\theta)-\lambda zP(\theta).
+ \label{ffd:eq:operator}
+\end{equation}
+These are generalized hypergeometric equations with regular singularities
+only at $0$, $1/\lambda$, and infinity. (Part~I carries out the same
+cancellation for A211417 and its normalized companion, in
+\eqref{eq:Apock} and \eqref{eq:hypode}; it uses no monodromy.)
+
+\subsection{The classical input and what the certificates replace}
+We use the following classical monodromy facts, not new results of this paper.
+For disjoint exponent sets $e^{2\pi i\alpha_j}$ and $e^{2\pi i\beta_j}$, the
+monodromy group of \eqref{ffd:eq:operator} is conjugate to the group generated by
+the companion matrices of
+\begin{equation}
+ f(T)=\prod_j(T-e^{2\pi i\alpha_j}),\qquad
+ g(T)=\prod_j(T-e^{2\pi i\beta_j}).
+ \label{ffd:eq:fg}
+\end{equation}
+This is Levelt's description, as presented in Beukers--Heckman
+\cite[Section 3]{ffd-bh}. A directly accessible presentation is
+\cite[Theorem 3.2.3 and Section 3.3]{ffd-beukersnotes}.
+Strict interlacing of the roots on the unit circle gives a positive-definite
+invariant Hermitian form; see \cite[Section 4]{ffd-bh}.
+
+For our four cases, Section~\ref{ffd:sec:gram} supplies that form as an explicit
+integer matrix. Thus their proof needs the companion description but does
+not require recognizing a group in the finite-group classification or trusting
+a table of group orders. The step from positive definiteness and integrality
+to finiteness is proved below.
+
+\begin{lemma}[Integral isometries of a definite form]\label[lemma]{ffd:lem:finite}
+If a positive-definite Hermitian matrix $H$ is preserved by a subgroup
+$G\subset\mathrm{GL}_h(\Z)$, then $G$ is finite.
+\end{lemma}
+\begin{proof}
+Let $\eta>0$ be the least eigenvalue of $H$. For each matrix $M\in G$, its
+$j$th column $v_j$ satisfies
+\[
+ \eta\|v_j\|^2\le v_j^*Hv_j=H_{jj}.
+\]
+There are only finitely many integer vectors satisfying this bound. There
+are therefore only finitely many possible ordered lists of columns.
+\end{proof}
+
+\begin{lemma}[Finite monodromy and regular singularities]\label[lemma]{ffd:lem:alg}
+Every local solution of a regular-singular linear differential equation on the
+Riemann sphere with finite monodromy is algebraic over $\C(z)$.
+\end{lemma}
+\begin{proof}
+A local solution has only finitely many continuations because its monodromy
+orbit is finite. Pass to the finite covering that trivializes the monodromy.
+At the finitely many points over singularities, regular singularity gives at
+most power-logarithmic growth. Finite local monodromy removes logarithmic
+terms and, after a finite ramification, makes all local exponents integral.
+Thus the continued solution is meromorphic on the compactified finite cover.
+Equivalently, the elementary symmetric functions of its finitely many
+branches are single-valued meromorphic functions on the sphere, hence rational.
+The monic polynomial with those branches as roots proves algebraicity.
+\end{proof}
+Regular singularity is indispensable in this statement: finite monodromy
+alone would not rule out an essential singularity.
+
+\subsection{Why the nonintegral subsequences solve the same equation}
+\begin{lemma}[Fractional Frobenius sampling]\label[lemma]{ffd:lem:frobenius}
+Suppose $W$ satisfies \eqref{ffd:eq:hyperrec}. If $s\ge0$ and $Q(s)=0$, then
+\begin{equation}
+ \Phi_s(z)=\sum_{k\ge0}W(k+s)z^{k+s}
+ \label{ffd:eq:Phi}
+\end{equation}
+is a local Puiseux solution of $\mathcal L\Phi_s=0$, on a chosen branch of
+$z^s$.
+\end{lemma}
+\begin{proof}
+The coefficient of $z^s$ in $\mathcal L\Phi_s$ is $Q(s)W(s)=0$.
+For $k\ge1$, the coefficient of $z^{k+s}$ is
+\[
+ Q(k+s)W(k+s)-\lambda P(k-1+s)W(k-1+s),
+\]
+which vanishes by \eqref{ffd:eq:hyperrec}. The series converges near zero by the
+ratio test, since its consecutive coefficient ratio tends to $\lambda$.
+\end{proof}
+This boundary term is important. Merely shifting the parameters in a
+hypergeometric series does not, by itself, prove that the shifted series is
+another solution of the original homogeneous equation.
+
+For each row of the five-sequence parameter table, the list of $\beta$'s
+contains
+\[
+ 1,\ 1-1/d,\ldots,1-(d-1)/d.
+\]
+Hence $Q(r/d)=0$ for $0\le r<d$. If the base equation has finite monodromy,
+all the corresponding $\Phi_{r/d}$ are algebraic, and
+\begin{equation}
+ \sum_{n\ge0}V(n)x^n
+ =\sum_{r=0}^{d-1}\Phi_{r/d}(x^d).
+ \label{ffd:eq:branchsum}
+\end{equation}
+The identity holds as a power series after choosing the Puiseux branches
+with leading term $W(r/d)z^{r/d}$. Each summand contributes exactly the
+terms with $n\equiv r\pmod d$.
+
+\begin{lemma}[Descent of algebraicity]\label[lemma]{ffd:lem:descent}
+A series in $\Q[[x]]$ that is algebraic over $\C(x)$ is algebraic over $\Q(x)$.
+\end{lemma}
+\begin{proof}
+A complex polynomial relation of bounded degree in $x$ and the series gives
+a nonzero solution of a homogeneous linear system whose entries are rational:
+set each coefficient of the substituted series equal to zero. There are
+finitely many unknown polynomial coefficients, so the rational row space
+has a finite basis even though the system initially has infinitely many rows.
+A nontrivial complex kernel implies a nontrivial rational kernel for that
+finite rational matrix. The resulting rational coefficients give a nonzero
+relation over $\Q(x)$.
+\end{proof}
+Equation~\eqref{ffd:eq:product} supplies rational coefficients, so the descent
+lemma applies to \eqref{ffd:eq:branchsum}.
+
+\subsection{Completion of the general algebraicity theorem}\label{ffd:sec:completion}
+For the general $U_d$ of \eqref{ffd:eq:Ud}, integrality and
+\cref{ffd:lem:landau} imply $\Delta\ge0$. Away from the finitely many jump points,
+height one and balance give
+\[
+ \Delta(y)+\Delta(1-y)=1.
+\]
+Consequently $\Delta$ takes only the values $0$ and $1$, first away from
+jumps and then everywhere by right-continuity. After common numerator and
+denominator fractions are canceled, the jumps are the $\alpha$'s and
+$\beta$'s, respectively. A jump of size greater than one is impossible.
+Thus all remaining roots are simple and strictly alternate, beginning with
+an $\alpha$ and ending with the denominator root at $1$.
+
+The polynomials $f,g$ are obtained by canceling common factors in
+\[
+ \frac{(T^{dL}-1)(T^c-1)}
+ {(T^{dA}-1)(T^{dB}-1)(T^{c+dm}-1)}.
+\]
+They are monic integral products of cyclotomic polynomials with constant
+terms $\pm1$. Interlacing, the classical invariant-form result, and
+\cref{ffd:lem:finite} imply finite monodromy.
+
+It remains to justify all required exponents, rather than only $s=0$.
+For $1\le j<d$, the fraction $j/d$ occurs once in the fraction list for
+$dL$, once for $dA$, and once for $dB$. It occurs in neither the $c$ list
+nor the $c+dm$ list, since both are coprime to $d$. Cancellation therefore
+leaves one denominator occurrence. Height one leaves one denominator
+occurrence of $1$ as well. Hence every $r/d$, $0\le r<d$, is a zero of $Q$.
+Now \cref{ffd:lem:frobenius,ffd:lem:alg,ffd:lem:descent} and \eqref{ffd:eq:branchsum} prove
+the algebraicity part of \cref{ffd:thm:general}.
+
+\section{Four exact Gram-matrix certificates}\label{ffd:sec:gram}
+For a monic polynomial $f(T)=T^h+f_{h-1}T^{h-1}+\cdots+f_0$, our companion
+matrix has ones on the subdiagonal and last column
+$(-f_0,-f_1,\ldots,-f_{h-1})^{\mathsf T}$. Denote it by $C_f$.
+For the four base equations, the polynomial pairs are
+\begin{align}
+ f_{\rm I}&=T^4-T^2+1,&
+ g_{\rm I}&=T^4+T^3-T-1,\label{ffd:eq:polycerts}\\
+ f_{\rm II}&=T^6-T^5+T^3-T+1,&
+ g_{\rm II}&=T^6-T^4+T^2-1,\nonumber\\
+ f_{\rm III}&=T^6+T^5-T^3+T+1,&
+ g_{\rm III}&=T^6+T^5-T-1,\nonumber\\
+ f_{\rm IV}&=T^6-T^3+1,&
+ g_{\rm IV}&=T^6+T^5+T^4-T^2-T-1.\nonumber
+\end{align}
+Equivalently, in terms of cyclotomic polynomials,
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+Base &$f$&$g$\\
+\midrule
+I&$\Phi_{12}$&$(T^2-1)\Phi_3$\\
+II&$\Phi_{12}\Phi_6$&$(T^2-1)\Phi_8$\\
+III&$\Phi_{12}\Phi_3$&$(T^2-1)\Phi_5$\\
+IV&$\Phi_{18}$&$(T^2-1)\Phi_3\Phi_4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The pairs have no common root and their companion matrices are unimodular.
+Here are invariant forms:
+\begin{align}
+ H_{\rm I}&=\begin{pmatrix}
+2&-1&1&0\\-1&2&-1&1\\1&-1&2&-1\\0&1&-1&2
+\end{pmatrix},\label{ffd:eq:HI}\\[4pt]
+ H_{\rm II}&=\begin{pmatrix}
+4&2&1&-1&-2&-1\\2&4&2&1&-1&-2\\1&2&4&2&1&-1\\
+-1&1&2&4&2&1\\-2&-1&1&2&4&2\\-1&-2&-1&1&2&4
+\end{pmatrix},\label{ffd:eq:HII}\\[4pt]
+ H_{\rm III}&=\begin{pmatrix}
+10&-8&4&1&-5&7\\-8&10&-8&4&1&-5\\4&-8&10&-8&4&1\\
+1&4&-8&10&-8&4\\-5&1&4&-8&10&-8\\7&-5&1&4&-8&10
+\end{pmatrix},\label{ffd:eq:HIII}\\[4pt]
+ H_{\rm IV}&=\begin{pmatrix}
+4&-1&-2&2&1&-1\\-1&4&-1&-2&2&1\\-2&-1&4&-1&-2&2\\
+2&-2&-1&4&-1&-2\\1&2&-2&-1&4&-1\\-1&1&2&-2&-1&4
+\end{pmatrix}.\label{ffd:eq:HIV}
+\end{align}
+Their leading principal minors are, respectively,
+\begin{equation}
+\begin{array}{c|l}
+\mathrm I&2,3,4,4\\
+\mathrm {II}&4,12,36,81,162,243\\
+\mathrm {III}&10,36,72,108,162,243\\
+\mathrm {IV}&4,15,36,81,162,243.
+\end{array}
+\label{ffd:eq:minors}
+\end{equation}
+All are positive, so Sylvester's criterion proves positive definiteness.
+Exact multiplication gives, for each base $J$,
+\begin{equation}
+ C_{f_J}^{\mathsf T}H_JC_{f_J}=H_J
+ =C_{g_J}^{\mathsf T}H_JC_{g_J}.
+ \label{ffd:eq:gramidentity}
+\end{equation}
+These are finite integer identities, not approximate numerical eigentests.
+Their validity can be checked directly from the printed data. The program
+also derives the reduced polynomial pair by exact polynomial greatest-common-
+divisor cancellation from the original factorial slopes, which prevents an
+unnoticed mismatch between the differential equation and the matrix certificate.
+
+By \cref{ffd:lem:finite}, the four companion groups are finite. By Levelt's
+identification and \cref{ffd:lem:alg}, all solutions of the four equations are
+algebraic. The required roots $0,1/2$ for the half-integer cases, and
+$0,1/3,2/3$ for the third-integer case, are present in $Q$. Applying
+\eqref{ffd:eq:branchsum} proves the algebraicity assertion of \cref{ffd:thm:main}.
+This completes the proof of that theorem.
+
+\begin{remark}[Independent certificate routes]
+The program also checks Galois-stable interlacing of the root sets for moduli
+$12,24,60,36$, respectively. This is an additional check, not a necessary
+step in the Gram-matrix proof. The matrices establish finiteness without
+computing the order of any generated group, and no such order is asserted.
+\end{remark}
+
+\section{Positive moments, Hankel determinants, and shape}\label{ffd:sec:moments}
+The following consequences explain the regular behavior of these sequences.
+Moment representations for some ordinary and fractional members are already
+recorded in the OEIS material, notably by Penson \cite{ffd-oeis431,ffd-oeis854}.
+The beta-product construction gives a uniform proof for all five cases.
+
+Let $\alpha_j,\beta_j$ be listed in increasing order in the parameter table.
+They satisfy $0<\alpha_j<\beta_j$. Let $Z_j$ be independent beta random
+variables with density
+\begin{equation}
+ \frac{z^{\alpha_j-1}(1-z)^{\beta_j-\alpha_j-1}}
+ {\mathrm B(\alpha_j,\beta_j-\alpha_j)}\,dz,
+ \qquad 0<z<1,
+ \label{ffd:eq:beta}
+\end{equation}
+and set
+\begin{equation}
+ Y=\lambda\prod_{j=1}^h Z_j,\qquad X=Y^{1/d},\qquad R=\lambda^{1/d}.
+ \label{ffd:eq:randomX}
+\end{equation}
+
+\begin{theorem}[A compactly supported positive moment law]\label{ffd:thm:moments}
+For the relevant base and denominator $d$, the corresponding $V$ satisfies
+\begin{equation}
+ V(t)=\E[X^t]\quad(t\ge0).
+ \label{ffd:eq:moment}
+\end{equation}
+The law $\mu$ of $X$ has support $[0,R]$ and assigns positive measure to every
+nonempty open subinterval of $(0,R)$. In particular, for every $\ell\ge0$ and
+$q\ge1$,
+\begin{equation}
+ \det\bigl[V(\ell+i+j)\bigr]_{0\le i,j<q}>0.
+ \label{ffd:eq:hankel}
+\end{equation}
+Also, the normalized sequence $b_n=V(n)/R^n$ has strictly positive alternating
+finite differences:
+\begin{equation}
+ (-1)^k\Delta^k b_n>0\qquad(n,k\ge0).
+ \label{ffd:eq:hausdorff}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The beta integral gives
+\[
+ \E[Z_j^t]=\frac{\Gamma(\alpha_j+t)\Gamma(\beta_j)}
+ {\Gamma(\alpha_j)\Gamma(\beta_j+t)}.
+\]
+Gauss's multiplication formula, with the common fractions canceled and the
+normalization $U_J(0)=1$, yields
+\[
+ U_J(t)=\lambda^t\prod_j
+ \frac{\Gamma(\alpha_j+t)\Gamma(\beta_j)}
+ {\Gamma(\alpha_j)\Gamma(\beta_j+t)}.
+\]
+Independence proves $\E[Y^t]=U_J(t)$ and hence
+$\E[X^t]=U_J(t/d)=V(t)$.
+The beta densities are positive throughout $(0,1)$, so the product and its
+positive root have the stated support property.
+
+For a nonzero real polynomial $P$ of degree less than $q$,
+\[
+ \int_0^R x^\ell P(x)^2\,d\mu(x)>0.
+\]
+Indeed, $P$ has only finitely many zeros, and $\mu$ is not supported on them.
+Thus the Hankel matrix is a positive-definite Gram matrix, proving
+\eqref{ffd:eq:hankel}. Finally, with $T=X/R\in(0,1)$ almost surely,
+\[
+ (-1)^k\Delta^k b_n=\E[T^n(1-T)^k]>0.
+\]
+\end{proof}
+
+In particular, strict Cauchy--Schwarz gives
+\begin{equation}
+ V(n+1)^2<V(n)V(n+2)\qquad(n\ge0),
+ \label{ffd:eq:logconvex}
+\end{equation}
+so the consecutive ratios are strictly increasing. All five first ratios are
+greater than $1$; therefore each sequence is strictly increasing. The ratio
+limit is $R$, either by the asymptotics below or directly from the moment law
+and its upper endpoint. The moment problem on $[0,R]$ is determinate: equality
+of all moments gives equality of integrals of polynomials, then of continuous
+functions by polynomial approximation, and therefore equality of the measures.
+No uniqueness claim on a larger class of signed distributions is intended.
+
+\section{All-orders asymptotics and effective errors}\label{ffd:sec:asymptotic}
+The leading growth scale follows from Stirling's formula, which already
+underlies the asymptotic information in the entries. We give the complete
+coefficient rule and explicit remainder control. Let $t=c/d$ in this section
+(the letter $t$ is a fixed slope, not the running argument), and define
+\begin{equation}
+ R=\frac{L^L t^t}{A^A B^B(t+m)^{t+m}},\qquad
+ K=\frac1{\sqrt{2\pi}}\sqrt{\frac{Lt}{AB(t+m)}}.
+ \label{ffd:eq:RK}
+\end{equation}
+For $j\ge1$, put
+\begin{equation}
+ \gamma_{2j-1}=
+ \frac{B_{2j}}{2j(2j-1)}
+ \left(L^{1-2j}+t^{1-2j}-A^{1-2j}-B^{1-2j}-(t+m)^{1-2j}\right),
+ \label{ffd:eq:gamma}
+\end{equation}
+where $B_{2j}$ is a Bernoulli number, and set $\gamma_{2j}=0$.
+
+\begin{theorem}[An effective all-orders expansion]\label{ffd:thm:asymptotic}
+For any fixed integer $J\ge1$, as $n\to+\infty$ through real values,
+\begin{equation}
+ \log V(n)=n\log R-\tfrac12\log n+\log K
+ +\sum_{j=1}^J\frac{\gamma_{2j-1}}{n^{2j-1}}
+ +\mathcal R_J(n),
+ \label{ffd:eq:logasympt}
+\end{equation}
+where for every $n>0$,
+\begin{align}
+ |\mathcal R_J(n)|&\le E_J n^{-(2J+1)},\label{ffd:eq:error}\\
+ E_J&=\frac{|B_{2J+2}|}{(2J+2)(2J+1)}
+ \left(L^{-2J-1}+t^{-2J-1}+A^{-2J-1}
+       +B^{-2J-1}+(t+m)^{-2J-1}\right).\nonumber
+\end{align}
+In particular,
+\begin{equation}
+ V(n)\sim KR^n n^{-1/2}
+ \exp\left(\sum_{j\ge1}\gamma_{2j-1}n^{-(2j-1)}\right).
+ \label{ffd:eq:asymptexp}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $a>0$, substitute $z=an$ into the logarithmic Stirling expansion for
+$\Gamma(z)$, and add $\log(an)$ to obtain the expansion for $\Gamma(1+an)$.
+On the positive axis the remainder after a fixed number of terms is bounded
+in magnitude by the first omitted term; see \cite[Section 5.11]{dlmf}.
+Combining the two numerator and three denominator expansions, the
+$n\log n$ and linear-in-$n$ terms cancel by balance. The surviving exponential
+constant is $R$, the power is $n^{-1/2}$, and the constant is $K$.
+Each odd inverse-power coefficient is \eqref{ffd:eq:gamma}. Adding the absolute
+bounds on the five remainders gives \eqref{ffd:eq:error}.
+\end{proof}
+
+\begin{writenote}[Added 1 October 2026, batch~74: an instance of repository results]
+Apart from the explicit constant $E_J$, \cref{ffd:thm:asymptotic} is an
+instance of expansions already in the repository. Part~I's
+\eqref{eq:logasym} with numerator slopes $(L,t)$, denominator slopes
+$(A,B,t+m)$ and height $h=1$ gives \eqref{ffd:eq:logasympt} with
+$\Lambda=R$, $K_R=K$ and $\sigma_{2j-1}=\gamma_{2j-1}$; its derivation from
+DLMF~5.11 does not use integrality of the slopes. It is also the balanced
+case $\kappa=0$, $\lambda=\log R$, $\beta=-\tfrac12$ of the gamma-quotient
+coefficient engine \texttt{t2:thm:gamma} of the combinatorial-inverses
+volume \cite{ffd-cti}, with $q_j=\gamma_j$. New here is the fixed-order
+bound \eqref{ffd:eq:error} with its constant $E_J$ and its evaluation at the
+rational slope $t=c/d$.
+\end{writenote}
+
+The first constants are displayed below. The column headed $K\sqrt\pi$
+keeps the table compact.
+\begin{center}
+\small\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{clccc}
+\toprule
+$i$&$R_i$&$K_i\sqrt\pi$&$\gamma_1$&$\gamma_3$\\
+\midrule
+1&$96\sqrt3$&$1/\sqrt6$&$1/18$&$-163/7776$\\
+2&$24\sqrt[3]2$&$1/2$&$1/12$&$-163/2304$\\
+3&$81\sqrt3/2$&$1/2$&$1/48$&$-257/13824$\\
+4&$2592\sqrt{15}/125$&$\sqrt{30}/10$&$-1/30$&$-337/1620000$\\
+5&$2916$&$1/\sqrt{12}$&$19/216$&$-9131/419904$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For an ordinary inverse-power expansion
+\[
+ V(n)\sim KR^n n^{-1/2}\sum_{k\ge0}c_kn^{-k},\qquad c_0=1,
+\]
+all coefficients follow recursively from
+\begin{equation}
+ kc_k=\sum_{j=1}^{k}j\gamma_jc_{k-j}.
+ \label{ffd:eq:crec}
+\end{equation}
+For example,
+\[
+ c_1=\gamma_1,\quad c_2=\frac{\gamma_1^2}{2},\quad
+ c_3=\gamma_3+\frac{\gamma_1^3}{6},\quad
+ c_4=\gamma_1\gamma_3+\frac{\gamma_1^4}{24}.
+\]
+This is a full Poincar\'e expansion of the dominant exponential sector. We do
+not claim that it specifies exponentially small sectors of a resurgent
+transseries, nor that the formal Stirling series converges. The effective
+fixed-order bound \eqref{ffd:eq:error} is the assertion needed for numerical use.
+
+\begin{corollary}[The generating functions are genuinely nonrational]
+\label[corollary]{ffd:cor:nonrational}
+Each $A_i$ has radius of convergence $1/R_i$ and, along the real axis,
+\begin{equation}
+ A_i(x)\sim K_i\sqrt\pi\,(1-R_ix)^{-1/2}
+ \qquad(x\uparrow1/R_i).
+ \label{ffd:eq:singularity}
+\end{equation}
+Consequently $A_i(x)$ is not rational over $\C(x)$.
+\end{corollary}
+\begin{proof}
+The radius follows from the coefficient growth. Put $R_ix=e^{-u}$ with
+$u\downarrow0$. A Riemann-sum comparison gives
+$\sum_{n\ge1}n^{-1/2}e^{-un}\sim\sqrt\pi\,u^{-1/2}$.
+The coefficient asymptotic and positivity allow comparison above and below
+outside a fixed finite initial segment, proving \eqref{ffd:eq:singularity}.
+Since $u\sim1-R_ix$, the stated form follows. A rational function at a finite
+point can have only an integral-order pole or a removable singularity, not
+the half-order divergence in \eqref{ffd:eq:singularity}.
+\end{proof}
+
+\section{Inverse expansions and index recovery}\label{ffd:sec:inverse}
+Fix one of the five continuous Gamma interpolations $V(x)$ and put
+$\tau=\log R>0$. The moment representation implies strict convexity of
+$\log V(x)$: its second derivative is the variance of $\log X$ under the
+probability law tilted by $X^x$. In particular, for $x\ge1$ its derivative
+is at least the positive secant slope $\log V(1)-\log V(0)$.
+Thus, for $y\ge V(1)$, there is a unique $x\ge1$ satisfying $V(x)=y$.
+Denote this inverse by $\mathcal I(y)$.
+
+The leading model $y=KR^x/\sqrt x$ has a useful exact inverse on its large
+branch. Set
+\begin{equation}
+ N(y)=-\frac1{2\tau}\,
+ W_{-1}\left(-\frac{2\tau K^2}{y^2}\right),
+ \label{ffd:eq:N}
+\end{equation}
+for sufficiently large $y$. Here $W_{-1}$ is the real branch with values at
+most $-1$. The branch choice is fixed by the requirement $N(y)\to\infty$.
+It satisfies
+\[
+ \tau N-\tfrac12\log N=\log(y/K).
+\]
+
+\begin{theorem}[Inverse expansion to every order]\label{ffd:thm:inverse}
+As $y\to\infty$,
+\begin{align}
+ \mathcal I(y)={}&N-\frac{\gamma_1}{\tau N}
+ -\frac{\gamma_1}{2\tau^2N^2}\nonumber\\
+ &-\left(\frac{\gamma_3}{\tau}+
+ \frac{\gamma_1^2}{\tau^2}+
+ \frac{\gamma_1}{4\tau^3}\right)\frac1{N^3}
+ +O(N^{-4}),\label{ffd:eq:inverseexplicit}
+\end{align}
+where $N=N(y)$. There is a recursively computable expansion
+$\mathcal I(y)\sim N+\sum_{j\ge1}b_jN^{-j}$ to arbitrary fixed order.
+\end{theorem}
+\begin{proof}
+Let $\varepsilon=1/N$ and write $x=N+s$, where
+$s=\sum_{j\ge1}b_j\varepsilon^j$. Subtract the equation defining $N$ from
+\eqref{ffd:eq:logasympt}. The formal equation for $s$ is
+\begin{equation}
+ \tau s-\tfrac12\log(1+\varepsilon s)
+ +\sum_{j\ge1}\gamma_j\varepsilon^j(1+\varepsilon s)^{-j}=0.
+ \label{ffd:eq:inverseformal}
+\end{equation}
+At order $\varepsilon^j$, the only occurrence of the new coefficient $b_j$
+is $\tau b_j$. Hence $b_j$ is uniquely determined by earlier coefficients.
+The first equations give
+\[
+ b_1=-\gamma_1/\tau,\quad b_2=-\gamma_1/(2\tau^2),\quad
+ b_3=-\gamma_3/\tau-\gamma_1^2/\tau^2-\gamma_1/(4\tau^3).
+\]
+For an analytic justification at each fixed order, substitute the truncated
+series into the effective expansion of $\log V$. Its residual has the order
+of the first omitted power. Since $(\log V)'$ stays bounded away from zero
+for sufficiently large arguments, the mean value theorem converts that
+residual to an error of the same order in $x$. This proves the asymptotic
+inverse expansion, not merely formal reversion.
+\end{proof}
+
+\begin{writenote}[Added 1 October 2026, batch~74: an instance of repository results]
+\Cref{ffd:thm:inverse} is the balanced inverse theorem
+\texttt{t2:thm:balanced-inverse} of the combinatorial-inverses volume
+\cite{ffd-cti} with $a=\tau=\log R$, $\beta=-\tfrac12$, $C=K$, $q_j=\gamma_j$
+and $X=N$. That theorem's coefficients
+$d_1=-q_1/a$, $d_2=\beta q_1/a^2-q_2/a$ and
+$d_3=-\beta^2q_1/a^3+(\beta q_2-q_1^2)/a^2-q_3/a$ reduce, with
+$q_2=\gamma_2=0$, to the $b_1,b_2,b_3$ above, and it supplies a nonrecursive
+formula for every $b_j$. The choice of $W_{-1}$ is the branch rule stated
+there for $\beta<0$. The index-recovery identity below is part~(1), and the
+advice on certified rounding is the separation condition of part~(2), of the
+staircase theorem \texttt{p0:thm:staircase} of the transseries-and-inversion
+volume \cite{ffd-tai}. No novelty is claimed for this section.
+\end{writenote}
+
+The Lambert expression can itself be expanded in ordinary logarithms.
+With
+\[
+ Y=2\log(y/K)-\log(2\tau),\qquad H=\log Y,
+\]
+substitution into $2\tau N-\log(2\tau N)=Y$ gives
+\begin{equation}
+ 2\tau N=Y+H+\frac H Y+\frac{H-H^2/2}{Y^2}
+ +O\left(\frac{H^3}{Y^3}\right).
+ \label{ffd:eq:Wlogs}
+\end{equation}
+Together with \eqref{ffd:eq:inverseformal}, this produces the inverse in a
+logarithmic asymptotic scale without leaving an unevaluated special function.
+
+For integer index recovery, strict increase of $a_i(n)$ implies the exact
+identity
+\[
+ \min\{n\ge1:a_i(n)\ge y\}=\ceil{\mathcal I_i(y)}
+ \qquad(y\ge a_i(1)).
+\]
+An approximate inverse should not be rounded blindly: near an integer,
+a certified error interval must be used, or the adjacent exact terms must be
+compared. The logarithmic remainder bound and monotonicity give a direct
+route to such certification.
+
+\section{Reproducibility and the trust boundary}\label{ffd:sec:verification}
+The accompanying file \texttt{verify.py} (shipped as
+\nolinkurl{code/02-fractional-dilation-verify.py}; see
+Appendix~\ref{ffd:app:package} for how to rerun it under its delivery name) uses only the Python standard library,
+integer arithmetic, and exact rational arithmetic. It needs no network access
+and no computer-algebra system. Run
+\begin{verbatim}
+python verify.py --max-n 200 --output results.txt
+\end{verbatim}
+from a normal Python environment. The supplied execution completed
+successfully. It checks the eleven complete floor partitions, the four reduced
+cyclotomic polynomial pairs, eight Gram invariance identities, and all leading
+principal minors. It also checks the hypergeometric parameter cancellation,
+the required Frobenius exponents, and Galois-stable interlacing.
+
+Additional exact cross-checks include all five sequences through $n=200$,
+the displayed OEIS prefixes, the June refinements, the specified clearing
+multipliers, and the product divisor for $\tB$. There are $6120$ ordinary
+prime-valuation comparisons for the target sequences and $9200$ comparisons
+of the general valuation identities, including composite denominators up to
+$12$. The two infinite clearing families are tested for $1\le r\le8$ and
+$0\le n\le30$.
+
+These assertions have different logical roles. The complete floor partition
+is a finite proof certificate because \cref{ffd:lem:valuation,ffd:lem:slices} reduce
+the universal arithmetic question to those exact intervals. The Gram
+identities are finite proof certificates because \cref{ffd:lem:finite} and the
+cited companion theorem supply the universal implication. By contrast,
+checking $201$ terms or $9200$ valuation identities is a regression test;
+it cannot prove the assertions for unbounded $n,d$, or $r$.
+
+The executable is not a proof-assistant kernel, and its agreement with the
+manuscript is not independent peer review. The package contains neither a
+Lean file with placeholders nor an unexecuted claim of formal verification.
+The arithmetic proofs are designed to admit later formalization. The analytic
+monodromy bridge is a separate, substantially larger dependency.
+
+For asymptotics, the formulas are symbolic consequences of Stirling's formula
+and are proved in the text. The coefficient recurrence and inverse construction
+do not depend on fitting numerical data. The supplementary
+\texttt{asymptotic\_demo.py} (shipped as
+\nolinkurl{code/02-fractional-dilation-asymptotic_demo.py}), when the optional \texttt{mpmath} dependency is
+available, evaluates forward and inverse approximations as an additional
+numerical check; it is not part of the exact proof certificate.
+
+\section{Further research questions and topics}\label{ffd:sec:further}
+\subsection{Minimal denominator-clearing constants}
+The explicit constants $(kL_{12r})^r$ and $L_r^r$ solve the existence questions
+but are very large. Determine the least positive $C(k,r)$ and $D(r)$, or
+prove upper bounds with substantially smaller prime support and exponents.
+The proofs isolate the only potentially deficient prime-power levels, making
+this a finite local optimization problem for each fixed $r$. A complete
+algorithm must account for simultaneous residue constraints across levels,
+rather than optimize each level independently.
+
+\begin{writenote}[Added 1 October 2026, batch~74: re-scoped]
+Part~I already has such an algorithm. Its finite weighted digit graphs
+(Section~\ref{sec:sharp}) couple the residues at $p,p^2,\dots$ exactly and
+determine the least multipliers for the four specified products, so those
+cases are settled. Part~I also proves smaller family constants than $C(k,r)$
+and $D(r)$ (\cref{ffd:sec:overlap}), and it lists the behaviour of the
+optimal constants as $r$ grows, together with uniform control of the
+state space in $r$, as open (\cref{ffd:partI:directions}).
+The open question is that growing-$r$ problem.
+\end{writenote}
+
+\subsection{Beyond two numerator and three denominator Gamma factors}
+The rational-dilation theorem covers composite denominators already, under
+its stated structural hypotheses. The next question is not simply to allow a
+composite $d$, but to allow several fractional Gamma pairs, shared denominator
+primes, or a more general integer-factorial prefactor. Which structural
+conditions ensure that all exceptional-prime contributions remain
+nonnegative? The cancellation step must precede any valuation criterion.
+
+\subsection{All rational dilations of the sporadic family}
+For every sporadic ordinary height-one ratio, classify rational $q>0$ for
+which its Gamma interpolation $U(qn)$ is integral for every integer $n$.
+Some instances fit \cref{ffd:thm:general} after permuting slopes or canceling
+common factors; others may not. A useful deliverable would be a finite
+classification of denominator patterns with exact certificates, distinguishing
+integrality from mere boundedness of denominators.
+
+\subsection{Explicit algebraic equations and branch degrees}
+The proof establishes algebraicity but does not produce minimal polynomials
+for the five $A_i$. Compute them, determine their degrees, and relate the
+degree of the branch sum \eqref{ffd:eq:branchsum} to its stabilizer in the finite
+monodromy group. A polynomial guessed from initial coefficients requires an
+independent identity proof, for example by the differential equation and a
+sufficient initial-value argument on a specified branch.
+
+\subsection{Combinatorial interpretations}
+Find natural counting models for the fractional sequences and for the
+normalized integers in \eqref{ffd:eq:fiveclear}, \eqref{ffd:eq:Bref}, and
+\eqref{ffd:eq:Bdivmain}. Integrality by valuations and positivity by moments are
+not, by themselves, combinatorial interpretations. A satisfactory model
+would explain the denominator-clearing multipliers and the algebraic
+structure rather than merely encode the resulting integers artificially.
+
+\subsection{The remaining supercongruences}
+The OEIS entries include stronger prime-power congruences that are untouched
+by the present proof. The fact that each local floor contribution is $0$ or
+$1$ controls divisibility, not the unit part of a factorial ratio. A separate
+analysis of the unit factors, or a suitable $p$-adic Gamma identity, is needed.
+This is a natural next arithmetic target, but no supercongruence resolution
+is claimed here.
+
+\subsection{Hankel asymptotics and orthogonal polynomials}
+The beta-product laws imply positive Hankel determinants but do not give
+closed forms for them. Determine the large-size Hankel determinant
+asymptotics, the recurrence coefficients of the corresponding orthogonal
+polynomials, and the endpoint behavior of the moment densities. The algebraic
+Stieltjes transforms may provide an additional tool, but the density need
+not be a simple classical weight.
+
+\subsection{Effective algebraic and asymptotic computation}
+Develop a certified pipeline from a factorial ratio to its floor partition,
+finite-monodromy certificate, all-orders asymptotics, and inverse index
+bounds. The logarithmic remainder bound already gives guaranteed forward
+bounds. The remaining engineering question is how to select truncation
+orders and neighboring integer tests efficiently over a wide range of input
+sizes without confusing fixed-order asymptotics with optimal truncation.
+
+\subsection{A formalization plan for ProveIt}
+The most accessible first module would prove \eqref{ffd:eq:product}, the
+progression-counting lemma, and the ordinary slice identity over exact
+integers and rationals. A second module could verify floor partitions and
+formalize the denominator-prime reduction \eqref{ffd:eq:reducedtuple}, yielding
+a reusable arithmetic theorem rather than five isolated proofs. The
+specified clearing factors and the two infinite families then use only
+integer valuations, digit sums, and interval arithmetic.
+
+For the analytic branch, the small matrix identities and positive-definiteness
+certificates are accessible independently of the differential equations.
+Connecting them to algebraicity requires a formal treatment of monodromy,
+regular singularities, and Levelt's theorem, or a different route through
+explicit algebraic equations. Until that connection is formalized, a checked
+matrix certificate should not be described as a kernel-checked proof of the
+full generating-function theorem.
+
+%% ===================================================================
+%% Appendices: A and B belong to Part I, C and D to Part II
+%% ===================================================================
 \appendix
 \section{Admissible denominators for all 52 sporadic ratios}\label{app:atlas}
 In the following table, $a$ and $b$ are the numerator and denominator
@@ -1109,6 +2671,65 @@ packages. Run \texttt{make pdf}, or run \texttt{pdflatex article.tex}
 twice. The two atlas files and the certificate JSON are included, so
 compilation does not require a network connection or regeneration.
 
+\section{Part II: an audit map of the results}\label{ffd:app:audit}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{p{0.23\textwidth}p{0.42\textwidth}p{0.27\textwidth}}
+\toprule
+Target & Result in this manuscript & Main proof location\\
+\midrule
+\endfirsthead
+\toprule
+Target & Result in this manuscript & Main proof location\\
+\midrule
+\endhead
+A347854--A347858 & All terms positive integral & \cref{ffd:sec:valuation,ffd:sec:arithmetic-proof}; exact residue floors\\
+A347854--A347858 & All five ordinary generating functions algebraic & \cref{ffd:sec:monodromy,ffd:sec:gram}; Frobenius sampling and Gram certificates\\
+A347855, June refinement & $3^n\mid a_2(n)$ for $3\nmid n$ & \cref{ffd:sec:powers}\\
+A347854, June refinement & $(12n+1)\tB(n)/((2n+1)(6n+1))$ integral & \cref{ffd:sec:linear}\\
+A295431, specified factors & All four multipliers $385,5,1,770$ work (re-proof; optimal by Part~I) & \cref{ffd:sec:specified}; first proof Part~I, Section~\ref{sec:sharp}\\
+A295431, linear divisor & $U(n)/(12n-1)$ integral (re-proof) & \cref{ffd:sec:linear,ffd:sec:families}; first proof Part~I, Proposition~\ref{prop:negative}\\
+A295431, $C(k,r)$ & Explicit $(kL_{12r})^r$ for $k=1,2,3$ (Part~I's constant divides it) & \cref{ffd:sec:families}; Part~I, \eqref{eq:unrestricted}\\
+A295431, $D(r)$ & Explicit $L_r^r$ (Part~I's constant divides it) & \cref{ffd:sec:families}; Part~I, Proposition~\ref{prop:negative}\\
+A295432 & $6(6n+1)(12n-1)\mid \tB(n)$ for $n\ge1$ & \cref{ffd:sec:a295432}\\
+All five sequences & Compact positive moment laws; strict Hankel positivity & \cref{ffd:sec:moments}\\
+All five sequences & All-orders expansions and inversion (instances of repository results, \cref{ffd:sec:new}) & \cref{ffd:sec:asymptotic,ffd:sec:inverse}\\
+General family & Integral, algebraic rational dilation for arbitrary $d$ & \cref{ffd:thm:general}; \cref{ffd:sec:valuation,ffd:sec:arithmetic-proof,ffd:sec:completion}\\
+\bottomrule
+\end{longtable}
+\normalsize
+The OEIS status references were inspected for this manuscript on October 1,
+2026. Their remaining conjecture labels are evidence for the target selection,
+not proof that no earlier unpublished or differently indexed proof exists.
+The mathematics above stands or falls on its arguments, not on a novelty label.
+
+\section{Part II: package contents and rebuilding}\label{ffd:app:package}
+The package includes \texttt{article.tex}, the compiled \texttt{article.pdf},
+\texttt{verify.py}, its output \texttt{results.txt}, the generated
+\texttt{floor\_certificates.json}, a table of the first $51$ terms in
+\texttt{terms.csv}, the optional numerical demonstration, and a README.
+The TeX file is self-contained and uses no external image assets or bibliography
+processor. Rebuild it by running \texttt{pdflatex} twice. All essential
+mathematical certificate data appear in the manuscript itself.
+
+\begin{writenote}[Added 1 October 2026, batch~74: what is shipped]
+The delivered manuscript, its PDF and its README are not shipped; this Part
+is the manuscript's text, built into this report's \texttt{article.tex}.
+The other delivered files are shipped with the prefix
+\texttt{02-fractional-dilation-}: the two programs in \texttt{code/}, the
+outputs \texttt{results.txt}, \texttt{floor\_certificates.json},
+\texttt{terms.csv}, \texttt{asymptotic\_results.txt},
+\texttt{asymptotic\_results.csv} and \texttt{asymptotic\_coefficients.csv}
+in \texttt{data/}, and \texttt{reviewer\_notes.md} at the report root.
+The demonstration imports \texttt{verify} by its delivery name, and both
+programs write their outputs next to themselves under delivery names. To
+rerun them, copy the two programs into an empty scratch directory as
+\texttt{verify.py} and \texttt{asymptotic\_demo.py}, run them there, and
+compare the outputs with the shipped \texttt{data/02-fractional-dilation-*}
+files; the report's README gives the commands. Do not run them from
+\texttt{code/}.
+\end{writenote}
+
 \clearpage
 \begin{thebibliography}{99}
 \bibitem{oeisA}
@@ -1159,5 +2780,67 @@ NIST Digital Library of Mathematical Functions, \emph{Section 5.11:
 Asymptotic expansions}, especially formula 5.11.1 and the remainder
 discussion. \url{https://dlmf.nist.gov/5.11}.
 Accessed September 19, 2026.
+
+% Part II (batch 74, manuscript 01)
+\bibitem{ffd-oeis854}
+The OEIS Foundation Inc., \emph{A347854}, entry and formulas contributed by
+Peter Bala and other contributors. Accessed October 1, 2026.
+\url{https://oeis.org/A347854}.
+\bibitem{ffd-oeis855}
+The OEIS Foundation Inc., \emph{A347855}. Accessed October 1, 2026.
+\url{https://oeis.org/A347855}.
+\bibitem{ffd-oeis856}
+The OEIS Foundation Inc., \emph{A347856}. Accessed October 1, 2026.
+\url{https://oeis.org/A347856}.
+\bibitem{ffd-oeis857}
+The OEIS Foundation Inc., \emph{A347857}. Accessed October 1, 2026.
+\url{https://oeis.org/A347857}.
+\bibitem{ffd-oeis858}
+The OEIS Foundation Inc., \emph{A347858}. Accessed October 1, 2026.
+\url{https://oeis.org/A347858}.
+\bibitem{ffd-oeis431}
+The OEIS Foundation Inc., \emph{A295431}, including the August 28, 2025
+conjectures of Peter Bala and the table of sporadic factorial-ratio parameters.
+Accessed October 1, 2026. \url{https://oeis.org/A295431}.
+\bibitem{ffd-oeis432}
+The OEIS Foundation Inc., \emph{A295432}, including the June 10, 2026
+divisibility conjecture of Peter Bala. Accessed October 1, 2026.
+\url{https://oeis.org/A295432}.
+\bibitem{ffd-rv}
+F. Rodriguez-Villegas, \emph{Integral ratios of factorials and algebraic
+hypergeometric functions}, preprint, 2007.
+\url{https://arxiv.org/abs/math/0701362}.
+\bibitem{ffd-bh}
+F. Beukers and G. Heckman, \emph{Monodromy for the hypergeometric function
+${}_nF_{n-1}$}, Invent. Math. \textbf{95} (1989), 325--354.
+\href{https://doi.org/10.1007/BF01393900}{doi:10.1007/BF01393900}.
+\bibitem{ffd-beukersnotes}
+F. Beukers, \emph{Notes on differential equations and hypergeometric
+functions}, preliminary notes, August 21, 2009, especially pp. 38--40.
+\url{https://pages.uoregon.edu/njp/beukers.pdf}.
+\bibitem{ffd-failed}
+teai.io, \emph{OEIS second-round experiment report} (Japanese),
+published August 18, 2026, with correction and final status dated August 26,
+2026. First-party account of the invalid rational-slope Landau argument.
+\url{https://teai.io/blog/oeis-second-round}.
+\bibitem{ffd-proveit}
+Vladimir Reshetnikov, \emph{ProveIt}, repository README and research layout,
+inspected October 1, 2026. README blob
+\texttt{bfe39c17aa731ec0e39ce3a11a811efa4ab3e6d8} (the root \texttt{README.md}
+of commit \texttt{e37a17848}).
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{ffd-cti}
+ProveIt, \emph{Combinatorial Transseries and Their Inverses}, repository
+volume \nolinkurl{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex};
+theorems labelled \texttt{t2:thm:gamma} and \texttt{t2:thm:balanced-inverse}.
+Not formally verified.
+\bibitem{ffd-tai}
+ProveIt, \emph{Transseries: the polynomial-logarithmic calculus, series
+reversal at infinity, and inversion}, repository volume
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+theorem labelled \texttt{p0:thm:staircase}. The volume records that theorem
+as partly formalized (its rounding mechanisms, in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean});
+nothing in this report is formalized.
 \end{thebibliography}
 \end{document}
