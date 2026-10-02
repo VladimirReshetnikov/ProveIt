@@ -1576,6 +1576,2082 @@ The tradeoff is explicit: ten quartic certificates replace a much larger direct 
 The local replays check the exact quartic certificates and the support decomposition coefficientwise. The full mathematical assembly has independent approval, including the convex-hull argument, degree-drop endpoints, internal-edge correction, zero cases, and final square.
 
 
+\part{Independent role activities and small covers}\label{pgr:part:two}
+
+This Part allows independent nonnegative tail and head activities $u_i,v_i$
+(Definition~\ref{pgr:def:support}) on arbitrary loopless directed
+relations, transitive or not. Five sources contribute.
+\begin{itemize}[leftmargin=*]
+\item Section~\ref{pgr:r:rc:sec} (source~20): if every arc has its tail in
+  a set $P$ or its head in a set $Q$ with $|P|,|Q|\le2$ (overlap allowed),
+  the signed monomer polynomial is real stable, so $\Ga_D$ is
+  real-rooted.
+\item Section~\ref{pgr:r:tc:sec} (source~12): coefficientwise Rayleigh
+  inequalities in the core monomers when the physical graph is bipartite
+  with a three-vertex shore (computer-assisted boundary inequality).
+\item Section~\ref{pgr:r:pc:sec} (source~11): rank-ULC whenever the
+  underlying graph has a vertex cover of at most three vertices, internal
+  core arcs allowed; it uses source~12.
+\item Section~\ref{pgr:r:ps:sec} (source~15): a Lorentzian theorem for
+  bipartite physical graphs, and real stability for pendant uncovered heads
+  over a stable transversal seed.
+\item Section~\ref{pgr:r:ir:sec} (source~22): rank-ULC for every finite
+  preorder of actual degree at most three under independent role
+  activities, by a Gallai--Edmonds reduction, ordinary structural theorems,
+  a complete ledger of role certificates and half-plane-property side
+  matroids.
+\end{itemize}
+Several statements of source~22 are special cases of statements of sources
+11, 15 and~20, and source~25's theorem (Part~I) is the unit case of
+source~22's; these are recorded where they occur. In the bipartite case,
+with every vertex in one role, these results specialize to theorems of
+\prp{} and \mrn: two-shore ultra-log-concavity (\prp,
+\texttt{lor:thm:weightedULC}), weighted matching rank three and five
+(\prp, \texttt{lc:cor:rankthree}; \mrn, \texttt{mrn:w:rf:cor:rankfive}),
+scalar rank-three Rayleigh (\mrn, \texttt{mrn:s:tv:eq:rayleigh}) and
+stability under a two by two cover (\mrn, \texttt{mrn:w:sb:thm:main}). The
+directed, overlapping and coefficientwise forms are new.
+
+\section{Two by two role covers (source 20)}\label{pgr:r:rc:sec}
+
+Source~20 is \emph{Real stable monomers under a two by two role cover}
+(9 pages as delivered; archive \texttt{role-cover-package}). Its files are
+shipped with the prefix \texttt{20-role-cover-}. Source~16's Section~3 and
+Appendix~A are this article, with the differences printed below as
+``Second route (source~16)''; exact copies of the whole package were also
+embedded in source~22 and archive~31.
+
+\paragraph{Abstract of source 20, as delivered.}
+
+We count ordered disjoint tail and head supports of directed matchings, with every feasible support counted once. For any finite loopless directed relation whose bipartite role graph has a vertex cover comprising at most two tail copies and at most two head copies, we prove real stability of the signed physical monomer polynomial. The selected physical sets may overlap, and arbitrary nonnegative independent tail and head activities are allowed. Consequently the support polynomial has only negative real roots and satisfies Newton's inequalities at its actual surviving degree. The proof treats every subset of a two-source, two-sink core, using rank-two stable quadratics, stability-preserving operators, and explicit all-real Rayleigh square identities, before merging role copies to enforce physical disjointness. We also obtain a rank-two matroid free-product corollary and an elementary root transfer to gamma expansions. These are ordinary proofs; the accompanying exact algebra and finite Hall-support checks are supplementary. No proof-assistant formalization or literature-wide priority claim is made.
+
+\subsection{Support polynomials and normalization}
+\begin{definition}
+A feasible support of size $k$ is an ordered pair $(S,T)$ of disjoint subsets of $V$, each of cardinality $k$, for which there exists a bijection $\pi:S\to T$ with $s\to\pi(s)$ for every $s\in S$. Write
+\[
+ \gamma_k(D)=\#\{(S,T): (S,T)\text{ is feasible of size }k\},\qquad
+ \Ga_D(t)=\sum_{k\ge0}\gamma_k(D)t^k.
+\]
+The empty support contributes $\gamma_0=1$. A support contributes once, regardless of the number of witnessing bijections.
+\end{definition}
+The same-ground-set disjointness is essential. Passing to independent tail and head copies without subsequently excluding their simultaneous use changes this polynomial. Counting individual matchings also changes it.
+
+For nonnegative tail activities $u_i$ and head activities $v_i$, replace the contribution of $(S,T)$ by
+\[
+ u^S v^T=\prod_{i\in S}u_i\prod_{j\in T}v_j.
+\]
+We use the same notation when the weights are specified. A vertex may have different activities in its two roles. With zero activities, the polynomial degree can decrease.
+
+
+\mnote{source~20's Lemma ``degree'' is Lemma~\ref{pgr:lem:degree}, printed
+once in Section~\ref{pgr:sec:object} with this proof.}
+
+
+\begin{definition}
+A polynomial $g(t)=\sum_{k=0}^d g_k t^k$ is \emph{rank-ultra-log-concave}, or rank-ULC, if its coefficients are nonnegative with no internal zeros and
+\[
+ \left(\frac{g_k}{\binom dk}\right)^2\ge
+ \frac{g_{k-1}}{\binom d{k-1}}\frac{g_{k+1}}{\binom d{k+1}}
+ \quad(1\le k<d),
+\]
+where $d$ is the actual degree.
+\end{definition}
+
+Our main theorem concerns directed relations satisfying the two by two role-cover condition in Theorem~\ref{pgr:r:rc:thm:rolecover}; transitivity is not required. Throughout, the monomer variable of a vertex records that the vertex is unused. Real-rootedness is always interpreted at the degree remaining after zero activities are imposed.
+\subsection{Real-rootedness for a complete balanced core}
+Let $P=\{p_1,p_2\}$, $Q=\{q_1,q_2\}$, and let $I$ be an independent exterior set. Include all four arcs $P\to Q$. Each $x\in I$ may have arbitrary incoming neighbors in $P$ and outgoing neighbors in $Q$, including an empty neighbor set on either side. There are no other arcs. This directed family includes every nonnegative integer population of all fifteen nonempty exterior types.
+
+A real polynomial is \emph{real stable} if it is nonzero whenever every variable lies in the open upper half-plane $\HH$. We use the finite-degree stability-preserver theorem of Borcea and Br\"and\'en \cite{BB}; Wagner's survey gives the same plus-sign algebraic-symbol convention \cite[Theorem 5.2]{WagnerSurvey}.
+
+\begin{theorem}\label{pgr:r:rc:thm:balanced}
+For the complete balanced core described above, with arbitrary nonnegative independent tail and head activities, the signed multivariate monomer polynomial
+\[
+ \mu_D(\mathbf z)=\sum_{(S,T)\text{ feasible}}(-1)^{|S|}u^S v^T
+                   \prod_{i\notin S\cup T}z_i
+\]
+is real stable. Consequently every root of $\Ga_D$ is negative real, and $\Ga_D$ is rank-ULC at its actual degree. No transitivity assumption is required.
+\end{theorem}
+
+\subsubsection{A stable coupling of two rank-two matroids}
+A loopless rank-two matroid has parallel classes with variable sums $r_1,\ldots,r_j$. Its basis polynomial and element sum are
+$B=e_2(r_1,\ldots,r_j)$ and $L=\sum_i r_i$.
+
+\begin{lemma}\label{pgr:r:rc:lem:quadratic}
+The polynomial $f(s)=s^2+\sqrt2 Ls+B$ is real stable.
+\end{lemma}
+\begin{proof}
+The identity
+\[
+ f(s)=(s+L/\sqrt2)^2-\frac12\sum_i r_i^2
+\]
+shows that its quadratic form in $s,r_1,\ldots,r_j$ has exactly one positive direction. It has nonnegative coefficients and is positive on the positive orthant. For an alleged zero at $a+ib$ with $b$ strictly positive, its imaginary part says that $a$ and $b$ are orthogonal for the form. Since $f(b)>0$, the orthogonal complement of $b$ is nonpositive. Thus $f(a)\le0$, contradicting the real-part equation $f(a)=f(b)$. Replacing each $r_i$ by its parallel-class sum preserves stability.
+\end{proof}
+Apply the lemma to two matroids on disjoint variable sets. On auxiliary monomials of separate degrees at most two define the coefficientwise linear operator
+\[
+ \mathcal T(1)=1,\quad \mathcal T(st)=-\tfrac12,\quad
+ \mathcal T(s^2t^2)=1,
+\]
+and let it vanish on the other six auxiliary monomials. Its symbol is
+\[
+ \mathcal T[(s+a)^2(t+b)^2]=(ab-1)^2.
+\]
+This symbol is stable: $ab=1$ is impossible for $a,b\in\HH$, since $1/a$ lies in the lower half-plane. The full symbol, including all untouched variables, acquires only stable factors of the form $(z+w)^\kappa$. Therefore
+\begin{equation}\label{pgr:r:rc:eq:coupling}
+ B_PB_Q-L_PL_Q+1
+\end{equation}
+is real stable. The constant term shows that it is not identically zero.
+
+\paragraph{Second route (source 16): elementary operators.} Source~16
+does not invoke the stability-preserver theorem. It writes: ``We use the
+standard stability closures under products, diagonalization,
+differentiation, nonnegative linear substitutions, and real specialization
+(with zero outputs allowed) \cite{WagnerSurvey}. The special contraction
+operators needed here have elementary realizations; they also fit the
+general stability-preserver framework \cite{BB}.'' It then proves the
+coupling as follows.
+
+\begin{lemma}[Elementary Asano contraction; source 16]\label{pgr:u:d4:lem:asano}
+For a stable polynomial affine in each of $a,b$, write
+$f=abA+aB+bC+D$. The coefficientwise operation $f\mapsto D-A$ preserves
+stability or gives zero. So does $f\mapsto f-\partial_a\partial_bf$.
+\end{lemma}
+\begin{proof}
+For $t\in\HH$, both $t$ and $-1/t$ lie in $\HH$. Therefore
+\[
+ t f(t,-1/t)=Bt^2+(D-A)t-C
+\]
+is stable in $t$ and all untouched variables. Differentiate in $t$ and
+specialize $t=0$ to obtain $D-A$. The standard boundary-specialization
+closure permits the zero polynomial. For the second assertion, first
+replace $a,b$ by $a+x,b+y$, which preserves stability, and contract the
+fresh variables $x,y$. Their constant coefficient is $f(a,b)$ and their
+product coefficient is $\partial_a\partial_bf$.
+\end{proof}
+
+For each rank-two side use the polarized auxiliary quadratic
+\[
+ F_P(s_1,s_2)=s_1s_2+\frac{L_P}{\sqrt2}(s_1+s_2)+B_P.
+\]
+It is stable by the same one-positive-direction argument as
+Lemma~\ref{pgr:r:rc:lem:quadratic}: it equals the original auxiliary
+quadratic at $(s_1+s_2)/2$, minus $(s_1-s_2)^2/4$. The extra independent
+direction is negative, and every coefficient of the expanded polynomial is
+nonnegative. Construct $F_Q(t_1,t_2)$ similarly.
+
+Apply Lemma~\ref{pgr:u:d4:lem:asano} to the stable product $F_PF_Q$, first
+in $(s_1,t_1)$ and then in $(s_2,t_2)$. With $a=L_P/\sqrt2$ and
+$b=L_Q/\sqrt2$, the result is $B_PB_Q-2ab+1$. Consequently
+\eqref{pgr:r:rc:eq:coupling} is real stable. Its constant coefficient one
+rules out a zero output at either contraction stage. This proves the
+coupling without invoking the general classification of
+stability-preserving linear operators.
+
+
+\begin{corollary}\label{pgr:r:rc:cor:freeproduct}
+If $M$ and $N$ are loopless rank-two matroids on disjoint ground sets, then the basis polynomial of the free product $M\mathbin{\square}N^*$ is real stable.
+\end{corollary}
+\begin{proof}
+Write the ground sets as $S,T$, with variables $\mathbf x,\mathbf y$. By the basis characterization of the free product \cite[Proposition 1 and the following paragraph]{CS}, its bases are $I\cup(T\setminus K)$, where $I$ is independent in $M$, $K$ is independent in $N$, and $|I|=|K|\le2$. Indeed, $T\setminus K$ spans $N^*$ exactly when $K$ is independent in $N$, and the total basis size then forces the cardinalities to agree. Consequently its basis polynomial is
+\[
+ \left(\prod_{j\in T}y_j\right)
+ \left[1+L_M(\mathbf x)L_N(\mathbf y^{-1})
+          +B_M(\mathbf x)B_N(\mathbf y^{-1})\right].
+\]
+This is \eqref{pgr:r:rc:eq:coupling} after substituting $-1/y_j$ for each $N$-variable and multiplying by $\prod_{j\in T}y_j$. Multiaffinity cancels the denominators. Since $-1/y_j\in\HH$ for $y_j\in\HH$, the resulting polynomial is real stable.
+\end{proof}
+
+\subsubsection{The two-copy identity}
+Temporarily split each exterior vertex into a head copy, adjacent from $P$, and a tail copy, adjacent to $Q$. Keep isolated copies. For each two-center side use its rank-two transversal matroid on the nonisolated copies and two private core dummies. Isolated copies contribute only their factors to $Z$ and are omitted from both $B$ and $L$. The private-neighborhood copies and the corresponding dummy form a parallel class; each common-neighborhood copy forms its own class.
+
+Give a core dummy its monomer variable $z_p$ or $z_q$, and give an active exterior copy the value $-1/z_x$. These substitutions preserve the upper half-plane. Let $Z$ be the product of all exterior-copy monomer variables. The unweighted signed monomer polynomial of the split relation is
+\begin{equation}\label{pgr:r:rc:eq:copy}
+ \mu_{\rm copy}(\mathbf z)=Z(B_PB_Q-L_PL_Q+1).
+\end{equation}
+The possible denominators cancel because each exterior-copy variable is multiaffine before substitution.
+
+Here is the support-count explanation. The number of core arcs in a witnessing matching is determined by its endpoint support. Zero core arcs gives $ZB_PB_Q$. One core arc gives $-ZL_PL_Q$: on each side, the remaining core monomer can be either dummy, while an exterior singleton used together with both core vertices is counted once, not by its neighbor degree. Two core arcs use all four core vertices and no exterior vertex, contributing $Z$ once. Although the complete core admits two perfect matchings, it has only one such endpoint support. Completeness of $P\to Q$ makes the separate side conditions sufficient.
+
+Formula \eqref{pgr:r:rc:eq:copy} and \eqref{pgr:r:rc:eq:coupling} prove split monomer stability. Positive activities $w_i$ on split vertices are introduced by
+\[
+ \mu_w(\mathbf z)=\left(\prod_i w_i\right)
+                  \mu_{\rm copy}\bigl((z_i/w_i)_i\bigr).
+\]
+Assign the original tail activity to a tail copy, the head activity to a head copy, $u_p$ to a source core vertex, and $v_q$ to a sink core vertex.
+
+\subsubsection{Merging the physical vertices}
+For the two monomer variables $a,b$ of one physical exterior vertex apply
+\begin{equation}\label{pgr:r:rc:eq:merge}
+ ab\longmapsto z,\qquad a\longmapsto1,\qquad b\longmapsto1,
+ \qquad1\longmapsto0.
+\end{equation}
+Both unused copies become one unused physical vertex. Exactly one used copy becomes a used vertex. Two used copies are discarded. Contributions for the two different one-used roles add, as the support definition requires. The algebraic symbol is
+$\mathcal M[(a+r)(b+s)]=z+r+s$, which is stable. Including untouched variables only adds stable factors. Thus every merge preserves stability. After all merges we obtain precisely $\mu_D$.
+
+\paragraph{Second route (source 16): the merge by differentiation.} There
+is also an elementary realization of this operator. For $f=abA+aB+bC+D$,
+with coefficients independent of $a,b$, diagonalization gives
+$f(t,t)=t^2A+t(B+C)+D$. Differentiate in $t$ and substitute $t=z/2$ to
+obtain $zA+B+C$, exactly \eqref{pgr:r:rc:eq:merge}. Diagonalization,
+differentiation, and positive scaling preserve real stability or give
+zero. Thus this particular merge needs only these standard closure
+properties, and the empty-support monomial excludes zero. (Source~15's
+Lemma~\pgrfwd{pgr:r:ps:lem:merge}{``Core merge''} gives the same elementary
+realization; source~22 uses the directional-derivative form.)
+
+
+Zero activities follow by continuity from positive ones. The empty-support monomial has coefficient one throughout, so the limit is nonzero. Finally, with $N$ physical vertices,
+\[
+ \mu_D(s,\ldots,s)=\sum_k(-1)^k\gamma_k s^{N-2k}
+                  =s^N\Ga_D(-s^{-2}).
+\]
+The left side has only real zeros. A nonreal or positive zero of $\Ga_D$ would produce a nonreal solution of $s^2=-1/\rho$ and hence a nonreal zero of this monomer polynomial. Since $\Ga_D(0)=1$, all its roots are negative. Newton's inequalities finish the proof of Theorem~\ref{pgr:r:rc:thm:balanced}.
+
+\subsubsection{A two-edge core extension}
+The same physical-copy construction also works when the core has only the two arcs $p_2\to q_1,p_2\to q_2$.
+\begin{theorem}\label{pgr:r:rc:thm:twoedge}
+For this two-edge core, arbitrary exterior neighborhoods and arbitrary nonnegative independent role activities again give a real-stable signed monomer polynomial. The support polynomial is therefore real-rooted and rank-ULC at its actual degree.
+\end{theorem}
+\begin{proof}
+With the same rank-two side matroids, put $A_P=\partial_{d_{p_2}}B_P$. This is the dummy $d_{p_1}$ plus the sum of all exterior head-copy variables adjacent to $p_1$, including common-neighbor copies once. The split kernel is
+\[
+ H=B_PB_Q-A_PL_Q.
+\]
+At most one core edge can occur. If it does, its tail is forced to be $p_2$; the remaining $P$-side support is exactly $A_P$, and the remaining $Q$-side support is exactly $L_Q$. This proves the identity at support level.
+
+For the parallel-class sums of the $Q$ matroid, $B_Q+sL_Q=e_2(r_1,\ldots,r_j,s)$ is stable. Fix its original arguments in $\HH$. Both $B_Q$ and $L_Q$ are nonzero, and its root $-B_Q/L_Q$ cannot be strictly upper. Hence $-L_Q/B_Q$ has nonnegative imaginary part. Since $B_P$ is affine in $d_{p_2}$,
+\[
+ H=B_Q\,B_P\bigl(d_{p_2}-L_Q/B_Q\bigr),
+\]
+with all other arguments unchanged. The shifted dummy remains strictly upper, so this expression is nonzero. The reciprocal substitutions, activity scalings, physical-copy merges, and monomer-to-support root transfer from Theorem~\ref{pgr:r:rc:thm:balanced} now apply unchanged. Zero activities follow by the same nonzero limit argument.
+\end{proof}
+The proof does not assume that adding a polynomial with positive coefficients preserves stability.
+\mnote{source~16 adds: ``This includes canonical template~6 of the
+degree-four classification'' (Section~\ref{pgr:u:d4:sec}).}
+
+\subsubsection{A core with one missing edge}
+\begin{theorem}\label{pgr:r:rc:thm:missing}
+Keep the three core arcs $p_1\to q_1,p_1\to q_2,p_2\to q_1$, and omit $p_2\to q_2$. With arbitrary exterior neighborhoods and nonnegative independent role activities, the signed monomer polynomial is real stable and the support polynomial is real-rooted at its actual degree.
+\end{theorem}
+The split kernel is
+\begin{equation}\label{pgr:r:rc:eq:missingkernel}
+ H=B_PB_Q-L_PL_Q+1+r_Pr_Q,
+\end{equation}
+where $r_P$ is the parallel-class sum containing dummy $p_1$ and the head copies private to $p_1$, and $r_Q$ is defined similarly using $q_1$. A one-core-edge support is lost from the complete core exactly when its residual source and sink are forced to be $p_2,q_2$. These forced choices contribute $r_Pr_Q$; their former signed contribution was negative, so the correction is positive. Common-neighbor copies do not force that residual choice. The two-core-edge endpoint support survives through the off-diagonal matching, and contributes one.
+
+We prove the stability of \eqref{pgr:r:rc:eq:missingkernel} for arbitrary loopless rank-two matroids with a distinguished class on each side. Write their independent class variables as $p_0,\ldots,p_a$ and $q_0,\ldots,q_b$, with $r=p_0$, $s=q_0$, and set
+\[
+ F=e_2(\mathbf p),\quad G=e_2(\mathbf q),\quad
+ L=\sum p_i,\quad M=\sum q_j,\quad H=FG-LM+1+rs.
+\]
+For a real multiaffine polynomial the all-real Rayleigh criterion says that stability is equivalent to nonnegativity of every
+$\Delta_{xy}=(\partial_xH)(\partial_yH)-H\partial_x\partial_yH$
+at every real assignment \cite[Theorem 5.6]{BrandenHPP}; see also \cite[Theorem 3.1]{WagnerSurvey}. Testing only positive assignments would not suffice. Here five identities cover every pair type, up to exchange of sides and permutation of nondistinguished classes.
+
+\paragraph{One distinguished variable on the same side.}
+For $x=p_0,y=p_i$ with $i>0$, put
+$A=\sum_{k\ne0,i}p_k$, $U=\sum_{k\ne0,i}p_k^2$,
+$B=\sum_{l>0}q_l$, $V=\sum_{l>0}q_l^2$. Then
+\[
+ 2\Delta_{xy}=(GA-B)^2+G^2U+V.
+\]
+\paragraph{Two nondistinguished variables on the same side.}
+For $x=p_i,y=p_j$ with distinct $i,j>0$, put
+$A=\sum_{k\ne i,j}p_k$, $U=\sum_{k\ne0,i,j}p_k^2$,
+$V=\sum_{l>0}q_l^2$. Then
+\[
+ 2\Delta_{xy}=(GA-M)^2+(Gr-s)^2+G^2U+V.
+\]
+\paragraph{Both distinguished variables on opposite sides.}
+For $x=p_0,y=q_0$, put
+$A=\sum_{k>0}p_k$, $U=\sum_{k>0}p_k^2$,
+$B=\sum_{l>0}q_l$, $V=\sum_{l>0}q_l^2$. Then
+\[
+ 2\Delta_{xy}=A^2V+B^2U.
+\]
+\paragraph{One distinguished variable on opposite sides.}
+For $x=p_0,y=q_j$ with $j>0$, put
+$A=\sum_{k>0}p_k$, $U=\sum_{k>0}p_k^2$,
+$B=\sum_{l\ne j}q_l$, $V=\sum_{l\ne0,j}q_l^2$. Here $B$ includes $s$. Then
+\[
+ 4\Delta_{xy}=[A(B+s)-2]^2+A^2V+U[(B-s)^2+V].
+\]
+\paragraph{Neither variable distinguished on opposite sides.}
+For $x=p_i,y=q_j$ with $i,j>0$, put
+$A=\sum_{k\ne i}p_k$, $U=\sum_{k\ne0,i}p_k^2$,
+$B=\sum_{l\ne j}q_l$, $V=\sum_{l\ne0,j}q_l^2$. Thus $A,B$ include $r,s$. Then
+\[
+ 4\Delta_{xy}=(AB-rs-2)^2+(As-rB)^2
+             +U(B^2+s^2)+V(A^2+r^2)+UV.
+\]
+Each identity follows by expansion and
+$2e_2(\mathbf z)=(\sum z_i)^2-\sum z_i^2$.
+Every expression is nonnegative for all real variables: $U,V$ are sums of squares, so their displayed products are sums of squares as well. Empty sums are zero. The constant term one makes $H$ nonzero. The Rayleigh criterion proves stability, and substitution of parallel-class sums proves it in the individual matroid variables. The reciprocal, activity, and merge steps of Theorem~\ref{pgr:r:rc:thm:balanced} complete the proof of Theorem~\ref{pgr:r:rc:thm:missing}.
+\mnote{source~16 adds: ``This covers canonical template~21.''}
+
+\begin{remark}[Interpolation]
+The kernels $H_\theta=FG-LM+1+\theta rs$ are stable for $0\le\theta\le1$. In the independent class variables, every Rayleigh difference of the monomial $rs$ is zero. Thus $\Delta_{xy}(H_\theta)$ is the convex combination of the two endpoint differences. The same linear monomer and copy-merge transformations show that the corresponding interpolated support polynomials remain real-rooted. This is a statement about this particular interpolation, not a general convexity claim for stable polynomials.
+\end{remark}
+
+\subsubsection{Arbitrary cross-core patterns and role covers}
+For two disjoint core edges $p_1\to q_1,p_2\to q_2$, the split kernel is
+\[
+ H=B_PB_Q-L_PL_Q+1+r_{P1}r_{Q2}+r_{P2}r_{Q1},
+\]
+where each $r_{Pi},r_{Qj}$ is the private-plus-dummy parallel-class sum. Each omitted cross edge removes its uniquely forced residual one-core-edge supports. Those two lost sets are disjoint, and the diagonal perfect support survives. Section~\ref{pgr:r:rc:app:disjoint} proves this kernel stable by seven all-real Rayleigh identities. The weighted and physical-merge conclusions follow as before.
+
+The empty core gives the stable product $B_PB_Q$. A single core edge gives
+\[
+ (1-\partial_{d_{p_i}}\partial_{d_{q_j}})(B_PB_Q).
+\]
+On polynomials affine in these two dummy variables, the operator's symbol is
+$(a+x)(b+y)-1$, which is stable because two upper-half-plane numbers cannot have product one. These cases, the two-edge star and its reversal, the disjoint pair, the one-missing-edge case, and the complete core exhaust all sixteen subsets of the four possible core arcs. Thus every such subset has a stable split monomer polynomial.
+
+\paragraph{Second route (source 16).} Lemma~\ref{pgr:u:d4:lem:asano},
+applied after translation by fresh variables, proves that this operator
+preserves stability or gives zero. The all-dummy monomial excludes zero.
+
+
+\begin{theorem}[Two by two role cover]\label{pgr:r:rc:thm:rolecover}
+Let $D$ be any finite loopless directed relation on $V$. Suppose there are sets $P,Q\subseteq V$, each of size at most two, such that every arc $i\to j$ has $i\in P$ or $j\in Q$. The two sets may overlap. Then for arbitrary nonnegative independent tail and head activities, the signed physical monomer polynomial is real stable. Its support polynomial has only negative real roots and is rank-ULC at its actual degree.
+\end{theorem}
+\begin{proof}
+Replace every physical vertex by distinct tail and head copies. The selected tail copies of $P$ and head copies of $Q$ form a bipartite vertex cover. They are disjoint as copies even when their original physical sets overlap. All other copies are exterior; no edge joins two exterior copies. The core is an arbitrary subset of the four possible cross edges, so the preceding classification proves split monomer stability. If a cover side is smaller than two, pad it with isolated auxiliary vertices. Removing their monomer factors preserves nonvanishing in the upper half-plane.
+
+Give every tail copy its tail activity and every head copy its head activity. Merge the two copies of every physical vertex by \eqref{pgr:r:rc:eq:merge}, including core/core and core/exterior pairs. An original disjoint support lifts uniquely to its tail and head copies. A split support survives precisely when it does not use both copies of any physical vertex. Matching feasibility and its product weight are unchanged. Distinct original role assignments can have the same unused-vertex monomial and their coefficients correctly add. This is an exact support bijection, not a count of matching witnesses. Each merge preserves stability, and the empty-support monomial excludes the zero polynomial. The root transfer and zero-activity limit finish the proof.
+\end{proof}
+The criterion permits arbitrary arcs inside each of two disjoint two-vertex core sides, as well as arbitrary $P\to Q$ core arcs and $P\to I\to Q$ exterior attachments. It does not permit an arbitrary backward $Q\to P$ arc. It also shows why an actual degree below four causes no normalization problem: real-rootedness applies directly to the surviving polynomial.
+
+\mnote{for a bipartite graph oriented from one shore to the other, every
+vertex has one role, a cover with two vertices on each shore is a role
+cover with $P\cap Q=\varnothing$, vertex activities are role activities,
+and $\Ga_D$ is the matching-support polynomial. That case is \mrn,
+Theorem \texttt{mrn:w:sb:thm:main}, proved there by a different route
+(vertex sums, expected determinants and Grace--Walsh--Szeg\H{o}
+polarization); batch-73 manuscript~26, printed in \mrn{} as its source~77
+(Theorem \texttt{mrn:v:rf4:thm:mixed}), proves the same undirected
+statement with the weaker conclusion of real-rootedness by a third route. Theorem~\ref{pgr:r:rc:thm:rolecover} generalizes it to
+directed relations, overlapping $P$ and $Q$, arcs inside $P$ and inside
+$Q$, and independent role activities. Source~22 uses it in its role-cover
+corollary and in the three-attachment branch of its global proof
+(Section~\pgrfwd{pgr:r:ir:sec}{on source~22}); source~16's degree-four ledger
+uses its core cases for templates 6 and~21. The free-product corollary has
+no counterpart in \prp{} or \mrn.}
+
+
+\begin{corollary}[Transfer to the gamma expansion]\label{pgr:r:rc:cor:transfer}
+Under Theorem~\ref{pgr:r:rc:thm:rolecover}, let $d=\deg\Ga_D$ and choose any integer $N\ge2d$. Put
+\[
+ h_D(t)=\sum_k\gamma_k t^k(1+t)^{N-2k}.
+\]
+Then $h_D$ has only negative real roots. The choice $N=|V|$ is permitted. The same conclusion applies to any polynomial independently identified with this gamma expansion; no geometric convention is assumed here.
+\end{corollary}
+\begin{proof}
+Write $\Ga_D(z)=\prod_{i=1}^d(1+\lambda_i z)$ with $\lambda_i>0$. Since $2d\le N$,
+\[
+ h_D(t)=(1+t)^{N-2d}\prod_{i=1}^d\bigl[t^2+(2+\lambda_i)t+1\bigr].
+\]
+Each quadratic has discriminant $\lambda_i(\lambda_i+4)>0$, negative root sum, and positive root product, so both roots are negative. The remaining roots are $-1$. This is the standard elementary root transfer, not a separate novelty claim.
+\end{proof}
+
+\mnote{source~16 states this corollary with $N=|V|$ only and ends: ``In
+particular this applies to a preorder $h$-polynomial when its gamma
+expansion is the support expansion identified in the source report''
+(\prp, Theorem \texttt{gam:thm:main}).}
+
+
+\subsection{Proof and verification boundary}
+The arguments above are ordinary mathematical proofs. The all-real Rayleigh identities hold for any number of parallel classes; their validity is not inferred from a bounded computation. The finite-degree stability-preserver theorem, the all-real multiaffine Rayleigh criterion, and elementary rank-two matroid facts are the external mathematical dependencies.
+
+The supplementary archive contains the approved proof notes and scoped review receipts, two independent exact symbolic checkers for the twelve aggregate-variable identities, and four independent Hall-based support checkers. Each Hall checker compares weighted multivariate monomer coefficients for all $4845$ exterior-type multisets through four vertices, including isolated copies and zero activities: $14535$ activity-weighted identities per core pattern. These finite checks test the combinatorial formulas; they are not a substitute for the arbitrary-population proofs. The archive includes no numerical optimization or binary executable as a logical dependency. Its portable README describes how to rebuild the article and rerun the exact checks.
+
+\mnote{source~20's files are shipped with the prefix \texttt{20-role-cover-}
+(proof notes at the top of the report directory, checkers in
+\texttt{code/}, receipts and logs in \texttt{data/}). At intake its
+\texttt{verify.py} passed on a copy of the delivered package in 73~s; with
+GCC~16 its four C++ checkers need \texttt{-include cassert}, because they
+call \texttt{assert} without including \texttt{<cassert>}.}
+
+
+\subsection{Appendix of source 20: Rayleigh identities for two disjoint core edges}\label{pgr:r:rc:app:disjoint}
+
+\mnote{the typographical slip ``labels0,1'' of source~20 is corrected as in source~16.}
+
+Use independent parallel-class variables $p_0,p_1,p_2,\ldots$ and $q_0,q_1,q_2,\ldots$. Label the first two $Q$ classes so that the two correction terms are $p_0q_0+p_1q_1$. Put
+\[
+ F=e_2(\mathbf p),\quad G=e_2(\mathbf q),\quad
+ L=\sum p_i,\quad M=\sum q_j,\quad K=p_0q_0+p_1q_1,
+ \quad H=FG-LM+1+K.
+\]
+The following seven cases cover every pair under side interchange, simultaneous exchange of the partnered labels $0,1$, and permutations of the remaining classes. Every displayed square sum is nonnegative on all real assignments. The identities follow from the elementary symmetric identity used above, with no bound on the number of classes.
+
+\paragraph{Same side with both distinguished.}
+For $x=p_0,y=p_1$, take $A=\sum_{k\ge2}p_k$, $U=\sum_{k\ge2}p_k^2$, $B=\sum_{l\ge2}q_l$, $V=\sum_{l\ge2}q_l^2$. Then
+\[
+ 2\Delta_{xy}=(GA-B)^2+G^2U+V.
+\]
+\paragraph{Same side with one distinguished.}
+For $x=p_0,y=p_i$, $i\ge2$, take $A=\sum_{k\ne0,i}p_k$, $U=\sum_{k\ge2,k\ne i}p_k^2$, $V=\sum_{l\ge2}q_l^2$. Then
+\[
+ 2\Delta_{xy}=[GA-(M-q_0)]^2+(Gp_1-q_1)^2+G^2U+V.
+\]
+\paragraph{Same side with neither distinguished.}
+For $x=p_i,y=p_j$, $i,j\ge2$ and $i\ne j$, take $A=\sum_{k\ne i,j}p_k$, $U=\sum_{k\ge2,k\ne i,j}p_k^2$, $V=\sum_{l\ge2}q_l^2$. Then
+\[
+ 2\Delta_{xy}=(GA-M)^2+(Gp_0-q_0)^2+(Gp_1-q_1)^2+G^2U+V.
+\]
+\paragraph{Opposite sides with partnered distinguished variables.}
+For $x=p_0,y=q_0$, take $A=\sum_{k\ne0}p_k$, $U=\sum_{k\ge2}p_k^2$, $B=\sum_{l\ne0}q_l$, $V=\sum_{l\ge2}q_l^2$. Then
+\[
+ 2\Delta_{xy}=(Aq_1-Bp_1)^2+A^2V+B^2U.
+\]
+\paragraph{Opposite sides with unpartnered distinguished variables.}
+For $x=p_0,y=q_1$, let $u=p_1$, $v=q_0$, $A=\sum_{k\ne0}p_k$, $U=\sum_{k\ge2}p_k^2$, $B=\sum_{l\ne1}q_l$, $V=\sum_{l\ge2}q_l^2$. Then
+\[
+ 4\Delta_{xy}=(AB+uB+vA-uv-2)^2+U(B-v)^2+V(A-u)^2+UV.
+\]
+\paragraph{Opposite sides with one distinguished variable.}
+For $x=p_0,y=q_j$, $j\ge2$, let $r=p_1$, $s=q_1$, $v=q_0$, $A=\sum_{k\ne0}p_k$, $U=\sum_{k\ge2}p_k^2$, $B=\sum_{l\ne j}q_l$, $V=\sum_{l\ge2,l\ne j}q_l^2$. Then
+\begin{align*}
+4\Delta_{xy}={}&[A(B+v)-rs-2]^2+[As-r(B-v)]^2\\
+ &+V(A^2+r^2)+U[(B-v)^2+s^2]+UV.
+\end{align*}
+\paragraph{Opposite sides with neither distinguished.}
+For $x=p_i,y=q_j$, $i,j\ge2$, take $A=\sum_{k\ne i}p_k$, $U=\sum_{k\ge2,k\ne i}p_k^2$, $B=\sum_{l\ne j}q_l$, $V=\sum_{l\ge2,l\ne j}q_l^2$, $R_2=p_0^2+p_1^2$, $S_2=q_0^2+q_1^2$. Then
+\begin{align*}
+4\Delta_{xy}={}&(AB-K-2)^2+(Aq_0-Bp_0)^2+(Aq_1-Bp_1)^2\\
+ &+(p_0q_1-p_1q_0)^2+U(B^2+S_2)+V(A^2+R_2)+UV.
+\end{align*}
+The all-real Rayleigh criterion now proves stability. Parallel-class sum substitution transfers it to individual variables. These explicit identities, rather than a finite numerical test, establish the arbitrary-class statement.
+
+
+\section{Coefficientwise Rayleigh inequalities for a three-vertex shore (source 12)}\label{pgr:r:tc:sec}
+
+Source~12 is \emph{Coefficientwise Rayleigh inequalities for a three vertex
+shore} (6 pages as delivered; archive \texttt{three-core-rayleigh-result});
+source~11 embedded an exact copy of it as its dependency. Its files are
+shipped with the prefix \texttt{12-three-core-rayleigh-}.
+
+\paragraph{Abstract of source 12, as delivered.}
+
+For a directed relation whose physical graph is bipartite with a three-vertex shore, we prove coefficientwise Rayleigh inequalities for the polynomial of feasible ordered endpoint supports. Opposite arcs and independent tail/head activities are allowed, and each feasible support is counted once. The boundary inequality reduces to 48 role-monomial types and 17,376 finite directed graphs; two independent exact checkers verify every coefficient. A private-head argument then proves coefficientwise positivity of the full Rayleigh differences in the three core monomers. Consequently, use of any two core vertices is negatively correlated in the endpoint-support measure under all nonnegative role activities and positive core monomer activities. We give a four-core example, already admitting a two-tail/three-head role cover, where coefficientwise positivity fails despite an exact positive two-square formula. The boundary theorem is computer-assisted; the corollaries and obstruction are ordinary arguments. No full-stability, internal-core extension, proof-assistant formalization, or priority claim is made.
+
+\subsection{Supports and the main inequality}
+Let $D$ be a finite loopless directed relation on the physical vertex set
+$V=C\sqcup I$, where $C=\{0,1,2\}$, and assume every arc crosses this partition.
+Both orientations of an edge may be present. Work in the polynomial ring in
+independent commuting tail and head activities $u_v,v_v$ for $v\in V$.
+
+A \emph{feasible support} of size $k$ is an ordered pair $(S,T)$ of disjoint
+physical vertex sets of size $k$ admitting a directed perfect matching from
+$S$ to $T$. Its weight is $\wt(S,T)=u^Sv^T$. It contributes once, regardless
+of how many bijections witness feasibility. Since all arcs cross the physical
+bipartition, every size-$k$ support uses exactly $k$ vertices in each shore.
+
+Define $a_i$ as the sum of weights of size-one supports with used core set
+$\{i\}$, define $b_{ij}=b_{ji}$ similarly for size-two supports with used core
+set $\{i,j\}$, and let $c$ be the size-three coefficient. The core activities
+are included in these polynomials. The polynomial recording unused core
+vertices is
+\begin{equation}\label{pgr:r:tc:eq:F}
+ F(\mathbf z)=z_0z_1z_2+\sum_{i\in C}a_i z_jz_k
+                     +\sum_{i<j}b_{ij}z_k+c,
+\end{equation}
+where in each summand the omitted indices complete $C$. Exterior monomer
+activities are one; exterior role activities remain independent variables.
+
+Write $p\coefge0$ when every coefficient of $p$ in the original activity
+variables is a nonnegative integer.
+\begin{theorem}[Boundary inequality]\label{pgr:r:tc:thm:boundary}
+For every distinct $i,j,k\in C$,
+\begin{equation}\label{pgr:r:tc:eq:boundary}
+ b_{ij}b_{ik}-a_ic\coefge0.
+\end{equation}
+This holds for every finite exterior set $I$ and every directed relation
+satisfying the physical bipartition assumption.
+\end{theorem}
+Section~\ref{pgr:r:tc:sec:finite} gives the complete localization argument and exact
+finite certificate for this computer-assisted theorem. Section~\ref{pgr:r:tc:sec:full}
+derives the full core-variable Rayleigh property without another enumeration.
+Rank-three matroid Rayleigh theory \cite{WagnerR3} provides relevant context,
+but the proof here works directly with directed endpoint supports and their
+independent role activities; no identification with an ordinary unweighted
+matroid basis measure is assumed.
+
+
+\mnote{in the scalar case with one orientation (all arcs from the core
+$C$ to the exterior), the boundary inequality is source~22's inequality
+$B_{ij}B_{ik}\ge A_iC_0$ (Section~\pgrfwd{pgr:r:ir:sec:rayleigh}{on
+source~22's three-core theorem}), which source~22 derives from Wagner's
+rank-three Rayleigh theorem; for undirected graphs its scalar form is
+\mrn, Equation \texttt{mrn:s:tv:eq:rayleigh}. The coefficientwise form,
+with both orientations and independent role activities, is new.}
+
+\subsection{Complete coefficient localization}\label{pgr:r:tc:sec:finite}
+By relabeling the core, it suffices to prove
+$G=b_{01}b_{02}-a_0c\coefge0$.
+
+\begin{lemma}\label{pgr:r:tc:lem:localization}
+Every potentially negative coefficient of $G$ is determined by an induced
+relation on the three core vertices and either three or four exterior
+physical vertices. Their exterior physical multiplicities are respectively
+$(2,1,1)$ or $(1,1,1,1)$.
+\end{lemma}
+\begin{proof}
+A negative coefficient must occur in $a_0c$. The $a_0$ factor uses one exterior
+vertex and the $c$ factor uses three distinct exterior vertices. Their union
+therefore has exactly one of the two stated patterns. The physical core
+multiplicities are $(2,1,1)$ in either product, and total exterior degree is
+four. All other monomials have coefficient zero in $a_0c$, so their gap
+coefficients are nonnegative automatically.
+
+For a fixed monomial, no support contributing to its coefficient can use a
+vertex absent from that monomial. Nor can it use an arc whose tail or head
+role variable is absent. Removing such vertices and arcs preserves the
+coefficient exactly. The remaining finite graph is determined solely by the
+roles and physical labels in the monomial.
+\end{proof}
+
+Use role bit $1$ for a tail and $0$ for a head. At doubled core vertex $0$,
+let $h\in\{0,1,2\}$ be the exponent of $u_0$; its head exponent is $2-h$.
+Let $\epsilon_1,\epsilon_2\in\{0,1\}$ be the roles at vertices $1,2$.
+The allowed ordered allocations of the two roles at a doubled vertex are
+\begin{equation}\label{pgr:r:tc:eq:allocations}
+ \mathcal A(0)=\{(0,0)\},\quad
+ \mathcal A(1)=\{(0,1),(1,0)\},\quad
+ \mathcal A(2)=\{(1,1)\}.
+\end{equation}
+Thus identical-role occurrences have one allocation, not two. The total tail
+degree in both products is four: the factor sizes are $2+2$ or $1+3$.
+
+\paragraph{Four distinct exterior vertices.}
+Each exterior vertex has one fixed role, and exactly
+$4-h-\epsilon_1-\epsilon_2$ of them are tails. Up to exterior relabeling,
+put these tails first and the heads afterward. The twelve choices of
+$(h,\epsilon_1,\epsilon_2)$ give exactly twelve role-monomial cases.
+
+\paragraph{Three exterior vertices.}
+Label the repeated exterior vertex $0'$ and the other two $1',2'$. Let
+$\ell\in\{0,1,2\}$ be its tail exponent, and let
+$\delta_1,\delta_2\in\{0,1\}$ be the other exterior roles. Retain precisely
+the tuples satisfying
+\begin{equation}\label{pgr:r:tc:eq:balance}
+ h+\epsilon_1+\epsilon_2+\ell+\delta_1+\delta_2=4.
+\end{equation}
+There are thirty-six such tuples, including the core choices.
+
+For each role-monomial case, list every cross-partition directed arc whose
+tail and head roles occur in the monomial, and enumerate all subsets of that
+list. If both endpoint role types occur, both directions of the same physical
+edge are separate arc bits. The exact sizes are
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Exterior multiplicities & Role types & Most arc bits & Graphs\\
+\midrule
+$1,1,1,1$ & 12 & 12 & 11\,392\\
+$2,1,1$   & 36 & 10 & 5\,984\\
+\midrule
+Total     & 48 & & 17\,376\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are complete finite case counts, not a sample of arbitrary larger
+graphs. Lemma~\ref{pgr:r:tc:lem:localization} explains why they cover every potentially
+negative coefficient for every exterior size.
+
+\subsubsection*{Computing one coefficient exactly}
+For fixed endpoint sets and fixed roles, the producer checker lists the at
+most six bijections between the selected core and exterior vertices. The
+feasibility predicate is true if \emph{at least one} bijection uses present,
+role-compatible directed arcs. The number of successful bijections is never
+used as a coefficient.
+
+With four exterior vertices, the coefficient in $b_{01}b_{02}$ is obtained
+by choosing the two exterior vertices assigned to the first factor (six
+choices), assigning the complement to the second, and summing over the
+distinct role allocations \eqref{pgr:r:tc:eq:allocations} at core $0$. A choice
+contributes one exactly when both endpoint supports are feasible. For $a_0c$,
+choose the singleton exterior vertex (four choices), give the remaining
+three to $c$, and use the same core-role allocation rule.
+
+With three exterior vertices, both positive factors must contain $0'$.
+Choose which of $1',2'$ accompanies it in $b_{01}$ (two choices) and put the
+other in $b_{02}$. Sum over the distinct role allocations at core $0$ and
+exterior $0'$. In the negative product, the exterior singleton of $a_0$ must
+be $0'$, while $c$ uses all three exterior vertices. Again sum over precisely
+those two allocation sets. Each choice specifies an ordered pair of endpoint
+supports uniquely, so subtracting these two counts is the desired coefficient.
+
+All $17\,376$ cases give nonnegative coefficients; the recorded values in
+these potentially negative cases are $0,1,2,3$. The complete per-case
+histograms and executable checker are in the package.
+
+\subsubsection*{Independent reconstruction}
+A second checker does not import the producer code or use its allocation
+routine. It constructs actual directed physical matchings by adjoining
+vertex-disjoint arcs, deduplicates their ordered endpoint sets, and separates
+them according to their used core subsets. It encodes the formal role
+monomials in base three: each exponent in a product of two supports is at most
+two, so this representation has no carries. It then extracts the positive
+and negative product coefficients directly.
+
+This independent enumeration checks $228\,264$ support instances across the
+same $48$ role types and $17\,376$ graphs. Every coefficient histogram agrees
+with the producer's output. Together with the complete localization argument,
+these finite checks prove Theorem~\ref{pgr:r:tc:thm:boundary}. They are the finite part
+of the proof, not merely floating-point evidence. No random search is used.
+
+\subsection{Full Rayleigh differences and negative correlation}\label{pgr:r:tc:sec:full}
+For a multiaffine polynomial $F$, define
+\[
+ \Delta_{jk}(F)=(\partial_{z_j}F)(\partial_{z_k}F)
+                   -F\partial_{z_j}\partial_{z_k}F.
+\]
+\begin{theorem}\label{pgr:r:tc:thm:full}
+For $F$ in \eqref{pgr:r:tc:eq:F}, every $\Delta_{jk}(F)$ is coefficientwise
+nonnegative in the core monomers and original independent role activities.
+Consequently, after every nonnegative role-activity specialization, $F$ is
+Rayleigh as a polynomial of its three core monomers at nonnegative arguments.
+\end{theorem}
+\begin{proof}
+For distinct $i,j,k$, direct cancellation gives
+\begin{align}\label{pgr:r:tc:eq:delta}
+ \Delta_{jk}(F)={}&(a_ja_k-b_{jk})z_i^2\notag\\
+ &+(a_jb_{ik}+a_kb_{ij}-c-a_ib_{jk})z_i
+ +(b_{ij}b_{ik}-a_ic).
+\end{align}
+The constant coefficient is nonnegative by Theorem~\ref{pgr:r:tc:thm:boundary}.
+Also $a_ja_k\coefge b_{jk}$: every size-two support using $j,k$ has at
+least one pair of single-edge witnesses counted by the product, with the
+same role weight; repeated exterior vertices and additional witnesses only
+add terms to that product.
+
+To treat the middle coefficient, add a fresh exterior physical vertex $x$
+and only the arc $i\to x$, and put $L=u_iv_x$. Deleting that forced edge is
+a bijection of endpoint supports; any residual matching-witness multiplicity
+remains ignored. The enlarged relation has coefficients
+\[
+ a_i'=a_i+L,\qquad b_{ij}'=b_{ij}+La_j,\qquad
+ b_{ik}'=b_{ik}+La_k,\qquad c'=c+Lb_{jk}.
+\]
+It still satisfies the bipartition hypotheses of Theorem~\ref{pgr:r:tc:thm:boundary}.
+Its boundary gap is
+\begin{align}\label{pgr:r:tc:eq:private}
+ b_{ij}'b_{ik}'-a_i'c'={}&b_{ij}b_{ik}-a_ic\notag\\
+ &+L(a_jb_{ik}+a_kb_{ij}-c-a_ib_{jk})
+ +L^2(a_ja_k-b_{jk}).
+\end{align}
+The fresh variable $v_x$ is absent from the original coefficients. Its
+coefficient in \eqref{pgr:r:tc:eq:private} is $u_i$ times the middle coefficient of
+\eqref{pgr:r:tc:eq:delta}. The enlarged boundary gap is coefficientwise nonnegative,
+and multiplication by the monomial $u_i$ shifts exponents injectively.
+The middle coefficient is therefore nonnegative as well.
+\end{proof}
+
+The statement concerns nonnegative monomer arguments. It is not an all-real
+Rayleigh criterion, and no real-stability conclusion follows here. It also
+does not assert Rayleigh inequalities in the exterior or activity variables.
+
+\begin{corollary}\label{pgr:r:tc:cor:covariance}
+Fix nonnegative role activities and strictly positive core monomer activities.
+Give each feasible ordered support probability proportional to
+\[
+ u^Sv^T\prod_{i\in C\setminus(S\cup T)}z_i.
+\]
+Then use of any two distinct core vertices is negatively correlated. The
+same is true of their unused indicators.
+\end{corollary}
+\begin{proof}
+The normalizing constant is $F(\mathbf z)>0$, since the empty support
+contributes $z_0z_1z_2>0$. If $U_j$ is the indicator that $j$ is unused,
+differentiation gives
+\[
+ \operatorname{Cov}(U_j,U_k)
+ =\frac{z_jz_k(F\partial_{z_j}\partial_{z_k}F
+                    -\partial_{z_j}F\partial_{z_k}F)}{F^2}
+ =-\frac{z_jz_k\Delta_{jk}(F)}{F^2}\le0.
+\]
+Replacing each indicator by one minus itself leaves their pairwise covariance
+unchanged. This proves the assertion for used indicators too.
+\end{proof}
+This probability measure is on feasible endpoint supports, not on individual
+matching witnesses. Zero role activities cause no problem: the coefficientwise
+inequalities specialize directly, and the positive empty-support monomial
+still normalizes the measure.
+
+\subsection{A scalar cubic consequence}
+Write
+\[
+\Ga_D(t)=1+At+Bt^2+ct^3,\qquad
+ A=a_0+a_1+a_2,\quad B=b_{01}+b_{02}+b_{12}.
+\]
+Rank-ultra-log-concavity means log-concavity of
+$\gamma_k/\binom dk$ at the actual surviving degree $d$. Positive-weight
+submatchings ensure that the coefficient sequence has no internal zeros.
+At nonnegative activities,
+\begin{equation}\label{pgr:r:tc:eq:three-squares}
+ B^2-3Ac=
+ \frac12\bigl[(b_{01}-b_{02})^2+(b_{01}-b_{12})^2
+                         +(b_{02}-b_{12})^2\bigr]
+ +3\sum_i(b_{ij}b_{ik}-a_ic)\ge0.
+\end{equation}
+Moreover, $b_{ij}\le a_ia_j$ gives
+$A^2\ge3\sum_{i<j}a_ia_j\ge3B$.
+
+\mnote{identity~\eqref{pgr:r:tc:eq:three-squares} is printed once, here. Source~11 uses
+it in its equality proposition, and source~22's identity for its
+three-core theorem is this identity with $b_{ij}$, $a_i$ and $c$ replaced by
+$u_iu_jb_{ij}$, $u_ia_i$ and $u_0u_1u_2C_0$.}
+Thus the cubic Newton inequalities hold. Equation~\eqref{pgr:r:tc:eq:three-squares}
+is a scalar nonnegativity identity; its squared differences must not be
+mistaken for coefficientwise nonnegative polynomials.
+
+
+\mnote{source~12 continues with a paragraph proving the stronger
+normalization $A^2\ge4B$ after a drop to actual degree two, by
+Motzkin--Straus compression on the triangle-free graph of positive-weight
+arcs; this is the case $d=2$ of Theorem~\ref{pgr:thm:first} and is
+replaced by that pointer. Degrees zero and one have no inequalities to
+check.}
+
+
+Consequently $\Ga_D$ is rank-ultra-log-concave at its actual surviving degree,
+including zero activities. This scalar conclusion is weaker than the main
+coefficientwise and negative-correlation results.
+
+\subsection{An exact obstruction at four cores}\label{pgr:r:tc:sec:four}
+The coefficientwise assertion cannot be extended without qualification to a
+four-vertex shore, even inside the two-tail/three-head role-cover class.
+
+Take tails $0,1,2,3$ and five distinct heads $a,b,c,d,e$, and only the arcs
+\begin{equation}\label{pgr:r:tc:eq:fourgraph}
+ N(0)=\{c,d,e\},\quad N(1)=\{a,b,e\},\quad
+ N(2)=\{b,d\},\quad N(3)=\{e\}.
+\end{equation}
+The tail roles $\{0,1\}$ and head roles $\{b,d,e\}$ cover every arc. A
+matching $0\to c,1\to a,2\to d,3\to e$ shows degree four.
+Set tail activities to one and use the head labels as their activities.
+Let $B_J$ count head supports matchable to the selected tail set $J$, once
+per feasible head set. Boolean matching tests give
+\begin{align*}
+ B_{012}&=abc+abd+abe+acd+ade+bcd+bce+bde+cde,\\
+ B_{013}&=ace+ade+bce+bde,\\
+ B_{01}&=ac+ad+ae+bc+bd+be+ce+de,\\
+ B_{0123}&=abce+abde+acde+bcde.
+\end{align*}
+Their boundary gap is
+\begin{align}\label{pgr:r:tc:eq:fourgap}
+ B_{012}B_{013}-B_{01}B_{0123}
+ &=e^2(a^2d^2-abcd+abd^2+b^2c^2+b^2cd+b^2d^2)\notag\\
+ &=e^2\left[\left(ad+\frac{b(d-c)}2\right)^2
+                      +\frac34b^2(c+d)^2\right].
+\end{align}
+The coefficient of $abcde^2$ is $-1$. Restoring tail activities multiplies
+the entire gap by $u_0^2u_1^2u_2u_3$, so this remains a negative coefficient
+in the original role-activity ring.
+
+Nevertheless, the second line of \eqref{pgr:r:tc:eq:fourgap} is nonnegative at every
+real head-activity assignment. This example refutes the coefficientwise
+extension only. It is not a counterexample to scalar Rayleigh nonnegativity,
+real-rootedness, or rank-ULC. No minimality assertion is made.
+
+\subsection{Proof status and reproducibility}
+The boundary theorem consists of a complete all-size localization proof and
+an exhaustive finite integer check. The full core-variable Rayleigh theorem,
+negative-correlation corollary, scalar consequence, and four-core obstruction
+are ordinary arguments once that boundary theorem is established. No
+proof-assistant verification or literature-wide novelty claim is made.
+
+The package includes the producer's finite checker and all $48$ histograms,
+the independently written direct-support checker and its receipts, exact
+four-core verifiers, mathematical audits, and editable source. The replay
+driver first checks file hashes, then runs copied checkers in temporary
+directories and compares deterministic receipt fields without altering the
+frozen package. All computations use Python's standard library and exact
+integer or rational arithmetic.
+
+The physical core must remain independent. No result here permits internal
+core arcs. The general rank-ULC problem for a cover of at most two tail roles
+and three head roles, with arbitrary independent activities and physical
+overlap, remains open. Section~\ref{pgr:r:tc:sec:four} gives a specific reason that
+the strongest coefficientwise approach cannot simply be extrapolated to a
+larger shore.
+
+\mnote{in this report the two-tail/three-head problem is settled in
+part: by real stability when $|Q|\le2$ (source~20,
+Theorem~\ref{pgr:r:rc:thm:rolecover}), for $P\subseteq Q$ by source~11's
+Corollary~\pgrfwd{pgr:r:pc:cor:rolecover}{``rolecover''}, and for an
+independent physical core at its cover order by source~15's
+Corollary~\pgrfwd{pgr:r:ps:cor:overlap}{``overlap''}. The general case,
+with internal core arcs and a physical union of four or five vertices,
+remains open.}
+
+
+
+\section{A physical vertex cover of size three (source 11)}\label{pgr:r:pc:sec}
+
+Source~11 is \emph{Rank ultra log concavity under a three vertex physical
+cover} (5 pages as delivered; archive \texttt{physical-cover-three-result}).
+Its files are shipped with the prefix \texttt{11-physical-cover-}; the copy
+of source~12 that it embeds is not shipped, because source~12's own files
+are.
+
+\paragraph{Abstract of source 11, as delivered.}
+
+We prove actual-degree ultra-log-concavity of the endpoint-support polynomial
+for every finite loopless directed relation with a physical vertex cover of
+size at most three. Internal core arcs are arbitrary, transitivity is
+unnecessary, and independent nonnegative tail/head activities are allowed.
+The proof combines a verified bipartite boundary inequality, support-level
+witness bounds, and an exact two-square decomposition. Each support is
+counted once, with zero activities normalized at the surviving degree.
+A separate bipartite-only section characterizes strict core negative
+correlation and equality in the upper cubic Newton inequality. The ordinary
+arguments depend on a replayable finite boundary certificate included in the
+package. No real-rootedness, proof-assistant formalization, or priority claim
+is asserted.
+
+\subsection{Statement and normalization}
+Let $D$ be a finite loopless directed relation on physical vertex set $V$.
+Opposite arcs are allowed. Give every vertex tail activity $u_i\ge0$ and
+head activity $v_i\ge0$.
+A feasible support of size $k$ is an ordered pair $(S,T)$ of disjoint subsets
+of size $k$ admitting a directed perfect matching from $S$ to $T$. It has
+weight $\wt(S,T)=u^Sv^T$ and is counted once, regardless of how many matching
+witnesses realize it. Set
+\[
+ \gamma_k=\sum_{\substack{(S,T)\text{ feasible}\\|S|=k}}u^Sv^T,
+ \qquad \Ga_D(t)=\sum_{k\ge0}\gamma_k t^k,
+ \qquad\gamma_0=1.
+\]
+The actual degree $d$ is the matching number of the underlying graph of the
+positive-weight relation $D_+$, which retains precisely the arcs
+$i\to j$ with $u_iv_j>0$. Taking submatchings gives no internal zeros.
+Rank-ultra-log-concavity, or rank-ULC, means
+\begin{equation}\label{pgr:r:pc:eq:rankulc}
+ k(d-k)\gamma_k^2\ge(k+1)(d-k+1)\gamma_{k-1}\gamma_{k+1}
+ \qquad(1\le k<d),
+\end{equation}
+at this actual surviving degree.
+
+\begin{theorem}\label{pgr:r:pc:thm:main}
+If the underlying undirected graph of $D$ has a vertex cover of size at most
+three, then $\Ga_D$ is rank-ULC for every nonnegative choice of independent
+tail and head activities. The internal core arcs are unrestricted and
+transitivity is not required.
+\end{theorem}
+
+
+\mnote{Theorem~\ref{pgr:r:pc:thm:main} contains source~22's three-core
+theorem (Theorem~\pgrfwd{pgr:r:ir:thm:three}{``three'' of source~22}: three
+core tails and no arcs into the core, so the core is a physical vertex
+cover) and the rank-ULC half of source~22's role-matching corollary (a role
+cover of size three has at most three physical vertices); source~22's
+ordinary proof of the former is kept there as a second route. For bipartite
+graphs with every vertex in one role it is the case $\nu\le3$ of \prp,
+Corollary \texttt{lc:cor:rankthree}, itself contained in \mrn, Corollary
+\texttt{mrn:w:rf:cor:rankfive}.}
+
+\begin{corollary}\label{pgr:r:pc:cor:rolecover}
+Suppose every arc $i\to j$ satisfies $i\in P$ or $j\in Q$, with
+$|P|\le2$, $|Q|\le3$, and $P\subseteq Q$. Then $\Ga_D$ is rank-ULC at its
+actual surviving degree, with arbitrary independent activities.
+\end{corollary}
+\begin{proof}
+Every underlying edge meets the physical set $Q$, so
+Theorem~\ref{pgr:r:pc:thm:main} applies.
+\end{proof}
+This closes the two-tail/three-head role-cover case in which both selected
+tail vertices also belong to the selected head set. Covers with a physical
+union of four or five vertices are not settled by this theorem.
+
+
+\mnote{source~11's Lemma ``first'' (Universal first inequality: for any
+directed relation of actual degree $d\ge2$,
+$\gamma_1^2\ge\frac{2d}{d-1}\gamma_2$), proved by moving weight between
+nonadjacent positive-weight arcs of the compatibility graph, is
+Theorem~\ref{pgr:thm:first} with Lemma~\ref{pgr:lem:ms}; it is replaced by
+that pointer.}
+
+The lemma supplies the first cubic inequality and the stronger degree-two
+inequality after a degree drop. Only the last cubic inequality remains.
+
+\subsection{The exterior boundary input}
+Assume now that $C=\{0,1,2\}$ is a physical vertex cover and put
+$I=V\setminus C$. The exterior $I$ is independent. Delete all internal core
+arcs, obtaining the bipartite physical relation $D_0$ on $C\sqcup I$.
+Define, with all original role activities included,
+\begin{itemize}[nosep]
+\item $a_i$: the weight sum of size-one supports of $D_0$ using core $\{i\}$;
+\item $b_{ij}$: the weight sum of size-two supports using core $\{i,j\}$;
+\item $c$: the weight sum of size-three supports, using all three cores.
+\end{itemize}
+Set $A=\sum_i a_i$ and $B=\sum_{i<j}b_{ij}$.
+
+The following is the explicit dependency of the present proof:
+\begin{lemma}[Verified three-core boundary theorem]\label{pgr:r:pc:lem:boundary}
+For every distinct $i,j,k\in C$,
+\begin{equation}\label{pgr:r:pc:eq:boundary}
+ b_{ij}b_{ik}-a_ic\succeq_{\rm coeff}0
+\end{equation}
+in the original independent role-activity variables.
+\end{lemma}
+This theorem is proved in the accompanying manuscript. \mnote{that manuscript is source~12, printed in
+Section~\ref{pgr:r:tc:sec}; the statement above is its
+Theorem~\ref{pgr:r:tc:thm:boundary}. Source~12's files are shipped once,
+with its own prefix.}
+Its complete all-size localization reduces every potentially negative
+coefficient to three or four exterior physical vertices. There are $48$
+role-monomial types and $17\,376$ relevant directed graphs. Two independently
+written exact checkers reproduce every coefficient histogram. That proof,
+its audits and the checkers are included and replayed in this package; the
+dependency is not replaced by a random sample. We use only its valid
+nonnegative specialization below.
+
+Summing \eqref{pgr:r:pc:eq:boundary} gives
+\begin{equation}\label{pgr:r:pc:eq:Ac}
+ Ac\le b_{01}b_{02}+b_{01}b_{12}+b_{02}b_{12}.
+\end{equation}
+We also need the elementary coefficientwise inequality
+\begin{equation}\label{pgr:r:pc:eq:remove}
+ c\le a_kb_{ij}.
+\end{equation}
+For a size-three support, choose a witnessing matching. Its edge at core $k$
+is a singleton support, and deleting it leaves a support counted by $b_{ij}$.
+The product has the original weight. Additional decompositions and intersecting
+products only add nonnegative contributions.
+
+\subsection{Restoring every internal core arc}
+For an unordered core pair $\{i,j\}$, with remaining core $k$, write
+\[
+ h_{ij}=\mathbf1_{i\to j\in D}u_iv_j+
+         \mathbf1_{j\to i\in D}u_jv_i,\qquad
+ E=h_{01}+h_{02}+h_{12},\qquad w_{ij}=h_{ij}a_k.
+\]
+Let $H$ be the weight sum of size-two supports using all three physical core
+vertices. These supports use one internal core arc and one exterior arc.
+The other size-two supports use precisely two core vertices and belong to
+$D_0$. A size-three matching cannot contain an internal core edge, since
+that would leave only one core vertex for its other two disjoint edges.
+Thus, exactly at support level,
+\begin{equation}\label{pgr:r:pc:eq:decomposition}
+ \gamma_1=A+E,\qquad \gamma_2=B+H,\qquad\gamma_3=c.
+\end{equation}
+
+\begin{lemma}[Internal witness bounds]\label{pgr:r:pc:lem:witnesses}
+At all nonnegative activities,
+\begin{equation}\label{pgr:r:pc:eq:witnessbounds}
+ 0\le w_{ij}\le H,\qquad w_{01}+w_{02}+w_{12}\le2H.
+\end{equation}
+Both inequalities hold coefficientwise as support-counting statements.
+\end{lemma}
+\begin{proof}
+A product in $h_{ij}a_k$ chooses an internal arc on $\{i,j\}$ and an exterior
+arc at $k$. Their physical endpoints are disjoint. For this fixed unordered
+core pair, every resulting ordered endpoint support is counted exactly once:
+opposite orientations of the internal arc yield different role assignments,
+and the exterior edge is then forced. Hence $w_{ij}\le H$.
+
+The sum of the three $w$'s counts the internal-edge witnesses of each
+$H$-support. Such a support has three core vertices and one exterior vertex.
+If two core vertices are tails and one is a head, the internal edge must run
+from one of those two tails to that head. There are at most two choices.
+The case of one core tail and two core heads is the reverse case. Each
+witness has the same prescribed support weight, so the total is at most
+$2H$. In particular, fork-induced duplicate witnesses are retained in this
+bound rather than silently counted as distinct supports in $H$.
+\end{proof}
+Multiplying \eqref{pgr:r:pc:eq:remove} by $h_{ij}$ and summing yields
+\begin{equation}\label{pgr:r:pc:eq:Ec}
+ Ec\le\sum_{i<j} w_{ij}b_{ij}.
+\end{equation}
+
+At the fixed activity specialization, order the three $b$-values as
+$x\ge y\ge z\ge0$, and let $w_x,w_y,w_z$ be their corresponding $w$-values.
+The witness bounds imply
+\begin{equation}\label{pgr:r:pc:eq:weightedbound}
+ xw_x+yw_y+zw_z\le H(x+y),
+\end{equation}
+because its slack is exactly
+\begin{equation}\label{pgr:r:pc:eq:slack}
+ (x-y)(H-w_x)+y(2H-w_x-w_y-w_z)+(y-z)w_z\ge0.
+\end{equation}
+Combining \eqref{pgr:r:pc:eq:Ac}, \eqref{pgr:r:pc:eq:Ec} and \eqref{pgr:r:pc:eq:weightedbound} gives
+\[
+ \gamma_1\gamma_3\le xy+xz+yz+H(x+y),\qquad
+ \gamma_2=x+y+z+H.
+\]
+Consequently
+\begin{align}\label{pgr:r:pc:eq:twosquares}
+ \gamma_2^2-3\gamma_1\gamma_3
+ &\ge(x+y+z+H)^2-3\bigl[xy+xz+yz+H(x+y)\bigr]\notag\\
+ &=\left(z+H-\frac{x+y}{2}\right)^2+\frac34(x-y)^2\ge0.
+\end{align}
+Together with Lemma~\ref{pgr:thm:first}, this proves Theorem~\ref{pgr:r:pc:thm:main} at
+actual degree three. Degrees at most two were already handled by that lemma,
+so zero-weight degree drops cause no normalization gap.
+
+For a completely explicit accounting of the slack, the proof gives the exact
+identity
+\begin{align}\label{pgr:r:pc:eq:exact}
+ \gamma_2^2-3\gamma_1\gamma_3={}&
+ \left(z+H-\frac{x+y}{2}\right)^2+\frac34(x-y)^2\notag\\
+ &+3\sum_i(b_{ij}b_{ik}-a_ic)
+   +3\sum_{i<j}h_{ij}(a_kb_{ij}-c)\notag\\
+ &+3\bigl[(x-y)(H-w_x)+y(2H-\textstyle\sum w)
+                                  +(y-z)w_z\bigr].
+\end{align}
+Every term is nonnegative. The ordering of $x,y,z$ is numerical, after
+activity specialization; \eqref{pgr:r:pc:eq:exact} is not a coefficientwise positivity
+claim for the full Newton gap.
+
+\subsection{Bipartite only strictness results}\label{pgr:r:pc:sec:strictness}
+The remainder of this section assumes that \emph{there are no internal core
+arcs}. It must not be applied to the unrestricted internal-core theorem.
+Let $D_+$ denote the positive-weight relation, and give the three core
+monomers strictly positive activities $z_0,z_1,z_2$. The core polynomial is
+\[
+ F=z_0z_1z_2+\sum_i a_i z_jz_k+\sum_{i<j}b_{ij}z_k+c.
+\]
+The boundary theorem and a private-head insertion prove (source~12, Theorem~\ref{pgr:r:tc:thm:full})
+that all three coefficients of
+\begin{align}\label{pgr:r:pc:eq:rayleigh}
+ \Delta_{jk}(F)={}&(a_ja_k-b_{jk})z_i^2\notag\\
+ &+(a_jb_{ik}+a_kb_{ij}-c-a_ib_{jk})z_i+(b_{ij}b_{ik}-a_ic)
+\end{align}
+are coefficientwise nonnegative. Here
+$\Delta_{jk}=(\partial_jF)(\partial_kF)-F\partial_j\partial_kF$.
+
+\begin{proposition}\label{pgr:r:pc:prop:strict}
+Give each endpoint support probability proportional to
+\[
+ u^Sv^T\prod_{i\in C\setminus(S\cup T)}z_i.
+\]
+Then the covariance of the used
+indicators of two distinct core vertices is strictly negative exactly when
+they are in the same connected component of the underlying graph of $D_+$.
+Otherwise it is zero. The unused indicators have the same covariance.
+\end{proposition}
+\begin{proof}
+Supports and weights factor across different physical components, so those
+components are independent. If $j,k$ are connected, a simple alternating
+path between them has length two or four, since there are only three core
+vertices.
+
+For a path $j-x-k$, choose a positive available arc on each physical edge.
+Their product is a positive monomial of $a_ja_k$ with exterior vertex $x$
+used twice. It cannot occur in $b_{jk}$, whose supports require two distinct
+exterior vertices. Thus the quadratic coefficient of \eqref{pgr:r:pc:eq:rayleigh}
+is strictly positive at these activities.
+
+For a path $j-x-i-y-k$, the two supports formed by edges
+$\{j-x,i-y\}$ and $\{i-x,k-y\}$ contribute a positive monomial to
+$b_{ij}b_{ik}$ on only the two exterior vertices $x,y$. It cannot occur in
+$a_ic$, because $c$ requires three distinct exterior vertices. The constant
+coefficient is therefore strictly positive. Each support separately is
+physically disjoint; role reuse across the product is allowed.
+
+In either case, coefficientwise nonnegativity prevents cancellation and
+$\Delta_{jk}(F)>0$. The empty support makes $F>0$, and the unused indicators
+$U_j,U_k$ satisfy
+\[
+ \operatorname{Cov}(U_j,U_k)=-\frac{z_jz_k\Delta_{jk}(F)}{F^2}<0.
+\]
+Replacing both indicators by one minus themselves preserves covariance.
+\end{proof}
+
+\begin{proposition}\label{pgr:r:pc:prop:equality}
+Assume actual degree three, so $c>0$, and still no internal core arcs. Then
+$B^2=3Ac$ if and only if, after deleting zero-weight arcs and isolates, the
+physical graph is a union of three separate stars centered at the core
+vertices, with equal positive total directed arc activities. In that case
+$\Ga_D(t)=(1+at)^3$ for their common activity total $a$.
+\end{proposition}
+\begin{proof}
+The exact identity~\eqref{pgr:r:tc:eq:three-squares} of source~12, which source~11 prints again,
+uses the three unordered core pairs as $e,f$. Equality forces the three
+$b$-values to agree and all boundary gaps to vanish.
+
+Suppose an exterior vertex $x$ has at least two core neighbors, say $j,k$.
+If the remaining core $i$ has a neighbor $y\ne x$, the supports
+$\{i-y,j-x\}$ and $\{i-y,k-x\}$ give a positive monomial of the boundary
+gap for $i$ on only two exterior vertices. It cannot occur in $a_ic$.
+If $i$ has no neighbor other than $x$, then $x$ is adjacent to all three
+cores. A saturating matching exists because $c>0$; it uses $i-x$ and must
+match $j$ to some $y\ne x$. Use $j$ as the doubled core in the same
+two-support construction. In either case, one boundary gap is strictly
+positive, contradicting equality.
+
+Thus no exterior vertex is shared by different cores. The graph is the
+stated union of stars and supports factor:
+$b_{ij}=a_ia_j$, $c=a_0a_1a_2$, and
+$\Ga_D=\prod_i(1+a_it)$. Each $a_i>0$, so equality of the three $b$-values
+forces $a_0=a_1=a_2$. The converse is immediate. Opposite arcs simply
+contribute their two distinct singleton-support weights to a star's total.
+\end{proof}
+
+\subsection{Proof status and independent replay}
+The only computational dependency is the three-core bipartite boundary
+theorem. The internal-core assembly and bipartite-only strictness results
+are ordinary arguments from that input. No real-rootedness or signed-monomer
+stability is asserted for arbitrary internal core arcs.
+
+The independent audit checks all $4\,096$ one-exterior graphs for witness
+bounds, $1\,600$ three-exterior cases for \eqref{pgr:r:pc:eq:remove}, and $10\,080$
+exact activity evaluations for the assembly and actual-degree inequalities.
+The producer checks $10\,496$ weighted cases, including all $64$ core
+patterns, $6\,478$ zero-activity cases and $504$ larger activity-induced
+degree drops, and verifies \eqref{pgr:r:pc:eq:exact}. These checks corroborate the
+ordinary all-size proof; they impose no exterior-population bound.
+
+The archive includes the full boundary manuscript, source, audits and both
+finite checkers, plus the new independent and producer assembly checks.
+The replay driver verifies hashes and deterministic receipts using temporary
+copies. All code uses Python's standard library and exact arithmetic.
+
+The general two-tail/three-head problem with four or five physical core
+vertices remains open. No proof-assistant formalization or priority claim
+is made.
+
+
+\section{Bipartite physical graphs and pendant heads (source 15)}\label{pgr:r:ps:sec}
+
+Source~15 is \emph{Lorentzian and real stable directed support polynomials}
+(6 pages as delivered; archive \texttt{bipartite-and-pendant-support-result}).
+Its files are shipped with the prefix \texttt{15-pendant-support-}.
+
+\paragraph{Abstract of source 15, as delivered.}
+
+We count ordered disjoint endpoint supports of directed matchings once per feasible support, with independent nonnegative tail and head activities. For any directed relation whose physical graph is bipartite, we prove a multiaffine Lorentzian theorem at the physical shore order. It gives actual-degree ultra-log-concavity when a positive-weight matching saturates a shore, and accounts for overlap among selected core roles. We also prove that a stable selected-head transversal seed remains stable after adding pendant heads at arbitrarily many tail hubs and merging physical copies. This yields negative real roots and actual-degree ultra-log-concavity even on zero-weight degree drops. Singleton-or-universal neighborhoods give an explicit stable seed in arbitrary rank. The proofs are ordinary arguments; exact independent checks are supplementary. The general two-tail/three-head question remains open. No proof-assistant formalization or priority claim is made.
+
+\subsection{Supports and the normalization issue}
+Let $D$ be a finite loopless directed relation on $V$. Opposite arcs are allowed; transitivity is not assumed. Assign tail activities $u_i\ge0$ and head activities $v_i\ge0$.
+\begin{definition}
+A \emph{feasible support} of size $k$ is an ordered pair $(S,T)$ of disjoint subsets of $V$, with $|S|=|T|=k$, admitting a directed perfect matching from $S$ to $T$. Its weight is
+\[
+ \wt(S,T)=u^S v^T=\prod_{i\in S}u_i\prod_{j\in T}v_j.
+\]
+Every feasible pair contributes once, regardless of how many matching witnesses it has. Define
+\[
+ \gamma_k=\sum_{\substack{(S,T)\text{ feasible}\\|S|=k}}\wt(S,T),
+ \qquad \Ga_D(t)=\sum_{k\ge0}\gamma_k t^k.
+\]
+The empty support has weight one, so $\gamma_0=1$.
+\end{definition}
+The two activities of the same physical vertex can differ. Replacing physical vertices by independent role copies without later excluding their simultaneous use changes the polynomial.
+
+Let $D_+$ retain exactly the arcs $i\to j$ for which $u_iv_j>0$. The actual degree $d$ of $\Ga_D$ is the matching number of the underlying undirected graph of $D_+$. Indeed, every positive-weight support supplies such a matching; conversely, orient each edge of such a matching in an available direction. Taking submatchings also shows that $\gamma_k>0$ for $0\le k\le d$.
+
+\begin{definition}
+For an integer $r\ge d$, the coefficients satisfy \emph{order-$r$ ultra-log-concavity} if
+\begin{equation}\label{pgr:r:ps:eq:ulc}
+ k(r-k)\gamma_k^2\ \ge\ (k+1)(r-k+1)\gamma_{k-1}\gamma_{k+1}
+ \qquad(1\le k<r),
+\end{equation}
+with coefficients beyond degree $d$ set to zero. \emph{Rank-ULC} means \eqref{pgr:r:ps:eq:ulc} with $r=d$, the actual surviving degree.
+\end{definition}
+These distinctions matter. The binary polynomial
+\[
+ s^3+3s^2t+3st^2=s(s^2+3st+3t^2)
+\]
+is Lorentzian, but its degree-two quotient is not: $3^2<4\cdot1\cdot3$. Thus division by a common monomial cannot be used to upgrade an order bound to actual-degree ULC.
+
+Write $\HH=\{z\in\mathbb C:\operatorname{Im}z>0\}$. A real polynomial is \emph{real stable} if it is nonzero whenever every variable lies in $\HH$.
+
+We use the classical Lorentzian theory of Br\"and\'en and Huh \cite{BH}. In particular, matroid basis polynomials are Lorentzian; products, nonnegative linear substitutions and multiaffine-part extraction preserve this class. For a nonzero binary homogeneous polynomial $\sum_{k=0}^r a_k s^{r-k}t^k$, Lorentzianity is equivalent to the log-concavity of $a_k/\binom rk$, with interval support \cite[Example 2.26]{BH}. This paragraph invokes that theory, rather than reproving it.
+
+\subsection{A polynomial for bipartite physical graphs}
+\begin{theorem}\label{pgr:r:ps:thm:bipartite}
+Suppose $V=C\sqcup I$ is a bipartition of the underlying undirected graph of $D$. Every arc crosses the partition, but may have either orientation and may coexist with its reverse. Then
+\begin{equation}\label{pgr:r:ps:eq:physicalF}
+ F_C(\mathbf z,\mathbf x)=
+ \sum_{(S,T)\text{ feasible}}\wt(S,T)
+ \prod_{c\in C\setminus(S\cup T)}z_c
+ \prod_{i\in I\cap(S\cup T)}x_i
+\end{equation}
+is a nonzero multiaffine Lorentzian polynomial, homogeneous of degree $|C|$.
+\end{theorem}
+
+\begin{lemma}[Core merge]\label{pgr:r:ps:lem:merge}
+On polynomials affine in $a,b$, the coefficientwise operation
+\begin{equation}\label{pgr:r:ps:eq:merge}
+ ab\longmapsto z,\qquad a\longmapsto1,\qquad b\longmapsto1,
+ \qquad1\longmapsto0
+\end{equation}
+preserves Lorentzianity, allowing zero output. It lowers homogeneous degree by one. It also preserves real stability, allowing zero output.
+\end{lemma}
+\begin{proof}
+The Lorentzian assertion is precisely \cite[Lemma 3.3]{BH}, after renaming its surviving variable. Alternatively, the operator is homogeneous of degree $-1$, preserves coefficient nonnegativity, and has algebraic symbol
+\[
+ T[(a+r)(b+s)]=z+r+s.
+\]
+This symbol is homogeneous and real stable, hence Lorentzian; the full symbol includes only additional factors $(w_j+y_j)^{\kappa_j}$ for untouched variables. The finite-degree symbol theorem \cite[Theorem 3.2]{BH} applies.
+
+For an elementary stability proof, write $f=Aab+Ba+Cb+D$. Then the image $Az+B+C$ equals
+\[
+ \left.\frac{\partial}{\partial t}f(t,t)\right|_{t=z/2}.
+\]
+Diagonalization, differentiation and positive rescaling preserve real stability or give zero; see \cite{BB,WagnerSurvey}. Every surviving monomial in \eqref{pgr:r:ps:eq:merge} loses exactly one degree.
+\end{proof}
+
+
+\mnote{this is the copy merge of source~20, \eqref{pgr:r:rc:eq:merge},
+with source~16's elementary realization (Section~\ref{pgr:r:rc:sec}).
+The same operation glues two undirected graphs at a vertex in \prp,
+Lemma \texttt{ade:mat:lem:vertex-sum} (support-exact vertex sum).}
+
+\begin{proof}[Proof of Theorem~\ref{pgr:r:ps:thm:bipartite}]
+For the outgoing side, form a transversal matroid $M_+$ with matching positions indexed by $C$, and ground set consisting of an exterior head copy for each $i\in I$ and a private dummy $a_c$ for each $c\in C$. The exterior copy of $i$ is adjacent to $c$ exactly when $c\to i$ is an arc; $a_c$ is adjacent only to $c$. The dummies form a basis, so the rank is exactly $|C|$.
+
+A set consisting of exterior copies $R\subseteq I$ and dummies $C\setminus U$, for $U\subseteq C$, is a basis precisely when $|U|=|R|$ and $U$ can be matched to $R$. Its basis monomial records the endpoint sets once, not their matching witnesses. Similarly form $M_-$ from arcs $i\to c$, using exterior tail copies and private dummies $b_c$. Its bases encode $(L,W)$ with $L\subseteq I$, $W\subseteq C$, and a matching $L\to W$.
+
+The squarefree basis polynomials $B_+,B_-$ are Lorentzian \cite[Theorem 3.10]{BH}. First assume positive activities. In $B_+$ substitute $a_c/u_c$ for $a_c$ and $v_ix_i$ for the exterior variable, and multiply by $\prod_{c\in C}u_c$. A basis $(U,R)$ now has coefficient $u^Uv^R$. In $B_-$ substitute $b_c/v_c$ and $u_iy_i$, and multiply by $\prod_{c\in C}v_c$. Its coefficient for $(L,W)$ is $u^Lv^W$.
+
+Multiply the two polynomials, identify $x_i=y_i$, and take the multiaffine part. Squared exterior variables correspond exactly to vertices selected in both exterior roles, so this discards precisely $R\cap L\ne\varnothing$. All other variables were already multiaffine. The result remains Lorentzian by \cite[Theorem 2.10, Corollaries 2.32 and 3.5]{BH}, and has degree $2|C|$.
+
+For each $c\in C$, merge $a_c,b_c$ by Lemma~\ref{pgr:r:ps:lem:merge}. If both dummies occur, $c$ is unused in both roles and becomes one physical monomer $z_c$. If exactly one dummy occurs, $c$ is used in exactly one role and the dummy disappears. Neither dummy occurs exactly when $c$ is used in both roles, and that term is discarded. The degree falls by one at each of the $|C|$ merges.
+
+A surviving pair of bases determines
+\[
+ S=U\cup L,\qquad T=R\cup W,
+ \quad U\cap W=\varnothing,\quad R\cap L=\varnothing.
+\]
+Conversely, intersecting a feasible ordered support with $C$ and $I$ determines these four sets uniquely. Every witnessing matching splits into the two orientations across the bipartition, which establish the two basis conditions. This is a bijection of supports and surviving pairs of bases. Distinct role assignments may have the same physical-variable monomial, but their weights should add, because they are distinct ordered supports.
+
+A support of size $k$ uses exactly $k$ vertices in each shore. It therefore contributes $x$-degree $k$ and $z$-degree $|C|-k$, as required in \eqref{pgr:r:ps:eq:physicalF}. The all-dummy term survives as $\prod_{c\in C}z_c$, with coefficient one. Finally, nonnegative activities follow by limits in the closed Lorentzian cone; the same coefficient-one term prevents zero output.
+\end{proof}
+
+
+\mnote{with every arc oriented from $C$ to $I$ this is the two-shore
+setting of \prp, Theorem \texttt{lor:thm:weightedULC}, normalized by the
+shore order. Corollary~\ref{pgr:r:ps:cor:shore} is an order-$|C|$
+statement; it gives rank-ULC only under the saturation hypothesis stated
+there.}
+
+\begin{corollary}\label{pgr:r:ps:cor:shore}
+The coefficients of $\Ga_D$ satisfy order-$|C|$ ULC, and likewise order-$|I|$ ULC. If the positive-weight relation admits a matching saturating either shore, they satisfy actual-degree rank-ULC.
+\end{corollary}
+\begin{proof}
+Set every $z_c=s$ and every $x_i=t$ in \eqref{pgr:r:ps:eq:physicalF}. The result is
+$\sum_k\gamma_ks^{|C|-k}t^k$, which remains Lorentzian. Apply the binary characterization, and interchange the shores for the second statement.
+\end{proof}
+
+For a disconnected graph, each component's bipartition may be reversed independently. Placing the smaller shore of each nontrivial component in $C$, and isolated vertices in $I$, gives the order
+\begin{equation}\label{pgr:r:ps:eq:componentorder}
+ r=\sum_{K\text{ nontrivial component}}\min\{|C_K|,|I_K|\}.
+\end{equation}
+The theorem gives actual-degree ULC if every chosen smaller shore is saturated in $D_+$. The same observation can be applied after zero-weight arcs are removed.
+
+\begin{corollary}[Overlapping independent role covers]\label{pgr:r:ps:cor:overlap}
+Suppose every arc $i\to j$ satisfies $i\in P$ or $j\in Q$, where $P,Q\subseteq V$ may overlap. If the physical core $C=P\cup Q$ is independent in the underlying graph, then $\Ga_D$ satisfies order-$|P\cup Q|$ ULC. A positive-weight matching saturating $C$ makes this actual-degree rank-ULC.
+\end{corollary}
+\begin{proof}
+There are no exterior-to-exterior arcs by the role-cover condition and no core-to-core arcs by independence. Thus $C$ and $V\setminus C$ are a physical bipartition. Apply Corollary~\ref{pgr:r:ps:cor:shore}.
+\end{proof}
+For a cover of two tail roles and three head roles, this improves the cover order from five to four or three when the selected physical sets intersect in one or two vertices. It does not allow internal physical core arcs.
+
+\subsection{Pendant heads attached to a stable transversal seed}
+\begin{theorem}\label{pgr:r:ps:thm:pendant}
+Fix $Q\subseteq V$, and suppose every vertex $j\notin Q$ has at most one incoming neighbor in $D$. Form the transversal matroid $M_Q$ with positions $Q$, all tail copies $i^+$ as ground elements adjacent to $N_D^+(i)\cap Q$, and a private dummy $d_q$ adjacent only to each $q\in Q$. If its ordinary basis polynomial $B_{M_Q}$ is real stable, then the signed physical monomer polynomial
+\begin{equation}\label{pgr:r:ps:eq:monomer}
+ \mu_D(\mathbf z)=\sum_{(S,T)\text{ feasible}}
+ (-1)^{|S|}\wt(S,T)\prod_{i\notin S\cup T}z_i
+\end{equation}
+is real stable for every choice of nonnegative independent activities. Consequently $\Ga_D$ has only negative real zeros and is rank-ULC at its actual surviving degree.
+\end{theorem}
+
+\mnote{source~22's one-tail side criterion
+(Theorem~\pgrfwd{pgr:r:ir:thm:oneside}{``oneside'' of source~22}) is the
+case of this theorem with a single tail hub $p$: there every head outside
+$Q$ has at most the one in-neighbour $p$, and the matroid is the same.
+Source~22's proof (seed identity, pendant insertion, physical merge) is
+the proof below and is replaced there by a pointer. The seed construction
+is also used by batch-73 manuscript~08, printed in \mrn.}
+
+There is no bound on $|Q|$, on the number of distinct tail hubs, or on physical overlap. If a role cover $P^+\cup Q^-$ is specified, the condition says that every uncovered head has degree at most one; the unique parents may be different elements of $P$. Internal physical core arcs are permitted.
+
+\begin{proof}
+Split every physical vertex into tail and head copies. First retain all tail copies and only the head copies in $Q$, with the specified arcs into $Q$. Write $a_i$ for tail-copy monomers and $b_q$ for these head-copy monomers. For positive activities, the split seed has signed monomer polynomial
+\begin{equation}\label{pgr:r:ps:eq:seed}
+ \mu_0(\mathbf a,\mathbf b)=
+ \left(\prod_{i\in V}a_i\right)\left(\prod_{q\in Q}v_q\right)
+ B_{M_Q}\left(x_i=-\frac{u_i}{a_i},\ d_q=\frac{b_q}{v_q}\right).
+\end{equation}
+A basis consists of selected tails $S$ and dummies for the unused heads $Q\setminus T$; its basis condition says that the selected tail copies $S$ can be matched to the head copies $T$ in the split role graph. No physical disjointness is imposed yet. Its transformed monomial is
+\[
+ (-1)^{|S|}u^Sv^T\prod_{i\notin S}a_i\prod_{q\in Q\setminus T}b_q.
+\]
+Thus \eqref{pgr:r:ps:eq:seed} counts supports once. All denominators cancel by multiaffinity. For upper-half-plane monomer arguments, both $-u_i/a_i$ and $b_q/v_q$ lie in the upper half-plane. Stability of the basis polynomial therefore gives stability of $\mu_0$.
+
+Now insert each missing head copy $j^-$, $j\notin Q$. An isolated head contributes the factor $b_j$. Otherwise let $i^+$ be its unique parent and put $w=u_iv_j$. The exact support recurrence is
+\begin{equation}\label{pgr:r:ps:eq:pendantrec}
+ \mu_{\rm new}=b_j\mu_{\rm old}-w\partial_{a_i}\mu_{\rm old}
+ =b_j\mu_{\rm old}\left(a_i-\frac{w}{b_j}\right),
+\end{equation}
+with other arguments unchanged. Indeed, a support using the new head must contain the forced edge $i^+\to j^-$; removing its endpoints leaves exactly a support in which $i^+$ is unused. This proves the recurrence without matching multiplicity. Its second equality uses affinity in $a_i$.
+
+For $b_j\in\HH$ and $w\ge0$, the number $-w/b_j$ has nonnegative imaginary part, so the shifted $a_i$ stays strictly upper. Equation~\eqref{pgr:r:ps:eq:pendantrec} proves stability after each insertion, at any sequence of tail hubs. Multiaffinity prevents a previously used hub from being used again.
+
+Once all head copies are present, merge each physical pair by \eqref{pgr:r:ps:eq:merge}. Exactly the supports with disjoint physical endpoint sets survive, giving \eqref{pgr:r:ps:eq:monomer}. The coefficient-one all-unused monomial survives every stage. Nonnegative activities follow by limits and this monomial excludes an identically zero limit.
+
+With $n=|V|$, diagonal specialization yields
+\begin{equation}\label{pgr:r:ps:eq:roottransfer}
+ \mu_D(s,\ldots,s)=s^n\Ga_D(-s^{-2}).
+\end{equation}
+The left side has only real zeros. A zero $\rho$ of $\Ga_D$ that is not negative real would give a nonreal solution of $s^2=-1/\rho$, contradicting \eqref{pgr:r:ps:eq:roottransfer}. Since $\Ga_D(0)=1$, all zeros are strictly negative. Newton's inequalities apply at the actual remaining degree, including after weights vanish.
+\end{proof}
+
+\subsection{An explicit stable seed in arbitrary rank}
+\begin{corollary}\label{pgr:r:ps:cor:elementary}
+Under the pendant-head assumption of Theorem~\ref{pgr:r:ps:thm:pendant}, suppose every nonempty set $N_D^+(i)\cap Q$ is a singleton or all of $Q$. Then its conclusions hold, without any additional matroid hypothesis.
+\end{corollary}
+\begin{proof}
+Write $r=|Q|\ge2$. For $q\in Q$, let
+\[
+ R_q=d_q+\sum_{\{i:\,N_D^+(i)\cap Q=\{q\}\}}x_i,
+\]
+and let $g_1,\ldots,g_m$ be the separate variables for tails whose neighborhood is all of $Q$. Empty-neighborhood elements are loops. The basis polynomial is
+\begin{equation}\label{pgr:r:ps:eq:elementary}
+ B_{M_Q}=e_r\bigl((R_q)_{q\in Q},g_1,\ldots,g_m\bigr).
+\end{equation}
+To see this, singleton elements with the same neighbor, together with their private dummy, form one parallel class. An $r$-element set can be matched precisely when it uses at most one element from each such class. Its remaining universal elements can then be assigned to the unused positions. This is exactly \eqref{pgr:r:ps:eq:elementary}; distinct universal elements must not be merged into a single parallel class.
+
+The elementary symmetric polynomial is stable: differentiate the stable product $\prod_j(s+y_j)$ sufficiently many times in $s$, then specialize $s=0$. Replacing variables by nonnegative class sums preserves stability. For $r=1$ the basis polynomial is linear, with no separate universal class; for $r=0$ the seed is edgeless and the pendant construction starts from the product of tail monomers.
+\end{proof}
+If a physical tail belongs to $Q$, a universal neighborhood would include a loop and is therefore disallowed by the original loopless hypothesis. There is no conflict with the corollary: the condition is checked on the actual relation.
+
+\paragraph{An overlapping non-bipartite example.}
+Let $V=\{0,\ldots,8\}$, $P=\{0,1\}$, and $Q=\{1,2,3\}$. Include only
+\[
+ 0\to1,2,3,7;\qquad 1\to0,2,8;\qquad
+ i\to1,2,3\quad(i=4,5,6).
+\]
+The physical graph contains the triangle $0,1,2$, so Theorem~\ref{pgr:r:ps:thm:bipartite} does not apply. The selected role cover overlaps at vertex $1$. Every uncovered head has at most one parent, and every $Q$-neighborhood is empty, singleton or universal. Corollary~\ref{pgr:r:ps:cor:elementary} therefore gives real-rootedness for all independent nonnegative activities. At unit activities,
+\begin{equation}\label{pgr:r:ps:eq:example}
+ \Ga_D(t)=1+16t+47t^2+31t^3+4t^4.
+\end{equation}
+There are $99$ feasible supports, but $163$ directed matching witnesses. The independent checkers recover \eqref{pgr:r:ps:eq:example} by deduplicating endpoint sets.
+
+\subsection{Reproducibility and the remaining question}
+The proofs above are unbounded ordinary mathematical arguments. The package includes two independently written audit programs, their exact-check receipts, and the producer's separate checkers. They corroborate support identities, boundary cases and examples; finite tests are not the premise of either theorem.
+
+For the bipartite construction, the independent audit checks $5\,120$ graph--weight instances, including all $4\,096$ directed subrelations of $K_{2,3}$. It compares direct physical support enumeration with Hall-based transversal constructions, tests symmetric basis exchange, and performs $13\,152$ exact rational Hessian-inertia checks. The separate producer check covers $12\,800$ graph--weight--shore tests, including $4\,345$ zero-activity cases.
+
+For the pendant criterion, the independent audit checks $1\,884$ weighted cases, including all $1\,024$ eligible loopless four-vertex relations with $|Q|=2$, and random seed ranks up to five. These include $1\,734$ zero-activity cases and $880$ activity-induced degree drops. It checks exact operator/support identities, the elementary-symmetric Hall identity, negative real roots at the surviving degree, and $70\,752$ exact Rayleigh evaluations. The producer separately checks $480$ random weighted cases and \eqref{pgr:r:ps:eq:example} by rational Sturm sequences. Rayleigh evaluations at finitely many points are supplementary checks, not stability certificates.
+
+The two structural conclusions have different normalization guarantees. The bipartite theorem gives the shore order, or \eqref{pgr:r:ps:eq:componentorder}; saturation is required to identify that order with the actual degree. The stable-seed theorem instead gives real-rootedness and hence actual-degree ULC directly, even on degree-dropping zero-weight faces.
+
+\paragraph{Open question.}
+Does every finite directed relation whose bipartite role graph has a vertex cover comprising at most two tail copies and three head copies have a rank-ULC support polynomial for all nonnegative independent activities, with physical overlap allowed? The present results cover independent physical cores with suitable saturation, and stable transversal seeds with pendant uncovered heads. They do not resolve the general internal-core case or all deficient-rank cases. Real-rootedness is a stronger property and is not asserted for the entire class.
+
+\mnote{the case of two tail and two head roles is settled in the
+strongest sense by source~20 (Theorem~\ref{pgr:r:rc:thm:rolecover}), which
+source~15 does not cite; the case $P\subseteq Q$ of the question by
+source~11 (Corollary~\ref{pgr:r:pc:cor:rolecover}). The question as stated,
+with $|Q|=3$, internal core arcs and a physical union of four or five
+vertices, remains open.}
+
+
+For comparison, the bimatroid ULC theorem of R\"ohrle and Ulirsch \cite[Theorem A]{RU} is normalized by the smaller ground-side size, not by the actual bimatroid rank. Likewise, the current revision of Alexandersson and Jal \cite[Corollary 4.1]{AJ} uses the number of board rows. Neither is used here as an unproved actual-degree shortcut. All stability assumptions in Theorem~\ref{pgr:r:ps:thm:pendant} are explicit; arbitrary transversal matroids are not assumed to have the half-plane property.
+
+
+\section{Independent role activities through actual degree three (source 22)}\label{pgr:r:ir:sec}
+
+Source~22 is \emph{Independently weighted preorder support polynomials of
+actual degree at most three} (21 pages as delivered; archive
+\texttt{independent-role-degree-three-package}). Its files are shipped with
+the prefix \texttt{22-independent-role-}; its nested audit package is
+shipped as the delivered zip, the only carrier of its role certificates.
+Archive~31, \emph{Vertex-weighted preorder support polynomials of actual
+degree at most three}, is an earlier version of this manuscript, with one
+activity per vertex; its theorem is Corollary~\ref{pgr:r:ir:cor:vertex}
+below, and it is not printed separately.
+
+\paragraph{Abstract of source 22, as delivered.}
+
+For a finite preorder, we count ordered disjoint tail and head supports admitting a directed matching, counting each support once. Assign arbitrary nonnegative activities independently to the tail and head role of every vertex. We prove ultra-log-concavity with binomial normalization at the actual surviving degree whenever that degree is at most three, with no bound on the number of vertices. The proof combines the Gallai--Edmonds decomposition with ordinary structural inequalities and a complete exact verification through seven vertices. Its main ingredients are Motzkin--Straus, an all-rank articulation theorem, rank-three matroid Rayleigh inequalities, two-attachment compression and moment cones, and rational nonnegative identities. A half-plane-property side-matroid criterion resolves the final finite cases. One ten-element side matroid is certified by twenty half-plane-property minors and an exact rank-32 rational Gram identity for a Rayleigh difference, using Wagner--Wei's criterion. Published certified matroid data are explicit dependencies. Portable exact checkers and all local verification inputs are included. General real-rootedness fails already in degree three, as an explicit example shows. This is a computer-assisted proof, not a proof-assistant formalization or a literature-wide priority claim.
+
+\subsection{Definitions and the main theorem}\label{pgr:r:ir:sec:main}
+Let $R$ be a preorder on a finite set $V$: it is reflexive and transitive, but need not be antisymmetric. Its directed arcs are the \emph{off-diagonal} pairs $i\to j$ with $i\ne j$ and $iRj$. Reflexive loops never participate in a matching.
+
+\begin{definition}
+A feasible support of size $k$ is an ordered pair $(S,T)$ of subsets of $V$ such that $S\cap T=\varnothing$, $|S|=|T|=k$, and some bijection $\pi:S\to T$ satisfies $i\to\pi(i)$ for every $i\in S$. For independent nonnegative tail and head activities $\mathbf u=(u_i)_{i\in V}$ and $\mathbf v=(v_i)_{i\in V}$, put
+\begin{equation}\label{pgr:r:ir:eq:roledef}
+ \gamma_k=\sum_{(S,T)\text{ feasible},\ |S|=k}u^Sv^T,
+ \qquad \Ga_R(z;\mathbf u,\mathbf v)=\sum_{k\ge0}\gamma_k z^k,
+\end{equation}
+where $u^Sv^T=\prod_{i\in S}u_i\prod_{j\in T}v_j$. The empty support contributes $\gamma_0=1$.
+\end{definition}
+A support is counted once, irrespective of the number of witnessing bijections. However, \emph{different ordered pairs with the same physical union are different summands}. Thus the object is neither an unordered endpoint-set enumerator nor a matching-witness enumerator. Physical disjointness $S\cap T=\varnothing$ is essential.
+
+The single-vertex-activity model is the specialization $u_i=v_i=x_i$. It weights a support by $\prod_{i\in S\cup T}x_i$. The theorem below includes this specialization but does not require it.
+
+\begin{definition}
+For a nonnegative sequence $(g_0,\ldots,g_d)$ with $g_0,g_d>0$ and no internal zeros, \emph{rank-ultra-log-concavity}, abbreviated rank-ULC, means
+\begin{equation}\label{pgr:r:ir:eq:ulc}
+ \left(\frac{g_k}{\binom dk}\right)^2\ge
+ \frac{g_{k-1}}{\binom d{k-1}}\frac{g_{k+1}}{\binom d{k+1}}
+ \qquad(1\le k<d).
+\end{equation}
+Here $d$ is the actual polynomial degree, not a degree obtained by adding zero coefficients.
+\end{definition}
+
+\begin{theorem}[Independent-role degree-three theorem]\label{pgr:r:ir:thm:main}
+For every finite preorder $R$ and every assignment $u_i,v_i\ge0$, if the actual surviving degree $d=\deg\Ga_R(z;\mathbf u,\mathbf v)$ is at most three, then $\Ga_R(z;\mathbf u,\mathbf v)$ is rank-ULC. In particular,
+\begin{alignat}{2}
+ d=2:&\qquad \gamma_1^2\ge4\gamma_2,\label{pgr:r:ir:eq:d2}\\
+ d=3:&\qquad \gamma_1^2\ge3\gamma_2,
+ &\qquad \gamma_2^2\ge3\gamma_1\gamma_3.\label{pgr:r:ir:eq:d3}
+\end{alignat}
+The conditions in degrees zero and one are vacuous.
+\end{theorem}
+
+\subsubsection{What the theorem does and does not say}
+The number of vertices is unrestricted. In particular, this is not merely an enumeration of preorders on seven vertices. The reduction to bounded cores, with arbitrary exterior populations and heterogeneous activities, is part of the proof.
+
+Several structural ingredients below hold even for directed relations that are not transitive. Their scopes are stated separately. The global theorem uses transitivity in its bounded-core reduction. It does not imply real-rootedness; see Section~\ref{pgr:r:ir:sec:nonreal}. In particular, stability of the auxiliary matroids used for certain finite targets is a sufficient local tool, not an assertion about every preorder support polynomial.
+
+The accompanying package separates ordinary proofs, finite polynomial identities, exhaustive finite-domain coverage, and audit receipts. An audit receipt identifies exactly what was checked; it is not a substitute for the mathematical reduction. Numerical optimization was used in discovery, but no numerical solver is needed to verify any certificate.
+
+\subsection{Degree, zero activities, and the universal first gap}\label{pgr:r:ir:sec:first}
+Let $G_R$ be the simple undirected graph whose edge $ij$ is present when at least one of $i\to j$ and $j\to i$ is present. Write $\nu(G_R)$ for its matching number.
+
+\begin{lemma}\label{pgr:r:ir:lem:degree}
+If all relevant activities are positive, then $\deg\Ga_R=\nu(G_R)$ and the coefficients up to the actual degree are positive. With nonnegative independent role activities, there is a preorder with positive activities and the same support polynomial, whose physical matching number equals the original surviving degree.
+\end{lemma}
+\begin{proof}
+A witnessing bijection gives an undirected matching. Conversely, orient each edge of an undirected matching along a direction available in $R$. Its disjoint tail and head sets form a feasible support with positive weight. Submatchings give positivity at every lower degree.
+
+For the second statement let $U=\{i:u_i>0\}$ and $W=\{j:v_j>0\}$. Retain exactly the original off-diagonal arcs $i\to j$ with $i\in U$, $j\in W$, and then add all reflexive loops. This relation is transitive. Indeed, a surviving nontrivial path $i\to j\to k$ has $i\in U$, $k\in W$ and the original transitive relation $iRk$; its shortcut survives when $i\ne k$, and otherwise the required loop was added. Steps containing loops are harmless.
+
+A positive-weight original support uses only retained arcs. Conversely every support of the retained relation uses only previously positive role activities. Set a previously zero activity to $1$ in its now-unused role. No new support is created, so the polynomial is unchanged and all activities are positive. The first statement now identifies its matching number with the original surviving degree.
+\end{proof}
+This filtering argument is stronger than vertex deletion: a vertex may still be usable in one role when its other role has zero activity. It proves the actual-degree scope even if the original, unfiltered comparability graph has matching number larger than three. In the vertex specialization ordinary deletion of zero-activity vertices is enough.
+
+\mnote{the first statement of this lemma is Lemma~\ref{pgr:lem:degree}
+(\prp, Theorem \texttt{gam:thm:deficiency}, for preorders). The second,
+the transitivity-preserving filter for zero role activities, is source~22's
+own; source~22's earlier version (archive~31) mentioned it only as a
+remark.}
+
+
+\mnote{source~22's Proposition ``Universal first inequality'' (for any
+finite loopless directed relation with positive independent role
+activities and actual degree $d\ge2$, $\gamma_1^2\ge\frac{2d}{d-1}\gamma_2$,
+and the same at the surviving degree for nonnegative activities) is
+Theorem~\ref{pgr:thm:first}; its proof by Motzkin--Straus on the graph of
+arcs with four distinct endpoints is the proof printed there.}
+
+For degree two the quadratic $1+\gamma_1 z+\gamma_2z^2$ thus has negative real roots. Degree-one polynomials do as well. This observation will handle disconnected graphs without needing a general convolution theorem for ULC sequences.
+
+\begin{lemma}[Products over components]\label{pgr:r:ir:lem:products}
+If $R$ has underlying connected components $R_1,\ldots,R_m$, then $\Ga_R=\prod_i\Ga_{R_i}$. At total degree at most three, rank-ULC follows if the unique degree-three component, when present, is rank-ULC; otherwise the product is real-rooted.
+\end{lemma}
+\begin{proof}
+Every feasible support splits uniquely among components, and witnesses can be combined. If a component has degree three, all others have degree zero. Otherwise every component has degree at most two and is real-rooted by Proposition~\ref{pgr:thm:first}. Newton's inequalities apply to their product at its actual degree.
+\end{proof}
+
+\subsection{An ordinary all-rank articulation argument}\label{pgr:r:ir:sec:articulation}
+This structural result does not require transitivity and is useful beyond the main theorem.
+\begin{theorem}\label{pgr:r:ir:thm:articulation}
+Let $D$ be a loopless directed relation and $h$ a vertex such that every component of the underlying graph of $D-h$ has matching number at most one. For arbitrary nonnegative independent role activities, $\Ga_D$ has only negative real zeros. In particular it is rank-ULC at its actual degree.
+\end{theorem}
+\begin{proof}
+Let the components after deleting $h$ be $C_1,\ldots,C_m$. Write
+\[
+ Q_i(z)=\Ga_{C_i}(z)=1+a_i z,
+ \qquad
+ P_i(z)=\Ga_{C_i\cup\{h\}}(z)-Q_i(z)=c_i z+d_i z^2.
+\]
+All coefficients are nonnegative, and
+\begin{equation}\label{pgr:r:ir:eq:artbound}
+ d_i\le a_i c_i.
+\end{equation}
+Indeed, a size-two support counted by $d_i$ has a witness consisting of an arc incident to $h$ and a disjoint arc inside $C_i$. The product $a_i c_i$ contains that support's weight at least once. Extra witnesses and intersecting arc pairs only add nonnegative terms. This is a coefficientwise inequality in the role activities.
+
+At support level, the exact identity is
+\begin{equation}\label{pgr:r:ir:eq:artdecomp}
+ \Ga_D=\prod_i Q_i+\sum_i P_i\prod_{j\ne i}Q_j.
+\end{equation}
+A support omitting $h$ contributes to the product. If it uses $h$, precisely one component contains an odd number of its selected endpoints: the component paired with $h$. Every other component has an even number. Thus that component is determined by the support itself, independent of any choice of witness; there is no duplicate counting in the sum.
+
+For $a_i>0$,
+\begin{equation}\label{pgr:r:ir:eq:pickart}
+ \frac{P_i(z)}{Q_i(z)}=\frac{d_i}{a_i}z+\left(c_i-\frac{d_i}{a_i}\right)\frac{z}{1+a_i z}.
+\end{equation}
+Both coefficients are nonnegative by \eqref{pgr:r:ir:eq:artbound}. If $a_i=0$, then $d_i=0$ and the quotient is $c_i z$. For $z\in\HH=\{z:\operatorname{Im}z>0\}$,
+\[
+ \operatorname{Im}\frac{z}{1+a z}=\frac{\operatorname{Im}z}{|1+a z|^2}>0\qquad(a\ge0).
+\]
+Hence $1+\sum_iP_i/Q_i$ is either the constant $1$ or has positive imaginary part on $\HH$. It has no zero there, and neither does any $Q_i$. Equation~\eqref{pgr:r:ir:eq:artdecomp} excludes upper-half-plane zeros of $\Ga_D$; conjugation excludes lower-half-plane zeros. Its nonnegative coefficients and constant term $1$ exclude nonnegative real roots. The argument includes zero activities directly.
+\end{proof}
+The odd-endpoint argument in \eqref{pgr:r:ir:eq:artdecomp} is important: simply adding local matching polynomials would generally count witnesses instead of supports.
+
+\subsection{Three active tails: a rank-three Rayleigh proof}\label{pgr:r:ir:sec:rayleigh}
+\begin{theorem}\label{pgr:r:ir:thm:three}
+Let a loopless directed relation have a three-vertex set $C=\{0,1,2\}$ and an independent exterior $X$. Allow arbitrary internal arcs in $C$ and arbitrary arcs from $C$ to $X$, but no arcs from $X$ to $C$. Then its support polynomial is rank-ULC for arbitrary nonnegative independent role activities. The order-dual assertion also holds.
+\end{theorem}
+Only the second cubic inequality needs proof, by Proposition~\ref{pgr:thm:first}. Transitivity is not assumed in this theorem.
+
+\mnote{this theorem is a special case of source~11's
+Theorem~\ref{pgr:r:pc:thm:main}: the three core vertices form a physical
+vertex cover, since there are no exterior-to-exterior arcs. Source~11's
+proof rests on source~12's computer-assisted boundary inequality; the proof
+below is a second route for this special case, ordinary apart from
+Wagner's rank-three Rayleigh theorem. Its inequality $B_{ij}B_{ik}\ge
+A_iC_0$ is the scalar one-orientation case of source~12's
+Theorem~\ref{pgr:r:tc:thm:boundary}.}
+
+
+\subsubsection{Exterior head sets and private dummies}
+Let $N_i\subseteq X$ be the exterior heads available to tail $i$. Define
+\begin{align*}
+ A_i&=\sum_{x\in N_i}v_x,\\
+ B_{ij}&=\sum_{\substack{\{x,y\}\subseteq X\text{ matchable from }\{i,j\}}}v_xv_y,\\
+ C_0&=\sum_{\substack{\{x,y,z\}\subseteq X\text{ matchable from }\{0,1,2\}}}v_xv_yv_z.
+\end{align*}
+Each head set is counted once. For distinct $i,j,k$ we use
+\begin{equation}\label{pgr:r:ir:eq:exteriorineq}
+ B_{ij}B_{ik}\ge A_i C_0,
+ \qquad A_k B_{ij}\ge C_0.
+\end{equation}
+For the first inequality, adjoin private dummy heads $d_i$, each adjacent only to tail $i$. The resulting transversal matroid on heads and dummies has rank exactly three. Its basis polynomial, after substituting the exterior activities, is
+\begin{equation}\label{pgr:r:ir:eq:dummy}
+ M(\mathbf d)=d_0d_1d_2+\sum_i A_i d_jd_k+\sum_{i<j}B_{ij}d_k+C_0.
+\end{equation}
+Wagner's theorem states that every rank-three matroid is Rayleigh \cite[Theorem 1.1]{WagnerR3}. Thus
+$\partial_jM\,\partial_kM-M\partial_{jk}M\ge0$ on the nonnegative orthant. Setting the three dummy variables to zero, by continuity, gives $B_{ij}B_{ik}\ge A_i C_0$.
+
+The second inequality is coefficientwise. For each feasible three-head set choose a witness and its head paired with $k$. The remaining pair is feasible for $\{i,j\}$ and gives the same monomial in $A_k B_{ij}$. Different three-head sets give different squarefree monomials; repeated-head monomials or extra witnesses cause no difficulty.
+
+\subsubsection{Restoring every internal arc}
+Let $\epsilon_{ij}=1$ when $i\to j$ is an internal arc, and $0$ otherwise. For distinct $i,j,k$, let
+\[
+ H_j=\sum_{x\in (N_k\text{ if }\epsilon_{ij}=1)\,\cup\,(N_i\text{ if }\epsilon_{kj}=1)}v_x.
+\]
+An absent set in this notation means the empty set. This union, rather than a sum with possible duplication, counts exterior heads which can be used alongside core head $j$. Set
+\[
+ a_i=A_i+\epsilon_{ij}v_j+\epsilon_{ik}v_k,
+ \qquad b_{ij}=B_{ij}+v_kH_k.
+\]
+Every tail lies in $C$, so direct support counting gives
+\begin{equation}\label{pgr:r:ir:eq:threecoeff}
+ \gamma_1=\sum_i u_i a_i,
+ \qquad \gamma_2=\sum_{i<j}u_i u_j b_{ij},
+ \qquad \gamma_3=u_0u_1u_2C_0.
+\end{equation}
+In particular a size-three support uses every core vertex as a tail and every head in the exterior.
+
+The Rayleigh-type inequalities survive the restoration:
+\begin{align}\label{pgr:r:ir:eq:restore}
+ b_{ij}b_{ik}-a_iC_0={}&(B_{ij}B_{ik}-A_iC_0)\notag\\
+ &+v_j(B_{ij}H_j-\epsilon_{ij}C_0)
+ +v_k(B_{ik}H_k-\epsilon_{ik}C_0)+v_jv_kH_jH_k\ge0.
+\end{align}
+If $\epsilon_{ij}=0$ its bracket is nonnegative. If it is $1$, then $H_j\ge A_k$, and the second inequality of \eqref{pgr:r:ir:eq:exteriorineq} proves the same conclusion. The other bracket is symmetric; all remaining terms are nonnegative.
+
+Put $U=u_0u_1u_2$ and $x_{ij}=u_i u_jb_{ij}$. Expansion yields the exact identity
+\[
+ \gamma_2^2-3\gamma_1\gamma_3
+ =\frac12\bigl[(x_{01}-x_{02})^2+(x_{01}-x_{12})^2+(x_{02}-x_{12})^2\bigr]
+ +3U\sum_i u_i(b_{ij}b_{ik}-a_iC_0).
+\]
+\mnote{this is the three-squares identity \eqref{pgr:r:tc:eq:three-squares}
+of source~12 with $b_{ij}$, $a_i$, $c$ replaced by $x_{ij}$, $u_ia_i$,
+$UC_0$; source~22's label for it is redirected there.}
+Equations~\eqref{pgr:r:ir:eq:restore}--\eqref{pgr:r:tc:eq:three-squares} prove Theorem~\ref{pgr:r:ir:thm:three}. If the degree drops below three, the stronger surviving-degree inequality is supplied by Proposition~\ref{pgr:thm:first}, not by padding the cubic formula.
+
+\subsection{Role covers and a structural corollary}\label{pgr:r:ir:sec:rolecover}
+The \emph{bipartite role graph} has a tail copy and a head copy of every physical vertex, with an edge $i_{\rm tail}j_{\rm head}$ for every arc $i\to j$. Its matching number can exceed the physical matching number: a role matching can use the two copies of a physical vertex simultaneously.
+
+We use the following independently verified companion theorem, whose full ordinary proof and portable algebraic checker are included as a separate dependency (source~20's package; \mnote{source~22 restates here, as its Theorem ``Two-tail/two-head cover'', source~20's Theorem~\ref{pgr:r:rc:thm:rolecover} (Section~\ref{pgr:r:rc:sec}); the statement is not repeated, and source~22's references to it point there. Its embedded copy of source~20's package is not shipped.}).
+Here real stability means nonvanishing whenever all variables lie in $\HH$. The companion proof first splits roles, treats every subset of the four possible core arcs, and then merges the copies of each physical vertex. In monomer variables the local merge sends $ab\mapsto z$, $a,b\mapsto1$, $1\mapsto0$. Its stable symbol is $z+r+s$. Thus simultaneous use of both copies is removed rather than silently allowed. Positive activities enter by scaling before merging. Zero activities follow by continuity; the empty-support monomial prevents a zero-polynomial limit. No assertion that an arbitrary transversal matroid is stable is used.
+
+To pass from monomer stability to support real-rootedness, diagonalize:
+$\mu(t,\ldots,t)=t^n\Ga(-t^{-2})$. The diagonal is real-rooted. A nonzero nonreal or nonnegative root of $\Ga$ would yield a forbidden nonreal root in this identity. The constant coefficient is $1$, so zero is not a root of $\Ga$. This also handles surviving-degree losses.
+
+\begin{corollary}\label{pgr:r:ir:cor:rolerank}
+Any finite loopless directed relation whose bipartite role graph has matching number at most three has a rank-ULC support polynomial under arbitrary nonnegative independent role activities.
+\end{corollary}
+\begin{proof}
+By K\H onig's matching-cover theorem, choose a role-vertex cover of size at most three. If both shores occur, each contributes at most two vertices and Theorem~\ref{pgr:r:rc:thm:rolecover} applies, even if their physical sets overlap. If just one shore occurs, there are at most three active tails or at most three active heads. Theorem~\ref{pgr:r:ir:thm:three} or its dual applies. Missing active vertices can be supplied as isolated, zero-activity placeholders. Lower surviving degrees are covered by Proposition~\ref{pgr:thm:first}.
+\end{proof}
+
+\mnote{the rank-ULC conclusion of this corollary is contained in source~11's
+Theorem~\ref{pgr:r:pc:thm:main}, since the physical images of a role cover
+of size three cover every underlying edge. When both shores of the role
+cover occur, the proof gives real-rootedness through source~20, which is
+more. For bipartite relations with one role per vertex the corollary is
+\prp, Theorem \texttt{mr:thm:rankthree} and Corollary
+\texttt{lc:cor:rankthree}.}
+
+This corollary does not by itself prove Theorem~\ref{pgr:r:ir:thm:main}: the bipartite role matching number may exceed three even when the physical matching number is three.
+
+\subsection{The finite theorem through seven vertices}\label{pgr:r:ir:sec:finite}
+\begin{theorem}[Finite independent-role theorem]\label{pgr:r:ir:thm:finite}
+Every preorder on at most seven vertices has a rank-ULC support polynomial under arbitrary nonnegative independent role activities, at its actual surviving degree.
+\end{theorem}
+Since these orders have physical matching number at most three, only the second cubic gap requires new work. We describe both the exact finite domain and the scope of its certificates.
+
+\subsubsection{A complete enumeration rather than a sample}
+The equivalence relation $i\sim j$ defined by $iRj$ and $jRi$ partitions any preorder into equivalence classes. The quotient is a poset. Choose a linear extension and label its classes $1,\ldots,m$. Every quotient arc then goes forward. Conversely, a transitive forward relation on $m$ labels and a positive composition $n=n_1+\cdots+n_m$ determine a preorder on $n$ vertices by expanding each class into $n_i$ equivalent vertices.
+
+The verifier enumerates every forward relation by finite bit masks, tests transitivity, and enumerates every positive composition. This is redundant, but completeness is immediate from the quotient construction. Isomorphisms and global order duality are then checked explicitly; weights are transported with their vertices, and duality exchanges the tail and head activity families.
+
+For the connected, nonbipartite, nontotal, physical-rank-three seven-vertex domain there are
+\begin{center}
+\begin{tabular}{lr}
+Quotient/composition configurations&$131\,645$\\
+Relevant configurations&$75\,160$\\
+Isomorphism/duality representatives&$1\,686$
+\end{tabular}
+\end{center}
+The entire catalog and all maps are retained. The independent replay regenerates the domain; it does not infer completeness from the number of files in a certificate directory.
+
+\subsubsection{Branches outside the residual catalog}
+Degree at most two is universal. Disconnected cases are handled by Lemma~\ref{pgr:r:ir:lem:products}. A connected bipartite preorder with more than two vertices is a height-two poset: a directed path on three distinct vertices forces a triangle, and a nontrivial equivalence pair with a third neighbor also forces a triangle. Its physical and role matching numbers therefore agree. Corollary~\ref{pgr:r:ir:cor:rolerank} applies.
+
+A total preorder has complete underlying graph, so positive-activity degree three means $n=6$ or $7$. The $32+64=96$ positive compositions reduce, by the extremal-block identities below and duality, to $24$ role-weighted targets. Exact rational identities verify every target. For the nontotal six-vertex residual domain, the same quotient procedure gives $7\,090$ configurations, $3\,059$ relevant configurations, and $223$ representatives. Their independent-role identities are all included.
+
+\subsubsection{Exact certificates and independent support reconstruction}\label{pgr:r:ir:sec:certificates}
+Let $w$ denote all independent role variables. A typical certificate for the second cubic gap is
+\begin{equation}\label{pgr:r:ir:eq:sos}
+ p(w):=\gamma_2(w)^2-3\gamma_1(w)\gamma_3(w)
+ =\sum_\ell q_\ell w^{\alpha_\ell}
+       \left(\sum_\beta c_{\ell\beta}w^\beta\right)^2
+  +\sum_\eta r_\eta w^\eta,
+\end{equation}
+where $q_\ell>0$, $c_{\ell\beta}\in\mathbb Q$, $r_\eta\ge0$, and all exponents are nonnegative integers. The remainder is reconstructed by exact subtraction and checked coefficientwise, rather than accepted from a numerical residual.
+
+The independent checkers reconstruct the feasible supports by two complementary methods. The main hybrid replay and the two-attachment auditors enumerate physical directed matchings and deduplicate their ordered support pairs. The separate six-vertex and total-preorder routines use Hall's criterion
+\[
+ |N(A)\cap T|\ge |A|\qquad\text{for every }A\subseteq S
+\]
+for disjoint equal-sized sets $(S,T)$, with explicit bijection cross-checks. In either method, a feasible pair contributes its monomial once. In the vertex specialization, different pairs that specialize to the same monomial have their coefficients \emph{added}. This is where losing ordered-support multiplicity would invalidate the computation. Matching enumeration is used only to construct the set of supports, never to retain the number of matching witnesses.
+
+All arithmetic in the replay uses integers and rational numbers. Floating-point optimization proposed square directions during discovery; those optimization programs and their binaries are not part of the proof package or needed by the verifier.
+
+\subsubsection{Two structural reductions used in the selected ledger}
+The finite ledger uses several ordinary theorems already proved above, as well as the two-attachment theorem of Section~\ref{pgr:r:ir:sec:a2}. Two other reductions are worth stating explicitly.
+
+\paragraph{A marked five-vertex deletion lemma.}
+Let $H$ be a preorder on five vertices with factor-critical underlying graph, and mark $h$. Write
+\[
+ Q=\Ga_{H-h}=1+az+bz^2,\qquad
+ P=\Ga_H-Q=cz+dz^2.
+\]
+The finite role-weighted identity is
+\begin{equation}\label{pgr:r:ir:eq:marked}
+ acd-bc^2-d^2\ge0.
+\end{equation}
+There are $96$ marked isomorphism/duality types; $48$ margins are coefficientwise nonnegative and $48$ have rational square certificates. The collection contains $258$ square terms and $6\,971$ positive remainder monomials. The independent enumeration also checks the factor-critical condition, rather than presupposing it from a label.
+
+For positive activities $b,c,d>0$ and $Q$ has negative real roots by Proposition~\ref{pgr:thm:first}. Equation~\eqref{pgr:r:ir:eq:marked} says $Q(-c/d)\le0$, so the root of $c+dz$ lies between the roots of $Q$. Thus $(c+dz)/Q$ has nonnegative residues at its negative poles, and $P/Q=z(c+dz)/Q$ maps $\HH$ into its closure. Repeated roots are handled by cancellation and limits.
+
+Consequently the decomposition \eqref{pgr:r:ir:eq:artdecomp} proves real-rootedness whenever every block $C_i\cup\{h\}$ is a factor-critical preorder on three or five vertices. This is an all-rank gluing statement. In a seven-vertex factor-critical graph with a cut vertex $h$, the components after deleting $h$ have even sizes $2+4$ or $2+2+2$. Each block is factor-critical: for $v\in C_i$, parity forces $h$ to be matched into $C_i\setminus\{v\}$ in a perfect matching of $G-v$. Restricting that matching to $(C_i\setminus\{v\})\cup\{h\}$ proves the required deletion property; deleting $h$ itself leaves the perfectly matched $C_i$. Hence every such seven-vertex cut-vertex case is covered.
+
+\paragraph{Refining small extremal equivalence classes.}
+A minimal equivalence class has identical outgoing neighborhoods outside the class and no incoming outside arcs. For a class of size two, replacing equivalence by the chain $1<2$, keeping tails $u_1,u_2$, and setting
+\begin{equation}\label{pgr:r:ir:eq:block2}
+ v'_2=v_2+u_2v_1/u_1
+\end{equation}
+preserves the support polynomial. The first head activity in the chain is unused.
+
+For a class of size three, sort the tail activities as $x\le y\le z$, carrying their head activities $v_1,v_2,v_3$ with them. Put
+\[
+ a=\sum_{i\ne j}u_i v_j,\qquad
+ c=yzv_1+xzv_2+xyv_3,\qquad
+ \Delta=z(x+y)-xy.
+\]
+Replace the class by a strict chain with the same tails and effective heads
+\begin{equation}\label{pgr:r:ir:eq:block3}
+ v'_2=\frac{(x+y)c-xy a}{x\Delta},\qquad
+ v'_3=\frac{za-c}{\Delta}.
+\end{equation}
+These are nonnegative since
+\begin{align*}
+ (x+y)c-xy a&=y^2(z-x)v_1+x^2(z-y)v_2,\\
+ za-c&=z^2(v_1+v_2)+\Delta v_3,
+\end{align*}
+and $\Delta>0$ for positive tails. They satisfy
+\[
+ xv'_2+(x+y)v'_3=a,
+ \qquad xzv'_2+xyv'_3=c.
+\]
+These are precisely the local weights with one selected head and respectively one or two selected tails. Pure-tail states are unchanged. No other local head state is possible in a three-element minimal class. The surplus tails have identical outside neighborhoods, so equality of these local states preserves every continuation. Maximal classes are handled by duality. Disjoint chosen classes can be refined successively; each is refined once, and other classes' positive denominator activities are unchanged.
+
+This transfer holds for any minimal or maximal class of size two or three, not just a boundary class of a total preorder. The full seven-vertex refinement manifest has $648$ checked relational maps, each strictly reducing the number of equivalent pairs. Dependencies are therefore acyclic.
+
+\begin{remark}[Activity and dependency safeguards]\label{pgr:r:ir:rem:scope}
+The transformations \eqref{pgr:r:ir:eq:block2}--\eqref{pgr:r:ir:eq:block3} use strictly positive original denominator activities. They may create zero effective heads, which are permitted by the closed-orthant target theorems. Original zero activities are handled by Lemma~\ref{pgr:r:ir:lem:degree}, or by continuity of the original gap; no finite sorted-chain replacement at arbitrary zero denominators is asserted. The transformations generally destroy $u=v$. Every refinement here terminates in a proof valid for fully independent role activities. No vertex-only target is used. Strict decrease of equivalent pairs makes the dependency graph acyclic, and the verifier requires a proved terminal target.
+\end{remark}
+
+\subsubsection{The complete selected independent-role ledger}
+The final manifest partitions the $1\,686$ residual targets as follows. Labels identify the proof selected, rather than every applicable proof.
+\begin{center}
+\begin{tabular}{lr}
+\toprule Selected justification&Number\\\midrule
+Articulation real-rootedness&168\\
+Two-tail/two-head role-cover real-rootedness&478\\
+Three-core role-ULC&28\\
+Factor-critical cut-vertex real-rootedness&83\\
+Direct rational role certificate&812\\
+Two-attachment role-ULC&43\\
+HPP side matroid by small-matroid classification&27\\
+HPP side matroid by published nine-element list&6\\
+HPP side matroid by the final exact Rayleigh identity&1\\
+Fully role-justified extremal refinement&40\\\midrule
+Total&1\,686\\\bottomrule
+\end{tabular}
+\end{center}
+The HPP branches are proved in Section~\ref{pgr:r:ir:sec:oneside} below. All refinements end in unconditional role-valid proofs; there are no remaining conditional sources or independent obligations.
+
+Four selected direct certificates, with catalog IDs $722,736,756,758$, use a positive multiplier. They certify \eqref{pgr:r:ir:eq:sos} for $H(w)p(w)$ rather than $p(w)$, where
+\[
+ H=(u_4+u_5)(v_0+v_1)\quad\text{for }722,736,756,
+ \qquad H=(u_5+u_6)(v_0+v_1)\quad\text{for }758.
+\]
+The exact multiplier is reconstructed and checked. It is strictly positive when all role variables are positive, so division proves $p\ge0$ there; the original polynomial gap extends to the closed orthant by continuity. This is a declared positive-orthant argument and is distinct from the all-real Rayleigh identity in Section~\ref{pgr:r:ir:sec:last}.
+
+For reference, the six-vertex role certificates contain $586$ square terms and $31\,094$ positive remainders. The $24$ total-preorder role targets contain $793$ squares and $50\,660$ positive remainders. The full local catalog, exact identities and all selected terminal witnesses are included; counts describe proof data rather than sampled assignments. With the HPP arguments below, this establishes Theorem~\ref{pgr:r:ir:thm:finite}.
+
+\subsection{Half-plane-property side matroids and the final cases}\label{pgr:r:ir:sec:oneside}
+The final finite targets have a useful structural presentation. It leads to a general real-rootedness criterion, valid in every degree and without transitivity. The criterion is conditional on a matroid half-plane property; we verify that condition exactly in every application.
+
+\subsubsection{The one-tail side criterion}
+\begin{theorem}\label{pgr:r:ir:thm:oneside}
+Let $D$ be a finite loopless directed relation. Suppose a physical vertex $p$ and a set $Q$ satisfy
+\[
+ i\to j\quad\Longrightarrow\quad i=p\ \text{or}\ j\in Q.
+\]
+The vertex $p$ may belong to $Q$. Form a transversal matroid $M$ with centers $Q$, one ground element for every tail copy $i$ with neighborhood $N(i)\cap Q$, and one private dummy element $d_j$ with neighborhood $\{j\}$ for each $j\in Q$. If the basis-generating polynomial $F_M$ is real stable, then the signed physical monomer polynomial of $D$ is real stable for arbitrary nonnegative independent role activities. Hence $\Ga_D$ has only negative real zeros, with rank-ULC at its actual degree.
+\end{theorem}
+
+The private dummies are an independent basis, so $M$ has rank $|Q|$. A basis is counted once, not once for each matching that witnesses it. For homogeneous real polynomials, the half-plane property (nonvanishing when all variables have positive real parts) is equivalent to real stability by a simultaneous rotation of variables. We use the abbreviation HPP.
+
+
+\begin{proof}[Proof (pointer)]
+Every head copy outside $Q$ has no possible predecessor except $p$, so the
+hypothesis of source~15's Theorem~\ref{pgr:r:ps:thm:pendant} holds with
+the single hub $p$, and the matroid $M$ is the matroid $M_Q$ there. That
+theorem gives the conclusion.
+\end{proof}
+\mnote{source~22's own proof is source~15's proof in this special case:
+the split seed identity $\mu_B=(\prod_ia_i)(\prod_{j\in Q}v_j)
+F_M(d_j=b_j/v_j,\ t_i=-u_i/a_i)$ (source~15's
+\eqref{pgr:r:ps:eq:seed}), the forced pendant insertion
+$f\mapsto b_xf-u_pv_x\partial_{a_p}f$ (\eqref{pgr:r:ps:eq:pendantrec}),
+the physical merge, here realized as the directional derivative
+$T_if=(\partial_{a_i}+\partial_{b_i})f|_{a_i=b_i=z_i/2}$, and the diagonal
+root transfer. It is replaced by this pointer. Source~22 notes that
+successive pendant additions cannot reuse $p$, and that the evolving
+empty-support term keeps coefficient one through all merges.}
+
+Reversing every arc and exchanging $u$ with $v$ gives the dual one-covered-head criterion.
+
+\subsubsection{Simplification and the published HPP input}
+An empty-neighborhood tail element is a loop. A singleton-neighborhood element with neighbors $\{j\}$ is parallel to the dummy $d_j$. These are the only parallel classes: two nonempty columns are a dependent pair exactly when their neighborhood union has size one. Repeated multi-neighbor columns must therefore \emph{not} be merged.
+
+The side simplification consists of one private representative for each center and one separate element for each tail whose neighborhood has size at least two. HPP lifts back from the simplification by replacing a private representative's variable with the sum over its true parallel class; sums of upper-half-plane variables stay in that half-plane. Loops cause no difficulty.
+
+We use two precisely bounded published inputs from Kummer--Sert \cite{KS,KSdata}:
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item The complete exceptions on at most seven elements are the five rank-three matroids $F_7,F_7^{-},F_7^{--},F_7^{-3},M(K_4)+e$ and their rank-four duals. Every new eight-element excluded minor is rank-four sparse paving. Thus an eight-element matroid whose one-element deletions and contractions are HPP is HPP if its rank is not four or it is not sparse paving \cite[Section 5, Theorem 5.2]{KS}.
+\item The published file \texttt{n9r4Hpp.txt} contains $4\,125$ certified-positive rank-four nine-element matroids. Section 6 of \cite{KS} explains their rational positive-semidefinite Gram certifications. The separate lists of candidates and undetected cases are not used.
+\end{enumerate}
+We do not assume every small transversal matroid has HPP. In particular, the rank-four dual of $F_7^{-3}$ is transversal and is an exception. Our higher-rank side matroids are checked against the full exception/minor tests, including duality.
+
+The small-matroid side screen supplies 27 selected catalog targets. It checks 58 candidate presentations, including 47 eight-element sides and 752 one-element minors. Each witness stores the working relation, direction reversal, $p,Q$, every tail-neighborhood mask, retained simplified columns, and the complete basis set. The independent audit reconstructs these objects and checks exact matroid isomorphisms.
+
+Six further targets use the published nine-element positive list. Its basis fingerprints use increasing colex order on four-element subsets, equivalently increasing subset bit masks; an asterisk marks a basis. Rank-five sides are dualized to rank four before comparison. The selected applications are
+\begin{center}
+\begin{tabular}{lr}
+\toprule Catalog targets&One-based published line\\\midrule
+1030, 1474, 1480&1975\\
+1057, 1486&1536\\
+1495&1751\\\bottomrule
+\end{tabular}
+\end{center}
+The data retain explicit ground-element permutations, not just invariant matches. All 126 basis indicators are compared after the permutation. Both possible side presentations were independently recounted, giving twelve comparisons of complete side basis systems.
+
+The pinned official file has SHA256
+\begin{center}\footnotesize\texttt{a3c7a6eaebe02ef50998710282542be2751b218a6713853cdd2eecadbe1f1f86}.\end{center}
+
+\mnote{the published file \texttt{n9r4Hpp.txt} of Kummer and Sert is
+distributed under CC~BY~4.0 (Zenodo record 6108027) and is shipped
+unmodified, four times, inside source~22's nested audit zip; the report
+README carries the attribution and licence notice.}
+
+Its MD5 matches the publisher's \texttt{c73d80267112a960df5485f159ab56e0}. The exact data file is included for offline membership replay. This is an application of the published certified-positive list, not a local rerun of all of its original Gram certificates.
+
+\subsubsection{The final ten-element side matroid}\label{pgr:r:ir:sec:last}
+The final independent target, catalog ID 1565, has seven off-diagonal row masks
+\begin{equation}\label{pgr:r:ir:eq:lastrows}
+ (0,1,3,7,39,23,63).
+\end{equation}
+Choose $p=6$ and $Q=\{0,1,2,4,5\}$ in this order. Its side simplification is the rank-five transversal matroid $M$ on ten elements whose center-neighborhood masks are
+\begin{equation}\label{pgr:r:ir:eq:lastmasks}
+ (1,2,4,8,16,3,7,23,15,31).
+\end{equation}
+We index these elements $0,\ldots,9$. The first five private columns form a basis, and exact matching enumeration gives $198$ bases in total.
+
+All twenty one-element deletions and contractions have HPP. Loops, coloops, genuine parallel classes and series classes are reduced with exact basis checks. HPP is restored by the standard loop/coloop and parallel operations, with series reduction obtained by duality. After reduction, the dependencies group as follows; ``small'' means the previously stated at-most-eight criterion, and a number is a one-based line of the positive nine-element file, with dualization when the reduced rank is five.
+\begin{center}
+\begin{tabular}{lcc}
+\toprule Elements&Deletion&Contraction\\\midrule
+$0,1,5$&3368&small\\
+$2,6$&1751&2020\\
+$3,4,7,8$&small&1536\\
+$9$&small&2385\\\bottomrule
+\end{tabular}
+\end{center}
+Eight minors use the small criterion and twelve use the published list. The independent replay verifies $10\,240$ minor rank-function identities, every reduction, and all explicit published-basis comparisons. These checks establish the proper-minor hypothesis only; one further all-real inequality is needed.
+
+Let $F$ be the basis polynomial of $M$, and write $F_{ab}$ for the coefficient of $x_0^a x_9^b$, $a,b\in\{0,1\}$. Its Rayleigh difference is
+\begin{equation}\label{pgr:r:ir:eq:lastrayleigh}
+ q=\Delta_{09}F=F_{10}F_{01}-F_{00}F_{11}.
+\end{equation}
+It is independent of $x_0,x_9$. In the remaining element order $1,\ldots,8$, it is homogeneous of degree eight and has 397 nonzero monomials. Let $\mathcal B$ be the sorted set of the 37 squarefree degree-four exponent vectors $a$ for which the coefficient of $x^{2a}$ in $q$ is nonzero. Define
+\begin{equation}\label{pgr:r:ir:eq:gramformula}
+ N_e=\#\{(a,b)\in\mathcal B^2:a+b=e\},
+ \qquad G_{ab}=\frac{[x^{a+b}]q}{N_{a+b}}.
+\end{equation}
+The exact support check gives $\operatorname{supp}(q)\subseteq\mathcal B+\mathcal B$. With $h=(x^a)_{a\in\mathcal B}$, the identity $q=h^TGh$ therefore follows by collecting coefficients. The matrix entries are only
+\[
+ 0,\quad \frac18,\quad\frac16,\quad\frac14,\quad\frac13,\quad\frac12,\quad1.
+\]
+
+\begin{lemma}[Exact final Gram certificate]\label{pgr:r:ir:lem:lastgram}
+The rational matrix in \eqref{pgr:r:ir:eq:gramformula} is positive semidefinite of rank 32. Equivalently, the supplied exact vectors $c_1,\ldots,c_{32}\in\mathbb Q^{37}$ and positive rational weights $w_1,\ldots,w_{32}$ satisfy
+\begin{equation}\label{pgr:r:ir:eq:lastsos}
+ G=\sum_{\ell=1}^{32}w_\ell c_\ell c_\ell^T,
+ \qquad q=\sum_{\ell=1}^{32}w_\ell(c_\ell^T h)^2.
+\end{equation}
+In particular $q$ is nonnegative on all of $\mathbb R^8$.
+\end{lemma}
+\begin{proof}[Exact certificate verification]
+The supplied complementary standard-library checker reconstructs all 198 bases by explicit assignment to the five centers, forms the four coefficient polynomials $F_{ab}$, and expands \eqref{pgr:r:ir:eq:lastrayleigh}. It independently reconstructs $\mathcal B$, every multiplicity $N_e$ and the uniform Gram formula. Exact expansion of both identities in \eqref{pgr:r:ir:eq:lastsos} has zero remainder. Finally it performs rational Schur elimination, obtaining 32 strictly positive pivots and a zero residual matrix, independently confirming the rank and positive semidefiniteness. All vectors and weights are included in the machine-readable certificate. The independent audit separately reconstructs the full ten-variable derivatives, verifies both the Gram expansion and the positive-square factorization, and confirms rank 32 by exact row elimination.
+
+This is an all-real sum of ordinary polynomial squares. There is no uncontrolled-sign monomial prefactor and no merely coefficientwise-positive remainder. Thus it supplies precisely the all-real domain required below. Numerical projection found the matrix, but no floating-point output or tolerance is used in its exact verification.
+\end{proof}
+
+Wagner--Wei's criterion \cite[Theorem 3(c)]{WW} says that a multiaffine polynomial with positive coefficients is stable if every one-variable deletion and contraction is strongly Rayleigh and one Rayleigh difference is nonnegative on all real values of the remaining variables. For homogeneous matroid basis polynomials, HPP, real stability and the strong Rayleigh property are equivalent. The twenty proper minors and Lemma~\ref{pgr:r:ir:lem:lastgram} satisfy these hypotheses. Hence $M$ has HPP, and Theorem~\ref{pgr:r:ir:thm:oneside} proves real-rootedness for target 1565 under every nonnegative independent role assignment.
+
+The existing approved extremal-class refinement maps the last conditional source, ID 1611, to this target. Effective zero activities are permitted by Theorem~\ref{pgr:r:ir:thm:oneside}. This closes the final two entries in the selected finite ledger.
+
+\subsection{Two attachments and arbitrary exterior populations}\label{pgr:r:ir:sec:a2}
+The following theorem supplies the two-attachment infinite-family input to the global reduction.
+\begin{theorem}\label{pgr:r:ir:thm:a2}
+Let a preorder of physical matching number at most three have a retained core $K$ of at most five vertices, with two marked attachments $i,j$, and an independent exterior whose neighbors lie in $\{i,j\}$. Suppose each attachment has a fixed direction toward all of its exterior neighbors and no exterior vertex belongs to a nontrivial equivalence class. In the canonical Gallai--Edmonds core family, the support polynomial is rank-ULC under arbitrary nonnegative independent role activities and arbitrary heterogeneous exterior populations.
+\end{theorem}
+The canonical-core qualification fixes the finite catalog used in the proof. We do not replace it by an unchecked assertion about arbitrary marked five-vertex directed cores. The catalog has $1\,084$ structural templates, including harmless overcoverage. Its generation and coverage are independently checked in the included two-attachment dependency. Degree at most two and the first cubic gap are settled by Proposition~\ref{pgr:thm:first}; below we prove the second cubic gap.
+
+\subsubsection{Opposite signs: exact two-vertex compression}
+Assume exterior arcs at $i$ point outward and those at $j$ inward. The exterior types are head-only neighbors of $i$, tail-only neighbors of $j$, and shared vertices $i\to s\to j$. Put
+\[
+ H=\sum_{s:\,i\to s}v_s,
+ \qquad T=\sum_{s:\,s\to j}u_s,
+ \qquad W=\sum_{s:\,i\to s\to j}u_s v_s.
+\]
+The exact support identity is
+\begin{align}\label{pgr:r:ir:eq:mixedcompress}
+ \Ga_R={}&\Ga_K+T v_jz\Ga_{K-j}+H u_i z\Ga_{K-i}\notag\\
+ &+(HT-W)u_i v_j z^2\Ga_{K-\{i,j\}}.
+\end{align}
+A selected exterior tail must be matched to $j$ and a selected exterior head to $i$. Two selected exterior vertices must have distinct physical identities; $HT-W$ removes exactly the forbidden shared-vertex collisions. Removing their forced matched endpoints leaves a core support. This proves \eqref{pgr:r:ir:eq:mixedcompress} without counting witnessing matchings.
+
+We have $0\le W\le HT$. If the shared type is legal, so are both private types: after deleting either its incoming or its outgoing incidence, no two-step transitivity requirement through that exterior vertex remains, and core closure of the retained neighborhood is inherited. Legality is also checked directly in the finite catalog. For $T>0$, use one shared vertex with
+\[
+ u_s=T,\quad v_s=W/T,
+\]
+and one private head at $i$ of activity $H-W/T$. This preserves $H,T,W$ and hence the whole polynomial. If $T=0$, then $W=0$ and only the head sum remains. If the shared type is not legal, sum the two private clouds separately. The replacement uses at most two exterior vertices, so has at most seven vertices.
+
+Crucially, this compression need not preserve $u=v$. Its finite targets are proved under the stronger role weighting, independently of the global assembly. The finite certificate targets are replayed directly, so this use creates no circular dependence on the two-attachment branch of the selected ledger. Among the $494$ mixed-sign templates, the checked compressed branches are
+\begin{center}
+\begin{tabular}{lr}
+At most six vertices&366\\
+Physical matching rank at most two&19\\
+Disconnected&49\\
+Connected bipartite&3\\
+Residual seven-vertex references&57
+\end{tabular}
+\end{center}
+The last $57$ references use $56$ distinct direct role certificates, with $1\,135$ square terms and $6\,445$ positive remainders. Explicit relabeling/duality witnesses and all compression identities are included. The three bipartite cases can use Corollary~\ref{pgr:r:ir:cor:rolerank}; no higher-rank bipartite theorem is required here.
+
+\subsubsection{Equal signs: the exact moment cone}
+By duality suppose both attachments point to exterior heads. Let $A,B$ be the private head-activity sums at $i,j$. For the shared cloud define
+\[
+ U=\sum_s v_s,\qquad E=\sum_{s<t}v_s v_t.
+\]
+Put
+\[
+ F_i=zu_i\Ga_{K-i},\quad F_j=zu_j\Ga_{K-j},
+ \quad G=z^2u_i u_j\Ga_{K-\{i,j\}}.
+\]
+Let $F_*$ be the contribution of supports using one newly adjoined common head, whose activity is set to $1$. This is a genuine support kernel: if either attachment can use the same head, a final support is still counted once. In general $F_*\ne F_i+F_j$.
+
+There are at most two exterior vertices in a support, and direct counting gives
+\begin{equation}\label{pgr:r:ir:eq:samemoment}
+ \Ga_R=\Ga_K+A F_i+B F_j+U F_*+\bigl[AB+(A+B)U+E\bigr]G.
+\end{equation}
+Two heads from one private cloud cannot be used. The remaining pairs of types contribute $AB,AU,BU,E$, each at support multiplicity one. With two exterior heads selected, the two attachments are used, leaving exactly the core support in $K-\{i,j\}$.
+
+The moment range satisfies
+\[
+ U\ge0,\qquad 0\le E\le U^2/2,
+\]
+because $2E=U^2-\sum_s v_s^2$. The whole closed cone is parameterized by
+\begin{equation}\label{pgr:r:ir:eq:cone}
+ U=\xi+\eta,\qquad E=2\xi\eta,
+ \qquad \xi,\eta\ge0.
+\end{equation}
+Indeed the inverse values are $(U\pm\sqrt{U^2-2E})/2$. This is a positivity reduction on a cone, not an assertion that two ordinary heads realize every shared cloud. In the formal support generator, two common heads of weights $\xi,\eta$ are used and a support selecting both is assigned coefficient $2$. That formal convention produces exactly \eqref{pgr:r:ir:eq:samemoment} after \eqref{pgr:r:ir:eq:cone}; it is not confused with an ordinary two-clone preorder.
+
+If the common type is not legal, at most one private type is legal: a head's incoming neighborhood must be predecessor-closed in the core, and the union of two such legal neighborhoods is again predecessor-closed. Therefore the private-only cases compress to at most six vertices.
+
+There are $590$ same-sign catalog templates: $333$ private-only reductions and $257$ shared-cone cases. Every shared-cone substituted cubic gap has an exact certificate of the form \eqref{pgr:r:ir:eq:sos}, in the core role activities and $A,B,\xi,\eta$. Together these contain $7\,866$ squares and $32\,729$ positive remainder monomials. The verifier independently constructs $F_*$ from deduplicated ordered supports, checks the symbolic moment identity, tests heterogeneous and zero-face substitutions, and checks every rational identity. A separate local Hall-based reconstruction provides an additional check. No unfinished chamber split or numerical multiplier is needed for these $257$ certificates.
+
+\subsubsection{Degree and zero-activity safeguards}
+Both formulas preserve the original weighted polynomial, not merely its first few coefficients. Effective activities can be zero; all target polynomial inequalities hold on the closed orthant. Original degree at most two is handled before applying a cubic certificate, with its factor $4$. At original degree three, equality of support polynomials preserves that degree. Thus the argument never deduces degree-two rank-ULC from a degree-three zero-padding convention. This completes Theorem~\ref{pgr:r:ir:thm:a2}.
+
+\subsection{The Gallai--Edmonds reduction and the global proof}\label{pgr:r:ir:sec:ge}
+We now pass from bounded cores to arbitrarily many vertices. The graph-theoretic input is the classical Gallai--Edmonds structure theorem; an accessible primary proof is West \cite[Theorem 5]{West}.
+
+For a graph $G$, let $D$ be the vertices omitted by some maximum matching, let $A=N(D)\setminus D$, and let $C=V(G)\setminus(A\cup D)$. Each component of $G[D]$ is factor-critical, $G[C]$ has a perfect matching, and every maximum matching pairs every vertex of $A$ into a distinct component of $D$, with near-perfect matchings inside those components. Hence
+\begin{equation}\label{pgr:r:ir:eq:gebudget}
+ \nu(G)=|A|+\frac{|C|}{2}+\sum_{D_t}\frac{|D_t|-1}{2}.
+\end{equation}
+
+\subsubsection{The canonical exterior and its size bound}
+Assume positive activities and $\nu(G_R)=3$. Let $I$ be the union of the singleton components of $G_R[D]$ and let $K=V\setminus I$. Distinct vertices of $I$ are nonadjacent and all their neighbors lie in $A$. Write $a=|A|$, $|C|=2c$, and $|D_t|=2d_t+1$ for the nonsingleton components, with $d_t\ge1$. Then
+\[
+ a+c+\sum_t d_t=3,
+ \qquad
+ |K|=a+2c+\sum_t(2d_t+1)\le a+3\left(c+\sum_t d_t\right)=9-2a.
+\]
+Thus $a\le3$, with core bounds $7,5,3$ when $a=1,2,3$.
+
+The preorder adds two essential restrictions. Equivalent vertices are adjacent true twins, so their transposition is a graph automorphism. The canonical sets $D,A,C$ are invariant under every automorphism. An exterior vertex in a singleton $D$ component therefore cannot be equivalent to another vertex: such a vertex would also lie in $D$ and be adjacent to it. In particular, exterior-to-core arcs are not bidirectional.
+
+At each attachment, all exterior arcs have one direction. Otherwise $x\to h\to y$ with distinct $x,y\in I$ would make two exterior vertices adjacent by transitivity. The same exterior vertex cannot create the exception because bidirectionality has just been excluded. Each exterior type is thus determined by its nonempty neighborhood subset of $A$ and the fixed signs of those attachments. Isolated exterior points have no effect.
+
+\subsubsection{The four attachment cases}
+\paragraph{$a=0$.}
+There are no attachments. Every nontrivial component is either a factor-critical $D$ component on at most seven vertices or a component in $C$, whose total order is at most six. Apply Theorem~\ref{pgr:r:ir:thm:finite} to each and Lemma~\ref{pgr:r:ir:lem:products} to their product.
+
+\paragraph{$a=1$.}
+All nonisolated exterior vertices are equally oriented pendant twins at the sole attachment $h$. At most one occurs in a support. Sum their relevant activities into $S$. Replacing them by one pendant preserves the support polynomial. Assign the new pendant its relevant role activity $S$ and any positive activity in its unused role. Core activities are unchanged. The full independent-role polynomial is preserved; in the vertex specialization both new role activities may be set to $S$.
+
+If $|K|\le6$, the result has at most seven vertices and Theorem~\ref{pgr:r:ir:thm:finite} applies. If $|K|=7$, equality in the budget bound forces $c=0$ and precisely two nonsingleton factor-critical $D$ components, each with $d_t=1$ and hence three vertices. Deleting $h$ leaves these two rank-one components and the isolated exterior points. Theorem~\ref{pgr:r:ir:thm:articulation} applies directly to every population. If the exterior is empty, the seven-vertex finite theorem is already sufficient.
+
+\paragraph{$a=2$.}
+The core has at most five vertices and the canonical exterior has only the three possible nonempty neighborhood types. All hypotheses of Theorem~\ref{pgr:r:ir:thm:a2} hold. Its independent-role conclusion applies directly.
+
+\paragraph{$a=3$.}
+Equation~\eqref{pgr:r:ir:eq:gebudget} forces $K=A$, with three attachments and no other core vertices. Every attachment has an exterior neighbor, since $A=N(D)\setminus D$ and now every $D$ component is a singleton. Split $A=P\sqcup Q$, with exterior arcs outward at $P$ and inward at $Q$.
+
+There is no core arc $q\to p$ with $q\in Q$ and $p\in P$. Choose exterior neighbors $x\to q$ and $p\to y$. If $x\ne y$, the path $x\to q\to p\to y$ contradicts independence of $I$. If $x=y$, the directed cycle makes that exterior vertex equivalent to a core vertex, contradicting the singleton-equivalence property above. Every core arc is therefore covered by its tail in $P$ or its head in $Q$: arcs within $P$ are covered on the tail side, arcs within $Q$ on the head side, and $P\to Q$ on both. The exterior arcs are covered too.
+
+The role graph consequently has a cover of size three, and Corollary~\ref{pgr:r:ir:cor:rolerank} proves the result. This gives an ordinary conceptual replacement for following all seventeen three-attachment classes individually. The previously checked catalog of nine same-sign and eight mixed-sign classes remains in the supplementary dependency record.
+
+These cases exhaust the Gallai--Edmonds decomposition. Together with Proposition~\ref{pgr:thm:first} and Lemma~\ref{pgr:r:ir:lem:degree}, they prove Theorem~\ref{pgr:r:ir:thm:main}, including arbitrary vertex count and all zero-activity specializations at surviving degree.
+
+\begin{corollary}[Vertex activities; archive 31]\label{pgr:r:ir:cor:vertex}
+Every finite preorder with nonnegative vertex activities $x_i$, that is
+$u_i=v_i=x_i$, whose support polynomial has actual degree at most three,
+is rank-ULC at that degree.
+\end{corollary}
+\begin{proof}
+The case $u_i=v_i=x_i$ of Theorem~\ref{pgr:r:ir:thm:main}.
+\end{proof}
+\mnote{this is the main theorem of archive~31, the earlier, vertex-activity
+version of this manuscript (same skeleton; eleven proof notes and the
+role-cover dependency byte-identical). Archive~31 closed its finite
+seven-vertex domain with a selected ledger of 97 direct vertex-only
+certificates (100 shipped) after the specialization $u=v$; that ledger is
+redundant given the role ledger above and survives only in the arrival
+commit (README). Source~23 (Section~\ref{pgr:u:t26:sec}) uses exactly this
+corollary. With $x_i=1$ it is source~25's Theorem~\ref{pgr:u:d3:thm:main},
+whose proof in Part~I is an independent route.}
+
+
+
+\subsection{A cubic with nonreal zeros}\label{pgr:r:ir:sec:nonreal}
+
+Source~22 computes the fifteen-vertex example of
+Section~\ref{pgr:u:d3:sec:realroots} (three lower vertices, twelve upper
+vertices, four of each pair-neighborhood type; all activities one) with
+the same counts, $\Ga(z)=1+24z+162z^2+208z^3$, discriminant $-2592$, gaps
+$90$ and $11268$; that computation is printed once, in Part~I.
+
+It is rank-ULC, consistently with the theorem. This example requires no independent-role asymmetry and lies in the pure three-tail family of Section~\ref{pgr:r:ir:sec:rayleigh}. No minimal-size claim is made.
+
+\mnote{source~25's Theorem~\ref{pgr:u:d3:thm:minimum} makes the minimality
+claim: fifteen vertices is the least order of a preorder of actual degree
+three with a nonreal-rooted gamma polynomial, and this example and its
+dual are the only ones at that order.}
+
+
+\subsection[Verification and dependencies]{Verification package and dependency closure}\label{pgr:r:ir:sec:replay}
+The deliverable contains this TeX source and PDF, a portable exact checker entry point, frozen certificate archives, the companion role-cover paper and its checker package, and proof notes recording the precise scopes of structural inputs. All required data are local. The full replay uses Python 3 and a C++17 compiler for supplementary role-cover support checks; it needs no network connection, numerical solver, precompiled binary, or third-party Python library.
+
+
+\mnote{in this report source~22's package is shipped renamed: its proof
+notes at the top of the report directory, its checkers in \texttt{code/},
+its nested audit package as
+\texttt{data/22-independent-role-checker-role-degree-three-audit-package.zip}.
+Its embedded copies of source~20's package and article are not shipped
+(source~20's files are). Because \texttt{verify.py} first checks every
+listed file, the delivered wrapper runs only on the reconstructed package
+(README). At intake its sub-checkers passed on copies: the final Rayleigh
+certificate (198 bases, rank~32), the coverage and aggregate phases of the
+complete hybrid ledger, the 39 role certificates new relative to
+archive~31, the two-attachment and marked-five modules and the side-1565
+package; the whole wrapper was not run in one process.}
+
+\subsubsection{How to run the check}
+With Python 3 and a C++17 compiler available, from any working directory run
+\begin{center}\texttt{python /path/to/package/verify.py}\end{center}
+The wrapper verifies pinned dependency archives, extracts them into temporary directories, and runs their exact checkers. It verifies the complete role catalog, its rational certificates and multipliers, every structural witness and refinement terminal, all $223$ six-vertex role certificates and all $24$ total-preorder targets. Both two-attachment certificate modules and the marked-five deletion/gluing module are replayed as well. The HPP modules verify the side-matroid bases, explicit published-list isomorphisms, proper-minor reductions and final all-real Gram identity. The companion role-cover algebra and the nonreal example are checked separately.
+
+The command writes a fresh local replay receipt while preserving the original approval receipts. A separate build script compiles the paper with a standard LaTeX installation; the mathematical checker does not require LaTeX. Python checks use the standard library, and the companion role-cover checker compiles included exact C++ sources into temporary storage.
+
+\subsubsection{What is checked exactly}
+The independent checkers reconstruct support polynomials from relations, expand all rational squares, and compare coefficients exactly. They verify template generation, structural witnesses, maps under relabeling and duality, population-compression formulas, moment substitutions, and terminal dependency scope. Finite point evaluations supplement these symbolic checks but do not prove positivity.
+
+Ordinary theorems such as Gallai--Edmonds and Wagner's rank-three Rayleigh theorem are cited mathematical inputs, not re-proved by running a Python script. The support-level structural proofs are given in this paper and the included companion. The certificate and coverage layers are independently audited, with their frozen source hashes recorded. These distinctions make the boundary of the computer-assisted proof explicit.
+
+\subsubsection{Dependency closure and published data}
+The selected ledger is complete for independent roles. Each extremal refinement has a proved terminal; positive-multiplier division is confined to the positive orthant and followed by continuity. The final Rayleigh certificate instead has an exact sum of squares valid on all real inputs. These different domains are never interchanged.
+
+The classification results of Kummer--Sert and the certified-positive matroid list are cited mathematical dependencies. The local replay verifies membership in the published list by exact basis isomorphism, with the official file hash pinned. It does not purport to rerun the authors' original Gram certificates for every published entry. The new ten-element case has its own fully local rational Gram and square identity. Ordinary results such as Wagner--Wei's criterion and stability preservation under directional differentiation are proved or cited, not inferred from test points.
+
+Some provenance notes retain draft-status wording from the time their mathematical text was frozen. The approval receipts and complete selected ledger specify the final scope. Numerical discovery code is excluded. The earlier vertex-only release is a separate valid specialization and is not a proof dependency of this stronger theorem.
+
+\subsection{Further questions and mathematical boundaries}\label{pgr:r:ir:sec:questions}
+\paragraph{Beyond degree three.}
+The independent-role extension in degree three is now proved. Degree four requires two interior coefficient comparisons beyond the universal first inequality and has larger retained cores. An unweighted theorem does not imply its weighted counterpart; separate role-sensitive inequalities or exact certificates are needed. The HPP side-matroid criterion applies in every degree, but it is only a sufficient structural condition, not a general solution.
+
+\paragraph{A conceptual replacement for the finite certificates.}
+The Rayleigh identity \eqref{pgr:r:tc:eq:three-squares} and the upper-half-plane articulation proof are short structural explanations. It would be useful to find similarly uniform inequalities for the remaining two-connected factor-critical cores, eliminating some or all of the finite square certificates. The marked five-vertex deletion inequality suggests that interlacing under deletion may be stronger and more useful than ULC alone in certain small cores.
+
+\paragraph{Real-rootedness versus rank-ULC.}
+The example in Section~\ref{pgr:r:ir:sec:nonreal} rules out general real-rootedness already in degree three. A useful separate problem is to characterize the preorder or role-cover structures that force real-rootedness for every positive activity assignment. The articulation and two-tail/two-head cover theorems give substantial sufficient families but no general characterization.
+
+\paragraph{Equality and higher degree.}
+Classifying equality in the second cubic gap could clarify why weighted positivity is robust in some structures and difficult in others. The square identity identifies several simultaneous equality requirements in the pure three-tail case. Extending arbitrary independent-role-weighted rank-ULC to degree four or higher requires additional inequalities and is not implied by this paper. Even a complete unweighted higher-degree theorem would not justify the weighted extension without a new argument.
+
+
+\mnote{in this report, unit-activity degree four is settled (Part~I),
+real-rootedness is forced by the role-cover and articulation theorems and
+by source~15's pendant criterion in their families, and Part~III settles
+weighted degree four for four-vertex cores with universal sinks and for
+the five-vertex boundary. Weighted degree four in general remains open.}
+
+\paragraph{Attribution.}
+The first-gap method is an application of Motzkin--Straus; the bounded-core reduction uses Gallai--Edmonds; the pure three-tail proof applies Wagner's rank-three Rayleigh theorem; the role-cover companion uses classical real-stability preservers; the side-matroid applications use Kummer--Sert's published classification and certified data; and the final ten-element case applies Wagner--Wei's criterion. The new exact artifacts establish the statements and scopes recorded here. We make no claim that a literature-wide novelty search or a proof-assistant formalization has been completed.
+
+
 \part*{Appendix}
 \addcontentsline{toc}{part}{Appendix}
 \appendix

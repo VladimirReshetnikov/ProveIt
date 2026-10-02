@@ -15,16 +15,16 @@ normalization by its *actual* degree?
 | 25 | 25 | `preorder-gamma-degree-three-package` | *Rank ultra log concavity for preorder gamma polynomials of degree at most three* (14) | `d5e863bba` | `8f5c53106` | Part I, Section 2 |
 | 16 (base) | 16, 17, 18, 19 | `preorder-degree-four-part-4-of-4` … `part-1-of-4` | *Degree four preorder support polynomials* (17) | `d5e863bba` | `8f5c53106` | Part I, Section 3 (its Section 3 and Appendix A are source 20, printed in Part II) |
 | 23 | 23 | `template26-structural-supplement` | *A smaller proof of the last Newton gap for template 26* (6) | none | `8f5c53106` | Part I, Section 4 (second route) |
-| 20 | 20 | `role-cover-package` | *Real stable monomers under a two by two role cover* (9) | none | `8f5c53106` | Part II, Section (a later step) |
-| 12 | 12 (handed over by cluster C1) | `three-core-rayleigh-result` | *Coefficientwise Rayleigh inequalities for a three vertex shore* (6) | none | `8f5c53106` | Part II, Section (a later step) |
-| 11 | 11 (handed over by cluster C1) | `physical-cover-three-result` | *Rank ultra log concavity under a three vertex physical cover* (5) | none | `8f5c53106` | Part II, Section (a later step) |
-| 15 | 15 (handed over by cluster C1) | `bipartite-and-pendant-support-result` | *Lorentzian and real stable directed support polynomials* (6) | none | `8f5c53106` | Part II, Section (a later step) |
-| 22 | 22 | `independent-role-degree-three-package` | *Independently weighted preorder support polynomials of actual degree at most three* (21) | none | `8f5c53106` | Part II, Section (a later step) |
+| 20 | 20 | `role-cover-package` | *Real stable monomers under a two by two role cover* (9) | none | `8f5c53106` | Part II, Section 5 |
+| 12 | 12 (handed over by cluster C1) | `three-core-rayleigh-result` | *Coefficientwise Rayleigh inequalities for a three vertex shore* (6) | none | `8f5c53106` | Part II, Section 6 |
+| 11 | 11 (handed over by cluster C1) | `physical-cover-three-result` | *Rank ultra log concavity under a three vertex physical cover* (5) | none | `8f5c53106` | Part II, Section 7 |
+| 15 | 15 (handed over by cluster C1) | `bipartite-and-pendant-support-result` | *Lorentzian and real stable directed support polynomials* (6) | none | `8f5c53106` | Part II, Section 8 |
+| 22 | 22 | `independent-role-degree-three-package` | *Independently weighted preorder support polynomials of actual degree at most three* (21) | none | `8f5c53106` | Part II, Section 9 |
 | 14 | 14 | `universal-sink-last-gap-package` | *Sharp final coefficient bounds for directed cores with universal sinks* (4) | none | `8f5c53106` | Part III, Section (a later step) |
 | 10 | 10 | `universal-sink-all-degrees-package` | *Rank ultra log concavity for four vertex cores with universal sinks* (5) | none | `8f5c53106` | Part III, Section (a later step) |
 | 34 | 34 | `universal-sink-five-core-package` | *Rank five ultra log concavity for five vertex cores with universal sinks* (6) | none | `8f5c53106` | Part III, Section (a later step) |
 | 06 | 07 (part 1, carries the manuscript), 06 (part 2) | `universal-sink-five-core-boundary-package-part-1`, `-part-2` | *The rank four boundary for five vertex cores with universal sinks* (7) | none | `8f5c53106` | Part III, Section (a later step) |
-| — | 31 | `weighted-degree-three-package` | *Vertex-weighted preorder support polynomials of actual degree at most three* (17) | none | not staged | superseded by 22; its theorem is Corollary (a later step) (the case `u = v`) |
+| — | 31 | `weighted-degree-three-package` | *Vertex-weighted preorder support polynomials of actual degree at most three* (17) | none | not staged | superseded by 22; its theorem is Corollary 9.14 (the case `u = v`) |
 | — | 13 | `universal-sink-degree-four-package` | *Weighted degree four rank ultra log concavity for universal sink extensions* (5) | none | not staged | superseded by 10; one remark in Part III |
 
 Sources are numbered by their batch-73 manuscript numbers; a package
@@ -74,7 +74,7 @@ four-part package, for source 06 inside the assembled two-part package).
 
 ```
 article.tex        the report (pdfLaTeX), standalone, internal bibliography
-article.pdf        the compiled report, 40 pages (title page and contents, then the three Parts and Appendix A)
+article.pdf        the compiled report, 85 pages (title page and contents, then the three Parts and Appendix A)
 README.md          this guide
 ```
 
@@ -802,7 +802,7 @@ followed by a source infix and the source's own label: `d3` (25), `d4`
 (16), `t26` (23), `rc` (20), `tc` (12), `pc` (11), `ps` (15), `ir` (22),
 `lg` (14), `ad` (10), `fc` (34), `fb` (06). For example source 22's
 `thm:main` is `pgr:r:ir:thm:main`. The base article (source 16) had 26
-labels as staged; the report has 85 labels. Labels of source passages
+labels as staged; the report has 205 labels. Labels of source passages
 that are printed once elsewhere or replaced by pointers (the degree lemma
 and the first inequality of several sources, source 16's Section 3 and
 Appendix A, the duplicated three-squares identity and moment envelope, the
@@ -867,9 +867,69 @@ beyond degree three; a Lean formalization or a global priority claim.
 Source 25's finite lemma through seven vertices reproduces a published
 computation and is not claimed as a new size range.
 
-### Part II
+### Part II — independent role activities and small covers
 
-Written in the next step of this intake.
+Claimed (arbitrary loopless directed relations unless a preorder is said;
+independent nonnegative tail and head activities throughout):
+
+- **Two by two role cover** (source 20, `pgr:r:rc:thm:rolecover`;
+  ordinary): if `|P|, |Q| ≤ 2` and every arc has its tail in `P` or its
+  head in `Q` (`P`, `Q` may overlap), the signed physical monomer
+  polynomial is real stable; `Γ_D` has only negative real roots and is
+  rank-ULC at its actual degree. Also: the complete balanced core, the
+  two-edge core, the core with one missing edge and the disjoint pair
+  (seven all-real Rayleigh identities); the free product of two loopless
+  rank-two matroids has a real-stable basis polynomial
+  (`pgr:r:rc:cor:freeproduct`); the gamma transfer (`pgr:r:rc:cor:transfer`).
+  It generalizes `matching-rank-normalization`'s `mrn:w:sb:thm:main`
+  (bipartite, disjoint cover sides) by a different proof.
+- **Coefficientwise three-core Rayleigh** (source 12): the boundary
+  inequality `b_ij b_ik − a_i c ⪰ 0` coefficientwise for a bipartite
+  physical graph with a three-vertex shore, both orientations
+  (`pgr:r:tc:thm:boundary`; computer-assisted: 48 role types, 17,376
+  graphs, two independent checkers); coefficientwise nonnegativity of all
+  core Rayleigh differences (`pgr:r:tc:thm:full`); negative correlation
+  of core use (`pgr:r:tc:cor:covariance`); a four-core example where the
+  coefficientwise statement fails though a two-square formula is positive.
+- **Physical cover of size three** (source 11, `pgr:r:pc:thm:main`;
+  ordinary given source 12): if the underlying graph has a vertex cover of
+  at most three vertices, `Γ_D` is rank-ULC at its actual degree, internal
+  core arcs allowed, no transitivity. Corollary: role covers with
+  `|P| ≤ 2`, `|Q| ≤ 3`, `P ⊆ Q`. Bipartite-only strictness of negative
+  correlation and the equality case of the upper cubic inequality.
+- **Bipartite physical graphs and pendant heads** (source 15; ordinary):
+  for a bipartite physical graph, a multiaffine Lorentzian polynomial of
+  degree `|C|` (`pgr:r:ps:thm:bipartite`), hence order-`|C|` ULC and
+  rank-ULC under saturation; overlapping role covers with an independent
+  core (`pgr:r:ps:cor:overlap`); real stability when the uncovered heads
+  have in-degree at most one over a real-stable transversal seed
+  (`pgr:r:ps:thm:pendant`), with an explicit stable seed for
+  singleton-or-universal neighbourhoods (`pgr:r:ps:cor:elementary`).
+- **Independent roles through actual degree three** (source 22,
+  `pgr:r:ir:thm:main`; computer-assisted): every finite preorder with
+  independent role activities whose support polynomial has actual degree at
+  most three is rank-ULC. Ingredients: the zero-activity role filter
+  (`pgr:r:ir:lem:degree`), the articulation theorem (real-rootedness in
+  every degree, `pgr:r:ir:thm:articulation`), an ordinary three-core proof
+  through Wagner's theorem (`pgr:r:ir:thm:three`, a special case of
+  source 11 kept as a second route), the finite theorem through seven
+  vertices with a complete ledger of 1,686 targets
+  (`pgr:r:ir:thm:finite`), the half-plane-property side-matroid criterion
+  (`pgr:r:ir:thm:oneside`, the one-hub case of source 15's theorem), a
+  rank-32 exact Gram certificate for the last ten-element side matroid
+  (`pgr:r:ir:lem:lastgram`), and the two-attachment theorem
+  (`pgr:r:ir:thm:a2`). Its case `u = v` is the theorem of archive 31
+  (`pgr:r:ir:cor:vertex`); its case `u = v = 1` is source 25's theorem.
+
+Not claimed (Part II): real-rootedness of all preorder support polynomials
+(the fifteen-vertex cubic is not real-rooted); rank-ULC for general
+two-tail/three-head role covers (open: sources 11, 12 and 15); internal core
+arcs in sources 12 and 15; full stability in source 12 (its Rayleigh
+statement is for nonnegative monomer arguments, not an all-real criterion);
+weighted degree four; that an arbitrary transversal matroid is stable;
+membership checks beyond the published Kummer–Sert list (source 22 applies
+the list, it does not rerun its Gram certificates); a minimal-size claim in
+source 22 (source 25 makes it); formalization or priority.
 
 ### Part III
 
@@ -920,7 +980,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX with the standard `amsmath`, `amssymb`, `amsthm`, `mathtools`,
 `lmodern`, `microtype`, `geometry`, `booktabs`, `longtable`, `array`,
 `enumitem`, `fancyhdr`, `xurl` and `hyperref` packages; three passes. The
-committed PDF was built this way with MiKTeX: 40 pages, no errors, no
+committed PDF was built this way with MiKTeX: 85 pages, no errors, no
 undefined references or citations, no multiply defined labels, no duplicate
 destinations, no overfull boxes. Build in a scratch copy; do not commit the
 auxiliary files.
