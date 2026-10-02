@@ -33,6 +33,10 @@
 \newcommand{\disc}{\mathcal D}
 \newcommand{\coef}[2]{[#1^{#2}]}
 \DeclareMathOperator{\Rea}{Re}
+% [write] notes added when the report entered the collection (batch 77)
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Uniform asymptotics and moving zeros\\for the level 15 family of Cooper}
 \author{}
 \date{2 October 2026}
@@ -44,7 +48,7 @@ Cooper's level 15 coefficient polynomials have two competing singularities when 
 \end{abstract}
 
 \section{The competition and the moving zero}
-\label{sec:main}
+\label{cmz:sec:main}
 Let $T_\eps(n)$ be the level 15 family introduced by Cooper, normalized by $T_\eps(0)=1$ and defined for $n\geq0$ by
 \begin{align}
 (n+1)^3T_\eps(n+1)
@@ -52,7 +56,7 @@ Let $T_\eps(n)$ be the level 15 family introduced by Cooper, normalized by $T_\e
 &-n\bigl((6\eps^2+30\eps-7)n^2+\eps^2+4\eps-1\bigr)T_\eps(n-1)\notag\\
 &+n(2n-1)(n-1)(2\eps^3+15\eps^2-7\eps+20)T_\eps(n-2)\notag\\
 &-n(n-1)(n-2)(\eps-1)(\eps+11)(\eps^2+4)T_\eps(n-3).
-\label{eq:15rec}
+\label{cmz:eq:15rec}
 \end{align}
 Terms of negative index are zero. In particular, $T_\eps(n)$ is a real polynomial in $\eps$, of degree $n$. This is the existing family in \cite[Theorem 8.1 and (8.8)]{Cooper}; its recurrence is generically five-term. Its four-term specializations occur at $\eps=1,-11,2\ii,-2\ii$.
 
@@ -63,12 +67,12 @@ R_+(\eps)=\eps+11,\qquad R_-(\eps)=\eps-1.
 At $\eps=-5$ their moduli are equal, with $R_+=6$ and $R_-=-6$. Their amplitudes have ratio $10$. Thus parity and cancellation are essential; one dominant-root equivalent cannot describe a whole neighborhood of this parameter.
 
 \begin{theorem}[Uniform two-singularity expansion]
-\label{thm:uniform}
+\label{cmz:thm:uniform}
 For $|\eps+5|\leq1/10$, put
 \begin{equation}
 C_+(\eps)=\frac{(\eps+11)^{3/2}}{20\pi^{3/2}},\qquad
 C_-(\eps)=\frac{(1-\eps)^{3/2}}{2\pi^{3/2}}.
-\label{eq:amps}
+\label{cmz:eq:amps}
 \end{equation}
 The powers are the analytic branches positive at $\eps=-5$. There are analytic functions $b_{j,\pm}(\eps)$, with $b_{0,\pm}=1$, such that, for each fixed integer $K\geq0$,
 \begin{align}
@@ -78,20 +82,20 @@ T_\eps(n)={}&n^{-3/2}\left\{C_+(\eps)R_+(\eps)^n
                   \sum_{j=0}^K\frac{b_{j,-}(\eps)}{n^j}\right\}\notag\\
 &+O_K\!\left(n^{-K-5/2}
       \bigl(|R_+(\eps)|^n+|R_-(\eps)|^n\bigr)\right),
-\label{eq:two}
+\label{cmz:eq:two}
 \end{align}
-uniformly on that closed complex disc. The coefficients are given by the finite formula in Proposition~\ref{prop:generator}, applied at $r=1/R_+$ or $r=1/R_-$. In particular,
+uniformly on that closed complex disc. The coefficients are given by the finite formula in Proposition~\ref{cmz:prop:generator}, applied at $r=1/R_+$ or $r=1/R_-$. In particular,
 \begin{equation}
 b_{1,+}(\eps)=\frac{3(77\eps-403)}{2000},\qquad
 b_{1,-}(\eps)=-\frac{3(\eps+9)}{16}.
-\label{eq:twob1}
+\label{cmz:eq:twob1}
 \end{equation}
 \end{theorem}
 
-The error in \eqref{eq:two} is additive. It remains meaningful when the two principal contributions cancel; it is not a relative estimate with respect to their sum. The fixed disc is useful because it contains every bounded competition window for all sufficiently large $n$.
+The error in \eqref{cmz:eq:two} is additive. It remains meaningful when the two principal contributions cancel; it is not a relative estimate with respect to their sum. The fixed disc is useful because it contains every bounded competition window for all sufficiently large $n$.
 
 \begin{corollary}[The $1/n$ competition window]
-\label{cor:window}
+\label{cmz:cor:window}
 Set
 \[
 A=\frac{6^{3/2}}{20\pi^{3/2}},\qquad \eps=-5+\frac{u}{n}.
@@ -102,37 +106,37 @@ For every fixed $B>0$ and integer $K\geq0$, uniformly for complex $|u|\leq B$,
 ={}&e^{u/6}\sum_{j=0}^K\frac{P_{j,+}(u)}{n^j}
 +10(-1)^n e^{-u/6}\sum_{j=0}^K\frac{P_{j,-}(u)}{n^j}
 +O_{B,K}(n^{-K-1}),
-\label{eq:window}
+\label{cmz:eq:window}
 \end{align}
 where every $P_{j,\pm}$ is an explicitly computable polynomial. The first two are
 \begin{align}
 P_{0,+}(u)&=P_{0,-}(u)=1,\notag\\
 P_{1,+}(u)&=\frac u4-\frac{u^2}{72}-\frac{591}{500},
 & P_{1,-}(u)&=-\frac u4-\frac{u^2}{72}-\frac34.
-\label{eq:P1}
+\label{cmz:eq:P1}
 \end{align}
 Uniform expansions for every fixed derivative in $u$ hold on compact discs as well.
 \end{corollary}
 
 \begin{theorem}[A local real zero for odd indices]
-\label{thm:zero}
+\label{cmz:thm:zero}
 Let $u_0=3\log(10)$. For every sufficiently large odd $n$, the polynomial $u\mapsto T_{-5+u/n}(n)$ has exactly one zero in $|u-u_0|<1$, counting multiplicity. This zero $u_n$ is real and simple. For every fixed $J\geq0$,
 \begin{equation}
 u_n=u_0+\frac{u_1}{n}+\cdots+\frac{u_J}{n^J}+O(n^{-J-1}).
-\label{eq:uexp}
+\label{cmz:eq:uexp}
 \end{equation}
 Consequently, its corresponding parameter zero $\eps_n=-5+u_n/n$ satisfies
 \begin{equation}
 \eps_n=-5+\frac{3\log(10)}{n}
  +\frac{162/125-(9/2)\log(10)}{n^2}+O(n^{-3}).
-\label{eq:zero2}
+\label{cmz:eq:zero2}
 \end{equation}
 Writing $\ell=\log(10)$, the next coefficients are
 \begin{align}
-u_2&=-\frac{372357}{31250}-\frac{\ell^3}{4}+\frac{4023\ell}{1000},\label{eq:u2}\\
+u_2&=-\frac{372357}{31250}-\frac{\ell^3}{4}+\frac{4023\ell}{1000},\label{cmz:eq:u2}\\
 u_3&=-\frac{108224019}{7812500}-\frac{81\ell^2}{250}
        +\frac{9\ell^3}{8}+\frac{2066769\ell}{250000}.
-\label{eq:u3}
+\label{cmz:eq:u3}
 \end{align}
 Here $u_2$ multiplies $n^{-3}$ in $\eps_n$, and $u_3$ multiplies $n^{-4}$. For every fixed real $B>0$, all sufficiently large even $n$ have no real zero in the window $|u|\leq B$.
 \end{theorem}
@@ -142,10 +146,96 @@ This theorem is local in the rescaled parameter. It does not locate all the zero
 \subsection{Context and scope}
 The amplitude formulas in Cooper's Table 8 are already stated in \cite{Cooper}. The positive modular radial mechanism occurs in Guillera--Zudilin \cite[Example 6 and (27)]{GZ}; Example 6 specifically treats the sequence here called $14B$. The level 11 leading equivalent is also recorded by V\'aclav Kot\v{e}\v{s}ovec in OEIS A284756, dated 2 April 2017 \cite{OEIS}. Negative-$q$ modular transformations are part of the earlier framework of Cooper--Ye \cite[Section 7]{CY}. These facts are important distinctions between known formulas, their explicit analytic justification, and consequences for a moving parameter.
 
-The purpose here is to make the needed connections and continuation paths explicit, and then to use them simultaneously in the level 15 family. The general tools are standard multiple-singularity transfer and perturbation of singularity analysis \cite[Theorem VI.5 and Section IX.7]{FS}. The particular uniform expansion \eqref{eq:two} and zero law \eqref{eq:zero2} were not found in the sources examined; this bounded statement is not a claim of first discovery or first proof. Further source qualifications appear in Section~\ref{sec:sources}.
+The purpose here is to make the needed connections and continuation paths explicit, and then to use them simultaneously in the level 15 family. The general tools are standard multiple-singularity transfer and perturbation of singularity analysis \cite[Theorem VI.5 and Section IX.7]{FS}. The particular uniform expansion \eqref{cmz:eq:two} and zero law \eqref{cmz:eq:zero2} were not found in the sources examined; this bounded statement is not a claim of first discovery or first proof. Further source qualifications appear in Section~\ref{cmz:sec:sources}.
+
+\subsection{Provenance, status and reading conventions}
+\label{cmz:provenance}
+\begin{writenote}[Added 2 October 2026, batch~77]
+\emph{Provenance.} This report was built from one manuscript: batch~77,
+manuscript~33 of the repository's incoming-reports channel, archive
+\nolinkurl{modular-crossover-replay.zip} (main file
+\nolinkurl{modular-crossover.tex}, 999 lines, with a PDF that is not
+shipped), arrival commit \texttt{096ee7b87}, placed in \texttt{4f11bc9c0}.
+The text from the abstract to the end of the bibliography is the delivered
+manuscript, unchanged except for the label prefix \texttt{cmz:} and the
+notes marked \textbf{[write]}; no statement, proof, number or symbol of it
+was changed. \emph{Pin.} The delivery names no ProveIt revision and
+continues no repository report; the word ``replay'' in its archive name
+names the packaging, not a repair. \emph{Status.} An unrefereed research
+manuscript (its author line is empty). Nothing in it is formalized in Lean
+or Rocq, and its placement in the repository confers no formal status. At
+intake the delivered replay was rerun on a copy (all six stages PASS, its
+output identical to the shipped record apart from the Python version), and
+the recurrence terms of $15A$ and $15B$, the two coefficients
+\eqref{cmz:eq:twob1}, the coefficient $u_1$ of \eqref{cmz:eq:zero2}, the
+values \eqref{cmz:eq:u2}--\eqref{cmz:eq:u3} (by locating the zero of
+$T_{-5+u/n}(n)$ for $n=101,201,401,801$, where $n^4$ times the residual
+settles near $417$) and the equivalence of \eqref{cmz:eq:C11} with
+Kot\v{e}\v{s}ovec's sextic in Section~\ref{cmz:sec:sources} were checked
+independently. These are finite checks, not a review of the proofs.
+\end{writenote}
+
+\begin{writenote}[Reading conventions]
+The manuscript reuses several letters. No symbol was renamed; the table
+fixes the readings.
+
+\smallskip
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}
+ >{\raggedright\arraybackslash}p{0.81\linewidth}@{}}
+\toprule
+symbol & meanings, by section \\
+\midrule
+$u$ & the competition variable, $\eps=-5+u/n$ (Sections~\ref{cmz:sec:main},
+ \ref{cmz:sec:uniformproof}, \ref{cmz:sec:zeroproof}); but $\tau=u+\ii y$
+ in Theorem~\ref{cmz:thm:connection}, where $u$ is a real part. \\
+$r$, $R$ & $r$ is a simple root of $G$ (a singular point) and $R=1/r$ is
+ the corresponding growth rate; $R_\pm(\eps)$ are the two rates
+ $\eps+11$, $\eps-1$, called ``inverse locations'', with $r_\pm=1/R_\pm$. \\
+$s$ & $s=y-y_0$ in the proof of Theorem~\ref{cmz:thm:connection}; the
+ Dedekind sum $s(d,c)$ in \eqref{cmz:eq:multiplier}; a Taylor index in
+ Section~\ref{cmz:sec:corrections}. \\
+$A$, $B$ & $A=6^{3/2}/(20\pi^{3/2})$ and the radius $B$ of the $u$-disc in
+ Corollary~\ref{cmz:cor:window}; a matrix $A\in\mathrm{SL}_2(\Z)$ in
+ \eqref{cmz:eq:multiplier}; the subscript $B$ in $X_B,G_B,H_B$ is the
+ specialization $15B$ ($\eps=-11$). \\
+$C$ & connection constants ($C$, $C_\pm$, $C_{11}$, $C_\delta$, \dots); the
+ letters $C,\overline C$ in $14C$, $15\overline C$ name specializations; $\C$
+ is the complex field; $c$ in Section~\ref{cmz:sec:sources} is
+ Kot\v{e}\v{s}ovec's $\pi^{3/2}C_{11}$, and $c$ in
+ Theorem~\ref{cmz:thm:connection} a matrix entry. \\
+$D$ & $\det\gamma$ in Theorem~\ref{cmz:thm:connection}; the operator
+ $D=\sqrt G\,\tht$ in Section~\ref{cmz:sec:data}; $\disc$ is the parameter
+ buffer \eqref{cmz:eq:buffer}. \\
+$M$ & the matrix of \eqref{cmz:eq:gamma15}; the target value of the
+ threshold $N(M)$ in Section~\ref{cmz:sec:inverse}. \\
+$h$, $L$ & $h=3/2$ and $L=\log(M/C)$ in Section~\ref{cmz:sec:inverse};
+ $h_j$ are the coefficients of $H$, and $\mathcal L$ is the operator of
+ \eqref{cmz:eq:ODE}. \\
+$P$, $w$ & the weight-two eta product and the modular function of each
+ level in \eqref{cmz:eq:14mod}--\eqref{cmz:eq:24mod}; $P_{j,\pm}(u)$ are the
+ window polynomials of \eqref{cmz:eq:window}; $w=u-U$ in the proof of
+ Corollary~\ref{cmz:cor:complexzeros}. \\
+$v$ & a formal variable standing for $1/n$ in \eqref{cmz:eq:Pall} and in
+ Section~\ref{cmz:sec:zeroproof}; the iterates $v_j$ of
+ \eqref{cmz:eq:inverseiteration}. \\
+$a,b,c,d$ & $a_n$ is a sequence and $b_j$ its corrections; $a,b,c$ are
+ also matrix entries of $\gamma$, $d$ is the degree of $G$ and $H$, and
+ Kot\v{e}\v{s}ovec's $d$ is $R$. \\
+$11,\dots,24$ & sequence names ($11$, $14A$, \dots, $24$) are Cooper's
+ level labels, not indices. \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+In the shipped data file \nolinkurl{data/expected_coefficients.json} the
+symbol \texttt{x} in a primary fixed-case coefficient denotes the selected
+root $r=1/R$, not the generating-function variable; in the crossover data
+\texttt{e} is $\eps$, \texttt{u} the competition variable and \texttt{U} a
+limiting zero (the $U$ of Corollary~\ref{cmz:cor:complexzeros}).
+\end{writenote}
 
 \section{Recurrences and modular data}
-\label{sec:data}
+\label{cmz:sec:data}
 \subsection{A common differential equation}
 Put $\tht=x\,\dd/\dd x$. Let
 \[
@@ -157,48 +247,48 @@ The normalized analytic solution $F(0)=1$ of
 \mathcal LF=0,\qquad
 \mathcal L=G\tht^3+\frac32(\tht G)\tht^2+
        \left(\frac12\tht^2G-2H\right)\tht-\tht H
-\label{eq:ODE}
+\label{cmz:eq:ODE}
 \end{equation}
 is equivalently defined by the coefficient recurrence
 \begin{equation}
 n\sum_{j=0}^d g_j\left(n-\frac j2\right)(n-j)a_{n-j}
  =2\sum_{j=0}^d h_j\left(n-\frac j2\right)a_{n-j},
 \qquad n\geq1,
-\label{eq:generalrec}
+\label{cmz:eq:generalrec}
 \end{equation}
-with $a_0=1$ and $a_m=0$ for $m<0$. The coefficient of $a_n$ on the left is $n^3$, so this specifies the sequence uniquely. Equation~\eqref{eq:generalrec} follows by taking the coefficient of $x^n$ in \eqref{eq:ODE}. Conversely, the analytic germ of the recurrence satisfies that equation.
+with $a_0=1$ and $a_m=0$ for $m<0$. The coefficient of $a_n$ on the left is $n^3$, so this specifies the sequence uniquely. Equation~\eqref{cmz:eq:generalrec} follows by taking the coefficient of $x^n$ in \eqref{cmz:eq:ODE}. Conversely, the analytic germ of the recurrence satisfies that equation.
 
 The modular identities used below have the form
 \begin{equation}
 F(X(\tau))=Z(\tau),\qquad
 q\frac{\dd X}{\dd q}=ZX\sqrt{G(X)},\qquad q=e^{2\pi\ii\tau},
-\label{eq:moddiff}
+\label{cmz:eq:moddiff}
 \end{equation}
 where the square root equals $1$ at the cusp. Cooper's differential setup \cite[Sections 3--4, 7--9]{Cooper}, building on \cite{CGY,CY}, gives these identities for the explicit functions below. With $D=\sqrt G\tht$, the nonlinear equation is
 \[
 D^2F-\frac{(DF)^2}{2F}=HF.
 \]
-Its differentiated linear form is $D^3F-2HDF-(DH)F=0$, which becomes \eqref{eq:ODE}. We use \eqref{eq:generalrec} to establish the linear equation directly, so no division by a possibly vanishing $F$ is required in our continuation arguments.
+Its differentiated linear form is $D^3F-2HDF-(DH)F=0$, which becomes \eqref{cmz:eq:ODE}. We use \eqref{cmz:eq:generalrec} to establish the linear equation directly, so no division by a possibly vanishing $F$ is required in our continuation arguments.
 
 \subsection{Polynomial data for the two families}
 To distinguish the levels, write $G_{14,\eps},H_{14,\eps}$ and $G_{15,\eps},H_{15,\eps}$. They are
 \begin{align}
 G_{14,\eps}(x)
  &=(1-(\eps-9)x)(1-(\eps-5)x)
-       (1-2\eps x+(\eps^2-32)x^2),\label{eq:G14}\\
+       (1-2\eps x+(\eps^2-32)x^2),\label{cmz:eq:G14}\\
 H_{14,\eps}(x)
  &=x\left\{\eps-4-\frac{7\eps^2-50\eps+24}{2}x
  +(4\eps^3-42\eps^2+26\eps+448)x^2\right.\notag\\
  &\hspace{3.5em}\left.-\frac32(\eps-9)(\eps-5)(\eps^2-32)x^3\right\},
-\label{eq:H14}\\
+\label{cmz:eq:H14}\\
 G_{15,\eps}(x)
  &=(1-(\eps-1)x)(1-(\eps+11)x)
-       (1-2\eps x+(\eps^2+4)x^2),\label{eq:G15}\\
+       (1-2\eps x+(\eps^2+4)x^2),\label{cmz:eq:G15}\\
 H_{15,\eps}(x)
  &=x\left\{\eps+2-\frac{7\eps^2+34\eps-8}{2}x
  +(4\eps^3+30\eps^2-14\eps+40)x^2\right.\notag\\
  &\hspace{3.5em}\left.-\frac32(\eps-1)(\eps+11)(\eps^2+4)x^3\right\}.
-\label{eq:H15}
+\label{cmz:eq:H15}
 \end{align}
 The level 14 coefficients $T_{14,\eps}(n)$ obey
 \begin{align}
@@ -207,17 +297,17 @@ The level 14 coefficients $T_{14,\eps}(n)$ obey
 &-n\bigl((6\eps^2-42\eps+13)n^2+\eps^2-8\eps+11\bigr)T_{14,\eps}(n-1)\notag\\
 &+n(2n-1)(n-1)(2\eps^3-21\eps^2+13\eps+224)T_{14,\eps}(n-2)\notag\\
 &-n(n-1)(n-2)(\eps-5)(\eps-9)(\eps^2-32)T_{14,\eps}(n-3),
-\label{eq:14rec}
+\label{cmz:eq:14rec}
 \end{align}
 with the same initial convention. We denote the specializations $\eps=5,9,4\sqrt2,-4\sqrt2$ by $14A,14B,14C,14\overline C$, respectively. At level 15 the specializations $\eps=1,-11,2\ii,-2\ii$ are $15A,15B,15C,15\overline C$.
 
-The remaining two sequences are specified by \eqref{eq:generalrec} and
+The remaining two sequences are specified by \eqref{cmz:eq:generalrec} and
 \begin{align}
 G_{11}(x)&=1-20x+56x^2-44x^3,&
-H_{11}(x)&=4x(1-8x+11x^2),\label{eq:11data}\\
+H_{11}(x)&=4x(1-8x+11x^2),\label{cmz:eq:11data}\\
 G_{24}(x)&=(1+4x)(1-4x)(1-8x),&
 H_{24}(x)&=2x(1+5x-64x^2).
-\label{eq:24data}
+\label{cmz:eq:24data}
 \end{align}
 For reference, their first terms and those of the real integral specializations are
 \begin{center}
@@ -245,21 +335,21 @@ At level 11 set
 \begin{equation}
 \Theta(\tau)=\sum_{j,k\in\Z}q^{j^2+jk+3k^2},\quad
 Z=\Theta^2,\quad X=\frac{\eta_1^2\eta_{11}^2}{Z}.
-\label{eq:11mod}
+\label{cmz:eq:11mod}
 \end{equation}
 At level 14 use
 \begin{equation}
 w=\frac{\eta_1^4\eta_{14}^4}{\eta_2^4\eta_7^4},\quad
 P=\eta_1\eta_2\eta_7\eta_{14},\quad
 X_\eps=\frac{w}{1+(\eps-7)w+w^2},\quad Z_\eps=P/X_\eps.
-\label{eq:14mod}
+\label{cmz:eq:14mod}
 \end{equation}
 At level 15 use
 \begin{equation}
 w=\frac{\eta_3^2\eta_{15}^2}{\eta_1^2\eta_5^2},\quad
 P=\eta_1\eta_3\eta_5\eta_{15},\quad
 X_\eps=\frac{w}{1+(\eps+5)w+9w^2},\quad Z_\eps=P/X_\eps.
-\label{eq:15mod}
+\label{cmz:eq:15mod}
 \end{equation}
 Thus $X_1=w/(1+3w)^2$ and $X_{-11}=w/(1-3w)^2$. This $w$ is chosen for the eta transformation calculations; the parameter $\eps$ is exactly Cooper's parameter because $1/X_\eps-\eps$ is independent of $\eps$ and the $\eps=1$ function agrees.
 
@@ -268,32 +358,32 @@ Finally, at level 24 put
 w=\left(\frac{\eta_1\eta_3\eta_8\eta_{24}}
                   {\eta_2\eta_4\eta_6\eta_{12}}\right)^2,\quad
 P=\eta_2\eta_4\eta_6\eta_{12},\quad X=\frac{w}{1+4w^2},\quad Z=P/X.
-\label{eq:24mod}
+\label{cmz:eq:24mod}
 \end{equation}
-All these choices have $X=q+O(q^2)$ and $Z=1+O(q)$ at the cusp, and satisfy \eqref{eq:moddiff} with the polynomial data just given. In particular, they select the normalized recurrence solutions, not merely unspecified solutions of the same differential equations.
+All these choices have $X=q+O(q^2)$ and $Z=1+O(q)$ at the cusp, and satisfy \eqref{cmz:eq:moddiff} with the polynomial data just given. In particular, they select the normalized recurrence solutions, not merely unspecified solutions of the same differential equations.
 
 \subsection{Translation of the parameter}
 For either family, let $\delta=\eps-\eps_0$. Since $X_\eps^{-1}=X_{\eps_0}^{-1}+\delta$ and $X_\eps Z_\eps$ is independent of the parameter,
 \begin{align}
 F_\eps(x)&=\frac1{1-\delta x}
- F_{\eps_0}\!\left(\frac{x}{1-\delta x}\right),\label{eq:transform}\\
+ F_{\eps_0}\!\left(\frac{x}{1-\delta x}\right),\label{cmz:eq:transform}\\
 T_\eps(n)&=\sum_{k=0}^n\binom nk\delta^{n-k}T_{\eps_0}(k).
-\label{eq:binomial}
+\label{cmz:eq:binomial}
 \end{align}
-The identities first hold near zero and thereafter by analytic continuation. Formula~\eqref{eq:binomial} also proves directly that the parameter coefficients are real polynomials and monic. Differentiating that finite identity gives the Appell relation
+The identities first hold near zero and thereafter by analytic continuation. Formula~\eqref{cmz:eq:binomial} also proves directly that the parameter coefficients are real polynomials and monic. Differentiating that finite identity gives the Appell relation
 \begin{equation}
 \frac{\partial}{\partial\eps}T_\eps(n)=nT_\eps(n-1).
-\label{eq:appell}
+\label{cmz:eq:appell}
 \end{equation}
 This is a direct structural consequence of binomial translation, rather than an additional connection theorem.
 
 \section{From a modular connection to coefficient asymptotics}
-\label{sec:connection}
+\label{cmz:sec:connection}
 The following statement packages the local and global analytic requirements. Its positive-axis mechanism is the earlier modular radial principle \cite{GZ}; the hypotheses here make the sheet and coefficient-transfer steps explicit.
 
 \begin{theorem}[A specified real connection]
-\label{thm:connection}
-Suppose that $F$ satisfies \eqref{eq:ODE}, is analytic at zero with $F(0)=1$, and has a modular parametrization \eqref{eq:moddiff}. Assume the following conditions on a vertical path $\tau=u+\ii y$, $y\geq y_0$.
+\label{cmz:thm:connection}
+Suppose that $F$ satisfies \eqref{cmz:eq:ODE}, is analytic at zero with $F(0)=1$, and has a modular parametrization \eqref{cmz:eq:moddiff}. Assume the following conditions on a vertical path $\tau=u+\ii y$, $y\geq y_0$.
 \begin{enumerate}[label=(\roman*)]
 \item $X,Z$ are analytic near the path and real on it, $Z>0$, $X\to0$ as $y\to\infty$, and $X(u+\ii y_0)=r\ne0$.
 \item The number $r$ is a simple root of $G$, with $-rG'(r)>0$, and $X/r$ traverses $(0,1)$ without an earlier turning point.
@@ -306,22 +396,22 @@ fixes $\tau_0=u+\ii y_0$, and
 \begin{equation}
 X(\gamma\tau)=X(\tau),\qquad
 Z(\gamma\tau)=-\frac{(c\tau-a)^2}{D}Z(\tau).
-\label{eq:weight}
+\label{cmz:eq:weight}
 \end{equation}
-\item $r$ is the unique nonzero singular point of \eqref{eq:ODE} of minimum modulus. It suffices here that it be the unique minimum-modulus root of $G$.
+\item $r$ is the unique nonzero singular point of \eqref{cmz:eq:ODE} of minimum modulus. It suffices here that it be the unique minimum-modulus root of $G$.
 \end{enumerate}
 Put $\mu=c/\sqrt D$ and $R=1/r$. Then, for each fixed $K\geq0$,
 \begin{equation}
 a_n=C R^n n^{-3/2}
 \left(\sum_{j=0}^K\frac{b_j}{n^j}+O(n^{-K-1})\right),\qquad
 C=\frac{\mu}{2\pi^{3/2}\sqrt{-rG'(r)}},\quad b_0=1.
-\label{eq:connectionC}
+\label{cmz:eq:connectionC}
 \end{equation}
 For negative $r$, the displayed expression is the signed expansion $C(-|R|)^n n^{-3/2}(1+\cdots)$, with $C>0$.
 \end{theorem}
 
 \begin{proof}
-At the upper-half-plane fixed point, $c\tau_0-a=\ii\sqrt D$ and $\gamma'(\tau_0)=-1$. Differentiating the second equation in \eqref{eq:weight} therefore gives
+At the upper-half-plane fixed point, $c\tau_0-a=\ii\sqrt D$ and $\gamma'(\tau_0)=-1$. Differentiating the second equation in \eqref{cmz:eq:weight} therefore gives
 \[
 -Z_\tau(\tau_0)=-2\ii\mu Z(\tau_0)+Z_\tau(\tau_0),
 \]
@@ -329,29 +419,29 @@ so that
 \begin{equation}
 Z_\tau(\tau_0)=\ii\mu Z_0,\qquad Z_y(\tau_0)=-\mu Z_0\ne0,
 \qquad Z_0=Z(\tau_0)>0.
-\label{eq:Zderiv}
+\label{cmz:eq:Zderiv}
 \end{equation}
-Squaring \eqref{eq:moddiff} along the vertical path yields
+Squaring \eqref{cmz:eq:moddiff} along the vertical path yields
 \begin{equation}
 X_y^2=4\pi^2Z^2X^2G(X).
-\label{eq:square}
+\label{cmz:eq:square}
 \end{equation}
 The function $X$ is nonconstant. If $X-r$ first vanishes to order $m$ at the endpoint, the simple root of $G$ gives $2m-2=m$, hence $m=2$. With $s=y-y_0$,
 \begin{align}
 X&=r+\pi^2Z_0^2r^2G'(r)s^2+O(s^3),\notag\\
 1-X/r&=\kappa s^2+O(s^3),\qquad
 \kappa=-\pi^2Z_0^2rG'(r)>0.
-\label{eq:quadratic}
+\label{cmz:eq:quadratic}
 \end{align}
-The analytic inverse on the specified side $s>0$, together with \eqref{eq:Zderiv}, gives
+The analytic inverse on the specified side $s>0$, together with \eqref{cmz:eq:Zderiv}, gives
 \begin{equation}
 F(x)=Z_0-\frac{\mu}{\pi\sqrt{-rG'(r)}}(1-x/r)^{1/2}
        +O(1-x/r).
-\label{eq:puiseuxfirst}
+\label{cmz:eq:puiseuxfirst}
 \end{equation}
 More precisely, this is the beginning of a convergent power series in $(1-x/r)^{1/2}$. The nonzero square-root coefficient and its sign have thus been determined on the cusp sheet.
 
-After writing \eqref{eq:ODE} in ordinary derivative form, its only possible finite singularities are zero and roots of $G$. The analytic germ has trivial local monodromy at zero. Uniqueness of analytic continuation for the linear equation supplies a simply connected slit disc extending beyond $|r|$, but not reaching another root. On the verified real path it agrees with the modular germ. This gives the required dented, or $\Delta$-analytic, neighborhood at $r$; when $r<0$, rotate $x$ first.
+After writing \eqref{cmz:eq:ODE} in ordinary derivative form, its only possible finite singularities are zero and roots of $G$. The analytic germ has trivial local monodromy at zero. Uniqueness of analytic continuation for the linear equation supplies a simply connected slit disc extending beyond $|r|$, but not reaching another root. On the verified real path it agrees with the modular germ. This gives the required dented, or $\Delta$-analytic, neighborhood at $r$; when $r<0$, rotate $x$ first.
 
 Transfer of each odd half-integer power gives the expansion to every fixed order. The even powers are locally analytic and contribute no algebraic orders. In particular,
 \[
@@ -359,21 +449,21 @@ Transfer of each odd half-integer power gives the expansion to every fixed order
  =\frac{r^{-n}n^{-3/2}}{\Gamma(-1/2)}(1+O(n^{-1})),
 \qquad \Gamma(-1/2)=-2\sqrt\pi,
 \]
-which gives \eqref{eq:connectionC}. Taking sufficiently many terms of the convergent local series and the transfer expansion proves each stated remainder.
+which gives \eqref{cmz:eq:connectionC}. Taking sufficiently many terms of the convergent local series and the transfer expansion proves each stated remainder.
 \end{proof}
 
 \begin{lemma}[Checking the first turning point]
-\label{lem:turn}
+\label{cmz:lem:turn}
 Suppose $X$ is real, finite and nonzero, and $Z>0$, on the path under consideration. Critical points of $X$ can occur only at roots of $G$. If only one simple root is accessible in the range of $X$, and the endpoint attains it, then this is the first turning point.
 \end{lemma}
 \begin{proof}
-Equation~\eqref{eq:square} gives the first assertion. At every visit to the accessible root, the order comparison in \eqref{eq:quadratic} gives the same quadratic turning direction. Two distinct visits would require an intervening turn in the opposite direction, which is impossible when there is no other accessible critical value. The cusp starts on the side between zero and the root, so the endpoint belongs to its initial sheet.
+Equation~\eqref{cmz:eq:square} gives the first assertion. At every visit to the accessible root, the order comparison in \eqref{cmz:eq:quadratic} gives the same quadratic turning direction. Two distinct visits would require an intervening turn in the opposite direction, which is impossible when there is no other accessible critical value. The cusp starts on the side between zero and the root, so the endpoint belongs to its initial sheet.
 \end{proof}
 
-A radial limit alone would not justify Theorem~\ref{thm:connection}. Its proof separately establishes the local inverse, the nonzero first odd coefficient, the sheet, continuation, and dominance. We shall use the local part of the proof even when another singularity has smaller modulus, without then asserting a leading coefficient asymptotic from that local connection.
+A radial limit alone would not justify Theorem~\ref{cmz:thm:connection}. Its proof separately establishes the local inverse, the nonzero first odd coefficient, the sheet, continuation, and dominance. We shall use the local part of the proof even when another singularity has smaller modulus, without then asserting a leading coefficient asymptotic from that local connection.
 
 \section{The positive connections}
-\label{sec:positive}
+\label{cmz:sec:positive}
 Dedekind inversion, in the principal square-root convention, is
 \[
 \eta(-1/\tau)=\sqrt{-\ii\tau}\,\eta(\tau).
@@ -381,12 +471,12 @@ Dedekind inversion, in the principal square-root convention, is
 For a symmetric weight-two eta product $P_N=\prod_{d\mid N}\eta_d^{e_d}$ with $e_d=e_{N/d}$ and $\sum e_d=4$, it yields
 \begin{equation}
 P_N(-1/(N\tau))=-N\tau^2P_N(\tau).
-\label{eq:etaFricke}
+\label{cmz:eq:etaFricke}
 \end{equation}
 For the Fricke matrix $W_N=\left(\begin{smallmatrix}0&-1\\N&0\end{smallmatrix}\right)$, the fixed point is $\ii/\sqrt N$ and $\mu=\sqrt N$. Eta products on the positive imaginary axis are positive. These observations implement the positive principle in \cite[(27)]{GZ}.
 
 \subsection{Level 11}
-The Gram matrix of the theta series in \eqref{eq:11mod} is
+The Gram matrix of the theta series in \eqref{cmz:eq:11mod} is
 \[
 Q=\begin{pmatrix}2&1\\1&6\end{pmatrix},\qquad \det Q=11.
 \]
@@ -394,17 +484,17 @@ The matrix $11Q^{-1}=\left(\begin{smallmatrix}6&-1\\-1&2\end{smallmatrix}\right)
 \[
 \Theta(-1/(11\tau))=-\ii\sqrt{11}\tau\Theta(\tau).
 \]
-Thus $Z$ transforms as $-11\tau^2 Z$, and $X$ is Fricke invariant. At $\tau_0=\ii/\sqrt{11}$, $X_0>0$, $Z_0>0$. Invariance gives $X_\tau(\tau_0)=0$, so \eqref{eq:square} forces $G_{11}(X_0)=0$.
+Thus $Z$ transforms as $-11\tau^2 Z$, and $X$ is Fricke invariant. At $\tau_0=\ii/\sqrt{11}$, $X_0>0$, $Z_0>0$. Invariance gives $X_\tau(\tau_0)=0$, so \eqref{cmz:eq:square} forces $G_{11}(X_0)=0$.
 
 The cubic $G_{11}$ has one real root
 \[
 r=0.0594265310722368707300462917651\ldots;
 \]
-its other roots are $0.6066503708275\ldots\ \pm\ 0.1200771747517\ldots\ii$. Root counting, or the two critical values of the cubic, establishes that the real root is the unique positive root and has smaller modulus than the conjugate pair. Hence $X_0=r$; Lemma~\ref{lem:turn} verifies the initial sheet. The constant is
+its other roots are $0.6066503708275\ldots\ \pm\ 0.1200771747517\ldots\ii$. Root counting, or the two critical values of the cubic, establishes that the real root is the unique positive root and has smaller modulus than the conjugate pair. Hence $X_0=r$; Lemma~\ref{cmz:lem:turn} verifies the initial sheet. The constant is
 \begin{equation}
 C_{11}=\frac{\sqrt{11}}{2\pi^{3/2}\sqrt{20r-112r^2+132r^3}}
  =0.328736861862826544084043891528\ldots.
-\label{eq:C11}
+\label{cmz:eq:C11}
 \end{equation}
 The displayed decimals identify the root, rather than serve as the proof of its separation. For example, $G_{11}$ changes sign between $0.059$ and $0.060$; its values at the two positive stationary points are negative, and the product of the two nonreal roots is $1/(44r)>1/3$, so their common modulus exceeds $1/\sqrt3>r$.
 
@@ -413,18 +503,18 @@ If $\xi=C_{11}\pi^{3/2}/R$ with $R=1/r$, then
 \xi^2=\frac{11r}{80-448r+528r^2},\qquad
 11264\xi^6+928\xi^2-11=0,
 \]
-by reduction modulo $G_{11}(r)=0$. This is Cooper's Table 8 form of the constant. The equivalent OEIS form is discussed in Section~\ref{sec:sources}.
+by reduction modulo $G_{11}(r)=0$. This is Cooper's Table 8 form of the constant. The equivalent OEIS form is discussed in Section~\ref{cmz:sec:sources}.
 
 \subsection{The two positive level 14 specializations}
-From \eqref{eq:14mod},
+From \eqref{cmz:eq:14mod},
 \[
 X_5=\frac{w}{(1-w)^2},\qquad X_9=\frac{w}{(1+w)^2}.
 \]
-Fricke inversion fixes $w$, hence $X_5$ and $X_9$, and \eqref{eq:etaFricke} gives the required transformation for $Z=P/X$. On $0<q<1$,
+Fricke inversion fixes $w$, hence $X_5$ and $X_9$, and \eqref{cmz:eq:etaFricke} gives the required transformation for $Z=P/X$. On $0<q<1$,
 \begin{equation}
 w=q\prod_{m\geq1}\left(\frac{1+q^{7m}}{1+q^m}\right)^4,
 \qquad 0<w<q<1.
-\label{eq:14bounds}
+\label{cmz:eq:14bounds}
 \end{equation}
 Thus $X_5$ is finite and positive, while $0<X_9<1/4$. The special polynomials are
 \begin{align*}
@@ -433,10 +523,10 @@ H_{14A}&=\tfrac12x(2+51x+56x^2),\\
 G_{14B}&=(1-4x)(1-18x+49x^2),&
 H_{14B}&=\tfrac12x(10-141x+392x^2).
 \end{align*}
-For $14A$ the only positive root is $1/(5+4\sqrt2)$. For $14B$ the roots are $1/(9+4\sqrt2)$, $1/4$, and $1/(9-4\sqrt2)>1/4$. The range restriction in the second case therefore identifies the first root at the fixed point. Each selected root is uniquely smallest in modulus; Lemma~\ref{lem:turn} completes the path check. Theorem~\ref{thm:connection}, with $\mu=\sqrt{14}$, gives the two constants in Table~\ref{tab:constants}. The $14B$ result agrees with \cite[Example 6]{GZ}. Formula~\eqref{eq:binomial} also identifies $14B$ as the $+4$ binomial transform of $14A$.
+For $14A$ the only positive root is $1/(5+4\sqrt2)$. For $14B$ the roots are $1/(9+4\sqrt2)$, $1/4$, and $1/(9-4\sqrt2)>1/4$. The range restriction in the second case therefore identifies the first root at the fixed point. Each selected root is uniquely smallest in modulus; Lemma~\ref{cmz:lem:turn} completes the path check. Theorem~\ref{cmz:thm:connection}, with $\mu=\sqrt{14}$, gives the two constants in Table~\ref{cmz:tab:constants}. The $14B$ result agrees with \cite[Example 6]{GZ}. Formula~\eqref{cmz:eq:binomial} also identifies $14B$ as the $+4$ binomial transform of $14A$.
 
 \subsection{The positive level 15 specialization}
-For the functions in \eqref{eq:15mod}, Fricke inversion sends $w$ to $1/(9w)$ and sends $P$ to $-15\tau^2P$. Thus $X_1=w/(1+3w)^2$ is invariant. At $\tau_0=\ii/\sqrt{15}$, positivity and $w=1/(9w)$ give $w=1/3$, so $X_1=1/12$. Here
+For the functions in \eqref{cmz:eq:15mod}, Fricke inversion sends $w$ to $1/(9w)$ and sends $P$ to $-15\tau^2P$. Thus $X_1=w/(1+3w)^2$ is invariant. At $\tau_0=\ii/\sqrt{15}$, positivity and $w=1/(9w)$ give $w=1/3$, so $X_1=1/12$. Here
 \[
 G_{15A}=(1-12x)(1-2x+5x^2),\qquad
 H_{15A}=\tfrac32x(2-11x+40x^2).
@@ -444,11 +534,11 @@ H_{15A}=\tfrac32x(2-11x+40x^2).
 The remaining roots $(1\pm2\ii)/5$ have modulus $1/\sqrt5>1/12$. Positivity and the absence of another real root give the first-turn condition. Consequently,
 \begin{equation}
 C_{15A}=\frac{6\sqrt3}{5\pi^{3/2}}.
-\label{eq:C15A}
+\label{cmz:eq:C15A}
 \end{equation}
 
 \subsection{Level 24}
-Fricke inversion fixes the $w$ and $X$ of \eqref{eq:24mod}; $P$ transforms by $-24\tau^2$. For $0<q<1$,
+Fricke inversion fixes the $w$ and $X$ of \eqref{cmz:eq:24mod}; $P$ transforms by $-24\tau^2$. For $0<q<1$,
 \[
 w=q\prod_{m\geq1}
 \left(\frac{(1+q^{4m})(1+q^{12m})}{(1+q^m)(1+q^{3m})}\right)^2<q.
@@ -456,11 +546,11 @@ w=q\prod_{m\geq1}
 At $\tau_0=\ii/\sqrt{24}$, $q_0=e^{-2\pi/\sqrt{24}}<1/2$, so $0<w_0<1/2$ and $0<X_0<1/4$. The only root of $G_{24}$ in this interval is $r=1/8$, uniquely smallest in modulus. This identifies the endpoint, the range restriction excludes earlier accessible alternatives, and
 \begin{equation}
 C_{24}=\frac{\sqrt8}{\pi^{3/2}}.
-\label{eq:C24}
+\label{cmz:eq:C24}
 \end{equation}
 
 \section{The negative connections}
-\label{sec:negative}
+\label{cmz:sec:negative}
 For the two negative connections the relevant fixed point is on $\Rea\tau=1/2$. A formal replacement of a positive Fricke level does not fix the multiplier or its sign. We give the transformations explicitly.
 
 \subsection{The level 15 negative connection}
@@ -475,17 +565,17 @@ Take
 \begin{equation}
 M=\begin{pmatrix}8&1\\15&2\end{pmatrix}\in\Gamma_0(15),\qquad
 \gamma=MW_{15}=\begin{pmatrix}15&-8\\30&-15\end{pmatrix}.
-\label{eq:gamma15}
+\label{cmz:eq:gamma15}
 \end{equation}
 Then $\det\gamma=15$ and
 \begin{equation}
 X_B(\gamma\tau)=X_B(\tau),\qquad
 Z_B(\gamma\tau)=-\frac{(30\tau-15)^2}{15}Z_B(\tau).
-\label{eq:law15}
+\label{cmz:eq:law15}
 \end{equation}
 Its fixed point is $\tau_*=1/2+\ii/(2\sqrt{15})$, giving $\mu=2\sqrt{15}$.
 
-On $\tau=1/2+\ii y$, $q$ is negative. In their convergent product expressions both $w$ and $P$ are $q$ times a positive real product. Therefore $w<0$, $P<0$, $X_B<0$ is finite, and $Z_B>0$. The polynomial $G_B$ has only one real root, $r=-1/12$; its other roots have modulus $1/\sqrt{125}>1/12$. Invariance at the fixed point and \eqref{eq:square} force $X_B(\tau_*)=r$. The path has no earlier turn by Lemma~\ref{lem:turn}, so this really continues the cusp germ to the required negative sheet.
+On $\tau=1/2+\ii y$, $q$ is negative. In their convergent product expressions both $w$ and $P$ are $q$ times a positive real product. Therefore $w<0$, $P<0$, $X_B<0$ is finite, and $Z_B>0$. The polynomial $G_B$ has only one real root, $r=-1/12$; its other roots have modulus $1/\sqrt{125}>1/12$. Invariance at the fixed point and \eqref{cmz:eq:square} force $X_B(\tau_*)=r$. The path has no earlier turn by Lemma~\ref{cmz:lem:turn}, so this really continues the cusp germ to the required negative sheet.
 
 At the selected root,
 \[
@@ -495,22 +585,22 @@ The connection theorem now gives
 \begin{equation}
 C_{15B}=\frac{2\sqrt{15}}{2\pi^{3/2}\sqrt{5/144}}
        =\frac{12\sqrt3}{\pi^{3/2}}.
-\label{eq:C15B}
+\label{cmz:eq:C15B}
 \end{equation}
 The factor two in $\mu$ is essential. Using $\sqrt{15}$, the positive Fricke value, would give half the correct constant.
 
 \subsection{The negative level 14 conjugate connection}
-Use \eqref{eq:14mod} and the matrix
+Use \eqref{cmz:eq:14mod} and the matrix
 \begin{equation}
 \gamma=\begin{pmatrix}7&-4\\14&-7\end{pmatrix},\qquad
 \det\gamma=7,\qquad \tau_*=\frac12+\frac{\ii}{2\sqrt7}.
-\label{eq:gamma14}
+\label{cmz:eq:gamma14}
 \end{equation}
 The eta factors require the exact multipliers. For $A=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\in\mathrm{SL}_2(\Z)$ with $c>0$, use
 \begin{equation}
 \eta(Az)=\nu(A)(cz+d)^{1/2}\eta(z),\qquad
 \nu(A)=\exp\!\left(\pi\ii\left(\frac{a+d}{12c}-s(d,c)-\frac14\right)\right),
-\label{eq:multiplier}
+\label{cmz:eq:multiplier}
 \end{equation}
 where $s(d,c)$ is the Dedekind sum and the square root is principal. In the four cases needed here, $c=1$ or $2$ and $s(d,c)=0$. The exact argument identities and multipliers are as follows.
 \begin{center}
@@ -530,28 +620,28 @@ The square-root factors in the first and third rows are $(14\tau-7)^{1/2}$, and 
 \begin{equation}
 P(\gamma\tau)=-\frac{(14\tau-7)^2}{7}P(\tau),\qquad
 w(\gamma\tau)=\frac1{w(\tau)}.
-\label{eq:law14}
+\label{cmz:eq:law14}
 \end{equation}
-The fourth-power quotient gives the second equality. Since $X_\eps$ is invariant under $w\mapsto1/w$, $Z_\eps=P/X_\eps$ has exactly the negative weight-two law needed in Theorem~\ref{thm:connection}.
+The fourth-power quotient gives the second equality. Since $X_\eps$ is invariant under $w\mapsto1/w$, $Z_\eps=P/X_\eps$ has exactly the negative weight-two law needed in Theorem~\ref{cmz:thm:connection}.
 
-Along $\tau=1/2+\ii y$, the product signs give $w<0$ and $P<0$. At the fixed point \eqref{eq:law14} gives $w=1/w$, hence $w=-1$. For $\eps=-4\sqrt2$, the denominator $1+(\eps-7)w+w^2$ is positive for all negative $w$, so $X_\eps<0$ and $Z_\eps>0$. At $w=-1$,
+Along $\tau=1/2+\ii y$, the product signs give $w<0$ and $P<0$. At the fixed point \eqref{cmz:eq:law14} gives $w=1/w$, hence $w=-1$. For $\eps=-4\sqrt2$, the denominator $1+(\eps-7)w+w^2$ is positive for all negative $w$, so $X_\eps<0$ and $Z_\eps>0$. At $w=-1$,
 \[
 r=\frac1{\eps-9}=-\frac1{9+4\sqrt2}.
 \]
 Moreover,
 \begin{equation}
 \frac1{X_\eps}=\frac1w+w+\eps-7\leq\eps-9
-\label{eq:14negativebound}
+\label{cmz:eq:14negativebound}
 \end{equation}
-for every $w<0$. Thus $r\leq X_\eps<0$ throughout the path. The nonzero inverse root locations are $\eps-9$, $\eps-5$, and $\eps-4\sqrt2$, all negative; $|\eps-9|$ is strictly largest. This proves unique dominance and excludes other accessible turning values. Lemma~\ref{lem:turn} supplies the first-turn check.
+for every $w<0$. Thus $r\leq X_\eps<0$ throughout the path. The nonzero inverse root locations are $\eps-9$, $\eps-5$, and $\eps-4\sqrt2$, all negative; $|\eps-9|$ is strictly largest. This proves unique dominance and excludes other accessible turning values. Lemma~\ref{cmz:lem:turn} supplies the first-turn check.
 
-Here $\mu=2\sqrt7$. Exact simplification of \eqref{eq:connectionC} yields
+Here $\mu=2\sqrt7$. Exact simplification of \eqref{cmz:eq:connectionC} yields
 \begin{align}
 C_{14\overline C}
 &=\frac{(9+4\sqrt2)^{3/2}}{2\sqrt7\,\pi^{3/2}}\notag\\
 &=\frac{9+4\sqrt2}{\pi^{3/2}}
        \left(\frac{\sqrt{14}}7+\frac{\sqrt7}{14}\right),
-\label{eq:C14bar}
+\label{cmz:eq:C14bar}
 \end{align}
 which is the conjugate-$C$ entry in Cooper's table.
 
@@ -560,18 +650,18 @@ The same level 14 transformation at $\eps=5$ gives a local negative connection f
 \end{remark}
 
 \section{Binomial translation and the ten fixed connections}
-\label{sec:ten}
+\label{cmz:sec:ten}
 \begin{proposition}[A strict dominance cell]
-\label{prop:translate}
+\label{cmz:prop:translate}
 Suppose a base function has a positive dominant inverse singularity $R$, with connection constant $C_0$, and other inverse singularities $R_j$. For a parameter translation $\delta$, assume
 \begin{equation}
 |R+\delta|>\max\bigl(|\delta|,\ |R_j+\delta|\text{ for all }j\bigr).
-\label{eq:dominance}
+\label{cmz:eq:dominance}
 \end{equation}
-For the transform \eqref{eq:transform}, the singularity $1/(R+\delta)$ is uniquely dominant and
+For the transform \eqref{cmz:eq:transform}, the singularity $1/(R+\delta)$ is uniquely dominant and
 \begin{equation}
 C_\delta=C_0\left(\frac{R+\delta}{R}\right)^{3/2}.
-\label{eq:translatedC}
+\label{cmz:eq:translatedC}
 \end{equation}
 The branch is continued from $\delta=0$ in the strict dominance cell. Every fixed-order coefficient expansion transfers in the same way, uniformly on compact subsets of that cell.
 \end{proposition}
@@ -589,10 +679,10 @@ The inequality $|R+\delta|>|\delta|$ implies $\Rea\delta>-R/2$, and
 \end{align*}
 Thus $|z|<1/R$ and the path stays inside the original convergence disc. It fixes the sheet unambiguously.
 
-At the new singularity, direct substitution into the base local square-root term gives the multiplier $((R+\delta)/R)^{3/2}$, including the prefactor $(1-\delta x)^{-1}$. Each comparison with a fixed $S$ in \eqref{eq:dominance} defines an open affine half-plane, so their intersection is convex and contains $0$. Moreover $\Rea(R+\delta)>R/2>0$, which fixes the principal power throughout this cell. The same analytic substitution gives every local Puiseux coefficient. Compactness, strict separation and singularity transfer give the stated uniformity.
+At the new singularity, direct substitution into the base local square-root term gives the multiplier $((R+\delta)/R)^{3/2}$, including the prefactor $(1-\delta x)^{-1}$. Each comparison with a fixed $S$ in \eqref{cmz:eq:dominance} defines an open affine half-plane, so their intersection is convex and contains $0$. Moreover $\Rea(R+\delta)>R/2>0$, which fixes the principal power throughout this cell. The same analytic substitution gives every local Puiseux coefficient. Compactness, strict separation and singularity transfer give the stated uniformity.
 \end{proof}
 
-For $14C$, take the $14A$ base, $\eps_0=5$ and $\delta=4\sqrt2-5>0$. The base rates are $5+4\sqrt2,5-4\sqrt2,-4$, with the additional rate $0$. The transformed dominant rate is $8\sqrt2$; its competitors are $0,4\sqrt2-9,4\sqrt2-5$. Proposition~\ref{prop:translate} gives
+For $14C$, take the $14A$ base, $\eps_0=5$ and $\delta=4\sqrt2-5>0$. The base rates are $5+4\sqrt2,5-4\sqrt2,-4$, with the additional rate $0$. The transformed dominant rate is $8\sqrt2$; its competitors are $0,4\sqrt2-9,4\sqrt2-5$. Proposition~\ref{cmz:prop:translate} gives
 \[
 C_{14C}=\frac8{\pi^{3/2}}\sqrt{\frac{8\sqrt2-11}{7}}.
 \]
@@ -600,14 +690,14 @@ For $15C$ and $15\overline C$, take the $15A$ base and $\delta=-1\pm2\ii$. The b
 \begin{equation}
 C_{15C}=\frac{(11+2\ii)^{3/2}}{20\pi^{3/2}},\qquad
 C_{15\overline C}=\frac{(11-2\ii)^{3/2}}{20\pi^{3/2}},
-\label{eq:complexC}
+\label{cmz:eq:complexC}
 \end{equation}
 with conjugate principal powers. The algebraic and complex specializations are coefficient sequences of the existing families; no additional integer-sequence identification is intended.
 
 \begin{table}[p]
 \centering
 \caption{All ten fixed connections from Cooper's Table 8, normalized as $a_n=CR^n n^{-3/2}(1+b_1/n+O(n^{-2}))$. In the first row, $r$ is the positive root of $1-20r+56r^2-44r^3=0$.}
-\label{tab:constants}
+\label{cmz:tab:constants}
 \renewcommand{\arraystretch}{1.9}
 \begin{tabular}{ccl}
 \toprule
@@ -648,25 +738,25 @@ $24$ & $-3/8$\\
 \clearpage
 
 \section{Proof of the uniform level 15 expansion}
-\label{sec:uniformproof}
+\label{cmz:sec:uniformproof}
 \subsection{The two local amplitudes}
 The positive connection at $\eps=1$ continues through
 \begin{equation}
 F_\eps(x)=\frac1{1-(\eps-1)x}
  F_1\!\left(\frac{x}{1-(\eps-1)x}\right).
-\label{eq:plusmap}
+\label{cmz:eq:plusmap}
 \end{equation}
-At the image $r_+=1/(\eps+11)$, the same local substitution as in Proposition~\ref{prop:translate} multiplies the $15A$ constant by $((\eps+11)/12)^{3/2}$. Equation~\eqref{eq:C15A} consequently gives $C_+$ in \eqref{eq:amps}. This local argument does not require that this root be the single dominant one throughout the parameter region.
+At the image $r_+=1/(\eps+11)$, the same local substitution as in Proposition~\ref{cmz:prop:translate} multiplies the $15A$ constant by $((\eps+11)/12)^{3/2}$. Equation~\eqref{cmz:eq:C15A} consequently gives $C_+$ in \eqref{cmz:eq:amps}. This local argument does not require that this root be the single dominant one throughout the parameter region.
 
 Likewise, the negative connection at $\eps=-11$ continues through
 \begin{equation}
 F_\eps(x)=\frac1{1-(\eps+11)x}
  F_{-11}\!\left(\frac{x}{1-(\eps+11)x}\right).
-\label{eq:minusmap}
+\label{cmz:eq:minusmap}
 \end{equation}
-Its local multiplier is $((\eps-1)/(-12))^{3/2}=((1-\eps)/12)^{3/2}$. Equation~\eqref{eq:C15B} gives $C_-$ in \eqref{eq:amps}.
+Its local multiplier is $((\eps-1)/(-12))^{3/2}=((1-\eps)/12)^{3/2}$. Equation~\eqref{cmz:eq:C15B} gives $C_-$ in \eqref{cmz:eq:amps}.
 
-For real $\eps$ close to $-5$, the positive radial path in \eqref{eq:plusmap} maps inside the $15A$ convergence disc, and the negative radial path in \eqref{eq:minusmap} maps inside the $15B$ convergence disc. Explicitly, for $x=t/(\eps+11)$ the first base argument is
+For real $\eps$ close to $-5$, the positive radial path in \eqref{cmz:eq:plusmap} maps inside the $15A$ convergence disc, and the negative radial path in \eqref{cmz:eq:minusmap} maps inside the $15B$ convergence disc. Explicitly, for $x=t/(\eps+11)$ the first base argument is
 \[
 \frac{t}{12+(\eps-1)(1-t)},
 \]
@@ -681,26 +771,26 @@ For $|\eps+5|\leq1/10$,
 \begin{equation}
 |\eps+11|,\ |\eps-1|\geq\frac{59}{10},\qquad
 |\eps\pm2\ii|\leq\sqrt{29}+\frac1{10}<\frac{57}{10}.
-\label{eq:gapclosed}
+\label{cmz:eq:gapclosed}
 \end{equation}
 The circle $|x|=10/57$ therefore encloses $r_+$ and $r_-$ and excludes the other two roots of $G_{15,\eps}$. The two enclosed roots are simple and stay in disjoint neighborhoods of $1/6$ and $-1/6$.
 
 Uniformity on the entire closed parameter disc, including its boundary, uses an open buffer. On
 \begin{equation}
 \disc=\{\eps\in\C:|\eps+5|<1/5\},
-\label{eq:buffer}
+\label{cmz:eq:buffer}
 \end{equation}
 we have
 \[
 \min(|\eps+11|,|\eps-1|)>\frac{29}{5}>\frac{57}{10},\qquad
 |\eps\pm2\ii|<\sqrt{29}+\frac15<\frac{57}{10}.
 \]
-Thus the same outer circle works on an open neighborhood of the claimed compact parameter set. Nonintersecting moving slits from $r_+$ and $r_-$ to that circle can be chosen in uniformly separated neighborhoods. The normalized germ continues in their complement by the linear equation \eqref{eq:ODE}; zero is removable for that germ. Analytic dependence of linear differential equations on their coefficients, or the exact substitutions \eqref{eq:plusmap}--\eqref{eq:minusmap}, gives analytic dependence on $\eps$. Near each root the convergent Puiseux expansion has coefficients analytic on the buffer. The base Puiseux expansions established in Sections~\ref{sec:positive}--\ref{sec:negative} and the rational maps give these expansions directly.
+Thus the same outer circle works on an open neighborhood of the claimed compact parameter set. Nonintersecting moving slits from $r_+$ and $r_-$ to that circle can be chosen in uniformly separated neighborhoods. The normalized germ continues in their complement by the linear equation \eqref{cmz:eq:ODE}; zero is removable for that germ. Analytic dependence of linear differential equations on their coefficients, or the exact substitutions \eqref{cmz:eq:plusmap}--\eqref{cmz:eq:minusmap}, gives analytic dependence on $\eps$. Near each root the convergent Puiseux expansion has coefficients analytic on the buffer. The base Puiseux expansions established in Sections~\ref{cmz:sec:positive}--\ref{cmz:sec:negative} and the rational maps give these expansions directly.
 
 \subsection{Simultaneous transfer}
-Deform the coefficient contour in the two-slit domain to local Hankel contours at $r_+$ and $r_-$ together with portions at a uniformly separated outer radius. Transfer the odd half-integer powers at each root. Uniform local neighborhoods and analyticity on the buffer bound the Puiseux coefficients and their truncated remainders uniformly on $|\eps+5|\leq1/10$. The outer part is $O((57/10)^n)$, uniformly; because both dominant moduli are at least $59/10$, it is absorbed in the remainder of \eqref{eq:two} for each fixed $K$.
+Deform the coefficient contour in the two-slit domain to local Hankel contours at $r_+$ and $r_-$ together with portions at a uniformly separated outer radius. Transfer the odd half-integer powers at each root. Uniform local neighborhoods and analyticity on the buffer bound the Puiseux coefficients and their truncated remainders uniformly on $|\eps+5|\leq1/10$. The outer part is $O((57/10)^n)$, uniformly; because both dominant moduli are at least $59/10$, it is absorbed in the remainder of \eqref{cmz:eq:two} for each fixed $K$.
 
-This is the standard multiple-singularity transfer construction \cite[Theorem VI.5]{FS}, with uniformity supplied by the explicit gap and parameter buffer. In particular, it adds the two contour contributions before taking an error estimate; no division by their possibly vanishing sum occurs. The recurrence matching in Section~\ref{sec:corrections} identifies its correction coefficients with $b_{j,\pm}$ and gives \eqref{eq:twob1}. This proves Theorem~\ref{thm:uniform}.
+This is the standard multiple-singularity transfer construction \cite[Theorem VI.5]{FS}, with uniformity supplied by the explicit gap and parameter buffer. In particular, it adds the two contour contributions before taking an error estimate; no division by their possibly vanishing sum occurs. The recurrence matching in Section~\ref{cmz:sec:corrections} identifies its correction coefficients with $b_{j,\pm}$ and gives \eqref{cmz:eq:twob1}. This proves Theorem~\ref{cmz:thm:uniform}.
 
 \subsection{Expansion in the competition variable}
 For a sign $\sigma\in\{+1,-1\}$ and $k\geq1$, define
@@ -708,7 +798,7 @@ For a sign $\sigma\in\{+1,-1\}$ and $k\geq1$, define
 E_{k,\sigma}(u)
 =\frac{(-1)^k(\sigma u/6)^{k+1}}{k+1}
  +\frac32\frac{(-1)^{k+1}(\sigma u/6)^k}{k}.
-\label{eq:Ek}
+\label{cmz:eq:Ek}
 \end{equation}
 A constructive definition of all the window polynomials is
 \begin{equation}
@@ -716,35 +806,35 @@ P_{j,\sigma}(u)=
 [v^j]\left\{
 \exp\!\left(\sum_{k=1}^j E_{k,\sigma}(u)v^k\right)
 \sum_{m=0}^j b_{m,\sigma}(-5+uv)v^m\right\}.
-\label{eq:Pall}
+\label{cmz:eq:Pall}
 \end{equation}
 Only finitely many Taylor coefficients of the analytic $b$ functions are needed, so this is a polynomial in $u$.
 
-Indeed, the plus and minus terms in \eqref{eq:two}, after normalization, contain $(1+\sigma u/(6n))^{n+3/2}$. Its logarithm is
+Indeed, the plus and minus terms in \eqref{cmz:eq:two}, after normalization, contain $(1+\sigma u/(6n))^{n+3/2}$. Its logarithm is
 \[
 \frac{\sigma u}{6}+\sum_{k\geq1}E_{k,\sigma}(u)n^{-k}
 \]
-as a convergent local series in $1/n$ for bounded $u$. Expanding this factor and $b_{m,\sigma}(-5+u/n)$ proves \eqref{eq:Pall}, then \eqref{eq:window} and \eqref{eq:P1}. The estimates hold on every fixed complex $u$ disc for all sufficiently large $n$. Applying Cauchy's formula on a slightly larger disc also gives every fixed derivative expansion, which proves the last assertion of Corollary~\ref{cor:window}.
+as a convergent local series in $1/n$ for bounded $u$. Expanding this factor and $b_{m,\sigma}(-5+u/n)$ proves \eqref{cmz:eq:Pall}, then \eqref{cmz:eq:window} and \eqref{cmz:eq:P1}. The estimates hold on every fixed complex $u$ disc for all sufficiently large $n$. Applying Cauchy's formula on a slightly larger disc also gives every fixed derivative expansion, which proves the last assertion of Corollary~\ref{cmz:cor:window}.
 
 \section{Every fixed correction order}
-\label{sec:corrections}
+\label{cmz:sec:corrections}
 The connection analysis establishes the existence of full fixed-order asymptotic expansions. Their coefficients can then be generated algebraically, without solving further modular connection problems.
 
 \begin{proposition}[A finite exact generator]
-\label{prop:generator}
-Use the polynomial notation of Section~\ref{sec:data}. Let $r$ be a simple root of $G$, let $G_*=rG'(r)\ne0$, and set $b_0=1$. For $m\geq1$, define
+\label{cmz:prop:generator}
+Use the polynomial notation of Section~\ref{cmz:sec:data}. Let $r$ be a simple root of $G$, let $G_*=rG'(r)\ne0$, and set $b_0=1$. For $m\geq1$, define
 \begin{align}
 b_m=-\frac1{mG_*}\sum_{k=0}^{m-1}b_k\sum_{j=0}^d r^j
 [t^{m+1-k}]\Bigg\{
 \left(1-\frac{jt}{2}\right)
 \left[g_j(1-jt)^{-k-1/2}
        -2h_jt^2(1-jt)^{-k-3/2}\right]\Bigg\}.
-\label{eq:generator}
+\label{cmz:eq:generator}
 \end{align}
-This formula gives the normalized corrections for each connection in this article, including both branches of Theorem~\ref{thm:uniform}. In particular,
+This formula gives the normalized corrections for each connection in this article, including both branches of Theorem~\ref{cmz:thm:uniform}. In particular,
 \begin{equation}
 b_1=\frac{16H(r)-(\tht^2G)(r)}{8(\tht G)(r)}.
-\label{eq:b1general}
+\label{cmz:eq:b1general}
 \end{equation}
 \end{proposition}
 \begin{proof}
@@ -752,7 +842,7 @@ Insert
 \[
 a_n=C R^n n^{-3/2}\sum_{k\geq0}b_kn^{-k},\qquad R=1/r,
 \]
-formally into \eqref{eq:generalrec}, divide by $CR^n n^{3/2}$ and put $t=1/n$. Each summand becomes
+formally into \eqref{cmz:eq:generalrec}, divide by $CR^n n^{3/2}$ and put $t=1/n$. Each summand becomes
 \[
 r^j b_k t^k\left(1-\frac{jt}{2}\right)
 \left[g_j(1-jt)^{-k-1/2}
@@ -762,25 +852,25 @@ The coefficient of $b_m$ in the coefficient of $t^{m+1}$ is
 \[
 m\sum_j jg_jr^j=mG_*.
 \]
-The possible contribution of $b_{m+1}$ at the same order is proportional to $G(r)=0$. Solving for $b_m$ therefore gives \eqref{eq:generator}. The case $m=1$ simplifies to \eqref{eq:b1general}, agreeing with Cooper's formula.
+The possible contribution of $b_{m+1}$ at the same order is proportional to $G(r)=0$. Solving for $b_m$ therefore gives \eqref{cmz:eq:generator}. The case $m=1$ simplifies to \eqref{cmz:eq:b1general}, agreeing with Cooper's formula.
 
 This calculation uniquely identifies the formal coefficients. The convergent local Puiseux series and the transfer arguments already prove that these same coefficients occur in an asymptotic expansion with the asserted error at each fixed order. Thus formal matching is used to compute the expansion, not to substitute for its analytic justification.
 \end{proof}
 
-Every operation in \eqref{eq:generator} is finite. For example,
+Every operation in \eqref{cmz:eq:generator} is finite. For example,
 \[
 [t^s](1-jt)^{-\alpha}=\frac{(\alpha)_s}{s!}j^s
 \quad(s\geq0),
 \]
 with coefficient zero for $s<0$. Thus exact arithmetic in the relevant algebraic number field suffices. For level 11, one can reduce after each operation modulo $1-20r+56r^2-44r^3$; the simple-root condition makes the required denominator invertible.
 
-For the level 11 root $r$ of \eqref{eq:C11}, the first three corrections are
+For the level 11 root $r$ of \eqref{cmz:eq:C11}, the first three corrections are
 \begin{align}
 b_1={}&\frac{1902r^2}{121}-\frac{15727r}{1331}+\frac{2631}{10648},\notag\\
 b_2={}&-\frac{12871r^2}{484}+\frac{156041r}{10648}-\frac{105141}{170368},\notag\\
 b_3={}&-\frac{168370461r^2}{937024}
        +\frac{2654004521r}{20614528}-\frac{1147235747}{164916224}.
-\label{eq:11b123}
+\label{cmz:eq:11b123}
 \end{align}
 Some compact rational examples are
 \begin{center}
@@ -799,64 +889,64 @@ The size of a low-order correction, especially in a negative connection, need no
 
 For the two level 15 branches, the next two coefficients are polynomials:
 \begin{align}
-b_{2,+}(\eps)&=\frac{35397\eps^2-29766\eps+202037}{1600000},\label{eq:b2p}\\
-b_{2,-}(\eps)&=\frac{-15\eps^2+450\eps+1105}{512},\label{eq:b2m}\\
+b_{2,+}(\eps)&=\frac{35397\eps^2-29766\eps+202037}{1600000},\label{cmz:eq:b2p}\\
+b_{2,-}(\eps)&=\frac{-15\eps^2+450\eps+1105}{512},\label{cmz:eq:b2m}\\
 b_{3,+}(\eps)&=\frac{19143257\eps^3+74224731\eps^2
-                         -161870709\eps-47720183}{3200000000},\label{eq:b3p}\\
+                         -161870709\eps-47720183}{3200000000},\label{cmz:eq:b3p}\\
 b_{3,-}(\eps)&=\frac{1015\eps^3-1155\eps^2-22155\eps-15505}{8192}.
-\label{eq:b3m}
+\label{cmz:eq:b3m}
 \end{align}
-Equations~\eqref{eq:generator} and \eqref{eq:Pall} provide all higher coefficients. No convergence of the infinite series $\sum b_jn^{-j}$ is asserted, and no uniformity as the truncation order tends to infinity is claimed.
+Equations~\eqref{cmz:eq:generator} and \eqref{cmz:eq:Pall} provide all higher coefficients. No convergence of the infinite series $\sum b_jn^{-j}$ is asserted, and no uniformity as the truncation order tends to infinity is claimed.
 
 \section{Proof and computation of the moving zero}
-\label{sec:zeroproof}
-For odd $n$, the leading function in the normalized expansion \eqref{eq:window} is
+\label{cmz:sec:zeroproof}
+For odd $n$, the leading function in the normalized expansion \eqref{cmz:eq:window} is
 \[
 f_0(u)=e^{u/6}-10e^{-u/6}.
 \]
-Its zeros are $u_0+6\pi\ii k$, $k\in\Z$, where $u_0=3\log(10)$, and each is simple. In particular, $f_0$ has exactly one zero in $|u-u_0|<1$ and no zero on its boundary. The uniform complex estimate in Corollary~\ref{cor:window}, on a disc containing that closed circle, and Rouch\'e's theorem imply the same zero count for $T_{-5+u/n}(n)$ when odd $n$ is sufficiently large. Its real polynomial coefficients make nonreal zeros occur in conjugate pairs. The unique zero in this conjugation-invariant disc is consequently real, and the count with multiplicity makes it simple.
+Its zeros are $u_0+6\pi\ii k$, $k\in\Z$, where $u_0=3\log(10)$, and each is simple. In particular, $f_0$ has exactly one zero in $|u-u_0|<1$ and no zero on its boundary. The uniform complex estimate in Corollary~\ref{cmz:cor:window}, on a disc containing that closed circle, and Rouch\'e's theorem imply the same zero count for $T_{-5+u/n}(n)$ when odd $n$ is sufficiently large. Its real polynomial coefficients make nonreal zeros occur in conjugate pairs. The unique zero in this conjugation-invariant disc is consequently real, and the count with multiplicity makes it simple.
 
 For the all-order location, define
 \begin{equation}
 f_j(u)=e^{u/6}P_{j,+}(u)-10e^{-u/6}P_{j,-}(u).
-\label{eq:fj}
+\label{cmz:eq:fj}
 \end{equation}
 Then the normalized odd-index polynomial has the uniform expansion $\sum_{j=0}^K f_j(u)n^{-j}+O(n^{-K-1})$ on complex neighborhoods. Since
 \begin{equation}
 f_0'(u_0)=\frac{\sqrt{10}}{3}\ne0,
-\label{eq:simplederiv}
+\label{cmz:eq:simplederiv}
 \end{equation}
-formal substitution of $u=u_0+u_1v+u_2v^2+\cdots$ uniquely determines every $u_j$. At each fixed order this formal location is an actual asymptotic location: the residual is of the next order, the derivative stays bounded away from zero near $u_0$, and the already localized real zero is unique. Equivalently, one may combine the analytic implicit expansion with Rouch\'e localization. This proves \eqref{eq:uexp} without assuming that the sequence of polynomials is analytic as a function of the discrete variable $1/n$.
+formal substitution of $u=u_0+u_1v+u_2v^2+\cdots$ uniquely determines every $u_j$. At each fixed order this formal location is an actual asymptotic location: the residual is of the next order, the derivative stays bounded away from zero near $u_0$, and the already localized real zero is unique. Equivalently, one may combine the analytic implicit expansion with Rouch\'e localization. This proves \eqref{cmz:eq:uexp} without assuming that the sequence of polynomials is analytic as a function of the discrete variable $1/n$.
 
 In particular,
 \begin{align}
 u_1&=-\frac{f_1(u_0)}{f_0'(u_0)}
 =-3\left(\frac{u_0}{2}+b_{1,+}(-5)-b_{1,-}(-5)\right)\notag\\
 &=\frac{162}{125}-\frac92\log(10).
-\label{eq:u1proof}
+\label{cmz:eq:u1proof}
 \end{align}
 The subsequent computations can be reproduced by the finite identities
 \begin{align}
 u_2={}&-\frac{\tfrac12 f_0''(u_0)u_1^2+f_1'(u_0)u_1+f_2(u_0)}{f_0'(u_0)},
-\label{eq:u2rec}\\
+\label{cmz:eq:u2rec}\\
 u_3={}&-\frac{1}{f_0'(u_0)}\left\{
  f_0''(u_0)u_1u_2+\tfrac16f_0'''(u_0)u_1^3+f_1'(u_0)u_2\right.\notag\\
 &\hspace{8em}\left.+\tfrac12f_1''(u_0)u_1^2+f_2'(u_0)u_1+f_3(u_0)\right\}.
-\label{eq:u3rec}
+\label{cmz:eq:u3rec}
 \end{align}
-Here $f_0''(u_0)=0$. Using \eqref{eq:Pall} and \eqref{eq:b2p}--\eqref{eq:b3m} gives exactly \eqref{eq:u2}--\eqref{eq:u3}. More generally, at order $v^j$ the sole new unknown has coefficient $f_0'(u_0)$, so the procedure never requires an additional connection constant.
+Here $f_0''(u_0)=0$. Using \eqref{cmz:eq:Pall} and \eqref{cmz:eq:b2p}--\eqref{cmz:eq:b3m} gives exactly \eqref{cmz:eq:u2}--\eqref{cmz:eq:u3}. More generally, at order $v^j$ the sole new unknown has coefficient $f_0'(u_0)$, so the procedure never requires an additional connection constant.
 
 For even $n$, the leading function is
 \[
 g_0(u)=e^{u/6}+10e^{-u/6}.
 \]
-It is strictly positive for real $u$ and has a positive minimum on each fixed compact real interval. The uniform error in \eqref{eq:window} is eventually smaller than that minimum. Thus there are no real zeros on any such interval for all sufficiently large even $n$. This completes the proof of Theorem~\ref{thm:zero}.
+It is strictly positive for real $u$ and has a positive minimum on each fixed compact real interval. The uniform error in \eqref{cmz:eq:window} is eventually smaller than that minimum. Thus there are no real zeros on any such interval for all sufficiently large even $n$. This completes the proof of Theorem~\ref{cmz:thm:zero}.
 
 At $u_0$ the leading odd profile vanishes, but the coefficient polynomial generally does not vanish exactly there; its zero moves by $u_1/n+\cdots$. The additive expansion, rather than a relative leading equivalent, is what makes that displacement visible.
 
 
 \begin{corollary}[Fixed local complex zeros]
-\label{cor:complexzeros}
+\label{cmz:cor:complexzeros}
 Fix an integer $k$. Along odd $n$, put $U=3\log(10)+6\pi\ii k$; along even $n$, put $U=3\log(10)+(6k+3)\pi\ii$. In either case, for all sufficiently large $n$ of that parity, $u\mapsto T_{-5+u/n}(n)$ has exactly one zero in $|u-U|<1$, counting multiplicity. This zero has an expansion to every fixed inverse-$n$ order. Its first coefficients are obtained from the same polynomial formulas in $U$:
 \begin{align*}
 u_1(U)&=-\frac{3(125U-108)}{250},\\
@@ -876,11 +966,11 @@ Its linear coefficient in $w$ is nonzero. The same finite coefficient matching g
 \end{proof}
 
 \section{Qualified inversion for positive sequences}
-\label{sec:inverse}
+\label{cmz:sec:inverse}
 The preceding expansions also permit asymptotic threshold inversion. The integer rounding requires a qualification because an asymptotic error need not determine on which side of an integer the approximate inverse lies.
 
 \begin{proposition}[A non-effective threshold inverse]
-\label{prop:inverse}
+\label{cmz:prop:inverse}
 Let a positive real sequence satisfy, for each fixed $K\geq0$,
 \[
 a_n=CR^nn^{-h}\left(S_K(n)+O(n^{-K-1})\right),\qquad
@@ -890,17 +980,17 @@ where $S_K(v)=\sum_{j=0}^K b_jv^{-j}$ and $b_0=1$.
 Put $\lambda=\log R$, $L=\log(M/C)$, $v_0=L/\lambda$, and, for sufficiently large $M$, define
 \begin{equation}
 v_{j+1}=\frac{L+h\log v_j-\log S_K(v_j)}{\lambda}.
-\label{eq:inverseiteration}
+\label{cmz:eq:inverseiteration}
 \end{equation}
 Then the threshold $N(M)=\min\{n:a_n\geq M\}$ obeys
 \begin{equation}
 N(M)=\left\lceil v_{K+2}+O(L^{-K-1})\right\rceil.
-\label{eq:threshold}
+\label{cmz:eq:threshold}
 \end{equation}
 The error is inside the ceiling. This does not license unconditional rounding of $v_{K+2}$, and the statement provides no explicit error constant or effective cutoff.
 \end{proposition}
 \begin{proof}
-For large $v$, $S_K(v)>0$. The derivative of the update map in \eqref{eq:inverseiteration} is $O(1/L)$ in a neighborhood of the large solution $x_K$ of
+For large $v$, $S_K(v)>0$. The derivative of the update map in \eqref{cmz:eq:inverseiteration} is $O(1/L)$ in a neighborhood of the large solution $x_K$ of
 \[
 CR^{x_K}x_K^{-h}S_K(x_K)=M.
 \]
@@ -910,7 +1000,7 @@ v_{K+2}-x_K=O\!\left(\frac{\log L}{L^{K+2}}\right).
 \]
 The forward relative remainder changes a real crossing location by $O(L^{-K-1})$, since the logarithmic derivative of the approximant tends to $\lambda>0$. Equivalently, the recurrence values at integer indices can be bracketed between approximants with relative errors of that size; their crossing points are separated from $x_K$ by $O(L^{-K-1})$.
 
-Moreover $a_{n+1}/a_n\to R>1$, so the sequence is eventually strictly increasing. For large $M$ its threshold is past any exceptional finite prefix. The crossing brackets and the iteration error therefore give \eqref{eq:threshold}.
+Moreover $a_{n+1}/a_n\to R>1$, so the sequence is eventually strictly increasing. For large $M$ its threshold is past any exceptional finite prefix. The crossing brackets and the iteration error therefore give \eqref{cmz:eq:threshold}.
 \end{proof}
 
 The first explicit terms of the real asymptotic inverse are
@@ -918,11 +1008,30 @@ The first explicit terms of the real asymptotic inverse are
 x=\frac{L+\tfrac32\log(L/\lambda)}{\lambda}
  +\frac{\tfrac94\log(L/\lambda)-\lambda b_1}{\lambda L}
  +O\!\left(\frac{(\log L)^2}{L^2}\right).
-\label{eq:inverseexplicit}
+\label{cmz:eq:inverseexplicit}
 \end{equation}
 If a justified error interval meets an integer, exact nearby recurrence values resolve the threshold. The asymptotic statement by itself is non-effective and does not supply such a certified numerical interval. This distinction matters close to integer boundaries.
 
 No ordered inverse is asserted for complex coefficients. For negative $R$, the same method applies to a specified sign-adjusted envelope when that sequence is eventually positive; it does not order the unsorted signed coefficients.
+
+\begin{writenote}[An instance of the repository's inversion apparatus]
+No novelty is claimed here for the inversion method. The leading equation
+$\lambda X-\tfrac32\log X=L$ behind \eqref{cmz:eq:inverseiteration} is the
+dominant block of Theorem \texttt{p0:thm:lambert-core} of the transseries
+volume
+(\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex})
+with $a=\lambda$, $b=-\tfrac32$; its large solution is
+$X=\tfrac{3}{2\lambda}\bigl(-W_{-1}(-\tfrac{2\lambda}{3}e^{-2L/3})\bigr)$,
+and \eqref{cmz:eq:inverseexplicit} is its expansion with the correction
+$\log S_K$ treated as a perturbation, in the sense of
+\texttt{p0:thm:perturbed-inversion}. The qualification ``error inside the
+ceiling'' in Proposition~\ref{cmz:prop:inverse} is the separation condition
+of \texttt{p0:thm:staircase}(2): an approximate inverse determines the
+threshold only when its error interval lies in a single interval $(m-1,m]$.
+The formal reversion of the zero expansion \eqref{cmz:eq:uexp} in
+Section~\ref{cmz:sec:zeroproof} is of the same kind, solved order by order
+in $v=1/n$; the article proves it directly and does not use the volume.
+\end{writenote}
 
 
 \section{Further directions}
@@ -935,8 +1044,8 @@ Second, the finite generator determines arbitrarily high fixed corrections, but 
 Finally, the local parameter-zero laws suggest studying larger portions of the zero set and other equal-modulus loci among the four rates $\eps+11$, $\eps-1$, and $\eps\pm2\ii$. The fixed-disc rate gap is central to our proof; regimes in which additional singularities compete, or the complex-zero index grows with $n$, require separate uniform analysis.
 
 \section{Sources and boundaries of the claims}
-\label{sec:sources}
-All ten exact constant expressions in Table~\ref{tab:constants} occur in Cooper's arXiv version 2, revised 8 May 2024 \cite[Section 10, Table 8]{Cooper}. That version labels them conjectured values and describes numerical determination. A later publication appeared in 2025 \cite{CooperPub}; statements here about the conjectural wording refer to the inspected arXiv version rather than to an unverified comparison of the final publication.
+\label{cmz:sec:sources}
+All ten exact constant expressions in Table~\ref{cmz:tab:constants} occur in Cooper's arXiv version 2, revised 8 May 2024 \cite[Section 10, Table 8]{Cooper}. That version labels them conjectured values and describes numerical determination. A later publication appeared in 2025 \cite{CooperPub}; statements here about the conjectural wording refer to the inspected arXiv version rather than to an unverified comparison of the final publication.
 
 The level 11 sequence is OEIS A284756 \cite{OEIS}. Its entry records Kot\v{e}\v{s}ovec's 2 April 2017 equivalent
 \[
@@ -947,18 +1056,38 @@ where $d$ is the positive dominant root and $c>0$ satisfies
 \[
 704c^6-1936c^4-1020c^2-1331=0.
 \]
-This is equivalent to \eqref{eq:C11}, with $d=R$ and $c=\pi^{3/2}C_{11}$. The entry does not supply a proof of that asymptotic constant. Current exact-prefix searches did not verify companion OEIS identifiers for $14A,14B,15A,15B,24$; no identifiers are inferred, and this lookup outcome has no bearing on mathematical novelty.
+This is equivalent to \eqref{cmz:eq:C11}, with $d=R$ and $c=\pi^{3/2}C_{11}$. The entry does not supply a proof of that asymptotic constant. Current exact-prefix searches did not verify companion OEIS identifiers for $14A,14B,15A,15B,24$; no identifiers are inferred, and this lookup outcome has no bearing on mathematical novelty.
 
 Guillera--Zudilin \cite[(27)]{GZ} state the positive modular radial relation
 \[
 \lim_{x\to r^-}\sqrt{G(x)}\sum_{n\geq0}a_n n x^n
  =\frac{\sqrt N}{2\pi}
 \]
-in the appropriate modular setting. Their Example 6 treats $14B$ explicitly. Theorem~\ref{thm:connection} spells out analytic hypotheses and transfer steps suitable for the present applications; it does not claim a new universal radial principle. Cooper--Ye \cite[Theorems 7.2 and 7.4]{CY} use negative $q$ in level 14 and 15 Ramanujan-series identities. Those are relevant antecedents to the negative modular machinery, even though they do not explicitly state the shifted $15B$ and $14\overline C$ connection asymptotics used here.
+in the appropriate modular setting. Their Example 6 treats $14B$ explicitly. Theorem~\ref{cmz:thm:connection} spells out analytic hypotheses and transfer steps suitable for the present applications; it does not claim a new universal radial principle. Cooper--Ye \cite[Theorems 7.2 and 7.4]{CY} use negative $q$ in level 14 and 15 Ramanujan-series identities. Those are relevant antecedents to the negative modular machinery, even though they do not explicitly state the shifted $15B$ and $14\overline C$ connection asymptotics used here.
 
 The more recent Campbell--Cooper--Ye preprint \cite[Theorem 6.1(1)]{CCY} identifies positive Fricke endpoints with the relevant minimum-modulus roots for its selected Hauptmoduls, including levels 11, 14, 15 and 24. Its negative-root statement concerns a different selected list and is not used as an assertion about the two shifted negative connections here. The present calculations specify those paths and multipliers directly.
 
 A targeted reading of these sources and related work did not locate the displayed level 15 two-singularity window or moving-zero law. This observation is deliberately bounded: the full 2015 Cooper--Ge--Ye paper and Cooper's 2017 book were not fully searched, and the 2025 final text was not compared page by page with the arXiv version. Different notation, unindexed work and unpublished arguments remain possible. The mathematical content claimed here is the explicit proof with its stated hypotheses, not a historical priority conclusion.
+
+\begin{writenote}[Relation to other reports of the collection]
+The neighbouring report \texttt{a279619-\allowbreak level-\allowbreak
+seven-\allowbreak gamma-\allowbreak constant},
+in the same directory as this one, treats a level-seven sequence of the same circle of ideas: A279619, whose
+square sequence A183204 belongs to Cooper's sporadic Ap\'ery-like family.
+Its third derivation (manuscript~32 of batch~77, Section ``A third
+derivation of the constant'', Proposition \texttt{l7g:tr:prop:local} and
+Remark \texttt{l7g:tr:rem:gz}) computes the singular coefficient by
+differentiating a Fricke involution at its fixed point. That is a
+level-seven instance of the mechanism of Theorem~\ref{cmz:thm:connection}
+and \eqref{cmz:eq:Zderiv}, applied there to a weight-one theta series whose
+square plays the role of the weight-two $Z$ here, and it credits
+the same Guillera--Zudilin equation~(27). The two reports share no
+theorem: the levels, the sequences and the results (a Gamma-product
+constant there; the connection constants of Cooper's Table~8, the
+two-singularity window and the moving zero here) are different, and
+neither manuscript cites the other. That report was not edited by this
+write.
+\end{writenote}
 
 \begin{thebibliography}{99}
 \small
