@@ -21,6 +21,17 @@ This is a proposed complete solution in the question's stated topological
 category. It is not an independently refereed or proof-assistant-verified result,
 and it does not solve a Hausdorff-strengthened version of the problem.
 
+## Related report
+
+[Batch 76, 2 October 2026.] The report
+[`lexicographic-well-orderings-of-reals`](../../lexicographic-well-orderings-of-reals/)
+uses this report's game value: its binary coding length of an order `L` is
+`ps(L^dd)` by Theorem `thm:embedding`, so `ps(𝒲^dd) = κ⁺` for the
+lexicographic order `𝒲` of all well-orderings of the reals, with
+`κ = 2^ℵ₀`. Its strict binary-cube hierarchy
+re-proves Corollary `cor:strict` here; that report cites the corollary first
+and prints its own cylinder proof as a second route.
+
 ## Files
 
 - `ordinal_separation.pdf`: compiled article.

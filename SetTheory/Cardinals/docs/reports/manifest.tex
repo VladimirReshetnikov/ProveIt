@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 139 independent mathematical research packages}}
+  pdfsubject={Catalogue of 178 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,23 +53,24 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and thirty-nine independent mathematical research packages,\\
+  {\large One hundred and seventy-eight independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
-  {\normalsize 1 October 2026}
+  {\normalsize 2 October 2026}
 \end{center}
 
 \vspace{0.8em}
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and thirty-nine research packages stored
+This document catalogues the one hundred and seventy-eight research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other thirty-seven came through ProveIt's incoming-reports procedure
+other seventy-six came through ProveIt's incoming-reports procedure
 (\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
 and~44, two in batch~60, one each in batches~62 and~70, three in
-batch~72, sixteen in batch~73, two in batch~74 and three in batch~75 --- whose archives remain in the repository's history.  Later batches
+batch~72, sixteen in batch~73, two in batch~74, three in batch~75, two in
+batch~76, thirty-four in batch~77 and three in batch~78 --- whose archives remain in the repository's history.  Later batches
 also extended existing reports; their entries name the batch.
 The next paragraphs describe the historical collection before those two
 consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
@@ -154,9 +155,9 @@ original archive names are recorded with every entry.
  & \dir{friendly-order-types} & 3\\
  & \dir{games-on-ordinals} & 3\\
  & \dir{transfinite-words} & 1\\
- & (top level) & 5\\
+ & (top level) & 6\\
 \midrule
-\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 26\\
+\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 59\\
  & \dir{binary-product-coefficient-counts} & 3\\
  & (top level) & 5\\
 \midrule
@@ -171,7 +172,7 @@ original archive names are recorded with every entry.
  & \dir{iterated-series} & 3\\
  & (top level) & 4\\
 \midrule
-\dir{automata-and-formal-languages} & --- & 7\\
+\dir{automata-and-formal-languages} & --- & 8\\
 \midrule
 \dir{tetration-and-digit-stabilization} & --- & 6\\
 \midrule
@@ -183,9 +184,9 @@ original archive names are recorded with every entry.
 \midrule
 \dir{galois-theory-and-radicals} & --- & 2\\
 \midrule
-\dir{hilbert-tenth-problem} & --- & 3\\
+\dir{hilbert-tenth-problem} & --- & 7\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{139}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{178}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -468,9 +469,10 @@ is sufficient, not necessary), remain open.}
 
 \subsection{Order-theoretic invariants without a subcategory}
 
-Five reports whose objects sit outside every subcategory above: the minor order
+Six reports whose objects sit outside every subcategory above: the minor order
 on finite graphs, two on sites of filters on $\omega$, congruences of finite
-lattices, and a translation-invariant ideal.
+lattices, a translation-invariant ideal, and the lexicographic order of the
+well-orderings of the reals.
 
 \entry{Ordinal complexity of graph minors}
 {ordinals-and-order-types/graph-minor-ordinals}
@@ -542,12 +544,44 @@ target is an informal suggestion in the source, not a numbered conjecture.}
 translation-invariant ideal that is not Baire and carries a perfect
 translation-almost-disjoint family.}
 
+\entry{Lexicographic orders of the well-orderings of the reals}
+{ordinals-and-order-types/lexicographic-well-orderings-of-reals}
+{article.pdf}{batch~76: lexicographic\_well\_orderings\_of\_reals.zip + Lexicographic\_Well\_Orderings\_of\_Reals (1).zip + lexicographic\_well\_orderings\_research.zip}
+{With $\kappa=2^{\aleph_0}$ and $\mathcal W$ the order of all well-orderings
+of $\R$, as enumerations compared at their first unequal real entry, proves
+in ZFC that $|\mathcal W|=2^\kappa$, that every linear order of size at most
+$\kappa$ embeds, even into each fixed-type slice, and that an ordinal embeds
+exactly when it is below $\kappa^+$; yet the binary lexicographic coding
+length and the real representation rank of $\mathcal W$ are both $\kappa^+$,
+so $\mathcal W$ embeds into no bounded union of strata, in particular not
+into the slice $\mathcal W_\kappa$, which is equimorphic with the cube
+$2^\kappa$ in lexicographic order and with the Kanovei--Shelah
+ultrafilter index.  Also: each stratum $\mathcal W_{\lambda+n}$, $\lambda$ a
+limit of cardinality $\kappa$, is equimorphic with $2^\lambda\times n!$;
+$\mathcal W^\gamma_{\mathrm{lex}}$ is equimorphic with $\mathcal W$
+exactly for $0<\gamma<\kappa^+$; adjacency and the $n!$ blocks; the exact point-character and gap spectra (every gap has a
+countable side; exactly $2^\kappa$ gaps), a
+$(\mathrm{cf}\,\kappa,\mathrm{cf}\,\kappa)$ gap of $\mathcal W_\kappa$, a
+dense finite-condensation quotient equimorphic with $\mathcal W$, bounded
+surreal sign orders and an ultrafilter index built from well-orderings.  The
+cube hierarchy re-proves a corollary of \dir{point-separating-game-values},
+cited first; real-power strictness is Kuhlmann's theorem; no priority is
+claimed, and no intrinsic embedding criterion or classification of the gaps
+of the longer strata.  \emph{Merged from three independent manuscripts
+proving the same core: each shared theorem printed once, with the other
+arguments as second routes.  Each answers a question of another: the ZFC
+non-embedding into $\mathcal W_\kappa$, which one had only under
+$2^{<\kappa}<2^\kappa$, and the cut and character spectra and the quotient
+another had asked about.}}
+
 \section{Automata and formal languages}
 
-Seven reports on state complexity, synchronization, language hierarchies,
-crossover closures and additive complexity.
-The first two are each a merge: the shuffle bound arrived four times and the
-DFAO reversal bound twice.
+Eight reports on state complexity, synchronization, language hierarchies,
+crossover closures, additive complexity and the asymptotic enumeration of
+automata.
+Three are merges: the shuffle bound arrived four times, the DFAO reversal
+bound twice, and the last report joins a manuscript on accessible automata
+with one on strongly connected automata that adapts its method.
 
 \entry{The six-state shuffle bound}
 {automata-and-formal-languages/shuffle-six-state-bound}
@@ -701,6 +735,30 @@ power-saving error $O(N^\theta)$, $\theta=\log(7/5)/\log\beta$, at
 76-state output automaton is reconstructed independently rather than copied,
 and certified by evaluating its degree-76 characteristic polynomial at the
 adjacency matrix.}
+
+\entry{Accessible and strongly connected deterministic automata, to every fixed order}
+{automata-and-formal-languages/accessible-and-strong-automata}
+{article.pdf}{batch~77: accessible-automata-reproducibility.zip + strong-automata-reproducibility.zip}
+{For a fixed alphabet of $k\ge2$ letters, with $t=k(1-e^{-t})$,
+$\rho=e^{-t}$, $v=t/k$ and $c=1-k\rho$, Part~I proves that the number $a_n$
+of rooted accessible complete deterministic transition structures on $n$
+states (OEIS A006689, A006690) satisfies
+$a_n/S(kn+1,n)=\sum_{j\le J}c_jn^{-j}+O(n^{-J-1})$ for every $J$, with
+$c_0=c$, $c_1=k\rho v/(2c)$ and the small-state counts entering first at
+$c_k$.  The route is an exact first-failure renewal with two boundaries and
+a finite coefficient algorithm; $c_1,c_2,c_3$ are tabulated.  Part~II adapts
+the method, with a strict checkpoint, to strongly connected structures
+(A027834/A027835, A006691/A006692, A304312/A304313), transfers the expansion
+through the classical formal logarithm, confirms the identification that the
+A304312/A304313 records leave conjectural, and gives exact cyclic
+automorphism sectors with a uniform divisor-tail bound and a self-contained
+proof of Liskovets's existing unrooted formula.  The leading equivalents
+(Korshunov, Bassino--Nicaud, Lebensztayn) are classical, and priority of the
+refinement is left unresolved: Korshunov's 1978 survey was not obtained.
+The Lambert-$W$ inverses and threshold brackets are instances of the
+transseries volume.  \emph{Merged from two manuscripts; the passages Part~II
+repeats are printed once, in Part~I.}  Minimal DFAs of finite languages, a
+different object, are counted in the report \dir{a082161-airy-amplitudes}.}
 
 \section{Hankel determinants and continued fractions}
 
@@ -862,7 +920,7 @@ runs through an explicit inverse matrix and MacMahon's boxed plane partitions.}}
 
 \entry{A proof of the Ap\'ery Hankel growth conjecture}
 {hankel-determinants/growth-and-runs/apery-hankel-determinant-growth}
-{apery\_hankel\_growth.pdf}{apery\_hankel\_research.zip; batch~73: apery\_hankel\_research.zip (a different manuscript under the same archive name)}
+{apery\_hankel\_growth.pdf}{apery\_hankel\_research.zip; batch~73: apery\_hankel\_research.zip (a different manuscript under the same archive name); batch~77: apery-shifted-release.zip}
 {For $A_k=\sum_j\binom{k}{j}^2\binom{k+j}{j}^2$ and $D_n=\det(A_{i+j})$, proves
 $\log D_n=n(n+1)\log\frac{17+12\sqrt2}{4}+O(n)$ --- the limit conjectured in the
 September 2026 revision of OEIS A228143 --- using Edgar's moment-density
@@ -875,7 +933,16 @@ interval-certified), so $D_n/D_{n-1}\sim K\Lambda^{2n}$ and
 $\log D_n=n(n+1)\log\Lambda+(n+1)\log K+o(n)$, with
 $C=17+12\sqrt2$ and $\Lambda=C/4$; it refines
 Part~I's stride theorem at $\rho=0$.  Its re-proof of Part~I's main theorem
-is printed as a corollary, not a new result.}
+is printed as a corollary, not a new result.  Part~III, added in batch~77,
+proves for $H_N(r)=\det(A_{r+i+j})_{0\le i,j<N}$ and $s=r/N$ in compact
+subsets of $(s_*,\infty)$, $s_*=3\sqrt2/4-1$, the full equivalent
+$H_N(r)=M(s)N^{-1/24}e^{N^2A(s)+NB(s)}(1+c(s)/N+O(N^{-2}))$ with an exact
+Selberg normalization, by adapting Charlier--Gharakhloo's
+determinant-ratio analysis to a logarithmic potential; also that the
+floor-shifted sequence is eventually increasing, and rational-residue inverse thresholds, whose inversion
+cites the transseries volume.  Its quadratic term $A(s)$ is Part~I's
+stride theorem at $m=1$ and is not claimed as new; strides $m\ge2$,
+$s\le s_*$ and the prefactor of $D_n$ stay open.}
 
 \entry{Binary Runs in Rueppel Hankel Determinants}
 {hankel-determinants/growth-and-runs/rueppel-binary-run-determinants}
@@ -1336,7 +1403,7 @@ cases) were not placed.}
 
 \entry{Rank ultra-log-concavity of preorder gamma and directed support polynomials at the actual degree}
 {log-concavity-and-unimodality/preorder-gamma-rank-ulc}
-{article.pdf}{batch~73: preorder-degree-four-part-1-of-4.zip, preorder-degree-four-part-2-of-4.zip, preorder-degree-four-part-3-of-4.zip, preorder-degree-four-part-4-of-4.zip, preorder-gamma-degree-three-package.zip, template26-structural-supplement.zip, role-cover-package.zip, three-core-rayleigh-result.zip, physical-cover-three-result.zip, bipartite-and-pendant-support-result.zip, independent-role-degree-three-package.zip, universal-sink-last-gap-package.zip, universal-sink-all-degrees-package.zip, universal-sink-five-core-package.zip, universal-sink-five-core-boundary-package-part-1.zip, universal-sink-five-core-boundary-package-part-2.zip; superseded, not printed: weighted-degree-three-package.zip, universal-sink-degree-four-package.zip}
+{article.pdf}{batch~73: preorder-degree-four-part-1-of-4.zip, preorder-degree-four-part-2-of-4.zip, preorder-degree-four-part-3-of-4.zip, preorder-degree-four-part-4-of-4.zip, preorder-gamma-degree-three-package.zip, template26-structural-supplement.zip, role-cover-package.zip, three-core-rayleigh-result.zip, physical-cover-three-result.zip, bipartite-and-pendant-support-result.zip, independent-role-degree-three-package.zip, universal-sink-last-gap-package.zip, universal-sink-all-degrees-package.zip, universal-sink-five-core-package.zip, universal-sink-five-core-boundary-package-part-1.zip, universal-sink-five-core-boundary-package-part-2.zip; superseded, not printed: weighted-degree-three-package.zip, universal-sink-degree-four-package.zip; batch~77: universal-sink-five-core-cubic-package.zip}
 {Answers Research question~96 of the preorder root-polytope report: is the
 gamma polynomial $\Gamma_D=\sum_k\gamma_kt^k$ of a finite preorder, with
 $\gamma_k$ counting ordered pairs of disjoint $k$-sets joined along arcs,
@@ -1361,8 +1428,18 @@ degree-three and degree-four theorems are computer-assisted.  Merged from
 eleven manuscripts and a six-page supplement, from eighteen archives (three
 of them handed over from the matching-support cluster); two earlier
 versions are superseded and theorems proved more than once are printed once
-with second routes.  Some certificate data over 2~MB stay in the arrival
-commit, and the report says how to retrieve or rebuild them.}
+with second routes.  Section~14 of Part~III, added in batch~77 from a
+further manuscript, proves $\gamma_2^2\ge3\gamma_1\gamma_3$ on the face
+$\gamma_4=0$ for every loopless directed five-vertex core with universal
+sinks and independent activities, with the constant~3 sharp even for
+preorder cores, by a degree-drop reduction to a computer-assisted two-sink
+lemma with 7{,}901 rational square certificates; so five-vertex cores are
+rank ultra-log-concave at every actual degree.  For preorder cores it is a
+case of Part~II's degree-three theorem, so the new content is the
+non-transitive core; Section~12's counterexample to the constant~3 has
+$\gamma_4>0$.  Some certificate data over 2~MB, and Section~14's 95.1~MB
+of certificate shards, which cannot be regenerated, stay in the arrival
+commits, and the report says how to retrieve or rebuild them.}
 
 \section{Quaternionic analysis}
 
@@ -1948,7 +2025,7 @@ Conjecture~6.2 and the asymptotic analysis.}}
 
 \subsection{Single-sequence OEIS studies}
 
-Twenty-six reports on the growth or the closed form of a single OEIS sequence.  One
+Fifty-nine reports on the growth or the closed form of a single OEIS sequence.  One
 article counts the terms in the derivatives of three power towers --- $x^{x^x}$,
 $x^{x^2}$ and $x^x$ --- whose three parts reach three different answers by three
 different recurrences, and two reports added in batch~72 sit beside it: one
@@ -1957,16 +2034,27 @@ for $x^x$ and $x^{x^2}$, and the other studies the $x^{x^2}$ coefficients at
 unbounded logarithmic deficit.  Two more reports share a Bell-scale
 saddle-point method on unrelated sequences.  Shared technique is not shared
 theorem, and none of these duplicates another.  Thirteen reports came in
-batch~73, one in batch~74 and one in batch~75, the last fifteen entries
-below.  Four of them merge two manuscripts that proved the same theorems
+batch~73, one in batch~74, one in batch~75 and thirty-three in batch~77;
+they are the last forty-eight entries below, the batch-77 ones grouped by
+the cluster that placed them (ascent sequences; iterated Bell numbers,
+cone walks and divisor weights; trees and networks; words, permutations,
+partitions and placements; moments, renewals and moving parameters).  Four
+batch-73 reports merge two manuscripts that proved the same theorems
 independently on the same day (A139217, A022629, A215561, A279619): the
 shared theorems are printed once and the other proofs kept as marked second
 routes.  Batch~75 brought a third and a fourth independent proof of the
 A022629 theorems, and a manuscript about two thirds of which re-proves
 results of the A215561 report; those duplicates are tabulated in the
-reports, not reprinted, and only their new results were added.  The four
-partition reports (A022629, A033552, A097356, A238016) study different
-products in different saddle regimes and share no proposition; the A189281 and A330266 reports share a method but no theorem.
+reports, not reprinted, and only their new results were added.  Batch~77
+did the same with a fifth independent proof of the A022629 theorems, a
+fourth of the A215561 ones, a third of the A279619 constant and a second
+of the A126764 corrections.  Several of its new reports join a manuscript
+with addenda that nest it byte for byte; each paper is printed once.  The four
+partition reports of batches~73--74 (A022629, A033552, A097356, A238016)
+study different products in different saddle regimes and share no
+proposition, nor do the batch-77 partition reports (A174065, A291698,
+A292507, A301746, A301981), which share at most a method with them; the
+A189281 and A330266 reports share a method but no theorem.
 Many of these manuscripts invert their asymptotics by Lambert~$W$ and
 rounding; those steps are instances of the inversion theorems of the
 transseries volume in \dir{Analysis/Transseries}, which the reports cite
@@ -1974,7 +2062,7 @@ rather than claim.
 
 \entry{Bell-scale growth of OEIS A088714}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth}
-{article.pdf}{A088714\_asymptotic\_growth.zip; batch~73: golden\_moment\_laws.zip}
+{article.pdf}{A088714\_asymptotic\_growth.zip; batch~73: golden\_moment\_laws.zip; batch~76: A088714\_Bell\_Local\_Estimates.zip}
 {For the unique formal series with $A(x)=1+xA(x)^2A(xA(x))$, proves
 $\log a_n=n\log n-n\log\log n-n+O(n\log\log n/\log n)$, so
 $(e\log n/n)\,a_n^{1/n}\to1$ and the ordinary generating function has radius of
@@ -1988,7 +2076,17 @@ companion A088713 as moment sequences: determinate moment measures, strict
 Hankel positivity, golden-ratio endpoint laws with exponents
 $(3-\sqrt5)/2$ and $(\sqrt5-1)/2$, the ratio law
 $a_{n+1}/a_n\sim n/\log n$ and the far tail.  Its re-proof of Part~I's
-theorem is replaced by a pointer; the finer Bell conjecture stays open.}
+theorem is replaced by a pointer; the finer Bell conjecture stays open.
+Part~III, added in batch~76 from a continuation manuscript: Part~I's formal
+endpoint coefficient expansion, proved uniformly for $m\le C\log n$; the
+one-sided correction $\liminf(r_n-n/W(n))\ge3/2$ for $r_n=a_n/a_{n-1}$
+(the conjecture needs $2$); and a reduction of the finer Bell conjecture to
+one scalar defect estimate $E_n=O(W(n)^q/n^2)$, sufficient and in some form
+necessary, with a tilted-variance criterion, the complementary-endpoint
+bound $5/(r_nr_{n-1})$ and exact numerics to $n=1600$.  Its re-derivation
+of Part~I's summability step is a pointer; $W(n)$ enters only as the Bell
+saddle of the transseries volume, which it cites; the conjecture and its
+constant stay open.}
 
 \entry{The exponential growth constant of OEIS A158415}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a158415-growth-constant}
@@ -2202,7 +2300,7 @@ has are added.}}
 
 \entry{Five OEIS asymptotic conjectures for distinct-partition norms}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a022629-distinct-partition-norms}
-{article.pdf}{batch~73: OEIS\_Distinct\_Partition\_Norms.zip + A022629\_Research\_Package.zip; batch~75: A022629\_research\_package.zip, OEIS\_Norm\_Weighted\_Partitions.zip}
+{article.pdf}{batch~73: OEIS\_Distinct\_Partition\_Norms.zip + A022629\_Research\_Package.zip; batch~75: A022629\_research\_package.zip, OEIS\_Norm\_Weighted\_Partitions.zip; batch~77: oeis-fixed-power-asymptotics-result.zip}
 {For $a_\alpha(n)=\sum N(\lambda)^\alpha$ over partitions $\lambda$ of $n$
 into distinct parts, $N(\lambda)$ the product of the parts, proves the logarithmic
 growth formulas marked conjectural in A022629, A092484 and A265840--A265842,
@@ -2225,7 +2323,16 @@ large value to within $1+o(1)$ of an explicit inverse, eventual strict log-conca
 fixed-degree Jensen hyperbolicity; and the convolution powers
 $\prod(1+k^\alpha q^k)^\mu$ (A297321, A022630, A022631) with
 $\mu$-independent coefficients, two further inverse coefficients and an
-exact check of the eighth forward coefficient.}
+exact check of the eighth forward coefficient.
+A batch-77 manuscript is a fifth independent proof of the core theorems
+(all logarithmic orders for $\alpha=1$), again tabulated, not reprinted.
+Its new results form Section~20: the slot family
+$\prod(1+k^\alpha q^k)^{k^\beta}$, $\alpha>0$, $\beta\ge0$ an integer, with
+two logarithmic orders, an exact-saddle expansion to every fixed order, a
+threshold inverse and strict monotonicity, which for $\alpha=\beta=1$ proves
+Kot\v{e}\v{s}ovec's conjectured leading term for OEIS A266891; and resummed
+``thermal'' forms of the logarithm and the inverse, no sharper than the
+two-term truncations.}
 
 \entry{Three exceptions before every square}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a097356-sqrt-restricted-partitions}
@@ -2288,7 +2395,7 @@ Bala's supercongruence stays open.}
 
 \entry{Fixed-composition excursions}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a215561-fixed-composition-excursions}
-{article.pdf}{batch~73: oeis\_balanced\_excursions.zip + late\_growing\_excursions.zip; batch~75: OEIS\_Fixed\_Content\_Ballot\_Words.zip}
+{article.pdf}{batch~73: oeis\_balanced\_excursions.zip + late\_growing\_excursions.zip; batch~75: OEIS\_Fixed\_Content\_Ballot\_Words.zip; batch~77: oeis-ballot-asymptotics-20261001.zip}
 {For words with $n$ copies of each of $r$ letters whose every prefix sum is
 at most its average (OEIS A215561), proves the fixed-row conjecture
 $A_r(n)\sim\kappa_r(rn)!/(rn\,(n!)^r)$ with $\kappa_r$ a positive algebraic
@@ -2309,11 +2416,20 @@ certificate printed in full, and computes the coefficients
 $\alpha_{5,2},\ldots,\alpha_{5,8}$ of the five-letter row exactly.  About two
 thirds of that manuscript re-proves results of Parts~I--II, its row theorem
 only with relative error $O(n^{-1/5})$; those results are listed in one
-comparison table, not reprinted.}
+comparison table, not reprinted.
+Part~V, added in batch~77 from a fourth manuscript written without knowledge
+of this report, re-proves the main theorems with the same constants, sextic,
+Hessian and $\alpha_{5,1}$; these are tabulated, not reprinted.
+It adds the first correction
+$\alpha_{4,1}=-\frac{37}{200}\varrho^3+\frac{11}{40}\varrho^2+\frac{13}{40}\varrho-\frac{259}{400}\approx-0.5097846849$
+of the four-letter row A215562, with $\varrho=\varphi-\sqrt\varphi$ and
+$\varphi$ the golden ratio, the Hessian $H_4$, an operator-norm second
+route to the global-arc bound and a nested-logarithm inverse for every row;
+$\alpha_{4,2}$, $\alpha_{4,3}$ and the rows $r=6,7,8$ stay open.}
 
 \entry{An exact gamma constant for an Ap\'ery-like sequence}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a279619-level-seven-gamma-constant}
-{article.pdf}{batch~73: A279619\_Gamma\_Asymptotics.zip + A279619\_exact\_asymptotics.zip}
+{article.pdf}{batch~73: A279619\_Gamma\_Asymptotics.zip + A279619\_exact\_asymptotics.zip; batch~77: level7-asymptotics-replay.zip}
 {Proves the asymptotic displayed in OEIS A279619 with the constant
 identified:
 $a_n\sim\sqrt{3\pi}\,27^n/(\Gamma(\tfrac17)\Gamma(\tfrac27)\Gamma(\tfrac47)\,n^{3/2})$,
@@ -2325,7 +2441,16 @@ Lucas-congruence conjecture of the entry is not established.
 \emph{Merged from two manuscripts that proved the constant independently
 on the same day by different routes --- a hypergeometric pullback with
 Ramanujan's level-seven series, and an eta product at $i/\sqrt7$ evaluated by
-Chowla--Selberg --- both kept.}}
+Chowla--Selberg --- both kept.}  A third manuscript, added in batch~77,
+proves the constant once more; its route is printed as Section~16: the
+Fricke involution of the weight-one theta series gives the singular
+coefficient directly at $\tau=i/\sqrt7$, the level-seven case of
+Guillera--Zudilin's modular limit formula, and an Epstein zeta function
+gives the eta value.  It adds no theorem, but an explicit generator for
+the corrections of every convolution power, with coefficients in a
+polynomial ring over~$\Q$, and rounding brackets for every fixed weight,
+whose inversion cites the transseries volume; its claim to answer
+O'Brien's Question~10.2 is not carried.}
 
 \entry{Spectral collisions and boundary asymptotics for zig-zag Eulerian numbers}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a205497-zigzag-eulerian-spectra}
@@ -2353,15 +2478,23 @@ generating function $z^4/(1-2z+z^4)$.  Also an inverse transseries.}
 
 \entry{Fixed-multiplicity shuffles and balanced Smirnov words}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a330266-balanced-smirnov-poisson}
-{article.pdf}{batch~73: ProveIt\_Balanced\_Smirnov\_OEIS.zip}
+{article.pdf}{batch~73: ProveIt\_Balanced\_Smirnov\_OEIS.zip; batch~77: balanced-smirnov-repair-reproducibility.zip}
 {Proves Kirgizov's conjecture in OEIS A330266 for every fixed $k\ge2$: the
 fraction of shuffles of $n$ ranks of $k$ cards with no two equal neighbours
 tends to $e^{-(k-1)}$, and the number of equal adjacencies is asymptotically
 Poisson$(k-1)$, with an exact Laguerre-kernel generating integral and
 explicit corrections, for $k=4$
-$e^{-3}(1-\frac9{8n}-\frac3{128n^2}+\frac{189}{1024n^3}+O(n^{-4}))$.  One
-tail estimate is marked in the report as a sketch; the limit law does not
-depend on it.}
+$e^{-3}(1-\frac9{8n}-\frac3{128n^2}+\frac{189}{1024n^3}+O(n^{-4}))$.  Part~I
+marks one tail estimate, on which the uniform expansion and the
+corrections rest, as a sketch; the limit law does not depend on it.
+Part~II, added in batch~77 from a second manuscript, proves it for every
+fixed $k$: the factorial-moment domination $E(X)_M\le(k-1)^M$, an explicit
+uniform remainder with a Touchard-polynomial constant, an all-orders
+expansion in integer powers, a degree bound giving factorial cumulants
+$O(n^{1-r})$, and a sharper inverse along the count sequence, which cites
+the transseries volume.  Every coefficient Part~I displays is re-derived
+unchanged and cited, not reprinted; the second manuscript's contraction,
+ratio and local derivations are kept as second proofs.}
 
 \entry{Unconditional all-orders asymptotics for two OEIS permutation sequences}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a189281-path-forest-expansions}
@@ -2406,7 +2539,7 @@ answer to it.}
 
 \entry{L-convex polyominoes and a colored-partition comparison}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a126764-lconvex-polyominoes}
-{article.pdf}{batch~75: A126764\_Lconvex\_Research.zip}
+{article.pdf}{batch~75: A126764\_Lconvex\_Research.zip; batch~77: lconvex-asymptotics-reproducibility.zip}
 {Proves the Guttmann--Kot\v{e}\v{s}ovec asymptotic recorded as a conjecture
 in OEIS A126764 for fixed L-convex polyominoes of area~$n$,
 $a_n\sim\tfrac{13\sqrt2}{768}\,n^{-3/2}e^{\pi\sqrt{13n/6}}$, with three
@@ -2418,8 +2551,731 @@ finite-cut identity and a full-circle estimate give the other two.  Also an
 all-orders radial expansion of the generating function at $q=e^{-t}$ (not a
 coefficient expansion) and a $W_{-1}$ inverse, an instance of the
 transseries volume's Lambert and staircase theorems.  The area generating
-function is a cited input; the manuscript's metadata says it was prepared with
-ChatGPT.}
+function is a cited input; Part~I's manuscript metadata says it was
+prepared with ChatGPT.  Part~II, added in batch~77 from an independent
+second manuscript, proves the all-orders coefficient expansion that
+Part~I left open: from an exact decomposition $A=PB^2+R$, with $P$
+Part~I's eta quotient, $B$ a partial theta function and $R$ exponentially
+smaller,
+$a_n=\tfrac{13\sqrt2}{768}N^{-3/2}e^{\pi\sqrt{13N/6}}(\sum_{r<M}c_rN^{-r/2}+O(N^{-M/2}))$
+with $N=n-1/6$, for every $M$, re-proving Part~I's three corrections.
+Also eventual strict log-concavity, monotonicity by an injection, and a
+shifted $W_{-1}$ inverse with integer brackets of every order, again an
+instance of the transseries volume; Part~I's boundary series equals~$B$.
+Part~II states that Guttmann and Kot\v{e}\v{s}ovec print the reciprocal of
+the amplitude, which the report does not check.}
+
+\entry{The logarithmic deficit of 120-avoiding ascent sequences}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202061-ascent-120-deficit}
+{article.pdf}{batch~77: oeis-a202061-report.zip + oeis-a202061-sharp-deficit.zip + oeis-a202061-second-order-report.zip + oeis-a202061-third-order-report.zip + oeis-a202061-allorders-report.zip}
+{For ascent sequences avoiding 120 (OEIS A202061), with $\mu\approx7.2959$
+the largest root of $\mu^3-8\mu^2+5\mu+1$, $D_n=n\log\mu-\log a_n$,
+$F=n^{1/3}(\log n)^{2/3}$ and $L=\log n$, five Parts prove, each refining
+the last: $D_n=\Theta(F)$ from an exact positive height-walk
+representation, which excludes every equivalent
+$C_0\mu^ne^{-dn^\gamma}n^g$ with $\gamma\ge1/3$, among them the stretch
+$n^{3/8}$ that Conway, Conway, Elvey Price and Guttmann estimated
+numerically, and that the generating function is not D-finite (Part~I);
+$D_n/F\to C_\star\approx2.2326$, explicit (II); the term
+$(7/3)C_\star F\log L/L$ (III); the next constant
+$\kappa\approx-1.9401$, which proves Part~III's conjecture (IV); and, for
+every fixed $J$, an expansion of $D_n/(C_\star F)$ in powers of $1/L$
+with universal polynomials $P_j(\kappa+(7/3)\log L)$ (V); each with its
+inverse.  No multiplicative equivalent, amplitude or effective threshold
+is claimed, priority is not established, and the inverses are instances
+of the transseries volume.  The A202062 report gives a second route to
+the growth rate~$\mu$.  \emph{Merged from five manuscripts whose archives
+nest their predecessors byte for byte; each paper is printed once, in
+chain order, and one manuscript's restatements of Part~I are cited.}}
+
+\entry{Ascent sequences avoiding 000}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202058-ascent-000-growth}
+{article.pdf}{batch~77: oeis-a202058-report.zip + oeis-a202058-fine-report.zip + a202058-lognormal-report.zip + a202058-ratio-report.zip}
+{For ascent sequences avoiding 000 (OEIS A202058), $T=3\pi^2/8$ and
+$c_n=a_nT^n/n!$, Part~I proves the factorial growth constant
+$(a_n/n!)^{1/n}\to8/(3\pi^2)$ conjectured by Conway, Conway, Elvey Price
+and Guttmann, through the exact radius $T$ of the exponential generating
+function, with $\log c_n=O(n^{9/13}(\log n)^3)$.  Part~II proves
+$-O(n^{2/3}(\log n)^{5/3})\le\log c_n\le O((\log n)^2)$, which excludes a
+factor $e^{cn^\sigma}$ with $c,\sigma>0$, gives exact counts through 400,
+shows that $a_n/n!$ is not PF$_3$, and conjectures
+$\log c_n\sim(2/3)(\log n)^2$.  Part~III proves that law in limsup and
+cumulative form, with $\log A(t)\sim(2/3)\log^2(1/(T-t))$; Part~IV
+proves the ratio limit $a_{n+1}/((n+1)a_n)\to8/(3\pi^2)$ with error
+$O(n^{-1/4}(\log n)^{3/4})$ and the lower bound
+$\log c_n\ge-O(\sqrt n(\log n)^{3/2})$.  The pointwise law,
+log-concavity and a multiplicative equivalent stay open; the Lambert-$W$
+inverses are instances of the transseries volume.  \emph{Merged from four
+manuscripts in chain order; Part~III's re-proof of Part~II's bounds is
+kept as a second route, Part~IV's uncredited restatement of a Part~II
+identity is credited, and statements a later Part supersedes carry dated
+notes.}}
+
+\entry{Exact enumeration of 201-avoiding ascent sequences}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202062-ascent-201-enumeration}
+{article.pdf}{batch~77: oeis-a202062-report.zip}
+{For ascent sequences avoiding 201 (OEIS A202062), proves the cubic
+generating function conjectured by Guttmann and Kot\v{e}\v{s}ovec, by an
+exact two-label generating tree whose two-catalytic kernel equation is
+solved by two rational invariants, one from an order-seven kernel orbit;
+the report finds their conjectured cubic equivalent to its own and a sign
+error in their printed final combination.  For every $M$,
+$a_n=C\mu^nn^{-9/2}(\sum_{m\le M}c_mn^{-m}+O(n^{-M-1}))$, with
+$\mu\approx7.2959$ the largest root of $\mu^3-8\mu^2+5\mu+1$,
+$C\approx13.4300$ in closed form and $c_m\in\Q(\mu)$, the first three
+exact; also a $W_{-1}$ inverse with ceiling brackets, an instance of the
+transseries volume's Lambert theorems.  With Conway, Conway, Elvey Price
+and Guttmann's equal-growth theorem it gives $\lim b_n^{1/n}=\mu$ for
+A202061, a second route to Part~I of the A202061 report.  Novelty rests
+on a scoped literature check, and the envelope constants are not
+explicit.}
+
+\entry{Asymptotic enumeration and inversion for A122399}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a122399-surjection-diagonal}
+{article.pdf}{batch~77: oeis-a122399-research.zip}
+{For $a_n=\sum_kk^nk!\,S(n,k)$ (OEIS A122399), the diagonal of
+$1/(1-ue^y(e^x-1))$: an exact, absolutely convergent vertical-contour
+formula for the two-size numbers $A_{m,n}$ with a nonasymptotic tail
+bound; an all-orders saddle expansion uniform for $m/n$ in compact
+subsets of $(0,\infty)$; and
+$a_n=CD^n(n!)^2n^{-1/2}(1-0.0600744\ldots/n+\cdots)$ through $n^{-4}$,
+with $D\approx3.1610887$ (A317855) and the first correction in closed
+form.  Also a controlled inverse with integer-threshold envelopes, whose
+initializer is an instance of the transseries volume's inverse-Gamma
+core; a central limit theorem for the number of occupied blocks; and
+$a_{n+\varphi(p^r)}\equiv a_n\pmod{p^r}$ for $n\ge r$, which proves Bala's
+conjecture that $p-1$ is a period modulo~$p$; no least period is claimed.
+The leading equivalent is Kot\v{e}\v{s}ovec's (OEIS, 2018), the methods
+are standard saddle methods, and no global novelty is claimed.}
+
+\entry{Asymptotics of iterated Bell diagonals (OEIS A139383, A261280)}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a139383-iterated-bell-diagonals}
+{article.pdf}{batch~77: oeis-iterated-bell-report-attribution-revised.zip + iterated-bell-proportional-addendum.zip (the first edition oeis-iterated-bell-report.zip superseded, not printed)}
+{For the iterated Bell numbers $H(n,m)=n![z^n](e^z-1)^{\circ m}$, with
+OEIS A139383 $=H(n,n)$ and A261280 $=H(n,n+1)$, Part~I proves the leading
+equivalents those entries label conjectural, and for each fixed integer $k$
+an expansion
+$H(n,n+k)=e^kC\,n^{2n-5/6}2^{1-n}e^{-n}\bigl(1+\sum_jP_{j,k}(\log n)n^{-j}\bigr)$
+to every fixed order, with an outward-rounded interval certificate that
+$2<C<4$ (the digits $C\approx2.86540798$ are not certified), an exact
+coefficient generator, and smooth inverses with a safe integer bracket.
+Part~II, from an addendum conditional on Part~I, extends the expansion to
+proportional depth $m=\lambda n+\delta$, uniformly for $\lambda$ in compact
+subsets of $(0,\infty)$, with an amplitude $D(\lambda)$, $D(1)=2C$, proved
+strictly positive for every $\lambda>0$, a floor-depth phase
+$e^{-\{\lambda n\}/\lambda}$, eventual monotonicity and inverses; the
+endpoint regimes stay open.  Prellberg's 2002 bivariate formula and
+parabolic-coordinate method already give the leading equivalent: no priority
+is claimed for it, for the method or for the coefficients.  The inverses are
+instances of the transseries volume.  The superseded first edition differs
+only in that attribution; the check that Prellberg's broad printed theorem
+fails for $f(z)=z/(1-z)$ is shared with the Takeuchi report.}
+
+\entry{Corner polyhedra and Schnyder labelings: polynomial exponents and limiting amplitudes}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a377922-corner-polyhedra-schnyder}
+{article.pdf}{batch~77: oeis-bimodal-cone-research.zip + oeis-bimodal-full-asymptotics.zip}
+{Fusy, Narmanli and Schaeffer encode corner polyhedra (OEIS A377922) and
+3-connected Schnyder labelings (A377920) as quadrant walks with a two-state
+parity and conjecture equivalents $\kappa\mu^nn^{-\alpha}$ with irrational
+exponents (their Conjecture~25).  Part~I proves
+$p_n=\Theta((9/2)^nn^{-\alpha_P})$ and $s_n=\Theta((16/3)^nn^{-\alpha_S})$
+with the conjectured $\alpha_P=1+\pi/\arccos(9/16)$ and
+$\alpha_S=1+\pi/\arccos(22/27)$, by a one-unit cycle buffer, a random-clock
+transfer and a Fourier local limit; since both exponents are irrational, the
+generating functions of A377922, A377920 and A377921 are not D-finite; and
+first-threshold inverses with $O(1)$ error.  Part~II, from an addendum,
+proves the full equivalents with finite positive amplitudes $\kappa_P$,
+$\kappa_S$ (completing Conjecture~25), the coefficientwise equivalent
+$\tilde s_n\sim(16/19)^3\kappa_S(16/3)^nn^{-\alpha_S}$ for A377921, and a
+Lambert-$W_{-1}$ inverse with a vanishing-width ceiling bracket, an instance
+of the transseries volume.  No digits of $\kappa_P$, $\kappa_S$, no rates and
+no correction terms are claimed; A377923 is outside both theorems; the iid
+cone theorems are Denisov--Wachtel's, and neither manuscript claims
+priority.}
+
+\entry{Precise asymptotics of the powered Catalan numbers (OEIS A113227)}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a113227-powered-catalan}
+{article.pdf}{batch~77: oeis-powered-catalan-report.zip + oeis-powered-catalan-fourier-addendum.zip}
+{The powered Catalan numbers $a_n$ (OEIS A113227) count permutations
+avoiding the vincular pattern $1$-$23$-$4$.  From the known continued
+fraction Part~I derives a positive discrete moment representation
+$a_n=\sum_\lambda\omega_\lambda\lambda^n$ whose transform is a Bessel
+quotient, locates its large spectral nodes, and proves
+$a_n\sim e^{e-2}(2\pi)^{-1/2}r^{-3/2}B_n(e)$, with $B_n$ the Touchard
+polynomial and $r=n/W(n/e)$, answering the question of precise asymptotics
+that Elizalde left open in 2006; also an expansion to every fixed order with
+explicit $c_1$, $c_2$, a canonical continuous inverse and an
+exponential-generating-function corollary.  Part~II, from an addendum,
+proves a zero-free complex wedge for the Bessel weight, replaces the
+spectral sum by a lattice sum with relative error $O(e^{-dn})$ for every
+$d<\log2$, and splits $a_n$, for each fixed $J$, into $J+1$ exact Fourier
+sectors, each with an all-orders expansion.  No convergence, growing number
+of sectors, Borel sum or transseries is claimed, and the inverse is an
+instance of the transseries volume.  The recurrence, models and continued
+fraction are prior art (Callan, Beaton et al., Gladkovskii); the sibling
+pattern $12$-$34$ (A113226) has its own report.}
+
+\entry{Growing powers of Mahonian coefficients}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a380274-mahonian-growing-powers}
+{article.pdf}{batch~77: oeis-mahonian-crossover-result.zip}
+{For $S_n(r)=\sum_kM_n(k)^r$, with $M_n(k)$ the number of permutations of
+$n$ with $k$ inversions, proves that for every $r_n\to\infty$ the ratio
+$S_n(r_n)/C_n^{r_n}$, $C_n$ the central Mahonian number, is asymptotic to a
+theta function $\Theta_\delta(r_n/V_n)$, where $V_n=n(n-1)(2n+5)/72$ is the
+inversion variance and $\delta\in\{0,\tfrac12\}$ depends on $n\bmod4$: a
+Gaussian integral below the critical scale $r\asymp n^3$, a discrete Gaussian
+partition function on it and $1+2\delta$ above it, with the matching limit
+laws for the common inversion count of colliding random permutations.  Also
+an explicit fourth-order correction, uniform expansions to every fixed order
+on the transition scale, an unnormalized multiplicative equivalent, and a
+Lambert-$W_0$ index inverse on a fixed critical path, an instance of the
+transseries volume.  The fixed-power equivalent with three corrections,
+including OEIS A380274 ($r=3$) and A380275 ($r=4$), is in Wang's 2026
+manuscript and is not claimed; priority for the growing-power extension is
+not established.  A dated note relates the crossover to the critical theorem
+of the theta-ballot report, whose general lattice-peak question stays open.}
+
+\entry{Divisor-weighted partition products and assemblies (OEIS A301746 and A294363)}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a301746-divisor-weighted-asymptotics}
+{article.pdf}{batch~77: oeis-divisor-square-asymptotics-result.zip + oeis-divisor-assembly-result.zip}
+{Two manuscripts on generating functions weighted by the divisor function
+$d(k)$.  Part~I treats OEIS A301746, the coefficients of
+$\prod_k(1+q^k)^{d(k)^2}$, and proves the conjecture recorded there.
+From the fourth-order Mellin pole at $s=1$ it obtains
+$\log a_n\sim\sqrt n(\log n)^{3/2}/(2\sqrt6)$, Kot\v{e}\v{s}ovec's 2018
+conjecture, with three further inverse-logarithmic corrections and the
+matching inverse.  Part~I also gives a relative expansion to every order in
+exact saddle cumulants, strict monotonicity and shrinking brackets for the
+integer threshold; the contributions of zeta zeros are left open.
+Part~II treats A294363, $n![z^n]\exp(\sum_kd(k)z^k)$, whose Mellin kernel has
+a double pole: an explicit multiplicative equivalent through a shifted
+Lambert-$W$ saddle, an all-orders expansion, the OEIS logarithmic statement,
+and a factorial-core inverse.
+Its coefficients are rational in the Lambert parameter, and the inverse's
+absolute error tends to zero.
+The two Parts share a method template, also used by the batch-77 source of
+the A022629 report, but no theorem.  No priority is claimed for the methods,
+and the Lambert, reversion and bracket steps are instances of the
+transseries volume.}
+
+\entry{Ascent sequences with bounded multiplicity (OEIS A294220)}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a294220-ascent-multiplicity-caps}
+{article.pdf}{batch~77: oeis-bounded-multiplicity-family-report.zip + oeis-fixed-sector-addendum.zip}
+{For ascent sequences of length $n$ in which every value occurs at most $b$
+times (the array OEIS A294220; cap three is A317784), Part~I proves for every
+fixed $b\ge3$ that $(a^{(b)}_n/n!)^{1/n}\to\mu_b=1/T_b$, with
+$T_b=\int_0^\infty\log E_b(v)/(E_b(v)-1)\,dv$ and $E_b$ the truncated
+exponential, with error $O_b(n/\log n)$ in $\log a^{(b)}_n$; also a
+Lambert-$W$ inverse in the length, the large-cap law
+$T_b=\pi^2/6+(b+1)(\zeta(b+2)-1)+O(b^{5/2}(4/9)^b)$ with explicit constants,
+and a $W_{-1}$ inverse in the cap with counterexamples to naive rounding.
+The cap-two value $T_2=3\pi^2/8$, the constant $8/(3\pi^2)$ conjectured by
+Conway, Conway, Elvey Price and Guttmann, is taken from the A202058 report,
+not re-proved.  Part~II, from an addendum, writes $T_b-\pi^2/6$ as a
+convergent sum of positive Taylor sectors, proves that the remainder after
+any fixed number of sectors is asymptotic to the next sector, and expands
+each fixed sector to all orders in $1/b$; the remainder above is
+$\sim\frac8{9\sqrt\pi}\sqrt b\,(4/9)^b$.  No prefactor or all-orders
+expansion in $n$, no joint regime $b=b(n)$ and no priority is claimed; the
+inverses are instances of the transseries volume.}
+
+\entry{Galled trees by gall count: the cube-root crossover, positive density and the near-maximal endpoint}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a399421-galled-trees}
+{article.pdf}{batch~77: galled-density-reproducibility.zip + galled-crossover-reproducibility.zip + galled-endpoint-report.zip (the earlier edition galled-crossover-reproducibility (1).zip superseded, not printed)}
+{For $g(n,k)$, the rooted binary unlabeled simplex time-consistent galled
+trees with $n$ leaves and $k$ galls (OEIS A399421, row sums A397952), proves
+expansions to every fixed order in three disjoint regimes.  Part~I: for
+$k\asymp n^{1/3}$ the fixed-$k$ asymptotic acquires the factor
+$\exp(-2\gamma_0k^{3/2}/\sqrt n)$, $\gamma_0=1.1300337163\ldots$, with a
+series in $n^{-1/3}$ and an explicit first correction.  Part~II: for $k/n$ in
+compact subsets of $(0,1/2)$, a saddle expansion in $1/n$, a central limit
+theorem with mean $0.19741431\,n$ and variance $0.05548588\,n$, local and
+large-deviation laws and integer inverse brackets; it records that the
+inspected versions of Agranat-Tamir et al.\ print $\gamma\approx0.3846$ where
+their defining equation gives $0.3835758866\ldots$, the value credited on
+OEIS to Kot\v{e}\v{s}ovec.  Part~III: for $n-2k-1\asymp\sqrt n$, an
+expansion in $n^{-1/2}$ whose factor two comes from the parity of two moving
+square-root singularities.  The generating function and the fixed-$k$ and
+scalar leading terms are prior work, the cube-root mechanism is Fuchs and
+Hao~Yu's for leaf-labeled classes, matching the regimes stays open, and the
+inverses are instances of the transseries volume.  \emph{Merged from three
+manuscripts of one workspace, one per regime, with no theorem proved twice;
+the common model is printed once.}  Five heavy triangle files are not
+shipped; the README regenerates them.}
+
+\entry{Airy amplitudes for relaxed trees, compacted trees and finite-language automata}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a082161-airy-amplitudes}
+{article.pdf}{batch~77: relaxed-binary-trees-reproducibility.zip + compacted-binary-trees-reproducibility.zip + fixed-arity-airy-package.zip + ternary-airy-amplitudes-result.zip + larger-alphabet-automata-report.zip + oeis-dfa-finite-language-report.zip}
+{Relaxed trees, compacted trees and minimal automata of finite languages
+satisfy one triangular recurrence family indexed by the arity $k$; their
+growth orders are due to Elvey Price, Fang and Wallner and to Ghosh Dastidar
+and Wallner, and the existence of a limiting amplitude was open.  Proves
+positive amplitudes and Poincar\'e expansions to every fixed order in
+$n^{-1/3}$.  Part~I (A082161):
+$a_n=\gamma\,n!\,4^ne^{3zn^{1/3}}n\,(1+\sum_kc_kn^{-k/3})$, $z$ the largest
+Airy zero, with three explicit logarithmic corrections.  Part~II (A254789):
+the same with $n^{3/4}$, exact positive renewal models, and cancellation of
+the $n^{-1/3}$ term in the logarithm of the compacted-to-relaxed ratio.
+Part~III: every fixed $k\ge3$ and all three models at scale
+$(n!)^{k-1}(k^k/(k-1)^{k-1})^ne^{\gamma n^{1/3}}n^{(2k-1)/3}$, with common
+first two corrections, first model-dependent defects of order $n^{-(k-2)}$,
+eventual decrease of the normalized ratios and a cancellation identity; its
+ternary section, the base proof, adds the third coefficient, and its
+comparison section bounds the automaton-to-relaxed ratio below by
+$\prod_{j=2}^n(1-1/(2j^{k-1}))\ge(2\sqrt2/\pi)\sin(\pi/\sqrt2)$, uniformly
+in $k$ and $n$.  Part~IV (A331120): binary automata, with $8^n$ and
+$n^{7/8}$.  No amplitude is evaluated, the expansions are not uniform in $k$, the
+Lambert-$W$ inverses are instances of the transseries volume, and the
+sources' claim that Ghosh Dastidar--Wallner use a false bound $U\le q$ was
+not checked against the printed paper.  \emph{Merged from six manuscripts:
+the ternary one is the $k=3$ case and base proof of the arity one, the
+comparison one the earliest form of its comparison step, and the automaton
+one repeats the compacted one's method and Jacobi appendix, printed once.}}
+
+\entry{Airy asymptotics for tree-child networks}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a213863-tree-child-networks}
+{article.pdf}{batch~77: d-combining-asymptotics-reproducibility.zip + tree-child-asymptotics-reproducibility.zip}
+{For maximally reticulated $d$-combining tree-child networks and their word
+diagonal $a_n$ (OEIS A213863 at $d=2$), proves for every fixed $d\ge2$ that
+$a_n=\gamma_d(n!)^{d-1}\Gamma^ne^{Bn^{1/3}}n^{\rho}(1+\sum_rC_{d,r}n^{-r/3})$
+to every finite order, with $\gamma_d>0$ defined by convergent limits,
+$\Gamma=4(d+1)^{d-1}/(d-1)!$, $B=3z((d-1)/(d+1))^{2/3}$, $z$ the largest
+Airy zero, and $\rho$ explicit, by a contractive Jacobi reduction and
+polynomial--Airy profiles; ternary coefficients are given.  Part~II, for
+$d=2$: explicit coefficients; every order for the total number of binary
+tree-child networks, $TC_n\sim(\sqrt e\,\gamma/12)(n!)^212^ne^{Bn^{1/3}}n^{-5/3}$,
+through the Pons--Batle identity proved by Lin, Liu, Liu, Liu and Xin;
+weighted all-orders expansions of the reticulation deficit around
+Poisson$(1/2)$; an exact eventual total-variation identity with sharp rate
+$|B|n^{-2/3}/(48\sqrt e)$; explicit inverses with integer brackets, instances
+of the transseries volume.  For $d\ge3$ the total count has only its leading
+term, and no amplitude is evaluated or certified.  \emph{Merged from two
+manuscripts with one proof skeleton: the binary manuscript's own proof of
+the case $d=2$ is kept as a second route, and four identical displays are
+printed once.}}
+
+\entry{Historic tree asymptotics and a high-order obstruction}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a333497-historic-trees}
+{article.pdf}{batch~77: historic-tree-report.zip}
+{For reduced 5-historic trees (OEIS A333497), the exponential coefficients
+$h_n$ of the solution of $H'''=H^2$, $H(0)=H'(0)=H''(0)=1$, proves a unique
+positive blowup point $\rho$, $180^{1/4}\le\rho\le60^{1/3}$, and an
+expansion of $h_n/(30(n+2)!\rho^{-n-3})$ to every fixed grade with exact
+Gamma ratios, oscillating in $\log n$ through the exponent
+$\lambda=(13+i\sqrt{71})/2$: the relative error is
+$2|K|n^{-13/2}\cos(\arg K-\tfrac12\sqrt{71}\log n)+O(n^{-15/2})$ with
+$K\ne0$, so it changes sign infinitely often.  The same for A336009
+($G''''=G^2$), with the exact real-mode coefficient $-1/18052070400$ from a
+conserved energy.  Main result: the factorial-pole asymptotic of Burghart
+and Wagner's Conjecture~1 fails for every ODE order $r\ge30$ (conjecture
+parameter $m=r-1\ge29$), through an unstable conjugate pair (an exact
+rational bridge for $30\le r\le37$), a sign-variation cone, strict
+sign-regularity and a generalized stable manifold.  The orders
+$4\le m\le28$ and Conjecture~2 stay open, no replacement asymptotic is
+given, and the fitted constants are not certified; the manuscript also
+reads the journal's Table~1 as listing the radius under its reciprocal's
+label.  The Lambert-$W$ start and two-ceiling window of the inverse are
+instances of the transseries volume.}
+
+\entry{Asymptotic expansions of the Takeuchi numbers}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a000651-takeuchi-numbers}
+{article.pdf}{batch~77: takeuchi-asymptotics-research.zip}
+{For the Takeuchi numbers $T_n$ (OEIS A000651) and $w=W(n)$, proves
+$\log T_n=e^w(w^2-w+1)+w^2/2-\tfrac12\log(1+w)+\log C+p_1(w)/n+p_2(w)/n^2
++O((1+w)^8/n^3)$ with explicit rational $p_1,p_2$ and $0<C<\infty$, without
+assuming the leading equivalent, which is Prellberg's (announced 2002);
+then every fixed order, each $p_j$ by a finite exact algorithm and one
+convergent quadrature, and an explicit $p_3\sim w^4/72$, so $p_j=O(w^j)$
+fails at $j=3$.  The transfer is a quantitative stability lemma for
+descending Markov chains with jumps close to $1+\mathrm{Pois}(W(r))$.  Also
+the Takeuchi-minus-Bell coefficients, and real and integer inverses that
+are instances of the transseries volume.  The manuscript states that the
+general theorem printed in Prellberg's 2002 slides omits a restriction
+($f=z/(1-z)$, $a=z$, $b=1$ gives $B_{n-1}$, not a multiple of $B_n$),
+without effect on the Takeuchi case; \dir{a139383-iterated-bell-diagonals}
+makes the same check, printed only here.  $C$ is not enclosed, and
+effective constants and optimal truncation are open.}
+
+\entry{Rooted identity trees with fixed maximum outdegree}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a116379-bounded-identity-trees}
+{article.pdf}{batch~77: rooted-identity-trees-source.zip}
+{For rooted unlabeled identity trees with at most $d$ children at each
+vertex (OEIS A116379 for $d=3$, A116380 for $d=4$, whose leading asymptotic
+OEIS records as unknown), proves for every fixed $d\ge2$ the square-root law
+$a_{d,n}=C\rho^{-n}n^{-3/2}(\sum_{j\le R}D_jn^{-j}+O(n^{-R-1}))$ to every
+fixed order, with $C>0$ and explicit $D_1,D_2$, from the signed root
+equation: $1/4\le\rho\le9/20$, a transversality bound with the constant
+$1-810/(319\sqrt{19})$ independent of $d$, a characteristic point and a
+unique dominant singularity.  Tabulates $\rho,C,D_1,D_2$ for $d=3,4$ to 30
+uncertified decimals ($\rho_3=0.40077450047\ldots$,
+$C_3=0.41431687066\ldots$) and inverts a specified finite model by
+$W_{-1}$, an instance of the transseries volume.  Nothing is uniform in
+$d$; the derivative cancellation is Bell, Burris and Yeats's, and no
+priority is claimed, since Meir--Moon--Mycielski (1983) and
+Haigh--Kennedy--Quintas (1984) were not read in full.}
+
+\entry{Tournament score sequences and weighted component asymptotics}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a000571-tournament-score-sequences}
+{article.pdf}{batch~77: tournament-score-sequences-source.zip}
+{Refines Kolesnik's leading asymptotics for the score sequences of
+tournaments (OEIS A000571) and of strong tournaments (A351822), from the
+generating function $\exp A(z)$ of
+Claesson--Dukes--Frankl\'{\i}n--Stef\'ansson: to every fixed order,
+$T_n^\pm=(e^{\pm\lambda}/(2\sqrt\pi))\,4^nn^{-5/2}(1+c_1^\pm/n+\cdots)$ with
+$\lambda=A(1/4)=0.33023754398\ldots$, $c_1^\pm=-1/8\pm5\mu/2$,
+$\mu=A'(1/4)/4=0.67395260185\ldots$ and explicit $c_2^\pm$.  For the count
+weighted by $u^m$, $m$ the number of strong blocks: fixed subcritical
+weights; at the critical weight an expansion in $n^{-1/2}$ with no $n^{-1}$
+term; uniformly on a logarithmic window above it a half-power expansion
+with Kummer-function coefficients; and at
+$\tau=\tfrac12\log n+2\log\log n+\log(\mu\sqrt\pi/2)+s$ a coexistence
+profile proportional to $1+e^{-s}$, which is not claimed to be a mixture
+law.  Inverses of specified models are instances of the transseries
+volume.  Nothing is claimed for $\tau<0$ or for growing orders, and the
+renewal mechanisms are credited to Blanchet and Glynn.}
+
+\entry{Fixed forbidden distances in involutions}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a239144-forbidden-distance-involutions}
+{article.pdf}{batch~77: fixed-forbidden-distance-involutions.zip + involution-refinements-attribution-revision.zip (its earlier edition involution-refinements-reproducibility.zip superseded, not printed)}
+{For involutions of $[n]$ avoiding the transpositions of a forbidden graph
+of fixed maximum degree, proves a uniform complex probability-generating
+function expansion to every fixed order in $n^{-1/2}$, with coefficients
+evaluated at the graph's own matching-root moments, and an exact split of
+the avoidance count into two Gaussian sectors of relative weights
+$e^{\pm\sqrt n}$, each with its own expansion.  For a fixed finite set of
+forbidden distances the local statistics are eventually exactly affine in
+$1/n$, so the columns of OEIS A239144 have constant coefficients:
+$A_{n,r}/I_n=e^{-r}(1+r/\sqrt n-r/(2n)-r(8r^2-12r+3)/(24n^{3/2})+O(n^{-2}))$.
+Section~9 holds the second manuscript's case $r=1$: the all-orders law of
+the number of adjacent transpositions (A217876; zero column A170941), its
+total-variation distance from Poisson(1), a second proof by growing moments
+and a Touchard transform, a Chebyshev sector decomposition with sector ratio
+$(-1)^ne^{-2\sqrt n}(1-31/(12\sqrt n)+O(1/n))$, and coefficients through
+order eight.  \emph{Merged: the second manuscript proves the case $r=1$
+with the same coefficients $31/24$, $-55/48$, $1717/1920$; its inverse
+statements are given by pointer.}  The Gaussian matching identity and the
+root-moment method are prior work (Godsil, Godsil--McKay, McLeod), the
+zero-count limit is Ganjtabesh--Steyaert's, the Poisson law Li's and $31/24$
+Kot\v{e}\v{s}ovec's.  The inverses are instances of the transseries volumes.}
+
+\entry{All fixed order asymptotics for distinct parabolic double cosets}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260700-parabolic-double-cosets}
+{article.pdf}{batch~77: double-coset-report.zip}
+{Let $p_n$ count the distinct subsets of $S_n$ that are double cosets of
+standard parabolic subgroups (OEIS A260700).  Starting from Browning's exact
+enumeration, proves
+$p_n=Kn!\,\rho^{-2n}(\sum_{m\le M}B_m(\rho)n^{-m}+O(n^{-M-1}))$ for every
+fixed $M$, with $\rho=\log2$, $K=e^{-\rho^2/2}/(4\rho^2)$ and
+$B_1(r)=r^2/2-r^3-11r^4/12+r^5/4$; $B_2$, $B_3$, $B_4$ are explicit.  The
+first correction proves Browning's higher-order conjecture with
+$c=-KB_1(\rho)=0.10819705289\ldots>0$, the sign proved without a numerical
+test.  The tools are uniform generalized-Fubini pole extraction, summable
+bounds on the signed inner defects and a joint bound for the omitted
+long-cycle configurations of the outer Stirling transform, with a finite
+exact coefficient algorithm.  The leading equivalent is Browning's theorem,
+novelty rests on a bounded search, and five questions stay open.  Smooth
+Lambert-$W$ inverses and an eventual two-ceiling bracket for the integer
+threshold are instances of the transseries volume; the report keeps the
+counterexample $y=p_{25}+1$ to the naive rounding
+$N(y)=\lceil x_1(y)\rceil$.  A companion of the A260952 report below;
+neither uses the other.}
+
+\entry{Full support signed permutations and their asymptotic coefficients}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260952-full-support-signed-permutations}
+{article.pdf}{batch~77: Coxeter\_Full\_Support\_Asymptotics.zip}
+{Proves Kot\v{e}\v{s}ovec's 2015 conjecture recorded in OEIS A260952,
+$a_m\sim-2^{m+1}m!/(9(\log3)^{m+1})$, with the corrections
+$1-2\tau/m-9\tau^2/(4(m)_2)-27\tau^3/(2(m)_3)-1755\tau^4/(16(m)_4)+O(m^{-5})$,
+$\tau=\log3$, every further fixed order by a finite formula, and $a_m<0$
+for all $m\ge1$.  The $a_m$ are the asymptotic coefficients of the
+full-support elements of the Weyl groups of types~$B$ and~$D$ (A109253,
+A112225); they are written as a positive Stirling transform whose late
+expansion holds to every fixed order on the scale $\log(1+q)$, uniformly in
+$q$.  The two exact endpoint sums of the signed-permutation model have
+separate all-order expansions for $1/4<|q|<4$ (not extended to $q\ge4$),
+which give an all-order sparse-sign crossover: the number of negative
+entries tends to a Poisson law conditioned to be positive.  The models are
+Bergeron--Hohlweg--Zabrocki's and the Stirling-transform construction
+Martin--Kearney's.  Lambert-$W$ growth-index inverses with a stated rounding
+width are instances of the transseries volume.  A companion of the A260700
+report above; neither uses the other.}
+
+\entry{Ordered long-jump rook paths}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a227578-ordered-rook-paths}
+{article.pdf}{batch~77: ordered-rook-reproducibility.zip}
+{Let $A(n,k)$ count the paths from $(n,\dots,n)$ to the origin that lower
+one coordinate by any positive amount at each step and stay weakly ordered
+(OEIS A227578; columns A059231, A227580, A227583, A227596).  For every
+$k\ge2$ the report proves an exact coefficient identity with a squared
+Vandermonde numerator, so each column is D-finite (no posted recurrence is
+certified), and, by the Raichev--Wilson smooth-point theorem,
+$A(n,k)=C_k(k+1)^{kn}n^{-(k^2-1)/2}(\sum_{j<M}d_j(k)n^{-j}+O(n^{-M}))$ for
+every $M$, with $C_k$ in closed form through a Mehta-type Gaussian integral,
+$d_1(k)=-(k-1)(k+1)(2k^4+8k^3+9k^2+6k+12)/(12k(k+2)^2)$ and $d_2(k)$ in
+closed form; every $d_j(k)$ comes from a finite generator and is a rational
+function of $k$ with poles only at $0,-1,-2$.  This proves the general
+fixed-$k$ growth that OEIS records as a conjecture; the leading constants
+for $k\le5$ were already recorded there by Kot\v{e}\v{s}ovec, and the
+methods are classical.  The $W_{-1}$ inverse and the two-ceiling threshold
+enclosure are instances of the transseries volume.  ``Rook'' means a move
+here, not a rook polynomial.}
+
+\entry{Regular cyclic word covers}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a108242-regular-cyclic-word-covers}
+{article.pdf}{batch~77: regular-cyclic-word-covers-reproducibility.zip}
+{Counts sets and multisets of rotation classes of words of fixed length
+$\ell\ge3$ over an $n$-letter alphabet in which every letter occurs exactly
+$r$ times.  An exact slot-partition identity gives, for fixed degree, the
+ratio to the carrier $(rn)!/(\ell^{rn/\ell}(rn/\ell)!\,(r!)^n)$ to every
+order in $1/n$, with rational coefficients and absolute remainder control.
+For $\ell=3$ it identifies OEIS A108242, A110105, A110104 and A110106
+(following the examples and Mishna's source where OEIS titles disagree with
+the parameters), with corrections through $n^{-5}$, such as
+$1+8/(9n)+104/(81n^2)+\cdots$, and the corrections each posted carrier
+induces.  At the critical degree $r=\lambda n^{(\ell-2)/2}$ it proves an
+expansion to every fixed order in $n^{-1/2}$, uniform on compact positive
+$\lambda$-intervals, with multiplier
+$\exp(s\lambda^2/(2\ell)+\mathbf{1}_{2\mid\ell}\,\lambda/\ell)$, $s=\pm1$;
+the even-length term comes from half-turn symmetry.  The leading
+equivalents were already posted by Kot\v{e}\v{s}ovec, and the literature
+comparison is an applicability screen, not a priority claim.  A $W_0$
+inverse with a lattice threshold enclosure is an instance of the
+transseries volume.  The open cyclic-words question of the A330266 report
+concerns other objects and is not answered.}
+
+\entry{Unitary divisor sum colored partitions and their asymptotics}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a301981-unitary-divisor-partitions}
+{article.pdf}{batch~77: unitary-partition-report.zip}
+{For the products $\prod(1-z^m)^{-\sigma^*(m)}$ (OEIS A301981) and
+$\prod(1+z^m)^{\sigma^*(m)}$ (A301982), $\sigma^*$ the unitary divisor sum,
+proves that the stretched-exponential equivalents conjectured in both OEIS
+entries are false: the ratio of coefficient to model does not eventually
+stay in any compact subinterval of $(0,\infty)$, by a least-height
+zeta-zero noncancellation (the Mellin kernel has denominator
+$\zeta(2s-1)$) and an Abelian transfer.  Unconditionally
+$\log a_n=c\,n^{2/3}+o(n^{1/3})$ with $c=3(A/4)^{1/3}$, $A=\pi^2/6$ for
+A301981 and $\pi^2/8$ for A301982, and the error is not
+$O(n^{1/4-\varepsilon})$; for each sequence separately, an error
+$O_\varepsilon(n^{1/4+\varepsilon})$ for every $\varepsilon>0$ is
+equivalent to the Riemann hypothesis, which is neither proved nor
+disproved.  Also a corrected equivalent at the explicit point
+$(2A/n)^{1/3}$ (without a rate), all-fixed-order exact-saddle and
+off-center Hermite expansions, and two-ceiling threshold brackets whose
+integer step is an instance of the transseries volume.  Which one-sided
+divergence occurs stays open.  The refutation concerns OEIS text, not a
+repository claim, and no OEIS submission is implied.}
+
+\entry{Log-periodic factors in radix-layer partition asymptotics}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a174065-radix-layer-partitions}
+{article.pdf}{batch~77: radix-partition-reproducibility.zip}
+{For $b\ge2$ let $a_b(n)=[z^n]\prod_{j\ge0,\,i\ge1}(1+z^{ib^j})$; for
+$b=2^m$ it counts partitions into parts $k$ with $v_2(k)\equiv0\pmod m$:
+ordinary partitions at $b=2$, OEIS A174065 at $b=4$, A393565 at $b=8$.  The
+report proves an expansion of $a_b(n)$ to every fixed order against
+$KN^{-\kappa}e^{2\sqrt{AN}}$, with explicit differential operators acting
+on a positive analytic $1$-periodic function $H$ of $\log_b\sqrt{N/A}$, and
+shows by the zero-free line of $\zeta$ that $H$ is nonconstant for every
+$b>2$.  Hence the equivalents recorded in A174065 and A393565 have correct
+smooth constants but omit a persistent log-periodic factor; a separate
+Abelian argument excludes every constant-only equivalent, and the
+subsequential ratios fill exactly $[\min H,\max H]$, with
+$(\min H)(\max H)=1$ from an exact radial reciprocity.  Also eventual
+strict increase and log-concavity, and a two-ceiling threshold enclosure
+whose integer step is an instance of the transseries volume.  The methods
+are classical Mellin analysis (Flajolet--Gourdon--Dumas, Madritsch--Wagner).
+The correction concerns OEIS text, not a repository claim, and no OEIS edit
+was made.  The mechanism, but no theorem, is shared with the A033552
+report.}
+
+\entry{Full asymptotic expansions for partition sums of acyclic orientations}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a372395-acyclic-orientation-partitions}
+{article.pdf}{batch~77: orientation-partition-asymptotics.zip}
+{OEIS A372395 and A370613 sum the numbers of acyclic orientations of the
+complete multipartite graphs $K_\lambda$ over the partitions $\lambda$ of
+$n$, unrestricted or into distinct parts.  The report proves
+$B_\pm(n)=A_\pm n!\,n^{-p_\pm}e^{C_\pm\sqrt n}(\sum_{j\le J}a_{\pm,j}n^{-j/2}+O(n^{-(J+1)/2}))$
+for every $J$, with $p_+=1$, $p_-=3/4$, explicit amplitudes including a
+tilted Gamma-integral factor, and $a_{+,1}=-0.30756533\ldots$,
+$a_{-,1}=0.23095021\ldots$; this answers the question of Sun
+(arXiv:2605.04006), to whom the exact Gamma representation and the
+constants $C_\pm$ are due.  A uniform quadratic majorant controls the
+signed representation; a finite Gaussian-expectation algorithm gives every
+coefficient, and a second short route gives $a_{\pm,1}$.  A corollary
+extends the expansion to the sums of $(-1)^{|V|}\chi_{K_\lambda}(-v)$ for
+fixed $v>0$, with $\Gamma(n+v)/\Gamma(v)$ in place of $n!$.  The expansions
+are Poincar\'e expansions, not transseries, and four questions stay open.
+The Lambert-$W$ inverse with its integer-threshold envelope is an instance
+of the transseries volumes.}
+
+\entry{Sparse nonattacking chess placements}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a201513-sparse-chess-placements}
+{article.pdf}{batch~77: Sparse\_Chess\_Asymptotics.zip}
+{For $n$ nonattacking kings (OEIS A201513) or knights (A201540) on an
+$n\times n$ board, measured against Kot\v{e}\v{s}ovec's common leading
+equivalent $B_n=e^{-9/2}n^{2n}/n!$, proves rational expansions to every
+fixed order, four corrections explicit:
+$K_n/B_n=1+7/(3n)+119/(9n^2)+11327/(810n^3)+90475/(1944n^4)+O(n^{-5})$ and
+$N_n/B_n=1+37/(3n)+914/(9n^2)+330917/(810n^3)+966583/(1944n^4)+O(n^{-5})$.
+For any fixed finite symmetric move set $S$ the count is
+$(n^{2n}/n!)\,e^{-(|S|+1)/2}$ times an all-orders series, also uniformly
+for $k$ pieces with $k/n$ in a compact positive interval, and the first
+correction is $c_1=B+1/3-\tau$ (boundary loss $B$, triangle density
+$\tau$), which is why kings and knights share the leading term but not the
+next; wazir (A201511) and fers (A201861) coefficients through order four
+follow.  The cluster-expansion method is credited to
+Davies--Jenssen--Perkins and Pulvirenti--Tsagkarogiannis.  The coefficients
+depend on the carrier: against the Stirling-expanded carrier the first
+corrections are $9/4$ and $49/4$.  The Lambert-$W$ growth-index inverse and
+its rounding qualification are instances of the transseries volume.}
+
+\entry{Asymptotic enumeration of tied football seasons}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a380592-tied-football-seasons}
+{article.pdf}{batch~77: tied-football-report.zip}
+{In a double round-robin league of $n$ labelled teams with $3/1/0$ scoring,
+$a(n)$ (OEIS A380592) counts the seasons in which every team finishes on
+the same score.  The report proves $a(n)\sim B_n\Theta(c_n)$ with
+$B_n=3^{n(n-1)}n^{-1/2}(9/(56\pi n))^{(n-1)/2}e^{-9829/65856}$,
+$c_n=8(n-1)/3-13/84$ and the positive $1$-periodic theta function
+$\Theta(c)=\sum_je^{-4\pi^2j^2/9}e^{2\pi ijc}$, so the multiplier depends
+on $n\bmod3$ and cannot be replaced by~$1$.  The proof uses mean-matching
+exponential tilts and a sharp global Fourier localization: a negative
+quartic gives an exact Gaussian majorant and an outlier bound handles the
+complement.  On each residue class the conditioned common score tends to a
+discrete Gaussian centred at $c_n$, which is not its conditional mean.
+After checking the hypotheses of Isaev's complex cumulant theorem
+(arXiv:2508.16952), the external input, it gives every fixed order in $1/n$
+with a finite exact algorithm and the first correction.  The
+residue-aware inverse threshold enclosures need no Lambert function, the
+phase being quadratic, and are instances of the transseries volume's
+reversion and staircase theorems.  The model and its exact counts are
+Jehn--Habermann--Lavrov's.}
+
+\entry{All-orders asymptotics and asymptotic inversion for A292507}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a292507-binomial-partition-transform}
+{article.pdf}{batch~77: A292507\_report\_and\_code.zip}
+{For $a_n=\sum_k\binom nk b(k)$, where $b(k)=p(k)-p(k-1)$ counts the
+partitions of $k$ without parts~$1$ (OEIS A292507), proves an all-orders
+Poincar\'e expansion
+$a_n=C\,2^nn^{-3/2}e^{\beta\sqrt n}\bigl(\sum_{j\le M}c_jn^{-j/2}+O(n^{-(M+1)/2})\bigr)$
+with $\beta=\pi/\sqrt3$ and $C=(\pi/6)e^{\pi^2/24}$, an additive form of
+Kot\v{e}\v{s}ovec's logarithmic conjecture in the entry; $c_1,c_2,c_3$ are in
+closed form, and a finite Gaussian-moment algorithm gives every $c_j$
+($c_1,\ldots,c_6$ computed).  Also an all-orders reversion of the real model
+in $X^{-1/2}$ and $\log X$ with a residual bound, and shrinking
+integer-threshold brackets with existence constants only, not certified
+thresholds; these are instances of the transseries volume's Lambert,
+perturbed-inversion and staircase theorems and are cited, not claimed.  The
+only analytic input is Nemes' explicit partition-remainder estimate.  The
+leading binomial-smoothing mechanism is prior art (A218481), the coefficient
+formula is Gutkovskiy's, and no publication priority is claimed; nor is
+convergence of the correction series or a complete transseries.}
+
+\entry{Permutations avoiding the vincular pattern 12--34 (A113226)}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a113226-vincular-avoiders}
+{article.pdf}{batch~77: a113226-asymptotics.zip + a113226-refined-addendum.zip}
+{For the permutations avoiding the vincular pattern $12$--$34$ (OEIS
+A113226), equivalently Bevan--Cheon--Kitaev's $\{3,2+2\}$-free naturally
+labelled posets, Part~I derives the closed EGF
+$H(z)=\exp\{z/2+q(3\arcsin q-\pi/2)/\sqrt{1-q^2}\}$, $q=e^{z/2}/2$,
+identifies the cumulants as A136127 shifted, and proves the
+stretched-exponential form of Bevan--Cheon--Kitaev's Conjectures~13 and~14
+with exact constants and to all orders:
+$A_n\sim D\,n!\,\rho^{-n}e^{3cn^{1/3}}n^{-5/6}(1+\sum_ja_jn^{-j/3})$ with
+$\rho=\log4$, $c=(\pi^2/(4\rho))^{1/3}$ and
+$D=2e^{-3}\sqrt{c/(3\pi)}\approx0.0357$, where their fit gave about $0.032$;
+$a_1,\ldots,a_4$ are exact.  Its Lambert-$W$ inverse is an instance of the
+transseries volume.  Part~II, an addendum, marks the distinct strict
+downsets and the isolated elements: a record-to-cycle bijection explaining
+the exponential transform, a complex-uniform saddle expansion, all-orders
+local large deviations for interior densities, Gaussian and local limit
+laws, and a conditional Poisson law of isolated elements with
+total-variation error $O(n^{-2/3})$.  Endpoint densities, exponentially
+small sectors and certified constants are not claimed; Part~II answers
+Part~I's questions~1--2 in part, and 3--4 stay open.  The two heavy exact
+tables are not shipped; the README regenerates them.}
+
+\entry{Asymptotic expansions and inversion for A124380}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a124380-signed-moment-asymptotics}
+{article.pdf}{batch~77: a124380-reproducibility.zip}
+{For $\sum_na_nz^n=\sum_kz^k\prod_{j\le k}(1+jz)$ (OEIS A124380), proves an
+exact decomposition $a_n=I_n+(-1)^nJ_n$ into a positive and a signed moment
+integral, the multiplicative equivalent
+$a_n\sim\tfrac12e^{1/2}x\exp\{x^2(2L-1)+x(L+1)+L^2/8\}$ with $x=\sqrt{n/2}$
+and $L=\log x$, which is more than Kot\v{e}\v{s}ovec's logarithmic
+conjecture in the entry, and every fixed-order relative expansion with
+coefficients polynomial in~$L$.  The signed sector is exponentially smaller
+and has its own all-orders oscillatory expansion, with the error measured
+against its amplitude so that it stays valid near zeros of the sine, and
+coefficients $q_j^-(L)=(-1)^jq_j(L-i\pi)$.  Also eventual strict
+log-convexity, an all-orders inverse in $X=\sqrt{y/W(y/e)}$, an instance of
+the transseries volume's inverse-Gamma core with no novelty claimed, and a
+conditional certification rule for the integer threshold;
+$T(y)=\lceil\nu(y)\rceil$ is not asserted.  The combinatorial models are
+Chen--Fan--Zhao's and Cerbai--Claesson--Sagan's, no priority is claimed,
+and four research questions stay open.}
+
+\entry{Complete increasing subsequences in multiset permutations (A047909 and A268485)}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a047909-beta-renewal-subsequences}
+{article.pdf}{batch~77: beta-renewal-asymptotics-reproducibility.zip + beta-renewal-uniform-reproducibility.zip}
+{Studies the probability $p_m(k)=H(m,k)(m!)^k/(mk)!$ that a word with $m$
+copies of each of $1,\ldots,k$ contains $12\cdots k$ (OEIS A047909, diagonal
+A268485).  Its representation as the probability that $k$ independent
+$\mathrm{Beta}(1,m)$ increments sum to at most~$1$, and the Gaussian limit,
+are El Maazouz--Pitman's and are credited, not claimed.  Part~I proves an
+expansion to every fixed order in the window $k=m+x\sqrt m$ with
+$P_1,\ldots,P_4$ explicit ($P_1=(x^2+8)/6$); on the diagonal only odd
+half-integer powers occur beyond the leading~$1/2$, with four corrections
+computed.  It adds smooth quantile and Lambert-$W$ count inverses with
+qualified integer brackets and all-orders rare-tail expansions for $k/m$ in compact subsets of $(0,1)$ or
+$(1,\infty)$.  Part~II, an addendum, joins the regimes: relative error
+$O(m^{-(R+1)/2})$ for both tails, uniformly on compact ranges of $k/m$ and
+through $k=m+1$, recovering Part~I's coefficients by a second route, and
+both real Lambert-$W$ branches for tail thresholds.  The inverses are instances of the transseries volume and the
+tilting method is classical (Esscher, Cram\'er, Daniels).  Effective
+constants, growing orders, ratios tending to $0$ or $\infty$, and certified
+rounding remain open.}
+
+\entry{Uniform asymptotics and moving zeros for the level-15 family of Cooper}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/cooper-level-15-moving-zeros}
+{article.pdf}{batch~77: modular-crossover-replay.zip}
+{For Cooper's level-15 polynomials $T_\varepsilon(n)$, of degree $n$ in the
+parameter~$\varepsilon$, proves a two-singularity expansion with rates
+$\varepsilon+11$ and $\varepsilon-1$, uniform to every fixed order on the
+disc $|\varepsilon+5|\le1/10$, with an additive error that stays valid
+where the two terms cancel; in the window $\varepsilon=-5+u/n$ the profile
+is $e^{u/6}+10(-1)^ne^{-u/6}$.  Hence for every large odd $n$ there is
+exactly one zero with $|u-3\log10|<1$, real and simple, at
+$\varepsilon_n=-5+3\log(10)/n+(162/125-\tfrac92\log10)/n^2+O(n^{-3})$, and
+no real zero in a bounded window for large even~$n$.  Explicit path, sheet
+and connection proofs give all ten constants of Cooper's Table~8 (levels
+11, 14, 15 and 24), labelled conjectured and determined numerically there,
+including two negative-axis connections with exact eta multipliers.  The
+formulas are Cooper's, the level-11 equivalent is Kot\v{e}\v{s}ovec's
+(A284756) and the positive modular radial principle Guillera--Zudilin's.
+Also a finite generator for every correction order and a qualified,
+non-effective threshold inverse, an instance of the transseries volume.  No
+historical priority and no global location of the zeros are claimed; the
+OEIS numbers of five of the sequences were not verified.}
+
+\entry{Moving fugacity asymptotics for distinct partitions}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a291698-moving-fugacity-partitions}
+{article.pdf}{batch~77: moving-fugacity-reproducibility.zip}
+{For $a_n(\alpha)=[q^n]\prod_{k\ge1}(1+n^\alpha q^k)$, distinct partitions
+with one size-dependent weight $u=n^\alpha$ per part, proves, uniformly for
+$\alpha$ in compact subsets of $(0,\infty)$, an all-orders principal Bessel
+expansion with a finite generator for its coefficients and, through an
+exact Jacobi decomposition, finitely many conjugate resonance sectors with
+separated local integrals and sectorwise remainders.  This yields
+the equivalents conjectured by Kot\v{e}\v{s}ovec for A291698 ($\alpha=1$)
+and A292304 ($\alpha=2$), and shows that the
+elementary Sommerfeld form is relatively valid exactly when
+$\alpha\ge1/2$.  Also a specified monotone real continuation with a
+Lambert-$W$ inverse and its first correction, a formal reversion generator
+and an integer-threshold statement, instances of the transseries volume
+with no novelty claimed.  The onset is slow: at $n=20{,}000$ the principal
+term for $\alpha=2$ is still off by about $5.6\%$.  The sector count and
+depth are fixed; no growing-sector theorem, convergence or explicit
+constants are claimed, nor priority, and four questions stay open.}
 
 \subsection{Asymptotics, records and discrepancy}
 
@@ -2650,16 +3506,22 @@ the constant matching resolvent.}
 
 \section{Hilbert's tenth problem}
 
-Three reports continuing the formal project
+Seven reports on Diophantine representations of computation that control
+their witnesses, beside the formal project
 \dir{Computability/HilbertTenthProblem}, which proves MRDP in both
 directions in Lean, the universal pair $(58,4)$ and the single-fold unary
-exponential representation of Jones and Matiyasevich.  None of the reports'
-own theorems is formalized; each README names the project declarations it
-builds on.
+exponential representation of Jones and Matiyasevich.  The first three
+(canonical certificates; probabilistic, quantum and continuous computation;
+liveness beyond halting) continue that project.  The other four, added in
+batches~76 and~78 (groups as substrates, signal machines, stochastic and
+thermal exactness, quadratic orthant certificates), treat further
+substrates and use MRDP at most as an imported theorem.  None of the
+reports' own theorems is formalized; each README names the project
+declarations it builds on or relates to.
 
 \entry{Canonical Diophantine certificates}
 {hilbert-tenth-problem/canonical-diophantine-certificates}
-{article.pdf}{Diophantine\_Causal\_Computation.zip, canonical\_diophantine\_certificates.zip, ProveIt\_Linear\_Size\_Diophantine\_Certificates.zip, Witness\_Faithful\_Diophantine\_Compilation.zip, canonical\_trace\_polytopes.zip, diophantine\_counter\_programs.zip (batch~60); batch~61: Causal\_Diophantine\_Queue\_Compilation.zip; batch~62: Names\_to\_Numbers\_Diophantine\_Heaps.zip, order\_free\_diophantine.zip, ProveIt\_Priority\_Pumping\_Diophantine.zip, one\_shared\_fallback\_research.zip; batch~63: Diophantine\_Certificates\_Without\_Histories.zip}
+{article.pdf}{Diophantine\_Causal\_Computation.zip, canonical\_diophantine\_certificates.zip, ProveIt\_Linear\_Size\_Diophantine\_Certificates.zip, Witness\_Faithful\_Diophantine\_Compilation.zip, canonical\_trace\_polytopes.zip, diophantine\_counter\_programs.zip (batch~60); batch~61: Causal\_Diophantine\_Queue\_Compilation.zip; batch~62: Names\_to\_Numbers\_Diophantine\_Heaps.zip, order\_free\_diophantine.zip, ProveIt\_Priority\_Pumping\_Diophantine.zip, one\_shared\_fallback\_research.zip; batch~63: Diophantine\_Certificates\_Without\_Histories.zip; batch~78: Exact\_Wiring\_Diophantine\_Report.zip, Topology\_Is\_Not\_Free\_Interaction\_Nets.zip, no\_ghost\_wires.zip, sandpile\_diophantine\_research.zip}
 {Diophantine representations that control their witnesses, not only their
 existence.  For Petri nets and interval-guarded translations, a convex
 quadratic integer polynomial whose natural zeros are in bijection with the
@@ -2693,12 +3555,38 @@ and minimum-fuel quartics and a least-reservoir relation whose single-fold
 Part~XIV (batch~63): one quartic per run-length routing topology with exactly
 $4n+4m+s$ witnesses and a unique root iff the run terminates, and a fixed
 polynomial-time rank function whose single-fold (finite-fold) graph is
-equivalent to the corresponding principle for all c.e.\ sets.  Merged from
-twelve manuscripts; not a Lean formalization.}
+equivalent to the corresponding principle for all c.e.\ sets.  Part~XV, added
+in batch~78 from three manuscripts: exact port wiring for Lafont's
+interaction combinators.  If $M\ne N$ are perfect matchings of $2n$ ports
+and $Q$ is a uniformly random one, closing by $Q$ gives different parities of
+cyclic wires with probability between $2/5$ and $2/3$, both bounds sharp and
+the equality cases classified; bounded six-rule compilers with
+$O(C_0+F+T)$ natural coordinates, degree four and one witness per legal
+schedule (scheduled histories, not commutation classes), built on a minimal
+ten-state boundary calculus, a ten-pattern annihilation kernel and memory
+certificates that are ledger variants of Part~V's $24L$ (whose product lemma
+two of the manuscripts re-prove; no novelty is claimed for it); and a
+canonical permutation-orbit certificate with an implemented fixed-schedule
+compiler.  This answers Part~X's question on an interaction-combinator
+frontend for bounded scheduled histories; quotienting by independent
+schedules stays open.  Part~XVI (batch~78): for abelian sandpiles on a
+finite undirected multigraph with a sink, an exact support criterion for
+the odometer and cubic integer polynomials with exactly one natural zero
+for every input, carrying the odometer, the stable endpoint and canonical
+burning ranks instead of a toppling history, with $10n+6E$ coordinates in
+the compact form (a directed counterexample fixes the scope); on
+$\mathbb Z^d$ with a stable periodic background, an exterior collar that
+certifies global halting exactly, with a unique canonical radius that by
+Cairns's imported universality theorem has no computable bound; and the
+exact minimal eventual period of stabilization along an input ray.  It
+answers Part~XIV's question on infinite-background abelian computation for
+undirected graphs, and its single-fold equivalence for Cairns's relation is
+an instance of Part~IX's.  Merged from sixteen manuscripts; not a Lean
+formalization.}
 
 \entry{Diophantine laws of probabilistic, quantum and continuous computation}
 {hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation}
-{article.pdf}{ProveIt\_Diophantine\_Quantum\_Normalization.zip, quantum\_diophantine\_research.zip, ProveIt\_Diophantine\_Barriers.zip (batch~60); batch~62: Quartic\_Probability\_Landscapes.zip, ProveIt\_Reversible\_Equilibria.zip, Diophantine\_Certificates\_for\_Coherent\_Computation.zip, proveit\_rational\_rotations\_research.zip, dense\_rotations\_research.zip, strict\_contractions\_research.zip, Diophantine\_Contracting\_2Adic.zip, Precision\_Is\_Memory\_Diophantine\_Neural\_Computation.zip; batch~64: Rational\_Tubes\_Integer\_Zeros.zip}
+{article.pdf}{ProveIt\_Diophantine\_Quantum\_Normalization.zip, quantum\_diophantine\_research.zip, ProveIt\_Diophantine\_Barriers.zip (batch~60); batch~62: Quartic\_Probability\_Landscapes.zip, ProveIt\_Reversible\_Equilibria.zip, Diophantine\_Certificates\_for\_Coherent\_Computation.zip, proveit\_rational\_rotations\_research.zip, dense\_rotations\_research.zip, strict\_contractions\_research.zip, Diophantine\_Contracting\_2Adic.zip, Precision\_Is\_Memory\_Diophantine\_Neural\_Computation.zip; batch~64: Rational\_Tubes\_Integer\_Zeros.zip; batch~76: Infinite\_Quantum\_Runs\_Diophantine\_Certificates.zip}
 {One fixed quartic represents the output law of every effective
 probabilistic or quantum program as masses of projected roots; exact
 normalization budgets with a unique-witness quartic certificate;
@@ -2728,8 +3616,25 @@ equivalent to Hilbert's tenth problem over~$\mathbb{Q}$.  Part~VIII (batch~64):
 complete integer tube certificates, sums of squares of quadratics with at
 most one witness, for reaching open rational targets under rational
 polynomial flows, and global mass-action normal forms that carry them to
-chemical reachability.  Merged from twelve manuscripts; not a Lean
-formalization.}
+chemical reachability.  Part~IX, added in batch~76 from one manuscript: for
+time-homogeneous rational quantum loops (completely positive,
+trace-nonincreasing), the group inverse and Ces\`aro projection as the
+unique solution of four linear equations with no rank choice, all stopping
+moments by one finite recurrence certified by a Faddeev--LeVerrier circuit,
+unique seven-coordinate natural wires extending Part~VI's quartic
+compilation to rational inputs, an exact weak-clock resolvent with an
+exponential limit law, a geometric clock on the Eisert--M\"uller--Gogolin
+instruments giving every device the law $(16/25)(9/25)^n$ while
+forbidden-record existence stays undecidable (also in dimension four,
+conditional on Part~II), a two-state counterexample to the unrestricted
+reading of Lardizabal's rationality conjecture, and no uniform existential
+Diophantine graph for computably scheduled one-dimensional loops.  Its three
+arguments repeated from Parts~I, II and~V are pointers.  The report now
+points to the sibling reports \dir{stochastic-and-thermal-exactness},
+which answers Part~VII's structural-subclass question negatively in part
+(dated notes), and
+\dir{signal-machine-collision-certificates}, which shares no theorem.
+Merged from thirteen manuscripts; not a Lean formalization.}
 
 \entry{Beyond halting: recurrence, progress deadlines and Diophantine liveness}
 {hilbert-tenth-problem/liveness-beyond-halting}
@@ -2747,5 +3652,124 @@ height six, a sum-of-squares quartic companion and an exact planar
 realization; and a two-stack quartic certifies finite runs meeting
 prescribed deadlines.  Merged from three manuscripts; not a Lean
 formalization.}
+
+\entry{Groups as Diophantine substrates}
+{hilbert-tenth-problem/group-theoretic-substrates}
+{article.pdf}{batch~76: arithmetic\_van\_kampen.zip + three\_commutative\_phases\_research.zip; batch~78: Order\_Is\_Not\_a\_Moment.zip + ProveIt\_Affine\_Matrix\_Diophantine\_Research.zip}
+{Low-degree certificates for computation in groups, all through the integral
+Heisenberg group $\mathsf H$.  Part~I: with Sanov's chart (the free group of
+rank two as the integral points of $x+t+4xt-yz=0$), quartics whose zeros
+are in bijection with padded factorizations and that accept exactly the
+words of van Kampen area at most $m$, with $(2s+13)m-4$ witnesses, so that
+minimal arity tracks the Dehn function; proof-DAG compression, and exactly
+$k+\ell$ product gates for $[a^{2^k},b^{2^\ell}]$, optimal in the stated
+calculus; a height bound rests on an imported Cornulier--Tessera lemma.
+Part~II: three injective commuting phase homomorphisms into
+$\mathsf H^N\times\mathbb Z^m$ whose ordered product realizes every
+integral quadratic system fibre-bijectively, hence, with MRDP, three fixed
+free abelian subgroups of a Heisenberg power with c.e.-complete product
+membership, a proposed, unrefereed negative answer to the three-subgroup
+question of K\"onig--Lohrey--Zetzsche and Roman'kov; two-phase
+decidability, known for integer exponents and credited, is new only for
+natural and mixed exponents.  Part~III (batch~78): for three letters the
+realizable pair counts $K_{AB}$ at fixed $K_{AC},K_{BC}$ form a gapless
+interval, with a 24-witness quartic single-fold over complete profiles for
+$c=2$, holes for four letters, and decidable three-generator submonoid
+membership in $\mathsf H^r$ given one multiplicity, a partial answer to a
+question of the Hilbert's-tenth programme.  Part~IV (batch~78): the hit set
+of an affine unimodular curve in any subgroup of
+$\mathrm{SL}_d(\mathbb Z)$ is finite (at most $d-1$ points) or exactly
+periodic, with sharp periods and no uniform algorithm; input degree two,
+via the repository's quadratic loader (reconstructed and attributed), is
+the least that loads a noncomputable c.e.\ set; and an affine abelian
+compiler into $\mathrm{SL}_{6g+2}(\mathbb Z)$.  Built from four manuscripts
+that share no theorem, the Heisenberg setup printed once; one Mihailova
+step is a second route to the probabilistic-quantum report's.  Not a Lean
+formalization.}
+
+\entry{Collision geometry is linear: Diophantine certificates for rational signal machines}
+{hilbert-tenth-problem/signal-machine-collision-certificates}
+{article.pdf}{batch~78: Collision\_Geometry\_Diophantine\_Signal\_Machines.zip + Signal\_Machine\_Diophantine\_Certificates.zip}
+{A rational signal machine computes by collisions of finitely many kinds of
+particles moving at fixed rational speeds on a line.  Once a complete finite
+collision history is fixed, its realizations are exactly the natural zeros
+of a sum of squares of integer affine residuals, of degree two, with one
+witness tuple each; typed endpoint conditions on maximal adjacency
+intervals exclude unrecorded and omitted simultaneous collisions, and causal
+depth controls the denominators.  Part~I eliminates every event coordinate:
+the realizing initial gaps form a relatively open rational polyhedral cone
+cut out by at most $3(n-1)+(3m+1)E$ conditions, which gives small integral
+realizations, an NP upper bound for bounded synthesis, a canonical
+first-hit quartic, exact quasi-polynomial seed counts, an exactly solved
+first-collision tournament and a four-speed accumulating clock with
+denominators $2\cdot3^k$.  Part~II keeps event times and positions as
+witnesses on a rational grid, adds halting, proves full column rank (strict
+convexity in the witnesses) and bounds the canonical witnesses by
+$60^K\max(1,M_0)$ for the four-speed interface of Durand-Lose's universal
+machine, which is not transcribed.  Part~I's convex-quadratic barrier is a
+special case of Part~XI of \dir{canonical-diophantine-certificates}, printed
+as a second route.  No fixed-arity polynomial for unbounded halting is
+claimed.  \emph{Merged from two independent manuscripts proving one theorem
+by two routes, both printed in full;} not a Lean formalization.}
+
+\entry{Stochastic and thermal exactness: exact events in uniformly convergent systems}
+{hilbert-tenth-problem/stochastic-and-thermal-exactness}
+{article.pdf}{batch~78: ProveIt\_Exact\_Erasure\_Research.zip + ProveIt\_Exact\_Convergence\_Research.zip + Thermal\_Arithmetic\_Diophantine\_Hamiltonians.zip}
+{One pattern in three settings: an approximation converges uniformly at a
+known rate, while an exact event of the same system is undecidable.
+Part~I lifts integer matrix mortality to strictly positive rational
+column-stochastic matrices with no common invariant complex line, entries
+in any band around $1/n$ and total-variation contraction $\eta^T$; a
+product has rank one exactly when the source product vanishes, so exact
+erasure is undecidable for at most eight positive $7\times7$ matrices (from
+an imported mortality bound) and many-one complete for a nine-state family
+with a variable alphabet, with horizon-$T$ quartics having one witness per
+erasing word.  Part~II builds a fixed turn-based stochastic game with
+discount $1/2$, reward $1/4$ and full-support dyadic rows: value iteration
+converges at rate $2^{-n}$, yet exact attainment of the known fixed point
+$\tfrac12\mathbf 1$ from a dyadic terminal payoff is c.e.-complete; the
+one-player case stays open.  Part~III turns natural arithmetic circuits
+into diagonal Hamiltonians $H=(1+\sum_in_i)Q$ of degree at most five whose
+zero states biject with the witnesses; compact resolvent and finite thermal
+trace are equivalent to finite witness multiplicity and undecidable on a
+padded universal family, and a uniformly computable critical fugacity
+satisfies $t_*<1$ exactly on halting inputs.  The quadratization,
+no-cutoff and finite-fold steps are those of
+\dir{canonical-diophantine-certificates}, printed as pointers; defects that
+the research tree found in three shipped programs are disclosed, not
+patched, and Part~II's two largest certificates are regenerated by its code
+rather than stored.  \emph{Merged from three manuscripts that share no
+theorem;} a sibling of
+\dir{probabilistic-quantum-and-continuous-computation}, not a Lean
+formalization.}
+
+\entry{Quadratic orthant certificates: maximal parallelism, timed irreversible races and a fixed Waterfall universal machine}
+{hilbert-tenth-problem/quadratic-orthant-certificates}
+{article.pdf}{batch~78: Maximal\_Parallel\_Diophantine.zip + Total\_Quadratic\_Diophantine\_Semantics.zip + Waterfall\_Diophantine\_Certificates.zip}
+{Each Part compiles a fixed finite system into one integer polynomial of
+degree two, nonnegative on the real orthant, whose natural zeros biject with
+the semantic objects and whose unsquared products express a condition that
+balance equations cannot; all three sit at the level $D^{+}_2=\mathrm{SL}$
+of the degree classification in Part~XI of
+\dir{canonical-diophantine-certificates}.  Part~I certifies one maximal
+parallel round of a multiset-rewriting system with $d+2m+4H$ natural
+auxiliaries, and also histories and exact first halting; the resource-cover
+rank $\rho(A)$ gives the sharp counting exponent $m-\rho(A)$, fixed-horizon
+counts are eventually quasipolynomial, counting is \#P-complete, the
+deadlock of $A+B\to C$ has no convex quadratic, and a program-uniform
+certificate needs degree four.
+Part~II gives irreversible exclusive-site systems with positive integer
+delays a total semantics: one quadratic per catalogue has exactly one
+natural zero for every delay vector, recording the earliest-completion
+outcome and certified permanent absence, which has no computable grounding
+bound.  Part~III proves the exact macrostep behaviour of Iijil's fixed
+46-clock Waterfall program for the Neary--Woods universal machine
+$U_{15,2}$ and compiles $k$ steps into one quadratic with $35k$ witnesses
+and an empty or singleton fibre; its arity grows with~$k$.  Re-proofs and
+generalizations of Part~XI's results are printed as second routes; the
+research tree's reduction to 107 witnesses at $k=7$ and its independent
+finding of the same Neary--Woods erratum are credited.  Iijil's two machine
+data files are third-party and not under MIT-0.  \emph{Merged from three
+independent manuscripts that share no theorem;} not a Lean formalization.}
 
 \end{document}
