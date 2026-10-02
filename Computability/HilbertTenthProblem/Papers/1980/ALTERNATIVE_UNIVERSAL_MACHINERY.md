@@ -26,15 +26,19 @@ with29 witnesses and degree2. These are complete single-step relations;
 ordinary multiplication of packed histories would convolve time cells, so
 neither scalar count is an unbounded universal-polynomial bound.
 
-The [computed-truth packed U15 compiler](../research-wip/native-stream-queue/u15_packed_computed_truth647.md)
-costs **647=253M+394A operations**,102 positive witnesses and46 comparisons,
-including ordinary input. Its raw interface costs404 operations and51 witnesses.
+The [composed packed U15 compiler](../research-wip/native-stream-queue/u15_packed_composed_truth646.md)
+costs **646=252M+394A operations**,102 positive witnesses and46 comparisons,
+including ordinary input. Its raw interface costs403 operations and51 witnesses.
 Three paid disjoint-tag gates allow three native truth witnesses and their
 comparisons to be eliminated. Positivity follows from the retained head and
 aggregate bounds before any AND typing. Exact signed graph restoration is to
 the newly tagged parent; the original outer relation is preserved with fresh
 history-native witnesses. All input, range, controller and unbounded-duration
-costs remain paid. Degree is at most1936; the global87 bound is unchanged.
+costs remain paid. The state relabeling saves a further multiplication.
+The [separate degree certificate](../research-wip/native-stream-queue/u15_packed_exact_degree1936.md)
+proves exact degree1936 on every fixed program slice for all12 emitted forms
+of the baseline, relabel, tagged and composed sources. The frozen compiler
+metadata remains upper-bound-only. The global87 bound is unchanged.
 
 The [state-relabeled packed U15 tape compiler](../research-wip/native-stream-queue/u15_packed_state_relabel652.md)
 gives **652=254M+398A operations**, 105 positive witnesses and formal degree
