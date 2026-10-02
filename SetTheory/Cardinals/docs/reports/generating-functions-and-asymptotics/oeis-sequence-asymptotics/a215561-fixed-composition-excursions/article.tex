@@ -10,7 +10,7 @@
 \usepackage{mathrsfs}
 \hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
  pdftitle={Fixed-composition excursions: D-finiteness, transcendence, and all-order asymptotics for OEIS A215561},
- pdfsubject={Merged from two independent manuscripts (batch 73, manuscripts 61 and 42); Part IV from a third (batch 75, manuscript 03)},
+ pdfsubject={Merged from two independent manuscripts (batch 73, manuscripts 61 and 42); Part IV from a third (batch 75, manuscript 03); Part V from a fourth (batch 77, manuscript 44)},
  pdfauthor={Research report prepared for Vladimir Reshetnikov}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Fixed-composition excursions}
@@ -62,10 +62,10 @@
 \vspace{3mm}
 {\normalsize Merged from two independent manuscripts of the same day:\par
 \emph{Fixed-composition excursions} and
-\emph{Balanced Late-Growing Permutations}; Part~IV from a third\par}
+\emph{Balanced Late-Growing Permutations}; Parts~IV and~V\par from a third and a fourth\par}
 \vspace{3mm}
 {Prepared for Vladimir Reshetnikov\par}
-{October 1, 2026; Part~IV added October 2, 2026\par}
+{October 1, 2026; Parts~IV and~V added October 2, 2026\par}
 \vspace{2mm}
 \begin{minipage}{0.89\textwidth}
 \begin{abstract}
@@ -102,6 +102,7 @@ Part~IV, from a third manuscript, proves the order-three recurrence that
 Kauers and Koutschan conjectured for A215570, by a positive
 Legendre-coefficient formula and a rational telescoping certificate, and
 computes $\alpha_{5,2},\ldots,\alpha_{5,8}$ exactly.
+Part~V, from a fourth, adds the first correction $\alpha_{4,1}$ of A215562.
 \end{abstract}
 \end{minipage}
 \vfill
@@ -162,6 +163,15 @@ Kauers--Koutschan recurrence for A215570; Section~\ref{fce:kk:sec:intro}
 gives its provenance and Table~\ref{fce:kk:tab:overlap} the results it
 re-proves, which are not printed again.
 
+(Addition of October~2, 2026, batch~77.) A fourth independent manuscript,
+batch-77 manuscript~44, \emph{Equal-content ballot words} (here
+\textbf{source~77-44}; archive \path{oeis-ballot-asymptotics-20261001.zip},
+arrival commit \texttt{096ee7b87}, placed in \texttt{aa7345800}, no pin),
+proves the main theorems a fourth time and adds the first correction of
+A215562. Part~\ref{fce:ba:part} prints what it adds;
+Section~\ref{fce:ba:sec:intro} gives its provenance and
+Table~\ref{fce:ba:tab:overlap} the results it re-proves.
+
 \subsection{What each source contributed}\label{fce:sec:crosswalk}
 Table~\ref{fce:tab:crosswalk} lists every result and where it is printed.
 ``Both'' means the two sources prove the result independently; it is then
@@ -170,9 +180,10 @@ as well when it follows a different route.
 
 \begin{table}[ht]
 \centering\small
-\caption{Results of the sources. The last three rows are source~75-03's
-additions (Part~IV); its re-proofs of other rows are listed in
-Table~\ref{fce:kk:tab:overlap}.}\label{fce:tab:crosswalk}
+\caption{Results of the sources. The rows below the first inner rule are
+source~75-03's additions (Part~IV), those below the second source~77-44's
+(Part~V); their re-proofs of other rows are listed in
+Tables~\ref{fce:kk:tab:overlap} and~\ref{fce:ba:tab:overlap}.}\label{fce:tab:crosswalk}
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}l>{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
 \toprule
 result & sources & printed as\\
@@ -210,6 +221,9 @@ Kauers--Koutschan Conjecture~15: the A215570 recurrence & 75-03 &
 positive Legendre formula for A215570 & 75-03 & Theorem~\ref{fce:kk:thm:coefficient}\\
 exact $\alpha_{5,2},\ldots,\alpha_{5,8}$; second-order inverse for $r=5$ & 75-03 &
  Proposition~\ref{fce:kk:prop:alpha}, \eqref{fce:kk:eq:inversefive}\\
+\midrule
+first correction $\alpha_{4,1}$ of A215562 & 77-44 & Theorem~\ref{fce:ba:thm:alpha41}\\
+global mark arcs by an operator norm & 77-44 & Lemma~\ref{fce:ba:lem:global}\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -256,6 +270,15 @@ Section~\ref{fce:kk:sec:overlap}. Its research questions are merged into
 Section~\ref{fce:sec:future}; its package description is folded into
 Appendix~\ref{fce:app:package}.
 
+For source~77-44 (Part~\ref{fce:ba:part}, October~2, 2026) the merge prints
+in full the first correction $\alpha_{4,1}$ with its ingredients, the
+operator-norm proof of the global-arc bound as a second route, its
+nested-logarithm inverse and its literature pointers; everything else is a
+row of Table~\ref{fce:ba:tab:overlap}. Its questions coincide with those of
+Section~\ref{fce:sec:future} and are listed in
+Section~\ref{fce:ba:sec:checks}; its package is described in
+Appendix~\ref{fce:app:package}.
+
 \subsection{Repository context and re-derived material}\label{fce:sec:repository}
 The bridge--excursion identity (Lemma~\ref{fce:lem:bridge} and
 \eqref{fce:lg:eq:exp}) is the composition-marked case, with coefficient
@@ -282,12 +305,15 @@ Neither source cites these theorems (source~61 cites the README of that
 volume, unchanged since its pin \cite{proveit}); they are cited here, and
 no novelty is claimed for the inversion or rounding statements. The same
 holds for source~75-03's inversion of A215570, which also does not cite
-them (Section~\ref{fce:kk:sec:inverse}).
+them (Section~\ref{fce:kk:sec:inverse}). (2026-10-02 note: the same holds for
+source~77-44's inverse, Remark~\ref{fce:ba:rem:inverse}.)
 
 All three sources are AI-assisted and unrefereed. No Lean or Rocq development
 checks any statement of this report; the Lean theorems just named are
 general facts about ceilings and do not verify its asymptotic inputs, and
-its place in the research-report collection confers no formal status.
+its place in the research-report collection confers no formal status. Source~77-44
+(Part~\ref{fce:ba:part}) says nothing about AI assistance; it is unrefereed
+and not formalized either.
 
 \subsection{Notation}\label{fce:sec:notation}
 The two sources used different letters for the same objects and the same
@@ -309,7 +335,8 @@ $\mathcal I$ for the generating function of arches (primitive excursions);
 $h$ for the depth of the most negative step; and $V$ for the step variance.
 Table~\ref{fce:tab:renamed} lists every renamed symbol; no normalization
 changed (source~75-03's $Q_r$ has the opposite sign; its other conventions
-are fixed in Section~\ref{fce:kk:sec:conventions}). A few letters keep two meanings in separate places, where the
+are fixed in Section~\ref{fce:kk:sec:conventions}; source~77-44's step
+polynomial is $r$ times $P_r$, Section~\ref{fce:ba:sec:conventions}). A few letters keep two meanings in separate places, where the
 context fixes them: $q$ is the number of labelled steps in
 Part~\ref{fce:lg:part}, the tilted probabilities $q_i(\boldsymbol y)$ in
 Section~\ref{fce:sec:saddle}, and a root product in \eqref{fce:eq:sextic};
@@ -368,6 +395,17 @@ $\mathscr S_0,\mathscr S_1$; $\mathscr A_n,\mathscr B_n$ & $\mathscr R_0,\mathsc
 $\mathscr P(u,v)$; $H$ & $\Pi(u,v)$; $H_\Pi$ & $\rho$; $G=1+u_0$ & $\varphi^{-2}$; $G_0$\\
 $\eta_j$; $c_k$; $P_j(z)$ & $\eta^\Lambda_j$; $\tilde c_k$; $\widehat{\mathfrak p}_j(z)$ & $b_j,g_j$; $\kappa_j$; $(X,Y)$ & $\ell^+_j,\ell^-_j$; $\mathcal K_j$; $(Z_1,Z_2)$\\
 $L=5\log5$; $y$; $N(y)$ & $\lambda$; $Y$; $N_5(Y)$ & $D$ (log variable) & $D_Y$\\
+\midrule
+source 77-44 & here & source 77-44 & here\\
+\midrule
+$a_q(n)$, $q$ (alphabet) & $A_r(n)$, $r$ & $r=\varphi-\sqrt\varphi$ & $\varrho=\kappa_4/4$\\
+$c_{q,j}$ & $\alpha_{r,j}$ & $E_*(\boldsymbol1)$, $E_q$ & $\kappa_r$\\
+$\sigma_q^2$; $\Delta$ & $V$; $\delta$ & $D_{\rm uni}$, $D_{\rm sad}$ & $\mathcal B$, $\mathcal S$\\
+$d_2$, $\alpha$ (root jet) & $D$, $c$ & $G=H^{-1}$; $\kappa_{ijk}$ & $C$; $T_{abc}$\\
+$c=-\min S_q$; $h=q-2$ & $h$; $d$ & $p_q$ (period) & $\nu$\\
+$\boldsymbol w$; $\boldsymbol z=\log\boldsymbol w$ & $\boldsymbol z$; $\boldsymbol y$ & $\eta=1-t/\rho$ & $x$ (with $t$ rescaled)\\
+$\mathcal B$ (bridge series) & $B(t;\boldsymbol x)$ & $F$, $F_2$ (sextic) & $X$, $e$\\
+$P_q(u)=\sum_iu^{s_i}$ & $rP_r(u)$ & $\kappa_q$, $\beta_q$, $C_q$ (inverse) & $\lambda$, $\beta$, $K_r$\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1191,7 +1229,8 @@ and multiply them. If $\varphi=(1+\sqrt5)/2$, the result is
  c(4)=\frac{\varphi-\sqrt\varphi}{\sqrt2}.
 \]
 Substitution in \eqref{fce:eq:full} reproduces the formula credited in the
-OEIS entry to Kotesovec \cite{oeis4}. Source~42 reaches the same value by
+OEIS entry to Kotesovec \cite{oeis4}. (2026-10-02 note: Part~\ref{fce:ba:part}
+gives the next coefficient, $\alpha_{4,1}$, Theorem~\ref{fce:ba:thm:alpha41}.) Source~42 reaches the same value by
 elimination: write the quartic as
 $(u^2-\sigma u+q)(u^2-(\sigma/q)u+q^{-1})$, where $q$ is the product of its
 two interior roots. Comparing cubic and quadratic coefficients gives
@@ -1329,7 +1368,8 @@ Stirling's first correction then gives
  \alpha_{r,1}=\frac{1/r-r}{12}+\frac{\Delta_r}{r}.
 \end{equation}
 Equations~\eqref{fce:eq:saddlecorrection}--\eqref{fce:eq:alphafirst} are also an
-implementable recipe for other fixed rows.
+implementable recipe for other fixed rows. (2026-10-02 note: source~77-44
+evaluates it for $r=4$, Theorem~\ref{fce:ba:thm:alpha41}.)
 
 \subsection{Exact ingredients for \texorpdfstring{$r=5$}{r=5}}
 Here $s=(-2,-1,0,1,2)$, $p_i=1/5$, $d=3$, and $V=2$. The Hessian and
@@ -2616,7 +2656,9 @@ are source~42's alone. The eight questions of source~75-03 (Part~IV) were
 added on October~2, 2026, as sentences marked with its name. The
 A215570 question of sources~61 and~42 is answered by source~75-03, and
 source~75-03's question on all orders for every row by
-Theorem~\ref{fce:thm:main}.
+Theorem~\ref{fce:thm:main}. (2026-10-02 note: the four questions of
+source~77-44, Part~\ref{fce:ba:part}, coincide with subsections below; they
+are listed in Section~\ref{fce:ba:sec:checks}.)
 \subsection{Certify the explicit A215570 recurrence (resolved)}
 The sextic \eqref{fce:eq:sextic}, its specified formal branch, and a diagonal
 representation give a concrete input for creative telescoping. The next
@@ -2665,7 +2707,10 @@ The proof supplies finite algebraic operations, but a practical system
 should exploit residual-marker coordinates, symmetry, and Wick
 contractions to avoid dense high-dimensional tensors. An immediate target
 is exact $\alpha_{r,1},\alpha_{r,2},\alpha_{r,3}$ for $r=4,6,7,8$, together
-with machine-readable algebraic-number specifications. For $r=5$, the
+with machine-readable algebraic-number specifications. (2026-10-02 note:
+source~77-44 supplies $\alpha_{4,1}$ exactly in $\Q(\varrho)$,
+Theorem~\ref{fce:ba:thm:alpha41}; $\alpha_{4,2}$, $\alpha_{4,3}$ and the rows
+$r=6,7,8$ remain open.) For $r=5$, the
 field $\Q(\sqrt5)$ makes an especially clean regression suite.
 Source~42 (project~3) proposes the same engine built on
 \eqref{fce:lg:eq:Gj} and \eqref{fce:lg:eq:betas}, with exact algebraic
@@ -2677,7 +2722,8 @@ by the recurrence rather than by such an engine. Source~75-03 asks whether
 its transfer argument, which gives only a nonsharp $O(n^{-1/5})$ error, can
 be refined to all orders for every fixed alphabet; Theorem~\ref{fce:thm:main}
 already does so, so its question reduces to the targets above (it names an
-explicit, proved $1/n$ correction for $r=4,6,7$) and to a uniform version of
+explicit, proved $1/n$ correction for $r=4,6,7$; 2026-10-02 note: for
+$r=4$ it is Theorem~\ref{fce:ba:thm:alpha41}, for $r=6,7$ still open) and to a uniform version of
 the convolution method giving a better general error without the whole
 expansion. It also asks for the minimal polynomials and degrees of the
 constants \eqref{fce:eq:finiteconstant} and their dependence on parity,
@@ -2835,6 +2881,11 @@ recurrence and, with the first correction, every dominant asymptotic
 coefficient and its inverse, while an explicit four-symbol recurrence,
 uniform growing-alphabet limits and the exponentially small sectors stay
 separate tasks.
+
+Source~77-44 reaches the leading theorems a fourth time, by the same
+kernel, saddle and mark-extraction route, and contributes the first
+correction of the four-symbol row; the recurrence for that row is still
+open.
 
 %% ====================================================================
 %% Part IV (written 2026-10-02, batch 75): source 75-03, "Fixed-Content
@@ -3580,6 +3631,360 @@ agreement alone would not prove the conjecture''. Numerical errors are
 high-precision illustrations, not interval enclosures. ``No Lean files are
 supplied as if they had been compiled.''
 
+%% ====================================================================
+%% Part V (written 2026-10-02, batch 77): source 77-44, "Equal-content
+%% ballot words".  All labels of this Part carry the prefix fce:ba:.
+%% It follows Part IV, so no earlier number moves.
+%% ====================================================================
+\part{Equal-content ballot words: the first correction for A215562}\label{fce:ba:part}
+
+Part~V was added on October~2, 2026, in batch~77 of ProveIt's
+incoming-reports intake, from a fourth manuscript on the same problem
+(source~77-44), after Part~IV. Source~77-44 proves the leading constants of
+A215562 and A215570, every fixed order of their expansions, the fixed-row
+theorem for every alphabet and D-finiteness: a \emph{fourth} independent
+proof of Theorems~\ref{fce:thm:main} and~\ref{fce:thm:class} (its
+D-finiteness part) and of the constructions of Sections~4--7, with
+identical constants and the same sextic. Those results are not printed
+again; Table~\ref{fce:ba:tab:overlap} lists them. What it adds is one new
+value, the first correction $\alpha_{4,1}$ of A215562
+(Theorem~\ref{fce:ba:thm:alpha41}), which meets the target stated in
+Part~III (Section~\ref{fce:sec:future}); an operator-norm proof of the
+global-arc bound (Section~\ref{fce:ba:sec:global}), a second route to
+Section~6.4; the explicit Hessian for the fourth row; a nested-logarithm
+inverse for every row (Remark~\ref{fce:ba:rem:inverse}); and two literature
+pointers (Section~\ref{fce:ba:sec:literature}). The rest of the report is
+unchanged apart from dated notes that point here, rows added to
+Tables~\ref{fce:tab:crosswalk} and~\ref{fce:tab:renamed}, and the package
+description of Appendix~\ref{fce:app:package}; no existing label or number
+was changed.
+
+\section{Provenance, overlap and conventions of Part~V}\label{fce:ba:sec:intro}
+\subsection{A fourth manuscript}\label{fce:ba:sec:source}
+Source~77-44 is batch-77 manuscript~44, \emph{Equal-content ballot words:
+leading constants and fixed-order expansions for OEIS A215562 and A215570},
+dated October~1, 2026, author line ``Research note with independently
+reviewed proofs'' (a 594-line source with 18 labels and an 8-page PDF).
+Archive \path{oeis-ballot-asymptotics-20261001.zip}, arrival commit
+\texttt{096ee7b87}, placed in commit \texttt{aa7345800}. It names no ProveIt
+commit and records no repository search. Its programs and receipts ship
+with the prefix \texttt{77-44-bal-} (Section~\ref{fce:ba:sec:checks}).
+
+Source~77-44 was written without knowledge of this report: its receipts
+record the UTC date October~1, 2026, and its archive members are stamped
+10:40--10:46 (no time zone), in any time zone before this report's
+placement (\texttt{6e193dd4f}, October~2, 02:16 UTC). Its Theorem~1, Corollary~2, Lemmas~3
+and~4, Proposition~5 and Theorem~6 re-prove Theorems~\ref{fce:thm:main}
+and~\ref{fce:thm:class} and Sections~4--7 of this report and are listed in
+Table~\ref{fce:ba:tab:overlap}, not reprinted. It presents the row-wise
+asymptotic recorded conjecturally in A215561 as a consequence of its own
+argument; in this report its proof is the fourth (after sources~61, 42
+and~75-03). Its status statement is kept: ``The proofs have been
+independently reviewed and the supporting computations reproduced. These
+are ordinary mathematical proofs, not machine-checked theorems or claims of
+publication priority. A complete exponentially improved transseries is not
+claimed.'' The review it refers to is its own pre-delivery review (an
+approval receipt), not refereeing; the delivery says nothing about AI
+assistance. Its constants ``exist for every fixed $J$; this draft does not
+give numerical thresholds or optimized numerical remainder constants''. No
+Lean or Rocq development checks any statement of this Part.
+
+Source~77-44 calls the Kauers--Koutschan recurrence for A215570 ``guessed''
+and unproved, and lists ``proving the particular guessed recurrence'' among
+its future questions. (2026-10-02 note: the recurrence is proved in
+Part~\ref{fce:kk:part}, Theorem~\ref{fce:kk:thm:recurrence}; the A215562
+recurrence remains open, Section~\ref{fce:sec:future}.)
+
+\subsection{What the fourth manuscript re-proves}\label{fce:ba:sec:overlap}
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\caption{Results of source~77-44 that Parts~I, II and~IV already prove.
+Statement numbers are source~77-44's own (it numbers theorems, lemmas and
+propositions consecutively).}\label{fce:ba:tab:overlap}\\
+\toprule
+source~77-44 & printed here & comparison\\
+\midrule
+\endfirsthead
+\toprule
+source~77-44 & printed here & comparison\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+leading constants of A215562 and A215570, every fixed order (Thm.~1) &
+ Theorem~\ref{fce:thm:main} & same; its $E_q$ is $\kappa_r$ and its leading
+ constant is $K_r$ of \eqref{fce:eq:constant}\\
+every fixed row; $\det H=\Delta^2/(q^q\sigma^2)$; D-finiteness (Thm.~6) &
+ Theorems~\ref{fce:thm:main}, \ref{fce:thm:class}; Lemma~\ref{fce:lem:hessian},
+ \eqref{fce:eq:detH} & same (fourth proof); no transcendence statement\\
+small-root formula, bridge identity $\mathcal B=1+t\partial_t\log\E$ &
+ Lemmas~\ref{fce:lem:kernel}, \ref{fce:lem:bridge} & same; classical
+ \cite{bf}\\
+degree-six equation of the fully marked five-step series &
+ \eqref{fce:eq:sextic} & the same polynomial term by term, under
+ $(A,B,C,D,F_2,F)=(a,b,c,d,e,X)$; same derivation by small- and large-root
+ quadratics (a fourth derivation, beside Remarks~\ref{fce:rem:sextic42}
+ and~\ref{fce:kk:rem:resolvent})\\
+D-finiteness of A215562, A215570 (Cor.~2) & Theorem~\ref{fce:thm:class}
+ & same; it cites a different Lipshitz paper \cite{lipshitz89}\\
+uniform square-root expansions, periods $p_4=2$, $p_5=1$ (Lemma~3); mark
+ transfer (Prop.~5); lattice normalization check &
+ Section~\ref{fce:sec:saddle}, \eqref{fce:eq:period} & same; $p_q=\nu$\\
+global mark arcs (Lemma~4) & Section~\ref{fce:sec:saddle}, ``Why other
+ phases do not contribute'' & same statement, \textbf{different proof}:
+ Section~\ref{fce:ba:sec:global}\\
+$E_*(\boldsymbol1)=\frac52(3-\sqrt5)$, $4\varrho$ & Section~\ref{fce:sec:constants}
+ & same; its reciprocal factorization is source~42's elimination\\
+first-correction recipe $c_{q,1}=(D_{\rm uni}+D_{\rm sad})/q+(q^{-1}-q)/12$ &
+ \eqref{fce:eq:saddlecorrection}--\eqref{fce:eq:alphafirst} & the same
+ formula: $D_{\rm sad}=\mathcal S$, and $D_{\rm uni}=-\frac32d_2+\frac12\alpha^2
+ =\mathcal B$ because $d_2=D=L_2+c^2/2$ and $\alpha=c$\\
+$c_{5,1}=13(\sqrt5-5)/50$, with $D_{\rm uni}$, $D_{\rm sad}$ &
+ \eqref{fce:eq:fivecorrection}, Section~\ref{fce:sec:correction} & same
+ values; a fourth computation (after Sections~\ref{fce:sec:correction},
+ \ref{fce:lg:sec:first} and \eqref{fce:kk:eq:eta})\\
+the higher-order algorithm & Section~\ref{fce:subsec:allorders},
+ Appendix~\ref{fce:app:algorithm}, Section~\ref{fce:lg:sec:allorders} & same\\
+inverse models, threshold localization & Section~\ref{fce:sec:inverse},
+ \eqref{fce:lg:eq:rounding} & same; its general nested-logarithm form is
+ Remark~\ref{fce:ba:rem:inverse}\\
+exact diagonals through $n=30$ & Sections~\ref{fce:sec:checks},
+ \ref{fce:kk:sec:checks} & equal on every common index\\
+\end{longtable}}
+
+\subsection{Conventions of Part~V}\label{fce:ba:sec:conventions}
+Part~V uses the merged notation of Section~\ref{fce:sec:notation};
+Table~\ref{fce:tab:renamed} lists every renamed symbol of source~77-44. Its
+alphabet size $q$ is $r$ here, and its normalized coefficients $c_{q,j}$ are
+the $\alpha_{r,j}$ of \eqref{fce:eq:full}. One normalization differs: its
+step polynomial $P_q(u)=\sum_iu^{s_i}$ is $r$ times the $P_r$ of
+\eqref{fce:eq:steps}, so its dominant singularity is at $t=1/q$, not $t=1$.
+Three readings are tempting and false:
+\begin{itemize}
+\item $\varrho=\varphi-\sqrt\varphi=\kappa_4/4$ (source~77-44's $r$) is not
+the alphabet size $r$; it is the product $q$ of the two interior roots in
+Section~\ref{fce:sec:constants}, the root in $(0,1)$ of
+$\varrho^4-2\varrho^3-2\varrho^2-2\varrho+1$.
+\item $c_{q,j}$ is not the OEIS-style constant $c(r)$ of
+\eqref{fce:eq:constant}, and source~77-44's $c=-\min S_q$ is the depth $h$.
+\item Source~77-44's $\mathcal B$ is the bridge generating function
+$B(t;\boldsymbol x)$, not the length correction $\mathcal B$ of
+\eqref{fce:eq:lengthcorrection}, which it calls $D_{\rm uni}$.
+\end{itemize}
+
+\section{The first correction for A215562}\label{fce:ba:sec:alpha41}
+\begin{theorem}[First correction of the fourth row (source~77-44)]\label{fce:ba:thm:alpha41}
+Let $\varphi=(1+\sqrt5)/2$ and $\varrho=\varphi-\sqrt\varphi$. Then
+\begin{equation}\label{fce:ba:eq:four}
+ A_4(n)=\frac{\varrho\,256^n}{\sqrt2\,\pi^{3/2}n^{5/2}}
+ \left(1+\frac{\alpha_{4,1}}n+O(n^{-2})\right),
+\end{equation}
+\begin{equation}\label{fce:ba:eq:alpha41}
+ \alpha_{4,1}=-\frac{37\varrho^3}{200}+\frac{11\varrho^2}{40}
+              +\frac{13\varrho}{40}-\frac{259}{400}
+            =-0.509784684867675\ldots .
+\end{equation}
+\end{theorem}
+The leading factor is $K_4\,4^{4n}n^{-5/2}$ of \eqref{fce:eq:full}, with
+$\kappa_4=4\varrho$; it is the formula credited to Kotesovec in the OEIS
+\cite{oeis4}. Every $\alpha_{4,j}$ lies in $\Q(\varrho)$, a quartic field,
+by the argument that gives $\alpha_{5,j}\in\Q(\sqrt5)$ in
+Section~\ref{fce:sec:correction}; source~77-44 states that all its
+normalized coefficients are effectively computable real algebraic numbers.
+\begin{proof}[Proof (source~77-44)]
+Apply \eqref{fce:eq:alphafirst} with $r=4$: $\alpha_{4,1}=(\mathcal B+\mathcal
+S)/4+(1/4-4)/12$. In source~77-44's form, the length part is
+\[
+ \mathcal B=-\frac32d_2+\frac12\alpha^2,\qquad
+ \alpha^2=\frac{2q}{P_q''(1)},\quad
+ \beta=-\frac{P_q'''(1)\alpha^2}{6P_q''(1)},\quad
+ d_2=1+\beta+q\sum_{\substack{P_q(r_j)=q\\|r_j|<1}}\frac1{r_jP_q'(r_j)},
+\]
+where $u_1=1-\alpha\eta^{1/2}+\beta\eta+\cdots$ is the coalescing small
+root at unit marks, $\eta=1-t/\rho$, and $d_2$ is the coefficient of $\eta$
+in $\E/E_*$; for $q=4$, $P_4(u)=u^{-3}+u^{-1}+u+u^3$, $P_4''(1)=20$ and
+$\alpha^2=2/5=2/V$. The saddle part $\mathcal S$ is
+\eqref{fce:eq:saddlecorrection}, written by source~77-44 as
+\[
+ \mathcal S=-\frac12\sum_{ij}G_{ij}\bigl(g_{ij}+g_ig_j+2(\partial_i\log b)g_j\bigr)
+ +\frac12\sum_{ijkl}g_i\kappa_{jkl}G_{ij}G_{kl},
+\]
+with $G=H^{-1}$, $g=\log E_*(e^{\boldsymbol z})$ and $b=V(e^{\boldsymbol z})^{-1/2}$
+in the logarithmic marks $\boldsymbol z$ of the first two letters. For $r=4$
+the marked steps are $-3,-1$, the unmarked ones $1,3$, and
+\begin{equation}\label{fce:ba:eq:H4}
+ H_4=\begin{pmatrix}3/40&-1/10\\-1/10&7/40\end{pmatrix},\qquad
+ \det H_4=\frac1{320}.
+\end{equation}
+Direct implicit differentiation of the kernel roots, in $\Q(\varrho)$ reduced
+modulo $\varrho^4-2\varrho^3-2\varrho^2-2\varrho+1$, gives
+\begin{equation}\label{fce:ba:eq:BS}
+ \mathcal B=-\frac{6\varrho^3}{25}+\frac{3\varrho^2}{10}+\frac{3\varrho}5-\frac{47}{50},
+ \qquad
+ \mathcal S=-\frac{\varrho^3}2+\frac{4\varrho^2}5+\frac{7\varrho}{10}-\frac25,
+\end{equation}
+and \eqref{fce:eq:alphafirst} yields \eqref{fce:ba:eq:alpha41}.
+\end{proof}
+Source~77-44's exact script \path{code/77-44-bal-ballot_four_correction.py}
+implements this computation; its numerical-derivative check
+(\path{code/77-44-bal-verify_ballot_numerical_derivatives.py}) differentiates
+numerical implicit root solves directly, without the symbolic derivative
+formulas, and reproduces $\alpha_{4,1}$ and $\alpha_{5,1}$ to at least 54
+decimal digits.
+
+\begin{remark}[Checks made at the merge]\label{fce:ba:rem:checks}
+The intake checked that \eqref{fce:ba:eq:BS} with \eqref{fce:eq:alphafirst}
+gives exactly \eqref{fce:ba:eq:alpha41} ($(\mathcal B+\mathcal
+S)/4=-\frac{37}{200}\varrho^3+\frac{11}{40}\varrho^2+\frac{13}{40}\varrho-\frac{67}{200}$
+and $(1/4-4)/12=-\frac5{16}$), and that $\mathcal B\approx-0.706416072$ and
+$\mathcal S\approx-0.082722667$. Richardson extrapolation of
+$n\bigl(A_4(n)/(K_4\,256^nn^{-5/2})-1\bigr)$ on the exact terms $n\le30$, which equal
+the enumerations of Section~\ref{fce:sec:checks} on their common range,
+gives $-0.5097844658$, $-0.5097846437$ and $-0.5097846764$ at orders $4$, $6$
+and $8$: agreement with \eqref{fce:ba:eq:alpha41} to eight digits. The
+same procedure reproduces $\alpha_{5,1}$ to thirteen digits. These are
+diagnostics, not part of the proof. $\det H_4=1/320$ and the five-letter
+matrix $H_5$ of source~77-44, with $\det H_5=1/6250$, are those of
+\eqref{fce:eq:detH} and Section~\ref{fce:sec:correction}.
+\end{remark}
+
+With $\alpha_{4,1}$ known, \eqref{fce:eq:inversefirst} is explicit to first
+order for the fourth row (this display was added at the merge):
+\begin{equation}\label{fce:ba:eq:inversefour}
+ n=x_0+\frac{|\alpha_{4,1}|}{4\log4}\frac1{x_0}+O(x_0^{-2}),\qquad
+ \frac{|\alpha_{4,1}|}{4\log4}=0.0919329795\ldots,\qquad Y=A_4(n),
+\end{equation}
+with $x_0=x_0(Y)$ the Lambert core \eqref{fce:eq:lambertcore} for
+$(K,\lambda,\beta)=(K_4,4\log4,5/2)$.
+
+\section{A second route to the global-arc bound}\label{fce:ba:sec:global}
+Section~\ref{fce:sec:saddle} (``Why other phases do not contribute'') shows
+that the marker torus contributes only near $\boldsymbol z=\one$ by
+continuing the small-root product to a slightly larger disk away from that
+point. Source~77-44 proves the needed bound directly on coefficients.
+
+\begin{lemma}[Global mark arcs (source~77-44)]\label{fce:ba:lem:global}
+Let $E_N(\boldsymbol w)$ and $B_N(\boldsymbol w)$ be the mark-weighted counts
+of nonnegative excursions and zero-height bridges of length $N$, with the
+first $r-2$ step types marked by $\boldsymbol w$ and the unnormalized step
+polynomial $P(u;\boldsymbol w)$. For $\boldsymbol w$ on the unit torus,
+\[
+ |E_N(\boldsymbol w)|\le\Bigl(\max_{|u|=1}|P(u;\boldsymbol w)|\Bigr)^N,
+ \qquad
+ |B_N(\boldsymbol w)|\le\Bigl(\max_{|u|=1}|P(u;\boldsymbol w)|\Bigr)^N .
+\]
+On any closed subset of the torus excluding $\boldsymbol1$ the maximum is at
+most $r-\epsilon$ for some $\epsilon>0$.
+\end{lemma}
+\begin{proof}[Proof (source~77-44)]
+The bridge inequality follows from its Fourier constant-term integral. For
+excursions, let $L_{\boldsymbol w}$ be the bilateral Laurent operator on
+$\ell^2(\Z)$ with the marked steps as its coefficients. Fourier
+transformation gives $\|L_{\boldsymbol w}\|=\max_{|u|=1}|P(u;\boldsymbol w)|$.
+If $\Pi$ projects onto heights $0,1,\ldots$, then $T=\Pi L_{\boldsymbol w}\Pi$
+is the killed transfer operator and $E_N=\langle e_0,T^Ne_0\rangle$. Thus
+$|E_N|\le\|T\|^N\le\|L_{\boldsymbol w}\|^N$.
+
+Equality in the triangle bound $|P(u;\boldsymbol w)|\le r$ requires all its
+unit-modulus summands to have the same phase. The two unmarked steps differ
+by $\delta$ (source~77-44's $\Delta$), forcing $u^\delta=1$: for odd $r$,
+$u=1$; for even $r$ all exponents are odd, so $u=\pm1$ gives the same
+conclusion. Then every mark equals $1$. Compactness gives a strict uniform
+gap away from that mark point.
+\end{proof}
+Source~77-44 states the lemma for $r=4,5$ and extends it to every fixed
+row in its Theorem~6. With the uniform square-root expansions near
+$\boldsymbol1$ (Section~\ref{fce:sec:saddle}), the lemma makes the mark
+integral outside a fixed neighbourhood of $\boldsymbol1$ exponentially
+smaller than the main term, which is what Section~6.4 provides by
+continuation. The operator bound needs no continuation in $t$ and no
+analysis of colliding roots.
+
+\section{Literature pointers and further remarks}\label{fce:ba:sec:literature}
+Source~77-44 adds two references to those of the other sources. Denisov and
+Wachtel \cite{dw} give a much more general local-limit framework for random
+walks in cones, compatible with the exponent; ``its existence theorem alone
+does not replace the explicit constant calculation or all-order argument''.
+Banderier, Krattenthaler, Krinik, Kruchinin, Kruchinin, Nguyen and Wallner
+\cite{basketball}, Section~3.3 and Theorem~3.8, already give univariate
+basketball-walk asymptotics and explain the computation of all higher
+Puiseux orders; their statements fix length and endpoints, not equal
+multiplicities of every step, so the mark extraction and its global-arc
+control are the additional ingredients. In the five-letter case deletion and
+reinsertion of the zero steps reduces the four nonzero steps to basketball
+steps; this is the reduction \eqref{fce:kk:eq:zeroinsert} of Part~IV.
+``These comparisons do not constitute a comprehensive publication-priority
+claim.'' The OEIS leading constants ``are prior statements, not new
+conjectures''.
+
+\begin{remark}[A nested-logarithm inverse for every row (source~77-44)]\label{fce:ba:rem:inverse}
+Write the expansion as $A_r(n)=K_re^{\lambda n}n^{-\beta}(1+\alpha_{r,1}/n+\cdots)$
+with $\lambda=r\log r$, $\beta=(r+1)/2$, and fix $J$. Source~77-44 defines
+the \emph{chosen analytic model}
+$F_J(x)=K_re^{\lambda x}x^{-\beta}(1+\sum_{j\le J}\alpha_{r,j}x^{-j})$ for
+$x>X_J$, positive and strictly increasing for large $X_J$, so that
+$F_J^{-1}(A_r(n))=n+O_J(n^{-J-1})$. With $L=\log Y$ and
+$B=\beta\log\lambda+\log K_r$ its compatible formal inverse begins
+\begin{equation}\label{fce:ba:eq:loginverse}
+ x=\frac1\lambda\left[L+\beta\log L-B
+ +\frac{\beta^2\log L-\beta B-\lambda\alpha_{r,1}}{L}
+ +O\!\left(\frac{(\log L)^2}{L^2}\right)\right].
+\end{equation}
+This extends \eqref{fce:lg:eq:loginverse} by one order, for every row; for
+$r=5$ it is consistent with \eqref{fce:kk:eq:loganchor} combined with
+\eqref{fce:eq:inversefive}. The discrete threshold is localized by rounding
+an interval of width $O_J(x^{-J-1})$ around $F_J^{-1}(Y)$; exact rounding
+requires separation from an integer at that accuracy, and ``no uniform
+exact-rounding claim is made''. As for the other sources, the core is the
+large-solution case $b<0$ of \texttt{p0:thm:lambert-core} and the
+corrections are \texttt{p0:thm:perturbed-inversion} of the transseries
+volume (Section~\ref{fce:sec:repository}); the threshold step is
+\texttt{p0:thm:staircase}. No novelty is claimed.
+\end{remark}
+The intake checked \eqref{fce:ba:eq:loginverse} by substituting it into
+$\lambda x-\beta\log x+\log K_r+\alpha_{r,1}/x=L$: the constant and the
+$L^{-1}$ terms cancel.
+
+\section{Source 77-44's computations and questions}\label{fce:ba:sec:checks}
+Source~77-44 ships an exact checker, five derivation scripts and their
+receipts (Appendix~\ref{fce:app:package}). \path{code/77-44-bal-verify_ballot_kernels.py}
+enumerates all count vectors in the box $0\le b_i\le3$, checks the
+bridge--excursion coefficient identity for both step sets and the
+degree-six equation for the five-step set with no nonzero residuals, and
+outputs the diagonals $(1,7,403,40350)$ and $(1,35,18720,19369350)$, which
+agree with the entries. \path{code/77-44-bal-verify_ballot_large_dp.py}
+recomputes the two diagonals through $n=30$ by a rolling-array dynamic
+program; for five letters it removes and reinserts the zero steps. The
+first-correction scripts use exact symbolic arithmetic, and
+\path{code/77-44-bal-check.py} checks the correction formula identities, the
+generic degree-six identity, the covariance determinants for
+$q=2,\ldots,16$ and 134 finite bridge identities. ``These numerical checks,
+and numerical values from the OEIS, are diagnostics, not part of the
+proof.''
+
+At placement the intake reran three of the scripts on copies: the kernel
+check, the dynamic program and the numerical-derivative check reproduced
+their receipts (modulo line endings), and the two first-correction scripts
+printed the values of \eqref{fce:ba:eq:BS} and of $\alpha_{5,1}$. The
+checker \path{code/77-44-bal-check.py} and the driver
+\path{code/77-44-bal-verify.py} did not finish within three minutes on a
+loaded machine and were not rerun; the delivered receipts record their
+passes. The diagonals through $n=30$ equal
+\path{data/61-balanced-exact_rows.json} and
+\path{data/75-03-ballot-words-a215570_terms.csv} on every common index.
+
+Source~77-44's questions are those of Section~\ref{fce:sec:future}:
+numerical effective remainder constants (``Determine sharp asymptotic error
+constants''); proving the particular guessed recurrence (resolved for
+A215570 by Part~\ref{fce:kk:part}; open for A215562); ``a genuinely
+exponentially improved transseries or a single selected exact analytic
+interpolation'' (``Determine the exponentially small sectors''); and an
+alphabet size growing with $n$ (``Let the alphabet grow''). ``None of these
+is silently inferred'' from its theorems. With $\alpha_{4,1}$, the target of
+Section~\ref{fce:sec:future} (``Automate all-order coefficient extraction'')
+is met for $r=4$ at first order; $\alpha_{4,2}$, $\alpha_{4,3}$ and the rows
+$r=6,7,8$ remain open.
+
 \appendix
 \section{A reproducible all-order construction}\label{fce:app:algorithm}
 For clarity, the finite procedure implicit in the proof can be organized
@@ -3660,6 +4065,19 @@ $\Lambda_n$ and $A_5(n)$ for $n\le103$ in
 \path{certificate_data} by that delivered name and writes its JSON and CSV
 beside itself under the delivered names; it must likewise be run on a copy
 under those names, never in this directory.
+
+Source~77-44 (Part~\ref{fce:ba:part}, added October~2, 2026) contributes
+the driver \path{code/77-44-bal-verify.py}, the exact checker
+\path{code/77-44-bal-check.py}, the derivation scripts
+\path{code/77-44-bal-ballot_first_correction.py},
+\path{code/77-44-bal-ballot_four_correction.py},
+\path{code/77-44-bal-verify_ballot_kernels.py},
+\path{code/77-44-bal-verify_ballot_large_dp.py} and
+\path{code/77-44-bal-verify_ballot_numerical_derivatives.py}, and the
+receipts \path{data/77-44-bal-*}. Its driver checks the hash of its
+unshipped manuscript, so it runs only in the delivered layout, rebuilt from
+the arrival archive; three of its scripts write their JSON receipts beside
+themselves. The README gives the commands.
 
 The computations use arbitrary-precision integers, rational arithmetic,
 SymPy and mpmath (the shipped \path{data/61-balanced-requirements.txt},
@@ -3797,6 +4215,24 @@ L. Lipshitz,
 \emph{The diagonal of a D-finite power series is D-finite},
 Journal of Algebra \textbf{113} (1988), 373--378.
 DOI: \href{https://doi.org/10.1016/0021-8693(88)90166-4}{10.1016/0021-8693(88)90166-4}.
+
+\bibitem{lipshitz89}
+L. Lipshitz, \emph{D-finite power series}, Journal of Algebra \textbf{122}
+(1989), 353--373.
+DOI: \href{https://doi.org/10.1016/0021-8693(89)90222-6}{10.1016/0021-8693(89)90222-6}.
+Cited by source~77-44 for the diagonal closure.
+
+\bibitem{dw}
+D. Denisov and V. Wachtel, \emph{Random walks in cones}, Annals of
+Probability \textbf{43} (2015), 992--1044.
+\url{https://arxiv.org/abs/1110.1254}. Cited by source~77-44.
+
+\bibitem{basketball}
+C. Banderier, C. Krattenthaler, A. Krinik, D. Kruchinin, V. Kruchinin,
+D. T. Nguyen and M. Wallner, \emph{Explicit formulas for enumeration of
+lattice paths: basketball and the kernel method}, arXiv:1609.06473,
+version~2 (2017). \url{https://arxiv.org/pdf/1609.06473}. Cited by
+source~77-44, Section~3.3 and Theorem~3.8.
 
 \bibitem{lindemann}
 F. Lindemann, \emph{Ueber die Zahl $\pi$},
