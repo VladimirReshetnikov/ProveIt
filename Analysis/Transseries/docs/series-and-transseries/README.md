@@ -4,8 +4,8 @@ This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
 2026-09-04 (see the end of this file). Beside them are fifty-two unmerged
 arrivals, fifty of 2026-09-29, one of 2026-09-30 and one of 2026-10-01,
-each filed whole with its PDF, the first fifty-one then amended
-editorially (see "Arrivals of 2026-09-29 to 2026-10-01" below).
+each filed whole with its PDF and then amended editorially (see
+"Arrivals of 2026-09-29 to 2026-10-01" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -397,7 +397,9 @@ recording it were added to two earlier packages (the exact-degree and
 residue-obstruction packages).
 The tenth delivery was amended in the same way on 2026-09-30, and notes
 recording it were added to one earlier package (the subexponential-cost
-package).  The eleventh delivery has not yet been amended.
+package).
+The eleventh delivery was amended in the same way on 2026-10-01; no
+earlier package needed a note recording it.
 
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
@@ -1913,7 +1915,7 @@ in the triangular article) need a dictionary first.
 holds *Factorial Transseries for OEIS A006014: hypergeometric
 linearization, an exact A130032 bridge, a proof of the factorial
 constant, all-orders late terms, and Lambert-W inversion* (22-page A4
-PDF, 1,276-line source, an exact/80-digit check program and its recorded
+PDF, 1,303-line source, an exact/80-digit check program and its recorded
 output, an unsubmitted OEIS update draft). For `a_{n+1} = (n+1)a_n +
 Σ_{k=1}^{n−1} a_k a_{n−k}` it proves `A = x U′/U` with
 `U = ₂F₀(α, ᾱ;; x)`, `α = (1 + i√3)/2`, that `n![xⁿ]U` is A130032, that
@@ -1928,8 +1930,16 @@ volume's Part "Inversion: the apparatus for a rapidly growing function"
 (`Transseries_And_Inversion/transseries_and_inversion.tex:37288`,
 `p0:sec:top`) and sits beside its chapter "The subfactorial" (`:53222`,
 `p8:sec:top`), the volume's other factorially growing sequence; its
-inverse re-derives that apparatus for its own core without citing it. It
-leaves the Borel singularities at actions 2, 3, … open (article.tex:615-618)
+inverse re-derives that apparatus for its own core without citing it. An
+editorial note there now cites it: the core `M(log M − 1) = X` is the
+volume's factorial core (`p0:prop:factorial-core`, `κ = 1`, `d = −1`) and
+the core of its gamma inverse (`p6:sec:gamma`); for `a_n = C n!` the
+article's reversion returns `p6:thm:gamma`, and the factor `1 − 2/n + …` of
+`a_n/(C n!)` turns its `1/(24Mq)` into `49/(24Mq)` and adds an `M^{−2}` term;
+the general reversion is `p0:thm:perturbed-inversion` and the step to the
+integer threshold `p0:thm:staircase`. The method is the volume's; the
+A006014 coefficients are new to the repository. It
+leaves the Borel singularities at actions 2, 3, … open (article.tex:621-623)
 and is not formalized.
 
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
@@ -1953,7 +1963,7 @@ moment-determinacy article's least moment bound is compared with its flat
 defect, not with the actual truncation error; none of these is a sharp
 instance.
 
-Twenty-nine checksum ledgers were verified in full on filing and not filed.
+Thirty checksum ledgers were verified in full on filing and not filed.
 From the first delivery, these are the two `SHA256SUMS.txt` of the
 regularity and inverse-harmonic packages and the `SHA256SUMS` of the
 moving-fold package. From the second, they are the `SHA256SUMS` of the
@@ -1975,14 +1985,16 @@ moment-determinacy package had none. From the eighth, they are the
 `SHA256SUMS` of the exact-type and path-sensitive packages and the
 `SHA256SUMS.txt` of the Hahn–Dulac package; the other five had none. From
 the ninth, it is the `SHA256SUMS.txt` of the triangular package. The tenth
-delivery's package had none. The READMEs of the
+delivery's package had none. From the eleventh, it is the `SHA256SUMS.txt`
+of the factorial-transseries package. The READMEs of the
 inverse-harmonic, moving-fold, certified-inversion, Stokes-transport,
 action-accumulation, near-linear and critical Hahn packages, and of the five
 fourth-delivery and five fifth-delivery packages that had one, now record
 that retirement instead of listing the ledger; those of the regularity,
 gamma-core, direct-truncation and finite-core packages never mentioned
 theirs, and those of the three sixth-delivery packages that had one now
-record it too.
+record it too, as does, since its editorial pass, that of the
+factorial-transseries package.
 The build records of the Hahn–Fuchsian, microscopic-condensation and
 weighted-type packages carry digests of their own PDF and source; they were
 recomputed for the amended source and the rebuilt PDF, match the filed files
@@ -2048,6 +2060,9 @@ The tenth delivery has no carriage return in any file either, and since
 its editorial pass its two programs write LF on every platform (as
 delivered, their JSON and TeX outputs used the platform's line endings,
 CRLF on Windows; the diagnostics CSV was always LF).
+The eleventh delivery has no carriage return in any file, and since its
+editorial pass its program writes LF on every platform (as delivered, it
+used the platform's line endings, CRLF on Windows).
 
 The inverse-harmonic package's `verification/run.log` and
 `verification/certification.log` are byte-identical to its `results.json`
@@ -2067,7 +2082,7 @@ of the seventh delivery adds a twelfth, `data/run.log`, the recorded output
 of the run that wrote its `data/` files (with `--output data`, as its
 README now says; the documented command writes under `build/`), likewise
 added past the rule. The eighth delivery has no `.log` file. Nor has the
-ninth. Nor has the tenth.
+ninth. Nor has the tenth, nor the eleventh.
 
 No `build.sh` reruns a verification program in place any more. Those of the
 arithmetic, resonance-block, non-Archimedean reversion and Stokes-transport
@@ -2139,5 +2154,16 @@ diagnostics use double precision, not an extended `long double`, and run
 on Windows; a rerun of the amended programs reproduced
 `data/verification.json` and `data/numerical_table.tex` byte for byte and
 the other recorded values to a relative difference below `10^{−12}`.
+The factorial-transseries `verify.py` writes into `rerun/` by default
+(`--output`); only `--output verification_output.txt` overwrites the
+recorded file, as the delivered default did; `rerun/` is not ignored, so
+delete it afterwards. Its symbolic stage takes minutes: on filing it did
+not finish within 170 seconds, twice, and was not run to completion, so
+allow more than three minutes for a full run. The four `PASS` lines at the head of
+the recorded `verification_output.txt` are fixed text written with the
+tables, so the file alone is not evidence that this stage ran; the amended
+program reproduced the file byte for byte with the stage skipped, and the
+coefficient lists the stage asserts were reproduced independently in exact
+rational arithmetic (see the package README).
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.

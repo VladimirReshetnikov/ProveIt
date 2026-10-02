@@ -59,6 +59,8 @@
 \newtheorem{algorithm}[theorem]{Algorithm}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 
 \newtcolorbox{resultbox}[1][]{
   enhanced, breakable,
@@ -887,6 +889,22 @@ Finally \(n=m-1/2\).
 
 This inversion is useful when a counting threshold \(Y\) is prescribed and only the index is sought.  It also makes the relation with the inverse-gamma and power--log transseries elsewhere in ProveIt explicit.
 
+% ed. (2026-10-01): names the repository results meant above; this section re-derives the canonical volume's inversion apparatus without citing it (batch-73 placement dossier).
+\begin{ednote}
+The repository results meant here are in the canonical transseries volume \cite{ed:tai}, which this note does not cite; the method of this section is the volume's, and only the A006014 coefficients are new to the repository (neither A006014 nor the coefficients of \eqref{eq:inverse} occur in the volume).
+With \(Y/\constC\) in place of the volume's \(y\), the quantities \(X,w,M,q\) of \eqref{eq:inverse-defs}--\eqref{eq:Mdef} are its \(R,w,T,\Lambda\) of Section~Q.5 (\path{p6:sec:gamma}), and \(M(\log M-1)=X\) is its core equation there, the factorial core of Proposition~J.27 (\path{p0:prop:factorial-core}) with \(\kappa=1\), \(d=-1\).
+For the pure gamma block \(a_n=\constC\,n!\), the reversion in the proof of Theorem~\ref{thm:inverse} returns
+\[
+ \nu(Y)=\Gamma_+^{-1}(Y/\constC)-1
+ =M-\frac12+\frac{1}{24Mq}-\frac{14q^2+10q+5}{5760M^3q^3}+\bigO(M^{-5}),
+\]
+which is Theorem~Q.25 (\path{p6:thm:gamma}) with the blocks \(d_1,d_3\) of Proposition~Q.26 (\path{p6:prop:gamma-blocks}).
+The factor \(1-2/n-2/n^3-\cdots\) of \eqref{eq:ratioexpansion} turns \(1/24\) into \(49/24\), adds the even power \(M^{-2}\), and changes the cubic coefficient to that of \eqref{eq:inverse}; the editors repeated both reversions independently.
+The general reversion is the volume's perturbed inversion, Theorem~J.21 (\path{p0:thm:perturbed-inversion}), in its Part~X, ``Inversion: the apparatus for a rapidly growing function'' (chapter \path{p0:sec:top}).
+The step from \(\nu(Y)\) to the integer threshold, left above to checking the nearest integers, is its Theorem~J.43 (\path{p0:thm:staircase}): if \(\nu\) is the inverse of an admissible interpolation (a continuous, strictly increasing function equal to \(a_n\) at every integer \(n\ge1\), Definition~J.41, \path{p0:def:three-inverses}), the least \(n\) with \(a_n\ge Y\) is \(\lceil\nu(Y)\rceil\); an approximation \(x_\ast\) with \(|x_\ast-\nu(Y)|\le\eta\) determines it whenever \(\lceil x_\ast-\eta\rceil=\lceil x_\ast+\eta\rceil\); and \(Y=a_n\) gives \(n=\lfloor x_\ast+\frac12\rfloor\) whenever \(\eta<\frac12\).
+The volume's other factorially growing sequence is the subfactorial, in its chapter ``The subfactorial'' (\path{p8:sec:top}). There the carrier is cited from the gamma chapter (Proposition~S.10, \path{p8:prop:carrier}: the same dictionary with \(\e Y\) in place of \(Y/\constC\)), and the derangement correction is smaller than every fixed exponential scale in the inverse variable; here the correction \eqref{eq:ratioexpansion} is a power series in \(1/n\) and already changes the coefficient of \(M^{-1}\).
+\end{ednote}
+
 \section{A one-parameter hypergeometric universality class}
 
 The mechanism is not isolated.  Let \(\lambda>0\), set \(a^{(\lambda)}_1=\lambda\), and retain the same nonlinear recurrence:
@@ -1270,6 +1288,15 @@ Advances in Computational Mathematics 5 (1996), 329--359.
 P. Flajolet and R. Sedgewick,
 \emph{Analytic Combinatorics},
 Cambridge University Press, 2009.
+
+% ed. (2026-10-01): entry for the editorial note in the section on asymptotic inversion (key prefixed ed:).
+\bibitem{ed:tai}
+[Editorial addition, ProveIt, 2026-10-01.] ProveIt, \emph{Transseries: the
+polynomial-logarithmic calculus, series reversal at infinity, and
+inversion} (canonical volume),
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+Part~X (chapter \path{p0:sec:top}), Chapters \path{p6:sec:top} and
+\path{p8:sec:top}.
 
 \end{thebibliography}
 
