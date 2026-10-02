@@ -36,6 +36,8 @@
 \newcommand{\Lcal}{\mathcal L}
 \newcommand{\pre}{\preccurlyeq}
 \newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}% Part II (batch 77P5)
+\newcommand{\dd}{\mathrm d}% Part II (batch 77P5)
 \DeclareMathOperator{\ord}{ord}
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
@@ -45,7 +47,8 @@
 \title{\color{inkblue}\bfseries L-convex polyominoes\par
  and a colored-partition comparison\vspace{0.6em}\par
  \large A proof of the A126764 asymptotic, three correction terms,\par
- an all-orders radial expansion, and inverse asymptotics}
+ an all-orders radial expansion, and inverse asymptotics\vspace{0.4em}\par
+ \normalsize Part~II: the all-orders coefficient theorem}
 \author{Research manuscript prepared for Vladimir Reshetnikov}
 \date{October 1, 2026}
 \begin{document}
@@ -80,10 +83,17 @@ analysis is supplied here. The all-orders \emph{radial} expansion is proved.
 An all-orders \emph{coefficient} expansion, and exponentially small
 transseries sectors for $a_n$, are not claimed.
 \end{resultbox}
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+The box describes Part~I. Part~II (Sections~\ref{lcp:ao:sec:intro}--\ref{lcp:ao:sec:provenance}),
+a second manuscript, proves the all-orders \emph{coefficient} expansion
+(Theorem~\ref{lcp:ao:thm:main}). Exponentially small transseries sectors
+remain unclaimed in both parts.
+\end{writenote}
 \clearpage
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \clearpage
 
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } L-convex polyominoes and a colored-partition comparison}
 \section{The problem and the main results}
 \subsection{The sequence and the source boundary}
 An L-convex polyomino is a convex polyomino in which any two cells can be
@@ -139,6 +149,19 @@ $9047/2000$); the L-convex class grows only like $\ee^{B\sqrt n}$, so the
 two constants are unrelated and no theorem is shared. The report
 \texttt{skew-\allowbreak partition-\allowbreak continued-\allowbreak fractions}
 touches parallelogram polyominoes (A006958) only.
+\end{writenote}
+
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+The note above describes Part~I, Sections~1--12 and Appendices~A and~B.
+Since batch~77 the report has a second part, Part~II
+(Sections~\ref{lcp:ao:sec:intro}--\ref{lcp:ao:sec:provenance}), printed in
+full from manuscript~31 of batch~77 (archive
+\texttt{lconvex-\allowbreak asymptotics-\allowbreak reproducibility.zip},
+arrival commit \texttt{096ee7b87}, placement commit \texttt{4f11bc9c0}; no
+pin). It proves the all-orders coefficient expansion that Part~I leaves
+open, by an exact decomposition $\Acal=R\,D^2+(\text{an exponentially
+smaller remainder})$ in Part~I's letters. Its letters clash with Part~I's;
+Table~\ref{lcp:ao:tab:notation} resolves them.
 \end{writenote}
 
 \subsection{Constants and coefficient asymptotics}
@@ -844,6 +867,21 @@ remainder argument is supplied. No exponentially small contribution from
 other roots of unity, nor a complete transseries with all such sectors,
 is claimed in this report.
 
+\begin{writenote}[Added 2 October 2026, batch~77P5: the gap is closed in Part~II]
+Part~II proves the all-orders coefficient theorem
+(Theorem~\ref{lcp:ao:thm:main}): for every fixed $M$, $a_n$ has an
+expansion in powers of $(n-1/6)^{-1/2}$ with remainder
+$\OO(n^{-M/2})$ and algorithmically determined coefficients. It does not
+control the zeros of $Q_m$. It avoids them: the series $D=L/R$ of this
+section is a partial theta function (Remark~\ref{lcp:ao:rem:LR}), and
+$\Acal=R\,D^2$ plus a remainder whose coefficients are exponentially
+smaller (Proposition~\ref{lcp:ao:prop:square},
+Corollary~\ref{lcp:ao:cor:exponential}), with whole-circle bounds for both
+factors. The later coefficients called ``candidates'' above are thereby
+proved. The statement about exponentially small sectors and a complete
+transseries still stands for both parts.
+\end{writenote}
+
 \section{Inverse asymptotics and integer thresholds}
 \subsection{A real inverse requires an interpolation convention}
 The sequence itself is defined only on integers. To state a real inverse
@@ -1059,6 +1097,12 @@ not generating formal coefficients; it is uniform contour control of
 $Q_m^{-1}$ and treatment of possible interior poles of rational
 approximants. A theorem organizing admissible cuts would turn the radial
 algorithm into an all-orders coefficient algorithm.
+\begin{writenote}[Added 2 October 2026, batch~77P5: answered]
+Part~II proves the all-orders coefficient expansion
+(Theorem~\ref{lcp:ao:thm:main}) by a different route, an exact
+product-square decomposition, without organizing finite cuts. A theorem on
+admissible cuts, or on the zeros of $Q_m$, remains a separate question.
+\end{writenote}
 
 \item \textbf{Explicit numerical error constants.}
 Make the product minor-arc constants and the cubic lower bound in the
@@ -1078,6 +1122,13 @@ Study $D(q)=L/R$ as an analytic object, not just a radial formal series.
 The recurrence, Wronskians, and positive tails give several exact
 representations. Determine its domain of continuation and the role of
 zeros of the finite denominators $Q_m$.
+\begin{writenote}[Added 2 October 2026, batch~77P5: partly answered]
+$D=L/R$ equals the partial theta function
+$1-\sum_{k\ge0}q^{k(k+1)}(1-q^{2k+1})/(1+q^{2k+1})$ on the whole disk
+$|q|<1$ (Remark~\ref{lcp:ao:rem:LR}, from Part~II's
+Proposition~\ref{lcp:ao:prop:square}). Its continuation and the zeros of
+$Q_m$ remain open; Part~II's open problem~5 continues the question.
+\end{writenote}
 
 \item \textbf{Beyond-all-orders terms.}
 Separate exponentially small contributions to $\Acal(\ee^{-t})$ from
@@ -1086,6 +1137,13 @@ Determine which roots of unity contribute to a coefficient transseries
 and whether the radial series has a useful summability or resurgence
 structure. None of these properties follows just from the computed
 rational coefficients.
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+Part~II separates an exact remainder whose coefficients are
+$\OO(n^{1/4}\ee^{\pi\sqrt{2n}})$, exponentially smaller than $a_n$
+(Corollary~\ref{lcp:ao:cor:exponential}); the bound is deliberately
+coarse. The actual exponentially small contributions remain open (Part~II,
+open problem~2).
+\end{writenote}
 
 \item \textbf{A reusable theorem for recurrence-defined area series.}
 Abstract the positive-transfer and finite-cut mechanism to other
@@ -1100,6 +1158,10 @@ Investigate whether the numerically studied Z-convex area asymptotics
 \cite{zconvex} admit a related positive comparison. This is a proposed
 application, not an assertion that the L-convex recurrence or constant
 extends unchanged. Area and perimeter must remain distinct parameters.
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+Part~II's open problem~4 asks the analogous question for its
+product-square decomposition.
+\end{writenote}
 
 \item \textbf{Formalization and OEIS integration.}
 Formalize the normalized transfer, coefficientwise order, Wronskian, and
@@ -1144,6 +1206,899 @@ Independent peer review or Lean verification
 \bottomrule
 \end{tabular}
 \end{center}
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+The ledger is Part~I's. Its row ``All-orders coefficient expansion and
+exponentially small sectors'' is now half answered: Part~II proves the
+all-orders coefficient expansion (Theorem~\ref{lcp:ao:thm:main});
+exponentially small sectors are still not claimed. The last two rows hold
+for Part~II as well.
+\end{writenote}
+
+%% ====================================================================
+%% Batch-77P5 addition (manuscript 31, "All order asymptotics and
+%% inversion for L convex polyominoes").  All labels of Part II carry the
+%% prefix lcp:ao: (all orders).  Section lcp:ao:sec:intro, the closing
+%% section lcp:ao:sec:provenance and every text marked [write] were added
+%% when Part II was written into the report; the other Part II sections
+%% print the manuscript.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad All-order asymptotics and inversion}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } All-order asymptotics and inversion}
+
+\noindent\emph{Sections~1--12 and Appendices~A and~B form the original
+report (Part~I) of 1~October 2026. Part~I is unchanged except for dated
+\textsf{[write]} pointers to this addition (after the scope box, in
+Section~1.1, at the end of Section~8.2, in research questions~1, 4, 5
+and~7 of Section~11, and after the claim ledger of Section~12), a line in
+the title, contents entries for the two parts, two macros in the preamble,
+one bibliography entry used only by Part~II, and notes in two existing
+entries. No number of Part~I moves.}
+
+\section{Part II: source, scope and notation}\label{lcp:ao:sec:intro}
+This section was written when Part~II was added. Sections~\ref{lcp:ao:sec:main}--\ref{lcp:ao:sec:open}
+print the manuscript; Section~\ref{lcp:ao:sec:provenance} records the
+provenance of both parts and the choices the merge made.
+
+\subsection{Source and status}
+Sections~\ref{lcp:ao:sec:main}--\ref{lcp:ao:sec:open} print, in full,
+manuscript~31 of batch~77 of ProveIt's incoming-reports intake, titled
+``All order asymptotics and inversion for L convex polyominoes'' and dated
+1~October 2026. It arrived as the archive
+\texttt{lconvex-\allowbreak asymptotics-\allowbreak reproducibility.zip}
+in commit \texttt{096ee7b87} and was placed in commit \texttt{4f11bc9c0}.
+Its author line is empty and it names no tool; like every manuscript of
+the intake it is treated as AI-assisted research output. It names no
+ProveIt commit and does not mention the repository, so it has no pin, and
+it was not written against Part~I.
+
+It is not a version of Part~I's manuscript. Only 40 of its 380 distinct
+non-blank source lines occur in Part~I's source. Its proof architecture is
+different: an exact product-square decomposition and a Hankel--Bessel
+transfer, where Part~I uses a positive coefficient squeeze and finite cuts.
+The proof note that its shipped audit reviewed is a different file from
+Part~I's manuscript. The package ships three internal reviews
+(\texttt{02-all-orders-mathematical-audit.md},
+\texttt{02-all-orders-final-source-review.md},
+\texttt{02-all-orders-computational-review.md}). They are the delivery's
+own checks, not external peer review. Part~II is unrefereed. Nothing in
+it is formalized in Lean or Rocq, and its place in the collection confers
+no formal status on it.
+
+\paragraph{What was rechecked at intake and in this write.} Independently
+of the delivery:
+\begin{itemize}[leftmargin=*,itemsep=0.15em]
+\item $a_0,\ldots,a_{120}$ from the original form \eqref{lcp:ao:eq:known}
+ agree with the shipped coefficient file, and that file agrees entry by
+ entry with the column $a_n$ of Part~I's \texttt{data/coefficients.csv}
+ for all $0\le n\le2000$;
+\item $c_0,\ldots,c_4$ follow from \eqref{lcp:ao:eq:cr} with
+ $b_0,\ldots,b_4$ read from \eqref{lcp:ao:eq:Dexp}, the $h_r$ of
+ Section~\ref{lcp:ao:sec:inverse} are $(2\sqrt\kappa)^rc_r$, and the
+ unshifted re-expansion gives exactly Part~I's $d,e,f$
+ (Remark~\ref{lcp:ao:rem:partI}), all with exact SymPy arithmetic;
+\item $B=D$ and $A=PB^2+R$, with $R$ from the literal $E(q)$, at
+ $q=0.3$, $0.6$ and $0.3+0.4\ii$, to 40 digits (discrepancies
+ $10^{-38}$ to $10^{-41}$);
+\item the identity of Remark~\ref{lcp:ao:rem:LR} between Part~I's
+ $L/R^{\mathrm I}$ and Part~II's $B$, at the same three points;
+\item the entries of Table~\ref{lcp:ao:tab:errors}, the leading constant,
+ the monotonicity injection (by hand), and the log-concavity expansion
+ numerically (Corollary~\ref{lcp:ao:cor:logconcavity});
+\item the shipped replay, core and optional parts
+ (Section~\ref{lcp:ao:sec:checks}).
+\end{itemize}
+The whole-circle estimates (Lemmas~\ref{lcp:ao:lem:global}
+and~\ref{lcp:ao:lem:minor}) and the contour deformation in
+Section~\ref{lcp:ao:sec:extraction} were read but not re-derived in
+detail; they are written at the level of standard saddle-point estimates.
+
+\subsection{What Part II adds, and what stays in Part I}
+Part~II proves, from the same cited area generating function:
+\begin{itemize}[leftmargin=*,itemsep=0.15em]
+\item the exact decomposition $A=PBD+R$ and the identity $B=D$, a partial
+ theta function, hence $A=PB^2+R$ exactly
+ (Propositions~\ref{lcp:ao:prop:split} and~\ref{lcp:ao:prop:square});
+\item whole-circle bounds and an exponentially smaller exact remainder
+ (Lemma~\ref{lcp:ao:lem:global}, Corollary~\ref{lcp:ao:cor:exponential});
+\item \textbf{the all-orders coefficient theorem}
+ (Theorem~\ref{lcp:ao:thm:main}) in the shifted index $N=n-1/6$, with
+ coefficients given by a finite algorithm. This closes the gap that
+ Part~I states in Section~8.2 and research question~1 of Section~11;
+\item eventual strict log-concavity with a two-term expansion of
+ $\log(a_n^2/(a_{n-1}a_{n+1}))$ (Corollary~\ref{lcp:ao:cor:logconcavity});
+\item an injection proving that $a_n$ is nondecreasing;
+\item a Lambert-$W$ inverse in shifted coordinates, logarithmic inverse
+ polynomials, and shrinking integer brackets for every order
+ (Section~\ref{lcp:ao:sec:inverse}).
+\end{itemize}
+Only Part~I has the coefficientwise squeeze $0\le p_n-4a_n\le3j_n$ for
+every $n\ge3$ with its colored-partition reading, the deficit limit $K/2$,
+the finite-cut identity and its $m=3$ route, the interpolation $\nu(y)$
+with the exact rule $N(y)=\lceil\nu(y)\rceil$, and the tables of
+Section~10.
+
+Several results are proved in both parts, by different arguments; each
+part keeps its own proof.
+\begin{itemize}[leftmargin=*,itemsep=0.15em]
+\item The leading asymptotic and the corrections $d,e,f$ of
+ Theorem~\ref{lcp:thm:main}: Part~I by squeeze and finite cut, with
+ remainder $\OO(n^{-7/4})$; Part~II as the case $M=4$ of
+ Theorem~\ref{lcp:ao:thm:main}, with remainder $\OO(n^{-2})$
+ (Remark~\ref{lcp:ao:rem:partI}).
+\item The radial expansion \eqref{lcp:eq:radialintro} with the
+ coefficients \eqref{lcp:eq:Fintro} of Theorem~\ref{lcp:thm:radial}: it
+ follows from \eqref{lcp:ao:eq:exactmain}, and the coefficients are four
+ times those of $D(\ee^{-z})^2$ in \eqref{lcp:ao:eq:Dexp}
+ (Remark~\ref{lcp:ao:rem:LR}).
+\item The local eta expansion \eqref{lcp:eq:Rlocal} is
+ \eqref{lcp:ao:eq:Plocal}; the minor-arc bound \eqref{lcp:eq:minor} is
+ Lemma~\ref{lcp:ao:lem:minor}, for the same product; the transfer
+ \eqref{lcp:eq:transfer}--\eqref{lcp:eq:betak} is
+ \eqref{lcp:ao:eq:Bessel}--\eqref{lcp:ao:eq:cr} in the shifted index.
+\item The generating function \eqref{lcp:eq:enum} is
+ \eqref{lcp:ao:eq:known}, with Part~I's $h_n$ equal to the manuscript's
+ $f_{n-1}$; the initial terms are printed in both parts.
+\end{itemize}
+
+\subsection{Notation across the two parts}\label{lcp:ao:sec:notation}
+Part~II keeps the manuscript's letters. The shipped data files and reviews
+use them (for example the keys \texttt{A\_equals\_P\_B\_squared\_plus\_R}
+and \texttt{initial\_R} of \texttt{02-all-orders-exact-identities.json},
+and \texttt{kappa} in the forward and inverse series), and renaming would
+break that correspondence. Many of these letters mean something else in
+Part~I. In Sections~\ref{lcp:ao:sec:main}--\ref{lcp:ao:sec:open} a letter
+has its Part~II meaning. Where a \textsf{[write]} note in Part~II refers to
+a Part~I object whose letter clashes, it adds the superscript
+$\mathrm I$: $R^{\mathrm I}$, $K^{\mathrm I}$, $B^{\mathrm I}$,
+$D^{\mathrm I}$, $L^{\mathrm I}$, $y^{\mathrm I}$. No symbol of either
+manuscript was renamed and no normalization was changed.
+Table~\ref{lcp:ao:tab:notation} lists every clash. The last column gives
+the tempting false reading.
+
+{\small
+\begin{longtable}{@{}>{\raggedright}p{0.1\textwidth}>{\raggedright}p{0.3\textwidth}>{\raggedright}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
+\caption{Letters of Part~II, the same object in Part~I, and the clash to avoid.}\label{lcp:ao:tab:notation}\\
+\toprule
+Part II & Meaning in Part II & Same object in Part I & Not to be confused with\\
+\midrule
+\endfirsthead
+\toprule
+Part II & Meaning in Part II & Same object in Part I & Not to be confused with\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$\kappa$ & $13\pi^2/24$ & $K$, \eqref{lcp:eq:constants} & Part~I's $\kappa$ in \eqref{lcp:eq:Rlocal}, an unspecified sector-dependent exponent\\
+$C$ & $13\sqrt2/768$ & $c$ & Part~I's series $C(z;q)$, $C_j$, \eqref{lcp:eq:C}\\
+$N$ & $n-1/6$ & --- & Part~I's threshold $N(y)$, and its block length $N\asymp1/t$ in the minor-arc proof\\
+$P(q)$ & $(-q;q^2)_\infty/(q;q)_\infty^3$, \eqref{lcp:ao:eq:PBD}, \eqref{lcp:ao:eq:eta} & $R(q)$, \eqref{lcp:eq:R} & Part~I's polynomials $P_m$; Part~II's $P_j$\\
+$R(q)$ & exact remainder $1+E(q)/(q;q)_\infty$, Proposition~\ref{lcp:ao:prop:split} & none & Part~I's $R(q)$, which is Part~II's $P$: $A=PB^2+R$ does \emph{not} say $\Acal=R^{\mathrm I}D^2+R^{\mathrm I}$\\
+$p_n$ & $[q^n]P(q)B(q)^2$, Corollary~\ref{lcp:ao:cor:exponential}; $p_n\sim a_n$ & none & Part~I's $p_n=[q^n]R^{\mathrm I}(q)=[q^n]P(q)$, with $p_n\sim4a_n$\\
+$E(q)$ & the double sum \eqref{lcp:ao:eq:E} & none & Part~I's defect $E=R-2L$, \eqref{lcp:eq:E}, and tails $E_m$, \eqref{lcp:eq:Em}\\
+$B(q)$ & $1-\sum_lu_l$, the partial theta function \eqref{lcp:ao:eq:theta} & $D(q)=L/R$ of Section~8.1, exactly (Remark~\ref{lcp:ao:rem:LR}) & Part~I's constant $B=2\sqrt K=\pi\sqrt{13/6}$\\
+$D(q)$ & the series of \eqref{lcp:ao:eq:PBD}; $D=B$ & $D(q)=L/R$: the same function, not only the same letter & Part~II's bracket constants $D_M$\\
+$K$ & $C(2\sqrt\kappa)^3$, \eqref{lcp:ao:eq:inversevars} & $cB^3$ & Part~I's $K=13\pi^2/24$, which is Part~II's $\kappa$\\
+$L$, $w$ & $\log(X/K)$, $\log L$ & $\ell=\log(y/(cB^3))$ of \eqref{lcp:eq:inverseconstants} & Part~I's slope series $L=\Lcal_h$, \eqref{lcp:eq:slope}\\
+$X$ & target value of the inverse & $y$ of Section~9 & ---\\
+$y$ & $2\sqrt{\kappa(n-1/6)}=B^{\mathrm I}\sqrt N$ & unshifted analogue $s=B\sqrt\nu$ & Part~I's $y$, the target value\\
+$y_0$ & Lambert root \eqref{lcp:ao:eq:W} & $s_0$ of \eqref{lcp:eq:inverseconstants}, the same number when $X=y^{\mathrm I}$ & ---\\
+$n_*(X)$ & $\min\{n:a_n\ge X\}$ & $N(y)$ of Section~9 & ---\\
+$F_M$, $x_M$ & real model \eqref{lcp:ao:eq:model} and its large inverse & analogues of $M(x)$ and $\nu(y)$ & Part~I's rational $F_3(q)$, \eqref{lcp:eq:thirdcut}, and series $\mathcal F(t)$\\
+$M$ & truncation order & --- & Part~I's model function $M(x)$\\
+$h_n$, $H$, $G$ & $f_{n-1}/(q;q)_n$, its generating function, the product \eqref{lcp:ao:eq:HG} & Part~I's $h_n=f_{n-1}$ lacks the factor $1/(q;q)_n$; $G$ is Part~I's $G$, \eqref{lcp:eq:Gproduct} & $h_r$ of Section~\ref{lcp:ao:sec:inverse}\\
+$h_r$, $\ell_r$ & coefficients of \eqref{lcp:ao:eq:yforward} and of its logarithm, \eqref{lcp:ao:eq:ell} & $D_0$, $\alpha_2$, $\alpha_3$ play this role for $s$ & $h_n$ above; Part~I's $\ell$\\
+$b_m$ & Taylor coefficients of $D(\ee^{-z})^2$, \eqref{lcp:ao:eq:bdef} & $\mathcal F(t)=4\sum b_mt^m$, \eqref{lcp:eq:Dformal} & Part~I's $b_n=y_n/(q;q)_n^2$ and color multiplicities $b_j$, \eqref{lcp:eq:colors}\\
+$c_r$ & coefficients of \eqref{lcp:ao:eq:allorders} & unshifted: $1,-d,e,f$ & Part~I's $c$ and $c_0$; the local constants $c$, $c_1,\ldots,c_4$, $C_1$ of Part~II's proofs\\
+$u_l$, $T_j$ & summands of $B$ in \eqref{lcp:ao:eq:PBD}; summands of $D$ (proof of Lemma~\ref{lcp:ao:lem:localD}) & --- & Part~I's $u_n=Q_n-h_n$ and $T_n(q)$\\
+$P_j$ & logarithmic inverse polynomials & --- & $P(q)$; Part~I's $P_m$\\
+$a$, $b$, $S$, $V$ & local to the proof of Proposition~\ref{lcp:ao:prop:square} ($a=\ii\sqrt q$) & --- & $a_n$; $b_m$; Part~I's $s$\\
+$z$, $t$ & auxiliary variable in Section~\ref{lcp:ao:sec:decomposition}; from Section~\ref{lcp:ao:sec:local} on $q=\ee^{-z}$, $t=\Re z$ & same two uses in Part~I & saddle radius $t=\sqrt{\kappa/N}$ here, $t=\sqrt{K/n}$ in Part~I\\
+$\lambda$, $\alpha$ & $\sqrt{\kappa N}$; $3/2+m$ & --- & Part~I's amplitude $\lambda$ in \eqref{lcp:eq:transfer}; $\alpha_2$, $\alpha_3$\\
+$d_r$ & local to the proof of Corollary~\ref{lcp:ao:cor:logconcavity} & --- & Part~I's $d$\\
+\end{longtable}}
+
+Two further letters are shared with the same meaning: $f_n$ (the
+recurrence \eqref{lcp:ao:eq:rec}; Part~I's $h_{n+1}$) and the branch
+$W_{-1}$.
+
+\subsection{The manuscript's abstract}
+\begin{quote}\small
+Let $a_n$ count fixed $L$-convex polyominoes of area $n$, with the empty object included. Starting from the known exact area generating function, we prove the asymptotic equivalent conjectured by Guttmann and Kot\v{e}\v{s}ovec and recorded in OEIS A126764. An exact decomposition into an eta quotient times the square of a partial theta function, plus an exponentially smaller coefficient remainder, supplies every fixed algebraic order. The correction coefficients are given by a finite algorithm. We also give a branch-explicit Lambert $W$ inverse, logarithmic inverse polynomials, and shrinking intervals for the integer threshold inverse before rounding. The proof includes whole-circle estimates; a positive-real singular expansion alone is not used as a coefficient-transfer argument. Exact coefficient checks and a portable replay accompany the analysis.
+\end{quote}
+
+\section{The sequence and the main theorem}\label{lcp:ao:sec:main}
+An $L$-convex polyomino is a convex polyomino in which any two cells can be joined internally by a path with at most one right-angle turn. We count fixed polyominoes, identifying translations but keeping rotations and reflections distinct. Its area generating function is
+\begin{equation}\label{lcp:ao:eq:known}
+ A(q)=\sum_{n\ge0}a_nq^n
+ =1+\sum_{n\ge1}\frac{q^n f_{n-1}(q)}{(q;q)_{n-1}^2(1-q^n)},
+\end{equation}
+where
+\begin{equation}\label{lcp:ao:eq:rec}
+ f_{-1}=f_0=1,\qquad f_n=2f_{n-1}-(1-q^n)^2f_{n-2}\quad(n\ge1).
+\end{equation}
+Here $(a;q)_j=\prod_{h=0}^{j-1}(1-aq^h)$. Formula \eqref{lcp:ao:eq:known} is the Castiglione--Frosini--Munarini--Restivo--Rinaldi area formula~\cite{castiglione}, in the normalization reproduced in~\cite[Eq.~(1.1)]{gk}. The first terms are
+\[
+1,1,2,6,15,35,76,156,310,590,1098,1984,3515,6094,\ldots.
+\]
+Set
+\begin{equation}\label{lcp:ao:eq:constants}
+ \kappa=\frac{13\pi^2}{24},\qquad C=\frac{13\sqrt2}{768},\qquad N=n-\frac16.
+\end{equation}
+
+\begin{theorem}\label{lcp:ao:thm:main}
+For every fixed integer $M\ge1$,
+\begin{equation}\label{lcp:ao:eq:allorders}
+ a_n=C N^{-3/2}\ee^{2\sqrt{\kappa N}}
+ \left(\sum_{r=0}^{M-1}c_r N^{-r/2}+O(N^{-M/2})\right).
+\end{equation}
+The coefficients are algorithmically determined as follows. Define the formal asymptotic coefficients $b_m$ by
+\begin{equation}\label{lcp:ao:eq:bdef}
+ \left(\sum_{j\ge0}\frac{(-1)^j\ee^{-zj(j-1)/2}(\ee^{-z};\ee^{-z})_j}
+ {(-\ee^{-z};\ee^{-2z})_{j+1}}\right)^2
+ \sim\sum_{m\ge0}b_m z^m.
+\end{equation}
+To determine $b_0,\ldots,b_{M-1}$, it suffices to retain $0\le j<M$ on the left and take ordinary Taylor coefficients. Then
+\begin{equation}\label{lcp:ao:eq:cr}
+ c_r=\sum_{\substack{m+k=r\\0\le k\le m+2}}
+ 4b_m\kappa^{m/2}\frac{(-1)^k(m+2+k)!}
+ {(m+2-k)!\,k!\,(4\sqrt\kappa)^k}.
+\end{equation}
+In particular,
+\begin{align}\label{lcp:ao:eq:firstc}
+ c_0&=1,&c_1&=-\frac{3}{2\sqrt\kappa},&
+ c_2&=\frac{3}{4\kappa}-\frac\kappa2,\notag\\
+ c_3&=\frac{\sqrt\kappa(\kappa+5)}2,&
+ c_4&=-\frac{45}{8}-\frac{15\kappa}{4}-\frac{41\kappa^2}{48}.
+\end{align}
+\end{theorem}
+The $M=1$ case proves the OEIS conjecture
+\begin{equation}\label{lcp:ao:eq:leading}
+ a_n\sim \frac{13\sqrt2}{768}\,n^{-3/2}\exp\!\left(\pi\sqrt{\frac{13n}{6}}\right).
+\end{equation}
+For readers preferring the unshifted variable, the first correction is
+\begin{equation}\label{lcp:ao:eq:unshifted}
+ a_n=Cn^{-3/2}\ee^{2\sqrt{\kappa n}}
+ \left[1-\left(\frac{\sqrt\kappa}{6}+\frac{3}{2\sqrt\kappa}\right)n^{-1/2}
+ +O(n^{-1})\right].
+\end{equation}
+The shift $N=n-1/6$ keeps the higher formulas shorter.
+
+\begin{remark}[write, 2 October 2026: consistency with Part~I]\label{lcp:ao:rem:partI}
+Take $M=4$ in Theorem~\ref{lcp:ao:thm:main} and re-expand in the unshifted
+index. With $\kappa=K^{\mathrm I}$ this gives
+\[
+ a_n=Cn^{-3/2}\ee^{2\sqrt{\kappa n}}
+ \left(1-\frac d{\sqrt n}+\frac en+\frac f{n^{3/2}}+\OO(n^{-2})\right),
+\]
+with exactly the $d,e,f$ of \eqref{lcp:eq:d}--\eqref{lcp:eq:f}: the three
+symbolic differences vanish (exact SymPy arithmetic, at intake and again in
+this write). So Theorem~\ref{lcp:ao:thm:main} re-proves
+Theorem~\ref{lcp:thm:main} with the sharper relative remainder
+$\OO(n^{-2})$, by a route independent of Part~I's squeeze and finite cut,
+and continues it to every order. Equation \eqref{lcp:ao:eq:unshifted} is
+Part~I's first correction $-d$, and \eqref{lcp:ao:eq:leading} is the
+leading asymptotic proved in both parts. Part~I keeps its own statement
+and proof.
+\end{remark}
+
+\paragraph{Literature status and prefactor.}
+The inspected OEIS entry~\cite{oeis} explicitly labels \eqref{lcp:ao:eq:leading} conjectural. The published 2023 paper~\cite{gk} describes its coefficient analysis as conjectural, and the 2024 paper~\cite[p.~19]{zconvex} repeats that status. The introduction of~\cite{gk} and its quoted numerical value $0.023938510821419\ldots$ agree with $C$ above, while its final display in Section~2 prints the reciprocal. Our derivation fixes the normalization independently. Targeted searches through 1 October 2026 did not locate an earlier proof or an all-orders expansion; this is a scoped search result, not an exhaustive claim of priority.
+
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+The statement that the final display of Section~2 of~\cite{gk} prints the
+reciprocal of $C$ was \emph{not} checked at intake. The shipped
+mathematical audit (item~13) says the same, but it is the delivery's own
+review. Part~I cites~\cite{gk} for the conjecture and its equation~(1.1)
+only. As in Part~I, the search statement is scoped, and no priority is
+claimed. Part~I's own proof of the leading term and three corrections
+(Theorem~\ref{lcp:thm:main}) predates this manuscript in the repository,
+though the two were written independently.
+\end{writenote}
+
+\section{An exact decomposition of the generating function}\label{lcp:ao:sec:decomposition}
+All $q$-series in this section converge for $|q|<1$. Introduce
+\begin{equation}\label{lcp:ao:eq:HG}
+ h_n=\frac{f_{n-1}}{(q;q)_n},\quad H(z)=\sum_{n\ge0}h_nz^n\quad(|z|<1),\quad
+ G(z)=\frac{(-qz^2;q^2)_\infty}{(z;q)_\infty^2}.
+\end{equation}
+The letter $z$ here is an auxiliary generating-function variable; later $q=\ee^{-z}$ will be explicitly stated.
+
+\begin{lemma}\label{lcp:ao:lem:H}
+The following identity holds for $|z|<1$:
+\begin{equation}\label{lcp:ao:eq:Hsolution}
+ H(z)=G(z)\left[1-\sum_{j\ge0}\frac{q^jz(q^{j+1}z;q)_\infty^2}
+ {(-q^{2j+1}z^2;q^2)_\infty}\right].
+\end{equation}
+\end{lemma}
+\begin{proof}
+The recurrence gives
+\[
+(1-z)^2H(z)=(1+qz^2)H(qz)-z,
+\]
+whereas $G$ satisfies the corresponding homogeneous equation. Division by $G$ and iteration toward $q^jz\to0$ give \eqref{lcp:ao:eq:Hsolution}. To justify convergence directly, put $\epsilon_k=2q^k-q^{2k}$. First differences in \eqref{lcp:ao:eq:rec} yield
+\[
+f_n=1+\sum_{k=1}^n(n-k+1)\epsilon_k f_{k-2}.
+\]
+Divide by $n+2$ and apply the discrete Gronwall inequality; the relevant product converges because $\sum k|\epsilon_k|<\infty$. Thus $f_n=O_q(n)$, uniformly on compact $q$-subdisks. Since $(q;q)_n$ has a nonzero limit, $H$ is analytic for $|z|<1$. All subsequent rearrangements are absolutely convergent, initially on compact subdisks.
+\end{proof}
+Define
+\begin{align}\label{lcp:ao:eq:PBD}
+ P(q)&=\frac{(-q;q^2)_\infty}{(q;q)_\infty^3},\notag\\
+ u_l(q)&=\frac{q^l(q^{l+1};q)_\infty^2}{(-q^{2l+1};q^2)_\infty},
+ &B(q)&=1-\sum_{l\ge0}u_l(q),\notag\\
+ D(q)&=\sum_{j\ge0}\frac{(-1)^j q^{j(j-1)/2}(q;q)_j}{(-q;q^2)_{j+1}}.
+\end{align}
+Formula \eqref{lcp:ao:eq:Hsolution} gives
+\begin{equation}\label{lcp:ao:eq:Hqj}
+ H(q^{j+1})=G(q^{j+1})\left(B+\sum_{l=0}^j u_l\right).
+\end{equation}
+
+\begin{proposition}\label{lcp:ao:prop:split}
+There is an exact identity
+\begin{equation}\label{lcp:ao:eq:splitBD}
+ A(q)=P(q)B(q)D(q)+R(q),
+\end{equation}
+where $R(q)=1+(q;q)_\infty^{-1}E(q)$ and
+\begin{equation}\label{lcp:ao:eq:E}
+ E(q)=\sum_{j\ge0}\frac{(-1)^j q^{j(j-1)/2}}{(q;q)_j}
+ \sum_{l=0}^j
+ \frac{q^l(q^{l+1};q)_{j-l}^2}{(-q^{2l+1};q^2)_{j-l+1}}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Euler's $q$-binomial theorem gives
+\[
+\frac1{(q;q)_{n-1}}=\frac{(q^n;q)_\infty}{(q;q)_\infty}
+=\frac1{(q;q)_\infty}\sum_{j\ge0}
+\frac{(-1)^jq^{j(j-1)/2+nj}}{(q;q)_j}.
+\]
+Substitute this in $A-1=\sum_{n\ge1}q^nh_n/(q;q)_{n-1}$ and interchange sums. The constant piece vanishes because
+\[
+\sum_{j\ge0}\frac{(-1)^jq^{j(j-1)/2}}{(q;q)_j}=(1;q)_\infty=0.
+\]
+For the homogeneous part of \eqref{lcp:ao:eq:Hqj}, use
+\[
+G(q^{j+1})=\frac{(-q;q^2)_\infty}{(q;q)_\infty^2}
+\frac{(q;q)_j^2}{(-q;q^2)_{j+1}}.
+\]
+The remaining product simplifies, for $l\le j$, to
+\[
+G(q^{j+1})u_l=
+\frac{q^l(q^{l+1};q)_{j-l}^2}{(-q^{2l+1};q^2)_{j-l+1}},
+\]
+which proves the proposition.
+\end{proof}
+
+\section{The square identity and a partial theta representation}\label{lcp:ao:sec:square}
+\begin{proposition}\label{lcp:ao:prop:square}
+One has
+\begin{equation}\label{lcp:ao:eq:theta}
+ B(q)=D(q)=1-\sum_{k\ge0}q^{k(k+1)}\frac{1-q^{2k+1}}{1+q^{2k+1}}.
+\end{equation}
+Consequently
+\begin{equation}\label{lcp:ao:eq:exactmain}
+ A(q)=P(q)B(q)^2+R(q).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Set $a=\ii\sqrt q$, $b=-\ii\sqrt q$, so $a+b=0$, $ab=q$. Both choices of square root give the same symmetric expressions. We use the convention
+\[
+{}_2\phi_1(a,b;c;q,z)=\sum_{n\ge0}\frac{(a,b;q)_n}{(c,q;q)_n}z^n.
+\]
+For the transformation argument assume $q\ne0$; the identities at $q=0$ follow by continuity.
+Heine's first transformation~\cite[17.6.6]{lcp-ao-dlmf} applied to ${}_2\phi_1(a,b;q;q,q)$ gives
+\begin{equation}\label{lcp:ao:eq:Lambert}
+ S:=1-B=\sum_{n\ge0}\frac{b^n}{1-aq^n}
+ =\sum_{n,k\ge0}a^k b^nq^{nk}.
+\end{equation}
+Indeed, the defining sum of the $u_l$ is
+\[
+\frac{(q;q)_\infty^2}{(a,b;q)_\infty}\,{}_2\phi_1(a,b;q;q,q).
+\]
+After Heine's transformation, the series ratio is $(a;q)_n/(aq;q)_n=(1-a)/(1-aq^n)$; the product prefactor cancels with $1-a$. Formula \eqref{lcp:ao:eq:Lambert} is symmetric in $a,b$.
+
+Let $V=(1+q)D$ and let $V_q$ denote the same summation with an extra factor $q^n$ in term $n$. Fine's second transformation~\cite[17.6.10]{lcp-ao-dlmf}, in the form
+\[
+(1-z){}_2\phi_1(q,\alpha q;\beta q;q,z)
+=\sum_{n\ge0}\frac{(\beta/\alpha;q)_n(-\alpha z)^nq^{n(n+1)/2}}
+ {(\beta q,zq;q)_n},
+\]
+with $\alpha=a/q^2$, $\beta=a/q$, $z=b$, yields
+\begin{equation}\label{lcp:ao:eq:Fine}
+\frac{V-aV_q}{1-a}=(1-b){}_2\phi_1(q,a/q;a;q,b)
+=(1-b)\bigl[1+(b-1)S\bigr].
+\end{equation}
+For the second equality, split off $n=0$ and use
+\[
+\frac{(a/q;q)_n}{(a;q)_n}=\frac{1-a/q}{1-aq^{n-1}},\qquad ab=q.
+\]
+Swap $a,b$ in \eqref{lcp:ao:eq:Fine}. Multiplying the original and swapped equations by $1-a$ and $1-b$ and adding gives $2V=2(1+q)(1-S)$. Hence $D=B$.
+
+Finally split the double sum \eqref{lcp:ao:eq:Lambert} into its diagonal and two off-diagonal triangles. On a diagonal difference $d$, $a^d+b^d$ vanishes for odd $d$, while it is $2(-1)^m q^m$ for $d=2m$. Therefore
+\[
+S=\sum_{k\ge0}q^{k(k+1)}\left(1+2\sum_{m\ge1}(-1)^mq^{m(2k+1)}\right),
+\]
+and summing the geometric progression gives \eqref{lcp:ao:eq:theta}.
+\end{proof}
+
+\begin{remark}[write, 2 October 2026: Part~I's boundary series is the partial theta function]\label{lcp:ao:rem:LR}
+For $|q|<1$, Part~I's series $D^{\mathrm I}(q)=L^{\mathrm I}(q)/R^{\mathrm I}(q)$
+of Section~8.1, with $L^{\mathrm I}$ the normalized limiting slope
+\eqref{lcp:eq:slope} of the solution $h^{\mathrm I}_n=f_{n-1}$, equals
+$B(q)=D(q)$. Indeed, in \eqref{lcp:ao:eq:Hsolution} the bracket is
+analytic for $|z|<|q|^{-1/2}$ (the zeros of $(-q^{2j+1}z^2;q^2)_\infty$
+have $|z|\ge|q|^{-1/2}$, and the factor $q^j$ makes the sum converge) and
+equals $B(q)$ at $z=1$, while $G$ has in $|z|<|q|^{-1}$ only the double
+pole at $z=1$, with $(1-z)^2G(z)\to(-q;q^2)_\infty/(q;q)_\infty^2$. Hence
+\[
+ \frac{f_{n-1}}{(q;q)_n}=[z^n]H(z)
+ =\frac{(-q;q^2)_\infty B(q)}{(q;q)_\infty^2}\,n+\OO_q(1),
+\]
+so the slope of Lemma~\ref{lcp:lem:slope} is
+$s(q)=(-q;q^2)_\infty B(q)/(q;q)_\infty$, and
+$L^{\mathrm I}=s/(q;q)_\infty^2=R^{\mathrm I}B$. A 40-digit evaluation at
+$q=0.3$, $0.6$ and $0.3+0.4\ii$ agrees to $10^{-37}$. Consequences: Part~I's
+formal limit $\mathcal D(t)$ in \eqref{lcp:eq:Dformal} is the Poincar\'e
+expansion of $B(\ee^{-t})$ given by Lemma~\ref{lcp:ao:lem:localD}, and the
+coefficients \eqref{lcp:eq:Fintro} are four times those of $D(\ee^{-z})^2$
+in \eqref{lcp:ao:eq:Dexp}; Part~I's rational approximants $h_m/Q_m$ in
+\eqref{lcp:eq:Dapprox} approximate this partial theta function; and
+Theorem~\ref{lcp:thm:radial} also follows from \eqref{lcp:ao:eq:exactmain},
+since $P=R^{\mathrm I}$ and $R$ is exponentially smaller on the radius by
+Lemma~\ref{lcp:ao:lem:global}. This answers part of Part~I's research
+question~4 (Section~11): $D^{\mathrm I}$ has the closed form
+\eqref{lcp:ao:eq:theta} on the whole unit disk. Its continuation beyond
+$|q|<1$ and the zeros of the finite denominators $Q_m$ are not addressed.
+\end{remark}
+
+\section{Global estimates and the exponentially smaller part}\label{lcp:ao:sec:global}
+These bounds hold on the entire coefficient-extraction circle, not only on the positive real radius. Let $r=\ee^{-t}$, $t>0$, and $|q|=r$.
+
+\begin{lemma}\label{lcp:ao:lem:global}
+As $t\downarrow0$, uniformly on $|q|=r$,
+\begin{align}\label{lcp:ao:eq:globalbounds}
+ |B(q)|&=O\!\left(t^{-1}\log\frac1t\right),\notag\\
+ |R(q)|&=O\!\left(t^{-1/2}\ee^{\pi^2/(2t)}\right).
+\end{align}
+\end{lemma}
+\begin{proof}
+From \eqref{lcp:ao:eq:theta},
+\[
+ |B(q)|\le1+\sum_{k\ge0}r^{k(k+1)}\frac{1+r^{2k+1}}{1-r^{2k+1}}.
+\]
+Split at $k\asymp t^{-1/2}$ and $k\asymp t^{-1}$. The small-$k$ part is bounded by a harmonic sum times $t^{-1}$, and the Gaussian tails give the stated estimate.
+
+In \eqref{lcp:ao:eq:E}, bound the finite numerator products by $(-r;r)_\infty^2$, the finite denominator products from below by $(r;r^2)_\infty$, and $\sum_{l=0}^jr^l$ by $(1-r)^{-1}$. Euler's identity gives
+\[
+\sum_{j\ge0}\frac{r^{j(j-1)/2}}{(r;r)_j}=(-1;r)_\infty=2(-r;r)_\infty.
+\]
+Thus
+\begin{equation}\label{lcp:ao:eq:explicitR}
+ |R(q)|\le1+\frac{2(-r;r)_\infty^3}
+ {(1-r)(r;r)_\infty(r;r^2)_\infty}.
+\end{equation}
+The standard eta-product estimates
+\begin{align*}
+(r;r)_\infty&\sim\sqrt{\frac{2\pi}{t}}\ee^{-\pi^2/(6t)},\\
+(-r;r)_\infty&\sim2^{-1/2}\ee^{\pi^2/(12t)},\qquad
+(r;r^2)_\infty\sim\sqrt2\ee^{-\pi^2/(12t)}
+\end{align*}
+prove the second bound. Crucially, $\pi^2/2<\kappa=13\pi^2/24$.
+\end{proof}
+
+\begin{corollary}\label{lcp:ao:cor:exponential}
+Let $p_n=[q^n]P(q)B(q)^2$. Then
+\begin{equation}\label{lcp:ao:eq:expcoefficient}
+ a_n-p_n=O\!\left(n^{1/4}\ee^{\pi\sqrt{2n}}\right).
+\end{equation}
+After Theorem~\ref{lcp:ao:thm:main}, this also gives
+\begin{equation}\label{lcp:ao:eq:exprelative}
+ \frac{a_n-p_n}{a_n}
+ =O\!\left(n^{7/4}\ee^{-\pi(\sqrt{13/6}-\sqrt2)\sqrt n}\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Cauchy's estimate and Lemma~\ref{lcp:ao:lem:global} bound the coefficient of $R$ by
+$O(t^{-1/2}\exp(nt+\pi^2/(2t)))$. Choose its own optimizing radius
+$t=\pi/\sqrt{2n}$. This is independent of the principal saddle used below.
+\end{proof}
+This is an exponentially smaller remainder for an \emph{exact principal generating function}. It is not a claim that the algebraic series in Theorem~\ref{lcp:ao:thm:main} converges, nor a complete transseries resolving all smaller exponential scales.
+
+\begin{lemma}\label{lcp:ao:lem:minor}
+There are constants $c,t_0>0$ such that for $0<t<t_0$ and $-\pi\le\theta\le\pi$,
+\begin{equation}\label{lcp:ao:eq:minor}
+ \frac{|P(\ee^{-t+\ii\theta})|}{P(\ee^{-t})}
+ \le\exp\!\left[-c\min\left(\frac{\theta^2}{t^3},\frac1t\right)\right].
+\end{equation}
+\end{lemma}
+\begin{proof}
+Each numerator factor satisfies $|1+q^{2j+1}|\le1+r^{2j+1}$. For denominator factors on the consecutive block $t^{-1}\le j\le2t^{-1}$,
+\[
+ |1-r^j\ee^{\ii j\theta}|^2=(1-r^j)^2+2r^j(1-\cos j\theta).
+\]
+Since $r^j$ stays in a compact subinterval of $(0,1)$, taking logarithms gives an upper bound $-c_1\sum_j(1-\cos j\theta)$ for the product ratio. For $|\theta|\le c_2t$, the quadratic cosine bound gives $c_3\theta^2/t^3$. For $|\theta|/t$ in a fixed compact interval away from zero, rescaled Riemann sums converge to the strictly positive integral $\int_1^2(1-\cos(ux))\dd x$. For $|\theta|\ge C_1t$, choose $C_1$ large and use $|\sum_j\ee^{\ii j\theta}|\le1/|\sin(\theta/2)|$ to obtain a lower bound $c_4/t$. These ranges cover the circle.
+\end{proof}
+
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+The proofs of Lemmas~\ref{lcp:ao:lem:global} and~\ref{lcp:ao:lem:minor}
+are sketched at the level of standard estimates (the split of the harmonic
+sum, and the Riemann-sum compactness step); items 6--8 of the shipped
+mathematical audit spell them out. Since $P=R^{\mathrm I}$,
+Lemma~\ref{lcp:ao:lem:minor} is Part~I's bound \eqref{lcp:eq:minor} for the
+same product, proved by the same argument; both texts are kept.
+\end{writenote}
+
+\section{Uniform local expansions}\label{lcp:ao:sec:local}
+From now on put $q=\ee^{-z}$, with $t=\Re z>0$ and $|\Im z|\le t/8$.
+\begin{lemma}\label{lcp:ao:lem:localD}
+For every fixed $M$, $D(\ee^{-z})$ has a uniform Poincar\'e expansion through degree $M-1$, obtained by Taylor expanding only its summands $0\le j<M$. Its remaining tail is $O(z^M)$.
+\end{lemma}
+\begin{proof}
+Write $T_j$ for the $j$th summand of $D$. Then
+\[
+\frac{T_{j+1}}{T_j}=-q^j\frac{1-q^{j+1}}{1+q^{2j+3}}.
+\]
+Assume $0<t\le0.1$ and put $x=(j+1)t$. If $x\le1$, then
+$|(2j+3)\Im z|\le(2+t)/8<\pi/2$, so the denominator has real part at least one. Also $|1-\ee^{-(j+1)z}|\le(j+1)|z|$. Therefore the ratio has modulus at most
+\[
+\ee^{0.1}\frac{\sqrt{65}}8xe^{-x}\le\frac{\ee^{0.1}\sqrt{65}}{8\ee}<\frac23.
+\]
+If $x\ge1$, the bound is
+\[
+\ee^t\frac{\ee^{-x}(1+\ee^{-x})}{1-\ee^{-2x}}
+=\frac{\ee^t}{\ee^x-1}\le\frac{\ee^{0.1}}{\ee-1}<\frac23.
+\]
+Since $T_M=O(z^M)$ for fixed $M$, geometric summation proves the uniform tail estimate.
+\end{proof}
+The first coefficients are
+\begin{align}\label{lcp:ao:eq:Dexp}
+D(\ee^{-z})={}&\frac12-\frac{z^2}{8}+\frac{z^3}{8}-\frac{11z^4}{48}
+ +\frac{15z^5}{32}-\frac{6737z^6}{5760}
+ +\frac{6451z^7}{1920}-\frac{888521z^8}{80640}+O(z^9),\notag\\
+D(\ee^{-z})^2={}&\frac14-\frac{z^2}{8}+\frac{z^3}{8}-\frac{41z^4}{192}
+ +\frac{7z^5}{16}-\frac{6317z^6}{5760}
+ +\frac{1529z^7}{480}-\frac{1702513z^8}{161280}+O(z^9).
+\end{align}
+These are exact rational coefficients, derived from finite Taylor arithmetic.
+
+The eta quotient identity
+\begin{equation}\label{lcp:ao:eq:eta}
+P(q)=\frac{(q^2;q^2)_\infty^2}{(q;q)_\infty^4(q^4;q^4)_\infty}
+\end{equation}
+and eta inversion~\cite[23.18.5]{lcp-ao-dlmf} imply uniformly in the same wedge
+\begin{equation}\label{lcp:ao:eq:Plocal}
+ P(\ee^{-z})=\left(\frac{z}{2\pi}\right)^{3/2}
+ \exp\!\left(\frac\kappa z-\frac z6\right)
+ \left(1+O(\ee^{-c/t})\right),
+\end{equation}
+with the principal power of $z$. For example, the standard product formula is
+\[
+(\ee^{-z};\ee^{-z})_\infty
+=\sqrt{\frac{2\pi}{z}}\exp\!\left(-\frac{\pi^2}{6z}+\frac z{24}\right)
+\bigl(1+O(\ee^{-c/t})\bigr).
+\]
+Substitution at $z,2z,4z$ proves both the constant and the shift in \eqref{lcp:ao:eq:Plocal}.
+
+\section{Coefficient extraction to every fixed order}\label{lcp:ao:sec:extraction}
+\begin{proof}[Proof of Theorem~\ref{lcp:ao:thm:main}]
+Use Cauchy's coefficient integral on $q=\ee^{-t+\ii\theta}$ with
+$t=\sqrt{\kappa/N}$ and separate the exact remainder $R$. Lemma~\ref{lcp:ao:lem:global} makes its coefficient exponentially smaller than the result. Let
+\[
+\theta_0=t^{3/2}\log(1/t).
+\]
+On $|\theta|>\theta_0$, Lemma~\ref{lcp:ao:lem:minor}, together with the polynomial bound for $B$, makes $PB^2$ smaller than every algebraic relative order. On the remaining arc set $z=t-\ii\theta$. Lemma~\ref{lcp:ao:lem:localD} and \eqref{lcp:ao:eq:Plocal} give, for any fixed $M$,
+\begin{equation}\label{lcp:ao:eq:localintegrand}
+ P(\ee^{-z})B(\ee^{-z})^2\ee^{nz}
+ =(2\pi)^{-3/2}\ee^{\kappa/z+Nz}
+ \left(\sum_{m=0}^{M-1}b_mz^{3/2+m}+O(|z|^{3/2+M})\right),
+\end{equation}
+up to an exponentially small term. The real part of the phase has Gaussian decrease $-c\theta^2/t^3$; hence the integrated remainder is a relative $O(t^M)=O(N^{-M/2})$.
+
+For explicit coefficients, consider a monomial $z^\alpha$ in \eqref{lcp:ao:eq:localintegrand}, with $\alpha=3/2+m$. Deform the truncated vertical saddle segment to the corresponding arc of $|z|=t$, adding radial connectors. Put $\lambda=\sqrt{\kappa N}$. On the circle the phase has real part $2\lambda\cos\phi$. On either connector, writing $|z|/t=s\in[1,\sec\phi]$, it is $\lambda\cos\phi(s+s^{-1})$. At the endpoint angle both are at most $2\lambda-c\log^2(1/t)$. Extending the circle to a Hankel contour cut along the negative real axis therefore changes the integral only by a superalgebraically small relative amount. The negative rays $z=-s$, $s\ge t$, have phase $-\kappa/s-Ns\le-2\lambda$.
+
+The resulting Hankel integral is
+\begin{equation}\label{lcp:ao:eq:Bessel}
+\frac1{2\pi\ii}\int_{\mathcal H}z^\alpha\ee^{\kappa/z+Nz}\dd z
+=\left(\frac\kappa N\right)^{(\alpha+1)/2}
+ I_{-\alpha-1}(2\sqrt{\kappa N}).
+\end{equation}
+One can verify \eqref{lcp:ao:eq:Bessel} by expanding $\ee^{\kappa/z}$ and applying the reciprocal-Gamma Hankel formula term by term; $|z|\ge t$ ensures convergence. For fixed half-integral order the growing-exponential expansion of $I$~\cite[10.40.1]{lcp-ao-dlmf} terminates. Its coefficient at order $k$ is
+\[
+\frac{(-1)^k(m+2+k)!}{(m+2-k)!\,k!\,(4\sqrt{\kappa N})^k},
+\qquad 0\le k\le m+2.
+\]
+Collecting total order $m+k=r$ gives \eqref{lcp:ao:eq:cr}. The leading constant is
+\[
+\frac{(2\pi)^{-3/2}b_0\kappa}{2\sqrt\pi}
+=\frac{13\sqrt2}{768},\qquad b_0=\frac14,
+\]
+as required.
+\end{proof}
+
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+The transfer \eqref{lcp:ao:eq:Bessel}--\eqref{lcp:ao:eq:cr} is Part~I's
+\eqref{lcp:eq:transfer}--\eqref{lcp:eq:betak} written in $N=n-1/6$: with
+$m=j$, $\beta_k(j)/(2\sqrt{K^{\mathrm I}})^k$ equals the coefficient
+displayed above, and the factor $\exp(-z/6)$ of \eqref{lcp:ao:eq:Plocal},
+which Part~I expands into its $s_j$, is absorbed by the shift. Part~I
+applies the transfer to $R^{\mathrm I}$ and to $F_3R^{\mathrm I}$; Part~II
+applies it to $PB^2$, whose complement $R$ is exponentially smaller, and
+that is what yields every order.
+\end{writenote}
+
+\begin{corollary}\label{lcp:ao:cor:logconcavity}
+The sequence is eventually strictly log-concave: $a_n^2>a_{n-1}a_{n+1}$ for all sufficiently large $n$. More precisely,
+\begin{equation}\label{lcp:ao:eq:logconcavity}
+ \log\frac{a_n^2}{a_{n-1}a_{n+1}}
+ =\frac{\sqrt\kappa}{2N^{3/2}}-\frac{3}{2N^2}+O(N^{-5/2}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take $M=5$ in Theorem~\ref{lcp:ao:thm:main} and expand the logarithm. For fixed real constants $d_1,\ldots,d_4$ this gives
+\[
+ \log a_n=g(N)+O(N^{-5/2}),\qquad
+ g(u)=\log C+2\sqrt{\kappa u}-\frac32\log u
+       +\sum_{r=1}^4d_ru^{-r/2}.
+\]
+Taylor expansion of this explicit smooth function gives
+\[
+ g(N+1)-2g(N)+g(N-1)
+ =-\frac{\sqrt\kappa}{2N^{3/2}}+\frac{3}{2N^2}+O(N^{-5/2}).
+\]
+The second difference of the three remainder values is still $O(N^{-5/2})$ by the triangle inequality; no derivative bound on the asymptotic remainder is assumed. Negating the resulting second difference proves \eqref{lcp:ao:eq:logconcavity}, whose leading term is positive.
+\end{proof}
+
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+From the exact coefficients through $n=2000$: $a_n^2>a_{n-1}a_{n+1}$ for
+$3\le n\le1999$, and it fails only at $n=1,2$; the difference between
+$\log(a_n^2/(a_{n-1}a_{n+1}))$ and the two displayed terms, times
+$N^{5/2}$, is $0.674$ at $n=500$ and $0.593$ at $n=1999$. These are
+numerical observations, not part of the proof; no effective threshold is
+claimed.
+\end{writenote}
+
+\section{Continuous inverse models and integer thresholds}\label{lcp:ao:sec:inverse}
+All inverse statements below concern the increasing large branch. Put
+\begin{equation}\label{lcp:ao:eq:inversevars}
+ y=2\sqrt{\kappa(n-1/6)},\qquad K=C(2\sqrt\kappa)^3,\qquad
+ L=\log(X/K),\quad w=\log L.
+\end{equation}
+The transformed expansion has the form
+\begin{equation}\label{lcp:ao:eq:yforward}
+ X\sim K\frac{\ee^y}{y^3}\left(1+\sum_{r\ge1}\frac{h_r}{y^r}\right),
+ \qquad h_r=(2\sqrt\kappa)^rc_r.
+\end{equation}
+Its first coefficients are
+\begin{align*}
+h_1&=-3,&h_2&=3-2\kappa^2,\\
+h_3&=4\kappa^3+20\kappa^2,&
+h_4&=-\frac{41\kappa^4}{3}-60\kappa^3-90\kappa^2.
+\end{align*}
+If $\log(1+\sum h_r y^{-r})\sim\sum\ell_r y^{-r}$, then
+\begin{align}\label{lcp:ao:eq:ell}
+\ell_1&=-3,&\ell_2&=-\frac32-2\kappa^2,\notag\\
+\ell_3&=4\kappa^3+14\kappa^2,&
+\ell_4&=\frac94-42\kappa^2-48\kappa^3-\frac{47\kappa^4}{3}.
+\end{align}
+
+\subsection{A branch explicit Lambert inverse}
+The leading equation $X=K\ee^{y_0}/y_0^3$ has the exact large solution
+\begin{equation}\label{lcp:ao:eq:W}
+ y_0=-3W_{-1}\!\left(-\frac13(K/X)^{1/3}\right).
+\end{equation}
+The branch $W_{-1}$ is essential; it gives $y_0\to\infty$. Reverting \eqref{lcp:ao:eq:yforward} around $y_0$ gives
+\begin{equation}\label{lcp:ao:eq:Winverse}
+ y=y_0+\frac3{y_0}+\frac{21/2+2\kappa^2}{y_0^2}
+ +\frac{45/2-8\kappa^2-4\kappa^3}{y_0^3}+O(y_0^{-4}),
+ \qquad n=\frac16+\frac{y^2}{4\kappa}.
+\end{equation}
+These are inverse asymptotic models, not an assertion that a discrete sequence has a canonical noninteger inverse.
+
+\subsection{Logarithmic inverse polynomials}
+Substitute
+\[
+y=L+3\log L+\sum_{j\ge1}P_j(\log L)L^{-j}
+\]
+into $L=y-3\log y+\sum_{r\ge1}\ell_r y^{-r}$. At each new order $P_j$ enters linearly with coefficient one. This determines every polynomial recursively. In particular,
+\begin{align}\label{lcp:ao:eq:logpolys}
+ y={}&L+3w+\frac{9w+3}{L}
+ +\frac{-27w^2/2+18w+21/2+2\kappa^2}{L^2}\notag\\
+ &+\frac{27w^3-189w^2/2-9w+45/2-12\kappa^2w-8\kappa^2-4\kappa^3}{L^3}
+ +O\!\left(\frac{w^4}{L^4}\right).
+\end{align}
+After any fixed order $J$, the remainder in the continuous inverse model for $y$ is
+\[
+O\!\left(\frac{(\log L)^{J+1}}{L^{J+1}}\right).
+\]
+Squaring and dividing by $4\kappa$ converts this to an index-scale error. The Lambert model and the logarithmic polynomials describe the same reversion in different coordinates.
+
+\subsection{Shrinking integer brackets before rounding}
+For $M\ge1$, define the explicit real function
+\begin{equation}\label{lcp:ao:eq:model}
+ F_M(x)=C(x-1/6)^{-3/2}\ee^{2\sqrt{\kappa(x-1/6)}}
+ \sum_{r=0}^{M-1}c_r(x-1/6)^{-r/2}.
+\end{equation}
+It is positive and increasing for sufficiently large $x$, with
+\[
+\frac{\dd}{\dd x}\log F_M(x)=\frac{\sqrt\kappa}{\sqrt x}+O(x^{-1}).
+\]
+Let $x_M(X)$ be its unique large solution of $F_M(x)=X$, and let
+$n_*(X)=\min\{n:a_n\ge X\}$.
+
+\begin{corollary}\label{lcp:ao:cor:brackets}
+For each fixed $M\ge2$, there are constants $D_M,X_M>0$ such that, for $X\ge X_M$,
+\begin{equation}\label{lcp:ao:eq:brackets}
+\left\lceil x_M(X)-\delta_M(X)\right\rceil
+\le n_*(X)\le
+\left\lceil x_M(X)+\delta_M(X)\right\rceil,
+\qquad
+\delta_M(X)=D_Mx_M(X)^{-(M-1)/2}.
+\end{equation}
+Thus the real bracket width tends to zero. If it does not cross an integer, the threshold is determined exactly by rounding its endpoints.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{lcp:ao:thm:main} gives $a_n/F_M(n)=1+O(n^{-M/2})$. The derivative above converts this relative error to an index displacement $O(n^{-(M-1)/2})$. Enlarge its implied constant to obtain strict comparisons on either side of $x_M\pm\delta_M$.
+
+The sequence is nondecreasing: choose the topmost maximum-width row and adjoin one cell immediately to its left outside the bounding box. Row intervals of an $L$-convex polyomino are nested, since otherwise opposite extreme cells have no internal $L$ path. Thus the chosen row spans all columns, and the new cell connects to every old cell through that row using at most one turn. The enlarged row is uniquely longest, so removing its new leftmost cell recovers the original. This is an injection. Eventual strict increase also follows from the two-term expansion, because the positive order-$n^{-1/2}$ term in $a_{n+1}/a_n$ dominates its order-$n^{-1}$ uncertainty. Monotonicity and the two comparisons prove \eqref{lcp:ao:eq:brackets}.
+\end{proof}
+The constants in \eqref{lcp:ao:eq:brackets} are asymptotic existence constants. This report does not supply numerically certified values or a finite starting index. A small numerical model error by itself is therefore not a certified rounding rule, especially at a target $X=a_n$.
+
+\begin{writenote}[Added 2 October 2026, batch~77P5: an instance of repository results]
+As for Part~I's inverse (the note in Section~9.2), this section is an
+instance of the transseries-and-inversion volume~\cite{lcp-tai}, and no
+novelty is claimed for the method. The core $y_0-3\log y_0=L$ is
+\texttt{p0:thm:lambert-core} with $a=1$, $b=-3$ and the branch $W_{-1}$;
+the corrections in \eqref{lcp:ao:eq:Winverse} and the polynomials
+\eqref{lcp:ao:eq:logpolys} are the reversion of
+\texttt{p0:thm:perturbed-inversion}, in the Lambert-centred form
+\texttt{p0:thm:lambert-centered}; Corollary~\ref{lcp:ao:cor:brackets} is
+part~(2), the separation condition, of \texttt{p0:thm:staircase}, applied to
+the model $F_M$ with the model error moved into $\delta_M$.
+
+Relation to Part~I's Theorem~\ref{lcp:thm:inverse}. Since
+$K=c(B^{\mathrm I})^3$, Part~II's $L$ at $X=y^{\mathrm I}$ is Part~I's
+$\ell$, and $y_0=s_0$. Part~II's $y$ is $B^{\mathrm I}\sqrt{n-1/6}$, while
+Part~I's $s$ is $B^{\mathrm I}\sqrt\nu$; hence
+$s=y+(B^{\mathrm I})^2/(12y)+\cdots$, and $y=y_0+3/y_0+\cdots$ gives
+$s=s_0+D_0/s_0+\cdots$ with $D_0=(B^{\mathrm I})^2/12+3$, Part~I's first
+correction. The two inverses invert different real functions (Part~II's
+model $F_M$, Part~I's interpolation $\widetilde a$), so they agree to the
+orders both control, not term by term beyond them. Part~II's $n_*(X)$ is
+Part~I's $N(y)$; with monotonicity proved for every $n$, Part~II needs no
+starting index $n_0$ in the definition. The shipped
+\texttt{data/02-all-orders-inverse-series.json} also records a fourth
+Lambert-centred coefficient, $(47\kappa^4/3+36\kappa^3+45/4)/y_0^4$, and a
+fourth logarithmic polynomial. They come from formal substitution
+(residual zero through order~4) and are not printed in the manuscript.
+\end{writenote}
+
+\section{Exact checks and reproducible calculations}\label{lcp:ao:sec:checks}
+The proofs above do not infer their constants from numerical fits. For a separate check, set $g_n=f_{n-1}/(q;q)_n^2$. Then
+\begin{equation}\label{lcp:ao:eq:compute}
+(1-q^n)^2g_n=2g_{n-1}-g_{n-2},\quad g_{-1}=g_0=1,
+\qquad A(q)=1+\sum_{n\ge1}q^n(1-q^n)g_n.
+\end{equation}
+Truncated power series division by $1-q^n$ is a simple shifted addition; using it twice gives exact integer coefficients in $O(N^2)$ arithmetic operations up to area $N$. The replay computes through $N=2000$ and matches the first 37 displayed OEIS values.
+
+Table~\ref{lcp:ao:tab:errors} gives $(F_M(n)/a_n)-1$ for selected truncations. More terms improve these examples substantially, but a Poincar\'e expansion is a fixed-order statement as $n\to\infty$; indefinitely increasing $M$ at a fixed small $n$ need not improve accuracy.
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $M=1$ & $M=3$ & $M=5$ & $M=9$\\
+\midrule
+100  & $8.8963\,10^{-2}$ & $-9.3690\,10^{-3}$ & $-1.7838\,10^{-3}$ & $-5.2974\,10^{-4}$\\
+200  & $5.8496\,10^{-2}$ & $-3.4962\,10^{-3}$ & $-3.4199\,10^{-4}$ & $-2.6476\,10^{-5}$\\
+500  & $3.4317\,10^{-2}$ & $-9.3753\,10^{-4}$ & $-3.7809\,10^{-5}$ & $-4.9192\,10^{-7}$\\
+1000 & $2.3243\,10^{-2}$ & $-3.4290\,10^{-4}$ & $-7.0411\,10^{-6}$ & $-2.3623\,10^{-8}$\\
+2000 & $1.5900\,10^{-2}$ & $-1.2444\,10^{-4}$ & $-1.2961\,10^{-6}$ & $-1.1150\,10^{-9}$\\
+\bottomrule
+\end{tabular}
+\caption{Signed relative error of the shifted forward model.}\label{lcp:ao:tab:errors}
+\end{table}
+The package contains exact coefficient generation, rational expansion arithmetic, inverse reversion checks, and independent evaluations of the exact decomposition at real and nonreal points. These checks test transcription and normalization; the complex bounds and coefficient-transfer proof supply the asymptotic theorem. A separate audit records the precise source version reviewed. Neither these computational checks nor that review constitute machine-checked formal verification or external peer review.
+
+\begin{writenote}[Added 2 October 2026, batch~77P5: files and rerun]
+In the repository the replay is \texttt{code/02-all-orders-replay.py}
+(delivered as \texttt{code/replay.py}); its recorded outputs are the files
+\texttt{data/02-all-orders-*.json}, and the ``separate audit'' is the three
+\texttt{02-all-orders-*.md} reviews. The replay reads its reference
+fixture from \texttt{../data/coefficients-2000.txt} relative to itself, a
+file shipped as \texttt{data/02-all-orders-coefficients-2000.txt}, so it
+runs only in the delivered layout; the report's README recreates that
+layout on a scratch copy. The fixture agrees entry by entry with the
+column $a_n$ of Part~I's \texttt{data/coefficients.csv}, $0\le n\le2000$:
+the two parts computed the same 2001 integers by different recurrences.
+On 2~October~2026 that recipe passed here: the core replay in 6~s, and
+the replay with the optional SymPy and mpmath parts in 78~s. All five
+outputs agreed with the shipped records apart from line endings (Windows
+writes CRLF).
+\end{writenote}
+
+\section{What remains open}\label{lcp:ao:sec:open}
+\begin{enumerate}
+\item \textbf{Effective constants and thresholds.} Quantifying all remainder bounds would turn the shrinking asymptotic brackets into certified finite algorithms with explicit starting ranges.
+\item \textbf{Smaller exponential scales.} The exact remainder bound \eqref{lcp:ao:eq:expcoefficient} is deliberately coarse. Determining the actual dominant singular behavior of $R$, and then secondary contributions from $PB^2$, would be needed for a complete exponentially improved expansion.
+\item \textbf{Large correction order.} The growth of the $b_m$ and $c_r$, optimal truncation, and possible resummation are separate problems. The fixed-order proof does not settle them.
+\item \textbf{Further convexity classes.} The decisive step here is the exact product-square decomposition. Whether comparable transformations can be derived from area generating functions for other constrained polyomino classes is a concrete direction; this result alone makes no assertion about their asymptotics.
+\item \textbf{The partial theta factor.} The Lambert, partial theta, and rapidly convergent $q$-series forms of $B$ may permit sharper arithmetic or analytic descriptions. No modularity claim for $B$ is required here.
+\end{enumerate}
+
+\begin{writenote}[Added 2 October 2026, batch~77P5]
+These questions overlap Part~I's research questions of Section~11:
+item~1 continues Part~I's question~2 (explicit error constants), item~2
+its question~5 (beyond-all-orders terms), item~4 its question~7 (Z-convex
+and other classes), and item~5 its question~4, since $B$ is Part~I's
+$D^{\mathrm I}$ (Remark~\ref{lcp:ao:rem:LR}). Part~I's question~1 is
+answered by Theorem~\ref{lcp:ao:thm:main}.
+\end{writenote}
+
+\section{Provenance of the two parts, and where the merge had to choose}\label{lcp:ao:sec:provenance}
+This section was written when Part~II was added.
+
+\paragraph{Two manuscripts.} The report is built from two manuscripts, each
+printed in full.
+\begin{itemize}[leftmargin=*,itemsep=0.15em]
+\item \textbf{Part~I} (Sections~1--12, Appendices~A and~B): manuscript~05
+ of batch~75, ``L-convex polyominoes and a colored-partition comparison'',
+ archive \texttt{A126764\_\allowbreak Lconvex\_\allowbreak Research.zip},
+ arrival commit \texttt{4b874cea0}, placed in \texttt{6ea60e367} and
+ written in \texttt{936896776}. It contributed the squeeze, the finite-cut
+ proof of three corrections, the radial theorem, the interpolated inverse
+ and the exact and numerical checks of Section~10. It names no ProveIt
+ commit (its repository input was an overview and a targeted search), so it
+ has no pin.
+\item \textbf{Part~II} (Sections~\ref{lcp:ao:sec:main}--\ref{lcp:ao:sec:open}):
+ manuscript~31 of batch~77, ``All order asymptotics and inversion for L
+ convex polyominoes'', archive
+ \texttt{lconvex-\allowbreak asymptotics-\allowbreak reproducibility.zip},
+ arrival commit \texttt{096ee7b87}, placed in \texttt{4f11bc9c0}. It
+ contributed the exact product-square decomposition, the all-orders
+ coefficient theorem, log-concavity, monotonicity by injection, and the
+ shifted inverse with integer brackets. It names no ProveIt commit and does
+ not mention the repository, so it has no pin either.
+\end{itemize}
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}[leftmargin=*,itemsep=0.15em]
+\item \emph{Placement.} Part~II is printed after Part~I's closing
+ Section~12 and before Part~I's appendices, so no section, theorem or
+ equation number of Part~I moves. Part~I's Appendix~A remains the
+ reproduction appendix of Part~I; Part~II's reproduction notes are in
+ Section~\ref{lcp:ao:sec:checks}.
+\item \emph{Letters.} Part~II keeps the manuscript's letters, which the
+ shipped data and reviews use; the clashes with Part~I are resolved by
+ Table~\ref{lcp:ao:tab:notation} and by the superscript $\mathrm I$ in
+ write notes, not by renaming (Section~\ref{lcp:ao:sec:notation}). The
+ manuscript's macros \verb|\e|, \verb|\ii| and \verb|\dd| were mapped to
+ Part~I's \verb|\ee| and two new preamble macros; three unused macros of the
+ manuscript were dropped.
+\item \emph{Duplicated results.} Results proved in both manuscripts keep
+ both proofs, with cross-references (Section~\ref{lcp:ao:sec:intro}); no
+ proof was shortened.
+\item \emph{Bibliography.} The manuscript's entries for
+ Castiglione--Frosini--Munarini--Restivo--Rinaldi, Guttmann--Kot\v e\v
+ sovec, Guttmann--Massazza and OEIS A126764 cite the same works as Part~I's
+ entries \cite{castiglione,gk,zconvex,oeis} and were merged into them (the
+ page reference for Guttmann--Massazza is noted in that entry). Its DLMF
+ entry cites other sections and a stated version, so it is kept as a
+ separate entry \cite{lcp-ao-dlmf}.
+\item \emph{Additions.} Section~\ref{lcp:ao:sec:intro}, this section, the
+ remarks headed ``write'' and the \textsf{[write]} notes in Part~II are
+ editorial; Remark~\ref{lcp:ao:rem:LR} is a write-phase observation, with
+ its proof and a numerical check. No statement, proof or number of either
+ manuscript was changed; labels of Part~II carry the prefix
+ \texttt{lcp:ao:}.
+\item \emph{Not shipped.} The delivered PDF of manuscript~31, its build
+ script, its delivery README, its checksum manifest
+ \texttt{MANIFEST.json} with the package verifier, the replay's own copy of
+ its coefficient output (equal to the shipped fixture plus a final
+ newline) and the record of its PDF build. The archive survives in the
+ arrival commit; retrieve it with \texttt{git show
+ 096ee7b87:\allowbreak docs/\allowbreak incoming/\allowbreak lconvex-\allowbreak asymptotics-\allowbreak reproducibility.zip}.
+\end{itemize}
+
 
 \appendix
 \section{Reproduction commands and files}
@@ -1236,6 +2191,8 @@ A.~J.~Guttmann and P.~Massazza,
 RAIRO--Theoretical Informatics and Applications (2024).
 \url{https://www.rairo-ita.org/articles/ita/pdf/2024/01/ita220046.pdf}.
 Cited as a further research target, not as an input to the proof.
+Part~II cites its p.~19, which repeats that the L-convex asymptotic is
+conjectural (note added in batch~77P5).
 
 \bibitem{proveit}
 V.~Reshetnikov, \emph{ProveIt}, mathematical research and formalization
@@ -1248,13 +2205,17 @@ Repository overview and targeted A126764 search inspected October 1, 2026.
 (theorems \texttt{p0:thm:lambert-core}, \texttt{p0:thm:lambert-centered},
 \texttt{p0:thm:staircase}; Section \texttt{p3:sec:lambert},
 \texttt{p3:thm:core-correction}, \texttt{p3:thm:staircase}). Added in
-writing, batch~75.
+writing, batch~75. Part~II also cites \texttt{p0:thm:perturbed-inversion}
+(batch~77P5).
 
 \bibitem{lcp-klarner}
 \emph{Finite-prefix corrections and dual certificates for polyomino growth},
 a report of the ProveIt research-report collection:
 \nolinkurl{SetTheory/Cardinals/docs/reports/enumerative-combinatorics/polyomino-growth-finite-prefix-corrections}.
 Added in writing, batch~75.
+
+\bibitem{lcp-ao-dlmf}
+NIST Digital Library of Mathematical Functions, version 1.2.8, 15 September 2026. Heine and Fine transformations, \href{https://dlmf.nist.gov/17.6}{\S17.6}; eta transformation, \href{https://dlmf.nist.gov/23.18}{\S23.18}; modified Bessel asymptotics, \href{https://dlmf.nist.gov/10.40}{\S10.40}. Inspected 1 October 2026. Cited by Part~II (batch~77P5).
 \end{thebibliography}
 \endgroup
 \end{document}
