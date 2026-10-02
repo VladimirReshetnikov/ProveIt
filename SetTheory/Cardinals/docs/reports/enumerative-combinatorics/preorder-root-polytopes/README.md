@@ -1,6 +1,6 @@
 # A Reflexive Root-Polytope Model for Preorder h-Polynomials
 
-**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points; rare stable markings on random trees, with sparse and critical transitions and annealed–quenched separation; and Hall bottlenecks: a weighted counterexample to normalization by the matching number, a rank-six phase diagram and exact counting parameterized by the matching number; and matching supports through rank three: normalization by the matching number at unit weights for `nu ≤ 3`, a bimatroid obstruction, and exact support kernels for graphs, relations and preorder gamma vectors; and leaf compression: normalization by the matching number for every positive weighting through matching number three; continued, from batch 72, in the separate report matching-rank-normalization**
+**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points; rare stable markings on random trees, with sparse and critical transitions and annealed–quenched separation; and Hall bottlenecks: a weighted counterexample to normalization by the matching number, a rank-six phase diagram and exact counting parameterized by the matching number; and matching supports through rank three: normalization by the matching number at unit weights for `nu ≤ 3`, a bimatroid obstruction, and exact support kernels for graphs, relations and preorder gamma vectors; and leaf compression: normalization by the matching number for every positive weighting through matching number three; continued, from batch 72, in the separate report matching-rank-normalization, and from batch 73 in preorder-gamma-rank-ulc**
 
 This is a research report in thirteen parts. Part I is the original report of
 20 September 2026. Part II was added on 28 September 2026 in batch 39 of
@@ -154,6 +154,27 @@ answered there (only its one-shore analogue). Its archive 78 was a
 byte-identical repeat of the batch-71 manuscript printed here as
 Part XIII. This report's article gains dated pointers marked "Added
 1 October 2026, batch 72" (listed under the answers below).
+
+**Continued in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc) (batch 73).** On
+1 October 2026, eleven further manuscripts, delivered in eighteen archives,
+were placed as a separate report in `log-concavity-and-unimodality`; it
+cites this report's labels and does not reprint them. It answers
+Research question 96 (`mr:q:gamma`) through actual degree four with unit
+activities: every finite preorder whose gamma polynomial has degree at most
+four is ultra-log-concave of its actual degree (its Theorems 2.3 and 3.9,
+computer-assisted), so the degree-three target named after that question
+is proved. With independent tail and head activities it proves degree three
+(Theorem 9.3), and for directed relations at every actual degree it covers
+two-by-two role covers (real stability), physical vertex covers of size
+three, saturated bipartite physical graphs and universal-sink clouds over
+four-vertex cores (five-vertex cores at actual degrees five and four).
+Degree five with unit activities and degree four with independent
+activities stay open. Real-rootedness fails already in degree three: the
+least order of a preorder of gamma degree three with a nonreal gamma zero
+is 15 (its Theorem 2.9; the same graph is the minimum of
+`matching-rank-normalization`, Part V, Theorem 40.6). This report's article
+gains dated pointers marked "Added 1 October 2026, batch 73" (listed under
+the answers below).
 
 > **Priority.** Part II's headline counterexample to Conjecture 5.3 (real
 > roots) is **not new**. The first counterexample known to this report, the
@@ -1298,6 +1319,22 @@ Research questions 23, 24, 26, 28, 32 and 34):
   after its delivered scope box, in Section 172.3, after Corollary 177.2,
   after Research questions 84–90, 93, 94 and 101, and in Section 208; the
   bibliography gains the entry `[MRN]`.
+- [Added 1 October 2026, batch 73.] The separate report
+  [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc) (eleven manuscripts) answers Research question 96
+  through gamma degree four with unit activities and through actual degree
+  three with independent tail and head activities, both computer-assisted;
+  degree five stays open. It bears on Research question 98 (its degree-four
+  proof uses 50 binomial-square identities with 15408 square orbits).
+  `matching-rank-normalization`, Part V, adds the 15-vertex minimum for a
+  nonreal zero at matching number three, which bears on Theorem 207.1.
+  Nothing in this report is refuted or retracted. The dated pointers,
+  marked "Added 1 October 2026, batch 73", are after source 06's and
+  source 09's "Gamma log-concavity beyond height two" paragraphs
+  (Sections 80.1 and 112.1), after Part XII's delivered scope box
+  (Section 187.1), in Section 187.3, after Corollary 197.3, after Research
+  questions 96 and 98, and after Theorem 207.1. They refer to the other
+  reports in prose, by report name and printed number; the bibliography
+  is unchanged.
 
 ## Not claimed
 
@@ -1398,7 +1435,7 @@ From Part IV (see also `05-gamma-positivity-PROOF_STATUS.md`,
   Ehrhart numerator of the original `Q_tau`. [Updated 29 September 2026,
   batch 55: Part IV's own scope. Part V proves ultra-log-concave height-two
   gamma vectors and ultra-log-concave `h_tau` for every preorder; gamma
-  log-concavity beyond height two remains open.]
+  log-concavity beyond height two remains open.] [Updated 1 October 2026, batch 73: rank-ULC through actual degree four (unit activities) and three (independent tail and head activities) in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc); open from degree five]
 - **Limits of the reflexive-relation criterion.** It is no classification
   for unbalanced bipartite graphs, for balanced graphs without a perfect
   matching, or for graphs whose maximum matching is smaller than a shore.
@@ -1459,7 +1496,7 @@ From Part V (see also `06-lorentzian-support-SOURCES.md`,
   [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization).]
 - **No gamma log-concavity beyond height two** [Updated 30 September 2026,
   batch 70: except at the first index, and hence in gamma degree at most
-  two, for every finite preorder (Part XII, Corollary 197.2)]; no real-rootedness
+  two, for every finite preorder (Part XII, Corollary 197.2)] [Updated 1 October 2026, batch 73: rank-ULC through actual degree four (unit activities) and three (independent tail and head activities) in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc); open from degree five]; no real-rootedness
   classification; the Lorentzian conclusions do not upgrade to real
   stability (`Theta_3`); no flag realization; no limit theorem.
 - **No bijection and no lattice-point sampler.** The samplers return
@@ -1500,7 +1537,8 @@ From Part VII (see also `09-matroid-lifts-CLAIMS_AND_SOURCES.md`):
 - Reconstruction is proved inside the image of `tau ↦ M_tau`; no intrinsic
   recognition of that image among all matroids (Research question 54).
 - No lattice-point interpretation of the transport weights and no action
-  of the clone group on lattice points; no gamma log-concavity; no
+  of the clone group on lattice points; no gamma log-concavity
+  [Updated 1 October 2026, batch 73: rank-ULC through actual degree four (unit activities) and three (independent tail and head activities) in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc); open from degree five]; no
   classification of stable 2-connected blocks (Part VI's question).
 - No Lean or Rocq verification; the staged formalization plan (Section 111)
   is unstarted.
@@ -1648,7 +1686,7 @@ From Part XII (source 14's status box, Section 199.2 and its
   equality classification beyond the first inequality and the mixed-cover
   step.
 - **Preorders.** No general gamma log-concavity or rank-ULC (Research
-  question 96), no unimodality of all gamma vectors, real-rootedness or
+  question 96) [Updated 1 October 2026, batch 73: rank-ULC through actual degree four (unit activities) and three (independent tail and head activities) in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc); open from degree five], no unimodality of all gamma vectors, real-rootedness or
   flag realization. The preorder corollaries assume the support-counting
   bridge, which source 14 imports (it reproves only the cancellation); the
   full-coordinate lattice-point sampler is a specified composition with
@@ -1867,6 +1905,14 @@ moved by one to three pages, because dated notes were added from Part V's
 Section 70.4 on (after Research questions 37 and 84–90, 93, 94 and 101,
 and in Parts XI–XIII). The bibliography gains one entry, `MRN`.
 
+The batch-73 reciprocal notes (1 October 2026) added **no** label (still
+1213 occurrences of the pattern) and renamed or removed none; the numbers
+of all labels are unchanged (compared in the `.aux` files of the committed
+and the new build). The pages of 1138 labels are unchanged; the other 72
+moved by one or two pages, because the notes from Part XII's scope box on
+lengthen the article by a page; the notes in Parts V and VII move no
+label. The bibliography is unchanged.
+
 ## Notation
 
 Table 1 (Section 11.2) fixes Part II's symbols against Part I's; Table 2
@@ -2026,13 +2072,13 @@ Part IV's against all three. Watch in particular:
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 374 pages, A4 (title p. 1, scope box and contents pp. 2–13,
+article.pdf                                  the compiled report, 375 pages, A4 (title p. 1, scope box and contents pp. 2–13,
                                              Part I pp. 14–26, Part II pp. 27–55, Part III pp. 56–80,
                                              Part IV pp. 81–122, Part V pp. 123–173, Part VI pp. 174–207,
                                              Part VII pp. 208–224, Part VIII pp. 225–251, Part IX pp. 252–278,
-                                             Part X pp. 278–303, Part XI pp. 304–329, Part XII pp. 330–359,
-                                             Part XIII pp. 359–369, Part I's appendices pp. 369–372,
-                                             references pp. 372–374)
+                                             Part X pp. 278–303, Part XI pp. 304–329, Part XII pp. 330–360,
+                                             Part XIII pp. 360–371, Part I's appendices pp. 371–373,
+                                             references pp. 373–375)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -2454,11 +2500,11 @@ Part XI adds one macro (`\ULC`), and its figure uses the TikZ library
 `positioning`, already loaded; Part XII adds two macros (`\GammaD`,
 `\poly`); Part XIII adds none.
 No image or font files are needed.
-The shipped PDF (374 pages) was built on 1 October 2026, after the
-batch-72 reciprocal notes, with MiKTeX (pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
+The shipped PDF (375 pages) was built on 1 October 2026, after the
+batch-73 reciprocal notes, with MiKTeX (pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull boxes and
 no other LaTeX warnings; five underfull boxes, the same five as the build of
-the committed Parts I–XIII text before the batch-72 notes and of the Parts I–XII text (and of Parts I–XI, I–X, I–IX, I–VIII and I–VII before it): one (badness 1817) in Part II's
+the committed text before the batch-73 notes, of the Parts I–XIII text before the batch-72 notes and of the Parts I–XII text (and of Parts I–XI, I–X, I–IX, I–VIII and I–VII before it): one (badness 1817) in Part II's
 provenance-ledger table, which the committed builds before Parts III–VII and
 the delivered manuscript 02's own build also show, and four (badness
 1024–6625) in paragraphs of Parts V and VI that set long shipped file names
@@ -2466,7 +2512,7 @@ the delivered manuscript 02's own build also show, and four (badness
 74 pages before Part IV, 116 before Parts V–VII and 220 before Part VIII;
 the builds of 30 September 2026 before Part IX, before Part X, before
 Part XI, before Part XII and before Part XIII had 249, 277, 304, 332 and
-362, and the build of Parts I–XIII before the batch-72 notes had 372.)
+362, and the builds of Parts I–XIII before the batch-72 and batch-73 notes had 372 and 374.)
 
 ## Rerun the checks
 
@@ -3354,7 +3400,10 @@ Batch 72 continued Parts XI–XIII in the separate report
 summary above); this report received only dated pointers to it, and that
 report cites this one by printed theorem number. The search above for other
 treatments of normalization by the matching number is therefore out of
-date in one respect: that report now treats it.
+date in one respect: that report now treats it. Batch 73 placed a further
+separate report, [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc), on Research question 96 (directed
+support polynomials and preorder gamma polynomials at the actual degree);
+this report received only dated pointers to it.
 
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
