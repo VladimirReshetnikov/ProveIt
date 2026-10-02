@@ -4934,6 +4934,31 @@ accepting internal divergence, and effective bounds on all finite
 simulation trees. Restricting to a model with no zero tests may radically
 change its computational power, so the operational language must be fixed
 before importing universality claims.
+\srcnote{\wtag{} Batch~78, 2 October 2026: partly answered, it appears, for reaction systems whose
+explicit zero test is an inhibitor, by Part~I of the neighbouring report
+\path{quadratic-orthant-certificates} of this category (written in commit \texttt{c51b9880d}; its
+source~08, batch-78 manuscript~08, which does not draw the connection itself). Its guarded
+register-machine embedding (in its section \texttt{qoc:mp:sec:variants}) simulates a register
+machine by maximal-parallel multiset rewriting with one control object: an increment is one rule,
+and a decrement-or-branch is a consuming rule together with a rule inhibited by the presence of the
+register's object. Checked at this write against the definition before \cref{lbh:thm:transfer}:
+the source machine is deterministic, hence effectively finitely branching; each instruction is
+exactly one nonempty round, so the blocks have length one, are computable and are uniformly bounded
+(bounded gaps transfer as well); with one control object each round is forced, so no target
+execution from an encoded state has internal steps or alternative branches; and accepting signals
+are read off the control object, one per source visit. One convention is needed: in that Part's
+semantics the zero extent is the unique maximal extent at a deadlocked state, so a halted run
+continues by empty rounds (its section \texttt{qoc:mp:sec:semantics}). These must count as
+termination, as its first-halting certificate (\texttt{qoc:mp:cor:firsthalt}) counts them;
+otherwise an accepting halt label would emit infinitely many spurious accepting signals. The local
+polynomial compiler for the target's own finite steps is its guarded-round certificate, of degree
+two once the guard bits have degree-two certificates (\texttt{qoc:mp:prop:guards}). So the
+embedding appears to be a computable signal-faithful block simulation with block length one, and
+the question is answered only partly: for register-machine sources and this one class of reaction
+systems. A clock-faithful simulation of this report's own fixed universal systems by register
+machines is a separate step, not checked here; the embedding is elementary (its source calls it
+no improvement on unguarded universality), and guarded histories are not implemented in that
+report's shipped code.}
 
 \par\smallskip\noindent\textit{Overlapping question of source 11, ``Verified front ends for unconventional substrates'':} \textbf{Target.} Develop marker-preserving front ends from exact graph rewriting,
 queue systems, symbolic dynamical maps, and reversible interpreters to the

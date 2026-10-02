@@ -280,7 +280,7 @@ article.
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 449 pages
+article.pdf                              the compiled report, 451 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -1472,6 +1472,28 @@ that Part XI's classification (`cdc:of:thm:classification`,
 so that no fixed-arity cubic of that kind can carry Cairns's universality.
 No neighbouring report was edited in this write.
 
+**Reciprocal notes (batch 78, cluster H3).** The same cluster opened
+[quadratic-orthant-certificates](../quadratic-orthant-certificates/)
+(`qoc:`, written in `c51b9880d` from batch-78 manuscripts 08, 12 and 14,
+its sources 08, 12 and 14), whose three Parts are degree-two,
+orthant-nonnegative certificates at the level `D⁺₂ = SL` of Part XI.
+Dated notes of 2 October 2026 record the relation here, without new
+labels: after `cdc:of:thm:classification` (its source 08 re-proves
+`D⁺₃ ⊆ SL`, `cdc:of:cor:squares`, `cdc:of:cor:no-cubic-universal`, the
+penalty `E_a` and `cdc:of:prop:quartic`, printed there as second routes;
+its program-uniform quartic theorem `qoc:mp:thm:programdegree` is new);
+after the remark following `cdc:of:thm:ranks` (its Theorem
+`qoc:ts:thm:fixedpoint` generalizes the two-cut ranks to positive delays,
+exclusive labels and certified absence); after `cdc:q:acceleration` (its
+Part III realizes the restricted target for one fixed universal Waterfall
+program at each fixed horizon); after `cdc:q:restricted` (answered in part
+by its decidable common-column class, a horizon-free single-fold quadratic
+for the outcome); and after Part XII's questions "Canonical macro
+decompositions" (a forced macrostep normal form, for a substrate other than
+priority programs) and "A small explicit fixed interpreter" (an analogue in
+another substrate, not an answer). No question of this report is answered
+in full.
+
 ## Build
 
 pdfLaTeX, with the packages loaded in `article.tex` (base 05's preamble
@@ -1489,8 +1511,8 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 449 pages (196 before batch 62, 306 before batch 63,
-338 before batch 78, 419 after Part XV),
+The recorded build has 451 pages (196 before batch 62, 306 before batch 63,
+338 before batch 78, 419 after Part XV, 449 after Part XVI),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -1502,7 +1524,9 @@ above. Part XVI (batch 78, cluster H3) adds no macro and no package
 (manuscript 16's `\Ccmp`, `\Poly` and `\diag` are written out and its
 `\ind` printed with `\indset`); its build likewise has no error, warning,
 undefined reference, duplicate destination or overfull box, and the same
-single underfull line.
+single underfull line. The reciprocal notes of cluster H3 (six dated notes, no label) add two
+pages and change no label number (compared in the `.aux`); that build has
+the same clean log and the same single underfull line.
 
 ## Rerunning the checks
 
@@ -2253,6 +2277,15 @@ same decisions.
   opening and after its Cairns remark, in Part IX, and inside Part XVI on
   the three constructor defects found by the research tree's review,
   whose patch is not applied.
+- **Batch-78 reciprocal notes (cluster H3).** Six dated `[write]` notes of
+  2 October 2026 point to the new report `quadratic-orthant-certificates`:
+  in Part XI after the classification theorem and after the remark that
+  follows the two-cut ranks theorem, after `cdc:q:acceleration` and
+  `cdc:q:restricted`, and after Part XII's questions on canonical macro
+  decompositions and on a small explicit fixed interpreter (see
+  "Reciprocal notes (batch 78, cluster H3)" above). They cite that
+  report's labels by name; no label was added, renamed or renumbered, and
+  no printed text was changed.
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
   different commits), `\repoCommit` (02) and `\reposha` (04) printed as
