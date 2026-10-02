@@ -311,6 +311,26 @@ carry out the finite Laurent-polynomial step of its question "Composite
 reciprocal returns" for finite sources; editorial notes of 2026-10-01
 record both.  Unreviewed; no Lean statement.
 
+Archival arrival of 2026-10-01:
+[`Wasserstein_Contact_Orders_Uniform_Factor_Resonances/`](Wasserstein_Contact_Orders_Uniform_Factor_Resonances/),
+*Wasserstein Contact Orders at Uniform Factor Resonances* (17-page US
+Letter PDF, 737-line source, five finite checkers with receipts), filed
+by a quick archival intake from the repository-level `docs/incoming/`
+drop zone (its revision 2; the first edition was not filed).  It answers
+the question "Sharp distance to a resonance" of the article above: for
+the factor `U_{1/2}*U_{1/3}` the Wasserstein distance from `μ_q` to the
+laws with that factor is of exact first order at `q = 1/2`, with
+one-sided coefficients between `|P|/(6π(1+12π))` and `1/4` described
+by an `L^1` tangent cone, and at most `|q − 1/2|/4` everywhere, so the
+leading perturbation cannot be cancelled.  For the factor
+`U_{1/B}*U_{B^{−j}}` the distance has exact order `|q − 1/B|^j` from
+both sides, for every fixed integer base `B ≥ 2` and depth `j ≥ 1`:
+every positive integer contact order occurs.  The lower bounds compare
+Fourier derivatives at a double zero; the upper bounds construct
+genuine probability remainders.  It credits the arithmetic-factor
+article's `prop:wasserstein` and the article above.  Unreviewed; no
+Lean statement.
+
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
 Product* (retained 24-page PDF checkpoint; current live TeX: 1,060 lines,
