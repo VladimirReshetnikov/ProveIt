@@ -5,13 +5,15 @@
 This is a research report dated 1 October 2026, built from eleven
 manuscripts and a supplement (source 23; twelve sources), delivered with two
 superseded versions in eighteen archives of ProveIt's batch 73 (arrival
-commit `f8c3a392a`, placement commit `8f5c53106`). It answers Research
+commit `f8c3a392a`, placement commit `8f5c53106`), and from one manuscript
+of batch 77, source 35 (arrival commit `096ee7b87`, placement commit
+`089d2b825`): thirteen sources in all. It answers Research
 question 96 (`mr:q:gamma`) of
 [`preorder-root-polytopes`](../../enumerative-combinatorics/preorder-root-polytopes):
 is the gamma polynomial of every finite preorder ultra-log-concave after
 normalization by its *actual* degree?
 
-| Source | Batch-73 archive(s) | Archive name(s) | Manuscript (pages as delivered) | Pin | Placed | Printed as |
+| Source | Archive(s) (batch 73 unless said) | Archive name(s) | Manuscript (pages as delivered) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|---|
 | 25 | 25 | `preorder-gamma-degree-three-package` | *Rank ultra log concavity for preorder gamma polynomials of degree at most three* (14) | `d5e863bba` | `8f5c53106` | Part I, Section 2 |
 | 16 (base) | 16, 17, 18, 19 | `preorder-degree-four-part-4-of-4` … `part-1-of-4` | *Degree four preorder support polynomials* (17) | `d5e863bba` | `8f5c53106` | Part I, Section 3 (its Section 3 and Appendix A are source 20, printed in Part II) |
@@ -25,11 +27,15 @@ normalization by its *actual* degree?
 | 10 | 10 | `universal-sink-all-degrees-package` | *Rank ultra log concavity for four vertex cores with universal sinks* (5) | none | `8f5c53106` | Part III, Section 11 |
 | 34 | 34 | `universal-sink-five-core-package` | *Rank five ultra log concavity for five vertex cores with universal sinks* (6) | none | `8f5c53106` | Part III, Section 12 |
 | 06 | 07 (part 1, carries the manuscript), 06 (part 2) | `universal-sink-five-core-boundary-package-part-1`, `-part-2` | *The rank four boundary for five vertex cores with universal sinks* (7) | none | `8f5c53106` | Part III, Section 13 |
+| 35 | batch 77, archive 71 (six ZIP parts in one archive) | `universal-sink-five-core-cubic-package` | *The cubic boundary for five-vertex cores with universal sinks* (5) | none | `089d2b825` | Part III, Section 14 |
 | — | 31 | `weighted-degree-three-package` | *Vertex-weighted preorder support polynomials of actual degree at most three* (17) | none | not staged | superseded by 22; its theorem is Corollary 9.14 (the case `u = v`) |
 | — | 13 | `universal-sink-degree-four-package` | *Weighted degree four rank ultra log concavity for universal sink extensions* (5) | none | not staged | superseded by 10; one remark in Part III |
 
 Sources are numbered by their batch-73 manuscript numbers; a package
-delivered in several archives takes its lowest number. "Pin" is the ProveIt
+delivered in several archives takes its lowest number. Source 35 is
+batch-77 manuscript 71 (arrival commit `096ee7b87`, 2 October 2026); as an
+addition it takes the next number after the report's highest, 34, and its
+files the prefix `35-five-core-cubic-`. "Pin" is the ProveIt
 commit a manuscript cites (`d5e863bba`, "Write batch 70 (4/5)", for
 `preorder-root-polytopes`); the other manuscripts cite no ProveIt commit,
 and every other 40-digit hexadecimal string in the packages is a SHA-256
@@ -39,12 +45,15 @@ of a package file.
 sources 11, 12, 15, 16, 20, 22 and 25 read "Research manuscript prepared for
 Vladimir Reshetnikov" and their PDF metadata "Research manuscript prepared
 with OpenAI" (the visible title pages do not mention OpenAI); sources 06,
-10, 14 and 34 read "Research note"; source 23 has no author line. The
+10, 14, 34 and 35 read "Research note"; source 23 has no author line. The
 degree-three and degree-four theorems of Part I, source 22's main theorem,
 source 12's boundary theorem (and through it source 11's theorem), and the
-first interior inequalities of sources 10, 34 and 06 are
-**computer-assisted**: their proofs include exact finite certificate
-computations shipped here. The other theorems have ordinary proofs. No
+first interior inequalities of sources 10, 34 and 06, and source 35's
+two-sink lemma (hence its cubic boundary) are **computer-assisted**: their
+proofs include exact finite certificate computations, shipped here except
+source 16's files larger than 2 MB, source 06's bounded-sink certificates
+and source 35's certificate shards, which stay in the arrival commits (see "Reconstructing what is not
+shipped"). The other theorems have ordinary proofs. No
 statement is formalized in Lean or Rocq, and no source claims
 literature-wide priority.
 
@@ -52,7 +61,7 @@ The report has three Parts: **Part I**, unit activities on finite preorders
 through actual degree four (sources 25, 16, 23); **Part II**, independent
 role activities and small covers (sources 20, 12, 11, 15, 22); **Part III**,
 universal-sink clouds over an arbitrary directed core (sources 14, 10, 34,
-06). Every result, proof, example, remark, limitation and research question
+06, 35). Every result, proof, example, remark, limitation and research question
 of every source is printed. A result proved by several sources is printed
 once, with the other proofs kept as marked second routes or, where the
 proof is the same, replaced by a pointer (Appendix A.3 of the article lists
@@ -62,20 +71,23 @@ every such choice). Results that `preorder-root-polytopes` or
 ## Files
 
 The listing matches the directory. Every file except `article.tex`,
-`article.pdf`, `README.md` and the derived container
-`data/34-five-core-certificate-data.tar.xz` is a delivered file, byte for
-byte, renamed to `NN-slug-` followed by its delivered path with `/`
+`article.pdf`, `README.md` and the two derived containers
+`data/34-five-core-certificate-data.tar.xz` and
+`data/35-five-core-cubic-inputs-structural-9608.json.xz` is a delivered
+file, byte for byte, renamed to `NN-slug-` followed by its delivered path with `/`
 replaced by `-` and long directory names abbreviated (for example
 `independent-audit/` → `ia-`, `four-attachment/` → `a4-`; source 16's
 `reproducibility/sources/preorder-gamma-degree4/` is dropped). Code is in
 `code/`, recorded outputs, certificates and receipts in `data/`, audit and
 proof-note Markdown at the top. The second column gives each file's
 delivered path inside its package (for source 16 inside the assembled
-four-part package, for source 06 inside the assembled two-part package).
+four-part package, for source 06 inside the assembled two-part package, for source 35
+inside its merged six-part package, whose parts all have the top-level
+directory `universal-sink-five-core-cubic-result/`).
 
 ```
 article.tex        the report (pdfLaTeX), standalone, internal bibliography
-article.pdf        the compiled report, 105 pages (title page and contents, then the three Parts and Appendix A)
+article.pdf        the compiled report, 113 pages (title page and contents, then the three Parts and Appendix A)
 README.md          this guide
 ```
 
@@ -167,6 +179,9 @@ README.md          this guide
 23-template26-sources-wpg-VERTEX_WEIGHTED_DEGREE3_THEOREM.md                           source 23, Part I: `sources/weighted-preorder-gamma/VERTEX_WEIGHTED_DEGREE3_THEOREM.md`
 34-five-core-ORDINARY_PROOFS.md                                                        source 34, Part III: `ORDINARY_PROOFS.md`
 34-five-core-audits-CERTIFICATE_AUDIT.md                                               source 34, Part III: `audits/CERTIFICATE_AUDIT.md`
+35-five-core-cubic-DEPENDENCIES.md                                                     source 35 (batch 77), Part III: `DEPENDENCIES.md`
+35-five-core-cubic-audits-FINAL_AUDIT.md                                               source 35 (batch 77), Part III: `audits/FINAL_AUDIT.md`
+35-five-core-cubic-audits-ONE_TAIL_HPP_SCOPE.md                                        source 35 (batch 77), Part III: `audits/ONE_TAIL_HPP_SCOPE.md`
 code/06-five-core-boundary-discovery-bounded_moment_cubic.py                           source 06 (archive 07), Part III: `discovery/bounded_moment_cubic.py`
 code/06-five-core-boundary-discovery-certify_four_active.py                            source 06 (archive 07), Part III: `discovery/certify_four_active.py`
 code/06-five-core-boundary-discovery-explicit_last.py                                  source 06 (archive 07), Part III: `discovery/explicit_last.py`
@@ -289,6 +304,15 @@ code/34-five-core-discovery-poly.py                                             
 code/34-five-core-proof-check-check.py                                                 source 34, Part III: `proof-check/check.py`
 code/34-five-core-proof-check-check_strengthening_counterexample.py                    source 34, Part III: `proof-check/check_strengthening_counterexample.py`
 code/34-five-core-verify.py                                                            source 34, Part III: `verify.py`
+code/35-five-core-cubic-replay-check.py                                                source 35 (batch 77), Part III: `replay/check.py`
+code/35-five-core-cubic-replay-check_extended.py                                       source 35 (batch 77), Part III: `replay/check_extended.py`
+code/35-five-core-cubic-replay-check_fast.py                                           source 35 (batch 77), Part III: `replay/check_fast.py`
+code/35-five-core-cubic-replay-check_sharpness_portable.py                             source 35 (batch 77), Part III: `replay/check_sharpness_portable.py`
+code/35-five-core-cubic-replay-hybrid_extended.py                                      source 35 (batch 77), Part III: `replay/hybrid_extended.py`
+code/35-five-core-cubic-replay-selftest_extended_portable.py                           source 35 (batch 77), Part III: `replay/selftest_extended_portable.py`
+code/35-five-core-cubic-replay-selftest_multiplier_portable.py                         source 35 (batch 77), Part III: `replay/selftest_multiplier_portable.py`
+code/35-five-core-cubic-replay-structural.py                                           source 35 (batch 77), Part III: `replay/structural.py`
+code/35-five-core-cubic-verify.py                                                      source 35 (batch 77), Part III: `verify.py`
 data/06-five-core-boundary-audits-article-certificate-approval.json                    source 06 (archive 07), Part III: `audits/article-certificate-approval.json`
 data/06-five-core-boundary-audits-article-ordinary-scope-approval.json                 source 06 (archive 07), Part III: `audits/article-ordinary-scope-approval.json`
 data/06-five-core-boundary-audits-compressed-certificate-parts.json                    source 06 (archive 07), Part III: `audits/compressed-certificate-parts.json`
@@ -792,6 +816,22 @@ data/34-five-core-audits-strengthening-counterexample-receipt.json              
 data/34-five-core-certificate-data.tar.xz                                              source 34, Part III: derived container of delivered `certificate-data/` (9,610 files, byte-identical members; see below)
 data/34-five-core-discovery-cores.txt                                                  source 34, Part III: `discovery/cores.txt`
 data/34-five-core-qa-visual-review.json                                                source 34, Part III: `qa/visual-review.json`
+data/35-five-core-cubic-audits-article-approval.json                                   source 35 (batch 77), Part III: `audits/article-approval.json`
+data/35-five-core-cubic-audits-extended-selftest-receipt.json                          source 35 (batch 77), Part III: `audits/extended-selftest-receipt.json`
+data/35-five-core-cubic-audits-full-approval.json                                      source 35 (batch 77), Part III: `audits/full-approval.json`
+data/35-five-core-cubic-audits-full-hybrid-20261001T164052Z-receipt.json               source 35 (batch 77), Part III: `audits/full-hybrid-20261001T164052Z-receipt.json`
+data/35-five-core-cubic-audits-missing-shard-control.json                              source 35 (batch 77), Part III: `audits/missing-shard-control.json`
+data/35-five-core-cubic-audits-multiplier-762-receipt.json                             source 35 (batch 77), Part III: `audits/multiplier-762-receipt.json`
+data/35-five-core-cubic-audits-multiplier-schema-selftest-receipt.json                 source 35 (batch 77), Part III: `audits/multiplier-schema-selftest-receipt.json`
+data/35-five-core-cubic-audits-optimized-comparison-20261001T134314Z-receipt.json      source 35 (batch 77), Part III: `audits/optimized-comparison-20261001T134314Z-receipt.json`
+data/35-five-core-cubic-audits-portable-extended-selftest-receipt.json                 source 35 (batch 77), Part III: `audits/portable-extended-selftest-receipt.json`
+data/35-five-core-cubic-audits-portable-multiplier-selftest-receipt.json               source 35 (batch 77), Part III: `audits/portable-multiplier-selftest-receipt.json`
+data/35-five-core-cubic-audits-portable-sharpness-receipt.json                         source 35 (batch 77), Part III: `audits/portable-sharpness-receipt.json`
+data/35-five-core-cubic-audits-sharpness-receipt.json                                  source 35 (batch 77), Part III: `audits/sharpness-receipt.json`
+data/35-five-core-cubic-audits-visual-qa.json                                          source 35 (batch 77), Part III: `audits/visual-qa.json`
+data/35-five-core-cubic-inputs-preorder-coverage.json                                  source 35 (batch 77), Part III: `inputs/preorder-coverage.json`
+data/35-five-core-cubic-inputs-structural-9608.json.xz                                 source 35 (batch 77), Part III: derived container of delivered `inputs/structural-9608.json` (4,004,583 bytes; `xz -dc` restores it byte for byte; see below)
+data/35-five-core-cubic-replay-dependencies-preorder-degree-three-release-approval.json source 35 (batch 77), Part III: `replay/dependencies/preorder-degree-three-release-approval.json`
 ```
 
 ## Labels
@@ -801,14 +841,19 @@ Every label carries the prefix `pgr:`: `pgr:sec:…`, `pgr:def:…`,
 and Appendix A, and per Part `pgr:u:` (I), `pgr:r:` (II), `pgr:s:` (III)
 followed by a source infix and the source's own label: `d3` (25), `d4`
 (16), `t26` (23), `rc` (20), `tc` (12), `pc` (11), `ps` (15), `ir` (22),
-`lg` (14), `ad` (10), `fc` (34), `fb` (06). For example source 22's
-`thm:main` is `pgr:r:ir:thm:main`. The base article (source 16) had 26
-labels as staged; the report has 254 labels. Labels of source passages
+`lg` (14), `ad` (10), `fc` (34), `fb` (06), `fq` (35, "five-core
+cubic"). For example source 22's `thm:main` is `pgr:r:ir:thm:main`. The
+base article (source 16) had 26 labels as staged; the report had 254
+labels after batch 73 and has 261 since batch 77 (source 35 added seven:
+`pgr:s:fq:sec`, `:thm:main`, `:eq:cubic`, `:eq:target`, `:lem:finite`,
+`:eq:certificate`, `:cor:all`; no existing label was renamed or
+removed). Labels of source passages
 that are printed once elsewhere or replaced by pointers (the degree lemma
 and the first inequality of several sources, source 16's Section 3 and
 Appendix A, the duplicated three-squares identity and moment envelope, the
-last-gap proofs of sources 10 and 34, source 34's appendix, and the proof of
-source 22's one-tail criterion) are not defined; references to them point
+last-gap proofs of sources 10 and 34, source 34's appendix, the proof of
+source 22's one-tail criterion, and source 35's coefficient display, first
+comparison and one-tail argument) are not defined; references to them point
 to the printed copy.
 
 ## What the report claims
@@ -969,6 +1014,20 @@ Claimed:
   rank-ULC at actual degree four; ordinary coefficientwise core comparisons
   (the appendix, printed once in source 06's form, which strengthens
   source 34's).
+- **Five-vertex cores at actual degree at most three** (source 35, batch
+  77, `pgr:s:fq:thm:main`): `γ2² ≥ 3γ1γ3` on the whole face `γ4 = 0`, by
+  an ordinary degree-drop reduction to a two-sink lemma
+  (`pgr:s:fq:lem:finite`) that is computer-assisted: 9,608 classes covering
+  all 2²⁰ labeled cores, settled by 43 role covers, 21 physical covers of
+  size three, 1,743 one-tail/HPP sides, 49 further classes by source 22's
+  preorder theorem, 7,658 direct and 94 tail-sum-multiplied rational square
+  certificates (1,368,926 squares and 11,514,499 positive remainder terms
+  over all 7,901 certificate files). The constant 3 is sharp, even for
+  preorder cores. Hence, with sources 06 and 34, every five-vertex core is
+  rank-ULC at every actual degree 0–5 (`pgr:s:fq:cor:all`). For preorder
+  cores the theorem is a special case of source 22's `pgr:r:ir:thm:main`;
+  the new content is the non-transitive core. Source 34's counterexample
+  to the constant 3 has `γ4 > 0` and does not contradict it.
 
 Not claimed (Part III): sharpness of the cubic constants 3, 2 and 9/4;
 any conclusion at actual degree three for five-vertex cores (source 06
@@ -978,13 +1037,20 @@ non-universal exterior neighbourhoods or larger cores; real-rootedness or
 stability; that the first comparison is new (it is
 `preorder-root-polytopes`' `mr:thm:first`); novelty or priority. The
 bounded-sink certificates of source 06 are not shipped (they are in the
-arrival commit).
+arrival commit). (2 October 2026, batch 77: source 35 proves the constant
+3 on `γ4 = 0`, sharp there, and actual degree three for five-vertex cores;
+the sentence above stays true of sources 06 and 34. The constants 2 and
+9/4, and source 10's 3 for four-vertex cores, still carry no sharpness
+claim. Source 35 claims no real-rootedness, no nonuniversal
+neighbourhoods, no general directed physical-degree-three
+classification, no formal verification and no priority; its certificate
+shards are not shipped either.)
 
 ## Research questions of `preorder-root-polytopes`
 
 | Question | Where | Answered by | How |
 |---|---|---|---|
-| Research question 96, `mr:q:gamma` | Part XII | sources 25, 16 (unit activities), 22 (independent activities); 11, 15, 20 and Part III in families | yes for unit activities through actual degree four and for independent role activities through degree three; open from degree five (unit) and degree four (weighted) in general; "a first unproved target is degree three" is proved |
+| Research question 96, `mr:q:gamma` | Part XII | sources 25, 16 (unit activities), 22 (independent activities); 11, 15, 20 and Part III in families (since batch 77, source 35: five-vertex cores with universal sinks at every actual degree) | yes for unit activities through actual degree four and for independent role activities through degree three; open from degree five (unit) and degree four (weighted) in general; "a first unproved target is degree three" is proved |
 | "Gamma log-concavity beyond height two" (the paragraphs of its sources 06 and 09, sections `lor:sec:oldquestions` and `mat:sec:oldquestions`) | — | same | answered for unit activities through actual degree four: no counterexample of degree at most four exists, so a minimal counterexample, if any, has degree at least five; real-rootedness does fail, and source 25 determines its least order in degree three (fifteen vertices) |
 | `mr:q:certificates` | Part XII | sources 16, 23 | bears on it: binomial-square certificates at scale (source 16), a smaller route for the largest one (source 23) |
 | `mrn:w:sb:thm:main` of `matching-rank-normalization` | its Part I | source 20 | generalized to directed relations with overlapping role covers |
@@ -1014,6 +1080,7 @@ The reciprocal notes in `preorder-root-polytopes` and
   `SetTheory/Cardinals/` beside Lean developments, but placement there
   confers no formal status: no statement of this report is formalized in
   Lean or Rocq, and no Lean declaration corresponds to any of its results.
+  This holds for source 35 as well.
 
 ## Build
 
@@ -1025,7 +1092,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX with the standard `amsmath`, `amssymb`, `amsthm`, `mathtools`,
 `lmodern`, `microtype`, `geometry`, `booktabs`, `longtable`, `array`,
 `enumitem`, `fancyhdr`, `xurl` and `hyperref` packages; three passes. The
-committed PDF was built this way with MiKTeX: 105 pages, no errors, no
+committed PDF was built this way with MiKTeX: 113 pages, no errors, no
 undefined references or citations, no multiply defined labels, no duplicate
 destinations, no overfull boxes. Build in a scratch copy; do not commit the
 auxiliary files.
@@ -1057,6 +1124,7 @@ recorded times).
 | 10 | `python verify.py --output <out.json>` | standard library; pass, 46 s, receipt equal modulo time fields |
 | 34 | `python verify.py --workers 4 --output <out.json>` | standard library; all 9,608 certificates passed (run in two halves), aggregate equal to the delivered manifest; counterexample checker reproduced |
 | 06 | `python verify.py --workers 4 --output <out.json>` | needs about 2 GB of temporary disk; not run whole at intake: all 12,652 certificate members were authenticated against the audit manifests and 40 certificates replayed; `check_ordinary_lemmas.py` reproduced its receipt |
+| 35 | `python -B verify.py --workers 4 --output <out.json>` in the merged six-part package (`--integrity-only` checks integrity only and is not a proof replay) | standard library, Python ≥ 3.10; needs the six certificate shards, which are not shipped (next section), and about 6 GB of temporary disk under `--temp-dir` (default: the current directory). Not run whole at intake: about 1.5 h with four workers here under load (measured 3.8 s of one core per MB of certificate JSON), less on an idle machine (next section); the delivered receipt records 279 s. Integrity PASS (74 files, six shards); 15 certificates checked by `replay/check_extended.py --partial`: PARTIAL_PASS, records equal to the delivered manifest; `replay/structural.py`, both portable self-tests and the sharpness checker PASS |
 
 Two checks run from shipped files, on scratch copies:
 
@@ -1069,7 +1137,21 @@ python /tmp/s1565/verify_side1565_rayleigh.py
 # source 34's 9,608 certificates from the derived container (always pass the output path)
 mkdir -p /tmp/c34 && tar -xJf data/34-five-core-certificate-data.tar.xz -C /tmp/c34
 python code/34-five-core-proof-check-check.py /tmp/c34/certificate-data /tmp/c34/receipt.json 4
+# source 35's symbolic sharpness check: its checkers import siblings by their delivered names
+mkdir -p /tmp/s35
+cp code/35-five-core-cubic-replay-check.py /tmp/s35/check.py
+cp code/35-five-core-cubic-replay-check_sharpness_portable.py /tmp/s35/check_sharpness_portable.py
+python -B /tmp/s35/check_sharpness_portable.py --output /tmp/s35/sharp.json
 ```
+
+The sharpness output equals `data/35-five-core-cubic-audits-portable-sharpness-receipt.json`
+as JSON (checked at the write). Every other source-35 checker needs the
+delivered `replay/dependencies/`, `inputs/` and certificate directories,
+so it runs only in the reconstructed package. Source 35's programs write
+with Python's `write_text`, which produces CRLF line endings on Windows;
+their default output paths are inside the package (`replay/receipt.json`,
+`replay/structural-receipt.json`, `replay/hybrid-receipt.json`) or the
+current directory (`verify.py`). Always pass `--output`.
 
 Regenerated text outputs on Windows differ from the delivered ones by CRLF
 line endings only; compare modulo line endings. Do not use `python -O`:
@@ -1077,8 +1159,9 @@ several drivers rely on assertions and refuse to run without them.
 
 ## Reconstructing what is not shipped
 
-Everything that is not shipped is in the arrival commit `f8c3a392a`, byte
-for byte, and can be retrieved exactly (`git` in a clone of ProveIt):
+Everything that is not shipped is in the arrival commit `f8c3a392a` (for
+source 35, batch 77: `096ee7b87`, last subsection), byte for byte, and can
+be retrieved exactly (`git` in a clone of ProveIt):
 
 ```
 mkdir pgr-arrival && cd pgr-arrival
@@ -1346,6 +1429,290 @@ certificate files are in the container; the 245 files of archive 13 and the
 | 34 | `qa/page-5.png` | rendered page image of the unshipped delivered PDF (visual QA) |
 | 34 | `qa/page-6.png` | rendered page image of the unshipped delivered PDF (visual QA) |
 
+### Source 35 (batch 77): the excluded data
+
+Source 35 arrived later, in commit `096ee7b87` (2 October 2026), as the
+single archive `universal-sink-five-core-cubic-package.zip` (96,776,115
+bytes). It holds six top-level directories
+`universal-sink-five-core-cubic-package-part-1/` … `-part-6/`, each with
+the same inner directory `universal-sink-five-core-cubic-result/`; the
+delivery README says to extract all six parts into one folder. The
+following reassembles the package exactly (about 6 s here; the zip, its
+extraction and the merged copy take about 320 MB):
+
+```
+mkdir u35 && cd u35
+git show 096ee7b87:docs/incoming/universal-sink-five-core-cubic-package.zip > u35.zip   # 96,776,115 bytes
+unzip -q u35.zip
+mkdir pkg && for k in 1 2 3 4 5 6; do
+  cp -r universal-sink-five-core-cubic-package-part-$k/universal-sink-five-core-cubic-result/. pkg/
+done
+cd pkg && python -B verify.py --integrity-only --output integrity.json   # PASS: 74 files, six shards
+```
+
+The six parts carry the same `README.md`, so the copies overwrite each
+other harmlessly. All commands below run inside `pkg`.
+
+**Not regenerable, kept only in the arrival commit: the six certificate
+shards.** `data/certificates-01.tar.xz` … `-06.tar.xz` (95,052,048 bytes
+in all; 15,524,052, 17,021,744, 17,018,000, 17,020,204, 17,012,048 and
+11,456,000 bytes) hold the 7,901 rational square certificate files of
+the two-sink lemma (5,037,863,250 bytes of JSON when decoded): 1,009,
+1,491, 1,198, 1,384, 1,848 and 971 files for the class ids 0–1813,
+1814–3910, 3911–5275, 5276–6726, 6727–8636 and 8637–9607. The 94
+tail-sum certificates (`tail-sum-cubic/`) are in shards 01–05 (20, 32,
+37, 1 and 4); the other 7,807 files are in `two-sink-cubic/`. These
+files are the only carrier of the 7,752 classes (7,658 direct, 94
+tail-sum) that the selected ledger settles by certificates. They cannot be
+regenerated: the package ships checkers only, and the numerical search
+and rationalization that found the squares are not delivered (a
+numerical Gram search would not reproduce them byte for byte anyway).
+They are not staged because of their size, following the precedent of
+source 06's bounded-sink certificates; Vladimir's rule of 2 October 2026,
+"Exclude heavy regenerable artifacts", does not decide their case, since
+they are not regenerable. They are kept, byte for byte, in the arrival
+commit.
+
+The full proof replay decodes them into a temporary directory, checks
+every certificate, the structural records, the orbit coverage, the
+self-tests and the sharpness, compares the result with the delivered
+receipt, and deletes the decoded data:
+
+```
+python -B verify.py --workers 4 --output fresh-replay.json      # about 1.5 h here, 6 GB of temporary disk
+python -B verify.py --workers 4 --temp-dir /big/volume --output fresh-replay.json   # to decode elsewhere
+```
+
+It was not run at intake. The figure of about 1.5 h is the rate of the
+delivered checker measured at placement on this laptop under load (3.8 s
+of one core per MB of certificate JSON on an 8.6 MB sample, so about
+19,100 core-seconds for the 5,038 MB), plus the orbit coverage and the
+structural check. At the write, on the idle machine, the same sample took
+5.5 s on one worker including the orbit coverage, which suggests well
+under an hour (extrapolated, not run). The delivered receipt records
+279 s on the delivery machine. What was run at intake on the reassembled
+package: the integrity check (PASS), and fifteen certificates, ids 0–7
+(shard 01), 1814–1817 (shard 02; 1817 is a tail-sum certificate) and
+8637–8639 (shard 06), decoded (their hashes match
+`proof-data-manifest.json`) and checked, with the two self-tests and the
+sharpness check:
+
+```
+mkdir -p sample out && cp inputs/cores.txt inputs/structural-9608.json inputs/preorder-coverage.json sample/
+python -B - <<'EOF'
+import tarfile
+want = {1: [0, 1, 2, 3, 4, 5, 6, 7], 2: [1814, 1815, 1816, 1817], 6: [8637, 8638, 8639]}
+for k, ids in want.items():
+    left = set(ids)
+    with tarfile.open('data/certificates-0%d.tar.xz' % k, 'r|xz') as tf:
+        for m in tf:
+            i = int(m.name.split('_')[-1].split('.')[0])
+            if i in left:
+                tf.extract(m, 'sample', filter='data')
+                left.discard(i)
+                if not left:
+                    break
+EOF
+python -B replay/check_extended.py sample --partial --workers 2 --output out/sample.json
+tar -xJf data/certificates-01.tar.xz -C sample tail-sum-cubic/certificate_762.json   # needed by the multiplier self-test
+python -B replay/selftest_extended_portable.py sample --output out/selftest-extended.json
+python -B replay/selftest_multiplier_portable.py sample --output out/selftest-multiplier.json
+python -B replay/check_sharpness_portable.py --output out/sharp.json
+```
+
+`check_extended.py` gives PARTIAL_PASS, with the full orbit coverage of
+all 2²⁰ labeled cores, and writes `out/sample-manifest.json`, whose 15
+records equal those of the delivered per-certificate manifest; the other
+three give PASS, and the sharpness output equals the delivered receipt.
+At placement this took 45, 78, 46 and 5 s under load; at the write, 6, 6,
+2 and under 1 s. (The `filter` argument of `tarfile` needs a current
+Python; omit it on an old one.)
+
+**Not regenerable, shipped as a derived container: the structural input.**
+`inputs/structural-9608.json` (4,004,583 bytes, SHA-256
+`e346cb3f54d78f46c38045798f55733aa76f6daebc56841380e50580ad66da86`) is the
+output of the unshipped producer: the cover, matroid and HPP-side witnesses
+that `replay/structural.py` checks for the 1,807 structural classes. It is
+shipped as `data/35-five-core-cubic-inputs-structural-9608.json.xz`
+(31,524 bytes), made at placement with XZ Utils 5.8.2 by
+
+```
+xz -9e --check=crc64 -T1 -c inputs/structural-9608.json > 35-five-core-cubic-inputs-structural-9608.json.xz
+```
+
+Two runs gave identical bytes, and the round trip is byte for byte
+(checked again at the write). Another xz version may compress
+differently; the decompressed bytes are what matter. Restore it with
+
+```
+xz -dc data/35-five-core-cubic-inputs-structural-9608.json.xz > structural-9608.json
+cmp structural-9608.json <pkg>/inputs/structural-9608.json        # or: sha256sum, compare with the value above
+```
+
+**Regenerable outputs and ledgers, not shipped** (also in the arrival
+commit). Times are those at the write (2 October 2026) on the intake
+laptop; at placement, on the same machine under load, the structural check
+took 103 s and the shard-06 hash check 33 s.
+
+- `audits/full-hybrid-20261001T164052Z-receipt-structural-records.json`
+  (2,182,680 bytes): rebuilt byte for byte (7 s) by
+
+  ```
+  mkdir -p src out && cp inputs/cores.txt inputs/structural-9608.json inputs/preorder-coverage.json src/
+  python -B replay/structural.py src --output out/structural-receipt.json   # PASS: 1,807 + 139 records
+  python -B - <<'EOF'
+  import json
+  b = json.load(open('out/structural-receipt-records.json'))
+  open('out/structural-records.json', 'w', newline='\n').write(
+      json.dumps({'structural': b['structural'], 'preorders': b['preorder']}, indent=2) + '\n')
+  EOF
+  cmp out/structural-records.json audits/full-hybrid-20261001T164052Z-receipt-structural-records.json
+  ```
+
+  `structural.py` writes the key `preorder` (and CRLF on Windows);
+  `replay/hybrid_extended.py`, which wrote the delivered file, writes
+  `preorders`. The script rewrites it accordingly. `structural.py` must run
+  inside the package, because it reads `replay/dependencies/`.
+- `audits/full-hybrid-20261001T164052Z-receipt-ledger.json` (778,231
+  bytes), the disjoint selected ledger: rebuilt byte for byte (under 1 s)
+  from the structural records and the certificate paths of
+  `proof-data-manifest.json`, by the rule of `replay/hybrid_extended.py`
+  (lines 71–80):
+
+  ```
+  python -B - <<'EOF'
+  import json, re
+  b = json.load(open('out/structural-records.json'))
+  method = {r['id']: r['method'] for r in b['structural']}
+  preorder = {r['id'] for r in b['preorders']}
+  cert = {}
+  for r in json.load(open('proof-data-manifest.json'))['files']:
+      m = re.fullmatch(r'(two-sink|tail-sum)-cubic/certificate_(\d+)\.json', r['path'])
+      if m:
+          cert[int(m.group(2))] = m.group(1)
+  ledger = []
+  for i in range(9608):
+      if i in method: s = method[i]
+      elif i in preorder: s = 'previous_weighted_preorder_degree_three_theorem'
+      elif cert.get(i) == 'tail-sum': s = 'tail_sum_rational_square_certificate'
+      elif cert.get(i) == 'two-sink': s = 'exact_rational_square_certificate'
+      else: s = 'MISSING'
+      ledger.append({'id': i, 'selected_method': s})
+  open('out/ledger.json', 'w', newline='\n').write(json.dumps(ledger, indent=2) + '\n')
+  EOF
+  cmp out/ledger.json audits/full-hybrid-20261001T164052Z-receipt-ledger.json
+  ```
+
+- `audits/full-hybrid-20261001T164052Z-receipt-certificate-manifest.json`
+  (6,610,973 bytes), one record per certificate file: written only by a
+  full run of `replay/hybrid_extended.py` on the decoded certificates.
+  `verify.py` runs it inside its temporary directory and deletes the
+  outputs with the decoded data, so call it directly (about 1.5 h with four
+  workers, 5.04 GB of decoded files):
+
+  ```
+  mkdir -p dec out && cp inputs/cores.txt inputs/structural-9608.json inputs/preorder-coverage.json dec/
+  for k in 1 2 3 4 5 6; do tar -xJf data/certificates-0$k.tar.xz -C dec; done
+  python -B replay/hybrid_extended.py dec --workers 4 --output out/full.json
+  # out/full-certificate-manifest.json; also out/full-ledger.json and out/full-structural-records.json
+  ```
+
+  Not run whole at intake; the fifteen sampled records were regenerated
+  equal as JSON, and the manifest's hash and totals were recomputed equal
+  to the receipt. Compare it as JSON (CRLF on Windows).
+- `proof-data-manifest.json` (1,509,544 bytes; SHA-256 and byte count of
+  the 7,904 decoded proof-data files) and `data-shards.json` (380,602
+  bytes; the six shards, their hashes and member lists): their rows come
+  from streaming the shards. At the write, all 7,904 rows and all six
+  member lists were reproduced in 29 s by
+
+  ```
+  python -B - <<'EOF'
+  import hashlib, json, tarfile
+  want = {r['path']: r for r in json.load(open('proof-data-manifest.json'))['files']}
+  index = {s['path']: s for s in json.load(open('data-shards.json'))['shards']}
+  for k in range(1, 7):
+      path = 'data/certificates-0%d.tar.xz' % k
+      names = []
+      with tarfile.open(path, 'r|xz') as tf:
+          for m in tf:
+              h = hashlib.sha256(tf.extractfile(m).read()).hexdigest()
+              assert (m.size, h) == (want[m.name]['bytes'], want[m.name]['sha256']), m.name
+              names.append(m.name)
+      assert names == index[path]['members'], path
+  for name in ('cores.txt', 'structural-9608.json', 'preorder-coverage.json'):
+      data = open('inputs/' + name, 'rb').read()
+      assert (len(data), hashlib.sha256(data).hexdigest()) == (want[name]['bytes'], want[name]['sha256'])
+  print('all rows equal')
+  EOF
+  ```
+
+  The header fields of both files (counts, totals, the hash of the full
+  replay receipt, the shard index's `seconds`) are records of the delivery
+  run. `verify.py` needs both files and `MANIFEST.json`, which pins them;
+  that is one more reason to replay from the arrival commit rather than
+  from shipped files.
+
+`inputs/cores.txt` is not shipped either: it is byte-identical to
+`data/34-five-core-discovery-cores.txt` (the same 9,608 representatives in
+the same order). Every delivered file of source 35 that is not shipped:
+
+| Part | Delivered path | Why not shipped |
+|---|---|---|
+| 1 | `MANIFEST.json` | package checksum ledger of 74 files; verify.py --integrity-only PASS at intake; survives in 096ee7b87 |
+| 1 | `README.md` | delivery README; provenance goes into the report README |
+| 1 | `article/certificate-summary.tex` | two count macros of the manuscript, OrdinaryCount 7,658 and MultiplierCount 94, printed at the write; survives in 096ee7b87 |
+| 1 | `article/universal-sink-five-core-cubic.pdf` | PDF of the printed manuscript; survives in 096ee7b87 |
+| 1 | `article/universal-sink-five-core-cubic.tex` | member manuscript; printed at the write as a new Part III section; survives in 096ee7b87 |
+| 1 | `audits/full-hybrid-20261001T164052Z-receipt-certificate-manifest.json` | heavy regenerable output, 6610973 B: per-certificate records written by replay/hybrid_extended.py; 15/15 sampled records regenerated value-identically by check_extended.py; its hash and totals recomputed equal to the receipt; whole file needs the full replay; survives in 096ee7b87 |
+| 1 | `audits/full-hybrid-20261001T164052Z-receipt-ledger.json` | regenerable output, 778231 B: the disjoint selected ledger; regenerated byte-identically from structural.py records and proof-data-manifest paths; survives in 096ee7b87 |
+| 1 | `audits/full-hybrid-20261001T164052Z-receipt-structural-records.json` | heavy regenerable output, 2182680 B: regenerated byte-identically by replay/structural.py in 103 s, key "preorder" written as "preorders" as hybrid_extended.py does; survives in 096ee7b87 |
+| 1 | `build.sh` | build helper for the unshipped manuscript; foreign /tmp/hamiltonian-rank-build paths; survives in 096ee7b87 |
+| 1 | `data-shards.json` | shard index of the unstaged shards, 380602 B; member lists regenerated equal from the shards (shard 06 checked); the README lists the six shard byte counts; the delivered verify.py checks their SHA-256; survives in 096ee7b87 |
+| 1 | `data/certificates-01.tar.xz` | proof-carrying certificate shard, 15524052 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 1 | `inputs/cores.txt` | byte-identical to tracked data/34-five-core-discovery-cores.txt, staged once |
+| 1 | `proof-data-manifest.json` | heavy regenerable ledger, 1509544 B: sha256 and bytes of the 7,904 decoded proof-data files; rows regenerated value-identically from the arrival shards (shard 06 in 33 s at placement; all 7,904 rows in 29 s at the write); see the recipes above; survives in 096ee7b87 |
+| 1 | `proof-dependencies/companion-archives.json` | checksum ledger; its five companion archives are byte-for-byte batch-73 archives 10, 34, 07, 06 and 22 of f8c3a392a (verified at intake; stated in the README); survives in 096ee7b87 |
+| 1 | `proof-dependencies/companion-statement-pins.json` | checksum ledger of the copied companion members, all byte-identical to f8c3a392a members (verified at intake); survives in 096ee7b87 |
+| 1 | `proof-dependencies/companion-statements/universal-sink-all-degrees-result/article-approval.json` | byte-identical to tracked data/10-sink-all-degrees-audit-article-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-all-degrees-result/universal-sink-all-degrees.tex` | source 10 manuscript (f8c3a392a universal-sink-all-degrees-package.zip), printed as host Section 11; byte-identical |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/article-certificate-approval.json` | byte-identical to tracked data/06-five-core-boundary-audits-article-certificate-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/article-ordinary-scope-approval.json` | byte-identical to tracked data/06-five-core-boundary-audits-article-ordinary-scope-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/core-appendix.tex` | source 06 appendix (f8c3a392a universal-sink-five-core-boundary-package-part-1.zip), printed in host Section 13; byte-identical |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/ordinary-scope-approval.json` | byte-identical to tracked data/06-five-core-boundary-audits-ordinary-scope-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/universal-sink-five-core-boundary.tex` | source 06 manuscript (f8c3a392a universal-sink-five-core-boundary-package-part-1.zip), printed as host Section 13; byte-identical |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-result/article-certificate-approval.json` | byte-identical to tracked data/34-five-core-audits-article-certificate-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-result/ordinary-and-scope-approval.json` | byte-identical to tracked data/34-five-core-audits-ordinary-and-scope-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-result/universal-sink-five-core.tex` | source 34 manuscript (f8c3a392a universal-sink-five-core-package.zip), printed as host Section 12; byte-identical |
+| 1 | `proof-dependencies/role-rank-three-source.md` | byte-identical to tracked 22-independent-role-proofs-ROLE_MATCHING_RANK_THREE_COROLLARY.md, staged once |
+| 1 | `proof-dependencies/three-active-tail-approval.json` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/same_three_core/approval_receipt.json of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip |
+| 1 | `proof-dependencies/three-active-tail-source.md` | byte-identical to tracked 22-independent-role-proofs-SAME_ORIENTATION_THREE_CORE_RAYLEIGH.md, staged once |
+| 1 | `replay/dependencies/n9r4Hpp.txt` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/one_tail_published_nine_side/n9r4Hpp.txt of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip; Kummer-Sert Zenodo 6108027, CC BY 4.0, NOTICE already in the host README |
+| 1 | `replay/dependencies/nine-positive-source-check.json` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/one_tail_published_nine_side/nine-side-matroid-audit-package.zip!primary-source-check.json of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip |
+| 1 | `replay/dependencies/one-tail-approval.json` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/side1565_all_real_rayleigh/side1565-final-case-audit-package.zip!stable_side_approval.json of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip |
+| 1 | `replay/dependencies/one-tail-theorem.md` | byte-identical to tracked 22-independent-role-proofs-ONE_TAIL_HPP_ROLE_COVER.md, staged once |
+| 1 | `replay/dependencies/physical-cover-three-approval.json` | byte-identical to tracked data/11-physical-cover-audits-assembly-approval.json, staged once |
+| 1 | `replay/dependencies/physical-cover-three-integrated-approval.json` | byte-identical to tracked data/11-physical-cover-audits-integrated-paper-approval.json, staged once |
+| 1 | `replay/dependencies/physical-cover-three-theorem.md` | byte-identical to tracked 11-physical-cover-proof-notes-PHYSICAL_COVER_THREE_ULC.md, staged once |
+| 1 | `replay/dependencies/physical-cover-three.tex` | source 11 manuscript (f8c3a392a physical-cover-three-result.zip), printed as host Section 7; byte-identical |
+| 1 | `replay/dependencies/preorder-degree-three-approval.json` | byte-identical to tracked data/22-independent-role-audit-global-mathematical-approval.json, staged once |
+| 1 | `replay/dependencies/preorder-degree-three-theorem.md` | byte-identical to tracked 22-independent-role-proofs-INDEPENDENT_ROLE_WEIGHTED_DEGREE3_THEOREM.md, staged once |
+| 1 | `replay/dependencies/role-cover-approval.json` | byte-identical to tracked data/20-role-cover-proofs-ic-ia-two_by_two_role_cover_audit_receipt.json, staged once |
+| 1 | `replay/dependencies/role-cover-theorem.md` | byte-identical to tracked 20-role-cover-proofs-ic-TWO_BY_TWO_ROLE_COVER_THEOREM.md, staged once |
+| 1 | `replay/dependencies/small-classification-source-check.json` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/one_tail_hpp_side/one-tail-stable-side-audit-package.zip!primary-source-check.json of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip |
+| 1 | `replay/dependencies/source-pins.json` | checksum ledger of replay/dependencies, all byte-identical to tracked files or f8c3a392a members (verified at intake); survives in 096ee7b87 |
+| 2 | `README.md` | delivery README, byte-identical copy in part 2; provenance goes into the report README |
+| 2 | `data/certificates-02.tar.xz` | proof-carrying certificate shard, 17021744 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 3 | `README.md` | delivery README, byte-identical copy in part 3; provenance goes into the report README |
+| 3 | `data/certificates-03.tar.xz` | proof-carrying certificate shard, 17018000 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 4 | `README.md` | delivery README, byte-identical copy in part 4; provenance goes into the report README |
+| 4 | `data/certificates-04.tar.xz` | proof-carrying certificate shard, 17020204 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 5 | `README.md` | delivery README, byte-identical copy in part 5; provenance goes into the report README |
+| 5 | `data/certificates-05.tar.xz` | proof-carrying certificate shard, 17012048 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 6 | `README.md` | delivery README, byte-identical copy in part 6; provenance goes into the report README |
+| 6 | `data/certificates-06.tar.xz` | proof-carrying certificate shard, 11456000 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+
+
 ## Third-party data: Kummer–Sert notice
 
 `data/22-independent-role-checker-role-degree-three-audit-package.zip`
@@ -1370,7 +1737,10 @@ complete-hybrid-audit-package.zip!/dependencies/side1565_all_real_rayleigh/side1
 ```
 
 The delivered package attributes the file (source 22's bibliography and its
-audit records) but states no licence; this notice supplies it. The rest
+audit records) but states no licence; this notice supplies it. Source 35's
+package carries a fifth, identical copy at `replay/dependencies/n9r4Hpp.txt`;
+it is not shipped (it is the file above), but it is in the arrival commit
+`096ee7b87`. The rest
 of the report is MIT-0 like the repository.
 
 ## Delivery names and discrepancies
@@ -1436,3 +1806,50 @@ of the report is MIT-0 like the repository.
 - **Credits.** The PDF metadata of sources 11, 12, 15, 16, 20, 22 and 25
   credits OpenAI; their visible title pages do not. Source 23 has no author
   line.
+- **Source 35 (batch 77).**
+  - *One README, six copies.* Each of the six parts carries the same
+    delivery `README.md` (5,195 bytes); none is shipped.
+  - *Delivery names.* The shipped checkers import their siblings by
+    delivered name (`import check`, `import check_extended`, `import
+    structural`) and read `replay/dependencies/`, `inputs/`, `audits/` and
+    the decoded certificate directories, so they run only in the
+    reassembled package (or, for the sharpness check, in a directory with
+    the two files renamed back). `35-five-core-cubic-audits-FINAL_AUDIT.md`
+    names `packaging-file-manifest.json`; the delivered file is
+    `proof-data-manifest.json` (not shipped), the same bytes: its SHA-256
+    `ff956659…` is the `packaging_file_manifest_sha256` of
+    `data/35-five-core-cubic-audits-full-approval.json`.
+    `35-five-core-cubic-audits-ONE_TAIL_HPP_SCOPE.md` cites files of
+    earlier work directories (`../weighted-preorder-gamma/…`,
+    `../independent-role-degree-three-result/…`,
+    `../weighted-nontotal7-hybrid-independent-audit/…`,
+    `../weighted-nine-side-matroid-independent-audit/…`) that were never
+    delivered as such; the theorem they hold is source 22's
+    `ONE_TAIL_HPP_ROLE_COVER.md`, shipped as
+    `22-independent-role-proofs-ONE_TAIL_HPP_ROLE_COVER.md`. Its closing
+    "Audit boundary" ("does not yet approve any new five-core pruning
+    record") predates the final audit that does.
+  - *Release replay not recorded.* The delivery README says that "detached
+    release information" pins the final ZIPs; it is not in the archive.
+    `data/35-five-core-cubic-audits-article-approval.json` records
+    `release_archive_replay_included: false` with the remaining step "Clean
+    combined extraction and full replay of the final candidate ZIP files",
+    and `FINAL_AUDIT.md` ends the same way. The delivered full receipt is
+    therefore the pre-release replay. At intake the integrity check passed
+    on the reassembled parts and a sample was replayed; the full replay was
+    not run.
+  - *Unnamed companions.* The manuscript and its ledger cite their inputs
+    only as "previously delivered" or "established" results identified by
+    archive hashes. The report replaces them by labels; the five companion
+    archives are, byte for byte, batch-73 archives 10, 34, 07, 06 and 22,
+    and the companion manuscripts and approvals it carries are copies of
+    files already shipped or printed here (the table above).
+  - *Historical wording.* Some pinned dependency notes say "proposed" or
+    describe then-open parts; `35-five-core-cubic-DEPENDENCIES.md` explains
+    that later approvals pin the same bytes.
+  - *Not shipped by rule.* The manuscript, its PDF, the count macros
+    `article/certificate-summary.tex` (typed into the article) and
+    `build.sh`, which refers to `/tmp/hamiltonian-rank-build`, are not
+    shipped; they are in the arrival commit.
+  - *No CR bytes.* No delivered text file of source 35 contains a CR byte,
+    so no `.gitattributes` line was needed.

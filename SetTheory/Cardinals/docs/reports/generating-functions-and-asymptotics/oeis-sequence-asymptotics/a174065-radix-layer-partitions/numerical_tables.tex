@@ -1,0 +1,32 @@
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}rrccccc@{}}
+\toprule
+$b$ & $n$ & Order $0$ & Order $1$ & Order $2$ & Order $3$ & Order $4$ \\
+\midrule
+4 & 400 & $1.637\times10^{-2}$ & $1.046\times10^{-4}$ & $3.357\times10^{-6}$ & $4.207\times10^{-8}$ & $-1.596\times10^{-8}$ \\
+4 & 2500 & $6.270\times10^{-3}$ & $1.193\times10^{-5}$ & $2.809\times10^{-7}$ & $1.278\times10^{-8}$ & $5.829\times10^{-10}$ \\
+4 & 10000 & $3.169\times10^{-3}$ & $2.246\times10^{-6}$ & $-1.411\times10^{-8}$ & $-6.009\times10^{-10}$ & $-1.361\times10^{-11}$ \\
+8 & 400 & $1.559\times10^{-2}$ & $1.312\times10^{-4}$ & $2.184\times10^{-6}$ & $-2.030\times10^{-7}$ & $-5.065\times10^{-8}$ \\
+8 & 2500 & $5.444\times10^{-3}$ & $5.799\times10^{-6}$ & $4.312\times10^{-8}$ & $2.973\times10^{-9}$ & $1.125\times10^{-10}$ \\
+8 & 10000 & $2.932\times10^{-3}$ & $5.592\times10^{-6}$ & $5.935\times10^{-8}$ & $1.081\times10^{-9}$ & $2.680\times10^{-11}$ \\
+\bottomrule
+\end{tabular}
+\caption{Relative errors in the shifted coefficient expansion. Decimal values are high-precision checks, not certified error bounds.}
+\label{tab:counts}
+\end{table}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$b$ & Order $4$ inverse error & Inverse error omitting $P$ \\
+\midrule
+4 & $1.310\times10^{-9}$ & $-9.231\times10^{-2}$ \\
+8 & $-2.789\times10^{-9}$ & $2.026\times10^{-1}$ \\
+\bottomrule
+\end{tabular}
+\caption{Continuous inverse index error at the exact target $y=a_b(10000)$, measured as approximate root minus $10000$. The final column sets $P$ and its derivatives to zero at the same truncation order.}
+\label{tab:inverse}
+\end{table}
+\noindent The direct reciprocity check uses 90 decimal working precision and seven $(b,t)$ pairs with $b\in\{2,3,4,8,16\}$. Its largest observed absolute residual in \eqref{eq:reciprocitylog} is below $2.3\times10^{-91}$. These computations use direct positive-real products on both sides and a separately summed Fourier series.

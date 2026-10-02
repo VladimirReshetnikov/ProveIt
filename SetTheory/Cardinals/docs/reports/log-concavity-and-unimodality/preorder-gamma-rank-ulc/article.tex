@@ -5,7 +5,7 @@
 \usepackage{booktabs,longtable,array,enumitem,fancyhdr,xurl,hyperref}
 \hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue,
  pdftitle={Rank Ultra-Log-Concavity of Preorder Gamma and Directed Support Polynomials at the Actual Degree},
- pdfauthor={Research manuscripts prepared for Vladimir Reshetnikov (several with OpenAI); merged in ProveIt's batch-73 intake}}
+ pdfauthor={Research manuscripts prepared for Vladimir Reshetnikov (several with OpenAI); merged in ProveIt's batch-73 intake; Section 14 added in batch 77}}
 \pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Preorder gamma and directed support polynomials}\fancyhead[R]{\small Rank-ULC at the actual degree}\fancyfoot[C]{\thepage}
 \setlength{\parskip}{3pt}\setlength{\emergencystretch}{2em}
 \numberwithin{equation}{section}
@@ -47,7 +47,7 @@
 \large Degree four, independent role activities, small covers\\ and universal-sink clouds}
 \author{Research manuscripts prepared for Vladimir Reshetnikov\\
 (PDF metadata of sources 11, 12, 15, 16, 20, 22 and 25: ``prepared with OpenAI'')\\[2pt]
-\small merged in ProveIt's batch-73 intake}
+\small merged in ProveIt's batch-73 intake; Section~14 added in batch~77}
 \date{1 October 2026}
 \maketitle
 \thispagestyle{empty}
@@ -64,7 +64,8 @@ preorder, $\Ga_D=\sum_k\gamma_kt^k$ is the gamma polynomial of
 whether $\Ga_D$ is ultra-log-concave after normalization by its
 \emph{actual} degree, and names degree three as the first open target. This
 report merges eleven manuscripts and a supplement (twelve sources) of % ed. (2026-10-02): was "eleven manuscripts"; source 23 is the supplement
-ProveIt's batch~73 that answer the question in three directions.
+ProveIt's batch~73, and one manuscript of batch~77 (source~35), that % batch 77 (2026-10-02): source 35 added
+answer the question in three directions.
 Part~I (sources 25, 16 and~23) proves it for every finite preorder of actual
 degree at most four with unit activities: degree three by a
 Gallai--Edmonds reduction and exact integer-population certificates, with
@@ -77,10 +78,11 @@ by two role cover, coefficientwise Rayleigh inequalities for a three-vertex
 shore, rank-ULC under every physical vertex cover of size three and on
 bipartite physical graphs, a pendant-head stability criterion, and rank-ULC
 of every independently weighted preorder of actual degree at most three.
-Part~III (sources 14, 10, 34 and~06) treats an arbitrary directed core with a
+Part~III (sources 14, 10, 34, 06 and~35) treats an arbitrary directed core with a
 cloud of universal sinks: a sharp last-coefficient bound for every core
-size, rank-ULC at every actual degree for four-vertex cores, and for
-five-vertex cores at actual degrees five and four.
+size, and rank-ULC at every actual degree for four-vertex and for % batch 77 (2026-10-02): was "and for five-vertex cores at actual degrees five and four"
+five-vertex cores; for five-vertex cores the cubic constant three holds
+on the face $\gamma_4=0$ and is sharp there.
 The degree-three and degree-four theorems are computer-assisted; the
 structural theorems have ordinary proofs. Nothing here is formalized in
 Lean or Rocq, and nothing is refereed.
@@ -105,6 +107,14 @@ printed sources and are not sources: 31 (vertex activities, superseded by
 source~22) and 13 (a weaker four-core inequality, superseded by source~10).
 Appendix~\ref{pgr:sec:provenance} records every archive.
 
+Source~35 arrived later, in ProveIt's batch~77 (arrival commit % batch 77 (2026-10-02)
+\texttt{096ee7b87}, 2~October 2026; placement commit \texttt{089d2b825}).
+It is batch-77 manuscript~71, the archive
+\nolinkurl{universal-sink-five-core-cubic-package}, delivered as six ZIP parts
+in one archive. It takes the next number after this report's highest
+source number,~34, and is printed as Section~\ref{pgr:s:fq:sec}, the last
+section of Part~III. With it the report has thirteen sources.
+
 The report has three Parts.
 \begin{itemize}
 \item Part~I, unit activities on finite preorders through actual degree
@@ -114,7 +124,7 @@ The report has three Parts.
 \item Part~II, independent role activities and small covers: sources 20,
   12, 11, 15 and~22.
 \item Part~III, universal-sink clouds over an arbitrary directed core:
-  sources 14, 10, 34 and~06.
+  sources 14, 10, 34, 06 and~35.
 \end{itemize}
 
 Every source is printed with its statements, proofs, examples, remarks,
@@ -129,7 +139,7 @@ label there and is not presented as new. Editorial additions are marked
 \emph{Status.} The sources are AI-assisted research manuscripts and notes:
 the title pages of sources 11, 12, 15, 16, 20, 22 and~25 read ``Research
 manuscript prepared for Vladimir Reshetnikov'' and their PDF metadata
-``Research manuscript prepared with OpenAI''; sources 06, 10, 14 and~34 read
+``Research manuscript prepared with OpenAI''; sources 06, 10, 14, 34 and~35 read
 ``Research note''; source~23 has no author line. Several main theorems are
 computer-assisted: their proofs include finite exact certificate
 computations shipped with this report (Section~\ref{pgr:sec:prov:files}).
@@ -174,7 +184,7 @@ Sources~16 and~25 cite \prp{} at its commit \texttt{d5e863bba}; the labels
 they cite are unchanged at the placement commit.
 
 \subsection{The common object}\label{pgr:sec:object}
-The following definitions are common to all twelve sources; each source % ed. (2026-10-02): was "eleven"
+The following definitions are common to all thirteen sources; each source % ed. (2026-10-02): was "eleven"; batch 77: "twelve"
 restates them in its own words, and those restatements are kept in their
 sections because they fix each source's precise scope. Let $D$ be a finite
 loopless directed relation on a set $V$. For a preorder, $D$ is its
@@ -278,8 +288,8 @@ the merge note after that theorem. It is re-proved, by the same route and
 without novelty claim, as source~16's Theorem ``Universal first
 inequality'', source~25's Proposition ``first'' (unit activities, with the
 lemma above), source~22's Proposition ``first'', source~11's Lemma
-``first'' and the first comparisons of sources 10, 34 and~06; sources 10,
-11, 34 and~06 prove Lemma~\ref{pgr:lem:ms} by the same mass-shifting
+``first'' and the first comparisons of sources 10, 34, 06 and~35; sources % batch 77 (2026-10-02): source 35 added twice
+10, 11, 34, 06 and~35 prove Lemma~\ref{pgr:lem:ms} by the same mass-shifting
 argument, and source~12 gives its triangle-free case for actual degree two.
 Those texts are replaced by pointers to this theorem. Source~25 adds, and
 we keep, that counting matchings instead of supports would change the
@@ -293,7 +303,7 @@ most two is rank-ULC and real-rooted; for preorders this is \prp,
 Corollary \texttt{mr:cor:preorderfirst}.
 
 \subsection{Notions and notation}\label{pgr:sec:notions}
-The twelve sources share one object but not one vocabulary. The following % ed. (2026-10-02): was "eleven"
+The thirteen sources share one object but not one vocabulary. The following % ed. (2026-10-02): was "eleven"; batch 77: "twelve"
 conventions hold throughout; every source section uses its own letters
 inside its own scope, and the table below says where a letter means
 different things.
@@ -375,7 +385,9 @@ Real stable & nonvanishing when all variables lie in
 \item $\rho$: the actual degree in the notation of sources 06, 10 and~34;
   $d$ in the others.
 \end{itemize}
-No symbol of a source has been renamed. Where a source's normalization
+No symbol of a source has been renamed, except some letters of
+source~35, which Section~\ref{pgr:s:fq:sec} renames and lists (added
+2~October 2026, batch~77). Where a source's normalization
 differs from the actual degree (source~16's Theorem on the exterior
 construction and source~15's shore order), the source says so at the
 place, and that sentence is kept.
@@ -1307,7 +1319,10 @@ cores with saturation by source~15, and by real stability for two by two
 role covers (source~20); sources 11, 12 and~15 state the general
 two-tail/three-head case as open. (4)--(6) remain open. (7)~Part~III proves
 actual-degree five for five-vertex cores with a universal-sink cloud
-(source~34); degree five for preorders in general is open.}
+(source~34); degree five for preorders in general is open.
+Added 2~October 2026, batch~77: with sources 06 and~35, Part~III proves
+rank-ULC at every actual degree for five-vertex cores with a
+universal-sink cloud (Corollary~\ref{pgr:s:fq:cor:all}).}
 
 
 
@@ -3677,6 +3692,10 @@ exchanging the roles gives the universal-source versions.
   at actual degree five, and a counterexample to the constant three.
 \item Section~\ref{pgr:s:fb:sec} (source~06): five-vertex cores on the face
   $\gamma_5=0$, rank-ULC at actual degree four.
+\item Section~\ref{pgr:s:fq:sec} (source~35, batch~77): five-vertex cores
+  on the face $\gamma_4=0$, $\gamma_2^2\ge3\gamma_1\gamma_3$
+  (computer-assisted), with the constant three sharp; hence, with sources
+  06 and~34, rank-ULC at every actual degree.
 \end{itemize}
 \mnote{relation to Parts I and~II. A universal-sink cloud is a single
 exterior type in the sense of source~16's normal form, so with unit
@@ -3693,6 +3712,16 @@ Theorem~\ref{pgr:thm:first}. On faces where every vertex used as a tail is
 never used as a head, the relation is bipartite and \mrn, Corollary
 \texttt{mrn:w:rf:cor:rankfive}, applies. Neither \prp{} nor \mrn{} has
 universal-sink material.}
+\mnote{Added 2~October 2026, batch~77: source~35
+(Section~\ref{pgr:s:fq:sec}) proves actual degree three for five-vertex
+cores, so the statement above that it remains open is answered. It proves
+the constant three on the face $\gamma_4=0$, and that constant is sharp
+there, although it fails at actual degree five (source~34's example has
+$\gamma_4>0$). With sources 06 and~34, every five-vertex core with a
+universal-sink cloud is rank-ULC at every actual degree
+(Corollary~\ref{pgr:s:fq:cor:all}). Source~35's first comparison is again
+Theorem~\ref{pgr:thm:first}, and for preorder cores its theorem is a
+case of source~22's Theorem~\ref{pgr:r:ir:thm:main}.}
 
 \section{The sharp last gap for every core size (source 14)}\label{pgr:s:lg:sec}
 
@@ -4263,6 +4292,13 @@ The relation becomes a preorder upon adjoining the diagonal. Its actual degree i
 the example has five positive core tail activities, and source~10 proves
 the constant three for four-vertex cores only. It was reproduced at intake
 by direct enumeration.}
+\mnote{Added 2~October 2026, batch~77: nor does it contradict source~35's
+Theorem~\ref{pgr:s:fq:thm:main}, which proves the constant three for
+five-vertex cores only on the face $\gamma_4=0$; here
+$\gamma_4=4{,}830{,}450{,}000>0$. The lower-degree closure that this
+section does not claim is now supplied by source~06 at actual degree four
+and by source~35 at actual degrees at most three
+(Corollary~\ref{pgr:s:fq:cor:all}).}
 
 
 The package's \texttt{python verify.py} command performs a fresh exact replay. File integrity checking alone is not mathematical verification. Optional discovery programs and numerical-search receipts are not proof dependencies. The ordinary core proofs below, the moment reduction, and the first and last arguments are separate from the finite exact calculation. The result makes no claim about arbitrary weighted preorders outside the universal-sink family, no lower-degree closure claim for five cores, and no real-rootedness or stability claim.
@@ -4531,6 +4567,11 @@ At actual degree four this gives $3\gamma_1^2\ge8\gamma_2$. Along with \eqref{pg
 Run \texttt{python verify.py} in the supplied package for a fresh standard-library exact replay. The driver checks integrity, unpacks the compressed certificate data to a fresh temporary directory, and runs the independent support, polynomial, and orbit checks. Neither a numerical solver, a prior research archive, nor network access is needed. Integrity checking by itself is not a proof replay. Separate exact audits corroborate the ordinary Boolean implications and square identities, but the ordinary arguments do not depend on those computations.
 
 The theorem does not infer the degree-three inequality $\gamma_2^2\ge3\gamma_1\gamma_3$ from a padded quartic normalization. It therefore closes the actual-degree-four boundary only. Nonuniversal exterior neighborhoods and larger physical cores are outside its scope. No general weighted-preorder, real-rootedness, stability, or novelty claim is made.
+\mnote{Added 2~October 2026, batch~77: the degree-three inequality
+$\gamma_2^2\ge3\gamma_1\gamma_3$ on the face $\gamma_4=0$ is proved by
+source~35 (Theorem~\ref{pgr:s:fq:thm:main}), without any padded
+normalization; with it, five-vertex cores are rank-ULC at every actual
+degree (Section~\ref{pgr:s:fq:sec}).}
 
 
 \subsection{Appendix of source 06: ordinary coefficientwise core comparisons}\label{pgr:s:fb:app:core}
@@ -4610,6 +4651,371 @@ If the neighborhood has at least two vertices, $d_j=z_3,c_j\le z_2$, and the coe
 which are coefficientwise nonnegative since $s^2\ge2tp$ and $st\ge3p$. The empty-neighborhood case is zero. Summing over heads proves $2de_3\ge2e_2g+ce_4$.
 
 
+\section{Five-vertex cores at actual degree at most three (source 35)}\label{pgr:s:fq:sec}
+
+Source~35 is \emph{The cubic boundary for five-vertex cores with universal
+sinks} (5 pages as delivered, dated 1~October 2026; ``Research note'', no
+author line). It is the one manuscript of this report that arrived in
+ProveIt's batch~77: batch-77 manuscript~71, the archive
+\nolinkurl{universal-sink-five-core-cubic-package} (six ZIP parts in one
+archive), arrival commit \texttt{096ee7b87}, placement commit
+\texttt{089d2b825}. It was written right after sources 34 and~06 and
+continues their five-vertex line. Its files are shipped with the prefix
+\texttt{35-five-core-cubic-}. Its $7{,}901$ certificate files, delivered in
+six compressed shards of 95.1~MB, are not shipped: they are kept in the
+arrival commit, and no shipped program can regenerate them (README,
+``Reconstructing what is not shipped''). Its structural input
+\nolinkurl{inputs/structural-9608.json} is shipped as the derived container
+\nolinkurl{data/35-five-core-cubic-inputs-structural-9608.json.xz}, which
+decompresses to the delivered file byte for byte.
+
+\paragraph{Abstract of source 35, as delivered.}
+
+We prove rank ultra log concavity at actual degree three for every arbitrary directed five-vertex core with a finite independent cloud of universal sinks and independent nonnegative tail and head activities. Combined with the established degree-four and degree-five results, this closes every actual degree from zero to five in this family. Each feasible ordered pair of disjoint endpoint supports is counted once. Ordinary reductions leave a two-sink problem on 9,608 core classes. Its exact hybrid proof uses established structural criteria, the earlier preorder theorem, and rational square certificates; 94 classes use a positive tail-sum multiplier. The complete finite replay is independent of the discovery code and numerical optimization. The cubic constant is sharp, even for preorder cores.
+
+\mnote{Added 2~October 2026, batch~77. This section answers the statement
+in the introduction to Part~III that actual degree three was open for
+five-vertex cores. Several of its steps are already printed in this report
+and are replaced by pointers: its Boolean coefficient formulas are
+source~34's \eqref{pgr:s:fc:eq:coeff}; its first comparison is
+Theorem~\ref{pgr:thm:first}; its argument that the one-tail criterion
+applies to physical supports is the proof of
+Theorem~\ref{pgr:r:ir:thm:oneside}. Its degree-four and degree-five inputs
+are sources 06 and~34, which it cites and does not re-prove. Everything
+else is printed below.}
+
+\paragraph{Notation of this section.}
+Source~35 works in the setting of Part~III and uses source~34's letters
+$a,b,c,d,f,g$ for the Boolean core polynomials and $e_r$, $E_r$ for the
+elementary symmetric functions of the core tail and sink head activities.
+Three of its letters would clash with letters of other sources or with each
+other. They are renamed here, and nothing else is.
+\begin{center}\small
+\begin{tabular}{p{50mm}p{24mm}p{66mm}}
+\toprule
+Source~35 & Here & Reason\\\midrule
+$m$, the number of positive core tails & $n_u$ & source~14's $m$
+  (Section~\ref{pgr:s:lg:sec}) counts positive \emph{sinks}\\
+$q$, the number of positive sinks & $n_w$ & $q_\ell$ are the weights of
+  a certificate\\
+$p=\prod_{i\ne h}u_i$ (reduction, case~4) & $u_{C\setminus h}$ & source~34's
+  notation $u_S=\prod_{i\in S}u_i$; $p$ is also the hub of a one-tail
+  cover\\
+$s=w_0+w_1$, $p=w_0w_1$ (two-sink lemma) & $E_1$, $E_2$ & these are the
+  elementary symmetric functions of the two sink activities\\\bottomrule
+\end{tabular}
+\end{center}
+The hub $p$ of a one-tail cover $(p,Q)$ keeps its letter, as in
+Theorem~\ref{pgr:r:ir:thm:oneside}. The letter $h$ names a zero-tail core
+vertex, as in source~06; $H$ is the core relation, and $P_H$, $M_H$, $R_H$
+are indexed by it. The multiplier $M_H$ is not the side matroid $M$ of
+Theorem~\ref{pgr:r:ir:thm:oneside}. A tempting misreading should be
+avoided: the theorem below asserts the cubic constant three only on the
+face $\gamma_4=0$. Across the whole five-vertex family that constant is
+false; source~34's example in Section~\ref{pgr:s:fc:sec} has $\gamma_4>0$.
+
+\subsection{Model, statement and proof dependencies}
+Let $C=\{0,1,2,3,4\}$ carry an arbitrary loopless directed relation $H$. Let $W$ be a finite independent set disjoint from $C$. The full relation $D$ consists of $H$ and every arc $C\to W$, with no other arcs. Assign nonnegative tail activities $u_i$ and head activities $v_i$ independently on $C$, and head activities $w_x$ on $W$. Put
+\[
+ \Gamma_D(t)=\sum_{k=0}^5\gamma_k t^k,\qquad \gamma_0=1,
+\]
+where $\gamma_k$ is the sum of
+$u_Sv_{T\cap C}w_{T\cap W}$ over ordered pairs $(S,T)$ of disjoint physical endpoint sets, $|S|=|T|=k$, that admit a directed perfect matching from $S$ to $T$. Every feasible pair is counted once, regardless of its number of witnesses. Write $\rho=\deg\Gamma_D$ for the actual surviving degree.
+
+\begin{theorem}[Cubic boundary]\label{pgr:s:fq:thm:main}
+On the entire nonnegative activity face $\gamma_4=0$,
+\begin{equation}\label{pgr:s:fq:eq:cubic}
+ \gamma_2^2\ge 3\gamma_1\gamma_3.
+\end{equation}
+Consequently the family is rank ultra log concave at every actual degree $\rho\le3$: the sequence $(\gamma_k/\binom\rho k)_{k=0}^{\rho}$ has no internal zeros and is log-concave. The coefficient $3$ in \eqref{pgr:s:fq:eq:cubic} is sharp, even for preorder cores.
+\end{theorem}
+
+No transitivity is assumed. Adjoining the diagonal has no effect on physically disjoint support pairs. Thus the result applies to universal-sink extensions of finite preorder cores. Reversal of every arc, accompanied by interchange of tail and head activities, gives the universal-source version.
+
+\mnote{relation to the other sources. For a preorder core the theorem is a
+special case of source~22's Theorem~\ref{pgr:r:ir:thm:main}: every
+independently weighted preorder of actual degree at most three is
+rank-ULC, and source~35 itself uses that theorem for 49 core classes
+below. The new content is the non-transitive core. For four-vertex cores
+the constant three holds on every face (source~10,
+Theorem~\ref{pgr:s:ad:thm:main}); for five-vertex cores it holds on the face
+$\gamma_4=0$ but not everywhere. Source~34's counterexample to the
+constant three (Section~\ref{pgr:s:fc:sec}) has
+$\gamma_4=4{,}830{,}450{,}000>0$ and actual degree five, so it lies off this
+face and does not contradict the theorem.}
+
+The ordinary reduction uses two established companion results, stated here to fix their scope:
+\begin{itemize}
+\item[(R3)] Every finite loopless directed relation with at most three active tail roles has actual-degree rank ultra log concavity under independent nonnegative role activities. This is the one-shore case of the previously proved role-matching-rank-three theorem; transitivity is unnecessary.
+\item[(C4)] Every arbitrary directed four-vertex core with an independent universal-sink cloud satisfies $\gamma_2^2\ge3\gamma_1\gamma_3$ for all nonnegative independent role activities, and is rank ultra log concave at every actual degree.
+\end{itemize}
+The finite verification additionally uses the established physical-cover-three, two-tail/two-head role-cover, and one-tail stable-side criteria, together with the established weighted-preorder theorem at actual degree at most three. Their exact statements, approved versions, and hashes are recorded among the proof dependencies. These are mathematical inputs; the new replay checks every application hypothesis. It does not rerun every companion theorem's earlier certificate collection.
+
+\mnote{in this report these inputs are: (R3), the one-shore case of
+source~22's Corollary~\ref{pgr:r:ir:cor:rolerank}, that is,
+Theorem~\ref{pgr:r:ir:thm:three} for three active tails; (C4), source~10's
+Theorem~\ref{pgr:s:ad:thm:main}; the physical-cover-three criterion,
+source~11's Theorem~\ref{pgr:r:pc:thm:main}; the two-tail/two-head role
+cover, source~20's Theorem~\ref{pgr:r:rc:thm:rolecover}; the one-tail
+stable-side criterion, Theorem~\ref{pgr:r:ir:thm:oneside} (source~22, a
+case of source~15's Theorem~\ref{pgr:r:ps:thm:pendant}); and the weighted
+preorder theorem, source~22's Theorem~\ref{pgr:r:ir:thm:main}. Source~35
+names none of them. It calls them ``previously proved'' or ``established''
+and identifies them by archive hashes in its dependency ledger
+(\nolinkurl{35-five-core-cubic-DEPENDENCIES.md}). Its five companion
+archives are, byte for byte, batch-73 archives 10, 34, 07, 06 and~22, that
+is, sources 10, 34, 06 and~22 of this report. Some of the pinned dependency
+notes still say ``proposed'' or describe parts that were open when they
+were written. The ledger explains that later explicit approvals pin the
+same theorem bytes, and that only the approved statements are used.}
+
+\subsection{Boolean coefficients and the complete degree-drop reduction}
+For disjoint $S,J\subseteq C$, let $F_{kr}$ sum $u_Sv_J$ over $|S|=k$, $|J|=r$, for which distinct selected tails can cover all selected core heads $J$. Feasibility is Boolean. Every such partial matching extends to any chosen $k-r$ sinks. With
+\[
+ a=F_{11},\quad b=F_{22},\quad c=F_{21},\quad d=F_{31},\quad f=F_{32},
+ \qquad e_r=\ee_r(u),\quad E_r=\ee_r(w),
+\]
+the coefficients $\gamma_1,\dots,\gamma_4$ are given by source~34's
+\eqref{pgr:s:fc:eq:coeff}, where
+\[
+ g=F_{41}=\sum_{j\in C}\eta_jv_ju_{C\setminus j},
+ \qquad \eta_j=\mathbf1\{\text{some }i\ne j\text{ has }i\to j\text{ in }H\}.
+\]
+\mnote{source~35 states these formulas as its own equation, without
+$\gamma_5$. They are source~34's (and source~06's
+\eqref{pgr:s:fb:eq:coeff}) in the same letters, and are printed once, in
+Section~\ref{pgr:s:fc:sec}. Source~35 writes $g$ with the indicator
+$\eta_j$; this is source~34's $g=\sum_jv_jg_j$, with $g_j=u_{C\setminus j}$
+for a nonempty in-neighbourhood of $j$ and $g_j=0$ otherwise. Source~35's
+justification of the $\gamma_4$ formula is kept.}
+For $\gamma_4$, four core tails allow at most one core head; if that head is $j$, the tail set is exactly $C\setminus\{j\}$, and one incoming arc suffices. This proves its displayed formula without counting matching witnesses.
+
+An arc is \emph{effective} when the product of its role activities is positive. Deleting ineffective arcs preserves every positive-weight support. A zero tail activity alone does not permit deletion of the corresponding head role. Zero-weight sink heads can be removed, since sinks have no outgoing arcs.
+
+Put $n_u=|\{i:u_i>0\}|$ and $n_w=|\{x:w_x>0\}|$. It suffices to consider $\gamma_3>0$ and $\gamma_4=0$; otherwise \eqref{pgr:s:fq:eq:cubic} is immediate. A positive support contains positive submatchings, so these conditions give actual degree three.
+\begin{enumerate}
+\item If $n_u\le3$, apply (R3) to the effective relation. Its role graph has at most three nonisolated tail vertices. No physical vertex is discarded from an active head role.
+\item If $n_u\ge4$ and $n_w\ge4$, universal arcs give a positive support of size four, contradicting $\gamma_4=0$. Hence $n_w\le3$ in the remaining cases.
+\item Suppose $n_u=5$ and $n_w=3$. Then $E_3>0$, $E_4=0$, and \eqref{pgr:s:fc:eq:coeff} gives $g=0$. Every product $u_{C\setminus j}$ is positive, so $\eta_jv_j=0$ for every $j$. Thus every effective internal arc is absent, and $\gamma_k=e_kE_k$.
+For the three positive sink weights $x,y,z$,
+\[
+ E_2^2-3E_1E_3=\tfrac12\bigl((xy-xz)^2+(xy-yz)^2+(xz-yz)^2\bigr)\ge0.
+\]
+Also $e_2^2-e_1e_3$ is coefficientwise nonnegative: its nonzero monomial types $u_i^2u_j^2$, $u_i^2u_ju_k$, and $u_iu_ju_ku_l$ have coefficients $1,1,2$, respectively. Therefore
+\[
+ \gamma_2^2-3\gamma_1\gamma_3
+ =(e_2^2-e_1e_3)E_2^2+e_1e_3(E_2^2-3E_1E_3)\ge0.
+\]
+\item Suppose $n_u=4$ and $n_w=3$. Let $h$ be the unique zero-tail core vertex, so that $u_{C\setminus h}>0$. The fourth coefficient is $u_{C\setminus h}v_h\eta_hE_3$. Its vanishing forces $v_h\eta_h=0$. Every possible in-neighbor of $h$ is one of the four positive tails. Thus $h$ has no effective incoming arc and, because $u_h=0$, no effective outgoing arc. Both roles are now unusable in every positive support, so deleting $h$ preserves $\Gamma_D$ and reduces to (C4).
+\item It remains that $n_w\le2$. Pad with zero sink weights to use two explicit variables $w_0,w_1$. If $n_w=0$, only five physical vertices are usable, so the degree is at most two. The two-sink inequality below (Lemma~\ref{pgr:s:fq:lem:finite}) covers all these cases, including further zero activities.
+\end{enumerate}
+This exhausts the entire face $\gamma_4=0$. In particular, no quartic-normalized inequality is substituted for the required cubic constant $3$.
+
+\mnote{case~4 is the step that source~34's scope paragraph says cannot be
+taken in general: a fifth core vertex with zero tail activity may remain a
+head. Here $\gamma_4=0$ forces its head role to be unusable as well, and
+only then is it deleted. Source~06 keeps such a vertex as a head-only
+vertex at actual degree four (Section~\ref{pgr:s:fb:sec}).}
+
+\subsection{The exact two-sink verification}
+With two sinks, there are at most seven usable physical vertices and hence degree at most three. With $E_1=w_0+w_1$ and $E_2=w_0w_1$,
+\[
+ \gamma_1=a+e_1E_1,\quad\gamma_2=b+cE_1+e_2E_2,\quad\gamma_3=fE_1+dE_2.
+\]
+The target polynomial is
+\begin{equation}\label{pgr:s:fq:eq:target}
+ P_H=(b+cE_1+e_2E_2)^2-3(a+e_1E_1)(fE_1+dE_2)
+\end{equation}
+in the twelve variables $x=(u_0,\ldots,u_4,v_0,\ldots,v_4,w_0,w_1)$, homogeneous of total degree eight.
+
+\begin{lemma}[Finite verification]\label{pgr:s:fq:lem:finite}
+For every loopless directed relation on five labeled core vertices, $P_H\ge0$ on the nonnegative orthant.
+\end{lemma}
+
+\paragraph{Coverage and selected proof branches.}
+There are $2^{20}=1,048,576$ labeled loopless relations, represented by 9,608 disjoint orbits under simultaneous permutations of the five physical core labels. The verifier checks the full orbit partition explicitly. It then selects exactly one proof for each representative, in this order:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Proof branch&Selected classes\\
+\midrule
+Two-tail/two-head role cover&43\\
+Physical vertex cover of size at most three&21\\
+One-tail cover with a certified HPP side&1,743\\
+Established preorder theorem, additional classes&49\\
+Direct rational square certificate&7,658\\
+Tail-sum-multiplied rational square certificate&94\\
+\bottomrule
+\end{tabular}
+\end{center}
+The structural/preorder union has 1,856 classes. Of the 139 preorder core classes (after adding the diagonal), 90 belong to the preceding branches and 49 are additional. Their two-sink extensions are preorders of physical degree at most three.
+
+\mnote{the last two counts are macros of the delivered file
+\nolinkurl{article/certificate-summary.tex}, which is not shipped; their
+values are typed in. The 9,608 class representatives are the core
+catalogue of sources 34 and~06, in the same order: the delivered
+\nolinkurl{inputs/cores.txt} is byte-identical to the shipped
+\nolinkurl{data/34-five-core-discovery-cores.txt}. The certificates are
+nevertheless new: their target is the two-sink polynomial
+\eqref{pgr:s:fq:eq:target}, not source~34's moment polynomial or
+source~06's, and none of their files equals a file of sources 34 or~06.}
+
+For the one-tail branch, a stored cover $(p,Q)$ satisfies: every arc has tail $p$ or head in $Q$, possibly after reversal. Its side transversal matroid has centers $Q$, one element for every physical tail with its neighborhood in $Q$, and one private dummy at each center. A basis is counted once by matching feasibility. The checker retains every repeated multi-neighbor column; only genuine loops and singleton-neighborhood parallel elements are simplified. It checks the complete basis set, not just numerical invariants.
+
+The side HPP inputs comprise 14 cases on at most seven elements, 201 eight-element cases of nonmiddle rank with all required HPP minors, and 1,528 cases matched to the published nine-element positive list. The small classifications and positive databank are those of Kummer and Sert \cite{KS,KSdata}. Each nine-element match includes an explicit element permutation and equality of all 126 rank-four basis indicators; a rank-five side is dualized first. The new computation checks membership in a proved-positive list, not a complete nine-element classification.
+
+\paragraph{Why the one-tail criterion applies to physical supports.}
+\mnote{source~35 proves here that the stable-side criterion applies to the
+physical supports of an arbitrary directed relation. The proof has four
+steps. The split seed identity is
+$\mu_B=(\prod_ia_i)(\prod_{j\in Q}v_j)F_M(d_j=b_j/v_j,\ t_i=-u_i/a_i)$ for
+role-split monomer variables $a_i,b_j$. An uncovered head $x$ is added by
+$\mu\mapsto b_x\mu-c_x\partial_{a_p}\mu=b_x\mu(a_p-c_x/b_x)$ with
+$c_x=u_pv_x\mathbf1_{p\to x}$. The two roles of each physical vertex are
+merged by $(\partial_{a_i}+\partial_{b_i})\mu|_{a_i=b_i=z_i/2}$. Finally
+the diagonal $\mu(t,\ldots,t)=t^n\Gamma_D(-t^{-2})$ transfers the roots.
+These are the four steps of source~22's proof of
+Theorem~\ref{pgr:r:ir:thm:oneside}, which is itself source~15's
+Theorem~\ref{pgr:r:ps:thm:pendant} with a single hub, so the argument is
+replaced by that pointer. Source~35's own remarks are kept. Its
+coefficient $c_x$ includes the arc indicator. Multiaffinity in $a_p$
+gives the displayed factorization. The merge sends $a_ib_i$ to $z_i$,
+either of $a_i,b_i$ to $1$ and the constant term to $0$, so it removes
+simultaneous use of both physical roles and preserves exactly the Boolean
+support polynomial. The empty-support coefficient is one, which rules out
+a zero output and controls zero-activity limits. The criterion is used in
+its arbitrary-directed-relation scope, which the shipped note
+\nolinkurl{35-five-core-cubic-audits-ONE_TAIL_HPP_SCOPE.md} audits.}
+
+\paragraph{Exact algebraic certificates.}
+The remaining representatives use one of two explicitly tagged identities:
+\begin{equation}\label{pgr:s:fq:eq:certificate}
+ M_H P_H=R_H+\sum_{\ell}q_\ell x^{\alpha_\ell}
+       \left(\sum_j c_{\ell j}x^{\beta_{\ell j}}\right)^2,
+ \qquad M_H\in\{1,U\},\quad U=\sum_{i=0}^4u_i.
+\end{equation}
+Here every $q_\ell$ is a positive rational, every exponent is a nonnegative integer, each $c_{\ell j}$ is rational, and every coefficient of $R_H$ is nonnegative. The total degree is eight for $M_H=1$ and nine for $M_H=U$. If $U>0$, the second identity proves $P_H\ge0$ by division. If $U=0$, all core tails are zero and every positive-rank support has weight zero, so $P_H=0$ directly. This proves the same target on every nonnegative face.
+
+The independent checker reconstructs $\gamma_1,\gamma_2,\gamma_3$ by literal disjoint endpoint-pair enumeration and a separate grouped Hall test. It expands every square with integer and rational arithmetic, including contributions at monomials absent from the target, and verifies the entire remainder. It rejects unknown multipliers, wrong degrees, and duplicate representative IDs across the two certificate directories. Numerical Gram matrices or optimization may suggest squares during discovery; neither numerical output nor any solver is trusted or needed in the proof replay.
+
+\mnote{the tail-sum multiplier $M_H=U$ is new in Part~III: the
+certificates of sources 10, 34 and~06 are unmultiplied. (Source~22 uses
+positive multipliers for four of its direct certificates,
+Section~\ref{pgr:r:ir:sec:finite}.) The producer that
+found the squares is not delivered, so the certificates cannot be
+regenerated, only checked.}
+
+\paragraph{Completion receipt.}
+The complete independent replay verifies all 9,608 classes with no missing or duplicate proof IDs. It checks every one of the 7,901 retained certificate files: 7,807 direct certificates and 94 tail-sum certificates. The total is 1,368,926 positive rational square summands and 11,514,499 positive remainder terms. Of the direct files, 149 overlap earlier structural/preorder branches; they remain included and checked for provenance, while the selected ledger is disjoint. All literal/Hall polynomial comparisons, structural witnesses, published positive-list matches, and the full permutation-orbit partition pass. The executable verifier uses only Python's standard library and exact integer/rational arithmetic. The release records source hashes and theorem-application checks separately from replays of the companion results' older certificate collections.
+
+\mnote{verification at intake (2~October 2026). The integrity check of
+the delivered package passed on the merged six parts (74 files and six
+data shards, 4.9~s). Fifteen certificates (ids 0--7, 1814--1817 and
+8637--8639) were decoded from shards 01, 02 and~06, matched against the
+delivered per-file hashes and checked by the delivered checker in partial
+mode, together with the full orbit coverage of all $2^{20}$ labeled
+cores: their records equal those of the delivered per-certificate
+manifest; the sample includes the tail-sum certificate~1817. The
+delivered extended and multiplier self-tests passed on this sample; the
+multiplier self-test needs the tail-sum certificate~762, which was added
+for it. The structural checker re-verified all 1,807 structural records and the 139
+preorder records (49 new beyond the structural branches, 1,856 combined)
+in 103~s, and reproduced the delivered structural records. The symbolic
+sharpness check passed. The full replay of all 7,901 certificates was not
+run: it would take about 1.5~hours with four workers and 6~GB of
+temporary disk on the intake machine (the delivered receipt records
+279~s on the delivery machine). The delivered approvals say that a clean
+replay of the final six ZIP files was a separate release step, which they
+do not record. The delivered receipt, which this paragraph reports, is
+therefore the pre-release replay. Shipped receipts:
+\nolinkurl{data/35-five-core-cubic-audits-full-hybrid-20261001T164052Z-receipt.json}
+and the approvals beside it.}
+
+The supporting dependency ledger gives further counts. The replay checks
+192,528 basis indicators of the published list and 3,216 one-element
+minors, including 411,648 rank-function identities. This is a
+theorem-application and exact databank-membership check. It does not
+rediscover the published HPP proofs or rerun the published Gram searches.
+
+\subsection{Actual normalization and all-degree synthesis}
+
+\mnote{source~35 proves here, for every finite loopless directed relation
+under nonnegative independent role weights and actual degree $\rho\ge2$,
+the first comparison $(\rho-1)\gamma_1^2\ge2\rho\gamma_2$, by the weighted
+clique bound of Motzkin and Straus \cite{MS} on the graph of effective
+arcs, with a direct mass-transfer proof of that bound. This is
+Theorem~\ref{pgr:thm:first} with Lemma~\ref{pgr:lem:ms}, by the same route,
+and is replaced by that pointer.}
+
+At actual degree three, \eqref{pgr:eq:first} is $\gamma_1^2\ge3\gamma_2$, and the other normalized comparison is exactly \eqref{pgr:s:fq:eq:cubic}. At degree two the needed constant is $4$, again supplied by \eqref{pgr:eq:first}; degrees zero and one are vacuous. A positive top support has a positive matching witness, and taking subsets of its arcs gives positive supports of every smaller size. Hence there are no internal zero coefficients.
+
+\begin{corollary}[All actual degrees]\label{pgr:s:fq:cor:all}
+Every arbitrary loopless directed five-vertex core with an independent universal-sink cloud is rank ultra log concave under independent nonnegative tail and head activities, normalized by its own actual surviving degree $0\le\rho\le5$.
+\end{corollary}
+\begin{proof}
+Degrees at most three are settled above. The actual-degree-four boundary theorem, source~06's Theorem~\ref{pgr:s:fb:thm:main}, gives the two interior constants $9/4$ and $8/3$; the actual-degree-five theorem, source~34's Theorem~\ref{pgr:s:fc:thm:main}, gives $\gamma_2^2\ge2\gamma_1\gamma_3$, $\gamma_3^2\ge2\gamma_2\gamma_4$, and the stronger last comparison $\gamma_4^2\ge(25/8)\gamma_3\gamma_5$. Their first comparisons are \eqref{pgr:eq:first}. Their statements are applied only at their asserted actual degrees. No lower-degree normalization is inferred from a padded higher-degree result. The companion archive identities and exact scope are listed in the dependency ledger.
+\end{proof}
+\mnote{source~35 writes ``the previously delivered actual-degree-four
+boundary theorem'' and ``the previously delivered actual-degree-five
+theorem''. Its ledger pins their archives, which are those of sources 06
+and~34. With source~14's last gap (Section~\ref{pgr:s:lg:sec}), Part~III
+now proves rank-ULC at every actual degree for four- and five-vertex cores
+with universal-sink clouds.}
+
+\subsection{Sharpness of the cubic constant}
+Take core arcs $0\to3$ and $1\to2$, with the universal arcs to two sinks. For $\varepsilon>0$, set
+\[
+ u=(\varepsilon,\varepsilon,0,0,1),\qquad
+ v=(0,0,\varepsilon^{-1},\varepsilon^{-1},0),\qquad
+ w_0=w_1=\tfrac12.
+\]
+This is a preorder core after adding diagonals. Direct Boolean enumeration gives
+\begin{align*}
+ (\gamma_0,\gamma_1,\gamma_2,\gamma_3)
+ &=\left(1,3+2\varepsilon,
+ 3+\tfrac52\varepsilon+\tfrac14\varepsilon^2,
+ 1+\tfrac12\varepsilon\right),\\
+ \gamma_2^2-3\gamma_1\gamma_3
+ &=\tfrac92\varepsilon+\tfrac{19}4\varepsilon^2
+  +\tfrac54\varepsilon^3+\tfrac1{16}\varepsilon^4.
+\end{align*}
+The degree is three for every $\varepsilon>0$, and $\Gamma_D\to(1+t)^3$ coefficientwise. Hence $\gamma_2^2/(\gamma_1\gamma_3)\to3$, excluding every larger uniform constant. An independent symbolic replay is included.
+
+\mnote{the symbolic replay is the shipped
+\nolinkurl{code/35-five-core-cubic-replay-check_sharpness_portable.py};
+it passed at intake, and its output equals the shipped
+\nolinkurl{data/35-five-core-cubic-audits-portable-sharpness-receipt.json}.
+The example was also recomputed at intake by direct enumeration, with
+exact arithmetic, at $\varepsilon=10^{-3}$. The limit $(1+t)^3$ attains
+equality in every degree-three Newton inequality, so no constant above
+three can hold. No other source of Part~III states sharpness for its
+cubic constant ($3$ for source~10, $2$ for source~34, $9/4$ for
+source~06). The statement here is for five-vertex cores on the face
+$\gamma_4=0$: the example uses all five core vertices, and the sharpness of
+source~10's constant three for four-vertex cores is not addressed.}
+
+\subsection{Scope and limits}
+The delivered package states its scope limits. Source~35 does not claim
+real-rootedness for the full family, a result for arbitrary nonuniversal
+sink neighbourhoods, a general directed physical-degree-three
+classification, a formal proof-assistant verification, or literature
+priority. A padded degree-four or degree-five normalization is never used
+at degree three. Its final audit adds that no numerical proof premise,
+sampling substitute or producer-code import is used, and no stability
+claim is made for every core. The package's command
+\texttt{python3 -B verify.py \mbox{--workers 4} \mbox{--output fresh-replay.json}} is
+the fresh proof replay; its integrity-only mode, partial logs, exploratory
+numerical searches and the stored reference receipt are not. Existing
+companion theorems are mathematical inputs, and their earlier certificate
+archives are not rerun. The local audits check exact applicability and
+data membership for the Kummer--Sert inputs. They do not rerun those
+authors' Gram searches or the entire earlier dependency archives.
+
+\mnote{an ordinary, certificate-free proof of
+Lemma~\ref{pgr:s:fq:lem:finite} would remove the computer assistance from
+Theorem~\ref{pgr:s:fq:thm:main}. Source~35 states no research questions.}
+
+
 \part*{Appendix}
 \addcontentsline{toc}{part}{Appendix}
 \appendix
@@ -4624,6 +5030,13 @@ cite a ProveIt commit: \nolinkurl{d5e863bba} (\prp{} at ``Write batch 70
 (4/5)''); the labels they cite are unchanged since. All other 40-digit
 hexadecimal strings in the packages are SHA-256 digests of package files.
 Every package's checksum ledger verified at intake.
+Source~35's archive \nolinkurl{universal-sink-five-core-cubic-package}
+(six ZIP parts in one archive) arrived later, in commit
+\nolinkurl{096ee7b87} on 2~October 2026 (batch~77, manuscript~71), and
+was placed in commit \nolinkurl{089d2b825} (batch~77, cluster~U). It
+cites no ProveIt commit. Its package integrity check passed at intake on
+the merged six parts, and the five companion archives it pins by SHA-256
+are batch-73 archives 10, 34, 07, 06 and~22, byte for byte.
 
 \begin{center}\small
 \begin{longtable}{p{9mm}p{40mm}p{52mm}p{13mm}p{20mm}}
@@ -4642,6 +5055,7 @@ Src. & Archive(s) & Manuscript (pages as delivered) & Pin & Printed\\\midrule
 10 & \nolinkurl{universal-sink-all-degrees-package} & Rank ultra log concavity for four vertex cores with universal sinks (5) & --- & Section~\pgrfwd{pgr:s:ad:sec}{in Part~III}\\
 34 & \nolinkurl{universal-sink-five-core-package} & Rank five ultra log concavity for five vertex cores with universal sinks (6) & --- & Section~\pgrfwd{pgr:s:fc:sec}{in Part~III}\\
 06 & archives 07 and 06, \nolinkurl{universal-sink-five-core-boundary-package-part-1}, \texttt{-part-2} & The rank four boundary for five vertex cores with universal sinks (7) & --- & Section~\pgrfwd{pgr:s:fb:sec}{in Part~III}\\
+35 & batch~77, \nolinkurl{universal-sink-five-core-cubic-package} (six parts in one archive) & The cubic boundary for five-vertex cores with universal sinks (5) & --- & Section~\ref{pgr:s:fq:sec}\\
 31 & \nolinkurl{weighted-degree-three-package} & Vertex-weighted preorder support polynomials of actual degree at most three (17) & --- & superseded by 22\\
 13 & \nolinkurl{universal-sink-degree-four-package} & Weighted degree four rank ultra log concavity for universal sink extensions (5) & --- & superseded by 10\\\bottomrule
 \end{longtable}
@@ -4688,6 +5102,17 @@ Src. & Archive(s) & Manuscript (pages as delivered) & Pin & Printed\\\midrule
   universal sinks, and a counterexample to the constant three there.
 \item \emph{06}: the actual-degree-four boundary of the five-vertex family,
   and the strengthened ordinary core comparisons.
+\item \emph{35} (batch~77): the cubic boundary
+  $\gamma_2^2\ge3\gamma_1\gamma_3$ on the face $\gamma_4=0$ for
+  five-vertex cores, hence, with sources 06 and~34, rank-ULC at every
+  actual degree; the degree-drop reduction; the two-sink lemma, whose
+  9,608 classes are settled by structural theorems and source~22's
+  preorder theorem (1,856), direct rational square certificates (7,658) and
+  tail-sum-multiplied ones (94); sharpness of the constant three. Its
+  Boolean coefficients are source~34's, its first comparison is \prp's,
+  and its one-tail step is Theorem~\ref{pgr:r:ir:thm:oneside}. It
+  re-delivers, byte for byte, statements and approvals of sources 10, 11,
+  20, 22, 34 and~06.
 \end{itemize}
 
 \subsection{Where the merge had to choose}\label{pgr:sec:prov:choices}
@@ -4728,13 +5153,30 @@ Src. & Archive(s) & Manuscript (pages as delivered) & Pin & Printed\\\midrule
   in the arrival commit.
 \item \emph{Source numbers} of multi-archive packages are their lowest
   archive numbers (16 and~06), as are their file prefixes.
+\item \emph{Source~35} (batch~77) is a new last section of Part~III, not a
+  new report: it continues the five-vertex line of sources 34 and~06 in
+  their setting, with their coefficient formulas and their core
+  catalogue. Its number is the next after this report's highest,~34. Its
+  Boolean coefficients (source~34's), its first comparison
+  (Theorem~\ref{pgr:thm:first}) and its argument for the one-tail
+  criterion (the proof of Theorem~\ref{pgr:r:ir:thm:oneside}) are
+  pointers. Its references to ``previously delivered'' or ``established''
+  results are replaced by labels. Its letters $m$, $q$, $s$ and two uses
+  of~$p$ are renamed (Section~\ref{pgr:s:fq:sec}). Its 27 delivered files
+  that are byte-identical to batch-73 material already here (17 shipped
+  files, five members of source~22's shipped audit archive, five printed
+  manuscripts) are not shipped again.
 \item \emph{Not shipped} (README): embedded exact copies of other archives,
   PDFs, delivery READMEs, checksum ledgers, rendered page images, build
   logs and scripts of the delivered PDFs, the files of source~16 larger
   than 2~MB, source~06's two bounded-sink certificate archives and their
   manifest, and the regenerable outputs listed in the README. Source~34's
   9,610 certificate files are shipped as one derived container whose
-  members are byte-identical to the delivered files.
+  members are byte-identical to the delivered files. Source~35's six
+  certificate shards (95.1~MB), which no shipped program regenerates, are
+  kept in its arrival commit; its structural input is shipped as a
+  derived \texttt{.xz} container that decompresses to the delivered
+  bytes; four regenerable outputs and ledgers are not shipped (README).
 \end{enumerate}
 
 \subsection{Shipped files}\label{pgr:sec:prov:files}
@@ -4744,7 +5186,8 @@ renamed with its prefix (\nolinkurl{25-degree-three-}, \nolinkurl{16-degree-four
 \nolinkurl{12-three-core-rayleigh-}, \nolinkurl{11-physical-cover-},
 \nolinkurl{15-pendant-support-}, \nolinkurl{22-independent-role-},
 \nolinkurl{14-sink-last-gap-}, \nolinkurl{10-sink-all-degrees-},
-\nolinkurl{34-five-core-}, \nolinkurl{06-five-core-boundary-}): code in
+\nolinkurl{34-five-core-}, \nolinkurl{06-five-core-boundary-},
+\nolinkurl{35-five-core-cubic-}): code in
 \texttt{code/}, data and records in \texttt{data/}, audits and proof notes
 at the top of the report directory. The report README lists them, maps the
 delivered names, lists what is not shipped and how to retrieve it from the

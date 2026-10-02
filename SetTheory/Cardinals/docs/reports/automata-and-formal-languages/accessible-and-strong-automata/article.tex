@@ -1,0 +1,605 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Fixed alphabet accessible automata}\fancyhead[R]{\small Research article}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{0.25em}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}
+\newcommand{\ind}{\mathbf 1}\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\newcommand{\coeff}[2]{[#1^{#2}]}\newcommand{\CalS}{\mathcal S}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\Var}{Var}
+\title{All orders asymptotics for fixed alphabet accessible automata}
+\author{Research article and reproducibility supplement}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For each fixed integer alphabet size $k\ge2$, let $a_n$ count rooted accessible complete deterministic transition structures on $n$ states, up to state isomorphism, with no chosen accepting states. We prove an expansion to every fixed order of $a_n/S(kn+1,n)$. An exact first-failure decomposition has two relevant boundaries: $n-h$ fixed produces a contractive renewal kernel, while $h$ fixed introduces finitely many exact small-state counts at each order. Independent geometric waiting times control the left tail; a typical-coupon conditioning argument suppresses the middle; and a uniform-sum integral controls all right-endpoint remainders. A patched trial sequence converts coefficient matching into a rigorous asymptotic theorem. We give a finite coefficient algorithm, the first three corrections, an elementary saddle carrier, and Lambert--Newton inversion with integer threshold brackets. The leading equivalent is classical. This article supplies a self-contained derivation and higher-order extension; it makes no exhaustive claim of publication priority.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage
+
+\section{Objects and main result}
+Fix $k\ge2$. An object consists of a finite state set, a distinguished initial state, and one total transition map for each of $k$ individually distinguished input letters. Every state must be reachable from the initial state. Isomorphisms preserve the initial state and each input letter. We do not choose an accepting-state subset, and do not quotient by permutations of the letters. The resulting sequences are OEIS A006689 for $k=2$ and A006690 for $k=3$ \cite{oeis2,oeis3}.
+
+A rooted accessible structure has trivial state automorphism group: every state is the image of the root under some word, and an automorphism fixes each such image. Consequently the number on labels $[n]$ with root fixed to $1$ is $(n-1)!a_n$, while allowing an arbitrary labeled root gives $n!a_n$. Choosing any accepting-state subset multiplies these counts by $2^n$. These conventions are important when comparing formulas in the literature.
+
+Write $S(m,n)$ for a Stirling number of the second kind, and set
+\begin{equation}\label{eq:constants}
+\begin{gathered}
+T_n=S(kn+1,n),\qquad d=k-1,\\
+t=k(1-e^{-t})>0,\qquad v=t/k,\qquad \rho=e^{-t}=1-v,\\
+c=1-k\rho=kv-k+1,\qquad q=\rho v^d,\qquad \beta=e^{-d}/q.
+\end{gathered}
+\end{equation}
+The function $k(1-e^{-t})-t$ is strictly concave, initially increasing, and eventually negative, so it has precisely one positive zero. Equivalently
+\[
+t=k+W_0(-ke^{-k}),\qquad v=1+\frac{W_0(-ke^{-k})}{k},
+\]
+where $W_0$ is the principal Lambert branch. All limits below hold for fixed $k$ and fixed requested expansion order. We exclude $k=1$ and make no growing-alphabet uniformity claim.
+
+\begin{theorem}\label{thm:main}
+There are effectively computable constants $c_j=c_j(k)$, $c_0=c$, such that for every fixed integer $J\ge0$,
+\begin{equation}\label{eq:main}
+\frac{a_n}{S(kn+1,n)}=\sum_{j=0}^{J}\frac{c_j}{n^j}+O_{k,J}(n^{-J-1}).
+\end{equation}
+Each coefficient is obtainable by finite rational operations and differentiation in $k,v$, together with finitely many exact values $a_h(k)$. Only $h$ with $dh+1\le j$ can affect $c_j$. In particular
+\begin{equation}\label{eq:c1}
+c_1=\frac{k\rho v}{2c}.
+\end{equation}
+The small-state boundary first affects $c_k$; for $k=2$ it contributes the term $-cv^2$ to $c_2$.
+\end{theorem}
+
+The leading constant and leading enumeration scale are classical, due to Korshunov and their later reformulation and simplification by Bassino--Nicaud and Lebensztayn \cite{korshunov1978,bassino,lebensztayn}. The principal contribution here is the two-boundary all-fixed-orders argument, including finite-state forcing and inversion. The bounded literature audit in Section~\ref{sec:provenance} does not establish priority.
+
+\section{An exact first failure identity}
+Scan outgoing transitions in discovery order of states and in the fixed order of input letters. Including the root as the first symbol gives a restricted-growth word of length $kn+1$: its first occurrence labels are $1,2,\ldots,n$ in that order. Let $Y_m$ be the number of distinct symbols in the first $m$ positions. Accessibility is equivalent to
+\begin{equation}\label{eq:checkpoint}
+Y_{kh+1}\ge h+1\qquad(0\le h<n).
+\end{equation}
+Indeed, after processing $h$ discovered states, another state must already be waiting unless all $n$ states have been processed. Conversely these inequalities ensure the row-by-row exploration is defined throughout and reaches all states.
+
+All restricted-growth words with $n$ symbols are counted by $T_n$. If \eqref{eq:checkpoint} first fails at $h$, the prefix has exactly $h$ symbols: the previous checkpoint forces at least $h$, and failure forces at most $h$. This prefix is an accessible $h$-state encoding. Its suffix of length $k(n-h)$ must introduce $n-h$ new symbols, without further accessibility restrictions. Put
+\begin{equation}\label{eq:R}
+R_h(r)=\frac{(kr)!}{r!}[z^{kr}]e^{hz}(e^z-1)^r\qquad(r\ge0).
+\end{equation}
+The factor $1/r!$ removes the order-independent labels of the new symbols. Existing symbols are individually distinguished. This proves
+\begin{equation}\label{eq:renewal}
+T_n=a_n+\sum_{h=1}^{n-1}a_h R_h(n-h).
+\end{equation}
+For example, at $k=2$, the cases $n=2,3$ are $15=12+3$ and $301=216+25+60$.
+
+The following equivalent forms will be useful:
+\begin{align}
+R_h(r)&=\sum_{j=r}^{kr}\binom{kr}{j}h^{kr-j}S(j,r),\label{eq:suffix-sum}\\
+&=\mathsf h_{dr}(h,h+1,\ldots,h+r),\label{eq:homogeneous}\\
+&=\frac1{r!}\sum_{i=0}^{r}(-1)^i\binom ri(h+r-i)^{kr}.\label{eq:finite-diff}
+\end{align}
+Here $\mathsf h_m$ is the complete homogeneous symmetric polynomial of degree $m$. To see \eqref{eq:homogeneous}, the ordinary generating function for appending a suffix introducing exactly $r$ new symbols is
+\[
+x^r\prod_{j=0}^{r}(1-(h+j)x)^{-1}.
+\]
+The $r$ first occurrences supply the factors $x$, with $h+j$ symbols available between the $j$th and $(j+1)$st first occurrences. Equation~\eqref{eq:finite-diff} follows directly from \eqref{eq:R}.
+
+Define
+\begin{equation}\label{eq:kernel}
+b_n=\frac{a_n}{T_n},\qquad K(n,h)=\frac{T_hR_h(n-h)}{T_n}.
+\end{equation}
+Thus $0\le b_n\le1$, $b_1=1$, and
+\begin{equation}\label{eq:b-renewal}
+b_n+\sum_{h=1}^{n-1}K(n,h)b_h=1.
+\end{equation}
+There is no $h=0$ term. The kernel describes an unrestricted prefix event; multiplying it by $b_h$ imposes accessibility of that prefix.
+
+\section{The fixed saddle and its expansion}\label{sec:saddle}
+Let $A(z)=e^z-1$. We use only the multipliers $g_0(z)=z^{-1}$ and $g_h(z)=z^{kh}e^{hz}/A(z)^h$ for fixed integers $h\ge1$. They are analytic and nonzero near $t$, and the canceled-integrand argument below controls the rest of the contour. Use the coefficient-integral notation
+\[
+I_g(n)=[z^{kn}]A(z)^n g(z),\qquad g_0(z)=z^{-1}.
+\]
+For the multipliers used below the product has a well-defined Laurent expansion at zero, so this coefficient is unambiguous. The positive saddle of $\log A(z)-k\log z$ is $t$. Write
+\begin{equation}\label{eq:cumulants}
+\kappa_m=\left.(z\partial_z)^m\log A(z)\right|_{z=t};\qquad
+\kappa_1=k,\quad \kappa_2=kc>0.
+\end{equation}
+These are the cumulants of a positive-Poisson random variable $Z_t$, with
+\[
+\Prob(Z_t=j)=\frac{t^j}{j!A(t)},\quad j\ge1.
+\]
+In particular, the exact coefficient interpretation is
+\[
+T_n=\frac{(kn+1)!}{n!}\frac{A(t)^n}{t^{kn+1}}
+\Prob(Z_{t,1}+\cdots+Z_{t,n}=kn+1).
+\]
+
+\begin{lemma}\label{lem:saddle}
+For every fixed $J\ge0$,
+\begin{equation}\label{eq:T-expansion}
+T_n=C_T\beta^n n^{dn+1/2}
+\left(\sum_{j=0}^{J}t_jn^{-j}+O_{k,J}(n^{-J-1})\right),
+\qquad C_T=\frac1{v\sqrt{2\pi c}},\quad t_0=1.
+\end{equation}
+For these specified multipliers, the analogous expansion for $I_g(n)$ has leading factor
+\[
+\frac{A(t)^nt^{-kn}g(t)}{\sqrt{2\pi n\kappa_2}}.
+\]
+All coefficients are effectively obtained by Gaussian moments.
+\end{lemma}
+\begin{proof}
+On the circle $z=te^{i\theta}$, expand
+\[
+\log A(te^{i\theta})-\log A(t)-ik\theta
+=-\frac{\kappa_2\theta^2}{2}+\sum_{m\ge3}\frac{\kappa_m(i\theta)^m}{m!}.
+\]
+The coefficients of $A$ are positive and its support has span $1$. Hence $|A(te^{i\theta})|<A(t)$ for $0<|\theta|\le\pi$; compact arcs away from zero are exponentially negligible. Near zero, the real part is at most $-C\theta^2$. Set $\epsilon=n^{-1/2}$ and $\theta=\epsilon u/\sqrt{\kappa_2}$. Taylor expansion on a shrinking central window, with a Gaussian-dominated remainder, gives the coefficient of $\epsilon^{2j}$ in
+\begin{equation}\label{eq:Gaussian}
+\E\left[
+\frac{g(te^{i\epsilon Z/\sqrt{\kappa_2}})}{g(t)}
+\exp\left\{\sum_{m\ge3}
+\frac{\kappa_m(i\epsilon Z/\sqrt{\kappa_2})^m}{m!\epsilon^2}\right\}\right],
+\end{equation}
+where $Z$ is standard normal, $\E Z^{2j}=(2j-1)!!$, and odd moments vanish. This is a formal rule for each finite coefficient, not an expectation requiring convergence of the infinite series. To obtain order $J$, only finitely many terms are used. Taylor's formula, integrated against the Gaussian bound, gives the stated $O(n^{-J-1})$ remainder.
+
+Finally $T_n=((kn+1)!/n!)I_{g_0}(n)$. Applying factorial Stirling expansions yields \eqref{eq:T-expansion}. For a completely finite rule, let $P_0(X)$ be the series generated by \eqref{eq:Gaussian} for $g_0$ and let $B_m(x)$ denote a Bernoulli polynomial. Then
+\begin{equation}\label{eq:tau-algorithm}
+\tau(X):=\sum_{j\ge0}t_jX^j
+=P_0(X)\exp\left\{\sum_{j\ge1}\frac{(-1)^{j+1}}{j(j+1)}
+\left(\frac{B_{j+1}(2)}{k^j}-B_{j+1}(1)\right)X^j\right\}.
+\end{equation}
+Every series here is truncated at the requested order. Simplification of the leading factor using $t=kv$ and $A(t)=v/\rho$ gives $C_T$ and $\beta$ in \eqref{eq:T-expansion}.
+\end{proof}
+
+A detail needed for arbitrary fixed $k$ is worth making explicit. Later $g$ contains $A(z)^{-h}$; this quotient need not be analytic throughout $|z|\le t$, because nonzero zeros of $e^z-1$ may lie there. The local expansion only requires analyticity near positive $t$. Off-central bounds must be applied to the canceled product
+\[
+A(z)^{n-h}z^{kh}e^{hz},
+\]
+which is analytic and has the required strict modulus gap for fixed $h$ and $n>h$. No global boundedness of the meromorphic quotient is assumed.
+
+\section{Three region bounds}
+\begin{proposition}\label{prop:tails}
+For each fixed $H\ge1$, there exist $a,\varepsilon,\eta>0$ such that
+\begin{align}
+\sum_{H\le h\le an}K(n,h)&=O(n^{-dH-1}),\label{eq:left-tail}\\
+\sum_{an\le h\le(1-\varepsilon)n}K(n,h)&=O(e^{-\eta n}),\label{eq:middle-tail}\\
+K(n,n-r)&\le C e^{-\eta r}\quad(1\le r\le\varepsilon n).\label{eq:right-tail}
+\end{align}
+Constants may depend on $k,H$. Rounding interval endpoints has no effect.
+\end{proposition}
+
+\subsection{The left boundary on an independent product space}
+Take independent uniform coupon draws from $n$ labels. Let $G_i$ be the number of additional draws from the $(i-1)$st discovery through the $i$th discovery. Then $G_1=1$ and the $G_i$ are independent geometric variables on $\{1,2,\ldots\}$ with success probability $(n-i+1)/n$. This follows from the iid strong Markov property at discovery times; the conditional waiting law depends only on the number already collected.
+
+On this product space with coordinatewise order, both events
+\[
+\mathcal A=\{G_1+\cdots+G_{h+1}\le kh+1\},\qquad
+\mathcal B=\{G_1+\cdots+G_n\le kn+1\}
+\]
+are decreasing. Harris association gives $\Prob(\mathcal A\mid\mathcal B)\ge\Prob(\mathcal A)$, or the reverse inequality for the complement of $\mathcal A$. One elementary proof of the association used here applies the one-variable identity
+\[
+\operatorname{Cov}(f(U),g(U))=\tfrac12\E[(f(U)-f(U'))(g(U)-g(U'))]\ge0
+\]
+for two monotone functions in the same direction, then inducts over independent coordinates by conditional covariance. Thus the argument also applies to unbounded geometric coordinates and decreasing indicators.
+
+Conditioning $\mathcal B$ gives a uniform surjection of length $kn+1$ onto $n$ labels. Each partition into $n$ blocks has exactly $n!$ labelings; its restricted-growth encoding is therefore uniform. Consequently
+\begin{align}
+K(n,h)&=\Prob(Y_{kh+1}=h\mid\mathcal B)\notag\\
+&\le\Prob(Y_{kh+1}\le h\mid\mathcal B)
+\le\Prob(Y_{kh+1}\le h)
+\le \binom nh(h/n)^{kh+1}=:u_h.\label{eq:coupon-left}
+\end{align}
+The last bound is a union bound over $h$-subsets of the labels. Direct division gives
+\[
+\frac{u_{h+1}}{u_h}
+=\frac{n-h}{h+1}\left(\frac{h+1}{h}\right)^{kh+1}
+\left(\frac{h+1}{n}\right)^k
+\le 2e^k\left(\frac{h+1}{n}\right)^d.
+\]
+Choose $a$ small enough that this is at most $1/2$ for $h\le an$ and large $n$. Then the left-tail sum is at most $2u_H=O(n^{-dH-1})$. The same ratio argument, after multiplying by $(n/h)^p$ for any fixed $p\ge0$, gives
+\begin{equation}\label{eq:left-weighted}
+\sum_{H\le h\le an}K(n,h)(n/h)^p=O(n^{p-dH-1}).
+\end{equation}
+The association is on independent waiting times. It is not a claim that fixed-time occupancy indicators form an independent product space.
+
+\subsection{A typical coupon count removes the compact middle}
+Choose an integer $M=n/v+O(1)$ and draw coupons uniformly from $M$ labels. Conditional on $Y_{kn+1}=n$, each partition of $[kn+1]$ into $n$ blocks has exactly $\fall{M}{n}$ labelings. It induces the same uniform partition law and hence the same $K(n,h)$.
+
+The exact conditioning probability is
+\begin{equation}\label{eq:conditioning}
+\Prob_M(Y_{kn+1}=n)=\frac{\fall{M}{n}T_n}{M^{kn+1}}=\Theta(n^{-1/2}).
+\end{equation}
+The estimate follows by inserting \eqref{eq:T-expansion} and Stirling's formula for $M!/(M-n)!$. The exponential rate cancels because $v=1-e^{-kv}$; rounding $M$ by $O(1)$ shifts its saddle by only $O(1)$ and changes the positive limiting prefactor by at most constant factors.
+
+For $h/n=x$ in a fixed compact subinterval of $(0,1)$,
+\begin{equation}\label{eq:profile}
+\E_M Y_{kh+1}-h
+=n\left(\frac{1-e^{-kvx}}v-x\right)+O(1).
+\end{equation}
+The bracket is strictly concave and vanishes at $0$ and $1$. On $[a,1-\varepsilon]$ it is bounded below by a positive constant. The number of occupied labels changes by at most one when one draw is replaced. Bounded differences therefore gives
+\[
+\Prob_M(Y_{kh+1}\le h)\le \exp(-\eta n)
+\]
+uniformly on that compact interval. Divide by \eqref{eq:conditioning} and sum over at most $n$ values of $h$. Polynomial factors are absorbed by reducing $\eta$, proving \eqref{eq:middle-tail}. Notice that here the conditioning is at a typical coupon count, rather than on the exponentially unlikely complete collection from $n$ labels.
+
+\subsection{Exponential domination at the right boundary}
+By \eqref{eq:homogeneous}, all variables in $R_{n-r}(r)$ are at most $n$, and the number of monomials is $\binom{kr}{r}$. Thus
+\[
+R_{n-r}(r)\le\binom{kr}{r}n^{dr}.
+\]
+The two-sided leading bounds from Lemma~\ref{lem:saddle}, uniform for $n-r\ge(1-\varepsilon)n$, imply
+\begin{align*}
+K(n,n-r)&\le C\binom{kr}{r}\beta^{-r}
+(1-r/n)^{d(n-r)+1/2}\\
+&\le C\binom{kr}{r}q^r\exp(C_kr^2/n).
+\end{align*}
+The function $(1-v)v^d$ takes its maximum $d^d/k^k$ at $v=d/k$, and our root lies to the right of that point. Hence $q<d^d/k^k$. The binomial theorem with weights $1/k$ and $d/k$ gives $\binom{kr}{r}\le(k^k/d^d)^r$. Choosing $\varepsilon$ small absorbs $\exp(C_k\varepsilon r)$ into the strict geometric decay. This proves \eqref{eq:right-tail}.
+
+\section{The endpoint kernel and its contraction}
+\subsection{An exact uniform sum identity}
+Set $w_r=\binom{kr}{r}q^r$ for $r\ge0$. For $r\ge1$, apply the fundamental theorem of calculus $r$ times to \eqref{eq:finite-diff}. If $U_1,\ldots,U_r$ are independent uniform random variables on $[0,1]$, the result is
+\begin{equation}\label{eq:uniform}
+\frac{R_{n-r}(r)}{\binom{kr}{r}n^{dr}}
+=\E\left(1-\frac{U_1+\cdots+U_r}{n}\right)^{dr}.
+\end{equation}
+Consequently, exactly,
+\begin{equation}\label{eq:uniform-coeff}
+\frac{R_{n-r}(r)}{\binom{kr}{r}n^{dr}}
+=\sum_{j=0}^{dr}(-1)^j\fall{dr}{j}
+[z^j]\left(\frac{e^z-1}{z}\right)^r n^{-j}.
+\end{equation}
+The bracketed generating function is the moment-generating function of $U_1+\cdots+U_r$. At fixed $j$ its coefficient is a polynomial in $r$ of degree at most $j$, because it is $\exp(r\log((e^z-1)/z))$. Thus the coefficient in \eqref{eq:uniform-coeff} is polynomial in $r$ of degree at most $2j$.
+
+Since $0\le\sum U_i\le r$, the absolute value of the $j$th coefficient is at most $(dr^2)^j/j!$. The absolute remainder after order $J$ is bounded by
+\begin{equation}\label{eq:uniform-remainder}
+\frac{(dr^2/n)^{J+1}}{(J+1)!}\exp(dr^2/n).
+\end{equation}
+This quantitative estimate justifies the polynomial coefficient calculus and summation of endpoint remainders, rather than merely asserting a fixed-$r$ expansion.
+
+Combining \eqref{eq:uniform-coeff} with the all-order saddle expansion gives
+\begin{equation}\label{eq:W}
+K(n,n-r)\sim w_r\sum_{j\ge0}W_j(r)n^{-j},\qquad W_0(r)=1.
+\end{equation}
+Each $W_j$ is polynomial in $r$, with coefficients rational in $k,v$. For $r\le C\log n$, a truncation after $J$ has a remainder bounded by $n^{-J-1}w_re^{\delta r}$ times a fixed polynomial in $r$, with $\delta>0$ as small as needed. This follows from \eqref{eq:uniform-remainder}, Taylor bounds on $(1-r/n)^{d(n-r)+1/2}$, and the uniform one-variable remainder in \eqref{eq:T-expansion}. The tail $r>C\log n$ is smaller than any prescribed fixed inverse power when $C$ is chosen large enough, by \eqref{eq:right-tail}.
+
+\subsection{The mass is strictly less than one}
+Let $y=1+qy^k$ be the branch satisfying $y(0)=1$. Lagrange inversion gives the Fuss--Catalan series
+\[
+y=\sum_{r\ge0}\frac1{dr+1}\binom{kr}{r}q^r.
+\]
+Thus $F(q):=\sum_{r\ge0}\binom{kr}{r}q^r=y+dqy'$. Differentiating the implicit equation yields
+\[
+F(q)=\frac{y}{k-dy}.
+\]
+Our value of $q$ lies below the branch point and corresponds to $y=1/v<k/d$, so
+\begin{equation}\label{eq:mass}
+F(q)=\frac1c,\qquad
+\theta:=\sum_{r\ge1}w_r=\frac{1-c}{c}=\frac{k\rho}{1-k\rho}.
+\end{equation}
+In fact $\theta<1$. Evaluate $f(s)=k(1-e^{-s})-s$ at $s=\log(2k)$:
+\[
+f(\log(2k))=k-\tfrac12-\log(2k)>0.
+\]
+It is positive at $k=2$ and increasing thereafter. The positive zero $t$ lies to its right, so $k\rho=ke^{-t}<1/2$, $c>1/2$, and \eqref{eq:mass} is a strict contraction.
+
+\section{A finite all orders coefficient algorithm}\label{sec:algorithm}
+All power series in this section are formal expansions at $X=0$. No convergence in $X\ne0$ is claimed. Define
+\begin{align}
+H_r(X)&=\mathsf h_{dr}(1-rX,1-(r-1)X,\ldots,1),\notag\\
+\mathcal K_r(X)&=q^r H_r(X)(1-rX)^{1/2}
+\exp\{d[(X^{-1}-r)\log(1-rX)+r]\}\notag\\
+&\hspace{30mm}\cdot\frac{\tau(X/(1-rX))}{\tau(X)}.\label{eq:formal-kernel}
+\end{align}
+The apparent $X^{-1}$ singularity is removable. This is the formal series for $K(n,n-r)$, and its constant term is $w_r$.
+
+For fixed $h$, let $D_h(X)$ be the expansion of $a_hR_h(n-h)/T_n$. Put
+\[
+g_h(z)=\frac{z^{kh}e^{hz}}{A(z)^h}.
+\]
+Direct coefficient extraction gives
+\begin{equation}\label{eq:small-ratio}
+\frac{R_h(n-h)}{T_n}
+=\frac{n!}{(n-h)!}\frac{(kn-kh)!}{(kn+1)!}
+\frac{I_{g_h}(n)}{I_{g_0}(n)}.
+\end{equation}
+The explicit finite product for its factorial prefactor is
+\begin{equation}\label{eq:small-factorial}
+X^{dh+1}k^{-kh-1}
+\frac{\prod_{i=0}^{h-1}(1-iX)}{\prod_{j=0}^{kh}(1+(1-j)X/k)}.
+\end{equation}
+Since $g_h(t)/g_0(t)=k^{kh+1}v^{dh+1}$, Lemma~\ref{lem:saddle} gives
+\begin{equation}\label{eq:D-leading}
+D_h(X)=a_hv^{dh+1}X^{dh+1}(1+O(X)).
+\end{equation}
+The all-order saddle rule \eqref{eq:Gaussian} applied to the ratio in \eqref{eq:small-ratio} computes all further terms. The canceled-integrand caveat in Section~\ref{sec:saddle} applies.
+
+The coefficient series $C(X)=\sum_{j\ge0}c_jX^j$ is specified by
+\begin{equation}\label{eq:formal-renewal}
+C(X)+\sum_{r\ge1}\mathcal K_r(X)C\left(\frac{X}{1-rX}\right)
++\sum_{h\ge1}D_h(X)=1.
+\end{equation}
+At each order $j$, only finitely many $h$ enter. The unknown $c_j$ has coefficient $1+\theta=1/c$, so the recursion is uniquely solvable. At order zero it gives $c_0=c$.
+
+Although the $r$-sum is infinite, it reduces to finitely many exact moments. Define
+\begin{equation}\label{eq:moments}
+M_\ell=\sum_{r\ge1}r^\ell w_r,\qquad
+M_0=1/c-1,\qquad M_\ell=(q\partial_q)^\ell(1/c)\ (\ell\ge1).
+\end{equation}
+In $v$-coordinates, with $k$ fixed,
+\begin{equation}\label{eq:moment-D}
+q\partial_q=-\frac{\rho v}{c}\partial_v.
+\end{equation}
+Each fixed coefficient of \eqref{eq:formal-renewal} is a finite linear combination of these moments, since the endpoint coefficients are polynomials in $r$.
+
+A finite implementation to requested order $J$ therefore performs the following steps:
+\begin{enumerate}
+\item Compute cumulants through the finite order required by \eqref{eq:Gaussian}, then $t_0,\ldots,t_J$ via \eqref{eq:tau-algorithm}.
+\item Compute exact $a_h$ for $1\le h\le\lfloor(J-1)/d\rfloor$, and truncate the corresponding $D_h$ at order $J$.
+\item Expand \eqref{eq:formal-kernel} using \eqref{eq:uniform-coeff}, retaining polynomials in $r$ through order $J$.
+\item Replace every power of $r$ in the endpoint sum by the appropriate moment \eqref{eq:moments}, and solve \eqref{eq:formal-renewal} coefficient by coefficient.
+\end{enumerate}
+The implementation reconstructs each order-$j$ endpoint polynomial from its values at $r=0,1,\ldots,2j$. This finite interpolation is justified by a degree bound, not by fitting count asymptotics. The normalized suffix coefficient of grade $m$ has degree at most $2m$, while the log-phase coefficient has degree at most $m+1\le2m$ for $m\ge1$. Products preserve degree at most twice the total grade. The shifted earlier $C$ coefficients obey the same bound. Thus the order-$j$ residual polynomial has degree at most $2j$, and $2j+1$ distinct nodes determine it exactly in symbolic arithmetic. The supplied implementation evaluates these finite operations at high precision; its decimal outputs are neither exact rational expressions nor interval certificates.
+
+One exact small-count recurrence, with $L_n=(n-1)!a_n$, is
+\begin{equation}\label{eq:labelled}
+L_n=n^{kn}-\sum_{h=1}^{n-1}\binom{n-1}{h-1}n^{k(n-h)}L_h,
+\qquad L_1=1.
+\end{equation}
+It follows by choosing the set of states reachable from root $1$, taking an accessible structure on it, and assigning all outgoing transitions on the remaining states arbitrarily. Thus the algorithm does not require previously tabulated counts.
+
+\section{Why the coefficient expansion is a theorem}\label{sec:closure}
+We now establish the error in Theorem~\ref{thm:main} without assuming an asymptotic expansion of $a_n$ in advance. Fix $J$ and choose an integer $H$ with $dH+1>J+1$. Form the explicitly patched trial sequence
+\begin{equation}\label{eq:patch}
+f_J(h)=\begin{cases}
+b_h,&1\le h<H,\\
+\sum_{j=0}^{J}c_jh^{-j},&h\ge H.
+\end{cases}
+\end{equation}
+This patch is a proof device. It asserts no canonical interpolation of the integer sequence.
+
+In the renewal equation for $f_J$, the finitely many $h<H$ terms are exact small-state forcing. Expand them through order $J$ by \eqref{eq:small-ratio}. Discard the remaining left tail by \eqref{eq:left-tail}, and the compact middle by \eqref{eq:middle-tail}. In the right endpoint, cut at $r=C\log n$, use the uniform expansion \eqref{eq:W}, and then restore its infinite moment sums. Equation~\eqref{eq:right-tail} and the quantified remainder \eqref{eq:uniform-remainder} make these operations valid with error $O(n^{-J-1})$. The finite coefficients vanish by \eqref{eq:formal-renewal}. Therefore
+\begin{equation}\label{eq:residual}
+f_J(n)+\sum_{h=1}^{n-1}K(n,h)f_J(h)-1=O(n^{-J-1}).
+\end{equation}
+
+Set $e_n=b_n-f_J(n)$ and $p=J+1$. Subtracting gives
+\begin{equation}\label{eq:error-rec}
+e_n=-\sum_{h=H}^{n-1}K(n,h)e_h+O(n^{-p}).
+\end{equation}
+Take a sufficiently large fixed $N\ge H$. The finitely many $H\le h<N$ contribute $O(n^{-dH-1})$, absorbed into the forcing. Moreover
+\begin{equation}\label{eq:weighted-contraction}
+\sum_{h=N}^{n-1}K(n,h)(n/h)^p\longrightarrow\theta<1.
+\end{equation}
+At the left endpoint \eqref{eq:left-weighted} gives $O(n^{p-dN-1})$, which vanishes after enlarging $N$. The middle stays exponentially negligible under the polynomial weight. At the right endpoint the weight is bounded and tends to $1$ for each fixed $r$, so dominated convergence with \eqref{eq:right-tail} gives $\sum_{r\ge1}w_r$.
+
+Choose $\theta'<1$ bounding the weighted sum for all sufficiently large $n$, and let $B$ bound the scaled forcing. Strong induction proves $n^p|e_n|\le C$: choose $C$ to cover the finite initial segment and $B/(1-\theta')$, then \eqref{eq:error-rec} gives $n^p|e_n|\le\theta'C+B\le C$. This proves \eqref{eq:main} at every fixed order. In particular, the small-state boundary is retained in the proof; replacing $b_h$ by a truncated large-$h$ formula for all $h$ would generally give the wrong coefficients.
+
+\section{The first three corrections}\label{sec:corrections}
+All $c_j$ below are absolute coefficients in $a_n/T_n$. They are not relative corrections after additionally dividing by $c$.
+
+The first saddle coefficient is
+\begin{equation}\label{eq:t1}
+t_1=\frac{13}{12k}-\frac1{12}-\frac1{2\kappa_2}
+-\frac{\kappa_3}{2\kappa_2^2}
++\frac{\kappa_4}{8\kappa_2^2}
+-\frac{5\kappa_3^2}{24\kappa_2^3}.
+\end{equation}
+The offset-one/cubic-cumulant term has a negative sign. From \eqref{eq:uniform-coeff}, the normalized suffix begins
+\[
+1-\frac{dr^2}{2n}
++\frac{dr^2(dr-1)(3r+1)}{24n^2}+O_r(n^{-3}).
+\]
+Combining it with the $T_{n-r}/T_n$ expansion cancels the quadratic terms at first order, giving
+\begin{equation}\label{eq:W12}
+W_1(r)=-\frac r2,\qquad
+W_2(r)=\frac{k(k-1)r^3}{24}-\frac{(k+2)r^2}{24}+t_1r.
+\end{equation}
+Hence
+\begin{align}
+c_1&=\frac{c^2M_1}{2}=\frac{k\rho v}{2c},\notag\\
+c_2&=-c^2\left\{\frac{k(k-1)}{24}M_3-\frac{k+2}{24}M_2+t_1M_1\right\}
+-\frac{cc_1M_1}{2}-\ind_{\{k=2\}}cv^2.\label{eq:c2}
+\end{align}
+For a direct check of the last term, $a_1=1$ and
+\begin{equation}\label{eq:h1-exact}
+R_1(n-1)=S(kn-k+1,n).
+\end{equation}
+This follows by differentiating $A(z)^n$ in \eqref{eq:R}. It also follows from the suffix encoding. Its contribution is $v^kn^{-k}(1+O(n^{-1}))$, so the small-state correction first enters at order $k$.
+
+Here is an explicit factored formula for $c_3$ avoiding an unwieldy expanded rational expression. Obtain $t_2$ from \eqref{eq:tau-algorithm}; only cumulants through $\kappa_6$ are needed. Define
+\begin{align*}
+R_1^*&=-dr^2/2,&
+R_2^*&=dr^2(dr-1)(3r+1)/24,\\
+R_3^*&=-dr(dr-1)(dr-2)r^2(r+1)/48,\\
+\ell_1&=dr^2/2-r/2,&
+\ell_2&=dr^3/6-r^2/4+t_1r,\\
+\ell_3&=dr^4/12-r^3/6+t_1r^2+(2t_2-t_1^2)r.
+\end{align*}
+Then
+\begin{equation}\label{eq:W3}
+W_3(r)=R_3^*+R_2^*\ell_1+R_1^*(\ell_2+\ell_1^2/2)
++\ell_3+\ell_1\ell_2+\ell_1^3/6.
+\end{equation}
+The small-state forcing at order three is
+\begin{equation}\label{eq:D3}
+\Delta_3=\begin{cases}
+v^2(-\tfrac12+\kappa_3/\kappa_2^2)+12v^3,&k=2,\\
+v^3,&k=3,\\
+0,&k\ge4.
+\end{cases}
+\end{equation}
+For $k=2$, the first term is the next coefficient of $D_1$, and $12v^3$ is the leading term of $D_2$, since $a_2(2)=12$. For $k=3$, only $D_1$ enters. Coefficient matching now gives
+\begin{equation}\label{eq:c3}
+c_3=-c\left\{\sum_{r\ge1}w_r
+\left[cW_3(r)+c_1\left(W_2(r)+\frac{r^2}{2}\right)
++\frac32c_2r\right]+\Delta_3\right\}.
+\end{equation}
+The sum is a finite moment evaluation by \eqref{eq:moments}, so \eqref{eq:c3} is an explicit finite formula. It was independently derived from Gaussian cumulants and both boundaries, rather than fitted to numerical residuals.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{crrrr}
+\toprule
+$k$&$c_0$&$c_1$&$c_2$&$c_3$\\
+\midrule
+2&0.593624260040&0.272735752852&$-0.825656934340$&$-6.133864769329$\\
+3&0.821439372122&0.102218537140&$-0.120023291867$&$-0.962319525736$\\
+4&0.920690394873&0.042216744192&$-0.051188526457$&$-0.064104878991$\\
+\bottomrule
+\end{tabular}
+\caption{The first coefficients of $a_n/S(kn+1,n)$, rounded to twelve decimal places.}
+\label{tab:coeffs}
+\end{table}
+
+\section{An elementary carrier and inverse counting}
+Multiplication of Theorem~\ref{thm:main} and Lemma~\ref{lem:saddle} gives
+\begin{equation}\label{eq:a-carrier}
+a_n=C_a\beta^n n^{dn+1/2}\left(\sum_{j=0}^{J}\alpha_jn^{-j}
++O(n^{-J-1})\right),\qquad C_a=\frac{\sqrt c}{v\sqrt{2\pi}},
+\end{equation}
+where $\alpha_0=1$ and
+\begin{equation}\label{eq:alpha}
+\alpha_j=c^{-1}\sum_{i=0}^{j}c_it_{j-i},\qquad
+\alpha_1=t_1+c_1/c.
+\end{equation}
+This form involves only elementary functions of $n$, with fixed constants depending on $k$.
+
+\subsection{Lambert seed and two explicit corrections}
+Let $y=\log X$ and define
+\begin{equation}\label{eq:Lambert}
+x=\frac{y}{dW_0(\beta^{1/d}y/d)},\qquad
+L=d\log x+d+\log\beta,\qquad A=\tfrac12\log x+\log C_a.
+\end{equation}
+The seed solves $dx\log x+x\log\beta=y$. Put
+\begin{equation}\label{eq:deltas}
+\delta_0=-A/L,\qquad
+\delta_1=-\frac{(d/2)\delta_0^2+\delta_0/2+\alpha_1}{xL}.
+\end{equation}
+Taylor expansion of the logarithm of \eqref{eq:a-carrier} yields, for the smooth large solution of the corresponding truncated scale,
+\begin{equation}\label{eq:inverse-explicit}
+n=x+\delta_0+\delta_1+O\bigl(x^{-2}(\log x)^{-1}\bigr).
+\end{equation}
+More intrinsically, when $X=a_n$, the right side reproduces the integer index $n$ with this error. This statement does not require any canonical interpolation of the sequence $a_n$.
+
+For detail, $\delta_0=O(1)$ cancels $A$ against the first derivative $L$. At the next order, the quadratic term of $dx\log x+x\log\beta$ is $d\delta_0^2/(2x)$, the change in $\frac12\log x$ is $\delta_0/(2x)$, and the first relative correction contributes $\alpha_1/x$. Equation~\eqref{eq:deltas} cancels their sum. The remaining logarithmic residual is $O(x^{-2})$; division by the derivative $L\asymp\log x$ proves \eqref{eq:inverse-explicit}.
+
+\subsection{Rigorous integer threshold brackets}
+For fixed $J\ge0$, define the smooth model
+\begin{equation}\label{eq:FJ}
+F_J(x)=C_a\beta^x x^{dx+1/2}\sum_{j=0}^{J}\alpha_jx^{-j}.
+\end{equation}
+It is positive and strictly increasing for all sufficiently large $x$. Let $x_J(X)$ be the unique sufficiently large solution of $F_J(x)=X$.
+
+\begin{theorem}\label{thm:inverse}
+For every fixed $J$, there exist constants $C_J,X_J^*>0$ such that, whenever $X\ge X_J^*$,
+\begin{equation}\label{eq:bracket}
+\left\lceil x_J(X)-\frac{C_Jx_J(X)^{-J-1}}{\log x_J(X)}\right\rceil
+\le \min\{n\ge1:a_n\ge X\}
+\le
+\left\lceil x_J(X)+\frac{C_Jx_J(X)^{-J-1}}{\log x_J(X)}\right\rceil.
+\end{equation}
+The constants and the starting cutoff are existential; the present proof does not certify numerical thresholds. If the ceilings agree, they give the exact inverse. Otherwise the neighboring exact counts decide it.
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:a-carrier} implies
+$\log a_n-\log F_J(n)=O(n^{-J-1})$, while
+$(\log F_J)'(x)\sim d\log x$. Thus a displacement
+$C_Jx^{-J-1}/\log x$ on either side of the model root dominates the logarithmic count error for a sufficiently large constant. The mean value theorem then shows that every integer below the left displaced root has $a_n<X$, and every integer at or above the right displaced root has $a_n\ge X$. Values a bounded distance away are covered directly by the derivative bound, and more distant large values by monotonicity. Indeed
+$a_{n+1}/a_n\sim\beta e^d n^d\to\infty$, so the actual count is eventually strictly increasing. The finitely many earlier values are irrelevant once $X$ exceeds their maximum. Taking ceilings proves \eqref{eq:bracket}, including the possibility that $X$ lies arbitrarily close to an exact count.
+\end{proof}
+
+\subsection{Finite Newton inversion to any fixed order}
+Apply Newton's method to $\log F_J(x)-\log X$, starting at the Lambert seed \eqref{eq:Lambert}. Its initial error is $O(1)$. On a bounded neighborhood of the root,
+\[
+\frac{(\log F_J)''(x)}{(\log F_J)'(x)}=O\bigl((x\log x)^{-1}\bigr).
+\]
+After any fixed $s\ge1$ iterations, the model-root error is therefore
+\begin{equation}\label{eq:Newton}
+O\bigl((x\log x)^{-(2^s-1)}\bigr).
+\end{equation}
+Choose $2^s-1\ge J+1$ to make this no larger than the scale of \eqref{eq:bracket}. A sufficiently enlarged bracket constant absorbs this numerical-model error. These statements distinguish inversion of a smooth asymptotic model from exact integer inversion; an unqualified ceiling of a truncated inverse is not generally valid.
+
+\section{Reproducibility and independent checks}\label{sec:reproduce}
+The companion archive contains editable \LaTeX, a package-local PDF build script, portable coefficient and verification programs, reference outputs, and SHA-256 manifests. Python calculations use exact integers and rational symbolic algebra where stated; decimal checks use \texttt{mpmath}. No network access or absolute workspace path is needed to replay the package. Detailed commands and dependency versions appear in its \texttt{README.md}.
+
+The proof is the source of the asymptotic remainder bounds. Finite tests cannot establish an all-orders theorem, but they detect convention, sign, and boundary mistakes. The independent audit performs the following checks:
+\begin{itemize}
+\item Compare \eqref{eq:renewal} with the independent labeled recurrence \eqref{eq:labelled} for $k=2,3,4,5$ through $n=25$.
+\item Exhaust all restricted-growth words for $(k,n)=(2,2),(2,3),(3,2),(3,3)$, checking accessible totals and the first-failure distribution.
+\item Check the right-endpoint exact polynomial identity for $k=2,3,4$, $1\le r\le7$, and three values of $n$ for each pair.
+\item Derive the cumulants, kernel moments, $c_1,c_2$, and an independent $c_3$; compare against exact integer counts through $n=500$.
+\end{itemize}
+A separate identity replay tests 75 first-failure identities, 105 finite-difference identities, 105 uniform-integral identities, and 70 small-state $h=1$ identities, a total of 355 exact assertions.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{crrr}
+\toprule
+$n$&$k=2$&$k=3$&$k=4$\\
+\midrule
+50&$-8.737308011$&$-1.010620671$&$-0.086710126$\\
+100&$-7.078863264$&$-0.981296740$&$-0.075271144$\\
+200&$-6.558489989$&$-0.970615747$&$-0.069659588$\\
+500&$-6.294495506$&$-0.965358866$&$-0.066320449$\\
+\midrule
+$c_3$&$-6.133864769$&$-0.962319526$&$-0.064104879$\\
+\bottomrule
+\end{tabular}
+\caption{Exact-count diagnostics $n^3(b_n-c_0-c_1/n-c_2/n^2)$ compared with the independently derived $c_3$. The binary case converges slowly; no coefficient is inferred by fitting these rows.}
+\end{table}
+
+\section{Provenance and the boundary of the novelty claim}\label{sec:provenance}
+The classical leading asymptotic is explicitly attributed to Korshunov in Bassino--Nicaud and Lebensztayn. Lebensztayn simplifies its generalized-binomial constant. Amri--Chassaing develop the coupon representation and conditioned-profile approach; the waiting-time association here retains the dependence on an arbitrary fixed lower cutoff, which is needed for all orders. Chassaing--Flin--Zevio give a newer fluid-profile treatment whose automata application still states the classical leading equivalent \cite{impatient,pascal}.
+
+The present formulation uses $S(kn+1,n)$ rather than $nS(kn,n)$. In Lebensztayn's convention, accepting-state choices produce a factor $2^n$ and the leading constant is $E_k=c/v$. Since $S(kn+1,n)/(nS(kn,n))\to1/v$, the leading equivalents agree exactly after removing $2^n$. A different normalization is not a new leading asymptotic.
+
+Korshunov's 1976 paper already gives fixed-alphabet leading equivalents and also addresses varying alphabet sizes and the logarithmic connectivity window \cite{korshunov1976}. Those regimes are explicitly outside the novelty scope here. His 78-page 1978 Russian survey was identified, but its full text was not obtained for direct inspection in the bounded search, and the 1986 strongly-connected paper likewise remains outside an exhaustive audit. The result should therefore be described as a newly developed self-contained derivation and higher-order extension, with priority unresolved until that literature is checked. An absent OEIS asymptotic entry does not establish novelty.
+
+A read-only public metadata audit also inspected the ProveIt repository \cite{proveit}. Its first recursive tree response was truncated after the Computability section; separate complete Oeis, docs, NumberTheory, and Optimizations subtrees were then retrieved, alongside the already returned Analysis and Combinatorics portions. Root, Combinatorics, and incoming-report READMEs were read. No path named for these two OEIS entries or accessible automata, and no corresponding report in those READMEs, was found. This is a bounded path-and-README check, not a full content search of every source file. No publication, repository change, or OEIS submission is implied by this article.
+
+\section{Further questions}
+The following directions lie beyond the results proved here; listing them is not an exhaustive claim about what remains unpublished.
+
+An effective version of the remainder estimates would be particularly useful. Tracking constants in the saddle bounds, the three-region estimates, and the weighted contraction could produce explicit values of the starting index and remainder constant for each fixed $(k,J)$. Coupled with interval evaluation of the finite coefficient formulas, this would turn the existential inverse brackets into certified numerical threshold computations.
+
+The present argument fixes the order before taking $n\to\infty$. It does not control the growth of $c_j$ as $j\to\infty$. Understanding that growth could reveal whether useful optimal truncation or exponentially improved approximations are available, and how the two boundaries influence such refinements.
+
+Uniform higher-order estimates when $k$ varies with $n$ require additional analysis of the $k$-dependence of the saddle, tail bounds, and finite-state forcing. The exponentially small quantity $\rho$ also requires care in numerical evaluation. Classical leading growing-alphabet regimes and connectivity transitions are already present in Korshunov's work; the potential extension here concerns uniform higher corrections and their rigorous error control, not rediscovery of those leading transitions.
+
+\appendix
+\section{An independent analytic left tail bound}
+For completeness, the left-tail estimate can also be proved without association. At the saddle $t$, the numerator coefficient in \eqref{eq:R} is represented by a sum of $h$ independent Poisson$(t)$ variables and $n-h$ independent positive-Poisson$(t)$ variables. The latter distribution has maximum point mass at most $C/\sqrt{n-h}$: Fourier inversion bounds the integral by a Gaussian near zero and a strict geometric modulus bound away from zero. The denominator positive-Poisson sum at $kn+1$ has mass bounded below by $C'/\sqrt n$ by Lemma~\ref{lem:saddle}. Thus uniformly for $h\le an$, $a<1$,
+\[
+K(n,h)\le C T_h\frac{(k(n-h))!}{(kn+1)!}
+\frac{n!}{(n-h)!}\,t^{kh+1}v^{-h}.
+\]
+Using $T_h\le h^{kh+1}/h!\le e^h h^{dh+1}$ and elementary factorial bounds gives
+\[
+K(n,h)\le C\frac hn\left[C_k(h/n)^d\right]^h.
+\]
+For sufficiently small $a$, successive terms decrease at a uniformly geometric rate (apply the logarithmic derivative, or a direct ratio bound). Summing from $H$ yields $O(n^{-dH-1})$, and multiplication by $(n/h)^p$ yields $O(n^{p-dH-1})$. This independently supplies exactly the left-tail input needed for the weighted contraction.
+
+\begingroup\small\setlength{\parskip}{0pt}
+\begin{thebibliography}{99}\setlength{\itemsep}{4pt}
+\bibitem{oeis2} OEIS Foundation. \emph{A006689}, deterministic completely defined initially connected finite automata with two inputs and unlabeled states. \url{https://oeis.org/A006689/internal}. Accessed 2 October 2026.
+\bibitem{oeis3} OEIS Foundation. \emph{A006690}, the corresponding three-input sequence. \url{https://oeis.org/A006690/internal}. Accessed 2 October 2026.
+\bibitem{bassino} F. Bassino and C. Nicaud. Enumeration and random generation of accessible automata. \emph{Theoretical Computer Science} 381 (2007), 86--104. \url{https://www-igm.univ-mlv.fr/~nicaud/articles/tcs07.pdf}.
+\bibitem{lebensztayn} E. Lebensztayn. On the asymptotic enumeration of accessible automata. \emph{Discrete Mathematics \& Theoretical Computer Science} 12(3) (2010), 75--80. \url{https://dmtcs.episciences.org/512/pdf}.
+\bibitem{impatient} A. Amri and P. Chassaing. \emph{The impatient collector}. arXiv:1906.11012 (2019). \url{https://arxiv.org/abs/1906.11012}.
+\bibitem{pascal} P. Chassaing, J. Flin, and A. Zevio. Pascal's formulas and vector fields. \emph{Electronic Journal of Combinatorics} 32(1) (2025), P1.38. \url{https://doi.org/10.37236/12591}.
+\bibitem{korshunov1976} A. D. Korshunov. The number of automata, boundedly determined functions and hereditary properties of automata. \emph{Kybernetika} 12(1) (1976), 31--37. \url{https://www.dml.cz/bitstream/handle/10338.dmlcz/124988/Kybernetika_12-1976-1_5.pdf}.
+\bibitem{korshunov1978} A. D. Korshunov. Enumeration of finite automata. \emph{Problemy Kibernetiki} 34 (1978), 5--82 (Russian). Identified through the references of \cite{lebensztayn}; full text not obtained for direct inspection.
+\bibitem{proveit} V. Reshetnikov. \emph{ProveIt}, public repository. \url{https://github.com/VladimirReshetnikov/ProveIt}. Bounded metadata and README audit, 2 October 2026.
+\end{thebibliography}\endgroup
+\end{document}
