@@ -39,7 +39,19 @@ supplies87=48M+39A with19 positive witnesses and exact degree169. Its
 X=wq³ to X=wq preserves each frozen parent's full positive zero set through
 a proved integer coordinate bijection at zeros.
 
-The [new archive review](research-wip/native-stream-queue/incoming_substrate_review_6914ccca6.md)
+The [latest six-report review](research-wip/native-stream-queue/incoming_substrate_review_1977e6ea6.md)
+covers exact wiring, interaction-net topology, cyclic wires, stochastic erasure,
+thermal arithmetic and sandpiles delivered at1977e6ea6. All18 original
+verifier/CLI entry points replay. Checked patches repair three sandpile
+constructor bypasses and invalid low-level thermal DAG descriptors while
+preserving valid exported examples. The original archives remain unchanged.
+Source-derived natural-domain reductions give **169→147 orbit residuals**,
+**23→15 local topology rows (17→15 helpers)** and **144→134 memory rows**.
+Their complete rewritten production interfaces and operation ledgers remain
+next work. The reports preserve finite-horizon/spatial and static-representation
+scope; neither their counts nor the repairs change the87-operation bound.
+
+The [preceding archive review](research-wip/native-stream-queue/incoming_substrate_review_6914ccca6.md)
 checks the van Kampen, three-Heisenberg-phase and infinite-quantum-run reports
 delivered at6914ccca6. It reproduces two van Kampen input-validation defects
 and a mutable Heisenberg-constructor defect; tested repairs are applied to

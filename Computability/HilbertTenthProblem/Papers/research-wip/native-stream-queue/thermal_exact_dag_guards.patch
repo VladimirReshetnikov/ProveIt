@@ -1,0 +1,140 @@
+--- a/compiler.py
++++ b/compiler.py
+@@ -21,14 +21,28 @@
+     kind: str
+     value: int
+ 
++    def __post_init__(self) -> None:
++        if type(self.kind) is not str or self.kind not in ('const', 'mode', 'param'):
++            raise ValueError('atom kind must be const, mode or param')
++        natural(self.value, 'atom value')
++
+     def evaluate(self, modes: Sequence[int], parameters: Sequence[int]) -> int:
+         if self.kind == 'const':
+             return self.value
+-        if self.kind == 'mode':
+-            return modes[self.value]
+-        if self.kind == 'param':
+-            return parameters[self.value]
+-        raise ValueError('invalid atom')
++        values = modes if self.kind == 'mode' else parameters
++        if self.value >= len(values):
++            raise ValueError('atom index out of range')
++        return natural(values[self.value], 'atom operand')
++
++
++def _atom(atom: Atom, available_modes: int, parameters: int) -> Atom:
++    if type(atom) is not Atom:
++        raise ValueError('an exact Atom descriptor is required')
++    checked = Atom(atom.kind, atom.value)
++    if ((checked.kind == 'mode' and checked.value >= available_modes)
++            or (checked.kind == 'param' and checked.value >= parameters)):
++        raise ValueError('atom must reference an available earlier mode or parameter')
++    return checked
+ 
+ 
+ @dataclass(frozen=True)
+@@ -37,6 +51,28 @@
+     left: Atom
+     right: Atom
+     output: int
++
++    def __post_init__(self) -> None:
++        if type(self.operation) is not str or self.operation not in ('add', 'mul'):
++            raise ValueError('gate operation must be add or mul')
++        natural(self.output, 'gate output')
++        if type(self.left) is not Atom or type(self.right) is not Atom:
++            raise ValueError('gate operands must be exact Atom descriptors')
++        object.__setattr__(self, 'left', Atom(self.left.kind, self.left.value))
++        object.__setattr__(self, 'right', Atom(self.right.kind, self.right.value))
++
++
++def _gates(gates: Sequence[Gate], inputs: int, parameters: int) -> tuple[Gate, ...]:
++    if type(gates) not in (tuple, list):
++        raise ValueError('gates must be a finite list or tuple of Gate descriptors')
++    out = []
++    for index, gate in enumerate(tuple(gates)):
++        available = inputs + index
++        if type(gate) is not Gate or type(gate.output) is not int or gate.output != available:
++            raise ValueError('gate outputs must be consecutive in topological order')
++        left, right = _atom(gate.left, available, parameters), _atom(gate.right, available, parameters)
++        out.append(Gate(gate.operation, left, right, gate.output))
++    return tuple(out)
+ 
+ 
+ class Compiler:
+@@ -47,13 +83,28 @@
+         self.gates: list[Gate] = []
+         self._cache: dict[tuple, Atom] = {}
+ 
++    def _validate(self) -> None:
++        natural(self.inputs, 'inputs')
++        natural(self.parameters, 'parameters')
++        if type(self.gates) is not list:
++            raise ValueError('compiler gates must be a list')
++        gates = _gates(self.gates, self.inputs, self.parameters)
++        # Rebuild sharing from the actual validated DAG, so an edited public
++        # gate list cannot leave stale cached references to removed outputs.
++        self._cache = {}
++        for gate in gates:
++            a, b = sorted((gate.left, gate.right), key=lambda t: (t.kind, t.value))
++            self._cache.setdefault((gate.operation, a, b), Atom('mode', gate.output))
++
+     def variable(self, i: int) -> Atom:
++        self._validate()
+         natural(i)
+         if i >= self.inputs:
+             raise ValueError('input index out of range')
+         return Atom('mode', i)
+ 
+     def parameter(self, i: int) -> Atom:
++        self._validate()
+         natural(i)
+         if i >= self.parameters:
+             raise ValueError('parameter index out of range')
+@@ -63,6 +114,11 @@
+         return Atom('const', natural(n))
+ 
+     def _gate(self, op: str, a: Atom, b: Atom) -> Atom:
++        self._validate()
++        if type(op) is not str or op not in ('add', 'mul'):
++            raise ValueError('gate operation must be add or mul')
++        available = self.inputs + len(self.gates)
++        a, b = _atom(a, available, self.parameters), _atom(b, available, self.parameters)
+         if a.kind == b.kind == 'const':
+             return self.constant(a.value + b.value if op == 'add' else a.value * b.value)
+         zero, one = self.constant(0), self.constant(1)
+@@ -89,6 +145,8 @@
+         return self._gate('mul', a, b)
+ 
+     def power(self, a: Atom, n: int) -> Atom:
++        self._validate()
++        a = _atom(a, self.inputs + len(self.gates), self.parameters)
+         n = natural(n)
+         out = self.constant(1)
+         while n:
+@@ -100,6 +158,7 @@
+         return out
+ 
+     def finish(self, left: Atom, right: Atom) -> 'Compiled':
++        self._validate()
+         return Compiled(self.inputs, self.parameters, tuple(self.gates), left, right)
+ 
+ 
+@@ -110,6 +169,16 @@
+     gates: tuple[Gate, ...]
+     left: Atom
+     right: Atom
++
++    def __post_init__(self) -> None:
++        natural(self.inputs, 'inputs')
++        natural(self.parameters, 'parameters')
++        gates = _gates(self.gates, self.inputs, self.parameters)
++        available = self.inputs + len(gates)
++        left, right = _atom(self.left, available, self.parameters), _atom(self.right, available, self.parameters)
++        object.__setattr__(self, 'gates', gates)
++        object.__setattr__(self, 'left', left)
++        object.__setattr__(self, 'right', right)
+ 
+     @property
+     def modes(self) -> int:
