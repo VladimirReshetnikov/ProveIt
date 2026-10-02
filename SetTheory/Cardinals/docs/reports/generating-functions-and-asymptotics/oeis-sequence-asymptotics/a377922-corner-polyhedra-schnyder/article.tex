@@ -9,8 +9,8 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!45!black,
- pdftitle={Polynomial exponents for corner polyhedra and Schnyder labelings},
- pdfauthor={Research note},pdfsubject={Two-sided asymptotic bounds for bimodal quadrant walks}}
+ pdftitle={Corner polyhedra and Schnyder labelings: polynomial exponents and limiting amplitudes},
+ pdfauthor={Research note and research addendum},pdfsubject={Two-sided bounds, non-D-finiteness and full asymptotic equivalents for OEIS A377922, A377920, A377921}}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -33,32 +33,205 @@
 \setlength{\emergencystretch}{2em}
 \allowdisplaybreaks[1]
 \raggedbottom
-\title{Polynomial exponents for corner polyhedra\\and Schnyder labelings}
-\author{Research note}
+\newcommand{\repo}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}{\begin{quote}\small\sloppy\textbf{[write, 2026-10-02]}\ }{\end{quote}}
+\newenvironment{sourceabstract}[1]{\begin{quote}\small\textbf{Abstract of #1, as delivered.}\ }{\end{quote}}
+\title{Corner polyhedra and Schnyder labelings:\\polynomial exponents and limiting amplitudes\\[4pt]
+\large OEIS A377922, A377920 and A377921}
+\author{Part I: research note; Part II: research addendum\\[2pt]\small merged in ProveIt from two manuscripts (batch 77, sources 45 and 46)}
 \date{2 October 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
+Fusy, Narmanli and Schaeffer encode corner polyhedra (A377922) and 3-connected Schnyder
+labelings (A377920) as quadrant walks whose steps depend on a two-state parity, and conjectured
+equivalents $\kappa\mu^nn^{-\alpha}$ with irrational exponents. Part~I proves two-sided
+$\Theta$ bounds with the conjectured exponents, non-D-finiteness of the generating functions of
+A377922, A377920 and A377921, and first-threshold inverses with $O(1)$ error. Part~II proves the
+full equivalents with finite positive amplitudes, including
+$\widetilde s_n\sim(16/19)^3\kappa_S\mu_S^nn^{-\alpha_S}$ for A377921, and a Lambert-$W$ inverse
+with a vanishing-width ceiling bracket. No digits of the amplitudes are certified. The two
+manuscripts are printed in full; a guide fixes the notation shared between them.
+\end{abstract}
+\tableofcontents
+\clearpage
+\begingroup\sloppy
+\section*{Guide to the merged report}\phantomsection\label{cps:sec:guide}
+\addcontentsline{toc}{section}{Guide to the merged report}
+
+\subsection*{What the report proves}
+Let $p_n$ count corner polyhedra with $n+3$ flats (A377922), $s_n$ count 3-connected Schnyder
+labelings with $n$ inner faces (A377920), and $\widetilde s_n$ count rigid orthogonal surfaces
+(A377921), all indexed as in Fusy--Narmanli--Schaeffer \cite{FNS}. Put $\mu_P=9/2$,
+$\mu_S=16/3$, $\alpha_P=1+\pi/\arccos(9/16)$ and $\alpha_S=1+\pi/\arccos(22/27)$.
+\begin{itemize}
+\item \textbf{Part~\ref{cps:part:exponents}} (source 45): $p_n=\Theta(\mu_P^nn^{-\alpha_P})$ and
+ $s_n=\Theta(\mu_S^nn^{-\alpha_S})$ on the full integer sequence
+ (Theorem~\ref{cps:thm:main}), which proves the exponents of \cite[Conjecture 25]{FNS}; the
+ exponents are irrational (Lemma~\ref{cps:lem:irrational}); the generating functions of A377922,
+ A377920 and A377921 are not D-finite (Corollary~\ref{cps:cor:nonD}); and the first threshold
+ index satisfies $N(Y)=(\log Y+\alpha\log\log Y)/\log\mu+O(1)$ (Lemma~\ref{cps:lem:inverse}).
+\item \textbf{Part~\ref{cps:part:amplitudes}} (source 46): finite positive $\kappa_P,\kappa_S$ with
+ $p_n\sim\kappa_P\mu_P^nn^{-\alpha_P}$, $s_n\sim\kappa_S\mu_S^nn^{-\alpha_S}$ and
+ $\widetilde s_n\sim(16/19)^3\kappa_S\mu_S^nn^{-\alpha_S}$
+ (Theorem~\ref{cps:amp:thm:main}): the two positive-amplitude equivalents of
+ \cite[Conjecture 25]{FNS} and a coefficientwise equivalent for A377921. On the way: a
+ boundary-shift comparison (Lemma~\ref{cps:amp:lem:shift}), harmonic and endpoint limits for
+ valid regeneration cycles (Theorem~\ref{cps:amp:thm:cyclelimits}), exact counted-time survival
+ constants (Theorem~\ref{cps:amp:thm:exacttime}), a uniform killed local limit
+ (Lemma~\ref{cps:amp:lem:killed}), fixed-endpoint bridge amplitudes
+ (Theorem~\ref{cps:amp:thm:bridge}) with the universal Brownian factor evaluated
+ (Section~\ref{cps:amp:sec:Brownian}), and a Lambert-$W_{-1}$ inverse with a vanishing-width
+ two-ceiling bracket (Theorem~\ref{cps:amp:thm:inverse}).
+\end{itemize}
+Part~\ref{cps:part:amplitudes} supersedes none of Part~\ref{cps:part:exponents}: it uses Part I's
+models, covariance calculations, cycle buffer, survival bound, free local theorem and uniform
+endpoint estimate as inputs, and it does not reprove non-D-finiteness (which needs only the
+$\Theta$ bounds and the irrationality of the exponents).
+
+\subsection*{Sources and provenance}
+Both manuscripts are dated 2 October 2026 and name no ProveIt commit; neither inspected the
+repository beyond a GitHub code search (which then returned nothing for these sequences). They
+arrived in batch 77 of \texttt{docs/incoming} (arrival commit \texttt{096ee7b87}) and were placed
+in \texttt{aa7345800}. Author lines: ``Research note'' (source 45) and ``Research addendum''
+(source 46); the PDF metadata of both say ``Research note''. Neither names a tool; the report is
+unrefereed and not formalized.
+
+\begin{center}\small
+\begin{tabular}{@{}l>{\raggedright}p{0.4\textwidth}ll>{\raggedright\arraybackslash}p{0.2\textwidth}@{}}
+\toprule
+Source & Archive (wrapper directory, main file) & Pin & Placed & Printed as\\
+\midrule
+45 & \texttt{oeis-bimodal-cone-research.zip} (\texttt{oeis-bimodal-cone-report/}, \texttt{article.tex}, 15-page PDF) & none & \texttt{aa7345800} & Part I: Sections 1--10, Appendix A\\
+46 & \texttt{oeis-bimodal-full-asymptotics.zip} (\texttt{oeis-bimodal-amplitude-report/}, \texttt{addendum.tex}, 14-page PDF) & none & \texttt{aa7345800} & Part II: Sections 11--21\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{How the two sources were merged}
+\begin{itemize}
+\item Source 46 is an addendum to source 45 and embeds an unchanged copy of all 30 files of
+ source 45's package (verified byte-identical at placement). That copy is not shipped; source 45
+ is printed once, as Part~\ref{cps:part:exponents}.
+\item Part~\ref{cps:part:exponents} keeps source 45's numbering exactly (Sections 1--10,
+ Appendix~\ref{cps:app:checks}), because this guide is unnumbered. So the numbers in source 46's
+ ``Foundation Lemma 2.1, Lemma 4.1, Section 3, Section 4.1, Proposition 6.1, Proposition 7.2,
+ equation (8.6)'' are still correct here; they are now hyperlinks. Source 46's Section $n$ is
+ Section $n+10$ here, and its Theorem $n.m$ is Theorem $(n+10).m$.
+\item Both manuscripts are printed in full, with their abstracts. Source 46's Section 2
+ (Section~\ref{cps:amp:sec:inputs} here) restates Part I's inputs in its own notation; it is
+ kept, because the rest of Part~\ref{cps:part:amplitudes} cites its displays. No result is proved
+ in both Parts with the same strength: Part II's inverse theorem sharpens Part I's inverse lemma,
+ and both are printed.
+\item Source 45's appendix of exact checks is placed after Part~\ref{cps:part:amplitudes}, so that
+ it stays Appendix~A.
+\item Labels carry the prefix \texttt{cps:} in Part I and \texttt{cps:amp:} in Part II. Apart from
+ labels, the only changes to the manuscripts' text are: source 46's citations of the
+ Foundation, which became cross-references to Part I; its citation key \texttt{DW}, which became
+ source 45's \texttt{DWrevisited} (the same paper); and the dated notes marked \textbf{[write]}.
+ No statement, proof, symbol or number was changed.
+\item One bibliography: source 45's, plus source 46's entry for Ba\~nuelos--Smits. Source 46's
+ entries for Fusy--Narmanli--Schaeffer and Denisov--Wachtel are the same papers as source 45's.
+ Its \texttt{Foundation} entry is replaced by Part I. Its uncited \texttt{OEIS} entry (A377922,
+ A377920, A377921) duplicates source 45's two OEIS entries and is omitted. Source 45's uncited
+ entry for Denisov--Wachtel 2015 is kept, as delivered.
+\end{itemize}
+
+\subsection*{Notation shared and not shared}
+The two manuscripts use the same normalizations: $\mu_P,\mu_S,\alpha_P,\alpha_S$, the lattice $L$,
+the kernels $K_P,K_S$, the killed transition probabilities $q_n$ and $q_n^*$, the covariances
+$\Sigma_P,\Sigma_S$ per counted step (Part I remarks that the matrices of \cite[Section 4.2]{FNS}
+are $\mu\Sigma$), the angle $\theta$ and $p=\pi/\theta=\alpha-1$. \emph{No symbol was renamed and no
+normalization was changed}; each Part keeps its own letters, and the letters below mean different
+things in the two Parts, or in different places of one Part. In both Parts the roman
+$\mathrm e$ is the even parity state, not Euler's number.
+
+\begin{table}[ht]
+\centering\small
+\caption{Clashing letters. ``Reading to avoid'' is the tempting false identification.}\label{cps:tab:notation}
+\begin{tabular}{@{}>{$}l<{$}>{\raggedright}p{0.3\textwidth}>{\raggedright}p{0.3\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
+\toprule
+\text{Letter} & Part I (source 45) & Part II (source 46) & Reading to avoid\\
+\midrule
+D & $D=(1-\frac1{3x^2})(1-\frac{y^2}3)$ in \eqref{cps:eq:PK}; $D_0$; operators $D_x=x\partial_x$, $D_y$ & $D$: valid complete-cycle kernel (Section~\ref{cps:amp:sec:kernels}), $D_i$ per parity; Part I's $D$ is $D_P$ & $D^m$ in Part II is not a power of Part I's denominator\\
+H & $H=1-x^{-2}-y^2-2x^{-2}y^2$ in \eqref{cps:eq:SM} & $H_S$ = Part I's $H$; $\mathcal H=\lim D^mV$ harmonic function & $\mathcal H$ is not $H$\\
+T & return times $T_k$; $T(z)=\sum\widetilde s_nz^n$ (proof of Corollary~\ref{cps:cor:nonD}) & whitening $T=(2\Sigma)^{-1/2}$; $T_k$; $T_Y=\log Y$; Part I's $T(z)$ is $\widetilde S(z)$ & $T$ in Part II is a matrix, not a series\\
+K & tilted kernels $K_P,K_S$ & the same kernels; also the wedge $K=TC$, $K_b$, heat kernels $k_t^K$, the semigroup $K_t$ & \\
+C & generic constants; conditional covariances $C_i$; a fixed ball $C$ (Section~\ref{cps:sec:gluing}) & open quadrant $C=(0,\infty)^2$; $C_B$; bridge amplitude $\mathcal C(a,b)$; shifts $c_P,c_S$ & \\
+B & entry $B=x/y+x^{-1}y/H$; balls $B,B',B_n$ & continuity sets $B$; bridge factor $\mathcal B_\Sigma$; shifts $b_P,b_S$; coefficients $b_j$ & \\
+L & lattice $L$; $L=\log Y$ in the proof of Lemma~\ref{cps:lem:inverse} & lattice $L$; $L_m=\sqrt m\log m$ & \\
+A & generating function $A(z)$ (Lemma~\ref{cps:lem:nonD}) & survival amplitudes $A(a)$, $A^*(b)$ & \\
+S & survival $S_n(a)$; $S(z)=\sum s_nz^n$ & $S(z)$ the same series; $S$ also names the model & \\
+\beta & $\beta=k-\alpha$ (proof of Lemma~\ref{cps:lem:nonD}) & survival constants $\beta,\beta^*,\beta_B$ & \\
+\lambda & principal eigenvalue $\lambda(t)$; exponential-moment parameter & $\lambda=\log\mu$ (Theorem~\ref{cps:amp:thm:inverse}) & \\
+h & corrector $h_{\mathrm e},h_{\mathrm o}$ & corrector; also $h(x)=u(\Sigma^{-1/2}x)$ (Section~\ref{cps:amp:sec:Brownian}) & \\
+a & stay probability $a=1/6$ or $1/8$ in \eqref{cps:eq:internal}; also points & points; sequences $a_n$ in Theorem~\ref{cps:amp:thm:inverse} & \\
+r,\ g & coordinate index $r$; $r\in\{9/16,22/27\}$ & $r(Y)$ the Lambert centre; $g_t$ entrance density, $g(t)$ in a proof & \\
+\gamma,\ \kappa & --- & $\kappa_P,\kappa_S$ amplitudes; $\gamma$ a generic amplitude ($=\kappa$) & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{What is not claimed}
+Every limitation stated by either source is kept in its text. In summary:
+\begin{itemize}
+\item No numerical digits of $\kappa_P$ or $\kappa_S$, no rate of convergence and no correction
+ term are certified (Part II, Sections 11 and 21). The amplitudes are characterized by positive
+ killed-harmonic and Brownian heat-kernel expressions; only the universal Brownian factor is
+ evaluated.
+\item No unconditional rounding formula $N(Y)=\lceil r(Y)\rceil$ (Part II); Part I's inverse has
+ $O(1)$ error and no next constant.
+\item A377923, whose OEIS entry the delivery also exported, is a different sequence and is
+ outside both theorems.
+\item No general cone theorem for Markov-modulated walks (Part I, Section 1); the arguments use a
+ fixed cycle buffer specific to these two models. No cone-killed local theorem for the two-state
+ chain is assumed (Part II).
+\item The counting bijections are Fusy--Narmanli--Schaeffer's, the iid cone input is
+ Denisov--Wachtel's, and the Brownian cone kernel is Ba\~nuelos--Smits'. Neither source claims
+ publication priority; both literature checks (\texttt{45-cone-literature-status.md},
+ \texttt{46-amp-literature-status.md}) are bounded snapshots that do not establish novelty.
+\item The finite computations check identities, normalizations and indexing (coefficients to
+ $n=30$); they do not establish any limit. Neither source was externally peer reviewed or
+ machine-formalized; the shipped mathematical reviews are the deliveries' own.
+\end{itemize}
+
+\subsection*{Inversion mechanics and formal status}
+Part I's Lemma~\ref{cps:lem:inverse} and Part II's Theorem~\ref{cps:amp:thm:inverse} are instances of
+three theorems of the repository's transseries volume
+(\repo{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}):
+\texttt{p0:thm:lambert-core}, \texttt{p0:thm:lambert-centered} and, for the integer bracket,
+\texttt{p0:thm:staircase}. No novelty is claimed for the inversion mechanics. Nothing in this
+report is formalized in Lean or Rocq, and its place in the collection confers no formal status.
+The only related formal statement is the generic staircase lemma
+\texttt{Fabius.staircase\_separation}
+(\repo{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean}), which concerns an
+arbitrary monotone interpolation, not these sequences.
+\endgroup
+\clearpage
+\part{Polynomial exponents (source 45)}\label{cps:part:exponents}
+\begin{center}\large Polynomial exponents for corner polyhedra and Schnyder labelings\\[2pt]
+\normalsize Research note, 2 October 2026\end{center}
+\begin{sourceabstract}{source 45}
 The quadrant-walk models of Fusy, Narmanli, and Schaeffer have a two-state parity dependence that prevents a direct application of an independent-increment cone theorem at the original time scale. We prove two-sided constant-factor estimates for the two enumerating sequences:
 \[
  p_n=\Theta\!\left((9/2)^n n^{-1-\pi/\arccos(9/16)}\right),\qquad
  s_n=\Theta\!\left((16/3)^n n^{-1-\pi/\arccos(22/27)}\right).
 \]
 The proof regenerates at returns to a parity state. A deterministic one-unit bound on excursions within a regeneration cycle transfers independent-increment cone estimates to the original walk. Exponential concentration of the random clock yields lower bounds at every sufficiently large exact time; a Fourier local limit estimate and an interior gluing argument yield the extra factor $n^{-1}$. The estimates prove the conjectured polynomial exponents, but do not prove convergence to positive asymptotic amplitudes. They also imply non-D-finiteness of the two generating functions and, by a rational generating-function identity, of the related rigid-surface generating function. All symbolic and finite enumeration checks are supplied in a reproducibility package.
-\end{abstract}
+\end{sourceabstract}
 
 \section{Results and scope}
 Let $p_n$ be the number of polyhedral orientations with $n$ inner vertices, equivalently the number of combinatorial types of corner polyhedra with $n+3$ flats. Let $s_n$ count 3-connected Schnyder labelings with $n$ inner faces in the associated quadrangular dissection. These are the sequences \href{https://oeis.org/A377922}{A377922} and \href{https://oeis.org/A377920}{A377920}, with precisely the indexing of Fusy--Narmanli--Schaeffer \cite{FNS,OEISP,OEISS}. Put
-\begin{equation}\label{eq:parameters}
+\begin{equation}\label{cps:eq:parameters}
  \mu_P=\frac92,\quad \mu_S=\frac{16}3,\qquad
  \alpha_P=1+\frac{\pi}{\arccos(9/16)},\quad
  \alpha_S=1+\frac{\pi}{\arccos(22/27)}.
 \end{equation}
 Throughout, $a_n=\Theta(b_n)$ means that positive constants $c,C$ exist such that $cb_n\le a_n\le Cb_n$ for all sufficiently large integers $n$.
 
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{cps:thm:main}
 With the preceding conventions,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{cps:eq:main}
  p_n=\Theta(\mu_P^n n^{-\alpha_P}),\qquad
  s_n=\Theta(\mu_S^n n^{-\alpha_S}).
 \end{equation}
@@ -76,17 +249,25 @@ A377920 & Schnyder labelings & $16/3$ & $\alpha_S=6.080304846\ldots$\\
 \end{tabular}
 \end{center}
 
-The exponential rates were proved in \cite[Theorem 24]{FNS}. Their Conjecture 25 predicts asymptotic equivalents with positive amplitudes and the exponents in \eqref{eq:parameters}. Theorem~\ref{thm:main} establishes the exponents and stronger two-sided bounds, but leaves the amplitude limits unresolved. In particular,
-\begin{equation}\label{eq:loglimits}
+The exponential rates were proved in \cite[Theorem 24]{FNS}. Their Conjecture 25 predicts asymptotic equivalents with positive amplitudes and the exponents in \eqref{cps:eq:parameters}. Theorem~\ref{cps:thm:main} establishes the exponents and stronger two-sided bounds, but leaves the amplitude limits unresolved. In particular,
+\begin{equation}\label{cps:eq:loglimits}
  \lim_{n\to\infty}\frac{\log p_n-n\log\mu_P}{\log n}=-\alpha_P,
  \qquad
  \lim_{n\to\infty}\frac{\log s_n-n\log\mu_S}{\log n}=-\alpha_S.
 \end{equation}
-The manuscript relies on the published combinatorial bijections and on the independent-increment cone theorem stated in Section~\ref{sec:iid}. It does not posit a new general cone theorem for arbitrary Markov-modulated walks. Its argument is specific to a geometric property of these two tandem-walk models.
+The manuscript relies on the published combinatorial bijections and on the independent-increment cone theorem stated in Section~\ref{cps:sec:iid}. It does not posit a new general cone theorem for arbitrary Markov-modulated walks. Its argument is specific to a geometric property of these two tandem-walk models.
 
-\section{Exact walk models and normalization}\label{sec:models}
+\begin{writenote}
+The amplitude limits that this paragraph leaves unresolved are established in
+Part~\ref{cps:part:amplitudes} (source 46): Theorem~\ref{cps:amp:thm:main} proves both
+positive-amplitude equivalents of \cite[Conjecture 25]{FNS}, on the full integer sequence, and
+an equivalent for A377921. Part~\ref{cps:part:amplitudes} characterizes $\kappa_P,\kappa_S$ by
+positive harmonic and heat-kernel expressions and certifies no numerical digits of them.
+\end{writenote}
+
+\section{Exact walk models and normalization}\label{cps:sec:models}
 A tandem step is either $\SE=(1,-1)$ or a \emph{face step} $(-i,j)$ with $i,j\ge0$. A walk is even when every increment has coordinates of the same parity. The common state space is
-\begin{equation}\label{eq:lattice}
+\begin{equation}\label{cps:eq:lattice}
  L=\{(a,b)\in\ZZ^2:a\equiv b\pmod2\}.
 \end{equation}
 The internal state $J$ is the parity of the second coordinate, denoted $\e$ or $\oState$. In a matrix of Laurent series, rows give the initial state, columns the final state, and the coefficient of $x^ay^b$ gives the weight of displacement $(a,b)$. Nonnegative coefficients are understood in the indicated convergent expansions.
@@ -96,7 +277,7 @@ The $P$-admissible steps are
 \begin{align}
  \mathcal S_P^{\e}
  &=\{(1,-1)\}\cup\{(-2i,2j):i\ge0,j\ge1\}
-       \cup\{(-2i-1,2j+1):i,j\ge0\},\label{eq:Psteps}\\
+       \cup\{(-2i-1,2j+1):i,j\ge0\},\label{cps:eq:Psteps}\\
  \mathcal S_P^{\oState}
  &=\{(1,-1)\}\cup\{(-2i,2j):i\ge1,j\ge0\}
        \cup\{(-2i-1,2j+1):i,j\ge0\}.\notag
@@ -111,7 +292,7 @@ Write $D_0=(1-x^{-2})(1-y^2)$. The unweighted matrix is
  \end{pmatrix}.
 \end{equation}
 Tilting and normalizing gives
-\begin{equation}\label{eq:PK}
+\begin{equation}\label{cps:eq:PK}
  K_P(x,y)=\frac2{9}M_P(\sqrt3x,y/\sqrt3)
  =\begin{pmatrix}
  \dfrac{2y^2}{27D}&\dfrac{2x}{3y}+\dfrac{2y}{27xD}\\[5pt]
@@ -125,13 +306,13 @@ At $(1,1)$ the matrix is stochastic. Each admissible displacement $z$ has probab
  q_n^P(a,b)=\PP_a(X_n=b,\ X_t\in Q_P\text{ for }0\le t\le n).
 \end{equation}
 The tilt telescopes along a path, giving the exact identity
-\begin{equation}\label{eq:Pcount}
+\begin{equation}\label{cps:eq:Pcount}
  p_n=\mu_P^n\sum_{i\ge1}3^{-i}q_n^P((0,0),(2i,0)).
 \end{equation}
 
 \subsection{Schnyder labelings}
 An $S$-admissible face step is one of the following, with $\ell,r\ge0$ and weight $\binom{\ell+r}{r}$:
-\begin{equation}\label{eq:Ssteps}
+\begin{equation}\label{cps:eq:Ssteps}
  \begin{array}{c|c}
  \text{initial parity}&\text{face displacement}\\ \hline
  \text{either}&(-2\ell-2,\ 2r+2)\\
@@ -140,7 +321,7 @@ An $S$-admissible face step is one of the following, with $\ell,r\ge0$ and weigh
  \end{array}
 \end{equation}
 Weights count distinct decorations. Write $s'_n$ for the subclass in which the two outer vertices labeled $G$ are non-isolated. Proposition 14 and Remark 9 of \cite{FNS} state that $s'_n$ counts weighted quadrant walks from $(0,2)$ to $(2,0)$ with $n+2$ southeast steps, and that
-\begin{equation}\label{eq:Sconversion}
+\begin{equation}\label{cps:eq:Sconversion}
  s_n=s'_n+2s'_{n-1}+s'_{n-2}\qquad(n\ge4).
 \end{equation}
 Each such walk begins and ends with a southeast step. Removing the last one leaves a walk from $(0,2)$ to $(1,1)$ with $n+1$ southeast steps.
@@ -156,15 +337,15 @@ Thus $M_S=E(I-W)^{-1}$. With
  H=1-x^{-2}-y^2-2x^{-2}y^2,\qquad B=x/y+x^{-1}y/H,
 \end{equation}
 explicit inversion yields
-\begin{equation}\label{eq:SM}
+\begin{equation}\label{cps:eq:SM}
  M_S(x,y)=\begin{pmatrix}x^{-2}/H&B\\B&y^2/H\end{pmatrix},\qquad
  K_S(x,y)=\frac3{16}M_S(2x,y/2).
 \end{equation}
 The expansion of $(I-W)^{-1}$ accounts for every decorated face string with its correct multiplicity. It converges at the tilting point $(2,1/2)$, and in a neighborhood thereof.
 
-\begin{lemma}[Exact aggregate boundary]\label{lem:Sboundary}
+\begin{lemma}[Exact aggregate boundary]\label{cps:lem:Sboundary}
 For an aggregate walk from $(0,2)$ to $(1,1)$, every underlying physical step stays in the nonnegative quadrant if and only if every aggregate endpoint stays in
-\begin{equation}\label{eq:SQ}
+\begin{equation}\label{cps:eq:SQ}
  Q_S=\{(a,b)\in L:a\ge0,\ b\ge1\}.
 \end{equation}
 \end{lemma}
@@ -172,14 +353,14 @@ For an aggregate walk from $(0,2)$ to $(1,1)$, every underlying physical step st
 If an aggregate begins at height at least one, its southeast step remains nonnegative. Subsequent face steps decrease the first coordinate and increase the second, so nonnegativity of the aggregate's final first coordinate controls the whole face string. Conversely, any aggregate except the last must end at height at least one to allow the following southeast step; the prescribed last endpoint has height one. The first coordinate is nonnegative at all endpoints whenever the physical path is valid.
 \end{proof}
 Let $q_N^S$ denote the $K_S$ chain killed outside $Q_S$, with $N$ counting aggregates. A decorated path of $N$ aggregates with displacement $(a,b)$ has probability $\mu_S^{-N}2^{a-b}$. The total displacement here is $(1,-1)$; hence
-\begin{equation}\label{eq:Scount}
+\begin{equation}\label{cps:eq:Scount}
  s'_n=\frac{\mu_S^{n+1}}4q_{n+1}^S((0,2),(1,1)).
 \end{equation}
-There is no physical-time offset in \eqref{eq:Pcount}; the $n+1$ in \eqref{eq:Scount} is essential.
+There is no physical-time offset in \eqref{cps:eq:Pcount}; the $n+1$ in \eqref{cps:eq:Scount} is essential.
 
-\section{Correctors and regenerative covariance}\label{sec:moments}
+\section{Correctors and regenerative covariance}\label{cps:sec:moments}
 In this section $K$ denotes either $K_P$ or $K_S$. Time means a physical step for $P$ and an aggregate for $S$. In both cases the internal transition matrix is
-\begin{equation}\label{eq:internal}
+\begin{equation}\label{cps:eq:internal}
  P=K(1,1)=\begin{pmatrix}a&1-a\\1-a&a\end{pmatrix},\qquad
  a=\begin{cases}1/6&(P),\\1/8&(S).
  \end{cases}
@@ -190,7 +371,7 @@ Its stationary distribution is $(1/2,1/2)$. Define $D_x=x\partial_x$ and $D_y=y\
 \end{equation}
 The means satisfy $d_{\oState}=-d_{\e}$. Solving
 $d_i+\sum_jP_{ij}(h_j-h_i)=0$ gives a bounded corrector with $h_{\oState}=-h_{\e}$:
-\begin{equation}\label{eq:drifts}
+\begin{equation}\label{cps:eq:drifts}
  \begin{array}{c|cc}
  &d_{\e}&h_{\e}\\ \hline
  P&(1/6,1/6)&(1/10,1/10)\\
@@ -200,7 +381,7 @@ $d_i+\sum_jP_{ij}(h_j-h_i)=0$ gives a bounded corrector with $h_{\oState}=-h_{\e
 Consequently $M_t=X_t+h_{J_t}$ is a martingale.
 
 The conditional covariance matrix of its increment in state $i$ has entries
-\begin{align}\label{eq:Cformula}
+\begin{align}\label{cps:eq:Cformula}
  (C_i)_{rs}={}&\sum_j\bigl[ D_rD_sK_{ij}
  +(h_{j,r}-h_{i,r})D_sK_{ij}
  +(h_{j,s}-h_{i,s})D_rK_{ij}\notag\\
@@ -209,16 +390,16 @@ The conditional covariance matrix of its increment in state $i$ has entries
 Evaluation gives
 \begin{align}
  C^P_{\e}&=\begin{pmatrix}12/5&-9/5\\-9/5&4\end{pmatrix},&
- C^P_{\oState}&=\begin{pmatrix}4&-9/5\\-9/5&12/5\end{pmatrix},\label{eq:PC}\\
+ C^P_{\oState}&=\begin{pmatrix}4&-9/5\\-9/5&12/5\end{pmatrix},\label{cps:eq:PC}\\
  C^S_{\e}&=\begin{pmatrix}6&-88/21\\-88/21&30/7\end{pmatrix},&
- C^S_{\oState}&=\begin{pmatrix}30/7&-88/21\\-88/21&6\end{pmatrix}.\label{eq:SC}
+ C^S_{\oState}&=\begin{pmatrix}30/7&-88/21\\-88/21&6\end{pmatrix}.\label{cps:eq:SC}
 \end{align}
 Averaging over the stationary internal chain gives the covariance per unit time:
-\begin{equation}\label{eq:Sigma}
+\begin{equation}\label{cps:eq:Sigma}
  \Sigma_P=\begin{pmatrix}16/5&-9/5\\-9/5&16/5\end{pmatrix},\qquad
  \Sigma_S=\begin{pmatrix}36/7&-88/21\\-88/21&36/7\end{pmatrix}.
 \end{equation}
-Both are positive definite. The matrices displayed in \cite[Section 4.2]{FNS} are $\mu_P\Sigma_P$ and $\mu_S\Sigma_S$, respectively; the stochastic per-counted-step normalization here differs by these scalar factors. The correlation coefficients and conjectured powers are unchanged. The unequal matrices in \eqref{eq:PC} and \eqref{eq:SC} are one reason to avoid imposing a state-independent conditional covariance hypothesis on the original chain.
+Both are positive definite. The matrices displayed in \cite[Section 4.2]{FNS} are $\mu_P\Sigma_P$ and $\mu_S\Sigma_S$, respectively; the stochastic per-counted-step normalization here differs by these scalar factors. The correlation coefficients and conjectured powers are unchanged. The unequal matrices in \eqref{cps:eq:PC} and \eqref{cps:eq:SC} are one reason to avoid imposing a state-independent conditional covariance hypothesis on the original chain.
 
 \subsection{First returns to a parity state}
 Fix the initial parity $i$ and set $T_0=0$ and $T_{k+1}=\inf\{t>T_k:J_t=i\}$. By the Markov property and translation invariance within a parity class, the pairs
@@ -226,13 +407,13 @@ Fix the initial parity $i$ and set $T_0=0$ and $T_{k+1}=\inf\{t>T_k:J_t=i\}$. By
  (Y_k,\ell_k)=(X_{T_k}-X_{T_{k-1}},\ T_k-T_{k-1})
 \end{equation}
 are independent and identically distributed. With $j\ne i$ their joint generating function is
-\begin{equation}\label{eq:return}
+\begin{equation}\label{cps:eq:return}
  R_i(u,x,y)=uK_{ii}(x,y)+\frac{u^2K_{ij}(x,y)K_{ji}(x,y)}{1-uK_{jj}(x,y)}.
 \end{equation}
 The geometric term enumerates a first transition to $j$, any number of stays in $j$, and a last transition to $i$. The denominator is nonzero at $(1,1,1)$, and all coefficients are nonnegative. Analyticity there gives a joint exponential moment of $(\ell,Y)$.
 
-Differentiating \eqref{eq:return}, for either choice of $i$, yields
-\begin{equation}\label{eq:cyclemoments}
+Differentiating \eqref{cps:eq:return}, for either choice of $i$, yields
+\begin{equation}\label{cps:eq:cyclemoments}
  \EE\ell=2,\qquad \EE Y=0,\qquad \Cov(Y)=2\Sigma,
  \qquad
  \Var(\ell)=\begin{cases}2/5&(P),\\2/7&(S).
@@ -248,17 +429,17 @@ Thus cycle displacement and duration are genuinely dependent. No argument below 
 
 \subsection{Time reversal and cone angle}
 Write $K_{ij}(z)$ for a coefficient of the step matrix. The reverse transition probabilities are
-\begin{equation}\label{eq:reverse}
+\begin{equation}\label{cps:eq:reverse}
  K^*_{ij}(z)=K_{ji}(-z).
 \end{equation}
 For a fixed endpoint in $L$, the total incoming mass is the relevant column sum of $P$, which is one. Counting measure on $L$ is therefore invariant, and $K^*$ is stochastic. For either killed domain,
-\begin{equation}\label{eq:killedreverse}
+\begin{equation}\label{cps:eq:killedreverse}
  q_n(a,b)=q_n^*(b,a).
 \end{equation}
-The matrices $K_P$ and $K_S$ are symmetric as matrices of Laurent series, so $K^*(x,y)=K(x^{-1},y^{-1})$. The reverse corrector is $h^*=-h$, and its corrected conditional covariance matrices are the same as \eqref{eq:PC}--\eqref{eq:SC}. Reversing a first-return path preserves its probability and duration and negates its displacement. The reverse cycle law consequently has the same covariance as the forward one.
+The matrices $K_P$ and $K_S$ are symmetric as matrices of Laurent series, so $K^*(x,y)=K(x^{-1},y^{-1})$. The reverse corrector is $h^*=-h$, and its corrected conditional covariance matrices are the same as \eqref{cps:eq:PC}--\eqref{cps:eq:SC}. Reversing a first-return path preserves its probability and duration and negates its displacement. The reverse cycle law consequently has the same covariance as the forward one.
 
 Whitening covariance $2\Sigma$ transforms the positive quadrant to a wedge with angle
-\begin{equation}\label{eq:angles}
+\begin{equation}\label{cps:eq:angles}
  \theta=\arccos\!\left(-\frac{\Sigma_{12}}{\sqrt{\Sigma_{11}\Sigma_{22}}}\right),
  \qquad p=\frac{\pi}{\theta},
  \qquad
@@ -266,12 +447,12 @@ Whitening covariance $2\Sigma$ transforms the positive quadrant to a wedge with 
 \end{equation}
 Thus $\alpha=1+p$ in each model. Multiplying the covariance by a scalar does not change this angle.
 
-\section{A fixed buffer for regeneration cycles}\label{sec:buffer}
+\section{A fixed buffer for regeneration cycles}\label{cps:sec:buffer}
 Call an increment northwest if its first coordinate is nonpositive and its second coordinate is nonnegative. For $P$, every parity-preserving step is northwest, and every parity-changing step is either northwest or $\SE$. The same assertion holds for $S$ aggregates: any nonempty face string following the initial southeast step offsets its increase of the first coordinate and decrease of the second, since each face step has first coordinate at most $-1$ and second coordinate at least $1$. An empty aggregate is exactly $\SE$, and cannot preserve parity.
 
-\begin{lemma}[One-unit cycle bound]\label{lem:buffer}
+\begin{lemma}[One-unit cycle bound]\label{cps:lem:buffer}
 For a first return to either parity in either model, with endpoints $a,b$, every intermediate position $z$ at the model's time scale satisfies
-\begin{equation}\label{eq:buffer}
+\begin{equation}\label{cps:eq:buffer}
  z_r\ge\min(a_r,b_r)-1\qquad(r=1,2).
 \end{equation}
 The same statement holds for reversed cycles.
@@ -279,9 +460,9 @@ The same statement holds for reversed cycles.
 \begin{proof}
 A one-step return is northwest. Otherwise the cycle consists of one parity-changing step, a string of parity-preserving northwest steps, and one parity-changing step. The first and last steps may each be northwest or $\SE$. A drop of the second coordinate below the smaller endpoint height is possible only at the first step, when that step is $\SE$, and its size is one. A drop of the first coordinate below the smaller endpoint first coordinate is possible only immediately before a final $\SE$, also by one. All intervening changes have the northwest monotonicity. Reversal preserves the set of intermediate positions and exchanges the endpoints, so it preserves the bound.
 \end{proof}
-If all even-parity cycle endpoints have both coordinates at least two, every intervening position has both coordinates at least one. This ensures survival in $Q_P$ and $Q_S$. In the $S$ model Lemma~\ref{lem:Sboundary} then ensures survival at every underlying physical step as well. The buffer is fixed, irrespective of cycle duration or displacement.
+If all even-parity cycle endpoints have both coordinates at least two, every intervening position has both coordinates at least one. This ensures survival in $Q_P$ and $Q_S$. In the $S$ model Lemma~\ref{cps:lem:Sboundary} then ensures survival at every underlying physical step as well. The buffer is fixed, irrespective of cycle duration or displacement.
 
-\subsection{Accessibility and finite entrance paths}\label{sec:entrances}
+\subsection{Accessibility and finite entrance paths}\label{cps:sec:entrances}
 The even-return cycle laws have explicit increments that make the required cone starting points accessible. In $P$, $(0,2)$ is a one-step even return, and $(2,-2)$ is realized by two southeast steps. A cycle with displacement $(-2,0)$ consists of
 \begin{equation}
  (-1,1),\quad(-2,0),\quad(1,-1),
@@ -289,19 +470,19 @@ The even-return cycle laws have explicit increments that make the required cone 
 with states $\e,\oState,\oState,\e$. The reverse cycle law therefore contains $(2,0)$ and $(-2,2)$. By raising the second coordinate before adding $(2,-2)$, the forward skeleton reaches arbitrarily deep diagonal points without exiting the translated cone. The analogous reverse construction first raises the first coordinate and then uses $(-2,2)$.
 
 In $S$, two empty aggregates give $(2,-2)$. A cycle of aggregate displacements
-\begin{equation}\label{eq:Saccess}
+\begin{equation}\label{cps:eq:Saccess}
  (1,-1),\quad(0,2),\quad(-1,1)
 \end{equation}
 gives $(0,2)$. The middle aggregate is a southeast step followed by the face step $(-1,3)$; the last is a southeast step followed by $(-2,2)$. A single aggregate consisting of a southeast step and $(-3,1)$ gives the even return $(-2,0)$. Hence the same forward and reverse accessibility argument applies.
 
 Finally, there are positive-probability entrance paths to $(2,2)$. For $P$ they are
-\begin{equation}\label{eq:Pentrances}
+\begin{equation}\label{cps:eq:Pentrances}
  (0,0)\longrightarrow(0,4)\longrightarrow(1,3)\longrightarrow(2,2),
  \qquad
  (4,0)\xrightarrow{\text{reverse}}(3,1)\longrightarrow(2,2).
 \end{equation}
 For $S$ the forward aggregate path is
-\begin{equation}\label{eq:Sentrances}
+\begin{equation}\label{cps:eq:Sentrances}
  (0,2)\xrightarrow{\SE}(1,1)
  \xrightarrow{\SE+(-1,3)}(1,3)
  \xrightarrow{\SE}(2,2).
@@ -314,46 +495,46 @@ Its middle aggregate passes through $(2,0)$, which is permitted physically. The 
 The last reversed aggregate is the reversal of the valid forward path
 $(2,2)\to(3,1)\to(0,2)$. All displayed entrances respect their killed domains.
 
-\section{Independent-increment cone input}\label{sec:iid}
+\section{Independent-increment cone input}\label{cps:sec:iid}
 We use the following consequences of Denisov--Wachtel \cite[Theorems 2 and 3]{DWrevisited}. Let $Z_k$ be an iid centered random walk in a planar wedge, after a nonsingular linear normalization of its covariance to the identity. Assume a nondegenerate covariance and an exponential moment. Let $\tau$ be its first exit from the open wedge and let $p=\pi/\theta$, where $\theta$ is the wedge angle. Assume $p\ge1$, as holds for both wedges here. Then
-\begin{equation}\label{eq:iidupper}
+\begin{equation}\label{cps:eq:iidupper}
  \PP_z(\tau>k)\le C(1+\norm z)^p k^{-p/2}.
 \end{equation}
 For a fixed starting point with positive killed harmonic function and any fixed ball $B$ compactly contained in the wedge,
-\begin{equation}\label{eq:iidlower}
+\begin{equation}\label{cps:eq:iidlower}
  \PP_z(\tau>k,\ Z_k\in\sqrt{k}B)\sim c_{z,B}k^{-p/2},
  \qquad c_{z,B}>0.
 \end{equation}
-Indeed, Theorem 3(a) bounds survival by a constant times the wedge harmonic function at a fixed inward shift, divided by $k^{p/2}$. The harmonic function is homogeneous of degree $p$ and is bounded above by a constant times $\norm z^p$, giving \eqref{eq:iidupper}. Theorem 3(b) gives a positive integral over the ball in \eqref{eq:iidlower}; Theorem 2 and accessibility give positivity of the starting harmonic function.
+Indeed, Theorem 3(a) bounds survival by a constant times the wedge harmonic function at a fixed inward shift, divided by $k^{p/2}$. The harmonic function is homogeneous of degree $p$ and is bounded above by a constant times $\norm z^p$, giving \eqref{cps:eq:iidupper}. Theorem 3(b) gives a positive integral over the ball in \eqref{cps:eq:iidlower}; Theorem 2 and accessibility give positivity of the starting harmonic function.
 
-All hypotheses can be checked for the present skeletons. The moment and covariance conditions follow from \eqref{eq:cyclemoments}. A planar wedge is Lipschitz and star-like. In polar coordinates its positive Brownian harmonic function is
+All hypotheses can be checked for the present skeletons. The moment and covariance conditions follow from \eqref{cps:eq:cyclemoments}. A planar wedge is Lipschitz and star-like. In polar coordinates its positive Brownian harmonic function is
 \begin{equation}
  u(r,\varphi)=r^p\sin(p\varphi),\qquad0<\varphi<\theta,
 \end{equation}
-which is comparable to $r^{p-1}$ times distance to the boundary. The accessibility constructions in Section~\ref{sec:entrances} supply the positive starting points used in the lower bound.
+which is comparable to $r^{p-1}$ times distance to the boundary. The accessibility constructions in Section~\ref{cps:sec:entrances} supply the positive starting points used in the lower bound.
 
-The lattice boundary convention causes no difficulty, but must be fixed before whitening. On the even lattice, translating $(a,b)$ to $(a+1,b+1)$ makes $a,b\ge0$ equivalent to positivity of both translated coordinates. Translating to $(a-1,b-1)$ does the same for $a,b\ge2$. For $Q_S$, translation by $(1,0)$ makes $a\ge0,b\ge1$ equivalent to an open quadrant condition on either parity class. Each is a fixed shift. After diffusive rescaling, the induced displacement of endpoint balls tends to zero, and nested fixed balls suffice in every application of \eqref{eq:iidlower}.
+The lattice boundary convention causes no difficulty, but must be fixed before whitening. On the even lattice, translating $(a,b)$ to $(a+1,b+1)$ makes $a,b\ge0$ equivalent to positivity of both translated coordinates. Translating to $(a-1,b-1)$ does the same for $a,b\ge2$. For $Q_S$, translation by $(1,0)$ makes $a\ge0,b\ge1$ equivalent to an open quadrant condition on either parity class. Each is a fixed shift. After diffusive rescaling, the induced displacement of endpoint balls tends to zero, and nested fixed balls suffice in every application of \eqref{cps:eq:iidlower}.
 
-\section{Transfer to exact model time}\label{sec:time}
+\section{Transfer to exact model time}\label{cps:sec:time}
 This section applies to both models and their reversals. For $P$, time is physical time; for $S$, it is aggregate time. Put
 \begin{equation}
  S_n(a)=\sum_{b\in Q}q_n(a,b)=\PP_a(X_t\in Q\text{ for }0\le t\le n).
 \end{equation}
 
-\begin{proposition}[Survival upper bound]\label{prop:survival}
+\begin{proposition}[Survival upper bound]\label{cps:prop:survival}
 For the starting parity being used for regeneration,
-\begin{equation}\label{eq:survival}
+\begin{equation}\label{cps:eq:survival}
  S_n(a)\le C(1+\norm a)^p n^{-p/2}+Ce^{-cn}.
 \end{equation}
 The constants can be chosen for all starting points in the relevant domain and either of the two parity classes.
 \end{proposition}
 \begin{proof}
-Take $k=\lfloor n/4\rfloor$. Since the iid durations have mean two and an exponential moment, a Chernoff bound gives $\PP(T_k>n)\le Ce^{-cn}$. If the model-time path survives through $n$ and $T_k\le n$, then all of the first $k$ skeleton endpoints lie in $Q$. Drop all within-cycle restrictions and apply \eqref{eq:iidupper}, with the appropriate fixed translation. This is an event inclusion, not an identification of skeleton survival with full path survival. There are only two parities, so their constants can be combined.
+Take $k=\lfloor n/4\rfloor$. Since the iid durations have mean two and an exponential moment, a Chernoff bound gives $\PP(T_k>n)\le Ce^{-cn}$. If the model-time path survives through $n$ and $T_k\le n$, then all of the first $k$ skeleton endpoints lie in $Q$. Drop all within-cycle restrictions and apply \eqref{cps:eq:iidupper}, with the appropriate fixed translation. This is an event inclusion, not an identification of skeleton survival with full path survival. There are only two parities, so their constants can be combined.
 \end{proof}
 
-\begin{proposition}[Interior mass at every exact time]\label{prop:mass}
+\begin{proposition}[Interior mass at every exact time]\label{cps:prop:mass}
 For each ball $B$ with closure in the positive quadrant, a constant $c_B>0$ exists such that
-\begin{equation}\label{eq:mass}
+\begin{equation}\label{cps:eq:mass}
  \PP_{(2,2)}(X_t\in Q\ (0\le t\le n),\ X_n\in\sqrt nB)
  \ge c_Bn^{-p/2}
 \end{equation}
@@ -361,21 +542,21 @@ for all sufficiently large integers $n$. This is true for the forward and revers
 \end{proposition}
 \begin{proof}
 Choose a smaller ball $B'$ with $\overline{B'}\subset B$ and set
-\begin{equation}\label{eq:kchoice}
+\begin{equation}\label{cps:eq:kchoice}
  k=\left\lceil n/2+n^{3/4}\right\rceil.
 \end{equation}
-Constrain the even skeleton endpoints to have both coordinates at least two. Equation~\eqref{eq:iidlower}, after the fixed translation, gives
-\begin{equation}\label{eq:skeletonmass}
+Constrain the even skeleton endpoints to have both coordinates at least two. Equation~\eqref{cps:eq:iidlower}, after the fixed translation, gives
+\begin{equation}\label{cps:eq:skeletonmass}
  \PP\bigl(X_{T_j}\in[2,\infty)^2\ (0\le j\le k),\
  X_{T_k}\in\sqrt nB'\bigr)\ge cn^{-p/2}.
 \end{equation}
-To justify the varying normalization, note that $k/n\to1/2$. A sufficiently small fixed ball whose closure lies in $\sqrt2B'$ is contained in the rescaled target for all large $n$, even after the fixed lattice shift. Thus only a fixed-ball application of \eqref{eq:iidlower} is needed.
+To justify the varying normalization, note that $k/n\to1/2$. A sufficiently small fixed ball whose closure lies in $\sqrt2B'$ is contained in the rescaled target for all large $n$, even after the fixed lattice shift. Thus only a fixed-ball application of \eqref{cps:eq:iidlower} is needed.
 
 The mean of $T_k$ is $2k=n+2n^{3/4}+O(1)$. Exponential moments of the durations give
-\begin{equation}\label{eq:clock}
+\begin{equation}\label{cps:eq:clock}
  \PP\{T_k\notin[n,n+4n^{3/4}]\}\le Ce^{-cn^{1/2}}.
 \end{equation}
-For completeness, the usual moment-generating-function bound for a centered duration is $\EE e^{\lambda(\ell-2)}\le e^{C\lambda^2}$ for sufficiently small $|\lambda|$. Choosing $\lambda$ proportional to $n^{-1/4}$ in a deviation of order $n^{3/4}$ over $k=O(n)$ terms proves \eqref{eq:clock}.
+For completeness, the usual moment-generating-function bound for a centered duration is $\EE e^{\lambda(\ell-2)}\le e^{C\lambda^2}$ for sufficiently small $|\lambda|$. Choosing $\lambda$ proportional to $n^{-1/4}$ in a deviation of order $n^{3/4}$ over $k=O(n)$ terms proves \eqref{cps:eq:clock}.
 
 For the corrected model-time martingale, the conditional exponential moments are uniformly bounded over the two states. Since each increment has conditional mean zero, Taylor expansion gives
 \begin{equation}
@@ -383,75 +564,75 @@ For the corrected model-time martingale, the conditional exponential moments are
  \le e^{C\lambda^2}\qquad(|\lambda|\le\lambda_0,\ r=1,2).
 \end{equation}
 The exponential supermartingale maximal inequality, applied to both signs and both coordinates, implies for fixed $\delta>0$
-\begin{equation}\label{eq:window}
+\begin{equation}\label{cps:eq:window}
  \PP\!\left(\max_{0\le r\le\lceil4n^{3/4}\rceil+2}
  \norm{X_{n+r}-X_n}>\delta\sqrt n\right)
  \le Ce^{-c_\delta n^{1/4}}.
 \end{equation}
 One can take $\lambda$ proportional to $\sqrt n/n^{3/4}=n^{-1/4}$; the bounded corrector changes thresholds by only a constant. This estimate is unconditional and uniform in the state at time $n$. The reverse corrector verified above gives the identical argument in reverse time.
 
-On the event in \eqref{eq:skeletonmass}, Lemma~\ref{lem:buffer} gives survival through $T_k$. Remove the bad events in \eqref{eq:clock} and \eqref{eq:window}. If $\delta$ is smaller than the separation of $\overline{B'}$ from $B^c$, then $X_n\in\sqrt nB$ and the path survives through the exact time $n$. Both subtracted errors are exponentially smaller than $n^{-p/2}$. This proves \eqref{eq:mass} without any conditioning of clock or displacement estimates on survival.
+On the event in \eqref{cps:eq:skeletonmass}, Lemma~\ref{cps:lem:buffer} gives survival through $T_k$. Remove the bad events in \eqref{cps:eq:clock} and \eqref{cps:eq:window}. If $\delta$ is smaller than the separation of $\overline{B'}$ from $B^c$, then $X_n\in\sqrt nB$ and the path survives through the exact time $n$. Both subtracted errors are exponentially smaller than $n^{-p/2}$. This proves \eqref{cps:eq:mass} without any conditioning of clock or displacement estimates on survival.
 \end{proof}
-The entrance paths in Section~\ref{sec:entrances} extend \eqref{eq:mass} to the fixed endpoints needed below. A smaller target ball absorbs their fixed time lengths. Explicitly, for $P$ the forward starting point is $(0,0)$ and the reverse starting point is $(4,0)$; for $S$ they are $(0,2)$ and $(1,1)$, respectively. The resulting endpoint masses are each bounded below by a positive constant times $n^{-p/2}$.
+The entrance paths in Section~\ref{cps:sec:entrances} extend \eqref{cps:eq:mass} to the fixed endpoints needed below. A smaller target ball absorbs their fixed time lengths. Explicitly, for $P$ the forward starting point is $(0,0)$ and the reverse starting point is $(4,0)$; for $S$ they are $(0,2)$ and $(1,1)$, respectively. The resulting endpoint masses are each bounded below by a positive constant times $n^{-p/2}$.
 
-\section{Free local bounds and lattice aperiodicity}\label{sec:Fourier}
+\section{Free local bounds and lattice aperiodicity}\label{cps:sec:Fourier}
 Represent every $z\in L$ uniquely as
 \begin{equation}
  z=(2a+j,2b+j),\qquad(a,b)\in\ZZ^2,\quad j\in\{0,1\}.
 \end{equation}
 This is a two-state translation-cell representation. Let $F(t)$ be the Fourier matrix of its cell increments, with $t\in[-\pi,\pi]^2$. If
 $D(t)=\diag(1,e^{i(t_1+t_2)/2})$, then
-\begin{equation}\label{eq:cellFourier}
+\begin{equation}\label{cps:eq:cellFourier}
  F(t)=D(t)K(e^{it_1/2},e^{it_2/2})D(t)^{-1}.
 \end{equation}
 Indeed, a transition from internal state $i$ to $j$ with physical displacement $z$ has cell displacement $(z-(j-i)(1,1))/2$. The direct cell formula also makes $F$ $2\pi$-periodic in each coordinate.
 
-\begin{lemma}[No secondary Fourier points]\label{lem:aperiodic}
+\begin{lemma}[No secondary Fourier points]\label{cps:lem:aperiodic}
 The only point of the cell torus where $F(t)$ has spectral radius one is $t=0$. At zero the sole unit-modulus eigenvalue is the simple eigenvalue one.
 \end{lemma}
 \begin{proof}
-Suppose $F(t)v=\lambda v$ with $|\lambda|=1$, and normalize the largest component modulus of $v$ to one. Equality in the triangle inequality, together with irreducibility of the internal stochastic matrix, forces both component moduli to equal one and all supported transition phases to align. In particular, all $\e\to\e$ cell-increment phases are equal. For $P$ their support includes every $(-i,j)$ with $i\ge0,j\ge1$. Comparing $(0,1)$ and $(0,2)$ forces $t_2=0$ modulo $2\pi$; comparing $(0,1)$ and $(-1,1)$ forces $t_1=0$. For $S$, the support includes every $(-i,j)$ with $i\ge1,j\ge0$. Comparing $(-1,0),(-2,0),(-1,1)$ gives the same conclusion. At zero, the matrix in \eqref{eq:internal} is primitive; its other eigenvalue is $2a-1$, strictly inside the unit circle.
+Suppose $F(t)v=\lambda v$ with $|\lambda|=1$, and normalize the largest component modulus of $v$ to one. Equality in the triangle inequality, together with irreducibility of the internal stochastic matrix, forces both component moduli to equal one and all supported transition phases to align. In particular, all $\e\to\e$ cell-increment phases are equal. For $P$ their support includes every $(-i,j)$ with $i\ge0,j\ge1$. Comparing $(0,1)$ and $(0,2)$ forces $t_2=0$ modulo $2\pi$; comparing $(0,1)$ and $(-1,1)$ forces $t_1=0$. For $S$, the support includes every $(-i,j)$ with $i\ge1,j\ge0$. Comparing $(-1,0),(-2,0),(-1,1)$ gives the same conclusion. At zero, the matrix in \eqref{cps:eq:internal} is primitive; its other eigenvalue is $2a-1$, strictly inside the unit circle.
 \end{proof}
 
-\begin{proposition}[Free local estimates]\label{prop:local}
+\begin{proposition}[Free local estimates]\label{cps:prop:local}
 For either chain, with no killing,
-\begin{equation}\label{eq:freeupper}
+\begin{equation}\label{cps:eq:freeupper}
  \sup_{a,b\in L}\PP_a(X_n=b)\le Cn^{-1}.
 \end{equation}
 For every fixed $A<\infty$, uniformly for $a,b\in L$ with $\norm{b-a}\le A\sqrt n$,
-\begin{equation}\label{eq:LLT}
+\begin{equation}\label{cps:eq:LLT}
  \PP_a(X_n=b)=\frac{2}{2\pi n\sqrt{\det\Sigma}}
  \exp\!\left(-\frac{(b-a)^T\Sigma^{-1}(b-a)}{2n}\right)+o(n^{-1}).
 \end{equation}
 The statements hold for all four initial and final parity pairs, and for the reverse chains.
 \end{proposition}
 \begin{proof}
-Near zero the principal eigenvalue and spectral projection of $F(t)$ are analytic. Centering and \eqref{eq:Sigma} give
-\begin{equation}\label{eq:lambda}
+Near zero the principal eigenvalue and spectral projection of $F(t)$ are analytic. Centering and \eqref{cps:eq:Sigma} give
+\begin{equation}\label{cps:eq:lambda}
  \lambda(t)=1-\tfrac12t^T(\Sigma/4)t+O(\norm t^3),
  \qquad\Pi(t)\longrightarrow\one(1/2,1/2).
 \end{equation}
 To identify the Hessian without presuming an iid walk at model time, write $X_n=M_n-h_{J_n}$. Martingale increment orthogonality and convergence of the finite internal chain give $n^{-1}\Cov(M_n)\to\Sigma$; the bounded corrector changes the covariance divided by $n$ by $o(1)$. Analytic differentiation of the finite matrix moment-generating function identifies the same limiting covariance with the Hessian of the log principal eigenvalue. Passing to cells divides it by four. The mean is zero at linear scale for the same reason.
 
-In a small neighborhood of zero, $|\lambda(t)|\le e^{-c\norm t^2}$ and the other spectral part decays exponentially in $n$. On the compact complement, Lemma~\ref{lem:aperiodic} gives a uniform strict spectral-radius bound, and finite-dimensional matrix-power estimates give exponential decay. Fourier inversion therefore proves \eqref{eq:freeupper}. Rescaling $t$ by $n^{-1/2}$ in the neighborhood of zero gives the Gaussian local limit, uniformly on bounded diffusive displacement ranges. The cell covariance contributes a factor four when expressed in physical coordinates; the terminal parity mass is $1/2$. Their product is the factor two in \eqref{eq:LLT}, also the covolume of $L$ in $\ZZ^2$. Bounded parity-coordinate offsets change the exponent by $o(1)$. Reversal preserves the same argument.
+In a small neighborhood of zero, $|\lambda(t)|\le e^{-c\norm t^2}$ and the other spectral part decays exponentially in $n$. On the compact complement, Lemma~\ref{cps:lem:aperiodic} gives a uniform strict spectral-radius bound, and finite-dimensional matrix-power estimates give exponential decay. Fourier inversion therefore proves \eqref{cps:eq:freeupper}. Rescaling $t$ by $n^{-1/2}$ in the neighborhood of zero gives the Gaussian local limit, uniformly on bounded diffusive displacement ranges. The cell covariance contributes a factor four when expressed in physical coordinates; the terminal parity mass is $1/2$. Their product is the factor two in \eqref{cps:eq:LLT}, also the covolume of $L$ in $\ZZ^2$. Bounded parity-coordinate offsets change the exponent by $o(1)$. Reversal preserves the same argument.
 \end{proof}
 This Fourier calculation supplies the exact-time aperiodicity that is not supplied merely by an invariance principle. There is no leftover restriction to even times.
 
-\section{A killed interior estimate and gluing}\label{sec:gluing}
-\begin{lemma}[Interior killed local lower bound]\label{lem:killed}
+\section{A killed interior estimate and gluing}\label{cps:sec:gluing}
+\begin{lemma}[Interior killed local lower bound]\label{cps:lem:killed}
 Fix $\eta>0$. For a sufficiently large fixed $R$, set
 \begin{equation}
  B=B((R,R),\eta),\qquad B_n=\sqrt nB\cap L.
 \end{equation}
 There is a constant $c>0$ such that, for all sufficiently large $n$ and every integer $m\in[n/4,n/2]$,
-\begin{equation}\label{eq:killedlocal}
+\begin{equation}\label{cps:eq:killedlocal}
  q_m(a,b)\ge c/n\qquad(a,b\in B_n).
 \end{equation}
 \end{lemma}
 \begin{proof}
-Equation~\eqref{eq:LLT} gives $\PP_a(X_m=b)\ge c_0/n$ uniformly in the specified range. Here $c_0$ is independent of $R$, since the Gaussian depends on $b-a$, whose norm is at most $2\eta\sqrt n$.
+Equation~\eqref{cps:eq:LLT} gives $\PP_a(X_m=b)\ge c_0/n$ uniformly in the specified range. Here $c_0$ is independent of $R$, since the Gaussian depends on $b-a$, whose norm is at most $2\eta\sqrt n$.
 
-Let $\tau$ be the first exit from $Q$. For paths that exit in the first half of the interval, the strong Markov property at $\tau$ and \eqref{eq:freeupper} give
+Let $\tau$ be the first exit from $Q$. For paths that exit in the first half of the interval, the strong Markov property at $\tau$ and \eqref{cps:eq:freeupper} give
 \begin{equation}
  \PP_a(X_m=b,\ \tau\le\lfloor m/2\rfloor)
  \le\frac Cn\PP_a(\tau\le\lfloor m/2\rfloor).
@@ -460,58 +641,58 @@ Every starting point in $B_n$ is at coordinate distance at least $(R-\eta)\sqrt 
 \begin{equation}
  \PP_a(\tau\le\lfloor m/2\rfloor)\le\frac C{(R-\eta)^2}.
 \end{equation}
-The expected martingale quadratic variation is $O(m)$ by the finite matrices \eqref{eq:PC}--\eqref{eq:SC}. For a path that first exits in the second half, reverse the full unrestricted path from its fixed endpoint $b$. Some reversed position outside $Q$ is then visited in the first half of reversed time. Equation~\eqref{eq:reverse} and the same argument bound this mass by $C/[n(R-\eta)^2]$. Taking a union bound covers all paths with any exit. Choosing $R$ large makes this smaller than $c_0/(2n)$; subtracting from the free lower bound proves the claim. The fixed shift of $Q_S$ changes only the harmless $O(1)$ boundary distance.
+The expected martingale quadratic variation is $O(m)$ by the finite matrices \eqref{cps:eq:PC}--\eqref{cps:eq:SC}. For a path that first exits in the second half, reverse the full unrestricted path from its fixed endpoint $b$. Some reversed position outside $Q$ is then visited in the first half of reversed time. Equation~\eqref{cps:eq:reverse} and the same argument bound this mass by $C/[n(R-\eta)^2]$. Taking a union bound covers all paths with any exit. Choosing $R$ large makes this smaller than $c_0/(2n)$; subtracting from the free lower bound proves the claim. The fixed shift of $Q_S$ changes only the harmless $O(1)$ boundary distance.
 \end{proof}
 No cone-killed local limit theorem or conditioned bridge theorem is used in this step.
 
 \subsection{Upper bounds}
 Split $n=m+\ell+m$, where $m=\lfloor n/3\rfloor$ and $\ell=n-2m$. The Markov property, the unrestricted middle-kernel upper bound, and reversal give
-\begin{align}\label{eq:threeupper}
+\begin{align}\label{cps:eq:threeupper}
  q_n(a,b)
  &=\sum_{u,v\in Q}q_m(a,u)q_\ell(u,v)q_m(v,b)\notag\\
  &\le\frac Cn S_m(a)S_m^*(b).
 \end{align}
-For $P$, Proposition~\ref{prop:survival} gives
-\begin{equation}\label{eq:Pupper}
+For $P$, Proposition~\ref{cps:prop:survival} gives
+\begin{equation}\label{cps:eq:Pupper}
  q_n^P((0,0),(2i,0))\le C(1+i)^{p_P}n^{-p_P-1}.
 \end{equation}
-Exponential clock errors are absorbed in this bound uniformly in $i$. Summation in \eqref{eq:Pcount} is legitimate because $\sum_{i\ge1}3^{-i}(1+i)^{p_P}<\infty$. This proves the upper half of the $P$ estimate.
+Exponential clock errors are absorbed in this bound uniformly in $i$. Summation in \eqref{cps:eq:Pcount} is legitimate because $\sum_{i\ge1}3^{-i}(1+i)^{p_P}<\infty$. This proves the upper half of the $P$ estimate.
 
-For $S$, apply \eqref{eq:threeupper} to the fixed endpoints $a=(0,2)$ and $b=(1,1)$. Regenerate at even parity from $a$ and at odd parity for the reverse chain from $b$. Equations~\eqref{eq:cyclemoments} and \eqref{eq:survival} apply in both cases, so
-\begin{equation}\label{eq:Supper}
+For $S$, apply \eqref{cps:eq:threeupper} to the fixed endpoints $a=(0,2)$ and $b=(1,1)$. Regenerate at even parity from $a$ and at odd parity for the reverse chain from $b$. Equations~\eqref{cps:eq:cyclemoments} and \eqref{cps:eq:survival} apply in both cases, so
+\begin{equation}\label{cps:eq:Supper}
  q_N^S((0,2),(1,1))\le CN^{-p_S-1}.
 \end{equation}
 
 \subsection{Lower bounds}
-Use the same three-piece split and restrict both joining points $u,v$ to $B_n$ from Lemma~\ref{lem:killed}. The entrance paths and Proposition~\ref{prop:mass} give forward and reverse masses at least $cn^{-p/2}$ in $B_n$. To handle the floor in $m$, choose a fixed ball $C$ with closure inside $\sqrt3B$. Since $\sqrt{n/m}\to\sqrt3$, one has $\sqrt mC\subset\sqrt nB$ for every sufficiently large $n$. A fixed-ball use of Proposition~\ref{prop:mass} at time $m$ supplies the required mass. The fixed entrance times are handled by one further nested ball, if needed.
+Use the same three-piece split and restrict both joining points $u,v$ to $B_n$ from Lemma~\ref{cps:lem:killed}. The entrance paths and Proposition~\ref{cps:prop:mass} give forward and reverse masses at least $cn^{-p/2}$ in $B_n$. To handle the floor in $m$, choose a fixed ball $C$ with closure inside $\sqrt3B$. Since $\sqrt{n/m}\to\sqrt3$, one has $\sqrt mC\subset\sqrt nB$ for every sufficiently large $n$. A fixed-ball use of Proposition~\ref{cps:prop:mass} at time $m$ supplies the required mass. The fixed entrance times are handled by one further nested ball, if needed.
 
 The middle length $\ell$ lies in $[n/4,n/2]$ for all large $n$. Thus
-\begin{equation}\label{eq:threelower}
+\begin{equation}\label{cps:eq:threelower}
  q_n(a,b)\ge
  \sum_{u,v\in B_n}q_m(a,u)\frac cn q_m^*(b,v)
  \ge c n^{-p/2}n^{-1}n^{-p/2}=cn^{-p-1}
 \end{equation}
 for the endpoint pairs $(a,b)=((0,0),(4,0))$ in $P$ and $((0,2),(1,1))$ in $S$.
 
-Keeping only $i=2$ in \eqref{eq:Pcount} proves
-$p_n\ge c\mu_P^n n^{-p_P-1}$. For $S$, \eqref{eq:Scount} gives
-$s'_n=\Theta(\mu_S^n n^{-p_S-1})$; then \eqref{eq:Sconversion}, with nonnegative summands and fixed shifts of $n$, gives the same estimate for $s_n$. This completes the proof of Theorem~\ref{thm:main}.
+Keeping only $i=2$ in \eqref{cps:eq:Pcount} proves
+$p_n\ge c\mu_P^n n^{-p_P-1}$. For $S$, \eqref{cps:eq:Scount} gives
+$s'_n=\Theta(\mu_S^n n^{-p_S-1})$; then \eqref{cps:eq:Sconversion}, with nonnegative summands and fixed shifts of $n$, gives the same estimate for $s_n$. This completes the proof of Theorem~\ref{cps:thm:main}.
 
-\section{Consequences}\label{sec:consequences}
+\section{Consequences}\label{cps:sec:consequences}
 \subsection{Irrational exponents and non-D-finiteness}
-\begin{lemma}\label{lem:irrational}
+\begin{lemma}\label{cps:lem:irrational}
 Both $\alpha_P$ and $\alpha_S$ are irrational.
 \end{lemma}
 \begin{proof}
 Let $r\in\{9/16,22/27\}$ and suppose $1+\pi/\arccos r$ is rational. Then $\arccos r$ is a rational multiple of $\pi$, so $\zeta=e^{i\arccos r}$ is a root of unity. Therefore $2r=\zeta+\zeta^{-1}$ is an algebraic integer. As a rational algebraic integer it must be an integer, contradicting $2r=9/8$ or $44/27$.
 \end{proof}
 
-\begin{lemma}[A two-sided coefficient criterion]\label{lem:nonD}
+\begin{lemma}[A two-sided coefficient criterion]\label{cps:lem:nonD}
 Suppose $a_n$ are nonnegative integers, $\mu>1$, $\alpha$ is irrational, and $a_n=\Theta(\mu^n n^{-\alpha})$. Then $A(z)=\sum_{n\ge0}a_nz^n$ is not D-finite.
 \end{lemma}
 \begin{proof}
 Put $\rho=\mu^{-1}$ and choose a nonnegative integer $k>\alpha-1$. The coefficient bounds and nonnegativity imply, as $t\downarrow0$,
-\begin{equation}\label{eq:derivativegrowth}
+\begin{equation}\label{cps:eq:derivativegrowth}
  A^{(k)}(\rho(1-t))
  =\Theta\!\left(\sum_{n\ge k}n^{k-\alpha}(1-t)^n\right)
  =\Theta(t^{\alpha-k-1}).
@@ -524,34 +705,42 @@ by a Riemann-sum comparison and $s=-\log(1-t)\sim t$. Initial terms do not affec
 
 If $A$ were D-finite, its integer coefficients and exponential upper bound would make it a $G$-function: its coefficient conjugates have exponential growth and its coefficient denominators are all one. The Andr\'e--Chudnovsky--Katz regular-singularity and rational-exponent theorem implies that its minimal differential equation has only regular singularities with rational local exponents. The finite rational-power and logarithmic form used below is stated explicitly in \cite[Theorem 6, Section 4.1]{FR}; see also \cite[Section 2.2, proof of Theorem 2]{BRS}.
 
-Consequently, a local solution near $z=\rho$, and every fixed derivative of it, has a finite Frobenius expansion in rational powers and nonnegative integer powers of a logarithm, with analytic coefficient functions. Along the positive real approach, a nonzero divergent such function has a rational logarithmic growth exponent: combine terms with equal powers, choose the smallest surviving rational power, and then the highest nonzero logarithmic power at that order. In contrast, \eqref{eq:derivativegrowth} gives
+Consequently, a local solution near $z=\rho$, and every fixed derivative of it, has a finite Frobenius expansion in rational powers and nonnegative integer powers of a logarithm, with analytic coefficient functions. Along the positive real approach, a nonzero divergent such function has a rational logarithmic growth exponent: combine terms with equal powers, choose the smallest surviving rational power, and then the highest nonzero logarithmic power at that order. In contrast, \eqref{cps:eq:derivativegrowth} gives
 \begin{equation}
  \lim_{t\downarrow0}\frac{\log A^{(k)}(\rho(1-t))}{\log(1/t)}=k+1-\alpha,
 \end{equation}
 which is irrational. This contradiction proves the result.
 \end{proof}
 \begin{remark}
-The coefficient criterion stated in \cite[Theorem 2]{BRS} assumes an asymptotic equivalent. It is not directly applicable to a $\Theta$ estimate. The positive-derivative argument in \eqref{eq:derivativegrowth} is the additional step used here. For a rational-coefficient series, D-finiteness over $\mathbb C$ is equivalent to D-finiteness over $\mathbb Q$: a relation of fixed order and polynomial degree imposes rational linear equations on finitely many operator coefficients, and a rational row-space basis gives a nonzero rational solution whenever a nonzero complex solution exists.
+The coefficient criterion stated in \cite[Theorem 2]{BRS} assumes an asymptotic equivalent. It is not directly applicable to a $\Theta$ estimate. The positive-derivative argument in \eqref{cps:eq:derivativegrowth} is the additional step used here. For a rational-coefficient series, D-finiteness over $\mathbb C$ is equivalent to D-finiteness over $\mathbb Q$: a relation of fixed order and polynomial degree imposes rational linear equations on finitely many operator coefficients, and a rational row-space basis gives a nonzero rational solution whenever a nonzero complex solution exists.
 \end{remark}
 
-\begin{corollary}\label{cor:nonD}
+\begin{corollary}\label{cps:cor:nonD}
 The ordinary generating functions of A377922, A377920, and A377921 are not D-finite.
 \end{corollary}
 \begin{proof}
-The first two cases follow from Theorem~\ref{thm:main} and Lemmas~\ref{lem:irrational}--\ref{lem:nonD}. For A377921, let $\widetilde s_n$ be the rigid-orthogonal-surface sequence, and put
+The first two cases follow from Theorem~\ref{cps:thm:main} and Lemmas~\ref{cps:lem:irrational}--\ref{cps:lem:nonD}. For A377921, let $\widetilde s_n$ be the rigid-orthogonal-surface sequence, and put
 $S(z)=\sum_{n\ge2}s_nz^n$, $T(z)=\sum_{n\ge2}\widetilde s_nz^n$. Remark 20 of \cite{FNS} gives
-\begin{equation}\label{eq:rigid}
+\begin{equation}\label{cps:eq:rigid}
  S(z)=(1+z)^3T(z)+3z^2+z^3.
 \end{equation}
-D-finite series are closed under multiplication by rational functions and addition of polynomials. Equation~\eqref{eq:rigid} therefore makes $S$ D-finite if and only if $T$ is D-finite.
+D-finite series are closed under multiplication by rational functions and addition of polynomials. Equation~\eqref{cps:eq:rigid} therefore makes $S$ D-finite if and only if $T$ is D-finite.
 \end{proof}
 No coefficientwise $\Theta$ estimate for A377921 follows from this argument; the statement about that sequence concerns its generating function only.
 
+\begin{writenote}
+A coefficientwise statement for A377921 is now proved in Part~\ref{cps:part:amplitudes}:
+equation~\eqref{cps:amp:eq:rigidmain} gives
+$\widetilde s_n\sim(16/19)^3\kappa_S\mu_S^nn^{-\alpha_S}$, by a dominated signed convolution that
+uses the full equivalent for $s_n$. As Part~\ref{cps:part:amplitudes} says, the $\Theta$ bounds
+of Theorem~\ref{cps:thm:main} alone do not give it.
+\end{writenote}
+
 \subsection{First-threshold inverse asymptotics}
-\begin{lemma}\label{lem:inverse}
+\begin{lemma}\label{cps:lem:inverse}
 Suppose $a_n=\Theta(\mu^n n^{-\alpha})$ with $\mu>1$ and $\alpha\in\RR$, and define
 $N(Y)=\min\{n\ge0:a_n\ge Y\}$. Then
-\begin{equation}\label{eq:inversegeneral}
+\begin{equation}\label{cps:eq:inversegeneral}
  N(Y)=\frac{\log Y+\alpha\log\log Y}{\log\mu}+O(1)
  \qquad(Y\to\infty).
 \end{equation}
@@ -563,41 +752,671 @@ Put $L=\log Y$ and $v(L)=(L+\alpha\log L)/\log\mu$. Uniformly for $h$ in a fixed
  \log\!\left(\mu^{v(L)+h}(v(L)+h)^{-\alpha}\right)
  =L+h\log\mu+\alpha\log\log\mu+o(1).
 \end{equation}
-Choose a constant $H$ sufficiently large that the upper coefficient comparison is less than $Y$ at $v(L)-H$, while the lower comparison is at least $Y$ at $v(L)+H$, allowing another fixed unit for integer rounding. The comparison function $\mu^n n^{-\alpha}$ is eventually increasing. Hence all sufficiently large integers below the lower bracket have $a_n<Y$, and the finitely many earlier values also do so for large $Y$. The upper bracket supplies at least one index above threshold. This proves \eqref{eq:inversegeneral}.
+Choose a constant $H$ sufficiently large that the upper coefficient comparison is less than $Y$ at $v(L)-H$, while the lower comparison is at least $Y$ at $v(L)+H$, allowing another fixed unit for integer rounding. The comparison function $\mu^n n^{-\alpha}$ is eventually increasing. Hence all sufficiently large integers below the lower bracket have $a_n<Y$, and the finitely many earlier values also do so for large $Y$. The upper bracket supplies at least one index above threshold. This proves \eqref{cps:eq:inversegeneral}.
 \end{proof}
 In particular,
 \begin{align}
- N_P(Y)&=\frac{\log Y+\alpha_P\log\log Y}{\log(9/2)}+O(1),\label{eq:Pinverse}\\
- N_S(Y)&=\frac{\log Y+\alpha_S\log\log Y}{\log(16/3)}+O(1).\label{eq:Sinverse}
+ N_P(Y)&=\frac{\log Y+\alpha_P\log\log Y}{\log(9/2)}+O(1),\label{cps:eq:Pinverse}\\
+ N_S(Y)&=\frac{\log Y+\alpha_S\log\log Y}{\log(16/3)}+O(1).\label{cps:eq:Sinverse}
 \end{align}
 These estimates do not specify an exact rounding rule or a next additive constant.
 
-\section{Verification and unresolved questions}\label{sec:verification}
-The reproducibility package contains editable \LaTeX\ source, the compiled PDF, exact symbolic and enumeration programs, their recorded outputs, source identifiers, and mathematical audit receipts. Appendix~\ref{app:checks} specifies the finite checks. These checks corroborate normalizations and identities; they are not a formal verification of the probabilistic proof or an external peer review.
+\begin{writenote}
+Part~\ref{cps:part:amplitudes}, Theorem~\ref{cps:amp:thm:inverse}, sharpens
+\eqref{cps:eq:Pinverse}--\eqref{cps:eq:Sinverse} under the full equivalents: Lambert-$W_{-1}$
+centering with a next additive constant $-(\alpha\log\log\mu+\log\gamma)/\log\mu$ and a
+vanishing-width two-ceiling bracket. It still gives no exact rounding rule. Both inversions are
+instances of the repository's transseries volume
+(\repo{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}): the
+model equation $\lambda r-\alpha\log r=\log(Y/\gamma)$ is \texttt{p0:thm:lambert-core} with
+$a=\log\mu$, $b=-\alpha$ (branch $W_{-1}$), its expansion is the first step of
+\texttt{p0:thm:lambert-centered}, and the integer bracket is the separation situation of
+\texttt{p0:thm:staircase}. No novelty is claimed for the inversion mechanics.
+\end{writenote}
 
-Theorem~\ref{thm:main} does not prove either of the limits
-\begin{equation}\label{eq:amplitudes}
+\section{Verification and unresolved questions}\label{cps:sec:verification}
+The reproducibility package contains editable \LaTeX\ source, the compiled PDF, exact symbolic and enumeration programs, their recorded outputs, source identifiers, and mathematical audit receipts. Appendix~\ref{cps:app:checks} specifies the finite checks. These checks corroborate normalizations and identities; they are not a formal verification of the probabilistic proof or an external peer review.
+
+\begin{writenote}
+In this repository the delivered PDF and the checksum ledger of this package are not
+shipped; the report's \texttt{article.pdf} is a build of this merged text. The programs,
+outputs, source excerpts and receipts are shipped byte-identical under the prefix
+\texttt{45-cone-} (programs in \texttt{code/}, outputs and data in \texttt{data/}, the two audit
+notes at the report root). The report README lists them and gives a rerun recipe.
+\end{writenote}
+
+Theorem~\ref{cps:thm:main} does not prove either of the limits
+\begin{equation}\label{cps:eq:amplitudes}
  \lim_{n\to\infty}p_n\mu_P^{-n}n^{\alpha_P},\qquad
  \lim_{n\to\infty}s_n\mu_S^{-n}n^{\alpha_S}.
 \end{equation}
 It proves that both normalized sequences are eventually bounded above and bounded away from zero. Convergence to positive constants, the full asymptotic equivalents of \cite[Conjecture 25]{FNS}, remains to be established. Computing those constants and correction terms would require sharper information than the inequalities used in the clock transfer and gluing arguments. Other open directions include a direct coefficientwise estimate for A377921 and identifying other parity-dependent tandem models for which a fixed cycle buffer exists.
 
+\begin{writenote}
+Status after the merge. Convergence to positive constants and the full equivalents of
+\cite[Conjecture 25]{FNS} are proved in Part~\ref{cps:part:amplitudes}
+(Theorem~\ref{cps:amp:thm:main}), and so is a direct coefficientwise equivalent for A377921
+(equation~\eqref{cps:amp:eq:rigidmain}). Still open: the numerical values of $\kappa_P$ and
+$\kappa_S$, a rate of convergence, correction terms, an exact rounding rule for the threshold
+inverses, and other parity-dependent tandem models with a fixed cycle buffer.
+\end{writenote}
+
 This research note presents a mathematical proof with reproducible exact checks. It has not been externally peer reviewed or machine-formalized, and makes no publication-priority claim. The source credits distinguish the established bijections and iid cone input from the argument presented here.
 
+
+\clearpage
+\part{Limiting amplitudes (source 46)}\label{cps:part:amplitudes}
+\begin{center}\large Limiting amplitudes for corner polyhedra and Schnyder labelings\\[2pt]
+\normalsize Research addendum, 2 October 2026\end{center}
+\begin{sourceabstract}{source 46}
+We strengthen the two-sided estimates for the parity-dependent quadrant walks counting corner polyhedra and 3-connected Schnyder labelings to full asymptotic equivalents with finite positive amplitudes. The key step is a harmonic comparison for a cycle kernel trapped between an ordinary iid cone kernel and its fixed inward translate. It yields exact survival constants and a common endpoint limit law for valid regeneration cycles. A two-sided random-clock argument transfers these limits to every exact counted time. A killed local limit, proved from the free local theorem and the exit decomposition, then gives the fixed-endpoint amplitudes by a fixed-thirds semigroup limit. Geometrically weighted endpoint summation and a signed rational convolution give the enumerative equivalents, including the rigid-surface sequence. The amplitude constants have positive harmonic and heat-kernel expressions; no numerical digits are certified. We also give Lambert-$W$ inverse centering and a vanishing-width ceiling bracket, without asserting an unconditional rounding formula.
+\end{sourceabstract}
+
+\section{Results and the accompanying foundation}
+This addendum is intended to be read with the included research note \emph{Polynomial exponents for corner polyhedra and Schnyder labelings}, cited as the \emph{Foundation} (in this report: Part~\ref{cps:part:exponents}). The Foundation and its exact-check package are included unchanged. They establish the walk models, covariance calculations, fixed-buffer geometry, free local theorem and two-sided estimates used below. This addendum supplies the limiting-amplitude argument, rather than assuming a cone local theorem for the original parity-dependent chain. Statements in the Foundation that amplitude convergence was unresolved describe the scope of that earlier note; the present addendum establishes those limits.
+
+\begin{writenote}
+In this report the Foundation is Part~\ref{cps:part:exponents} (Sections 1--10 and
+Appendix~\ref{cps:app:checks}), printed with source 45's numbering, so that ``Foundation
+Lemma~2.1'' below is Lemma~\ref{cps:lem:Sboundary} here; the Foundation references are
+hyperlinks. The unchanged 30-file copy of the Foundation package that source 46 embedded is not
+shipped: the same files are shipped once, from source 45, with the prefix \texttt{45-cone-}
+(the copy's PDF and checksum ledger only in the arrival commit). The source's Section $n$ is
+Section $n+10$ here.
+\end{writenote}
+
+Let $p_n$ count polyhedral orientations with $n$ inner vertices, equivalently corner-polyhedron types with $n+3$ flats. Let $s_n$ count 3-connected Schnyder labelings with $n$ inner faces, and let $\widetilde s_n$ be the rigid-orthogonal-surface sequence of Fusy--Narmanli--Schaeffer \cite{FNS}. These are A377922, A377920 and A377921, respectively. Set
+\begin{equation}\label{cps:amp:eq:parameters}
+ \mu_P=\frac92,\quad \mu_S=\frac{16}3,\qquad
+ \alpha_P=1+\frac{\pi}{\arccos(9/16)},\quad
+ \alpha_S=1+\frac{\pi}{\arccos(22/27)}.
+\end{equation}
+
+\begin{theorem}[Full enumerative equivalents]\label{cps:amp:thm:main}
+There are finite strictly positive constants $\kappa_P$ and $\kappa_S$ such that
+\begin{align}
+ p_n&\sim\kappa_P\mu_P^n n^{-\alpha_P},\label{cps:amp:eq:Pmain}\\
+ s_n&\sim\kappa_S\mu_S^n n^{-\alpha_S},\label{cps:amp:eq:Smain}\\
+ \widetilde s_n&\sim\left(\frac{16}{19}\right)^3\kappa_S\mu_S^n n^{-\alpha_S}.
+ \label{cps:amp:eq:rigidmain}
+\end{align}
+The limits hold on the full sequence of integers. Positive expressions for the amplitudes are given in Section~\ref{cps:amp:sec:enumeration}.
+\end{theorem}
+The first two conclusions are the positive-amplitude equivalents stated in \cite[Conjecture 25]{FNS}. The third follows here by a dominated signed-convolution argument, which uses the full equivalent and is not a consequence of the earlier $\Theta$ bounds alone.
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Sequence & Rate & Power & Amplitude\\
+\midrule
+A377922 & $9/2$ & $\alpha_P$ & $\kappa_P>0$\\
+A377920 & $16/3$ & $\alpha_S$ & $\kappa_S>0$\\
+A377921 & $16/3$ & $\alpha_S$ & $(16/19)^3\kappa_S$\\
+\bottomrule
+\end{tabular}
+\end{center}
+No numerical evaluation of these constants, convergence rate, or further coefficient correction is claimed. This is a mathematical research addendum with exact reproducibility checks, not an externally peer-reviewed publication or a machine-formalized proof. No publication-priority claim is made.
+
+\section{Model notation and established inputs}\label{cps:amp:sec:inputs}
+
+\begin{writenote}
+This section restates inputs proved or quoted in Part~\ref{cps:part:exponents}, in
+source 46's notation; it is kept because the rest of Part~\ref{cps:part:amplitudes} cites its
+displays. $D_P$ and $H_S$ here are Part~\ref{cps:part:exponents}'s $D$ and $H$
+(\eqref{cps:eq:PK}, \eqref{cps:eq:SM}); the letter $D$ alone is reserved in this Part for the
+valid-cycle kernel of Section~\ref{cps:amp:sec:kernels}. Table~\ref{cps:tab:notation} lists every
+clash between the two Parts.
+\end{writenote}
+Let
+\begin{equation}
+ L=\{(a,b)\in\ZZ^2:a\equiv b\pmod2\},\qquad
+ C=(0,\infty)^2.
+\end{equation}
+For $P$, one unit of counted time is one physical tandem step and the killed domain is $Q_P=L\cap[0,\infty)^2$. For $S$, one unit is an aggregate consisting of a southeast step $(1,-1)$ followed by zero or more weighted face steps, and the killed domain is $Q_S=\{(a,b)\in L:a\ge0,b\ge1\}$. In the latter model, restricting aggregate endpoints to $Q_S$ controls all physical intermediate steps, as proved in Foundation Lemma~\ref{cps:lem:Sboundary}.
+
+Write $q_n(a,b)$ for the counted-time transition probability killed outside the model domain. The model is specified by a $2\times2$ probability-generating matrix; its two internal states are the parity of the ordinate. In the notation
+\begin{equation}
+ D_P=\left(1-\frac1{3x^2}\right)\left(1-\frac{y^2}3\right),\qquad
+ H_S=1-x^{-2}-y^2-2x^{-2}y^2,
+\end{equation}
+the matrices are
+\begin{align}
+ K_P(x,y)&=\begin{pmatrix}
+ 2y^2/(27D_P)&2x/(3y)+2y/(27xD_P)\\
+ 2x/(3y)+2y/(27xD_P)&2/(27x^2D_P)
+ \end{pmatrix},\label{cps:amp:eq:PK}\\
+ K_S(x,y)&=\frac3{16}M_S(2x,y/2),\qquad
+ M_S(x,y)=\begin{pmatrix}
+ x^{-2}/H_S&x/y+x^{-1}y/H_S\\
+ x/y+x^{-1}y/H_S&y^2/H_S
+ \end{pmatrix}.\label{cps:amp:eq:SK}
+\end{align}
+The covariance matrices per unit counted time are
+\begin{equation}\label{cps:amp:eq:Sigma}
+ \Sigma_P=\begin{pmatrix}16/5&-9/5\\-9/5&16/5\end{pmatrix},\qquad
+ \Sigma_S=\begin{pmatrix}36/7&-88/21\\-88/21&36/7\end{pmatrix}.
+\end{equation}
+Counting measure on $L$ is invariant. The reversed chain has
+$K^*_{ij}(z)=K_{ji}(-z)$ and satisfies
+\begin{equation}\label{cps:amp:eq:reverse}
+ q_n(a,b)=q_n^*(b,a).
+\end{equation}
+The symmetric internal matrices have stationary distribution $(1/2,1/2)$.
+
+For either initial parity, let $T_k$ be successive first-return times to that parity. The cycle pairs $(Y_k,\ell_k)$ of displacement and duration are iid, with
+\begin{equation}\label{cps:amp:eq:cycles}
+ \EE Y=0,\quad\Cov(Y)=2\Sigma,\quad\EE\ell=2,
+ \quad\EE e^{\varepsilon(\norm Y+\ell)}<\infty
+\end{equation}
+for some $\varepsilon>0$. The reversed cycles have displacement law $-Y$ and the same duration law. Dependence between displacement and duration is permitted and retained.
+
+The following previously established estimates will be used with their stated scopes:
+\begin{enumerate}
+\item \emph{Cycle buffer.} Every intermediate counted position in a first-return cycle with endpoints $a,b$ has coordinate $r$ at least $\min(a_r,b_r)-1$. This holds forward and backward and at either parity (Foundation Lemma~\ref{cps:lem:buffer}).
+\item \emph{Bounded corrector.} $M_n=X_n+h_{J_n}$ is a martingale; its increments have uniformly bounded conditional exponential moments. The reversed chain has corrector $-h$ and the same averaged covariance (Foundation Section~\ref{cps:sec:moments}).
+\item \emph{Survival upper bound.} For either chain,
+\begin{equation}\label{cps:amp:eq:survivalupper}
+ \PP_a(\tau>n)\le C(1+\norm a)^p n^{-p/2}+Ce^{-cn},
+\end{equation}
+where $p=\alpha-1>1$ (Foundation Proposition~\ref{cps:prop:survival}).
+\item \emph{Free local theorem.} On the unrestricted chain,
+\begin{equation}\label{cps:amp:eq:freeupper}
+ \sup_{a,b\in L}\PP_a(X_n=b)\le C/n,
+\end{equation}
+and, uniformly on compact diffusive displacement sets,
+\begin{equation}\label{cps:amp:eq:freelocal}
+ \PP_a(X_n=b)=\frac{2}{2\pi n\sqrt{\det\Sigma}}
+ \exp\!\left(-\frac{(b-a)^T\Sigma^{-1}(b-a)}{2n}\right)+o(n^{-1}).
+\end{equation}
+All parity pairs and all sufficiently large integer times are included. The factor two is the covolume of $L$ (Foundation Proposition~\ref{cps:prop:local}).
+\item \emph{Uniform endpoint estimate for $P$.}
+\begin{equation}\label{cps:amp:eq:endpointupper}
+ q_n^P((0,0),(2i,0))\le C(1+i)^{p_P}n^{-p_P-1},\qquad i\ge1
+\end{equation}
+(Foundation equation~\eqref{cps:eq:Pupper}).
+\end{enumerate}
+The normalization identities are
+\begin{align}
+ p_n&=\mu_P^n\sum_{i\ge1}3^{-i}q_n^P((0,0),(2i,0)),\label{cps:amp:eq:Pcount}\\
+ s'_n&=\frac{\mu_S^{n+1}}4q_{n+1}^S((0,2),(1,1)),
+ &s_n&=s'_n+2s'_{n-1}+s'_{n-2}\quad(n\ge4),\label{cps:amp:eq:Scount}
+\end{align}
+where $s'_n$ restricts the two outer $G$ vertices to be non-isolated. The full rigid-series relation is
+\begin{equation}\label{cps:amp:eq:series}
+ S(z)=(1+z)^3\widetilde S(z)+3z^2+z^3,
+ \quad S(z)=\sum_{n\ge2}s_nz^n,\quad
+ \widetilde S(z)=\sum_{n\ge2}\widetilde s_nz^n.
+\end{equation}
+These are the counting bijections and relations of \cite[Propositions 13--14, Remarks 9 and 20]{FNS}, in the normalized form verified in the Foundation.
+
+\section{Ordinary and valid-cycle cone kernels}\label{cps:amp:sec:kernels}
+Fix a model, an initial parity and a time direction. Let
+\begin{equation}\label{cps:amp:eq:whitening}
+ T=(2\Sigma)^{-1/2},\qquad K=TC.
+\end{equation}
+Whitening the cycle covariance makes its increment covariance the identity. The fixed translation of the original domain is $c_P=(1,1)$ or $c_S=(1,0)$, before applying $T$. A starting point $a$ thus becomes $x=T(a+c_M)$, for model $M$. The open wedge $K$ has angle
+\begin{equation}
+ \theta=\arccos\!\left(-\frac{\Sigma_{12}}{\sqrt{\Sigma_{11}\Sigma_{22}}}\right),
+ \qquad p=\pi/\theta>1.
+\end{equation}
+In polar coordinates adapted to its boundary rays, normalize the positive Brownian harmonic function by
+\begin{equation}\label{cps:amp:eq:u}
+ u(r,\varphi)=r^p\sin(p\varphi),\qquad0<\varphi<\theta.
+\end{equation}
+All kernels below live on the corresponding translated and whitened lattice coset. Fixed translations need not preserve that coset to define the translated starting state of the same iid walk.
+
+Let $P_0$ be the iid cycle-displacement kernel killed outside $K$. Choose
+\begin{equation}
+ b_P=T(2,2),\qquad b_S=T(2,1),\qquad K_b=b+K.
+\end{equation}
+On either parity lattice, the inner condition $T(a+c_M)\in K_b$ is exactly $a_1,a_2\ge2$. Let $P_b$ be the iid displacement kernel killed outside $K_b$, extended by zero for starting points outside $K_b$. Let $D$ be the true substochastic kernel of one complete cycle, rejecting a cycle if any of its counted steps leaves the model domain. By the cycle buffer,
+\begin{equation}\label{cps:amp:eq:kernelorder}
+ 0\le P_b\le D\le P_0
+\end{equation}
+pointwise as kernels. In fact, if both endpoints lie in $K_b$, every marked cycle between them is safe, so $D$ agrees there with the unrestricted cycle kernel. The inequality concerns entire kernels, not only their row sums.
+
+\subsection{The iid harmonic input}
+The hypotheses of Denisov--Wachtel \cite[Theorems 2--3]{DWrevisited} hold for these iid increments: centering, identity covariance, exponential moments, the wedge geometry and $p\ge1$ were checked in the Foundation. Write $Z_m$ for the whitened iid walk, $\tau_0$ for its exit from $K$, and
+\begin{equation}\label{cps:amp:eq:V}
+ V(x)=\lim_{m\to\infty}\EE_x[u(Z_m);\tau_0>m].
+\end{equation}
+The theorem provides $P_0V=V$, uniform $V(z)/u(z)\to1$ as $\operatorname{dist}(z,\partial K)\to\infty$, a polynomial survival upper bound, and
+\begin{align}
+ m^{p/2}P_0^m\one(x)&\longrightarrow\beta V(x),\label{cps:amp:eq:iidsurvival}\\
+ m^{p/2}\EE_x[f(Z_m/\sqrt m);\tau_0>m]
+ &\longrightarrow\beta V(x)\nu(f),\label{cps:amp:eq:iidYaglom}
+\end{align}
+for bounded continuous nonnegative $f$. Here $\beta>0$ uses the normalization \eqref{cps:amp:eq:u}, and $\nu$ is the normalized Brownian cone-meander endpoint law in $K$. The corresponding translated kernel has harmonic function
+\begin{equation}\label{cps:amp:eq:Vb}
+ V_b(x)=V(x-b)\one_{\{x\in K_b\}},\qquad P_bV_b=V_b,
+\end{equation}
+and the same constants $\beta,\nu$, since the shift is fixed. Coupling the same iid increments started at $x$ and $x-b$ makes survival in the translated inner wedge imply survival in the outer wedge. Taking the limits in \eqref{cps:amp:eq:iidsurvival} gives
+\begin{equation}\label{cps:amp:eq:Vorder}
+ 0\le V_b(x)\le V(x).
+\end{equation}
+
+\section{The boundary-shift comparison}\label{cps:amp:sec:shift}
+\begin{lemma}\label{cps:amp:lem:shift}
+For every fixed outer starting point $x$,
+\begin{equation}\label{cps:amp:eq:shiftlimit}
+ P_0^m(V-V_b)(x)\longrightarrow0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Since $P_0^mV(x)=V(x)$, it suffices to prove $P_0^mV_b(x)\to V(x)$. Put $d(z)=\operatorname{dist}(z,\partial K)$. We first show that for every fixed $R$,
+\begin{equation}\label{cps:amp:eq:strip}
+ \EE_x[u(Z_m);\tau_0>m,\ d(Z_m)\le R]\longrightarrow0.
+\end{equation}
+On $\norm{Z_m}\le\sqrt m\log m$, the wedge estimate
+$u(z)\le C\norm z^{p-1}d(z)$ and the survival upper bound give
+\begin{equation}
+ \EE_x[u(Z_m);\tau_0>m,d(Z_m)\le R,\norm{Z_m}\le\sqrt m\log m]
+ \le C_xR m^{-1/2}(\log m)^{p-1}=o(1).
+\end{equation}
+For the complementary region no killing estimate is needed. Centered iid exponential moments imply, for $t$ sufficiently larger than the fixed starting norm,
+\begin{equation}\label{cps:amp:eq:tail}
+ \PP_x(\norm{Z_m}>t)\le C_x\exp[-c\min(t^2/m,t)].
+\end{equation}
+For $L_m=\sqrt m\log m$, integration of this tail bound yields
+\begin{align}
+ \EE_x[\norm{Z_m}^p;\norm{Z_m}>L_m]
+ &\le L_m^p\PP_x(\norm{Z_m}>L_m)
+   +\int_{L_m}^{\infty}pt^{p-1}\PP_x(\norm{Z_m}>t)\,dt\notag\\
+ &=O\!\left(m^{p/2}e^{-c'(\log m)^2}\right)+O(e^{-c'm})=o(1),\label{cps:amp:eq:tailmoment}
+\end{align}
+after absorbing powers of $\log m$ into a smaller positive exponential constant. Because $u(z)\le C\norm z^p$, this proves \eqref{cps:amp:eq:strip}.
+
+Given $\varepsilon>0$, choose $R$ large. If $d(z)>R$, then $z-b\in K$ and the uniform asymptotic for $V$ gives $V(z-b)/u(z-b)$ close to one. Also
+\begin{equation}\label{cps:amp:eq:ushift}
+ \frac{u(z-b)}{u(z)}\longrightarrow1
+ \quad\text{uniformly as }d(z)\longrightarrow\infty.
+\end{equation}
+To see the uniformity even when $\norm z$ grows independently, use the explicit wedge function to obtain $\norm{\nabla\log u(w)}\le C/d(w)$. Along $w=z-tb$, $0\le t\le1$, the boundary distance is at least $d(z)-\norm b$; integrate the logarithmic derivative along this bounded segment. Consequently, for sufficiently large $R$,
+\begin{equation}
+ V_b(z)\ge(1-\varepsilon)u(z)\qquad(d(z)>R).
+\end{equation}
+Combining this inequality with \eqref{cps:amp:eq:V} and \eqref{cps:amp:eq:strip} gives
+$\liminf_mP_0^mV_b(x)\ge(1-\varepsilon)V(x)$. By \eqref{cps:amp:eq:Vorder}, the corresponding upper bound is $P_0^mV_b(x)\le V(x)$. Let $\varepsilon\downarrow0$.
+\end{proof}
+The argument needs only the ordinary iid harmonic asymptotic and survival bound. It does not assume a conditioned invariance principle for the valid-cycle kernel.
+
+\section{Harmonic and endpoint limits for valid cycles}\label{cps:amp:sec:validcycles}
+\begin{theorem}\label{cps:amp:thm:cyclelimits}
+The limit
+\begin{equation}\label{cps:amp:eq:H}
+ \mathcal H(x)=\lim_{m\to\infty}D^mV(x)
+\end{equation}
+exists, is finite, is $D$-harmonic, and is positive at every starting point that can reach a point with $V_b>0$ by a valid finite cycle path. Moreover,
+\begin{align}
+ n^{p/2}D^n\one(x)&\longrightarrow\beta\mathcal H(x),\label{cps:amp:eq:Dsurvival}\\
+ n^{p/2}\EE_x[f(Z_n/\sqrt n);\text{the first }n\text{ cycles are valid}]
+ &\longrightarrow\beta\mathcal H(x)\nu(f)\label{cps:amp:eq:DYaglom}
+\end{align}
+for every bounded continuous nonnegative $f$.
+\end{theorem}
+\begin{proof}
+The inequality $DV\le P_0V=V$ makes $D^mV$ nonincreasing and nonnegative, proving existence and finiteness. Since $DV_b\ge P_bV_b=V_b$ and $V\ge V_b$, one has $D^mV\ge V_b$. Dominated convergence against $D(x,dz)$, using $DV(x)\le V(x)<\infty$, gives $D\mathcal H=\mathcal H$. Thus $\mathcal H\ge V_b$, and harmonicity propagates strict positivity backwards along every valid finite path to a point where $V_b>0$.
+
+Fix $m$ and write $n=m+r$. Kernel order gives
+\begin{equation}\label{cps:amp:eq:sandwich}
+ D^mP_b^r\one(x)\le D^n\one(x)\le D^mP_0^r\one(x).
+\end{equation}
+Multiply by $n^{p/2}$ and let $n\to\infty$ with $m$ fixed. The ordinary survival theorem and its uniform polynomial upper bound permit dominated convergence against $D^m(x,dz)$. Indeed, $D^m$ is bounded by the fixed-time iid displacement kernel, so this measure has all polynomial moments. It follows that
+\begin{equation}\label{cps:amp:eq:limitbracket}
+ \beta D^mV_b(x)
+ \le\liminf_n n^{p/2}D^n\one(x)
+ \le\limsup_n n^{p/2}D^n\one(x)
+ \le\beta D^mV(x).
+\end{equation}
+The width is at most
+\begin{equation}
+ \beta D^m(V-V_b)(x)\le\beta P_0^m(V-V_b)(x)\longrightarrow0
+\end{equation}
+by Lemma~\ref{cps:amp:lem:shift}. The upper endpoint tends to $\beta\mathcal H(x)$, proving \eqref{cps:amp:eq:Dsurvival}.
+
+For \eqref{cps:amp:eq:DYaglom}, insert the nonnegative terminal test function $f(z/\sqrt n)$ in \eqref{cps:amp:eq:sandwich}. For each fixed intermediate starting point, the ordinary endpoint theorem gives the same factor $\nu(f)$ in the inner and outer kernels: the shift is fixed and $r/n\to1$. Domination follows from $\norm f_\infty$ times the same survival bound. Thus the analogue of \eqref{cps:amp:eq:limitbracket} has both endpoints multiplied by $\nu(f)$, and the same vanishing-width argument proves the result. Taking $f=1$ gives convergence of total mass; together the statements give the normalized weak conditional endpoint limit.
+\end{proof}
+
+\section{Exact counted-time constants}\label{cps:amp:sec:clock}
+Let $R_n$ be survival of the original counted-step chain through time $n$. For an initial parity $i$, use its complete-cycle kernel $D_i$ and the corresponding harmonic function $\mathcal H_i$; forward and reverse kernels may have different harmonic functions. Define
+\begin{equation}\label{cps:amp:eq:A}
+ A(a)=2^{p/2}\beta\mathcal H_{i(a)}(T(a+c_M)),\qquad
+ A^*(b)=2^{p/2}\beta^*\mathcal H_{i(b)}^*(T(b+c_M)).
+\end{equation}
+Here $i(a)$ and $i(b)$ denote the respective parities of the two endpoints. The starred harmonic normalization uses the same wedge function \eqref{cps:amp:eq:u}; writing $\beta^*$ separately allows the ordinary reverse iid theorem to be applied without identifying its constant in advance. Its endpoint law is the same $\nu$, since the covariance and wedge agree.
+
+\begin{theorem}\label{cps:amp:thm:exacttime}
+At every relevant forward and reverse starting point,
+\begin{equation}\label{cps:amp:eq:exacttime}
+ \PP_a(R_n)\sim A(a)n^{-p/2},\qquad
+ \mathcal L_a(X_n/\sqrt n\mid R_n)\Longrightarrow\nu_\Sigma,
+\end{equation}
+with the analogous reversed statement and amplitude $A^*(b)$. The probability law $\nu_\Sigma$ is the endpoint law at time one of the Brownian meander in $C$ with covariance $\Sigma$.
+\end{theorem}
+\begin{proof}
+Put
+\begin{equation}
+ k_- =\lfloor n/2-n^{3/4}\rfloor,\qquad
+ k_+ =\lceil n/2+n^{3/4}\rceil.
+\end{equation}
+Chernoff bounds for the iid durations, with mean two, show that outside an event of probability $O(e^{-c\sqrt n})$,
+\begin{equation}\label{cps:amp:eq:clockwindow}
+ n-4n^{3/4}\le T_{k_-}\le n\le T_{k_+}\le n+4n^{3/4}.
+\end{equation}
+The corrected-martingale exponential maximal inequality from the Foundation, applied on the deterministic interval beginning at $\lfloor n-4n^{3/4}\rfloor$ and of length $O(n^{3/4})$, gives total positional oscillation at most $\delta\sqrt n$ outside an event of probability $O(e^{-c_\delta n^{1/4}})$. The bounded corrector contributes only $O(1)$. Both estimates are unconditional; no independence between duration and displacement and no conditioning on valid cycles is used.
+
+For a continuity set $B$ of the limiting endpoint law, let $B^{-\delta}$ and $B^{+\delta}$ be its inner and outer $\delta$ neighborhoods. The two complete-cycle events give
+\begin{align}\label{cps:amp:eq:eventbracket}
+ &\PP\{D\text{-survival through }k_+,\ X_{T_{k_+}}/\sqrt n\in B^{-\delta}\}-\varepsilon_n\notag\\
+ &\hspace{9mm}\le\PP_a(R_n,X_n/\sqrt n\in B)\notag\\
+ &\hspace{9mm}\le\PP\{D\text{-survival through }k_-,\ X_{T_{k_-}}/\sqrt n\in B^{+\delta}\}+\varepsilon_n,
+\end{align}
+where $\varepsilon_n$ is exponentially small compared with $n^{-p/2}$. First choose $\delta$ so the neighborhood boundaries are continuity sets; then let $\delta\downarrow0$. Since $k_\pm/n\to1/2$, Theorem~\ref{cps:amp:thm:cyclelimits} yields a common amplitude factor $2^{p/2}\beta\mathcal H_i$. The spatial transformation is
+\begin{equation}
+ \frac1{\sqrt2}T^{-1}=(\Sigma)^{1/2},
+\end{equation}
+so the pushed-forward endpoint law is precisely $\nu_\Sigma$. The fixed domain translation vanishes under scaling. Using $B=\RR^2$ gives the survival equivalent, and general continuity sets give the conditional weak limit.
+\end{proof}
+
+\subsection{Positivity at the enumeration endpoints}
+The valid entrances to the even inner cone were exhibited in Foundation Section~\ref{cps:sec:entrances}. For completeness, a complete odd-return path for the reversed $S$ chain from its odd endpoint is
+\begin{equation}\label{cps:amp:eq:oddentrance}
+ (1,1)\longrightarrow(0,2)\longrightarrow(2,2)
+ \longrightarrow(4,2)\longrightarrow(3,3).
+\end{equation}
+The first and last steps are reversed southeast steps. Each middle aggregate of displacement $(2,0)$ reverses a southeast step followed by the face step $(-3,1)$. Its internal physical points remain nonnegative. The final odd point lies in the inner domain; the middle internal states are even, so this is a complete first return to odd parity.
+
+For reversed $P$ from $(2i,0)$, $i\ge2$, two reversed southeast steps reach $(2i-2,2)$. For $i=1$, the valid complete even-return path is
+\begin{equation}
+ (2,0)\longrightarrow(1,1)\longrightarrow(3,1)\longrightarrow(2,2),
+\end{equation}
+whose middle step is the reversed odd-to-odd face displacement $(2,0)$. From these points the cycle-support accessibility constructions reach arbitrarily deep points where $V_b>0$. Thus every endpoint in the $P$ sum has a positive reversed amplitude, and all the fixed endpoints in \eqref{cps:amp:eq:Scount} have positive amplitudes as well.
+
+\section{Uniform interior killed local convergence}\label{cps:amp:sec:killed}
+Let $g_t^\Sigma(x,y)$ be the unrestricted Brownian transition density with covariance $\Sigma$, and let $k_t^{C,\Sigma}(x,y)$ be its density killed on leaving the open quadrant $C$. The distinction between the physical quadrant $C$ and the whitened wedge $K=TC$ is maintained throughout this section.
+
+\begin{lemma}\label{cps:amp:lem:killed}
+Fix $t>0$ and integers $m_n$ with $m_n/n\to t$. For compact sets $E,F\subset C$,
+\begin{equation}\label{cps:amp:eq:killedlocal}
+ \sup_{\substack{a,b\in L:\ a/\sqrt n\in E,\ b/\sqrt n\in F}}
+ \left|nq_{m_n}(a,b)-2k_t^{C,\Sigma}(a/\sqrt n,b/\sqrt n)\right|
+ \longrightarrow0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+We give the exit-decomposition proof. First, the unrestricted counted process satisfies a functional central limit theorem with covariance $\Sigma$. This follows from the bounded-corrector martingale: its predictable quadratic variation, divided by $n$, converges to $t\Sigma$ uniformly on compact time intervals by ergodicity of the finite internal chain, while the exponential moment implies the martingale Lindeberg condition. The bounded corrector disappears at scale $\sqrt n$. Equivalently, one may use the iid cycle functional limit theorem and the renewal law $T_k/k\to2$; the dependent clock still converges to a deterministic time change. Exponential tails bound both maximum cycle length and maximum individual jump over $O(n)$ steps by $O(\log n)$ in probability, leaving an unfinished-cycle error $O(\log^2n)=o(\sqrt n)$.
+
+It is enough first to describe $m_n=n$. The free exit decomposition is
+\begin{equation}\label{cps:amp:eq:Hunt}
+ q_n(a,b)=\PP_a(X_n=b)
+ -\EE_a[\PP_{X_\tau}(X_{n-\tau}=b);\tau\le n],
+\end{equation}
+where $\tau$ is the first exit from the discrete model domain. Fix $\varepsilon>0$ and restrict the expectation to $\tau\le(1-\varepsilon)n$. The unrestricted functional limit theorem gives convergence of the rescaled exit time and position on this truncated event. The continuous-mapping assertion uses familiar path properties of nondegenerate Brownian motion in a quadrant: it crosses a regular face immediately upon first hitting it, has zero probability of exit at the vertex, and its exit time has no atom at a fixed positive truncation time. The maximum jump divided by $\sqrt n$ tends to zero, so the discrete overshoot vanishes. The fixed displacement of the $S$ boundary also vanishes.
+
+On a compact set of rescaled exit positions, the free local theorem \eqref{cps:amp:eq:freelocal} applies uniformly, with remaining durations in $[\varepsilon n,n]$. After multiplication by $n$, its limit is twice the appropriate free Brownian density at the remaining time. Uniformity for the varying time ratios follows by compactness of $[\varepsilon,1]$ and the local theorem, or by taking convergent subsequences of these ratios. Outside a compact set of exit positions, \eqref{cps:amp:eq:freeupper} bounds the rescaled integrand by $C/\varepsilon$, and functional-limit tightness of the path maximum removes that tail. Thus the truncated expectation converges to the corresponding Brownian exit integral.
+
+It remains to control late exits. Reverse every path that ends at $b$ and exits after time $(1-\varepsilon)n$. Its reversal visits the complement within its first $\varepsilon n$ steps. Strong Markov at the first reversed exit, followed by the global free upper bound for at least $(1-\varepsilon)n$ remaining steps, gives
+\begin{equation}\label{cps:amp:eq:late}
+ \PP_a(X_n=b,(1-\varepsilon)n<\tau\le n)
+ \le\frac Cn\PP_b^*(\tau^*\le\varepsilon n).
+\end{equation}
+If $b/\sqrt n\in F$ and $F$ has boundary distance at least $\delta>0$, the reversed corrected-martingale exponential inequality gives, for each fixed $\varepsilon$ and sufficiently large $n$,
+\begin{equation}\label{cps:amp:eq:earlyexit}
+ \PP_b^*(\tau^*\le\varepsilon n)
+ \le C\exp[-c\delta^2/\varepsilon].
+\end{equation}
+Indeed, an exit requires a displacement of at least $\delta\sqrt n-O(1)$, and the optimized moment-generating parameter is of order $1/(\varepsilon\sqrt n)$, within its allowed range for large $n$. Hence the late-exit mass times $n$ tends uniformly to zero as $\varepsilon\downarrow0$. The Brownian analogue removes the truncation in the limiting integral.
+
+Subtracting the exit integral from the limiting free density in \eqref{cps:amp:eq:Hunt} is the Brownian Hunt formula and gives $2k_1^{C,\Sigma}$. The argument with $m_n/n\to t$ uses the identical truncation, with remaining time ratios bounded away from zero; it gives $2k_t^{C,\Sigma}$. Finally, compact uniformity follows by the subsequence principle: any sequence of endpoint pairs in $E\times F$ has a convergent subsequence, and a further subsequence fixes the finite parity pair. All the bounds above are uniform on those compact sets, and the limiting heat kernel is continuous there.
+\end{proof}
+Only an unrestricted functional limit theorem and the already verified free local theorem enter this proof. No cone-killed local theorem for the two-state chain is assumed.
+
+\section{Fixed-thirds convergence and positive bridge amplitudes}\label{cps:amp:sec:bridge}
+Fix relevant endpoints $a,b$, put $m=\lfloor n/3\rfloor$ and $\ell=n-2m$, and define finite measures
+\begin{equation}\label{cps:amp:eq:measures}
+ \mu_{n,a}=n^{p/2}\sum_uq_m(a,u)\delta_{u/\sqrt n},\qquad
+ \mu_{n,b}^*=n^{p/2}\sum_vq_m^*(b,v)\delta_{v/\sqrt n}.
+\end{equation}
+Let $\nu_{1/3,\Sigma}$ be the image of $\nu_\Sigma$ under $x\mapsto x/\sqrt3$. By Theorem~\ref{cps:amp:thm:exacttime}, including convergence of total mass,
+\begin{equation}\label{cps:amp:eq:measurelimit}
+ \mu_{n,a}\Longrightarrow3^{p/2}A(a)\nu_{1/3,\Sigma},\qquad
+ \mu_{n,b}^*\Longrightarrow3^{p/2}A^*(b)\nu_{1/3,\Sigma}.
+\end{equation}
+For this model define the positive continuum constant
+\begin{equation}\label{cps:amp:eq:B}
+ \mathcal B_\Sigma
+ =2\,3^p\iint_{C\times C}k_{1/3}^{C,\Sigma}(x,y)
+       \,\nu_{1/3,\Sigma}(dx)\nu_{1/3,\Sigma}(dy).
+\end{equation}
+It is finite by the unrestricted Gaussian bound and strictly positive because the killed heat kernel and the meander density are positive in the interior.
+
+\begin{theorem}[Fixed-endpoint amplitude]\label{cps:amp:thm:bridge}
+For each relevant pair of fixed endpoints,
+\begin{equation}\label{cps:amp:eq:bridgeamp}
+ q_n(a,b)\sim\mathcal C(a,b)n^{-p-1},\qquad
+ \mathcal C(a,b)=\mathcal B_\Sigma A(a)A^*(b)>0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact semigroup identity and reversal give
+\begin{equation}\label{cps:amp:eq:semigroup}
+ n^{p+1}q_n(a,b)
+ =\iint nq_\ell(u,v)\,
+ \mu_{n,a}(d(u/\sqrt n))\mu_{n,b}^*(d(v/\sqrt n)).
+\end{equation}
+On compact interior sets, Lemma~\ref{cps:amp:lem:killed} makes the kernel converge uniformly to $2k_{1/3}^{C,\Sigma}$. The global bound $nq_\ell\le C$ holds everywhere by \eqref{cps:amp:eq:freeupper}. The finite measures in \eqref{cps:amp:eq:measurelimit} are tight and have convergent total masses. Their limits put no mass on the boundary and none at infinity. Therefore compact interior sets, chosen with limiting boundary measure zero, leave arbitrarily small mass in the complement, uniformly for large $n$. The contribution to \eqref{cps:amp:eq:semigroup} from either complementary coordinate is bounded by that small mass times $C$ and the bounded total mass of the other factor. On the compact product, weak product-measure convergence and uniform kernel convergence give the integral in \eqref{cps:amp:eq:B}, multiplied by $A(a)A^*(b)$. This proves \eqref{cps:amp:eq:bridgeamp}.
+\end{proof}
+The argument uses a fixed positive fraction of the time in all three pieces. It needs neither a marked-clock local theorem in three dimensions nor a shrinking-time gluing limit.
+
+\subsection{Evaluation of the universal Brownian factor}\label{cps:amp:sec:Brownian}
+The positive integral \eqref{cps:amp:eq:B} is the primary definition of the bridge factor. Its universal part can also be evaluated explicitly, while the discrete harmonic values remain unevaluated. All Brownian densities below use generator $\tfrac12\Sigma:\nabla^2$ and physical planar Lebesgue measure. Write
+\begin{equation}
+ h(x)=u(\Sigma^{-1/2}x),\qquad
+ C_B=\frac{2^{1-p}}{\theta\Gamma(p+1)\sqrt{\det\Sigma}},\qquad
+ \beta_B=\frac{2^{1-p/2}\Gamma(p/2)}{\pi\Gamma(p)}.
+\end{equation}
+The covariance-identity wedge kernel, obtained from the spectral/Bessel formula of B\~anuelos--Smits \cite[Lemma 1, equation (2.2)]{BS}, is
+\begin{equation}\label{cps:amp:eq:wedgekernel}
+ k_t^K((r,\varphi),(s,\psi))=
+ \frac2{\theta t}e^{-(r^2+s^2)/(2t)}
+ \sum_{j\ge1}I_{jp}(rs/t)\sin(jp\varphi)\sin(jp\psi).
+\end{equation}
+Its leading term uses $I_p(z)\sim(z/2)^p/\Gamma(p+1)$. After the physical coordinate change, the small-start entrance density, divided by the starting harmonic value, is
+\begin{equation}\label{cps:amp:eq:entrance}
+ g_t(y)=C_Bt^{-p-1}h(y)
+       e^{-y^T\Sigma^{-1}y/(2t)}.
+\end{equation}
+The angular and radial integrals are
+\begin{equation}
+ \int_0^\theta\sin(p\varphi)\,d\varphi=\frac2p,\qquad
+ \int_0^\infty r^{p+1}e^{-r^2/(2t)}\,dr
+ =2^{p/2}t^{p/2+1}\Gamma(p/2+1).
+\end{equation}
+Since $\theta p=\pi$, integration of \eqref{cps:amp:eq:entrance} gives
+$\int_Cg_t(y)\,dy=\beta_Bt^{-p/2}$. Thus
+\begin{equation}\label{cps:amp:eq:meanderdensity}
+ \nu_{t,\Sigma}(dy)=\frac{g_t(y)\,dy}{\beta_Bt^{-p/2}}.
+\end{equation}
+With the harmonic normalization \eqref{cps:amp:eq:u}, the ordinary iid survival constant is this Brownian constant, so $\beta=\beta^*=\beta_B$.
+
+Define the physical harmonic functions, with the parity of their argument selecting the relevant cycle law, by
+\begin{equation}\label{cps:amp:eq:U}
+ U_i(a)=2^{p/2}\mathcal H_i((2\Sigma)^{-1/2}(a+c_M)),\qquad
+ U_i^*(a)=2^{p/2}\mathcal H_i^*((2\Sigma)^{-1/2}(a+c_M)).
+\end{equation}
+Then $A=\beta_BU$ and $A^*=\beta_BU^*$. They are harmonic for the respective killed counted-time kernels: apply the one-step survival recursion, multiply by $n^{p/2}$, and pass to the limit using \eqref{cps:amp:eq:survivalupper} and the exponential one-step moment as an integrable majorant. The bounds $V_b\le\mathcal H\le V$ and the fixed-shift comparison give $U(a)\sim h(a)$ as the boundary distance tends to infinity. No uniqueness assertion is required.
+
+The entrance densities satisfy $g_sK_t=g_{s+t}$, by the killed semigroup and its small-start limit. This also follows from \eqref{cps:amp:eq:wedgekernel}, angular orthogonality and the termwise Bessel identity
+\begin{equation}
+ \int_0^\infty r^{p+1}e^{-ar^2}I_p(br)\,dr
+ =\frac{b^p e^{b^2/(4a)}}{(2a)^{p+1}},\qquad a>0.
+\end{equation}
+For $s=1/3$, each limiting measure in \eqref{cps:amp:eq:measurelimit} is $U(a)g_s(x)\,dx$. The limiting bridge integral therefore reduces to
+\begin{equation}
+ 2U(a)U^*(b)\int_C g_{2s}(y)g_s(y)\,dy.
+\end{equation}
+A polar integration, using $\int_0^\theta\sin^2(p\varphi)d\varphi=\theta/2$, gives
+\begin{align}
+ \int_Cg_{2s}(y)g_s(y)\,dy
+ &=C_B^2\sqrt{\det\Sigma}\frac{\theta\Gamma(p+1)}4
+   (2s)^{-p-1}s^{-p-1}(4s/3)^{p+1}\notag\\
+ &=C_B(3s)^{-p-1}=C_B.
+\end{align}
+Consequently the equivalent explicit form of \eqref{cps:amp:eq:bridgeamp} is
+\begin{align}\label{cps:amp:eq:explicitbridge}
+ \mathcal C(a,b)&=2C_BU(a)U^*(b)\notag\\
+ &=\frac{4}{\theta\Gamma(p+1)\sqrt{\det\Sigma}}
+ \mathcal H_i(T(a+c_M))\mathcal H_j^*(T(b+c_M)).
+\end{align}
+The factor two in the first line is the discrete lattice covolume; it is not part of the Brownian density. Here $i,j$ are the initial and terminal parities. In particular, the $S$ bridge uses the even forward and odd reversed harmonic functions. The determinants are
+\begin{equation}
+ \det\Sigma_P=7,\qquad \det\Sigma_S=80/9.
+\end{equation}
+As normalization checks, for identity covariance and $p=1$ the constants are $C_B=1/\pi$, $\beta_B=\sqrt{2/\pi}$; for $p=2$, they are $C_B=1/(2\pi)$, $\beta_B=1/\pi$, with $u(x,y)=2xy$. These formulas evaluate only the universal Brownian factors. The discrete harmonic values, and the weighted endpoint sum for $P$, still determine the counting amplitudes.
+
+\section{Enumeration amplitudes and the rigid sequence}\label{cps:amp:sec:enumeration}
+Attach subscripts $P,S$ to the constants for the two models.
+
+\subsection{Corner polyhedra}
+By \eqref{cps:amp:eq:Pcount}, Theorem~\ref{cps:amp:thm:bridge}, and the uniform bound \eqref{cps:amp:eq:endpointupper}, dominated convergence in the geometrically weighted endpoint sum gives
+\begin{equation}\label{cps:amp:eq:kappaP}
+ \kappa_P=\sum_{i\ge1}3^{-i}\mathcal C_P((0,0),(2i,0))
+ =\mathcal B_{\Sigma_P}A_P((0,0))
+   \sum_{i\ge1}3^{-i}A_P^*((2i,0)).
+\end{equation}
+The dominating series $\sum_{i\ge1}3^{-i}(1+i)^{p_P}$ converges. Positivity follows already from the single endpoint $(4,0)$. This proves \eqref{cps:amp:eq:Pmain}.
+
+\subsection{Schnyder labelings}
+The fixed-endpoint identity \eqref{cps:amp:eq:Scount} gives
+\begin{equation}\label{cps:amp:eq:kappaSprime}
+ s'_n\sim\kappa'_S\mu_S^nn^{-\alpha_S},\qquad
+ \kappa'_S=\frac{\mu_S}{4}\mathcal C_S((0,2),(1,1)).
+\end{equation}
+Its positive finite combination then gives
+\begin{equation}\label{cps:amp:eq:kappaS}
+ \kappa_S=(1+\mu_S^{-1})^2\kappa'_S
+ =\frac{361}{192}\mathcal B_{\Sigma_S}A_S((0,2))A_S^*((1,1)).
+\end{equation}
+Here $\mu_S/4=4/3$ and $(1+\mu_S^{-1})^2=(19/16)^2$. This proves \eqref{cps:amp:eq:Smain}.
+
+\subsection{A dominated signed convolution}
+Write
+\begin{equation}
+ (1+z)^{-3}=\sum_{j\ge0}b_jz^j,\qquad
+ b_j=(-1)^j\binom{j+2}{2}.
+\end{equation}
+From \eqref{cps:amp:eq:series}, $\widetilde s_n$ is the signed convolution of $s_n$ with $b_j$, minus the coefficient of $(3z^2+z^3)/(1+z)^3$. Enlarge a constant so that
+\begin{equation}
+ 0\le s_m\le C\mu_S^m(m+1)^{-\alpha_S}\qquad(m\ge0).
+\end{equation}
+For $0\le j\le n$,
+\begin{equation}
+ \frac{n}{n-j+1}\le j+1,
+\end{equation}
+so the absolute normalized convolution summand is bounded by
+\begin{equation}\label{cps:amp:eq:convolutionmajorant}
+ n^{\alpha_S}\mu_S^{-n}|b_j|s_{n-j}
+ \le C|b_j|\mu_S^{-j}(j+1)^{\alpha_S}.
+\end{equation}
+The right side is summable over $j$, independently of $n$. For each fixed $j$, the summand has signed limit $\kappa_Sb_j\mu_S^{-j}$. Dominated convergence therefore gives
+\begin{equation}
+ \lim_{n\to\infty}n^{\alpha_S}\mu_S^{-n}
+ \sum_{j=0}^nb_js_{n-j}
+ =\kappa_S\sum_{j\ge0}b_j\mu_S^{-j}
+ =\frac{\kappa_S}{(1+\mu_S^{-1})^3}.
+\end{equation}
+The polynomial correction divided by $(1+z)^3$ has coefficients $O(n^2)$, so it is exponentially negligible under this normalization. Since $(1+\mu_S^{-1})^{-3}=(16/19)^3$, \eqref{cps:amp:eq:rigidmain} follows. This completes the proof of Theorem~\ref{cps:amp:thm:main}.
+
+\section{Sharper first-threshold inversion}\label{cps:amp:sec:inverse}
+The following conclusion applies to each of the three counting sequences, with its rate $\mu$, exponent $\alpha$ and amplitude $\gamma$ from Theorem~\ref{cps:amp:thm:main}.
+
+\begin{theorem}\label{cps:amp:thm:inverse}
+Suppose $a_n\sim\gamma\mu^nn^{-\alpha}$ with $\gamma>0$, $\mu>1$ and $\alpha>0$, and define $N(Y)=\min\{n\ge0:a_n\ge Y\}$. Put $\lambda=\log\mu$, $T_Y=\log Y$, and
+\begin{equation}\label{cps:amp:eq:W}
+ r(Y)=-\frac\alpha\lambda W_{-1}\!\left(-\frac\lambda\alpha(\gamma/Y)^{1/\alpha}\right).
+\end{equation}
+Then
+\begin{equation}\label{cps:amp:eq:inverseexpansion}
+ r(Y)=\frac{T_Y+\alpha\log T_Y-\alpha\log\lambda-\log\gamma}{\lambda}+o(1).
+\end{equation}
+There is a positive function $\varepsilon_Y\to0$ such that, for all sufficiently large $Y$,
+\begin{equation}\label{cps:amp:eq:ceiling}
+ \lceil r(Y)-\varepsilon_Y\rceil\le N(Y)\le\lceil r(Y)+\varepsilon_Y\rceil.
+\end{equation}
+No separate monotonicity assumption on $a_n$ is needed.
+\end{theorem}
+\begin{proof}
+The defining relation $W(z)e^{W(z)}=z$ gives, on the negative real branch $W_{-1}$,
+\begin{equation}\label{cps:amp:eq:modelinverse}
+ \gamma e^{\lambda r(Y)}r(Y)^{-\alpha}=Y.
+\end{equation}
+The branch selects the large positive solution tending to infinity; the other real branch selects the small solution. To obtain \eqref{cps:amp:eq:inverseexpansion}, first $r(Y)\sim T_Y/\lambda$ by taking logarithms in \eqref{cps:amp:eq:modelinverse}; substituting this into
+$\lambda r=T_Y+\alpha\log r-\log\gamma$ gives the stated expansion, with $o(1)$ remainder after one substitution.
+
+Write $\log a_n=g(n)+e_n$ for all sufficiently large $n$, where
+\begin{equation}
+ g(t)=\lambda t-\alpha\log t+\log\gamma,\qquad e_n\to0.
+\end{equation}
+The coefficients are eventually positive by the full equivalent. For large $t$, $g'(t)\ge\lambda/2$. Put
+$\delta_Y=\sup_{n\ge r(Y)/2}|e_n|$, where the supremum is over integers in that range. Then $\delta_Y\to0$. Choose $\varepsilon_Y>2\delta_Y/\lambda$ with $\varepsilon_Y\to0$, for instance $3\delta_Y/\lambda+1/r(Y)$.
+
+Every integer $n$ with $r(Y)/2\le n<r(Y)-\varepsilon_Y$ satisfies
+$g(n)+e_n<g(r(Y))=\log Y$. Conversely the integer
+$n=\lceil r(Y)+\varepsilon_Y\rceil$ satisfies $g(n)+e_n>\log Y$. Integers below $r(Y)/2$ remain below threshold for large $Y$ by the exponential-polynomial upper bound and eventual increase of its comparison envelope; finitely many initial values cause no exception for large $Y$. This proves the two ceiling bounds.
+\end{proof}
+The conclusion is deliberately a bracket. There is no unconditional assertion that $N(Y)=\lceil r(Y)\rceil$, because $r(Y)$ can approach an integer more closely than the unknown forward relative error permits. Nor do additional formal terms of the Lambert-$W$ model provide a justified error expansion for the actual counting sequence without a quantitative remainder in its forward asymptotic. No numerical amplitude estimate is substituted into \eqref{cps:amp:eq:W}.
+
+\begin{writenote}
+Theorem~\ref{cps:amp:thm:inverse} is an instance of the transseries volume's
+\texttt{p0:thm:lambert-core} ($a=\lambda$, $b=-\alpha$, branch $W_{-1}$), with
+\eqref{cps:amp:eq:inverseexpansion} the first step of \texttt{p0:thm:lambert-centered} and the
+bracket \eqref{cps:amp:eq:ceiling} the separation situation of \texttt{p0:thm:staircase}
+(\repo{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}). No
+novelty is claimed for the inversion mechanics. The generic staircase separation lemma is
+formalized in Lean as \texttt{Fabius.staircase\_separation}; nothing about $p_n$, $s_n$ or
+$\widetilde s_n$ is formalized.
+\end{writenote}
+
+\section{Verification, reproducibility and limits of the result}
+The accompanying package contains the addendum source and PDF, the unchanged 30-file Foundation package, portable build commands, exact symbolic checks of the new algebraic amplitude factors and inverse identities, source and mathematical-review receipts, and checksums. The supplied integrity program verifies every included Foundation file against its original manifest before any reproduction command is run.
+
+\begin{writenote}
+In this repository the addendum PDF, the embedded Foundation copy, the integrity
+receipt \texttt{results/foundation-integrity.json} (a hash ledger of that copy) and the checksum
+ledgers are not shipped, so \texttt{code/46-amp-verify\_foundation.py} and
+\texttt{code/46-amp-run\_all.py} cannot run from the report directory. The report README says how
+to rerun them from the archive in the arrival commit, and how to run the new algebra check
+\texttt{code/46-amp-verify\_addendum.py} alone.
+\end{writenote}
+
+Finite computations verify algebraic identities, normalization factors and indexing. They do not establish Lemma~\ref{cps:amp:lem:shift}, the valid-cycle harmonic sandwich, the functional-limit and exit-decomposition argument, or the limiting interchange in the semigroup identity; those are the mathematical proofs given above. The positive amplitude formulas \eqref{cps:amp:eq:kappaP} and \eqref{cps:amp:eq:kappaS} characterize the constants through killed harmonic functions and Brownian heat kernels. They do not certify numerical amplitude digits, a rate of convergence, or any unproved correction term.
+
+
 \appendix
-\section{Exact computational checks}\label{app:checks}
+
+\section{Exact computational checks}\label{cps:app:checks}
 The scripts require Python 3 and SymPy. All paths in the reproducibility package are relative to the package root. Running \texttt{python3 scripts/run\_all.py} regenerates the verification outputs, and running \texttt{bash build.sh} recompiles the article.
+
+\begin{writenote}
+These are delivery
+paths. In this repository the scripts are shipped as \texttt{code/45-cone-*.py}, their outputs
+and the OEIS excerpts as \texttt{data/45-cone-*}, and \texttt{build.sh} as
+\texttt{code/45-cone-build.sh}, which builds a delivery-layout \texttt{article.tex} (source 45
+alone). The scripts resolve \texttt{scripts/}, \texttt{results/} and \texttt{sources/} relative to
+their parent directory, so they must be run on a scratch copy in the delivered layout; the
+report README gives the recipe.
+\end{writenote}
 
 \subsection{Symbolic identities}
 The exact-arithmetic checks differentiate the two rational kernel matrices and their return generating functions. They verify stochasticity, the conditional drifts, both forward and reverse correctors, each conditional covariance matrix, the zero cycle means, both parity cycle covariances, the mean and variance of the cycle duration, the covariance angles, and the $S$ aggregate resolvent identity. No floating-point approximation is used for these assertions. Decimal exponents in the results table are evaluated only after the exact formulas have been established.
 
 \subsection{Finite cycle geometry}
-The supplied independent $P$ audit exhaustively tests the one-unit minimum bound and its reversed form for 25,900 nontrivial cycles with bounded face-step parameters and at most three middle parity-preserving steps. This finite test is useful for detecting sign errors. The proof for unbounded cycles is Lemma~\ref{lem:buffer}, not an extrapolation from the test.
+The supplied independent $P$ audit exhaustively tests the one-unit minimum bound and its reversed form for 25,900 nontrivial cycles with bounded face-step parameters and at most three middle parity-preserving steps. This finite test is useful for detecting sign errors. The proof for unbounded cycles is Lemma~\ref{cps:lem:buffer}, not an extrapolation from the test.
 
 \subsection{Integer enumeration}
 For $P$, an elementary dynamic program counts admissible physical walks. When counting walks with total length $N$, a state at time $t$ with ordinate greater than $N-t$ can be discarded: only a southeast step can decrease the ordinate, and it does so by one. Nonnegative horizontal coordinates bound possible face-step horizontal decrements. These restrictions make every counting sum finite without approximation.
 
-For $S$, the package includes the weighted southeast/face recurrence and a separately implemented direct enumeration check. The weights $\binom{\ell+r}{r}$ are exact integers. The relation \eqref{eq:Sconversion} converts the restricted counts $s'_n$ to $s_n$. Initial coefficients provide explicit indexing checks:
+For $S$, the package includes the weighted southeast/face recurrence and a separately implemented direct enumeration check. The weights $\binom{\ell+r}{r}$ are exact integers. The relation \eqref{cps:eq:Sconversion} converts the restricted counts $s'_n$ to $s_n$. Initial coefficients provide explicit indexing checks:
 \begin{center}
 \begin{tabular}{@{}r*{2}{r}@{}}
 \toprule
@@ -624,8 +1443,9 @@ $n$&$p_n$&$s_n$\\
 \end{center}
 The longer recorded Schnyder recurrence output reaches $n=30$ and agrees with the supplied OEIS export. Comparisons are exact coefficient comparisons; no numerical fit is used to infer either exponent.
 
+
 \clearpage
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 \bibitem{FNS}
 \'E. Fusy, E. Narmanli, and G. Schaeffer,
 \emph{Enumeration of corner polyhedra and 3-connected Schnyder labelings},
@@ -662,6 +1482,13 @@ A. Bostan, K. Raschel, and B. Salvy,
 Journal of Combinatorial Theory, Series A \textbf{121} (2014), 45--63.
 \href{https://specfun.inria.fr/bostan/publications/BoRaSa12.pdf}{Author-hosted manuscript}.
 Section 2.2 and the proof of Theorem 2.
+
+\bibitem{BS}
+R. B\~anuelos and R. G. Smits,
+\emph{Brownian motion in cones},
+Probability Theory and Related Fields \textbf{108}(3) (1997), 299--319.
+\href{https://doi.org/10.1007/s004400050111}{doi:10.1007/s004400050111}.
+Lemma 1, equation (2.2); \href{https://www.math.purdue.edu/~banuelos/Papers/cones.pdf}{author-hosted PDF}.
 
 \bibitem{OEISP}
 The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
