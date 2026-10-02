@@ -84,6 +84,10 @@
 \newcommand{\waddsevone}[1]{\textup{[}Added 1 October 2026, batch~71: #1\textup{]}}
 \newcommand{\runs}{\operatorname{runs}}
 \newcommand{\Lgate}[1]{L^{\mathrm{gate}}_{#1}}
+% [write, batch 73] marks text added when Parts V-VII were written in (see
+% their opening sections); \waddsevthree prints a dated note.
+\newcommand{\wsevthree}{\textup{[write, batch~73]}}
+\newcommand{\waddsevthree}[1]{\textup{[}Added 1 October 2026, batch~73: #1\textup{]}}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
  breaklines=true,frame=single,rulecolor=\color{black!20},
  xleftmargin=4pt,xrightmargin=4pt}
@@ -1776,6 +1780,10 @@ unrefereed and unformalized.}
 \waddsevone{Part~IV shows that Part~II's quadratic rank bound has the right
 order for NFAs: some $s$-state NFA has finite maximal rank $(s-3)^2$. It is
 equally unrefereed and unformalized.}
+\waddsevthree{Part~V shows that on each residue the maximal rank of a
+nonstabilizing regular seed grows with a rational, computable slope, and
+lowers the quadratic rank bound to $2(s-1)^2+3$. It is equally unrefereed and
+unformalized.}
 
 %% =====================================================================
 %% [write] Batch-66 addition 02: manuscript 01 of batch 66, "Finite
@@ -2227,6 +2235,10 @@ $d_n=\rank_L(w)$ for $n>0$. Maintaining the subset image as $j$ increases
 for each fixed $i$ implements the interval tests in polynomial time.
 The finite verifier independently compares this path-based algorithm with
 literal seed-substring enumeration; they do not share an interval oracle.
+\waddsevthree{Part~V proves that the longest admissible prefix may always be
+taken (Lemma~\ref{ccc:rs:lem:greedy}), which turns this program into a
+left-to-right pass in $O((|\Sigma|+n)s^2)$ time
+(Corollary~\ref{ccc:rs:cor:algorithm}).}
 
 \section{Uniform periodicity and its quantitative cost}\label{ccc:ps:sec:periodicity}
 
@@ -2469,6 +2481,8 @@ Apply the central-fragment proof separately to each residue with no
 obstruction. Otherwise combine \eqref{ccc:ps:eq:all-large-lower} with
 $M_L(n)\le n$. These alternatives cannot overlap.
 \end{proof}
+\waddsevthree{Part~V sharpens alternative~(2) to $M_L(n)=\sigma_rn+O(1)$
+with a rational slope $\sigma_r>0$ (Theorem~\ref{ccc:rs:thm:slope}).}
 
 \begin{corollary}[Asymmetric boundary bound]\label{ccc:ps:cor:asymmetric}
 If $P_i$ is $p$-periodic for $i\ge t_P$ and $R_i$ is $p$-periodic for
@@ -3137,6 +3151,9 @@ missing length a boundary between separate fragments. The upper bound is the
 one above. The leading constant and the exact $F(s)$ stay open
 (Question~\ref{ccc:qr:q:constant}), and so does the order for DFAs
 (Question~\ref{ccc:qr:q:dfa}).}
+\waddsevthree{Part~V lowers the upper bound to $2(s-1)^2+3$
+(Corollary~\ref{ccc:rs:cor:upper}), so that $(s-3)^2\le F(s)\le2(s-1)^2+3$
+and the leading constant lies in $[1,2]$.}
 
 \begin{question}[Exact residue-wise rank slope]\label{ccc:ps:q:slope}
 On a bad residue, does $M_L(n)/n$ always have a limit, perhaps after
@@ -3148,6 +3165,15 @@ a limit or a formula. The quantity is a maximum over target words of a
 minimum partition cost. Replacing it by a shortest-path mean without
 justifying this order of quantifiers would be invalid. The periodic
 systems provide finite objects on which this problem can be studied.
+\waddsevthree{Answered in all three parts by Part~V
+(Theorem~\ref{ccc:rs:thm:slope}): on every live residue $r$ of any valid
+period, $M_L(n)=\sigma_rn+O(1)$, where $\sigma_r$ is rational with denominator
+at most $p(2^s-1)$, is computed as the largest reachable cycle mean of a
+finite subset-reset graph, and is positive exactly when the residue has an
+interior obstruction; no refinement of the period is needed. The order of
+quantifiers is handled as asked above: longest-prefix greedy factorization is
+optimal (Lemma~\ref{ccc:rs:lem:greedy}), so the minimum partition cost is
+computed by a deterministic parser before any maximization.}
 
 \begin{question}[Optimal obstruction lengths]\label{ccc:ps:q:length}
 How sharp are the interior bounds $p2^s$ for NFAs and $ps^2$ for DFAs?
@@ -3287,6 +3313,10 @@ rather than being hidden inside an unspecified generic limitedness bound.
 \waddsevone{The optimal rank order is now known for NFAs: it is quadratic
 (Part~IV, Theorem~\ref{ccc:qr:thm:main}); its constant and the DFA case
 remain.}
+\waddsevthree{The slopes of bad residues are now determined: they are
+rational and effectively computable (Part~V,
+Theorem~\ref{ccc:rs:thm:slope}), and the constant of the rank order is at
+most two (Corollary~\ref{ccc:rs:cor:upper}).}
 
 \section{Proof and edge-case audit}\label{ccc:ps:app:audit}
 
@@ -5609,6 +5639,8 @@ repository. It does not identify an exact extremal formula. In particular,
 the gap between leading constants one and four remains: the result gives
 $\liminf F(s)/s^2\ge1$ and $\limsup F(s)/s^2\le4$, without proving either a
 limit or a sharp constant.
+\waddsevthree{Part~V proves $\limsup F(s)/s^2\le2$
+(Corollary~\ref{ccc:rs:cor:upper}).}
 
 The equal-length fragment framework and its crossover interpretation are not
 claimed as new. They are developed in the ProveIt report. Closely related
@@ -5629,6 +5661,9 @@ titles were added.
 \begin{question}[Leading constant]\label{ccc:qr:q:constant}
 What is the best leading constant, or the exact function $F(s)$?
 \end{question}
+\waddsevthree{Part~V narrows the leading constant to $[1,2]$:
+$(s-3)^2\le F(s)\le2(s-1)^2+3$ for $s\ge4$
+(Corollary~\ref{ccc:rs:cor:upper}).}
 
 \begin{question}[Order for DFAs]\label{ccc:qr:q:dfa}
 What is the optimal finite-rank order for binary DFAs? The construction here
@@ -5641,6 +5676,8 @@ report are $\lfloor(s-3)/2\rfloor$ (Part~II's
 Theorem~\ref{ccc:ps:thm:lower-family}, whose language $L_m$ has rank $m$ and
 a complete DFA with at most $2m+3$ states, $m$ being that family's index)
 and $(2s+5)^2$ (every DFA is an NFA).
+\waddsevthree{Part~V lowers that upper bound to $2(s-1)^2+3$, for every NFA
+and so for every DFA (Corollary~\ref{ccc:rs:cor:upper}).}
 
 \begin{question}[Tightness of the transfer principle]\label{ccc:qr:q:transfer}
 How tightly can a general cofinite unary automaton's last missing length
@@ -5719,6 +5756,651 @@ which is printed here as Part~IV and is not shipped; it must not be run in
 \texttt{code/}. The ``source file'' of the last paragraph above is that
 manuscript; this report is built as its README describes.
 
+%% =====================================================================
+%% [write] Batch-73 addition 05: manuscript 33 of batch 73 (cluster C1),
+%% "Rational Rank Slopes for Constrained Crossover". Every label of this
+%% Part carries the prefix ccc:rs: (rank slopes).
+%% =====================================================================
+\clearpage
+\phantomsection\part*{Part V.\quad Rational rank slopes for constrained crossover}
+\addcontentsline{toc}{part}{Part V.\texorpdfstring{\quad}{ } Rational rank slopes for constrained crossover}
+
+\noindent\emph{\wsevthree\ Part~V was added on 1 October 2026 in batch~73 of
+ProveIt's incoming-report intake, from one manuscript written against
+Parts~I--III as printed above; it knew Part~IV only as a separate
+manuscript. It answers Part~II's Question~\ref{ccc:ps:q:slope} in all three
+of its parts: on every live residue $r$ the largest rank $M_L(n)$ of a
+length-$n$ hull word is $\sigma_rn+O(1)$, with a rational, effectively
+computable slope $\sigma_r$ and without refining the period. It also proves
+that longest-prefix greedy factorization into aligned fragments is optimal,
+which turns the rank of one word into a linear pass, and lowers Part~II's
+finite-rank bound $(2s+5)^2$ to $2(s-1)^2+3$, so that
+$(s-3)^2\le F(s)\le2(s-1)^2+3$ with Part~IV's lower bound.
+Section~\ref{ccc:rs:sec:provenance} records the provenance and fixes the
+notation of the addition.}
+
+\section{\texorpdfstring{\wsevthree\ }{}Provenance and notation of Part~V}
+\label{ccc:rs:sec:provenance}
+
+\subsection{One manuscript, one addition}\label{ccc:rs:sec:source}
+
+Part~V is batch-73 manuscript~33, \emph{Rational Rank Slopes for Constrained
+Crossover}, dated 1 October 2026 (11 US-letter pages as delivered). It is an
+AI-assisted research note: its title page and PDF metadata read ``Research
+note prepared with OpenAI for Vladimir Reshetnikov'', quoted here and in the
+report's README only. It arrived as the archive
+\texttt{rational-rank-slopes-package.zip} (inner directory
+\texttt{rational-rank-slopes}) in ProveIt commit \texttt{f8c3a392a} and was
+placed in commit \texttt{5e4f1263c}. It was written against ProveIt commit
+\texttt{1bd730779} (in full
+\nolinkurl{1bd730779e8bc44c8976dcd9f38cad86a0d21c26}), the pin of Part~IV's
+manuscript as well; at the pin this report's \texttt{article.tex} had the
+Git blob \texttt{ff492c83}, which holds Parts~I--III as printed above, so
+``the pinned report'' and its ``Part~II'' in the manuscript are this report
+and its Part~II. The manuscript cites its pin through a link to lines
+3109--3120 of that \texttt{article.tex}, which are exactly
+Question~\ref{ccc:ps:q:slope} and the comment after it. It cites the
+manuscript of Part~IV, \emph{Quadratic Finite Rank for Constrained Crossover},
+as a companion note; that note is Part~IV here.
+
+Its two checkers, their recorded outputs and its build script are shipped
+beside the files of Parts~I--IV with the prefix
+\nolinkurl{05-rational-slopes-}; its manuscript, delivery README and PDF are
+not shipped and survive in the arrival commit, and its checksum list
+\texttt{SHA256SUMS} (8 files, all verified at placement) was retired by the
+repository's policy. Section~\ref{ccc:rs:sec:verification} and the report's
+README list the shipped names. The package contained no audit or provenance
+notes; the delivery README's pin, attribution and non-claims are recorded in
+this section.
+
+Every result, proof, example, table, limitation and question of the
+manuscript is printed here, in its order, with one exception: the proof of
+Lemma~\ref{ccc:rs:lem:path}, which repeats Part~II's proof of the same
+lemma, is replaced by a pointer (the definitions of
+Section~\ref{ccc:rs:sec:periodic}, which restate Part~II's, are kept with a
+pointer). Its title page
+and abstract became this section; its Sections~1--10 are
+Sections~\ref{ccc:rs:sec:setting}--\ref{ccc:rs:sec:verification}
+(manuscript Section~$n$ is Section~$n+55$; its main theorem is
+Theorem~\ref{ccc:rs:thm:slope}); it has no appendix. Its closing sentence of
+next questions became
+Questions~\ref{ccc:rs:q:complexity}--\ref{ccc:rs:q:error}. Text marked
+\wsevthree{} was added when the manuscript was written into this report. No
+theorem was strengthened or weakened.
+
+\paragraph{What Part~V adds, and what it repeats.}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \emph{Answered:} Part~II's Question~\ref{ccc:ps:q:slope} (``On a bad
+ residue, does $M_L(n)/n$ always have a limit, perhaps after refining the
+ period? Must a resulting slope be rational, and can it be computed
+ effectively?''), in all three parts, by Theorem~\ref{ccc:rs:thm:slope}: the
+ limit exists on every live residue of every valid period, with no
+ refinement; it is rational with denominator at most $p(2^s-1)$; it is the
+ largest reachable cycle mean of an explicit finite graph, hence effective;
+ and it is positive exactly on the residues with an interior obstruction.
+\item \emph{Sharpened:} Part~II's residue-wise bounded/linear dichotomy
+ (Corollary~\ref{ccc:ps:cor:residue}) becomes an exact rational slope;
+ Part~II's finite-rank bound $(2s+5)^2$ (Theorem~\ref{ccc:ps:thm:main})
+ becomes $2(s-1)^2+3$ (Corollary~\ref{ccc:rs:cor:upper}), by applying
+ Schwarz's relation-power theorem to Part~II's bound $2t+1$, so that the
+ leading constant of $F(s)$ lies in $[1,2]$ rather than Part~IV's $[1,4]$;
+ Part~II's interval dynamic program for the rank of one word
+ \eqref{ccc:ps:eq:rank-dp} is replaced by a linear pass
+ (Corollary~\ref{ccc:rs:cor:algorithm}).
+\item \emph{New:} optimality of longest-prefix greedy factorization for
+ aligned fragments, for every seed language (Lemma~\ref{ccc:rs:lem:greedy},
+ a positional form of a classical principle, credited as such); the
+ subset-reset parser and its weighted graph
+ (Proposition~\ref{ccc:rs:prop:reset}); the reciprocal slopes $1/k$; the two
+ three-state examples showing that neither $t+1$ nor $\kappa+1$ replaces
+ $2t+1$.
+\item \emph{Restated:} Lemma~\ref{ccc:rs:lem:path} is Part~II's
+ Lemma~\ref{ccc:ps:lem:fragment} with
+ Corollary~\ref{ccc:ps:cor:coordinate-alphabet} (pointer; the repeated proof
+ is not reprinted); Section~\ref{ccc:rs:sec:periodic} restates Part~II's
+ periodic system; the parity language of Section~\ref{ccc:rs:sec:examples}
+ is Part~II's Example~\ref{ccc:ps:ex:parity} with the parities exchanged;
+ the bound $2t+1$ used in Corollary~\ref{ccc:rs:cor:upper} is Part~II's
+ \eqref{ccc:ps:eq:transient-bound}.
+\item \emph{Imported and credited:} Schwarz's theorem
+ (Theorem~\ref{ccc:rs:thm:schwarz}); maximum cycle means and Karp's
+ algorithm~\cite{KarpCycle}; greedy parsing (Crochemore--Langiu--Mignosi,
+ De~Luca--Fici); represented-interval machinery (Manzoni--Vanneschi--Mauri);
+ Part~IV's lower family.
+\item \emph{Not affected:} the leading constant and the exact $F(s)$
+ (Question~\ref{ccc:qr:q:constant}) remain open, now within $[1,2]$; Part~II's
+ Question~\ref{ccc:ps:q:dfa} and Part~IV's Question~\ref{ccc:qr:q:dfa} on
+ DFAs, Part~II's Questions~\ref{ccc:ps:q:length} and~\ref{ccc:ps:q:period}
+ (to which Part~V's denominator bound and Question~\ref{ccc:rs:q:period} are
+ related), and the questions of Parts~I and~III are untouched.
+\end{itemize}
+
+\subsection{The manuscript's summary and status}\label{ccc:rs:sec:abstract}
+
+\emph{Abstract, as delivered (``the pinned ProveIt report'' is this report,
+its Question~24.3 is Part~II's Question~\ref{ccc:ps:q:slope}, the companion
+note is Part~IV, and the slope written $\lambda_r$ is printed $\sigma_r$).}
+For a regular seed language $L$, let $M_L(n)$ be the maximum aligned-fragment
+rank among length-$n$ words in its coordinate hull. On every live residue $r$
+of any common eventual period of the forward and backward reachability sets,
+we prove
+\[
+M_L(n)=\sigma_r n+O_L(1),\qquad n\equiv r\pmod p,
+\]
+where $\sigma_r\in[0,1]$ is rational and effectively computable. The slope is
+the maximum reachable cycle mean of a finite deterministic subset-reset graph
+with edge weights zero and one. The key point is that longest-prefix greedy
+factorization exactly minimizes the number of aligned admissible fragments, so
+the original maximum-over-words, minimum-over-partitions quantity becomes an
+ordinary maximum path weight. All terminal subsets are permitted; no period
+refinement is needed. This resolves the three parts of Question~24.3 in the
+pinned ProveIt report. The note also gives a linear-pass fixed-word rank
+algorithm after viable-layer preprocessing, examples with distinct residue
+slopes and slope $1/k$, and reproducible finite checks. Separately, Schwarz's
+classical relation-power bound sharpens the finite-rank estimate to
+$R(L)\le2(s-1)^2+3$. Greedy parsing and cycle-mean methods are classical; no
+literature-wide priority or proof-assistant verification is claimed.
+
+\wsevthree\ The delivered abstract writes $O(1)$ where
+Theorem~\ref{ccc:rs:thm:slope} writes $O_L(1)$; the constant depends on $L$
+in both.
+
+\emph{Status, as delivered.} The manuscript has no separate status box; its
+abstract ends with the disclaimer above, and
+Section~\ref{ccc:rs:sec:verification} states the scope of its finite checks.
+Its delivery README adds: the finite checks do not prove the universal slope
+theorem or Schwarz's classical theorem; the parser test covers hull targets
+only and is not an exhaustive check of infinite-rank inputs or of the
+empty-word branch; greedy parsing is credited to Crochemore, Langiu and
+Mignosi (2014), with related discussion by De~Luca and Fici (2025), cycle
+means are classical (Karp 1978), and the quadratic lower bound to the
+companion note; and no global first-discovery claim, formal Lean
+verification, tight slope-computation complexity, exact eventual affine
+periodicity or sharp extremal constant is asserted. It also says that the
+delivered PDF was compiled and every page visually inspected.
+
+\subsection{Notation beside Parts~I--IV}\label{ccc:rs:sec:notation}
+
+Part~V uses Part~II's notation throughout: the exact-length sets $P_i$,
+$R_j$ \eqref{ccc:ps:eq:PR}, the viable layers $S_{n,i}$ and letters
+$A_{n,i}$, a transient and period $t,p$, the stable sets $P^\infty_a$,
+$R^\infty_a$, $S_{r,a}$, $C_{r,a}$, live residues, phase-admissible and
+liftable words, interior obstructions, $M_L(n)$, $R(L)$ and $F(s)$. NFAs are
+$\eps$-free, may have several initial states and need not be complete;
+positions are zero based. One symbol was renamed when the manuscript was
+written in: its slope $\lambda_r$, and the maximum cycle mean $\lambda$ of
+Lemma~\ref{ccc:rs:lem:cycle}, are printed $\sigma_r$ and $\sigma$, because
+Part~III's $\lambda_v$ is the velocity of a ray site, also a rational number
+in $[0,1]$ (Section~\ref{ccc:cl:sec:notation}). No normalization changed.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.39\textwidth}>{\raggedright\arraybackslash}p{.36\textwidth}@{}}
+\toprule
+\textbf{In Part~V} & \textbf{Meaning in Part~V} & \textbf{Not to be confused with}\\
+\midrule
+$\sigma_r$, $\sigma$ & rank slope on the live residue $r$; largest cycle mean (manuscript $\lambda_r$, $\lambda$) & Part~III's velocity $\lambda_v$ of a ray site\\[3pt]
+bad, good & a live residue with, or without, an interior obstruction & the ``bad block'' of Part~I's Section~\ref{ccc:sec:amplification}\\[3pt]
+$\rho(v)$ & least number of liftable pieces of a phase-admissible word $v$ & the rank $\rank_L(w)=\rho_L(w)$ of a hull word, which carries the language as a subscript; \eqref{ccc:rs:eq:sandwich} compares them\\[3pt]
+$H_{r,a_0}(m)$, $W(m)$ & largest $\rho(v)$ over phase words of length $m$; largest path weight & Part~IV's set of gate lengths $H_m$\\[3pt]
+$G_{r,a_0}$, $T_{a,c}(Z)$, $N$ & the reset graph, its transition, its vertex bound $p(2^s-1)$ & Part~III's graph $\Gamma_R$; the operator $T(L)$ and Part~II's constant $T_s$\\[3pt]
+$L_n$, e.g.\ $L_3$, $L_4$ & the length-$n$ slice $L\cap\Sigma^n$ & Part~II's one-$1$ family $L_m$; Part~IV's $\Lgate m$\\[3pt]
+$\kappa$, $p$ in Theorem~\ref{ccc:rs:thm:schwarz} & index and period of the powers of a relation $E$ & Part~II's period $p$ of $(P_i,R_i)$, which these imply\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The manuscript's macros for $\N$, $\eps$, $\rank$ and $\rec$ are the
+report's; its macros \verb|\im| and \verb|\runs| are not used in its text and were
+not carried over (the report's \verb|\runs| is Part~IV's). Its
+\texttt{lmodern} and \texttt{amssymb} packages are not loaded (the report
+keeps Part~I's newtx fonts).
+
+\section{The question and the setting}\label{ccc:rs:sec:setting}
+
+\wsevthree\ ``The pinned ProveIt report'' and ``the report'' of this Part are
+this report as it stood at the pin, that is, Parts~I--III; ``Question~24.3''
+is Part~II's Question~\ref{ccc:ps:q:slope}, and ``the companion note'' is the
+manuscript of Part~IV. The manuscript's citations of both are replaced by
+internal references.
+
+Question~24.3 of the pinned ProveIt report asks whether the maximum finite rank per length has a limiting ratio on each bad residue, whether a limit must be rational, and whether it is effectively computable (Part~II, Question~\ref{ccc:ps:q:slope}). The report establishes a bounded-versus-linear dichotomy. It also identifies the central difficulty: rank is a minimum partition cost, while $M_L(n)$ maximizes that cost over targets. A cycle-mean argument requires a justified way to handle this order of quantifiers.
+
+We consider an $\eps$-free NFA
+\[
+\mathcal A=(Q,\Sigma,(\Delta_c)_{c\in\Sigma},I,F),\qquad |Q|=s\ge1,
+\]
+over a finite nonempty alphabet, with an arbitrary set $I$ of initial states. Missing transitions are allowed. For $Z\subseteq Q$, $\Delta_c(Z)$ is the set of $c$-successors of states of $Z$; extend this notation to words by composition. Let $L$ be the accepted language and $L_n=L\cap\Sigma^n$.
+
+For a nonempty target $w\in\Sigma^n$, an interval $[i,j)$ is \emph{admissible} if some $v\in L_n$ satisfies $v[i:j]=w[i:j]$. The aligned-fragment rank $\rank_L(w)$ is the least number of nonempty admissible intervals partitioning $[0,n)$, or infinity if none exists. Set $\rank_L(\eps)=1$ when $\eps\in L$ and infinity otherwise. The equal total length and the equal coordinates in the witnessing seed are part of this definition.
+
+The coordinate hull is
+\[
+\rec(L)_n=\prod_{i=0}^{n-1}A_{n,i},\quad
+A_{n,i}=\{c\in\Sigma:\exists v\in L_n,\ v_i=c\}\quad(n>0),
+\]
+with $\rec(L)_0=L_0$. Thus its nonempty words are exactly the words of finite rank. For $n>0$, define
+\[
+M_L(n)=\max\{\rank_L(w):w\in\rec(L)_n\},
+\]
+where the maximum is zero when the hull slice is empty. A nonempty slice gives $1\le M_L(n)\le n$.
+
+The rank definition, coordinate hull, and relation between rank and crossover generation are existing background from the report.
+\wsevthree\ They are Part~I's Definitions~\ref{ccc:def:rank} and~\ref{ccc:def:hull}
+and Theorem~\ref{ccc:thm:generation}, in the zero-based form of Part~II's
+Definition~\ref{ccc:ps:def:rank} and~\eqref{ccc:ps:eq:hull}; $M_L(n)$ is
+Part~II's (Corollary~\ref{ccc:ps:cor:residue}). Earlier represented-interval machinery for one-point crossover appears in Manzoni, Vanneschi, and Mauri \cite{Manzoni}. The contribution pursued here is the explicit rational slope formula for regular seed languages.
+
+\section{Why longest aligned fragments are optimal}\label{ccc:rs:sec:greedy}
+
+\begin{lemma}[Greedy factorization of hereditary intervals]\label{ccc:rs:lem:greedy}
+Fix a word on $[0,n)$. Suppose its family of admissible nonempty intervals contains every singleton and is closed under restriction to nonempty subintervals. Repeatedly taking the longest admissible interval beginning at the current boundary gives a partition with the fewest possible pieces.
+\end{lemma}
+\begin{proof}
+Let $0=q_0<q_1<\cdots<q_k=n$ be any admissible partition, and let $g_j$ be the greedy boundaries, with $g_j=n$ after greedy has finished. Inductively, $g_j\ge q_j$. Suppose $g_{j-1}\ge q_{j-1}$. If $g_{j-1}\ge q_j$, the next greedy boundary is also at least $q_j$. Otherwise,
+\[
+[g_{j-1},q_j)\subseteq[q_{j-1},q_j)
+\]
+is a nonempty subinterval of an admissible interval and is therefore admissible. The longest extension from $g_{j-1}$ reaches at least $q_j$. This proves the induction. In particular $g_k=n$, so greedy uses at most $k$ pieces.
+\end{proof}
+
+Aligned seed fragments satisfy the hereditary hypothesis: restriction of a witnessing seed gives a witness on every smaller interval. Singletons are admissible precisely for targets in the hull. Therefore the lemma applies to every finite-rank target, for arbitrary seed languages, not only regular ones. It also applies to labelled paths through any specified sequence of viable state layers.
+
+This is a positional form of the classical greedy-parsing principle. Crochemore, Langiu, and Mignosi study optimal greedy parsing under suffix-closure conditions for dynamic dictionaries \cite{CLM}. Their exact dynamic-dictionary convention has additional conditions, so Lemma~\ref{ccc:rs:lem:greedy} supplies the needed interval-hereditary argument directly. Factorial-language greedy optimality is also stated by De Luca and Fici \cite{DeLucaFici}. We do not claim greedy optimality itself as a new phenomenon.
+
+\section{Viable layers and a fixed word algorithm}\label{ccc:rs:sec:parser}
+
+Let $E$ be the unlabelled transition relation, the union of all $\Delta_c$. Write
+\[
+P_i=E^i(I),\qquad
+R_j=\{q\in Q:\exists f\in F,\ (q,f)\in E^j\}.
+\]
+For a fixed total length $n$, define the viable states at boundary $i$ by
+\[
+S_{n,i}=P_i\cap R_{n-i}\qquad(0\le i\le n).
+\]
+These are exactly the states visited after $i$ letters in some accepting length-$n$ run.
+
+\begin{lemma}[The aligned path criterion; Part~II, restated]\label{ccc:rs:lem:path}
+For $0\le i<j\le n$, a word $x\in\Sigma^{j-i}$ is an admissible fragment on $[i,j)$ if and only if
+\[
+\Delta_x(P_i)\cap R_{n-j}\ne\varnothing.
+\]
+Equivalently, $x$ labels a path through the successive viable layers $S_{n,i},\ldots,S_{n,j}$. In particular,
+\[
+A_{n,i}=\{c\in\Sigma:\Delta_c(S_{n,i})\cap S_{n,i+1}\ne\varnothing\}.
+\]
+\end{lemma}
+\noindent\wsevthree\ This is Part~II's Lemma~\ref{ccc:ps:lem:fragment} with its
+Corollary~\ref{ccc:ps:cor:coordinate-alphabet}, and $P_i$, $R_j$, $S_{n,i}$,
+$A_{n,i}$ are Part~II's \eqref{ccc:ps:eq:PR}, \eqref{ccc:ps:eq:viable-layer}
+and~\eqref{ccc:ps:eq:coordinate-letters}. The manuscript credits it as
+background and proves it again by the same argument (extend a path through
+the viable layers backwards to an initial and forwards to a final state);
+that proof is not reprinted.
+
+For $w\in\Sigma^n$, $n>0$, precompute $S_{n,0},\ldots,S_{n,n}$. Start with $Z=S_{n,0}$ and a piece counter $b=1$. At position $i$ with letter $c=w_i$, compute
+\[
+U=\Delta_c(Z)\cap S_{n,i+1}.
+\]
+If $U\ne\varnothing$, replace $Z$ by $U$. If $U=\varnothing$, compute
+\[
+U'=\Delta_c(S_{n,i})\cap S_{n,i+1}.
+\]
+When $U'=\varnothing$, the singleton is unavailable and the rank is infinite. Otherwise increment $b$ and set $Z=U'$. At the end, return $b$.
+
+The subset $Z$ records all possible ending states of the current greedy fragment. Failed extension closes that fragment immediately before the current letter; the letter is then consumed as the first letter of the next fragment. Because admissibility is hereditary, failure cannot be repaired by extending farther. The parser therefore realizes Lemma~\ref{ccc:rs:lem:greedy}, and its answer is the exact rank. This is a left-to-right parser with a one-letter lookahead at a boundary, after the length-dependent layers have been computed.
+\wsevthree\ It replaces, for this purpose, the interval dynamic
+program~\eqref{ccc:ps:eq:rank-dp} of Part~II, which tests a quadratic number of
+intervals; the comparison is the write's, not the manuscript's.
+
+\begin{corollary}[Fixed word rank complexity]\label{ccc:rs:cor:algorithm}
+For an $s$-state NFA represented by Boolean transition matrices and a word of length $n>0$, exact rank is computable in
+\[
+O\bigl((|\Sigma|+n)s^2\bigr)
+\]
+time and $O(ns+s^2)$ auxiliary Boolean storage, excluding the input transition representation. If $E$ is already available, the time is $O(ns^2)$ and the auxiliary storage is $O(ns)$. For $n=0$, rank is one exactly when $I\cap F\ne\varnothing$, and infinity otherwise.
+\end{corollary}
+\begin{proof}
+Forming $E$ costs $O(|\Sigma|s^2)$. The forward and backward recurrences and their intersections cost $O(ns^2)$. Each letter requires at most two subset images under a transition matrix, each costing $O(s^2)$. Store $O(n)$ subsets of $Q$ and, when needed, the $s\times s$ union matrix $E$. The empty-word test follows directly from $\eps$-freeness.
+\end{proof}
+
+\section{The periodic interior}\label{ccc:rs:sec:periodic}
+
+\wsevthree\ This section restates Part~II's Section~\ref{ccc:ps:sec:dichotomy}:
+\eqref{ccc:rs:eq:period} is~\eqref{ccc:ps:eq:periodicity},
+\eqref{ccc:rs:eq:stable-states} and~\eqref{ccc:rs:eq:stable-alphabet} are
+\eqref{ccc:ps:eq:stable-states} and~\eqref{ccc:ps:eq:stable-letters}, the
+nonemptiness and agreement statement is Lemma~\ref{ccc:ps:lem:agreement}
+(its two-sentence justification below repeats that proof), and
+phase-admissible, liftable and interior obstruction are
+Definition~\ref{ccc:ps:def:liftable}. Only the words \emph{bad} and
+\emph{good} for a live residue with and without an obstruction are new;
+Part~II's Question~\ref{ccc:ps:q:slope} uses ``bad residue'' in this sense.
+
+The recurrence on pairs $(P_i,R_i)$ is deterministic and has at most $4^s$ possible values. Thus one can compute $t\ge0$ and $p\ge1$ such that
+\begin{equation}\label{ccc:rs:eq:period}
+P_{i+p}=P_i,\qquad R_{i+p}=R_i\qquad(i\ge t).
+\end{equation}
+No minimal period or sharp transient is required for the slope theorem. All phase subscripts below are interpreted modulo $p$. Set
+\[
+P^\infty_a=P_i\ (i\ge t,\ i\equiv a\pmod p),\qquad
+R^\infty_a=R_i\ (i\ge t,\ i\equiv a\pmod p).
+\]
+A total-length residue $r$ is \emph{live} if $P^\infty_r\cap F\ne\varnothing$. Equivalently, every sufficiently large length in this residue has a nonempty seed slice. A nonlive residue eventually has $M_L(n)=0$.
+
+Fix a live residue $r$ and define its stable viable states and coordinate alphabets by
+\begin{align}
+S_{r,a}&=P^\infty_a\cap R^\infty_{r-a},\label{ccc:rs:eq:stable-states}\\
+C_{r,a}&=\{c\in\Sigma:\Delta_c(S_{r,a})\cap S_{r,a+1}\ne\varnothing\}.
+\label{ccc:rs:eq:stable-alphabet}
+\end{align}
+All these sets are nonempty. Indeed, choose an arbitrarily long accepted length in residue $r$ and a sufficiently interior boundary in phase $a$. An accepting run supplies a state there and a letter at the next position. Moreover, for $n\equiv r\pmod p$,
+\[
+S_{n,i}=S_{r,i\bmod p}\quad(t\le i\le n-t),
+\]
+and $A_{n,i}=C_{r,i\bmod p}$ whenever both endpoints of that letter lie in this interior.
+
+A word $v=v_0\cdots v_{m-1}$ is \emph{phase-admissible} from phase $a$ if $v_j\in C_{r,a+j}$ for every $j$. It is \emph{liftable} if it labels a path through
+\[
+S_{r,a},S_{r,a+1},\ldots,S_{r,a+m},
+\]
+starting at any state of the first layer. A phase-admissible word that is not liftable is an \emph{interior obstruction}. A live residue is \emph{bad} if such an obstruction exists at some phase, and \emph{good} otherwise. These are the periodic-interior notions used in the source report.
+
+\section{The finite weighted reset graph}\label{ccc:rs:sec:graph}
+
+Fix $r$ and a starting phase $a_0$. For $\varnothing\ne Z\subseteq S_{r,a}$ and $c\in C_{r,a}$, put
+\[
+T_{a,c}(Z)=\Delta_c(Z)\cap S_{r,a+1}.
+\]
+Build a letter-labelled weighted graph whose vertices are pairs $(a,Z)$ with $\varnothing\ne Z\subseteq S_{r,a}$. Its initial vertex is $(a_0,S_{r,a_0})$. For each permitted letter $c\in C_{r,a}$, the unique outgoing edge with that letter is
+\begin{equation}\label{ccc:rs:eq:reset}
+(a,Z)\longrightarrow
+\begin{cases}
+(a+1,T_{a,c}(Z)),&T_{a,c}(Z)\ne\varnothing,\quad\text{weight }0,\\
+(a+1,T_{a,c}(S_{r,a})),&T_{a,c}(Z)=\varnothing,\quad\text{weight }1.
+\end{cases}
+\end{equation}
+The reset target in the second line is nonempty by the definition of $C_{r,a}$. Retain only vertices reachable from the initial vertex and call the resulting graph $G_{r,a_0}$. There are at most
+\[
+N=p(2^s-1)
+\]
+vertices, and every retained vertex has an outgoing edge. All retained vertices are allowed as terminal vertices.
+
+For a nonempty phase-admissible word $v$, let $\rho(v)$ be the minimum number of consecutive liftable pieces in a partition of $v$. Liftable intervals are hereditary and all singletons are liftable. Thus the greedy lemma applies.
+
+\begin{proposition}[Rank equals one plus reset count]\label{ccc:rs:prop:reset}
+Every phase-admissible word $v$ from $a_0$ labels a unique path from the initial vertex of $G_{r,a_0}$, and every such graph path is labelled by a phase-admissible word. If $|v|>0$, then
+\[
+\rho(v)=1+\text{the weight of its path}.
+\]
+Consequently, if $H_{r,a_0}(m)=\max_{|v|=m}\rho(v)$ and $W(m)$ is the maximum weight of a length-$m$ path from the initial vertex, then
+\begin{equation}\label{ccc:rs:eq:H-W}
+H_{r,a_0}(m)=1+W(m)\qquad(m\ge1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The transition rule is deterministic for each permitted letter and permits every phase-admissible letter sequence. Its current subset is precisely the possible endpoints of the current greedy piece. A zero-weight edge extends that piece. A weight-one edge records failure of extension, closes the previous piece, and starts the next piece with the current letter from the entire current viable layer. The first letter never causes a reset because the starting subset is that entire layer. Therefore the number of pieces is one plus the reset count, and greedy optimality makes this the minimum partition cost. Maximizing the equality over words proves \eqref{ccc:rs:eq:H-W}.
+\end{proof}
+
+This identity resolves the order-of-quantifiers issue in the source question. The minimum partition cost is computed deterministically for each target before any maximization occurs. No unjustified interchange of a maximum and a minimum is used.
+
+\section{Cycle means with unrestricted endpoints}\label{ccc:rs:sec:cycle}
+
+\begin{lemma}[Maximum path weight growth]\label{ccc:rs:lem:cycle}
+Let $G$ be a finite directed graph with zero-one edge weights, a fixed initial vertex, and no reachable sinks. Let $W(m)$ be the maximum weight of a length-$m$ path from that vertex, with unrestricted endpoint. If $\sigma$ is the maximum mean weight of a reachable directed cycle, then
+\[
+W(m)=\sigma m+O(1).
+\]
+The maximum can be taken over simple cycles. In particular, $\sigma\in[0,1]$ is rational and effectively computable, and its reduced denominator is at most the number of reachable vertices.
+\end{lemma}
+\begin{proof}
+Let $N$ be the number of reachable vertices. At least one reachable cycle exists, because an infinite walk can be continued without reaching a sink. Delete cycles successively from any length-$m$ path. The remaining simple path has at most $N-1$ edges. Each deleted cycle has weight at most its length times $\sigma$, and the remaining path has weight at most $N-1$. Hence
+\[
+W(m)\le\sigma m+N-1.
+\]
+For the reverse bound, choose a path of length $h$ to a cycle of length $\ell$ and mean $\sigma$. For $m\ge h$, follow that path, take $\lfloor(m-h)/\ell\rfloor$ full turns around the cycle, and take the necessary prefix of the next turn. Nonnegative edge weights give
+\[
+W(m)\ge\sigma(m-h-\ell+1).
+\]
+The finitely many smaller $m$ can be absorbed into the constant. The final partial turn is allowed because endpoints are unrestricted; there is no divisibility condition on $m$.
+
+Every closed walk decomposes into simple cycles, and its mean is a length-weighted average of their means. Thus a maximum-mean simple cycle exists. Its mean is an integer divided by its length, at most $N$, proving rationality and the denominator bound. Finite enumeration of simple cycles proves effectivity; classical cycle-mean algorithms, such as Karp's method with signs reversed, are more efficient on an explicitly given graph \cite{KarpCycle}.
+\end{proof}
+
+The unrestricted endpoint condition is essential to this short proof. Imposing a final state could exclude some lengths and force separate congruence classes. The rank parser imposes no such condition: every subset reached after the last letter is a valid endpoint.
+
+\section{Exact rational slopes on the original residues}\label{ccc:rs:sec:theorem}
+
+\begin{theorem}[Residue-wise rank slope]\label{ccc:rs:thm:slope}
+Let $L$ be accepted by an $s$-state $\eps$-free NFA and let $t,p$ satisfy \eqref{ccc:rs:eq:period}. For every live total-length residue $r$ there is an effectively computable rational number $\sigma_r\in[0,1]$ such that
+\begin{equation}\label{ccc:rs:eq:main}
+M_L(n)=\sigma_r n+O_L(1)
+\qquad(n\to\infty,\ n\equiv r\pmod p).
+\end{equation}
+One may take $\sigma_r$ to be the maximum reachable cycle mean of $G_{r,t\bmod p}$. Its reduced denominator is at most $p(2^s-1)$. The slope is positive precisely on the bad residues, and zero on the good residues. No refinement of $p$ is needed.
+\end{theorem}
+\begin{proof}
+Fix a sufficiently large $n>2t$ with $n\equiv r\pmod p$, and put $m=n-2t$ and $a_0=t\bmod p$. The interval $[t,n-t)$ has the stable viable-layer system beginning at phase $a_0$.
+
+Restrict an optimal partition of a full hull word $w$ to this central interval, discard empty intersections, and apply Lemma~\ref{ccc:rs:lem:path}. The resulting pieces are liftable. Conversely, a liftable partition of the central word is a partition into admissible aligned seed fragments and can be extended by at most $2t$ singleton pieces. Therefore
+\[
+\rho(w[t:n-t])\le\rank_L(w)\le\rho(w[t:n-t])+2t.
+\]
+Every phase-admissible word of length $m$ extends to a full hull word: independently select any available letter at each boundary coordinate. These alphabets are nonempty because the seed slice is nonempty. Maximizing now gives
+\begin{equation}\label{ccc:rs:eq:sandwich}
+H_{r,a_0}(m)\le M_L(n)\le H_{r,a_0}(m)+2t.
+\end{equation}
+Proposition~\ref{ccc:rs:prop:reset} and Lemma~\ref{ccc:rs:lem:cycle} imply
+$H_{r,a_0}(m)=\sigma_r m+O(1)$. Since $m=n-2t$, this proves \eqref{ccc:rs:eq:main}, rationality, the denominator bound, and effectivity.
+
+If the residue is good, every phase-admissible word from $a_0$ is liftable, so no reset occurs and $W(m)=0$ for every $m$. Hence $\sigma_r=0$.
+
+If the residue is bad, choose an obstruction $v$ beginning at a phase $a$. Append phase-admissible letters until it forms a block $B$ of length divisible by $p$. From any nonempty subset of $S_{r,a}$, processing the initial $v$ without a reset would give a lift of $v$ from that subset, hence from $S_{r,a}$, which is impossible. Thus each copy of $B$ forces at least one reset. From the initial vertex, a phase-admissible prefix reaches phase $a$. Repeating $B$ after this prefix gives paths with at least one reset per $|B|$ letters, so the already proved growth formula implies $\sigma_r\ge1/|B|>0$.
+\end{proof}
+
+For fixed $L,t,p$, the bounded constants may initially depend on $r$; because there are finitely many residues, one can take their maximum. Likewise, different valid transient choices produce the same slope, since \eqref{ccc:rs:eq:main} identifies it as the limit of the same ratio $M_L(n)/n$ along the residue.
+
+\paragraph{An effective procedure.}
+Compute a repeated pair in the finite process $(P_i,R_i)$, extract $t,p$, compute the stable layers and alphabets for each live $r$, explore the reachable reset graph, and compute its maximum cycle mean. This is a terminating finite procedure. It is not a claim of a tight input-complexity bound: both the period and the subset graph can be large.
+
+\section{Examples and interpretation}\label{ccc:rs:sec:examples}
+
+\subsection{Every reciprocal integer occurs}
+Fix $k\ge2$ and let $L$ be the binary language avoiding the factor $1^{k+1}$. It is regular and its hull is universal: any prescribed singleton can be surrounded by zeroes. More generally, every block of length at most $k$ is an admissible aligned fragment at every position where it fits, since zero padding creates a seed of the required total length. Thus
+\[
+M_L(n)\le\left\lceil\frac nk\right\rceil.
+\]
+For the target $1^n$, no admissible fragment has length exceeding $k$, and partitioning into blocks of length at most $k$ attains the bound. Consequently,
+\[
+M_L(n)=\left\lceil\frac nk\right\rceil\quad(n\ge1),
+\qquad \sigma=\frac1k.
+\]
+For $k=3$, a longest-prefix parser groups $1^{10}$ as $111\mid111\mid111\mid1$, giving rank four. This supplies genuinely nonintegral slopes and shows that slope denominators are unbounded over all finite automata.
+
+\subsection{Different residues can have different slopes}
+Let
+\[
+L=\{w\in\{0,1\}^*:|w|\text{ is odd}\}\cup0^*\cup1^*.
+\]
+Its hull is universal. Odd slices are already full, so $M_L(n)=1$ for odd $n$. At a positive even length, the only seeds are $0^n$ and $1^n$, so admissible fragments are exactly constant intervals. An alternating target needs $n$ fragments. Hence
+\[
+M_L(n)=
+\begin{cases}
+1,&n\text{ odd},\\
+n,&n>0\text{ even},
+\end{cases}
+\]
+and the two slopes for the natural period two are zero and one. Thus a single global limit need not exist; the residue-wise formulation is necessary.
+
+\wsevthree\ This is Part~II's Example~\ref{ccc:ps:ex:parity} with the two
+parities exchanged (there the even slices are full and the odd ones have
+linear rank); the manuscript does not cite it. It is printed because it reads
+the example as a statement about slopes.
+
+\subsection{What the bounded error does and does not say}
+The theorem strengthens a mere two-sided linear estimate to an exact rational leading coefficient. It does not, by itself, prove eventual equality to an affine function, exact periodicity of the bounded error, or a smallest possible error bound. In the reciprocal example, the ceiling already produces a bounded periodic fluctuation. The theorem needs no refinement of the original period to make the ratio converge.
+
+
+\section{A sharper finite rank bound}\label{ccc:rs:sec:upper}
+
+The same periodic-interior framework gives an improved quantitative bound for the finite-rank case. Define
+\[
+R(L)=\sup\bigl(\{1\}\cup\{\rank_L(w):w\in\rec(L)\}\bigr).
+\]
+The pinned report proves $R(L)\le(2s+5)^2$ when $R(L)<\infty$. Its boundary argument actually gives $2t+1$ for any valid common transient $t$.
+\wsevthree\ These are Part~II's Theorem~\ref{ccc:ps:thm:main}(2) and the
+bound~\eqref{ccc:ps:eq:transient-bound} of Theorem~\ref{ccc:ps:thm:criterion},
+which Part~II states for any $t,p$ satisfying~\eqref{ccc:ps:eq:periodicity};
+$R(L)$ is Part~II's (Corollary~\ref{ccc:ps:cor:bounded}). Applying a stronger classical relation-power theorem directly on the original state set improves the leading constant from four to two.
+
+\begin{theorem}[Schwarz's relation-power bound, imported]\label{ccc:rs:thm:schwarz}
+For every binary relation $E$ on an $s$-element set, there exist integers $\kappa,p\ge1$ such that
+\[
+\kappa\le(s-1)^2+1,\qquad E^{i+p}=E^i\quad(i\ge\kappa).
+\]
+No irreducibility assumption is required.
+\end{theorem}
+
+This is Theorem~4.3 on printed page~653 of Schwarz \cite{Schwarz}. The index is defined on printed page~634 as the least positive exponent whose relation power repeats at a later exponent; multiplying a repeated equality by further powers gives periodicity from that exponent inclusively. The theorem applies to all relations, including reducible ones. The primitive-graph exponent bound alone would not justify this application.
+
+\begin{corollary}[Leading constant two]\label{ccc:rs:cor:upper}
+For every $s$-state $\eps$-free NFA over a finite alphabet,
+\[
+R(L)<\infty\quad\Longrightarrow\quad R(L)\le2(s-1)^2+3.
+\]
+For the binary extremal function $F(s)$ under the multiple-initial-state convention, the quadratic lower family from the companion note (Part~IV, Theorem~\ref{ccc:qr:thm:main}) yields
+\[
+(s-3)^2\le F(s)\le2(s-1)^2+3\qquad(s\ge4).
+\]
+Thus the unresolved leading-constant interval narrows from $[1,4]$ to $[1,2]$.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{ccc:rs:thm:schwarz} to the unlabelled relation $E$ on the original $s$ states. With $t=(s-1)^2+1$, its power identities imply both $P_{i+p}=P_i$ and $R_{i+p}=R_i$ for $i\ge t$. No source, sink, or initial-state normalization is needed.
+
+If $R(L)<\infty$, Theorem~\ref{ccc:rs:thm:slope} shows that no live residue can be bad. For a nonempty hull word of length $n\le2t$, singleton fragments give rank at most $2t$. For $n>2t$, the central interval $[t,n-t)$ is phase-admissible in a good residue, hence liftable and, by Lemma~\ref{ccc:rs:lem:path}, one admissible seed fragment. Its two boundaries contribute at most $2t$ singleton pieces. The empty-word convention and the adjoined value one cause no exception. Therefore $R(L)\le2t+1=2(s-1)^2+3$.
+
+The companion note (Part~IV, Theorem~\ref{ccc:qr:thm:main}) constructs an $s$-state binary NFA with exact finite rank $(s-3)^2$: an $(s-2)$-state two-cycle length gate plus two monochromatic components. Combining its lower bound with the present estimate proves the claim for $F(s)$.
+\end{proof}
+
+The statement about constants means
+\[
+1\le\liminf_{s\to\infty}\frac{F(s)}{s^2}
+\le\limsup_{s\to\infty}\frac{F(s)}{s^2}\le2.
+\]
+Neither equality of these limits nor a sharp leading constant has been established.
+\wsevthree\ This improves the bracket $[1,4]$ of Part~IV
+(Section~\ref{ccc:qr:sec:scope}) to $[1,2]$, for NFAs. The bound
+$2(s-1)^2+3$ is smaller than Part~II's $(2s+5)^2$ for every $s\ge1$.
+
+\subsection{Why a simple one-boundary improvement fails}
+The coefficient two in the boundary estimate cannot be removed merely by asserting $R(L)\le t+1$. Here is an explicit three-state example. Use states $0,1,2$, initial set $\{0,1\}$, final set $\{0\}$, and transitions
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+State & $0$-successors & $1$-successors\\
+\midrule
+$0$ & $\{0,2\}$ & $\varnothing$\\
+$1$ & $\{0,1\}$ & $\{0\}$\\
+$2$ & $\{0,1,2\}$ & $\{2\}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $P_i=R_i=Q$ for all $i\ge1$, so the minimal common pair transient is $t=1$ and the period is one. State $2$ has both loops, so all stable interior words lift and $R(L)\le3$. The exact length-three seed slice is
+\[
+L_3=\{000,001,010,100\}.
+\]
+The word $111$ lies in the hull, but neither of its length-two intervals is admissible. Hence its rank is three and $R(L)=3=2t+1>t+1$.
+
+Even the full relation-power transient $\kappa$ cannot replace the two-boundary estimate by $\kappa+1$. For a second example, use initial set $\{2\}$, final set $\{0,2\}$, and transitions
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+State & $0$-successors & $1$-successors\\
+\midrule
+$0$ & $\{1\}$ & $\varnothing$\\
+$1$ & $\{0,1\}$ & $\{1\}$\\
+$2$ & $\{0\}$ & $\{2\}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Its relation powers satisfy $E^3=E^2\ne E$, so $\kappa=2$ and the period is one. Both reachability sets are $Q$ from exponent two onward; state $1$ has both loops, giving finite rank at most five. The exact length-four seed slice is
+\[
+L_4=\{0000,0010,1000,1110,1111\}.
+\]
+The hull word $0101$ has no admissible length-two interval, so its rank is four, greater than $\kappa+1=3$.
+\wsevthree\ The manuscript claims only $4\le R(L)\le5$ for this automaton. A
+literal computation made when the batch was placed (it is not shipped) finds
+$R(L)=4$ exactly; nothing in the manuscript depends on the value. These examples do not disprove a state-count leading constant of one; they rule out two direct transient-only shortcuts to it.
+
+
+\section{Reproducibility and remaining questions}\label{ccc:rs:sec:verification}
+
+The accompanying \texttt{verify\_greedy.py} constructs accepted seed words literally, collects their actual aligned substrings, and computes the minimum partition count by interval dynamic programming. It compares this independent oracle with the viable-layer subset-reset parser. The recorded run covers every binary two-state NFA with nonempty initial and final sets through target length six, followed by $300$ seeded random NFAs on three to five states through target length eight. The seed is $20261001$.
+
+The successful run contains $2{,}604$ automata, $14{,}407$ nonempty length slices, and $309{,}574$ rank comparisons. Only target words in nonempty coordinate hulls are compared, so these counts do not include a systematic test of infinite-rank inputs or the empty-word convention. The delivered checker prints a JSON receipt and uses only Python's standard library. Run it without the \texttt{-O} flag, since its assertions perform the comparisons.
+
+The second checker, \texttt{check\_boundaries.py}, computes the relation-power and reachability-pair orbits, literally enumerates both displayed seed slices, and verifies the witnesses in Section~\ref{ccc:rs:sec:upper}. Its output is saved as \texttt{boundary-verification.json}.
+
+These finite checks corroborate the parser and the faithful handling of alignment and total length. They do not prove the asymptotic theorem, exhaust all NFAs, or verify a formal proof assistant development. The universal claims are supported by the proofs above. The report's periodic-interior framework, classical greedy principles, and cycle-mean theory are credited background; the present note claims a resolution of the pinned repository question, with no assertion of global first discovery.
+
+Natural next questions include the following.
+\wsevthree\ The manuscript lists them in one sentence; they are printed as
+numbered questions, in the same order and words; their bracketed titles were
+added.
+
+\begin{question}[Complexity of the slope]\label{ccc:rs:q:complexity}
+What is the exact complexity of computing $\sigma_r$ from an NFA?
+\end{question}
+
+\begin{question}[Denominators]\label{ccc:rs:q:denominator}
+Are there sharper denominator bounds in terms of the input structure?
+\end{question}
+
+\begin{question}[Distinguishing period]\label{ccc:rs:q:period}
+What is the smallest common period needed to distinguish slopes?
+\end{question}
+
+\begin{question}[The bounded error]\label{ccc:rs:q:error}
+Is the bounded error in \eqref{ccc:rs:eq:main} eventually periodic?
+\end{question}
+
+The explicit reset representation provides a finite object for studying these refinements.
+\wsevthree\ Question~\ref{ccc:rs:q:period} bears on Part~II's
+Question~\ref{ccc:ps:q:period}, and the denominator bound $p(2^s-1)$ of
+Theorem~\ref{ccc:rs:thm:slope} on Part~II's Question~\ref{ccc:ps:q:length};
+neither of those is answered. No statement of this Part is formalized; Part~II's
+Question~\ref{ccc:ps:q:formal} applies to it as well.
+
+\wsevthree\ \emph{Shipped layout.} The paragraphs above describe the delivered
+package. In this report its files are shipped, byte-identical, as follows;
+the manuscript and its PDF are printed or replaced by this report, the
+delivery README by the report's README, and the checksum list
+\texttt{SHA256SUMS} was verified and retired.
+\begin{center}\footnotesize
+\begin{tabular}{@{}P{.62\textwidth}P{.32\textwidth}@{}}
+\toprule
+\textbf{Shipped path} & \textbf{Delivered as}\\
+\midrule
+\nolinkurl{code/05-rational-slopes-verify_greedy.py} & \texttt{verify\_greedy.py}\\
+\nolinkurl{data/05-rational-slopes-verification.json} & \texttt{verification.json}\\
+\nolinkurl{code/05-rational-slopes-check_boundaries.py} & \texttt{check\_boundaries.py}\\
+\nolinkurl{data/05-rational-slopes-boundary-verification.json} & \texttt{boundary-verification.json}\\
+\nolinkurl{code/05-rational-slopes-build.sh} & \texttt{build.sh}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both checkers print their record to standard output and write no file, so
+they may be run from anywhere, provided the output is not redirected onto a
+shipped record (the report's README gives the commands). When the batch was
+placed both were rerun on a copy with Python~3.14.4: the boundary checker in
+about a second and the greedy checker in about seventy seconds, each printing
+the bytes of its shipped record apart from CRLF line endings. The build
+script changes to its own directory and runs \texttt{pdflatex} twice on
+\texttt{rational-rank-slopes.tex}, the delivered manuscript, which is printed
+here as Part~V and is not shipped; it must not be run in \texttt{code/}.
+
+
+
 % [write, batch 66] the appendices belong to Part I.
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
@@ -5729,6 +6411,7 @@ manuscript; this report is built as its README describes.
 belong to Part~I and are printed after Parts~II and~III so that no letter or
 number of Part~I moved.}
 \waddsevone{Part~IV is printed before them too.}
+\waddsevthree{So is Part~V.}
 
 For completeness, here is the standard route to the co-r.e.-completeness used
 in Section~\ref{ccc:sec:undecidable}. The foundational undecidable problem is Post
@@ -5919,6 +6602,32 @@ conclusion, and here (the title page, already full, received none); no
 existing label, theorem, section, equation or
 question number changed.
 
+\paragraph{\waddsevthree{A fifth manuscript.}} On 1 October 2026 batch-73
+manuscript~33, \emph{Rational Rank Slopes for Constrained Crossover}
+(archive \texttt{rational-rank-slopes-package.zip}), written against
+Parts~I--III at ProveIt commit \texttt{1bd730779}, which arrived in commit
+\texttt{f8c3a392a} and was placed in commit \texttt{5e4f1263c}, became
+Part~V. The report is now built from five manuscripts;
+Section~\ref{ccc:rs:sec:source} gives this one's provenance and what it
+contributed. The choices made were these. Part~V answers Part~II's
+Question~\ref{ccc:ps:q:slope} and was kept as a Part of its own, because its
+theorem and its proof (greedy optimality, the subset-reset graph, cycle
+means) are new; its restatement of Part~II's aligned fragment criterion
+became a pointer without the repeated proof, its periodic definitions and
+its parity example are kept with pointers to Part~II; its slope $\lambda_r$
+was renamed $\sigma_r$, because Part~III's $\lambda_v$ is another rational
+quantity; its sentence of next questions became four numbered questions;
+every label received the prefix \texttt{ccc:rs:}; its bibliography entries
+for the pinned report and for Part~IV's manuscript were replaced by internal
+references, its Manzoni entry identified with \cite{Manzoni}, and its
+Karp~(1978) entry printed as \cite{KarpCycle}, because \cite{Karp} is another
+paper. Dated notes were added after Questions~\ref{ccc:ps:q:rank},
+\ref{ccc:ps:q:slope}, \ref{ccc:qr:q:constant} and~\ref{ccc:qr:q:dfa}, after Part~II's fixed-word
+algorithm and Corollary~\ref{ccc:ps:cor:residue}, in Part~II's conclusion,
+in Part~I's conclusion, in Part~IV's Section~\ref{ccc:qr:sec:scope}, in
+Appendix~\ref{ccc:app:universality} and here; no existing label, theorem,
+section, equation or question number changed.
+
 \begin{thebibliography}{99}
 \small\raggedright\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}\setlength{\parskip}{0pt}
 \bibitem{Hughes}
@@ -6085,5 +6794,35 @@ Jorge L. Ram\'irez Alfons\'in.
 \emph{The Diophantine Frobenius Problem}.
 Oxford Lecture Series in Mathematics and its Applications 30,
 Oxford University Press, 2005.
+
+% [write, batch 73] entries cited by Part V. Its entries for this report and
+% for Part IV's manuscript were replaced by internal references; its Manzoni
+% entry is \cite{Manzoni} above; its Karp entry is KarpCycle, since Karp
+% above is another paper.
+\bibitem{CLM}
+Maxime Crochemore, Alessio Langiu, and Filippo Mignosi.
+Note on the greedy parsing optimality for dictionary-based text compression.
+\emph{Theoretical Computer Science} \textbf{525} (2014), 55--59.
+\href{https://doi.org/10.1016/j.tcs.2014.01.013}{doi:10.1016/j.tcs.2014.01.013}.
+\href{https://arxiv.org/abs/1211.5350}{arXiv:1211.5350}.
+
+\bibitem{DeLucaFici}
+Alessandro De Luca and Gabriele Fici.
+Dorst--Smeulders coding for arbitrary binary words.
+\href{https://arxiv.org/abs/2509.08684v1}{arXiv:2509.08684v1} (10 September 2025).
+
+\bibitem{KarpCycle}
+Richard M. Karp.
+A characterization of the minimum cycle mean in a digraph.
+\emph{Discrete Mathematics} \textbf{23}(3) (1978), 309--311.
+\href{https://doi.org/10.1016/0012-365X(78)90011-0}{doi:10.1016/0012-365X(78)90011-0}.
+
+\bibitem{Schwarz}
+\v{S}tefan Schwarz.
+On the semigroup of binary relations on a finite set.
+\emph{Czechoslovak Mathematical Journal} \textbf{20}(95) (1970), no.~4, 632--679.
+Theorem~4.3, p.~653; index definition, p.~634.
+\href{https://doi.org/10.21136/CMJ.1970.100989}{doi:10.21136/CMJ.1970.100989}.
+\href{https://dml.cz/bitstream/handle/10338.dmlcz/100989/CzechMathJ_20-1970-4_9.pdf\#page=23}{Primary full text, theorem page}.
 \end{thebibliography}
 \end{document}
