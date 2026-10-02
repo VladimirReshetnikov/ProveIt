@@ -33,6 +33,9 @@
 \newcommand{\bigO}{\mathcal O}
 \newcommand{\RR}{\mathbb R}
 \DeclareMathOperator{\Var}{Var}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small\emergencystretch=3em
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \hypersetup{pdftitle={Tournament score sequences and weighted component asymptotics},pdfauthor={},pdfsubject={Exact enumeration, fixed-order corrections, uniform logarithmic crossover and inverse localization}}
 \begin{document}
 \thispagestyle{empty}
@@ -62,21 +65,76 @@ This is a coefficient asymptotic, not a proved conditional distributional mixtur
 \end{itemize}
 \smallskip
 The results do not cover $\tau<0$, a supercritical moving pole, truncation order growing with $n$, or convergence of the full asymptotic series. All numerical decimal evaluations are non-interval computations.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~68 of
+batch~77 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{tournament-\allowbreak score-\allowbreak sequences-\allowbreak source.zip}
+(wrapper directory \texttt{tournament-\allowbreak score-\allowbreak sequences/})
+in commit \texttt{096ee7b87}, and placed in commit \texttt{34f1acd4b} in the
+research-report collection, among the OEIS-sequence asymptotics reports (main
+file \texttt{report.tex}, now \texttt{article.tex}). The manuscript names no
+ProveIt commit and continues no repository path, so it has no pin; it names
+neither an author nor a tool, and its PDF metadata leave the author empty.
+Nothing in this report is formalized in Lean or Rocq, and placement in the
+collection confers no formal status on any statement here. No other report of
+the repository treats tournament score sequences or A000571, A351822, A145855,
+A054946. The writing step prefixed every label with \texttt{tss:}, typeset the
+six binomial coefficients with \verb|\binom| instead of \verb|\choose| (same
+output, no amsmath warning), set the bibliography ragged-right, and added these
+\textsf{[write]} notes; no statement, proof or number of the manuscript was
+altered.
+
+\emph{Credit, kept.} The exact generating function \eqref{tss:eq:exactgf} and
+the block decomposition are Claesson--Dukes--Frankl\'in--Stef\'ansson's
+\cite{CDFS} (with the divisor evaluation attributed there to Alekseyev), the
+leading asymptotics \eqref{tss:eq:known} are Kolesnik's \cite{Kolesnik} (shorter
+proof \cite{BDK}), and the renewal and logarithmic heavy-traffic/heavy-tail
+mechanisms are Blanchet--Glynn's and Olvera-Cravioto--Blanchet--Glynn's
+\cite{BG,OCBG}. The report's contribution is the explicit local refinement;
+no exhaustive novelty search is claimed.
+
+\emph{Notation.} The manuscript reuses several letters. Each symbol is printed
+as delivered; the table fixes its meaning by section, with the tempting false
+readings.
+\begin{center}\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.81\linewidth}@{}}
+\toprule
+symbol & meaning here (and what it is \emph{not})\\
+\midrule
+$W$, $W_{-1}$ & $W(z,u)$ is the component-weighted generating function and $W_n(u)$ its coefficients; $W_{-1}$ in \eqref{tss:eq:lambert} is the lower branch of Lambert's function.\\
+$s$ & $s=nw$ is the Hankel variable (Sections~\ref{tss:sec:uniform}--\ref{tss:sec:allorders}); $s$ is also the shift of the coexistence centre, $\tau=b_n+s$ (Sections~\ref{tss:sec:coexist}--\ref{tss:sec:inverse}).\\
+$b_j$, $b_n$, $B$ & $b_j$ are the odd Puiseux coefficients of $B(t)$ \eqref{tss:eq:B}; $b_n$ is the coexistence centre \eqref{tss:eq:center}; $B_j(x)$ are Bernoulli polynomials.\\
+$c$, $c_m^\sigma$, $C$ & $c=\e^{-\lambda}\mu$; $c_m^\sigma$ the fixed-order corrections; $c$ also a contour constant in $\exp(-cn|w|)$. $C$ is the fixed window constant ($0\le\tau\le C\log n$); $C_m(\tau)$ the uniform terms; $C_\sigma=\e^{\sigma\lambda}/(2\sqrt\pi)$.\\
+$D_j^\sigma$, $D$, $d_j$, $d$ & $D_j^\sigma$ the odd local coefficients \eqref{tss:eq:Dj}; $D(w)$ the denominator series \eqref{tss:eq:D} with coefficients $d_j$; $d$ a divisor in \eqref{tss:eq:divisor}. $d_4=\ell$.\\
+$E$, $e_j$, $E_n$ & $E(v)=\sum e_jv^j$ is the even part \eqref{tss:eq:E}; $E_n(w)$ the resolvent error \eqref{tss:eq:resolve}. $e_2$ is a constant, not $\e^2$.\\
+$H$, $H_j$, $\mathcal H$, $h$ & $H(\tau)$ the entire kernel \eqref{tss:eq:H}; $H_j$ harmonic numbers in \eqref{tss:eq:ej}; $\mathcal H$ the Hankel contour; $h=\log4$ (Section~\ref{tss:sec:inverse}).\\
+$k$, $K$ & $k=2/(3\mu)$; $k$ is also an index. $K$ is a fixed truncation order (Section~\ref{tss:sec:fixed}) and a generic constant; $K_s$ the path constant \eqref{tss:eq:inversecenter}.\\
+$p$, $q$, $q_j$ & $p=1-\e^{-\lambda}$; $q=\tau/n$; $q_j$ the renewal mass function.\\
+$t$ & $t=\sqrt{1-4z}$ (Sections~\ref{tss:sec:split}--\ref{tss:sec:fixed}); $t$ is the free weight parameter of $\mathcal M_{n,M}(t)$ in Section~\ref{tss:sec:inverse}.\\
+$F$, $R$, $r_n$ & $F(z)$ the central-binomial part and $R(z)$ the divisor remainder \eqref{tss:eq:split}, $r_n=[z^n]R$; $F_{K,\sigma}(x)$ the fixed-order inverse model.\\
+$a$, $a_c$, $a_n$ & $a=a_n(\tau)=u_n(\tau)c$; $a_c=c/p$ its critical value; $a_x(\tau_x)$ its real-variable extension in \eqref{tss:eq:pathmodel}.\\
+$m$, $M$ & $m$ counts strong blocks in $S_{n,m}$ and indexes $c_m^\sigma$, $C_m$; $M$ is a truncation order and also a summation cutoff in \eqref{tss:eq:fastconstant}.\\
+$I$, $S$, $N_n$ & $I(z)$, $I_n$ strong sequences; $S(z)$, $S_n$ all sequences, $S_{n,m}$ by number of blocks; $N_n$ the divisor sum (A145855). $I_n$ omits A351822's empty object.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
 \clearpage
 \tableofcontents
 \clearpage
 
 \section{The counting problem and established identities}
-\label{sec:exact}
+\label{tss:sec:exact}
 A tournament is an orientation of a complete graph. Its score sequence is the nondecreasing list of vertex outdegrees. Let $S_n$ count distinct score sequences of length $n$, and set $S_0=1$. A sequence $(s_1,\ldots,s_n)$ is a score sequence precisely when
-\begin{equation}\label{eq:landau}
+\begin{equation}\label{tss:eq:landau}
 0\leq s_1\leq\cdots\leq s_n\leq n-1,\qquad
-\sum_{i=1}^j s_i\geq {j\choose2}\ (j<n),\qquad
-\sum_{i=1}^n s_i={n\choose2}.
+\sum_{i=1}^j s_i\geq \binom{j}{2}\ (j<n),\qquad
+\sum_{i=1}^n s_i=\binom{n}{2}.
 \end{equation}
 The sequence is strong or irreducible when each proper-prefix inequality is strict. This includes the singleton sequence. We use $I_n$ for the number of nonempty strong sequences, with $I_0=0$. The OEIS entry A351822 includes an empty-object value $1$ at index zero; its full listed generating function is consequently $1+I(z)$ under our notation.
 
-Equality indices in \eqref{eq:landau} give the unique ordered decomposition into strong blocks. When a prefix of length $j$ is removed, subtract $j$ from each subsequent score. Conversely, concatenating two blocks after adding the first length to the second block gives a score sequence. Thus a block is an object of the score-sequence class, not an underlying labeled tournament. The first values are
+Equality indices in \eqref{tss:eq:landau} give the unique ordered decomposition into strong blocks. When a prefix of length $j$ is removed, subtract $j$ from each subsequent score. Conversely, concatenating two blocks after adding the first length to the second block gives a score sequence. Thus a block is an object of the score-sequence class, not an underlying labeled tournament. The first values are
 \begin{center}
 \begin{tabular}{c|rrrrrrrrrrr}
 $n$&0&1&2&3&4&5&6&7&8&9&10\\\hline
@@ -86,18 +144,18 @@ $I_n$&0&1&0&1&1&3&7&21&61&184&573
 \end{center}
 
 Let $\varphi$ be Euler's totient function and define
-\begin{equation}\label{eq:divisor}
-N_n=\frac1{2n}\sum_{d\mid n}(-1)^{n+d}\varphi(n/d){2d\choose d},
+\begin{equation}\label{tss:eq:divisor}
+N_n=\frac1{2n}\sum_{d\mid n}(-1)^{n+d}\varphi(n/d)\binom{2d}{d},
 \qquad A(z)=\sum_{n\geq1}\frac{N_n}{n}z^n.
 \end{equation}
 The auxiliary $N_n$ is OEIS A145855. Claesson, Dukes, Frankl\'in, and Stef\'ansson (CDFS) prove the score-sequence identity \cite[Corollaries 12--13]{CDFS}
-\begin{equation}\label{eq:exactgf}
+\begin{equation}\label{tss:eq:exactgf}
 S(z)=\sum_{n\geq0}S_nz^n=\exp A(z).
 \end{equation}
-Their paper attributes the divisor evaluation in \eqref{eq:divisor} to Alekseyev's 2008 proof of a conjecture of Jovovi\'c. The signs $(-1)^{n-d}$ and $(-1)^{n+d}$ are equal. These established exact identities are inputs to the analytical results below; we do not reproduce the full combinatorial proof of \eqref{eq:exactgf}.
+Their paper attributes the divisor evaluation in \eqref{tss:eq:divisor} to Alekseyev's 2008 proof of a conjecture of Jovovi\'c. The signs $(-1)^{n-d}$ and $(-1)^{n+d}$ are equal. These established exact identities are inputs to the analytical results below; we do not reproduce the full combinatorial proof of \eqref{tss:eq:exactgf}.
 
 The ordered block decomposition now gives
-\begin{equation}\label{eq:weighted}
+\begin{equation}\label{tss:eq:weighted}
 I(z)=1-\exp(-A(z)),\qquad
 W(z,u)=\frac1{1-uI(z)}=\sum_{n,m\geq0}S_{n,m}z^nu^m.
 \end{equation}
@@ -106,16 +164,16 @@ $W_n(u)=[z^n]W(z,u)$. For integer $u>0$, the factor $u^m$ colors the blocks; for
 
 Exact computation uses
 \begin{align}
- nS_n&=\sum_{k=1}^nN_k S_{n-k},\label{eq:score-recur}\\
- I_n&=S_n-\sum_{k=1}^{n-1}I_kS_{n-k},\label{eq:strong-recur}\\
+ nS_n&=\sum_{k=1}^nN_k S_{n-k},\label{tss:eq:score-recur}\\
+ I_n&=S_n-\sum_{k=1}^{n-1}I_kS_{n-k},\label{tss:eq:strong-recur}\\
  W_0(u)&=1,\qquad W_n(u)=u\sum_{k=1}^n I_kW_{n-k}(u).
- \label{eq:renewal}
+ \label{tss:eq:renewal}
 \end{align}
-The first two recurrences can be evaluated with integers. Independently enumerating the solutions of \eqref{eq:landau} checks both the totals and the number of equality indices, hence the component statistic itself.
+The first two recurrences can be evaluated with integers. Independently enumerating the solutions of \eqref{tss:eq:landau} checks both the totals and the number of equality indices, hence the component statistic itself.
 
 \subsection{Prior asymptotics and the intended refinement}
 Kolesnik \cite{Kolesnik} proved the leading asymptotics for $S_n$, $I_n$, and each fixed component count. In the notation introduced below, these include
-\begin{equation}\label{eq:known}
+\begin{equation}\label{tss:eq:known}
 S_n\sim\frac{\e^\lambda}{2\sqrt\pi}\frac{4^n}{n^{5/2}},\quad
 I_n\sim\frac{\e^{-\lambda}}{2\sqrt\pi}\frac{4^n}{n^{5/2}},\quad
 \frac{S_{n,m}}{S_n}\longrightarrow m p^{m-1}\e^{-2\lambda}.
@@ -125,65 +183,65 @@ Bassan, Donderwinkel, and Kolesnik give a shorter proof of the leading result \c
 Uniform renewal expansions and geometric-sum approximations have an established literature, including Blanchet and Glynn \cite{BG}. Olvera-Cravioto, Blanchet, and Glynn \cite{OCBG} explicitly study a logarithmic heavy-traffic/heavy-tail transition. Their queueing and survival-probability setting differs from the local lattice coefficient problem here. We credit the transition mechanism to that literature and prove the needed coefficient estimates directly, rather than importing an unchecked theorem. The contribution of this report is an explicit refinement for the score-sequence model, with constants, fixed-order generators, and inverse scopes. A bounded primary-source review supports this focus; it cannot certify that no equivalent refinement exists elsewhere.
 
 \section{An exact analytic and singular splitting}
-\label{sec:split}
+\label{tss:sec:split}
 Throughout, let
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{tss:eq:constants}
 \rho=\frac14,\quad \lambda=A(\rho),\quad \mu=\rho A'(\rho),\quad
 p=1-\e^{-\lambda},\quad c=\e^{-\lambda}\mu,\quad
 u_c=\frac1p,\quad a_c=\frac cp.
 \end{equation}
 All these constants except $\rho$ are derived from the exact series, and $\lambda,\mu,p,c,a_c$ are positive.
 
-Separate the divisor $d=n$ in \eqref{eq:divisor}:
-\begin{equation}\label{eq:split}
+Separate the divisor $d=n$ in \eqref{tss:eq:divisor}:
+\begin{equation}\label{tss:eq:split}
 A(z)=F(z)+R(z),\qquad
-F(z)=\frac12\sum_{n\geq1}{2n\choose n}\frac{z^n}{n^2}.
+F(z)=\frac12\sum_{n\geq1}\binom{2n}{n}\frac{z^n}{n^2}.
 \end{equation}
 Writing $r_n=[z^n]R(z)$ gives the exact rational formula
-\begin{equation}\label{eq:rcoef}
-r_n=\frac{2nN_n-{2n\choose n}}{2n^2}.
+\begin{equation}\label{tss:eq:rcoef}
+r_n=\frac{2nN_n-\binom{2n}{n}}{2n^2}.
 \end{equation}
-For a proper divisor $d$ of $n$, $d\leq n/2$. Since $\varphi(n/d)\leq n$ and ${2d\choose d}\leq4^d\leq2^n$, the crude bound using at most $n$ divisors gives
+For a proper divisor $d$ of $n$, $d\leq n/2$. Since $\varphi(n/d)\leq n$ and $\binom{2d}{d}\leq4^d\leq2^n$, the crude bound using at most $n$ divisors gives
 $|r_n|\leq 2^{n-1}$. Therefore $R$ is analytic in $|z|<1/2$. Analyticity on the boundary $|z|=1/2$ is not needed or asserted.
 
 Put $t=\sqrt{1-4z}$, choosing the principal branch near the real interval $z<\rho$, and set $v=t^2$. Differentiation of the central-binomial series yields
-\begin{equation}\label{eq:Fderiv}
+\begin{equation}\label{tss:eq:Fderiv}
 \frac{\dd F}{\dd t}=-\frac{2t}{1-t^2}\log\frac2{1+t}.
 \end{equation}
 Integrating the even and odd parts, with $F(\rho)=\pi^2/12-\log^2 2$, gives the convergent local decomposition
 \begin{align}
-A(z)&=E(t^2)+B(t),\label{eq:EB}\\
+A(z)&=E(t^2)+B(t),\label{tss:eq:EB}\\
 E(v)&=\frac{\pi^2}{12}-\log^2 2+\log2\log(1-v)
- -\frac14\log^2(1-v)+R\left(\frac{1-v}4\right),\label{eq:E}\\
+ -\frac14\log^2(1-v)+R\left(\frac{1-v}4\right),\label{tss:eq:E}\\
 B(t)&=\sum_{j\geq1}b_jt^{2j+1},\qquad
  b_j=\frac2{2j+1}\sum_{k=0}^{j-1}\frac1{2k+1}.
- \label{eq:B}
+ \label{tss:eq:B}
 \end{align}
 For example, $b_1=2/3$, $b_2=8/15$, and $b_3=46/105$. Write $E(v)=\sum e_jv^j$. Then
-\begin{equation}\label{eq:ej}
+\begin{equation}\label{tss:eq:ej}
 e_0=\lambda,\qquad
  e_j=-\frac{\log2}{j}-\frac{H_{j-1}}{2j}
        +\frac{(-1)^jR^{(j)}(\rho)}{4^j j!}\quad(j\geq1),
 \end{equation}
 where $H_0=0$. In particular $e_1=-\mu$ and
-\begin{equation}\label{eq:e2}
+\begin{equation}\label{tss:eq:e2}
 e_2=-\frac{\log2}{2}-\frac14+\frac{R''(\rho)}{32}.
 \end{equation}
 Thus, with $w=1-4z$,
 \begin{align}
-A(z)&=\lambda-\mu w+\frac23w^{3/2}+e_2w^2+O(w^{5/2}),\label{eq:Aexp}\\
+A(z)&=\lambda-\mu w+\frac23w^{3/2}+e_2w^2+O(w^{5/2}),\label{tss:eq:Aexp}\\
 I(z)&=p-cw+\frac23\e^{-\lambda}w^{3/2}+O(w^2).
-\label{eq:Iexp}
+\label{tss:eq:Iexp}
 \end{align}
 These are analytic Puiseux expansions on a fixed slit neighborhood, not merely real-axis estimates.
 
 The split also accelerates computation:
-\begin{equation}\label{eq:fastconstant}
+\begin{equation}\label{tss:eq:fastconstant}
 \lambda=\frac{\pi^2}{12}-\log^2 2+\sum_{n\geq1}\frac{r_n}{4^n},\qquad
 \mu=\log2+\sum_{n\geq1}\frac{nr_n}{4^n}.
 \end{equation}
 After terms through $M$, the absolute tail bounds are respectively
-$2^{-M-1}$ and $(M+2)2^{-M-1}$. Derivative tails are similarly bounded by a polynomial times $2^{-M}$. Exact-integer subtraction in \eqref{eq:rcoef} avoids cancellation before the conversion to floating point.
+$2^{-M-1}$ and $(M+2)2^{-M-1}$. Derivative tails are similarly bounded by a polynomial times $2^{-M}$. Exact-integer subtraction in \eqref{tss:eq:rcoef} avoids cancellation before the conversion to floating point.
 \begin{center}
 \begin{tabular}{lr@{\qquad}lr}
 \toprule
@@ -198,46 +256,46 @@ The displayed decimals are numerical evaluations, not certified enclosures.
 
 \subsection{The renewal interpretation}
 Define $q_j=I_j4^{-j}/p$ for $j\geq1$. This is a probability mass function, and its generating function is $I(y/4)/p$. Its mean is
-$\sum jq_j=\rho I'(\rho)/p=c/p=a_c$. Equation \eqref{eq:known} gives a mass tail proportional to $j^{-5/2}$, hence finite mean and infinite variance. At $u=u_c$, $W(y/4,u_c)$ is the renewal generating function. The limiting constant $a_c^{-1}$ is the classical finite-mean renewal behavior. This interpretation motivates the two mechanisms but is not used in place of the contour proof.
+$\sum jq_j=\rho I'(\rho)/p=c/p=a_c$. Equation \eqref{tss:eq:known} gives a mass tail proportional to $j^{-5/2}$, hence finite mean and infinite variance. At $u=u_c$, $W(y/4,u_c)$ is the renewal generating function. The limiting constant $a_c^{-1}$ is the classical finite-mean renewal behavior. This interpretation motivates the two mechanisms but is not used in place of the contour proof.
 
 \section{Fixed weights and explicit enumeration corrections}
-\label{sec:fixed}
+\label{tss:sec:fixed}
 For $\sigma\in\{+1,-1\}$, define $T_n^+=S_n$ and $T_n^-=I_n$ for $n\geq1$. Introduce
-\begin{equation}\label{eq:Dj}
+\begin{equation}\label{tss:eq:Dj}
 D_j^\sigma=[t^{2j+3}]\,
 \exp\bigl(\sigma(E(t^2)-\lambda)\bigr)\sinh B(t),\qquad j\geq0.
 \end{equation}
 Both signs use the same $\sinh B$: the odd part of $\exp(\sigma B)$ is $\sigma\sinh B$, and the minus sign in $-\exp(-A)$ cancels it for $I_n$.
 
 Define the standard gamma-ratio coefficients by
-\begin{equation}\label{eq:gratio}
+\begin{equation}\label{tss:eq:gratio}
 \frac{\Gamma(n-\alpha)}{\Gamma(n+1)}
 \sim n^{-\alpha-1}\sum_{\ell\geq0}g_\ell(\alpha)n^{-\ell}.
 \end{equation}
 They result by exponentiating the formal series
-\begin{equation}\label{eq:bernoulli}
+\begin{equation}\label{tss:eq:bernoulli}
 \sum_{j\geq1}\frac{(-1)^{j+1}
  \bigl(B_{j+1}(-\alpha)-B_{j+1}(1)\bigr)}{j(j+1)n^j},
 \end{equation}
 where $B_j(x)$ is the Bernoulli polynomial. In particular
 $g_0=1$ and $g_1(\alpha)=\alpha(\alpha+1)/2$.
 
-\begin{theorem}[All fixed orders for all and strong scores]\label{thm:fixed}
+\begin{theorem}[All fixed orders for all and strong scores]\label{tss:thm:fixed}
 For every fixed integer $K\geq0$,
-\begin{equation}\label{eq:fixedall}
+\begin{equation}\label{tss:eq:fixedall}
 T_n^\sigma=\frac{\e^{\sigma\lambda}}{2\sqrt\pi}\,
 4^n n^{-5/2}\left(\sum_{m=0}^K\frac{c_m^\sigma}{n^m}
  +O_K(n^{-K-1})\right),
 \end{equation}
 where
-\begin{equation}\label{eq:cm}
+\begin{equation}\label{tss:eq:cm}
 c_m^\sigma=2\sqrt\pi\sum_{j=0}^m
  \frac{D_j^\sigma g_{m-j}(j+3/2)}{\Gamma(-j-3/2)}.
 \end{equation}
 The first three coefficients are
 \begin{align}
 c_0^\sigma&=1,\notag\\
-c_1^\sigma&=-\frac18+\sigma\frac52\mu,\label{eq:c12}\\
+c_1^\sigma&=-\frac18+\sigma\frac52\mu,\label{tss:eq:c12}\\
 c_2^\sigma&=\frac1{128}+\frac{35}8\mu^2
  +\sigma\left(\frac{63}{16}\mu+\frac{35}4e_2\right).\notag
 \end{align}
@@ -248,26 +306,26 @@ Every finite collection is computable from finitely many derivatives of $R$ at $
 The exact split continues to a dented neighborhood of $z=\rho$, while $F$ is analytic in the plane slit along $[\rho,\infty)$ and $R$ is analytic for $|z|<1/2$. Thus $\rho$ is the only singularity on the convergence circle. The odd local part of either generating function is
 $\e^{\sigma\lambda}\sum_{j\geq0}D_j^\sigma t^{2j+3}$.
 For noninteger $\alpha$ the exact coefficient identity is
-\begin{equation}\label{eq:transfer}
+\begin{equation}\label{tss:eq:transfer}
 [z^n](1-4z)^\alpha
  =4^n\frac{\Gamma(n-\alpha)}{\Gamma(-\alpha)\Gamma(n+1)}.
 \end{equation}
-Apply \eqref{eq:gratio} to each retained odd power and collect equal relative powers of $n^{-1}$; this gives \eqref{eq:cm}.
+Apply \eqref{tss:eq:gratio} to each retained odd power and collect equal relative powers of $n^{-1}$; this gives \eqref{tss:eq:cm}.
 
 For the error, retain additional terms of the convergent Puiseux expansion beyond the requested order and use the same dented coefficient contour. The next nonanalytic term and its gamma-ratio expansion give
 $O(4^n n^{-K-7/2})$ after terms through relative order $K$. The locally analytic even part is handled by analytic continuation of the full expansion and contour deformation. One must not infer an exponentially small error from a merely local Taylor polynomial, or apply an unqualified transfer rule to an integer-power remainder. Keeping enough further Puiseux terms and the common continuation domain avoids both errors.
 
 Finally $D_0=2/3$ and
-$D_1^\sigma=8/15-(2/3)\sigma\mu$. Expanding one term further and using \eqref{eq:bernoulli} yields \eqref{eq:c12}.
+$D_1^\sigma=8/15-(2/3)\sigma\mu$. Expanding one term further and using \eqref{tss:eq:bernoulli} yields \eqref{tss:eq:c12}.
 \end{proof}
 
 The second corrections are approximately
 $c_2^+=-0.5921736164232970$ and $c_2^-=4.5821545749204735$.
 This is a fixed-order asymptotic expansion; it makes no assertion that the infinite series in $1/n$ converges.
 
-\begin{proposition}[Fixed subcritical and critical weights]\label{prop:fixedu}
+\begin{proposition}[Fixed subcritical and critical weights]\label{tss:prop:fixedu}
 For fixed $0<u<u_c$, uniformly on compact subsets of that interval,
-\begin{equation}\label{eq:subcritical}
+\begin{equation}\label{tss:eq:subcritical}
 W_n(u)\sim \frac{u\e^{-\lambda}}{(1-up)^2}
  \frac{4^n}{2\sqrt\pi n^{5/2}}.
 \end{equation}
@@ -275,16 +333,16 @@ There is a full expansion in relative integer powers of $1/n$ at every fixed ord
 \[
 \frac1{1-u+u\exp\{-E(t^2)-B(t)\}}
 \]
-and \eqref{eq:transfer}. At the critical weight,
-\begin{equation}\label{eq:critical}
+and \eqref{tss:eq:transfer}. At the critical weight,
+\begin{equation}\label{tss:eq:critical}
 4^{-n}W_n(u_c)=\frac1{a_c}
  +\frac{2}{3\mu a_c\sqrt\pi}\,n^{-1/2}+O(n^{-3/2}).
 \end{equation}
 There is no $n^{-1}$ term.
 \end{proposition}
 \begin{proof}
-For subcritical $u$, $|uI(z)|\leq up<1$ on $|z|\leq\rho$, so the analytic composition has no zero denominator there. Compactness and the continuation in Section~\ref{sec:split} provide a common dented neighborhood on compact weight sets. The first odd term is
-$\frac23u\e^{-\lambda}(1-up)^{-2}t^3$; transfer gives \eqref{eq:subcritical}. At $u_c$, Laurent expansion gives
+For subcritical $u$, $|uI(z)|\leq up<1$ on $|z|\leq\rho$, so the analytic composition has no zero denominator there. Compactness and the continuation in Section~\ref{tss:sec:split} provide a common dented neighborhood on compact weight sets. The first odd term is
+$\frac23u\e^{-\lambda}(1-up)^{-2}t^3$; transfer gives \eqref{tss:eq:subcritical}. At $u_c$, Laurent expansion gives
 \[
 W(z,u_c)=a_c^{-1}t^{-2}+\frac{2}{3\mu a_c}t^{-1}+O(1).
 \]
@@ -292,23 +350,23 @@ The exact $t^{-2}$ coefficient is $4^n$. The next nonanalytic term after $t^{-1}
 \end{proof}
 
 \section{A uniform logarithmic near critical expansion}
-\label{sec:uniform}
+\label{tss:sec:uniform}
 Let
-\begin{equation}\label{eq:parameter}
+\begin{equation}\label{tss:eq:parameter}
 u_n(\tau)=\frac{n}{np+\tau c},\qquad
  a_n(\tau)=u_n(\tau)c,\qquad k=\frac2{3\mu}.
 \end{equation}
 Thus $0\leq\tau$ corresponds to $u_n(\tau)\leq u_c$. We sometimes write $u,a$ for $u_n(\tau),a_n(\tau)$.
 
-\begin{theorem}[First two uniform terms]\label{thm:uniform}
+\begin{theorem}[First two uniform terms]\label{tss:thm:uniform}
 Fix $C>0$. Uniformly for $0\leq\tau\leq C\log n$,
-\begin{equation}\label{eq:uniform}
+\begin{equation}\label{tss:eq:uniform}
 4^{-n}W_n(u_n(\tau))
  =\frac1{a_n(\tau)}\left\{\e^{-\tau}
         +k n^{-1/2}H(\tau)\right\}+O_C(n^{-1}),
 \end{equation}
 where the entire function
-\begin{equation}\label{eq:H}
+\begin{equation}\label{tss:eq:H}
 H(\tau)=\frac1{\sqrt\pi}\,{}_1F_1(2;1/2;-\tau)
  =\sum_{j\geq0}\frac{(-1)^j(j+1)\tau^j}{\Gamma(j+1/2)}.
 \end{equation}
@@ -318,18 +376,18 @@ $(1+\tau/n)^{-n-1}$ preserves the absolute bound.
 \end{theorem}
 
 \subsection{One common coefficient contour}
-\label{sec:contour}
-Use $y=4z$, $w=1-y$, and $q=\tau/n$. By \eqref{eq:Iexp} and \eqref{eq:parameter},
-\begin{equation}\label{eq:denom}
+\label{tss:sec:contour}
+Use $y=4z$, $w=1-y$, and $q=\tau/n$. By \eqref{tss:eq:Iexp} and \eqref{tss:eq:parameter},
+\begin{equation}\label{tss:eq:denom}
 1-uI(y/4)=a\{w+q-kw^{3/2}+O(w^2)\}.
 \end{equation}
 The remainder constant is uniform for $u$ in a compact positive neighborhood of $u_c$, which contains the whole parameter window for large $n$.
 
 Fix $\pi/2<\theta<\pi$. On the rays $w=re^{\pm\ii\theta}$ and throughout the joining arc $|\arg w|\leq\theta$,
-\begin{equation}\label{eq:lower}
+\begin{equation}\label{tss:eq:lower}
 |w+q|\geq\cos(\theta/2)(|w|+q),\qquad q\geq0.
 \end{equation}
-The perturbation in \eqref{eq:denom} is therefore less than half the leading denominator in a single sufficiently small neighborhood, independent of $q$. This excludes local zeros on the indented sector. At $q=0$, the critical endpoint singularity is encircled by the indentation, not omitted.
+The perturbation in \eqref{tss:eq:denom} is therefore less than half the leading denominator in a single sufficiently small neighborhood, independent of $q$. This excludes local zeros on the indented sector. At $q=0$, the critical endpoint singularity is encircled by the indentation, not omitted.
 
 Away from $y=1$ on $|y|=1$, positivity and aperiodicity give
 $|I(y/4)|<p$. Indeed, equality would require the positive terms at degrees $1,3,4$ to have the same phase; $y=y^3=y^4$ forces $y=1$. A compact arc away from $1$ has a strict nonvanishing margin. Analytic continuation from $F+R$ thickens this arc slightly while retaining that margin uniformly as $u\to u_c$.
@@ -338,20 +396,20 @@ Combining this compact continuation with the local sector yields a common dented
 
 \subsection{Resolvent expansion and its error}
 On the local contour, a geometric-resolvent expansion gives
-\begin{equation}\label{eq:resolve}
+\begin{equation}\label{tss:eq:resolve}
 W(y/4,u)=\frac1{a(w+q)}+\frac{k}{a}\frac{w^{3/2}}{(w+q)^2}+E_n(w),
 \end{equation}
 where
-\begin{equation}\label{eq:errorbound}
+\begin{equation}\label{tss:eq:errorbound}
 |E_n(w)|\leq K\left\{\frac{|w|^2}{(|w|+q)^2}
                   +\frac{|w|^3}{(|w|+q)^3}\right\}\leq2K.
 \end{equation}
 For sufficiently small ray radius,
 $|(1-w)^{-n-1}|\leq K\exp(-cn|w|)$.
-Thus the ray integral of \eqref{eq:errorbound} is $O(n^{-1})$; the indentation has length $O(n^{-1})$ and bounded coefficient kernel. The common outer contour adds only exponentially small terms.
+Thus the ray integral of \eqref{tss:eq:errorbound} is $O(n^{-1})$; the indentation has length $O(n^{-1})$ and bounded coefficient kernel. The common outer contour adds only exponentially small terms.
 
 The first model coefficient is exact:
-\begin{equation}\label{eq:carrier}
+\begin{equation}\label{tss:eq:carrier}
 [y^n](w+q)^{-1}=(1+q)^{-n-1}.
 \end{equation}
 Its difference from $\e^{-\tau}$ is $O(n^{-1})$ uniformly on the stated logarithmic window: the exponential factor absorbs the polynomial in $\tau$ from Taylor expansion.
@@ -363,13 +421,13 @@ $|s^{3/2}/(s+\tau)^2|\leq K|s|^{-1/2}$. Hence
 [y^n]\frac{w^{3/2}}{(w+q)^2}
  &=n^{-1/2}\frac1{2\pi\ii}\int_{\HH}
        \e^s\frac{s^{3/2}}{(s+\tau)^2}\,\dd s+O(n^{-3/2})\notag\\
- &=n^{-1/2}H(\tau)+O(n^{-3/2}).\label{eq:Htransfer}
+ &=n^{-1/2}H(\tau)+O(n^{-3/2}).\label{tss:eq:Htransfer}
 \end{align}
-To justify replacing $(1-s/n)^{-n-1}$ by $\e^s$, first restrict to $|s|\leq n^\eta$ with fixed $\eta<1/2$. The difference is bounded by $O((|s|+|s|^2)/n)$ times a decaying exponential. This is uniformly integrable against the preceding bound. The remaining rays are exponentially suppressed. For $|\tau|<1$, expanding $(s+\tau)^{-2}$ on the unit indentation and using the reciprocal-gamma Hankel formula gives \eqref{eq:H}; analytic continuation extends the identity along $\tau\geq0$. The model pole at $s=-\tau$ is on the excluded cut, so no residue has been silently removed. Equations \eqref{eq:resolve}--\eqref{eq:Htransfer} prove the absolute part of Theorem~\ref{thm:uniform}.
+To justify replacing $(1-s/n)^{-n-1}$ by $\e^s$, first restrict to $|s|\leq n^\eta$ with fixed $\eta<1/2$. The difference is bounded by $O((|s|+|s|^2)/n)$ times a decaying exponential. This is uniformly integrable against the preceding bound. The remaining rays are exponentially suppressed. For $|\tau|<1$, expanding $(s+\tau)^{-2}$ on the unit indentation and using the reciprocal-gamma Hankel formula gives \eqref{tss:eq:H}; analytic continuation extends the identity along $\tau\geq0$. The model pole at $s=-\tau$ is on the excluded cut, so no residue has been silently removed. Equations \eqref{tss:eq:resolve}--\eqref{tss:eq:Htransfer} prove the absolute part of Theorem~\ref{tss:thm:uniform}.
 
 \subsection{Positivity and relative error}
 Repeated expansion of the inverse-Laplace integral gives
-\begin{equation}\label{eq:Hlarge}
+\begin{equation}\label{tss:eq:Hlarge}
 H(\tau)=\frac3{4\sqrt\pi\,\tau^2}
  \left(1+\frac5\tau+\frac{105}{4\tau^2}+O(\tau^{-3})\right)
  \quad(\tau\to+\infty).
@@ -377,9 +435,9 @@ H(\tau)=\frac3{4\sqrt\pi\,\tau^2}
 For instance expand $(s+\tau)^{-2}$ on $|s|\leq\tau/2$ and bound the rest of the fixed rays exponentially. Reciprocal gamma values give the displayed coefficients. In particular $H(\tau)>0$ eventually and $H(\tau)\asymp\tau^{-2}$ there. On a fixed initial interval, $\e^{-\tau}$ dominates the bounded $n^{-1/2}H(\tau)$ term; no global positivity of $H$ alone is required. The full model is consequently bounded below by a positive constant times $n^{-1/2}/(\log n)^2$ on the window. Dividing the absolute error by this bound proves the relative statement.
 
 \section{The half power generator to every fixed order}
-\label{sec:allorders}
+\label{tss:sec:allorders}
 The exact local denominator series is
-\begin{equation}\label{eq:D}
+\begin{equation}\label{tss:eq:D}
 D(w)=\frac{p-I((1-w)/4)}{c}=\sum_{j\geq2}d_jw^{j/2},\qquad
  d_2=1,\quad d_3=-k,\quad
  d_4=\ell=\frac{\mu^2/2-e_2}{\mu}.
@@ -389,7 +447,7 @@ $p-I=\exp(-A)-\exp(-\lambda)$.
 
 \subsection{Entire kernel functions}
 For the finite monomials arising below, define
-\begin{equation}\label{eq:kernel}
+\begin{equation}\label{tss:eq:kernel}
 \mathcal K_{\alpha,b}(\tau)
  =\frac1{2\pi\ii}\int_{\HH}\e^s\frac{s^\alpha}{(s+\tau)^b}\,\dd s
  =\sum_{j\geq0}\frac{(-1)^j(b)_j\tau^j}
@@ -397,24 +455,24 @@ For the finite monomials arising below, define
 \end{equation}
 The contour identity holds for $\tau\geq0$, and the convergent series supplies the entire continuation. Here $(b)_j$ denotes the rising factorial and $1/\Gamma$ is its entire reciprocal, including its zeros. Equivalently this is
 $\RegF(b;b-\alpha;-\tau)$, the \emph{regularized} confluent hypergeometric function. If $b-\alpha$ is a nonpositive integer, the unregularized product
-${}_1F_1(b;b-\alpha;-\tau)/\Gamma(b-\alpha)$ is not a literal defined expression. Formula \eqref{eq:kernel} avoids this degeneracy.
+${}_1F_1(b;b-\alpha;-\tau)/\Gamma(b-\alpha)$ is not a literal defined expression. Formula \eqref{tss:eq:kernel} avoids this degeneracy.
 
-\begin{theorem}[Uniform expansion at every fixed order]\label{thm:allorders}
+\begin{theorem}[Uniform expansion at every fixed order]\label{tss:thm:allorders}
 Put $\varepsilon=n^{-1/2}$ and define $C_m(\tau)$ by the finite formal coefficient extraction
-\begin{equation}\label{eq:generator}
+\begin{equation}\label{tss:eq:generator}
 C_m(\tau)=\frac1{2\pi\ii}\int_{\HH}\e^s[\varepsilon^m]\,
 \frac{\displaystyle\exp\left\{\sum_{j\geq1}\varepsilon^{2j}
              \left(\frac{s^j}{j}+\frac{s^{j+1}}{j+1}\right)\right\}}
  {\displaystyle s+\tau+\sum_{j\geq1}d_{j+2}\varepsilon^j s^{1+j/2}}\,\dd s.
 \end{equation}
-For each fixed $m$, this is a finite linear combination of the entire kernels in \eqref{eq:kernel}. For every fixed integer $M\geq0$ and fixed $C>0$,
-\begin{equation}\label{eq:uniformall}
+For each fixed $m$, this is a finite linear combination of the entire kernels in \eqref{tss:eq:kernel}. For every fixed integer $M\geq0$ and fixed $C>0$,
+\begin{equation}\label{tss:eq:uniformall}
 4^{-n}W_n(u_n(\tau))
  =\frac1{a_n(\tau)}\sum_{m=0}^M n^{-m/2}C_m(\tau)
    +O_{M,C}(n^{-(M+1)/2})
 \end{equation}
 uniformly on $0\leq\tau\leq C\log n$. In particular $C_0=\e^{-\tau}$, $C_1=kH(\tau)$, and
-\begin{equation}\label{eq:C2}
+\begin{equation}\label{tss:eq:C2}
 \begin{split}
 C_2(\tau)=\e^{-\tau}\biggl\{&\frac{\tau^2}{2}-\tau
   -\ell(\tau^2-2\tau)\\
@@ -426,20 +484,20 @@ $O_{M,C}((\log n)^2n^{-M/2})$.
 \end{theorem}
 
 \begin{proof}
-On the contour of Section~\ref{sec:contour}, write $D(w)=w+V(w)$ with $V(w)=O(w^{3/2})$. Inequality \eqref{eq:lower} gives
+On the contour of Section~\ref{tss:sec:contour}, write $D(w)=w+V(w)$ with $V(w)=O(w^{3/2})$. Inequality \eqref{tss:eq:lower} gives
 $V(w)/(w+q)=O(|w|^{1/2})$ uniformly in $q\geq0$. Expanding the resolvent through $M$ such factors leaves a remainder bounded by
-\begin{equation}\label{eq:allerror}
+\begin{equation}\label{tss:eq:allerror}
 K\frac{|w|^{(M+1)/2}}{|w|+q}\leq K|w|^{(M-1)/2}.
 \end{equation}
-Since the local Puiseux series is genuinely convergent, truncating the numerators at the corresponding total half-power order has the same or a smaller error. Integration along the rays and the radius-$1/n$ indentation makes \eqref{eq:allerror} an $O(n^{-(M+1)/2})$ coefficient error, including $M=0$.
+Since the local Puiseux series is genuinely convergent, truncating the numerators at the corresponding total half-power order has the same or a smaller error. Integration along the rays and the radius-$1/n$ indentation makes \eqref{tss:eq:allerror} an $O(n^{-(M+1)/2})$ coefficient error, including $M=0$.
 
 After $s=nw$, the exact coefficient kernel has the identity
-\begin{equation}\label{eq:cauchyexp}
+\begin{equation}\label{tss:eq:cauchyexp}
 (1-\varepsilon^2s)^{-\varepsilon^{-2}-1}
  =\e^s\exp\left\{\sum_{j\geq1}\varepsilon^{2j}
                \left(\frac{s^j}{j}+\frac{s^{j+1}}{j+1}\right)\right\}.
 \end{equation}
-For the prescribed fixed $M$, choose a sufficiently small fixed $\eta>0$ and expand on $|s|\leq n^\eta$. Taylor remainders are bounded by the required power of $n^{-1/2}$ times a fixed polynomial in $|s|$ and a decaying exponential. The denominator bound gives uniform integrable domination for each finite coefficient and remainder. Outside this range both the exact kernel and the finitely many model terms are exponentially small. The common outer contour also contributes exponentially small terms. This proves \eqref{eq:generator} and \eqref{eq:uniformall}, with constants depending on $M,C$ but not on $\tau,n$.
+For the prescribed fixed $M$, choose a sufficiently small fixed $\eta>0$ and expand on $|s|\leq n^\eta$. Taylor remainders are bounded by the required power of $n^{-1/2}$ times a fixed polynomial in $|s|$ and a decaying exponential. The denominator bound gives uniform integrable domination for each finite coefficient and remainder. Outside this range both the exact kernel and the finitely many model terms are exponentially small. The common outer contour also contributes exponentially small terms. This proves \eqref{tss:eq:generator} and \eqref{tss:eq:uniformall}, with constants depending on $M,C$ but not on $\tau,n$.
 
 At order $\varepsilon^2$, the three kernels are
 \[
@@ -447,25 +505,25 @@ At order $\varepsilon^2$, the three kernels are
 -\ell\frac{s^2}{(s+\tau)^2},\qquad
 k^2\frac{s^3}{(s+\tau)^3}.
 \]
-Their time-one inverse Laplace values yield \eqref{eq:C2}. Polynomial parts in $s$ have zero Hankel integral (or are distributions at time zero), so they do not contribute at time one. In particular $C_2(0)=0$, in agreement with \eqref{eq:critical}.
+Their time-one inverse Laplace values yield \eqref{tss:eq:C2}. Polynomial parts in $s$ have zero Hankel integral (or are distributions at time zero), so they do not contribute at time one. In particular $C_2(0)=0$, in agreement with \eqref{tss:eq:critical}.
 
-Each fixed $C_m$ is bounded on $\tau\geq0$ by its fixed-contour integral. The extra terms for $m\geq2$ therefore total $O(n^{-1})$, which is negligible compared with the positive lower bound from Theorem~\ref{thm:uniform}. Positivity and the relative error follow.
+Each fixed $C_m$ is bounded on $\tau\geq0$ by its fixed-contour integral. The extra terms for $m\geq2$ therefore total $O(n^{-1})$, which is negligible compared with the positive lower bound from Theorem~\ref{tss:thm:uniform}. Positivity and the relative error follow.
 \end{proof}
 
 The quantifiers are essential: choose the truncation order and logarithmic window constant \emph{before} taking $n\to\infty$. The theorem does not claim uniformity in growing $M$, convergence of its infinite formal expansion, or validity for a supercritical weight.
 
 \section{The explicit two contribution coexistence profile}
-\label{sec:coexist}
+\label{tss:sec:coexist}
 Set
-\begin{equation}\label{eq:center}
+\begin{equation}\label{tss:eq:center}
 b_n=\frac12\log n+2\log\log n+\log\frac{\mu\sqrt\pi}{2},
 \qquad \tau_n(s)=b_n+s.
 \end{equation}
 For $s$ in a fixed compact real interval, this parameter is nonnegative and lies in a fixed logarithmic window for sufficiently large $n$.
 
-\begin{corollary}[Coexistence]\label{cor:coexist}
+\begin{corollary}[Coexistence]\label{tss:cor:coexist}
 Uniformly for $s$ in compact real intervals,
-\begin{equation}\label{eq:coexist}
+\begin{equation}\label{tss:eq:coexist}
 a_c\sqrt n(\log n)^2\,4^{-n}W_n(u_n(\tau_n(s)))
  \longrightarrow \frac2{\mu\sqrt\pi}(1+\e^{-s}).
 \end{equation}
@@ -473,50 +531,50 @@ a_c\sqrt n(\log n)^2\,4^{-n}W_n(u_n(\tau_n(s)))
 \begin{proof}
 The exponential term satisfies
 $\sqrt n(\log n)^2\e^{-b_n-s}=2\e^{-s}/(\mu\sqrt\pi)$.
-For the second term, \eqref{eq:Hlarge} and $\tau_n(s)/\log n\to1/2$ give
+For the second term, \eqref{tss:eq:Hlarge} and $\tau_n(s)/\log n\to1/2$ give
 $k(\log n)^2H(\tau_n(s))\to2/(\mu\sqrt\pi)$.
-Also $a_n(\tau_n(s))\to a_c$. The normalized absolute error in Theorem~\ref{thm:uniform}, multiplied by $\sqrt n(\log n)^2$, tends to zero.
+Also $a_n(\tau_n(s))\to a_c$. The normalized absolute error in Theorem~\ref{tss:thm:uniform}, multiplied by $\sqrt n(\log n)^2$, tends to zero.
 \end{proof}
 
-The balance is between the near-critical exponential coefficient contribution and the heavy-tail correction. The $2\log\log n$ term is necessary because the heavy-tail contribution contains $\tau^{-2}$. A compact $\tau$ window cannot see this coexistence balance. Logarithmic heavy-traffic/heavy-tail transitions are established phenomena \cite{OCBG}; \eqref{eq:coexist} supplies the model-specific centering and local-coefficient profile.
+The balance is between the near-critical exponential coefficient contribution and the heavy-tail correction. The $2\log\log n$ term is necessary because the heavy-tail contribution contains $\tau^{-2}$. A compact $\tau$ window cannot see this coexistence balance. Logarithmic heavy-traffic/heavy-tail transitions are established phenomena \cite{OCBG}; \eqref{tss:eq:coexist} supplies the model-specific centering and local-coefficient profile.
 
-Nothing in the coefficient decomposition alone identifies the conditional law of the number or sizes of blocks in either contribution. In particular, \eqref{eq:coexist} is not a proved distributional mixture, and the factors $1$ and $\e^{-s}$ are not asserted to be mixture probabilities.
+Nothing in the coefficient decomposition alone identifies the conditional law of the number or sizes of blocks in either contribution. In particular, \eqref{tss:eq:coexist} is not a proved distributional mixture, and the factors $1$ and $\e^{-s}$ are not asserted to be mixture probabilities.
 
 \section{What can be inverted and with what error}
-\label{sec:inverse}
+\label{tss:sec:inverse}
 An inverse requires a specified one-variable map. We give three such choices. In every case, a real inverse-location error is distinct from a guarantee about rounding to an integer threshold.
 
 \subsection{Fixed family size from an all or strong count}
 Let $h=\log4$ and $C_\sigma=\e^{\sigma\lambda}/(2\sqrt\pi)$. For fixed $K$, define the eventually positive model
-\begin{equation}\label{eq:fixedmodel}
+\begin{equation}\label{tss:eq:fixedmodel}
 F_{K,\sigma}(x)=C_\sigma4^xx^{-5/2}
  \left(1+\sum_{j=1}^K c_j^\sigma x^{-j}\right).
 \end{equation}
-It is eventually strictly increasing, with logarithmic derivative $h+O(1/x)$. Denote its eventual real inverse by $x_{K,\sigma}(Y)$. Theorem~\ref{thm:fixed} and the mean value theorem then imply, whenever $Y=T_n^\sigma$ and $n$ is sufficiently large,
-\begin{equation}\label{eq:fixedinverse}
+It is eventually strictly increasing, with logarithmic derivative $h+O(1/x)$. Denote its eventual real inverse by $x_{K,\sigma}(Y)$. Theorem~\ref{tss:thm:fixed} and the mean value theorem then imply, whenever $Y=T_n^\sigma$ and $n$ is sufficiently large,
+\begin{equation}\label{tss:eq:fixedinverse}
 n=x_{K,\sigma}(Y)+O(x_{K,\sigma}(Y)^{-K-1}).
 \end{equation}
 For $K=0$ the model inverse is explicit:
-\begin{equation}\label{eq:lambert}
+\begin{equation}\label{tss:eq:lambert}
 x_{0,\sigma}(Y)=-\frac5{2h}\,\mathop{W}_{-1}
  \left(-\frac{2h}{5}\left(\frac{C_\sigma}{Y}\right)^{2/5}\right).
 \end{equation}
 The branch $W_{-1}$ selects the large positive solution. Higher-order inverses can be found by substitution or Newton iteration on $\log F_{K,\sigma}(x)-\log Y$.
 
 \subsection{Size along a specified coexistence path}
-Fix $s\in\RR$. Extend \eqref{eq:center} to large real $x$ and define
-\begin{equation}\label{eq:pathmodel}
+Fix $s\in\RR$. Extend \eqref{tss:eq:center} to large real $x$ and define
+\begin{equation}\label{tss:eq:pathmodel}
 G_s(x)=\frac{4^x}{a_x(\tau_x)}
   \left\{\e^{-\tau_x}+kx^{-1/2}H(\tau_x)\right\},
 \quad \tau_x=\frac12\log x+2\log\log x+\log\frac{\mu\sqrt\pi}{2}+s.
 \end{equation}
 This is eventually positive with logarithmic derivative tending to $h$. If $x_s(Y)$ is its eventual inverse and
 $Y=W_n(u_n(\tau_n(s)))$, then
-\begin{equation}\label{eq:pathinverse}
+\begin{equation}\label{tss:eq:pathinverse}
 n=x_s(Y)+O\left(\frac{(\log x_s(Y))^2}{\sqrt{x_s(Y)}}\right).
 \end{equation}
 This uses the explicit derivative of the model, not differentiation of an uncontrolled enumeration remainder. An elementary first inverse center, with $L=\log Y$, is
-\begin{equation}\label{eq:inversecenter}
+\begin{equation}\label{tss:eq:inversecenter}
 x=\frac{L+\frac12\log L+2\log\log L-\frac12\log h-\log K_s}{h}+o(1),
 \qquad K_s=\frac{2(1+\e^{-s})}{a_c\mu\sqrt\pi}.
 \end{equation}
@@ -524,32 +582,53 @@ The discrete weighted sequence along this fixed path is eventually increasing be
 
 \subsection{Known size and an unknown component weight}
 Fix a compact real interval $J$. Suppose $n$ is known, $\tau=b_n+s$ with $s\in J$, and the target is specified as
-\begin{equation}\label{eq:target}
+\begin{equation}\label{tss:eq:target}
 Y=4^{-n}W_n(u_n(\tau)).
 \end{equation}
 For $n\geq1$, $W_n(u)$ is a nonconstant polynomial with nonnegative coefficients and is strictly increasing on $u>0$. Since $u_n(\tau)$ decreases strictly, the exact target determines $\tau$ uniquely on the specified window.
 
 For fixed $M\geq1$, define
-\begin{equation}\label{eq:weightmodel}
+\begin{equation}\label{tss:eq:weightmodel}
 \mathcal M_{n,M}(t)=\left(\frac pc+\frac tn\right)
           \sum_{m=0}^M n^{-m/2}C_m(t).
 \end{equation}
 For all sufficiently large $n$, this model is strictly decreasing on the padded interval $b_n+(J+[-1,1])$ and has derivative magnitude at least a positive constant times $n^{-1/2}/(\log n)^2$. Indeed, the $C_0$ derivative is negative of that size, the $C_1$ derivative is smaller by $O(1/\log n)$ using $H'(t)=O(t^{-3})$, and the higher derivatives are bounded by their contour integrals. The derivative $1/n$ of the prefactor is negligible. Only the explicit model is differentiated.
 
-The padding ensures the model brackets the exact target even when $s$ is at an endpoint of $J$: the model change over a unit of padding dominates the absolute error in \eqref{eq:uniformall}. There is therefore one root $\widehat\tau$ of $\mathcal M_{n,M}(\widehat\tau)=Y$ on that padded interval, and the mean value theorem gives
-\begin{equation}\label{eq:tauinverse}
+The padding ensures the model brackets the exact target even when $s$ is at an endpoint of $J$: the model change over a unit of padding dominates the absolute error in \eqref{tss:eq:uniformall}. There is therefore one root $\widehat\tau$ of $\mathcal M_{n,M}(\widehat\tau)=Y$ on that padded interval, and the mean value theorem gives
+\begin{equation}\label{tss:eq:tauinverse}
 |\widehat\tau-\tau|=O_{M,J}((\log n)^2n^{-M/2}).
 \end{equation}
 Since $|u'_n(t)|=nc/(np+tc)^2=O(n^{-1})$ there, the inferred weight
 $\widehat u=n/(np+\widehat\tau c)$ satisfies
-\begin{equation}\label{eq:weightinverse}
+\begin{equation}\label{tss:eq:weightinverse}
 |\widehat u-u_n(\tau)|=O_{M,J}((\log n)^2n^{-1-M/2}).
 \end{equation}
 The displayed $C_2$ thus improves weight localization from
 $O(\log^2 n/n^{3/2})$ to $O(\log^2 n/n^2)$. These are asymptotic localization bounds for a known-$n$ model, not finite-$n$ certified error bars or an unspecified inverse of a bivariate sequence.
 
+\begin{writenote}[Added 2 October 2026, batch~77]
+The general steps of this section are instances of results of the repository's
+transseries volume
+(\texttt{Analysis/\allowbreak Transseries/\allowbreak docs/\allowbreak series-\allowbreak and-\allowbreak transseries/\allowbreak Transseries\_And\_Inversion/}),
+and no novelty is claimed for them.
+The explicit inverse \eqref{tss:eq:lambert}
+is \texttt{p0:thm:lambert-core} for $hx-\tfrac52\log x=\log(Y/C_\sigma)$, that
+is $a=h=\log4$, $b=-5/2$, with the branch $W_{-1}$ that its branch rule selects
+for the large solution. The three localization statements
+\eqref{tss:eq:fixedinverse}, \eqref{tss:eq:pathinverse} and
+\eqref{tss:eq:tauinverse} divide a model error by a model slope, which is the
+residual-to-root conversion \texttt{p0:thm:backward-error}. The remark that an
+exact threshold still needs bracketing is the separation condition, part~(2) of
+\texttt{p0:thm:staircase}; no exact-rounding rule (its part~(1)) is used. The
+generic staircase arithmetic is formalized in Lean, in the file
+\texttt{Analysis/\allowbreak FabiusFunction/\allowbreak Lean/\allowbreak FabiusFunction/\allowbreak StaircaseInversion.lean},
+as \texttt{Fabius.staircase\_ceil} and \texttt{Fabius.staircase\_separation};
+those lemmas concern an arbitrary monotone function, not $S_n$ or $W_n$, and
+give this report no formal status.
+\end{writenote}
+
 \section{Reproducible checks and numerical interpretation}
-\label{sec:checks}
+\label{tss:sec:checks}
 The accompanying archive contains this editable \TeX{} source, the compiled PDF, a portable Python verification program, generated JSON data, a replay script, and a SHA-256 manifest. It does not require a connection to OEIS or another external data service to run the mathematical checks. The code independently generates the integer recurrences rather than loading an OEIS term list.
 
 The check layers have different evidentiary roles:
@@ -591,8 +670,29 @@ All decimal computations, including values computed at high working precision, r
 \subsection{How to replay}
 From the extracted archive, run \texttt{bash replay.sh}. The script runs exact and symbolic assertions, regenerates numerical JSON data, and invokes \texttt{pdflatex} twice to rebuild the PDF. Python requirements are listed in \texttt{requirements.txt}; a working \LaTeX{} installation is also needed. Use \texttt{python3 scripts/verify\_manifest.py} before replay to check the packaged file hashes. The README specifies versions and commands. Generated results are written inside the extracted directory, and the source code has no absolute workspace paths.
 
+\begin{writenote}[Added 2 October 2026, batch~77]
+This subsection describes the delivered archive. In the repository the files
+keep their bytes but not their places: \texttt{scripts/} is \texttt{code/},
+\texttt{results/} is \texttt{data/}, \texttt{replay.sh} and
+\texttt{build\_pdf.sh} are in \texttt{code/}, \texttt{requirements.txt} is in
+\texttt{data/}, and \texttt{report.tex} became \texttt{article.tex}. The
+delivered PDF and the manifest \texttt{SHA256SUMS} were verified at placement
+and not shipped (both survive in the arrival commit), so
+\texttt{verify\_manifest.py} cannot run as shipped. \texttt{run\_checks.py}
+writes into \texttt{results/} beside \texttt{scripts/}, overwriting the
+recorded outputs; the report's \texttt{README.md} therefore runs it on a scratch
+copy with the delivered layout. At intake (2 October 2026) that run reported
+status PASS and all seven JSON files equal to the recorded ones up to line
+endings. An independent intake computation (exact $S_n$ to $n=1200$ from the
+totient formula) gave $\lambda=0.33023754398592927\ldots$ and
+$\mu=0.67395260185159494\ldots$, $n(S_n/(C_+4^nn^{-5/2})-1)=1.55938$ at
+$n=1200$ against $c_1^+=1.55988$, and second-order residuals $-0.59993$
+($n=1000$) and $-0.59864$ ($n=1200$) approaching $c_2^+=-0.59217$ at rate
+$1/n$, consistent with Theorem~\ref{tss:thm:fixed}.
+\end{writenote}
+
 \section{Further questions}
-\label{sec:questions}
+\label{tss:sec:questions}
 The results suggest several concrete extensions without settling them:
 \begin{enumerate}
 \item \textbf{Conditional component laws at coexistence.} Identify which component-count and component-size ranges contribute to the two coefficient terms. A genuine mixture theorem needs separate uniform estimates for those ranges, rather than only the sum of their weights.
@@ -603,7 +703,7 @@ The results suggest several concrete extensions without settling them:
 \end{enumerate}
 
 \begingroup
-\small
+\small\raggedright
 \begin{thebibliography}{9}
 \setlength{\itemsep}{3pt}
 \bibitem{CDFS}

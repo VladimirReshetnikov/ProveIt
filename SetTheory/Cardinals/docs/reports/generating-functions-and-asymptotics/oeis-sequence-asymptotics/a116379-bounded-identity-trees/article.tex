@@ -31,6 +31,9 @@
 \newcommand{\ee}{\mathrm e}
 \newcommand{\N}{\mathbb N}
 \DeclareMathOperator{\Aut}{Aut}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small\emergencystretch=3em
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \hypersetup{pdftitle={Rooted identity trees with fixed maximum outdegree},pdfauthor={},pdfsubject={Explicit transversality, all fixed order asymptotics, and specified model inversion}}
 \begin{document}
 \thispagestyle{empty}
@@ -55,16 +58,63 @@ We give finite Puiseux and Gamma-ratio generators, explicit first corrections fo
 \item A degree-independent positive transversality bound is proved. All coefficient and inverse remainder statements nevertheless keep $d$ and the expansion order fixed.
 \item The leading law, its corrections, and its inverses have separate logical roles. A smooth inverse is defined only after a specific finite model has been chosen.
 \end{itemize}
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~63 of
+batch~77 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{rooted-\allowbreak identity-\allowbreak trees-\allowbreak source.zip}
+(wrapper directory \texttt{rooted-\allowbreak identity-\allowbreak trees/}) in
+commit \texttt{096ee7b87}, and placed in commit \texttt{34f1acd4b} in the
+research-report collection, among the OEIS-sequence asymptotics reports (main
+file \texttt{report.tex}, now \texttt{article.tex}). The manuscript names no
+ProveIt commit and continues no repository path, so it has no pin; it names
+neither an author nor a tool, and its PDF metadata leave the author empty.
+Nothing in this report is formalized in Lean or Rocq, and placement in the
+collection confers no formal status on any statement here. No other report of
+the repository treats identity trees, A116379 or A116380. The writing step
+prefixed every label with \texttt{bit:} and added these \textsf{[write]} notes;
+no statement, proof or number of the manuscript was altered.
+
+\emph{Priority caveat, kept.} The manuscript makes no priority claim: the full
+texts of Meir--Moon--Mycielski (1983) and Haigh--Kennedy--Quintas (1984) were
+not inspected (Section~\ref{bit:sec:prior}), and the derivative cancellation is
+credited to Bell--Burris--Yeats. The statement that the OEIS entries ``still
+describe the leading asymptotic as unknown'' is the manuscript's, dated
+2 October 2026; the intake did not re-check the OEIS pages.
+
+\emph{Notation.} The manuscript reuses several letters. Each symbol is printed
+as delivered; the table fixes its meaning by section, with the tempting false
+readings.
+\begin{center}\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.81\linewidth}@{}}
+\toprule
+symbol & meaning here (and what it is \emph{not})\\
+\midrule
+$p$, $p_r$ & $p_r=I(z^r)$ are power sums (Sections~\ref{bit:sec:equation}--\ref{bit:sec:allorders}); $p=3/2$ is the polynomial exponent of the inverse model \eqref{bit:eq:model}. The inverse sections never use $p_r$.\\
+$E_j$, $e_j$, $E_k$ & $e_j$ elementary symmetric functions and $E_j=\sum_{k\le j}e_k$ their cumulative sums \eqref{bit:eq:esym}; $E_k$ in Proposition~\ref{bit:prop:inverse} are inverse coefficients, not cumulative sums.\\
+$P$, $P_k$ & $P(z)$ is the plane-tree (Catalan) majorant \eqref{bit:eq:plane}; $P_k(h)$ are the pure-log inverse polynomials \eqref{bit:eq:P1}--\eqref{bit:eq:P2}.\\
+$B$, $B_j$ & $B=P(81/400)$ in the proof of Lemma~\ref{bit:lem:radius} and a count-error constant in the proof of Proposition~\ref{bit:prop:threshold}; $B_j(x)$ are Bernoulli polynomials.\\
+$h$, $h_r$, $H$ & $h=\log(L/\lambda)$ (Section~\ref{bit:sec:inverse}); $h_r(\alpha)$ the log-Gamma coefficients \eqref{bit:eq:h}; $H(z)$ the evaluated derivative \eqref{bit:eq:H}.\\
+$d$, $D_j$, $\Delta$ & $d$ is the cap; $D_j=D_{d,j}$ the relative corrections ($D_0=1$); $\Delta$ the inverse displacement. $D_j$ is not a derivative.\\
+$C$, $\tau$, $\rho$, $\lambda$ & $C=C_d=b_1/\Gamma(-1/2)$; $\tau=I(\rho)$; $\lambda=\log(1/\rho)$. All depend on $d$; Table~\ref{bit:tab:constants} gives them for $d=3,4$.\\
+$N$, $N_{r,q}$, $N(y)$ & $N$ is a nested-input truncation in the numerics; $N_{r,q}$ the nested coefficients \eqref{bit:eq:nested}; $N(y)$ the integer threshold \eqref{bit:eq:threshold}.\\
+$R$, $\mathcal R_R$, $K$ & $R$ is a model (expansion) order; $\mathcal R_R(n)$ the count residual \eqref{bit:eq:residual}; $K$ an inverse order, $K_{d,R}$ the enclosure constant.\\
+$L$, $L_2$, $M_R$, $Q_R$ & $L=\log(y/C)$; $L_2=D_2-D_1^2/2$; $M_R$ the smooth model and $Q_R$ its correction factor.\\
+$t$, $\eta$ & $t=\sqrt{1-z/\rho}$; $\eta=1-810/(319\sqrt{19})$ the transversality margin.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
 \clearpage
 
 \section{The rooted set equation}
-\label{sec:equation}
+\label{bit:sec:equation}
 A rooted identity tree is a finite rooted unlabeled tree whose only automorphism fixing the root is the identity. Its child subtrees are themselves identity trees and are pairwise nonisomorphic. Conversely, these two conditions force every root-preserving automorphism to be trivial: it cannot permute distinct child types and, recursively, cannot act inside a child. The restriction is siblingwise and recursive. The same fringe-tree type may occur at vertices with different parents.
 
 Fix $d\ge2$ throughout. Write
 \begin{equation}
  I(z)=I_d(z)=\sum_{n\ge1}a_nz^n,\qquad a_n=a_{d,n},\qquad a_0=0.
- \label{eq:I}
+ \label{bit:eq:I}
 \end{equation}
 Size means number of vertices. There is a unary path at every positive size, so $a_n\ge1$. Root deletion leaves a set of between zero and $d$ distinct objects from the same class.
 
@@ -73,45 +123,45 @@ Define elementary symmetric polynomials in \emph{power-sum coordinates} by
  \sum_{j\ge0}e_j(p_1,p_2,\ldots)u^j
  =\exp\!\left(\sum_{r\ge1}\frac{(-1)^{r-1}}r p_ru^r\right),
  \qquad E_j=\sum_{k=0}^j e_k.
- \label{eq:esym}
+ \label{bit:eq:esym}
 \end{equation}
 Thus $e_0=E_0=1$; put $E_j=0$ for $j<0$. When evaluating $E_j$ below, its power sums are always stated or inherited from the displayed arguments. The root equation is
 \begin{equation}
  I(z)=F(z,I(z)),\qquad
  F(z,y)=zE_d\bigl(y,I(z^2),\ldots,I(z^d)\bigr).
- \label{eq:root}
+ \label{bit:eq:root}
 \end{equation}
-Although the polynomial in \eqref{eq:root} has signed coefficients, the series
+Although the polynomial in \eqref{bit:eq:root} has signed coefficients, the series
 $e_j(I(z),I(z^2),\ldots)$ counts sets of $j$ distinct subtree objects and has nonnegative coefficients. Formally,
 \begin{equation}
  \sum_{j\ge0}e_j\bigl(I(z),I(z^2),\ldots\bigr)u^j
  =\prod_{n\ge1}(1+uz^n)^{a_n}.
- \label{eq:product}
+ \label{bit:eq:product}
 \end{equation}
 This identity also gives an exact integer algorithm without cancellation.
 
 For clarity, put $y=I(z)$ and $p_r=I(z^r)$. The two target equations are
 \begin{align}
  d=3:\quad y&=z\left(1+y+\frac{y^2-p_2}{2}
-                  +\frac{y^3-3yp_2+2p_3}{6}\right),\label{eq:d3}\\
+                  +\frac{y^3-3yp_2+2p_3}{6}\right),\label{bit:eq:d3}\\
  d=4:\quad y&=z\left(1+y+\frac{y^2-p_2}{2}
                   +\frac{y^3-3yp_2+2p_3}{6}\right.\notag\\
  &\hspace{34mm}\left.+\frac{y^4-6y^2p_2+8yp_3+3p_2^2-6p_4}{24}\right).
- \label{eq:d4}
+ \label{bit:eq:d4}
 \end{align}
 These agree with A116379 and A116380 \cite{oeis3,oeis4}. For $d=2$ the cubic and quartic terms are absent.
 
 \section{Boundary finiteness and a uniform derivative bound}
-\label{sec:closure}
+\label{bit:sec:closure}
 Let $\rho$ be the radius of $I$. We prove the analytic hypotheses directly, rather than assuming a positive-coefficient bivariate implicit schema for the signed polynomial $F$.
 
 \begin{lemma}[Radius and finite endpoint]
-\label{lem:radius}
+\label{bit:lem:radius}
 For every $d\ge2$,
 \begin{equation}
  \frac14\le\rho\le\frac9{20},\qquad
  \tau:=\lim_{z\uparrow\rho} I(z)=I(\rho)<\infty.
- \label{eq:bounds}
+ \label{bit:eq:bounds}
 \end{equation}
 The functions $I(z^r)$, $r\ge2$, needed in $F$ are analytic on a neighborhood of the closed disk $|z|\le\rho$.
 \end{lemma}
@@ -120,116 +170,116 @@ Choose a canonical ordering of the children of each unlabeled tree, for example 
 \begin{equation}
  I(z)\preceq P(z):=\frac{1-\sqrt{1-4z}}2,\qquad
  P'(z)=\frac1{\sqrt{1-4z}},
- \label{eq:plane}
+ \label{bit:eq:plane}
 \end{equation}
 and $\rho\ge1/4$.
 
 Every class with cap $d\ge2$ includes roots with zero children, one child, or two distinct children from the class. At $0<z<\rho$, writing $y=I(z)$, this yields
 \begin{equation}
  y\ge z\left(1+y+\frac{y^2-I(z^2)}2\right).
- \label{eq:binary}
+ \label{bit:eq:binary}
 \end{equation}
 Suppose $\rho>9/20$. At $z=9/20$ the necessary discriminant for this quadratic inequality would be nonnegative. Yet
 \begin{align}
  (1-z)^2-2z^2+z^2I(z^2)
  &\le 1-2z-z^2+z^2P(z^2)\notag\\
  &=-\frac{10+81\sqrt{19}}{8000}<0,
- \label{eq:disc}
+ \label{bit:eq:disc}
 \end{align}
 a contradiction. This proves the non-strict upper bound without evaluating a boundary series.
 
-Now let $z\uparrow\rho$. Since $z^2\le81/400<1/4$, the term $I(z^2)$ is bounded by $B=P(81/400)$. On any interval $\rho/2\le z<\rho$, \eqref{eq:binary} implies
+Now let $z\uparrow\rho$. Since $z^2\le81/400<1/4$, the term $I(z^2)$ is bounded by $B=P(81/400)$. On any interval $\rho/2\le z<\rho$, \eqref{bit:eq:binary} implies
 $zy^2\le2(1-z)y+zB\le2y+zB$.
-The positive roots of this quadratic bound $y$ uniformly because $z\ge1/8$. Nonnegative coefficients therefore give a finite limit $\tau$ and convergence of $I(\rho)$ to that limit. Continuity would also exclude $\rho=9/20$ by \eqref{eq:disc}, but we retain the sufficient non-strict bound.
+The positive roots of this quadratic bound $y$ uniformly because $z\ge1/8$. Nonnegative coefficients therefore give a finite limit $\tau$ and convergence of $I(\rho)$ to that limit. Continuity would also exclude $\rho=9/20$ by \eqref{bit:eq:disc}, but we retain the sufficient non-strict bound.
 
 Finally $\rho^r\le\rho^2\le81/400<1/4\le\rho$ for $r\ge2$. For fixed $d$ there is a common disk larger than $|z|\le\rho$ on which all finitely many nested inputs $I(z^r)$ are analytic.
 \end{proof}
 
-Differentiating \eqref{eq:esym} in $p_r$ gives the useful cancellation
+Differentiating \eqref{bit:eq:esym} in $p_r$ gives the useful cancellation
 \begin{equation}
  \frac{\partial E_j}{\partial p_r}=
  \frac{(-1)^{r-1}}r E_{j-r}.
- \label{eq:newtonderivative}
+ \label{bit:eq:newtonderivative}
 \end{equation}
-For fixed-cardinality Set, Bell, Burris and Yeats \cite[p.~57]{bby} already observe the $r=1$ derivative cancellation and the resulting positivity after substitution. Equation~\eqref{eq:newtonderivative} is the direct power-sum differentiation used here; neither it nor that positivity observation is claimed as new.
+For fixed-cardinality Set, Bell, Burris and Yeats \cite[p.~57]{bby} already observe the $r=1$ derivative cancellation and the resulting positivity after substitution. Equation~\eqref{bit:eq:newtonderivative} is the direct power-sum differentiation used here; neither it nor that positivity observation is claimed as new.
 
 \begin{proposition}[Explicit transversality]
-\label{prop:transverse}
+\label{bit:prop:transverse}
 On the physical positive branch and at its endpoint, the partial derivatives of $F$ satisfy
 \begin{align}
- F_y(z,I(z))&=zE_{d-1},& F_{yy}(z,I(z))&=zE_{d-2}\ge z,\label{eq:fy}\\
+ F_y(z,I(z))&=zE_{d-1},& F_{yy}(z,I(z))&=zE_{d-2}\ge z,\label{bit:eq:fy}\\
  F_z(z,I(z))&\ge\frac{I(z)}z\,\eta>0,&
  \eta&:=1-\frac{810}{319\sqrt{19}}>0.
- \label{eq:fzbound}
+ \label{bit:eq:fzbound}
 \end{align}
 Here $0<z\le\rho$, every $E_j$ is evaluated at the actual subtree power sums, and $F_z$ differentiates with respect to $z$ while holding $y$ fixed.
 \end{proposition}
 \begin{proof}
-Equation \eqref{eq:newtonderivative} proves \eqref{eq:fy}. Along the actual branch, \eqref{eq:root} gives
+Equation \eqref{bit:eq:newtonderivative} proves \eqref{bit:eq:fy}. Along the actual branch, \eqref{bit:eq:root} gives
 \begin{equation}
  F_z=\frac{y}{z}
    +\sum_{r=2}^d(-1)^{r-1}z^r I'(z^r)E_{d-r}.
- \label{eq:fzexact}
+ \label{bit:eq:fzexact}
 \end{equation}
 All evaluated $e_j$ are nonnegative. Thus
-$0\le E_{d-r}\le E_d=y/z$, and \eqref{eq:plane} implies
+$0\le E_{d-r}\le E_d=y/z$, and \eqref{bit:eq:plane} implies
 $I'(z^r)\le P'(z^r)$. Discarding positive odd-index terms yields
 \begin{align}
  F_z&\ge\frac yz\left(1-\sum_{k\ge1}z^{2k}P'(z^{2k})\right)\notag\\
  &\ge\frac yz\left(1-\frac{z^2}{(1-z^2)\sqrt{1-4z^2}}\right).
- \label{eq:fzchain}
+ \label{bit:eq:fzchain}
 \end{align}
 The expression subtracted in the last line is increasing for $0<z\le9/20$ and at $9/20$ equals $810/(319\sqrt{19})<1$. All nested derivatives are analytic at the endpoint, so the same inequality holds by continuity there. The estimate is independent of $d$ and requires no prior characteristic equation.
 \end{proof}
 
 \section{The characteristic point and complex dominance}
-\label{sec:dominance}
+\label{bit:sec:dominance}
 \begin{theorem}[Unique square root singularity]
-\label{thm:sqrt}
+\label{bit:thm:sqrt}
 For each fixed $d\ge2$, the point $(\rho,\tau)$ satisfies
 \begin{equation}
  \tau=F(\rho,\tau),\qquad F_y(\rho,\tau)=1,
  \qquad F_z(\rho,\tau)>0,\quad F_{yy}(\rho,\tau)>0.
- \label{eq:critical}
+ \label{bit:eq:critical}
 \end{equation}
 It is the unique singularity of $I$ on $|z|=\rho$. The function $I$ continues analytically to a dented neighborhood of that disk and, locally at $\rho$, has the convergent expansion
 \begin{equation}
  I(z)=\sum_{j\ge0}b_j(1-z/\rho)^{j/2},\qquad
  b_0=\tau,\quad b_1=-\sqrt{\frac{2\rho F_z(\rho,\tau)}{F_{yy}(\rho,\tau)}}<0,
- \label{eq:puiseux}
+ \label{bit:eq:puiseux}
 \end{equation}
 \end{theorem}
 \begin{proof}
-For $0<z<\rho$, differentiate \eqref{eq:root}:
+For $0<z<\rho$, differentiate \eqref{bit:eq:root}:
 \begin{equation}
  (1-F_y(z,I(z)))I'(z)=F_z(z,I(z))>0.
- \label{eq:branch}
+ \label{bit:eq:branch}
 \end{equation}
-Since $I'(z)>0$, we have $F_y<1$. The finite endpoint and analytic nested inputs imply a finite endpoint limit with $F_y(\rho,\tau)\le1$. If it were less than one, the ordinary analytic implicit-function theorem applied to $G(z,y)=y-F(z,y)$ would continue $I$ through the positive point $\rho$. This contradicts Pringsheim's theorem for the nonnegative series $I$ with finite radius. Thus $F_y=1$. Proposition~\ref{prop:transverse} proves the other inequalities in \eqref{eq:critical}.
+Since $I'(z)>0$, we have $F_y<1$. The finite endpoint and analytic nested inputs imply a finite endpoint limit with $F_y(\rho,\tau)\le1$. If it were less than one, the ordinary analytic implicit-function theorem applied to $G(z,y)=y-F(z,y)$ would continue $I$ through the positive point $\rho$. This contradicts Pringsheim's theorem for the nonnegative series $I$ with finite radius. Thus $F_y=1$. Proposition~\ref{bit:prop:transverse} proves the other inequalities in \eqref{bit:eq:critical}.
 
 For complex dominance, define the \emph{evaluated} derivative
 \begin{equation}
  H(z)=F_y(z,I(z))=zE_{d-1}\bigl(I(z),I(z^2),\ldots\bigr).
- \label{eq:H}
+ \label{bit:eq:H}
 \end{equation}
 It has nonnegative coefficients. Its terms $z e_0$ and $z e_1=zI(z)$ ensure positive coefficients of $z$ and $z^2$. Absolute convergence at $\rho$ follows from $\tau<\infty$ and the finite polynomial expression; also $H(\rho)=1$.
 If $z=\rho\ee^{i\theta}$, the triangle inequality gives $|H(z)|\le1$. Equality requires all nonzero terms to have the same argument. The terms of degrees one and two then require $\ee^{i\theta}=\ee^{2i\theta}$, so $\ee^{i\theta}=1$. Consequently
 \begin{equation}
  |F_y(z,I(z))|<1\qquad (|z|=\rho,\ z\ne\rho).
- \label{eq:strictH}
+ \label{bit:eq:strictH}
 \end{equation}
-The series $I$ converges absolutely and uniformly on its closed disk. At each such boundary point its value satisfies the analytic equation, and \eqref{eq:strictH} allows implicit continuation across it.
+The series $I$ converges absolutely and uniformly on its closed disk. At each such boundary point its value satisfies the analytic equation, and \eqref{bit:eq:strictH} allows implicit continuation across it.
 
 At $(\rho,\tau)$, $G_y=0$, $G_z=-F_z\ne0$ and $G_{yy}=-F_{yy}\ne0$. Local analytic preparation therefore gives two square-root branches. Expanding $G$ at that point gives
 $0=\rho F_z t^2-\tfrac12F_{yy}(y-\tau)^2+\bigO(t^3)$ with $t=\sqrt{1-z/\rho}$.
-Because $I(z)<\tau$ for real $z<\rho$, the physical branch has the negative coefficient in \eqref{eq:puiseux}. Nonzero $b_1$ makes $\rho$ a genuine singularity.
+Because $I(z)<\tau$ for real $z<\rho$, the physical branch has the negative coefficient in \eqref{bit:eq:puiseux}. Nonzero $b_1$ makes $\rho$ a genuine singularity.
 
 Choose the local slit branch at $\rho$. The implicit continuations around the rest of the circle agree with the original interior function and with one another on their overlaps. Compactness of the circle away from a small neighborhood of $\rho$ gives a common outer collar. Together these neighborhoods contain a usual $\Delta$-domain:
 \begin{equation}
  |z|<\rho+\varepsilon,\quad z\ne\rho,\quad
  |\arg(z-\rho)|>\phi
  \qquad (0<\phi<\pi/2)
- \label{eq:delta}
+ \label{bit:eq:delta}
 \end{equation}
 for sufficiently small $\varepsilon>0$. This supplies the domain needed for singularity transfer \cite[Chs.~VI--VII]{fs}.
 \end{proof}
@@ -238,20 +288,20 @@ Two checks at the characteristic point are worth recording. Subtracting the root
 \begin{equation}
  \tau=1+\rho e_d>1,\qquad
  F_{yy}=\rho E_{d-2}=1-\rho e_{d-1}>0.
- \label{eq:taucheck}
+ \label{bit:eq:taucheck}
 \end{equation}
 The strict inequality $e_d>0$ follows by choosing $d$ distinct finite unary paths as child subtrees. These finite-cap identities are useful consistency tests; they do not constitute separate priority claims.
 
 \section{All fixed orders by finite coefficient operations}
-\label{sec:allorders}
+\label{bit:sec:allorders}
 \begin{theorem}[Coefficient expansion]
-\label{thm:coeff}
+\label{bit:thm:coeff}
 For every fixed $d\ge2$ and every fixed integer $R\ge0$,
 \begin{equation}
  a_n=C\rho^{-n}n^{-3/2}
  \left(\sum_{j=0}^R D_jn^{-j}+\bigO_{d,R}(n^{-R-1})\right),
  \quad D_0=1,\quad C=\frac{b_1}{\Gamma(-1/2)}>0.
- \label{eq:allorders}
+ \label{bit:eq:allorders}
 \end{equation}
 The constants $b_j$ and $D_j$ are determined by the finite recursions below. The domain, implicit constants and required lower bound on $n$ may depend on $d$ and $R$.
 \end{theorem}
@@ -261,72 +311,72 @@ Put $t=\sqrt{1-z/\rho}$, so $z=\rho(1-t^2)$. For $r\ge2$ define exact nested coe
 \begin{equation}
  N_{r,q}=(-1)^q\sum_{n\ge1}a_n\rho^{rn}\binom{rn}{q},
  \qquad I(z^r)=\sum_{q\ge0}N_{r,q}t^{2q}.
- \label{eq:nested}
+ \label{bit:eq:nested}
 \end{equation}
 For each fixed $q$, the sum converges absolutely because $\rho^r<\rho$ and the binomial factor grows only polynomially in $n$. Equivalently, $N_{r,q}$ is the $s^q$ coefficient of
 $I(\rho^r(1-s)^r)$, giving a second numerical route by Taylor differentiation.
 
-To compute through $D_R$, work modulo $t^{2R+3}$, retain $q\le R+1$ in \eqref{eq:nested}, and use
+To compute through $D_R$, work modulo $t^{2R+3}$, retain $q\le R+1$ in \eqref{bit:eq:nested}, and use
 \begin{equation}
  e_0=1,\qquad
  j e_j=\sum_{r=1}^j(-1)^{r-1}p_re_{j-r},\qquad
  p_1=y=\tau+\sum_{k\ge1}b_kt^k.
- \label{eq:newton}
+ \label{bit:eq:newton}
 \end{equation}
-For $r\ge2$ substitute \eqref{eq:nested}. After choosing the negative $b_1$ in \eqref{eq:puiseux}, determine $b_k$ successively for $2\le k\le2R+1$ from
+For $r\ge2$ substitute \eqref{bit:eq:nested}. After choosing the negative $b_1$ in \eqref{bit:eq:puiseux}, determine $b_k$ successively for $2\le k\le2R+1$ from
 \begin{equation}
  [t^{k+1}]\left(y-\rho(1-t^2)\sum_{j=0}^de_j\right)=0.
- \label{eq:triangular}
+ \label{bit:eq:triangular}
 \end{equation}
-At this stage the coefficient of the new unknown $b_k$ is $-F_{yy}b_1\ne0$. Indeed the first relevant term of $G_y$ along the expansion is $-F_{yy}b_1t$, so varying $b_k t^k$ first changes degree $k+1$ by that amount. A possible $b_{k+1}$ term is multiplied by $G_y(\rho,\tau)=0$. This proves that the recursion is triangular and uniquely solvable. Finite truncation of the sums in \eqref{eq:nested} is a numerical approximation to this exact definition.
+At this stage the coefficient of the new unknown $b_k$ is $-F_{yy}b_1\ne0$. Indeed the first relevant term of $G_y$ along the expansion is $-F_{yy}b_1t$, so varying $b_k t^k$ first changes degree $k+1$ by that amount. A possible $b_{k+1}$ term is multiplied by $G_y(\rho,\tau)=0$. This proves that the recursion is triangular and uniquely solvable. Finite truncation of the sums in \eqref{bit:eq:nested} is a numerical approximation to this exact definition.
 
 \subsection{The Gamma ratio generator}
 For noninteger $\alpha$ and $n\ge0$,
 \begin{equation}
  [z^n](1-z/\rho)^\alpha
  =\rho^{-n}\frac{\Gamma(n-\alpha)}{\Gamma(-\alpha)\Gamma(n+1)}.
- \label{eq:gammaexact}
+ \label{bit:eq:gammaexact}
 \end{equation}
 Let $B_j(x)$ denote the Bernoulli polynomials, with their usual exponential generating function $te^{xt}/(e^t-1)$. Define $\gamma_0(\alpha)=1$ and
 \begin{align}
  h_r(\alpha)&=\frac{(-1)^{r+1}}{r(r+1)}
-    \bigl(B_{r+1}(-\alpha)-B_{r+1}(1)\bigr),\label{eq:h}\\
+    \bigl(B_{r+1}(-\alpha)-B_{r+1}(1)\bigr),\label{bit:eq:h}\\
  k\gamma_k(\alpha)&=\sum_{r=1}^k r h_r(\alpha)\gamma_{k-r}(\alpha).
- \label{eq:gamma}
+ \label{bit:eq:gamma}
 \end{align}
 The log-Gamma expansion, followed by exponentiation, gives
 \begin{equation}
  \frac{\Gamma(n-\alpha)}{\Gamma(n+1)}
  \sim n^{-\alpha-1}\sum_{k\ge0}\gamma_k(\alpha)n^{-k}.
- \label{eq:gammaratio}
+ \label{bit:eq:gammaratio}
 \end{equation}
 It follows that
 \begin{equation}
  D_j=\sum_{\ell=0}^j\frac{b_{2\ell+1}}{b_1}
  \frac{\Gamma(-1/2)}{\Gamma(-\ell-1/2)}
  \gamma_{j-\ell}(\ell+1/2).
- \label{eq:D}
+ \label{bit:eq:D}
 \end{equation}
 In particular,
 \begin{align}
- D_1&=\frac38-\frac32\frac{b_3}{b_1},\label{eq:D1}\\
+ D_1&=\frac38-\frac32\frac{b_3}{b_1},\label{bit:eq:D1}\\
  D_2&=\frac{25}{128}-\frac{45}{16}\frac{b_3}{b_1}
                          +\frac{15}{4}\frac{b_5}{b_1}.
- \label{eq:D2}
+ \label{bit:eq:D2}
 \end{align}
 
-\begin{proof}[Proof of Theorem~\ref{thm:coeff}]
-The convergent Puiseux expansion from Theorem~\ref{thm:sqrt} may be truncated after $t^{2R+2}$ with remainder $\bigO(t^{2R+3})$. The finitely many even powers are polynomials in $z$ and have no coefficients for sufficiently large $n$. Transfer in the $\Delta$-domain \eqref{eq:delta}, applied to each odd power and to the remainder, yields an absolute remainder
-$\bigO_{d,R}(\rho^{-n}n^{-R-5/2})$. Substituting \eqref{eq:gammaratio} into \eqref{eq:gammaexact} and collecting powers of $n^{-1}$ gives \eqref{eq:D} and \eqref{eq:allorders}. This is the standard Puiseux and singularity-transfer mechanism; the preceding sections verify its hypotheses for the present signed equations.
+\begin{proof}[Proof of Theorem~\ref{bit:thm:coeff}]
+The convergent Puiseux expansion from Theorem~\ref{bit:thm:sqrt} may be truncated after $t^{2R+2}$ with remainder $\bigO(t^{2R+3})$. The finitely many even powers are polynomials in $z$ and have no coefficients for sufficiently large $n$. Transfer in the $\Delta$-domain \eqref{bit:eq:delta}, applied to each odd power and to the remainder, yields an absolute remainder
+$\bigO_{d,R}(\rho^{-n}n^{-R-5/2})$. Substituting \eqref{bit:eq:gammaratio} into \eqref{bit:eq:gammaexact} and collecting powers of $n^{-1}$ gives \eqref{bit:eq:D} and \eqref{bit:eq:allorders}. This is the standard Puiseux and singularity-transfer mechanism; the preceding sections verify its hypotheses for the present signed equations.
 \end{proof}
 
 \begin{remark}[What the uniform bound does not prove]
-The number $\eta$ in \eqref{eq:fzbound} is independent of $d$. This alone controls neither a common $\Delta$-domain nor all local derivatives or transfer constants as $d\to\infty$. No asymptotic assertion here allows $d$ or $R$ to grow with $n$, and no convergence of the full inverse-power asymptotic series is asserted.
+The number $\eta$ in \eqref{bit:eq:fzbound} is independent of $d$. This alone controls neither a common $\Delta$-domain nor all local derivatives or transfer constants as $d\to\infty$. No asymptotic assertion here allows $d$ or $R$ to grow with $n$, and no convergence of the full inverse-power asymptotic series is asserted.
 \end{remark}
 
 \section{The ternary and quaternary cases}
-\label{sec:numerics}
-The characteristic system \eqref{eq:critical}, with the nested functions evaluated from exact count polynomials, gives the numerical values in Table~\ref{tab:constants}. Thirty decimal places are displayed to make comparisons unambiguous; none is interval-certified.
+\label{bit:sec:numerics}
+The characteristic system \eqref{bit:eq:critical}, with the nested functions evaluated from exact count polynomials, gives the numerical values in Table~\ref{bit:tab:constants}. Thirty decimal places are displayed to make comparisons unambiguous; none is interval-certified.
 
 \begin{table}[htbp]
 \centering\small
@@ -342,7 +392,7 @@ $D_2$ & $-0.572628680061486211786162046680$ & $-0.562216000439483655162154638924
 \bottomrule
 \end{tabular}
 \caption{Non-certified numerical characteristic data and first relative corrections.}
-\label{tab:constants}
+\label{bit:tab:constants}
 \end{table}
 
 For example, writing the displayed decimals only as approximations,
@@ -354,13 +404,25 @@ For example, writing the displayed decimals only as approximations,
 \end{align*}
 Numerical work should use the stored high-precision constants, since a rounded base raised to the $n$th power eventually introduces a material error.
 
+\begin{writenote}[Added 2 October 2026, batch~77]
+The stored values in \texttt{data/identity-checks.json} carry 48 decimals.
+The table rounds them correctly, so in two entries its last digit differs from
+the 30-decimal prefix of the file: $C$ for $d=3$ is stored as
+$\ldots980551907\ldots$ (printed $\ldots980552$), and $\rho$ for $d=4$ as
+$\ldots531229552\ldots$ (printed $\ldots531230$).
+The intake checked the table independently from the exact counts: at $n=400$,
+$n\bigl(a_n/(C\rho^{-n}n^{-3/2})-1\bigr)-D_1$ is $-0.00146$ for $d=3$ and
+$-0.00143$ for $d=4$, matching $D_2/n=-0.00143$ and $-0.00141$ to the
+expected accuracy, which confirms $\rho$, $C$, $D_1$ and $D_2$ for both caps.
+\end{writenote}
+
 Define the residual, including its sign convention, by
 \begin{equation}
  \mathcal R_{R}(n):=
  \frac{a_n}{C\rho^{-n}n^{-3/2}\sum_{j=0}^R D_jn^{-j}}-1.
- \label{eq:residual}
+ \label{bit:eq:residual}
 \end{equation}
-A negative residual means the approximation is larger than the exact count. Table~\ref{tab:residuals} uses full stored precision.
+A negative residual means the approximation is larger than the exact count. Table~\ref{bit:tab:residuals} uses full stored precision.
 
 \begin{table}[htbp]
 \centering
@@ -378,28 +440,28 @@ Cap & $n$ & $\mathcal R_0(n)$ & $\mathcal R_2(n)$ & $\mathcal R_4(n)$\\
 \bottomrule
 \end{tabular}
 \caption{Exact count divided by truncated asymptotic model, minus one.}
-\label{tab:residuals}
+\label{bit:tab:residuals}
 \end{table}
 
-The factor close to eight on doubling $n$ in the order-two column is consistent with an $n^{-3}$ relative remainder. This observation is a diagnostic, not the proof of Theorem~\ref{thm:coeff}.
+The factor close to eight on doubling $n$ in the order-two column is consistent with an $n^{-3}$ relative remainder. This observation is a diagnostic, not the proof of Theorem~\ref{bit:thm:coeff}.
 
 Exact counts were computed through $n=400$. Nested jets were evaluated by direct weighted binomial sums with $(N,\mathrm{digits})=(200,70)$ and $(400,110)$, and by Taylor differentiation of the composed polynomial with $(N,\mathrm{digits})=(250,80)$. The resulting $\rho,\tau,C,D_0,\ldots,D_4$ agree to more than 60 decimal places. These are independent constructions of the \emph{nested jets}; they share the exact count data, characteristic-point procedure and later jet algebra. They are not independent full proofs or rigorous enclosures of truncation and rounding errors.
 
 \section{Inverting a specified smooth asymptotic model}
-\label{sec:inverse}
+\label{bit:sec:inverse}
 A sequence on the integers has no canonical smooth inverse. We therefore choose a model before inverting it. Fix a finite $R\ge0$, set
 \begin{equation}
  p=\frac32,\qquad\lambda=\log(1/\rho)>0,\qquad
  Q_R(x)=1+\sum_{j=1}^R D_jx^{-j},\qquad
  M_R(x)=C\ee^{\lambda x}x^{-p}Q_R(x).
- \label{eq:model}
+ \label{bit:eq:model}
 \end{equation}
 For this model only, \emph{set $D_j=0$ for all $j>R$} whenever a higher inverse order is requested. This is a convention about the chosen model, not a statement that the true sequence corrections vanish.
 
 For sufficiently large real $x$, $Q_R(x)>0$ and
 \begin{equation}
  (\log M_R)'(x)=\lambda-\frac px+\bigO(x^{-2})>\lambda/2.
- \label{eq:monmodel}
+ \label{bit:eq:monmodel}
 \end{equation}
 Thus the restriction of $M_R$ to a sufficiently large half-line has a unique inverse $x_R(y)$ for all sufficiently large $y$.
 
@@ -408,38 +470,38 @@ The $R=0$ model has large inverse
 \begin{equation}
  x_0(y)=-\frac p\lambda
  W_{-1}\!\left(-\frac\lambda p(C/y)^{1/p}\right).
- \label{eq:lambert}
+ \label{bit:eq:lambert}
 \end{equation}
 Indeed taking the $p$th root of $y=C\ee^{\lambda x}x^{-p}$ gives
 $(-\lambda x/p)\ee^{-\lambda x/p}=-(\lambda/p)(C/y)^{1/p}$.
-The argument lies in $(-1/\ee,0)$ when $y$ is large. The lower real branch $W_{-1}$ gives the solution tending to infinity; $W_0$ gives the small solution. Formula \eqref{eq:lambert} is exact for $M_0$ on its increasing branch.
+The argument lies in $(-1/\ee,0)$ when $y$ is large. The lower real branch $W_{-1}$ gives the solution tending to infinity; $W_0$ gives the small solution. Formula \eqref{bit:eq:lambert} is exact for $M_0$ on its increasing branch.
 
 \begin{proposition}[Recursive Lambert corrections]
-\label{prop:inverse}
-For the specified finite model \eqref{eq:model} and each fixed $K\ge0$,
+\label{bit:prop:inverse}
+For the specified finite model \eqref{bit:eq:model} and each fixed $K\ge0$,
 \begin{equation}
  x_R(y)=x_0(y)+\sum_{k=1}^K E_k x_0(y)^{-k}
             +\bigO_{d,R,K}(x_0(y)^{-K-1}).
- \label{eq:inverseseries}
+ \label{bit:eq:inverseseries}
 \end{equation}
 The coefficients are generated by setting $u=1/x_0$, $\Delta=\sum_{k\ge1}E_ku^k$ and cancelling powers of $u$ in
 \begin{equation}
  \lambda\Delta-p\log(1+u\Delta)
  +\log\!\left(1+\sum_{j=1}^R D_j
              \left(\frac{u}{1+u\Delta}\right)^j\right)=0.
- \label{eq:inverserec}
+ \label{bit:eq:inverserec}
 \end{equation}
 At degree $k$, the only occurrence of the new coefficient is $\lambda E_k$.
 \end{proposition}
 \begin{proof}
-Subtract $\log M_0(x_0)=\log y$ from $\log M_R(x_0+\Delta)=\log y$ to obtain \eqref{eq:inverserec}. Its left side is analytic near $(u,\Delta)=(0,0)$ and has partial derivative $\lambda$ in $\Delta$ there. The implicit-function theorem gives an analytic solution $\Delta(u)$ with zero constant term, proving both the finite-order remainder and the triangular recurrence.
+Subtract $\log M_0(x_0)=\log y$ from $\log M_R(x_0+\Delta)=\log y$ to obtain \eqref{bit:eq:inverserec}. Its left side is analytic near $(u,\Delta)=(0,0)$ and has partial derivative $\lambda$ in $\Delta$ there. The implicit-function theorem gives an analytic solution $\Delta(u)$ with zero constant term, proving both the finite-order remainder and the triangular recurrence.
 \end{proof}
 
 Writing $L_2=D_2-D_1^2/2$ and using the zero-extension convention if $R<2$, the first coefficients are
 \begin{equation}
  E_1=-\frac{D_1}{\lambda},\qquad
  E_2=-\frac{pD_1}{\lambda^2}-\frac{L_2}{\lambda}.
- \label{eq:E12}
+ \label{bit:eq:E12}
 \end{equation}
 \begin{samepage}
 For any model of order at least two, these are approximately
@@ -459,28 +521,28 @@ When $K\le R$, $E_1,\ldots,E_K$ depend only on the true $D_1,\ldots,D_K$ and agr
 Let
 \begin{equation}
  L=\log(y/C),\qquad h=\log(L/\lambda).
- \label{eq:Lh}
+ \label{bit:eq:Lh}
 \end{equation}
 For each fixed $K$, the same large inverse can be written without evaluating Lambert $W$:
 \begin{equation}
  \lambda x_R(y)=L+ph+\sum_{k=1}^K\frac{P_k(h)}{L^k}
        +\bigO_{d,R,K}\!\left(\frac{(\log L)^{K+1}}{L^{K+1}}\right).
- \label{eq:purelog}
+ \label{bit:eq:purelog}
 \end{equation}
 Here $P_k$ is a polynomial of degree at most $k$. The first two are
 \begin{align}
- P_1(h)&=p^2h-\lambda D_1,\label{eq:P1}\\
+ P_1(h)&=p^2h-\lambda D_1,\label{bit:eq:P1}\\
  P_2(h)&=-\frac{p^3}{2}h^2+p^3h+p\lambda D_1(h-1)
                   -\lambda^2(D_2-D_1^2/2).
- \label{eq:P2}
+ \label{bit:eq:P2}
 \end{align}
 To generate higher $P_k$, substitute $X=L+ph+\sum P_k(h)L^{-k}$ into
 \begin{equation}
  X-p\log(X/\lambda)
  +\log\!\left(1+\sum_{j=1}^R D_j(\lambda/X)^j\right)=L.
- \label{eq:logrec}
+ \label{bit:eq:logrec}
 \end{equation}
-At each new order the unknown $P_k$ has coefficient one. Treat $h$ as a formal indeterminate during cancellation, then put $h=\log(L/\lambda)$. Expanding $\log(1+\bigO(\log L/L))$ shows inductively that $\deg P_k\le k$. The residual after order $K$ has the order in \eqref{eq:purelog}. The derivative of the left side of \eqref{eq:logrec} with respect to $X$ tends to one, so the solution error has the same order. This gives a remainder statement, rather than only a formal series.
+At each new order the unknown $P_k$ has coefficient one. Treat $h$ as a formal indeterminate during cancellation, then put $h=\log(L/\lambda)$. Expanding $\log(1+\bigO(\log L/L))$ shows inductively that $\deg P_k\le k$. The residual after order $K$ has the order in \eqref{bit:eq:purelog}. The derivative of the left side of \eqref{bit:eq:logrec} with respect to $X$ tends to one, so the solution error has the same order. This gives a remainder statement, rather than only a formal series.
 
 \subsection{Numerical separation of inverse errors}
 For the order-four model let
@@ -490,70 +552,109 @@ At the exact targets $y=a_n$, record three quantities with their indicated signs
  x_4(a_n)-n,\qquad
  \widehat x_4(a_n)-x_4(a_n),\qquad
  \widehat x_4(a_n)-n.
- \label{eq:inverseerrors}
+ \label{bit:eq:inverseerrors}
 \end{equation}
 They separate the sequence-to-model discrepancy, the inverse-series discrepancy, and their sum. The supplement records them for $n=50,100,200,400$. At $n=400$, the last quantity is approximately $-4.1616\cdot10^{-11}$ for $d=3$ and $-3.6307\cdot10^{-11}$ for $d=4$. These tests concern real inverse location, not a certified ceiling at a discontinuity.
 
 \section{Integer thresholds and the ceiling qualification}
-\label{sec:threshold}
+\label{bit:sec:threshold}
 Adding a new unary root gives an injection from the size-$n$ class to the size-$(n+1)$ class and preserves the cap and identity property. Hence $a_{n+1}\ge a_n$. The leading theorem gives
 \begin{equation}
  \frac{a_{n+1}}{a_n}\longrightarrow\rho^{-1}>1,
- \label{eq:ratio}
+ \label{bit:eq:ratio}
 \end{equation}
 so the sequence is eventually strictly increasing. For sufficiently large real $y$, define
 \begin{equation}
  N(y)=\min\{n\in\N:a_n\ge y\}.
- \label{eq:threshold}
+ \label{bit:eq:threshold}
 \end{equation}
 
 \begin{proposition}[Qualified integer enclosure]
-\label{prop:threshold}
+\label{bit:prop:threshold}
 For fixed $d$ and $R$, there is a constant $K_{d,R}>0$ such that, for all sufficiently large $y$, writing $x=x_R(y)$,
 \begin{equation}
  \left\lceil x-K_{d,R}x^{-R-1}\right\rceil
  \le N(y)\le
  \left\lceil x+K_{d,R}x^{-R-1}\right\rceil.
- \label{eq:ceiling}
+ \label{bit:eq:ceiling}
 \end{equation}
 The same form holds with $x$ replaced by the order-$R$ Lambert-corrected approximation, after increasing the constant.
 \end{proposition}
 \begin{proof}
-Theorem~\ref{thm:coeff} and positivity of $Q_R$ for large arguments give
-$|\log a_n-\log M_R(n)|\le Bn^{-R-1}$ for large integer $n$. Equation \eqref{eq:monmodel} bounds the logarithmic model slope below by $\lambda/2$. Choose $K_{d,R}$ sufficiently larger than $2B/\lambda$ and put $\delta=K_{d,R}x^{-R-1}$.
-For integers near $x$, if $n<x-\delta$, the model slope dominates the count error and $a_n<y$; if $n\ge x+\delta$, then $a_n\ge y$. Integers far below $x$ are handled by eventual monotonicity, with the finite initial segment smaller than $y$ for large $y$. Thus no integer smaller than $\lceil x-\delta\rceil$ can attain the threshold, while $\lceil x+\delta\rceil$ does. This proves \eqref{eq:ceiling}. Proposition~\ref{prop:inverse} with $K=R$ changes $x$ by at most a constant multiple of $x^{-R-1}$, which can be absorbed by enlarging $K_{d,R}$.
+Theorem~\ref{bit:thm:coeff} and positivity of $Q_R$ for large arguments give
+$|\log a_n-\log M_R(n)|\le Bn^{-R-1}$ for large integer $n$. Equation \eqref{bit:eq:monmodel} bounds the logarithmic model slope below by $\lambda/2$. Choose $K_{d,R}$ sufficiently larger than $2B/\lambda$ and put $\delta=K_{d,R}x^{-R-1}$.
+For integers near $x$, if $n<x-\delta$, the model slope dominates the count error and $a_n<y$; if $n\ge x+\delta$, then $a_n\ge y$. Integers far below $x$ are handled by eventual monotonicity, with the finite initial segment smaller than $y$ for large $y$. Thus no integer smaller than $\lceil x-\delta\rceil$ can attain the threshold, while $\lceil x+\delta\rceil$ does. This proves \eqref{bit:eq:ceiling}. Proposition~\ref{bit:prop:inverse} with $K=R$ changes $x$ by at most a constant multiple of $x^{-R-1}$, which can be absorbed by enlarging $K_{d,R}$.
 \end{proof}
 
-An exact ceiling is justified only when both enclosing ceilings in \eqref{eq:ceiling} coincide. A finite asymptotic expansion cannot decide every threshold arbitrarily close to a jump. In particular, at $y=a_n$ even a tiny negative inverse error must not be interpreted as an unconditional rounding theorem. No effective numerical value of $K_{d,R}$ or certified finite starting threshold is claimed here.
+An exact ceiling is justified only when both enclosing ceilings in \eqref{bit:eq:ceiling} coincide. A finite asymptotic expansion cannot decide every threshold arbitrarily close to a jump. In particular, at $y=a_n$ even a tiny negative inverse error must not be interpreted as an unconditional rounding theorem. No effective numerical value of $K_{d,R}$ or certified finite starting threshold is claimed here.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+The inversion of Sections~\ref{bit:sec:inverse}--\ref{bit:sec:threshold} is an
+instance of general results of the repository's transseries volume
+(\texttt{Analysis/\allowbreak Transseries/\allowbreak docs/\allowbreak series-\allowbreak and-\allowbreak transseries/\allowbreak Transseries\_And\_Inversion/}),
+and no novelty is claimed for the method. The Lambert carrier
+\eqref{bit:eq:lambert} is \texttt{p0:thm:lambert-core} for
+$\lambda x-p\log x=\log(y/C)$, that is $a=\lambda$, $b=-p=-3/2$, with the
+branch $W_{-1}$ that its branch rule selects for the large solution. The
+recursion \eqref{bit:eq:inverserec} is the fixed-point equation of
+\texttt{p0:thm:lambert-centered} with $a=\lambda$, $b=-p$, $t=u=1/x_0$, $U=\Delta$
+and $Q(t)=\log\bigl(1+\sum_{j\le R}D_jt^j\bigr)$, which also gives the
+triangular structure noted after Proposition~\ref{bit:prop:inverse}. The pure
+logarithmic expansion \eqref{bit:eq:purelog} is of the kind treated by
+\texttt{p0:thm:flattening} (direct polynomial--logarithmic reversion); the
+intake did not match the two normalizations term by term. The enclosure
+\eqref{bit:eq:ceiling} has the form of the separation condition, part~(2) of
+\texttt{p0:thm:staircase}: equal ceilings determine $N(y)$, as the paragraph
+above says. The generic staircase arithmetic is formalized in Lean as
+\texttt{Fabius.staircase\_ceil} and \texttt{Fabius.staircase\_separation}
+(\texttt{Analysis/\allowbreak FabiusFunction/\allowbreak Lean/\allowbreak FabiusFunction/\allowbreak StaircaseInversion.lean});
+those lemmas concern an arbitrary monotone function, not $a_{d,n}$, and give
+this report no formal status.
+\end{writenote}
 
 \section{Relation to prior work and remaining priority checks}
-\label{sec:prior}
-The leading $n^{-3/2}$ mechanism, analytic implicit-function analysis, Puiseux expansions and Gamma-ratio transfer are classical \cite{fs}. Bell--Burris--Yeats \cite[\S\S6.1--6.2]{bby} explain why the signed Set or PSET construction is not automatically covered by their broad positive-operator theorem. Their Example~77 treats binary identity trees separately, and Example~78 discusses the unrestricted class. They already state the derivative cancellation for fixed-cardinality Set and the resulting nonnegativity after substitution on printed page~57. The issue addressed by Sections~\ref{sec:closure}--\ref{sec:dominance} is the remaining finite-boundary, nonvanishing-derivative and complex-dominance closure, with an explicit bound valid for every finite cap.
+\label{bit:sec:prior}
+The leading $n^{-3/2}$ mechanism, analytic implicit-function analysis, Puiseux expansions and Gamma-ratio transfer are classical \cite{fs}. Bell--Burris--Yeats \cite[\S\S6.1--6.2]{bby} explain why the signed Set or PSET construction is not automatically covered by their broad positive-operator theorem. Their Example~77 treats binary identity trees separately, and Example~78 discusses the unrestricted class. They already state the derivative cancellation for fixed-cardinality Set and the resulting nonnegativity after substitution on printed page~57. The issue addressed by Sections~\ref{bit:sec:closure}--\ref{bit:sec:dominance} is the remaining finite-boundary, nonvanishing-derivative and complex-dominance closure, with an explicit bound valid for every finite cap.
 
 Genitrini's all-order P\'olya-structure analysis \cite{genitrini} assumes an equation $T=\zeta\exp T$ with suitable analyticity beyond the dominant radius and a nonzero derivative of $\zeta$. Its identity-tree example in \S3.2 is the unrestricted PSET class A004111, not either finite cap considered here. Defining $\zeta=I\exp(-I)$ formally would not by itself verify those analytic hypotheses and cannot replace the boundary argument. The degree-restricted $\Omega$-P\'olya framework in Gittenberger--Jin--Wallner \cite[\S5.2]{gjw} is based on multiset trees and explicitly distinguishes identity trees; it does not supply a positive-weight bounded-PSET theorem.
 
 The inspected A116379 and A116380 pages retain an unknown-asymptotic comment as of 2 October 2026 \cite{oeis3,oeis4}. That database status motivates the calculation but is not evidence of exhaustive priority. Two especially relevant older works remain unresolved at full-text level: Meir--Moon--Mycielski's \emph{Hereditarily finite sets and identity trees} \cite{mmm}, and Haigh--Kennedy--Quintas's \emph{Counting and coding identity trees with fixed diameter and bounded degree} \cite{hkq}. The latter's available abstract concerns large-diameter asymptotics, but this does not exclude an additional size theorem in the complete paper. Public publisher and metadata routes did not yield readable full texts in the present check. Accordingly this article makes no first-ever claim or assertion that those papers omit the result. Establishing publication-level novelty would require resolving those sources and a broader literature review.
 
 \section{Exact enumeration and reproducibility}
-\label{sec:reproduce}
+\label{bit:sec:reproduce}
 The accompanying archive is self-contained apart from standard software dependencies. It contains this article's TeX and PDF, source code, generated numerical data, build instructions and a file-hash manifest. It contains no third-party full papers.
 
 For exact enumeration, suppose $a_1,\ldots,a_{n-1}$ are known. The number $a_n$ is the sum, over $0\le j\le d$, of the coefficient of $u^jz^{n-1}$ in
 \begin{equation}
  \prod_{m=1}^{n-1}(1+uz^m)^{a_m}.
- \label{eq:enumeration}
+ \label{bit:eq:enumeration}
 \end{equation}
-Truncate the $u$ degree at $d$ and the $z$ degree at the requested size. Multiplying the factor for size $m$ uses the exact binomial coefficients $\binom{a_m}{\ell}$ and descending updates in $u$ degree. Since a child has strictly fewer vertices than its parent, the construction determines all counts successively from $a_1=1$. A separately implemented Newton recurrence from \eqref{eq:newton} provides an exact cross-check.
+Truncate the $u$ degree at $d$ and the $z$ degree at the requested size. Multiplying the factor for size $m$ uses the exact binomial coefficients $\binom{a_m}{\ell}$ and descending updates in $u$ degree. Since a child has strictly fewer vertices than its parent, the construction determines all counts successively from $a_1=1$. A separately implemented Newton recurrence from \eqref{bit:eq:newton} provides an exact cross-check.
 
-The numerical stage solves the two characteristic equations for the finite nested-input polynomial, forms the jets by \eqref{eq:nested} or Taylor differentiation, and applies \eqref{eq:triangular} and \eqref{eq:D}. The inverse stage implements \eqref{eq:inverserec} and \eqref{eq:logrec}, solves the large model inverse directly, and separates the three residuals in \eqref{eq:inverseerrors}. The code supports finite orders beyond the displayed examples; their numerical reliability still depends on precision and nested-input truncation.
+The numerical stage solves the two characteristic equations for the finite nested-input polynomial, forms the jets by \eqref{bit:eq:nested} or Taylor differentiation, and applies \eqref{bit:eq:triangular} and \eqref{bit:eq:D}. The inverse stage implements \eqref{bit:eq:inverserec} and \eqref{bit:eq:logrec}, solves the large model inverse directly, and separates the three residuals in \eqref{bit:eq:inverseerrors}. The code supports finite orders beyond the displayed examples; their numerical reliability still depends on precision and nested-input truncation.
 
 The replay script is invoked with \texttt{bash replay.sh}. It regenerates exact counts, cross-checks the two enumeration routes, reproduces the jet and inverse tests, and rebuilds the article. The README specifies the software versions and commands, expected outputs, residual conventions and the limits of numerical verification. A SHA-256 manifest identifies the released inputs and outputs. On a different TeX engine or package version PDF bytes may differ; in that case mathematical content and rendering should be compared rather than equating a different metadata or font encoding with changed results.
 
+\begin{writenote}[Added 2 October 2026, batch~77]
+This section describes the delivered archive. In the repository
+\texttt{code/} and \texttt{data/} keep their delivered names, while
+\texttt{replay.sh} and \texttt{build\_pdf.sh} moved into \texttt{code/},
+\texttt{code/requirements.txt} into \texttt{data/}, and \texttt{report.tex} became
+\texttt{article.tex}. The delivered PDF and the SHA-256 manifest
+\texttt{SHA256SUMS} were verified at placement and not shipped (both survive in
+the arrival commit). \texttt{replay.sh} begins by checking that manifest and
+then rebuilds \texttt{report.pdf}, so it cannot run as shipped; the numerical
+replay \texttt{code/reproduce.sh} needs neither and runs with the shipped
+layout (the report's \texttt{README.md} gives the command, with an output
+directory outside the repository). At intake (2 October 2026) it passed every
+check in 41~s, and \texttt{check\_identity.py} reproduced the stored counts.
+\end{writenote}
+
 \section{Further research questions}
-\label{sec:future}
+\label{bit:sec:future}
 \begin{enumerate}
-\item \textbf{Certified constants and effective thresholds.} Certify $\rho,C,D_j$ by interval root and tail bounds, then make \eqref{eq:ceiling} effective.
-\item \textbf{Growing degree caps.} Determine whether the local analytic domains and derivative estimates can be controlled uniformly as $d\to\infty$, and identify the scale at which finite-cap coefficients approach unrestricted identity-tree coefficients. The bound in Proposition~\ref{prop:transverse} is only one ingredient.
+\item \textbf{Certified constants and effective thresholds.} Certify $\rho,C,D_j$ by interval root and tail bounds, then make \eqref{bit:eq:ceiling} effective.
+\item \textbf{Growing degree caps.} Determine whether the local analytic domains and derivative estimates can be controlled uniformly as $d\to\infty$, and identify the scale at which finite-cap coefficients approach unrestricted identity-tree coefficients. The bound in Proposition~\ref{bit:prop:transverse} is only one ingredient.
 \item \textbf{Other allowed outdegree sets.} For arbitrary finite allowed sets the cumulative $E_d$ structure is lost. Which restrictions retain enough positivity of the evaluated derivatives for a comparable closure? Periodicity and absent unary roots would require separate dominance and threshold arguments.
 \item \textbf{Structure of random bounded identity trees.} Derive height, profile or fringe-subtree laws from suitable marked equations after verifying their signed analytic hypotheses. Existing multiset-tree limit laws cannot simply be imported.
 \item \textbf{Priority and formulation.} Resolve the two older full-text references, compare maximum graph degree with rooted outdegree conventions, and identify the precise strongest statement already in the literature before making a novelty claim.

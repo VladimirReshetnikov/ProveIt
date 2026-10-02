@@ -20,6 +20,10 @@
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \allowdisplaybreaks[2]
 \setcounter{tocdepth}{2}
+% [write] notes added when the report entered the collection (batch 77)
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{\textbf{Moving fugacity asymptotics for distinct partitions}\\[7pt]\large Uniform coefficient expansions and inverses for A291698 and A292304}
 \author{}\date{1 October 2026}
 \begin{document}
@@ -32,7 +36,7 @@ For distinct partitions with size-dependent fugacity $u=n^\alpha$, this report p
 \newpage
 \tableofcontents
 \newpage
-\section{Result and scope}\label{result-and-scope}
+\section{Result and scope}\label{mfp:result-and-scope}
 
 Let
 
@@ -79,7 +83,7 @@ and
  \Delta_j=2s-2\Re\sqrt{NA_j}.
 \]
 
-\subsection{Theorem 1 Principal sector expansion}\label{principal-sector-theorem}
+\subsection{Theorem 1 Principal sector expansion}\label{mfp:principal-sector-theorem}
 
 For every fixed integer \(M\ge0\),
 
@@ -102,7 +106,7 @@ The absorbed form of (2) can have a very late numerical onset. The
 explicit exponential remainder in (1) should be retained in practical
 work.
 
-\subsection{Theorem 2 Finite resonance sectors}\label{finite-resonance-sector-theorem}
+\subsection{Theorem 2 Finite resonance sectors}\label{mfp:finite-resonance-sector-theorem}
 
 For fixed nonnegative integers \(K,M\), the stronger, finite-sector
 statement is
@@ -136,8 +140,88 @@ growing with \(n\). The exact local-sector formulation in Section 5.4
 supplies a stronger, non-vacuous exponential separation before the
 algebraic expansions are truncated.
 
+\subsection{Provenance, status and reading conventions}\label{mfp:provenance}
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+\emph{Provenance.} This report was built from one manuscript: batch~77,
+manuscript~34 of the repository's incoming-reports channel, archive
+\nolinkurl{moving-fugacity-reproducibility.zip} (main file
+\nolinkurl{moving-fugacity-report.tex}, 985 lines, dated 1 October 2026,
+with a 17-page PDF that is not shipped), arrival commit
+\texttt{096ee7b87}, placed in \texttt{4f11bc9c0}. The text from the title
+to the end of the scope checklist is the delivered manuscript, unchanged
+except for the label prefix \texttt{mfp:} and the notes marked
+\textbf{[write]}; no statement, proof, number or symbol of it was changed,
+and every section number the text cites by hand is still correct. The delivered proof note \nolinkurl{theorem-and-proof.md}
+and the delivered \nolinkurl{REPRODUCIBILITY.md} are shipped beside this
+article, byte-identical; the SHA-256 printed in Appendix~A still matches
+the shipped \nolinkurl{theorem-and-proof.md}. \emph{Pin.} The delivery
+names no ProveIt revision and continues no repository report.
+\emph{Status.} An unrefereed research manuscript (its author line is
+empty). Nothing in it is formalized in Lean or Rocq, and its placement in
+the repository confers no formal status. At intake and at this write all
+four delivered programs (Appendix~A) were rerun on a copy, with outputs
+identical to the shipped records up to line endings; the first ten terms
+of both OEIS sequences were recomputed independently by a direct product
+expansion. These are numerical diagnostics; the proofs were not
+re-derived.
+\end{writenote}
+
+\begin{writenote}[Reading conventions]
+The manuscript reuses several letters; no symbol was renamed. Two readings
+need care. \emph{The fugacity $u=n^\alpha$ is one weight per part, the
+same for every part of a partition of $n$}: a partition with $m$ parts has
+weight $n^{\alpha m}$. It is \emph{not} a part-dependent weight $k^\alpha$
+on a part of size $k$, which is the different family $\prod_k(1+k^\alpha
+q^k)$ (see the note at the end of Section~9). \emph{The symbol $C_n$ has
+two unrelated meanings}: in Section~2 it is the Bessel scale
+$C_n=A^{1/4}e^{2\sqrt{AN}}/(2\sqrt\pi N^{3/4}\sqrt{1+u})$, while in
+Sections~5.2--5.3 it is the bounded constant $C_n=A-L^2/2\to\pi^2/6$.
+
+\smallskip
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}
+ >{\raggedright\arraybackslash}p{0.77\linewidth}@{}}
+\toprule
+symbol & meanings, by section \\
+\midrule
+$a,b$ & the endpoints $0<a\le\alpha\le b$ of the compact $\alpha$-range;
+ $a_n(\alpha)$ is the sequence; $a_j,b_j$ are $\Re\sqrt{A_j}$,
+ $\Im\sqrt{A_j}$ in Section~5.3; $b_r(\nu)$ are Bessel coefficients
+ (Section~2). \\
+$A$ & $A=-\operatorname{Li}_2(-u)$; $A_j$ its sector shifts; $A_\infty$ its
+ elementary part (Section~6); $\mathcal A_\alpha(x)$ the real continuation
+ (13). \\
+$B$ & $B_{2r}$ Bernoulli numbers; $B_0$ the principal scale; $\mathcal B_j$
+ the exact sector integrals (12c). \\
+$c$ & $c_r(u)$ endpoint coefficients ($c_1(u)=u/(12(1+u))$); $c$, $c_0$,
+ $c_J$, $c_j$ unnamed positive constants, and $c_1$ in (9) is such a
+ constant, not $c_1(u)$. \\
+$v$ & $v=1/u$, the small fugacity (Sections~5.1, 7); a summation index in
+ $b_r(\nu)$ and in the residue series after (10). \\
+$y$ & $y=tx-L$ in Section~3; $y=\theta/t$ in Section~5.2; $y=\log X$ in
+ Section~7. \\
+$z$ & the complex variable $q=e^{-z}$; but $z=y/(2\sqrt2\alpha)$ in (15). \\
+$m$, $r$ & $m$ is the endpoint degree, and also the number of consecutive
+ indices in (9); $r$ indexes $c_r$, is the starting index in (9) and the
+ Lagrange order in (17); $r_0$ in (15). \\
+$x$ & the real continuation variable of Section~7; an integration variable
+ ($w=xz$) in Section~3. \\
+$D$, $E$, $g$, $H$ & $D=u\,d/du$ (and $D_v$); $E(x)=\log S_{K,M}(x)-g(x)$
+ in (17), while $E_n(\alpha)$ is the Sommerfeld expression of Section~6;
+ $g(x)=\sqrt2\alpha\sqrt x\log x$, while $g_d$ are generator coefficients
+ (Section~2); $H=g^{-1}$, while $H_{\rm ex}$ is the amplitude (12b). \\
+$\eta$ & a small fixed constant in (5); $\eta(y)=E(H(y))$ in (17); the
+ Dedekind-$\eta$ transformation in Section~5. \\
+$R_K$, $R_P$ & the exact remainder of (12d); the Euler--Maclaurin remainder
+ of (13a). \\
+$t$, $s$, $N$, $L$ & $t=\sqrt{A/N}$ (the saddle, not a time), $s=\sqrt{AN}$,
+ $N=n+c_1(u)$, $L=\log u$. \\
+\bottomrule
+\end{tabular}
+\end{writenote}
+
 \section{Coefficient generator and ordinary relative
-expansion}\label{coefficient-generator-and-ordinary-relative-expansion}
+expansion}\label{mfp:coefficient-generator-and-ordinary-relative-expansion}
 
 The first endpoint coefficients are
 
@@ -195,7 +279,7 @@ large; the log factors are accounted for by choosing strict inequalities
 in the depth.
 
 \section{Euler--Maclaurin and its uniform
-remainder}\label{eulermaclaurin-and-its-uniform-remainder}
+remainder}\label{mfp:eulermaclaurin-and-its-uniform-remainder}
 
 Write \(f_u(w)=\log(1+ue^{-w})\), with the branch continued from the
 positive real axis. Fix a small \(\eta>0\). In the strip-like sector
@@ -249,7 +333,7 @@ exact identity in Section 5 obtains the \(1/u\) factor directly from the
 small-fugacity factor's derivative norm.
 
 \section{Minor arcs and Bessel
-transfer}\label{minor-arcs-and-bessel-transfer}
+transfer}\label{mfp:minor-arcs-and-bessel-transfer}
 
 The Cauchy integral on \(q=e^{-t+i\theta}\) is
 
@@ -327,7 +411,7 @@ For completeness, expand both exponentials: the residue is
 series. Equations (7)-(10) prove Theorem 1.
 
 \section{Exact Jacobi decomposition and the finite-sector
-proof}\label{exact-jacobi-decomposition-and-the-finite-sector-proof}
+proof}\label{mfp:exact-jacobi-decomposition-and-the-finite-sector-proof}
 
 Let \(q=e^{-z},\ \Re z>0,\ u>1,\ L=\log u,\ Q=e^{-4\pi^2/z}\). With
 \((a;q)_\infty=\prod_{r\ge0}(1-aq^r)\), the following is an
@@ -367,7 +451,7 @@ Division proves (11), first for \(z>0\) and then throughout
 square-root branches.
 
 \subsection{Uniform local amplitude over any fixed number of
-sectors}\label{uniform-local-amplitude-over-any-fixed-number-of-sectors}
+sectors}\label{mfp:uniform-local-amplitude-over-any-fixed-number-of-sectors}
 
 Fix \(C>0\) and allow \(|\Im z|\le Ct/L,\ \Re z=t\). Unlike (6), \(C\)
 need not be small. Apply Euler--Maclaurin to
@@ -401,7 +485,7 @@ estimates below use the \textbf{sum of the absolute values} of the
 theta terms, never division by a possibly vanishing theta sum.
 
 \subsection{Isolating and completing finitely many saddle
-arcs}\label{isolating-and-completing-finitely-many-saddle-arcs}
+arcs}\label{mfp:isolating-and-completing-finitely-many-saddle-arcs}
 
 Fix an auxiliary integer \(J>K\), to be chosen sufficiently large below.
 Restrict initially to
@@ -470,7 +554,7 @@ avoids making any assertion about dominance exactly at the cell
 boundaries.
 
 \subsection{Bounding the rest without an infinite Bessel
-sum}\label{bounding-the-rest-without-an-infinite-bessel-sum}
+sum}\label{mfp:bounding-the-rest-without-an-infinite-bessel-sum}
 
 Let \(C_n=A-L^2/2\). Then \(C_n\) tends uniformly to \(\pi^2/6\) and is
 bounded between two positive constants. Since
@@ -507,7 +591,7 @@ The polynomial factor is then absorbed, giving
 any infinite inversion or growing-\(K\) assertion.
 
 \subsection{Exact sector functions and a genuinely sectorwise
-statement}\label{exact-sector-functions-and-a-genuinely-sectorwise-statement}
+statement}\label{mfp:exact-sector-functions-and-a-genuinely-sectorwise-statement}
 
 To distinguish an exponential sector before truncating a much larger
 principal algebraic series, define the analytic amplitude
@@ -589,7 +673,7 @@ accompanying code.
 
 \Needspace{9\baselineskip}
 \section{OEIS specializations and the fugacity
-threshold}\label{oeis-specializations-and-the-fugacity-threshold}
+threshold}\label{mfp:oeis-specializations-and-the-fugacity-threshold}
 
 The dilogarithm identity gives
 
@@ -639,7 +723,7 @@ Keeping A exact, N shifted, and the factor \(\sqrt{1+u}\) exact is the
 clean route to the uniform theorem and its inverse.
 
 \section{Real continuation and
-inversion}\label{real-continuation-and-inversion}
+inversion}\label{mfp:real-continuation-and-inversion}
 
 A sequence has no unique real analytic continuation. To make the inverse
 unambiguous, specify the following \textbf{saddle-Fourier continuation},
@@ -781,7 +865,7 @@ avoids asserting convergence of an infinite transseries. Every
 derivative includes \(u=x^\alpha\), \(A(u)\), \(N(x)\), and the
 finite-sector dependence.
 
-\subsection{Integer threshold}\label{integer-threshold}
+\subsection{Integer threshold}\label{mfp:integer-threshold}
 
 The distinct-partition map that increments the largest part embeds
 partitions of \(n\) into those of \(n\)+1 without changing part count.
@@ -799,8 +883,24 @@ remainder, or evaluate the neighboring exact coefficients. The big-O
 constants in this note are not numerical certificates for a particular
 finite input.
 
+\begin{writenote}[An instance of the repository's inversion apparatus]
+No novelty is claimed here for the inversion method; the instances are
+those of the transseries volume
+(\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}).
+The initializer (15) solves $r\log r=z$, that is $X+\log X=\log z$ for
+$X=\log r=\tfrac12\log x$: the dominant block of
+\texttt{p0:thm:lambert-core} with $a=b=1$, on the principal branch, so
+$r_0=e^{W_0(z)}=z/W_0(z)$. The generator (17) is the reversion formula of
+\texttt{p0:thm:perturbed-inversion}, read formally at $\varepsilon=1$ with
+$F=g$, $\mu_0=H$ and $E(\mu_0(y))=\eta(y)$; the manuscript itself calls it
+formal and does not assert convergence. The threshold identity of this
+subsection is part~(1) (exact rounding) of \texttt{p0:thm:staircase} for the
+interpolation (13), and the warning against rounding an approximate inverse
+is its separation condition, part~(2).
+\end{writenote}
+
 \section{Exact computations and practical
-warning}\label{exact-computations-and-practical-warning}
+warning}\label{mfp:exact-computations-and-practical-warning}
 
 The code \texttt{checks.py} computes the exact polynomials
 
@@ -854,7 +954,7 @@ matter before the eventual regime. The script records all \(K\) from 0
 through 8 so this limitation is visible rather than hidden.
 
 \section{Prior-art boundary and sources
-checked}\label{prior-art-boundary-and-sources-checked}
+checked}\label{mfp:prior-art-boundary-and-sources-checked}
 
 \begin{itemize}
 \tightlist
@@ -908,6 +1008,34 @@ transformed argument. These are relevant antecedents, not a basis for
 claiming that q-product Euler--Maclaurin or modular transformations are
 new.
 
+\begin{writenote}[The two OEIS conjectures]
+The delivered proof note (\nolinkurl{theorem-and-proof.md}, Section~9)
+records that the OEIS page of A291698 could not be reached when the
+manuscript was written, so that its displayed conjecture was transcribed
+from a screening note that is not part of the delivery, while the A292304
+entry was checked directly. The manuscript's list above drops that
+caveat. On 2 October 2026 both entries were consulted for this write: the
+equivalents displayed in Section~6 are exactly the conjectures of V\'aclav Kot\v{e}\v{s}ovec in A291698
+(15 September 2017) and A292304 (14 September 2017), which the manuscript
+does not name; and the listed terms $1,1,2,12,20,55,294,497,1224,2520$ of
+A291698 agree with an independent recomputation.
+\end{writenote}
+
+\begin{writenote}[Relation to other reports of the collection]
+The neighbouring report \texttt{a022629-\allowbreak distinct-\allowbreak
+partition-\allowbreak norms}, in the same directory as this one, treats
+the norm-weighted products $\prod_{k\ge1}(1+k^\alpha q^k)^\mu$ (A022629 and
+its relatives), where the weight $k^\alpha$ depends on the \emph{part}
+$k$. Here the weight $n^\alpha$ depends on the \emph{size} $n$ being
+counted and is the same for every part, so a partition with $m$ parts
+carries $n^{\alpha m}$. The two families share the distinct-part structure,
+the Euler--Maclaurin and saddle methods and a Lambert-type inverse, but
+not the saddle regime (here the part count approaches the
+distinct-partition endpoint $\sqrt{2n}$, with conjugate resonance sectors
+governed by $L=\log u$), the sequences or any theorem. Neither manuscript cites the other. That report
+was not edited by this write.
+\end{writenote}
+
 \section{Further research questions}
 \subsection{Effective constants and certified numerical ranges}
 The present bounds are uniform but eventual. An explicit value for the consecutive-interval constant, quantitative Euler--Maclaurin remainders, and certified saddle-contour quadrature would turn the inverse enclosure into a finite-input certificate. This is especially relevant for $\alpha=2$, where asymptotic smoothness begins late. The exact local integrals in (12c) provide a natural numerical starting point; the supplied quadrature experiment is not interval arithmetic.
@@ -937,6 +1065,17 @@ The long hash identifies the source precisely; it is not a mathematical certific
 \item[\texttt{validate.py}] Performs 120 independent direct weighted-product dynamic-programming checks for $n\le60$, verifies 24 listed A292304 terms, tests the exact Jacobi identity at real and complex arguments, and compares finite-sector inverses. \\\emph{Output: }\texttt{validation.json}.
 \item[\texttt{sector\_integrals.py}] Performs uncertified high-precision quadrature of the exact local integrals at $\alpha=1$, $n=20{,}000$, for $j=0,1,2,3$. \\\emph{Output: }\texttt{sector-integral-checks.json}.
 \end{description}
+
+\begin{writenote}[Shipped names]
+In this repository the four programs are \nolinkurl{code/checks.py},
+\nolinkurl{code/resonance_check.py}, \nolinkurl{code/validate.py} and
+\nolinkurl{code/sector_integrals.py}, their outputs are in
+\nolinkurl{data/}, the delivered \nolinkurl{build_pdf.sh} is
+\nolinkurl{code/build_pdf.sh}, and \nolinkurl{moving-fugacity-report.tex} is
+\nolinkurl{article.tex}. The last three programs read and write files
+beside themselves, so the replay below must be run on a flat copy; the
+report's README gives the commands.
+\end{writenote}
 
 The checks were run with Python, mpmath 1.3.0, and SymPy 1.14.0. The principal comparison uses 100 decimal digits; the local-sector quadrature uses 70. All integer polynomial coefficients are exact. No random seed is involved.
 

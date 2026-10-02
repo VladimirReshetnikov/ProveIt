@@ -14,6 +14,9 @@
 \newcommand{\N}{\mathbb N}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\e}{e}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Sparse nonattacking chess placements\\\large Every fixed asymptotic order and growth-index inversion}
 \author{}
 \date{2 October 2026}
@@ -23,27 +26,27 @@
 The numbers of ways to place $n$ nonattacking kings or knights on an $n\times n$ board have the same classical leading equivalent, $e^{-9/2}n^{2n}/n!$. Their first relative corrections are different: $7/(3n)$ for kings and $37/(3n)$ for knights. We compute four corrections exactly and give a finite algorithm and a uniform remainder proof for every fixed order. The method applies to every fixed finite symmetric move set, including a uniform extension with $k/n$ in a compact positive interval. Exact boundary contributions and triangle density explain the first correction. We also derive a Lambert-$W$ growth-index inverse and state the necessary integer-rounding qualification. The leading law and general cluster-expansion methods are prior work; the results presented here are explicit specialized expansions with controlled errors.
 \end{abstract}
 
-\section{Definitions and main results}
+\section{Definitions and main results}\label{scp:sec:main}
 Let $K_n$ count subsets of $n$ squares of the ordinary $n\times n$ board containing no attacking pair of kings, and let $N_n$ be the corresponding knight count. These are OEIS \href{https://oeis.org/A201513}{A201513} and \href{https://oeis.org/A201540}{A201540}. Rotations and reflections remain distinct. There is no one-piece-per-row or one-piece-per-column constraint.
 
 Kot\v e\v sovec's leading equivalent, dated 29 November 2011 and reproduced in his book~\cite{Kote}, is
-\begin{equation}\label{eq:classical}
+\begin{equation}\label{scp:eq:classical}
  K_n\sim N_n\sim B_n,\qquad B_n=e^{-9/2}\frac{n^{2n}}{n!}.
 \end{equation}
 It is not a new result of this report. The book also contains fixed-piece polynomial formulas. Pages 77 and 293 display the diagonal leading laws; pages 685--686 give the general bounded-move leading argument. A fixed-piece polynomial expansion alone does not justify substituting a growing piece count in its remainder. We supply that uniform step below.
 
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{scp:thm:main}
 Both sequences have rational relative expansions to every fixed order, with the corresponding next-power remainder. In particular,
 \begin{align}
 \frac{K_n}{B_n}
  &=1+\frac7{3n}+\frac{119}{9n^2}+\frac{11327}{810n^3}
-       +\frac{90475}{1944n^4}+O(n^{-5}),\label{eq:kings}\\
+       +\frac{90475}{1944n^4}+O(n^{-5}),\label{scp:eq:kings}\\
 \frac{N_n}{B_n}
  &=1+\frac{37}{3n}+\frac{914}{9n^2}+\frac{330917}{810n^3}
-       +\frac{966583}{1944n^4}+O(n^{-5}).\label{eq:knights}
+       +\frac{966583}{1944n^4}+O(n^{-5}).\label{scp:eq:knights}
 \end{align}
 Consequently,
-\begin{equation}\label{eq:ratio}
+\begin{equation}\label{scp:eq:ratio}
 \frac{N_n}{K_n}=1+\frac{10}{n}+\frac{65}{n^2}
  +\frac{332}{3n^3}-\frac{4841}{6n^4}+O(n^{-5}).
 \end{equation}
@@ -52,23 +55,88 @@ The logarithmic corrections are particularly simple:
 \begin{align}
 \log\frac{K_n}{B_n}
  &=\frac7{3n}+\frac{21}{2n^2}-\frac{379}{30n^3}
- -\frac{357}{40n^4}+O(n^{-5}),\label{eq:klog}\\
+ -\frac{357}{40n^4}+O(n^{-5}),\label{scp:eq:klog}\\
 \log\frac{N_n}{B_n}
  &=\frac{37}{3n}+\frac{51}{2n^2}-\frac{6559}{30n^3}
- -\frac{1397}{40n^4}+O(n^{-5}).\label{eq:nlog}
+ -\frac{1397}{40n^4}+O(n^{-5}).\label{scp:eq:nlog}
 \end{align}
 If the carrier is instead $e^{-9/2}(en)^n/\sqrt{2\pi n}$, the first relative corrections are $9/(4n)$ and $49/(4n)$. The carrier must therefore be specified when quoting a coefficient.
 
 The mechanism is an application of established cluster-expansion ideas. Canonical independent-set cluster expansions and convergent tails are developed, for example, by Davies, Jenssen, and Perkins~\cite{DJP}, who credit earlier canonical work of Pulvirenti and Tsagkarogiannis~\cite{PT}. We do not claim a new general cluster method, or exhaustive historical priority for each specialized coefficient. The proof here is self-contained and the coefficient computation is exact.
 
-\section{The finite-range theorem and its geometry}
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~03 of
+batch~77 of ProveIt's incoming-reports intake, delivered in commit \texttt{096ee7b87} as an archive whose name, wrapper
+directory and main \TeX{} file all have the stem
+\texttt{Sparse\_Chess\_Asymptotics} (the main file is now
+\texttt{article.tex}), and placed in commit \texttt{d0e6008d9} among the OEIS-sequence asymptotics
+reports of the research-report collection. Its author line is empty and the
+delivery names no tool. It names no ProveIt commit, so it has no pin; its
+closing literature-scope paragraph mentions ``targeted checks of the current
+relevant ProveIt catalog'', an unpinned, bounded search. The intake's own
+untruncated search of the collection, the transseries volumes,
+\texttt{Oeis/} and \texttt{docs/reports/} is the authoritative one: it found
+none of A201513, A201540, A201511, A201861 and no report on non-attacking
+placements, so the manuscript's ``did not reveal overlap'' stands. Nothing
+here is formalized in Lean or Rocq, and placement in the collection confers
+no formal status on any statement. The writing step prefixed every label with
+\texttt{scp:}, added section labels and these \textsf{[write]} notes and two
+references \cite{scp-tai,scp-cti}; no statement, proof, number or table of
+the manuscript was changed.
+
+\emph{Three carriers.} Every coefficient of this report is relative to a
+named carrier, and the three in use give different numbers. (i)~The
+coefficients $c_r$ of Theorems~\ref{scp:thm:main} and~\ref{scp:thm:general}
+and of \eqref{scp:eq:kings}--\eqref{scp:eq:nlog} are relative to
+$B_n=e^{-9/2}n^{2n}/n!$ of \eqref{scp:eq:classical}, with the factorial kept
+exact: first corrections $7/3$ (kings) and $37/3$ (knights). (ii)~Relative to
+the Stirling-expanded carrier $e^{-9/2}(en)^n/\sqrt{2\pi n}$ the first
+corrections are $9/4$ and $49/4$, as stated above. (iii)~The logarithmic model
+\eqref{scp:eq:logmodel} of Section~\ref{scp:sec:inverse} expands
+$\log n!$ as well, so its $d_1=9/4$, $49/4$ are logarithmic coefficients
+relative to carrier (ii), equal to $c_1-\tfrac1{12}$. Quoting a $c_r$ against
+carrier (ii), or a $d_j$ against $B_n$, is the tempting false reading.
+
+\emph{Not the rook paths of a neighbouring report.} The batch-77 report
+\texttt{a227578-\allowbreak ordered-\allowbreak rook-\allowbreak paths}
+counts lattice paths made of rook \emph{moves}; the collection's rook
+polynomials (\texttt{a330266-\allowbreak balanced-\allowbreak smirnov-\allowbreak poisson})
+count non-attacking rook placements. Neither concerns kings or knights, and
+no result is shared.
+
+\emph{Notation.} Several letters carry two meanings. Each symbol is printed
+as delivered; the table fixes its meaning.
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.14\linewidth}p{0.80\linewidth}@{}}
+\toprule
+symbol & meaning here (and what it is \emph{not})\\
+\midrule
+$B_n$, $B$ & $B_n$ is the carrier \eqref{scp:eq:classical}; $B=\frac12\sum_{u\in S}(|u_1|+|u_2|)$ is the boundary loss of Section~\ref{scp:sec:general}.\\
+$K_n$, $N_n$, $N(y)$ & $K_n$ (kings) and $N_n$ (knights) are the counts; $N(y)$ is the integer threshold of Section~\ref{scp:sec:inverse}, for either sequence.\\
+$d$, $d_j$ & $d=|S|$ is the number of moves ($d=8$ for both pieces); $d_1,d_2,\ldots$ are the logarithmic coefficients of \eqref{scp:eq:logmodel}, relative to carrier (ii) above.\\
+$a$, $a(n,k)$ & $a=\alpha_2=-(d+1)/2$ ($=-9/2$ for kings and knights); $a(n,k)$ counts independent $k$-sets.\\
+$D$ & the operator $t\,d/dt$ of Section~\ref{scp:sec:transfer}; the slope $D=\log x+2$ of Section~\ref{scp:sec:inverse}.\\
+$w$, $h$ & $w(T)$, $h(T)$ are the width and height of a support; $w_j(T)$ is its M\"obius weight \eqref{scp:eq:weight}; $h_\ell$ are the polynomials \eqref{scp:eq:h}.\\
+$J$ & a compact $\theta$-interval in Theorem~\ref{scp:thm:general}; a cluster truncation order in Section~\ref{scp:sec:uniform}.\\
+$A$, $A_n$ & $A=m(m-1)/2$ in the proof of Proposition~\ref{scp:prop:algorithm}; $A_n$ is either main sequence in Section~\ref{scp:sec:inverse}.\\
+$H$, $H_r$ & a finite graph $H$ ($L_j(H)$, $I_H$); the polynomials $H_r(t;\theta)$ and the function $H_{n,k}(t)$ of Section~\ref{scp:sec:transfer}.\\
+$L$, $L_j$ & $L=\log y$ (Section~\ref{scp:sec:inverse}); $L_j(H)$ are logarithm coefficients (Section~\ref{scp:sec:connected}).\\
+$x$, $y$ & lattice coordinates in Section~\ref{scp:sec:connected}; in Section~\ref{scp:sec:inverse}, $y$ is a target value and $x=L/W(eL)$ the Lambert core.\\
+$W$ & the positive real (principal) Lambert branch $W_0$.\\
+$c_r$, $c_r(\theta)$ & $c_r=c_r(1)$; $c_1^{\rm K}(\theta)$, $c_1^{\rm N}(\theta)$ of Section~\ref{scp:sec:coefficients} are \eqref{scp:eq:c1theta} specialized to kings and knights.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+\section{The finite-range theorem and its geometry}\label{scp:sec:general}
 Fix a nonempty finite symmetric set $S\subset\Z^2\setminus\{0\}$, and write $d=|S|$. Let $G_n$ have vertex set $V_n=\{0,\ldots,n-1\}^2$, with $x,y$ adjacent when $y-x\in S$. Write
-\begin{equation}\label{eq:logI}
+\begin{equation}\label{scp:eq:logI}
  I_n(z)=\sum_{k\ge0}a(n,k)z^k,\qquad
  \log I_n(z)=\sum_{j\ge1}b_j(n)z^j.
 \end{equation}
 Here $a(n,k)$ counts independent $k$-subsets. We will prove that for each fixed $j$ there are rational numbers $\alpha_j,\beta_j,\gamma_j$ for which
-\begin{equation}\label{eq:quadratic}
+\begin{equation}\label{scp:eq:quadratic}
  b_j(n)=\alpha_j n^2+\beta_j n+\gamma_j
 \end{equation}
 for all sufficiently large integers $n$. In particular
@@ -78,23 +146,23 @@ for all sufficiently large integers $n$. In particular
 \]
 Put $a=\alpha_2$.
 
-\begin{theorem}\label{thm:general}
+\begin{theorem}\label{scp:thm:general}
 For every fixed $M\ge0$,
-\begin{equation}\label{eq:diagonal-general}
+\begin{equation}\label{scp:eq:diagonal-general}
  a(n,n)=\frac{n^{2n}}{n!}e^a
  \left(\sum_{r=0}^M\frac{c_r}{n^r}+O_{M,S}(n^{-M-1})\right),
 \end{equation}
 where $c_0=1$ and every $c_r$ is rational. A finite formula for $c_r$ uses only the cluster polynomials $b_2,\ldots,b_{r+2}$.
 
 More generally, for any fixed compact interval $J\subset(0,\infty)$, uniformly over integers $k$ with $\theta=k/n\in J$,
-\begin{equation}\label{eq:density-general}
+\begin{equation}\label{scp:eq:density-general}
  a(n,k)=\frac{n^{2k}}{k!}e^{a\theta^2}
  \left(\sum_{r=0}^M\frac{c_r(\theta)}{n^r}
        +O_{M,S,J}(n^{-M-1})\right).
 \end{equation}
-The coefficient functions have the explicit finite formula in Section~\ref{sec:transfer}.
+The coefficient functions have the explicit finite formula in Section~\ref{scp:sec:transfer}.
 \end{theorem}
-The actual value $\theta=k/n$ is used in~\eqref{eq:density-general}. Thus a choice $k=\lfloor\lambda n\rfloor$ retains its fractional-part corrections. No uniformity as $\theta\to0$ or $\theta\to\infty$ is asserted.
+The actual value $\theta=k/n$ is used in~\eqref{scp:eq:density-general}. Thus a choice $k=\lfloor\lambda n\rfloor$ retains its fractional-part corrections. No uniformity as $\theta\to0$ or $\theta\to\infty$ is asserted.
 
 \subsection{Boundary loss and triangles}
 Define
@@ -103,12 +171,12 @@ Define
  \tau=\frac16\#\{(u,v)\in S^2:v-u\in S\}.
 \]
 Thus $\tau$ is the number of triangles per bulk vertex, when each triangle is counted once. The first correction is
-\begin{equation}\label{eq:first-geometric}
+\begin{equation}\label{scp:eq:first-geometric}
 \boxed{c_1(1)=B+\frac13-\tau.}
 \end{equation}
 For kings $(d,B,\tau)=(8,6,4)$; for knights $(d,B,\tau)=(8,12,0)$. The degree determines the common leading term, but the boundary loss and triangles distinguish the next term.
 
-To verify~\eqref{eq:first-geometric}, the elementary graph identities are
+To verify~\eqref{scp:eq:first-geometric}, the elementary graph identities are
 \begin{align*}
  b_2&=-\frac{|V|}{2}-|E|,\\
  b_3&=\frac{|V|}{3}+2|E|+\sum_{v\in V}\binom{\deg(v)}2
@@ -119,58 +187,58 @@ Since
  |E(G_n)|=\frac12\sum_{u\in S}(n-|u_1|)(n-|u_2|)
 \]
 for sufficiently large $n$, these imply
-\begin{equation}\label{eq:first-clusters}
+\begin{equation}\label{scp:eq:first-clusters}
  \beta_2=B,\qquad
  \alpha_3=\frac13+\frac{d(d+1)}2-\tau.
 \end{equation}
-The coefficient extraction in Section~\ref{sec:transfer} then gives the stronger identity
-\begin{equation}\label{eq:c1theta}
+The coefficient extraction in Section~\ref{scp:sec:transfer} then gives the stronger identity
+\begin{equation}\label{scp:eq:c1theta}
  c_1(\theta)=\frac{d+1}{2}\theta+B\theta^2
  -\left(\frac{d+1}{2}+\tau-\frac13\right)\theta^3.
 \end{equation}
 
-\section{Exact connected-support polynomials}
+\section{Exact connected-support polynomials}\label{scp:sec:connected}
 For a finite graph $H$, write $L_j(H)=[z^j]\log I_H(z)$. For a nonempty set of vertices $T$ define
-\begin{equation}\label{eq:weight}
+\begin{equation}\label{scp:eq:weight}
  w_j(T)=\sum_{U\subseteq T}(-1)^{|T|-|U|}L_j(G_n[U]).
 \end{equation}
 The empty graph contributes zero. Then
-\begin{equation}\label{eq:connected}
+\begin{equation}\label{scp:eq:connected}
  w_j(T)=0\quad\text{if }|T|>j\text{ or }G_n[T]\text{ is disconnected},
  \qquad b_j(n)=\sum_{\varnothing\ne T\subseteq V_n}w_j(T).
 \end{equation}
-Indeed, give each vertex its own indeterminate in the independence polynomial. A degree-$j$ monomial of the formal logarithm uses at most $j$ variables. M\"obius inversion~\eqref{eq:weight} selects precisely the monomials whose support equals $T$, after all variables are equated. If the induced graph on $T$ is disconnected, its independence polynomial factors over components, so its logarithm contains no monomial using all of $T$. This proves~\eqref{eq:connected}.
+Indeed, give each vertex its own indeterminate in the independence polynomial. A degree-$j$ monomial of the formal logarithm uses at most $j$ variables. M\"obius inversion~\eqref{scp:eq:weight} selects precisely the monomials whose support equals $T$, after all variables are equated. If the induced graph on $T$ is disconnected, its independence polynomial factors over components, so its logarithm contains no monomial using all of $T$. This proves~\eqref{scp:eq:connected}.
 
 Enumerate nonempty finite connected lattice sets $T$ of size at most $j$ modulo translations. Normalize each representative so that both coordinate minima are zero; do not quotient by rotations or reflections. Let
 \[
  w(T)=\max_{(x,y)\in T}x,\qquad h(T)=\max_{(x,y)\in T}y.
 \]
 Its number of translates fitting in $V_n$ is exactly $(n-w(T))_+(n-h(T))_+$. Hence the following identity holds for every $n$:
-\begin{equation}\label{eq:clipped}
+\begin{equation}\label{scp:eq:clipped}
  b_j(n)=\sum_T w_j(T)(n-w(T))_+(n-h(T))_+.
 \end{equation}
 There are finitely many supports because the move set is fixed. If
 \[
  R=\max_{u\in S}\max(|u_1|,|u_2|),
 \]
-connectedness implies $w(T),h(T)\le R(j-1)$. For $n\ge R(j-1)+1$, equation~\eqref{eq:clipped} is the exact quadratic~\eqref{eq:quadratic}, with
-\begin{equation}\label{eq:alphabetagamma}
+connectedness implies $w(T),h(T)\le R(j-1)$. For $n\ge R(j-1)+1$, equation~\eqref{scp:eq:clipped} is the exact quadratic~\eqref{scp:eq:quadratic}, with
+\begin{equation}\label{scp:eq:alphabetagamma}
  \alpha_j=\sum_Tw_j(T),\quad
  \beta_j=-\sum_Tw_j(T)(w(T)+h(T)),\quad
  \gamma_j=\sum_Tw_j(T)w(T)h(T).
 \end{equation}
 These are finite rational sums, not numerical fits or polynomial interpolation.
 
-\section{Uniform analytic control}
+\section{Uniform analytic control}\label{scp:sec:uniform}
 A uniform bound is needed to turn the finite-order data into an expansion for a growing number of pieces.
 
-\begin{lemma}\label{lem:zerofree}
+\begin{lemma}\label{scp:lem:zerofree}
 For every graph $G$ of maximum degree at most $d$, its independence polynomial has no zero on
 \[
  |z|\le\rho:=\frac1{4(d+1)}.
 \]
 The logarithm normalized by $\log I_G(0)=0$ satisfies
-\begin{equation}\label{eq:bound}
+\begin{equation}\label{scp:eq:bound}
  |\log I_G(z)|\le4|V(G)||z|,\qquad
  |[z^j]\log I_G(z)|\le4|V(G)|\rho^{1-j}.
 \end{equation}
@@ -193,20 +261,20 @@ Telescope over a vertex deletion order. Cauchy's coefficient estimate on $|z|=\r
 \end{proof}
 
 Fix $R_0>1$ and a compact positive interval for $\theta$. The omitted tail after cluster order $J$ in $\log I_n(\theta t/n)$, uniformly on $|t|\le R_0$, is bounded by
-\begin{equation}\label{eq:logtail}
+\begin{equation}\label{scp:eq:logtail}
  \sum_{j>J}4n^2\rho^{1-j}(\theta R_0/n)^j=O(n^{1-J}).
 \end{equation}
-Use~\eqref{eq:quadratic} for the finitely many retained indices. Taking $J=M+2$ and exponentiating gives
-\begin{equation}\label{eq:Hexp}
+Use~\eqref{scp:eq:quadratic} for the finitely many retained indices. Taking $J=M+2$ and exponentiating gives
+\begin{equation}\label{scp:eq:Hexp}
  I_n(\theta t/n)e^{-\theta nt}
  =e^{a\theta^2t^2}
  \left(\sum_{r=0}^M H_r(t;\theta)n^{-r}+O(n^{-M-1})\right)
 \end{equation}
-uniformly on the same disk. Exponentiation preserves the order because the retained expressions are uniformly bounded there. Section~\ref{sec:transfer} identifies $H_r$ and proves that coefficient extraction preserves this error.
+uniformly on the same disk. Exponentiation preserves the order because the retained expressions are uniformly bounded there. Section~\ref{scp:sec:transfer} identifies $H_r$ and proves that coefficient extraction preserves this error.
 
-\section{A finite all-order extraction formula}\label{sec:transfer}
+\section{A finite all-order extraction formula}\label{scp:sec:transfer}
 For $\ell\ge1$ set
-\begin{equation}\label{eq:h}
+\begin{equation}\label{scp:eq:h}
  h_\ell(t;\theta)=\alpha_{\ell+2}(\theta t)^{\ell+2}
    +\beta_{\ell+1}(\theta t)^{\ell+1}
    +\gamma_\ell(\theta t)^\ell,
@@ -217,11 +285,11 @@ with missing indices below $2$ interpreted as zero. Define polynomials $H_r$ by
  =\exp\left(\sum_{\ell\ge1}h_\ell(t;\theta)\epsilon^\ell\right).
 \]
 Equivalently, $H_0=1$ and
-\begin{equation}\label{eq:Hrec}
+\begin{equation}\label{scp:eq:Hrec}
  rH_r=\sum_{\ell=1}^r\ell h_\ell H_{r-\ell}.
 \end{equation}
 Define rational polynomials $P_q(m)$ by
-\begin{equation}\label{eq:P}
+\begin{equation}\label{scp:eq:P}
  \sum_{q\ge0}P_q(m)\epsilon^q
  =\exp\left(-\sum_{\ell\ge1}\frac{\epsilon^\ell}{\ell}
                       \sum_{i=0}^{m-1}i^\ell\right).
@@ -233,9 +301,9 @@ Faulhaber's formula gives $\deg P_q\le2q$. The first three are
 \]
 Write $D=t\,d/dt$.
 
-\begin{proposition}\label{prop:algorithm}
-The coefficients in Theorem~\ref{thm:general} are
-\begin{equation}\label{eq:cformula}
+\begin{proposition}\label{scp:prop:algorithm}
+The coefficients in Theorem~\ref{scp:thm:general} are
+\begin{equation}\label{scp:eq:cformula}
  c_r(\theta)=e^{-a\theta^2}
  \sum_{q=0}^r\theta^{-q}
  \left. P_q(D)\{e^{a\theta^2t^2}H_{r-q}(t;\theta)\}\right|_{t=1}.
@@ -244,13 +312,13 @@ In particular $c_r=c_r(1)\in\mathbb Q$.
 \end{proposition}
 \begin{proof}
 For $k=\theta n$ let $H_{n,k}(t)=I_n(\theta t/n)e^{-kt}$. Expanding $e^{kt}$ and extracting $[t^k]$ gives the exact identity
-\begin{equation}\label{eq:exacttransfer}
+\begin{equation}\label{scp:eq:exacttransfer}
  \frac{a(n,k)}{n^{2k}/k!}
  =\sum_{m=0}^k[t^m]H_{n,k}(t)\frac{\fall{k}{m}}{k^m}.
 \end{equation}
 The scale in $I_n(\theta t/n)$ is $(k/n^2)^k$, which accounts for the normalization.
 
-For an analytic function $f$ on $|t|\le R_0$, Cauchy's estimate and $0\le\fall{k}{m}/k^m\le1$ show that the functional on the right of~\eqref{eq:exacttransfer} has norm at most $(1-1/R_0)^{-1}$ in the disk supremum norm. Thus the analytic remainder in~\eqref{eq:Hexp} remains $O(n^{-M-1})$ after extraction.
+For an analytic function $f$ on $|t|\le R_0$, Cauchy's estimate and $0\le\fall{k}{m}/k^m\le1$ show that the functional on the right of~\eqref{scp:eq:exacttransfer} has norm at most $(1-1/R_0)^{-1}$ in the disk supremum norm. Thus the analytic remainder in~\eqref{scp:eq:Hexp} remains $O(n^{-M-1})$ after extraction.
 
 It remains to expand the finite falling product. For $0\le m\le\sqrt{k}$, the elementary symmetric functions in $0,1,\ldots,m-1$ give
 \[
@@ -258,20 +326,20 @@ It remains to expand the finite falling product. For $0\le m\le\sqrt{k}$, the el
  =\sum_{q=0}^M P_q(m)k^{-q}+E_{M,m,k}.
 \]
 Put $A=m(m-1)/2$. Since the degree-$q$ elementary symmetric function is at most $A^q/q!$,
-\begin{equation}\label{eq:falltail}
+\begin{equation}\label{scp:eq:falltail}
  |E_{M,m,k}|
  \le \frac{k^{-M-1}A^{M+1}}{(M+1)!}e^{A/k}
  \le C_M k^{-M-1}m^{2M+2}.
 \end{equation}
-The coefficients of each analytic function in~\eqref{eq:Hexp} decay geometrically, so summing~\eqref{eq:falltail} gives $O(k^{-M-1})$. For $m>\sqrt{k}$ the exact factor is bounded by $1$ up to $k$ and vanishes beyond $k$, while $P_q(m)$ has fixed polynomial growth. These tails, including the extension of each polynomial sum to all $m$, are $O(\operatorname{poly}(k)R_0^{-\sqrt{k}})$. Finally,
+The coefficients of each analytic function in~\eqref{scp:eq:Hexp} decay geometrically, so summing~\eqref{scp:eq:falltail} gives $O(k^{-M-1})$. For $m>\sqrt{k}$ the exact factor is bounded by $1$ up to $k$ and vanishes beyond $k$, while $P_q(m)$ has fixed polynomial growth. These tails, including the extension of each polynomial sum to all $m$, are $O(\operatorname{poly}(k)R_0^{-\sqrt{k}})$. Finally,
 \[
  \sum_{m\ge0}m^j[t^m]f(t)=D^jf(1).
 \]
-Apply this identity to the retained terms and use $k^{-q}=\theta^{-q}n^{-q}$. Since $k$ and $n$ are uniformly comparable,~\eqref{eq:cformula} and the uniform remainder follow. Exponential factors cancel in~\eqref{eq:cformula}; the coefficients are rational at $\theta=1$.
+Apply this identity to the retained terms and use $k^{-q}=\theta^{-q}n^{-q}$. Since $k$ and $n$ are uniformly comparable,~\eqref{scp:eq:cformula} and the uniform remainder follow. Exponential factors cancel in~\eqref{scp:eq:cformula}; the coefficients are rational at $\theta=1$.
 \end{proof}
-Theorem~\ref{thm:general}, and hence the existence assertion of Theorem~\ref{thm:main}, is now proved. Inserting~\eqref{eq:first-clusters} into the first operator gives~\eqref{eq:c1theta} and~\eqref{eq:first-geometric}.
+Theorem~\ref{scp:thm:general}, and hence the existence assertion of Theorem~\ref{scp:thm:main}, is now proved. Inserting~\eqref{scp:eq:first-clusters} into the first operator gives~\eqref{scp:eq:c1theta} and~\eqref{scp:eq:first-geometric}.
 
-\section{Exact coefficients and reproducibility}
+\section{Exact coefficients and reproducibility}\label{scp:sec:coefficients}
 For kings and knights the quadratic cluster coefficients through $j=6$ are as follows. Each row means $b_j(n)=\alpha_jn^2+\beta_jn+\gamma_j$ once $n\ge R(j-1)+1$.
 \begin{center}
 \begin{tabular}{crrr|rrr}
@@ -294,9 +362,9 @@ The numbers of connected supports modulo translations, by sizes $1,\ldots,6$, ar
 \text{knights}&1&4&28&234&2162&20972.
 \end{array}
 \]
-Inserting the table into~\eqref{eq:cformula} proves the explicit coefficients in~\eqref{eq:kings}--\eqref{eq:knights}. Formal division and logarithms give~\eqref{eq:ratio}--\eqref{eq:nlog}.
+Inserting the table into~\eqref{scp:eq:cformula} proves the explicit coefficients in~\eqref{scp:eq:kings}--\eqref{scp:eq:knights}. Formal division and logarithms give~\eqref{scp:eq:ratio}--\eqref{scp:eq:nlog}.
 
-The first two uniform-density corrections, beyond~\eqref{eq:c1theta}, are
+The first two uniform-density corrections, beyond~\eqref{scp:eq:c1theta}, are
 \begin{align*}
  c_1^{\rm K}(\theta)&=-\frac{\theta}{6}(49\theta^2-36\theta-27),\\
  c_2^{\rm K}(\theta)&=\frac{\theta}{72}
@@ -320,18 +388,39 @@ For wazirs (orthogonal nearest-neighbor moves, A201511) and ferses (diagonal nea
 These are instances of the same theorem, with the same all-fixed-order error guarantee.
 
 \subsection{Finite computation and independent checks}
-The accompanying \texttt{compute\_clusters.py} grows every connected support from the singleton and applies~\eqref{eq:weight} and~\eqref{eq:alphabetagamma}. Every finite connected graph has an ordering obtained by deleting leaves of a spanning tree, so every support occurs in this growth procedure. Translation normalization alone avoids erroneous symmetry division. Coefficients of graph logarithms are computed using the exact integer recurrence
+The accompanying \texttt{compute\_clusters.py} grows every connected support from the singleton and applies~\eqref{scp:eq:weight} and~\eqref{scp:eq:alphabetagamma}. Every finite connected graph has an ordering obtained by deleting leaves of a spanning tree, so every support occurs in this growth procedure. Translation normalization alone avoids erroneous symmetry division. Coefficients of graph logarithms are computed using the exact integer recurrence
 \[
  jL_j=j i_j-\sum_{q=1}^{j-1}qL_q\,i_{j-q},
  \qquad I_H(z)=\sum_{j\ge0}i_jz^j.
 \]
-The file \texttt{derive\_expansion.py} implements~\eqref{eq:Hrec}--\eqref{eq:cformula} using rational symbolic algebra. No sequence fit is used.
+The file \texttt{derive\_expansion.py} implements~\eqref{scp:eq:Hrec}--\eqref{scp:eq:cformula} using rational symbolic algebra. No sequence fit is used.
 
-The direct finite-board program \texttt{verify\_finite.py} enumerates independent subsets on $3\times3$, $4\times4$, and $5\times5$ boards for all four pieces. All twelve comparisons with the clipped-support formula~\eqref{eq:clipped} pass through cluster order six. A separate row-mask dynamic program reproduced both OEIS diagonals through $n=8$ and checked the cluster polynomials at all applicable board sizes through $13$ (111 exact comparisons). A separate Touchard-moment extraction verified the four displayed corrections for both main sequences. These finite checks validate the arithmetic implementation; Sections 3--5 supply the proof for all large $n$.
+The direct finite-board program \texttt{verify\_finite.py} enumerates independent subsets on $3\times3$, $4\times4$, and $5\times5$ boards for all four pieces. All twelve comparisons with the clipped-support formula~\eqref{scp:eq:clipped} pass through cluster order six. A separate row-mask dynamic program reproduced both OEIS diagonals through $n=8$ and checked the cluster polynomials at all applicable board sizes through $13$ (111 exact comparisons). A separate Touchard-moment extraction verified the four displayed corrections for both main sequences. These finite checks validate the arithmetic implementation; Sections 3--5 supply the proof for all large $n$.
 
-\section{Growth-index inversion}
+\begin{writenote}[Added 2 October 2026, batch~77: the files in the collection]
+In the collection the three producer scripts, \texttt{replay.sh},
+\texttt{build.sh} and the independent-verification programs are in
+\texttt{code/} (the latter renamed
+\texttt{independent\_verification-check\_coefficients.py} and
+\texttt{independent\_verification-row\_dp.cpp}); the two JSON files,
+\texttt{finite\_verification.txt}, the frozen row-DP output and the
+independent result file are in \texttt{data/}; \texttt{PROOF.md} and
+\texttt{SOURCES.md} are at the report root. All are byte-identical to the
+delivery; the checksum ledger \texttt{SHA256SUMS} (verified, 19 of 19
+files, at intake) and the delivered PDF are not shipped. The scripts read
+and write in the current directory and beside themselves under their
+delivered names, so they do not run in place; the report's
+\texttt{README.md} explains how to rerun them on a copy. At intake the
+producers, the twelve finite-board checks and the independent Touchard
+check were rerun on a copy and reproduced every recorded output (up to line
+endings); \texttt{row\_dp.cpp} was not compiled, so the 111 row-DP
+comparisons were checked against the frozen counts only, as in the
+delivered replay.
+\end{writenote}
+
+\section{Growth-index inversion}\label{scp:sec:inverse}
 Let $A_n$ be either main sequence. Stirling's formula gives, at every fixed order,
-\begin{equation}\label{eq:logmodel}
+\begin{equation}\label{scp:eq:logmodel}
  \log A_n=n(\log n+1)-\frac12\log(2\pi n)+a
           +\frac{d_1}{n}+\frac{d_2}{n^2}+\cdots,
 \end{equation}
@@ -343,12 +432,12 @@ where $a=-9/2$ and
 Replacing $n$ by a positive real variable in a fixed truncation defines a smooth asymptotic model; it does not define combinatorial counts on noninteger boards.
 
 For $y\to\infty$, set
-\begin{equation}\label{eq:inverse-def}
+\begin{equation}\label{scp:eq:inverse-def}
  L=\log y,\qquad x=\frac{L}{W(eL)},\qquad D=\log x+2,
  \qquad \delta_0=\frac{\tfrac12\log(2\pi x)-a}{D},
 \end{equation}
 where $W$ is the positive real Lambert function. For any logarithmic model retaining at least $d_1/n$, the inverse has
-\begin{equation}\label{eq:inverse}
+\begin{equation}\label{scp:eq:inverse}
  n=x+\delta_0+
  \frac{\delta_0/2-\delta_0^2/2-d_1}{xD}
  +O\left(\frac1{x^2D}\right).
@@ -357,7 +446,7 @@ Indeed $x(\log x+1)=L$. The first correction cancels the logarithmic and constan
 \[
  \frac{\delta_0^2/2-\delta_0/2+d_1}{x}
 \]
-to first order in $x^{-1}$; division by the derivative $D+O(1/x)$ gives~\eqref{eq:inverse}. The omitted residual is $O(x^{-2})$. Recursive Taylor cancellation or Newton iteration gives every further fixed inverse order.
+to first order in $x^{-1}$; division by the derivative $D+O(1/x)$ gives~\eqref{scp:eq:inverse}. The omitted residual is $O(x^{-2})$. Recursive Taylor cancellation or Newton iteration gives every further fixed inverse order.
 
 There is an essential qualification for integer thresholds. The leading equivalent proves eventual strict increase, since
 \[
@@ -368,14 +457,45 @@ Let $q_M(y)$ solve the smooth logarithmic model through $d_M/n^M$. For all suffi
  N(y)=\min\{n\ge n_0:A_n\ge y\}
 \]
 is bracketed by the ceilings of
-\begin{equation}\label{eq:round}
+\begin{equation}\label{scp:eq:round}
  q_M(y)\ \pm\ O\left(\frac{q_M(y)^{-M-1}}{\log q_M(y)}\right).
 \end{equation}
 This follows from the uniform pointwise logarithmic error and the positive derivative of the model. The two ceilings agree away from a shrinking window around integers. No finite-order expansion guarantees unconditional rounding when $y$ is arbitrarily close to a sequence value.
 
+\begin{writenote}[Added 2 October 2026, batch~77: an instance of repository results]
+The inversion of this section is an instance of the inversion apparatus of
+ProveIt's transseries volumes, and no novelty is claimed for it. The phase
+is factorial, so the core is not the linear--logarithmic
+\texttt{p0:thm:lambert-core} but \texttt{p0:prop:factorial-core} of the
+transseries-and-inversion volume \cite{scp-tai} with $\kappa=1$, $d=1$ and
+right-hand side $L=\log y$: its solution $\exp(v-1)$, $v=W_0(eL)$, equals
+$x=L/W(eL)$ of \eqref{scp:eq:inverse-def} (since $ve^v=eL$), and its slope
+$\kappa(v+1)=\log x+2$ is the $D$ there. The same core is
+\texttt{t2:eq:unbalanced-core} (with $\kappa=\lambda=1$) of the
+combinatorial-transseries volume \cite{scp-cti}. The correction
+\eqref{scp:eq:inverse} is the first two terms of the perturbation-operator
+series \texttt{p0:prop:operator-form} with
+$\varrho(x)=-\tfrac12\log(2\pi x)+a+d_1/x$: the $m=1$ term gives
+$\delta_0-d_1/(xD)$ and the $m=2$ term gives
+$(\delta_0-\delta_0^2)/(2xD)$, as the write step checked by hand; its
+coefficients involve $\log x$ through $D$ and $\delta_0$. The integer bracket
+\eqref{scp:eq:round} is the two-ceiling form of the separation condition,
+part~(2) of \texttt{p0:thm:staircase}; part~(1) (exact rounding) is not
+invoked and does not apply, because the truncated model is not an
+interpolation of $(A_n)$. The generic staircase arithmetic is formalized in
+Lean as \texttt{Fabius.staircase\_ceil} and
+\texttt{Fabius.staircase\_separation} in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+those statements concern an arbitrary monotone function and give no formal
+status to anything here. What is specific to this report is the forward
+expansion that feeds the inversion, in particular the constants $a=-9/2$ and
+$d_1=9/4$, $49/4$.
+\end{writenote}
+
 \section*{Scope of the literature check}
 The OEIS definitions and cited book pages were inspected on 2 October 2026. Searches for these sequence IDs and higher-order chess expansions, and targeted checks of the current relevant ProveIt catalog, did not locate the specialized formulas displayed here. This is a bounded source check, not proof of absence from all literature. The general canonical cluster framework and the classical leading equivalents are explicitly credited. No convergent infinite asymptotic series or beyond-all-orders completion is claimed.
 
+\begingroup\raggedright
 \begin{thebibliography}{9}
 \bibitem{OEIS} The OEIS Foundation Inc.,
 \href{https://oeis.org/A201513}{A201513},
@@ -391,5 +511,13 @@ The OEIS definitions and cited book pages were inspected on 2 October 2026. Sear
 \emph{Cluster expansion in the canonical ensemble},
 Communications in Mathematical Physics \textbf{316} (2012), 289--306.
 \href{https://arxiv.org/abs/1105.1022}{arXiv:1105.1022}.
+\bibitem{scp-tai} [write] ProveIt, \emph{Transseries and inversion}, the
+transseries-and-inversion volume (\texttt{p0:prop:factorial-core},
+\texttt{p0:prop:operator-form}, \texttt{p0:thm:staircase}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+\bibitem{scp-cti} [write] ProveIt, \emph{Combinatorial transseries
+inverses} (\texttt{t2:eq:unbalanced-core}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
 \end{thebibliography}
+\endgroup
 \end{document}
