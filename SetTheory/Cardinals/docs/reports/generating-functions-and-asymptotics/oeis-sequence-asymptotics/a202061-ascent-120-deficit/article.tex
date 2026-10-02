@@ -1,0 +1,517 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+symbols.map}
+\usepackage{lmodern,microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Logarithmic deficit of 120 avoiding ascent sequences},pdfsubject={Two sided stretched bounds and inverse order for OEIS A202061}}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\asc}{\operatorname{asc}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\st}{\star}
+\title{Logarithmic deficit of 120 avoiding ascent sequences}
+\author{A proof and reproducible research report}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For the number $a_n$ of classical 120-avoiding ascent sequences, we derive an exact positive height-walk representation and prove
+\[
+ n\log\mu-\log a_n=\Theta\!\left(n^{1/3}(\log n)^{2/3}\right),
+ \qquad \mu=7.295896943239772\ldots.
+\]
+This rules out the previously estimated pure $n^{3/8}$ stretched correction. The proof uses a positive binomial block formula, a critical jump tail, a finite-height radius bound, and a legal all-length staircase construction. We also obtain the order of the inverse correction and prove that the generating function is not D-finite. No exact stretched constant, asymptotic equivalent, or all-orders transseries is claimed. Exact-arithmetic certificates and independent finite diagnostics accompany the argument.
+\end{abstract}
+
+\section{Results and scope}
+An ascent sequence is a word $w_1\cdots w_n$ of nonnegative integers with $w_1=0$ and
+\[
+ w_i\le1+\asc(w_1\cdots w_{i-1})\quad(i\ge2),\qquad
+ \asc(w)=\#\{i:w_i<w_{i+1}\}.
+\]
+It avoids the classical pattern 120 if there are no $i<j<k$ with $w_k<w_i<w_j$. Let $a_n$ count these words, including $a_0=1$, and let $A(x)=\sum_{n\ge0}a_nx^n$. This is OEIS A202061 \cite{OEIS}.
+
+\begin{theorem}\label{thm:main}
+Let $\mu$ be the largest root of
+\[
+ \mu^3-8\mu^2+5\mu+1=0,
+ \qquad \mu=7.29589694323977237457\ldots,
+\]
+and put $\Phi(n)=n^{1/3}(\log n)^{2/3}$. There exist $c,C>0$ and $n_0$ such that, for every integer $n\ge n_0$,
+\begin{equation}\label{eq:main}
+ \mu^n e^{-C\Phi(n)}\le a_n\le C\mu^n e^{-c\Phi(n)}.
+\end{equation}
+In particular,
+\[
+ n\log\mu-\log a_n=\Theta(\Phi(n)),\qquad
+ \frac{\log(n\log\mu-\log a_n)}{\log n}\longrightarrow\frac13.
+\]
+The radius of convergence is $\rho=1/\mu$.
+\end{theorem}
+
+\begin{corollary}\label{cor:consequences}
+The following consequences hold.
+\begin{enumerate}
+\item No equivalent $C_0\mu^n\exp(-d n^\gamma)n^g$, with $C_0,d>0$ and fixed $g\in\mathbb R$, is possible for $\gamma>1/3$ or for $\gamma=1/3$.
+\item For $N(Y)=\min\{n\ge0:a_n\ge Y\}$ and $Y\to\infty$,
+\[
+ N(Y)=\frac{\log Y}{\log\mu}
+ +\Theta\!\left((\log Y)^{1/3}(\log\log Y)^{2/3}\right).
+\]
+\item $A(x)$ is not D-finite over $\C(x)$; equivalently, $(a_n)$ is not P-recursive over $\C[n]$.
+\end{enumerate}
+\end{corollary}
+
+Conway, Conway, Elvey Price and Guttmann \cite{Conway} proved equality of the exponential growth rates of the 120- and 201-avoiding classes. Their numerical analysis estimated a pure stretched power $\sigma=3/8$, with other fitted parameters depending on that choice. Their final paper says the later 500-term computation reinforced the estimate; it does not prove that stretched power. Theorem~\ref{thm:main} determines a different asymptotic order. It does not supply the leading constant in the deficit, prove convergence of the normalized deficit, or furnish a full expansion. The proof of its exponential rate is independent of any generating-function theorem for A202062.
+
+The original derivation and the additional independent audit are included in the accompanying package. They are research verification, not journal peer review or formal proof-assistant certification. A scoped source check does not establish comprehensive publication priority; in particular the gap reduction may overlap an unpublished polynomial-time enumeration mentioned in \cite{Conway}.
+
+\section{An exact normalized recurrence}
+For an avoiding prefix, let $v$ be the largest lower endpoint of an already occurring increasing pair, or $0$ if there is none. A future letter smaller than $v$ would complete a 120 pattern, and every letter at least $v$ obeying the ascent bound is permitted. Delete the seen values smaller than $v$ and translate the surviving alphabet by $-v$. The normalized state is $(a,l,S)$, where $a$ is the number of previous ascents minus $v$, $l$ is the translated last letter, and $S$ is the set of seen translated surviving values. Write
+\[
+ S=\{0=s_0<s_1<\cdots<s_k\},\quad m=s_k,\quad
+ h=a+1-m,\quad d_i=s_i-s_{i-1}.
+\]
+Every ascent sequence satisfies $\max w\le\asc(w)$, so $h\ge1$.
+
+Appending $i\in\{0,\ldots,a+1\}$ sets
+\[
+ p=\max\bigl(\{s\in S:s<i\}\cup\{0\}\bigr)
+\]
+and gives the exact child
+\begin{equation}\label{eq:state}
+ (a',l',S')=
+ \left(a+\one_{l<i}-p,\ i-p,\ \{s-p:s\in S,\ s\ge p\}\cup\{i-p\}\right).
+\end{equation}
+Indeed $p$ is the greatest newly forbidden lower threshold, and the insertion of $i-p$ records the new letter. Thus this recurrence follows directly from the class definition. In every normalized state, the last letter is either $0$ or the least positive member of $S$: if $i>0$, there was no old seen value strictly between $p$ and $i$.
+
+Let $E_h(R)$ be the suffix generating function when the last letter is $0$ and the list of positive gaps is $R$. Let $G_h(d,R)$ be the suffix generating function when the gap list is $(d,R)$ and the last letter is $d$. All empty suffixes have weight $1$. Define
+\[
+ D_h(d,R)=\sum_{q=1}^dG_h(q,(d-q,R)),\quad e_h=E_h(\varnothing),\quad
+ N_h=\sum_{q=1}^hG_{h+1-q}(q,\varnothing),
+\]
+where a zero gap is omitted. Write $(Tf)_h=f_{h+1}$.
+
+\begin{lemma}\label{lem:operator}
+Put $c=x/(1-x)$ and $\mathcal B=x+x^2T/(1-x)$. There are formal series $R_d(T),P_d(T),Q_d(T)$ with nonnegative integer coefficients in $x,T$ such that
+\begin{align}
+ D_h(d,R)&=R_d(T)E_h(R),\notag\\
+ E_h((d,R))&=P_d(T)E_h(R),\qquad
+ G_h(d,R)=Q_d(T)E_h(R),\label{eq:op}
+\end{align}
+where
+\begin{align}
+ P_d&=1+cTR_d,\qquad Q_d=1+\mathcal B R_d,\notag\\
+ (1-\mathcal B)R_d&=1+\sum_{q=1}^{d-1}Q_qP_{d-q}.
+ \label{eq:oprec}
+\end{align}
+\end{lemma}
+\begin{proof}
+Classify the next letter as zero, in an old gap, or a new maximum. For $R=(d_1,\ldots,d_k)$ this gives
+\begin{equation}\label{eq:E}
+ (1-x)E_h(R)=1+xN_h+x\sum_{j=1}^kD_{h+1}(d_j,(d_{j+1},\ldots,d_k)).
+\end{equation}
+From last letter $d$, selecting in the first gap gives no ascent; selecting in a later gap does. Subtraction from \eqref{eq:E} therefore gives
+\[
+ G_h(d,R)=E_h((d,R))+x(1-T)D_h(d,R).
+\]
+Subtracting \eqref{eq:E} for $R$ from its version for $(d,R)$ also gives
+\[
+ E_h((d,R))=E_h(R)+cTD_h(d,R).
+\]
+Together these imply $G_h(d,R)=E_h(R)+\mathcal B D_h(d,R)$. Induct on $d$, splitting the definition of $D$ into $q=d$ and $q<d$. For $q<d$, both shorter-gap identities apply to the arbitrary tail. All resulting operators commute, being series in the same shift $T$. The $q=d$ term gives the factor $1-\mathcal B$, whose inverse exists $x$-adically and has nonnegative coefficients. This proves the identities, existence, uniqueness and positivity.
+\end{proof}
+
+Use an ordinary variable $t$ for the shift and set $Q(x;z,t)=\sum_{q\ge1}Q_q(x,t)z^q$, with similar notation for $P,R$. With $b=1-x$ and $\mathcal B=x+x^2t/b$, summing \eqref{eq:oprec} yields
+\[
+ R=Q(1+P),\qquad Q=\frac{z}{1-z}+\mathcal B R,
+ \qquad P=\frac{z}{1-z}+\frac{xt}{b}R.
+\]
+Elimination gives the exact jump equation
+\begin{equation}\label{eq:Qquad}
+ xt(1-z)Q^2+[b(z-b)+xt(x-z)]Q+bz=0,
+\end{equation}
+with $Q(x;0,t)=0$ and $Q(0;z,t)=z/(1-z)$. In particular,
+\begin{equation}\label{eq:Q1}
+ Q_1(x,t)=\frac1{1-x-x^2t/(1-x)}.
+\end{equation}
+
+\section{Positive height walks and block weights}
+The empty-gap case of \eqref{eq:E} is
+\begin{equation}\label{eq:walk}
+ e_h=\frac1{1-x}+\frac{x}{1-x}\sum_{q=1}^h(Q_q(x,T)e)_{h+1-q},
+ \qquad A(x)=1+xe_1(x).
+\end{equation}
+Interpret a term indexed by $q,r$ as a macro-step that first drops by $q-1$, then rises by $r$, has weight
+\[
+ \frac{x}{1-x}[t^r]Q_q(x,t),
+\]
+and changes height from $h$ to $h+1-q+r$. Its legality condition is exactly $1\le q\le h$. The terminal weight is $1/(1-x)$ at every height. This is a positive formal representation of the original sequence; no additional word-level bijection is required for coefficient selection. Every nonterminal step has positive $x$-degree, and only finitely many shifts occur at any fixed degree. Hence the formal Neumann series is well defined and uniquely solves \eqref{eq:walk}.
+
+Put $\beta=xt/b$ and $\eta=x^2t/b^2$. Equation~\eqref{eq:Qquad} is equivalently
+\begin{equation}\label{eq:W}
+ Q=\frac{z+xW}{1-z},\qquad
+ W=\frac{z}{b}\frac{(1+\beta)(1+W)}{1-\eta(1+W)},\qquad [z^0]W=0.
+\end{equation}
+Lagrange inversion gives, for $j\ge1$,
+\begin{equation}\label{eq:lagrange}
+ [z^j]W=\frac{(1+\beta)^j}{b^j}
+ \sum_{k\ge0}\mathcal C(j,k)\eta^k,
+ \quad \mathcal C(j,k)=\frac1j\binom{j+k-1}{k}\binom{j+k}{k+1}>0.
+\end{equation}
+For $\ell,r\ge0$ and $q\ge1$, write $B(\ell,q,r)=[x^\ell t^r]Q_q(x,t)$. Expanding \eqref{eq:lagrange} yields
+\begin{equation}\label{eq:blockexact}
+ B(\ell,q,r)=\one_{\ell=0,r=0}
+ +\sum_{j=1}^q\ \sum_{k=0}^r
+ \mathcal C(j,k)\binom{j}{r-k}
+ \binom{j+\ell-2}{\ell-r-k-1}.
+\end{equation}
+The summation includes only $0\le r-k\le j$ and $\ell\ge r+k+1$. In particular, keeping $j=q$ and one admissible $k$ gives
+\begin{equation}\label{eq:blocklower}
+ B(\ell,q,r)\ge\mathcal C(q,k)\binom{q}{r-k}
+ \binom{q+\ell-2}{\ell-r-k-1}.
+\end{equation}
+
+\section{An exact critical point}
+Let $\alpha$ be the unique positive root of $7\alpha^3+14\alpha^2-7\alpha-1=0$ and define
+\begin{equation}\label{eq:constants}
+ \kappa=\frac{-21\alpha^2+17\alpha+5}{29},\qquad
+ \mu=\frac{1+\alpha}{1-\alpha-\kappa},\qquad
+ z_\st=\frac{\kappa(1-\alpha-\kappa)}{(\alpha-\kappa)(2\alpha+\kappa)}.
+\end{equation}
+The following bounds and identities are certified by rational interval arithmetic and polynomial reduction in the supplied program:
+\begin{align*}
+ \alpha&=0.5100033746178888\ldots,& \kappa&=0.2830305201361994\ldots,\\
+ z_\st&=0.1980622641951617\ldots,& z_\st^3-5z_\st^2+6z_\st-1&=0,\\
+ 0&<\kappa<\alpha,& \alpha+\kappa&<1.
+\end{align*}
+The value of $\mu$ satisfies the cubic and interval in Theorem~\ref{thm:main}, which identify its largest real root. Descartes' rule gives uniqueness of the positive $\alpha$ root, isolated in
+\[
+ \frac{51000337}{10^8}<\alpha<\frac{51000339}{10^8}.
+\]
+
+For $L(v)=v\log v$, let
+\begin{align*}
+ S(a,d,u)={}&2L(a+u)-L(a)-2L(u)-L(d-u)-L(a-d+u)\\
+ &+L(1+a)-L(1-d-u)-L(a+d+u).
+\end{align*}
+This is the factorial entropy of \eqref{eq:blocklower} divided by $\ell$, for $a=q/\ell$, $d=r/\ell$ and $u=k/\ell$. At $(\alpha,\alpha,\kappa)$,
+\begin{equation}\label{eq:entropy}
+ S_u=0,\qquad S_a+S_d=0,\qquad S_d=\log z_\st,\qquad S=\log\mu.
+\end{equation}
+For clarity, the two stationary identities reduce to
+\begin{align*}
+ (\alpha+\kappa)^2(\alpha-\kappa)(1-\alpha-\kappa)
+ &=\kappa^3(2\alpha+\kappa),\\
+ (\alpha+\kappa)^2(1+\alpha)(1-\alpha-\kappa)
+ &=\alpha(\alpha-\kappa)(2\alpha+\kappa)^2.
+\end{align*}
+The displayed expression for $z_\st$ gives $S_d$. Euler's identity applied to the homogeneous factorial entropy then gives $S=\log((1+\alpha)/(1-\alpha-\kappa))$. These are finite algebraic verifications; global maximality of $S$ is not needed.
+
+Set $\rho=1/\mu$, $b_\st=1-\rho$, $t_\st=1/z_\st$, and
+\begin{align}\label{eq:critical}
+ \beta_\st&=\frac{\rho}{b_\st z_\st},&
+ \eta_\st&=\frac{\rho^2}{b_\st^2z_\st},&
+ Q_\st&=\frac{b_\st z_\st}{b_\st z_\st+\rho},\\
+ W_\st&=\frac{(1-z_\st)Q_\st-z_\st}{\rho},&
+ m_\st&=\frac{\rho}{b_\st}t_\st Q_\st
+ =\frac{\rho}{b_\st z_\st+\rho}.\notag
+\end{align}
+The exact certificate proves the fixed-point identity \eqref{eq:W} at these values, and
+\begin{equation}\label{eq:margins}
+ W_\st=1+\beta_\st>0,\quad
+ \eta_\st(2+\beta_\st)^2=1,\quad
+ 0<\eta_\st(1+W_\st)<\tfrac12,\quad
+ \tfrac25<m_\st<\tfrac12.
+\end{equation}
+Numerically, $W_\st=1.8019377358\ldots$ and $m_\st=0.4450418679\ldots$.
+
+\begin{lemma}\label{lem:criticalbound}
+The jump series converges at $(\rho,z_\st,t_\st)$, with $Q(\rho;z_\st,t_\st)\le Q_\st$. Moreover,
+\begin{equation}\label{eq:ehcritical}
+ e_h(\rho)\le\frac{t_\st^h}{b_\st(1-m_\st)},\qquad
+ A(\rho)\le1+\frac{\rho t_\st}{b_\st(1-m_\st)}<\infty.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expand the denominator on the right of \eqref{eq:W} geometrically. Iteration starting from $0$ is nonnegative and bounded by the fixed-point supersolution $W_\st$, by \eqref{eq:margins}. Monotone convergence proves the assertion about $Q$. For the height weight $t_\st^h$, the sum of an unrestricted transition row divided by its starting weight is at most
+\[
+ \frac{\rho}{b_\st}\sum_{q\ge1,r\ge0}
+ [t^r]Q_q(\rho,t)\,t_\st^{1-q+r}
+ =\frac{\rho}{b_\st}t_\st Q(\rho;z_\st,t_\st)\le m_\st<1.
+\]
+Each legal row is a subsum. The terminal weight $1/b_\st$ is at most $t_\st^h/b_\st$, so the nonnegative Neumann series is bounded by a geometric series. This proves \eqref{eq:ehcritical}. No spectral-radius identification from a discriminant is being assumed.
+\end{proof}
+
+\section{The all length lower bound}
+\begin{lemma}\label{lem:uniform}
+For each fixed $D>0$ there exist $c_D,C_D>0$ and $\ell_D$ such that the conditions
+\[
+ \ell\ge\ell_D,\quad |q-\alpha\ell|\le2,\quad
+ |k-\kappa\ell|\le1,\quad
+ |r-q|\le D\sqrt{\ell\log\ell}
+\]
+imply admissibility in \eqref{eq:blocklower} and
+\begin{equation}\label{eq:uniform}
+ B(\ell,q,r)\ge c_D\ell^{-C_D}\mu^\ell z_\st^{r-q}.
+\end{equation}
+If $|r-q|\le D\sqrt\ell$, one can use the more precise factor $c_D\ell^{-3}$.
+\end{lemma}
+\begin{proof}
+All normalized factorial arguments lie in one compact subset of the positive interior, for all sufficiently large $\ell$. The exact identities
+\begin{align*}
+ \mathcal C(q,k)&=\frac{q}{(q+k)(k+1)}\binom{q+k}{k}^{\!2},\\
+ \binom{q+\ell-2}{\ell-r-k-1}
+ &=\frac{(\ell-r-k)(q+r+k)}{(q+\ell)(q+\ell-1)}
+ \binom{q+\ell}{\ell-r-k}
+\end{align*}
+and uniform Stirling bounds give a lower bound
+$c\ell^{-3}\exp(\ell S(q/\ell,r/\ell,k/\ell))$. Taylor's theorem and \eqref{eq:entropy} yield
+\[
+ \ell S=\ell\log\mu+(r-q)\log z_\st+O_D(\log\ell).
+\]
+Indeed the first differential is exactly $(r-q)\log z_\st$, and the quadratic remainder is $O((r-q)^2/\ell+1)$. This proves \eqref{eq:uniform}; with square-root perturbations the remainder is bounded.
+\end{proof}
+
+Choose a sufficiently large fixed integer $J$. For $j\ge J$, define
+\[
+ h_j=\lfloor j^2\log j\rfloor,\quad q_j=\lfloor h_j/2\rfloor,
+ \quad \ell_j=\lfloor q_j/\alpha\rfloor,\quad
+ k_j=\text{a nearest integer to }\kappa\ell_j.
+\]
+An ascent step from $h_j$ to $h_{j+1}$ uses
+\[
+ r_j^+=q_j-1+(h_{j+1}-h_j),
+\]
+and a descent step from $h_j$ to $h_{j-1}$ uses
+\[
+ r_j^-=q_j-1+(h_{j-1}-h_j).
+\]
+Both preserve the exact increment $1-q+r$. As $\ell_j=\Theta(j^2\log j)$ and $h_{j+1}-h_j=O(j\log j)$, every such step satisfies Lemma~\ref{lem:uniform} with the same $D$. Its down parameter obeys $q_j\le h_j$, so it is legal. Retain just the leading $x$ in the macro factor $x/(1-x)$; then its length is $\ell_j+1$ and multiplicity at least $B(\ell_j,q_j,r_j^{\pm})$.
+
+Seed the walk from height $1$ to $h_J$ using $q=1,r=h_J-1$. Equation~\eqref{eq:Q1} gives a coefficient $1$ at its leading degree $\ell=2(h_J-1)$, so the macro-step has length $2h_J-1$. The final return from $h_J$ to $1$ uses $q=h_J,r=0,\ell=0$, of length $1$ and multiplicity $1$.
+
+Ascend from $h_J$ to $h_K$ and descend to $h_J$, then add the seeds and the original leading letter. The total length is
+\begin{align}\label{eq:LK}
+ L_K&=2h_J+1+\sum_{j=J}^{K-1}(\ell_j+1)
+                +\sum_{j=J+1}^{K}(\ell_j+1)\notag\\
+ &=\frac{K^3\log K}{3\alpha}+O(K^3),
+\end{align}
+and
+\[
+ L_{K+1}-L_K=\ell_K+\ell_{K+1}+2=\Theta(h_K).
+\]
+The total increment of the large blocks is zero. If there are $M$ such blocks, then $\sum(r-q)=-M$, so their height-tilt factors multiply to $z_\st^{-M}$. There is no uncancelled exponentially expensive endpoint factor.
+
+To cover every sufficiently large integer $n$, choose maximal $K$ with $L_K\le n$ and let $R=n-L_K$. A bounded residual is absorbed by the terminating geometric series. Otherwise split $R=m_1+m_2$ into two nearly equal integers, both above a fixed threshold, and insert two self-loops at height $h_K$. For length $m$ choose
+\[
+ \ell=m-1,\qquad q=\text{a nearest integer to }\alpha\ell,
+ \qquad r=q-1,\qquad k=\text{a nearest integer to }\kappa\ell.
+\]
+The loop has exactly zero increment and meets Lemma~\ref{lem:uniform}. Furthermore,
+\[
+ q\le\frac{\alpha R}{2}+O(1)
+ \le\frac{h_K+h_{K+1}}4+O(1)<h_K
+\]
+for all sufficiently large $K$, proving legality.
+
+There are $O(K)$ large blocks and at most two repair loops, each with $\ell=O(K^2\log K)$. Multiply \eqref{eq:uniform}. The extra factor $\mu^{-1}$ for each macro-step's leading $x$, and the fixed seed lengths, cost at most $\exp(O(K))$. Polynomial factors cost at most $\exp(O(K\log K))$, while the tilt telescopes as above. Thus
+\[
+ \log a_n\ge n\log\mu-O(K\log K).
+\]
+By \eqref{eq:LK} and $R=O(h_K)$, one has
+$K=\Theta((n/\log n)^{1/3})$, hence $K\log K=\Theta(\Phi(n))$. This proves the lower half of \eqref{eq:main} for all large integers, not merely a subsequence.
+
+\section{A finite height radius gain}
+\subsection{A fixed gap derivative bound}
+For fixed $t=t_\st$ and variable $x$, put $b=1-x$, $\beta=xt_\st/b$ and $\eta=x^2t_\st/b^2$. The coefficient formula \eqref{eq:lagrange} implies
+\begin{equation}\label{eq:fixedgap}
+ Q_q(x,t_\st)=1+x\sum_{j=1}^q W_j(x),\qquad
+ W_j(x)=\left(\frac{1+\beta}{b}\right)^j
+ \frac{N_{j-1}(\eta)}{(1-\eta)^{2j-1}},
+\end{equation}
+where $N_0=1$ and, for $j\ge2$,
+\[
+ N_{j-1}(v)=\frac1{j-1}\sum_{l=0}^{j-2}
+ \binom{j-1}{l}\binom{j-1}{l+1}v^l.
+\]
+Here is a formal proof, with no analytic continuation needed. If $F_j(v)=\sum_{k\ge0}\mathcal C(j,k)v^k$, its coefficient ratio gives
+\[
+ v(1-v)F_j''+[2-(2j+2)v]F_j'-j(j+1)F_j=0.
+\]
+Substitute $F_j=(1-v)^{1-2j}N$. The equation becomes
+\[
+ v(1-v)N''+[2-(4-2j)v]N'-(2-j)(1-j)N=0.
+\]
+With $N(0)=1$, its unique formal coefficients satisfy
+\[
+ (l+1)(l+2)n_{l+1}=(l+2-j)(l+1-j)n_l.
+\]
+They are exactly the displayed coefficients of $N_{j-1}$, and terminate after $j-2$. For $j=1$, $\mathcal C(1,k)=1$ directly gives $F_1=(1-v)^{-1}$.
+
+Since $\eta(\rho)=0.12737466\ldots<1$, choose a fixed interval $[\rho,\rho+\epsilon_0]$ on which $b>0$ and $0<\eta<1$. The positive polynomial $N_{j-1}$ has degree at most $j$, so
+\[
+ 0\le\frac{\eta N_{j-1}'(\eta)}{N_{j-1}(\eta)}\le j.
+\]
+Logarithmic differentiation of \eqref{eq:fixedgap} gives a constant $C_0$, independent of $j$, such that $0\le(\log W_j)'\le C_0j$ throughout this interval. Increasing a constant $C_1$ therefore gives
+\begin{equation}\label{eq:derivative}
+ Q_q(x,t_\st)\le Q_q(\rho,t_\st)
+       \exp(C_1(q+1)(x-\rho))
+\end{equation}
+for all $q\ge1$ and $x$ in the interval.
+
+\subsection{The critical jump tail}
+At $x=\rho,t=t_\st$, let $b=b_\st$ and $s=b^2-\rho^2t_\st>0$. The discriminant of \eqref{eq:Qquad} as a quadratic in $Q$ factors, as a polynomial in $z$, as
+\[
+ \Delta(z)=s^2(1-z/z_\st)(1-z/z_2),\qquad
+ z_2=\frac{s^2}{(b+\rho t_\st)^2z_\st}.
+\]
+The exact certificate verifies $0<z_\st<z_2<1$, with $z_2=0.8817230195\ldots$. The branch with $Q(0)=0$ is
+\begin{equation}\label{eq:sqrt}
+ Q(\rho;z,t_\st)=
+ \frac{s-(b-\rho t_\st)z-s\sqrt{1-z/z_\st}\sqrt{1-z/z_2}}
+      {2\rho t_\st(1-z)}.
+\end{equation}
+The rational nonsingular part is analytic in $|z|<1$, and the multiplier of $\sqrt{1-z/z_\st}$ is analytic in $|z|<z_2$. Consequently, for some fixed $C_2$,
+\begin{equation}\label{eq:qtail}
+ 0\le Q_q(\rho,t_\st)z_\st^q\le C_2q^{-3/2}\qquad(q\ge1).
+\end{equation}
+For an elementary coefficient justification, rescale $z=z_\st w$. The coefficients of $\sqrt{1-w}$ have absolute value at most $C(m+1)^{-3/2}$. The analytic multiplier has coefficients $O(R^{-m})$ for some $R>1$. In the convolution, indices at most $q/2$ yield $O(q^{-3/2})$ by geometric summation, and the other indices yield an exponentially small bound. The rational part is exponentially smaller as well. This proves \eqref{eq:qtail} without a transfer theorem.
+
+\subsection{The cutoff estimate}
+Let $a_n^{[\le H]}$ denote the coefficients in \eqref{eq:walk} restricted to macro-boundary heights in $\{1,\ldots,H\}$. This is a coefficientwise positive subclass of the formal walk expansion. Set
+\[
+ \delta_H=\epsilon\frac{\log(H+1)}{H+1},\qquad x_H=\rho+\delta_H,
+\]
+with a sufficiently small fixed $\epsilon>0$. Write $A_q=Q_q(\rho,t_\st)z_\st^q$. By \eqref{eq:derivative}, the weighted row sum of the cutoff at $x_H$ is at most
+\begin{equation}\label{eq:rowcut}
+ \frac{x_H}{1-x_H}t_\st e^{C_1\delta_H}
+       \sum_{q\le H}A_qe^{C_1q\delta_H}.
+\end{equation}
+Its unperturbed infinite mass is at most $m_\st<1$. Moreover, \eqref{eq:qtail} implies
+\begin{equation}\label{eq:tailperturb}
+ \sum_{q\le H}A_q(e^{C_1q\delta_H}-1)\longrightarrow0.
+\end{equation}
+Indeed split at $q=1/\delta_H$. The lower part is $O(\sqrt{\delta_H})$, using $e^{C_1q\delta_H}-1=O(q\delta_H)$ there. The upper part is bounded by
+\[
+ C e^{C_1H\delta_H}\sqrt{\delta_H}
+ =O\!\left(H^{C_1\epsilon-1/2}\sqrt{\log H}\right)=o(1)
+\]
+if $C_1\epsilon<1/2$. The prefactor in \eqref{eq:rowcut} tends to its critical value. Thus the row mass is uniformly at most a fixed $\bar m<1$ for large $H$. The same weighted geometric bound as in Lemma~\ref{lem:criticalbound}, now in the finite cutoff, gives a uniform upper bound on its generating function at $x_H$. Positive coefficient extraction yields
+\begin{equation}\label{eq:cutbound}
+ a_n^{[\le H]}\le Cx_H^{-n}
+ \le C\mu^n\exp\!\left(-c\frac{n\log(H+1)}{H+1}\right).
+\end{equation}
+All constants are independent of $H,n$ once $H$ is sufficiently large.
+
+\section{The first hit bound and the upper estimate}
+Keep $W=W_\st$ fixed and write the right side of \eqref{eq:W} as
+\[
+ F(x,z,t;W)=\frac{z}{1-x}
+ \frac{(1+xt/(1-x))(1+W)}{1-x^2t(1+W)/(1-x)^2}.
+\]
+Let $f(x,\theta)=F(x,z_\st e^{-\theta},t_\st e^\theta;W_\st)$. By \eqref{eq:margins}, $f(\rho,0)=W_\st$ and $f_\theta(\rho,0)=0$. Specifically, with $u=\eta_\st(1+W_\st)$,
+\[
+ \frac{f_\theta}{f}(\rho,0)
+ =-\frac1{1+\beta_\st}+\frac{u}{1-u}=0.
+\]
+Also $f_x(\rho,0)>0$, since the positive factors increase with $x$ and the denominator remains positive. Choose a fixed sufficiently large $D>0$ and put
+\[
+ x_\theta=\rho e^{-D\theta^2},\qquad
+ t_\theta=t_\st e^\theta,\qquad z_\theta=1/t_\theta.
+\]
+Taylor's theorem gives
+\[
+ f(x_\theta,\theta)=W_\st+
+ \left(\tfrac12 f_{\theta\theta}(\rho,0)-\rho D f_x(\rho,0)\right)\theta^2
+ +O(\theta^3).
+\]
+Make the bracket negative. For $0\le\theta\le\theta_0$ with sufficiently small $\theta_0>0$, the positive fixed-point map then has the supersolution $W_\st$ and positive denominator. Iteration from zero gives
+\[
+ Q(x_\theta;z_\theta,t_\theta)
+ \le\frac{z_\theta+x_\theta W_\st}{1-z_\theta}.
+\]
+Its unrestricted weighted row mass satisfies
+\[
+ m_\theta=\frac{x_\theta}{1-x_\theta}t_\theta
+ Q(x_\theta;z_\theta,t_\theta)
+ \le \frac{x_\theta}{1-x_\theta}t_\theta
+       \frac{z_\theta+x_\theta W_\st}{1-z_\theta}.
+\]
+The explicit supersolution bound on the right is continuous at zero, where it equals $m_\st<1$. Reducing $\theta_0$ makes all such masses at most one fixed $\bar m<1$. The sum of the weights of all finite macro-prefixes starting at height $1$, including the factor $t_\theta^h$ at their final height but no terminating weight, is therefore at most
+\begin{equation}\label{eq:prefix}
+ t_\theta\sum_{k\ge0}\bar m^k\le C.
+\end{equation}
+
+Let $p_{m,h}$ count the first-hit macro-prefixes of length $m$ whose first height above $H$ is $h>H$. The remaining unrestricted suffix has generating function $e_h$. By \eqref{eq:ehcritical}, for the complementary coefficients at fixed word length $n$,
+\[
+ a_n^{[>H]}\rho^n
+ \le C\rho\sum_{m\le n-1,\,h>H}p_{m,h}\rho^m t_\st^h.
+\]
+Here $\rho$ accounts for the original leading letter, and the use of $e_h(\rho)$ only enlarges the permitted remaining lengths. For $0<\theta\le\theta_0$,
+\[
+ \rho^m\le x_\theta^m e^{D\theta^2n},\qquad
+ t_\st^h\le t_\theta^h e^{-\theta H}.
+\]
+First-hit prefixes are a subset of all prefixes, so \eqref{eq:prefix} implies
+\[
+ a_n^{[>H]}\le C\mu^n\exp(D\theta^2n-\theta H).
+\]
+When $H/(2Dn)\le\theta_0$, use $\theta=H/(2Dn)$ to obtain
+\begin{equation}\label{eq:hit}
+ a_n^{[>H]}\le C\mu^n\exp\!\left(-\frac{H^2}{4Dn}\right).
+\end{equation}
+Continuation at the critical tilt in \eqref{eq:ehcritical} is what cancels the final height weight. No constraint on the final height of the entire walk is imposed.
+
+Take $H=\lfloor n^{2/3}(\log n)^{1/3}\rfloor$. It is $o(n)$, so \eqref{eq:hit} applies for large $n$. Both exponents in \eqref{eq:cutbound} and \eqref{eq:hit} are at least a positive constant times $\Phi(n)$. Adding the two positive subclasses proves the upper half of \eqref{eq:main}. Together with the lower bound, this completes Theorem~\ref{thm:main}.
+
+\section{Inverse order and non D finiteness}
+The main theorem gives $c\Phi(n)-O(1)\le n\log\mu-\log a_n\le C\Phi(n)$. If a pure stretched equivalent in Corollary~\ref{cor:consequences}(1) held, its deficit would be $dn^\gamma-g\log n-\log C_0+o(1)$. This grows faster than $\Phi(n)$ for $\gamma>1/3$ and more slowly for $\gamma=1/3$, contradicting the two-sided bounds.
+
+The sequence is nondecreasing: append a copy of the last letter to an avoiding ascent sequence. The ascent condition persists. A new 120 occurrence using the appended letter would already occur using its previous copy. This extension is injective. Hence $N(Y)$ is well defined for large $Y$.
+
+Let $L=\log Y$ and $\lambda=\log\mu$. Applying the upper bound at $n=N(Y)$ first gives $N(Y)\ge L/\lambda-O(1)$ and then
+\[
+ \lambda N(Y)-L\ge c\Phi(N(Y))-O(1)\ge c'\Phi(L).
+\]
+Conversely set $n=\lceil L/\lambda+K\Phi(L)\rceil$. Since $\Phi(n)/\Phi(L)\to\lambda^{-1/3}$, any sufficiently large fixed $K$ makes $\lambda n-C\Phi(n)\ge L$. The coefficient lower bound implies $a_n\ge Y$, hence $N(Y)\le n$. This proves the stated inverse order. It is a positive correction of a known order, with no asserted leading coefficient or exact rounding rule.
+
+For non-D-finiteness, the stretched upper bound gives
+\[
+ \sum_{n\ge0}n^k a_n\rho^n<\infty\qquad(k=0,1,2,\ldots).
+\]
+Thus $A$ and all its derivatives extend continuously along the real radius to $\rho$. Suppose $A$ were D-finite over $\Q(x)$. Its coefficients are exponentially bounded nonnegative integers, their algebraic conjugates have the same bound, and all common denominators are $1$. It would therefore be a Siegel G-function. The G-function regularity theorem gives a convergent finite local sum of terms
+\[
+ (x-\rho)^\alpha(\log(x-\rho))^\beta H(x-\rho),
+\]
+with rational $\alpha$, nonnegative integer $\beta$ and analytic $H$, on a slit neighborhood of $\rho$; see \cite[Definition 2.2 and Theorem 2.1(c)]{GB}.
+
+Such a convergent finite power-log expansion can be smooth to every order along a radius only if it is analytic at the endpoint. To see this, combine terms with the same rational exponents modulo integers and the same logarithmic powers. The possible exponents form a discrete set bounded below. A least surviving negative integer power is unbounded; a least noninteger power fails to have a bounded derivative at some finite order; and a least nonzero logarithmic term fails similarly. The absence of all these terms leaves a convergent ordinary power series. Consequently $A$ would be analytic at $\rho$, contrary to Pringsheim's theorem for a nonnegative series of finite radius. Thus $A$ is not D-finite over $\Q(x)$.
+
+Finally, a complex differential relation of bounded order and polynomial degree for a rational series produces a homogeneous linear system with rational entries and finitely many unknowns. Its rank is attained by finitely many rows. If it has a nonzero complex solution, it has a nonzero rational solution. Hence complex D-finiteness would imply rational D-finiteness here, proving Corollary~\ref{cor:consequences}(3). This argument uses G-function arithmetic regularity; it does not assert that all D-finite functions have regular singularities.
+
+\section{Reproduction and remaining questions}
+The exact certificate checks the algebraic identities and rational sign margins. Independent programs compare literal words, normalized states, gap operators and binomial height walks, including the OEIS terms through $n=20$. Additional checks cover fixed-gap formulas and staircase legality, lengths and tilt cancellation. These diagnostics supplement the proofs above.
+
+The package includes editable source, a build script, mathematical notes, a separate audit and content hashes. The checks require Python with SymPy and mpmath. The PDF build uses standard LaTeX with AMS packages, geometry, hyperref, microtype and Latin Modern fonts.
+
+The convergence and possible limit of $\bigl(n\log\mu-\log a_n\bigr)/\Phi(n)$, and lower-order corrections, remain open here. There is no full transseries or all-orders inverse expansion. Although the $n^{3/8}$ estimate is ruled out asymptotically, the theorem gives no explicit crossover threshold for finite-data fits.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{OEIS} OEIS Foundation, \emph{A202061: Number of ascent sequences avoiding the pattern 120}. Inspected 2 October 2026. \url{https://oeis.org/A202061}.
+\bibitem{Conway} A. R. Conway, M. Conway, A. Elvey Price and A. J. Guttmann, \emph{Pattern-Avoiding Ascent Sequences of Length 3}, Electronic Journal of Combinatorics \textbf{29}(4) (2022), P4.25. \url{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v29i4p25/pdf/}.
+\bibitem{GB} S. Garoufalidis and J. Bellissard, \emph{Algebraic G-functions associated to matrices over a group-ring}, version dated 19 December 2013, Definition 2.2 and Theorem 2.1(c). \url{https://people.mpim-bonn.mpg.de/stavros/publications/algebraicGfunctions.pdf}.
+\end{thebibliography}
+\end{document}
