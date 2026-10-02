@@ -1,44 +1,182 @@
 \documentclass[11pt,letterpaper]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs}
-\usepackage[hidelinks,pdftitle={Asymptotics of iterated Bell diagonals}]{hyperref}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Asymptotics of iterated Bell diagonals (OEIS A139383, A261280)},pdfsubject={Fixed-shift and proportional-depth asymptotics of the iterated Bell numbers H(n,m), the m-fold compositions of exp(z)-1; merged from batch-77 manuscripts 53 and 28}}
 \usepackage{enumitem}
 \setlist{nosep}
+\setlength{\emergencystretch}{2em}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
-\newcommand{\Res}{\mathop{\rm Res}}
+\DeclareMathOperator{\Res}{Res}
 \newcommand{\I}{\mathcal I}
+\newcommand{\J}{\mathcal J}
 \newcommand{\dd}{\,\mathrm d}
 \newcommand{\Oh}{\mathcal O}
 \DeclareMathOperator{\Rea}{Re}
 \DeclareMathOperator{\Ima}{Im}
-\title{Asymptotics of iterated Bell diagonals}
-\author{}
-\date{2 October 2026}
+\newcommand{\JP}{J_{\mathrm P}}
+% Notes added when the two manuscripts were merged into this report
+\newenvironment{writenote}{\par\smallskip\begin{quote}\small\textbf{[write, 2 October 2026]}\ }{\end{quote}\smallskip}
+\newenvironment{partsource}{\par\medskip\noindent\begin{minipage}{\linewidth}\small\raggedright\textit{Source.}\ }{\end{minipage}\par\medskip}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\_\do-\do/}
+\Urlmuskip=0mu plus 1mu
+\newcommand{\repopath}[1]{\nolinkurl{#1}}
+
+\title{Asymptotics of iterated Bell diagonals (OEIS A139383, A261280)\\[4pt]
+\large Fixed depth shifts and proportional depth}
+\author{A merged research report built from two manuscripts\\
+(batch 77, manuscripts 53 and 28)}
+\date{Manuscripts dated 2 October 2026; merged 2 October 2026}
 \begin{document}
 \maketitle
-\vspace{-1.8em}
 \begin{abstract}
-The diagonal higher-order Bell numbers count hierarchical set partitions whose depth grows with their size. Prellberg's 2002 pre-sum coefficient formula already announces the corresponding leading asymptotic scale through parabolic-coordinate analysis. We give a self-contained finite-contour proof for OEIS A139383 and A261280, with an expansion to every finite log-polynomial order, explicit remainder construction, and a separate outward-rounded certificate that $2<C<4$. A coefficient generator and smooth-model inverses with safe discrete threshold treatment are included. No priority is claimed for the leading formula, the parabolic method, or displayed coefficients.
+Let $H(n,m)=n![z^n](e^z-1)^{\circ m}$ be the iterated (higher-order) Bell numbers, so that OEIS A139383 and A261280 are $H(n,n)$ and $H(n,n+1)$. This report prints two manuscripts as two Parts. Part~I proves, for each fixed integer $k$, an expansion $H(n,n+k)=e^kC\,n^{2n-5/6}(2^{n-1}e^n)^{-1}\bigl(1+\sum_{j\le M}P_{j,k}(\log n)n^{-j}+O((1+\log n)^{D_M}n^{-M-1})\bigr)$ to every fixed order, with an outward-rounded interval certificate that $2<C<4$, an exact rational coefficient generator, and inverses of the smooth models with a safe integer threshold bracket. Part~II extends the expansion to proportional depth $m=\lambda n+\delta$, uniformly for $\lambda$ in compact subsets of $(0,\infty)$ and bounded $\delta$; its amplitude $D(\lambda)=\sqrt{2\pi}\lambda^{-1/(3\lambda)}I(1/\lambda)$, with $D(1)=2C$, is proved strictly positive for every $\lambda>0$ by an exact quadratic composition inequality and the single certified seed $I(1)>1.64$ of Part~I. Part~II also gives the floor-depth phase $e^{-\{\lambda n\}/\lambda}$, eventual monotonicity, the first correction and smooth inverses. Part~II is conditional on Part~I. Prellberg's 2002 bivariate formula and parabolic-coordinate method are direct antecedents of both leading equivalents; no priority is claimed for them, for the method, or for the displayed coefficients. The digits $C\approx2.86540798$ are not certified, the certificate relies on the interval arithmetic of \texttt{mpmath.iv}, and the report is unrefereed and not formalized.
 \end{abstract}
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\section*{Guide to this report}
+\addcontentsline{toc}{section}{Guide to this report}
+\phantomsection\label{ibd:guide}
+This guide was written when the two manuscripts were merged. Everything after it is the manuscripts' text, except for the passages marked \textbf{[write, 2 October 2026]} and the changes listed under ``Conventions of the merge'' below.
+
+\subsection*{What the report proves}
+\phantomsection\label{ibd:guide:results}
+\begin{itemize}
+\item \textbf{Part~\ref{ibd:part:diag}} (source 53). Theorem~\ref{ibd:thm:main}: for each fixed integer $k$ and every $M$, the expansion \eqref{ibd:eq:main} of $H(n,n+k)$ with explicit polynomials $P_{j,k}$ of degree at most $2j$ in $\log n$, the amplitude $C=\sqrt{2\pi}I_0/2$ defined by a fixed contour of radius $1/2$, and the certified enclosure $2<C<4$ (Section~\ref{ibd:sec:certificate}); in particular A261280$/$A139383$\,\to e$. The exact residue representation \eqref{ibd:eq:residue}, an effective Fatou coordinate (Lemma~\ref{ibd:lem:tail}), explicit rational Abel-remainder constants \eqref{ibd:eq:generalremainder}, the shift rule \eqref{ibd:eq:Pmom} and first correction \eqref{ibd:eq:first}; the Galton--Watson factorial-moment interpretation; inverses of the smooth models $G_{N,k}$ to every finite order and a safe integer bracket for the threshold $\nu_k(Y)$ (Section~\ref{ibd:sec:inverse}).
+\item \textbf{Part~\ref{ibd:part:pd}} (source 28). Theorem~\ref{ibd:pd:thm:main}: for $m=\lambda n+\delta$, every fixed order, uniformly for $\lambda$ in a compact $\Lambda\subset(0,\infty)$ and $|\delta|\le\Delta$, with $I$ real analytic and strictly positive on $(0,\infty)$ (Proposition~\ref{ibd:pd:prop:positive}); the uniform absolute transfer \eqref{ibd:pd:eq:absolute} proved before positivity; the coefficient formula \eqref{ibd:pd:eq:Pgen} and first correction \eqref{ibd:pd:eq:P1}; the floor-depth phase \eqref{ibd:pd:eq:floor}, the shift ratio \eqref{ibd:pd:eq:shiftratio} and eventual monotonicity (Proposition~\ref{ibd:pd:prop:monotone}); smooth inverses to every finite order \eqref{ibd:pd:eq:Urec}, with the residue-class treatment of rational slopes and the warning against holding $\delta_n$ constant.
+\end{itemize}
+
+\subsection*{How the Parts depend on each other}
+\phantomsection\label{ibd:guide:dependencies}
+Part~\ref{ibd:part:pd} is \emph{conditional on Part~\ref{ibd:part:diag}}: it takes the fixed-contour foundation (Sections~\ref{ibd:sec:inviter}--\ref{ibd:sec:certificate}) and the certificate's positive seed as input; Section~\ref{ibd:pd:sec:foundation} lists exactly what it uses. It does not rerun or replace the interval certificate. Its independent review is likewise conditional on that foundation and certificate.
+
+Conversely, Part~\ref{ibd:part:pd} at $\lambda=1$, $\delta=k$ contains Part~\ref{ibd:part:diag}'s Theorem~\ref{ibd:thm:main}, except for the certified enclosure: $\beta=1$, $D(1)=2C$, $I(1)=I_0$, $I^{(j)}(1)=I_j$, so $\mu_j(1)=m_j$, $R_j(y;1)=R_j(y)$ and $P_j(L;1,k)=P_{j,k}(L)$. Substituting $\beta=1$, $\delta=0$, $A=-L/3$ into \eqref{ibd:pd:eq:P1} gives \eqref{ibd:eq:first} term by term (checked when merging). Both Parts are printed in full because Part~\ref{ibd:part:pd}'s proof rests on Part~\ref{ibd:part:diag}'s, and Part~\ref{ibd:part:diag} carries the certificate, the exact positivity of $C$, and the shift rule for integer $k$ without the compact-slope apparatus.
+
+\subsection*{Sources and provenance}
+\phantomsection\label{ibd:guide:provenance}
+The report was built from two manuscripts, both delivered in the arrival commit \texttt{096ee7b87} of 2 October 2026 as batch~77, manuscripts 53 and 28, and placed in this directory by commit \texttt{aa7345800} (batch 77P2). Both have an empty author line, name no tool or person, and pin no ProveIt commit; neither mentions the repository except for source 53's scoped search (Section~\ref{ibd:sec:literature}). Neither states whether it was produced with AI assistance.
+
+\begin{center}
+\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Part & Source & Archive & Dated & PDF & Labels\\
+\midrule
+I & 53 & \texttt{oeis-iterated-bell-report-attribution-revised.zip} & 2 Oct & 12 pp. & \texttt{ibd:}\\
+II & 28 & \texttt{iterated-bell-proportional-addendum.zip} & 2 Oct & 11 pp. & \texttt{ibd:pd:}\\
+--- & 54 & \texttt{oeis-iterated-bell-report.zip} & 2 Oct & 11 pp. & superseded\\
+\bottomrule
+\end{tabular}
+
+\end{center}
+
+\noindent\textbf{The superseded first edition (54).} Manuscript 54 is the first edition of source 53. Source 53 is its ``attribution corrected'' revision: a \texttt{diff} has four hunks, replacing four lines by twenty-two (the abstract, the subsection ``Historical attribution'', the research-question sentence in Section~\ref{ibd:sec:literature} and two bibliography entries); the body from ``Result and exact model'' through the inverse section, \texttt{inverse-section.tex}, the programs, the recorded results and the certificate are byte-identical. Every sentence of 54 is therefore printed here, and nothing of it was staged. Source 53's change note is shipped as \texttt{53-iterated-bell-CHANGE-NOTE.md}.
+
+\noindent\textbf{Nesting.} Archive 28 embeds archive 53 whole, byte for byte (31 files, under \repopath{dependencies/foundation/}), plus one file found in no other archive, the pre-release diagnostic \repopath{results/recurrence-original.json} (the first ten terms of $H(n,n)$ and $H(n,n+1)$ and floating-point amplitudes), shipped as \repopath{data/28-proportional-foundation-recurrence-original.json}. The placement staged source 53's files once, from archive 53.
+
+\noindent\textbf{Where the merge had to choose.}
+(i) Source 53 is the base and Part~I, since source 28 is written on it.
+(ii) Source 28's Section~2 (four pages) restated source 53's fixed-contour lemmas from its embedded copy; it is replaced by pointers to Part~I, keeping the three displays that Part~II's proofs cite (Section~\ref{ibd:pd:sec:foundation}). Likewise the definition of $H$ and the recurrence in source 28's Section~1 are replaced by references to \eqref{ibd:eq:H} and \eqref{ibd:eq:rec}. Source 28's restatements in its own notation of the orbit polynomials \eqref{ibd:pd:eq:W}--\eqref{ibd:pd:eq:vrec} and of the real functional \eqref{ibd:pd:eq:realI} are kept, because its proofs work with them; notes name the Part~I originals.
+(iii) The two literature sections are both printed in full. Each derives the same specialization of Prellberg's pre-sum formula (\eqref{ibd:eq:historical} and \eqref{ibd:pd:eq:prellberg}), but each carries its own non-claims and comparisons, and source 28's adds the general recurrence, the integration by parts $I=\beta\JP$ and the slope-$\lambda$ prefactor.
+(iv) Source 53's check that Prellberg's broad printed theorem fails for $f(z)=z/(1-z)$ is printed in Part~I and also in the Takeuchi report (see below); Part~I keeps its own paragraph.
+(v) The two bibliographies are merged; the two Nagaev--Vakhtel DOIs agree (the 10.1163 DOI of source 53 redirects to the 10.1515 DOI of source 28).
+
+\subsection*{Conventions of the merge}
+\phantomsection\label{ibd:guide:conventions}
+\begin{itemize}
+\item Labels: every label of source 53 (including \texttt{inverse-section.tex}) carries the prefix \texttt{ibd:}, every label of source 28 the prefix \texttt{ibd:pd:}; new labels start with \texttt{ibd:}.
+\item Numbering: Part~I's sections, theorems and equations have source 53's numbers. Source 28's Section $n$ is Section $n+9$; its theorems are renumbered accordingly (its Theorem~1.1 is Theorem~\ref{ibd:pd:thm:main}), and its equations continue Part~I's numbering. The shipped review files refer to the delivered numbering (for example, \texttt{53-iterated-bell-attribution-review.md} calls \eqref{ibd:eq:historical} ``equation (32)'').
+\item \texttt{inverse-section.tex} is printed inline as Section~\ref{ibd:sec:inverse}.
+\item One renamed symbol: Prellberg's contour integral, $J(\beta)$ in both sources, is written $\JP(\beta)$, to separate it from the certified outer contribution $J$ of \eqref{ibd:eq:Jcert} (source 53 used $J$ for both). Nothing else is renamed and no normalization is changed.
+\item Source 28's citations of its two package documents are replaced: \verb|\cite{foundation}| by references to Part~I, and \verb|\cite{audit}| by the shipped file \texttt{28-proportional-audit-audit.md}. In Part~II, ``the foundation'' means Part~I. Source 28's running header is not reproduced.
+\item The sources' own abstracts are printed at the head of their Parts; their title blocks are replaced by this report's.
+\end{itemize}
+
+\subsection*{Notation}
+\phantomsection\label{ibd:guide:notation}
+The two sources share most symbols, and each uses some letters for several things. The table fixes the meaning in each Part and prints the tempting false reading beside the true one.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.47\linewidth}>{\raggedright\arraybackslash}p{0.32\linewidth}@{}}
+\toprule
+Symbol & Meaning and where & Do not read it as\\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Meaning and where & Do not read it as\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$H(n,m)$ & $n![z^n]f^{\circ m}(z)$, $f(z)=e^z-1$; $m$ is the depth (number of compositions). Both Parts. & Skau--Kristensen's $B^{(r)}_n=H(n,r+1)$ and the $B_k(p)=H(p,k+1)$ of Carlson--Makarychev--Mosenzon count one more composition.\\
+$k$ (I), $\delta$ (II) & The depth shift: Part~I takes $m=n+k$ with $k$ a fixed integer; Part~II takes integer $m=\lambda n+\delta$ with $\delta$ real and bounded. At $\lambda=1$, $\delta=k$. & In Part~II, $k$ is also a summation index \eqref{ibd:pd:eq:quadratic} and a power ($\Psi^k$); in Part~I, $K$ is also a number of moment terms \eqref{ibd:eq:momenttail}.\\
+$\lambda$, $\beta$, $\eta$ & $\lambda$: the slope (Part~II); $\beta=1/\lambda$ (Part~II from \eqref{ibd:pd:eq:shift} on); $\eta=n/m$ exactly, in Part~II's transfer section; $\beta=n/m$ in both literature sections and in Part~II's positivity proof. & In Part~I's threshold bracket, $\eta$ is an index-uncertainty margin.\\
+$C$ (I), $D(\lambda)$ (II) & $C=\sqrt{2\pi}I_0/2$, so $H(n,n+k)\sim e^kC\,n^{2n-5/6}/(2^{n-1}e^n)$; $D(\lambda)=\sqrt{2\pi}\lambda^{-1/(3\lambda)}I(1/\lambda)$, so $D(1)=2C$. The OEIS estimate $2.86539\ldots$ and the exploratory $2.86540798$ are values of $C$. & $D(1)$ is \emph{not} $C$ (``this factor of two is important when comparing OEIS constants''). $C$, $C'$, $C_K$, $C_{R_0}$, $C_Q$ are also generic constants; $C_J$ is the explicit defect constant of Section~\ref{ibd:sec:orders}; $\mathcal C(n,m)$ is Part~II's normalization \eqref{ibd:pd:eq:Cnm}. $D_M$, $D$, $E$ are logarithmic remainder degrees, not amplitudes.\\
+$I_j$, $m_j$ (I); $I(\beta)$, $\mu_j(\beta)$ (II) & $I_j=\I[e^\Psi\Psi^j]$, $m_j=I_j/I_0$; $I(\beta)=\I[e^{\beta\Psi}]$, $\mu_j=I^{(j)}/I$. Hence $I(1)=I_0$, $I^{(j)}(1)=I_j$, $\mu_j(1)=m_j$. & In Part~I, $\mu_j$ in Section~\ref{ibd:sec:orders} and \eqref{ibd:eq:momenttail} are the Stieltjes moments of $\rho$; Prellberg's $\mu(s)$ is his inverse parabolic coordinate. $\mu_j(\beta)$ are signed contour moments, not moments of a positive measure.\\
+$\I$, $\J$ & $\I$: the fixed-radius real functional \eqref{ibd:eq:Ifunc}, restated as \eqref{ibd:pd:eq:realI}; $\J$: the complex-linear functional \eqref{ibd:pd:eq:complexJ} (Part~II). & $\J$ is neither $J$ nor $\JP$.\\
+$J$, $\JP(\beta)$ & $J$: the certified outer contribution, $2.14<J<2.43$ \eqref{ibd:eq:Jcert}. $\JP(\beta)$: Prellberg's contour integral in \eqref{ibd:eq:historical} and \eqref{ibd:pd:eq:prellberg} (renamed from $J(\beta)$). & $J$ is not $\JP(1)$. In Part~I $J$ is also a truncation order ($V_J$, $B_J$, $C_J$).\\
+$P_{j,k}(L)$ (I), $P_j(L;\lambda,\delta)$ (II) & Forward correction polynomials, $L=\log n$; $P_{j,k}(L)=P_j(L;1,k)$. & In the inverse sections $L=\log x$, not $\log n$.\\
+$R_j(y)$ (I), $R_j(y;\beta)$ (II) & Integrand polynomials \eqref{ibd:eq:Rgen}, \eqref{ibd:pd:eq:Rgen}; $R_j(y)=R_j(y;1)$. & In Part~I, $R_j=g^{\circ j}(R_0)$ is also the real comparison orbit (Section~\ref{ibd:sec:contour}), and $R$ a remainder in Lemma~\ref{ibd:lem:tail}.\\
+$W(n,y)$ (I), $W(q,y)$ (II) & The orbit series \eqref{ibd:eq:vrec}, \eqref{ibd:pd:eq:W}, with $q=\lambda n$ in Part~II. & $W_0$ is Lambert's principal branch.\\
+$A_{j,k}$, $A_j$, $A$ & Logarithmic forward coefficients (\eqref{ibd:eq:Gmodel}, \eqref{ibd:pd:eq:logmodel}); in Part~II also $A=\delta-(L+\log\lambda)/3$ in \eqref{ibd:pd:eq:P1}. & Both Parts also split the cut at $\tau\le A\log n$ (resp.\ $A\log m$) with a large constant $A$.\\
+$U_{j,k}$, $U_j$ & Inverse coefficients \eqref{ibd:eq:inverseansatz}, \eqref{ibd:pd:eq:inverse}. & In Section~\ref{ibd:sec:contour}, $h=U+iV$ (real and imaginary parts).\\
+$S(n,j)$, $S$ & Stirling numbers of the second kind; $S=2L+1-\log2$ (Part~I) and $S=2L+1+\log(\lambda/2)$ (Part~II), the derivative of the leading inverse function. & \\
+$G_{N,k}$, $G_N$ & The smooth finite models \eqref{ibd:eq:Gmodel}, \eqref{ibd:pd:eq:logmodel}. & $G(s)=e^{s-1}$ is the offspring generating function (Section~\ref{ibd:sec:result}).\\
+$c$, $d$ & Part~II's inverse: $c=\log(\lambda/(2e))$, $d=\log D(\lambda)+\delta/\lambda$. & In both literature sections, Prellberg's $f(z)=z+cz^2+dz^3+\cdots$ with $c=1/2$, $d=1/6$; $d_\ell$ are the Fatou coefficients of Section~\ref{ibd:sec:orders}.\\
+$Z_m$, $Z_n$ & $Z_m$: generation $m$ of the critical Poisson(1) Galton--Watson process (both Parts). & In Part~II's literature section, $Z_n=\sum_m2^{-m-1}H(n,m)$ is the partition-lattice chain observable.\\
+$q$, $Q$ & Part~II: $q=\lambda n$ in $W(q,y)$, and $\lambda=p/q$ for rational slopes. Part~I: $Q(n,m)=2^{n-1}H(n,m)/n!$; $q(z)=zg(1/z)$ in both Parts. & Nagaev--Vakhtel's population size $q=o(n^2)$ in Section~\ref{ibd:sec:literature}.\\
+$b$, $B$ & Part~I: $b=\Psi(u)$ in the polynomial recursion. Part~II: $\eta\in[b,B]$ in the transfer section. & Prellberg's $b(z)$; the ordinary Bell series $B(z)$ and $B_n$; Bernoulli numbers $B_{2\ell}$; the bound $B_J$.\\
+$r$ & The fixed radius $r=1/2$ (both Parts); $r_0=2/\pi$. & In \eqref{ibd:pd:eq:shiftratio}, $r$ is a fixed integer depth increment.\\
+$\alpha$ & Part~II: $\alpha=\frac12+\frac1{3\lambda}$; $\alpha=5/6$ at $\lambda=1$. & \\
+$X_{n,m}$, $Y$ & Prellberg's coefficients and homogeneous solution (literature sections). & $Y$ is also the target in both inverse sections.\\
+$\tau$, $w(s)$, $K$ & Total entrance delay, entrance point, compact entrance set \eqref{ibd:eq:K}. & \\
+\end{longtable}}
+
+\subsection*{What is not claimed}
+\phantomsection\label{ibd:guide:nonclaims}
+Collected from both sources; each is also stated where it arises.
+\begin{itemize}
+\item \textbf{Priority.} No priority for the leading formula, the parabolic-coordinate method, or the displayed correction coefficients (source 53), nor for the leading equivalent, the parabolic method, the displayed formal coefficients, or the existence of earlier higher-term calculations (source 28): Prellberg's FPSAC 2002 slides and Mishna's 2005 seminar summary already state the pre-sum bivariate formula. Source 53's contribution is ``the fully specified proof and reproducibility package, without a claim that every component is historically new''. OEIS conjecture labels (as retrieved on 2 October 2026) are not evidence of novelty.
+\item \textbf{Verification.} Both sources report independent mathematical review and replay of their checks; neither review is proof-assistant verification, and source 28's review is conditional on Part~I and its certificate. The interval certificate relies on the outward-rounded operations of \texttt{mpmath.iv} (tested with mpmath 1.3.0 and Python 3.12.14). The digits $C\approx2.86540798$ are exploratory and not certified; only $2<C<4$ is.
+\item \textbf{Scope of the expansions.} Finite-order Poincar\'e expansions, not exponentially improved transseries; no sharp value of the logarithmic remainder degree $D_M$; the rational Abel constants are conservative bounds, not final instantiated remainder constants. Part~II claims uniformity only on compact positive slope ranges, not as $\lambda\to0$ or $\infty$ with $n$; general-$\beta$ amplitude values, final numerical remainder constants and target-specific threshold validity ranges are uncertified.
+\item \textbf{Inverses.} The inverses are inverses of chosen smooth models; no canonical interpolation of the integer sequence or of non-integer depth, and no unique rounding rule for integer thresholds, is claimed; the $O$ statements are not numerically instantiated threshold certificates.
+\item \textbf{Literature.} The literature and repository searches are bounded; they exclude neither unpublished results nor other formulations.
+\end{itemize}
+
+\subsection*{Relation to the repository}
+\phantomsection\label{ibd:guide:repository}
+\begin{itemize}
+\item \textbf{Takeuchi numbers.} The research-report collection's \repopath{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a000651-takeuchi-numbers} (placed from the same batch) records the same counterexample to Prellberg's broad printed theorem ($f(z)=z/(1-z)$, $a(z)=z$, $b(z)=1$ gives $B_{n-1}$, not the $B_n$ scale) in its subsection ``A limitation of the printed general theorem''; source 53's review checked its paragraph against that report, and source 28's literature notes cite it under a delivery path (see the README).
+\item \textbf{Inversion.} The inverse sections (Section~\ref{ibd:sec:inverse} and Section~\ref{ibd:pd:sec:inverse}) are instances of the transseries volume \repopath{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}: the Lambert core of \texttt{p0:thm:lambert-core}, the residual cancellation of \texttt{p0:thm:perturbed-inversion} and the integer bracket of \texttt{p0:thm:staircase}. The logarithmic term of the Fatou coordinate is the model case of its example \texttt{plt:ex:mot-parabolic}. No novelty is claimed for the inversion mechanics.
+\item \textbf{Neighbouring reports.} \repopath{a088714-bell-scale-growth} (same collection directory) studies composition iterates of a different series ($A=1+xA^2A(xA)$, Bell-scale growth); it shares no theorem with this report. \repopath{SetTheory/Cardinals/docs/reports/congruences-and-valuations/iterated-series/a168362-lacunary-iterates-mod4} studies the same shape $[x^n]F^{\circ n}(x)$ for a lacunary series, whose refined asymptotic (\texttt{lim:conj:refined-asymptotic}) is open and ``suggested by parabolic iteration theory''; the finite-contour Fatou method here is a candidate tool there, and no claim is made. \repopath{a277364-bell-asymptotics} is unrelated.
+\item \textbf{Formal status.} No Lean or Rocq development in ProveIt concerns these sequences; no statement of this report is formalized.
+\end{itemize}
+
+\clearpage
+\part{Fixed depth shifts: the diagonal theorem}\label{ibd:part:diag}
+\begin{partsource}Batch-77 manuscript 53, archive \texttt{oeis-iterated-bell-report-attribution-revised.zip} (main file \texttt{iterated-bell.tex} with \texttt{inverse-section.tex}), titled ``Asymptotics of iterated Bell diagonals'', dated 2 October 2026, empty author line, no pinned commit. Printed in full; its Sections 1--9 are Sections~\ref{ibd:sec:result}--\ref{ibd:sec:repro} here, with the same theorem and equation numbers. It is the attribution-corrected edition of manuscript 54, which is not printed separately (see the Guide).\end{partsource}
+\begin{quote}\small\textbf{Abstract of source 53.} The diagonal higher-order Bell numbers count hierarchical set partitions whose depth grows with their size. Prellberg's 2002 pre-sum coefficient formula already announces the corresponding leading asymptotic scale through parabolic-coordinate analysis. We give a self-contained finite-contour proof for OEIS A139383 and A261280, with an expansion to every finite log-polynomial order, explicit remainder construction, and a separate outward-rounded certificate that $2<C<4$. A coefficient generator and smooth-model inverses with safe discrete threshold treatment are included. No priority is claimed for the leading formula, the parabolic method, or displayed coefficients.\end{quote}
 \noindent\textbf{Verification scope.} The mathematical argument and production interval certificate have undergone independent review and replay. This is not proof-assistant verification. The interval calculation certifies a coarse enclosure only; the displayed finer amplitude estimate is exploratory.
 
-\section{Result and exact model}
+\section{Result and exact model}\label{ibd:sec:result}
 Put $f(z)=e^z-1$ and, for integers $n\geq1$, $m\geq0$, define
-\begin{equation}\label{eq:H}
+\begin{equation}\label{ibd:eq:H}
  H(n,m)=n![z^n]f^{\circ m}(z).
 \end{equation}
 The two sequences of interest are
 \[
  A139383(n)=H(n,n),\qquad A261280(n)=H(n,n+1).
 \]
-The conventional value at $n=0$ is $1$. Equivalently, $H(n,m)$ counts the corresponding leaf-labeled rooted trees with $m$ levels; the second sequence counts $n$ successive refinements of a partition of an $n$-element set. Specifying \eqref{eq:H} avoids ambiguity about level conventions.
+The conventional value at $n=0$ is $1$. Equivalently, $H(n,m)$ counts the corresponding leaf-labeled rooted trees with $m$ levels; the second sequence counts $n$ successive refinements of a partition of an $n$-element set. Specifying \eqref{ibd:eq:H} avoids ambiguity about level conventions.
 
 Let $S(n,j)$ be a Stirling number of the second kind. Composition of exponential generating functions gives the exact positive recurrence
-\begin{equation}\label{eq:rec}
+\begin{equation}\label{ibd:eq:rec}
  H(n,m+1)=\sum_{j=1}^n S(n,j)H(j,m),\qquad H(n,0)=\mathbf1_{\{n=1\}}.
 \end{equation}
 A useful normalization is $Q(n,m)=2^{n-1}H(n,m)/n!$, for which
@@ -47,9 +185,9 @@ A useful normalization is $Q(n,m)=2^{n-1}H(n,m)/n!$, for which
 \]
 For fixed $n$, $Q(n,m)$ is a polynomial in $m$ of degree $n-1$ with leading coefficient $1$. This fixed-$n$ fact does not justify taking $m=n$ in its leading term.
 
-\begin{theorem}\label{thm:main}
-There is a real constant $C>0$, defined by the fixed contour in Section~\ref{sec:contour}, with the certified coarse enclosure $2<C<4$. For each fixed integer $k$ and each $M\geq0$, there are explicit real polynomials $P_{j,k}$, of degree at most $2j$, such that
-\begin{align}\label{eq:main}
+\begin{theorem}\label{ibd:thm:main}
+There is a real constant $C>0$, defined by the fixed contour in Section~\ref{ibd:sec:contour}, with the certified coarse enclosure $2<C<4$. For each fixed integer $k$ and each $M\geq0$, there are explicit real polynomials $P_{j,k}$, of degree at most $2j$, such that
+\begin{align}\label{ibd:eq:main}
  H(n,n+k)&=e^k C\frac{n^{2n-5/6}}{2^{n-1}e^n}
  \left(1+\sum_{j=1}^M\frac{P_{j,k}(\log n)}{n^j}
  +\Oh_{M,k}\!\left(\frac{(1+\log n)^{D_M}}{n^{M+1}}\right)\right).
@@ -65,37 +203,37 @@ There is also an exact probabilistic interpretation. If $Z_m$ is generation $m$ 
 \]
 Thus the diagonal describes factorial moments whose order grows with time.
 
-\section{Inverse logarithmic iteration}
+\section{Inverse logarithmic iteration}\label{ibd:sec:inviter}
 Let $h(u)=\log(1+u)$ be the principal logarithm and set
 \[
  t_m(u)=\frac2{h^{\circ m}(u)},\qquad
  g(w)=\frac2{\log(1+2/w)},\qquad t_0(u)=\frac2u.
 \]
 Then $t_{m+1}=g(t_m)$. Lagrange inversion yields the exact identity
-\begin{equation}\label{eq:residue}
+\begin{equation}\label{ibd:eq:residue}
  H(n,m)=(n-1)!\,2^{-n}\Res_{u=0}t_m(u)^n\dd u.
 \end{equation}
 Indeed, the local inverse of $f^{\circ m}$ is $h^{\circ m}$, and
 $[z^n]f^{\circ m}(z)=n^{-1}[u^{n-1}](u/h^{\circ m}(u))^n$.
 
-\begin{lemma}\label{lem:stieltjes}
+\begin{lemma}\label{ibd:lem:stieltjes}
 Off $[-2,0]$, with consistent half-plane branches,
-\begin{align}\label{eq:stieltjes}
+\begin{align}\label{ibd:eq:stieltjes}
  g(w)&=w+1-\int_0^2\frac{\rho(s)}{w+s}\dd s,
  &\rho(s)&=\frac2{\log^2((2-s)/s)+\pi^2},\\
- g(w)&=\int_0^1 w^{1-v}(w+2)^v\dd v.\label{eq:mean}
+ g(w)&=\int_0^1 w^{1-v}(w+2)^v\dd v.\label{ibd:eq:mean}
 \end{align}
 The density has mass and first moment $1/3$, and second moment $19/45$. In particular
-\begin{equation}\label{eq:gexp}
+\begin{equation}\label{ibd:eq:gexp}
  g(w)=w+1-\frac1{3w}+\frac1{3w^2}-\frac{19}{45w^3}+\frac3{5w^4}+\cdots.
 \end{equation}
 Moreover, $|g(w)|\leq g(|w|)\leq |w|+1$, and $g$ is increasing on positive reals.
 \end{lemma}
 \begin{proof}
 On $w=-s+i0$, $0<s<2$, the inner logarithm is
-$\log((2-s)/s)-i\pi$, so the imaginary part of $g$ is $\pi\rho(s)$. Subtracting $w+1$, a keyhole Cauchy integral around $[-2,0]$ gives \eqref{eq:stieltjes}; the endpoint logarithmic singularities are integrable and the remainder at infinity is $\Oh(1/w)$. Expansion at infinity identifies the mass and moments. Alternatively, the first moment follows from symmetry about $1$.
+$\log((2-s)/s)-i\pi$, so the imaginary part of $g$ is $\pi\rho(s)$. Subtracting $w+1$, a keyhole Cauchy integral around $[-2,0]$ gives \eqref{ibd:eq:stieltjes}; the endpoint logarithmic singularities are integrable and the remainder at infinity is $\Oh(1/w)$. Expansion at infinity identifies the mass and moments. Alternatively, the first moment follows from symmetry about $1$.
 
-For \eqref{eq:mean}, integrate the exponential interpolation between $w$ and $w+2$. Their logarithm difference is the principal logarithm of $1+2/w$ in either half-plane. Taking absolute values and using $|w+2|\leq |w|+2$ proves $|g(w)|\leq g(|w|)$. The arithmetic-mean bound gives $g(r)\leq r+1$. Finally $g'(r)=1+\int\rho(s)/(r+s)^2\dd s>0$.
+For \eqref{ibd:eq:mean}, integrate the exponential interpolation between $w$ and $w+2$. Their logarithm difference is the principal logarithm of $1+2/w$ in either half-plane. Taking absolute values and using $|w+2|\leq |w|+2$ proves $|g(w)|\leq g(|w|)$. The arithmetic-mean bound gives $g(r)\leq r+1$. Finally $g'(r)=1+\int\rho(s)/(r+s)^2\dd s>0$.
 \end{proof}
 
 \subsection{An effective Fatou coordinate}
@@ -103,13 +241,13 @@ For $\Rea w=x\geq4$, put
 \[
  V(w)=w+\frac13\log w+\frac1{18w}.
 \]
-\begin{lemma}\label{lem:tail}
+\begin{lemma}\label{ibd:lem:tail}
 For $x\geq4$,
-\begin{equation}\label{eq:defect}
+\begin{equation}\label{ibd:eq:defect}
  |V(g(w))-V(w)-1|\leq\frac2{x^3}.
 \end{equation}
 The limit $\Phi(w)=\lim_{j\to\infty}(V(g^{\circ j}(w))-j)$ exists locally uniformly, is analytic, and satisfies
-\begin{equation}\label{eq:tail}
+\begin{equation}\label{ibd:eq:tail}
  |\Phi(w)-V(w)|\leq\frac2{x^2},\qquad
  \Phi(g(w))=\Phi(w)+1.
 \end{equation}
@@ -131,7 +269,7 @@ For the logarithm, errors from $a/w$ and $a^2/(2w^2)$ are each at most $x^{-3}/2
 $|1-a+a/w|\leq3/(2x)$ and $|1+a/w|\geq2/3$.
 The coefficients of $w^{-1}$ and $w^{-2}$ in the Abel defect cancel, leaving at most $35/(24x^3)<2/x^3$.
 
-Along iteration $w_j=g^{\circ j}(w)$, $\Rea w_j\geq x+11j/12$. Summing \eqref{eq:defect} gives
+Along iteration $w_j=g^{\circ j}(w)$, $\Rea w_j\geq x+11j/12$. Summing \eqref{ibd:eq:defect} gives
 \[
  \sum_{j\geq0}\frac2{(x+11j/12)^3}
  \leq\frac2{x^3}+\frac{12}{11x^2}<\frac2{x^2}.
@@ -140,21 +278,21 @@ Uniform convergence of analytic functions proves the assertions. Also $w_j=w+j+\
 $\Phi(w)=\lim_j(w_j-j+(\log j)/3)$.
 \end{proof}
 Whenever $t_M(u)$ has entered $\Rea w\geq4$, define
-\begin{equation}\label{eq:psi}
+\begin{equation}\label{ibd:eq:psi}
  \Psi(u)=\Phi(t_M(u))-M.
 \end{equation}
 The functional identity makes this independent of the chosen entry time. In particular,
-\begin{equation}\label{eq:psitail}
+\begin{equation}\label{ibd:eq:psitail}
  \left|\Psi(u)-\left(V(t_M(u))-M\right)\right|
  \leq\frac2{(\Rea t_M(u))^2}.
 \end{equation}
 Only finite continuation near the specific contours used below is needed. No global dynamics theorem or unrestricted circle expansion is assumed.
 
-\section{The finite contour and uniform cut estimates}\label{sec:contour}
-Fix $r=1/2$. The interval certificate in Section~\ref{sec:certificate} verifies a common finite entry into $\Rea w\geq4$ on every upper semicircle subarc; conjugation supplies the lower semicircle. Strict interval bounds also give entry in small neighborhoods of these arcs.
+\section{The finite contour and uniform cut estimates}\label{ibd:sec:contour}
+Fix $r=1/2$. The interval certificate in Section~\ref{ibd:sec:certificate} verifies a common finite entry into $\Rea w\geq4$ on every upper semicircle subarc; conjugation supplies the lower semicircle. Strict interval bounds also give entry in small neighborhoods of these arcs.
 
 For fixed $m$, $h^{\circ m}$ is analytic off a negative-real cut beginning at $f^{\circ(m-1)}(-1)$. Nonreal points retain the sign of their imaginary part under principal logarithms, so no off-axis preimage of the cut occurs. Its only zero is $0$. Deforming the small residue contour to the fixed circle and the two lips gives
-\begin{align}\label{eq:contourfinite}
+\begin{align}\label{ibd:eq:contourfinite}
  \Res t_m(u)^n\dd u={}&\frac1\pi\int_0^\pi
  \Rea\!\left[r e^{i\theta}t_m(r e^{i\theta})^n\right]\dd\theta\\
  &+\frac1\pi\int_0^r\Ima\!\left[t_m(-s+i0)^n\right]\dd s.\nonumber
@@ -170,15 +308,15 @@ The reciprocal therefore lies in the right-half-plane cone
 \[
  |\arg t|\leq\theta_0:=\arctan(\pi/\log\pi)<\pi/2.
 \]
-Equation~\eqref{eq:mean} preserves this cone: each integrand argument lies between $\arg w$ and $\arg(w+2)$, and the cone is convex. Stop at the first subsequent iterate with modulus at least $16$. It enters
-\begin{equation}\label{eq:K}
+Equation~\eqref{ibd:eq:mean} preserves this cone: each integrand argument lies between $\arg w$ and $\arg(w+2)$, and the cone is convex. Stop at the first subsequent iterate with modulus at least $16$. It enters
+\begin{equation}\label{ibd:eq:K}
  K=\{w:16\leq|w|\leq17,\ \Rea w\geq16\cos\theta_0>4,\ \Ima w\leq0\}.
 \end{equation}
 The upper bound is from $|g(w)|\leq|w|+1$. The stopping time is finite: for $\Rea w=x>0$,
 $\Rea g(w)\geq g(x)>x$; a finite positive limit of the real parts would contradict this strict continuous increment.
 
 Write $\tau(s)$ for the total entrance time and $w(s)=t_{\tau(s)}(-s+i0)\in K$. Then
-\begin{equation}\label{eq:entrance}
+\begin{equation}\label{ibd:eq:entrance}
  t_n(-s+i0)=g^{\circ(n-\tau)}(w(s)),\qquad
  \Psi(-s+i0)=\Phi(w(s))-\tau
 \end{equation}
@@ -190,7 +328,7 @@ For $R_0>0$ let $R_j=g^{\circ j}(R_0)$. Since
  g(r)\leq r+1-\frac1{3(r+2)},\qquad R_j\leq j+R_0,
 \]
 harmonic summation gives
-\begin{equation}\label{eq:realbound}
+\begin{equation}\label{ibd:eq:realbound}
  R_j\leq j-\frac13\log(j+1)+C_{R_0}.
 \end{equation}
 For $n\geq\tau$ put $j=n-\tau$ and compare with $R_0=17$. If $j\geq n/2$, the inequality $\log(1+v)\leq v$ gives
@@ -198,7 +336,7 @@ For $n\geq\tau$ put $j=n-\tau$ and compare with $R_0=17$. If $j\geq n/2$, the in
  n^{1/3}|t_n/n|^n\leq C e^{-\tau}\left(\frac n{j+1}\right)^{1/3}\leq C' e^{-\tau}.
 \]
 If $j<n/2$, then $|t_n|\leq j+17$ gives $C e^{-c n}$. If crossing has occurred but $\tau>n$, use $|t_n|<16$; before crossing the imaginary part is zero. Altogether,
-\begin{equation}\label{eq:delaybound}
+\begin{equation}\label{ibd:eq:delaybound}
  n^{1/3}\left|\Ima\!\left[(t_n/n)^n\right]\right|
  \leq C e^{-c\min(\tau,n)}.
 \end{equation}
@@ -211,7 +349,7 @@ Near the cut endpoint, write the pre-crossing reciprocal as $-R$, $R>2$. Its nex
 \]
 The second inequality is the logarithmic-mean arithmetic-mean inequality. Starting at $R=2/s$, the crossing delay is at least $1/s-1$. Hence the limiting cut integrands have an integrable bound of the form $C\exp(-c/s)$ near zero.
 
-\section{All finite orders and a coefficient generator}\label{sec:orders}
+\section{All finite orders and a coefficient generator}\label{ibd:sec:orders}
 For every $J$, choose rational $d_\ell$ successively so that
 \[
  V_J(w)=w+\tfrac13\log w+\sum_{\ell=1}^J d_\ell w^{-\ell},\qquad
@@ -228,7 +366,7 @@ has a zero of order $J+2$. On that circle its modulus is bounded by
                    \left((3/5)^\ell+3^{-\ell}\right),
 \]
 using $\log(9/5)<3/5$. The maximum-modulus principle applied to $D_J(z)/z^{J+2}$ gives the explicit defect constant $C_J=3^{J+2}B_J$. Consequently, for $\Rea w\geq4$,
-\begin{equation}\label{eq:generalremainder}
+\begin{equation}\label{ibd:eq:generalremainder}
  |\Phi(w)-V_J(w)|\leq
  C_J\left(\frac14+\frac{12}{11(J+1)}\right)(\Rea w)^{-J-1}.
 \end{equation}
@@ -248,7 +386,7 @@ The following equivalent recursion is convenient for actual coefficients. Put
  W(n,y)=n+y+\sum_{j\geq1}v_j(y)n^{-j},\qquad b=\Psi(u).
 \]
 Enforce, as a formal expansion,
-\begin{equation}\label{eq:vrec}
+\begin{equation}\label{ibd:eq:vrec}
  W(n+1,y-\tfrac13\log(1+1/n))=g(W(n,y)).
 \end{equation}
 At order $n^{-j-1}$ the new polynomial enters as
@@ -257,13 +395,13 @@ $-jv_j-v_j'/3$. This operator is invertible on polynomials of degree at most $j$
  v_1(y)=-\frac y3-\frac1{18}.
 \]
 Define $R_j(y)$ by
-\begin{equation}\label{eq:Rgen}
+\begin{equation}\label{ibd:eq:Rgen}
  \exp\left(n\log\frac{W(n,y)}n-y+
  \sum_{\ell\geq1}\frac{B_{2\ell}}{2\ell(2\ell-1)n^{2\ell-1}}\right)
  =\sum_{j\geq0}\frac{R_j(y)}{n^j}.
 \end{equation}
 The Bernoulli sum is the logarithmic Stirling expansion. At any requested order both sums are truncated finitely. One has
-\begin{equation}\label{eq:R1}
+\begin{equation}\label{ibd:eq:R1}
  R_0=1,\qquad R_1(y)=-\frac{y^2}2-\frac y3+\frac1{36},\qquad \deg R_j\leq2j.
 \end{equation}
 The second integrand polynomial, useful for checking conventions, is
@@ -271,19 +409,19 @@ The second integrand polynomial, useful for checking conventions, is
  R_2(y)=\frac{y^4}8+\frac{y^3}2+\frac{13y^2}{24}
           +\frac{23y}{108}+\frac{341}{12960}.
 \]
-The included exact-rational program implements \eqref{eq:vrec}--\eqref{eq:Rgen}, checks the recurrence cancellations, and verifies the degree bounds through the selected order. The analytic proof, rather than the program's finite tests, justifies arbitrary fixed depth.
+The included exact-rational program implements \eqref{ibd:eq:vrec}--\eqref{ibd:eq:Rgen}, checks the recurrence cancellations, and verifies the degree bounds through the selected order. The analytic proof, rather than the program's finite tests, justifies arbitrary fixed depth.
 
 \subsection{Why the cut expansion is uniform}
 For a requested order $M$, split the cut into $\tau\leq A\log n$ and its complement. In the first region use the compact expansion at time $n-\tau$ with initial coordinate $\Phi(w)$ and reexpand in $n$. The functional relation identifies the parameter as $b=\Phi(w)-\tau=\Psi(u)$. Here $|b|=\Oh(\log n)$, so finite Taylor remainders are uniform. Finite Taylor expansion gives a bound of order
 $n^{-M-1}(1+\log n)^{D_M}$ after normalized exponentiation and Stirling multiplication, for some finite effectively obtainable $D_M$. The theorem does not claim a sharp value of this remainder degree.
 
-In the complementary region \eqref{eq:delaybound} bounds the true integrand by $\Oh(n^{-cA})$. The tails of all finitely many proposed coefficient functions are bounded by $e^{-\tau}$ times a polynomial in $\tau$, and hence by $\Oh(n^{-A}\operatorname{polylog}n)$. Choose $A$ sufficiently large in terms of $M$. The cases $n<\tau$ have already been included in \eqref{eq:delaybound}. This proves uniform integrability of every finite expansion without excluding neighborhoods of the countably many limiting log-preimages.
+In the complementary region \eqref{ibd:eq:delaybound} bounds the true integrand by $\Oh(n^{-cA})$. The tails of all finitely many proposed coefficient functions are bounded by $e^{-\tau}$ times a polynomial in $\tau$, and hence by $\Oh(n^{-A}\operatorname{polylog}n)$. Choose $A$ sufficiently large in terms of $M$. The cases $n<\tau$ have already been included in \eqref{ibd:eq:delaybound}. This proves uniform integrability of every finite expansion without excluding neighborhoods of the countably many limiting log-preimages.
 
-On the outer arcs the verified compact entry gives the expansion directly. Finite-length integration in \eqref{eq:contourfinite} therefore proves Theorem~\ref{thm:main}, except for positivity, which is supplied in Section~\ref{sec:certificate}.
+On the outer arcs the verified compact entry gives the expansion directly. Finite-length integration in \eqref{ibd:eq:contourfinite} therefore proves Theorem~\ref{ibd:thm:main}, except for positivity, which is supplied in Section~\ref{ibd:sec:certificate}.
 
-\section{Contour constants and the first correction}
+\section{Contour constants and the first correction}\label{ibd:sec:constants}
 For an analytic function $F$ with the boundary behavior established above define the fixed-radius functional
-\begin{equation}\label{eq:Ifunc}
+\begin{equation}\label{ibd:eq:Ifunc}
  \I[F]=\frac1\pi\int_0^\pi\Rea\!\left[r e^{i\theta}F(r e^{i\theta})\right]\dd\theta
  +\frac1\pi\int_0^r\Ima F(-s+i0)\dd s,\quad r=\tfrac12.
 \end{equation}
@@ -294,33 +432,33 @@ Set
 \]
 All these integrals are finite. These definitions use only the fixed certified radius, not a global residue of a Fatou coordinate on a punctured disk.
 
-The general forward coefficient in Theorem~\ref{thm:main} is
-\begin{equation}\label{eq:Pmom}
+The general forward coefficient in Theorem~\ref{ibd:thm:main} is
+\begin{equation}\label{ibd:eq:Pmom}
  P_{j,k}(L)=\frac1{I_0}\I\!\left[e^{\Psi}R_j(\Psi+k-L/3)\right].
 \end{equation}
 For $k=0$ the first correction is
-\begin{equation}\label{eq:first}
+\begin{equation}\label{ibd:eq:first}
  P_{1,0}(L)=-\frac{L^2}{18}+
  \left(\frac19+\frac{m_1}3\right)L+\frac1{36}-\frac{m_1}3-\frac{m_2}2.
 \end{equation}
-For a fixed shift $k$, replace $m_1$ by $m_1+k$ and $m_2$ by $m_2+2km_1+k^2$. More generally, \eqref{eq:Pmom} is the entire shift rule. It follows either from $\Psi\mapsto\Psi+k$ in inverse iteration or by expanding the compact orbit for $n+k$ steps with exponent $n$.
+For a fixed shift $k$, replace $m_1$ by $m_1+k$ and $m_2$ by $m_2+2km_1+k^2$. More generally, \eqref{ibd:eq:Pmom} is the entire shift rule. It follows either from $\Psi\mapsto\Psi+k$ in inverse iteration or by expanding the compact orbit for $n+k$ steps with exponent $n$.
 
-\section{Certified positivity and numerical checks}\label{sec:certificate}
+\section{Certified positivity and numerical checks}\label{ibd:sec:certificate}
 The outer contribution
 \[
  J=\frac1\pi\int_0^\pi
  \Rea\!\left[\tfrac12 e^{i\theta}e^{\Psi(e^{i\theta}/2)}\right]\dd\theta
 \]
 is enclosed by the included outward-rounded interval verifier:
-\begin{equation}\label{eq:Jcert}
+\begin{equation}\label{ibd:eq:Jcert}
  \frac{214}{100}<J<\frac{243}{100}.
 \end{equation}
 The verifier uses $2048$ whole angular panels, $12$ direct logarithmic iterates, then reciprocal iteration to total depth $64$ using $20$ exact rational moment terms. For $|w|\geq R>2$, the omitted moment tail is bounded by
-\begin{equation}\label{eq:momenttail}
+\begin{equation}\label{ibd:eq:momenttail}
  \left|g(w)-w-1+\sum_{j=0}^{K-1}\frac{(-1)^j\mu_j}{w^{j+1}}\right|
  \leq\frac{2^K}{3R^K(R-2)}.
 \end{equation}
-The program checks every logarithm's domain and branch, confirms final $\Rea w\geq4$, adds the analytic Fatou tail \eqref{eq:psitail}, and encloses each full-panel integrand. Summing panel intervals is a Darboux enclosure, not a point-sampling quadrature estimate. The rational endpoint assertions \eqref{eq:Jcert} are executable checks.
+The program checks every logarithm's domain and branch, confirms final $\Rea w\geq4$, adds the analytic Fatou tail \eqref{ibd:eq:psitail}, and encloses each full-panel integrand. Summing panel intervals is a Darboux enclosure, not a point-sampling quadrature estimate. The rational endpoint assertions \eqref{ibd:eq:Jcert} are executable checks.
 
 \subsection{The whole cut needs only a coarse bound}
 At crossing, $|t|\leq r_0=2/\pi$. Summing the real comparison bound gives
@@ -333,11 +471,11 @@ The crossing delay is at least $1/s-1$, whence
  \Rea\Psi(-s+i0)\leq3-1/s.
 \]
 Therefore the absolute cut contribution in $I_0$ is at most
-\begin{equation}\label{eq:cutbound}
+\begin{equation}\label{ibd:eq:cutbound}
  \frac1\pi\int_0^{1/2}e^{3-1/s}\dd s
  \leq\frac e{2\pi}<\frac12.
 \end{equation}
-Combining \eqref{eq:Jcert} and \eqref{eq:cutbound} gives
+Combining \eqref{ibd:eq:Jcert} and \eqref{ibd:eq:cutbound} gives
 $1.64<I_0<2.93$, and elementary bounds on $\pi$ yield $2<C<4$.
 This avoids any inference that a fixed sign of a cut jump determines an essential-singularity residue; the outer contour has been retained throughout.
 
@@ -360,11 +498,65 @@ $n$ & normalized A139383 amplitude & A261280/A139383\\\midrule
 \end{center}
 The ratio crosses $e$; monotone extrapolation would be misleading. These diagnostics check normalization and indexing, not the theorem's remainder constants.
 
-\section{Inversion and discrete thresholds}\label{sec:inverse}
-\input{inverse-section.tex}
+\section{Inversion and discrete thresholds}\label{ibd:sec:inverse}
+Taking logarithms of \eqref{ibd:eq:main} gives explicit polynomials $A_{j,k}$ and smooth finite models
+\begin{equation}\label{ibd:eq:Gmodel}
+ G_{N,k}(t)=2t\log t-(1+\log2)t-\frac56\log t+\log(2C)+k
+       +\sum_{j=1}^N\frac{A_{j,k}(\log t)}{t^j}.
+\end{equation}
+At integer points the logarithmic error is
+$\Oh_{N,k}(t^{-N-1}(1+\log t)^D)$ for a finite effective $D$. Each chosen model $\exp(G_{N,k})$ is eventually strictly increasing, because
+\[
+ G_{N,k}'(t)=2\log t+1-\log2+\Oh_k((1+\log t)^D/t).
+\]
+The leading logarithmic term alone in fact contributes $-5/(6t)$ to the derivative, and all finite correction derivatives are smaller than the main term.
 
-\section{Literature boundary and further questions}
-\subsection{Historical attribution}
+Let $Y$ be the target, $y=\log Y$, and put
+\begin{equation}\label{ibd:eq:inversecore}
+ x=\frac{y}{2W_0(y/(2\sqrt{2e}))},\quad L=\log x,\quad S=2L+1-\log2.
+\end{equation}
+Then $2x\log x-(1+\log2)x=y$. Seek the inverse in the form
+\begin{equation}\label{ibd:eq:inverseansatz}
+ t=x+\sum_{j=0}^M x^{-j}U_{j,k}(L,S^{-1}).
+\end{equation}
+Each $U_{j,k}$ is polynomial in $L$ and $S^{-1}$ with constants formed from $\log(2C)$ and the forward contour moments. Taylor-expand \eqref{ibd:eq:Gmodel} at $x$ and cancel residual powers successively. At order $x^{-j}$ the new unknown occurs only as $S U_{j,k}$; its other occurrences have at least one extra inverse power of $x$. Division by $S$ gives a unique constructive recursion. In particular
+\begin{equation}\label{ibd:eq:inversefirst}
+ U_{0,k}=\frac{(5/6)L-\log(2C)-k}{S}.
+\end{equation}
+For illustration, if $a=U_{0,k}$ and $A_{1,k}$ is the first logarithmic forward coefficient, then
+\[
+ U_{1,k}=\frac{(5/6)a-a^2-A_{1,k}(L)}{S}.
+\]
+The same residual-cancellation rule constructs any prescribed finite order.
+
+This reversion has a remainder proof. The first correction is bounded, and every subsequent term has at most polynomial-logarithmic growth. For sufficiently large $x$ all Taylor arguments lie in $[x/2,2x]$. Finite Taylor remainders give a residual
+$\Oh(x^{-M-1}(1+\log x)^E)$ for some finite $E$, taking $N\geq M$. Since $G_{N,k}'\geq S/2$ in this interval, the mean-value theorem gives an inverse-index error
+\begin{equation}\label{ibd:eq:inverseerror}
+ \Oh\!\left(\frac{x^{-M-1}(1+\log x)^E}{S}\right).
+\end{equation}
+The first correction alone has the sharper bound
+$\Oh(\log^2 x/(xS))$. This proves inverses to every finite order for the specified smooth models; it does not choose a canonical interpolation of the integer sequence.
+
+\subsection{Safe treatment of the integer threshold}
+For fixed $k$ define the eventual discrete threshold
+$\nu_k(Y)=\min\{n\geq n_0:H(n,n+k)\geq Y\}$, where $n_0$ is large enough for the chosen remainder bounds. Monotonicity has a direct exact proof: \eqref{ibd:eq:rec} implies
+\[
+ H(n+1,n+1+k)\geq S(n+1,n)H(n,n+k)
+      =\binom{n+1}{2}H(n,n+k).
+\]
+Thus the sequence is strictly increasing once the positive terms and $n\geq2$ are reached.
+
+With an explicit uniform logarithmic remainder bound and an explicit inverse residual bound, enlarge the resulting index uncertainty to $\eta>0$ so that integers below $t-\eta$ have count below $Y$, while integers above $t+\eta$ have count above $Y$. A safe integer enclosure is
+\[
+ \left\lceil t-\eta\right\rceil\leq\nu_k(Y)
+       \leq\left\lfloor t+\eta\right\rfloor+1.
+\]
+A single rounding rule, such as $\nu_k(Y)=\lceil t\rceil$, is justified only after verifying separation from the relevant integer boundaries or checking the neighboring exact counts. The asymptotic $\Oh$ statements establish eventual enclosures but are not themselves numerically instantiated threshold certificates: effective constants and a validity range must be supplied for a concrete target.
+
+\begin{writenote}The Lambert core \eqref{ibd:eq:inversecore}, the residual-cancellation recursion and the integer bracket are instances of the transseries volume's \texttt{p0:thm:lambert-core}, \texttt{p0:thm:perturbed-inversion} and \texttt{p0:thm:staircase} (\repopath{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}); no novelty is claimed for the inversion mechanics. Part~\ref{ibd:part:pd}'s Section~\ref{ibd:pd:sec:inverse} gives the same construction at slope $\lambda$.\end{writenote}
+
+\section{Literature boundary and further questions}\label{ibd:sec:literature}
+\subsection{Historical attribution}\label{ibd:sec:attribution}
 Prellberg's FPSAC 2002 slides~\cite{prellberg2002}, numbered slide 17 (PDF pages 55--59, final build on page 59), give an asymptotic for the individual coefficient $X_{n,m}$ before summing over depth. Mishna's 2005 summary of the 2002 seminar~\cite{mishna2005}, Section 2.2, page 49, prints the same formula. This is substantive prior overlap with the present diagonal result and method, rather than merely an asymptotic for the depth-summed sequence.
 
 For an explicit comparison, use their setup with $f(z)=e^z-1$, $c=1/2$, $d=1/6$, $a(z)=a_0\in(0,1)$ and $b(z)=z$. Then
@@ -372,13 +564,14 @@ For an explicit comparison, use their setup with $f(z)=e^z-1$, $c=1/2$, $d=1/6$,
  X_{n,m}=a_0^m H(n,m)/n!,\qquad Y(\mu(s))=a_0^s.
 \]
 Writing $\beta=n/m$, cancellation of $a_0^m$ in their pre-sum formula yields the announced form
-\begin{equation}\label{eq:historical}
- \frac{H(n,m)}{n!}\sim 2^{-n}m^{n-1-\beta/3}J(\beta),
- \qquad J(\beta)=\frac1{2\pi i}\int_{\mathcal C}\mu(s)e^{\beta s}\dd s.
+\begin{equation}\label{ibd:eq:historical}
+ \frac{H(n,m)}{n!}\sim 2^{-n}m^{n-1-\beta/3}\JP(\beta),
+ \qquad \JP(\beta)=\frac1{2\pi i}\int_{\mathcal C}\mu(s)e^{\beta s}\dd s.
 \end{equation}
-Thus $m=n$ already gives the power $n^{2n-5/6}$ after Stirling's formula. Their $\mu$ is an inverse parabolic coordinate; the contour and additive-coordinate conventions must be matched before identifying its amplitude with ours. Equation~\eqref{eq:historical} records the historical announcement, not an additional theorem invoked in our proof.
+Thus $m=n$ already gives the power $n^{2n-5/6}$ after Stirling's formula. Their $\mu$ is an inverse parabolic coordinate; the contour and additive-coordinate conventions must be matched before identifying its amplitude with ours. Equation~\eqref{ibd:eq:historical} records the historical announcement, not an additional theorem invoked in our proof.
 
 The brief sources do not supply the quantitative contour and uniform remainder estimates used here. Moreover, the broad printed theorem needs additional hypotheses or normalization in general: for $f(z)=z/(1-z)$, $a(z)=z$, $b(z)=1$, its solution is $1+zB(z)$ with $B$ the ordinary Bell-number series, giving $B_{n-1}$ rather than a nonzero constant multiple of the printed $B_n$ scale. This limitation does not negate the specific pre-sum announcement. The slides also record earlier non-rigorous computation of further terms. Accordingly, we claim no priority for the leading formula, parabolic-coordinate method, or displayed correction coefficients. The present contribution is the fully specified proof and reproducibility package, without a claim that every component is historically new.
+\begin{writenote}The same check of Prellberg's broad printed theorem is recorded in the research-report collection's \repopath{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a000651-takeuchi-numbers}, in its subsection ``A limitation of the printed general theorem''. Source 53's attribution review (shipped as \texttt{53-iterated-bell-attribution-review.md}) checked this paragraph ``against the earlier Takeuchi report''; that report is now in the repository at the path above.\end{writenote}
 
 The official OEIS exports retrieved on 2 October 2026 still label the leading equivalents conjectural; both entries have an internal revision date of 14 March 2026~\cite{oeisA,oeisB}. This metadata is not evidence of novelty or absence of an earlier result. The unbound $k$ in A261280's displayed compositional formula is fixed by its own code and definition to $k=n$.
 
@@ -387,24 +580,354 @@ Skau and Kristensen~\cite{skau} prove the leading polynomial in depth for fixed 
 The branching-process interpretation also requires care. Nagaev--Vakhtel's Cram\'er-type theorem~\cite{nv} treats populations $q=o(n^2)$; the correction coefficient is $1-2f'''(1)/(3f''(1)^2)$, equal to $1/3$ for Poisson offspring. Wachtel's later introduction~\cite{wachtel} explicitly records that boundary. The diagonal factorial moment has a heuristic dominant population of order $n^2/2$, outside that small-$o$ regime. The theorem statement was checked in an indexed primary copy; direct retrieval of the full 2003 PDF did not complete during the literature check. The later source supplies an additional explicit confirmation of the range.
 
 The searches covered sequence IDs, higher-order and iterated Bell numbers, growing depth, Stirling-matrix iteration, hierarchical set partitions, parabolic iteration, and critical branching deviations. Scoped default-branch searches in the specified ProveIt repository found no exact target IDs or matching iterated-Bell phrases; existing general parabolic-germ material is background, not automatically a duplicate of this diagonal coefficient theorem. This is bounded overlap evidence, not a claim to have excluded every branch, unpublished result, or semantic formulation.
+\begin{writenote}Source 53 pins no ProveIt commit, so the repository state it searched is not recorded. At the placement of this report (\texttt{aa7345800}) the repository still had no material on A139383, A261280, A144150 or A346802; this report is now that material. The Takeuchi report named in the previous note shares the Prellberg limitation check, and the related reports are listed in the Guide.\end{writenote}
 
 Natural next questions include a fully quantitative uniform treatment of the historically announced proportional-depth formula, high-order moment interpretation in critical branching, rigorous narrow enclosures for $C$ and the first contour moments, and exponentially small corrections. None is implied merely by the fixed-shift theorem proved here.
+\begin{writenote}The first question, a quantitative uniform treatment of the proportional-depth formula, is answered by Part~\ref{ibd:part:pd} for slopes in compact subsets of $(0,\infty)$ and bounded shifts (Theorem~\ref{ibd:pd:thm:main}), conditional on this Part; the endpoint regimes $\lambda\to0$ and $\lambda\to\infty$ remain open. Part~\ref{ibd:part:pd} does not give narrow enclosures for $C$ or for the contour moments (it uses only the seed $I(1)>1.64$), nor a moment interpretation in critical branching or exponentially small corrections; those questions remain open.\end{writenote}
 
-\section{Reproducibility}
+\section{Reproducibility}\label{ibd:sec:repro}
 The accompanying archive contains this PDF and editable TeX, the official sequence exports, exact recurrence diagnostics, the rational coefficient generator, and the interval amplitude verifier. Run \texttt{python verification/replay.py} from the extracted directory for the mathematical checks. Use \texttt{bash build.sh} to rebuild the PDF with a local TeX installation. The replay uses no network access. Runtime dependencies are Python, mpmath for the interval proof, and SymPy for coefficient generation; recurrence checks use the standard library.
 
 The manifest lists deliverable files and SHA256 digests. The certificate's positive enclosure is separate from the exploratory numerical amplitude. Exact tests at finitely many indices and symbolic orders supplement, but do not replace, the analytic proof.
+\begin{writenote}In this repository the archive is unpacked as follows. The PDF and the manifest are not shipped (\texttt{article.pdf} is a build of this merged text; the manifest and the checksum files were verified at placement and retired). The editable TeX is \texttt{article.tex}, with source 53's \texttt{inverse-section.tex} kept beside it as delivered. The programs are shipped as \texttt{code/53-iterated-bell-*.py}, their recorded outputs and the official sequence exports as \texttt{data/53-iterated-bell-*}, and the reviews as \texttt{53-iterated-bell-*.md}. \texttt{verification/replay.py} expects the delivered layout (\texttt{verification/}, \texttt{source/}); the README of this report gives a recipe that rebuilds that layout in a scratch directory. The shipped \texttt{code/53-iterated-bell-build.sh} builds the delivered \texttt{iterated-bell.tex}, not this report.\end{writenote}
+
+\clearpage
+\part{Proportional depth}\label{ibd:part:pd}
+\begin{partsource}Batch-77 manuscript 28, archive \texttt{iterated-bell-proportional-addendum.zip} (main file \texttt{proportional-depth.tex}), titled ``Proportional depth asymptotics of iterated Bell numbers'', dated 2 October 2026, empty author line, no pinned commit. Printed in full, except that its Section~2, a restatement of source 53's fixed-contour input, is replaced by pointers to Part~\ref{ibd:part:diag} (Section~\ref{ibd:pd:sec:foundation}), and that its definitions of $H$ and of the recurrence refer to Part~\ref{ibd:part:diag}. Its Section $n$ is Section $n+9$ here. In this Part, ``the foundation'' means Part~\ref{ibd:part:diag}.\end{partsource}
+\begin{quote}\small\textbf{Abstract of source 28.} For $H(n,m)=n![z^n](e^z-1)^{\circ m}$ and integer depth $m=\lambda n+\delta$, we establish compact-uniform expansions to every fixed order for $\lambda>0$ and bounded $\delta$, conditional on the audited fixed-contour foundation stated below. The amplitude is strictly positive for every positive parameter, by analyticity and an exact quadratic composition inequality. We give the coefficient generator, first correction, floor-depth phase, and all-finite-order smooth inverse construction with its discrete limitations. Prellberg's 2002 bivariate formula and parabolic-coordinate method are direct antecedents of the leading equivalent; no priority is claimed for that equivalent, the method, or formal correction terms.\end{quote}
+\noindent\textbf{Status and dependency.} This addendum gives the transfer, positivity, and inversion arguments in full, with the required fixed-contour lemmas restated from the attribution-corrected foundation (Part~\ref{ibd:part:diag} of this report). Its independent mathematical review (shipped as \texttt{28-proportional-audit-audit.md}) is conditional on that foundation and its positive-amplitude certificate. Neither review is proof-assistant verification. Final numerical remainder constants and target-specific threshold enclosures are not certified here.
+
+\section{Statement and normalization}\label{ibd:pd:sec:statement}
+Let $f(z)=e^z-1$, let $f^{\circ0}(z)=z$, and let $H(n,m)=n![z^n]f^{\circ m}(z)$ ($n\geq1$, $m\geq0$) be as in \eqref{ibd:eq:H}. Composition gives the nonnegative integer recurrence \eqref{ibd:eq:rec}, where $S(n,j)$ are Stirling numbers of the second kind. The coordinate $\Psi$ and fixed-radius functional $\I$ will always have the normalization of Section~\ref{ibd:pd:sec:foundation}. For real $\beta>0$, define
+\begin{equation}\label{ibd:pd:eq:amplitude}
+ I(\beta)=\I[e^{\beta\Psi}],\qquad
+ D(\lambda)=\sqrt{2\pi}\lambda^{-1/(3\lambda)}I(1/\lambda),\qquad
+ \alpha=\frac12+\frac1{3\lambda}.
+\end{equation}
+\begin{theorem}\label{ibd:pd:thm:main}
+The function $I$ is real analytic and strictly positive on $(0,\infty)$. Fix a compact interval $\Lambda\subset(0,\infty)$, a finite $\Delta$, and an integer $M\geq0$. For $\lambda\in\Lambda$, $|\delta|\leq\Delta$, and integer $m=\lambda n+\delta$, as $n\to\infty$,
+\begin{align}\label{ibd:pd:eq:main}
+ H(n,m)={}&D(\lambda)e^{\delta/\lambda}
+ \left(\frac{\lambda}{2e}\right)^n n^{2n-\alpha}
+ \left\{1+\sum_{j=1}^M\frac{P_j(\log n;\lambda,\delta)}{n^j}
+ +\Oh\!\left(\frac{(1+\log n)^{D_M}}{n^{M+1}}\right)\right\}.
+\end{align}
+The error is uniform on these parameter ranges. Each $P_j$ has degree at most $2j$ in $\log n$, is polynomial in $\delta$, and has coefficients analytic in $\lambda>0$. Its exact construction is given in Section~\ref{ibd:pd:sec:coefficients}. The exponent $D_M$ is finite and effectively obtainable; it is not asserted to be optimal.
+\end{theorem}
+An equivalent leading form, useful before Stirling expansion, is
+\begin{equation}\label{ibd:pd:eq:factorial}
+ H(n,m)\sim(n-1)!\,2^{-n}(\lambda n)^n
+ (\lambda n)^{-1/(3\lambda)}e^{\delta/\lambda}I(1/\lambda).
+\end{equation}
+At $\lambda=1$, the foundation's convention is
+$C=\sqrt{2\pi}I(1)/2$, so $D(1)=2C$ and
+\[
+ H(n,n)\sim C\frac{n^{2n-5/6}}{2^{n-1}e^n}.
+\]
+This factor of two is important when comparing OEIS constants. Uniformity is claimed only on compact positive slope ranges, not when $\lambda$ tends to zero or infinity with $n$.
+
+\section{Exact fixed contour foundation}\label{ibd:pd:sec:foundation}
+\begin{writenote}In source 28 this section restated, from its embedded copy of source 53, the fixed-contour input it uses: the inverse iteration and residue identity, the Stieltjes representation, the effective Fatou coordinate, the fixed circle and cut entrance, the real comparison bound, the certified seed, and the all-orders Abel remainders. That input is Part~\ref{ibd:part:diag}, so the restatement is replaced by the list below, which names where each item is proved. The three displays that the proofs of this Part cite are kept with their labels. Source 28's own sentences that are not restatements are kept verbatim.\end{writenote}
+This section records precisely the input from Part~\ref{ibd:part:diag} (source 53's Sections 2--6). The copied foundation, original mathematical review, interval review, and replay scripts are included as an unchanged dependency in the accompanying package. No global continuation theorem or arbitrary-radius assertion is used.
+\begin{itemize}
+\item \emph{Inverse iteration and the coordinate.} The principal logarithm $h(u)=\log(1+u)$, $t_m(u)=2/h^{\circ m}(u)$, $g(w)=2/\log(1+2/w)$, $t_{m+1}=g(t_m)$, and the exact residue identity \eqref{ibd:eq:residue}. The Stieltjes representation \eqref{ibd:eq:stieltjes}, the mean form \eqref{ibd:eq:mean}, the moments $1/3$, $1/3$, $19/45$, the expansion \eqref{ibd:eq:gexp} and $|g(w)|\le g(|w|)\le|w|+1$: Lemma~\ref{ibd:lem:stieltjes}. The effective Fatou coordinate $V(w)=w+\frac13\log w+\frac1{18w}$, $\Phi$, the Abel identity, and the bounds $|V(g(w))-V(w)-1|\le2x^{-3}$, $|\Phi(w)-V(w)|\le2x^{-2}$ for $\Rea w=x\ge4$: Lemma~\ref{ibd:lem:tail}. The coordinate $\Psi(u)=\Phi(t_a(u))-a$ for any entrance time $a$ with $\Rea t_a(u)\ge4$, \eqref{ibd:eq:psi}; the Abel identity makes it independent of $a$ and fixes the additive normalization.
+\item \emph{Fixed circle and cut entrance.} The radius is always $r=1/2$; the production interval certificate verifies common finite entry on the upper semicircle, including small neighbourhoods of its subarcs, and conjugation supplies the lower one. The contour formula \eqref{ibd:eq:contourfinite}; before the first logarithmic cut crossing the imaginary cut integrand is exactly zero; the small connecting circles vanish; exceptional point values do not affect the integrals. After crossing and one further logarithm the reciprocal lies in the invariant cone of half-angle $\theta_0=\arctan(\pi/\log\pi)$, and its first later modulus at least $16$ lies in the compact entrance set $K$ of \eqref{ibd:eq:K}. For each nonexceptional upper-cut point, with the finite, possibly unbounded, total delay $\tau=\tau(s)$ and $w(s)=t_\tau(-s+i0)\in K$ (compare \eqref{ibd:eq:entrance}),
+\begin{equation}\label{ibd:pd:eq:entry}
+ t_m(-s+i0)=g^{\circ(m-\tau)}(w(s))\quad(m\geq\tau),\qquad
+ \Psi(-s+i0)=\Phi(w(s))-\tau.
+\end{equation}
+In particular $\Rea\Psi\leq C_K-\tau$, $|\Psi|\leq\tau+C_K'$, and $\Ima\Psi$ is uniformly bounded. Between crossing and entrance, $|t_m|<16$. The real comparison orbit starting at $17$ satisfies (this is \eqref{ibd:eq:realbound} with $R_0=17$, combined with $|g(w)|\le g(|w|)$)
+\begin{equation}\label{ibd:pd:eq:realbound}
+ |g^{\circ j}(w)|\leq j-\tfrac13\log(j+1)+C_K\qquad(w\in K).
+\end{equation}
+The endpoint estimate and certified seed are (Section~\ref{ibd:sec:certificate}; $I(1)=I_0$)
+\begin{equation}\label{ibd:pd:eq:seed}
+ \Rea\Psi(-s+i0)\leq3-1/s\quad(0<s\leq1/2),\qquad
+ 1.64<I(1)<2.93.
+\end{equation}
+Only the strict lower bound is needed for positivity at all parameters.
+\item \emph{All finite orbit orders with analytic remainders.} The rational $d_\ell$ with $d_1=1/18$, the models $V_J$, and the explicit audited remainder construction $B_J$, $C_J=3^{J+2}B_J$, \eqref{ibd:eq:generalremainder}, by maximum modulus and summation along $\Rea g^{\circ j}(w)\ge\Rea w+11j/12$: Section~\ref{ibd:sec:orders}. The imaginary parts of orbits from $K$ remain uniformly bounded, so reversion using $V_J'(w)=1+\Oh(1/w)$ gives uniform finite orbit expansions on $K$, with finite analytic remainders. These facts, rather than finite symbolic tests alone, justify the all-orders construction.
+\end{itemize}
+
+\section{Uniform absolute transfer before positivity}\label{ibd:pd:sec:transfer}
+To avoid division by a possibly vanishing amplitude, first put $\eta=n/m$ and fix $0<b\leq\eta\leq B<\infty$. Define the positive normalization
+\begin{equation}\label{ibd:pd:eq:Cnm}
+ \mathcal C(n,m)=(n-1)!\,2^{-n}m^n m^{-n/(3m)}.
+\end{equation}
+We first prove the absolute estimate
+\begin{equation}\label{ibd:pd:eq:absolute}
+ \frac{H(n,m)}{\mathcal C(n,m)}
+ =I(\eta)+\Oh\bigl(m^{-1}(1+\log m)^D\bigr),
+\end{equation}
+and its finite-order analogues uniformly for $\eta\in[b,B]$.
+
+When $j=m-\tau\geq m/2$, \eqref{ibd:pd:eq:realbound} and $\log(1+v)\leq v$ give
+\begin{align}\label{ibd:pd:eq:delay}
+ m^{\eta/3}|t_m/m|^n
+ &\leq e^{\eta C_K-\eta\tau}
+ \left(\frac m{j+1}\right)^{\eta/3}
+ \leq C e^{-b\tau}.
+\end{align}
+If $0\leq j<m/2$, use $|t_m|\leq m/2+17$ for an exponentially small bound in $m$, uniformly for $\eta\in[b,B]$. If crossing has occurred but entrance has not, $|t_m|<16$ gives the same conclusion. Before crossing the imaginary part vanishes exactly. Hence, with uniform positive constants,
+\begin{equation}\label{ibd:pd:eq:jumpbound}
+ m^{\eta/3}\left|\Ima\bigl[(t_m/m)^n\bigr]\right|
+ \leq C e^{-c\min(\tau,m)}.
+\end{equation}
+It is essential to combine the two finite-$m$ lips before estimating: the individual true lip integrals need not be absolutely integrable at zero. Their pre-crossing cancellation cannot be discarded.
+
+For each fixed polynomial $Q$, the limiting coefficient integrands obey
+\begin{equation}\label{ibd:pd:eq:coeffbound}
+ |e^{\eta\Psi}Q(\Psi)|\leq C_Qe^{-b\tau}(1+\tau)^{\deg Q}.
+\end{equation}
+Their individual lips are integrable; \eqref{ibd:pd:eq:seed} also supplies direct exponential decay near $s=0$. For any requested finite order, split the cut at $\tau\leq A\log m$. On this part, reversion from the compact entrance orbit and finite Taylor expansion are uniform because $|\Psi|=\Oh(\log m)$ and $\eta$ remains in a compact interval. On the complement, \eqref{ibd:pd:eq:jumpbound} and \eqref{ibd:pd:eq:coeffbound} make both the true integrand and all retained coefficient tails smaller than the requested power by taking $A$ sufficiently large. The case $\tau>m$ is already included in \eqref{ibd:pd:eq:jumpbound}.
+
+On the outer arcs, the certified common finite entry directly gives the uniform expansion. The contour has finite length. Termwise integration of every finite expansion is therefore justified, yielding \eqref{ibd:pd:eq:absolute} and every higher absolute order with a finite effective logarithmic remainder degree. The constants may depend on $b,B$ and the order; no endpoint uniformity is implied.
+
+\section{Analyticity and strict positivity at every slope}\label{ibd:pd:sec:positivity}
+For conjugation-symmetric functions, the real form of the contour functional is
+\begin{equation}\label{ibd:pd:eq:realI}
+ \I[F]=\frac1\pi\int_0^\pi\Rea\bigl[r e^{i\theta}F(re^{i\theta})\bigr]\dd\theta
+ +\frac1\pi\int_0^r\Ima F(-s+i0)\dd s.
+\end{equation}
+For complex parameters use instead the complex-linear functional
+\begin{align}\label{ibd:pd:eq:complexJ}
+ \J[F]={}&\frac1{2\pi}\int_{-\pi}^{\pi}r e^{i\theta}F(re^{i\theta})\dd\theta\\
+ &+\frac1{2\pi i}\int_0^r\bigl(F(-s+i0)-F(-s-i0)\bigr)\dd s.\nonumber
+\end{align}
+For real $\beta$, $\J[e^{\beta\Psi}]=I(\beta)$. The real-part form is not a complex-linear definition for complex $\beta$.
+
+\begin{proposition}\label{ibd:pd:prop:positive}
+The function $I$ extends holomorphically to $\Rea\beta>0$, is real on $(0,\infty)$, and satisfies $I(\beta)>0$ there.
+\end{proposition}
+\begin{proof}
+On a compact subset of $\Rea\beta>0$, let $b=\min\Rea\beta>0$ and $T=\max|\Ima\beta|$. Bounded $\Ima\Psi$, \eqref{ibd:pd:eq:entry}, and bounded circle values imply, for every fixed $k$,
+\[
+ |e^{\beta\Psi}\Psi^k|\leq C_k e^{-b\tau}(1+\tau)^k
+\]
+on both lips. This is a local integrable majorant for holomorphy and differentiation under \eqref{ibd:pd:eq:complexJ}. Conjugation proves reality for real $\beta$.
+
+Fix any real $\beta>0$ and take $n=\lfloor\beta m\rfloor$ as $m\to\infty$. Since $H(n,m)\geq0$, the absolute estimate \eqref{ibd:pd:eq:absolute} and continuity imply $I(\beta)\geq0$. The certified seed $I(1)>1.64$ shows $I$ is not identically zero. Thus its real zeros are isolated and finite in every compact interior interval. Nonnegativity and isolated zeros alone do not yet prove strict positivity.
+
+Since iterates commute,
+$f^{\circ(m+1)}=\exp(f^{\circ m})-1$. Keeping its positive quadratic term gives
+\begin{equation}\label{ibd:pd:eq:quadratic}
+ H(n,m+1)\geq\frac12\sum_{k=1}^{n-1}\binom nk H(k,m)H(n-k,m).
+\end{equation}
+The exact normalization cancellation is
+\begin{equation}\label{ibd:pd:eq:cancel}
+ \frac{\binom nk\mathcal C(k,m)\mathcal C(n-k,m)}{\mathcal C(n,m)}
+ =\frac n{k(n-k)}.
+\end{equation}
+Take $n/m\to\beta$ and restrict the sum to $a\leq k/n\leq c$, where $0<a<c<1$. Both $k/m$ and $(n-k)/m$ remain in compact positive intervals. If each uniform absolute error is at most $\varepsilon_m\to0$, and the corresponding $I$ values are bounded by $M_0$, the product error is at most $2M_0\varepsilon_m+\varepsilon_m^2$. The weights in \eqref{ibd:pd:eq:cancel} have bounded sum on this interval, so their accumulated error tends to zero. The sum tends to the ordinary Riemann integral
+\[
+ \frac12\int_a^c\frac{I(\beta\theta)I(\beta(1-\theta))}
+ {\theta(1-\theta)}\dd\theta.
+\]
+On the left, $n/(m+1)\to\beta$ and
+\begin{align*}
+ \log\frac{\mathcal C(n,m+1)}{\mathcal C(n,m)}
+ &=n\log(1+1/m)+\frac n3\left(\frac{\log m}{m}
+ -\frac{\log(m+1)}{m+1}\right)\longrightarrow\beta.
+\end{align*}
+The second summand is $\Oh(\log m/m)$. Hence
+\begin{equation}\label{ibd:pd:eq:positiveintegral}
+ e^\beta I(\beta)\geq\frac12\int_a^c
+ \frac{I(\beta\theta)I(\beta(1-\theta))}{\theta(1-\theta)}\dd\theta.
+\end{equation}
+Each factor can vanish at only finitely many points in $[a,c]$. Both are nonnegative everywhere and positive elsewhere, so the integral is strictly positive. Therefore $I(\beta)>0$ for every $\beta>0$.
+\end{proof}
+This proof uses no numerical positivity samples away from $\beta=1$. After positivity is known, monotone convergence permits $a\downarrow0$ and $c\uparrow1$ in \eqref{ibd:pd:eq:positiveintegral}, giving a finite full-interval integral inequality. Continuity and compactness give a positive lower bound for $I$ on each compact positive interval, which now licenses uniform division in the absolute expansions.
+
+\section{All orders and the explicit first correction}\label{ibd:pd:sec:coefficients}
+The orbit polynomials are defined by the formal identity
+\begin{gather}\label{ibd:pd:eq:W}
+ W(q,y)=q+y+\sum_{j\geq1}v_j(y)q^{-j},\\
+ W\left(q+1,y-\tfrac13\log(1+1/q)\right)=g(W(q,y)).\label{ibd:pd:eq:vrec}
+\end{gather}
+At order $q^{-j-1}$ the new polynomial enters through
+$-jv_j-v_j'/3$, an invertible operator on polynomials of degree at most $j$. Induction determines $v_j$ uniquely with $\deg v_j\leq j$; in particular
+\[
+ v_1(y)=-\frac y3-\frac1{18}.
+\]
+The foundation's Abel defects and reversion give analytic remainders for these finite formal expansions.
+\begin{writenote}The identity \eqref{ibd:pd:eq:W}--\eqref{ibd:pd:eq:vrec} is Part~\ref{ibd:part:diag}'s \eqref{ibd:eq:vrec} with $n$ written $q$, and $v_1$ is the same polynomial.\end{writenote}
+
+For $q=\lambda n$, set
+\begin{equation}\label{ibd:pd:eq:shift}
+ \beta=1/\lambda,\qquad L=\log n,\qquad
+ y=\Psi+\delta-\frac{L+\log\lambda}{3}.
+\end{equation}
+The bounded depth shift is precisely $\Psi\mapsto\Psi+\delta$. This follows from the Abel identity and reexpansion of $W(m,\Psi-\log m/3)$ at $m=q+\delta$. It is an asymptotic inverse-coordinate identity and requires no fractional iterate of the original generating function.
+
+Define the integrand polynomials $R_j(y;\beta)$ by the finite formal generator, with $z=1/n$,
+\begin{align}\label{ibd:pd:eq:Rgen}
+ \sum_{j\geq0}R_j(y;\beta)z^j
+ =\exp\Bigg\{&\frac1z\log\left[1+\beta yz+
+ \sum_{j\geq1}v_j(y)\beta^{j+1}z^{j+1}\right]-\beta y\\
+ &+\sum_{\ell\geq1}\frac{B_{2\ell}z^{2\ell-1}}{2\ell(2\ell-1)}\Bigg\}.\nonumber
+\end{align}
+At any requested order, all sums are truncated finitely. The Bernoulli sum is the logarithmic Stirling expansion for $(n-1)!$ in powers of $1/n$, not $1/m$. An order-$j$ logarithmic term has degree at most $j+1\leq2j$ for $j\geq1$, and exponentiation preserves the total degree bound. Thus
+\begin{equation}\label{ibd:pd:eq:R1}
+ R_0=1,\qquad
+ R_1(y;\beta)=\frac1{12}+\beta^2\left(-\frac{y^2}{2}-\frac y3-\frac1{18}\right),
+ \qquad\deg_yR_j\leq2j.
+\end{equation}
+Combining the absolute transfer, Stirling's expansion, and positivity proves Theorem~\ref{ibd:pd:thm:main}, with the exact coefficient formula
+\begin{equation}\label{ibd:pd:eq:Pgen}
+ P_j(L;\lambda,\delta)=\frac1{I(\beta)}\I\!\left[
+ e^{\beta\Psi}R_j\!\left(\Psi+\delta-\frac{L+\log\lambda}{3};\beta\right)\right].
+\end{equation}
+This also proves the asserted analytic parameter dependence and the polynomial dependence on $\delta$ and $L$.
+
+For a fully explicit first correction, put
+\[
+ \mu_j(\beta)=\frac{I^{(j)}(\beta)}{I(\beta)},\qquad \mu_0=1,\qquad
+ A=\delta-\frac{L+\log\lambda}{3}.
+\]
+These are signed contour moments, not moments of an asserted positive measure. Then
+\begin{equation}\label{ibd:pd:eq:P1}
+ P_1=\frac1{12}-\beta^2\left[
+ \frac{\mu_2+2A\mu_1+A^2}{2}+
+ \frac{\mu_1+A}{3}+\frac1{18}\right].
+\end{equation}
+At $\beta=\lambda=1$, \eqref{ibd:pd:eq:R1} becomes
+$-y^2/2-y/3+1/36$, exactly the diagonal convention. The accompanying exact-rational checks verify the first correction, degree bounds, and agreement with the foundation through order three; an independent check verifies bounded-shift translation through order two. Finite checks supplement the analytic proof.
+
+\section{Floor depth and bounded shifts}\label{ibd:pd:sec:floors}
+Taking $m=\lfloor\lambda n\rfloor$ gives $\delta_n=-\{\lambda n\}$, so
+\begin{equation}\label{ibd:pd:eq:floor}
+ H(n,\lfloor\lambda n\rfloor)\sim
+ D(\lambda)e^{-\{\lambda n\}/\lambda}
+ \left(\frac{\lambda}{2e}\right)^n n^{2n-1/2-1/(3\lambda)}.
+\end{equation}
+The fractional-part multiplier is indispensable. It is identically one for integer $\lambda$, periodic for noninteger rational $\lambda$, and exhibits the usual fractional-part oscillation for irrational $\lambda$. Thus the unmodulated normalization generally has no single limiting amplitude. The full expansion follows by substituting $\delta_n$ into every $P_j$; bounded-shift uniformity justifies that substitution without any smoothness of the sequence.
+
+For ceilings use $\delta_n=\lceil\lambda n\rceil-\lambda n$, including zero at integral $\lambda n$. General bounded shifts are equally valid in the forward theorem but need not produce a monotone sequence. For a fixed integer increment $r$ and $m=\lambda n+\delta$,
+\begin{equation}\label{ibd:pd:eq:shiftratio}
+ \frac{H(n,m+r)}{H(n,m)}\longrightarrow e^{r/\lambda}
+\end{equation}
+uniformly on the same compact slope and bounded-shift ranges. The leading shift dependence is $e^{\delta/\lambda}$, not $e^\delta$ except at $\lambda=1$.
+
+\begin{proposition}\label{ibd:pd:prop:monotone}
+For each fixed $\lambda>0$, the floor-depth sequence $H(n,\lfloor\lambda n\rfloor)$ is eventually strictly increasing.
+\end{proposition}
+\begin{proof}
+From \eqref{ibd:eq:rec} and $S(n,n)=1$, $H(n,m+1)\geq H(n,m)$. For fixed $m\geq2$ and $n\geq2$, compare the recurrence for $H(n+1,m)$ with that for $H(n,m)$. The inequalities $S(n+1,j)\geq S(n,j)$ hold, with strict inequality at $j=2$ and $H(2,m-1)>0$. Therefore $H(n+1,m)>H(n,m)$. Eventually $\lfloor\lambda n\rfloor\geq2$ and $\lfloor\lambda(n+1)\rfloor\geq\lfloor\lambda n\rfloor$, proving the claim.
+\end{proof}
+This supplies a well-defined eventual integer threshold. It does not remove the phase from its inversion.
+
+\section{Smooth inverse construction and discrete thresholds}\label{ibd:pd:sec:inverse}
+Fix $\lambda>0$ and a constant real $\delta$. Choose a smooth finite asymptotic model; this is not a claim of canonical interpolation in noninteger depth. Write
+\begin{gather}\label{ibd:pd:eq:logmodel}
+ c=\log\frac{\lambda}{2e},\qquad
+ d=\log D(\lambda)+\frac\delta\lambda,\qquad
+ G_N(t)=2t\log t+ct-\alpha\log t+d+
+ \sum_{j=1}^N A_j(\log t;\lambda,\delta)t^{-j},\\
+ \log\left(1+\sum_{j\geq1}P_j(L;\lambda,\delta)z^j\right)
+ =\sum_{j\geq1}A_j(L;\lambda,\delta)z^j.\nonumber
+\end{gather}
+In particular $A_1=P_1$ and $A_2=P_2-P_1^2/2$. The model is eventually strictly increasing uniformly on compact slope and bounded-shift ranges.
+
+For a large target $Y$, put $y=\log Y$ and use the positive real branch of Lambert's function:
+\begin{equation}\label{ibd:pd:eq:Lambert}
+ x=\frac{y}{2W_0\!\left(y\sqrt\lambda/(2\sqrt{2e})\right)},\qquad
+ L=\log x,\qquad S=2L+1+\log(\lambda/2).
+\end{equation}
+Then $2x\log x+cx=y$ and $S$ is the derivative of that leading function at $x$. Seek
+\begin{equation}\label{ibd:pd:eq:inverse}
+ t=x+\sum_{j=0}^M x^{-j}U_j(L,S^{-1};\lambda,\delta).
+\end{equation}
+Cancel residual powers in $G_N(t)-y$ successively. At its first order, the new $U_j$ appears only as $S U_j$. Thus
+\begin{equation}\label{ibd:pd:eq:U01}
+ U_0=\frac{\alpha L-d}{S},\qquad
+ U_1=\frac{\alpha U_0-U_0^2-A_1(L;\lambda,\delta)}{S}.
+\end{equation}
+For an explicit all-orders algorithm, given $U_0,\dots,U_{j-1}$, form
+$t_{<j}=x+\sum_{k=0}^{j-1}x^{-k}U_k$ and let $E_j$ be the coefficient of $x^{-j}$ in the formal expansion of $G_N(t_{<j})-y$, with $L=\log x$ retained as a formal parameter. Then
+\begin{equation}\label{ibd:pd:eq:Urec}
+ U_j=-E_j/S\qquad(j\geq1),\qquad N\geq j.
+\end{equation}
+Here $\log t_{<j}=L+\log(t_{<j}/x)$ is expanded finitely. This makes each $U_j$ a polynomial expression in $L$ and $S^{-1}$ with the stated analytic parameter coefficients, and supplies every finite order.
+
+Taylor remainders and the eventual bound $G_N'\geq S/2$ in a neighborhood of $x$ yield inverse error
+\begin{equation}\label{ibd:pd:eq:inverseerror}
+ \Oh\!\left(\frac{x^{-M-1}(1+\log x)^E}{S}\right),\qquad N\geq M,
+\end{equation}
+for a finite effective $E$, uniformly on the compact parameter ranges. In particular, using only $x+U_0$ gives the valid conservative error $\Oh(\log^2x/(xS))$. These are inverses of the chosen smooth model; applying them to integer thresholds still requires the phase and forward error to be controlled.
+
+For $\lambda=p/q\in\mathbb Q_{>0}$, each residue class of $n$ modulo $q$ has fixed $\delta_n=-\{pn/q\}$. Apply the corresponding fixed-$\delta$ smooth inverse on each arithmetic progression, then bracket on its lattice. For irrational $\lambda$ there are no finitely many such branches.
+
+One must not hold $\delta_n$ constant while inverting a general floor-depth sequence. Its logarithm contains the bounded sawtooth term $-\{\lambda n\}/\lambda$. Omitting that term produces $\Oh(1)$ logarithmic uncertainty, hence $\Oh(1/\log n)$ uncertainty in the index, larger than higher smooth corrections. Safe alternatives are to bracket by the $\delta=0$ and $\delta=-1$ models with explicitly instantiated forward errors, or to evaluate the neighboring candidate exact counts. A unique rounding rule requires separation from integer boundaries or exact bracketing. No such numerical threshold certificate is supplied here.
+\begin{writenote}As in Part~\ref{ibd:part:diag}, the Lambert core \eqref{ibd:pd:eq:Lambert} and the recursion \eqref{ibd:pd:eq:Urec} are instances of the transseries volume's \texttt{p0:thm:lambert-core} and \texttt{p0:thm:perturbed-inversion}, and the lattice bracketing of \texttt{p0:thm:staircase}; at $\lambda=1$, $\delta=k$, \eqref{ibd:pd:eq:Lambert} and \eqref{ibd:pd:eq:U01} reduce to \eqref{ibd:eq:inversecore} and \eqref{ibd:eq:inversefirst}.\end{writenote}
+
+\section{Literature comparison and boundaries}\label{ibd:pd:sec:literature}
+\subsection{Prellberg's direct bivariate antecedent}\label{ibd:pd:sec:prellberg}
+Prellberg's FPSAC 2002 slides \cite[slide 17 of 26, physical PDF p.~59]{prellberg2002} display a leading two-index coefficient equivalent before summing over the depth. A September 2002 seminar account summarized by Mishna \cite[especially p.~49]{mishna2005} discusses the same parabolic-coordinate method. This is a direct antecedent, not merely a shared exponential scale.
+
+To spell out the algebraic specialization, Prellberg treats
+\[
+ X(z)=a(z)X(f(z))+b(z),\qquad f(z)=z+cz^2+dz^3+\cdots.
+\]
+Take $a(z)=a_0\in(0,1)$, $b(z)=z$, and $f=e^z-1$. Then $c=1/2$, $d=1/6$, $1-d/c^2=1/3$, and
+\[
+ X(z)=\sum_{m\geq0}a_0^mf^{\circ m}(z),\qquad
+ X_{n,m}=a_0^mH(n,m)/n!.
+\]
+If $f^{-1}(\mu(s))=\mu(s+1)$, the homogeneous solution satisfies $Y(\mu(s))=a_0^s$, up to an irrelevant constant factor. Cancelling those factors in the displayed source formula gives
+\begin{equation}\label{ibd:pd:eq:prellberg}
+ \frac{H(n,m)}{n!}\sim(m/2)^n m^{-1-\beta/3}\JP(\beta),\qquad
+ \JP(\beta)=\frac1{2\pi i}\int_{\mathcal C}\mu(s)e^{\beta s}\dd s,
+ \quad\beta=n/m.
+\end{equation}
+This is our algebraic specialization of the prior formula, not a newly located verbatim theorem about $H$.
+\begin{writenote}This is the specialization \eqref{ibd:eq:historical} of Part~\ref{ibd:part:diag}, written with $(m/2)^nm^{-1-\beta/3}$ in place of $2^{-n}m^{n-1-\beta/3}$. Both sources wrote $J(\beta)$; it is written $\JP(\beta)$ here (see the Guide).\end{writenote}
+
+Formally, if contour correspondence, orientation, normalization, and vanishing endpoint terms are established, integration by parts gives
+\[
+ -\frac1{2\pi i}\int_{\mathcal C}\mu'(s)e^{\beta s}\dd s
+ =\beta \JP(\beta),
+\]
+which is the factor $I(\beta)=\beta \JP(\beta)$ needed to match \eqref{ibd:pd:eq:factorial}. This addendum does not infer that analytic contour identification solely from matching formulas. Translating a Fatou coordinate multiplies its amplitude by an exponential, so numerical constants also require matched normalization. For $m=\lambda n$, Stirling converts \eqref{ibd:pd:eq:prellberg} to the same formal leading shape, with prefactor
+$\sqrt{2\pi}\lambda^{-1-1/(3\lambda)}\JP(1/\lambda)$.
+
+The located sources describe inverse-coordinate expansions to all orders, but do not state an explicit compact $\beta$ uniformity region, quantified bivariate remainder, all-parameter strict positivity result, or all-orders coefficient expansion for $X_{n,m}$. Their final numbered theorem concerns the sum over $m$. They are short proof outlines; contour and tail estimates are not developed there to the depth required for an independent quantitative audit. The last slide labels earlier higher correction computations as non-rigorous. Visible ancillary typographical inconsistencies further counsel using the original slide formula with checked normalization. None of this disproves that formula, and no exhaustive claim about the later literature is made.
+
+The purpose here is a self-contained compact-uniform transfer, conditional on the explicit audited contour foundation, together with positivity, coefficient construction, floor phase, and safe inverse use. We claim no priority for the leading equivalent, parabolic method, displayed formal coefficients, or the existence of earlier higher-term calculations.
+
+\subsection{Other overlap and scope restrictions}
+Skau and Kristensen \cite{skau} use $B_n^{(r)}=H(n,r+1)$ and obtain
+$B_n^{(r)}\sim n!r^{n-1}/2^{n-1}$ for fixed $n$ as $r\to\infty$. Their theorem supplies no uniformity in growing $n$, so substituting $r\asymp n$ is not justified. Carlson, Makarychev, and Mosenzon \cite[Theorem 5.7]{cmm} use $B_k(p)=H(p,k+1)$ and obtain root-order bounds; at $k\asymp p$ these give $B_k(p)^{1/p}=\Theta(p^2)$, without the exponential-base constant, power correction, or multiplicative amplitude.
+
+For critical Poisson$(1)$ branching from one ancestor and $m\geq1$,
+\[
+ H(n,m)=\mathbb E[(Z_m)_n]=\mathbb E[Z_{m-1}^{n}].
+\]
+Nagaev and Vakhtel's large-deviation theorem \cite{nv} assumes $k/t\to\infty$ and $k=o(t^2)$. Its logarithmic coefficient $1-2f'''(1)/(3f''(1)^2)$ equals $1/3$ for Poisson reproduction. The heuristic moment saddle $k\approx nt/2$ is of order $t^2$ when $t\asymp n$, outside that theorem's range. Its formal extrapolation suggests the logarithmic power but cannot prove the amplitude here.
+
+OEIS A144150 indexes $H(n,k+1)$; A139383, A261280, and A346802 index $H(n,n)$, $H(n,n+1)$, and $H(n,n+2)$ respectively \cite{oeis}. The inspected entries explicitly label the corresponding leading equivalents as conjectures. Their constants are consistent with $D(1)$, $eD(1)$, and $e^2D(1)$ after respecting the denominator convention. Searches for several nonunit-slope initial segments found no dedicated entry, a bounded search result rather than evidence of absence.
+
+The related partition-lattice chain observable is a depth sum:
+$Z_n=\sum_{m\geq0}2^{-m-1}H(n,m)$, since its generating function obeys $2Z(z)=z+Z(f(z))$. Its known aggregate asymptotics motivate Prellberg's setting, but a depth-summed equivalent alone does not give a pointwise proportional-depth equivalent. The direct source overlap above was checked at the bivariate formula itself.
+
+\section{Reproducibility and precise limitations}\label{ibd:pd:sec:repro}
+The accompanying archive includes the editable \LaTeX\ source and build script; the unchanged attribution-corrected foundation, certificate, and reviews; the proportional research and independent audit snapshots; and exact coefficient-generation scripts with recorded outputs and hashes. All executable replay entry points use package-relative paths. The independent audit's original files and hash manifest are preserved verbatim; the portable replay uses a separately identified path-adjusted copy of its check.
+
+The default replay regenerates the foundation's order-three orbit polynomials, generates the general-$\beta$ integrand polynomials, compares both JSON outputs with the saved exact outputs, and checks the independent low-order identities. An optional diagnostic computes exact recurrence values and exploratory long-double contour quadratures. At $n=160$, the recorded count divided by the first-corrected prediction is approximately $0.999845$, $1.000009$, and $1.000013$ for $\lambda=1/2,1,2$. The odd-index floor-phase diagnostic at $n=159$, $\lambda=1/2$, $m=79$, and $\delta=-1/2$ gives about $0.999748$. These are convention checks, not rigorous amplitude enclosures or remainder bounds.
+
+The only numerical input to the all-$\beta$ positivity argument is the foundation's outward-rounded certificate at $\beta=1$. That certificate relies on the documented interval semantics of its runtime; it is not an independently verified arithmetic kernel. General-$\beta$ amplitude values, final numerical remainder constants, and target-specific threshold validity ranges remain uncertified. Symbolic generation is finite at every requested order and does not assert convergence of an infinite series. No exponentially improved expansion or endpoint slope regime is claimed.
+\begin{writenote}In this repository source 28's package is unpacked as follows. Its \LaTeX\ source, build script, PDF, compile log and \texttt{pdfinfo} record are not shipped (this report replaces them). Its unchanged copy of the foundation is not shipped twice: Part~\ref{ibd:part:diag} and the \texttt{53-iterated-bell-*} files are that foundation. Its programs are shipped as \texttt{code/28-proportional-*.py}, its recorded outputs and search evidence as \texttt{data/28-proportional-*}, its research notes, source notes, reviews and production record as \texttt{28-proportional-*.md}. The checksum files were verified at placement and are not shipped; the structured package manifest is shipped as \texttt{data/28-proportional-manifest.json}, and it lists files under their delivered names. The README of this report gives a recipe that rebuilds the delivered layout for \texttt{verification/replay.py}.\end{writenote}
 
 \begin{thebibliography}{99}
-\bibitem{prellberg2002} T. Prellberg, \emph{On the asymptotic analysis of a class of linear recurrences}, FPSAC 2002 slides, numbered slide 17 and final slide. \url{https://webspace.maths.qmul.ac.uk/t.prellberg/talks/recurrence.pdf}.
+\bibitem{prellberg2002} T. Prellberg, \emph{On the asymptotic analysis of a class of linear recurrences}, FPSAC 2002 slides, numbered slide 17 (of 26) and final slide. \url{https://webspace.maths.qmul.ac.uk/t.prellberg/talks/recurrence.pdf}.
 \bibitem{mishna2005} M. Mishna, summary of T. Prellberg's seminar of 23 September 2002, \emph{On the asymptotic analysis of a class of linear recurrences}, in F. Chyzak (ed.), \emph{Algorithms Seminar 2002--2004}, INRIA (2005), pp.~47--50. \url{https://algo.inria.fr/seminars/summary/Prellberg2002a.pdf}.
 \bibitem{oeisA} OEIS Foundation, \emph{A139383}, official sequence export, revision 14 March 2026. \url{https://oeis.org/A139383}.
 \bibitem{oeisB} OEIS Foundation, \emph{A261280}, official sequence export, revision 14 March 2026. \url{https://oeis.org/A261280}.
+\bibitem{oeis} OEIS Foundation Inc., entries \href{https://oeis.org/A144150}{A144150}, \href{https://oeis.org/A139383}{A139383}, \href{https://oeis.org/A261280}{A261280}, and \href{https://oeis.org/A346802}{A346802}. Literature comparison checked 2 October 2026.
 \bibitem{bell} E. T. Bell, The iterated exponential integers, \emph{Annals of Mathematics} 39 (1938), 539--557.
 \bibitem{skau} I. H. Skau and K. F. Kristensen, \emph{An asymptotic formula for the iterated exponential Bell numbers}, 2019. \url{https://arxiv.org/abs/1903.07979}.
-\bibitem{cmm} C. Carlson, Y. Makarychev and R. Mosenzon, \emph{Hardness of approximation for shortest path with vector costs}, SODA 2026; preprint 2025. \url{https://arxiv.org/abs/2510.21058}.
+\bibitem{cmm} C. Carlson, Y. Makarychev and R. Mosenzon, \emph{Hardness of approximation for shortest path with vector costs}, arXiv:2510.21058v1, 2025; SODA 2026. \url{https://arxiv.org/abs/2510.21058}.
 \bibitem{weising} M. Bechtloff Weising, \emph{Higher order Bell symmetric functions}, 2025. \url{https://arxiv.org/abs/2505.18504}.
-\bibitem{nv} S. V. Nagaev and V. I. Vakhtel, Limit theorems for probabilities of large deviations of a Galton--Watson process, \emph{Discrete Mathematics and Applications} 13 (2003), 1--26. \href{https://doi.org/10.1163/156939203321669537}{doi:10.1163/156939203321669537}.
+\bibitem{nv} S. V. Nagaev and V. I. Vakhtel, Limit theorems for probabilities of large deviations of a Galton--Watson process, \emph{Discrete Mathematics and Applications} 13(1) (2003), 1--26; Russian original \emph{Diskretnaya Matematika} 15(1), 3--27, Theorems 1--2. \url{https://www.mathnet.ru/eng/dm183}; \href{https://doi.org/10.1515/156939203321669537}{doi:10.1515/156939203321669537} (source 53 cites the original DOI 10.1163/156939203321669537, which redirects there).
 \bibitem{wachtel} V. I. Wachtel, Limit theorems for probabilities of large deviations of a critical Galton--Watson process having power tails, \emph{Theory of Probability and Its Applications} 52 (2008), 674--688. \href{https://doi.org/10.1137/S0040585X97983249}{doi:10.1137/S0040585X97983249}.
 \end{thebibliography}
 \end{document}
