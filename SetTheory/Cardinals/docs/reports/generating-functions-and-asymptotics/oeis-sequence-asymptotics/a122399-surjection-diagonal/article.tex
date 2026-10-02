@@ -15,6 +15,11 @@
 \setcounter{secnumdepth}{0}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \newcommand{\Log}{\operatorname{Log}}
+\usepackage{booktabs,array}
+% [write] notes added when the report entered the collection (batch 77)
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \allowdisplaybreaks[2]
 \hypersetup{pdftitle={Asymptotic enumeration and inversion for A122399},pdfsubject={Exact contours, all orders asymptotics, inversion, block fluctuations, and congruences}}
 \title{Asymptotic enumeration and inversion for A122399}
@@ -25,11 +30,77 @@
 \begin{abstract}
 For $a_n=\sum_k k^n k!S(n,k)$, we prove the leading equivalent already recorded in OEIS and obtain a complete fixed-order expansion with explicit coefficients. An exact vertical contour gives a branch-safe representation and a simple, nonasymptotic exponential truncation bound. The same method yields compact-direction two-size asymptotics, Gaussian block-count fluctuations, and a controlled inverse with integer-threshold envelopes. An elementary appendix proves the posted mod-prime periodicity conjecture, in the sense that $p-1$ is a period, and extends it to prime powers. The standard saddle methodology and existing leading result are explicitly credited.
 \end{abstract}
-\subsection{Results and attribution}\label{results-and-attribution}
+\subsection{Results and attribution}\label{a122:results-and-attribution}
 
 The leading equivalent for A122399 was posted by Vaclav Kotesovec on OEIS on August 9, 2018; its growth constant was already identified in 2013. \textbf{Neither that equivalent nor its numerical constant is claimed as a new conjecture.} This manuscript proves it and develops explicit, reproducible higher coefficients, a globally valid contour with an explicit exponentially small truncation bound, a compact-direction extension, a block-count central limit theorem, and controlled inversion. These are applications and refinements of standard analytic saddle methods, not a new general method. In particular Khera--Lundberg--Melczer (2021, preprint 2019), Section 3 and the paragraph following its equation (15), give directional asymptotics and explain higher-order expansion for the nearby but different lonesum-matrix denominator. No global novelty claim is made.
 
-\subsection{1. Exact combinatorics}\label{exact-combinatorics}
+\subsection{Provenance, status and reading conventions}\label{a122:provenance}
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+\emph{Provenance.} This report was built from one manuscript: batch~77,
+manuscript~35 of the repository's incoming-reports channel, archive
+\nolinkurl{oeis-a122399-research.zip} (main file
+\nolinkurl{a122399-report.tex}, 389 lines, with an eight-page PDF that is not
+shipped), arrival commit \texttt{096ee7b87}, placed in \texttt{f76fcb566}.
+The text from the abstract to the end of the source list is the delivered
+manuscript, unchanged except for the label prefix \texttt{a122:} and the
+notes marked \textbf{[write]}. The delivered pre-layout source
+\nolinkurl{proof.md} is shipped beside this article; it carries no
+mathematics absent here, while Section~8 exists only in this text.
+\emph{Pin.} The delivery names no ProveIt commit that it continues. Its
+\nolinkurl{proof.md} (line~9) records a scoped search of the public
+repository index on 1 October 2026, which found no A122399 or A317855 match
+and returned other files at commit \texttt{76c0887a6}; the delivered layout
+script removed that paragraph from the manuscript. The search result was
+true then; the only match now is this report. The search is scoped
+nonduplication evidence, as its author says, not a proof of absence.
+\emph{Status.} An unrefereed research manuscript; the delivery names no
+author or tool. Nothing in it is formalized in Lean or Rocq, and its
+placement in the collection confers no formal status
+(\hyperref[a122:elementary-congruence-appendix]{Section~7} names the one
+formalized identity its proof uses). The delivered independent audit
+(shipped as \nolinkurl{audit-independent_audit.md}) found no blocking
+error; its script was not replayed at placement (it exceeded a 170-second
+cap), while the four producer scripts were replayed with identical outputs (up to line endings).
+\end{writenote}
+
+\begin{writenote}[Reading conventions]
+The manuscript reuses several letters. No symbol of the delivered text was
+renamed; the table fixes the readings.
+
+\smallskip
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}
+ >{\raggedright\arraybackslash}p{0.75\linewidth}@{}}
+\toprule
+symbol & meanings, by section \\
+\midrule
+$p$ & $p(z)=1/(1+e^z)$ in Sections~2--4; $p=x/y$ in the formula for $\mu_0$
+ and $p(s)$ in Section~6; a prime in Section~7. \\
+$r$ & the Taylor index of $f_r$ in (3.2), (3.4); the Newton step count in
+ (5.3); the prime-power exponent in (7.1); the OEIS constant
+ $r=0.873702\ldots$, which is $\mu=1/y$ of (6.2), not any of the others. \\
+$x,y$ & formal variables of $F(x,y;u)$ in Section~1; saddle values
+ $x=X(y)$, $y=y(\lambda)$ from (3.1) on, and on the diagonal the numbers
+ $x(1)$, $y(1)$ of Section~4. \\
+$a$ & $a_n$ is the sequence; $a$ is a summation index in (3.4) and
+ $a=y-x$ in (4.2). \\
+$m$ & the red set size (with $\lambda=m/n$); $m_r$ in (3.4) are
+ multiplicities. \\
+$C$, $C_J$, $E_J$ & $C$ is the diagonal constant of (4.1); $C_J$ and $E_J$ in
+ the proof of (5.4) are unrelated existence constants; $C(s)$ in Section~6
+ has $C(0)=C$. \\
+$\mu$, $\mu_0$ & mean of the block count (6.2), not a growth rate. \\
+$D$ & the growth constant of (4.1): $D=1/(xy)=(1+e^{y})/y^{2}
+ =3.16108865\ldots$, the constant of OEIS A317855. \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\noindent Section and equation numbers are the manuscript's own and are
+typed by hand; equation tags such as (2.1) are fixed tags, not counters.
+\end{writenote}
+
+\subsection{1. Exact combinatorics}\label{a122:exact-combinatorics}
 
 Put
 
@@ -46,7 +117,7 @@ The convention at the origin is \(0^0=1\). For positive \(m,n\), a structure con
 
 Thus the diagonal is exactly A122399, not an approximation to it. When a structure is chosen uniformly, its block count satisfies \(\Pr(K_n=k)=k^n k!S(n,k)/a_n\).
 
-\subsection{2. Exact contour and a nonasymptotic tail bound}\label{exact-contour-and-a-nonasymptotic-tail-bound}
+\subsection{2. Exact contour and a nonasymptotic tail bound}\label{a122:exact-contour-and-a-nonasymptotic-tail-bound}
 
 For \(\Re z>0\), use the single analytic branch
 
@@ -67,7 +138,7 @@ Here \(1+e^{-z}\) stays in the open disk of radius one about 1, and \(X(z)\ne0\)
 
 Both integrals are absolutely convergent. Integer powers are used, so there is no unresolved power branch.
 
-\subsubsection{Proof}\label{proof}
+\subsubsection{Proof}\label{a122:proof}
 
 For \(\Re h>0\) and \(n\ge1\), the absolutely and locally uniformly convergent Mittag--Leffler identity is
 
@@ -82,7 +153,7 @@ Change the \(x\)-coefficient contour to \(q=e^x-1\), with \(|q|=e^{-c}<1\); the 
 
 This argument does \textbf{not} treat an individual \((h(x)+2\pi i j)^{-n-1}\) as a globally analytic power series at \(x=0\). Doing so would ignore its logarithmic monodromy.
 
-\subsubsection{Explicit truncation theorem}\label{explicit-truncation-theorem}
+\subsubsection{Explicit truncation theorem}\label{a122:explicit-truncation-theorem}
 
 Let \(x_c=X(c)>0\), and let \(R_T\) denote the sum of the parts of the \textbf{second} integral in (2.1) with \(|\Im z|\ge T>0\), including its prefactor. Then
 
@@ -102,7 +173,7 @@ Consequently the modulus of the tail is bounded by \((n+1)x_c^{-m}/(\pi m)\int_T
 
 There is therefore an exact, absolutely convergent strip decomposition obtained by splitting the second contour into \((2j-1)\pi\le\Im z\le(2j+1)\pi\), \(j\in\mathbb Z\). The noncentral strips together have bound (2.3) with \(T=\pi\). They are not asserted to be canonical saddle/transseries sectors: their artificial endpoint contributions can cancel, and no individual secondary-saddle expansion is proved here. A fixed-order Poincaré expansion for the central strip has algebraic error, despite the exponentially accurate contour truncation.
 
-\subsection{3. The unique saddle and all orders}\label{the-unique-saddle-and-all-orders}
+\subsection{3. The unique saddle and all orders}\label{a122:the-unique-saddle-and-all-orders}
 
 Fix \(\lambda=m/n>0\). There is a unique \(y=y(\lambda)>0\) satisfying
 
@@ -130,7 +201,7 @@ Here logarithms are local germs, and \(f_\lambda(0)=f'_\lambda(0)=0\). Globally 
 
 The bound from Section 2 gives \(|e^{n f_\lambda(i\theta)}|\le(1+\theta^2)^{-n/2}\).
 
-\subsubsection{Explicit coefficient formula}\label{explicit-coefficient-formula}
+\subsubsection{Explicit coefficient formula}\label{a122:explicit-coefficient-formula}
 
 Set \((-1)!!=1\). For \(j\ge0\), sum over nonnegative integers \(a,m_3,\ldots,m_{2j+2}\) subject to
 
@@ -158,13 +229,13 @@ The empty product gives \(d_0=1\). For every fixed integer \(J\ge0\),
 
 The remainder is uniform when \(m/n\) ranges over any fixed compact subset of \((0,\infty)\). No growing-direction or boundary-uniform assertion is made.
 
-\subsubsection{All-orders proof and remainder justification}\label{all-orders-proof-and-remainder-justification}
+\subsubsection{All-orders proof and remainder justification}\label{a122:all-orders-proof-and-remainder-justification}
 
 Choose a small fixed \(\delta>0\) uniformly over the compact direction set. Outside \(|\theta|<\delta\), the modulus bound above makes the integral exponentially small; integrate the power tail exactly or use (2.3). Inside, analyticity, \(B>1\), and compactness give uniform Taylor remainder bounds and a uniform quadratic bound \(\Re f(i\theta)\le-b\theta^2\), for some \(b>0\). Set \(\theta=t/\sqrt n\). Expand the analytic amplitude \((1+s)^{-2}\) and \(\exp\{n(f(s)-Bs^2/2)\}\) through order \(n^{-J-1/2}\), keeping enough further Taylor terms to bound the remainder. On \(|t|\le n^\epsilon\), with \(\epsilon>0\) chosen sufficiently small for this fixed \(J\), Taylor's theorem bounds the remainder by \(n^{-J-1}\) times a fixed polynomial in \(|t|\) times a Gaussian with uniformly negative exponent. On \(n^\epsilon<|t|<\delta\sqrt n\), the uniform quadratic bound is superpolynomially small. Extend the polynomial--Gaussian integrals to the real line with the same accuracy. Odd terms integrate to zero. The even Gaussian moments are \((M-1)!!B^{-M/2}\), with \(i^M=(-1)^{M/2}\), giving (3.4). The prefactor \(1+1/n\) gives \(c_j=d_j+d_{j-1}\). This proves (3.5) with its uniform remainder.
 
 This is the ordinary analytic one-dimensional saddle expansion; the exact contour is what supplies the particularly simple global tail control here.
 
-\subsection{4. Diagonal constants and reproducible coefficients}\label{diagonal-constants-and-reproducible-coefficients}
+\subsection{4. Diagonal constants and reproducible coefficients}\label{a122:diagonal-constants-and-reproducible-coefficients}
 
 On the diagonal write \(x=x(1),y=y(1),B=2-y+x\), \(D=(xy)^{-1}\), and
 
@@ -219,7 +290,7 @@ The numerical generator uses exact rational symbolic algebra for the phase, then
 
 The strip-tail factor for \(T=\pi\) is \(\rho_\pi=y/\sqrt{y^2+\pi^2}<0.343\). Accordingly the exact central-contour integral differs from \(a_n/(n!)^2\) by at most \(D^n\rho_\pi^n/(\pi^2 n)\). This is a contour-evaluation statement, not an exponentially accurate bound for a fixed truncation of (4.1).
 
-\subsection{5. Controlled inverse}\label{controlled-inverse}
+\subsection{5. Controlled inverse}\label{a122:controlled-inverse}
 
 Define \(P_J(t)=\sum_{j=0}^J c_jt^j\). For every fixed \(J\), it is positive for all sufficiently small nonnegative \(t\). For sufficiently large real \(v\), put
 
@@ -257,6 +328,23 @@ If \(A=a_n\), then \(N_0=n+O(1)\), and
 
 Indeed Stirling's expansion gives \(\log a_n=2n\log n+(\log D-2)n+\frac12\log n+\log(2\pi C)+O(1/n)\), while \(N_0\) exactly solves its first two terms. Taylor expansion around \(N_0\) gives (5.2).
 
+\begin{writenote}[Added 2 October 2026, batch~77: an instance of repository results]
+The initializer of (5.2) is an instance of the inverse-Gamma core of the
+transseries-and-inversion volume
+(\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+section \texttt{p6:sec:gamma}), and no novelty is claimed for the method.
+The two leading Stirling terms read \(2N\log N+(\log D-2)N=L\); with
+\(T=\sqrt D\,N\) and \(R=\sqrt D\,L/2\) this is the core equation
+\(T(\log T-1)=R\) of \texttt{p6:eq:gamma-core-eq}, whose solution
+\(w=W_0(R/e)\), \(T=R/w\) is \(w=W_0(\sqrt D L/(2e))\), \(N_0=L/(2w)\) as
+above. The general power--logarithmic block is \texttt{p6:lem:core}, and the
+scaled family is \texttt{p2:thm:multi-scaling}. Only the core is shared:
+the lower-order terms here, \(\frac12\log N+\log(2\pi C)\), are not those of
+\(\log\Gamma\), so the volume's all-orders recurrence for
+\(\Gamma_+^{-1}\) does not apply as it stands; this report's own all-orders
+inverse is \(\nu_J\) of (5.1).
+\end{writenote}
+
 For arbitrary algebraic inverse precision use Newton iteration
 
 \[
@@ -277,7 +365,19 @@ for all sufficiently large \(A\). Indeed, the uniform sequence-value error \(|\l
 
 The envelope (5.4) allows two neighboring candidates near an integer boundary, so rounding a real inverse alone is not guaranteed. Exact integer comparison settles that boundary. The constants and starting threshold in (5.4) are asymptotic existence constants, not a certified finite-input error bar unless separately bounded.
 
-\subsection{6. Block-count fluctuations}\label{block-count-fluctuations}
+\begin{writenote}[Added 2 October 2026, batch~77]
+The rounding remarks above are the general staircase facts of the same
+volume, \texttt{p0:thm:staircase}: part~(1), \(M(A)=\lceil\nu\rceil\) for
+the exact monotone interpolation, and part~(2), the separation condition
+that fails near an integer boundary. Their generic arithmetic is formalized
+in Lean as \texttt{Fabius.staircase\_ceil} and
+\texttt{Fabius.staircase\_separation}
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean});
+those statements concern an arbitrary strictly monotone function and give
+no formal status to (5.1)--(5.4), whose interpolation \(H_J\) is not exact.
+\end{writenote}
+
+\subsection{6. Block-count fluctuations}\label{a122:block-count-fluctuations}
 
 For \(u=e^s\) near 1, replace \(X\) by \(X_s(z)=\Log(1+e^{-s-z})\), and let \(y(s)\), \(x(s)=X_s(y(s))\) solve \(x(s)=y(s)p(s)\), where \(p(s)=1/(1+e^{s+y(s)})\). Set
 
@@ -323,7 +423,7 @@ Numerically,
 
 This gives a probabilistic interpretation of the OEIS growth parametrization's constant \(r=0.873702\ldots\): it is the asymptotic fraction of occupied ordered blocks. No local limit theorem or growing-marking-range result is claimed.
 
-\subsection{7. Elementary congruence appendix}\label{elementary-congruence-appendix}
+\subsection{7. Elementary congruence appendix}\label{a122:elementary-congruence-appendix}
 
 The current OEIS entry conjectures that, for a prime \(p\), the reduction of \(a_n\) for \(n\ge1\) is purely periodic with period \(p-1\). The following proves that \(p-1\) is a period; it does not assert that it is always the least period.
 
@@ -344,7 +444,24 @@ In particular \(a_{n+p-1}\equiv a_n\pmod p\) for every \(n\ge1\).
 
 For \(n\ge r\), a term with \(p\mid kj\) is zero modulo \(p^r\). Each other base \(kj\) is a unit, so Euler's theorem leaves its power unchanged on replacing \(n\) by \(n+\varphi(p^r)\). This proves (7.1). The argument is elementary and independent of the asymptotic analysis.
 
-\subsection{8. Questions left by this analysis}\label{questions-left-by-this-analysis}
+\begin{writenote}[Added 2 October 2026, batch~77]
+The OEIS conjecture is credited there to Peter Bala (31 May 2022), as the
+delivered \nolinkurl{source_review.md} records. Neither (7.1) nor any other
+statement of this report is formalized. The one nontrivial identity in its
+proof, the surjection formula \(k!\,S(n,k)=\sum_{j\le k}(-1)^{k-j}\binom kj
+j^n\), is formalized in Lean as
+\texttt{Fabius.factorial\_mul\_stirlingSecond\_eq\_sum}
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StirlingBasisChange.lean}),
+so (7.1) is a small formalization target on top of it and Euler's theorem;
+no such proof exists in the repository. The collection's report
+\nolinkurl{congruences-and-valuations/secant-number-periodicity} studies the
+same kind of question for the secant numbers A000364, where the analogous
+OEIS conjecture (period dividing \(\varphi(m)\), pure from index one) is
+false for some moduli; no result is shared, and no least period or onset is
+claimed here.
+\end{writenote}
+
+\subsection{8. Questions left by this analysis}\label{a122:questions-left-by-this-analysis}
 
 The results separate three different levels of control: an exact contour with an explicit exponential tail, a fixed-order algebraic saddle expansion, and an asymptotic inverse. Several natural extensions require additional arguments.
 
@@ -363,7 +480,7 @@ The results separate three different levels of control: an exact contour with an
 
 These are limitations and possible continuations of this analysis, not claims that the corresponding general techniques or all related results are absent from the literature.
 
-\subsection{Sources and reproducibility}\label{sources-and-reproducibility}
+\subsection{Sources and reproducibility}\label{a122:sources-and-reproducibility}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -383,6 +500,33 @@ These are limitations and possible continuations of this analysis, not claims th
 \item
   \nolinkurl{verify_congruences.py}: finite modular checks of (7.1), including all primes below 50 and several prime powers.
 \end{enumerate}
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+\emph{Item~2.} The manuscript lists OEIS A317855 without saying what it
+is. Checked on 2 October 2026: A317855 is the decimal expansion
+\(3.161088653\ldots\) of the growth constant \(D\) of (4.1) (OEIS titles it
+as a constant of the asymptotics of A122400), and the A122399 entry writes
+the Kotěšovec equivalent as \(c\cdot\mathrm{A317855}^n(n!)^2/\sqrt n\) with
+\(c=0.32762828\ldots=C\), its constant \(r\) being \(1/y\). The manuscript
+states no other relation between A317855 and A122399.
+\emph{Items~4--7 and the audit.} The scripts are shipped as
+\nolinkurl{code/check_a122399.py}, \nolinkurl{code/export_exact_coefficients.py},
+\nolinkurl{code/verify_contour_inverse.py} and
+\nolinkurl{code/verify_congruences.py}, their recorded outputs under
+\nolinkurl{data/}, and the audit as \nolinkurl{audit-independent_audit.md},
+\nolinkurl{code/audit-independent_audit.py} and
+\nolinkurl{data/audit-independent_audit_*}. They read and write files next
+to themselves in the delivered flat layout; the report's README gives rerun
+instructions that do not overwrite shipped data.
+\emph{Neighbours.} Row \(n=0\) of \(A_{m,n}\) is the Fubini sequence,
+\(A_{m,0}=\sum_k k!\,S(m,k)\), defined in Lean as \texttt{Fabius.fubini}
+(\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/OrderedBell.lean});
+its exact pole-lattice formula is \texttt{q2:thm:fubini} of the
+transseries volume. That row lies outside the compact-direction theorem
+(3.5), on the side of question~2 of Section~8, and nothing is claimed about
+it here. The collection's \nolinkurl{a277364-bell-asymptotics} treats a
+different Stirling sum by classical saddle methods; no theorem is shared.
+\end{writenote}
 
 The computer checks are reproducible evidence; the all-orders and error statements rely on the analytic proofs above. An independent audit and clean replay accompany this report. Conventional peer review remains appropriate before publication.
 
