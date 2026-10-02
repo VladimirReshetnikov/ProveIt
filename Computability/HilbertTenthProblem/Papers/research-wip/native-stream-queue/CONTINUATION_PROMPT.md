@@ -84,6 +84,10 @@
 > ordinary integer witnesses, finite-support polynomial/field witnesses,
 > functional exponentiation and external horizon bounds. The spectral/clock,
 > polynomial/boundary/sandpile and signal/membrane groups are under review.
+> The [three spectral reviews](review_spectral_060e08a07.md) are complete with
+> five focused implementation repairs and all18 original/repaired author replays.
+> Keep fixed-base power atoms, external bit widths and infinite clock quantifiers
+> distinct from ordinary fixed-arity universal-polynomial bounds.
 > The [boundary/sandpile review](review_boundary_sandpile_060e08a07.md) is complete.
 > Exact Boolean guards repair inconsistent clock modes. The actual sandpile
 > source has a proved canonical projection to8n+12m witnesses/9n+16m rows

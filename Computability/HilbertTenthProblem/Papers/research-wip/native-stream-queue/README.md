@@ -90,6 +90,13 @@ A checked patch rejects noninteger symbol aliases that generated dangling witnes
 names. Its nine-row feature system uses polynomial witnesses; it gives no new
 ordinary integer bound. All valid saved JSON exports are preserved.
 
+The [three spectral reviews](review_spectral_060e08a07.md) validate the stated
+positive-spectrum, bounded-quartic and clock-degree constructions. Five repaired
+checker/API issues include a false sign certificate from an unchecked difference
+chain and a forged expansion passing two sampled points. All nine original and
+nine repaired author commands pass; all15 nonvolatile JSON exports are unchanged.
+Power atoms, external bit widths and infinite clock quantifiers remain explicit.
+
 The [boundary/sandpile review](review_boundary_sandpile_060e08a07.md) passes
 both complete written proofs and all four original author entry points. A
 checked boundary patch requires exact Boolean clock modes. Exact substitution

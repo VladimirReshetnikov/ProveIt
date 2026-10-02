@@ -1,0 +1,260 @@
+--- a/code/profiles.py
++++ b/code/profiles.py
+@@ -8,6 +8,7 @@
+ from dataclasses import dataclass
+ from functools import lru_cache
+ from math import comb
++from types import MappingProxyType
+ from typing import Callable, Optional
+ 
+ 
+@@ -21,30 +22,45 @@
+     hi: Optional[int]
+     sign: int
+ 
++    def __post_init__(self) -> None:
++        if type(self.lo) is not int or self.lo < 0:
++            raise ValueError("Run start must be a natural integer")
++        if self.hi is not None and (type(self.hi) is not int or self.hi < self.lo):
++            raise ValueError("Run end must be an integer at least its start")
++        if type(self.sign) is not int or self.sign not in (-1, 0, 1):
++            raise ValueError("Run sign must be an exact sign integer")
++
+     def contains(self, n: int) -> bool:
+         return self.lo <= n and (self.hi is None or n <= self.hi)
+ 
+ 
+ class ExpPoly:
+     """sum_base P_base(n)*base**n; coefficient lists use ascending degrees."""
++    __slots__ = ("_terms", "evaluations")
++
++    @property
++    def terms(self):
++        """Read-only coefficient snapshot; cached evaluations cannot become stale."""
++        return self._terms
++
+     def __init__(self, terms: dict[int, list[int] | tuple[int, ...]]):
+         clean = {}
+         for base, coeffs in sorted(terms.items()):
+-            if not isinstance(base, int) or base < 1:
++            if type(base) is not int or base < 1:
+                 raise ValueError("Bases must be positive integers")
+             c = list(coeffs)
+-            if not all(isinstance(x, int) for x in c):
++            if not all(type(x) is int for x in c):
+                 raise TypeError("Coefficients must be integers")
+             while c and c[-1] == 0:
+                 c.pop()
+             if c:
+                 clean[base] = tuple(c)
+-        self.terms = clean
++        self._terms = MappingProxyType(clean)
+         self.evaluations = 0
+ 
+-    @lru_cache(maxsize=None)
++    @lru_cache(maxsize=None, typed=True)
+     def value(self, n: int) -> int:
+-        if n < 0 or not isinstance(n, int):
++        if type(n) is not int or n < 0:
+             raise ValueError("Index must be a nonnegative integer")
+         self.evaluations += 1
+         result = 0
+@@ -61,6 +77,8 @@
+         return sign(self.terms[max(self.terms)][-1])
+ 
+     def difference(self, a: int) -> ExpPoly:
++        if type(a) is not int or a < 1:
++            raise ValueError("Difference base must be a positive integer")
+         terms = {}
+         for b, c in self.terms.items():
+             terms[b] = [b*sum(comb(h,k)*c[h] for h in range(k,len(c)))
+@@ -68,6 +86,8 @@
+         return ExpPoly(terms)
+ 
+     def shifted_constant(self, delta: int) -> ExpPoly:
++        if type(delta) is not int:
++            raise TypeError("Shift must be an exact integer")
+         d = {b:list(c) for b,c in self.terms.items()}
+         d.setdefault(1,[0])[0] += delta
+         return ExpPoly(d)
+@@ -75,7 +95,7 @@
+ 
+ def annihilator(shape: dict[int,int]) -> list[int]:
+     """shape maps a base to its allowed degree (zero coefficients are permitted)."""
+-    if not shape or any(b<1 or d<0 for b,d in shape.items()):
++    if not shape or any(type(b) is not int or type(d) is not int or b<1 or d<0 for b,d in shape.items()):
+         raise ValueError("Nonempty shape with positive bases and nonnegative degrees required")
+     return [b for b,d in sorted(shape.items()) for _ in range(d+1)]
+ 
+@@ -162,9 +182,46 @@
+         raise AssertionError("Intervals do not form an adjacent cover")
+ 
+ 
++def valid_chain(chain: list[ExpPoly]) -> bool:
++    """Authenticate every E-a step for some positive integer a and terminal zero.
++
++    If f is nonzero, a is recovered from one nonzero coefficient of f and
++    checked against every coefficient. No horizon values or power sampling
++    are used. A zero parent must have a zero child.
++    """
++    if not chain or any(type(f) is not ExpPoly for f in chain) or chain[-1].terms:
++        return False
++    for f, g in zip(chain, chain[1:]):
++        if not f.terms:
++            if g.terms:
++                return False
++            continue
++        if any(b not in f.terms for b in g.terms):
++            return False
++        candidate = None
++        for b, cs in f.terms.items():
++            gs = g.terms.get(b, ())
++            if len(gs) > len(cs):
++                return False
++            for k, c in enumerate(cs):
++                delta = b*sum(comb(h, k)*cs[h] for h in range(k, len(cs)))
++                delta -= gs[k] if k < len(gs) else 0
++                if not c:
++                    if delta:
++                        return False
++                else:
++                    a, remainder = divmod(delta, c)
++                    if remainder or a < 1 or (candidate is not None and a != candidate):
++                        return False
++                    candidate = a
++    return True
++
++
+ def build_profiles(chain: list[ExpPoly], horizon: Optional[int]) -> list[list[Run]]:
+-    if horizon is not None and horizon < 0:
++    if horizon is not None and (type(horizon) is not int or horizon < 0):
+         raise ValueError("Horizon must be nonnegative or None")
++    if not valid_chain(chain):
++        raise ValueError("Unauthenticated positive-base difference chain")
+     profiles: list[list[Run]] = [[] for _ in chain]
+     profiles[-1] = [Run(0,horizon,0)]
+     D = len(chain)-1
+@@ -183,7 +240,11 @@
+ 
+ def verify_profiles(chain: list[ExpPoly], profiles: list[list[Run]],
+                     horizon: Optional[int]) -> bool:
+-    """Local verifier: uses endpoints and eventual signs, never scans the horizon."""
++    """Authenticate the chain, then verify endpoints without scanning the horizon."""
++    if (horizon is not None and (type(horizon) is not int or horizon < 0)) or not valid_chain(chain):
++        return False
++    if any(type(r) is not Run for rows in profiles for r in rows):
++        return False
+     D = len(chain)-1
+     if len(profiles)!=len(chain):
+         return False
+--- a/code/check_export.py
++++ b/code/check_export.py
+@@ -1,41 +1,81 @@
+ #!/usr/bin/env python3
+-"""Independent checker for exported polynomial/power-atom certificates."""
++"""Independent exact schema, sample, power and polynomial-SOS checker."""
+ import json
+ import sys
+ from pathlib import Path
+ 
+ 
+ def evaluate(terms, values):
+-    total=0
+-    for coefficient,monomial in terms:
+-        term=coefficient
++    total = 0
++    for coefficient, monomial in terms:
++        term = coefficient
+         for variable in monomial:
+-            term*=values[variable]
+-        total+=term
++            term *= values[variable]
++        total += term
+     return total
+ 
+ 
+-def check(path):
+-    data=json.loads(Path(path).read_text())
+-    values=data['sample_assignment']
+-    assert all(type(v) is int and v>=0 for v in values)
+-    assert len(values)==len(data['variables'])
+-    assert all(len(m)<=2 for terms in data['quadratic_residuals'] for _,m in terms)
+-    residual_values=[evaluate(p,values) for p in data['quadratic_residuals']]
+-    assert all(x==0 for x in residual_values), 'Arithmetic residual failed'
+-    for a in data['power_atoms']:
+-        assert values[a['result']]==pow(a['base'],values[a['exponent']]), 'Power atom failed'
+-    if 'expanded_quartic' in data:
+-        assert all(len(m)<=4 for _,m in data['expanded_quartic'])
+-        assert evaluate(data['expanded_quartic'],values)==0
+-        # Check the expanded SOS identity off the zero set on a deterministic test vector.
+-        v=[(i*7+3)%11 for i in range(len(values))]
+-        assert evaluate(data['expanded_quartic'],v)==sum(evaluate(p,v)**2 for p in data['quadratic_residuals'])
+-    print(f'PASS {Path(path).name}: {len(values)} natural coordinates, '
+-          f'{len(residual_values)} quadratic residuals, {len(data["power_atoms"])} power atoms')
++def _require(ok, message):
++    if not ok:
++        raise ValueError(message)
+ 
+ 
+-if __name__=='__main__':
+-    if len(sys.argv)<2:
++def _polynomial(terms, variables, degree):
++    _require(type(terms) is list, "Polynomial must be a list")
++    result = {}
++    for term in terms:
++        _require(type(term) is list and len(term) == 2, "Malformed term")
++        c, mon = term
++        _require(type(c) is int and c != 0, "Coefficient must be a nonzero exact integer")
++        _require(type(mon) is list and len(mon) <= degree, "Invalid monomial degree")
++        _require(all(type(i) is int and 0 <= i < variables for i in mon), "Undeclared index")
++        _require(mon == sorted(mon), "Unnormalized monomial")
++        key = tuple(mon)
++        _require(key not in result, "Repeated monomial")
++        result[key] = c
++    return result
++
++
++def check(path):
++    data = json.loads(Path(path).read_text())
++    _require(data.get('format') == 'canonical-positive-spectrum-v1', "Unknown format")
++    _require(data.get('domain') == 'nonnegative integers', "Unknown domain")
++    _require(data.get('semantics') == 'sum(residual**2)=0 AND every listed power atom', "Unknown semantics")
++    values = data['sample_assignment']
++    variables = data['variables']
++    _require(type(values) is list and all(type(v) is int and v >= 0 for v in values), "Invalid natural assignment")
++    _require(type(variables) is list and len(values) == len(variables), "Coordinate count mismatch")
++    for i, row in enumerate(variables):
++        _require(type(row) is dict and set(row) == {'index', 'name', 'role'}, "Invalid variable descriptor")
++        _require(type(row['index']) is int and row['index'] == i and type(row['name']) is str, "Invalid variable index/name")
++        _require(row['role'] in ('input', 'witness'), "Invalid variable role")
++    rows = data['quadratic_residuals']
++    _require(type(rows) is list, "Residual list required")
++    polynomials = [_polynomial(row, len(values), 2) for row in rows]
++    _require(all(evaluate(row, values) == 0 for row in rows), "Arithmetic residual failed")
++    atoms = data['power_atoms']
++    _require(type(atoms) is list, "Power atom list required")
++    for a in atoms:
++        _require(type(a) is dict and set(a) == {'base', 'exponent', 'result'}, "Invalid power atom")
++        _require(type(a['base']) is int and a['base'] >= 1, "Invalid fixed base")
++        _require(all(type(a[k]) is int and 0 <= a[k] < len(values) for k in ('exponent', 'result')), "Invalid power index")
++        _require(values[a['result']] == pow(a['base'], values[a['exponent']]), "Power atom failed")
++    if 'expanded_quartic' in data:
++        expanded = _polynomial(data['expanded_quartic'], len(values), 4)
++        exact = {}
++        for row in polynomials:
++            for m, c in row.items():
++                for n, d in row.items():
++                    mon = tuple(sorted(m+n))
++                    exact[mon] = exact.get(mon, 0)+c*d
++        exact = {m: c for m, c in exact.items() if c}
++        _require(expanded == exact, "Expanded quartic is not the exact residual sum of squares")
++    print(f'PASS {Path(path).name}: {len(values)} natural coordinates, '
++          f'{len(rows)} quadratic residuals, {len(atoms)} power atoms')
++
++
++if __name__ == '__main__':
++    if len(sys.argv) < 2:
+         raise SystemExit('Usage: python check_export.py FILE.json [FILE.json ...]')
+-    for name in sys.argv[1:]: check(name)
++    for name in sys.argv[1:]:
++        check(name)
