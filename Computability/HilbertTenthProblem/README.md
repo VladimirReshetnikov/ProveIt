@@ -29,6 +29,16 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate independent-gamma87 candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
+The [computed-truth packed U15 compiler](Papers/research-wip/native-stream-queue/u15_packed_computed_truth647.md)
+costs **647=253M+394A operations**,102 positive witnesses and46 comparisons,
+including ordinary input. Its raw interface costs404 operations and51 witnesses.
+Three paid disjoint-tag gates allow three native truth witnesses and their
+comparisons to be eliminated. Positivity follows from the retained head and
+aggregate bounds before any AND typing. Exact signed graph restoration is to
+the newly tagged parent; the original outer relation is preserved with fresh
+history-native witnesses. All input, range, controller and unbounded-duration
+costs remain paid. Degree is at most1936; the global87 bound is unchanged.
+
 The [state-relabeled packed U15 tape compiler](Papers/research-wip/native-stream-queue/u15_packed_state_relabel652.md)
 gives **652=254M+398A operations**, 105 positive witnesses and formal degree
 at most1936, including the ordinary-integer input conversion. Its raw natural

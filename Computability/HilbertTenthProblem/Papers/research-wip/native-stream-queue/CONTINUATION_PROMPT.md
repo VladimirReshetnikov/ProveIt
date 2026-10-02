@@ -69,8 +69,8 @@
 > The seven-report review at `808b53ed8`/`48ee077c7` is now linked below.
 > The Waterfall packet at `24a743255` now has a complete proof/source review
 > and a paid forced-boundary reduction, linked below. The successor direct
-> [U15 tape compiler](u15_packed_state_relabel652.md) costs652 operations,
-> including ordinary input, with105 positive witnesses and degree at most1936.
+> [U15 tape compiler](u15_packed_computed_truth647.md) costs647 operations,
+> including ordinary input, with102 positive witnesses and degree at most1936.
 > It pays all typing, range, controller and common-duration predicates; its
 > unbounded history has fixed arity. The overall87-operation bound is unchanged.
 > Other ready followups are hardened source rewrites for signal endpoint rows
@@ -1011,6 +1011,16 @@ halt and unused state. The grouped one-hot comparators cost142/147 operations
 with29 witnesses and degree2. These are complete single-step relations;
 ordinary multiplication of packed histories would convolve time cells, so
 neither scalar count is an unbounded universal-polynomial bound.
+
+The [computed-truth packed U15 compiler](u15_packed_computed_truth647.md)
+costs **647=253M+394A operations**,102 positive witnesses and46 comparisons,
+including ordinary input. Its raw interface costs404 operations and51 witnesses.
+Three paid disjoint-tag gates allow three native truth witnesses and their
+comparisons to be eliminated. Positivity follows from the retained head and
+aggregate bounds before any AND typing. Exact signed graph restoration is to
+the newly tagged parent; the original outer relation is preserved with fresh
+history-native witnesses. All input, range, controller and unbounded-duration
+costs remain paid. Degree is at most1936; the global87 bound is unchanged.
 
 The [state-relabeled packed U15 tape compiler](u15_packed_state_relabel652.md)
 gives **652=254M+398A operations**, 105 positive witnesses and formal degree
