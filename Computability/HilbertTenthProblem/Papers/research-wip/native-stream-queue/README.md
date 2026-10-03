@@ -113,6 +113,19 @@ universal input and a numerical universal source remain separate obligations.
 These unbounded examples have a different contract from the44/43 fixed-horizon
 circuits below and do not improve the86-operation universal polynomial.
 
+The [paid exponential input bridge](three_mass_exponential_input_bridge.md)
+now initializes those four fixed machines at payload2^(96x), with positive
+ordinary input x and unbounded existential duration. Each complete circuit
+adds54=32M+22A and12 positive witnesses, giving **651/526/524/527** operations.
+The default `(U-1)^2+S` excludes the exponent's negative-unit branch and
+preserves degree upper bounds2344/1192. A same-cost product finalizer is
+also emitted, with its different off-zero polynomial checked exactly.
+The [independent composition review](review_three_mass_exponential_input_bridge.md)
+and both fresh root receipts pass. A separate201-state reversible prefix
+maps counter values(96x,0) to(x,0); its instructions are excluded from the
+four measured circuits. Neither this prefix nor source Turing completeness
+supplies an all-r.e. unary-input theorem or a numerical universal table.
+
 [All twelve batch-80 archives](incoming_substrate_review_4e270aa46.md) have
 completed their scoped reviews and root replays. The inventory pins 388
 published member occurrences; the complete universal polynomial bound remains 87.

@@ -1,6 +1,6 @@
 # Continuation: universal straight-line certificates
 
-> **Current established universal bounds:74 comparison /86 polynomial.**
+> **Current established universal bounds:74 certificate operations /86 polynomial operations.**
 > The [complete74 factorization](complete74_factored_first_norm.md) replaces
 > `(E²+X)*(kY)²` by `L*(L+k)`, L=E*(kY), E=XY, saving one multiplication.
 > This is the identical polynomial on all tuples, with unchanged coordinates,
@@ -148,6 +148,27 @@
 > Author CLI is cold-process only; preserve its three frozen review-pinned
 > files, including pre-review prose. This closes raw history/clock payment,
 > not the ordinary universal input/program decoder obligation.
+
+> The [paid exponential mass input](three_mass_exponential_input_bridge.md)
+> and [independent review](review_three_mass_exponential_input_bridge.md)
+> now pass both fresh root receipts. For positive x, computeQ=2^(96x) with
+> the authenticated52-operation exponent and load raw inputQ-1. The sole
+> K*z+q0 path folds toK*Q+(q0-K) with no extra gate. All20 history residuals
+> remain paid. Default `(U-1)^2+S` adds54=32M+22A and12positive auxiliaries,
+> giving651/526/524/527, with71/69/69/69 private witnesses and unchanged
+> degreeupper2344/1192. The same-cost anchorU*(1+S)-1 has larger bounds
+> 2398/1246; its off-zero gap is(U-1)*(S-U+2), not polynomial equality.
+> Both exclude the genuine negative-unit exponent branch. Parameters are
+> positive x and natural y,T; existential positive y,T add2w but no gates.
+> Exact source valuations are(96x,0). A separate201-state/202-instruction
+> reversible prefix reaches(x,0) in198x+4 source steps; it is NOT compiled
+> into these four costs. Appending a recognizer requires its own proved
+> unary(x,0) input contract and a no-incoming initial state. Morita-Imai's
+> simulation/no-incoming statements alone do not establish that contract.
+> No all-r.e unary-input theorem or numerical universal table is claimed.
+> Author and reviewer reconstruct all8 complete DAGs/160 retained residuals;
+> independent sparse factor expansions confirm exponentdegree54. Preserve
+> all frozen parents. No astronomical full native/Pell witness is built.
 
 > Latest three-mass examples: the [per-step branch search](three_mass_mixed_branch_search.md)
 > reaches44native/43clean for INC2;DEC2 at h=2, using implicit indices[0,1],

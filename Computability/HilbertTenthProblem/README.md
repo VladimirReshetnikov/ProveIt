@@ -67,6 +67,13 @@ binary AND certificate. All six complete polynomials are unchanged; the
 [independent audit](Papers/research-wip/native-stream-queue/review_native_pell_factored_first_coefficient.md)
 and both fresh receipts pass.
 
+The [paid three-mass input bridge](Papers/research-wip/native-stream-queue/three_mass_exponential_input_bridge.md)
+adds54 operations to load payload2^(96x) for positive ordinary x, giving
+complete fixed-source totals651/526/524/527. Its sum-of-squares finalizer
+preserves the existing degree upper bounds; independent composition review
+and fresh receipts pass. This proves the input relation for four specified
+machines. A universal source and its intended input protocol remain open.
+
 The [geometry component](Papers/research-wip/native-stream-queue/group_linked_binary_geometry46.md)
 now costs46 operations with a shared scale, or48 with its scale computed.
 Its full SOS costs84/86 and has exact degree28; independent complete
