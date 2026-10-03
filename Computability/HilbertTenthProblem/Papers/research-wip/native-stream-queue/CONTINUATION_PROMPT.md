@@ -18,6 +18,18 @@
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
 >
+> The [complete Report30 first-hit fixture](original_frame_first_hit30_fixture.md)
+> reduces one explicit original-frame mass-four orbit certificate to
+> **35=11M+24A operations, three natural witnesses and exact degree four**.
+> Shared phase clocks and inequalities remove unnecessary lifts; nonnegative
+> time excludes the sole extra cycle-index boundary before restoring old slacks.
+> The [independent review](review_original_frame_first_hit30_fixture.md) checks
+> seven full sources, 404 live gates, 87 residuals, five complete polynomial
+> identities and 616 zero maps from 88 actual configurations. Fresh normal and
+> optimized receipts pass. The timed dependency is now read in full; the
+> 35-operation result is fixed-input and belongs to a decidable class. It is
+> not a universal bound; the established universal polynomial remains **84**.
+>
 > The [sandpile Report 35/36 intake](review_sandpile35_36_intake.md) approves the
 > finite-prism cubic and its real-orthant upgrade within the stated proof scope.
 > The [shared arithmetic](sandpile_shared_arithmetic35_36.md) saves exactly
