@@ -225,6 +225,18 @@
 > No universal simulation or fixed-arity unbounded Diophantine encoding is
 > supplied, so neither614 nor degree4 changes the universal arithmetic bound.
 >
+> The [Report37 exact-obstruction review](review_exact_negative_obstruction37.md)
+> confirms a full negative-zero criterion for the raw29/positive21 projections,
+> with only `q,w` left unbounded. It does not establish existence or exclusion;
+> the inverse problems remain open. Five archived/current source pairs match,
+> and fresh bounded arithmetic checks pass. Its necessary `F>=q` is incompatible
+> with the normalized universal source's retained `F+Z<q` bootstrap.
+> The [Report38 turmite intake](review_turmite_first_revisit38_intake.md) checks
+> polynomial first-revisit detection and exact finite observations, with possible
+> exponential Boolean expansion. Its shared Boolean-DAG certificate is a proposed
+> component; first-hit minimality and an ordinary-input universal loader remain
+> unpaid. Neither report changes the universal operation bound.
+>
 > The [new negative-index/fiber report review](review_incoming_negative_index_fibers.md)
 > **refutes the exact symmetric signed19 nonlinear-index candidate**: its
 > complete positive existential projection contains every positive ordinary
