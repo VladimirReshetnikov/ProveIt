@@ -1,21 +1,32 @@
+% ---- hand chunk preamble
 \documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage[margin=1in]{geometry}
+\usepackage{mathrsfs}
+\usepackage[margin=1in,headheight=14pt]{geometry}
 \usepackage{microtype}
-\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{booktabs,longtable,array,tabularx,enumitem}
 \usepackage{xcolor,fancyhdr,listings}
+\usepackage[most]{tcolorbox}
+\usepackage{aliascnt}
 \usepackage{hyperref}
+\usepackage{xurl}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \definecolor{navy}{RGB}{25,54,88}
 \definecolor{linkblue}{RGB}{26,77,127}
+\definecolor{Ink}{HTML}{183247}
+\definecolor{Accent}{HTML}{126E75}
+\definecolor{Pale}{HTML}{EDF5F5}
+\definecolor{Gray}{HTML}{52616B}
 \hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,bookmarksdepth=2,
   pdftitle={Lexicographic Orders of Well-Orderings of the Surreal Numbers},
-  pdfauthor={Research report}}
+  pdfauthor={Research report merged from four manuscripts prepared for Vladimir Reshetnikov (sources 08, 09, 11 and 12 of batch 80)},
+  pdfsubject={Surreal collection, foundations and computation: surreal-well-orders}}
 \setcounter{tocdepth}{1}
 \urlstyle{same}
-\setlength{\emergencystretch}{2em}
+\setlength{\emergencystretch}{3em}
 \setlength{\headheight}{14pt}
 \pagestyle{fancy}
 \fancyhf{}
@@ -24,37 +35,94 @@
 \renewcommand{\headrulewidth}{0.3pt}
 \setlist{topsep=5pt,itemsep=3pt,parsep=0pt}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{question}[theorem]{Research question}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newaliascnt{question}{theorem}
+\newtheorem{question}[question]{Research question}
+\aliascntresetthe{question}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newaliascnt{note}{theorem}
+\newtheorem{note}[note]{Note}
+\aliascntresetthe{note}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{question}{research question}{research questions}
+\Crefname{question}{Research question}{Research questions}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{note}{note}{notes}
+\Crefname{note}{Note}{Notes}
+\crefname{part}{part}{parts}
+\Crefname{part}{Part}{Parts}
+\newtcolorbox{resultbox}{colback=Pale,colframe=Accent,boxrule=.6pt,
+ arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+% ---- one notation for all four sources (Section 1.4 lists every renaming)
 \newcommand{\No}{\mathbf{No}}
 \newcommand{\Ord}{\mathrm{Ord}}
 \newcommand{\WO}{\mathcal W}
+\newcommand{\W}{\mathcal W}
 \newcommand{\Words}{\mathcal I}
+\newcommand{\I}{\mathcal I}
 \newcommand{\WordsAll}{\mathcal T}
 \newcommand{\Hsl}{\mathfrak W_{\mathrm{sl}}}
 \newcommand{\Hall}{\mathfrak W_{\mathrm{all}}}
 \newcommand{\Jinj}{\mathfrak J}
 \newcommand{\Pbd}{\mathcal P_{\mathrm{bd}}}
+\newcommand{\Psupp}{\mathcal P_{\mathrm{s}}}
+\newcommand{\B}{\mathbb B}
+\newcommand{\BB}{\mathbb B}
+\newcommand{\BOrd}{\mathbb B_{\Ord}}
+\newcommand{\two}{\{0,1\}}
 \newcommand{\lex}{\mathrm{lex}}
 \newcommand{\ran}{\operatorname{ran}}
 \newcommand{\dom}{\operatorname{dom}}
 \newcommand{\otp}{\operatorname{otp}}
 \newcommand{\cf}{\operatorname{cf}}
 \newcommand{\rk}{\operatorname{rank}}
+\newcommand{\bl}{\ell_2}
+\newcommand{\bd}{\operatorname{bd}}
+\newcommand{\lh}{\operatorname{lh}}
 \newcommand{\pred}{\operatorname{Pred}}
 \newcommand{\supp}{\operatorname{supp}}
 \newcommand{\Cut}{\operatorname{Cut}}
+\newcommand{\Bij}{\operatorname{Bij}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\End}{\mathtt{end}}
 \newcommand{\emb}{\hookrightarrow}
-\newcommand{\equi}{\mathrel{\approx_{\mathrm{emb}}}}
+\newcommand{\equi}{\mathrel{\simeq_{\!e}}}
+\newcommand{\equim}{\mathrel{\simeq_{\!e}}}
 \newcommand{\cat}{\mathbin{{}^\frown}}
+\newcommand{\concat}{\mathbin{{}^\frown}}
 \newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\res}{\mathbin{\upharpoonright}}
 \newcommand{\GB}{\mathsf{GB}}
 \newcommand{\GBC}{\mathsf{GBC}}
 \newcommand{\ZFC}{\mathsf{ZFC}}
@@ -64,21 +132,25 @@
 \newcommand{\GC}{\mathsf{GC}}
 \newcommand{\card}[1]{\lvert #1\rvert}
 \newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\merge}{\textsf{[merge]}}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
   breaklines=true,frame=single,rulecolor=\color{black!20},
   backgroundcolor=\color{black!2},showstringspaces=false}
 
 \title{\color{navy}\bfseries Lexicographic Orders of Well-Orderings\\
 of the Surreal Numbers\\[5pt]
-\large Set Approximations, Class Orders, and Higher-Order Structure}
-\author{Research report}
-\date{3 October 2026\\
-\small Repository snapshot: 3 October 2026, 01:03:53 UTC}
+\large Set approximations, the singular birthday transition, set-length words,\\
+class orders, and higher-order structure}
+\author{Research report merged from four independent manuscripts\\
+prepared for Vladimir Reshetnikov (sources 08, 09, 11 and 12 of batch 80)}
+\date{Sources dated 2 October 2026 (source 11: 3 October 2026, UTC); merged 2 October 2026}
 
 \begin{document}
 \maketitle
 \thispagestyle{empty}
 \begin{abstract}
+
+% ---- source 11, lines 82-113
 The phrase \emph{all well-orders of the surreal numbers} has several
 inequivalent meanings. Well-orders of a fixed birthday fragment form a set;
 well-orders of arbitrary set-sized subsets form an ordinary class;
@@ -111,8 +183,34 @@ The proofs use \(\ZF\), \(\ZFC\), or \(\GBC\), as specified, with
 a further uniform nonembedding theorem in \(\KM+\GC\). We give
 universe-relative and proof-assistant formulations, and propose further
 research on the higher-order structure.
+
+% ---- hand chunk abstract_merge@1
+
+\merge\ This report is being merged from four manuscripts written
+independently on 2 October 2026 on the same question and delivered together
+in batch~80. This edition contains source~11 (the base, whose abstract is
+printed above) and source~12; sources~09 and~08 follow in the second write.
+Each shared theorem is printed once; source~12's versions of source~11's
+results are recorded in numbered notes, and its genuinely different arguments
+are kept as marked routes. Source~12 adds an exact dichotomy at birthday
+cutoffs: for an infinite cardinal $\kappa$ and $\mu=2^{<\kappa}$, the
+minimal-length enumeration order $\WO_\mu(\No_{<\kappa})$ is equimorphic with
+the binary cube $\B_{\kappa\cdot\kappa}$ (ordinal product) exactly when
+$\kappa$ is a singular strong limit, and with $\B_\mu$ otherwise, with
+$\kappa=\beth_\omega$ as an unconditional example. It also adds a second
+direct comparison of all class well-orders, by their largest common labelled
+prefix, and an exact external identification of both global orders in a
+full-class model at an inaccessible cardinal. Source~11's choiceless proof
+answers source~12's question on the weak-choice strength, and source~12's
+dichotomy answers in part a question of the repository's report on the reals.
+The set-sized general-alphabet layer re-proves that report and is printed
+with pointers to it, never as new.
 \end{abstract}
 
+% ---- hand chunk status_box
+\begin{resultbox}
+
+% ---- source 11, lines 116-121
 \paragraph{Status.}
 This is a mathematical research report with proofs, not a claim of
 machine verification or bibliographic priority. Existing general
@@ -120,11 +218,200 @@ set-alphabet results are credited to the repository. The further
 constructions are proved here and should be evaluated by their arguments.
 The repository audit was targeted; no Lean build or remote change was made.
 
+% ---- hand chunk status_box_end@1
+
+\smallskip
+\merge\ \textbf{Status of the merged report.} AI-assisted and unrefereed;
+not formalized. Source~12 calls itself AI-assisted on its title page;
+source~11 does not use the word (author lines: 11 ``Research report'', 12
+``Research report prepared for Vladimir Reshetnikov''). Neither claims
+historical priority, peer review or machine verification. Their finite checks
+verify finite instances only. No statement of this report is formalized; the
+formal status of the inputs it uses is in \cref{swo:sec:formal}.
+\end{resultbox}
+
 \clearpage
 \tableofcontents
 \clearpage
 
-\section{The objects being studied}\label{sec:objects}
+% ---- hand chunk about@1
+\section{About this report}\label{swo:sec:about}
+
+\subsection{Four manuscripts, one report}\label{swo:sub:sources}
+
+\merge\ All four manuscripts of this report arrived in commit \code{4e270aa46}
+and were placed in \code{ccc046989} (batch~80, cluster K3). This edition
+merges source~11 (the base; pin \code{ae7c1e6aa}, 2 October 2026, 18:03:53
+PDT = 3 October 2026, 01:03:53 UTC, which is the date its title page
+gives; 2,807 lines, 35-page PDF, archive \code{surreal\_well\_orders (1).zip};
+labels \code{swo:}, files \code{11-raw-orders-*}) and source~12 (pin
+\code{63bb8b1d9}, 18:01:32 PDT; 1,689 lines, 24-page PDF, archive
+\code{surreal\_well\_orders.zip}; labels \code{swo:st:}, files
+\code{12-singular-*}). Sources~09 and~08 (labels \code{swo:ec:} and
+\code{swo:sk:}, files \code{09-core-*} and \code{08-skeleton-*}) are merged in
+the second write. The two archives sharing the name \code{surreal\_well\_orders}
+are not editions of one another: word 8-gram overlap 0.7\,\%, no shared
+member file, different pins and result sets.
+
+Source~11 is the base. Its global-choice equivalence is proved over $\GB$
+without set choice (\cref{swo:cf:choice}); it covers set alphabets,
+set-length words, and set-like and unrestricted class well-orders; and it
+attributes the general set-alphabet theorems to the repository's report on
+the reals,
+\path{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/lexicographic-well-orderings-of-reals/}
+(cited below as the reals report, labels \code{lwo:}).
+
+\subsection{How the texts are printed}\label{swo:sub:printing}
+
+\merge\ Source~11's text is printed in full and in its own order. Source~12's
+introduction and foundational section are printed whole; a result that a
+printed result already proves by the same argument is recorded in a numbered
+\emph{Note} with the source's statement, number and differences; a genuinely
+different proof is printed in full as a marked route; a result proved only by
+source~12 is printed in full where it belongs. Every label survives with its
+prefix; unlabelled numbered statements carry \code{swo:}\emph{sub}\code{:n}%
+\emph{number}. \Cref{swo:app:crosswalk} maps every numbered statement to its
+place here. Text written for the merge is marked \merge.
+
+% ---- hand chunk notation@1
+\subsection{One notation for the sources}\label{swo:sec:notation}
+
+\merge\ The sources' symbols collide. The following convention is fixed
+before any of them is used; every renaming is listed.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.70\textwidth}@{}}
+\toprule
+Here & Meaning, and the sources' symbols\\
+\midrule\endhead
+$\GB$, $\GBC$ &
+$\GB$ has a $\ZF$ set part, elementary class comprehension and class
+replacement, and \emph{no} choice principle (\code{found:sub:gbconvention});
+$\GBC=\GB+\GC$. Source~12 analyses choice ``over GB plus set-level AC''
+(\cref{swo:st:thm:choice}), written $\GB+\mathrm{AC}$ in the merge text;
+source~11 works over $\GB$ itself.\\[3pt]
+$\bd(x)$ &
+Birthday. Source~11's $\ell(x)$ and source~12's $b(s)$ are renamed.\\[3pt]
+$\No_{<\kappa}$ &
+$\{x\in\No:\bd(x)<\kappa\}$. Renamed: source~11's $X_\kappa$, source~12's
+$S_\kappa$ (the reals report's $S_{<\kappa}$, not $S_{<\kappa^+}$).\\[3pt]
+$\bl(L)$ &
+Binary coding length (\code{lwo:def:binary-length}); source~12 prints the
+same symbol and calls it the ``binary coding rank''. $\rk(x)$ is the von
+Neumann rank (source~11).\\[3pt]
+$\WO(X)$, $\WO_\alpha(X)$ &
+Exhaustive enumerations of a set $X$, and those of length $\alpha$; source~11's
+$\mathcal P_\lambda(X)$ is renamed $\WO_\lambda(X)$.\\[3pt]
+$\Hsl(\No)$, $\Hall(\No)$ &
+Set-like and all class well-orders of $\No$, predicates on classes;
+source~12's $\mathrm{SL}(\No)=\mathscr E(\No)$ and $\WO_{\mathrm{cl}}(\No)$.\\[3pt]
+$\B_\gamma$, $\BOrd$ &
+Binary cubes; class binary words on $\Ord$ (source~12's $\mathfrak B$).\\[3pt]
+$\equi$ &
+Equimorphism; source~11's $\approx_{\mathrm{emb}}$.\\[3pt]
+$e_0$, $B$ & The baseline enumeration of sources~11 and~12.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+% ---- hand chunk claims@1
+\subsection{What the report claims, and what it does not}\label{swo:sec:claims}
+
+\merge\ The report claims the written proofs printed below, each in the
+foundation its statement names. None is claimed to be historically first.
+The set-sized general-alphabet layer re-proves the reals report and is
+printed with pointers to it (\cref{swo:sub:lwo-pointer}); universality and
+homogeneity of $\No$ are classical (Ehrlich \cite{Ehrlich2012}; Hamkins
+\cite{HamkinsUniversal}).
+\begin{itemize}
+\item \emph{Source~11} (its Status paragraph, its delivery README's ``Scope
+and verification'' and its audit): no machine verification, no Lean build, no
+new Lean file; no bibliographic priority; research questions are proposed
+directions; the audit was targeted; the finite checks do not verify
+transfinite proofs, cardinal arithmetic or class comprehension. Its README
+states: ``The mathematical proofs underwent a separate proof review.'' That
+is the delivery's own statement; no such review is recorded in the
+repository, and this report does not rely on it.
+\item \emph{Source~12} (title page, its Section~1.2, and
+\code{12-singular-RESEARCH\_STATUS.md}, ``What is not claimed''):
+AI-assisted, unrefereed; priority not claimed; no catalogued open problem
+claimed settled; no new Lean or Rocq verification; the Python checks are not
+substitutes for the proofs; the bounded theorem is not a construction of a
+full class model at a singular cardinal; the collection of class well-orders
+is not treated as a set or class at the same level; no universal semantic
+decoder is assumed; its research questions are proposals; its source search
+was not sufficient to establish originality.
+\item \emph{Review status.} The repository's Hilbert's-tenth research tree
+holds a written-proof review of the four archives of this cluster
+(\path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_batch80_surreal.md},
+commit \code{c338541e3}); it found their principal arguments sound under the
+stated foundations, with one scoped correction to source~08, which joins in
+the second write. That review is pinned to the delivered archives and does
+not cover the text written for this merge; it is not an entry of the surreal
+collection's review record, where this report's review is pending.
+\end{itemize}
+
+% ---- hand chunk formal@1
+\subsection{Formal status}\label{swo:sec:formal}
+
+\merge\ No statement of this report is formalized, and no \code{swo:} label
+has a Lean mapping in the collection's formalization ledger
+(\path{Algebra/SurrealNumbers/docs/FORMALIZATION.md}). Placement in the
+surreal collection confers no formal status. Inputs the sources use are
+proved in Lean in universe-relative form: properness and bounded birthdays
+(\code{found:prop:proper}; \code{birthdays\_bounded}, \code{small\_bounded},
+\code{not\_small} in \path{SignSequence.lean}), small-cut filling
+(\code{small\_cut\_fillers}, \code{exists\_separator\_of\_small\_sets}) and
+the inconsistency of unrestricted cuts (\code{noUnrestrictedCuts}). The
+declarations cited by sources~11 and~12 exist at the current revision; none
+states a result of this report.
+
+% ---- hand chunk choices@1
+\subsection{Where the merge had to choose}\label{swo:sub:choices}
+
+\merge
+\begin{itemize}
+\item \emph{Base and order.} Source~11; its section order is kept, and
+source~12's material follows the base result it duplicates or extends.
+\item \emph{Strongest statement printed as the statement.} The choice
+equivalence is source~11's (over $\GB$; source~12 assumes set choice). The
+diagonal theorem is printed twice: source~11's (\cref{swo:gl:diagonal}) and
+source~12's stronger \cref{swo:st:thm:diagonal}. The birthday-cutoff
+statement is source~12's dichotomy.
+\item \emph{Different routes kept in full:} source~12's set-sized spectra
+through binary coding length, its avoidance lemma, its proof of the choice
+equivalence over $\GB+\mathrm{AC}$, its largest common labelled prefix, its
+residual adjacency criterion, its binary-class concatenation, its prefix
+extension, and its birthday-bounded universality.
+\item \emph{Corrections.} The renamings of \cref{swo:sec:notation}; one
+mistyped reference in source~11; source~12's weak-choice question printed as
+answered (\cref{swo:st:n14.5}).
+\end{itemize}
+
+% ---- hand chunk answers@1
+\subsection{Where one source answers another}\label{swo:sec:answers}
+
+\merge\ Dated notes, 2 October 2026.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Source~12's question on the weak-choice strength}
+(\cref{swo:st:n14.5}, and its \cref{swo:st:n4.2}): answered by source~11.
+Over $\GB$ without set choice, a class well-order of $\No$ exists exactly when
+global choice holds (\cref{swo:cf:choice}); see \cref{swo:rem:answered-choice}.
+\item \emph{The reals report's question ``Other ground orders''}
+(\code{lwo:sec:research}, which names ``set-sized suborders of surreal
+numbers''): answered in part by \cref{swo:st:thm:transition} for
+$X=\No_{<\kappa}$ and the minimal stratum: $\WO_\mu(\No_{<\kappa})\equi\B_\mu$,
+except at singular strong-limit $\kappa$, where it is
+$\equi\B_{\kappa\cdot\kappa}$ and not $\equi\B_\kappa$. Open for longer
+strata and other alphabets (\cref{swo:st:n14.1}).
+\item \emph{Hamkins's question whether universality of the surreal line is a
+weak global choice principle} \cite{HamkinsUnivChoice}: not settled here, as
+source~12 says after its \cref{swo:st:n14.5}.
+\end{enumerate}
+
+
+% ---- source 11, lines 127-189
+\section{The objects being studied}\label{swo:sec:objects}
 
 There are two orders in this problem. Each object under consideration is
 itself a well-order of some collection of surreal numbers. We then compare
@@ -187,7 +474,9 @@ too many disjoint two-point fibers to embed into the set-like order in
 the full containing-universe model. A related uniform definability
 obstruction is provable in \(\KM+\GC\).
 
-\section{Relationship to ProveIt and the literature}\label{sec:sources}
+
+% ---- source 11, lines 190-249
+\section{Relationship to ProveIt and the literature}\label{swo:sec:sources}
 
 We inspected the repository at the immutable revision
 \[
@@ -247,7 +536,116 @@ theorem, and the relation between omitted ranges and non-set-like tails.
 No claim about real-specific countability, separability, or gap spectra
 is transferred to surreal alphabets without proof.
 
-\section{Surreal order facts and foundational conventions}\label{sec:prelim}
+
+% ---- hand chunk intros_head@1
+\section{The other source's introduction}\label{swo:sec:intros}
+
+\merge\ Source~12 opens with its own statement of the problem, of its
+relation to ProveIt, and of the Kanovei--Shelah connection. Its introduction
+is printed whole, followed by notes where the merge qualifies it. Every
+result it announces is printed, once, in the body.
+
+% ---- source 12, lines 149-231
+\subsection{Source 12: scope, predecessors, and the results at a glance}
+\label{swo:st:sec:scope}
+
+The phrase ``well-orders of surreal numbers'' hides several distinct
+objects. The usual numerical order of $\No$ is not a well-order. One may
+instead put an unrelated well-order on the entire surreal carrier, or
+consider numerical well-orders on subclasses, or work with an ordinary
+set of bounded-birthday surreals. This article treats all three viewpoints,
+but the principal object is the lexicographic comparison of
+\emph{exhaustive well-orders of a fixed carrier}.
+
+The supplied ProveIt repository contains a substantial predecessor,
+\emph{Lexicographic Orders of the Well-Orderings of the Reals}, merging
+three reports and distinguishing the full enumeration order from its
+minimal-length slice \cite{ProveItReals}. The inspected README explicitly
+marks that report as unrefereed and not formalized. Its real-number
+spectra, binary coding, finite-tail geometry, and warnings about
+isomorphism versus equimorphism motivate the present work. The repository
+also contains a Lean development of simplest elements of convex sets of
+sign sequences \cite{ProveItSimplicity}. These are useful foundations, not a
+formal verification of the new theorems below.
+
+We pinned the audit to repository commit
+\begin{center}
+\small\texttt{63bb8b1d99359e7188abf0a33fb152e121858150}.
+\end{center}
+The audit was targeted, not an exhaustive review of the repository.
+All essential arguments used here are written out, so no unreviewed
+research claim from the repository is required as a black box.
+
+\subsubsection{Three different orders}
+
+For an infinite set-sized linear order $X$ of cardinality $\mu$, define
+\[
+ \WO_\alpha(X)=\{e:\alpha\longrightarrow X:e\text{ is bijective}\},
+ \qquad
+ \WO(X)=\bigcup_{\mu\leq\alpha<\mu^+}\WO_\alpha(X).
+\]
+They are ordered by their first unequal entry, using the given order of
+$X$, not the well-order being represented.
+
+For the proper class $\No$, let $\Hsl(\No)$ denote, as a \emph{predicate on
+classes}, the class bijections $E:\Ord\to\No$. These represent exactly the
+set-like global well-orders. Let $\Hall(\No)$ denote the predicate
+of being an arbitrary class well-order relation on $\No$.
+Neither displayed notation asserts the existence of a class having these
+class-sized objects as members.
+
+The comparison on $\Hsl(\No)$ uses a least ordinal of disagreement.
+The comparison on $\Hall(\No)$ uses a largest common
+\emph{labelled} initial segment. The latter can be a proper class, and
+this is essential rather than a cosmetic extension.
+
+\subsubsection{What is proved, and what is not being claimed}
+
+The principal developments are the elementary common-prefix theorem
+(\cref{swo:st:thm:fulllex}), the global-choice equivalence
+(\cref{swo:st:thm:choice}), the non-enumerability theorem
+(\cref{swo:st:thm:diagonal}), and the singular transition
+(\cref{swo:st:thm:transition}). The full and minimal bounded spectra are proved
+in \cref{swo:st:sec:bounded,swo:st:sec:transition}. The difference between the dense
+set-like order and finite-tail geometry in the full order is proved in
+\cref{swo:st:sec:setlike,swo:st:sec:fullgeometry}.
+
+These are mathematical claims with supplied proofs. We do not claim
+that they settle a previously catalogued open problem, that their exact
+formulations are historically new, or that they have been independently
+refereed. The proposed research questions at the end are precisely that:
+questions suggested by the results, not an assertion of a complete
+literature census.
+
+\subsubsection{The Kanovei--Shelah connection}
+
+Kanovei and Shelah order maps
+$a:\mathfrak c\to\mathcal P(\mathbb N)$ whose ranges are ultrafilters,
+using a fixed lexicographic order on $\mathcal P(\mathbb N)$
+\cite[\S1]{KanoveiShelah}. Their maps need not be bijections, and their index is not
+the literal collection of all well-orders of $\mathbb R$, still less all
+class well-orders of $\No$. The useful common idea is to compare
+representations at their first difference instead of choosing one
+canonical representative. Their index construction remains set-sized.
+Moving to all global surreal well-orders creates an additional size level
+that their construction does not remove.
+
+% ---- hand chunk intro12_note
+
+\merge\ \emph{On source~12's introduction.} Source~12 read the reals
+report's README and the Lean file \path{SignSequenceSimplicity.lean}, not the
+reals report's article; it therefore re-proved the set-sized patterns it
+needed. They are printed here as a marked route with pointers to the reals
+report (\cref{swo:sub:lwo-pointer,swo:st:sec:bounded}). The reals report's
+article has not changed since source~12's pin. Source~12's principal
+developments are printed as \cref{swo:st:thm:fulllex} (a second route to
+\cref{swo:cf:lex}), \cref{swo:st:thm:choice} (a second route to
+\cref{swo:cf:choice}, over $\GB+\mathrm{AC}$), \cref{swo:st:thm:diagonal}
+(printed beside \cref{swo:gl:diagonal}) and \cref{swo:st:thm:transition}
+(new).
+
+% ---- source 11, lines 250-308
+\section{Surreal order facts and foundational conventions}\label{swo:sec:prelim}
 
 \subsection{Signs, birthdays, and set cuts}
 
@@ -255,7 +653,7 @@ A surreal number is represented by a sign sequence
 \[
  s:\alpha\longrightarrow\{-,+\}
 \]
-of set-ordinal length \(\alpha\), its birthday \(\ell(s)\). Numerical
+of set-ordinal length \(\alpha\), its birthday \(\bd(s)\). Numerical
 comparison at the first disagreement uses
 \[
  -\ <\ \text{termination}\ <\ +.
@@ -272,7 +670,7 @@ It is a set. The full \(\No\) is proper-class-sized, because all-plus
 sequences embed all ordinals. Every set of surreals has bounded birthdays
 by Replacement.
 
-\begin{definition}
+\begin{definition}\label{swo:n3.1}
 A class linear order \(L\) has the \emph{set-cut property}, called
 \(\eta_{\Ord}\) here, if for all sets \(A,B\subseteq L\) with \(A<B\)
 there is \(x\) with \(A<x<B\). Empty sides are allowed. For a cardinal
@@ -286,7 +684,7 @@ as the unique simplest separator. This statement concerns \emph{sets}
 of options; applying it to the whole class against the empty right side
 would be inconsistent.
 
-\begin{lemma}[Deleting a set]\label{lem:delete}
+\begin{lemma}[Deleting a set]\label{swo:lem:delete}
 If \(S\subseteq\No\) is a set, then \(\No\setminus S\) has the
 set-cut property. Every nonempty open interval of \(\No\) is a
 proper class.
@@ -306,6 +704,26 @@ If an interval \((a,b)\) were a set \(S\), applying the result to
 Choosing both separators by simplicity makes the deletion argument
 uniform in the set parameters without global choice.
 
+
+% ---- hand chunk avoid12_head
+
+\merge\ \emph{Third route to the first clause of \cref{swo:lem:delete}
+(source~12, Lemma~6.2).} Source~12 avoids a forbidden set by using that open
+intervals of $\No$ are proper classes.
+
+% ---- source 12, lines 580-589
+\begin{lemma}[Avoiding a forbidden set]\label[lemma]{swo:st:lem:avoid}
+If $A<B$ are sets of surreals and $D$ is a set, then some separator
+$z$ of $A,B$ lies outside $D$.
+\end{lemma}
+\begin{proof}
+Choose $u$ between $A$ and $B$, and then $v$ between $\{u\}$ and $B$.
+Every point of $(u,v)$ separates $A,B$, and that interval is a proper
+class. It cannot be contained in $D$. With a fixed global well-order,
+choose the first acceptable point, making the operation uniform.
+\end{proof}
+
+% ---- source 11, lines 309-329
 \subsection{Which recursion principle is used?}
 
 Here \(\GB\) has a \(\ZF\) set part, elementary class comprehension,
@@ -328,9 +746,102 @@ iterated truth predicates and is stronger than \(\GBC\)
 \cite{GitmanHamkins}. The prefix searches, partial permutations, and
 back-and-forth maps used here have set-sized stages.
 
+% ---- hand chunk found12_head
+
+\merge\ The other sources fix their foundational conventions in their own
+sections, printed whole next. They agree with source~11's conventions, with
+one difference of base theory: when it analyses choice, source~12 works over
+$\GB+\mathrm{AC}$ (\cref{swo:sec:notation}).
+
+% ---- source 12, lines 233-315
+\subsection{Source 12: the surreal carrier and the foundational conventions}
+\label{swo:st:sec:foundations}
+
+\subsubsection{Sign sequences}
+
+We use the sign-sequence presentation
+\[
+ \No=\bigcup_{\alpha\in\Ord}\{-,+\}^{\alpha}.
+\]
+Each individual sequence is a set. Its length $\bd(s)=\lh(s)$ is its
+birthday. At the first difference, signs and termination are compared by
+\[
+ -\ <\ \End\ <\ +.
+\]
+This is the usual numerical order, not the ordinary ``shorter comes
+first'' dictionary convention. Simplicity is the separate relation of
+being a proper sign prefix. The standard surreal construction and its
+simplicity structure are treated by Gonshor and Ehrlich
+\cite{Gonshor,Ehrlich2012}.
+
+We shall use the following standard feature, also obtainable directly
+from the construction: whenever $A,B$ are \emph{sets} of surreals with
+$A<B$, there is a surreal $z$ with $A<z<B$. There is a unique such
+separator of minimum birthday. Moreover, if every member of $A\cup B$
+has birthday less than an ordinal $\gamma$, a separator can be constructed
+with birthday at most $\gamma$. This is interpolation, not Dedekind
+completeness: no least upper bound is being asserted.
+
+Every set of surreals has a birthday bound, by Replacement. Every
+nonempty numerical interval contains a proper class of surreals. To see
+the latter without arithmetic, start with $a<b$ and recursively choose
+$x_\alpha$ between $\{a\}\cup\{x_\xi:\xi<\alpha\}$ and $\{b\}$.
+The previous values form a set at each stage. Thus one obtains distinct
+points for all ordinals $\alpha$.
+
+\subsubsection{Well-orders and set-likeness}
+
+A class well-order on a class $X$ is a strict linear class relation $R$
+for which every nonempty subclass has an $R$-least element. In GBC this
+agrees with the usual formulations using nonempty set subsets or absence
+of descending $\omega$-sequences; the relationship is discussed in
+\cite[\S3]{HamkinsWoodin}. We use strict relations throughout.
+
+It is \emph{set-like} if
+\[
+ \pred_R(x)=\{y\in X:yRx\}
+\]
+is a set for every $x$. A proper-class set-like well-order is isomorphic
+to $\Ord$: map $x$ to the ordinal type of its set of predecessors. The
+range is an initial segment of $\Ord$, and cannot be a set ordinal when
+$X$ is proper. This construction uses only set-sized order types.
+
+Not all class well-orders are set-like. The ordered sums
+$\Ord+1$, $\Ord+\Ord$, and $\Ord+\Ord+1$ are examples. Their notation
+means ordered sums of class orders, not new von Neumann ordinals.
+
+\subsubsection{Foundational levels}
+
+Our set-sized results are theorems of ZFC. Our global results are in GBC,
+meaning Gödel--Bernays set theory with global choice. When analyzing the
+necessity of choice we work over GB plus ordinary, set-level AC.
+The full collection of global well-orders is handled by formulas with
+class variables, not by pretending that a proper class is an element of
+another GBC class.
+
+Kelley--Morse theory allows stronger comprehension, but its classes still
+have sets, not proper classes, as members. Moving from GBC to KM does not
+by itself create a powerclass object of all subclasses of $\No$.
+One can instead use a larger set-theoretic universe, a set model with a
+specified collection of classes, or an explicitly higher-order theory.
+These are distinct interpretations and will be kept distinct.
+
+\subsubsection{Why an ordinal-length recursion here need not invoke ETR}
+
+A recursion on $\Ord$ that produces one \emph{set} at each stage and uses
+the set of previous values is available by the ordinary recursion theorem
+with class parameters in GB. In contrast, ETR permits a genuinely
+class-valued recursive stage, represented by a class of pairs of a stage
+and an arbitrary set. Even a truth hierarchy brings stronger principles
+into play \cite[\S2]{HamkinsWoodin}. Our forth constructions, block lengths, and
+canonical enumeration of a class with set-sized initial segments are
+set-valued recursions. We do not invoke a universal satisfaction predicate
+or unrestricted class-valued recursion.
+
+% ---- source 11, lines 331-358
 \subsection{Universality and uniqueness of the saturated class order}
 
-\begin{proposition}\label{prop:universal}
+\begin{proposition}\label{swo:prop:universal}
 In \(\ZFC\), every set linear order embeds into \(\No\). In
 \(\GBC\), every class linear order embeds uniformly into \(\No\).
 Any two proper-class \(\eta_{\Ord}\) orders are isomorphic in
@@ -357,9 +868,53 @@ universality and homogeneity features of \(\No\)
 is made with global choice; it is not used as an unproved converse
 to global choice.
 
+% ---- hand chunk univ12_head
 
-% BEGIN sections/set_and_word_orders
-\section{Well-order codes on a fixed set alphabet}\label{sw:fixed}
+\merge\ \emph{Source~12's version (its Lemmas~6.5 and~6.6).} It exposes the
+size of the forth recursion, with a birthday bound for set orders, and proves
+the class isomorphism $\No\setminus A\cong\No$ that source~11 uses in
+\cref{swo:gl:cylinders}.
+
+% ---- source 12, lines 655-687
+\begin{lemma}[Surreal universality, with the size of the recursion exposed]
+\label[lemma]{swo:st:lem:universalNo}
+In GBC, every class linear order admits a class order-embedding into
+$\No$. For a set order enumerated in type $\lambda$, one can arrange
+that the image of its $\xi$th enumerated element has birthday at most
+$\xi$, for each $\xi<\lambda$.
+\end{lemma}
+\begin{proof}
+Use a global-choice enumeration of the carrier, either by an ordinal or
+by $\Ord$. When the next element is considered, its previously embedded
+predecessors and successors form two sets $A<B$. Send it to the simplest
+surreal separator. It is distinct from all previous images and preserves
+order. Every stage has set-sized history. Induction gives the birthday
+bound, because the earlier birthdays are less than the current stage.
+This is the standard forth argument behind surreal universality
+\cite{Ehrlich2012,HamkinsUniversal}.
+\end{proof}
+
+\begin{lemma}[Deleting a set does not change the numerical class order]
+\label[lemma]{swo:st:lem:delete}
+In GBC, $\No\setminus A$ is order-isomorphic to $\No$ for every set $A$.
+Every nonempty open numerical interval is also order-isomorphic to $\No$.
+\end{lemma}
+\begin{proof}
+Each target has interpolation for arbitrary separated sets, by
+\cref{swo:st:lem:avoid}, adding interval bounds when needed. Each is a proper
+class and has an $\Ord$-enumeration by global choice. Carry out a
+back-and-forth between the two enumerations. At each ordinal stage,
+extend the partial isomorphism to the next unused domain point and then
+to the next unused target point. The previous partial map is a set, and
+the required cut can be filled while avoiding its set-sized range.
+At the end the class map is onto and order-preserving.
+\end{proof}
+
+% ---- hand chunk part1
+\part{Sets of surreals}\label{swo:part:sets}
+
+% ---- source 11, lines 362-531
+\section{Well-order codes on a fixed set alphabet}\label{swo:sw:fixed}
 
 Let \(X\) be an infinite linearly ordered set, and put
 \(\lambda=\card{X}\).  We work in \(\ZFC\) throughout this section.
@@ -373,7 +928,7 @@ two related sets:
  \mathcal I(X)=
  \bigcup_{\alpha<\lambda^+}\{f:\alpha\hookrightarrow X\},
  \qquad
- \mathcal P_\lambda(X)=\{f:\lambda\longrightarrow X:
+ \WO_\lambda(X)=\{f:\lambda\longrightarrow X:
                                       f\text{ is bijective}\}.
 \]
 Thus \(\mathcal I(X)\) codes well-orders of arbitrary subsets of \(X\),
@@ -391,8 +946,8 @@ with the injective-word variant, and include a common proof
 to keep the size distinctions explicit.  Neither density nor
 completeness of the native order is needed.
 
-\begin{theorem}[Cardinality and exact ordinal spectrum]\label{sw:setspectrum}
-Each of \(\mathcal P_\lambda(X)\), \(\WO(X)\), and \(\mathcal I(X)\)
+\begin{theorem}[Cardinality and exact ordinal spectrum]\label{swo:sw:setspectrum}
+Each of \(\WO_\lambda(X)\), \(\WO(X)\), and \(\mathcal I(X)\)
 has cardinality \(2^\lambda\), contains a copy of every linear order
 of cardinality at most \(\lambda\), and contains neither
 \(\lambda^+\) nor \((\lambda^+)^*\).
@@ -412,7 +967,7 @@ For \(\varepsilon\in2^\lambda\), list the \(\xi\)-th pair as
 \((a_\xi,b_\xi)\) if \(\varepsilon(\xi)=0\), and as
 \((b_\xi,a_\xi)\) otherwise.  The resulting map
 \[
-                 2^\lambda\longrightarrow\mathcal P_\lambda(X)
+                 2^\lambda\longrightarrow\WO_\lambda(X)
 \]
 is an order embedding when \(2^\lambda\) has lexicographic order.
 This proves all three cardinality assertions.
@@ -425,7 +980,7 @@ coordinates are \(0\).  If \(t<u\), then \(c_t\leq c_u\)
 coordinatewise, and the inequality is strict at \(\iota(t)\).
 Their first difference therefore has the correct direction.
 The preceding pair construction embeds \(L\) into
-\(\mathcal P_\lambda(X)\).
+\(\WO_\lambda(X)\).
 
 It remains to exclude longer monotone sequences.  Suppose that
 \((f_\xi)_{\xi<\lambda^+}\) is strictly increasing or strictly
@@ -451,7 +1006,7 @@ at most \(\lambda\).
 \end{proof}
 
 The distinction between the models also affects their elementary
-order topology.  The order \(\mathcal P_\lambda(X)\) is dense.
+order topology.  The order \(\WO_\lambda(X)\) is dense.
 Indeed, let \(f<_{\lex}g\), with first difference at \(\xi\).
 If the tail of \(f\) after \(\xi\) has an ascent, interchanging
 the two entries produces a point strictly between \(f\) and \(g\).
@@ -471,7 +1026,7 @@ Thus a cardinal-length convention changes the resulting linear
 order even though it does not change its cardinality or ordinal
 embedding spectrum.
 
-\begin{proposition}[Exactly where jumps occur]\label{sw:adjacency}
+\begin{proposition}[Exactly where jumps occur]\label{swo:sw:adjacency}
 Suppose \(f<_{\lex}g\) in \(\WO(X)\), with common prefix \(p\)
 up to their first difference.  Put
 \(Y=X\setminus\ran(p)\), \(a=f(\dom(p))\), and
@@ -521,7 +1076,7 @@ that entry with a later smaller one decreases the enumeration.
 Hence a least element exists exactly when the native order
 on \(X\) is a well-order, and is its increasing enumeration.
 The greatest-element statement is the reverse assertion.
-For \(\mathcal P_\lambda(X)\), the same argument shows that
+For \(\WO_\lambda(X)\), the same argument shows that
 a least element exists exactly when the native order type is
 the initial ordinal \(\lambda\), not merely an arbitrary
 ordinal of cardinality \(\lambda\).
@@ -529,10 +1084,209 @@ For example, an alphabet of native type \(\lambda+1\)
 has a least full enumeration, but no least
 \(\lambda\)-length permutation.
 
-\section{Birthday cutoffs and their set-sized orders}\label{sw:cutoffs}
+
+% ---- hand chunk lwo_pointer@1
+
+\subsection{Pointers to the reals report}\label{swo:sub:lwo-pointer}
+
+\merge\ The theorems of this section hold for every infinite linearly ordered
+set and are theorems of the repository's reals report, which proves them in
+that generality. Source~11 says so (\cref{swo:sec:sources}); its repository
+audit (\path{11-raw-orders-repository_audit.md}) adds that their application
+to birthday fragments ``should be attributed as applications of existing
+repository results, not marketed as new general theorems''. Source~12
+re-proves them; they are printed with these pointers, and no novelty is
+claimed for any of them.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}@{}}
+\toprule
+Statement & Here & Reals report\\
+\midrule\endhead
+Prefix-freeness & before \cref{swo:sw:setspectrum}; \cref{swo:st:lem:prefixfree} &
+\code{lwo:lem:prefix-free}\\[2pt]
+Cardinality; pair swaps & \cref{swo:sw:setspectrum};
+\cref{swo:st:lem:pairs,swo:st:thm:setspectrum} &
+\code{lwo:prop:cardinality}, \code{lwo:lem:all-small-cubes}\\[2pt]
+Cut coding & \cref{swo:sw:setspectrum}; \cref{swo:st:lem:cutcode} &
+\code{lwo:lem:cut-code}, \code{lwo:thm:ordinal-spectrum}(a)\\[2pt]
+No $\lambda^+$-sequence & \cref{swo:sw:setspectrum}; \cref{swo:st:lem:nochain} &
+\code{lwo:thm:no-long}, \code{lwo:thm:ordinal-spectrum}\\[2pt]
+Strict cubes & \cref{swo:st:lem:strictcube} & \code{lwo:thm:cube-strict}\\[2pt]
+Coding length $\lambda^+$ & \cref{swo:st:thm:setspectrum} &
+\code{lwo:thm:full-length}\\[2pt]
+Extrema; adjacency; $n!$ blocks & paragraphs after \cref{swo:sw:adjacency} &
+\code{lwo:lem:extrema}, \code{lwo:thm:adjacency}, \code{lwo:thm:blocks}\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The arguments are the reals report's: pair swaps, cut codes, prefix
+stabilization and cylinder fusion. Source~12's Section~9 is printed in full
+because the singular transition of \cref{swo:st:sec:transition} uses its
+lemmas.
+
+% ---- source 12, lines 863-1016
+\subsection{Source 12's route: a general set-sized spectrum theorem}
+\label{swo:st:sec:bounded}
+
+We temporarily forget the surreal structure. Let $X$ be any infinite
+linearly ordered set, and write $|X|=\mu$, an initial cardinal.
+The spectra below depend only on the cardinality, not on density,
+separability, or field operations of $X$.
+
+\begin{lemma}[Prefix-freeness of exhaustive enumerations]\label[lemma]{swo:st:lem:prefixfree}
+Two distinct exhaustive injective ordinal enumerations of $X$ are never
+proper prefixes of one another. Hence first-difference lexicography is
+unambiguous on $\WO(X)$.
+\end{lemma}
+\begin{proof}
+An exhaustive prefix has already used every element of $X$. An injective
+proper extension would have to use a new element, which is impossible.
+\end{proof}
+
+For any ordinal $\gamma$, let $\BB_\gamma=(2^\gamma,<_{\lex})$.
+For linear orders $L,M$, write $L\emb M$ for an order-embedding and
+$L\equim M$ for embeddings in both directions. Define
+\[
+ \bl(L)=\min\{\gamma:L\emb\BB_\gamma\}
+\]
+when such a binary coding ordinal exists. This is an ordinal-valued rank,
+not a cardinal invariant.
+
+\begin{lemma}[Strict binary hierarchy]\label[lemma]{swo:st:lem:strictcube}
+For ordinals $\alpha,\beta$,
+\[
+ \BB_\alpha\emb\BB_\beta\quad\Longleftrightarrow\quad\alpha\leq\beta.
+\]
+In particular $\bl(\BB_\alpha)=\alpha$.
+\end{lemma}
+\begin{proof}
+Zero-padding proves the forward construction when $\alpha\leq\beta$.
+It suffices to rule out an embedding
+$f:\BB_{\beta+1}\to\BB_\beta$.
+
+Recursively construct an input prefix $s_\xi$ of length $\xi$ and an
+output prefix $t_\xi$ of length $\xi$, so that every input extending
+$s_\xi$ is sent to an output extending $t_\xi$. At a successor stage,
+split the input cylinder into its two next-bit halves and split the
+output cylinder likewise. The two input halves have strictly ordered
+images. They cannot both have images meeting both output halves:
+an image point in the upper output half from the lower input half would
+exceed an image point in the lower output half from the upper input half.
+Thus one input half has image contained in a single output half.
+Choose those halves to continue.
+
+At a limit take unions; the corresponding cylinders are nonempty and
+the containment persists. At stage $\beta$, two inputs remain, differing
+in their last bit, but their images have the same full $\beta$-long
+output. This contradicts injectivity. For $\alpha>\beta$, padding embeds
+$\BB_{\beta+1}$ into $\BB_\alpha$, giving the general impossibility.
+\end{proof}
+
+\begin{lemma}[Characteristic-cut coding]\label[lemma]{swo:st:lem:cutcode}
+Every linear order of cardinality at most $\mu$ embeds in $\BB_\mu$.
+\end{lemma}
+\begin{proof}
+Enumerate its carrier by distinct coordinates $d_\xi$, padding unused
+coordinates if necessary. Send $x$ to the bits
+$\mathbf1[d_\xi<x]$. For $x<y$, every differing coordinate changes from
+$0$ to $1$, and the coordinate representing $x$ does change. Thus the
+least difference gives the correct order.
+\end{proof}
+
+\begin{lemma}[Pair orientation coding]\label[lemma]{swo:st:lem:pairs}
+$\BB_\mu\emb\WO_\mu(X)$. More generally,
+$\BB_\gamma\emb\WO(X)$ for every $\gamma<\mu^+$.
+\end{lemma}
+\begin{proof}
+Partition $X$ into $\mu$ unordered pairs, sort each pair by $X$'s order,
+and orient the pair according to its bit. The ordinal sum of $\mu$
+two-element blocks has type $2\cdot\mu=\mu$.
+
+For a general $\gamma<\mu^+$, choose $|\gamma|$ disjoint pairs and retain
+a disjoint reserve of size $\mu$. Such a choice is possible even when
+$|\gamma|=\mu$. List the pairs in type $\gamma$, then well-order all
+remaining labels in type $\mu$. The resulting enumeration has length
+$2\cdot\gamma+\mu<\mu^+$. Its comparison is decided by the first
+oriented pair at which the inputs differ.
+\end{proof}
+
+\begin{lemma}[No $\mu^+$-long monotone chain]\label[lemma]{swo:st:lem:nochain}
+Neither $\mu^+$ nor its reverse embeds into $\WO(X)$.
+\end{lemma}
+\begin{proof}
+Suppose $(e_i)_{i<\mu^+}$ is strictly increasing. We recursively stabilize
+its entries on final segments of the index set. Assume that a final
+segment agrees on a prefix $p$ of length $\delta<\mu^+$. No enumeration
+in a further infinite final segment can end there, by
+\cref{swo:st:lem:prefixfree}. Their $\delta$th entries form a nondecreasing
+$\mu^+$-sequence in a set of size $\mu$.
+
+Such a sequence is eventually constant: choose one first occurrence for
+each value in its range; their at most $\mu$ indices have supremum below
+$\mu^+$ by regularity. Past that supremum no larger value can first
+appear. At a limit stage $\delta<\mu^+$, take the supremum of the earlier
+stabilization indices, still below $\mu^+$, and the union of the earlier
+prefixes.
+
+This would produce an injective sequence of labels from $X$ of length
+$\mu^+$: every set-sized earlier part is shared by a final segment of
+injective enumerations. That contradicts $|X|=\mu$. Replace
+nondecreasing by nonincreasing for the reverse order.
+\end{proof}
+
+\begin{theorem}[Cardinality and exact spectra]\label{swo:st:thm:setspectrum}
+For every infinite linearly ordered set $X$ of cardinality $\mu$,
+\begin{align*}
+ |\WO(X)|=|\WO_\mu(X)|&=2^\mu,\\
+ \beta\emb\WO(X)\quad&\Longleftrightarrow\quad\beta<\mu^+,\\
+ \beta\emb\WO_\mu(X)\quad&\Longleftrightarrow\quad\beta<\mu^+,\\
+ \BB_\gamma\emb\WO(X)\quad&\Longleftrightarrow\quad\gamma<\mu^+,\\
+ \bl(\WO(X))&=\mu^+.
+\end{align*}
+The ordinal statements also hold for reversed ordinals, and every
+linear order of cardinality at most $\mu$ embeds even into
+$\WO_\mu(X)$.
+\end{theorem}
+\begin{proof}
+Pair coding gives $2^\mu$ elements, while all well-orders are relations
+on $X$, giving the upper bound $2^{|X\times X|}=2^\mu$.
+The lower ordinal bounds and universality follow from
+\cref{swo:st:lem:cutcode,swo:st:lem:pairs}; \cref{swo:st:lem:nochain} gives the upper bounds.
+The same characteristic coding applies to reversed ordinals.
+
+For the cube spectrum use \cref{swo:st:lem:pairs}. If $\gamma\geq\mu^+$,
+$\BB_\gamma$ contains an increasing chain of type $\mu^+$: use the
+sequences that are $1$ before a moving cut and $0$ afterward. Thus it
+cannot embed into $\WO(X)$.
+
+Embed $X$ into $\BB_\mu$ using \cref{swo:st:lem:cutcode}. Encode an exhaustive
+enumeration of length $\alpha<\mu^+$ by concatenating its $\mu$-long
+entry codes, then pad with zeroes to length $\mu^+$. The unpadded length
+$\mu\cdot\alpha$ has cardinality at most $\mu$, so is less than $\mu^+$.
+Distinct enumerations disagree before either ends, and their encoded
+first disagreement preserves the order. This proves
+$\WO(X)\emb\BB_{\mu^+}$.
+
+If it embedded in $\BB_\rho$ for $\rho<\mu^+$, then the copy of
+$\BB_{\rho+1}$ supplied by \cref{swo:st:lem:pairs} would contradict
+\cref{swo:st:lem:strictcube}. Hence the rank is exactly $\mu^+$.
+\end{proof}
+
+\begin{remark}[What the rank does not say]\label{swo:st:n9.7}
+Although $\bl(\WO(X))=\mu^+$, the cube $\BB_{\mu^+}$ does \emph{not}
+embed back into $\WO(X)$. An order can first admit a binary encoding at
+an ordinal without containing the full cube of that ordinal.
+Nor is the absence of $\mu^+$ and its reverse claimed sufficient for an
+arbitrary order to embed in $\WO(X)$.
+\end{remark}
+
+% ---- source 11, lines 532-615
+\section{Birthday cutoffs and their set-sized orders}\label{swo:sw:cutoffs}
 
 Use the sign presentation of surreal numbers: \(x\in\No\) is a
-function from an ordinal \(\ell(x)\) to \(\{-,+\}\).
+function from an ordinal \(\bd(x)\) to \(\{-,+\}\).
 At the first difference, the comparison is
 \(-<\text{termination}<+\).
 This presentation and the fundamental set-cut theorem are treated
@@ -540,25 +1294,25 @@ in Gonshor and in the modern account of Bagayoko and van der Hoeven
 \cite{Gonshor,BagayokoHoeven}.
 For an infinite cardinal \(\kappa\), define
 \[
-                 X_\kappa=\No_{<\kappa}
-                   =\{x\in\No:\ell(x)<\kappa\}.
+                 \No_{<\kappa}
+                   =\{x\in\No:\bd(x)<\kappa\}.
 \]
 This is a set.  Counting sign sequences gives
 \[
-       \card{X_\kappa}
+       \card{\No_{<\kappa}}
           =\sum_{\alpha<\kappa}2^{\card{\alpha}}
           =2^{<\kappa}.
 \]
 Here \(2^{<\kappa}\) denotes the supremum of \(2^\mu\) over
 cardinals \(\mu<\kappa\); it is at least \(\kappa\).
 
-\begin{corollary}\label{sw:cutoffspectrum}
+\begin{corollary}\label{swo:sw:cutoffspectrum}
 Put \(\lambda=2^{<\kappa}\).
 Then \(\WO(\No_{<\kappa})\) has cardinality \(2^\lambda\), is
 universal for linear orders of cardinality at most \(\lambda\),
 and admits exactly the ordinals below \(\lambda^+\).
 The same conclusions hold for its cardinal-length permutation
-suborder and for the injective-word order \(\mathcal I(X_\kappa)\).
+suborder and for the injective-word order \(\mathcal I(\No_{<\kappa})\).
 \end{corollary}
 
 The parameter controlling this spectrum is the cardinality
@@ -577,8 +1331,8 @@ hypothesis.
 When \(2^{<\kappa}=\kappa\), the spectrum simplifies to
 \(\alpha<\kappa^+\).
 
-\begin{lemma}\label{sw:stageeta}
-If \(\kappa\) is regular infinite, \(X_\kappa\) fills every cut
+\begin{lemma}\label{swo:sw:stageeta}
+If \(\kappa\) is regular infinite, \(\No_{<\kappa}\) fills every cut
 \(A<B\) with \(\card{A\cup B}<\kappa\).  Such a cut can still
 be filled after excluding any prescribed subset of
 cardinality less than \(\kappa\).
@@ -588,7 +1342,7 @@ cardinality less than \(\kappa\).
 The birthdays of the members of \(A\cup B\) have supremum below
 \(\kappa\), by regularity.  The simplest surreal between them
 has birthday at most the supremum of their birthdays plus one,
-and hence still belongs to \(X_\kappa\).
+and hence still belongs to \(\No_{<\kappa}\).
 For the exclusion statement, let \(S\) be the forbidden set,
 and let \(S_0\) consist of its members that already lie strictly
 between \(A\) and \(B\).  Fill the cut
@@ -605,17 +1359,230 @@ all that the stage arguments below require.
 Regularity is necessary for this particular cutoff conclusion.
 If \(\kappa\) is singular, a cofinal sequence of ordinals below
 \(\kappa\), of length \(\cf(\kappa)<\kappa\), is unbounded
-in \(X_\kappa\).  Indeed, a surreal of birthday \(\beta\)
+in \(\No_{<\kappa}\).  Indeed, a surreal of birthday \(\beta\)
 is at most the ordinal \(\beta\), the all-positive sign
 expansion of that length.  Every candidate upper bound is
 therefore exceeded by some member of the cofinal sequence.
 The cut consisting of this sequence on the left and the
-empty set on the right has no filler in \(X_\kappa\).
+empty set on the right has no filler in \(\No_{<\kappa}\).
 This failure concerns the bounded stage; it does not weaken
 the set-cut theorem for the full surreal class.
 
+% ---- hand chunk transition_head
+
+\merge\ The next section is source~12's Section~10. Its dichotomy is new
+against the repository; it answers in part the reals report's question
+``Other ground orders'' (\cref{swo:sec:answers}). It uses source~12's
+self-delimiting code (\cref{swo:st:lem:code}, printed in
+\cref{swo:part:setlike}) and its lemmas of
+\cref{swo:st:sec:bounded}. Here $S_\kappa$ of source~12 is printed
+$\No_{<\kappa}$, and its ``binary coding rank'' is the binary coding length
+$\bl$ of the reals report.
+
+% ---- source 12, lines 1018-1205
+\section{Birthday cutoffs and the singular transition (source 12)}
+\label{swo:st:sec:transition}
+
+Let $\kappa$ be an infinite initial cardinal and put
+\[
+ \No_{<\kappa}=\{s\in\No:\bd(s)<\kappa\},\qquad
+ \mu=|\No_{<\kappa}|=2^{<\kappa}
+       =\sup_{\lambda<\kappa}2^{|\lambda|}.
+\]
+The cardinality identity follows by counting all levels. The supremum is
+at least $\kappa$, and summing $\kappa$ levels of size at most that
+supremum does not increase it. The reverse inequality is supplied by the
+levels themselves. We do not assume $\No_{<\kappa}$ is a field; none of the
+following proofs uses arithmetic closure.
+
+\subsection{A scheduler that preserves the first varying coordinate}
+
+\begin{lemma}[Row scheduler]\label[lemma]{swo:st:lem:scheduler}
+Suppose a set order $X$ of infinite cardinality $\kappa$ has disjoint
+subsets $(X_i)_{i<\kappa}$, each containing a copy of $X$ and each of
+cardinality $\kappa$. Suppose their complement is either empty or has
+cardinality $\kappa$. Then
+\[
+ X^\kappa_{\lex}\emb\WO_\kappa(X).
+\]
+\end{lemma}
+\begin{proof}
+Fix embeddings $\phi_i:X\to X_i$ and a baseline enumeration of each
+$X_i$ in length $\kappa$. For $x\in X$, transpose the label $\phi_i(x)$
+with the first label of that baseline, giving an enumeration $r_{i,x}$
+of $X_i$ whose first value is $\phi_i(x)$. Its dependence on $x$ is fixed
+and uniform. If the complement is nonempty, add a fixed filler row
+indexed before all variable rows. The row index order still has type
+$1+\kappa=\kappa$.
+
+Well-order row-stage pairs $(i,j)\in\kappa\times\kappa$ first by
+$\max(i,j)$ and then lexicographically within a level. This schedule has
+type $\kappa$: the predecessors of any pair have cardinality less than
+$\kappa$, since both coordinates there are bounded below $\kappa$, while
+the entire set of pairs has size $\kappa$. The first appearance of row
+$i$ is $(i,0)$, and these first appearances occur in increasing row order.
+
+For an input $(x_i)_{i<\kappa}$, output the $j$th entry of $r_{i,x_i}$
+when pair $(i,j)$ is scheduled. The output is an exhaustive bijection
+in type $\kappa$. If two inputs first differ in row $i$, every earlier
+row agrees, no later row has appeared before $(i,0)$, and the first
+output discrepancy is $\phi_i(x_i)$ versus $\phi_i(y_i)$. Its sign is
+exactly the sign of the input comparison.
+\end{proof}
+
+\begin{lemma}[Surreal cone decomposition]\label[lemma]{swo:st:lem:cones}
+If $|\No_{<\kappa}|=\kappa$, then
+\[
+ \WO_\kappa(\No_{<\kappa})\equim (\No_{<\kappa})^\kappa_{\lex}.
+\]
+\end{lemma}
+\begin{proof}
+One embedding is the inclusion of bijective sequences among all
+sequences. For the other, partition the sign sequences with a minus into
+the cones with prefixes
+\[
+ p_i=+^i\concat -,\qquad i<\kappa.
+\]
+They are disjoint, and prefixing by $p_i$ gives a numerical order
+isomorphism from $\No_{<\kappa}$ onto that cone. For $i,\alpha<\kappa$,
+$i+1+\alpha<\kappa$; this uses that $\kappa$ is an initial cardinal and
+is valid even when it is singular. Removing the initial prefix also
+leaves a sign sequence of length less than $\kappa$.
+The complement consists of all-plus sequences, one for each length
+below $\kappa$, so has cardinality $\kappa$. Apply
+\cref{swo:st:lem:scheduler}.
+\end{proof}
+
+\begin{theorem}[Exact minimal-slice dichotomy]\label{swo:st:thm:transition}
+For $\kappa$ and $\mu=2^{<\kappa}$ as above,
+\[
+ \WO_\mu(\No_{<\kappa})\equim
+ \begin{cases}
+ \BB_{\kappa\cdot\kappa},
+    &\mu=\kappa\text{ and }\cf\kappa<\kappa,\\[2pt]
+ \BB_\mu,&\text{otherwise}.
+ \end{cases}
+\]
+Consequently its binary coding rank is respectively
+$\kappa\cdot\kappa$ or $\mu$. The exceptional case is exactly the case
+of a singular strong-limit cardinal $\kappa$.
+\end{theorem}
+\begin{proof}
+We separate the three mechanisms.
+
+\emph{Case 1: $\mu>\kappa$.} By \cref{swo:st:lem:code}, each member of
+$\No_{<\kappa}$ has a prefix-free numerical binary code of length less than
+$\kappa$. Pad each such code to length $\kappa$. Concatenating the entry
+codes of a $\mu$-long enumeration produces a binary word of length
+$\kappa\cdot\mu=\mu$. The equality holds because $\mu$ is an initial
+cardinal strictly larger than $\kappa$: every proper partial product
+$\kappa\cdot\xi$, $\xi<\mu$, has cardinality below $\mu$.
+Thus $\WO_\mu(\No_{<\kappa})\emb\BB_\mu$. Pair coding gives the reverse
+embedding.
+
+\emph{Case 2: $\mu=\kappa$ and $\kappa$ is regular.} Use the unpadded,
+self-delimiting code $c(s)$. In a sequence of $\kappa$ entries, the sum
+of code lengths before any stage $\xi<\kappa$ is less than $\kappa$,
+by regularity. The full sum is $\kappa$, since every length is positive.
+Consequently concatenation embeds even
+$(\No_{<\kappa})^\kappa_{\lex}$ into $\BB_\kappa$. Pair coding again supplies
+the reverse embedding for $\WO_\kappa(\No_{<\kappa})$.
+
+\emph{Case 3: $\mu=\kappa$ and $\delta=\cf\kappa<\kappa$.}
+The padded single-entry code embeds $\No_{<\kappa}$ into $\BB_\kappa$,
+whence
+\[
+ \WO_\kappa(\No_{<\kappa})\emb
+ (\No_{<\kappa})^\kappa_{\lex}\emb\BB_{\kappa\cdot\kappa}.
+\]
+Choose increasing nonzero ordinals $(\lambda_j)_{j<\delta}$ cofinal in
+$\kappa$. Their ordinal sum is $\kappa$. As $\delta\cdot\kappa=\kappa$,
+partition the $\kappa$ input coordinates into $\kappa$ consecutive blocks
+of length $\delta$. In each block, restrict its $j$th coordinate to sign
+sequences of exactly length $\lambda_j$. The lexicographic product of
+those coordinates is the binary cube of the sum of their lengths.
+Thus, over all the blocks, this restricted product is
+\[
+ \BB_{\sum_{\xi<\kappa}\sum_{j<\delta}\lambda_j}
+   =\BB_{\kappa\cdot\kappa}.
+\]
+It embeds into $(\No_{<\kappa})^\kappa_{\lex}$, which embeds into
+$\WO_\kappa(\No_{<\kappa})$ by \cref{swo:st:lem:cones}. This gives the claimed
+equimorphism. The rank assertions follow from \cref{swo:st:lem:strictcube}.
+
+Finally, a singular strong limit satisfies $2^{<\kappa}=\kappa$.
+Conversely, suppose $\kappa$ is singular and $2^{<\kappa}=\kappa$.
+If $2^\lambda=\kappa$ for some $\lambda<\kappa$, choose
+$\rho<\kappa$ with $\rho\geq\lambda,\cf\kappa$. Then
+$\kappa\leq2^\rho\leq2^{<\kappa}=\kappa$, so $2^\rho=\kappa$,
+contradicting König's inequality $\cf(2^\rho)>\rho$.
+Thus $2^\lambda<\kappa$ for every $\lambda<\kappa$.
+\end{proof}
+
+\begin{corollary}[A complete cube test for the minimal slice]\label{swo:st:n10.4}
+Let $\rho=\kappa\cdot\kappa$ in the exceptional case of
+\cref{swo:st:thm:transition}, and let $\rho=\mu$ otherwise. Then
+\[
+ \BB_\gamma\emb\WO_\mu(\No_{<\kappa})
+ \quad\Longleftrightarrow\quad\gamma\leq\rho.
+\]
+In every case its ordinal embedding spectrum is still precisely
+$\{\beta:\beta<\mu^+\}$.
+\end{corollary}
+
+\begin{example}[An unconditional singular example]\label{swo:st:n10.5}
+Let $\kappa=\beth_\omega=\sup_{n<\omega}\beth_n$. It is a singular
+strong-limit cardinal of cofinality $\omega$, independently of GCH.
+Thus
+\[
+ \bl\bigl(\WO_\kappa(\No_{<\kappa})\bigr)=\kappa\cdot\kappa>
+ \kappa,\qquad
+ \bl\bigl(\WO(\No_{<\kappa})\bigr)=\kappa^+.
+\]
+All three displayed ordinals must be distinguished. The first two have
+the same cardinality, but are different coding lengths; the successor
+cardinal is larger still.
+\end{example}
+
+\begin{example}[Regular cutoffs]\label{swo:st:n10.6}
+For $\kappa=\omega$, $\No_{<\kappa}$ is the order of finite-birthday surreals,
+and the minimal slice is equimorphic with $\BB_\omega$.
+For $\kappa=\omega_1$, its cardinality is $2^{\aleph_0}$, and the
+minimal slice is equimorphic with $\BB_{2^{\aleph_0}}$, whether or not
+CH holds. At a strongly inaccessible $\kappa$, it is equimorphic with
+$\BB_\kappa$.
+\end{example}
+
+\subsection{Why the singular phenomenon is genuinely ordinal}
+
+A set of $\kappa$ coordinates does not license arbitrary reordering of
+those coordinates in a lexicographic product. In the singular case, a
+short cofinal block of coordinate lengths can already consume ordinal
+length $\kappa$; repeating that event $\kappa$ times consumes
+$\kappa\cdot\kappa$. Replacing this ordinal sum by its cardinality would
+incorrectly collapse the rank back to $\kappa$. The strict-cube lemma
+shows that the lost information is mathematically detectable.
+
+The row scheduler addresses a separate possible error: an arbitrary
+bijection $\kappa\times\kappa\to\kappa$ need not preserve the first
+varying row. Bounding by the maximum coordinate ensures that all earlier
+observable output is independent of later varying rows. This is why the
+product-to-permutation embedding is valid even at singular $\kappa$.
+
+% ---- hand chunk transition_after
+
+\merge\ The last sentence of \cref{swo:st:n10.4} is \cref{swo:sw:cutoffspectrum}
+for the minimal slice. The dichotomy computes binary coding length only;
+source~11's question on the exact cut spectrum and point characters of
+$\WO_\lambda(\No_{<\kappa})$ without $2^{<\kappa}=\kappa$ (\cref{swo:n16.7})
+stays open.
+
+% ---- hand chunk part2
+\part{Set-length words}\label{swo:part:words}
+
+% ---- source 11, lines 617-737
 \section{Set-length surreal words embed explicitly in the surreal line}
-\label{sw:encoding}
+\label{swo:sw:encoding}
 
 Let \(\WordsAll\) be the class of all set-length words
 \(f:\alpha\to\No\), and let \(\Words\) be its injective subclass.
@@ -642,7 +1609,7 @@ The following construction uses neither a global enumeration of
 of sign expansions, whose general properties are discussed in
 \cite[Section 3.2]{BagayokoHoeven}.
 
-\begin{theorem}[Explicit sign coding]\label{sw:code}
+\begin{theorem}[Explicit sign coding]\label{swo:sw:code}
 There is an explicitly defined order embedding
 \(\mathcal E:\WordsAll\longrightarrow\No\).
 It maps the empty word to \(0\), maps every nonempty word to
@@ -659,7 +1626,7 @@ For \(x\in\No\), put
                C(x)=(+)\cat D(s_x)\cat(+,-).
 \]
 The length here is the ordinal
-\(1+2\cdot\ell(x)+2\).
+\(1+2\cdot\bd(x)+2\).
 If \(s_x,s_y\) first differ at a sign, their doubled blocks
 have the same comparison.  If \(s_x\) is a proper prefix of
 \(s_y\), the terminal block \((+,-)\) of \(C(x)\) is compared
@@ -693,11 +1660,11 @@ both word classes.
 
 Accordingly, \(\WordsAll\), \(\Words\), and \(\No\) are pairwise
 equimorphic as class linear orders.  This conclusion asserts
-embeddings both ways, not isomorphism.  Section~\ref{sw:characters}
+embeddings both ways, not isomorphism.  Section~\ref{swo:sw:characters}
 exhibits an obstruction to isomorphism that persists after
 the empty word is removed.
 
-\begin{proposition}[Birthday bounds]\label{sw:codebounds}
+\begin{proposition}[Birthday bounds]\label{swo:sw:codebounds}
 The coding has the following bounds.
 \begin{enumerate}
 \item If \(\kappa\) is regular infinite, \(\alpha<\kappa\), and
@@ -713,8 +1680,8 @@ The coding has the following bounds.
 \begin{proof}
 The birthday of the image is
 \[
-       \ell(\mathcal E(f))
-           =\sum_{i<\alpha}\bigl(1+2\cdot\ell(f(i))+2\bigr),
+       \bd(\mathcal E(f))
+           =\sum_{i<\alpha}\bigl(1+2\cdot\bd(f(i))+2\bigr),
 \]
 with ordinal addition and multiplication.
 For the first assertion, this sums fewer than \(\kappa\)
@@ -736,18 +1703,19 @@ Also, injectivity is essential to the unrestricted second bound:
 constant words over a one-element alphabet can have every
 ordinal length.
 
+% ---- source 11, lines 739-836
 \section{Local characters and set suprema of word orders}
-\label{sw:characters}
+\label{swo:sw:characters}
 
 In this section \(\mathcal W\) denotes either \(\WordsAll\)
 or \(\Words\).
 Deleting the set of entries of an existing prefix causes no
 difficulty when choosing a new coordinate: apply
-Lemma~\ref{lem:delete}.
+Lemma~\ref{swo:lem:delete}.
 We say that a segment has no set cofinal subset rather than
 assigning it a cardinal cofinality that does not exist.
 
-\begin{theorem}[Exact local character]\label{sw:character}
+\begin{theorem}[Exact local character]\label{swo:sw:character}
 Let \(f\in\mathcal W\) have domain \(\alpha\).
 \begin{enumerate}
 \item If \(\alpha\) is a nonzero limit ordinal, then
@@ -795,7 +1763,7 @@ larger coordinate, and consequently exceeds every extension
 of \(f\), including \(h\).  Hence \(f<h<B\).
 \end{proof}
 
-\begin{corollary}\label{sw:notiso}
+\begin{corollary}\label{swo:sw:notiso}
 Neither \(\WordsAll\) nor \(\Words\), with or without its
 empty word, is order-isomorphic to \(\No\).
 Each has nontrivial set suprema, but a set with no minimum
@@ -830,19 +1798,20 @@ Every surreal interval \((u,v)\) is order-isomorphic to
                       \left(1+\frac{t}{1+|t|}\right).
 \]
 Thus every open word interval contains a copy of \(\No\),
-and Theorem~\ref{sw:code} then places a copy of the entire
+and Theorem~\ref{swo:sw:code} then places a copy of the entire
 word order inside it.
 Interval universality therefore does not imply that set cuts
 are filled.
 
+% ---- source 11, lines 838-944
 \section{The complete obstruction to filling a set cut}
-\label{sw:wordcuts}
+\label{swo:sw:wordcuts}
 
 The preceding prefix example is the only nontrivial obstruction.
 Here and below, \(A<B\) means that every member of \(A\) is
 strictly below every member of \(B\); either set may be empty.
 
-\begin{theorem}[Word-cut classification]\label{sw:cutclassification}
+\begin{theorem}[Word-cut classification]\label{swo:sw:cutclassification}
 A set cut \(A<B\) in \(\mathcal W\) has no interpolant
 if and only if one of the following holds:
 \begin{enumerate}
@@ -915,14 +1884,14 @@ Since the proper prefixes are cofinal below \(p\), \(A\)
 is cofinal below \(p\).  This is exactly the second obstruction.
 \end{proof}
 
-\begin{corollary}[Successor words]\label{sw:successors}
+\begin{corollary}[Successor words]\label{swo:sw:successors}
 The suborder of \(\mathcal W\) consisting of words of nonzero
 successor length fills every set cut.
 In \(\GBC\), it is order-isomorphic to \(\No\).
 \end{corollary}
 
 \begin{proof}
-Neither obstruction in Theorem~\ref{sw:cutclassification}
+Neither obstruction in Theorem~\ref{swo:sw:cutclassification}
 can occur when the upper set consists of successor words.
 The construction returns another successor word, proving
 the set-cut property.
@@ -940,33 +1909,34 @@ made explicit; compare the class framework in
 The distinction is precise.  Deleting the empty word alone
 does not remove the prefix-supremum obstruction.  Restricting
 to successor lengths does remove it.  The explicit embeddings
-of Theorem~\ref{sw:code} require no Global Choice, while the
+of Theorem~\ref{swo:sw:code} require no Global Choice, while the
 back-and-forth identification just given uses it.
 
-\section{Saturation at a regular stage}\label{sw:stagesaturation}
+% ---- source 11, lines 946-1008
+\section{Saturation at a regular stage}\label{swo:sw:stagesaturation}
 
 For regular infinite \(\kappa\), restrict to successor-length
 injective words of length below \(\kappa\), with entries in
-\(X_\kappa=\No_{<\kappa}\).
+\(\No_{<\kappa}\).
 This order is \(\eta_\kappa\).
 Indeed, a cut with fewer than \(\kappa\) words has all its
 word lengths bounded below \(\kappa\).
 The common-prefix search in the preceding proof consequently
-stops below \(\kappa\), and Lemma~\ref{sw:stageeta} supplies
+stops below \(\kappa\), and Lemma~\ref{swo:sw:stageeta} supplies
 the last coordinate while excluding the fewer than \(\kappa\)
 entries already used.
-Theorem~\ref{sw:codebounds} embeds this order into \(X_\kappa\);
-singleton words embed \(X_\kappa\) back.
+Proposition~\ref{swo:sw:codebounds} embeds this order into \(\No_{<\kappa}\);
+singleton words embed \(\No_{<\kappa}\) back.
 When \(2^{<\kappa}=\kappa\), both orders have cardinality
 \(\kappa\), and the ordinary back-and-forth of length \(\kappa\)
 makes them isomorphic.
 
 A related saturation statement applies to full permutations.
 
-\begin{proposition}\label{sw:permutationeta}
+\begin{proposition}\label{swo:sw:permutationeta}
 Let \(X\) be an \(\eta_\kappa\)-order of cardinality \(\kappa\),
 where \(\kappa\) is regular infinite.
-Then \(\mathcal P_\kappa(X)\) is \(\eta_\kappa\).
+Then \(\WO_\kappa(X)\) is \(\eta_\kappa\).
 Its global and local cofinalities and coinitialities are
 all exactly \(\kappa\).
 \end{proposition}
@@ -989,7 +1959,7 @@ The completed permutation fills the cut.
 
 Saturation excludes cofinal or coinitial subsets of size below
 \(\kappa\), both globally and on either side of a point.
-Conversely, Theorem~\ref{sw:setspectrum} excludes monotone
+Conversely, Theorem~\ref{swo:sw:setspectrum} excludes monotone
 sequences of length \(\kappa^+\).
 If one of these segments had no cofinal subset of size at
 most \(\kappa\), recursively choosing a point above all earlier
@@ -1005,14 +1975,15 @@ so it is substantially larger than its alphabet while retaining
 the same local characters.  It is not
 \(\eta_{\kappa^+}\): that stronger cut property would construct
 an increasing \(\kappa^+\)-sequence, contrary to
-Theorem~\ref{sw:setspectrum}.
+Theorem~\ref{swo:sw:setspectrum}.
 
-% END sections/set_and_word_orders
+% ---- hand chunk part3
+\part{Global choice and all class well-orders}\label{swo:part:classes}
 
 
-% BEGIN sections/class_foundations
+% ---- source 11, lines 1014-1125
 \section{Global choice and well-ordering the surreal class}
-\label{cf:existence}
+\label{swo:cf:existence}
 
 The distinction between a set of surreal numbers and the entire surreal class
 changes the existence question.  Here \(\GB\) has the sets of \(\mathrm{ZF}\),
@@ -1043,7 +2014,7 @@ families of proper class relations while preserving the usual GB typing
 rules.  No exhaustive indexing family is assumed in this section.
 
 \begin{theorem}[Existence and global choice]
-\label{cf:choice}
+\label{swo:cf:choice}
 Over \(\GB\), the following statements are equivalent:
 \begin{enumerate}
   \item \(\GC\) holds;
@@ -1124,8 +2095,108 @@ the assertion over the stated choiceless GB base.  It does not assert that a
 global choice class is definable without parameters in the first-order
 language of set theory.  Definability is an additional requirement.
 
+% ---- hand chunk choice12_head
+
+\merge\ \emph{Second proof over $\GB+\mathrm{AC}$ (source~12).} Source~12
+proves the equivalence by coding transitive closures on ordinals; set choice
+is used only to code each $\operatorname{TC}(\{x\})$ on an ordinal. Its
+equivalence includes non-set-like well-orders, as source~11's does. Its
+subsection on birthday order follows its theorem.
+
+% ---- source 12, lines 429-494
+\subsection{Source 12's route over GB with set choice}
+\label{swo:st:sec:choice}
+
+\begin{theorem}[Choice equivalence]\label{swo:st:thm:choice}
+Over GB plus set-level AC, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item global choice;
+\item a class bijection $\Ord\to\No$;
+\item a set-like class well-order of $\No$;
+\item a class well-order of $\No$, not necessarily set-like.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Global choice supplies a set-like global well-order of the universe, and
+hence of the proper class $\No$. A proper set-like well-order has type
+$\Ord$, giving (i)$\Rightarrow$(iii)$\Rightarrow$(ii). A bijection in (ii)
+pulls back ordinal order, giving (iii), and (iii)$\Rightarrow$(iv) is
+immediate.
+
+We prove the substantive reverse implication by coding sets. Suppose
+$R$ well-orders $\No$. Let $x$ be a nonempty set and let
+$T_x=\operatorname{TC}(\{x\})$; it contains $x$ and all its elements.
+By set choice, there is a least initial ordinal $\lambda$ equinumerous
+with $T_x$. There is a fixed definable ordinal $\tau_\lambda$ large
+enough to code a binary relation on $\lambda$, together with one
+distinguished index, by a binary sequence of length $\tau_\lambda$.
+For example, concatenate a $\lambda\cdot\lambda$-long relation table
+and a $\lambda$-long singleton marker.
+
+Consider the \emph{set} of codes for well-founded extensional relations
+on $\lambda$ whose Mostowski collapse has range $T_x$, and whose marked
+index collapses to $x$. This set is nonempty. Convert $0,1$ to $-,+$,
+view the codes as surreals, and take its $R$-least member. Decode it, and
+choose the element of $x$ represented by the least ordinal index that
+belongs to the marked node in the coded membership relation.
+
+The result is an element of $x$, uniquely determined by $x$ and the class
+parameter $R$. Elementary class comprehension gives the graph of this
+choice operation on all nonempty sets. It is a global choice function.
+Notice that only a set of codes for each $x$ was minimized: set-likeness
+of $R$ was not needed.
+\end{proof}
+
+\begin{remark}[The explicit set-choice hypothesis]\label{swo:st:n4.2}
+The converse proof uses set choice to code $T_x$ on an ordinal. We do not
+claim the same equivalence over GB with no set-level choice. A purported
+stronger choice equivalence must address that missing coding step.
+\end{remark}
+
+\subsubsection{Birthday is not a canonical global well-order}
+
+Ordering first by birthday and then by numerical value does not work.
+For $n<\omega$, let $s_n$ be the length-$\omega$ sign sequence consisting
+of $n$ minuses followed by pluses forever. Then
+\[
+ \bd(s_n)=\omega,\qquad s_{n+1}<s_n.
+\]
+The whole descending sequence lies in one birthday level. Simplicity
+itself is well-founded but is only a partial order; two incompatible sign
+sequences need not be comparable by simplicity.
+
+With global choice one may choose a well-order on every birthday level
+and concatenate them in birthday order. The result is set-like because
+all earlier levels, and every initial part of the current level, form a
+set. The noncanonical choices have not disappeared: they are exactly the
+kind of information accounted for by \cref{swo:st:thm:choice}.
+
+% ---- hand chunk choice12_answered
+
+\begin{remark}[\merge; source~12's question answered]\label{swo:rem:answered-choice}
+Dated note, 2 October 2026. Source~12's \cref{swo:st:n4.2} declines the
+choiceless case, and its research question on the exact weak-choice strength
+(\cref{swo:st:n14.5}) asks which principle is equivalent to a class well-order
+of the sign-sequence surreals over $\GB$ without set choice. Source~11's
+\cref{swo:cf:choice} answers it: global choice itself. The ``missing coding
+step'' that \cref{swo:st:n4.2} names is avoided, not supplied: the well-orders
+$w_\alpha$ of $V_\alpha$ are built by set-valued recursion from the given
+well-order of the sign sequences of length $\theta=\otp(V_\beta,w_\beta)$, a
+subset $A\subseteq V_\beta$ being coded by the sign sequence $s_A$ of length
+exactly $\theta$, so no ordinal coding of a transitive closure has to be
+chosen. The proof thus produces a coherent sequence of well-orders of the sets
+$V_\alpha$, in particular of the power sets of ordinals, which is the
+comparison the question suggests. The same mechanism, at the level of
+sets, is the ordinal-graph coding of the birthday-cutoff report
+(\code{hset:thm:choice}, whose range over $\ZF$ is the class of sets with
+well-orderable transitive closure) \cite{ProveItHset}; that theorem concerns
+a different statement and is unchanged. Hamkins's question whether surreal
+universality implies global choice \cite{HamkinsUnivChoice} is not affected.
+\end{remark}
+
+% ---- source 11, lines 1127-1249
 \section{Lexicographic comparison without class ordinals}
-\label{cf:comparison}
+\label{swo:cf:comparison}
 
 The set-sized enumeration method studied for the real numbers
 \cite{ProveItReals} suggests comparing the first unequal labels.  Arbitrary
@@ -1143,7 +2214,7 @@ here is equality of the actual elements and relations, rather than the
 existence of an abstract order isomorphism.
 
 \begin{lemma}[Unique first disagreement]
-\label{cf:first}
+\label{swo:cf:first}
 If \(R\ne S\) are class well-orders of the same class \(X\), there are
 unique distinct \(a,b\in X\) such that
 \[
@@ -1179,10 +2250,10 @@ labels, so \(C\) is maximal.
 
 Fix now a native linear order \(<_X\) on the labels.  For distinct \(R,S\),
 define \(R<_{\lex}S\) when the labels supplied by
-Lemma~\ref{cf:first} satisfy \(a<_Xb\).
+Lemma~\ref{swo:cf:first} satisfy \(a<_Xb\).
 
 \begin{theorem}[Raw lexicographic order]
-\label{cf:lex}
+\label{swo:cf:lex}
 This rule is a strict linear order on the class well-orders of \(X\),
 understood as a definable relation on class variables.  In particular it
 defines \(\Hall\) for \(X=\No\) with its native numerical order.
@@ -1230,7 +2301,7 @@ indexing is injective.  Passing instead to abstract isomorphism types would
 discard exactly the label information on which the construction depends.
 
 \begin{proposition}[Convex prefix cones]
-\label{cf:cones}
+\label{swo:cf:cones}
 Fix a well-ordered subclass \((C,P)\) of \(X\).  The collection of all
 class well-orders of \(X\) extending \((C,P)\) as an initial labeled
 segment is convex in the raw lexicographic order.
@@ -1248,15 +2319,153 @@ inequalities.  This reasoning permits \(C\) and \(D\) to be proper
 classes.
 \end{proof}
 
+% ---- hand chunk prefix12_head
+
+\merge\ \emph{Second route (source~12): the largest common labelled prefix.}
+Source~12's Section~3 proves \cref{swo:cf:first,swo:cf:lex} differently.
+Instead of the class $D$ of points whose predecessor classes differ, it
+defines the largest common labelled prefix $C(R,S)$ by an elementary formula
+and proves directly that it is initial in both orders and contains every
+common labelled initial segment. Source~11's shipped check compares its
+predecessor rule with finite lexicographic order on all 266,272 pairs of
+permutations of at most six points
+(\path{data/11-raw-orders-finite_checks_results.txt}); source~12's checks the
+common-prefix formula on 15,017 finite pairs
+(\path{data/12-singular-finite_checks.json}).
+
+% ---- source 12, lines 317-427
+\subsection{Source 12's route: the largest common labelled prefix}
+\label{swo:st:sec:commonprefix}
+
+The central observation is that comparing two \emph{labelled}
+well-orders is easier than comparing arbitrary abstract class order types.
+Fix a class $X$ equipped with an ambient strict linear order $<$, and let
+$R,S$ be class well-orders of the same carrier $X$.
+
+\begin{definition}[Common labelled prefix]\label{swo:st:n3.1}
+Define $C(R,S)\subseteq X$ by putting $x\in C(R,S)$ if
+\begin{align*}
+ \pred_R(x)&=\pred_S(x),\\
+ \forall u,v\in\pred_R(x),\qquad uRv&\ \Longleftrightarrow\ uSv.
+\end{align*}
+Equality of the predecessor classes is expanded as a quantification over
+sets $u\in X$. Thus this is an elementary formula with class parameters
+$R,S$; it is not a quantification over all possible common prefixes.
+\end{definition}
+
+\begin{lemma}[Maximal-prefix lemma]\label[lemma]{swo:st:lem:common}
+$C(R,S)$ is an initial segment of both well-orders, their restrictions to
+it agree, and it contains every common labelled initial segment. If
+$R\ne S$, it is proper, and the least elements
+\[
+ a=\min_R(X\setminus C(R,S)),\qquad
+ b=\min_S(X\setminus C(R,S))
+\]
+exist and are distinct.
+\end{lemma}
+\begin{proof}
+Suppose $x\in C(R,S)$ and $yRx$. Equality of the predecessor classes puts
+$y$ before $x$ in $S$ as well. For $zRy$, transitivity gives $zRx$;
+agreement of $R,S$ below $x$ then gives $zSy$. Conversely, $zSy$ implies
+$zSx$, hence $zRx$, and agreement below $x$ yields $zRy$. The orders agree
+below $y$ because they agree below $x$. Therefore $y\in C(R,S)$.
+The symmetric argument proves initiality in $S$.
+
+If $u,v\in C(R,S)$ and $uRv$, equality of the predecessor classes of $v$
+gives $uSv$. Thus the restrictions agree. If $D$ is any common labelled
+initial segment and $x\in D$, both predecessor classes of $x$ lie in $D$
+and agree, as do the restricted relations. Hence $D\subseteq C(R,S)$.
+If $C(R,S)=X$, equality of every predecessor class implies $R=S$.
+
+For $R\ne S$, class well-foundedness supplies $a,b$. By initiality and
+minimality, $\pred_R(a)=C(R,S)$ and $\pred_S(b)=C(R,S)$. If $a=b$, these
+predecessor classes agree and the two relations agree on them. The
+defining formula would put $a$ in $C(R,S)$, a contradiction.
+\end{proof}
+
+\begin{definition}[Full lexicographic comparison]\label{swo:st:n3.3}
+For distinct $R,S$, put $R<_{\lex}S$ precisely when $a<b$, with $a,b$
+from \cref{swo:st:lem:common}. Identical relations are equal in this order.
+\end{definition}
+
+\begin{theorem}[Full class lexicographic order]\label{swo:st:thm:fulllex}
+In GBC, the preceding comparison is a strict linear ordering of the
+predicate of all class well-orders of a fixed linearly ordered class
+$X$. Its definition uses only elementary class comprehension. In
+particular, ETR and the comparability of abstract class well-order types
+are not required.
+\end{theorem}
+\begin{proof}
+Irreflexivity and trichotomy follow from the maximal-prefix lemma and
+trichotomy in $X$. For transitivity suppose $R<_{\lex}S<_{\lex}T$.
+The classes $C(R,S)$ and $C(S,T)$ are initial segments of the same
+well-order $S$, so they are comparable by inclusion.
+
+If $C(R,S)$ is a proper subset of $C(S,T)$, the first $S$-element $b$
+after $C(R,S)$ belongs to $C(S,T)$. Thus $T$ agrees with $S$ through that
+element. The first disagreement of $R,T$ is exactly the earlier
+$R,S$ disagreement, with the same two labels $a<b$. Consequently
+$R<_{\lex}T$. The opposite proper-inclusion case uses the earlier
+$S,T$ disagreement and is identical in form.
+
+If the two common prefixes are equal to $C$, let $a,b,c$ be the first
+labels after $C$ in $R,S,T$. The hypotheses give $a<b<c$. Hence $R,T$
+also first disagree after $C$, and $R<_{\lex}T$. Every construction of
+$C$, and every assertion about its next elements, expands into set
+quantifiers with the given class relations as parameters.
+\end{proof}
+
+\begin{remark}[Why this does not prove class order-type comparability]\label{swo:st:n3.5}
+In general one asks whether two arbitrary class well-orders admit an
+initial-segment isomorphism. ETR is a sufficient hypothesis for that
+principle \cite[Theorem 6]{HamkinsWoodin}. Here no such isomorphism is constructed.
+Only their \emph{identical labelled} portions are compared. As soon as
+the labels disagree, the fixed ambient order decides the answer.
+Confusing these two tasks would impose an unnecessary stronger axiom.
+\end{remark}
+
+\begin{example}[A disagreement after every ordinary ordinal]\label{swo:st:n3.6}
+Fix $a<b$ in $\No$. Well-order $\No\setminus\{a,b\}$ in type $\Ord$.
+Append first $a,b$, and in a second order append $b,a$.
+The orders agree throughout their initial $\Ord$-block and differ only
+after it. No ordinary ordinal indexes that first disagreement, but
+\cref{swo:st:thm:fulllex} compares them immediately: their common labelled
+prefix is $\No\setminus\{a,b\}$.
+\end{example}
+
+\begin{corollary}[Agreement with enumeration lexicography]\label{swo:st:n3.7}
+For set-sized exhaustive ordinal enumerations, and for class bijections
+$\Ord\to X$, the common-prefix definition agrees with first-difference
+lexicography.
+\end{corollary}
+\begin{proof}
+Before the first unequal entry, exactly the same labels occur in exactly
+the same order. Their ranges form the common labelled initial segment.
+No later label can belong to that segment by initiality and the distinct
+next labels. In the $\Ord$ case the disagreement is a nonempty class of
+ordinals; restricting it below any one witness gives its least member.
+\end{proof}
+
+% ---- hand chunk prefix12_after
+
+\merge\ Source~12's \cref{swo:st:n3.5} is source~11's remark after
+\cref{swo:cf:lex} and in \cref{swo:sec:formalization}: comparability of
+abstract class well-orders by initial-segment isomorphisms follows from $\ETR$
+\cite{HamkinsWoodin}, and neither labelled comparison needs it. Its
+\cref{swo:st:n3.6} is source~11's \cref{swo:cf:ordtwo}, and its
+\cref{swo:st:n3.7} is the corresponding sentence after
+\cref{swo:gl:uniform}.
+
+% ---- source 11, lines 1251-1362
 \section{The canonical initial set-like part}
-\label{cf:decomposition}
+\label{swo:cf:decomposition}
 
 Every class well-order of \(\No\) has a canonical initial segment of
 type \(\Ord\), even when its entire order is not set-like.  This gives
 a structural description of all well-orders using ordinary class functions.
 
 \begin{theorem}[Canonical initial part]
-\label{cf:core}
+\label{swo:cf:core}
 For \(R\in\Hall\), let
 \[
  I_R=\{x\in\No:P_R(x)\text{ is a set}\}.
@@ -1281,14 +2490,14 @@ of \(I_R\) before \(x\).  Hence \(P_R(x)=I_R\), a contradiction.
 
 The induced order on \(I_R\) has the same predecessor sets as \(R\).
 The ordinal-rank map therefore identifies it with an initial subclass of
-\(\Ord\).  As in Theorem~\ref{cf:choice}, a set-sized range would make
+\(\Ord\).  As in Theorem~\ref{swo:cf:choice}, a set-sized range would make
 \(I_R\) a set by replacement.  Its range is consequently all of
 \(\Ord\).  The inverse map is unique, and initiality gives the asserted
 concatenation.
 \end{proof}
 
 \begin{example}[Two proper blocks]
-\label{cf:two_blocks}
+\label{swo:cf:two_blocks}
 Under \(\GBC\), fix \(e:\Ord\to\No\) bijective.  The disjoint classes
 \(A=\{e(2\alpha):\alpha\in\Ord\}\) and
 \(B=\{e(2\alpha+1):\alpha\in\Ord\}\) partition \(\No\), where the
@@ -1310,7 +2519,7 @@ after choosing any witness, minimize within the set of earlier ordinals.
 Put \(Y_F=\No\setminus\operatorname{ran}(F)\).
 
 \begin{proposition}[Convex fibers]
-\label{cf:fibers}
+\label{swo:cf:fibers}
 Assume \(\GBC\).  Every \(F\in\Jinj\) occurs as \(F_R\) for some
 \(R\in\Hall\).  The fiber over \(F\) is a convex copy of
 \(\WO(Y_F)\).  Distinct fibers are ordered by the first unequal values
@@ -1328,7 +2537,7 @@ Thus the resulting order has canonical function exactly \(F\).
 
 All orders with that function extend the same initial labeled order on
 \(\operatorname{ran}(F)\), and conversely every extension has that
-canonical function.  Proposition~\ref{cf:cones} proves convexity.
+canonical function.  Proposition~\ref{swo:cf:cones} proves convexity.
 Restriction to \(Y_F\) and concatenation with \(F\) are inverse
 operations; first disagreement inside the residual orders proves that they
 preserve lexicographic comparison.  Finally, if \(F\ne G\), their first
@@ -1350,7 +2559,7 @@ For finite \(Y_F\) of size \(m\), its fiber is a convex block of
 \(m!\) orders, with the usual lexicographic order on permutations.
 
 \begin{remark}[Singleton fibers and iteration]
-\label{cf:singleton}
+\label{swo:cf:singleton}
 A singleton fiber need not be set-like.  If \(F\) omits exactly one
 surreal \(z\), its unique completion puts \(z\) after the entire
 \(\Ord\)-sequence; it has class order type \(\Ord+1\).  Conversely,
@@ -1361,15 +2570,16 @@ separate specification of its indexing order, its objects, and its
 recursion principle; none is asserted here.
 \end{remark}
 
+% ---- source 11, lines 1364-1480
 \section{All jumps arise from finite residual permutations}
-\label{cf:jumps}
+\label{swo:cf:jumps}
 
 The full order has jumps despite the extreme density of the native surreal
 line.  A proper common prefix can already have used every label between the
 two labels at which comparison is decided.
 
 \begin{lemma}[Extreme enumerations]
-\label{cf:extreme}
+\label{swo:cf:extreme}
 For a class \(Z\) with a native linear order, a class well-order is
 lexicographically greatest among all well-orders of \(Z\) exactly when
 it is the native reverse order.  It is lexicographically least exactly
@@ -1398,7 +2608,7 @@ Finite residual domains have both extrema, and the adjacency theorem shows
 that precisely such domains can support a jump after a common prefix.
 
 \begin{theorem}[Exact adjacency criterion]
-\label{cf:adjacency}
+\label{swo:cf:adjacency}
 Let \(R<_{\lex}S\) be class well-orders of \(X\).  Let \(C\) be their
 first-disagreement prefix, let \(a<b\) be their respective next labels,
 and put \(Y=X\setminus C\).  They are adjacent if and only if all
@@ -1424,7 +2634,7 @@ give a well-order strictly between \(R,S\); thus condition~1 holds.
 Any lexicographically greater replacement of the \(R\)-tail after
 \(a\) would also give an intermediate order: its next label after
 \(C\) would still be \(a<b\).  Hence this tail is greatest, and
-Lemma~\ref{cf:extreme} gives condition~2.  A lexicographically smaller
+Lemma~\ref{swo:cf:extreme} gives condition~2.  A lexicographically smaller
 replacement of the \(S\)-tail after \(b\) similarly gives
 condition~3.  These modifications use restrictions and finite
 transpositions of existing class relations; they require no new choice
@@ -1450,7 +2660,7 @@ If \(t=b\), its tail cannot precede the least tail of \(S\), so
 \end{proof}
 
 \begin{example}[An adjacent pair of type \(\Ord+2\)]
-\label{cf:ordtwo}
+\label{swo:cf:ordtwo}
 Assume \(\GBC\), choose surreal labels \(a<b\), and give
 \(C=\No\setminus\{a,b\}\) a set-like well-order \(P\).  Consider
 \[
@@ -1479,12 +2689,161 @@ Thus the induced order \(\Hsl\) is dense, while \(\Hall\) has the
 finite terminal blocks classified above.  Allowing all well-orders changes
 the local order structure in a concrete and unavoidable way.
 
-% END sections/class_foundations
+% ---- hand chunk geometry12_head
 
+\merge\ \emph{Second route (source~12): residual decomposition and
+adjacency.} Source~12's Section~8 proves \cref{swo:cf:adjacency} in the form
+``the residual class is finite and the residual permutations are consecutive'';
+the two criteria are equivalent, since a tail that is both well-ordered and
+reverse well-ordered is finite. Its \cref{swo:st:prop:residual} is the
+description of one prefix cone given by \cref{swo:cf:cones,swo:cf:fibers}. Its
+\cref{swo:st:n8.4} adds that interior points of the finite blocks with
+$n\ge3$ are isolated in the order topology and that the set-like suborder is
+not dense in the full order, and its last paragraph adds the order-reversing
+involution induced by negation.
 
-% BEGIN sections/global_lex_structure
+% ---- source 12, lines 773-861
+\subsection{Source 12's route: unrestricted class well-orders and finite-tail geometry}
+\label{swo:st:sec:fullgeometry}
+
+The full order $\Hall(\No)$ contains $\Hsl(\No)$ as an ordered
+subcollection, but it is not dense. The effect is not a failure of density
+of the surreal alphabet; it is exhaustion of almost all labels by a
+proper-class prefix.
+
+\begin{definition}[A prefix cylinder in the full order]\label{swo:st:n8.1}
+Let $C\subsetneq X$ carry a fixed well-order $P$. Consider all class
+well-orders of $X$ that have $(C,P)$ as a labelled initial segment.
+Write this cylinder as $[P]_X$ and put $D=X\setminus C$.
+\end{definition}
+
+\begin{proposition}[Residual-order decomposition]\label[proposition]{swo:st:prop:residual}
+$[P]_X$ is convex and is order-isomorphic to the lexicographic order of
+all well-orders of the residual carrier $D$, with its inherited ambient
+order. If $D$ is a set, this is the ordinary set order $\WO(D)$,
+with the same notation extended to finite carriers.
+If $|D|=n<\omega$, the cylinder has exactly $n!$ elements.
+\end{proposition}
+\begin{proof}
+Restriction to $D$ and ordered concatenation with $P$ are inverse
+operations. Concatenation of two class well-orders is a class well-order:
+a nonempty subclass has its minimum in the first part if it meets that
+part, and otherwise in the second. The maximal common prefix after $P$
+is exactly the common prefix of the tails, so comparisons are preserved.
+
+If a third order differs before completing $P$, its first discrepancy
+with every extension of $P$ is the same and places it on the same side of
+all of them. This proves convexity. The last assertion counts
+permutations of a finite carrier.
+\end{proof}
+
+\begin{theorem}[Exact adjacency criterion]\label{swo:st:thm:adjacency}
+Let $R<_{\lex}S$ be two class well-orders of $X$, and let
+$C=C(R,S)$, $D=X\setminus C$. They are adjacent in the full order if and
+only if $D$ is finite and their residual permutations are consecutive in
+the ordinary finite lexicographic order.
+\end{theorem}
+\begin{proof}
+Let $a<b$ be their first residual labels. If some $d\in D$ satisfies
+$a<d<b$, begin the residual order with $d$ and well-order the remaining
+labels by a restriction of $R$. This gives an order strictly between.
+So an adjacent pair can have no such $d$.
+
+If the tail of $R$ after $a$ has two labels $u$ before $v$ with $u<v$ in
+the ambient order, interchange the labels $u,v$ at their two positions.
+The new well-order is larger than $R$, and still smaller than $S$ because
+its first residual label remains $a$. Thus adjacency forces the $R$ tail
+to be numerically decreasing. Dually, the tail of $S$ after $b$ must be
+numerically increasing.
+
+On $D\setminus\{a,b\}$, both the ambient numerical order and its reverse
+are therefore well-orders. Such a carrier is finite: an infinite
+well-order contains an increasing $\omega$-sequence, contradicting
+well-foundedness of its reverse. Hence $D$ is finite.
+
+Conversely, if $D$ is finite, convexity in \cref{swo:st:prop:residual} says that
+every order between $R,S$ must be another permutation of $D$ after $C$.
+There is none exactly when the two permutations are consecutive.
+\end{proof}
+
+\begin{corollary}[Proper-class prefixes are responsible]\label{swo:st:n8.4}
+Adjacent pairs in $\Hall(\No)$ share a proper-class prefix.
+There are convex blocks of every factorial size $n!$. For $n\geq3$,
+interior elements of such blocks are isolated in the order topology.
+The set-like suborder is not dense in the full order.
+\end{corollary}
+\begin{proof}
+A set prefix cannot exhaust all but finitely many surreals. Conversely,
+well-order $\No\setminus D$ in type $\Ord$ for any finite $D$, and append
+all its permutations. For $|D|\geq3$, choose two nonconsecutive
+permutations in the resulting finite convex block. Their nonempty open
+interval contains only orders with a proper-class predecessor segment,
+so it contains no set-like order.
+\end{proof}
+
+The full order still has no endpoints and no set-indexed cofinal or
+coinitial family, by the first-entry argument of
+\cref{swo:st:prop:characters}. It contains every class linear order, by
+\cref{swo:st:thm:local}. But neither global density nor interpolation for all
+set-indexed cuts survives: an adjacent pair already gives a two-sided
+cut that cannot be filled.
+
+Pointwise surreal negation gives an order-reversing involution on both
+global orders: transport a well-order by the bijection $x\mapsto -x$.
+This preserves enumeration type and set-likeness while reversing the
+ambient comparison of the first unequal labels.
+
+% ---- source 12, lines 1299-1334
+\section{Numerically well-ordered subclasses and other interpretations (source 12)}
+\label{swo:st:sec:subclasses}
+
+The positive surreal ordinals form a numerically increasing class copy
+of $\Ord$, but this is not a well-order of all of $\No$. More generally,
+\cref{swo:st:lem:universalNo} implies that every class well-order is isomorphic
+to a numerically well-ordered subclass of $\No$. That subclass need not
+be set-like in its inherited numerical order.
+
+For an explicit example, the class
+\[
+ \left\{-\frac{1}{\alpha+1}:\alpha\in\Ord\right\}\cup\{0\}
+\]
+has numerical order type $\Ord+1$. The arithmetic here is surreal
+arithmetic on the embedded ordinal values; the reciprocal reverses
+positive order and the minus sign reverses it back. The final point has
+a proper class of predecessors. Putting a positive ordinal block after
+this negative block gives a numerical copy of $\Ord+\Ord$.
+
+For a \emph{set} $A\subseteq\No$, numerical well-ordering has the usual
+ordinal order type. Its birthday bound places it inside some $\No_{<\kappa}$.
+The class of all such set-sized well-ordered subsets is a legitimate
+class of sets. Its members are not exhaustive enumerations of a fixed
+carrier, however, so one must specify what happens when one enumeration
+is a prefix of another. The ``shorter first'' convention and the surreal
+$-<\End<+$ convention are different choices; neither can be silently
+borrowed from the prefix-free exhaustive setting.
+
+Finally, ordering binary relation tables rather than enumerations is
+another legitimate but different construction. If one fixes a set-like
+well-order of $\No\times\No$, compares the characteristic functions of
+relations at the first unequal table entry, and restricts to well-orders,
+one gets a table-dependent order. A first changed relation bit is not
+generally the first changed enumerated label. Even on three points the
+two lexicographic orders can differ. The present article uses labelled
+initial segments, not relation-table lexicography.
+
+% ---- hand chunk subclasses_after
+
+\merge\ Source~12's shipped check records a three-point example on which
+relation-table lexicography and enumeration lexicography differ
+(\path{data/12-singular-finite_checks.json}, key
+\code{relation\_table\_vs\_enumeration\_example}).
+
+% ---- hand chunk part4
+\part{Set-like global well-orders}\label{swo:part:setlike}
+
+% ---- source 11, lines 1486-1538
 \section{The lexicographic structure of global enumerations}
-\label{gl:section}
+\label{swo:gl:section}
 
 The set-like case has a particularly strong structure theorem.  Although the
 full collection of global enumerations is a higher-order object, one ordinary
@@ -1501,13 +2860,13 @@ Throughout this section we work in $\GBC$ and fix a class bijection
 The existence of such a baseline is supplied by global choice; the relevant
 equivalences are discussed in \cite{HamkinsGC}.  We use the surreal
 set-cut property, its preservation under deleting a set
-(Lemma~\ref{lem:delete}), and the universality and uniqueness statements of
-Proposition~\ref{prop:universal}.  These are order-theoretic properties; the
+(Lemma~\ref{swo:lem:delete}), and the universality and uniqueness statements of
+Proposition~\ref{swo:prop:universal}.  These are order-theoretic properties; the
 field operations on $\No$ play no role in the main construction.
 
 \subsection{Class parameters and uniform families}
 
-\begin{definition}\label{gl:uniform}
+\begin{definition}\label{swo:gl:uniform}
 For this section, $\Jinj$ denotes the collection of class injections
 $F:\Ord\to\No$, and $\Hsl$ denotes the subcollection of class bijections.
 For distinct $F,G\in\Jinj$, put
@@ -1537,9 +2896,10 @@ given class parameters are automatically uniform, and the families of
 set-coded objects constructed below have a fixed evaluation formula, so their
 set-indexed subfamilies are uniform as well.
 
+% ---- source 11, lines 1540-1601
 \subsection{A class of bounded-support codes}
 
-\begin{definition}\label{gl:bounded-codes}
+\begin{definition}\label{swo:gl:bounded-codes}
 A \emph{normalized bounded-support code} is a set permutation
 $\sigma:\lambda\to\lambda$ of an ordinal $\lambda$ satisfying
 \[
@@ -1570,7 +2930,7 @@ into a set.  In particular, the assertion that $\Pbd$ is an ordinary class
 refers to the codes, while assertions comparing its members with arbitrary
 members of $\Hsl$ use the common evaluation relation.
 
-\begin{lemma}[Completion of an arbitrary set prefix]\label{gl:completion}
+\begin{lemma}[Completion of an arbitrary set prefix]\label{swo:gl:completion}
 Every injective set function $p:\delta\to\No$, with $\delta$ an ordinal,
 is the initial segment of an enumeration represented in $\Pbd$.
 The completion can be chosen uniformly in $p$.
@@ -1600,9 +2960,40 @@ Even an arbitrarily long set-sized prefix can be realized by changing the
 baseline only on a bounded set of coordinates.  The bound need not be small:
 it must contain the baseline indices of all values prescribed by $p$.
 
+% ---- hand chunk extend12
+
+\paragraph{Source 12's prefix extension.}\label{swo:st:sec:setlike}
+\merge\ Source~12's Section~6 (``Set-like global well-orders: interpolation
+and universality'') proves the results of this section by the same arguments,
+except for its prefix extension, printed next, which is a different
+construction: it appends the restriction of the baseline order to the
+complement of the prefix, so its completion need not have bounded support.
+Source~12's interpolation theorem, local characters and local universality are
+recorded in notes below; its avoidance lemma and its universality lemmas are
+printed in \cref{swo:sec:prelim}.
+
+% ---- source 12, lines 563-578
+We now restrict to $\Hsl(\No)$, the class-bijection predicate. All statements
+about set- or class-indexed collections of its members mean uniform
+families, unless a larger ambient universe is explicitly specified.
+
+\begin{lemma}[Extending a set prefix]\label[lemma]{swo:st:lem:extend}
+Every injective set sequence $p:\alpha\to\No$ extends to a class
+bijection $\Ord\to\No$. The extension can be chosen uniformly from $p$
+and one fixed baseline bijection $B$.
+\end{lemma}
+\begin{proof}
+Let $A=\ran(p)$. Restrict the baseline order to $\No\setminus A$.
+It is a proper-class set-like well-order, so it has its canonical
+increasing enumeration in type $\Ord$. Append that enumeration to $p$.
+The class order $\alpha+\Ord$ is canonically isomorphic to $\Ord$.
+The construction is set-valued recursion with $B$ as a parameter.
+\end{proof}
+
+% ---- source 11, lines 1603-1668
 \subsection{Interpolation of every uniformly set-indexed cut}
 
-\begin{theorem}[Prefix interpolation]\label{gl:interpolation}
+\begin{theorem}[Prefix interpolation]\label{swo:gl:interpolation}
 Let $(A_i)_{i\in I}$ and $(B_j)_{j\in J}$ be uniformly set-indexed families
 in $\Jinj$, with
 \[
@@ -1636,7 +3027,7 @@ has at most one member: two distinct common values, taken in reverse order
 as a left and a right value, would contradict this inequality.
 
 If $L\cap R$ is empty, all cross inequalities are strict.  By
-Lemma~\ref{lem:delete}, choose
+Lemma~\ref{swo:lem:delete}, choose
 \[
  z\in\No\setminus\ran(p),\qquad L<z<R.
 \]
@@ -1656,7 +3047,7 @@ prefixes; its length is a set ordinal and it remains injective.
 The procedure cannot continue with both sides active through a prefix of
 length $\beta$.  Such active rows would agree below $\beta$, contrary to the
 bound on every cross first difference.  Therefore it stops no later than the
-next step, giving a set prefix.  Lemma~\ref{gl:completion} supplies a
+next step, giving a set prefix.  Lemma~\ref{swo:gl:completion} supplies a
 bounded-support completion.  Notice that surjectivity of the input rows was
 never used; this is why the theorem was stated for $\Jinj$.
 \end{proof}
@@ -1667,17 +3058,30 @@ values form sets because the index sets are sets.  The proof therefore uses
 ordinary set-valued transfinite recursion with class parameters, not $\ETR$.
 The same observation applies to the back-and-forth argument below.
 
-\begin{corollary}\label{gl:pbd-no}
+% ---- hand chunk n_interp12
+
+\begin{note}[Source~12, Theorem~6.3, ``Set-indexed interpolation'']\label{swo:st:thm:etasl}
+\emph{If $I,J$ are sets and $(E_i)_{i\in I}$, $(F_j)_{j\in J}$ are uniform
+families in $\Hsl(\No)$ with $E_i<_\lex F_j$ for all $i,j$, there is
+$G\in\Hsl(\No)$ with $E_i<_\lex G<_\lex F_j$; empty sides are allowed, so
+$\Hsl(\No)$ is dense without endpoints in the indexed-family sense.} This is
+\cref{swo:gl:interpolation}, by the same forced-prefix construction; source~12
+completes the prefix by \cref{swo:st:lem:extend}, so its interpolant need not
+lie in the bounded-support core.
+\end{note}
+
+% ---- source 11, lines 1670-1695
+\begin{corollary}\label{swo:gl:pbd-no}
 The class order $\Pbd$ is an $\eta_{\Ord}$ order and is order-isomorphic to
 $(\No,<)$.  Moreover, it meets every strict cut in $\Hsl$ specified by
 uniformly set-indexed families.
 \end{corollary}
 
 \begin{proof}
-A set of codes is uniformly evaluable, so Theorem~\ref{gl:interpolation}
+A set of codes is uniformly evaluable, so Theorem~\ref{swo:gl:interpolation}
 applies to every separated pair of sets in $\Pbd$.  Empty sides give the
 absence of endpoints, and singleton sides give density.  We already know
-that $\Pbd$ is a proper class.  Proposition~\ref{prop:universal} therefore
+that $\Pbd$ is a proper class.  Proposition~\ref{swo:prop:universal} therefore
 identifies it with $\No$.
 
 Explicitly, global choice enumerates each of the two classes by ordinals.
@@ -1686,7 +3090,7 @@ of one enumeration and then the next element of the other.  The lower and
 upper images at either step are sets, so the cut property supplies the new
 point.  The union of this ordinary set-valued recursion is an isomorphism.
 The last assertion is the direct specialization of
-Theorem~\ref{gl:interpolation} to bijective input rows.
+Theorem~\ref{swo:gl:interpolation} to bijective input rows.
 \end{proof}
 
 This is an isomorphism of the class of bounded-support codes with the surreal
@@ -1694,9 +3098,10 @@ line.  It is not an isomorphism between $\No$ and the full higher-order
 collection $\Hsl$.  Different baselines produce classes with the same abstract
 order type, but the argument does not single out a canonical isomorphism.
 
+% ---- source 11, lines 1697-1728
 \begin{corollary}[The class of realizations of a set cut]
-\label{gl:realizers}
-Under the hypotheses of Theorem~\ref{gl:interpolation}, the ordinary class
+\label{swo:gl:realizers}
+Under the hypotheses of Theorem~\ref{swo:gl:interpolation}, the ordinary class
 \[
  K=\{p\in\Pbd:(\forall i\in I\ A_i<_{\lex}p)
                     \text{ and }(\forall j\in J\ p<_{\lex}B_j)\}
@@ -1709,11 +3114,11 @@ It is an ordinary class by comprehension with the two uniform input relations
 as parameters.  Suppose $C,D\subseteq K$ are sets with $C<D$.  Add the
 evaluated codes of $C$ to the lower input family and those of $D$ to the upper
 input family.  All cross inequalities remain strict: members of $K$ already
-lie between the original sides.  Theorem~\ref{gl:interpolation} supplies a
+lie between the original sides.  Theorem~\ref{swo:gl:interpolation} supplies a
 member of $K$ between $C$ and $D$.  Thus $K$ has the set-cut property,
 including empty sides.  It cannot be a set, since applying that property
 with lower side all of $K$ would give a member above itself.  The uniqueness
-statement of Proposition~\ref{prop:universal} now gives the isomorphism.
+statement of Proposition~\ref{swo:prop:universal} now gives the isomorphism.
 \end{proof}
 
 Thus the interpolation theorem produces a full proper-class order of
@@ -1727,9 +3132,10 @@ class of realizations of one specified set cut.  The ordinary class
 $\Pbd$ is therefore a natural scale for density here, while an exhaustive
 class of set codes will be ruled out by a separate diagonal argument.
 
+% ---- source 11, lines 1730-1753
 \subsection{Universality, cylinders, and local cofinality}
 
-\begin{proposition}\label{gl:universality}
+\begin{proposition}\label{swo:gl:universality}
 The surreal line embeds explicitly into $\Pbd$.  Consequently every ordinary
 class linear order embeds into $\Pbd$ and hence into $\Hsl$, in the uniform
 evaluation sense.
@@ -1743,7 +3149,7 @@ contained in $\{0,e_0^{-1}(x)\}$, so it has a code in $\Pbd$, and
  E_x(0)=x,\qquad x<y\ \Longleftrightarrow\ E_x<_{\lex}E_y.
 \]
 For the general assertion, compose this embedding with the class-order
-universality of $\No$ from Proposition~\ref{prop:universal}.
+universality of $\No$ from Proposition~\ref{swo:prop:universal}.
 \end{proof}
 
 Thus all set ordinals, the class order $\Ord$, its reverse, and class orders
@@ -1752,7 +3158,25 @@ This statement concerns the order \emph{between} enumerations.  Each
 individual enumeration in $\Hsl$ still presents a well-order of type
 $\Ord$; its lexicographic environment need not be well-ordered.
 
-\begin{proposition}[Prefix cylinders]\label{gl:cylinders}
+% ---- hand chunk n_univ12
+
+\begin{note}[Source~12, Theorem~6.7, ``Local class universality and cylinders'']\label{swo:st:thm:local}
+\emph{Every class linear order has a uniform order-embedding into $\Hsl(\No)$
+and into every nonempty open interval of $\Hsl(\No)$; for a set-sized
+injective prefix $p$, the cylinder $[p]$ is convex and isomorphic to
+$\Hsl(\No)$ by uniform transformations.} This is \cref{swo:gl:universality}
+and \cref{swo:gl:cylinders}, by the same constructions ($x\mapsto E_x$
+composed with \cref{swo:st:lem:universalNo}; a cylinder through
+$\No\setminus\ran(p)\cong\No$, \cref{swo:st:lem:delete}). Source~12 lists
+the examples ``all set ordinals, their reverses, $\Ord+1$, $\Ord+\Ord$, all
+set-sized lexicographic powers of $\No$ formed as class orders'' and adds that
+``every class linear order'' still means an order whose elements are sets; it
+does not include an unrestricted higher collection such as all class
+well-orders themselves.
+\end{note}
+
+% ---- source 11, lines 1755-1785
+\begin{proposition}[Prefix cylinders]\label{swo:gl:cylinders}
 For an injective set prefix $p$, let
 \[
  C_p=\{E\in\Hsl:E\upharpoonright\dom(p)=p\}.
@@ -1766,8 +3190,8 @@ uniformly set-indexed strict cut, contains a whole such cylinder.
 \begin{proof}
 An enumeration that first departs from $p$ at a coordinate of $p$ lies on the
 same side of all its extensions.  This proves convexity.  Put
-$S=\ran(p)$ and $\delta=\dom(p)$.  By Lemma~\ref{lem:delete} and
-Proposition~\ref{prop:universal}, fix an order-isomorphism
+$S=\ran(p)$ and $\delta=\dom(p)$.  By Lemma~\ref{swo:lem:delete} and
+Proposition~\ref{swo:prop:universal}, fix an order-isomorphism
 $h:\No\to\No\setminus S$.  The ordinal tail $[\delta,\Ord)$ has order
 type $\Ord$, with its canonical increasing parametrization
 $\xi\mapsto\delta+\xi$.  Given $E\in\Hsl$, prepend $p$ to the enumeration
@@ -1775,7 +3199,7 @@ $h\circ E$ on this tail.  The result is a bijection onto $\No$, since its
 prefix covers $S$ and its tail covers exactly the complement.  Conversely,
 restrict an element of $C_p$ to its tail and apply $h^{-1}$.  These
 transformations are inverse and preserve first-difference comparisons.
-The final assertion follows from Theorem~\ref{gl:interpolation}.
+The final assertion follows from Theorem~\ref{swo:gl:interpolation}.
 \end{proof}
 
 In particular, every such interval contains a copy of the entire comparison
@@ -1784,7 +3208,8 @@ self-similarity does not invoke a class whose members are the cylinders;
 for each set prefix the displayed construction gives the required
 transformation, using the indicated class parameters.
 
-\begin{proposition}[Approximants at every point]\label{gl:local}
+% ---- source 11, lines 1787-1821
+\begin{proposition}[Approximants at every point]\label{swo:gl:local}
 For each $F\in\Jinj$ there are uniformly ordinal-indexed families
 $(a_\alpha)$ and $(b_\alpha)$ of codes in $\Pbd$ such that, whenever
 $\alpha<\beta$,
@@ -1799,9 +3224,9 @@ uniformly set-indexed cofinal or coinitial family, respectively.
 
 \begin{proof}
 Choose a fresh value below $F(\alpha)$, append it to
-$F\upharpoonright\alpha$, and use Lemma~\ref{gl:completion} to obtain
+$F\upharpoonright\alpha$, and use Lemma~\ref{swo:gl:completion} to obtain
 $a_\alpha$.  Choose a fresh value above $F(\alpha)$ to obtain $b_\alpha$.
-Lemma~\ref{lem:delete} supplies the fresh values, and the fixed global
+Lemma~\ref{swo:lem:delete} supplies the fresh values, and the fixed global
 well-order makes all choices uniform.  For $\alpha<\beta$, the comparison
 between $a_\alpha$ and $a_\beta$ is decided at $\alpha$, giving the asserted
 inequality; the other comparisons are identical arguments.
@@ -1809,7 +3234,7 @@ inequality; the other comparisons are identical arguments.
 If $E<_{\lex}F$, choose $\alpha>d(E,F)$.  Then $a_\alpha$ agrees with $F$
 at the decisive coordinate, so $E<_{\lex}a_\alpha<_{\lex}F$.  This proves
 cofinality, and the upper assertion is symmetric.  Finally, given any
-uniformly set-indexed family below $F$, Theorem~\ref{gl:interpolation}
+uniformly set-indexed family below $F$, Theorem~\ref{swo:gl:interpolation}
 applied with upper side $\{F\}$ supplies a larger lower approximant in
 $\Pbd$.  Hence the original family was not cofinal.  The dual argument
 proves the coinitiality assertion.
@@ -1820,8 +3245,21 @@ at an actual point of the order.  It is appropriate to say that ordinal-length
 class families suffice and set-sized families do not; assigning an ordinary
 set cardinal to these proper-class cofinalities would obscure the distinction.
 
+% ---- hand chunk n_local12
+
+\begin{note}[Source~12, Proposition~6.4, ``Cofinality and local character'']\label{swo:st:prop:characters}
+\emph{No set-indexed uniform family is cofinal or coinitial in $\Hsl(\No)$;
+there are increasing cofinal and decreasing coinitial families indexed by
+$\Ord$; at every point neither side has a set-indexed cofinal, respectively
+coinitial, family, but both have $\Ord$-indexed ones.} This is
+\cref{swo:gl:local} together with the remark that first entries of a
+set-indexed family are bounded, by the same argument; the cofinal family is
+$(E_\alpha)_{\alpha\in\Ord}$ for the positive ordinals $\alpha$.
+\end{note}
+
+% ---- source 11, lines 1823-1850
 \begin{corollary}[Set saturation is not Dedekind completeness]
-\label{gl:no-suprema}
+\label{swo:gl:no-suprema}
 A nonempty uniformly set-indexed family in $\Hsl$ with no greatest member
 has no supremum in $\Hsl$.  Dually, a family with no least member has no
 infimum.  Both statements also hold in the ordinary class order $\Pbd$.
@@ -1830,7 +3268,7 @@ infimum.  Both statements also hold in the ordinary class order $\Pbd$.
 \begin{proof}
 Suppose that $E$ is the supremum of a family $(A_i)$ with no greatest member.
 Every $A_i$ is then strictly below $E$.  By
-Theorem~\ref{gl:interpolation}, there is a bounded-support enumeration $p$
+Theorem~\ref{swo:gl:interpolation}, there is a bounded-support enumeration $p$
 with $A_i<p<E$ for every $i$.  This makes $p$ a smaller upper bound, a
 contradiction.  The infimum argument reverses the inequalities, and the same
 bounded-support interpolant proves the assertions internal to $\Pbd$.
@@ -1841,7 +3279,7 @@ so that $E_n(0)=n$ for $n\in\mathbb N$.  They form an increasing sequence
 of bounded-support codes.  The enumeration whose first value is the surreal
 ordinal $\omega$ is an upper bound, but there is no least upper bound in
 either $\Pbd$ or $\Hsl$.  The obstruction is not a failure to find bounds:
-Theorem~\ref{gl:interpolation}, with one input side empty, bounds every
+Theorem~\ref{swo:gl:interpolation}, with one input side empty, bounds every
 uniformly set-indexed family above and below.  Rather, whenever a proposed
 bound is strictly beyond every member, there remains room to move the bound
 closer.  This distinction will also matter when the full order of Dedekind
@@ -1849,9 +3287,10 @@ cuts is embedded below.  An order embedding preserves comparisons, but does
 not automatically preserve the role of a point as the least upper bound of
 a specified family.
 
+% ---- source 11, lines 1852-1894
 \subsection{Binary class words, cuts, and diagonalization}
 
-\begin{theorem}\label{gl:binary}
+\begin{theorem}\label{swo:gl:binary}
 The lexicographic orders $\Hsl$ and $\{0,1\}^{\Ord}$ are order-bi-embeddable,
 where a binary word of length $\Ord$ means a class characteristic function.
 Both embeddings have uniform relational definitions in $\GBC$.
@@ -1880,7 +3319,7 @@ the set codes in $\Pbd$.  Associate with $E\in\Hsl$ the class
  D_E=\{\xi\in\Ord:p_\xi<_{\lex}E\}.
 \]
 If $E<_{\lex}F$, then $D_E\subseteq D_F$, and the inclusion is strict:
-Corollary~\ref{gl:pbd-no} supplies a code strictly between $E$ and $F$.
+Corollary~\ref{swo:gl:pbd-no} supplies a code strictly between $E$ and $F$.
 At the least ordinal belonging to $D_F\setminus D_E$, the characteristic
 functions therefore have values $0$ and $1$, respectively.  This proves the
 second order embedding.  Both constructions use elementary class
@@ -1893,7 +3332,68 @@ the word with next bit $0$ and all subsequent bits $1$ immediately precedes
 the word with next bit $1$ and all subsequent bits $0$.  By contrast,
 $\Hsl$ is dense and has no endpoints.
 
-\begin{corollary}\label{gl:cuts}
+% ---- hand chunk binary12_head
+
+\merge\ \emph{Second route (source~12).} Source~12's Section~7 embeds
+$\Hsl(\No)$ into binary class words by concatenating self-delimiting codes of
+the entries, instead of source~11's characteristic function of a dense class;
+the other embedding is source~11's pair swap.
+
+% ---- source 12, lines 721-771
+\subsection{Source 12's route to the binary-class representation}
+\label{swo:st:sec:binaryclass}
+
+Let $\BOrd$ denote the predicate of class subsets of $\Ord$, regarded as
+binary functions on $\Ord$ and compared at their least disagreement.
+This is again notation for a predicate and relation on classes, not a
+powerclass object.
+
+\begin{lemma}[A self-delimiting numerical code]\label[lemma]{swo:st:lem:code}
+Replace every minus in a sign sequence by $00$, every plus by $11$, and
+append the terminal block $01$. The resulting binary ordinal word $c(s)$
+has length $2\cdot \bd(s)+2$. Distinct codewords are prefix-incomparable,
+and their first-difference comparison agrees with numerical comparison
+of the surreals.
+\end{lemma}
+\begin{proof}
+The three two-bit blocks have order $00<01<11$, exactly matching
+$-<\End<+$. At a sign disagreement the first different block decides.
+When one sign sequence ends, its terminal block differs from the next
+sign block of the other. Hence neither complete codeword can be a prefix
+of another, and the numerical comparison is preserved.
+\end{proof}
+
+\begin{theorem}[Binary-class equimorphism]\label{swo:st:thm:binaryclass}
+In the sense of uniform class transformations,
+\[
+ \Hsl(\No)\equim\BOrd.
+\]
+\end{theorem}
+\begin{proof}
+For $E:\Ord\to\No$, concatenate $c(E(\alpha))$ over all ordinals.
+The cumulative length before each stage is a set ordinal. All blocks
+are nonempty, so the cumulative lengths are unbounded in $\Ord$ and the
+result is a binary class on all of $\Ord$. If $E,F$ first disagree at
+$\alpha$, their earlier block lengths and bits agree, and the code of
+that entry decides the same inequality by \cref{swo:st:lem:code}.
+
+For the converse, use the disjoint pairs $a_\alpha<b_\alpha$ in the proof
+of \cref{swo:st:thm:diagonal}. For a binary class $A$, list the pair in ascending
+order if its bit is $0$, and descending order if its bit is $1$.
+Put pair blocks in ordinal order. The first different bit gives the
+first different pair orientation and the correct lexical inequality.
+All labels occur exactly once.
+\end{proof}
+
+This is not an isomorphism assertion. The binary-class order has least
+and greatest elements and adjacent pairs, such as a zero followed by all
+ones versus a one followed by all zeros. By
+\cref{swo:st:thm:etasl}, $\Hsl(\No)$ has no endpoints or adjacent pairs.
+The distinction between equimorphism and isomorphism is already visible
+at this level.
+
+% ---- source 11, lines 1896-1936
+\begin{corollary}\label{swo:gl:cuts}
 The higher-order order of all class initial segments of $\No$, ordered by
 inclusion, embeds into $\Hsl$.  In particular, this holds for any specified
 convention of Dedekind cuts.  Conversely, each $E\in\Hsl$ determines the
@@ -1904,7 +3404,7 @@ separate distinct enumerations.
 \begin{proof}
 For a class initial segment $C\subseteq\No$, form
 $e_0^{-1}[C]\subseteq\Ord$ and apply the pair-swap embedding of
-Theorem~\ref{gl:binary}.  Proper inclusion of initial segments gives proper
+Theorem~\ref{swo:gl:binary}.  Proper inclusion of initial segments gives proper
 inclusion of their inverse images, which implies the correct lex comparison
 of their characteristic functions.  The converse is the dense-class
 construction in the second half of that theorem.
@@ -1925,7 +3425,7 @@ then
  L_E=\{p\in\Pbd:p<_{\lex}E\},\qquad
  U_E=\{p\in\Pbd:E<_{\lex}p\}
 \]
-partition $\Pbd$ into two nonempty classes.  Proposition~\ref{gl:local}
+partition $\Pbd$ into two nonempty classes.  Proposition~\ref{swo:gl:local}
 shows that $L_E$ has no set-sized cofinal subset and $U_E$ has no set-sized
 coinitial subset, while ordinal-indexed class families suffice on both
 sides.  This cut is unfilled in $\Pbd$: a putative filling code and $E$
@@ -1935,7 +3435,8 @@ cut with neither side controlled by a cofinal or coinitial set.  This is a
 description of individual additional enumerations relative to the fixed
 dense class, rather than a classification of all surreal class cuts.
 
-\begin{theorem}[No exhaustive uniform class of codes]\label{gl:diagonal}
+% ---- source 11, lines 1938-1965
+\begin{theorem}[No exhaustive uniform class of codes]\label{swo:gl:diagonal}
 There is no ordinary class of set codes with a single class evaluation
 relation whose evaluated rows include every member of $\Hsl$.
 \end{theorem}
@@ -1944,7 +3445,7 @@ relation whose evaluated rows include every member of $\Hsl$.
 If such a coding existed, global choice would enumerate its codes by
 ordinals, with repetitions if the class of codes were a set.  Write the
 resulting row relation as $\operatorname{Eval}(\xi,\alpha,x)$.
-Use the sorted pairs $u_\xi<v_\xi$ from Theorem~\ref{gl:binary},
+Use the sorted pairs $u_\xi<v_\xi$ from Theorem~\ref{swo:gl:binary},
 and define the class
 \[
  D=\{\xi:\operatorname{Eval}(\xi,2\cdot\xi,u_\xi)\}.
@@ -1964,9 +3465,83 @@ only bounded modifications, or any other one uniformly evaluable family of
 set codes: such a family may be order-dense and may realize all set-indexed
 cuts, while still omitting global enumerations by diagonalization.
 
+% ---- hand chunk diag12_head
+
+\merge\ \emph{Strengthening (source~12).} Source~12's Section~5 proves that no
+uniform family of class well-orders indexed by a class of sets contains every
+class well-order of $\No$, and that the missing one can be chosen set-like;
+its \cref{swo:st:n5.2} is \cref{swo:gl:diagonal}. Its subsection on definable
+classes explains why enumerating formulas does not evade the theorem.
+
+% ---- source 12, lines 496-558
+\subsection{Source 12's strengthening: why the collection of all global well-orders is not a class}
+\label{swo:st:sec:diagonal}
+
+The formal obstacle is not that individual class relations are illegal.
+They are legitimate class variables. The obstacle is attempting to make
+them the elements of an ordinary class of the same theory.
+
+A useful legal replacement is a \emph{uniform family}. For example,
+$F\subseteq I\times\Ord\times\No$ is a class of triples of sets, and its
+section $F_i$ can be a class bijection for every $i\in I$. Similarly a
+class of triples $(i,x,y)$ can code a family of class order relations.
+The index class $I$ may be proper. These are single classes, not functions
+whose values are class objects.
+
+\begin{theorem}[No exhaustive class-coded family]\label{swo:st:thm:diagonal}
+In GBC, no uniform family of class well-orders of $\No$ indexed by a
+class of sets contains every class well-order of $\No$. In fact, for
+every such family there is a \emph{set-like} class well-order not among
+its sections.
+\end{theorem}
+\begin{proof}
+Global choice permits the family to be reindexed by an ordinal or by
+$\Ord$. Extend an ordinal-indexed family to an $\Ord$-indexed one by
+repeating an arbitrary default well-order; an empty family is trivial.
+Write the resulting relations as $R_\alpha$.
+
+Fix a bijection $B:\Ord\to\No$ and partition its range into the pairs
+\[
+ \{B(2\cdot\alpha),B(2\cdot\alpha+1)\}
+   =\{a_\alpha,b_\alpha\},\qquad a_\alpha<b_\alpha.
+\]
+Here multiplication is ordinal multiplication. The blocks of length two
+partition $\Ord$. Define a new enumeration $E$ by placing the two labels
+of pair $\alpha$ in the order \emph{opposite} to their relative order in
+$R_\alpha$. Keep the pair blocks in increasing $\alpha$ order.
+
+This is a class bijection $\Ord\to\No$, defined elementarily from the
+family and $B$. Its induced well-order disagrees with $R_\alpha$ on the
+relative order of $a_\alpha,b_\alpha$. Thus it is not any section of the
+family.
+\end{proof}
+
+\begin{corollary}[No uniform set-code solution]\label{swo:st:n5.2}
+There is no class $D$ of set codes together with a uniform class decoder
+whose decoded relations are exactly all class well-orders of $\No$.
+\end{corollary}
+
+This diagonal theorem applies equally to an attempted exhaustive coding
+of all class subsets of $\Ord$ through the pair construction. It does not
+say that an externally specified set model has too many classes to form
+an external set. It says that the corresponding exhaustive decoder is
+not available \emph{internally at the same size level}.
+
+\subsubsection{Definable classes and the truth-predicate trap}
+
+Formula codes and set parameters are sets, but the semantic map
+``formula plus parameters $\mapsto$ its extension in the universe'' is
+not a uniformly available truth predicate for the universe. For each
+fixed formula one may define a class. One may also work externally with
+all definable classes of a chosen model. Neither maneuver supplies an
+internal universal decoder defeating \cref{swo:st:thm:diagonal}.
+The same caution applies to quantifying over all possible Lean universe
+levels: universe polymorphism is not an internal type of all universes.
+
+% ---- source 11, lines 1967-2004
 \subsection{Omitted ranges and the transition to raw well-orders}
 
-\begin{theorem}[An omitted-range cut]\label{gl:omitted}
+\begin{theorem}[An omitted-range cut]\label{swo:gl:omitted}
 Fix $r\in\No$ and a class bijection
 $F:\Ord\to\No\setminus\{r\}$.  There are increasing and decreasing
 ordinal-indexed families $(a_\alpha)$ and $(b_\alpha)$ in $\Pbd$ such that
@@ -1979,7 +3554,7 @@ unique member of $\Hall$ between these families.
 \end{theorem}
 
 \begin{proof}
-Use the approximants from Proposition~\ref{gl:local}.  They satisfy
+Use the approximants from Proposition~\ref{swo:gl:local}.  They satisfy
 $a_\alpha<_{\lex}F<_{\lex}b_\beta$ for every pair of indices.  If a global
 bijection $E$ lay between both families and differed from $F$ first at
 $\delta$, an approximant with index greater than $\delta$ would place $E$
@@ -1993,18 +3568,19 @@ Its comparisons with the approximants are decided at their prescribed
 ordinal first differences, so it lies between both families.  Conversely,
 the same first-difference argument forces the core $F_S$ of any raw order
 $S$ between the families to equal $F$.  By the core decomposition of
-Theorem~\ref{cf:core}, its residual order must be the unique order on the
+Theorem~\ref{swo:cf:core}, its residual order must be the unique order on the
 singleton $\{r\}$.  Thus $S=R$.
 \end{proof}
 
 The lower and upper families here are indexed by all ordinals, not by sets.
 Accordingly, the missing interpolant does not contradict
-Theorem~\ref{gl:interpolation}.  It gives a concrete boundary between the
+Theorem~\ref{swo:gl:interpolation}.  It gives a concrete boundary between the
 set-cut saturation of the set-like comparison and the additional points
 provided by non-set-like global well-orders.
 
+% ---- source 11, lines 2006-2050
 \begin{example}[Two omitted points produce adjacent raw orders]
-\label{gl:omitted-two}
+\label{swo:gl:omitted-two}
 Let $r<s$ and choose $F:\Ord\to\No\setminus\{r,s\}$ bijectively.  The
 approximants to $F$ have exactly two raw interpolants: append $r,s$ in that
 order, or append $s,r$.  Both raw orders have type $\Ord+2$, and the first
@@ -2017,7 +3593,7 @@ does not extend to all raw well-orders.
 \end{example}
 
 \begin{corollary}[Exactly which raw set cuts admit bounded completions]
-\label{gl:raw-cut}
+\label{swo:gl:raw-cut}
 Let $(A_i)_{i\in I}<_{\lex}(B_j)_{j\in J}$ be a uniformly set-indexed
 strict cut in $\Hall$.  A member of $\Pbd$ lies between the two sides if
 and only if
@@ -2031,7 +3607,7 @@ part of a raw well-order $R$.  The condition is vacuous when a side is empty.
 \begin{proof}
 If the cross cores are different, their comparisons are decided at ordinal
 first differences and have the same direction as the given raw comparisons.
-Apply Theorem~\ref{gl:interpolation} to these uniform families in $\Jinj$.
+Apply Theorem~\ref{swo:gl:interpolation} to these uniform families in $\Jinj$.
 Every comparison of the resulting completion with a raw input is already
 decided within its core, giving the required raw inequalities.
 
@@ -2049,11 +3625,12 @@ baseline, even for a whole set-indexed cut.  Two opposite sides with the same
 core require information in the residual non-set-like order, beyond every
 ordinal coordinate available to a global set-like enumeration.
 
-% END sections/global_lex_structure
+% ---- hand chunk part5
+\part{Foundations, models and formalization}\label{swo:part:models}
 
-
+% ---- source 11, lines 2055-2383
 \section{Formalizing the subject without changing its meaning}
-\label{sec:formalization}
+\label{swo:sec:formalization}
 
 \subsection{A bounded development in ordinary set theory}
 
@@ -2176,7 +3753,7 @@ The containing-universe interpretation makes a further comparison
 decidable by ordinary set-order invariants.
 
 \begin{theorem}[Nonembedding in a full universe]
-\label{thm:universe-nonembedding}
+\label{swo:thm:universe-nonembedding}
 In the preceding full interpretation
 \(U=V_\kappa\), \(\mathcal C=\mathcal P(V_\kappa)\), with ambient
 \(\ZFC\) and \(\kappa\) strongly inaccessible,
@@ -2232,7 +3809,7 @@ inverse evaluation relation can be formed by impredicative
 comprehension.
 
 \begin{theorem}[No definable uniform embedding in
-  \(\KM+\GC\)]\label{thm:km-nonembedding}
+  \(\KM+\GC\)]\label{swo:thm:km-nonembedding}
 For every fixed formula, with fixed set and class parameters,
 that defines a total transformation \(R\mapsto\Phi(R)\) from
 \(\Hall(\No)\) to \(\Hsl(\No)\), the theory \(\KM+\GC\)
@@ -2276,7 +3853,7 @@ fixed class bijection
 \(\No\setminus\{a,b\}\to\No\). The resulting single
 class evaluator, with the ordinary set codes \(q\in\Pbd\),
 contains every global enumeration of \(\No\).
-This contradicts Theorem~\ref{gl:diagonal}.
+This contradicts Theorem~\ref{swo:gl:diagonal}.
 \end{proof}
 
 The inverse evaluator is the decisive extra comprehension
@@ -2382,7 +3959,274 @@ polymorphism is a schema of well-typed constructions, not a
 term denoting the union of all universes. This article supplies
 no new Lean file and makes no machine-verification claim.
 
-\section{Further research questions and topics}\label{sec:research}
+% ---- hand chunk model12_head
+
+\merge\ Source~12's Section~11 identifies both global orders in the full-class
+model $(V_\kappa,\mathcal P(V_\kappa))$ of \cref{swo:thm:universe-nonembedding}.
+Its clause~(iv) gives a second proof of that theorem's non-embedding: the full
+order $\WO(\No_{<\kappa})$ has binary coding length $\kappa^+$
+(\cref{swo:st:thm:setspectrum}), whereas the set-like order
+$\WO_\kappa(\No_{<\kappa})$ has coding length $\kappa$
+(\cref{swo:st:thm:transition}, regular case), and coding length cannot
+decrease under embeddings (\cref{swo:st:lem:strictcube}). Source~11's proof
+counts $2^\kappa$ disjoint intervals against a dense suborder of size
+$\kappa$.
+
+% ---- source 12, lines 1207-1297
+\section{A full-class model that connects the two size levels (source 12)}
+\label{swo:st:sec:model}
+
+Assume in an ambient ZFC universe that $\kappa$ is strongly inaccessible.
+Consider the two-sorted structure
+\[
+ \mathcal M=(V_\kappa,\mathcal P(V_\kappa)),
+\]
+with all external subclasses of $V_\kappa$ available as its classes.
+This is a familiar full-class interpretation of strong class set theory:
+regularity and the strong-limit property ensure the required closure of
+set operations and class Replacement. It satisfies KM and global choice.
+We use this as an explicit relative model, not as a claim that inaccessible
+cardinals are necessary for the earlier GBC theorems.
+
+\begin{theorem}[Exact external identification]\label{swo:st:thm:model}
+For the full-class interpretation above:
+\begin{enumerate}[label=(\roman*)]
+\item the internal surreal carrier is externally $\No_{<\kappa}$, and its
+internal ordinals are the external ordinals below $\kappa$;
+\item the internal set-like global surreal well-orders, viewed as an
+external set order, are exactly $\WO_\kappa(\No_{<\kappa})$;
+\item all internal global surreal well-orders, viewed externally, form
+exactly $\WO(\No_{<\kappa})$;
+\item both external orders have cardinality $2^\kappa$ and ordinal
+spectrum $\beta<\kappa^+$, but their binary coding ranks are respectively
+$\kappa$ and $\kappa^+$. Therefore the full order does not embed into the
+set-like order.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+A sign sequence belongs to $V_\kappa$ precisely when its ordinal domain
+has length less than $\kappa$. Inaccessibility gives
+$|\No_{<\kappa}|=\kappa$.
+
+Every external relation on $\No_{<\kappa}$ is a permitted internal class:
+each ordered pair of its labels is an element of $V_\kappa$. External
+well-foundedness implies internal well-foundedness. Conversely, if a
+relation is externally ill-founded, ambient choice supplies a descending
+$\omega$-sequence. Its countably many labels have ranks bounded below
+$\kappa$ by regularity, so the sequence is an element of $V_\kappa$ and
+witnesses internal ill-foundedness. Thus the well-orders agree.
+
+An internal set has external cardinality less than $\kappa$.
+Conversely, a subset of $\No_{<\kappa}$ of cardinality less than $\kappa$ has
+bounded ranks and is an element of $V_\kappa$. Therefore internal
+set-likeness means that every proper predecessor segment has cardinality
+less than $\kappa$. An external well-order of $\kappa$ labels has that
+property exactly when its order type is $\kappa$, proving (ii).
+Arbitrary external well-orders on those labels have types exactly the
+ordinals of cardinality $\kappa$, proving (iii). Comparisons agree by
+\cref{swo:st:thm:fulllex}. Finally apply
+\cref{swo:st:thm:setspectrum,swo:st:thm:transition} and the monotonicity of coding rank
+under embeddings.
+\end{proof}
+
+\subsection{Why this does not contradict surreal universality}
+
+Internally, each class linear order has elements that are sets of
+$V_\kappa$ and hence externally at most $\kappa$ elements.
+The external collection of all class well-orders has $2^\kappa$
+elements and is not an internal class carrier. Thus it is outside the
+scope of the internal class-universality theorem.
+
+If $\lambda>\kappa$ is another inaccessible cardinal, the entire
+external set $\WO(\No_{<\kappa})$ can be studied as an ordinary set in
+$V_\lambda$. It then embeds into the larger surreal carrier there by
+set-order universality. Its labels have moved up one foundational level;
+no same-level universal object has been created.
+
+The singular cutoff $\beth_\omega$ in \cref{swo:st:sec:transition} must not be
+used as though $V_{\beth_\omega}$ were this model. That rank lacks the
+regularity used in Replacement and in the well-foundedness argument.
+The singular theorem is an ordinary ZFC theorem about a bounded set,
+not a full-class model construction at a singular height.
+
+\subsection{Henkin classes, countable models, and relativity}
+
+If the class collection is some $\mathcal X\subsetneq\mathcal P(M)$,
+only those well-orders whose relations lie in $\mathcal X$ are admitted.
+External cardinality and saturation can then differ from the full-class
+calculation. A countable model may have an externally countable collection
+of admitted classes and external countable cofinal families, while
+internally having no \emph{coded set-indexed} cofinal family. The missing
+external families are simply not internal objects.
+
+For nonstandard or non-$\beta$ class models, one must additionally
+separate internal and external well-foundedness. Our exact identification
+in \cref{swo:st:thm:model} used transitivity, full classes, and regularity; it
+was not asserted for arbitrary models. The general subtleties of class
+well-foundedness are discussed in \cite[\S3]{HamkinsWoodin}.
+
+% ---- hand chunk model12_after
+
+\merge\ Clause~(ii) of \cref{swo:st:thm:model} is source~11's statement that
+the internally set-like well-orders have ambient type $\kappa$, and
+clause~(iii) its statement that unrestricted ones have every ambient type of
+cardinality $\kappa$ (\cref{swo:sec:formalization}). Source~12's remark that
+the singular cutoff $\beth_\omega$ must not be used as though
+$V_{\beth_\omega}$ were such a model is the counterpart of source~11's remark
+that inaccessibility is needed for the full universe example but not for an
+individual birthday fragment.
+
+% ---- hand chunk formal12_head@1
+
+\merge\ The next section is source~12's formalization proposal. The modules it
+names are proposals and do not exist; the existing declarations it cites exist
+at the current revision, and none states a result of this report
+(\cref{swo:sec:formal}).
+
+% ---- source 12, lines 1336-1445
+\section{A formalization architecture with explicit size boundaries (source 12)}
+\label{swo:st:sec:formalization}
+
+\subsection{Start with a universe-polymorphic set theorem}
+
+The most efficient verified starting point is independent of surreal
+arithmetic. For a type $X$ with a linear order, represent a well-order on
+$X$ by its binary relation and a proof of well-foundedness and linearity.
+Define the common prefix by equality of predecessor sets and equality of
+the restricted relations, exactly as in \cref{swo:st:sec:commonprefix}.
+Prove maximality, distinct next labels, and transitivity of comparison.
+This gives a generic theorem reusable for reals, surreal cutoffs, and
+other ordered alphabets.
+
+For a fixed ordinal domain, represent an enumeration as an equivalence
+between an ordinal's carrier and $X$. For all well-orders of a small $X$,
+using relations on $X$ often avoids unnecessarily quantifying over every
+ordinal in a larger universe. The ordinal enumeration can be recovered
+later from the well-order type. This is a representation choice, not an
+identification of all ordinals with a small type.
+
+\subsection{Use the existing sign-sequence foundations selectively}
+
+The inspected repository file
+\begin{quote}\small
+\path{Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceSimplicity.lean}
+\end{quote}
+contains, among others,
+\begin{quote}\small\ttfamily
+isPrefix\_of\_minimum\_birthday\par
+existsUnique\_prefix\_of\_ordConnected\par
+existsUnique\_minimum\_birthday\_of\_ordConnected\par
+existsUnique\_simplest\_separator
+\end{quote}
+\cite{ProveItSimplicity}. Its comments explicitly distinguish uniqueness of a
+simplest separator from existence of separators for arbitrary small cuts.
+The last theorem assumes a separator exists. It must not be imported as
+though it independently established all cut-filling instances.
+
+A suitable interface for the order-theoretic development needs a birthday
+map, a numerical linear order, sign concatenation and truncation, the
+first-difference comparison, and small-cut existence with a birthday
+bound. Field operations can be omitted except in illustrative examples.
+
+\subsection{Suggested proof modules}
+
+\begin{longtable}{@{}p{0.27\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Module & Principal obligations\\
+\midrule
+\endhead
+\texttt{CommonPrefix} & The elementary definition; initiality; maximality;
+next-label inequality; generic full lexical linearity.\\
+\texttt{ExhaustiveLex} & Prefix-freeness; equivalence with ordinal
+first-difference comparison; transport between relations and enumerations.\\
+\texttt{BinaryCubes} & Cylinder fusion; strict hierarchy;
+characteristic-cut embeddings; precise ordinal concatenation.\\
+\texttt{PermutationCoding} & Pair orientation, product scheduler,
+transpositions, and exhaustive output.\\
+\texttt{BirthdayCutoffs} & Size of $\No_{<\kappa}$; prefix-free numerical code;
+cone partition; regular and singular sums.\\
+\texttt{ClassFamilies} & A formal set/class model, sections of class
+relations, baseline enumeration, and diagonal non-enumerability.\\
+\texttt{UniverseModels} & A chosen inaccessible-rank interpretation;
+internal/external well-foundedness and identification of the two orders.\\
+\bottomrule
+\end{longtable}
+
+The finite common-prefix theorem should be proved directly for relations,
+not by first developing all of ordinal arithmetic. The scheduler proof
+should record both surjectivity and the first-row-appearance invariant;
+a bare cardinal pairing equivalence is insufficient. The singular theorem
+must use ordinal sums, never a cardinal cast that silently loses order.
+
+\subsection{Universe accounting}
+
+Schematically, a sign-sequence type built from small ordinal lengths has
+one universe level for its ordinal index and potentially a higher level
+for the total carrier. One should retain explicit levels rather than
+promise a concrete declaration before checking the chosen ordinal API.
+A bounded carrier with a specified small birthday bound is the cleanest
+first implementation.
+
+Three operations must remain visibly different: taking a subtype of one
+fixed surreal carrier; lifting an existing carrier to a larger universe;
+and constructing all surreals of the larger universe. The third adds new
+birthdays and is not merely a type lift. Likewise, a type of relations on
+a fixed carrier can exist at a higher level without becoming a same-level
+class of all class relations.
+
+For global theorems, two safe routes are available. One may formalize GB
+or GBC models and express theorems about their class predicates. Or one
+may formalize the bounded analogue inside a hierarchy of explicit
+universes and separately prove its interpretation in a set/class model.
+Neither route requires an inconsistent type of all types.
+
+\subsection{Axioms, kernels, and honest validation}
+
+A full formalization should record the uses of classical logic, set
+choice, global choice, and any ambient model-existence assumptions.
+The common-prefix comparison should not acquire an ETR assumption merely
+because abstract class order comparison sometimes uses one.
+The inaccessible-rank example is conditional on that ambient cardinal,
+whereas the bounded singular theorem needs no inaccessible cardinal.
+
+The present package includes exact executable tests of finite shadows:
+sign coding, pair coding, the scheduler, the common-prefix formula, and
+finite adjacency. These are useful implementation checks and
+counterexample detectors. They are not kernel-checked proofs of any
+infinite or class theorem, and no supplied file is advertised as such.
+
+% ---- hand chunk formal_after
+
+\merge\ The four plans agree on a first milestone that is independent of
+surreal arithmetic: the predecessor or common-prefix comparison of
+well-orders on a small carrier, prefix-freeness and the
+successor-cardinal obstruction, then bounded-support prefix completion and
+small-family interpolation, reusing the existing small-cut interface. This
+is a proposal recorded for the collection's formalization work; no such
+module exists.
+
+% ---- hand chunk questions_head@1
+\cleardoublepage\phantomsection
+\addcontentsline{toc}{part}{Questions, conclusions and status}
+\part*{Questions, conclusions and status}
+\section{Research questions}\label{swo:sec:questions}
+
+\merge\ The sources' questions are printed per source in the following
+subsections, as proposed continuations, not as a census of open problems.
+Source~12's question on the weak-choice strength (\cref{swo:st:n14.5}) is
+answered by \cref{swo:cf:choice} and printed as an answered remark. Source~11's
+\cref{swo:n16.7} and source~12's \cref{swo:st:n14.3} ask related questions on
+invariants at cutoffs; source~11's \cref{swo:n16.2} and source~12's
+\cref{swo:st:n14.6} on minimal axioms; source~11's \cref{swo:n16.3} and
+source~12's \cref{swo:st:n14.4} on proper-class blocks; source~11's
+\cref{swo:n16.4} and source~12's \cref{swo:st:n14.7} on automorphisms; and
+source~11's \cref{swo:n16.8} and source~12's \cref{swo:st:n14.8} on the class
+realization. Source~12's \cref{swo:st:n14.1} continues the reals report's
+question ``Other ground orders'', which \cref{swo:st:thm:transition} answers
+in part.
+
+% ---- source 11, lines 2385-2596
+\subsection{Source 11's research questions and topics}\label{swo:sec:research}
 
 The questions below are proposed extensions of the present
 development. Except where a source is explicitly named, they
@@ -2390,7 +4234,7 @@ are not asserted to be established open problems in the
 literature. Several ask for a stronger classification than
 the proved results supply.
 
-\subsection{A precise description of the represented cuts}
+\subsubsection{A precise description of the represented cuts}
 
 Fix the dense ordinary class \(\Pbd\cong\No\). Every
 set-like global enumeration determines a lower cut of
@@ -2399,7 +4243,7 @@ set-like global enumeration determines a lower cut of
 first collection does not fill every cut generated by the
 second.
 
-\begin{question}
+\begin{question}\label{swo:n16.1}
 Characterize, using the prefix tree and its numerical
 labels, exactly which class cuts of \(\Pbd\) arise from
 injective \(\Ord\)-words, and which of these words are
@@ -2414,17 +4258,17 @@ every coherent branch. This should first be stated for a
 fixed uniform class cut, before quantifying over an entire
 hyperclass of cuts.
 
-\subsection{The embedding relationship between the two global orders}
+\subsubsection{The embedding relationship between the two global orders}
 
 The set-like fragment and binary class words are
 equimorphic, while the unrestricted order has additional
-convex fibers. Theorem~\ref{thm:universe-nonembedding}
+convex fibers. Theorem~\ref{swo:thm:universe-nonembedding}
 rules out a reverse embedding in the full universe
-interpretation. Theorem~\ref{thm:km-nonembedding} also
+interpretation. Theorem~\ref{swo:thm:km-nonembedding} also
 rules out a definable uniform reverse embedding in
 \(\KM+\GC\).
 
-\begin{question}
+\begin{question}\label{swo:n16.2}
 What is the weakest comprehension scheme over \(\GBC\)
 that proves the uniform nonembedding result? Can the
 inverse-evaluation step be replaced by an elementary
@@ -2441,14 +4285,14 @@ with their minimum-length stratum, especially when
 is already settled above; the remaining questions
 concern strength and wider hypotheses.
 
-\subsection{Iterated residual decomposition}
+\subsubsection{Iterated residual decomposition}
 
 One extraction of the canonical initial \(\Ord\)-part
 requires only elementary class comprehension. A residual
 proper class has another such part, suggesting a hierarchy
 of successive blocks.
 
-\begin{question}
+\begin{question}\label{swo:n16.3}
 What is the exact recursion strength needed to organize
 iterated residual decompositions uniformly, and what
 class order types can occur as their block-index orders?
@@ -2461,13 +4305,13 @@ be compared with known \(\ETR\) results on class
 well-order comparability, rather than assumed to follow
 from the one-step theorem.
 
-\subsection{Recovering the prefix structure from the bare order}
+\subsubsection{Recovering the prefix structure from the bare order}
 
 The definitions exhibit a labeled tree of prefixes.
 An automorphism of the bare lexicographic order need not
 obviously preserve its displayed labels or cylinders.
 
-\begin{question}
+\begin{question}\label{swo:n16.4}
 Which prefix cones, canonical-core fibers, and finite
 permutation blocks are definable from the linear order
 alone? What extra predicates make the reconstruction
@@ -2480,14 +4324,14 @@ Thus local block size alone cannot recover set-likeness.
 An analysis of the automorphism group may clarify what
 the order remembers about the original enumeration.
 
-\subsection{The bounded-support choice of baseline}
+\subsubsection{The bounded-support choice of baseline}
 
 Every baseline enumeration gives an ordinary class
 \(\Pbd\) abstractly isomorphic to \(\No\). If two
 baselines differ on a proper class of positions, their
 bounded-support subfamilies can be disjoint.
 
-\begin{question}
+\begin{question}\label{swo:n16.5}
 How do the two dense classes sit inside the same
 \(\Hsl(\No)\), and when does an automorphism of that
 higher-order order carry one onto the other?
@@ -2499,17 +4343,17 @@ The represented-cut problem is likely relevant. A
 restricted first case is a baseline change obtained by
 an order automorphism of the numerical surreal line.
 
-\subsection{Sharper birthday bounds and minimal codes}
+\subsubsection{Sharper birthday bounds and minimal codes}
 
 The explicit code gives a usable bound
 \[
- \ell(E(f))=\sum_{i<\dom f}
-              \bigl(1+2\cdot\ell(f(i))+2\bigr).
+ \bd(E(f))=\sum_{i<\dom f}
+              \bigl(1+2\cdot\bd(f(i))+2\bigr).
 \]
 It is designed for a transparent proof, not asserted
 to be optimal.
 
-\begin{question}
+\begin{question}\label{swo:n16.6}
 Which birthday bounds are optimal for uniform embeddings
 of injective surreal words? Can shorter prefix-free
 coefficient codes preserve useful simplicity relations?
@@ -2521,14 +4365,14 @@ A sharpened result should specify whether it preserves
 only numerical order, prefix extension, simplicity, or
 all of these.
 
-\subsection{Saturation of more general bounded alphabets}
+\subsubsection{Saturation of more general bounded alphabets}
 
 If \(X\) is an \(\eta_\kappa\) order of cardinality
 \(\kappa\), its minimal-length permutation order inherits
 \(\eta_\kappa\). Birthday fragments often have cardinality
 \(2^{<\kappa}\), which may exceed \(\kappa\).
 
-\begin{question}
+\begin{question}\label{swo:n16.7}
 Determine the exact cut spectrum and point characters of
 \(\WO_\lambda(\No_{<\kappa})\), where
 \(\lambda=2^{<\kappa}\), without assuming
@@ -2540,13 +4384,13 @@ number and birthdays of possible numerical separators.
 The real-alphabet formulas in the precursor report
 cannot settle this case by substitution.
 
-\subsection{Class extensions and available global orders}
+\subsubsection{Class extensions and available global orders}
 
 Two models may have the same sets and hence the same
 individual surreal numbers, but different available
 classes and different global well-orders.
 
-\begin{question}
+\begin{question}\label{swo:n16.8}
 Which features of the lexicographic theory are invariant
 under extensions of the class part, and how does the
 represented-cut collection change?
@@ -2558,9 +4402,9 @@ enumerations changes the larger totality. This offers a
 way to distinguish properties of the labeled surreal
 order from properties of the surrounding class theory.
 
-\subsection{A verified first milestone for ProveIt}
+\subsubsection{A verified first milestone for ProveIt}
 
-\begin{question}
+\begin{question}\label{swo:n16.9}
 Can the explicit word compression and the direct
 predecessor comparison be formalized first, with a small,
 reusable interface independent of surreal arithmetic?
@@ -2575,14 +4419,14 @@ small-family interpolation theorem. This ordering keeps
 the central algorithms separate from a formalization of
 an entire higher-order set theory.
 
-\subsection{Uniform mathematical constructions indexed by well-orders}
+\subsubsection{Uniform mathematical constructions indexed by well-orders}
 
 The Kanovei--Shelah method suggests using a definable
 linear order of codes to index constructions without
 selecting one privileged code. The surreal setting
 raises additional smallness conditions.
 
-\begin{question}
+\begin{question}\label{swo:n16.10}
 Which finite-support or bounded-support constructions
 can be indexed by a uniform class family of global
 well-orders, and which require a genuine higher-order
@@ -2595,8 +4439,170 @@ algebra or model theory. The diagonal theorem prevents
 an exhaustive class-code shortcut, but leaves many
 useful uniform families available.
 
+% ---- hand chunk q11_after
+
+\merge\ Status of source~11's questions after the merge: all remain open.
+Source~12's dichotomy (\cref{swo:st:thm:transition}) computes the binary
+coding length of $\WO_\mu(\No_{<\kappa})$ in every case, but not the cut
+spectrum or the point characters that \cref{swo:n16.7} asks for.
+
+% ---- source 12, lines 1447-1549
+\subsection{Source 12's research questions and prioritized program}
+\label{swo:st:sec:questions}
+
+The following are proposed continuations. Except where an older question
+is explicitly attributed, they are not claimed to be recognized open
+problems in the literature.
+
+\begin{question}[All fixed enumeration types]\label{swo:st:n14.1}
+Determine $\bl(\WO_\alpha(\No_{<\kappa}))$ for every ordinal $\alpha$ of
+cardinality $2^{<\kappa}$, not only the minimal type. Can the answer be
+expressed by a precise ordinal-sum invariant of admissible entry-code
+lengths, together with the finite terminal permutation factor?
+\end{question}
+The singular theorem identifies the first obstruction that any such
+formula must capture. A useful initial target is
+$\alpha=\mu\cdot2$ and then $\mu\cdot\gamma+n$ for finite $n$.
+
+\begin{question}[Noncardinal birthday bounds]\label{swo:st:n14.2}
+For an arbitrary infinite ordinal $\theta$, classify the minimal
+permutation order of $\No_{<\theta}$. Which features of the ordinal tail of
+$\theta$, beyond $|\theta|$ and $|\No_{<\theta}|$, survive in its coding
+rank and local character?
+\end{question}
+The cone argument for an initial cardinal relies on closure under
+$i+1+\alpha$ below the cutoff. At a noncardinal cutoff that closure can
+fail and should be replaced by a stratified family of cones.
+
+\begin{question}[Isomorphism, not merely equimorphism]\label{swo:st:n14.3}
+Classify the order topology and isomorphism invariants of
+$\WO_\mu(\No_{<\kappa})$. At regular cutoffs, and at singular strong limits,
+what are its density, cellularity, cut-character spectra, and degrees of
+homogeneity? Which distinguish it from other orders of the same binary
+rank?
+\end{question}
+The binary cube itself cannot be the literal answer: it has endpoints
+and adjacent pairs, while the surreal permutation order has different
+local behavior. A dense suborder equimorphic with a cube can retain
+substantial information not measured by rank.
+
+\begin{question}[The hierarchy of proper-class blocks]\label{swo:st:n14.4}
+Study the subpredicates of $\Hall(\No)$ with types
+$\Ord\cdot\gamma+\alpha$ for fixed set ordinals $\gamma,\alpha$.
+Give explicit, size-safe embedding and nonembedding theorems between
+these subpredicates and the set-like order.
+\end{question}
+The inaccessible-model calculation provides concrete bounded targets and
+shows that the full order is strictly more complex than the set-like
+order there. Extending binary fusion to uniform transformations on
+class predicates may require stronger comprehension; that dependence
+should be proved, not assumed away.
+
+\begin{remark}[Source 12's question ``The exact weak-choice strength'', answered]\label{swo:st:n14.5}
+\emph{Source 12's text:} Remove set-level AC from the base theory in \cref{swo:st:thm:choice}. What
+principle is equivalent to a class well-order of the sign-sequence
+surreals then? Compare it with coherent well-ordering of power sets of
+ordinals and with uniform ordinal presentations of transitive closures.
+
+\merge\ \emph{Answered (2 October 2026).} Source 11's \cref{swo:cf:choice} proves the
+equivalence over GB with no set-level choice: a class well-order of the
+sign-sequence surreals is equivalent to global choice. Its proof is
+precisely a coherent well-ordering of the power sets $V_{\beta+1}$,
+obtained by set-valued recursion from the given well-order on the sign
+sequences of each length $\theta$; see \cref{swo:rem:answered-choice}.
+\end{remark}
+This is separate from the question whether surreal universality for
+class linear orders itself implies global choice, raised by Hamkins
+\cite{HamkinsUnivChoice}. The present equivalence concerns a well-order of
+all surreal labels and does not settle that universality question.
+
+\begin{question}[Elementary common-prefix theory]\label{swo:st:n14.6}
+Formalize \cref{swo:st:thm:fulllex} over a precisely chosen weak class theory.
+How little comprehension and class well-foundedness are needed? Can one
+characterize the same relation directly by a formula avoiding explicit
+mention of the common-prefix class?
+\end{question}
+The definition already expands to elementary quantifiers. A mechanized
+proof would make the separation from abstract class comparability
+particularly transparent and yield a reusable theorem for other carriers.
+
+\begin{question}[Automorphisms and finite condensation]\label{swo:st:n14.7}
+Determine natural automorphism groups of the full lexicographic order,
+and of the order after collapsing finite residual blocks. Which
+operations arise from numerical automorphisms or permutations of the
+underlying surreal carrier, and which genuinely act on enumeration
+structure?
+\end{question}
+Finite-tail blocks are now characterized intrinsically by adjacency.
+That makes condensation a plausible first invariant, but no complete
+classification of its quotient is claimed here.
+
+\begin{question}[Dependence on the class realization]\label{swo:st:n14.8}
+Fix a transitive set universe $M$ and vary its admissible class collection
+$\mathcal X$. Which external order invariants of the admitted global
+well-orders detect this change? Can the order reconstruct useful
+information about available truth predicates or class choice functions?
+\end{question}
+The diagonal obstruction persists internally, while external cardinality
+can vary. This makes the distinction between full and Henkin semantics a
+source of mathematical questions rather than merely a formal warning.
+
+\begin{question}[Compatibility between birthday cutoffs]\label{swo:st:n14.9}
+Construct and analyze coherent embeddings from the well-order spaces at
+smaller birthday cutoffs into those at larger cutoffs. Which choices of
+reserve labels and tail enumerations are functorial, and which preserve
+finite condensation, coding ranks, or canonical cylinders?
+\end{question}
+Naively extending every enumeration by an arbitrary tail can change
+minimal length, and fixed choices need not be compatible across three
+cutoffs. A coherence theorem would make universe-lifting arguments much
+more useful in a proof assistant.
+
+% ---- hand chunk q12_after
+
+\merge\ Status of source~12's questions after the merge: \cref{swo:st:n14.5} is
+answered (it is printed above as a remark). \Cref{swo:st:n14.1} continues the
+reals report's question ``Other ground orders'' for the surreal cutoffs, whose
+minimal type \cref{swo:st:thm:transition} settles. The others remain open.
+
+% ---- hand chunk conclusions_head@1
+\section{Source 12's conclusion}\label{swo:sec:conclusions}
+
+\merge\ Source~11 has no conclusion section; its summary is
+\cref{swo:sec:status}.
+
+% ---- source 12, lines 1551-1577
+\subsection{Source 12's conclusion}
+
+There is a rigorous full lexicographic order of all global surreal
+well-orders, provided it is understood as a relation on class objects,
+not as an ordinary class containing those objects. Its comparison needs
+no universal enumeration of abstract class order types: the largest
+common \emph{labelled} prefix is elementary and sufficient.
+
+The set-like suborder has a particularly uniform geometry. It fills
+set-indexed cuts, contains every class linear order even locally, and is
+equimorphic with binary classes on $\Ord$. The unrestricted order adds
+new proper-class prefix phenomena, including finite adjacent blocks.
+The diagonal theorem prevents either construction from being exhausted
+by a same-level class of set codes.
+
+At set-sized birthday bounds the theory becomes quantitative. The full
+well-order space of a carrier of cardinality $\mu$ has exact ordinal
+spectrum below $\mu^+$ and binary rank $\mu^+$. The minimal surreal slice
+has rank $\mu$, except at singular strong-limit cutoffs, where it has
+rank $\kappa\cdot\kappa$. This is an order-theoretic effect of cofinal
+blocks of code lengths, invisible to cardinal counting alone.
+
+The inaccessible-rank interpretation shows exactly how these facts can
+coexist: internal classes and the external collection of all such
+classes occupy different levels. Respecting those levels removes the
+apparent paradox without weakening the embedding and universality
+questions into trivialities.
+
+% ---- source 11, lines 2598-2658
 \section{Results, assumptions, and verification status}
-\label{sec:status}
+\label{swo:sec:status}
 
 \begin{center}
 \small
@@ -2657,8 +4663,45 @@ whole repository has been audited, or that every
 research question listed here is a previously published
 open problem.
 
+% ---- hand chunk ledgers_head
+
+\merge\ The other sources' ledgers follow; each records the hypotheses its
+source used, not that each is necessary.
+
+% ---- source 12, lines 1580-1606
+\subsection{Source 12's proof-dependency and assumption ledger}
+
+\begin{longtable}{@{}p{0.32\textwidth}p{0.24\textwidth}p{0.36\textwidth}@{}}
+\toprule
+Result & Stated setting & Essential input\\
+\midrule
+\endhead
+Common labelled prefix and full lexical comparison & GBC; comparison is
+elementary & Existing well-orders; class minima; ambient linear order.\\
+Global-choice equivalence & GB + set AC & Ordinal coding of transitive
+closures; restriction of a surreal well-order to a set of codes.\\
+No exhaustive class-coded family & GBC & A baseline $\Ord$-bijection;
+elementary diagonal pair orientation.\\
+Set-like cut interpolation & GBC & Set-sized discrepancy bound; surreal
+small-cut filling; prefix extension.\\
+Local class universality & GBC & Set-valued forth and back-and-forth
+recursions; global enumeration.\\
+Finite-tail adjacency & GBC & Label transpositions; finite residual
+cylinders; no infinite order well-ordered in both directions.\\
+Set-sized full spectra & ZFC & Pair coding; regularity of $\mu^+$;
+cylinder-fusion nonembedding.\\
+Minimal-slice singular transition & ZFC & Cone partition; scheduler;
+ordinal block sums; regularity or singular cofinality as appropriate.\\
+Full-class rank model & Ambient ZFC + an inaccessible $\kappa$ & Closure
+of $V_\kappa$; all external classes; regularity for descending sequences.\\
+\bottomrule
+\end{longtable}
+
+% ---- hand chunk appendix_head
 \appendix
-\section{Source crosswalk and reproducibility}\label{app:sources}
+
+% ---- source 11, lines 2661-2700
+\section{Source crosswalk and reproducibility}\label{swo:app:sources}
 
 The immutable sources used in the targeted audit are
 recorded in the accompanying source audit. For convenient
@@ -2699,38 +4742,327 @@ Run \code{python3 finite\_checks.py} for the finite checks.
 The supplied PDF was compiled from the included sources
 and inspected after rendering.
 
+% ---- hand chunk app11_after
+
+\merge\ \emph{Delivery names.} The paragraph above describes source~11's
+delivered package. Its \code{surreal\_well\_orders.tex} is shipped as
+\path{article.tex}, which this merged text replaces; its PDF is not shipped
+(\path{article.pdf} is a build of this text); its \code{finite\_checks.py} and
+\code{finite\_checks\_results.txt} are
+\path{code/11-raw-orders-finite_checks.py} and
+\path{data/11-raw-orders-finite_checks_results.txt}; the ``accompanying source
+audit'' is \path{11-raw-orders-repository_audit.md}. Build this report with
+\code{latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex}, and
+rerun the checks as in \cref{swo:app:checks}. The same applies to the
+reproducibility records of the other sources that follow.
+
+% ---- source 12, lines 1608-1623
+\subsection{Source 12: reproducibility and inspection record}
+
+The package contains \texttt{article.tex}, the compiled
+\texttt{article.pdf}, a build script, an exact finite-check program,
+its recorded JSON output, and a research-status and source-audit file.
+The Python program uses only the standard library. The recorded run
+passed all 180,905 finite comparison cases. Its comparisons are exact; there are no floating-point tolerances or inferred transfinite
+results. The PDF was compiled and rendered for visual inspection.
+
+The repository audit directly inspected the merged real-well-order
+README and the sign-sequence simplicity Lean source at the stated commit.
+It did not independently compile the repository or verify the predecessor
+report's proofs. The needed predecessor patterns have therefore been
+reproved in the present manuscript. Literature checking was focused on
+surreal foundations, Kanovei--Shelah indexing, and class recursion and
+well-orders; it was not sufficient to certify historical originality.
+
+% ---- hand chunk app_checks@1
+\section{The finite checks as shipped}\label{swo:app:checks}
+
+\merge\ The programs of sources~11 and~12 use only the Python standard library
+and check finite instances; they verify no transfinite, class-theoretic or
+cardinal statement. Rerun on copies on 2 October 2026 (Python~3.14.4,
+Windows), each reproduced its recorded output exactly apart from line endings
+(both write CRLF on Windows; compare with \code{diff --strip-trailing-cr}):
+\path{code/11-raw-orders-finite_checks.py} prints the content of
+\path{data/11-raw-orders-finite_checks_results.txt} (465 sign-code pairs,
+79,800 word-code pairs, 266,272 pairs of permutations, 867 adjacent), and
+\path{code/12-singular-finite_checks.py --output} writes the content of
+\path{data/12-singular-finite_checks.json} (180,905 cases). Always pass an
+output path outside the report directory. The delivered
+\path{code/12-singular-build.sh} changes into \path{code/} and then calls
+\code{code/finite\_checks.py}; it builds nothing in this layout.
+
+% ---- hand chunk app_abstracts_head
+\section{The other sources' title pages and abstracts}\label{swo:app:abstracts}
+
+\merge\ The results these summaries announce are printed in the body; the
+summaries are kept for the record.
+
+\subsection*{Source 12}
+\paragraph{Title-page summary.}
+
+% ---- source 12, lines 86-111
+\textbf{Main distinction.} An arbitrary class well-order of $\No$ need not
+have order type $\Ord$. Nevertheless, two such well-orders have an
+\emph{elementarily definable largest common labelled initial segment},
+possibly a proper class. This supplies a lexicographic comparison in GBC
+without invoking general class well-order comparability or ETR.
+
+\medskip
+\textbf{Principal quantitative result.} Put
+$\No_{<\kappa}=\{s:\alpha\to\{-,+\}:\alpha<\kappa\}$ and
+$\mu=|\No_{<\kappa}|=2^{<\kappa}$, for an infinite initial cardinal $\kappa$.
+The minimal-length permutation order satisfies
+\[
+\WO_\mu(\No_{<\kappa})\equim
+\begin{cases}
+\BB_{\kappa\cdot\kappa},&\mu=\kappa\text{ and }\cf\kappa<\kappa,\\
+\BB_\mu,&\text{otherwise},
+\end{cases}
+\]
+where $\BB_\gamma=(2^\gamma,<_{\lex})$ and $\equim$ means mutual
+order-embeddability, not isomorphism.
+
+\medskip
+\textbf{Status.} This is an AI-assisted, unrefereed research manuscript.
+Proofs are supplied for the stated results; historical priority is not
+claimed. The accompanying exact finite tests do not verify the transfinite
+arguments. No new Lean formalization is claimed.
+
+% ---- hand chunk abs12_mid
+
+\paragraph{Abstract.}
+
+% ---- source 12, lines 117-143
+We study the lexicographic order of well-orderings of the surreal numbers,
+carefully distinguishing bounded sets of surreals, set-like global
+well-orders, and arbitrary global class well-orders. For the full class
+problem, ordinal-indexed enumerations are insufficient. We construct the
+largest common labelled initial segment of two well-orders directly from
+their relations, prove that comparison of their next elements defines a
+linear order, and show that this construction needs only elementary class
+comprehension once the well-orders exist. Over GB with set choice, the
+existence of any class well-order of the surreals is equivalent to global
+choice. The collection of all these well-orders is not itself an ordinary
+class of GBC or Kelley--Morse theory; a diagonal theorem rules out any
+uniform exhaustive coding by a class of sets.
+
+For set-like global well-orders we prove density, interpolation for
+set-indexed cuts, local universality for class linear orders, and mutual
+embeddability with the lexicographic comparison of binary classes on
+$\Ord$. For unrestricted global well-orders we classify adjacent pairs:
+they arise precisely from finite residual permutations after a common,
+necessarily proper-class, prefix. At a birthday cutoff $\kappa$, we obtain
+an exact regular/singular dichotomy for the binary coding rank of
+minimal-length enumerations. We also establish the exact ordinal and
+binary-cube embedding spectra for the full set-sized order. Finally, a
+full-class model based on an inaccessible rank explains exactly how the
+bounded and global theories fit together, and provides a rigorous example
+in which the full order and the set-like order have the same cardinality
+and ordinal spectrum but different coding ranks. Explicit proof-assistant
+interfaces and further research questions are included.
+
+% ---- hand chunk crosswalk_head
+\section{Crosswalk of the sources' numbered statements}\label{swo:app:crosswalk}
+
+\merge\ Each row gives a numbered statement of a source (numbered as in that
+source's own PDF), and where it is printed or recorded here. A note records a
+statement proved here by the same argument; a section labelled ``route''
+prints a different argument. Labels are the source's own with its prefix, or
+\code{swo:}\emph{sub}\code{:n}\emph{number} for unlabelled statements.
+
+% ---- generated crosswalk
+\subsection{Source 11 (base)}
+\begingroup\small
+\begin{longtable}{@{}p{0.11\textwidth}p{0.47\textwidth}p{0.34\textwidth}@{}}
+\toprule
+No. & Statement in source 11 & Printed here as\\
+\midrule\endhead
+3.1 & Definition & \Cref{swo:n3.1}, p.~\pageref{swo:n3.1}\\
+3.2 & Lemma (Deleting a set) & \Cref{swo:lem:delete}, p.~\pageref{swo:lem:delete}\\
+3.3 & Proposition & \Cref{swo:prop:universal}, p.~\pageref{swo:prop:universal}\\
+4.1 & Theorem (Cardinality and exact ordinal spectrum) & \Cref{swo:sw:setspectrum}, p.~\pageref{swo:sw:setspectrum}\\
+4.2 & Proposition (Exactly where jumps occur) & \Cref{swo:sw:adjacency}, p.~\pageref{swo:sw:adjacency}\\
+5.1 & Corollary & \Cref{swo:sw:cutoffspectrum}, p.~\pageref{swo:sw:cutoffspectrum}\\
+5.2 & Lemma & \Cref{swo:sw:stageeta}, p.~\pageref{swo:sw:stageeta}\\
+6.1 & Theorem (Explicit sign coding) & \Cref{swo:sw:code}, p.~\pageref{swo:sw:code}\\
+6.2 & Proposition (Birthday bounds) & \Cref{swo:sw:codebounds}, p.~\pageref{swo:sw:codebounds}\\
+7.1 & Theorem (Exact local character) & \Cref{swo:sw:character}, p.~\pageref{swo:sw:character}\\
+7.2 & Corollary & \Cref{swo:sw:notiso}, p.~\pageref{swo:sw:notiso}\\
+8.1 & Theorem (Word-cut classification) & \Cref{swo:sw:cutclassification}, p.~\pageref{swo:sw:cutclassification}\\
+8.2 & Corollary (Successor words) & \Cref{swo:sw:successors}, p.~\pageref{swo:sw:successors}\\
+9.1 & Proposition & \Cref{swo:sw:permutationeta}, p.~\pageref{swo:sw:permutationeta}\\
+10.1 & Theorem (Existence and global choice) & \Cref{swo:cf:choice}, p.~\pageref{swo:cf:choice}\\
+11.1 & Lemma (Unique first disagreement) & \Cref{swo:cf:first}, p.~\pageref{swo:cf:first}\\
+11.2 & Theorem (Raw lexicographic order) & \Cref{swo:cf:lex}, p.~\pageref{swo:cf:lex}\\
+11.3 & Proposition (Convex prefix cones) & \Cref{swo:cf:cones}, p.~\pageref{swo:cf:cones}\\
+12.1 & Theorem (Canonical initial part) & \Cref{swo:cf:core}, p.~\pageref{swo:cf:core}\\
+12.2 & Example (Two proper blocks) & \Cref{swo:cf:two_blocks}, p.~\pageref{swo:cf:two_blocks}\\
+12.3 & Proposition (Convex fibers) & \Cref{swo:cf:fibers}, p.~\pageref{swo:cf:fibers}\\
+12.4 & Remark (Singleton fibers and iteration) & \Cref{swo:cf:singleton}, p.~\pageref{swo:cf:singleton}\\
+13.1 & Lemma (Extreme enumerations) & \Cref{swo:cf:extreme}, p.~\pageref{swo:cf:extreme}\\
+13.2 & Theorem (Exact adjacency criterion) & \Cref{swo:cf:adjacency}, p.~\pageref{swo:cf:adjacency}\\
+13.3 & Example (An adjacent pair of type \(\Ord+2\)) & \Cref{swo:cf:ordtwo}, p.~\pageref{swo:cf:ordtwo}\\
+14.1 & Definition & \Cref{swo:gl:uniform}, p.~\pageref{swo:gl:uniform}\\
+14.2 & Definition & \Cref{swo:gl:bounded-codes}, p.~\pageref{swo:gl:bounded-codes}\\
+14.3 & Lemma (Completion of an arbitrary set prefix) & \Cref{swo:gl:completion}, p.~\pageref{swo:gl:completion}\\
+14.4 & Theorem (Prefix interpolation) & \Cref{swo:gl:interpolation}, p.~\pageref{swo:gl:interpolation}\\
+14.5 & Corollary & \Cref{swo:gl:pbd-no}, p.~\pageref{swo:gl:pbd-no}\\
+14.6 & Corollary (The class of realizations of a set cut) & \Cref{swo:gl:realizers}, p.~\pageref{swo:gl:realizers}\\
+14.7 & Proposition & \Cref{swo:gl:universality}, p.~\pageref{swo:gl:universality}\\
+14.8 & Proposition (Prefix cylinders) & \Cref{swo:gl:cylinders}, p.~\pageref{swo:gl:cylinders}\\
+14.9 & Proposition (Approximants at every point) & \Cref{swo:gl:local}, p.~\pageref{swo:gl:local}\\
+14.10 & Corollary (Set saturation is not Dedekind completeness) & \Cref{swo:gl:no-suprema}, p.~\pageref{swo:gl:no-suprema}\\
+14.11 & Theorem & \Cref{swo:gl:binary}, p.~\pageref{swo:gl:binary}\\
+14.12 & Corollary & \Cref{swo:gl:cuts}, p.~\pageref{swo:gl:cuts}\\
+14.13 & Theorem (No exhaustive uniform class of codes) & \Cref{swo:gl:diagonal}, p.~\pageref{swo:gl:diagonal}\\
+14.14 & Theorem (An omitted-range cut) & \Cref{swo:gl:omitted}, p.~\pageref{swo:gl:omitted}\\
+14.15 & Example (Two omitted points produce adjacent raw orders) & \Cref{swo:gl:omitted-two}, p.~\pageref{swo:gl:omitted-two}\\
+14.16 & Corollary (Exactly which raw set cuts admit bounded completions) & \Cref{swo:gl:raw-cut}, p.~\pageref{swo:gl:raw-cut}\\
+15.1 & Theorem (Nonembedding in a full universe) & \Cref{swo:thm:universe-nonembedding}, p.~\pageref{swo:thm:universe-nonembedding}\\
+15.2 & Theorem & \Cref{swo:thm:km-nonembedding}, p.~\pageref{swo:thm:km-nonembedding}\\
+16.1 & Research question & \Cref{swo:n16.1}, p.~\pageref{swo:n16.1}\\
+16.2 & Research question & \Cref{swo:n16.2}, p.~\pageref{swo:n16.2}\\
+16.3 & Research question & \Cref{swo:n16.3}, p.~\pageref{swo:n16.3}\\
+16.4 & Research question & \Cref{swo:n16.4}, p.~\pageref{swo:n16.4}\\
+16.5 & Research question & \Cref{swo:n16.5}, p.~\pageref{swo:n16.5}\\
+16.6 & Research question & \Cref{swo:n16.6}, p.~\pageref{swo:n16.6}\\
+16.7 & Research question & \Cref{swo:n16.7}, p.~\pageref{swo:n16.7}\\
+16.8 & Research question & \Cref{swo:n16.8}, p.~\pageref{swo:n16.8}\\
+16.9 & Research question & \Cref{swo:n16.9}, p.~\pageref{swo:n16.9}\\
+16.10 & Research question & \Cref{swo:n16.10}, p.~\pageref{swo:n16.10}\\
+\bottomrule
+\end{longtable}
+\endgroup
+\subsection{Source 12}
+\begingroup\small
+\begin{longtable}{@{}p{0.11\textwidth}p{0.47\textwidth}p{0.34\textwidth}@{}}
+\toprule
+No. & Statement in source 12 & Printed here as\\
+\midrule\endhead
+3.1 & Definition (Common labelled prefix) & \Cref{swo:st:n3.1}, p.~\pageref{swo:st:n3.1}\\
+3.2 & Lemma (Maximal-prefix lemma) & \Cref{swo:st:lem:common}, p.~\pageref{swo:st:lem:common}\\
+3.3 & Definition (Full lexicographic comparison) & \Cref{swo:st:n3.3}, p.~\pageref{swo:st:n3.3}\\
+3.4 & Theorem (Full class lexicographic order) & \Cref{swo:st:thm:fulllex}, p.~\pageref{swo:st:thm:fulllex}\\
+3.5 & Remark (Why this does not prove class order-type comparability) & \Cref{swo:st:n3.5}, p.~\pageref{swo:st:n3.5}\\
+3.6 & Example (A disagreement after every ordinary ordinal) & \Cref{swo:st:n3.6}, p.~\pageref{swo:st:n3.6}\\
+3.7 & Corollary (Agreement with enumeration lexicography) & \Cref{swo:st:n3.7}, p.~\pageref{swo:st:n3.7}\\
+4.1 & Theorem (Choice equivalence) & \Cref{swo:st:thm:choice}, p.~\pageref{swo:st:thm:choice}\\
+4.2 & Remark (The explicit set-choice hypothesis) & \Cref{swo:st:n4.2}, p.~\pageref{swo:st:n4.2}\\
+5.1 & Theorem (No exhaustive class-coded family) & \Cref{swo:st:thm:diagonal}, p.~\pageref{swo:st:thm:diagonal}\\
+5.2 & Corollary (No uniform set-code solution) & \Cref{swo:st:n5.2}, p.~\pageref{swo:st:n5.2}\\
+6.1 & Lemma (Extending a set prefix) & \Cref{swo:st:lem:extend}, p.~\pageref{swo:st:lem:extend}\\
+6.2 & Lemma (Avoiding a forbidden set) & \Cref{swo:st:lem:avoid}, p.~\pageref{swo:st:lem:avoid}\\
+6.3 & Theorem (Set-indexed interpolation) & \Cref{swo:st:thm:etasl}, p.~\pageref{swo:st:thm:etasl}\\
+6.4 & Proposition (Cofinality and local character) & \Cref{swo:st:prop:characters}, p.~\pageref{swo:st:prop:characters}\\
+6.5 & Lemma (Surreal universality, with the size of the recursion exposed) & \Cref{swo:st:lem:universalNo}, p.~\pageref{swo:st:lem:universalNo}\\
+6.6 & Lemma (Deleting a set does not change the numerical class order) & \Cref{swo:st:lem:delete}, p.~\pageref{swo:st:lem:delete}\\
+6.7 & Theorem (Local class universality and cylinders) & \Cref{swo:st:thm:local}, p.~\pageref{swo:st:thm:local}\\
+7.1 & Lemma (A self-delimiting numerical code) & \Cref{swo:st:lem:code}, p.~\pageref{swo:st:lem:code}\\
+7.2 & Theorem (Binary-class equimorphism) & \Cref{swo:st:thm:binaryclass}, p.~\pageref{swo:st:thm:binaryclass}\\
+8.1 & Definition (A prefix cylinder in the full order) & \Cref{swo:st:n8.1}, p.~\pageref{swo:st:n8.1}\\
+8.2 & Proposition (Residual-order decomposition) & \Cref{swo:st:prop:residual}, p.~\pageref{swo:st:prop:residual}\\
+8.3 & Theorem (Exact adjacency criterion) & \Cref{swo:st:thm:adjacency}, p.~\pageref{swo:st:thm:adjacency}\\
+8.4 & Corollary (Proper-class prefixes are responsible) & \Cref{swo:st:n8.4}, p.~\pageref{swo:st:n8.4}\\
+9.1 & Lemma (Prefix-freeness of exhaustive enumerations) & \Cref{swo:st:lem:prefixfree}, p.~\pageref{swo:st:lem:prefixfree}\\
+9.2 & Lemma (Strict binary hierarchy) & \Cref{swo:st:lem:strictcube}, p.~\pageref{swo:st:lem:strictcube}\\
+9.3 & Lemma (Characteristic-cut coding) & \Cref{swo:st:lem:cutcode}, p.~\pageref{swo:st:lem:cutcode}\\
+9.4 & Lemma (Pair orientation coding) & \Cref{swo:st:lem:pairs}, p.~\pageref{swo:st:lem:pairs}\\
+9.5 & Lemma (No $\mu^+$-long monotone chain) & \Cref{swo:st:lem:nochain}, p.~\pageref{swo:st:lem:nochain}\\
+9.6 & Theorem (Cardinality and exact spectra) & \Cref{swo:st:thm:setspectrum}, p.~\pageref{swo:st:thm:setspectrum}\\
+9.7 & Remark (What the rank does not say) & \Cref{swo:st:n9.7}, p.~\pageref{swo:st:n9.7}\\
+10.1 & Lemma (Row scheduler) & \Cref{swo:st:lem:scheduler}, p.~\pageref{swo:st:lem:scheduler}\\
+10.2 & Lemma (Surreal cone decomposition) & \Cref{swo:st:lem:cones}, p.~\pageref{swo:st:lem:cones}\\
+10.3 & Theorem (Exact minimal-slice dichotomy) & \Cref{swo:st:thm:transition}, p.~\pageref{swo:st:thm:transition}\\
+10.4 & Corollary (A complete cube test for the minimal slice) & \Cref{swo:st:n10.4}, p.~\pageref{swo:st:n10.4}\\
+10.5 & Example (An unconditional singular example) & \Cref{swo:st:n10.5}, p.~\pageref{swo:st:n10.5}\\
+10.6 & Example (Regular cutoffs) & \Cref{swo:st:n10.6}, p.~\pageref{swo:st:n10.6}\\
+11.1 & Theorem (Exact external identification) & \Cref{swo:st:thm:model}, p.~\pageref{swo:st:thm:model}\\
+14.1 & Research question (All fixed enumeration types) & \Cref{swo:st:n14.1}, p.~\pageref{swo:st:n14.1}\\
+14.2 & Research question (Noncardinal birthday bounds) & \Cref{swo:st:n14.2}, p.~\pageref{swo:st:n14.2}\\
+14.3 & Research question (Isomorphism, not merely equimorphism) & \Cref{swo:st:n14.3}, p.~\pageref{swo:st:n14.3}\\
+14.4 & Research question (The hierarchy of proper-class blocks) & \Cref{swo:st:n14.4}, p.~\pageref{swo:st:n14.4}\\
+14.5 & Research question (The exact weak-choice strength) & \Cref{swo:st:n14.5}, p.~\pageref{swo:st:n14.5}\\
+14.6 & Research question (Elementary common-prefix theory) & \Cref{swo:st:n14.6}, p.~\pageref{swo:st:n14.6}\\
+14.7 & Research question (Automorphisms and finite condensation) & \Cref{swo:st:n14.7}, p.~\pageref{swo:st:n14.7}\\
+14.8 & Research question (Dependence on the class realization) & \Cref{swo:st:n14.8}, p.~\pageref{swo:st:n14.8}\\
+14.9 & Research question (Compatibility between birthday cutoffs) & \Cref{swo:st:n14.9}, p.~\pageref{swo:st:n14.9}\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+% ---- hand chunk bibliography
+
 \begin{thebibliography}{99}
 \small
 
 \bibitem{ProveItReals}
 VladimirReshetnikov/ProveIt repository,
 \emph{Lexicographic orders of the well-orderings of the reals},
-merged research report, 2 October 2026.
-Revision \texttt{ae7c1e6aae3dc58c9c638b35646865ad6c10387d}.
-\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae7c1e6aae3dc58c9c638b35646865ad6c10387d/SetTheory/Cardinals/docs/reports/ordinals-and-order-types/lexicographic-well-orderings-of-reals/article.tex}{Immutable article source}.
+merged research report, 2 October 2026,
+\path{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/lexicographic-well-orderings-of-reals/}.
+Source~11 read its article at revision \texttt{ae7c1e6aa}; sources~09 and~12
+read its README at revision \texttt{63bb8b1d9}; source~08 did not read it
+(see \cite{Batch76Source02}). The article has not changed since
+\texttt{603f6ed31}.
+
+\bibitem{Batch76Source02}
+\emph{Lexicographic Orders of Well-Orderings of the Continuum: Ordinal
+spectra, lexicographic complexity, finite-tail geometry, and self-absorption},
+research manuscript prepared for Vladimir Reshetnikov, 2 October 2026,
+24 pages; batch-76 manuscript~02, the base source~02 of \cite{ProveItReals}.
+Source~08 cites it as a ``prior working manuscript in the user's library,
+supplied there as \texttt{article(20261002-170841).pdf} and corresponding
+\LaTeX{} source''; unrefereed.
 
 \bibitem{ProveItFoundations}
 VladimirReshetnikov/ProveIt repository,
-\emph{Foundations for surreal and surcomplex mathematics}, research report.
-Same revision as above.
-\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae7c1e6aae3dc58c9c638b35646865ad6c10387d/Algebra/SurrealNumbers/docs/foundations-and-computation/foundations/article.tex}{Immutable article source}.
+\emph{Foundations for surreal and surcomplex mathematics}, research report,
+\path{Algebra/SurrealNumbers/docs/foundations-and-computation/foundations/};
+read by source~11 at revision \texttt{ae7c1e6aa}.
+
+\bibitem{ProveItHset}
+VladimirReshetnikov/ProveIt repository,
+\emph{Birthday cutoffs and hereditary sets}, merged research report,
+\path{Algebra/SurrealNumbers/docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets/}.
 
 \bibitem{ProveItVector}
 VladimirReshetnikov/ProveIt repository,
 \emph{The surreal numbers as a real vector space},
-research report. Same revision.
-\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae7c1e6aae3dc58c9c638b35646865ad6c10387d/Algebra/SurrealNumbers/docs/surreal/real-vector-space-structure/article.tex}{Immutable article source}.
+research report,
+\path{Algebra/SurrealNumbers/docs/surreal/real-vector-space-structure/};
+read by source~11 at revision \texttt{ae7c1e6aa}.
+
+\bibitem{ProveItSurrealREADME}
+VladimirReshetnikov/ProveIt repository, surreal-number project README,
+\path{Algebra/SurrealNumbers/README.md}; read by source~08 at revision
+\texttt{ae7c1e6aa}.
 
 \bibitem{ProveItSigns}
-ProveIt contributors, \code{SignSequence.lean},
-under \path{Algebra/SurrealNumbers/Surreal/Foundations/},
-same revision.
-\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae7c1e6aae3dc58c9c638b35646865ad6c10387d/Algebra/SurrealNumbers/Surreal/Foundations/SignSequence.lean}{Immutable Lean source}.
+ProveIt contributors, \path{Algebra/SurrealNumbers/Surreal/Foundations/SignSequence.lean};
+read by sources~11 and~08 at revision \texttt{ae7c1e6aa} (blob
+\texttt{e2c093860f29b0b9ea312d50099fc4aa89a76a99}) and by source~09 at
+\texttt{63bb8b1d9}.
+
+\bibitem{ProveItCutFill}
+ProveIt contributors, \path{Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceCut.lean};
+read by source~08 at revision \texttt{ae7c1e6aa} (blob
+\texttt{c5c35afd98a5ad293687367ee9fb0244f94cc91c}).
 
 \bibitem{ProveItCuts}
-ProveIt contributors, \code{SignSequenceCutOperation.lean},
-under the same directory and revision.
-\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae7c1e6aae3dc58c9c638b35646865ad6c10387d/Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceCutOperation.lean}{Immutable Lean source}.
+ProveIt contributors, \path{Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceCutOperation.lean};
+read by source~11 at revision \texttt{ae7c1e6aa} and by source~09 at
+\texttt{63bb8b1d9}.
+
+\bibitem{ProveItSimplicity}
+ProveIt contributors, \path{Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceSimplicity.lean};
+read by source~12 at revision \texttt{63bb8b1d9} and by source~11 at
+\texttt{ae7c1e6aa}. It proves minimum-birthday and simplest-separator
+uniqueness; source~12 did not rebuild it.
+
+\bibitem{Conway}
+J.~H. Conway,
+\emph{On Numbers and Games},
+Academic Press, 1976; second edition, A~K Peters, 2001.
 
 \bibitem{Gonshor}
 Harry Gonshor,
@@ -2739,13 +5071,19 @@ London Mathematical Society Lecture Note Series 110,
 Cambridge University Press, 1986.
 \href{https://doi.org/10.1017/CBO9780511629143}{doi:10.1017/CBO9780511629143}.
 
+\bibitem{Alling}
+N.~L. Alling,
+Conway's field of surreal numbers,
+\emph{Transactions of the American Mathematical Society} \textbf{287} (1985),
+365--386.
+\href{https://doi.org/10.1090/S0002-9947-1985-0766225-7}{doi:10.1090/S0002-9947-1985-0766225-7}.
+
 \bibitem{BagayokoHoeven}
 Vincent Bagayoko and Joris van der Hoeven,
 \emph{Surreal substructures},
 Fundamenta Mathematicae 266 (2024), 25--96.
 \href{https://doi.org/10.4064/fm231020-23-2}{doi:10.4064/fm231020-23-2}.
 \href{https://arxiv.org/abs/2305.02001}{arXiv:2305.02001}.
-\href{https://www.texmacs.org/joris/sss/sss.html}{Author-hosted text}.
 
 \bibitem{Ehrlich2012}
 Philip Ehrlich,
@@ -2759,7 +5097,13 @@ Vladimir Kanovei and Saharon Shelah,
 \emph{A definable nonstandard model of the reals},
 Journal of Symbolic Logic 69 (2004), no.~1, 159--164.
 \href{https://doi.org/10.2178/jsl/1080938834}{doi:10.2178/jsl/1080938834}.
-\href{https://arxiv.org/abs/math/0311165}{arXiv:math/0311165}.
+\href{https://arxiv.org/abs/math/0311165}{arXiv:math/0311165}; the index is
+defined in Section~1, page~2 of the preprint.
+
+\bibitem{RochaRangelMariano}
+D. Rocha Rangel and H.~L. Mariano,
+An algebraic (set) theory of surreal numbers, I, 2019.
+\href{https://arxiv.org/abs/1911.12726}{arXiv:1911.12726}. Research preprint.
 
 \bibitem{HamkinsChoice}
 Joel David Hamkins,
@@ -2773,18 +5117,57 @@ Joel David Hamkins,
 3 December 2014.
 \url{https://jdh.hamkins.org/the-global-choice-principle-in-godel-bernays-set-theory/}.
 
+\bibitem{HamkinsUniversal}
+J.~D. Hamkins,
+Answer to ``Universal order type'', MathOverflow, 6 March 2011,
+\url{https://mathoverflow.net/questions/57597/universal-order-type}.
+An author-given account of the forth construction for surreal universality.
+
+\bibitem{HamkinsUnivChoice}
+J.~D. Hamkins,
+``Is the universality of the surreal number line a weak global choice
+principle?'', MathOverflow, 7 January 2016,
+\url{https://mathoverflow.net/questions/227849/}.
+Cited as a historical question, not as a certified 2026 status claim.
+
 \bibitem{GitmanHamkins}
 Victoria Gitman and Joel David Hamkins,
 \emph{Open determinacy for class games},
 research paper.
 \href{https://arxiv.org/abs/1509.01099}{arXiv:1509.01099}.
 
+\bibitem{HamkinsOpenDet}
+J.~D. Hamkins,
+``Open determinacy for class games'',
+author's research overview of joint work with V.~Gitman, 4 September 2015.
+\href{https://jdh.hamkins.org/open-determinacy-for-class-games/}{Author's source page}.
+
+\bibitem{GHHSW}
+V. Gitman, J.~D. Hamkins, P. Holy, P. Schlicht, and K.~J. Williams,
+``The exact strength of the class forcing theorem,''
+\emph{Journal of Symbolic Logic} \textbf{85} (2020), 869--905.
+\href{https://arxiv.org/abs/1707.03700}{arXiv:1707.03700}; version 2,
+10 March 2021.
+
+\bibitem{HamkinsClassForcing}
+J.~D. Hamkins,
+``The exact strength of the class forcing theorem,''
+author's research overview of joint work with V.~Gitman, P.~Holy,
+P.~Schlicht, and K.~J. Williams, 12 July 2017.
+\href{https://jdh.hamkins.org/class-forcing-theorem/}{Author's source page}.
+
+\bibitem{HamkinsRecursion}
+J.~D. Hamkins, ``Second-order transfinite recursion is equivalent to
+Kelley--Morse set theory over GBC,'' author's research exposition,
+23 July 2017.
+\href{https://jdh.hamkins.org/second-order-transfinite-recursion-is-equivalent-to-kelley-morse-set-theory/}{Author's webpage}.
+
 \bibitem{HamkinsWoodin}
 Joel David Hamkins and W.~Hugh Woodin,
 \emph{Open class determinacy is preserved by forcing},
 research paper, 2018.
 \href{https://arxiv.org/abs/1806.11180}{arXiv:1806.11180}.
-\href{https://arxiv.org/html/1806.11180v1}{Full text, Sections 2--3}.
+Especially Sections~2--3 and Theorem~6.
 
 \bibitem{AntosFriedman}
 Carolin Antos and Sy-David Friedman,
@@ -2805,3 +5188,4 @@ accessed October 2026.
 
 \end{thebibliography}
 \end{document}
+
