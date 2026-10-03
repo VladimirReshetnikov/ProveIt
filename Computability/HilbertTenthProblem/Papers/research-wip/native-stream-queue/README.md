@@ -1,6 +1,24 @@
 # WIP: native queue streams and research continuation
 
-The complete universal polynomial now costs **86=48M+38A**, with19 positive
+The [auxiliary quotient projection](complete85_auxiliary_bezout_projection.md)
+lowers the complete universal polynomial to **85=48M+37A operations**, with
+**18 positive witnesses and uniform exact degree175**. It replaces the
+positive auxiliary pair o,j by one positive T and computes
+`V=c(Tf−1)−Rf²`, retaining the paid f-square. A norm gap forces V>0;
+restored auxiliary congruences and the retained ratio recover the positive
+index sign before the parent compiler theorem is invoked. This gives a
+bijection of full positive integer zero sets at the same ordinary input
+and fixed program numerals. Off zeros the full polynomials obey an explicit
+correction, rather than an equality at unchanged tuples.
+The [independent source review](review_complete85_auxiliary_bezout_source.md)
+reconstructs all85 gates and expands the uniform leading form; the
+[mathematical review](review_complete85_auxiliary_bezout_math.md)
+checks the noncircular positivity, rank, sign and inverse-divisibility proof.
+Author and both independent reviews pass fresh installed exact replay.
+The comparison-system bound remains74. Earlier entries retain their
+historical counts; this result supersedes the minimum86 polynomial bound.
+
+The preceding complete universal polynomial costs **86=48M+38A**, with19 positive
 witnesses and exact degree178 after the
 [transport quotient shear](complete86_transport_quotient_shear.md). It supplies
 `t=zplus-w*C`, replacing `(K+w*q)*C` by `(K+w)*C` in the transport factor.
@@ -29,7 +47,7 @@ with fresh root receipts. The86 construction also has an
 [mathematical challenge](review_complete86_first_root_math.md); its author
 and both review receipts pass fresh root replay. Earlier entries below retain their
 historical counts and benchmark statements; the current numerical bounds
-are74/86. The [recomputed thirteen-base grouping family](complete86_first_root_partitions.md)
+are74/85. The [recomputed thirteen-base grouping family](complete86_first_root_partitions.md)
 adds four operation/exact-degree improvements:**88/123,91/102,92/80,95/54**.
 The reviewed saved-source shear below and retained older points give
 **86/178,87/134,88/122,89/112,90/108,91/102,92/80,93/72,94/62,

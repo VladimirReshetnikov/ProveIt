@@ -1,7 +1,27 @@
 # Continuation: universal straight-line certificates
 
-> **Current established universal bounds:74 certificate operations /86 polynomial operations.**
-> **Current exact degrees at86/87 operations:178/134.** The
+> **Current established universal bounds:74 certificate operations /85 polynomial operations.**
+> **Current minimum polynomial:85=48M+37A,18 positive witnesses,exact degree175.**
+>
+> The [auxiliary quotient projection](complete85_auxiliary_bezout_projection.md)
+> lowers the complete universal polynomial to **85=48M+37A operations**, with
+> **18 positive witnesses and uniform exact degree175**. It replaces the
+> positive auxiliary pair o,j by one positive T and computes
+> `V=c(Tf−1)−Rf²`, retaining the paid f-square. A norm gap forces V>0;
+> restored auxiliary congruences and the retained ratio recover the positive
+> index sign before the parent compiler theorem is invoked. This gives a
+> bijection of full positive integer zero sets at the same ordinary input
+> and fixed program numerals. Off zeros the full polynomials obey an explicit
+> correction, rather than an equality at unchanged tuples.
+> The [independent source review](review_complete85_auxiliary_bezout_source.md)
+> reconstructs all85 gates and expands the uniform leading form; the
+> [mathematical review](review_complete85_auxiliary_bezout_math.md)
+> checks the noncircular positivity, rank, sign and inverse-divisibility proof.
+> Author and both independent reviews pass fresh installed exact replay.
+> The comparison-system bound remains74. Earlier entries retain their
+> historical counts; this result supersedes the minimum86 polynomial bound.
+>
+> **Retained nineteen-witness exact degrees at86/87 operations:178/134.** The
 > [transport quotient shear](complete86_transport_quotient_shear.md) supplies
 > t=zplus-w*C and changes only kinner=K+w*q to K+w plus the quotient name.
 > Nt=(K+w)*C+(q-F)-t*(q-1) has exact degree2. All seven other factors and
@@ -13,8 +33,8 @@
 > [Independent full review](review_complete86_transport_quotient_shear.md)
 > and both installed receipts pass fresh / replay. Exact factor/leading-form
 > proof is uniform on valid inherited fixed-program numeral slices. Raw
-> gate-propagation188/144 must not be confused with exact178/134. Current
-> combined catalogue starts86/178,87/134,88/122,89/112,90/108,91/102,92/80,
+> gate-propagation188/144 must not be confused with exact178/134. The preceding nineteen-witness
+> catalogue starts86/178,87/134,88/122,89/112,90/108,91/102,92/80,
 > 93/72,94/62,95/54,96/50,97/48,98/44; retain106/42,108/28,110/24 separately.
 > The [saved-source shear probe](transport_shear_frontier_probe.md) and
 > [independent review](review_transport_shear_frontier_probe.md) now justify
