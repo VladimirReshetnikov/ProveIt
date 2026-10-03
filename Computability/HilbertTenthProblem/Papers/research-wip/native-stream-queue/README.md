@@ -80,6 +80,14 @@ universal bound or a bijection with causal history witnesses. Its
 source/count/degree identities and checks all 247 positive closures in a
 bounded census. Both author and independent receipts pass root replay.
 
+The [sparse Grill content row](grill_tag_sparse_content.md) gives an alternative
+complete schedule of **11t+5−3z(t)** operations. It retains exactly the same
+integer zeros and positive coordinates, with a proved full-polynomial correction.
+Its saving is 2+2z(t)−t, so it helps only sufficiently sparse phase schedules.
+The [independent review](review_grill_sparse_content.md) expands 72 complete
+sources and checks all 247 positive closures in its census; the author's full
+receipt also passes root replay. The horizon and decoder limitations remain.
+
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
 Shared row/column sums reduce the transfer example from 245 to 206 operations
