@@ -7,11 +7,11 @@ This is the continuing proof/source review of the [byte-pinned intake](incoming_
 | Compressed queue | [Complete](review_compressed_queue_aebfa.md) | Two low-level constructor repairs; natural-zero projection to `6c+1` witnesses and `6c+3` quadratic rows for an external grammar with `c` concatenations |
 | Corrected conservative signals | In progress | Comparing the previous repairs and rerunning the complete packet |
 | Reset Petri nets | In progress | Full source/frontend and timing audit |
-| Eager tree calculus | In progress | External DAG, arithmetic and universality interfaces |
-| One-coordinate certificates | In progress | Polynomial unknowns, stride and coefficient-bound scope |
+| Eager tree calculus | [Complete](review_eager_tree_aebfa.md) | Paid DAG/canonicalization and literal universal-tree audit; evaluator input repair, both 19-script replays pass |
+| One-coordinate certificates | [Complete](review_one_coordinate_aebfa.md) | Exact descriptor repair; natural-polynomial projection to ten quadratic identities on `s³+s+6` unknown polynomials |
 | Smooth quartics | [Complete](review_smooth_quartic_aebfa386e.md) | Full integral smoothness and domain audit; all 21,128 author checks and byte-identical exports replayed; no repair needed |
-| Coercive Green functions | In progress | Infinite graph and finite-support arithmetic interface |
-| Well-conditioned computation | In progress | Infinite graph and normalized integer witnesses |
+| Coercive Green functions | [Complete](review_coercive_connected_aebfa386e.md) | Full coercivity, normalization and finite-support audit; original 110,522 checks and independent exact replays pass |
+| Well-conditioned computation | [Complete](review_coercive_connected_aebfa386e.md) | Connected dipole/finite-prime/sparsity proofs; export-alias and input-type repairs; original/repaired 38,524 checks pass |
 | Mixing | In progress | Exact-series dimension versus arithmetic/zero-set complexity |
 | Sparse lattice dynamics | [Complete](review_sparse_lattice_aebfa386e.md) | Exact polynomial-constructor repair; both complete 18-stage replays and large source-fixture regeneration pass |
 
