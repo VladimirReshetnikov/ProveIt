@@ -105,6 +105,24 @@
 > not whole86 optimality, a bound with other paid registers, or a zero-set
 > replacement bound. It does not cover geometry's tau*(tau+1) target.
 
+> The [joint strong/auxiliary census](complete86_joint_strong_auxiliary_scout.md)
+> now tests292,320 schedules:6 paid charts*2 deterministic factoring modes*
+> 203 six-term partitions*120 common Horner orders. The best stays86=48M+38A,
+> with220 ties and no85. Every actual complete DAG is charged, including
+> shared_H=i*Ac2 when used and every retained factor/input/finalizer.
+> Exact58,113 local and complete finalizer identities and348,678 retained
+> factor DAG checks are summed within the12 chart/mode groups, not global
+> distinctness. Full polynomial equality preserves19w and exactdegree179.
+> The [independent review](review_complete86_joint_strong_auxiliary_scout.md)
+> proves all6 charts/all12 saved complete minima, recounts1,040 live gates
+> and independently enumerates203 partitions/120 orders. It reads the
+> full scout but does NOT regenerate its complete per-choice histograms.
+> Both fresh root author/review receipts pass. Grammar is fixed block order,
+> common Horner order, fixed binary powers and optional first exact sorted
+> binomial divisor. No arbitrary cross-factor or coordinate-change bound.
+> This extends the earlier multiplication-only coefficient census; do not
+> confuse it with a general lower bound or repeat the free-t rank obstruction.
+
 > The [Grill halt bridge](grill_tag_halt_bridge.md) and
 > [independent review](review_grill_tag_halt_bridge.md) are frozen and pass
 > root replay. Corrected E uses a−4 in its second long grill. At the unique
