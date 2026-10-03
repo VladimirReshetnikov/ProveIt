@@ -82,9 +82,55 @@
 > Main/input degrees8/7, product15; unique full leader
 > 16*Bm1^12*w^4*Jrep^12*delta^4*a^10 proves exact30 uniformly on every
 > admissible fixed program slice. The [independent review](review_complete113_main_input_units111.md)
-> and both root receipts pass. Current combined frontier appends111/30,
+> and both root receipts pass. That milestone's frontier appends111/30,
 > 113/28 to86/179 through98/44; new points have24w, earlier points19w.
 > This is one proved grouping, not a new complete partition census.
+> The [retained-coordinate asymmetric family](complete113_asymmetric_retained109.md)
+> now extends the current catalogue by109/34 and111/24, both24w, superseding
+> the preceding111/30 and113/28 points. Four full forms are emitted:
+> sos113/24, pair111/24, triple109/42, two_pairs109/34, with complete
+> symmetric references113/28,111/30,109/50,109/44 respectively.
+> Change only wn2=w*n2 to w*q; Y=s*q^3 and the ordinary strong equation
+> remain. Forward w_new=q^2*w_old gives exact whole polynomial equality.
+> Reverse integrality is proved BEFORE parent universality: raw packing
+> 3q+1<=R<q^4, E>=q^4>R, relaxed rank and minus/minus auxiliary congruences
+> give p=R; first-index congruence then gives2n=R+1. The lower ratio forces
+> 2^R<a and the root projection givesX=2^R, henceq^3|X andq^2|w_new.
+> Keep raw S'=q^2 and R+1=E boundaries; never import F+Z<q from a different
+> normalized source. Restoring a,c as positive supplied coordinates is part
+> of the theorem. No native typing is used before this inverse is established.
+> Nm,Ni cannot be-1 modulo4 sinceDelta=a^2+4a+3 is0 or3; Na cannot be-1
+> since its coefficient(ic^2)^2 is a square. Thus(N0*Nm)=1 and(Ni*Na)=1
+> recover all four units on ALL integer tuples, without a first-norm sign
+> premise. The optional first-norm descent is separate. Integer grouping
+> and positive-only scale restoration are different statements.
+> Full109=53M+56A has11 residuals, degree34 leader
+> 16*a^10*c^12*delta^4*i^4*j^4. Full111=53M+58A has12 residuals,
+> degree24 leaderBm1^14*w^2*s^4*(eta+zeta)^2*Jrep^14*(2g-eta-zeta)^2.
+> The [independent full review](review_complete113_asymmetric_retained109.md)
+> reconstructs all eight current/reference circuits and uniform leaders.
+> Both author/reviewer receipts pass fresh root replay. The separate
+> [mathematical challenge](review_asymmetric_retained109_math.md) agrees;
+> its math-only header deliberately excludes source/API/degree certification.
+> The three1980 notes FIXED_RAW_UNIVERSAL_75_PROOF, PELL_RELAXED_AUXILIARY_PROOF,
+> HALF_PARAMETER_PELL_92_PROOF and pell_kernel_half_binomial42 are now pinned
+> proof provenance: preserve their bytes, including historical notices.
+> Put future status updates in these landing documents. No Git fallback
+> bypasses a mismatched source/proof pin. Minimum operation bounds stay74/86.
+
+> Next bounded lead (NOT an established bound): replace the private index
+> rows r1=r+1 and R11=r1+hpm1, comparison k=R11, by
+> index_partial=k-r; index_unit=index_partial-hpm1; index_unit=1.
+> k is the already paid R10b=eta+zeta. Both old/new schedules cost2A;
+> r1 has only R11 as consumer and R11 only its comparison. The new unit
+> minus1 is exactly the old residual. Pairing it with a protected norm
+> recovers its positive unit value on integer zeros. A private root probe
+> and independent bounded challenge support candidate109/32 through
+> (first*main),(index*input),aux alone, and107/42 through(first*input),
+> (index*main*aux), both24w. These have no frozen author/review packet and
+> are NOT in the catalogue. Emit complete sources/corrections/degrees and
+> obtain independent review before claiming them. Preserve the four-form
+> packet rather than folding the next search into its frozen artifacts.
 > The [coefficient-only census](complete87_shared_coefficient_scout.md) is
 > frozen separately: reachable-set counts1/13/116/891 exclude at most three
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid

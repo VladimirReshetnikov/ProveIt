@@ -39,21 +39,18 @@ independently verify the result. The source and both review receipts pass
 fresh replay. This is a mathematical proof with executable checks, not a
 Lean formalization or an unrestricted optimality claim.
 
-The [selective positive-gap construction](Papers/research-wip/native-stream-queue/complete74_gap_selective_projection113.md)
-adds a complete **113-operation polynomial of exact degree28**, with24
-positive witnesses and the same universal ordinary-input theorem. Its
-[independent review](Papers/research-wip/native-stream-queue/review_complete74_gap_selective_projection113.md)
-checks all256 coordinate projections, full circuits and uniform exact degrees.
-Both fresh root receipts pass. This improves the achieved degree tradeoff;
-the minimum operation bounds remain74/86.
-
-The [protected norm grouping](Papers/research-wip/native-stream-queue/complete113_main_input_units111.md)
-also gives **111 operations at exact degree30**, with the same24 witnesses.
-A modulo4 obstruction permits combining the main and input unit equations;
-the complete integer zero sets agree. Its
-[independent review](Papers/research-wip/native-stream-queue/review_complete113_main_input_units111.md)
-and both fresh root receipts pass. Both111/30 and113/28 are new achieved
-operation/degree tradeoffs.
+The [retained-coordinate asymmetric construction](Papers/research-wip/native-stream-queue/complete113_asymmetric_retained109.md)
+adds complete universal polynomials with **111 operations at exact degree24**
+and **109 at exact degree34**, both with24 positive witnesses. The equations
+prove the integral inverse of a smaller X scale, while protected norm
+products remove comparisons. Its
+[independent review](Papers/research-wip/native-stream-queue/review_complete113_asymmetric_retained109.md)
+checks four complete forms and their symmetric references. The degree claims
+hold for every admissible fixed program slice; both fresh root replays pass.
+These improve the earlier
+[113/28](Papers/research-wip/native-stream-queue/complete74_gap_selective_projection113.md)
+and [111/30](Papers/research-wip/native-stream-queue/complete113_main_input_units111.md)
+milestones; minimum operation bounds remain74/86.
 
 The [corrected Grill halt bridge](Papers/research-wip/native-stream-queue/grill_tag_halt_bridge.md)
 and its [independent review](Papers/research-wip/native-stream-queue/review_grill_tag_halt_bridge.md)

@@ -33,26 +33,25 @@ a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
 This restricted negative result does not cover the new first-root change.
 
-The [selective positive-gap construction](complete74_gap_selective_projection113.md)
-adds a complete **113=53M+60A polynomial of exact degree28**, with24 positive
-witnesses. It eliminates q,C,k,d,kappa,mu while retaining a,c. The full
-parent SOS agrees on the restored graph, and the first equation proves the
-inverse gap positive before the universal theorem is used. Its
-[independent review](review_complete74_gap_selective_projection113.md)
-checks all256 graph choices, complete source ledgers and leading forms.
-Both fresh root receipts pass. The new113/28 point extends the catalogue
-above; exact degrees hold on every admissible fixed program slice. Ordinary
-input and unbounded duration remain paid. The minimum bounds stay74/86.
+The [retained-coordinate asymmetric construction](complete113_asymmetric_retained109.md)
+adds **111=53M+58A at exact degree24** and **109=53M+56A at exact degree34**,
+both with24 positive witnesses. The equations force the positive integral
+inverse when X=wq replaces X=wq^3, with Y=sq^3 retained. The source recovers
+that divisibility before invoking the parent universal theorem. Protected
+norm products then remove comparisons: each group has at most one factor
+whose negative unit is not independently excluded modulo4. Its
+[independent full review](review_complete113_asymmetric_retained109.md)
+checks all four forms and their complete symmetric references. Exact degrees
+hold on every admissible fixed program slice; ordinary input and unbounded
+duration remain paid. Author and review receipts pass fresh root replay.
+The minimum bounds stay74/86.
 
-The [protected norm grouping](complete113_main_input_units111.md) adds
-**111=53M+58A at exact degree30**, on the same24 positive witnesses. The
-actual main and input norms cannot equal minus one modulo4, so their two
-unit equations can be replaced by one product-unit equation. This saves
-two additions in the fully paid SOS. Its
-[independent source and mathematical review](review_complete113_main_input_units111.md)
-and both fresh root receipts pass. The complete integer zero sets agree;
-an explicit correction identity records the different off-zero polynomials.
-Both111/30 and113/28 extend the achieved operation/degree catalogue.
+These extend the86/179 through98/44 catalogue above. The
+[113/28 positive-gap family](complete74_gap_selective_projection113.md) and
+[111/30 protected grouping](complete113_main_input_units111.md) remain frozen
+reviewed predecessors. The current four-form packet also retains dominated
+113/24 and109/42 comparisons. The exact coordinate identities and off-zero
+grouping corrections are separate from the positive integer witness theorem.
 
 The [native first-coefficient transfer](native_pell_factored_first_coefficient.md)
 now gives a **63=32M+31A prescribed AND certificate**, with22 positive
