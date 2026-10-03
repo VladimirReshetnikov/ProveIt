@@ -81,8 +81,8 @@ question is re-scoped below dimension four or seven continuation outcomes.
 
 ```
 article.tex                                           the report, standalone LaTeX with an internal bibliography
-article.pdf                                           the compiled report, 340 pages (unnumbered title page,
-                                                      contents pages 1-19, then pages 20-339)
+article.pdf                                           the compiled report, 341 pages (unnumbered title page,
+                                                      contents pages 1-20, then pages 21-340)
 README.md                                             this guide
 07-quantum-mortality-STATUS.md                        source 07's verification and dependency status, as delivered
 09-continuous-barriers-PROVENANCE.md                  source 09's repository inspection, sources and claim boundaries, as delivered
@@ -329,6 +329,10 @@ Part VII's previously unlabelled research question "Structural subclasses"
 existing label was renamed or removed, and no existing label's number or
 bibliography number changed (checked against the `.aux` of a build of the
 previous text).
+
+Batch 79 (one note, no new Part) added no label; the report still has
+**1138 labels**, and no label's number changed (checked against the `.aux` of
+a build of the previous text).
 
 Numbering: source 08's Section *n* is Section *n* + 1 here for *n* = 2–8
 (Part I), and its Sections 9, 10, 11 are Sections 11, 12, 33; source 07's
@@ -916,6 +920,18 @@ marked second route citing both labels. A dated note of 2 October 2026 after
 it. No label was added: the report still has 1138 labels, every label number
 is unchanged (compared in the `.aux`), and the note adds one page.
 
+**Related reports (batch 79, cluster J1).** [`smooth-diophantine-finalizers`](../smooth-diophantine-finalizers/README.md)
+(written in `83abbd7fa`; batch-79 manuscript 13) meets, in a finalized form, the
+non-claim of nonsingularity in the remark after Theorem 42.1
+(`pqc:ql:thm:hessian`): its Theorem `sdf:thm:main`, applied to the degree-two
+residuals of `𝓔_C`, adds five variables and gives an integer quartic whose
+affine hypersurface is smooth over ℤ with the same natural (Boolean) zeros, but
+which takes negative real values, so the Morse statement here and that
+smoothness concern different polynomials. A dated note of 2 October 2026 after
+the remark records this, and Section 36.4 and Appendix F.5 list it; no label
+was added or renumbered (compared in the `.aux`). The new contents line adds
+one contents page, so every later page number moves up by one.
+
 ## Build
 
 TeX Live or MiKTeX with lmodern, amsmath/amssymb/amsthm, mathtools,
@@ -927,7 +943,7 @@ No external figures, bibliography database or downloads are needed.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build (MiKTeX, pdfTeX) has 340 Letter pages, with no errors,
+The recorded build (MiKTeX, pdfTeX) has 341 Letter pages, with no errors,
 undefined references or citations, multiply defined labels, duplicate
 destinations, LaTeX or package warnings, or overfull boxes; there are 17
 underfull boxes, in narrow table cells and in a few source paragraphs. All
@@ -1427,3 +1443,15 @@ in each source's implementation section gives the shipped names (for source
   already leaves the multiplicity of witness tuples uncontrolled; the old
   phrase could be misread as finitely many witness tuples per input. The note
   after the corollary records the source's wording.
+
+**Batch 79 (one note, Appendix F.5).**
+
+- **No new Part.** Batch 79's cluster J1 (placement commit `224ca41df`)
+  opened `smooth-diophantine-finalizers` (written in `83abbd7fa`; batch-79
+  manuscript 13, arrival `ef2fc7990`, pin `a845ab5d0`); this report received
+  one dated note of 2 October 2026, checked against that report's
+  Theorem `sdf:thm:main` and its editorial preface.
+- **Written text** (`[write]`): the note after the remark "Nondegenerate
+  minimum versus smooth hypersurface" (after Theorem 42.1); a bullet in
+  Section 36.4; Appendix F.5. No existing text was changed and no label was
+  added, renamed or renumbered.
