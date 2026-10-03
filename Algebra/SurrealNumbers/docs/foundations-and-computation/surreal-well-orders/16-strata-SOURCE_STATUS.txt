@@ -1,0 +1,67 @@
+SOURCE AND PROOF STATUS
+3 October 2026
+
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Pinned revision: 491ed8411cccf7bd57916eb7666bbba762e92f96
+
+The revision is the snapshot used for the targeted audit. It is not a
+claim that this commit will remain the repository's current HEAD.
+
+PRINCIPAL INSPECTED SOURCES
+
+Algebra/SurrealNumbers/docs/foundations-and-computation/
+    surreal-well-orders/article.tex
+    surreal-well-orders/README.md
+
+SetTheory/Cardinals/docs/reports/ordinals-and-order-types/
+    lexicographic-well-orderings-of-reals/README.md
+
+Algebra/SurrealNumbers/Surreal/Foundations/
+    SignSequence.lean
+    SignSequenceCut.lean
+    SignSequenceCutOperation.lean
+    SignSequenceSimplicity.lean
+    SizeObstructions.lean
+
+The relevant project instructions were also inspected. The audit was
+targeted; it does not certify that every source or theorem elsewhere in
+the repository was examined. The article bibliography includes clickable
+pinned links, primary research papers, and official documentation.
+
+STATUS OF THE WORK
+
+The prior merged surreal well-order report identifies its own mathematical
+results as unrefereed, and records no Lean mapping for its swo: labels.
+This article reuses several of those results and develops additional
+arguments. Its status ledger distinguishes reused results from extensions.
+
+New arguments include all-stratum density/cellularity, countable witnesses
+to incompleteness, regular-stage gap spectra, word-tree and termination
+classification, direct simultaneous block extraction, prefix-cylinder
+recognition and first-failure classification, and the stated refinement
+of the sufficient comprehension bound for elementary nonembedding.
+
+The proofs underwent independent mathematical checks during preparation,
+with particular attention to smallness, uniformity, endpoints, limit
+prefixes, and the distinction between elementary and class-quantifier
+comprehension. This is not external peer review, a proof of historical
+novelty, or verification by a proof assistant.
+
+No repository files were modified. No Lean project build was run and no
+new Lean declarations are supplied. The proposed formalization is a
+design tied to inspected existing primitives, with explicit separation
+of universe-polymorphic type theory and internal class-model semantics.
+
+ARTIFACT VERIFICATION
+
+The standalone source compiles to the included PDF with resolved
+references and citations. The final compilation log contains no LaTeX
+warnings, overfull boxes, or underfull boxes. All 33 physical pages were
+rendered and visually inspected, including the mathematical displays,
+interpretation and status tables, and the formalization table.
+
+The included Python diagnostic script uses exact dyadic arithmetic for
+finite surreal sign strings and independently compares finite relation
+matrices. Its JSON output records the domains, counts, and outcomes.
+These finite checks do not establish cardinal arithmetic, infinite
+well-foundedness, saturation, comprehension, or class-model claims.

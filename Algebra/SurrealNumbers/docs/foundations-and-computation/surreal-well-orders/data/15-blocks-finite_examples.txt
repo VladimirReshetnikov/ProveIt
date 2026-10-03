@@ -1,0 +1,25 @@
+Three lexicographic comparisons on labels 0 < 1 < 2
+Table scan: (0,1), (0,2), (1,0), (1,2), (2,0), (2,1).
+A table bit is 1 when the first label precedes the second.
+Enumeration  Inverse ranks  Relation table
+012          012            110100
+021          021            110001
+102          102            011100
+120          201            001110
+201          120            100011
+210          210            001011
+Enumeration order: 012 < 021 < 102 < 120 < 201 < 210
+Inverse-rank order: 012 < 021 < 102 < 201 < 120 < 210
+Relation-table order: 210 < 120 < 102 < 201 < 021 < 012
+
+Restriction reverses comparison: 021 < 102, but 21 > 12 on {1,2}.
+The relabeling (0 1) exchanges 012 and 102, reverses their comparison,
+and applying it twice returns every enumeration to itself.
+
+All eight choices of orders on the three pair-restriction spaces checked.
+The longest coordinatewise chain has length 4 in six choices and 2 in two.
+None can accommodate all six permutations as a monotone chain.
+
+Raw common-prefix relation comparison agrees with enumeration lexicography
+for every pair of permutations on carriers of sizes 0 through 5.
+All finite checks passed.
