@@ -70,6 +70,14 @@ separate bound. The [independent review](review_auxiliary_norm_five_gate_lower_b
 and both root replays pass. This limits exact local evaluation only; shared
 computed ports, coordinate changes and equivalent zero sets remain open.
 
+The [first-norm lower bound](first_norm_five_gate_lower_bound.md) proves
+that its present5=3M+2A block is optimal at the six paid ports
+T,X,Y,k,E=XY,Z=kY, including those dependencies. Specializing Y=1 rules
+out two products through a missing cubic coefficient; irreducibility rules
+out one addition. The [independent challenge](review_first_norm_five_gate_lower_bound.md)
+and both root receipts pass. Other shared registers, changed coordinates
+and equivalent zero sets remain outside this component bound.
+
 The [corrected Grill halt bridge](grill_tag_halt_bridge.md) proves exact-width
 encoded halting equivalence, including the final queue cleanup. A3a phase
 shift sends every remaining active block position to a zero run. The

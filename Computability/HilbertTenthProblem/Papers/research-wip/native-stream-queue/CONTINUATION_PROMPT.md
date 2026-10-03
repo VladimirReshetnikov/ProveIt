@@ -93,6 +93,18 @@
 > lower bound for actual computed K,V, other shared ports or changed zero sets.
 > Further auxiliary-factor savings must exploit structure outside this interface.
 
+> The [sharp first-norm bound](first_norm_five_gate_lower_bound.md) now
+> handles the actual dependent paid ports T,X,Y,k,E=XY,Z=kY, proving3M+2A
+> necessary and attained. For <=2M specializeY=1: quartic−X²k² forces
+> the first product Q=qXk+rX+sk+t; restrictingX=0 forces both next linear
+> parts to be T-only, so their product cannot supply required cubic−Xk².
+> For <=1A all ports are monomials; irreducibility via odd X-valuation of
+> (kY)²X(XY²+1) excludes a monomial times a binomial power. The
+> [independent challenge](review_first_norm_five_gate_lower_bound.md) and
+> both fresh root receipts pass. This is exact component evaluation only,
+> not whole86 optimality, a bound with other paid registers, or a zero-set
+> replacement bound. It does not cover geometry's tau*(tau+1) target.
+
 > The [Grill halt bridge](grill_tag_halt_bridge.md) and
 > [independent review](review_grill_tag_halt_bridge.md) are frozen and pass
 > root replay. Corrected E uses a−4 in its second long grill. At the unique
