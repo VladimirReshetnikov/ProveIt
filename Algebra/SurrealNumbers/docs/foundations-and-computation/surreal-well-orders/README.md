@@ -11,8 +11,10 @@ and 12 call themselves AI-assisted. The report is AI-assisted, unrefereed and
 not formalized. Its review in the collection's
 [review record](../../REVIEW.md) is **pending**, and it is not yet indexed in
 the [formalization ledger](../../FORMALIZATION.md). The four delivered
-archives (not this merged text) have a written-proof review in the
-Hilbert's-tenth research tree; see "Reviews" below.
+archives have a written-proof review in the Hilbert's-tenth research tree,
+and since 3 October 2026 this merged text has a scoped synthesis review and
+a preservation audit there too, whose corrections are applied; see
+"Reviews" below.
 
 | Source | Batch-80 manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -43,7 +45,7 @@ the four sources to its place here.
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 115 pages (title page unnumbered)
+article.pdf                              the compiled report, 116 pages (title page unnumbered)
 README.md                                this guide
 09-core-RESEARCH_STATUS.md               source 09's research status and audit, as delivered
 11-raw-orders-repository_audit.md        source 11's targeted repository audit, as delivered
@@ -79,7 +81,7 @@ Not shipped (all recoverable with `git show 4e270aa46:"docs/incoming/<archive>.z
 the four delivered PDFs (08 26 pages, 09 24, 11 35, 12 24); the manuscripts
 and delivery READMEs of sources 08, 09 and 12; and three checksum manifests
 (08 6/6, 09 7/7, 12 7/7 verified at placement; source 11 shipped none).
-Nothing was excluded as regenerable (the largest delivered file is
+Nothing was excluded as regenerable (the largest delivered non-PDF file is
 126,780 bytes), so there is no data to reconstruct.
 
 Shipped files whose text still uses delivery names or names unshipped files:
@@ -261,9 +263,16 @@ external figures or bibliography file.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-Built with MiKTeX (pdfLaTeX): 115 pages; no errors, undefined references or
+Built with MiKTeX (pdfLaTeX): 116 pages; no errors, undefined references or
 citations, multiply defined labels, duplicate destinations, LaTeX or package
 warnings, or overfull boxes.
+
+The corrections of 3 October 2026 (see "Reviews": two words, two dated
+notes and one paragraph; no label, macro or bibliography entry) add one
+page to the 115 of the first build. The `.aux` of a build of the previous
+text has the same 272 labels with the same numbers (544 `\newlabel`
+lines, page fields aside); the title page and the three changed pages
+(9, 47, 96) were rendered and inspected.
 
 ## Rerunning the checks
 
@@ -335,3 +344,38 @@ and then calls `code/finite_checks.py`.
 Both are pinned to the delivered archives and the placement; neither covers
 the text written for this merge, and neither is an entry of the collection's
 review record.
+
+Added 3 October 2026: the same tree has since reviewed the merged text
+(write commits `d51fafea8` and `0be9b9134`).
+
+- `review_surreal_synthesis_0be9b9134.md` (commit `280583d2f`): reads all
+  98 blocks written for the merge, this README and the NOTATION addition;
+  no mathematical defect under the stated hypotheses, two minor
+  overstatements, and a three-location patch
+  `review_surreal_synthesis_0be9b9134.patch`, which **was applied verbatim**
+  on 3 October 2026. (1) Remark `swo:rem:answered-choice` and the answered
+  question `swo:st:n14.5` called the choice recursion of `swo:cf:choice` a
+  "coherent" sequence (well-ordering) of the sets V_α; it is uniformly
+  defined, but later orders need not restrict to earlier ones (if W puts
+  `-` before `+` and `+-` before `--`, then w_2 puts ∅ before {∅} and w_3
+  reverses them), so both now say "uniform(ly defined)". The global-choice
+  theorem is unaffected: it uses only the w_rank(A)-least element of each
+  set A. Both places carry a dated note crediting the review; the first
+  gives the example, and adds that ordering all sets by rank and then by
+  w_(γ+1) within rank γ does give a coherent class well-order (not used by
+  the proof). (2) "the largest delivered file is 126,780 bytes" now says
+  "non-PDF": source 11's TeX is 126,780 bytes, its PDF 543,575 (checked
+  against the four archives at this change).
+- `review_surreal_transfer_0be9b9134.md` (commit `afb706742`): a
+  preservation audit; all 166 formal statements of the four sources are
+  accounted for (124 normalized-exact bodies, 41 duplicate-result notes, one
+  question kept verbatim inside an answered remark), all 198 original labels
+  occur once, and the 14 code/data companions are byte-identical. No
+  further defect.
+- `review_surreal_reciprocal_a13efdd51.md` (commit `a3cf6e939`) audits the
+  reciprocal notes in four other surreal reports, finds no new defect, and
+  confirms that they do not repeat the "coherent" wording.
+
+The "Review status" item of the report's Section 1 records the first two in
+a dated note. None of these is an entry of the collection's review record,
+where this report's review stays pending.
