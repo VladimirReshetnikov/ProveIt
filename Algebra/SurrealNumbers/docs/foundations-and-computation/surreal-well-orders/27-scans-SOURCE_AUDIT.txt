@@ -1,0 +1,129 @@
+SOURCE AUDIT AND ATTRIBUTION BOUNDARIES
+3 October 2026
+
+1. PINNED REPOSITORY
+
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Revision: 7ff7736ecf3a0adc8536b2d083cf819e1ba39ace
+Commit timestamp: 2026-10-03 21:47:46 UTC
+
+The following inputs were inspected at that revision:
+
+Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders/article.tex
+Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders/README.md
+SetTheory/Cardinals/docs/reports/ordinals-and-order-types/lexicographic-well-orderings-of-reals/README.md
+Algebra/SurrealNumbers/Surreal/Foundations/SignSequence.lean
+Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceCut.lean
+Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceCutOperation.lean
+Algebra/SurrealNumbers/Surreal/Foundations/SizeObstructions.lean
+
+The article bibliography links directly to these pinned sources.
+
+2. SCOPE AND DOCUMENTATION FINDINGS
+
+This was a targeted source and mathematical audit supporting the new article,
+not a repository-wide correctness certification or a Lean build.
+
+The downloaded merged surreal report contains Parts I-VIII. It refers to a
+Part IX that is not present in that body. The accompanying README describes
+an earlier four-source report and does not fully reflect the expanded body.
+The older research-question index is dated 2 October, while later status
+updates dated 3 October mark several of those questions as resolved.
+
+The continuation therefore uses the current body and its later status
+summaries. It does not treat a result as new merely because an advertised
+Part IX proof is absent. Separately distributed source archives for the
+missing installment were not audited, so no source-archive priority claim
+is made.
+
+3. EXISTING RESULTS CREDITED TO THE CORPUS
+
+The article uses, with attribution, the general-alphabet enumeration spectrum,
+set-length surreal coding and word isomorphisms, direct labelled comparison
+of raw class well-orders, canonical first set-like blocks, bounded-support
+cores, represented and exhaustive cut recognition, previously established
+termination-convention analysis, centered increasing-word character results,
+and the exact cardinal reserve needed for partial-permutation completion.
+
+The already established relation-table equimorphism and endpoint results are
+also distinguished from the scan-dependent topology proved in the new paper.
+The source already identifies least ordinal support height, as distinct from
+support cardinality, as a further problem.
+
+4. CONTINUATIONS PROVED IN THE ARTICLE
+
+The principal further results concern:
+
+* Exact ordinal spectra for arbitrary set scans and the density/cellularity
+  contrast between initial-cardinal scans and six delayed coordinates.
+* Density of the same bounded-support core in raw relation-table comparison.
+* Exact terminal-cut factorization for increasing words, its centered product
+  form, additional zero-convention identities, and convex interval structure.
+* Branch transitivity of the ordered injective prefix tree, failure of intrinsic
+  exhaustiveness recognition, sufficient coverage bounds, and the effect of
+  retaining cross-node label equality.
+* Whole convex copies omitted by every uniform ordinary class-indexed family
+  of raw global well-orders, plus the set analogue at birthday cutoffs.
+* A necessary and sufficient ordinal support cutoff and its exact least value.
+* Reconstruction of a model's admitted classes from embeddings fixing the
+  displayed bounded-support core pointwise.
+* An explicit full-rank model criterion and a detailed foundational ledger.
+
+The article supplies proofs. These are extensions relative to the inspected
+corpus, not claims of historical novelty. Some statements repackage familiar
+foundational arguments to make the relevant size assumptions explicit.
+
+5. FORMALIZATION STATUS
+
+The inspected Lean modules provide the sign-sequence carrier, its numerical
+order, ordinal embedding, small-family birthday bounds, bounded-birthday
+smallness, small-cut interpolation, and obstructions to unrestricted cuts.
+The exact declaration names are tabulated in Section 11.
+
+Ordinal.{u} and SignSequence.{u} both live in Type (u+1). Small.{u} refers to
+resizing into the lower universe u. Relations and predicate collections over
+a fixed carrier do not automatically require a further universe at every step.
+
+The new lexicographic theorems have not been machine-checked. The proposed
+module order is a development plan, not a description of completed Lean code.
+
+6. PRIMARY EXTERNAL REFERENCES
+
+Kanovei and Shelah, A definable nonstandard model of the reals:
+https://arxiv.org/abs/math/0311165
+https://doi.org/10.2178/jsl/1080938834
+The article checks the actual indexing definition: maps into P(N) with
+ultrafilter range, rather than silently substituting a different enumeration
+or injection convention.
+
+Jahel and Tsankov, Invariant measures on products and on the space of linear orders:
+https://arxiv.org/html/2007.00281v3
+https://doi.org/10.5802/jep.180
+Used for the classical product-space framework, not as a source of the new
+lexicographic scan-topology theorems.
+
+Hamkins, The global choice principle in Goedel-Bernays set theory:
+https://jdh.hamkins.org/the-global-choice-principle-in-godel-bernays-set-theory/
+
+Gitman and Hamkins, Open determinacy for class games:
+https://arxiv.org/abs/1509.01099
+
+Hamkins and Woodin, Open class determinacy is preserved by forcing:
+https://arxiv.org/abs/1806.11180
+Used for class well-foundedness, elementary transfinite recursion, and class
+well-order comparability. The direct labelled comparison is separately
+attributed to the repository and developed in the present article.
+
+Antos and Friedman, Hyperclass Forcing in Morse-Kelley Class Theory:
+https://arxiv.org/abs/1510.04082
+
+Lean Language Reference, Universes:
+https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/
+
+7. REMAINING QUESTIONS
+
+The paper does not claim a complete classification of arbitrary relation scans,
+all unfilled cuts at general increasing-word gap thresholds, or the full group
+preserving exhaustive branches. The proposed isomorphism between the centered
+product and the nonempty shorter-first word order remains a research question.
+These limits are stated explicitly in the twelve-question research agenda.

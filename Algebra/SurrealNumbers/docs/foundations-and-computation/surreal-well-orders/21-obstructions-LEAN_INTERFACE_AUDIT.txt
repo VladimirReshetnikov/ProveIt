@@ -1,0 +1,184 @@
+LEAN INTERFACE AUDIT — SOURCE READ, NOT REBUILT
+
+Repository: VladimirReshetnikov/ProveIt
+Pinned revision: 109aaca1505c12d70ae169bdc2011f40bd476f7d
+Scope: the four files below, fetched with the selected GitHub connection and
+read completely. No build, declaration elaboration, dependency scan, or new
+Lean verification was performed. The original files are not redistributed;
+SOURCE_AUDIT.txt supplies immutable source links.
+
+1. Algebra/SurrealNumbers/Surreal/Foundations/SignSequence.lean
+Git blob: e2c093860f29b0b9ea312d50099fc4aa89a76a99
+Namespace: Surreal.Foundations; most declarations nested in SignSequence.
+Import path: Surreal.Foundations.SignSequence
+
+Actual carrier:
+  structure SignSequence : Type (u + 1) where
+    birthday : Ordinal.{u}
+    signAt : Ordinal.{u} -> SignType
+    signAt_ne_zero_iff : forall i, signAt i != 0 <-> i < birthday
+
+The zero extension uses SignType values -1, 0, 1. The LinearOrder instance is
+lifted from Mathlib's lexicographic order on signAt, and:
+  SignSequence.lt_iff (x y : SignSequence.{u}) :
+    x < y <->
+      exists i, (forall j < i, x.signAt j = y.signAt j) /\
+                x.signAt i < y.signAt i
+is literally Iff.rfl.
+
+Useful existing names (prefix Surreal.Foundations.SignSequence):
+- signAt_injective, ext, signAt_eq_zero_iff
+- ofOrdinal, birthday_ofOrdinal, ofOrdinal_strictMono, ordinalOrderEmbedding
+- ofSigns (a : Ordinal.{u}) (s : Set.Iio a -> Bool)
+- birthdays_bounded {I : Type v} [Small.{u} I]
+    (f : I -> SignSequence.{u}) :
+    exists b : Ordinal.{u}, forall i, (f i).birthday < b
+- small_strict_upper_bounds :
+    HasSmallStrictUpperBounds.{u, u + 1} SignSequence.{u} (· < ·)
+- not_small : not Small.{u} SignSequence.{u}
+- small_bounded (b : Ordinal.{u}) :
+    Small.{u} {x : SignSequence.{u} // x.birthday <= b}
+  (an instance)
+- IsPrefix, IsPrefix.refl, IsPrefix.trans, IsPrefix.antisymm
+- Simpler, simpler_wellFounded
+- truncate, truncate_isPrefix, truncate_simpler
+- LeftIndex, RightIndex, small_leftIndex, small_rightIndex
+- canonicalCut :
+    SignSequence.{u} ->
+    SmallCutData.{u, u + 1} SignSequence.{u} (· < ·)
+- canonicalCut_realized
+- neg_lt_neg_iff, birthday_neg
+- birthday_precedence_not_prefix
+
+Interpretation: this is a genuine type in the higher universe, not an internally
+formed proper class. It is proved not equivalent to any Type u carrier. Bounded
+birthday subtypes remain syntactically in the higher universe but have Small.{u}
+instances, allowing Shrink to obtain equivalent lower-universe types.
+The file supplies order and prefix/simplicity structure, not surreal field
+arithmetic. Numerical order is explicitly distinguished from birthday comparison.
+
+2. Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceCut.lean
+Git blob: c5c35afd98a5ad293687367ee9fb0244f94cc91c
+Namespace: Surreal.Foundations.SignSequence
+Import path: Surreal.Foundations.SignSequenceCut
+
+Public declarations actually present:
+- exists_cut_separator_of_birthday_lt
+    (c : SmallCutData.{u, u + 1} SignSequence.{u} (· < ·))
+    (b : Ordinal.{u})
+    (hleft : forall i, (c.left i).birthday < b)
+    (hright : forall i, (c.right i).birthday < b) :
+    exists x : SignSequence.{u},
+      x.birthday = b /\ c.IsRealizedBy x
+- small_cut_fillers :
+    HasSmallCutFillers.{u, u + 1} SignSequence.{u} (· < ·)
+
+The proof uses a complete lexicographic order of full Boolean words with fixed
+ordinal length b, bounds option birthdays, and constructs a separator of exactly
+birthday b. The common bound b need not be a successor ordinal. The code calls
+birthdays_bounded on the sum of the two small index types.
+
+Limit: only SmallCutData with lower-universe option indices is covered. This is
+not unrestricted filling of all Set SignSequence predicates. Auxiliary full-word
+and aboveWord/belowWord declarations are private and should not be cited as a
+stable public API.
+
+3. Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceCutOperation.lean
+Git blob: 478c1e7f603e44032ae180f38bb0601044a94bae
+Namespace: Surreal.Foundations.SignSequence
+Import path: Surreal.Foundations.SignSequenceCutOperation
+
+Public declarations actually present:
+- cut (c : SmallCutData.{u, u + 1} SignSequence.{u} (· < ·)) :
+    SignSequence.{u}
+- cut_realizes, cut_isPrefix, cut_eq_iff, cut_canonicalCut
+- birthday_cut_le
+- birthday_cut_le_iSup:
+    (cut c).birthday <=
+      iSup (fun i : c.Left + c.Right =>
+        (Sum.elim c.left c.right i).birthday + 1)
+- cut_congr, cut_reindex
+- IsPrefix.neg, negateCut, negateCut_realizes_iff, cut_negateCut
+- exists_strict_lower_bound (I : Type u) (f : I -> SignSequence.{u})
+- exists_positive_lower_bound (I : Type u) (f : I -> SignSequence.{u})
+- exists_separator_of_small_sets
+    (L R : Set SignSequence.{u})
+    [Small.{u} L] [Small.{u} R]
+    (h : forall l in L, forall r in R, l < r) :
+    exists x, (forall l in L, l < x) /\ (forall r in R, x < r)
+- DenselyOrdered, NoMinOrder, NoMaxOrder instances for SignSequence.{u}.
+
+The simplest-cut constructor is noncomputable and uses the imported uniqueness
+of a simplest separator. That dependency lies in SignSequenceSimplicity.lean,
+which was not part of this four-file audit.
+The output is a prefix of every separator, not merely of minimum birthday.
+The file itself explicitly says it supplies no addition, multiplication, or
+field instance.
+
+4. Algebra/SurrealNumbers/Surreal/Foundations/SizeObstructions.lean
+Git blob: 02606e2b04ae42d19b723169d3e09f7c18b209ae
+Namespace: Surreal.Foundations
+Import path: Surreal.Foundations.SizeObstructions
+
+The index universe u and carrier universe v are independent. The surreal
+instantiation uses v=u+1.
+
+Actual interfaces:
+- SmallCutData (X : Type v) (lt : X -> X -> Prop), with fields
+    Left : Type u; Right : Type u;
+    left : Left -> X; right : Right -> X;
+    separated : forall l r, lt (left l) (right r)
+  This input structure does not assert the existence of a filler.
+- SmallCutData.IsRealizedBy
+- HasSmallCutFillers.{u,v} X lt :=
+    forall c : SmallCutData.{u,v} X lt, exists x, c.IsRealizedBy x
+- HasSmallStrictUpperBounds.{u,v} X lt :=
+    forall (I : Type u) (f : I -> X), exists b, forall i, lt (f i) b
+
+Actual obstruction theorems:
+- noUniversalStrictBound
+- noUnrestrictedStrictBounds
+- noUnrestrictedUpperBounds
+- noUnrestrictedCuts
+- not_small_of_small_strict_upper_bounds
+- not_small_of_small_cut_fillers
+
+noUnrestrictedCuts is the completely general irreflexive-relation statement:
+  not (forall L R : Set X,
+    (forall l in L, forall r in R, lt l r) ->
+    exists x, (forall l in L, lt l x) /\ (forall r in R, lt x r)).
+Its proof takes L=Set.univ and R=empty. It is not a theorem prohibiting all
+lower-universe small cuts.
+
+Other usable consequences:
+- HasSmallCutFillers.hasSmallStrictUpperBounds
+- HasSmallCutFillers.exists_strict_lower_bound
+- HasSmallCutFillers.exists_strict_lower_bound_above
+- HasSmallStrictUpperBounds.exists_bound_of_small_set
+  (requires a Small.{u} instance for the set's element subtype)
+
+FIRST FORMALIZATION MILESTONES SUPPORTED BY THESE INTERFACES
+
+A. Numerical first-divergence proofs can reuse SignSequence.lt_iff and ext.
+B. Prefix and simplicity arguments can reuse IsPrefix, truncate, and their laws.
+C. Bounded birthday fragments can be transported to a lower-universe carrier
+   using small_bounded; an arbitrary higher-universe type cannot be silently
+   treated as lower-universe small.
+D. Small-family interpolation can be expressed through SmallCutData or through
+   exists_separator_of_small_sets with both explicit Small assumptions.
+E. The noUnrestrictedCuts theorem provides a direct formal guard against an
+   illicit unrestricted self-cut.
+
+LIMITATIONS OF THIS AUDIT AND OF THE FOUR-FILE INTERFACE
+
+- No file or proof was rebuilt, and no #check or #print axioms session was run.
+- The four files contain proof-bearing Lean declarations, but source inspection
+  alone is not a fresh kernel-verification claim.
+- Imports outside the four requested files were not recursively inspected.
+- These interfaces do not formalize GBC/KM, global class-choice equivalences,
+  proper-class enumeration predicates, class-valued recursion, or hyperclasses.
+- They do not by themselves formalize the current article's new automorphism,
+  countable-topology, coherent-embedding, branch-cut, or nonembedding theorems.
+- None of the mathematical additions in the new article acquired formal status
+  through this source audit.
+

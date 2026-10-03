@@ -1,0 +1,125 @@
+SOURCE AUDIT
+Audit date: 3 October 2026
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Pinned revision: 7ff7736ecf3a0adc8536b2d083cf819e1ba39ace
+
+1. SCOPE
+
+Sixteen UTF-8 repository source files were retrieved at the exact pin.
+The audit covers the main project and surreal-project READMEs, the two
+relevant research READMEs, the complete merged surreal-well-orders article,
+six research-status companions, and five Lean foundation modules.
+It does not constitute a complete repository audit or a Lean build.
+
+Every retrieved source file was checked against the GitHub-reported Git
+blob hash SHA1("blob " + decimal_byte_count + NUL + file_bytes).
+All sixteen matched. The source_manifest.json file records those hashes,
+independent SHA256 hashes, byte counts, and pinned public URLs. The audit
+sources themselves are not duplicated in this download package.
+
+Central article:
+Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders/article.tex
+Git blob SHA1: f3f69663cd63682ad2e1db808bcb3c6e8fd940ce
+Size: 903287 bytes
+
+2. SOURCE SYNCHRONIZATION FINDINGS
+
+The research README describes an earlier 116-page four-source merge.
+The actual pinned article contains substantial later additions from six
+further manuscripts, called sources 13-18 in its editorial apparatus,
+including Parts VI-VIII. Its older question index is superseded in
+several places by later theorem statements and status notes.
+
+An introductory description mentions a planned Part IX, but that part
+is absent from the pinned body. A roadmap was therefore not treated as
+proof of its proposed results. The new article uses actual inspected
+statements and proofs, and explicitly identifies separately inspected
+earlier project manuscripts.
+
+3. INHERITED MATERIAL
+
+The inherited baseline includes fixed-set cardinality and ordinal
+spectra; birthday cardinal-block and finite-tail embedding calculations;
+fixed-stratum density, cellularity, and gap spectra; uniform normalization
+of free, injective, and increasing set-length surreal words; elementary
+comparison of raw class well-orders by their common labelled prefix;
+the bounded-support class core of global enumerations; represented and
+exhaustive core-cut criteria; and earlier class-condensation constructions.
+
+The present article credits these results and reproduces the portions
+needed for its extensions. In particular, the singular scheduling and
+variable-residual machinery are not presented as newly invented here.
+The double-split Borel phenomenon has a classical antecedent in Fremlin,
+Measure Theory, Volume 4, section 419L(b); the manuscript credits it and
+proves the version needed for the countable enumeration strata.
+
+4. EARLIER PROJECT MANUSCRIPTS
+
+Three earlier manuscripts are separately cited and directly inspected:
+
+- Lexicographic Orders of Surreal Well-Orders: Residual Spectra,
+  Decorated Completions, and Model Invariants
+  surreal_lexicographic_orders_continuation.tex
+
+- Lexicographic Orders of Surreal Well-Orders: Further Structure,
+  Automorphism Obstructions, and Model Dependence
+  surreal_well_orders_further_structure.tex
+
+- Lexicographic Orders of Surreal Well-Orders: Coherent Limits,
+  Nonextendible Symmetries, and Countable Models
+  surreal_orders_limits_symmetries_models.tex
+
+The manifest records their exact byte counts, SHA256 hashes, and persistent
+file identities. These are earlier AI-assisted project research documents,
+not refereed sources or proof-assistant certificates. Their presence in
+this audit does not assert that the pinned repository has merged them.
+
+5. INSPECTED LEAN FOUNDATION
+
+All five modules are under Algebra/SurrealNumbers/Surreal/Foundations/:
+
+SignSequence.lean
+    SignSequence lives in Type (u+1), with birthdays in Ordinal.{u}.
+    The source provides the numerical order, bounded birthdays,
+    prefix/truncation primitives, an ordinal embedding, and non-smallness.
+
+SignSequenceCut.lean
+    Small-cut fillers and separators at a prescribed birthday above
+    the option birthdays.
+
+SignSequenceCutOperation.lean
+    Canonical small-cut operations, birthday bounds, dense order,
+    and absence of endpoints.
+
+SignSequenceSimplicity.lean
+    existsUnique_simplest_separator requires an explicit separator-
+    existence hypothesis. That premise cannot be dropped or read as
+    arbitrary cut existence.
+
+SizeObstructions.lean
+    Lower-universe option indexing and the impossibility of unrestricted
+    cut filling, including the universal-lower-cut obstruction.
+
+These declarations were inspected. No new Lean code was written or
+compiled, and the article's suggested formal milestones are proposals.
+
+6. PRIMARY-SOURCE CHECKS
+
+The bibliography cites Gonshor and Bagayoko-van der Hoeven for surreal
+sign-sequence foundations; Kanovei-Shelah for the lexicographic ordering
+of redundant ultrafilter presentations; Gitman-Hamkins and Hamkins-Woodin
+for class-recursion and comparability principles; and Kechris and Fremlin
+for descriptive set theory and split-order Borel structure.
+
+Kanovei-Shelah's actual index consists of maps from the continuum cardinal
+to P(N) whose ranges are ultrafilters, with repetitions allowed. The
+relevant definition appears in section 1 of the preprint, on page 2.
+It is not literally a set of all exhaustive well-orderings of the reals.
+
+Hamkins-Woodin Theorem 6 supplies ETR => strong class-well-order
+comparability. Their Question 7 discusses related converses. This
+manuscript proves its stated condensation/comparability equivalence;
+it does not assert a converse from comparability to ETR or claim a
+new survey of the current status of every related open problem.
+
+Complete bibliographic links appear in the LaTeX source and the manifest.

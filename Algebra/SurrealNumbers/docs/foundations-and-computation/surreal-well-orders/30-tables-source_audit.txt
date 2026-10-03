@@ -1,0 +1,60 @@
+SOURCE AUDIT
+
+Repository:
+https://github.com/VladimirReshetnikov/ProveIt
+
+Pinned revision:
+7ff7736ecf3a0adc8536b2d083cf819e1ba39ace
+
+Principal research source:
+Algebra/SurrealNumbers/docs/foundations-and-computation/
+surreal-well-orders/article.tex
+
+The accompanying README and the surreal documentation guides were also
+inspected. The principal report is a merged research source with several
+successive additions. Earlier open-problem lists were compared against
+later results before selecting topics for continuation. The audit concerns
+the identified surreal research material; it is not a claim of exhaustive
+inspection of every file in the large repository or every related publication.
+
+Important inherited source labels:
+swo:cb:new:thm:block-types      Cardinal-block equimorphism theorem.
+swo:cb:new:lem:block-scheduler  Singular block scheduler.
+swo:cb:new:lem:finite-deletion  Deletion variant of the scheduler.
+swo:cb:new:lem:finite-capacity  Exact finite-fiber embedding capacity.
+swo:vi:sub:cb-boundary          Previously untreated infinite remainders.
+swo:cf:choice                  Choice equivalence over choice-free GB.
+
+The baseline also includes fixed-set cardinality and ordinal spectra,
+set-length word encodings and termination conventions, common-class-prefix
+comparison, bounded-support core and cut reconstruction, finite residual
+blocks, and earlier class-model results. These are acknowledged as inherited.
+
+Inspected Lean sources, under Algebra/SurrealNumbers/Surreal/Foundations/:
+SignSequence.lean
+SignSequenceCut.lean
+SignSequenceCutOperation.lean
+SizeObstructions.lean
+
+The article identifies concrete declarations, including birthdays_bounded,
+not_small, exists_cut_separator_of_birthday_lt, small_cut_fillers,
+birthday_cut_le_iSup, exists_separator_of_small_sets, and noUnrestrictedCuts.
+The smallness and universe parameters are preserved in its formalization plan.
+Source inspection is not reported as a fresh kernel check.
+
+Primary external sources:
+- Kanovei and Shelah, A definable nonstandard model of the reals (2004).
+  The index objects are maps from c to P(N) whose ranges are ultrafilters;
+  they are not literally all bijective well-orderings of R.
+- Ehrlich, The Absolute Arithmetic Continuum and the Unification of All
+  Numbers Great and Small (2012).
+- Miller, On the Borel Classification of the Isomorphism Class of a
+  Countable Model (1983), especially Section 2, Example 5, and Section 3.
+- Hamkins's original surreal/global-choice answer and global-choice exposition.
+- Gitman and Hamkins, Open determinacy for class games.
+- Gitman, Hamkins, Holy, Schlicht, and Williams, The exact strength of the
+  class forcing theorem.
+- Williams, Minimum models of second-order set theories (2019), especially
+  the minimum GBC-realization criterion for countable models.
+
+Precise bibliographic entries and source links are in the article.
