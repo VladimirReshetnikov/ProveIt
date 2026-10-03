@@ -671,9 +671,14 @@ minimizers at both duration interfaces and saves30 full frontier sources.
 All64,918 paid registers have complete grouped signed pullbacks; every ordinary
 comparison and finalizer remains included. The43-witness degree floor is312
 in this grouping grammar; the unchanged44-witness266/212 endpoint remains.
-Author and fresh installed receipt replays pass. Independent weighted and
-full source reviews are pending. These finite-family degree improvements do
-not lower the established74/86 operation records.
+The [independent bin-packing review](Papers/research-wip/native-stream-queue/review_u9_tail_weighted_minima.md)
+proves all120 minima using a different search and analytical anchor bounds.
+The [independent full source review](Papers/research-wip/native-stream-queue/review_neary_woods_universal_tail_partitions.md)
+reconstructs every one of the240 schedules and30 saved arrays, proves all
+64,918 grouped register identities and240 complete finalizers, and verifies
+all paid degree ledgers. Author and both installed review receipts pass fresh
+replay. These finite-family degree improvements do not lower the established
+74/86 operation records.
 
 
 The author packet retains its upper-only metadata. All three installed
