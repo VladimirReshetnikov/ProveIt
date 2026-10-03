@@ -289,6 +289,16 @@ polynomials and their complete predecessor identities, and checks all seven
 public APIs. Degree figures remain upper bounds, and no ordinary-input
 universal decoder or bound is added.
 
+The [time-free-height obstruction](three_mass_time_free_height_obstruction.md)
+and [independent review](review_three_mass_time_free_height_obstruction.md)
+reject a uniform further one-addition deletion. The actual incdec source
+would accept requested time137438954087 instead of616 at raw(x,y)=(0,1),
+with every native witness unchanged. Any accepted path with at least two
+positive-tick steps supplies the needed positive clock quotient; removing
+T from the height then permits T+(B-1). Both installed receipts pass fresh
+replay. The three exactly-one-step programs are separate exceptions; this
+obstruction is about exact-clock preservation, not a universal lower bound.
+
 The [two-cone recoder transfer](native_binary_recoder_factored128.md) reduces
 the complete inline binary recoder to**128=65M+63A**, with49 positive
 auxiliaries,34 comparisons and229-operation SOS of exact degree40.

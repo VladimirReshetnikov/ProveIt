@@ -269,6 +269,13 @@ and [full maintained-source review](Papers/research-wip/native-stream-queue/revi
 pass fresh installed replay. All four complete polynomial identities and
 seven maintained APIs are independently checked. Universal bounds stay74/86.
 
+A [reviewed clock-deletion obstruction](Papers/research-wip/native-stream-queue/review_three_mass_time_free_height_obstruction.md)
+shows why the same height cannot simply omit time for a multistep program.
+The complete incdec proposal accepts time137438954087 instead of616 with
+unchanged native witnesses. The proof applies to any accepted path of at
+least two positive-tick steps in this clock scheme. One-step programs are
+separate exceptions. Both installed source and review receipts pass.
+
 The [paid three-mass input bridge](Papers/research-wip/native-stream-queue/three_mass_exponential_input_bridge.md)
 adds54 operations to load payload2^(96x) for positive ordinary x, giving
 complete fixed-source totals651/526/524/527. Its sum-of-squares finalizer

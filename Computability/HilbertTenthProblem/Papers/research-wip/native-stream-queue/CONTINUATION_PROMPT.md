@@ -96,6 +96,19 @@
 > Preserve all frozen parent/probe/math trios. No ordinary universal loader
 > or universal operation change follows; old paid input-bridge totals retain
 > their own frozen predecessor source.
+> The [time-free-height obstruction](three_mass_time_free_height_obstruction.md)
+> and [independent review](review_three_mass_time_free_height_obstruction.md)
+> rule out a uniform additional1A deletion. Full candidate totals591/466/464/467
+> are syntactic counts only. Actual incdec path1->7->3 has ticks308+308=616.
+> Genuine prescribed h1024 uses parenteta407; embedding into candidate gives
+> eta1023, sameB=2^37 and same positive native witnesses. Clockhat309->308,
+> T616->137438954087 preserves every complete comparison and gives a false
+> exact time. General >=2-step positive-tick Q=sum_{i>=1}tau_i(1+...+B^(i-1))>=1
+> proves the same obstruction in this literal scheme. Author and independent
+> installed / receipts pass, with literal full identities and genuine outer
+> seed/AND checks; full native witnesses exist by the pinned prescribed-height
+> theorem and are not materialized. The exactly-one-step zero3/nop/positive3
+> examples are separate exceptions, adding no unbounded-computation benefit.
 > The [factored first-root reduction](complete86_factored_first_root.md)
 > gives86=48M+38A, exact degree179,19 positive witnesses. Its ordinary-strong
 > alternative gives87=47M+40A, degree135. The old first factor
