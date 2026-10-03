@@ -207,7 +207,7 @@ costs376 under general weighted flow, illustrating why fewer states do
 not imply fewer operations. Input2 has a genuine124-step accepting outer
 history; a modulo5 obstruction excludes input1. Positive native extensions
 are proved, not materialized. All height/input conditions remain. The
-numerical alphabet is not universal and the74/86 bounds are unchanged.
+numerical alphabet is not asserted universal; the74/86 bounds are unchanged.
 The [independent review](review_group_projective_inverse_macro_sharing.md)
 checks all four complete arrays:1,671 paid live gates,144 outer/native
 polynomial identities,740 retained registers,24 complete comparisons and
@@ -231,6 +231,25 @@ all707 paid gates and complete changed interfaces, all old/new finalizers,
 and three independent dense degree expansions. It proves the exact full
 polynomial correction and its strictly lower degree. Author and review
 pass fresh installed exact replay; all predecessor bytes are unchanged.
+
+The [nonempty mask tradeoff](group_projective_nonempty_mask_frontier.md)
+composes the unit top mask with the actual Nielsen compiler, giving
+**370=149M+221A at exact degree4909**. A second complete source pays one
+multiplication for J*R8(P), keeps J*R32(P) for the controller, and shortens
+the range-body scale P72→P48: **371=150M+221A at exact degree3517**.
+Both retain54 positive witnesses, six comparisons, all17 finalizer gates
+and every height/input obligation. Pretyping block bounds and the typed
+low-eight mask identity preserve the full outer-coordinate projection
+with fresh native extensions. Inputs2 and7 have genuine accepting outer
+histories; no complete native Pell zero is materialized. These are two
+saved sources, not a global frontier or a numerical universal improvement.
+The [independent review](review_group_projective_nonempty_mask_frontier.md)
+reconstructs both complete arrays and all741 live gates, proves24 graph/scale
+and31 joined scalar polynomials, checks740 retained registers and both
+full finalizers, and independently expands both whole polynomials for exact
+degree. Four new accepting outer fixtures use doubled height choices.
+Author and review pass fresh installed exact replay; all predecessor bytes
+remain unchanged.
 
 The [direct-height obstruction](group_projective_height_projection_obstruction.md)
 rejects deleting D=u+height_slack from the projective compiler. An actual
