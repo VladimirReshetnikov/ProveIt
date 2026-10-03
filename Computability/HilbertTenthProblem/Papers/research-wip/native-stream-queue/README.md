@@ -22,11 +22,133 @@ dipole, while point-source columns have infinite support. The original theorems
 are preserved. A separate patch and an immediate-halt counterexample document
 the correction; the report text and PDF remain unchanged.
 
+The [signal/sparse assembled report](review_signal_typesetting_bd8a8afd6.md)
+also preserves the source mathematics and 71 companion files. Its new signal
+abstract drops the partial/piecewise qualifiers; a separate tested patch restores
+them. Sparse-lattice mass, natural-domain and external-horizon limits remain correct.
+
+The [membrane/reset transfer](review_typesetting_11abe5008.md) verifies the
+explicit reuse of seven source blocks and preserves 124 companion paths. A
+separate patch qualifies the real-witness claim for duration padding and
+corrects the description of an emitted metadata difference.
+
+The [final J3 queue/sandpile integration](review_canonical_j3_0ac86bb58.md)
+preserves all source theorem blocks and its 20 companion files. Its new queue
+summaries need resource/drift guards and narrower claims about power elimination
+and the open storage question. The tested patch preserves the original theorems;
+root replay and the independent sandpile comparison check pass.
+
 The [existential congruence variant](presburger_congruence_existence15.md)
 further lowers the complete atom to **14 = 5M+9A** with five natural witnesses.
 Its truth output is exact, but its witness fibers are infinite. The separate
 independent review emits a fully paid two-atom NAND comparison, 53→39 operations,
 and checks the natural-domain and private-coordinate boundaries.
+
+For fixed parity, the [specialized atoms](parity_truth_specialization.md) cost
+8 operations on signed inputs, 10 with unique witnesses, or 7 on known-natural
+inputs. Explicit truth materialization costs one further subtraction. A fully
+paid accepted-NAND example costs 17 operations. The [independent review](review_parity_truth_specialization.md)
+checks all eighteen complete circuits; this local result leaves the universal
+87-operation bound unchanged.
+
+A [primary-source Grill Tag audit](review_grill_encoding_e.md) finds a four-bit
+error in the published E encoding. Changing its second grill from a−2 to a−4
+ones matches the displayed widths and production list; 10,240 independent
+two-generation fixtures pass. This bounded check does not certify the full
+compiler, halt protocol or ordinary-input universality.
+
+The [Grill Tag arithmetic scout](grill_tag_affine_scout.md) gives a positive
+affine representation whose terminal state forces dyadic widths. With external
+horizon t, one aggregate equation uniquely restores all intermediate content
+coordinates, saving 3(t−1) additions and t−1 witnesses. Adding integer
+Boolean factors without squaring saves another t multiplications. The complete
+projected circuit costs 15t+2−z(t), where z(t) counts zero runs in the fixed
+phase schedule. Its input is a paid padded-binary-x relation; a universal
+decoder remains open; fixed-arity word-closure packing is provided below. An
+[independent audit](review_grill_arithmetic_independent.md) checks 384 complete
+circuits and 193 positive history bijections; both suites pass root replay.
+The global bound stays 87.
+
+The [Grill word-closure compiler](grill_tag_word_closure.md) removes the
+remaining width witnesses and costs **10t+7−z(t)**, with t+1 positive witnesses
+and degree 2t+2. Its global word equality implies a genuine halt by t, but can
+include symbols after the first halt. Actual halts supply zeros at their actual
+time, so the union over external horizons preserves the same padded-input
+halting relation. This is a smaller varying-size family, not a fixed-arity
+universal bound or a bijection with causal history witnesses. Its
+[independent audit](review_grill_word_closure_independent.md) proves 144 complete
+source/count/degree identities and checks all 247 positive closures in a
+bounded census. Both author and independent receipts pass root replay.
+
+The [sparse Grill content row](grill_tag_sparse_content.md) gives an alternative
+complete schedule of **11t+5−3z(t)** operations. It retains exactly the same
+integer zeros and positive coordinates, with a proved full-polynomial correction.
+Its saving is 2+2z(t)−t, so it helps only sufficiently sparse phase schedules.
+The [independent review](review_grill_sparse_content.md) expands 72 complete
+sources and checks all 247 positive closures in its census; the author's full
+receipt also passes root replay. The horizon and decoder limitations remain.
+
+The [native Grill word-closure compiler](grill_tag_native_word_closure.md)
+now packs arbitrary duration into a fixed number of positive witnesses. It
+pays ordinary input, reversed affine histories, actual cyclic phase flow and
+dyadic input-width typing. For `(0,1,1)` its complete polynomial costs
+**219=98M+121A**, with 31 positive witnesses and degree at most 1187.
+The [independent review](review_grill_native_word_closure.md) verifies all
+eight complete sources, symbolic outer equations, native-unit restoration
+and a 112,224-tile-word census. Root replay matches both receipts. Full native
+Pell witnesses are supplied by the retained theorem, not numerically
+materialized in these fixtures. The represented language allows existential
+binary padding, which can change halting; an explicit universal recognizer
+and decoder remain unproved. This does not improve the 87-operation bound.
+
+The [whole-period padding theorem](grill_tag_padding_period.md) makes that
+input scope precise: appending a multiple of the program period in zero bits
+preserves halting and delays the first halt by exactly that length. The
+existential input language is a union of at most m canonical padding residues.
+Exact cycles show that a one-zero extension can change halting truth. The
+[independent review](review_grill_padding_period.md) also confirms that the
+weaker cone P0>x gives the same existential language, permitting a separate
+one-multiplication source reduction. That is a language equivalence, not
+equality of polynomials or witness fibers; the decoder remains unproved.
+
+The [native phase-sharing child](grill_tag_native_phase_sharing.md) reduces
+the complete `(0,1,1)` source from **219 to 209=94M+115A**, preserving the
+entire polynomial, all coordinates and every native/finalizer requirement.
+Its raw alternative drops from 243 to 233. The
+[independent review](review_grill_native_phase_shared.md) proves 18 complete
+source identities across nine programs, including literal one-phase no-ops.
+Both receipts pass root replay. The 31-witness interface and degree upper
+bound 1187 remain; these are still small-program, nonuniversal examples.
+
+The [phase-residual rewrite](grill_tag_native_phase_residual206.md) further
+reduces the strong-cone source from 209 to **206=93M+113A**, preserving its
+entire polynomial on every supplied tuple. A complementary weighted phase sum
+removes one multiplication and two additions. The
+[independent review](review_grill_native_phase_residual206.md) expands the
+actual selector, repunit and phase formulas and proves 14 complete source
+identities, including periods 1, 2, 3, 4 and 5. Both receipts pass root replay.
+The 31 positive witnesses and degree upper bound 1187 remain unchanged.
+
+The [weak-cone child](grill_tag_native_weak_cone.md) implements the padding
+corollary, reducing that complete source to **208=93M+115A**. It replaces
+P0=3x+Z0 by P0=x+Z0. Fresh native-domain arguments and the padding theorem
+preserve the existential input language; the positive zero sets on identical
+coordinates are disjoint. The exact algebraic relation instead shifts Z0 by
+−2x. The [independent review](review_grill_native_weak_cone.md) verifies all
+eight source substitutions and 82 actual outer/AND fixtures, explicitly
+distinguishing these fixtures from full native Pell zeros. Both receipts
+pass root replay; no universal decoder is inferred.
+
+The [encoded-padding obstruction](grill_tag_encoded_padding_obstruction.md)
+shows why the corrected creator fragment cannot directly provide the missing
+ordinary-input decoder. One fixed 1,176-entry compiled program has an infinite
+family of encoded inputs whose intended runs provably never halt; adding six
+terminal zero bits makes them halt after exactly 2,268k+6 steps. The numeric
+input is unchanged and both widths satisfy the strong cone. The
+[independent review](review_grill_encoded_padding_obstruction.md) reconstructs
+the program and blocks, proves the local identities underlying the infinite
+family, and reproduces two complete FIFO traces. Both receipts pass root replay.
+This refutes that direct decoder, not Grill universality or all possible decoders.
 
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
@@ -36,8 +158,27 @@ and a five-branch example from 840 to 456. Complete emitted gate lists,
 pay the whole evaluation, including finalization; the horizon remains external.
 
 
-The [complete direct U15 partition frontier](u15_unit_partition_frontier.md)
-gives **511/4881,513/3120,515/2116,517/1936** (operations/exact degree),
+The [U15 loader offset rewrite](u15_packed_loader_offset506.md) saves a further
+addition, giving complete ordinary-input points **506/4881, 508/3120,
+510/2116, 512/1936** (operations/exact degree). Each entire polynomial and all
+87 positive witnesses remain unchanged. The [independent review](review_u15_loader_offset506.md)
+proves equality of all eight emitted sources and transfers the exact degrees;
+root replay of both receipts passes. Raw counts remain 319/321, and the separate
+87-operation universal benchmark remains unchanged.
+
+Four preceding [exact U15 source identities](u15_packed_cross_projection507.md) remove
+two multiplications and two additions from the complete equations. The ordinary
+input schedules cost **507/4881, 509/3120, 511/2116, 513/1936**
+(operations/exact degree), with 209 multiplications and 87 positive witnesses.
+Raw input drops to 319 operations. Each entire polynomial, comparison, native
+unit factor and finalizer is unchanged; ordinary input and unbounded duration
+remain paid. All eight emitted forms pass root replay and the
+[independent full-source audit](review_u15_cross_projection507.md), including
+literal modular expansions attaining all exact degrees. The global
+87-operation benchmark remains unchanged.
+
+The preceding [complete direct U15 partition search](u15_unit_partition_frontier.md)
+gave **511/4881,513/3120,515/2116,517/1936** (operations/exact degree),
 all with211 multiplications and87 positive witnesses. In particular,517
 retains degree1936 using six fewer operations than the ungrouped523 source.
 The search emits all877 partitions and4,140 SOS/single-anchor schedules;
@@ -60,6 +201,12 @@ The [complete87 discriminant-shear scout](complete87_discriminant_shear_scout.md
 checks3,249 fully charged main/input norm schedules with exact full-polynomial
 identities. The best changed schedule costs88; this finite family does not
 improve87. It is distinct from the earlier product-of-norms composition scout.
+
+The [strong-norm composition scout](complete87_strong_norm_composition_scout.md)
+adds 106 complete schedules involving the strong norm: two pairings, all ordered
+triple compositions, and a common-c factorization. Their best costs are 91, 92
+and 94; none improves 87. Exact polynomial identities preserve the complete
+positive zero set and degree 169. Root replay reproduces the pinned receipt.
 
 
 The [factored history index](u15_packed_factored_index532.md) removes four

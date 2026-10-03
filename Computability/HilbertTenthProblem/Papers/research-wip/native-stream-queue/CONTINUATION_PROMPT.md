@@ -26,6 +26,22 @@
 > column with the signed dipole. The pinned correction restores this essential
 > distinction and the factor-two resistance; root replay and private patch
 > application pass. The maintained PDF still needs rebuilding when applied.
+> The [signal/sparse transfer](review_signal_typesetting_bd8a8afd6.md) preserves
+> all 23 formal blocks, 106 displays and 949 inline formulas with ordered
+> occurrence matching, plus 71 companion files. The new abstract needs the
+> partial/piecewise/homogeneous map qualifiers restored; its separate patch
+> and receipt pass root replay. The sparse editorial read found no new defect.
+> The [membrane/reset transfer](review_typesetting_11abe5008.md) also passes,
+> with seven explicitly mapped deduplicated blocks and 124 unchanged companions.
+> Its separate patch qualifies natural-only duration padding and fixes the
+> scope-metadata description; root receipt and private git-apply checks pass.
+> The [final J3 transfer at 0ac86bb58](review_canonical_j3_0ac86bb58.md) preserves
+> 72 formal blocks, 117 displays, 958 inline formulas and 20 companions. Its
+> separate patch restores queue resource/drift guards, distinguishes ordinary
+> existential Pow elimination from unique fibers, and qualifies the arbitrary-
+> power storage question as only partly answered. Root replay/private patch
+> checks and the independent sandpile comparison read pass. Later revisions
+> still need their own audit; these checks do not cover future commits.
 > New verified reductions: [five-witness congruence](presburger_congruence_five.md)
 > costs21 rather than22 for the full displayed atom; [sparse wire projection](sparse_lattice_projection.md)
 > saves T[7M+M(M−1)] coordinates and rows without a gate claim;
@@ -41,7 +57,61 @@
 > costs 14=5M+9A with five natural witnesses and exact truth, but infinite fibers.
 > Only its truth output can be shared. Independent full-NAND counts are 53→39;
 > both full sources and domain/privacy counterexamples have fresh root replays.
-> The complete U15 frontier511/4881,513/3120,515/2116,517/1936 is unchanged.
+> The [fixed-parity specialization](parity_truth_specialization.md) now costs
+> 8 operations with infinite signed-input fibers, 10 with canonical fibers, or
+> 7 on known-natural inputs. Truth materialization costs one extra A. The fully
+> paid fused accepted-NAND predicate costs 17/21/15 in those modes. Its separate
+> [independent circuit audit](review_parity_truth_specialization.md) and root
+> writer replay pass. Keep parity-only, already-evaluated-input and natural-witness scope.
+> Four [exact U15 source rewrites](u15_packed_cross_projection507.md) now save
+> 2M+2A, giving ordinary schedules **507/4881,509/3120,511/2116,513/1936**
+> and raw319. Every comparison and the whole polynomial are identical to the
+> respective pinned parent. The 87 positive witnesses, complete input loader,
+> unit-sign proof and unbounded duration are retained. Eight complete forms,
+> including four partition representatives, pass root replay and an
+> [independent complete-source audit](review_u15_cross_projection507.md), with
+> literal degree expansions and unchanged finalizer checks. This does not
+> rerun all 4,140 older partitions or improve the global 87-operation bound.
+> The [primary Grill Tag source review](review_grill_encoding_e.md) finds that
+> encoding E's second grill has a−2 ones in prose but requires a−4 to match
+> the stated widths and run list. All 10,240 bounded two-generation compiler
+> fixtures support the correction. The full compiler and its halt/input
+> contracts remain unaudited; do not assume a universal raw-input bridge.
+> The separate [Grill affine scout](grill_tag_affine_scout.md) pays for a
+> fixed-horizon padded-binary-x relation via P0=3x+Z0. The empty endpoint
+> forces dyadic widths, and a weighted aggregate restores each positive
+> intermediate content coordinate uniquely. Projected cost 15t+2−z(t)
+> saves 3(t−1) additions and t−1 witnesses over the full history; z(t)
+> counts zero run lengths. Both finalizers add integer Boolean factors
+> without squaring. Keep the external horizon, unaudited universal decoder
+> and unresolved uniform weighted-history packing explicit; neither is free.
+> Its [independent review](review_grill_arithmetic_independent.md) proves the
+> literal polynomials/counts/degrees of 384 complete circuits and checks 193
+> positive projection/restoration histories. Both author and review receipts
+> reproduce from the maintained repository. Real-witness and missing initial
+> code-bound counterexamples document the exact domain limits.
+> The following [Grill word-closure compiler](grill_tag_word_closure.md) reduces
+> cost to **10t+7−z(t)**, with t+1 positive witnesses and exact degree 2t+2.
+> It computes scaled prefix products directly from the Boolean head word.
+> Zeros imply first halt at some time ≤t; actual first halts give zeros at
+> their own time. Posthalt extensions exist, so do not claim a bijection with
+> causal width histories or equivalence to "halt by t" for each fixed t.
+> Only the union over external horizons equals the padded-input halting
+> relation. Uniform packing and a universal raw-input decoder remain open.
+> The [independent closure review](review_grill_word_closure_independent.md)
+> passes 144 complete source/count/degree proofs and a census of 247 positive
+> closures, including 20 posthalt examples. Both frozen receipts reproduce
+> from the maintained directory; the author and reviewer notes were read.
+> Next unimplemented circuit candidate: write c_i=2(H_i−1)/3 and replace the
+> closure content row by B−x−Σ c_i T_i. The old content residual minus the
+> width residual is three times this expression. Zero-run phases have c_i=0,
+> so a sparse emitted schedule may save work. No gate count or checked source
+> for this alternative is claimed yet; retain the positive input-width bound.
+> A new [strong-norm composition scout](complete87_strong_norm_composition_scout.md)
+> checks 106 complete schedules, including both strong-containing pairs, all
+> ordered triple compositions and a common-c factorization. Best costs 91/92/94
+> do not improve 87. All-value polynomial identities retain degree 169 and the
+> full supplied positive zero set; the fresh root replay matches its receipt.
 > The [connected routing SLP](connected_cross_routing_slp.md) additionally emits
 > the full unchanged polynomial with shared selector/column/row sums: transfer
 > 245→206 and five-branch fixture 840→456. Both the 20,455-check writer and
