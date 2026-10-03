@@ -20,7 +20,7 @@ not source 08 (batch-78 manuscript 08, Part I).
 | 14 | batch 78, manuscript 14 | `Waterfall_Diophantine_Certificates.zip` (`24a743255`); *Quadratic Diophantine certificates for a fixed Waterfall universal machine*, main file `paper/waterfall-diophantine.tex` with `paper/affine-gap-table.tex`, 16-page PDF; "Research note prepared with AI assistance for private review" | none (the manuscript names no ProveIt commit) | `41e7f1189` | Part III (Sections 30–38) and Appendices F–G |
 | 15 | batch 79, manuscript 08 | `Membrane_Motif_Research_Package.zip` (`2a8a39599`); *Exact Spatially Compressed Diophantine Certificates for Active Membrane Systems*, main file `article/membrane_motifs.tex`, 20-page PDF; "Research report with an exact arithmetic replay package" | none | `a7ae02511` | Part IV (Sections 39–49) and Appendices I–J |
 | 16 | batch 79, manuscript 09 | `Universal_Membrane_Research_Package.zip` (`2a8a39599`); *Literal universal active membrane frontends and quadratic outcome certificates*, main file `article/membrane_frontend.tex`, 21-page PDF; "Research manuscript" | none | `a7ae02511` | Part V (Sections 50–62) and Appendix K |
-| 17 | batch 79, manuscript 18 | `Reset_Petri_Net_Certificates.zip` (`aebfa386e`); *Reset Petri Nets and Canonical Quadratic Certificates*, main file `report/reset-net-certificates.tex`, 26-page PDF; "Research report and reproducible construction" | `44983ed7e` (an ancestor of this write, at which Parts I–III already existed; it cites the README of `canonical-diophantine-certificates`, not this report) | `a7ae02511` | Part VI (Sections 63–77) and Appendices L–M |
+| 17 | batch 79, manuscript 18 | `Reset_Petri_Net_Certificates.zip` (`aebfa386e`; corrected code edition `Reset_Petri_Net_Certificates_corrected.zip`, batch 80, manuscript 04, `4e270aa46`); *Reset Petri Nets and Canonical Quadratic Certificates*, main file `report/reset-net-certificates.tex`, 26-page PDF; "Research report and reproducible construction" | `44983ed7e` (an ancestor of this write, at which Parts I–III already existed; it cites the README of `canonical-diophantine-certificates`, not this report) | `a7ae02511`; corrected code `8a4e64732` | Part VI (Sections 63–77) and Appendices L–M |
 
 Every result, proof, example, remark, research question and limitation of
 the three batch-78 manuscripts is printed. They are not versions of one manuscript
@@ -67,9 +67,27 @@ programs instead of Iijil's Waterfall matrix; no theorem is shared.
 certified for any Part. Nothing in the report is formalized in Lean or
 Rocq.
 
+**Batch 80 (corrected code edition of source 17).** A corrected edition of
+source 17's archive, `Reset_Petri_Net_Certificates_corrected.zip`
+(3,632,338 bytes, SHA-256 `8d5b9b1a…486d3`; arrival `4e270aa46`, batch 80,
+manuscript 04; the archive dates its correction 3 October 2026), repairs
+the two input-boundary defects found by the research programme's review
+(see "Reviews and patches"). It was placed by `8a4e64732` (batch 80,
+cluster K1): four placed files were replaced by their corrected bytes under
+the same names (`code/17-reset-net-build_net.py`,
+`code/17-reset-net-peak_quadratic.py`, `code/17-reset-net-run-checks.sh`,
+`data/17-reset-net-checks-PADDING_AND_GENERIC_PEAK_RESULTS.json`; the
+originals remain in `a7ae02511` and `aebfa386e`) and three were added
+(`17-reset-net-CORRECTION.md`, `code/17-reset-net-checks-audit_exact_domains.py`,
+`data/17-reset-net-checks-EXACT_DOMAIN_RESULTS.json`). Its manuscript
+source and PDF are byte-identical to the batch-79 delivery, so no printed
+statement, proof, count or label changes; nets, schemas, witnesses,
+formulas and counts are unchanged. Part VI records it in a dated note in
+Section 76 (`qoc:rn:sec:reproduce`).
+
 ```
 article.tex                                          the report, standalone LaTeX with an internal bibliography
-article.pdf                                          the compiled report, 168 pages (unnumbered title page, then pages 1–167)
+article.pdf                                          the compiled report, 169 pages (unnumbered title page, then pages 1–168)
 README.md                                            this guide
 08-maximal-parallel-PROOF_AUDIT.md                   source 08's proof and scope audit, as delivered
 08-maximal-parallel-SOURCE_AUDIT.md                  source 08's source audit (repository pin, literature), as delivered
@@ -79,6 +97,7 @@ README.md                                            this guide
 15-membrane-motifs-RELEASE_NOTES.md                  source 15's release notes: proved claims and finite replay coverage, as delivered
 16-universal-membrane-direct-PROOF.md                source 16's proof notes for the affine (direct) frontend, as delivered
 16-universal-membrane-packet-PROOF.md                source 16's proof notes for the prime (packet) frontend, as delivered
+17-reset-net-CORRECTION.md                           source 17's corrected edition: exact-domain repair of two programs, scope and evidence, as delivered (batch 80)
 17-reset-net-VALIDATION.md                           source 17's verification-scope statement, as delivered
 code/08-maximal-parallel-parallel_certificates.py    source 08's exact-integer compiler, evaluator, canonical witnesses, rank and counting routines
 code/08-maximal-parallel-verify.py                   source 08's deterministic validation (imports parallel_certificates)
@@ -123,14 +142,15 @@ code/16-universal-membrane-packet-verify_quadratic.py  independent checks of the
 code/16-universal-membrane-reproduce.py              source 16's complete rerun with byte comparison (needs the arrival archive)
 code/17-reset-net-budget-audit-audit_budget.py       independent reconstruction of the net specification
 code/17-reset-net-build-pdf.sh                       source 17's PDF build script (delivered layout; see below)
-code/17-reset-net-build_net.py                       builds the 539-place reset net and its ledger
+code/17-reset-net-build_net.py                       builds the 539-place reset net and its ledger (batch-80 corrected edition: exact markings in fire)
 code/17-reset-net-checks-audit.py                    JSON-only structural and arithmetic checker
 code/17-reset-net-checks-audit_generated_families.py  generated-family coefficient checker
+code/17-reset-net-checks-audit_exact_domains.py      exact-domain regression (batch 80): 64 rejected calls, 9 schema hashes, 388 firings; also under -O
 code/17-reset-net-checks-audit_padding_and_generic_peak.py  padding and generic-peak checks
-code/17-reset-net-peak_quadratic.py                  local peak recurrence and duration extensions of the certificate
+code/17-reset-net-peak_quadratic.py                  local peak recurrence and duration extensions of the certificate (batch-80 corrected edition: Boolean flags)
 code/17-reset-net-replay_and_verify.py               main replay: traces, witnesses, every quadratic term (about 1-2 minutes)
 code/17-reset-net-reset_quadratic.py                 generic reset-trace compiler with the checked control projection
-code/17-reset-net-run-checks.sh                      the fourteen checks in order (hard-codes python3)
+code/17-reset-net-run-checks.sh                      the fourteen checks, then the exact-domain regression twice (normal, -O) (batch-80 corrected edition; hard-codes python3)
 code/17-reset-net-shared-checks-audit_prime_macros.py  checks the 328 prime-macro summaries for a=64
 code/17-reset-net-shared-checks-audit_shared.py      transition-by-transition checks of both shared-arc nets (over 3 minutes)
 code/17-reset-net-shared-reset-arcs-build_shared.py  builds the shared-reset-arc nets (writes four excluded files)
@@ -217,8 +237,9 @@ data/17-reset-net-accepting_reset_witness.json       sparse projected-trace witn
 data/17-reset-net-budget-audit-audit_results.json    receipt of audit_budget
 data/17-reset-net-budget-audit-shortest_accepting_word.json  the shortest accepting word
 data/17-reset-net-checks-AUDIT_RESULTS.json          receipt of checks/audit
+data/17-reset-net-checks-EXACT_DOMAIN_RESULTS.json   the two printed runs of audit_exact_domains, normal and -O (both PASS; batch 80)
 data/17-reset-net-checks-GENERATED_FAMILIES_RESULTS.json  receipt of audit_generated_families
-data/17-reset-net-checks-PADDING_AND_GENERIC_PEAK_RESULTS.json  receipt of audit_padding_and_generic_peak
+data/17-reset-net-checks-PADDING_AND_GENERIC_PEAK_RESULTS.json  receipt of audit_padding_and_generic_peak (batch 80: two source hashes refreshed)
 data/17-reset-net-checks-PORTABILITY_RESULTS.json    receipt of relocation checks of the JSON-only checker
 data/17-reset-net-net_ledger.json                    literal graph counts and degrees of the 539-place net
 data/17-reset-net-reset_net.json                     every place and arc of the 539-place net
@@ -244,7 +265,9 @@ data/17-reset-net-verification_receipt.json          receipt of replay_and_verif
 ### Delivered names
 
 Every shipped file other than `article.tex`, `article.pdf` and `README.md`
-is byte-identical to the delivery. Delivered name → shipped name:
+is byte-identical to the delivery; for source 17 the delivery is, since
+batch 80, the corrected code edition (the 47 files of source 17 not
+replaced or added then are byte-identical in both editions). Delivered name → shipped name:
 
 - Source 08 (inner directory `Maximal_Parallel_Diophantine/`):
   `code/*.py` → `code/08-maximal-parallel-*.py`; `data/*` →
@@ -278,13 +301,18 @@ is byte-identical to the delivery. Delivered name → shipped name:
   and are both shipped.
 - Source 17 (inner directory `reset-net-release/`): root programs →
   `code/17-reset-net-*`, root data → `data/17-reset-net-*`, `VALIDATION.md`
-  → `17-reset-net-VALIDATION.md`; files in sub-directories carry the
+  → `17-reset-net-VALIDATION.md`, the corrected edition's `CORRECTION.md` →
+  `17-reset-net-CORRECTION.md`; files in sub-directories carry the
   sub-directory in the prefix (`two-counter/build_variant.py` →
   `code/17-reset-net-two-counter-build_variant.py`,
   `shared-reset-arcs/three-counter/net_ledger.json` →
   `data/17-reset-net-shared-reset-arcs-three-counter-net_ledger.json`,
   `two-counter/source/accepting_example.json` →
-  `data/17-reset-net-two-counter-source-accepting_example.json`). Source
+  `data/17-reset-net-two-counter-source-accepting_example.json`; the
+  corrected edition's `checks/audit_exact_domains.py` and
+  `checks/EXACT_DOMAIN_RESULTS.json` →
+  `code/17-reset-net-checks-audit_exact_domains.py` and
+  `data/17-reset-net-checks-EXACT_DOMAIN_RESULTS.json`). Source
   17's copies of source 16's files are shipped once, under source 16's names:
   `source/{tm_table.json, virtual3.json, virtual3.txt, macro_certificates.json,
   accepting_counter_trace.json}` are `data/16-universal-membrane-{tm_table.json,
@@ -308,7 +336,9 @@ Parts IV–VI); the delivered READMEs (source 15: one; 16: three; 17: three);
 the checksum ledgers, all verified at placement (source 15 `SHA256SUMS`
 26/26 and `MANIFEST.json` 26/26; 16 `MANIFEST.json` 71/71,
 `direct/MANIFEST.json` 30/30, `packet/MANIFEST.json` 31/31; 17 `SHA256SUMS`
-83/83, with its checker `verify-manifest.py`); source 15's two transcripts
+83/83, with its checker `verify-manifest.py`, and the corrected edition's
+refreshed `SHA256SUMS` 86/86 at the batch-80 placement); the corrected
+edition's delivery `README.md` (with a correction notice); source 15's two transcripts
 `replay/export_sos_stdout.txt` and `replay/focused_tests_stdout.txt`
 (byte-identical to the shipped quartic and focused receipts); source 16's two
 identical copies of `WATERFALL-FRONTEND-PROOF.md`, an earlier draft of the
@@ -332,8 +362,13 @@ git show 808b53ed8:docs/incoming/Total_Quadratic_Diophantine_Semantics.zip > tqs
 git show 24a743255:docs/incoming/Waterfall_Diophantine_Certificates.zip > wdc.zip
 git show 2a8a39599:docs/incoming/Membrane_Motif_Research_Package.zip > mm.zip
 git show 2a8a39599:docs/incoming/Universal_Membrane_Research_Package.zip > um.zip
-git show aebfa386e:docs/incoming/Reset_Petri_Net_Certificates.zip > rn.zip
+git show aebfa386e:docs/incoming/Reset_Petri_Net_Certificates.zip > rn-original.zip   # source 17, original edition
+git show 4e270aa46:docs/incoming/Reset_Petri_Net_Certificates_corrected.zip > rn.zip   # source 17, corrected edition (preferred)
 ```
+
+Both editions of source 17 are complete layouts, including the heavy
+files; the corrected one (batch 80) matches the shipped programs. The
+commands below that name `rn.zip` work with either.
 
 ## Labels and numbering
 
@@ -646,7 +681,9 @@ The report does **not** claim:
 These reviews are in another session's tree; nothing there was changed,
 and **the shipped programs are the delivered bytes, unpatched**. Applying a
 patch to the prefixed copies would need its file names rewritten and is
-the research programme's decision.
+the research programme's decision. For source 17 the delivered bytes are,
+since batch 80, those of the authors' corrected code edition, which
+contains its own repair of the reviewed defects (below).
 
 - Sources 08 and 12: `incoming_substrate_review_808b53ed8.md`, with the
   detailed reviews `incoming_parallel_order_review_808b.md` (source 08)
@@ -694,9 +731,26 @@ the research programme's decision.
   `all_durations=0.5` it emits a schema declaring 2,813 variables but using
   index 2,813), and `build_net.py`'s `fire` accepts unknown places and
   non-natural token counts. Patch `reset_net_exact_domains.patch` (SHA-256
-  `bc3d28a4…`), changing only those two programs; the shipped
-  `code/17-reset-net-peak_quadratic.py` and `code/17-reset-net-build_net.py`
-  are unpatched (apply it in a delivered layout with `patch -p1`). The
+  `bc3d28a4…`), changing only those two programs. At the batch-79 write the
+  shipped `code/17-reset-net-peak_quadratic.py` and
+  `code/17-reset-net-build_net.py` were the delivered originals, unpatched.
+  **Batch 80:** they are now the authors' corrected code edition (arrival
+  `4e270aa46`, placement `8a4e64732`), written after reading (not running)
+  this review: `compile_peak` requires exact `bool` duration flags, `fire`
+  requires a dictionary of known string places with exact nonnegative
+  `int` counts, and `initial` raises `ValueError` instead of asserting; the
+  checks hold under `python -O`. The repair is equivalent to the patch: the
+  patched originals pass the authors' new regression
+  `code/17-reset-net-checks-audit_exact_domains.py` (normal and `-O`, the
+  same printed results), and the unpatched originals fail it ("Accepted malformed
+  call"). **Do not apply the patch to the shipped files**: the repair is
+  already present and the patch does not apply to them. The programme's
+  correction audit `review_batch80_corrected.md` (commit `abfc0cb25`)
+  confirms the repair, that removing the new guards (and restoring the old
+  assertion) makes both programs' Python syntax trees identical to the
+  originals, and that nets, schemas and receipts are otherwise unchanged;
+  it also notes that the schema parameter and caller-supplied nets are not
+  comprehensively hardened. The
   review also gives a natural-only gate simplification (`(E−e_r)X_r` instead
   of `(E−e_r)(e_r+X_r)`: same natural zero set, real exactness lost; one
   evaluation schedule from `12,770h+11` to `12,009h+11` paid operations), a
@@ -704,7 +758,14 @@ the research programme's decision.
 - The placement itself: `review_placement_a7ae02511.md` (commit
   `653349f6a`) authenticates all 246 files placed by `a7ae02511` against
   their archive members, and its stager `replay_placed_substrates_a7ae02511.py`
-  restores the complete delivered layouts of sources 15–17 from Git.
+  restores the complete delivered layouts of sources 15–17 from Git. That
+  statement is about the files of `a7ae02511` and remains true there; 4 of
+  them (13 across three reports) were replaced by corrected bytes in the
+  batch-80K1 placement. Since batch 80 the stager authenticates only a
+  checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`), where it
+  restores the original editions; on a current checkout it stops with
+  "Placed source differs". For the corrected layout of source 17 extract
+  the batch-80 archive.
 
 ## Licensing of the third-party machine data
 
@@ -746,11 +807,17 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX, in a scratch directory; standard packages (Latin Modern, AMS,
 bm, microtype, booktabs, longtable, enumitem, tcolorbox, fancyhdr, TikZ,
 xurl, hyperref, listings, float; `hypertexnames=false`). The committed
-build has 168 pages, with no undefined references or citations, no multiply
+build has 169 pages (168 before the batch-80 note), with no errors, warnings,
+undefined references or citations, no multiply
 defined labels, no duplicate destinations, and no overfull or underfull
-boxes. The log carries six informational "Infinite glue shrinkage found in
+boxes. The log carries eight informational "Infinite glue shrinkage found in
 box being split" messages from longtable page breaks (two in the build of
-Parts I–III alone).
+Parts I–III alone, six before the batch-80 note, which moved the page
+breaks of Part VI's file map and of the provenance table). The batch-80
+edit added no label, macro or package; the `.aux` of a build of the
+previous text has the same 307 labels with the same numbers, and the pages
+of the new note (Section 76), the provenance table and the title page were
+rendered and inspected.
 
 The article is generated reproducibly from the delivered manuscripts by
 merge scripts with anchored insertions (Parts IV–VI were appended to the
@@ -824,7 +891,10 @@ recreated layout, never the shipped files. Three ways to get one:
 2. run the research programme's stager,
    `py Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/replay_placed_substrates_a7ae02511.py --repo . --destination <new directory>`
    from the repository root (it authenticates the placed files and restores
-   the complete layouts from Git); or
+   the complete layouts from Git). Since batch 80 run it only from a
+   checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`); it then
+   restores source 17's original edition, and on a current checkout it
+   stops at the replaced files; or
 3. rebuild the layouts from the shipped files with the snippet under
    "Reconstructing the excluded data", then regenerate the excluded files.
 
@@ -846,7 +916,11 @@ py checks/audit.py; py checks/audit_generated_families.py; py checks/audit_paddi
 py two-counter/verify_source.py; py two-counter/build_variant.py
 py two-reset-audit/audit_two_reset.py; py two-reset-audit/compare_release_net.py
 py shared-reset-arcs/build_shared.py; py shared-checks/audit_shared.py; py shared-checks/audit_prime_macros.py
+py checks/audit_exact_domains.py; py -O checks/audit_exact_domains.py   # corrected edition (batch 80)
 ```
+
+The exact-domain regression runs under `-O` as well; the other checkers
+use assertions and must run without optimization flags.
 
 At placement (Windows, `PYTHONUTF8=1`, 170-s limit per command) source 15's
 four short suites passed and `replay_tests.py` did not finish (the research
@@ -866,6 +940,20 @@ archive and, on Windows, fails on line endings; run it under POSIX or
 compare modulo CRLF. `two-reset-audit/audit_two_reset.py` hashes the
 unshipped `two-counter/source/PROOF.md` into its receipt; take that file
 from the archive (`unzip -p rn.zip reset-net-release/two-counter/source/PROOF.md`).
+Batch 80 (corrected edition), on a layout rebuilt by `layout.sh` from the
+shipped files after the replacement (Windows, `PYTHONUTF8=1`, Python
+3.14.4): `checks/audit_exact_domains.py` passed normally and with `-O` (64
+rejected calls, 9 schema hashes, 388 stored firings, 72 overlap cases; about
+3 s for both), and its two printed JSON lines equal the two `runs` entries
+of the shipped receipt; with the three horizon-one schemas regenerated (the
+compiler calls under "Reconstructing the excluded data"),
+`checks/audit_padding_and_generic_peak.py`, `verify_source.py` and
+`build_net.py` reproduced their receipts, `reset_net.json` and
+`net_ledger.json` modulo line endings. The batch-80 placement check also
+reran `checks/audit.py`, `checks/audit_generated_families.py` and
+`budget-audit/audit_budget.py` in the extracted corrected archive with
+identical outputs, and found that the exact-domain regression fails on the
+two original programs and passes on them with the review's patch.
 
 ## Reconstructing the excluded data
 
@@ -874,7 +962,13 @@ files of sources 16 and 17, 63,245,978 bytes in all, were not shipped. The
 delivered programs regenerate each of them byte for byte, after the CRLF
 line endings that Windows runs write are converted to LF. This write rebuilt
 all seventeen from the shipped files on a recreated layout and compared them
-with the archive members: all identical.
+with the archive members: all identical. Batch 80: the heavy members of
+source 17's corrected code edition (`4e270aa46`) are byte-identical to those
+of the original edition, and its corrections leave every generator below
+unchanged (`build_net.py` changes only in `initial` and `fire`, not in the
+net builder; `reset_net.json` and `net_ledger.json` regenerate byte for
+byte), so the table and the commands stand; only the retrieval command
+gains the corrected archive (see "Delivered names").
 
 | Source | Excluded files (delivered paths) | Bytes | Rebuilt by | Time here |
 |---|---|---:|---|---:|
@@ -928,6 +1022,7 @@ for d in direct packet; do cp "$Q/data/14-waterfall-UniversalTM15x2.tm.txt" "$U/
 # source 17 (batch-79 manuscript 18)
 R=$O/reset-net-release; mkdir -p "$R/source" "$R/two-counter/source"
 cp "$Q/17-reset-net-VALIDATION.md" "$R/VALIDATION.md"
+cp "$Q/17-reset-net-CORRECTION.md" "$R/CORRECTION.md"
 for f in "$Q"/code/17-reset-net-* "$Q"/data/17-reset-net-*; do
   b=${f##*/17-reset-net-}
   case $b in
@@ -1070,3 +1165,19 @@ For Parts IV–VI:
   between Parts I, IV and V (Part I: multiset rewriting with cooperative
   rules; Parts IV–V: noncooperative active membranes, weak division in IV,
   elementary division in V). Table 1 says so.
+- Batch 80 (corrected code edition of source 17). `17-reset-net-CORRECTION.md`
+  uses delivered names (`peak_quadratic.compile_peak`, `build_net.fire`,
+  `checks/audit_exact_domains.py`, `run-checks.sh`, `SHA256SUMS`), runs its
+  reproducers "from the package root" with `python3`, and names the
+  unshipped ledger and delivery README; the regression runs in a recreated
+  layout (`layout.sh` above) or in the extracted archive. It writes no
+  file: it prints one JSON line per run, and its receipt
+  `checks/EXACT_DOMAIN_RESULTS.json` collects the two runs (normal and
+  `-O`) as a `runs` list that no shipped script writes. The corrected `run-checks.sh` still
+  hard-codes `python3` and now runs sixteen commands; Section 76 of the
+  article prints the fourteen of the original as delivered, with a dated
+  `[write]` note. Written in the article: that note, and updated sentences
+  in the front section (sources and reviews), the opening note of Part VI
+  and the provenance appendix (paragraph and source-17 row). No label,
+  statement or number changed (the corrected archive's `.tex` is
+  byte-identical), and no label was added.

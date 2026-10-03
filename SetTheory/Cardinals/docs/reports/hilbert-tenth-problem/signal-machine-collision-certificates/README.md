@@ -20,7 +20,7 @@ OpenAI", source 12 is an AI-assisted research note, and source 13 is a
 | 07 (base) | batch 78, manuscript 07 | `Collision_Geometry_Diophantine_Signal_Machines.zip` (`808b53ed8`); *Collision Geometry Is Linear: Event-Sparse Quadratic Diophantine Certificates for Rational Signal Machines*, main file `collision_geometry/article.tex`, 29-page PDF | `f1edb38f9` (audit blob `cb31d0a10`) | `798b0c5d4` | Part I (Sections 2–16) and Appendices A–B |
 | 11 | batch 78, manuscript 11 | `Signal_Machine_Diophantine_Certificates.zip` (`808b53ed8`); *Direct Diophantine Certificates for Rational Signal Machines: Finite collision schemas with unique quadratic witnesses*, main file `signal-diophantine-release/article.tex`, 15-page PDF | none named | `798b0c5d4` | Part II (Sections 17–28) and Appendices C–D |
 | 12 | batch 79, manuscript 16 | `Conservative_Signal_Frontend_Corrected.zip` (`aebfa386e`); *Conservative signal machines as Diophantine frontends*, main file `paper/conservative-signal-diophantine.tex` with `paper/morita-table.tex`, 21-page PDF; the corrected edition of batch-79 manuscript 07 (`Conservative_Signal_Diophantine_Frontend.zip`, `2a8a39599`), which is superseded and not shipped | none named (its `CORRECTION.md` cites the review commit `9f033fa6e`) | `a7ae02511` | Part III (Sections 29–37) and Appendices F–H |
-| 13 | batch 79, manuscript 19 | `Sparse_Lattice_Diophantine_Certificates.zip` (`aebfa386e`); *Sparse Diophantine certificates for finite mass lattice dynamics*, main file `paper/sparse-lattice.tex` reading five further files, 27-page PDF | none named | `a7ae02511` | Part IV (Sections 38–48) |
+| 13 | batch 79, manuscript 19 | `Sparse_Lattice_Diophantine_Certificates.zip` (`aebfa386e`); *Sparse Diophantine certificates for finite mass lattice dynamics*, main file `paper/sparse-lattice.tex` reading five further files, 27-page PDF; corrected code edition `Sparse_Lattice_Diophantine_Certificates_corrected.zip` (batch 80, manuscript 07, `4e270aa46`) | none named | `a7ae02511`; corrected code `8a4e64732` | Part IV (Sections 38–48) |
 
 **Parts I and II prove one theorem by two routes.** Once a complete finite
 collision history of a rational signal machine is fixed, its realizations are
@@ -62,20 +62,44 @@ before or while this report was written: sources 07 and 11 in
 repair `conservative_signal_packet_domains.patch` that source 12 applies) and
 source 12 itself in `review_conservative_signal_corrected_aebfa386e.md`
 (commit `9df1f72ca`); source 13 in `review_sparse_lattice_aebfa386e.md`
-(commit `9975af7e1`, with the unapplied repair
-`sparse_mass_exact_polynomials.patch`). Section "Reviews and patches" below
+(commit `9975af7e1`, with the repair
+`sparse_mass_exact_polynomials.patch`, never applied here; since batch 80 the
+shipped program is source 13's corrected code edition, whose own repair is
+equivalent). Section "Reviews and patches" below
 gives the details. This intake is not a first review.
+
+**Batch 80 (corrected code edition of source 13).** A corrected edition of
+source 13's archive, `Sparse_Lattice_Diophantine_Certificates_corrected.zip`
+(3,895,754 bytes, SHA-256 `cf9b546b…dec1e2`; arrival `4e270aa46`, batch 80,
+manuscript 07; the archive dates its correction 3 October 2026), repairs the
+review's finding P2. It was placed by `8a4e64732` (batch 80, cluster K1):
+five placed files were replaced by their corrected bytes under the same
+names (`code/13-sparse-lattice-sparse_mass.py`,
+`code/13-sparse-lattice-run_release.py`,
+`13-sparse-lattice-SOURCE-PROVENANCE.md`,
+`data/13-sparse-lattice-coefficient-crosscheck.json`,
+`data/13-sparse-lattice-release-verification.json`; the originals remain in
+`a7ae02511` and `aebfa386e`) and three were added
+(`13-sparse-lattice-CORRECTION.md`,
+`code/13-sparse-lattice-test_poly_exactness.py`,
+`data/13-sparse-lattice-poly-exactness.json`). Its six manuscript files,
+PDF, fixtures and tables are byte-identical to the batch-79 delivery, so no
+printed statement, proof, count or label changes; Part IV records it in a
+dated paragraph of Section 47 (`smc:sl:sec:reproduction`). The research
+tree's correction audit `review_batch80_corrected.md` (commit `abfc0cb25`)
+confirms the repair.
 
 ```
 article.tex                                                     the report, standalone LaTeX with an internal bibliography
-article.pdf                                                     the compiled report, 119 pages (unnumbered title page, then pages 1–118)
+article.pdf                                                     the compiled report, 120 pages (unnumbered title page, then pages 1–119)
 README.md                                                       this guide
 07-collision-geometry-PROVENANCE.md                             source 07's repository and literature provenance, as delivered
 11-signal-certificates-REPRODUCIBILITY.md                       source 11's reproducibility record, as delivered
 12-conservative-signal-CORRECTION.md                            source 12's account of the generic-evaluator correction, as delivered
 12-conservative-signal-PROOF_AND_LEDGER.md                      source 12's mode-closure proof and numeric packet ledger, as delivered
 12-conservative-signal-SOURCE-PROVENANCE.md                     source 12's primary sources (Durand-Lose, Morita) and the Table 5 discrepancy, as delivered
-13-sparse-lattice-SOURCE-PROVENANCE.md                          source 13's provenance, primary sources and packaging changes, as delivered
+13-sparse-lattice-CORRECTION.md                                 source 13's corrected edition: the exact Poly constructor, scope and evidence, as delivered (batch 80)
+13-sparse-lattice-SOURCE-PROVENANCE.md                          source 13's provenance, primary sources and packaging changes, as delivered (batch-80 corrected edition, with a dated preface)
 code/07-collision-geometry-Makefile                             source 07's make targets: test (run_checks.py) and pdf (latexmk)
 code/07-collision-geometry-run_checks.py                        source 07's 34,560-assertion regression suite (imports signal_certificates; rewrites data/)
 code/07-collision-geometry-signal_certificates.py               source 07's exact simulator, chamber compiler, quartic union (standard library)
@@ -107,10 +131,11 @@ code/13-sparse-lattice-morita_audit.py                          source 13's corr
 code/13-sparse-lattice-run-replay.sh                            source 13's wrapper: python3 replay/run_release.py
 code/13-sparse-lattice-run_checks.py                            source 13's core checks and generic fixture generation
 code/13-sparse-lattice-run_morita_fixture.py                    source 13's generator of the two Morita first-pulse certificates (the excluded .json.gz files)
-code/13-sparse-lattice-run_release.py                           source 13's release runner (works in a temporary copy, compares with receipts)
+code/13-sparse-lattice-run_release.py                           source 13's release runner (works in a temporary copy, compares with receipts; batch-80 edition, runs the exactness suite first)
 code/13-sparse-lattice-semilinearity-audit.py                   source 13's independent actual-CA/Presburger arithmetic audit (delivered replay/semilinearity/audit.py)
 code/13-sparse-lattice-semilinearity-check.py                   source 13's semilinearity proof-component regression (delivered replay/semilinearity/check.py)
-code/13-sparse-lattice-sparse_mass.py                           source 13's coefficient-explicit sparse compiler and verifier (delivered, unpatched)
+code/13-sparse-lattice-sparse_mass.py                           source 13's coefficient-explicit sparse compiler and verifier (batch-80 corrected edition: exact Poly constructor)
+code/13-sparse-lattice-test_poly_exactness.py                   source 13's exactness suite for direct Poly construction (batch 80; --baseline-module compares the original)
 code/13-sparse-lattice-two-mass-audit.py                        source 13's mass-two encounter/query arithmetic audit (delivered replay/two-mass/audit.py)
 code/13-sparse-lattice-two-mass-regression.py                   source 13's separate mass-two encounter regression
 data/07-collision-geometry-checks.json                          source 07's recorded run: PASS, 34,560 assertions, test counts and ledgers
@@ -149,7 +174,7 @@ data/12-conservative-signal-REPLAY_RECEIPT.json                 receipt of conse
 data/12-conservative-signal-SOURCE_MANIFEST.json                digests and access dates of the (unshipped) primary-source PDFs
 data/13-sparse-lattice-binary_three_way_collision.json          coefficient-explicit fixture (Section 47.2)
 data/13-sparse-lattice-binary_three_way_collision_orthant.json  the same, orthant-exact
-data/13-sparse-lattice-coefficient-crosscheck.json              receipt of the producer/independent cross-check
+data/13-sparse-lattice-coefficient-crosscheck.json              receipt of the producer/independent cross-check (batch 80: producer hash refreshed)
 data/13-sparse-lattice-core-checks.json                         receipt of the core checks
 data/13-sparse-lattice-doubling-complete.csv                    the 17,576-row completed doubling table (CRLF, kept byte for byte)
 data/13-sparse-lattice-false-signal-complete.csv                the 9,261-row unsafe-source counterexample table (CRLF, kept byte for byte)
@@ -160,7 +185,8 @@ data/13-sparse-lattice-legacy-factorized.json                   receipt of the f
 data/13-sparse-lattice-morita-n0.json                           receipt of the n=0, T=7 first-pulse certificate (file excluded, see below)
 data/13-sparse-lattice-morita-n2.json                           receipt of the n=2, T=41 first-pulse certificate (file excluded, see below)
 data/13-sparse-lattice-morita-source.json                       receipt of the source-interface audit (no final newline, as delivered)
-data/13-sparse-lattice-release-verification.json                receipt of the release runner
+data/13-sparse-lattice-poly-exactness.json                      receipt of the exactness suite (PASS: 24 malformed categories, 2,700 exact comparisons; batch 80)
+data/13-sparse-lattice-release-verification.json                receipt of the release runner (batch 80: new first stage, producer hash refreshed)
 data/13-sparse-lattice-semilinearity-components.json            receipt of the semilinearity component regression
 data/13-sparse-lattice-semilinearity-independent.json           receipt of the independent semilinearity audit
 data/13-sparse-lattice-ternary_mixed_mass.json                  coefficient-explicit mixed-mass fixture
@@ -168,10 +194,135 @@ data/13-sparse-lattice-two-mass-arithmetic.json                 receipt of the m
 data/13-sparse-lattice-visual-qa.json                           source 13's record of its PDF visual check
 ```
 
+Placed by `345a9e44e`, to be printed as Parts V–VI (batch 80K2); listed
+here only so that this listing matches the directory (116 files):
+
+```
+14-three-mass-SOURCE_PROVENANCE.md
+15-clean-targets-CLEAN-TARGET-THEOREM.md
+15-clean-targets-INDEPENDENT-AUDIT.md
+15-clean-targets-SOURCE_PROVENANCE.md
+16-single-unit-AUDIT.md
+16-single-unit-REVISION.md
+16-single-unit-SOURCE-PROVENANCE.md
+17-four-mass-BINARY-EXPANDING-SHUTTLE.md
+17-four-mass-BINARY-INDEPENDENT-AUDIT.md
+17-four-mass-EXPANDING-SHUTTLE.md
+17-four-mass-FINAL-REVIEW.md
+17-four-mass-INDEPENDENT-AUDIT.md
+17-four-mass-SOURCE-PROVENANCE.md
+17-four-mass-finite-seed-section-lemma.md
+code/14-three-mass-build.sh
+code/14-three-mass-certificate.py
+code/14-three-mass-checker.py
+code/14-three-mass-export_examples.py
+code/14-three-mass-legacy-certificate.py
+code/14-three-mass-legacy-checker.py
+code/14-three-mass-radius_one.py
+code/14-three-mass-replay.sh
+code/14-three-mass-spatial_radius_one.py
+code/14-three-mass-test_certificate_hardening.py
+code/14-three-mass-test_certificates.py
+code/14-three-mass-test_certificates_independent.py
+code/14-three-mass-test_checker_mutations.py
+code/14-three-mass-test_clock_scale_independent.py
+code/14-three-mass-test_literal_exports.py
+code/14-three-mass-test_radius_one.py
+code/14-three-mass-test_radius_one_boundaries.py
+code/14-three-mass-test_size_ledger.py
+code/14-three-mass-test_spatial_radius_one.py
+code/14-three-mass-test_three_mass_independent.py
+code/14-three-mass-test_two_mass_arithmetic.py
+code/14-three-mass-three_mass_collision_generator.py
+code/15-clean-targets-audit_actual_ca.py
+code/15-clean-targets-audit_certificates.py
+code/15-clean-targets-audit_lift_name_collisions.py
+code/15-clean-targets-audit_witness_lift.py
+code/15-clean-targets-build.sh
+code/15-clean-targets-check_clean_targets.py
+code/15-clean-targets-clean_targets.py
+code/15-clean-targets-replay.py
+code/15-clean-targets-test_affine_lift.py
+code/15-clean-targets-test_clean_targets.py
+code/16-single-unit-audit_accelerator.py
+code/16-single-unit-build.sh
+code/16-single-unit-run-tests.sh
+code/16-single-unit-test_single_unit_acceleration.py
+code/17-four-mass-audit_arithmetic.py
+code/17-four-mass-audit_binary_shuttle.py
+code/17-four-mass-binary_exact.py
+code/17-four-mass-build.sh
+code/17-four-mass-check_binary_rule.py
+code/17-four-mass-draw_binary_shuttle_trace.py
+code/17-four-mass-run-tests.sh
+code/17-four-mass-test_binary_expanding_shuttle.py
+code/17-four-mass-test_exact_boundaries.py
+code/17-four-mass-test_expanding_shuttle.py
+data/14-three-mass-certificate-hardening.json
+data/14-three-mass-certificate-tests.json
+data/14-three-mass-chain_certificate.json
+data/14-three-mass-chain_check.json
+data/14-three-mass-chain_request.json
+data/14-three-mass-chain_witness.json
+data/14-three-mass-checker-mutations.json
+data/14-three-mass-clock-scale-optimized-tests.json
+data/14-three-mass-clock-scale-tests.json
+data/14-three-mass-generator-tests.json
+data/14-three-mass-independent-ca-tests.json
+data/14-three-mass-independent-certificate-tests.json
+data/14-three-mass-literal-export-check.json
+data/14-three-mass-literal-export.json
+data/14-three-mass-mixed_check.json
+data/14-three-mass-mixed_radius_one_check.json
+data/14-three-mass-mixed_radius_one_request.json
+data/14-three-mass-mixed_radius_one_witness.json
+data/14-three-mass-mixed_request.json
+data/14-three-mass-mixed_witness.json
+data/14-three-mass-pdf-qa.json
+data/14-three-mass-radius-one-boundaries.json
+data/14-three-mass-radius-one-tests.json
+data/14-three-mass-replay-summary.json
+data/14-three-mass-rule_index.json
+data/14-three-mass-size-ledger-tests.json
+data/14-three-mass-spatial-radius-one-optimized-tests.json
+data/14-three-mass-spatial-radius-one-tests.json
+data/15-clean-targets-actual-ca-receipt.json
+data/15-clean-targets-affine_lift.json
+data/15-clean-targets-certificate-receipt.json
+data/15-clean-targets-chain_certificate.json
+data/15-clean-targets-chain_receipt.json
+data/15-clean-targets-chain_request.json
+data/15-clean-targets-chain_witness.json
+data/15-clean-targets-final-prose-review.json
+data/15-clean-targets-lift-name-collision-receipt.json
+data/15-clean-targets-portable-replay.json
+data/15-clean-targets-report-qa.json
+data/15-clean-targets-source-provenance.json
+data/15-clean-targets-test_clean_targets.json
+data/15-clean-targets-upstream-extension-manifest.json
+data/15-clean-targets-witness-lift-receipt.json
+data/16-single-unit-audit-results.json
+data/16-single-unit-test-results.json
+data/17-four-mass-audit-arithmetic-results.json
+data/17-four-mass-binary-four-particle-shuttle.csv
+data/17-four-mass-binary-four-particle-shuttle.json
+data/17-four-mass-binary-independent-audit-results.json
+data/17-four-mass-binary-radius6-conservation-certificate.json
+data/17-four-mass-binary-rule-receipt.json
+data/17-four-mass-binary-shuttle-test-results.json
+data/17-four-mass-exact-boundary-results.json
+data/17-four-mass-portable-replay-results.json
+data/17-four-mass-shuttle-test-results.json
+figures/17-four-mass-binary-four-particle-shuttle.pdf
+```
+
 ### Delivered names
 
 Every shipped file other than `article.tex`, `article.pdf` and `README.md`
-is byte-identical to the delivery. Delivered name → shipped name:
+is byte-identical to the delivery; for source 13 the delivery is, since
+batch 80, the corrected code edition (its other 30 shipped files are
+byte-identical in both editions). The files of the batch-80K2 block above
+are described by the write of Parts V–VI. Delivered name → shipped name:
 
 - Source 07 (`collision_geometry/`): `Makefile`, `code/run_checks.py`,
   `code/signal_certificates.py` → `code/07-collision-geometry-*`;
@@ -201,7 +352,11 @@ is byte-identical to the delivery. Delivered name → shipped name:
   → `data/13-sparse-lattice-<file name>`; the four
   `replay/core/fixtures/*.json` → `data/13-sparse-lattice-<file name>`;
   `tables/*.csv` → `data/13-sparse-lattice-*-complete.csv`;
-  `SOURCE-PROVENANCE.md` → `13-sparse-lattice-SOURCE-PROVENANCE.md`. The
+  `SOURCE-PROVENANCE.md` → `13-sparse-lattice-SOURCE-PROVENANCE.md`; the
+  corrected edition's `CORRECTION.md`, `replay/core/test_poly_exactness.py`
+  and `receipts/poly-exactness.json` → `13-sparse-lattice-CORRECTION.md`,
+  `code/13-sparse-lattice-test_poly_exactness.py` and
+  `data/13-sparse-lattice-poly-exactness.json`. The
   delivered `replay/morita/audit.py` is a byte copy of
   `replay/core/morita_audit.py` and is shipped once.
 
@@ -214,7 +369,10 @@ Not shipped (all survive in the archives of the arrival commits):
 - the checksum ledgers, all verified at placement: source 07's `SHA256SUMS`
   (14 of 14), source 11's `CHECKSUMS.sha256` (17 of 17), source 12's
   `SHA256SUMS` (44 of 44; batch-79 manuscript 07's had 37 of 37), source
-  13's `SHA256SUMS` (48 of 48) with its checker `replay/verify_manifest.py`;
+  13's `SHA256SUMS` (48 of 48) with its checker `replay/verify_manifest.py`,
+  and the corrected edition's refreshed `SHA256SUMS` (51 of 51) at the
+  batch-80 placement; the corrected edition's delivery `README.md` (with a
+  correction notice);
 - source 12's `correction/conservative_signal_packet_domains.patch`, which is
   byte-identical to the research tree's
   `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/conservative_signal_packet_domains.patch`
@@ -231,9 +389,14 @@ Not shipped (all survive in the archives of the arrival commits):
 git show 808b53ed8:docs/incoming/Collision_Geometry_Diophantine_Signal_Machines.zip > cg.zip
 git show 808b53ed8:docs/incoming/Signal_Machine_Diophantine_Certificates.zip > sd.zip
 git show aebfa386e:docs/incoming/Conservative_Signal_Frontend_Corrected.zip > cs.zip
-git show aebfa386e:docs/incoming/Sparse_Lattice_Diophantine_Certificates.zip > sl.zip
+git show aebfa386e:docs/incoming/Sparse_Lattice_Diophantine_Certificates.zip > sl-original.zip   # source 13, original edition
+git show 4e270aa46:docs/incoming/Sparse_Lattice_Diophantine_Certificates_corrected.zip > sl.zip   # source 13, corrected edition (preferred)
 git show 2a8a39599:docs/incoming/Conservative_Signal_Diophantine_Frontend.zip > cs-original.zip
 ```
+
+Both editions of source 13 contain every file, including the excluded
+fixtures (byte-identical in the two); the corrected one matches the shipped
+programs.
 
 ### Reconstructing the excluded data
 
@@ -632,8 +795,31 @@ except where a source itself shipped the patched program (source 12).
   within its stated domains; checked the rule (8.2) sign against the primary
   paper; regenerated both Morita fixtures; one low-level finding (P2): the
   public `Poly` constructor of `sparse_mass.py` accepts float coefficients and
-  mutable terms, repaired by `sparse_mass_exact_polynomials.patch`, which is
-  **not** applied to the shipped `code/13-sparse-lattice-sparse_mass.py`.
+  mutable terms, repaired by `sparse_mass_exact_polynomials.patch`, which
+  was **not** applied: at the batch-79 write the shipped
+  `code/13-sparse-lattice-sparse_mass.py` was the delivered original.
+  **Batch 80:** it is now source 13's corrected code edition (arrival
+  `4e270aa46`, placement `8a4e64732`), written after reading (not running)
+  this review: `Poly.__post_init__` requires a tuple of
+  `(monomial, coefficient)` tuples, exact `int` indices and coefficients
+  (not `bool`, float or subclasses), nonzero coefficients, sorted indices
+  and distinct sorted monomials; `Poly.make` stays the canonicalizer, and
+  negative (parameter) and repeated (power) indices remain valid. Its new
+  suite `code/13-sparse-lattice-test_poly_exactness.py` passes on the
+  shipped file and on the original with the review's patch; with
+  `--baseline-module` on the original it reproduces the floating false
+  zero (residual `0.0` at `2**60+1`, witness accepted) and the mutable
+  alias (3, then 6). **Do not apply the patch to the shipped file**: the
+  repair is already present, and the patch would apply with fuzz 2 and
+  insert a second `__post_init__` (the later definition wins). The
+  correction audit `review_batch80_corrected.md` (commit `abfc0cb25`)
+  confirms the repair and that removing the new guard leaves the module's
+  syntax tree identical to the original's. One disclosure on the suite
+  (delivered file unchanged): in baseline mode its receipt field
+  `"noncanonical_examples_accepted": 3` is a literal, and the loop feeds
+  the original only three of the four noncanonical forms listed in
+  `13-sparse-lattice-CORRECTION.md` (not the explicit zero coefficient,
+  which the original also accepts, as checked at this write).
   Later: `sparse_lattice_projection.md` (commit `352ec5c1c`) reduces the
   preferred ledger to `V = T[M(S+7) + 4M(M−1)]`, `R = T[10M + 4M(M−1)]`, and
   `presburger_congruence_five.md` (commit `d175245d7`) lowers the
@@ -650,7 +836,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX, in a scratch directory; standard packages (Latin Modern, AMS,
 mathtools, microtype, booktabs, longtable, ragged2e, xcolor, TikZ, enumitem,
-fancyhdr, listings, xurl, hyperref). The committed build has 119 pages: no
+fancyhdr, listings, xurl, hyperref). The committed build has 120 pages: no
 errors, no undefined references or citations, no multiply defined labels,
 no duplicate destinations, no overfull boxes. The log's only box messages
 are four underfull lines in bibliography entries: three in `reversible`,
@@ -666,6 +852,18 @@ longtable now gets its own anchor name (`\theHtable` redefined inside its
 `center` group); no printed number or text changed, and the new build has
 119 pages and the clean log described above, with no duplicate destination
 (label numbers compared in the `.aux`).
+
+The batch-80 notes of cluster K1 (the corrected code edition of source 13:
+one dated paragraph, updated sentences and one bibliography entry appended
+last; no label, macro or package) add one page, 120 pages, whose last page
+holds the end of the new entry. The log is as described above (no errors,
+warnings, undefined references or citations, multiply defined labels,
+duplicate destinations or overfull boxes; the same four underfull
+bibliography lines). The `.aux` of a build of the previous text has the
+same 252 labels with the same numbers and the same 35 earlier bibliography
+numbers (`reviewbeighty` is 36). The pages with the new paragraph, the
+provenance table of Parts III–IV and the bibliography were rendered and
+inspected.
 
 ## Rerunning the programs
 
@@ -708,14 +906,14 @@ programme's review (Python 3.13.14) agree. Running source 11's individual
 scripts directly writes their receipts into the current directory.
 
 Sources 12 and 13 have deeper layouts (45 and 49 files, with the excluded
-data). Restore the delivered layout in one of two ways, never in the report
+data; source 13's corrected edition has 52). Restore the delivered layout in one of two ways, never in the report
 directory:
 
 ```sh
 # (a) from the arrival archive (contains the excluded files too)
 mkdir r12 r13
 git show aebfa386e:docs/incoming/Conservative_Signal_Frontend_Corrected.zip > r12/cs.zip
-git show aebfa386e:docs/incoming/Sparse_Lattice_Diophantine_Certificates.zip > r13/sl.zip
+git show 4e270aa46:docs/incoming/Sparse_Lattice_Diophantine_Certificates_corrected.zip > r13/sl.zip   # corrected edition
 (cd r12 && unzip -q cs.zip)    # r12/conservative-signal-release/
 (cd r13 && unzip -q sl.zip)    # r13/sparse-lattice-release/
 # (b) from the shipped files, with the research tree's placement stager
@@ -732,7 +930,11 @@ excluded files, which it takes from Git, but then stopped with "Restored
 complete package manifest differs" while checking the six package roots it
 restores (the other four belong to `quadratic-orthant-certificates` and
 `canonical-diophantine-certificates`). The stager is the research tree's
-program, not part of this report.
+program, not part of this report. Since batch 80 it authenticates only a
+checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`), where it
+restores source 13's original edition; on a current checkout it stops
+earlier, with "Placed source differs" at the five replaced files. For the
+corrected layout use way (a).
 
 Then, in `conservative-signal-release/` (source 12): `sh run-replay.sh` runs
 the ten original commands; it hard-codes `python3` and rewrites its receipts
@@ -762,7 +964,23 @@ hand from the shipped files lacks them, so regenerate them first (see
 "Reconstructing the excluded data"). At placement every stage passed under
 an LF shim (the last two bound replays, which the three-minute cap
 interrupted, were run separately and were valid), and the programme's review
-ran both complete eighteen-stage replays.
+ran both complete eighteen-stage replays. Since batch 80 the runner has the
+exactness stage first (nineteen stages with `--regenerate-source`,
+seventeen without). At this write the suite was run on a copy of the
+shipped `sparse_mass.py` and suite (with the fixture
+`binary_three_way_collision.json` beside them as `fixtures/`; about 1 s):
+PASS, and its `--output` receipt equals
+`data/13-sparse-lattice-poly-exactness.json` after removing carriage
+returns; with `--baseline-module` pointing at the original
+(`git show a7ae02511:<path of code/13-sparse-lattice-sparse_mass.py>`) it
+passes and reports the false zero. The batch-80 placement check also reran,
+in the extracted corrected archive under an LF shim,
+`replay/verify_manifest.py` (51 files), `core/run_checks.py` and
+`crosscheck_row_producer.py` (receipts equal, including the new producer
+hash `3a8b4747…`), the bound replays of the four generic fixtures and the
+n=0 fixture, `two-mass/regression.py` and `semilinearity/check.py`; it did
+not repeat the full `--regenerate-source` run (over three minutes), whose
+other stages run unchanged code on unchanged data.
 
 ## Discrepancies and disclosures
 
@@ -804,7 +1022,22 @@ ran both complete eighteen-stage replays.
   `code/13-sparse-lattice-morita_audit.py`); the receipts
   `data/13-sparse-lattice-morita-n{0,2}.json` and
   `release-verification.json` describe the two excluded fixtures and record
-  their `compressed_bytes`.
+  their `compressed_bytes`. Batch 80: `13-sparse-lattice-CORRECTION.md` and
+  the dated preface of `13-sparse-lattice-SOURCE-PROVENANCE.md` name
+  `replay/core/sparse_mass.py`, `replay/core/test_poly_exactness.py`,
+  `receipts/*.json`, `run-replay.sh`, `replay/verify_manifest.py` and
+  `SHA256SUMS` (the last two not shipped), and give commands with `python3`
+  "from this directory"; `code/13-sparse-lattice-test_poly_exactness.py`
+  imports `sparse_mass` by its delivered name and reads
+  `fixtures/binary_three_way_collision.json` beside itself; the corrected
+  `run_release.py` runs `core/test_poly_exactness.py` by delivered path.
+  Written in the article for batch 80: the dated paragraph in Section 47,
+  and updated sentences in the front section (reviews), the paragraphs on
+  the release and on the review in Section 47, the provenance paragraph
+  and table of Parts III–IV, and one bibliography entry,
+  `reviewbeighty`, appended last. No label, statement or number changed
+  (the corrected archive's `.tex` files are byte-identical), and no label
+  was added.
 - Source 13's two CSV tables have CRLF line ends as delivered; the lines
   `docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/data/13-sparse-lattice-doubling-complete.csv -text`
   and `…/data/13-sparse-lattice-false-signal-complete.csv -text` in
