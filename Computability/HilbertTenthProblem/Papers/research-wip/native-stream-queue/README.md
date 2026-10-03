@@ -173,6 +173,20 @@ also checks the maintained circuits, complete ring corrections, exact degrees
 and all public maps. All three receipts pass fresh root replay. The external
 row count and universal74/86 bounds remain unchanged.
 
+The [Tree direct-root projection](eager_tree_direct_root_projection.md) now
+uses the ordinary program, argument and output ports directly as the root
+fields. All16 complete forms save **9=3M+6A operations and3 witnesses**,
+reaching **946=394M+552A,88 natural witnesses and exact degree72** atN=8,
+or **36 operations,4 witnesses and exact degree6** atN=1 with static cleanup.
+The full polynomial equals the leaf-tag parent's after restoring the root
+fields from those ordinary ports. Restoration is unconditionally natural,
+and the maps are inverse on the full natural zero sets of these immediate
+sources. The mixed finalizer retains **7N−3 residual squares andN unsquared
+integer guards**. The [independent full review](review_eager_tree_direct_root_projection.md)
+checks all16 literal sources, graph identities, exact degrees and public
+maps; both fresh root receipts pass. Earlier projections keep their own
+fiber restrictions. ExternalN and the universal74/86 bounds are unchanged.
+
 The [coded suffix-membership interface](eager_tree_beta_membership_interface.md)
 gives a complete **16-operation** local polynomial, or **17 with an active
 guard**, using four natural witnesses at exact degree6/7. It certifies a

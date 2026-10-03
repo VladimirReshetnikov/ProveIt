@@ -151,6 +151,19 @@ and [full source review](Papers/research-wip/native-stream-queue/review_eager_tr
 pass, as do all three fresh replays. ExternalN and the universal74/86 bounds
 are unchanged.
 
+The [Tree direct-root projection](Papers/research-wip/native-stream-queue/eager_tree_direct_root_projection.md)
+then uses the ordinary input/output ports directly as the root fields,
+saving **9=3M+6A operations and3 witnesses** in all16 complete forms.
+With static cleanup it reaches **946=394M+552A operations,88 natural
+witnesses and exact degree72 atN=8**; atN=1 it costs **36 operations with4
+witnesses and exact degree6**. The full polynomial is identical to the
+leaf-tag parent's after restoring those three aliases. Restoration is
+unconditionally natural and gives a full natural-zero bijection with that
+immediate parent. The finalizer has7N−3 squares andN unsquared integer guards.
+The [independent review](Papers/research-wip/native-stream-queue/review_eager_tree_direct_root_projection.md)
+and author receipts pass fresh root replay. ExternalN and the universal74/86 bounds remain
+unchanged.
+
 The [coded suffix-membership interface](Papers/research-wip/native-stream-queue/eager_tree_beta_membership_interface.md)
 costs **16 operations**, or17 with a guard, and uses four natural witnesses.
 It supplies a local component for compressing Tree certificates, plus an

@@ -366,12 +366,27 @@
 > degrees. It checks44 genuine natural bijections,147 rejects including27
 > warm pins,18 copies and both domain counterexamples. All three fresh root
 > receipts pass. Preserve author, math and full-review trios and all parents.
-> Next separate source reduction to investigate: substitute root rowx/y/z
-> directly by ordinaryprogram/argument/output. A root-only read-only probe
-> of all16 terminal forms finds three private binding subtractions plus
-> three squares/three sum additions, suggesting9 operations and3 witnesses
-> can be removed uniformly. No maintained successor or reviewed new bound
-> for that projection is included here; retain it as the next concrete scout.
+> The former nine-operation root scout is completed by the
+> [Tree direct-root projection](eager_tree_direct_root_projection.md) and
+> [independent full review](review_eager_tree_direct_root_projection.md).
+> Substitute r0_x/r0_y/r0_z directly by ordinary program/argument/output.
+> All16 complete forms remove only three private binding subtractions,
+> their three squares and three final additions: save9=3M+6A and3 witnesses.
+> Whole graph identity Fchild=Fleaf[root fields=ordinary ports] holds on
+> all supplied values. Restoration copies natural ports unconditionally;
+> nonnegative parent finalizer terms force the root bindings at every
+> natural zero. This gives a full immediate-parent natural-zero bijection,
+> without changing the fiber restrictions of older projections.
+> The mixed finalizer has7N−3 squares andN unsquared guards,8N−3 terms.
+> Cleaned total3N²+103N−70, natural witnesses12N−8;
+> N8=946=394M+552A/88w/exactdegree72;
+> N1=36=16M+20A/4w/exactdegree6.
+> Exactdegree is6 atN1 and10N−8 otherwise; the complete diagonal polynomial
+> is unchanged by aliasing the root ports. Independent review checks16
+> whole graph identities,6,588 retained certificate expressions,456 residuals,
+> 72 guards,48 zero bindings,7,556 live gates and16 exact degrees, plus
+> natural maps and strict APIs. Both fresh root receipts pass. Freeze
+> both trios and all parents; externalN and universal74/86 remain unchanged.
 > The [Tree beta-membership interface](eager_tree_beta_membership_interface.md)
 > emits a complete16=5M+11A local polynomial,17=6M+11A when guarded, with
 > FOUR natural witnesses independent ofN and exactdegree6/7. For supplied
