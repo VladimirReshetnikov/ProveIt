@@ -63,6 +63,16 @@ maps to a negative bridge coordinate and changes the polynomial value.
 The horizon, input encoding, source table, affine evaluation and unbounded
 history packing remain to be charged for a fixed-arity universal comparison.
 
+The subsequent [paid mass-coordinate construction](three_mass_arithmetic.md)
+now supplies complete arithmetic schedules for concrete source tables. Replacing
+`u` by `v=e+u` preserves the complete natural zero fibers by an
+[independent induction](review_three_mass_mass_coordinate_math.md). The two-step
+increment/decrement example costs 60→56 operations; a three-increment chain
+costs 116→107 with native endpoints or 114→105 with the compact cleaned clock.
+An [independent complete-source review](review_three_mass_arithmetic.md) verifies
+all 228 emitted polynomial identities, fair old-coordinate baselines and paid
+loaders/endpoints. The external horizon and universal-compiler obligations remain.
+
 The low-mass canonical corollary also admits the previously proved
 [five-witness congruence substitution](presburger_congruence_five.md): after
 Presburger quantifier elimination its auxiliary count improves from

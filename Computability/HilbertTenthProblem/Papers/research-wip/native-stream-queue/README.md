@@ -18,6 +18,22 @@ wrapper eliminates reverse-history witnesses through an affine map on natural
 zero sets. Its compact quadratic family still has an external source horizon;
 no fixed-arity universal arithmetic improvement follows.
 
+The [paid three-mass circuits](three_mass_arithmetic.md) turn that coordinate
+change into measured savings: **60→56** for an increment/decrement pair,
+**116→107** for three increments with native endpoints, and **114→105**
+for the corresponding compact cleaned target and clock. The
+[independent circuit review](review_three_mass_arithmetic.md) reconstructs all
+228 complete polynomial identities and counts every live gate. Both receipts
+pass root replay. The branch table and horizon remain external; the general
+87-operation universal bound is unchanged.
+
+The [mass-coordinate proof](review_three_mass_mass_coordinate_math.md) permits
+replacing each natural branch offset by `v=e+u`. Every complete natural zero
+restores `u=v−e≥0`, using the paid positive loader and the literal branch forms;
+the clean reverse-history lift also composes. The proof preserves unique natural
+fibers and has a fresh independent 10,080-tuple source census. It does not extend
+to nonnegative real witnesses or by itself establish a gate saving.
+
 The [four surreal order reports](review_batch80_surreal.md) pass their finite
 replays and the scoped mathematical review, with one separate prose correction
 about fixed-relation internal well-foundedness in GBC. Their different coding
@@ -223,8 +239,19 @@ and a five-branch example from 840 to 456. Complete emitted gate lists,
 pay the whole evaluation, including finalization; the horizon remains external.
 
 
-The [U15 loader offset rewrite](u15_packed_loader_offset506.md) saves a further
-addition, giving complete ordinary-input points **506/4881, 508/3120,
+The [U15 consumed-affine rewrite](u15_packed_consumed_affine505.md) lowers the
+complete ordinary-input frontier to **505/4881, 507/3120, 509/2116, 511/1936**
+(operations/exact degree), with 209 multiplications and 87 positive witnesses.
+It saves one addition by rescheduling the controller's actual consumed forms;
+raw input drops to **318 grouped /320 ungrouped**. Every complete polynomial
+and all input/unbounded-duration obligations are unchanged. The
+[independent review](review_u15_consumed_affine505.md) derives the affine forms
+from the literal U15 table and verifies all eight complete sources. Both
+receipts pass fresh root replay. This improves the U15 route; the global
+87-operation universal polynomial is unchanged.
+
+The preceding [U15 loader offset rewrite](u15_packed_loader_offset506.md) saved
+one addition, giving complete ordinary-input points **506/4881, 508/3120,
 510/2116, 512/1936** (operations/exact degree). Each entire polynomial and all
 87 positive witnesses remain unchanged. The [independent review](review_u15_loader_offset506.md)
 proves equality of all eight emitted sources and transfers the exact degrees;
@@ -266,6 +293,13 @@ The [complete87 discriminant-shear scout](complete87_discriminant_shear_scout.md
 checks3,249 fully charged main/input norm schedules with exact full-polynomial
 identities. The best changed schedule costs88; this finite family does not
 improve87. It is distinct from the earlier product-of-norms composition scout.
+
+The [auxiliary-ordinate coordinate scout](complete87_new_scout.md) checks twelve
+complete schedules for the two positive-zero coordinate maps `y=e±V`.
+The best costs **88=48M+40A**, with exact degree 165; the established 88/125
+point dominates it. Full polynomial substitution identities, a uniform
+positive-zero bijection proof and root receipt replay pass. This finite family
+gives no improvement to the 87-operation universal polynomial.
 
 The [strong-norm composition scout](complete87_strong_norm_composition_scout.md)
 adds 106 complete schedules involving the strong norm: two pairings, all ordered
