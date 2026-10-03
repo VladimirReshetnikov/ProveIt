@@ -6,14 +6,15 @@ The reviews preserve the delivered sources and provide pinned repair patches,
 complete receipts, and explicit domain/horizon limits. Verified reductions
 include queue and sparse-lattice wire projections, ten-row polynomial-semiring
 certificates, a 21-operation five-witness congruence atom, and natural-only
-signal/reset simplifications. The signal schedule saves 7,489,424 operations
-per event packet; reset gates save 761 additions per source step. These
+signal/reset simplifications. With [complementarity rescheduling](signal_complementarity_factoring.md),
+the signal schedule saves 7,569,906 operations per event packet, reaching
+17,822,616; reset gates save 761 additions per source step. These
 external-horizon/local results leave the global 87-operation bound unchanged.
 
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
-Shared row/column sums reduce the transfer example from245 to206 operations
-and a five-branch example from840 to456. Complete emitted gate lists,
+Shared row/column sums reduce the transfer example from 245 to 206 operations
+and a five-branch example from 840 to 456. Complete emitted gate lists,
 20,455 checks and an [independent full-source reconstruction](review_connected_cross_routing_slp.md)
 pay the whole evaluation, including finalization; the horizon remains external.
 
