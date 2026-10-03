@@ -250,6 +250,18 @@ internal field `No_{<θ}`, and uses them at `θ = ℵ_{ω+2}` for `2^{ℵ₀}`
 nonisomorphic real closed fields with one saturation spectrum; Remark 15.9
 (`hset:rem:cutoffgaps`, added in batch 37) records this.
 
+**[surreal-well-orders](../surreal-well-orders/)** (batch 80) proves and uses
+the order-theoretic case of Remark 12.4 (`hset:rem:saturation`): for every
+regular infinite κ, ω included, `No_{<κ}` fills every cut of fewer than κ
+points, avoiding any fewer than κ given points (its Lemma 7.2,
+`swo:sw:stageeta`; its Note 7.4, `swo:sk:prop:cutoffeta`, cites the remark).
+Its Theorem 13.1 (`swo:cf:choice`) is a class-level counterpart of Theorem 13.2
+(`hset:thm:choice`): over GB without set choice, Global Choice holds iff `No`
+has a class well-order; its Remark 13.4 compares the two codings. Two dated
+notes, bracketed "[Added 2 October 2026, batch 80: …]", after Remark 12.4 and
+after Remark 13.4 (`hset:rem:answered-choice`) record this; they change no
+label or number, and the open problems of Remark 13.4 are not affected.
+
 **[gonshor-product-birthdays](../../surreal/gonshor-product-birthdays/)**: see
 above; no argument here depends on it.
 
@@ -264,7 +276,8 @@ TP₂ witness, for a Hahn field expanded by one exponent dilation
 ## What was run
 
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX):
-  62 pages (61 before the batch-37 Remark 15.9); no errors, undefined references or citations, multiply defined
+  62 pages (61 before the batch-37 Remark 15.9; still 62 after the two
+  batch-80 notes); no errors, undefined references or citations, multiply defined
   labels, duplicate destinations, LaTeX or package warnings, or overfull or
   underfull boxes. Cross-references are typed (lemma, proposition, ...) through
   alias counters.

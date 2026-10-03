@@ -234,6 +234,14 @@ re-prove collection results and are printed as pointers with second routes
 - [`../independent-surreal-copies/`](../independent-surreal-copies/) proves
   algebraic independence of other families; related to Corollary 18.9, not
   the same.
+- [`../../foundations-and-computation/surreal-well-orders/`](../../foundations-and-computation/surreal-well-orders/)
+  (batch 80): its Theorem 13.1 (`swo:cf:choice`) proves over GB, without set
+  choice, that global choice, a class well-order of `No`, a set-like one and
+  a class bijection `On → No` are equivalent. So 52's hypothesis "a set-like
+  global well-order" in its second proof of Proposition 5.4 is global choice
+  itself; the weakest-principle question for class bases (Research question
+  21.1) is unaffected. Recorded in a dated note, bracketed "[Added 2 October
+  2026, batch 80: …]", after that question; no label or number changed.
 
 Placement in `Algebra/SurrealNumbers`, beside its Lean development, confers
 no formal status, and `FORMALIZATION.md` maps no `rvs:` label. The Lean
