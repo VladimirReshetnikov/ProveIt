@@ -167,6 +167,25 @@ Author and review pass fresh installed replay. Their degree fields remain
 upper bounds304/208; the separate parent exact-degree proof and polynomial
 identity also establish unchanged exact degrees. No universal bound changes.
 
+The [shared projective macro compiler](group_projective_shared_macro_automaton.md)
+transfers continuation sharing to the complete one-kernel product-scale/tail
+architecture. The explicitly emitted private/shared sources cost
+**236=99M+137A →230=98M+132A**, with34→33 positive witnesses, six comparisons
+and exact degree1789. Both graphs already use eight lanes; the saving is
+six operations and one edge witness, with the ordinary input and positive
+height constructor retained. These are bounded schedule results, not
+packing optima. **This fixture's positive-input language is empty**: its
+fourth coordinate never changes to the required endpoint. It is an
+arithmetic compiler benchmark, not a new universal bound or an accepting
+computation example. The general branching-flow/native-interface proof
+preserves the existential input language; different graphs and lane maps
+do not have the same polynomial. The [independent review](review_group_projective_shared_macro_automaton.md)
+checks both saved winners:466 paid live gates,18 full graph coefficients,
+366 retained-register identities, both complete outputs, and two independent
+full coefficient expansions proving degree1789. The other28 schedules
+receive metadata checks only. Author and review pass fresh installed exact
+replay; the established74/86 universal bounds are unchanged.
+
 The [direct-height obstruction](group_projective_height_projection_obstruction.md)
 rejects deleting D=u+height_slack from the projective compiler. An actual
 32-letter macro table has no accepted positive ordinary input, but the
