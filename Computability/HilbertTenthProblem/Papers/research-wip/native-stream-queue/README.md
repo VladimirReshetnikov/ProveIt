@@ -1,5 +1,11 @@
 # WIP: native queue streams and research continuation
 
+The [batch-80 correction audit](review_batch80_corrected.md) verifies the new
+Tree Calculus, reset-net and sparse-lattice corrected packages at `4e270aa46`.
+The declared API repairs are present; every original report and mathematical
+fixture is unchanged. Six targeted normal/optimized replay runs and actual
+baseline comparisons pass. Review of the other nine new archives is in progress.
+
 [All ten reports](incoming_substrate_review_aebfa386e.md) received at
 `ef2fc7990`/`aebfa386e` have completed proof/source review and isolated replay.
 The reviews preserve the delivered sources and provide pinned repair patches,
