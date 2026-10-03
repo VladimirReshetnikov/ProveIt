@@ -39,7 +39,12 @@ all 98 editorial sections, the README and notation update at `0be9b9134`.
 Its three-location patch replaces unsupported restriction-coherence claims by
 uniformity and qualifies the largest-file size as non-PDF. An exact finite
 counterexample, code-convention checks and private patch replay pass. The
-separate original-to-assembled preservation census is still in progress.
+[preservation census](review_surreal_transfer_0be9b9134.md) also passes: all
+166 original formal occurrences and 198 source labels are accounted for,
+112 displays in copied ranges retain order and multiplicity, and all 14
+code/data companions retain their bytes. Both scoped reviews have fresh root
+receipts. The later reciprocal notes at `a13efdd51` and mass Parts V–VI at
+`ef114b0bb` remain separate publication boundaries awaiting review.
 
 The [four surreal order reports](review_batch80_surreal.md) pass their finite
 replays and the scoped mathematical review, with one separate prose correction

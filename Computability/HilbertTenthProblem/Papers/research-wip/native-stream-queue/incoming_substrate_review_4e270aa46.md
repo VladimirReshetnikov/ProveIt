@@ -173,18 +173,26 @@ release entrypoints. Unchanged author suites were not rerun for byte-only
 placements. New assembled mathematics or later editorial revisions need
 separate semantic reviews; they do not inherit a proof check from placement.
 
-## Newly merged publication awaiting its own audit
+## Subsequent publication boundaries
 
 The surreal synthesis at `d51fafea806cbd48ba29be017eff85cdd9653b14` and
-`0be9b913487fa2cc0e16cea6545c55f33b4446d8` arrived during the final sync of
-this review/reduction pass and was merged from `acb0041e1`. Its four changed
-paths contain the assembled four-source article, new crosswalk/questions,
-README, PDF and notation update. Review this composition next; the original
-archive and staging verdicts above remain explicitly confined to their pins.
+`0be9b913487fa2cc0e16cea6545c55f33b4446d8` now has a completed scoped
+[new-prose audit](review_surreal_synthesis_0be9b9134.md) and
+[preservation census](review_surreal_transfer_0be9b9134.md). The prose audit
+reads all98 editorial blocks, README and notation changes; its separate
+three-location patch corrects two P3 findings, supported by an exact finite
+noncoherence counterexample and all29 original member sizes/hashes.
 
-The [new synthesis prose audit](review_surreal_synthesis_0be9b9134.md) has now
-read all 98 editorial blocks and the README/notation changes. It supplies a
-three-location patch for two P3 findings, with an exact finite noncoherence
-counterexample and fresh root replay. Root also authenticated all 29 original
-member sizes, confirming the non-PDF size qualification. The separate complete
-original-to-assembled preservation census is still pending.
+The preservation audit accounts for all166 original formal occurrences:
+124 normalized-exact statements,41 declared duplicate notes, and one original
+question retained in a new answered remark. All198 original labels occur
+exactly once;830 references resolve. All112 displays in100 copied ranges
+retain order and multiplicity;35 displays outside those ranges are explicitly
+not claimed verbatim. All14 code/data companions are byte-identical across
+placement and both writes. Basic PDF checks pass without a build/layout claim.
+Root read both checkers and notes and freshly reproduced both receipts.
+
+Later commits `a13efdd51` (reciprocal surreal notes,12 publication paths) and
+`ef114b0bb` (mass Parts V–VI,three publication paths) were merged at `e0680a7fb`.
+These are the next separate review boundaries; the completed synthesis audit
+does not certify those newer explanations or transfers.

@@ -1,24 +1,26 @@
 # Continuation: universal straight-line certificates
 
-> The [surreal synthesis prose review](review_surreal_synthesis_0be9b9134.md)
-> is complete with two P3 findings/three patched passages: the rank orders are
-> uniform, not necessarily coherent under restriction; the largest-file claim
-> needs non-PDF. Root checked the exact finite counterexample, all 29 original
-> member sizes/hashes and the fresh patch receipt. The separate full preservation
-> census remains in progress; do not yet mark the whole transfer reviewed.
+> The surreal synthesis at `d51fafea806cbd48ba29be017eff85cdd9653b14` /
+> `0be9b913487fa2cc0e16cea6545c55f33b4446d8` now has both scoped reviews:
+> [new prose](review_surreal_synthesis_0be9b9134.md) and
+> [original-to-assembled preservation](review_surreal_transfer_0be9b9134.md).
+> All166 original formal occurrences are accounted for (124 normalized exact,
+> 41 declared duplicate notes, one question retained in an answered remark).
+> All198 source labels occur once;830 references resolve;112 copied-range
+> displays retain order/multiplicity;14 code/data companions are byte-exact.
+> The35 other original displays lie outside copied ranges and are not claimed
+> verbatim. All29 original archive members are authenticated. Root read both
+> helpers/notes and reproduced both receipts. The separate three-location
+> patch corrects restriction-coherence wording and the non-PDF size qualifier;
+> it remains unapplied to the maintained article/PDF. No new transfer defect.
 >
-> **Current preservation review boundary:** surreal report publication commits
-> `d51fafea806cbd48ba29be017eff85cdd9653b14` and
-> `0be9b913487fa2cc0e16cea6545c55f33b4446d8` (upstream merge `acb0041e1`).
-> They add the four-source synthesis, crosswalk/questions/README, first PDF and
-> a notation update: four changed paths, including about6,287 TeX delta lines.
-> The [four original archive reviews](review_batch80_surreal.md) and
-> [base staging audit](review_surreal_placement_ccc046989.md) remain valid at
-> their pins; they do not review this new composition. Audit original-to-final
-> formal preservation and new explanatory claims, including the existing GBC
-> well-foundedness qualification. Read `Algebra/SurrealNumbers/AGENTS.md` for
-> any work under that subtree. This pending boundary does not invalidate the
-> completed U15/three-mass arithmetic and corrected-code publication audits below.
+> **Next publication boundaries:** `a13efdd51` adds reciprocal surreal notes
+> to four existing reports (12 paths); `ef114b0bb` writes signal-machine
+> Parts V–VI for three-mass universality and unique-unit mass-three/four
+> decidability (three paths). Both arrived in upstream `ecc9185aa`, merged
+> at `e0680a7fb`. These15 paths are not covered by the reviews above.
+> Read `Algebra/SurrealNumbers/AGENTS.md` before work under that subtree.
+> Earlier archive/placement verdicts remain valid at their own immutable pins.
 
 > Current batch-80 status: [all twelve arrivals](incoming_substrate_review_4e270aa46.md)
 > and their original placements have scoped proof/source reviews and root replays.
