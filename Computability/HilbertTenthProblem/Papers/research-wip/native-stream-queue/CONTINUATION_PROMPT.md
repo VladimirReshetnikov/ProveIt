@@ -1,5 +1,14 @@
 # Continuation: universal straight-line certificates
 
+> Next priority: [ten new reports](incoming_substrate_intake_aebfa386e.md) arrived
+> at `ef2fc7990`/`aebfa386e` during the final frontier push. They are merged,
+> byte-inventoried (334 files/84 Python modules). The [current review index](incoming_substrate_review_aebfa386e.md)
+> records the completed queue and smooth-quartic reviews and the remaining eight packets.
+> Keep each remaining packet pending until full proof/source review and replays.
+> The preceding turn made verified arithmetic progress through the complete
+> U15 frontier511/4881,513/3120,515/2116,517/1936, all reviewed and published.
+
+
 > Historical handoff below. The current comparison frontier is
 > **75=41M+34A**: see [the complete proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md)
 > and [consolidated checker](../../verification/explore_fixed_raw_universal_75.py).
@@ -76,13 +85,25 @@
 > and [unit grouping](u15_packed_unit_product524.md) saves12A ordinary/2A raw.
 > Every source and the full finalizer is paid. Six protected norms exclude−1
 > modulo4; the sole unprotected loader checksum is forced+1 after the others.
-> Grouped sources have exactly the same integer zeros; off-zero polynomial
-> equality holds only for the ungrouped arithmetic stages. The raw default
-> is groupedSOS, ordinary default is the positive anchor U*(1+S)−1.
+> In this compiler, grouped modes preserve all integer zeros and ungrouped
+> modes preserve the full polynomial. The raw default is groupedSOS; the
+> ordinary default is the integer anchor U*(1+S)−1.
 > The current unit audit guards actual cancellation rows before claiming degree.
-> A concrete next step is exact set-partition/anchor optimization over the
-> seven paid unit factors, preserving the current integer sign proof and
-> charging every regrouped finalizer. Also inspect shared native arithmetic.
+> The [complete unit partition search](u15_unit_partition_frontier.md) now
+> emits all877 partitions and4,140 SOS/single-anchor forms, with exact frontier
+> **511/4881,513/3120,515/2116,517/1936**. All have87 positive witnesses
+> and211 multiplications. The default four-group517 form has28 comparisons
+> and preserves degree1936 with six fewer operations than523. Its zero set
+> is identical; full-polynomial equality is separately marked only for the
+> seven-singleton SOS schedule. Independent source/modular-coefficient review
+> and a separate two-enumeration mathematical census pass. These are exact
+> finite-family optima, not global bounds or arbitrary regrouping claims.
+> A concrete next step is source-level sharing across the three native kernels
+> or a newly proved factor rewrite in the actual full compiler; retain the
+> six protected signs and single-checksum restriction unless a new sign proof
+> is provided. Any transfer to another substrate must match its paid source,
+> ordinary input and unbounded history; a smaller local certificate is not
+> by itself a smaller universal equation.
 > The new [complete87 shear scout](complete87_discriminant_shear_scout.md)
 > checks3,249 explicit full schedules: none beats87; the best changed form
 > costs88. This finite family is not an unrestricted arithmetic lower bound.

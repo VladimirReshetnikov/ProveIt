@@ -1,14 +1,23 @@
 # WIP: native queue streams and research continuation
 
-The [composed direct U15 compiler](u15_packed_composed_units511.md)
-now costs **511=211M+300A operations**, with87 positive witnesses,25
-comparisons and exact degree4881; raw323 has exact degree3464.
-The optional523-operation source retains the identical degree1936 polynomial.
-Factoring the history index, sharing signed binary affine planes and combining
-protected native units save25 operations from536, or100 from611.
-The [independent review](review_u15_composed511.md) verifies all four
-modes and the complete integer-zero equivalence. Ordinary input and unbounded
-duration remain paid. The overall87-operation benchmark is unchanged.
+[Ten newly arrived reports](incoming_substrate_intake_aebfa386e.md) at
+`ef2fc7990`/`aebfa386e` are inventoried (334 files/84 Python modules); their
+[full review is underway](incoming_substrate_review_aebfa386e.md). The queue
+packet is reviewed and repaired, with a proved finite-grammar witness reduction.
+The review index distinguishes completed packets from pending work.
+
+
+The [complete direct U15 partition frontier](u15_unit_partition_frontier.md)
+gives **511/4881,513/3120,515/2116,517/1936** (operations/exact degree),
+all with211 multiplications and87 positive witnesses. In particular,517
+retains degree1936 using six fewer operations than the ungrouped523 source.
+The search emits all877 partitions and4,140 SOS/single-anchor schedules;
+its optimum is confined to that finite family. The
+[independent source review](review_u15_unit_partition_frontier.md)
+and [separate mathematical census](review_u15_partition_math.md)
+confirm the frontier. The [composed compiler](u15_packed_composed_units511.md)
+also retains raw323/degree3464. Ordinary input and unbounded duration remain
+paid. The overall87-operation universal benchmark is unchanged.
 
 
 The [native unit-product transfer](u15_packed_unit_product524.md), with its

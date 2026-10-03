@@ -105,14 +105,15 @@ excluded these defects.
 
 ## Current research frontier
 
-The subsequent [composed direct U15 compiler](u15_packed_composed_units511.md)
-now gives **511=211M+300A operations**, with87 positive witnesses,25 comparisons
-and exact degree4881, or323 operations/degree3464 for raw half tapes. Its
-523-operation ungrouped alternative retains exact degree1936. The
-[independent review](review_u15_composed511.md) checks full source composition,
-integer-zero equivalence, degree and guarded interfaces. This saves100
-operations from the reviewed611 direct-tape source. The overall universal
-87-operation bound remains unchanged.
+The subsequent [complete direct U15 partition frontier](u15_unit_partition_frontier.md)
+is **511/4881,513/3120,515/2116,517/1936** (operations/exact degree), with
+87 positive witnesses and211 multiplications. The517 form improves the
+523-operation degree1936 source by six operations;511 saves100 from611.
+The [independent source review](review_u15_unit_partition_frontier.md) and
+[separate mathematical census](review_u15_partition_math.md) verify all877
+partitions/4,140 allowed finalizers and the four complete frontier sources.
+The [composed compiler](u15_packed_composed_units511.md) also retains raw
+323/degree3464. The overall universal87-operation bound remains unchanged.
 
 The next useful transfers should pay the ordinary input, acceptance and
 unbounded-duration interfaces, or produce a complete source-level arithmetic

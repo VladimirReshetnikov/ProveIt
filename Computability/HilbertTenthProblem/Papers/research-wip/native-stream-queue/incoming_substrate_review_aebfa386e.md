@@ -1,0 +1,22 @@
+# Review of the ten-report intake at aebfa386e
+
+This is the continuing proof/source review of the [byte-pinned intake](incoming_substrate_intake_aebfa386e.md). Original archives remain unchanged. A completed row means full mathematical/source reading, author replay in isolation, and a portable independent review receipt; it does not mean proof-assistant verification or a universal-operation improvement.
+
+| Report | Review status | Result |
+|---|---|---|
+| Compressed queue | [Complete](review_compressed_queue_aebfa.md) | Two low-level constructor repairs; natural-zero projection to `6c+1` witnesses and `6c+3` quadratic rows for an external grammar with `c` concatenations |
+| Corrected conservative signals | In progress | Comparing the previous repairs and rerunning the complete packet |
+| Reset Petri nets | In progress | Full source/frontend and timing audit |
+| Eager tree calculus | In progress | External DAG, arithmetic and universality interfaces |
+| One-coordinate certificates | In progress | Polynomial unknowns, stride and coefficient-bound scope |
+| Smooth quartics | [Complete](review_smooth_quartic_aebfa386e.md) | Full integral smoothness and domain audit; all 21,128 author checks and byte-identical exports replayed; no repair needed |
+| Coercive Green functions | In progress | Infinite graph and finite-support arithmetic interface |
+| Well-conditioned computation | In progress | Infinite graph and normalized integer witnesses |
+| Mixing | In progress | Exact-series dimension versus arithmetic/zero-set complexity |
+| Sparse lattice dynamics | In progress | Full proof/source read; complete author replay running |
+
+For the queue packet, root independently reran the portable helper with both original and repaired author suites: 259,025 checks on each, unchanged example exports, and the exact saved independent receipt. Its projection saves witnesses and residuals while retaining the external grammar. Dense affine substitution can increase monomial counts, so no unmeasured straight-line arithmetic saving is asserted.
+
+For smooth quartics, root also reproduced the pinned portable receipt, including independent expanded integral Jacobian identities and integer/natural fiber checks. The five-variable smoothing layer preserves source hardness but does not reduce the universal arithmetic ledger.
+
+The complete universal bound remains **87 operations**. The direct U15 frontier remains **511/4881, 513/3120, 515/2116, 517/1936** (operations/exact degree). None of the still-pending reports is admitted into those ledgers.
