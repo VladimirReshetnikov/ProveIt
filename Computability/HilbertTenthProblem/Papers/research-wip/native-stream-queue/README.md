@@ -231,12 +231,28 @@ The [native first-coefficient transfer](native_pell_factored_first_coefficient.m
 now gives a **63=32M+31A prescribed AND certificate**, with22 positive
 auxiliaries and16 comparisons; its full degree28 SOS costs110 operations.
 The positive-scale form also costs63, with21 auxiliaries,15 comparisons and
-107-operation SOS. The same literal identity lowers the four current unbounded
-mass-clock polynomials to**597/472/470/473**, preserving every condition and
-coordinate. The [independent audit](review_native_pell_factored_first_coefficient.md)
+107-operation SOS. The same literal identity gives the historical predecessor
+mass-clock polynomials **597/472/470/473**, preserving every condition and
+coordinate; the separate endpoint successor below reduces these further. The
+[independent audit](review_native_pell_factored_first_coefficient.md)
 reconstructs all six complete polynomial identities from frozen sources;
 author and review receipts pass root replay. All use actual supplied k.
 These component/raw-clock savings leave the universal74/86 bounds unchanged.
+
+The [unbounded mass endpoint projection](three_mass_unbounded_endpoint_projection.md)
+emits four complete successors at **594/469/467/470 operations**, saving
+**3=1M+2A** and one positive witness per source. They have 19 comparisons
+and 58/56/56/56 positive witnesses; degree upper bounds remain
+2344/1192/1192/1192. The exact signed pullback is `F=y` and
+`eta_old=eta+K`. Natural zeros are in bijection only with the parent's
+`eta_old>K` slice. A raised height keeps the native inputs positive before
+typing; the retained global bound forces at least one step, and chronological
+digit cancellation then excludes zero output. Fresh larger-height witnesses
+prove the same fixed-program raw natural `(x,y,T)` relation with unbounded
+existential runtime. The [independent review](review_three_mass_unbounded_endpoint_projection.md)
+proves all four full graph identities and checks the chronology and domain
+transport; both installed receipts pass fresh root replay. This supplies no new ordinary universal loader or bound,
+and does not silently change the frozen input-bridge compositions below.
 
 The [two-cone recoder transfer](native_binary_recoder_factored128.md) reduces
 the complete inline binary recoder to**128=65M+63A**, with49 positive
@@ -310,6 +326,17 @@ not materialize the enormous full auxiliary tuple. This rejects this
 specific85 candidate, without changing the valid86 source or establishing
 a lower bound for other85-operation representations.
 
+The [two-move census](complete86_two_move_scout.md) extends that finite
+rewrite family to **66,673 complete circuits**, using at most two local
+moves after the same six root schedules, without cost pruning. The minimum
+remains **86=48M+38A**, with2,661 ties and no better M/A tradeoff. Its
+[independent review](review_complete86_two_move_scout.md) uses a separately
+implemented grammar, reproduces the full census and recounts5,882,977 paid
+live gates. All candidates preserve the complete polynomial, original ports
+and degree179. Both installed receipts pass fresh replay, including the
+repaired JSON expression descriptors. This says nothing about three or more
+moves or unrestricted circuit lower bounds; universal74/86 is unchanged.
+
 The [marked-word obstruction](complete86_marked_word_obstruction.md) rejects
 another concrete shortcut, which supplies the packed word in place of its
 positive width slack. Its complete sources cost84 and83 operations, but a
@@ -348,9 +375,11 @@ pays raw fixed-source reachability and an exact physical clock through the
 existing residue-history compiler. A rejecting halt totalization bounds
 accepted duration by the number of distinct encoded states; a squared-height
 radix then prevents clock congruence wrap. Four complete examples cost
-598/473/471/474 operations before the exact one-multiplication transfer above,
-with59/57/57/57 positive witnesses and20
-comparisons. The [independent review](review_three_mass_unbounded_interface.md)
+598/473/471/474 operations in the original packet and597/472/470/473
+after the historical coefficient transfer, with59/57/57/57 positive witnesses
+and20 comparisons. The endpoint successor above emits594/469/467/470
+with one fewer witness and19 comparisons; both fresh root receipts pass.
+The [independent review](review_three_mass_unbounded_interface.md)
 and both root replays pass. The author note retains its pre-review status
 as frozen provenance; the completed review supplies the current status.
 Raw halting is invariant under payload cofactors coprime to6, so ordinary

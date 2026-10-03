@@ -17,7 +17,8 @@
 > now checks the actual E=XY and kY cones in six full sources. Prescribed
 > AND becomes63=32M+31A (22 witnesses,16 comparisons,SOS110/degree28);
 > positive-scale AND63 has21 witnesses,15 comparisons,SOS107/upperdegree28.
-> Current unbounded mass-clock polynomials become597/472/470/473.
+> Historical coefficient-transfer mass-clock totals are597/472/470/473;
+> the separate endpoint successor below emits594/469/467/470.
 > Every full polynomial is identical on all supplied tuples; supplied k
 > remains independent away from the ratio equation and native R9=tau(tau+1).
 > The [independent audit](review_native_pell_factored_first_coefficient.md)
@@ -25,6 +26,33 @@
 > Preserve all nine pinned parent files, including their historical notes.
 > Native norm-unit forms already remove the coefficient cone; no extra saving
 > applies there. This prescribed AND63 differs from the older unrestricted63.
+> The [unbounded mass endpoint projection](three_mass_unbounded_endpoint_projection.md)
+> emits four complete sources594/469/467/470, saving3=1M+2A and one positive
+> witness from each coefficient-transfer predecessor. Full M/A pairs are
+> 235/359,180/289,178/289,185/285; witnesses58/56/56/56,19 comparisons.
+> Upper degrees stay2344/1192/1192/1192; do not promote them to exact degrees.
+> Exact signed graph pullback: F=y,eta_old=eta+K. Natural-zero bijection is
+> ONLY onto the parent eta_old>K slice, not all parent witness tuples.
+> Child height n_initial+K*y+q_h+T+eta is positive before native typing,
+> including y=0. Retained global bound forces J>=1 and duration t>=1;
+> typed digit cancellation forces target=last positive next digit, hence
+> rejects y=0 before restoring positive F. Fresh sufficiently large dyadic
+> height/native witnesses establish the same fixed raw natural(x,y,T)
+> relation and exact clock with unbounded existential runtime.
+> The [independent review](review_three_mass_unbounded_endpoint_projection.md)
+> proves all four full graph identities directly without author cuts, checks
+> 2,000 live gates,54 outer histories and23,478 integer chronology cases.
+> Author and review receipts pass fresh installed root replay.
+> No new ordinary universal loader/table/bound. Existing paid input bridge
+> counts below still refer to their frozen coefficient-transfer parents.
+> Next source-reduction lead: omit the endpoint entirely from height and use
+> h=n_initial+T+eta. A separate bounded probe deletes two private additions,
+> but it is not yet a maintained/reviewed successor. Prove native pretyping
+> at h>=2, arbitrary-integer-target digit cancellation and the full clock
+> theorem directly. Signed restoration eta_coefficient=eta-target need not
+> be positive: genuine nop outer data x40,y41,T7880,h8192,eta111 restore
+> eta_coefficient=-91. Do not reuse the current slice bijection; represented
+> triples require separate soundness and fresh-height completeness.
 > The [factored first-root reduction](complete86_factored_first_root.md)
 > gives86=48M+38A, exact degree179,19 positive witnesses. Its ordinary-strong
 > alternative gives87=47M+40A, degree135. The old first factor
@@ -558,6 +586,24 @@
 > and the affine scout's frozen narrower statement. Universal74/86 remains;
 > no arbitrary85-operation lower bound follows.
 
+> The [two-move census](complete86_two_move_scout.md) and
+> [independent full review](review_complete86_two_move_scout.md) now pass
+> fresh installed root receipts. Exactly the six affine seeds plus at most
+> TWO local moves give66,673 complete DAGs, with no cost cutoff/beam pruning.
+> First layer874/1,300 moves; second192,823 instances/17,548 distinct local
+> cut identities, plus12 seed identities. All5,882,977 paid live gates are
+> recounted. Costs86..91 have2,661/13,366/24,249/19,145/6,460/792 sources;
+> the sole M/A frontier is48/38. All original26 ports and19 positive witnesses
+> remain; complete polynomial equality transfers exactdegree179 and zeros.
+> Review uses its pinned prior independent engine, never author grammar code.
+> Its graph hashes differ from author allocation-ID serializations; do not
+> claim it reproduced all author byte hashes. All12 complete representatives
+> are independently verified, with48 numeric outputs; author checks133,346
+> full outputs across the whole census. Initial tuple/list receipt descriptors
+> were repaired before final freeze and replay. Routes are replay descriptors,
+> not standalone expanded proof certificates. No three-move closure, new
+> coordinate theorem or global lower bound. Keep universal74/86 unchanged.
+
 > The [marked-word obstruction](complete86_marked_word_obstruction.md)
 > rejects supplying positiveC_word instead of positivealpha. The literal
 > alpha->C_after_alpha->marked_rhs chain loses2A (84=48M+36A); u−Z then
@@ -616,8 +662,10 @@
 > makes the existing selected quotient lanes plus one new clock quotient
 > exact modulo B−1. All20 comparisons and final SOS are emitted; native
 > clocks only, natural external x,y,T, fixed arity and unbounded duration.
-> Parent totals598/473/471/474; current exact transfer597/472/470/473,
-> witnesses59/57/57/57; degrees remain upper bounds.
+> Original totals598/473/471/474; historical coefficient transfer597/472/470/473,
+> witnesses59/57/57/57. Endpoint successor594/469/467/470 has58/56/56/56
+> witnesses and19 comparisons; both fresh root receipts pass. All stated
+> degrees remain upper bounds.
 > Root read both full source/proof packets and checked the inherited history
 > proof. No full native Pell witness, cleaned-clock total or universal source
 > table is claimed. Raw input x+1 retains the (v2,v3) cofactor obstruction.

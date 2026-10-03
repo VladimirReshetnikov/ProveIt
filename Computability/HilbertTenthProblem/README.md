@@ -53,6 +53,15 @@ program constants fixed; finite checks verify the source and supporting
 components without materializing the full auxiliary Pell tower. Both
 fresh receipts pass. The valid86 source and universal bounds are unchanged.
 
+The [two-move extension](Papers/research-wip/native-stream-queue/complete86_two_move_scout.md)
+and [independent census](Papers/research-wip/native-stream-queue/review_complete86_two_move_scout.md)
+check **66,673 complete circuits** after the same six starting schedules.
+The minimum remains **86**, with2,661 ties; no multiplication/addition
+tradeoff improves on48M+38A. Exact local identities preserve the entire
+polynomial and its original coordinates. Both fresh receipt replays pass.
+The result covers at most two specified local moves, with no cost pruning,
+and is not an unrestricted lower bound.
+
 The [marked-word obstruction](Papers/research-wip/native-stream-queue/complete86_marked_word_obstruction.md)
 rejects a separate83-operation shortcut. Supplying the packed word directly
 drops a width bound, allowing an accepting certificate atx to acceptx+N
@@ -212,10 +221,24 @@ checks all four complete examples and the proof excluding clock wrap.
 A numerical universal source and its full circuit remain unexpanded; no
 universal bound is inferred from these raw examples. The
 [native first-coefficient transfer](Papers/research-wip/native-stream-queue/native_pell_factored_first_coefficient.md)
-reduces them to597/472/470/473 operations and gives a63-operation prescribed
-binary AND certificate. All six complete polynomials are unchanged; the
+gives the historical predecessor totals597/472/470/473 and a63-operation
+prescribed binary AND certificate. All six complete polynomials are unchanged; the
 [independent audit](Papers/research-wip/native-stream-queue/review_native_pell_factored_first_coefficient.md)
 and both fresh receipts pass.
+
+The [unbounded endpoint successor](Papers/research-wip/native-stream-queue/three_mass_unbounded_endpoint_projection.md)
+now emits four full sources at **594/469/467/470 operations**, each saving
+**3=1M+2A operations and one positive witness**, with 19 comparisons.
+The exact signed pullback `F=y, eta_old=eta+K` gives a natural-zero bijection
+only onto the parent's `eta_old>K` slice. The retained global bound forces
+a nonempty history; chronological digit cancellation excludes zero output
+before restoring the positive endpoint. Fresh larger-height completeness
+preserves the same fixed-program raw natural `(x,y,T)` relation and exact
+clock. The [independent review](Papers/research-wip/native-stream-queue/review_three_mass_unbounded_endpoint_projection.md)
+checks all four full graph identities and the domain proof; both installed
+receipts pass fresh root replay. This does not supply a new ordinary universal input loader
+or improve the 74/86 bounds. The input-bridge counts below retain their
+frozen predecessor sources.
 
 The [paid three-mass input bridge](Papers/research-wip/native-stream-queue/three_mass_exponential_input_bridge.md)
 adds54 operations to load payload2^(96x) for positive ordinary x, giving
