@@ -161,6 +161,22 @@
 > This is the finite base certificate, not the larger canonical/unique-fiber
 > system. N remains external; no ordinary-input loader or fixed-arity bound.
 > Preserve the imported kernel and both current frozen trios.
+> The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
+> and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
+> pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual
+> path A0,B0,C0,G1,G0,H0,I1->J1 has left digits[0,0,1,0,0,B/2,B/4−1],
+> right[0,0,0,0,1,2,5],Lf=B/8−1,Rf11. Left local defects B,−1 cancel
+> between adjacent packed positions. Aggregate H+G+ZL+ZR+ZU<P with positive
+> slack, all5 actual outer rows and33 unchanged typed lanes hold. Only the
+> left range lane fails. Widening that mask byP³(B−D)J makes all34 joined
+> lanes and current disjoint tags pass. Literal execution instead reaches
+> I0 before instruction7 and then A1 with tapes(0,2): a false finite history.
+> Full formal-B identities are checked in both actualraw320/318 sources
+> of the505 compiler. This rawR0=0 fixture is NOT an ordinary-loader zero;
+> no full native Pell assignment or nonhalting claim is materialized.
+> Retained source rejects correctly; do not delete that range hypothesis
+> merely from aggregate magnitude, clock sums or a circular no-repeat bound.
+> This is a scoped negative result, not a universal arithmetic improvement.
 > The [coefficient-only census](complete87_shared_coefficient_scout.md) is
 > frozen separately: reachable-set counts1/13/116/891 exclude at most three
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid

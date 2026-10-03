@@ -69,6 +69,18 @@ checks full sources, exact corrections, graph semantics and cyclic examples;
 author and reviewer receipts pass fresh root replay. N stays external, so
 this does not change the universal74/86 bounds.
 
+The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
+shows why the aggregate bound cannot replace the left-tape range lane in
+the current U15 route. A false seven-step history satisfies all five actual
+outer equations and33 other typed lanes for every dyadicB>=512, while its
+left digits violate the retained range constraint. The
+[independent formal-base review](review_waterfall_packed_range_obstruction.md)
+checks both raw320/318 sources, complete joined words and tags, and the
+positive aggregate slack. Both frozen receipts pass fresh root replay.
+This is an obstruction at the raw history interface: the current compiler
+correctly rejects it, and no ordinary-input-slice or complete Pell zero is
+claimed. No operation bound improves.
+
 The [native first-coefficient transfer](native_pell_factored_first_coefficient.md)
 now gives a **63=32M+31A prescribed AND certificate**, with22 positive
 auxiliaries and16 comparisons; its full degree28 SOS costs110 operations.

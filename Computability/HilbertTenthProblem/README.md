@@ -62,6 +62,13 @@ certificate for the same input/output triple at the sameN. The
 and fresh replays pass. N remains external, so this is a finite-certificate
 improvement without a new universal operation bound or uniqueness theorem.
 
+The [Waterfall range-lane audit](Papers/research-wip/native-stream-queue/waterfall_packed_range_obstruction.md)
+proves that the aggregate packed bound alone still permits false tape
+histories. The [independent review](Papers/research-wip/native-stream-queue/review_waterfall_packed_range_obstruction.md)
+verifies a general dyadic-base family against both actual raw compiler
+forms. The retained range lane correctly rejects it. This concerns the raw
+history interface and establishes no false ordinary-input or full Pell zero.
+
 The [corrected Grill halt bridge](Papers/research-wip/native-stream-queue/grill_tag_halt_bridge.md)
 and its [independent review](Papers/research-wip/native-stream-queue/review_grill_tag_halt_bridge.md)
 prove halting equivalence at the exact encoded width, including cleanup.
