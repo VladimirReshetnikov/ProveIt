@@ -18,6 +18,20 @@
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
 >
+> The [auxiliary square/product chart](complete82_auxiliary_square_product_chart.md)
+> has a fully paid **82=45M+37A** source, 18 positive witnesses and exact
+> degree185, but **universality remains unproved**. Supplying f² and T*f
+> removes two gates from84 and preserves the complete polynomial under the
+> forward substitution. On the stated positive odd-c sector, the three new
+> auxiliary coordinates extend an outer tuple exactly when its five retained
+> factors have product +1 or −1. Thus this block loses its former restrictions.
+> Every accepted84 input also has full82 zeros with a nonsquare supplied f²,
+> defeating the literal inverse without showing a falsely accepted input.
+> The [independent review](review_complete82_auxiliary_square_product_chart.md)
+> proves the full output identity and uniform degree from the actual rows and
+> checks both-sign constructions. Fresh installed normal/optimized receipts
+> pass. This candidate does not change the **84-operation universal bound**.
+>
 > The [free auxiliary coefficient scout](complete83_free_coefficient_scout.md)
 > emits an **83-operation, degree-111 candidate**, whose **universality is unproved**.
 > Supplying S instead of computing i*Delta*c² saves one multiplication but loses
