@@ -118,7 +118,7 @@ Its raw alternative drops from 243 to 233. The
 [independent review](review_grill_native_phase_shared.md) proves 18 complete
 source identities across nine programs, including literal one-phase no-ops.
 Both receipts pass root replay. The 31-witness interface and degree upper
-bound 1187 remain; these are still small-program, nonuniversal examples.
+bound 1187 remain; these are small-program examples whose universality is unproved.
 
 The [phase-residual rewrite](grill_tag_native_phase_residual206.md) further
 reduces the strong-cone source from 209 to **206=93M+113A**, preserving its
@@ -130,14 +130,24 @@ identities, including periods 1, 2, 3, 4 and 5. Both receipts pass root replay.
 The 31 positive witnesses and degree upper bound 1187 remain unchanged.
 
 The [weak-cone child](grill_tag_native_weak_cone.md) implements the padding
-corollary, reducing that complete source to **208=93M+115A**. It replaces
-P0=3x+Z0 by P0=x+Z0. Fresh native-domain arguments and the padding theorem
+corollary, reducing the 209-operation phase-sharing source to **208=93M+115A**.
+It replaces P0=3x+Z0 by P0=x+Z0. Fresh native-domain arguments and the padding theorem
 preserve the existential input language; the positive zero sets on identical
 coordinates are disjoint. The exact algebraic relation instead shifts Z0 by
 −2x. The [independent review](review_grill_native_weak_cone.md) verifies all
 eight source substitutions and 82 actual outer/AND fixtures, explicitly
 distinguishing these fixtures from full native Pell zeros. Both receipts
 pass root replay; no universal decoder is inferred.
+
+The [composed compiler](grill_tag_native_composed205.md) combines these two
+reductions, reaching **205=92M+113A** for `(0,1,1)` and 229 in raw mode.
+It emits identical complete arithmetic in either rewrite order and preserves
+the entire weak208 polynomial on the same coordinates. Its separate relation
+to strong206 shifts Z0 by −2x and does not identify positive witness fibers.
+The [independent review](review_grill_native_composed205.md) proves both full
+identities for all eight displayed forms and accounts for every paid gate.
+Both receipts pass root replay. The 31 positive witnesses, degree upper bound
+1187, and fixed-program scope remain; the universal benchmark stays 87.
 
 The [encoded-padding obstruction](grill_tag_encoded_padding_obstruction.md)
 shows why the corrected creator fragment cannot directly provide the missing
