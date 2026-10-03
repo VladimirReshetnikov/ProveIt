@@ -18,6 +18,18 @@
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
 >
+> The [free auxiliary coefficient scout](complete83_free_coefficient_scout.md)
+> emits an **83-operation, degree-111 candidate**, whose **universality is unproved**.
+> Supplying S instead of computing i*Delta*c² saves one multiplication but loses
+> its divisibility condition. Every full positive84 zero has new full positive
+> candidate extensions, at the same accepted input, whose literal inverse i is
+> nonintegral. Both odd-index cases are proved; no false accepted input is shown.
+> The [independent review](review_complete83_free_coefficient_scout.md) reconstructs
+> all 83 gates and both complete graph maps, expands 2,114 factor coefficients,
+> and proves the uniform degree. Fresh normal/optimized receipts and the separate
+> proof challenge pass. Generic divisor/sign cases and accepted-input soundness
+> remain open; the established universal minimum stays **84 operations**.
+>
 > The [complete Report30 first-hit fixture](original_frame_first_hit30_fixture.md)
 > reduces one explicit original-frame mass-four orbit certificate to
 > **35=11M+24A operations, three natural witnesses and exact degree four**.
