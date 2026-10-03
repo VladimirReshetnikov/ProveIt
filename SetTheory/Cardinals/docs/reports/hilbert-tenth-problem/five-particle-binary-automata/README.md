@@ -1,14 +1,19 @@
 # Five-Particle Binary Automata
 
-**Reversible universality, a literal universal source, startup and cellular clocks, and exact lazy evaluation**
+**Reversible universality, a literal universal source, startup and cellular clocks, exact lazy evaluation, quartic certificates and a parallel replacement rule**
 
-This is a research report dated 3 October 2026, built from six
-manuscripts: "Research Reports" 14–19 of one AI-assisted research
-pipeline, delivered as batch 82 (cluster M1) of ProveIt's incoming reports.
-They concern one object, the binary, number-conserving, globally reversible
-cellular automaton that Report 15's compiler builds, fed with the explicit
-universal source of Report 16; Report 14 is a sibling construction for
-binary conservative (not necessarily reversible) automata.
+This is a research report dated 3 October 2026, built from ten
+manuscripts: "Research Reports" 14–20 and 26–28 of one AI-assisted research
+pipeline, delivered as batch 82 (clusters M1 and M2) of ProveIt's incoming
+reports. They concern one object, the binary, number-conserving, globally
+reversible cellular automaton that Report 15's compiler builds, fed with the
+explicit universal source of Report 16; Report 14 is a sibling construction
+for binary conservative (not necessarily reversible) automata. Reports 20
+and 26–28 certify that automaton (Report 20), replace its ordered execution
+by two parallel involutions with the same admissible dynamics (Report 26),
+and evaluate (Report 27) and certify (Report 28) the new rule. Parts I–IV
+(Reports 14–19) were written by the first write (`e6a410588`), Parts V–VI
+(Reports 20, 26–28) by a second write the same day.
 
 | Report | batch-82 archive | Archive (main file) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -18,34 +23,41 @@ binary conservative (not necessarily reversible) automata.
 | 17 | 16 | `Reversible_Startup_Optimization_Package.zip` (`report17.tex`, 14 pp.) | none | `bca6383e9` | Part III, Sections 42–52 |
 | 18 | 04 | `Cellular_Clock_Domination_Package.zip` (`report18.tex`, 13 pp.) | none | `bca6383e9` | Part III, Sections 53–64 |
 | 19 | 09 | `Exact_Lazy_Reversible_CA_Evaluator_Package.zip` (`report19.tex`, 14 pp.) | none | `bca6383e9` | Part IV, Sections 65–76 |
+| 20 | 08 | `Event_Budgeted_Quartic_Certificates_Package.zip` (`report20.tex`, 16 pp.) | none | `7d2b1b245` | Part V, Sections 77–88 |
+| 26 | 20 | `Two_Parallel_Conservative_Involutions_Package.zip` (`report26.tex`, 16 pp.) | none | `7d2b1b245` | Part VI (first), Sections 89–100 |
+| 27 | 18 | `Sparse_Parallel_Particle_Evaluation_Package.zip` (`report27.tex`, 11 pp.) | none | `7d2b1b245` | Part VI (second), Sections 101–110 |
+| 28 | 03 | `Canonical_Parallel_Quartic_Certificates_Package.zip` (`report28.tex`, 19 pp.) | none | `7d2b1b245` | Part VI (third), Sections 111–126 |
 
-All six archives arrived unchanged in `db37d18c8` and survive there
+All ten archives arrived unchanged in `db37d18c8` and survive there
 (`git show db37d18c8:docs/incoming/<archive> > <archive>`). No manuscript
 names a ProveIt commit; they pin one another by SHA-256 (Report 16 pins
 Report 15's compiler `f95a6028c9d3…`, Report 17 pins Report 16's source
 `38c586706fa1…`, Reports 18 and 19 pin Report 17's source `fa61d06178d7…`,
-Reports 14–16 pin Report 12's LaTeX `803bf0c4194b…`). Report 14 is
+Reports 14–16 pin Report 12's LaTeX `803bf0c4194b…`; Reports 20, 27 and
+28 pin Report 19's evaluator `42e8aa65c05f…` and all four pin Report 15's
+compiler; Reports 20 and 27 pin Report 17's source; Report 27 pins Report
+26's scientific manifest `141f1ecf4e34…`; Report 28 pins Report 26's
+evaluator `2c8b6396…` and Report 27's `785082d12162…`). Report 14 is
 unnumbered in its own header; Report 16's compiler proof identifies it.
+Placement commits: `bca6383e9` (M1, Reports 14–19) and `7d2b1b245` (M2,
+Reports 20 and 26–28; the same placement filed M2's Reports 21–22 in
+`../signal-machine-collision-certificates`, for its Part VIII).
 
 **Status.** AI-assisted research manuscripts (Report 14's delivery README:
-"prepared with AI assistance"); unrefereed; not formalized; **not yet
-reviewed by the Hilbert's-tenth research programme** (see "Relation to the
-formal project"). Every result, proof, example, question and limitation of
-the six manuscripts is printed; re-proofs of results already in the
-collection are kept as marked second presentations.
-
-Four further Reports of the same pipeline, Reports 20, 26, 27 and 28
-(batch 82, cluster M2), concern the same automaton. Their files were placed
-in this directory by `7d2b1b245` and are listed below; their text is to be
-printed as Parts V–VI, after Part IV (the insertion point is marked in
-`article.tex`).
+"prepared with AI assistance"); unrefereed; not formalized. The
+Hilbert's-tenth research programme has read Reports 16, 18, 19, 20 and
+26–28 in reviews or scoped intakes that found no defect (none executed the
+archived suites), and has not reviewed Reports 14, 15 and 17 (see
+"Relation to the formal project"). Every result, proof, example, question
+and limitation of the ten manuscripts is printed; re-proofs of results
+already in the collection are kept as marked second presentations.
 
 ## Files
 
 ```
 README.md                                       this guide
 article.tex                                     the report: standalone LaTeX, internal bibliography
-article.pdf                                     the compiled report, 121 pages
+article.pdf                                     the compiled report, 190 pages
 figures/accepting-orbit.pdf                     Report 15's Figure (raw five-particle trace of its accepting example)
 figures/14-five-binary-five-particle-trace.pdf  Report 14's figure (its accepting example's CA trace)
 ```
@@ -326,7 +338,7 @@ data/19-lazy-eval-release-integrity-receipt.json
 data/19-lazy-eval-report19-qa.json
 ```
 
-**Placed by `7d2b1b245`, to be printed as Parts V–VI** (batch 82, cluster M2: Reports 20, 26, 27 and 28, which certify, replace and evaluate this report's automaton; their text is not yet in `article.tex`, and their README section will be written with those Parts). The Hilbert's-tenth review `review_parallel_particle_reports.md` (`fb7e3cb47`) covers Reports 26–28.
+**Placed by `7d2b1b245`, printed as Parts V–VI** (batch 82, cluster M2: Reports 20, 26, 27 and 28, 149 files). Report 20's root files are its proof, the inner README of its `reproducibility/` packet, its independent audit and the delivered mathematical review; Report 26's its proof, lemma and preservation audits, packet README and prior-art audit; Report 27's its proof, results, candidate-completeness audit and packet README; Report 28's its proof, design and emitter audits, the witness-height (`bitbound/`) proof, review and README, replay and results notes, the evidence audits and the test-oracle report. `code/` holds each Report's programs, tests, audits and `build.sh`; `data/` its receipts, logs, examples, fixtures and provenance JSON.
 
 *Report 20, prefix `20-event-budget-`* — 40 files (4 at the root, 11 in `code/`, 25 in `data/`):
 
@@ -500,8 +512,8 @@ data/28-parallel-quartic-test.log
 The three files `certificate-section.tex`, `clean-target-section.tex` and
 `verification-details.tex`, which `bca6383e9` placed so that the delivered
 base would build, are inlined in `article.tex` and no longer exist here.
-The delivered PDFs, checksum ledgers and delivery READMEs of Reports 14–19
-are not shipped; this README replaces them, and `article.pdf` is a build of
+The delivered PDFs, checksum ledgers and delivery READMEs of Reports 14–20
+and 26–28 are not shipped; this README replaces them, and `article.pdf` is a build of
 `article.tex`. (The files `16-literal-source-README.md`,
 `17-startup-README.md`, `18-cell-clock-README.md`,
 `14-five-binary-compiler-README.md` and similar are READMEs of
@@ -522,16 +534,28 @@ unlabelled sections of Report 19. Total 222 (counted in the `.aux`).
 Before the write the report's text (Report 15 as placed) had 40 labels,
 all unprefixed; the prefix was applied before anything cites them.
 
+The second write (Parts V–VI) kept all 222 labels and added 95: the 82
+delivered labels of Reports 20 (22, `fpa:eb:`), 26 (33, `fpa:pi:`), 27
+(6, `fpa:sp:`) and 28 (21, `fpa:pq:`), each sub-prefix followed by the
+delivered name, plus 13 written ones: `fpa:part:five`, `fpa:part:six`,
+`fpa:rep:<r>:first`/`fpa:rep:<r>:last` for r = 20, 26, 27, 28, and
+`fpa:eb:sec:source`, `fpa:eb:sec:proof`, `fpa:pq:sec:sorting` on three
+unlabelled sections. Total 317 in the `.aux` (311 `\label` commands in the
+source, plus the six Part labels set through the `\fpapart` macro).
+
 Sections and theorems are numbered continuously (Theorem *n.m* is in
 Section *n*); Sections 1–3 are the front matter and Appendix A the
 provenance. Reports 15 and 16 number their displays by hand, (1), (2), …,
 and cite them as "(3)"; those numbers are kept and are local to the
-Report. Displays of Reports 14, 17 and 18 are numbered (*n.m*) by section.
+Report. Displays of Reports 14, 17, 18, 20 and 26–28 are numbered (*n.m*) by section;
+Report 27's statements, numbered 1, 2, … through the delivered Report, are
+numbered by section here, and the appendices of Reports 27 and 28 are
+ordinary sections.
 Text added in the write is marked `[write]`.
 
 ## Notation
 
-No symbol of any Report was renamed; each Part uses its Report's symbols.
+No symbol of Reports 14–19 was renamed (for Report 20 see below); each Part uses its Report's symbols.
 Section 2 of the article tabulates the collisions, the worst being:
 Report 14's `D = m + 2p` (unsigned codes; `p` counts rows) against
 Reports 15–19's `D = 2m + 4p` (signed modes; `p` counts nonzero-update
@@ -541,6 +565,20 @@ but Report 16's certificate horizon; `J` as class cutoff but also the
 Turing state of the halt cell `J1`; `F` as one automaton step (Report 15)
 but the factor count (Report 19). Report 14's macro `\enc` (printing
 "Enc") is `\Enc` internally; nothing printed changed.
+
+Parts V–VI have a second table (Section 2): `F` is the ordered-factor
+count in Report 20 but the same number read as endpoint types in Reports
+26–28; `𝓕` is the old ordered rule in Reports 19–20 but the new parallel
+rule in Report 28 (Report 26 writes `F_new`, Report 27 `Φ`), and the two
+rules differ on malformed supports; `b` counts branches in Report 20 but is
+the triple write radius `4D + 5` in Reports 26–28; `K` is Report 20's
+event budget but Report 26's radius `3b + 1` and Report 28's slot widths;
+`C` is Report 20's slot count but Report 28's height constant `C(s, n)`.
+One printed symbol changed: Report 20's witness-height bound `H_*` is
+printed `Ht_*`, because Report 28 uses `H_*` for an isolation distance.
+Internally, Report 26's `\N` (printing ℤ≥0) and Report 28's `\N`
+(printing ℕ₀) are `\Nge` and `\Nzero`, Report 27's `\code` and `\C` are
+`\file` and `\calC`; they print as delivered.
 
 ## What the report claims
 
@@ -580,12 +618,35 @@ but the factor count (Report 19). Report 14's macro `\enc` (printing
 - **Part IV (Report 19).** Theorem 65.1: `compile_lazy_source(source).step(X)` equals the
   frozen ordered product of 269,291,358,255 involutions on every finite
   support, and the inverse uses the reversed order.
+- **Part V (Report 20).** Theorem 77.1: for a fixed accepted source, mass
+  `n`, horizon `T` and budget `K`, a sum of squares of quadratic residuals
+  has exactly one natural auxiliary point when the literal ordered product
+  completes `T` steps with at most `K` changing factors (and meets a
+  prescribed endpoint, if any), and none otherwise; `T + K` deterministic
+  rounds over `C = C(n,2)[Δ + 3 + 4 max(n − 2, 0)]` occupied-pair slots
+  (170 for the universal source at mass five), no array over the `F`
+  factors; a mass-two exporter with 612 witnesses, 616 residuals and 4,573
+  expanded monomials.
+- **Part VI (Reports 26, 27, 28).** Report 26, Theorem 89.1:
+  `F_new = P∥ ∘ E∥`, two full-shift number-conserving involutions, agrees
+  with the ordered rule on the whole admissible doubled micrograph, has
+  sufficient radius `180D + 258 + 9J` (91,711,698 for the universal ledger)
+  and is time-symmetric, by the prospective-isolation Lemma 90.1 (radius
+  `3(b + r)`). Report 27, Theorem 101.1: a sparse evaluator equals the new
+  rule on every finite support, malformed ones included, with at most
+  `n + 2` raw-discovery calls per step; 128 universal startup steps.
+  Report 28, Theorem 111.1: for fixed source, mass, horizon and direction,
+  a polynomial of degree ≤ 4 in `4n` external naturals has exactly one
+  natural witness at accepted endpoint pairs of the new rule and none
+  elsewhere; witness count `4 max(n − 1, 0) + T(w_E + w_P)`; the
+  two-particle example has 1,494 witnesses, 1,502 residuals and 12,595
+  monomials; a linear witness-height bound (Section 119).
 
 Section ranges are in the table above.
 
 ## What the report does not claim
 
-Section 3 of the article collects every limitation the six Reports state;
+Section 3 of the article collects every limitation the ten Reports state;
 in short: no proof-assistant formalization, novelty or priority claim; no
 intrinsic universality, efficient input conversion, minimal radius or
 materialized truth table (`2^1,513,575` rows for Report 14's instance);
@@ -596,6 +657,18 @@ separate proof; universal startup is not executed (Report 16 predicts
 about `8·10^13` source steps; Report 17 executes 138 literal steps;
 Report 19 executes 128 of about `1.39·10^9` CA microsteps); Report 18's
 comparison is within fixed templates; Report 19 makes no cost guarantee.
+Report 20 is a fixed-parameter finite-schema theorem (no unknown-horizon,
+fixed-arity, finite-fold, real-witness, mass-two-universality, novelty or
+optimality claim; only a mass-two exporter exists; its 10000 prefactor and
+height bound are conservative). Report 26 claims neither radius optimality
+nor novelty of the two-involution architecture; its rule agrees with the
+old one only on admissible states (the new radius bound is worse for tiny
+sources, 978 against 540). Report 27 finishes no universal startup or
+Turing step and gives no worst-case sublinear-in-`F` bound. Report 28 is a
+fixed-horizon family whose arity grows with `T` (no fixed-arity unbounded
+representation, no finite-fold consequence, no uniqueness over ℝ, ℚ or
+signed auxiliaries); no universal-source polynomial was emitted, and its
+mass-five certificate tests at horizons two and three were not completed.
 
 ## Relation to neighbouring reports
 
@@ -617,7 +690,7 @@ Report 32 is `../group-theoretic-substrates` Part V.
   SMC source 15's (`smc:ct:thm:restore`, Bennett's uncomputation),
   credited in a `[write]` note. SMC source 19 (Report 29) cites Report 16
   for its four-versus-five boundary. SMC's own text is not changed by
-  this write.
+  either write.
 - **`../quadratic-orthant-certificates` (QOC).** Report 14's 8,408-row
   source is QOC Part V's (source 16); its Section 26 re-derives
   `qoc:um:lem:virtual` and `qoc:um:lem:prime` (kept as a marked second
@@ -626,14 +699,26 @@ Report 32 is `../group-theoretic-substrates` Part V.
   (dated note). Report 16's front end is QOC's 528-row program byte for
   byte. The Neary–Woods `(u10, b)` discrepancy is printed once, in QOC
   Part III.
-- **`../canonical-diophantine-certificates`.** No overlap (8-gram
-  containment 0.000).
+- **`../canonical-diophantine-certificates` (CDC).** No overlap with
+  Reports 14–19 (8-gram containment 0.000). Reports 20 and 28 prove again
+  CDC's canonical circuit layer (signed pairs `cdc:pt:lem:signed`, the
+  circuit lemma `cdc:pt:lem:circuit`, comparison `cdc:mem:lem:compare`),
+  and Report 28's bitonic sorter is CDC's `cdc:mem:prop:comparator-cost`
+  and §`cdc:mem:subsec:bitonic`; neither Report cites CDC. These passages
+  are kept as second presentations with `[write]` credits, also to SMC
+  Part IV's `smc:sl:eq:cmp`, `smc:sl:eq:eq` and
+  §`smc:sl:sec:presburger-quartic` (Report 20's "Report 8" is SMC source
+  13; its bundled excerpts of SMC's text are not shipped). The closest
+  theorem to Report 20 is SMC's `smc:sl:thm:core`.
+- **SMC Part VIII (Report 22, source 23).** Report 28's uncited remark on
+  "infinite native Pell witness fibers" refers to it; a `[write]` note
+  says so.
 
 ## Relation to the formal project
 
 `../../../../../../Computability/HilbertTenthProblem/` (Lean and research
-notes) is maintained by another session. At the time of this write its
-research programme has **not reviewed Reports 14–19**: its note
+notes) is maintained by another session. At the time of the first write its
+research programme had **not reviewed Reports 14–19**: its note
 `Papers/research-wip/native-stream-queue/reviewed_report_archive_replay.md`
 (commit `ceb7222e9`) lists the six archives as "Relocation only" and says
 that copying them is not a scientific review; its materializer
@@ -641,9 +726,23 @@ that copying them is not a scientific review; its materializer
 pinned by size and SHA-256, from revision `55d248dc5` into an external
 cache (another way to obtain the delivered layout). Its review
 `Papers/research-wip/native-stream-queue/review_parallel_particle_reports.md`
-(commit `fb7e3cb47`) covers Reports 26–28 of the future Parts V–VI, finds
-no defect, and records that the inherited template geometry and source
-simulation of Reports 15–17 is a dependency it did not reconstruct;
+(commit `fb7e3cb47`) covers Reports 26–28 (Part VI), finds no defect,
+re-enumerates the 4,096 period-12 words of Report 26's lemma example and
+rebuilds Report 28's 12,595-term quartic from its 1,502 residuals, and
+records that the inherited template geometry and source simulation of
+Reports 15–17 is a dependency it did not reconstruct. Since the first
+write, the same directory has gained `review_literal_universal_reversible_source16.md`
+(`69730d3e8`: Report 16's 141,561 rows rescanned, no contradiction),
+`review_cellular_clock_domination18_intake.md` (`735f62a6a`: Report 18's
+central proof passes), `review_lazy_ordered_evaluator19_intake.md`
+(`c875bad40`: no gap in Report 19's finite-support argument; a proof
+intake, not an implementation audit) and
+`review_event_budget_clean_clock_intake.md` (`8aabb1453`: Report 20's
+complete proof read, no new defect within its stated scope; arity grows
+with `n`, `T`, `K` and the source). None of these executed the archived
+Python; all stress that the Reports supply no smaller arithmetic compiler,
+paid ordinary-input loader or unbounded fixed-arity history encoding.
+Dated notes in the article's Section 1.6 record them;
 `review_binary_planar_four_particle31.md` (`16f50dcc6`) concerns
 Report 31 (SMC Part VII). Its note `neary_woods_explicit_universal_tm.md`
 transcribes the same Neary–Woods table. Placement beside a formal
@@ -655,8 +754,10 @@ formalized**, and no Lean or Rocq declaration is cited.
 Shipped files are byte-identical to the archive members. Their names drop
 the archive's top directory (and `report/`, `source/`, `reproducibility/`)
 and replace `/` by `-`, after the prefix `14-five-binary-`,
-`15-rev-five-`, `16-literal-source-`, `17-startup-`, `18-cell-clock-` or
-`19-lazy-eval-`; programs and build scripts are in `code/`, JSON receipts,
+`15-rev-five-`, `16-literal-source-`, `17-startup-`, `18-cell-clock-`,
+`19-lazy-eval-`, `20-event-budget-`, `26-parallel-involutions-`,
+`27-sparse-parallel-` or `28-parallel-quartic-` (the M2 trees also drop
+`scientific/`, `research/` and `reproducibility/`); programs and build scripts are in `code/`, JSON receipts,
 traces and examples in `data/`, proof, audit and provenance Markdown at the
 root. Report 15's figure is `figures/accepting-orbit.pdf` (delivered
 name), Report 14's is `figures/14-five-binary-five-particle-trace.pdf`
@@ -707,7 +808,40 @@ end of this README.
 - **Byte copies across the series.** Report 19's evaluator
   (`code/19-lazy-eval-lazy_reversible.py`) and Report 15's compiler are
   re-shipped inside the M2 archives of Reports 20 and 26–28; the M2
-  placement did not stage them twice.
+  placement did not stage them twice. Likewise not staged twice: Report
+  26's proof, audits, `parallel_particles.py`, prior-art audit and
+  provenance inside archives 18 and 03 (Report 27's
+  `scientific/PARALLEL_*.md` and `references/report26-provenance.json` are
+  `26-parallel-involutions-PROOF.md`, `…-audit-lemma.md`,
+  `…-audit-preservation.md` and `data/26-parallel-involutions-delivery-provenance.json`);
+  Report 27's evaluator, proof and test suite inside archive 03; Report
+  20's proof inside archive 20; Report 19's proof, receipts and startup
+  trace, Report 15's `COMPILER_PROOF.md`, `SOURCE_SCHEMA.md` and
+  clean-target sample source inside all four.
+- **Unshipped M2 files named by shipped ones.** The delivered `.tex`,
+  PDFs and delivery READMEs of Reports 20 and 26–28; release manifests,
+  `SHA256SUMS`, `manifest.json` and their verifiers (`verify_release.py`,
+  `release_checks.py`, `replay.py`, `replay_release.py`,
+  `write_manifest.py`, `verify_bundle.py`, `verify_packet.py`,
+  `test_release_integrity.py`, `check_release_claims.py`,
+  `source-pins.json`); Report 20's `reproducibility/dependencies/`
+  (`report8-core.tex`, `report8-semilinearity.tex`: excerpts of SMC's own
+  Part IV text; `report19-proof.md`) and `source.json.gz`; Report 27's
+  `scientific/universal-source.json` and four universal traces; Report
+  28's `expected/` replay references (one is shipped, below) and its two
+  stale supplement receipts. All survive in `db37d18c8`.
+- **Report 28's stale supplement receipts (placement finding).**
+  `research/supplement-receipt.json` and its optimized copy lack four
+  ledger fields (`endpoint_type_count`, `legacy_ordered_radius`,
+  `new_rule_radius`, `source_metadata_semantics`) that the pinned
+  `compiler.py` (line 246) emits, so they predate the final compiler; they
+  are not shipped. The fresh replay receipt `expected/normal/supplement-receipt.json`,
+  shipped as `data/28-parallel-quartic-expected-supplement-receipt.json`, is
+  the binding evidence. This qualifies Report 28's sentence (Section 123)
+  that compiler, circuit and fixtures "retain their pinned identities"; a
+  footnote there says so.
+- **Report 26's lemma hypothesis.** `0 ≤ b ≤ r` is stated but `b ≤ r` is
+  not used in the proof (placement finding; a `[write]` note in Section 90).
 
 ## Rerunning the checks
 
@@ -731,6 +865,17 @@ release_checks.py`, `python3 replay.py --out <new directory outside the
 release>`. All need only the Python standard library (Report 19 targets
 Python ≥ 3.12, Report 14 ≥ 3.10).
 
+Reports 20 and 26–28 (cluster M2): Report 20 `python3 -B
+verify_release.py`, `python3 -B replay.py --output <new directory>`;
+Report 26 the same two with `--output /existing/parent/new-output`; Report
+27 `python3 -B verify_release.py`, `python3 -B release_checks.py`, `python3
+-B replay.py --output <new directory>`, or the individual
+`scientific/*.py --output-dir <dir>` commands of its delivery README;
+Report 28 `python3 -B verify_release.py`, `python3 -B replay_release.py
+--output-dir ../report28-fresh-replay`. Their programs import sibling
+modules by bare name and read data beside themselves, so they run only in
+the delivered layout: extract the archive as above.
+
 Hazards measured at placement (Windows, Python 3.14.4, on copies):
 
 - Every producer writes text with `write_text`, so on Windows its outputs
@@ -753,6 +898,23 @@ Hazards measured at placement (Windows, Python 3.14.4, on copies):
   remaining two separately in 13 s and 17 s).
 - Report 19's `benchmark_universal.py` imports the Unix-only `resource`
   module; the other steps pass on Windows (`test_lazy` about 90 s per mode).
+- Report 20: every script passes in both modes, `release_checks.py` too;
+  regenerated outputs equal the recorded ones after CRLF→LF. Its
+  `verify_release.py` pins the bytes of `source.json.gz` (next section).
+- Report 26: all suites pass (`test_parallel.py` is long; it was run in two
+  halves and the merged counts equal the receipts).
+- Report 27: all six suite/mode runs pass. `benchmark_universal.py`
+  (`code/27-sparse-parallel-benchmark_universal.py`, line 12) imports
+  `resource` unconditionally and `release_checks.py` (line 132) calls
+  `os.mkfifo`: both need Linux, as Report 27 says; with a stub `resource`
+  module the benchmark gives byte-identical traces on Windows.
+- Report 28: all suites pass in both modes except `test_certificate.py`,
+  which needs more than 165 s here (its log matched the delivered one on
+  the 50 lines produced); `verify_release.py` stops at a POSIX file-mode
+  check on Windows, while `sha256sum -c` of its ledgers passes.
+- The delivered `replay.py`/`replay_release.py` of Reports 20 and 26–28
+  were not run as a whole (each over three minutes and Linux-oriented);
+  their components were.
 
 ## Reconstructing the excluded data
 
@@ -775,6 +937,9 @@ CRLF→LF conversion (exactly, under POSIX).
 | Report 14 `compiler/universal_h1_frontend.json` | 2,208,310 | in the Report 14 layout, with the two `literal2` files restored: `cd compiler && python3 check_frontend.py` | 3 s |
 | Report 15 (archive 15) `compiler/clean-target-sample-orbit.json` | 837,481 | in the Report 15 layout: `cd compiler && python3 clean_target_sample.py` | 22 s |
 | Report 15 `figures/accepting-orbit.svg` | 493,541 | in the Report 15 layout: `python3 tools/render_trace.py` (reads `compiler/sample-orbit.json` = `data/15-rev-five-compiler-sample-orbit.json`; also rewrites the figure PDF, byte-identically) | 1 s |
+| Report 27 (archive 18) `scientific/universal-source.json` | 32,034,272 | Report 17's `source.json` (first row, `fa61d06178d7…`), renamed | as above |
+| Report 27 `scientific/universal-startup-trace.json`, `universal-malformed-trace.json` (and their byte-identical `-optimized` copies) | 129,601; 143,165 | in a copy holding `benchmark_universal.py` (= `code/27-sparse-parallel-benchmark_universal.py`), `sparse_parallel.py` (= `code/27-sparse-parallel-sparse_parallel.py`), `parallel_particles.py` (= `code/26-parallel-involutions-parallel_particles.py`), `frozen_lazy_source.py` (= `code/19-lazy-eval-lazy_reversible.py`), `frozen_reversible_binary.py` (= `code/15-rev-five-compiler-reversible_binary.py`), `frozen-ordered-startup-trace.json` (= `data/19-lazy-eval-evidence-universal-startup-trace.json`) and `universal-source.json`: `python3 -B benchmark_universal.py --output-dir <dir>` (Linux; on Windows only with a stub `resource` module) | about 4–8 s |
+| Report 20 (archive 08) `reproducibility/source.json.gz` | 1,599,790 | a byte copy of Report 19's `.gz` (row above): the same recipe, Python 3.11–3.13 | 2–6 s |
 
 SHA-256 checks: Report 16's `source.json` is `38c586706fa1…` (printed in
 Section 33), Report 17's `fa61d06178d7…` (printed in Section 76, with
@@ -794,21 +959,39 @@ LF-identical, `38c586706fa1…`); the `.gz` under Python 3.12 (identical,
 and PDF from `render_trace.py` (0.1 s; SVG LF-identical, PDF identical).
 The other rows were verified at placement (dossier timings).
 
+Re-verified for the second write (3 October 2026, Windows, on copies):
+Report 27's universal source rebuilt from `code/17-startup-build_source.py`
+and QOC's `virtual3.json` with LF writes is byte-identical to the delivered
+`scientific/universal-source.json` (SHA-256 `fa61d06178d7…`); the two
+universal traces rebuilt from the shipped files listed above (stub
+`resource`, LF writes) are byte-identical (`c49b3e6992d9…`,
+`3b5607797755…`), while the benchmark's own receipt differs only in its
+timing and RSS fields; Report 20's `.gz` is byte-identical to Report 19's
+(`2e21ed646509…`) and is reproduced exactly under Python 3.11.15 (5.5 s).
+The M2 placement record called the `.gz` "content-identical only"; that
+holds for Python 3.14 and GNU gzip, not for Python 3.11–3.13. Report 27's
+`release_checks.py`/`verify_bundle.py` and Report 20's `verify_release.py`
+treat these files as mandatory: rebuild them first, or run from the
+archive.
+
 ## Build
 
     latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX (MiKTeX), standalone with an internal bibliography; needs the two
-PDFs in `figures/`. The build of this text has 121 pages (Part I
-from page 13, Part II from 55, Part III from 80, Part IV from 106, the
-provenance appendix from 118), no undefined references or citations, no
-multiply-defined labels and no duplicate destinations. One overfull line
-(13 pt) is in Report 14's own text (Section 31, a long file name).
+PDFs in `figures/`. The build of this text has 190 pages (Part I
+from page 19, Part II from 61, Part III from 86, Part IV from 112, Part V
+from 124, Part VI from 139, the provenance appendix from 183), no undefined
+references or citations, no multiply-defined labels, no duplicate
+destinations and no overfull lines. The second write widened the table of
+contents' section-number and page-number boxes (three-digit numbers) and
+set `\emergencystretch` to 2em, as Reports 27 and 28 do; this also removed
+the one overfull line of the first build (Report 14's Section 31).
 
 ## Delivered path → shipped path
 
 <details>
-<summary>All 248 files of Reports 14–19 shipped from the archives (`article.tex`, `README.md` and the three inlined inputs of the base, rewritten or removed in the write, omitted)</summary>
+<summary>All 397 files shipped from the archives: 248 of Reports 14–19 and 149 of Reports 20 and 26–28 (`article.tex`, `README.md` and the three inlined inputs of the base, rewritten or removed in the write, omitted)</summary>
 
 `five-particle-binary-portable.zip` (path inside the archive → shipped path):
 
@@ -1088,5 +1271,173 @@ lazy-evaluator-release-20261003/verify_release.py  ->  code/19-lazy-eval-verify_
 lazy-evaluator-release-20261003/write_manifest.py  ->  code/19-lazy-eval-write_manifest.py
 ```
 
+`Event_Budgeted_Quartic_Certificates_Package.zip` (Report 20; path inside the archive → shipped path):
+
+```
+event-budget-release-20261003/build.sh  ->  code/20-event-budget-build.sh
+event-budget-release-20261003/report20-math-review.md  ->  20-event-budget-report20-math-review.md
+event-budget-release-20261003/report20-qa.json  ->  data/20-event-budget-report20-qa.json
+event-budget-release-20261003/reproducibility/PROOF.md  ->  20-event-budget-PROOF.md
+event-budget-release-20261003/reproducibility/PROVENANCE.json  ->  data/20-event-budget-PROVENANCE.json
+event-budget-release-20261003/reproducibility/README.md  ->  20-event-budget-README.md
+event-budget-release-20261003/reproducibility/artifact_checks.py  ->  code/20-event-budget-artifact_checks.py
+event-budget-release-20261003/reproducibility/audit/INDEPENDENT_AUDIT.md  ->  20-event-budget-audit-INDEPENDENT_AUDIT.md
+event-budget-release-20261003/reproducibility/audit/independent-receipt.json  ->  data/20-event-budget-audit-independent-receipt.json
+event-budget-release-20261003/reproducibility/audit/independent_audit.py  ->  code/20-event-budget-audit-independent_audit.py
+event-budget-release-20261003/reproducibility/audit/reviewed-hashes.txt  ->  data/20-event-budget-audit-reviewed-hashes.txt
+event-budget-release-20261003/reproducibility/binding-receipt.json  ->  data/20-event-budget-binding-receipt.json
+event-budget-release-20261003/reproducibility/check_example.py  ->  code/20-event-budget-check_example.py
+event-budget-release-20261003/reproducibility/example-polynomial.json  ->  data/20-event-budget-example-polynomial.json
+event-budget-release-20261003/reproducibility/example-receipt.json  ->  data/20-event-budget-example-receipt.json
+event-budget-release-20261003/reproducibility/example-witness.json  ->  data/20-event-budget-example-witness.json
+event-budget-release-20261003/reproducibility/example_emitter.py  ->  code/20-event-budget-example_emitter.py
+event-budget-release-20261003/reproducibility/guard-optimized-receipt.json  ->  data/20-event-budget-guard-optimized-receipt.json
+event-budget-release-20261003/reproducibility/guard-receipt.json  ->  data/20-event-budget-guard-receipt.json
+event-budget-release-20261003/reproducibility/independent_expansion.py  ->  code/20-event-budget-independent_expansion.py
+event-budget-release-20261003/reproducibility/interface-optimized-receipt.json  ->  data/20-event-budget-interface-optimized-receipt.json
+event-budget-release-20261003/reproducibility/interface-receipt.json  ->  data/20-event-budget-interface-receipt.json
+event-budget-release-20261003/reproducibility/portable-replay/normal/artifact-checks-receipt.json  ->  data/20-event-budget-portable-replay-normal-artifact-checks-receipt.json
+event-budget-release-20261003/reproducibility/portable-replay/normal/independent-expansion-receipt.json  ->  data/20-event-budget-portable-replay-normal-independent-expansion-receipt.json
+event-budget-release-20261003/reproducibility/portable-replay/normal/provenance-receipt.json  ->  data/20-event-budget-portable-replay-normal-provenance-receipt.json
+event-budget-release-20261003/reproducibility/portable-replay/normal/release-checks-receipt.json  ->  data/20-event-budget-portable-replay-normal-release-checks-receipt.json
+event-budget-release-20261003/reproducibility/portable-replay/normal/universal-slots-receipt.json  ->  data/20-event-budget-portable-replay-normal-universal-slots-receipt.json
+event-budget-release-20261003/reproducibility/portable-replay/optimized/artifact-checks-receipt.json  ->  data/20-event-budget-portable-replay-optimized-artifact-checks-receipt.json
+event-budget-release-20261003/reproducibility/portable-replay/optimized/release-checks-receipt.json  ->  data/20-event-budget-portable-replay-optimized-release-checks-receipt.json
+event-budget-release-20261003/reproducibility/portable-replay/summary.json  ->  data/20-event-budget-portable-replay-summary.json
+event-budget-release-20261003/reproducibility/provenance/producer-manifest.json  ->  data/20-event-budget-provenance-producer-manifest.json
+event-budget-release-20261003/reproducibility/scheduler_reference.py  ->  code/20-event-budget-scheduler_reference.py
+event-budget-release-20261003/reproducibility/test-optimized-receipt.json  ->  data/20-event-budget-test-optimized-receipt.json
+event-budget-release-20261003/reproducibility/test-optimized.log  ->  data/20-event-budget-test-optimized.log
+event-budget-release-20261003/reproducibility/test-receipt.json  ->  data/20-event-budget-test-receipt.json
+event-budget-release-20261003/reproducibility/test.log  ->  data/20-event-budget-test.log
+event-budget-release-20261003/reproducibility/test_guards.py  ->  code/20-event-budget-test_guards.py
+event-budget-release-20261003/reproducibility/test_interface.py  ->  code/20-event-budget-test_interface.py
+event-budget-release-20261003/reproducibility/test_schema.py  ->  code/20-event-budget-test_schema.py
+event-budget-release-20261003/reproducibility/universal_slots.py  ->  code/20-event-budget-universal_slots.py
+```
+
+`Two_Parallel_Conservative_Involutions_Package.zip` (Report 26; path inside the archive → shipped path):
+
+```
+parallel-involution-report26/build.sh  ->  code/26-parallel-involutions-build.sh
+parallel-involution-report26/delivery-provenance.json  ->  data/26-parallel-involutions-delivery-provenance.json
+parallel-involution-report26/references/prior-art-audit.md  ->  26-parallel-involutions-references-prior-art-audit.md
+parallel-involution-report26/references/root-scientific-QA.json  ->  data/26-parallel-involutions-references-root-scientific-QA.json
+parallel-involution-report26/report26-qa.json  ->  data/26-parallel-involutions-report26-qa.json
+parallel-involution-report26/scientific/PROOF.md  ->  26-parallel-involutions-PROOF.md
+parallel-involution-report26/scientific/README.md  ->  26-parallel-involutions-README.md
+parallel-involution-report26/scientific/api-receipt.json  ->  data/26-parallel-involutions-api-receipt.json
+parallel-involution-report26/scientific/audit-lemma.md  ->  26-parallel-involutions-audit-lemma.md
+parallel-involution-report26/scientific/audit-preservation.md  ->  26-parallel-involutions-audit-preservation.md
+parallel-involution-report26/scientific/parallel_particles.py  ->  code/26-parallel-involutions-parallel_particles.py
+parallel-involution-report26/scientific/periodic-receipt-optimized.json  ->  data/26-parallel-involutions-periodic-receipt-optimized.json
+parallel-involution-report26/scientific/periodic-receipt.json  ->  data/26-parallel-involutions-periodic-receipt.json
+parallel-involution-report26/scientific/resource-ledger.json  ->  data/26-parallel-involutions-resource-ledger.json
+parallel-involution-report26/scientific/test-optimized.log  ->  data/26-parallel-involutions-test-optimized.log
+parallel-involution-report26/scientific/test-receipt-optimized.json  ->  data/26-parallel-involutions-test-receipt-optimized.json
+parallel-involution-report26/scientific/test-receipt.json  ->  data/26-parallel-involutions-test-receipt.json
+parallel-involution-report26/scientific/test.log  ->  data/26-parallel-involutions-test.log
+parallel-involution-report26/scientific/test_parallel.py  ->  code/26-parallel-involutions-test_parallel.py
+parallel-involution-report26/scientific/test_periodic_lemma.py  ->  code/26-parallel-involutions-test_periodic_lemma.py
+parallel-involution-report26/scientific/test_public_api.py  ->  code/26-parallel-involutions-test_public_api.py
+```
+
+`Sparse_Parallel_Particle_Evaluation_Package.zip` (Report 27; path inside the archive → shipped path):
+
+```
+sparse-parallel-release-20261003/build.sh  ->  code/27-sparse-parallel-build.sh
+sparse-parallel-release-20261003/delivery-provenance.json  ->  data/27-sparse-parallel-delivery-provenance.json
+sparse-parallel-release-20261003/references/root-scientific-QA.json  ->  data/27-sparse-parallel-references-root-scientific-QA.json
+sparse-parallel-release-20261003/report27-qa.json  ->  data/27-sparse-parallel-report27-qa.json
+sparse-parallel-release-20261003/scientific/PROOF.md  ->  27-sparse-parallel-PROOF.md
+sparse-parallel-release-20261003/scientific/PROVENANCE.json  ->  data/27-sparse-parallel-PROVENANCE.json
+sparse-parallel-release-20261003/scientific/README.md  ->  27-sparse-parallel-README.md
+sparse-parallel-release-20261003/scientific/RESULTS.md  ->  27-sparse-parallel-RESULTS.md
+sparse-parallel-release-20261003/scientific/audit-candidate-completeness.md  ->  27-sparse-parallel-audit-candidate-completeness.md
+sparse-parallel-release-20261003/scientific/audit-candidate-receipt-optimized.json  ->  data/27-sparse-parallel-audit-candidate-receipt-optimized.json
+sparse-parallel-release-20261003/scientific/audit-candidate-receipt.json  ->  data/27-sparse-parallel-audit-candidate-receipt.json
+sparse-parallel-release-20261003/scientific/audit-timings.json  ->  data/27-sparse-parallel-audit-timings.json
+sparse-parallel-release-20261003/scientific/audit_candidate_completeness.py  ->  code/27-sparse-parallel-audit_candidate_completeness.py
+sparse-parallel-release-20261003/scientific/benchmark_universal.py  ->  code/27-sparse-parallel-benchmark_universal.py
+sparse-parallel-release-20261003/scientific/sparse_parallel.py  ->  code/27-sparse-parallel-sparse_parallel.py
+sparse-parallel-release-20261003/scientific/test-sparse-parallel-optimized-receipt.json  ->  data/27-sparse-parallel-test-sparse-parallel-optimized-receipt.json
+sparse-parallel-release-20261003/scientific/test-sparse-parallel-optimized.log  ->  data/27-sparse-parallel-test-sparse-parallel-optimized.log
+sparse-parallel-release-20261003/scientific/test-sparse-parallel-receipt.json  ->  data/27-sparse-parallel-test-sparse-parallel-receipt.json
+sparse-parallel-release-20261003/scientific/test-sparse-parallel.log  ->  data/27-sparse-parallel-test-sparse-parallel.log
+sparse-parallel-release-20261003/scientific/test_sparse_parallel.py  ->  code/27-sparse-parallel-test_sparse_parallel.py
+sparse-parallel-release-20261003/scientific/universal-receipt-optimized.json  ->  data/27-sparse-parallel-universal-receipt-optimized.json
+sparse-parallel-release-20261003/scientific/universal-receipt.json  ->  data/27-sparse-parallel-universal-receipt.json
+```
+
+`Canonical_Parallel_Quartic_Certificates_Package.zip` (Report 28; path inside the archive → shipped path):
+
+```
+parallel-quartic-release-20261003/bitbound/PROOF.md  ->  28-parallel-quartic-bitbound-PROOF.md
+parallel-quartic-release-20261003/bitbound/README.md  ->  28-parallel-quartic-bitbound-README.md
+parallel-quartic-release-20261003/bitbound/audit-receipt-optimized.json  ->  data/28-parallel-quartic-bitbound-audit-receipt-optimized.json
+parallel-quartic-release-20261003/bitbound/audit-receipt.json  ->  data/28-parallel-quartic-bitbound-audit-receipt.json
+parallel-quartic-release-20261003/bitbound/audit.log  ->  data/28-parallel-quartic-bitbound-audit.log
+parallel-quartic-release-20261003/bitbound/audit_bounds.py  ->  code/28-parallel-quartic-bitbound-audit_bounds.py
+parallel-quartic-release-20261003/bitbound/check_portability.py  ->  code/28-parallel-quartic-bitbound-check_portability.py
+parallel-quartic-release-20261003/bitbound/independent-review.md  ->  28-parallel-quartic-bitbound-independent-review.md
+parallel-quartic-release-20261003/bitbound/plumbing-receipt.json  ->  data/28-parallel-quartic-bitbound-plumbing-receipt.json
+parallel-quartic-release-20261003/bitbound/portability-receipt.json  ->  data/28-parallel-quartic-bitbound-portability-receipt.json
+parallel-quartic-release-20261003/build.sh  ->  code/28-parallel-quartic-build.sh
+parallel-quartic-release-20261003/delivery-provenance.json  ->  data/28-parallel-quartic-delivery-provenance.json
+parallel-quartic-release-20261003/evidence/REPLAY_RESULTS.md  ->  28-parallel-quartic-evidence-REPLAY_RESULTS.md
+parallel-quartic-release-20261003/evidence/independent-scientific-QA.json  ->  data/28-parallel-quartic-evidence-independent-scientific-QA.json
+parallel-quartic-release-20261003/evidence/output-routing-audit.md  ->  28-parallel-quartic-evidence-output-routing-audit.md
+parallel-quartic-release-20261003/evidence/verifier-audit/independent-probes-optimized.json  ->  data/28-parallel-quartic-evidence-verifier-audit-independent-probes-optimized.json
+parallel-quartic-release-20261003/evidence/verifier-audit/independent-probes.json  ->  data/28-parallel-quartic-evidence-verifier-audit-independent-probes.json
+parallel-quartic-release-20261003/evidence/verifier-audit/probe_binding.py  ->  code/28-parallel-quartic-evidence-verifier-audit-probe_binding.py
+parallel-quartic-release-20261003/evidence/verifier-binding-audit.md  ->  28-parallel-quartic-evidence-verifier-binding-audit.md
+parallel-quartic-release-20261003/expected/normal/supplement-receipt.json  ->  data/28-parallel-quartic-expected-supplement-receipt.json
+parallel-quartic-release-20261003/report28-qa.json  ->  data/28-parallel-quartic-report28-qa.json
+parallel-quartic-release-20261003/research/PROOF.md  ->  28-parallel-quartic-PROOF.md
+parallel-quartic-release-20261003/research/PROVENANCE.json  ->  data/28-parallel-quartic-PROVENANCE.json
+parallel-quartic-release-20261003/research/README.md  ->  28-parallel-quartic-README.md
+parallel-quartic-release-20261003/research/REPLAY.md  ->  28-parallel-quartic-REPLAY.md
+parallel-quartic-release-20261003/research/RESULTS.md  ->  28-parallel-quartic-RESULTS.md
+parallel-quartic-release-20261003/research/audit-design.md  ->  28-parallel-quartic-audit-design.md
+parallel-quartic-release-20261003/research/audit-emitter-receipt.json  ->  data/28-parallel-quartic-audit-emitter-receipt.json
+parallel-quartic-release-20261003/research/audit-emitter-test.log  ->  data/28-parallel-quartic-audit-emitter-test.log
+parallel-quartic-release-20261003/research/audit-emitter.md  ->  28-parallel-quartic-audit-emitter.md
+parallel-quartic-release-20261003/research/audit_emitter.py  ->  code/28-parallel-quartic-audit_emitter.py
+parallel-quartic-release-20261003/research/bundle-verification.json  ->  data/28-parallel-quartic-bundle-verification.json
+parallel-quartic-release-20261003/research/check_portability.py  ->  code/28-parallel-quartic-check_portability.py
+parallel-quartic-release-20261003/research/circuit.py  ->  code/28-parallel-quartic-circuit.py
+parallel-quartic-release-20261003/research/compiler.py  ->  code/28-parallel-quartic-compiler.py
+parallel-quartic-release-20261003/research/example-pair-quartic.json  ->  data/28-parallel-quartic-example-pair-quartic.json
+parallel-quartic-release-20261003/research/example-pair-sos.json  ->  data/28-parallel-quartic-example-pair-sos.json
+parallel-quartic-release-20261003/research/example-pair-witness.json  ->  data/28-parallel-quartic-example-pair-witness.json
+parallel-quartic-release-20261003/research/example-source.json  ->  data/28-parallel-quartic-example-source.json
+parallel-quartic-release-20261003/research/example-validation-receipt-optimized.json  ->  data/28-parallel-quartic-example-validation-receipt-optimized.json
+parallel-quartic-release-20261003/research/example-validation-receipt.json  ->  data/28-parallel-quartic-example-validation-receipt.json
+parallel-quartic-release-20261003/research/example-verification.json  ->  data/28-parallel-quartic-example-verification.json
+parallel-quartic-release-20261003/research/fixture-provenance-rebind.json  ->  data/28-parallel-quartic-fixture-provenance-rebind.json
+parallel-quartic-release-20261003/research/fixtures.json  ->  data/28-parallel-quartic-fixtures.json
+parallel-quartic-release-20261003/research/freeze_metadata.py  ->  code/28-parallel-quartic-freeze_metadata.py
+parallel-quartic-release-20261003/research/lineage/v1-MANIFEST.json  ->  data/28-parallel-quartic-lineage-v1-MANIFEST.json
+parallel-quartic-release-20261003/research/multisource-optimized.log  ->  data/28-parallel-quartic-multisource-optimized.log
+parallel-quartic-release-20261003/research/multisource-receipt-optimized.json  ->  data/28-parallel-quartic-multisource-receipt-optimized.json
+parallel-quartic-release-20261003/research/multisource-receipt.json  ->  data/28-parallel-quartic-multisource-receipt.json
+parallel-quartic-release-20261003/research/multisource.log  ->  data/28-parallel-quartic-multisource.log
+parallel-quartic-release-20261003/research/portability-receipt.json  ->  data/28-parallel-quartic-portability-receipt.json
+parallel-quartic-release-20261003/research/prepare_test_oracle.py  ->  code/28-parallel-quartic-prepare_test_oracle.py
+parallel-quartic-release-20261003/research/receipt-optimized.json  ->  data/28-parallel-quartic-receipt-optimized.json
+parallel-quartic-release-20261003/research/receipt.json  ->  data/28-parallel-quartic-receipt.json
+parallel-quartic-release-20261003/research/resource-ledger.json  ->  data/28-parallel-quartic-resource-ledger.json
+parallel-quartic-release-20261003/research/supplement-optimized.log  ->  data/28-parallel-quartic-supplement-optimized.log
+parallel-quartic-release-20261003/research/supplement.log  ->  data/28-parallel-quartic-supplement.log
+parallel-quartic-release-20261003/research/test-optimized.log  ->  data/28-parallel-quartic-test-optimized.log
+parallel-quartic-release-20261003/research/test-oracle-receipt.json  ->  data/28-parallel-quartic-test-oracle-receipt.json
+parallel-quartic-release-20261003/research/test-oracle-report.md  ->  28-parallel-quartic-test-oracle-report.md
+parallel-quartic-release-20261003/research/test.log  ->  data/28-parallel-quartic-test.log
+parallel-quartic-release-20261003/research/test_certificate.py  ->  code/28-parallel-quartic-test_certificate.py
+parallel-quartic-release-20261003/research/test_example_validation.py  ->  code/28-parallel-quartic-test_example_validation.py
+parallel-quartic-release-20261003/research/test_multisource.py  ->  code/28-parallel-quartic-test_multisource.py
+parallel-quartic-release-20261003/research/test_supplement.py  ->  code/28-parallel-quartic-test_supplement.py
+parallel-quartic-release-20261003/research/verify_example.py  ->  code/28-parallel-quartic-verify_example.py
+```
 
 </details>
