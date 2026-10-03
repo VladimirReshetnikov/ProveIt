@@ -73,6 +73,12 @@ An [independent complete-source review](review_three_mass_arithmetic.md) verifie
 all 228 emitted polynomial identities, fair old-coordinate baselines and paid
 loaders/endpoints. The external horizon and universal-compiler obligations remain.
 
+The separate [endpoint-penalty rewrite](three_mass_endpoint_penalties.md)
+retains every witness and exact degree two, reaching51/51 for the two-step
+native/clean pair and100/98 for three increments. Complete natural zero tuples
+are unchanged. Its [broader independent audit](review_three_mass_endpoint_penalties_full.md)
+checks128 complete pairs over64 actual certificates, with fresh root replay.
+
 A subsequent [guarded selector projection](three_mass_selector_projection.md)
 removes one natural witness per nonempty step. The complete native/clean
 increment-decrement examples cost47/46; the three-increment examples cost91/88.

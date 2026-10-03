@@ -27,6 +27,15 @@ for the corresponding compact cleaned target and clock. The
 pass root replay. The branch table and horizon remain external; the general
 87-operation universal bound is unchanged.
 
+The [endpoint-penalty variant](three_mass_endpoint_penalties.md) preserves
+**degree two** and all witnesses while reducing the native/clean two-step
+circuits to **51/51**, and the three-increment circuits to **100/98**.
+It replaces coded endpoint squares by nonnegative forbidden-branch sums;
+retained one-hot constraints prove equality of complete natural zero tuples.
+The [full independent review](review_three_mass_endpoint_penalties_full.md)
+checks128 old/new pairs over64 actual certificates and10,702 paid live gates.
+Both independent receipts and the author receipt pass root replay.
+
 The [guarded selector projection](three_mass_selector_projection.md) removes
 one witness per nonempty step, giving **56→47** native and **56→46** compact-clean
 for the two-step example, and **107→91 /105→88** for three increments.

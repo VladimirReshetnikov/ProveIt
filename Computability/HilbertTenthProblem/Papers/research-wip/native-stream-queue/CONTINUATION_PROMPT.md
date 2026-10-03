@@ -1,5 +1,15 @@
 # Continuation: universal straight-line certificates
 
+> The [quadratic endpoint-penalty variant](three_mass_endpoint_penalties.md)
+> retains all2Bh witnesses and degree2, reaching51/51 native/clean two-step
+> and100/98 three-increment totals. Both nonnegative linear endpoint masks
+> replace state-code squares, with equality of complete natural zero tuples.
+> The [broader independent review](review_three_mass_endpoint_penalties_full.md)
+> reconstructs128 complete old/new pairs over64 actual certificates; all10,702
+> paid gates are live. A separate saved-packet review covers14 pairs. Root
+> read/replayed both independent receipts and the author receipt. This is a
+> separate alternative to the projection below; safe composition is pending.
+>
 > The [guarded three-mass selector projection](three_mass_selector_projection.md)
 > now removes one natural selector per nonempty step: witness count(2B−1)h,
 > degree3 for B>=2,h>0. Complete native/clean two-step costs56→47/46 and
@@ -9,7 +19,7 @@
 > [independent review](review_three_mass_selector_projection.md) checks252
 > full coefficient identities,18,847livegates,76baselinecounts and24 mixed
 > branch/clock variants. Root read/replayed both receipts. These counts
-> do not include the separate endpoint-penalty variants still under review.
+> do not include the separately counted endpoint-penalty variants.
 >
 > The surreal synthesis at `d51fafea806cbd48ba29be017eff85cdd9653b14` /
 > `0be9b913487fa2cc0e16cea6545c55f33b4446d8` now has both scoped reviews:
