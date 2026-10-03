@@ -1243,7 +1243,7 @@
 >
 > The [smaller U9 native quotient shift](neary_woods_universal_tail_quotient253.md)
 > keeps **253=132M+121A operations**, one comparison and43 positive witnesses,
-> and has **degree at most982** with all supplied program parameters counted as
+> and has **exact total degree982** with all supplied program parameters counted as
 > variables. Only the eleven fixed compiler numeral ports have degree zero.
 > The source emits both the default four-program-parameter form and the
 > separate fifth duration-bound form. The existing tail product replaces the
@@ -1251,10 +1251,14 @@
 > parent on valid program slices. The proof first obtains E>2r+3 and handles
 > the normalized strong equation before recovering the native exponent and
 > restoring the positive old quotient. The [independent mathematical review](review_neary_woods_tail_quotient_math.md)
-> checks both native strong variants in all16 saved parent layouts. Author and
-> mathematical-review receipts pass fresh installed replay. The parent1147 remains
-> a historical upper bound. No operation
-> record below the independent74/86 universal bounds is claimed.
+> checks both native strong variants in all16 saved parent layouts. The separate
+> [source/degree/API review](review_neary_woods_tail_quotient_source.md)
+> proves exact982 from sixteen nonzero leading forms for the actual fixed
+> compiler coefficients, supported by four complete coefficient expansions.
+> This does not assert exact982 after specializing the program parameters.
+> The author packet retains its upper-only metadata. All three installed
+> receipts pass fresh replay; the parent1147 remains a historical upper bound.
+> The independent74/86 universal operation bounds are unchanged.
 >
 > The preceding [product-scale U9 polynomial](neary_woods_universal_product_scale253.md)
 > gives **252 certificate /253=132M+121A operations**, one comparison,
