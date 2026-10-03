@@ -1256,7 +1256,22 @@ and degree at most3396. It preserves the complete fixed-table accepted
 relation with fresh native witnesses. The numerical universal subgroup
 alphabet remains uninstantiated, so244 is not a numerical universal bound.
 
-The latest [product-scale U9 polynomial](neary_woods_universal_product_scale253.md)
+The [smaller U9 native quotient shift](neary_woods_universal_tail_quotient253.md)
+keeps **253=132M+121A operations**, one comparison and43 positive witnesses,
+and has **degree at most982** with all supplied program parameters counted as
+variables. Only the eleven fixed compiler numeral ports have degree zero.
+The source emits both the default four-program-parameter form and the
+separate fifth duration-bound form. The existing tail product replaces the
+larger quotient offset, with a full positive-zero bijection to each immediate
+parent on valid program slices. The proof first obtains E>2r+3 and handles
+the normalized strong equation before recovering the native exponent and
+restoring the positive old quotient. The [independent mathematical review](review_neary_woods_tail_quotient_math.md)
+checks both native strong variants in all16 saved parent layouts. Author and
+mathematical-review receipts pass fresh installed replay. The parent1147 remains
+a historical upper bound. No operation
+record below the independent74/86 universal bounds is claimed.
+
+The preceding [product-scale U9 polynomial](neary_woods_universal_product_scale253.md)
 gives **252 certificate /253=132M+121A operations**, one comparison,
 43 positive witnesses, four fixed program parameters and degree at most1147.
 Its paid product b*P^9 types both history radices; fixed top tags2,1 let a
@@ -1268,6 +1283,8 @@ gives the frontier253/1147,255/1013,256/967,257/710,258/664,259/488,
 the rest44. The finite propagated-objective floors are372 with43 witnesses
 and212 overall, attained at261 and266 operations. Fixed45 ends269/212.
 These optimize the stated finite objective, not exact degree or all circuits.
+That census uses the preceding source coordinates; no repartitioning after the
+smaller quotient shift is claimed.
 
 The preceding [paid native bound](neary_woods_universal_native_bound254.md)
 gives254/1203 by reusing r=(q-1)S in X=q(S+beta)>r. Its triangular
@@ -3148,6 +3165,7 @@ New research and the completed75-operation construction:
 | [Combined U21 range/zero mask](korec_packed_zero_range397.md) | **397=141M+256A**,1eq50w,one program,degree at most21549; two-program396/40706. | Narrow the global bound to the zero-cleared mask before native typing, specialize A=Z+4, and use paid B*P^35. Accepted-input equivalence with fresh native witnesses. |
 | [Minimal U21 time radix](korec_packed_minimal_radix405.md) | One-program405/36165; two-program404/68314; both50w. | B=D^8 deletes one M; paid S supplies X=q(S+beta). Direct chronology and fresh extension; bound-only triangular map applies at the new B. |
 | [Exact U21 port factorization](korec_packed_factored_ports406.md) | One-program406; two-program405; four additions saved. | Complete polynomial identity on identical integer coordinates; same degree dictionaries and supplied positive zeros. |
+| [Smaller U9 quotient offset](neary_woods_universal_tail_quotient253.md) | Same **253=132M+121A**,1eq43w; upper degree982, down from parent upper1147. Both four-parameter/default and fifth-duration forms emitted. | Beta-only positive-zero bijection after native exponent recovery; normalized strong conversion is proof-only. Fixed11 numeral recipes, ordinary input and unbounded chronology retained. |
 | [Product U9 history scale](neary_woods_universal_product_scale253.md) | **253=132M+121A**,1eq43w,four program parameters,degree at most1147. | Paid b*P^9 and top tags2,1; pretyping/sign proof precedes dyadic factor recovery. Fresh private joint-native extension. |
 | [Exact U9 product-scale partitions](neary_woods_universal_product_scale_partitions.md) | **253/1147 to261/372 with43w;266/212 with44w**. New partition gains257/710,258/664. | All sixteen bases and all partitions/anchors,480 literal ledgers. Finite propagated-objective floors372 and212; no exact-degree or global lower-bound claim. |
 | [Exact U9 native-bound partitions](neary_woods_universal_native_bound_partitions.md) | Historical254/1203,258/742,259/696 with43w; floors392 fixed43 and212 overall. | Exhaustive sixteen-base predecessor before the product-scale change; original sources remain unchanged. |

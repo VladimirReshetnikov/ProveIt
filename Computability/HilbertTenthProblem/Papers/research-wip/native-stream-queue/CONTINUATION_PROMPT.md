@@ -1241,7 +1241,22 @@
 > relation with fresh native witnesses. The numerical universal subgroup
 > alphabet remains uninstantiated, so244 is not a numerical universal bound.
 >
-> The latest [product-scale U9 polynomial](neary_woods_universal_product_scale253.md)
+> The [smaller U9 native quotient shift](neary_woods_universal_tail_quotient253.md)
+> keeps **253=132M+121A operations**, one comparison and43 positive witnesses,
+> and has **degree at most982** with all supplied program parameters counted as
+> variables. Only the eleven fixed compiler numeral ports have degree zero.
+> The source emits both the default four-program-parameter form and the
+> separate fifth duration-bound form. The existing tail product replaces the
+> larger quotient offset, with a full positive-zero bijection to each immediate
+> parent on valid program slices. The proof first obtains E>2r+3 and handles
+> the normalized strong equation before recovering the native exponent and
+> restoring the positive old quotient. The [independent mathematical review](review_neary_woods_tail_quotient_math.md)
+> checks both native strong variants in all16 saved parent layouts. Author and
+> mathematical-review receipts pass fresh installed replay. The parent1147 remains
+> a historical upper bound. No operation
+> record below the independent74/86 universal bounds is claimed.
+>
+> The preceding [product-scale U9 polynomial](neary_woods_universal_product_scale253.md)
 > gives **252 certificate /253=132M+121A operations**, one comparison,
 > 43 positive witnesses, four fixed program parameters and degree at most1147.
 > Its paid product b*P^9 types both history radices; fixed top tags2,1 let a
@@ -1253,6 +1268,12 @@
 > the rest44. The finite propagated-objective floors are372 with43 witnesses
 > and212 overall, attained at261 and266 operations. Fixed45 ends269/212.
 > These optimize the stated finite objective, not exact degree or all circuits.
+> That census uses the preceding source coordinates; no repartitioning after the
+> smaller quotient shift is claimed.
+> A concrete next extension is to emit and source-audit the remaining14 saved
+> product-scale layouts under this shift, then optimize their new factor weights.
+> The all16 mathematical recipe check alone does not establish those new source
+> APIs, degree certificates or a new partition census; do not rerun old suites.
 >
 > The preceding [paid native bound](neary_woods_universal_native_bound254.md)
 > gives254/1203 by reusing r=(q-1)S in X=q(S+beta)>r. Its triangular
