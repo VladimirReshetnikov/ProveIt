@@ -20,3 +20,5 @@ For the queue packet, root independently reran the portable helper with both ori
 For smooth quartics, root also reproduced the pinned portable receipt, including independent expanded integral Jacobian identities and integer/natural fiber checks. The five-variable smoothing layer preserves source hardness but does not reduce the universal arithmetic ledger.
 
 The complete universal bound remains **87 operations**. The direct U15 frontier remains **511/4881, 513/3120, 515/2116, 517/1936** (operations/exact degree). None of the still-pending reports is admitted into those ledgers.
+
+The reviewed [five-witness congruence atom](presburger_congruence_five.md) removes one natural coordinate per fixed-modulus atom and improves its displayed complete atom SOS schedule from22 to21 operations. This is an exact graph identity within the post-elimination Presburger compiler; it does not change the universal bound.
