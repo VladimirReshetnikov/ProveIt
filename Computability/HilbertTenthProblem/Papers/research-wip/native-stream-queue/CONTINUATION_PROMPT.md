@@ -21,6 +21,20 @@
 > The comparison-system bound remains74. Earlier entries retain their
 > historical counts; this result supersedes the minimum86 polynomial bound.
 >
+> The [general eight-lane range transfer](group_projective_general_separate_range.md)
+> now covers the canonical nonempty matrix-history graph family. Separating its
+> physical range mask from its controller width lowers the uniform exact degree
+> from **130m+749 to72m+1213**, with no added arithmetic operations; the m8
+> specialization saves one multiplication. Seven complete saved sources cover
+> m8,16,32,64. The theorem preserves the projection of positive zeros onto all
+> outer coordinates, using fresh native extensions. It requires a proved or
+> paid radix margin and independent canonical coordinates.
+> The [independent review](review_group_projective_general_separate_range.md)
+> rebuilds all seven arrays, recounts2379 live gates, verifies14 exact-degree
+> certificates and checks8 genuine accepted outer histories. Both installed
+> receipts pass fresh replay. This generalizes the matrix route's range packing;
+> it supplies no numerical universal alphabet or new universal bound.
+>
 > **Retained nineteen-witness exact degrees at86/87 operations:178/134.** The
 > [transport quotient shear](complete86_transport_quotient_shear.md) supplies
 > t=zplus-w*C and changes only kinner=K+w*q to K+w plus the quotient name.
