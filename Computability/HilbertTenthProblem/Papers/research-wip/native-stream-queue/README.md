@@ -186,6 +186,18 @@ full coefficient expansions proving degree1789. The other28 schedules
 receive metadata checks only. Author and review pass fresh installed exact
 replay; the established74/86 universal bounds are unchanged.
 
+The [inverse-graph folding theorem](group_inverse_stallings_controller.md)
+now permits changing physical word spellings while preserving the evaluated
+matrix subgroup. An identity-connector proof covers every fold, including
+folds at the base vertex; fresh histories and height recover the same
+existential projective input predicate. Its explicit inverse-closed table
+has a canonical **28-edge,13-state,32-lane** core. Four construction routes,
+54 folds,378 individual path lifts and independent spanning-tree bases
+verify the saved graph. Root checked the full proof/source and fresh
+installed receipt replay passes. This packet has no complete arithmetic
+ledger; fewer graph vertices alone do not establish an operation saving.
+The universal alphabet remains uninstantiated and the74/86 bounds unchanged.
+
 The [direct-height obstruction](group_projective_height_projection_obstruction.md)
 rejects deleting D=u+height_slack from the projective compiler. An actual
 32-letter macro table has no accepted positive ordinary input, but the
