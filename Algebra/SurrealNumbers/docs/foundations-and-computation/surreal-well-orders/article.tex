@@ -567,6 +567,18 @@ A normalized class cut $(L,U)$ has a lower side $L$ without greatest element;
 the cut of an injective branch $F$ is written $L_F$ (source~16's $L_F$,
 source~17's $L_f$; source~14's $D_F$, $D^\pm_p$, $D_{p,H}$ and source~13's
 $(L,U)$ are explained where printed).\\[3pt]
+$\varepsilon$, $\End$, $\dagger$ &
+A formal termination symbol adjoined to the alphabet of a word order; it is
+never a surreal number. Source~16's $\varepsilon$ sits at a cut
+$L_\varepsilon<\varepsilon<R_\varepsilon$ of $\No$, and its $0^-$, $0^+$ sit
+immediately below and above zero; source~14 writes $\End$; source~18's
+centered $\dagger$ takes the place of zero, which is then not a letter, and
+its $\dagger_-$, $\dagger_+$ sit immediately below and above an available
+zero. Source~13's central termination pads a word with zeros, zero again not
+being a letter. Source~18 writes $\ell(p)$ for the length of a word $p$ and
+$\mathcal J$ for the increasing words, printed $\WordsInc$. \emph{False
+reading:} the Conway sign order $-<\End<+$ is not prefix-first dictionary
+order.\\[3pt]
 (S$NN$.$n$), labels &
 Displayed equations of source~$NN$ keep their numbers as (S$NN$.$n$), as for
 source~08. Labels: \code{swo:fs:} (13, replacing its \code{swf:}),
@@ -575,7 +587,7 @@ source~08. Labels: \code{swo:fs:} (13, replacing its \code{swf:}),
 \code{swo:ds:} (16), \code{swo:gs:} (17), \code{swo:sh:} (18, keeping its
 internal \code{wv:}); unlabelled numbered statements get
 \code{swo:}\emph{sub}\code{:n}\emph{number}; labels written for the merge in
-Part~VI begin \code{swo:vi:}.\\
+Part~VI begin \code{swo:vi:}, in Part~VII \code{swo:vii:}.\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -891,7 +903,10 @@ of class well-orders with explicit condensation histories; product
 (non)absorption; a $\Sigma^1_1$ comprehension bound; and the countable models.
 
 The addition is printed by theme, not by source, because the sources overlap:
-Part~VI (\cref{swo:part:strata}) prints the set-sized strata. The rules of
+Part~VI (\cref{swo:part:strata}) prints the set-sized strata; Part~VII
+(\cref{swo:part:conventions}) prints the six sources' maps of interpretations,
+the word orders, the termination conventions and the other comparison orders.
+The rules of
 \cref{swo:sub:printing} apply unchanged: each shared result is printed once,
 with every source that proves it named; the other versions are numbered
 notes, genuinely different proofs are marked routes, and every label of every
@@ -9936,6 +9951,2539 @@ under precisely those hypotheses'' (end of \cref{swo:vi:sub:ds-regular}), and
 source~15 that its block theorem gives ``a precise affirmative continuation of
 the proposed cardinal-block program'' (\cref{swo:vi:sub:cb-boundary}); items~(c)
 and~(e) record the same.
+
+% ---- hand chunk part7 (batch 81, write 2 of 4)
+\part{Words, termination conventions and other comparison orders}\label{swo:part:conventions}
+
+\merge\ (3 October 2026.) The second Part of the batch-81 addition
+(\cref{swo:sub:batch81}; notation in \cref{swo:sub:notation81}). Part~II
+(\cref{swo:part:words}) compared set-length words with proper prefixes first;
+the six batch-81 sources ask what changes when the comparison convention
+changes. This Part prints the six sources' maps of the possible
+interpretations (\cref{swo:vii:sec:maps}); the isomorphism of the
+unrestricted, injective and numerically increasing shorter-first word orders
+(\cref{swo:ds:sec:words}); the criterion for every placement of a formal
+terminator and the list of all isomorphism types it produces
+(\cref{swo:ds:sec:termination}); the exact cut classification of centered
+increasing words and of the conventions for the entry zero
+(\cref{swo:vii:sec:centered}); and comparison orders other than numerical
+enumeration lexicography: inverse ranks, relation tables, restrictions and
+normal forms (\cref{swo:cb:sec:alternatives}). \Cref{swo:vii:sec:status}
+records which questions the Part answers.
+
+The bases are chosen by generality, as in Part~VI: source~16 for the word
+isomorphism and the termination classification (every placement of a
+terminator, unrestricted and injective words), source~18 for centered
+increasing words and the zero conventions (the only source treating them),
+source~15 for the other comparison orders (the only source proving theorems
+about them). Source~13's central termination theorem and source~18's
+centered theorem are the same special case of source~16's criterion, proved
+independently, with the same letter code; they are printed as routes.
+Source~18 was written before sources~13--17 arrived. Re-proofs of Part~II
+are printed as notes. Source~16 uses the macro names of this report for other
+objects (its \verb|\Words| is the class of \emph{all} words, its \verb|\I| the
+class injections); here they are printed $\WordsAll$ and $\Jinj$, and
+$\Words$ keeps its meaning of injective words (\cref{swo:sub:notation81}).
+Labels written for the merge in this Part begin \code{swo:vii:}.
+
+% ---- hand chunk maps
+\section{The six sources' maps of interpretations}\label{swo:vii:sec:maps}
+
+\merge\ Each batch-81 source opens with a map of what ``all well-orders of
+the surreal numbers'' can mean, as sources~12, 09 and~08 did
+(\cref{swo:sec:intros}). The six maps are printed here, each whole, because
+their rows on varying carriers, termination, increasing subsets, relation
+codes and abstract types are the subject of this Part; the subsections on a
+fixed set carrier that sources~14 and~17 put inside their maps are printed in
+Part~VI (\cref{swo:tc:thm:setbaseline,swo:vi:sub:gs-base}). The six agree with
+one another and with the batch-80 sources; \cref{swo:vii:note:maps} lists
+what they share.
+
+% ---- source 13 (batch-81 manuscript 01), lines 206-321
+\subsection{Source 13: the interpretations that must be separated}\label{swo:fs:sec:interpretations}
+
+\subsubsection{A taxonomy by carrier and representation}
+
+The following table fixes the principal meanings. In every row, numerical
+comparison of surreal labels is distinct from the auxiliary well-order
+being represented.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.22\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}>{\raggedright\arraybackslash}p{.32\textwidth}@{}}
+\toprule
+Interpretation & Representation & Logical size and caveat\\
+\midrule\endhead
+Fixed set $X\subseteq\No$ & Well-order relations on $X$, equivalently
+bijections $\alpha\to X$ from set ordinals & A set; every possible
+well-order type on $X$ is permitted.\\[4pt]
+Fixed length on $X$ & Bijections $\lambda\to X$ & A single stratum;
+$|\lambda|=|X|$ is necessary.\\[4pt]
+Arbitrary set subsets & Injective words $p:\alpha\to\No$ & An ordinary
+class of sets; termination must be specified.\\[4pt]
+Words with repetitions & Arbitrary $p:\alpha\to\No$ & An ordinary
+class, but not a class of well-orderings of the ranges.\\[4pt]
+Inherited numerical order & Subsets on which the restriction of $<$ is
+a well-order & Not arbitrary relabelings; increasing enumerations only.\\[4pt]
+Set-like whole-class orders & Class bijections $E:\Ord\to\No$ & The
+virtual domain $\Hsl$; its elements are classes.\\[4pt]
+Unrestricted whole-class orders & Class well-order relations on $\No$ &
+The virtual domain $\Hall$; proper-class predecessor segments are allowed.\\[4pt]
+Unlabeled order types & Quotients by order-isomorphism & Label-sensitive
+lexicographic comparison does not descend.\\[4pt]
+Relation-code order & Characteristic bits of a relation, read in a chosen
+order of pairs & A different, coding-dependent lexicographic order.\\
+\bottomrule
+\end{longtable}
+
+This covers the standard semantic axes, not every artificial encoding one
+could invent. Birthday-first comparison, a fixed global well-order of the
+labels in place of their numerical order, or comparison of unquotiented
+Conway expressions each changes the problem again.
+
+\subsubsection{Fixed carriers have no end-marker ambiguity}
+
+For a set $X$, put
+\[
+ \W(X)=\{e:\alpha\overset{\sim}{\longrightarrow}X:
+                   \alpha\text{ an ordinal}\},\qquad
+ \W_\lambda(X)=\{e\in\W(X):\dom(e)=\lambda\}.
+\]
+These are sets: if $|X|=\mu$ is infinite, the possible domains are among
+the ordinals below $\mu^+$ of cardinality $\mu$.
+
+\begin{lemma}[Prefix-freeness of exhaustive enumerations]\label{swo:fs:lem:prefixfree}
+Distinct members of $\W(X)$ are never proper prefixes of one another.
+Their lexicographic comparison is determined at a least common coordinate
+where their values differ.
+\end{lemma}
+\begin{proof}
+A prefix that already enumerates all of $X$ cannot be extended injectively
+by another member of $X$. If two different enumerations agreed on their
+common domain, the shorter would be such a prefix. Otherwise their set
+of disagreement coordinates has a least member.
+\end{proof}
+
+An auxiliary well-order $R$ on $X$ has one ordinal type and one increasing
+enumeration in that order. This is a bijection between relation
+representations and the displayed exhaustive words. Lexicographic
+comparison uses the \emph{numerical} order of their values, not the order
+$R$ itself.
+
+\subsubsection{Varying the range introduces a genuine convention}
+
+An injective word $p:\alpha\to\No$ enumerates a well-order of its range.
+Once ranges may differ, $p$ can be a proper prefix of another word. Under
+\emph{end-first} dictionary comparison, $p<p\cat x$ for every fresh $x$.
+Under end-last comparison the inequality is reversed. A terminal symbol
+placed inside an enlarged alphabet gives a third possibility.
+
+Deleting repeated letters from arbitrary words is not a harmless change
+of representation. For example, with $a<b$, the two words $(a,a,b)$ and
+$(a,b)$ have different dictionary positions but the same first-occurrence
+enumeration. No quotient order is supplied merely by performing this
+deletion.
+
+\subsubsection{Inherited well-orders and unlabeled quotients}
+
+The numerical order of all surreals is not a well-order: it contains, for
+example, the descending sequence $0,-1,-2,\ldots$. Its ordinal subclass,
+represented by all-plus signs, is a proper-class increasing well-order.
+Every set ordinal is likewise realized as a numerically well-ordered
+subset of $\No$.
+
+The class of \emph{set-sized} numerically increasing words is an ordinary
+class of set codes. Under end-first comparison it has an empty minimum
+and the limit-prefix phenomenon proved in \Cref{swo:fs:sec:words}.
+It therefore differs from the surreal line despite containing a copy of
+$\No$ through singleton words. The general class-universality argument
+below embeds it back into $\No$: equimorphism is not isomorphism.
+
+If labels are forgotten altogether, lexicographic comparison is usually
+lost. On a two-element labeled carrier the two enumerations have the
+same ordinal type but opposite lexicographic positions. More dramatically,
+every individual set-like global well-order of $\No$ has type $\Ord$;
+its quotient by abstract order-isomorphism has just one element, although
+$\Hsl$ itself is extremely rich.
+
+\subsubsection{The Kanovei--Shelah comparison is related, not identical}
+
+Kanovei and Shelah's definable hyperreal construction uses a linearly
+ordered family of maps from the continuum into $\mathcal P(\mathbb N)$
+whose ranges are ultrafilters. The maps are compared lexicographically;
+injectivity is not the defining requirement \cite{KanoveiShelah}.
+This is an important motivation for ordered collections of enumeration
+codes. It should not be identified without argument with the exhaustive
+well-orderings of one fixed labeled carrier. In particular, replacing
+its index by ``all surreal well-orders'' would change both the coding
+and the logical size level.
+
+% ---- source 14 (batch-81 manuscript 02), lines 211-256
+\subsection{Source 14: which interpretation is intended?}
+\label{swo:tc:sec:interpretations}
+\subsubsection{A map of the natural meanings}
+In the table below, ``ordinary class'' means a collection of sets defined
+by a class predicate. ``Virtual'' means that each candidate is itself a
+class and the theory quantifies over candidates without forming their
+collection as another class.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.22\textwidth}>{\raggedright\arraybackslash}p{.40\textwidth}>{\raggedright\arraybackslash}p{.29\textwidth}@{}}
+\toprule
+Interpretation & Objects and comparison & Size and main warning\\
+\midrule\endhead
+Fixed set $X\subseteq\No$ & All well-order relations on $X$, compared
+by their exhaustive labelled ordinal enumerations. & A set; arbitrary
+well-order type of cardinality $|X|$ is allowed.\\
+Fixed length $\alpha$ & Bijections $\alpha\to X$, numerical
+first-disagreement comparison. & A set; one slice of the preceding order.\\
+Birthday fragment & $X=\No_{<\theta}$, with either of the preceding
+choices. & A set; the ordinal cutoff and cardinality play different roles.\\
+Variable set domain & Pairs $(A,R)$ with $A\subseteq\No$ a set and $R$
+a well-order of $A$, or injective set-length surreal words. & An ordinary
+proper class; a termination convention is indispensable.\\
+Unrestricted words & All functions $\alpha\to\No$ for set ordinals
+$\alpha$, allowing repeated values. & An ordinary proper class; these are
+not enumerations of well-ordered labelled subsets.\\
+Increasing subsets & Subsets or subclasses well-ordered by the
+\emph{numerical} order inherited from $\No$. & A restriction on labels,
+not an arbitrary imposed well-order.\\
+Set-like global order & Class bijections $\Ord\to\No$. & Virtual order
+$\Hsl$; each proper initial segment is a set.\\
+Arbitrary global order & Class well-order relations on all of $\No$,
+including non-set-like ones. & Virtual order $\Hall$; direct labelled
+common-prefix comparison is available.\\
+Relation-code lex & Characteristic functions of relations, using a fixed
+well-ordered schedule of ordered pairs. & A different order; depends on
+the schedule and on the bit convention.\\
+Order types only & Isomorphism classes after forgetting surreal labels. &
+Enumeration lex does not descend. Set-like proper class orders all have
+type $\Ord$.\\
+\bottomrule
+\end{longtable}
+
+This list covers the main structural ambiguities, rather than pretending
+that arbitrary encodings cannot create additional variants. Every
+subsequent theorem names the interpretation to which it applies.
+
+\merge\ Source~14's Subsection~2.2 (``Fixed carriers and the inherited
+spectra'') is printed in Part~VI (\cref{swo:tc:thm:setbaseline}); its
+Subsections~2.3--2.5 follow.
+
+% ---- source 14 (batch-81 manuscript 02), lines 307-365
+\subsubsection{Variable domains and the terminal symbol}
+An imposed well-order on a set $A\subseteq\No$ is represented uniquely
+by an injective word $p:\lambda\to\No$. For varying $A$, a word may be a
+proper prefix of another. Three reasonable choices are:
+\emph{prefix first}, using $\End<x$ for every numerical letter;
+\emph{prefix last}, using $x<\End$; and a marker inserted at a specified
+cut in the numerical alphabet. A fourth order is length-first lexicography.
+They do not agree, and none becomes a well-order simply because the
+word domains are ordinals: the one-letter words already contain the
+numerical order of $\No$.
+
+The familiar sign-sequence order of the surreals uses
+$-<\End<+$. It is not prefix-first dictionary order. A useful
+self-delimiting numerical code replaces $-$ by $00$, $+$ by $11$, and
+appends $01$. Comparisons are preserved because
+\[
+ 00<01<11.
+\]
+The terminal block makes distinct numerical codewords
+prefix-incomparable. Concatenating such codes is useful for embeddings,
+but does not turn arbitrary repeated-letter words into exhaustive
+enumerations. The predecessor report treats the resulting compression
+and the special cuts at limit word lengths (\cref{swo:sw:encoding,swo:sw:characters,swo:sw:wordcuts}; Sections~9--11 of this report at the pin).
+
+\subsubsection{Numerically increasing well-orders}
+The numerical order of $\No$ is not a well-order; for example,
+$0>-1>-2>\cdots$. Hence no numerical order-preserving enumeration can
+well-order all of $\No$. This is different from imposing another
+well-order on the same carrier.
+
+Proper subclasses can nevertheless be numerically well-ordered and
+non-set-like. For instance,
+\[
+ \left\{-\frac1{\alpha+1}:\alpha\in\Ord\right\}\cup\{0\}
+\]
+together with numerical order has type $\Ord+1$. The ordinal arithmetic
+in the denominator is interpreted by the corresponding surreal ordinal
+followed by surreal addition; the displayed values are strictly
+increasing and all precede $0$. Thus a numerically bounded subclass can
+have a point with a proper class of predecessors. Set-likeness is not a
+consequence of numerical boundedness.
+
+\subsubsection{Forgetting labels changes the problem}
+For a fixed infinite set of cardinality $\mu$, its possible abstract
+well-order types are the ordinals $\alpha$ satisfying
+$\mu\leq\alpha<\mu^+$. Ordering these types by ordinal size gives a
+well-order of type $\mu^+$, which cannot embed in $\W(X)$ by
+\Cref{swo:tc:thm:setbaseline}. Therefore the order on abstract types is
+not the induced quotient of enumeration lexicography.
+
+More directly, different enumerations of the same type need not occupy
+a convex subset: choose first labels $x<y<z$ and complete the first and
+third to type $\mu$, the middle to type $\mu+1$. All three completions
+exist, and their lexical positions are decided by those first labels.
+For a proper class carrier every set-like well-order has abstract type
+$\Ord$, so quotienting that fragment by abstract type collapses it to a
+single type. Almost all of the lexicographic information was in the
+labels, not in the abstract order type.
+
+% ---- source 15 (batch-81 manuscript 03), lines 159-208
+\subsection{Source 15: a map of the interpretations}\label{swo:cb:sec:map}
+
+Every concrete version is determined by six choices: the carrier; whether
+orders are labelled or identified up to isomorphism; how an order is coded;
+which order compares the code entries; which well-order scans the entries;
+and the universe in which all codes are collected. Prefix conventions add
+a seventh choice when the coded sequences have variable domains and need
+not exhaust a common carrier.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+Interpretation & Objects and comparison & Main distinction\\
+\midrule\endhead
+Fixed carrier, all types & All ordinal bijections $e:\alpha\to X$, compared at first unequal labels in $X$ & A set in ZFC; exhaustive codes are prefix-free.\\
+Fixed enumeration type & Only $e:\alpha\to X$ for one prescribed $\alpha$ & Same possible ordinal suborders need not mean the same binary coding length.\\
+Variable set carrier & Injective set-length words, or all well-ordered sets of surreal labels & Proper prefixes occur; termination must be ordered explicitly.\\
+Natural well-ordered subsets & Subsets $A\subseteq\No$ with the inherited numerical order well-founded & No arbitrary rearrangement is part of the data.\\
+Set-like class orders & Bijections $\Ord\to\No$; first ordinal difference & All predecessors are sets; a predicate on class functions.\\
+All labelled class orders & Arbitrary class well-orders on $\No$; common labelled prefix & May differ only after a proper class of identical earlier labels.\\
+Fixed class index type & Bijections $J\to\No$ for one given class well-order $J$ & A chosen type such as $\Ord+\Ord$ restricts the domain.\\
+Inverse-rank lexicography & Rank values of labels scanned in a fixed baseline well-order & Uses ordinal values rather than numerical surreal labels; has different endpoints.\\
+Relation-table lexicography & Characteristic bits of $R\subseteq\No^2$ in a fixed well-ordered scan & Depends on scan and bit orientation; differs already on three points.\\
+Isomorphism types & Quotient well-orders by abstract order isomorphism & Native enumeration lex does not descend to this quotient.\\
+Birthday/simplicity variants & Birthday ranks, sign strings, or simplicity predecessors & Birthday ties need a separate well-order; simplicity is only partial.\\
+Definable or computable codes & A specified syntactic class with an evaluator & Restricts the available objects; syntax alone does not supply universal truth.\\
+Higher-universe totality & All relevant relations become sets in a larger universe & Results depend on the class realization and external well-foundedness.\\
+\bottomrule
+\end{longtable}
+
+This table is exhaustive at the level of the structural choices just
+listed, not a claim to enumerate every artificially possible encoding.
+Once arbitrary encodings and arbitrary scans are allowed, one can manufacture
+many further linearizations. The mathematically meaningful task is to say
+which properties are intrinsic to the chosen order and which depend on
+its presentation.
+
+\subsubsection{The historical Kanovei--Shelah construction}
+
+The original construction uses
+\[
+ A=\{a:\mathfrak c\to\mathcal P(\mathbb N):\ran(a)
+       \text{ is an ultrafilter on }\mathbb N\},
+\]
+ordered lexicographically in the initial ordinal $\mathfrak c$ coordinates,
+with $\mathcal P(\mathbb N)$ itself ordered through characteristic functions.
+Maps may repeat entries, and different maps may represent the same
+ultrafilter. This is an important precedent for ordering presentations
+without selecting a preferred presentation. It is not literally an order
+of all well-orders of $\mathbb R$ or of $\No$ \cite[Section~1]{KanoveiShelah}.
+
+% ---- source 16 (batch-81 manuscript 04), lines 188-276
+\subsection{Source 16: a systematic map of the interpretations}\label{swo:ds:sec:interpretations}
+
+Three choices account for most natural readings: the carrier to be
+well-ordered, whether numerical labels are retained, and the coding used for
+comparison. A fourth choice, the treatment of termination, becomes necessary
+when carriers or word lengths vary. There cannot be a literal list of every
+possible encoding: composing any encoding with an arbitrary permutation can
+manufacture another order. The following table covers the principal
+mathematical interpretations and explains how the remaining variants arise.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}@{}}
+\toprule
+Interpretation & Objects and comparison & Size and main issue\\
+\midrule\endhead
+Fixed set of labels $X\subseteq\No$ & Bijections $\alpha\to X$; first unequal
+entry compared numerically & A set in ZFC; the order on enumerations is
+usually far from a well-order.\\[5pt]
+Fixed enumeration type & Only bijections $\alpha\to X$, with $\alpha$ fixed &
+Changing $\alpha$ changes topology and may change embedding invariants.\\[5pt]
+Variable set carrier & Injective set-length words in $\No$ & An ordinary
+class of set codes; proper-prefix comparison must be specified.\\[5pt]
+Numerically well-ordered subsets & Increasing enumerations in the numerical
+order & No arbitrary auxiliary well-order remains on each carrier; proper
+class subsets can still be non-set-like.\\[5pt]
+Set-like global well-orders & Class bijections $\Ord\to\No$ & A predicate on
+class variables; not an ordinary class of such graphs.\\[5pt]
+Arbitrary global class well-orders & Class relations on all of $\No$;
+compare after the common labelled prefix & Common prefixes can be proper
+classes; ordinal-coordinate comparison alone is insufficient.\\[5pt]
+Relation-table encoding & Binary membership tables for order relations,
+read along an auxiliary well-order of pairs & Gives a different,
+coding-dependent lexicographic order.\\[5pt]
+Abstract order types & Forget surreal labels and identify isomorphic
+well-orders & Numerical first-disagreement comparison no longer descends to
+the quotient.\\[5pt]
+Larger-universe interpretation & Regard internal classes as sets in an
+explicit containing universe & Makes entire collections available, while
+changing the meaning of ``set'', ``class'', and ``all''.\\
+\bottomrule
+\end{longtable}
+
+\subsubsection{Fixed labels versus abstract types}
+
+For a linearly ordered set $(X,<)$, write
+\[
+ \WO_\alpha(X)=\{e:\alpha\overset{\sim}{\longrightarrow}X\},\qquad
+ \WO(X)=\bigcup_{|\alpha|=|X|}\WO_\alpha(X).
+\]
+A bijection is identified with the well-order it induces on $X$. Distinct
+exhaustive enumerations cannot be proper initial segments of one another:
+the shorter enumeration has already used every label, leaving no fresh next
+entry for the longer one. Therefore every distinct pair has a first unequal
+entry, with no termination convention needed.
+
+If labels are discarded, the order types are simply the ordinals $\alpha$
+of cardinality $|X|$. Their ordinary ordinal comparison is meaningful, but
+it is not numerical lexicography. Even two permutations of a finite set have
+the same abstract order type and different lexicographic positions.
+For arbitrary class well-orders, a single class of all abstract ``class
+ordinals'' is not supplied by GB or KM. Direct labelled comparison will
+avoid this issue entirely.
+
+\subsubsection{Relation tables genuinely change the answer}
+
+Choose an auxiliary well-order $j:\delta\to X\times X$ and encode a relation
+$R$ by the binary word $\chi_R(j(\xi))$. The earliest differing bit defines
+a linear comparison, but its answer depends on $j$ and the bit convention.
+For example, on $X=\{0,1,2\}$ the enumeration $(0,2,1)$ precedes $(1,0,2)$
+numerically. In row-major relation-table order, their first differing entry
+is the pair $(0,1)$: its bits are respectively $1$ and $0$. The table
+comparison therefore gives the opposite inequality. A class version needs
+a specified class ordering of the pairs and appropriately stratified
+quantification; the word ``lexicographic'' alone does not choose one.
+
+\subsubsection{The Kanovei--Shelah connection}
+
+The motivating analogy should not be mistaken for an identification.
+Kanovei and Shelah use the index
+\[
+ A=\{a:\mathfrak c\to\mathcal P(\mathbb N):
+             \ran(a)\text{ is an ultrafilter on }\mathbb N\},
+\]
+ordered at the first differing coordinate by binary characteristic-function
+order on $\mathcal P(\mathbb N)$. Repetitions are permitted, and the displayed
+definition admits ultrafilters generally. The point is a definable order on
+redundant codes, used in an ultrapower construction. It is not literally the
+space of all bijective enumerations or all well-orders of $\mathbb R$
+\cite[\S2 in the published version; \S1 in the preprint]{KanoveiShelah}.
+
+% ---- source 17 (batch-81 manuscript 05), lines 180-188
+\subsection{Source 17: what can ``all well-orders of surreal numbers'' mean?}
+\label{swo:gs:sec:meanings}
+
+We use the sign-sequence presentation and numerical order of surreal
+numbers; standard background is given in \cite{Conway,Gonshor}.
+A well-ordering relation and the numerical order of its labels are distinct.
+An enumeration of a well-order need not be numerically increasing. This
+single distinction already produces two different research programs.
+
+\merge\ Source~17's Subsection~2.1 (``Labelled well-orders of a fixed set'')
+is printed in Part~VI (\cref{swo:vi:sub:gs-base}). Its displayed word code
+keeps its number as (S17.1).
+
+% ---- source 17 (batch-81 manuscript 05), lines 218-324
+\subsubsection{Set-length words and varying supports}
+Every well-order of a set-sized subset of $\No$ is represented by an
+injective word $w:\alpha\to\No$. Now one word can be a proper prefix of
+another. We use the \emph{shorter-prefix-first} convention unless specified
+otherwise. The resulting carrier is an ordinary class of sets. Allowing
+repeated entries gives a larger class of words, but such a word no longer
+represents a well-order of its range without an additional occurrence
+labelling.
+
+There is a useful explicit compression, also present in the source.
+Represent $x\in\No$ by its sign sequence. Replace a minus sign by $--$,
+a plus sign by $++$, and append the terminal block $-+$. Call the resulting
+prefix-free code $c(x)$. The comparison
+\[
+ --\ <\ -+\ <\ ++
+\]
+encodes the surreal convention ``minus $<$ termination $<$ plus''.
+For any set-length word put
+\[\tag{S17.1}\label{swo:gs:eq:wordcode}
+ \Phi(w)=\mathop{\mathbin{\cat}}_{i<\alpha}\bigl(+\cat c(w(i))\bigr).
+\]
+At a first differing entry the prefix-free coefficient codes determine the
+comparison; at a proper word prefix the next sign is $+$, so the longer word
+is larger. Hence $\Phi$ is an order embedding into $\No$, with birthday
+\[
+ \bd\Phi(w)=\sum_{i<\alpha}\bigl(1+2\cdot\bd(w(i))+2\bigr).
+\]
+Products and sums in this formula are ordinal operations. All lengths are
+sets. The empty word is least, so the entire word order is not isomorphic
+to the endpoint-free surreal line, despite embeddings in both directions.
+Using $-$ instead of the leading $+$ in each entry block gives the
+longer-prefix-first convention and makes the empty word greatest.
+
+Length-first comparison, often called shortlex, is another legitimate
+linear order, but is not this dictionary order. It should not be silently
+substituted in an embedding or topology theorem.
+
+\subsubsection{Numerically well-ordered subsets}
+A different interpretation asks for subsets $A\subseteq\No$ whose
+\emph{inherited numerical order} is a well-order. Their set-sized
+increasing enumerations form a suborder of the injective word order.
+They include every singleton, so their lexicographic order contains a copy
+of $(\No,<)$ and is not a well-order. They inherit the embedding
+\eqref{swo:gs:eq:wordcode}. Every set-sized increasing word admits a longer
+increasing extension, because a set of surreal numbers has a strict upper
+bound.
+
+There is no numerically increasing exhaustive well-order of the whole
+surreal line: the sequence $0,-1,-2,\ldots$ already witnesses the failure of
+well-foundedness of the numerical order. This does not prohibit an
+arbitrary labelled class well-order of $\No$.
+
+Proper-class \emph{subsets} with their inherited numerical order must
+also be distinguished from the entire numerical line. They can be
+non-set-like well-orders. For example,
+\[
+ \left\{-\frac{1}{\alpha+1}:\alpha\in\Ord\right\}\cup\{0\}
+\]
+is increasingly well-ordered in type $\Ord+1$. The reciprocal is surreal
+field reciprocal, and $\alpha$ denotes its ordinal surreal value. The
+set of predecessors of $0$ in this class order is proper. A collection
+of all such class subsets again lives at the higher logical level.
+For varying supports, proper-prefix comparisons require an explicit
+termination convention, just as for set words. Our main raw comparison
+keeps the carrier fixed and therefore has no termination ambiguity.
+
+\subsubsection{Global enumerations and unrestricted relations}
+A \emph{set-like} class well-order is one in which each element has a set
+of predecessors. A set-like well-order of the proper class $\No$ has order
+type $\Ord$, and is equivalently a class bijection
+\[
+ E:\Ord\longrightarrow\No.
+\]
+Write $\Hsl$ for this predicate on class relations, and $\Jinj$ for the analogous
+predicate of injective, not necessarily exhaustive, $\Ord$-words.
+These symbols are not names of ordinary GB classes whose elements are
+class functions.
+
+Write $\Hall$ for arbitrary class well-orders of $\No$. Orders of type
+$\Ord+1$, $\Ord+\Ord$, and many other non-set-like types belong here.
+For example, enumerate $\No\setminus\{a,b\}$ first and append $a,b$.
+Interchanging those last two labels creates a first disagreement after a
+proper-class prefix, not at a set ordinal.
+
+One can also fix a particular class well-order $J$ and compare bijections
+$J\to\No$ at their least differing $J$-position. This is legitimate when
+least elements of nonempty admitted subclasses of $J$ are part of the
+hypothesis. It is a fixed-domain alternative, not a universal set ordinal
+index for every class well-order.
+
+\subsubsection{Relation codes, isomorphism types, and ordinal-valued rankings}
+Fix a class bijection $d:\Ord\to\No\times\No$. A class relation $R$ has
+binary code $\xi\mapsto\mathbf1_R(d(\xi))$, which can be compared
+lexicographically. This yields a valid order on the admitted well-order
+relations, but depends on $d$ and the bit convention. It is generally not
+the native labelled-enumeration order. Even on $\{0,1\}$, listing coordinate
+$(0,1)$ first and using $0<1$ compares the two well-orders in the reverse
+of their first-label comparison.
+
+Abstract isomorphism types form yet another subject. For set well-orders
+they are ordinals, naturally ordered by initial-segment embeddability.
+The native lexicographic order does not descend to this quotient: the two
+enumerations $(a,b)$ and $(b,a)$ have the same abstract type but opposite
+label order when $a<b$. A rank function, a birthday-first code, or a chosen
+well-order of relation codes introduces additional structure rather than
+recovering a canonical lexicographic comparison from the abstract types.
+
+% ---- source 18 (batch-81 manuscript 06), lines 256-301
+\subsection{Source 18: interpretations and foundational conventions}
+\label{swo:sh:sec:interpretations}
+
+\subsubsection{A map of the natural interpretations}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+\toprule
+Object & What a point represents & Size and comparison\\
+\midrule
+\endhead
+$\WO(X)$, $X\subset\No$ a set & A labelled well-order of the fixed carrier
+$X$, in any possible ordinal type & A set; compare unique exhaustive
+ordinal enumerations\\[4pt]
+$\WO_\alpha(X)$ & A well-order whose type is the specified ordinal
+$\alpha$ & A stratum of $\WO(X)$; nonempty exactly when
+$|\alpha|=|X|$\\[4pt]
+Injective set words & A well-order of a variable set-sized subset of
+$\No$ & A genuine proper class of sets; a termination convention is needed\\[4pt]
+Increasing set words & A subset well-ordered by the numerical surreal
+order, with its unique increasing enumeration & A subclass of the previous
+word class; no arbitrary reordering of a fixed subset\\[4pt]
+$\Hsl(\No)$ & A set-like global well-order, equivalently a class bijection
+$\Ord\to\No$ & A predicate on class relations; distinct enumerations have
+a set ordinal first difference\\[4pt]
+$\Hall(\No)$ & Any class well-order of the entire surreal carrier & A
+predicate on class relations; the common labelled prefix can be proper\\[4pt]
+Inherited class well-orders & A subclass on which numerical $<$ is a
+well-order & A different restriction: $\No$ itself is not numerically
+well-ordered\\[4pt]
+Order types modulo isomorphism & Labels are forgotten & Numerical
+lexicography does not descend to this quotient\\[4pt]
+Characteristic-relation codes & A well-order relation encoded by its
+membership bits in a chosen order of pairs & A valid auxiliary lex order,
+usually different from enumeration comparison\\[4pt]
+Containing-universe objects & All orders admitted by a specified smaller
+set/class universe & Sets in an external universe; ``all'' is relative to
+the chosen class realization\\
+\bottomrule
+\end{longtable}
+
+There are indefinitely many artificial encodings. The table covers the
+natural mathematical choices by varying carrier, enumeration type,
+admissible order, label retention, comparison rule, and size level. An
+arbitrary encoding cannot be expected to preserve the results for another
+row.
+
+\merge\ Source~18's Subsections~2.2 and~2.3 (sign sequences with its lemma
+on surreal order tools, and set and class theories) are foundations, not
+interpretations, and are not printed in this Part. Its Subsection~2.4
+follows.
+
+% ---- source 18 (batch-81 manuscript 06), lines 391-403
+\subsubsection{Why the Kanovei--Shelah connection needs qualification}
+
+Kanovei and Shelah's published construction \cite[\S2]{KanoveiShelah}
+orders maps $a:\mathfrak c\to\mathcal P(\mathbb N)$ whose ranges are
+ultrafilters, using characteristic-function lexicography on
+$\mathcal P(\mathbb N)$. Repetitions are allowed in those maps and in
+the ultrafilter presentation. Their index is therefore not literally
+$\WO(\mathbb R)$ or a permutation order of the reals. The useful
+connection is the method of linearly ordering many codes without
+choosing one privileged code. The present article studies different,
+precisely specified orders inspired by that method. This correction
+was already explicit in the repository's reals report \cite{ProveItReals}.
+
+\begin{note}[\merge; what the six maps share]\label{swo:vii:note:maps}
+All six separate the same carriers as the batch-80 sources
+(\cref{swo:sec:objects,swo:sk:sec:question}): a fixed set with all types or
+one type, varying set carriers (injective words, with a termination
+convention), unrestricted words, numerically well-ordered subsets, set-like
+and arbitrary class well-orders, relation codes and abstract types.
+\begin{itemize}
+\item \emph{Termination.} Sources~13, 14, 16 and~17 name the three placements
+of a terminator (first, last, inside the alphabet) and length-first order as
+a fourth choice; source~14's warning that the Conway sign order uses
+$-<\End<+$ and is not prefix-first dictionary order is the convention printed in
+\cref{swo:sec:prelim}.
+\item \emph{Increasing subclasses.} The example
+$\{-1/(\alpha+1):\alpha\in\Ord\}\cup\{0\}$ of numerical type $\Ord+1$ is
+source~12's (\cref{swo:st:sec:subclasses}); sources~14, 15, 16, 17 and~18
+repeat it.
+\item \emph{Relation codes.} The two- and three-point examples of
+sources~14, 16, 17 and~18 make the point of source~12's shipped example and
+of \cref{swo:sk:prop:relationcode}; source~15 proves theorems about these
+orders (\cref{swo:cb:thm:tableendpoints,swo:cb:cor:tablepatterns}).
+\item \emph{Abstract types.} That enumeration lexicography does not descend to
+abstract order types (sources~13, 14, 15, 16, 17) is printed with source~15's
+non-convexity example in \cref{swo:cb:sec:alternatives}; source~14's argument
+that the type order $\mu^+$ cannot embed uses \cref{swo:tc:thm:setbaseline}.
+\item \emph{Kanovei--Shelah.} The Kanovei--Shelah subsections of sources~13, 15, 16 and~18
+printed here (sources~14 and~17 discuss it elsewhere in their texts) make
+source~08's point (\cref{swo:sk:sec:KS}): the index there is a
+lexicographically ordered family of redundant codes, not a space of
+well-orders. Source~16 cites Section~2 of the published version and Section~1
+of the preprint; source~15 cites ``Section~1''.
+\item \emph{Prefix-freeness.} Source~13's \cref{swo:fs:lem:prefixfree} is the
+prefix-freeness of exhaustive enumerations used in \cref{swo:sw:fixed}.
+\end{itemize}
+\end{note}
+
+% ---- hand chunk words
+% ---- source 16 (batch-81 manuscript 04), lines 735-830
+\section{Shorter-first words: three classes, one prefix order (source 16; routes of sources 13, 14 and 18)}\label{swo:ds:sec:words}
+
+\merge\ Source~16's Section~7, printed whole; its $\mathcal T$,
+$\mathcal T^{\mathrm{inj}}$, $\mathcal T^{\mathrm{inc}}$ are printed $\WordsAll$,
+$\Words$, $\WordsInc$ (\cref{swo:sub:notation81}), and its equations keep
+their numbers as (S16.$n$). Its references to its own fresh-separator lemma,
+universality proposition, set-cut display and raw-comparison section are
+printed as references to \cref{swo:lem:delete,swo:prop:universal,swo:n3.1}
+and \cref{swo:cf:lex}, which state the same facts. The word orders of Part~II
+(\cref{swo:part:words}) are the cases $\WordsAll$ and $\Words$; what this
+section adds is the increasing class $\WordsInc$ and the isomorphism of the
+three (\cref{swo:ds:thm:wordisomorphism}). Source~18 proves the isomorphism
+independently, with the uniformity of the back-and-forth made explicit
+(\cref{swo:vii:sub:sh-tree}); source~13's and source~18's word sections and
+source~14's explicit codes follow as notes and routes.
+
+Let $\WordsAll$ be the class of all set functions $f:\alpha\to\No$ with
+$\alpha$ an ordinal. Let $\Words$ be its injective subclass, and
+$\WordsInc$ its numerically strictly increasing subclass. Members of all
+three are sets. In $\Words$ the word imposes a well-order on its image;
+in $\WordsInc$ that well-order is the restriction of the numerical order.
+Initially give all three the convention that a proper prefix is smaller
+than its extension.
+
+The empty word is then a minimum. More substantially, if $f$ has nonzero
+limit length $\lambda$, its proper prefixes are cofinal below it, giving
+\[
+ \cf(\WordsAll_{<f})=\cf(\lambda).
+\tag{S16.5}\label{swo:ds:eq:wordcharacter}
+\]
+At successor-length words there is no set cofinal family below the point,
+and above any word there is no set coinitial family. For the unrestricted
+and injective cases these facts appear in the earlier report; they follow
+by choosing a fresh next letter between the set of active coordinates and
+the coordinate of the given word. Equation~\eqref{swo:ds:eq:wordcharacter} already
+prevents an isomorphism with $\No$, even if the empty word is removed:
+a surreal cannot be the supremum of a set lying strictly below it, by
+the set-cut property (\cref{swo:n3.1}).
+
+\begin{theorem}[Three interpretations with the same prefix order]
+\label{swo:ds:thm:wordisomorphism}
+In GBC,
+\[
+ \WordsAll\cong \Words\cong \WordsInc
+\]
+under shorter-prefix-first comparison. There are isomorphisms preserving
+word length, the prefix relation, unions of set-length prefix chains, and
+every singleton word. The same assertion holds for the convention that
+proper prefixes are larger than their extensions.
+\end{theorem}
+\begin{proof}
+For an admissible output prefix $q$, its possible next letters form,
+respectively,
+\[
+ \No,\qquad \No\setminus\ran(q),\qquad
+ U(q)=\{x\in\No:\forall y\in\ran(q)\ (y<x)\}.
+\]
+Each is a proper class with the set-cut property. For the second use
+the fresh-separator lemma (\cref{swo:lem:delete}). For the third, given sets $A<B$ in $U(q)$,
+fill the cut $A\cup\ran(q)<B$; this also proves the property with an
+empty side. Uniform back-and-forth as in
+class universality (\cref{swo:prop:universal}) gives, for every set parameter $q$, an
+order isomorphism $h_q$ from $\No$ onto its available-letter class.
+Take $h_\varnothing$ to be the identity. A single class relation
+$H(q,x,y)$ defines all these maps: a pair belongs when it appears in the
+uniquely specified set-length back-and-forth history. No choice of a
+proper class for each index is hidden here.
+
+For a free word $f:\alpha\to\No$, define its output by set recursion:
+\[
+ q(i)=h_{q\res i}(f(i))\qquad(i<\alpha).
+\]
+The output is injective or increasing according to the target rule.
+Conversely, an admissible output $q$ uniquely recovers
+$f(i)=h_{q\res i}^{-1}(q(i))$. These operations are inverse and preserve
+prefixes and lengths. At a first differing coordinate, both inputs use
+the same strictly increasing local map, so their comparison is preserved.
+The endpoint termination rule depends only on the prefix relation, which
+is also preserved. The recursive definition makes compatibility with
+unions immediate, and the choice at the empty prefix fixes singletons.
+\end{proof}
+
+This is an isomorphism theorem, not a literal identification of the objects.
+Longer labels generally change. In particular, the theorem does not turn
+an arbitrary chosen well-order of a subset into the numerical order on
+the \emph{same} subset. It shows that the bare lexicographic order does not
+recover that conceptual distinction.
+
+\subsection{Increasing proper classes are a further case}
+
+The preceding theorem concerns set-length words. A numerically well-ordered
+proper subclass can itself be non-set-like. For example, the increasing
+class
+\[
+ \left\{-\frac1{\xi+1}:\xi\in\Ord\right\}\cup\{0\}
+\]
+has order type $\Ord+1$; the point $0$ has a proper class of predecessors.
+The simpler subclass of nonnegative ordinal surreals has type $\Ord$.
+In GBC, class universality (\cref{swo:prop:universal}) embeds every class well-order
+into the numerical surreal line, so every such abstract order can occur
+on a numerically well-ordered subclass. No increasing enumeration can
+exhaust $\No$: it has a first value and omits every smaller surreal.
+
+If distinct proper class carriers are allowed, comparison must also say
+what happens when one whole labelled class order is an initial segment of
+another. The direct common-prefix method of Part~III (\cref{swo:cf:lex}), with
+an explicitly placed termination symbol, supplies the corresponding
+variant. It is a different problem from comparing well-orders on the same
+fixed carrier.
+
+\begin{note}[\merge; what transfers from Part~II]\label{swo:vii:note:partII}
+Display (S16.5) and the two sentences after it are \cref{swo:sw:character}
+(sources~11 and~09: \cref{swo:ec:prop:prefix-cf}). Because the isomorphisms of
+\cref{swo:ds:thm:wordisomorphism} preserve length and the prefix relation,
+every statement of Part~II about $\WordsAll$ or $\Words$ that is phrased by
+lengths and prefixes holds in $\GBC$ for $\WordsInc$: the exact local
+characters (\cref{swo:sw:character}), the word-cut classification
+(\cref{swo:sw:cutclassification}) and the successor-word corollary
+(\cref{swo:sw:successors}). Source~18 makes this remark for the cut
+classification (\cref{swo:sh:sec:dictionary-words}); its direct proof of the
+characters of $\WordsInc$ needs no global choice
+(\cref{swo:sh:prop:dictionary-characters}). Part~II's explicit code
+(\cref{swo:sw:code}) restricts to $\WordsInc$ without choice. The example of
+source~16's Subsection~7.1 is source~12's (\cref{swo:st:sec:subclasses}).
+\end{note}
+
+% ---- source 13 (batch-81 manuscript 01), lines 493-533
+\subsection{Source 13: set-length words and their first obstruction}\label{swo:fs:sec:words}
+
+\merge\ Source~13's Section~5, printed whole. Its proposition is
+\cref{swo:sw:character}~(1) of Part~II (and source~09's
+\cref{swo:ec:prop:prefix-cf}) and is printed as a note.
+
+Let $\WordsAll$ be the ordinary class of all set-length words over $\No$, and
+let $\I\subseteq \WordsAll$ be the injective words. The latter is exactly the
+class of well-orderings of arbitrary set-sized subsets, represented by
+their increasing enumeration in the auxiliary order. In this section the
+terminal symbol precedes every label.
+
+\begin{note}[Source~13, Proposition~5.1, ``Limit-prefix character'']\label{swo:fs:prop:wordlimit}
+\emph{
+Suppose $p$ has nonzero limit length $\lambda$. In either $\WordsAll$ or $\I$
+when $p$ is injective, the proper prefixes of $p$ are cofinal below $p$.
+The cofinality of the strict lower side at $p$ is exactly $\cf(\lambda)$.}
+This is \cref{swo:sw:character}~(1), with the same proof.
+\end{note}
+\begin{proof}[Source~13's proof]
+If $q<p$, then either $q$ is a proper prefix of $p$, or its comparison
+with $p$ is decided by a smaller letter at some coordinate
+$\xi<\lambda$. In either case a sufficiently long proper prefix of $p$
+lies above $q$ and below $p$. Restricting to a cofinal sequence of
+lengths gives the upper bound $\cf(\lambda)$.
+
+For the converse, assign to each $q<p$ a bound $\xi_q<\lambda$ beyond
+which proper prefixes of $p$ lie above $q$. A family of cardinality less
+than $\cf(\lambda)$ has a common such bound. A later proper prefix then
+witnesses its failure to be cofinal.
+\end{proof}
+
+Every point of $\No$ has no set-sized cofinal family strictly below it:
+a proposed family together with that point is a set cut and has a
+strict interpolant. Thus the displayed word orders are not isomorphic
+to $\No$, even after the empty minimum is deleted. They nevertheless
+embed into $\No$ by class universality (\cref{swo:prop:universal}), and $\No$ embeds
+back through singleton words. The earlier report gives explicit
+sign-coding embeddings and a more detailed end-first analysis
+(\cref{swo:sw:encoding,swo:sw:characters,swo:sw:wordcuts}; Sections~9--11 of this report at the pin).
+
+The same limit-prefix proof applies to numerically increasing set
+words, since every proper prefix remains increasing. By reversing the
+position of termination, one obtains the corresponding small
+\emph{right}-hand character. \Cref{swo:fs:sec:central} proves that a
+central termination convention has a fundamentally different outcome.
+
+% ---- source 18 (batch-81 manuscript 06), lines 1480-1573
+\subsection{Source 18: set-length dictionary words and numerical increase}
+\label{swo:sh:sec:dictionary-words}
+
+Let $\WordsAll$ be the class of all functions $f:\alpha\to\No$
+with $\alpha$ a set ordinal, and let $\Words$ and $\WordsInc$
+be its injective and strictly numerically increasing subclasses. These
+are ordinary classes: their members are set graphs. In $\Words$ a
+point represents a well-order of its own range; in $\WordsInc$ that
+well-order is the inherited numerical order. No point exhausts $\No$.
+
+First use ordinary dictionary comparison: compare first unequal
+entries, and put a proper prefix before every proper extension. This
+convention is sometimes described by a formal terminator below all
+surreal letters. Such a terminator is not a surreal number.
+
+\begin{note}[Source~18, Proposition~6.1, ``Explicit order coding; repository result'']\label{swo:sh:prop:dictionary-code}
+\emph{
+There is an explicit order embedding $\WordsAll\emb\No$, requiring
+no Global Choice. Singleton words embed $\No$ into each of
+$\WordsAll,\Words,\WordsInc$. Thus all three word orders and
+$\No$ are equimorphic, but the word orders are not isomorphic to
+$\No$.} This is \cref{swo:sw:code}, with the same letter code
+$K(x)=C(x)=(+)\cat D(s_x)\cat(+,-)$; source~18 labels it a repository result.
+\end{note}
+\begin{proof}[Source~18's proof]
+Duplicate each sign in the sign expansion $s_x$ and write the result
+as $D(s_x)$. The code
+\[
+ K(x)=(+)\cat D(s_x)\cat(+,-)
+\]
+is prefix-free and numerically order-preserving. A terminated source
+word is correctly compared with a longer one because its delimiter
+satisfies $(-,-)<(+,-)<(+,+)$. Concatenate the $K(f(i))$ in ordinal
+domain order. Replacement and ordinal summation give a set sign word.
+At the first unequal entry prefix-freeness preserves the comparison;
+at the end of a proper prefix the next block begins with $+$, so the
+shorter word is smaller. The code length is exactly
+\[
+ \sum_{i<\alpha}\bigl(1+2\cdot\bd(f(i))+2\bigr).
+\]
+This proves the embedding. The nonisomorphism follows from the
+next proposition and holds even after removing the empty word.
+\end{proof}
+
+\begin{note}[Source~18, Proposition~6.2, ``The prefix-supremum obstruction'']\label{swo:sh:prop:dictionary-characters}
+\emph{
+The empty word is the minimum of each dictionary word order. For any
+word $f$ of nonzero limit length $\alpha$, its proper prefixes are
+cofinal below it, and the left character of $f$ is $\cf\alpha$.
+At every successor-length word the left segment has no set cofinal
+subset. At every word the right segment has no set coinitial subset.
+These assertions hold in $\WordsAll$, $\Words$, and $\WordsInc$.} For
+$\WordsAll$ and $\Words$ this is \cref{swo:sw:character}. The case
+$\WordsInc$ also follows in $\GBC$ from \cref{swo:ds:thm:wordisomorphism},
+which preserves lengths and prefixes; source~18's proof below needs no global
+choice.
+\end{note}
+\begin{proof}[Source~18's proof]
+At a limit length, a smaller word is either a proper prefix or differs
+at a coordinate below $\alpha$. A sufficiently long proper prefix
+exceeds it. A cofinal set of prefix lengths therefore gives the upper
+bound $\cf\alpha$; fewer than that many comparison coordinates are
+bounded and cannot be cofinal. At successor length, interpolate at
+the last entry above all relevant lower next values and below that
+entry. In the injective case avoid earlier labels; in the increasing
+case also stay above all earlier labels. These are set constraints
+and the surreal cut property satisfies them. To defeat a proposed
+set coinitial family above $f$, append a new value below all of its
+relevant next values. In the increasing case impose the additional
+lower bound $\ran f$. Every family member extending $f$ already
+satisfies that bound, so a separator still exists.
+\end{proof}
+
+In particular, an increasing word of length $\omega$ is the supremum
+of its finite prefixes. No surreal number is the supremum of a set
+strictly below it, since the surreal set-cut property inserts a
+smaller upper bound. This invariant distinguishes the word orders
+from $\No$; mutual embeddings do not preserve suprema in the ambient
+order.
+
+The repository proves a sharper dictionary cut criterion for arbitrary
+and injective words (\cref{swo:sw:cutclassification}): a set cut $A<B$ fails to have
+an interpolant exactly when $B$ contains the empty word, or when
+$B$ has a minimum of nonzero limit length and $A$ is cofinal below
+that minimum. A common-prefix search proves this: unequal next-value
+sets can be separated, while a forced common entry is appended; the
+search is bounded by the input word lengths. Its only terminal failure
+is a forced upper minimum reached at a limit. Restricting to nonzero
+successor-length words removes both failures and gives a copy of
+$\No$ in GBC. The prefix-tree isomorphism proved below transfers this
+criterion to increasing dictionary words as well.
+
+The following sections give the genuinely different outcomes obtained
+by placing termination near zero. They treat zero exclusion, zero
+padding, and a distinct terminator separately; these choices cannot
+be conflated.
+
+% ---- source 14 (batch-81 manuscript 02), lines 1417-1464
+\subsection{Source 14: an explicit word embedding with a termination convention}
+\label{swo:tc:sec:embeddings}
+\merge\ The first subsection of source~14's Section~11; it gives a second
+explicit code for the prefix-first word order (a second route to
+\cref{swo:sw:code}) and a code for the prefix-last order. The rest of that
+section (binary class words, the no-coding theorem and the Kanovei--Shelah
+remark) is not printed in this Part; its relation-code subsection is in
+\cref{swo:vii:sub:relcodes}.
+The ordinary class of all set-length surreal words is much smaller in
+logical sort than the virtual collection $\Hsl$. An explicit coding makes
+its embeddability into $\No$ transparent and illustrates why the terminal
+symbol matters. The underlying compression idea is inherited from the
+predecessor (\cref{swo:sw:encoding}; Section~9 of this report at the pin); we spell out a version that
+also permits repeated letters.
+
+For a surreal $x$, let $c(x)$ be its binary sign code: replace each
+minus by $00$, each plus by $11$, and append $01$. The three blocks
+encode $-<\End<+$. Different complete codes are prefix-incomparable,
+and their first-difference order is the numerical order of their labels.
+For a word $p:\lambda\to\No$, concatenate the codes $c(p(\alpha))$
+in ordinal order. Now replace each binary $0$ by $01$ and each binary
+$1$ by $11$, and append $00$ to terminate the entire word. Finally read
+$0,1$ as surreal signs $-,+$.
+
+\begin{proposition}[Source~14, Proposition~11.1, ``Prefix-first word coding'']\label{swo:tc:n11.1}
+This construction is an order embedding of the class of all set-length
+surreal words, with prefix-first lexicography, into $\No$. Its output
+birthday is
+\[
+ \sum_{\alpha<\lambda}\bigl(4\cdot\bd(p(\alpha))+4\bigr)+2,
+\]
+where every sum and multiplication is ordinal arithmetic.
+\end{proposition}
+\begin{proof}
+All lengths and concatenations are sets. At the first differing label,
+the prefix-free numerical codes determine the correct binary comparison;
+the outer replacement preserves it. If one whole word is a proper
+prefix of the other, its outer terminal block $00$ is compared with
+one of the data blocks $01,11$, making the shorter word smaller.
+Complete outer codes are prefix-incomparable, so their comparison as
+surreal sign sequences never reaches an ambiguity about termination.
+The length of a label code is $2\cdot\bd(x)+2$ and outer replacement
+doubles that length on the left. Summing those lengths and adding the
+last two signs gives the displayed formula.
+\end{proof}
+
+For prefix-last order, use outer data blocks $00,10$ and terminal
+block $11$ instead. The same proof applies. The embeddings do not claim
+that these word orders are isomorphic to the entire surreal line: for
+example the empty word is the least point in the prefix-first order.
+Nor do they turn an $\Ord$-length class word into a set-length surreal.
+The birthday formula is explicitly a \emph{set} ordinal expression.
+
+% ---- source 18 (batch-81 manuscript 06), lines 2042-2149
+\subsection{Source 18's route: shorter-first increasing words are not a new order type in GBC}\label{swo:vii:sub:sh-tree}
+
+\merge\ The first part of source~18's Section~10: a second proof of
+\cref{swo:ds:thm:wordisomorphism}, written without knowledge of source~16.
+Its proof makes explicit that the family of local isomorphisms is one class
+given by one elementary formula from a set-like global well-order, and its
+statement adds that zero may be excluded from any of the alphabets. The
+corollary of that section, on cones of centered increasing words, is printed
+with them (\cref{swo:sh:wv:cone-types}).
+\label{swo:sh:wv:prefix-isomorphism}
+
+The preceding centered results should not be transferred to the
+shorter-first convention.  For shorter-first words a stronger
+identification is possible, despite the constraints on coordinates.
+
+\begin{theorem}[A prefix-preserving tree isomorphism]
+\label{swo:sh:wv:tree-isomorphism}
+In \(\mathrm{GBC}\), the classes of arbitrary, injective, and
+strictly increasing set-length surreal words, all with shorter
+prefixes first, are pairwise order-isomorphic.  Isomorphisms can
+be chosen to preserve every word length and the prefix relation.
+The conclusion also holds if zero is excluded from any of the
+alphabets.
+\end{theorem}
+
+\begin{proof}
+For a permitted target prefix \(p\), its admissible next-letter
+class is respectively
+\[
+ \No,\qquad
+ \No\setminus\operatorname{ran}(p),\qquad
+ D_p=\{x\in\No:\operatorname{ran}(p)<x\}.
+\]
+If zero is excluded, delete it as well.  Each class is proper and
+fills every set cut.  For the increasing case, simply add
+\(\operatorname{ran}(p)\) to the lower side of the proposed cut;
+every upper-side letter already exceeds that range.  For the
+injective case use set avoidance.
+
+Fix a set-like global well-order \(\prec\).  There is a single
+uniformly defined family of order isomorphisms
+\[
+                    \theta_p:\No\longrightarrow D_p,
+\]
+where \(D_p\) now denotes the relevant admissible class in any of
+the cases.  Here is a construction that makes the uniformity and
+the choice strength explicit.  Restrict \(\prec\) to \(\No\)
+and to \(D_p\); these give ordinal enumerations, definably in
+the set parameter \(p\).  Run the deterministic back-and-forth
+that, at each stage, treats the least unmatched source point and
+then the least unmatched target point, always choosing the
+\(\prec\)-least unused filler of the required cut.  Every partial
+map and every cut at an ordinal stage is a set.  For each set
+ordinal, ordinary set recursion defines the unique initial
+construction, with \(p\) and \(\prec\) as parameters.  The
+assertion that a pair occurs in some such initial construction
+is one elementary formula with these parameters.  Elementary
+class comprehension therefore gives all the \(\theta_p\)'s as
+one class relation.
+
+In particular, we have not selected an arbitrary class
+isomorphism independently for each of a proper class of prefixes.
+No extra class-choice principle, and no recursion with
+proper-class-valued stages, has been used.
+
+For an arbitrary source word \(f:\alpha\to\No\), construct a
+target word by set recursion.  Given its prefix \(p\) at position
+\(\xi\), put the next target entry equal to
+\(\theta_p(f(\xi))\); take unions at limits.  The output is a
+permitted word of the same length.  Conversely, from any permitted
+target word \(g\) recover
+\[
+              f(\xi)=\theta_{g\restriction\xi}^{-1}(g(\xi)).
+\]
+These procedures are inverse.  They preserve prefixes, and the
+first unequal entries are transformed by the same increasing
+map \(\theta_p\).  Thus they preserve the shorter-first
+lexicographic order.
+
+% ---- hand chunk termination
+% ---- source 16 (batch-81 manuscript 04), lines 831-1063
+\section{Termination conventions: the criterion and all isomorphism types (source 16; routes of sources 13 and 18)}\label{swo:ds:sec:termination}
+
+\merge\ Source~16's Section~8, printed whole, as the base of this section:
+it decides, for every placement of a formal terminator in the alphabet
+$\No$, whether the unrestricted and the injective word orders fill every set
+cut (\cref{swo:ds:thm:terminator}), and lists every isomorphism type that
+occurs (\cref{swo:ds:thm:alltermination}). Its termination types
+$\mathcal T_{\min}$, $T_\kappa$ are printed $\mathbf T_{\min}$,
+$\mathbf T_\kappa$; its references to its own universality proposition and
+set-cut display are printed as references to \cref{swo:prop:universal} and
+\cref{swo:n3.1}. Source~13 (\cref{swo:fs:sec:central}) and source~18
+(\cref{swo:vii:sub:sh-centered}) prove the central case independently, with the
+same letter code (\cref{swo:vii:note:codes}).
+
+Choose an initial/final partition $\No=L_\varepsilon+R_\varepsilon$ and
+adjoin a formal symbol $\varepsilon$, distinct from every surreal, with
+\[
+ L_\varepsilon<\varepsilon<R_\varepsilon.
+\]
+Compare words at the first differing coordinate, treating a terminated
+word as having the symbol $\varepsilon$ there. This includes prefix-first
+and prefix-last as the two extreme placements. The Conway convention for
+sign expansions, $-<\varepsilon<+$, uses a two-letter alphabet; it must
+not be confused with prefix-first dictionary order over all surreals.
+
+\begin{theorem}[Termination criterion]\label{swo:ds:thm:terminator}
+Let $\mathcal V$ be either $\WordsAll$ or $\Words$. Its termination order
+has a strict interpolant for every separated pair of sets, including
+empty sides, if and only if:
+\begin{enumerate}
+\item $L_\varepsilon$ and $R_\varepsilon$ are nonempty;
+\item $L_\varepsilon$ has a greatest member or has no set cofinal subset;
+\item $R_\varepsilon$ has a least member or has no set coinitial subset.
+\end{enumerate}
+The equivalence uses GB and the surreal set-cut property. In GBC these
+conditions are also equivalent to this word order being isomorphic to
+$\No$.
+\end{theorem}
+\begin{proof}
+If either side of the threshold is empty, the empty word is an endpoint.
+If $L_\varepsilon$ has no maximum but a set cofinal subset $C$, the
+singleton words $(c)$, $c\in C$, lie below the empty word and have no
+strict interpolant below it. Any proposed interpolant has a first letter
+$x\in L_\varepsilon$, and some $c\in C$ is larger than $x$, placing
+$(c)$ above it. The right-side argument is dual. This proves necessity.
+
+For sufficiency, start with a separated set cut $A<B$ of words. Follow a
+common prefix $p$, keeping active precisely the input words extending
+it, including equality. Every discarded lower word is below every
+extension of $p$, and every discarded upper word is above every such
+extension. At the next coordinate let $U,V$ be the sets of active lower
+and upper symbols, using $\varepsilon$ for a word ending at $p$.
+Every $u\in U$ is at most every $v\in V$.
+
+If $U$ and $V$ meet, their common member is unique. It cannot be
+$\varepsilon$, which would put the same word $p$ on both sides. Append
+the common surreal letter and continue. In the injective case a witness
+among the active words ensures freshness. Take unions at limits. The
+search cannot reach an ordinal larger than every input word length, so
+eventually $U<V$ are disjoint.
+
+If neither set contains $\varepsilon$, choose a fresh surreal strictly
+between them and append it. Suppose $\varepsilon\in U$, so
+$V\subseteq R_\varepsilon$. If a numerical member of $U$ already lies
+in $R_\varepsilon$, ordinary fresh separation works. Otherwise all
+numerical lower symbols lie in $L_\varepsilon$.
+If $R_\varepsilon$ has no set coinitial subset, choose
+$r\in R_\varepsilon$ below the whole set $V$, and then a fresh letter
+strictly between $r$ and $V$. If $R_\varepsilon$ has a least member
+$r$ not in $V$, the same interval above $r$ works.
+
+The remaining case is that $r=\min R_\varepsilon$ belongs to $V$.
+Append $r$, which is fresh in the injective case because an active upper
+word supplies it. All lower comparisons are now decided. For the upper
+words continuing through $r$, collect their next numerical letters and
+choose a fresh $d$ below this set and below some fixed member of
+$L_\varepsilon$. The extension $p\cat(r,d)$ is below all those upper
+words, including any terminating just after $r$, and above every lower
+word. Thus two letters handle the possible adjacency between the
+termination symbol and a numerical letter. The case
+$\varepsilon\in V$ is the reversed construction using
+$\max L_\varepsilon$ when needed.
+
+This proves interpolation using only a bounded set recursion. The word
+carrier is proper, since it contains all singleton surreals. In GBC,
+class universality (\cref{swo:prop:universal}) gives the claimed isomorphism with $\No$.
+\end{proof}
+
+\subsection{Concrete consequences and explicit encodings}
+
+Write $0^-$ for the formal symbol immediately below numerical zero, and
+$0^+$ for the one immediately above zero. All labels, including zero,
+remain available. For $0^-$ the sides are $x<0$ and $x\ge0$; for $0^+$
+they are $x\le0$ and $x>0$. \Cref{swo:ds:thm:terminator} gives
+\[
+ \WordsAll_{0^-}\cong \Words_{0^-}\cong\No,
+ \qquad
+ \WordsAll_{0^+}\cong \Words_{0^+}\cong\No
+ \quad\text{in GBC}.
+\tag{S16.6}\label{swo:ds:eq:centered}
+\]
+This includes the empty word and all limit-length words.
+
+There are also explicit embeddings that do not use global choice. For a
+sign sequence $s_x$, let $D(s_x)$ duplicate each sign, and put
+\[
+ C_-(x)=D(s_x)\cat(+,-),\qquad
+ C_+(x)=D(s_x)\cat(-,+).
+\]
+Both letter codes are prefix-free and preserve numerical comparison,
+because either terminal block lies strictly between $(-,-)$ and $(+,+)$.
+The first sign of $C_-(x)$ is negative exactly when $x<0$, and that of
+$C_+(x)$ exactly when $x\le0$. Concatenating the codes of the entries
+therefore embeds the corresponding termination order into $\No$.
+The encoded birthday is
+\[
+ \sum_{i<\alpha}\bigl(2\cdot\bd(f(i))+2\bigr).
+\tag{S16.7}\label{swo:ds:eq:centeredbirthday}
+\]
+The operations are ordinal operations; the $2$ is on the left.
+At regular infinite birthday cutoffs, words of length below the cutoff
+whose entries are below it remain below it under this encoding.
+Singular cutoffs do not satisfy that closure assertion.
+
+For prefix-first words, add an initial $+$ to each letter code. This
+makes every continued block begin above termination and again gives an
+explicit embedding into $\No$. Singleton words embed $\No$ back. Thus
+equimorphism persists even where local characters prevent isomorphism.
+
+An interior threshold alone does not guarantee saturation. Place it
+between the surreals bounded above by some natural number and those
+larger than every natural number. The singleton natural-number words are
+cofinal below the empty word, so the termination order fails the criterion.
+Furthermore, \eqref{swo:ds:eq:centered} does not extend to increasing words:
+a positive increasing word of length $\omega$ still has its finite
+prefixes cofinal below it. Its permissible continuation letters are all
+positive. Hence the centered order on $\WordsInc$ is not $\eta_{\Ord}$.
+The isomorphism of \Cref{swo:ds:thm:wordisomorphism} specifically uses
+an endpoint termination convention.
+
+\subsection{Complete isomorphism classification of the termination family}
+
+There is a stronger classification for unrestricted and injective words.
+For an infinite regular cardinal $\kappa$, place the formal terminator
+at the threshold
+\[
+ L_\kappa=\{x:\exists\alpha<\kappa\ (x<\alpha)\},\qquad
+ R_\kappa=\{x:\forall\alpha<\kappa\ (\alpha<x)\},
+\]
+and call the resulting unrestricted word order $\mathbf T_\kappa$. The two
+classes partition $\No$: the regular infinite cardinal $\kappa$ is a
+limit ordinal. Its left side has cofinality $\kappa$, while its right
+side has no set coinitial family, since the set of ordinals below
+$\kappa$ can be separated from any proposed such family by
+the set-cut property (\cref{swo:n3.1}).
+
+\begin{theorem}[All termination types]\label{swo:ds:thm:alltermination}
+In GBC, the isomorphism types obtained from every formal termination
+cut, for either unrestricted or injective set words, are exactly
+\[
+ \mathbf T_{\min},\quad\mathbf T_{\min}^{\mathrm{op}},\quad\No,\quad
+ \mathbf T_\kappa,\quad \mathbf T_\kappa^{\mathrm{op}}
+ \quad(\kappa\text{ infinite regular}).
+\tag{S16.8}\label{swo:ds:eq:alltermination}
+\]
+There are no repetitions in this list. Here $\mathbf T_{\min}$ uses
+shorter-prefix-first comparison. At every point of $\mathbf T_\kappa$ the
+left cofinality is $\kappa$ and there is no set coinitial family on the
+right; its dual has the reversed profile.
+\end{theorem}
+\begin{proof}
+The endpoint placements give the first two types, by
+\Cref{swo:ds:thm:wordisomorphism} and numerical negation. For an
+interior placement, \Cref{swo:ds:thm:terminator} gives $\No$ unless
+one threshold side has no endpoint and a set cofinal or coinitial
+family. Both sides cannot fail this way: the two sets would contradict
+the set-cut property (\cref{swo:n3.1}). The one small character is an infinite regular
+cardinal, say $\kappa$.
+
+For a maximum-free left threshold of cofinality $\kappa$, extensions
+$p\cat(c)$ with $c$ in a cofinal subset of the left threshold are
+cofinal below any word $p$. In the injective case one may move these
+letters through intervening nonempty intervals to avoid $\ran(p)$.
+Conversely, the next letters of a set cofinal below $p$, among its
+extending members, must be cofinal in that threshold. This proves the
+left character $\kappa$. The right threshold has no set coinitial
+family, and the same next-letter argument excludes one above $p$.
+If a threshold side has an endpoint instead, two-letter extensions as
+in \Cref{swo:ds:thm:terminator} exclude small local character on that
+side. These observations also distinguish the profiles in the list.
+
+Two maximum-free threshold cuts with left cofinality $\kappa$ are
+conjugate by a numerical automorphism of $\No$. Choose increasing
+cofinal sequences of length $\kappa$ on their left sides, match them,
+and extend this set partial isomorphism by back-and-forth. Each left
+side is determined as the initial closure of its sequence, so the
+automorphism carries the whole threshold cut to the other one.
+Applying it entrywise identifies the unrestricted word orders, and
+likewise the injective ones. The right-sided case is dual.
+
+To identify unrestricted and injective words in this remaining case,
+fix the cofinal left sequence. For every set $S$, choose uniformly a
+cofinal sequence of the same type in $L_\varepsilon\setminus S$,
+using fresh points in intervening surreal intervals. Start
+back-and-forth with the matching of these two set sequences. It gives
+a uniform isomorphism $h_S:\No\to\No\setminus S$ preserving both
+threshold sides. Taking $h_\varnothing$ as the identity, the recursion
+\[
+ q(i)=h_{\ran(q\res i)}(f(i))
+\]
+is a length- and prefix-preserving isomorphism from free words to
+injective words, now preserving comparison with the middle terminator
+as well. All preparatory sequences and stage histories are sets.
+The saturated cases were already identified with $\No$.
+
+Finally endpoints distinguish the first two types. The surreal type
+has no small character on either side of any point, whereas the
+$\mathbf T_\kappa$ types have the displayed one-sided character. Those
+characters distinguish the different regular cardinals and their
+duals. This proves exhaustiveness and absence of repetitions.
+\end{proof}
+
+Every termination order in this list is nevertheless equimorphic with
+$\No$, even without global choice. For an arbitrary threshold, the
+increasing map $\phi(x)=x/(1+|x|)$ can be rescaled separately on its
+two sides into $(-1,0)$ and $(0,1)$. This preserves all letter
+comparisons and puts termination at zero. The duplicated-sign codes
+above then give an explicit word embedding into $\No$; singleton
+words supply an embedding in the opposite direction. Thus equimorphism
+leaves a proper class of different isomorphism types undistinguished.
+This classification excludes numerically increasing words with an
+interior terminator, whose behavior depends on the prefix as explained
+above.
+
+\subsection{Length-first ordering is another independent choice}
+
+In shortlex order one compares the ordinal lengths first, and compares
+entries only when those lengths agree. It is the ordered sum of the
+fixed-length layers over $\Ord$, rather than one of the termination
+orders above. Its empty word is a minimum, and two words can be ordered
+by their lengths even when they disagree numerically at their first
+entry. This variant is rigorously definable on set codes but should be
+named explicitly; none of the global-exhaustive results implicitly uses it.
+
+\begin{note}[\merge; one letter code, five spellings]\label{swo:vii:note:codes}
+With $D(s)$ the sign sequence $s$ with every sign doubled, the letter codes
+of the six sources and of Part~II are the following; each is prefix-free and
+order-preserving because its terminal block lies strictly between $(-,-)$ and
+$(+,+)$.
+\begin{itemize}
+\item $D(s_x)\cat(+,-)$: source~16's $C_-$ (S16.7), source~13's $c(x)$
+(\cref{swo:fs:prop:centralcode}) and source~18's centered $C(x)$
+(\cref{swo:sh:wv:centered-code}); birthday $2\cdot\bd(x)+2$ per letter, as in
+(S16.7). Source~16's $C_+$ is $D(s_x)\cat(-,+)$.
+\item $(+)\cat D(s_x)\cat(+,-)$: Part~II's prefix-first code (\cref{swo:sw:code}),
+source~16's ``add an initial $+$'' and source~18's $K(x)$
+(\cref{swo:sh:prop:dictionary-code}); birthday $1+2\cdot\bd(x)+2$ per letter.
+Source~17's code (S17.1) is $(+)\cat D(s_x)\cat(-,+)$, with the same birthday.
+\item $00,11,01$ for $-,+$ and termination, read as signs: source~14's inner
+code (\cref{swo:tc:n11.1} and its Subsection~2.3) and source~15's entry code
+(\cref{swo:cb:lem:entrycode}); this is source~16's $C_+$. Source~14 doubles it
+once more for the outer word, which gives $4\cdot\bd(x)+4$ per letter and $2$
+for the end.
+\end{itemize}
+Source~16 does not cite Part~II for its prefix-first code. No source claims
+that any of these codes is optimal; source~11's question on optimal birthday
+bounds (\cref{swo:n16.6}) stays open (\cref{swo:vii:sec:status}).
+\end{note}
+
+% ---- source 13 (batch-81 manuscript 01), lines 1389-1540
+\subsection{Source 13's route: central termination restores a surreal word order}\label{swo:fs:sec:central}
+
+\merge\ Source~13's Section~12, printed whole as a route to the central case
+of \cref{swo:ds:thm:terminator}. Its order $\WordsAll_0$ is the termination
+order of the alphabet $\No\setminus\{0\}$ with the terminator in the place of
+the reserved zero, i.e.\ with threshold sides the negative and the positive
+surreals; neither side has an endpoint or a set cofinal (resp.\ coinitial)
+subset, so \cref{swo:ds:thm:terminator}, transported along an isomorphism
+$\No\setminus\{0\}\cong\No$ in $\GBC$, gives \cref{swo:fs:thm:central}. The
+proofs are the same common-prefix search. Its code (\cref{swo:fs:prop:centralcode})
+is source~16's code $C_-$ (S16.7), with the same birthday. Source~13's own
+caveat stands: it does not classify all placements of a marker; source~16
+does (\cref{swo:ds:thm:alltermination}). Its references to its fresh-separator
+lemma, class universality and core interpolation are printed as references to
+\cref{swo:lem:delete,swo:prop:universal,swo:gl:interpolation}.
+
+The end-first convention of \Cref{swo:fs:sec:words} treats every
+extension as larger than its prefix, irrespective of the sign of the
+new label. We now keep a genuine middle termination value. To avoid
+collapsing distinct words, that value must not also be an ordinary
+letter.
+
+\subsubsection{The precise alternative}
+
+Let $A=\No\setminus\{0\}$. A word $p:\alpha\to A$ is padded by the
+surreal number $0$ at every coordinate at or beyond $\alpha$. Compare
+two different words at the first difference of these padded functions,
+using numerical comparison in $\No$. Call this \emph{central
+termination}, and denote the arbitrary-word and injective-word orders
+by $\WordsAll_0$ and $\I_0$, respectively.
+
+For example,
+\[
+       (-1)<()<(1),\qquad
+       p\cat(-1)<p<p\cat(1),
+\]
+whenever the displayed appended letters are allowed. The empty word
+is now an interior point, not an endpoint. For injective words, fresh
+negative and positive letters can always be used in place of $-1,1$.
+
+Distinct words really are distinguished by padding: at the end of a
+proper prefix, the longer word has a nonzero letter. If $0$ were also
+allowed as a letter, $p$ and $p\cat(0)$ would have identical padded
+functions. The resulting rule would fail even to define an
+antisymmetric order on raw words. Reserving the marker is essential.
+
+\begin{theorem}[Central-word isomorphism]\label{swo:fs:thm:central}
+In $\GBC$,
+\[
+                          \WordsAll_0\cong\No,
+                  \qquad \I_0\cong\No.
+\]
+Both isomorphisms concern ordinary classes of set codes. They do not
+identify the word structure, concatenation, or birthdays with surreal
+arithmetic.
+\end{theorem}
+\begin{proof}
+It suffices to prove set-cut saturation. Let a set of lower words be
+strictly below a set of upper words. Choose an ordinal $\delta$
+strictly above all their lengths. We use an active-prefix argument
+similar to the interpolation theorem of the core (source~13's Theorem~7.2, \cref{swo:gl:interpolation}), but now an active word
+that ends exactly at the current prefix contributes the value $0$.
+
+At a current nonzero-letter prefix $p$ of length $\beta$, an active
+bound agrees with $p$ and has length at least $\beta$. Let $L_\beta$
+and $U_\beta$ be its next letters, or $0$ for a bound ending there.
+Every cross lower value is at most every upper value. If there is a
+shared value $t$, it is unique. It cannot be $0$: a lower word and an
+upper word both ending at $p$ would be identical, contradicting the
+strict cut. Append $t$ and retain the active rows with next value $t$.
+In the injective case $t$ is fresh, because it belongs to an active
+injective word extending $p$.
+
+If no value is shared, choose a strict separator $x$ between the two
+sets, avoiding $0$, and also avoiding $\ran(p)$ in the injective
+case. The fresh-separator lemma (\cref{swo:lem:delete}) supplies it. The \emph{terminated}
+word $p\cat x$ now lies strictly between every original bound. Every
+comparison is already decided at this new coordinate or an earlier
+one, so its termination afterwards is immaterial.
+
+At limits, take the union of the earlier prefixes. The procedure
+cannot continue indefinitely: after all input lengths have been
+passed, no bound can remain active. More specifically, a shared
+nonzero letter extends some active word and so cannot occur at a
+stage $\beta\geq\delta$. The construction stops at a set stage.
+It also works with an empty side or with both sides empty. This proves
+set-cut saturation of each order. Their elements are sets; apply
+class universality (\cref{swo:prop:universal}) to obtain the two isomorphisms.
+\end{proof}
+
+This answers the termination-convention direction for an important
+interior convention. It is not a classification of all possible
+placements of a marker in every class alphabet. By translating labels,
+one may reserve any specified surreal $c$ instead of $0$. Since
+$\No\setminus\{0\}\cong\No$, the construction can also be transported
+to an abstract alphabet order-isomorphic to the full surreal line.
+Such a transport is not the identity on numerical labels and should
+not be hidden in the notation.
+
+\subsubsection{An explicit sign-code embedding}
+
+The isomorphism proof uses class back-and-forth. There is also a direct
+order embedding, useful for calculations and finite tests.
+
+Given a surreal letter $x$ with sign sequence $s_x$ of length $\alpha$,
+replace each $-$ by $--$ and each $+$ by $++$, then append the pair
+$+-$. Write the resulting sign block as
+\[
+             c(x)=\operatorname{double}(s_x)\cat(+,-).
+\]
+The family of these blocks is prefix-free. If two original sign
+sequences first differ by actual signs, their doubled versions decide
+the comparison in the same direction. If one sequence ends first,
+its terminal pair $+-$ lies lexicographically between the two possible
+continuation pairs $--$ and $++$. Thus the same statement holds when
+the original comparison used termination.
+
+\begin{proposition}[Direct central-word coding]\label{swo:fs:prop:centralcode}
+For a set word $p:\lambda\to\No\setminus\{0\}$, concatenate the
+blocks $c(p(i))$ in order and regard the result as a surreal sign
+sequence. This defines an order embedding $C:\WordsAll_0\emb\No$, and
+hence also an embedding of $\I_0$, with
+\[
+          \bd(C(p))=
+          \sum_{i<\lambda}\bigl(2\cdot\bd(p(i))+2\bigr).
+\]
+All sums and products in this formula are ordinal operations.
+\end{proposition}
+\begin{proof}
+Every block has positive set-ordinal length and the concatenation has
+set-ordinal length, so it is a surreal. At a first unequal letter,
+prefix-freeness and order preservation of the block code decide the
+same comparison before either block is exhausted.
+
+If one outer word is a proper prefix of the other, its code terminates
+at the beginning of the next block. Because the next letter is
+nonzero, the first sign of its block has the sign of that letter.
+Comparison of termination with this sign has exactly the central
+termination direction. Thus all comparisons are strict and preserved.
+The birthday formula is the definition of ordinal concatenation.
+\end{proof}
+
+No claim of surjectivity is made for this explicit map. The order
+isomorphism in \Cref{swo:fs:thm:central} is a separate conclusion.
+The code is a central-termination adaptation of the prefix-free
+sign-block methods used in the earlier set-word analysis
+of Part~II (\cref{swo:sw:code}); the accompanying finite tests check it by
+independent dyadic evaluation.
+
+\subsubsection{Why the obstruction disappears}
+
+At a limit-length central word $p$, the proper prefixes are not
+uniformly below it: their comparison depends on the next nonzero
+letter of $p$. More importantly, a set of lower approximants can be
+separated from $p$ by a fresh next value at the decisive active stage.
+The set-cut proof supplies this separator regardless of a particular
+sign pattern. Hence the small cofinality invariant of
+\Cref{swo:fs:prop:wordlimit} no longer obstructs an isomorphism
+with $\No$.
+
+The two constructions therefore illustrate a general warning:
+lexicographic comparison of variable-length words is not a minor
+technical variation of fixed-domain lexicography. A termination
+convention can change endpoints, point characters, and the entire
+isomorphism type.
+
+% ---- source 18 (batch-81 manuscript 06), lines 1574-1688
+\subsection{Source 18's route: centered termination changes the order}\label{swo:vii:sub:sh-centered}
+
+\merge\ Source~18's Section~7, printed whole as a third proof of the central
+case. Its classes $\mathcal C$, $\mathcal C_{\mathrm{inj}}$,
+$\mathcal C_{\mathrm{inc}}$ are printed $\WordsAll_c$, $\Words_c$, $\WordsInc_c$
+(\cref{swo:sub:notation81}). Its centered order is source~13's $\WordsAll_0$
+(the terminator compared as zero with the next entry), and its code $C(x)$
+is source~13's $c(x)$ and source~16's $C_-(x)$. Nothing in it is new against
+sources~13 and~16 except the remark that singleton words also embed $\No$
+into $\WordsInc_c$, which the next section uses. Source~18 was written
+before sources~13--17 arrived.
+\label{swo:sh:wv:centered}
+
+For a set word \(p\), write \(\ell(p)\) for its ordinal length and
+\(p\mathbin{\frown}\langle x\rangle\) for ordinal concatenation.
+The surreal set-cut property used throughout this section is the following:
+if \(L<R\) are sets of surreals, possibly empty, there is a surreal
+strictly between them.  The interpolant can also be required to avoid
+any prescribed set.  Indeed, first find a nonempty surreal interval
+between the two sides, and then use the set-cut property inside that
+interval to escape the forbidden set.  No global choice is needed
+for these interpolation statements.
+
+Put \(D=\No\setminus\{0\}\).  Let \(\WordsAll_c\) be all set-length
+words over \(D\), and let \(\Words_c\) and
+\(\WordsInc_c\) be its injective and strictly numerically
+increasing subclasses.  Include the empty word in all three classes.
+Compare unequal words at their first unequal entry.  If one word is a
+proper prefix of the other, compare its termination symbol \(\dagger\)
+with the next entry of the longer word, using
+\[
+             x<\dagger\quad(x<0),\qquad
+             \dagger<x\quad(x>0).
+\]
+Thus \(\dagger\) occupies the missing numerical position of zero.
+This is a strict linear order, called the centered order below.
+The definition is not the shorter-first convention.
+
+\begin{theorem}[Centered arbitrary and injective words]
+\label{swo:sh:wv:centered-eta}
+Both \(\WordsAll_c\) and \(\Words_c\) fill every
+set cut.  Consequently, in \(\mathrm{GBC}\), both are
+order-isomorphic to \(\No\).  They have no endpoints; neither side
+of any point has a set cofinal or a set coinitial subset, respectively.
+\end{theorem}
+
+\begin{proof}
+For a prefix \(p\), its cone consists of all words extending \(p\),
+including \(p\) itself.  A cone is convex.  A word outside it is
+uniformly below the whole cone or uniformly above the whole cone:
+the comparison has already been decided before \(p\) ends.
+
+Given a set cut \(A<B\), start with the empty prefix.  Maintain the
+invariant that discarded members of \(A\) are below its whole cone,
+and discarded members of \(B\) are above its whole cone.  At a current
+prefix \(p\) of length \(\delta\), assign next tokens to the active
+words: an actual next entry to a proper extension, and the numerical
+token \(0\) to \(p\) itself.  Let \(L_p,R_p\) be the two sets of
+tokens.  Every member of \(L_p\) is at most every member of \(R_p\).
+Their intersection therefore has at most one member.
+
+If the token sets are disjoint, choose
+\[
+          L_p<c<R_p,\qquad
+          c\notin\{0\}\cup\operatorname{ran}(p).
+\]
+Then \(p\mathbin{\frown}\langle c\rangle\) interpolates the original
+cut.  Avoiding the range is needed only for the injective version.
+If the token sets meet, their common token cannot be zero: zero would
+mean that the same word \(p\) belonged to both sides.  Append their
+common nonzero entry and continue.  The new prefix is injective when
+required, since it is an actual prefix of a witnessing injective word.
+At a limit stage take the union.  The cone invariant persists.
+
+Choose an ordinal strictly above every length occurring in
+\(A\cup B\).  The search cannot keep finding common actual entries
+that long.  It therefore terminates with a successor-length
+interpolant.  Empty sides cause no difficulty.  Taking one side to be
+a singleton gives the asserted local character properties.
+
+In \(\mathrm{GBC}\), restrict a fixed set-like global well-order to
+each of the two proper classes and to \(\No\).  An ordinal
+back-and-forth constructs an isomorphism: at each stage its partial
+map is a set, and the new point is chosen in the cut imposed by that
+set.  Freshness follows from the set-avoidance version of
+interpolation.  This is a recursion with set-sized partial maps,
+not an appeal to choice for arbitrary families of proper classes.
+\end{proof}
+
+The contrast with shorter-first words is substantive.  At a limit
+word, the centered convention still permits extensions on both sides.
+These extensions prevent the proper prefixes from creating a
+one-sided set-cofinal obstruction.
+
+\begin{proposition}[An explicit centered sign embedding]
+\label{swo:sh:wv:centered-code}
+There is an explicit order embedding of \(\WordsAll_c\) into \(\No\),
+without global choice.  Conversely, \(\No\) embeds into each of
+\(\WordsAll_c\), \(\Words_c\), and
+\(\WordsInc_c\).
+\end{proposition}
+
+\begin{proof}
+For a nonzero surreal \(x\), let \(s_x\) be its nonempty sign expansion.
+Duplicate each sign, writing \(D(s_x)\), and put
+\[
+       C(x)=D(s_x)\mathbin{\frown}(+,-).
+\]
+This is a prefix-free order-preserving code.  When one original sign
+expansion ends, the delimiter \((+,-)\) is compared with the next
+doubled block; the inequalities
+\[
+                  (-,-)<(+,-)<(+,+)
+\]
+give exactly the surreal comparison at termination.  The first sign
+of \(C(x)\) is the sign of \(x\).
+For a word \(f\), concatenate the blocks \(C(f(i))\) in ordinal
+domain order.  Replacement makes the resulting sign expansion a set.
+First disagreements are preserved by prefix freedom; proper-prefix
+comparisons are preserved by the first sign of the next block.
+This proves the first assertion.
+For the reverse embedding send \(0\) to the empty word and send
+\(x\ne0\) to \(\langle x\rangle\).
+\end{proof}
+
+% ---- hand chunk centered increasing
+\section{Centered increasing words and the entry zero (source 18)}\label{swo:vii:sec:centered}
+
+\merge\ Source~18's Sections~8, 9 and~11 and the corollary of its Section~10,
+printed whole; no other source treats these orders. Source~16 observed the
+first obstruction (end of its Subsection~8.1: a positive increasing word of
+length $\omega$ is the supremum of its finite prefixes, so the centered order
+on $\WordsInc$ is not $\eta_{\Ord}$) and asked for the classification of
+increasing words with an interior terminator (its question ``Centered
+increasing words''); source~18 gives it for the threshold at zero
+(\cref{swo:sh:wv:inc-cuts}), and settles the three ways of treating an
+actual entry zero (\cref{swo:sh:wv:zero-quotient,swo:sh:wv:adjacent-terminator-all,swo:sh:wv:zero-adjacency}).
+Its proofs use the common-prefix search of \cref{swo:sw:cutclassification}
+with the termination token evaluated as zero.
+
+% ---- source 18 (batch-81 manuscript 06), lines 1689-1838
+\subsection{Centered increasing words: an exact cut classification}
+\label{swo:sh:wv:increasing}
+
+Strict numerical increase changes which continuations remain
+available.  An all-negative prefix admits fresh negative and positive
+continuations.  Once a positive entry has occurred, every valid
+continuation is positive.  This distinction gives the entire
+obstruction below.
+
+\begin{theorem}[Local characters of centered increasing words]
+\label{swo:sh:wv:inc-characters}
+Let \(f\in\WordsInc_c\) have length \(\alpha\).
+If \(\alpha\) is a nonzero limit and \(f\) has a positive entry, then
+\[
+ \operatorname{cf}\bigl((\WordsInc_c)_{<f}\bigr)
+                  =\operatorname{cf}(\alpha).
+\]
+At every other point the open initial segment has no set cofinal
+subset.  At every point the open final segment has no set coinitial
+subset.  The order has no endpoints and is dense.
+\end{theorem}
+
+\begin{proof}
+If \(f\) has a positive entry and has limit length, its sufficiently
+long proper prefixes form an increasing cofinal family below it.
+Every smaller word either terminates before \(f\), or first differs
+at a smaller entry before \(\alpha\); it cannot properly extend
+\(f\), since all such extensions are larger.  It is consequently
+below every sufficiently long prefix.  A cofinal sequence of prefix
+lengths proves the upper bound \(\operatorname{cf}(\alpha)\).
+Conversely, for each smaller word choose a prefix exceeding it.
+Fewer than \(\operatorname{cf}(\alpha)\) chosen lengths are bounded,
+so that many words cannot be cofinal.
+
+Suppose next that every entry of \(f\) is negative; this includes
+the empty word.  Given a set \(A<f\), collect the next entries of
+those members of \(A\) that properly extend \(f\).  They are all
+negative.  Choose a negative \(d\) above this set and above
+\(\operatorname{ran}(f)\).  The set-cut property permits this even
+when the range of \(f\) has no largest member.  Then
+\[
+              A<f\mathbin{\frown}\langle d\rangle<f.
+\]
+Members of \(A\) that do not extend \(f\) first differ earlier
+with a smaller entry.  They are also below this new word.
+
+If \(f=p\mathbin{\frown}\langle x\rangle\) and \(x>0\), a smaller
+word sharing \(p\) either stops there or has next entry below \(x\).
+For a set of such words, choose \(d<x\) above all their next entries,
+above zero, and above \(\operatorname{ran}(p)\).
+The word \(p\mathbin{\frown}\langle d\rangle\) is a strictly larger
+lower bound for \(f\) than any member of the given set.
+This handles the remaining successor case.
+
+Finally, given a set \(B>f\), the next entries of members that extend
+\(f\) are positive.  Choose a positive \(d\), above the range of
+\(f\), but below all those entries.  Then
+\[
+                    f<f\mathbin{\frown}\langle d\rangle<B.
+\]
+All other members of \(B\) are above the whole cone of \(f\).
+This proves the right-hand assertion and, with empty sets, the
+absence of endpoints.
+
+For density, if two words first differ, choose a new coordinate
+strictly between their different entries.  It is automatically
+above the common prefix.  If the comparison is a proper-prefix
+comparison with next entry \(x>0\), choose a coordinate strictly
+between the set \(\{0\}\cup\operatorname{ran}(p)\) and \(x\).
+For a next entry \(x<0\), choose one strictly between
+\(\{x\}\cup\operatorname{ran}(p)\) and zero.
+\end{proof}
+
+\begin{theorem}[All set-cut obstructions]
+\label{swo:sh:wv:inc-cuts}
+A set cut \(A<B\) in \(\WordsInc_c\) has no
+interpolant if and only if \(B\) has a minimum \(b\) such that
+\begin{enumerate}
+\item \(\ell(b)\) is a nonzero limit ordinal;
+\item \(b\) has a positive entry;
+\item \(A\) is cofinal in the open initial segment below \(b\).
+\end{enumerate}
+In every other case an interpolant of nonzero successor length
+can be chosen.
+\end{theorem}
+
+\begin{proof}
+The stated obstruction plainly prevents interpolation.  For the
+converse use the common-prefix search from
+\Cref{swo:sh:wv:centered-eta}, evaluating the termination token as
+zero.  Common actual coordinates can still be appended, since each
+is witnessed by an increasing word.
+
+At a stage where the next-token sets are disjoint, a permissible
+new coordinate must satisfy
+\[
+       L_p\cup\operatorname{ran}(p)<c<R_p,\qquad c\ne0.
+\]
+Every actual token on the right exceeds the whole range of \(p\).
+Thus these are consistent strict surreal constraints unless zero
+is a right token and \(p\) already has a positive entry.
+When zero is a right token and all entries of \(p\) are negative,
+the constraints are still consistent and a negative interpolating
+coordinate can be chosen.  Empty right sides are harmless.
+
+The sole exceptional event is therefore reaching \(p\in B\)
+after \(p\) has acquired a positive entry.  Every proper extension
+of \(p\) is larger, so the active lower side is then empty and
+\(p=\min B\).  This event cannot occur at a successor length:
+the last common coordinate had a witness in \(A\) extending that
+successor prefix, which would be at least \(p\), contradicting
+\(A<B\).  It also cannot occur at length zero.
+
+It can occur at a limit length \(\alpha\).  For every sufficiently
+large \(\xi<\alpha\), a lower-side witness supplied the coordinate
+\(p(\xi)\).  That witness extends
+\(p\restriction(\xi+1)\), is at least this prefix, and remains below
+\(p\).  The sufficiently long prefixes are cofinal below \(p\)
+by \Cref{swo:sh:wv:inc-characters}; hence \(A\) is cofinal there.
+As before, a bound on all input word lengths ensures that the search
+terminates using only set recursion.
+\end{proof}
+
+\begin{corollary}
+\label{swo:sh:wv:inc-corollary}
+The centered increasing-word order is equimorphic with \(\No\),
+but is not isomorphic to \(\No\), even in \(\mathrm{GBC}\).
+Its successor-length suborder fills every set cut and is isomorphic
+to \(\No\) in \(\mathrm{GBC}\).  The larger suborder obtained by
+adjoining the empty word and every all-negative limit word also
+fills every set cut and has the same isomorphism conclusion.
+\end{corollary}
+
+\begin{proof}
+Use the explicit embeddings of \Cref{swo:sh:wv:centered-code}.
+The increasing word \(\langle1,2,3,\ldots\rangle\) is the supremum
+of its finite prefixes in this word order.  Such a nontrivial set
+supremum cannot occur in \(\No\), by its set-cut property.
+For either stated suborder, an upper set cannot contain the
+exceptional minimum in \Cref{swo:sh:wv:inc-cuts}, and the proof
+returns a successor word in the suborder itself.  Apply class
+back-and-forth in \(\mathrm{GBC}\).
+\end{proof}
+
+Every nonempty open interval in the centered increasing-word order
+contains an order copy of \(\No\).  The density proof can choose a
+whole surreal interval of permissible new coordinates, rather than
+one coordinate.  This supplies the copy.  Thus rich interval
+universality coexists with the precise limit-word obstructions.
+
+% ---- source 18 (batch-81 manuscript 06), lines 1839-2041
+\subsection{What if the entry zero is allowed?}
+\label{swo:sh:wv:zero}
+
+Saying only that termination lies ``between negatives and positives''
+does not settle its relation to an actual entry equal to zero.
+There are at least three different mathematical constructions.
+
+\subsubsection{Zero padding and its quotient}
+
+One may pad each set word by zeros at every later ordinal coordinate.
+First-difference comparison then gives a total preorder, not a strict
+linear order on the original words.  For instance the empty word
+and \(\langle0\rangle\) become equal.  In general put
+\[
+ \sigma(f)=\sup\{\xi+1:\xi<\ell(f),\ f(\xi)\ne0\},\qquad
+ \rho(f)=f\restriction\sigma(f).
+\]
+Two padded words are equivalent exactly when their reduced words
+\(\rho(f)\) agree.  A class of canonical set representatives is
+therefore available: trim the entire terminal zero tail.  A
+limit-length reduced word has nonzero entries cofinal in its length.
+Reduction preserves injectivity and strict numerical increase.
+
+\begin{proposition}[The zero-padding quotient]
+\label{swo:sh:wv:zero-quotient}
+For all set words, and separately for injective set words, the
+zero-padding quotient fills every set cut and is isomorphic to
+\(\No\) in \(\mathrm{GBC}\).
+For strictly increasing set words, the quotient has exactly the
+cut obstruction in \Cref{swo:sh:wv:inc-cuts}, applied to the reduced
+representatives.  Its exceptional points are precisely the reduced
+limit words having a positive entry.
+\end{proposition}
+
+\begin{proof}
+Work with reduced representatives.  A set of input representatives
+has lengths bounded by a set ordinal \(\mu\).  Pad them by zeros
+through coordinate \(\mu\) and perform the numerical common-prefix
+search.  This search now allows a common coordinate equal to zero.
+
+In the injective case, the prefix produced by the search remains
+injective.  A common nonzero coordinate is an actual coordinate of
+every witness.  If zero is common, at least one witness has an actual
+zero at that coordinate: otherwise a witness on each side would
+have terminated already and, agreeing at all previous coordinates,
+would represent the same padded word.  An actual witness certifies
+that the enlarged prefix is injective.  At a separation step choose
+a nonzero coordinate outside the range of the prefix, using the
+surreal set-cut property.  This returns a reduced injective word.
+At coordinate \(\mu\), two distinct input classes cannot both remain
+active, so termination is guaranteed.  This proves the first claim.
+
+For increasing words the same witness argument makes every common
+prefix strictly increasing.  At a separating step add its range
+to the lower numerical constraints.  The only potential failure
+is an upper padded-zero token together with a nonnegative entry in
+the current prefix.
+
+If the prefix has a positive entry, an increasing extension cannot
+consist of an extra padded zero.  The active upper word must therefore
+be exactly this reduced prefix.  As in the proof of
+\Cref{swo:sh:wv:inc-cuts}, a successor stopping stage contradicts
+the preceding lower-side witness, while a limit stopping stage gives
+the stated cofinal-prefix obstruction.
+
+The remaining apparent failure would be a prefix
+\(p=q\mathbin{\frown}\langle0\rangle\), where \(q\) is all-negative,
+and an active upper representative equal to \(q\).  This stage
+cannot be reached.  The common zero that produced it would require
+a lower witness.  If that witness has terminated, it represents
+\(q\) itself; if it has an actual zero, its reduced increasing
+continuation has a positive entry and lies above \(q\).  Both
+possibilities contradict the cut.  There are no further failures.
+The converse obstruction is again supplied by cofinal proper
+prefixes of a positive limit word.
+\end{proof}
+
+For labeled well-orders the quotient is a change of subject that
+must be stated explicitly.  It identifies distinct codes with
+different underlying sets: an all-negative increasing word and
+that word followed by zero are different labeled well-orders,
+although the padding convention makes them equivalent.
+
+\subsubsection{A distinct terminator immediately below or above zero}
+
+Alternatively, retain every word as a distinct object and use one
+of the two enlarged alphabets
+\[
+ \No_{<0}<\dagger_-<0<\No_{>0},\qquad
+ \No_{<0}<0<\dagger_+<\No_{>0}.
+\]
+The indicated neighboring symbols are adjacent in the enlarged
+alphabet.  These are genuine linear orders on the original words.
+
+\begin{proposition}
+\label{swo:sh:wv:adjacent-terminator-all}
+For arbitrary set words, and separately for injective set words,
+both distinct-terminator conventions fill every set cut.  Each
+resulting class order is isomorphic to \(\No\) in \(\mathrm{GBC}\).
+\end{proposition}
+
+\begin{proof}
+Use the common-prefix search with tokens in the enlarged alphabet.
+At a strict token separation an unused surreal can normally be
+inserted.  The only exception is its displayed adjacent pair.
+
+For \(\dagger_-<0\), the exceptional separation has the current
+prefix \(p\) on the lower side, and upper active words with next
+entry zero.  No lower word has next entry zero, since that would
+have caused a common-coordinate step.  Append zero and then append
+a sufficiently small negative, unused coordinate.  The resulting
+word is above the original lower side and below every upper word
+in the zero cone, including its root if that root occurs.
+For \(0<\dagger_+\), use the reverse construction: append zero and
+then a sufficiently large positive, unused coordinate.
+The existence of a zero cone certifies that zero has not already
+been used when injectivity is required.  All choices avoid the
+remaining set of used entries.  This resolves the only additional
+cases, and the length bound still makes the search a set recursion.
+\end{proof}
+
+Increasing words behave differently.  The following general fact
+isolates the reason, independently of any surreal coding.
+
+\begin{lemma}[Adjacency test for increasing words]
+\label{swo:sh:wv:adjacency-test}
+Let \(D\) be a linearly ordered alphabet with a distinct termination
+symbol \(\dagger\).  Suppose every allowed increasing set word has
+a further admissible entry above \(\dagger\).  In the corresponding
+order of all increasing set words, \(f<g\) are adjacent if and only if
+\[
+ g=f\mathbin{\frown}\langle c\rangle,
+ \qquad
+ c=\min\{x\in D:\operatorname{ran}(f)<x,\ \dagger<x\}.
+\]
+The minimum in this assertion must exist.
+\end{lemma}
+
+\begin{proof}
+If \(f\) is not a prefix of \(g\), append a positive-side
+admissible entry to \(f\).  The new word is above \(f\), and its
+comparison with \(g\) was already settled before the appended
+entry; hence it remains below \(g\).  Such a pair is not adjacent.
+
+If \(f\) is a proper prefix of \(g\), its first new entry \(c\)
+must be above \(\dagger\).  All subsequent entries exceed \(c\),
+so if \(g\) has any further entries, the one-letter extension
+\(f\mathbin{\frown}\langle c\rangle\) lies strictly between.
+For this one-letter extension to be adjacent, no admissible entry
+strictly between \(\dagger\) and \(c\) can exist.  Conversely,
+if \(c\) is the stated minimum, every word in between would have
+to extend \(f\); its first new entry could neither be below \(c\)
+nor above it, and a proper continuation after \(c\) would be larger
+than \(g\).  No such word exists.
+\end{proof}
+
+\begin{corollary}[Exactly where the zero jump appears]
+\label{swo:sh:wv:zero-adjacency}
+For increasing surreal words with \(\dagger_-\), the adjacent
+pairs are exactly
+\[
+          p\ <\ p\mathbin{\frown}\langle0\rangle
+          \quad\text{with every entry of \(p\) negative}.
+\]
+The empty prefix is allowed.  With \(\dagger_+\), or with zero
+excluded and centered termination, there are no adjacent pairs.
+\end{corollary}
+
+\begin{proof}
+Every set of surreal entries has a strictly larger positive surreal,
+so the lemma applies.  With \(\dagger_-\), an all-negative prefix
+has zero as its least positive-side admissible entry.  Once a
+nonnegative entry is present, the admissible upper class has no
+least member, by the surreal set-cut property.  With
+\(\dagger_+\), its positive-side admissible class consists of
+positive surreals above the prefix and has no least member.
+The same argument applies when zero is excluded.
+\end{proof}
+
+Thus a convention that differs only in the placement of actual
+zero can create adjacent pairs even among finite increasing words.
+The absence of an eligible letter between termination and the zero
+entry is decisive: increasing words cannot use the negative
+two-letter detour from \Cref{swo:sh:wv:adjacent-terminator-all}.
+
+For completeness, the same common-prefix argument gives the full
+set-cut classification for increasing words with the distinct
+terminators.  With \(\dagger_+\), only the positive limit-word
+obstruction of \Cref{swo:sh:wv:inc-cuts} remains.  With
+\(\dagger_-\), one must additionally allow the adjacent-pair
+obstruction
+\[
+ \max A=p,\qquad \min B=p\mathbin{\frown}\langle0\rangle,
+ \qquad \operatorname{ran}(p)<0.
+\]
+Indeed, at the exceptional token gap the word
+\(p\mathbin{\frown}\langle0\rangle\) itself interpolates unless
+it is the upper minimum and \(p\) is the lower maximum.  All
+other separating-coordinate steps work as before.  A positive
+limit stopping stage is unchanged.  For \(\dagger_+\), the
+zero-then-positive detour is increasing and always resolves the
+adjacent token gap.
+
+\begin{note}[\merge; two of the zero conventions are source~16's]\label{swo:vii:note:adjacent}
+For arbitrary and injective words, the conventions $\dagger_-$ and $\dagger_+$
+of \cref{swo:sh:wv:adjacent-terminator-all} are source~16's $0^-$ and $0^+$,
+and that proposition is (S16.6), a case of \cref{swo:ds:thm:terminator}; both
+proofs resolve the adjacent pair by the same two-letter detour. New in
+source~18 are the zero-padding quotient (\cref{swo:sh:wv:zero-quotient}) and,
+for increasing words, the exact adjacent pairs
+(\cref{swo:sh:wv:adjacency-test,swo:sh:wv:zero-adjacency}).
+\end{note}
+
+\subsection{Cones of centered increasing words (source 18, Corollary 10.2)}
+
+% ---- source 18 (batch-81 manuscript 06), lines 2042-2149 (chunk lines 80-116)
+\end{proof}
+
+This theorem sharpens equimorphism: under the displayed choice
+assumption the three shorter-first word orders are actually the
+same order type.  It does not identify that type with \(\No\).
+Their positive-length limit prefixes still have the familiar
+small left cofinalities and nontrivial set suprema.
+
+\begin{corollary}[Two kinds of centered increasing cones]
+\label{swo:sh:wv:cone-types}
+Work in \(\mathrm{GBC}\), with zero excluded and centered termination.
+The cone above an all-negative increasing prefix \(p\), including
+its root \(p\), is isomorphic to the entire centered increasing-word
+order \(\WordsInc_c\).  If \(p\) has a positive entry,
+its cone is isomorphic to the shorter-first arbitrary-word order,
+including that order's minimum.  These isomorphisms can preserve
+the rooted prefix tree and the lengths of tails after the root.
+\end{corollary}
+
+\begin{proof}
+At an all-negative prefix, the two admissible classes
+\[
+ \{x:\operatorname{ran}(p)<x<0\},\qquad \{x:0<x\}
+\]
+are both proper and fill every set cut relative to themselves.
+Once a positive coordinate is chosen, the negative admissible
+class disappears, and the positive admissible class continues to
+fill all set cuts.  Use the uniform construction in the proof of
+\Cref{swo:sh:wv:tree-isomorphism} separately on the negative and
+positive parts whenever both are present.  The source and target
+therefore pass from the all-negative case to the positive case
+at the same coordinate, and both entry and termination comparisons
+are preserved.  This proves the first assertion.  In the positive
+case every later entry is above termination, so the rooted cone
+uses precisely shorter-first comparison.  The one-part version
+of the same construction proves the second assertion.
+\end{proof}
+
+% ---- source 18 (batch-81 manuscript 06), lines 2150-2179
+\subsection{Regular set stages}
+\label{swo:sh:wv:regular-stages}
+
+The cut arguments also give a set-sized version.  Let \(\kappa\)
+be regular infinite, restrict entries to \(\No_{<\kappa}\), and
+restrict word lengths to be below \(\kappa\).  With zero excluded
+and centered termination, the arbitrary and injective word orders
+are \(\eta_\kappa\).  Their increasing-word successor suborders
+are \(\eta_\kappa\) as well.  The proof of every relevant cut
+statement uses fewer than \(\kappa\) input words, has its prefix
+length bounded below \(\kappa\), and adds fewer than \(\kappa\)
+coordinate constraints or forbidden entries.  Regularity and
+the \(\eta_\kappa\) property of \(\No_{<\kappa}\) supply the
+last coordinate.  If \(2^{<\kappa}=\kappa\), these orders have
+cardinality \(\kappa\) and are isomorphic to \(\No_{<\kappa}\)
+by ordinary set back-and-forth.
+
+The complete increasing-word order retains every positive
+limit-length obstruction that is present below the cutoff.
+When \(\kappa=\omega\) no nonzero limit word length is allowed,
+so this particular obstruction disappears.  These statements
+should not be extrapolated to singular cutoffs or to unrestricted
+word lengths over a fixed set alphabet: a prefix can then exhaust
+the available one-sided room.  For example, over the nonzero
+dyadic rationals, an increasing negative word
+\(\langle-1,-1/2,-1/4,\ldots\rangle\) has no further negative
+entry above its whole range, whereas every set of negative
+surreals does have such a continuation in the full surreal class.
+
+\begin{note}[\merge; regular stages in Part~II]\label{swo:vii:note:regular}
+For shorter-first words the regular-stage statements are Part~II's
+\cref{swo:sw:stagesaturation} and \cref{swo:sw:codebounds}~(1); source~18's
+paragraph gives the centered analogues. Its warning about singular cutoffs is
+the one printed after \cref{swo:sw:codebounds}.
+\end{note}
+
+% ---- hand chunk alternatives
+% ---- source 15 (batch-81 manuscript 03), lines 1872-2175
+\section{Other comparison orders (source 15; remarks of sources 13, 14, 16, 17 and 18)}\label{swo:cb:sec:alternatives}
+
+\merge\ Source~15's Section~10, printed whole as the base: three
+lexicographies on three labels, inverse-rank lexicography
+(\cref{swo:cb:thm:inverserank}), relation tables and the transfer of their
+endpoints (\cref{swo:cb:thm:tableendpoints,swo:cb:cor:tablepatterns}), the
+failure of restriction-monotone linearizations (\cref{swo:cb:thm:restriction}),
+the isomorphism quotient, the normal-form embedding
+(\cref{swo:cb:prop:hahn}) and the birthday and simplicity remarks. Its
+macros $\mathfrak W_{\mathrm{sl}}$, $\mathfrak W_{\mathrm{all}}$, $\mathcal D$
+print as in this report; its $\operatorname{rk}$, $\operatorname{bl}$ are
+this report's $\rk$ and $\bl$. The relation-code remarks of the other sources
+follow in \cref{swo:vii:sub:relcodes}.
+
+\subsection{Three lexicographies disagree on three labels}
+
+On $0<1<2$, an enumeration is a permutation word. Its inverse-rank
+vector lists the positions of labels $0,1,2$. For table lexicography
+scan the directed pairs in this order:
+\[
+ (0,1),(0,2),(1,0),(1,2),(2,0),(2,1),
+\]
+and use bit $1$ when the first label precedes the second.
+
+\begin{center}
+\begin{tabular}{ccc}
+\toprule Enumeration & Inverse ranks & Relation table\\\midrule
+$012$ & $012$ & $110100$\\
+$021$ & $021$ & $110001$\\
+$102$ & $102$ & $011100$\\
+$120$ & $201$ & $001110$\\
+$201$ & $120$ & $100011$\\
+$210$ & $210$ & $001011$\\\bottomrule
+\end{tabular}
+\end{center}
+
+The increasing orders on the same six objects are respectively
+\[
+\begin{array}{ll}
+\text{enumeration:}&012,021,102,120,201,210,\\
+\text{inverse rank:}&012,021,102,201,120,210,\\
+\text{table:}&210,120,102,201,021,012.
+\end{array}
+\]
+The table comparison is not just the reverse of enumeration comparison.
+As abstract finite orders, all three are of course the same six-point
+chain. The difference here concerns which labelled object precedes which;
+the next results distinguish abstract infinite order types as well.
+
+\subsection{Inverse-rank lexicography}
+
+Fix a baseline $q:\Ord\to\No$. For a set-like well-order $R$, let
+$r_R:\No\to\Ord$ be its rank map. Compare the permutations
+\[
+ p_R=r_R\circ q:\Ord\longrightarrow\Ord
+\]
+lexicographically, using the ordinal order on the values. Conversely,
+every class permutation $p$ corresponds to the enumeration $q\circ p^{-1}$.
+This comparison uses ordinal ranks of fixed labels, rather than numerical
+labels at fixed positions. For a non-set-like order an ordinal rank does
+not exist at every label, so this version needs a further coding choice
+before it can be applied to all raw orders.
+
+\begin{theorem}[Endpoint and character of inverse ranks]\label{swo:cb:thm:inverserank}
+The inverse-rank order of set-like global well-orders has a least element,
+the baseline order, and no greatest element. It is dense. For every nonzero
+limit ordinal $\lambda$, it has a point $M_\lambda$ with left cofinality
+$\cf(\lambda)$. No point has a set coinitial family strictly above it.
+In particular this order is not isomorphic to native enumeration lexicography.
+\end{theorem}
+\begin{proof}
+The identity permutation is least. If $p$ first differs from the identity
+at $\alpha$, all smaller ordinals have already appeared, so
+$p(\alpha)>\alpha$. On every tail of a permutation there is an ascending
+pair: otherwise a countable subsequence would descend through the ordinals.
+Swapping that ascending pair makes the permutation lexicographically larger.
+If $p<q$, perform such a swap strictly after their first disagreement;
+the result lies strictly between them. This also proves no greatest point.
+For a set family of points above $p$, bound all their first disagreements
+with $p$ and perform an ascending swap later; the result is above $p$ and
+below the entire family.
+
+Let $M_\alpha$ begin with $\alpha$ and then list the remaining ordinals
+in increasing order. This is a permutation of type $\Ord$ and is the
+least permutation with first value $\alpha$, since it always chooses
+the least unused ordinal thereafter. For limit $\lambda$,
+\[
+ M_\lambda=\sup_{\alpha<\lambda}M_\alpha.
+\]
+Indeed, a point below $M_\lambda$ has first value below $\lambda$;
+some larger $\alpha<\lambda$ therefore gives a point $M_\alpha$
+above it. A cofinal family below $M_\lambda$ must have first values
+cofinal in $\lambda$, proving the exact character. Native enumeration
+lex has no least element and no set cofinal family below any point.
+\end{proof}
+
+For a set carrier $X$ of cardinality $\mu$, scanning the labels by a
+bijection $q:\mu\to X$ gives a least inverse-rank code among all
+well-orders, again the $q$ order. On a fixed-type slice of type $\alpha$,
+a least inverse-rank code exists exactly when $\alpha=\mu$: a least
+rank vector can have no inversion, since swapping an inverted pair lowers
+it, and an increasing bijection of its ranks forces precisely that type.
+Thus even fixed-type endpoint behavior depends on the representation.
+
+\subsection{Relation tables and a theorem about all their endpoints}
+
+Choose a well-ordered scan of $X\times X$. For a proper class carrier
+assume the scan is set-like, so every proper initial part of the scan is
+a set. The table of a strict relation $R$ is its characteristic function,
+compared with $0<1$. The native numerical order on $\No^2$ cannot itself
+serve as a scan with a universal first-difference principle.
+
+\begin{theorem}[Endpoint transfer for relation tables]\label{swo:cb:thm:tableendpoints}
+For a set-like scan, a well-order table is least among all well-order
+tables if and only if it is least among all strict linear-order tables.
+The dual statement holds for greatest elements. Both assertions also
+hold with the class of set-like well-orders in place of all well-orders.
+\end{theorem}
+\begin{proof}
+Suppose $R$ is a claimed minimum and a linear order $T$ has a smaller
+table. At the first differing entry $(x,y)$, one has $xRy$ and $yTx$.
+The earlier bits impose a set $P$ of directed order constraints: a true
+off-diagonal bit gives its indicated direction, and a false one gives
+the reversed direction. Both $R$ and $T$ satisfy these constraints.
+
+Let $D$ be the downward closure of $y$ under finite $P$-paths, including
+$y$. It is a set, contained in $\{y\}$ and the vertices of the earlier
+scan. Since $T$ satisfies $P$ and $yTx$, one has $x\notin D$.
+Move $D$ to the front of $R$, preserving the old order within $D$
+and within its complement. The resulting relation $R'$ is a well-order.
+It satisfies every earlier constraint because $D$ is $P$-downward
+closed. It puts $y$ before $x$, so its first changed table bit is
+smaller, a contradiction. If $R$ was set-like, $R'$ is still set-like:
+new predecessor classes are contained in an old predecessor set together
+with $D$. The proof for a maximum moves the appropriate opposite endpoint
+at the first larger bit. The reverse implications are immediate.
+\end{proof}
+
+\begin{corollary}[Exactly three possible endpoint patterns]\label{swo:cb:cor:tablepatterns}
+On an infinite carrier, table lexicography of well-orders has at most one
+endpoint. By choosing the scan, each of the following can occur: a minimum
+only, a maximum only, or neither. The same patterns occur for set-like
+class well-orders of $\No$.
+\end{corollary}
+\begin{proof}
+Reversing a linear order complements all off-diagonal bits, so it reverses
+the table comparison. If a minimum and maximum well-order both existed,
+\Cref{swo:cb:thm:tableendpoints} would make them endpoints among all linear
+orders, and hence reversals of one another. An order and its reversal
+cannot both be well-orders on an infinite carrier: the first $\omega$
+points of one form a descending sequence in the other.
+
+For any given linear order $T$, scan each unordered pair in a two-entry
+block, putting its $T$-false direction first and its $T$-true direction
+second. Scan the blocks set-likely. Then $T$ is the least linear-order
+table: a different order changes the first entry of its earliest changed
+block from $0$ to $1$. Reversing the two entries makes $T$ greatest.
+Take $T$ to be a well-order for the one-endpoint cases, and a linear order
+such that neither it nor its reverse is well-founded for the no-endpoint
+case. Such an order exists on every infinite carrier; on $\No$ its
+native order suffices. Endpoint transfer finishes the argument.
+\end{proof}
+
+A scan built around a non-set-like $R$ makes $R$ the minimum among all
+well-orders but leaves no minimum among set-like well-orders. The greatest
+linear-order table is then $R^{\mathrm{op}}$, not a well-order, so the
+set-like subcollection has neither endpoint. Therefore a relation table
+may erase the natural numerical comparison while retaining or losing
+particular well-order types according to the chosen scan.
+
+\begin{example}[Failure of a numerical pair scan]\label{swo:cb:n10.4}
+On the integer labels, compare the enumerations
+\[
+ 0,-1,1,-2,2,-3,3,\ldots,
+ \qquad
+ 0,1,-1,2,-2,3,-3,\ldots,
+\]
+then append the same set-like enumeration of the remaining surreals.
+The resulting set-like orders disagree on the directed pairs
+$(-n,n)$ and $(n,-n)$, $n\geq1$. Their numerical-lexicographic
+disagreement set in $\No^2$ has no least pair, because its first
+coordinates include arbitrarily negative integers. A genuine well-ordered
+scan avoids this problem; the numerical order alone does not.
+\end{example}
+
+\subsection{Restrictions, extensions, and relabelling}
+
+Restriction to a smaller carrier can reverse enumeration lexicography:
+$021<102$ on $0<1<2$, but on $\{1,2\}$ the restrictions are $21>12$.
+The obstruction is stronger than a bad choice of lexicographic convention.
+
+\begin{theorem}[No total linearization respects every restriction]\label{swo:cb:thm:restriction}
+There is no total order on the six well-orders of a three-element carrier
+making all three restrictions to two-element carriers monotone, no matter
+which of the two orders is chosen on each two-element well-order space.
+\end{theorem}
+\begin{proof}
+Encode each pair restriction by $0$ or $1$ according to its chosen order.
+The three restrictions determine the original relation, so the six
+well-orders map injectively to $\{0,1\}^3$. If all restrictions were
+monotone, the six objects in increasing order would give a coordinatewise
+increasing chain of six distinct Boolean vectors. Every strict step raises
+the sum of the coordinates, whose possible values are $0,1,2,3$.
+Such a chain has at most four points, a contradiction.
+\end{proof}
+
+Thus arbitrary restrictions do not form a monotone system automatically.
+The theorem does not rule out a carefully chosen nested filtration or
+restricted family. In the other direction, fixing a well-order $Q$ of
+$X\setminus Y$ makes $R\mapsto R+Q$ an order embedding from the native
+well-order space of $Y$ into that of $X$. First disagreement occurs before
+the fixed tail. Prepending a common labelled prefix works as well.
+
+No linearization can be invariant under every relabelling of a carrier
+with at least two labels. A transposition acts as a nontrivial involution
+on its well-orders, since well-orders are rigid. But an increasing
+involution of a linear order must be the identity: $x<f(x)$ would imply
+$f(x)<f(f(x))=x$. Some auxiliary label structure is indispensable.
+Increasing automorphisms of the numerical surreal line preserve native
+enumeration lex; a table scan or baseline must instead be transported
+along with the labels.
+
+\subsection{The quotient by order isomorphism is a new construction}
+
+On the numerical carrier $\mathbb N$, let
+\[
+ R=(0,1,2,\ldots),\quad
+ S=(1,2,3,\ldots,0),\quad
+ T=(2,0,1,3,4,\ldots).
+\]
+Their types are $\omega,\omega+1,\omega$, respectively, and their first
+labels give $R<S<T$. Thus the equivalence class of type $\omega$ is
+not convex. A linear-order quotient requires convex classes, so labelled
+lexicography does not descend to abstract order types.
+
+One may separately order the possible set types by ordinal comparison.
+For $|X|=\mu$ infinite they are precisely $\mu\leq\alpha<\mu^+$;
+in that comparison their order type is $\mu^+$. The original labelled
+order embeds no ordinal $\mu^+$, by \Cref{swo:cb:thm:sets}. This is a
+particularly sharp sign that the quotient-type order is a different object.
+For set-like well-orders of all $\No$, quotienting by class-order
+isomorphism collapses everything to the one type $\Ord$. Arbitrary
+non-set-like class types require their own collection and comparison
+framework; raw labelled lexicography provides neither automatically.
+
+\subsection{Numerically well-ordered subsets and a normal-form embedding}
+
+Let $A,B\subseteq\No$ be sets or classes well-ordered by the inherited
+numerical order. Their union is well-ordered: a nonempty subclass has its
+least member among the minima of its intersections with $A$ and $B$.
+Consequently $\min(A\mathbin\triangle B)$ exists whenever $A\ne B$.
+This makes an intrinsic characteristic comparison possible without a
+global scan of the entire numerical line:
+\[
+ A<_{\chi}B\quad\Longleftrightarrow\quad
+       \min(A\mathbin\triangle B)\in A.
+\]
+It uses membership bits with $1<0$. Transitivity is first-difference
+transitivity on the well-ordered union of three carriers. For increasing
+enumerations it agrees with numerical first difference and \emph{longer
+prefixes first}. The empty carrier is greatest. The shorter-first
+convention agrees on genuine unequal next labels but reverses proper-prefix
+pairs and makes the empty carrier least.
+
+\begin{proposition}[Coefficient-one normal forms realize set supports]\label{swo:cb:prop:hahn}
+For a set-sized naturally well-ordered subset $A\subseteq\No$, the map
+\[
+ H(A)=-\sum_{a\in A}\omega^{-a}
+\]
+is a well-defined surreal, and $A<_{\chi}B$ if and only if $H(A)<H(B)$.
+\end{proposition}
+\begin{proof}
+The exponent support $\{-a:a\in A\}$ is reverse well-ordered and is
+a set, so the displayed Conway normal form is legitimate. At the least
+$a$ in the symmetric difference, the largest differing exponent is
+$-a$. The set containing $a$ has coefficient $-1$ there rather than
+$0$, and therefore gives the smaller surreal. Uniqueness of normal
+form gives injectivity \cite{Conway,Gonshor}.
+\end{proof}
+
+This particular construction does not admit proper-class support: the
+normal form of one surreal has set support. Naturally well-ordered
+proper subclasses nevertheless exist with every class well-order type
+by surreal universality. For example
+\[
+ \left\{-\frac{1}{\alpha+1}:\alpha\in\Ord\right\}\cup\{0\}
+\]
+has natural type $\Ord+1$. Its final point has a proper class of
+earlier points. The reciprocal and addition in this example are surreal
+operations on the embedded ordinal labels.
+
+At a set limit-length increasing word, shorter-first order makes the
+word the supremum of its proper prefixes; longer-first order makes it
+their infimum. The associated one-sided cofinality is the cofinality
+of the length. These features expose the termination convention in the
+order itself, even when both conventions admit embeddings into $\No$.
+
+\subsection{Birthday and simplicity do not secretly provide a scan}
+
+Simplicity, interpreted as initial sign-sequence extension, is a partial
+tree order. The one-sign strings $+$ and $-$ are incomparable by it.
+Numerical sign comparison instead uses the middle termination symbol
+$-<\text{undefined}<+$ and gives the surreal line, not a well-order.
+
+Even birthday-first ordering with numerical tie-breaking fails. The
+strings
+\[
+ s_n=-^n\concat+^\omega\qquad(n<\omega)
+\]
+all have birthday $\omega$, since $n+\omega=\omega$, and satisfy
+$s_{n+1}<s_n$. Thus the birthday-$\omega$ level already contains a
+descending sequence under numerical tie-breaking. A genuine
+birthday-compatible global well-order requires well-ordering each level
+with additional coherent choice data. That choice must be stated; it is
+not supplied by birthdays or simplicity alone.
+
+\begin{note}[\merge; repository counterparts of source~15's Section~10]\label{swo:vii:note:alt}
+Relation-table lexicography is source~08's relation-code order
+(\cref{swo:sk:prop:relationcode}: equimorphic with $\B_{\Ord}$ for every
+coordinate enumeration) and source~12's remark with its three-point check
+(\cref{swo:st:sec:subclasses}). New in source~15 are the endpoint transfer
+(\cref{swo:cb:thm:tableendpoints}) and the three endpoint patterns
+(\cref{swo:cb:cor:tablepatterns}), which show that the endpoints of a
+relation-code order are artifacts of the scan; inverse-rank lexicography
+(\cref{swo:cb:thm:inverserank}); the restriction theorem
+(\cref{swo:cb:thm:restriction}); and the normal-form embedding
+(\cref{swo:cb:prop:hahn}). The birthday tie-break example is source~12's
+(``Birthday is not a canonical global well-order'', after
+\cref{swo:st:thm:choice}), and source~18 repeats it
+(\cref{swo:vii:sub:relcodes}). The non-convexity of type classes is made by
+sources~13, 14, 16 and~17 in their maps (\cref{swo:vii:sec:maps}).
+\end{note}
+
+\subsection{Relation-code remarks of sources 13, 14 and 18}\label{swo:vii:sub:relcodes}
+
+\merge\ Three further remarks on relation codes, each printed whole:
+source~13's (from its foundations section), source~14's (from its Section~11)
+and source~18's (from its section on global well-orders). Source~16's is in
+its map (\cref{swo:ds:sec:interpretations}), source~17's in its map
+(\cref{swo:gs:sec:meanings}). They make one point, that relation-code
+lexicography depends on the scan and the bit convention and is not
+enumeration lexicography; they prove no theorem about it beyond
+\cref{swo:sk:prop:relationcode} and \cref{swo:cb:sec:alternatives}.
+
+% ---- source 13 (batch-81 manuscript 01), lines 1661-1678
+\subsubsection{Source 13: relation-bit lexicography is a different order}
+
+Fix a set-like global enumeration of the ordered pairs of surreal
+labels. Read the characteristic bits of a raw relation in this order
+and compare at the first different bit. This is a legitimate
+code-dependent class lexicography. It is not in general the labeled
+common-prefix comparison of \cref{swo:cf:lex}: the first edge
+in a chosen code order need not reveal the first disagreement of the
+enumerated labels.
+
+The preceding report analyzes this relation-code alternative and its
+binary-word equimorphism (\cref{swo:sk:prop:relationcode}; Section~17 of this report at the pin). A choice of
+pair enumeration is indispensable. Replacing the label order by
+birthday order or comparing raw Conway construction trees would impose
+still other auxiliary data. Such choices can be studied rigorously,
+but no one of them should be advertised as \emph{the} lexicographic
+order without identifying the coding convention.
+
+% ---- source 14 (batch-81 manuscript 02), lines 1516-1531
+\subsubsection{Source 14: relation-code lexicography really is another order}
+One may instead fix a class bijection scheduling $\No\times\No$ by
+$\Ord$, and compare characteristic functions of well-order relations
+at their first differing scheduled pair. This defines a linear
+comparison on the admitted relations but depends on the schedule and
+on the convention $0<1$.
+
+The difference is visible with three labels. Let numerical order be
+$0<1<2$, and let the enumerations be $e=(0,1,2)$ and $f=(1,0,2)$.
+Enumeration lex gives $e<f$. If the relation-coordinate schedule begins
+with $(0,1)$, their strict-relation bits there are $1$ and $0$, so the
+relation-code comparison gives $e>f$. Starting instead with $(1,0)$
+reverses those bits and that conclusion. This counterexample does not
+involve any proper-class complication. Results proved for numerical
+first-disagreement order cannot simply be transported to relation codes.
+
+% ---- source 18 (batch-81 manuscript 06), lines 2351-2381
+\subsubsection{Source 18: inherited numerical well-orders and relation codes}
+
+Numerical $<$ on $\No$ is not a well-order; the negative integers
+already descend. Nevertheless, many subclasses are numerically
+well-ordered. The ordinals give type $\Ord$, and
+\[
+ \{-1/(\alpha+1):\alpha\in\Ord\}\cup\{0\}
+\]
+has numerical order type $\Ord+1$. Under Global Choice, class
+universality gives a numerically ordered copy of every supplied class
+well-order. This concerns the range of an embedding in the surreal line,
+not a well-order of every surreal label.
+
+One can instead order well-order \emph{relations} by characteristic
+bits. Choose a set-like class enumeration of $X\times X$, and compare
+the bits of two relations at their first unequal pair. The resulting
+comparison is well-defined, but is a different auxiliary order. Even
+on $\{0,1\}$ the enumerations $(0,1)<(1,0)$ compare in the opposite
+direction if the first tested pair is $(0,1)$ and $0<1$ for relation
+bits. The enumeration rule tests first labels, while the relation rule
+tests a chosen predicate membership. Its dependence on the chosen pair
+order should be recorded explicitly.
+
+Finally, ordering birthday first and then ordering sign expansions
+lexicographically does not produce a global well-order. The fixed
+birthday-$\omega$ slice already contains descending sequences. A
+genuine birthday-first global well-order must use an auxiliary
+well-order within each birthday level, not its numerical sign order.
+
+% ---- hand chunk status7
+\section{What this Part answers}\label{swo:vii:sec:status}
+
+\merge\ Dated notes, 3 October 2026, in the form of \cref{swo:vi:sec:status};
+where the question index of \cref{swo:sec:questions} (dated 2 October 2026)
+says otherwise, these notes supersede it.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Source~09's direction ``Other termination conventions for set
+words''} (\cref{swo:ec:sec:research}): \textbf{answered} for unrestricted and
+injective words. Exactly the placements of a formal terminator satisfying the
+three conditions of \cref{swo:ds:thm:terminator} give the set-cut property,
+hence (in $\GBC$) an order isomorphic to $\No$; every placement gives one of
+the types of \cref{swo:ds:thm:alltermination}; the distinguished internal value
+is \cref{swo:fs:thm:central,swo:sh:wv:centered-eta}, and the prefix-free codes
+are listed in \cref{swo:vii:note:codes}. For increasing words with the
+terminator at zero see~(b).
+\item \emph{Source~08's question~14, increasing-subset and alternate-termination
+orders} (\cref{swo:sk:sec:research}): \textbf{answered} for prefix-small,
+prefix-large and centered conventions on unrestricted and injective words
+(\cref{swo:ds:thm:terminator,swo:ds:thm:alltermination}), for shorter-first
+increasing words (isomorphic to the other two classes in $\GBC$,
+\cref{swo:ds:thm:wordisomorphism}), and for centered increasing words up to
+their isomorphism type: local characters, all set-cut obstructions,
+equimorphism without isomorphism (\cref{swo:sh:wv:inc-characters,swo:sh:wv:inc-cuts,swo:sh:wv:inc-corollary}).
+Open: the isomorphism type of the centered increasing order (source~18's own
+question) and increasing words with an interior terminator at a threshold
+other than zero.
+\item \emph{Source~13's question ``A classification of termination cuts''} (for
+a class alphabet isomorphic to $\No$): answered by source~16
+(\cref{swo:ds:thm:terminator,swo:ds:thm:alltermination}), transported along an
+isomorphism of the alphabet with $\No$ in $\GBC$.
+\item \emph{Source~16's question ``Centered increasing words''}: answered by
+source~18 for the threshold at zero (with zero excluded, padded, or adjacent
+to a distinct terminator: \cref{swo:vii:sec:centered}); open for other
+interior thresholds.
+\item \emph{Source~08's question~9 and source~09's direction ``Non-set-like
+well-order relations''} (relation-code orders; \cref{swo:sk:sec:research,swo:ec:sec:research}):
+answered in part. Which endpoints a relation-code order of well-orders has is
+an artifact of the scan: a minimum only, a maximum only, or neither, each by a
+suitable scan, and never both on an infinite carrier
+(\cref{swo:cb:thm:tableendpoints,swo:cb:cor:tablepatterns}). The isomorphism
+question for two scans stays open.
+\item \emph{Source~11's question on optimal birthday bounds} (\cref{swo:n16.6}):
+not answered. Sources~13, 14, 16, 17 and~18 give explicit codes with birthdays
+$\sum(2\cdot\bd+2)$, $\sum(4\cdot\bd+4)+2$ and $\sum(1+2\cdot\bd+2)$
+(\cref{swo:vii:note:codes}); none is claimed optimal.
+\end{enumerate}
+Sources~16 and~18 also ask how much of the word isomorphisms survives without
+a global well-order; source~18's proof (\cref{swo:vii:sub:sh-tree}) shows that
+one set-like global well-order suffices as a parameter, so the question is
+whether that parameter can be removed. It is open.
 
 % ---- hand chunk questions_head
 \cleardoublepage\phantomsection
