@@ -65,6 +65,19 @@ pass, as does an independent read of the helper and three main proof notes.
 The quartic family grows with the fixed horizon; it supplies no fixed-arity
 universal or unrestricted finite-fold representation.
 
+The [new negative-index/fiber report review](Papers/research-wip/native-stream-queue/review_incoming_negative_index_fibers.md)
+**refutes the exact symmetric signed19 nonlinear-index candidate**: its
+complete positive existential projection contains every positive ordinary
+input, with infinitely many zeros restoring R<0. The proof incorporates all
+transport, packing, input and positive auxiliary obligations, using a free
+CRT progression and Pell-ratio density. Four archived sources match the
+current files byte for byte; a new checker verifies all eight residuals,
+fourteen definitions and the complete finalizer. Raw29/positive21 remain open;
+the new family has negative computed W. The sound74 parent and normalized85
+construction retain different constraints and are unaffected. The ordinary
+native-fiber classification is also consistent, but its auxiliary progression
+must not be copied unchanged to the normalized strong equation.
+
 The
 [factored first-root construction](Papers/research-wip/native-stream-queue/complete86_factored_first_root.md)
 costs **48M+38A**, with **19 positive witnesses and exact degree179**.
@@ -158,9 +171,10 @@ The [nonlinear first-index scout](Papers/research-wip/native-stream-queue/comple
 emits three full graph projections using `r=actual_k-h*UM-1`, paying both
 remaining r consumers. Certificate cost stays74; removing one comparison
 and coordinate gives full SOS counts127/103/97, exact degrees52/84/84 and
-29/21/19 retained positive-coordinate interfaces. These are **provisional
-candidates**: restoration of a positive r is unproved, so their positive
-zeros are not yet known to recognize the parent language. The packing
+29/21/19 retained positive-coordinate interfaces. The raw29/positive21
+variants remain provisional. The exact symmetric signed19 variant is now
+refuted by the incoming full counterexample reviewed above: every positive
+ordinary input has positive witnesses with negative restored r. The packing
 remainder excludes zero but does not by itself exclude a negative index.
 The [independent source-only review](Papers/research-wip/native-stream-queue/review_complete74_nonlinear_index_projection.md)
 confirms all three complete graphs, costs and exact degrees while leaving
@@ -173,9 +187,10 @@ nonlinear projections without assuming r>0. Raw30/positive22 further force
 q even and r=±p; a negative branch has2n+p−1=vE with1≤v≤3q+2. A parametric
 positive auxiliary construction realizes r=−p at arbitrarily large rank
 indices, so auxiliary signs alone cannot remove that branch. This is not
-a full negative compiler zero. The complete inverse remains unresolved,
-including the additional signed20 bounds. Root checked the proof and the
-installed exact receipt replays successfully; no universal bound changes.
+a full negative compiler zero. The subsequent incoming proof now supplies
+such full zeros for signed19; the raw29/positive21 inverse remains unresolved.
+Root checked this historical bootstrap and its installed exact receipt;
+no established universal bound changes.
 
 The [negative-index refinement](Papers/research-wip/native-stream-queue/complete74_negative_index_refinement.md)
 further proves, for raw30/positive22, that the input Pell index is e=u or
