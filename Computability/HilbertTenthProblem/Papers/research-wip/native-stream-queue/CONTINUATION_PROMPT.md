@@ -31,6 +31,10 @@
 > occurrence matching, plus 71 companion files. The new abstract needs the
 > partial/piecewise/homogeneous map qualifiers restored; its separate patch
 > and receipt pass root replay. The sparse editorial read found no new defect.
+> The [membrane/reset transfer](review_typesetting_11abe5008.md) also passes,
+> with seven explicitly mapped deduplicated blocks and 124 unchanged companions.
+> Its separate patch qualifies natural-only duration padding and fixes the
+> scope-metadata description; root receipt and private git-apply checks pass.
 > New verified reductions: [five-witness congruence](presburger_congruence_five.md)
 > costs21 rather than22 for the full displayed atom; [sparse wire projection](sparse_lattice_projection.md)
 > saves T[7M+M(M−1)] coordinates and rows without a gate claim;

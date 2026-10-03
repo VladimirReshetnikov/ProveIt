@@ -27,6 +27,11 @@ also preserves the source mathematics and 71 companion files. Its new signal
 abstract drops the partial/piecewise qualifiers; a separate tested patch restores
 them. Sparse-lattice mass, natural-domain and external-horizon limits remain correct.
 
+The [membrane/reset transfer](review_typesetting_11abe5008.md) verifies the
+explicit reuse of seven source blocks and preserves 124 companion paths. A
+separate patch qualifies the real-witness claim for duration padding and
+corrects the description of an emitted metadata difference.
+
 The [existential congruence variant](presburger_congruence_existence15.md)
 further lowers the complete atom to **14 = 5M+9A** with five natural witnesses.
 Its truth output is exact, but its witness fibers are infinite. The separate
