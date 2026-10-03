@@ -13,7 +13,7 @@ This is the continuing proof/source review of the [byte-pinned intake](incoming_
 | Coercive Green functions | In progress | Infinite graph and finite-support arithmetic interface |
 | Well-conditioned computation | In progress | Infinite graph and normalized integer witnesses |
 | Mixing | In progress | Exact-series dimension versus arithmetic/zero-set complexity |
-| Sparse lattice dynamics | In progress | Full proof/source read; complete author replay running |
+| Sparse lattice dynamics | [Complete](review_sparse_lattice_aebfa386e.md) | Exact polynomial-constructor repair; both complete 18-stage replays and large source-fixture regeneration pass |
 
 For the queue packet, root independently reran the portable helper with both original and repaired author suites: 259,025 checks on each, unchanged example exports, and the exact saved independent receipt. Its projection saves witnesses and residuals while retaining the external grammar. Dense affine substitution can increase monomial counts, so no unmeasured straight-line arithmetic saving is asserted.
 

@@ -1,0 +1,27 @@
+--- a/replay/core/sparse_mass.py
++++ b/replay/core/sparse_mass.py
+@@ -31,6 +31,24 @@
+ class Poly:
+     """Canonical sparse polynomial; negative variable indices are free inputs."""
+     terms: tuple[tuple[tuple[int, ...], int], ...]
++
++    def __post_init__(self):
++        if type(self.terms) is not tuple:
++            raise ValueError("polynomial terms must be immutable canonical tuples")
++        previous = None
++        for term in self.terms:
++            if type(term) is not tuple or len(term) != 2:
++                raise ValueError("invalid polynomial term")
++            monomial, coefficient = term
++            if type(monomial) is not tuple or any(type(v) is not int for v in monomial):
++                raise ValueError("monomials must be immutable exact-integer tuples")
++            if tuple(sorted(monomial)) != monomial:
++                raise ValueError("monomial indices must be sorted")
++            if type(coefficient) is not int or coefficient == 0:
++                raise ValueError("coefficients must be nonzero exact integers")
++            if previous is not None and not previous < monomial:
++                raise ValueError("terms must be sorted with distinct monomials")
++            previous = monomial
+ 
+     @staticmethod
+     def make(terms):
