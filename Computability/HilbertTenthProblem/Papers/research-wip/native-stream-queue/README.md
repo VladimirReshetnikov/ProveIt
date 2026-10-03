@@ -18,8 +18,16 @@ The [four surreal order reports](review_batch80_surreal.md) pass their finite
 replays and the scoped mathematical review, with one separate prose correction
 about fixed-relation internal well-foundedness in GBC. Their different coding
 and class-order results are complementary. They supply neither an effective
-universal machine nor a paid Diophantine interface. The remaining three
-low-mass archive variants are under final replay.
+universal machine nor a paid Diophantine interface.
+
+The [three low-mass archive variants](review_batch80_low_mass.md) pass all nine
+author invocations and independent rule/orbit/arithmetic checks. With at most
+one unit-weight label, the three-mass relation is uniformly timed Presburger;
+four-mass reachability is decidable, but a binary shuttle has quadratic return
+times. The revised single-unit package changes attribution, with mathematical
+body and executables preserved. A prior five-witness congruence atom removes
+one coordinate per congruence in its canonical quartic corollary, after
+quantifier elimination. These results do not lower the universal bound.
 
 [All ten reports](incoming_substrate_review_aebfa386e.md) received at
 `ef2fc7990`/`aebfa386e` have completed proof/source review and isolated replay.
