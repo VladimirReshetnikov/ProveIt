@@ -1,30 +1,39 @@
 # Fixed Universal Polynomials
 
-**A literal Grill instance, exact degree laws, native witness fibers and positive-index restoration**
+**A literal Grill instance, exact degree laws, native witness fibers, positive-index restoration and an exact negative-index predicate**
 
-This is a research report dated 3 October 2026, built from five manuscripts:
+This is a research report dated 3 October 2026, built from six manuscripts:
 "Research Reports" 23 (revision 1), 24, 25, 33 and 34 of one AI-assisted
-research pipeline, all of batch 82 (cluster M3). Author lines: "Research report
-23" ("Revision 1 with the exact degree theorem"), "Research report 24",
-"Research report 25", and "Mathematical research report" for Reports 33 and 34.
-All five build on the Hilbert's-tenth programme's own research artifacts in
-this repository, at pinned commits.
+research pipeline, all of batch 82 (cluster M3), and Report 37 of the same
+pipeline, manuscript 09 of batch 83 (cluster 83H2), added as Part V. Author
+lines: "Research report 23" ("Revision 1 with the exact degree theorem"),
+"Research report 24", "Research report 25", and "Mathematical research report"
+for Reports 33, 34 and 37. All six build on the Hilbert's-tenth programme's own
+research artifacts in this repository, at pinned commits.
 
-| Source | Report | Batch 82 | Archive (arrival `db37d18c8`) | Pin | Placed | Printed as |
-|---|---|---|---|---|---|---|
-| 11 | 23, revision 1 | 11 | `Fixed_Universal_Grill_Polynomial_Package (1).zip` (15,508,226 B; 23-page PDF) | `2d887f0fa` | `2f58ab4e9` | Part I, Sections 23.1–23.15 (base) |
-| 14 | 24 | 14 | `Native_Grill_Exact_Degree_Laws_Package.zip` (552,226 B; 15 pp.) | `2d887f0fa` | `2f58ab4e9` | Part II, Sections 24.1–24.11 |
-| 07 | 25 | 07 | `Entire_Native_Witness_Fiber_Package.zip` (531,631 B; 19 pp.) | `ad634b2d1` | `2f58ab4e9` | Part III, Sections 25.1–25.13 |
-| 10 | 33 | 10 | `Failure_of_Positive_Index_Restoration_Package.zip` (703,207 B; 17 pp.) | `2dde7850f`; context `93ad43375` | `2f58ab4e9` | Part IV, Sections 33.1–33.10, 33.A, 33.B |
-| 05 | 34 | 05 | `Counterexample_Height_Expansions_and_Rotation_Discrepancy_Package.zip` (591,664 B; 17 pp.) | `2dde7850f`; transfer appendix `9fa99be93` | `2f58ab4e9` | Part IV, Sections 34.1–34.9, 34.A, 34.B |
-| — | 23, original edition | 12 | `Fixed_Universal_Grill_Polynomial_Package.zip` (15,390,453 B; 19 pp.) | `2d887f0fa` | not staged | superseded by source 11 |
+| Source | Report | Batch, no. | Archive | Arrival | Pin | Placed | Printed as |
+|---|---|---|---|---|---|---|---|
+| 11 | 23, revision 1 | 82, 11 | `Fixed_Universal_Grill_Polynomial_Package (1).zip` (15,508,226 B; 23-page PDF) | `db37d18c8` | `2d887f0fa` | `2f58ab4e9` | Part I, Sections 23.1–23.15 (base) |
+| 14 | 24 | 82, 14 | `Native_Grill_Exact_Degree_Laws_Package.zip` (552,226 B; 15 pp.) | `db37d18c8` | `2d887f0fa` | `2f58ab4e9` | Part II, Sections 24.1–24.11 |
+| 07 | 25 | 82, 07 | `Entire_Native_Witness_Fiber_Package.zip` (531,631 B; 19 pp.) | `db37d18c8` | `ad634b2d1` | `2f58ab4e9` | Part III, Sections 25.1–25.13 |
+| 10 | 33 | 82, 10 | `Failure_of_Positive_Index_Restoration_Package.zip` (703,207 B; 17 pp.) | `db37d18c8` | `2dde7850f`; context `93ad43375` | `2f58ab4e9` | Part IV, Sections 33.1–33.10, 33.A, 33.B |
+| 05 | 34 | 82, 05 | `Counterexample_Height_Expansions_and_Rotation_Discrepancy_Package.zip` (591,664 B; 17 pp.) | `db37d18c8` | `2dde7850f`; transfer appendix `9fa99be93` | `2f58ab4e9` | Part IV, Sections 34.1–34.9, 34.A, 34.B |
+| 15 | 37 | 83, 09 | `Exact_Negative_Index_Obstruction_for_Positive_Diophantine_Interfaces_Package.zip` (501,623 B; 16 pp.) | `3051d1446` | `d5bd4a67b`; refinement `813c1cff4`; freshness check `0f7d618f4` | `a51a439cd` | Part V, Sections 37.1–37.9, 37.A |
+| — | 23, original edition | 82, 12 | `Fixed_Universal_Grill_Polynomial_Package.zip` (15,390,453 B; 19 pp.) | `db37d18c8` | `2d887f0fa` | not staged | superseded by source 11 |
 
-Every result, proof, remark, question and limitation of the five manuscripts
-is printed. Text marked **[write]** in the article was written at the merge.
-The report is AI-assisted and unrefereed. **It is not formalized, and the
-programme has reviewed only parts of it** (see below). The language theorem of
+Sources are named by their file-prefix numbers. Source 15's number continues
+this report's own sequence after its highest prefix, 14 (it is not the batch-83
+manuscript number, 09). Report 37's archive has SHA-256
+`018b960efd8069db99ec3eaa9b691cb2ca60edbc88932cc6e37cbf3562d169f9`.
+
+Every result, proof, remark, question and limitation of the six manuscripts
+is printed. Text marked **[write]** in the article was written at the merge
+(batch 82) or when Part V was added (batch 83). The report is AI-assisted and
+unrefereed. **It is not formalized.** The programme has reviewed every source,
+but certifies only parts of some (see below). The language theorem of
 Part I is conditional on pinned imports; Parts III and IV inherit pinned
-native-source theorems as they state.
+native-source theorems as they state; Part V inherits the compiler contract
+and the sign-free bootstrap as premises.
 
 **Editions.** Archive 12 is the original edition of Report 23 and archive 11
 its revision 1. `11-grill-poly-REVISION.md` anchors the SHA-256 of archive 12
@@ -41,11 +50,12 @@ original's QA as `qa/v0-*`. Nothing of archive 12 is staged; its open question
 ```
 README.md     this guide (it replaces source 11's delivery README, which survives in the arrival archive)
 article.tex   the report: standalone LaTeX, one bibliography per source at the end of its Part
-article.pdf   the compiled report, 102 pages (unnumbered title page; contents pages 1-5; front
-              matter 6-11; Part I 12-34; Part II 35-50; Part III 51-68; Part IV 69-101)
+article.pdf   the compiled report, 125 pages (unnumbered title page; contents pages 1-6; front
+              matter 7-15; Part I 16-38; Part II 39-54; Part III 55-72; Part IV 73-105;
+              Part V 106-124)
 ```
 
-The other 269 files are the five sources' audit and provenance notes (root),
+The other 297 files are the six sources' audit and provenance notes (root),
 code (`code/`) and recorded data (`data/`), byte-identical to the delivery,
 each name prefixed by its source:
 
@@ -343,6 +353,39 @@ data/05-signed19-heights-PROVENANCE.json
 data/05-signed19-heights-QA.json
 ```
 
+Source 15 (Report 37): 4 audit, proof and provenance notes, 9 code files, 15 data files.
+
+```
+15-neg-obstruction-INTEGRITY.md
+15-neg-obstruction-evidence-EXACT-OBSTRUCTION.md
+15-neg-obstruction-evidence-README.md
+15-neg-obstruction-evidence-independent-INDEPENDENT-REVIEW.md
+code/15-neg-obstruction-archive_regression.py
+code/15-neg-obstruction-archive_release.py
+code/15-neg-obstruction-build_pdf.py
+code/15-neg-obstruction-evidence-check_exact_obstruction.py
+code/15-neg-obstruction-evidence-independent-audit_exact_obstruction.py
+code/15-neg-obstruction-evidence-independent-audit_log_windows.py
+code/15-neg-obstruction-seal_release.py
+code/15-neg-obstruction-tamper_regression.py
+code/15-neg-obstruction-verify_release.py
+data/15-neg-obstruction-MANIFEST.json
+data/15-neg-obstruction-evidence-expected_check_results.json
+data/15-neg-obstruction-evidence-final_source_freshness.json
+data/15-neg-obstruction-evidence-guard_regression_results.json
+data/15-neg-obstruction-evidence-independent-expected_audit_results.json
+data/15-neg-obstruction-evidence-independent-expected_log_window_results.json
+data/15-neg-obstruction-evidence-independent-release_hardening_results.json
+data/15-neg-obstruction-evidence-independent-review_manifest.json
+data/15-neg-obstruction-evidence-release_hardening_results.json
+data/15-neg-obstruction-evidence-source_manifest.json
+data/15-neg-obstruction-verification-expected-receipts.json
+data/15-neg-obstruction-verification-release-review.json
+data/15-neg-obstruction-verification-replay-plan.json
+data/15-neg-obstruction-verification-source-lineage.json
+data/15-neg-obstruction-verification-tooling-review.json
+```
+
 ## Delivery names and shipped names
 
 Every shipped file is a delivered file with the delivery directory flattened
@@ -365,6 +408,7 @@ JSON, logs, `.bin` and `.txt` data to `data/`, markdown to the root):
 | 07 | `proofs/<d>/`, `provenance/`, `source/` | `07-native-fiber-proofs-<d>-`, `-provenance-`, `-source-` |
 | 10 | `Research_Report33/`, `context/`, `repro/`, `repro/evidence/`, `supplements/`, `supplements/evidence/` | `10-index-restore-`, `-context-`, `-repro-`, `-repro-evidence-`, `-supplements-`, `-supplements-evidence-` |
 | 05 | `Research_Report34/`, `evidence/` | `05-signed19-heights-`, `05-signed19-heights-evidence-` |
+| 15 | `Research_Report37/`, `evidence/`, `evidence/independent/`, `verification/` | `15-neg-obstruction-`, `-evidence-`, `-evidence-independent-`, `-verification-` (`MANIFEST.json` and `evidence/source_manifest.json` record sizes, modes, URLs and blob ids besides hashes, so they are staged as data) |
 
 In source 11 the frozen original of a script and its portable executable
 version both appear in `code/`: the inert original keeps the delivered
@@ -384,13 +428,20 @@ provenance record, manifest and script names files by their delivery paths
 are not shipped here: the release inventories and checksum ledgers, the PDFs,
 the heavy files of source 11, the byte copies of research-tree files, source
 05's context copies of Reports 25 and 33, and the third-party paper copies
-(next section).
+(next section). Source 15's `INTEGRITY.md`, `evidence/README.md`,
+`EXACT-OBSTRUCTION.md`, `INDEPENDENT-REVIEW.md`, `MANIFEST.json`,
+`verification/*.json` and its release tools name its delivery layout, including
+the unshipped `Research_Report37.tex`/`.pdf`, `SHA256SUMS`,
+`evidence/MANIFEST.sha256`, the duplicate receipts `evidence/check_results.json`,
+`evidence/independent/audit_results.json` and `log_window_results.json`, and the
+byte copies under `evidence/sources/` and `evidence/context/`.
 
 ## Not shipped
 
-All of these survive in the arrival commit `db37d18c8` and can be extracted
-with `git show "db37d18c8:docs/incoming/<archive>" > x.zip` (the archives were
-retired from `docs/incoming/` by the placement commit).
+All of these survive in the arrival commit, `db37d18c8` for sources 11, 14,
+07, 10 and 05 and `3051d1446` for source 15, and can be extracted with
+`git show "<arrival>:docs/incoming/<archive>" > x.zip` (the archives were
+retired from `docs/incoming/` by the placement commits).
 
 | Source | Not shipped |
 |---|---|
@@ -399,6 +450,7 @@ retired from `docs/incoming/` by the placement commit).
 | 07 | 4 byte copies of research-tree files; 4 ledgers; manuscript, delivery README, PDF |
 | 10 | 38 byte copies of research-tree files; 5 in-archive byte copies; 4 ledgers; manuscript, delivery README, PDF |
 | 05 | 6 byte copies of research-tree files; 2 byte copies of source 10's evidence (shipped once, under `10-index-restore-repro-evidence-`); `context/Research_Report25.tex` and `context/Research_Report33.tex` (byte-identical to the manuscripts printed as Parts III and IV); 2 ledgers; manuscript, delivery README, PDF |
+| 15 | 5 byte copies of research-tree files (`evidence/sources/`); 2 byte copies of source 10's evidence (`evidence/context/`, shipped once, under `10-index-restore-`); 3 in-archive duplicate receipts (`evidence/check_results.json`, `evidence/independent/audit_results.json` and `log_window_results.json`, byte-identical to the shipped `expected_*` receipts); 2 checksum ledgers (`SHA256SUMS`, `evidence/MANIFEST.sha256`); manuscript `Research_Report37.tex`, delivery README, PDF |
 
 **Third-party papers.** Archive 11 contained copies of T. Neary and D. Woods,
 *Four small universal Turing machines*, Fundamenta Informaticae 91 (2009),
@@ -415,11 +467,13 @@ they are not redistributed here; Part I's bibliography cites both papers with
 the URLs the source gives. The sealed verifiers of source 11 pin them, so they
 are needed only to rerun those verifiers, from an extraction of the archive.
 
-**Byte copies of research-tree files.** 73 members of the five archives are
-byte copies of 51 distinct files of `Computability/HilbertTenthProblem/Papers/`.
-Every one was compared with the current file at this write and is
-byte-identical; no pinned file has changed since its pin. They are cited by
-path:
+**Byte copies of research-tree files.** 73 members of the five batch-82
+archives are byte copies of 51 distinct files of
+`Computability/HilbertTenthProblem/Papers/`, and 5 members of source 15's
+archive are byte copies of 5 more such files (table at the end of this list).
+Every one was compared with the current file (at the batch-82 write, and for
+source 15 at the batch-83 write) and is byte-identical; no pinned file has
+changed since its pin. They are cited by path:
 
 Source 11 (Report 23 rev. 1), 24 members:
 
@@ -519,6 +573,20 @@ Source 05 (Report 34), 6 members:
 | `sources/complete74_factored_first_norm.json` | `research-wip/native-stream-queue/complete74_factored_first_norm.json` |
 | `sources/review_complete74_equation_orientation_census.md` | `research-wip/native-stream-queue/review_complete74_equation_orientation_census.md` |
 
+Source 15 (Report 37), 5 members of research-tree files (all five also cited
+by Report 37's bibliography with their URLs at the pin `d5bd4a67b`) and 2
+members that are byte copies of source 10's shipped evidence:
+
+| Archive member (under `Research_Report37/`) | Repository file |
+|---|---|
+| `evidence/sources/complete74_negative_index_refinement.md` | `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete74_negative_index_refinement.md` (introduced by `813c1cff4`) |
+| `evidence/sources/complete74_nonlinear_index_projection_scout.json` | `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete74_nonlinear_index_projection_scout.json` (74,001 B) |
+| `evidence/sources/complete75_half_binomial_compiler.md` | `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_half_binomial_compiler.md` |
+| `evidence/sources/complete75_positive_elimination.py` | `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_positive_elimination.py` (inert text, never executed) |
+| `evidence/sources/review_complete74_nonlinear_index_bootstrap.md` | `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_complete74_nonlinear_index_bootstrap.md` |
+| `evidence/context/RAW-POSITIVE-REDUCTION.md` | `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/fixed-universal-polynomials/10-index-restore-repro-evidence-RAW-POSITIVE-REDUCTION.md` (this directory) |
+| `evidence/context/PRIOR-INDEPENDENT-REVIEW.md` | `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/fixed-universal-polynomials/10-index-restore-supplements-evidence-INDEPENDENT-REVIEW.md` (this directory) |
+
 Two near-copies are shipped because they differ from the research-tree file:
 `11-grill-poly-input-audit-sources-neary_woods_explicit_universal_tm.md`
 differs from `native-stream-queue/neary_woods_explicit_universal_tm.md` only in
@@ -591,11 +659,12 @@ they report a file-set mismatch in this directory. Rerun them in a scratch
 extraction of the arrival archive, never here:
 
 ```sh
-git show "db37d18c8:docs/incoming/<archive>.zip" > x.zip && unzip x.zip -d <scratch>
+git show "<arrival>:docs/incoming/<archive>.zip" > x.zip && unzip x.zip -d <scratch>
 ```
 
-Commands (from each delivery README) and the results of the placement's reruns
-on such copies (Python 3.14.4, Windows 11):
+with `<arrival>` = `db37d18c8` for sources 11, 14, 07, 10 and 05 and
+`3051d1446` for source 15. Commands (from each delivery README) and the results
+of the placements' reruns on such copies (Python 3.14.4, Windows 11):
 
 | Source | Command, in the extracted package root | Result at placement |
 |---|---|---|
@@ -608,12 +677,65 @@ on such copies (Python 3.14.4, Windows 11):
 | 07 | `python3 -B verify_release.py`; `python3 -B replay.py --output <new directory outside the package>` | PASS (1 s; 98 s, normal and optimized) |
 | 10 | `python3 -I -B verify_package.py --replay` (and `-O`) | PASS (14 s; 10 s) |
 | 05 | `python3 verify_package.py` (and `-O`) | PASS, 1 s each: an identity gate only, no mathematical checker by design |
+| 15 | `python -I -B verify_release.py --verify-only` (and `-O`) | FAIL on Windows before any check of content: its identity gate requires the POSIX file modes 0644/0755, which NTFS cannot carry ("payload mode mismatch: INTEGRITY.md"); the same gate blocks `--replay`, `tamper_regression.py` and the archive tools, which were therefore not run. Run them on a POSIX file system |
+| 15 | `python -I -B verify_release.py --self-test-types` | PASS, 1 s (18 typed mutations, 12 malformed encodings rejected) |
+| 15 | the three mathematical programs run directly with `--expect` (normal and `-O`): `evidence/check_exact_obstruction.py`, `evidence/independent/audit_exact_obstruction.py`, `evidence/independent/audit_log_windows.py` | PASS (74/80 s, 3/8 s, 12/21 s); the two independent receipts byte-identical to the frozen ones, the author receipt identical after CRLF to LF (Windows text-mode stdout) |
 
 Not rerun: the PDF builds, source 11's optimized replay. Do not run source
 07's `write_manifest.py` (it reseals the release) or the `--write` modes of its
 checkers (they regenerate receipts). Source 05's `--build` and `build_pdf.sh`
-need an external build directory. Passing these suites supports the
-implementations, not the unbounded theorems.
+need an external build directory. Source 15's `seal_release.py` is a
+maintainer tool that reseals a release; never run it to make a received
+package pass. Passing these suites supports the implementations, not the
+unbounded theorems.
+
+**Source 15 from the shipped names.** Its three mathematical programs read the
+byte copies under `evidence/sources/` and `evidence/context/`, which are not
+shipped. This recipe rebuilds the delivered `evidence/` layout in a scratch
+directory from the shipped files and the repository files they copy, and runs
+the programs there; it writes nothing into the repository (POSIX shell, from
+the repository root; Python 3.9 or newer, standard library only):
+
+```sh
+D=SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/fixed-universal-polynomials
+T=Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue
+W=$(mktemp -d); E="$W/evidence"; mkdir -p "$E/sources" "$E/context" "$E/independent"
+cp "$D/code/15-neg-obstruction-evidence-check_exact_obstruction.py" "$E/check_exact_obstruction.py"
+cp "$D/data/15-neg-obstruction-evidence-source_manifest.json" "$E/source_manifest.json"
+cp "$D/data/15-neg-obstruction-evidence-expected_check_results.json" "$E/expected_check_results.json"
+for f in complete74_negative_index_refinement.md complete74_nonlinear_index_projection_scout.json \
+         complete75_half_binomial_compiler.md complete75_positive_elimination.py \
+         review_complete74_nonlinear_index_bootstrap.md; do cp "$T/$f" "$E/sources/$f"; done
+cp "$D/10-index-restore-repro-evidence-RAW-POSITIVE-REDUCTION.md" "$E/context/RAW-POSITIVE-REDUCTION.md"
+cp "$D/10-index-restore-supplements-evidence-INDEPENDENT-REVIEW.md" "$E/context/PRIOR-INDEPENDENT-REVIEW.md"
+for f in audit_exact_obstruction.py audit_log_windows.py; do
+  cp "$D/code/15-neg-obstruction-evidence-independent-$f" "$E/independent/$f"; done
+for f in expected_audit_results.json expected_log_window_results.json; do
+  cp "$D/data/15-neg-obstruction-evidence-independent-$f" "$E/independent/$f"; done
+cd "$E"
+python3 -B check_exact_obstruction.py --expect expected_check_results.json
+python3 -B independent/audit_exact_obstruction.py --expect independent/expected_audit_results.json
+python3 -B independent/audit_log_windows.py --expect independent/expected_log_window_results.json
+```
+
+The first two programs authenticate the five source copies against the shipped
+source manifest before they compute; each program prints its receipt to stdout
+and compares it with the frozen one; add `-O` for the optimized runs. Tested at
+this write (Git Bash, Windows 11, `py` 3.14.4 in place of `python3`): all six
+runs pass, in 106/85 s, 7/4 s and 13/14 s (normal/optimized), and the
+repository is unchanged afterwards.
+The release verifier, the tamper test and the archive tools cannot run from
+the shipped names: they check the sealed delivery inventory. Run them in an
+extraction of the arrival archive on a POSIX file system:
+
+```sh
+git show "3051d1446:docs/incoming/Exact_Negative_Index_Obstruction_for_Positive_Diophantine_Interfaces_Package.zip" > r37.zip
+unzip r37.zip -d <scratch>; cd <scratch>/Research_Report37
+python3 -I -B verify_release.py --verify-only && python3 -I -B verify_release.py --replay
+```
+
+Authenticate the ZIP first against the SHA-256 above, as the delivery README
+asks; a packaged verifier cannot establish its own authenticity.
 
 ## Labels and numbering
 
@@ -622,7 +744,10 @@ their delivered names after a sub-prefix: source 11 `fup:gp:` (27), source 14
 `fup:dl:` (46), source 07 `fup:nf:` (63), source 10 `fup:ir:` (77) and source 05
 `fup:hc:` (61), 274 in all. The write added 12: eight front-matter labels
 `fup:fm:*` and the four Part labels `fup:part:gp`, `fup:part:dl`, `fup:part:nf`,
-`fup:part:ir`; 286 in total. Bibliography keys carry the same sub-prefixes.
+`fup:part:ir`; 286 in total at the batch-82 write. Part V (batch 83) added
+source 15's 57 labels under `fup:nz:` and the Part label `fup:part:nz`: 344 in
+total. No earlier label was renamed or removed. Bibliography keys carry the
+same sub-prefixes.
 
 Numbers carry the Report number: Section *k*, statement *k.m*, equation (*k*)
 and Appendix X of Report NN are Section NN.*k*, statement NN.*k.m*, equation
@@ -631,7 +756,15 @@ exact degree) is Theorem 23.13.1, and Theorem 2.1 of Report 25 is Theorem
 25.2.1. Tables are numbered consecutively through the report. Only macro names
 changed, never renderings: Report 24's `\sha` and `\fname` are `\shasmall` and
 `\fnameB`; Report 33's `\MF` and `\MFS` are `\MFnat` and `\MFsrc`; Report 34's
-`\MF`, which means the paid mask, is `\MFsrc`.
+`\MF`, which means the paid mask, is `\MFsrc`. Report 37's `\MF` and
+`\MFnative` are `\MFsrcV` and `\MFnatV`, rendered as delivered (M_{F,src},
+M_{F,0}); they denote the masks M_F^src and M_F^native of Part IV. Unlike
+Parts I–IV, Part V renames some of its source's mathematical symbols so that
+each letter has one meaning inside the Part; the note at the start of Part V
+lists every rename (for example E*_r is written 𝓔_A(r), Report 33's e_A(r);
+the log bounds L(p), U(p) are Λ₋(p), Λ₊(p); J_log is I_Bin), and no
+normalization changed. The front-matter notation table (Section 0.3) gained
+rows for t, e, d/d_cell, z/z_quot, U and L and Part V entries in the others.
 
 ## What is claimed and what is not
 
@@ -660,17 +793,41 @@ changed, never renderings: Report 24's `\sha` and `\fname` are `\shasmall` and
 - **Part IV (Reports 33, 34).** The complete74 signed19 child has infinitely
   many positive zeros with restored index R < 0 at every positive input, for
   every actual compiler export (Report 33), so its proposed positive
-  restoration fails; raw29 and positive21 remain open. Report 34 counts one
+  restoration fails; raw29 and positive21 remain open (Part V reduces both to
+  one exact predicate without deciding it). Report 34 counts one
   canonical family of these zeros: N(B) ~ κ log log B with a power saving, an
   exact rotation discrepancy, the falsity of a bounded smooth second term
   (Kesten), and an equivalence of the finer law with an unresolved
   discrepancy estimate. Not claimed: an operation bound, a machine-specific
   false acceptance, a materialized child witness, a result about the whole
   signed19 fiber.
+- **Part V (Report 37).** For the two positive interfaces raw29 and
+  positive21 (29 and 21 positive supplied coordinates, 18 and 10 comparisons)
+  that Report 33 leaves open, at each fixed valid compiler slice and positive
+  input: a full positive zero with negative restored index exists in raw29 if
+  and only if one exists in positive21, if and only if an explicit arithmetic
+  predicate passes (Theorem 37.5.1). Only the scale parameters q, w are
+  unbounded; for fixed q, w the choices s, t are finite, at most one odd main
+  index p fits (Lemma 37.4.1), packing forces Z and F (Lemma 37.4.2), and each
+  of the two input indices e ∈ {u, uA} forces W. Every passing predicate
+  reconstructs strictly positive witnesses for every equation in both
+  interfaces. Further: a finite wrapped odd-input sector (empty for x = 1, 2),
+  the even-input bounds us ≤ C ≤ q−u+b−1 and t ≥ 2u+1, the filter 3 ∤ q, and a
+  necessary Binet window of length < q⁻³+q⁻⁵ < 1 (Theorem 37.7.1) with
+  outward rational evaluation. Inherited, not reproved: the compiler contract,
+  the sign-free bootstrap, and the reduction of Section 33.B and the research
+  tree's refinement note (Section 37.3 is a recap of them). Not claimed: that
+  the predicate ever passes or never passes (existence and emptiness of a
+  negative zero are both open), global restored-index positivity, a globally
+  finite or practical decision procedure, uniqueness of auxiliary witnesses,
+  an exact acceptance test or complexity bound from the window, any operation
+  count, universal bound, witness bound or global novelty. The 3,536-case
+  relaxed scale grid and the auxiliary-only tuples are not compiler
+  instances, counterexamples or an unbounded search certificate.
 
 ## Relation to the research tree, its reviews and other reports
 
-The five sources import or cite files of
+The six sources import or cite files of
 `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`
 (and `Papers/1980/`) at their pins. Section 0.4 of the article records the
 overlaps: the norm cancellation behind the exact degrees is identity (4) of
@@ -681,9 +838,16 @@ re-state and re-certify the tree's halt bridge and composed native history,
 with attribution; Report 33's input-index dichotomy is proved independently in
 `complete74_negative_index_refinement.md` (`813c1cff4`), which goes further;
 Report 33's bounded-window reduction imports the tree's bootstrap
-(`93ad43375`) and says so. New relative to the tree: the literal Grill program
-and its exact degree, the laws of Part II, the native-fiber classification and
-counting, the signed19 counterexample and the canonical-family counting.
+(`93ad43375`) and says so. Report 37 takes that reduction and the refinement
+note's defect bound and uniqueness (its Sections 3–4) as prior results, re-uses
+the auxiliary construction of Section 5 of the tree's
+`review_complete74_nonlinear_index_bootstrap.md`, and re-proves Report 33's
+Lemma 33.3.2 (identity (37.33)); it credits all of these, and Part V marks them.
+New relative to the tree: the literal Grill program and its exact degree, the
+laws of Part II, the native-fiber classification and counting, the signed19
+counterexample and the canonical-family counting, and Report 37's packing
+recovery, full-zero equivalence with positive reconstruction, sector bounds and
+Binet window.
 
 **Reviews by the programme** (after arrival):
 `native-stream-queue/review_incoming_matrix_grill.md` (commit `32da04296`)
@@ -694,10 +858,33 @@ numerical Grill milestone, not an operation improvement.
 `0055e1c4d`) reviews Reports 33, 25 and 22: no gap in Report 33's construction
 (the programme's README now calls the signed19 candidate refuted), Report 25's
 classification consistent, its second-term and bit-length theorems not
-certified there. **Report 34 has not been reviewed.** Report 23 is not an
-operation record: the tree's universal polynomials by other routes have 85
-operations (exact degree 175, `109aaca15`) and 86 operations (exact degree 131,
-`55d248dc5`).
+certified there.
+`native-stream-queue/review_incoming_counterexample_heights.md` (commit
+`ceb7222e9`, 13:16 on 3 October 2026) reviews Report 34 and passes it within
+its scoped analytic and source-interface review, including the transfer to the
+eight matching signed19 children (forward only); the batch-82 write, two
+minutes later, still said "Report 34 has not been reviewed", which the batch-83
+write corrected (dated notes in Section 0.4 and Part IV).
+`native-stream-queue/review_exact_negative_obstruction37.md` (commit
+`308f14072`, with helper and receipt) reviews Report 37: "PASS within the
+stated fixed-compiler scope"; the predicate is exact but its emptiness and
+nonemptiness remain unresolved; the 3,536-case grid was not rerun and is not a
+set of compiler instances; and the programme's normalized85 universal
+polynomial is unaffected, because its positive zeros have F+Z<q while every
+Report 37 negative solution has F≥q. Part V prints all its findings in [write]
+notes after Lemma 37.4.2 and Theorem 37.5.1.
+
+Report 23 is not an operation record. At the batch-82 write the tree's
+universal polynomials by other routes had 85 operations (exact degree 175,
+`109aaca15`) and 86 operations (exact degree 131, `55d248dc5`). Since
+`20aafb9a5` (3 October 2026, `complete84_scaled_strong_output.md`) the record
+is **84 operations** (84 = 47M + 37A, 18 positive witnesses, uniform exact
+degree 187), with F84 = Δ·F85 and Δ > 0 on every allowed positive tuple, so
+the positive zeros are those of the 85-operation polynomial and the F ≥ q
+separation of Report 37 carries over to it (the review of Report 37 predates
+`20aafb9a5` by about five minutes and names only normalized85). The 85/175 and
+86/131 constructions remain available; the comparison-certificate bound is
+still 74. The earlier figures in the article are kept as dated history.
 
 **Formal status.** Placement beside the Lean development of
 `Computability/HilbertTenthProblem` confers no formal status. No statement of
@@ -715,7 +902,10 @@ instantiation questions `ste:ta:q:instantiate`
 (`../polynomial-witness-histories`), the explicitness boundary of
 `lbh:qd:sec:universal` (`../liveness-beyond-halting`) and the remark near
 `smc:cg:sec:barrier`: it is a conditional literal circuit with exact degree,
-not an expanded polynomial.
+not an expanded polynomial. No other collection report treats the raw29 and
+positive21 interfaces of Part V; within this report, Part V continues Section
+33.B (`fup:ir:app:raw`), whose closing open task now carries a dated [write]
+note: re-scoped to the predicate of Theorem 37.5.1, not closed.
 
 ## Other discrepancies and hazards
 
@@ -743,6 +933,23 @@ not an expanded polynomial.
 - No delivered text file contains a CR byte; the four
   `data/11-grill-poly-arithmetic-native_backend_small_*.bin` fixtures contain
   NUL bytes and are binary to git.
+- **Source 15's verifier and POSIX modes.** `code/15-neg-obstruction-verify_release.py`
+  requires the delivered file modes 0644/0755 before it checks anything, so it
+  fails on NTFS and from the shipped names; use the recipes above. Its own
+  hash in `data/15-neg-obstruction-MANIFEST.json` is that of its bytes with the
+  one manifest-pin line (line 22) zeroed, as `15-neg-obstruction-INTEGRITY.md`
+  describes; measured equal at placement. As that file says, the preservation
+  mechanism is not an operating-system sandbox, and the tamper tests do not
+  make a substituted verifier trustworthy without an external anchor (the
+  archive's SHA-256 above). On Windows the author checker's
+  stdout has CRLF line ends; compare after normalizing them, or use `--expect`,
+  which compares inside the program.
+- **Stale figure in source 15's evidence, kept byte for byte.**
+  `15-neg-obstruction-evidence-README.md` mentions "the newer universal
+  85-operation polynomial"; the tree's record is 84 operations since
+  `20aafb9a5` (above).
+- Source 15 has no licence file; the repository's MIT-0 applies to its
+  authored files. It contains no third-party material.
 
 ## Building the PDF
 
@@ -752,6 +959,7 @@ Copy `article.tex` to a scratch directory and run
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-(pdfLaTeX; standard packages only). At this write the build had no errors, no
-undefined references or citations, no multiply defined labels, no duplicate
-PDF destinations and no overfull boxes; it gives 102 pages.
+(pdfLaTeX; standard packages only). At the batch-83 write (Part V) the build
+had no errors, no undefined references or citations, no multiply defined
+labels, no duplicate PDF destinations and no overfull boxes; it gives 125
+pages (102 before Part V).
