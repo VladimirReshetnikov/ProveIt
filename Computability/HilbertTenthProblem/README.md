@@ -86,8 +86,10 @@ and coordinate gives full SOS counts127/103/97, exact degrees52/84/84 and
 candidates**: restoration of a positive r is unproved, so their positive
 zeros are not yet known to recognize the parent language. The packing
 remainder excludes zero but does not by itself exclude a negative index.
-Author and fresh installed receipt replay pass; independent review is
-pending. No established universal bound or witness record changes.
+The [independent source-only review](Papers/research-wip/native-stream-queue/review_complete74_nonlinear_index_projection.md)
+confirms all three complete graphs, costs and exact degrees while leaving
+the positive inverse unproved. Both installed receipts pass fresh replay.
+No established universal bound or witness record changes.
 
 
 The [affine-port scout](Papers/research-wip/native-stream-queue/complete86_affine_port_scout.md)

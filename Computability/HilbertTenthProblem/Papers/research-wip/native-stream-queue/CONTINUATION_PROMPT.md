@@ -81,8 +81,23 @@
 > candidates**: restoration of a positive r is unproved, so their positive
 > zeros are not yet known to recognize the parent language. The packing
 > remainder excludes zero but does not by itself exclude a negative index.
-> Author and fresh installed receipt replay pass; independent review is
-> pending. No established universal bound or witness record changes.
+> The [independent source-only review](review_complete74_nonlinear_index_projection.md)
+> confirms all three complete graphs, costs and exact degrees while leaving
+> the positive inverse unproved. Both installed receipts pass fresh replay.
+> No established universal bound or witness record changes.
+>
+> Next scoped transfer to consider: the [asymmetric87/88 proof](complete75_asymmetric_scale_tradeoffs.md)
+> and [retained-a,c asymmetric proof](complete113_asymmetric_retained109.md)
+> already establish smaller X=wq with Y=sq³ in their own emitted sources.
+> A read-only inventory found all three literal complete74 raw/positive/signed
+> packets still use X=wq³. A one-row transfer would keep74 and the full SOS
+> counts130/106/100; it is not an operation saving. Before claiming a transfer,
+> justify the ordinary first-root conversion to the retained-gap theorem and
+> adapt signed20's omitted-coordinate positivity recovery to the weaker scale
+> bounds. This is a missing scoped source/proof transfer to investigate, not a
+> new kernel theorem or an already verified successor. Do not rerun old suites
+> or silently apply the old symmetric proof to the changed X definition.
+
 
 >
 > The [native coefficient transfer](native_pell_factored_first_coefficient.md)
