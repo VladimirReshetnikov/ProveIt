@@ -1009,13 +1009,18 @@ treated signal machines before batch 78 apart from the programme's review.
   adds an elementary observation that neither source makes: two positive
   selectors force every local copy, hence the input `X`, to vanish, so the
   nonnegative real fibre of Part III's packet is natural at every natural
-  input `X ≠ 0`; adding the selector term would remove the exception at
-  `X = 0` without changing the ledger. That report's relation section and
+  input `X ≠ 0`. At `X = 0`, strict branches have zero selectors and
+  disjointness allows at most one branch with only homogeneous weak or
+  equality guards, so the complete packet's real fibre is natural there
+  too. Adding the selector term forces one-hot selection by the gates
+  alone, independently of this branch condition, without changing the
+  witness and residual ledger. That report's relation section and
   a note after its Theorem `qoc:um:thm:poly` point back here.
 - **[`probabilistic-quantum-and-continuous-computation`](../probabilistic-quantum-and-continuous-computation)**:
-  its trace theorem `pqc:pm:thm:trace` is the same kind of fixed-horizon,
-  one-natural-zero statement as Part III's horizon sums, for different
-  dynamics. **[`group-theoretic-substrates`](../group-theoretic-substrates)**:
+  its trace theorem `pqc:pm:thm:trace` is the same kind of fixed-horizon
+  statement as Part III's horizon sums, for different dynamics: exactly one
+  natural zero there, for a total clipped network, against an
+  empty-or-singleton natural fibre here, for a partial event map. **[`group-theoretic-substrates`](../group-theoretic-substrates)**:
   no overlap.
 - **The Hilbert-tenth-problem research programme** (read-only for this
   report), `Computability/HilbertTenthProblem/Papers/`:
@@ -1167,10 +1172,27 @@ except where a source itself shipped the patched program (source 12).
   `smc:cs:thm:packet` (and the README sentence in "Relation to neighbouring
   reports") be qualified: under the packet's disjoint homogeneous branch
   hypothesis the complete packet's real fibre is natural also at `X = 0`;
-  only the weak gates alone admit the fractional exception. Its private
-  seven-file prose patch also touches this article and README. It is **not
-  applied** at the batch-80K2 write (it concerns Part III's batch-79 note,
-  outside this write's scope); it remains open.
+  only the weak gates alone admit the fractional exception. Its
+  seven-file prose patch `review_batch79_j2_bbc67d225.patch` was not
+  applied at the batch-80K2 write; it **was applied** on 2 October 2026,
+  after that write, to this article and README and to the other reports it
+  touches (the two hunks here verbatim; the note after `smc:cs:thm:packet`
+  now says that it was corrected in place, crediting the review). The same
+  change extended the qualification to the item "The degree-two orthant
+  format" of Section 1.9 (`smc:cs:sec:relation`) and replaced "one
+  natural zero" by "empty or a singleton" where this report compares its horizon sums with
+  `pqc:pm:thm:trace` (the review's finding 3, which the patch applied to
+  the other report only).
+- Batch-80 corrected-code publication: `review_batch80_correction_publication_86267b8a3.md`
+  (commit `fbad71e8c`) audits the batch-80K1 corrected-code updates of
+  this report, `quadratic-orthant-certificates` and
+  `canonical-diophantine-certificates` (through `86267b8a3`) and passes
+  their mathematics. It finds one reproducibility defect: the placement
+  stager and its inventory do not exist at `a7ae02511`, so they must be run
+  from a recent checkout with the historical checkout passed as `--repo`.
+  Its README-only patch `batch80_historical_stager_launch.patch` was
+  applied on 2 October 2026 to way (b) under "Rerunning the programs" and
+  to the paragraph after it.
 
 ## Build
 
@@ -1278,11 +1300,12 @@ git show aebfa386e:docs/incoming/Conservative_Signal_Frontend_Corrected.zip > r1
 git show 4e270aa46:docs/incoming/Sparse_Lattice_Diophantine_Certificates_corrected.zip > r13/sl.zip   # corrected edition
 (cd r12 && unzip -q cs.zip)    # r12/conservative-signal-release/
 (cd r13 && unzip -q sl.zip)    # r13/sparse-lattice-release/
-# (b) from the shipped files, with the research tree's placement stager
-#     (authenticates the shipped bytes, restores the omitted members from Git;
-#      the destination must not exist)
+# (b) original editions: run the later helper from this recent checkout,
+#     with its sibling placement_a7ae02511_inventory.json present.
+#     The historical checkout and destination below must not exist yet.
+git worktree add ../source-a7ae02511 a7ae02511
 py Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/replay_placed_substrates_a7ae02511.py \
-   --repo . --destination ../placed-a7ae02511
+   --repo ../source-a7ae02511 --destination ../placed-a7ae02511
 ```
 
 Way (a) is the tested one. Way (b) was tried at this write on this Windows
@@ -1292,11 +1315,12 @@ excluded files, which it takes from Git, but then stopped with "Restored
 complete package manifest differs" while checking the six package roots it
 restores (the other four belong to `quadratic-orthant-certificates` and
 `canonical-diophantine-certificates`). The stager is the research tree's
-program, not part of this report. Since batch 80 it authenticates only a
-checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`), where it
-restores source 13's original edition; on a current checkout it stops
-earlier, with "Placed source differs" at the five replaced files. For the
-corrected layout use way (a).
+program, not part of this report. Since batch 80, use an unchanged
+historical checkout as its `--repo` argument to restore the original edition.
+Invoke the helper from a recent checkout with its required sibling inventory:
+neither helper nor inventory exists at `a7ae02511`. Passing a current
+corrected checkout as `--repo` stops earlier, with "Placed source differs"
+at replaced files. For the corrected layout use way (a).
 
 Then, in `conservative-signal-release/` (source 12): `sh run-replay.sh` runs
 the ten original commands; it hard-codes `python3` and rewrites its receipts

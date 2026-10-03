@@ -509,9 +509,10 @@ Batch 79, nineteen archives in four arrival commits, was placed in three
 clusters and opened two reports in
 [`hilbert-tenth-problem`](hilbert-tenth-problem):
 [`polynomial-witness-histories`](hilbert-tenth-problem/polynomial-witness-histories)
-(unique linear certificates whose unknowns are a fixed number of finite
-polynomials over ℕ[X,Y], ℕ[X] or any commutative ring, from three
-manuscripts, the second answering the first's question on one coordinate)
+(unique certificates whose unknowns are a fixed number of finite
+polynomials: affine-linear over ℕ[X,Y] or a nonzero commutative ring, and
+quadratic over ℕ[X] with a shared stride, from three manuscripts, the
+second answering the first's question on one coordinate)
 and
 [`smooth-diophantine-finalizers`](hilbert-tenth-problem/smooth-diophantine-finalizers)
 (five more variables turn any quadratic certificate into a quartic that is

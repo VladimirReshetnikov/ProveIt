@@ -87,7 +87,7 @@ Section 76 (`qoc:rn:sec:reproduce`).
 
 ```
 article.tex                                          the report, standalone LaTeX with an internal bibliography
-article.pdf                                          the compiled report, 169 pages (unnumbered title page, then pages 1–168)
+article.pdf                                          the compiled report, 170 pages (unnumbered title page, then pages 1–169)
 README.md                                            this guide
 08-maximal-parallel-PROOF_AUDIT.md                   source 08's proof and scope audit, as delivered
 08-maximal-parallel-SOURCE_AUDIT.md                  source 08's source audit (repository pin, literature), as delivered
@@ -632,7 +632,10 @@ The report does **not** claim:
   `(Σ_{h≠r} b_h)(Σ_i X_{r,i})`: Part V's strong gates without the selector
   in the right factor. Its source claims natural exactness only; the note
   after its packet theorem shows that the real fibre is natural at every
-  natural input `X ≠ 0`. Its Part IV, like Part IV here, has degree four.
+  natural input `X ≠ 0`, and at `X = 0` too under that theorem's disjoint
+  homogeneous branch hypothesis (its weak gates alone do not force one-hot
+  selection at zero; corrected 2 October 2026 after
+  `review_batch79_j2_bbc67d225.md`, finding 4). Its Part IV, like Part IV here, has degree four.
   Dated notes in this report's relation section and after Theorem
   `qoc:um:thm:poly` record this; neither report re-proves a theorem of the
   other.
@@ -761,11 +764,27 @@ contains its own repair of the reviewed defects (below).
   restores the complete delivered layouts of sources 15–17 from Git. That
   statement is about the files of `a7ae02511` and remains true there; 4 of
   them (13 across three reports) were replaced by corrected bytes in the
-  batch-80K1 placement. Since batch 80 the stager authenticates only a
-  checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`), where it
-  restores the original editions; on a current checkout it stops with
-  "Placed source differs". For the corrected layout of source 17 extract
-  the batch-80 archive.
+  batch-80K1 placement. For original-edition restoration, pass an unchanged
+  historical checkout (for example, a worktree at `a7ae02511`) as `--repo`,
+  while invoking the later helper from a recent checkout with its required
+  sibling `placement_a7ae02511_inventory.json`. Neither helper nor inventory
+  exists at `a7ae02511`. A current corrected checkout passed as `--repo`
+  stops with "Placed source differs". For the corrected layout of source 17
+  extract the batch-80 archive.
+- Later reviews of this report's own text (applied 2 October 2026):
+  `review_batch79_j2_bbc67d225.md` (commit `37a829e0b`), finding 4: the
+  batch-79 reciprocal note after Theorem `qoc:um:thm:poly` had presented
+  fractional selectors at `X = 0` as an exception of the signal packet
+  `smc:cs:thm:packet`; under that packet's disjoint homogeneous branch
+  hypothesis its real fibre is natural at zero too, and only its weak
+  gates in isolation admit fractional selectors. The note is corrected in
+  place, crediting the review (the patch's hunk verbatim plus a
+  correction sentence), and its catalogue entry no longer says that every
+  Part has degree two. `review_batch80_correction_publication_86267b8a3.md`
+  (commit `fbad71e8c`) passes the batch-80K1 corrected-code update of this
+  README and corrects its historical-stager instructions (the preceding
+  bullet and alternative 2 under "Sources 15–17") from
+  `batch80_historical_stager_launch.patch`, applied verbatim.
 
 ## Licensing of the third-party machine data
 
@@ -817,7 +836,15 @@ breaks of Part VI's file map and of the provenance table). The batch-80
 edit added no label, macro or package; the `.aux` of a build of the
 previous text has the same 307 labels with the same numbers, and the pages
 of the new note (Section 76), the provenance table and the title page were
-rendered and inspected.
+rendered and inspected. The in-place correction of 2 October 2026 to the
+reciprocal note after Theorem 60.1 (`qoc:um:thm:poly`; see "Reviews and
+patches by the research programme") lengthens Part V by one page: the
+build now has 170 pages, still with no errors, undefined references or
+citations, multiply defined labels, duplicate destinations or overfull or
+underfull boxes, and with the same seven "Infinite glue shrinkage"
+messages as a rebuild of the previous text in the same environment. The
+307 labels keep their numbers (compared in the `.aux`); pages after
+Section 60 move up by one.
 
 The article is generated reproducibly from the delivered manuscripts by
 merge scripts with anchored insertions (Parts IV–VI were appended to the
@@ -888,13 +915,14 @@ recreated layout, never the shipped files. Three ways to get one:
 
 1. extract the arrival archives (commands under "Delivered names"); they
    contain every file, including the excluded ones;
-2. run the research programme's stager,
-   `py Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/replay_placed_substrates_a7ae02511.py --repo . --destination <new directory>`
-   from the repository root (it authenticates the placed files and restores
-   the complete layouts from Git). Since batch 80 run it only from a
-   checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`); it then
-   restores source 17's original edition, and on a current checkout it
-   stops at the replaced files; or
+2. create an unchanged historical checkout, for example with
+   `git worktree add <historical-checkout> a7ae02511`, then run
+   `py Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/replay_placed_substrates_a7ae02511.py --repo <historical-checkout> --destination <new-directory>`
+   from a recent repository root where the helper and its required sibling
+   `placement_a7ae02511_inventory.json` exist. Neither file exists in the
+   `a7ae02511` checkout. This restores the original editions from the
+   historical placed bytes; passing the current corrected checkout as
+   `--repo` stops at the replaced files; or
 3. rebuild the layouts from the shipped files with the snippet under
    "Reconstructing the excluded data", then regenerate the excluded files.
 
