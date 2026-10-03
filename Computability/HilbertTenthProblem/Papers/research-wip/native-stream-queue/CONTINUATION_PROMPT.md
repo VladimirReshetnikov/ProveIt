@@ -140,6 +140,30 @@
 > All22 inherited source/proof pins are strict; no historical suite is
 > imported. Preserve the frozen author and review trios. Only these two
 > new partitions are claimed, not a complete grouping census.
+> Next unit-family leads (NOT yet catalogue bounds): the finite five-unit
+> criterion separating N0 and Nk has37 partitions out of52. A root probe
+> and independent source-based math challenge support109/28 with groups
+> [N0],[Nm,Na],[Ni,Nk]. It has TWO leading degree14 squares, whose sum
+> contains ga^4*a^4*i^4*j^4*c^12 with coefficient256. The bounded frontier
+> is107/42,109/28,111/24; a full author census/API packet is in progress.
+> Independent math trio is /tmp/review_index_unit_partitions_math.*, frozen
+> source165dc8479997282bcddff1edc728259831a07fbc89bda6d11c87ea646e1a8ed0,
+> receiptb14112b3df1990c353f9006ab771dd5140da9fc1b6d8f01b6b53268a6254b547,
+> note95047482d789166f49a9eca90a75d954459c90b1e35a54d4d82882e17724fb1a.
+> It does not review the forthcoming author's API; finish that audit before
+> replacing109/32 in this catalogue. Preserve the current frozen107 packet.
+> A separate prospective six-unit source adds Nb=raw_bound-repunit for1A;
+> Nb-1 is exactly comparison0 since actual q=repunit+1 remains computed
+> and shared. Core76=40M+36A and seven other residuals give full102+2k
+> operations for k groups. Nb degree1 has alpha coefficient1. All-integer
+> groups separating N0,Nk,Nb suggest108/30 and110/24. The ALREADY pinned
+> asymmetric proof §2 excludes N0=-1 on positive tuples withV=XY²>1 by
+> a strict Pell descent, independently of other zero equations. Separating
+> only Nk,Nb then suggests positive-only106/42 and108/28, with110/24.
+> These latter forms and their general source/degree/API packets are not
+> yet established here. Never conflate their positive-domain theorem with
+> the stronger entire-integer zero equivalence of the current37 criterion.
+
 > The [eager Tree occurrence-flow reduction](eager_tree_occurrence_flow.md)
 > and [independent full review](review_eager_tree_occurrence_flow_full.md)
 > pass fresh root receipts. From the corrected imported base kernel replace
@@ -178,6 +202,26 @@
 > Public calls pin parentPY and actual kernel; CLI verify also pins parent
 > JSON/MD. Do not claim every-call companion pin guarding. No fixed arity,
 > unique witness theorem, positive-only conversion or universal cost follows.
+> The [triangular Tree projection](eager_tree_triangular_projection.md)
+> and [full independent review](review_eager_tree_triangular_projection.md)
+> pass fresh root replays. After replacing unreachable rows by valid leaves,
+> topologically order the reachable DAG root-first and put dummy rows last.
+> Permute BOTH row fields and every pointer target; external program/argument/
+> output bindings stay at the unchanged root. Hardwire p[i,s,j]=0 forj<=i
+> and drop allN flow/height coordinates and their equations. Induction on
+> row index proves soundness. The(154,1) fixture needs an actual permutation;
+> simply deleting its backward pointers fails.
+> Witnesses(3N²+33N)/2,residuals22N+3,exactdegree4 for everyN>=1.
+> Selective fullM=(9N²+101N+6)/2,A=6N²+61N+17,total(21N²+223N+40)/2.
+> Static0+b cleanup savesN more: total(21N²+221N+40)/2. All12 zero-minus-
+> target subtractions in the final row stay paid; no CSE or optimality claim.
+> Recursively restore mu in increasing order and h in decreasing order.
+> These polynomial graphs make every deleted row identically zero over any
+> commutative ring and give exact WHOLE polynomial identities to both actual
+> parents. Natural masses>=0/heights>=1 prove bijections only to their
+> triangular zero slices, and represented-triple equivalence with all zeros.
+> ExternalN remains, as do natural rather than positive-only coordinates;
+> no universal or canonical-unique-fiber theorem follows. Preserve both trios.
 > The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 > and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
 > pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual

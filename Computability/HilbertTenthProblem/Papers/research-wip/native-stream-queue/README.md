@@ -80,6 +80,19 @@ parent slice and represents the same triples at the same externalN. Its
 [independent source and semantic review](review_eager_tree_root_projection.md)
 and both fresh root receipts pass. The universal bounds remain74/86.
 
+The [triangular Tree compiler](eager_tree_triangular_projection.md) then
+orders premises strictly after their callers, removing every rank/flow
+coordinate and all backward pointers. With static cleanup, its complete
+quartic costs **(21N²+221N+40)/2 operations**, with(3N²+33N)/2 natural
+witnesses and22N+3 residuals. AtN=8 this is1,576 operations and228 witnesses,
+compared with2,736 and344 in the original kernel. The
+[independent full review](review_eager_tree_triangular_projection.md) checks
+complete sources, recursive polynomial restorations to both parents and
+necessary row permutations. Both fresh root receipts pass. This preserves
+represented triples at the same externalN; its coordinate bijections concern
+the triangular parent slices. The canonical unique-fiber refinement and
+fixed-arity universal bounds are separate.
+
 The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 shows why the aggregate bound cannot replace the left-tape range lane in
 the current U15 route. A false seven-step history satisfies all five actual

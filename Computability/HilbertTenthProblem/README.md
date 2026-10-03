@@ -70,6 +70,15 @@ coordinate correspondence holds only on the normalized parent slice. Its
 [independent review](Papers/research-wip/native-stream-queue/review_eager_tree_root_projection.md)
 and both fresh receipts pass. The universal operation bound is unchanged.
 
+The [triangular Tree compiler](Papers/research-wip/native-stream-queue/eager_tree_triangular_projection.md)
+further removes all rank coordinates by ordering each premise after its
+caller. The complete quartic costs **(21N²+221N+40)/2 operations** with
+static cleanup and(3N²+33N)/2 natural witnesses. AtN=8, the original
+2,736-operation/344-witness certificate becomes1,576 operations/228 witnesses.
+Its [independent review](Papers/research-wip/native-stream-queue/review_eager_tree_triangular_projection.md)
+and fresh replays pass. Equality of represented triples holds at each
+externalN; no fixed-arity universal bound or unique certificate is claimed.
+
 The [Waterfall range-lane audit](Papers/research-wip/native-stream-queue/waterfall_packed_range_obstruction.md)
 proves that the aggregate packed bound alone still permits false tape
 histories. The [independent review](Papers/research-wip/native-stream-queue/review_waterfall_packed_range_obstruction.md)
