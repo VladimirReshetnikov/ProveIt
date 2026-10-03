@@ -1,21 +1,29 @@
 # Quadratic Orthant Certificates
 
-**Maximal parallelism, timed irreversible races and a fixed Waterfall universal machine: degree-two Diophantine certificates, nonnegative on the real orthant, with negative and selection conditions**
+**Maximal parallelism, timed irreversible races, a fixed Waterfall universal machine, active membranes and reset Petri nets: Diophantine certificates of degree two (four for dynamic membranes), nonnegative on the real orthant, with negative and selection conditions**
 
-This is a research report dated 2 October 2026, built from three manuscripts
-of batch 78 of ProveIt's incoming reports (cluster H3). All three are
-AI-assisted research manuscripts. They are called *source 08*, *source 12*
-and *source 14* after their batch-78 manuscript numbers, which are also the
-file prefixes of their shipped programs and data.
+This is a research report dated 2 October 2026, built from six manuscripts
+of ProveIt's incoming reports: three of batch 78 (cluster H3), printed as
+Parts I–III, and three of batch 79 (cluster J2), added the same day as
+Parts IV–VI. All six are treated as AI-assisted research manuscripts. The
+batch-78 sources are called *source 08*, *source 12* and *source 14* after
+their batch-78 manuscript numbers, which are also the file prefixes of their
+shipped programs and data. The batch-79 sources are called *source 15*,
+*source 16* and *source 17* after their file prefixes, which continue this
+report's own sequence. **Beware:** source 15 is batch-79 manuscript 08; it is
+not source 08 (batch-78 manuscript 08, Part I).
 
 | Source | Manuscript | Archive (arrival commit) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | 08 (base) | batch 78, manuscript 08 | `Maximal_Parallel_Diophantine.zip` (`808b53ed8`); *Quadratic Certificates for Maximal Parallelism: Exact witnesses, sharp growth bounds, and a convexity obstruction*, main file `article.tex`, 25-page PDF; "Research manuscript prepared for Vladimir Reshetnikov", "Developed with ChatGPT" | `db3b377f0` (its search results also showed the older `4cccfa068`) | `41e7f1189` | Part I (Sections 2–16) and Appendices A–C |
 | 12 | batch 78, manuscript 12 | `Total_Quadratic_Diophantine_Semantics.zip` (`808b53ed8`); *Total Quadratic Semantics for Irreversible Computation: Exclusive sites, timed self-assembly, and Horn closure without execution histories*, main file `article.tex`, 25-page PDF; "Research prepared for Vladimir Reshetnikov", "Developed with ChatGPT" | `db3b377f0` | `41e7f1189` | Part II (Sections 17–29) and Appendices D–E |
 | 14 | batch 78, manuscript 14 | `Waterfall_Diophantine_Certificates.zip` (`24a743255`); *Quadratic Diophantine certificates for a fixed Waterfall universal machine*, main file `paper/waterfall-diophantine.tex` with `paper/affine-gap-table.tex`, 16-page PDF; "Research note prepared with AI assistance for private review" | none (the manuscript names no ProveIt commit) | `41e7f1189` | Part III (Sections 30–38) and Appendices F–G |
+| 15 | batch 79, manuscript 08 | `Membrane_Motif_Research_Package.zip` (`2a8a39599`); *Exact Spatially Compressed Diophantine Certificates for Active Membrane Systems*, main file `article/membrane_motifs.tex`, 20-page PDF; "Research report with an exact arithmetic replay package" | none | `a7ae02511` | Part IV (Sections 39–49) and Appendices I–J |
+| 16 | batch 79, manuscript 09 | `Universal_Membrane_Research_Package.zip` (`2a8a39599`); *Literal universal active membrane frontends and quadratic outcome certificates*, main file `article/membrane_frontend.tex`, 21-page PDF; "Research manuscript" | none | `a7ae02511` | Part V (Sections 50–62) and Appendix K |
+| 17 | batch 79, manuscript 18 | `Reset_Petri_Net_Certificates.zip` (`aebfa386e`); *Reset Petri Nets and Canonical Quadratic Certificates*, main file `report/reset-net-certificates.tex`, 26-page PDF; "Research report and reproducible construction" | `44983ed7e` (an ancestor of this write, at which Parts I–III already existed; it cites the README of `canonical-diophantine-certificates`, not this report) | `a7ae02511` | Part VI (Sections 63–77) and Appendices L–M |
 
 Every result, proof, example, remark, research question and limitation of
-the three manuscripts is printed. They are not versions of one manuscript
+the three batch-78 manuscripts is printed. They are not versions of one manuscript
 and share no theorem (word 8-gram overlap between 08 and 12 is about 0.5 %,
 all boilerplate); none cites another. What they share is one *format*: a
 fixed finite system is compiled into one integer polynomial
@@ -32,19 +40,46 @@ Part XI of
 [`canonical-diophantine-certificates`](../canonical-diophantine-certificates),
 and gives tables of notions and letters.
 
+The batch-79 sources extend the same spine. Source 16's outcome polynomials
+and source 17's certificates have the form `Σ A² + Σ B·C` and prove more:
+their products are strong selector gates, so for natural parameters every
+zero over the real nonnegative orthant is natural. Source 15's certificate is
+the deliberate exception: the sum of squares of quadratic residual
+equations, of degree four, one polynomial per finite schema. Sources 15 and
+16 are complementary (source 16 discharges the universal-frontend
+obligations that source 15 lists) and share no theorem; both are printed in
+full, with every result, proof, example, remark, question and limitation.
+**Source 17
+re-derives source 16's program layer without citing it**: the 528-row
+program files are byte-identical, its source compiler is source 16's up to
+one docstring word, its two proof notes are excerpts of source 16's (91 % and
+98 % of their word 8-grams), and its Proposition 69.1 is source 16's
+Theorem 60.1 for that program. That layer is printed once, in Part V. Four
+duplicated passages of source 17 are replaced by marked pointers (the
+transition table, the proof of its counter-macro lemma, the proof of
+Proposition 69.1, and the macro descriptions and cost table of its
+two-counter companion); everything else of source 17, and everything
+specific to reset nets, is printed. Sources 16 and 17 use Part III's
+universal machine (Neary–Woods `U15,2`) by a different route, through counter
+programs instead of Iijil's Waterfall matrix; no theorem is shared.
+
 **Status: AI-assisted, unrefereed, not formalized.** Priority is not
 certified for any Part. Nothing in the report is formalized in Lean or
 Rocq.
 
 ```
 article.tex                                          the report, standalone LaTeX with an internal bibliography
-article.pdf                                          the compiled report, 87 pages (unnumbered title page, then pages 1–86)
+article.pdf                                          the compiled report, 168 pages (unnumbered title page, then pages 1–167)
 README.md                                            this guide
 08-maximal-parallel-PROOF_AUDIT.md                   source 08's proof and scope audit, as delivered
 08-maximal-parallel-SOURCE_AUDIT.md                  source 08's source audit (repository pin, literature), as delivered
 12-total-quadratic-SOURCE_AUDIT.md                   source 12's source audit and claim boundary, as delivered
 14-waterfall-LICENSE-PROVENANCE.md                   source 14's licence and provenance statement, as delivered
 14-waterfall-SOURCE-PROVENANCE.md                    source 14's provenance of the machine data and primary paper, as delivered
+15-membrane-motifs-RELEASE_NOTES.md                  source 15's release notes: proved claims and finite replay coverage, as delivered
+16-universal-membrane-direct-PROOF.md                source 16's proof notes for the affine (direct) frontend, as delivered
+16-universal-membrane-packet-PROOF.md                source 16's proof notes for the prime (packet) frontend, as delivered
+17-reset-net-VALIDATION.md                           source 17's verification-scope statement, as delivered
 code/08-maximal-parallel-parallel_certificates.py    source 08's exact-integer compiler, evaluator, canonical witnesses, rank and counting routines
 code/08-maximal-parallel-verify.py                   source 08's deterministic validation (imports parallel_certificates)
 code/12-total-quadratic-build.sh                     source 12's three-pass pdflatex script (delivered layout; see below)
@@ -61,6 +96,50 @@ code/14-waterfall-verify_quadratic_independent.py    independent formula evaluat
 code/14-waterfall-verify_halting_example.py          direct event and countdown simulation of the seven-step example
 code/14-waterfall-verify_certificates.py             the common-column class, ledgers and counterexamples
 code/14-waterfall-verify_release.py                  cross-checks the receipts and the exported polynomial at its fixture
+code/15-membrane-motifs-export_sos.py                expands the contextual-copy example into its quartic sum of squares
+code/15-membrane-motifs-focused_tests.py             old-topology, normalization, anti-sharing and ledger checks
+code/15-membrane-motifs-motif_compiler.py            exact sparse residual compiler and expanded operational oracle
+code/15-membrane-motifs-regression_extensions.py     cascaded dissolution, domain and duplicate-index counterexamples, population identity
+code/15-membrane-motifs-replay_tests.py              the exhaustive candidate-plan suite (several minutes)
+code/15-membrane-motifs-run_all.py                   ordered complete replay; rewrites the receipts and transcripts
+code/15-membrane-motifs-verify_saved_examples.py     short replay of the saved schemas and witnesses, ledgers and coefficient bounds
+code/16-universal-membrane-build_pdf.sh              source 16's PDF build script (delivered layout; see below)
+code/16-universal-membrane-direct-build_direct.py    builds the affine frontend: 528-row program and 2,544 membrane rules
+code/16-universal-membrane-direct-build_quadratic.py  compiles the affine-frontend outcome polynomial at a given horizon
+code/16-universal-membrane-direct-load_input.py      structural loader for half tapes (L,R)
+code/16-universal-membrane-direct-make_accepting_witness.py  builds the sparse T=328 accepting witness for (6,0)
+code/16-universal-membrane-direct-quadratic_core.py  the generic d-counter outcome-polynomial compiler
+code/16-universal-membrane-direct-verify_accepting_quadratic.py  evaluates every term of the T=328 accepting certificate
+code/16-universal-membrane-direct-verify_direct.py   symbolic and concrete checks of the 528-row program
+code/16-universal-membrane-direct-verify_membrane.py  replays the complete 1,013-step membrane run
+code/16-universal-membrane-packet-build_frontend.py  builds the prime frontend (writes four of the excluded files)
+code/16-universal-membrane-packet-load_input.py      structural loader for a raw input a, or half tapes via 2^L 3^R
+code/16-universal-membrane-packet-quadratic_outcome.py  prime-frontend polynomial generator and evaluator (writes two excluded files)
+code/16-universal-membrane-packet-replay_example.py  source-cut replay and exact macro-cost summation for a=64
+code/16-universal-membrane-packet-verify_density.py  finite exact density calculations and certified lower bounds
+code/16-universal-membrane-packet-verify_frontend.py  symbolic and concrete counter checks of the 8,408-row program
+code/16-universal-membrane-packet-verify_membrane.py  maximal-allocation membrane checks on representative gadgets
+code/16-universal-membrane-packet-verify_quadratic.py  independent checks of the prime-frontend polynomial
+code/16-universal-membrane-reproduce.py              source 16's complete rerun with byte comparison (needs the arrival archive)
+code/17-reset-net-budget-audit-audit_budget.py       independent reconstruction of the net specification
+code/17-reset-net-build-pdf.sh                       source 17's PDF build script (delivered layout; see below)
+code/17-reset-net-build_net.py                       builds the 539-place reset net and its ledger
+code/17-reset-net-checks-audit.py                    JSON-only structural and arithmetic checker
+code/17-reset-net-checks-audit_generated_families.py  generated-family coefficient checker
+code/17-reset-net-checks-audit_padding_and_generic_peak.py  padding and generic-peak checks
+code/17-reset-net-peak_quadratic.py                  local peak recurrence and duration extensions of the certificate
+code/17-reset-net-replay_and_verify.py               main replay: traces, witnesses, every quadratic term (about 1-2 minutes)
+code/17-reset-net-reset_quadratic.py                 generic reset-trace compiler with the checked control projection
+code/17-reset-net-run-checks.sh                      the fourteen checks in order (hard-codes python3)
+code/17-reset-net-shared-checks-audit_prime_macros.py  checks the 328 prime-macro summaries for a=64
+code/17-reset-net-shared-checks-audit_shared.py      transition-by-transition checks of both shared-arc nets (over 3 minutes)
+code/17-reset-net-shared-reset-arcs-build_shared.py  builds the shared-reset-arc nets (writes four excluded files)
+code/17-reset-net-source_quadratic.py                source affine-branch compiler (source 16's quadratic_core.py up to one docstring word)
+code/17-reset-net-two-counter-build_variant.py       builds the two-counter companion net (writes three excluded files)
+code/17-reset-net-two-counter-verify_source.py       checks the 8,408-row prime-coded source
+code/17-reset-net-two-reset-audit-audit_two_reset.py  separately generated two-counter net (writes one excluded file)
+code/17-reset-net-two-reset-audit-compare_release_net.py  incidence-preserving comparison of the two-counter nets
+code/17-reset-net-verify_source.py                   checks the serialization, the 528 rows and the macro bodies
 data/08-maximal-parallel-example_certificate.json    structured and expanded quadratic for A+B→C, A→B, with one witness
 data/08-maximal-parallel-verification.txt            source 08's recorded validation run (Python 3.13.5; all PASS)
 data/08-maximal-parallel-verification_counts.json    the same counts as JSON
@@ -84,6 +163,82 @@ data/14-waterfall-independent-receipt.json           receipt of verify_frontend_
 data/14-waterfall-quadratic-independent.json         receipt of verify_quadratic_independent
 data/14-waterfall-halting-example.json               the full event and timestamp trace of the seven-step example
 data/14-waterfall-release-verification.json          receipt of verify_release (PASS)
+data/15-membrane-motifs-contextual_copy_polynomials.json  129 named sparse residuals and the 86-coordinate witness
+data/15-membrane-motifs-contextual_copy_quartic.json  their expanded quartic: 282 monomials, coefficient height 19
+data/15-membrane-motifs-examples.json                saved schemas, rule arrays, natural witnesses and ledgers (708,035 bytes)
+data/15-membrane-motifs-focused_receipt.json         receipt of focused_tests
+data/15-membrane-motifs-quartic_receipt.json         receipt of export_sos
+data/15-membrane-motifs-regression_extensions_receipt.json  receipt of regression_extensions
+data/15-membrane-motifs-regression_extensions_stdout.txt  transcript of regression_extensions
+data/15-membrane-motifs-replay_receipt.json          receipt of replay_tests
+data/15-membrane-motifs-replay_tests_stdout.txt      transcript of replay_tests
+data/15-membrane-motifs-run_receipt.json             receipt of run_all, with runtime metadata and file hashes
+data/15-membrane-motifs-saved_example_receipt.json   receipt of verify_saved_examples
+data/15-membrane-motifs-source-provenance.json       primary-source URLs and hashes
+data/15-membrane-motifs-verify_saved_examples_stdout.txt  transcript of verify_saved_examples
+data/16-universal-membrane-SOURCE_PROVENANCE.json    public source URLs and pinned digests
+data/16-universal-membrane-direct-SOURCE_PROVENANCE.json  provenance of the direct packet
+data/16-universal-membrane-direct-accepting_counter_trace.json  the 328-instruction accepting counter trace for (6,0)
+data/16-universal-membrane-direct-accepting_example.json  the (6,0) example summary
+data/16-universal-membrane-direct-accepting_membrane_trace.json  the 1,013-step membrane trace (602,183 bytes)
+data/16-universal-membrane-direct-accepting_quadratic_receipt.json  receipt of verify_accepting_quadratic
+data/16-universal-membrane-direct-accepting_quadratic_witness.json  the sparse T=328 accepting witness (922 nonzero of 922,008)
+data/16-universal-membrane-direct-frontend_metadata.json  labels, counts and input contract of the affine frontend
+data/16-universal-membrane-direct-input6_0.json      loader output for (6,0)
+data/16-universal-membrane-direct-macro_certificates.json  macro-to-control-graph correspondence of the 528-row program
+data/16-universal-membrane-direct-membrane_rules.jsonl  all 2,544 affine-frontend membrane rules
+data/16-universal-membrane-direct-membrane_verification_receipt.json  receipt of direct verify_membrane
+data/16-universal-membrane-direct-object_alphabet.txt  the 1,296-symbol alphabet
+data/16-universal-membrane-direct-quadratic_schema_T1.json  the affine-frontend polynomial at T=1
+data/16-universal-membrane-direct-register_verification_receipt.json  receipt of verify_direct
+data/16-universal-membrane-direct-semantic_branches.json  the 761 semantic branches
+data/16-universal-membrane-direct-virtual3.txt       the 528-row program as text
+data/16-universal-membrane-document_checks.json      receipt of source 16's PDF layout checks
+data/16-universal-membrane-packet-SOURCE_PROVENANCE.json  provenance of the prime packet
+data/16-universal-membrane-packet-accepting_example.json  the a=64 example summary (no final newline, as delivered)
+data/16-universal-membrane-packet-density_lower_bounds.json  exact rational lower bounds for the density
+data/16-universal-membrane-packet-frontend_metadata.json  labels, counts and input contract of the prime frontend
+data/16-universal-membrane-packet-input64.json       loader output for a=64
+data/16-universal-membrane-packet-macro_certificates.json  macro correspondence of the 8,408-row program
+data/16-universal-membrane-packet-membrane_verification_receipt.json  receipt of packet verify_membrane
+data/16-universal-membrane-packet-quadratic_small_fixtures.json  small fully expanded polynomial fixtures
+data/16-universal-membrane-packet-quadratic_verification_receipt.json  receipt of verify_quadratic
+data/16-universal-membrane-packet-verification_receipt.json  receipt of verify_frontend
+data/16-universal-membrane-packet-virtual3.txt       the 528-row program as text (packet copy, different bytes)
+data/16-universal-membrane-reproduction.json         receipt of reproduce.py
+data/16-universal-membrane-tm_table.json             the parsed 15-state source table (shared by both packets and by source 17)
+data/16-universal-membrane-virtual3.json             the 528-row three-counter program (shared by both packets and by source 17)
+data/17-reset-net-SOURCE_PROVENANCE.json             source attribution and digests
+data/17-reset-net-accepting_all_duration_witness_N390.json  natural padding fixture at N=390
+data/17-reset-net-accepting_peak_trace.json          per-step masses and peak coordinates of the (6,0) run
+data/17-reset-net-accepting_peak_witness.json        sparse canonical witness at h=328, N=388
+data/17-reset-net-accepting_reset_trace.json         all 388 labelled firings with markings
+data/17-reset-net-accepting_reset_witness.json       sparse projected-trace witness at N=388
+data/17-reset-net-budget-audit-audit_results.json    receipt of audit_budget
+data/17-reset-net-budget-audit-shortest_accepting_word.json  the shortest accepting word
+data/17-reset-net-checks-AUDIT_RESULTS.json          receipt of checks/audit
+data/17-reset-net-checks-GENERATED_FAMILIES_RESULTS.json  receipt of audit_generated_families
+data/17-reset-net-checks-PADDING_AND_GENERIC_PEAK_RESULTS.json  receipt of audit_padding_and_generic_peak
+data/17-reset-net-checks-PORTABILITY_RESULTS.json    receipt of relocation checks of the JSON-only checker
+data/17-reset-net-net_ledger.json                    literal graph counts and degrees of the 539-place net
+data/17-reset-net-reset_net.json                     every place and arc of the 539-place net
+data/17-reset-net-shared-checks-audit_receipt.json   receipt of audit_shared (PASS, as delivered)
+data/17-reset-net-shared-checks-independent_A64_macro_trace.json  independent a=64 macro trace
+data/17-reset-net-shared-checks-prime_macro_receipt.json  receipt of audit_prime_macros
+data/17-reset-net-shared-reset-arcs-three-counter-accepting_peak_witness_N446.json  canonical witness of the shared net at N=446
+data/17-reset-net-shared-reset-arcs-three-counter-accepting_reset_trace_N446.json  all 446 firings of the shared run
+data/17-reset-net-shared-reset-arcs-three-counter-net_ledger.json  ledger of the shared three-counter net
+data/17-reset-net-shared-reset-arcs-two-counter-accepting_macro_count_A64.json  shared two-counter duration for a=64
+data/17-reset-net-shared-reset-arcs-two-counter-net_ledger.json  ledger of the shared two-counter net
+data/17-reset-net-shared-reset-arcs-verification_receipt.json  receipt of build_shared
+data/17-reset-net-source_verification_receipt.json   receipt of verify_source
+data/17-reset-net-two-counter-net_ledger.json        ledger of the two-counter companion net
+data/17-reset-net-two-counter-source-accepting_example.json  the a=64 example of the companion
+data/17-reset-net-two-counter-source_verification_receipt.json  receipt of two-counter verify_source
+data/17-reset-net-two-reset-audit-accepting_macro_trace.json  macro trace of the separately generated net
+data/17-reset-net-two-reset-audit-audit_receipt.json  receipt of audit_two_reset (hashes an unshipped proof note)
+data/17-reset-net-two-reset-audit-release_comparison_receipt.json  receipt of compare_release_net
+data/17-reset-net-verification_receipt.json          receipt of replay_and_verify
 ```
 
 ### Delivered names
@@ -106,6 +261,38 @@ is byte-identical to the delivery. Delivered name → shipped name:
   `receipts/*.json` → `data/14-waterfall-*.json`; `source/*` →
   `data/14-waterfall-UniversalTM15x2.*`; `LICENSE-PROVENANCE.md`,
   `SOURCE-PROVENANCE.md` → `14-waterfall-*.md`.
+- Source 15 (inner directory `membrane-motif-release/`): `replay/*.py` →
+  `code/15-membrane-motifs-*.py`; the other files of `replay/` →
+  `data/15-membrane-motifs-*`; `provenance/source-provenance.json` →
+  `data/15-membrane-motifs-source-provenance.json`; `RELEASE_NOTES.md` →
+  `15-membrane-motifs-RELEASE_NOTES.md`.
+- Source 16 (inner directory `literal-membrane-release/`): `direct/X` →
+  `…-direct-X` and `packet/X` → `…-packet-X` (programs in `code/`, everything
+  else in `data/`); `direct/PROOF.md`, `packet/PROOF.md` →
+  `16-universal-membrane-{direct,packet}-PROOF.md`; `reproduce.py`,
+  `build_pdf.sh` → `code/16-universal-membrane-*`; `SOURCE_PROVENANCE.json`
+  and `receipts/*.json` → `data/16-universal-membrane-*`. The byte-identical
+  pairs `{direct,packet}/tm_table.json` and `{direct,packet}/virtual3.json`
+  are shipped once, as `data/16-universal-membrane-tm_table.json` and
+  `data/16-universal-membrane-virtual3.json`; the two `virtual3.txt` differ
+  and are both shipped.
+- Source 17 (inner directory `reset-net-release/`): root programs →
+  `code/17-reset-net-*`, root data → `data/17-reset-net-*`, `VALIDATION.md`
+  → `17-reset-net-VALIDATION.md`; files in sub-directories carry the
+  sub-directory in the prefix (`two-counter/build_variant.py` →
+  `code/17-reset-net-two-counter-build_variant.py`,
+  `shared-reset-arcs/three-counter/net_ledger.json` →
+  `data/17-reset-net-shared-reset-arcs-three-counter-net_ledger.json`,
+  `two-counter/source/accepting_example.json` →
+  `data/17-reset-net-two-counter-source-accepting_example.json`). Source
+  17's copies of source 16's files are shipped once, under source 16's names:
+  `source/{tm_table.json, virtual3.json, virtual3.txt, macro_certificates.json,
+  accepting_counter_trace.json}` are `data/16-universal-membrane-{tm_table.json,
+  virtual3.json, direct-virtual3.txt, direct-macro_certificates.json,
+  direct-accepting_counter_trace.json}`, and `two-counter/source/{tm_table.json,
+  virtual3.json, virtual3.txt, macro_certificates.json}` are
+  `data/16-universal-membrane-{tm_table.json, virtual3.json, packet-virtual3.txt,
+  packet-macro_certificates.json}`.
 
 Not shipped: the three PDFs; the manuscripts of sources 12 and 14 (printed
 as Parts II and III; source 14's `paper/affine-gap-table.tex` is printed
@@ -113,13 +300,39 @@ as Appendix G and carries the same 64 forms as
 `data/14-waterfall-affine-gap-forms.json`); the READMEs of sources 12 and
 14; and the checksum ledgers of sources 08 (`SHA256SUMS.txt`, 10 of 10
 verified at placement) and 14 (`SHA256SUMS`, 30 of 30). Source 12 shipped
-no ledger. Nothing was excluded as heavy (the largest shipped file is
-127,417 bytes). All of it survives in the arrival commits:
+no ledger. Nothing of sources 08, 12 and 14 was excluded as heavy (their
+largest shipped file is 127,417 bytes).
+
+Not shipped from sources 15–17: the three PDFs and manuscripts (printed as
+Parts IV–VI); the delivered READMEs (source 15: one; 16: three; 17: three);
+the checksum ledgers, all verified at placement (source 15 `SHA256SUMS`
+26/26 and `MANIFEST.json` 26/26; 16 `MANIFEST.json` 71/71,
+`direct/MANIFEST.json` 30/30, `packet/MANIFEST.json` 31/31; 17 `SHA256SUMS`
+83/83, with its checker `verify-manifest.py`); source 15's two transcripts
+`replay/export_sos_stdout.txt` and `replay/focused_tests_stdout.txt`
+(byte-identical to the shipped quartic and focused receipts); source 16's two
+identical copies of `WATERFALL-FRONTEND-PROOF.md`, an earlier draft of the
+Waterfall frontend printed as Part III (its only content not in Part III is
+a 34k-witness degree-four baseline, superseded by Part III's 35k quadratic);
+source 17's two excerpt proof notes `source/SOURCE_REGISTER_PROOF.md` and
+`two-counter/source/PROOF.md` and its copies of source 16's program files
+(above); the four copies of Iijil's `UniversalTM15x2.tm.txt` in sources 16
+and 17 (third-party, the same bytes as `data/14-waterfall-UniversalTM15x2.tm.txt`;
+see "Licensing"); and seventeen heavy regenerable files of sources 16 and 17
+(63,245,978 bytes; see "Reconstructing the excluded data"). The two largest
+shipped files of the batch, `data/15-membrane-motifs-examples.json`
+(708,035 bytes) and `data/16-universal-membrane-direct-accepting_membrane_trace.json`
+(602,183 bytes), are single artifacts under 1 MB and were staged.
+
+All of it survives in the arrival commits:
 
 ```sh
 git show 808b53ed8:docs/incoming/Maximal_Parallel_Diophantine.zip > mpd.zip
 git show 808b53ed8:docs/incoming/Total_Quadratic_Diophantine_Semantics.zip > tqs.zip
 git show 24a743255:docs/incoming/Waterfall_Diophantine_Certificates.zip > wdc.zip
+git show 2a8a39599:docs/incoming/Membrane_Motif_Research_Package.zip > mm.zip
+git show 2a8a39599:docs/incoming/Universal_Membrane_Research_Package.zip > um.zip
+git show aebfa386e:docs/incoming/Reset_Petri_Net_Certificates.zip > rn.zip
 ```
 
 ## Labels and numbering
@@ -127,8 +340,8 @@ git show 24a743255:docs/incoming/Waterfall_Diophantine_Certificates.zip > wdc.zi
 Every label carries the prefix `qoc:`. Source 08's 73 labels are
 `qoc:mp:` plus their delivered names, source 12's 40 are `qoc:ts:` plus
 theirs, and source 14's 54 are `qoc:wf:` plus theirs; no source label was
-dropped or renamed apart from the prefix. The merge added 22 labels, 189 in
-all: fifteen of the front section, the three Parts and the provenance
+dropped or renamed apart from the prefix. The batch-78 merge added 22 labels,
+189 in all: fifteen of the front section, the three Parts and the provenance
 appendix (`qoc:sec:front`, `qoc:sec:parts`, `qoc:sec:spine`,
 `qoc:eq:spine`, `qoc:sec:conventions`, `qoc:tab:notions`,
 `qoc:tab:letters`, `qoc:sec:gadgets`, `qoc:sec:reproofs`,
@@ -141,6 +354,17 @@ section. The CDC report already uses the sub-prefix `cdc:wf:` (its
 manuscript 04); it is unrelated to `qoc:wf:`. Bibliography keys carry
 `mp:`, `ts:` or `wf:`; the credits added in the merge carry `w:`.
 
+The batch-79 write added 118 labels, 307 in all: source 15's 37 delivered
+labels as `qoc:mm:` plus their delivered names, source 16's 35 as `qoc:um:`,
+source 17's 34 as `qoc:rn:`, and twelve new ones (`qoc:mm:part`,
+`qoc:um:part`, `qoc:rn:part`, `qoc:mm:sec:intro`, `qoc:mm:sec:conclusion`,
+`qoc:mm:app:ledgers`, `qoc:mm:app:provenance79`, `qoc:um:sec:intro`,
+`qoc:um:sec:sources`, `qoc:um:sec:future`, `qoc:um:app:artifacts`,
+`qoc:rn:app:compiler`). None of the 189 earlier labels was renamed or
+removed, and every one of them still prints the same number (compared in the
+`.aux` files of the committed and the new build). Bibliography keys of the
+new Parts carry `mm:`, `um:` or `rn:`.
+
 Each Part keeps its source's numbering by section: source 08's Section *n*
 is Section *n* + 1 (Sections 2–16), source 12's is *n* + 16 (Sections
 17–29) and source 14's is *n* + 29 (Sections 30–38); Theorem *n.m*
@@ -148,6 +372,16 @@ shifts the same way. Source 08's appendices A–C keep their letters, source
 12's A–B are D–E, source 14's A–B are F–G, and Appendix H is the
 provenance. Text written in the merge is marked `[write]`; text without a
 marker is the source's own.
+
+Parts IV–VI continue the section numbering: source 15's Section *n* is
+Section *n* + 38 (Sections 39–49), source 16's is *n* + 49 (Sections 50–62)
+and source 17's is *n* + 62 (Sections 63–77), with theorems shifted the same
+way. Inside Parts IV–VI, equations, tables and figures are numbered within
+sections (for example Table 60.2), and the global counters are restored
+after Part VI, so that no number of Parts I–III or Appendices A–H moved.
+Their appendices are Appendices I–J (source 15's A–B), K (source 16's A) and
+L–M (source 17's A–B), after the provenance appendix H, which gained
+Appendix H.1 for the batch-79 provenance.
 
 ## Setting and notation
 
@@ -173,6 +407,19 @@ carefully:
   fixed horizon, not the single-fold problem for all c.e. sets;
 - **phase** (Part II) is a timing region; **clock** (Part III) is a
   Waterfall counter, not a computable clock of `liveness-beyond-halting`.
+
+For Parts IV–VI, an unnumbered table after Table 2 lists their letters
+(among them `T`: Part V's horizon in counter instructions but Part VI's
+scratch counter; `h`: Part V's halt code but Part VI's source-instruction
+horizon; `K`: Part IV's number of catalogue entries, Part V's scratch
+register, Part VI's minimum fuel; `M`, `N`, `B`, `H`, `Z`), and Table 1
+gains rows for **reset** (a Petri-net reset arc, unrelated to the research
+programme's "two-reset mortality" matrices), **motif, schema**, **budget,
+fuel**, **outcome, trace**, **division**, **boundary** and **source n**.
+Source macros that clashed with the report's were renamed without changing
+their output (`\zero` of source 15 to `\mmzero`; `\code` and `\ind` of
+source 17 to `\rncode` and `\rnind`), and source 15's `\file` is set like
+source 16's (`\nolinkurl` instead of `\texttt{\detokenize}`).
 
 ## Status: what is claimed, and what is not
 
@@ -209,6 +456,39 @@ The report claims conventional mathematical proofs, by its sources, for:
   seven-step example (`C = 189`, `τ = 428`, 245 witnesses); semilinearity
   at fixed `k`; the decidable common-column class with a horizon-free
   `4n`-witness certificate; and the endpoint-count counterexample.
+- **Part IV (source 15).** For polarizationless, noncooperative active
+  membranes with evolution, communication, dissolution and weak division:
+  soundness of every natural zero for every well-formed finite acyclic
+  schema and existential consistent-schema completeness for one maximally
+  parallel step; exact inclusion maximality by one linear residual per
+  parent; uniqueness of the derived coordinates; the exact ledger
+  `V = dK+A+E+B+3dJ+KJ`, `R = (3d+2K)J+(d+K)L+Z`; residual degree two,
+  sum-of-squares degree four and a coefficient-height bound; one 18-variable,
+  30-residual schema doubling any population; the nested-division family
+  (`V = 2D²+11D+5`, `R = 8D²+15D+7`); the exact next-population identity
+  with the sharp bound `2^n − 1`; and a four-rule system with `2^T` distinct
+  payloads defeating identical-subtree sharing.
+- **Part V (source 16).** Two literal frontends for the Neary–Woods machine:
+  affine (528 three-counter instructions, 2,544 rules, 1,296 symbols, five
+  labels) and prime (8,408 two-counter instructions, 34,605 rules, 19,162
+  symbols, four labels), accepting by existence of a globally halting run,
+  both c.e.-complete; exact macro costs; the density of the prime language,
+  transcendental, of Turing degree `0′`, with an explicit `O(log² N)`
+  counting remainder and zero effective dimensions; and the generic outcome
+  polynomial with `((d+1)B₀−S₀)T` witnesses, `(d+2)T+1` squares and `B₀T`
+  products (`2,811T`, `5T+1`, `761T` and `29,904T`, `4T+1`, `10,748T`), whose
+  fibres are empty or singletons over the naturals and over the nonnegative
+  reals.
+- **Part VI (source 17).** A unit-weight reset net with 539 places, 771
+  transitions, 2,608 ordinary arcs and 233 reset arcs from three places, with
+  c.e.-complete exact-target reachability; the all-run debt identity; the
+  exact fuel threshold `K = M − B`; exactly one accepting word at each length
+  of `N_min + 2ℕ`, `N_min = h+H+2M−B+5`; the canonical certificate with
+  `2813h` witnesses, `6h+2` squares and `762h` products, natural over the
+  nonnegative reals; the real-parity obstruction for padding; the generic
+  reset-trace bijection with `(d+1)mN` witnesses; the one-resettable-place
+  reduction to one inhibitor arc; the prime-coded companion with its
+  physical-peak theorem; and shared reset arcs (three and two).
 
 Several statements re-prove or generalize results of
 `canonical-diophantine-certificates` Part XI, which sources 08 and 12 knew
@@ -223,7 +503,14 @@ generalizes `cdc:of:thm:ranks`, and its compatible-union lemma, batch
 serialization and the second half of its absence theorem are
 `cdc:of:prop:antimatroid`, `cdc:of:lem:closure` and
 `cdc:bd:prop:nobound`; source 14's semilinearity proposition has a second
-route through `cdc:of:thm:classification`.
+route through `cdc:of:thm:classification`. Source 17's fuel lemma
+(Lemma 67.1) is `cdc:rx:thm:threshold` in another substrate, and the
+ordinary-net case of its trace theorem (Theorem 71.1) is a second route to
+`cdc:thm:main` and `cdc:wf:thm:petri`, generalized to reset arcs with every
+nonnegative real zero natural; its canonical peak certificate is related to
+`cdc:rx:thm:QL` but is not the same theorem. Source 17's program layer is
+source 16's (above). These are printed with `[write]` notes and listed in
+Section 1.5.
 
 The report does **not** claim:
 
@@ -253,6 +540,23 @@ The report does **not** claim:
 - for Part III: optimality of `35k` or of the four-operation loader, any
   cost for encoding ordinary programs as half tapes, or that the
   universal machine, the matrix or its compiler are new.
+- for Part IV: a fixed-arity universal polynomial, uncharged temporal
+  compression, completeness for an arbitrary preassigned catalogue, uniqueness
+  of the selected schedule or of the witness across schemas, a lower bound
+  for encodings other than identical-subtree quotients, priority, or a
+  certified instantiated universal rule table;
+- for Part V: any payment for unknown time, a fixed-arity unbounded-time
+  representation, a singlefold MRDP representation, an efficiency or
+  Diophantine record, priority, or a verifier of supplied membrane histories
+  (its polynomial is an outcome projection); the half-tape-to-raw-input
+  preprocessing is external, and the prime example (`C` about `7.4·10¹⁷`
+  instructions) is computed from proved macro counts, not executed;
+- for Part VI: novelty of the reset-budget method or of the decidability
+  boundaries (both classical), arc-minimality, a fixed-arity unbounded-time,
+  finite-fold or single-fold result, a size record, a uniform procedure
+  deciding which inputs have empty length sets, marker-free trace
+  certificates for the shared-arc net, or real-exactness of the padding
+  variant; the prime-coded example is macro-counted, not replayed.
 
 ## Relation to neighbouring reports and to the formal project
 
@@ -268,6 +572,11 @@ The report does **not** claim:
   class) and Part XII's "Canonical macro decompositions" and "A small
   explicit fixed interpreter"; Parts I and II add data points to
   `cdc:q:degree`. None of these questions is answered in general.
+  Part VI re-proves Part XIII's resource threshold (`cdc:rx:thm:threshold`)
+  for reset nets and generalizes Part II's trace certificates (`cdc:thm:main`,
+  `cdc:wf:thm:petri`); its exact-target acceptance is the distinction behind
+  `cdc:rx:thm:nopriority`. Parts V and VI bear on CDC's question
+  "Substrate-transfer theorems".
 - **[`liveness-beyond-halting`](../liveness-beyond-halting)**: Part I's
   guarded register-machine embedding (one round per instruction) appears
   to satisfy the hypotheses of `lbh:thm:transfer` with block length one,
@@ -277,18 +586,30 @@ The report does **not** claim:
 - **[`signal-machine-collision-certificates`](../signal-machine-collision-certificates)**
   (batch 78, cluster H2) uses the same family of degree-two certificates
   for rational signal machines. No theorem is shared.
+- **This report's own questions.** Part IV answers in part Part I's question
+  "Add dynamic membranes without witness multiplicity" (one step, histories
+  modulo renaming) and covers division and dissolution, which Part I's
+  fixed-topology section excludes; Part V answers in part "Compile a
+  published small universal system end to end" (a universal active-membrane
+  system, not the 23-rule system); Parts V–VI are the opposite data point to
+  Part III's question on longer verifiable affine blocks. Dated notes record
+  each in place.
 - **[`group-theoretic-substrates`](../group-theoretic-substrates)**,
   **[`probabilistic-quantum-and-continuous-computation`](../probabilistic-quantum-and-continuous-computation)**,
   **[`stochastic-and-thermal-exactness`](../stochastic-and-thermal-exactness)**:
   no overlap.
 - **The Hilbert-tenth-problem research programme** (read-only for this
   report), `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`,
-  reviewed all three archives on the day they arrived (see "Reviews and
-  patches" below). Its note `neary_woods_explicit_universal_tm.md`
+  reviewed all six archives on the day they arrived (source 17's review
+  landed after its placement; see "Reviews and patches" below). Its note `neary_woods_explicit_universal_tm.md`
   (added 1 October 2026, commit `f2622a68c`) transcribes the same
   Neary–Woods Table 16 as Part III, entry by entry, and reports the same
   `(u10,b)`/`(u10,c)` inconsistency in the primary paper; source 14 found it
-  independently, and the report credits the note.
+  independently, and the report credits the note. Sources 16 and 17 report
+  it again; it is printed once, in Part III. The programme's
+  `u15_raw_half_tape_loader.md` (commit `02419530a`) prices the
+  ordinary-input loader into raw half tapes (138 = 73M+65A operations) that
+  Parts III, V and VI leave external.
 - **The formal project.** The report sits in the collection, not in
   `Computability/HilbertTenthProblem`, and **placement beside a Lean
   development confers no formal status**. Sources 08 and 12 use MRDP only
@@ -297,7 +618,13 @@ The report does **not** claim:
   (`Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean`, lines
   33, 42, 26), whose blob `74aea8c5e` is the one source 08 cites. The
   project has formalized none of this report's statements: it has no
-  multiset-rewriting, timed-Horn, self-assembly or Waterfall module.
+  multiset-rewriting, timed-Horn, self-assembly, Waterfall, membrane or
+  reset-net module. Source 17 cites `MRDP.lean` and
+  `Common/DiophantineTrace.lean` at its pin `44983ed7e`; both are unchanged
+  at this write, and the latter's declarations
+  (`Diophantine.boundedForall_dioph`, `Diophantine.exactIter_dioph`,
+  `Diophantine.existsExactIter_dioph`) are general Diophantine closure
+  theorems, not statements of this report.
 
 ## Reviews and patches by the research programme
 
@@ -334,6 +661,35 @@ the research programme's decision.
   (`Mv = 194·1`; `(C,k,τ)` from `(189,7,428)` to `(251,17,622)`). These are
   dated notes in Part III (Sections 34 and 37); source 14's counts are
   printed as delivered.
+- Sources 15 and 16: `review_membrane_reports_2a8a.md` (commit `85294a527`;
+  index `incoming_substrate_review_2a8a39599.md`). No theorem-level defect,
+  no false certificate, **no patch**; all 18 author suite commands and two
+  loader checks pass in private copies (300-s limits); an independent checker
+  ran 122,640 exhaustive natural tuples, 10,125 maximality cases and 502
+  rejected mutations. The review documents the scope limits that Part IV
+  states (well-formed schemas, natural witnesses, existential completeness)
+  and a bounded direct-prefix projection of source 16's affine-frontend
+  polynomial (forced first zero test: `2,811(T−1)` witnesses, `5(T−1)+1`
+  squares, `761(T−1)` products), a dated note in Part V, Section 60.
+- Source 17: `review_reset_petri_net_aebfa386e.md` (commit `9df1f72ca`,
+  after the placement; replay index `review_reset_signal_aebfa386e.md` with
+  checker `review_reset_signal_aebfa386e.py`). The mathematics on the valid
+  natural domain and all fourteen author commands pass. Two malformed-input
+  defects: `peak_quadratic.py` accepts non-Boolean option flags (with
+  `all_durations=0.5` it emits a schema declaring 2,813 variables but using
+  index 2,813), and `build_net.py`'s `fire` accepts unknown places and
+  non-natural token counts. Patch `reset_net_exact_domains.patch` (SHA-256
+  `bc3d28a4…`), changing only those two programs; the shipped
+  `code/17-reset-net-peak_quadratic.py` and `code/17-reset-net-build_net.py`
+  are unpatched (apply it in a delivered layout with `patch -p1`). The
+  review also gives a natural-only gate simplification (`(E−e_r)X_r` instead
+  of `(E−e_r)(e_r+X_r)`: same natural zero set, real exactness lost; one
+  evaluation schedule from `12,770h+11` to `12,009h+11` paid operations), a
+  dated note in Part VI, Section 69.
+- The placement itself: `review_placement_a7ae02511.md` (commit
+  `653349f6a`) authenticates all 246 files placed by `a7ae02511` against
+  their archive members, and its stager `replay_placed_substrates_a7ae02511.py`
+  restores the complete delivered layouts of sources 15–17 from Git.
 
 ## Licensing of the third-party machine data
 
@@ -355,6 +711,17 @@ source 14's own note and Python checks "in this private review package".
 The placement treated those files as repository content; this README
 records both statements and does not decide the question.
 
+Sources 16 and 17 use the same serialization (SHA-256 `ba70ab2c…`, 227
+bytes): source 16's two copies and source 17's two copies are not shipped,
+and the programs read it at `source/UniversalTM15x2.tm.txt` in their
+delivered layouts, where the recipes below put a copy of
+`data/14-waterfall-UniversalTM15x2.tm.txt`; it stays third-party data, not
+covered by MIT-0. Sources 15–17 state no licence for their own files: source
+15's README says its code and article text were prepared for that release,
+and sources 16 and 17 say they redistribute only the small serialization and
+their own proofs and programs, citing third-party papers without bundling
+them. The placement treated their files as repository content.
+
 ## Build
 
 ```sh
@@ -363,13 +730,17 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX, in a scratch directory; standard packages (Latin Modern, AMS,
 bm, microtype, booktabs, longtable, enumitem, tcolorbox, fancyhdr, TikZ,
-xurl, hyperref). The committed build has 87 pages, with no undefined
-references or citations, no multiply defined labels, no duplicate
-destinations, and no overfull or underfull boxes.
+xurl, hyperref, listings, float; `hypertexnames=false`). The committed
+build has 168 pages, with no undefined references or citations, no multiply
+defined labels, no duplicate destinations, and no overfull or underfull
+boxes. The log carries six informational "Infinite glue shrinkage found in
+box being split" messages from longtable page breaks (two in the build of
+Parts I–III alone).
 
-The article is generated reproducibly from the three delivered manuscripts
-by a merge script with anchored insertions; the script is not shipped, and
-`article.tex` is the source of record.
+The article is generated reproducibly from the delivered manuscripts by
+merge scripts with anchored insertions (Parts IV–VI were appended to the
+committed text of Parts I–III the same way); the scripts are not shipped,
+and `article.tex` is the source of record.
 
 ## Rerunning the programs
 
@@ -426,6 +797,185 @@ twelve JSON files. All comparisons are apart from line endings: the
 Windows runs write CRLF, and the shipped files are LF. Receipts with run
 times or interpreter versions never regenerate byte for byte.
 
+### Sources 15–17
+
+Their programs too read and write their delivered layouts (they rewrite
+receipts, transcripts, nets and exports in place), the delivered texts say
+`python3`, and `code/17-reset-net-run-checks.sh` hard-codes `python3`. Use a
+recreated layout, never the shipped files. Three ways to get one:
+
+1. extract the arrival archives (commands under "Delivered names"); they
+   contain every file, including the excluded ones;
+2. run the research programme's stager,
+   `py Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/replay_placed_substrates_a7ae02511.py --repo . --destination <new directory>`
+   from the repository root (it authenticates the placed files and restores
+   the complete layouts from Git); or
+3. rebuild the layouts from the shipped files with the snippet under
+   "Reconstructing the excluded data", then regenerate the excluded files.
+
+Then, with `py` and `PYTHONUTF8=1`:
+
+```sh
+# source 15, in membrane-motif-release/  (a few seconds each)
+py replay/verify_saved_examples.py; py replay/focused_tests.py
+py replay/regression_extensions.py; py replay/export_sos.py
+py replay/replay_tests.py      # exhaustive: several minutes
+# source 16, in literal-membrane-release/packet/ and .../direct/
+py build_frontend.py; py verify_frontend.py; py verify_membrane.py; py replay_example.py
+py verify_density.py; py quadratic_outcome.py --steps 1; py verify_quadratic.py; py load_input.py --A 64
+py build_direct.py; py verify_direct.py; py build_quadratic.py --steps 1
+py make_accepting_witness.py; py verify_accepting_quadratic.py; py verify_membrane.py
+# source 17, in reset-net-release/  (the order of run-checks.sh)
+py verify_source.py; py build_net.py; py replay_and_verify.py; py budget-audit/audit_budget.py
+py checks/audit.py; py checks/audit_generated_families.py; py checks/audit_padding_and_generic_peak.py
+py two-counter/verify_source.py; py two-counter/build_variant.py
+py two-reset-audit/audit_two_reset.py; py two-reset-audit/compare_release_net.py
+py shared-reset-arcs/build_shared.py; py shared-checks/audit_shared.py; py shared-checks/audit_prime_macros.py
+```
+
+At placement (Windows, `PYTHONUTF8=1`, 170-s limit per command) source 15's
+four short suites passed and `replay_tests.py` did not finish (the research
+programme ran it within 300 s); all fifteen component commands of source 16
+passed, with outputs equal to the delivery apart from line endings and one
+platform field (`program_sha256` in `direct/accepting_quadratic_witness.json`,
+a hash of the CRLF-rewritten program); and every command of source 17 passed
+except `shared-checks/audit_shared.py`, which did not finish (three of its
+four phases passed; the delivered receipt records PASS). At this write, on
+layouts rebuilt from the shipped files with regenerated excluded files,
+`focused_tests.py` and `verify_saved_examples.py` of source 15 and
+`verify_source.py`, `two-counter/verify_source.py`,
+`checks/audit_padding_and_generic_peak.py` and `replay_and_verify.py` (63 s)
+of source 17 passed. `reproduce.py` of source 16 reads the three manifests
+and byte-compares regenerated files, so it runs only in the extracted
+archive and, on Windows, fails on line endings; run it under POSIX or
+compare modulo CRLF. `two-reset-audit/audit_two_reset.py` hashes the
+unshipped `two-counter/source/PROOF.md` into its receipt; take that file
+from the archive (`unzip -p rn.zip reset-net-release/two-counter/source/PROOF.md`).
+
+## Reconstructing the excluded data
+
+Vladimir, 2 October 2026: "Exclude heavy regenerable artifacts". Seventeen
+files of sources 16 and 17, 63,245,978 bytes in all, were not shipped. The
+delivered programs regenerate each of them byte for byte, after the CRLF
+line endings that Windows runs write are converted to LF. This write rebuilt
+all seventeen from the shipped files on a recreated layout and compared them
+with the archive members: all identical.
+
+| Source | Excluded files (delivered paths) | Bytes | Rebuilt by | Time here |
+|---|---|---:|---|---:|
+| 16 | `packet/membrane_rules.jsonl`, `packet/literal2.json`, `packet/literal2.txt`, `packet/object_alphabet.txt` | 4,360,490; 878,685; 504,996; 467,766 | `py build_frontend.py` in `packet/` | 3 s |
+| 16 | `packet/quadratic_schema_T1.json`, `packet/semantic_branches.json` | 3,094,551; 1,061,338 | `py quadratic_outcome.py --steps 1` in `packet/` (reads `literal2.json`) | 1 s |
+| 17 | `canonical_peak_schema_h1.json`, `all_duration_schema_h1.json`, `projected_trace_schema_T1.json` | 810,169; 810,250; 1,032,589 | **no shipped script writes them** (`replay_and_verify.py` and `checks/*.py` only compare them): the three compiler calls below | 1 s |
+| 17 | `two-counter/reset_net.json`, `two-counter/canonical_peak_schema_h1.json`, `two-counter/projected_trace_schema_T1.json` | 4,652,129; 10,100,914; 13,217,236 | `py two-counter/build_variant.py` (reads `two-counter/source/literal2.json`, which is source 16's `packet/literal2.json`) | 18 s |
+| 17 | `shared-reset-arcs/two-counter/{reset_net,canonical_peak_schema_h1}.json`, `shared-reset-arcs/three-counter/{reset_net,canonical_peak_schema_h1}.json` | 7,676,408; 10,225,459; 504,323; 822,675 | `py shared-reset-arcs/build_shared.py` (after the two rows above) | 20 s |
+| 17 | `two-reset-audit/two_reset_net.json` | 3,026,000 | `py two-reset-audit/audit_two_reset.py` (writes the net, then needs `two-counter/source/PROOF.md` for its receipt) | 5 s |
+
+Source 17's own copies of source 16's `literal2.json` and `literal2.txt`
+(`two-counter/source/`) are excluded with them. The simplest route is to
+extract the arrival archives, which contain every file. To rebuild instead
+from this directory, recreate the layouts: save the following as
+`layout.sh` outside the repository and run `sh layout.sh . <scratch>` (POSIX
+`sh`, as in Git Bash). It copies every shipped file of sources 15–17 to its
+delivered path; this write checked the result byte for byte against the
+archives.
+
+```sh
+#!/bin/sh
+# Recreate the delivered layouts of QOC sources 15, 16, 17 from the shipped
+# files.  usage: sh layout.sh <report-dir> <scratch-dir>
+set -eu
+Q=$(cd "$1" && pwd); O=$2
+mkdir -p "$O"; O=$(cd "$O" && pwd)
+
+# source 15 (batch-79 manuscript 08)
+M=$O/membrane-motif-release; mkdir -p "$M/replay" "$M/provenance"
+cp "$Q/15-membrane-motifs-RELEASE_NOTES.md" "$M/RELEASE_NOTES.md"
+cp "$Q/data/15-membrane-motifs-source-provenance.json" "$M/provenance/source-provenance.json"
+for f in "$Q"/code/15-membrane-motifs-* "$Q"/data/15-membrane-motifs-*; do
+  b=${f##*/15-membrane-motifs-}; [ "$b" = source-provenance.json ] && continue
+  cp "$f" "$M/replay/$b"; done
+
+# source 16 (batch-79 manuscript 09)
+U=$O/literal-membrane-release; mkdir -p "$U/direct/source" "$U/packet/source" "$U/receipts"
+cp "$Q/16-universal-membrane-direct-PROOF.md" "$U/direct/PROOF.md"
+cp "$Q/16-universal-membrane-packet-PROOF.md" "$U/packet/PROOF.md"
+for f in "$Q"/code/16-universal-membrane-* "$Q"/data/16-universal-membrane-*; do
+  b=${f##*/16-universal-membrane-}
+  case $b in
+    direct-*) cp "$f" "$U/direct/${b#direct-}" ;;
+    packet-*) cp "$f" "$U/packet/${b#packet-}" ;;
+    tm_table.json|virtual3.json) cp "$f" "$U/direct/$b"; cp "$f" "$U/packet/$b" ;;
+    document_checks.json|reproduction.json) cp "$f" "$U/receipts/$b" ;;
+    *) cp "$f" "$U/$b" ;;
+  esac; done
+for d in direct packet; do cp "$Q/data/14-waterfall-UniversalTM15x2.tm.txt" "$U/$d/source/UniversalTM15x2.tm.txt"; done
+
+# source 17 (batch-79 manuscript 18)
+R=$O/reset-net-release; mkdir -p "$R/source" "$R/two-counter/source"
+cp "$Q/17-reset-net-VALIDATION.md" "$R/VALIDATION.md"
+for f in "$Q"/code/17-reset-net-* "$Q"/data/17-reset-net-*; do
+  b=${f##*/17-reset-net-}
+  case $b in
+    shared-reset-arcs-three-counter-*) d=shared-reset-arcs/three-counter; b=${b#shared-reset-arcs-three-counter-} ;;
+    shared-reset-arcs-two-counter-*) d=shared-reset-arcs/two-counter; b=${b#shared-reset-arcs-two-counter-} ;;
+    shared-reset-arcs-*) d=shared-reset-arcs; b=${b#shared-reset-arcs-} ;;
+    two-counter-source-*) d=two-counter/source; b=${b#two-counter-source-} ;;
+    two-counter-*) d=two-counter; b=${b#two-counter-} ;;
+    two-reset-audit-*) d=two-reset-audit; b=${b#two-reset-audit-} ;;
+    shared-checks-*) d=shared-checks; b=${b#shared-checks-} ;;
+    budget-audit-*) d=budget-audit; b=${b#budget-audit-} ;;
+    checks-*) d=checks; b=${b#checks-} ;;
+    *) d=. ;;
+  esac
+  mkdir -p "$R/$d"; cp "$f" "$R/$d/$b"; done
+# source 17's copies of source 16's program files (shipped once, under 16-)
+for d in source two-counter/source; do
+  cp "$Q/data/14-waterfall-UniversalTM15x2.tm.txt" "$R/$d/UniversalTM15x2.tm.txt"
+  cp "$Q/data/16-universal-membrane-tm_table.json" "$R/$d/tm_table.json"
+  cp "$Q/data/16-universal-membrane-virtual3.json" "$R/$d/virtual3.json"; done
+cp "$Q/data/16-universal-membrane-direct-virtual3.txt" "$R/source/virtual3.txt"
+cp "$Q/data/16-universal-membrane-direct-macro_certificates.json" "$R/source/macro_certificates.json"
+cp "$Q/data/16-universal-membrane-direct-accepting_counter_trace.json" "$R/source/accepting_counter_trace.json"
+cp "$Q/data/16-universal-membrane-packet-virtual3.txt" "$R/two-counter/source/virtual3.txt"
+cp "$Q/data/16-universal-membrane-packet-macro_certificates.json" "$R/two-counter/source/macro_certificates.json"
+echo "layouts recreated under $O"
+```
+
+then regenerate in this order, converting line endings after each step on
+Windows (where the programs write CRLF):
+
+```sh
+lf() { py -c "import sys,pathlib;[pathlib.Path(p).write_bytes(pathlib.Path(p).read_bytes().replace(b'\r\n',b'\n')) for p in sys.argv[1:]]" "$@"; }
+export PYTHONUTF8=1
+cd <scratch>/literal-membrane-release/packet
+py build_frontend.py && py quadratic_outcome.py --steps 1
+lf membrane_rules.jsonl literal2.json literal2.txt object_alphabet.txt quadratic_schema_T1.json semantic_branches.json
+cp literal2.json literal2.txt ../../reset-net-release/two-counter/source/
+cd ../../reset-net-release
+py -c "
+import json, sys; from pathlib import Path; sys.path.insert(0, '.')
+from source_quadratic import semantic_table
+from peak_quadratic import compile_peak
+from reset_quadratic import compile_schema
+table = semantic_table(json.loads(Path('source/virtual3.json').read_text()))
+net = json.loads(Path('reset_net.json').read_text())
+for name, obj in [('canonical_peak_schema_h1.json', compile_peak(table, 1)),
+                  ('all_duration_schema_h1.json', compile_peak(table, 1, all_durations=True)),
+                  ('projected_trace_schema_T1.json', compile_schema(net, 1, project_controls=True))]:
+    Path(name).write_bytes((json.dumps(obj, indent=2) + '\n').encode('utf-8'))
+"
+py two-counter/build_variant.py && lf two-counter/*.json
+py shared-reset-arcs/build_shared.py && lf shared-reset-arcs/*/*.json
+py two-reset-audit/audit_two_reset.py; lf two-reset-audit/two_reset_net.json
+```
+
+The three compiler calls are those that `replay_and_verify.py` and the
+`checks/` scripts compare against; they write LF on every platform. The
+receipts that record hashes of excluded or unshipped files (source 16's
+`SOURCE_PROVENANCE.json` files and receipts, source 17's
+`SOURCE_PROVENANCE.json`, `checks/*RESULTS.json` and
+`two-reset-audit/audit_receipt.json`) are shipped as delivered.
+
 ## Discrepancies and disclosures
 
 - The shipped build scripts keep the delivered layout:
@@ -471,3 +1021,37 @@ times or interpreter versions never regenerate byte for byte.
   three sources are collected after Part III.
 - The receipts of source 08 and source 12 record Python 3.13.5; the
   reruns above used Python 3.14.4.
+
+For Parts IV–VI:
+
+- Delivered texts name delivered paths: Part IV's Section 48, Part V's
+  Section 61 and Appendix K, Part VI's Section 76 and Appendices L–M; the
+  shipped notes `15-membrane-motifs-RELEASE_NOTES.md`,
+  `16-universal-membrane-{direct,packet}-PROOF.md`, `17-reset-net-VALIDATION.md`;
+  and the receipts. `[write]` notes give the shipped names in the article;
+  the map above gives them here. The build scripts
+  `code/16-universal-membrane-build_pdf.sh` and `code/17-reset-net-build-pdf.sh`
+  build delivered manuscripts that are not shipped; neither builds this
+  report.
+- Source 17 re-derives source 16's program layer without citing it (see
+  the top of this README); four passages are replaced by pointers, listed in
+  Part VI's opening note and Appendix H.1. Source 16 refers to source 15 only
+  as "a separate motif-based one-step arithmetization" and to an "earlier
+  guard-based two-counter construction" that is in its packet proof notes
+  (`16-universal-membrane-packet-PROOF.md`, line 411), not in any article;
+  `[write]` notes say so.
+- The placement dossier said that this report was placed but not yet
+  written at source 17's pin `44983ed7e`. That is wrong: Parts I–III were
+  written in `c51b9880d`, an ancestor of the pin. Source 17 still does not
+  cite this report.
+- Source 17's hard-coded "Appendix B" became a cross-reference with a
+  footnote; no other source sentence of sources 15–17 was changed. Source 17's
+  minipage in its Appendix A gained a `\noindent` (its delivered layout had
+  no paragraph indent). Source 15's reference "paun" is
+  Păun–Suzuki–Tanaka–Yokomori 2004; Păun's 2000 paper is credited in a
+  `[write]` note.
+- Source 15's maximality, source 16's frontends and source 17's net use the
+  operational conventions their sources state; the conventions differ
+  between Parts I, IV and V (Part I: multiset rewriting with cooperative
+  rules; Parts IV–V: noncooperative active membranes, weak division in IV,
+  elementary division in V). Table 1 says so.
