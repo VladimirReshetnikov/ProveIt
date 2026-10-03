@@ -5,6 +5,8 @@ This proves an outcome and canonical shortest run, not arbitrary reset-net trace
 from source_quadratic import compile_schema,affine
 
 def compile_peak(table,h,with_duration=True,all_durations=False,initial=None):
+    if type(with_duration) is not bool or type(all_durations) is not bool:
+        raise ValueError('Duration options must be exact Boolean values')
     if all_durations and not with_duration:raise ValueError("All durations require the duration parameter")
     assert h>=1
     d=table['register_count']

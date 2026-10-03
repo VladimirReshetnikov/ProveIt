@@ -65,6 +65,8 @@ class Evaluation:
         self.active = set()
 
     def app(self, x, y):
+        if type(x) is not int or x < 0 or type(y) is not int or y < 0:
+            raise ValueError("application codes must be exact natural integers")
         key = (x, y)
         if key in self.records:
             return self.records[key]['z']
