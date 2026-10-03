@@ -118,19 +118,28 @@
 > Put future status updates in these landing documents. No Git fallback
 > bypasses a mismatched source/proof pin. Minimum operation bounds stay74/86.
 
-> Next bounded lead (NOT an established bound): replace the private index
-> rows r1=r+1 and R11=r1+hpm1, comparison k=R11, by
-> index_partial=k-r; index_unit=index_partial-hpm1; index_unit=1.
-> k is the already paid R10b=eta+zeta. Both old/new schedules cost2A;
-> r1 has only R11 as consumer and R11 only its comparison. The new unit
-> minus1 is exactly the old residual. Pairing it with a protected norm
-> recovers its positive unit value on integer zeros. A private root probe
-> and independent bounded challenge support candidate109/32 through
-> (first*main),(index*input),aux alone, and107/42 through(first*input),
-> (index*main*aux), both24w. These have no frozen author/review packet and
-> are NOT in the catalogue. Emit complete sources/corrections/degrees and
-> obtain independent review before claiming them. Preserve the four-form
-> packet rather than folding the next search into its frozen artifacts.
+> The [index-unit107/109 construction](complete109_index_unit_tradeoffs107.md)
+> and [independent review](review_complete109_index_unit_tradeoffs107.md) are
+> complete; author and reviewer receipts pass fresh root replay. Replace
+> private r1=r+1;R11=r1+hpm1 by index_partial=R10b-r and
+> Nk=index_partial-hpm1. Nk-1 is exactly the old index residual, costing
+> the same2A, with actual paid R10b=eta+zeta. The two full sources are
+> 109=53M+56A/degree32 (11 comparisons, certificate77) and
+> 107=53M+54A/degree42 (10 comparisons, certificate78), both24 witnesses.
+> Groups are(N0*Nm),(Nk*Ni),Na and(N0*Ni),(Nk*Nm*Na) respectively.
+> Nm,Ni,Na cannot be-1 modulo4; each group has at most one unprotected
+> factor. This proves entire INTEGER zero-set equality at identical
+> coordinates with the actual asymmetric sos113/24 parent; no native
+> typing or new positive scale theorem is required. Other eight residuals
+> are identical. The full off-zero corrections are the new grouped squares
+> minus the five old unit squares, and are explicitly coefficient-checked.
+> Exact degree uses unit degrees12,4,7,10,7 and uniform multivariate leaders
+> from actual source expansion, on every admissible fixed program slice.
+> Current frontier appends107/42,109/32,111/24 to86/179 through98/44;
+> earlier points have19w, these have24w. Minimum bounds stay74/86.
+> All22 inherited source/proof pins are strict; no historical suite is
+> imported. Preserve the frozen author and review trios. Only these two
+> new partitions are claimed, not a complete grouping census.
 > The [coefficient-only census](complete87_shared_coefficient_scout.md) is
 > frozen separately: reachable-set counts1/13/116/891 exclude at most three
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid

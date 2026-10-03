@@ -33,25 +33,29 @@ a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
 This restricted negative result does not cover the new first-root change.
 
-The [retained-coordinate asymmetric construction](complete113_asymmetric_retained109.md)
-adds **111=53M+58A at exact degree24** and **109=53M+56A at exact degree34**,
-both with24 positive witnesses. The equations force the positive integral
-inverse when X=wq replaces X=wq^3, with Y=sq^3 retained. The source recovers
-that divisibility before invoking the parent universal theorem. Protected
-norm products then remove comparisons: each group has at most one factor
-whose negative unit is not independently excluded modulo4. Its
-[independent full review](review_complete113_asymmetric_retained109.md)
-checks all four forms and their complete symmetric references. Exact degrees
-hold on every admissible fixed program slice; ordinary input and unbounded
-duration remain paid. Author and review receipts pass fresh root replay.
-The minimum bounds stay74/86.
+The [index-unit construction](complete109_index_unit_tradeoffs107.md)
+now adds **109=53M+56A at exact degree32** and **107=53M+54A at exact degree42**,
+both with24 positive witnesses. Two existing additions express the index
+condition as a unit; grouping it with protected integer norms then removes
+comparisons. The complete polynomials have exactly the same integer zero
+sets as their asymmetric113/24 parent on the same supplied coordinates.
+Their [independent review](review_complete109_index_unit_tradeoffs107.md)
+checks full emitted sources, all-value corrections, uniform exact degrees,
+complete ledgers and strict source/proof guards. Both author and review
+receipts pass fresh root replay. Ordinary input and unbounded duration remain
+paid. The minimum operation bounds stay74/86.
 
-These extend the86/179 through98/44 catalogue above. The
+The combined operation/degree frontier appends107/42,109/32 and111/24 to
+86/179 through98/44 above. These retained-coordinate points use24 witnesses;
+the earlier points use19. The [asymmetric family](complete113_asymmetric_retained109.md)
+and its [full review](review_complete113_asymmetric_retained109.md) supply
+111/24 and the positive integral scale restoration before parent universality.
+Their earlier109/34 is superseded by109/32. The
 [113/28 positive-gap family](complete74_gap_selective_projection113.md) and
 [111/30 protected grouping](complete113_main_input_units111.md) remain frozen
-reviewed predecessors. The current four-form packet also retains dominated
-113/24 and109/42 comparisons. The exact coordinate identities and off-zero
-grouping corrections are separate from the positive integer witness theorem.
+reviewed predecessors. Exact coordinate identities and off-zero grouping
+corrections remain separate from the positive integer witness theorem.
+No global arithmetic optimality or general grouping census is claimed.
 
 The [native first-coefficient transfer](native_pell_factored_first_coefficient.md)
 now gives a **63=32M+31A prescribed AND certificate**, with22 positive

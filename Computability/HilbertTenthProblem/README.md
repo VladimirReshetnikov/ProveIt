@@ -39,18 +39,19 @@ independently verify the result. The source and both review receipts pass
 fresh replay. This is a mathematical proof with executable checks, not a
 Lean formalization or an unrestricted optimality claim.
 
-The [retained-coordinate asymmetric construction](Papers/research-wip/native-stream-queue/complete113_asymmetric_retained109.md)
-adds complete universal polynomials with **111 operations at exact degree24**
-and **109 at exact degree34**, both with24 positive witnesses. The equations
-prove the integral inverse of a smaller X scale, while protected norm
-products remove comparisons. Its
-[independent review](Papers/research-wip/native-stream-queue/review_complete113_asymmetric_retained109.md)
-checks four complete forms and their symmetric references. The degree claims
-hold for every admissible fixed program slice; both fresh root replays pass.
-These improve the earlier
-[113/28](Papers/research-wip/native-stream-queue/complete74_gap_selective_projection113.md)
-and [111/30](Papers/research-wip/native-stream-queue/complete113_main_input_units111.md)
-milestones; minimum operation bounds remain74/86.
+The [index-unit construction](Papers/research-wip/native-stream-queue/complete109_index_unit_tradeoffs107.md)
+adds complete universal polynomials with **109 operations at exact degree32**
+and **107 at exact degree42**, both with24 positive witnesses. Rearranging
+the existing index equation and grouping protected integer norm factors
+preserves the entire integer zero set of its asymmetric113/24 parent on
+unchanged coordinates. The [independent review](Papers/research-wip/native-stream-queue/review_complete109_index_unit_tradeoffs107.md)
+checks complete sources, corrections, paid ledgers and uniform exact degrees;
+both frozen receipts pass fresh replay. Ordinary input and unbounded duration
+remain paid. The [retained-coordinate asymmetric family](Papers/research-wip/native-stream-queue/complete113_asymmetric_retained109.md)
+still supplies **111/24** and the positive integral scale-restoration theorem.
+These three points extend the86/179 through98/44 operation/degree catalogue.
+Earlier points use19 witnesses; these use24. No global optimality is claimed,
+and the minimum operation bounds remain74/86.
 
 The [corrected Grill halt bridge](Papers/research-wip/native-stream-queue/grill_tag_halt_bridge.md)
 and its [independent review](Papers/research-wip/native-stream-queue/review_grill_tag_halt_bridge.md)
