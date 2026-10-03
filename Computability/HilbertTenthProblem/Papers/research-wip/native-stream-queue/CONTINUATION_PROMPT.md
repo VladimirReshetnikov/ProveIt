@@ -28,6 +28,21 @@
 > proofs are uniform on valid fixed numeral slices, not inferred from finite
 > expansions. Scope is reviewed saved circuits, not a new partition census
 > or maintained public compiler. Preserve the original probe-stage note.
+> The [complete26-base shear census](transport_shear_partition_census.md)
+> and [independent weighted census](transport_shear_weighted_census_independent.md)
+> now close the saved-metadata/tie gap:59,262 partitions,298,672 SOS/anchor
+> plans; no additional point beyond the current13-point catalogue. Root's
+> source packet reuses authenticated predecessor base builders, never their
+> old census/verify, and emits/recounts all202 per-base/per-cost winners
+> totaling19,375=9,702M+9,673A. It proves202 whole source pullbacks,18,567
+> retained registers,808 full values202rational,190 core factor degrees and
+> 202 whole degree expansions. The independent checker reads ancestry JSON
+> without parent Python, enumerates least-element blocks, and cross-checks
+> all26 minima by subset DP plus distinguished-anchor scans. Predicted202
+> cost/degree/M/A minima match literal winners; no independent full202-source
+> audit is claimed by that weighted checker. Both installed / replays pass.
+> Do not repeat a metadata-only search or promote this finite negative result
+> to a lower bound outside the26 cores and SOS/single-anchor grammar.
 > Earlier first-root and rewrite-census degrees below describe their frozen
 > predecessor coordinates, not the new quotient-shear polynomials.
 > The [complete74 factorization](complete74_factored_first_norm.md) replaces

@@ -57,6 +57,13 @@ full finalizers are checked, with uniform exact-degree proofs and both
 fresh installed replays passing. No new exhaustive partition search or
 maintained public compiler is claimed.
 
+The [complete finite grouping census](Papers/research-wip/native-stream-queue/transport_shear_partition_census.md)
+checks298,672 SOS/anchor choices across26 sheared bases, finding no additional
+operation/degree pair. It emits all202 per-cost winning complete circuits.
+An [independent weighted census and subset calculation](Papers/research-wip/native-stream-queue/transport_shear_weighted_census_independent.md)
+agree on every minimum, and both fresh installed receipts pass. This rules
+out further gains only within that specified grouping family.
+
 The [affine-port scout](Papers/research-wip/native-stream-queue/complete86_affine_port_scout.md)
 and [independent census](Papers/research-wip/native-stream-queue/review_complete86_affine_port_scout.md)
 also check874 complete circuits from six joint-root schedules and one local

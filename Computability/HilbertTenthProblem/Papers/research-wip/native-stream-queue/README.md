@@ -49,6 +49,17 @@ are uniform on valid fixed-program numeral slices. This is a reviewed set
 of saved source witnesses, with no new partition census or public compiler.
 The original probe note's unpromoted status records its earlier author stage.
 
+The [full finite shear census](transport_shear_partition_census.md) now
+covers all13 first-root bases and their13 gap-root counterparts: **59,262
+partitions and298,672 SOS/anchor choices**. It finds no further pair beyond
+the catalogue above. All202 per-base/per-cost winning complete sources are
+saved and recounted, totaling19,375 paid gates, with whole polynomial
+pullbacks and degree checks. The [independent weighted census](transport_shear_weighted_census_independent.md)
+uses a different enumeration and a subset dynamic program; all26 families
+and202 predicted minima agree. Both installed receipts pass fresh replay.
+This closes missing metadata and tied schedules in that exact finite grammar;
+it is not an unrestricted circuit lower bound or a new universal bound.
+
 The [shared-coefficient scout](complete87_shared_coefficient_scout.md) exhausts
 a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
