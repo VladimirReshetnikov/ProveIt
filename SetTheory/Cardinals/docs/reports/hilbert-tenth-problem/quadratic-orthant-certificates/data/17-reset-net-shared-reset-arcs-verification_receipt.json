@@ -1,0 +1,160 @@
+{
+  "status": "passed",
+  "inputs": {
+    "reset_net.json": "3fd8f9dcf86135f7fdf41bfa77959942e7ece95662c9cfedc27ac1409e5d3780",
+    "canonical_peak_schema_h1.json": "06daa82b8619dcdd6ccc41ebaae7d013adb82bdabdac892940b414c086e8c25b",
+    "two-counter/reset_net.json": "7bd1ae386bdc8f8cb05541b7b39fd08a926a0cdb807b237f3070ffea11aefaf7",
+    "two-counter/canonical_peak_schema_h1.json": "1cc266b0597e690354088a451394be21927bbb0c5b828bbaca5180c8bdb63a73"
+  },
+  "variants": {
+    "three-counter": {
+      "source_counts": {
+        "q": 528,
+        "I": 295,
+        "S": 233,
+        "r": 3
+      },
+      "ledger": {
+        "places": 778,
+        "data_places": 238,
+        "resource_places": 5,
+        "marker_places": 233,
+        "control_places": 540,
+        "transitions": 1007,
+        "ordinary_input_arcs": 1773,
+        "ordinary_output_arcs": 1773,
+        "ordinary_arcs": 3546,
+        "reset_arcs": 3,
+        "all_arcs": 3549,
+        "max_input_weight": 1,
+        "max_output_weight": 1,
+        "max_total_incidence_transition": 4,
+        "distinct_reset_places": [
+          "L",
+          "R",
+          "T"
+        ],
+        "transition_kinds": {
+          "pump": 1,
+          "enter": 1,
+          "SUB_POS": 233,
+          "ZERO_DISPATCH": 233,
+          "ZERO_RETURN": 233,
+          "INC": 295,
+          "CLEAN": 3,
+          "ADVANCE": 3,
+          "drain": 1,
+          "finish": 1,
+          "SHARED_RESET": 3
+        }
+      },
+      "canonical_peak_h1_ledger": {
+        "natural_witnesses": 2813,
+        "affine_squares": 8,
+        "quadratic_products": 762,
+        "degree_at_most": 2
+      },
+      "initial_affine_preserved": true,
+      "structure_check": "passed"
+    },
+    "two-counter": {
+      "source_counts": {
+        "q": 8408,
+        "I": 6068,
+        "S": 2340,
+        "r": 2
+      },
+      "ledger": {
+        "places": 10761,
+        "data_places": 2344,
+        "resource_places": 4,
+        "marker_places": 2340,
+        "control_places": 8417,
+        "transitions": 13098,
+        "ordinary_input_arcs": 23850,
+        "ordinary_output_arcs": 23850,
+        "ordinary_arcs": 47700,
+        "reset_arcs": 2,
+        "all_arcs": 47702,
+        "max_input_weight": 1,
+        "max_output_weight": 1,
+        "max_total_incidence_transition": 4,
+        "distinct_reset_places": [
+          "A",
+          "B"
+        ],
+        "transition_kinds": {
+          "pump": 1,
+          "enter": 1,
+          "SUB_POS": 2340,
+          "ZERO_DISPATCH": 2340,
+          "ZERO_RETURN": 2340,
+          "INC": 6068,
+          "CLEAN": 2,
+          "ADVANCE": 2,
+          "drain": 1,
+          "finish": 1,
+          "SHARED_RESET": 2
+        }
+      },
+      "canonical_peak_h1_ledger": {
+        "natural_witnesses": 29906,
+        "affine_squares": 7,
+        "quadratic_products": 10749,
+        "degree_at_most": 2
+      },
+      "initial_affine_preserved": true,
+      "structure_check": "passed"
+    }
+  },
+  "schema_api_rejection_tests": [
+    "all-duration format",
+    "padding coordinate",
+    "top-level padding coordinate",
+    "missing duration row",
+    "duplicate duration row",
+    "mismatched E:0 branch map",
+    "mismatched Q:0 branch map",
+    "mismatched D:0 branch map"
+  ],
+  "three_counter_trace": {
+    "parameters": {
+      "L": 6,
+      "R": 0
+    },
+    "fuel": 19,
+    "length": 446,
+    "source_instructions": 328,
+    "source_zero_branches": 29,
+    "peak_counter_mass": 25,
+    "terminal_counter_mass": 11,
+    "cumulative_loss": 0
+  },
+  "three_counter_peak_polynomial": {
+    "h": 328,
+    "natural_witnesses": 922664,
+    "affine_squares_evaluated": 1970,
+    "quadratic_products_evaluated": 249936,
+    "polynomial_value": 0,
+    "source_zero_count_from_selectors": 29,
+    "same_sparse_witness_coordinates_as_direct": true
+  },
+  "two_counter_macro_example": {
+    "input": {
+      "raw_A": 64
+    },
+    "virtual_instructions": 328,
+    "physical_source_instructions": 738579314485258247,
+    "physical_ADD": 369289657242717337,
+    "physical_SUB_positive": 369289657242540254,
+    "physical_SUB_zero": 656,
+    "peak_counter_mass": 59604644775390625,
+    "terminal_counter_mass": 177147,
+    "minimum_fuel": 59604644775390561,
+    "direct_minimum_duration": 857788604036216584,
+    "shared_minimum_duration": 857788604036217896,
+    "added_shared_firings": 1312,
+    "literal_physical_rows_template_checked": 8408,
+    "giant_physical_trace_enumerated": false
+  }
+}

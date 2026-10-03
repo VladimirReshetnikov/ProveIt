@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "script": "audit.py",
+      "mode": "explicit packet-root argument",
+      "status": "PASS"
+    },
+    {
+      "script": "audit.py",
+      "mode": "relocated packet, no arguments, default parent",
+      "status": "PASS"
+    },
+    {
+      "script": "audit_generated_families.py",
+      "mode": "explicit packet-root argument",
+      "status": "PASS"
+    },
+    {
+      "script": "audit_generated_families.py",
+      "mode": "relocated packet, no arguments, default parent",
+      "status": "PASS"
+    },
+    {
+      "script": "audit_padding_and_generic_peak.py",
+      "mode": "explicit packet-root argument",
+      "status": "PASS"
+    },
+    {
+      "script": "audit_padding_and_generic_peak.py",
+      "mode": "relocated packet, no arguments, default parent",
+      "status": "PASS"
+    },
+    {
+      "script": "audit_padding_and_generic_peak.py",
+      "mode": "RESET_NET_PACKET_ROOT environment override",
+      "status": "PASS"
+    }
+  ],
+  "source_pin_sha256": "24c771db50dc621068e470227802c2710a4531ce2e7ad3703a5cdb6b0543bbcf",
+  "scripts_sha256": {
+    "audit.py": "a435a9de5d75afd529eadb23684a65e9b80600c541ac1ca7c5419be1c3727e62",
+    "audit_generated_families.py": "e5bf43ab00d37b276a779d25548cffcec227778470385c74466ca4c0666947c3",
+    "audit_padding_and_generic_peak.py": "a11fa27c0bbd1bcd8200daa13ecc04f33e3787a4c5225ae564b3c8be6bf4b895"
+  },
+  "external_source_dependency_removed": true,
+  "writes": "Each script writes receipts only beside itself",
+  "copied_packet_dependency_test": "Passed with only packaged JSON fixtures and four compiler modules; no original workspace paths used in copied scripts"
+}

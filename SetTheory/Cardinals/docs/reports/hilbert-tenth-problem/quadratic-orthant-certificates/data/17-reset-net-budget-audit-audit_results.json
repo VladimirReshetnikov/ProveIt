@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "ledger": {
+    "places": 539,
+    "control_places": 534,
+    "data_places": 5,
+    "transitions": 771,
+    "ordinary_input_arcs": 1304,
+    "ordinary_output_arcs": 1304,
+    "reset_arcs": 233,
+    "transition_kinds": {
+      "pump": 1,
+      "enter": 1,
+      "SUB_POS": 233,
+      "SUB_ZERO": 233,
+      "INC": 295,
+      "CLEAN": 3,
+      "ADVANCE": 3,
+      "drain": 1,
+      "finish": 1
+    },
+    "ordinary_arcs": 2608
+  },
+  "source": {
+    "h": 328,
+    "B": 6,
+    "H": 11,
+    "M": 25,
+    "K": 19,
+    "shortest_length": 388,
+    "last_peak_slack": 14
+  },
+  "accepting_checks": [
+    {
+      "k": 19,
+      "length": 388,
+      "target_reached": true
+    },
+    {
+      "k": 20,
+      "length": 390,
+      "target_reached": true
+    },
+    {
+      "k": 24,
+      "length": 398,
+      "target_reached": true
+    }
+  ],
+  "insufficient_fuel_check": {
+    "k": 18,
+    "word_index": 154,
+    "transition": "tm_B0_0_write:inc",
+    "reserve_at_failure": 0
+  },
+  "false_zero_check": {
+    "transition": "tm_A0_0_push:zero",
+    "reset_loss": 6,
+    "debt_after_false_zero": 6
+  },
+  "canonical_peak_extension": {
+    "added_variables": 656,
+    "added_affine_squares": 328,
+    "added_nonnegative_products": 328
+  }
+}

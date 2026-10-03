@@ -1,0 +1,78 @@
+{
+  "deterministic": true,
+  "reversible": true,
+  "unique_read_pair_count": 62,
+  "unique_incoming_write_per_target": true,
+  "fixed_incoming_move_per_target": true,
+  "explicit_terminal_cells": 2,
+  "unlabeled_empty_cells": 26,
+  "incoming_directions": {
+    "q0": 1,
+    "q1": -1,
+    "q2": -1,
+    "q3": -1,
+    "q4": 1,
+    "q5": 1,
+    "q6": 1,
+    "q7": -1,
+    "q8": 1,
+    "q9": 1,
+    "q10": 1,
+    "q11": -1,
+    "q12": -1,
+    "q13": 1,
+    "q14": 1
+  },
+  "example_final_time": 184,
+  "example_inverse_replay_verified_steps": 184,
+  "figure_28_checkpoints": [
+    {
+      "time": 0,
+      "state": "q0",
+      "head": 9,
+      "window_origin": -1,
+      "window": "bNYY*NY*b$NYYbbbbbbb",
+      "matches_visual_figure": true
+    },
+    {
+      "time": 6,
+      "state": "q13",
+      "head": 9,
+      "window_origin": -1,
+      "window": "bNYY*NYb*$bYYbbbbbbb",
+      "matches_visual_figure": true
+    },
+    {
+      "time": 59,
+      "state": "q9",
+      "head": 10,
+      "window_origin": -1,
+      "window": "bNYYbNY**$N$YYNbbbb",
+      "matches_visual_figure": true
+    },
+    {
+      "time": 178,
+      "state": "q9",
+      "head": 11,
+      "window_origin": -1,
+      "window": "bNYY*NY*b$NY$YNYYNb",
+      "matches_visual_figure": true
+    },
+    {
+      "time": 184,
+      "state": "q1",
+      "head": 7,
+      "window_origin": -1,
+      "window": "bNYY*NY*bbNYY$NYYNb",
+      "matches_visual_figure": true
+    }
+  ],
+  "bounded_differential_test": {
+    "cases": 2430,
+    "macro_checks": 7687,
+    "microsteps": 169019,
+    "terminal_cases": 2390,
+    "bounded_nonterminal_cases": 40
+  },
+  "source_typo": "Page 24 last paragraph reverses the letters of p1 relative to Example 3.3 and Figure 28. Example 3.3 p1=YN and Figure 28 initial tape NYY*NY*b$NYY agree with all 184 table-driven steps. The paragraph instead prints p1=NY and NYY*YN**. Use the general reversal convention and the figure, not those inconsistent example letters."
+}
