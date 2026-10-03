@@ -78,6 +78,18 @@ construction retain different constraints and are unaffected. The ordinary
 native-fiber classification is also consistent, but its auxiliary progression
 must not be copied unchanged to the normalized strong equation.
 
+The [matrix and Grill report intake](Papers/research-wip/native-stream-queue/review_incoming_matrix_grill.md)
+reconstructs all229 literal directed-semigroup generators and derives a
+**197-generator universal subset**, with the same finite-tape target encoder.
+This is a generator reduction; its fixed-length quartic companion still has
+130r witnesses. The Grill report supplies a complete numerical ordinary-input
+universal polynomial at **3,600,546 operations and797,135 positive witnesses**.
+Its two releases contain the identical full DAG; the revision proves exact
+degree69,339,973. Independent intake checks every paid row, every live input,
+all260 finalizer gates and the177 unchanged scientific files. These reports
+supply concrete substrate data but do not improve85 operations or instantiate
+the inverse-closed Higman alphabet needed by the separate group route.
+
 The
 [factored first-root construction](Papers/research-wip/native-stream-queue/complete86_factored_first_root.md)
 costs **48M+38A**, with **19 positive witnesses and exact degree179**.

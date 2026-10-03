@@ -59,6 +59,18 @@
 > native-fiber classification is also consistent, but its auxiliary progression
 > must not be copied unchanged to the normalized strong equation.
 >
+> The [matrix and Grill report intake](review_incoming_matrix_grill.md)
+> reconstructs all229 literal directed-semigroup generators and derives a
+> **197-generator universal subset**, with the same finite-tape target encoder.
+> This is a generator reduction; its fixed-length quartic companion still has
+> 130r witnesses. The Grill report supplies a complete numerical ordinary-input
+> universal polynomial at **3,600,546 operations and797,135 positive witnesses**.
+> Its two releases contain the identical full DAG; the revision proves exact
+> degree69,339,973. Independent intake checks every paid row, every live input,
+> all260 finalizer gates and the177 unchanged scientific files. These reports
+> supply concrete substrate data but do not improve85 operations or instantiate
+> the inverse-closed Higman alphabet needed by the separate group route.
+>
 > **Retained nineteen-witness exact degrees at86/87 operations:178/134.** The
 > [transport quotient shear](complete86_transport_quotient_shear.md) supplies
 > t=zplus-w*C and changes only kinner=K+w*q to K+w plus the quotient name.
