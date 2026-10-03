@@ -79,8 +79,11 @@ counterexample, code-convention checks and private patch replay pass. The
 166 original formal occurrences and 198 source labels are accounted for,
 112 displays in copied ranges retain order and multiplicity, and all 14
 code/data companions retain their bytes. Both scoped reviews have fresh root
-receipts. The later reciprocal notes at `a13efdd51` and mass Parts V–VI at
-`ef114b0bb` remain separate publication boundaries awaiting review.
+receipts. The [reciprocal notes at a13efdd51](review_surreal_reciprocal_a13efdd51.md)
+also pass their separate audit: all461 formal blocks,251 proofs,457 displays
+and39 companions are preserved, cited numbers/links resolve, and the new prose
+retains the stated hypotheses. Root replay passes. Mass Parts V–VI at
+`ef114b0bb` remain the next separate publication review.
 
 The [four surreal order reports](review_batch80_surreal.md) pass their finite
 replays and the scoped mathematical review, with one separate prose correction

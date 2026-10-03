@@ -223,7 +223,15 @@ not claimed verbatim. All14 code/data companions are byte-identical across
 placement and both writes. Basic PDF checks pass without a build/layout claim.
 Root read both checkers and notes and freshly reproduced both receipts.
 
-Later commits `a13efdd51` (reciprocal surreal notes,12 publication paths) and
-`ef114b0bb` (mass Parts V–VI,three publication paths) were merged at `e0680a7fb`.
-These are the next separate review boundaries; the completed synthesis audit
-does not certify those newer explanations or transfers.
+The [reciprocal surreal notes at a13efdd51](review_surreal_reciprocal_a13efdd51.md)
+now pass a separate scoped audit of all12 publication paths. The four old
+articles are retained by exact ordered insertion-only maps:461 formal blocks,
+251 proofs,457 displays and820 labels;39 companions remain byte-exact. All
+new referenced numbers and relative links resolve. The complete new prose
+retains the relevant regularity, GB/choice and recursion limits; no new defect.
+Root read and freshly replayed the checker. PDF page/basic checks do not claim
+a fresh build or layout review.
+
+The remaining mass Parts V–VI boundary is `ef114b0bb` (three publication
+paths), merged with the reciprocal notes at `e0680a7fb`. Its assembled-prose
+and transfer review is in progress, separate from original archive verdicts.

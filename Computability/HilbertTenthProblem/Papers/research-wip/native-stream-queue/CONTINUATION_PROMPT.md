@@ -55,13 +55,19 @@
 > patch corrects restriction-coherence wording and the non-PDF size qualifier;
 > it remains unapplied to the maintained article/PDF. No new transfer defect.
 >
-> **Next publication boundaries:** `a13efdd51` adds reciprocal surreal notes
-> to four existing reports (12 paths); `ef114b0bb` writes signal-machine
+> The [reciprocal surreal notes](review_surreal_reciprocal_a13efdd51.md) at
+> `a13efdd51` now pass their separate scoped audit: all12 changed paths are
+> pinned; the four old articles are insertion-only with461 formal blocks,
+> 251 proofs,457 displays,820 labels and39 unchanged companions. All cited
+> statement/subsection numbers and new links resolve. New prose retains its
+> regularity, GB/set-choice and set-recursion hypotheses. Root read the full
+> helper/note and added prose and freshly reproduced the receipt. No new defect.
+>
+> **Remaining publication boundary:** `ef114b0bb` writes signal-machine
 > Parts V–VI for three-mass universality and unique-unit mass-three/four
-> decidability (three paths). Both arrived in upstream `ecc9185aa`, merged
-> at `e0680a7fb`. These15 paths are not covered by the reviews above.
-> Read `Algebra/SurrealNumbers/AGENTS.md` before work under that subtree.
-> Earlier archive/placement verdicts remain valid at their own immutable pins.
+> decidability (three paths). The archive and placement audits remain valid;
+> the assembled publication review is in progress. Both new publication
+> commits arrived in upstream `ecc9185aa`, merged at `e0680a7fb`.
 
 > Current batch-80 status: [all twelve arrivals](incoming_substrate_review_4e270aa46.md)
 > and their original placements have scoped proof/source reviews and root replays.
