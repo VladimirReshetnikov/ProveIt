@@ -54,6 +54,17 @@ certificates and checks8 genuine accepted outer histories. Both installed
 receipts pass fresh replay. This generalizes the matrix route's range packing;
 it supplies no numerical universal alphabet or new universal bound.
 
+The [parallel-particle report review](Papers/research-wip/native-stream-queue/review_parallel_particle_reports.md)
+checks the new two-involution CA, its sparse evaluator, and its fixed-horizon
+natural-witness quartics. An independent reconstruction matches the complete
+12,595-term sample polynomial to all1,502 residual squares, checks its full
+accepted assignment and rejects1,494 individual witness increments. A separate
+4,096-word periodic test confirms the prospective-selection mechanism and
+its isolation-only counterexample. Both normal and optimized fresh replays
+pass, as does an independent read of the helper and three main proof notes.
+The quartic family grows with the fixed horizon; it supplies no fixed-arity
+universal or unrestricted finite-fold representation.
+
 The
 [factored first-root construction](Papers/research-wip/native-stream-queue/complete86_factored_first_root.md)
 costs **48M+38A**, with **19 positive witnesses and exact degree179**.
