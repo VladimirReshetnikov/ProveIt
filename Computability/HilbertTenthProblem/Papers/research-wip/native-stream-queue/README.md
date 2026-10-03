@@ -1271,6 +1271,17 @@ checks both native strong variants in all16 saved parent layouts. The separate
 proves exact982 from sixteen nonzero leading forms for the actual fixed
 compiler coefficients, supported by four complete coefficient expansions.
 This does not assert exact982 after specializing the program parameters.
+
+The [all-sixteen U9 source transfer](neary_woods_tail_quotient_all16.md) now
+extends that shift to every saved eligible layout: eight native bases at two
+duration interfaces. All sixteen complete source arrays, ordinary strong
+comparisons, fixed numeral recipes and finalizers remain paid. Each degree
+upper bound falls by165; the eight distinct new bounds are795,802,837,848,
+957,964,975,982. The author packet proves4,102 register pullbacks and checks
+192 full values, including32 rational cases; fresh installed replay passes.
+Independent source review is pending. These are upper bounds and a saved-source
+transfer, with no new grouping census or change to the74/86 records.
+
 The author packet retains its upper-only metadata. All three installed
 receipts pass fresh replay; the parent1147 remains a historical upper bound.
 The independent74/86 universal operation bounds are unchanged.
