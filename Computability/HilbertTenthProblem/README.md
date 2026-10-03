@@ -55,6 +55,19 @@ All three installed receipts pass fresh replay. The raw propagated degree141
 is only an upper bound. Thus the current eighteen-witness choices include
 **85 operations/degree175 and86/131**; the comparison-system bound remains74.
 
+The [seven-factor grouping family](Papers/research-wip/native-stream-queue/complete_auxiliary_unit_partition_frontier.md)
+adds complete universal polynomials at **89 operations/degree110,91/80,
+and93/64**, all with18 positive witnesses. A singleton ordinary strong
+residual reuses `strong_difference`, removing two additions from its square.
+Every grouping has the same full positive zero set as its own85 or86 parent.
+All8,280 declared SOS/one-anchor circuits are reconstructed and recounted;
+the five canonical sources **85/175,86/131,89/110,91/80,93/64** are saved in full.
+The [independent review](Papers/research-wip/native-stream-queue/review_complete_auxiliary_unit_partition_frontier.md)
+agrees on every plan and all762,221 paid gates, and expands the actual factor
+coefficients and complete finalist leaders. Both fresh installed receipts pass.
+This is an exact frontier within two fixed cores and the stated finalizer
+rules; it is not a general circuit lower bound. The minimum stays85.
+
 The [general eight-lane range transfer](Papers/research-wip/native-stream-queue/group_projective_general_separate_range.md)
 now covers the canonical nonempty matrix-history graph family. Separating its
 physical range mask from its controller width lowers the uniform exact degree
