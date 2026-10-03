@@ -34,10 +34,12 @@ the clean reverse-history lift also composes. The proof preserves unique natural
 fibers and has a fresh independent 10,080-tuple source census. It does not extend
 to nonnegative real witnesses or by itself establish a gate saving.
 
-A later surreal synthesis, published in `d51fafea8` and `0be9b9134`, has now
-been merged. Its assembled article, new crosswalk/questions, README, PDF and
-notation update are the **next pending review boundary**. The original archive
-and staging reviews below do not certify that new composition.
+The [new surreal synthesis review](review_surreal_synthesis_0be9b9134.md) reads
+all 98 editorial sections, the README and notation update at `0be9b9134`.
+Its three-location patch replaces unsupported restriction-coherence claims by
+uniformity and qualifies the largest-file size as non-PDF. An exact finite
+counterexample, code-convention checks and private patch replay pass. The
+separate original-to-assembled preservation census is still in progress.
 
 The [four surreal order reports](review_batch80_surreal.md) pass their finite
 replays and the scoped mathematical review, with one separate prose correction

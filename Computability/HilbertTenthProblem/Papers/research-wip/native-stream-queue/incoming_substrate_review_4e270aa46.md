@@ -181,3 +181,10 @@ this review/reduction pass and was merged from `acb0041e1`. Its four changed
 paths contain the assembled four-source article, new crosswalk/questions,
 README, PDF and notation update. Review this composition next; the original
 archive and staging verdicts above remain explicitly confined to their pins.
+
+The [new synthesis prose audit](review_surreal_synthesis_0be9b9134.md) has now
+read all 98 editorial blocks and the README/notation changes. It supplies a
+three-location patch for two P3 findings, with an exact finite noncoherence
+counterexample and fresh root replay. Root also authenticated all 29 original
+member sizes, confirming the non-PDF size qualification. The separate complete
+original-to-assembled preservation census is still pending.

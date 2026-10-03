@@ -1,6 +1,13 @@
 # Continuation: universal straight-line certificates
 
-> **Next review boundary, newly merged:** surreal report publication commits
+> The [surreal synthesis prose review](review_surreal_synthesis_0be9b9134.md)
+> is complete with two P3 findings/three patched passages: the rank orders are
+> uniform, not necessarily coherent under restriction; the largest-file claim
+> needs non-PDF. Root checked the exact finite counterexample, all 29 original
+> member sizes/hashes and the fresh patch receipt. The separate full preservation
+> census remains in progress; do not yet mark the whole transfer reviewed.
+>
+> **Current preservation review boundary:** surreal report publication commits
 > `d51fafea806cbd48ba29be017eff85cdd9653b14` and
 > `0be9b913487fa2cc0e16cea6545c55f33b4446d8` (upstream merge `acb0041e1`).
 > They add the four-source synthesis, crosswalk/questions/README, first PDF and
