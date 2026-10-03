@@ -5,11 +5,17 @@
 The reviews preserve the delivered sources and provide pinned repair patches,
 complete receipts, and explicit domain/horizon limits. Verified reductions
 include queue and sparse-lattice wire projections, ten-row polynomial-semiring
-certificates, a 21-operation five-witness congruence atom, and natural-only
+certificates, a 21-operation canonical five-witness congruence atom, and natural-only
 signal/reset simplifications. With [complementarity rescheduling](signal_complementarity_factoring.md),
 the signal schedule saves 7,569,906 operations per event packet, reaching
 17,822,616; reset gates save 761 additions per source step. These
 external-horizon/local results leave the global 87-operation bound unchanged.
+
+The [existential congruence variant](presburger_congruence_existence15.md)
+further lowers the complete atom to **14 = 5M+9A** with five natural witnesses.
+Its truth output is exact, but its witness fibers are infinite. The separate
+independent review emits a fully paid two-atom NAND comparison, 53→39 operations,
+and checks the natural-domain and private-coordinate boundaries.
 
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
