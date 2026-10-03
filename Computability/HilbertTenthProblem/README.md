@@ -53,6 +53,15 @@ program constants fixed; finite checks verify the source and supporting
 components without materializing the full auxiliary Pell tower. Both
 fresh receipts pass. The valid86 source and universal bounds are unchanged.
 
+The [marked-word obstruction](Papers/research-wip/native-stream-queue/complete86_marked_word_obstruction.md)
+rejects a separate83-operation shortcut. Supplying the packed word directly
+drops a width bound, allowing an accepting certificate atx to acceptx+N
+with the same program numerals and all19 witnesses positive. A singleton
+language gives a false ordinary input. The
+[independent review](Papers/research-wip/native-stream-queue/review_complete86_marked_word_obstruction.md)
+and both fresh replays pass. This rules out these specific83/84 sources;
+it is not a general lower bound.
+
 The [complete six-unit census](Papers/research-wip/native-stream-queue/complete_six_unit_partition_frontier106.md)
 now gives **106 operations at exact degree42**, **108 at degree28**, and
 **110 at degree24**, each with24 positive witnesses. A paid bound-unit

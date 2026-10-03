@@ -489,6 +489,29 @@
 > and the affine scout's frozen narrower statement. Universal74/86 remains;
 > no arbitrary85-operation lower bound follows.
 
+> The [marked-word obstruction](complete86_marked_word_obstruction.md)
+> rejects supplying positiveC_word instead of positivealpha. The literal
+> alpha->C_after_alpha->marked_rhs chain loses2A (84=48M+36A); u−Z then
+> becomes private to the gap, so(q−1)u+(u−Z)=qu−Z saves anotherA (83=48M+35A).
+> Ordinary2dx stays paid. Signed inversealpha=q−F−Z−2dx−C_word gives both
+> complete graph identities, but loses the packed input width bound.
+> Use a canonical accepted parent zero:q=2^t=B^N,t=dN,e=2dx+b odd>=3,
+> W=2^e<q,e<t,R>=q². Shiftordinaryx'=x+N,e'=e+2t<3t<q²<=R,
+> W'=q²W,C'=Z+W',zplus'=zplus+(K+X)(q+1)W. KeepF and the entire main/first/
+> auxiliary tower unchanged. gamma_n=(chi_A(n)−a psi_A(n)−2^n)/(4a+3)
+> hasgamma0=gamma1=0 andgamma_(n+1)=2A gamma_n−gamma_(n−1)+2^(n−1).
+> Setdelta'=(psi_A(e')−e')/(A²−1)>0,rho'=gamma_e',sigma'=gamma_R−gamma_e'>0.
+> Their sum preserves the actual shared main root. Exact transport
+> compensation and the new input norm make all8 full factors1, all19
+> supplied coordinates positive; restoredalpha'<0. The valid fixed compiler
+> forS={1} gainsfalseinput1+N. This is NOT all-input acceptance for every
+> compiler and NOT an unrestricted83/84 lower bound. Finite Pell cases are
+> components only; the full proof transports the canonical parent witness
+> without materializing its enormous auxiliary tower. The
+> [independent review](review_complete86_marked_word_obstruction.md) checks
+> both entire sources,165 retained-gate identities,16 factor identities,
+> both full outputs, canonical asymmetric provenance and the quantified proof.
+> Both fresh root receipts pass. Preserve both trios and all parents.
 > The [Grill halt bridge](grill_tag_halt_bridge.md) and
 > [independent review](review_grill_tag_halt_bridge.md) are frozen and pass
 > root replay. Corrected E uses a−4 in its second long grill. At the unique

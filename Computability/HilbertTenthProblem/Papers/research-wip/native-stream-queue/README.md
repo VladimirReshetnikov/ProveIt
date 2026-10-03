@@ -265,6 +265,19 @@ not materialize the enormous full auxiliary tuple. This rejects this
 specific85 candidate, without changing the valid86 source or establishing
 a lower bound for other85-operation representations.
 
+The [marked-word obstruction](complete86_marked_word_obstruction.md) rejects
+another concrete shortcut, which supplies the packed word in place of its
+positive width slack. Its complete sources cost84 and83 operations, but a
+canonical accepting certificate at inputx and widthN can then acceptx+N.
+The transport adjustment and input Pell quotient split keep all19 witnesses
+positive and all eight factors equal1. A valid singleton-language compiler
+therefore gains a false ordinary input with its program numerals unchanged.
+The [independent review](review_complete86_marked_word_obstruction.md)
+checks both complete sources, their canonical provenance and the full
+transport argument; both fresh root receipts pass. This is a complete-zero
+obstruction to these particular sources, without asserting that all83-operation
+representations are impossible. The valid universal74/86 bounds are unchanged.
+
 The [corrected Grill halt bridge](grill_tag_halt_bridge.md) proves exact-width
 encoded halting equivalence, including the final queue cleanup. A3a phase
 shift sends every remaining active block position to a zero run. The
