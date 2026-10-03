@@ -1,0 +1,130 @@
+{
+  "status": "passed",
+  "source_manifest_sha256": {
+    "packet": "3d54dc2f9a9426ee1502b108677dc735da2a44089fa7770f70507581e19c2325",
+    "direct": "f627280060c9cf35bd0fdb2490b7f211b2a199c20da744e6930b9fb9ab5d4180"
+  },
+  "checks": [
+    {
+      "packet": "packet",
+      "command": [
+        "python3",
+        "build_frontend.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "packet",
+      "command": [
+        "python3",
+        "verify_frontend.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "packet",
+      "command": [
+        "python3",
+        "verify_membrane.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "packet",
+      "command": [
+        "python3",
+        "replay_example.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "packet",
+      "command": [
+        "python3",
+        "verify_density.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "packet",
+      "command": [
+        "python3",
+        "quadratic_outcome.py",
+        "--steps",
+        "1"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "packet",
+      "command": [
+        "python3",
+        "verify_quadratic.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "packet",
+      "check": "all source-manifest entries unchanged after regeneration",
+      "files": 31,
+      "status": "passed"
+    },
+    {
+      "packet": "direct",
+      "command": [
+        "python3",
+        "build_direct.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "direct",
+      "command": [
+        "python3",
+        "verify_direct.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "direct",
+      "command": [
+        "python3",
+        "build_quadratic.py",
+        "--steps",
+        "1"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "direct",
+      "command": [
+        "python3",
+        "make_accepting_witness.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "direct",
+      "command": [
+        "python3",
+        "verify_accepting_quadratic.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "direct",
+      "command": [
+        "python3",
+        "verify_membrane.py"
+      ],
+      "status": "passed"
+    },
+    {
+      "packet": "direct",
+      "check": "all source-manifest entries unchanged after regeneration",
+      "files": 30,
+      "status": "passed"
+    }
+  ],
+  "scope": "Clean temporary-copy regeneration, all public computational checks, source-manifest verification, and exact byte comparison. Mathematical all-input claims require the article proofs; this receipt is not formal proof-assistant verification."
+}

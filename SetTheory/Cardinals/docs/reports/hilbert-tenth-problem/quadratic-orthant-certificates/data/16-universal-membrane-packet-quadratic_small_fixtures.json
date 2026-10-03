@@ -1,0 +1,3485 @@
+[
+  {
+    "program": {
+      "entry": "s",
+      "rows": {
+        "s": [
+          "SUB",
+          0,
+          "n",
+          "HALT"
+        ],
+        "n": [
+          "SUB",
+          0,
+          "HALT",
+          "HALT"
+        ]
+      }
+    },
+    "schema": {
+      "format": "explicit-affine-squares-and-products-v3",
+      "domain": "natural witnesses, including zero; for natural input the strengthened gates give exactly the same zero set over nonnegative real witnesses",
+      "parameters": {
+        "raw_A": "positive integer"
+      },
+      "initial_counters": [
+        "raw_A",
+        0
+      ],
+      "external_time": 2,
+      "entry_code": 0,
+      "terminal_code": 2,
+      "halt_code": 2,
+      "variables": {
+        "count": 20,
+        "per_step": 10,
+        "branch_count": 4,
+        "sub_count": 2,
+        "register_count": 2,
+        "base_count_per_step": 6,
+        "base_offsets_by_branch": [
+          [
+            0,
+            1
+          ],
+          [
+            null,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            null,
+            5
+          ]
+        ],
+        "indexing": "at step j: selectors j*stride+[0,B); base for branch r and register i is j*stride+B+base_offsets_by_branch[r][i]; null means omitted zero-branch tested base"
+      },
+      "linear_forms": {
+        "E:0": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "Q:0": [
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "D:0": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "OLD0:0": [
+          [
+            4,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "NEW0:0": [
+          [
+            4,
+            1
+          ],
+          [
+            7,
+            1
+          ]
+        ],
+        "OLD1:0": [
+          [
+            5,
+            1
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            1
+          ]
+        ],
+        "NEW1:0": [
+          [
+            5,
+            1
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            1
+          ]
+        ],
+        "E:1": [
+          [
+            10,
+            1
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            12,
+            1
+          ],
+          [
+            13,
+            1
+          ]
+        ],
+        "Q:1": [
+          [
+            12,
+            1
+          ],
+          [
+            13,
+            1
+          ]
+        ],
+        "D:1": [
+          [
+            10,
+            1
+          ],
+          [
+            11,
+            2
+          ],
+          [
+            12,
+            2
+          ],
+          [
+            13,
+            2
+          ]
+        ],
+        "OLD0:1": [
+          [
+            14,
+            1
+          ],
+          [
+            10,
+            1
+          ],
+          [
+            17,
+            1
+          ],
+          [
+            12,
+            1
+          ]
+        ],
+        "NEW0:1": [
+          [
+            14,
+            1
+          ],
+          [
+            17,
+            1
+          ]
+        ],
+        "OLD1:1": [
+          [
+            15,
+            1
+          ],
+          [
+            16,
+            1
+          ],
+          [
+            18,
+            1
+          ],
+          [
+            19,
+            1
+          ]
+        ],
+        "NEW1:1": [
+          [
+            15,
+            1
+          ],
+          [
+            16,
+            1
+          ],
+          [
+            18,
+            1
+          ],
+          [
+            19,
+            1
+          ]
+        ]
+      },
+      "affine_squares": [
+        {
+          "name": "onehot:0",
+          "affine": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": -1
+          }
+        },
+        {
+          "name": "control:0",
+          "affine": {
+            "forms": [
+              [
+                "Q:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter0:0",
+          "affine": {
+            "forms": [
+              [
+                "OLD0:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [
+              [
+                "raw_A",
+                -1
+              ]
+            ],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter1:0",
+          "affine": {
+            "forms": [
+              [
+                "OLD1:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "onehot:1",
+          "affine": {
+            "forms": [
+              [
+                "E:1",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": -1
+          }
+        },
+        {
+          "name": "control:1",
+          "affine": {
+            "forms": [
+              [
+                "Q:1",
+                1
+              ],
+              [
+                "D:0",
+                -1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter0:1",
+          "affine": {
+            "forms": [
+              [
+                "OLD0:1",
+                1
+              ],
+              [
+                "NEW0:0",
+                -1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter1:1",
+          "affine": {
+            "forms": [
+              [
+                "OLD1:1",
+                1
+              ],
+              [
+                "NEW1:0",
+                -1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "terminal",
+          "affine": {
+            "forms": [
+              [
+                "D:1",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": -2
+          }
+        }
+      ],
+      "quadratic_products": [
+        {
+          "name": "inactive:0:0",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                0,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                0,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                5,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:0:1",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                1,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                1,
+                1
+              ],
+              [
+                6,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:0:2",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                2,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                2,
+                1
+              ],
+              [
+                7,
+                1
+              ],
+              [
+                8,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:0:3",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                3,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                3,
+                1
+              ],
+              [
+                9,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:1:0",
+          "left": {
+            "forms": [
+              [
+                "E:1",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                10,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                10,
+                1
+              ],
+              [
+                14,
+                1
+              ],
+              [
+                15,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:1:1",
+          "left": {
+            "forms": [
+              [
+                "E:1",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                11,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                11,
+                1
+              ],
+              [
+                16,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:1:2",
+          "left": {
+            "forms": [
+              [
+                "E:1",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                12,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                12,
+                1
+              ],
+              [
+                17,
+                1
+              ],
+              [
+                18,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:1:3",
+          "left": {
+            "forms": [
+              [
+                "E:1",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                13,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                13,
+                1
+              ],
+              [
+                19,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        }
+      ],
+      "polynomial": "sum(affine_squares.affine^2)+sum(quadratic_products.left*right)",
+      "ledger": {
+        "natural_witnesses": 20,
+        "affine_squares": 9,
+        "quadratic_products": 8,
+        "degree_at_most": 2
+      },
+      "scope": "Exact endpoint existence at this fixed register-instruction count. HALT has no outgoing row, so terminal HALT is first halt. Not an arbitrary membrane-trace verifier or fixed-arity unbounded-time polynomial."
+    },
+    "raw_A": 1,
+    "sparse_natural_witness": [
+      [
+        0,
+        1
+      ],
+      [
+        13,
+        1
+      ]
+    ],
+    "expanded_polynomial": [
+      [
+        [],
+        6
+      ],
+      [
+        [
+          -1,
+          -1
+        ],
+        1
+      ],
+      [
+        [
+          -1,
+          0
+        ],
+        -2
+      ],
+      [
+        [
+          -1,
+          2
+        ],
+        -2
+      ],
+      [
+        [
+          -1,
+          4
+        ],
+        -2
+      ],
+      [
+        [
+          -1,
+          7
+        ],
+        -2
+      ],
+      [
+        [
+          0
+        ],
+        -2
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        3
+      ],
+      [
+        [
+          0,
+          1
+        ],
+        8
+      ],
+      [
+        [
+          0,
+          2
+        ],
+        10
+      ],
+      [
+        [
+          0,
+          3
+        ],
+        8
+      ],
+      [
+        [
+          0,
+          4
+        ],
+        2
+      ],
+      [
+        [
+          0,
+          6
+        ],
+        1
+      ],
+      [
+        [
+          0,
+          7
+        ],
+        3
+      ],
+      [
+        [
+          0,
+          8
+        ],
+        1
+      ],
+      [
+        [
+          0,
+          9
+        ],
+        1
+      ],
+      [
+        [
+          0,
+          12
+        ],
+        -2
+      ],
+      [
+        [
+          0,
+          13
+        ],
+        -2
+      ],
+      [
+        [
+          1
+        ],
+        -2
+      ],
+      [
+        [
+          1,
+          1
+        ],
+        5
+      ],
+      [
+        [
+          1,
+          2
+        ],
+        12
+      ],
+      [
+        [
+          1,
+          3
+        ],
+        12
+      ],
+      [
+        [
+          1,
+          4
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          7
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          8
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          9
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          12
+        ],
+        -4
+      ],
+      [
+        [
+          1,
+          13
+        ],
+        -4
+      ],
+      [
+        [
+          2
+        ],
+        -2
+      ],
+      [
+        [
+          2,
+          2
+        ],
+        7
+      ],
+      [
+        [
+          2,
+          3
+        ],
+        14
+      ],
+      [
+        [
+          2,
+          4
+        ],
+        3
+      ],
+      [
+        [
+          2,
+          5
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          6
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          7
+        ],
+        2
+      ],
+      [
+        [
+          2,
+          9
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          12
+        ],
+        -4
+      ],
+      [
+        [
+          2,
+          13
+        ],
+        -4
+      ],
+      [
+        [
+          3
+        ],
+        -2
+      ],
+      [
+        [
+          3,
+          3
+        ],
+        6
+      ],
+      [
+        [
+          3,
+          4
+        ],
+        1
+      ],
+      [
+        [
+          3,
+          5
+        ],
+        1
+      ],
+      [
+        [
+          3,
+          6
+        ],
+        1
+      ],
+      [
+        [
+          3,
+          7
+        ],
+        1
+      ],
+      [
+        [
+          3,
+          8
+        ],
+        1
+      ],
+      [
+        [
+          3,
+          12
+        ],
+        -4
+      ],
+      [
+        [
+          3,
+          13
+        ],
+        -4
+      ],
+      [
+        [
+          4,
+          4
+        ],
+        2
+      ],
+      [
+        [
+          4,
+          7
+        ],
+        4
+      ],
+      [
+        [
+          4,
+          10
+        ],
+        -2
+      ],
+      [
+        [
+          4,
+          12
+        ],
+        -2
+      ],
+      [
+        [
+          4,
+          14
+        ],
+        -2
+      ],
+      [
+        [
+          4,
+          17
+        ],
+        -2
+      ],
+      [
+        [
+          5,
+          5
+        ],
+        2
+      ],
+      [
+        [
+          5,
+          6
+        ],
+        4
+      ],
+      [
+        [
+          5,
+          8
+        ],
+        4
+      ],
+      [
+        [
+          5,
+          9
+        ],
+        4
+      ],
+      [
+        [
+          5,
+          15
+        ],
+        -2
+      ],
+      [
+        [
+          5,
+          16
+        ],
+        -2
+      ],
+      [
+        [
+          5,
+          18
+        ],
+        -2
+      ],
+      [
+        [
+          5,
+          19
+        ],
+        -2
+      ],
+      [
+        [
+          6,
+          6
+        ],
+        2
+      ],
+      [
+        [
+          6,
+          8
+        ],
+        4
+      ],
+      [
+        [
+          6,
+          9
+        ],
+        4
+      ],
+      [
+        [
+          6,
+          15
+        ],
+        -2
+      ],
+      [
+        [
+          6,
+          16
+        ],
+        -2
+      ],
+      [
+        [
+          6,
+          18
+        ],
+        -2
+      ],
+      [
+        [
+          6,
+          19
+        ],
+        -2
+      ],
+      [
+        [
+          7,
+          7
+        ],
+        2
+      ],
+      [
+        [
+          7,
+          10
+        ],
+        -2
+      ],
+      [
+        [
+          7,
+          12
+        ],
+        -2
+      ],
+      [
+        [
+          7,
+          14
+        ],
+        -2
+      ],
+      [
+        [
+          7,
+          17
+        ],
+        -2
+      ],
+      [
+        [
+          8,
+          8
+        ],
+        2
+      ],
+      [
+        [
+          8,
+          9
+        ],
+        4
+      ],
+      [
+        [
+          8,
+          15
+        ],
+        -2
+      ],
+      [
+        [
+          8,
+          16
+        ],
+        -2
+      ],
+      [
+        [
+          8,
+          18
+        ],
+        -2
+      ],
+      [
+        [
+          8,
+          19
+        ],
+        -2
+      ],
+      [
+        [
+          9,
+          9
+        ],
+        2
+      ],
+      [
+        [
+          9,
+          15
+        ],
+        -2
+      ],
+      [
+        [
+          9,
+          16
+        ],
+        -2
+      ],
+      [
+        [
+          9,
+          18
+        ],
+        -2
+      ],
+      [
+        [
+          9,
+          19
+        ],
+        -2
+      ],
+      [
+        [
+          10
+        ],
+        -6
+      ],
+      [
+        [
+          10,
+          10
+        ],
+        3
+      ],
+      [
+        [
+          10,
+          11
+        ],
+        8
+      ],
+      [
+        [
+          10,
+          12
+        ],
+        10
+      ],
+      [
+        [
+          10,
+          13
+        ],
+        8
+      ],
+      [
+        [
+          10,
+          14
+        ],
+        2
+      ],
+      [
+        [
+          10,
+          16
+        ],
+        1
+      ],
+      [
+        [
+          10,
+          17
+        ],
+        3
+      ],
+      [
+        [
+          10,
+          18
+        ],
+        1
+      ],
+      [
+        [
+          10,
+          19
+        ],
+        1
+      ],
+      [
+        [
+          11
+        ],
+        -10
+      ],
+      [
+        [
+          11,
+          11
+        ],
+        5
+      ],
+      [
+        [
+          11,
+          12
+        ],
+        12
+      ],
+      [
+        [
+          11,
+          13
+        ],
+        12
+      ],
+      [
+        [
+          11,
+          14
+        ],
+        1
+      ],
+      [
+        [
+          11,
+          15
+        ],
+        1
+      ],
+      [
+        [
+          11,
+          17
+        ],
+        1
+      ],
+      [
+        [
+          11,
+          18
+        ],
+        1
+      ],
+      [
+        [
+          11,
+          19
+        ],
+        1
+      ],
+      [
+        [
+          12
+        ],
+        -10
+      ],
+      [
+        [
+          12,
+          12
+        ],
+        7
+      ],
+      [
+        [
+          12,
+          13
+        ],
+        14
+      ],
+      [
+        [
+          12,
+          14
+        ],
+        3
+      ],
+      [
+        [
+          12,
+          15
+        ],
+        1
+      ],
+      [
+        [
+          12,
+          16
+        ],
+        1
+      ],
+      [
+        [
+          12,
+          17
+        ],
+        2
+      ],
+      [
+        [
+          12,
+          19
+        ],
+        1
+      ],
+      [
+        [
+          13
+        ],
+        -10
+      ],
+      [
+        [
+          13,
+          13
+        ],
+        6
+      ],
+      [
+        [
+          13,
+          14
+        ],
+        1
+      ],
+      [
+        [
+          13,
+          15
+        ],
+        1
+      ],
+      [
+        [
+          13,
+          16
+        ],
+        1
+      ],
+      [
+        [
+          13,
+          17
+        ],
+        1
+      ],
+      [
+        [
+          13,
+          18
+        ],
+        1
+      ],
+      [
+        [
+          14,
+          14
+        ],
+        1
+      ],
+      [
+        [
+          14,
+          17
+        ],
+        2
+      ],
+      [
+        [
+          15,
+          15
+        ],
+        1
+      ],
+      [
+        [
+          15,
+          16
+        ],
+        2
+      ],
+      [
+        [
+          15,
+          18
+        ],
+        2
+      ],
+      [
+        [
+          15,
+          19
+        ],
+        2
+      ],
+      [
+        [
+          16,
+          16
+        ],
+        1
+      ],
+      [
+        [
+          16,
+          18
+        ],
+        2
+      ],
+      [
+        [
+          16,
+          19
+        ],
+        2
+      ],
+      [
+        [
+          17,
+          17
+        ],
+        1
+      ],
+      [
+        [
+          18,
+          18
+        ],
+        1
+      ],
+      [
+        [
+          18,
+          19
+        ],
+        2
+      ],
+      [
+        [
+          19,
+          19
+        ],
+        1
+      ]
+    ],
+    "parameter_token": -1
+  },
+  {
+    "program": {
+      "entry": "s",
+      "rows": {
+        "s": [
+          "ADD",
+          1,
+          "n"
+        ],
+        "n": [
+          "SUB",
+          1,
+          "HALT",
+          "HALT"
+        ]
+      }
+    },
+    "schema": {
+      "format": "explicit-affine-squares-and-products-v3",
+      "domain": "natural witnesses, including zero; for natural input the strengthened gates give exactly the same zero set over nonnegative real witnesses",
+      "parameters": {
+        "raw_A": "positive integer"
+      },
+      "initial_counters": [
+        "raw_A",
+        0
+      ],
+      "external_time": 2,
+      "entry_code": 0,
+      "terminal_code": 2,
+      "halt_code": 2,
+      "variables": {
+        "count": 16,
+        "per_step": 8,
+        "branch_count": 3,
+        "sub_count": 1,
+        "register_count": 2,
+        "base_count_per_step": 5,
+        "base_offsets_by_branch": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            4,
+            null
+          ]
+        ],
+        "indexing": "at step j: selectors j*stride+[0,B); base for branch r and register i is j*stride+B+base_offsets_by_branch[r][i]; null means omitted zero-branch tested base"
+      },
+      "linear_forms": {
+        "E:0": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "Q:0": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "D:0": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "OLD0:0": [
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            7,
+            1
+          ]
+        ],
+        "NEW0:0": [
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            7,
+            1
+          ]
+        ],
+        "OLD1:0": [
+          [
+            4,
+            1
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "NEW1:0": [
+          [
+            4,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            6,
+            1
+          ]
+        ],
+        "E:1": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            1
+          ]
+        ],
+        "Q:1": [
+          [
+            9,
+            1
+          ],
+          [
+            10,
+            1
+          ]
+        ],
+        "D:1": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            2
+          ],
+          [
+            10,
+            2
+          ]
+        ],
+        "OLD0:1": [
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            15,
+            1
+          ]
+        ],
+        "NEW0:1": [
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            15,
+            1
+          ]
+        ],
+        "OLD1:1": [
+          [
+            12,
+            1
+          ],
+          [
+            14,
+            1
+          ],
+          [
+            9,
+            1
+          ]
+        ],
+        "NEW1:1": [
+          [
+            12,
+            1
+          ],
+          [
+            8,
+            1
+          ],
+          [
+            14,
+            1
+          ]
+        ]
+      },
+      "affine_squares": [
+        {
+          "name": "onehot:0",
+          "affine": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": -1
+          }
+        },
+        {
+          "name": "control:0",
+          "affine": {
+            "forms": [
+              [
+                "Q:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter0:0",
+          "affine": {
+            "forms": [
+              [
+                "OLD0:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [
+              [
+                "raw_A",
+                -1
+              ]
+            ],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter1:0",
+          "affine": {
+            "forms": [
+              [
+                "OLD1:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "onehot:1",
+          "affine": {
+            "forms": [
+              [
+                "E:1",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": -1
+          }
+        },
+        {
+          "name": "control:1",
+          "affine": {
+            "forms": [
+              [
+                "Q:1",
+                1
+              ],
+              [
+                "D:0",
+                -1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter0:1",
+          "affine": {
+            "forms": [
+              [
+                "OLD0:1",
+                1
+              ],
+              [
+                "NEW0:0",
+                -1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter1:1",
+          "affine": {
+            "forms": [
+              [
+                "OLD1:1",
+                1
+              ],
+              [
+                "NEW1:0",
+                -1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "terminal",
+          "affine": {
+            "forms": [
+              [
+                "D:1",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": -2
+          }
+        }
+      ],
+      "quadratic_products": [
+        {
+          "name": "inactive:0:0",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                0,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                0,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:0:1",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                1,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                1,
+                1
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                6,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:0:2",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                2,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                2,
+                1
+              ],
+              [
+                7,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:1:0",
+          "left": {
+            "forms": [
+              [
+                "E:1",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                8,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                8,
+                1
+              ],
+              [
+                11,
+                1
+              ],
+              [
+                12,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:1:1",
+          "left": {
+            "forms": [
+              [
+                "E:1",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                9,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                9,
+                1
+              ],
+              [
+                13,
+                1
+              ],
+              [
+                14,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:1:2",
+          "left": {
+            "forms": [
+              [
+                "E:1",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                10,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                10,
+                1
+              ],
+              [
+                15,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        }
+      ],
+      "polynomial": "sum(affine_squares.affine^2)+sum(quadratic_products.left*right)",
+      "ledger": {
+        "natural_witnesses": 16,
+        "affine_squares": 9,
+        "quadratic_products": 6,
+        "degree_at_most": 2
+      },
+      "scope": "Exact endpoint existence at this fixed register-instruction count. HALT has no outgoing row, so terminal HALT is first halt. Not an arbitrary membrane-trace verifier or fixed-arity unbounded-time polynomial."
+    },
+    "raw_A": 1,
+    "sparse_natural_witness": [
+      [
+        0,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        9,
+        1
+      ],
+      [
+        13,
+        1
+      ]
+    ],
+    "expanded_polynomial": [
+      [
+        [],
+        6
+      ],
+      [
+        [
+          -1,
+          -1
+        ],
+        1
+      ],
+      [
+        [
+          -1,
+          3
+        ],
+        -2
+      ],
+      [
+        [
+          -1,
+          5
+        ],
+        -2
+      ],
+      [
+        [
+          -1,
+          7
+        ],
+        -2
+      ],
+      [
+        [
+          0
+        ],
+        -2
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        3
+      ],
+      [
+        [
+          0,
+          1
+        ],
+        8
+      ],
+      [
+        [
+          0,
+          2
+        ],
+        8
+      ],
+      [
+        [
+          0,
+          4
+        ],
+        2
+      ],
+      [
+        [
+          0,
+          5
+        ],
+        1
+      ],
+      [
+        [
+          0,
+          6
+        ],
+        3
+      ],
+      [
+        [
+          0,
+          7
+        ],
+        1
+      ],
+      [
+        [
+          0,
+          9
+        ],
+        -4
+      ],
+      [
+        [
+          0,
+          10
+        ],
+        -2
+      ],
+      [
+        [
+          0,
+          12
+        ],
+        -2
+      ],
+      [
+        [
+          0,
+          14
+        ],
+        -2
+      ],
+      [
+        [
+          1
+        ],
+        -2
+      ],
+      [
+        [
+          1,
+          1
+        ],
+        7
+      ],
+      [
+        [
+          1,
+          2
+        ],
+        14
+      ],
+      [
+        [
+          1,
+          3
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          4
+        ],
+        3
+      ],
+      [
+        [
+          1,
+          6
+        ],
+        2
+      ],
+      [
+        [
+          1,
+          7
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          9
+        ],
+        -4
+      ],
+      [
+        [
+          1,
+          10
+        ],
+        -4
+      ],
+      [
+        [
+          2
+        ],
+        -2
+      ],
+      [
+        [
+          2,
+          2
+        ],
+        6
+      ],
+      [
+        [
+          2,
+          3
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          4
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          5
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          6
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          9
+        ],
+        -4
+      ],
+      [
+        [
+          2,
+          10
+        ],
+        -4
+      ],
+      [
+        [
+          3,
+          3
+        ],
+        2
+      ],
+      [
+        [
+          3,
+          5
+        ],
+        4
+      ],
+      [
+        [
+          3,
+          7
+        ],
+        4
+      ],
+      [
+        [
+          3,
+          11
+        ],
+        -2
+      ],
+      [
+        [
+          3,
+          13
+        ],
+        -2
+      ],
+      [
+        [
+          3,
+          15
+        ],
+        -2
+      ],
+      [
+        [
+          4,
+          4
+        ],
+        2
+      ],
+      [
+        [
+          4,
+          6
+        ],
+        4
+      ],
+      [
+        [
+          4,
+          9
+        ],
+        -2
+      ],
+      [
+        [
+          4,
+          12
+        ],
+        -2
+      ],
+      [
+        [
+          4,
+          14
+        ],
+        -2
+      ],
+      [
+        [
+          5,
+          5
+        ],
+        2
+      ],
+      [
+        [
+          5,
+          7
+        ],
+        4
+      ],
+      [
+        [
+          5,
+          11
+        ],
+        -2
+      ],
+      [
+        [
+          5,
+          13
+        ],
+        -2
+      ],
+      [
+        [
+          5,
+          15
+        ],
+        -2
+      ],
+      [
+        [
+          6,
+          6
+        ],
+        2
+      ],
+      [
+        [
+          6,
+          9
+        ],
+        -2
+      ],
+      [
+        [
+          6,
+          12
+        ],
+        -2
+      ],
+      [
+        [
+          6,
+          14
+        ],
+        -2
+      ],
+      [
+        [
+          7,
+          7
+        ],
+        2
+      ],
+      [
+        [
+          7,
+          11
+        ],
+        -2
+      ],
+      [
+        [
+          7,
+          13
+        ],
+        -2
+      ],
+      [
+        [
+          7,
+          15
+        ],
+        -2
+      ],
+      [
+        [
+          8
+        ],
+        -6
+      ],
+      [
+        [
+          8,
+          8
+        ],
+        2
+      ],
+      [
+        [
+          8,
+          9
+        ],
+        8
+      ],
+      [
+        [
+          8,
+          10
+        ],
+        8
+      ],
+      [
+        [
+          8,
+          13
+        ],
+        1
+      ],
+      [
+        [
+          8,
+          14
+        ],
+        1
+      ],
+      [
+        [
+          8,
+          15
+        ],
+        1
+      ],
+      [
+        [
+          9
+        ],
+        -10
+      ],
+      [
+        [
+          9,
+          9
+        ],
+        7
+      ],
+      [
+        [
+          9,
+          10
+        ],
+        14
+      ],
+      [
+        [
+          9,
+          11
+        ],
+        1
+      ],
+      [
+        [
+          9,
+          12
+        ],
+        3
+      ],
+      [
+        [
+          9,
+          14
+        ],
+        2
+      ],
+      [
+        [
+          9,
+          15
+        ],
+        1
+      ],
+      [
+        [
+          10
+        ],
+        -10
+      ],
+      [
+        [
+          10,
+          10
+        ],
+        6
+      ],
+      [
+        [
+          10,
+          11
+        ],
+        1
+      ],
+      [
+        [
+          10,
+          12
+        ],
+        1
+      ],
+      [
+        [
+          10,
+          13
+        ],
+        1
+      ],
+      [
+        [
+          10,
+          14
+        ],
+        1
+      ],
+      [
+        [
+          11,
+          11
+        ],
+        1
+      ],
+      [
+        [
+          11,
+          13
+        ],
+        2
+      ],
+      [
+        [
+          11,
+          15
+        ],
+        2
+      ],
+      [
+        [
+          12,
+          12
+        ],
+        1
+      ],
+      [
+        [
+          12,
+          14
+        ],
+        2
+      ],
+      [
+        [
+          13,
+          13
+        ],
+        1
+      ],
+      [
+        [
+          13,
+          15
+        ],
+        2
+      ],
+      [
+        [
+          14,
+          14
+        ],
+        1
+      ],
+      [
+        [
+          15,
+          15
+        ],
+        1
+      ]
+    ],
+    "parameter_token": -1
+  },
+  {
+    "program": {
+      "entry": "s",
+      "rows": {
+        "s": [
+          "SUB",
+          1,
+          "n",
+          "HALT"
+        ],
+        "n": [
+          "ADD",
+          0,
+          "s"
+        ]
+      }
+    },
+    "schema": {
+      "format": "explicit-affine-squares-and-products-v3",
+      "domain": "natural witnesses, including zero; for natural input the strengthened gates give exactly the same zero set over nonnegative real witnesses",
+      "parameters": {
+        "raw_A": "positive integer"
+      },
+      "initial_counters": [
+        "raw_A",
+        0
+      ],
+      "external_time": 1,
+      "entry_code": 0,
+      "terminal_code": 2,
+      "halt_code": 2,
+      "variables": {
+        "count": 8,
+        "per_step": 8,
+        "branch_count": 3,
+        "sub_count": 1,
+        "register_count": 2,
+        "base_count_per_step": 5,
+        "base_offsets_by_branch": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            null
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "indexing": "at step j: selectors j*stride+[0,B); base for branch r and register i is j*stride+B+base_offsets_by_branch[r][i]; null means omitted zero-branch tested base"
+      },
+      "linear_forms": {
+        "E:0": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "Q:0": [
+          [
+            2,
+            1
+          ]
+        ],
+        "D:0": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "OLD0:0": [
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            6,
+            1
+          ]
+        ],
+        "NEW0:0": [
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            6,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "OLD1:0": [
+          [
+            4,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            7,
+            1
+          ]
+        ],
+        "NEW1:0": [
+          [
+            4,
+            1
+          ],
+          [
+            7,
+            1
+          ]
+        ]
+      },
+      "affine_squares": [
+        {
+          "name": "onehot:0",
+          "affine": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": -1
+          }
+        },
+        {
+          "name": "control:0",
+          "affine": {
+            "forms": [
+              [
+                "Q:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter0:0",
+          "affine": {
+            "forms": [
+              [
+                "OLD0:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [
+              [
+                "raw_A",
+                -1
+              ]
+            ],
+            "constant": 0
+          }
+        },
+        {
+          "name": "counter1:0",
+          "affine": {
+            "forms": [
+              [
+                "OLD1:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "terminal",
+          "affine": {
+            "forms": [
+              [
+                "D:0",
+                1
+              ]
+            ],
+            "variables": [],
+            "parameters": [],
+            "constant": -2
+          }
+        }
+      ],
+      "quadratic_products": [
+        {
+          "name": "inactive:0:0",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                0,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                0,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:0:1",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                1,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                1,
+                1
+              ],
+              [
+                5,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        },
+        {
+          "name": "inactive:0:2",
+          "left": {
+            "forms": [
+              [
+                "E:0",
+                1
+              ]
+            ],
+            "variables": [
+              [
+                2,
+                -1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          },
+          "right": {
+            "forms": [],
+            "variables": [
+              [
+                2,
+                1
+              ],
+              [
+                6,
+                1
+              ],
+              [
+                7,
+                1
+              ]
+            ],
+            "parameters": [],
+            "constant": 0
+          }
+        }
+      ],
+      "polynomial": "sum(affine_squares.affine^2)+sum(quadratic_products.left*right)",
+      "ledger": {
+        "natural_witnesses": 8,
+        "affine_squares": 5,
+        "quadratic_products": 3,
+        "degree_at_most": 2
+      },
+      "scope": "Exact endpoint existence at this fixed register-instruction count. HALT has no outgoing row, so terminal HALT is first halt. Not an arbitrary membrane-trace verifier or fixed-arity unbounded-time polynomial."
+    },
+    "raw_A": 1,
+    "sparse_natural_witness": [
+      [
+        1,
+        1
+      ],
+      [
+        5,
+        1
+      ]
+    ],
+    "expanded_polynomial": [
+      [
+        [],
+        5
+      ],
+      [
+        [
+          -1,
+          -1
+        ],
+        1
+      ],
+      [
+        [
+          -1,
+          3
+        ],
+        -2
+      ],
+      [
+        [
+          -1,
+          5
+        ],
+        -2
+      ],
+      [
+        [
+          -1,
+          6
+        ],
+        -2
+      ],
+      [
+        [
+          0
+        ],
+        -6
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        3
+      ],
+      [
+        [
+          0,
+          1
+        ],
+        8
+      ],
+      [
+        [
+          0,
+          2
+        ],
+        4
+      ],
+      [
+        [
+          0,
+          4
+        ],
+        2
+      ],
+      [
+        [
+          0,
+          5
+        ],
+        1
+      ],
+      [
+        [
+          0,
+          6
+        ],
+        1
+      ],
+      [
+        [
+          0,
+          7
+        ],
+        3
+      ],
+      [
+        [
+          1
+        ],
+        -10
+      ],
+      [
+        [
+          1,
+          1
+        ],
+        5
+      ],
+      [
+        [
+          1,
+          2
+        ],
+        4
+      ],
+      [
+        [
+          1,
+          3
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          4
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          6
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          7
+        ],
+        1
+      ],
+      [
+        [
+          2
+        ],
+        -2
+      ],
+      [
+        [
+          2,
+          2
+        ],
+        2
+      ],
+      [
+        [
+          2,
+          3
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          4
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          5
+        ],
+        1
+      ],
+      [
+        [
+          3,
+          3
+        ],
+        1
+      ],
+      [
+        [
+          3,
+          5
+        ],
+        2
+      ],
+      [
+        [
+          3,
+          6
+        ],
+        2
+      ],
+      [
+        [
+          4,
+          4
+        ],
+        1
+      ],
+      [
+        [
+          4,
+          7
+        ],
+        2
+      ],
+      [
+        [
+          5,
+          5
+        ],
+        1
+      ],
+      [
+        [
+          5,
+          6
+        ],
+        2
+      ],
+      [
+        [
+          6,
+          6
+        ],
+        1
+      ],
+      [
+        [
+          7,
+          7
+        ],
+        1
+      ]
+    ],
+    "parameter_token": -1
+  }
+]

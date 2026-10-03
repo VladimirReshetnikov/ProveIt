@@ -1,0 +1,59 @@
+{
+  "format": "sparse-affine-squares-plus-factored-complementarity-v1",
+  "domain": "nonnegative integers",
+  "degree": 2,
+  "variable_order": {
+    "X": [
+      0,
+      18
+    ],
+    "Y": [
+      18,
+      36
+    ],
+    "selectors": [
+      36,
+      80537
+    ],
+    "copies": [
+      80537,
+      1529555
+    ],
+    "slacks": [
+      1529555,
+      4197034
+    ]
+  },
+  "interval_convention": "half-open; branch r copy starts copy_base+18*r; all coefficients serialized as exact decimal strings",
+  "polynomial": "sum(row_value**2 for row in RESIDUALS) + sum((selector_sum-b_r)*copy_sum_r for r)",
+  "shared_expressions": {
+    "selector_sum": {
+      "op": "sum",
+      "variables": [
+        36,
+        80537
+      ]
+    },
+    "copy_sum_r": {
+      "op": "sum",
+      "variables": "copy_base+18*r .. copy_base+18*r+17"
+    }
+  },
+  "selector_sum_is_expression_not_auxiliary": true,
+  "other_selector_sum_is_nonnegative_on_all_naturals": true,
+  "residual_export_command": "python compile_packet.py residuals --output RESIDUALS.jsonl.gz",
+  "coefficient_query_command": "python compile_packet.py coefficient I J",
+  "closure": "MODES.jsonl.gz",
+  "branches": "EVENTS.jsonl.gz",
+  "event_record_format": [
+    "branch_id",
+    "source_mode_id",
+    "target_mode_id",
+    "pivot",
+    "J_bitmask"
+  ],
+  "optional_verbose_branches": "BRANCHES.jsonl.gz",
+  "reconstruction": "compile_packet.py: Compiler.close, guards, matrix, export_residuals",
+  "ledger": "LEDGER.json",
+  "guard_semantics": "equalities=0; strict forms>=1; coordinate nonnegativity is the ambient domain"
+}

@@ -1,0 +1,2916 @@
+{
+  "registers": [
+    "L",
+    "R",
+    "T"
+  ],
+  "entry": "init_clear_T",
+  "halt": "HALT",
+  "tm_cuts": {
+    "A0": "tm_A0_pop0",
+    "A1": "tm_A1_pop0",
+    "B0": "tm_B0_pop0",
+    "B1": "tm_B1_pop0",
+    "C0": "tm_C0_pop0",
+    "C1": "tm_C1_pop0",
+    "D0": "tm_D0_pop0",
+    "D1": "tm_D1_pop0",
+    "E0": "tm_E0_pop0",
+    "E1": "tm_E1_pop0",
+    "F0": "tm_F0_pop0",
+    "F1": "tm_F1_pop0",
+    "G0": "tm_G0_pop0",
+    "G1": "tm_G1_pop0",
+    "H0": "tm_H0_pop0",
+    "H1": "tm_H1_pop0",
+    "I0": "tm_I0_pop0",
+    "I1": "tm_I1_pop0",
+    "J0": "tm_J0_pop0",
+    "J1": "HALT",
+    "K0": "tm_K0_pop0",
+    "K1": "tm_K1_pop0",
+    "L0": "tm_L0_pop0",
+    "L1": "tm_L1_pop0",
+    "M0": "tm_M0_pop0",
+    "M1": "tm_M1_pop0",
+    "N0": "tm_N0_pop0",
+    "N1": "tm_N1_pop0",
+    "O0": "tm_O0_pop0",
+    "O1": "tm_O1_pop0"
+  },
+  "rows": {
+    "init_clear_T": [
+      "SUB",
+      2,
+      "init_clear_T",
+      "tm_A0_pop0"
+    ],
+    "tm_A0_pop0": [
+      "SUB",
+      1,
+      "tm_A0_pop1",
+      "tm_A0_0_back"
+    ],
+    "tm_A0_pop1": [
+      "SUB",
+      1,
+      "tm_A0_pair",
+      "tm_A0_1_back"
+    ],
+    "tm_A0_pair": [
+      "ADD",
+      2,
+      "tm_A0_pop0"
+    ],
+    "tm_A0_0_back": [
+      "SUB",
+      2,
+      "tm_A0_0_back_add",
+      "tm_A0_0_push"
+    ],
+    "tm_A0_0_back_add": [
+      "ADD",
+      1,
+      "tm_A0_0_back"
+    ],
+    "tm_A0_0_push": [
+      "SUB",
+      0,
+      "tm_A0_0_twice1",
+      "tm_A0_0_restore"
+    ],
+    "tm_A0_0_twice1": [
+      "ADD",
+      2,
+      "tm_A0_0_twice2"
+    ],
+    "tm_A0_0_twice2": [
+      "ADD",
+      2,
+      "tm_A0_0_push"
+    ],
+    "tm_A0_0_restore": [
+      "SUB",
+      2,
+      "tm_A0_0_restore_add",
+      "tm_B0_pop0"
+    ],
+    "tm_A0_0_restore_add": [
+      "ADD",
+      0,
+      "tm_A0_0_restore"
+    ],
+    "tm_A0_1_back": [
+      "SUB",
+      2,
+      "tm_A0_1_back_add",
+      "tm_A0_1_push"
+    ],
+    "tm_A0_1_back_add": [
+      "ADD",
+      1,
+      "tm_A0_1_back"
+    ],
+    "tm_A0_1_push": [
+      "SUB",
+      0,
+      "tm_A0_1_twice1",
+      "tm_A0_1_restore"
+    ],
+    "tm_A0_1_twice1": [
+      "ADD",
+      2,
+      "tm_A0_1_twice2"
+    ],
+    "tm_A0_1_twice2": [
+      "ADD",
+      2,
+      "tm_A0_1_push"
+    ],
+    "tm_A0_1_restore": [
+      "SUB",
+      2,
+      "tm_A0_1_restore_add",
+      "tm_B1_pop0"
+    ],
+    "tm_A0_1_restore_add": [
+      "ADD",
+      0,
+      "tm_A0_1_restore"
+    ],
+    "tm_A1_pop0": [
+      "SUB",
+      1,
+      "tm_A1_pop1",
+      "tm_A1_0_back"
+    ],
+    "tm_A1_pop1": [
+      "SUB",
+      1,
+      "tm_A1_pair",
+      "tm_A1_1_back"
+    ],
+    "tm_A1_pair": [
+      "ADD",
+      2,
+      "tm_A1_pop0"
+    ],
+    "tm_A1_0_back": [
+      "SUB",
+      2,
+      "tm_A1_0_back_add",
+      "tm_A1_0_push"
+    ],
+    "tm_A1_0_back_add": [
+      "ADD",
+      1,
+      "tm_A1_0_back"
+    ],
+    "tm_A1_0_push": [
+      "SUB",
+      0,
+      "tm_A1_0_twice1",
+      "tm_A1_0_restore"
+    ],
+    "tm_A1_0_twice1": [
+      "ADD",
+      2,
+      "tm_A1_0_twice2"
+    ],
+    "tm_A1_0_twice2": [
+      "ADD",
+      2,
+      "tm_A1_0_push"
+    ],
+    "tm_A1_0_restore": [
+      "SUB",
+      2,
+      "tm_A1_0_restore_add",
+      "tm_A1_0_write"
+    ],
+    "tm_A1_0_restore_add": [
+      "ADD",
+      0,
+      "tm_A1_0_restore"
+    ],
+    "tm_A1_0_write": [
+      "ADD",
+      0,
+      "tm_A0_pop0"
+    ],
+    "tm_A1_1_back": [
+      "SUB",
+      2,
+      "tm_A1_1_back_add",
+      "tm_A1_1_push"
+    ],
+    "tm_A1_1_back_add": [
+      "ADD",
+      1,
+      "tm_A1_1_back"
+    ],
+    "tm_A1_1_push": [
+      "SUB",
+      0,
+      "tm_A1_1_twice1",
+      "tm_A1_1_restore"
+    ],
+    "tm_A1_1_twice1": [
+      "ADD",
+      2,
+      "tm_A1_1_twice2"
+    ],
+    "tm_A1_1_twice2": [
+      "ADD",
+      2,
+      "tm_A1_1_push"
+    ],
+    "tm_A1_1_restore": [
+      "SUB",
+      2,
+      "tm_A1_1_restore_add",
+      "tm_A1_1_write"
+    ],
+    "tm_A1_1_restore_add": [
+      "ADD",
+      0,
+      "tm_A1_1_restore"
+    ],
+    "tm_A1_1_write": [
+      "ADD",
+      0,
+      "tm_A1_pop0"
+    ],
+    "tm_B0_pop0": [
+      "SUB",
+      1,
+      "tm_B0_pop1",
+      "tm_B0_0_back"
+    ],
+    "tm_B0_pop1": [
+      "SUB",
+      1,
+      "tm_B0_pair",
+      "tm_B0_1_back"
+    ],
+    "tm_B0_pair": [
+      "ADD",
+      2,
+      "tm_B0_pop0"
+    ],
+    "tm_B0_0_back": [
+      "SUB",
+      2,
+      "tm_B0_0_back_add",
+      "tm_B0_0_push"
+    ],
+    "tm_B0_0_back_add": [
+      "ADD",
+      1,
+      "tm_B0_0_back"
+    ],
+    "tm_B0_0_push": [
+      "SUB",
+      0,
+      "tm_B0_0_twice1",
+      "tm_B0_0_restore"
+    ],
+    "tm_B0_0_twice1": [
+      "ADD",
+      2,
+      "tm_B0_0_twice2"
+    ],
+    "tm_B0_0_twice2": [
+      "ADD",
+      2,
+      "tm_B0_0_push"
+    ],
+    "tm_B0_0_restore": [
+      "SUB",
+      2,
+      "tm_B0_0_restore_add",
+      "tm_B0_0_write"
+    ],
+    "tm_B0_0_restore_add": [
+      "ADD",
+      0,
+      "tm_B0_0_restore"
+    ],
+    "tm_B0_0_write": [
+      "ADD",
+      0,
+      "tm_C0_pop0"
+    ],
+    "tm_B0_1_back": [
+      "SUB",
+      2,
+      "tm_B0_1_back_add",
+      "tm_B0_1_push"
+    ],
+    "tm_B0_1_back_add": [
+      "ADD",
+      1,
+      "tm_B0_1_back"
+    ],
+    "tm_B0_1_push": [
+      "SUB",
+      0,
+      "tm_B0_1_twice1",
+      "tm_B0_1_restore"
+    ],
+    "tm_B0_1_twice1": [
+      "ADD",
+      2,
+      "tm_B0_1_twice2"
+    ],
+    "tm_B0_1_twice2": [
+      "ADD",
+      2,
+      "tm_B0_1_push"
+    ],
+    "tm_B0_1_restore": [
+      "SUB",
+      2,
+      "tm_B0_1_restore_add",
+      "tm_B0_1_write"
+    ],
+    "tm_B0_1_restore_add": [
+      "ADD",
+      0,
+      "tm_B0_1_restore"
+    ],
+    "tm_B0_1_write": [
+      "ADD",
+      0,
+      "tm_C1_pop0"
+    ],
+    "tm_B1_pop0": [
+      "SUB",
+      1,
+      "tm_B1_pop1",
+      "tm_B1_0_back"
+    ],
+    "tm_B1_pop1": [
+      "SUB",
+      1,
+      "tm_B1_pair",
+      "tm_B1_1_back"
+    ],
+    "tm_B1_pair": [
+      "ADD",
+      2,
+      "tm_B1_pop0"
+    ],
+    "tm_B1_0_back": [
+      "SUB",
+      2,
+      "tm_B1_0_back_add",
+      "tm_B1_0_push"
+    ],
+    "tm_B1_0_back_add": [
+      "ADD",
+      1,
+      "tm_B1_0_back"
+    ],
+    "tm_B1_0_push": [
+      "SUB",
+      0,
+      "tm_B1_0_twice1",
+      "tm_B1_0_restore"
+    ],
+    "tm_B1_0_twice1": [
+      "ADD",
+      2,
+      "tm_B1_0_twice2"
+    ],
+    "tm_B1_0_twice2": [
+      "ADD",
+      2,
+      "tm_B1_0_push"
+    ],
+    "tm_B1_0_restore": [
+      "SUB",
+      2,
+      "tm_B1_0_restore_add",
+      "tm_B1_0_write"
+    ],
+    "tm_B1_0_restore_add": [
+      "ADD",
+      0,
+      "tm_B1_0_restore"
+    ],
+    "tm_B1_0_write": [
+      "ADD",
+      0,
+      "tm_A0_pop0"
+    ],
+    "tm_B1_1_back": [
+      "SUB",
+      2,
+      "tm_B1_1_back_add",
+      "tm_B1_1_push"
+    ],
+    "tm_B1_1_back_add": [
+      "ADD",
+      1,
+      "tm_B1_1_back"
+    ],
+    "tm_B1_1_push": [
+      "SUB",
+      0,
+      "tm_B1_1_twice1",
+      "tm_B1_1_restore"
+    ],
+    "tm_B1_1_twice1": [
+      "ADD",
+      2,
+      "tm_B1_1_twice2"
+    ],
+    "tm_B1_1_twice2": [
+      "ADD",
+      2,
+      "tm_B1_1_push"
+    ],
+    "tm_B1_1_restore": [
+      "SUB",
+      2,
+      "tm_B1_1_restore_add",
+      "tm_B1_1_write"
+    ],
+    "tm_B1_1_restore_add": [
+      "ADD",
+      0,
+      "tm_B1_1_restore"
+    ],
+    "tm_B1_1_write": [
+      "ADD",
+      0,
+      "tm_A1_pop0"
+    ],
+    "tm_C0_pop0": [
+      "SUB",
+      0,
+      "tm_C0_pop1",
+      "tm_C0_0_back"
+    ],
+    "tm_C0_pop1": [
+      "SUB",
+      0,
+      "tm_C0_pair",
+      "tm_C0_1_back"
+    ],
+    "tm_C0_pair": [
+      "ADD",
+      2,
+      "tm_C0_pop0"
+    ],
+    "tm_C0_0_back": [
+      "SUB",
+      2,
+      "tm_C0_0_back_add",
+      "tm_C0_0_push"
+    ],
+    "tm_C0_0_back_add": [
+      "ADD",
+      0,
+      "tm_C0_0_back"
+    ],
+    "tm_C0_0_push": [
+      "SUB",
+      1,
+      "tm_C0_0_twice1",
+      "tm_C0_0_restore"
+    ],
+    "tm_C0_0_twice1": [
+      "ADD",
+      2,
+      "tm_C0_0_twice2"
+    ],
+    "tm_C0_0_twice2": [
+      "ADD",
+      2,
+      "tm_C0_0_push"
+    ],
+    "tm_C0_0_restore": [
+      "SUB",
+      2,
+      "tm_C0_0_restore_add",
+      "tm_G0_pop0"
+    ],
+    "tm_C0_0_restore_add": [
+      "ADD",
+      1,
+      "tm_C0_0_restore"
+    ],
+    "tm_C0_1_back": [
+      "SUB",
+      2,
+      "tm_C0_1_back_add",
+      "tm_C0_1_push"
+    ],
+    "tm_C0_1_back_add": [
+      "ADD",
+      0,
+      "tm_C0_1_back"
+    ],
+    "tm_C0_1_push": [
+      "SUB",
+      1,
+      "tm_C0_1_twice1",
+      "tm_C0_1_restore"
+    ],
+    "tm_C0_1_twice1": [
+      "ADD",
+      2,
+      "tm_C0_1_twice2"
+    ],
+    "tm_C0_1_twice2": [
+      "ADD",
+      2,
+      "tm_C0_1_push"
+    ],
+    "tm_C0_1_restore": [
+      "SUB",
+      2,
+      "tm_C0_1_restore_add",
+      "tm_G1_pop0"
+    ],
+    "tm_C0_1_restore_add": [
+      "ADD",
+      1,
+      "tm_C0_1_restore"
+    ],
+    "tm_C1_pop0": [
+      "SUB",
+      0,
+      "tm_C1_pop1",
+      "tm_C1_0_back"
+    ],
+    "tm_C1_pop1": [
+      "SUB",
+      0,
+      "tm_C1_pair",
+      "tm_C1_1_back"
+    ],
+    "tm_C1_pair": [
+      "ADD",
+      2,
+      "tm_C1_pop0"
+    ],
+    "tm_C1_0_back": [
+      "SUB",
+      2,
+      "tm_C1_0_back_add",
+      "tm_C1_0_push"
+    ],
+    "tm_C1_0_back_add": [
+      "ADD",
+      0,
+      "tm_C1_0_back"
+    ],
+    "tm_C1_0_push": [
+      "SUB",
+      1,
+      "tm_C1_0_twice1",
+      "tm_C1_0_restore"
+    ],
+    "tm_C1_0_twice1": [
+      "ADD",
+      2,
+      "tm_C1_0_twice2"
+    ],
+    "tm_C1_0_twice2": [
+      "ADD",
+      2,
+      "tm_C1_0_push"
+    ],
+    "tm_C1_0_restore": [
+      "SUB",
+      2,
+      "tm_C1_0_restore_add",
+      "tm_E0_pop0"
+    ],
+    "tm_C1_0_restore_add": [
+      "ADD",
+      1,
+      "tm_C1_0_restore"
+    ],
+    "tm_C1_1_back": [
+      "SUB",
+      2,
+      "tm_C1_1_back_add",
+      "tm_C1_1_push"
+    ],
+    "tm_C1_1_back_add": [
+      "ADD",
+      0,
+      "tm_C1_1_back"
+    ],
+    "tm_C1_1_push": [
+      "SUB",
+      1,
+      "tm_C1_1_twice1",
+      "tm_C1_1_restore"
+    ],
+    "tm_C1_1_twice1": [
+      "ADD",
+      2,
+      "tm_C1_1_twice2"
+    ],
+    "tm_C1_1_twice2": [
+      "ADD",
+      2,
+      "tm_C1_1_push"
+    ],
+    "tm_C1_1_restore": [
+      "SUB",
+      2,
+      "tm_C1_1_restore_add",
+      "tm_E1_pop0"
+    ],
+    "tm_C1_1_restore_add": [
+      "ADD",
+      1,
+      "tm_C1_1_restore"
+    ],
+    "tm_D0_pop0": [
+      "SUB",
+      0,
+      "tm_D0_pop1",
+      "tm_D0_0_back"
+    ],
+    "tm_D0_pop1": [
+      "SUB",
+      0,
+      "tm_D0_pair",
+      "tm_D0_1_back"
+    ],
+    "tm_D0_pair": [
+      "ADD",
+      2,
+      "tm_D0_pop0"
+    ],
+    "tm_D0_0_back": [
+      "SUB",
+      2,
+      "tm_D0_0_back_add",
+      "tm_D0_0_push"
+    ],
+    "tm_D0_0_back_add": [
+      "ADD",
+      0,
+      "tm_D0_0_back"
+    ],
+    "tm_D0_0_push": [
+      "SUB",
+      1,
+      "tm_D0_0_twice1",
+      "tm_D0_0_restore"
+    ],
+    "tm_D0_0_twice1": [
+      "ADD",
+      2,
+      "tm_D0_0_twice2"
+    ],
+    "tm_D0_0_twice2": [
+      "ADD",
+      2,
+      "tm_D0_0_push"
+    ],
+    "tm_D0_0_restore": [
+      "SUB",
+      2,
+      "tm_D0_0_restore_add",
+      "tm_F0_pop0"
+    ],
+    "tm_D0_0_restore_add": [
+      "ADD",
+      1,
+      "tm_D0_0_restore"
+    ],
+    "tm_D0_1_back": [
+      "SUB",
+      2,
+      "tm_D0_1_back_add",
+      "tm_D0_1_push"
+    ],
+    "tm_D0_1_back_add": [
+      "ADD",
+      0,
+      "tm_D0_1_back"
+    ],
+    "tm_D0_1_push": [
+      "SUB",
+      1,
+      "tm_D0_1_twice1",
+      "tm_D0_1_restore"
+    ],
+    "tm_D0_1_twice1": [
+      "ADD",
+      2,
+      "tm_D0_1_twice2"
+    ],
+    "tm_D0_1_twice2": [
+      "ADD",
+      2,
+      "tm_D0_1_push"
+    ],
+    "tm_D0_1_restore": [
+      "SUB",
+      2,
+      "tm_D0_1_restore_add",
+      "tm_F1_pop0"
+    ],
+    "tm_D0_1_restore_add": [
+      "ADD",
+      1,
+      "tm_D0_1_restore"
+    ],
+    "tm_D1_pop0": [
+      "SUB",
+      0,
+      "tm_D1_pop1",
+      "tm_D1_0_back"
+    ],
+    "tm_D1_pop1": [
+      "SUB",
+      0,
+      "tm_D1_pair",
+      "tm_D1_1_back"
+    ],
+    "tm_D1_pair": [
+      "ADD",
+      2,
+      "tm_D1_pop0"
+    ],
+    "tm_D1_0_back": [
+      "SUB",
+      2,
+      "tm_D1_0_back_add",
+      "tm_D1_0_push"
+    ],
+    "tm_D1_0_back_add": [
+      "ADD",
+      0,
+      "tm_D1_0_back"
+    ],
+    "tm_D1_0_push": [
+      "SUB",
+      1,
+      "tm_D1_0_twice1",
+      "tm_D1_0_restore"
+    ],
+    "tm_D1_0_twice1": [
+      "ADD",
+      2,
+      "tm_D1_0_twice2"
+    ],
+    "tm_D1_0_twice2": [
+      "ADD",
+      2,
+      "tm_D1_0_push"
+    ],
+    "tm_D1_0_restore": [
+      "SUB",
+      2,
+      "tm_D1_0_restore_add",
+      "tm_D1_0_write"
+    ],
+    "tm_D1_0_restore_add": [
+      "ADD",
+      1,
+      "tm_D1_0_restore"
+    ],
+    "tm_D1_0_write": [
+      "ADD",
+      1,
+      "tm_E0_pop0"
+    ],
+    "tm_D1_1_back": [
+      "SUB",
+      2,
+      "tm_D1_1_back_add",
+      "tm_D1_1_push"
+    ],
+    "tm_D1_1_back_add": [
+      "ADD",
+      0,
+      "tm_D1_1_back"
+    ],
+    "tm_D1_1_push": [
+      "SUB",
+      1,
+      "tm_D1_1_twice1",
+      "tm_D1_1_restore"
+    ],
+    "tm_D1_1_twice1": [
+      "ADD",
+      2,
+      "tm_D1_1_twice2"
+    ],
+    "tm_D1_1_twice2": [
+      "ADD",
+      2,
+      "tm_D1_1_push"
+    ],
+    "tm_D1_1_restore": [
+      "SUB",
+      2,
+      "tm_D1_1_restore_add",
+      "tm_D1_1_write"
+    ],
+    "tm_D1_1_restore_add": [
+      "ADD",
+      1,
+      "tm_D1_1_restore"
+    ],
+    "tm_D1_1_write": [
+      "ADD",
+      1,
+      "tm_E1_pop0"
+    ],
+    "tm_E0_pop0": [
+      "SUB",
+      1,
+      "tm_E0_pop1",
+      "tm_E0_0_back"
+    ],
+    "tm_E0_pop1": [
+      "SUB",
+      1,
+      "tm_E0_pair",
+      "tm_E0_1_back"
+    ],
+    "tm_E0_pair": [
+      "ADD",
+      2,
+      "tm_E0_pop0"
+    ],
+    "tm_E0_0_back": [
+      "SUB",
+      2,
+      "tm_E0_0_back_add",
+      "tm_E0_0_push"
+    ],
+    "tm_E0_0_back_add": [
+      "ADD",
+      1,
+      "tm_E0_0_back"
+    ],
+    "tm_E0_0_push": [
+      "SUB",
+      0,
+      "tm_E0_0_twice1",
+      "tm_E0_0_restore"
+    ],
+    "tm_E0_0_twice1": [
+      "ADD",
+      2,
+      "tm_E0_0_twice2"
+    ],
+    "tm_E0_0_twice2": [
+      "ADD",
+      2,
+      "tm_E0_0_push"
+    ],
+    "tm_E0_0_restore": [
+      "SUB",
+      2,
+      "tm_E0_0_restore_add",
+      "tm_E0_0_write"
+    ],
+    "tm_E0_0_restore_add": [
+      "ADD",
+      0,
+      "tm_E0_0_restore"
+    ],
+    "tm_E0_0_write": [
+      "ADD",
+      0,
+      "tm_A0_pop0"
+    ],
+    "tm_E0_1_back": [
+      "SUB",
+      2,
+      "tm_E0_1_back_add",
+      "tm_E0_1_push"
+    ],
+    "tm_E0_1_back_add": [
+      "ADD",
+      1,
+      "tm_E0_1_back"
+    ],
+    "tm_E0_1_push": [
+      "SUB",
+      0,
+      "tm_E0_1_twice1",
+      "tm_E0_1_restore"
+    ],
+    "tm_E0_1_twice1": [
+      "ADD",
+      2,
+      "tm_E0_1_twice2"
+    ],
+    "tm_E0_1_twice2": [
+      "ADD",
+      2,
+      "tm_E0_1_push"
+    ],
+    "tm_E0_1_restore": [
+      "SUB",
+      2,
+      "tm_E0_1_restore_add",
+      "tm_E0_1_write"
+    ],
+    "tm_E0_1_restore_add": [
+      "ADD",
+      0,
+      "tm_E0_1_restore"
+    ],
+    "tm_E0_1_write": [
+      "ADD",
+      0,
+      "tm_A1_pop0"
+    ],
+    "tm_E1_pop0": [
+      "SUB",
+      0,
+      "tm_E1_pop1",
+      "tm_E1_0_back"
+    ],
+    "tm_E1_pop1": [
+      "SUB",
+      0,
+      "tm_E1_pair",
+      "tm_E1_1_back"
+    ],
+    "tm_E1_pair": [
+      "ADD",
+      2,
+      "tm_E1_pop0"
+    ],
+    "tm_E1_0_back": [
+      "SUB",
+      2,
+      "tm_E1_0_back_add",
+      "tm_E1_0_push"
+    ],
+    "tm_E1_0_back_add": [
+      "ADD",
+      0,
+      "tm_E1_0_back"
+    ],
+    "tm_E1_0_push": [
+      "SUB",
+      1,
+      "tm_E1_0_twice1",
+      "tm_E1_0_restore"
+    ],
+    "tm_E1_0_twice1": [
+      "ADD",
+      2,
+      "tm_E1_0_twice2"
+    ],
+    "tm_E1_0_twice2": [
+      "ADD",
+      2,
+      "tm_E1_0_push"
+    ],
+    "tm_E1_0_restore": [
+      "SUB",
+      2,
+      "tm_E1_0_restore_add",
+      "tm_E1_0_write"
+    ],
+    "tm_E1_0_restore_add": [
+      "ADD",
+      1,
+      "tm_E1_0_restore"
+    ],
+    "tm_E1_0_write": [
+      "ADD",
+      1,
+      "tm_D0_pop0"
+    ],
+    "tm_E1_1_back": [
+      "SUB",
+      2,
+      "tm_E1_1_back_add",
+      "tm_E1_1_push"
+    ],
+    "tm_E1_1_back_add": [
+      "ADD",
+      0,
+      "tm_E1_1_back"
+    ],
+    "tm_E1_1_push": [
+      "SUB",
+      1,
+      "tm_E1_1_twice1",
+      "tm_E1_1_restore"
+    ],
+    "tm_E1_1_twice1": [
+      "ADD",
+      2,
+      "tm_E1_1_twice2"
+    ],
+    "tm_E1_1_twice2": [
+      "ADD",
+      2,
+      "tm_E1_1_push"
+    ],
+    "tm_E1_1_restore": [
+      "SUB",
+      2,
+      "tm_E1_1_restore_add",
+      "tm_E1_1_write"
+    ],
+    "tm_E1_1_restore_add": [
+      "ADD",
+      1,
+      "tm_E1_1_restore"
+    ],
+    "tm_E1_1_write": [
+      "ADD",
+      1,
+      "tm_D1_pop0"
+    ],
+    "tm_F0_pop0": [
+      "SUB",
+      0,
+      "tm_F0_pop1",
+      "tm_F0_0_back"
+    ],
+    "tm_F0_pop1": [
+      "SUB",
+      0,
+      "tm_F0_pair",
+      "tm_F0_1_back"
+    ],
+    "tm_F0_pair": [
+      "ADD",
+      2,
+      "tm_F0_pop0"
+    ],
+    "tm_F0_0_back": [
+      "SUB",
+      2,
+      "tm_F0_0_back_add",
+      "tm_F0_0_push"
+    ],
+    "tm_F0_0_back_add": [
+      "ADD",
+      0,
+      "tm_F0_0_back"
+    ],
+    "tm_F0_0_push": [
+      "SUB",
+      1,
+      "tm_F0_0_twice1",
+      "tm_F0_0_restore"
+    ],
+    "tm_F0_0_twice1": [
+      "ADD",
+      2,
+      "tm_F0_0_twice2"
+    ],
+    "tm_F0_0_twice2": [
+      "ADD",
+      2,
+      "tm_F0_0_push"
+    ],
+    "tm_F0_0_restore": [
+      "SUB",
+      2,
+      "tm_F0_0_restore_add",
+      "tm_F0_0_write"
+    ],
+    "tm_F0_0_restore_add": [
+      "ADD",
+      1,
+      "tm_F0_0_restore"
+    ],
+    "tm_F0_0_write": [
+      "ADD",
+      1,
+      "tm_D0_pop0"
+    ],
+    "tm_F0_1_back": [
+      "SUB",
+      2,
+      "tm_F0_1_back_add",
+      "tm_F0_1_push"
+    ],
+    "tm_F0_1_back_add": [
+      "ADD",
+      0,
+      "tm_F0_1_back"
+    ],
+    "tm_F0_1_push": [
+      "SUB",
+      1,
+      "tm_F0_1_twice1",
+      "tm_F0_1_restore"
+    ],
+    "tm_F0_1_twice1": [
+      "ADD",
+      2,
+      "tm_F0_1_twice2"
+    ],
+    "tm_F0_1_twice2": [
+      "ADD",
+      2,
+      "tm_F0_1_push"
+    ],
+    "tm_F0_1_restore": [
+      "SUB",
+      2,
+      "tm_F0_1_restore_add",
+      "tm_F0_1_write"
+    ],
+    "tm_F0_1_restore_add": [
+      "ADD",
+      1,
+      "tm_F0_1_restore"
+    ],
+    "tm_F0_1_write": [
+      "ADD",
+      1,
+      "tm_D1_pop0"
+    ],
+    "tm_F1_pop0": [
+      "SUB",
+      0,
+      "tm_F1_pop1",
+      "tm_F1_0_back"
+    ],
+    "tm_F1_pop1": [
+      "SUB",
+      0,
+      "tm_F1_pair",
+      "tm_F1_1_back"
+    ],
+    "tm_F1_pair": [
+      "ADD",
+      2,
+      "tm_F1_pop0"
+    ],
+    "tm_F1_0_back": [
+      "SUB",
+      2,
+      "tm_F1_0_back_add",
+      "tm_F1_0_push"
+    ],
+    "tm_F1_0_back_add": [
+      "ADD",
+      0,
+      "tm_F1_0_back"
+    ],
+    "tm_F1_0_push": [
+      "SUB",
+      1,
+      "tm_F1_0_twice1",
+      "tm_F1_0_restore"
+    ],
+    "tm_F1_0_twice1": [
+      "ADD",
+      2,
+      "tm_F1_0_twice2"
+    ],
+    "tm_F1_0_twice2": [
+      "ADD",
+      2,
+      "tm_F1_0_push"
+    ],
+    "tm_F1_0_restore": [
+      "SUB",
+      2,
+      "tm_F1_0_restore_add",
+      "tm_F1_0_write"
+    ],
+    "tm_F1_0_restore_add": [
+      "ADD",
+      1,
+      "tm_F1_0_restore"
+    ],
+    "tm_F1_0_write": [
+      "ADD",
+      1,
+      "tm_D0_pop0"
+    ],
+    "tm_F1_1_back": [
+      "SUB",
+      2,
+      "tm_F1_1_back_add",
+      "tm_F1_1_push"
+    ],
+    "tm_F1_1_back_add": [
+      "ADD",
+      0,
+      "tm_F1_1_back"
+    ],
+    "tm_F1_1_push": [
+      "SUB",
+      1,
+      "tm_F1_1_twice1",
+      "tm_F1_1_restore"
+    ],
+    "tm_F1_1_twice1": [
+      "ADD",
+      2,
+      "tm_F1_1_twice2"
+    ],
+    "tm_F1_1_twice2": [
+      "ADD",
+      2,
+      "tm_F1_1_push"
+    ],
+    "tm_F1_1_restore": [
+      "SUB",
+      2,
+      "tm_F1_1_restore_add",
+      "tm_F1_1_write"
+    ],
+    "tm_F1_1_restore_add": [
+      "ADD",
+      1,
+      "tm_F1_1_restore"
+    ],
+    "tm_F1_1_write": [
+      "ADD",
+      1,
+      "tm_D1_pop0"
+    ],
+    "tm_G0_pop0": [
+      "SUB",
+      0,
+      "tm_G0_pop1",
+      "tm_G0_0_back"
+    ],
+    "tm_G0_pop1": [
+      "SUB",
+      0,
+      "tm_G0_pair",
+      "tm_G0_1_back"
+    ],
+    "tm_G0_pair": [
+      "ADD",
+      2,
+      "tm_G0_pop0"
+    ],
+    "tm_G0_0_back": [
+      "SUB",
+      2,
+      "tm_G0_0_back_add",
+      "tm_G0_0_push"
+    ],
+    "tm_G0_0_back_add": [
+      "ADD",
+      0,
+      "tm_G0_0_back"
+    ],
+    "tm_G0_0_push": [
+      "SUB",
+      1,
+      "tm_G0_0_twice1",
+      "tm_G0_0_restore"
+    ],
+    "tm_G0_0_twice1": [
+      "ADD",
+      2,
+      "tm_G0_0_twice2"
+    ],
+    "tm_G0_0_twice2": [
+      "ADD",
+      2,
+      "tm_G0_0_push"
+    ],
+    "tm_G0_0_restore": [
+      "SUB",
+      2,
+      "tm_G0_0_restore_add",
+      "tm_H0_pop0"
+    ],
+    "tm_G0_0_restore_add": [
+      "ADD",
+      1,
+      "tm_G0_0_restore"
+    ],
+    "tm_G0_1_back": [
+      "SUB",
+      2,
+      "tm_G0_1_back_add",
+      "tm_G0_1_push"
+    ],
+    "tm_G0_1_back_add": [
+      "ADD",
+      0,
+      "tm_G0_1_back"
+    ],
+    "tm_G0_1_push": [
+      "SUB",
+      1,
+      "tm_G0_1_twice1",
+      "tm_G0_1_restore"
+    ],
+    "tm_G0_1_twice1": [
+      "ADD",
+      2,
+      "tm_G0_1_twice2"
+    ],
+    "tm_G0_1_twice2": [
+      "ADD",
+      2,
+      "tm_G0_1_push"
+    ],
+    "tm_G0_1_restore": [
+      "SUB",
+      2,
+      "tm_G0_1_restore_add",
+      "tm_H1_pop0"
+    ],
+    "tm_G0_1_restore_add": [
+      "ADD",
+      1,
+      "tm_G0_1_restore"
+    ],
+    "tm_G1_pop0": [
+      "SUB",
+      0,
+      "tm_G1_pop1",
+      "tm_G1_0_back"
+    ],
+    "tm_G1_pop1": [
+      "SUB",
+      0,
+      "tm_G1_pair",
+      "tm_G1_1_back"
+    ],
+    "tm_G1_pair": [
+      "ADD",
+      2,
+      "tm_G1_pop0"
+    ],
+    "tm_G1_0_back": [
+      "SUB",
+      2,
+      "tm_G1_0_back_add",
+      "tm_G1_0_push"
+    ],
+    "tm_G1_0_back_add": [
+      "ADD",
+      0,
+      "tm_G1_0_back"
+    ],
+    "tm_G1_0_push": [
+      "SUB",
+      1,
+      "tm_G1_0_twice1",
+      "tm_G1_0_restore"
+    ],
+    "tm_G1_0_twice1": [
+      "ADD",
+      2,
+      "tm_G1_0_twice2"
+    ],
+    "tm_G1_0_twice2": [
+      "ADD",
+      2,
+      "tm_G1_0_push"
+    ],
+    "tm_G1_0_restore": [
+      "SUB",
+      2,
+      "tm_G1_0_restore_add",
+      "tm_G1_0_write"
+    ],
+    "tm_G1_0_restore_add": [
+      "ADD",
+      1,
+      "tm_G1_0_restore"
+    ],
+    "tm_G1_0_write": [
+      "ADD",
+      1,
+      "tm_G0_pop0"
+    ],
+    "tm_G1_1_back": [
+      "SUB",
+      2,
+      "tm_G1_1_back_add",
+      "tm_G1_1_push"
+    ],
+    "tm_G1_1_back_add": [
+      "ADD",
+      0,
+      "tm_G1_1_back"
+    ],
+    "tm_G1_1_push": [
+      "SUB",
+      1,
+      "tm_G1_1_twice1",
+      "tm_G1_1_restore"
+    ],
+    "tm_G1_1_twice1": [
+      "ADD",
+      2,
+      "tm_G1_1_twice2"
+    ],
+    "tm_G1_1_twice2": [
+      "ADD",
+      2,
+      "tm_G1_1_push"
+    ],
+    "tm_G1_1_restore": [
+      "SUB",
+      2,
+      "tm_G1_1_restore_add",
+      "tm_G1_1_write"
+    ],
+    "tm_G1_1_restore_add": [
+      "ADD",
+      1,
+      "tm_G1_1_restore"
+    ],
+    "tm_G1_1_write": [
+      "ADD",
+      1,
+      "tm_G1_pop0"
+    ],
+    "tm_H0_pop0": [
+      "SUB",
+      0,
+      "tm_H0_pop1",
+      "tm_H0_0_back"
+    ],
+    "tm_H0_pop1": [
+      "SUB",
+      0,
+      "tm_H0_pair",
+      "tm_H0_1_back"
+    ],
+    "tm_H0_pair": [
+      "ADD",
+      2,
+      "tm_H0_pop0"
+    ],
+    "tm_H0_0_back": [
+      "SUB",
+      2,
+      "tm_H0_0_back_add",
+      "tm_H0_0_push"
+    ],
+    "tm_H0_0_back_add": [
+      "ADD",
+      0,
+      "tm_H0_0_back"
+    ],
+    "tm_H0_0_push": [
+      "SUB",
+      1,
+      "tm_H0_0_twice1",
+      "tm_H0_0_restore"
+    ],
+    "tm_H0_0_twice1": [
+      "ADD",
+      2,
+      "tm_H0_0_twice2"
+    ],
+    "tm_H0_0_twice2": [
+      "ADD",
+      2,
+      "tm_H0_0_push"
+    ],
+    "tm_H0_0_restore": [
+      "SUB",
+      2,
+      "tm_H0_0_restore_add",
+      "tm_H0_0_write"
+    ],
+    "tm_H0_0_restore_add": [
+      "ADD",
+      1,
+      "tm_H0_0_restore"
+    ],
+    "tm_H0_0_write": [
+      "ADD",
+      1,
+      "tm_I0_pop0"
+    ],
+    "tm_H0_1_back": [
+      "SUB",
+      2,
+      "tm_H0_1_back_add",
+      "tm_H0_1_push"
+    ],
+    "tm_H0_1_back_add": [
+      "ADD",
+      0,
+      "tm_H0_1_back"
+    ],
+    "tm_H0_1_push": [
+      "SUB",
+      1,
+      "tm_H0_1_twice1",
+      "tm_H0_1_restore"
+    ],
+    "tm_H0_1_twice1": [
+      "ADD",
+      2,
+      "tm_H0_1_twice2"
+    ],
+    "tm_H0_1_twice2": [
+      "ADD",
+      2,
+      "tm_H0_1_push"
+    ],
+    "tm_H0_1_restore": [
+      "SUB",
+      2,
+      "tm_H0_1_restore_add",
+      "tm_H0_1_write"
+    ],
+    "tm_H0_1_restore_add": [
+      "ADD",
+      1,
+      "tm_H0_1_restore"
+    ],
+    "tm_H0_1_write": [
+      "ADD",
+      1,
+      "tm_I1_pop0"
+    ],
+    "tm_H1_pop0": [
+      "SUB",
+      0,
+      "tm_H1_pop1",
+      "tm_H1_0_back"
+    ],
+    "tm_H1_pop1": [
+      "SUB",
+      0,
+      "tm_H1_pair",
+      "tm_H1_1_back"
+    ],
+    "tm_H1_pair": [
+      "ADD",
+      2,
+      "tm_H1_pop0"
+    ],
+    "tm_H1_0_back": [
+      "SUB",
+      2,
+      "tm_H1_0_back_add",
+      "tm_H1_0_push"
+    ],
+    "tm_H1_0_back_add": [
+      "ADD",
+      0,
+      "tm_H1_0_back"
+    ],
+    "tm_H1_0_push": [
+      "SUB",
+      1,
+      "tm_H1_0_twice1",
+      "tm_H1_0_restore"
+    ],
+    "tm_H1_0_twice1": [
+      "ADD",
+      2,
+      "tm_H1_0_twice2"
+    ],
+    "tm_H1_0_twice2": [
+      "ADD",
+      2,
+      "tm_H1_0_push"
+    ],
+    "tm_H1_0_restore": [
+      "SUB",
+      2,
+      "tm_H1_0_restore_add",
+      "tm_H1_0_write"
+    ],
+    "tm_H1_0_restore_add": [
+      "ADD",
+      1,
+      "tm_H1_0_restore"
+    ],
+    "tm_H1_0_write": [
+      "ADD",
+      1,
+      "tm_G0_pop0"
+    ],
+    "tm_H1_1_back": [
+      "SUB",
+      2,
+      "tm_H1_1_back_add",
+      "tm_H1_1_push"
+    ],
+    "tm_H1_1_back_add": [
+      "ADD",
+      0,
+      "tm_H1_1_back"
+    ],
+    "tm_H1_1_push": [
+      "SUB",
+      1,
+      "tm_H1_1_twice1",
+      "tm_H1_1_restore"
+    ],
+    "tm_H1_1_twice1": [
+      "ADD",
+      2,
+      "tm_H1_1_twice2"
+    ],
+    "tm_H1_1_twice2": [
+      "ADD",
+      2,
+      "tm_H1_1_push"
+    ],
+    "tm_H1_1_restore": [
+      "SUB",
+      2,
+      "tm_H1_1_restore_add",
+      "tm_H1_1_write"
+    ],
+    "tm_H1_1_restore_add": [
+      "ADD",
+      1,
+      "tm_H1_1_restore"
+    ],
+    "tm_H1_1_write": [
+      "ADD",
+      1,
+      "tm_G1_pop0"
+    ],
+    "tm_I0_pop0": [
+      "SUB",
+      1,
+      "tm_I0_pop1",
+      "tm_I0_0_back"
+    ],
+    "tm_I0_pop1": [
+      "SUB",
+      1,
+      "tm_I0_pair",
+      "tm_I0_1_back"
+    ],
+    "tm_I0_pair": [
+      "ADD",
+      2,
+      "tm_I0_pop0"
+    ],
+    "tm_I0_0_back": [
+      "SUB",
+      2,
+      "tm_I0_0_back_add",
+      "tm_I0_0_push"
+    ],
+    "tm_I0_0_back_add": [
+      "ADD",
+      1,
+      "tm_I0_0_back"
+    ],
+    "tm_I0_0_push": [
+      "SUB",
+      0,
+      "tm_I0_0_twice1",
+      "tm_I0_0_restore"
+    ],
+    "tm_I0_0_twice1": [
+      "ADD",
+      2,
+      "tm_I0_0_twice2"
+    ],
+    "tm_I0_0_twice2": [
+      "ADD",
+      2,
+      "tm_I0_0_push"
+    ],
+    "tm_I0_0_restore": [
+      "SUB",
+      2,
+      "tm_I0_0_restore_add",
+      "tm_A0_pop0"
+    ],
+    "tm_I0_0_restore_add": [
+      "ADD",
+      0,
+      "tm_I0_0_restore"
+    ],
+    "tm_I0_1_back": [
+      "SUB",
+      2,
+      "tm_I0_1_back_add",
+      "tm_I0_1_push"
+    ],
+    "tm_I0_1_back_add": [
+      "ADD",
+      1,
+      "tm_I0_1_back"
+    ],
+    "tm_I0_1_push": [
+      "SUB",
+      0,
+      "tm_I0_1_twice1",
+      "tm_I0_1_restore"
+    ],
+    "tm_I0_1_twice1": [
+      "ADD",
+      2,
+      "tm_I0_1_twice2"
+    ],
+    "tm_I0_1_twice2": [
+      "ADD",
+      2,
+      "tm_I0_1_push"
+    ],
+    "tm_I0_1_restore": [
+      "SUB",
+      2,
+      "tm_I0_1_restore_add",
+      "tm_A1_pop0"
+    ],
+    "tm_I0_1_restore_add": [
+      "ADD",
+      0,
+      "tm_I0_1_restore"
+    ],
+    "tm_I1_pop0": [
+      "SUB",
+      0,
+      "tm_I1_pop1",
+      "tm_I1_0_back"
+    ],
+    "tm_I1_pop1": [
+      "SUB",
+      0,
+      "tm_I1_pair",
+      "tm_I1_1_back"
+    ],
+    "tm_I1_pair": [
+      "ADD",
+      2,
+      "tm_I1_pop0"
+    ],
+    "tm_I1_0_back": [
+      "SUB",
+      2,
+      "tm_I1_0_back_add",
+      "tm_I1_0_push"
+    ],
+    "tm_I1_0_back_add": [
+      "ADD",
+      0,
+      "tm_I1_0_back"
+    ],
+    "tm_I1_0_push": [
+      "SUB",
+      1,
+      "tm_I1_0_twice1",
+      "tm_I1_0_restore"
+    ],
+    "tm_I1_0_twice1": [
+      "ADD",
+      2,
+      "tm_I1_0_twice2"
+    ],
+    "tm_I1_0_twice2": [
+      "ADD",
+      2,
+      "tm_I1_0_push"
+    ],
+    "tm_I1_0_restore": [
+      "SUB",
+      2,
+      "tm_I1_0_restore_add",
+      "tm_I1_0_write"
+    ],
+    "tm_I1_0_restore_add": [
+      "ADD",
+      1,
+      "tm_I1_0_restore"
+    ],
+    "tm_I1_0_write": [
+      "ADD",
+      1,
+      "tm_J0_pop0"
+    ],
+    "tm_I1_1_back": [
+      "SUB",
+      2,
+      "tm_I1_1_back_add",
+      "tm_I1_1_push"
+    ],
+    "tm_I1_1_back_add": [
+      "ADD",
+      0,
+      "tm_I1_1_back"
+    ],
+    "tm_I1_1_push": [
+      "SUB",
+      1,
+      "tm_I1_1_twice1",
+      "tm_I1_1_restore"
+    ],
+    "tm_I1_1_twice1": [
+      "ADD",
+      2,
+      "tm_I1_1_twice2"
+    ],
+    "tm_I1_1_twice2": [
+      "ADD",
+      2,
+      "tm_I1_1_push"
+    ],
+    "tm_I1_1_restore": [
+      "SUB",
+      2,
+      "tm_I1_1_restore_add",
+      "tm_I1_1_write"
+    ],
+    "tm_I1_1_restore_add": [
+      "ADD",
+      1,
+      "tm_I1_1_restore"
+    ],
+    "tm_I1_1_write": [
+      "ADD",
+      1,
+      "HALT"
+    ],
+    "tm_J0_pop0": [
+      "SUB",
+      0,
+      "tm_J0_pop1",
+      "tm_J0_0_back"
+    ],
+    "tm_J0_pop1": [
+      "SUB",
+      0,
+      "tm_J0_pair",
+      "tm_J0_1_back"
+    ],
+    "tm_J0_pair": [
+      "ADD",
+      2,
+      "tm_J0_pop0"
+    ],
+    "tm_J0_0_back": [
+      "SUB",
+      2,
+      "tm_J0_0_back_add",
+      "tm_J0_0_push"
+    ],
+    "tm_J0_0_back_add": [
+      "ADD",
+      0,
+      "tm_J0_0_back"
+    ],
+    "tm_J0_0_push": [
+      "SUB",
+      1,
+      "tm_J0_0_twice1",
+      "tm_J0_0_restore"
+    ],
+    "tm_J0_0_twice1": [
+      "ADD",
+      2,
+      "tm_J0_0_twice2"
+    ],
+    "tm_J0_0_twice2": [
+      "ADD",
+      2,
+      "tm_J0_0_push"
+    ],
+    "tm_J0_0_restore": [
+      "SUB",
+      2,
+      "tm_J0_0_restore_add",
+      "tm_J0_0_write"
+    ],
+    "tm_J0_0_restore_add": [
+      "ADD",
+      1,
+      "tm_J0_0_restore"
+    ],
+    "tm_J0_0_write": [
+      "ADD",
+      1,
+      "tm_K0_pop0"
+    ],
+    "tm_J0_1_back": [
+      "SUB",
+      2,
+      "tm_J0_1_back_add",
+      "tm_J0_1_push"
+    ],
+    "tm_J0_1_back_add": [
+      "ADD",
+      0,
+      "tm_J0_1_back"
+    ],
+    "tm_J0_1_push": [
+      "SUB",
+      1,
+      "tm_J0_1_twice1",
+      "tm_J0_1_restore"
+    ],
+    "tm_J0_1_twice1": [
+      "ADD",
+      2,
+      "tm_J0_1_twice2"
+    ],
+    "tm_J0_1_twice2": [
+      "ADD",
+      2,
+      "tm_J0_1_push"
+    ],
+    "tm_J0_1_restore": [
+      "SUB",
+      2,
+      "tm_J0_1_restore_add",
+      "tm_J0_1_write"
+    ],
+    "tm_J0_1_restore_add": [
+      "ADD",
+      1,
+      "tm_J0_1_restore"
+    ],
+    "tm_J0_1_write": [
+      "ADD",
+      1,
+      "tm_K1_pop0"
+    ],
+    "tm_K0_pop0": [
+      "SUB",
+      1,
+      "tm_K0_pop1",
+      "tm_K0_0_back"
+    ],
+    "tm_K0_pop1": [
+      "SUB",
+      1,
+      "tm_K0_pair",
+      "tm_K0_1_back"
+    ],
+    "tm_K0_pair": [
+      "ADD",
+      2,
+      "tm_K0_pop0"
+    ],
+    "tm_K0_0_back": [
+      "SUB",
+      2,
+      "tm_K0_0_back_add",
+      "tm_K0_0_push"
+    ],
+    "tm_K0_0_back_add": [
+      "ADD",
+      1,
+      "tm_K0_0_back"
+    ],
+    "tm_K0_0_push": [
+      "SUB",
+      0,
+      "tm_K0_0_twice1",
+      "tm_K0_0_restore"
+    ],
+    "tm_K0_0_twice1": [
+      "ADD",
+      2,
+      "tm_K0_0_twice2"
+    ],
+    "tm_K0_0_twice2": [
+      "ADD",
+      2,
+      "tm_K0_0_push"
+    ],
+    "tm_K0_0_restore": [
+      "SUB",
+      2,
+      "tm_K0_0_restore_add",
+      "tm_L0_pop0"
+    ],
+    "tm_K0_0_restore_add": [
+      "ADD",
+      0,
+      "tm_K0_0_restore"
+    ],
+    "tm_K0_1_back": [
+      "SUB",
+      2,
+      "tm_K0_1_back_add",
+      "tm_K0_1_push"
+    ],
+    "tm_K0_1_back_add": [
+      "ADD",
+      1,
+      "tm_K0_1_back"
+    ],
+    "tm_K0_1_push": [
+      "SUB",
+      0,
+      "tm_K0_1_twice1",
+      "tm_K0_1_restore"
+    ],
+    "tm_K0_1_twice1": [
+      "ADD",
+      2,
+      "tm_K0_1_twice2"
+    ],
+    "tm_K0_1_twice2": [
+      "ADD",
+      2,
+      "tm_K0_1_push"
+    ],
+    "tm_K0_1_restore": [
+      "SUB",
+      2,
+      "tm_K0_1_restore_add",
+      "tm_L1_pop0"
+    ],
+    "tm_K0_1_restore_add": [
+      "ADD",
+      0,
+      "tm_K0_1_restore"
+    ],
+    "tm_K1_pop0": [
+      "SUB",
+      1,
+      "tm_K1_pop1",
+      "tm_K1_0_back"
+    ],
+    "tm_K1_pop1": [
+      "SUB",
+      1,
+      "tm_K1_pair",
+      "tm_K1_1_back"
+    ],
+    "tm_K1_pair": [
+      "ADD",
+      2,
+      "tm_K1_pop0"
+    ],
+    "tm_K1_0_back": [
+      "SUB",
+      2,
+      "tm_K1_0_back_add",
+      "tm_K1_0_push"
+    ],
+    "tm_K1_0_back_add": [
+      "ADD",
+      1,
+      "tm_K1_0_back"
+    ],
+    "tm_K1_0_push": [
+      "SUB",
+      0,
+      "tm_K1_0_twice1",
+      "tm_K1_0_restore"
+    ],
+    "tm_K1_0_twice1": [
+      "ADD",
+      2,
+      "tm_K1_0_twice2"
+    ],
+    "tm_K1_0_twice2": [
+      "ADD",
+      2,
+      "tm_K1_0_push"
+    ],
+    "tm_K1_0_restore": [
+      "SUB",
+      2,
+      "tm_K1_0_restore_add",
+      "tm_K1_0_write"
+    ],
+    "tm_K1_0_restore_add": [
+      "ADD",
+      0,
+      "tm_K1_0_restore"
+    ],
+    "tm_K1_0_write": [
+      "ADD",
+      0,
+      "tm_N0_pop0"
+    ],
+    "tm_K1_1_back": [
+      "SUB",
+      2,
+      "tm_K1_1_back_add",
+      "tm_K1_1_push"
+    ],
+    "tm_K1_1_back_add": [
+      "ADD",
+      1,
+      "tm_K1_1_back"
+    ],
+    "tm_K1_1_push": [
+      "SUB",
+      0,
+      "tm_K1_1_twice1",
+      "tm_K1_1_restore"
+    ],
+    "tm_K1_1_twice1": [
+      "ADD",
+      2,
+      "tm_K1_1_twice2"
+    ],
+    "tm_K1_1_twice2": [
+      "ADD",
+      2,
+      "tm_K1_1_push"
+    ],
+    "tm_K1_1_restore": [
+      "SUB",
+      2,
+      "tm_K1_1_restore_add",
+      "tm_K1_1_write"
+    ],
+    "tm_K1_1_restore_add": [
+      "ADD",
+      0,
+      "tm_K1_1_restore"
+    ],
+    "tm_K1_1_write": [
+      "ADD",
+      0,
+      "tm_N1_pop0"
+    ],
+    "tm_L0_pop0": [
+      "SUB",
+      1,
+      "tm_L0_pop1",
+      "tm_L0_0_back"
+    ],
+    "tm_L0_pop1": [
+      "SUB",
+      1,
+      "tm_L0_pair",
+      "tm_L0_1_back"
+    ],
+    "tm_L0_pair": [
+      "ADD",
+      2,
+      "tm_L0_pop0"
+    ],
+    "tm_L0_0_back": [
+      "SUB",
+      2,
+      "tm_L0_0_back_add",
+      "tm_L0_0_push"
+    ],
+    "tm_L0_0_back_add": [
+      "ADD",
+      1,
+      "tm_L0_0_back"
+    ],
+    "tm_L0_0_push": [
+      "SUB",
+      0,
+      "tm_L0_0_twice1",
+      "tm_L0_0_restore"
+    ],
+    "tm_L0_0_twice1": [
+      "ADD",
+      2,
+      "tm_L0_0_twice2"
+    ],
+    "tm_L0_0_twice2": [
+      "ADD",
+      2,
+      "tm_L0_0_push"
+    ],
+    "tm_L0_0_restore": [
+      "SUB",
+      2,
+      "tm_L0_0_restore_add",
+      "tm_M0_pop0"
+    ],
+    "tm_L0_0_restore_add": [
+      "ADD",
+      0,
+      "tm_L0_0_restore"
+    ],
+    "tm_L0_1_back": [
+      "SUB",
+      2,
+      "tm_L0_1_back_add",
+      "tm_L0_1_push"
+    ],
+    "tm_L0_1_back_add": [
+      "ADD",
+      1,
+      "tm_L0_1_back"
+    ],
+    "tm_L0_1_push": [
+      "SUB",
+      0,
+      "tm_L0_1_twice1",
+      "tm_L0_1_restore"
+    ],
+    "tm_L0_1_twice1": [
+      "ADD",
+      2,
+      "tm_L0_1_twice2"
+    ],
+    "tm_L0_1_twice2": [
+      "ADD",
+      2,
+      "tm_L0_1_push"
+    ],
+    "tm_L0_1_restore": [
+      "SUB",
+      2,
+      "tm_L0_1_restore_add",
+      "tm_M1_pop0"
+    ],
+    "tm_L0_1_restore_add": [
+      "ADD",
+      0,
+      "tm_L0_1_restore"
+    ],
+    "tm_L1_pop0": [
+      "SUB",
+      1,
+      "tm_L1_pop1",
+      "tm_L1_0_back"
+    ],
+    "tm_L1_pop1": [
+      "SUB",
+      1,
+      "tm_L1_pair",
+      "tm_L1_1_back"
+    ],
+    "tm_L1_pair": [
+      "ADD",
+      2,
+      "tm_L1_pop0"
+    ],
+    "tm_L1_0_back": [
+      "SUB",
+      2,
+      "tm_L1_0_back_add",
+      "tm_L1_0_push"
+    ],
+    "tm_L1_0_back_add": [
+      "ADD",
+      1,
+      "tm_L1_0_back"
+    ],
+    "tm_L1_0_push": [
+      "SUB",
+      0,
+      "tm_L1_0_twice1",
+      "tm_L1_0_restore"
+    ],
+    "tm_L1_0_twice1": [
+      "ADD",
+      2,
+      "tm_L1_0_twice2"
+    ],
+    "tm_L1_0_twice2": [
+      "ADD",
+      2,
+      "tm_L1_0_push"
+    ],
+    "tm_L1_0_restore": [
+      "SUB",
+      2,
+      "tm_L1_0_restore_add",
+      "tm_L1_0_write"
+    ],
+    "tm_L1_0_restore_add": [
+      "ADD",
+      0,
+      "tm_L1_0_restore"
+    ],
+    "tm_L1_0_write": [
+      "ADD",
+      0,
+      "tm_L0_pop0"
+    ],
+    "tm_L1_1_back": [
+      "SUB",
+      2,
+      "tm_L1_1_back_add",
+      "tm_L1_1_push"
+    ],
+    "tm_L1_1_back_add": [
+      "ADD",
+      1,
+      "tm_L1_1_back"
+    ],
+    "tm_L1_1_push": [
+      "SUB",
+      0,
+      "tm_L1_1_twice1",
+      "tm_L1_1_restore"
+    ],
+    "tm_L1_1_twice1": [
+      "ADD",
+      2,
+      "tm_L1_1_twice2"
+    ],
+    "tm_L1_1_twice2": [
+      "ADD",
+      2,
+      "tm_L1_1_push"
+    ],
+    "tm_L1_1_restore": [
+      "SUB",
+      2,
+      "tm_L1_1_restore_add",
+      "tm_L1_1_write"
+    ],
+    "tm_L1_1_restore_add": [
+      "ADD",
+      0,
+      "tm_L1_1_restore"
+    ],
+    "tm_L1_1_write": [
+      "ADD",
+      0,
+      "tm_L1_pop0"
+    ],
+    "tm_M0_pop0": [
+      "SUB",
+      0,
+      "tm_M0_pop1",
+      "tm_M0_0_back"
+    ],
+    "tm_M0_pop1": [
+      "SUB",
+      0,
+      "tm_M0_pair",
+      "tm_M0_1_back"
+    ],
+    "tm_M0_pair": [
+      "ADD",
+      2,
+      "tm_M0_pop0"
+    ],
+    "tm_M0_0_back": [
+      "SUB",
+      2,
+      "tm_M0_0_back_add",
+      "tm_M0_0_push"
+    ],
+    "tm_M0_0_back_add": [
+      "ADD",
+      0,
+      "tm_M0_0_back"
+    ],
+    "tm_M0_0_push": [
+      "SUB",
+      1,
+      "tm_M0_0_twice1",
+      "tm_M0_0_restore"
+    ],
+    "tm_M0_0_twice1": [
+      "ADD",
+      2,
+      "tm_M0_0_twice2"
+    ],
+    "tm_M0_0_twice2": [
+      "ADD",
+      2,
+      "tm_M0_0_push"
+    ],
+    "tm_M0_0_restore": [
+      "SUB",
+      2,
+      "tm_M0_0_restore_add",
+      "tm_B0_pop0"
+    ],
+    "tm_M0_0_restore_add": [
+      "ADD",
+      1,
+      "tm_M0_0_restore"
+    ],
+    "tm_M0_1_back": [
+      "SUB",
+      2,
+      "tm_M0_1_back_add",
+      "tm_M0_1_push"
+    ],
+    "tm_M0_1_back_add": [
+      "ADD",
+      0,
+      "tm_M0_1_back"
+    ],
+    "tm_M0_1_push": [
+      "SUB",
+      1,
+      "tm_M0_1_twice1",
+      "tm_M0_1_restore"
+    ],
+    "tm_M0_1_twice1": [
+      "ADD",
+      2,
+      "tm_M0_1_twice2"
+    ],
+    "tm_M0_1_twice2": [
+      "ADD",
+      2,
+      "tm_M0_1_push"
+    ],
+    "tm_M0_1_restore": [
+      "SUB",
+      2,
+      "tm_M0_1_restore_add",
+      "tm_B1_pop0"
+    ],
+    "tm_M0_1_restore_add": [
+      "ADD",
+      1,
+      "tm_M0_1_restore"
+    ],
+    "tm_M1_pop0": [
+      "SUB",
+      1,
+      "tm_M1_pop1",
+      "tm_M1_0_back"
+    ],
+    "tm_M1_pop1": [
+      "SUB",
+      1,
+      "tm_M1_pair",
+      "tm_M1_1_back"
+    ],
+    "tm_M1_pair": [
+      "ADD",
+      2,
+      "tm_M1_pop0"
+    ],
+    "tm_M1_0_back": [
+      "SUB",
+      2,
+      "tm_M1_0_back_add",
+      "tm_M1_0_push"
+    ],
+    "tm_M1_0_back_add": [
+      "ADD",
+      1,
+      "tm_M1_0_back"
+    ],
+    "tm_M1_0_push": [
+      "SUB",
+      0,
+      "tm_M1_0_twice1",
+      "tm_M1_0_restore"
+    ],
+    "tm_M1_0_twice1": [
+      "ADD",
+      2,
+      "tm_M1_0_twice2"
+    ],
+    "tm_M1_0_twice2": [
+      "ADD",
+      2,
+      "tm_M1_0_push"
+    ],
+    "tm_M1_0_restore": [
+      "SUB",
+      2,
+      "tm_M1_0_restore_add",
+      "tm_M1_0_write"
+    ],
+    "tm_M1_0_restore_add": [
+      "ADD",
+      0,
+      "tm_M1_0_restore"
+    ],
+    "tm_M1_0_write": [
+      "ADD",
+      0,
+      "tm_L0_pop0"
+    ],
+    "tm_M1_1_back": [
+      "SUB",
+      2,
+      "tm_M1_1_back_add",
+      "tm_M1_1_push"
+    ],
+    "tm_M1_1_back_add": [
+      "ADD",
+      1,
+      "tm_M1_1_back"
+    ],
+    "tm_M1_1_push": [
+      "SUB",
+      0,
+      "tm_M1_1_twice1",
+      "tm_M1_1_restore"
+    ],
+    "tm_M1_1_twice1": [
+      "ADD",
+      2,
+      "tm_M1_1_twice2"
+    ],
+    "tm_M1_1_twice2": [
+      "ADD",
+      2,
+      "tm_M1_1_push"
+    ],
+    "tm_M1_1_restore": [
+      "SUB",
+      2,
+      "tm_M1_1_restore_add",
+      "tm_M1_1_write"
+    ],
+    "tm_M1_1_restore_add": [
+      "ADD",
+      0,
+      "tm_M1_1_restore"
+    ],
+    "tm_M1_1_write": [
+      "ADD",
+      0,
+      "tm_L1_pop0"
+    ],
+    "tm_N0_pop0": [
+      "SUB",
+      0,
+      "tm_N0_pop1",
+      "tm_N0_0_back"
+    ],
+    "tm_N0_pop1": [
+      "SUB",
+      0,
+      "tm_N0_pair",
+      "tm_N0_1_back"
+    ],
+    "tm_N0_pair": [
+      "ADD",
+      2,
+      "tm_N0_pop0"
+    ],
+    "tm_N0_0_back": [
+      "SUB",
+      2,
+      "tm_N0_0_back_add",
+      "tm_N0_0_push"
+    ],
+    "tm_N0_0_back_add": [
+      "ADD",
+      0,
+      "tm_N0_0_back"
+    ],
+    "tm_N0_0_push": [
+      "SUB",
+      1,
+      "tm_N0_0_twice1",
+      "tm_N0_0_restore"
+    ],
+    "tm_N0_0_twice1": [
+      "ADD",
+      2,
+      "tm_N0_0_twice2"
+    ],
+    "tm_N0_0_twice2": [
+      "ADD",
+      2,
+      "tm_N0_0_push"
+    ],
+    "tm_N0_0_restore": [
+      "SUB",
+      2,
+      "tm_N0_0_restore_add",
+      "tm_C0_pop0"
+    ],
+    "tm_N0_0_restore_add": [
+      "ADD",
+      1,
+      "tm_N0_0_restore"
+    ],
+    "tm_N0_1_back": [
+      "SUB",
+      2,
+      "tm_N0_1_back_add",
+      "tm_N0_1_push"
+    ],
+    "tm_N0_1_back_add": [
+      "ADD",
+      0,
+      "tm_N0_1_back"
+    ],
+    "tm_N0_1_push": [
+      "SUB",
+      1,
+      "tm_N0_1_twice1",
+      "tm_N0_1_restore"
+    ],
+    "tm_N0_1_twice1": [
+      "ADD",
+      2,
+      "tm_N0_1_twice2"
+    ],
+    "tm_N0_1_twice2": [
+      "ADD",
+      2,
+      "tm_N0_1_push"
+    ],
+    "tm_N0_1_restore": [
+      "SUB",
+      2,
+      "tm_N0_1_restore_add",
+      "tm_C1_pop0"
+    ],
+    "tm_N0_1_restore_add": [
+      "ADD",
+      1,
+      "tm_N0_1_restore"
+    ],
+    "tm_N1_pop0": [
+      "SUB",
+      1,
+      "tm_N1_pop1",
+      "tm_N1_0_back"
+    ],
+    "tm_N1_pop1": [
+      "SUB",
+      1,
+      "tm_N1_pair",
+      "tm_N1_1_back"
+    ],
+    "tm_N1_pair": [
+      "ADD",
+      2,
+      "tm_N1_pop0"
+    ],
+    "tm_N1_0_back": [
+      "SUB",
+      2,
+      "tm_N1_0_back_add",
+      "tm_N1_0_push"
+    ],
+    "tm_N1_0_back_add": [
+      "ADD",
+      1,
+      "tm_N1_0_back"
+    ],
+    "tm_N1_0_push": [
+      "SUB",
+      0,
+      "tm_N1_0_twice1",
+      "tm_N1_0_restore"
+    ],
+    "tm_N1_0_twice1": [
+      "ADD",
+      2,
+      "tm_N1_0_twice2"
+    ],
+    "tm_N1_0_twice2": [
+      "ADD",
+      2,
+      "tm_N1_0_push"
+    ],
+    "tm_N1_0_restore": [
+      "SUB",
+      2,
+      "tm_N1_0_restore_add",
+      "tm_O0_pop0"
+    ],
+    "tm_N1_0_restore_add": [
+      "ADD",
+      0,
+      "tm_N1_0_restore"
+    ],
+    "tm_N1_1_back": [
+      "SUB",
+      2,
+      "tm_N1_1_back_add",
+      "tm_N1_1_push"
+    ],
+    "tm_N1_1_back_add": [
+      "ADD",
+      1,
+      "tm_N1_1_back"
+    ],
+    "tm_N1_1_push": [
+      "SUB",
+      0,
+      "tm_N1_1_twice1",
+      "tm_N1_1_restore"
+    ],
+    "tm_N1_1_twice1": [
+      "ADD",
+      2,
+      "tm_N1_1_twice2"
+    ],
+    "tm_N1_1_twice2": [
+      "ADD",
+      2,
+      "tm_N1_1_push"
+    ],
+    "tm_N1_1_restore": [
+      "SUB",
+      2,
+      "tm_N1_1_restore_add",
+      "tm_O1_pop0"
+    ],
+    "tm_N1_1_restore_add": [
+      "ADD",
+      0,
+      "tm_N1_1_restore"
+    ],
+    "tm_O0_pop0": [
+      "SUB",
+      1,
+      "tm_O0_pop1",
+      "tm_O0_0_back"
+    ],
+    "tm_O0_pop1": [
+      "SUB",
+      1,
+      "tm_O0_pair",
+      "tm_O0_1_back"
+    ],
+    "tm_O0_pair": [
+      "ADD",
+      2,
+      "tm_O0_pop0"
+    ],
+    "tm_O0_0_back": [
+      "SUB",
+      2,
+      "tm_O0_0_back_add",
+      "tm_O0_0_push"
+    ],
+    "tm_O0_0_back_add": [
+      "ADD",
+      1,
+      "tm_O0_0_back"
+    ],
+    "tm_O0_0_push": [
+      "SUB",
+      0,
+      "tm_O0_0_twice1",
+      "tm_O0_0_restore"
+    ],
+    "tm_O0_0_twice1": [
+      "ADD",
+      2,
+      "tm_O0_0_twice2"
+    ],
+    "tm_O0_0_twice2": [
+      "ADD",
+      2,
+      "tm_O0_0_push"
+    ],
+    "tm_O0_0_restore": [
+      "SUB",
+      2,
+      "tm_O0_0_restore_add",
+      "tm_N0_pop0"
+    ],
+    "tm_O0_0_restore_add": [
+      "ADD",
+      0,
+      "tm_O0_0_restore"
+    ],
+    "tm_O0_1_back": [
+      "SUB",
+      2,
+      "tm_O0_1_back_add",
+      "tm_O0_1_push"
+    ],
+    "tm_O0_1_back_add": [
+      "ADD",
+      1,
+      "tm_O0_1_back"
+    ],
+    "tm_O0_1_push": [
+      "SUB",
+      0,
+      "tm_O0_1_twice1",
+      "tm_O0_1_restore"
+    ],
+    "tm_O0_1_twice1": [
+      "ADD",
+      2,
+      "tm_O0_1_twice2"
+    ],
+    "tm_O0_1_twice2": [
+      "ADD",
+      2,
+      "tm_O0_1_push"
+    ],
+    "tm_O0_1_restore": [
+      "SUB",
+      2,
+      "tm_O0_1_restore_add",
+      "tm_N1_pop0"
+    ],
+    "tm_O0_1_restore_add": [
+      "ADD",
+      0,
+      "tm_O0_1_restore"
+    ],
+    "tm_O1_pop0": [
+      "SUB",
+      1,
+      "tm_O1_pop1",
+      "tm_O1_0_back"
+    ],
+    "tm_O1_pop1": [
+      "SUB",
+      1,
+      "tm_O1_pair",
+      "tm_O1_1_back"
+    ],
+    "tm_O1_pair": [
+      "ADD",
+      2,
+      "tm_O1_pop0"
+    ],
+    "tm_O1_0_back": [
+      "SUB",
+      2,
+      "tm_O1_0_back_add",
+      "tm_O1_0_push"
+    ],
+    "tm_O1_0_back_add": [
+      "ADD",
+      1,
+      "tm_O1_0_back"
+    ],
+    "tm_O1_0_push": [
+      "SUB",
+      0,
+      "tm_O1_0_twice1",
+      "tm_O1_0_restore"
+    ],
+    "tm_O1_0_twice1": [
+      "ADD",
+      2,
+      "tm_O1_0_twice2"
+    ],
+    "tm_O1_0_twice2": [
+      "ADD",
+      2,
+      "tm_O1_0_push"
+    ],
+    "tm_O1_0_restore": [
+      "SUB",
+      2,
+      "tm_O1_0_restore_add",
+      "tm_O1_0_write"
+    ],
+    "tm_O1_0_restore_add": [
+      "ADD",
+      0,
+      "tm_O1_0_restore"
+    ],
+    "tm_O1_0_write": [
+      "ADD",
+      0,
+      "tm_N0_pop0"
+    ],
+    "tm_O1_1_back": [
+      "SUB",
+      2,
+      "tm_O1_1_back_add",
+      "tm_O1_1_push"
+    ],
+    "tm_O1_1_back_add": [
+      "ADD",
+      1,
+      "tm_O1_1_back"
+    ],
+    "tm_O1_1_push": [
+      "SUB",
+      0,
+      "tm_O1_1_twice1",
+      "tm_O1_1_restore"
+    ],
+    "tm_O1_1_twice1": [
+      "ADD",
+      2,
+      "tm_O1_1_twice2"
+    ],
+    "tm_O1_1_twice2": [
+      "ADD",
+      2,
+      "tm_O1_1_push"
+    ],
+    "tm_O1_1_restore": [
+      "SUB",
+      2,
+      "tm_O1_1_restore_add",
+      "tm_O1_1_write"
+    ],
+    "tm_O1_1_restore_add": [
+      "ADD",
+      0,
+      "tm_O1_1_restore"
+    ],
+    "tm_O1_1_write": [
+      "ADD",
+      0,
+      "tm_N1_pop0"
+    ]
+  }
+}

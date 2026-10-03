@@ -1,0 +1,212 @@
+{
+  "status": "passed",
+  "independence": "Reads JSON and standard-library modules only; never imports or executes producer code. All outputs stay in this audit directory.",
+  "variants": {
+    "three-counter": {
+      "source_rows": 528,
+      "ADD": 295,
+      "SUB": 233,
+      "registers": 3,
+      "ledger": {
+        "places": 778,
+        "data_places": 238,
+        "resource_places": 5,
+        "marker_places": 233,
+        "control_places": 540,
+        "transitions": 1007,
+        "ordinary_input_arcs": 1773,
+        "ordinary_output_arcs": 1773,
+        "ordinary_arcs": 3546,
+        "reset_arcs": 3,
+        "all_arcs": 3549,
+        "max_input_weight": 1,
+        "max_output_weight": 1,
+        "max_total_incidence_transition": 4,
+        "distinct_reset_places": [
+          "L",
+          "R",
+          "T"
+        ],
+        "transition_kinds": {
+          "pump": 1,
+          "enter": 1,
+          "SUB_POS": 233,
+          "ZERO_DISPATCH": 233,
+          "ZERO_RETURN": 233,
+          "INC": 295,
+          "CLEAN": 3,
+          "ADVANCE": 3,
+          "drain": 1,
+          "finish": 1,
+          "SHARED_RESET": 3
+        }
+      },
+      "linear_invariants_checked_per_transition": 5,
+      "trace_certificate_counts": {
+        "controller_only_projection": {
+          "witness_coefficient": 240673,
+          "squares_N_coefficient": 240,
+          "squares_constant": 239,
+          "products_coefficient": 1007
+        },
+        "unprojected": {
+          "witness_coefficient": 784453,
+          "squares_N_coefficient": 779,
+          "squares_constant": 778,
+          "products_coefficient": 1007
+        }
+      },
+      "adversarial_local_phases": {
+        "source_zero_labels_checked": 233,
+        "counter_values_tested": [
+          0,
+          1,
+          7
+        ],
+        "macro_firings": 2097,
+        "premature_or_repeated_returns_disabled": 224817,
+        "mismatched_returns_disabled": 60552
+      },
+      "replay": {
+        "source_steps": 328,
+        "source_zero_steps": 29,
+        "peak": 25,
+        "final_mass": 11,
+        "minimum_fuel": 19,
+        "lengths_replayed": [
+          446,
+          448,
+          450
+        ],
+        "minimum_trace_fixture_exact": true,
+        "insufficient_fuel": {
+          "blocked": "tm_B0_0_write:inc",
+          "steps": 172,
+          "marking": {
+            "budget": 24,
+            "L": 24,
+            "q:tm_B0_0_write": 1
+          }
+        },
+        "premature_cleanup_DONE_marking": {
+          "budget": 11,
+          "R": 11,
+          "q:DONE": 1
+        },
+        "premature_finish_DONE_marking": {
+          "budget": 25,
+          "reserve": 25,
+          "q:DONE": 1
+        },
+        "all_step_stuttering_projection_checked": true,
+        "dishonest_reset_loss": 6,
+        "wrong_reset_descendant_states": 15,
+        "wrong_reset_descendant_edges": 14
+      },
+      "canonical_schema": {
+        "h1_structure_pass": true,
+        "witnesses_per_source_step": 2813,
+        "squares_per_source_step": 6,
+        "square_constant": 2,
+        "products_per_source_step": 762,
+        "full_horizon": 328,
+        "full_witness_coordinates": 922664,
+        "sparse_nonzero_coordinates": 1187,
+        "affine_squares_evaluated": 1970,
+        "quadratic_products_evaluated": 249936,
+        "polynomial_value": 0,
+        "source_zero_count": 29,
+        "duration_minus_or_plus_one_rejected": true
+      }
+    },
+    "two-counter": {
+      "source_rows": 8408,
+      "ADD": 6068,
+      "SUB": 2340,
+      "registers": 2,
+      "ledger": {
+        "places": 10761,
+        "data_places": 2344,
+        "resource_places": 4,
+        "marker_places": 2340,
+        "control_places": 8417,
+        "transitions": 13098,
+        "ordinary_input_arcs": 23850,
+        "ordinary_output_arcs": 23850,
+        "ordinary_arcs": 47700,
+        "reset_arcs": 2,
+        "all_arcs": 47702,
+        "max_input_weight": 1,
+        "max_output_weight": 1,
+        "max_total_incidence_transition": 4,
+        "distinct_reset_places": [
+          "A",
+          "B"
+        ],
+        "transition_kinds": {
+          "pump": 1,
+          "enter": 1,
+          "SUB_POS": 2340,
+          "ZERO_DISPATCH": 2340,
+          "ZERO_RETURN": 2340,
+          "INC": 6068,
+          "CLEAN": 2,
+          "ADVANCE": 2,
+          "drain": 1,
+          "finish": 1,
+          "SHARED_RESET": 2
+        }
+      },
+      "linear_invariants_checked_per_transition": 4,
+      "trace_certificate_counts": {
+        "controller_only_projection": {
+          "witness_coefficient": 30714810,
+          "squares_N_coefficient": 2346,
+          "squares_constant": 2345,
+          "products_coefficient": 13098
+        },
+        "unprojected": {
+          "witness_coefficient": 140960676,
+          "squares_N_coefficient": 10762,
+          "squares_constant": 10761,
+          "products_coefficient": 13098
+        }
+      },
+      "adversarial_local_phases": {
+        "source_zero_labels_checked": 2340,
+        "counter_values_tested": [
+          0,
+          1,
+          7
+        ],
+        "macro_firings": 21060,
+        "premature_or_repeated_returns_disabled": 24647220,
+        "mismatched_returns_disabled": 8206380
+      },
+      "canonical_schema": {
+        "h1_structure_pass": true,
+        "witnesses_per_source_step": 29906,
+        "squares_per_source_step": 5,
+        "square_constant": 2,
+        "products_per_source_step": 10749
+      }
+    }
+  },
+  "input_sha256": {
+    "reset_net.json": "3fd8f9dcf86135f7fdf41bfa77959942e7ece95662c9cfedc27ac1409e5d3780",
+    "shared-reset-arcs/three-counter/reset_net.json": "bf3b174fa7ff82c173698cf03f16e5d816f9f24da2387ab1e79271997ab7446f",
+    "source/virtual3.json": "24c771db50dc621068e470227802c2710a4531ce2e7ad3703a5cdb6b0543bbcf",
+    "shared-reset-arcs/three-counter/net_ledger.json": "7d4e99e6fb2bc8df431da8711574e56b708afc1ebbf2278cd734c3ee2ec09fcb",
+    "shared-reset-arcs/three-counter/accepting_reset_trace_N446.json": "251829e61fb2b19d049db155ec1c1c0a45252bbe20b24ec55aaf1be403531139",
+    "canonical_peak_schema_h1.json": "06daa82b8619dcdd6ccc41ebaae7d013adb82bdabdac892940b414c086e8c25b",
+    "shared-reset-arcs/three-counter/canonical_peak_schema_h1.json": "470dc152f35b94c7d69ef543e56b3807058b698b6dadf5264b3719c984c80a29",
+    "shared-reset-arcs/three-counter/accepting_peak_witness_N446.json": "c530461a3fdce0788eb919cf312d87500d9ac97be1201bf0885817c524429e04",
+    "accepting_peak_witness.json": "e033c42405bd6d6c4529f789b48b6d7355b2a986b24fb9966fd8e07b5895bcef",
+    "two-counter/reset_net.json": "7bd1ae386bdc8f8cb05541b7b39fd08a926a0cdb807b237f3070ffea11aefaf7",
+    "shared-reset-arcs/two-counter/reset_net.json": "d449abb872042fd88b65ab4f5c5ce660d5528a7b306032a9cbf2e6c182b7b2e9",
+    "two-counter/source/literal2.json": "85e16b44828f2f3d4ad6d0805dcc9e9922893a6d286874f2018d6a33af864b00",
+    "shared-reset-arcs/two-counter/net_ledger.json": "d644b13fae4ed396625603b3105d847bba0d1ff5d490f228264dd6d02446f873",
+    "two-counter/canonical_peak_schema_h1.json": "1cc266b0597e690354088a451394be21927bbb0c5b828bbaca5180c8bdb63a73",
+    "shared-reset-arcs/two-counter/canonical_peak_schema_h1.json": "57d791786532ed87e32e29f9fb5394c3774c0ebd7c2c836c33ae8e1b8bcb6b1e"
+  }
+}
