@@ -1,0 +1,1733 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,listings,fancyhdr}
+\usepackage[unicode,pdfencoding=auto,psdextra]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Smooth Everywhere, Universal on the Integers},
+ pdfauthor={Research prepared for Vladimir Reshetnikov with ChatGPT},
+ pdfsubject={Canonical quartic Diophantine certificates, arithmetic smoothness, and local solubility}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Smooth Everywhere, Universal on the Integers}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\A}{\mathbb A}
+\newcommand{\Fp}{\mathbb F_p}
+\newcommand{\Zp}{\mathbb Z_p}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\zeros}[2]{Z_{#1}(#2)}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\height}{\operatorname{ht}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ann}{\operatorname{Ann}}
+\newcommand{\guard}{g}
+\newcommand{\source}{\mathcal S}
+\newcommand{\variety}{\mathcal X}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{black!25},showstringspaces=false,
+ xleftmargin=5pt,xrightmargin=5pt,aboveskip=8pt,belowskip=8pt}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{16mm}
+{\Large\color{MidnightBlue} PROVEIT\quad /\quad RESEARCH MANUSCRIPT\par}
+\vspace{12mm}
+{\Huge\bfseries Smooth Everywhere,\\[4pt]
+Universal on the Integers\par}
+\vspace{7mm}
+{\Large Canonical quartic certificates with five extra variables,\\
+no local obstruction, and explicit Jacobian identities\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\normalsize Developed with ChatGPT\par}
+{\normalsize 2 October 2026\par}
+\vspace{10mm}
+\noindent\rule{\textwidth}{0.5pt}
+\begin{abstract}
+We give a uniform arithmetic-geometric finalizer for Diophantine computation.
+Given any finite system of quadratic integer equations in $n$ variables, it
+constructs one polynomial of exact degree four in $n+5$ variables. Its natural
+zeros are in explicit bijection with the original natural zeros, and its integer
+zeros are exactly two sign-related copies of the original integer zeros.
+Nevertheless, its affine scheme is smooth over $\Z$, every geometric fibre is
+integral, a nonnegative dyadic rational point can always be constructed, and
+there are integral $p$-adic points for every prime. Rational points are dense in
+the real locus, which has exactly two path components. A degree-bounded
+integral B\'ezout identity certifies smoothness without a genericity search.
+
+The construction yields a sharply specified undecidable class of smooth,
+everywhere locally soluble quartic equations. It also preserves canonical
+bounded-execution certificates without increasing witness multiplicity. We
+supply a counter-machine frontend, a complete worked export, a sharp
+weighted-guard obstruction in this architecture, and
+21,128 successful symbolic and finite checks. General undecidability for
+smooth varieties is known; the contribution proposed here is the explicit
+normal form and its combined guarantees, not a claim of priority for that
+general phenomenon.
+\end{abstract}
+\vfill
+\noindent\textbf{Status.} Ordinary mathematical proofs and executable exact checks.
+Not a Lean/Coq formalization; not peer reviewed. No finite-fold MRDP theorem,
+no solution to Hilbert's tenth problem over $\Q$, and no improvement to the
+repository's universal operation-count records is claimed.
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{The problem: preserve computation, simplify the geometry}
+
+A computational certificate normally begins as a list of equations. States,
+registers, scheduling choices, memory contents, and auxiliary multiplication
+gates are constrained by polynomial residuals. Combining those residuals by
+squaring is convenient over the integers, but it destroys geometric regularity:
+if
+\[
+ P(x)=\sum_{i=1}^m f_i(x)^2,
+\]
+then every common zero of the $f_i$ is a critical point of $P$. This is not an
+incidental implementation defect. The ordinary sum-of-squares finalizer makes
+precisely the computationally meaningful points singular.
+
+The question considered here is more demanding than whether computation has
+some Diophantine representation:
+\begin{quote}
+Can a certificate be replaced by one low-degree equation, without changing
+its natural-number witnesses, while making the affine model smooth at every
+prime and making all local and rational existence tests automatically succeed?
+\end{quote}
+The answer is affirmative. The resulting separation is between lattice
+arithmetic and geometry: smoothness, rational points, real connectedness, and
+local integral points can all be harmless while integer solvability still
+carries an arbitrary computably enumerable problem.
+
+\subsection{Relation to the repository}
+
+The ProveIt repository already has a substantial collection of witness-faithful
+Diophantine frontends. The reviewed canonical-certificate collection includes
+bounded causal traces, queue and memory histories, dynamic heaps, interaction
+nets, and stabilization certificates. Its status document explicitly separates
+ordinary proofs, finite Python checks, and unproved uniform finite-fold claims
+\cite{repo,canonical,status}. This manuscript adds a different layer: a
+\emph{finalizer} that can follow any quadratic frontend, irrespective of its
+underlying substrate.
+
+The distinction matters. Replacing a scheduler, changing a memory encoding,
+or quotienting commuting histories is a semantic task. Our finalizer neither
+performs nor assumes such a quotient. It takes whatever witness set has already
+been justified and preserves it exactly over $\N$. Thus a unique certificate
+remains unique, a family indexed by trace classes retains those classes, and
+an existing noncanonical representation remains noncanonical.
+
+The targeted repository comparison used the canonical-certificate status file
+at commit
+\begin{center}\small\ttfamily a845ab5d0f4591294ef3c2d92feaeb5825a8d543.\end{center}
+Other overview files were read on the live branch. This was not an exhaustive
+repository audit, a build, or a verification of every theorem mentioned in
+its documentation.
+
+\subsection{Known antecedent and the precise novelty boundary}
+
+Poonen proved that integer solvability can be preserved while replacing an
+equation by one defining a smooth geometrically integral affine variety over
+$\Q$. His Lemma~4.1 uses a positive multiple of $y^2-y$ added to a square,
+with a suitable coefficient chosen effectively. He also obtained
+undecidability under a smooth-projective-closure condition
+\cite[Lemma 4.1 and Corollary 4.3]{poonen}.
+
+Consequently, \emph{smoothness does not make Hilbert's tenth problem decidable}
+is not a new claim. The proposed contribution here is the simultaneous,
+coefficient-independent package: five additional variables, a quartic after
+quadratic lifting, an exact natural-fibre bijection, smoothness over the entire
+integer base, an integral Jacobian certificate of bounded degree, and explicit
+dyadic and local points. A comprehensive priority search for this exact
+combination was not completed. The construction is presented as a research
+result with proofs, not as a certified world-first theorem.
+
+\subsection{Reading map}
+
+Sections~\ref{sec:main}--\ref{sec:integrality} prove the algebraic finalizer.
+Sections~\ref{sec:local}--\ref{sec:real} prove the arithmetic and real-geometric
+claims. Section~\ref{sec:guards} explains why three weighted guards are the
+smallest successful choice in the specified weight-four architecture.
+Sections~\ref{sec:counter}--\ref{sec:undecidable} connect the finalizer to
+computation, carefully separating external time bounds from fixed-arity
+unbounded representations. The implementation and its limits are recorded
+in Section~\ref{sec:implementation}.
+
+\section{Conventions and the quadratic interface}\label{sec:interface}
+
+Throughout, $\N=\{0,1,2,\ldots\}$. A polynomial with integer coefficients is
+evaluated in $\Z$ even when its variables range over $\N$. Negative
+coefficients in a residual do not change the domain of its witnesses.
+For a finite system $\source=(f_1,\ldots,f_m)$, put
+\[
+ \zeros{D}{\source}=
+ \{a\in D^n:f_i(a)=0\text{ for every }i\},
+ \qquad D\in\{\N,\Z,\Q,\R\}.
+\]
+Empty systems and zero residuals are allowed. Parameters are coefficients
+unless explicitly declared to be additional variables.
+
+\begin{definition}[Quadratic interface]
+A quadratic certificate consists of named variables $x=(x_1,\ldots,x_n)$,
+a finite list of polynomials $f_i\in\Z[x]$ of total degree at most two,
+and a separately justified interpretation of its zeros over a stated domain.
+The interpretation is not part of the algebraic data.
+\end{definition}
+
+\subsection{Functional arithmetic-circuit lifting}
+
+\begin{lemma}[Quadratic lifting]\label{lem:lifting}
+A finite system of integer polynomial equations can effectively be replaced
+by a quadratic system whose projection onto the original variables is a
+bijection of integer zero sets. Over $\N$, the same statement holds using
+nonnegative arithmetic circuits for the positive and negative parts of each
+polynomial.
+\end{lemma}
+\begin{proof}
+Over $\Z$, evaluate each polynomial by a finite straight-line circuit. For an
+addition, subtraction, or multiplication gate introduce a fresh variable $w$
+and the corresponding equation
+\[
+ w-a-b=0,\qquad w-a+b=0,\qquad w-ab=0.
+\]
+Constants are imposed by $w-c=0$, and output variables are set to zero.
+Every source tuple has exactly one gate assignment, by induction on the
+acyclic circuit order. The residuals have degree at most two, and the outputs
+vanish exactly when the original equations hold.
+
+Over $\N$, first write $f=f^+-f^-$ with nonnegative integer coefficients.
+Evaluate $f^+$ and $f^-$ using addition and multiplication only, and equate
+the two output variables. All gate values are then natural, and the same
+induction proves uniqueness. A circuit using arbitrary subtraction is not
+silently treated as a natural circuit.
+\end{proof}
+
+This lemma preserves \emph{gate} uniqueness. It does not make the witnesses
+of a pre-existing Diophantine representation unique. For example, a
+representation of halting may have many auxiliary solutions before any
+circuit gates are introduced. That multiplicity survives lifting.
+
+\subsection{Affine smoothness and degree conventions}
+
+Our geometric object is the affine scheme
+\[
+ \variety=\Spec\bigl(\Z[x,t,u,z_1,z_2,z_3]/(F)\bigr).
+\]
+Smoothness over $\Z$ means that its structure morphism to $\Spec\Z$ is
+smooth, not merely that its real locus has no singularities. A geometric
+fibre is obtained by passing to an algebraic closure of a residue field of
+$\Z$, including the generic characteristic-zero fibre.
+
+We use the standard hypersurface criterion: if the ideal generated by $F$
+and all its partial derivatives is the whole polynomial ring, the
+derivative-open subsets of the hypersurface are standard smooth and cover
+it \cite{stacks}. In particular, an integral identity expressing $1$ in that
+ideal certifies relative smoothness in every characteristic.
+
+Degree four will always mean degree in the \emph{witness variables of a
+specialized equation}. When input parameters become coordinates of a single
+master polynomial, their contribution to total degree must be counted again;
+Section~\ref{sec:parameter-degree} does so explicitly.
+
+\section{The five-variable finalizer}\label{sec:main}
+
+Write each source residual as
+\[
+ f_i(x)=\sum_{|\alpha|\le2}c_{i,\alpha}x^\alpha.
+\]
+Its homogeneous quadratic lift is
+\begin{equation}\label{eq:q}
+ q_i(x,t)=\sum_{|\alpha|\le2}c_{i,\alpha}x^\alpha t^{2-|\alpha|}.
+\end{equation}
+The expression $t^2 f_i(x/t)$ is a useful mnemonic for $t\ne0$; the
+polynomial definition \eqref{eq:q}, valid also at $t=0$, is authoritative.
+Set
+\begin{equation}\label{eq:ingredients}
+ H(x,t)=\sum_{i=1}^m q_i(x,t)^2,\qquad
+ R=tu-1,\qquad \guard(z)=2z^2-z.
+\end{equation}
+Put $\lambda=(\lambda_1,\lambda_2,\lambda_3)=(1,1,2)$. The finalizer is
+\begin{equation}\boxed{\displaystyle
+ F(x,t,u,z)=H(x,t)+(tu-1)^2+
+             \guard(z_1)+\guard(z_2)+2\guard(z_3).}\label{eq:F}
+\end{equation}
+Here $z=(z_1,z_2,z_3)$, and all five new variables are distinct from the
+source variables.
+
+\begin{theorem}[Canonical smooth quartic finalizer]\label{thm:main}
+For every quadratic interface in $n$ variables, the polynomial
+\eqref{eq:F} has the following properties.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item Its coefficients are integers and its total degree is exactly four.
+\item The map $a\mapsto(a,1,1,0,0,0)$ is a bijection from
+$\zeros{\N}{\source}$ to $\zeros{\N}{F}$.
+\item The map
+\[
+ (a,\varepsilon)\longmapsto
+ (\varepsilon a,\varepsilon,\varepsilon,0,0,0)
+\]
+is a bijection from $\zeros{\Z}{\source}\times\{1,-1\}$ to
+$\zeros{\Z}{F}$.
+\item The affine scheme $\variety$ is smooth over $\Z$ of relative dimension
+$n+4$, and every geometric fibre is integral.
+\item An explicit identity $AF+\sum_v B_vF_v=1$ exists with
+$\deg A\le3$ and $\deg B_v\le4$; its coefficients are given below without
+an elimination or genericity search.
+\item A point of $\variety(\Z[1/2])$ with nonnegative rational coordinates
+can always be constructed. Also $\variety(\Z_p)\ne\varnothing$ for every
+prime $p$, and $\variety(\Z/M\Z)\ne\varnothing$ for every $M\ge1$.
+\item $\variety(\Q)$ is dense in $\variety(\R)$ and is Zariski dense in
+$\variety_\Q$. The real locus has exactly two path components.
+\end{enumerate}
+\end{theorem}
+
+The theorem is proved in the next five sections. Notice how different its
+claims are: the first three are statements about an integer lattice, the
+fourth and fifth about schemes, and the last two about rational, real, and
+local points. None is being substituted for another.
+
+\begin{proposition}[Size bounds]\label{prop:size}
+If $f_i$ has $s_i$ nonzero monomials, the number of monomials of $F$ is at
+most
+\[
+ 9+\sum_{i=1}^m\binom{s_i+1}{2}.
+\]
+For the sum of absolute values of coefficients,
+\[
+ \lVert F\rVert_1\le \sum_i\lVert f_i\rVert_1^2+16.
+\]
+The construction of the expanded polynomial has polynomial bit complexity
+in the expanded quadratic input size.
+\end{proposition}
+\begin{proof}
+Homogenization preserves the number and coefficients of source monomials.
+A square of an $s_i$-term polynomial contributes at most
+$s_i(s_i+1)/2$ monomials. The unit square contributes at most three and
+the three guards contribute six. Possible coincidences only lower the
+count. The $\ell^1$ norm is submultiplicative; the unit square has norm four
+and the three weighted guards together have norm twelve. The stated expansion uses a
+quadratic number of input-term products with polynomial-length coefficients.
+\end{proof}
+
+These are expanded-polynomial bounds, not claims about the smallest arithmetic
+circuit or the repository's universal operation-count records.
+
+\section{Exact integer fibres and witness heights}\label{sec:fibres}
+
+\begin{lemma}[A one-zero integer guard]\label{lem:guard}
+For every $z\in\Z$, $\guard(z)\ge0$, with equality if and only if $z=0$.
+For every $z\in\R$,
+\begin{equation}\label{eq:guard-complete}
+ \guard(z)=2\left(z-\frac14\right)^2-\frac18.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $z\ge1$, $z(2z-1)>0$; for $z\le-1$, both factors are negative, so
+again their product is positive. The remaining integer is zero.
+Completing the square gives \eqref{eq:guard-complete}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}(i)--(iii)]
+Each $q_i$ is homogeneous of degree two, so $H$ has degree at most four.
+The monomial $t^2u^2$ has coefficient one in $F$: no term of $H$ involves
+$u$, and the guards involve neither $t$ nor $u$. Thus the degree is exactly
+four, including for the empty or identically zero source system.
+
+On an integer tuple, every summand in \eqref{eq:F} is nonnegative.
+Consequently $F=0$ forces
+\[
+ q_i(x,t)=0\ (1\le i\le m),\qquad tu=1,\qquad z_1=z_2=z_3=0.
+\]
+The units of $\Z$ are $\pm1$, so $t=u=\varepsilon$ for one
+$\varepsilon\in\{1,-1\}$. Put $a=\varepsilon x$. Homogeneity gives
+\[
+ q_i(\varepsilon a,\varepsilon)=\varepsilon^2 f_i(a)=f_i(a).
+\]
+Thus $a$ is a source zero. Conversely, every displayed lift of a source
+zero makes every summand vanish. The inverse map is
+$(x,t,u,z)\mapsto(tx,t)$, proving bijectivity and not just existence.
+
+If all coordinates are natural, $tu=1$ forces $t=u=1$. The resulting
+inverse map is simply projection onto $x$. No sign choice remains.
+\end{proof}
+
+\begin{corollary}[Exact counting and height transfer]\label{cor:height}
+Let $B\ge1$ be an integer, and count zeros whose coordinates have absolute
+value at most $B$. The number of target natural zeros is exactly the number
+of source natural zeros; the number of target integer zeros is twice the
+number of source integer zeros. For each individual lift,
+\[
+ \height(\varepsilon a,\varepsilon,\varepsilon,0^3)
+       =\max\{1,\height(a)\},\qquad
+ \height(a)=\max_i|a_i|.
+\]
+The same assertions hold fibrewise after any external parameters are fixed.
+\end{corollary}
+\begin{proof}
+The bijections just proved add only $\pm1$ and zero and change source
+coordinates only by a common sign. They therefore preserve every box of
+radius $B\ge1$ in the asserted manner.
+\end{proof}
+
+\begin{remark}[What the extra coordinates do not encode]
+The three $z$ coordinates are zero at every integer solution. They are not
+additional computational choices. The $t,u$ coordinates impose a unit
+condition, and over $\N$ that unit is uniquely one. Their geometric role
+becomes visible only away from the integer lattice, where the guards may
+be negative and $t$ may be a nonintegral unit.
+\end{remark}
+
+\section{Smoothness in every characteristic}\label{sec:smooth}
+
+There are two complementary proofs. The first explains the choice of
+constants through critical values. The second gives an integral identity
+suitable for independent symbolic checking and eventual formalization.
+
+\subsection{The critical-value mechanism}
+
+Put $Q=H+R^2$, so $F=Q+\sum_j\lambda_j\guard(z_j)$.
+
+\begin{lemma}[Only two possible critical values]\label{lem:critical}
+Over any field of characteristic different from two, every critical point
+of $Q$ has value either zero or one.
+\end{lemma}
+\begin{proof}
+Homogeneity of $H$ gives the polynomial identity
+\begin{equation}\label{eq:Euler}
+ \sum_{i=1}^n x_iQ_{x_i}+tQ_t-uQ_u=4H.
+\end{equation}
+The contributions of $R^2$ cancel between the last two terms. At a critical
+point the left side is zero, hence $H=0$. Moreover $Q_u=2tR$.
+If $t\ne0$, then $R=0$ and $Q=0$. If $t=0$, then $R=-1$ and $Q=1$.
+\end{proof}
+
+A singular point of $F=0$ in odd characteristic would satisfy
+$4z_j-1=0$ for all three guards. Their weighted values sum to $-4/8$, so
+$Q=1/2$. That contradicts Lemma~\ref{lem:critical}. In characteristic two,
+$F_{z_1}=4z_1-1=1$, which rules out singularities directly.
+
+This calculation is coefficient independent. In particular, no assumption
+about the source zero set, its dimension, or the regularity of its defining
+system is used.
+
+\subsection{An integral unit-ideal certificate}
+
+For derivatives of the full polynomial $F$, define
+\begin{equation}\label{eq:EDJ}
+ \begin{split}
+ E&=\sum_{i=1}^n x_iF_{x_i}+tF_t-uF_u=4H,\\
+ D_j&=F_{z_j}=\lambda_j(4z_j-1),\\
+ J&=8F-2E-\sum_{j=1}^3(4z_j-1)D_j=8R^2-4.
+ \end{split}
+\end{equation}
+The rightmost equalities are identities over $\Z$, not reductions on the
+zero set.
+
+\begin{proposition}[Universal Jacobian identity]\label{prop:jacobian}
+In $\Z[x,t,u,z]$,
+\begin{equation}\label{eq:four}
+ 4u(2R-1)F_u-(2R+1)J=4
+\end{equation}
+and therefore
+\begin{equation}\boxed{\displaystyle
+ z_1\bigl[4u(2R-1)F_u-(2R+1)J\bigr]-D_1=1.}\label{eq:unit}
+\end{equation}
+In particular, $1$ belongs to the ideal generated by $F$ and its partial
+derivatives.
+\end{proposition}
+\begin{proof}
+Substitute $F_u=2tR$ and $J=8R^2-4$ into the left side of
+\eqref{eq:four}, and use $tu=R+1$. It becomes
+\[
+ 8R(R+1)(2R-1)-(2R+1)(8R^2-4)=4.
+\]
+Multiplying by $z_1$ and subtracting $D_1=4z_1-1$ gives
+\eqref{eq:unit}. By \eqref{eq:EDJ}, both $E$ and $J$ are explicit
+combinations of the equation and its derivatives. Every product $(4z_j-1)D_j$ is a derivative times a polynomial, so it
+also belongs to the same ideal.
+\end{proof}
+
+For direct certificate exchange, no nested abbreviations are necessary.
+Let $F_v=\partial F/\partial v$, and set
+\begin{equation}\label{eq:coefficients}
+\begin{aligned}
+ A&=-8z_1(2R+1),\\
+ B_{x_i}&=2z_1(2R+1)x_i,&
+ B_t&=2z_1(2R+1)t,\\
+ B_u&=2z_1u(2R-3),&
+ B_{z_j}&=z_1(2R+1)(4z_j-1)-\delta_{j1}.
+\end{aligned}
+\end{equation}
+Expansion of \eqref{eq:unit} gives
+\begin{equation}\boxed{\displaystyle AF+\sum_v B_vF_v=1.}\label{eq:bezout}
+\end{equation}
+Here $\deg A\le3$ and $\deg B_v\le4$, so every summand in this certificate
+has degree at most seven. The degree bound is independent of the number of
+source equations and the size of their coefficients.
+
+\begin{proof}[Proof of smoothness in Theorem~\ref{thm:main}]
+The identity \eqref{eq:bezout} persists under every base change. On the
+hypersurface, the partial derivatives generate the unit ideal. The open
+subsets where one partial is invertible form a standard-smooth cover
+\cite{stacks}. Thus $\variety\to\Spec\Z$ is smooth. It is locally one
+smooth equation in $n+5$ variables, so its relative dimension is $n+4$.
+This argument does not infer relative smoothness merely from a picture of
+the real locus or from a finite list of prime checks.
+\end{proof}
+
+\begin{remark}[Universal coefficient families]
+The same identity works with coefficients in any commutative base ring.
+In particular, letting the source coefficients vary gives a smooth relative
+family over the coefficient-parameter scheme. This does not assert that
+there is a polynomially varying dyadic point over that entire parameter
+space; the point construction below is performed after integer
+specialization.
+\end{remark}
+
+\section{Geometric integrality and the special fibre at two}\label{sec:integrality}
+
+\begin{proposition}\label{prop:integral}
+Every geometric fibre of $\variety\to\Spec\Z$ is integral.
+In characteristic two the fibre is isomorphic to affine $(n+4)$-space.
+\end{proposition}
+\begin{proof}
+Let $k$ be an algebraically closed field of odd characteristic or
+characteristic zero. Regard $F$ as a polynomial in $z_1,z_2,z_3$ over
+$K=k(x,t,u)$. Its highest homogeneous part in the $z$ variables is
+\[
+ 2z_1^2+2z_2^2+4z_3^2,
+\]
+a quadratic form of rank three. A nontrivial factorization of this
+degree-two polynomial over $K$ would have two affine-linear factors in
+$z$. Their leading product has rank at most two, a contradiction.
+Hence $F$ is irreducible over $K$.
+
+As a polynomial in $z$ over $k[x,t,u]$, $F$ is primitive: the coefficient
+of $z_1^2$ is the nonzero constant $2$. Gauss's lemma now gives
+irreducibility in $k[x,t,u,z]$, a unique factorization domain. The
+principal ideal $(F)$ is prime, so the fibre is integral.
+
+In characteristic two, every $2z_j^2$ disappears and the coefficient of
+$z_1$ is $-1=1$. Solving uniquely for $z_1$ identifies the coordinate ring
+with a polynomial ring in the remaining $n+4$ variables. This proves both
+integrality and the stated affine-space description.
+\end{proof}
+
+There is no hidden component carrying the actual computation while another
+component supplies easy rational points. The entire geometric fibre is one
+integral variety. The integer and rational behaviours coexist on that single
+variety.
+
+The phrase ``good reduction'' in this article refers to the displayed
+\emph{affine} smooth model. It does not say that the naive projective closure
+is smooth, or that there is a smooth proper model over $\Z$.
+
+\section{Dyadic points and the complete absence of local obstructions}\label{sec:local}
+
+\subsection{An explicit point after inverting only two}
+
+Let
+\begin{equation}\label{eq:c}
+ c=\sum_{i=1}^m f_i(0)^2\in\N.
+\end{equation}
+Choose $K=2^k$ with $K^4>2c$, and set $N=K^4-2c>0$.
+Lagrange's four-square theorem supplies nonnegative integers
+$a_1,\ldots,a_4$ such that
+\begin{equation}\label{eq:four-square}
+ N=a_1^2+a_2^2+a_3^2+a_4^2.
+\end{equation}
+We use this classical theorem only for a finite integer, not as a statement
+about representing computations; it is also the standard bridge from
+natural to integer witnesses in Diophantine undecidability arguments
+\cite[Section 5]{poonen}.
+
+\begin{lemma}[An elementary universal weighted form]\label{lem:1122}
+Every nonnegative integer is of the form
+\[
+ A_1^2+A_2^2+2A_3^2+2B^2,
+ \qquad A_1,A_2,A_3,B\in\N.
+\]
+The same form represents every nonnegative rational number over $\Q$.
+\end{lemma}
+\begin{proof}
+Start from four ordinary squares. Among four integers, two have the same
+parity. Replace the squares of that pair, say $a,b$, by
+\[
+ a^2+b^2=2\left(\frac{a+b}{2}\right)^2+
+        2\left(\frac{a-b}{2}\right)^2.
+\]
+The other two squares remain unchanged, and an absolute value makes the last
+coordinate nonnegative. For $A/B\ge0$, represent the integer $AB$ and
+divide all four coordinates by $B$.
+\end{proof}
+
+\begin{theorem}[Constructive dyadic solubility]\label{thm:dyadic}
+Choose a representation
+\[
+ K^4-2c=A_1^2+A_2^2+2A_3^2+2B^2.
+\]
+Then the coordinates
+\begin{equation}\label{eq:dyadic}
+ x=0,\qquad t=\frac1K,\qquad u=K+\frac BK,\qquad
+ z_j=\frac14+\frac{A_j}{2K^2}\quad(1\le j\le3)
+\end{equation}
+define a point of $\variety(\Z[1/2])$, all of whose coordinates are
+nonnegative. If $K$ is the smallest admissible power of two, the rational
+coordinate height is $O(\sqrt{c+1})$, and its bit length is $O(\log(c+2))$.
+\end{theorem}
+\begin{proof}
+At these coordinates $R=B/K^2$ and $H=c/K^4$. Completing the weighted
+squares gives
+\[
+ \sum_{j=1}^3\lambda_j\guard(z_j)
+ =\frac{A_1^2+A_2^2+2A_3^2}{2K^4}-\frac12.
+\]
+Adding $R^2$ and $H$ yields zero by the displayed representation of
+$K^4-2c$. All denominators are powers of two. The coordinates satisfy
+$1/4\le z_j\le3/4$ and $K\le u\le2K$.
+
+For a reduced rational $a/b$ with $b>0$, use coordinate height
+$\max\{|a|,b\}$. All coordinates in \eqref{eq:dyadic} have height at most
+$4K^2$. If $c\ge1$, minimality gives $(K/2)^4\le2c$, hence $K^4\le32c$.
+The case $c=0$ has $K=1$. These inequalities give the claimed bounds.
+\end{proof}
+
+The small height bound is not a deterministic polynomial-time claim for
+finding a four-square decomposition in the bit model. The included reference
+routine uses a finite pair-table search, and explicitly limits the size of
+that search. A supplied decomposition can instead be checked immediately
+by \eqref{eq:four-square}.
+
+\subsection{Integral points at all primes}
+
+\begin{theorem}[Every integral local test succeeds]\label{thm:local}
+For every prime $p$, $\variety(\Z_p)$ is nonempty. Consequently the equation
+has a solution modulo every positive integer.
+\end{theorem}
+\begin{proof}
+For an odd prime $p$, the dyadic point \eqref{eq:dyadic} is already integral
+in $\Z_p$, because its denominators are powers of two.
+
+For $p=2$, fix $x=0$, $t=u=1$, and $z_2=z_3=0$. The remaining equation
+is
+\begin{equation}\label{eq:2adic}
+ h(z_1):=c+2z_1^2-z_1=0.
+\end{equation}
+Modulo two it has the root $z_1\equiv c$, and $h'(z_1)=4z_1-1$ is odd.
+Hensel lifting therefore gives a root in $\Z_2$. To avoid treating the
+lifting as a black box, suppose $h(z_s)\equiv0\pmod{2^s}$ and choose
+$b\in\{0,1\}$ so that
+\[
+ h(z_s)/2^s+b\equiv0\pmod2.
+\]
+Then $z_{s+1}=z_s+b2^s$ satisfies
+$h(z_{s+1})\equiv0\pmod{2^{s+1}}$. The compatible residues converge to the
+required root.
+
+For $M=\prod p^{e_p}$, reduce one local point modulo each $p^{e_p}$ and
+apply the Chinese remainder theorem coordinate by coordinate. The resulting
+point solves $F=0$ modulo $M$.
+\end{proof}
+
+Thus rejecting source instances cannot be rejected by finding a bad prime,
+a bad prime power, or any congruence modulus. They even have compatible
+integral points at every prime. This is a failure of a prospective
+\emph{integral} local-to-global principle, not a failure of the rational
+Hasse principle: rational points are already available globally.
+
+\subsection{A five-variable counterexample requiring no machine encoding}
+
+\begin{example}[An everywhere soluble equation with no integer point]\label{ex:one}
+Take the inconsistent source equation $1=0$, with no source variables.
+Then
+\begin{equation}\label{eq:inconsistent}
+ t^4+(tu-1)^2+\guard(z_1)+\guard(z_2)+2\guard(z_3)=0
+\end{equation}
+has no integer solution. Indeed, vanishing forces $tu=1$ and $t^4=0$,
+which are incompatible. Nevertheless it has the dyadic point
+\[
+ \left(t,u,z_1,z_2,z_3\right)
+ =\left(\frac12,3,\frac14,\frac12,\frac38\right).
+\]
+Here $K=2$ and $14=0^2+2^2+2\cdot1^2+2\cdot2^2$.
+The Jacobian identity proves smoothness over $\Z$, not just at this point;
+Theorem~\ref{thm:local} supplies all integral local points.
+\end{example}
+
+This example is elementary, but its role in the general reduction is
+important. The same harmless arithmetic geometry occurs for instances whose
+integer solvability encodes arbitrary halting behaviour. The phenomenon is
+not restricted to isolated inconsistent equations that an algorithm could
+recognize syntactically.
+
+\section{Rational density and the real locus}\label{sec:real}
+
+\subsection{Rational points in the quadric fibres}
+
+At every real point, completing the weighted guard squares gives
+\[
+ H+(tu-1)^2\le\frac12,
+ \qquad tu\ge1-\frac1{\sqrt2}>0.
+\]
+In particular $t$ is nonzero. We may therefore project onto the base
+$b=(x,t)$ and recover $u=(R+1)/t$ from $R$. Put
+\begin{equation}\label{eq:rho}
+ \rho(b)=\frac12-H(x,t),\qquad y_j=z_j-\frac14.
+\end{equation}
+The remaining equation is the ellipsoid
+\begin{equation}\label{eq:sphere}
+ R^2+2y_1^2+2y_2^2+4y_3^2=\rho(b).
+\end{equation}
+For rational $b$ with $\rho(b)>0$, this quadric has a rational point.
+Indeed, after multiplication by two, its left side becomes
+\[
+ (2y_1)^2+(2y_2)^2+2(2y_3)^2+2R^2,
+\]
+and Lemma~\ref{lem:1122} represents the positive rational $2\rho(b)$.
+
+A nonsingular ellipsoid with rational coefficients and a rational point has
+dense rational points in its real locus. A line through the rational point
+with rational direction meets the quadric in a second rational point:
+substitution gives a quadratic equation with one known root. The resulting
+rational parametrization covers the quadric except for the usual
+lower-dimensional exceptional set, and rational parameters are dense in
+real parameters. Equivalently, use stereographic projection after fixing
+a rational point and its rational tangent hyperplane.
+
+\begin{theorem}[Real and Zariski density]\label{thm:density}
+The set $\variety(\Q)$ is dense in $\variety(\R)$ in the Euclidean topology
+and is Zariski dense in $\variety_\Q$.
+\end{theorem}
+\begin{proof}
+Consider a real point with $\rho(b)>0$. Approximate $b=(x,t)$ by rational
+base points $b_\nu$ with nonzero $t_\nu$ and positive $\rho$. Radially
+rescale $(R,y_1,y_2,y_3)$ to get nearby real points on the nearby ellipsoids.
+On each such ellipsoid choose a rational point arbitrarily close to that
+real point. Recovering $u=(R+1)/t$ is continuous because $t\ne0$. This
+produces rational points tending to the original point.
+
+At a boundary point $\rho=0$, all four coordinates $(R,y)$ vanish and
+$H=1/2$. Euler's identity
+$\sum x_iH_{x_i}+tH_t=4H$ shows that $\nabla H$ is not zero there.
+Thus every neighbourhood contains base points with $\rho>0$. The ellipsoid
+radii tend to zero on approach to the boundary, so the same approximation
+also reaches the boundary point.
+
+There is a nonempty real open set with $t\ne0$ and $\rho>0$: take $x=0$
+and positive $t$ sufficiently small. The smooth integral variety therefore
+has real manifold points of its full dimension $n+4$. A polynomial function
+vanishing on all its rational points vanishes, by Euclidean density, on this
+real open manifold. In smooth local algebraic coordinates a regular
+function vanishing on a real open set vanishes identically on the
+irreducible variety. Hence the rational points are Zariski dense.
+\end{proof}
+
+The last local fact can also be seen by complexifying a smooth coordinate
+chart: a holomorphic function that vanishes on an open subset of its real
+coordinate slice has identically zero Taylor series. Geometric integrality
+then propagates the identity to the whole variety. No density assertion is
+made for \emph{dyadic} points; ordinary rational directions, with arbitrary
+denominators, were used in the quadric argument.
+
+\subsection{Exactly two path components}
+
+\begin{theorem}\label{thm:components}
+The real locus has exactly two path components, distinguished by the sign
+of $t$, or equivalently the sign of $u$.
+\end{theorem}
+\begin{proof}
+On $\variety(\R)$, the sum of the guards is at least $-1/2$. Hence
+\[
+ H+(tu-1)^2\le\frac12,
+ \qquad tu\ge1-\frac1{\sqrt2}>0.
+\]
+Thus $t,u$ are nonzero and have the same sign. Both signs occur, for example
+by changing $(x,t,u)$ to $(-x,-t,-u)$ in the point
+\eqref{eq:dyadic}. No continuous path can join the two signs.
+
+To show that the positive part is path connected, use coordinates
+\[
+ y=x/t,\qquad r=tu-1,\qquad w_j=\sqrt{2\lambda_j}(z_j-1/4),\qquad t>0.
+\]
+If $S(y)=\sum_i f_i(y)^2$, the equation becomes
+\begin{equation}\label{eq:real-model}
+ t^4S(y)+r^2+\sum_{j=1}^3w_j^2=\frac12.
+\end{equation}
+Conversely, every solution of \eqref{eq:real-model} with $t>0$ gives an
+original point: $u=(1+r)/t>0$ since $|r|\le1/\sqrt2$.
+
+For fixed $y$, decreasing $t$ makes the squared radius
+$1/2-t^4S(y)$ nondecreasing. A point can therefore be moved to arbitrarily
+small positive $t$ by radially rescaling its vector $(r,w)$. If that vector
+is initially zero, choose any direction when the radius first becomes
+positive; the resulting path is still continuous at the initial point.
+For a positive radius its direction lies in the path-connected sphere
+$S^3$, so the direction may be changed to any chosen common direction.
+
+Now join $y$ to $0$ by a line segment. The continuous function $S$ is bounded
+on this compact segment. Choose $t=\epsilon>0$ small enough that
+$\epsilon^4S<1/2$ throughout it. Keeping the common direction and varying
+the radius continuously gives a path along the whole segment. At $y=0$,
+any two admissible positive values of $t$ can be joined, again by radial
+rescaling. Thus all positive-$t$ points lie in one path component. The sign
+symmetry proves the same for negative $t$.
+\end{proof}
+
+Only the number of components is uniform. For example, if $H=0$, each
+component has an $S^3$ factor in the real description. If the only residual
+is the constant $1$, the corresponding radius closes at a finite positive
+$t$. We do not assert a single source-independent diffeomorphism type.
+
+\section{Why three weighted guards: a sharp restricted obstruction}\label{sec:guards}
+
+The five-variable result is not obtained merely by deleting one guard from
+a sum of four identical ones. The weights and the use of the unit residual
+in the rational-point construction are essential.
+
+\subsection{Classification by total guard weight}
+
+Consider the more general architecture
+\begin{equation}\label{eq:Fweights}
+ F_{\mathbf w}=H+(tu-1)^2+\sum_{j=1}^k w_j(2z_j^2-z_j),
+ \qquad w_j\in\Z_{>0},\quad w_1=1,
+\end{equation}
+and let $W=\sum_jw_j$. The assumption $w_1=1$ gives an especially simple
+uniform certificate at the prime two. Define
+\[
+ E=4H,\qquad D_j=w_j(4z_j-1),\qquad
+ J_W=8F_{\mathbf w}-2E-\sum_j(4z_j-1)D_j=8R^2-W.
+\]
+A general elimination identity is
+\begin{equation}\label{eq:general-guard}
+ W(8-W)=4u(8R-W)(F_{\mathbf w})_u-(8R+8-W)J_W.
+\end{equation}
+It follows by substituting $(F_{\mathbf w})_u=2tR$ and $tu=R+1$.
+
+\begin{theorem}[Universal smoothness in the weighted architecture]
+Under $w_1=1$, the hypersurface \eqref{eq:Fweights} is smooth over $\Z$
+for \emph{every} quadratic source system if and only if
+\[
+ W\in\{4,16\}.
+\]
+\end{theorem}
+\begin{proof}
+In the quotient by the equation and all its derivatives, $D_1=0$ gives
+$4z_1=1$, so two is invertible. Identity \eqref{eq:general-guard} says that
+$W(8-W)$ is zero in that quotient. For $W=4$ or $W=16$ it is a nonzero
+signed power of two. The quotient is therefore the zero ring, proving that
+the Jacobian ideal is the unit ideal and the hypersurface is smooth.
+
+For necessity, suppose an odd prime $p$ divides $8-W$. At the point
+$x=t=u=0$ and $z_j=1/4$ over $\overline{\Fp}$, the equation and all its
+partial derivatives vanish. This works for every source, because $H$ is
+homogeneous of degree four and has zero gradient at the origin. The case
+$W=8$ gives the same counterexample for every odd prime.
+
+If instead an odd prime $p$ divides $W$, choose the zero source $H=0$ and
+take $t=u=1$, $x=0$, and $z_j=1/4$. This is again a singular point. Hence
+universal smoothness requires that both $W$ and $|8-W|$ be nonzero powers
+of two. Write $W=2^a$. If $a<3$, the odd factor of $8-W$ is
+$2^{3-a}-1$, which equals one only for $a=2$. If $a>3$, the odd factor of
+$W-8$ is $2^{a-3}-1$, which equals one only for $a=4$. The case $a=3$
+was excluded. Thus $W=4$ or $16$.
+\end{proof}
+
+For identical guards $w_j=1$, this says that exactly $k=4$ and $k=16$
+give universal smoothness. In particular, simply using one, two, or three
+identical guards always introduces a bad odd prime: respectively seven,
+three, or five at the origin. The weighting $(1,1,2)$ keeps total weight
+four while using only three variables.
+
+\subsection{Why the still smaller weighting \texorpdfstring{$(1,3)$}{(1,3)} is insufficient}
+
+Two guards with weights $(1,3)$ also have total weight four, and therefore
+satisfy the smoothness theorem. They do \emph{not}, however, give a dyadic
+point for every source. This is not merely a failure of our chosen
+point-construction algorithm.
+
+\begin{lemma}[A dyadic ternary-form obstruction]\label{lem:dyadic-obstruction}
+If an integer $N$ satisfies $N\equiv10\pmod{16}$, the equation
+\[
+ X^2+3Y^2+2Z^2=N
+\]
+has no solution with $X,Y,Z\in\Z[1/2]$.
+\end{lemma}
+\begin{proof}
+First, such a solution would have integral coordinates. Otherwise multiply
+by a smallest common denominator $2^d$, $d\ge1$, to obtain integers
+$X_0,Y_0,Z_0$, not all even, with
+\[
+ X_0^2+3Y_0^2+2Z_0^2=2^{2d}N\equiv0\pmod8.
+\]
+Reduction modulo four forces $Z_0$ even and $X_0,Y_0$ of the same parity.
+Primitivity then makes $X_0,Y_0$ odd, but the left side is four modulo
+eight, a contradiction.
+
+For an integral solution, the even value of $N$ forces $X,Y$ to have the
+same parity. If both are odd, the left side is four or six modulo eight,
+not $N\equiv2\pmod8$. If both are even, write $X=2a$, $Y=2b$.
+Reduction modulo four makes $Z$ odd, so $2Z^2\equiv2\pmod{16}$.
+The equation would imply $a^2+3b^2\equiv2\pmod4$, which is impossible.
+\end{proof}
+
+\begin{proposition}[Failure of the two-guard dyadic guarantee]\label{prop:two-guard}
+For the source consisting of three constant residuals equal to one,
+\begin{equation}\label{eq:bad-weighted}
+ 3t^4+(tu-1)^2+\guard(z)+3\guard(w)=0
+\end{equation}
+has no point over $\Z[1/2]$, although its affine model is smooth over $\Z$.
+\end{proposition}
+\begin{proof}
+A hypothetical dyadic point is a real point. Completing squares gives
+$3t^4\le1/2$, while the same estimate as before gives $tu>0$.
+Thus $0<|t|<1$. Write $t=a/2^k$ with $a$ odd and $k\ge1$.
+With $R=tu-1$, the equation becomes
+\[
+ (2z-1/2)^2+3(2w-1/2)^2+2R^2=1-6t^4.
+\]
+Multiplying all three coordinates on the left by $2^{2k}$ gives a dyadic
+representation by $X^2+3Y^2+2Z^2$ of the integer
+\[
+ N=2^{4k}-6a^4\equiv10\pmod{16}.
+\]
+This contradicts Lemma~\ref{lem:dyadic-obstruction}. Smoothness follows
+from total weight four and first weight one.
+\end{proof}
+
+\begin{corollary}[Five auxiliaries are optimal in the weight-four family]
+Among finalizers of the form
+\[
+ H+(tu-1)^2+\sum_jw_j\guard(z_j),\qquad
+ w_j>0,\quad \sum_jw_j=4,
+\]
+which must be smooth over $\Z$ and have a dyadic point for every source,
+at least three guard variables are necessary. The choice $(1,1,2)$ is
+sufficient, so five total auxiliary variables are optimal within this family.
+\end{corollary}
+\begin{proof}
+With one guard the only weight is four. With two guards the weights are,
+up to order, $(2,2)$ or $(1,3)$. All-even weights give a zero gradient
+modulo two for the zero source $H=0$, and a nonempty singular fibre.
+The remaining pair $(1,3)$ is excluded by Proposition~\ref{prop:two-guard}.
+Theorem~\ref{thm:main} proves sufficiency of three guards.
+\end{proof}
+
+This is a restricted optimality theorem. It does not rule out a different
+unit gadget, a different nonnegative polynomial guard, a different total
+weight, or a construction with fewer variables that avoids this architecture
+entirely.
+
+\section{A concrete Turing-complete frontend}\label{sec:counter}
+
+The finalizer does not depend on a particular language. Nevertheless, an
+executable frontend makes the semantics and the witness-count claims
+concrete. We use finite deterministic counter programs with natural
+registers and instructions of the following forms:
+\[
+ \operatorname{inc}(j,q),\qquad
+ \operatorname{dec}(j,q_+,q_0),\qquad
+ \operatorname{halt}.
+\]
+An increment adds one to counter $j$ and jumps to $q$. A decrement
+instruction decrements a positive counter and jumps to $q_+$, or leaves a
+zero counter unchanged and jumps to $q_0$. There is one halt state, and it
+has an absorbing self-loop for padding.
+
+\subsection{Why this instruction set can support universal computation}
+
+For completeness, three counters suffice for a direct simulation of a
+Turing machine. Store the tape to the left and to the right of the current
+head in two stacks, keep the current head symbol in finite control, and
+use a third counter as scratch space. Encode a stack in a fixed base $B$
+using nonzero digits for tape symbols, with the empty stack encoded by
+zero. The outermost stack symbol is the least significant digit.
+
+To push a digit $d$, replace $X$ by $BX+d$. Repeatedly decrement $X$ while
+adding $B$ units to a scratch counter; then transfer the scratch counter
+back to $X$ and add $d$. The fixed additions by $B$ or $d$ expand into
+finite sequences of increment instructions.
+
+To pop, repeatedly decrement $X$, maintaining the remainder modulo $B$ in
+finite control and incrementing the scratch counter after each complete
+block of $B$ decrements. At the end, the scratch counter is the quotient
+and the control state holds the remainder. Transfer the quotient back to
+$X$. An empty stack returns the blank symbol. Scratch space is zero at the
+end of either operation.
+
+A tape move pushes the updated head symbol onto one stack and pops from
+the other. Thus each transition expands into a finite counter program,
+with the unused stack preserved. This supplies an explicit simulation
+argument for universality of the program class. The small worked example
+below uses only one counter and is not itself a universal machine.
+Formalized reductions through Minsky machines and FRACTRAN provide an
+independent established context for this substrate choice \cite{coq}.
+
+\subsection{A quadratic certificate for an external horizon}
+
+Fix a program with $\ell$ states, $r$ counters, and a chosen horizon $T$.
+Expand instructions into edges $e$: increment edges, positive-decrement
+edges, zero-test edges, and the absorbing halt edge. Let $E$ be their
+number, $p$ the number of positive-decrement edges, and $g$ the number of
+all guarded edges (positive and zero). Write $s(e),t(e)$ for source and
+target states, and $\delta_{e,j}\in\{-1,0,1\}$ for counter updates.
+
+Introduce natural variables
+\[
+ q_{s,i}\quad(0\le s\le T,\ 0\le i<\ell),\qquad
+ c_{s,j}\quad(0\le s\le T,\ 0\le j<r),
+\]
+edge selectors $a_{s,e}$ for $s<T$, and one slack $d_{s,e}$ for every
+positive-decrement edge at every time $s<T$. The equations at time $s$ are
+\begin{align}
+ \sum_e a_{s,e}&=1,\label{eq:oneedge}\\
+ q_{s,i}&=\sum_{e:s(e)=i}a_{s,e},&
+ q_{s+1,i}&=\sum_{e:t(e)=i}a_{s,e},\label{eq:states}\\
+ c_{s+1,j}&=c_{s,j}+\sum_e\delta_{e,j}a_{s,e}.\label{eq:update}
+\end{align}
+For an edge testing counter $j$, impose
+\begin{align}
+ a_{s,e}c_{s,j}&=0&&\text{on a zero edge},\label{eq:zeroedge}\\
+ a_{s,e}c_{s,j}-a_{s,e}-d_{s,e}&=0&&\text{on a positive edge}.\label{eq:posedge}
+\end{align}
+The initial one-hot state and initial counters are fixed by linear
+equations. Finally impose $q_{T,h}=1$, where $h$ is the halt state.
+Every displayed residual is of degree at most two.
+
+\begin{theorem}[Canonical bounded counter certificates]\label{thm:counter}
+The natural zero set of this quadratic system is empty if the program has
+not halted by time $T$, and is a singleton if it has. The same statement
+holds for its smooth quartic finalization, with five additional variables.
+The quadratic interface has
+\begin{align}
+ n_T&=(\ell+r)(T+1)+(E+p)T,\label{eq:nT}\\
+ m_T&=(\ell+r)+T(1+2\ell+r+g)+1.\label{eq:mT}
+\end{align}
+\end{theorem}
+\begin{proof}
+Because the selectors are natural and sum to one, exactly one selector is
+one and all the others are zero. The state equations identify its source
+and target. No separate Boolean equation is needed. On a selected zero
+edge, \eqref{eq:zeroedge} forces the counter to be zero. On a selected
+positive edge, \eqref{eq:posedge} says $c_{s,j}=1+d_{s,e}$, so the
+counter is positive. On an inactive positive edge, that same equation
+forces its slack to be zero, rather than leaving an arbitrary witness.
+
+Starting from the fixed initial state, exactly one operational edge is
+enabled. Induction on $s$ therefore determines every selector, every
+counter, and every state variable uniquely. Active positive slacks equal
+the tested counter minus one; inactive slacks are zero. Conversely the
+actual padded run provides precisely this assignment and satisfies all
+transition equations. The endpoint equation holds exactly when the run
+has reached the absorbing halt state by time $T$.
+
+There are $(\ell+r)(T+1)$ state and counter variables, $ET$ selectors,
+and $pT$ slacks. The initial rows number $\ell+r$. Each step has one
+selector-sum row, $2\ell$ state rows, $r$ update rows, and $g$ guard
+rows. There is one final endpoint row. This gives
+\eqref{eq:nT}--\eqref{eq:mT}, and Theorem~\ref{thm:main} gives the
+last assertion.
+\end{proof}
+
+The proof depends on natural coordinates. Over unrestricted integers a sum
+of selectors equal to one does not make them one-hot. The integer
+zero-set theorem for the finalizer still holds, but it refers to the
+integer zeros of the source equations, which need not describe legal
+counter executions. A separate domain encoding is required before using
+this frontend as an integer execution certificate.
+
+\subsection{Worked example: a countdown program}
+
+Take two states: state zero executes
+$\operatorname{dec}(0,0,1)$, and state one halts. The three edges are
+$D$ (decrement and loop), $Z$ (zero-test and enter halt), and $H$ (halt
+self-loop). For input counter value two, the run is
+\[
+ (0,2)\xrightarrow{D}(0,1)\xrightarrow{D}(0,0)
+       \xrightarrow{Z}(1,0)\xrightarrow{H}(1,0)\longrightarrow\cdots.
+\]
+Thus horizon two rejects; horizon three accepts; larger horizons add only
+forced halt padding. Here
+\[
+ \ell=2,\quad r=1,\quad E=3,\quad p=1,\quad g=2,
+ \qquad n_T=7T+3,\quad m_T=8T+4.
+\]
+For $T=3$ the source has 24 variables and 28 residuals. The exported
+smooth equation has 29 variables, exact degree four, and 97 nonzero
+monomials. Its natural zero set is a singleton.
+
+The exported rational point deliberately need not coincide with the
+computational witness. The source constant statistic is $c=9$; the
+reference constructor takes $K=4$ and uses
+\[
+ 238=0^2+2^2+3^2+15^2=3^2+15^2+2\cdot1^2+2\cdot1^2.
+\]
+All 24 source coordinates are set to zero in that rational point, with
+\[
+ t=\frac14,\quad u=\frac{17}{4},\quad
+ (z_1,z_2,z_3)=\left(\frac{11}{32},\frac{23}{32},\frac9{32}\right).
+\]
+Here $H=9/256$, $R^2=1/256$, and the weighted guard sum is $-10/256$.
+The endpoint condition is not being claimed to hold by itself at this
+rational tuple. Only the full finalized equation vanishes.
+
+\section{Consequences for unbounded computation}\label{sec:undecidable}
+
+\subsection{An undecidable smooth quartic class}
+
+The MRDP theorem identifies computably enumerable relations with
+Diophantine relations. The existence of a fully mechanized proof, including
+both directions and machine translations, is established in the work of
+Larchey-Wendling and Forster \cite{coq}. Here MRDP is a background theorem,
+not a result reproved by the finite counter compiler.
+
+\begin{theorem}[A geometrically restricted complete problem]\label{thm:hardness}
+Integer solvability is computably enumerable complete, under computable
+many-one reductions, even on the explicit class of quartic polynomials
+produced by \eqref{eq:F}. Every instance in this class comes with
+\begin{enumerate}[label=\textnormal{(\alph*)}]
+\item a smooth affine model over $\Z$ with geometrically integral fibres;
+\item a bounded-degree integral Jacobian certificate;
+\item a constructible nonnegative dyadic rational point;
+\item integral points over every $\Z_p$ and solutions modulo every integer;
+\item a Zariski-dense set of rational points and exactly two real path
+components.
+\end{enumerate}
+The analogous statement for natural solvability holds on the natural
+quadratic-lifting version of the class.
+\end{theorem}
+\begin{proof}
+Given an integer polynomial equation, apply the integer version of
+Lemma~\ref{lem:lifting}, then the finalizer. Integer solvability is
+preserved at both stages. Equivalently, to start from a natural MRDP
+representation, introduce integer variables for each original natural
+witness and impose that it is a sum of four integer squares. These
+additional equations are quadratic, and circuit lifting deals with the
+remaining polynomial equations. This second route does not preserve
+witness uniqueness at the four-square stage, and no such assertion is
+needed for undecidability.
+
+The known computably enumerable completeness of Diophantine solvability
+therefore transfers to the displayed subclass. Membership remains
+computably enumerable by enumerating integer tuples and evaluating the
+polynomial. All geometric and arithmetic promises follow from
+Theorem~\ref{thm:main}; their certificates can be generated with the
+reduction and do not require discovering an integer solution.
+
+For natural solvability, use the natural circuit lifting in
+Lemma~\ref{lem:lifting}. The finalizer then preserves the full natural
+zero set bijectively.
+\end{proof}
+
+This theorem is compatible with the older smooth-variety undecidability
+result cited in the introduction. Its content is a specific simultaneous
+normal form, including an everywhere smooth \emph{integer} model and
+explicit positive evidence for all the easier existence notions.
+
+\subsection{Fixed arity versus external duration}
+
+Fixing a universal Diophantine source relation gives a fixed finite
+quadratic circuit and therefore a fixed number of variables in the
+finalized family. This is a legitimate fixed-arity unbounded statement,
+because the source already comes from MRDP or another proved unbounded
+representation.
+
+By contrast, the counter frontend of Section~\ref{sec:counter} creates
+$n_T$ variables and $m_T$ equations. Its horizon is an external compiler
+argument. The facts that each accepting bounded run has one witness and
+that finalization adds only five variables do not combine to give a
+fixed-arity unique representation of arbitrary halting.
+
+More explicitly, even the disjoint union of the bounded accepting
+certificates has a copy for every $T$ after the first halting time because
+of padding. Restricting to a first-halting horizon would remove that
+particular repetition, but compiling a variable-length history into one
+fixed polynomial while preserving all multiplicities is an additional
+problem. It is not accomplished by treating a loop in the compiler as a
+polynomial variable.
+
+\subsection{Input parameters and total degree}\label{sec:parameter-degree}
+
+Suppose a master family uses an input parameter $a$ only through a loader
+$v-a=0$, while the remaining quadratic equations have fixed integer
+coefficients. If $a$ is treated as a coefficient during homogenization,
+the loader becomes
+\[
+ tv-at^2.
+\]
+Its square has total degree six when $a$ is counted as a coordinate,
+although it is quartic in witness variables for every fixed $a$.
+Therefore this straightforward master presentation has
+\[
+ \deg_{\text{all coordinates}}\mathcal F\le6,
+ \qquad \deg_{\text{witnesses}}\mathcal F(a;\cdot)=4.
+\]
+It is smooth \emph{relative to the input base}: the same Jacobian identity
+uses only witness derivatives and continues to hold with $a$ in the
+coefficient ring.
+
+Alternatively, homogenizing $a$ as a source variable keeps the total
+polynomial quartic and gives a smooth total space. It does not by itself
+prove that every fixed-$a$ fibre is smooth, because the Euler identity
+then uses the derivative in the $a$ direction. These two degree/smoothness
+contracts must not be conflated.
+
+\subsection{A separation between rational and integer search}
+
+\begin{corollary}[No computable bound for the least integer witness]
+There is no computable function of the finite source description that
+bounds the height of an integer point on every solvable compiled instance.
+This remains true even when the dyadic point and Jacobian certificate are
+included as additional input data.
+\end{corollary}
+\begin{proof}
+Such a function would turn integer solvability into a finite search over a
+box of its computed radius, deciding the complete problem in
+Theorem~\ref{thm:hardness}. The additional data are computably produced
+from the same source description and do not change the reduction.
+\end{proof}
+
+The rational side is starkly different: a point of polynomially bounded
+coordinate height in $\sqrt{c+1}$ is always available. Thus small rational
+solutions do not bound the size of the first integer solution. The exact
+height transfer in Corollary~\ref{cor:height} also shows that this
+separation is not caused by huge integer auxiliary values introduced by
+the finalizer.
+
+\section{A direct higher-degree extension}\label{sec:power-two}
+
+Quadratic lifting is useful for degree four, but it is not needed for
+smoothness itself. A power-of-two padding gives a second tradeoff: keep
+only five new variables and permit a larger degree.
+
+\begin{theorem}[Power-of-two homogeneous padding]\label{thm:padding}
+Let $f_i\in\Z[x]$ have degrees at most $D$. Choose a positive power of
+two $d\ge\max\{1,D\}$ and set
+\[
+ q_i(x,t)=t^d f_i(x/t),\qquad H=\sum_iq_i^2,
+ \qquad F=H+(tu-1)^2+\guard(z_1)+\guard(z_2)+2\guard(z_3),
+\]
+where homogenization is interpreted polynomially. Then the natural and
+integer zero-set correspondences of Theorem~\ref{thm:main} still hold.
+The affine model is smooth over $\Z$ with geometrically integral fibres,
+and it has dyadic points and integral points at all primes. Its degree is
+at most $\max\{4,2d\}$.
+\end{theorem}
+\begin{proof}
+Nonnegativity, the unit equation, and
+$q_i(\varepsilon a,\varepsilon)=\varepsilon^d f_i(a)$ prove the same
+lattice correspondences. The rank-three argument in the guard variables
+proves geometric integrality, and the characteristic-two fibre is again
+a polynomial graph.
+
+For smoothness, work in the quotient ring by $F$ and all its derivatives.
+The equation $D_1=4z_1-1=0$ makes two invertible. The other guard
+coefficients are one and two, hence are also units in this quotient, and
+all $z_j=1/4$. Euler's identity now gives
+\[
+ \sum_i x_iF_{x_i}+tF_t-uF_u=2dH=0.
+\]
+Since $d$ is a power of two, $H=0$. The equation $F=0$ therefore gives
+$R^2=1/2$. The derivative $F_u=2tR=0$, multiplied by $u$, gives
+$R(R+1)=0$, so $R=-1/2$. Squaring contradicts $R^2=1/2$ by forcing
+$1/4=0$. Since four is a unit, the quotient is the zero ring. This is
+exactly the unit-Jacobian-ideal criterion for smoothness.
+
+For dyadic points choose a power of two $K$ with $K^{2d}>2c$ and represent
+\[
+ K^{2d}-2c=A_1^2+A_2^2+2A_3^2+2B^2.
+\]
+Take $x=0$, $t=1/K$, $R=B/K^d$, $u=K+B/K^{d-1}$, and
+$z_j=1/4+A_j/(2K^d)$. The same substitution as before proves $F=0$.
+This point is integral at odd primes; at two the equation
+$c+2z_1^2-z_1=0$ again gives a lift with $t=u=1$.
+\end{proof}
+
+Choosing the smallest such $d$ gives $d<2D$ for $D\ge1$, except that
+$d=D$ when $D$ already is a power of two. Thus there is a simple
+variable/degree tradeoff between direct padding and unique quadratic
+circuit lifting. Only the quadratic version is implemented in the supplied
+reference compiler; this section is a proved extension, not an additional
+software feature.
+
+\section{Implementation, exact checks, and reproducibility}\label{sec:implementation}
+
+\subsection{Files and interfaces}
+
+The archive contains a self-contained \LaTeX\ source and compiled PDF,
+three Python modules, two expanded polynomial exports, and an execution
+report. The main software files are
+\begin{center}
+\begin{tabular}{p{0.34\textwidth}p{0.56\textwidth}}
+\toprule
+File & Purpose\\
+\midrule
+\texttt{code/smooth\_compiler.py} & Validated quadratic input, homogeneous lift,
+quartic export, Jacobian certificate, dyadic point, and compatible
+$2$-adic residues.\\
+\texttt{code/counter\_frontend.py} & Counter-program semantics and the bounded
+quadratic frontend.\\
+\texttt{code/verify.py} & Exact symbolic identities, independent sparse
+polynomial evaluation, finite exhaustive checks, and export generation.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A \texttt{QuadraticSystem} copies its variables and residuals into immutable
+tuples. It rejects undeclared symbols, repeated variable names,
+nonintegral coefficients, floating-point coefficients, and residual degree
+above two. The finalizer checks auxiliary-name collisions. Counter-program
+validation checks register ranges, state targets, instruction fields,
+nonnegative initial counters, and an exact nonnegative integer horizon.
+
+The dyadic constructor computes a four-square decomposition by a finite
+pair table and converts it to weights $(1,1,2,2)$ using an equal-parity
+pair. The pair-table routine has a declared default input cap of one
+million to prevent an unexpected large allocation. That is a software
+resource limit, not a mathematical exception. The caller may supply a
+four-square representation for independent exact checking instead.
+
+\subsection{Recorded checks}
+
+The included run used Python 3.13.5 and SymPy 1.14.0 with seed 20261002.
+All 21,128 recorded assertions passed. The principal groups are shown in
+Table~\ref{tab:checks}; the exact full breakdown is in
+\texttt{verification/results.json}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{p{0.70\textwidth}r}
+\toprule
+Check group & Assertions\\
+\midrule
+Integer tuples in three explicit six-dimensional boxes & 10,125\\
+Natural subboxes of those same boxes & 648\\
+One-step countdown assignments, exhaustively compared to semantics & 2,048\\
+Ternary obstruction, all triples modulo sixteen & 4,096\\
+Primitive triples modulo eight in the same obstruction & 448\\
+Independent sparse-export evaluations on seeded tuples & 520\\
+Odd-prime reductions of the constructed dyadic points & 260\\
+Four-square and weighted-four-square replay for $0\le N\le200$ & 402\\
+Four nested Jacobian/Euler identities on 27 source systems & 108\\
+Expanded B\'ezout identities and coefficient-degree bounds & 54\\
+Malformed-input rejection checks & 21\\
+\bottomrule
+\end{tabular}
+\caption{Selected groups of exact checks; not a replacement for the proofs.}
+\label{tab:checks}
+\end{table}
+
+The source systems used for symbolic checks include zero-variable cases,
+a zero system, constant inconsistent systems, simple quadratic equations,
+20 seeded two-variable systems, and the countdown certificate. The
+integer-box test ranges over $x,t,u\in\{-2,-1,0,1,2\}$ and each of the
+three guard variables in $\{-1,0,1\}$. There are $5^3 3^3=3375$ tuples
+per source. These ranges are recorded so that a finite test is not mistaken
+for an unbounded exhaustive verification.
+
+For the counter frontend, 140 initial-input/horizon combinations are
+checked across a one-counter and a two-counter program. The transitions,
+endpoint, variable count, residual count, and nonnegativity checks are
+separate assertions. The one-step exhaustive check independently compares
+the polynomial rows with the operational transition relation, rather than
+merely checking the one run returned by the compiler.
+
+The sparse JSON evaluator multiplies integer coefficients by powers of
+supplied coordinates; it does not call SymPy substitution into the original
+residual list. On seeded tuples its result is compared with direct
+homogeneous-residual evaluation. For the Jacobian identity, both the nested
+formula \eqref{eq:unit} and the expanded coefficient formula
+\eqref{eq:bezout} are checked symbolically from the actual emitted $F$.
+
+\subsection{What the checks establish and what they do not}
+
+The symbolic identities certify the algebraic calculations for the exported
+examples and sampled systems. The paper supplies the universal derivations.
+The finite checks can reveal implementation errors in lifting, signs,
+weights, inactive slacks, variable order, and exported coefficients. They
+do not prove the general source semantics or replace the scheme-theoretic
+arguments about smoothness and geometric integrality.
+
+No Lean or Coq process was run for this manuscript. No existing repository
+axiom audit was rerun. The ordinary proofs of rational density, the number
+of real components, the higher-degree padding theorem, and the general
+undecidability reduction are not advertised as consequences of a Python
+unit test.
+
+To reproduce the package from its root directory:
+\begin{lstlisting}
+python -m pip install -r requirements.txt
+python code/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+A minimal use of the finalizer is
+\begin{lstlisting}[language=Python]
+import sys
+sys.path.insert(0, "code")
+import sympy as sp
+from smooth_compiler import QuadraticSystem, compile_smooth
+from smooth_compiler import dyadic_point
+
+x, y = sp.symbols("x y")
+source = QuadraticSystem((x, y), (x - y*y, y - 2))
+certificate = compile_smooth(source)
+integer_point = certificate.lift((4, 2))
+assert certificate.evaluate(integer_point) == 0
+rational_point, metadata = dyadic_point(certificate)
+assert certificate.evaluate(rational_point) == 0
+assert certificate.jacobian_certificate()["unit"] == 1
+\end{lstlisting}
+
+\section{Formalization plan and theorem boundaries}\label{sec:boundaries}
+
+A useful formalization should mirror the actual proof boundary rather than
+importing the final statement as a large opaque axiom. The algebraic core
+can be separated from the geometry.
+
+First formalize integer guard nonnegativity and its unique zero, the two
+units of $\Z$, and homogeneous lifting. These yield the natural bijection,
+the signed integer bijection, and the height correspondence. Their proofs
+need no algebraic geometry.
+
+Next formalize the identities \eqref{eq:Euler}, \eqref{eq:EDJ}, and
+\eqref{eq:bezout} over a general commutative coefficient ring. One may
+represent the certificate as a finite tuple of polynomials and check the
+single ring identity. An exported, independently checked identity is a
+natural target, but a theorem connecting such a checker to polynomial
+semantics is needed before it becomes a trusted bridge.
+
+The geometric layer should separately connect a unit Jacobian ideal to
+relative smoothness and prove the rank-three irreducibility argument.
+The characteristic-two polynomial-graph isomorphism is elementary and
+should not be subsumed under a characteristic-zero smoothness theorem.
+The rational/local layer then needs four-square existence, the parity
+conversion, exact rational substitution, and compatible $2$-adic lifting.
+
+Finally, the counter frontend should prove its natural one-hot lemma,
+per-edge correctness including inactive slacks, and induction on the
+externally fixed horizon. Its output can then feed the generic finalizer
+without repeating the geometric proof for every language.
+
+Several boundaries are structural, not minor missing optimizations:
+\begin{itemize}
+\item A smooth affine model is not a smooth proper model. The points at
+infinity of a homogenized projective closure are outside the main theorem.
+\item Dyadic solubility of this class does not decide arbitrary equations
+over $\Z[1/2]$ or $\Q$. The reduction preserves integer or natural
+solvability, not rational solvability.
+\item Witness preservation does not establish single-fold or finite-fold
+MRDP. It preserves whatever multiplicities the source already has.
+\item External horizon bounds are not compressed by adding five variables.
+Fixed arity is obtained only from an already fixed-arity source relation.
+\item The sharp five-auxiliary lower bound proved here is restricted to the
+positive weight-four guard architecture; it is not a general lower bound
+for smooth Diophantine representations.
+\end{itemize}
+
+\section{Further research questions and concrete next targets}\label{sec:future}
+
+The following questions are proposals arising from this construction.
+Unless explicitly stated otherwise, they are not assertions that no answer
+exists in the literature. A dedicated priority search should accompany any
+attempt to publish a claimed resolution.
+
+\begin{question}[Four auxiliary variables with the full package]
+Can another integer-polynomial finalizer preserve every natural zero set
+bijectively, remain quartic and smooth over $\Z$, and guarantee a dyadic
+point for every source while adding at most four variables?
+\end{question}
+Proposition~\ref{prop:two-guard} excludes the most immediate candidate,
+not all candidates. A successful construction must avoid the ternary-form
+obstruction rather than merely find a better algorithm for that form.
+Promising search spaces include unequal guard centres, nonquadratic guards
+whose total degree stays four, or a replacement for the product-unit
+constraint.
+
+\begin{question}[Other total weights]
+Within \eqref{eq:Fweights}, can two positive guards of total weight sixteen
+give the complete dyadic guarantee for every quadratic source?
+\end{question}
+The smoothness classification allows total weight sixteen. It leaves a
+finite family of two-guard choices with first weight one, or a slightly
+larger family after replacing that normalization by a coprime-weight
+condition. The rational point problem becomes a ternary quadratic-form
+problem coupled to fourth-power scaling. An exact local obstruction or a
+uniform construction would materially extend the sharp result above.
+
+\begin{question}[A totally quartic, relatively smooth universal family]
+Can one obtain a single polynomial of total degree four in both input
+parameters and witnesses, with every integer-input fibre smooth over $\Z$,
+while preserving a universal natural relation and retaining the same
+local-solubility guarantees?
+\end{question}
+Section~\ref{sec:parameter-degree} gives a total-degree-six master family
+and explains why homogenizing the parameter changes the relative-smoothness
+claim. An input loader compatible with both total degree and the relative
+Euler identity is the specific missing component.
+
+\begin{question}[A smaller Jacobian certificate]
+Can the degree-seven expanded identity be replaced uniformly by a
+certificate whose products all have degree at most six, or by a shorter
+arithmetic circuit with the same universal coefficient contract?
+\end{question}
+This is a certificate-optimization problem, not an attempt to improve a
+universal halting polynomial's operation count by ignoring its frontend.
+The precise optimization object should include the equation, all derivative
+costs, and the coefficient tuple in \eqref{eq:coefficients}.
+
+\begin{question}[Controlled higher topology]
+Which topological invariants of the two real components can be read from
+the real zero set of the source system, and can the construction be modified
+to make every real component contractible?
+\end{question}
+The model \eqref{eq:real-model} gives a concrete starting point. Its fibres
+change from a capped sphere family to a cylinder at source real zeros.
+The number of components is fixed, but a full homotopy or diffeomorphism
+classification is not supplied here.
+
+\begin{question}[Strong approximation and integral obstructions]
+What can be said about strong approximation, and about more refined
+obstructions to integral points, on these explicit affine varieties?
+\end{question}
+All local integral points exist and rational points are dense in the real
+locus, but these statements do not imply simultaneous approximation at
+many places with integral control away from them. A meaningful answer must
+respect the undecidability theorem: no proposed effectively complete,
+uniform terminating obstruction procedure can decide all compiled inputs.
+
+\begin{question}[Density of restricted-denominator points]
+For which source systems are the dyadic points dense in a real component?
+Can a bounded set of additional denominator primes guarantee density?
+\end{question}
+The proof of Theorem~\ref{thm:density} uses rational parametrizations with
+unrestricted denominators. Replacing them by dyadic parameters does not
+preserve all denominator conditions automatically. This is a distinct
+arithmetic approximation problem, not an immediate corollary of the
+existence construction.
+
+\begin{question}[Smooth models over other arithmetic rings]
+Which discretely ordered domains or rings of $S$-integers admit analogues
+with exact control of unit-induced witness multiplicity?
+\end{question}
+The integer proof uses both the positivity gap of $2z^2-z$ on the lattice
+and the fact that the unit group is $\{\pm1\}$. Neither property carries
+over unchanged to a general ring of integers. A useful extension should
+state exactly what replaces the lattice order and how the unit group acts
+on fibres.
+
+\begin{question}[A verified finalizer integrated with repository frontends]
+Can the five-variable transformation be formalized once and instantiated
+on the repository's existing causal, queue, heap, and interaction-net
+interfaces without changing their semantic contracts?
+\end{question}
+A practical first milestone is the homogeneous lift plus the explicit
+Jacobian certificate. A second is a proved checker for the sparse JSON
+format. A third is one full frontend-to-smooth-quartic theorem with an
+explicit distinction between natural and integer witnesses.
+
+\begin{question}[A detailed publication and priority audit]
+Which parts of the combined normal form are already implicit in known
+smoothness reductions or in work on integral local-to-global phenomena?
+\end{question}
+The introduction identifies a definite antecedent and avoids presenting
+the general smooth-undecidability phenomenon as new. A systematic comparison
+should separately track good reduction at every prime, fixed auxiliary
+count, dyadic sections after specialization, the exact natural bijection,
+and the bounded-degree Jacobian certificate. These properties should not
+be collapsed into the vague phrase ``smooth Diophantine representation.''
+
+\section{Conclusion}
+
+The construction separates three layers that are easily confused. The source
+quadratic equations contain the computational semantics. The integer gap of
+the guards and the unit equation preserve their witnesses. The homogeneous
+scaling and weighted guards alter the surrounding arithmetic geometry so
+that every geometric fibre is smooth and integral, all integral local
+points exist, and rational points are plentiful.
+
+The resulting polynomial is
+\[
+ \boxed{\sum_i q_i(x,t)^2+(tu-1)^2+
+       (2z_1^2-z_1)+(2z_2^2-z_2)+2(2z_3^2-z_3).}
+\]
+It has exactly five additional variables. Its geometric regularity is
+certified by an integral identity of bounded degree, not by a generic
+choice, numerical evidence, or an unbounded singularity search. Its
+natural witnesses are unchanged; its integer witnesses form exactly two
+sign-related copies. The failed two-guard alternative shows that the
+arithmetic point construction imposes a genuine additional constraint
+beyond smoothness.
+
+This does not settle a classical undecidability conjecture or erase the
+finite-fold boundary. It provides a reusable explicit normal form: even a
+smooth affine quartic with everywhere good affine reduction, small dyadic
+points, and only two real components can carry the full difficulty of
+integer computation.
+
+\appendix
+\section{The complete countdown residual list}\label{app:countdown}
+
+For the input two and horizon $T=3$, use variables
+\[
+ q_{s,0},q_{s,1},c_s\quad(0\le s\le3),\qquad
+ a_{s,D},a_{s,Z},a_{s,H},d_s\quad(0\le s<3).
+\]
+There are $3\cdot4+4\cdot3=24$ of them. The initial rows are
+\[
+ q_{0,0}-1,\qquad q_{0,1},\qquad c_0-2.
+\]
+At each $s=0,1,2$, include the following eight residuals:
+\begin{align*}
+ &a_{s,D}+a_{s,Z}+a_{s,H}-1,\\
+ &q_{s,0}-a_{s,D}-a_{s,Z},\qquad q_{s,1}-a_{s,H},\\
+ &q_{s+1,0}-a_{s,D},\qquad q_{s+1,1}-a_{s,Z}-a_{s,H},\\
+ &c_{s+1}-c_s+a_{s,D},\\
+ &a_{s,D}c_s-a_{s,D}-d_s,\qquad a_{s,Z}c_s.
+\end{align*}
+The final row is $q_{3,1}-1$. Thus the total number is $3+3\cdot8+1=28$.
+The source witness is
+\begin{align*}
+ &(q_{0,0},q_{0,1})=(q_{1,0},q_{1,1})=(q_{2,0},q_{2,1})=(1,0),\\
+ &(q_{3,0},q_{3,1})=(0,1),\qquad (c_0,c_1,c_2,c_3)=(2,1,0,0),\\
+ &(a_{0,D},a_{0,Z},a_{0,H})=(a_{1,D},a_{1,Z},a_{1,H})=(1,0,0),\\
+ &(a_{2,D},a_{2,Z},a_{2,H})=(0,1,0),\qquad(d_0,d_1,d_2)=(1,0,0).
+\end{align*}
+Add $(t,u,z_1,z_2,z_3)=(1,1,0,0,0)$ to obtain the unique natural zero of
+the finalized equation.
+
+For an entirely explicit compact polynomial, apply the following rule to
+each row above: multiply its quadratic terms by $1$, its linear terms by
+$t$, and its constants by $t^2$. Square the 28 resulting homogeneous
+polynomials, add them, and then add $(tu-1)^2+\guard(z_1)+\guard(z_2)+
+2\guard(z_3)$. This is a complete expression, not an appeal to an
+unspecified universal representation. Its expanded 97-term coefficient
+list is in \texttt{examples/countdown\_T3.json}.
+
+\section{The export and verification boundary}
+
+Each JSON export records an ordered variable list and a list of terms.
+A term has an integer coefficient and an exponent vector of the same
+length as the variable list. Its mathematical meaning is
+\[
+ c\prod_{j=1}^Nv_j^{e_j}.
+\]
+Zero coefficients are omitted; the degree is the maximum sum of exponents
+among retained terms. The format also records the source residuals for
+human inspection, the guard weights, a rational point as exact strings,
+the four-square conversion data, and compatible $2$-adic residues.
+
+The equation is reconstructed for independent evaluation from the
+coefficient/exponent data. The source residual strings are not interpreted
+as trusted assertions about machine semantics. A future formal checker
+should validate the term format, coefficient ring, variable order, and
+identity semantics before using such an export as a theorem input.
+
+The file \texttt{examples/inconsistent.json} uses the constant source
+residual $1$ with one unused source variable. It therefore has one more
+free source coordinate than Example~\ref{ex:one}; it is the product of
+that example with an affine line. The printed five-variable equation and
+its rational point are checked separately by the zero-variable test.
+This distinction is intentional and is not a mismatch in the auxiliary
+variable count.
+
+\section{Provenance and scope of the source review}
+
+The source comparison consisted of the repository root overview, the
+Hilbert-tenth-problem overview, the canonical-certificate collection
+README, and a pinned canonical-certificate research-status file. The
+last file was read at commit
+\begin{center}\small\ttfamily a845ab5d0f4591294ef3c2d92feaeb5825a8d543\end{center}
+and had Git blob identifier
+\begin{center}\small\ttfamily e768b2284c6723d21d77edfb24f786ccdb83585a.\end{center}
+The source review did not establish the absence of an equivalent formula
+elsewhere in the repository or literature.
+
+The external mathematical references used directly are Poonen's smoothness
+reduction, the primary account of mechanized MRDP by Larchey-Wendling and
+Forster, and the Stacks Project's smoothness criterion. The general
+four-square theorem is used as classical background; its application to
+weighted $(1,1,2,2)$ representation is proved in the text. The explicit
+five-variable formula, the universal B\'ezout identity, the dyadic
+construction, the weighted two-guard obstruction, and the detailed
+counter frontend were developed in this manuscript and checked as
+reported. Their status is that of proved research claims awaiting
+independent mathematical review, not established publication priority.
+
+\begin{thebibliography}{9}
+
+\bibitem{poonen}
+Bjorn Poonen, with an appendix by Matthias Aschenbrenner,
+\emph{Automorphisms mapping a point into a subvariety},
+Journal of Algebraic Geometry \textbf{20} (2011), 785--794.
+Author manuscript dated 14 July 2009, especially Lemma 4.1,
+Corollary 4.3, and Section 5.
+\url{https://math.mit.edu/~poonen/papers/automorphism.pdf}.
+
+\bibitem{coq}
+Dominique Larchey-Wendling and Yannick Forster,
+\emph{Hilbert's Tenth Problem in Coq (Extended Version)},
+Logical Methods in Computer Science \textbf{18}(1), article 35 (2022).
+\url{https://arxiv.org/abs/2003.04604}.
+
+\bibitem{stacks}
+The Stacks Project Authors,
+\emph{The Stacks Project}, Tag 01V4, Smooth morphisms.
+\url{https://stacks.math.columbia.edu/tag/01V4}.
+Accessed 2 October 2026.
+
+\bibitem{repo}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt}, repository and Hilbert-tenth-problem overview.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Repository paths \texttt{README.md} and
+\texttt{Computability/HilbertTenthProblem/README.md}; accessed
+2 October 2026.
+
+\bibitem{canonical}
+ProveIt research collection,
+\emph{Canonical Diophantine certificates}, collection README.
+Repository path
+\path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/README.md}.
+Accessed 2 October 2026. Research-report claims are not treated as
+proof-assistant verification in this manuscript.
+
+\bibitem{status}
+ProveIt research collection,
+\emph{Research and verification status}, canonical causal certificates.
+Repository path
+\path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/01-causal-traces-RESEARCH_STATUS.md}.
+Read at commit \texttt{a845ab5d0f4591294ef3c2d92feaeb5825a8d543};
+blob \texttt{e768b2284c6723d21d77edfb24f786ccdb83585a}.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,20 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+.PHONY: all pdf test clean
+all: pdf test
+
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+
+test:
+	$(PYTHON) code/test_profiles.py > data/test_log.txt
+	$(PYTHON) code/test_applications.py
+	$(PYTHON) code/compiler.py
+	$(PYTHON) code/check_export.py data/finite_certificate.json data/infinite_certificate.json > data/export_check_log.txt
+	cat data/export_check_log.txt
+
+clean:
+	rm -f article.aux article.log article.out article.toc article.fls article.fdb_latexmk
