@@ -1,0 +1,2504 @@
+{
+  "counts": {
+    "all_paid_gates_live": 18,
+    "arbitrary_complete_NAND_fibers": 3600,
+    "complete_NAND_truth": 432,
+    "complete_acceptance_graph_identity": 3,
+    "complete_offzero_NAND_correction": 3,
+    "complete_parent_graph_correction": 1,
+    "complete_symbolic_NAND": 12,
+    "complete_symbolic_atom": 6,
+    "complete_truth_output": 3,
+    "defensive_builds": 1,
+    "exact_degree": 18,
+    "exhaustive_NAND_boolean_block": 900,
+    "exhaustive_atom_zero_fibers": 30656,
+    "full_charged_ledger": 18,
+    "full_large_signed_evaluation": 432,
+    "guard_rejections": 84,
+    "large_canonical_truth": 20,
+    "natural_real_false_bit_counterexample": 1,
+    "negative_input_natural_variant_missing": 1,
+    "parent_zero_restoration": 20,
+    "private_quotient_counterexample": 1,
+    "real_false_bit_counterexample": 1,
+    "real_negative_counterexample": 1,
+    "signed_helpers_break_canonical": 1,
+    "single_coordinate_false_witness": 56,
+    "strictly_positive_witness_counterexample": 1
+  },
+  "packets": [
+    {
+      "config": {
+        "kind": "atom",
+        "materialize_truth": false,
+        "mode": "signed_existential"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "qp",
+          "qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "b",
+          "g5"
+        ],
+        [
+          "g7",
+          "add",
+          "g4",
+          "g6"
+        ]
+      ],
+      "inputs": [
+        "L"
+      ],
+      "ledger": {
+        "A": 5,
+        "M": 3,
+        "total": 8,
+        "witnesses": 3
+      },
+      "output": "g7",
+      "truth_expression": "1-b",
+      "truth_output": null,
+      "witnesses": [
+        "qp",
+        "qm",
+        "b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "atom",
+        "materialize_truth": true,
+        "mode": "signed_existential"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "qp",
+          "qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "b",
+          "g5"
+        ],
+        [
+          "g7",
+          "add",
+          "g4",
+          "g6"
+        ],
+        [
+          "g8",
+          "sub",
+          1,
+          "b"
+        ]
+      ],
+      "inputs": [
+        "L"
+      ],
+      "ledger": {
+        "A": 6,
+        "M": 3,
+        "total": 9,
+        "witnesses": 3
+      },
+      "output": "g7",
+      "truth_expression": "1-b",
+      "truth_output": "g8",
+      "witnesses": [
+        "qp",
+        "qm",
+        "b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "signed_existential",
+        "variant": "relation"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "a_L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "a_b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "a_b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "a_b",
+          "g5"
+        ],
+        [
+          "g7",
+          "sub",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g8",
+          "mul",
+          2,
+          "g7"
+        ],
+        [
+          "g9",
+          "sub",
+          "b_L",
+          "g8"
+        ],
+        [
+          "g10",
+          "sub",
+          "g9",
+          "b_b"
+        ],
+        [
+          "g11",
+          "mul",
+          "g10",
+          "g10"
+        ],
+        [
+          "g12",
+          "sub",
+          "b_b",
+          1
+        ],
+        [
+          "g13",
+          "mul",
+          "b_b",
+          "g12"
+        ],
+        [
+          "g14",
+          "mul",
+          "g5",
+          "g12"
+        ],
+        [
+          "g15",
+          "sub",
+          "z",
+          1
+        ],
+        [
+          "g16",
+          "add",
+          "g15",
+          "g14"
+        ],
+        [
+          "g17",
+          "mul",
+          "g16",
+          "g16"
+        ],
+        [
+          "g18",
+          "add",
+          "g4",
+          "g6"
+        ],
+        [
+          "g19",
+          "add",
+          "g18",
+          "g11"
+        ],
+        [
+          "g20",
+          "add",
+          "g19",
+          "g13"
+        ],
+        [
+          "g21",
+          "add",
+          "g20",
+          "g17"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 14,
+        "M": 8,
+        "total": 22,
+        "witnesses": 7
+      },
+      "output": "g21",
+      "truth_output": null,
+      "witnesses": [
+        "a_qp",
+        "a_qm",
+        "a_b",
+        "b_qp",
+        "b_qm",
+        "b_b",
+        "z"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "signed_existential",
+        "variant": "accepted"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "a_L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "a_b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "a_b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "a_b",
+          "g5"
+        ],
+        [
+          "g7",
+          "sub",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g8",
+          "mul",
+          2,
+          "g7"
+        ],
+        [
+          "g9",
+          "sub",
+          "b_L",
+          "g8"
+        ],
+        [
+          "g10",
+          "sub",
+          "g9",
+          "b_b"
+        ],
+        [
+          "g11",
+          "mul",
+          "g10",
+          "g10"
+        ],
+        [
+          "g12",
+          "sub",
+          "b_b",
+          1
+        ],
+        [
+          "g13",
+          "mul",
+          "b_b",
+          "g12"
+        ],
+        [
+          "g14",
+          "mul",
+          "g5",
+          "g12"
+        ],
+        [
+          "g15",
+          "sub",
+          "z",
+          1
+        ],
+        [
+          "g16",
+          "add",
+          "g15",
+          "g14"
+        ],
+        [
+          "g17",
+          "mul",
+          "g16",
+          "g16"
+        ],
+        [
+          "g18",
+          "mul",
+          "g15",
+          "g15"
+        ],
+        [
+          "g19",
+          "add",
+          "g4",
+          "g6"
+        ],
+        [
+          "g20",
+          "add",
+          "g19",
+          "g11"
+        ],
+        [
+          "g21",
+          "add",
+          "g20",
+          "g13"
+        ],
+        [
+          "g22",
+          "add",
+          "g21",
+          "g17"
+        ],
+        [
+          "g23",
+          "add",
+          "g22",
+          "g18"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 15,
+        "M": 9,
+        "total": 24,
+        "witnesses": 7
+      },
+      "output": "g23",
+      "truth_output": null,
+      "witnesses": [
+        "a_qp",
+        "a_qm",
+        "a_b",
+        "b_qp",
+        "b_qm",
+        "b_b",
+        "z"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "signed_existential",
+        "variant": "projected"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "a_L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "a_b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "a_b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "a_b",
+          "g5"
+        ],
+        [
+          "g7",
+          "sub",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g8",
+          "mul",
+          2,
+          "g7"
+        ],
+        [
+          "g9",
+          "sub",
+          "b_L",
+          "g8"
+        ],
+        [
+          "g10",
+          "sub",
+          "g9",
+          "b_b"
+        ],
+        [
+          "g11",
+          "mul",
+          "g10",
+          "g10"
+        ],
+        [
+          "g12",
+          "sub",
+          "b_b",
+          1
+        ],
+        [
+          "g13",
+          "mul",
+          "b_b",
+          "g12"
+        ],
+        [
+          "g14",
+          "mul",
+          "g5",
+          "g12"
+        ],
+        [
+          "g15",
+          "mul",
+          "g14",
+          "g14"
+        ],
+        [
+          "g16",
+          "add",
+          "g4",
+          "g6"
+        ],
+        [
+          "g17",
+          "add",
+          "g16",
+          "g11"
+        ],
+        [
+          "g18",
+          "add",
+          "g17",
+          "g13"
+        ],
+        [
+          "g19",
+          "add",
+          "g18",
+          "g15"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 12,
+        "M": 8,
+        "total": 20,
+        "witnesses": 6
+      },
+      "output": "g19",
+      "truth_output": null,
+      "witnesses": [
+        "a_qp",
+        "a_qm",
+        "a_b",
+        "b_qp",
+        "b_qm",
+        "b_b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "signed_existential",
+        "variant": "factored"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "a_L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "a_b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g6",
+          "mul",
+          2,
+          "g5"
+        ],
+        [
+          "g7",
+          "sub",
+          "b_L",
+          "g6"
+        ],
+        [
+          "g8",
+          "sub",
+          "g7",
+          "b_b"
+        ],
+        [
+          "g9",
+          "mul",
+          "g8",
+          "g8"
+        ],
+        [
+          "g10",
+          "add",
+          "a_b",
+          "b_b"
+        ],
+        [
+          "g11",
+          "sub",
+          "g10",
+          1
+        ],
+        [
+          "g12",
+          "mul",
+          "g11",
+          "g11"
+        ],
+        [
+          "g13",
+          "mul",
+          "a_b",
+          "b_b"
+        ],
+        [
+          "g14",
+          "sub",
+          "g12",
+          "g13"
+        ],
+        [
+          "g15",
+          "add",
+          "g4",
+          "g9"
+        ],
+        [
+          "g16",
+          "add",
+          "g15",
+          "g14"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 11,
+        "M": 6,
+        "total": 17,
+        "witnesses": 6
+      },
+      "output": "g16",
+      "truth_output": null,
+      "witnesses": [
+        "a_qp",
+        "a_qm",
+        "a_b",
+        "b_qp",
+        "b_qm",
+        "b_b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "atom",
+        "materialize_truth": false,
+        "mode": "signed_canonical"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "qp",
+          "qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "b",
+          "g5"
+        ],
+        [
+          "g7",
+          "mul",
+          "qp",
+          "qm"
+        ],
+        [
+          "g8",
+          "add",
+          "g4",
+          "g6"
+        ],
+        [
+          "g9",
+          "add",
+          "g8",
+          "g7"
+        ]
+      ],
+      "inputs": [
+        "L"
+      ],
+      "ledger": {
+        "A": 6,
+        "M": 4,
+        "total": 10,
+        "witnesses": 3
+      },
+      "output": "g9",
+      "truth_expression": "1-b",
+      "truth_output": null,
+      "witnesses": [
+        "qp",
+        "qm",
+        "b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "atom",
+        "materialize_truth": true,
+        "mode": "signed_canonical"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "qp",
+          "qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "b",
+          "g5"
+        ],
+        [
+          "g7",
+          "mul",
+          "qp",
+          "qm"
+        ],
+        [
+          "g8",
+          "add",
+          "g4",
+          "g6"
+        ],
+        [
+          "g9",
+          "add",
+          "g8",
+          "g7"
+        ],
+        [
+          "g10",
+          "sub",
+          1,
+          "b"
+        ]
+      ],
+      "inputs": [
+        "L"
+      ],
+      "ledger": {
+        "A": 7,
+        "M": 4,
+        "total": 11,
+        "witnesses": 3
+      },
+      "output": "g9",
+      "truth_expression": "1-b",
+      "truth_output": "g10",
+      "witnesses": [
+        "qp",
+        "qm",
+        "b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "signed_canonical",
+        "variant": "relation"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "a_L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "a_b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "a_b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "a_b",
+          "g5"
+        ],
+        [
+          "g7",
+          "mul",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g8",
+          "sub",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g9",
+          "mul",
+          2,
+          "g8"
+        ],
+        [
+          "g10",
+          "sub",
+          "b_L",
+          "g9"
+        ],
+        [
+          "g11",
+          "sub",
+          "g10",
+          "b_b"
+        ],
+        [
+          "g12",
+          "mul",
+          "g11",
+          "g11"
+        ],
+        [
+          "g13",
+          "sub",
+          "b_b",
+          1
+        ],
+        [
+          "g14",
+          "mul",
+          "b_b",
+          "g13"
+        ],
+        [
+          "g15",
+          "mul",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g16",
+          "mul",
+          "g5",
+          "g13"
+        ],
+        [
+          "g17",
+          "sub",
+          "z",
+          1
+        ],
+        [
+          "g18",
+          "add",
+          "g17",
+          "g16"
+        ],
+        [
+          "g19",
+          "mul",
+          "g18",
+          "g18"
+        ],
+        [
+          "g20",
+          "add",
+          "g4",
+          "g6"
+        ],
+        [
+          "g21",
+          "add",
+          "g20",
+          "g7"
+        ],
+        [
+          "g22",
+          "add",
+          "g21",
+          "g12"
+        ],
+        [
+          "g23",
+          "add",
+          "g22",
+          "g14"
+        ],
+        [
+          "g24",
+          "add",
+          "g23",
+          "g15"
+        ],
+        [
+          "g25",
+          "add",
+          "g24",
+          "g19"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 16,
+        "M": 10,
+        "total": 26,
+        "witnesses": 7
+      },
+      "output": "g25",
+      "truth_output": null,
+      "witnesses": [
+        "a_qp",
+        "a_qm",
+        "a_b",
+        "b_qp",
+        "b_qm",
+        "b_b",
+        "z"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "signed_canonical",
+        "variant": "accepted"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "a_L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "a_b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "a_b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "a_b",
+          "g5"
+        ],
+        [
+          "g7",
+          "mul",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g8",
+          "sub",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g9",
+          "mul",
+          2,
+          "g8"
+        ],
+        [
+          "g10",
+          "sub",
+          "b_L",
+          "g9"
+        ],
+        [
+          "g11",
+          "sub",
+          "g10",
+          "b_b"
+        ],
+        [
+          "g12",
+          "mul",
+          "g11",
+          "g11"
+        ],
+        [
+          "g13",
+          "sub",
+          "b_b",
+          1
+        ],
+        [
+          "g14",
+          "mul",
+          "b_b",
+          "g13"
+        ],
+        [
+          "g15",
+          "mul",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g16",
+          "mul",
+          "g5",
+          "g13"
+        ],
+        [
+          "g17",
+          "sub",
+          "z",
+          1
+        ],
+        [
+          "g18",
+          "add",
+          "g17",
+          "g16"
+        ],
+        [
+          "g19",
+          "mul",
+          "g18",
+          "g18"
+        ],
+        [
+          "g20",
+          "mul",
+          "g17",
+          "g17"
+        ],
+        [
+          "g21",
+          "add",
+          "g4",
+          "g6"
+        ],
+        [
+          "g22",
+          "add",
+          "g21",
+          "g7"
+        ],
+        [
+          "g23",
+          "add",
+          "g22",
+          "g12"
+        ],
+        [
+          "g24",
+          "add",
+          "g23",
+          "g14"
+        ],
+        [
+          "g25",
+          "add",
+          "g24",
+          "g15"
+        ],
+        [
+          "g26",
+          "add",
+          "g25",
+          "g19"
+        ],
+        [
+          "g27",
+          "add",
+          "g26",
+          "g20"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 17,
+        "M": 11,
+        "total": 28,
+        "witnesses": 7
+      },
+      "output": "g27",
+      "truth_output": null,
+      "witnesses": [
+        "a_qp",
+        "a_qm",
+        "a_b",
+        "b_qp",
+        "b_qm",
+        "b_b",
+        "z"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "signed_canonical",
+        "variant": "projected"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "a_L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "a_b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "sub",
+          "a_b",
+          1
+        ],
+        [
+          "g6",
+          "mul",
+          "a_b",
+          "g5"
+        ],
+        [
+          "g7",
+          "mul",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g8",
+          "sub",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g9",
+          "mul",
+          2,
+          "g8"
+        ],
+        [
+          "g10",
+          "sub",
+          "b_L",
+          "g9"
+        ],
+        [
+          "g11",
+          "sub",
+          "g10",
+          "b_b"
+        ],
+        [
+          "g12",
+          "mul",
+          "g11",
+          "g11"
+        ],
+        [
+          "g13",
+          "sub",
+          "b_b",
+          1
+        ],
+        [
+          "g14",
+          "mul",
+          "b_b",
+          "g13"
+        ],
+        [
+          "g15",
+          "mul",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g16",
+          "mul",
+          "g5",
+          "g13"
+        ],
+        [
+          "g17",
+          "mul",
+          "g16",
+          "g16"
+        ],
+        [
+          "g18",
+          "add",
+          "g4",
+          "g6"
+        ],
+        [
+          "g19",
+          "add",
+          "g18",
+          "g7"
+        ],
+        [
+          "g20",
+          "add",
+          "g19",
+          "g12"
+        ],
+        [
+          "g21",
+          "add",
+          "g20",
+          "g14"
+        ],
+        [
+          "g22",
+          "add",
+          "g21",
+          "g15"
+        ],
+        [
+          "g23",
+          "add",
+          "g22",
+          "g17"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 14,
+        "M": 10,
+        "total": 24,
+        "witnesses": 6
+      },
+      "output": "g23",
+      "truth_output": null,
+      "witnesses": [
+        "a_qp",
+        "a_qm",
+        "a_b",
+        "b_qp",
+        "b_qm",
+        "b_b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "signed_canonical",
+        "variant": "factored"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "signed integer",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "sub",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g1",
+          "mul",
+          2,
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "a_L",
+          "g1"
+        ],
+        [
+          "g3",
+          "sub",
+          "g2",
+          "a_b"
+        ],
+        [
+          "g4",
+          "mul",
+          "g3",
+          "g3"
+        ],
+        [
+          "g5",
+          "mul",
+          "a_qp",
+          "a_qm"
+        ],
+        [
+          "g6",
+          "sub",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g7",
+          "mul",
+          2,
+          "g6"
+        ],
+        [
+          "g8",
+          "sub",
+          "b_L",
+          "g7"
+        ],
+        [
+          "g9",
+          "sub",
+          "g8",
+          "b_b"
+        ],
+        [
+          "g10",
+          "mul",
+          "g9",
+          "g9"
+        ],
+        [
+          "g11",
+          "mul",
+          "b_qp",
+          "b_qm"
+        ],
+        [
+          "g12",
+          "add",
+          "a_b",
+          "b_b"
+        ],
+        [
+          "g13",
+          "sub",
+          "g12",
+          1
+        ],
+        [
+          "g14",
+          "mul",
+          "g13",
+          "g13"
+        ],
+        [
+          "g15",
+          "mul",
+          "a_b",
+          "b_b"
+        ],
+        [
+          "g16",
+          "sub",
+          "g14",
+          "g15"
+        ],
+        [
+          "g17",
+          "add",
+          "g4",
+          "g5"
+        ],
+        [
+          "g18",
+          "add",
+          "g17",
+          "g10"
+        ],
+        [
+          "g19",
+          "add",
+          "g18",
+          "g11"
+        ],
+        [
+          "g20",
+          "add",
+          "g19",
+          "g16"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 13,
+        "M": 8,
+        "total": 21,
+        "witnesses": 6
+      },
+      "output": "g20",
+      "truth_output": null,
+      "witnesses": [
+        "a_qp",
+        "a_qm",
+        "a_b",
+        "b_qp",
+        "b_qm",
+        "b_b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "atom",
+        "materialize_truth": false,
+        "mode": "natural"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "natural",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "mul",
+          2,
+          "q"
+        ],
+        [
+          "g1",
+          "sub",
+          "L",
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "g1",
+          "b"
+        ],
+        [
+          "g3",
+          "mul",
+          "g2",
+          "g2"
+        ],
+        [
+          "g4",
+          "sub",
+          "b",
+          1
+        ],
+        [
+          "g5",
+          "mul",
+          "b",
+          "g4"
+        ],
+        [
+          "g6",
+          "add",
+          "g3",
+          "g5"
+        ]
+      ],
+      "inputs": [
+        "L"
+      ],
+      "ledger": {
+        "A": 4,
+        "M": 3,
+        "total": 7,
+        "witnesses": 2
+      },
+      "output": "g6",
+      "truth_expression": "1-b",
+      "truth_output": null,
+      "witnesses": [
+        "q",
+        "b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "atom",
+        "materialize_truth": true,
+        "mode": "natural"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "natural",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "mul",
+          2,
+          "q"
+        ],
+        [
+          "g1",
+          "sub",
+          "L",
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "g1",
+          "b"
+        ],
+        [
+          "g3",
+          "mul",
+          "g2",
+          "g2"
+        ],
+        [
+          "g4",
+          "sub",
+          "b",
+          1
+        ],
+        [
+          "g5",
+          "mul",
+          "b",
+          "g4"
+        ],
+        [
+          "g6",
+          "add",
+          "g3",
+          "g5"
+        ],
+        [
+          "g7",
+          "sub",
+          1,
+          "b"
+        ]
+      ],
+      "inputs": [
+        "L"
+      ],
+      "ledger": {
+        "A": 5,
+        "M": 3,
+        "total": 8,
+        "witnesses": 2
+      },
+      "output": "g6",
+      "truth_expression": "1-b",
+      "truth_output": "g7",
+      "witnesses": [
+        "q",
+        "b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "natural",
+        "variant": "relation"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "natural",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "mul",
+          2,
+          "a_q"
+        ],
+        [
+          "g1",
+          "sub",
+          "a_L",
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "g1",
+          "a_b"
+        ],
+        [
+          "g3",
+          "mul",
+          "g2",
+          "g2"
+        ],
+        [
+          "g4",
+          "sub",
+          "a_b",
+          1
+        ],
+        [
+          "g5",
+          "mul",
+          "a_b",
+          "g4"
+        ],
+        [
+          "g6",
+          "mul",
+          2,
+          "b_q"
+        ],
+        [
+          "g7",
+          "sub",
+          "b_L",
+          "g6"
+        ],
+        [
+          "g8",
+          "sub",
+          "g7",
+          "b_b"
+        ],
+        [
+          "g9",
+          "mul",
+          "g8",
+          "g8"
+        ],
+        [
+          "g10",
+          "sub",
+          "b_b",
+          1
+        ],
+        [
+          "g11",
+          "mul",
+          "b_b",
+          "g10"
+        ],
+        [
+          "g12",
+          "mul",
+          "g4",
+          "g10"
+        ],
+        [
+          "g13",
+          "sub",
+          "z",
+          1
+        ],
+        [
+          "g14",
+          "add",
+          "g13",
+          "g12"
+        ],
+        [
+          "g15",
+          "mul",
+          "g14",
+          "g14"
+        ],
+        [
+          "g16",
+          "add",
+          "g3",
+          "g5"
+        ],
+        [
+          "g17",
+          "add",
+          "g16",
+          "g9"
+        ],
+        [
+          "g18",
+          "add",
+          "g17",
+          "g11"
+        ],
+        [
+          "g19",
+          "add",
+          "g18",
+          "g15"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 12,
+        "M": 8,
+        "total": 20,
+        "witnesses": 5
+      },
+      "output": "g19",
+      "truth_output": null,
+      "witnesses": [
+        "a_q",
+        "a_b",
+        "b_q",
+        "b_b",
+        "z"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "natural",
+        "variant": "accepted"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "natural",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "mul",
+          2,
+          "a_q"
+        ],
+        [
+          "g1",
+          "sub",
+          "a_L",
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "g1",
+          "a_b"
+        ],
+        [
+          "g3",
+          "mul",
+          "g2",
+          "g2"
+        ],
+        [
+          "g4",
+          "sub",
+          "a_b",
+          1
+        ],
+        [
+          "g5",
+          "mul",
+          "a_b",
+          "g4"
+        ],
+        [
+          "g6",
+          "mul",
+          2,
+          "b_q"
+        ],
+        [
+          "g7",
+          "sub",
+          "b_L",
+          "g6"
+        ],
+        [
+          "g8",
+          "sub",
+          "g7",
+          "b_b"
+        ],
+        [
+          "g9",
+          "mul",
+          "g8",
+          "g8"
+        ],
+        [
+          "g10",
+          "sub",
+          "b_b",
+          1
+        ],
+        [
+          "g11",
+          "mul",
+          "b_b",
+          "g10"
+        ],
+        [
+          "g12",
+          "mul",
+          "g4",
+          "g10"
+        ],
+        [
+          "g13",
+          "sub",
+          "z",
+          1
+        ],
+        [
+          "g14",
+          "add",
+          "g13",
+          "g12"
+        ],
+        [
+          "g15",
+          "mul",
+          "g14",
+          "g14"
+        ],
+        [
+          "g16",
+          "mul",
+          "g13",
+          "g13"
+        ],
+        [
+          "g17",
+          "add",
+          "g3",
+          "g5"
+        ],
+        [
+          "g18",
+          "add",
+          "g17",
+          "g9"
+        ],
+        [
+          "g19",
+          "add",
+          "g18",
+          "g11"
+        ],
+        [
+          "g20",
+          "add",
+          "g19",
+          "g15"
+        ],
+        [
+          "g21",
+          "add",
+          "g20",
+          "g16"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 13,
+        "M": 9,
+        "total": 22,
+        "witnesses": 5
+      },
+      "output": "g21",
+      "truth_output": null,
+      "witnesses": [
+        "a_q",
+        "a_b",
+        "b_q",
+        "b_b",
+        "z"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "natural",
+        "variant": "projected"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "natural",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "mul",
+          2,
+          "a_q"
+        ],
+        [
+          "g1",
+          "sub",
+          "a_L",
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "g1",
+          "a_b"
+        ],
+        [
+          "g3",
+          "mul",
+          "g2",
+          "g2"
+        ],
+        [
+          "g4",
+          "sub",
+          "a_b",
+          1
+        ],
+        [
+          "g5",
+          "mul",
+          "a_b",
+          "g4"
+        ],
+        [
+          "g6",
+          "mul",
+          2,
+          "b_q"
+        ],
+        [
+          "g7",
+          "sub",
+          "b_L",
+          "g6"
+        ],
+        [
+          "g8",
+          "sub",
+          "g7",
+          "b_b"
+        ],
+        [
+          "g9",
+          "mul",
+          "g8",
+          "g8"
+        ],
+        [
+          "g10",
+          "sub",
+          "b_b",
+          1
+        ],
+        [
+          "g11",
+          "mul",
+          "b_b",
+          "g10"
+        ],
+        [
+          "g12",
+          "mul",
+          "g4",
+          "g10"
+        ],
+        [
+          "g13",
+          "mul",
+          "g12",
+          "g12"
+        ],
+        [
+          "g14",
+          "add",
+          "g3",
+          "g5"
+        ],
+        [
+          "g15",
+          "add",
+          "g14",
+          "g9"
+        ],
+        [
+          "g16",
+          "add",
+          "g15",
+          "g11"
+        ],
+        [
+          "g17",
+          "add",
+          "g16",
+          "g13"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 10,
+        "M": 8,
+        "total": 18,
+        "witnesses": 4
+      },
+      "output": "g17",
+      "truth_output": null,
+      "witnesses": [
+        "a_q",
+        "a_b",
+        "b_q",
+        "b_b"
+      ]
+    },
+    {
+      "config": {
+        "kind": "nand",
+        "mode": "natural",
+        "variant": "factored"
+      },
+      "context_parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+      "domain": {
+        "inputs": "natural",
+        "witnesses": "natural"
+      },
+      "format": "parity_truth_specialization_v1",
+      "gates": [
+        [
+          "g0",
+          "mul",
+          2,
+          "a_q"
+        ],
+        [
+          "g1",
+          "sub",
+          "a_L",
+          "g0"
+        ],
+        [
+          "g2",
+          "sub",
+          "g1",
+          "a_b"
+        ],
+        [
+          "g3",
+          "mul",
+          "g2",
+          "g2"
+        ],
+        [
+          "g4",
+          "mul",
+          2,
+          "b_q"
+        ],
+        [
+          "g5",
+          "sub",
+          "b_L",
+          "g4"
+        ],
+        [
+          "g6",
+          "sub",
+          "g5",
+          "b_b"
+        ],
+        [
+          "g7",
+          "mul",
+          "g6",
+          "g6"
+        ],
+        [
+          "g8",
+          "add",
+          "a_b",
+          "b_b"
+        ],
+        [
+          "g9",
+          "sub",
+          "g8",
+          1
+        ],
+        [
+          "g10",
+          "mul",
+          "g9",
+          "g9"
+        ],
+        [
+          "g11",
+          "mul",
+          "a_b",
+          "b_b"
+        ],
+        [
+          "g12",
+          "sub",
+          "g10",
+          "g11"
+        ],
+        [
+          "g13",
+          "add",
+          "g3",
+          "g7"
+        ],
+        [
+          "g14",
+          "add",
+          "g13",
+          "g12"
+        ]
+      ],
+      "inputs": [
+        "a_L",
+        "b_L"
+      ],
+      "ledger": {
+        "A": 9,
+        "M": 6,
+        "total": 15,
+        "witnesses": 4
+      },
+      "output": "g14",
+      "truth_output": null,
+      "witnesses": [
+        "a_q",
+        "a_b",
+        "b_q",
+        "b_b"
+      ]
+    }
+  ],
+  "parent_sha256": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+  "scope": "Fixed parity only, already evaluated inputs, natural witnesses. Signed existential variant has infinite fibers; signed canonical and natural variants have unique atom fibers. Truth materialization is charged when emitted. No whole-real-orthant or unrestricted-interface substitution, optimum, or global universal-operation claim.",
+  "source_sha256": "fabf4eef1b31f4cf6695cc5907e2d56f5bd2fac1e9ab8f0ad5b375cbc0100bf7",
+  "status": "PASS"
+}

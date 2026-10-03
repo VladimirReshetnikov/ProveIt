@@ -46,6 +46,12 @@
 > costs 14=5M+9A with five natural witnesses and exact truth, but infinite fibers.
 > Only its truth output can be shared. Independent full-NAND counts are 53→39;
 > both full sources and domain/privacy counterexamples have fresh root replays.
+> The [fixed-parity specialization](parity_truth_specialization.md) now costs
+> 8 operations with infinite signed-input fibers, 10 with canonical fibers, or
+> 7 on known-natural inputs. Truth materialization costs one extra A. The fully
+> paid fused accepted-NAND predicate costs 17/21/15 in those modes. Its separate
+> [independent circuit audit](review_parity_truth_specialization.md) and root
+> writer replay pass. Keep parity-only, already-evaluated-input and natural-witness scope.
 > The complete U15 frontier511/4881,513/3120,515/2116,517/1936 is unchanged.
 > The [connected routing SLP](connected_cross_routing_slp.md) additionally emits
 > the full unchanged polynomial with shared selector/column/row sums: transfer

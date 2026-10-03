@@ -33,6 +33,13 @@ Its truth output is exact, but its witness fibers are infinite. The separate
 independent review emits a fully paid two-atom NAND comparison, 53→39 operations,
 and checks the natural-domain and private-coordinate boundaries.
 
+For fixed parity, the [specialized atoms](parity_truth_specialization.md) cost
+8 operations on signed inputs, 10 with unique witnesses, or 7 on known-natural
+inputs. Explicit truth materialization costs one further subtraction. A fully
+paid accepted-NAND example costs 17 operations. The [independent review](review_parity_truth_specialization.md)
+checks all eighteen complete circuits; this local result leaves the universal
+87-operation bound unchanged.
+
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
 Shared row/column sums reduce the transfer example from 245 to 206 operations
