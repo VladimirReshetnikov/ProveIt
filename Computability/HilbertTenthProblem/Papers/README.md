@@ -29,15 +29,22 @@ The [native-stream queue WIP handoff](research-wip/native-stream-queue/README.md
 preserves the conditional six/eight-operation stream component, portable
 independent audits, unfinished controller research and archived scratch
 evidence. Its [continuation prompt](research-wip/native-stream-queue/CONTINUATION_PROMPT.md)
-records the current75-operation certificate and87-operation polynomial
-frontiers alongside the historical handoff. The
+records the current75-operation certificate and86-operation polynomial
+bounds alongside the historical handoff. The
 [complete half-binomial75 proof](1980/FIXED_RAW_UNIVERSAL_75_PROOF.md)
 supplies the comparison bound; the
-[asymmetric-scale proof](research-wip/native-stream-queue/complete75_asymmetric_scale_tradeoffs.md)
-supplies87=48M+39A with19 positive witnesses and exact degree169. Its
-88=47M+41A alternative has exact degree125. Keeping Y=sq³ while changing
-X=wq³ to X=wq preserves each frozen parent's full positive zero set through
-a proved integer coordinate bijection at zeros.
+[factored first-root proof](research-wip/native-stream-queue/complete86_factored_first_root.md)
+supplies **86=48M+38A**, with19 positive witnesses and exact degree179.
+Its ordinary-strong alternative costs87=47M+40A at exact degree135.
+The supplied-root coordinate and `T²−L(L+k)` factorization save one
+addition while preserving each authenticated parent's full positive zero
+set and complete ordinary-input contract. Independent
+[source](research-wip/native-stream-queue/review_complete86_first_root_source.md)
+and [mathematical](research-wip/native-stream-queue/review_complete86_first_root_math.md)
+audits and fresh receipt replays pass. The earlier88/125 alternative
+remains a separate degree tradeoff. Subsequent progress entries retain
+their historical counts and contemporary benchmark statements; the current
+numerical bounds are75/86.
 
 The [completed nine-report review](research-wip/native-stream-queue/incoming_substrate_review_2a8a39599.md)
 validates the recent spectral, clock, polynomial-history, boundary, sandpile,

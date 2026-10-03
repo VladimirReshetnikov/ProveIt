@@ -1,5 +1,20 @@
 # WIP: native queue streams and research continuation
 
+The complete universal polynomial now costs **86=48M+38A**, with19 positive
+witnesses and exact degree179. The
+[factored first-root proof and complete circuits](complete86_factored_first_root.md)
+replace `g²+L(2g−k)` by `T²−L(L+k)`, supplying `T=L+g`.
+At every complete positive zero, the product-unit equation forces `T>L`,
+so the inverse gap is positive and the full parent theorem transfers.
+All other factors and ordinary-input obligations remain paid. The alternative
+ordinary-strong circuit costs87=47M+40A at exact degree135. The separate
+comparison-system bound remains75. Both the
+[independent source audit](review_complete86_first_root_source.md) and
+[mathematical challenge](review_complete86_first_root_math.md) pass; all three
+receipts have fresh root replays. Earlier entries below retain their
+historical counts and benchmark statements; the current numerical bounds
+are75/86. The grouping frontier has not yet been recomputed for this change.
+
 [All twelve batch-80 archives](incoming_substrate_review_4e270aa46.md) have
 completed their scoped reviews and root replays. The inventory pins 388
 published member occurrences; the complete universal polynomial bound remains 87.

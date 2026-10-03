@@ -13,13 +13,23 @@ universal Diophantine equations by James P. Jones and coauthors:
 | 1982 | J. P. Jones | Universal Diophantine Equation | *J. Symbolic Logic* 47, 549–571 | XeLaTeX |
 | 1984 | J. P. Jones, Yu. V. Matiyasevich | Register Machine Proof of the Theorem on Exponential Diophantine Representation of Enumerable Sets | *J. Symbolic Logic* 49, 818–829 | pdfLaTeX |
 
-The established arithmetic bounds remain **75 operations for a complete
-certificate and 87 for one universal polynomial**. The
-[asymmetric-scale construction](Papers/research-wip/native-stream-queue/complete75_asymmetric_scale_tradeoffs.md)
-costs **48M+39A**, with19 positive witnesses and exact degree169. Its
-88-operation alternative has exact degree125. Each has a proved positive
-integer zero-set bijection with its frozen parent, retaining both ratio
-slacks and the full strong equation.
+The established arithmetic bounds are **75 operations for a complete
+certificate and 86 for one universal polynomial**. The
+[factored first-root construction](Papers/research-wip/native-stream-queue/complete86_factored_first_root.md)
+costs **48M+38A**, with **19 positive witnesses and exact degree179**.
+Its ordinary-strong alternative costs **87=47M+40A**, with exact degree135;
+the earlier88/125 alternative remains a separate degree tradeoff. Replacing
+the supplied first gap by its positive Pell root saves one addition through
+`T²−L(L+k)`. A proved bijection preserves the complete positive integer zero
+set, ordinary input, both ratio slacks and the full strong equation.
+The [source audit](Papers/research-wip/native-stream-queue/review_complete86_first_root_source.md)
+and [positive-zero challenge](Papers/research-wip/native-stream-queue/review_complete86_first_root_math.md)
+independently verify the result. The source and both review receipts pass
+fresh replay. This is a mathematical proof with executable checks, not a
+Lean formalization or an unrestricted optimality claim.
+
+The progress entries below preserve their historical counts and contemporary
+benchmark statements; the current complete numerical bounds are75/86.
 The preceding complete
 [fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
 has an illustrative **228-operation certificate / 245-operation polynomial
@@ -1209,7 +1219,11 @@ retains its full strong equation.
   The later [asymmetric scale](Papers/research-wip/native-stream-queue/complete75_asymmetric_scale_tradeoffs.md)
   lowers these87/88 exact degrees to169/125 with the same operation counts
   and a full positive-zero bijection to each historical parent.
-  The75-operation certificate bound and87-operation polynomial bound remain distinct.
+  The [factored first root](Papers/research-wip/native-stream-queue/complete86_factored_first_root.md)
+  then gives86/179 and87/135, retaining19 positive witnesses through a full
+  positive-zero bijection. The75-operation certificate and86-operation
+  polynomial bounds remain distinct. This proved reduction is separate
+  from the unsound or unresolved historical86/87 proposals below.
   The [weakened-bound86 candidate](Papers/research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
   has exact signed parent identities and positive completeness. Its new
   [positive-index theorem](Papers/research-wip/native-stream-queue/complete75_weakened86_positive_index.md)

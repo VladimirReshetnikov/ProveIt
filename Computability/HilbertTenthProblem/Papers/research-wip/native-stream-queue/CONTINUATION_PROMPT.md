@@ -1,5 +1,24 @@
 # Continuation: universal straight-line certificates
 
+> **Current established universal bounds:75 comparison /86 polynomial.**
+> The [factored first-root reduction](complete86_factored_first_root.md)
+> gives86=48M+38A, exact degree179,19 positive witnesses. Its ordinary-strong
+> alternative gives87=47M+40A, degree135. The old first factor
+> `g²+L(2g−k)` becomes `T²−L(L+k)` with a supplied positive `tau_root`.
+> L is the retained paid `first_root_base=UM*ksn2`; k=eta+zeta≥2.
+> At a complete zero the first factor is±1, so T²−L²=Lk±1>0 and g=T−L>0.
+> This proves a bijection of full positive zero sets before using any
+> inherited compiler conclusions. Every other factor and fixed numeral is
+> unchanged. Both the [source review](review_complete86_first_root_source.md)
+> and [mathematical challenge](review_complete86_first_root_math.md) pass,
+> as do fresh author/reviewer replays. No full astronomical witness is
+> materialized; the quantified proof supplies the universal conclusion.
+> These are distinct from the historical failed weakened/squared-scale86
+> proposals and unresolved independent-gamma87. Keep those boundaries.
+> Earlier log entries below use their historical benchmark statements.
+> Next circuit work may transfer this exact five-gate block into the earlier
+> grouping family, but no such family reoptimization is yet claimed.
+
 > Latest three-mass examples: the [per-step branch search](three_mass_mixed_branch_search.md)
 > reaches44native/43clean for INC2;DEC2 at h=2, using implicit indices[0,1],
 > Horner guards and both endpoint penalties. Six witnesses, degree3. The

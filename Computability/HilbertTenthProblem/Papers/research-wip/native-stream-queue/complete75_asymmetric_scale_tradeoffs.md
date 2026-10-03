@@ -1,5 +1,11 @@
 # Asymmetric scales lower the complete87/88 degrees to169/125
 
+> The later [factored first-root coordinate](complete86_factored_first_root.md)
+> reduces these complete sources to **86/179 and87/135** (operations/exact
+> degree), preserving all19 positive witnesses through a full positive-zero
+> bijection. The frozen87/169 and88/125 sources and proofs below are retained
+> as its authenticated parents; the grouping frontier below is historical.
+
 > The [linear-input/gap and grouping extension](complete75_asymmetric_linear_gap_tradeoffs.md)
 > gives the combined exact frontier87/169,88/125,89/113,90/109,91/104,
 > 92/92,93/72,94/62,95/60,96/50,97/48,98/44, with19 witnesses.
