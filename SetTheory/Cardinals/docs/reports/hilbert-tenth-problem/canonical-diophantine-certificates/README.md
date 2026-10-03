@@ -1,9 +1,9 @@
 # Canonical Diophantine certificates
 
-**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles, exponential trajectories, compressed queue traces and eager Tree Calculus**
+**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles, exponential trajectories, compressed queue traces, eager Tree Calculus and literal periodic sandpiles**
 
 This is a research report dated 30 September 2026, with Parts XV–XIX dated 2 October
-2026, merged from twenty-one manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
+2026 and Part XX dated 3 October 2026, merged from twenty-three manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
 of batch 61, which is numbered 07 here, four of batch 62 (its
 manuscripts 01, 02, 04 and 05), numbered 08–11 here and added as Parts X–XIII
 after the report had been written, and one of batch 63 (its manuscript 02),
@@ -16,9 +16,11 @@ into Part XVII, and two more of batch 79 (its manuscripts 05 and 11, cluster
 J3), numbered 19 and 20 here: 19 proves Part XVI's main theorems again and
 is printed inside Part XVI as a marked second route, and 20 is added as Part
 XVIII, and one more of batch 79 (its manuscript 17, cluster J2), numbered
-21 here and added as Part XIX. The base is manuscript 05, *Canonical
+21 here and added as Part XIX, and two of batch 83 (its manuscripts 07 and 08, cluster H1; the research
+pipeline's Reports 35 and 36), numbered 22 and 23 here and merged into
+Part XX. The base is manuscript 05, *Canonical
 Trace Polytopes*; its `article.tex` was staged unprefixed and has been
-replaced in place by the merged text. All twenty-one manuscripts prove the same
+replaced in place by the merged text. All twenty-three manuscripts prove the same
 kind of theorem: an explicit integer polynomial whose natural zeros are in
 bijection with the bounded executions (or trace classes of executions) of a
 discrete substrate, with exactly one witness each; in 12 the execution is a
@@ -38,7 +40,12 @@ is a reliable FIFO execution whose transition trace is supplied as a
 straight-line grammar, and a supplied closed macro that repeats
 indefinitely. In 21 it is a terminating eager application in Barry Jay's
 Tree Calculus, represented by its memoized proof DAG, for an externally
-fixed bound on the number of distinct calls. They continue the Lean
+fixed bound on the number of distinct calls. In 22 the execution is the global stabilization of an ordinary
+sandpile on `ℤ³` with a binary odometer in a fixed rectangular prism,
+represented by its odometer, endpoint and canonical burning ranks; 22 also
+makes the input loader of a universal periodic sandpile literal, for the
+Neary–Woods machine `U₁₅`. In 23 the same certificate becomes exact over
+the nonnegative reals. They continue the Lean
 project `Computability/HilbertTenthProblem`, whose trace interfaces assert
 only that such representations exist. Author lines: "Research report
 prepared for the ProveIt project" (01), "Research manuscript for the ProveIt
@@ -63,9 +70,11 @@ draft for the ProveIt project") and "Research prepared for Vladimir
 Reshetnikov / Developed with ChatGPT for the ProveIt research program" (20;
 its PDF metadata reads "Research prepared for Vladimir Reshetnikov with
 ChatGPT") and "Prepared for Vladimir Reshetnikov" (21; its PDF metadata
-reads "Research report prepared for Vladimir Reshetnikov"). The article prints the batch-62, batch-78
+reads "Research report prepared for Vladimir Reshetnikov") and "Mathematical
+research report" (22 and 23; their PDF metadata has an empty author
+field). The article prints the batch-62, batch-78
 and batch-79 author lines in neutral form and records these assistant names only in its
-provenance appendix; the author lines of 12, 16 and 21 name no assistant.
+provenance appendix; the author lines of 12, 16, 21, 22 and 23 name no assistant.
 
 | Report no. | Batch, manuscript | Archive | Title | Pin | Arrived | Placed | Printed in |
 |---|---|---|---|---|---|---|---|
@@ -90,6 +99,8 @@ provenance appendix; the author lines of 12, 16 and 21 name no assistant.
 | 19 | batch 79, manuscript 05 | `no_borrowed_firings`, inner directory `no_borrowed_firings` (24-page PDF) | *No Borrowed Firings: Canonical Diophantine Certificates for Abelian Sandpiles* | `e58b724c2` | `060e08a07` | `bbaf322e5` | Section 3.19 (abstract, §1); Part XVI, Sections M19.1–M19.14 (opening, §§2–14) and M19.A–M19.B (Appendices A–B), a marked second route |
 | 20 | batch 79, manuscript 11 | `Compressed_Queue_Diophantine_Research`, inner directory `Compressed_Queue_Diophantine` (28-page PDF) | *Compressed Queue Computation: Grammar-size quartic certificates, exact periodic acceleration, and certified infinite loops* | `44983ed7e` | `ef2fc7990` | `bbaf322e5` | Section 3.20 (status box, abstract, §1); Part XVIII (§§2–15, Appendices A–B) |
 | 21 | batch 79, manuscript 17 | `Eager_Tree_Calculus_Research_Package`, inner directory `eager-tree-certificates` (30-page PDF) | *Eager Tree Calculus: Exact quartic proof-DAG certificates, operational universality, and binary sharing compression* | none (Jay's upstream `baa877d91`) | `aebfa386e`; corrected code edition `4e270aa46` (batch 80, manuscript 01) | `a7ae02511`; corrected code `8a4e64732` | Section 3.21 (title-page box and status lines, abstract, §1); Part XIX (§§2–12, Appendices A–B) |
+| 22 | batch 83, manuscript 07 | `Literal_Periodic_Sandpiles_and_Diophantine_Certificates_Package`, inner directory `Research_Report35` (23-page PDF) | *A Literal Periodic Sandpile Loader and Finite Prism Certificates: Ordinary three dimensional sandpiles from finite binary tapes* (Research Report 35) | `83befe707` | `3051d1446` | `216bd81e1` | Section 3.22 (abstract, §1; its Figure 1 at the opening of Part XX); Part XX (§§2–13) |
+| 23 | batch 83, manuscript 08 | `Real_Exactness_of_Binary_Sandpile_Certificates_Package`, inner directory `Research_Report36` (13-page PDF) | *Real Orthant Exactness for the Binary Sandpile Cubic: A strengthening with unchanged variables degree summands and support* (Research Report 36) | `83befe707` (and `0055e1c4d` for *quadratic-orthant-certificates*) | `3051d1446` | `216bd81e1` | Section 3.23 (abstract, §1); Part XX (§§2–9, §4 as a pointer) |
 
 Section numbers in the last column are those of each manuscript. Manuscripts
 01–07 also contribute to the Introduction and to the back matter
@@ -110,7 +121,10 @@ that no number moved, and its appendices M19.A–M19.B follow 16's;
 manuscript 20 is Part XVIII in its own order, closing with its validation,
 formalization path, questions, conclusion and appendices; manuscript 21 is
 Part XIX in its own order, closing with its reproducibility record, six
-questions, closing remarks and appendices. The Parts are: I Exact commutation and resource algebra;
+questions, closing remarks and appendices. Manuscripts 22 and 23 form Part XX: 22's Sections 2–13 in its own
+order, then 23's Sections 2–9 (its Section 4, a further proof of 22's
+certificate theorem, printed as a pointer), the research programme's review
+and nine research questions. The Parts are: I Exact commutation and resource algebra;
 II Canonical trace classes; III Compressed repetition and accelerators; IV
 Polynomial trajectories; V Memory logs, RAM and graph evaluation; VI Queues:
 tag systems and FIFO networks; VII FRACTRAN, SKI and term rewriting; VIII
@@ -127,7 +141,9 @@ closure, fixed fields and exact periods; XVII Exponential trajectories:
 positive-spectrum sign charts and the order-two power boundary; XVIII
 Compressed queue traces: grammar-size quartics, exact macro repetition and
 infinite-loop certificates; XIX Eager Tree Calculus: exact quartic proof-DAG
-certificates and a literal universal tree.
+certificates and a literal universal tree; XX Literal periodic sandpiles: an
+explicit `U₁₅` loader, binary prism certificates and real-orthant
+exactness.
 
 The full pins are `e8bb0931d67f80d9fce87a8cddb0f661ff19f956` (01–06),
 `725d2ebb6909fe11a13a92354c0f47367a3cbbf5` (07),
@@ -139,7 +155,9 @@ live branch) and `e18718e837d43e162252f9a314e8cb797fbd1a1f` (12), and `439c0a2d9
 `e58b724c25bd34533b7a5834cfcbe873dfa01288` (17, 18 and 19), and
 `44983ed7ebfd545de55bfdb50e040c82f3d24295` (20); 21 names no ProveIt commit
 and pins only Barry Jay's Tree Calculus repository at
-`baa877d916eb640280ed2df7ef4385ecd5957d19`. The pin of 07 is the commit
+`baa877d916eb640280ed2df7ef4385ecd5957d19`. 22 and 23 pin `83befe707f2840c2b53e0606701d8a2b28598e47`; 23 also names
+`0055e1c4d5bd890878edf75a11fb412b9d15f6cc` as its observed revision of
+the neighbouring report *quadratic-orthant-certificates*. The pin of 07 is the commit
 in which 01–03 arrived; 07 was written after 04 and 06, names them by title
 as its companion manuscripts, and arrived after this report was placed but
 before it was written. The batch-60 placement commit `7498484af` also placed
@@ -233,6 +251,21 @@ byte-identical to batch-79 members. It replaced four placed files and
 added two (see Files); the note "Added 2 October 2026 (batch 80):
 corrected code edition" in the reproducibility section of Part XIX
 (`cdc:et:sec:reproduce`) records it.
+
+Manuscripts 22 and 23 were written on 3 October 2026 at `83befe707`
+(10:38 Pacific time), when Parts I–XIX had been written, and arrived
+together in `3051d1446` (14:47); they were placed by `216bd81e1` (15:46;
+batch 83, cluster H1). They read this report's article at the pin (Part
+XVI and manuscript 19, by line ranges and labels; 23 records that the
+article blob is the same at `0055e1c4d`), and 22 read four files of this
+report by blob (this README and the programs
+`code/16-sandpile-sandpile_compact.py`, `code/16-sandpile-sandpile_spatial.py`
+and `code/19-no-borrowed-firings-sandpile_certificates.py`), none executed;
+23 also read Part VI of *quadratic-orthant-certificates* at `0055e1c4d`. No
+file of this report changed between the pin and the placement. The
+research programme reviewed both archives at 15:19 (`c120b34df`), before
+the placement (see Disclosures). Both name "Research Report 35"/"36" and
+call each other by those numbers: "Report 35" in 23's text is 22.
 
 What each manuscript contributes:
 
@@ -459,6 +492,42 @@ What each manuscript contributes:
   (`n ≥ 2`; `D_0 = 44`, `D_1 = 179`), proved by a finite symbolic kernel
   proof, induction and a complete template-equality classification.
 
+- **22** for the Neary–Woods machine `U₁₅` (fifteen states, two symbols,
+  the pair `(J,1)` undefined) on finite two-sided binary tapes: one
+  explicit stable periodic background `b: ℤ³ → {0,4,5}` with periods
+  (1,303,671,936, 744,955,392, 1,955,501,604) and a 0/1 loader of at most
+  `n+7` chips with coordinates at most `B(n+4)`, `B = 186,238,848`, such
+  that `U₁₅` halts exactly when `b+δ` has finitely many topplings in total
+  (one-shot: every site topples at most once, also on nonhalting inputs);
+  built from a literal 34-state radius-two lazy automaton with 388,146
+  positive rules and exact shutdown, a circuit of 3,879,975 primitives and
+  5,819,945 edges with exact numbering, AND/OR/diode/wire/fork lattice
+  primitives with one-shot confinement and all-port contracts, a
+  seven-segment periodic router with every seam included, and a pointwise
+  background-coefficient algorithm; a halting prism of at most
+  `C(n+T+1)²` sites, `C = 5,426,111,451,172,075,939,316,367,360`, where the
+  run halts after `T` transitions, and total toppling work between
+  `(n+T+1)²/6` and `C(n+T+1)²`; for a fixed rectangular prism `P` and a
+  natural input stable outside `P`, a cubic with `8V+6E+H` natural
+  witnesses and `8V+7E+H` summands (`V`, `E`, `H` the vertices, internal
+  edges and face-halo sites) with one natural zero exactly when the lattice
+  stabilizes with a binary odometer supported in `P` (the binary case of
+  16's compact cubic with its collar, a second route); a fractional real
+  zero of that cubic; exact raw, expansion and evaluation ledgers with a
+  bounded-record local collection and the coefficient bound
+  `max(215V, 773,136)`; and a 43-chip example that halts after 75
+  transitions.
+- **23** replacing `f·g` by `f·(g+k+c)` in 22's cubic gives a polynomial
+  (printed `Q^real`; 23 writes `Q_R`) whose nonnegative-real zero set equals
+  22's natural zero set, empty or one point, for every fixed prism, with
+  the same variables, summands, degree three, collected support and
+  coefficient height (only `[fk]` and `[fc]` change, from 2 to 3;
+  `[kc] = 86` at every vertex), by a real-exact edge gadget, binary activity
+  and a finite predecessor-rigidity lemma; four ledger counts grow by `2V`
+  in 22's convention; the real-orthant loader corollary; a fractional zero
+  of 16's unrestricted compact certificate even with all pair penalties
+  (so the binary hypothesis is essential); and a comparison variant with
+  the same zeros and a larger height.
 **Status.** The report is AI-assisted and unrefereed. None of its theorems
 is formalized in Lean or Rocq, and no manuscript ships Lean or Rocq files.
 The Python programs are finite exact checks of the implementations and
@@ -484,12 +553,16 @@ apply the patch to the shipped file: the repair is already present, and the
 patch's hunk no longer applies. The same tree's correction audit
 (`review_batch80_corrected.md`, commit `abfc0cb25`) confirms the repair and
 that nothing mathematical changed.
+The same tree reviewed the archives of 22 and 23 before placement
+(`review_sandpile35_36_intake.md`, commit `c120b34df`): no defect and no
+change requested, within a stated scope; it adds a shared-arithmetic
+schedule and a real-algebraic limit of its own (see Disclosures).
 
 ## Files
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 608 pages
+article.pdf                              the compiled report, 652 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -514,6 +587,21 @@ README.md                                this guide
 20-compressed-queue-CLAIMS_AND_PROVENANCE.md  manuscript 20's claims (by its own theorem numbers), scope, pin, sources and validation
 21-eager-tree-CORRECTION.md              manuscript 21's corrected code edition: the application-input repair, its scope and evidence, as delivered (batch 80)
 21-eager-tree-VERIFICATION.md            manuscript 21's verification scope: evidence by type, deliberate limits, portability
+22-literal-sandpiles-INTEGRITY.md        manuscript 22's release trust boundary, replay and archive behaviour (delivery names)
+22-literal-sandpiles-evidence-composition-PROOF.md  the binary prism certificate proof and ledger of 22's composition packet (= 23's approved_base PROOF.md)
+22-literal-sandpiles-evidence-composition-README.md  guide to 22's composition packet
+22-literal-sandpiles-evidence-composition-review-INDEPENDENT_AUDIT.md  independent audit of the binary certificate (natural witnesses, fixed prism)
+22-literal-sandpiles-evidence-loader-INDEPENDENT-AUDIT.md  independent adversarial audit of the loader (PASS), with the files it hashed
+22-literal-sandpiles-evidence-loader-LOADER-PROOF.md  the loader proof: automaton, primitives, router, composition, prism
+22-literal-sandpiles-evidence-loader-README.md  guide to 22's loader packet
+22-literal-sandpiles-evidence-loader-ca-SEMANTICS_AND_BOUNDS.md  the lazy automaton: data, rule families, shutdown, bounds
+22-literal-sandpiles-evidence-loader-gates-GATE-PROOF.md  the lattice primitives and their all-port contracts
+22-literal-sandpiles-evidence-loader-geometry-periodic_router_proof.md  the periodic router and its separation proof
+23-real-sandpiles-INTEGRITY.md           manuscript 23's release authentication boundary and replay contract (delivery names)
+23-real-sandpiles-evidence-real-PROOF.md  the real-orthant exactness proof
+23-real-sandpiles-evidence-real-PUBLIC_PRIOR_ART.md  23's pins, the lines and labels it read, and its claim boundary
+23-real-sandpiles-evidence-real-README.md  guide to 23's real-exactness packet
+23-real-sandpiles-evidence-real-independent_math_review.md  independent review of 23's real-zero argument, support and ledger (pass)
 
 code/01-causal-traces-causal_diophantine.py   exact semantics and the four compiler entry points
 code/01-causal-traces-demo.py            the 11-witness large-count example (prints; writes no file)
@@ -622,6 +710,38 @@ code/21-eager-tree-test_application_domain.py  regression suite for exact-natura
 code/21-eager-tree-tree_kernel.py  (batch-80 corrected edition) coding, memoized eager kernel, structural evaluator, polynomial circuit and gate counter; writes the two fixtures and receipt.json
 code/21-eager-tree-verify_packet_assumptions.py  kernel-proof validity and full reachability for the exact-growth identification; writes its receipt
 code/21-eager-tree-verify_shared_macro.py  standalone symbolic-row, acyclicity, program-identity and bit-bound verifier (prints JSON; writes no file)
+code/22-literal-sandpiles-archive_regression.py  22's archive safe-inventory regression (release tool; needs the delivered tree)
+code/22-literal-sandpiles-archive_release.py  22's deterministic ZIP builder and checker (release tool)
+code/22-literal-sandpiles-build_pdf.py   22's PDF rebuild of the unshipped Research_Report35.tex (do not run here)
+code/22-literal-sandpiles-evidence-composition-literal_composition.py  literal adapter from loader coefficients to prism certificates (prints its receipt)
+code/22-literal-sandpiles-evidence-composition-prism_certificate.py  the binary prism certificate compiler (= 23's approved_base compiler)
+code/22-literal-sandpiles-evidence-composition-review-audit_adapter.py  independent audit of the adapter (prints its receipt)
+code/22-literal-sandpiles-evidence-composition-review-audit_crosscheck.py  independent cross-check of compiler and ledgers (prints)
+code/22-literal-sandpiles-evidence-composition-review-audit_independent.py  independent direct model of the certificate (prints)
+code/22-literal-sandpiles-evidence-composition-review-audit_polynomial.py  independent polynomial expansion and ledger (prints)
+code/22-literal-sandpiles-evidence-composition-review-audit_streaming.py  independent local-versus-global collection audit (prints)
+code/22-literal-sandpiles-evidence-composition-test_prism_certificate.py  the composition test suite (prints its receipt)
+code/22-literal-sandpiles-evidence-loader-ca-lazy_u15.py  the 34-state lazy automaton and its rule-stream writer
+code/22-literal-sandpiles-evidence-loader-ca-test_lazy_u15.py  automaton tests against the machine table and the rule stream; rewrites its receipt
+code/22-literal-sandpiles-evidence-loader-compiler-literal_loader.py  circuit numbering, port incidence and pointwise coefficients; --audit rewrites the circuit manifest
+code/22-literal-sandpiles-evidence-loader-compiler-make_example.py  the 43-chip worked example; rewrites its receipt
+code/22-literal-sandpiles-evidence-loader-compiler-test_coefficients.py  coefficient-suite tests; rewrites its receipt
+code/22-literal-sandpiles-evidence-loader-gates-check_gates.py  all-port primitive checks by least closure and firing orders; rewrites its receipt
+code/22-literal-sandpiles-evidence-loader-geometry-periodic_router.py  the periodic router and its finite tori (--output)
+code/22-literal-sandpiles-evidence-loader-verify_bundle.py  the loader packet's own bundle check (delivered layout)
+code/22-literal-sandpiles-seal_release.py  22's maintainer seal tool (do not run)
+code/22-literal-sandpiles-tamper_regression.py  22's tamper regression (release tool; POSIX modes)
+code/22-literal-sandpiles-verify_release.py  22's release verifier and replay wrapper (needs the delivered tree and POSIX modes)
+code/23-real-sandpiles-archive_regression.py  23's archive regression (release tool)
+code/23-real-sandpiles-archive_release.py  23's deterministic ZIP builder and checker (release tool)
+code/23-real-sandpiles-build_pdf.py      23's PDF rebuild of the unshipped Research_Report36.tex (do not run here)
+code/23-real-sandpiles-evidence-real-exact_checks.py  exact symbolic and LP checks of the real-exact certificate (SymPy 1.14.0; --output)
+code/23-real-sandpiles-evidence-real-freeze_packet.py  23's packet freezer (hashes its files, approved_base included)
+code/23-real-sandpiles-evidence-real-independent_coefficient_ledger_checks.py  independent coefficient and ledger audit, 54 cases (--output)
+code/23-real-sandpiles-evidence-real-real_certificate.py  the real-exact compiler (subclasses approved_base/prism_certificate.py)
+code/23-real-sandpiles-seal_release.py   23's maintainer seal tool (do not run)
+code/23-real-sandpiles-tamper_regression.py  23's tamper regression (release tool; POSIX modes)
+code/23-real-sandpiles-verify_release.py  23's release verifier and replay wrapper (needs the delivered tree and POSIX modes)
 
 data/01-causal-traces-build_validation.json   build and rendering record of the delivered 29-page PDF
 data/01-causal-traces-canonical_history.json  32-witness, 48-residual causal-history polynomial and certificate
@@ -789,15 +909,55 @@ data/21-eager-tree-sources.json  the pinned upstream sources (Jay's commit baa87
 data/21-eager-tree-symbolic_receipt.json  recorded run of symbolic_audit.py
 data/21-eager-tree-universal_code_circuit.json  the 175 constant-code residuals of U
 data/21-eager-tree-universal_lambda_source.json  the finite source lambda AST of U
+data/22-literal-sandpiles-evidence-composition-FROZEN-INPUTS.json  status, layout and loader pin of the composition packet, with file hashes
+data/22-literal-sandpiles-evidence-composition-PROVENANCE.json  the four repository files 22 read at 83befe707, by blob
+data/22-literal-sandpiles-evidence-composition-VALIDATION.json  the composition packet's validation record
+data/22-literal-sandpiles-evidence-composition-example_hypothetical_bound.json  receipt of literal_composition.py
+data/22-literal-sandpiles-evidence-composition-review-AUDIT-FROZEN.json  status, scope and hashes of the composition audit
+data/22-literal-sandpiles-evidence-composition-review-REPLAY.json  the composition audit's replay record
+data/22-literal-sandpiles-evidence-composition-review-audit_adapter_results.json  receipt of audit_adapter.py
+data/22-literal-sandpiles-evidence-composition-review-audit_crosscheck_results.json  receipt of audit_crosscheck.py
+data/22-literal-sandpiles-evidence-composition-review-audit_independent_results.json  receipt of audit_independent.py
+data/22-literal-sandpiles-evidence-composition-review-audit_ledger.json  receipt of audit_polynomial.py
+data/22-literal-sandpiles-evidence-composition-review-audit_streaming_results.json  receipt of audit_streaming.py
+data/22-literal-sandpiles-evidence-composition-verification.json  receipt of test_prism_certificate.py
+data/22-literal-sandpiles-evidence-loader-PROVENANCE.json  the loader's sources, pinned machine data and repository obligation
+data/22-literal-sandpiles-evidence-loader-VALIDATION.json  the loader packet's validation record
+data/22-literal-sandpiles-evidence-loader-ca-manifest.json  the automaton manifest (rule counts, stream hash)
+data/22-literal-sandpiles-evidence-loader-ca-rules.jsonl.gz  all 388,146 rules as gzip-compressed JSON lines (1,870,861 bytes; see below)
+data/22-literal-sandpiles-evidence-loader-ca-verification.json  receipt of test_lazy_u15.py
+data/22-literal-sandpiles-evidence-loader-compiler-circuit_manifest.json  receipt of literal_loader.py --audit (5,819,945 edges)
+data/22-literal-sandpiles-evidence-loader-compiler-coefficient_checks.json  receipt of test_coefficients.py
+data/22-literal-sandpiles-evidence-loader-compiler-worked_example.json  the 43-chip example with every seed (receipt of make_example.py)
+data/22-literal-sandpiles-evidence-loader-gates-gate_receipt.json  receipt of check_gates.py
+data/22-literal-sandpiles-evidence-loader-geometry-router_checks.json  receipt of periodic_router.py
+data/22-literal-sandpiles-verification-document-qa.json  22's document quality record
+data/22-literal-sandpiles-verification-expected-receipts.json  the 17 expected receipts and records of 22's replay
+data/22-literal-sandpiles-verification-primary-references.json  Cairns and Neary-Woods, with verified publication metadata
+data/22-literal-sandpiles-verification-replay-plan.json  22's 13 producers: working directory, arguments, receipt, capture
+data/22-literal-sandpiles-verification-root-certificate-review.json  22's certificate review receipt
+data/22-literal-sandpiles-verification-root-loader-review.json  22's loader review receipt
+data/22-literal-sandpiles-verification-source-lineage.json  original-to-packaged identity of 60 evidence files (delivery paths)
+data/23-real-sandpiles-evidence-real-ENVIRONMENT.json  23's environment and packet record: base hashes, branch count, LP scope
+data/23-real-sandpiles-evidence-real-independent_coefficient_ledger_receipt.json  receipt of the 54-case ledger audit
+data/23-real-sandpiles-evidence-real-report35_integrity_check.txt  record that 22's 78 release checksums pass
+data/23-real-sandpiles-evidence-real-verification.json  receipt of exact_checks.py (18 expansions, 2,733 mutations, 1,863 branches)
+data/23-real-sandpiles-verification-article-quality.json  23's article quality record
+data/23-real-sandpiles-verification-expected-receipts.json  the four expected receipts of 23's replay (normal and optimized)
+data/23-real-sandpiles-verification-pdf-rebuild.json  23's PDF rebuild record
+data/23-real-sandpiles-verification-release-review.json  23's release review, including the LP scope statement
+data/23-real-sandpiles-verification-replay-plan.json  23's two producers
+data/23-real-sandpiles-verification-source-lineage.json  original-to-packaged identity of 18 evidence files (delivery paths)
+data/23-real-sandpiles-verification-tooling-tests.json  23's tooling test record
 ```
 
-The directory holds 298 files: 25 at the root (the article, its PDF, this
-README and twenty-two provenance, audit and correction files), 107 in `code/` and 166 in
+The directory holds 385 files: 40 at the root (the article, its PDF, this
+README and thirty-seven provenance, audit, proof and correction files), 139 in `code/` and 206 in
 `data/`. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
 besides the replaced `article.tex` and `README.md`, 06 15, 07 14, 08 8, 09
 9, 10 14, 11 9, 12 9, 13 9, 14 12, 15 10, 16 19 (1 at the root, 7 in
 `code/`, 11 in `data/`), 17 13 (1, 6, 6), 18 16 (1, 5, 10), 19 11 (1, 3, 7),
-20 9 (1, 4, 4) and 21 53 (2, 22, 29). Every file of manuscripts 01–21
+20 9 (1, 4, 4), 21 53 (2, 22, 29), 22 61 (10, 22, 29) and 23 26 (5, 10, 11). Every file of manuscripts 01–23
 except `article.tex`, `article.pdf` and `README.md` is byte-identical to the
 delivery; for 21 the delivery is, since batch 80, the corrected code edition
 (`Eager_Tree_Calculus_Research_Package_corrected.zip`, arrival `4e270aa46`,
@@ -837,6 +997,8 @@ manuscripts take a sub-prefix:
 | 19 | `cdc:nb:` | `cdc:nb:thm:fields` |
 | 20 | `cdc:cq:` | `cdc:cq:thm:compiler` |
 | 21 | `cdc:et:` | `cdc:et:thm:certificate` |
+| 22 | `cdc:lp:` | `cdc:lp:thm:loader` |
+| 23 | `cdc:ro:` | `cdc:ro:thm:main` |
 
 Labels written in the merge use `cdc:conv:` (the Conventions section),
 `cdc:bd:` (merged statements of Part IX, such as the universal-halting
@@ -989,6 +1151,24 @@ hyperlink anchor of the unnumbered paragraph `cdc:conv:b62q` (number 71
 unchanged; Section 3.21 adds an unnumbered paragraph before it). Section
 3.21's equations are numbered within the subsection ((3.21.1)–(3.21.3));
 Part XIX is Sections 224–237, after every existing numbered section.
+
+The batch-83 cluster-H1 write (Part XX) raised the count from 1566 to
+1672. It adds all 88 labels of manuscripts 22 and 23 (22 61, 23 27), with
+the sub-prefixes `cdc:lp:` and `cdc:ro:`, none dropped (the two share the
+bare names `sec:result`, `sec:coefficients` and `eq:AB`), and 18 written
+labels: the manuscript subsections `cdc:sec:ms22` and `cdc:sec:ms23`
+(Sections 3.22–3.23), the Part `cdc:part:literalsandpile`, its conventions
+section `cdc:conv:b83-XX`, the review and question sections
+`cdc:sec:b83-review` and `cdc:sec:b83-questions`, `cdc:ro:cor:loader` on
+23's unlabelled corollary, the review's equation `cdc:ro:eq:moment` and
+remark `cdc:ro:rem:qelimit`, and nine question labels (`cdc:lp:q:encoder`,
+`…:automaton`, `…:periods`, `…:variables`, `…:bounds`,
+`cdc:ro:q:unbounded`, `…:rigidity`, `…:separation`, `…:packing`). 22's
+Section 1 label `sec:result` sits on Section 3.22.1 and 23's on 3.23.1. No
+existing label was renamed, removed or renumbered (see Build). Section
+3.22's and 3.23's equations are numbered within the subsections; Part XX
+is Sections 238–260, after every existing numbered section, and 22's three
+diagrams are Figures 3–5, after every existing figure.
 
 Text written during the merge is marked `[write]` in the article.
 
@@ -1481,6 +1661,105 @@ Section 7, and its six research directions are Research questions
 numbered within sections here. Its delivered texts cite no theorem by
 number.
 
+**Manuscript 22** (package root `Research_Report35/`)
+
+| Delivered | Shipped |
+|---|---|
+| `archive_regression.py` | `code/22-literal-sandpiles-archive_regression.py` |
+| `archive_release.py` | `code/22-literal-sandpiles-archive_release.py` |
+| `build_pdf.py` | `code/22-literal-sandpiles-build_pdf.py` |
+| `evidence/composition/example_hypothetical_bound.json` | `data/22-literal-sandpiles-evidence-composition-example_hypothetical_bound.json` |
+| `evidence/composition/FROZEN-INPUTS.json` | `data/22-literal-sandpiles-evidence-composition-FROZEN-INPUTS.json` |
+| `evidence/composition/literal_composition.py` | `code/22-literal-sandpiles-evidence-composition-literal_composition.py` |
+| `evidence/composition/prism_certificate.py` | `code/22-literal-sandpiles-evidence-composition-prism_certificate.py` |
+| `evidence/composition/PROOF.md` | `22-literal-sandpiles-evidence-composition-PROOF.md` |
+| `evidence/composition/PROVENANCE.json` | `data/22-literal-sandpiles-evidence-composition-PROVENANCE.json` |
+| `evidence/composition/README.md` | `22-literal-sandpiles-evidence-composition-README.md` |
+| `evidence/composition/review/AUDIT-FROZEN.json` | `data/22-literal-sandpiles-evidence-composition-review-AUDIT-FROZEN.json` |
+| `evidence/composition/review/audit_adapter.py` | `code/22-literal-sandpiles-evidence-composition-review-audit_adapter.py` |
+| `evidence/composition/review/audit_adapter_results.json` | `data/22-literal-sandpiles-evidence-composition-review-audit_adapter_results.json` |
+| `evidence/composition/review/audit_crosscheck.py` | `code/22-literal-sandpiles-evidence-composition-review-audit_crosscheck.py` |
+| `evidence/composition/review/audit_crosscheck_results.json` | `data/22-literal-sandpiles-evidence-composition-review-audit_crosscheck_results.json` |
+| `evidence/composition/review/audit_independent.py` | `code/22-literal-sandpiles-evidence-composition-review-audit_independent.py` |
+| `evidence/composition/review/audit_independent_results.json` | `data/22-literal-sandpiles-evidence-composition-review-audit_independent_results.json` |
+| `evidence/composition/review/audit_ledger.json` | `data/22-literal-sandpiles-evidence-composition-review-audit_ledger.json` |
+| `evidence/composition/review/audit_polynomial.py` | `code/22-literal-sandpiles-evidence-composition-review-audit_polynomial.py` |
+| `evidence/composition/review/audit_streaming.py` | `code/22-literal-sandpiles-evidence-composition-review-audit_streaming.py` |
+| `evidence/composition/review/audit_streaming_results.json` | `data/22-literal-sandpiles-evidence-composition-review-audit_streaming_results.json` |
+| `evidence/composition/review/INDEPENDENT_AUDIT.md` | `22-literal-sandpiles-evidence-composition-review-INDEPENDENT_AUDIT.md` |
+| `evidence/composition/review/REPLAY.json` | `data/22-literal-sandpiles-evidence-composition-review-REPLAY.json` |
+| `evidence/composition/test_prism_certificate.py` | `code/22-literal-sandpiles-evidence-composition-test_prism_certificate.py` |
+| `evidence/composition/VALIDATION.json` | `data/22-literal-sandpiles-evidence-composition-VALIDATION.json` |
+| `evidence/composition/verification.json` | `data/22-literal-sandpiles-evidence-composition-verification.json` |
+| `evidence/loader/ca/lazy_u15.py` | `code/22-literal-sandpiles-evidence-loader-ca-lazy_u15.py` |
+| `evidence/loader/ca/manifest.json` | `data/22-literal-sandpiles-evidence-loader-ca-manifest.json` |
+| `evidence/loader/ca/rules.jsonl.gz` | `data/22-literal-sandpiles-evidence-loader-ca-rules.jsonl.gz` |
+| `evidence/loader/ca/SEMANTICS_AND_BOUNDS.md` | `22-literal-sandpiles-evidence-loader-ca-SEMANTICS_AND_BOUNDS.md` |
+| `evidence/loader/ca/test_lazy_u15.py` | `code/22-literal-sandpiles-evidence-loader-ca-test_lazy_u15.py` |
+| `evidence/loader/ca/verification.json` | `data/22-literal-sandpiles-evidence-loader-ca-verification.json` |
+| `evidence/loader/compiler/circuit_manifest.json` | `data/22-literal-sandpiles-evidence-loader-compiler-circuit_manifest.json` |
+| `evidence/loader/compiler/coefficient_checks.json` | `data/22-literal-sandpiles-evidence-loader-compiler-coefficient_checks.json` |
+| `evidence/loader/compiler/literal_loader.py` | `code/22-literal-sandpiles-evidence-loader-compiler-literal_loader.py` |
+| `evidence/loader/compiler/make_example.py` | `code/22-literal-sandpiles-evidence-loader-compiler-make_example.py` |
+| `evidence/loader/compiler/test_coefficients.py` | `code/22-literal-sandpiles-evidence-loader-compiler-test_coefficients.py` |
+| `evidence/loader/compiler/worked_example.json` | `data/22-literal-sandpiles-evidence-loader-compiler-worked_example.json` |
+| `evidence/loader/gates/check_gates.py` | `code/22-literal-sandpiles-evidence-loader-gates-check_gates.py` |
+| `evidence/loader/gates/GATE-PROOF.md` | `22-literal-sandpiles-evidence-loader-gates-GATE-PROOF.md` |
+| `evidence/loader/gates/gate_receipt.json` | `data/22-literal-sandpiles-evidence-loader-gates-gate_receipt.json` |
+| `evidence/loader/geometry/periodic_router.py` | `code/22-literal-sandpiles-evidence-loader-geometry-periodic_router.py` |
+| `evidence/loader/geometry/periodic_router_proof.md` | `22-literal-sandpiles-evidence-loader-geometry-periodic_router_proof.md` |
+| `evidence/loader/geometry/router_checks.json` | `data/22-literal-sandpiles-evidence-loader-geometry-router_checks.json` |
+| `evidence/loader/INDEPENDENT-AUDIT.md` | `22-literal-sandpiles-evidence-loader-INDEPENDENT-AUDIT.md` |
+| `evidence/loader/LOADER-PROOF.md` | `22-literal-sandpiles-evidence-loader-LOADER-PROOF.md` |
+| `evidence/loader/PROVENANCE.json` | `data/22-literal-sandpiles-evidence-loader-PROVENANCE.json` |
+| `evidence/loader/README.md` | `22-literal-sandpiles-evidence-loader-README.md` |
+| `evidence/loader/VALIDATION.json` | `data/22-literal-sandpiles-evidence-loader-VALIDATION.json` |
+| `evidence/loader/verify_bundle.py` | `code/22-literal-sandpiles-evidence-loader-verify_bundle.py` |
+| `INTEGRITY.md` | `22-literal-sandpiles-INTEGRITY.md` |
+| `seal_release.py` | `code/22-literal-sandpiles-seal_release.py` |
+| `tamper_regression.py` | `code/22-literal-sandpiles-tamper_regression.py` |
+| `verification/document-qa.json` | `data/22-literal-sandpiles-verification-document-qa.json` |
+| `verification/expected-receipts.json` | `data/22-literal-sandpiles-verification-expected-receipts.json` |
+| `verification/primary-references.json` | `data/22-literal-sandpiles-verification-primary-references.json` |
+| `verification/replay-plan.json` | `data/22-literal-sandpiles-verification-replay-plan.json` |
+| `verification/root-certificate-review.json` | `data/22-literal-sandpiles-verification-root-certificate-review.json` |
+| `verification/root-loader-review.json` | `data/22-literal-sandpiles-verification-root-loader-review.json` |
+| `verification/source-lineage.json` | `data/22-literal-sandpiles-verification-source-lineage.json` |
+| `verify_release.py` | `code/22-literal-sandpiles-verify_release.py` |
+
+**Manuscript 23** (package root `Research_Report36/`)
+
+| Delivered | Shipped |
+|---|---|
+| `archive_regression.py` | `code/23-real-sandpiles-archive_regression.py` |
+| `archive_release.py` | `code/23-real-sandpiles-archive_release.py` |
+| `build_pdf.py` | `code/23-real-sandpiles-build_pdf.py` |
+| `evidence/real/ENVIRONMENT.json` | `data/23-real-sandpiles-evidence-real-ENVIRONMENT.json` |
+| `evidence/real/exact_checks.py` | `code/23-real-sandpiles-evidence-real-exact_checks.py` |
+| `evidence/real/freeze_packet.py` | `code/23-real-sandpiles-evidence-real-freeze_packet.py` |
+| `evidence/real/independent_coefficient_ledger_checks.py` | `code/23-real-sandpiles-evidence-real-independent_coefficient_ledger_checks.py` |
+| `evidence/real/independent_coefficient_ledger_receipt.json` | `data/23-real-sandpiles-evidence-real-independent_coefficient_ledger_receipt.json` |
+| `evidence/real/independent_math_review.md` | `23-real-sandpiles-evidence-real-independent_math_review.md` |
+| `evidence/real/PROOF.md` | `23-real-sandpiles-evidence-real-PROOF.md` |
+| `evidence/real/PUBLIC_PRIOR_ART.md` | `23-real-sandpiles-evidence-real-PUBLIC_PRIOR_ART.md` |
+| `evidence/real/README.md` | `23-real-sandpiles-evidence-real-README.md` |
+| `evidence/real/real_certificate.py` | `code/23-real-sandpiles-evidence-real-real_certificate.py` |
+| `evidence/real/report35_integrity_check.txt` | `data/23-real-sandpiles-evidence-real-report35_integrity_check.txt` |
+| `evidence/real/verification.json` | `data/23-real-sandpiles-evidence-real-verification.json` |
+| `INTEGRITY.md` | `23-real-sandpiles-INTEGRITY.md` |
+| `seal_release.py` | `code/23-real-sandpiles-seal_release.py` |
+| `tamper_regression.py` | `code/23-real-sandpiles-tamper_regression.py` |
+| `verification/article-quality.json` | `data/23-real-sandpiles-verification-article-quality.json` |
+| `verification/expected-receipts.json` | `data/23-real-sandpiles-verification-expected-receipts.json` |
+| `verification/pdf-rebuild.json` | `data/23-real-sandpiles-verification-pdf-rebuild.json` |
+| `verification/release-review.json` | `data/23-real-sandpiles-verification-release-review.json` |
+| `verification/replay-plan.json` | `data/23-real-sandpiles-verification-replay-plan.json` |
+| `verification/source-lineage.json` | `data/23-real-sandpiles-verification-source-lineage.json` |
+| `verification/tooling-tests.json` | `data/23-real-sandpiles-verification-tooling-tests.json` |
+| `verify_release.py` | `code/23-real-sandpiles-verify_release.py` |
+
+Nested delivered paths are flattened with `-` after the prefix (`evidence/loader/ca/lazy_u15.py` is `code/22-literal-sandpiles-evidence-loader-ca-lazy_u15.py`); the recipe in "Rerunning the checks" reverses this. Part XX is Sections 238–260 of the article: 238 its conventions, 239–250 manuscript 22's Sections 2–13 (its Section `N` is Section `237+N`), 251–258 manuscript 23's Sections 2–9 (its Section `N` is Section `249+N`), 259 the research programme's review and 260 the questions; their Sections 1 are Sections 3.22.1 and 3.23.1. Theorem numbers `N.k` become `(237+N).k` and `(249+N).k`: 22's Lemma 9.1 and Theorem 9.2 (the certificate) are 246.1 and 246.2, its Proposition 7.1 (the prism) 244.1, its Remark 9.3 246.3 and its Corollary 10.1 247.1; 23's Lemmas 3.1–3.3 are 252.1–252.3, its Proposition 5.1 254.1 and its Corollary 7.1 256.1. In Section 3, 22's Definition 1.1 and Theorems 1.2–1.3 are Definition 3.3 and Theorems 3.4–3.5, and 23's Theorem 1.1 is Theorem 3.6. Their delivered texts cite no theorem by number; the shipped proofs and audits use their own numbering.
+
 **Not shipped.** The manuscripts (`article.tex`) and delivery READMEs of
 members 01, 02, 03, 04, 06 and 07: they survive in their arrival commits
 (`725d2ebb6` for 01–03, `c1f56f842` for 04 and 06, `b998f70c6` for 07), as
@@ -1558,6 +1837,46 @@ The complete corrected layout of 21 (batch 80) is preferably retrieved from
 (57/57) was verified and retired at the batch-80 placement (`8a4e64732`),
 and its delivery `README.md` (with a correction notice) is not shipped.
 The `aebfa386e` command above retrieves the original edition.
+For the batch-83 additions 22 and 23: their manuscripts
+(`Research_Report35.tex`, `Research_Report36.tex`), delivery `README.md`
+files and PDFs (23 and 13 pages) survive in the arrival commit `3051d1446`,
+as members of `Literal_Periodic_Sandpiles_and_Diophantine_Certificates_Package.zip`
+(1,645,467 bytes, SHA-256 `3202b1f0…a12d`) and
+`Real_Exactness_of_Binary_Sandpile_Certificates_Package.zip` (423,395
+bytes, SHA-256 `72cfb3a8…96ac`)
+(`git show 3051d1446:docs/incoming/<archive>.zip`). Their checksum
+ledgers and release seals were verified against a fresh extraction and
+retired at placement (`216bd81e1`): 22's `SHA256SUMS` (78/78),
+`MANIFEST.json` (77/77) and `evidence/loader/FROZEN-INPUTS.json` (24/24),
+and 23's `SHA256SUMS` (36/36), `MANIFEST.json` (35/35),
+`evidence/real/SHA256SUMS` (17/17) and `evidence/real/MANIFEST.json`
+(16/16). 22's `evidence/composition/FROZEN-INPUTS.json`,
+`evidence/composition/review/AUDIT-FROZEN.json` and both
+`verification/source-lineage.json` files carry content besides hashes and
+are shipped as data. Not shipped as copies: 22's
+`evidence/loader/data/u15_table.json`, byte-identical to
+`quadratic-orthant-certificates/data/16-universal-membrane-tm_table.json`
+(blob `c4aeb5671`); 22's ten `evidence/composition/review/*.normal.out` and
+`*.optimized.out` console outputs and `evidence/composition/verification_optimized.json`,
+byte-identical to the receipts they repeat; 23's two optimized-mode
+receipts (`evidence/real/verification_optimized.json`,
+`independent_coefficient_ledger_receipt_optimized.json`), likewise; and 23's
+`evidence/real/approved_base/PROOF.md` and `prism_certificate.py`,
+byte-identical to 22's `evidence/composition/PROOF.md` and
+`prism_certificate.py` (shipped as `22-literal-sandpiles-evidence-composition-PROOF.md`
+and `code/22-literal-sandpiles-evidence-composition-prism_certificate.py`).
+Three of the unshipped files are read by delivered programs; the rerun
+recipe below restores them. The one file over 1 MB,
+`data/22-literal-sandpiles-evidence-loader-ca-rules.jsonl.gz` (1,870,861
+bytes), is shipped, not excluded: `lazy_u15.py` regenerates its content in
+about 30 s (`py code/lazy_u15.py --manifest m.json --rules-jsonl
+rules.jsonl.gz` in a copy with the delivered layout), but not byte for
+byte. The gzip header records a modification time and the stored file
+name, and on Windows the text-mode writer emits CRLF, so the decompressed
+stream differs from the manifest's `canonical_integer_rules_jsonl_sha256`
+until carriage returns are removed; after that the 9,711,068-byte stream
+equals the delivered one (checked at placement). `.gitattributes` treats
+`*.gz` as binary, so the blob is the delivered bytes.
 
 ## What is claimed and what is not
 
@@ -1622,7 +1941,16 @@ the classical effective Turing simulation of weak call by value), the
 charged fixed-universal corollary, the canonical singleton theorem with
 its counts, the binary-sharing and exact-growth theorems for the fixed
 program `R` (whose finite symbolic proof is checked by the shipped
-programs, not printed in full), and the template-counting proposition. It does not claim the following. Each item is stated by at least the
+programs, not printed in full), and the template-counting proposition. For Part XX: 22's loader theorem (with its automaton, circuit,
+primitive, confinement, port, router and composition lemmas, the seed
+coordinates, the halting-prism proposition and the coefficient algorithm),
+its binary certificate theorem with least action, the exact ledgers and
+the total-work corollary, and the worked example as finite data; 23's
+real-exactness theorem with its three lemmas, the support and height
+invariance, its ledger, the loader corollary and its counterexamples. The
+moment identity, the shared schedules and the real-algebraic limit of
+Part XX's review section are the research programme's results, cited
+there, not claims of the manuscripts. It does not claim the following. Each item is stated by at least the
 manuscripts named; the article keeps every one of them.
 
 - **No priority.** No manuscript establishes historical or literature-wide
@@ -1899,6 +2227,57 @@ manuscripts named; the article keeps every one of them.
   sets in general. One evaluator method accepts non-natural inputs
   (found by the research tree's review; see Disclosures); no theorem
   depends on it.
+- **22, scope.** Cairns's sandpile universality and the Neary–Woods
+  machine are prior results; the construction is an explicit instance, not
+  a new undecidability or universality theorem, and the arbitrary
+  program-to-tape encoder is imported, not implemented. "Literal" means no
+  unspecified choice remains, not that the object was stored: the dense
+  period of about `1.9×10²⁷` entries, a universal routed-sandpile evolution
+  and a giant-prism polynomial were not materialized, simulated, expanded
+  or solved. Global halting means finitely many topplings in total. The
+  prism bound holds where the run actually halts; there is no computable
+  stopping bound in `n` alone, and candidate `(T,p)` arguments of the
+  compiler certify nothing. Uniqueness holds per fixed prism, not across
+  padded prisms; nonnegative real zeros can be spurious; the family has
+  variable arity, so it is not one fixed-arity universal polynomial and not
+  finite-fold MRDP. General nonbinary odometers are excluded (a singleton
+  at height 12 needs two topplings). The total-work bound is about legal
+  toppling work, not runtime, and is not optimal for all simulators. The
+  ledgers count a specified straight-line model, not Python internals,
+  memory or runtime; bounded record count is not constant bit space, and a
+  collected stream's first record is not cheap. "Literal is not
+  efficient." The research programme's review did not reconstruct the
+  physical graph, routing seams, automaton tables, encoder or a giant
+  prism, and Cairns's paper does not verify this particular graph. The
+  composition audit did not re-audit the simulation, one-shotness, routing
+  or background queries. Executable evidence is finite; hashes cannot
+  authenticate a coordinated replacement; nothing is Lean-verified. 22's
+  Theorem 3.5 (the certificate interface in Section 3.22) omits the input
+  hypothesis "stable outside `P`", which holds automatically for the loader
+  and is stated in a bracket and a note.
+- **23, scope.** Exact zeros in the nonnegative real orthant only: not all
+  of `ℝ^W`, not approximate zeros, no robustness, quantitative separation
+  or numerical conditioning. The binary-odometer hypothesis is essential.
+  No fixed-arity unbounded representation and no finite-fold MRDP. The
+  rejected linear-programming branches have no independently checked
+  Farkas certificates; they are solver-assisted regression evidence, not
+  certified real infeasibility, and the theorem rests on the proof (the
+  research programme found the searches unnecessary and did not rerun
+  them). The independent ledger audit reads the compiler's affine
+  summands and does no LP. No literature-wide priority, new general
+  real/natural principle, new support-burning theorem, new universality
+  theorem or Lean certification; the source comparison is bounded. It does
+  not show that arbitrary one-hot encodings have natural magnitudes, and
+  the variant `Q♯` does not keep the exact height. The `approved_base/`
+  copy is predecessor context, not the full Report 35 archive;
+  `evaluate_orthant` is exact only on integer and `Fraction` inputs. The
+  prism bounds assume an actual halting run. Its `+2V` ledger is 22's
+  convention; in the research programme's paid schedules the upgrade costs
+  `V` additions, and the two are different conventions, not a
+  contradiction. For positive coordinates `p = w+1` the theorem transfers
+  to `p ≥ 1`, not to all `p > 0`. A fixed-arity universal compression
+  cannot keep its real/natural existence equivalence (the programme's
+  remark `cdc:ro:rem:qelimit`).
 - **17, scope.** Bases are fixed positive integers (or rationals after a
   fixed scaling, where minimizing `Kq^n f(n)` is not minimizing `f(n)`);
   positive algebraic irrational bases are outside the encoding. Repetition
@@ -2464,6 +2843,35 @@ compiler, Part V's graph evaluator and sharing remark, manuscript 04's
 activation lemma and Part IX. No neighbouring report was edited in this
 write.
 
+Manuscripts 22 and 23 rely on no formal declaration and cite no Lean or
+Rocq file. Their certificate is a cubic of Part XVI's kind; MRDP
+(`Diophantine.mrdp`) is context only, and no theorem of Part XX is
+formalized in Lean or Rocq. Placing the Part beside the formal project
+confers no formal status on it. The separately maintained research tree
+reviewed both archives before placement (`review_sandpile35_36_intake.md`,
+`c120b34df`) and added `sandpile_shared_arithmetic35_36.md` with its
+independent review `review_sandpile_shared_arithmetic35_36.md`, both in
+`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`
+and summarized in the project README; the article's Part XX records every
+finding (`cdc:sec:b83-review`). Its least universal Diophantine polynomial
+stays at 84 operations (`20aafb9a5`); Part XX changes nothing there.
+
+**Relations (batch 83, cluster H1).** Part XX answers in part manuscript
+16's question "A verified universal periodic input loader" (a literal,
+audited, not formally verified loader for `U₁₅`, with the encoder
+imported) and manuscript 19's `cdc:nb:q:formal`, and answers in part
+manuscript 16's question on coefficient and operation ledgers; it touches
+16's question "Fewer witnesses without losing uniqueness" and 19's
+`cdc:nb:q:smaller` (binary odometers only), and bears on 16's question on
+fixed-arity compression (the review's real-algebraic limit). Dated notes
+after those six questions say so. 23 credits Part VI of
+*quadratic-orthant-certificates* (`qoc:rn:lem:gates`, `qoc:rn:thm:trace`)
+for the real one-hot principle; the machine is that report's `U_{15,2}`
+and that of *group-theoretic-substrates* Part V (placed, not yet written),
+with the same imported encoder. No neighbouring report was edited in this
+write; reciprocal notes for those two reports are left to a separate
+commit.
+
 ## Build
 
 pdfLaTeX, with the packages loaded in `article.tex` (base 05's preamble
@@ -2472,7 +2880,7 @@ fontenc, inputenc, amsmath, amsthm, mathtools, newtxtext, newtxmath,
 geometry, microtype, booktabs, array, longtable, tabularx, float, xcolor,
 enumitem, listings, fancyhdr, titlesec, tcolorbox, xurl, hyperref, aliascnt,
 cleveref, fancyvrb, tikz and etoolbox; `etoolbox` only widens the section
-numbers in the contents, which reach three digits). The two diagrams (Parts XI and XIII) are drawn in TikZ in the
+numbers in the contents, which reach three digits). The two diagrams (Parts XI and XIII) and, since batch 83, three in Part XX are drawn in TikZ in the
 source. The bibliography is internal; no BibTeX, external figures or
 downloads are needed. Build in a scratch copy, so that no auxiliary file
 lands in the collection:
@@ -2481,10 +2889,10 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 608 pages (196 before batch 62, 306 before batch 63,
+The recorded build has 652 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note),
+509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note, 652 after Part XX),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -2584,6 +2992,34 @@ as a rebuild of the previous text in the same environment. Every label
 and bibliography number is unchanged (the `.aux` of that rebuild
 compared, 3132 `\newlabel` and 99 `\bibcite` entries). The page of the
 note (page 260) was rendered and inspected.
+
+Part XX (batch 83, cluster H1) adds fifteen macros (`\FL`, `\FR`, `\AND`,
+`\OR`, `\WIRE`, `\FORK`, `\htcoef`, and `\Ufift`, `\bitset`, `\Qreal`,
+`\rlo`, `\rneg`, `\req`, `\rpos`, `\rhi` for 22's `\U` and `\bits` and
+23's `\QR`, `\lo`, `\negc`, `\eqc`, `\pos` and `\hi`, of which `\bits` and
+`\pos` would clash with this report's) and no package (22's TikZ
+libraries `arrows.meta` and `positioning` are already loaded; `lmodern`,
+`amssymb` and `tocloft` are not needed). Its three TikZ diagrams are 22's
+Figures 1–3, printed as Figures 3–5. Built in a scratch directory with
+`latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX,
+pdfTeX): 652 pages, no errors, warnings, undefined references or
+citations, multiply defined labels, duplicate destinations or overfull
+boxes, and the same single underfull line as before; there are fourteen
+"Infinite glue shrinkage" messages, one more than in a rebuild of the
+previous text, from Part XX's conventions longtable. Every earlier label
+keeps its number and type, and every earlier bibliography number is
+unchanged (the `.aux` of that rebuild compared, 3132 `\newlabel` and 99
+`\bibcite` entries); one entry is retitled (`cdc:sec:manuscripts`, now
+"The twenty-three manuscripts"), and the hyperlink anchors of two
+unnumbered paragraphs (`cdc:pt:subsec:repo`, `cdc:conv:b62q`) moved,
+because the conventions gained the paragraph "Part XX". The eight new
+bibliography entries are items 100–107. Layout-only changes: the
+horizontal unit of 22's shutdown diagram (Figure 4) is narrowed from
+.038 cm to .035 cm so that it fits the text width, and the first-column
+entries of the conventions table are split into separate formulas so that
+they can break. The title page, Sections 3.21–3.23, the opening and
+conventions of Part XX, Figure 4, the review section with its table, the
+provenance list and the bibliography were rendered and inspected.
 
 ## Rerunning the checks
 
@@ -2731,6 +3167,92 @@ mv r21/code/reproduce.py r21/code/build_pdf.py r21/code/sources.json r21/code/re
 # optional: also the three SymPy stages
 (cd r21 && uv run --no-project --with sympy==1.14.0 python reproduce.py --symbolic)
 ```
+
+**Part XX (22 and 23).** These need, besides `code/` and `data/`, the
+`22-*` and `23-*` files at the report root in the scratch copy, and three
+files that are not shipped as such. Save the following as `restore83.py`
+in the scratch copy; it rebuilds the delivered layout in `r22` and `r23`:
+
+```python
+import pathlib, shutil, sys
+DIRS = {'evidence', 'composition', 'review', 'loader', 'ca', 'compiler', 'gates', 'geometry', 'verification', 'real'}
+for prefix, out in (('22-literal-sandpiles-', 'r22'), ('23-real-sandpiles-', 'r23')):
+    for d in ('.', 'code', 'data'):
+        for f in pathlib.Path(d).glob(prefix + '*'):
+            parts, rest = [], f.name[len(prefix):]
+            while '-' in rest and rest.split('-', 1)[0] in DIRS:
+                head, rest = rest.split('-', 1)
+                parts.append(head)
+            dest = pathlib.Path(out, *parts, rest)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest)
+pathlib.Path('r22/evidence/loader/data').mkdir()
+shutil.copy2(sys.argv[1], 'r22/evidence/loader/data/u15_table.json')
+pathlib.Path('r23/evidence/real/approved_base').mkdir()
+for n in ('PROOF.md', 'prism_certificate.py'):
+    shutil.copy2('r22/evidence/composition/' + n, 'r23/evidence/real/approved_base/' + n)
+```
+
+Then, with `REPO` the repository checkout and the scratch copy beside
+`quadratic-orthant-certificates` (or pass that report's machine table by
+its full path):
+
+```sh
+# 22 and 23: run in a scratch copy of the report directory that holds code/, data/ and the 22-*/23-* root files
+py restore83.py ../quadratic-orthant-certificates/data/16-universal-membrane-tm_table.json
+git -C "$REPO" show 3051d1446:docs/incoming/Literal_Periodic_Sandpiles_and_Diophantine_Certificates_Package.zip > r35.zip
+unzip -p r35.zip Research_Report35/evidence/loader/FROZEN-INPUTS.json > r22/evidence/loader/FROZEN-INPUTS.json
+# 22, composition first: these producers print their receipts and check the hashes of the loader files
+(cd r22/evidence/composition && py test_prism_certificate.py > verification.json \
+  && py literal_composition.py > example_hypothetical_bound.json \
+  && py review/audit_independent.py > review/audit_independent_results.json \
+  && py review/audit_polynomial.py > review/audit_ledger.json \
+  && py review/audit_crosscheck.py > review/audit_crosscheck_results.json \
+  && py review/audit_streaming.py > review/audit_streaming_results.json \
+  && py review/audit_adapter.py > review/audit_adapter_results.json)
+# 22, loader: rewrites its six receipts in place
+(cd r22/evidence/loader && py gates/check_gates.py && py ca/test_lazy_u15.py \
+  && py geometry/periodic_router.py --output geometry/router_checks.json \
+  && py compiler/literal_loader.py --audit && py compiler/test_coefficients.py && py compiler/make_example.py)
+# 23: rewrites its two receipts in place (the first needs SymPy 1.14.0)
+(cd r23/evidence/real && uv run --no-project --with sympy==1.14.0 python exact_checks.py --output verification.json \
+  && py independent_coefficient_ledger_checks.py --output independent_coefficient_ledger_receipt.json)
+```
+
+**Part XX (22 and 23).** The replay plans
+`data/22-literal-sandpiles-verification-replay-plan.json` and
+`data/23-real-sandpiles-verification-replay-plan.json` list every producer
+with its working directory, arguments, receipt and whether the receipt is
+a file or captured stdout (the seven composition producers print their
+receipts, and the recipe redirects them to the receipt paths). The
+preferred route is the delivered one, on a POSIX host: extract both
+archives from the arrival commit
+(`git show 3051d1446:docs/incoming/<archive>.zip`, outside the repository)
+and run, in each extracted `Research_Report35/` or `Research_Report36/`,
+`python3 verify_release.py --verify-only` and `python3 verify_release.py
+--replay` (23 with `-I -B` and SymPy 1.14.0 installed); the wrapper runs
+every producer in disposable copies, normal and optimized, and compares the
+receipts. It cannot run in this repository or on a Windows file system:
+it needs the unshipped manifests and POSIX modes. The recipe above is the
+alternative on any host, without the wrapper: it restores the delivered
+layout from the shipped files, adds the three unshipped files the programs
+read (the machine table from *quadratic-orthant-certificates*, 23's
+`approved_base/` pair from 22's shipped composition files, and 22's
+loader `FROZEN-INPUTS.json` from the archive), and runs the producers. In
+the write it was run on Windows (Python 3.14.4; SymPy 1.14.0 through `uv`
+for 23): every producer passed and every regenerated receipt equals the
+shipped one after removing carriage returns (all 15 receipts, under three
+minutes in all). **Hazards:** run the composition producers before the loader
+producers or on a fresh copy, because on Windows the loader producers
+rewrite their receipts with CRLF, after which the composition producers
+stop with "frozen loader file changed"; without the restored
+`FROZEN-INPUTS.json` they stop at once. Every producer overwrites its
+receipt in place, so run them only in `r22` and `r23`. Do not run
+`code/22-…-build_pdf.py` or `code/23-…-build_pdf.py` (they compile the
+unshipped `Research_Report35.tex`/`Research_Report36.tex`), the
+`archive_*.py` and `seal_release.py` tools, or `tamper_regression.py`
+here. `lazy_u15.py --rules-jsonl` regenerates the rule stream, not
+byte for byte (see Files).
 
 The recipes for 08–12 use `py`, which resolves on this machine; the
 delivered texts write `python` (12's Makefile `python3`).
@@ -3316,6 +3838,94 @@ there `verify_manifest.py` checks 57 entries.
   already present and the hunk fails (`patch --dry-run`). The tree's
   correction audit `review_batch80_corrected.md` (`abfc0cb25`) confirms the
   repair and that the rest of the kernel's AST is unchanged.
+- **Batch 83, cluster H1 (manuscripts 22 and 23): shipped text that uses
+  delivery names or names unshipped files.** Both `INTEGRITY.md` files
+  (shipped as `22-literal-sandpiles-INTEGRITY.md` and
+  `23-real-sandpiles-INTEGRITY.md`) describe the delivered release: the
+  unshipped `MANIFEST.json` and `SHA256SUMS`, `verify_release.py`,
+  `seal_release.py` and the other entry points by delivered name, POSIX
+  file modes and modification times, and commands run from the release
+  directory. The evidence READMEs, proofs and audits name their files by
+  paths relative to their packet (`ca/lazy_u15.py`, `compiler/…`,
+  `gates/…`, `geometry/…`, `review/audit_*.py`, `data/u15_table.json`,
+  `FROZEN-INPUTS.json`, `approved_base/`, `PROOF.md`); the loader's audit
+  and README name the unshipped `data/u15_table.json` and
+  `FROZEN-INPUTS.json`, and 23's README, PROOF and review name the
+  unshipped `approved_base/` pair, its `SHA256SUMS` and `MANIFEST.json` and
+  the optimized receipts; 23's `PROOF.md` also names the predecessor packet
+  as `sandpile-certificate-composition-20261003/PROOF.md`, which is 22's
+  composition `PROOF.md`. Every program reads and writes by delivered
+  paths: `test_lazy_u15.py` and `verify_bundle.py` read
+  `data/u15_table.json`; `test_prism_certificate.py`,
+  `literal_composition.py` and `review/audit_adapter.py` read
+  `evidence/loader/FROZEN-INPUTS.json` and check the hash of every loader
+  file it lists; 23's `real_certificate.py`, `freeze_packet.py` and
+  `independent_coefficient_ledger_checks.py` import or hash
+  `approved_base/prism_certificate.py`. The receipts in `data/` record
+  delivered paths and hashes; `data/22-literal-sandpiles-verification-source-lineage.json`
+  and `data/23-…-source-lineage.json` map original to packaged paths of the
+  delivery, not to shipped names; the replay plans give delivered working
+  directories. `data/23-real-sandpiles-evidence-real-report35_integrity_check.txt`
+  records that "all 78 frozen-release SHA256 checks" of 22's archive pass
+  (verified again at placement). The article prints shipped names where 23
+  names its files, and a note where 22 names its unshipped table.
+- **Batch 83, cluster H1: corrections, renamings and notes in the printed
+  text.** 22's certificate-interface theorem (its Theorem 1.3, in Section
+  3.22) states no hypothesis on the input outside the prism; a `[write]`
+  bracket in the statement and a note supply its Section 9's standing
+  hypothesis (natural `η` stable outside `P`, every finite addition in
+  `P`), automatic for the loader. Renamed: 22's `\bits` (`{0,1}`) and `\U`
+  print as `\bitset` and `\Ufift` with the same glyphs; 23's `\QR`, printed
+  `Q_R` there, is `Q^real` here, because Part XVI's `Q_R` is a box; 23's
+  selector macros print with the same glyphs under new names. 22's Figure 1
+  is printed at the opening of Part XX, so that no figure number moved.
+  Notes mark 22's certificate theorem and least-action lemma as second
+  routes to Part XVI and manuscript 19, record that its bundled machine
+  table is the neighbouring report's, and point 23's Section 4 to 22's
+  proof. A written conventions table resolves the clashes with Part XVI
+  (`Q_R`, `Q`, `H`, `L`, `R`, `ρ`, `λ`, `B`, `M`, `N`, `b`, `δ`, `T`) and
+  between the two manuscripts' names, and prints the two arithmetic
+  conventions as two labelled rows.
+- **Batch 83, cluster H1: the research programme's review.**
+  `review_sandpile35_36_intake.md` (`c120b34df`, 3 October 2026, before
+  placement) authenticates both archives (SHA-256 above), executes no
+  archived code, and passes the certificate argument and the real-orthant
+  upgrade within a stated scope: it read 22's README, composition proof,
+  vertex and edge formulas and loader proof, and 23's README, real proof,
+  independent review and source; it did not reconstruct the physical
+  graph, routing seams, automaton or machine tables, the encoder or a giant
+  prism. Its findings, all printed in the article's `cdc:sec:b83-review`:
+  the restatement of 22's theorem with its hypotheses and the exclusion of
+  nonbinary odometers; the loader's scope (total topplings, one-shot also
+  when nonhalting, the conditional and noncomputable prism bound, the
+  imported encoder, Cairns's paper not verifying this graph, a family of
+  cubics rather than a fixed finite list of witnesses and operations);
+  23's argument confirmed without integral ranks, the LP searches
+  unnecessary and not rerun, `5/36` reproduced; a moment identity for the
+  five weighted edge squares and two paid shared schedules saving exactly
+  `V+4E` multiplications and `E` additions (55→54, 145→138, 839→771 for the
+  real variants of three fixtures), independently reviewed
+  (`review_sandpile_shared_arithmetic35_36.md`, PASS); the real upgrade
+  costing `V` additions in those schedules against `+2V` per count in 23's
+  convention, printed as two conventions; the positive-coordinate shift
+  valid only on `p ≥ 1`; the real-algebraic limit on fixed-arity
+  compression with its stated exceptions; no effect on the 84-operation
+  bound; and the next step, a paid integer-only packing interface. It
+  supplies no patch; nothing shipped was changed.
+- **Batch 83, cluster H1: reruns.** The delivered release verifiers
+  (`code/22-literal-sandpiles-verify_release.py`,
+  `code/23-real-sandpiles-verify_release.py`) check the unshipped
+  `MANIFEST.json` with POSIX file modes and refuse to run on NTFS
+  ("Identity gate: payload mode mismatch"); `tamper_regression.py`,
+  `archive_*.py`, `seal_release.py` and `build_pdf.py` are release tools
+  that need the delivered tree. The placement session ran the full replay
+  on a copy of the extracted archives through a shim that substitutes only
+  the manifest-declared modes: 22 26/26 producer runs (13 producers, normal
+  and `-O`, 9 min) and 23 4/4 (SymPy 1.14.0, 4 min), every regenerated
+  receipt equal to the expected one up to CRLF. The write reran every
+  producer directly (normal Python) on a copy restored from the shipped
+  files by the recipe below: all pass, with receipts equal up to CRLF; see
+  "Rerunning the checks".
 - **Byte-identical duplicates within a manuscript** (checked with `cmp`):
   03's `test_results.json` and `test_run.txt`, `linear_test_results.json`
   and `linear_test_run.txt`, and `example-events.json` and
@@ -3849,6 +4459,35 @@ same decisions.
   shipped kernel was the original and the patch not applied are kept as
   history. No statement, label, number or manuscript text changed (the
   corrected archive's `.tex` is byte-identical); no label was added.
+- **Batch 83, cluster H1 (Part XX).** 22 and 23 continue Part XVI, 23
+  depends on 22, and 22 delivers the loader that Part XVI's question names,
+  so they form one addition: Part XX after Part XIX and before the
+  appendices, 22's Sections 2–13 and then 23's Sections 2–9, with their
+  abstracts and Sections 1 as Sections 3.22–3.23; no existing section,
+  theorem, equation, table or figure number moved. Not a new report (both
+  state that they continue Part XVI), not inside Part XVI (the loader,
+  automaton, router and primitives are a new subject, and Parts are
+  appended), and not *fixed-universal-polynomials* or
+  *quadratic-orthant-certificates* (they share only the machine and the
+  credited real-gate principle). Printed once: the binary certificate
+  theorem (22's, with 23's Section 4 as a pointer keeping its two extra
+  remarks). Kept as marked second routes, with no novelty claim: 22's
+  certificate theorem and least-action lemma against `cdc:sp:thm:compact`,
+  `cdc:sp:thm:collar`, `cdc:sp:lem:leastaction`, `cdc:nb:thm:halo` and
+  `cdc:nb:lem:least`. The fractional singleton zero is printed in both
+  manuscripts' places. Written: the Part's opening (source and scope,
+  relation to other Parts, the review, setting and hypotheses), a
+  conventions table, notes at the re-proofs, the input-hypothesis bracket,
+  the review section `cdc:sec:b83-review`, nine labelled questions
+  `cdc:sec:b83-questions` (restating the manuscripts' closing prose and the
+  programme's next step) and dated notes after six questions of Part XVI
+  (16's fewer-witnesses, ledger, loader and fixed-arity questions, 19's
+  `cdc:nb:q:smaller` and `cdc:nb:q:formal`). The provenance appendix
+  counted "twenty manuscripts" since batch 79; it now says twenty-three,
+  as does the bibliography's opening note. Bibliography: eight new entries
+  (`neary-woods-fi`, `repo-cdc83`, `repo-qoc83`, `lp-loaderpacket`,
+  `lp-certpacket`, `ro-report35`, `repo-b83rev`, `repo-b83arith`);
+  `cairns` and `basu` extended. Neither manuscript names an AI assistant.
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
   different commits), `\repoCommit` (02) and `\reposha` (04) printed as
