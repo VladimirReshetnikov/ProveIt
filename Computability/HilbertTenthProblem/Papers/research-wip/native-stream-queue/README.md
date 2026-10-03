@@ -33,6 +33,17 @@ a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
 This restricted negative result does not cover the new first-root change.
 
+The [selective positive-gap construction](complete74_gap_selective_projection113.md)
+adds a complete **113=53M+60A polynomial of exact degree28**, with24 positive
+witnesses. It eliminates q,C,k,d,kappa,mu while retaining a,c. The full
+parent SOS agrees on the restored graph, and the first equation proves the
+inverse gap positive before the universal theorem is used. Its
+[independent review](review_complete74_gap_selective_projection113.md)
+checks all256 graph choices, complete source ledgers and leading forms.
+Both fresh root receipts pass. The new113/28 point extends the catalogue
+above; exact degrees hold on every admissible fixed program slice. Ordinary
+input and unbounded duration remain paid. The minimum bounds stay74/86.
+
 The [native first-coefficient transfer](native_pell_factored_first_coefficient.md)
 now gives a **63=32M+31A prescribed AND certificate**, with22 positive
 auxiliaries and16 comparisons; its full degree28 SOS costs110 operations.

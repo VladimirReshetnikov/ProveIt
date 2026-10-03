@@ -53,6 +53,23 @@
 > witnesses. At grouped zeros first prove N0'=±1, then T>L, then invoke the
 > old positive-gap theorem, including auxiliary-gap positivity in its old order.
 > Do not describe finite partition optimality as an unrestricted lower bound.
+> The [selective positive-gap family](complete74_gap_selective_projection113.md)
+> now adds113=53M+60A/exactdegree28 with24 positive witnesses and13 residuals.
+> Start from actual raw74 with X=wq^3,Y=sq^3,L=XY^2*k. Restore tau=L+g;
+> first residual becomes1-g^2-L(2g-k), with comparison operands reversed.
+> On old zeros tau^2-L^2=L*k+1>0 proves g>0 before any parent conclusion.
+> Eliminate q,C,k,d,kappa,mu; retain a,c. All selected graph definitions
+> are unconditionally positive. The full old SOS after restoration equals
+> the new SOS on all tuples; complete positive zero sets are in bijection.
+> Default residual degrees1,5,4,14,5,9,8,8,6,10,2,3,7; unique SOS leader
+> Bm1^18*w^2*s^4*(eta+zeta)^2*Jrep^18*(2g-eta-zeta)^2 proves exact28
+> uniformly for every admissible fixed program slice. All256 subsets have
+> certificate75=40M+35A, full cost131-3n,30-n witnesses,19-n comparisons.
+> Family frontier113/28,110/68(two forms),107/84; only113/28 extends the
+> earlier combined catalogue. The [independent full review](review_complete74_gap_selective_projection113.md)
+> and both root receipts pass. Review reconstructs all256 literal sources,
+> complete SOS/graph identities and multivariate leading forms independently.
+> No full native Pell zero is materialized. Minimum bounds remain74/86.
 > The [coefficient-only census](complete87_shared_coefficient_scout.md) is
 > frozen separately: reachable-set counts1/13/116/891 exclude at most three
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid

@@ -39,6 +39,14 @@ independently verify the result. The source and both review receipts pass
 fresh replay. This is a mathematical proof with executable checks, not a
 Lean formalization or an unrestricted optimality claim.
 
+The [selective positive-gap construction](Papers/research-wip/native-stream-queue/complete74_gap_selective_projection113.md)
+adds a complete **113-operation polynomial of exact degree28**, with24
+positive witnesses and the same universal ordinary-input theorem. Its
+[independent review](Papers/research-wip/native-stream-queue/review_complete74_gap_selective_projection113.md)
+checks all256 coordinate projections, full circuits and uniform exact degrees.
+Both fresh root receipts pass. This improves the achieved degree tradeoff;
+the minimum operation bounds remain74/86.
+
 The [corrected Grill halt bridge](Papers/research-wip/native-stream-queue/grill_tag_halt_bridge.md)
 and its [independent review](Papers/research-wip/native-stream-queue/review_grill_tag_halt_bridge.md)
 prove halting equivalence at the exact encoded width, including cleanup.
