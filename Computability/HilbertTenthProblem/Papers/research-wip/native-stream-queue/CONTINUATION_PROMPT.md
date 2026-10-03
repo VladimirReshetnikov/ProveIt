@@ -16,6 +16,11 @@
 > [reset gates](review_reset_petri_net_aebfa386e.md) save761 additions per source step.
 > Respect the natural-only zero-set claims and external horizons. None lowers87.
 > The complete U15 frontier511/4881,513/3120,515/2116,517/1936 is unchanged.
+> The [connected routing SLP](connected_cross_routing_slp.md) additionally emits
+> the full unchanged polynomial with shared selector/column/row sums: transfer
+>245→206 and five-branch fixture840→456. Both the20,455-check writer and
+> [independent164-polynomial reconstruction](review_connected_cross_routing_slp.md)
+> pass fresh root replays. Keep the external horizon and m≥5 network scope.
 
 
 > Historical handoff below. The current comparison frontier is

@@ -10,6 +10,13 @@ signal/reset simplifications. The signal schedule saves 7,489,424 operations
 per event packet; reset gates save 761 additions per source step. These
 external-horizon/local results leave the global 87-operation bound unchanged.
 
+The [complete connected routing evaluators](connected_cross_routing_slp.md)
+retain every original equation and the entire polynomial on all integer tuples.
+Shared row/column sums reduce the transfer example from245 to206 operations
+and a five-branch example from840 to456. Complete emitted gate lists,
+20,455 checks and an [independent full-source reconstruction](review_connected_cross_routing_slp.md)
+pay the whole evaluation, including finalization; the horizon remains external.
+
 
 The [complete direct U15 partition frontier](u15_unit_partition_frontier.md)
 gives **511/4881,513/3120,515/2116,517/1936** (operations/exact degree),
