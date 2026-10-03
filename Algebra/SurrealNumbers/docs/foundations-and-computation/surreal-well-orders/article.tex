@@ -566,7 +566,12 @@ Cuts of the core &
 A normalized class cut $(L,U)$ has a lower side $L$ without greatest element;
 the cut of an injective branch $F$ is written $L_F$ (source~16's $L_F$,
 source~17's $L_f$; source~14's $D_F$, $D^\pm_p$, $D_{p,H}$ and source~13's
-$(L,U)$ are explained where printed).\\[3pt]
+$(L,U)$ are explained where printed). In Part~VIII, source~13's code
+cylinder $\mathcal D_p$ is printed $\Psupp(b)_p$, and source~17's
+$\mathcal C_p$ and source~18's $\mathcal C_b(p)$ are printed $C_p$; in
+source~14's support section its decreasing sequence $(r_i)$ is printed
+$(u_i)$ and the regular cardinal of its definition of $\eta$-orders
+$\theta$, since $r=\cf\kappa$ there.\\[3pt]
 $\varepsilon$, $\End$, $\dagger$ &
 A formal termination symbol adjoined to the alphabet of a word order; it is
 never a surreal number. Source~16's $\varepsilon$ sits at a cut
@@ -587,7 +592,8 @@ source~08. Labels: \code{swo:fs:} (13, replacing its \code{swf:}),
 \code{swo:ds:} (16), \code{swo:gs:} (17), \code{swo:sh:} (18, keeping its
 internal \code{wv:}); unlabelled numbered statements get
 \code{swo:}\emph{sub}\code{:n}\emph{number}; labels written for the merge in
-Part~VI begin \code{swo:vi:}, in Part~VII \code{swo:vii:}.\\
+Part~VI begin \code{swo:vi:}, in Part~VII \code{swo:vii:}, in Part~VIII
+\code{swo:viii:}.\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -905,7 +911,10 @@ of class well-orders with explicit condensation histories; product
 The addition is printed by theme, not by source, because the sources overlap:
 Part~VI (\cref{swo:part:strata}) prints the set-sized strata; Part~VII
 (\cref{swo:part:conventions}) prints the six sources' maps of interpretations,
-the word orders, the termination conventions and the other comparison orders.
+the word orders, the termination conventions and the other comparison orders;
+Part~VIII (\cref{swo:part:corecuts}) prints the class cuts of the core:
+their classification and recognition, automorphisms, class extensions and
+support.
 The rules of
 \cref{swo:sub:printing} apply unchanged: each shared result is printed once,
 with every source that proves it named; the other versions are numbered
@@ -12484,6 +12493,3616 @@ Sources~16 and~18 also ask how much of the word isomorphisms survives without
 a global well-order; source~18's proof (\cref{swo:vii:sub:sh-tree}) shows that
 one set-like global well-order suffices as a parameter, so the question is
 whether that parameter can be removed. It is open.
+
+% ---- hand chunk part8 (batch 81, write 3 of 4)
+\part{Cuts of the set-coded core: recognition, automorphisms, support and class realizations}\label{swo:part:corecuts}
+
+\merge\ (3 October 2026.) The third Part of the batch-81 addition
+(\cref{swo:sub:batch81}; notation in \cref{swo:sub:notation81}). Part~IV
+(\cref{swo:part:setlike}) built the core, the ordinary class of set codes
+for bounded-support perturbations of one baseline enumeration $b$, proved
+that it interpolates every uniformly set-indexed cut, and asked which of its
+class cuts come from global enumerations (\cref{swo:n16.1}; source~09's
+third direction in \cref{swo:ec:sec:research}). All six batch-81 sources
+answer that question, by one argument. This Part prints the answer and what
+the sources prove around it: source~14's foundations for the class-level
+results (\cref{swo:tc:sec:foundations}); the core and its cylinders
+(\cref{swo:tc:sec:core}), with the five other sources' re-proofs of
+Part~IV (\cref{swo:viii:sec:reproved}); the classification of every proper
+class cut of the core into a cylinder edge, a numerical gap or a branch
+(\cref{swo:tc:sec:cuts}) and its characters (\cref{swo:tc:sec:characters});
+the recognition of the cuts of global enumerations (\cref{swo:tc:sec:recognition})
+and the five further proofs of it (\cref{swo:viii:sec:routes}); automorphisms
+of the core (\cref{swo:viii:sec:automorphisms}); class extensions
+(\cref{swo:viii:sec:extensions}); and support-restricted suborders and the
+exact reserve of a partial injection (\cref{swo:viii:sec:support}).
+\Cref{swo:viii:sec:status} records which questions the Part answers.
+
+The base is source~14 throughout, by generality: it alone classifies
+\emph{every} proper class cut with unique data, gives the complete orbit
+invariant, the absoluteness theorem and the support hierarchy. Source~17 is
+the base for the exact reserve cardinal, the automorphism extension
+criterion and the clause that every proper class extension adds a
+represented cut; source~15 adds the finest first-failure partition (a
+forbidden repeated label) and source~13 the non-rigidity of the cylinder
+family. The represented-cut theorem itself is printed once as source~14's
+\cref{swo:tc:thm:trichotomy,swo:tc:thm:recognition}, and the other five
+proofs follow as routes, each whole, because each source builds different
+examples and corollaries on its own proof (\cref{swo:viii:note:sixfold}).
+Source~18 was written before sources~13--17 arrived.
+
+Notation (\cref{swo:sub:notation81}): the core is printed $\Psupp(b)$ in the
+support coding of sources~13, 14, 17 and~18 (their $\mathcal D$,
+$\mathcal P_b$, $\mathcal C_b$, $\mathcal C_b$; source~18's macro
+\verb|\Pbd|), and $\Pbd(b)$ in the normalized-permutation coding of
+sources~15 and~16 (their $\mathcal D$ and $\mathcal P_b$); the two codings
+have the same evaluations. Cylinders of codes are printed $C_p$ (source~13's
+$\mathcal D_p$ is printed $\Psupp(b)_p$, source~17's $\mathcal C_p$ and
+source~18's $\mathcal C_b(p)$ are printed $C_p$). Source~14's $\mathfrak E$,
+$\mathfrak J$, $\mathfrak W$ are printed $\Hsl$, $\Jinj$, $\Hall$, its
+relation macro \verb|\lex| as $<_\lex$; in its support section its
+$\tau=\cf\kappa$ is printed $r$, its decreasing sequence $(r_i)$ is printed
+$(u_i)$, and the generic regular cardinal of its definition of
+$\eta_\tau$-orders is printed $\theta$. A cylinder meeting both sides of a
+cut \emph{crosses} it in sources~13, 14 and~15 (source~15 also calls such
+cuts \emph{persistent}) and \emph{straddles} it in sources~16, 17 and~18;
+the two words mean the same. All six use $\Ord$ as a character symbol for
+``a uniform $\Ord$-indexed cofinal family exists and no set-sized one does'',
+never as a cardinal. Labels written for the merge in this Part begin
+\code{swo:viii:}.
+
+% ---- hand chunk foundations
+% ---- source 14 (batch-81 manuscript 02), lines 366-453
+\section{Foundations and the audited starting point (source 14)}
+\label{swo:tc:sec:foundations}
+\subsection{Sets, classes, and uniform families}
+We use sign sequences as canonical set representatives of surreals. Each
+surreal has a set ordinal birthday. This avoids treating a proper class
+of equivalent game forms as an individual set.
+
+In $\GBC$, a class $E\subseteq\Ord\times\No$ may be the graph of a
+global enumeration. It cannot then be an element of a set or an ordinary
+class. Expressions such as
+\[
+ E\in \Hsl=\Bij(\Ord,\No)
+\]
+are convenient predicate notation. They mean that the class variable
+$E$ satisfies the indicated formula. They are not membership assertions
+in a powerclass object. The same convention applies to the virtual
+collection $\mathfrak C(\Psupp(b))$ of class cuts.
+
+A uniformly set-indexed family $(E_i)_{i\in I}$ is one class relation
+$U\subseteq I\times\Ord\times\No$ whose $i$-th section is $E_i$, with
+$I$ a set. Replacement with the parameter $U$ produces a set of first
+disagreement ordinals or a set of evaluated prefix values. Merely writing
+``a set of proper-class functions'' does not provide such a family.
+
+A class well-order is a class linear order for which every nonempty
+subclass has a least member. Under the choice assumptions used here,
+the standard set-subset well-foundedness formulation is equivalent;
+see \cite[Section~3]{HamkinsWoodin}. Internal well-foundedness in an arbitrary
+model is not asserted to be external well-foundedness.
+
+\subsection{Why a baseline is an assumption, not a notation}
+Global Choice supplies a set-like class well-order and hence a class
+bijection $b:\Ord\to\No$. Conversely, the predecessor report proves
+over $\GB$ without even assuming set Choice that a class well-order of
+the sign-sequence surreals implies Global Choice
+(\cref{swo:cf:choice}; Section~13 of this report at the pin). The proof
+uniformly well-orders the power sets $V_{\beta+1}$ (\merge\ the delivered
+text says ``coherently''; the orders need not extend one another, as
+corrected in this report on 3 October 2026, commit \code{0f52c0dca}, after
+source~14's pin) and constructs rank-by-rank presentations; it is stronger than the
+observation that each already well-orderable set embeds into $\No$.
+We use that reported equivalence as background, rather than claim to
+re-prove its choiceless direction here.
+
+There is no paradox in using $\Ord$ as the domain of $b$: it is a
+proper class domain. There would be a paradox in calling it a set
+ordinal or applying a set power-set operation to it inside the same
+universe.
+
+\subsection{Elementary comprehension versus class-valued recursion}
+The new constructions use formulas with set quantifiers and previously
+given class parameters. For example, ``a set prefix has a core completion
+on each side of this cut'' quantifies over set codes, not over classes.
+The union of all such coherent prefixes is consequently an ordinary
+class obtained by elementary comprehension.
+
+Set-valued recursion of length $\Ord$ with set histories at each stage
+can be implemented by coherent set-length recursions in $\GBC$.
+This must not be conflated with recursions that choose an entire class
+at each stage, or with recursions along arbitrary non-set-like class
+well-orders. The literature proves that $\ETR$ implies abstract
+class-well-order comparability \cite[Theorem~6]{HamkinsWoodin}; our labelled
+comparison and prefix reconstruction are different operations and do
+not invoke that implication in reverse.
+
+\subsection{Repository audit and status of the inputs}
+The inspected report lives at
+\begin{quote}\small
+\path{Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders/article.tex}.
+\end{quote}
+Its README records a 115-page merged report, four source manuscripts,
+and a pending collection-level review; it explicitly says the report is
+not formalized (its README at the pin; \merge\ the page count and the
+number of sources have grown with this addition, and the report is still
+not formalized). We inspected the introduction,
+set-supported and binary-coding sections, universe discussion, and
+research questions relevant to the present work. This is a targeted audit,
+not a certification of the entire repository.
+
+We also inspected the actual Lean file
+\begin{quote}\small
+\path{Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceSimplicity.lean}.
+\end{quote}
+It proves uniqueness and prefix properties of simplest separators
+\emph{assuming existence}. In particular,
+\texttt{existsUnique\_simplest\_separator} takes an existence hypothesis.
+It is not a theorem supplying all small-cut separators by itself
+\cite{ProveItSimplicity}. This distinction matters for the proposed formalization.
+\merge\ The pinned tree already supplies the existence half and composes
+the two: \texttt{small\_cut\_fillers} in \path{SignSequenceCut.lean}
+\cite{ProveItCutFill} proves that small cuts have fillers, and
+\texttt{cut} in \path{SignSequenceCutOperation.lean} \cite{ProveItCuts} is
+defined from \texttt{existsUnique\_simplest\_separator} applied to it
+(\cref{swo:sec:formal}). Source~14's recommendation to compose them is
+therefore already carried out.
+
+The present main theorems have written proofs below. Their novelty claim
+is only that they extend the inspected predecessor results; historical
+priority has not been established by the literature check.
+
+% ---- hand chunk core
+% ---- source 14 (batch-81 manuscript 02), lines 454-570
+\section{The set-coded skeleton and its cylinders (source 14)}
+\label{swo:tc:sec:core}
+For the remainder of the class-level development we work in $\GBC$ and
+fix a class bijection $b:\Ord\to\No$. All occurrences of a class
+parameter mean a class belonging to the chosen class realization.
+
+\subsection{Canonical support codes}
+A \emph{support code} is a set bijection $\sigma:S\to S$ with no fixed
+points, where $S$ is a set of ordinals. The empty code is permitted.
+Extend it by the identity to a class permutation $\widehat\sigma$ of
+$\Ord$, and set
+\[
+ E_\sigma=b\circ\widehat\sigma,
+ \qquad \supp(\sigma)=S.
+\]
+Let $\Psupp(b)$ be the ordinary class of these codes, ordered by
+$\sigma<\tau$ if $E_\sigma <_{\lex} E_\tau$. The codes are canonical:
+two of them have the same extension exactly when they are equal.
+Every class permutation with set support is represented, because its
+support is invariant under the permutation and its restriction has no
+fixed points. A set of ordinals is bounded, so ``set support'' and
+``bounded support'' are equivalent here. This does not mean finite support.
+
+Let $\Hsl$ stand for the virtual collection of class bijections
+$\Ord\to\No$, and $\Jinj$ for that of class injections. A statement
+quantifying over $\Hsl$ or $\Jinj$ is a statement with class variables;
+these symbols do not name additional class objects. Two distinct members
+of $\Jinj$ have a least differing ordinal. Their common initial segment
+has set length, so first-difference comparison is unambiguous.
+
+\begin{lemma}[Fresh separators]\label{swo:tc:lem:fresh}
+If $A,B,U$ are sets of surreals and $A<B$, there is a surreal
+$x\notin U$ such that $A<x<B$. Consequently $\No\setminus U$ has
+no endpoints and fills all cuts specified by sets of its elements.
+\end{lemma}
+\begin{proof}
+The ordinary surreal set-cut theorem supplies a separator
+(\cite{Ehrlich2012}; \cref{swo:lem:delete}). In fact there
+are more than $|U|$ separators: recursively for $|U|^+$ many steps choose
+a separator above the earlier choices and $A$, and below $B$.
+Every stage uses set options, and the resulting choices are distinct.
+At least one is outside $U$. The same argument permits either option
+set to be empty. This uses set recursion and the usual surreal cut
+existence theorem, not a purported cut with proper-class options.
+\end{proof}
+
+\begin{lemma}[Completion of a set prefix]\label{swo:tc:lem:completion}
+Every injective set word $p:\lambda\to\No$ extends to some
+$E_\sigma$ with $\sigma\in \Psupp(b)$.
+\end{lemma}
+\begin{proof}
+Choose an infinite initial cardinal $\nu$ strictly greater than
+$\lambda$ and all the ordinals in $b^{-1}[\ran p]$. The map
+$\alpha\mapsto b^{-1}(p(\alpha))$ is a partial injection from $\nu$
+to itself with domain of cardinality $<\nu$ and equally small range.
+Both complements have cardinality $\nu$. Choose a bijection between
+them to extend the partial map to a permutation of $\nu$, and fix every
+ordinal outside $\nu$. Restricting the resulting permutation to its
+moved points gives the required canonical code.
+\end{proof}
+
+\begin{definition}[Cylinder and residual alphabet]\label{swo:tc:n4.3}
+For an injective set prefix $p:\lambda\to\No$, put
+\[
+ C_p=\{\sigma\in \Psupp(b):E_\sigma\res\lambda=p\},
+ \qquad A_p=\No\setminus\ran p.
+\]
+The empty prefix has cylinder $C_\varnothing=\Psupp(b)$.
+\end{definition}
+
+\begin{proposition}[Cylinder geometry]\label{swo:tc:prop:cylinders}
+Every $C_p$ is a nonempty convex proper class. It has neither an endpoint
+nor a set-sized cofinal or coinitial subset. Its immediate subdivisions
+are
+\[
+ C_p=\bigcup_{x\in A_p}C_{p\cat(x)},
+\]
+in increasing order of $x$. The union is an elementary class statement,
+not a set-indexed union. Cylinders of two prefixes are either nested or
+disjoint and strictly ordered.
+\end{proposition}
+\begin{proof}
+Completion proves nonemptiness. If a word between two extensions of $p$
+first differed from $p$ before $\lambda$, it would lie on the same side
+of both extensions, proving convexity. The child cylinders partition
+$C_p$ by the value at coordinate $\lambda$, and first difference puts
+them in numerical order. \Cref{swo:tc:lem:fresh} and completion give a
+child below or above any specified set of child labels. Thus a set of
+members of $C_p$ is neither cofinal nor coinitial: take their next
+labels, choose a fresh label above or below all of them, and complete.
+In particular $C_p$ cannot itself be a set. Finally, incomparable
+prefixes first differ at a set coordinate, which orders their entire
+cylinders; comparable prefixes give nested cylinders.
+\end{proof}
+
+\begin{lemma}[Density around injective branches]\label{swo:tc:lem:branchdensity}
+If $F,G\in \Jinj$ and $F<_{\lex} G$, there is a code $\sigma\in \Psupp(b)$
+with $F<_{\lex} E_\sigma <_{\lex} G$. For every $F\in \Jinj$ and every set
+ordinal $\alpha$, there are codes below and above $F$ agreeing with
+$F$ before $\alpha$ and differing from it at $\alpha$.
+\end{lemma}
+\begin{proof}
+For the first assertion use the first disagreement $\delta$, choose
+$x$ strictly between $F(\delta)$ and $G(\delta)$ outside their common
+prefix range, and complete $(F\res\delta)\cat(x)$. For the second,
+choose fresh values below and above $F(\alpha)$ and complete the two
+prefixes. A fixed global well-order of set codes makes all these
+choices uniform when a uniform family is needed.
+\end{proof}
+
+These elementary cylinder facts, rather than a powerclass completion,
+are the main engine of the next result. The predecessor proves the
+stronger statement that $\Psupp(b)$ interpolates every uniformly
+set-indexed strict cut of $\Hsl$ (\cref{swo:gl:interpolation}; Section~19
+of this report at the pin).
+We will also recover the ordinary set-cut property of $\Psupp(b)$ from
+our cut classification and its character calculation.
+
+\begin{note}[\merge; Part~IV counterparts of source~14's Section~4]\label{swo:viii:note:core}
+Source~14's support codes are source~09's coding $\Psupp(b)$
+(\cref{swo:sec:notation}); its \cref{swo:tc:lem:fresh} is \cref{swo:lem:delete},
+its \cref{swo:tc:lem:completion} is \cref{swo:gl:completion} with the
+cardinality check of \cref{swo:ec:n8.2}, its \cref{swo:tc:prop:cylinders} is
+the code-level form of \cref{swo:gl:cylinders} (sources~11 and~09), and the
+two-sided approximants of \cref{swo:tc:lem:branchdensity} are those of
+\cref{swo:gl:local}. Source~14 credits the interpolation theorem
+(\cref{swo:gl:interpolation}) and does not re-prove it; the elementary
+cylinder facts are what its classification uses. The class $T_D$ of crossing
+prefixes of a cut, defined in the next section, is the class-scale form of
+the reals report's cut spine (\code{lwo:sp:lem:cutspine}, for $\WO(\mathbb
+R)$); source~14 does not cite it.
+\end{note}
+
+% ---- hand chunk reproved
+\section{The core as re-proved in sources 13, 15, 16, 17 and 18}\label{swo:viii:sec:reproved}
+
+\merge\ Each of the other five sources re-proves the core layer of Part~IV
+before its recognition theorem, and each credits it to this report. Their
+sections are printed here whole, in source order, as re-proofs of the
+following results of Part~IV; none is new against the repository.
+\begin{itemize}
+\item \emph{Fresh separators}: \cref{swo:lem:delete} (source~13's
+\cref{swo:fs:lem:fresh}, source~17's \cref{swo:gs:lem:avoid-set}).
+\item \emph{Class universality, uniqueness and uniform complements}
+$h_S:\No\cong\No\setminus S$: \cref{swo:prop:universal,swo:ec:thm:backforth}
+(source~13's \cref{swo:fs:lem:backforth}, source~17's
+\cref{swo:gs:cor:class-universality}). Source~16's termination section
+(\cref{swo:ds:sec:termination}) uses the same family $h_S$.
+\item \emph{Prefix completion}: \cref{swo:gl:completion} with
+\cref{swo:ec:n8.2} (\cref{swo:fs:lem:completion,swo:cb:lem:completion,swo:ds:lem:completion,swo:sh:lem:core-completion};
+source~17 obtains it from its reserve theorem, \cref{swo:gs:cor:optimal-prefix}).
+\item \emph{Interpolation and the core isomorphic to $\No$}:
+\cref{swo:gl:interpolation,swo:gl:pbd-no}
+(\cref{swo:fs:thm:interpolate,swo:fs:cor:core,swo:ds:thm:interpolation,swo:ds:cor:coreiso,swo:gs:thm:core-interpolation,swo:gs:cor:core-isomorphism,swo:sh:thm:global-interpolation};
+source~15 cites them).
+\item \emph{Approximants at a branch}: \cref{swo:gl:local}
+(\cref{swo:fs:lem:approximants}).
+\item \emph{The diagonal theorem}: \cref{swo:gl:diagonal,swo:st:thm:diagonal}
+(\cref{swo:fs:thm:diagonal,swo:gs:thm:diagonal,swo:sh:thm:noncoding}).
+\item \emph{Canonical first block and residual fibres} of a raw order:
+\cref{swo:cf:core,swo:cf:fibers,swo:cf:singleton} (source~16's
+Subsection~11.1 below, with displays (S16.12) and (S16.13)).
+\item \emph{Global choice is an assumption}: \cref{swo:cf:choice} (end of
+source~13's Section~3).
+\end{itemize}
+The proofs differ only in bookkeeping. Sources~13, 15, 16 and~18 complete a
+prefix inside an infinite initial cardinal, as Part~IV does; source~17
+completes it with the least possible reserve (\cref{swo:viii:sec:support}).
+Source~13's warning after \cref{swo:fs:lem:completion} is the point of
+\cref{swo:ec:n8.2}. Source~16's Subsection~11.1 refers to its block
+decomposition, printed in Part~IX; source~17's Section~8 and source~18's
+Section~14 are printed together with their remarks on what density does not
+give.
+
+% ---- source 13 (batch-81 manuscript 01), lines 322-416
+\subsection{Source 13: surreal cuts and the size of the universe}\label{swo:fs:sec:surreal}
+
+\subsubsection{Signs, birthdays, and small cut filling}
+
+We use the sign-sequence presentation of the surreal numbers. A surreal
+$x$ is a sequence of signs $-$ and $+$ indexed by a set ordinal $\bd(x)$.
+Extend the sequence by $0$ after its domain; comparison is at the first
+unequal coordinate using $-<0<+$. Here $0$ in the sign alphabet is a
+termination value, not an extra sign before the birthday. This is also
+the representation used by the inspected Lean carrier
+\cite{ProveItSigns}. General context for the universal ordered-continuum
+viewpoint is given in \cite{Ehrlich2012}.
+
+For sets $A,B\subseteq\No$ with $A<B$, a surreal lies strictly between
+them. More precisely, if an ordinal $\gamma$ strictly exceeds all their
+birthdays, there is such a separator of birthday exactly $\gamma$.
+The stronger statement is implemented at the source level by
+\code{exists\_cut\_separator\_of\_birthday\_lt}
+\cite{ProveItCutFill}. We use it in the following form.
+
+\begin{lemma}[Fresh set-cut separator]\label{swo:fs:lem:fresh}
+Let $A,B,S$ be sets of surreals and suppose $A<B$. There is an
+$x\notin S$ with $A<x<B$. Empty sides are allowed.
+\end{lemma}
+\begin{proof}
+Choose $\gamma$ strictly larger than every birthday occurring in
+$A\cup B\cup S$. A separator of birthday $\gamma$ cannot belong to $S$.
+\end{proof}
+
+The adjective ``set'' cannot be removed. There is no surreal above every
+ordinal: any surreal is smaller than a sufficiently long all-plus sign
+sequence. Likewise, a proper-class sign sequence is not another surreal
+at a larger birthday.
+
+\subsubsection{Set-cut orders and class back-and-forth}
+
+Call an ordinary class linear order \emph{set-cut saturated} when every
+pair of sets $A<B$ has a strict interpolant, including when a side is
+empty. This is sometimes expressed by an $\eta_{\Ord}$ terminology; we
+use the explicit condition rather than assigning a set cardinal to it.
+
+\begin{lemma}[Class universality and uniqueness in $\GBC$]\label{swo:fs:lem:backforth}
+Every ordinary class linear order embeds into $\No$. Any two nonempty
+set-cut saturated ordinary class orders are order-isomorphic. In
+particular, for every set $S\subseteq\No$,
+\[
+                    \No\setminus S\cong\No.
+\]
+The complement isomorphisms can be chosen as a single uniform class
+family $h_S:\No\to\No\setminus S$, indexed by sets $S$.
+\end{lemma}
+\begin{proof}
+Global choice supplies a set-like enumeration of any proper class of
+sets; for a set carrier use a set well-order. At a stage of the usual
+order-embedding recursion, the images already chosen form a set. Their
+lower and upper parts determine a set cut in $\No$, and a fresh
+interpolant gives the next image. The recursion has a set partial map
+at each set-ordinal stage.
+
+For uniqueness, alternate the two enumerations. A forth step puts the
+next unused source point into the target cut determined by the current
+partial isomorphism; a back step does the same for the inverse. Strict
+interpolation keeps each map injective. Every point on both sides is
+visited, so the union is an isomorphism. A set-cut saturated nonempty
+order cannot be a set, since using all its points as a lower side would
+require a point above itself.
+
+\Cref{swo:fs:lem:fresh} says that $\No\setminus S$ has the same set-cut
+property. To make its isomorphism uniform, fix the global well-order
+and always choose its least eligible witness. For each set parameter
+$S$ and each set stage, the partial history is a set satisfying a fixed
+recursive specification. Its existence and uniqueness are established
+by set-length recursion. Elementary class comprehension, quantifying
+over such set histories, gives one relation $h(S,x,y)$. No choice of a
+class witness for each $S$ is being assumed.
+\end{proof}
+
+This is not an appeal to elementary transfinite recursion with
+\emph{class-valued} stages. Our stages are sets, even though their total
+union is a class. Keeping that distinction explicit will matter in
+source~13's sections on asymmetric products and on foundational
+interpretations (\merge\ its Sections~10 and~13, printed with Part~IX and
+with the foundations sections of Part~V).
+
+\subsubsection{Global choice is a real assumption}
+
+The earlier report proves, over $\GB$ without set choice, that the
+existence of a class well-order of $\No$ is equivalent to global choice
+(\cref{swo:cf:choice}; Theorem~13.1 at the pin). Thus a global enumeration is not a
+choice-free consequence of the numerical order of surreals. We work in
+$\GBC$ for the main global constructions and fix a baseline bijection
+\[
+                         b:\Ord\overset{\sim}{\longrightarrow}\No.
+\]
+The particular $b$ affects the chosen dense core but not the definition
+of the full enumeration comparison.
+
+% ---- source 13 (batch-81 manuscript 01), lines 624-807
+\subsection{Source 13: the global enumeration order and its dense core}\label{swo:fs:sec:core}
+
+\subsubsection{Uniformity and the code carrier}
+
+Let $\Jinj$ denote the virtual domain of injective class functions
+$F:\Ord\to\No$, and let $\Hsl\subseteq \Jinj$ require surjectivity. Their
+lexicographic comparison is at the least disagreement ordinal. A
+nonempty class of ordinals has a least member: find one member and take
+the least member below it. Thus this comparison is elementary in its
+class parameters.
+
+A \emph{uniformly set-indexed family} $(F_i)_{i\in I}$ means a set $I$
+and a single class relation coding all values $F_i(\alpha)$. A phrase
+such as ``choose a class $F_i$ for each $i$'' is not a substitute for this
+uniform family. We consistently use the latter.
+
+Fix $b:\Ord\simeq\No$. A set-supported permutation $\sigma$ of $\Ord$
+is the identity except on a set of ordinals. Code it by the set graph of
+its moved points, omitting all fixed points. Such normalized codes form
+an ordinary class $\Psupp(b)$, and a code $d$ evaluates to
+\[
+                             E_d=b\circ\widehat d.
+\]
+Equivalently, a code is a set bijection $d:S\to S$, where $S$ is a
+set of ordinals and $d(\xi)\ne\xi$ for every $\xi\in S$; the empty
+code is allowed. This is an elementary condition on sets, so defining
+$\Psupp(b)$ does not require quantification over a collection of class
+permutations. Different normalized codes have different evaluations.
+Order $\Psupp(b)$ by these evaluations. The support of each code is bounded by a set ordinal,
+but there is no common set bound for all codes.
+
+For an injective set word $p$, define
+\[
+ C_p=\{E\in \Hsl:E\restr\dom(p)=p\},\qquad
+ \Psupp(b)_p=\{d\in \Psupp(b):E_d\restr\dom(p)=p\}.
+\]
+$C_p$ is virtual notation; $\Psupp(b)_p$ is an ordinary class of set codes.
+Both are convex in their respective orders.
+
+\subsubsection{Completion with the missing cardinality check}
+
+\begin{lemma}[Set-prefix completion]\label{swo:fs:lem:completion}
+Every injective set prefix $p:\alpha\to\No$ has a completion in $\Psupp(b)$.
+The completion can be chosen uniformly from $p$.
+\end{lemma}
+\begin{proof}
+The class inverse of $b$, restricted to the set range of $p$, gives a
+set injection $f=b^{-1}\circ p:\alpha\to\Ord$. Choose an infinite
+initial cardinal $\delta$ strictly above $\alpha$ and every member of
+$\ran(f)$. Both $\delta\setminus\alpha$ and
+$\delta\setminus\ran(f)$ then have cardinality $\delta$. A bijection
+between these complements extends $f$ to a permutation of $\delta$.
+Extend it by the identity outside $\delta$ and retain only its moved
+points as a code. Global choice makes the choices uniform.
+\end{proof}
+
+It would be incorrect to assert that every partial injection of a set
+into itself extends to a permutation without checking the complements.
+For instance, a bijection from a proper subset onto the entire carrier
+has no such extension. Enlarging to the cardinal $\delta$ is exactly
+what prevents this obstruction.
+
+\subsubsection{The active-prefix interpolation argument}
+
+The next theorem is the earlier dense-core interpolation result
+(\cref{swo:gl:interpolation}; Section~19 at the pin). We include the algorithm because both
+cut classification and the central-word theorem depend on its logic.
+
+\begin{theorem}[Uniform set-cut interpolation]\label{swo:fs:thm:interpolate}
+Let $(A_i)_{i\in I}$ and $(B_j)_{j\in J}$ be uniform set-indexed
+families in $\Jinj$, with $A_i<B_j$ for every cross pair. There is an
+injective set prefix $p$ such that all its global completions lie
+strictly between the two families. In particular, a code in $\Psupp(b)$
+interpolates the cut.
+\end{theorem}
+\begin{proof}
+For a cross pair let $d(i,j)$ be its least disagreement. Class
+replacement gives a set of these ordinals. Put
+\[
+               \theta=\sup\{d(i,j)+1:i\in I,\ j\in J\},
+\]
+with supremum $0$ for an empty set. We construct an injective common
+prefix, keeping as \emph{active} the rows that agree with it so far.
+Every inactive lower row is already strictly below all completions;
+every inactive upper row is already strictly above them.
+
+At stage $\beta$, let $L_\beta$ and $U_\beta$ be the sets of next
+letters of the active lower and upper rows. Every $l\in L_\beta$ is
+at most every $u\in U_\beta$, since otherwise the corresponding
+cross pair would be reversed. There are two cases.
+
+If $L_\beta\cap U_\beta$ is nonempty, it is a singleton $\{t\}$.
+Append $t$, which is fresh because the active rows are injective.
+Keep only the rows whose next letter is $t$. A dropped lower row has
+next letter less than $t$, and a dropped upper row has next letter
+greater than $t$, so the invariant is maintained.
+
+If the intersection is empty, then $L_\beta<U_\beta$, allowing empty
+sides. Choose a fresh strict separator $x$ outside the earlier range
+by \Cref{swo:fs:lem:fresh}, and append it. Every remaining active
+comparison is now strict. This prefix is the required $p$.
+
+At a limit stage take the union of the earlier set prefixes and keep
+exactly the rows agreeing with it. The construction cannot continue
+with a shared letter through stage $\theta$: surviving active rows on
+both sides would agree beyond their first disagreement. It therefore
+stops by that stage. The prefix has length at most $\theta+1$.
+Apply \Cref{swo:fs:lem:completion} to obtain a code.
+\end{proof}
+
+The histories in this proof have set length and set entries. Nothing
+requires collecting a set of class-valued choices, taking a surreal
+cut with proper-class sides, or invoking a class-valued recursion
+principle.
+
+\begin{corollary}[The core and its cylinders]\label{swo:fs:cor:core}
+$\Psupp(b)\cong\No$, and every $\Psupp(b)_p\cong\No$. The core is order-dense
+among global enumerations and among distinct injective class words.
+Every interval specified by a uniform set cut in $\Hsl$ contains a
+whole cylinder $C_p$.
+\end{corollary}
+\begin{proof}
+The theorem says that $\Psupp(b)$ fills all its set cuts, so
+\Cref{swo:fs:lem:backforth} applies. To keep a prescribed prefix $p$,
+run the same active-row construction after $p$, forbidding $\ran(p)$
+as well as the later used values; all forbidden values at a stage
+still form a set. This proves the set-cut property of $\Psupp(b)_p$,
+including empty sides. The other assertions follow directly from the
+strict cylinder conclusion of the theorem.
+\end{proof}
+
+\subsubsection{Approximating one branch}
+
+\begin{lemma}[Two-sided ordinal approximants]\label{swo:fs:lem:approximants}
+For $F\in \Jinj$ there are uniform sequences of codes $a_\alpha,b_\alpha$
+indexed by $\Ord$ such that, for $\alpha<\beta$,
+\[
+ E_{a_\alpha}<E_{a_\beta}<F<E_{b_\beta}<E_{b_\alpha}.
+\]
+They are respectively cofinal and coinitial among code evaluations
+strictly below and above $F$. Neither punctured side has a set-sized
+cofinal or coinitial family.
+\end{lemma}
+\begin{proof}
+Complete $F\restr\alpha$ followed by a fresh letter below $F(\alpha)$
+to obtain $a_\alpha$, and use a fresh letter above for $b_\alpha$.
+The inequalities are decided at the earlier index. A code differing
+from $F$ at $\xi$ lies on the appropriate far side of every
+approximant with index greater than $\xi$. Uniform choices come from
+the least completion code in the fixed global well-order. Finally,
+\Cref{swo:fs:thm:interpolate}, with $F$ on one side, puts a code
+strictly beyond any proposed set family on the other side.
+\end{proof}
+
+\subsubsection{The diagonal limitation on all set codes}
+
+\begin{theorem}[No exhaustive uniform evaluator]\label{swo:fs:thm:diagonal}
+No single class relation with set indices can have, among its rows,
+every class bijection $\Ord\to\No$.
+\end{theorem}
+\begin{proof}
+Extend an alleged evaluator to all set indices by giving unused
+indices empty rows. Fix a class bijection $\alpha\mapsto c_\alpha$
+from $\Ord$ to the universe of sets. Partition $\Ord$ into pairs
+\[
+                    (2\cdot\alpha,\ 2\cdot\alpha+1).
+\]
+The multiplication is ordinal multiplication with $2$ on the left;
+these adjacent pairs partition all ordinals.
+
+On pair $\alpha$, use the two values
+$b(2\cdot\alpha),b(2\cdot\alpha+1)$. Put the second value first if
+the row $c_\alpha$ reports $b(2\cdot\alpha)$ at coordinate
+$2\cdot\alpha$; otherwise put the first value first. Put the other
+value second. This elementary class construction defines a bijection
+$E$. Whenever the row $c_\alpha$ is the graph of a function, it differs
+from $E$ at that even coordinate. Thus every valid row misses $E$.
+\end{proof}
+
+The theorem does not say that $\Psupp(b)$ is too small to be dense. It says
+that density and exhaustive representation are different notions. It
+also does not prohibit defining some enumerations from set parameters;
+it prohibits one uniform evaluator from covering \emph{all} of them.
+
+% ---- source 15 (batch-81 manuscript 03), lines 892-937
+\subsection{Source 15: the ordinary class of bounded-support codes}\label{swo:viii:sub:cb-core}
+
+Fix a class bijection $b:\Ord\to\No$. A set-supported permutation
+of $\Ord$ equals the identity outside some ordinal. Code it by a
+permutation $\pi:\gamma\to\gamma$ and extend it by the identity.
+Normalize
+$\gamma=\sup\{\xi+1:\overline\pi(\xi)\ne\xi\}$,
+using $\gamma=0$ and the empty code for the identity. This makes codes unique.
+Let $\Pbd(b)$ be the ordinary class of these set codes, with evaluation
+\[
+ E_d(\xi)=b(\overline\pi_d(\xi)).
+\]
+The values of an evaluation are sets; the whole evaluation is a class
+function uniformly given by a class relation.
+
+\begin{lemma}[Every injective set prefix has a core completion]\label{swo:cb:lem:completion}
+Every injective set word $p:\alpha\to\No$ extends to some $E_d$,
+$d\in \Pbd(b)$, and a completion can be chosen uniformly.
+\end{lemma}
+\begin{proof}
+The map $q=b^{-1}\circ p$ is a set injection into $\Ord$. Choose an
+infinite initial cardinal $\nu$ greater than $\alpha$ and every member
+of $\ran(q)$. The complements of $\alpha$ and of $\ran(q)$ in $\nu$
+both have cardinality $\nu$. A bijection between them extends $q$ to
+a permutation of $\nu$. Extend by the identity and normalize.
+The least permissible $\nu$ and a fixed global well-order choose a
+particular complement bijection, so the construction is uniform.
+\end{proof}
+
+We use the following established core theorem from the prior report:
+$\Pbd(b)$, with the induced native lexicographic order, fills every set cut
+and is class-order-isomorphic to $\No$ (\cref{swo:gl:interpolation} and
+\cref{swo:gl:pbd-no}; Theorem~19.10 and Corollary~19.15 at the pin, which
+source~15 cites as ``Theorems 19.10 and 19.15'').
+Its proof combines prefix completion with fresh separators and then
+applies the ordinary class back-and-forth theorem. This is a statement
+about a class of sets, so it falls within surreal universality.
+
+For an injective set word $p:\alpha\to\No$, its cylinder is
+\[
+ C_p=\{d\in \Pbd(b):E_d\res\alpha=p\}.
+\]
+Cylinders are nonempty and convex. Those of a fixed length partition
+$\Pbd(b)$ and are strictly ordered by their different prefixes. Each
+cylinder has no set cofinal or coinitial subset: given a set of its
+codes, choose a fresh label above or below all their values at coordinate
+$\alpha$, append it to $p$, and complete it using \Cref{swo:cb:lem:completion}.
+
+% ---- source 16 (batch-81 manuscript 04), lines 1325-1437
+\subsection{Source 16: the bounded-support core of global enumerations}\label{swo:ds:sec:core}
+
+Work in GBC and fix a baseline bijection $b:\Ord\to\No$. A normalized
+bounded-support code is a set permutation $\sigma:\lambda\to\lambda$
+of an ordinal satisfying
+\[
+ \lambda=\sup\{\xi+1:\sigma(\xi)\ne\xi\}.
+\]
+The empty permutation is permitted. Extend $\sigma$ by the identity above
+$\lambda$, obtaining $\widehat\sigma$, and evaluate the code as
+$E_\sigma=b\circ\widehat\sigma$. Let $\Pbd(b)$ be the ordinary class of
+these set codes, ordered by comparison of their evaluations. Normalization
+makes the coding injective. The evaluations are class functions, but their
+codes are sets; the distinction is essential.
+
+\begin{lemma}[Uniform completion of every set prefix]\label{swo:ds:lem:completion}
+Every injective set function $p:\delta\to\No$ extends to an evaluation
+$E_q$ with $q\in \Pbd(b)$. A completion can be selected uniformly in $p$.
+\end{lemma}
+\begin{proof}
+The function $b^{-1}\circ p$ is a set injection into $\Ord$. Choose
+an infinite initial cardinal $\gamma$ strictly above $\delta$ and all
+the ordinals in its range. The unused positions and unused values below
+$\gamma$ both have cardinality $\gamma$. A bijection of their
+complements extends this injection to a permutation of $\gamma$.
+Extend by the identity and normalize. Choose the least suitable set
+bijection in a fixed global well-order to make the construction uniform.
+\end{proof}
+
+\begin{theorem}[Uniform set-cut interpolation]\label{swo:ds:thm:interpolation}
+Let $(F_i)_{i\in I}$ and $(G_j)_{j\in J}$ be uniformly set-indexed
+families in $\Jinj$ satisfying $F_i<G_j$ for all cross pairs. Either side
+may be empty. Some injective set prefix $p$ has every continuation in
+$\Jinj$ strictly between the families. In particular, a member of $\Pbd(b)$
+interpolates them.
+\end{theorem}
+\begin{proof}
+When both sides are nonempty, their cross first-disagreement ordinals
+form a set by Class Replacement. Bound them strictly below $\beta$;
+otherwise put $\beta=0$. Follow a prefix $p$, calling an input row
+active if it agrees with the whole prefix. Discarded lower rows are
+below every continuation and discarded upper rows above every
+continuation.
+
+At coordinate $\delta=\dom(p)$, let $A$ and $B$ be the sets of next
+values of the active lower and upper rows. Every value of $A$ is at
+most every value of $B$. If they are disjoint, use
+the fresh-separator lemma (\cref{swo:lem:delete}) to append an unused value strictly between them
+and stop. This also handles empty sides. If they meet, their intersection
+is a singleton; append that forced value and retain only the rows using
+it. A surviving injective row guarantees freshness. At limits take
+unions of the set histories.
+
+The process cannot retain both a lower and an upper row through length
+$\beta$, since such rows would agree beyond their bounded first
+disagreement. Thus it stops at a set stage, with all comparisons decided.
+\Cref{swo:ds:lem:completion} provides the bounded-support completion.
+Surjectivity was not used for any input row.
+\end{proof}
+
+\begin{corollary}[A surreal-sized dense core]\label{swo:ds:cor:coreiso}
+The ordinary class order $\Pbd(b)$ satisfies the set-cut property and is
+isomorphic to $\No$. It is dense in both $\Jinj$ and $\Hsl$ in the sense of
+their definable comparisons. It has no set cofinal or coinitial subset.
+The interpolation theorem works for every chosen baseline, including
+constraints whose rows do not belong to that baseline's core.
+\end{corollary}
+\begin{proof}
+Apply \Cref{swo:ds:thm:interpolation} to evaluations of sets of codes.
+The core is proper, since transpositions of position zero with arbitrary
+ordinal positions give distinct codes. Class universality and uniqueness (\cref{swo:prop:universal,swo:ec:thm:backforth})
+then gives the isomorphism. The remaining assertions are instances of
+the same interpolation theorem.
+\end{proof}
+
+\par\smallskip\noindent\textbf{Status.} The completion and interpolation theorems, and the core
+isomorphism, are results of the earlier report (Part~IV:
+\cref{swo:gl:completion,swo:gl:interpolation,swo:gl:pbd-no}). They
+are proved here because they are the inputs to the new recognition theorem
+below. Neither $\Pbd(b)\cong\No$ nor its density says that all global
+enumerations can be coded by sets.\par\smallskip
+
+\subsubsection{Canonical first cores and residual fibers}
+
+For $R\in \Hall$, the first block of source~16's canonical block decomposition
+(its Theorem~10.1, \merge\ printed in Part~IX) is
+\[
+ I_R=\{x\in\No:\{y:yRx\}\text{ is a set}\}.
+\]
+It is always a proper class and has a unique enumeration
+$F_R:\Ord\to I_R$. If $I_R$ were a set, the least point outside it
+would have exactly that set of predecessors, a contradiction.
+
+Conversely every $F\in \Jinj$ occurs as such a first core: enumerate its
+range by $F$ and then append any class well-order of its complement.
+The points in the range have set predecessors; every residual point
+has that whole proper range before it. Restriction and concatenation
+therefore identify the fiber over $F$ with
+\[
+ \WO(Y_F),\qquad Y_F=\No\setminus\ran(F),
+\tag{S16.12}\label{swo:ds:eq:fiber}
+\]
+where for a proper $Y_F$ the notation denotes the raw class comparison.
+Each fiber is convex. Distinct fibers are ordered by the first ordinal
+disagreement of their cores. Symbolically,
+\[
+ \Hall\cong\sum_{F\in \Jinj}\WO(Y_F).
+\tag{S16.13}\label{swo:ds:eq:rawsum}
+\]
+This is a summary of uniform relational constructions, not a same-level
+class sum whose index elements are proper classes. The set-like order
+$\Hsl$ consists precisely of the exhaustive, empty-residual fibers.
+A singleton fiber need not be exhaustive: omitting one label produces
+a unique raw completion of type $\Ord+1$.
+
+% ---- source 17 (batch-81 manuscript 05), lines 996-1143
+\subsection{Source 17: the ordinary class core inside the global comparison}
+\label{swo:gs:sec:core}
+
+From now on work in $\GBC$ and fix $b:\Ord\to\No$. Let $\Jinj$ be the
+predicate of injective class functions $\Ord\to\No$, and let $\Hsl$ be its
+surjective subpredicate. Comparisons are made at the least ordinal of
+first disagreement. These are predicates on class variables, not classes
+whose members are proper classes.
+
+\subsubsection{Canonical codes and interpolation}
+A \emph{support code} is a set bijection $\sigma:S\to S$, where
+$S\subseteq\Ord$ is a set and $\sigma(\xi)\ne\xi$ for every $\xi\in S$.
+The empty code is allowed. Extend it by the identity off $S$ and put
+$E_\sigma=b\circ\widehat\sigma$. Let $\Psupp(b)$ be the ordinary class of
+these codes, ordered by the associated enumerations. The fixed-point-free
+condition makes the coding unique. A global enumeration has such a code
+exactly when it agrees with $b$ at every sufficiently large ordinal.
+By \Cref{swo:gs:cor:optimal-prefix}, every injective set prefix occurs
+in this core.
+
+We recall the central interpolation theorem of the source, with its proof
+because the later recognition results depend on its full strength for
+\emph{injective, possibly nonexhaustive} rows.
+
+\begin{lemma}[Avoiding a set of labels]\label{swo:gs:lem:avoid-set}
+If $L,R,Z$ are sets of surreal numbers with $L<R$, there is
+$z\notin Z$ with $L<z<R$. Either side of the cut may be empty.
+\end{lemma}
+\begin{proof}
+The surreal set-cut property supplies a strict separator of any two
+separated sets. Repeat that construction $|Z|^+$ times, each time adding
+all earlier chosen separators to the lower side. Every stage has a set
+history and gives a new separator below all of $R$. The resulting set
+has more elements than $Z$, so one separator is not forbidden. This is
+set-valued recursion with class parameters, not class-valued recursion.
+\end{proof}
+
+\begin{theorem}[Core interpolation; source result]\label{swo:gs:thm:core-interpolation}
+Let $(A_i)_{i\in I}$ and $(B_j)_{j\in J}$ be uniformly set-indexed
+families in $\Jinj$, with $A_i<_{\lex}B_j$ for every $i,j$. There is an
+injective set prefix $p$ such that every row in $\Jinj$ extending $p$ lies
+strictly between both families. In particular there is such a row with
+a code in $\Psupp(b)$. Empty index sets are permitted.
+\end{theorem}
+\begin{proof}
+When both sides are nonempty, Class Replacement collects their cross
+first-difference coordinates into a set. Choose an ordinal $\beta$
+strictly above all these coordinates. If one side is empty take
+$\beta=0$.
+
+Build an injective prefix, retaining as \emph{active} the rows agreeing
+with it. At stage $\alpha$ form the sets of active next labels
+\[
+ L_\alpha=\{A_i(\alpha):A_i\text{ active}\},\qquad
+ R_\alpha=\{B_j(\alpha):B_j\text{ active}\}.
+\]
+Every lower label is at most every upper label. Their intersection has
+at most one member. If it is empty, choose a fresh strict separator by
+\Cref{swo:gs:lem:avoid-set}, append it, and stop. All active inequalities
+are now strict. If the intersection is $\{z\}$, append $z$ and keep only
+rows with next value $z$. This value is fresh because a surviving row is
+injective. A discarded lower row is below every later extension; a
+discarded upper row is above every later extension. This is the invariant
+throughout the construction. At limits take unions of the set histories.
+
+Both sides cannot still be active after a common prefix of length
+$\beta$, since an active cross pair would disagree only at or beyond
+$\beta$. Thus the procedure stops by the next step. Complete the final
+prefix in $\Psupp(b)$ using \Cref{swo:gs:cor:optimal-prefix}. All recursions
+and collections in this proof have set-sized stages and values.
+\end{proof}
+
+\begin{corollary}[A dense surreal order core; source result]
+\label{swo:gs:cor:core-isomorphism}
+The class order $\Psupp(b)$ is isomorphic to the numerical order of $\No$.
+It is order-dense in the global comparisons of both $\Hsl$ and $\Jinj$:
+between any two distinct rows there is a coded row. Every uniformly
+set-indexed separated cut of those comparisons has a core interpolant.
+\end{corollary}
+\begin{proof}
+The last statements are \Cref{swo:gs:thm:core-interpolation}. In particular
+$\Psupp(b)$ has the same set-cut interpolation property as $\No$. Under
+Global Choice enumerate each of these proper classes in a set-like
+well-order. Construct a back-and-forth partial order-isomorphism along
+$\Ord$. At each stage its domain and range are sets, so the required
+cut is a set cut; interpolation provides a fresh image or preimage.
+Global choice selects a least permissible choice. Every history at a
+set ordinal is a set, so elementary class comprehension together with
+set-valued transfinite recursion gives the full class map. Alternating
+forth and back ensures exhaustiveness on both sides.
+\end{proof}
+
+This is an isomorphism of \emph{linear orders}, not of surreal fields or
+of structures with the simplicity relation. The additional structure
+studied in \cite{BagayokoHoeven} cannot be inferred from numerical order
+alone. Nor is the core exhaustive in $\Hsl$.
+
+\begin{corollary}[Universality for ordinary class linear orders]
+\label{swo:gs:cor:class-universality}
+Every given linear order on a class of sets embeds by a class map into
+$\Psupp(b)$, hence into $\No$, $\Hsl$, and $\Hall$ in their stated senses.
+\end{corollary}
+\begin{proof}
+Global choice supplies a set-like enumeration of the given class
+(or a set enumeration if its carrier is a set). At each stage, previous
+images form a set. Partition them by whether their source labels are
+below or above the next source label; interpolation in $\Psupp(b)$ supplies
+a fresh image. This forth-only recursion gives the required embedding.
+The core inclusion and \Cref{swo:gs:cor:core-isomorphism} give the other
+targets. This is the source's class-universality argument.
+\end{proof}
+
+The hypothesis ``class of sets'' cannot be dropped and replaced with
+``all class well-orders''. The latter is the higher-order predicate
+$\Hall$, not a carrier to which this recursion theorem applies.
+This distinction is compatible with the no-coding theorem that follows.
+
+\subsubsection{Why a dense class of codes is not a universal list}
+\begin{theorem}[Uniform diagonal obstruction; source result]
+\label{swo:gs:thm:diagonal}
+No ordinary class of set indices with one uniform evaluation relation
+lists all class well-orders of $\No$. A missing order can always be
+chosen set-like.
+\end{theorem}
+\begin{proof}
+Global choice permits reindexing a proposed nonempty list by $\Ord$;
+a set-sized list can be extended by repetitions. Write its rows as
+$R_\alpha$. Partition the baseline labels into the pairs
+\[
+ \{b(2\cdot\alpha),b(2\cdot\alpha+1)\}=\{a_\alpha,c_\alpha\},
+ \qquad a_\alpha<c_\alpha.
+\]
+The products here are ordinal products with $2$ on the left, so these
+successive two-element blocks partition $\Ord$. In block $\alpha$, list
+the two labels in the order opposite to their relative order under
+$R_\alpha$. Keep the blocks in increasing $\alpha$ order. Elementary
+comprehension defines a class bijection $E:\Ord\to\No$. Its induced
+well-order disagrees with $R_\alpha$ on that pair, for every $\alpha$.
+The empty-list case is immediate.
+\end{proof}
+
+Each input row and the diagonal output are legitimate classes. The
+forbidden object is a same-level exhaustive decoder, not an individual
+large relation. Strengthening comprehension does not make a class into
+a permissible element of another class of the same two-sorted theory.
+An external set universe, a higher sort, or a stated uniform operator
+provides a different, legitimate interpretation.
+
+% ---- source 18 (batch-81 manuscript 06), lines 2640-2752
+\subsection{Source 18: the set-like global order and its ordinary class core}
+\label{swo:sh:sec:global-core}
+
+Assume GBC and fix a class bijection $b:\Ord\to\No$.
+The set-like global order can be studied through its ordinal
+enumerations: if $e\ne f$, the nonempty class
+$\{\alpha:e(\alpha)\ne f(\alpha)\}$ has a least ordinal. Numerical
+comparison there agrees with source~18's Theorem~12.3 (\merge\ printed in
+Part~IX; \cref{swo:st:thm:fulllex}).
+
+\subsubsection{Canonical bounded-support codes}
+
+A permutation $\pi$ of $\Ord$ with set-sized support can be encoded
+by the set graph of its nonfixed pairs; it is the identity elsewhere.
+This representation is unique. Let $\Psupp(b)$ be the genuine class of all
+such set codes, ordered by their evaluated global enumerations
+$b\circ\pi$. The notation distinguishes the set code from the class
+function that it evaluates.
+
+\begin{lemma}[Completion of every set prefix]
+\label{swo:sh:lem:core-completion}
+Every injective set word $p:\delta\to\No$ extends an evaluated
+member of $\Psupp(b)$.
+\end{lemma}
+\begin{proof}
+The $b$-indices of the labels in $\ran p$ form a set. Choose an
+infinite initial cardinal $\lambda$ greater than $\delta$ and all
+these indices. The first $\lambda$ values of $b$ contain $\ran p$.
+List $p$ first, followed by a bijection of the unused values of this
+initial block in length $\lambda$. Since $\delta+\lambda=\lambda$,
+the result permutes that entire block. Leave all later positions
+unchanged. This is a bounded-support permutation extending $p$.
+\end{proof}
+
+\begin{theorem}[Uniform set-cut interpolation]
+\label{swo:sh:thm:global-interpolation}
+Let $(e_i)_{i\in I}$ and $(f_j)_{j\in J}$ be uniformly presented
+set-indexed families of global ordinal enumerations, and suppose
+$e_i<f_j$ for all $i,j$. There is $g\in \Psupp(b)$ strictly between them.
+In particular, $\Psupp(b)$ fills every set cut and is order-isomorphic
+to $\No$ in GBC. It is order dense in $\Hsl$.
+\end{theorem}
+\begin{proof}
+When both families are nonempty, the first disagreements of all pairs
+$(e_i,f_j)$ form a set of ordinals by Class Replacement. Take a bound
+on them. Run a common-prefix search: keep only the family members
+extending the current prefix; numerical next values on the lower side
+are at most those on the upper side. If the sets of next values meet,
+they meet in a unique value, which is appended. If they do not meet,
+choose a fresh surreal strictly between them, append it, and stop.
+At a limit stage take the union of the preceding set prefixes.
+
+The search cannot continue through the bound on all pairwise first
+disagreements while both active sides remain nonempty. When a side
+becomes empty, the surreal set-cut property also supplies a fresh
+next value. If one original side is empty, the search stops at the
+first step. Each inactive lower member is below the whole current
+cone, and each inactive upper member is above it. Thus the resulting
+successor prefix puts every completion strictly between the given
+families. Apply \Cref{swo:sh:lem:core-completion}.
+
+For the isomorphism, perform set-valued back-and-forth along fixed
+set-like enumerations of the two proper classes $\Psupp(b)$ and $\No$.
+At each stage only a set of previously matched points must be respected,
+and interpolation supplies the next point. Taking singleton families
+in the first assertion proves density in $\Hsl$.
+\end{proof}
+
+The conclusion is stronger than pairwise density and weaker than
+filling arbitrary proper-class cuts. For example, choose an injective
+$\Ord$ word that enumerates $\No\setminus\{x\}$. It determines a
+cut of $\Psupp(b)$ but cannot itself be a global enumeration of $\No$.
+The next section makes the distinction exact.
+
+Class universality of $\No$ now implies that every supplied class
+linear order embeds into $\Hsl$, through $\Psupp(b)$. The same is true
+inside any nonempty open interval of $\Hsl$: a sufficiently long
+set prefix and a free numerical interval place a copy of the same
+core inside it. This is a statement about uniform class-indexed
+subfamilies. It does not say that $\Hsl$ itself is an ordinary class.
+
+\subsubsection{An elementary obstruction to exhaustive class coding}
+
+\begin{theorem}[No ordinary class of codes for all global well-orders]
+\label{swo:sh:thm:noncoding}
+There is no class-indexed uniform evaluator whose values include every
+class well-order of $\No$. The same holds if only set-like orders are
+required as values.
+\end{theorem}
+\begin{proof}
+Under Global Choice any class of set codes can be listed in an
+$\Ord$-indexed family, repeating values if the code class is a set.
+Suppose $(R_\alpha)_{\alpha\in\Ord}$ were exhaustive. Split the
+fixed baseline $b$ into consecutive pairs
+\[
+ \{b(2\cdot\alpha),b(2\cdot\alpha+1)\},\qquad\alpha\in\Ord.
+\]
+In pair $\alpha$, choose the orientation opposite to the relative
+order of these two labels in $R_\alpha$. Keep the pair blocks in
+their original ordinal order. This is a class bijection
+$\Ord\to\No$, hence a set-like well-order. It differs from
+$R_\alpha$ on the relative order of its designated pair, for every
+$\alpha$, contradicting exhaustiveness. The orientation class is
+defined elementarily from the proposed evaluator.
+\end{proof}
+
+This is the relevant Cantor-style diagonal. It blocks a uniform
+``all codes are sets'' shortcut. Individual global well-orders can
+still be parameters, and any specified uniform family can be studied.
+Kelley--Morse comprehension strengthens which classes exist; it does
+not make proper classes into members of other ordinary classes.
+
+% ---- hand chunk trichotomy
+% ---- source 14 (batch-81 manuscript 02), lines 571-733
+\section{A trichotomy for class cuts of the skeleton (source 14)}
+\label{swo:tc:sec:cuts}
+\subsection{Normalization and the three constructions}
+A \emph{proper normalized cut} of $\Psupp(b)$ is a class
+$D\subseteq \Psupp(b)$ which is nonempty, proper, downward closed, and has
+no greatest member. Its complement is allowed to have a least member.
+Thus the point $\sigma$ is represented by the lower set
+$\{\tau:\tau<\sigma\}$, not by the lower set that includes $\sigma$.
+This convention is essential when we calculate characters.
+
+We write $D_p^-$ and $D_p^+$ for the two edges of a nonempty-prefix
+cylinder:
+\begin{align*}
+ D_p^-&=\{\sigma:(\forall\tau\in C_p)\ \sigma<\tau\},\\
+ D_p^+&=\{\sigma:(\exists\tau\in C_p)\ \sigma<\tau\}.
+\end{align*}
+Since $C_p$ has no endpoints, $D_p^-$ consists of the codes below the
+whole cylinder, whereas $D_p^+$ consists of those codes together with
+all of $C_p$. Both are proper normalized cuts. The empty-prefix edges
+are the improper endpoint cuts and are excluded.
+
+For a set prefix $p$ and a nonempty proper initial class $H\subset A_p$
+with no greatest member and with $A_p\setminus H$ having no least
+member, define a \emph{numerical-gap cut}
+\[
+ D_{p,H}=D_p^-\ \cup\
+ \{\sigma\in C_p:E_\sigma(\lambda)\in H\},
+ \qquad \lambda=\dom p.
+\]
+Here $D_\varnothing^-=\varnothing$ by convention. The nonprincipality
+conditions prevent this notation from duplicating the two edges of a
+child cylinder.
+
+Finally, for $F\in \Jinj$ define the \emph{branch trace}
+\[
+ D_F=\{\sigma\in \Psupp(b):E_\sigma <_{\lex} F\}.
+\]
+\Cref{swo:tc:lem:branchdensity} shows that it is a proper normalized cut.
+The branch need not be exhaustive. If $F=E_\sigma$, the cut is principal
+in the normalized sense; otherwise it has no point of the skeleton at
+its boundary.
+
+\subsection{Crossing cylinders and reconstruction}
+\begin{definition}\label{swo:tc:n5.1}
+A prefix $p$ \emph{crosses} $D$ if its cylinder meets both sides:
+\[
+ \operatorname{Cross}_D(p)\quad\Longleftrightarrow\quad
+ (\exists\sigma\in C_p\cap D)(\exists\tau\in C_p\setminus D).
+\]
+Let $T_D$ be the class of crossing set prefixes.
+\end{definition}
+All displayed witnesses are sets. Therefore $T_D$ is obtained by
+\emph{elementary} class comprehension from $D$ and $b$.
+
+\begin{lemma}[The crossing-chain lemma]\label{swo:tc:lem:crosschain}
+For every proper normalized cut $D$, the class $T_D$ contains the empty
+prefix, is downward closed under prefix restriction, and is a chain
+under prefix extension. It contains at most one prefix of any given
+length. Its union is an injective function with domain either a set
+ordinal or all of $\Ord$.
+\end{lemma}
+\begin{proof}
+Properness gives the empty prefix, and any ancestor of a crossing
+cylinder also crosses. If incomparable prefixes $p,q$ both crossed,
+order their disjoint cylinders as $C_p<C_q$. An excluded point of $C_p$
+would then lie below an included point of $C_q$, contradicting downward
+closure. Thus they are comparable, which also proves uniqueness at each
+length. Their union is a function and is injective because every two
+of its coordinates occur together in a sufficiently long member of the
+chain. Its domain is an initial subclass of $\Ord$. Such a subclass is
+all of $\Ord$ or a set ordinal. In the latter case, class Replacement
+on that set domain makes the union a set function.
+\end{proof}
+
+\begin{theorem}[Boundary trichotomy]\label{swo:tc:thm:trichotomy}
+Every proper normalized class cut $D$ of $\Psupp(b)$ has exactly one of
+the following forms:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item a cylinder edge $D_p^-$ or $D_p^+$ for a nonempty injective set
+prefix $p$;
+\item a numerical-gap cut $D_{p,H}$ with the nonprincipality conditions
+specified above;
+\item a branch trace $D_F$ for an injective class function
+$F:\Ord\to\No$.
+\end{enumerate}
+The data within the appropriate form, including the edge direction, are
+unique. The alternatives and their data can be recovered from the
+crossing-prefix class by elementary formulas with class parameters.
+\end{theorem}
+\begin{proof}
+We distinguish whether the lengths occurring in $T_D$ are unbounded.
+
+\emph{Unbounded case.} Let $F=\bigcup T_D$. Its domain is $\Ord$.
+For a code $\sigma$ with $E_\sigma\ne F$, let $\delta$ be their first
+disagreement. Take a crossing prefix of length greater than $\delta$.
+If $E_\sigma <_{\lex} F$, then $\sigma$ is below that entire cylinder and
+in particular below one of its included points, so $\sigma\in D$.
+If $F<_{\lex} E_\sigma$, it is above an excluded point of that cylinder
+and cannot belong to $D$. If $E_\sigma=F$, membership in $D$ would make
+$\sigma$ its greatest member, since all larger codes have just been
+excluded. This is prohibited by normalization. Therefore $D=D_F$.
+
+\emph{Bounded case with no longest crossing prefix.} The union $p$ has
+nonzero limit length $\lambda$. It does not cross, so either
+$C_p\subseteq D$ or $C_p\cap D=\varnothing$. For every code outside
+$C_p$, its first disagreement with $p$ occurs before $\lambda$; a
+longer crossing prefix then decides its membership exactly as in the
+unbounded case. Hence $D=D_p^+$ in the first alternative and $D=D_p^-$
+in the second.
+
+\emph{Bounded case with a longest crossing prefix $p$.} No child
+$C_{p\cat(x)}$ crosses. Each child is consequently wholly included or
+wholly excluded. Let
+\[
+ H=\{x\in A_p:C_{p\cat(x)}\subseteq D\}.
+\]
+It is an initial class of $A_p$. Because $C_p$ crosses and the child
+cylinders partition it, $H$ is nonempty and proper. Points outside
+$C_p$ are below all of it or above all of it; the crossing witnesses
+show that exactly those below belong to $D$. Thus $D$ has the formula
+used to define $D_{p,H}$. If $H$ has a greatest member $x$, that formula
+is $D_{p\cat(x)}^+$. If $A_p\setminus H$ has a least member $x$, it
+is $D_{p\cat(x)}^-$. Both possibilities cannot occur, since $A_p$ is
+dense. If neither occurs, we have precisely alternative (ii).
+
+For uniqueness, in alternative (iii) the crossing prefixes are exactly
+all set restrictions of $F$; in alternative (ii) they are exactly $p$
+and its restrictions; and at an edge they are exactly the \emph{proper}
+restrictions of its prefix. If the last chain has no longest member,
+its union recovers the limit prefix and membership of its cylinder
+recovers the direction. If it has a longest member, the included child
+labels have a maximum or the excluded child labels have a minimum;
+that endpoint recovers the additional label and the direction. For a
+numerical gap neither endpoint exists. These descriptions distinguish
+the alternatives, and also recover every parameter uniquely.
+\end{proof}
+
+\begin{remark}[What the theorem does not construct]\label{swo:tc:n5.4}
+It does not collect all class cuts into an ordinary class, nor insert
+an $\Ord$-length sign sequence as a surreal number. The theorem is a
+statement about an arbitrary supplied class $D$. Its elementary formulas
+can be used uniformly in models, but the virtual family of every such
+$D$ still occupies a higher logical level.
+\end{remark}
+
+\subsection{Examples distinguishing the alternatives}
+For the one-letter prefix $(0)$, the cut $D_{(0)}^-$ lies just below all
+core enumerations beginning with $0$. There is no numerical ``largest
+first entry below $0$.'' It is a cylinder boundary, not a branch trace.
+At the empty prefix, take the numerical gap
+\[
+ H=\{x\in\No:(\exists n\in\mathbb N)\ x<n\}.
+\]
+Its complement is the class of surreals at least as large as every
+natural number. It has no least member: from such a surreal $y$, the
+number $y-1$ is still in the complement and is smaller. The class $H$
+has no greatest member. This produces a cut of type (ii), with a
+countable cofinal left side but no set-sized coinitial right side.
+Finally $F(\alpha)=\alpha$ is an injective branch of type (iii) which
+omits, for example, $-1$. Its trace is coherent at every set length but
+is not realized by any member of $\Hsl$. Exhaustiveness is not implied
+by coherence.
+
+\begin{note}[\merge; the three examples in the repository]\label{swo:viii:note:examples}
+The first-label cut at $0$ (with its upper-edge twin) is printed also by
+sources~15 and~16 (\cref{swo:cb:ex:firstlabelcut} and source~16's table after
+\cref{swo:ds:thm:firstfailure}); the numerical gap
+$\{x:\exists n\ x<n\}$ also by sources~15 and~17 (\cref{swo:cb:n7.7,swo:gs:n9.3}).
+The branch $F(\alpha)=\alpha$, which omits $-1$, is source~09's
+\cref{swo:ec:thm:class-gap} (printed in Part~IV), which source~14 does not
+cite; source~13 recovers it as \cref{swo:fs:n8.5}, crediting this report,
+and source~15 prints it again (after \cref{swo:cb:n7.7}). Its one-label
+variant, a bijection $\Ord\to\No\setminus\{r\}$, is source~11's
+\cref{swo:gl:omitted}, printed again by sources~16 and~17 (source~16's
+table, \cref{swo:gs:n9.5}), which do not cite it. The limit boundary below
+the cylinder of $p(n)=n$ ($n<\omega$), which source~14 does not use, is
+printed by sources~13 (end of its Section~9), 15 (\cref{swo:cb:n7.7}),
+16 (its table) and~17 (\cref{swo:gs:n9.4}, for any injective $p$ of
+length~$\omega$).
+\end{note}
+
+% ---- hand chunk characters
+% ---- source 14 (batch-81 manuscript 02), lines 734-856
+\section{Characters, saturation, and principal cuts (source 14)}
+\label{swo:tc:sec:characters}
+We use $\Ord$ as a \emph{character symbol}: it means that a uniform
+ordinal-indexed cofinal or coinitial family exists, while no set-sized
+one exists. It is not an ordinary cardinal. For any nonempty class
+linear order with no set-sized cofinal subset, global choice permits
+an increasing cofinal $\Ord$-sequence: at each set stage dominate the
+earlier choices and the elements seen so far in a global enumeration.
+If no such upper choice existed, the already considered set would be
+cofinal. This is set-valued recursion. The dual argument handles
+coinitiality. A set-sized character is the least cardinality of a
+cofinal or coinitial subset; if there is a corresponding endpoint it
+is $1$.
+
+\begin{theorem}[Cut-character calculation]\label{swo:tc:thm:characters}
+Write the character of a normalized cut as
+$(\cf D,\ci(\Psupp(b)\setminus D))$. For the alternatives of
+\Cref{swo:tc:thm:trichotomy}, the following formulas hold.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}Yl@{}}
+\toprule
+Cut & Character\\\midrule
+$D_F$, with $F=E_\sigma$ for some core code & $(\Ord,1)$\\
+$D_F$, with $F$ not represented by a core code & $(\Ord,\Ord)$\\
+$D_p^-$, $\dom p=\lambda$ a nonzero limit & $(\cf\lambda,\Ord)$\\
+$D_p^+$, $\dom p=\lambda$ a nonzero limit & $(\Ord,\cf\lambda)$\\
+$D_p^-$ or $D_p^+$, $\dom p$ a successor & $(\Ord,\Ord)$\\
+$D_{p,H}$ & $(\cf H,\ci(A_p\setminus H))$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+For the last row both characters cannot be set-sized. At every actual
+point of $\Psupp(b)$, both \emph{strict} local characters are $\Ord$.
+\end{theorem}
+\begin{proof}
+For a branch $F$, complete a prefix agreeing with $F$ before $\alpha$
+and taking a fresh smaller entry at $\alpha$; call the result
+$a_\alpha$. Similarly obtain $b_\alpha$ with a larger entry. If
+$\alpha<\beta$, first difference gives
+\[
+ a_\alpha<a_\beta <_{\lex} F<_{\lex} b_\beta<b_\alpha.
+\]
+Every code below or above $F$ is surpassed on the appropriate side by
+one of these approximants, once $\alpha$ exceeds its first disagreement.
+A set of codes differing from $F$ has a set of first disagreements and
+hence a common ordinal bound; a later approximant defeats its alleged
+cofinality or coinitiality. If $F$ itself is a core point, the complement
+of $D_F$ has that point as its least member. This gives $(\Ord,1)$,
+not $(\Ord,\Ord)$; only the strict right side has character $\Ord$.
+
+At the lower edge of a limit-length prefix $p$, take a cofinal sequence
+of coordinates $\alpha<\lambda$ and complete a word that first differs
+from $p$ there by a smaller entry. These codes are cofinal below the
+cylinder. Conversely the first-disagreement coordinates of any cofinal
+family must be cofinal in $\lambda$: a code which follows $p$ longer
+would otherwise be above the entire family. This proves the character
+$\cf\lambda$. On the other side the cylinder has no set-sized
+coinitial subset by \Cref{swo:tc:prop:cylinders}, and lies below
+all other points of the complement. Its character is $\Ord$. The
+upper-edge calculation is dual.
+
+For a successor-length prefix $p=q\cat(x)$, any set of points below
+$C_p$ that first differ before the last coordinate can be surpassed by
+one following $q$. Among those which follow $q$, their entries at the
+last coordinate form a set below $x$. \Cref{swo:tc:lem:fresh} provides a
+fresh entry between that set and $x$. Completion again surpasses the
+whole family while remaining below $C_p$. Thus the lower side of the
+lower edge has no set-sized cofinal subset. The opposite side follows
+from the cylinder property. The upper edge is the dual case.
+
+For a numerical gap, project included points in $C_p$ to their
+next-coordinate labels in $H$. A cofinal set of labels, with one
+completed word above each chosen label when necessary, produces a
+cofinal family of codes. Conversely a cofinal family of codes must
+have cofinal projected labels: otherwise a child cylinder with a
+larger label in $H$ surpasses it. The absence of a greatest member of
+$H$ removes any dependence on the internal character of one child.
+The dual argument proves the right character. If both were sets,
+cofinal labels on the left and coinitial labels on the right would
+constitute a set cut of $A_p$ with no separator, contradicting
+\Cref{swo:tc:lem:fresh}. Finally the branch argument at a core point
+already proves the assertion about strict local characters.
+\end{proof}
+
+\begin{corollary}[Recovery of the core saturation theorem]\label{swo:tc:cor:coreeta}
+Every separated pair of sets of codes $A,B\subseteq \Psupp(b)$ has a
+strict separator in $\Psupp(b)$. In particular the core is an
+$\eta_{\Ord}$-order: it fills all set-sized strict cuts, including
+those with an empty side.
+\end{corollary}
+\begin{proof}
+Empty-side bounds follow by choosing a first label above or below all
+first labels in the specified set. Suppose both sides are nonempty
+and no separator exists. If $A$ has a greatest point $a$, then $B$
+would be coinitial in the strict right side of $a$, contradicting its
+local character. The dual argument applies if $B$ has a least point.
+Otherwise let $D=\{\sigma:(\exists a\in A)\ \sigma<a\}$. It is a
+proper normalized cut with $A$ cofinal. Absence of a separator makes
+$B$ coinitial in its complement: any point there below all of $B$
+would be strictly above all of $A$. The character table has no
+nonprincipal cut with two set-sized characters, a contradiction.
+\end{proof}
+
+\begin{corollary}[The known surreal order type]\label{swo:tc:cor:coreNo}
+There is a class order isomorphism $\Psupp(b)\cong\No$ in $\GBC$.
+\end{corollary}
+\begin{proof}
+Both are proper class linear orders filling all set cuts. Fix set-like
+global enumerations and perform back-and-forth along $\Ord$. At a set
+stage the existing partial map has set domain and range; the next
+point's lower and upper constraints are sets and admit a fresh image.
+The union is an elementary definable class bijection preserving order.
+This is the standard argument, also used by the predecessor; the
+isomorphism statement itself is inherited, not claimed as a new result.
+\end{proof}
+
+The character calculation explains why the core is not Dedekind complete.
+For instance the increasing core points whose first entries are natural
+numbers have upper bounds but no supremum. Filling \emph{strict} set
+cuts supplies another point between all those entries and any proposed
+upper bound. The countable/non-set-sized numerical-gap character above
+records this failure rather than contradicting saturation.
+
+\begin{note}[\merge; which rows are new]\label{swo:viii:note:characters}
+The branch rows of \cref{swo:tc:thm:characters} are source~11's
+\cref{swo:gl:local} and source~09's \cref{swo:ec:thm:class-gap}
+($(\Ord,\Ord)$ at a non-core branch); \cref{swo:tc:cor:coreeta} is
+\cref{swo:gl:interpolation} for sets of codes and \cref{swo:tc:cor:coreNo} is
+\cref{swo:gl:pbd-no}, both stated by source~14 as recoveries. New are the
+characters of the edge and numerical-gap cuts and the statement that no
+nonprincipal cut has two set-sized characters. The same table is proved,
+case by case, by source~13 (\cref{swo:fs:prop:characters}), source~15
+(\cref{swo:cb:prop:cutcharacters}), source~16 (the paragraph after its
+table) and source~17 for non-core branches (\cref{swo:gs:prop:class-characters});
+those statements are printed with their sources' recognition theorems in
+\cref{swo:viii:sec:routes}.
+\end{note}
+
+% ---- hand chunk recognition
+% ---- source 14 (batch-81 manuscript 02), lines 857-917
+\section{Recognizing exhaustive cuts and preserving old cuts (source 14)}
+\label{swo:tc:sec:recognition}
+\begin{theorem}[Exhaustive-cut recognition]\label{swo:tc:thm:recognition}
+Let $D$ be a proper normalized class cut of $\Psupp(b)$. There exists
+$E\in \Hsl$ with $D=D_E$ if and only if both conditions hold:
+\begin{align}
+ &\forall\alpha\in\Ord\ \exists p\,
+   [\dom p=\alpha\ \wedge\ \operatorname{Cross}_D(p)],
+       \tag{C}\label{swo:tc:eq:coherence}\\
+ &\forall x\in\No\ \exists p\,
+   [\operatorname{Cross}_D(p)\ \wedge\ x\in\ran p].
+       \tag{X}\label{swo:tc:eq:coverage}
+\end{align}
+Such an enumeration is unique, and its graph is given by
+\[
+ E(\alpha)=x\quad\Longleftrightarrow\quad
+ \exists p\,[\operatorname{Cross}_D(p)\ \wedge\ \alpha\in\dom p
+                         \ \wedge\ p(\alpha)=x].
+\]
+All quantifiers in the criterion and reconstruction range over sets;
+only $D$ and $b$ are class parameters.
+\end{theorem}
+\begin{proof}
+For an exhaustive $E$, every restriction $E\res\alpha$ crosses its
+trace by the smaller and larger completions in
+\Cref{swo:tc:lem:branchdensity}. Every surreal occurs in one of these
+restrictions, giving (C) and (X). Conversely (C) and
+\Cref{swo:tc:lem:crosschain} produce an injective union $F$ on all of
+$\Ord$. Condition (X) makes it surjective. The unbounded case of
+\Cref{swo:tc:thm:trichotomy} gives $D=D_F$. The displayed graph formula
+is exactly the union of the crossing chain; its functionality and
+uniqueness follow from the chain lemma.
+\end{proof}
+
+\paragraph{A logical simplification.}
+For this proper-class alphabet, (X) by itself already implies (C).
+Indeed, the union of the crossing chain then has range all of $\No$;
+if its domain were a set ordinal, class Replacement would make that
+range a set. Its domain is therefore $\Ord$, and prefix closure gives
+(C). We retain the two conditions in the theorem to distinguish
+coherent nonexhaustive branches from failures that stop at a set stage;
+we do not claim that the conditions are logically independent.
+
+This answers the predecessor's question ``Which cuts of the core
+represent exhaustive branches?'' (\cref{swo:n16.1}; source~09's third direction in \cref{swo:ec:sec:research})
+\emph{in the prefix-enriched structure}. A bare linear-order isomorphism
+of the core does not come equipped with its prefix cylinders or the
+label evaluation. The theorem does not show that those enrichments are
+definable from the order relation alone. \Cref{swo:tc:cor:nonintrinsic} below proves that an automorphism-invariant
+bare-order criterion cannot recognize exhaustiveness: some core
+automorphisms carry exhaustive traces to nonbranch cylinder edges.
+
+The criterion also separates two notions of completion. An injective
+branch always gives a cut coherent through every set stage. It gives
+a global enumeration only if it eventually visits every label. No
+condition at a single bounded stage can enforce the latter assertion.
+For the branch $F(\alpha)=\alpha$, (C) holds and (X) fails at $x=-1$.
+The two cylinder-edge alternatives fail (C) at a bounded length; a
+numerical-gap alternative also fails (C), because there is no crossing
+child after its last crossing prefix.
+
+\merge\ The second half of source~14's Section~7, on preserving old cuts
+under class extensions (its \cref{swo:tc:thm:absolute}, the corollary and
+the remark after it), is printed in \cref{swo:viii:sec:extensions}.
+
+% ---- hand chunk routes
+\section{Five further proofs of the represented-cut theorem (sources 16, 15, 13, 17 and 18)}\label{swo:viii:sec:routes}
+
+\begin{note}[\merge; one theorem, six proofs]\label{swo:viii:note:sixfold}
+The theorem that a normalized class cut of the core is the cut of an
+injective class word exactly when a crossing (straddling) prefix exists at
+every set length, that the word is then unique and elementary in the cut,
+and that it is exhaustive exactly when the ranges of these prefixes cover
+$\No$, is proved independently in all six batch-81 sources:
+source~14's \cref{swo:tc:thm:trichotomy}(iii) and \cref{swo:tc:thm:recognition},
+source~16's \cref{swo:ds:thm:cutrecognition}, source~15's
+\cref{swo:cb:thm:cutcriterion} with \cref{swo:cb:cor:kernel}, source~13's
+\cref{swo:fs:thm:reconstruction}, source~17's \cref{swo:gs:thm:recognition}
+and source~18's \cref{swo:sh:thm:represented-class-cut} with
+\cref{swo:sh:cor:elementary-cut-recognition}. Each source presents it as its
+own answer to source~11's \cref{swo:n16.1}; it answers that question
+(\cref{swo:viii:sec:status}), and no source has priority over another. The
+six proofs are the same argument: uniqueness of a crossing prefix at each
+length, coherence under restriction, the elementary union, and the first
+disagreement with a code. They are printed as routes because each source
+builds different examples and corollaries on its own proof.
+
+The analysis of a failing cut is likewise proved five times. Source~14
+partitions the proper cuts by their form (edge, numerical gap, branch:
+\cref{swo:tc:thm:trichotomy}); sources~13, 15, 16 and~18 partition the
+failing cuts by their first failed length (successor or limit:
+\cref{swo:fs:thm:failure,swo:cb:thm:terminal,swo:ds:thm:firstfailure,swo:sh:thm:cut-first-failure}).
+The two partitions are equivalent: a limit failure is an edge of a
+limit-length cylinder, and a successor failure is an edge of a child cylinder
+or a numerical gap. Source~15's successor case is the finest, separating a
+\emph{forbidden repeated label} (the unused alphabet split at a label already
+used by the prefix, \cref{swo:cb:n7.7}, source~16's second table row and
+source~18's \cref{swo:sh:ex:repeated-label-cut}) from a numerical gap with no
+surreal separator; in source~14's terms both are numerical-gap cuts
+$D_{p,H}$, the first with $A_p\setminus H$ and $H$ separated by a point of
+$\ran p$.
+
+Source~18 states its theorem ``in $\GB$ with the fixed baseline''. A baseline
+$b:\Ord\to\No$ already yields global choice over $\GB$
+(\cref{swo:cf:choice}), so the hypothesis is not weaker than $\GBC$; the
+theorem's own content is that no class choice and no $\ETR$ are used beyond
+the baseline. Sources~13, 14, 15, 16 and~17 say $\GBC$.
+\end{note}
+
+% ---- source 16 (batch-81 manuscript 04), lines 1438-1611
+\subsection{Source 16: exact recognition of cuts represented by branches}\label{swo:ds:sec:cutrecognition}
+
+Fix the core $\Pbd(b)$ and its evaluation. For an injective set prefix
+$p:\alpha\to\No$ write
+\[
+ C_p=\{q\in \Pbd(b):E_q\res\alpha=p\}.
+\]
+These cylinders are nonempty and convex, and at each fixed length they
+form an ordered partition. Each cylinder has no endpoint: change the
+next coordinate of one completion to a fresh smaller or larger surreal
+and apply \Cref{swo:ds:lem:completion}.
+
+A \emph{lower cut} here means an available class
+$\varnothing\ne L\subsetneq \Pbd(b)$ that is initial and has no greatest
+member. Put $U=\Pbd(b)\setminus L$. A prefix \emph{straddles} the cut if
+$C_p\cap L$ and $C_p\cap U$ are both nonempty. This is a property with
+only set quantifiers and the class parameters $L,b$.
+
+\begin{theorem}[Prefix-cylinder recognition]\label{swo:ds:thm:cutrecognition}
+The following are equivalent:
+\begin{enumerate}
+\item There is an injective class function $F:\Ord\to\No$ such that
+\[
+ L=\{q\in \Pbd(b):E_q<_{\lex}F\}=:L_F.
+\]
+\item At every ordinal length $\alpha$ some injective prefix straddles
+the cut.
+\end{enumerate}
+When these conditions hold, the prefix at each length is unique and is
+exactly $F\res\alpha$. The branch is exhaustive if and only if every
+surreal occurs in the range of some straddling prefix.
+\end{theorem}
+\begin{proof}
+For a given $F$, choose fresh values below and above $F(\alpha)$ and
+complete the corresponding one-letter extensions of $F\res\alpha$.
+They lie on opposite sides of $F$, so its prefix straddles.
+
+Two different prefixes at the same length cannot both straddle an
+initial cut. Their cylinders are entirely ordered one before the
+other, and an upper witness in the earlier cylinder would be below a
+lower witness in the later one. This contradicts initiality.
+Restrictions of straddling prefixes still straddle. Hence the prefixes
+$p_\alpha$ supplied by condition 2 are unique and coherent.
+
+Define the branch directly, by elementary comprehension:
+\[
+ F(\alpha)=x\quad\Longleftrightarrow\quad
+ \exists p\,[p\text{ straddles},\ \dom(p)=\alpha+1,\ p(\alpha)=x].
+\tag{S16.14}\label{swo:ds:eq:recognitionformula}
+\]
+Here the prefix and the witnesses from both sides are sets. Coherence
+proves that this is a total injective class function and that
+$F\res\alpha=p_\alpha$. This is not a class-valued recursion.
+
+If $E_q<F$ first differ at $\delta$, every point of
+$C_{p_{\delta+1}}$ is above $q$. One such point is in $L$, so $q\in L$.
+If $F<E_q$, an upper witness in the same cylinder lies below $q$, so
+$q\in U$. Finally, if $E_q=F$, placing $q$ in $L$ would make it the
+greatest member of $L$ by the preceding two implications. Thus it is
+in $U$, and $L=L_F$. The prefixes determine $F$ uniquely, and their
+range union gives exactly the stated exhaustion criterion.
+\end{proof}
+
+The no-greatest convention matters only at a represented core point:
+without it, both $\{q:E_q<F\}$ and $\{q:E_q\le F\}$ would straddle
+every level when $F=E_q$ for a code. The two improper cuts fail already
+at the empty prefix and represent no injection.
+
+\begin{theorem}[Complete classification of the first failure]
+\label{swo:ds:thm:firstfailure}
+If a lower cut is not represented, let $\lambda$ be the least length
+with no straddling prefix. Then $\lambda>0$, and exactly one of the
+following occurs.
+\begin{enumerate}
+\item \textbf{Successor failure.} If $\lambda=\alpha+1$, let $p$ be
+the unique straddling prefix of length $\alpha$. The unused labels
+$\No\setminus\ran(p)$ split into nonempty initial and final classes
+$A+B$, with
+\[
+ C_{p\cat(x)}\subseteq L\ (x\in A),\qquad
+ C_{p\cat(x)}\subseteq U\ (x\in B).
+\]
+All codes below $C_p$ are in $L$ and all codes above it in $U$.
+\item \textbf{Limit failure.} If $\lambda$ is a nonzero limit, the
+coherent earlier prefixes have an injective set union $p$ of length
+$\lambda$. The cut is exactly the lower or upper edge of its cylinder:
+\[
+ L=C_p^-\quad\text{or}\quad L=C_p^-\cup C_p,
+ \qquad C_p^-:=\{q:\forall c\in C_p\ (q<c)\}.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Minimize below any ordinal witnessing failure; this uses no ordering of
+classes. The empty prefix straddles. At a successor, every nonempty
+child cylinder is wholly on one side, and the children partition the
+parent cylinder, which straddles. Both parts of the label split are
+therefore nonempty, and their order follows from that of the children.
+The outside-code assertion follows by comparison with a lower and an
+upper witness in the parent.
+
+At a limit, Class Replacement applied to the unique prefixes indexed
+by the set $\lambda$ makes their union a set. Coherence ensures
+injectivity, and completion ensures a nonempty cylinder. Since the
+length fails, that cylinder is wholly on one side. Any code outside it
+first differs from $p$ at $\delta<\lambda$; the shorter prefix of
+length $\delta+1$ still straddles. Its witnesses force the code to the
+lower side if it differs downward and to the upper side if upward.
+Including or excluding the entire limit cylinder gives exactly its
+two edges.
+\end{proof}
+
+A successor failure need not be a numerical gap with both sides lacking
+endpoints. It can be an edge of a whole child cylinder, or a cut for which
+the numerically suitable next label has already been used. The theorem
+distinguishes these from a failure of coherence at a limit length.
+
+\subsubsection{Explicit cuts and their meaning}
+
+The following table gives concrete, fully defined examples.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.49\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}@{}}
+\toprule
+Lower side & First failure & Interpretation\\
+\midrule\endhead
+$\{q:E_q(0)\le0\}$ & $1$ & Upper edge of the entire zero-first
+cylinder.\\[5pt]
+$\{q:E_q(0)<0\}\cup\{q:E_q(0)=0,\ E_q(1)<0\}$ & $2$ & The apparent
+second separator would repeat the already used zero.\\[5pt]
+$C_p^-$ or $C_p^-\cup C_p$, with $p(n)=n$ for $n<\omega$ & $\omega$ &
+Every finite prefix straddles, but the whole countable-prefix cylinder
+lies on one side.\\[5pt]
+$L_F$ for $F:\Ord\overset{\sim}{\to}\No\setminus\{r\}$ & None &
+A genuine injective branch, failing only the exhaustion test.\\
+\bottomrule
+\end{longtable}
+
+All displayed lower sides have no greatest member. For a nonzero limit
+prefix length $\lambda$, its lower cylinder edge has lower cofinality
+exactly $\cf(\lambda)$ and no set coinitial family on its upper side.
+To see this, make a fresh downward deviation at cofinally many positions
+of $p$. The completions increase cofinally below $C_p$; any cofinal
+family must have unbounded deviation coordinates. On the upper side,
+the initial portion $C_p$ has no set coinitial family, since one can
+choose a fresh next value below any set of next values. The upper
+edge has the dual characters.
+
+\begin{corollary}[Exactly what raw tails add]\label{swo:ds:cor:rawcutimage}
+For a raw order $R\in \Hall$, its strict lower cut in $\Pbd(b)$ is
+$L_{F_R}$. Thus the cut image of all raw orders consists exactly of
+the cuts passing the straddling test. Over the cut of $F$, the fiber
+is the convex order $\WO(\No\setminus\ran F)$.
+Neither successor nor limit first-failure cuts are filled by any raw
+class well-order.
+\end{corollary}
+\begin{proof}
+A bounded-support enumeration unequal to $F_R$ first disagrees at a
+set ordinal, before any non-set-like tail begins. Its comparison with
+$R$ is therefore its comparison with $F_R$. Equality is possible
+only when $F_R$ is exhaustive, in which case it determines $R$.
+Conversely every injection occurs as a first core, by
+\eqref{swo:ds:eq:fiber}. Distinct cores give different cuts by
+\Cref{swo:ds:thm:cutrecognition}, proving exactly the asserted image
+and fibers.
+\end{proof}
+
+This resolves the earlier report's represented-cut question using the
+prefix tree with its numerical labels. It does not claim that the tree
+is recoverable from the bare order on $\Pbd(b)$. Since $\Pbd(b)\cong\No$,
+forgetting those additional predicates can lose precisely the information
+used by the recognition test.
+
+\begin{note}[\merge; on source~16's last paragraph]\label{swo:viii:note:ds-resolves}
+Source~16's sentence that this ``resolves the earlier report's
+represented-cut question'' is true of the theorem, which all six batch-81
+sources prove (\cref{swo:viii:note:sixfold}). Its \cref{swo:ds:cor:rawcutimage}
+is the statement about raw orders that sources~13, 15, 17 and~18 make in
+\cref{swo:fs:cor:rawtraces}, \cref{swo:cb:cor:kernel},
+\cref{swo:gs:prop:raw-lifts} and \cref{swo:sh:cor:cut-representation-levels};
+the fibre description in it is source~12's \cref{swo:cf:fibers}, and the
+image of all raw orders, exactly the cuts passing the straddling test, is the
+new part. Part~IX prints source~14's trace-fibre theorem.
+\end{note}
+
+% ---- source 15 (batch-81 manuscript 03), lines 890-891
+\subsection{Source 15: a prefix criterion for all represented core cuts}\label{swo:cb:sec:cuts}
+\merge\ Source~15's Section~7, from its Subsection~7.2 (Subsection~7.1, the
+class of codes, is printed in \cref{swo:viii:sub:cb-core}; Subsection~7.5,
+the automorphism theorem, in \cref{swo:viii:sec:automorphisms}).
+
+% ---- source 15 (batch-81 manuscript 03), lines 938-1147
+\subsubsection{The persistent-cylinder theorem}
+
+A normalized class cut of $\Pbd(b)$ is a nonempty proper initial subclass
+$L$ with no greatest member; write $R=\Pbd(b)\setminus L$. The upper side
+may have a least element. A cylinder \emph{crosses} the cut if it meets
+both sides. For an injective class word $F:\Ord\to\No$, put
+\[
+ L_F=\{d\in \Pbd(b):E_d<_{\lex}F\}.
+\]
+The comparison is defined at the first ordinal difference, unless the
+functions agree, in which case the strict inequality is false.
+
+\begin{theorem}[Exact criterion for representation]\label{swo:cb:thm:cutcriterion}
+\textit{Extension proved in source~15.}\ In GBC, for a normalized class cut $L$ the following are
+equivalent:
+\begin{enumerate}
+\item $L=L_F$ for an injective class word $F:\Ord\to\No$;
+\item for every ordinal $\alpha$, some cylinder $C_p$ with
+      $\dom(p)=\alpha$ crosses the cut.
+\end{enumerate}
+The representing word is unique. Its restrictions are exactly the unique
+crossing prefixes. Its construction uses elementary comprehension, not ETR.
+\end{theorem}
+\begin{proof}
+At most one cylinder at a given level crosses. If $C_p<C_q$ both crossed,
+a point of $R$ in $C_p$ would precede a point of $L$ in $C_q$,
+contradicting initiality. A restriction of a crossing prefix also
+crosses. Thus the unique prefixes $p_\alpha$ in (2) are coherent.
+
+Define $F(\alpha)=x$ when the crossing prefix of length $\alpha+1$
+has last value $x$. This is an elementary formula: prefixes and codes
+are sets, and crossing is expressed by two existential set quantifiers
+with the cut and evaluation as class parameters. Coherence shows that
+$F\res\alpha=p_\alpha$; injectivity holds on every such restriction
+and hence globally.
+
+If $E_d\ne F$, let $\delta$ be the first difference. The cylinder
+$C_{p_{\delta+1}}$ crosses the cut. If $E_d(\delta)<F(\delta)$,
+the whole cylinder is above $d$, and its lower-side member forces
+$d\in L$. If $E_d(\delta)>F(\delta)$, its upper-side member lies
+below $d$, forcing $d\in R$. If $E_d=F$, the code $d$ cannot lie
+in $L$, since it would then be its greatest member. This proves (1).
+
+Conversely, at every $\alpha$ choose fresh labels
+$a<F(\alpha)<c$, neither in $\ran(F\res\alpha)$. Completions of
+$(F\res\alpha)\concat a$ and $(F\res\alpha)\concat c$ lie on
+opposite sides of $F$. Thus $C_{F\res\alpha}$ crosses. These same
+perturbations show that $L_F$ is nonempty, proper, and has no greatest
+member. Uniqueness follows from recovery of every prefix.
+\end{proof}
+
+\begin{remark}[The normalization is necessary]\label{swo:cb:n7.3}
+Without the no-greatest condition, persistence determines a unique $F$
+but allows either side of a principal point:
+\[
+ L_F\subseteq L\subseteq L_F\cup\{d:E_d=F\}.
+\]
+Only a word already represented by a core code permits the two choices.
+Both $\{d:E_d<F\}$ and $\{d:E_d\leq F\}$ cross every level, but
+the second has a greatest member. Terminal cuts below have neither endpoint.
+\end{remark}
+
+\begin{corollary}[Exhaustiveness and the kernel of the raw cut map]\label{swo:cb:cor:kernel}
+A persistent cut is represented by a set-like global well-order exactly when
+\[
+ \forall x\in\No\ \exists\alpha\quad x\in\ran(p_\alpha).
+\]
+Every persistent cut is represented by an arbitrary raw class well-order.
+Two raw orders determine the same strict lower cut on $\Pbd(b)$ exactly when
+their initial words $F_R$ agree. The common fibre is precisely
+$\WO(\No\setminus\ran(F_R))$, interpreted at the appropriate size level.
+\end{corollary}
+\begin{proof}
+The displayed condition says exactly that the recovered word is onto.
+Every injective word has a raw completion by source~15's Proposition~4.2
+(prefix convexity and initial-word fibres; \merge\ printed in Part~IX; it is
+\cref{swo:cf:fibers}).
+A raw order and its initial word compare with a core evaluation at the
+same first ordinal disagreement. If a core evaluation equals that word,
+its exhaustiveness forces the raw order to have no residual tail.
+Thus its lower cut is $L_{F_R}$. Apply uniqueness in the theorem and the
+fibre description of the same proposition.
+\end{proof}
+
+This answers the prior report's represented-cut question by a necessary
+and sufficient condition on all set-length prefix levels. Missing labels
+are not a failure of persistence. They distinguish the exhaustive words
+inside the persistent branches. Any ordering information after the first
+proper block is invisible to comparisons with the bounded-support core.
+
+\subsubsection{An exhaustive description of first failure}
+
+\begin{theorem}[Terminal-cut classification]\label{swo:cb:thm:terminal}
+\textit{Extension proved in source~15.}\ If a normalized class cut fails the criterion, let
+$\theta>0$ be the least length without a crossing cylinder.
+Exactly one of the following descriptions applies.
+\begin{enumerate}
+\item \textbf{Successor failure.} If $\theta=\alpha+1$, there is a unique
+crossing prefix $p:\alpha\to\No$ and a nonempty initial/final partition
+\[
+ A+B=\No\setminus\ran(p),\qquad A<B,
+\]
+such that each child $C_{p\concat x}$ lies wholly in $L$ for $x\in A$
+and wholly in $R$ for $x\in B$. The four mutually exclusive forms are:
+an upper boundary of a child cylinder when $A$ has a greatest element;
+a lower boundary when $B$ has a least element;
+a unique forbidden repeated label separating $A$ and $B$ when neither
+endpoint exists but a surreal separator exists;
+or a numerical class gap with no surreal separator.
+\item \textbf{Limit failure.} If $\theta$ is limit, the coherent union
+$p=\bigcup_{\alpha<\theta}p_\alpha$ is an injective set word. The cut
+is exactly the lower or upper boundary of its nonempty cylinder:
+\[
+ L=\{d:E_d\res\theta<p\}
+ \quad\text{or}\quad
+ L=\{d:E_d\res\theta\leq p\}.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The empty cylinder crosses, so $\theta\ne0$. At a successor, child
+cylinders partition the crossing parent and none crosses. Each is
+nonempty, giving the asserted partition of allowed labels. Both parts
+are nonempty because the parent crosses. Their order follows from the
+order of the cylinders and initiality of $L$. All codes below the
+parent lie in $L$, and all those above it lie in $R$.
+
+The numerical residual alphabet is dense by the fresh-separator lemma
+(source~15's Lemma~3.1; \cref{swo:lem:delete}),
+so $A$ cannot have a greatest element while $B$ has a least one.
+If neither endpoint exists and $s$ strictly separates them, $s$ cannot
+be an allowed label: membership in $A$ or $B$ would contradict strict
+separation. Hence $s\in\ran(p)$. Two different separators would enclose
+a fresh allowed label, which is impossible. This proves all four subcases.
+
+At a limit, replacement over the set ordinal $\theta$ collects the
+coherent prefixes, and their union is an injective set word. Its
+cylinder is nonempty by prefix completion but does not cross. A code
+outside it differs from $p$ at a coordinate $\delta<\theta$; the
+crossing cylinder of length $\delta+1$ then fixes its side. The only
+remaining choice is which side contains all of $C_p$, giving precisely
+the two formulas. There is no incoherent-branch case: uniqueness at the
+earlier levels already ruled it out.
+\end{proof}
+
+\begin{example}[A cut not filled even by arbitrary class well-orders]\label{swo:cb:ex:firstlabelcut}
+The initial class $L=\{d:E_d(0)<0\}$ has no greatest member. Its
+empty cylinder crosses, but each length-one cylinder lies on one side.
+It is the lower boundary of $C_{(0)}$. Therefore no injective
+$\Ord$-word and no raw class well-order represents this cut.
+The upper boundary $\{d:E_d(0)\leq0\}$ is likewise unrepresented.
+\end{example}
+
+\begin{example}[Repeated label, numerical gap, and limit boundary]\label{swo:cb:n7.7}
+The cut defined by
+\[
+ E_d(0)<0\quad\text{or}\quad(E_d(0)=0\ \land\ E_d(1)<0)
+\]
+first fails at length two: the putative continuation of $(0)$ would
+repeat $0$. For a numerical-gap example, use
+$A=\{x:\exists n\in\omega\ x<n\}$ and its complementary final class
+of positive infinite surreals, and put $d\in L$ when $E_d(0)\in A$.
+No surreal strictly separates these label classes; neither relevant
+endpoint exists. Finally, if $p(n)=n$ for $n<\omega$, the lower and
+upper boundaries of $C_p$ first fail at length $\omega$ even though
+every finite prefix still crosses.
+\end{example}
+
+For a persistent but nonexhaustive example, take $F(\alpha)=\alpha$.
+Every prefix level crosses, but the range omits the negative surreals.
+Appending a well-order of the omitted range gives many raw completions
+with exactly the same lower core cut. If $F$ instead omits just one
+label, it has one raw completion of type $\Ord+1$. These are sharply
+different from the terminal cuts in \Cref{swo:cb:ex:firstlabelcut}.
+
+\subsubsection{Local characters of terminal cuts}
+
+Here a ``set cofinal family'' is an actual set of codes cofinal in an
+ordinary class side of a cut. We say explicitly when none exists;
+$\Ord$ is not being used as a set cardinal.
+
+\begin{proposition}[Cofinality read from first failure]\label{swo:cb:prop:cutcharacters}
+At a first limit failure $\theta$, the lower-boundary case has
+$\cf(L)=\cf(\theta)$, while $R$ has no set coinitial family.
+The upper-boundary case has the dual properties.
+At a successor failure with label partition $A+B$, if $A$ has no
+greatest label, $L$ has exactly the same least set cofinality as $A$,
+or no set cofinality if $A$ has none. If $A$ has a greatest label,
+$L$ has no set cofinal family. The dual statements hold for $B$ and $R$.
+\end{proposition}
+\begin{proof}
+At a limit, choose cofinally many coordinates $\beta<\theta$ and
+complete prefixes agreeing with $p$ before $\beta$ but smaller at
+$\beta$. These form an increasing cofinal family on the lower side.
+Any cofinal family must have first-divergence coordinates unbounded
+in $\theta$, since a later lower perturbation dominates every family
+with bounded divergence coordinates. This proves equality. The upper
+side begins with the whole cylinder $C_p$, which has no set coinitial
+family; all remaining upper-side points are above it.
+
+At a successor with no greatest label in $A$, a cofinal set of labels
+can be lifted to completions, and conversely the next labels of any
+cofinal family eventually inside the parent cylinder must be cofinal
+in $A$. If $A$ has a greatest label, its final child cylinder has no
+set cofinal family and is final on the lower side. The dual argument
+proves the remaining assertions.
+\end{proof}
+
+No gap of $\Pbd(b)$ can have both a set cofinal lower side and a set coinitial
+upper side: the core's set-cut filling theorem would put a point between
+such two sets. The character calculation is compatible with this
+restriction, while identifying many genuinely different class cuts.
+
+% ---- source 15 (batch-81 manuscript 03), lines 1190-1208
+\subsubsection{What a completion would have to mean}
+
+The normalized class cuts of $\Pbd(b)$, ordered by inclusion, give the natural
+Dedekind-cut interpretation at the next size level. For a uniform family
+of such cuts whose union is nonempty and proper, the union is again a
+normalized class cut: its defining membership formula quantifies over
+set indices. This is a precise available-family completeness statement,
+not a same-level class containing all its subclasses.
+
+The map from raw orders to these cuts collapses exactly the residual
+fibres of \Cref{swo:cb:cor:kernel}. Therefore adjoining all raw orders
+is neither a faithful Dedekind completion of the core nor a realization
+of every core cut. It both retains multiplicity over persistent cuts
+and omits all terminal cuts. Any order embedding into a dense completion
+that fixes the core would have to identify distinct raw orders lying in
+one fibre, which is impossible. Arbitrary embeddings that move the core
+are a different question.
+
+% ---- source 13 (batch-81 manuscript 01), lines 808-1102
+\subsection{Source 13: exact reconstruction of cuts from prefix cylinders}\label{swo:fs:sec:cuts}
+
+We now address the earlier report's question asking for a necessary
+and sufficient cylinder criterion for represented cuts
+(\cref{swo:n16.1}). The criterion is relative
+to the chosen core and prefix system; \Cref{swo:fs:sec:automorphisms}
+will show why it is not a statement about the pure linear order alone.
+
+\subsubsection{Normalization and crossing}
+
+\begin{definition}\label{swo:fs:def:cut}
+A \emph{normalized proper cut} of $\Psupp(b)$ is a pair of ordinary classes
+$(L,U)$ such that $L\sqcup U=\Psupp(b)$, both sides are nonempty, every
+member of $L$ precedes every member of $U$, and $L$ has no greatest
+member. The upper side may have a least member.
+
+An injective set prefix $p$ \emph{crosses} this cut when
+\[
+                         \Psupp(b)_p\cap L\ne\varnothing,
+             \qquad      \Psupp(b)_p\cap U\ne\varnothing.
+\]
+\end{definition}
+
+The normalization is essential. Immediately below and immediately above
+a code $d$, two different cuts would otherwise reconstruct the same
+branch $E_d$. We choose the lower trace convention, so the cut at $d$
+puts $d$ in the upper side.
+
+\begin{lemma}[Uniqueness and coherence of crossing prefixes]\label{swo:fs:lem:crossing}
+At a fixed ordinal length there is at most one crossing prefix.
+Restrictions of a crossing prefix cross the same cut. Consequently
+crossing prefixes of different lengths are coherent.
+\end{lemma}
+\begin{proof}
+Distinct same-length prefixes first differ at a coordinate, placing
+one entire cylinder below the other. If both cylinders crossed, an
+upper-side point in the first would precede a lower-side point in the
+second, impossible. Restriction enlarges a cylinder, so preserves
+crossing. Apply same-length uniqueness to the restriction of a longer
+crossing prefix.
+\end{proof}
+
+For $F\in \Jinj$, its lower trace is the class
+\[
+                       \operatorname{tr}(F)=\{d\in \Psupp(b):E_d<F\}.
+\]
+All comparisons use a least set-ordinal disagreement, except equality,
+which simply excludes a code from the lower trace.
+
+\begin{theorem}[Exact branch representation]\label{swo:fs:thm:reconstruction}
+In $\GBC$, a normalized proper cut $(L,U)$ of $\Psupp(b)$ is the lower trace
+of a unique $F\in \Jinj$ if and only if
+\[\tag{S13.1}\label{swo:fs:eq:crossall}
+ \text{for every ordinal }\alpha\text{ there exists a crossing prefix
+ of length }\alpha.
+\]
+The represented word is exhaustive, hence belongs to $\Hsl$, if and
+only if it also satisfies
+\[\tag{S13.2}\label{swo:fs:eq:coverage}
+ \text{for every }x\in\No\text{ some crossing prefix has }x
+ \text{ in its range}.
+\]
+\end{theorem}
+\begin{proof}
+Suppose first that $L=\operatorname{tr}(F)$. For each ordinal $\alpha$, the prefix
+$F\restr\alpha$ has code completions below and above $F$, by choosing
+a fresh next value on the desired side. Thus it crosses. It is the
+unique crossing prefix of that length. Equation~\eqref{swo:fs:eq:coverage}
+is then precisely surjectivity of $F$.
+
+Conversely, let $p_\alpha$ be the unique crossing prefix of length
+$\alpha$. Coherence gives $p_\alpha=p_\beta\restr\alpha$ whenever
+$\alpha<\beta$. Define
+\[
+                            F(\alpha)=p_{\alpha+1}(\alpha).
+\]
+This is an elementary class definition quantifying over the set code
+$p_{\alpha+1}$. It does not ask for a class-valued choice or a
+class-valued recursive sequence of prefixes. Every two coordinates
+belong to one longer injective prefix, so $F$ is injective.
+
+We check the trace equality. If $E_d<F$, let $\xi$ be the first
+disagreement and choose a crossing prefix of length greater than
+$\xi$. Every code in its cylinder is above $d$. One of those codes is
+in $L$, so downward closure gives $d\in L$. If $E_d>F$, the symmetric
+argument with an upper-side code gives $d\in U$.
+
+The only possible remaining case is $E_d=F$. Every other lower-side
+code has smaller evaluation, by the two arguments just given. If $d$
+were in $L$, it would therefore be its greatest member, contradicting
+normalization. Thus $L=\operatorname{tr}(F)$. Distinct words have a code strictly
+between them by \Cref{swo:fs:cor:core}, so their traces are
+distinct. Finally, the union of the prefix ranges is exactly $\ran(F)$,
+which proves the exhaustion criterion.
+\end{proof}
+
+\subsubsection{What raw well-orders add, and what they cannot add}
+
+\begin{corollary}[Trace image and fibers of raw orders]\label{swo:fs:cor:rawtraces}
+For $R\in\Hall$, define $L_R=\{d\in \Psupp(b):E_d<R\}$. The normalized
+proper cuts represented in this way are exactly those satisfying
+\eqref{swo:fs:eq:crossall}. For such a cut the unique reconstructed word
+is $F_R$. Its raw realization fiber is precisely the order of all
+well-orders of $\No\setminus\ran(F_R)$. The fiber contains a set-like
+realization exactly when the coverage condition holds, and then it is
+a singleton.
+\end{corollary}
+\begin{proof}
+Every comparison with a code is decided inside the ordinal head unless
+the code equals the entire raw order; equality can occur only when the
+head is exhaustive. Hence $L_R=\operatorname{tr}(F_R)$. Conversely, append a
+well-order of the omitted range to the branch reconstructed by
+\Cref{swo:fs:thm:reconstruction}. Source~13's Proposition~6.2 (``Canonical
+head; prior structural lemma'', \merge\ printed in Part~IX; it is
+\cref{swo:cf:core,swo:cf:fibers})
+gives every realization and proves the fiber statement.
+\end{proof}
+
+If the omitted range has $n$ elements, there are exactly $n!$ raw
+realizations. A single omitted label gives one additional point of type
+$\Ord+1$; two omitted labels give two adjacent realizations of type
+$\Ord+2$. These examples were already constructed in the earlier
+report. The new criterion determines the complete trace image: adding
+arbitrary non-set-like tails still does not fill a cut that fails the
+all-level crossing test.
+
+\begin{example}[A branch that fails only exhaustion]\label{swo:fs:n8.5}
+Let $F(\alpha)=\alpha$, viewed as the all-plus surreal of length
+$\alpha$. Its lower trace crosses every prefix length, but its prefixes
+never contain $-1$. It has raw realizations obtained by well-ordering
+the nonordinal surreals after its head, and no realization in $\Hsl$.
+This recovers the earlier omitted-range example through the exact
+criterion rather than through a single selected gap.
+\end{example}
+
+\subsection{Source 13: a complete first-failure classification}\label{swo:fs:sec:failure}
+
+The representation theorem reduces the problem to a question about
+crossing prefixes. The next theorem describes every way the test can
+fail. In particular, failure at a limit is not an unexplained
+compactness assumption: it has an exact geometric form.
+
+\begin{theorem}[Branch, horizontal cut, or limit boundary]\label{swo:fs:thm:failure}
+Let $(L,U)$ be a normalized proper cut of $\Psupp(b)$. Exactly one of the
+following descriptions applies.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There is a crossing prefix at every ordinal length. The cut is
+the trace of a unique injective class word.
+\item There is a least failed length $\lambda=\beta+1$. Let $p$ be
+the crossing prefix of length $\beta$. There is a nonempty cut
+$A<B$ partitioning $Y=\No\setminus\ran(p)$ such that, within $\Psupp(b)_p$,
+\[
+ L\cap \Psupp(b)_p=\bigcup_{x\in A}\Psupp(b)_{p\cat x},\qquad
+ U\cap \Psupp(b)_p=\bigcup_{x\in B}\Psupp(b)_{p\cat x}.
+\]
+Thus the cut separates whole next-letter cylinders. We call it
+\emph{horizontal at $p$}.
+\item There is a least failed length $\lambda$ that is a nonzero
+limit. The union $p$ of the shorter crossing prefixes has length
+$\lambda$, and the cut is exactly the lower or upper boundary of
+$\Psupp(b)_p$.
+\end{enumerate}
+All descriptions are expressible with ordinary class parameters in
+$\GBC$.
+\end{theorem}
+\begin{proof}
+The empty prefix crosses every proper cut. If some length fails, the
+class of failed ordinals has a least member $\lambda>0$.
+
+For $\lambda=\beta+1$, uniqueness gives the crossing $p$ of length
+$\beta$. Every child cylinder is nonempty by prefix completion, but
+none crosses the cut. Each is therefore entirely on one side. Put
+$x\in A$ or $x\in B$ according to that side. These are ordinary
+classes: the predicate ``every code in this child is in $L$'' quantifies
+only over set codes. Their union is $Y$, they are disjoint, and the
+label order of the children shows $A<B$. Both sides are nonempty
+because the parent crosses. Every code outside the parent lies below
+all of it or above all of it, so its placement in the cut is forced.
+
+For limit $\lambda$, coherence gives an injective set word
+$p=\bigcup_{\alpha<\lambda}p_\alpha$. Its cylinder is nonempty but
+cannot cross. If a code does not extend $p$, it first disagrees at
+some $\xi<\lambda$. A shorter crossing prefix of length greater than
+$\xi$ forces its side: a lower disagreement puts it in $L$, and an
+upper disagreement puts it in $U$. Thus every code below $\Psupp(b)_p$ is
+in $L$, and every code above it is in $U$. The entire $\Psupp(b)_p$ lies on
+one side, giving precisely one of its two boundaries.
+
+If there is no failed set ordinal, \Cref{swo:fs:thm:reconstruction}
+applies. The three cases are disjoint by their first failed length.
+\end{proof}
+
+There is no fourth case called ``failure at $\Ord$''. An injective
+branch that omits labels still crosses every set level; its failure
+is exhaustion, not prefix existence. Treating $\Ord$ as one more set
+stage would conflate the two tests.
+
+\subsubsection{One-sided characters of the three cases}
+
+For a class order, say that a side has character $\Ord$ when it has
+no set-sized cofinal (respectively coinitial) family but does have a
+uniform increasing (respectively decreasing) $\Ord$-indexed family.
+This is a notation for a pair of properties, not a set cardinal.
+When a set-sized family suffices, use the usual least cofinal cardinal;
+an endpoint has character $1$.
+
+Every ordinary class order without a set-cofinal subset has an
+$\Ord$-indexed increasing cofinal sequence in $\GBC$: enumerate its
+points by the global well-order and at each stage choose a point above
+both the earlier set of choices and the next enumerated point. Absence
+of a set-cofinal subset guarantees this choice. The dual construction
+handles coinitiality.
+
+\begin{proposition}[Characters at first failure]\label{swo:fs:prop:characters}
+The cut descriptions have the following character consequences.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item A branch trace has character $(\Ord,\Ord)$ when its word is
+not a code evaluation. If $F=E_d$, its normalized trace has character
+$(\Ord,1)$; the punctured upper side again has character $\Ord$.
+\item A lower boundary of a limit-length cylinder $\Psupp(b)_p$, of length
+$\lambda$, has character $(\cf\lambda,\Ord)$. Its upper boundary
+has character $(\Ord,\cf\lambda)$.
+\item For a horizontal cut associated with $A<B$, the lower
+character is $\cf(A)$ if $A$ has no greatest label, and is $\Ord$
+if $A$ has a greatest label. The upper character is $\ci(B)$ if
+$B$ has no least label, and is $\Ord$ if it has a least label.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+The branch statement is \Cref{swo:fs:lem:approximants}, with the
+possible equal code placed in the upper side.
+
+At a lower limit boundary, choose prefixes agreeing with $p$ up to
+$\xi$ and then taking a fresh lower letter. Completions at lengths
+$\xi$ cofinal in $\lambda$ are cofinal below the whole cylinder.
+Conversely, fewer than $\cf\lambda$ many codes below it have their
+first-disagreement coordinates bounded below $\lambda$, so a later
+such completion lies above them all. The right side has $\Psupp(b)_p$ as a
+coinitial subclass, and that cylinder has no set-coinitial family by
+\Cref{swo:fs:cor:core}. The upper-boundary proof is dual.
+
+For a horizontal cut whose lower label side has no greatest member,
+choose one code in each child along a cofinal family of labels. This
+family is cofinal among all lower codes. Conversely, projecting a
+cofinal family of lower codes in the parent onto its next labels is
+cofinal in $A$. Codes below the parent cannot improve this bound. If
+$A$ has a greatest label $a$, the whole terminal child $\Psupp(b)_{p\cat a}$
+is cofinal on the lower side. Its character is $\Ord$, not $1$.
+The upper assertion is the reversed argument.
+\end{proof}
+
+\subsubsection{Equal characters do not imply representability}
+
+\begin{example}[A horizontal $(\Ord,\Ord)$ cut]\label{swo:fs:ex:horizontalgap}
+Let $s:\Ord\to\{-,+\}$ be the proper-class sign string whose sign is
+$+$ when the finite remainder of its ordinal index is even and $-$
+when it is odd. Both signs occur cofinally. This is \emph{not} a
+surreal number.
+
+Compare each set-length surreal sign sequence with $s$ at its first
+difference, regarding its termination as $0$. Every surreal differs
+from $s$ by the time of its termination. Define
+\[
+       A=\{x\in\No:x<s\},\qquad B=\{x\in\No:s<x\}.
+\]
+These are nonempty classes partitioning the label order. Neither
+side has an endpoint or a set-sized cofinal or coinitial family.
+Indeed, the birthdays of any proposed set family are bounded by some
+$\gamma$. Truncating $s$ at a later $+$ position gives a larger lower
+label than all lower members of the family; truncating at a later
+$-$ position gives a smaller upper label. The corresponding ordinal
+sequences of truncations supply cofinal and coinitial class families.
+
+Now partition the core by its first label:
+\[
+           L=\{d:E_d(0)\in A\},\qquad U=\{d:E_d(0)\in B\}.
+\]
+This cut has character $(\Ord,\Ord)$ but no crossing prefix of
+length $1$. It is horizontal at the root, and is not the trace of
+any injective class word or of any raw class well-order.
+\end{example}
+
+Thus neither saturation below set size nor the ordered pair of local
+characters identifies the represented cuts. The labeled prefix
+criterion contains strictly more information.
+
+\subsubsection{An explicit limit-boundary example}
+
+Let $p(n)=n$ for $n<\omega$. The cut just below $\Psupp(b)_p$ is crossed by
+every finite initial prefix of $p$, but not by any prefix of length
+$\omega$. At each finite level, some lower code leaves the ordinal
+prefix later, while an upper code extends all of $p$. The cut has
+character $(\omega,\Ord)$ and is not represented by a raw global
+well-order. Its obstruction is a set-length limit boundary rather than
+an omitted proper-class range. This is the distinction that an informal
+``keep taking longer prefixes'' argument would overlook.
+
+% ---- source 17 (batch-81 manuscript 05), lines 1144-1313
+\subsection{Source 17: recognizing exactly which core cuts are global enumerations}
+\label{swo:gs:sec:recognition}
+
+The preceding source results place $\Hsl$ in a larger collection of cuts
+of $\Psupp(b)$, but do not by themselves identify its image. We now give a
+necessary-and-sufficient test in terms of the displayed prefix cylinders.
+This addresses source question \code{swo:n16.1} (\cref{swo:n16.1}) and its parallel in
+source 09 (its third direction in \cref{swo:ec:sec:research}). It is a \emph{labelled-tree} recognition theorem; a pure-order
+recognition theorem would be stronger and, as shown below, cannot hold in
+the naive invariant form.
+
+\subsubsection{The straddling test}
+For an injective set prefix $p:\alpha\to\No$, define the ordinary class
+\[
+ C_p=\{c\in \Psupp(b):E_c\res\alpha=p\}.
+\]
+Let $L$ be a proper nonempty lower subclass of $\Psupp(b)$ with no greatest
+element, and put $U=\Psupp(b)\setminus L$. We allow $U$ to have a least
+element. Thus the convention is the \emph{open lower cut}, including the
+one immediately before an actual core point. Say that $p$ straddles $L$
+when $C_p$ meets both $L$ and $U$.
+
+\begin{theorem}[Recognition of injective branches]\label{swo:gs:thm:recognition}
+The following conditions are equivalent.
+\begin{enumerate}
+\item There is an injective class word $f:\Ord\to\No$ such that
+\[
+ L=L_f:=\{c\in \Psupp(b):E_c<_{\lex} f\}.
+\]
+\item For every set ordinal $\alpha$, there is a straddling injective
+prefix of length $\alpha$.
+\end{enumerate}
+When these conditions hold, both the straddling prefix at each length
+and the word $f$ are unique. Moreover $f$ is surjective if and only if
+\[\tag{S17.8}\label{swo:gs:eq:coverage}
+ \forall x\in\No\ \exists p\,
+ \bigl(p\text{ straddles }L\ \wedge\ x\in\ran p\bigr).
+\]
+The reconstruction uses elementary class comprehension over $\GBC$,
+not $\ETR$.
+\end{theorem}
+\begin{proof}
+Distinct cylinders of the same length are disjoint convex blocks in
+lexicographic order. At most one can meet both sides of a cut: if an
+earlier block met $U$, every later block would be in $U$.
+
+Suppose first that $f$ is given. For any $\alpha$, take its prefix
+$p=f\res\alpha$. A fresh smaller next label than $f(\alpha)$, and a
+fresh larger one, yield core completions respectively below and above
+$f$. Thus $p$ straddles. These completions also show that $L_f$ has no
+greatest element and is proper and nonempty.
+
+Conversely, let $p_\alpha$ denote the unique straddling prefix at length
+$\alpha$. Restrictions of straddling prefixes straddle, so uniqueness
+implies $p_\beta\res\alpha=p_\alpha$ for $\alpha<\beta$. Define a
+class graph by
+\[
+ f(\alpha)=x\quad\Longleftrightarrow\quad
+ \exists p\bigl(p\text{ is a straddling prefix of length }\alpha+1
+                  \ \wedge\ p(\alpha)=x\bigr).
+\]
+The quantifier over $p$ ranges over sets. Straddling itself quantifies over
+the set codes in $\Psupp(b)$, with $L$ and $b$ as class parameters. Thus this
+is elementary comprehension. Coherence makes $f$ a total function; its
+set restrictions are injective, so it is injective.
+
+If $E_c\ne f$, let $\delta$ be their first disagreement. The cylinder
+of $p_{\delta+1}$ straddles. If $E_c(\delta)<f(\delta)$, then $c$ is
+below every code in that cylinder, including a code in $L$, so $c\in L$.
+The reversed inequality places $c$ in $U$. If $E_c=f$, putting $c$ in
+$L$ would make it the greatest member of $L$, already excluded. Hence
+$L=L_f$ exactly, including the principal-cut case. Two different words
+would be separated by a core code, so the representing word is unique.
+Finally $\ran f$ is the union of the ranges of its straddling prefixes;
+this proves the coverage criterion.
+\end{proof}
+
+\begin{remark}[Why every ordinal length and the endpoint convention matter]\label{swo:gs:n9.2}
+Checking only successor extensions along finite histories is inadequate.
+A cut can track a coherent prefix through all finite levels and then lie
+at the boundary of its length-$\omega$ cylinder. There is then no
+straddling cylinder at that limit. In contrast,
+\Cref{swo:gs:thm:recognition} requires a straddler at \emph{every} set
+ordinal. Also, a closed principal lower cut would have the same
+straddling prefixes as the corresponding open one. The hypothesis that
+$L$ has no greatest element removes that ambiguity.
+\end{remark}
+
+\subsubsection{Three independent failures}
+\begin{example}[A coordinate cut that does not follow a branch]\label{swo:gs:n9.3}
+Let $A\subseteq\No$ consist of those $x$ with $x<n$ for some natural
+number $n$, and let $B=\No\setminus A$. Both are nonempty, $A$ has no
+largest element, and $B$ has no least element: a positive infinite member
+of $B$ has a smaller positive infinite half. Partition core codes by
+whether their first label lies in $A$ or $B$. The root cylinder straddles,
+but no length-one cylinder does. This is a genuine cut of the core, but
+not comparison with an injective $\Ord$-word.
+\end{example}
+
+\begin{example}[A limit boundary that defeats finite-depth testing]\label{swo:gs:n9.4}
+Fix an injective prefix $p:\omega\to\No$. Take the cut immediately
+before $C_p$. At every finite length $n$, the cylinder for
+$p\res n$ meets both cut sides, because a fresh lower label at a later
+finite coordinate gives a code strictly below $C_p$. At length
+$\omega$, the entire cylinder lies on the upper side and no cylinder
+straddles. This is precisely the limit obstruction in the set-sized cut
+trichotomy, now at an ordinary class of set codes.
+\end{example}
+
+\begin{example}[A coherent branch which is not exhaustive]\label{swo:gs:n9.5}
+Fix $r_0\in\No$ and a bijection $f:\Ord\to\No\setminus\{r_0\}$.
+The cut $L_f$ passes the straddling test at every ordinal length, but fails
+\eqref{swo:gs:eq:coverage} for $r_0$. It is not represented by any member of
+$\Hsl$, since the representing injective word is unique.
+\end{example}
+
+These examples separate numerical-cut failure, limit coherence, and
+exhaustiveness. The test is not merely the assertion that a representation
+exists restated in different notation: its quantifiers over prefixes and
+core witnesses are over \emph{sets}, and the representing proper-class
+function is recovered by one elementary formula.
+
+\begin{proposition}[Characters of branch cuts outside the core]
+\label{swo:gs:prop:class-characters}
+If $f\in \Jinj$ has no code in $\Psupp(b)$, both sides of its core cut have no
+set-sized cofinal or coinitial subset, respectively. Both admit uniform
+$\Ord$-indexed approximation families. This is often abbreviated by
+saying that the cut has character $(\Ord,\Ord)$; that notation does not
+make $\Ord$ into a cardinal or set.
+\end{proposition}
+\begin{proof}
+For each $\alpha$, extend $f\res\alpha$ by a smaller or larger fresh
+label and complete in the core, making the choices uniformly using global
+choice. As $\alpha$ increases, these codes approach the cut from their
+respective sides. For any set of codes below $f$, Class Replacement bounds
+all their first disagreements with $f$ by a set ordinal. A later lower
+approximation lies above them all. The upper argument is identical.
+There is no equality case because $f$ has no core code.
+\end{proof}
+
+\subsubsection{What the same cut remembers about unrestricted orders}
+For $f\in \Jinj$, put $D_f=\No\setminus\ran f$. Append to the well-order
+listed by $f$ any class well-order of $D_f$, choosing one using global
+choice when necessary. The result is a raw class well-order of $\No$.
+Every appended label has a proper class of predecessors; the initial
+set-like part is exactly $f$.
+
+\begin{proposition}[Raw lifts and loss of residual information]
+\label{swo:gs:prop:raw-lifts}
+All raw well-orders with canonical initial enumeration $f$ induce the
+same comparison cut $L_f$ on $\Psupp(b)$. Their convex fibre is the
+lexicographic order of all well-orders of $D_f$. Consequently the fibre
+is a singleton when $|D_f|=0$ or $1$, and has $n!$ members when
+$|D_f|=n<\omega$. For larger complements it retains the full residual
+well-order problem.
+\end{proposition}
+\begin{proof}
+Unless a core enumeration equals $f$, its comparison is decided at a set
+ordinal before any appended label. Equality is possible only when $f$ is
+exhaustive, in which case no tail remains. Restriction to $D_f$ and
+concatenation with the fixed initial order are inverse order-preserving
+operations. The source proves this convex-fibre description for all
+raw orders (\cref{swo:cf:fibers}); the argument here identifies
+its interaction with the reconstructed cut.
+\end{proof}
+
+Thus recognition of an injective branch determines the raw order's first
+$\Ord$-part but not its residual order. The core is dense in $\Hsl$ and
+$\Jinj$, not in the interiors of these nontrivial raw fibres.
+
+% ---- source 18 (batch-81 manuscript 06), lines 2753-3058
+\subsection{Source 18: exactly which class cuts of a core are represented}
+\label{swo:sh:sec:represented-class-cuts}
+
+Fix a baseline bijection $b:\Ord\to\No$ and let
+$\Psupp(b)$ be its ordinary class of normalized bounded-support
+permutation codes.  Write $E_c$ for the enumeration evaluated from a
+code $c\in\Psupp(b)$.  All such evaluations are supplied by one
+class relation.  For an injective set prefix $p:\delta\to\No$,
+put
+\[
+ C_{p}=\{c\in\Psupp(b):E_c\restriction\delta=p\}.
+\]
+The core-completion lemma ensures that every such cylinder is
+nonempty.  It is convex.  At a fixed length $\delta$, these cylinders
+partition $\Psupp(b)$ and are linearly ordered without overlap.
+
+Throughout this section, a cut is an ordinary class
+$L\subseteq\Psupp(b)$ that is nonempty, proper, initial, and has
+no greatest element.  This convention uses the strict lower side of
+a represented point.  In particular, it excludes the closed principal
+cut at a code.  Say that $p$ \emph{straddles} $L$ if
+\[
+ C_{p}\cap L\ne\varnothing,
+ \qquad
+ C_{p}\setminus L\ne\varnothing.
+\]
+This is an elementary predicate of the set $p$, with class parameters
+$b,L$.  Its witnesses are set codes, not arbitrary classes.
+
+\begin{theorem}[The prefix criterion for represented class cuts]
+\label{swo:sh:thm:represented-class-cut}
+In GB with the fixed baseline above, the following are equivalent.
+\begin{enumerate}
+\item There is an injective class function
+$f:\Ord\to\No$ such that
+\[
+ L=\{c\in\Psupp(b):E_c<_{\rm lex}f\}.
+\]
+\item For every ordinal $\delta$ there is an injective prefix
+$p:\delta\to\No$ that straddles $L$.
+\end{enumerate}
+When they hold, $f$ is unique.  At every length $\delta$, the unique
+straddling prefix is $f\restriction\delta$.  The function $f$ is
+defined by an elementary formula from $b,L$; no class choice or ETR
+is needed to assemble it.
+\end{theorem}
+\begin{proof}
+At most one prefix of a given length can straddle.  Indeed, if the
+cylinder of $p$ lies below that of $q$, an element outside $L$ in
+the first cylinder lies below an element of $L$ in the second,
+contradicting initiality.
+
+Assume the second condition and denote the unique prefix at length
+$\delta$ by $p_\delta$.  If $\gamma<\delta$, the restriction
+$p_\delta\restriction\gamma$ also straddles, since its cylinder
+contains the straddling cylinder of $p_\delta$.  Uniqueness gives
+\[
+ p_\delta\restriction\gamma=p_\gamma.
+\]
+Define
+\[
+ f(\alpha)=p_{\alpha+1}(\alpha).
+\]
+The graph is elementary because each $p_\delta$ is a uniquely
+specified set.  Coherence proves that this is an injective class
+function and that $f\restriction\delta=p_\delta$.
+
+Take a core code $c$ with $E_c\ne f$, and let $\alpha$ be the first
+coordinate of disagreement.  If $E_c(\alpha)<f(\alpha)$, then
+$c$ lies below every code in $C_{p_{\alpha+1}}$.
+That cylinder meets $L$, so $c\in L$ by initiality.  If
+$E_c(\alpha)>f(\alpha)$, then $c$ lies above every code in the
+same cylinder.  Its member outside $L$ shows that $c\notin L$.
+Finally, if $E_c=f$ and $c\in L$, the absence of a greatest element
+of $L$ supplies $d\in L$ with $E_d>f$, contradicting the previous
+case.  Hence the displayed cut identity holds in every case.
+
+Conversely, let $L$ be the strict lower cut of an injective class
+word $f$.  For any ordinal $\delta$, its prefix
+$p=f\restriction\delta$ is a set.  Choose fresh surreal labels
+\[
+ u<f(\delta)<v,
+ \qquad u,v\notin\operatorname{ran}(p).
+\]
+Such labels exist because a set cannot exhaust either numerical
+interval next to a given surreal.  Complete $p$ followed by $u$,
+and $p$ followed by $v$, to core enumerations.  Both completions
+belong to $C_{p}$, and they lie respectively below and
+above $f$.  Thus every prefix straddles.  Its uniqueness at each
+length also proves the uniqueness of $f$.
+\end{proof}
+
+For completeness, the strict lower cut of every injective class word
+is indeed nonempty, proper, and without a greatest element.  The
+first two assertions follow by choosing a smaller or larger first
+label.  If $E_c<f$ first differs at $\alpha$, complete
+$f\restriction(\alpha+1)$ with a fresh next label smaller than
+$f(\alpha+1)$.  The resulting core row lies strictly between
+$E_c$ and $f$.
+
+\begin{remark}[Why the strict-cut convention matters]\label{swo:sh:n15.2}
+If $f=E_c$ is itself a core row, both its strict lower cut and its
+closed lower cut have a straddling cylinder at every length.  The
+closed cut has greatest element $c$.  The no-greatest-element
+hypothesis is therefore necessary for the stated strict-cut
+criterion; it is not an incidental regularity assumption.
+\end{remark}
+
+\subsubsection{Set-like representation and all raw representations}
+
+For a raw class well-order $R$ of $\No$, let
+$F_R:\Ord\to\No$ be the unique enumeration of
+its canonical initial set-like part.  It is injective, and the
+remaining labels, if any, occur after its entire ordinal-class prefix.
+The earlier common-prefix theorem shows that a core row and $R$
+are compared at their first ordinal disagreement with $F_R$,
+unless they are identical.
+
+\begin{corollary}[Surjectivity is the exact remaining obstruction]
+\label{swo:sh:cor:cut-representation-levels}
+A cut $L$ is represented by a raw class well-order of
+$\No$ if and only if it satisfies the prefix criterion
+of \Cref{swo:sh:thm:represented-class-cut}.  Let $f$ be the unique
+class word recovered from such a cut.  Then:
+\begin{enumerate}
+\item $L$ is represented by a set-like global well-order if and
+only if $f$ is surjective onto $\No$.
+\item All its raw representatives are exactly the well-orders
+obtained by putting the sequence $f$ first and then well-ordering
+$Y_f=\No\setminus\operatorname{ran}(f)$.
+\item These representatives form the previously described convex
+fiber isomorphic, in the typed uniform sense, to
+$\WO(Y_f)$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+For any raw representative $R$, its cut on the core is the strict
+lower cut of $F_R$.  \Cref{swo:sh:thm:represented-class-cut} therefore
+applies and gives $f=F_R$.  Conversely, append the restriction of the
+baseline well-order to $Y_f$ after $f$.  The range
+of $f$ is proper, and its points have precisely set-many earlier
+$f$-values; every appended point has the whole proper range before
+it.  Thus the canonical initial function is exactly $f$, and the
+resulting raw order has cut $L$.
+
+A set-like representative has no residual labels, so its canonical
+function is a bijection.  Conversely a bijective $f$ directly defines
+a set-like representative.  Uniqueness of the recovered class word
+excludes a different surjective word representing the same cut.
+The last two statements are the canonical-fiber description.
+\end{proof}
+
+Thus allowing arbitrary raw well-orders fills the omitted-range
+branch cuts, but it still does not fill every class cut of the core.
+The first-failure theorem below identifies exactly where an
+unsuccessful prefix criterion breaks down.
+
+\begin{corollary}[Elementary recognition in uniform families]
+\label{swo:sh:cor:elementary-cut-recognition}
+Relative to the baseline, raw representability of a cut is an
+elementary property of its class parameter.  Set-like representability
+is also elementary: in addition to a straddling prefix at every length,
+require
+\[
+ \forall x\in\No\ \exists\delta\in\Ord\ \exists p
+ \bigl[p:\delta\to\No\text{ straddles }L
+       \ \wedge\ x\in\operatorname{ran}(p)\bigr].
+\]
+Consequently a uniformly class-indexed family of cuts has an
+elementary class of raw-represented indices, an elementary class of
+set-like-represented indices, and a uniform relation recovering the
+injective words of all raw-represented members.
+\end{corollary}
+\begin{proof}
+All displayed variables are sets.  The coverage condition is
+equivalent to surjectivity of the uniquely recovered word.
+Insert the family index into the same formulas and apply elementary
+class comprehension.  The input cut remains a class parameter;
+this does not provide set codes for all cuts or all class words.
+\end{proof}
+
+\subsubsection{The first failure: a numerical split or a limit boundary}
+
+\begin{theorem}[First-failure classification]
+\label{swo:sh:thm:cut-first-failure}
+Suppose $L$ fails the prefix criterion, and let $\delta$ be the
+least length with no straddling prefix.  Then $\delta>0$ and
+exactly one of the following descriptions applies.
+\begin{enumerate}
+\item \textbf{Successor failure.} If $\delta=\eta+1$, let $p$ be
+the unique straddling prefix of length $\eta$.  The unused alphabet
+$Y=\No\setminus\operatorname{ran}(p)$ has a nontrivial
+class cut $Y=A\sqcup B$, with $A<B$, such that
+\[
+ C_{p\mathbin{{}^\frown}\langle x\rangle}
+ \subseteq
+ \begin{cases}
+ L,&x\in A,\\
+ \Psupp(b)\setminus L,&x\in B.
+ \end{cases}
+\]
+Outside $C_{p}$, the codes below that cylinder lie in
+$L$ and those above it do not.
+\item \textbf{Limit failure.} If $\delta$ is a limit ordinal,
+the shorter unique straddling prefixes have a coherent union
+$p:\delta\to\No$, which is an injective \emph{set}
+prefix.  Its nonempty cylinder lies wholly in $L$ or wholly outside
+$L$.  The cut is respectively the upper or lower boundary of
+that cylinder: codes strictly below the cylinder belong to $L$,
+and codes strictly above it do not.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The empty prefix straddles because $L$ and its complement are
+nonempty, so $\delta>0$.  Unique shorter straddling prefixes are
+coherent by the proof of \Cref{swo:sh:thm:represented-class-cut}.
+
+In the successor case, every next-letter cylinder is nonempty
+and fails to straddle, so it lies wholly on one side.  The two
+sides of the parent cylinder supply a letter of each kind.
+Initiality orders the resulting classes $A<B$.  The straddling
+parent also forces every code below it into $L$ and every code
+above it outside $L$.
+
+In the limit case, Class Replacement on the set ordinal $\delta$
+collects the uniquely defined shorter prefixes into a set, so their
+union $p$ is a set.  Its cylinder is nonempty by core completion,
+and does not straddle by the defining failure at $\delta$.
+A code outside it first differs from $p$ at some $\alpha<\delta$.
+The straddling cylinder at length $\alpha+1<\delta$ then decides
+its side exactly as in the main proof.  All codes below the
+length-$\delta$ cylinder lie in $L$, all those above it lie
+outside, and the entire cylinder itself lies on one side.
+\end{proof}
+
+The successor split is a class cut in the \emph{unused} numerical
+alphabet.  It can be principal at a remaining label, can occur at
+a label deleted by the prefix, or can be an unfilled class cut of
+the surreal numerical order.  Surreal set-cut interpolation does
+not imply that an arbitrary class cut has a surreal boundary.
+The limit case records the independent possibility of reaching an
+entire set prefix while the cut lies at one of its cylinder's
+boundaries.  Neither failure type is represented even by a raw
+class well-order, by \Cref{swo:sh:cor:cut-representation-levels}.
+
+\begin{example}[A deleted-label cut caused by repetition]
+\label{swo:sh:ex:repeated-label-cut}
+Fix $x\in\No$ and put
+\[
+ L_x=\{c\in\Psupp(b):
+ E_c(0)<x\ \text{or}\
+ (E_c(0)=x\ \text{and}\ E_c(1)<x)\}.
+\]
+This is a nonempty proper initial class without a greatest element.
+The unique straddling prefix of length $1$ is $\langle x\rangle$.
+There is no straddling prefix of length $2$: its first entry other
+than $x$ already decides the side, and when its first entry is
+$x$, its second entry must be different from $x$ by injectivity.
+The first failure is therefore at length $2$, where the unused
+alphabet is split at the deleted label $x$.
+
+The cut is not represented by any injective ordinal-class word,
+and hence by no raw class well-order of $\No$.  A would-be
+word would have to begin with $x,x$.  This is an explicit omitted
+class cut distinct from the omitted-range branch cuts: enlarging
+the order from set-like to unrestricted raw well-orders does not
+repair it.  If repeated labels are allowed in class words, however,
+the constant word $x,x,x,\ldots$ represents this cut.  Every injective
+core row differs from that word by coordinate $1$ at the latest.
+\end{example}
+
+\begin{remark}[Class character does not decide representability]\label{swo:sh:n15.7}
+Both sides of $L_x$ have no set-sized cofinal or coinitial witness,
+respectively, although they have uniform witnesses indexed by
+$\Ord$. To see this, complete the prefixes
+\[
+ \left\langle x,x-\frac{1}{\alpha+1}\right\rangle,
+ \qquad
+ \left\langle x,x+\frac{1}{\alpha+1}\right\rangle
+ \quad(\alpha\in\Ord)
+\]
+uniformly to core rows. Since ordinals are cofinal in the numerical
+surreal order, the first family is cofinal in $L_x$ and the second
+is coinitial in its complement. Any proposed set-sized witness can
+be improved at its second coordinate by surreal set interpolation.
+Thus this unrepresented cut has the same $(\Ord,\Ord)$
+class character as omitted-range branch cuts that do have raw
+representatives. This notation records the stated existence and
+nonexistence of uniform witnesses; it does not assign a set cardinal
+to a proper class.
+\end{remark}
+
+\subsubsection{Foundational accounting}
+
+All cylinders, cuts, and recovered graphs in this section are
+ordinary classes of sets.  Prefixes are set functions; core rows
+are accessed through set codes.  Uniqueness assembles coherent
+prefixes without a class-choice principle.  Replacement is used
+only on set-sized domains, including the union at a limit failure.
+The argument never constructs a class containing all class words,
+never invokes a truth predicate for arbitrary formulas, and never
+uses ETR.  The fixed baseline already supplies the choice strength
+needed for the previously proved completion and extension lemmas.
+
+% ---- hand chunk automorphisms
+\section{Automorphisms of the core (source 14; sources 17, 15 and 13)}\label{swo:viii:sec:automorphisms}
+
+\merge\ Four sources show that the bare order of the core, or of the full
+order of global enumerations, does not remember what the recognition theorem
+uses. Source~14 classifies the automorphism orbits of class cuts by their
+characters (complete invariant) and derives that exhaustiveness is not
+invariant; source~17 gives an exact criterion for an automorphism of the
+core to extend to the global enumerations, the non-extension theorem and the
+positive family of numerical relabellings; source~15 gives a weaker form of
+source~14's corollary; source~13 proves a different theorem, that an
+automorphism of the full order $\Hsl$ can move a cylinder to a non-cylinder.
+Source~14 is printed first.
+
+% ---- source 14 (batch-81 manuscript 02), lines 961-1062
+\subsection{Source 14: automorphism orbits and the limits of bare-order recognition}
+\label{swo:tc:sec:orbits}
+The prefix classification has a complementary classification in the
+language of order alone. It is coarser: different prefix-boundary types
+can belong to the same orbit under class order automorphisms.
+
+\begin{lemma}[Set homogeneity of the core]\label{swo:tc:lem:sethomogeneous}
+Every increasing bijection between two set-sized suborders of $\Psupp(b)$
+extends to a class order automorphism of $\Psupp(b)$.
+\end{lemma}
+\begin{proof}
+Begin with the given partial map and carry out the back-and-forth
+construction used in \Cref{swo:tc:cor:coreNo}. At any set stage its
+domain and range are sets, even though they may already contain the
+entire initial partial map. The lower and upper images of a new point
+form a set cut. A strict separator automatically avoids all previously
+used image points, since each of those is on one of the two sides.
+The inverse step is symmetric. Taking the coherent union gives a
+surjective class order embedding extending the original map.
+\end{proof}
+
+\begin{theorem}[Complete character invariant for cut orbits]
+\label{swo:tc:thm:orbits}
+Two proper normalized class cuts of $\Psupp(b)$ lie in the same orbit
+under class order automorphisms if and only if they have the same
+character pair. The possible pairs are exactly
+\[
+ (\rho,\Ord),\quad (\Ord,\rho),\quad
+ (\Ord,1),\quad (\Ord,\Ord),
+\]
+where $\rho$ ranges over the infinite regular set cardinals.
+\end{theorem}
+\begin{proof}
+A class automorphism and its inverse carry sets to sets and preserve
+cofinality and coinitiality, so equality of characters is necessary.
+A normalized lower cut has no maximum, so any set-sized cofinality is
+an infinite regular cardinal. The upper complement either has a least
+point, with character $1$, has infinite regular set coinitiality, or
+has character $\Ord$. Both characters cannot be set-sized by the core
+set-cut property. These observations exhaust the displayed possibilities.
+They all occur: lower and upper edges of a prefix of length $\rho$
+realize the first two, a core point realizes the third, and a
+successor-prefix cylinder edge realizes the fourth.
+
+Suppose first that $D,D'$ have the same set-sized left cofinality
+$\rho$. Choose strictly increasing cofinal sequences of type $\rho$
+in them. Matching the sequences gives a set partial isomorphism.
+\Cref{swo:tc:lem:sethomogeneous} extends it to an automorphism. Since a
+normalized lower set is the strict downward closure of any cofinal
+sequence with no last member, that automorphism carries $D$ onto $D'$.
+For equal right coinitialities use coinitial sequences in their
+complements and the same argument with upward closures. This includes
+right character $1$, where one simply matches the two least points
+of the complements.
+
+It remains to consider two cuts with character $(\Ord,\Ord)$.
+Each of their four sides is itself a proper class
+$\eta_{\Ord}$-order. For example a set cut inside $D$ with a nonempty
+upper side is filled by core saturation, with the interpolant still
+below an element of $D$; a set with no upper constraints has an upper
+bound inside $D$ because $D$ has no set-sized cofinal subset. Lower
+bounds remain available from the ambient core. The corresponding
+argument for the complement uses its absence of a set-sized coinitial
+subset. None of these sides has an endpoint. Back-and-forth therefore
+gives one class isomorphism $D\to D'$ and another between their
+complements. Their union is an order automorphism of the core, since
+all points on a lower side precede all points on its upper side.
+\end{proof}
+
+\begin{corollary}[Exhaustiveness is not a bare-order invariant]
+\label{swo:tc:cor:nonintrinsic}
+There are a global exhaustive enumeration $E$ and a class order
+automorphism $g$ of $\Psupp(b)$ such that $g[D_E]$ is not the trace of
+\emph{any} unrestricted class well-order on $\No$. In particular,
+exhaustive representability and even branch representability cannot
+be recognized by a criterion invariant under all class automorphisms
+of the bare core order.
+\end{corollary}
+\begin{proof}
+Let $E$ swap every consecutive ordinal pair of the baseline:
+\[
+ E(2\cdot\alpha)=b(2\cdot\alpha+1),\qquad
+ E(2\cdot\alpha+1)=b(2\cdot\alpha).
+\]
+It is exhaustive, but it is not represented by a core code, because
+it moves a proper class of coordinates. Hence $D_E$ has character
+$(\Ord,\Ord)$. The lower edge of the one-letter cylinder
+$C_{(b(0))}$ has the same character. The orbit theorem supplies $g$
+carrying the former cut to the latter. A cylinder edge is not a branch
+trace by \Cref{swo:tc:thm:trichotomy}, and is not a raw-order trace by
+source~14's Theorem~10.2 (trace fibres; \merge\ printed in Part~IX, and
+\cref{swo:cf:fibers} for the fibre description). This proves the assertion.
+\end{proof}
+
+Thus the reference to named cylinders in the recognition theorem is
+not merely a technical limitation of its proof. A genuine symmetry of
+the bare linear order can destroy the property being recognized.
+Principal exhaustive cuts are distinguished by their right character
+$1$, but non-core exhaustive cuts are not distinguished from other
+$(\Ord,\Ord)$ boundaries. The stabilizer of the exhaustive-cut
+collection inside the full automorphism group is therefore a proper
+subgroup, deserving its own study.
+
+\begin{note}[\merge; overlaps]\label{swo:viii:note:orbits}
+\Cref{swo:tc:lem:sethomogeneous} is the set-homogeneity of an order filling
+all set cuts (\cref{swo:ec:thm:backforth}, source~09's remark on set-sized
+partial isomorphisms in its direction~4). \Cref{swo:tc:cor:nonintrinsic} and
+source~17's \cref{swo:gs:thm:nonextension} use the same exhaustive
+enumeration (the baseline with every consecutive pair swapped); source~14
+sends its cut to a cylinder edge, source~17 to the cut of a nonexhaustive
+injective word, and source~15's \cref{swo:cb:thm:automorphism} to a
+first-label cut, so all three show that neither represented cuts nor
+exhaustive cuts are invariant under automorphisms of the bare core.
+Source~15's proof that each side of such a cut is a copy of $\No$ is the
+argument of source~17's \cref{swo:gs:lem:gap-homogeneity} and of the last
+paragraph of the proof of \cref{swo:tc:thm:orbits}.
+\end{note}
+
+% ---- source 17 (batch-81 manuscript 05), lines 1314-1449
+\subsection{Source 17: automorphisms, an exact extension test and a negative result}
+\label{swo:gs:sec:automorphisms}
+
+Let $\mathscr R_b(L)$ be the predicate saying that $L$ is a proper nonempty
+open lower cut of $\Psupp(b)$ which satisfies both the straddling and coverage
+conditions of \Cref{swo:gs:thm:recognition}. Thus $\mathscr R_b$ describes
+exactly the cuts $L_E$ with $E\in \Hsl$. It is a predicate on individual
+class parameters, not an ordinary class of cuts.
+
+For a class order-automorphism $h:\Psupp(b)\to \Psupp(b)$, its action on cuts is
+$h_*L=h[L]$. An extension of $h$ to $\Hsl$ means a uniform operator sending
+each global enumeration to a global enumeration, preserving comparisons
+and having a uniform inverse, whose action on core enumerations is $h$.
+This convention states the higher-order typing of the assertion.
+
+\begin{theorem}[Extension criterion]\label{swo:gs:thm:extension-criterion}
+A class order-automorphism $h$ of $\Psupp(b)$ extends to an automorphism of
+$\Hsl$ if and only if
+\[\tag{S17.9}\label{swo:gs:eq:automorphism-criterion}
+ \mathscr R_b(L)\quad\Longleftrightarrow\quad\mathscr R_b(h_*L)
+ \qquad\text{for every admissible lower class cut }L.
+\]
+When it exists, the extension is unique and is reconstructed uniformly by
+\Cref{swo:gs:thm:recognition}. No new class-valued recursion is required.
+\end{theorem}
+\begin{proof}
+If $H$ extends $h$, order preservation gives
+\[
+ L_{H(E)}=h_*L_E.
+\]
+Applying the same fact to $H^{-1}$ proves preservation of the represented
+cut predicate in both directions.
+
+Conversely assume \eqref{swo:gs:eq:automorphism-criterion}. For each $E$, form
+$L_E$, take its image under $h$, and reconstruct its unique exhaustive
+word by \Cref{swo:gs:thm:recognition}. Call this word $H(E)$. The entire
+construction is elementary from $E,h,b$. Distinct rows have distinct cuts,
+and $E<F$ if and only if $L_E\subsetneq L_F$, because the core is dense
+between them. Hence $H$ preserves and reflects order. The same recipe
+using $h^{-1}$ is its inverse. For a code $c$, the image of the strict
+lower segment below $c$ is the strict lower segment below $h(c)$, so $H$
+agrees with $h$ on the core. Finally an extension's value is determined
+by its comparisons with every core code, proving uniqueness.
+\end{proof}
+
+The criterion gives a precise role to the represented-cut predicate. It
+is not automatic that an abstract automorphism of the dense core preserves
+it. In fact it can fail in a strong way.
+
+\begin{lemma}[Homogeneity of large two-sided core gaps]
+\label{swo:gs:lem:gap-homogeneity}
+Let $(L,U)$ be a gap of $\Psupp(b)$ such that $L$ has no set-sized cofinal
+subset and $U$ no set-sized coinitial subset. Each of the class orders
+$L$ and $U$ is isomorphic to $\No$. Any two such gaps are conjugate by a
+class order-automorphism of $\Psupp(b)$.
+\end{lemma}
+\begin{proof}
+Consider a separated pair of sets $A<B$ in $L$. If $B$ is nonempty,
+\Cref{swo:gs:thm:core-interpolation} gives a core interpolant below every
+member of $B$, hence lying in $L$. If $B$ is empty, the absence of a
+set-sized cofinal subset of $L$ supplies a member of $L$ strictly above
+all of $A$; this includes the case $A=\varnothing$ after choosing any
+member. Therefore $L$ has the full set-cut interpolation property.
+It is proper: a set $L$ would be a set-sized cofinal subset of itself.
+The dual proof gives the same property and properness for $U$.
+
+The class back-and-forth proof of \Cref{swo:gs:cor:core-isomorphism}
+now yields $L\cong\No\cong U$. Given two gaps, choose order-isomorphisms
+between their lower sides and between their upper sides. The union of
+these two class maps is an order-automorphism of the core carrying the
+first gap to the second. This uses only two class maps at a time, not an
+exhaustive choice of maps for a higher collection of gaps.
+\end{proof}
+
+\begin{theorem}[Some core automorphisms do not extend]
+\label{swo:gs:thm:nonextension}
+In $\GBC$ there is a class order-automorphism of $\Psupp(b)$ which does not
+extend to an automorphism of $\Hsl$. More precisely, there is one taking
+the cut of an exhaustive enumeration to the cut of a nonexhaustive
+injective word.
+\end{theorem}
+\begin{proof}
+Construct an exhaustive enumeration $E$ by transposing the two entries
+in every successive pair of positions of $b$. It differs from $b$ on a
+proper class of positions, so it has no core code. Choose also a bijection
+$F:\Ord\to\No\setminus\{r_0\}$ for one fixed label $r_0$. It cannot
+have a core code because it is not exhaustive.
+
+By \Cref{swo:gs:prop:class-characters}, both $L_E$ and $L_F$ are
+genuine two-sided core gaps with no small cofinal or coinitial side.
+\Cref{swo:gs:lem:gap-homogeneity} supplies an automorphism $h$ with
+$h_*L_E=L_F$. The first cut satisfies $\mathscr R_b$, whereas the second
+fails coverage. \Cref{swo:gs:thm:extension-criterion} rules out an
+extension. Alternatively, any proposed image $H(E)\in \Hsl$ would have
+cut $L_F$, whose unique representing injection is the nonexhaustive
+word $F$, a contradiction.
+\end{proof}
+
+\begin{corollary}[A limit to pure-order recognition]\label{swo:gs:n10.4}
+Exhaustiveness of a branch cut is not invariant under all automorphisms
+of the bare class order $\Psupp(b)$. In particular it cannot be characterized
+by a parameter-free, automorphism-invariant property of that order and
+its cuts alone. The two-sided character $(\Ord,\Ord)$ does not suffice.
+\end{corollary}
+
+This does not preclude recognition using the baseline, labelled prefix
+tree, or suitable additional predicates. \Cref{swo:gs:thm:recognition}
+provides exactly such a positive result. Nor does it rule out more subtle
+reconstruction after adding a distinguished represented-cut predicate.
+It shows why order-isomorphism of dense cores, by itself, cannot be used
+to extend maps of the entire higher-order comparison.
+
+\subsubsection{A natural positive family}
+\begin{proposition}[Relabelling by numerical automorphisms]
+\label{swo:gs:prop:relabelling}
+If $\varphi:\No\to\No$ is an increasing class bijection, then
+$E\mapsto\varphi\circ E$ is an automorphism of $\Hsl$, and transporting
+relations by $\varphi$ is an automorphism of the unrestricted comparison
+$\Hall$. It carries the core associated with $b$ onto the core associated
+with $\varphi\circ b$.
+\end{proposition}
+\begin{proof}
+The first differing labels are transformed by an increasing bijection,
+so their comparison is unchanged. Surjectivity, injectivity, and the
+class well-order property are preserved under relabelling. Finally
+$\varphi\circ(b\circ\widehat\sigma)
+=(\varphi\circ b)\circ\widehat\sigma$, with the same set support code.
+\end{proof}
+
+This is a sufficient family of extendible maps, not a classification of
+all of them. Arbitrary permutations of the label class need not preserve
+lexicographic order. A general isomorphism between two cores whose
+baselines differ on a proper class of positions need not extend either;
+\Cref{swo:gs:thm:extension-criterion} identifies the additional condition
+that must be checked.
+
+% ---- source 15 (batch-81 manuscript 03), lines 1148-1189
+\subsection{Source 15: the bare order does not determine represented cuts}
+
+\begin{theorem}[An automorphism destroys prefix representability]\label{swo:cb:thm:automorphism}
+\textit{Extension proved in source~15.}\ In $\GBC$, there is a class order automorphism of $\Pbd(b)$ taking a
+cut represented by an injective $\Ord$-word to a cut represented by
+no such word, and therefore by no raw class well-order.
+\end{theorem}
+\begin{proof}
+Take a nonexhaustive word $F$. Neither side of $(L_F,R_F)$ has a set
+cofinality toward the cut: a set of first-disagreement coordinates can
+be bounded, and a perturbation agreeing with $F$ beyond that bound
+improves every proposed bound. Each side consequently fills all its
+own set cuts. For a cut with constraints on both sides, use the core
+interpolation theorem between bounding points in that side. For an
+empty bounding side, use the absence of a set cofinal or coinitial
+family toward the removed boundary, together with the unboundedness
+away from it. Thus each side is a copy of $\No$.
+
+The class order $\No+\No$ also fills every set cut. If constraints
+straddle the summands, choose a point in the first summand above the
+set of lower constraints; cases with both bounds in one summand reduce
+to that summand. The cases of constraints extending into the second
+summand are handled there. Class uniqueness gives $\No+\No\cong\No$.
+Hence there is a numerical partition $\No=A+B$ with both sides
+isomorphic to $\No$.
+
+Let $L'=\{d:E_d(0)\in A\}$ and $R'=\{d:E_d(0)\in B\}$.
+This cut has no crossing cylinder at length one, so it is unrepresented.
+Neither side has a set cofinality toward the cut, as is seen already
+in its first labels. The preceding interpolation argument shows that
+$L'$ and $R'$ are also copies of $\No$. Choose class isomorphisms
+$L_F\to L'$ and $R_F\to R'$ and take their union. It is the required
+automorphism. All these maps have sets as inputs and outputs.
+\end{proof}
+
+Thus even knowing the abstract class order $\Pbd(b)\cong\No$ is insufficient
+to identify the enumeration cuts. One must retain predicates for the
+cylinders, the evaluation map, or equivalent structure. This supplies
+a negative answer to a natural reconstruction question raised in the
+prior report. The theorem does not claim that every automorphism of the
+core extends to the higher collection of all global enumerations.
+
+\merge\ Source~15 states \cref{swo:cb:thm:automorphism} without naming its
+foundation; its proof chooses class isomorphisms of the sides of two cuts
+with $\No$, so it is a theorem of $\GBC$, and the words ``In $\GBC$'' are
+added at the merge. Its Proposition~4.2, printed in Part~IX, needs $\GBC$
+for the same reason.
+Its closing sentence, a ``negative answer to a natural reconstruction
+question raised in the prior report'', answers \cref{swo:n16.4} in part
+only (\cref{swo:viii:sec:status}).
+
+% ---- source 13 (batch-81 manuscript 01), lines 1286-1388
+\subsection{Source 13: the pure order does not recover the prefix cylinders}\label{swo:fs:sec:automorphisms}
+
+The earlier report asks whether prefix structure can be recovered from
+the pure order (\cref{swo:n16.4}). We give a negative answer for the
+family of all set-prefix cylinders, using only a finite change in how
+information is grouped.
+
+\begin{lemma}[Finite tuples as a surreal class order]\label{swo:fs:lem:tuples}
+For each positive integer $n$, the class $P_n$ of injective $n$-tuples
+of surreals, ordered lexicographically, is isomorphic to $\No$.
+\end{lemma}
+\begin{proof}
+First, finite lexicographic powers $\No^n$ fill every set cut. At the
+first coordinate, the lower and upper projected values satisfy all
+cross weak inequalities. If no cross value is shared, choose a strict
+separator for that coordinate and fill the remaining coordinates
+arbitrarily. If a value is shared, it is the unique common one; keep
+that coordinate and use the active rows in the remaining coordinates.
+Continuing this way cannot reach two identical opposing tuples,
+because the original cut was strict. This proves the set-cut property.
+\Cref{swo:fs:lem:backforth} gives $\No^n\cong\No$.
+
+There is a uniform order isomorphism $\No^n\to P_n$: at coordinate
+$i$, map the input value increasingly into the complement of the
+previously output finite set, using $h_S$. Recover the input by the
+inverse complement map coordinate by coordinate. First disagreements
+are preserved. Compose the two isomorphisms.
+\end{proof}
+
+Fix an order isomorphism $k:\No\to P_2$. Write
+$k(x)=(u_x,v_x)$, where $u_x\ne v_x$. There is a uniform increasing
+bijection
+\[
+ g_x:\No\setminus\{x\}\longrightarrow\No\setminus\{u_x,v_x\},
+ \qquad
+ g_x=h_{\{u_x,v_x\}}\circ h_{\{x\}}^{-1}.
+\]
+
+\begin{theorem}[Cylinder non-rigidity]\label{swo:fs:thm:nonrigidity}
+In $\GBC$ there is a uniform order automorphism of $\Hsl$ that maps
+some prefix cylinder to a class of enumerations that is not any prefix
+cylinder. Thus the family of all prefix cylinders is not invariant
+under automorphisms of the pure linear order.
+\end{theorem}
+\begin{proof}
+Define $H(E)$ by replacing the first label $x=E(0)$ with the pair
+$(u_x,v_x)$, and translating the remaining labels by $g_x$:
+\[
+ H(E)(0)=u_x,\quad H(E)(1)=v_x,\quad
+ H(E)(2+\alpha)=g_x(E(1+\alpha)).
+\]
+This is a class bijection onto $\No$. The first two output labels
+determine $x$ by $k^{-1}$; the inverse of $g_x$ recovers the tail.
+Therefore $H$ is a bijection on the virtual domain. Different first
+input labels are compared by the order isomorphism $k$, and equal
+first labels leave an increasing tail transformation. Hence $H$ is
+an order automorphism, with
+\[
+                              H(C_{(x)})=C_{k(x)}.
+\]
+
+Fix a label $u$. Then
+\[
+ H^{-1}(C_{(u)})=
+       \bigcup_{x\in A_u} C_{(x)},\qquad
+ A_u=\{x:\text{the first coordinate of }k(x)\text{ is }u\}.
+\]
+The class $A_u$ contains more than one label, because $P_2$ contains
+$(u,v)$ for every $v\ne u$. It is nonempty and proper, since pairs
+with another first coordinate also exist. The displayed inverse image
+therefore contains enumerations with different first labels, but is
+not the whole domain. It cannot be a nonempty-prefix cylinder, all of
+whose members have the same first label, and it cannot be the
+empty-prefix cylinder, which is the whole domain. Apply the
+automorphism $H^{-1}$ to $C_{(u)}$.
+\end{proof}
+
+\subsubsection{What the counterexample does not say}
+
+The theorem rules out a parameter-free order-theoretic characterization
+whose members are exactly the prefix cylinders. It also rules out
+recovering their original tree canonically from the pure linear order.
+It does not say that no useful interval structure is recoverable, that
+every order automorphism arises by block recoding, or that the chosen
+core $\Psupp(b)$ is preserved by $H$.
+
+In particular, the expanded structure containing the core, its
+set-support filtration, birthday data, or an explicit prefix predicate
+may have a much smaller automorphism group. The cut criterion of
+\Cref{swo:fs:thm:reconstruction} is correctly a criterion in such
+an expanded prefix presentation. Its non-invariance under forgetting
+that presentation is a substantive feature, not a foundational flaw.
+
+\subsubsection{Finite block depth is not intrinsic either}
+
+Using $P_n$ instead of $P_2$ replaces one first label by any fixed
+positive finite number of distinct labels, with a complement
+isomorphism applied to the tail. The same construction gives an order
+automorphism that sends first-level cylinders to selected $n$th-level
+cylinders. Thus even finite prefix depth has no absolute meaning in
+the pure order, despite being indispensable to a particular
+lexicographic presentation.
+
+\merge\ Source~13's opening sentence refers to \cref{swo:n16.4}, which its
+theorem answers in part. \Cref{swo:fs:lem:tuples} uses the family $h_S$ of
+\cref{swo:fs:lem:backforth}.
+
+% ---- hand chunk extensions
+\section{Class extensions (source 14; source 17)}\label{swo:viii:sec:extensions}
+
+\merge\ Sources~14 and~17 prove the same theorem: for two class realizations
+with the same sets and a common baseline, an old core cut is the cut of a
+global enumeration in the larger realization exactly when it already is in
+the smaller one, and the enumeration is then old. The proof is the
+elementarity of the recognition criterion. Source~17 adds that every proper
+class extension adds a new global enumeration and a new represented cut
+(\cref{swo:gs:thm:class-extension}). Source~14's text, from the second half
+of its Section~7, is printed first.
+
+% ---- source 14 (batch-81 manuscript 02), lines 918-960
+\begin{theorem}[No new realization of an old trace cut]\label{swo:tc:thm:absolute}
+Suppose $(M,\mathcal C)$ and $(M,\mathcal D)$ are models of $\GBC$
+with the same set structure, $\mathcal C\subseteq\mathcal D$, and a
+common baseline enumeration $b\in\mathcal C$. If a proper normalized
+core cut $D$ belongs to $\mathcal C$, then
+\[
+ (M,\mathcal C)\models \exists E\in \Hsl\ (D=D_E)
+ \quad\Longleftrightarrow\quad
+ (M,\mathcal D)\models \exists E\in \Hsl\ (D=D_E).
+\]
+Moreover, when it exists, the realizing enumeration in the larger model
+is already a class of the smaller model.
+\end{theorem}
+\begin{proof}
+The canonical support codes, the cylinders, and their membership
+relations are defined from the same sets and $b$. Every formula in
+(C), (X), and the reconstruction formula has set quantifiers and the
+old class parameters $D,b$ only. Its truth is therefore the same in the
+two structures. If the larger model contains a realizing enumeration,
+the recognition theorem gives (C) and (X) there and hence in the
+smaller model. Elementary comprehension in the smaller model constructs
+the displayed graph from $D,b$. It is the same graph as the larger
+model's enumeration by uniqueness. The converse is immediate.
+\end{proof}
+
+\begin{corollary}\label{swo:tc:n7.3}
+An enumeration newly available after such a class extension has a
+trace cut not belonging to the old class collection. An old
+nonexhaustive branch cut, cylinder edge, or numerical-gap cut is not
+turned into the trace of a global enumeration by enlarging only the
+class part.
+\end{corollary}
+
+\begin{remark}[Scope of absoluteness]\label{swo:tc:n7.4}
+The theorem holds because realizability of this particular kind of cut
+has an elementary, uniquely reconstructing criterion. It is not an
+assertion that all class-existence questions are absolute, that the
+virtual enumeration order is unchanged, or that arbitrary internal
+well-foundedness is externally absolute. The set structure and the
+baseline must remain fixed. New classes can, and in suitable
+realizations do, supply new enumerations and new cuts simultaneously.
+\end{remark}
+
+% ---- source 17 (batch-81 manuscript 05), lines 1450-1509
+\subsection{Source 17: what changes when the available classes change?}
+\label{swo:gs:sec:class-extensions}
+
+Let $(M,\mathcal X)\subseteq(M,\mathcal Y)$ be two transitive two-sorted
+models of $\GBC$ with the same sets and $\mathcal X\subseteq\mathcal Y$.
+Assume the baseline $b$ belongs to $\mathcal X$. The assertions below can
+also be stated internally as preservation statements for a specified
+same-set extension; the transitive formulation avoids irrelevant
+ambiguities about external well-foundedness.
+
+\begin{theorem}[New enumerations are exactly new represented core cuts]
+\label{swo:gs:thm:class-extension}
+The set-code carrier $\Psupp(b)$, its order relation, and its labelled
+set-prefix cylinders are unchanged between the two models. For any
+$E\in \Hsl^{\mathcal Y}$,
+\[
+ E\in\mathcal X\quad\Longleftrightarrow\quad L_E\in\mathcal X.
+\]
+Consequently every genuinely larger class realization
+$\mathcal X\subsetneq\mathcal Y$ adds a global enumeration and a
+represented cut of the unchanged core.
+\end{theorem}
+\begin{proof}
+Support codes and prefixes are sets, and the two models have exactly the
+same sets. Their evaluations use the same baseline class. All relations
+in the definition of a cylinder are therefore the same.
+
+If $E\in\mathcal X$, elementary comprehension in the smaller model gives
+$L_E\in\mathcal X$. Conversely, suppose $L_E\in\mathcal X$. At every
+ordinal length, the assertion that a set prefix straddles this cut has
+the same truth value in the two models: its witnesses are set codes and
+its quantifiers range over their common sets. Thus the smaller model
+can reconstruct the unique branch by the elementary formula in
+\Cref{swo:gs:thm:recognition}. Its graph must be $E$, so $E\in\mathcal X$.
+Coverage is also an elementary assertion with the same set domain.
+
+For the final assertion, choose $A\in\mathcal Y\setminus\mathcal X$.
+A global well-order already in $\mathcal X$ gives a class bijection
+$g:\Ord^M\to M$. The pullback $D=g^{-1}[A]$ is a subclass of
+$\Ord^M$ in $\mathcal Y$ and not in $\mathcal X$, since $A$ is recovered
+from it by the same old $g$. Encode $D$ by listing each sorted baseline
+pair in increasing or decreasing order according as its index is absent
+from or present in $D$. This yields $E_D\in \Hsl^{\mathcal Y}$. Pair
+orientation recovers $D$, so $E_D$ is not in $\mathcal X$. Its core cut
+is new by the first part of the theorem.
+\end{proof}
+
+For pre-existing global enumerations, their comparisons and their
+surjectivity are unchanged. A bijection from the common ordinal class
+still induces a well-order: any nonempty subclass of its index class has
+a least ordinal, witnessed below any one of its members. Thus the old
+set-like comparison sits inside the new one with its order intact, even
+though the represented-cut collection strictly expands.
+
+This result answers a precise part of the source's class-realization
+question. It does not reconstruct the entire class collection from the
+\emph{unlabelled external order type} of its admitted enumerations. The
+proof uses the baseline and its fixed decoder. That stronger reconstruction
+problem remains open here.
+
+% ---- hand chunk support
+\section{Support-restricted suborders and the exact reserve (source 14; source 17)}\label{swo:viii:sec:support}
+
+\merge\ Source~14 measures how much support an interpolant needs; source~17
+measures how much support beyond the forced positions a completion of a
+partial injection needs. Source~14's Section~9 is printed first, then
+source~17's Section~7.
+
+% ---- source 14 (batch-81 manuscript 02), lines 1063-1247
+\subsection{Source 14: a sharp hierarchy of support-restricted orders}
+\label{swo:tc:sec:support}
+Fix an infinite set cardinal $\kappa$ and define
+\[
+ \mathcal P_{<\kappa}(b)=\{\sigma\in \Psupp(b):|\supp(\sigma)|<\kappa\}.
+\]
+For an infinite regular cardinal $\theta$, an $\eta_\theta$-order is a
+linear order in which every separated pair $A<B$ with
+$|A\cup B|<\theta$ has a strict separator, including when one side is
+empty. This convention makes $\eta_\omega$ mean dense without endpoints.
+The class-sized orders here need not have cardinality $\theta$.
+
+The predecessor distinguishes finite support from arbitrary set support
+(\cref{swo:sk:prop:finitesupport}; Section~19 of this report at the pin). We now give an
+exact intermediate hierarchy, including singular thresholds. The key
+is to compress the support of a separator without preserving its
+irrelevant later coordinates.
+
+\begin{lemma}[Small-support extension of a partial injection]
+\label{swo:tc:lem:partialextension}
+Let $f:D\to\Ord$ be a set injection. It extends to a class permutation
+of $\Ord$ with finite support if $D$ is finite, and with support of
+cardinality at most $|D|$ if $D$ is infinite. One may require that any
+specified set of already prescribed fixed positions, disjoint from
+$D\cup f[D]$, stay fixed.
+\end{lemma}
+\begin{proof}
+Put $T_0=D\cup f[D]$. For finite $D$, the complements $T_0\setminus D$
+and $T_0\setminus f[D]$ have the same finite cardinality. Choose a
+bijection between them and combine it with $f$; fix everything outside
+$T_0$. For infinite $D$ of cardinality $\nu$, adjoin a fresh set $B$
+of $\nu$ ordinals disjoint from $T_0$ and from the specified fixed
+positions. With $T=T_0\cup B$, both $T\setminus D$ and
+$T\setminus f[D]$ have cardinality $\nu$. A bijection between them
+extends $f$ to a permutation of $T$, again extended by the identity.
+The resulting support has cardinality at most $\nu$.
+\end{proof}
+
+\begin{lemma}[Support compression]\label{swo:tc:lem:compression}
+Let $A,B$ be separated sets of core codes and let
+\[
+ S=\bigcup\{\supp(\sigma):\sigma\in A\cup B\}.
+\]
+There is a strict separator whose support is finite if $S$ is finite,
+and has cardinality at most $|S|$ if $S$ is infinite.
+\end{lemma}
+\begin{proof}
+By \Cref{swo:tc:cor:coreeta}, choose a separator $Q\in \Psupp(b)$.
+If its support is contained in $S$, nothing remains to prove.
+Otherwise let
+\[
+ \gamma=\min(\supp(Q)\setminus S).
+\]
+Every input permutation fixes $\gamma$, while $\widehat Q$ moves it.
+Thus the first disagreement between $E_Q$ and every input enumeration
+occurs no later than $\gamma$. Any permutation agreeing with
+$\widehat Q$ through $\gamma$ will preserve all those comparisons.
+
+Let $D=\{\alpha\le\gamma:\widehat Q(\alpha)\ne\alpha\}$.
+By minimality of $\gamma$, $D\subseteq S\cup\{\gamma\}$. Keep the
+partial injection $\widehat Q\res D$. None of its images is a
+prescribed fixed position $\beta\le\gamma$ outside $D$: otherwise
+$\widehat Q(\beta)=\beta=\widehat Q(\alpha)$ for a distinct
+$\alpha\in D$, contradicting injectivity. Apply
+\Cref{swo:tc:lem:partialextension} while retaining those fixed positions.
+For infinite $D$ its buffer can explicitly be chosen above $\gamma$.
+The resulting permutation agrees with $\widehat Q$ through $\gamma$,
+hence is still a strict separator. Its support is finite when $S$ is
+finite, and is at most $|S|$ when $S$ is infinite, since
+$|D|\le|S\cup\{\gamma\}|$.
+\end{proof}
+
+\begin{theorem}[Exact support saturation and an attained obstruction]
+\label{swo:tc:thm:support}
+For every infinite set cardinal $\kappa$, put $r=\cf\kappa$.
+Then $\mathcal P_{<\kappa}(b)$ is an $\eta_r$-order but not an
+$\eta_{r^+}$-order. More precisely, there are increasing
+$(l_i)_{i<r}$ and decreasing $(u_i)_{i<r}$ in $\mathcal P_{<\kappa}(b)$ such that
+$l_i<u_j$ for all $i,j$, and every core separator moves at least
+$\kappa$ coordinates. A separator of support cardinality exactly
+$\kappa$ exists in $\Psupp(b)$.
+\end{theorem}
+\begin{proof}
+For the positive assertion take $A,B\subseteq \mathcal P_{<\kappa}(b)$ with
+$|A\cup B|<r$. Fewer than $\cf\kappa$ sets, each of cardinality
+$<\kappa$, have union of cardinality $<\kappa$. Their union of
+supports therefore satisfies $|S|<\kappa$. Support compression gives
+an interpolant with support $<\kappa$. For $\kappa=\omega$ both the
+family and all its supports are finite, so the finite clause applies.
+
+For sharpness choose strictly increasing ordinals
+$(\lambda_i)_{i<r}$ cofinal in $\kappa$. Consider the injective
+prefix
+\[
+ p:\kappa\to\No,\qquad p(\alpha)=b(\alpha+1).
+\]
+Every infinite initial cardinal is a limit ordinal, so this formula
+uses coordinates below $\kappa$. It moves every coordinate of its
+domain relative to $b$.
+For each $i$, choose fresh labels
+\[
+ a_i<p(\lambda_i)<c_i,
+ \qquad a_i,c_i\notin\ran(p\res\lambda_i),
+\]
+and extend the two prefixes
+\[
+ (p\res\lambda_i)\cat(a_i),\qquad
+ (p\res\lambda_i)\cat(c_i)
+\]
+to enumerations with codes $l_i,u_i$. Their partial ordinal maps have
+domains of cardinality $|\lambda_i+1|<\kappa$; by
+\Cref{swo:tc:lem:partialextension} they can be completed with support
+$<\kappa$, even when a chosen label has a very large baseline index.
+Set choice suffices to make the $r$ choices simultaneously.
+
+For $i<j$, comparison at $\lambda_i$ gives $l_i<l_j$ and $u_j<u_i$.
+The same first-coordinate argument gives $l_i<u_j$ for every $i,j$.
+Suppose any global enumeration $E$ separated the two families and
+first differed from $p$ at some $\alpha<\kappa$. Choose $i$ with
+$\lambda_i>\alpha$. Both $E_{l_i}$ and $E_{u_i}$ agree with $p$
+through $\alpha$. According to its differing value there, $E$ would
+lie below both or above both, a contradiction. Hence any separator
+satisfies $E\res\kappa=p$. Relative to $b$ it must move all
+$\kappa$ coordinates of that prefix. In particular no member of
+$\mathcal P_{<\kappa}(b)$ separates the families.
+
+Finally extend $p$ itself by \Cref{swo:tc:lem:partialextension}.
+Its domain has cardinality $\kappa$, so the extension has support at
+most $\kappa$; the forced moves show the support is exactly
+$\kappa$. It separates the two families by comparison at
+$\lambda_i$. The obstruction has combined cardinality $r$, hence
+violates $\eta_{r^+}$, and its minimum support cost is attained.
+\end{proof}
+
+\subsubsection{Consequences and examples}
+For a regular $\kappa$ the answer is exactly $\eta_\kappa$ but not
+$\eta_{\kappa^+}$. In particular finite support is dense without
+endpoints but can fail a countable cut; countable support fills every
+countable strict cut but can fail a cut of size $\omega_1$.
+For $\kappa=\aleph_\omega$, the cofinality is $\omega$, so support
+of every cardinality below $\aleph_\omega$ still does not guarantee
+countable-cut filling. The same construction takes supports cofinal
+in the threshold and forces their full union at the limit.
+
+This sharpness statement is stronger than merely exhibiting some gap:
+it quantifies how much extra support any solution must use. It also
+explains why replacing a singular support bound by its cardinal size
+in a saturation argument is invalid. The closure property used in the
+positive direction is closure under unions of fewer than
+$\cf\kappa$ supports, not fewer than $\kappa$ supports.
+
+\begin{proposition}[Universality without high saturation]
+\label{swo:tc:prop:supportuniversal}
+Every $\mathcal P_{<\kappa}(b)$ contains an order-isomorphic copy of $\No$, already among
+the permutations with support at most two. Thus, in $\GBC$, it contains
+every ordinary class linear order up to embedding. Nevertheless no fixed
+$\mathcal P_{<\kappa}(b)$ is isomorphic to $\No$, and it is not dense in $\Hsl$.
+\end{proposition}
+\begin{proof}
+For $x\in\No$, transpose the baseline positions $0$ and $b^{-1}(x)$,
+using the identity if these coincide. Call the code $t_x$. Then
+$E_{t_x}(0)=x$, so $x<y$ implies $t_x<t_y$. The familiar class
+universality of $\No$ follows by inserting points of any ordinary
+class linear order, in a fixed set-like global enumeration, between the
+images of their earlier lower and upper neighbors; every stage has
+only set many constraints. Composing gives the asserted embeddings.
+
+\Cref{swo:tc:thm:support} supplies a set cut not filled by $\mathcal P_{<\kappa}(b)$,
+whereas $\No$ fills all set cuts, so the two orders are not isomorphic.
+For ambient nondensity, use the prefix $p$ of length $\kappa$ in that
+theorem. Choose two distinct fresh next labels and complete both
+prefixes to core enumerations. Every enumeration between them shares
+$p$ and hence moves at least $\kappa$ baseline coordinates. The
+nonempty open interval they determine misses $\mathcal P_{<\kappa}(b)$ entirely.
+\end{proof}
+
+\begin{remark}[Cardinality versus location of support]\label{swo:tc:n9.5}
+The theorem restricts $|\supp\sigma|$, not the ordinal height of the
+support. A transposition with an arbitrarily late baseline coordinate
+still has support two. Replacing the cardinality condition by
+$\supp\sigma\subseteq\gamma$ for one fixed ordinal $\gamma$ gives
+a set-sized permutation space with quite different universality. These
+two filtrations should never share an undifferentiated ``bounded'' label.
+\end{remark}
+
+\begin{note}[\merge; the finite case is source~08's]\label{swo:viii:note:finitesupport}
+At $\kappa=\omega$, \cref{swo:tc:thm:support} is source~08's
+\cref{swo:sk:prop:finitesupport} (printed in Part~IV), with the same witness
+prefix $p(n)=b(n+1)$ and the same fresh labels; source~14 cites the
+finite-support subsection but not the proposition. New in source~14 are the
+positive half ($\mathcal P_{<\kappa}(b)$ is $\eta_r$), the threshold at
+every infinite $\kappa$, including singular $\kappa$, and the attained
+support cost $\kappa$ of a separator. \Cref{swo:tc:prop:supportuniversal}
+extends source~08's remark that the finite-support codes contain a copy of
+$\No$ (\cref{swo:sk:cor:firstentry}).
+\end{note}
+
+% ---- source 17 (batch-81 manuscript 05), lines 899-995
+\subsection{Source 17: the optimal extra support needed to extend a partial injection}
+\label{swo:gs:sec:support}
+
+The source extends a prescribed prefix inside a sufficiently large
+cardinal block. That argument is safe but leaves a more elementary
+optimization question: how many \emph{additional moved positions} are
+actually necessary? The following answer applies to arbitrary set-sized
+partial injections, not just prefixes.
+
+\begin{theorem}[Exact reserve cardinal]\label{swo:gs:thm:reserve}
+Let $A\subseteq\Ord$ be a set and let $h:A\to\Ord$ be injective. Define
+\[
+ D=\{\xi\in A:h(\xi)\ne\xi\},\qquad R=h[D],\qquad S=D\cup R,
+ \qquad u=|R\setminus D|,\quad v=|D\setminus R|.
+\]
+Among class permutations $\pi:\Ord\to\Ord$ with set support which extend
+$h$, the minimum possible value of $|\supp(\pi)\setminus S|$ is
+\[\tag{S17.6}\label{swo:gs:eq:reserve}
+ \boxed{\tau(h)=
+ \begin{cases}
+ 0,&u=v,\\
+ \max(\aleph_0,u,v),&u\ne v.
+ \end{cases}}
+\]
+Moreover every point of $S$ must move. An extension attaining the bound
+can be constructed by a bijection between two explicitly specified sets.
+The theorem uses only set choice and elementary operations with the class
+of ordinals; with a fixed global choice parameter the construction can be
+made uniform.
+\end{theorem}
+\begin{proof}
+The fixed points $A\setminus D$ are disjoint from $R$, by injectivity of
+$h$. Every $d\in D$ must move. If $r\in R\setminus D$, it already has a
+preimage $d\ne r$ under the prescribed map, so an extending permutation
+cannot fix $r$. Thus every point of $S$ must move.
+
+Suppose $\pi$ is an extension and put $T=\supp(\pi)\setminus S$. No point
+of $T$ is in $A\setminus D$, whose values are prescribed to be fixed.
+The support of a permutation is invariant under the permutation and its
+inverse. After the prescribed bijection $h:D\to R$ has been removed,
+$\pi$ must therefore give a bijection
+\[\tag{S17.7}\label{swo:gs:eq:reserve-bijection}
+ (R\setminus D)\cup T\ \longrightarrow\ (D\setminus R)\cup T.
+\]
+In particular $u+|T|=v+|T|$. If $u\ne v$ are finite, finite cancellation
+rules out finite $T$, and $\aleph_0$ suffices. If at least one of $u,v$
+is infinite, unequal cardinals can be equalized by addition of $|T|$
+only when $|T|\ge\max(u,v)$. This follows from the formula for addition
+of infinite cardinals as their maximum. These observations prove the
+lower bound in \eqref{swo:gs:eq:reserve}.
+
+Conversely, choose a fresh set of ordinals $T$ of cardinality $\tau(h)$,
+disjoint from $A\cup R$, and choose a bijection in
+\eqref{swo:gs:eq:reserve-bijection}. Combine it with $h:D\to R$, and take the
+identity outside $S\cup T$. The result is a permutation extending $h$,
+with support contained in $S\cup T$. All points of $S$ move, as proved
+above. If $\tau(h)>0$, the lower bound forces exactly $\tau(h)$ further
+points to move; if $\tau(h)=0$, no reserve was used. This proves
+attainment, including cases where the chosen bijection happens to fix
+some points of $T$.
+\end{proof}
+
+\begin{example}[Why a finite reserve can never repair a one-sided shift]\label{swo:gs:n7.2}
+Prescribe $h(n)=n+1$ for every $n<\omega$. Then $D=\omega$,
+$R=\omega\setminus\{0\}$, and $(u,v)=(0,1)$. No permutation on
+$\omega$ extends $h$. More strongly, no extension can use only finitely
+many additional moved positions outside $\omega$. Exactly countably many
+are necessary and sufficient. One concrete completion chooses fresh
+$t_0,t_1,\ldots$, sends $t_0$ to $0$, and sends $t_{n+1}$ to $t_n$;
+all other ordinals are fixed.
+\end{example}
+
+\begin{example}[Finite partial injections require no reserve]\label{swo:gs:n7.3}
+When $D$ is finite, $|D|=|R|$ implies $|R\setminus D|=|D\setminus R|$.
+Hence every finite partial injection extends to a permutation supported
+exactly on $D\cup R$. The distinction between this fact and the preceding
+infinite example is precisely the failure of finite cancellation for
+infinite sets; finite testing alone cannot find the infinite obstruction.
+\end{example}
+
+\begin{corollary}[Application to prescribed surreal prefixes]
+\label{swo:gs:cor:optimal-prefix}
+Fix a class bijection $b:\Ord\to\No$. If $p:\alpha\to\No$ is an
+injective set prefix, apply \Cref{swo:gs:thm:reserve} to
+$h=b^{-1}\circ p$. The resulting $b\circ\pi$ extends $p$ and agrees
+with $b$ outside a set. Formula~\eqref{swo:gs:eq:reserve} gives the exact minimum
+number of moved coordinates beyond the necessarily moved set
+$D\cup h[D]$.
+\end{corollary}
+
+This is a cardinal optimum relative to a given partial injection and
+baseline. It does not assert a minimum \emph{ordinal} support bound, a
+minimum birthday of a code, or a canonical extension independent of
+choice. Those are different optimization problems. The source's
+larger-cardinal completion remains a useful simple implementation; the
+reserve formula says exactly when its extra room is genuinely necessary.
+
+\begin{note}[\merge; the reserve theorem in this report]\label{swo:viii:note:reserve}
+\Cref{swo:gs:thm:reserve} sharpens source~09's \cref{swo:ec:n8.2}: the
+example $n\mapsto n+1$ there is source~17's \cref{swo:gs:n7.2}, and the
+theorem says exactly when the larger cardinal of \cref{swo:gl:completion}
+is needed and how many extra positions suffice. The two support theorems
+are consistent: \cref{swo:tc:lem:partialextension} bounds the support of an
+extension of a set injection $f:D\to\Ord$ by $\card D$ when $D$ is infinite
+and keeps it finite when $D$ is finite, while \cref{swo:gs:thm:reserve}
+computes the least number of moved positions outside the forced set: $0$ for
+finite partial injections (\cref{swo:gs:n7.3}), and otherwise $0$ or
+$\max(\aleph_0,u,v)\le\card D$. Source~17's
+question table maps the reserve theorem to source~11's \cref{swo:n16.6};
+that question asks for birthday bounds, and the theorem bears instead on
+source~09's direction ``Sharp birthday and support bounds'' and source~08's
+question~13 (\cref{swo:viii:sec:status}).
+\end{note}
+
+% ---- hand chunk status8
+\section{What this Part answers}\label{swo:viii:sec:status}
+
+\merge\ Dated notes, 3 October 2026, in the form of \cref{swo:vi:sec:status};
+where the question index of \cref{swo:sec:questions} (dated 2 October 2026)
+says otherwise, these notes supersede it.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Source~11's \cref{swo:n16.1} and source~09's direction ``Which
+cuts of the core represent exhaustive branches?''}
+(\cref{swo:ec:sec:research}): \textbf{answered}, in the labelled-tree form
+the question asks for. A normalized class cut of the core is the cut of an
+injective class word exactly when a crossing prefix exists at every set
+length; the word is unique and elementary in the cut; it is exhaustive
+exactly when the crossing prefixes cover $\No$
+(\cref{swo:tc:thm:recognition}; six proofs, \cref{swo:viii:note:sixfold}).
+Every other proper cut is a cylinder edge or a numerical gap after a set
+prefix, with unique data (\cref{swo:tc:thm:trichotomy}); the missing labels,
+the forbidden repeated labels and the cuts escaping every coherent branch
+that \cref{swo:n16.1}'s commentary asks to separate are exactly the coverage
+failure, source~15's repeated-label case and the edge and gap cuts. A
+recognition from the bare order is impossible (item~(c)).
+\item \emph{Source~08's question~8, higher-size cuts and completion}
+(\cref{swo:sk:sec:research}): answered for the class cuts of the core
+relative to its prefix presentation: the trichotomy and characters
+(\cref{swo:tc:thm:trichotomy,swo:tc:thm:characters}), the image of the raw
+orders (\cref{swo:ds:cor:rawcutimage}), and source~15's remark that adjoining
+the raw orders is neither a Dedekind completion of the core nor a
+realization of every core cut (\cref{swo:cb:sec:cuts}). Cuts given by higher
+collections of classes stay open.
+\item \emph{Source~11's \cref{swo:n16.4}, source~09's direction ``Automorphisms
+beyond set-sized partial maps'' and source~08's question~6}: answered in
+part, negatively. The automorphism orbits of class cuts of the core are
+exactly the four character classes (\cref{swo:tc:thm:orbits}); neither
+represented nor exhaustive cuts are invariant under automorphisms of the
+bare core (\cref{swo:tc:cor:nonintrinsic,swo:gs:thm:nonextension,swo:cb:thm:automorphism});
+the prefix cylinders of $\Hsl$ are not invariant under automorphisms of
+$\Hsl$, nor is finite prefix depth (\cref{swo:fs:thm:nonrigidity}). An
+automorphism of the core extends to $\Hsl$ exactly when it preserves
+represented cuts (\cref{swo:gs:thm:extension-criterion}). Open: the
+stabilizer of the exhaustive cuts, and which extra predicates make the
+reconstruction unique (source~14's and source~17's own questions).
+\item \emph{Source~11's \cref{swo:n16.5}, baselines}: its suggested restricted
+first case is settled: a baseline change by an increasing class bijection of
+$\No$ is an automorphism of $\Hsl$ and of $\Hall$ carrying one core onto the
+other (\cref{swo:gs:prop:relabelling}, source~08's remark in its question~6).
+The general case is open.
+\item \emph{Source~11's \cref{swo:n16.8}, source~12's \cref{swo:st:n14.8} and
+source~08's question~12, class realizations}: answered in part. Over a fixed
+set structure and baseline, the represented-cut status of an old core cut is
+absolute, its enumeration is old, and every proper extension of the class
+part adds a global enumeration and a represented cut
+(\cref{swo:tc:thm:absolute,swo:gs:thm:class-extension}). What the unlabelled
+external order type remembers is open here (Part~IX prints source~18's
+countable models).
+\item \emph{Source~09's direction ``Sharp birthday and support bounds'' and
+source~08's question~13}: answered in part for support. The least support
+cardinal of an interpolant in $\mathcal P_{<\kappa}(b)$ is governed by
+$\cf\kappa$ (\cref{swo:tc:thm:support}), and the least reserve of a
+completion of a partial injection is $0$ or $\max(\aleph_0,u,v)$
+(\cref{swo:gs:thm:reserve}). Ordinal support bounds, birthday bounds and the
+forced-prefix length remain open, as source~17 says.
+\item \emph{Source~11's \cref{swo:n16.6}} is not affected by the reserve
+theorem (\cref{swo:viii:note:reserve}).
+\end{enumerate}
 
 % ---- hand chunk questions_head
 \cleardoublepage\phantomsection
