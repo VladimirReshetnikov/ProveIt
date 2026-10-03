@@ -1,0 +1,219 @@
+# Portable locally authored code; upstream Python is never imported or executed.
+# See PROVENANCE.json and PORTABILITY.md for all transformations.
+"""Independent bounded tests; imports/executes no producer or upstream code.
+
+The complete positive native extensions are theorem premises, not constructed
+by these integer outer-interface tests. Failures use explicit exceptions so
+the same checks remain active with python -O.
+"""
+import hashlib
+import json
+from collections import Counter
+from pathlib import Path
+import random
+ROOT = Path(__file__).resolve().parent
+COUNTS = Counter()
+
+def need(ok, message):
+    if not ok:
+        raise RuntimeError(message)
+
+def val(bits):
+    return int(bits[::-1], 2) if bits else 0
+
+def spread(x, k):
+    return sum(((x >> j & 1) << k * j for j in range(x.bit_length())))
+
+def outer(x, h, k):
+    need(k >= 4 and h >= 2 and (0 < x < 1 << h), 'outer domain')
+    q = 1 << h
+    Q = 1 << k * h
+    B = 1 << k * h + k - 1
+    P = 1 << (k * h + k - 1) * h
+    J, K = ((P - 1) // (B - 1), (q * P - 1) // (2 * B - 1))
+    A = x * J & K
+    z = spread(x, k)
+    quotient_hat = (A - z) // (Q - 1) + 1
+    coords = (q, P, J, K, A + 1, quotient_hat, q - x, Q - z)
+    need(all((t > 0 for t in coords)), 'positive outer coordinates')
+    need((B - 1) * J + 1 == P and (2 * B - 1) * K + 1 == q * P, 'repunit rows')
+    need(A + 1 + Q == (Q - 1) * quotient_hat + z + 2, 'shifted quotient row')
+    need(J > B >= 8 * q * q and J % 2 == 1 and (J.bit_count() == h), 'geometry premises')
+    need(x * J < q * P and K < q * P, 'complete AND range premises')
+    need(A == sum(((x >> j & 1) << k * (h + 1) * j for j in range(h))), 'diagonal mask')
+    need(A % (Q - 1) == z and 0 < z < Q - 1, 'nonzero unique residue')
+    return (q, Q, B, P, J, K, A, z, quotient_hat)
+
+def check_canonical():
+    for u in range(1, 4097):
+        possible = []
+        for n in range(2, 15):
+            q = 1 << n
+            s = q - u
+            beta = 2 * u + 1 - q
+            if s > 0 and beta > 0 and (s + beta == u + 1):
+                possible.append(n)
+        need(possible == ([] if u == 1 else [u.bit_length()]), 'canonical census')
+        COUNTS['canonical_small_inputs'] += 1
+    rng = random.Random(934001)
+    for bits in (2, 3, 7, 16, 31, 64, 127, 256, 512):
+        for u in (1 << bits - 1, (1 << bits) - 1, (1 << bits - 1) + 1, rng.randrange(1 << bits - 1, 1 << bits)):
+            n = u.bit_length()
+            q = 1 << n
+            s = q - u
+            beta = 2 * u + 1 - q
+            need(s > 0 and beta > 0 and (s + beta == u + 1), 'large canonical input')
+            need(2 * u + 1 - 2 * q <= 0, 'extra bit rejected by beta')
+            need(q // 2 - u <= 0, 'missing bit rejected by input slack')
+            COUNTS['canonical_large_boundary_cases'] += 1
+
+def check_recoder_and_extraction():
+    rng = random.Random(824122)
+    for k in (4, 5, 7, 16, 32, 196, 392):
+        for h in range(2, 17):
+            for x in sorted({1, (1 << h) - 1, 1 << h - 1, (1 << h - 1) + 1, rng.randrange(1, 1 << h)}):
+                outer(x, h, k)
+                COUNTS['generic_complete_outer_fixtures'] += 1
+    for k in (4, 7, 32):
+        for h in range(2, 66):
+            q, Q, B, P, J, K, A, z, qhat = outer(1, h, k)
+            ell = h
+            v = (J - h) // (B - 1)
+            g = B - 1 - h
+            N = h - 1
+            need(A == z == qhat == 1, 'input one requires shifted quotient one')
+            need(v > 0 and g > 0 and (ell == N + 1), 'extraction positivity')
+            need((B - 1) * v + ell == J and ell + g == B - 1, 'extraction equations')
+            need(v == sum(((B ** j - 1) // (B - 1) for j in range(1, h))), 'positive quotient formula')
+            good = []
+            for alias in range(-2, 3):
+                candidate = h + alias * (B - 1)
+                quotient = v - alias
+                slack = B - 1 - candidate
+                if candidate > 0 and quotient > 0 and (slack > 0):
+                    good.append(candidate)
+            need(good == [h], 'modular alias rejected')
+            need(B > h + 1 and 1 <= ell <= B - 2, 'common representative interval')
+            need(Q // (1 << k) == 1 << k * N, 'extracted exact unary scale')
+            COUNTS['duration_extraction_cases'] += 1
+    need(0 + 1 < 2 and 1 + 1 == 2, 'N positive slice')
+    COUNTS['excluded_zero_tape_boundary'] = 1
+
+def tape_integer(tape, head, direction):
+    cells = [(pos, v) for pos, v in tape.items() if (pos - head) * direction > 0 and v]
+    return sum((v << abs(pos - head) - 1 for pos, v in cells))
+
+def check_table_tape_orientation():
+    c = ((0, 'R', 2), (1, 'R', 3), (0, 'L', 7), (0, 'L', 6), (1, 'R', 1), (1, 'L', 4), (0, 'L', 8), (1, 'L', 9), (0, 'R', 1), (1, 'L', 11), (0, 'R', 12), (0, 'R', 13), (0, 'L', 2), (0, 'L', 3), (0, 'R', 14))
+    b = ((1, 'R', 1), (1, 'R', 1), (0, 'L', 5), (1, 'L', 5), (1, 'L', 4), (1, 'L', 4), (1, 'L', 7), (1, 'L', 7), (1, 'L', 10), None, (1, 'R', 14), (1, 'R', 12), (1, 'R', 12), (0, 'R', 15), (1, 'R', 14))
+    table = {(u, a): row[u - 1] for a, row in enumerate((c, b)) for u in range(1, 16)}
+    need([2 * (u - 1) + a for (u, a), v in table.items() if v is None] == [19], 'sole accepting refinement')
+    for (u, a), rule in table.items():
+        if rule is None:
+            continue
+        epsilon, direction, v = rule
+        for M in range(32):
+            for N in range(32):
+                tape = {0: a}
+                tape.update({-j - 1: M >> j & 1 for j in range(M.bit_length())})
+                tape.update({j + 1: N >> j & 1 for j in range(N.bit_length())})
+                tape[0] = epsilon
+                head = 1 if direction == 'R' else -1
+                actual = (2 * (v - 1) + tape.get(head, 0), tape_integer(tape, head, -1), tape_integer(tape, head, 1))
+                if direction == 'R':
+                    expected = (2 * (v - 1) + (N & 1), 2 * M + epsilon, N // 2)
+                else:
+                    expected = (2 * (v - 1) + (M & 1), M // 2, 2 * N + epsilon)
+                need(actual == expected, 'refined tape orientation')
+                COUNTS['actual_u15_instruction_contexts'] += 1
+
+def check_finite_frame():
+    A = lambda i: '01' * (8 * i - 5) + '11'
+    block = (A(2) + A(1), A(1) + A(2))
+    need([len(t) for t in block] == [32, 32], 'physical block widths')
+    c0, c1 = map(val, block)
+    need((c0, c1, c1 - c0) == (3941247658, 3937053418, -4194240), 'LSB coefficients')
+    K0 = 1 << 32
+    m0 = K0 - 1
+    fixtures = []
+    xs = list(range(1, 257)) + [(1 << j) - 2 for j in (9, 16, 31, 64)] + [(1 << j) - 1 for j in (9, 16, 31, 64)]
+    for qB in (4, 5, 8, 16):
+        prefix = '01' * (8 * qB)
+        suffix = A(qB - 1) + A(qB)
+        p, a, s = (1 << len(prefix), val(prefix), val(suffix))
+        for x in xs:
+            u = x + 1
+            n = u.bit_length()
+            bits = [u >> j & 1 for j in range(n)]
+            literal = prefix + ''.join((block[bit] for bit in bits)) + suffix
+            N = val(literal)
+            Q = 1 << 32 * n
+            R = spread(u, 32)
+            rhs = m0 * a + p * c0 * (Q - 1) + p * m0 * (c1 - c0) * R + p * m0 * s * Q
+            need(m0 * N == rhs and N > 0, 'full finite frame numerator')
+            need(N.bit_length() == len(literal), 'nonzero final suffix fixes physical support')
+            need(literal.endswith('11') and s > 0, 'positive supplied right tape')
+            need(len(literal) == len(prefix) + 32 * n + len(suffix), 'retained zero blocks')
+            COUNTS['literal_finite_frame_cases'] += 1
+            if x == 1:
+                fixtures.append({'qB': qB, 'x': x, 'right_tape_bits': N.bit_length(), 'N_decimal': str(N)})
+    return fixtures
+
+def E(y, alphabet_size):
+    a = 28 * (alphabet_size + 1)
+    g = lambda r: '0' + '10' * r
+    return '0' * (14 * y + 7) + g(a - 3) + g(7) + g(a - 4) + '0' * (3 * a - 14 * y - 10)
+
+def check_unary_E():
+    for size in (6, 7, 12):
+        b = 196 * (size + 1)
+        k = 2 * b
+        K = 1 << k
+        blocks = {y: E(y, size) for y in range(5)}
+        need(all((len(t) == b and 0 < 3 * val(t) < 1 << b for t in blocks.values())), 'literal E size/cone')
+        pair = blocks[4] + blocks[1]
+        V = val(pair)
+        for M in range(4):
+            prefix = blocks[0] + blocks[1] + (blocks[2] + blocks[1]) * M + blocks[3] + blocks[1]
+            C, L = (val(prefix), 1 << len(prefix))
+            for N in range(1, 17):
+                h = N + 1
+                Q1 = 1 << k * h
+                T = Q1 // K
+                literal = prefix + pair * N
+                X = val(literal)
+                P0 = 1 << len(literal)
+                need(K * T == Q1 and T == 1 << k * N, 'unary scale exact')
+                need((K - 1) * X == (K - 1) * C + L * V * (T - 1), 'unary numerator')
+                need(P0 == L * T and 0 < 3 * X < P0, 'unary exact width and strong cone')
+                strong = P0 - 3 * X
+                weak = P0 - X
+                need(strong > 0 and weak == strong + 2 * X and (X + weak == P0), 'same-width positive transport')
+                need(64 * P0 - L * T == 63 * P0 > 0, 'extra native padding rejected')
+                COUNTS['literal_unary_E_cases'] += 1
+                COUNTS['rejected_six_zero_extensions'] += 1
+
+def check_finalizer_logic():
+    for U in range(-5, 6):
+        for r0 in range(-3, 4):
+            for r1 in range(-3, 4):
+                F = U * (1 + r0 * r0 + r1 * r1) - 1
+                need((F == 0) == (U == 1 and r0 == r1 == 0), 'integer unit finalizer')
+                COUNTS['integer_unit_finalizer_small_cases'] += 1
+
+def run():
+    check_canonical()
+    check_recoder_and_extraction()
+    check_table_tape_orientation()
+    fixtures = check_finite_frame()
+    check_unary_E()
+    check_finalizer_logic()
+    return {'status': 'PASS', 'checks': dict(COUNTS), 'small_input_actual_frame_examples': fixtures, 'scope': 'Independent bounded outer arithmetic and finite-word tests. No upstream code imported or executed; no full positive Pell witnesses or huge actual unary word materialized.', 'source_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+if __name__ == '__main__':
+    answer = run()
+    output = ROOT / 'independent_outer_checks.json'
+    if output.exists():
+        need(json.loads(output.read_text()) == answer, 'exact replay differs')
+    else:
+        output.write_text(json.dumps(answer, indent=2, sort_keys=True) + '\n')
+    print(json.dumps(answer, indent=2, sort_keys=True))

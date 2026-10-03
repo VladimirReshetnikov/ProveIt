@@ -1,0 +1,145 @@
+# Portable locally authored code; upstream Python is never imported or executed.
+# See PROVENANCE.json and PORTABILITY.md for all transformations.
+"""Scalable, positive weak-cone Grill history, emitted as paid binary gates.
+
+This file does not import or execute upstream code. Its fixed 67-row native
+unit kernel is data extracted from the pinned composed205 receipt. All outer
+formulas are emitted here, for an arbitrary fixed nonempty natural program.
+The caller owns the single finalizer and the ordinary-input composition.
+"""
+from __future__ import annotations
+import hashlib
+import json
+from pathlib import Path
+HERE = Path(__file__).resolve().parent
+KERNEL_FILE = HERE / 'native_unit_kernel.json'
+KERNEL_SHA256 = '2d88343037c08fe8b073f67dca531ee73309c0735c1d98a23c20b9ddb1eb08ae'
+
+def _kernel():
+    data = KERNEL_FILE.read_bytes()
+    if hashlib.sha256(data).hexdigest() != KERNEL_SHA256:
+        raise ValueError('Frozen native unit kernel changed')
+    return json.loads(data)
+
+def build(dag, program_exponents, X):
+    """Return one integer native unit and its ten remaining comparisons.
+
+    ``program_exponents`` contains exact nonnegative Python ints (an array of
+    uint32 is suitable). Operands and results are DAG handles, never values.
+    The only external arithmetic input is X; 2*m+g+23 new positive witnesses
+    are allocated in the native namespace. For target m=397488, g=2030 this
+    gives 797029 witnesses. No gate is emitted for proof-only Q or Next.
+    """
+    m = len(program_exponents)
+    if m < 1:
+        raise ValueError('A nonempty fixed Grill program is required')
+    group_index, group_n, counts = ({}, [], [])
+    for n in program_exponents:
+        if type(n) is not int or n < 0 or n > 4294967295:
+            raise ValueError('Program exponents must be exact uint32 values')
+        if n not in group_index:
+            group_index[n] = len(group_n)
+            group_n.append(n)
+            counts.append(0)
+        counts[group_index[n]] += 1
+    g, s = (len(group_n), 2 * m)
+    c, add, sub, mul = (dag.const, dag.add, dag.sub, dag.mul)
+    zero, one, two = (c(0), c(1), c(2))
+    fixed_names = ('Z0', 'Vfinal', 'phase_initial', 'height_slack', 'H_U', 'H_V', 'global_bound')
+    fixed = {name: dag.input('native.' + name) for name in fixed_names}
+    shats = dag.input_range('native.Shat', s)
+    zhats = dag.input_range('native.ZVhat', g)
+    P0 = add(X, fixed['Z0'])
+    Uf = add(mul(P0, fixed['Vfinal']), X)
+    D = add(add(Uf, fixed['phase_initial']), fixed['height_slack'])
+    k_exponent = max(3, (s + 3).bit_length(), 2 * max(group_n) + 2)
+    K = dag.recipe('pow2', k_exponent)
+    B = mul(K, D)
+    Bm1 = sub(B, one)
+    pair_sum, first_pair = (zero, None)
+    phase_prefix, phase_triangular = (zero, zero)
+    group_hats = [zero] * g
+    for i, n in enumerate(program_exponents):
+        even, odd = (shats[2 * i], shats[2 * i + 1])
+        pair = add(even, odd)
+        pair_sum = add(pair_sum, pair)
+        if i == 0:
+            first_pair = pair
+        else:
+            phase_prefix = add(phase_prefix, pair)
+            phase_triangular = add(phase_triangular, phase_prefix)
+        j = group_index[n]
+        group_hats[j] = add(group_hats[j], odd)
+    J = sub(pair_sum, c(s))
+    P = add(mul(Bm1, J), one)
+    powers, repunits = ({0: one, 1: P}, {0: zero, 1: one})
+
+    def power(n):
+        if n not in powers:
+            half = power(n // 2)
+            square = mul(half, half)
+            powers[n] = mul(square, P) if n & 1 else square
+        return powers[n]
+
+    def repunit(n):
+        if n not in repunits:
+            k = n // 2
+            double = mul(repunit(k), add(one, power(k)))
+            repunits[n] = add(double, power(2 * k)) if n & 1 else double
+        return repunits[n]
+
+    def pack(values):
+        out = zero
+        for i in range(len(values) - 1, -1, -1):
+            out = add(values[i], mul(P, out))
+        return out
+    group_selectors = [sub(v, c(count)) for v, count in zip(group_hats, counts)]
+    zs = [sub(v, one) for v in zhats]
+    nextU = add(mul(two, fixed['H_U']), dag.total(group_selectors))
+    vterms = [fixed['H_V']]
+    for n, selected, z in zip(group_n, group_selectors, zs):
+        slope_difference = one if n == 0 else dag.recipe('affine_slope_minus_one', n)
+        vterms.append(mul(slope_difference, z))
+        if n:
+            vterms.append(mul(dag.recipe('affine_offset', n), selected))
+    nextV = dag.total(vterms)
+    global_lhs = add(add(fixed['H_U'], fixed['H_V']), add(dag.total(zhats), fixed['global_bound']))
+    residuals = [(global_lhs, P), (add(mul(B, nextU), one), add(fixed['H_U'], mul(P, Uf))), (add(mul(B, nextV), one), add(fixed['H_V'], mul(P, fixed['Vfinal'])))]
+    if m == 1:
+        phase_left, phase_right = (fixed['phase_initial'], one)
+    else:
+        phase_T = sub(phase_triangular, c(m * (m - 1)))
+        phase_left = add(sub(mul(c(m), first_pair), mul(Bm1, phase_T)), fixed['phase_initial'])
+        phase_right = add(J, c(3 * m))
+    residuals.append((phase_left, phase_right))
+    S = sub(pack(shats), repunit(s))
+    Mc = mul(J, repunit(s))
+    T = add(fixed['H_U'], mul(P, fixed['H_V']))
+    Gpack = pack(group_selectors)
+    Hb = mul(fixed['H_V'], repunit(g))
+    Mb = mul(Bm1, Gpack)
+    Zb = pack(zs)
+    RM = mul(mul(sub(D, one), J), add(one, P))
+    ec, er, et, ei = (g, g + s, g + s + 2, g + s + 4)
+    common = add(mul(power(ec), S), mul(power(er), T))
+    H = dag.total((Hb, common, mul(power(et), B), mul(power(ei), P0)))
+    M = dag.total((Mb, mul(power(ec), Mc), mul(power(er), RM), mul(power(et), Bm1), mul(power(ei), sub(P0, one))))
+    Z = add(Zb, common)
+    scale = power(ei + 1)
+    interfaces = dict(P0=P0, Ufinal=Uf, D=D, B=B, J=J, P=P, S=S, Mc=Mc, T=T, Hb=Hb, Mb=Mb, Zb=Zb, Gpack=Gpack, RM=RM, H=H, M=M, Z=Z, scale=scale, nextU=nextU, nextV=nextV, phase_residual_left=phase_left, phase_residual_right=phase_right)
+    kernel = _kernel()
+    native_aux = {name: dag.input('native.' + name) for name in kernel['auxiliaries']}
+    env = dict(native_aux)
+    env.update({'@' + name: interfaces[name] for name in kernel['ports']})
+    operations = {'+': add, '-': sub, '*': mul}
+
+    def resolve(value):
+        return c(value) if type(value) is int else env[value]
+    for name, op, a, b in kernel['source']:
+        if name in env or op not in operations:
+            raise ValueError('Invalid frozen native SSA')
+        env[name] = operations[op](resolve(a), resolve(b))
+    residuals.extend(((resolve(a), resolve(b)) for a, b in kernel['comparisons']))
+    if len(residuals) != 10 or len(native_aux) != 16:
+        raise AssertionError('Native arity changed')
+    return {'unit': env[kernel['unit']], 'residuals': residuals, 'P0': P0, 'unit_factors': [env[name] for name in kernel['unit_factors']], 'interfaces': interfaces, 'witness_families': [{'kind': 'named', 'coordinates': {'native.' + k: v for k, v in fixed.items()}, 'count': 7}, {'kind': 'range', 'prefix': 'native.Shat', 'first_ref': shats[0], 'count': s}, {'kind': 'range', 'prefix': 'native.ZVhat', 'first_ref': zhats[0], 'count': g}, {'kind': 'named', 'coordinates': {'native.' + k: v for k, v in native_aux.items()}, 'count': 16}], 'metadata': {'phase_count': m, 'selector_count': s, 'slope_group_count': g, 'group_exponents': group_n, 'group_multiplicities': counts, 'K_exponent': k_exponent, 'scale_exponent': ei + 1, 'positive_witnesses': s + g + 23, 'native_kernel_binary_gates': len(kernel['source']), 'nonunit_comparisons': 10, 'width': 'X+Z0', 'receipt': kernel['provenance']}}

@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+"""Fresh-polynomial tests using this directory's independent checkers only."""
+import argparse,hashlib,importlib.util,json,mmap,struct
+from pathlib import Path
+import sys
+sys.dontwritebytecode = True
+ROOT=Path(__file__).resolve().parent
+ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--source-dir',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);args=ap.parse_args();SRC=args.source_dir.resolve()
+def load(name):
+    spec=importlib.util.spec_from_file_location(name,ROOT/(name+'.py'));m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+c=load('check_native_law');u=load('check_diagonal_expansion')
+for name in ('native_backend_small_0.json','native_backend_small_0.bin','native_receipt_fixtures.json','native_unit_kernel.json'):
+    c.need(hashlib.sha256((SRC/name).read_bytes()).hexdigest()==c.PINS[name],'Frozen source pin mismatch: '+name)
+meta=json.loads((SRC/'native_backend_small_0.json').read_text());blob=(SRC/'native_backend_small_0.bin').read_bytes()
+packet=json.loads((SRC/'native_receipt_fixtures.json').read_text())['fixtures'][0]['packet']
+kernel=json.loads((SRC/'native_unit_kernel.json').read_text())
+def expand(x):
+    constants=[u.cn(int(row[1])) for row in meta['constants']];vals=[]
+    def get(h):return constants[-h-1] if h<0 else (x if h==u.B else {1:1}) if h>=u.B else vals[h]
+    for code,a,b in struct.iter_unpack('<Bqq',blob[8:]):vals.append(u.op(code,get(a),get(b)))
+    env={n:(x if n=='x' else {1:1}) for n in packet['parameters']+packet['auxiliaries']}
+    def r(a):return u.cn(a) if type(a)is int else env[a]
+    for n,op,a,b in packet['source']:env[n]=u.op({'+':0,'-':1,'*':2}[op],r(a),r(b))
+    ss=u.cn(1)
+    for a,b in packet['comparisons'][:-1]:
+        v=u.add(r(a),r(b),-1);ss=u.add(ss,u.mul(v,v))
+    other=u.add(u.mul(env[packet['unit_register']],ss),u.cn(1),-1)
+    c.need(vals[meta['output']]==other,'Full raw/receipt polynomial mismatch')
+    return other
+cases=[]
+with (SRC/'native_backend_small_0.bin').open('rb') as ff,mmap.mmap(ff.fileno(),0,access=mmap.ACCESS_READ) as mm:
+    _,e,ports=c.match_kernel(mm,meta,kernel);pairs,_=c.finalizer(mm,meta,e,kernel)
+    for desc,delta,x,ray in [('y^3+y*z+7',3,{3:1,2:1,0:7},'y=t,z=t'),('y^2-z^2',2,{2:3},'y=2t,z=t')]:
+        upper=c.raw_pass(mm,meta,e,pairs,ports,17,{0:delta})['output']['degree_bound']
+        poly=expand(x);expected=(delta+2)*(29*8-8)+40
+        c.need(max(poly)==upper==expected,'Fresh-polynomial degree mismatch')
+        cases.append({'h':desc,'delta':delta,'ray':ray,'exact_total_degree':upper,'diagonal_degree':max(poly),'diagonal_coefficient_mod17':poly[max(poly)],'full_expansion_terms':len(poly),'raw_and_receipt_equal':True})
+    poly=expand({});c.need(max(poly)==712,'All-ones cancellation example mismatch')
+    cases.append({'h':'y^2-z^2','delta':2,'ray':'all supplied coordinates, including y and z, equal t','true_degree':936,'diagonal_degree':max(poly),'diagonal_coefficient_mod17':poly[max(poly)],'finding':'The all-ones ray drops degree to 712; the nonuniform ray certifies the true degree 936.'})
+result={'status':'PASS','modulus':17,'source_sha256':hashlib.sha256(blob).hexdigest(),'cases':cases}
+args.output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

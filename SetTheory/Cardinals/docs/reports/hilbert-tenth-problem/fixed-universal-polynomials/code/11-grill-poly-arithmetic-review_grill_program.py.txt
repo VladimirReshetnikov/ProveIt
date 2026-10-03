@@ -1,0 +1,221 @@
+#!/usr/bin/env python3
+"""Independent pointwise formula + bounded word checks. No upstream code imports."""
+import argparse, array, collections, hashlib, json, pathlib, resource, sys, time
+resource.setrlimit(resource.RLIMIT_AS, (512*1024*1024,512*1024*1024))
+resource.setrlimit(resource.RLIMIT_CPU, (120,120))
+START=time.monotonic()
+ROOT=pathlib.Path('source://arithmetic')
+LITERAL=pathlib.Path('source://input-research/literal/literal_tables.json')
+CONTRACT=LITERAL.parent.parent/'SEMANTIC_CONTRACT.md'
+bridge=(ROOT/'review_grill_bridge_pinned.md').read_bytes()
+assert hashlib.sha1(b'blob '+str(len(bridge)).encode()+b'\0'+bridge).hexdigest()=='e42c78fabf5c0b0523563e200b52fc1f4b705c53'
+ap=argparse.ArgumentParser();ap.add_argument('--derive-only',action='store_true');opts=ap.parse_args()
+t=json.loads(LITERAL.read_text()); G=t['genera']; rows=G['alphabet'];N=len(rows);H=G['halt_symbol'];a=28*(N+1);half=7*a;m=14*a
+assert G['modulus']==2 and G['initial_phase']==0
+assert [r['id'] for r in rows]==list(range(N)) and 0<=H<N
+assert rows[H]['kind']=='halt'
+for y,row in enumerate(rows):
+    assert row['width'] in (0,1)
+    assert len(row['productions'])==2
+    assert all(len(p)==2 and all(0<=z<N for z in p) for p in row['productions'])
+def extra(y):
+    return 3*a//2 if y==H else half*(1-rows[y]['width'])
+def value(k):
+    """Decode the three disjoint arithmetic progressions at one run phase."""
+    p,z=divmod(k,half)
+    for origin in (17,a+13):
+        y,r=divmod(z-origin,28)
+        if 0<=y<N and r in (0,2,4):
+            return (a-3,7,a-4)[r//2]
+    y,r=divmod(z-(2*a+3),14)
+    if 0<=y<N and y!=H and r%2==0:
+        u,v=rows[y]['productions'][p]
+        return (14*u+7,3,3*a-14*u-10+extra(u),0,
+                14*v+7,3,3*a-14*v-10+extra(v))[r//2]
+    return 0
+runs=array.array('I',(value(i) for i in range(m)))
+assert runs.itemsize==4
+wire=runs.tobytes() if sys.byteorder=='little' else bytes().join(x.to_bytes(4,'little') for x in runs)
+positive=[i for i,e in enumerate(runs) if e]
+assert len(positive)==24*N-12
+for k in positive:
+    z=k%half
+    assert z%2==1 and 0<z<5*a//2
+    assert runs[(k+3*a)%m]==0
+# Explicit zeros include every even phase, every H E-production position,
+# and the middle E slot for every nonhalting source row in both halves.
+assert not any(runs[::2])
+for p in (0,1):
+    assert all(runs[p*half+14*H+2*a+3+2*r]==0 for r in range(7))
+    for y in range(N):
+        assert runs[p*half+14*y+2*a+9]==0
+    for origin in (17,a+13):
+        assert [runs[p*half+28*H+origin+2*r] for r in range(3)]==[a-3,7,a-4]
+
+def grill(n): return b'0'+b'10'*n
+def block(kind,y):
+    e=extra(y)
+    if kind=='E':
+        w=b'0'*(14*y+7)+grill(a-3)+grill(7)+grill(a-4)+b'0'*(3*a-14*y-10+e)
+        assert len(w)==7*a+e and w.count(b'1')==2*a
+    elif kind=='L':
+        w=b'0'*(a-3)+grill(14*y+7)+grill(3)+grill(3*a-14*y-10)+b'10'*e
+        assert len(w)==7*a+2*e and w.count(b'1')==3*a+e
+    elif kind=='R':
+        w=b'0'+grill(14*y+7)+grill(3)+grill(3*a-14*y-10+e)+b'0'*(a-4)
+        assert len(w)==7*a+2*e and w.count(b'1')==3*a+e
+    else: raise ValueError(kind)
+    assert len(w)<=1_000_000
+    return w
+
+def digest(parts):
+    h=hashlib.sha256();length=0
+    for b in parts: h.update(b);length+=len(b)
+    return h.hexdigest(),length
+
+def generation(parts,phase,expected):
+    # Every input word segment is below one million bytes. Never materialize
+    # a whole output generation: the output hash is built one appendant at a time.
+    h=hashlib.sha256(); length=0; input_length=0;max_segment=0
+    expected=iter(expected); target=next(expected,b''); position=0
+    def match(piece):
+        nonlocal target,position
+        start=0
+        while start<len(piece):
+            while position==len(target):
+                target=next(expected,None);position=0
+                assert target is not None,'Actual output exceeds expected word'
+            take=min(len(piece)-start,len(target)-position)
+            assert piece[start:start+take]==target[position:position+take], 'Exact word bytes differ'
+            start+=take;position+=take
+    for w in parts:
+        max_segment=max(max_segment,len(w)); assert len(w)<=1_000_000
+        for at,bit in enumerate(w):
+            if bit==49:
+                out=grill(runs[(phase+at)%m]); match(out);h.update(out);length+=len(out)
+        input_length+=len(w);phase=(phase+len(w))%m
+    assert position==len(target),'Actual output shorter than expected word'
+    assert all(not tail for tail in expected),'Unconsumed expected output'
+    return (h.hexdigest(),length),phase,input_length,max_segment
+
+# Include both width values, phase-dependent originals, all named roles in the
+# accepting adapter, and both ends of the pair alphabet.
+halt_emitters=[y for y,row in enumerate(rows) if y!=H and any(H in p for p in row['productions'])]
+assert halt_emitters==[G['halt_metadata']['halt_pair']]
+hp=halt_emitters[0];dummy=G['dummy_symbol'];accept=G['halt_metadata']['accepting_head']
+assert rows[hp]['productions']==[[H,dummy],[H,dummy]]
+originals=G['original_symbols']
+assert [y for y in originals if any(hp in p for p in rows[y]['productions'])]==[accept]
+assert rows[accept]['productions'][0].count(hp)==1
+assert all(rows[z]['kind'] in ('pair','dummy') for y in originals for pr in rows[y]['productions'] for z in pr)
+assert rows[dummy]['productions']==[[dummy,dummy],[dummy,dummy]]
+selected=sorted(set([0,accept,30,G['inert_symbol'],dummy,570,hp,N-2]))
+checks=[];max_word=0
+for y in selected:
+    for p in (0,1):
+        u,v=rows[y]['productions'][p]
+        ew=block('E',y);lw=block('L',u);rw=block('R',v)
+        actual,newphase,_,mx=generation((ew,),p*half,(lw,rw));max_word=max(max_word,mx,len(lw),len(rw))
+        assert actual==digest((lw,rw))
+        assert newphase==(p*half+rows[y]['width']*half)%m
+        if H not in (u,v):
+            actual,finalphase,_,mx=generation((lw,rw),newphase,(block('E',u),block('E',v)));max_word=max(max_word,mx)
+            assert actual==digest((block('E',u),block('E',v)))
+            assert finalphase==newphase
+        checks.append({'y':y,'name':rows[y]['name'],'phase':p,'width':rows[y]['width'],'outputs':[u,v], 'E_to_LR_output_length':len(lw)+len(rw),'next_phase':newphase})
+
+lr_checks=erasure_checks=0
+for y in sorted(set(selected+[H])):
+    for kind in ('L','R'):
+        w=block(kind,y)
+        for p in (0,1):
+            actual,phase,_,mx=generation((w,),p*half,(block('E',y),));max_word=max(max_word,mx)
+            assert actual==digest((block('E',y),))
+            assert phase==(p*half+len(w))%m
+            lr_checks+=1
+    for kind in ('E','L','R'):
+        w=block(kind,y)
+        for p in (0,1):
+            actual,phase,_,mx=generation((w,),p*half+3*a,(b'0'*w.count(b'1'),));max_word=max(max_word,mx)
+            assert actual==digest((b'0'*w.count(b'1'),))
+            assert phase==(p*half+3*a+len(w))%m
+            erasure_checks+=1
+
+# Actual-table pair row hp -> H,dummy validates the valid-source empty-prefix
+# cleanup. Reverse H position is an independent cleanup-only regression.
+cleanup=[]
+for word in ((H,dummy),(dummy,H),(0,H),(H,0)):
+    j=word.index(H)
+    for p in (0,1):
+        parts=[block('LR'[i%2],y) for i,y in enumerate(word)]
+        l1=10*a+sum(7*a+14*a*(1-rows[y]['width']) for y in word if y!=H)
+        z=sum(3*a+7*a*(1-rows[y]['width']) for y in word[j+1:])
+        second=[block('E',y) for y in word[:j]]+[block('E',H),b'0'*z]
+        l2=17*a//2+sum(7*a+7*a*(1-rows[y]['width']) for y in word[:j])+z
+        l3=2*a*(j+1)
+        actual,ph,ilen,mx=generation(parts,p*half,second);max_word=max(max_word,mx)
+        assert ilen==l1 and actual==digest(second) and actual[1]==l2
+        assert ph==(p*half+3*a)%m
+        actual,ph2,ilen2,mx=generation(second,ph,(b'0'*l3,));max_word=max(max_word,mx)
+        third=b'0'*l3
+        assert ilen2==l2 and actual==digest((third,))
+        actual,ph3,ilen3,mx=generation((third,),ph2,(b'',));max_word=max(max_word,mx)
+        assert ilen3==l3 and actual==digest((b'',))
+        cleanup.append({'word':list(word),'phase':p,'lengths':[l1,l2,l3],'first_empty_runs_from_LR':l1+l2+l3,'actual_table_output':word==(H,dummy)})
+
+receipt={
+ 'reviewer':'independent pointwise arithmetic progression decoder and byte-word generation checker',
+ 'schema':'independent_grill_review_v1','N':N,'H':H,'a':a,'m':m,
+ 'positive_runs':len(positive),'zero_runs':m-len(positive),
+ 'distinct_exponents_including_zero':len(set(runs)),
+ 'distinct_positive_exponents':len(set(runs)-{0}), 'max_exponent':max(runs),
+ 'derived_little_endian_u32_sha256':hashlib.sha256(wire).hexdigest(),
+ 'literal_sha256':hashlib.sha256(LITERAL.read_bytes()).hexdigest(),
+ 'semantic_contract_sha256':hashlib.sha256(CONTRACT.read_bytes()).hexdigest(),
+ 'pinned_theorem_commit':'2d887f0fa768fd67f3e545d83f8998b5780e530d',
+ 'pinned_theorem_git_blob':'e42c78fabf5c0b0523563e200b52fc1f4b705c53',
+ 'all_phase_formulas_checked':m,'all_odd_support_plus_3a_zero':True,
+ 'all_even_phases_zero':True,'H_E_slots_zero_and_H_LR_slots_present':True,
+ 'phase_proof':{
+   'genera_modulus':2,'normal_grill_phases':[0,half],
+   'E_length_by_width':{'1':half,'0':2*half},
+   'nonhalt_LR_length_by_width':{'1':half,'0':3*half},
+   'E_phase_advance':'7a*w mod 14a',
+   'each_nonhalt_LR_phase_advance':half,
+   'two_output_LR_return_phase_advance':0,
+   'H_LR_length':10*a,'H_extra_phase_advance':3*a,
+   'native_program_domain':'m>=1, natural exponents: satisfied',
+   'native_distinct_lower_slope_classes':len(set(runs))},
+ 'actual_halt_pair':{'symbol':hp,'outputs':[H,dummy],
+   'cleanup_lengths':[31*a,37*a//2,2*a],
+   'first_empty_runs_from_LR':103*a//2,
+   'source_prefix_empty':True},
+ 'selected_E_LR_E_cases':checks,'normal_LR_to_E_checks':lr_checks,
+ 'shifted_erasure_checks':erasure_checks,'cleanup_cases':cleanup,
+ 'maximum_materialized_word_bytes':max_word,
+ 'word_identity_comparison':'Exact streamed byte comparison, with SHA-256 supplementary',
+ 'scope':'Exact table transcription and bounded actual-table word tests. Full arithmetic DAG and universality not established by this review.'}
+if not opts.derive_only:
+    path=ROOT/'grill_program.u32';data=path.read_bytes()
+    assert len(data)==4*m
+    assert data==wire,'Emitted u32 program differs from independent pointwise formulas'
+    receipt['emitted_program_byte_equal']=True
+    receipt['emitted_program_sha256']=hashlib.sha256(data).hexdigest()
+    # Metadata is separately recorded after byte equivalence, never used to
+    # derive/check run exponents or word semantics.
+    meta=json.loads((ROOT/'grill_program.json').read_text())
+    expected_meta={'a':a,'alphabet_size':N,'halt_symbol':H,'phase_count':m,
+      'distinct_exponents':len(set(runs)),'initial_phase':0,'max_exponent':max(runs),
+      'positive_runs':len(positive),'zero_runs':m-len(positive),
+      'program_bytes':4*m,'program_sha256':hashlib.sha256(wire).hexdigest(),
+      'source_sha256':hashlib.sha256(LITERAL.read_bytes()).hexdigest()}
+    for key,v in expected_meta.items():
+        assert type(meta[key]) is type(v) and meta[key]==v,(key,meta[key],v)
+    assert meta['histogram']=={str(k):v for k,v in collections.Counter(runs).items()}
+    receipt['emitter_metadata_checked']=True
+    receipt['emitter_metadata']=meta
+receipt['elapsed_seconds']=round(time.monotonic()-START,6)
+receipt['max_rss_kib']=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+out=ROOT/('review_grill_derived.json' if opts.derive_only else 'review_grill_program.json')
+out.write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n')
+print(json.dumps({k:v for k,v in receipt.items() if k not in ('selected_E_LR_E_cases','cleanup_cases','emitter_metadata')},indent=2))

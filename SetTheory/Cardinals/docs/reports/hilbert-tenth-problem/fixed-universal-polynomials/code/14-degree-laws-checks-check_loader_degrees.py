@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+"""Data-only parametric degree analysis of the pinned 34-comparison recoder.
+No producer module is imported or executed. Degree pairs mean a*k+b, k>=4.
+"""
+from pathlib import Path
+import sys
+sys.dontwritebytecode = True
+import argparse, hashlib, json
+
+PINS={
+'input_recoder130_receipt.json':'175c498990a8e63de7a91d1e3d321ef90a19f129f305074f0c6de10967d0a182',
+'input_loaders.py':'597a028e3a64e8ed97502f0b5e66411f293cdda0c9c1d7ebc470f9c38c897c14'}
+
+def need(ok,msg):
+    if not ok: raise ValueError(msg)
+
+def plus(x,y): return (x[0]+y[0],x[1]+y[1])
+def maximum(x,y):
+    """Return a bound valid at every integer k>=4; reject crossing lines."""
+    a,b=x[0]-y[0],x[1]-y[1]
+    if a>=0 and 4*a+b>=0:return x
+    if a<=0 and 4*a+b<=0:return y
+    raise ValueError('degree lines cross inside k>=4: '+str((x,y)))
+
+def recoder(c, mode):
+    # x,z are either distinct degree-one supplied ports or fixed constant ones.
+    env={name:(0,1) for name in c['auxiliaries']}
+    env.update(x=(0,1 if mode=='free_ports' else 0),z=(0,1 if mode=='free_ports' else 0))
+    env.update(Q=(1,0),B=(1,0))
+    def degree(x):return (0,0) if type(x)is int else env[x]
+    for name,op,left,right in c['source'][3:]:
+        need(name not in env and op in ('+','-','*'),'invalid topological source')
+        a,b=degree(left),degree(right)
+        env[name]=plus(a,b) if op=='*' else maximum(a,b)
+    bounds=[maximum(env[a],env[b]) for a,b in c['comparisons']]
+    # Each residual is bounded above by max(k+1,20).
+    need(all((a==0 and b<=20) or (a==1 and b<=1) for a,b in bounds),'recoder bound')
+    need(c['comparisons'][0]==['repunit_P','P'],'maximum witness row 0')
+    need(c['comparisons'][22]==['and__L9','and__R9'],'maximum witness row 22')
+    need(bounds[0]==(1,1) and bounds[22]==(0,20),'attaining bounds')
+    # Structurally authenticate the two exact highest forms used in the proof.
+    rows={row[0]:row for row in c['source']}
+    expected=[['Bm1','-','B',1],['repunit_product','*','Bm1','J'],
+      ['repunit_P','+','repunit_product',1],['scale','*','q','P'],
+      ['and__q','*',16,'scale'],['and__wn2','*','and__w','and__q'],
+      ['and__sn2','*','and__s','and__q'],['and__UM','*','and__wn2','and__sn2'],
+      ['and__UM2','*','and__UM','and__UM'],
+      ['and__scaled_norm_coefficient','+','and__UM2','and__wn2'],
+      ['and__ksn2','*','and__k','and__sn2'],
+      ['and__ratio_product2','*','and__ksn2','and__ksn2'],
+      ['and__L9','*','and__scaled_norm_coefficient','and__ratio_product2'],
+      ['and__tauplus1','+','and__tau',1],['and__R9','*','and__tau','and__tauplus1']]
+    need(all(rows[r[0]]==r for r in expected),'attaining-form structure')
+    return bounds
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--source-dir',type=Path,required=True)
+    p.add_argument('--output',type=Path,required=True)
+    args=p.parse_args()
+    for name,pin in PINS.items():
+        need(hashlib.sha256((args.source_dir/(name+'.txt' if name.endswith('.py') else name)).read_bytes()).hexdigest()==pin,'source pin '+name)
+    c=json.loads((args.source_dir/'input_recoder130_receipt.json').read_text())['certificate']
+    need(len(c['source'])==130 and len(c['comparisons'])==34 and len(c['auxiliaries'])==49,'source shape')
+    modes={mode:recoder(c,mode) for mode in ('free_ports','constant_one_ports')}
+    tests=[]
+    for k in (4,5,18,19,20,31,32,33,34,100,397488,2**32-1):
+        for mode,bounds in modes.items():
+            maximum_degree=max(a*k+b for a,b in bounds)
+            need(maximum_degree==max(k+1,20),'sample recoder maximum')
+        loader=max(34,k+1)
+        tests.append({'unrestricted_width':k,'recoder_exact_maximum':max(k+1,20),
+                      'loader_exact_maximum':loader,
+                      'attainment':'unrestricted first residual' if k+1>34 else 'canonical frame residual'})
+    # These are source-derived bounds for the seven outer residuals in exact
+    # input_loaders.build order, excluding the 34+34 recoder residuals.
+    # canonical guard=1; exact frame=34; exponent v bound=k+1;
+    # exponent gap=k; ell=N+1=1; scale=k; exact queue=2.
+    outer={'canonical_guard':(0,1),'ordinary_frame':(0,34),
+           'exponent_v':(1,1),'exponent_gap':(1,0),
+           'ell_N':(0,1),'unary_scale':(1,0),'unary_queue':(0,2)}
+    result={'status':'PASS','source_pins':PINS,'parameter_domain':'integer k>=4',
+            'degree_pair_meaning':'a*k+b; all runtime coordinates degree one',
+            'modes':{mode:[{'comparison':a+'='+b,'upper_bound':list(d)}
+                         for (a,b),d in zip(c['comparisons'],bounds)] for mode,bounds in modes.items()},
+            'recoder_exact_maximum':'max(k+1,20)',
+            'first_residual_top':'2^(k-1)*q^k*J',
+            'and_norm_residual_top':'2^24*and__w^2*and__k^2*and__s^4*q^6*P^6',
+            'canonical_width':32,'outer_residual_upper_bounds':outer,
+            'canonical_frame_top':'-(2^32-1)*p_e*s_e*canonical_q^32',
+            'loader_exact_maximum':'max(34,k+1)','width_link_degree':2,
+            'sample_checks':tests,
+            'proof_boundary':'Outer loader formulas are transcribed from the pinned source and proved in GENERAL_DEGREE_THEOREM.md; this script does not execute or parse producer Python.'}
+    args.output.write_text(json.dumps(result,indent=2)+'\n')
+    print(json.dumps({'status':'PASS','recoder':'max(k+1,20)','loader':'max(34,k+1)','sample_widths':len(tests),'certificate':args.output.name},sort_keys=True))
+if __name__=='__main__':main()

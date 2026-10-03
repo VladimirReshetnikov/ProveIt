@@ -1,0 +1,104 @@
+{
+  "external_variables": [
+    "T_00",
+    "T_01",
+    "T_10",
+    "T_11"
+  ],
+  "ledger": {
+    "distinct_variables_in_residuals": 4,
+    "evaluation_count_convention": "Start each monomial product at 1; multiply once per variable, once by coefficient; add each monomial; square each residual and add each square. No optimizations; excludes validation, comparisons, lookups, loop/control, parsing and polynomial construction.",
+    "external_domain": "Z",
+    "external_input_count": 4,
+    "generator_word_length": 1,
+    "generic_sparse_evaluator_additions": 12,
+    "generic_sparse_evaluator_multiplications": 16,
+    "inner_tile_alphabet": 114,
+    "literal_residual_monomials_by_degree": [
+      4,
+      4,
+      0
+    ],
+    "literal_residual_monomials_total": 8,
+    "maximum_residual_coefficient_absolute": 6712,
+    "maximum_residual_coefficient_magnitude_bits": 13,
+    "mode": "signed",
+    "natural_auxiliary_count": 0,
+    "r": 0,
+    "residual_count": 4,
+    "residual_degree_histogram": {
+      "1": 4
+    },
+    "schema": "paired-matrix-ledger-v1",
+    "sos_total_degree": 2,
+    "source_sha256": "506144b361b2bea634d468a94921644d91868dc089a257fe289a0bf51b74cec9"
+  },
+  "meaning": "F = sum(residual.polynomial ** 2); each polynomial is sum(coefficient * product(variables))",
+  "mode": "signed",
+  "natural_auxiliary_variables": [],
+  "r": 0,
+  "residuals": [
+    {
+      "name": "terminal_00",
+      "polynomial": [
+        {
+          "coefficient": 157,
+          "variables": []
+        },
+        {
+          "coefficient": -1,
+          "variables": [
+            "T_00"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "terminal_01",
+      "polynomial": [
+        {
+          "coefficient": 4,
+          "variables": []
+        },
+        {
+          "coefficient": -1,
+          "variables": [
+            "T_01"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "terminal_10",
+      "polynomial": [
+        {
+          "coefficient": -6712,
+          "variables": []
+        },
+        {
+          "coefficient": -1,
+          "variables": [
+            "T_10"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "terminal_11",
+      "polynomial": [
+        {
+          "coefficient": -171,
+          "variables": []
+        },
+        {
+          "coefficient": -1,
+          "variables": [
+            "T_11"
+          ]
+        }
+      ]
+    }
+  ],
+  "schema": "literal-sparse-integer-sos-v1",
+  "source_sha256": "506144b361b2bea634d468a94921644d91868dc089a257fe289a0bf51b74cec9"
+}

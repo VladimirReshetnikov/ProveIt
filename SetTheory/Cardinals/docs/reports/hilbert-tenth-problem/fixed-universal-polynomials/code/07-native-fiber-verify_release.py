@@ -1,0 +1,139 @@
+"""Strict, standard-library-only verification of Report 25's complete release.
+
+The seal proves internal consistency, not external authenticity. Obtain the final
+archive digest through a trusted channel. Every scientific source is mandatory.
+"""
+import sys
+sys.dont_write_bytecode = True
+from hashlib import sha256
+import json
+import os
+from pathlib import Path
+import stat
+
+ROOT = Path(__file__).absolute().parent
+MANIFEST = 'release-manifest.json'
+DIGEST = MANIFEST+'.sha256'
+SCHEMA = 'report25-exact-inventory-v1'
+MAX_FILES = 256
+MAX_FILE_BYTES = 64*1024*1024
+MAX_TREE_BYTES = 128*1024*1024
+SOURCE_PINS = {'CHECK-RECEIPT.json': 'a017001b6f263fe237e55b39c1b8095b0d27d585c7d70068183228eb23ed6a6b', 'DEPENDENCY-RECEIPT.json': '5d99d0c798b4fab7397dd33c6bc493abe98f32c9c20ef460a9804339d7928330', 'SECOND-TERM-RECEIPT.json': '88629fdd4e30b8d530b97b382c10d75731f9cb93c6ec600351bd302e3f94ca05', 'TOTAL-BITLENGTH-RECEIPT.json': '5fb31af53d88d0938c1cc19018496f457323e6e6a62b468191e0a8ca15ea493f', 'audit_dependency.py': '5fb3c9dad0b89bbab152a143af6475cfc618a84cb0b3605ee245ec53f4c7711f', 'build.sh': '1c58d6029a3811775d826ef4d85bf535758966933381499cde7d894ed36feee9', 'check_entire_fiber.py': '59d5b0f22e9dfa5cbf8a5fe3e1684f9a635d72bf9b4ef54d6a4dd1d5e5b815a0', 'check_privacy.py': '28a2a1e54b0b12ccb420e8a5bc29f245fe48b2d8b385915fa08df7d7803bc20e', 'check_provenance.py': 'fef4669c4bdad6db90a118171c7420e3bb8104f82004f8ac6c46946c45d2593d', 'check_second_term.py': '241d532162318b8b809b59f527a83a87e63bdb3bec3f140fc3559eacfd07899c', 'check_total_bitlength.py': '94b34648cfab7ceea9dda974b4181cb36f06f82fe1292c63e9d1b839780ae2ea', 'check_total_bitlength_review.py': '166a7db6c238606b082d22ed567c9a5a37707663b42a3c9b79cc7a1527618b2f', 'delivery-provenance.json': 'c2e007668b6d2f88692d2a36085448810dccd82b171f253fe626b4dbd7a7f74c', 'proofs/canonical-transport/SUMMARY.md': '74e2bd2134a16801b31580687c878d4a41226be51cd445f2796e4814cd6a17b9', 'proofs/entire-fiber/CLASSIFICATION-REVIEW.md': '482c130c0631c4c5deb2638ecf7368416b59602521ecf0d8c638a5172919198d', 'proofs/entire-fiber/COUNT-REVIEW.md': '2a4503e9e15ca529ae2b26471358478d6340f7d3aafbd13cc445b28473b99f30', 'proofs/entire-fiber/DEPENDENCY-AUDIT.md': '3ff64bd8dcf8be615568d3259a4ee2ae29c1bf9c4c45343199d50d7e45ca17b9', 'proofs/entire-fiber/README.md': '03c6925d4b784fc75b015563950e49eff109d97f3ecf2c598c2a0d45663e62dc', 'proofs/entire-fiber/REVIEW.md': 'a1605a2e63d03e6bd4badd37c13926fa1b0edadfad43c8b0eb29c6945dd8c989', 'proofs/entire-fiber/THEOREM.md': '6a7e6d941175fb14025b84a3d06788d6c2a995cdea2c2009e4f4f558ce58cd8c', 'proofs/second-term/CHECKS.md': '5294cab08c0f31f2247765828f80999a4ab4c5924907754bdce975b036290d7f', 'proofs/second-term/INDEPENDENT-COUNT-REVIEW.md': 'e068200e4db7ec4d987aac61ddacef4fd5ad4af674bcc8231dd012d0b45426af', 'proofs/second-term/README.md': '5307e6201e883b17727b3fa007fa6710f6602cea6fab22af20eaf3382b92da46', 'proofs/second-term/THEOREM.md': '889c0a82fa6681e954d8c7df07454259d4ea2ec1d9ea8985b8b5393c7c26faac', 'proofs/total-bitlength/CHECKS.md': '9a533a504581100ad867a199964af488b59f734e0c269f0305bbb738beee5f9f', 'proofs/total-bitlength/INDEPENDENT-REVIEW.md': 'd964d6b6ce3681b1bb96a8a8ba260e9be05def6d03b6f02dd2c82c8b59f6e5aa', 'proofs/total-bitlength/README.md': '6b3d1621e1b1f6335d89a54f67ce18832fd739861588feb09c172b3f37fcc512', 'proofs/total-bitlength/THEOREM.md': '9a1a7cae97b8e6f3d2de56de8b14fdbafee22bafc1030f7e2c3ede3553131e59', 'provenance/entire-fiber-original-MANIFEST.json': '93521af0fb27e2abf18f1b615902ae61d78f1bd559cf16166921b22b52c232bd', 'provenance/report22-original-release-manifest.json': '4c796e6bd497e3bd2e468e4d119a3d95d3278d01f9e7f726606be71608bbe7f5', 'provenance/second-term-original-MANIFEST.sha256': 'a05feb9dba4f2b4ce7e011cb54ef628159ee4b0b4771ef6fc38a79367e60f260', 'provenance/total-bitlength-original-MANIFEST.sha256': '3b3f0b4ef9a3d784eb2b2f6f7f06b1a09bcb23991ef5a853aaa7acd32f41094c', 'source/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md': '47a2c5b69f3c87b7a1ddc61ef84757023de291b63d1330e2c8dc9b40e811ab8b', 'source/EXPLORATION_ODD_INDEX_PELL_SIGNS.md': '4a257fe64194dc187cc9775899ca737f5ee15f185c088a33ac947c12afa66ccc', 'source/PELL_RELAXED_AUXILIARY_PROOF.md': 'ce92da34cf6007c9538cf60f4acdb61e375a0799ce17f27c7460b4a7dda32574', 'source/native_binary_masked_selection63.md': 'c2e08f2d9fdaaf2e17880d7a131254492afd7ef21b035985714734cbc158c53e', 'source/native_blocks.json': 'a3ef38c5a449040a817384d564da90a5b7a440d426997df8ae6acecc4d55d74f', 'source/native_controller_binary_selector56.md': '97fcdc7188f968f2ac3e315249b0e0a15dcc787c10451924ad3f2551c8bb376c', 'source/provenance.json': '11e6ed1e74c61dabfabb3d45cb88ead6f677ab451bac47275fcd30269f8f2590', 'source/relaxed-provenance.json': '49c0d9f6f77fd232face99ca2b4ab9b6717ffb3144f5eb0d412ee542692f1a58'}
+RELEASE_FILES = set(SOURCE_PINS) | {
+    'source-pins.json', 'README.md', 'build.sh', 'verify_release.py',
+    'write_manifest.py', 'release_checks.py', 'replay.py',
+    'report25.tex', 'report25.pdf', 'report25-math-review.md', 'report25-qa.json',
+}
+
+
+def require(ok, message):
+    if not ok:
+        raise ValueError(message)
+
+
+def unique_object(pairs):
+    out = {}
+    for key, value in pairs:
+        require(key not in out, 'duplicate JSON key: '+key)
+        out[key] = value
+    return out
+
+
+def load_json(raw):
+    return json.loads(raw, object_pairs_hook=unique_object,
+                      parse_constant=lambda s: (_ for _ in ()).throw(ValueError('nonfinite JSON number')))
+
+
+def relative_name(name):
+    require(type(name) is str and bool(name) and '\\' not in name and ':' not in name, 'invalid path')
+    require(not name.startswith('/') and all(part not in ('','.','..') for part in name.split('/')), 'unsafe relative path')
+    require(Path(name).as_posix()==name, 'noncanonical path')
+    return name
+
+
+def inventory(root):
+    root = Path(root).absolute()
+    require(not root.is_symlink() and root.is_dir(), 'release root must be an ordinary directory')
+    files, directories, total = {}, set(), 0
+    for base, dirs, names in os.walk(root, followlinks=False):
+        for child in sorted(dirs+names):
+            path = Path(base)/child
+            name = relative_name(path.relative_to(root).as_posix())
+            mode = path.lstat().st_mode
+            require(not stat.S_ISLNK(mode), 'symlink rejected: '+name)
+            if stat.S_ISDIR(mode):
+                directories.add(name)
+            else:
+                require(stat.S_ISREG(mode), 'nonregular file rejected: '+name)
+                size = path.stat().st_size
+                require(size<=MAX_FILE_BYTES, 'file size limit')
+                total += size
+                require(total<=MAX_TREE_BYTES, 'release size limit')
+                files[name] = path
+            require(len(files)+len(directories)<=MAX_FILES, 'inventory limit')
+    return files, directories
+
+
+def expected_directories(names):
+    return {p.as_posix() for name in names for p in Path(name).parents if p!=Path('.')}
+
+
+def check_pins(root=ROOT):
+    root = Path(root).absolute()
+    observed, directories = inventory(root)
+    require('source-pins.json' in observed, 'mandatory source pin manifest missing')
+    data = load_json(observed['source-pins.json'].read_bytes())
+    require(type(data) is dict and set(data)=={'schema','files'}, 'source pin manifest shape')
+    require(data['schema']=='report25-mandatory-source-pins-v1', 'source pin schema')
+    require(data['files']==SOURCE_PINS, 'mandatory source pin set/value mismatch')
+    for name, digest in SOURCE_PINS.items():
+        require(name in observed, 'missing mandatory scientific dependency: '+name)
+        require(sha256(observed[name].read_bytes()).hexdigest()==digest, 'scientific dependency pin mismatch: '+name)
+    require(set(observed)<=RELEASE_FILES|{MANIFEST,DIGEST}, 'unexpected release file outside exact deliverable inventory')
+    require(directories<=expected_directories(RELEASE_FILES), 'unexpected release directory')
+    return {'mandatory_scientific_files':len(SOURCE_PINS),'optional_scientific_files':0}
+
+
+def manifest_data(root=ROOT):
+    files, directories = inventory(root)
+    expected = RELEASE_FILES | {MANIFEST,DIGEST}
+    require(set(files)-{MANIFEST,DIGEST}==RELEASE_FILES,'missing/additional final release file')
+    require(directories==expected_directories(expected),'missing/additional final release directory')
+    check_pins(root)
+    entries = {}
+    for name in sorted(RELEASE_FILES):
+        raw = files[name].read_bytes()
+        entries[name] = {'bytes':len(raw),'sha256':sha256(raw).hexdigest()}
+    return {'schema':SCHEMA,'files':entries,'directories':sorted(directories)}
+
+
+def verify(root=ROOT):
+    root = Path(root).absolute()
+    files, directories = inventory(root)
+    require(MANIFEST in files and DIGEST in files, 'missing final seal')
+    raw = files[MANIFEST].read_bytes()
+    require(len(raw)<=1024*1024,'manifest too large')
+    require(files[DIGEST].read_text(encoding='ascii')==sha256(raw).hexdigest()+'  '+MANIFEST+'\n','manifest digest mismatch')
+    data = load_json(raw)
+    require(type(data) is dict and set(data)=={'schema','files','directories'},'release manifest shape')
+    require(data['schema']==SCHEMA,'release manifest schema')
+    entries = data['files']
+    require(type(entries) is dict and set(entries)==RELEASE_FILES,'manifest exact mandatory file inventory mismatch')
+    for name, entry in entries.items():
+        relative_name(name)
+        require(type(entry) is dict and set(entry)=={'bytes','sha256'},'manifest entry shape')
+        require(type(entry['bytes']) is int and 0<=entry['bytes']<=MAX_FILE_BYTES,'invalid manifest size')
+        require(type(entry['sha256']) is str and len(entry['sha256'])==64 and all(c in '0123456789abcdef' for c in entry['sha256']),'invalid manifest SHA')
+    require(set(files)==RELEASE_FILES|{MANIFEST,DIGEST},'actual file inventory mismatch')
+    wanted_dirs = expected_directories(RELEASE_FILES)
+    require(type(data['directories']) is list and data['directories']==sorted(wanted_dirs),'manifest exact directory inventory mismatch')
+    require(directories==wanted_dirs,'actual directory inventory mismatch')
+    for name, expected in entries.items():
+        content = files[name].read_bytes()
+        require(len(content)==expected['bytes'] and sha256(content).hexdigest()==expected['sha256'],'changed release file: '+name)
+    pins = check_pins(root)
+    return {'status':'PASS','files_verified':len(files),'directories_verified':len(directories),**pins}
+
+
+if __name__=='__main__':
+    print(json.dumps(verify(),indent=2))

@@ -1,0 +1,77 @@
+"""Stream the complete fixed-program arithmetic DAG with one safe finalizer."""
+from array import array
+from pathlib import Path
+import argparse,gc,hashlib,json,sys,time
+from compact_dag import DAG,Limits,hash_file
+import input_loaders,native_history
+
+ROOT=Path(__file__).resolve().parent
+LITERAL=Path('source://input-research/literal/literal_tables.json')
+LITERAL_SHA='3c8924dbb1b5d6e6b8897e59550b0e38a703654b87442c73487f411e94ae355b'
+PROGRAM_SHA='fa658fcdfe1dae2be3a8e2bf97bd613db59558949ea23ca03f549b77201dad01'
+
+def load_data():
+ raw=LITERAL.read_bytes();pr=(ROOT/'grill_program.u32').read_bytes()
+ if hashlib.sha256(raw).hexdigest()!=LITERAL_SHA or hashlib.sha256(pr).hexdigest()!=PROGRAM_SHA:
+  raise ValueError('Frozen literal/program pin mismatch')
+ program=array('I');program.frombytes(pr)
+ if sys.byteorder!='little':program.byteswap()
+ if len(program)!=397488:raise ValueError('Full program size')
+ return json.loads(raw),program
+
+def build(size=397488,max_seconds=600,max_rss_mb=1800):
+ literal,full=load_data()
+ if type(size)is not int or not(1<=size<=len(full)):raise ValueError('Prototype phase size')
+ program=full if size==len(full) else full[:size]
+ dest=ROOT/('universal.dag' if size==len(full) else f'prototype_{size}.dag')
+ dag=DAG(dest,Limits(max_nodes=6000000,max_seconds=max_seconds,max_rss_bytes=max_rss_mb*1024**2))
+ ext={name:dag.input(name,role='external') for name in input_loaders.EXTERNAL_NAMES}
+ loader=input_loaders.build(dag,literal,ext);dag.snapshot('complete_two_recoders_and_loader')
+ hist=native_history.build(dag,program,loader['X']);dag.snapshot('complete_native_history')
+ residuals=list(hist['residuals'])+list(loader['residuals'])+[(hist['P0'],loader['target_width'])]
+ if len(residuals)!=86:raise AssertionError('Complete residual census')
+ squares=[];total=dag.const(0)
+ for a,b in residuals:
+  r=dag.sub(a,b);square=dag.mul(r,r);squares.append(square);total=dag.add(total,square)
+ positive=dag.add(dag.const(1),total)
+ output=dag.sub(dag.mul(hist['unit'],positive),dag.const(1))
+ dag.snapshot('full_integer_unit_finalizer')
+ extra=dict(scope='Complete proposed universal program-slice arithmetic composition' if size==len(full)
+                   else 'Resource prototype only: truncated fixed Grill program, not universal',
+            full_program=size==len(full),phase_count=size,
+            source_program_sha256=PROGRAM_SHA if size==len(full) else hashlib.sha256(program.tobytes()).hexdigest(),
+            literal_source_sha256=LITERAL_SHA,
+            ordinary_input=dict(name='x',ref=ext['x'],domain='positive_integer',paid_recoder_input='x+1',
+                                orientation='least_significant_bit_first',canonical=True),
+            program_parameters=[dict(name=n,ref=ext[n],domain='positive_integer',fixed_for_represented_set=True)
+                                for n in input_loaders.EXTERNAL_NAMES if n!='x'],
+            program_parameters_are_existential=False,
+            loader_witnesses=loader['existential_count'],native_witnesses=hist['metadata']['positive_witnesses'],
+            recoder_interfaces=dict(canonical_input_bits=dict(width=32,canonical_length_guard=True,dyadic_duration=False),
+               unrestricted_tape_exponent=dict(width=loader['literal']['pair_width'],input=1,spread_output=1,
+                   canonical_length_guard=False,dyadic_duration=False,exact_exponent='N+1')),
+            residual_pairs=[list(x)for x in residuals],nonunit_comparisons=len(residuals),
+            total_comparisons_including_unit=len(residuals)+1,
+            native_unit=hist['unit'],unit_factors=hist['unit_factors'],native_width=hist['P0'],
+            target_width=loader['target_width'],finalizer='U*(1+sum(all86_nonunit_residual_squares))-1',
+            residual_squares=squares,finalizer_positive=positive,
+            native_metadata=hist['metadata'],
+            source_modules={f:hash_file(ROOT/f)for f in ('compact_dag.py','compose_universal.py','native_history.py','input_loaders.py')},
+            conditional_theorems=['Pinned complete native Grill history and its positive exact-width converse',
+                                 'Pinned complete unrestricted binary recoder',
+                                 'Pinned U15 ordinary finite-input universality and verified source transformations'])
+ manifest=dag.finish(output,extra)
+ if manifest['ledger']['positive_witnesses']!=loader['existential_count']+hist['metadata']['positive_witnesses']:
+  raise AssertionError('Complete witness count')
+ if manifest['ledger']['external_positive_coordinates']!=6:raise AssertionError('External coordinates')
+ return dict(path=str(dest),manifest=str(dest.with_suffix('.json')),ledger=manifest['ledger'],
+             resources=manifest['resources'],source_bytes=manifest['source_bytes'],
+             source_sha256=manifest['source_sha256'],constant_count=manifest['constant_count'],snapshots=manifest['snapshots'])
+
+if __name__=='__main__':
+ p=argparse.ArgumentParser();p.add_argument('--size',type=int,default=397488)
+ p.add_argument('--seconds',type=int,default=600);p.add_argument('--rss-mb',type=int,default=1800)
+ a=p.parse_args();result=build(a.size,a.seconds,a.rss_mb)
+ report=ROOT/('emission_result.json' if a.size==397488 else f'prototype_{a.size}_result.json')
+ report.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+ print(json.dumps(result,sort_keys=True))

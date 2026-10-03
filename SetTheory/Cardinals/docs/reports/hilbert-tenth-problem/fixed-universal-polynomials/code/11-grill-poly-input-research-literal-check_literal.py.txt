@@ -1,0 +1,160 @@
+"""Own bounded read-only tests of the emitted literal tables, not upstream code."""
+from collections import Counter,deque
+from pathlib import Path
+import hashlib,json,random
+ROOT=Path(__file__).resolve().parent
+
+def run():
+ raw=(ROOT/'literal_tables.json').read_bytes();p=json.loads(raw)
+ tag=p['tag'];g=p['genera'];states=p['refined_states']
+ names={r['id']:r['name'] for r in tag['alphabet']};ids={v:k for k,v in names.items()}
+ rules={r['symbol']:tuple(r['output']) for r in tag['productions']}
+ gn={r['id']:r['name'] for r in g['alphabet']};gi={v:k for k,v in gn.items()}
+ gr={r['id']:r for r in g['alphabet']};d=g['dummy_symbol'];H=tag['accepting_symbol'];GH=g['halt_symbol']
+ def canonical(i,M,N,which=tag):
+  v=which['canonical_symbols'][str(i)]
+  return [v['A'],v['x']]+[v['a'],v['x']]*M+[v['B'],v['x']]+[v['b'],v['x']]*N
+ def oracle(i,M,N):
+  row=states[i]
+  if row['accepting']: return None
+  s=row['write'];v=(M if row['direction']=='L' else N)%2
+  j=row['next_if_one' if v else 'next_if_zero']
+  return (j,M//2,2*N+s) if row['direction']=='L' else (j,2*M+s,N//2)
+ def macro(i,M,N):
+  expected=oracle(i,M,N);target=canonical(*expected);q=deque(canonical(i,M,N))
+  steps=0;minimum=len(q)
+  while not (steps and names[q[0]].startswith('A:')):
+   assert len(q)>=2
+   a=q.popleft();q.popleft();assert not names[a].startswith('x:')
+   assert a!=H and not (a==ids['A:19'])
+   q.extend(rules[a]);steps+=1;minimum=min(minimum,len(q));assert steps<1000000
+  assert list(q)==target,(i,M,N,expected,list(q),target)
+  return expected,steps,minimum
+ def ugeneration(word,phase):
+  out=[]
+  for a in word:
+   if phase==0:out.extend(rules[a])
+   phase^=1
+  return out,phase
+ def add(out,a,n=1):
+  if not n:return
+  if out and out[-1][0]==a:out[-1]=(a,out[-1][1]+n)
+  else:out.append((a,n))
+ def rle(word):
+  out=[]
+  for a in word:add(out,a)
+  return out
+ def ngen(word,phase):
+  out=[]
+  for a,n in word:
+   row=gr[a]
+   assert a!=GH
+   if row['width']==0:
+    b,c=row['productions'][phase]
+    if b==c:add(out,b,2*n)
+    else:
+     assert n<=100000
+     for _ in range(n):add(out,b);add(out,c)
+   else:
+    assert n<=100000
+    for _ in range(n):
+     for b in row['productions'][phase]:add(out,b)
+     phase^=1
+  return out,phase
+ def erase(word):
+  out=[]
+  for a,n in word:
+   if a!=d:
+    assert gr[a]['kind'] in ('original','halt')
+    out.extend([ids[gn[a]]]*n)
+  return out
+ checks=Counter();minimum=10**9;total_steps=0
+ for row in states:
+  i=row['id']
+  if row['accepting']:continue
+  for M in range(10):
+   for N in range(10):
+    _,steps,m=macro(i,M,N);checks['actual_row_macro_cases']+=1
+    total_steps+=steps;minimum=min(minimum,m)
+ rng=random.Random(1013570)
+ visits=set();max_integer=0
+ for row in states:
+  if row['accepting']:continue
+  for seed in range(12):
+   cfg=(row['id'],rng.randrange(9),rng.randrange(9));checks['multistep_seed_cases']+=1
+   for step in range(8):
+    i,M,N=cfg
+    if i==19:
+     q=canonical(i,M,N);out,p1=ugeneration(q,0)
+     assert out.count(H)==1
+     checks['multistep_accepting_endpoints']+=1;break
+    visits.add(i);max_integer=max(max_integer,M,N)
+    cfg,t,m=macro(i,M,N);checks['multistep_transitions']+=1
+    total_steps+=t;minimum=min(minimum,m)
+ # Algebraic projection includes signed phase and arbitrary original rules,
+ # but never calls another generation on a word already containing H.
+ originals=g['original_symbols']
+ for case in range(400):
+  phase=case%2;word=[];plain=[]
+  for _ in range(1+case%9):
+   add(word,d,rng.randrange(1,33));a=rng.choice(originals);add(word,a)
+   plain.append(ids[gn[a]])
+  add(word,d,rng.randrange(1,33))
+  first,p1=ngen(word,phase);second,p2=ngen(first,p1)
+  wanted,p3=ugeneration(plain,phase)
+  assert erase(second)==wanted and p2==p3
+  assert sum(n for _,n in second)==4*sum(n for _,n in word)
+  checks['two_generation_projection_cases']+=1
+ # Canonical seeds entering actual U15 halt through (u9,b), or starting in h.
+ # Exact dummy-run compression avoids allocating the exponential padding.
+ traces=[]
+ for i in (17,19):
+  for M in range(8):
+   if i==17 and M%2==0:continue
+   for N in range(8):
+    q=rle(canonical(i,M,N,g));base=canonical(i,M,N);phase=0;basephase=0;gen=0;maxruns=len(q)
+    initial_length=sum(n for _,n in q)
+    while not any(a==GH for a,_ in q):
+     q,phase=ngen(q,phase);gen+=1;maxruns=max(maxruns,len(q))
+     assert sum(n for _,n in q)==initial_length*2**gen
+     if gen%2==0:
+      base,basephase=ugeneration(base,basephase)
+      assert erase(q)==base and phase==basephase
+     assert gen<=30
+    assert gen%2==0 and sum(n for a,n in q if a==GH)==1
+    hpos=0
+    for a,n in q:
+     if a==GH:break
+     assert gr[a]['kind'] in ('original','dummy')
+     assert all(GH not in w for w in gr[a]['productions'])
+     hpos+=n
+    checks['normalized_unique_H_cases']+=1
+    traces.append(dict(refined_state=i,M=M,N=N,first_H_generation=gen,
+                       first_H_index=hpos,halt_generation_length=sum(n for _,n in q),
+                       final_phase=phase,max_compressed_runs=maxruns))
+ # Verify all literal normalized rules mechanically against literal tag rules.
+ pairmap={tuple(r['expands']):r['id'] for r in g['alphabet'] if r['kind']=='pair'}
+ dd=pairmap[(d,d)]
+ for a in originals:
+  rawprod=[gi[names[x]] for x in rules[ids[gn[a]]]]
+  w=rawprod+[d]*(4-len(rawprod))
+  assert gr[a]['width']==1
+  assert gr[a]['productions']==[[pairmap[tuple(w[:2])],pairmap[tuple(w[2:])]],[dd,dd]]
+  checks['all_original_normalization_rows']+=2
+ for row in g['alphabet']:
+  assert len(row['productions'])==2 and all(len(w)==2 for w in row['productions'])
+  if row['kind']=='pair':
+   assert row['width']==0 and row['productions']==[row['expands'],row['expands']]
+   checks['all_pair_expansion_rows']+=2
+ return dict(status='PASS_LITERAL_BOUNDED_CHECKS',checks=dict(checks),
+             counts=p['counts'],all_nonhalt_states_visited=sorted(visits),
+             total_literal_tag_steps=total_steps,minimum_preacceptance_word=minimum,
+             maximum_counter_in_multistep_tests=max_integer,
+             normalized_halting_traces=traces,
+             literal_tables_sha256=hashlib.sha256(raw).hexdigest(),
+             checker_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+             exclusions=['No primary or upstream Python executed.','No arithmetic/history circuit emitted.',
+                         'No finite tests are claimed to prove universality.','No Pell witnesses materialized.'])
+if __name__=='__main__':
+ result=run();(ROOT/'literal_checks.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+ print(json.dumps({k:v for k,v in result.items() if k not in ('normalized_halting_traces','counts')},sort_keys=True))
