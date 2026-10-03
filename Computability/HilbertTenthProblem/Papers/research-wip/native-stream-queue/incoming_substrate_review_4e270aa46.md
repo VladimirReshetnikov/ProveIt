@@ -172,3 +172,12 @@ package layout. Restore the pinned archive trees when using the original
 release entrypoints. Unchanged author suites were not rerun for byte-only
 placements. New assembled mathematics or later editorial revisions need
 separate semantic reviews; they do not inherit a proof check from placement.
+
+## Newly merged publication awaiting its own audit
+
+The surreal synthesis at `d51fafea806cbd48ba29be017eff85cdd9653b14` and
+`0be9b913487fa2cc0e16cea6545c55f33b4446d8` arrived during the final sync of
+this review/reduction pass and was merged from `acb0041e1`. Its four changed
+paths contain the assembled four-source article, new crosswalk/questions,
+README, PDF and notation update. Review this composition next; the original
+archive and staging verdicts above remain explicitly confined to their pins.

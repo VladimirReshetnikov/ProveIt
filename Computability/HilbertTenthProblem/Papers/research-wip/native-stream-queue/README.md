@@ -34,6 +34,11 @@ the clean reverse-history lift also composes. The proof preserves unique natural
 fibers and has a fresh independent 10,080-tuple source census. It does not extend
 to nonnegative real witnesses or by itself establish a gate saving.
 
+A later surreal synthesis, published in `d51fafea8` and `0be9b9134`, has now
+been merged. Its assembled article, new crosswalk/questions, README, PDF and
+notation update are the **next pending review boundary**. The original archive
+and staging reviews below do not certify that new composition.
+
 The [four surreal order reports](review_batch80_surreal.md) pass their finite
 replays and the scoped mathematical review, with one separate prose correction
 about fixed-relation internal well-foundedness in GBC. Their different coding
