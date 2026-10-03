@@ -26,7 +26,10 @@ The
 [factored first-root construction](Papers/research-wip/native-stream-queue/complete86_factored_first_root.md)
 costs **48M+38A**, with **19 positive witnesses and exact degree179**.
 Its ordinary-strong alternative costs **87=47M+40A**, with exact degree135;
-the earlier88/125 alternative remains a separate degree tradeoff. Replacing
+the [reviewed grouping transfer](Papers/research-wip/native-stream-queue/complete86_first_root_partitions.md)
+adds improved operation/degree points88/123,91/102,92/80 and95/54 across
+thirteen complete asymmetric bases. Its independent census and fresh replays
+pass. Replacing
 the supplied first gap by its positive Pell root saves one addition through
 `T²−L(L+k)`. A proved bijection preserves the complete positive integer zero
 set, ordinary input, both ratio slacks and the full strong equation.

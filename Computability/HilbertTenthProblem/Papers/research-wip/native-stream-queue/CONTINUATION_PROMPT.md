@@ -40,8 +40,19 @@
 > These are distinct from the historical failed weakened/squared-scale86
 > proposals and unresolved independent-gamma87. Keep those boundaries.
 > Earlier log entries below use their historical benchmark statements.
-> Next circuit work may transfer this exact five-gate block into the earlier
-> grouping family, but no such family reoptimization is yet claimed.
+> The [thirteen-base grouping transfer](complete86_first_root_partitions.md)
+> and [independent review](review_complete86_first_root_partitions.md) are now
+> complete, with both fresh root receipts passing. All actual asymmetric
+> X=wq,Y=sq³ parents are used (not the discarded preliminary symmetric bases).
+> Census29,631 partitions/149,336 finalizers; all101 best-by-cost full sources
+> are emitted and recounted, with202 independent full modular degree checks.
+> Combined old+new frontier:86/179,87/135,88/123,89/113,90/109,91/102,92/80,
+> 93/72,94/62,95/54,96/50,97/48,98/44. The four new degree improvements beyond
+> standalone86/87 are88/123,91/102,92/80,95/54. New-family-only89/119,90/114,
+> 93/76,94/64 are dominated by retained older points. All retain19 positive
+> witnesses. At grouped zeros first prove N0'=±1, then T>L, then invoke the
+> old positive-gap theorem, including auxiliary-gap positivity in its old order.
+> Do not describe finite partition optimality as an unrestricted lower bound.
 > The [coefficient-only census](complete87_shared_coefficient_scout.md) is
 > frozen separately: reachable-set counts1/13/116/891 exclude at most three
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid

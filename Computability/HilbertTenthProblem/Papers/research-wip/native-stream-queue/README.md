@@ -19,7 +19,15 @@ with fresh root receipts. The86 construction also has an
 [mathematical challenge](review_complete86_first_root_math.md); its author
 and both review receipts pass fresh root replay. Earlier entries below retain their
 historical counts and benchmark statements; the current numerical bounds
-are74/86. The grouping frontier has not yet been recomputed for this change.
+are74/86. The [recomputed thirteen-base grouping family](complete86_first_root_partitions.md)
+adds four operation/exact-degree improvements:**88/123,91/102,92/80,95/54**.
+The union with all retained older asymmetric points is86/179,87/135,88/123,
+89/113,90/109,91/102,92/80,93/72,94/62,95/54,96/50,97/48,98/44.
+Every source retains19 positive witnesses and ordinary input. Its
+[independent audit](review_complete86_first_root_partitions.md) reproduces
+29,631 partitions,149,336 finalizers,101 full certificate/polynomial ledgers
+and202 complete modular degree expansions. Both fresh root receipts pass.
+This is a finite-family frontier; the minimum operation bound stays86.
 The [shared-coefficient scout](complete87_shared_coefficient_scout.md) exhausts
 a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
