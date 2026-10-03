@@ -394,6 +394,30 @@
 > All12 predecessor blobs and both new trios remain frozen; no historical
 >292320-family rerun is needed.
 
+> The [complement-port obstruction](review_complete86_complement_port_math.md)
+> and [independent challenge](review_complete86_complement_port_independent.md)
+> now reject that particular85-gate expression, with fresh root receipts.
+> For EVERYx>0 and unchanged valid fixed compiler numerals, they construct
+> all19 positive child coordinates with F=q−u<0 and all8 factors+1.
+> Choose t=L!>e=2dx+b, d|t, q=2^t; prime-power Euler divisibility gives
+> t|q(q−1). Write A0=q(q²−1), T'=MCJ+1+q(MF0J−1), where sourceMF=MF0+B−1.
+> SetZ=1,W=2^e,C=W+1. Since t|A0, X=2^R has a fixed residue moduloq−1
+> alongR=A0u+T'. Chooseu0=1−(K+2^(T'modt))C mod(q−1),
+> u=u0+(q−1)(2^(8t+8)−1). The exact long-complement identity gives
+> popcountR>3t+2, R=3mod4, R>q^4, u>q and positivealpha/zplus.
+> Extend ONLY the half-binomial positive CONVERSE to this largeR: explicit
+> X=2^R,Y=half-binomial-floor givea>8r,6XY²>a andratioerror<16r/(X+1)<1/2.
+> Henceeta,zeta,h,s,w,tau_root are positive. The normalized canonical
+> m=2cR,i=psi_A(m)/c² and odd-Chebyshev minus identities givepositivef,i,j,o,y.
+> gamma_0=gamma_1=0,gamma_(n+1)=2A gamma_n−gamma_(n−1)+2^(n−1)
+> givespositive rho=gamma_e,sigma=gamma_R−gamma_e; delta>0 atodd e>=3.
+> This is a FULL positive-zero counterfamily, not merely off-zero inverse
+> failure. Helpers check literal sources and bounded components; they do
+> not materialize the complete auxiliary tower. The old bounded soundness
+> theorem is never applied outside its hypotheses. Preserve both new trios
+> and the affine scout's frozen narrower statement. Universal74/86 remains;
+> no arbitrary85-operation lower bound follows.
+
 > The [Grill halt bridge](grill_tag_halt_bridge.md) and
 > [independent review](review_grill_tag_halt_bridge.md) are frozen and pass
 > root replay. Corrected E uses a−4 in its second long grill. At the unique

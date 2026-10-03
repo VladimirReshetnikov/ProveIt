@@ -1,0 +1,1630 @@
+{
+  "canonical_auxiliary_cases": [
+    {
+      "A": 2,
+      "R": 3,
+      "auxiliary_bits": 344,
+      "f_bits": 170,
+      "m": 90,
+      "main_c": 15
+    },
+    {
+      "A": 3,
+      "R": 3,
+      "auxiliary_bits": 1072,
+      "f_bits": 534,
+      "m": 210,
+      "main_c": 35
+    },
+    {
+      "A": 4,
+      "R": 3,
+      "auxiliary_bits": 2255,
+      "f_bits": 1125,
+      "m": 378,
+      "main_c": 63
+    },
+    {
+      "A": 5,
+      "R": 3,
+      "auxiliary_bits": 3934,
+      "f_bits": 1964,
+      "m": 594,
+      "main_c": 99
+    },
+    {
+      "A": 6,
+      "R": 3,
+      "auxiliary_bits": 6140,
+      "f_bits": 3067,
+      "m": 858,
+      "main_c": 143
+    },
+    {
+      "A": 7,
+      "R": 3,
+      "auxiliary_bits": 8898,
+      "f_bits": 4445,
+      "m": 1170,
+      "main_c": 195
+    },
+    {
+      "A": 8,
+      "R": 3,
+      "auxiliary_bits": 12229,
+      "f_bits": 6111,
+      "m": 1530,
+      "main_c": 255
+    }
+  ],
+  "canonical_first_main_input_cases": [
+    {
+      "R": 7,
+      "X_bits": 8,
+      "Y_bits": 21,
+      "c_bits": 169,
+      "ratio_slacks_positive": true
+    },
+    {
+      "R": 11,
+      "X_bits": 12,
+      "Y_bits": 55,
+      "c_bits": 661,
+      "ratio_slacks_positive": true
+    },
+    {
+      "R": 15,
+      "X_bits": 16,
+      "Y_bits": 105,
+      "c_bits": 1681,
+      "ratio_slacks_positive": true
+    },
+    {
+      "R": 19,
+      "X_bits": 20,
+      "Y_bits": 171,
+      "c_bits": 3421,
+      "ratio_slacks_positive": true
+    },
+    {
+      "R": 31,
+      "X_bits": 32,
+      "Y_bits": 465,
+      "c_bits": 14881,
+      "ratio_slacks_positive": true
+    }
+  ],
+  "complete_source": {
+    "A": 37,
+    "M": 48,
+    "actual_factor_identities": 8,
+    "all_live": true,
+    "full_finalizer_identities": 1,
+    "operations": 85,
+    "source": [
+      [
+        "tau_square",
+        "*",
+        "tau_root",
+        "tau_root"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "q"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "first_next",
+        "+",
+        "first_root_base",
+        "R10b"
+      ],
+      [
+        "first_product",
+        "*",
+        "first_root_base",
+        "first_next"
+      ],
+      [
+        "norm_first",
+        "-",
+        "tau_square",
+        "first_product"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "u",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "strong_difference",
+        "*",
+        "A",
+        "ic22"
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "strong_difference"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "R10a"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "u"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "wn2"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "u"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "zplus",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "norm_strong",
+        "-",
+        "L16",
+        "strong_difference"
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "R10a"
+      ],
+      [
+        "linear_difference",
+        "-",
+        "aux_u_rhs",
+        "jc"
+      ],
+      [
+        "norm_linear",
+        "+",
+        "linear_difference",
+        "index_difference"
+      ],
+      [
+        "eight_units",
+        "*",
+        "seven_units",
+        "norm_linear"
+      ],
+      [
+        "polynomial",
+        "-",
+        "eight_units",
+        1
+      ]
+    ],
+    "witnesses": 19
+  },
+  "factorial_cases": [
+    [
+      4,
+      24,
+      3
+    ],
+    [
+      5,
+      120,
+      15
+    ],
+    [
+      6,
+      720,
+      45
+    ],
+    [
+      7,
+      5040,
+      315
+    ],
+    [
+      8,
+      40320,
+      315
+    ],
+    [
+      9,
+      362880,
+      2835
+    ],
+    [
+      10,
+      3628800,
+      14175
+    ],
+    [
+      11,
+      39916800,
+      155925
+    ],
+    [
+      12,
+      479001600,
+      467775
+    ],
+    [
+      13,
+      6227020800,
+      6081075
+    ],
+    [
+      14,
+      87178291200,
+      42567525
+    ]
+  ],
+  "odd_index_polynomial_cases": 13,
+  "outer_cases": [
+    {
+      "K": 1,
+      "MC": 6,
+      "MF0": 12,
+      "R_bits": 152,
+      "d": 4,
+      "negative_F": true,
+      "population": 114,
+      "t": 12,
+      "threshold": 38,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 6,
+      "MF0": 12,
+      "R_bits": 152,
+      "d": 4,
+      "negative_F": true,
+      "population": 112,
+      "t": 12,
+      "threshold": 38,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 6,
+      "MF0": 12,
+      "R_bits": 152,
+      "d": 4,
+      "negative_F": true,
+      "population": 111,
+      "t": 12,
+      "threshold": 38,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 10,
+      "MF0": 12,
+      "R_bits": 152,
+      "d": 4,
+      "negative_F": true,
+      "population": 114,
+      "t": 12,
+      "threshold": 38,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 10,
+      "MF0": 12,
+      "R_bits": 152,
+      "d": 4,
+      "negative_F": true,
+      "population": 112,
+      "t": 12,
+      "threshold": 38,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 10,
+      "MF0": 12,
+      "R_bits": 152,
+      "d": 4,
+      "negative_F": true,
+      "population": 111,
+      "t": 12,
+      "threshold": 38,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 14,
+      "MF0": 4,
+      "R_bits": 152,
+      "d": 4,
+      "negative_F": true,
+      "population": 116,
+      "t": 12,
+      "threshold": 38,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 14,
+      "MF0": 4,
+      "R_bits": 152,
+      "d": 4,
+      "negative_F": true,
+      "population": 115,
+      "t": 12,
+      "threshold": 38,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 14,
+      "MF0": 4,
+      "R_bits": 152,
+      "d": 4,
+      "negative_F": true,
+      "population": 111,
+      "t": 12,
+      "threshold": 38,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 6,
+      "MF0": 12,
+      "R_bits": 296,
+      "d": 4,
+      "negative_F": true,
+      "population": 212,
+      "t": 24,
+      "threshold": 74,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 6,
+      "MF0": 12,
+      "R_bits": 296,
+      "d": 4,
+      "negative_F": true,
+      "population": 216,
+      "t": 24,
+      "threshold": 74,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 6,
+      "MF0": 12,
+      "R_bits": 296,
+      "d": 4,
+      "negative_F": true,
+      "population": 218,
+      "t": 24,
+      "threshold": 74,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 10,
+      "MF0": 12,
+      "R_bits": 296,
+      "d": 4,
+      "negative_F": true,
+      "population": 219,
+      "t": 24,
+      "threshold": 74,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 10,
+      "MF0": 12,
+      "R_bits": 296,
+      "d": 4,
+      "negative_F": true,
+      "population": 216,
+      "t": 24,
+      "threshold": 74,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 10,
+      "MF0": 12,
+      "R_bits": 296,
+      "d": 4,
+      "negative_F": true,
+      "population": 216,
+      "t": 24,
+      "threshold": 74,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 14,
+      "MF0": 4,
+      "R_bits": 296,
+      "d": 4,
+      "negative_F": true,
+      "population": 215,
+      "t": 24,
+      "threshold": 74,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 14,
+      "MF0": 4,
+      "R_bits": 296,
+      "d": 4,
+      "negative_F": true,
+      "population": 222,
+      "t": 24,
+      "threshold": 74,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 14,
+      "MF0": 4,
+      "R_bits": 296,
+      "d": 4,
+      "negative_F": true,
+      "population": 222,
+      "t": 24,
+      "threshold": 74,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 6,
+      "MF0": 28,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 177,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 6,
+      "MF0": 28,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 179,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 6,
+      "MF0": 28,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 173,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 10,
+      "MF0": 28,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 177,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 10,
+      "MF0": 28,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 179,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 10,
+      "MF0": 28,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 173,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 14,
+      "MF0": 12,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 180,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 14,
+      "MF0": 12,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 181,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 14,
+      "MF0": 12,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 177,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 14,
+      "MF0": 20,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 182,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 14,
+      "MF0": 20,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 183,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 14,
+      "MF0": 20,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 180,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 18,
+      "MF0": 28,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 177,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 18,
+      "MF0": 28,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 179,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 18,
+      "MF0": 28,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 173,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 22,
+      "MF0": 12,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 180,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 22,
+      "MF0": 12,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 181,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 22,
+      "MF0": 12,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 177,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 22,
+      "MF0": 20,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 182,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 22,
+      "MF0": 20,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 183,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 22,
+      "MF0": 20,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 180,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 26,
+      "MF0": 12,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 180,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 26,
+      "MF0": 12,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 181,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 26,
+      "MF0": 12,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 177,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 26,
+      "MF0": 20,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 182,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 26,
+      "MF0": 20,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 183,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 26,
+      "MF0": 20,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 180,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 30,
+      "MF0": 4,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 182,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 83,
+      "MC": 30,
+      "MF0": 4,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 187,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1009,
+      "MC": 30,
+      "MF0": 4,
+      "R_bits": 248,
+      "d": 5,
+      "negative_F": true,
+      "population": 183,
+      "t": 20,
+      "threshold": 62,
+      "x": 1
+    },
+    {
+      "K": 1,
+      "MC": 6,
+      "MF0": 28,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1071,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 6,
+      "MF0": 28,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1080,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 6,
+      "MF0": 28,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1068,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 10,
+      "MF0": 28,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1063,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 10,
+      "MF0": 28,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1080,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 10,
+      "MF0": 28,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1068,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 14,
+      "MF0": 12,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1073,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 14,
+      "MF0": 12,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1082,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 14,
+      "MF0": 12,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1074,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 14,
+      "MF0": 20,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1075,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 14,
+      "MF0": 20,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1084,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 14,
+      "MF0": 20,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1074,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 18,
+      "MF0": 28,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1063,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 18,
+      "MF0": 28,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1080,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 18,
+      "MF0": 28,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1068,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 22,
+      "MF0": 12,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1073,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 22,
+      "MF0": 12,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1082,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 22,
+      "MF0": 12,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1074,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 22,
+      "MF0": 20,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1075,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 22,
+      "MF0": 20,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1084,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 22,
+      "MF0": 20,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1074,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 26,
+      "MF0": 12,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1065,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 26,
+      "MF0": 12,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1082,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 26,
+      "MF0": 12,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1074,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 26,
+      "MF0": 20,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1067,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 26,
+      "MF0": 20,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1084,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 26,
+      "MF0": 20,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1074,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1,
+      "MC": 30,
+      "MF0": 4,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1075,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 83,
+      "MC": 30,
+      "MF0": 4,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1087,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    },
+    {
+      "K": 1009,
+      "MC": 30,
+      "MF0": 4,
+      "R_bits": 1448,
+      "d": 5,
+      "negative_F": true,
+      "population": 1077,
+      "t": 120,
+      "threshold": 362,
+      "x": 2
+    }
+  ],
+  "pins": {
+    "../../1980/BASE_TWO_PELL_89_PROOF.md": "c5ab081eb26a4730c5b8f33042c4352553fead9c1a83dea3f836a25d5fed472a",
+    "../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md": "e381124c969087ffa867448177a9df693d81e7bd85dd3a8489d443220fba053d",
+    "complete75_asymmetric_scale_tradeoffs.md": "3fb7aad219cc05570531c2e806bd4f4998681777963063761106400514a146c2",
+    "complete75_normalized_strong87.md": "9c1cfa3ccd5a71c127c8e6aa341fad6e857788d708129e04ea177dbbcdccfb3b",
+    "complete86_factored_first_root.json": "2dfe46fe9c5537ff51eb3c542806c58242238363e6018f9daab7eabf0b6fe61e",
+    "complete86_factored_first_root.md": "9f2b50449e0724e523e9dd5d022f229b77504976f23ee52ca2917cf11ceb322b",
+    "complete86_factored_first_root.py": "29cf4100b846bcbabb05185550b7d9ead6b572746048b94998a13c83eeaff40f",
+    "pell_kernel_half_binomial42.md": "0df596859d84aa1cf1d4636457937274e8fdac0c1f8da3196962d911be232992",
+    "review_complete86_complement_port_math.json": "0b09bf02264908d760c163b11f03cfe6f671a6fd320926df6543cd82c271a2a6",
+    "review_complete86_complement_port_math.md": "f0cba6a4ad0b1f5488782ae943ac0da547a5903401c2f9a332db3a2fcf7df0b3",
+    "review_complete86_complement_port_math.py": "5bf5183c2e78826e42a836cc035cb0e126cf3fb450749f89282997d8dfc972e8"
+  },
+  "scope": "Independent literal source and component checks plus companion all-parameter proof review. No full valid-width auxiliary tower is materialized; syntactic85 is disproved as a general universal replacement, not certified.",
+  "source_sha256": "602a1da3fd979c17738c921df81bdf6532020d8aca5826e6d081d2464d1484d0",
+  "status": "PASS_INDEPENDENT_COMPLEMENT_OBSTRUCTION_REVIEW"
+}

@@ -203,7 +203,21 @@ regenerates all874 DAGs and1,300 move instances; author and review receipts
 pass fresh root replay. This excludes only the stated finite grammar.
 The separately saved syntactic85 complement-coordinate expression has
 only a signed graph identity in this packet; its positive inverse is
-not established here and no new universal bound is inferred.
+not established there and is now rejected by the following obstruction.
+
+The [complement-coordinate obstruction](review_complete86_complement_port_math.md)
+constructs complete positive zeros of that85-gate expression with
+**restoredF=q−u<0**, for every positive ordinary input and unchanged valid
+fixed program numerals. Factorial widths fix the transport residue; an
+oversized packed index supplies the required binary population. A direct
+positive Pell construction, including all19 witnesses and the shared
+input/main quotient split, makes every one of the eight factors equal1.
+The [independent challenge](review_complete86_complement_port_independent.md)
+checks the source and the general mathematical construction. Both fresh
+root receipts pass. Finite component checks supplement the proof; they do
+not materialize the enormous full auxiliary tuple. This rejects this
+specific85 candidate, without changing the valid86 source or establishing
+a lower bound for other85-operation representations.
 
 The [corrected Grill halt bridge](grill_tag_halt_bridge.md) proves exact-width
 encoded halting equivalence, including the final queue cleanup. A3a phase
