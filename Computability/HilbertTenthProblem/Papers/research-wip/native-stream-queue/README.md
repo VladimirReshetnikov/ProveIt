@@ -33,6 +33,13 @@ body and executables preserved. A prior five-witness congruence atom removes
 one coordinate per congruence in its canonical quartic corollary, after
 quantifier elimination. These results do not lower the universal bound.
 
+The subsequent placements are also authenticated: [corrected code](review_batch80_corrected_placement_8a4e64732.md)
+now carries all three API repairs; [mass companions](review_batch80_mass_placement_345a9e44e.md)
+preserve 116 files and explicit shared copies; [surreal staging](review_surreal_placement_ccc046989.md)
+preserves 16 files with one complete base manuscript. At those pins the mass
+Parts and the surreal synthesis have not yet been written. Flattened release
+companions still require the original package layout for their runners.
+
 [All ten reports](incoming_substrate_review_aebfa386e.md) received at
 `ef2fc7990`/`aebfa386e` have completed proof/source review and isolated replay.
 The reviews preserve the delivered sources and provide pinned repair patches,

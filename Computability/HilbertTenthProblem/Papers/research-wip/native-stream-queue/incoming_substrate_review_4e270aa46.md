@@ -130,8 +130,29 @@ specific universal source, an ordinary-input loader, unbounded-duration
 representation, and a complete gate schedule. The present reviews establish
 the projection and its precise domain, not that further construction.
 
-Assembled-report transfers have separate revision boundaries. The [Tree Calculus
-Part XIX editorial/source audit](review_tree_typesetting_954261e15.md) and subsequent corrected-code placement are
-tracked separately from the original archive proofs. New catalogue and
-surreal-collection edits are likewise checked as transfers, rather than
-silently inheriting the archive review.
+Assembled-report transfers have separate revision boundaries:
+
+- [Tree Calculus Part XIX](review_tree_typesetting_954261e15.md): ordered
+  mathematical preservation and five tested editorial corrections, including
+  the single-fold ordinary-input translation obligation.
+- [New catalogue and reciprocal notes](review_batch79_j2_bbc67d225.md): four
+  prose corrections; the original signal packet's disjoint guards also make
+  its nonnegative-real fibre natural at zero input.
+- [Corrected-code placement](review_batch80_corrected_placement_8a4e64732.md):
+  all 21 changed supplements match their corrected archives. The implementation
+  repairs are now maintained; 145 physical files serve 146 member paths.
+- [Mass companion placement](review_batch80_mass_placement_345a9e44e.md):
+  116 direct files, 13 explicit aliases and 33 archive-only members account
+  for all 162 source occurrences. The existing article, README and PDF are
+  unchanged at this pin; intended Parts V–VI await a mathematical write.
+- [Surreal staging](review_surreal_placement_ccc046989.md): 16 exact transfers,
+  13 disclosed unstaged members, and source11 as the unchanged base article.
+  Its four-manuscript synthesis and renamed-file guide remain pending at that pin.
+
+Every transfer checker has a fresh matching root receipt. None silently
+substitutes mutable working-tree bytes for a different reviewed revision.
+The prefixed companions preserve source provenance, not the original runnable
+package layout. Restore the pinned archive trees when using the original
+release entrypoints. Unchanged author suites were not rerun for byte-only
+placements. New assembled mathematics or later editorial revisions need
+separate semantic reviews; they do not inherit a proof check from placement.
