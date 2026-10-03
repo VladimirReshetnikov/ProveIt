@@ -1,9 +1,10 @@
 # WIP: native queue streams and research continuation
 
 [Ten newly arrived reports](incoming_substrate_intake_aebfa386e.md) at
-`ef2fc7990`/`aebfa386e` are inventoried (334 files/84 Python modules) and
-**pending full review**. Their original archives and member hashes are pinned;
-no new theorem or operation bound is accepted from this intake alone.
+`ef2fc7990`/`aebfa386e` are inventoried (334 files/84 Python modules); their
+[full review is underway](incoming_substrate_review_aebfa386e.md). The queue
+packet is reviewed and repaired, with a proved finite-grammar witness reduction.
+The review index distinguishes completed packets from pending work.
 
 
 The [complete direct U15 partition frontier](u15_unit_partition_frontier.md)
