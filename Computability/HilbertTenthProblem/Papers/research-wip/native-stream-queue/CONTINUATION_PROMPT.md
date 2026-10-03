@@ -176,6 +176,13 @@
 > only outer examples are numerically materialized. The sound parent costs and
 > universal minimum of 85 operations remain unchanged.
 >
+> The [lazy ordered-evaluator intake](review_lazy_ordered_evaluator19_intake.md)
+> finds no gap in Report19's finite-support skipping proof. Candidate discovery
+> must be repeated after each changing factor; malformed inputs can cascade.
+> Sparse evaluation avoids the enormous factor allocation, but a Diophantine
+> transfer must still account for skipped-factor validity and event order.
+> This proof read does not recertify the implementation or add a universal bound.
+>
 > The [parallel-particle report review](review_parallel_particle_reports.md)
 > checks the new two-involution CA, its sparse evaluator, and its fixed-horizon
 > natural-witness quartics. An independent reconstruction matches the complete
@@ -198,6 +205,14 @@
 > checks and fresh normal/optimized receipts pass. This excludes that mass-four
 > substrate as a universal finite-observation loader; it supplies no general
 > CA implementation or universal arithmetic-circuit lower bound.
+>
+> The [original-frame first-hit intake](review_original_frame_first_hit30_intake.md)
+> checks Report30's conditional argument for complete targets: expanding orbits
+> have unbounded diameter, so exact configurations cannot repeat. The inherited
+> timed quartic can then make time a witness while preserving singleton fibers.
+> This mass-four decidable setting supplies no universal reduction. The next
+> concrete audit is its inherited timed chart compiler and a fully costed emitted
+> first-hit polynomial; published witness/residual counts are not gate counts.
 >
 > The [planar four-particle review](review_binary_planar_four_particle31.md)
 > checks the new binary shuttle rule and independently reconstructs its

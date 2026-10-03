@@ -122,7 +122,7 @@ to remove the separate input contribution from the height of the current
 three-mass packed compiler. The separate new obstruction packet proves this
 specific one-addition saving unsound in all four complete clean-clock
 fixtures: the requested clock can remain fixed while an endpoint/clock
-symmetry changes the ordinary input and preserves every residual. This
+symmetry changes the raw-input parameter and preserves every residual. This
 counterexample uses the three-mass compiler's own clock and proof; it does
 not substitute Report 18's binary-CA microedge clock into that source.
 
