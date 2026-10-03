@@ -1,18 +1,22 @@
 # Collision Geometry Is Linear
 
-**Diophantine Certificates for Rational Signal Machines and Conservative Particle Dynamics: event-sparse chambers, canonical quadratic and quartic certificates, two routes to complete chronology, a conservative universal frontend, sparse lattice certificates, and conserved-mass thresholds**
+**Diophantine Certificates for Rational Signal Machines and Conservative Particle Dynamics: event-sparse chambers, canonical quadratic and quartic certificates, two routes to complete chronology, a conservative universal frontend, sparse lattice certificates, conserved-mass thresholds, and mass four in every dimension**
 
-This is a research report dated 2 October 2026, built from eight AI-assisted
-research manuscripts of ProveIt's incoming reports: manuscripts 07 and 11 of
-batch 78 (Parts I and II), manuscripts 16 and 19 of batch 79 (Parts III and
-IV), and manuscripts 10, 02, 05 and 03 of batch 80 (Parts V and VI). The
-report calls them *source 07*, *source 11* and *source 12* to *source 17*
+This is a research report dated 2 October 2026 and extended on 3 October
+2026, built from twelve AI-assisted research manuscripts of ProveIt's incoming
+reports: manuscripts 07 and 11 of batch 78 (Parts I and II), manuscripts 16
+and 19 of batch 79 (Parts III and IV), manuscripts 10, 02, 05 and 03 of batch
+80 (Parts V and VI), and manuscripts 19, 06, 17 and 01 of batch 82 (a third
+source of Part VI, and Part VII). The
+report calls them *source 07*, *source 11* and *source 12* to *source 21*
 after the file prefixes of their shipped programs and data. For the first two
 the prefix is also the batch-78 manuscript number; for the others it is not:
 **source 12 is batch-79 manuscript 16, source 13 is batch-79 manuscript 19,
 source 14 is batch-80 manuscript 10, source 15 is batch-80 manuscript 02,
-source 16 is batch-80 manuscript 05, and source 17 is batch-80 manuscript
-03** (the prefixes continue this report's own sequence). Source 07 is
+source 16 is batch-80 manuscript 05, source 17 is batch-80 manuscript 03,
+source 18 is batch-82 manuscript 19, source 19 is batch-82 manuscript 06,
+source 20 is batch-82 manuscript 17, and source 21 is batch-82 manuscript
+01** (the prefixes continue this report's own sequence). Source 07 is
 "prepared with ChatGPT for Vladimir Reshetnikov's ProveIt research
 program", source 11's document metadata name "Research report prepared with
 OpenAI", source 12 is an AI-assisted research note, and source 13 is a
@@ -21,7 +25,13 @@ carry the author lines "Mathematical construction and reproducibility
 report", "A clean return extension of the reversible weighted CA
 construction", "Decidability theorem and executable checks" and "Decidability
 proof and a binary timing certificate"; they name no assistant, and the
-article describes them as AI-assisted research manuscripts.
+article describes them as AI-assisted research manuscripts. Sources 18–21 are
+numbered reports of one research pipeline, which calls source 17 its "Report
+12": source 18 is its "Research addendum 13 / Complete fixed input orbits and
+exact witness accounting", and sources 19, 20 and 21 carry the author lines
+"Research report 29", "Research report 30" and "Research report 31". They name
+no assistant or repository commit either. Source, manuscript and pipeline
+numbers all differ; the article translates the pipeline's numbers in brackets.
 
 | Source | Manuscript | Archive (arrival commit) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -33,6 +43,10 @@ article describes them as AI-assisted research manuscripts.
 | 15 | batch 80, manuscript 02 | `Exact_Targets_Three_Mass_Units.zip` (`4e270aa46`); *Exact targets with three conserved mass units*, main file `clean-target-release/clean-target-report.tex`, 15-page PDF; a declared extension of source 14 | source 14 by SHA-256 ("frozen companion release 9": its TeX, PDF and ledger) | `345a9e44e` | Part V (Sections 64–73) |
 | 16 | batch 80, manuscript 05 | `Single_Unit_Three_Mass_Decidability (1).zip` (`4e270aa46`; note the space before the parenthesis); *Three mass units with a single unit symbol*, main file `single-unit-three-mass/single-unit-mass-three.tex`, 10-page PDF; the attribution revision of batch-80 manuscript 06 (`Single_Unit_Three_Mass_Decidability.zip`, 9-page PDF), which is superseded and not shipped | none named (cites source 13 by title) | `345a9e44e` | Part VI (Sections 74–82) |
 | 17 | batch 80, manuscript 03 | `Four_Mass_Decidability_Package.zip` (`4e270aa46`); *Four mass units and exact reachability*, main file `four-mass-bound/four-mass-decidability.tex`, 12-page PDF | none named (cites source 16 as its companion) | `345a9e44e` | Part VI (Sections 83–92) |
+| 18 | batch 82, manuscript 19 | `Timed_Four_Mass_Quartic_Certificates.zip` (`db37d18c8`); *Canonical quartic certificates for timed four mass orbits* (the pipeline's addendum 13), main file `phase-quartic-release/fixed-input-timed-quartics.tex`, 12-page PDF; a declared addendum to source 17 | no repository commit; cites source 17 by title ("companion report 12"); its `verification/source-freeze.json` pins its own code | `49dfa8fd6` | Part VI (Sections 93–100) |
+| 19 | batch 82, manuscript 06 | `Dimension_Independent_Particle_Thresholds_Package.zip` (`db37d18c8`); *Dimension independent particle thresholds: Effective reachability at mass four and the inherited mass five boundary* (Report 29), main file `dimension-independent-threshold-release-20261003/report29.tex`, 22-page PDF | no repository commit; SHA-256 of the TeX of source 17 (`803bf0c4…`), source 18 (`fecc0ae2…`) and batch-82 Reports 16 (`7e644e82…`) and 26 (`a156d7d9…`) | `49dfa8fd6` | Part VII (Sections 101–117) and Appendices I–J |
+| 20 | batch 82, manuscript 17 | `Sparse_Orbit_Geometry_and_Exact_Counting_Package.zip` (`db37d18c8`); *Sparse orbit geometry and exact counting: Semilinear spatial sets, quadratic clocks, and the effects of drift* (Report 30), main file `sparse-orbit-geometry-release-20261003/report30.tex`, 24-page PDF | no repository commit; SHA-256 of source 19's TeX (`1e4b9cb1…`) | `49dfa8fd6` | Part VII (Sections 118–128) and Appendix K |
+| 21 | batch 82, manuscript 01 | `Binary_Planar_Four_Particle_Shuttle_Package.zip` (`db37d18c8`); *A binary planar four particle shuttle: Exact orbit geometry and a one step quartic certificate* (Report 31), main file `binary-planar-shuttle-release-20261003/report31.tex`, 14-page PDF | no repository commit; SHA-256 of the TeX of sources 17, 18 and 20 (`0723338c…` for source 20) | `49dfa8fd6` | Part VII (Sections 129–140) |
 
 **Parts I and II prove one theorem by two routes.** Once a complete finite
 collision history of a rational signal machine is fixed, its realizations are
@@ -88,6 +102,38 @@ reachability and pattern occurrence stay decidable at mass four (Theorem
 shows that the timed relation is no longer Presburger (Proposition 89.2). So
 integer-state automata need at least five particles. Sections 1.12–1.16
 introduce the two Parts, with a threshold table.
+
+**Source 18 and Part VII: mass at most four in every dimension (batch 82).**
+Source 18, a declared addendum to source 17 and the third source of Part VI,
+answers source 17's last question for a fixed input: conditional on source
+17's normal form, the complete timed orbit of a fixed input of mass at most
+four is a disjoint union of half-open charts with at most two natural
+parameters, affine domains and quadratic outputs (Lemma 94.1), and a
+canonical quartic with `B + K + M` natural witnesses has exactly one witness
+tuple at each complete timed configuration (Theorem 93.1, Proposition 96.1);
+for source 17's binary shuttle it specializes to four witnesses and seven
+squares, exact even for nonnegative real witnesses at integer inputs and
+uniform in the gap (Corollary 99.1). Part VII (sources 19–21): for a
+cellular automaton on `Z^d` with a finite positively weighted alphabet, a
+unique vacuum, at most one weight-one symbol and conserved mass, exact and
+translated reachability and anchored and translated pattern occurrence are
+decidable from every input of mass at most four, uniformly in `d` and without
+reversibility (Theorem 101.1; at `d = 1` this is source 17's Theorem 83.1,
+proved again by the same architecture); Appendix I lifts source 18's
+quartics to `Z^d`. Source 19's inherited sharp four-versus-five boundary in
+every dimension (Corollary 101.2) is conditional on batch-82 Reports 16 and
+26. Source 20 derives semilinear visited sets in finitely many translates of
+one rational plane, eventually quasipolynomial box counts of sharp degree,
+quadratic clocks and piecewise quadratic first arrivals (Theorems
+118.2–118.3), the effect of drift (Theorem 118.4; an explicit weighted
+radius-six planar automaton has the exact count `3N − 3√N + O(1)`, Theorem
+125.1) and canonical first-visit quartics (Appendix K). Source 21 realizes
+the planar wedge and the drift regime by an ordinary binary, quiescent,
+conservative radius-six rule on `Z²` built from source 17's binary shuttle:
+the wedge minus two lines, exact counts with `4N − 4√N + O_k(1)` after drift,
+Boolean degree exactly 45 with exactly 78 essential cells, and a one-step
+quartic with 614 auxiliaries unique even over the reals (Theorems
+132.1–138.1). Sections 1.17–1.21 introduce them.
 
 **Status: AI-assisted, unrefereed, not formalized.** Conventional proofs and
 finite exact-arithmetic checks. Nothing in the report is formalized in Lean or
@@ -150,9 +196,34 @@ dated paragraph of Section 47 (`smc:sl:sec:reproduction`). The research
 tree's correction audit `review_batch80_corrected.md` (commit `abfc0cb25`)
 confirms the repair.
 
+**Batch 82 (source 18 and Part VII): reviews.** The research tree reviewed
+three of the four batch-82 archives on the day of their placement, all in
+`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`:
+source 21 in `review_binary_planar_four_particle31.md` (commit `16f50dcc6`;
+"PASS within the stated scope; no error found", with an independent
+reconstruction of the whole local quartic from the four printed rules);
+source 19 in `review_dimension_independent_four_mass.md` (commit
+`7b547f686`; the proof "passes this mathematical review", a second reviewer
+found no gap, and the inherited five-particle upper bound is not reproved);
+and source 20 in the scoped intake `review_original_frame_first_hit30_intake.md`
+(commit `c875bad40`; no defect in the whole-orbit-injectivity step of
+Corollary K.4, not a review of the compiler, which it names as the next
+audit). That next audit followed in `original_frame_first_hit30_fixture.md`
+and its independent review `review_original_frame_first_hit30_fixture.md`
+(commit `5b4c091e6`): source 19's timed proof (`19-mass-four-zd-timed-PROOF.md`,
+Appendix I) was read in full and is sound as a conditional statement, and
+for one drifted orbit of source 20's weighted planar automaton a complete
+first-hit quartic with 35 paid operations, three natural witnesses and
+degree four was emitted (one fixed input, not a compiler). Source 18 has no review; the programme's archive inventory
+`reviewed_report_archive_replay.md` lists it as relocation only. The reviews
+of batch-82 Reports 16 (`review_literal_universal_reversible_source16.md`,
+`69730d3e8`) and 26–28 (`review_parallel_particle_reports.md`, `fb7e3cb47`)
+bear on source 19's corollary. None of these reviews the batch-82 write of
+this report.
+
 ```
 article.tex                                                     the report, standalone LaTeX with an internal bibliography
-article.pdf                                                     the compiled report, 194 pages (unnumbered title page, then pages 1–193)
+article.pdf                                                     the compiled report, 280 pages (unnumbered title page, then pages 1–279)
 README.md                                                       this guide
 07-collision-geometry-PROVENANCE.md                             source 07's repository and literature provenance, as delivered
 11-signal-certificates-REPRODUCIBILITY.md                       source 11's reproducibility record, as delivered
@@ -175,6 +246,45 @@ README.md                                                       this guide
 17-four-mass-INDEPENDENT-AUDIT.md                               source 17's independent mathematical audit (delivered independent/), as delivered
 17-four-mass-SOURCE-PROVENANCE.md                               source 17's primary-source scope and page mappings, as delivered
 17-four-mass-finite-seed-section-lemma.md                       source 17's detailed finite seed library and threshold construction, as delivered
+18-timed-quartics-independent-audit.md                          source 18's mathematical review and verification scope (delivered verification/)
+19-mass-four-zd-PROOF.md                                        source 19's full proof source (delivered scientific/PROOF.md)
+19-mass-four-zd-audit.md                                        source 19's independent audit of the higher-dimensional extension (two wording corrections)
+19-mass-four-zd-independent-review.md                           source 19's adversarial review (sharpness conditional on Reports 16 and 26)
+19-mass-four-zd-literature.md                                   source 19's higher-dimensional literature check
+19-mass-four-zd-timed-PROOF.md                                  source 19's timed corollary: Z^d charts and quartics (Appendix I; delivered scientific/timed/)
+19-mass-four-zd-timed-REVIEW.md                                 source 19's independent review of the timed corollary
+20-orbit-geometry-examples-REVIEW.md                            source 20's review of its explicit automata and frame restoration (delivered scientific/examples/)
+20-orbit-geometry-first-visit-PROOF.md                          source 20's canonical first-visit quartics (Appendix K; delivered scientific/first-visit/)
+20-orbit-geometry-first-visit-README.md                         the first-visit supplement's README, as delivered
+20-orbit-geometry-first-visit-independent-review.md             its independent review
+20-orbit-geometry-geometry-PROOF.md                             source 20's geometry and distinct-site counting proof (delivered scientific/geometry/)
+20-orbit-geometry-geometry-README.md                            the geometry supplement's README, as delivered
+20-orbit-geometry-geometry-counting-review.md                   its distinct-site counting review
+20-orbit-geometry-original-frame-PROOF.md                       source 20's original-frame complete-target proof (Corollary K.4; delivered scientific/original-frame/)
+20-orbit-geometry-original-frame-REVIEW.md                      its independent review
+21-planar-shuttle-LOCAL_ALGEBRA.md                              source 21's Boolean degree and expanded local quartic (delivered scientific/)
+21-planar-shuttle-PROOF.md                                      source 21's construction and full-shift proof (delivered scientific/)
+21-planar-shuttle-audit-drift-and-first-arrivals.md             source 21's audit addendum on drift and first arrivals (delivered scientific/audit/)
+21-planar-shuttle-audit-final-review.md                         source 21's final review (pins its files in data/21-planar-shuttle-audit-reviewed-*.sha256)
+21-planar-shuttle-audit-independent-audit.md                    source 21's independent audit
+21-planar-shuttle-audit-local-quartic-review.md                 source 21's review of the local algebra and literal quartic
+22-clean-clocks-EMITTED-CIRCUIT-AUDIT.md                        placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+22-clean-clocks-FIVE-GATE-FOLDING-AUDIT.md                      placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+22-clean-clocks-FOLDED-ADDENDUM.md                              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+22-clean-clocks-FOLDED-PORTABILITY.md                           placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+22-clean-clocks-FOLDED-README.md                                placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+22-clean-clocks-MATH-REVIEW.md                                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+22-clean-clocks-PROOF-AUDIT.md                                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+22-clean-clocks-REPRODUCIBILITY-README.md                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+22-clean-clocks-THEOREM.md                                      placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+23-canonical-fibers-CANONICAL-HEIGHT-CIRCUIT-AUDIT.md           placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+23-canonical-fibers-CANONICAL-HEIGHT-PROOF-AUDIT.md             placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+23-canonical-fibers-CANONICAL-HEIGHT-README.md                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+23-canonical-fibers-CANONICAL-HEIGHT-THEOREM.md                 placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+23-canonical-fibers-MATH-REVIEW.md                              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+23-canonical-fibers-NATIVE-FIBERS-README.md                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+23-canonical-fibers-NATIVE-FIBERS-REVIEW.md                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+23-canonical-fibers-NATIVE-FIBERS-THEOREM.md                    placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
 code/07-collision-geometry-Makefile                             source 07's make targets: test (run_checks.py) and pdf (latexmk)
 code/07-collision-geometry-run_checks.py                        source 07's 34,560-assertion regression suite (imports signal_certificates; rewrites data/)
 code/07-collision-geometry-signal_certificates.py               source 07's exact simulator, chamber compiler, quartic union (standard library)
@@ -259,6 +369,61 @@ code/17-four-mass-run-tests.sh                                  source 17's test
 code/17-four-mass-test_binary_expanding_shuttle.py              source 17's producer checks; rewrites the conservation certificate in place
 code/17-four-mass-test_exact_boundaries.py                      source 17's 13 boundary-test groups of binary_exact.py (normal and -O)
 code/17-four-mass-test_expanding_shuttle.py                     source 17's typed weighted shuttle tests
+code/18-timed-quartics-build.sh                                 source 18's build of its own article (delivered layout)
+code/18-timed-quartics-compact_binary_quartic.py                source 18's four-witness binary certificate (delivered code/phase/)
+code/18-timed-quartics-exact_phase_quartic.py                   source 18's chart compiler: product and SOS formats, ledgers (delivered code/phase/)
+code/18-timed-quartics-run-tests.sh                             source 18's test runner (python3; runs the unshipped verify_manifest.py; regenerates fixtures in place)
+code/18-timed-quartics-selector_elimination.py                  source 18's SOS selector elimination (delivered code/phase/)
+code/18-timed-quartics-test_compact_binary_quartic.py           exhaustive four-witness cube suite (over 170 s here)
+code/18-timed-quartics-test_exact_phase_quartic.py              exhaustive chart-compiler suite (over 170 s here)
+code/18-timed-quartics-test_selector_elimination.py             selector-elimination suite
+code/19-mass-four-zd-audit_arithmetic.py                        source 19's arithmetic audit (delivered scientific/)
+code/19-mass-four-zd-build.sh                                   source 19's build of its own article (delivered layout)
+code/19-mass-four-zd-check_independent_arithmetic.py            source 19's independent arithmetic checks against PROOF.md (delivered scientific/)
+code/19-mass-four-zd-replay.py                                  source 19's replay (exact inventory and pinned hashes; delivered layout only)
+code/19-mass-four-zd-reproduce.sh                               source 19's trusted bootstrap for replay.py (python3 -I)
+code/19-mass-four-zd-tamper_regression.py                       source 19's tamper regression of the replay
+code/19-mass-four-zd-timed-check_corollary.py                   source 19's checks of the timed corollary (delivered scientific/timed/)
+code/20-orbit-geometry-build.sh                                 source 20's build of its own article (delivered layout)
+code/20-orbit-geometry-examples-independent-audit.py            source 20's independent audit of the explicit automata (delivered scientific/examples/)
+code/20-orbit-geometry-first-visit-audit.py                     source 20's first-visit algebra fixtures (delivered scientific/first-visit/audit.py)
+code/20-orbit-geometry-geometry-audit.py                        source 20's geometry and counting audit (delivered scientific/geometry/audit.py; SymPy optional)
+code/20-orbit-geometry-make_figures.py                          source 20's matplotlib renderer of its figure (delivered figures/)
+code/20-orbit-geometry-replay.py                                source 20's replay (exact inventory and pinned hashes; delivered layout only)
+code/20-orbit-geometry-reproduce.sh                             source 20's bootstrap for replay.py
+code/20-orbit-geometry-tamper_regression.py                     source 20's tamper regression of the replay
+code/21-planar-shuttle-audit-check_essential_inputs.py          source 21's check of the 78 essential cells (delivered scientific/audit/)
+code/21-planar-shuttle-audit-independent_audit.py               source 21's independent audit (54 s; 152 s with -O here)
+code/21-planar-shuttle-audit-independent_drift_audit.py         source 21's independent drift audit (prints non-ASCII; see rerun notes)
+code/21-planar-shuttle-audit-reconstruct_local_quartic.py       source 21's independent reconstruction of the local quartic
+code/21-planar-shuttle-audit-review_parent_code.py              source 21's review of source 17's code it builds on (prints non-ASCII)
+code/21-planar-shuttle-audit-upgrade_assert_checks.py           source 21's assert-hardening helper (its lineage record is in data/)
+code/21-planar-shuttle-build.sh                                 source 21's build of its own article (delivered layout)
+code/21-planar-shuttle-code-build_local_quartic.py              builds the 614-auxiliary local quartic certificate (delivered scientific/code/)
+code/21-planar-shuttle-code-check_local_quartic.py              checks the local quartic certificate
+code/21-planar-shuttle-code-check_shuttle.py                    checks orbit, counts and the local-rule certificate
+code/21-planar-shuttle-code-component_rule.py                   the component (four-shape) form of the rule
+code/21-planar-shuttle-code-exact_formulas.py                   exact formulas for the orbit, counts and inverses
+code/21-planar-shuttle-code-local_rule.py                       the radius-six local rule
+code/21-planar-shuttle-make_figures.py                          source 21's matplotlib renderer of its two figures (delivered figures/)
+code/21-planar-shuttle-replay.py                                source 21's replay (--verify-only or --output-dir; delivered layout only)
+code/21-planar-shuttle-reproduce.sh                             source 21's bootstrap for replay.py
+code/21-planar-shuttle-tamper_regression.py                     source 21's tamper regression of the replay
+code/22-clean-clocks-build.sh                                   placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/22-clean-clocks-check_degree_certificate.py                placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/22-clean-clocks-check_emitted_circuits.py                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/22-clean-clocks-check_semantics.py                         placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/22-clean-clocks-emit_clean_clocks.py                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/22-clean-clocks-folded-check_folded_clocks.py              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/22-clean-clocks-folded-emit_folded_clocks.py               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/23-canonical-fibers-build.sh                               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/23-canonical-fibers-check_canonical_height.py              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/23-canonical-fibers-check_canonical_height_proof.py        placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/23-canonical-fibers-check_combined_fibers.py               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/23-canonical-fibers-check_privacy.py                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/23-canonical-fibers-check_provenance.py                    placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/23-canonical-fibers-emit_canonical_clocks.py               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+code/23-canonical-fibers-native-check_native_fibers.py          placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
 data/07-collision-geometry-checks.json                          source 07's recorded run: PASS, 34,560 assertions, test counts and ledgers
 data/07-collision-geometry-first_hit_quartic_union.json         the two-chamber first-hit quartic (all matrices and the selector formula)
 data/07-collision-geometry-simultaneous_two_sites.json          the simultaneous two-site certificate (Section 11.3)
@@ -368,7 +533,93 @@ data/17-four-mass-binary-shuttle-test-results.json              receipt of test_
 data/17-four-mass-exact-boundary-results.json                   receipt of test_exact_boundaries.py
 data/17-four-mass-portable-replay-results.json                  source 17's record of a portable ZIP replay
 data/17-four-mass-shuttle-test-results.json                     receipt of test_expanding_shuttle.py
+data/18-timed-quartics-binary-d7-full-orbit-quartics.json       the eight-witness binary certificates at d = 7 (Section 98.3)
+data/18-timed-quartics-binary-uniform-four-witness-sos.json     the uniform four-witness, seven-square certificate (Corollary 99.1)
+data/18-timed-quartics-binary-uniform-seven-witness-sos.json    the uniform seven-witness certificate
+data/18-timed-quartics-compact-binary-test-results.json         receipt of the four-witness suite
+data/18-timed-quartics-fresh-extraction.json                    source 18's fresh-extraction record (hashes)
+data/18-timed-quartics-package-checks.json                      source 18's package checks
+data/18-timed-quartics-phase-quartic-test-results.json          receipt of the chart-compiler suite
+data/18-timed-quartics-selector-elimination-test-results.json   receipt of the selector-elimination suite
+data/18-timed-quartics-source-freeze.json                       source 18's freeze of its own code (hashes; names source 17's three files)
+data/19-mass-four-zd-expected-arithmetic.json                   expected receipt of audit_arithmetic.py
+data/19-mass-four-zd-expected-independent.json                  expected receipt of check_independent_arithmetic.py
+data/19-mass-four-zd-expected-timed.json                        expected receipt of check_corollary.py
+data/19-mass-four-zd-source-lineage.json                        pins of sources 17 and 18 and Reports 16 and 26 (SHA-256)
+data/20-orbit-geometry-expected-examples.json                   expected receipt of the examples audit
+data/20-orbit-geometry-expected-first-visit.json                expected receipt of the first-visit audit (byte copy of the next two)
+data/20-orbit-geometry-expected-geometry.json                   expected receipt of the geometry audit (byte copy of the next two)
+data/20-orbit-geometry-first-visit-audit-results-optimized.json first-visit receipt under -O
+data/20-orbit-geometry-first-visit-audit-results.json           first-visit receipt
+data/20-orbit-geometry-geometry-audit-results-optimized.json    geometry receipt under -O
+data/20-orbit-geometry-geometry-audit-results.json              geometry receipt
+data/20-orbit-geometry-source-lineage.json                      pin of source 19 (SHA-256)
+data/21-planar-shuttle-audit-assert-hardening-lineage.json      record of the assert-hardening upgrade
+data/21-planar-shuttle-audit-check-results.txt                  receipt of the independent audit (byte copy of the two independent_audit receipts)
+data/21-planar-shuttle-audit-drift-check-results.txt            receipt of the drift audit
+data/21-planar-shuttle-audit-essential-input-check-results.txt  receipt of the essential-cell check
+data/21-planar-shuttle-audit-essential-input-witnesses.json     witnesses of the 78 essential cells
+data/21-planar-shuttle-audit-independent_audit.normal.txt       independent-audit receipt
+data/21-planar-shuttle-audit-independent_audit.optimized.txt    independent-audit receipt under -O
+data/21-planar-shuttle-audit-independent_drift_audit.normal.txt drift-audit receipt
+data/21-planar-shuttle-audit-independent_drift_audit.optimized.txt  drift-audit receipt under -O
+data/21-planar-shuttle-audit-optimized-audit-validation.json    validation of the -O audit runs
+data/21-planar-shuttle-audit-parent-code-review-results.txt     receipt of the parent-code review
+data/21-planar-shuttle-audit-quartic-reconstruction-normal.txt  quartic-reconstruction receipt
+data/21-planar-shuttle-audit-quartic-reconstruction-optimized.txt  quartic-reconstruction receipt under -O
+data/21-planar-shuttle-audit-quartic-reconstruction-results.json  quartic-reconstruction results
+data/21-planar-shuttle-audit-review_parent_code.normal.txt      parent-code-review receipt
+data/21-planar-shuttle-audit-review_parent_code.optimized.txt   parent-code-review receipt under -O
+data/21-planar-shuttle-audit-reviewed-audit-code.sha256         review binding: hashes of the reviewed audit code (cited by the final review)
+data/21-planar-shuttle-audit-reviewed-main-files.sha256         review binding: hashes of the reviewed main files
+data/21-planar-shuttle-audit-reviewed-supplement-files.sha256   review binding: hashes of the reviewed supplement files
+data/21-planar-shuttle-expected-cross-implementation.txt        expected receipt (cross-implementation)
+data/21-planar-shuttle-expected-drift.txt                       expected drift receipt
+data/21-planar-shuttle-expected-essentiality.txt                expected essentiality receipt
+data/21-planar-shuttle-expected-independent.txt                 expected independent-audit receipt
+data/21-planar-shuttle-expected-local-rule.json                 expected local-rule certificate (byte copy of local-rule-certificate.json)
+data/21-planar-shuttle-expected-primary.json                    expected primary receipt of check_shuttle.py
+data/21-planar-shuttle-expected-quartic-checks.json             expected receipt of check_local_quartic.py
+data/21-planar-shuttle-expected-quartic-counts.json             expected quartic counts (614, 693, 79, 3403)
+data/21-planar-shuttle-expected-quartic-reconstruction.json     expected reconstruction receipt
+data/21-planar-shuttle-expected-replay-summary.json             expected replay summary
+data/21-planar-shuttle-local-quartic-certificate.json           the one-step quartic: 3403 collected terms (267,097 bytes, the largest shipped file)
+data/21-planar-shuttle-local-rule-certificate.json              the local rule and its 78-cell dependency set
+data/21-planar-shuttle-simulation-data.json                     orbit data of the two figures (delivered figures/)
+data/21-planar-shuttle-source-lineage.json                      pins of sources 17, 18 and 20 (SHA-256)
+data/22-clean-clocks-degree_crosscheck.json                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-delivery-provenance.json                   placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-emission.json                              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-final-degree-replay.log                    placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-final-emission-replay.log                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-final-independent-replay.log               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-final-semantics-replay.log                 placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-folded-base-integrity-after-audit.log      placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-folded-emission.json                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-folded-emitter-replay.log                  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-folded-final-live-base-replay.log          placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-folded-independent_folded_clock_audit.json placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-folded-initial-live-base-audit.log         placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-folded-portable-read-only-replay.log       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-folded-relocated-portable-replay.json      placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-independent_emitted_circuit_audit.json     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-privacy-scan.json                          placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-report21-qa.json                           placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-report21-replay.json                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-semantics.json                             placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/22-clean-clocks-source-provenance.json                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/23-canonical-fibers-canonical-emission.json                placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/23-canonical-fibers-canonical_height_proof_checks.json     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/23-canonical-fibers-combined-checks.json                   placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/23-canonical-fibers-delivery-provenance.json               placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/23-canonical-fibers-frozen-before.json                     placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/23-canonical-fibers-independent-canonical-height-audit.json  placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/23-canonical-fibers-native-CHECK-RECEIPT.json              placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
+data/23-canonical-fibers-report22-qa.json                       placed by 7d2b1b245 (batch 82M2) for Part VIII, not yet written; not described by this write
 figures/17-four-mass-binary-four-particle-shuttle.pdf           source 17's article figure (vector PDF, printed as Figure 5)
+figures/20-orbit-geometry-visited-geometry.pdf                  source 20's figure (vector PDF, printed as Figure 7)
+figures/21-planar-shuttle-orbits.pdf                            source 21's orbit figure (vector PDF, printed as Figure 9)
+figures/21-planar-shuttle-rule.pdf                              source 21's rule figure (vector PDF, printed as Figure 8)
 ```
 
 ### Delivered names
@@ -441,6 +692,50 @@ byte-identical in both editions). Delivered name → shipped name:
   → `figures/17-four-mass-binary-four-particle-shuttle.pdf` (printed as
   Figure 5); the top-level `*.md` other than `README.md` and
   `independent/*.md` → `17-four-mass-<file name>`.
+- Source 18 (`phase-quartic-release/`): `build.sh`, `run-tests.sh` and
+  `code/phase/*.py` → `code/18-timed-quartics-<file name>`;
+  `code/phase/*.json` and `verification/*.json` →
+  `data/18-timed-quartics-<file name>`; `verification/independent-audit.md`
+  → `18-timed-quartics-independent-audit.md`. Its
+  `code/test_binary_expanding_shuttle.py`,
+  `code/binary-radius6-conservation-certificate.json` and
+  `code/binary-shuttle-test-results.json` are byte copies of source 17's
+  `code/17-four-mass-test_binary_expanding_shuttle.py`,
+  `data/17-four-mass-binary-radius6-conservation-certificate.json` and
+  `data/17-four-mass-binary-shuttle-test-results.json` and are shipped once,
+  as source 17's.
+- Source 19 (`dimension-independent-threshold-release-20261003/`):
+  `build.sh`, `replay.py`, `reproduce.sh`, `tamper_regression.py` and
+  `scientific/*.py` → `code/19-mass-four-zd-<file name>`;
+  `scientific/timed/check_corollary.py` →
+  `code/19-mass-four-zd-timed-check_corollary.py`; `verification/*.json` →
+  `data/19-mass-four-zd-<file name>`; `scientific/*.md` →
+  `19-mass-four-zd-<file name>` and `scientific/timed/{PROOF,REVIEW}.md` →
+  `19-mass-four-zd-timed-{PROOF,REVIEW}.md`.
+- Source 20 (`sparse-orbit-geometry-release-20261003/`): `build.sh`,
+  `replay.py`, `reproduce.sh`, `tamper_regression.py` and
+  `figures/make_figures.py` → `code/20-orbit-geometry-<file name>`;
+  `scientific/<d>/<file>.py` (d = `examples`, `first-visit`, `geometry`) →
+  `code/20-orbit-geometry-<d>-<file>.py`; `scientific/<d>/*.json` →
+  `data/20-orbit-geometry-<d>-<file name>` and `verification/*.json` →
+  `data/20-orbit-geometry-<file name>`; `scientific/<d>/*.md` (d also
+  `original-frame`) → `20-orbit-geometry-<d>-<file name>`;
+  `figures/visited-geometry.pdf` → `figures/20-orbit-geometry-visited-geometry.pdf`.
+- Source 21 (`binary-planar-shuttle-release-20261003/`): `build.sh`,
+  `replay.py`, `reproduce.sh`, `tamper_regression.py` and
+  `figures/make_figures.py` → `code/21-planar-shuttle-<file name>`;
+  `scientific/code/*.py` → `code/21-planar-shuttle-code-<file name>`;
+  `scientific/audit/*.py` → `code/21-planar-shuttle-audit-<file name>`;
+  `scientific/audit/*.{txt,json,sha256}` →
+  `data/21-planar-shuttle-audit-<file name>`; `scientific/*.json`,
+  `figures/simulation-data.json` and `verification/*` →
+  `data/21-planar-shuttle-<file name>`; `scientific/*.md` →
+  `21-planar-shuttle-<file name>` and `scientific/audit/*.md` →
+  `21-planar-shuttle-audit-<file name>`; `figures/{rule,orbits}.pdf` →
+  `figures/21-planar-shuttle-{rule,orbits}.pdf`.
+- Sources 22 and 23 (batch 82, cluster M2, placed by `7d2b1b245` for a
+  Part VIII that is not yet written) are listed above but are not described
+  by this write.
 
 Not shipped (all survive in the archives of the arrival commits):
 
@@ -482,7 +777,16 @@ Not shipped (all survive in the archives of the arrival commits):
   (`Single_Unit_Three_Mass_Decidability.zip`), the superseded original of
   source 16 (seven of them are byte-identical to source 16's; its manuscript,
   README, provenance record, PDF and ledger differ only in the attribution,
-  `16-single-unit-REVISION.md`).
+  `16-single-unit-REVISION.md`);
+- for sources 18–21 (batch 82; 22 files, all in `db37d18c8`): the four
+  manuscripts (printed as source 18 and Part VII) and their PDFs; the four
+  delivery READMEs; the four checksum ledgers `SHA256SUMS`, all verified at
+  placement (source 18's 25 of 25, source 19's 20 of 20, source 20's 31 of
+  31, source 21's 61 of 61); source 18's manifest checker
+  `verify_manifest.py` and its three byte copies of source-17 files (above);
+  source 20's two supplement manifests
+  `scientific/first-visit/MANIFEST.sha256` and
+  `scientific/geometry/MANIFEST.sha256`.
 
 ```sh
 git show 808b53ed8:docs/incoming/Collision_Geometry_Diophantine_Signal_Machines.zip > cg.zip
@@ -496,6 +800,10 @@ git show 4e270aa46:docs/incoming/Exact_Targets_Three_Mass_Units.zip > ct.zip    
 git show "4e270aa46:docs/incoming/Single_Unit_Three_Mass_Decidability (1).zip" > su.zip  # source 16
 git show 4e270aa46:docs/incoming/Four_Mass_Decidability_Package.zip > fm.zip               # source 17
 git show 4e270aa46:docs/incoming/Single_Unit_Three_Mass_Decidability.zip > su-original.zip # manuscript 06 (superseded)
+git show db37d18c8:docs/incoming/Timed_Four_Mass_Quartic_Certificates.zip > tq.zip                  # source 18
+git show db37d18c8:docs/incoming/Dimension_Independent_Particle_Thresholds_Package.zip > zd.zip     # source 19
+git show db37d18c8:docs/incoming/Sparse_Orbit_Geometry_and_Exact_Counting_Package.zip > og.zip      # source 20
+git show db37d18c8:docs/incoming/Binary_Planar_Four_Particle_Shuttle_Package.zip > bp.zip           # source 21
 ```
 
 Both editions of source 13 contain every file, including the excluded
@@ -569,6 +877,12 @@ rules are byte-identical, `rule_index.json` and the certificate are identical
 apart from CR bytes, and the shipped `data/14-three-mass-rule_index.json`
 equals the delivered `examples/rule_index.json`.
 
+**Sources 18–21 (batch 82).** Nothing is excluded: every delivered file is
+either shipped or listed above as not shipped for another reason. The
+largest shipped file is `data/21-planar-shuttle-local-quartic-certificate.json`
+(267,097 bytes), which `code/21-planar-shuttle-code-build_local_quartic.py`
+regenerates with the same content (CRLF line ends on Windows).
+
 ## Labels and numbering
 
 Every label carries the prefix `smc:`. Source 07's 66 labels are `smc:cg:`
@@ -629,6 +943,29 @@ The labels of the re-proofs replaced by pointers (source 14's `eq:affine`,
 sources 14 and 17 are Figures 4 and 5. The three new front tables (sources,
 thresholds, letters) are uncaptioned, so no earlier table changed its number;
 the appendices keep their letters.
+
+Batch 82 (cluster M4: source 18 and Part VII) added 209 labels, 626 in all,
+and removed or renamed none (the `.aux` files of a build of the previous text
+and of the new build give the same number to every one of the 417 earlier
+labels, and the 48 earlier bibliography entries keep their numbers; the 13
+new ones are 49–61): source 18's 30 labels as `smc:tq:` plus their delivered
+names, source 19's 58 as `smc:zd:`, source 20's 71 as `smc:og:` and source
+21's 50 as `smc:bp:`. Of these, 178 are delivered labels and 31 were added:
+eight of source 18's sections and subsections, its corollary
+`smc:tq:cor:uniform` and its directions `smc:tq:q:directions`; source 20's
+corollary `smc:og:cor:rankthree` and source 21's theorem `smc:bp:thm:Gcount`;
+the fourteen questions of sources 19–21 (`smc:zd:q:*`, `smc:og:q:*`,
+`smc:bp:q:*`); and the new Part `smc:zd:part` and the five front subsections
+`smc:zd:sec:batch82`, `smc:zd:sec:notation`, `smc:zd:sec:relation`,
+`smc:zd:sec:status` and `smc:zd:sec:frontquestions`, which use `smc:zd:`
+although they cover all four sources. Source 18's Section *n* is Section
+*n* + 92 here (Sections 93–100), source 19's *n* + 100 (101–117), source
+20's *n* + 117 (118–128) and source 21's *n* + 128 (129–140); equations are
+numbered by section. Source 19's two appendices are Appendices I–J and
+source 20's is Appendix K, after Part III's, so that no earlier letter
+changed. The figures of sources 19–21 are Figures 6–9 and their captioned
+tables Tables 11–13; the new front tables are uncaptioned. Part VII is the
+last Part before the appendices.
 
 ## Setting and notation
 
@@ -705,6 +1042,32 @@ Part IV. The ones most likely to be misread:
 
 The TeX macro `\N` of sources 14–17 is `\NN` here; it prints `{0, 1, 2, …}`
 as in the sources.
+
+Source 18 and Part VII (batch 82) keep their sources' letters too; the table
+of Section 1.18 lists those with another meaning among the new sources or
+against Part VI. The ones most likely to be misread:
+
+- `d` — sources 17 and 18: the initial right-marker coordinate of the binary
+  shuttle (`d ≥ 7`, gap parameter `x = d − 7`); sources 19 and 20: the
+  **dimension** of `Z^d`; source 21: the current gap `d = k + n` (its initial
+  gap is `k ≥ 7`, which is source 17's and source 18's `d`). Reading source
+  18's `d ≥ 7` as a dimension bound is false.
+- `B`, `N`, `W`, `S` — source 19 keeps source 17's seed-prefix bound `B`,
+  thresholds `N` and `W` and padded radius `S`; source 18's `B` is a number
+  of charts and its `N` a witness count; source 20's `N` is a box radius,
+  its `S` the visited set and its `W` a witness count or a head state.
+- **Particles and mass** — in source 21 every occupied site has weight one,
+  so four particles are mass four; source 20's explicit automata have mass
+  four in three occupied sites (a head of weight two and two unit markers).
+- **One step, one orbit** — source 21's 614-auxiliary quartic certifies one
+  local transition; the quartics of sources 18, 19 (Appendix I) and 20
+  (Appendix K) certify one orbit of one fixed input, with an arity that
+  depends on the input.
+
+Their `\N` is `\NN` here (source 18 printed `ℕ`, sources 19–21 printed
+`ℤ≥0`, the same set), and the maximum norm `\norm` of sources 19–21 is
+renamed because Part IV's `\norm` differs. No other symbol was renamed and
+no normalization changed.
 
 ## Status: what is claimed, and what is not
 
@@ -811,6 +1174,42 @@ The report claims conventional mathematical proofs, by its sources, for:
   (Proposition 89.1) with anchored hit times `t_k = k² + (2d − 11)k`, `d ≥ 7`
   (Proposition 89.2: not Presburger); the one-witness quartic
   `[k² + (2x + 3)k − t]²`.
+- **Source 18 (Part VI, batch 82).** Conditional on source 17's normal form
+  (Proposition 87.1), for a fixed input of mass at most four: the half-open
+  chart interface (Lemma 94.1) and partition of every time; a canonical
+  quartic `C_a(t,x;w)` of degree at most four with exactly one natural
+  witness tuple at each complete timed configuration (Theorem 93.1) from a
+  compiler with constant-term lifting, product and SOS formats, the ledger
+  `B + K + M` witnesses and SOS selector elimination (Proposition 96.1);
+  signed external positions without extra witnesses; for source 17's binary
+  shuttle, two explicit charts, an eight-witness baseline, a four-witness,
+  seven-square specialization exact for nonnegative real witnesses at
+  integer inputs, uniform in `x = d − 7` (Corollary 99.1).
+- **Part VII (sources 19–21, batch 82).** Source 19: decidability of exact
+  and translated reachability and anchored and translated pattern
+  occurrence from every input of mass at most four on `Z^d` with at most one
+  weight-one symbol, uniformly in `d` (Theorem 101.1), through bounded mass-two
+  packets, exact contact rays with a Bezout functional, a finite nonparallel
+  switch set (Lemma 107.1), thresholds, dispatch, termination and a drift
+  cutoff; the no-unit case; the fixed-input timed Presburger form at mass
+  three (Lemma 104.1); timed charts and canonical quartics in `Z^d`, with
+  `B_ch ≤ 24d³J` and at most `168d³J` witnesses (Theorem I.1). Source 20:
+  semilinear visited sets in finitely many translates of one rational plane
+  and eventually quasipolynomial box counts of sharp degree `rank{E, ν}`
+  (Theorem 118.2); discovery rate and piecewise quadratic first arrivals
+  (Theorem 118.3); drift bounds and nonsemilinearity (Theorem 118.4,
+  Proposition 124.1); an explicit weighted radius-six planar automaton
+  (Proposition 123.1) with exact wedge counts and the drifted count
+  `3(N+1) − 2A(N) − B(N) = 3N − 3√N + O(1)` (Theorem 125.1); a rank-three
+  example (Corollary 126.1); canonical first-visit and original-frame
+  complete-target quartics (Theorem K.1, Corollaries K.2 and K.4). Source 21:
+  full-shift conservation and locality of an ordinary binary radius-six rule
+  on `Z²` (Lemma 130.1), the orbit with hit times `n² + (2k − 11)n`
+  (Theorem 132.1), the wedge minus two lines (Theorem 133.1), exact counts
+  and inverses (Theorems 134.1, 136.2), Boolean degree 45 with all 78 cells
+  essential (Theorem 137.1), and a one-step quartic with 614 auxiliaries,
+  693 residuals, 79 external variables and 3403 terms, unique over the
+  reals (Theorem 138.1).
 
 **Credit and re-derived results.** Part I's convex-quadratic rigidity
 theorem and compression barrier (Theorem 13.1, Corollary 13.2) are a special
@@ -848,6 +1247,28 @@ credited to their sources: the reversible three-unit compiler and its
 cleanup, the clean return wrapper, exact-pair undecidability, the clock and
 lift, the no-split lemma, the mass-three core and uniform composition, and all
 of source 17's four-mass analysis and binary shuttle.
+
+**Re-derived results of source 18 and Part VII (batch 82).** Source 18
+restates source 17's binary rule, conservation certificate, return quartic
+and normal form (the rule subsection is printed as a pointer; the others with
+notes), and its chart compiler is a second route to Part I's union quartic
+(Theorem 10.2, `smc:cg:thm:quarticunion`) with Part V's inactive gate and
+`qoc:rn:lem:gates`. Source 19 proves source 17's Theorem 83.1 again at
+`d = 1` by the same architecture (notes at each shared step); its Lemma
+104.1 is a weaker, fixed-input `Z^d` form of source 16's Theorem 74.1; its
+mass-two case meets Part IV's `smc:sl:thm:two`; its Appendix I restates source
+18's partition and compiler (printed in full, with notes). Source 20's
+membership quartic is a second route to Part IV's Presburger compiler and to
+`cdc:of:thm:singlefoldsl`, and its Lemma 122.1 is classical. Source 21's
+orbit theorem is the planar lift of source 17's Proposition 89.2. New, and
+credited to their sources: source 18's complete-orbit charts and
+four-witness certificate; source 19's higher-dimensional contact geometry;
+source 20's geometry, counting, explicit automata and first-visit
+certificates; source 21's binary planar rule, its counts, dependency set and
+local quartic. A note in Section 1.19 adds that, by
+`cdc:of:thm:classification`, degree four is least for source 18's binary
+certificates in the class of polynomials nonnegative on the real orthant
+(an observation of this write, not reviewed).
 
 The report does **not** claim:
 
@@ -907,6 +1328,25 @@ The report does **not** claim:
   injective); uniform timed Presburger definability at mass four; novelty
   with respect to Kong's 2021 thesis and Imai's 2021 KAKEN report, priority,
   or the present status of the four-particle question;
+- for source 18 and Part VII (batch 82; collected in Section 1.20): for
+  source 18, a proof of the imported normal form, an implemented
+  rule-to-chart preprocessing, a decision of the semantic bijectivity of a
+  chart family, a complexity bound, a bound uniform over inputs, uniform
+  timed Presburger definability, a single-fold or finite-fold conclusion,
+  real or rational exactness of the generic compiler, uniqueness after
+  forgetting time, witness minimality; for source 19, uniform timed
+  Presburger definability, a complexity bound, a general rule compiler,
+  reversibility, the inherited five-particle upper bound (which it does not
+  reconstruct), several unit labels or other relaxations, a single-fold MRDP
+  theorem or uniform arity bound for its appendix, a formalization; for
+  source 20, a binary or reversible realization, new Presburger theorems
+  (it applies Woods' counting theorems), practical algorithms, an exhaustive
+  asymptotic taxonomy, a general original-frame first-hit certificate for
+  sites or patterns under drift, a single-fold MRDP theorem or real
+  exactness; for source 21, reversibility or universality, any minimality of
+  mass, radius, essential cells, degree or auxiliaries, a classification of
+  malformed orbits, an unbounded-time or finite-fold representation; for all
+  four, novelty or priority;
 - any semantics at or after an accumulation point; that the clock discovers
   accumulation;
 - NP-hardness, an efficient first-hit enumerator, or that the denominator
@@ -962,6 +1402,34 @@ Part IV's first question (print a safe universal source) stays open, and so
 do the other questions of Parts V and VI. Part IV's non-claims "exact-target
 undecidability, … a minimum universal mass, or that three particles suffice"
 remain true of Part IV.
+
+Batch 82 (source 18 and Part VII) answers or touches, in dated `[write]`
+notes (Section 1.21):
+
+- source 17's seventh question (`smc:fm:q:quartic`, a fixed-input timed
+  quartic compiler from canonical disjoint phases): **answered for a fixed
+  input** by source 18, conditional on source 17's normal form and with
+  natural witnesses; source 19's Appendix I lifts it to `Z^d`; the
+  rule-to-chart preprocessing is not implemented;
+- source 17's second and fourth questions (uniform untimed spatial
+  definability; a stronger normal form for original-frame timed relations):
+  **touched** for a fixed input by sources 18 and 20; the uniform versions
+  stay open;
+- source 17's sixth question (minimal radius of the binary timing example):
+  **touched** by source 21 (exact radius six and 78 essential cells in the
+  plane, no minimality claimed); the one-dimensional question stays open;
+- source 17's first, third and fifth questions stay open (source 19 adds
+  literature and an example showing that naive geometric bounds fail);
+- the numerical particle threshold: the lower bound five holds in every
+  finite dimension (Theorem 101.1); the sharp upper bound in every dimension
+  is conditional on batch-82 Reports 16 and 26 (Corollary 101.2);
+- source 20's first question (binary or reversible realizations):
+  **answered for binary rules** by source 21; reversible realizations stay
+  open;
+- source 19's fifth question (optimizing the timed certificates) is touched
+  by source 18's selector elimination and four-witness certificate; all
+  other questions of sources 18–21 (six of source 19, five of source 20,
+  three of source 21 and source 18's directions) are open.
 
 ## Relation to neighbouring reports and to the formal project
 
@@ -1078,6 +1546,26 @@ treated signal machines before batch 78 apart from the programme's review.
   Morita's NCCA needs a background (`Papers/1980/REVERSIBLE_FINITE_HISTORY_MODELS.md`)
   are scope statements that Parts V–VI now bear on; they are the research
   tree's to update.
+- **Source 18 and Part VII (batch 82) and the neighbouring reports.**
+  [`five-particle-binary-automata`](../five-particle-binary-automata)
+  (batch 82, cluster M1, written in `e6a410588`) prints Report 16, one of the
+  two releases on which source 19's sharp boundary rests, as its Part II;
+  its Part I (Reports 14 and 15) proves with source 17 that five particles
+  are the exact one-dimensional binary threshold (`fpa:bc:cor:sharp`), and
+  Report 26, the other release, is placed there for a later write. Source
+  18's chart compiler is a second route to `qoc:rn:lem:gates` of
+  `quadratic-orthant-certificates` Part VI and Part I's union quartic;
+  source 20's membership quartic is a second route to `cdc:of:thm:singlefoldsl`
+  of `canonical-diophantine-certificates` Part XI. Reciprocal notes in those
+  reports and in Part IV are not part of this write. The formal project has
+  formalized none of source 18 or Part VII; its Lean development has no
+  cellular-automaton module, and Cooper's quantifier elimination
+  (`Logic/PresburgerArithmetic/Lean`, above) formalizes only the Presburger
+  step that source 19 imports. Woods' counting theorems, which source 20
+  applies, are not formalized in the repository. No statement of the four
+  sources bears on the project README's universal operation bounds: all
+  their quartics are for one fixed rule and one fixed input, with
+  input-dependent arity, or for one local transition (source 21).
 
 ## Reviews and patches
 
@@ -1224,6 +1712,39 @@ except where a source itself shipped the patched program (source 12).
   two-counter machine at mass three (it had said "reversible two-counter
   machines"), and the item "The programme's reviews" of Section 1.14
   credits the review in a dated note.
+- Batch 82 (source 18 and Part VII): `review_binary_planar_four_particle31.md`
+  (commit `16f50dcc6`) reviews source 21: "PASS within the stated scope; no
+  error found". It read the proof notes in full and, from the four printed
+  replacement rules alone, rebuilt the 16 indicators, 32 recognition
+  cylinders, 614 product-chain gates and 693 residuals, whose expansion
+  matches all 3403 saved terms; it confirms the degree-45 leaders, the 78
+  essential cells and radius six, and executed no archived Python.
+  `review_dimension_independent_four_mass.md` (commit `7b547f686`) reviews
+  source 19's placed proof: it passes, a separate reviewer found no gap,
+  and new arithmetic fixtures check contact rays, residues, Cramer solutions
+  and counter cycles (not a CA analyzer); the five-particle upper bound is
+  not reproved. `review_original_frame_first_hit30_intake.md` (commit
+  `c875bad40`) is a scoped intake of source 20's original-frame first-hit
+  certificate: no defect in the injectivity step; witness and residual
+  counts are not gate counts; source 19's timed companion proof
+  (`19-mass-four-zd-timed-PROOF.md`) is named as the next audit.
+  `original_frame_first_hit30_fixture.md` and its independent review
+  `review_original_frame_first_hit30_fixture.md` (commit `5b4c091e6`) do that
+  audit: the timed proof's half-open ownership, common clock, sorting,
+  constant-term lifts, pooled denominators, inactive natural witnesses and
+  padding are sound as conditional statements (the normal form stays an
+  inherited hypothesis); and for one orbit of source 20's weighted planar
+  automaton with a vertical drift they emit seven complete first-hit
+  quartics, the smallest with 35 operations (11 multiplications, 24
+  additions), three natural witnesses, eight squared rows and exact degree
+  four, checked at 88 successive configurations. It is a fixed-input
+  example, not a compiler or a universal bound (the universal polynomial
+  stays at 84 operations there).
+  Source 18 has no review (relocation only in `reviewed_report_archive_replay.md`).
+  The reviews of Reports 16 (`69730d3e8`) and 26–28 (`fb7e3cb47`) bear on
+  source 19's corollary and are quoted after it. No patch exists for any
+  batch-82 source; the delivered programs are shipped unpatched, including
+  the harness defects listed under "Rerunning the programs".
 
 ## Build
 
@@ -1233,7 +1754,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX, in a scratch directory; standard packages (Latin Modern, AMS,
 mathtools, microtype, booktabs, longtable, ragged2e, xcolor, TikZ, enumitem,
-fancyhdr, listings, xurl, hyperref, graphicx, pict2e). The committed build has 194 pages: no
+fancyhdr, listings, xurl, hyperref, graphicx, pict2e). The committed build has 280 pages: no
 errors, no undefined references or citations, no multiply defined labels,
 no duplicate destinations, no overfull boxes. The log's only box messages
 are four underfull lines in bibliography entries: three in `reversible`,
@@ -1292,6 +1813,20 @@ same 417 labels with the same numbers and the same 48 bibliography numbers.
 The title page (the abstract still fits on it), the threshold table
 (page 24), the note (page 27) and the opening of Part I (page 30) were
 rendered and inspected.
+
+The batch-82 write of cluster M4 (source 18 in Part VI and Part VII: four
+sources, five front subsections, dated notes, one provenance paragraph,
+thirteen bibliography entries appended last, three macros and wider number
+boxes in the table of contents) takes the report to 280 pages (unnumbered
+title page, then pages 1–279). The log has no errors, warnings, undefined
+references or citations, multiply defined labels, duplicate destinations or
+overfull boxes, and the same four underfull bibliography lines as before.
+The `.aux` of a build of the previous text (194 pages) has the same 417
+labels with the same numbers and the same 48 bibliography numbers. Source
+19's figure is its inline TikZ drawing; the figures of sources 20 and 21 are
+their delivered vector PDFs (embedded TrueType fonts, no Type 3 fonts),
+included unchanged from `figures/`. Part VII is the last Part before the
+appendices, so a later Part can follow it without renumbering.
 
 ## Rerunning the programs
 
@@ -1461,6 +1996,66 @@ git show 4e270aa46:docs/incoming/Four_Mass_Decidability_Package.zip > r17/fm.zip
   placement (about 30 s) and six receipts were JSON-equal; the figure
   renderer needs matplotlib and was not run.
 
+Sources 18–21 (batch 82) — likewise restore the delivered layouts from the
+arrival archive, never in the report directory. The replays of sources
+19–21 check an exact inventory and pinned hashes under the delivered names,
+so they cannot run on the shipped, prefixed files:
+
+```sh
+mkdir r18 r19 r20 r21
+git show db37d18c8:docs/incoming/Timed_Four_Mass_Quartic_Certificates.zip > r18/tq.zip
+git show db37d18c8:docs/incoming/Dimension_Independent_Particle_Thresholds_Package.zip > r19/zd.zip
+git show db37d18c8:docs/incoming/Sparse_Orbit_Geometry_and_Exact_Counting_Package.zip > r20/og.zip
+git show db37d18c8:docs/incoming/Binary_Planar_Four_Particle_Shuttle_Package.zip > r21/bp.zip
+(cd r18 && unzip -q tq.zip)   # r18/phase-quartic-release/
+(cd r19 && unzip -q zd.zip)   # r19/dimension-independent-threshold-release-20261003/
+(cd r20 && unzip -q og.zip)   # r20/sparse-orbit-geometry-release-20261003/
+(cd r21 && unzip -q bp.zip)   # r21/binary-planar-shuttle-release-20261003/
+```
+
+- **Source 18** (`phase-quartic-release/`): `sh run-tests.sh` runs
+  `verify_manifest.py`, source 17's `code/test_binary_expanding_shuttle.py`,
+  the three suites of `code/phase/` and `verify_manifest.py` again, with
+  `python3`, and regenerates its fixtures and receipts **in place**: use the
+  extracted copy. A layout rebuilt from the shipped files needs
+  `code/18-timed-quartics-*.py` and the `data/18-timed-quartics-*` fixtures
+  and receipts in `code/phase/` and `verification/` under their delivered
+  names, plus `code/17-four-mass-test_binary_expanding_shuttle.py`,
+  `data/17-four-mass-binary-radius6-conservation-certificate.json` and
+  `data/17-four-mass-binary-shuttle-test-results.json` in `code/` under
+  theirs; it lacks the unshipped `SHA256SUMS` and `verify_manifest.py`, so
+  skip those two steps there. On Windows the binary test rewrites the sealed
+  certificate with CRLF line ends, after which the final `verify_manifest.py`
+  fails: restore the certificate from the archive first, or run on POSIX. At
+  placement (Windows, Python 3.14.4) the binary and selector-elimination
+  suites passed and the four regenerated files equal the delivered ones apart
+  from line ends; the two exhaustive cube suites (`test_exact_phase_quartic.py`,
+  `test_compact_binary_quartic.py`) did not finish within 170 s and were not
+  run to completion.
+- **Sources 19 and 20**: `py replay.py --output-dir <directory outside the
+  package>` (or `sh reproduce.sh --output-dir …`, which needs `python3`),
+  then `py tamper_regression.py --output-dir <another outside directory>`.
+  Both passed at placement on Windows in normal and optimized mode (source
+  19: 42 s and 8 s; source 20: 56 s and 11 s), with receipts typed-equal to
+  the expected ones and no package file modified. Source 20's geometry audit
+  uses SymPy when it is installed.
+- **Source 21**: `py replay.py --verify-only` checks the pins; `py replay.py
+  --output-dir <outside>` runs every step normally and with `-O` (by the sum of its
+  steps, about 110 s and 210 s here). Two Windows defects of the
+  delivered harness, not patched here: `replay.py` starts its children with
+  `-I`, which ignores `PYTHONUTF8`, so `independent_drift_audit.py` and
+  `review_parent_code.py` fail to print `≤` and `×` on a cp1252 console; and
+  `build_local_quartic.py`, `check_shuttle.py`, `check_local_quartic.py` and
+  `reconstruct_local_quartic.py` write text with CRLF line ends, so the byte
+  comparison of the rebuilt `local-quartic-certificate.json` fails although
+  its content equals the delivered file. Run on POSIX, or run the steps one
+  by one (they are listed in `replay.py`) with `py -X utf8` and compare
+  after removing CR bytes. In that way every step passed at placement in
+  normal and optimized mode, and `tamper_regression.py` rejected all four
+  tamper cases; the end-to-end replay was not run here.
+- Not rerun for any of them: the PDF builds, the figure scripts (matplotlib)
+  and the shell wrappers as such.
+
 ## Discrepancies and disclosures
 
 - The shipped build scripts keep the delivered layout:
@@ -1582,3 +2177,51 @@ git show 4e270aa46:docs/incoming/Four_Mass_Decidability_Package.zip > r17/fm.zip
   supply the credit (Part V and VI openings, Sections 49, 62, 74, 84).
 - Manuscript 06, the superseded original of source 16, is not shipped; its
   text survives in the arrival commit `4e270aa46`.
+- Sources 18–21 (batch 82): delivered names in shipped texts. Source 18's
+  `data/18-timed-quartics-source-freeze.json` and `fresh-extraction.json`
+  list its files by their delivered paths (`code/phase/…`, and the three
+  source-17 files as `code/test_binary_expanding_shuttle.py`,
+  `code/binary-radius6-conservation-certificate.json` and
+  `code/binary-shuttle-test-results.json`), and `package-checks.json` names
+  the unshipped `SHA256SUMS` and manuscript PDF; its `independent-audit.md`
+  names no file. The notes of sources 19–21 refer to one another by delivered
+  names (`PROOF.md`, `scientific/timed/PROOF.md`, `MANIFEST.sha256`, and the
+  pipeline's `report16.tex`, `report26.tex` and `report29.tex`), and
+  `data/20-orbit-geometry-source-lineage.json` and
+  `data/21-planar-shuttle-source-lineage.json` name the unshipped
+  `README.md` and `report30.tex`; the three source-lineage records pin the
+  pipeline's manuscripts (source 17's TeX, source 18's, Reports 16, 26, 29
+  and 30) by SHA-256; the three `data/21-planar-shuttle-audit-reviewed-*.sha256` bind
+  source 21's internal reviews to delivered file names; and the replay
+  programs of sources 19–21 embed pinned hashes of their delivered files.
+  None of the unshipped files they name is promised here; all survive in
+  `db37d18c8`. The `[write]` paragraphs "The release in this report" at the
+  end of Sections 100, 116, 128 and 139 give the shipped names.
+- In-archive byte copies of sources 20 and 21 are shipped as delivered,
+  because their replays compare them by name: source 20's
+  `data/20-orbit-geometry-expected-first-visit.json` equals both
+  `first-visit-audit-results*.json`, and `expected-geometry.json` both
+  `geometry-audit-results*.json`; source 21's `audit-check-results.txt`,
+  `audit-independent_audit.{normal,optimized}.txt` and
+  `expected-independent.txt` are equal, and likewise its drift,
+  essentiality, parent-code-review and quartic-reconstruction receipts, and
+  `local-rule-certificate.json` equals `expected-local-rule.json` (eight
+  groups in all, 13 files that a deduplication would save).
+- The three figures of sources 20 and 21 are staged as PDFs under
+  `figures/`, the announced exception to "PDFs are not staged" (as for
+  source 17's figure), because the article prints them.
+- Source 18's hypothesis `d ≥ 7` (as source 17's) is safe but not sharp: at
+  placement the two charts also reproduced every state through `t < 2500`
+  for `d = 6`; a `[write]` note in Section 98 says so.
+- Source 19's sharp four-versus-five boundary (Corollary 101.2) inherits its
+  upper half from batch-82 Reports 16 and 26 (the first printed in
+  `five-particle-binary-automata`, the second placed there and not yet
+  written); its own review and the research tree's say so, and a `[write]`
+  note after the corollary states it. Source 19 cites source 17 only in its
+  lineage appendix and one aside; `[write]` notes at each shared step credit
+  source 17 (and source 16 at Lemma 104.1).
+- Source 21's wording: its abstract's "answers the binary-realization
+  question", "This proves induction from n = 0" and the asymptotic of its
+  stationary inverse carry bracketed precisions in the article.
+- Source 18's PDF metadata name the author "Mathematical research report";
+  the author lines of sources 18–21 are quoted at their openings.
