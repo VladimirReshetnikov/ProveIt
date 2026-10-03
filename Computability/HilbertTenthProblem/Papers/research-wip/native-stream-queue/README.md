@@ -101,6 +101,16 @@ materialized in these fixtures. The represented language allows existential
 binary padding, which can change halting; an explicit universal recognizer
 and decoder remain unproved. This does not improve the 87-operation bound.
 
+The [whole-period padding theorem](grill_tag_padding_period.md) makes that
+input scope precise: appending a multiple of the program period in zero bits
+preserves halting and delays the first halt by exactly that length. The
+existential input language is a union of at most m canonical padding residues.
+Exact cycles show that a one-zero extension can change halting truth. The
+[independent review](review_grill_padding_period.md) also confirms that the
+weaker cone P0>x gives the same existential language, permitting a separate
+one-multiplication source reduction. That is a language equivalence, not
+equality of polynomials or witness fibers; the decoder remains unproved.
+
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
 Shared row/column sums reduce the transfer example from 245 to 206 operations
