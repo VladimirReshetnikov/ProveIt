@@ -67,6 +67,12 @@ binary AND certificate. All six complete polynomials are unchanged; the
 [independent audit](Papers/research-wip/native-stream-queue/review_native_pell_factored_first_coefficient.md)
 and both fresh receipts pass.
 
+The [geometry component](Papers/research-wip/native-stream-queue/group_linked_binary_geometry46.md)
+now costs46 operations with a shared scale, or48 with its scale computed.
+Its full SOS costs84/86 and has exact degree28; independent complete
+polynomial expansions pass. The shared form retains its external scale
+hypothesis, and neither form includes a complete computation.
+
 The progress entries below preserve their historical counts and contemporary
 benchmark statements; the current complete numerical bounds are74/86.
 The preceding complete

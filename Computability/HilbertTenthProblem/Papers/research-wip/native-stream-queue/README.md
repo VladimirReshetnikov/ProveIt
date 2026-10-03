@@ -54,6 +54,15 @@ an upper bound. The [independent delta audit](review_native_binary_recoder_facto
 checks all four selected complete packets; both root receipts pass.
 The already translated history norm supplies no third coefficient saving.
 
+The [standalone geometry transfer](group_linked_binary_geometry46.md) now
+costs**46=25M+21A** with shared B, or48 with B=8q² computed internally.
+Both retain19 positive auxiliaries and13 comparisons; their complete SOS
+costs84/86 at exact degree28. The
+[independent full expansion](review_group_linked_binary_geometry46.md)
+checks all141 monomials of each polynomial and the symbolic scale transport.
+Both root receipts pass. Shared mode still requires external B>=8q²;
+dyadic typing of P, the repunit equation and computation remain separate.
+
 The [isolated auxiliary-norm lower bound](auxiliary_norm_five_gate_lower_bound.md)
 proves that `K*V²−(K−1)*y²` needs exactly3M+2A from independent supplied
 K,V,y, even allowing arbitrarily many operations of the other kind in each

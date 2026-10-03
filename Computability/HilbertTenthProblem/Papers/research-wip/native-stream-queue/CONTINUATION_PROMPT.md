@@ -71,9 +71,16 @@
 > is already removed by the old first_unit form, so no third saving applies.
 > Standalone recoder length stays existential; canonical binary(x+1) length
 > is enforced only by the separate exact-width wrapper. No universal table.
-> A concrete next lead is standalone group_linked_binary_geometry47:
-> its literal coefficient may give geometry46, but no complete standalone
-> geometry46 source/receipt is emitted or claimed by this checkpoint.
+> The [geometry46 transfer](group_linked_binary_geometry46.md) now emits
+> both complete primitive variants: shared46=25M+21A/SOS84 and computed-B
+> 48=27M+21A/SOS86, both19 positive auxiliaries/13 comparisons/exactdegree28.
+> The [independent expansion](review_group_linked_binary_geometry46.md)
+> verifies both full141-term polynomials, every residual, literal finalizers
+> and exact symbolic scale transport; author/review fresh root receipts pass.
+> Shared-B population semantics still assumes external B>=8q² using the
+> pinned dilation132§2 extension. Standalone computes B=8q² in two paid
+> products. P dyadic typing, repunit and computation are not in these counts.
+> Actual k stays supplied; tau*(tau+1) remains the untouched right side.
 
 > The [isolated auxiliary norm](auxiliary_norm_five_gate_lower_bound.md) now
 > has a sharp5=3M+2A lower bound for exact division-free evaluation at independent
