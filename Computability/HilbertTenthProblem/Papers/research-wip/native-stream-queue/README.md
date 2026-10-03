@@ -14,6 +14,10 @@ comparison-system bound remains75. Both the
 receipts have fresh root replays. Earlier entries below retain their
 historical counts and benchmark statements; the current numerical bounds
 are75/86. The grouping frontier has not yet been recomputed for this change.
+The [shared-coefficient scout](complete87_shared_coefficient_scout.md) exhausts
+a separate multiplication-only family: four gates remain necessary for its
+two target monomials, and all21 complete schedules tie the old87 cost.
+This restricted negative result does not cover the new first-root change.
 
 [All twelve batch-80 archives](incoming_substrate_review_4e270aa46.md) have
 completed their scoped reviews and root replays. The inventory pins 388

@@ -18,6 +18,10 @@
 > Earlier log entries below use their historical benchmark statements.
 > Next circuit work may transfer this exact five-gate block into the earlier
 > grouping family, but no such family reoptimization is yet claimed.
+> The [coefficient-only census](complete87_shared_coefficient_scout.md) is
+> frozen separately: reachable-set counts1/13/116/891 exclude at most three
+> multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid
+> monomial ports. All21 minimal completions retain87; no general lower bound.
 
 > Latest three-mass examples: the [per-step branch search](three_mass_mixed_branch_search.md)
 > reaches44native/43clean for INC2;DEC2 at h=2, using implicit indices[0,1],
