@@ -1,0 +1,257 @@
+#!/usr/bin/env python3
+"""Weak input cone for native Grill closure; one paid multiplication removed."""
+if not __debug__:raise RuntimeError('Run without -O')
+import argparse,copy,hashlib,json,random,tempfile,types
+from collections import Counter
+from fractions import Fraction
+from functools import lru_cache
+from pathlib import Path
+PARENT_NAME='grill_tag_native_phase_sharing.py'
+PARENT_SHA256='760ce9a0ea6e6020ecb52737ccc5c4197f7b84a212c73dc351b9ae3e6ef60069'
+PADDING_REFERENCE=dict(source='grill_tag_padding_period.py',sha256='299acc95d66b60fb7fe2b3e3a85ffd3ec7c77f8c53ce2f11d1b59d9f7d59ba48',
+ proof='grill_tag_padding_period.md',proof_sha256='9dde1ba4982fbc2c84c406e46859c125a3c9a93fccb176a159c23ef6399b6d11')
+
+def need(v,s):
+ if not v:raise ValueError(s)
+def exact(a,b):
+ if type(a)is not type(b):return False
+ if type(a)is dict:return a.keys()==b.keys() and all(type(k)is str and exact(a[k],b[k]) for k in a)
+ if type(a)in(list,tuple):return len(a)==len(b) and all(exact(x,y) for x,y in zip(a,b))
+ return a==b
+def _args(program,unit):
+ need(type(program)is tuple and bool(program) and all(type(n)is int and n>=0 for n in program),'Nonempty exact natural tuple program')
+ need(type(unit)is bool,'Exact Boolean finalizer flag')
+def _paths(root):
+ root=Path(__file__).resolve().parent if root is None else Path(root).resolve();here=Path(__file__).resolve().parent
+ path=here/PARENT_NAME if (here/PARENT_NAME).is_file() else root/PARENT_NAME
+ need(hashlib.sha256(path.read_bytes()).hexdigest()==PARENT_SHA256,'Pinned phase-sharing parent changed');return root,path
+@lru_cache(None)
+def _load(path):
+ data=Path(path).read_bytes();need(hashlib.sha256(data).hexdigest()==PARENT_SHA256,'Parent changed before execution')
+ m=types.ModuleType('_weak_cone_phase_parent');m.__file__=str(path);exec(compile(data,str(path),'exec'),m.__dict__);return m
+
+def _context(root):
+ root,path=_paths(root);parent=_load(str(path));parent._context(root)
+ return root,path,parent
+@lru_cache(None)
+def _canonical(program,unit,root,path):return _load(path).build(program,unit_product=unit,root=Path(root))
+
+def _count(rows):
+ c=Counter(o for n,o,a,b in rows);return dict(operations=len(rows),M=c['*'],A=c['+']+c['-'])
+def _linear(rows,target,*,pullback=False):
+ table={n:(o,a,b) for n,o,a,b in rows};env={'x':{'x':1},'Z0':{'Z0':1,'x':-2} if pullback else {'Z0':1}}
+ def value(v):
+  if type(v)is int:return {'':v} if v else {}
+  if v in env:return env[v]
+  need(v in table,'Unexpected width atom');o,a,b=table[v];a=value(a);b=value(b)
+  if o=='*':
+   need(not any(a) or not any(b),'Nonlinear width')
+   if any(a):a,b=b,a
+   out={k:a.get('',0)*v for k,v in b.items()}
+  else:
+   out=dict(a)
+   for k,v in b.items():out[k]=out.get(k,0)+(v if o=='+' else -v)
+  env[v]={k:v for k,v in out.items() if v};return env[v]
+ return value(target)
+
+def _proof(old,new):
+ cut=old['interfaces']['P0'];need(new['interfaces']['P0']==cut,'Width interface renamed')
+ need(_linear(old['source'],cut,pullback=True)==_linear(new['source'],cut)=={'x':1,'Z0':1},'Exact affine width substitution')
+ intern={}
+ def node(v):
+  if v not in intern:intern[v]=len(intern)
+  return intern[v]
+ def graph(p,strong):
+  env={n:node(('coordinate',n)) for n in p['parameters']+p['auxiliaries']}
+  if strong:env['Z0']=node(('-',env['Z0'],node(('*',node(('integer',2)),env['x']))))
+  def val(v):return env[v] if type(v)is str else node(('integer',v))
+  for n,o,a,b in p['polynomial_source']:
+   env[n]=node(('proved_width','x+Z0')) if n==cut else node((o,val(a),val(b)))
+  return env,val
+ a,aa=graph(old,True);b,bb=graph(new,False)
+ need(old['comparisons']==new['comparisons'],'Comparison list changed')
+ for x,y in old['comparisons']:need(aa(x)==bb(x) and aa(y)==bb(y),'Full shifted comparison operand differs')
+ for k,v in old['interfaces'].items():need(aa(v)==bb(new['interfaces'][k]),'Shifted semantic interface differs '+k)
+ for n in old.get('unit_factors',[]):need(a[n]==b[n],'Shifted native factor differs')
+ need(a[old['output']]==b[new['output']],'Complete substituted polynomial differs')
+ return dict(identity='F_weak(x,Z0,others)=F_strong(x,Z0-2*x,others)',
+  width_identity='3*x+(Z0-2*x)=x+Z0',complete_polynomial_substitution=True,
+  comparisons_preserved_under_substitution=len(old['comparisons']),native_factors_preserved_under_substitution=old.get('unit_factors',[])[:],
+  scope='All integer and rational tuples. The pullback slack can be nonpositive; this is not a positive-fiber bijection or a same-coordinate polynomial identity.')
+
+def _audit(p):
+ names=p['parameters']+p['auxiliaries'];known=set(names);degree={n:1 for n in names};live={p['output']}
+ need(len(known)==len(names),'Duplicate coordinates')
+ for n,o,a,b in p['polynomial_source']:
+  need(n not in known and type(n)is str and o in ('+','-','*'),'Unique binary gate')
+  need(all(type(v)is int or type(v)is str and v in known for v in (a,b)),'Topological complete source')
+  da=degree[a] if type(a)is str else 0;db=degree[b] if type(b)is str else 0;degree[n]=da+db if o=='*' else max(da,db);known.add(n)
+ for n,o,a,b in reversed(p['polynomial_source']):
+  need(n in live,'Dead paid gate');live.update(v for v in (a,b) if type(v)is str)
+ need(set(names)<=live,'Declared coordinate unused')
+ need(p['polynomial_source'][:len(p['source'])]==p['source'],'Certificate is not source prefix')
+ return degree[p['output']]
+
+def _rewrite(old):
+ p=copy.deepcopy(old);cut=p['interfaces']['P0'];rows={n:(o,a,b) for n,o,a,b in p['source']}
+ need(rows[cut]==('+','Z0','three_x__0') and rows['three_x__0']==('*','x',3),'Pinned literal initial width rows changed')
+ uses=[n for n,o,a,b in p['polynomial_source'] for v in (a,b) if v=='three_x__0'];need(uses==[cut],'Tripled input has another consumer')
+ zuses=[n for n,o,a,b in p['polynomial_source'] for v in (a,b) if v=='Z0'];need(zuses==[cut],'Slack has another live consumer')
+ def change(rows):return [(n,o,'Z0','x') if n==cut else (n,o,a,b) for n,o,a,b in rows if n!='three_x__0']
+ p['source']=change(p['source']);p['polynomial_source']=change(p['polynomial_source']);proof=_proof(old,p);upper=_audit(p)
+ before=_count(old['polynomial_source']);after=_count(p['polynomial_source']);cert=_count(p['source'])
+ need(before['operations']-after['operations']==1 and before['M']-after['M']==1 and before['A']==after['A'],'Exact full saving')
+ need(old['polynomial_source'][len(old['source']):]==p['polynomial_source'][len(p['source']):],'Finalizer changed')
+ p['operations']=cert['operations'];p['multiplications']=cert['M'];p['additions_subtractions']=cert['A']
+ p['wrapper_operations']=old['wrapper_operations']-1
+ p['polynomial_ledger']=dict(after,witnesses=len(p['auxiliaries']),comparisons=len(p['comparisons']),degree_upper=upper)
+ need(upper==old['polynomial_ledger']['degree_upper'] and p['exact_degree'] is None,'Unsupported degree claim')
+ p['strong_parent_metadata']={k:p.pop(k) for k in ('phase_sharing','adapter_sha256','full_polynomial_identity') if k in p}
+ p['kind']='grill_native_weak_input_cone';p['full_polynomial_identity']=False
+ p['input_cone']=dict(width='x+Z0',positive_coordinates=['x','Z0'],relation='P0>x',
+  strong_width='3*x+Z0',strong_to_weak_slack='Z0_weak=Z0_strong+2*x',
+  integer_pullback='Z0_strong=Z0_weak-2*x',positive_fiber_bijection=False,
+  existential_input_language='Equal to the pinned strong-cone language by period padding; general witness tuples are not identified.',padding_reference=copy.deepcopy(PADDING_REFERENCE))
+ p['weak_cone_rewrite']=dict(parent_file=PARENT_NAME,parent_sha256=PARENT_SHA256,parent_count=before,saved=dict(operations=1,M=1,A=0),
+  removed_arithmetic_register='three_x__0',proof=proof)
+ p['scope']='Fixed finite Grill program; arbitrary nonempty duration packed existentially, positive ordinary x and some dyadic P0>x. Same existential input language as the strong cone by period padding, not the same supplied positive zeros. No universal instance/decoder claim.'
+ return p
+@lru_cache(None)
+def _packet(program,unit,root,path):return _rewrite(_canonical(program,unit,root,path))
+def build(program=(0,1,1),*,unit_product=True,root=None):
+ _args(program,unit_product);root,path,parent=_context(root);return copy.deepcopy(_packet(program,unit_product,str(root),str(path)))
+def checked(p,*,root=None):
+ need(type(p)is dict,'Canonical whole weak packet required')
+ q=build(p.get('program'),unit_product=p.get('unit_product'),root=root);need(exact(p,q),'Noncanonical weak packet');return p
+def canonical_parent(p,*,root=None):
+ checked(p,root=root);root,path,parent=_context(root);return copy.deepcopy(_canonical(p['program'],p['unit_product'],str(root),str(path)))
+def rewrite(strong_packet,*,root=None):
+ need(type(strong_packet)is dict,'Canonical whole strong packet required');_args(strong_packet.get('program'),strong_packet.get('unit_product'));root,path,parent=_context(root)
+ old=_canonical(strong_packet['program'],strong_packet['unit_product'],str(root),str(path));need(exact(strong_packet,old),'Noncanonical strong parent packet')
+ return copy.deepcopy(_packet(old['program'],old['unit_product'],str(root),str(path)))
+def polynomial_source(p,*,root=None):return copy.deepcopy(checked(p,root=root)['polynomial_source'])
+def _values(p,v,signed):
+ need(type(signed)is bool,'Exact signed flag')
+ need(type(v)is dict and all(type(k)is str for k in v) and v.keys()==set(p['parameters']+p['auxiliaries']),'Complete exact coordinate dictionary')
+ need(all(type(x)is int and (signed or x>0) for x in v.values()),'Exact positive integers or explicit signed mode')
+def _execute(rows,values):
+ e=dict(values)
+ for n,o,a,b in rows:
+  a=e[a] if type(a)is str else a;b=e[b] if type(b)is str else b;e[n]=a*b if o=='*' else a+b if o=='+' else a-b
+ return e
+def _at(e,v):return e[v] if type(v)is str else v
+def integer_pullback(p,values,*,signed=False,root=None):
+ """Return the corresponding strong integer tuple; its slack may be nonpositive."""
+ checked(p,root=root);_values(p,values,signed);v=dict(values);v['Z0']-=2*v['x'];return v
+def strong_to_weak_assignment(p,values,*,root=None):
+ """Map any positive strong tuple to a positive weak tuple with the same width."""
+ checked(p,root=root);_values(p,values,False);v=dict(values);v['Z0']+=2*v['x'];return v
+def evaluate(p,values,*,signed=False,root=None):
+ checked(p,root=root);_values(p,values,signed);return _execute(p['polynomial_source'],values)[p['output']]
+def identity(p,values,*,signed=False,root=None):
+ checked(p,root=root);_values(p,values,signed);q=canonical_parent(p,root=root);oldvalues=dict(values);oldvalues['Z0']-=2*oldvalues['x']
+ a=_execute(q['polynomial_source'],oldvalues);b=_execute(p['polynomial_source'],values)
+ rr=[_at(a,x)-_at(a,y) for x,y in q['comparisons']];ss=[_at(b,x)-_at(b,y) for x,y in p['comparisons']]
+ need(rr==ss and a[q['output']]==b[p['output']],'Complete shifted identity')
+ return dict(output=b[p['output']],strong_slack=oldvalues['Z0'],strong_tuple_positive=min(oldvalues.values())>0,residuals=ss)
+
+def verify(*,root=None):
+ root,path,parent=_context(root);counts=Counter();forms=[];rng=random.Random(208232)
+ def reject(fn):
+  try:fn()
+  except (ValueError,TypeError,KeyError):counts['malformed_rejections']+=1;return
+  raise ValueError('Malformed accepted')
+ for program in ((0,),(1,),(0,1,1),(2,0,1)):
+  for unit in (False,True):
+   p=build(program,unit_product=unit,root=root);q=canonical_parent(p,root=root);_proof(q,p);_audit(p);need(exact(rewrite(q,root=root),p),'Public exact transform')
+   counts['complete_symbolic_substitution_identities']+=1;counts['formal_residual_identities']+=len(p['comparisons'])
+   for key in ('parameters','auxiliaries','comparisons','maps','groups_U','groups_V','baselines','K','unit_factors','unit_register','root_coordinate','projection_aliases','scale_exponent','region_exponents','interfaces'):
+    need(exact(p.get(key),q.get(key)),'Changed structural interface '+key)
+   for case in range(12):
+    signed=case>=6;v={n:rng.randrange(-3,4) if signed else rng.randrange(1,5) for n in p['parameters']+p['auxiliaries']}
+    result=identity(p,v,signed=signed,root=root);counts['complete_integer_substitutions']+=1;counts['signed_cases']+=signed;counts['numeric_residual_identities']+=len(result['residuals'])
+    same_old=_execute(q['source'],v);same_new=_execute(p['source'],v)
+    a,b=q['comparisons'][0];c,d=p['comparisons'][0]
+    delta=2*p['K']*v['x']*v['Vfinal']*_at(same_new,p['interfaces']['J'])
+    need((_at(same_old,a)-_at(same_old,b))-(_at(same_new,c)-_at(same_new,d))==-delta,'Exact same-coordinate global-row separation')
+    counts['same_coordinate_global_row_corrections']+=1
+    need(integer_pullback(p,v,signed=signed,root=root)['Z0']==result['strong_slack'],'Public signed pullback')
+    if not signed:
+     w=strong_to_weak_assignment(p,v,root=root);need(min(w.values())>0 and integer_pullback(p,w,root=root)==v,'Positive one-way map')
+     need(_execute(q['polynomial_source'],v)[q['output']]==evaluate(p,w,root=root),'One-way full output identity');counts['positive_strong_to_weak_maps']+=1
+     e=_execute(p['source'],v);P0=_at(e,p['interfaces']['P0']);Uf=_at(e,p['interfaces']['Ufinal']);D=_at(e,p['interfaces']['D'])
+     need(P0==v['x']+v['Z0'] and P0>v['x'] and D>=5 and D>Uf>P0 and Uf>v['Vfinal'] and D>v['phase_initial'],'Weak pretyping height inequalities');counts['weak_pretyping_checks']+=1
+   for case in range(2):
+    v={n:Fraction(rng.randrange(-2,3),rng.randrange(1,4)) for n in p['parameters']+p['auxiliaries']};w=dict(v);w['Z0']-=2*w['x']
+    need(_execute(q['polynomial_source'],w)[q['output']]==_execute(p['polynomial_source'],v)[p['output']],'Full rational shifted identity');counts['rational_substitutions']+=1
+   values={n:1 for n in p['parameters']+p['auxiliaries']};result=identity(p,values,root=root);need(result['strong_slack']==-1 and not result['strong_tuple_positive'],'No false positivity of inverse')
+   need(_execute(q['polynomial_source'],values)[q['output']]!=evaluate(p,values,root=root),'Wrong same-coordinate identity claim');counts['same_coordinate_polynomial_separations']+=1
+   def scan(v):
+    if type(v)is dict:
+     for x in v.values():scan(x)
+    elif type(v)in(list,tuple):
+     for x in v:scan(x)
+    else:need(v!='three_x__0','Stale current removed register')
+   scan({k:v for k,v in p.items() if k not in ('strong_parent_metadata','weak_cone_rewrite')})
+   for field in ('source','polynomial_source','input_cone','weak_cone_rewrite','strong_parent_metadata','polynomial_ledger','auxiliaries'):
+    bad=copy.deepcopy(p);bad[field]=None;reject(lambda bad=bad:checked(bad,root=root))
+   for field in ('source','interfaces','scope'):
+    bad=copy.deepcopy(q);bad[field]=None;reject(lambda bad=bad:rewrite(bad,root=root))
+   for name in list(values)[::9]:
+    for value in (True,1.0,0,-1,None):
+     bad=dict(values);bad[name]=value;reject(lambda bad=bad:evaluate(p,bad,root=root))
+   for getter in (lambda:build(program,unit_product=unit,root=root),lambda:canonical_parent(p,root=root),lambda:polynomial_source(p,root=root)):
+    a=getter();old=copy.deepcopy(a)
+    if type(a)is dict:a['source'].clear()
+    else:a.clear()
+    need(exact(getter(),old),'Public mutable cache alias');counts['copy_checks']+=1
+   forms.append(dict(program=list(program),unit_product=unit,strong_parent_ledger=q['polynomial_ledger'],compiler=p))
+ for bad in ((),[0,1],(True,),(1.0,),(-1,),None):reject(lambda bad=bad:build(bad,root=root))
+ for bad in (0,1,None,0.0):reject(lambda bad=bad:build(unit_product=bad,root=root))
+ p=build(root=root);v={n:1 for n in p['parameters']+p['auxiliaries']}
+ for bad in (0,1,None):
+  reject(lambda bad=bad:evaluate(p,v,signed=bad,root=root));reject(lambda bad=bad:integer_pullback(p,v,signed=bad,root=root))
+ class ForeignKey(str):pass
+ bad=copy.deepcopy(p);bad[ForeignKey('program')]=bad.pop('program');reject(lambda:checked(bad,root=root))
+ bad=dict(v);bad[ForeignKey('x')]=bad.pop('x');reject(lambda:evaluate(p,bad,root=root))
+ for bad in ({'x':1},dict(v,extra=1)):reject(lambda bad=bad:evaluate(p,bad,root=root))
+ bad=copy.deepcopy(p);i=next(i for i,r in enumerate(bad['polynomial_source']) if any(type(x)is int for x in r[2:]));r=list(bad['polynomial_source'][i]);j=next(j for j in (2,3) if type(r[j])is int);r[j]=float(r[j]);bad['polynomial_source'][i]=tuple(r)
+ reject(lambda:evaluate(bad,{n:10**100 for n in v},root=root))
+ with tempfile.TemporaryDirectory(prefix='grill-weak-warm-') as directory:
+  directory=Path(directory);child=directory/Path(__file__).name;child.write_bytes(Path(__file__).read_bytes())
+  copied=directory/PARENT_NAME;copied.write_bytes(path.read_bytes())
+  native_name=parent.PARENT_NAME;native_path=path.parent/native_name if (path.parent/native_name).is_file() else root/native_name
+  native_copy=directory/native_name;native_copy.write_bytes(native_path.read_bytes())
+  module=types.ModuleType('_private_grill_weak_guard');module.__file__=str(child);exec(compile(child.read_bytes(),str(child),'exec'),module.__dict__)
+  pristine=module.build((0,),root=root)
+  for target in (copied,native_copy):
+   data=target.read_bytes()
+   try:
+    target.write_bytes(data+b'\n# private source guard regression\n');reject(lambda:module.build((0,),root=root));counts['warm_source_pin_rejections']+=1
+   finally:target.write_bytes(data)
+   need(exact(module.build((0,),root=root),pristine),'Restored cached weak packet changed')
+ weak_fixtures=[]
+ for unit in (False,True):
+  f=build((0,),unit_product=unit,root=root);values={n:1 for n in f['parameters']+f['auxiliaries']}
+  values.update(x=1,Z0=1,Vfinal=2,phase_initial=1,height_slack=2,H_U=129,H_V=65,Shat0=2,Shat1=65,ZVhat0=65,global_bound=3837)
+  env=_execute(f['source'],values);face={k:_at(env,n) for k,n in f['interfaces'].items()}
+  need(all(_at(env,a)==_at(env,b) for a,b in f['comparisons'][:4]),'Concrete weak outer residuals')
+  need(face['P0']==2 and face['D']==8 and face['B']==64 and face['P']==4096,'Weak fixture geometry')
+  need(face['H']&face['M']==face['Z'] and max(face['H'],face['M'],face['Z'])<face['scale'],'Concrete complete semantic AND ports')
+  need(integer_pullback(f,values,root=root)['Z0']==-1,'Excluded strong-cone pullback')
+  need(_execute(f['polynomial_source'],values)[f['output']]!=0,'Do not report placeholder Pell values as a full zero')
+  counts['weak_outer_AND_fixtures']+=1
+  weak_fixtures.append(dict(program=[0],unit_product=unit,ordinary_input=1,input_width=2,weak_slack=1,strong_pullback_slack=-1,
+   H_U=129,H_V=65,Shat0=2,Shat1=65,ZVhat0=65,global_bound=3837,history_base=64,history_P=4096,
+   actual_head_word='10',actual_first_halt=2,positive_outer_equations_and_semantic_AND=True,full_Pell_witness_materialized=False,
+   padding_to_strong=dict(word='100',width=8,slack=5,actual_first_halt=4)))
+ return json.loads(json.dumps(dict(status='PASS_NATIVE_GRILL_WEAK_INPUT_CONE',source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),parent_sha256=PARENT_SHA256,
+  padding_reference=PADDING_REFERENCE,counts=dict(counts),forms=forms,weak_outer_fixtures=weak_fixtures,
+  scope='Complete polynomial identity only after the signed slack substitution; positive strong-to-weak map and existential input-language equality by fresh weak-cone native soundness plus period padding. No positive-fiber bijection or new universal decoder claim.')))
+
+if __name__=='__main__':
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path);p.add_argument('--output',type=Path);p.add_argument('--expect',type=Path);a=p.parse_args();r=verify(root=a.root)
+ if a.expect:need(exact(r,json.loads(a.expect.read_text())),'Full receipt mismatch')
+ if a.output:a.output.write_text(json.dumps(r,indent=2,sort_keys=True)+'\n')
+ print(json.dumps(dict(status=r['status'],counts=r['counts'],ledgers=[dict(program=f['program'],unit_product=f['unit_product'],**f['compiler']['polynomial_ledger']) for f in r['forms']]),indent=2))
+

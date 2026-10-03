@@ -1,0 +1,317 @@
+#!/usr/bin/env python3
+"""Independent data-only exact degree checker; never imports producer modules.
+
+The pair (upper degree, coefficient on the all-inputs=t diagonal at that degree)
+is propagated through every raw gate. A zero coefficient is never taken as an
+exact degree. A single polynomial identity, checked in a four-variable sparse
+ring and structurally matched to all 67 kernel rows, sharpens R15. Nonzero output
+coefficient proves the matching total-degree lower bound deterministically.
+"""
+import argparse, hashlib, json, mmap, struct, time
+from array import array
+from collections import Counter
+from pathlib import Path
+import sys
+sys.dontwritebytecode = True
+
+BASE=1<<50
+ROW=struct.Struct('<Bqq')
+OPS={'+':0,'-':1,'*':2}
+MODS=(17,1000000007)
+SRC=None
+PINS={'native_history.py': 'd6f88f09f5ffd48747b60bd53b98814431bcc5515cd16431438e2768a7f67340', 'native_unit_kernel.json': '2d88343037c08fe8b073f67dca531ee73309c0735c1d98a23c20b9ddb1eb08ae', 'native_receipt_fixtures.json': '99e635ffb9a470652aecf3dda2463846b983981dad06a3c69f5e79c8cc0d096c', 'native_backend_small_0.bin': '11f12f4bcda559b4ce05426fcf483115405bb158a0aed6f6d7f060d2b6a31065', 'native_backend_small_0.json': 'ac8e97555686fe84125eb2cb03ce6c5b4f03051d55cc9183e015858ff54842e6', 'native_backend_small_1.bin': '7b00bfaa93c222895d88cbc78b5dd5d80386e415547579e4000abf703c6a1270', 'native_backend_small_1.json': '2309c6ef7246c8611af53d205056d23d8dded7729ee594c030e00cec55518bd4', 'native_backend_small_2.bin': 'edec1cba2d33037880542e5d54859c9db672f9a21e996a1859c93ba4c7a5418c', 'native_backend_small_2.json': '4fb9ece6e59050c6322289ca526185ffd202a50a4788c2ed1403a50d06cf2816', 'native_backend_small_3.bin': '8eaeb2941a66fe712309eda8ceab72d5062032e7d152d1dc1512e41e31e4bca3', 'native_backend_small_3.json': '460f210783b5979b7d5e856ecc45c43cd2bf85c185c4139072bf0fdfdb31f4a7', 'universal.dag': 'a07c1ba41e3a18fafd05c19b8ac39211b0475e30ed8a08ddf43c45a9f5f440f2', 'universal.json': '41e6f754df8f60448e1207ef36e6161729b52004fac719a580d6ec643d039d49'}
+OUT=Path(__file__).resolve().parent
+
+def source_file(name):
+    return SRC / (name + '.txt' if name.endswith('.py') else name)
+
+def need(ok, why):
+    if not ok: raise RuntimeError(why)
+def sha(path):
+    h=hashlib.sha256()
+    with path.open('rb') as f:
+        for b in iter(lambda:f.read(1<<20),b''): h.update(b)
+    return h.hexdigest()
+
+def identity_check():
+    def add(a,b):
+        c=a.copy()
+        for k,v in b.items():
+            c[k]=c.get(k,0)+v
+            if not c[k]: del c[k]
+        return c
+    def neg(a):return {k:-v for k,v in a.items()}
+    def mul(a,b):
+        c={}
+        for k,v in a.items():
+            for l,w in b.items():
+                q=tuple(x+y for x,y in zip(k,l));c[q]=c.get(q,0)+v*w
+        return {k:v for k,v in c.items() if v}
+    def scale(a,n):return {k:v*n for k,v in a.items() if v*n}
+    one={(0,0,0,0):1}
+    u,a,c,g=[{tuple(int(i==j) for i in range(4)):1} for j in range(4)]
+    d=add(scale(a,4),scale(one,3))
+    ac=mul(a,c); gd=mul(g,d)
+    v=add(add(u,ac),gd)
+    lhs=add(mul(v,v),neg(mul(add(mul(a,a),d),mul(c,c))))
+    terms=[mul(u,u),scale(mul(u,ac),2),scale(mul(u,gd),2),scale(mul(ac,gd),2),mul(gd,gd),neg(mul(d,mul(c,c)))]
+    rhs={}
+    for t in terms:rhs=add(rhs,t)
+    need(lhs==rhs,'R15 sparse identity mismatch')
+    return {'variables':['u','a','c','gamma'],'monomials':[{'exponents':k,'coefficient':v} for k,v in sorted(lhs.items())],'term_count':len(lhs)}
+
+class Degree:
+    """Polynomial upper-bound and diagonal coefficient algebra over Z/mod Z."""
+    def __init__(self,d,c,mod):self.d=d;self.c=c%mod;self.mod=mod
+    def coerce(self,a):return a if isinstance(a,Degree) else Degree(0,a,self.mod)
+    def __add__(self,b):
+        b=self.coerce(b);d=max(self.d,b.d)
+        return Degree(d,(self.c if self.d==d else 0)+(b.c if b.d==d else 0),self.mod)
+    __radd__=__add__
+    def __neg__(self):return Degree(self.d,-self.c,self.mod)
+    def __sub__(self,b):return self+-self.coerce(b)
+    def __rsub__(self,b):return self.coerce(b)+-self
+    def __mul__(self,b):
+        b=self.coerce(b);return Degree(self.d+b.d,self.c*b.c,self.mod)
+    __rmul__=__mul__
+    def __pow__(self,n):return Degree(self.d*n,pow(self.c,n,self.mod),self.mod)
+    def item(self):return {'degree_bound':self.d,'diagonal_coefficient':self.c}
+
+def norm_reduced(e):
+    u=e['and__wn2'];a=e['and__R12'];c=e['and__R10a'];g=e['and__ga'];d=4*a+3
+    return u*u+2*u*a*c+2*u*g*d+2*a*c*g*d+g*g*d*d-d*c*c
+
+def constants(rows,mod):
+    out=[]
+    for r in rows:
+        op=r[0]
+        if op=='int':v=int(r[1])%mod
+        elif op=='pow2':v=pow(2,r[1],mod)
+        elif op=='geom4':v=((pow(4,r[1],3*mod)-1)//3)%mod
+        else:
+            need(op in ('add','sub','mul'),'Unknown constant recipe')
+            need(all(-len(out)<=x<0 for x in r[1:]),'Bad constant reference')
+            a,b=(out[-x-1] for x in r[1:])
+            v=(a+b if op=='add' else a-b if op=='sub' else a*b)%mod
+        out.append(v)
+    return out
+
+def input_map(meta):
+    out={}
+    for e in meta['inputs']:
+        for j in range(e['count']):
+            name=e['name']+str(j) if e.get('indexed') else e['name']
+            out[name]=BASE+e['start']+j
+    need(len(out)==meta['input_count'],'Input count mismatch')
+    return out
+
+def match_kernel(mm,meta,kernel):
+    n=meta['ledger']['operations'];ins=input_map(meta)
+    ints={int(r[1]):-j-1 for j,r in enumerate(meta['constants']) if r[0]=='int'}
+    def row(j):return ROW.unpack_from(mm,8+17*j)
+    # Kernel is near the finalizer; search every candidate in the last 2000 rows.
+    found=[]
+    for start in range(max(0,n-2000),n-len(kernel['source'])+1):
+        if row(start)[:2]!=(2,ints[16]):continue
+        e={x:ins['native.'+x] for x in kernel['auxiliaries']}
+        ports={};ok=True
+        for j,(name,op,a,b) in enumerate(kernel['source']):
+            actual=row(start+j)
+            if actual[0]!=OPS[op]:ok=False;break
+            for expected,actual_ref in zip((a,b),actual[1:]):
+                if type(expected)is int:want=ints.get(expected)
+                elif expected.startswith('@'):
+                    if expected not in ports:ports[expected]=actual_ref
+                    want=ports[expected]
+                else:want=e.get(expected)
+                if want!=actual_ref:ok=False;break
+            if not ok:break
+            e[name]=start+j
+        if ok:found.append((start,e,ports))
+    need(len(found)==1,'Expected exactly one exact 67-row native kernel match')
+    return found[0]
+
+def finalizer(mm,meta,e,kernel):
+    ints={int(r[1]):-j-1 for j,r in enumerate(meta['constants']) if r[0]=='int'}
+    def row(j):
+        need(0<=j<meta['ledger']['operations'],'Non-gate finalizer reference')
+        return ROW.unpack_from(mm,8+17*j)
+    op,p,one=row(meta['output']);need(op==1 and one==ints[1],'Final -1 mismatch')
+    op,u,s=row(p);need(op==2 and u==e[kernel['unit']],'Final unit product mismatch')
+    leaves=[];todo=[s]
+    while todo:
+        a=todo.pop()
+        if a<0:leaves.append(a);continue
+        op,b,c=row(a)
+        if op==0:todo.extend((c,b))
+        else:leaves.append(a)
+    need(leaves.count(ints[1])==1,'One-plus-squares constant mismatch')
+    pairs=[];squares=[]
+    for a in leaves:
+        if a==ints[1]:continue
+        op,b,c=row(a);need(op==2 and b==c,'Residual square mismatch')
+        op,l,r=row(b);need(op==1,'Residual subtraction mismatch')
+        squares.append(a);pairs.append((l,r))
+    need(len(pairs) in (10,86),'Unexpected finalizer comparison count')
+    for pair,(a,b) in zip(pairs[4:10],kernel['comparisons']):
+        need(pair==(e[a],e[b]),'Native comparison mismatch')
+    return pairs,squares
+
+def raw_pass(mm,meta,e,pairs,ports,mod,input_weights=None):
+    input_weights=input_weights or {}
+    cv=constants(meta['constants'],mod);ds=array('I');cs=array('I')
+    def get(h):
+        if h<0:return Degree(0,cv[-h-1],mod)
+        if h>=BASE:
+            need(h-BASE<meta['input_count'],'Invalid input')
+            return Degree(input_weights.get(h-BASE,1),1,mod)
+        return Degree(ds[h],cs[h],mod)
+    special=e['and__R15']
+    for j in range(meta['ledger']['operations']):
+        op,a,b=ROW.unpack_from(mm,8+17*j)
+        need(op in (0,1,2),'Invalid opcode')
+        need((a<j or a>=BASE) and (b<j or b>=BASE),'Invalid forward reference')
+        if j==special:
+            v=norm_reduced({x:get(e[x]) for x in ('and__wn2','and__R12','and__R10a','and__ga')})
+        else:
+            da,ca=(0,cv[-a-1]) if a<0 else (input_weights.get(a-BASE,1),1) if a>=BASE else (ds[a],cs[a])
+            db,cb=(0,cv[-b-1]) if b<0 else (input_weights.get(b-BASE,1),1) if b>=BASE else (ds[b],cs[b])
+            if op==2:d=da+db;c=ca*cb%mod
+            else:
+                d=max(da,db);c=((ca if da==d else 0)+(1 if op==0 else -1)*(cb if db==d else 0))%mod
+            v=Degree(d,c,mod)
+        ds.append(v.d);cs.append(v.c)
+    result={'modulus':mod,'output':get(meta['output']).item(),'unit':get(e['and__history_unit_product2']).item(),
+      'factors':{k:get(e[k]).item() for k in ('and__R15','and__P17','and__first_unit','and__bs_q')},
+      'ports':{k:get(v).item() for k,v in ports.items()},'residuals':[(get(a)-get(b)).item() for a,b in pairs]}
+    return result
+
+def packet_pass(packet,mod):
+    e={n:Degree(1,1,mod) for n in packet['parameters']+packet['auxiliaries']}
+    def r(x):return Degree(0,x,mod) if type(x)is int else e[x]
+    for name,op,a,b in packet['source']:
+        a,b=r(a),r(b)
+        e[name]=norm_reduced(e) if name=='and__R15' else a+b if op=='+' else a-b if op=='-' else a*b
+    residuals=[r(a)-r(b) for a,b in packet['comparisons'][:-1]]
+    output=e[packet['unit_register']]*(1+sum(x*x for x in residuals))-1
+    return output, [x.item() for x in residuals],{k:r(v).item() for k,v in packet['interfaces'].items()}
+
+def generic(program,kernel,mod):
+    """Separate formula-level implementation of native arithmetic.
+
+    Direct sum/power formulas intentionally differ from producer's gate-building
+    loops. Constant recipes are evaluated mod mod, never materialized.
+    """
+    m=len(program);s=2*m;groups=list(dict.fromkeys(program));g=len(groups);N=s+g+5
+    need(m>0 and all(type(x)is int and x>=0 for x in program),'Invalid program')
+    t=Degree(1,1,mod);z=Degree(0,0,mod);o=Degree(0,1,mod)
+    sh=[t]*s;zh=[t]*g
+    P0=t+t;Uf=P0*t+t;D=Uf+t+t
+    ke=max(3,(s+3).bit_length(),2*max(groups)+2);K=pow(2,ke,mod)
+    B=K*D;J=sum(sh,z)-s;P=(B-1)*J+1
+    def pack(seq):
+        return sum((v*P**i for i,v in enumerate(seq)),z)
+    def rep(n):return sum((P**i for i in range(n)),z)
+    selected=[sum((sh[2*i+1] for i,n in enumerate(program) if n==a),z)-program.count(a) for a in groups]
+    zs=[v-1 for v in zh]
+    nextU=2*t+sum(selected,z)
+    nextV=t
+    for a,sel,zv in zip(groups,selected,zs):
+        nextV+=(pow(2,2*a+1,mod)-1)*zv
+        if a:nextV+=2*((pow(4,a,3*mod)-1)//3)*sel
+    residuals=[3*t+sum(zh,z)-P, B*nextU+1-(t+P*Uf),B*nextV+1-(t+P*t)]
+    if m==1:phase=t-1
+    else:
+        phase=m*(sh[0]+sh[1])-(B-1)*(sum(((m-i)*(sh[2*i]+sh[2*i+1]) for i in range(1,m)),z)-m*(m-1))+t-(J+3*m)
+    residuals.append(phase)
+    S=pack(sh)-rep(s);Mc=J*rep(s);T=t+P*t;G=pack(selected);Hb=t*rep(g);Mb=(B-1)*G;Zb=pack(zs);RM=(D-1)*J*(1+P)
+    common=P**g*S+P**(g+s)*T
+    ports={'H':Hb+common+P**(g+s+2)*B+P**(g+s+4)*P0,
+           'M':Mb+P**g*Mc+P**(g+s)*RM+P**(g+s+2)*(B-1)+P**(g+s+4)*(P0-1),
+           'Z':Zb+common,'scale':P**N}
+    e={a:t for a in kernel['auxiliaries']};e.update({'@'+a:v for a,v in ports.items()})
+    def r(x):return Degree(0,x,mod) if type(x)is int else e[x]
+    for name,op,a,b in kernel['source']:
+        a,b=r(a),r(b)
+        e[name]=norm_reduced(e) if name=='and__R15' else a+b if op=='+' else a-b if op=='-' else a*b
+    residuals += [r(a)-r(b) for a,b in kernel['comparisons']]
+    F=e[kernel['unit']]*(1+sum((v*v for v in residuals),z))-1
+    expected=(-pow(2,148,mod)*pow(pow(2,ke+1,mod)*s%mod,29*N-8,mod))%mod
+    need(F.d==87*N+16,'Generic bound mismatch')
+    need(F.c==expected,'Generic closed-form coefficient mismatch')
+    need([x.d for x in residuals]==[3,5,4,1 if m==1 else 3,12*N-11,12*N-11,12*N+10,12*N-11,3*N-2,3*N-2],'Generic residual bound mismatch')
+    return {'m':m,'g':g,'N':N,'K_exponent':ke,'degree':F.d,'modulus':mod,'coefficient':F.c,'expected_coefficient':expected,
+            'residual_bounds':[x.d for x in residuals],'ports':{k:v.item() for k,v in ports.items()}}
+
+def check_file(stem,kernel,fixture=None):
+    need(sha(SRC/(stem+'.json'))==PINS[stem+'.json'],'Manifest frozen pin mismatch')
+    meta=json.loads((SRC/(stem+'.json')).read_text());path=SRC/(stem+('.dag' if stem=='universal' else '.bin'))
+    digest=sha(path);need(digest==meta['source_sha256']==PINS[path.name],'Source SHA mismatch')
+    if stem=='universal':need(digest=='a07c1ba41e3a18fafd05c19b8ac39211b0475e30ed8a08ddf43c45a9f5f440f2','Full frozen source pin mismatch')
+    need(path.stat().st_size==8+17*meta['ledger']['operations'],'DAG length mismatch')
+    with path.open('rb') as f, mmap.mmap(f.fileno(),0,access=mmap.ACCESS_READ) as mm:
+        need(mm[:8]==b'CDAGv1\0\0','DAG magic mismatch')
+        start,e,ports=match_kernel(mm,meta,kernel);pairs,squares=finalizer(mm,meta,e,kernel)
+        md=meta['extra']['native_metadata'];N=md['scale_exponent'];s=md['selector_count'];ke=md['K_exponent']
+        need(N==s+md['slope_group_count']+5,'N metadata mismatch')
+        passes=[]
+        for mod in MODS:
+            q=raw_pass(mm,meta,e,pairs,ports,mod)
+            expected=-pow(2,148,mod)*pow(pow(2,ke+1,mod)*s%mod,29*N-8,mod)%mod
+            need(q['output']['degree_bound']==87*N+16,'Raw degree mismatch')
+            need(q['output']['diagonal_coefficient']==expected,'Raw closed-form coefficient mismatch')
+            need(q['unit']['degree_bound']==63*N-4,'Unit degree mismatch')
+            need(max(x['degree_bound'] for x in q['residuals'])==12*N+10,'Residual maximum mismatch')
+            q['closed_form_diagonal_coefficient']=expected
+            if fixture:
+                p,rs,ps=packet_pass(fixture['packet'],mod)
+                need(p.item()==q['output'],'Pinned receipt output certificate mismatch')
+                need(rs==q['residuals'],'Pinned receipt residual certificate mismatch')
+                for port,v in q['ports'].items():need(ps[port[1:]]==v,'Pinned receipt port certificate mismatch')
+                gg=generic(fixture['program'],kernel,mod)
+                need(gg['degree']==p.d and gg['coefficient']==p.c,'Generic output certificate mismatch')
+                for port,v in q['ports'].items():need(gg['ports'][port[1:]]==v,'Generic port certificate mismatch')
+                q['receipt_and_formula_certificates_match']=True
+            passes.append(q)
+        need(any(q['output']['diagonal_coefficient'] for q in passes),'No nonzero coefficient certificate')
+    return {'source':path.name,'source_sha256':digest,'manifest_sha256':sha(SRC/(stem+'.json')),'nodes':meta['ledger']['operations'],
+            'kernel_start':start,'kernel_rows_matched':67,'finalizer_squares_matched':len(squares),
+            'm':md['phase_count'],'g':md['slope_group_count'],'N':N,'exact_degree':87*N+16,'passes':passes}
+
+def main():
+    global SRC
+    ap=argparse.ArgumentParser();ap.add_argument('--source-dir',type=Path,required=True);ap.add_argument('--skip-full',action='store_true');ap.add_argument('--output',required=True);args=ap.parse_args();SRC=args.source_dir.resolve()
+    for name in ('native_history.py','native_unit_kernel.json','native_receipt_fixtures.json'):
+        need(sha(source_file(name))==PINS[name],'Frozen input pin mismatch: '+name)
+    started=time.monotonic();kernel=json.loads((SRC/'native_unit_kernel.json').read_text())
+    need(sha(SRC/'native_unit_kernel.json')=='2d88343037c08fe8b073f67dca531ee73309c0735c1d98a23c20b9ddb1eb08ae','Kernel pin mismatch')
+    fixtures=json.loads((SRC/'native_receipt_fixtures.json').read_text())['fixtures']
+    record={'status':'PASS','upstream_python_executed':False,'source_files_modified':False,'R15_identity':identity_check(),'files':[],
+            'source_pins':{n:sha(source_file(n)) for n in ('native_history.py','native_unit_kernel.json','native_receipt_fixtures.json')},
+            'coefficient_formula':'-2^148 * (2^(K_exponent+1) * (2*m))^(29*N-8)','generic_cases':[]}
+    for i,f in enumerate(fixtures):
+        q=check_file('native_backend_small_'+str(i),kernel,f);record['files'].append(q)
+        print(json.dumps({'fixture':i,'program':f['program'],'degree':q['exact_degree'],'modular_coefficients':[p['output']['diagonal_coefficient'] for p in q['passes']]}),flush=True)
+    programs=[[0]*m for m in (1,2,3,5,17)]+[[1],[2],[512],[2**32-1],[0,1],[1,0],[0,0,1],[0,1,1],[2,0,1],[0,1,2,3],list(range(12)),[7]*12,[0,2**32-1]]
+    for p in programs:
+        rows=[generic(p,kernel,m) for m in MODS]
+        need(any(r['coefficient'] for r in rows),'Generic certificate zero in both moduli')
+        record['generic_cases'].append({'program':p,'passes':rows})
+    # Literal source substitution X=y^2; each other supplied coordinate has degree one.
+    cm=json.loads((SRC/'native_backend_small_0.json').read_text())
+    with (SRC/'native_backend_small_0.bin').open('rb') as ff, mmap.mmap(ff.fileno(),0,access=mmap.ACCESS_READ) as mm:
+        _,ce,cp=match_kernel(mm,cm,kernel);pairs,_=finalizer(mm,cm,ce,kernel)
+        weighted=[raw_pass(mm,cm,ce,pairs,cp,mod,{0:2}) for mod in MODS]
+        for row in weighted:
+            need(row['output']['degree_bound']==936,'X=y^2 counterexample degree mismatch')
+        need(any(row['output']['diagonal_coefficient'] for row in weighted),'X=y^2 nonzero coefficient missing')
+        record['composition_counterexample']={'program':[0],'substitution':'X=y^2; all other inputs independent degree-one coordinates',
+            'original_degree':712,'composed_degree':936,'predicted_degree_formula':'(delta+2)*(29*N-8)+40','delta':2,'passes':weighted}
+    if not args.skip_full:
+        q=check_file('universal',kernel);record['files'].append(q)
+        print(json.dumps({'full_universal_degree':q['exact_degree'],'modular_coefficients':[p['output']['diagonal_coefficient'] for p in q['passes']]}),flush=True)
+    for n,h in record['source_pins'].items():need(sha(source_file(n))==h,'Source changed during check')
+    record['elapsed_seconds']=time.monotonic()-started
+    Path(args.output).write_text(json.dumps(record,indent=2)+'\n')
+    print(json.dumps({'status':'PASS','output':Path(args.output).name,'seconds':record['elapsed_seconds']}),flush=True)
+if __name__=='__main__':main()

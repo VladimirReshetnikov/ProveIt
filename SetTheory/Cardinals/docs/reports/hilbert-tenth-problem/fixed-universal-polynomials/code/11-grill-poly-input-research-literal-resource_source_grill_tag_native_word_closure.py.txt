@@ -1,0 +1,345 @@
+#!/usr/bin/env python3
+"""Fixed-arity native Grill word closure with paid input/phase/power boundaries."""
+if not __debug__:
+    raise RuntimeError('Run without -O')
+import argparse
+import ast
+from collections import Counter
+from contextlib import contextmanager
+import copy
+import hashlib
+import importlib
+import importlib.abc
+import importlib.util
+import itertools
+import json
+from pathlib import Path
+import sys
+
+PINS = {'explore_base_three_positive_kernel': ['verification/explore_base_three_positive_kernel.py', 'd616bc47024ee872f0e1075e6ccc75e19013fa5809889f5472a51bdd5fc0a59d'], 'explore_boolean_affine_mask': ['verification/explore_boolean_affine_mask.py', '70f8471e3c26d5a0bcd95b10dfa353b0e4a0d4c92202e320c5ac0f9b19abd257'], 'explore_fixed_base_exponent_bridge': ['verification/explore_fixed_base_exponent_bridge.py', '9a7770acae48b4c9bb64654cf2f50c2bc35028362473f640fee3eedc0ee5f625'], 'explore_fixed_raw_universal_78': ['verification/explore_fixed_raw_universal_78.py', '10d5ed5809ccaf49b6006cf5758a40ed4f2bd05fed3f4747add3ea4c5d0b1639'], 'explore_fixed_raw_universal_80': ['verification/explore_fixed_raw_universal_80.py', '04a5522292b2348e4a1b52b5a5acb29a493e7f0bec46be4288b007ec762f6e2b'], 'explore_fixed_raw_universal_81': ['verification/explore_fixed_raw_universal_81.py', '5bd8c6deae690d36e83716a44f8e3a18592db568b026b8f3f8c76ed58a3102c9'], 'explore_fixed_raw_universal_84': ['verification/explore_fixed_raw_universal_84.py', '7eb0942a501e85e7d29d90de2489e51b6eb9ae42d7fc29bfdee5c26301528b92'], 'explore_fixed_unary_tableau': ['verification/explore_fixed_unary_tableau.py', 'a7d1e0612e93494d73fb36432ff48063cda1d4a6a44b457fa7301f65310eec96'], 'explore_four_cell_period_lift': ['verification/explore_four_cell_period_lift.py', '309a8381ceb6163cb8668fd2397b09563c422597c1bb8d6d3b949f6e9e15bc7a'], 'explore_helical_unary_tableau': ['verification/explore_helical_unary_tableau.py', 'ca612f502b18b1b7a59c7c356938d108d00fb4fdaa7e719ccde1d667ef467823'], 'explore_homogeneous_marked_cyclic': ['verification/explore_homogeneous_marked_cyclic.py', '28efa758a4440d667db484de89b9da511d6b9e12f9f48d4a2fd5cba5b2e4feb6'], 'explore_marked_periodic_tm_padding': ['verification/explore_marked_periodic_tm_padding.py', '2db443f932ae2ecb80e5a53a4312b81d9d337ce35db44cc2a59b0985011dd627'], 'explore_multibit_affine_cell': ['verification/explore_multibit_affine_cell.py', 'd4d2e7eab2a89995ab04553a9e53abc2f332ab484a1dee596a0ba8242847227f'], 'explore_multibit_cyclic_certificate': ['verification/explore_multibit_cyclic_certificate.py', '2e0731e97282c6797524c8ebdfae655d9392a69a73db8dd58da6346b35d9b408'], 'explore_one_field_rule110_history': ['verification/explore_one_field_rule110_history.py', '122ab7bda09d1e64fb54b14de22c31b23dbb214d65f0c744d1970abe1899a4b6'], 'explore_raw_input_exponent_bridge': ['verification/explore_raw_input_exponent_bridge.py', 'e2abfe6534380ee7e191ee01d115f03378a355d4f47dd1d390514666534a1e00'], 'explore_rule110_cyclic_certificate': ['verification/explore_rule110_cyclic_certificate.py', '9367dd51899b2efa0a064d7468cbcd7eaa99868ada95203c4d0b8a6519bc3f0f'], 'explore_rule110_cyclic_short_mask': ['verification/explore_rule110_cyclic_short_mask.py', '55e53e70a634b4fd9af7586c4b004aaf6f2d284ef0fe2df2a1f3d7f72691fbaf'], 'explore_three_cell_marked': ['verification/explore_three_cell_marked.py', '54659f6fd2938081a9a2f11b47831311e264ea41db3b166306cf57530374cba4'], 'explore_three_cell_period_lift': ['verification/explore_three_cell_period_lift.py', '37dc8b9fbb37d9551d0322918698fde6468a138521b2aa1fee5cf3bc1be5ccbe'], 'explore_unique_start_cyclic': ['verification/explore_unique_start_cyclic.py', '7c8e57927699744e4ac22ccb0a1d60d158e4194d8970b04d5119c99ae1572fa6'], 'gpcp_complete_fixed_program': ['research-wip/native-stream-queue/gpcp_complete_fixed_program.py', '4ea5b1072091f5b8a9ee8e3c5131ce7fde426ebae71e7abe9e3f0952a5f9906a'], 'gpcp_fixed_program_input_bridge': ['research-wip/native-stream-queue/gpcp_fixed_program_input_bridge.py', '0d5023b52a5ffe87f5c9e26b436048571e75ccbebfd18c62f9820729b10b74f0'], 'group_linked_binary_geometry47': ['research-wip/native-stream-queue/group_linked_binary_geometry47.py', 'f3368a4676138275a5329a4f53b63e918fb3dab7a7a9e143ec8edb0a8216b58f'], 'native_binary_input_dilation129': ['research-wip/native-stream-queue/native_binary_input_dilation129.py', 'ec29db56b8e03e58d52022d8aefd0d9fbfb13549c210b8aad1c08f645198b0b5'], 'native_binary_input_dilation130': ['research-wip/native-stream-queue/native_binary_input_dilation130.py', '7e7ccb297083ffb799775d729b81ec0e403981f287af62513338c5d366fb9ac2'], 'native_binary_input_dilation132': ['research-wip/native-stream-queue/native_binary_input_dilation132.py', '4734230670ee87464fd6df4f884904a4351c51b257ae8d87d21d5c362d086df7'], 'native_binary_input_dilation_unit179': ['research-wip/native-stream-queue/native_binary_input_dilation_unit179.py', 'f9e1ea743970ccac02f4625c0f2ac82cbbecc86575f256bacb94e3aa92fe12dd'], 'native_binary_masked_selection63': ['research-wip/native-stream-queue/native_binary_masked_selection63.py', 'fcff972928d234450901021b2fce5acf41e0c917ab8174ac67fee0b60df7c985'], 'native_binary_masked_selection65': ['research-wip/native-stream-queue/native_binary_masked_selection65.py', '3a2fe06641767be09f1e85a6b749480cd2b44b4c51caad30b9e095b654b2897c'], 'native_binary_three_row_fifo58': ['research-wip/native-stream-queue/native_binary_three_row_fifo58.py', 'c245a16893f62001f10dc734b949539835d5c43e6deb6cb3ef322872ef826800'], 'native_controller_binary_selector56': ['research-wip/native-stream-queue/native_controller_binary_selector56.py', 'd21de8fc373c5a55a30efdcf5a3171c06f80568a9edfdb98d5176fc2767494b1'], 'native_controller_three_selector_53': ['research-wip/native-stream-queue/native_controller_three_selector_53.py', '690790e946f50c039ff2b8c61f33c8545a859ebfb9b45de93fc3e152cc4aedb7'], 'pcp_affine_slope_class_history': ['research-wip/native-stream-queue/pcp_affine_slope_class_history.py', '4343629ab42a416ec1ce77d55120baeab7730f5cea9ebec50a2e83fdd2599bd0'], 'pcp_uniform_affine_pair_history': ['research-wip/native-stream-queue/pcp_uniform_affine_pair_history.py', 'c6e07c5eb3a46dc995ae722607c894e43e4b7438adc9af05bcb04f98a8e80b40'], 'pcp_uniform_affine_pair_units': ['research-wip/native-stream-queue/pcp_uniform_affine_pair_units.py', '5bac5fc3e24781aefbca30273672fa9f9c5b19b3105b8498101e46e30a476d9d'], 'round10_1980_certificate': ['verification/round10_1980_certificate.py', '33d7b78ead1bed3f21eb79a7eef2c401e59ce80cfef8e01d3c3fee140fef6ed7'], 'round12_1980_certificate': ['verification/round12_1980_certificate.py', '5a6e043369e12052ee676a617ecf06a59831f8c0c768eb58c66e80f8836cc5d7'], 'round13_1980_certificate': ['verification/round13_1980_certificate.py', 'd88100f53cdf840e8aa021998f157cf5f4c560ffd559095e27f876a72152c83f'], 'round14_1980_base_four_certificate': ['verification/round14_1980_base_four_certificate.py', 'ace312548d6cadf0ff1b01ad8a83908702a419d5ce1d27f269c26e5c4cbe187c'], 'round18_1980_unit_scale_certificate': ['verification/round18_1980_unit_scale_certificate.py', '1faf00c4c7914fd65ad904014399c46dbd00efc793fa08dfc6fd1ca249aae5a9'], 'round19_1980_shared_ratio_product_certificate': ['verification/round19_1980_shared_ratio_product_certificate.py', 'f5e0d041d6dcbd85d148d60d131b96c7df9d441315320e1e3b9b690d7a252f2d'], 'round20_1980_borrow_mask_certificate': ['verification/round20_1980_borrow_mask_certificate.py', '68e67b2c791c55834952d2e5c67bb09b98354ec0af84b9d5800e7c5feff128da'], 'round22_1980_composed_certificate': ['verification/round22_1980_composed_certificate.py', '34878b8cbae7f0d86e5d671eae5dc14a0f3cd7356f859cc6403591d6c45f458d'], 'round23_1980_fixed_four_certificate': ['verification/round23_1980_fixed_four_certificate.py', '4d327305907e795a76bb568d7ebabf012be3994fc74be57073cc61f0e57afb1f'], 'round24_1980_doubled_pell_certificate': ['verification/round24_1980_doubled_pell_certificate.py', '01d527879e85b8a780d3372bbedea2c389b7e81feeff87e39697f6259a08f68a'], 'round25_1980_half_center_certificate': ['verification/round25_1980_half_center_certificate.py', '5f0fe006224febec9fb5d08c242cacc99062a58d949e4d491d758df794f73782'], 'round26_1980_composed_certificate': ['verification/round26_1980_composed_certificate.py', '8f1d302d65a25c9db11058f2b947f8bffcd2cc6df70ba3debae0ccb1850230da'], 'round27_1980_unit_center_certificate': ['verification/round27_1980_unit_center_certificate.py', 'cf4107bbad32eb9c8a2718bafaf5109cc994ad19897a1a02e9bdf93e5327d2dd'], 'round28_1980_relaxed_auxiliary_certificate': ['verification/round28_1980_relaxed_auxiliary_certificate.py', '9a8e3d2e55cc2dc49c4c624dde5d89797dd73307a0e2ca1297fbfe3af883fdd2'], 'round29_1980_composed_certificate': ['verification/round29_1980_composed_certificate.py', '88ecea4f8c05a274be265d67aa40db3868b90ca484badab648f5cc7669d2e230'], 'round30_1980_linear_radix_certificate': ['verification/round30_1980_linear_radix_certificate.py', '86deedd1bdc7faabcebc147a3e5e530288d403564ce3c9172fa80c2d57b4ff3b'], 'round31_1980_combined_bound_certificate': ['verification/round31_1980_combined_bound_certificate.py', '2f6163c6d34ed5bf83ee887c51c8aca9d3b2d28dfb1dff0aeacc217e6f474fad'], 'round32_1980_affine_radix_certificate': ['verification/round32_1980_affine_radix_certificate.py', '6b31771709e8493b4aeb479b2ea61012445872e7ec929ffa05379acd11b5da80'], 'round33_1980_shifted_affine_certificate': ['verification/round33_1980_shifted_affine_certificate.py', '726f2340b6ee649e0b3ca689c05d5dd920270e1d2f01d505456a5015f60e2a2d'], 'round34_1980_factored_mask_certificate': ['verification/round34_1980_factored_mask_certificate.py', '927ace1ee25ef7ae61fc1ba5ec7b0ed2635206fb54e1d1149b8157f77ced4d64'], 'round35_1980_half_parameter_pell_certificate': ['verification/round35_1980_half_parameter_pell_certificate.py', 'de3b7fb3a3d0503c7f0fdfb1f8bd17cdc18d22cbf9e2946409a742125f8e2dc8'], 'round36_1980_product_bound_certificate': ['verification/round36_1980_product_bound_certificate.py', '0b37217d7c69ec091c3e6b123528730449cfeea3b455ccdd4d62602671905349'], 'round37_1980_base_two_pell_regression': ['verification/round37_1980_base_two_pell_regression.py', 'c0d985c83f7fe1155f2b5948bc6500cd539736a057020beb565c8f8ddabded3b'], 'round37_1980_binary_product_certificate': ['verification/round37_1980_binary_product_certificate.py', '6f013acf3e48f45bd28d8ca0d2afe7279aeb7ae945476c9782aaff90a6389087'], 'round39_1980_boolean_history_components': ['verification/round39_1980_boolean_history_components.py', 'd63486402926aab59c24aec2629cc8c0f192857cc94b717e164d6192bbdb6ee4'], 'round4_1980_operation_count': ['verification/round4_1980_operation_count.py', 'ca5b058939862d2c563618b864fb9c2865e80c3c0b64e27551410027e72b9e91'], 'round4_1980_optimized_certificate': ['verification/round4_1980_optimized_certificate.py', '33aaf5115caa7e06dc087af7773d7fe020cf60086daf026e5379d63697fd7980'], 'round4_1980_packed_certificate': ['verification/round4_1980_packed_certificate.py', 'e16231041b3b27df9a7385b952c8f6c67025a973ef50538f4e33c43d77025d6b'], 'round4_1980_recoded_certificate': ['verification/round4_1980_recoded_certificate.py', 'd2f142332d36385910f035a0f58294dd26fbfc1aa9db07e5655a910185b87a65'], 'round5_1980_certificate': ['verification/round5_1980_certificate.py', 'a812cc4d49830f693700354a1b51b30dbe384edd6c94987382cf3b61be14ccf0'], 'round5_1980_short_masks': ['verification/round5_1980_short_masks.py', '6cf1b628593ccaca7e6e07ddd6e27afe3916f5013575566fdca345edb8f0787c'], 'round6_1980_certificate': ['verification/round6_1980_certificate.py', '504893dfded855633d176c560be4fddd0df61d09056f853224ca408449c6eafe'], 'round6_1980_quadratic_certificate': ['verification/round6_1980_quadratic_certificate.py', '76d3a9a637bb5c22b7563e4c298f7ab6369fe356b3c537076c2cf93e5580475e'], 'round7_1980_certificate': ['verification/round7_1980_certificate.py', '56ab660e93e9194c92ab73b6cb83cb0ba2962859389666373980985f07525390'], 'round8_1980_certificate': ['verification/round8_1980_certificate.py', '4bd61d6aedcfe0d6c71df7af16e18d4d49f18c708ff0e289655606ab71e08b69'], 'round9_1980_certificate': ['verification/round9_1980_certificate.py', 'b33b5af016c765fc9bdd0de83da9607ff2b56d5e8d07b1658d35d0edb5f709c1']}
+
+def need(ok, message):
+    if not ok:
+        raise ValueError(message)
+
+def exact(a,b):
+    if type(a) is not type(b): return False
+    if type(a) is dict: return a.keys()==b.keys() and all(type(k) is str and exact(a[k],b[k]) for k in a)
+    if type(a) in (tuple,list): return len(a)==len(b) and all(exact(x,y) for x,y in zip(a,b))
+    return a==b
+
+@contextmanager
+def dependencies(root):
+    root=Path(root).resolve();papers=root.parents[1];verification=papers/'verification'
+    for name,(relative,digest) in PINS.items():
+        need(hashlib.sha256((papers/relative).read_bytes()).hexdigest()==digest,'source pin '+name)
+    stems={p.stem for folder in (root,verification) for p in folder.glob('*.py')}
+    prior={name:sys.modules[name] for name in stems if name in sys.modules}
+    oldpath=list(sys.path);oldmeta=list(sys.meta_path)
+    class SourceOnlyLoader(importlib.abc.Loader):
+        def __init__(self,name,path):self.name,self.path=name,path
+        def create_module(self,spec):return None
+        def exec_module(self,module):
+            data=self.path.read_bytes()
+            need(hashlib.sha256(data).hexdigest()==PINS[self.name][1],'executed source pin '+self.name)
+            module.__file__=str(self.path)
+            exec(compile(data,str(self.path),'exec'),module.__dict__)
+    class AuthenticatedFinder(importlib.abc.MetaPathFinder):
+        def find_spec(self,fullname,path=None,target=None):
+            if fullname in stems:
+                need(fullname in PINS,'unlisted local dependency '+fullname)
+                location=papers/PINS[fullname][0]
+                return importlib.util.spec_from_file_location(fullname,location,loader=SourceOnlyLoader(fullname,location))
+            return None
+    try:
+        for name in stems:sys.modules.pop(name,None)
+        sys.path[:0]=[str(root),str(verification)];sys.meta_path.insert(0,AuthenticatedFinder())
+        yield importlib.import_module('pcp_affine_slope_class_history')
+    finally:
+        for name in stems:sys.modules.pop(name,None)
+        sys.modules.update(prior);sys.path[:]=oldpath;sys.meta_path[:]=oldmeta
+
+def adapted(parent):
+    data=Path(parent.__file__).read_text()
+    node=next(n for n in ast.parse(data).body if isinstance(n,ast.FunctionDef) and n.name=='build_raw')
+    code=''.join(data.splitlines(keepends=True)[node.lineno-1:node.end_lineno])
+    def change(old,new):
+        nonlocal code
+        need(code.count(old)==1,'literal source adapter guard: '+old[:64]);code=code.replace(old,new)
+    change('def build_raw(maps=parent.DEFAULT_MAPS,*,baseline_U=\'auto\',baseline_V=\'auto\',linear_emitter=None):',
+           'def _raw(maps,phase_count,*,baseline_U=2,baseline_V=1,linear_emitter=None):')
+    change("    D=g.total(parent.PARAMETERS+['height_slack'],'height_sum')",
+           "    P0=g.add(g.mul(3,'x','three_x'),'Z0','input_width')\n"
+           "    Ufinal=g.add(g.mul(P0,'Vfinal','boundary_product'),'x','input_boundary')\n"
+           "    D=g.total([Ufinal,'phase_initial','height_slack'],'height_sum')")
+    change("g.add(g.mul(B,nextV,'V_update'),'Vinitial','V_lhs')", "g.add(g.mul(B,nextV,'V_update'),1,'V_lhs')")
+    change("g.mul(P,'Ufinal','U_terminal')", "g.mul(P,Ufinal,'U_terminal')")
+    change("    pairs += [(lhsU,rhsU),(lhsV,rhsV)]",
+           "    pairs += [(lhsU,rhsU),(lhsV,rhsV)]\n"
+           "    state_coeff=[i//2+1 for i in range(s)]\n"
+           "    next_coeff=[((i//2-1)%phase_count)+1 for i in range(s)]\n"
+           "    Q=g.sub(g.total([g.mul(c,f'Shat{i}','state_weight') for i,c in enumerate(state_coeff)],'state_sum'),sum(state_coeff),'state_unhat')\n"
+           "    Next=g.sub(g.total([g.mul(c,f'Shat{i}','next_weight') for i,c in enumerate(next_coeff)],'next_sum'),sum(next_coeff),'next_unhat')\n"
+           "    state_lhs=g.add(g.mul(B,Next,'state_shift'),'phase_initial','state_lhs')\n"
+           "    state_rhs=g.add(Q,g.mul(P,phase_count,'state_terminal'),'state_rhs')\n"
+           "    pairs.append((state_lhs,state_rhs))")
+    change("    Z=g.add(Zb,common,'joined_Z');scale=g.power(N)",
+           "    Z=g.add(Zb,common,'joined_Z')\n"
+           "    input_exponent=N\n"
+           "    input_region=g.power(input_exponent)\n"
+           "    H=g.add(H,g.mul(input_region,P0,'input_power_H'),'full_joined_H')\n"
+           "    M=g.add(M,g.mul(input_region,g.sub(P0,1,'input_width_minus_one'),'input_power_M'),'full_joined_M')\n"
+           "    N+=1;scale=g.power(N)")
+    change("    aux=['height_slack','H_U','H_V','global_bound']+[f'Shat{i}' for i in range(s)]+zhats",
+           "    aux=['Z0','Vfinal','phase_initial','height_slack','H_U','H_V','global_bound']+[f'Shat{i}' for i in range(s)]+zhats")
+    change("    names=set(parent.PARAMETERS+aux)","    names=set(['x']+aux)")
+    change("    assert len(aux)==s+count+26 and len(pairs)==19", "    assert len(aux)==s+count+29 and len(pairs)==20")
+    change("parameters=list(parent.PARAMETERS)", "parameters=['x']")
+    change("equations=19,witnesses=len(aux)","equations=20,witnesses=len(aux)")
+    change("exact_degree=24*N+16", "exact_degree=None")
+    change("region_exponents=dict(controller=ec,range=er,top=et)","region_exponents=dict(controller=ec,range=er,top=et,input_power=input_exponent)")
+    change("interfaces=dict(D=D,B=B,J=J,P=P,S=S", "interfaces=dict(P0=P0,Ufinal=Ufinal,Q=Q,Next=Next,phase_lhs=state_lhs,phase_rhs=state_rhs,D=D,B=B,J=J,P=P,S=S")
+    namespace=dict(parent.__dict__)
+    exec(compile(code,'<guarded native Grill adapter>','exec'),namespace)
+    return namespace['_raw'],hashlib.sha256(code.encode()).hexdigest()
+
+def table(program):
+    need(type(program) is tuple and program and all(type(n) is int and n>=0 for n in program),'fixed natural tuple')
+    return tuple(row for n in program for row in ((2,0,1,0),(2,1,2*4**n,2*(4**n-1)//3)))
+
+def formal_bound(source,names):
+    degree={name:1 for name in names}
+    for name,op,a,b in source:
+        da=degree[a] if type(a) is str else 0;db=degree[b] if type(b) is str else 0
+        degree[name]=da+db if op=='*' else max(da,db)
+    return degree
+
+def build(program=(0,1,1),*,unit_product=True,root=None):
+    need(type(unit_product) is bool,'exact Boolean finalizer')
+    maps=table(program)
+    root=Path(__file__).resolve().parent if root is None else Path(root)
+    with dependencies(root) as component:
+        return _build_authenticated(program,unit_product,component)
+
+def _build_authenticated(program,unit_product,component):
+    maps=table(program)
+    raw,adapter_hash=adapted(component)
+    packet=raw(maps,len(program))
+    if unit_product:
+        packet=component.units.rewrite(packet)
+        circuit,output=component.units.polynomial_source(packet)
+    else:
+        circuit,output=component.parent.polynomial_source(packet)
+    packet=dict(packet,program=program,phase_count=len(program),unit_product=unit_product,
+                adapter_sha256=adapter_hash,polynomial_source=circuit,output=output)
+    counts=Counter('M' if op=='*' else 'A' for _,op,_,_ in circuit)
+    degree=formal_bound(circuit,packet['parameters']+packet['auxiliaries'])
+    packet['polynomial_ledger']=dict(operations=len(circuit),M=counts['M'],A=counts['A'],witnesses=len(packet['auxiliaries']),comparisons=len(packet['comparisons']),degree_upper=degree[output])
+    packet['scope']='Fixed finite Grill program, arbitrary nonempty duration packed existentially; positive ordinary x with some dyadic P0>3x. No universal recognizer or numeric universal bound claimed.'
+    return packet
+
+def checked(packet,*,root=None):
+    need(type(packet) is dict,'canonical packet')
+    canonical=build(packet.get('program'),unit_product=packet.get('unit_product'),root=root)
+    need(exact(packet,canonical),'noncanonical full source packet')
+    return packet
+
+def execute(source,values):
+    env=dict(values)
+    for name,op,a,b in source:
+        need(name not in env and op in ('+','-','*'),'SSA operation')
+        aa=env[a] if type(a) is str else a;bb=env[b] if type(b) is str else b
+        env[name]=aa*bb if op=='*' else aa+bb if op=='+' else aa-bb
+    return env
+
+def evaluate(packet,values,*,signed=False,root=None):
+    checked(packet,root=root);need(type(signed) is bool,'exact signed flag')
+    need(type(values) is dict and all(type(k) is str for k in values) and values.keys()==set(packet['parameters']+packet['auxiliaries']),'complete assignment')
+    need(all(type(v) is int and (signed or v>0) for v in values.values()),'exact positive integers or signed algebra')
+    return execute(packet['polynomial_source'],values)[packet['output']]
+
+
+def scalar(value,env):
+    return env[value] if type(value) is str else value
+
+def manual_outer(packet,values):
+    s=packet['tiles'];m=packet['phase_count'];u=len(packet['groups_U']);v=len(packet['groups_V']);g=u+v
+    P0=3*values['x']+values['Z0'];Ufinal=P0*values['Vfinal']+values['x']
+    D=Ufinal+values['phase_initial']+values['height_slack'];B=packet['K']*D
+    sel=[values[f'Shat{i}']-1 for i in range(s)];J=sum(sel);P=(B-1)*J+1
+    zu=[values[f'ZUhat{i}']-1 for i in range(u)];zv=[values[f'ZVhat{i}']-1 for i in range(v)]
+    group=[sum(sel[i] for i in entry['tiles']) for entry in packet['groups_U']+packet['groups_V']]
+    pack=lambda row:sum(x*P**i for i,x in enumerate(row))
+    rep=lambda n:sum(P**i for i in range(n))
+    S=pack(sel);Mc=J*rep(s);T=values['H_U']+P*values['H_V']
+    Hb=values['H_U']*rep(u)+P**u*values['H_V']*rep(v);Mb=(B-1)*pack(group);Zb=pack(zu+zv)
+    RM=(D-1)*J*(1+P);common=P**g*S+P**(g+s)*T;oldN=g+s+4
+    H=Hb+common+P**(g+s+2)*B+P**oldN*P0
+    M=Mb+P**g*Mc+P**(g+s)*RM+P**(g+s+2)*(B-1)+P**oldN*(P0-1)
+    Z=Zb+common;scale=P**(oldN+1)
+    nextU=2*values['H_U']+sum(row[1]*a for row,a in zip(packet['maps'],sel))
+    nextV=values['H_V']+sum(entry['difference']*a for entry,a in zip(packet['groups_V'],zv))+sum(row[3]*a for row,a in zip(packet['maps'],sel))
+    Q=sum((i//2+1)*a for i,a in enumerate(sel));Next=sum((((i//2-1)%m)+1)*a for i,a in enumerate(sel))
+    rr=[values['H_U']+values['H_V']+sum(zu)+sum(zv)+g+values['global_bound']-P,
+        B*nextU+1-values['H_U']-P*Ufinal,
+        B*nextV+1-values['H_V']-P*values['Vfinal'],
+        B*Next+values['phase_initial']-Q-P*m]
+    face=dict(P0=P0,Ufinal=Ufinal,D=D,B=B,J=J,P=P,Q=Q,Next=Next,H=H,M=M,Z=Z,scale=scale,
+              Hb=Hb,Mb=Mb,Zb=Zb,S=S,Mc=Mc,T=T,RM=RM,Gpack=pack(group),nextU=nextU,nextV=nextV)
+    return rr,face
+
+def outer_fixture(packet,x,z0,heads,*,root,_component=None):
+    if _component is None:
+        with dependencies(root) as component:
+            return outer_fixture(packet,x,z0,heads,root=root,_component=component)
+    program=packet['program'];m=len(program);t=len(heads);P0=3*x+z0
+    need(t>0 and P0&(P0-1)==0,'fixture width')
+    chosen=[2*(i%m)+heads[i] for i in range(t-1,-1,-1)]
+    U=V=1;hu=[];hv=[]
+    for tile in chosen:
+        hu.append(U);hv.append(V);a,c,b,d=packet['maps'][tile];U,V=a*U+c,b*V+d
+    need(U==P0*V+x,'word boundary')
+    phase=chosen[0]//2+1;total=U+phase;D=1<<total.bit_length();B=packet['K']*D;P=B**t
+    pack=lambda row:sum(v*B**j for j,v in enumerate(row))
+    values=dict(x=x,Z0=z0,Vfinal=V,phase_initial=phase,height_slack=D-total,H_U=pack(hu),H_V=pack(hv))
+    for i in range(packet['tiles']):values[f'Shat{i}']=pack([int(tile==i) for tile in chosen])+1
+    zsum=0
+    for tag,groups,hist in [('U',packet['groups_U'],hu),('V',packet['groups_V'],hv)]:
+        for i,group in enumerate(groups):
+            z=pack([value if tile in group['tiles'] else 0 for tile,value in zip(chosen,hist)])+1
+            values[f'Z{tag}hat{i}']=z;zsum+=z
+    values['global_bound']=P-values['H_U']-values['H_V']-zsum
+    raw=_build_authenticated(program,False,_component)
+    for name in raw['native_auxiliaries']:values['and__'+name]=1
+    rr,face=manual_outer(raw,values)
+    need(rr==[0]*4 and face['P']==P,'four complete outer equations')
+    need(face['H']&face['M']==face['Z'] and max(face['H'],face['M'],face['Z'])<face['scale'],'full joined AND')
+    fields=_component.parent.native.parent.truth_fields(face['scale'],face['H'],face['M'])
+    values.update({f'and__F{i}':fields[i] for i in range(3)})
+    if packet['unit_product']:
+        values={n:values[n] for n in packet['parameters']+packet['auxiliaries'] if n in values}
+        values['and__tau_gap']=1
+    need(set(values)==set(packet['parameters']+packet['auxiliaries']) and min(values.values())>0,'positive complete coordinate domains')
+    env=execute(packet['source'],values)
+    need(all(scalar(a,env)==scalar(b,env) for a,b in packet['comparisons'][:4]),'literal outer comparisons')
+    need(env['and__F3']==fields[3],'actual native truth port')
+    return dict(program=list(program),x=x,Z0=z0,heads=list(heads),reverse_tiles=chosen,phase_initial=phase,
+                Ufinal=U,Vfinal=V,history_base=B,history_P=P,input_P0=P0,
+                complete_outer_and_truth_ports=True,full_Pell_witness_materialized=False)
+
+def enumerate_closures(program,max_t=8):
+    for t in range(1,max_t+1):
+        for heads in itertools.product((0,1),repeat=t):
+            S=1;C=0;bits=0
+            for i,d in enumerate(heads):
+                C+=d*S;bits+=d*2**i;S*=1+(2*4**program[i%len(program)]-1)*d
+            if (1<<t)%S:continue
+            P0=(1<<t)//S;z=(1<<t)-P0*C-3*bits
+            if z<=0 or (P0-z)%3 or P0<=z:continue
+            yield (P0-z)//3,z,heads
+
+def verify(root):
+    counts=Counter();ledgers=[];fixtures=[];packets=[]
+    programs=((0,),(1,),(0,1,1),(2,0,1))
+    with dependencies(root) as component:
+        for program in programs:
+            raw=_build_authenticated(program,False,component);unit=_build_authenticated(program,True,component)
+            for packet in (raw,unit):
+                counts['complete_source_ledgers']+=1
+                names=packet['parameters']+packet['auxiliaries'];known=set(names);live={packet['output']}
+                for name,op,a,b in packet['polynomial_source']:
+                    need(name not in known and op in ('+','-','*') and all(type(v) in (int,str) and (type(v) is int or v in known) for v in (a,b)),'literal complete source closure');known.add(name)
+                for name,op,a,b in reversed(packet['polynomial_source']):
+                    need(name in live,'dead complete source row');live.update(v for v in (a,b) if type(v) is str)
+                need(set(names)<=live,'every paid coordinate consumed')
+                hist=Counter('M' if op=='*' else 'A' for _,op,_,_ in packet['polynomial_source'])
+                need(hist=={key:packet['polynomial_ledger'][key] for key in ('M','A')},'complete gate histogram')
+                ledgers.append(dict(program=list(program),unit_product=packet['unit_product'],**packet['polynomial_ledger']))
+                if program==(0,1,1):packets.append(packet)
+            need(raw['polynomial_ledger']['operations']-unit['polynomial_ledger']['operations']==24,'inherited complete native-unit saving')
+            for seed in range(24):
+                values={name:(seed+2*i)%7-3 if seed>=12 else 1+(seed+2*i)%7 for i,name in enumerate(raw['parameters']+raw['auxiliaries'])}
+                rr,face=manual_outer(raw,values);env=execute(raw['polynomial_source'],values)
+                need(all(scalar(raw['interfaces'][k],env)==v for k,v in face.items()),'independent wrapper interface identities')
+                need(rr==[scalar(a,env)-scalar(b,env) for a,b in raw['comparisons'][:4]],'all outer residuals')
+                # Execute the original retained kernel at the independently computed new ports.
+                native,native_pairs,_=component.parent.native.source('and64_prescribed')
+                native_values={name:values['and__'+name] for name in raw['native_auxiliaries']}
+                native_values.update(P=face['scale'],Hhat=face['H']+1,Mhat=face['M']+1,Zhat=face['Z']+1)
+                ne=execute(native,native_values)
+                nrr=[scalar(a,ne)-scalar(b,ne) for a,b in native_pairs]
+                need(nrr==[scalar(a,env)-scalar(b,env) for a,b in raw['comparisons'][4:]],'complete native residual identity')
+                need(env[raw['output']]==sum(v*v for v in rr+nrr),'whole source SOS identity')
+                if seed<12:need(face['P']>=1 and min(face[k] for k in ('H','M','Z'))>=0,'pretyping positive native ports')
+                counts['complete_raw_residual_SOS_identities']+=1;counts['residuals_compared']+=20
+                uv={name:(seed+2*i)%7-3 if seed>=12 else 1+(seed+2*i)%7 for i,name in enumerate(unit['parameters']+unit['auxiliaries'])}
+                if seed<12:uv[unit['root_coordinate']]=2*(seed+1)+1
+                component.units.audit_identity(raw,unit,uv)
+                counts['complete_unit_restoration_identities']+=1
+            for x,z,heads in enumerate_closures(program):
+                for packet in (raw,unit):
+                    fixtures.append(outer_fixture(packet,x,z,heads,root=root,_component=component));counts['genuine_outer_closure_fixtures']+=1
+        # Full finite phase-word census: the packed equality recognizes a path, not a multiset.
+        for m in range(1,5):
+            B=16
+            for t in range(1,6):
+                P=B**t
+                for phases in itertools.product(range(m),repeat=t):
+                    q=sum((p+1)*B**j for j,p in enumerate(phases));n=sum(((p-1)%m+1)*B**j for j,p in enumerate(phases))
+                    for initial in range(1,m+2):
+                        algebra=B*n+initial==q+P*m
+                        path=(initial==phases[0]+1 and phases[-1]==0 and all(phases[j+1]==(phases[j]-1)%m for j in range(t-1)))
+                        need(algebra==path,'exact chronology phase flow');counts['phase_word_candidates']+=1
+    # The width lane is not redundant: all other scalar boundaries allow this nondyadic width.
+    P0=6;x=1;z=3;U=25;V=4
+    need(P0==3*x+z and U==P0*V+x and P0&(P0-1)!=0,'nondyadic boundary example')
+    counts['nondyadic_boundary_counterexample']=1
+    def reject(fn):
+        try:fn()
+        except (ValueError,TypeError,KeyError):counts['malformed_rejected']+=1
+        else:raise ValueError('malformed call accepted')
+    for bad in ([],(),(True,),(1.0,),(-1,),None):reject(lambda bad=bad:build(bad,root=root))
+    for bad in (0,1,None):reject(lambda bad=bad:build(unit_product=bad,root=root))
+    example=build(root=root)
+    for field in example:
+        bad=copy.deepcopy(example);bad[field]=0 if bad[field] is None else None;reject(lambda bad=bad:checked(bad,root=root))
+    values={name:1 for name in example['parameters']+example['auxiliaries']}
+    for bad in (True,1.0,0,-1,None):
+        candidate=dict(values,x=bad);reject(lambda candidate=candidate:evaluate(example,candidate,root=root))
+    reject(lambda:evaluate(example,dict(values,extra=1),root=root))
+    reject(lambda:evaluate(example,{'x':1},root=root))
+    reject(lambda:evaluate(example,values,signed=1,root=root))
+    class NonexactKey(str):pass
+    candidate=dict(example);candidate[NonexactKey('program')]=candidate.pop('program');reject(lambda:checked(candidate,root=root))
+    assignment=dict(values);assignment[NonexactKey('x')]=assignment.pop('x');reject(lambda:evaluate(example,assignment,root=root))
+    # Public builders are fresh, and dependency loading cannot reuse injected siblings.
+    pristine=build(root=root);changed=build(root=root);changed['source'].clear();need(exact(pristine,build(root=root)),'fresh packet independence');counts['fresh_packet_isolation']=1
+    import types
+    name='pcp_affine_slope_class_history';old=sys.modules.get(name);fake=types.ModuleType(name);sys.modules[name]=fake
+    try:need(exact(build(root=root),pristine) and sys.modules[name] is fake,'cold fake import isolation')
+    finally:
+        if old is None:sys.modules.pop(name,None)
+        else:sys.modules[name]=old
+    counts['cold_import_isolation']=1
+    # An apparently fresh timestamp-based bytecode cache is still ignored.
+    import marshal,struct,tempfile
+    with tempfile.TemporaryDirectory(prefix='grill-source-loader-') as directory:
+        papers=Path(directory)/'Papers';private=papers/'research-wip'/'native-stream-queue'
+        original=Path(root).resolve().parents[1]
+        for relative,digest in PINS.values():
+            target=papers/relative;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes((original/relative).read_bytes())
+        target=private/'pcp_affine_slope_class_history.py';cache=Path(importlib.util.cache_from_source(str(target)));cache.parent.mkdir(parents=True,exist_ok=True)
+        poisoned=compile("raise RuntimeError('POISONED_BYTECODE_EXECUTED')",str(target),'exec')
+        cache.write_bytes(importlib.util.MAGIC_NUMBER+struct.pack('<III',0,int(target.stat().st_mtime),target.stat().st_size)+marshal.dumps(poisoned))
+        need(exact(build(root=private),pristine),'source-only bytecode isolation')
+    counts['poisoned_bytecode_isolation']=1
+    return json.loads(json.dumps(dict(status='PASS_FIXED_ARITY_GRILL_NATIVE_CLOSURE',source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),dependencies=PINS,counts=dict(counts),ledgers=ledgers,complete_011_packets=packets,outer_fixtures=fixtures,
+        scope='Complete fixed-arity positive representation for each fixed finite Grill program and ordinary padded input. Duration is existentially packed, not externally bounded. Full positive native extension uses the retained AND theorem; no full Pell zero was materialized. Universal decoder/compiler remains unproved.',
+        nondyadic_boundary_counterexample=dict(program=[0,1,1],heads=[1,0,0,1],x=1,Z0=3,P0=6,Ufinal=25,Vfinal=4))))
+
+if __name__=='__main__':
+    ap=argparse.ArgumentParser();ap.add_argument('--root',type=Path,default=Path(__file__).resolve().parent);ap.add_argument('--output',type=Path);ap.add_argument('--expect',type=Path);a=ap.parse_args();r=verify(a.root)
+    if a.expect:need(exact(r,json.loads(a.expect.read_text())),'exact saved receipt mismatch')
+    if a.output:a.output.write_text(json.dumps(r,indent=2,sort_keys=True)+'\n')
+    print(json.dumps(dict(status=r['status'],counts=r['counts'],ledgers=r['ledgers']),sort_keys=True))
+

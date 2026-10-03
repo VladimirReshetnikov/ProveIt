@@ -1,0 +1,415 @@
+# Portable locally authored code; upstream Python is never imported or executed.
+# See PROVENANCE.json and PORTABILITY.md for all transformations.
+"""Independent full binary-DAG audit. Imports only Python's standard library.
+No producer module and no upstream executable is imported or executed.
+Every run caps address space at 1 GiB and CPU time at 300 seconds.
+"""
+from array import array
+from collections import Counter
+from pathlib import Path
+import argparse, hashlib, json, mmap, random, resource, struct, time
+ROOT = Path(__file__).resolve().parent
+resource.setrlimit(resource.RLIMIT_AS, (1024 ** 3, 1024 ** 3))
+resource.setrlimit(resource.RLIMIT_CPU, (300, 300))
+START = time.monotonic()
+ROW = struct.Struct('<Bqq')
+BASE = 1 << 50
+
+def require(ok, message):
+    if not ok:
+        raise RuntimeError(message)
+
+def sha(path):
+    h = hashlib.sha256()
+    with open(path, 'rb') as f:
+        for b in iter(lambda: f.read(1048576), b''):
+            h.update(b)
+    return h.hexdigest()
+
+def monoid_power_sum(b, n, p):
+    power, total = (1, 0)
+    block_power, block_sum = (b % p, 1)
+    while n:
+        if n & 1:
+            total = (total + power * block_sum) % p
+            power = power * block_power % p
+        block_sum = block_sum * (1 + block_power) % p
+        block_power = block_power * block_power % p
+        n //= 2
+    return (power, total)
+
+def constants(rows, p=None):
+    out = []
+    for i, r in enumerate(rows):
+        op = r[0]
+        if op == 'int':
+            require(len(r) == 2 and type(r[1]) is str, 'literal type')
+            z = int(r[1])
+            require(str(z) == r[1], 'noncanonical integer')
+        elif op in ('pow2', 'geom4'):
+            require(len(r) == 2 and type(r[1]) is int and (0 <= r[1] <= 10 ** 7), 'fixed exponent type/range')
+            z = (pow(2, r[1], p) if p else 1 << r[1]) if op == 'pow2' else monoid_power_sum(4, r[1], p)[1] if p else ((1 << 2 * r[1]) - 1) // 3
+        else:
+            require(op in ('add', 'sub', 'mul') and len(r) == 3, 'recipe opcode')
+            require(all((type(j) is int and -i <= j < 0 for j in r[1:])), 'recipe is not closed in prior fixed numerals')
+            if p:
+                a, b = (out[-j - 1] for j in r[1:])
+                z = a + b if op == 'add' else a - b if op == 'sub' else a * b
+            else:
+                z = 0
+        out.append(z % p if p else 0)
+    return out
+
+def structural(m, mm):
+    n = (len(mm) - 8) // 17
+    N = m['input_count']
+    const = m['constants']
+    extra = m['extra']
+    require(mm[:8] == b'CDAGv1\x00\x00' and (len(mm) - 8) % 17 == 0, 'binary envelope')
+    require((m['row_bytes'], m['row_struct'], m['input_base'], m['magic_hex']) == (17, '<Bqq', BASE, '4344414776310000'), 'manifest format')
+    require(m['output'] == n - 1, 'terminal root')
+    require(m['constant_count'] == len(const), 'constant count')
+    constants(const, 1000000007)
+    names = {}
+    next_index = 0
+    roles = Counter()
+    for r in m['inputs']:
+        require(set(r) <= set(('name', 'start', 'count', 'role', 'domain', 'indexed')), 'unexpected input metadata')
+        require(type(r['start']) is int and r['start'] == next_index and (type(r['count']) is int) and (r['count'] > 0), 'input partition')
+        require(r['domain'] == 'positive_integer' and r['role'] in ('external', 'witness'), 'input domain/role')
+        require(r['name'] not in names, 'duplicate input namespace')
+        names[r['name']] = r
+        next_index += r['count']
+        roles[r['role']] += r['count']
+    require(next_index == N, 'input cardinality')
+    require([r['name'] for r in m['inputs'] if r['role'] == 'external'] == ['x', 'a_e', 'p_e', 's_e', 'C_e', 'L_e'], 'external signature')
+    require(all((names[k]['count'] == 1 for k in ('x', 'a_e', 'p_e', 's_e', 'C_e', 'L_e'))), 'external scalar ports')
+    packet_bytes = (ROOT / 'input_recoder130_receipt.json').read_bytes()
+    require(hashlib.sha256(packet_bytes).hexdigest() == '175c498990a8e63de7a91d1e3d321ef90a19f129f305074f0c6de10967d0a182', 'recoder pinned bytes')
+    require(hashlib.sha1(b'blob ' + str(len(packet_bytes)).encode() + b'\x00' + packet_bytes).hexdigest() == 'c52224469f5644d99214f13559fb54d7c414aea6', 'recoder Git blob pin')
+    require(sha(ROOT / 'native_unit_kernel.json') == '2d88343037c08fe8b073f67dca531ee73309c0735c1d98a23c20b9ddb1eb08ae', 'native kernel pin')
+    literal = ROOT.parent / 'input-research/literal/literal_tables.json'
+    require(sha(literal) == extra['literal_source_sha256'] == '3c8924dbb1b5d6e6b8897e59550b0e38a703654b87442c73487f411e94ae355b', 'literal table pin')
+    recoder = json.loads(packet_bytes)['certificate']
+    kernel = json.loads((ROOT / 'native_unit_kernel.json').read_text())
+    expected_names = set(('x', 'a_e', 'p_e', 's_e', 'C_e', 'L_e', 'canonical_input_bits__spread'))
+    for ns in ('canonical_input_bits', 'unrestricted_tape_exponent'):
+        expected_names.update((ns + '__' + a for a in recoder['auxiliaries']))
+    expected_names.update(('input_loader__' + a for a in ('canonical_beta', 'N', 'ell', 'v', 'g', 'T', 'X')))
+    expected_names.update(('native.' + a for a in ('Z0', 'Vfinal', 'phase_initial', 'height_slack', 'H_U', 'H_V', 'global_bound', 'Shat', 'ZVhat')))
+    expected_names.update(('native.' + a for a in kernel['auxiliaries']))
+    require(set(names) == expected_names, 'additional or missing existential namespace')
+    require(names['native.Shat']['count'] == 794976 and names['native.ZVhat']['count'] == 2030, 'native array cardinality')
+    require(all((r['count'] == 1 for n, r in names.items() if n not in ('native.Shat', 'native.ZVhat'))), 'unexpected witness range')
+    require(extra['program_parameters_are_existential'] is False, 'program coordinates existential')
+    require([r['name'] for r in extra['program_parameters']] == ['a_e', 'p_e', 's_e', 'C_e', 'L_e'], 'program signature')
+    for r in extra['program_parameters']:
+        require(r['ref'] == BASE + names[r['name']]['start'] and r['fixed_for_represented_set'] is True and (r['domain'] == 'positive_integer'), 'parameter role')
+    deg = array('Q')
+    counts = [0, 0, 0]
+    max_operands = 0
+
+    def d(h, i):
+        require(type(h) is int, 'nonnumeric handle')
+        if h < 0:
+            require(-h <= len(const), 'unknown constant')
+            return 0
+        if h >= BASE:
+            require(h < BASE + N, 'undeclared input')
+            return 1
+        require(h < i, 'non-topological gate')
+        return deg[h]
+    for i in range(n):
+        op, a, b = ROW.unpack_from(mm, 8 + 17 * i)
+        require(op < 3, 'gate opcode')
+        da, db = (d(a, i), d(b, i))
+        deg.append(da + db if op == 2 else max(da, db))
+        counts[op] += 1
+    live = bytearray(n)
+    used = bytearray(N)
+    used_const = bytearray(len(const))
+    live[m['output']] = 1
+    for i in range(n - 1, -1, -1):
+        if live[i]:
+            _, a, b = ROW.unpack_from(mm, 8 + 17 * i)
+            for h in (a, b):
+                if h < 0:
+                    used_const[-h - 1] = 1
+                elif h >= BASE:
+                    used[h - BASE] = 1
+                else:
+                    live[h] = 1
+    require(all(live) and all(used), 'dead gate or input')
+    for i in range(len(const) - 1, -1, -1):
+        if used_const[i] and const[i][0] in ('add', 'sub', 'mul'):
+            for h in const[i][1:]:
+                used_const[-h - 1] = 1
+    z = next((-i - 1 for i, r in enumerate(const) if r == ['int', '0']))
+    o = next((-i - 1 for i, r in enumerate(const) if r == ['int', '1']))
+    cur = n - 260
+    start = cur
+    res = extra['residual_pairs']
+    require(len(res) == 86, 'residual census')
+    squares = []
+    total = z
+
+    def emit(op, a, b):
+        nonlocal cur
+        require(ROW.unpack_from(mm, 8 + 17 * cur) == (op, a, b), 'finalizer row ' + str(cur))
+        cur += 1
+        return cur - 1
+    for a, b in res:
+        r = emit(1, a, b)
+        sq = emit(2, r, r)
+        squares.append(sq)
+        total = sq if total == z else emit(0, total, sq)
+    positive = emit(0, o, total)
+    product = emit(2, extra['native_unit'], positive)
+    output = emit(1, product, o)
+    require(cur == n and output == m['output'] and (squares == extra['residual_squares']) and (positive == extra['finalizer_positive']), 'finalizer topology')
+    f = extra['unit_factors']
+    u = extra['native_unit']
+    require(len(f) == 4, 'unit factor census')
+    row = ROW.unpack_from(mm, 8 + 17 * u)
+    require(row[0] == 2 and row[2] == f[3], 'unit fourth factor')
+    row = ROW.unpack_from(mm, 8 + 17 * row[1])
+    require(row[0] == 2 and row[2] == f[2], 'unit third factor')
+    row = ROW.unpack_from(mm, 8 + 17 * row[1])
+    require(row == (2, f[0], f[1]), 'unit first factors')
+    X = BASE + names['input_loader__X']['start']
+    Z0 = BASE + names['native.Z0']['start']
+    require(ROW.unpack_from(mm, 8 + 17 * extra['native_width']) == (0, X, Z0), 'native width input')
+    T = BASE + names['input_loader__T']['start']
+    L = BASE + names['L_e']['start']
+    require(ROW.unpack_from(mm, 8 + 17 * extra['target_width']) == (2, L, T), 'exact queue target width')
+    require(res[-1] == [extra['native_width'], extra['target_width']], 'missing width residual')
+
+    def row_at(h):
+        require(0 <= h < n, 'gate required')
+        return ROW.unpack_from(mm, 8 + 17 * h)
+
+    def exact_fixed(h, cache={}):
+        require(h < 0, 'fixed numeral required')
+        if h in cache:
+            return cache[h]
+        r = const[-h - 1]
+        if r[0] == 'int':
+            v = int(r[1])
+        elif r[0] == 'pow2':
+            v = 1 << r[1]
+        elif r[0] == 'geom4':
+            v = ((1 << 2 * r[1]) - 1) // 3
+        else:
+            a, b = (exact_fixed(r[1]), exact_fixed(r[2]))
+            v = a + b if r[0] == 'add' else a - b if r[0] == 'sub' else a * b
+        require(v.bit_length() < 1000000, 'exact numeral cap')
+        cache[h] = v
+        return v
+    queue_lhs, queue_rhs = res[84]
+    op, km1, xref = row_at(queue_lhs)
+    require(op == 2 and xref == X, 'queue left shape')
+    op, cpart, reppart = row_at(queue_rhs)
+    require(op == 0, 'queue right sum')
+    require(row_at(cpart) == (2, km1, BASE + names['C_e']['start']), 'queue fixed prefix')
+    op, lv, tm1 = row_at(reppart)
+    require(op == 2 and row_at(tm1) == (1, T, o), 'queue repetition factor')
+    op, lref, vref = row_at(lv)
+    require(op == 2 and lref == L, 'literal pair factor')
+    op, kref, tref = row_at(res[83][0])
+    require(op == 2 and tref == T, 'unary power binding')
+    a = 28 * 1014
+    b = 7 * a
+
+    def E(y):
+        return '0' * (14 * y + 7) + '0' + '10' * (a - 3) + '0' + '10' * 7 + '0' + '10' * (a - 4) + '0' * (3 * a - 14 * y - 10)
+    pair = E(300) + E(539)
+    pair_value = int(pair[::-1], 2)
+    require(len(pair) == 397488 and exact_fixed(vref) == pair_value, 'exact fixed E pair mismatch')
+    require(exact_fixed(kref) == 1 << len(pair) and exact_fixed(km1) == (1 << len(pair)) - 1, 'exact pair modulus')
+    phases = 397488
+    for i in range(phases):
+        old_B = (i - 1) % phases + 1 - phases
+        old_plain = phases - i - 1
+        weight = 0 if i == 0 else phases - i
+        require((old_B, old_plain) == (-weight, (phases if i == 0 else weight) - 1), 'phase coefficient identity')
+    require(2 * sum(range(1, phases)) == phases * (phases - 1), 'phase unhat constant identity')
+    ledger = {'operations': n, 'multiplications': counts[2], 'additions': counts[0], 'subtractions': counts[1], 'additions_subtractions': counts[0] + counts[1], 'degree_upper': deg[-1], 'positive_witnesses': roles['witness'], 'external_positive_coordinates': roles['external'], 'all_gates_live': True, 'all_inputs_live': True, 'constant_recipes_closed': True, 'unused_constant_recipe_rows': len(const) - sum(used_const), 'finalizer_gates': cur - start, 'loader_gates': 310, 'native_prefinalizer_gates': start - 310, 'exact_E_pair_value_bit_length': pair_value.bit_length(), 'exact_E_pair_width': len(pair), 'phase_coefficient_identities': phases, 'native_unit_degree_upper': deg[u], 'max_residual_degree_upper': max((max(d(a, n), d(b, n)) for a, b in res))}
+    for k, v in m['ledger'].items():
+        require(ledger[k] == v, 'ledger mismatch ' + k)
+    require(sha(ROOT / 'universal.dag') == m['source_sha256'] and len(mm) == m['source_bytes'], 'DAG source pin')
+    for f, h in extra['source_modules'].items():
+        require(sha(ROOT / f) == h, 'producer pin ' + f)
+    require(sha(ROOT / 'grill_program.u32') == extra['source_program_sha256'], 'program pin')
+    require(extra['full_program'] and extra['phase_count'] == 397488, 'truncated program')
+    return (ledger, names)
+
+def data_replay(packet, env, p, skip=0):
+    env = dict(env)
+    for name, op, a, b in packet['source'][skip:]:
+        require(name not in env, 'duplicate source register')
+        aa = env[a] if type(a) is str else a
+        bb = env[b] if type(b) is str else b
+        env[name] = (aa + bb if op == '+' else aa - bb if op == '-' else aa * bb) % p
+    return env
+
+def numerical(m, mm, names, p, seed, kind):
+    rng = random.Random(seed)
+    N = m['input_count']
+    if kind == 'random':
+        inp = array('Q', (rng.randrange(p) for _ in range(N)))
+    elif kind == 'ones':
+        inp = array('Q', [1]) * N
+    elif kind == 'zeros':
+        inp = array('Q', [0]) * N
+    else:
+        inp = array('Q', ((i % 17 - 8) % p for i in range(N)))
+    cs = constants(m['constants'], p)
+    vals = array('Q')
+
+    def at(h):
+        return cs[-h - 1] if h < 0 else inp[h - BASE] if h >= BASE else vals[h]
+    for i in range((len(mm) - 8) // 17):
+        op, a, b = ROW.unpack_from(mm, 8 + 17 * i)
+        aa, bb = (at(a), at(b))
+        vals.append((aa + bb if op == 0 else aa - bb if op == 1 else aa * bb) % p)
+
+    def named(n):
+        return inp[names[n]['start']]
+
+    def recoder(namespace, width, x, z):
+        packet = json.loads((ROOT / 'input_recoder130_receipt.json').read_text())['certificate']
+        env = {a: named(namespace + '__' + a) for a in packet['auxiliaries']}
+        env.update(x=x % p, z=z % p)
+        env['Q'] = pow(env['q'], width, p)
+        env['B'] = pow(2, width - 1, p) * env['Q'] % p
+        env = data_replay(packet, env, p, 3)
+        return (env, [(env[a] - env[b]) % p for a, b in packet['comparisons']])
+    a = 28 * (1013 + 1)
+    b = 7 * a
+    k = 2 * b
+
+    def E(y):
+        return '0' * (14 * y + 7) + '0' + '10' * (a - 3) + '0' + '10' * 7 + '0' + '10' * (a - 4) + '0' * (3 * a - 14 * y - 10)
+    bits = E(300) + E(539)
+    require(len(bits) == k, 'literal E pair width')
+    V = int(bits[::-1], 2) % p
+    K = pow(2, k, p)
+    u = (named('x') + 1) % p
+    spread = named('canonical_input_bits__spread')
+    c, lr = recoder('canonical_input_bits', 32, u, spread)
+    lr.append((c['input_slack'] + named('input_loader__canonical_beta') - u - 1) % p)
+    m0 = 2 ** 32 - 1
+    Nval = named('input_loader__N')
+    Tval = named('input_loader__T')
+    X = named('input_loader__X')
+    A1 = '01' * 3 + '11'
+    A2 = '01' * 11 + '11'
+    c0 = int((A2 + A1)[::-1], 2)
+    c1 = int((A1 + A2)[::-1], 2)
+    require((len(A1 + A2), c0, c1) == (32, 3941247658, 3937053418), 'physical input blocks')
+    frame = m0 * named('a_e') + named('p_e') * c0 * (c['Q'] - 1) + named('p_e') * m0 * (c1 - c0) * spread + named('p_e') * m0 * named('s_e') * c['Q']
+    lr.append((m0 * Nval - frame) % p)
+    e, ers = recoder('unrestricted_tape_exponent', k, 1, 1)
+    lr.extend(ers)
+    ell = named('input_loader__ell')
+    v = named('input_loader__v')
+    gval = named('input_loader__g')
+    lr.extend(((e['B'] - 1) * v + ell - e['J'], ell + gval - (e['B'] - 1), ell - Nval - 1, K * Tval - e['Q'], (K - 1) * X - ((K - 1) * named('C_e') + named('L_e') * V * (Tval - 1))))
+    lr = [r % p for r in lr]
+    require(len(lr) == 75, 'expected loader residuals')
+    program = array('I')
+    program.frombytes((ROOT / 'grill_program.u32').read_bytes())
+    import sys
+    if sys.byteorder != 'little':
+        program.byteswap()
+    mcount = len(program)
+    s = 2 * mcount
+    groups = list(dict.fromkeys(program))
+    gi = {n: j for j, n in enumerate(groups)}
+    gcount = len(groups)
+    P0 = (X + named('native.Z0')) % p
+    vf = named('native.Vfinal')
+    U = (P0 * vf + X) % p
+    D = (U + named('native.phase_initial') + named('native.height_slack')) % p
+    kap_exp = max(3, (s + 3).bit_length(), 2 * max(groups) + 2)
+    B = pow(2, kap_exp, p) * D % p
+    sh = names['native.Shat']['start']
+    zh = names['native.ZVhat']['start']
+    selectors = [(inp[sh + i] - 1) % p for i in range(s)]
+    J = sum(selectors) % p
+    P = ((B - 1) * J + 1) % p
+    G = [0] * gcount
+    Qphase = Next = 0
+    for i, n in enumerate(program):
+        even, odd = selectors[2 * i:2 * i + 2]
+        G[gi[n]] = (G[gi[n]] + odd) % p
+        Qphase = (Qphase + (i + 1) * (even + odd)) % p
+        Next = (Next + ((i - 1) % mcount + 1) * (even + odd)) % p
+    zs = [(inp[zh + j] - 1) % p for j in range(gcount)]
+    HU = named('native.H_U')
+    HV = named('native.H_V')
+    NU = (2 * HU + sum(G)) % p
+    NV = (HV + sum(((pow(2, 2 * n + 1, p) - 1) * z + 2 * monoid_power_sum(4, n, p)[1] * g for n, z, g in zip(groups, zs, G)))) % p
+    nr = [(HU + HV + sum(inp[zh:zh + gcount]) + named('native.global_bound') - P) % p, (B * NU + 1 - HU - P * U) % p, (B * NV + 1 - HV - P * vf) % p, (B * Next + named('native.phase_initial') - Qphase - mcount * P) % p]
+
+    def pack(v):
+        total = 0
+        power = 1
+        for digit in v:
+            total = (total + digit * power) % p
+            power = power * P % p
+        return total
+    S = pack(selectors)
+    Mc = J * monoid_power_sum(P, s, p)[1] % p
+    T = (HU + P * HV) % p
+    Hb = HV * monoid_power_sum(P, gcount, p)[1] % p
+    Mb = (B - 1) * pack(G) % p
+    Zb = pack(zs)
+    RM = (D - 1) * J * (1 + P) % p
+    ec = gcount
+    er = gcount + s
+    et = er + 2
+    ei = er + 4
+    common = (pow(P, ec, p) * S + pow(P, er, p) * T) % p
+    ports = {'H': (Hb + common + pow(P, et, p) * B + pow(P, ei, p) * P0) % p, 'M': (Mb + pow(P, ec, p) * Mc + pow(P, er, p) * RM + pow(P, et, p) * (B - 1) + pow(P, ei, p) * (P0 - 1)) % p, 'Z': (Zb + common) % p, 'scale': pow(P, ei + 1, p)}
+    kernel = json.loads((ROOT / 'native_unit_kernel.json').read_text())
+    ne = {a: named('native.' + a) for a in kernel['auxiliaries']}
+    ne.update({'@' + n: v for n, v in ports.items()})
+    ne = data_replay(kernel, ne, p)
+    nr.extend(((ne[a] - ne[b]) % p for a, b in kernel['comparisons']))
+    expected = nr + lr + [(P0 - named('L_e') * Tval) % p]
+    actual = [(at(a) - at(b)) % p for a, b in m['extra']['residual_pairs']]
+    require(actual == expected, 'full comparison mismatch: ' + str([(i, a, e) for i, (a, e) in enumerate(zip(actual, expected)) if a != e]))
+    unit = ne[kernel['unit']]
+    require(at(m['extra']['native_unit']) == unit, 'unit differential mismatch')
+    require([at(h) for h in m['extra']['unit_factors']] == [ne[a] for a in kernel['unit_factors']], 'unit factors mismatch')
+    output = (unit * (1 + sum((r * r for r in expected))) - 1) % p
+    require(at(m['output']) == output, 'complete polynomial mismatch')
+    require(at(m['extra']['native_width']) == P0 and at(m['extra']['target_width']) == named('L_e') * Tval % p, 'actual width ports mismatch')
+    meta = m['extra']['native_metadata']
+    histogram = Counter(program)
+    require(meta['group_exponents'] == groups and meta['group_multiplicities'] == [histogram[n] for n in groups], 'group metadata')
+    require(meta['K_exponent'] == kap_exp and meta['scale_exponent'] == ei + 1, 'native exponent metadata')
+    return {'modulus': p, 'seed': seed, 'assignment': kind, 'all_gates_evaluated': len(vals), 'residuals_matched': len(actual), 'unit_factors_matched': 4, 'queue_width_ports_matched': 2, 'output': output, 'literal_E_pair_bits': len(bits)}
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--structural-only', action='store_true')
+    args = ap.parse_args()
+    m = json.loads((ROOT / 'universal.json').read_text())
+    with open(ROOT / 'universal.dag', 'rb') as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
+        ledger, names = structural(m, mm)
+        result = {'status': 'PASS', 'scope': 'Independent full binary stream, fixed recipes, signature, degree, liveness, finalizer, and full-size formula differential checks', 'ledger': ledger, 'source_sha256': sha(ROOT / 'universal.dag'), 'manifest_sha256': sha(ROOT / 'universal.json'), 'constant_recipe_count': len(m['constants']), 'trials': [], 'producer_or_upstream_code_executed': False}
+        print(json.dumps({'structural': ledger}), flush=True)
+        if not args.structural_only:
+            for p, seed, kind in [(2305843009213693951, 202610030900, 'random'), (2147483647, 202610030901, 'random'), (1000000007, 202610030902, 'random'), (3000000021, 202610030903, 'random'), (2305843009213693951, 0, 'ones'), (2305843009213693951, 0, 'signed_small'), (1000000007, 0, 'zeros')]:
+                trial = numerical(m, mm, names, p, seed, kind)
+                result['trials'].append(trial)
+                print(json.dumps(trial), flush=True)
+    result['resources'] = {'seconds': time.monotonic() - START, 'max_rss_bytes': resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * 1024, 'address_space_limit_bytes': 1024 ** 3, 'cpu_limit_seconds': 300}
+    result['checker_sha256'] = sha(Path(__file__))
+    dest = ROOT / ('review_complete_structure.json' if args.structural_only else 'review_complete_dag.json')
+    dest.write_text(json.dumps(result, indent=2) + '\n')
+    print(json.dumps(result['resources']), flush=True)
+if __name__ == '__main__':
+    main()

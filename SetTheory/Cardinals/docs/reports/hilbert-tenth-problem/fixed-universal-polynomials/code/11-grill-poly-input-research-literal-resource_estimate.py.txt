@@ -1,0 +1,44 @@
+"""Own sparse resource census; no dense Grill table/history construction."""
+from collections import Counter
+from pathlib import Path
+import json,math,hashlib
+ROOT=Path(__file__).resolve().parent
+def run():
+ raw=(ROOT/'literal_tables.json').read_bytes();g=json.loads(raw)['genera'];rows=g['alphabet']
+ N=len(rows);a=28*(N+1);m=14*a;H=g['halt_symbol'];sparse={}
+ def put(i,n):
+  assert i not in sparse and 0<=i<m and n>=0
+  sparse[i]=n
+ for phase in range(2):
+  start=7*a*phase
+  for y in range(N):
+   for offs,n in zip((17,19,21),(a-3,7,a-4)):put(start+28*y+offs,n)
+   for offs,n in zip((13,15,17),(a-3,7,a-4)):put(start+28*y+a+offs,n)
+   if y==H:continue
+   u,v=rows[y]['productions'][phase]
+   ext=lambda z:3*a//2 if z==H else 7*a*(1-rows[z]['width'])
+   vals=[14*u+7,3,3*a-14*u-10+ext(u),0,14*v+7,3,3*a-14*v-10+ext(v)]
+   for j,n in enumerate(vals):put(start+14*y+2*a+3+2*j,n)
+ hist=Counter(n for n in sparse.values() if n)
+ hist[0]=m-sum(hist.values())
+ positive=m-hist[0];gclasses=len(hist);sum_n=sum(n*c for n,c in hist.items());maxn=max(hist)
+ assert positive==24*N-12
+ # For n>0, 2*4^n and 2*(4^n-1)/3 have bit lengths 2n+2 and 2n.
+ payload=lambda n:(2*n+2+7)//8+(2*n+7)//8
+ return dict(schema='resource_estimate_no_history_v1',alphabet=N,a=a,phases=m,
+  positive_runs=positive,zero_runs=hist[0],distinct_run_exponents=gclasses,
+  max_run_exponent=maxn,sum_run_exponents=sum_n,sum_unique_run_exponents=sum(hist),
+  dense_run_uint32_bytes=4*m,compact_json_run_array_bytes=1+m+sum(c*len(str(n)) for n,c in hist.items()),
+  affine_rows=2*m,largest_affine_slope_bit_length=2*maxn+2,
+  positive_run_affine_integer_payload_bytes=sum(c*payload(n) for n,c in hist.items() if n),
+  interned_positive_run_affine_integer_payload_bytes=sum(payload(n) for n in hist if n),
+  repeated_affine_decimal_digits_approx=4*math.log10(2)*sum_n,
+  native_raw_witnesses_template=2*m+gclasses+29,
+  native_unit_witnesses_template=2*m+gclasses+23,
+  native_comparisons_template=11,native_scale_exponent_template=2*m+gclasses+5,
+  history_gate_ledger_emitted=False,grill_run_table_emitted=False,
+  histogram=dict(sorted(hist.items())),literal_tables_sha256=hashlib.sha256(raw).hexdigest(),
+  source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
+if __name__=='__main__':
+ p=run();(ROOT/'resource_geometry.json').write_text(json.dumps(p,indent=2,sort_keys=True)+'\n')
+ print(json.dumps({k:v for k,v in p.items() if k!='histogram'},sort_keys=True))

@@ -1,0 +1,126 @@
+"""Independent bounded checks for Semantic Contract section 5.
+No upstream source or prior checker is imported or executed.
+"""
+from itertools import product
+from collections import Counter
+import hashlib
+import json
+
+D = 'dummy'
+H = 'halt'
+A, B = 'A', 'B'
+
+def source_step(word, phase, rules):
+    out = []
+    for symbol in word:
+        assert symbol != H
+        if phase == 0:
+            out.extend(rules[symbol])
+        phase ^= 1
+    return tuple(out), phase
+
+def norm_step(word, phase, rules):
+    out = []
+    for symbol in word:
+        if symbol == D:
+            prod = (D, D)
+        elif isinstance(symbol, tuple):
+            assert len(symbol) == 2
+            prod = symbol
+        else:
+            assert symbol != H
+            prod0 = rules[symbol] if phase == 0 else ()
+            assert len(prod0) <= 4
+            padded = tuple(prod0) + (D,) * (4 - len(prod0))
+            prod = (padded[:2], padded[2:])
+            phase ^= 1
+        assert len(prod) == 2
+        out.extend(prod)
+    return tuple(out), phase
+
+def erase(word):
+    assert all(not isinstance(symbol, tuple) for symbol in word)
+    return tuple(symbol for symbol in word if symbol != D)
+
+def compare_two_steps(word, phase, rules, counts):
+    expected, phase_expected = source_step(erase(word), phase, rules)
+    mid, phase_mid = norm_step(word, phase, rules)
+    assert all(symbol == D or isinstance(symbol, tuple) for symbol in mid)
+    assert H not in mid
+    got, phase_got = norm_step(mid, phase_mid, rules)
+    assert erase(got) == expected
+    assert phase_mid == phase_got == phase_expected
+    assert len(mid) == 2 * len(word) and len(got) == 4 * len(word)
+    counts['two_generation_checks'] += 1
+    counts['odd_erased_inputs'] += len(erase(word)) % 2
+    counts['phase_one_inputs'] += phase
+    if got.count(H) == 1:
+        # The published prefix condition uses the phase now current after
+        # the completed generation; test both phases as a stronger property.
+        prefix = got[:got.index(H)]
+        for p in (0, 1):
+            hypothetic, _ = norm_step(prefix, p, rules)
+            assert H not in hypothetic
+        counts['unique_halt_prefix_checks'] += 1
+    return got, phase_got
+
+
+def main():
+    counts = Counter()
+    # Every production over A,B,H of lengths 0..4, both phase starts,
+    # every nonempty input over A,B of length <=3, with two dummy layouts.
+    prods = [p for n in range(5) for p in product((A,B,H), repeat=n)]
+    words = [w for n in range(1,4) for w in product((A,B), repeat=n)]
+    for pa in prods:
+        for pb in prods:
+            rules = {A: pa, B: pb}
+            for word in words:
+                with_dummies = (D, D) + tuple(t for s in word for t in (s,D)) + (D,)
+                for phase in (0,1):
+                    compare_two_steps(word, phase, rules, counts)
+                    compare_two_steps(with_dummies, phase, rules, counts)
+    # Repeated generations exercise accumulated dummies and persistent phase.
+    rules = {A: (B,B,B), B: (A,A)}
+    word, norm, phase, nphase = (A,A), (A,A), 0, 0
+    trace = []
+    for generation in range(8):
+        trace.append({'original_generation':generation, 'erased_length':len(word),
+                      'normalized_length':len(norm), 'phase':phase})
+        norm, nphase = compare_two_steps(norm,nphase,rules,counts)
+        word, phase = source_step(word,phase,rules)
+        assert erase(norm) == word and nphase == phase
+    assert trace[1]['erased_length'] == 3 and trace[2]['phase'] == 1
+    # Concrete odd-generation regression: a reset would read the first A,
+    # but the correct carry skips it and selects the following B.
+    rules = {A:(A,),B:(B,B)}
+    odd_mid, carry = source_step((A,B,B),0,rules)
+    assert carry == 1 and odd_mid == (A,B,B)
+    carried_word, carried = source_step(odd_mid,carry,rules)
+    reset_word, reset_phase = source_step(odd_mid,0,rules)
+    assert carried_word == (B,B) and carried == 0
+    assert reset_word == (A,B,B) and reset_phase == 1
+    # A designated accepting symbol in the discarded position is not an event.
+    accept='accept'
+    rules={A:(A,A),accept:(H,)}
+    out,_=compare_two_steps((A,accept),0,rules,counts)
+    assert H not in out
+    out,_=compare_two_steps((accept,A),0,rules,counts)
+    assert out.count(H)==1
+    # A source violating the hypothetical-prefix restriction is repaired
+    # by delayed pair expansion (not needed, but checks strength of lemma).
+    rules={A:(A,H),B:()}
+    original,p=source_step((A,B),0,rules)
+    bad_prefix,_=source_step(original[:original.index(H)],p,rules)
+    assert H in bad_prefix
+    normalized,np=compare_two_steps((A,B),0,rules,counts)
+    good_prefix,_=norm_step(normalized[:normalized.index(H)],np,rules)
+    assert H not in good_prefix
+    counts['phase_one_discarded_accept_regressions']=1
+    counts['prefix_hazard_repair_regressions']=1
+    return {'verdict':'PASS', 'checks':dict(counts), 'repeated_trace':trace,
+            'notes':['No repository code imported or executed.',
+                     'Multiple-H outputs are identity-tested only and are not declared valid halts.',
+                     'Finite tests support the algebraic proof; they do not establish universality.']}
+
+if __name__ == '__main__':
+    print(json.dumps(main(),indent=2,sort_keys=True))

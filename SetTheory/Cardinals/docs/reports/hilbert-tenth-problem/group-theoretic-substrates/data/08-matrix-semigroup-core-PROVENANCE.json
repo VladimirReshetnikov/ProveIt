@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-03",
+  "construction": "Fixed directed U15 semi-Thue system to constrained correspondence to a positive SL4(Z) semigroup",
+  "authored_code": [
+    "compiler.py",
+    "tests/check_all.py",
+    "audit/independent_check.py"
+  ],
+  "upstream_code_executed": false,
+  "previous_releases_modified": false,
+  "data_dependencies": [
+    {
+      "path": "data/u15_table.json",
+      "copied_from": "prior-artifact:literal-reversible-source-release-20261003/source/dependency/tm_table.json",
+      "sha256": "0c6d8ae506f503e2783f6ed2ee68db4cde2f501b9864f376ab3773f86b59428a",
+      "description": "Pure JSON transcription of all 30 Table 16 cells; 29 defined and sole halt J1"
+    }
+  ],
+  "primary_universality_source": {
+    "authors": "Turlough Neary and Damien Woods",
+    "title": "Four Small Universal Turing Machines",
+    "journal": "Fundamenta Informaticae 91(1) (2009), 123–144",
+    "doi": "10.3233/FI-2009-0036",
+    "url": "https://dna.hamilton.ie/assets/dw/NearyWoods-FI09.pdf",
+    "alternative_url": "https://mural.maynoothuniversity.ie/id/eprint/12416/1/Woods_FourSmall_2009.pdf",
+    "local_evidence": "Research-only reading cache evidence/nearywoods-primary.pdf; excluded from distribution archive",
+    "sha256": "6274cb6828579c234bf9f62b8fecc64dea4bb1ae842b4e2e39b9bfc676114c1b",
+    "table_location": "Table 16, draft-PDF printed page 121; states A..O = u1..u15, 0=c, 1=b",
+    "input_locations": "Definition 3.1, equations (3)–(4), Tables 1–3; draft-PDF printed pages 112–113",
+    "universality_locations": "Lemmas 2.1/2.2, Theorem 2.1; Theorem 3.1 correctness-extension paragraph; Section 3.5",
+    "halt_discrepancy": "The Table 16 undefined cell is (u10,b)=J1, not the conflicting prose (u10,c). The table controls.",
+    "publisher_record": "https://journals.sagepub.com/doi/10.3233/FI-2009-0036",
+    "author_publications": "https://dna.hamilton.ie/woods/",
+    "bibliographic_verification": "Publisher record and author publications page inspected on 2026-10-03; downloaded author PDF carries draft pagination/metadata",
+    "page_locator_convention": "All printed-page locators refer to the inspected author/draft PDF, which uses pages 105–126; they are not published 123–144 page locators"
+  },
+  "corroborating_matrix_sources": [
+    {
+      "title": "Undecidability Bounds for Integer Matrices using Claus Instances",
+      "authors": "Vesa Halava, Tero Harju, Mika Hirvensalo",
+      "journal": "IJFCS 18(5) (2007), 931–948",
+      "url": "https://users.utu.fi/harju/articles/HHH_ClausInst.pdf",
+      "locations": "Section 2; Section 7, Lemma 3 and Theorems 15–16"
+    },
+    {
+      "title": "Bell thesis",
+      "url": "https://www.csc.liv.ac.uk/research/techreports/tr2008/ulcs-08-005.pdf",
+      "locations": "Theorem 4.13"
+    }
+  ],
+  "delivered_executable_scope": "Every finite binary U15 tape pair to an exact numerical target, plus fixed source/rule/tile/generator compilation and accepting-witness compilation",
+  "unmaterialized_but_published_dependency": "Arbitrary TM and input to clockwise TM to bi-tag to finite U15 tape; effective correctness imported from Neary-Woods. This packet does not deliver a runnable arbitrary-program compiler.",
+  "exclusions": [
+    "No uninstantiated Higman embedding",
+    "No subgroup claim or inverse-generator closure",
+    "No ordinary-affine Diophantine input bridge",
+    "No inherited 244-operation bound",
+    "No minimality or novelty claim",
+    "No inference of nonhalting from finite simulation"
+  ],
+  "verification": {
+    "normal": "evidence/tests.json",
+    "optimized": "evidence/tests-optimized.json",
+    "independent": "audit/independent-results.json",
+    "proof_review": "audit/REVIEW.md",
+    "loader_audit": "loader-audit/U15_DEPENDENCY_AUDIT.md"
+  },
+  "distribution_exclusions": [
+    "Copyrighted primary-PDF reading caches; source URLs and hashes are retained instead"
+  ]
+}

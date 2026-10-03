@@ -1,0 +1,61 @@
+{
+  "checks": [
+    {
+      "command": [
+        "python",
+        "paired_compiler.py",
+        "ledger",
+        "0"
+      ],
+      "exit_code": 0,
+      "status": "pass",
+      "stdout_sha256": "e858a8833fe29bd6fac4cd9f303e793a392ebfcee49ea3095acb97db4f80c9cf"
+    },
+    {
+      "command": [
+        "python",
+        "paired_compiler.py",
+        "ledger",
+        "2",
+        "--mode",
+        "natural"
+      ],
+      "exit_code": 0,
+      "status": "pass",
+      "stdout_sha256": "19c9ac10618e03c40c2b54021528db6cd48c5cb9b3625432c80ea4543a386557"
+    },
+    {
+      "command": [
+        "python",
+        "paired_compiler.py",
+        "verify",
+        "examples/accepting-94-certificate.json"
+      ],
+      "exit_code": 0,
+      "status": "pass",
+      "stdout_sha256": "fd5f49bbe9bdad2f777f3bbb886f47dc23e8564baff8dccf9924e58d75d7cb1d"
+    },
+    {
+      "command": [
+        "python",
+        "audit/source_literal_check.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "700b58954b98455905cab1028ce9448849bad63958b68385df7598523a201524"
+    },
+    {
+      "command": [
+        "python",
+        "audit/independent_interface_check.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "692dd8f064ff2db432db4dd3089fbe9fc1c95ae1655bd36a49706ce2a78d52d6"
+    }
+  ],
+  "compiler_sha256": "d40f69194f14da7b8b02095ba77327aaa9b938b13f1d33d29641f24a57df66fd",
+  "schema": "paired-portable-smoke-v1",
+  "status": "pass",
+  "test_environment": "Temporary independent directory containing a copy of this packet; no upstream paths"
+}

@@ -1,0 +1,171 @@
+# Portable locally authored code; upstream Python is never imported or executed.
+# See PROVENANCE.json and PORTABILITY.md for all transformations.
+"""Own literal U15 -> corrected two-tag -> two-output Genera construction.
+
+Only standard library. No imports or execution of upstream project code.
+This emits finite source tables, not a Grill history or arithmetic circuit.
+"""
+from pathlib import Path
+from collections import Counter
+import argparse, hashlib, json
+ROOT = Path(__file__).resolve().parent
+U15 = {'c': 'cR2 bR3 cL7 cL6 bR1 bL4 cL8 bL9 cR1 bL11 cR12 cR13 cL2 cL3 cR14'.split(), 'b': 'bR1 bR1 cL5 bL5 bL4 bL4 bL7 bL7 bL10 - bR14 bR12 bR12 cR15 bR14'.split()}
+H = 'HALT'
+Z = 'INERT'
+DUMMY = 'DUMMY'
+
+def sym(kind, i):
+    return f'{kind}:{i:02d}'
+
+def sha(b):
+    return hashlib.sha256(b).hexdigest()
+
+def dump(v):
+    return (json.dumps(v, indent=2, sort_keys=True) + '\n').encode()
+
+def refined():
+    rows = []
+    for u in range(1, 16):
+        for a, read in enumerate(('c', 'b')):
+            i = 2 * (u - 1) + a
+            token = U15[read][u - 1]
+            row = dict(id=i, u15_state=u, read=a, accepting=token == '-')
+            if token != '-':
+                v = int(token[2:])
+                row.update(write=int(token[0] == 'b'), direction=token[1], next_if_zero=2 * (v - 1), next_if_one=2 * (v - 1) + 1)
+            rows.append(row)
+    if not [r['id'] for r in rows if r['accepting']] == [19]:
+        raise RuntimeError('Invariant failed at original source line 29')
+    return rows
+
+def build():
+    states = refined()
+    rules = {}
+    origins = {}
+
+    def add(lhs, rhs, origin):
+        if not lhs not in rules:
+            raise RuntimeError((lhs, 'duplicate definition'))
+        rules[lhs] = list(rhs)
+        origins[lhs] = origin
+
+    def s(k, i):
+        return sym(k, i)
+    for st in states:
+        i = st['id']
+        x = s('x', i)
+        if st['accepting']:
+            add(s('A', i), [H], 'accepting_head')
+            for k in ('a', 'B', 'b'):
+                add(s(k, i), [Z, Z], 'halt_state_inert')
+            continue
+        e = st['write']
+        left = st['direction'] == 'L'
+        C = s('C', i)
+        c = s('c', i)
+        if left:
+            add(s('A', i), [s('L', i), x], 'left_prepare')
+            add(s('a', i), [s('l', i), x], 'left_prepare')
+            add(s('B', i), [C, x] + [c, x] * e, 'left_double')
+            add(s('b', i), [c, x, c, x], 'left_double')
+            add(s('L', i), [s('S', i)], 'left_shrink')
+            add(s('l', i), [s('s', i)], 'left_shrink')
+        else:
+            add(s('A', i), [C, x] + [c, x] * e, 'right_double')
+            add(s('a', i), [c, x, c, x], 'right_double')
+            add(s('B', i), [s('S', i)], 'right_shrink')
+            add(s('b', i), [s('s', i)], 'right_shrink')
+        for a, b, c_ in [('C', 'D1', 'D0'), ('c', 'd1', 'd0'), ('S', 'T1', 'T0'), ('s', 't1', 't0')]:
+            add(s(a, i), [s(b, i), s(c_, i)], 'parity_prepare')
+        for r in (0, 1):
+            j = st['next_if_one' if r else 'next_if_zero']
+            xx = s('x', j)
+            head, low = ('Bp', 'bp') if left else ('A', 'a')
+            add(s('D' + str(r), i), ([xx] if r == 0 else []) + [s(head, j), xx], 'parity_select')
+            add(s('d' + str(r), i), [s(low, j), xx], 'parity_select')
+            head, low = ('A', 'a') if left else ('B', 'b')
+            add(s('T' + str(r), i), [s(head, j), xx], 'parity_finish')
+            add(s('t' + str(r), i), [s(low, j), xx], 'corrected_even_finish' if r == 0 else 'parity_finish')
+            if left:
+                for prime, normal in [('Bp', 'B'), ('bp', 'b')]:
+                    lhs = s(prime, j)
+                    rhs = [s(normal, j), xx]
+                    if lhs in rules:
+                        if not rules[lhs] == rhs:
+                            raise RuntimeError('Invariant failed at original source line 71')
+                    else:
+                        add(lhs, rhs, 'left_rotate')
+    for st in states:
+        add(s('x', st['id']), [Z, Z], 'unreachable_filler_totalization')
+    add(Z, [Z, Z], 'inert')
+    add(H, [Z, Z], 'ignored_after_acceptance')
+    alphabet = sorted(rules)
+    if not (set(alphabet) == set(rules) and all((1 <= len(w) <= 4 for w in rules.values()))):
+        raise RuntimeError('Invariant failed at original source line 76')
+    if not all((y in rules for w in rules.values() for y in w)):
+        raise RuntimeError('Invariant failed at original source line 77')
+    if not [(a, w) for a, w in rules.items() if H in w] == [(s('A', 19), [H])]:
+        raise RuntimeError('Invariant failed at original source line 78')
+    tag_ids = {name: i for i, name in enumerate(alphabet)}
+    tag = dict(deletion=2, alphabet=[dict(id=i, name=a) for a, i in tag_ids.items()], productions=[dict(symbol=tag_ids[a], output=[tag_ids[x] for x in rules[a]], role=origins[a]) for a in alphabet], accepting_symbol=tag_ids[H], inert_symbol=tag_ids[Z], canonical_symbols={str(i): {k: tag_ids[s(k, i)] for k in ('A', 'a', 'B', 'b', 'x')} for i in range(30)}, halt_event=dict(kind='fresh_H_emitted_by_accepting_head', source=tag_ids[s('A', 19)], accepting_refined_state=19, not_short_word_halting=True))
+    original = [a for a in alphabet if a != H]
+    padded = {a: rules[a] + [DUMMY] * (4 - len(rules[a])) for a in original}
+    pairs = {(DUMMY, DUMMY)}
+    for w in padded.values():
+        pairs.update((tuple(w[:2]), tuple(w[2:])))
+    pairs = sorted(pairs)
+    pair_names = {pair: f'PAIR:{i:04d}' for i, pair in enumerate(pairs)}
+    names = original + [DUMMY] + [pair_names[p] for p in pairs] + [H]
+    ids = {name: i for i, name in enumerate(names)}
+    grow = []
+    dd = ids[pair_names[DUMMY, DUMMY]]
+    for a in original:
+        w = padded[a]
+        grow.append(dict(id=ids[a], name=a, kind='original', width=1, productions=[[ids[pair_names[tuple(w[:2])]], ids[pair_names[tuple(w[2:])]]], [dd, dd]]))
+    grow.append(dict(id=ids[DUMMY], name=DUMMY, kind='dummy', width=0, productions=[[ids[DUMMY], ids[DUMMY]]] * 2))
+    for pair in pairs:
+        name = pair_names[pair]
+        out = [ids[x] for x in pair]
+        grow.append(dict(id=ids[name], name=name, kind='pair', width=0, expands=out, productions=[out, out]))
+    grow.append(dict(id=ids[H], name=H, kind='halt', width=0, productions=[[ids[Z], ids[Z]]] * 2, ignored_by_halt_semantics=True))
+    if not [r['id'] for r in grow] == list(range(len(names))):
+        raise RuntimeError('Invariant failed at original source line 111')
+    if not all((len(w) == 2 and all((0 <= y < len(names) for y in w)) for r in grow for w in r['productions'])):
+        raise RuntimeError('Invariant failed at original source line 112')
+    h_pairs = [r['id'] for r in grow if r['kind'] == 'pair' and ids[H] in r['expands']]
+    if not len(h_pairs) == 1:
+        raise RuntimeError('Invariant failed at original source line 114')
+    if not not any((ids[H] in w for r in grow if r['kind'] in ('original', 'dummy') for w in r['productions'])):
+        raise RuntimeError('Invariant failed at original source line 115')
+    genera = dict(modulus=2, initial_phase=0, halt_symbol=ids[H], alphabet=grow, canonical_symbols={str(i): {k: ids[s(k, i)] for k in ('A', 'a', 'B', 'b', 'x')} for i in range(30)}, dummy_symbol=ids[DUMMY], inert_symbol=ids[Z], original_symbols=[ids[a] for a in original], halt_metadata=dict(accepting_refined_state=19, accepting_head=ids[s('A', 19)], halt_pair=h_pairs[0], first_H_layer='pair_expansion', unique_H_on_valid_canonical_runs=True, hypothetical_prefix_cannot_emit_H=True, initial_H_forbidden=True, multiple_H_outside_contract=True), input_contract=dict(start_refined_state=0, word='A:00 x:00 (a:00 x:00)^M B:00 x:00 (b:00 x:00)^N', M='fixed per represented program; reversed finite left tape value', N='paid right tape value from canonical LSB binary(x+1)', bare_binary_loader_compatible=False), ignored_halt_row_is_total=True)
+    counts = dict(u15_states=15, u15_instructions=29, refined_states=30, refined_nonhalt_instructions=29, refined_left=sum((r.get('direction') == 'L' for r in states)), refined_right=sum((r.get('direction') == 'R' for r in states)), tag_symbols=len(alphabet), tag_productions=len(rules), tag_output_length_histogram=dict(sorted(Counter(map(len, rules.values())).items())), tag_role_counts=dict(sorted(Counter(origins.values()).items())), genera_symbols=len(names), genera_nonhalt_symbols=len(names) - 1, genera_pair_symbols=len(pairs), genera_production_rows=2 * len(names), genera_nonhalt_production_rows=2 * (len(names) - 1), genera_width_zero=sum((r['width'] == 0 for r in grow)), genera_width_one=sum((r['width'] == 1 for r in grow)), corrected_grill_phase_count_if_emitted=392 * (len(names) + 1), corrected_grill_E_width_for_initial_symbols=196 * (len(names) + 1), arithmetic_history_emitted=False)
+    return dict(schema='literal_u15_corrected_tag_genera_v1', u15_table_tokens=U15, refined_states=states, tag=tag, genera=genera, counts=counts)
+
+def source_manifest():
+    files = ['neary-woods-2009.pdf', 'u15-table16-page.png', 'upstream_u15_builder.py.txt', 'upstream_u15_proof.md', 'upstream_recoder_duration.md', '../cocke-minsky-1964.pdf', '../cm-page4.png', '../cm-page5.png', '../SEMANTIC_CONTRACT.md']
+    sources = []
+    for f in files:
+        b = (ROOT / f).read_bytes()
+        sources.append(dict(file=f, bytes=len(b), sha256=sha(b)))
+    return dict(files=sources, primary_u15_url='https://mural.maynoothuniversity.ie/id/eprint/12416/1/Woods_FourSmall_2009.pdf', primary_u15_table='Table 16, printed p.121, PDF page17', primary_cocke_url='https://cs.famaf.unc.edu.ar/~hoffmann/cc18/p15-cocke.pdf', primary_cocke_rule_pages='printed pp.18-19, PDF pages4-5', repository_commit='2d887f0fa768fd67f3e545d83f8998b5780e530d', upstream_code_executed=False, source_discrepancies=['Cocke p.19 printed t0 lacks final filler; this schema explicitly uses b_j0 x_j0.', 'U15 prose says missing (u10,c); Table16 and this schema use missing (u10,b).'])
+
+def write_or_check(expect=False):
+    packet = build()
+    out = ROOT / 'literal_tables.json'
+    data = dump(packet)
+    manifest = source_manifest()
+    manifest.update(builder_sha256=sha(Path(__file__).read_bytes()), literal_tables_sha256=sha(data))
+    mp = ROOT / 'source_manifest.json'
+    mb = dump(manifest)
+    if expect:
+        if not (out.read_bytes() == data and mp.read_bytes() == mb):
+            raise RuntimeError('Invariant failed at original source line 168')
+    else:
+        out.write_bytes(data)
+        mp.write_bytes(mb)
+    print(json.dumps(packet['counts'], sort_keys=True))
+if __name__ == '__main__':
+    p = argparse.ArgumentParser()
+    p.add_argument('--expect', action='store_true')
+    a = p.parse_args()
+    write_or_check(a.expect)

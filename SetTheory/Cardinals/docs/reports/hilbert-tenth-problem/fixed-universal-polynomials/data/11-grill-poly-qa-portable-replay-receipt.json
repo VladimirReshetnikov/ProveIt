@@ -1,0 +1,340 @@
+{
+  "adversarial_integrity": {
+    "normal": {
+      "cases": [
+        {
+          "case": "literal data mutation",
+          "reason": "Content digest mismatch: frozen/input-research/literal/literal_tables.json",
+          "status": "REJECTED"
+        },
+        {
+          "case": "inert upstream source mutation",
+          "reason": "Content digest mismatch: frozen/input-research/literal/upstream_u15_builder.py.txt",
+          "status": "REJECTED"
+        },
+        {
+          "case": "local executable mutation",
+          "reason": "Content digest mismatch: replay_code/arithmetic/compact_dag.py",
+          "status": "REJECTED"
+        },
+        {
+          "case": "full DAG mutation",
+          "reason": "Content digest mismatch: frozen/arithmetic/universal.dag",
+          "status": "REJECTED"
+        },
+        {
+          "case": "scientific manifest mutation",
+          "reason": "Content digest mismatch: frozen/arithmetic/universal.json",
+          "status": "REJECTED"
+        },
+        {
+          "case": "inventory manifest mutation",
+          "reason": "Inventory digest mismatch",
+          "status": "REJECTED"
+        },
+        {
+          "case": "inventory root digest mutation",
+          "reason": "Inventory digest mismatch",
+          "status": "REJECTED"
+        },
+        {
+          "case": "missing theorem source",
+          "reason": "Inventory file-set mismatch; missing=['frozen/arithmetic/FULL_COMPOSITION_PROOF.md']; extra=[]",
+          "status": "REJECTED"
+        },
+        {
+          "case": "extra undeclared file",
+          "reason": "Inventory file-set mismatch; missing=[]; extra=['undeclared.txt']",
+          "status": "REJECTED"
+        },
+        {
+          "case": "extra empty directory",
+          "reason": "Inventory directory-set mismatch",
+          "status": "REJECTED"
+        },
+        {
+          "case": "forbidden stale cache",
+          "reason": "Inventory file-set mismatch; missing=[]; extra=['__pycache__/extra.pyc']",
+          "status": "REJECTED"
+        }
+      ],
+      "optimized": false,
+      "status": "PASS_ADVERSARIAL_INTEGRITY"
+    },
+    "optimized": {
+      "cases": [
+        {
+          "case": "literal data mutation",
+          "reason": "Content digest mismatch: frozen/input-research/literal/literal_tables.json",
+          "status": "REJECTED"
+        },
+        {
+          "case": "inert upstream source mutation",
+          "reason": "Content digest mismatch: frozen/input-research/literal/upstream_u15_builder.py.txt",
+          "status": "REJECTED"
+        },
+        {
+          "case": "local executable mutation",
+          "reason": "Content digest mismatch: replay_code/arithmetic/compact_dag.py",
+          "status": "REJECTED"
+        },
+        {
+          "case": "full DAG mutation",
+          "reason": "Content digest mismatch: frozen/arithmetic/universal.dag",
+          "status": "REJECTED"
+        },
+        {
+          "case": "scientific manifest mutation",
+          "reason": "Content digest mismatch: frozen/arithmetic/universal.json",
+          "status": "REJECTED"
+        },
+        {
+          "case": "inventory manifest mutation",
+          "reason": "Inventory digest mismatch",
+          "status": "REJECTED"
+        },
+        {
+          "case": "inventory root digest mutation",
+          "reason": "Inventory digest mismatch",
+          "status": "REJECTED"
+        },
+        {
+          "case": "missing theorem source",
+          "reason": "Inventory file-set mismatch; missing=['frozen/arithmetic/FULL_COMPOSITION_PROOF.md']; extra=[]",
+          "status": "REJECTED"
+        },
+        {
+          "case": "extra undeclared file",
+          "reason": "Inventory file-set mismatch; missing=[]; extra=['undeclared.txt']",
+          "status": "REJECTED"
+        },
+        {
+          "case": "extra empty directory",
+          "reason": "Inventory directory-set mismatch",
+          "status": "REJECTED"
+        },
+        {
+          "case": "forbidden stale cache",
+          "reason": "Inventory file-set mismatch; missing=[]; extra=['__pycache__/extra.pyc']",
+          "status": "REJECTED"
+        }
+      ],
+      "optimized": true,
+      "status": "PASS_ADVERSARIAL_INTEGRITY"
+    }
+  },
+  "date": "2026-10-03",
+  "distribution_note": "Final release ZIP packaging is separate. Keep the entire reproducibility subtree unchanged, including its two inventory files. QA extraction ZIP is not the delivery archive.",
+  "executable_assertion_scan": "PASS",
+  "extraction_test": "ZIP extracted to a path containing spaces; both replays invoked from filesystem-root CWD; no original tree dependency",
+  "frozen_original_byte_identical_contents": 131,
+  "frozen_original_sources": 151,
+  "full_dag": {
+    "bytes": 61209290,
+    "sha256": "a07c1ba41e3a18fafd05c19b8ac39211b0475e30ed8a08ddf43c45a9f5f440f2"
+  },
+  "full_replays": {
+    "normal": {
+      "checks": [
+        {
+          "check": "rebuild literal source tables",
+          "seconds": 0.067,
+          "status": "PASS"
+        },
+        {
+          "check": "independent literal table/source semantics",
+          "seconds": 2.702,
+          "status": "PASS"
+        },
+        {
+          "check": "bounded original macro identities",
+          "seconds": 0.636,
+          "status": "PASS"
+        },
+        {
+          "check": "literal queue simulation",
+          "seconds": 0.436,
+          "status": "PASS"
+        },
+        {
+          "check": "normalization invariants",
+          "seconds": 8.442,
+          "status": "PASS"
+        },
+        {
+          "check": "independent input outer interfaces",
+          "seconds": 1.051,
+          "status": "PASS"
+        },
+        {
+          "check": "independent full run-table byte/phase/cleanup checks",
+          "seconds": 18.36,
+          "status": "PASS"
+        },
+        {
+          "check": "independent exact all-row and all-coefficient audit",
+          "seconds": 10.214,
+          "status": "PASS"
+        },
+        {
+          "check": "independent complete-interface checks",
+          "seconds": 4.056,
+          "status": "PASS"
+        },
+        {
+          "check": "input loader and complete recoder identities",
+          "seconds": 1.191,
+          "status": "PASS"
+        },
+        {
+          "check": "native source identities",
+          "seconds": 0.16,
+          "status": "PASS"
+        },
+        {
+          "check": "native streamed-backend identities",
+          "seconds": 0.092,
+          "status": "PASS"
+        },
+        {
+          "check": "rebuild complete run table",
+          "seconds": 0.066,
+          "status": "PASS"
+        },
+        {
+          "check": "re-emit full 3,600,546-gate DAG",
+          "seconds": 5.146,
+          "status": "PASS"
+        },
+        {
+          "check": "independent whole-DAG differential checks",
+          "seconds": 18.623,
+          "status": "PASS"
+        }
+      ],
+      "dag_bytes": 61209290,
+      "dag_sha256": "a07c1ba41e3a18fafd05c19b8ac39211b0475e30ed8a08ddf43c45a9f5f440f2",
+      "literal_sha256": "3c8924dbb1b5d6e6b8897e59550b0e38a703654b87442c73487f411e94ae355b",
+      "optimized": false,
+      "program_sha256": "fa658fcdfe1dae2be3a8e2bf97bd613db59558949ea23ca03f549b77201dad01",
+      "scientific_manifest_exact_match_excluding_resources_and_adapted_code_hashes": true,
+      "status": "PASS_OFFLINE_REPLAY",
+      "upstream_python_executed": false
+    },
+    "optimized": {
+      "checks": [
+        {
+          "check": "rebuild literal source tables",
+          "seconds": 0.275,
+          "status": "PASS"
+        },
+        {
+          "check": "independent literal table/source semantics",
+          "seconds": 2.661,
+          "status": "PASS"
+        },
+        {
+          "check": "bounded original macro identities",
+          "seconds": 0.703,
+          "status": "PASS"
+        },
+        {
+          "check": "literal queue simulation",
+          "seconds": 0.522,
+          "status": "PASS"
+        },
+        {
+          "check": "normalization invariants",
+          "seconds": 8.432,
+          "status": "PASS"
+        },
+        {
+          "check": "independent input outer interfaces",
+          "seconds": 1.118,
+          "status": "PASS"
+        },
+        {
+          "check": "independent full run-table byte/phase/cleanup checks",
+          "seconds": 16.719,
+          "status": "PASS"
+        },
+        {
+          "check": "independent exact all-row and all-coefficient audit",
+          "seconds": 11.127,
+          "status": "PASS"
+        },
+        {
+          "check": "independent complete-interface checks",
+          "seconds": 3.235,
+          "status": "PASS"
+        },
+        {
+          "check": "input loader and complete recoder identities",
+          "seconds": 1.353,
+          "status": "PASS"
+        },
+        {
+          "check": "native source identities",
+          "seconds": 0.234,
+          "status": "PASS"
+        },
+        {
+          "check": "native streamed-backend identities",
+          "seconds": 0.178,
+          "status": "PASS"
+        },
+        {
+          "check": "rebuild complete run table",
+          "seconds": 0.148,
+          "status": "PASS"
+        },
+        {
+          "check": "re-emit full 3,600,546-gate DAG",
+          "seconds": 5.274,
+          "status": "PASS"
+        },
+        {
+          "check": "independent whole-DAG differential checks",
+          "seconds": 18.51,
+          "status": "PASS"
+        }
+      ],
+      "dag_bytes": 61209290,
+      "dag_sha256": "a07c1ba41e3a18fafd05c19b8ac39211b0475e30ed8a08ddf43c45a9f5f440f2",
+      "literal_sha256": "3c8924dbb1b5d6e6b8897e59550b0e38a703654b87442c73487f411e94ae355b",
+      "optimized": true,
+      "program_sha256": "fa658fcdfe1dae2be3a8e2bf97bd613db59558949ea23ca03f549b77201dad01",
+      "scientific_manifest_exact_match_excluding_resources_and_adapted_code_hashes": true,
+      "status": "PASS_OFFLINE_REPLAY",
+      "upstream_python_executed": false
+    }
+  },
+  "inventory_sha256": "95940bfa3ff6fba747fe2252b3ae8ac89e9633355a341cf6787b4b27cb85151e",
+  "locally_authored_portable_scientific_modules": 19,
+  "private_authoring_path_scan": "PASS",
+  "provenance_sha256": "7892ec5dd262ffcdc9b5c40163326756ad0e7de87f8fc2e9437dc5d15fa03073",
+  "receipt_files": {
+    "final-integrity-normal.json": {
+      "bytes": 1849,
+      "sha256": "e4c32a0cc5a6655c26740b9e5699be7ad826228d6975f9d91b1e496cc1772e44"
+    },
+    "final-integrity-optimized.json": {
+      "bytes": 1848,
+      "sha256": "dbdc4d6b2db05e44929dd444f2a3e2c562c3ffcb01acd02daab84fb808a65fd6"
+    },
+    "final-replay-normal.log": {
+      "bytes": 3632,
+      "sha256": "66d82fcb9c4b6c1b77f8c261840f45a0ddf836a282c17ce768fce434a759c84a"
+    },
+    "final-replay-optimized.log": {
+      "bytes": 3633,
+      "sha256": "1fbf3d346e75b3836702ff1cadde311d4d173ece15da38e8a3b1abac633bc648"
+    }
+  },
+  "status": "PASS_PORTABLE_OFFLINE_RELEASE_SUBTREE",
+  "subtree_file_bytes": 67926588,
+  "subtree_files": 177,
+  "symlink_scan": "PASS",
+  "tested_python": "CPython 3.12.14, Linux",
+  "upstream_python_executed": false
+}

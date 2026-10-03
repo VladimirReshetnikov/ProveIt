@@ -1,0 +1,775 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array}
+\usepackage[margin=0.88in,headheight=15pt]{geometry}
+\usepackage{enumitem,fancyhdr,xcolor,xurl,placeins,needspace}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={A fixed universal Grill polynomial},pdfauthor={Research report 23},pdfsubject={Paid ordinary input and exact width through a literal source program},pdfkeywords={Diophantine representation, Grill Tag, positive witnesses, exact width}}
+\widowpenalty=10000
+\clubpenalty=10000
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.25em}
+\setlist{itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small A fixed universal Grill polynomial}\fancyhead[R]{\small Report 23 revision 1}\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Np}{\mathbb Z_{>0}}
+\newcommand{\val}{\operatorname{val}_{\rm LSB}}
+\newcommand{\bits}{\operatorname{bitlength}}
+\newcommand{\spread}{\operatorname{spread}}
+\newcommand{\rep}{\operatorname{rep}}
+\newcommand{\pack}{\operatorname{pack}}
+\newcommand{\sha}[1]{\texttt{\small\seqsplit{#1}}}
+\usepackage{seqsplit}
+\newcommand{\fname}[1]{\texttt{\small\detokenize{#1}}}
+\title{A fixed universal Grill polynomial\\\large Paid ordinary input and exact width through a literal source program}
+\author{Research report 23\\\normalsize Revision 1 with the exact degree theorem}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct one literal Grill program with 397,488 run phases and one complete integer polynomial circuit attached to it. The circuit accepts an ordinary positive integer input, pays for its conversion into the finite input convention of a fixed universal machine, and binds the initial queue to its exact bit width. Its six external coordinates are the ordinary input and five program parameters fixed for each represented language. It has 797,135 positive existential coordinates and 3,600,546 binary arithmetic operations, comprising 803,517 multiplications and 2,797,029 additions or subtractions. Its exact total degree is 69,339,973, established by an all-tuple norm cancellation and an explicit nonzero leading coefficient on a univariate ray.
+
+The language theorem is conditional on precisely pinned full native-history, binary-recoder, and finite-input U15 universality theorems. The exact-degree theorem is unconditional algebra on the unchanged pinned circuit. The new contribution is the explicit composition: corrected right and left tag macros, a unique accepting-head event, phase-preserving normalization, two distinct complete recoders, signed finite-frame arithmetic, exact unary loading, and a unit-safe finalizer. A complete 61,209,290-byte arithmetic DAG and independent whole-source checks accompany the report. The costs describe this actual emitted circuit in a literal-integer arithmetic model; they are not bit complexity or a minimality claim.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Result and its mathematical meaning}
+The purpose of this report is to close the ordinary-input interface for a concrete Grill route to Diophantine representation. A native queue-history relation by itself is insufficient: it may permit different terminal-zero paddings of the same integer, and a substrate-universality slogan does not identify what language a particular numerical input represents. Here both interfaces are explicit and paid.
+
+\begin{theorem}[Conditional fixed universal polynomial]\label{thm:main}
+Assume the pinned theorem imports in Section~\ref{sec:imports}. There exists a single polynomial
+\[
+ F\in\Z[x,a,p,s,C,L,y_1,\ldots,y_{797135}]
+\]
+represented by the complete arithmetic DAG in the accompanying archive, such that for every computably enumerable set $S\subseteq\Np$ there is a fixed tuple
+\[
+ \theta_S=(a_e,p_e,s_e,C_e,L_e)\in\Np^5
+\]
+with, for every $x\in\Np$,
+\[
+ x\in S\quad\Longleftrightarrow\quad
+ \exists(y_1,\ldots,y_{797135})\in\Np^{797135}:
+ F(x,a_e,p_e,s_e,C_e,L_e,\mathbf y)=0.
+\]
+All five coordinates of $\theta_S$ have the finite program-dependent recipes in Section~\ref{sec:parameters}. The polynomial has 3,600,546 emitted binary arithmetic gates and exact total degree 69,339,973 when all six external coordinates and every witness have degree one. The degree assertion is proved independently of these theorem imports in Section~\ref{sec:exactdegree}.
+\end{theorem}
+
+The program parameters are not existentially varied with $x$. An arbitrary positive tuple $(a,p,s,C,L)$ still gives a polynomial slice, but only the explicitly constructed valid tuples have the stated machine interpretation. The theorem covers positive integer inputs and positive integer witnesses. No statement about $x=0$, negative inputs, or real zeros is intended.
+
+The construction establishes a concrete representation through a selected computational substrate. It is not a new general MRDP theorem, and the operation or witness counts are not asserted to be optimal. The finite audits establish exact source facts and implementation identities; the unbounded existential equivalence additionally uses the imported complete theorems. In particular, no astronomical full Pell witness tuple or complete universal accepting execution has been materialized.
+
+\subsection{An overview of the chain}
+Fix a language $S$ and its finite semidecider. For the varying $x>0$, the construction follows
+\[
+\begin{gathered}
+x\longmapsto u=x+1\longmapsto \text{canonical LSB bits of }u\longmapsto N_e(x),\\
+\text{U15 finite tape}\longmapsto\text{corrected deletion-2 tag word}
+\longmapsto\text{normalized Genera word}\\
+\longmapsto\text{exact Grill E word and width}\longmapsto
+\text{complete native history relation}\longmapsto F=0.
+\end{gathered}
+\]
+The two recoders serve different jobs. The first selects the canonical bit length of $u$. The second extracts the unrestricted exponent $N_e(x)+1$ used to load a unary tag block. Neither exponent is the native history duration. Keeping these three quantities separate is essential.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lr}
+\toprule
+Object & Exact size or bound\\\midrule
+Refined U15 states & 30\\
+Nonhalting U15 instructions & 29\\
+Tag symbols and total productions & 570\\
+Normalized Genera symbols & 1,013\\
+Grill run phases & 397,488\\
+Positive runs / zero runs & 24,300 / 373,188\\
+Distinct run exponents, including zero & 2,030\\
+Largest run exponent & 275,944\\
+Positive existential coordinates & 797,135\\
+Nonunit comparisons / unit condition & 86 / 1\\
+Complete arithmetic operations & 3,600,546\\
+Exact total degree & 69,339,973\\\bottomrule
+\end{tabular}
+\caption{The literal source and the actual composed circuit. A run exponent describes a fixed block of commands; a run phase is not an individual command.}
+\end{table}
+
+\FloatBarrier
+\section{Sources and imported complete theorems}\label{sec:imports}
+All repository theorem imports use the immutable ProveIt commit
+\begin{center}\texttt{2d887f0fa768fd67f3e545d83f8998b5780e530d}.\end{center}
+They are under \fname{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/}. The reproducibility packet records Git blob identifiers, SHA-256 digests, frozen texts, and the local adaptations needed to replay the new source. A frozen theorem note is an explicit premise, not a claim that its full historical proof dependency graph has been independently formalized here.
+
+The imports have four distinct roles.
+\begin{enumerate}
+\item \emph{Finite-input universality.} The note \fname{neary_woods_explicit_universal_tm.md} supplies the U15 table and effective finite-frame initialization of a selected one-tape semidecider through the bi-tag construction. The primary Neary--Woods paper is frozen and Table~16 was checked visually. This is the finite-tape machine convention, not an infinite periodic background.
+\item \emph{Corrected source compilation.} The corrected \fname{grill_tag_halt_bridge.md} supplies the E/L/R compiler, persistent phase alignment, nonhalting simulation, and exact first-empty cleanup. Its hypotheses are proved for the newly literal normalized source in Sections~\ref{sec:tag}--\ref{sec:grill}.
+\item \emph{Complete native history.} The word-closure, weak-cone, phase-sharing, phase-residual206, composed205, and uniform affine-pair unit notes supply the fixed-arity native relation, positive soundness and converse, restoration, and polynomial rewrites. The scalable emitter is proved identical to the pinned complete native polynomial over \emph{all integer tuples}, not just on valid histories.
+\item \emph{Complete binary recoding.} The input-dilation130 source and the generic-width bridge, with their complete parent geometry/AND theorem chain, supply all 34 comparisons and 49 positive auxiliaries at every fixed width $k\ge4$. The positive converse applies at every permitted exponent $h\ge2$. The duration-extraction argument uses the unrestricted recoder; it does not import the later extra dyadic-duration predicate.
+\end{enumerate}
+
+\needspace{8\baselineskip}
+Two small literal data objects anchor native transcription. The complete recoder receipt has SHA-256
+\begin{center}\sha{175c498990a8e63de7a91d1e3d321ef90a19f129f305074f0c6de10967d0a182},\end{center}
+\par\needspace{4\baselineskip}
+The 67-row native unit kernel has SHA-256
+\begin{center}\sha{2d88343037c08fe8b073f67dca531ee73309c0735c1d98a23c20b9ddb1eb08ae}.\end{center}
+Four complete upstream native fixtures were authenticated and their frozen rows compared independently. Upstream Python is retained only as inert source evidence; none was executed in this work or is required by the offline replay.
+
+The archive retains earlier semantic and local audit reports with their original historical scope. Statements in those reports that a larger circuit remained to be emitted describe that earlier stage. The complete composition proof, current whole-circuit audit, and this report state the final scope.
+
+\section{A concrete finite U15 input language}\label{sec:u15}
+Use $c=0$, $b=1$, and blank zero outside a finite tape. Refine a U15 control state $u$ and already-read symbol $r$ to
+\[
+ i=2(u-1)+r\in\{0,\ldots,29\}.
+\]
+The initial refined state is $0=(u_1,0)$; the accepting state is $19=(u_{10},1)$. The unique absent instruction in primary Table~16 is $(u_{10},b)$. A primary prose sentence instead names $c$; the literal construction follows the table, and the discrepancy is recorded rather than silently reconciled.
+
+For a nonhalting instruction $(u,r)\mapsto(v,\epsilon,D)$, the refined machine writes $\epsilon$, moves in direction $D$, reads $r'$, and selects $j_{r'}=2(v-1)+r'$. There are 15 left-moving and 14 right-moving nonhalting instructions.
+
+Let $M,N$ be the left and right binary tape integers, with the square nearest the head as the least significant bit. The scanned symbol is omitted because the refined control remembers it. A right move changes
+\[
+ (i,M,N)\mapsto(j_{N\bmod2},\,2M+\epsilon,\,\lfloor N/2\rfloor),
+\]
+and a left move changes
+\[
+ (i,M,N)\mapsto(j_{M\bmod2},\,\lfloor M/2\rfloor,\,2N+\epsilon).
+\]
+These formulas include zero tape integers and indefinitely blank tails.
+
+\subsection{The chosen semidecider and physical input blocks}
+For each $S\subseteq\Np$ that is computably enumerable, choose a finite semidecider that reads the canonical LSB-first spelling of $u=x+1$, decodes it, subtracts one, and recognizes $S$. This is a fixed program choice. It is not an uncharged external algorithm applied anew to $x$.
+
+Write the physical binary blocks
+\[
+ \mathsf A_i=(01)^{8i-5}11,\qquad
+ \mathsf B_0=\mathsf A_2\mathsf A_1,\quad
+ \mathsf B_1=\mathsf A_1\mathsf A_2.
+\]
+Both $\mathsf B_0,\mathsf B_1$ have 32 bits. The U15 head scans the final $c$ of the start marker $bc$. Its left word is the finite encoded program followed by $b$; define $M_e$ by reversing that word and taking its LSB value. Its right word is
+\begin{equation}\label{eq:frame}
+ \mathsf P_e\mathsf B_{w_0}\cdots\mathsf B_{w_{n-1}}\mathsf S_e,
+ \qquad w_i=\operatorname{bit}_i(x+1),\quad n=\bits(x+1),
+\end{equation}
+where
+\[
+ \mathsf P_e=(01)^{8q_B},\qquad
+ \mathsf S_e=\mathsf A_{\rm right}\mathsf A_{\rm left},\qquad q_B\ge2.
+\]
+The alphabet size $q_B$ and the two boundary indices depend only on the selected finite program. All squares beyond the displayed words are blank. Put $N_e(x)=\val(\text{word in \eqref{eq:frame}})$. The suffix ends in $11$, hence $N_e(x)>0$.
+
+\section{Corrected tag macros and the accepting head}\label{sec:tag}
+A deletion-2 tag step reads the first symbol, deletes two symbols, and appends that first symbol's production. The canonical word is
+\[
+ \mathcal C(i,M,N)=A_i\xi_i(a_i\xi_i)^M B_i\xi_i(b_i\xi_i)^N.
+\]
+Internal names are local to the nonhalting refined state. Their numerical identifiers and every production appear in the literal packet.
+
+\subsection{The right macro}
+For an instruction writing $\epsilon$ and moving right, use the complete rules below. On internal symbols suppress the state index $i$.
+\begin{align*}
+ A_i&\to C\xi_i(c\xi_i)^\epsilon,& a_i&\to c\xi_i c\xi_i,\\
+ B_i&\to S,&b_i&\to s,\\
+ C&\to D_1D_0,&c&\to d_1d_0,\\
+ S&\to T_1T_0,&s&\to t_1t_0,\\
+ D_1&\to A_{j_1}\xi_{j_1},&d_1&\to a_{j_1}\xi_{j_1},\\
+ D_0&\to\xi_{j_0}A_{j_0}\xi_{j_0},&d_0&\to a_{j_0}\xi_{j_0},\\
+ T_1&\to B_{j_1}\xi_{j_1},&t_1&\to b_{j_1}\xi_{j_1},\\
+ T_0&\to B_{j_0}\xi_{j_0},&t_0&\to b_{j_0}\xi_{j_0}.
+\end{align*}
+Put $M'=2M+\epsilon$. Exact intermediate queue cuts are
+\begin{align*}
+ &B_i\xi_i(b_i\xi_i)^N C\xi_i(c\xi_i)^{M'},\\
+ &C\xi_i(c\xi_i)^{M'}S s^N,\\
+ &S s^N D_1D_0(d_1d_0)^{M'}.
+\end{align*}
+If $N=2k+1$, the shrinking traversal leaves
+\[
+ D_1D_0(d_1d_0)^{M'}T_1T_0(t_1t_0)^k,
+\]
+which rotates through the $D$ and $T$ blocks to exactly $\mathcal C(j_1,M',k)$.
+If $N=2k$, its last deletion consumes $D_1$, leaving
+\[
+ D_0(d_1d_0)^{M'}T_1T_0(t_1t_0)^k.
+\]
+The $D_0/d_0$ traversal consumes $T_1$ in its last deletion, including when $M'=0$, and gives
+\[
+ T_0(t_1t_0)^k\xi_{j_0}A_{j_0}\xi_{j_0}(a_{j_0}\xi_{j_0})^{M'}.
+\]
+The last $T_0/t_0$ deletion consumes the extra filler and yields precisely $\mathcal C(j_0,M',k)$, including $k=0$.
+
+The final filler in $t_0\to b_{j_0}\xi_{j_0}$ is deliberate. The inspected printed Cocke--Minsky production omits it although the next displayed target retains paired repetitions. With $M=0,N=2,\epsilon=0$, the printed rule produces a five-symbol target after ten steps, missing its sixth filler. The construction here proves its own corrected rule; it does not present an asserted published erratum.
+
+\subsection{The left macro and explicit rotation}
+For a left move replace the initial four right rules by
+\begin{align*}
+ A_i&\to L_i\xi_i,& a_i&\to l_i\xi_i,\\
+ B_i&\to C\xi_i(c\xi_i)^\epsilon,&b_i&\to c\xi_i c\xi_i,\\
+ L_i&\to S,&l_i&\to s.
+\end{align*}
+One traversal gives
+\[
+ L_i\xi_i(l_i\xi_i)^M C\xi_i(c\xi_i)^{2N+\epsilon}.
+\]
+Keep the $C/c/S/s$ preparation. Replace target $A_j,a_j$ in the $D/d$ rules by temporary $B'_j,b'_j$, and replace target $B_j,b_j$ in the $T/t$ rules by actual $A_j,a_j$. Add
+\[
+ B'_j\to B_j\xi_j,\qquad b'_j\to b_j\xi_j.
+\]
+The right parity calculation with the tape roles exchanged yields
+\[
+ B'_j\xi_j(b'_j\xi_j)^{2N+\epsilon}
+ A_j\xi_j(a_j\xi_j)^{\lfloor M/2\rfloor},
+ \qquad j=j_{M\bmod2}.
+\]
+Moving the leading prime block to the tail gives the exact canonical left-move target. This finite rotation is the missing content behind an informal appeal to left/right symmetry.
+
+\subsection{Safety before acceptance and uniqueness at acceptance}
+Every canonical word has at least four symbols. All preacceptance productions except the shrinking $B_i/b_i$ or $L_i/l_i$ rules have length at least two. During the shrinking phase an untouched $C\xi_i(c\xi_i)^{M'}$ block of length at least two remains, and an $S$ remains at the finish. Therefore every preacceptance intermediate queue has length at least three. Prime rotation preserves length. No valid rejecting run can halt by an accidental short queue.
+
+The exact cuts create one next canonical head. It is read only after all old-macro symbols preceding it are consumed; at that read the whole word is canonical. In particular the first active $A_{19}$ occurs at a genuine accepting boundary, with no delayed old head lineage elsewhere in the queue.
+
+Set $A_{19}\to H$, with a fresh halt symbol $H$. Give the accepting suffix symbols inert productions $ZZ$, and $Z\to ZZ$. No other nonhalting rule emits $H$. Once $A_{19}$ is read, the remaining accepting-state symbols cannot recreate either $A_{19}$ or $H$. Thus exactly one fresh $H$ is emitted. An occurrence in the second deleted position is never mistaken for an active head event.
+
+\section{Normalization with a persistent phase}\label{sec:normalization}
+Give each original tag symbol width one. Its unnormalized Genera production is its tag production at phase zero and empty at phase one. Two FIFO reads implement one deletion-2 step. The phase is persistent across generation boundaries, so a generation ending after an odd number of original reads is not reset.
+
+Introduce a width-zero dummy $d$, with $d\to dd$. Pad each production to four symbols using trailing $d$, and replace its two consecutive pairs by fresh width-zero pair symbols. A pair $[u,v]$ expands to $uv$ at either phase. Every normalized production now has exactly two outputs.
+
+\begin{lemma}[Two-layer projection]
+Starting in an original-symbol layer, erasing dummies after two normalized generations gives exactly one unnormalized generation, with exactly its final persistent phase.
+\end{lemma}
+\begin{proof}
+Only original symbols have width one, so only the first pass changes the phase. Its outputs are pairs and width-zero dummies. The second pass expands each pair, preserves order, and leaves the phase unchanged. Dummy expansion erases to the empty word. Applying these facts successively proves both the word and phase identities, also for odd erased word length.
+\end{proof}
+
+A first literal $H$ occurs only when its containing pair expands. The preceding prefix of that output contains original symbols and dummies. Their hypothetical next outputs contain only pairs and dummies, never $H$. This verifies the extra prefix condition in the Genera halt convention, not merely the existence of a halt symbol.
+
+The literal normalized alphabet has 569 nonhalting original symbols, 442 ordered pairs, one dummy, and one halt symbol, for $N_G=1013$. There are 2,024 nonhalting phase rows, each with two outputs; the two ignored halt rows are also total. Its unique halt-containing pair is $(H,d)$, numeric ID 694; the halt has ID 1012. Only phase-zero $A_{19}$ produces that pair. The complete literal table has SHA-256
+\begin{center}\sha{3c8924dbb1b5d6e6b8897e59550b0e38a703654b87442c73487f411e94ae355b}.\end{center}
+
+\section{The literal corrected Grill program}\label{sec:grill}
+Set
+\[
+ a=28(N_G+1)=28392,\qquad b=7a=198744,\qquad m=14a=397488.
+\]
+At one run step a zero is removed without output; a one is removed and appends $g(n_p)=0(10)^{n_p}$; the phase advances modulo $m$. An exponent $n_p$ denotes $n_p$ commands $11$ followed by command $10$. All source times below count run steps.
+
+For a nonhalting source symbol $y$ of width $w_y\in\{0,1\}$ put $e_y=7a(1-w_y)$, and put $e_H=3a/2$. The corrected blocks are
+\begin{align*}
+ E_y&=0^{14y+7}g(a-3)g(7)g(a-4)0^{3a-14y-10+e_y},\\
+ L_y&=0^{a-3}g(14y+7)g(3)g(3a-14y-10)(10)^{e_y},\\
+ R_y&=0g(14y+7)g(3)g(3a-14y-10+e_y)0^{a-4}.
+\end{align*}
+For $y=H$, the displayed $E_H$ is only a cleanup intermediate $E_H^*$, not an initial source block. The second long E grill uses $a-4$, correcting the earlier informal $a-2$ expression.
+
+\subsection{Every run exponent is specified}
+Use zero-based positions relative to the start $7ap$ of each half $p\in\{0,1\}$ of length $7a$. Place the values $a-3,7,a-4$ in the listed order at
+\[
+ 28y+\{17,19,21\}\quad\hbox{and}\quad 28y+a+\{13,15,17\},
+\]
+respectively, for every symbol $y$, including $H$. If nonhalt $y$ outputs $(u,v)$ at source phase $p$, place
+\[
+ 14u+7,\ 3,\ 3a-14u-10+e_u,\ 0,\
+ 14v+7,\ 3,\ 3a-14v-10+e_v
+\]
+at the seven positions $14y+2a+\{3,5,7,9,11,13,15\}$, in that order. All other exponents are zero. There are no E-production positions for $H$. The source rows therefore determine the entire little-endian uint32 array; its hash is
+\begin{center}\sha{fa658fcdfe1dae2be3a8e2bf97bd613db59558949ea23ca03f549b77201dad01}.\end{center}
+Independent reconstruction agrees at every entry and all 1,589,952 bytes.
+
+\subsection{Phase alignment and exact cleanup}
+At a normal start phase $7ap$, a nonhalt E block produces the appropriate $L_uR_v$. Its phase advance is $7aw_y\pmod{14a}$. A nonhalt L/R block has length $7a$ or $21a$, both congruent to $7a$ modulo $14a$. A complete two-output LR generation is phase-neutral. These facts preserve the source's persistent phase.
+
+Every active run position modulo $7a$ is odd and below $5a/2$. Translating it by $3a$ lands in the zero-run region. At a start phase shifted by $3a$, every one in an E/L/R block therefore selects exponent zero, producing one zero, while every zero produces nothing.
+
+Suppose the first halting source output is an even word $v$ with its unique $H$ at zero-based index $j$. The H block has length $10a$ and shifts all later blocks by $3a$. The three remaining generation lengths from that LR boundary are
+\begin{align*}
+ L_1&=10a+\sum_{i\ne j}\bigl[7a+14a(1-w_{v_i})\bigr],\\
+ Z&=\sum_{i>j}\bigl[3a+7a(1-w_{v_i})\bigr],\\
+ L_2&=17a/2+\sum_{i<j}\bigl[7a+7a(1-w_{v_i})\bigr]+Z,\\
+ L_3&=2a(j+1).
+\end{align*}
+The last produced word is all zeros. All three lengths are positive, and a FIFO queue cannot empty while an initial-generation suffix remains. Thus $L_1+L_2+L_3$ is the exact first-empty time from that boundary. For the actual H-producing pair, the lengths are 880,152, 525,252, and 56,784, totaling 1,462,188 further runs.
+
+Nonhalting E boundaries stay nonempty. Consequently the correctly normalized source halts if and only if the Grill queue from its exact E word empties. This equivalence is at the literal width. Allowing arbitrary high-zero padding of the same numeral would be a different and unjustified interface.
+
+\section{All five valid program parameters}\label{sec:parameters}
+The first three parameters record the finite U15 frame:
+\begin{equation}\label{eq:params1}
+ a_e=\val(\mathsf P_e)=\frac{2(4^{8q_B}-1)}3,
+ \qquad p_e=2^{16q_B},\qquad s_e=\val(\mathsf S_e).
+\end{equation}
+Each is positive and fixed once the finite program is chosen.
+
+For original symbols define $E_y^\#=\val(E_y)$. Let
+\begin{align*}
+ \gamma(t)&=2\sum_{j=0}^{t-1}4^j=\frac{2(4^t-1)}3,\\
+ A_*&=2^7\bigl[\gamma(a-3)+2^{2a-5}\gamma(7)
+                    +2^{2a+10}\gamma(a-4)\bigr].
+\end{align*}
+Then $E_y^\#=A_*2^{14y}$ and every original block has width $b$. Put
+\[
+ K=2^{2b},\qquad W_y=E_y^\#+2^bE_{539}^\#.
+\]
+\needspace{8\baselineskip}
+The literal start IDs are $A_0=0$, $a_0=270$, $B_0=30$, $b_0=300$, and $\xi_0=539$. The remaining parameters are
+\begin{align}
+ C_e&=W_0+K W_{270}\sum_{j=0}^{M_e-1}K^j+K^{M_e+1}W_{30},\label{eq:params2}\\
+ L_e&=K^{M_e+2}.\nonumber
+\end{align}
+The empty sum when $M_e=0$ is zero. These are the value and dyadic width scale of
+\[
+ E\bigl(A_0\xi_0(a_0\xi_0)^{M_e}B_0\xi_0\bigr).
+\]
+Equations~\eqref{eq:params1}--\eqref{eq:params2} are finite recipes for fixed program integers. Their powers and finite sums are not runtime operations of the universal polynomial. By contrast, every multiplication involving any of these five \emph{external coordinates} in the universal DAG is charged.
+
+The full initial tag word is the displayed fixed prefix followed by $(b_0\xi_0)^{N_e(x)}$. That repetition count varies with the ordinary input and must be paid inside the polynomial; it is the task of the second recoder.
+
+\section{Two complete recoders and the signed frame}\label{sec:recoders}
+The complete generic recoder at fixed width $k\ge4$, on positive input $z<2^h$ and exponent $h\ge2$, retains 49 positive auxiliaries and 34 comparison pairs. At a complete zero its ports satisfy
+\begin{gather}
+ q=2^h,\quad Q=q^k,\quad B=2^{k-1}Q,\quad P=B^h,\label{eq:recoder}\\
+ J=\sum_{j<h}B^j,\quad K_{\rm mask}=\sum_{j<h}(2B)^j,\quad
+ z_{\rm out}=\sum_{j<h}\operatorname{bit}_j(z)2^{kj}.\nonumber
+\end{gather}
+The full converse supplies every retained positive auxiliary at every such exponent. Selected outer equations alone would not justify this interface.
+
+Typing does not depend circularly on the conclusions. Before the recoder equalities, $B=2^{k-1}q^k\ge8q^2$ for positive $q$ and $k\ge4$, and the conceptual prescribed-scale AND ports $zJ+1$, $K_{\rm mask}+1$, its positive supplied output hat, and $qP$ are positive. Generic width changes only the fixed power chain and coefficient in the complete 130-row source; all remaining comparisons and witnesses remain.
+
+\subsection{Canonical input with an inclusive upper endpoint}
+Pay $u=x+1$ and apply the width-32 recoder with positive spread output $R$. Its existing positive slack $s_0$ satisfies $u+s_0=q_0$. Supply positive $\beta$ and impose
+\[
+ s_0+\beta=u+1.
+\]
+Then $u<q_0\le2u$. Since $q_0$ is dyadic, it is exactly $2^n$ for $n=\bits(u)$. For dyadic $u$ the upper endpoint is necessary and $\beta=1$. Conversely, $s_0=2^n-u>0$ and $\beta=2u+1-2^n>0$ give the required extension. As $x>0$, $u\ge2$, so $n\ge2$ is in the imported domain.
+
+With $K_0=2^{32}$ and $m_0=K_0-1$, the literal block values are
+\[
+ c_0=3941247658,\qquad c_1=3937053418,\qquad c_1-c_0=-4194240.
+\]
+Supply positive $N$ and impose the denominator-cleared equation
+\begin{align}\label{eq:N}
+ m_0N={}&m_0a_e+p_ec_0(Q_0-1)\\
+       &+p_em_0(c_1-c_0)R+p_em_0s_eQ_0.\nonumber
+\end{align}
+The recoder gives $Q_0=K_0^n$ and $R=\sum_{i<n}w_iK_0^i$. Hence \eqref{eq:N} is exactly the LSB concatenation formula for \eqref{eq:frame}. The signed coefficient is retained; it must not be changed to a presumed positive block difference. $N$ is a positive supplied witness, so the off-zero sign of the computed right side does not become an illicit native positivity assumption.
+
+\subsection{An unrestricted exponent equal to the tape integer plus one}
+Use a disjoint second recoder at fixed width $k=2b=397488$, with input and spread output both equal to one. Its theorem gives $h\ge2$ and \eqref{eq:recoder}. It receives no canonical-length guard and no dyadic-duration AND predicate. The two namespaces share no private witness.
+
+Supply positive $\ell,v,g$ and impose
+\begin{equation}\label{eq:extract}
+ (B-1)v+\ell=J,\qquad \ell+g=B-1,\qquad \ell=N+1.
+\end{equation}
+Since $J\equiv h\pmod{B-1}$, the first equation gives $\ell\equiv h$. The second bounds $1\le\ell\le B-2$. Also
+\[
+ B=2^{kh+k-1}\ge2^{4h+3}>h+1,
+\]
+so $2\le h\le B-2$. The representatives lie in one modulus interval and are equal: $h=\ell=N+1$. No modular alias survives.
+
+For the converse choose the full recoder extension at $h=N+1$ and take
+\[
+ v=\sum_{j=1}^{h-1}\sum_{i=0}^{j-1}B^i>0,
+ \qquad g=B-1-h>0,\qquad\ell=h.
+\]
+The case $N=1,h=2$ is already valid; the inner quotient is positive. $N=0$ would require the excluded $h=1$, but the physical suffix has proved $N>0$. Nondyadic exponents are allowed and are essential.
+
+\section{Exact unary loading and positive width}
+The fixed repeated pair has value
+\[
+ V=E_{300}^\#+2^bE_{539}^\#
+   =A_*2^{14\cdot300}+A_*2^{b+14\cdot539}
+\]
+and exact width $k=397488$. Its value has 319,867 bits. Those two numbers are different because its terminal zeros are part of the word.
+
+The second recoder has $Q_1=K^{N+1}$. Supply positive $T,X$ and impose
+\begin{align}
+ KT&=Q_1,\label{eq:unary}\\
+ (K-1)X&=(K-1)C_e+L_eV(T-1),\nonumber\\
+ P_0&=L_eT.\label{eq:width}
+\end{align}
+The first equation gives $T=K^N$. The second uniquely gives
+\[
+ X=C_e+L_eV\sum_{j=0}^{N-1}K^j,
+\]
+precisely the numeral of the full initial E word. Equation~\eqref{eq:width} fixes its exact dyadic width scale.
+
+The native source already has a positive width slack $Z_0$ and computes $P_0=X+Z_0$. This coordinate is retained, and \eqref{eq:width} is an additional comparison. Substituting an arbitrary signed computed difference for a positive input would not be a valid replacement.
+
+Every original E block is nonzero and ends with at least two zero bits. In base $2^b$, each block value is below one quarter of that base. A finite geometric sum therefore gives $0<3X<P_0$ for the exact word. On a genuine halt the strong native converse applies at that same width, with positive slack $P_0-3X$. The established strong-to-weak map yields $Z_0=P_0-X>0$ while preserving the word, width, and history. No optional padding is used.
+
+\section{A complete scalable native history}\label{sec:native}
+The complete native component is much larger than the loader. Its correctness transfer must therefore cover its entire source, not just a few ports or small instances. The accompanying \fname{native_history_proof.md} proves the scalable emitter identically equal to the pinned complete weak native polynomial after a bijective coordinate renaming. The following formulas expose the main identities.
+
+\subsection{Coordinates and grouped affine transports}
+For a fixed program $n_0,\ldots,n_{m-1}$, let $s=2m$ and let $g$ be the number of distinct exponents. The two tiles at phase $i$ are
+\[
+ (2,0,1,0),\qquad (2,1,b(n_i),d(n_i)),
+\]
+where $b(n)=2^{2n+1}$ and $d(n)=2(4^n-1)/3$. These are fixed integer coefficients. Distinct exponent classes retain separate selected-history coordinates, while every original chronological selector remains present.
+
+There are $s$ positive selector hats $\widehat S_i$, $g$ positive history hats $\widehat Z_j$, seven positive outer coordinates, and sixteen positive native-kernel coordinates. Thus the native count is $s+g+23$. For the literal program, $s=794976$ and $g=2030$, giving 797,029.
+
+Let $I_j=\{2i+1:n_i=e_j\}$, with groups ordered by first occurrence, and put
+\[
+ \sigma_i=\widehat S_i-1,\quad G_j=\sum_{i\in I_j}\sigma_i,\quad
+ z_j=\widehat Z_j-1,\quad J=\sum_i\sigma_i.
+\]
+To avoid collision with the loader's $K,B$, write the native radix multiplier as $\mathcal K$ and radix as $\mathcal B$. Its exact fixed value is
+\[
+ \mathcal K=2^{\max(3,\lceil\log_2(s+4)\rceil,\,2\max n_i+2)}=2^{551890}.
+\]
+The implementation computes the integer ceiling by bit length, without floating point. Define
+\begin{gather*}
+ P_0=X+Z_0,\qquad U_f=P_0V_f+X,\\
+ D=U_f+q_{\rm init}+h_{\rm slack},\qquad\mathcal B=\mathcal K D,
+ \qquad P=(\mathcal B-1)J+1.
+\end{gather*}
+Grouped transports are
+\begin{align*}
+ \operatorname{next}U&=2H_U+\sum_jG_j,\\
+ \operatorname{next}V&=H_V+\sum_j(b(e_j)-1)z_j+\sum_jd(e_j)G_j.
+\end{align*}
+Distributivity gives exactly the ungrouped template. The first three outer comparisons are
+\begin{align*}
+ H_U+H_V+\sum_j\widehat Z_j+g_{\rm bound}&=P,\\
+ \mathcal B\operatorname{next}U+1&=H_U+PU_f,\\
+ \mathcal B\operatorname{next}V+1&=H_V+PV_f.
+\end{align*}
+Positive hats in the first equality are intentional; they implement the precise global bound, including its $g$ offset.
+
+\subsection{The exact phase residual}
+Let $\pi_i=\widehat S_{2i}+\widehat S_{2i+1}$, $S_i=\pi_i-2$, and
+\[
+ T_{\rm ph}=\sum_{i=1}^{m-1}(m-i)S_i,\qquad J=\sum_iS_i.
+\]
+The streamed nested prefix sum gives coefficient $m-i$ on $\pi_i$; subtracting $m(m-1)$ removes its hat offsets. Every prefix and accumulator addition is an emitted gate.
+
+For proof purposes write $\operatorname{Next}=mJ-T_{\rm ph}$ and
+$Q=(m+1)J-mS_0-T_{\rm ph}$. Substitution yields the polynomial identity
+\begin{align*}
+ &\mathcal B\operatorname{Next}+q_{\rm init}-Q-mP\\
+ &\hspace{1em}=m\pi_0-(\mathcal B-1)T_{\rm ph}+q_{\rm init}-(J+3m).
+\end{align*}
+This is an all-tuple identity over a commutative ring. It assumes neither Boolean selectors nor a valid phase path nor the vanishing of another residual. For $m=1$ it reduces to $q_{\rm init}-1$.
+
+\subsection{Exact packed ports and the fixed kernel}
+Use $\pack(v)=\sum_i v_iP^i$ and $\rep(r)=\sum_{i<r}P^i$. Horner packing and the paid identities
+\[
+ \rep(2r)=\rep(r)(1+P^r),\qquad
+ \rep(2r+1)=\rep(2r)+P^{2r}
+\]
+are polynomial identities also at $P=0$ and $P=1$. All exponents are fixed by the literal program; square-and-multiply emits ordinary paid products.
+
+Define
+\begin{gather*}
+ S=\pack(\sigma),\quad M_c=J\rep(s),\quad T_c=H_U+PH_V,\\
+ G_*=\pack(G),\quad H_b=H_V\rep(g),\quad
+ M_b=(\mathcal B-1)G_*,\quad Z_b=\pack(z),\\
+ R_M=(D-1)J(1+P).
+\end{gather*}
+With $e_c=g$, $e_r=g+s$, $e_t=g+s+2$, $e_i=g+s+4$, put
+\begin{align*}
+ W&=P^{e_c}S+P^{e_r}T_c,\\
+ H&=H_b+W+P^{e_t}\mathcal B+P^{e_i}P_0,\\
+ M&=M_b+P^{e_c}M_c+P^{e_r}R_M
+            +P^{e_t}(\mathcal B-1)+P^{e_i}(P_0-1),\\
+ Z&=Z_b+W,\qquad \mathrm{scale}=P^{g+s+5}.
+\end{align*}
+These are the exact controller, range, top/radix, and initial-width lanes of the pinned native adapter. Here the scale exponent is 797,011.
+
+The frozen 67-row kernel receives exactly $(H,M,Z,\mathrm{scale})$. It retains sixteen positive coordinates, all six native comparison pairs, and a four-factor integer unit
+\[
+ U=R_{15}P_{17}\,\mathrm{first\_unit}\,\mathrm{bs}_q.
+\]
+Together with the four outer comparisons this gives ten nonunit native comparisons. In particular the strong norm-coefficient equality is retained. Induction over the frozen rows, combined with the displayed port identities, proves equality of every kernel register, residual, unit factor, and complete native polynomial on all integer tuples.
+
+\subsection{The semantic import at its positive domain}
+On supplied positive coordinates and $X>0$, $P_0\ge2$, $D\ge5$, $\mathcal B>D$, and the decoded hats are nonnegative. At a complete zero the global equality forces $P>1$, $J>0$ and the history bounds. Native classification gives dyadic scale and width and separates the lanes. The retained transports and phase relation recover a common reverse affine history. Its endpoint yields the word closure, hence an actual halt at or before the proposed closure length.
+
+Conversely a genuine finite halt at the specified admissible $P_0$ supplies reversed sentinel histories and selector hats. Choose an adequate dyadic height, pack at $\mathcal B=\mathcal K D$ and $P=\mathcal B^t$, and use the positive global-bound estimate from the complete theorem. The prescribed-scale native AND converse supplies its full positive witnesses; the unit projection supplies all sixteen retained coordinates.
+
+A native closure may include a post-halt suffix. Soundness gives a first actual halt no later than the closure length; it does not claim legal physical execution after an empty queue. The separate Grill cleanup theorem identifies the actual first-empty boundary. There is no externally imposed time cutoff.
+
+\section{One unit-safe finalizer and the full proof}
+The complete residual list is shown in Table~\ref{tab:residuals}. It includes both full recoders, all loader constraints, all native comparisons, and the exact-width equality once.
+\begin{table}[ht]
+\centering
+\begin{tabular}{lr}
+\toprule
+Source of nonunit residuals & Number\\\midrule
+Complete native history & 10\\
+Canonical width-32 recoder & 34\\
+Canonical length guard and signed frame & 2\\
+Unrestricted width-397488 recoder & 34\\
+Exponent extraction and binding & 3\\
+Unary scale, unary value, exact native width & 3\\\midrule
+Total & 86\\\bottomrule
+\end{tabular}
+\caption{All 86 residuals occur inside the same unit product.}\label{tab:residuals}
+\end{table}
+
+The emitted polynomial is exactly
+\begin{equation}\label{eq:finalizer}
+ F=U\left(1+\sum_{j=0}^{85}R_j^2\right)-1.
+\end{equation}
+For any integer tuple, the second factor is a positive integer. If $F=0$, it divides one, so it equals one, every $R_j=0$, and $U=1$. Conversely those conditions give $F=0$. This argument does not assume that $U$ or a previously finalized native polynomial is nonnegative away from its zero set. Adding an unweighted external sum of squares to a signed native polynomial would not provide the same implication.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix a valid $\theta_S$ from Section~\ref{sec:parameters}. Suppose $F$ has a positive zero at $x>0$. The finalizer restores every comparison and the native unit. The first recoder fixes the canonical bits of $x+1$ and the frame equation fixes $N=N_e(x)$. The second recoder and the bounded residue extraction fix $h=N+1$, hence $T=K^N$. The unary equation and width comparison identify the exact literal E word, with no independent padding choice. Native soundness implies a finite Grill halt. The corrected halt bridge, phase-preserving normalization, and accepting-head invariant imply U15 acceptance. The selected finite program recognizes $S$ on the decoded input $x$, so $x\in S$.
+
+Conversely let $x\in S$. Its selected U15 computation accepts. The corrected tag macros avoid premature short queues and emit one halt from the accepting head. Normalization satisfies the source halt convention, and the corrected Grill bridge gives a genuine finite first empty time from the exact E word. Choose the full first recoder extension at $n=\bits(x+1)$ and its positive guard. Set the positive genuine $N$, then choose the full second extension at $h=N+1$ and the positive $\ell,v,g$ in Section~\ref{sec:recoders}. Set $T=K^N$ and the literal positive $X$. The E-word margin permits the strong native converse at the same width and its positive transfer to the retained weak slack. All private witness sets are disjoint except for the deliberately shared ports. Thus every added coordinate can be positive simultaneously, every residual vanishes, and $U=1$. Equation~\eqref{eq:finalizer} vanishes.
+\end{proof}
+
+\section{What the arithmetic ledger counts}\label{sec:cost}
+The source is a straight-line DAG with binary addition, subtraction, and multiplication over integers. Reading an exact literal coefficient is free in this model, but multiplying a runtime register by any nontrivial coefficient is an emitted multiplication. A fixed-exponent runtime power is emitted as binary multiplication gates. There are no runtime division or variable-exponentiation gates.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Stage & Multiplications & Additive gates & Total\\\midrule
+Two full recoders and loader & 173 & 137 & 310\\
+Native history before finalizer & 803,257 & 2,796,719 & 3,599,976\\
+One finalizer & 87 & 173 & 260\\\midrule
+Complete polynomial & 803,517 & 2,797,029 & 3,600,546\\\bottomrule
+\end{tabular}
+\caption{Measured operations in the actual emitted source, not an inherited example.}
+\end{table}
+
+The two recoders contribute 98 private positive auxiliaries. The first spread output and the seven added loader coordinates $\beta,N,\ell,v,g,T,X$ contribute eight, for 106 new positive witnesses. Added to the 797,029 native witnesses, this gives 797,135. The six external positive coordinates are separate.
+
+The width-32 recoder uses 133 operations. The width-397488 recoder on input/output one uses 150; its one multiplication $1\cdot J$ is an alias, with all consumers and comparisons retained. The other loader operations total 27. The finalizer consists of 86 differences, 86 squares, 85 sum additions, addition of one, multiplication by $U$, and subtraction of one. All 3,600,546 emitted gates and every supplied coordinate reach the output.
+
+\subsection{Typed constant recipes}
+The manifest has 8,160 interned constant recipes. The allowed constructors are a decimal integer, a fixed $2^t$, a fixed finite geometric sum $(4^t-1)/3$, and addition, subtraction, or multiplication of earlier constant handles. The exponent $t$ is a fixed nonnegative source integer. A recipe cannot refer to an input or gate. These rules define ordinary finite integer coefficients; they do not smuggle in a witness-dependent power or unproved division.
+
+The largest exact fixed coefficient in the audited pool has 551,891 bits. Constant interning saves repeated storage. It neither removes runtime scalar multiplications nor reduces quantified coordinates. Some interned recipe rows are unused coefficient-construction remnants; they are not arithmetic gates, and do not contradict full gate and input liveness.
+
+\subsection{Degree and resource scope}
+Ordinary degree propagation gives $d(A\pm B)\le\max(d(A),d(B))$ and $d(AB)\le d(A)+d(B)$, starting every external coordinate and witness at degree one. It produced the valid historical bound 71,731,007. Two initial highest-form probes returned zero and did not certify attainment. The cancellation-aware analysis in Section~\ref{sec:exactdegree} now proves exact total degree 69,339,973 for the very same source. No gate, coefficient, coordinate, or comparison changes.
+
+The DAG occupies 61,209,290 bytes, including its eight-byte header. Its SHA-256 is
+\begin{center}\sha{a07c1ba41e3a18fafd05c19b8ac39211b0475e30ed8a08ddf43c45a9f5f440f2}.\end{center} The recorded full emission and backwards liveness audit took 5.47 seconds and 107,515,904 bytes peak RSS. Limits were six million gates, 200,000 constants, 600 seconds, and 1,800 MiB RSS; none was reached. These measurements describe one execution of a streamed construction, not evaluation of a huge positive solution or a performance guarantee.
+
+Earlier 205-operation examples, and the 16,291-operation exact-width illustration with its distinct 16,289-operation factored successor, describe different sources. None supplies the present ledger. The current all-tuple identity proof transfers mathematics between schedules; it does not identify their operation counts.
+
+\section{The exact total degree of the unchanged polynomial}\label{sec:exactdegree}
+The initial edition reported the sound propagated upper bound 71,731,007. A cancellation in the first native norm factor explains why that number was not attained. Resolving this cancellation in the \emph{analysis} of the source gives exact degree 69,339,973. The arithmetic DAG, its coefficients, all comparisons, and all supplied coordinates are unchanged. This is not a new circuit or a replacement polynomial with the same zero set.
+
+\begin{theorem}[Exact degree of the pinned source]\label{thm:degree}
+Assign degree one to all 797,141 supplied coordinates of the frozen DAG, including its six external coordinates. The integer polynomial computed by that source has total degree exactly
+\[
+ \deg F=69,339,973.
+\]
+This assertion is unconditional algebra on the pinned source. It uses neither witness positivity nor a residual equality, and it does not assume any native-history or universality theorem.
+\end{theorem}
+
+The main DAG digest is the one in Section~\ref{sec:cost}. The unchanged arithmetic manifest has SHA-256
+\begin{center}\sha{41e6f754df8f60448e1207ef36e6161729b52004fac719a580d6ec643d039d49}.\end{center}
+The kernel digest is the one in Section~\ref{sec:imports}. Both new checkers authenticate these three inputs before reading the complete source. Gate and input indices in this section are zero based.
+
+\subsection{The first norm cancels identically}
+For local notation in this section, let $u,a,c,\gamma,d$ denote these actual registers:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Symbol & Native register & Source location\\\midrule
+$u$ & \fname{and__wn2} & gate 3,600,220\\
+$a$ & \fname{and__R12} & gate 3,600,228\\
+$c$ & \fname{and__R10a} & gate 3,600,226\\
+$\gamma$ & \fname{and__ga} & input 797,137\\
+$d=4a+3$ & \fname{and__a4m5} & gate 3,600,232\\\bottomrule
+\end{tabular}
+\end{center}
+These local $u,a$ are not the earlier shifted ordinary input or the source alphabet parameter. The first unit factor $R_{15}$, gate 3,600,240, is
+\[
+ R_{15}=(u+ac+\gamma d)^2-(a^2+d)c^2.
+\]
+Expanding in four independent indeterminates $u,a,c,\gamma$ and substituting $d=4a+3$ gives the identity
+\begin{align}\label{eq:normidentity}
+ R_{15}={}&u^2+2uac+2u\gamma d+2ac\gamma d
+                 +\gamma^2d^2-dc^2.
+\end{align}
+The two $a^2c^2$ terms cancel. There is no appeal to a norm equation, a valid history, or any zero-set restriction. Independent sparse expansion of both sides gives identical coefficient dictionaries with eleven nonzero monomials. The check is in four abstract indeterminates, not an expansion in hundreds of thousands of coordinates.
+
+Before this identity is used, both checkers match all 67 native-kernel rows to the raw DAG, including operation codes, operand handles, supplied coordinates, constants, caller ports and unit factors. Thus \eqref{eq:normidentity} analyzes the factor actually present in the frozen source.
+
+\subsection{The outer leading forms}
+For a nonzero polynomial $R$, denote its highest homogeneous part by $R_*$. Put
+\[
+ s=794976,\quad g=2030,\quad N_*=g+s+5=797011,
+ \quad\alpha=3N_*=2391033.
+\]
+Here $N_*$ is a fixed lane exponent, distinct from the varying tape integer $N$. Let
+\[
+ J_1=\sum_{j=0}^{s-1}\widehat S_j,\qquad
+ \mathfrak p=2^{551890}(X+Z_0)V_fJ_1,\qquad
+ Q_*=16\mathfrak p^{N_*}.
+\]
+$X$ is the supplied loader witness, not ordinary input $x$. From the actual definitions
+\[
+ D=(X+Z_0)V_f+X+q_{\rm init}+h_{\rm slack},\qquad
+ P=(2^{551890}D-1)(J_1-s)+1,
+\]
+we have $P_*=\mathfrak p$ and $\deg P=3$. Its visibly nonzero leading form has positive coefficients. The independent checker also traverses the raw selector-sum graph and checks that each of the $s$ supplied selector hats occurs exactly once.
+
+The scale port is $P^{N_*}$, so the kernel's radix $q=16\,\mathrm{scale}$ has leading form $Q_*$ and exact degree $\alpha$. In the joined $Z$ port, the uniquely highest summand is $P^{g+s+1}H_V$. Indeed the selector lane has degree $3(g+s)-2$ and the history lane has degree $3(g+s)+4$; the low group pack is smaller. Hence
+\[
+ Z_* = \mathfrak p^{N_*-4}H_V,\qquad \deg Z=\alpha-11.
+\]
+The joined $H$ and $M$ ports have degree at most $\alpha-2$. These are source-polynomial statements before imposing any comparison.
+
+Write $\beta_*$ for the native input \fname{and__odd_half}, put $b_*=2\beta_*$, and put $k_*=\eta+\zeta$. The symbols $w,f,i,\gamma,\tau,\eta,\zeta$ denote their corresponding supplied native auxiliaries; $\tau$ is \fname{and__tau_gap}. They are independent coordinates. The relevant kernel leading forms are
+\[
+ u_*=wQ_*,\qquad (\mathrm{sn2})_*=b_*Q_*,\qquad
+ c_*=k_*b_*Q_*,\qquad a_*=wb_*Q_*^2.
+\]
+Their exact degrees are $\alpha+1$, $\alpha+1$, $\alpha+2$, and $2\alpha+2$, respectively.
+
+\subsection{The degree of every unit factor}
+The six terms in \eqref{eq:normidentity}, in the displayed order, have degree bounds
+\[
+ 2\alpha+2,\quad4\alpha+5,\quad3\alpha+4,\quad
+ 5\alpha+7,\quad4\alpha+6,\quad4\alpha+6.
+\]
+The fourth is uniquely highest. Since $d_*=4a_*$, it gives
+\[
+ (R_{15})_*=8\gamma a_*^2c_*
+           =8\gamma w^2b_*^3k_*Q_*^5\ne0.
+\]
+Therefore $\deg R_{15}=5\alpha+7=11,955,172$. Naive max/sum propagation at the original subtraction gave $6\alpha+8=14,346,206$. The precise reduction is $\alpha+1=2,391,034$.
+
+The other unit-factor calculations use the source's highest homogeneous pieces
+\begin{align*}
+ (R_{16})_*&=a_*^2f^2=w^2b_*^2f^2Q_*^4,\\
+ (\mathrm{bs\_packed})_*&=16Q_*^3Z_*,\qquad
+ (H_{17})_*=-32Q_*^3Z_*.
+\end{align*}
+Collecting their terms gives Table~\ref{tab:exactfactors}. The linear factor $\tau-k_*$ is nonzero because $\tau,\eta,\zeta$ are independent supplied coordinates. Each displayed leading form is consequently nonzero in the unrestricted integer polynomial ring.
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{llr}
+\toprule
+Factor & Highest homogeneous part & Exact degree\\\midrule
+$R_{15}$ & $8\gamma w^2b_*^3k_*Q_*^5$ & $5\alpha+7=11,955,172$\\
+$P_{17}$ & $1024w^2b_*^2f^2Q_*^{10}Z_*^2$ & $12\alpha-16=28,692,380$\\
+$\mathrm{first\_unit}$ & $4wb_*^2k_*(\tau-k_*)Q_*^3$ & $3\alpha+5=7,173,104$\\
+$\mathrm{bs}_q$ & $Q_*$ & $\alpha=2,391,033$\\\midrule
+$U$ & Product of these four forms & $21\alpha-4=50,211,689$\\\bottomrule
+\end{tabular}
+\caption{Exact degrees of all four native unit factors and their product.}\label{tab:exactfactors}
+\end{table}
+
+\subsection{All residuals and the highest square}
+The ten native residual bounds, in their actual zero-based order, are
+\[
+\begin{array}{c|rrrrrrrrrr}
+\text{index}&0&1&2&3&4&5&6&7&8&9\\\hline
+\text{bound}&3&5&4&3&4\alpha-11&4\alpha-11&4\alpha+10&4\alpha-11&\alpha-2&\alpha-2.
+\end{array}
+\]
+The next 75 residuals are the complete loader's comparisons, each of degree at most 397,489. The final exact-width residual has degree at most two. These bounds account for all 86 residuals; they are propagated from the full source, not inferred from satisfying assignments.
+
+Residual 6 is uniquely largest. Its comparison is $\mathrm{ic22}=R_{16}$, where $\mathrm{ic22}=(ic^2)^2$. Therefore
+\[
+ (\mathrm{ic22}-R_{16})_*=i^2c_*^4,\qquad
+ \deg(\mathrm{ic22}-R_{16})=4\alpha+10=9,564,142.
+\]
+Its square has leading form $i^4c_*^8$ and degree $8\alpha+20=19,128,284$. Every other residual square has a strictly smaller bound. Thus the leading form of $1+\sum_{j=0}^{85}R_j^2$ is exactly $i^4c_*^8$.
+
+Since the polynomial ring over $\Z$ is an integral domain, degrees of products of nonzero polynomials add. Subtracting one changes no positive-degree leading term. Applying this to the unchanged finalizer yields
+\[
+ \deg F=(21\alpha-4)+(8\alpha+20)=29\alpha+16=69,339,973,
+\]
+proving Theorem~\ref{thm:degree}.
+
+\subsection{The complete leading form and a nonzero ray coefficient}
+Multiplying the four unit-factor leading forms and the highest residual square, then substituting $b_*=2\beta_*$ and $Q_*=16\mathfrak p^{N_*}$, gives the entire highest homogeneous component:
+\begin{equation}\label{eq:fullleading}
+ F_*=2^{138}\mathfrak p^{29N_*-8}\,
+ \gamma w^5\beta_*^{15}k_*^{10}f^2i^4(\tau-k_*)H_V^2.
+\end{equation}
+The exponent $29N_*-8$ is 23,113,311. The remaining factors have total degree 40, so \eqref{eq:fullleading} has degree
+\[
+ 3(23,113,311)+40=69,339,973.
+\]
+The independent symbolic checker expands this expression into 23 monomials in the opaque degree-three base $\mathfrak p$ and the native input atoms, and checks exact coefficient-dictionary equality with the form propagated independently from raw DAG rows.
+
+There is also an explicit univariate certificate. Set \emph{every supplied coordinate}, including all six externals, equal to a common indeterminate $t$. Then $\mathfrak p$ has leading coefficient $2^{551891}s$, $k_*$ has coefficient two, and $\tau-k_*$ has coefficient minus one. The coefficient of $t^{69339973}$ in this ray specialization is exactly
+\begin{equation}\label{eq:raycoefficient}
+ -2^{148}\bigl(2^{551891}\cdot794976\bigr)^{23113311}\ne0.
+\end{equation}
+This finite negative integer is specified by a compact exact expression; it is not expanded into a giant decimal numeral. Its two independently checked residues are
+\[
+\begin{array}{c|r}
+\text{modulus}&\text{coefficient residue}\\\hline
+17&3\\
+1,000,000,007&53,942,795.
+\end{array}
+\]
+Either nonzero residue alone certifies a nonzero integer coefficient. The certificates are deterministic; they do not invoke random identity testing or require an assumption that a modulus is prime.
+
+\subsection{Two independent verifiers and their scope}
+The cancellation-aware verifier reads all 3,600,546 original rows. For each gate it carries a valid degree bound and the coefficient at that bound on the all-coordinate ray, modulo each stated modulus. A zero coefficient at an intermediate bound never promotes that bound to an exact degree. The sole improved rule is at $R_{15}$, justified by the structurally authenticated identity \eqref{eq:normidentity}. At the output the improved bound and a nonzero coefficient agree, and the coefficient matches \eqref{eq:raycoefficient}.
+
+The second verifier independently propagates exact sparse highest forms using an opaque degree-three base, authenticates the selector sum and all kernel rows, and proves equality with \eqref{eq:fullleading}. Both execute newly written standard-library code, read the frozen source as data, and retain explicit checks under optimized Python. Their receipts record source pins, kernel and port degrees, all residual bounds, factor degrees, and the two coefficient residues.
+
+The modular verifier uses at most four million source nodes, 800,000 coordinates, 256 monomials for its four-indeterminate identity, 512 MiB address space, and a 180-second ceiling. It keeps compact degree/coefficient arrays, not a degree-sized univariate polynomial or a full multivariate expansion. The independent symbolic verifier has its own explicit limits and receipt. These operational bounds constrain the checks; they are not bounds on witness size or computational complexity of the represented languages.
+
+The historical manifest and original reproducibility subtree remain byte-for-byte unchanged, including their valid syntactic degree bound and earlier inconclusive probes. The separate exact-degree extension supplies the stronger invariant for the \emph{same} source. This preserves an auditable distinction between an improved theorem about a circuit and an alteration of that circuit.
+
+
+\section{Independent evidence and reproducibility}\label{sec:replay}
+The evidence has several layers, with deliberately different purposes.
+\begin{enumerate}
+\item \emph{Semantic audit.} Independent checks cover 29,696 sparse-tape instruction contexts, 1,056 signed input-frame cases, 4,132 canonical-length cases, 192 exponent cases, and 192 exact-width E cases with rejected padding variants. A separate normalization audit checks 819,907 two-generation identities and 237,750 unique-H prefix cases. The accompanying proofs, rather than these finite counts, establish the parametric statements.
+\item \emph{Literal-table audit.} All 29 instructions and all numeric tag/Genera productions are reconstructed independently. Dynamics include 18,125 macro comparisons and 2,005,675 tag steps, with all 534 operative nonhalt tag symbols exercised, minimum preacceptance length three, and 300 accepting entries. Original-source code is read as data, never executed.
+\item \emph{Grill table audit.} Every one of the 397,488 exponents is derived by an independent position formula and compared byte for byte. Exact local E/L/R, shifted-erasure, and complete cleanup tests check the actual source rows, including the unique halt-producing pair.
+\item \emph{Complete arithmetic audits.} Independent readers check the binary DAG's typed references, constant-only recipes, six-external signature, witness count, all comparisons, one-unit finalizer, gate/input liveness, ledger, and degree bound. An exact motif audit consumes every row and compares every runtime coefficient by integer equality; all 67 native rows match authenticated complete fixtures. A separate formula evaluator checks the full source modulo independent primes without importing the producer.
+\end{enumerate}
+
+The mathematical text, source emitters, complete DAG, literal table, frozen proof imports, audit code, and results are included in the archive. Revision 1 adds a separate exact-degree proof and two independent verifiers using the existing DAG without duplicating it. The original scientific subtree and its historical degree metadata remain byte-for-byte unchanged. The portable replay uses Python 3.10 or newer on Linux and only its standard library; the resource-limited checkers use the Unix resource module and Linux RSS units. It needs no network or upstream Python execution. It works from a freshly extracted archive and is checked both normally and with \fname{python3 -O}. Explicit exceptions, rather than removable assertions, enforce validation. PDF rebuilding additionally requires a conventional LaTeX installation and the packages named in the preamble.
+
+The source-provenance record distinguishes original frozen hashes from documented portability transformations, including path adaptation and replacing local validation assertions by explicit exceptions. The inventory authenticates the delivered file set, including the actual arithmetic DAG, and rejects missing, extra, and altered files. Regeneration is performed in a separate work directory; it does not rewrite the supplied scientific evidence. Timing fields may vary, while mathematical metadata and DAG bytes are deterministic.
+
+The binary format is deliberately simple. Its header is \fname{CDAGv1} followed by two zero bytes. Each subsequent 17-byte record is little-endian \fname{<Bqq}: opcode 0 for addition, 1 for subtraction, or 2 for multiplication, followed by two signed 64-bit handles. A negative handle selects a constant recipe; a handle at least $2^{50}$ selects a supplied coordinate; other nonnegative handles refer to earlier gates. The JSON manifest gives compact coordinate families, exact coefficient recipes, comparisons, and the final output handle. This fully specifies the polynomial without expanding a prohibitively large monomial list.
+
+\section{Further mathematical questions}
+\paragraph{Can a different representation reduce the exact degree?}
+The exact degree of this frozen polynomial is now settled, with all program parameters still variable. Lowering degree therefore requires a genuinely different polynomial, rather than a sharper analysis of these same gates. One concrete direction is to isolate the largest native comparison and ask whether a paid auxiliary-variable interface can reduce total degree while controlling witness count, coefficient height and operation count. Such a change needs its own complete positive soundness and converse.
+
+\paragraph{Can ordinary input be loaded without unary expansion?}
+The second recoder pays for an exponent equal to the finite tape integer plus one. This is finite and arithmetically explicit but encodes an enormous unary tag word. A direct binary-input source compiler could remove that conceptual expansion. Such a proposal needs an actual fixed source-language theorem and an exact-width loader, rather than substituting a familiar universality claim.
+
+\paragraph{Which selectors can genuinely be shared?}
+The current emitter preserves all $2m$ chronological selectors. Equal run exponents share justified history classes, not phase identities. Eliminating selectors requires a sound and complete reconstruction of their phase chronology, especially across repeated zero exponents. A smaller numerical table could reduce both selectors and gates, but must retain the complete halt protocol.
+
+\paragraph{Can the five program parameters be tied together?}
+The valid tuple recipes have substantial algebraic dependence on a selected finite program. Encoding those dependences with fewer external parameters is a distinct task: it requires paying for a program decoder and proving that its range is the valid slice. Existentially freeing the present five parameters would change the recognized language and is not an acceptable shortcut.
+
+\paragraph{Can the imported theorem boundary be reduced?}
+A proof-assistant development could first formalize the all-tuple native identities, typed coefficient language, and exact source compiler, leaving the complete Pell/AND theorem as one explicit interface. A fuller development would certify that interface and the finite U15 initialization. These are separable proof obligations, and neither is supplied by increasing the number of bounded tests.
+
+\paragraph{What should an explicit accepting witness demonstrate?}
+Constructing a full positive tuple for a small genuine accepting source would test the most remote native interfaces, especially prescribed scale and restoration. It would still not prove universality. A feasible experiment should first estimate witness bit lengths and distinguish a full native solution from outer port assignments or modular residues.
+
+\paragraph{What is the right cost comparison?}
+The emitted source offers a reproducible arithmetic-operation baseline. Comparing substrates also requires coefficient height, source-program size, witness arity, maximum witness growth, exact-degree information, and bit cost. A source with fewer arithmetic gates can be worse on the other measures. Reporting those tradeoffs is more informative than collapsing them into a single unqualified complexity figure.
+
+\section*{Conclusion}
+The completed construction has one fixed numerical Grill program, one fully emitted polynomial circuit, explicit ordinary-input and program-parameter semantics, and an exact initial-width interface. The paid composition uses 797,135 positive witnesses and 3,600,546 operations. Its exact total degree is 69,339,973, certified on the unchanged source by the explicit full leading form and nonzero ray coefficient. The central logical safeguards are the accepting-head invariant, phase-preserving normalization, unrestricted second recoder, same-width positive native converse, and one integer-unit finalizer. Under the pinned complete theorem imports, these give the fixed-language equivalence of Theorem~\ref{thm:main} for every positive ordinary input.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{NW} T. Neary and D. Woods, \emph{Four small universal Turing machines}, Fundamenta Informaticae 91 (2009), 123--144. The author's publication list notes incorrect page numbering in the distributed PDF; Table 16 appears on its printed page 121. \url{https://mural.maynoothuniversity.ie/id/eprint/12416/1/Woods_FourSmall_2009.pdf}. Publication metadata: \url{https://dna.hamilton.ie/woods/}. The archive preserves the inspected primary PDF and page image; theorem use follows its concrete finite-frame table and the pinned initialization note.
+\bibitem{CM} J. Cocke and M. Minsky, \emph{Universality of Tag Systems with P=2}, Journal of the ACM 11 (1964), 15--20. \url{https://cs.famaf.unc.edu.ar/~hoffmann/cc18/p15-cocke.pdf}. The corrected construction in this report is distinguished from the printed production.
+\bibitem{Grill} \emph{Grill Tag}, creator construction, revision 181950. \url{https://esolangs.org/w/index.php?title=Grill_Tag&oldid=181950}.
+\bibitem{Genera} \emph{Genera Tag}, creator semantics, revision 182460. \url{https://esolangs.org/w/index.php?title=Genera_Tag&oldid=182460}.
+\bibitem{Pinned} V. Reshetnikov, \emph{ProveIt native stream queue research notes}, commit \texttt{2d887f0fa768fd67f3e545d83f8998b5780e530d}. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/2d887f0fa768fd67f3e545d83f8998b5780e530d/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue}. The exact note names, individual blob identifiers, and content hashes used here are listed in the included provenance inventory.
+\bibitem{Packet} \emph{Report 23 reproducibility packet, revision 1}, 3 October 2026. Complete composition and component proofs, literal tables, emitted arithmetic DAG, source provenance, independent semantic and circuit audits, the exact-degree proof and certificates, and offline replay. The archive is the accompanying research artifact, not an external theorem citation.
+\end{thebibliography}
+\end{document}
