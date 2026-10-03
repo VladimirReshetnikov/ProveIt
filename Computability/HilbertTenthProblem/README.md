@@ -122,6 +122,15 @@ The [independent full review](Papers/research-wip/native-stream-queue/review_eag
 and fresh replays pass. The degree10/12 alternatives remain useful, and
 externalN still prevents claiming a new fixed-arity universal bound.
 
+The [Tree terminal-row projection](Papers/research-wip/native-stream-queue/eager_tree_terminal_projection.md)
+then removes three terminal coordinates, saving31 operations in every form.
+AtN=8 the complete polynomial now costs **970 operations with99 natural
+witnesses**, at degree72; atN=1 it costs46 at degree6. The
+[independent review](Papers/research-wip/native-stream-queue/review_eager_tree_terminal_projection.md)
+and both fresh replays pass. This preserves existential solutions over all
+retained coordinates; the full parent has nonunique terminal-field fibers.
+ExternalN and the universal74/86 bounds remain unchanged.
+
 The [Waterfall range-lane audit](Papers/research-wip/native-stream-queue/waterfall_packed_range_obstruction.md)
 proves that the aggregate packed bound alone still permits false tape
 histories. The [independent review](Papers/research-wip/native-stream-queue/review_waterfall_packed_range_obstruction.md)

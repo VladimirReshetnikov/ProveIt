@@ -140,6 +140,20 @@ review also fixed a mutable provenance alias without changing the circuit.
 The prototype coversN=1..8; the externalN proof does not yield a new
 fixed-arity universal bound.
 
+The [Tree terminal-row projection](eager_tree_terminal_projection.md)
+removes the two forced-zero terminal branch tags and the terminal constructor
+field they make irrelevant. All16 complete sources save **31 operations**,
+giving **3N²+105N−62 operations**, **13N−5 natural witnesses** and8N residuals
+with static cleanup. AtN=8 this is **970 operations,99 witnesses and degree72**;
+atN=1 it is **46 operations,8 witnesses and degree6**. ForN>=2 the exact
+degree remains10N−8. The complete polynomial is identical after inserting
+zero tags, even with arbitrary terminal constructor field. This gives
+existential projection of natural zeros and a bijection only on the
+normalized terminal-field-zero slice. The
+[independent full review](review_eager_tree_terminal_projection.md) checks
+every source, degree, graph identity and public map; both fresh root receipts
+pass. The fixed-arity universal bounds stay74/86.
+
 The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 shows why the aggregate bound cannot replace the left-tape range lane in
 the current U15 route. A false seven-step history satisfies all five actual

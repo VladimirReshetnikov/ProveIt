@@ -315,6 +315,25 @@
 > Parent_pins metadata now deep-copies the authenticated dictionary; root
 > review found and repaired the returned alias before integration. Preserve
 > the repaired author/reviewer trios. ExternalN and universal74/86 remain.
+> The [Tree terminal-row projection](eager_tree_terminal_projection.md) and
+> [independent full review](review_eager_tree_terminal_projection.md) pass
+> fresh root receipts. In the actual pointer-product parent, the last three
+> residual occurrences areactive,active,t3, so a natural zero hast3=t4=0.
+> Lastc then appears only in a term killed byt4. Substitute lastt3,t4,c=0,
+> fold only transitively affected gates, prune dead gates and delete three
+> zero residuals. All16 forms save31=11M+20A (certificate8M+17A, finalizer3M+3A).
+> Full graph identity holds with arbitrary lastc once both tags arezero;
+> natural restoration sets allthree0. This is exact existential projection
+> on retained coordinates, and a bijection only to the lastc0 parent slice.
+> CompleteM=(3N²+81N−46)/2,A=(3N²+(131−2cleanup)N−78)/2,
+> cleanedtotal3N²+105N−62,witnesses13N−5,residuals8N.
+> N8=970=397M+573A/99w/64res/degree72; N1=46=19M+27A/8w/8res/degree6.
+> Exactdegree6 atN1, otherwise10N−8. The entire diagonal leading coefficient
+> is17 atN1, otherwise8*2^(10(N−1))+2^(8(N−1)); no quotient-ring degree used.
+> Review reconstructs all16 sources and7,828 paid gates, proves both graph
+> identities, checks18 copies and134 rejects including24 warm pins.
+> Public sizes remain1..8, while the proof describes the uniform externalN
+> template. Freeze both trios and all predecessors; universal74/86 unchanged.
 > The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 > and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
 > pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual
