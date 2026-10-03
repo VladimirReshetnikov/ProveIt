@@ -196,6 +196,20 @@ well-orderings of ℝ compared at the first unequal real entry:
   it first and prints source 02's cylinder proof as a second route. Source
   02's coding length ℓ₂(L) is that report's game value ps(L^dd) by its
   Theorem `thm:embedding` (equation `eq:embedding-rank`), so ps(𝒲^dd) = κ⁺.
+- [`Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders`](../../../../../../Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders/)
+  (batch 80, labels `swo:`) answers the question "Other ground orders"
+  (Section 26.6) in part for X = S_{<θ}, θ an infinite cardinal, at the
+  minimal stratum: its Theorem 8.3 (`swo:st:thm:transition`) gives
+  𝒲_λ(S_{<θ}) ≃ 𝔹_λ with λ = 2^{<θ}, except at singular strong-limit θ, where
+  𝒲_θ(S_{<θ}) ≃ 𝔹_{θ·θ} (ordinal product), so ℓ₂ = θ·θ > θ (θ = ℶ_ω is an
+  example in ZFC). It stays open for n > 0, longer strata, non-cardinal
+  cutoffs and other alphabets. That report reprints its sources' re-proofs of
+  this report's general-alphabet results (Lemmas 4.1, 5.1, 6.1, 8.1, 11.1,
+  Proposition 4.4, Theorems 5.3, 6.2, 6.4, 8.2, 11.2, 11.5, 15.1) as pointers,
+  with no novelty claim. Two dated notes, bracketed "[Added 2 October 2026,
+  batch 80: …]", record this after the question in Section 26.6 and at the
+  end of Section 22; no label or number changed, and nothing in this report
+  uses that one.
 - `Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceSimplicity.lean`
   is cited by source 06 as context for bounded sign orders (Section 22). None
   of its declarations states a result of this report.
