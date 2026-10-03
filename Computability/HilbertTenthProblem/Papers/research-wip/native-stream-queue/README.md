@@ -64,7 +64,7 @@ coordinates, saving 3(t−1) additions and t−1 witnesses. Adding integer
 Boolean factors without squaring saves another t multiplications. The complete
 projected circuit costs 15t+2−z(t), where z(t) counts zero runs in the fixed
 phase schedule. Its input is a paid padded-binary-x relation; a universal
-decoder and uniform history packing remain open. An
+decoder remains open; fixed-arity word-closure packing is provided below. An
 [independent audit](review_grill_arithmetic_independent.md) checks 384 complete
 circuits and 193 positive history bijections; both suites pass root replay.
 The global bound stays 87.
@@ -87,6 +87,19 @@ Its saving is 2+2z(t)−t, so it helps only sufficiently sparse phase schedules.
 The [independent review](review_grill_sparse_content.md) expands 72 complete
 sources and checks all 247 positive closures in its census; the author's full
 receipt also passes root replay. The horizon and decoder limitations remain.
+
+The [native Grill word-closure compiler](grill_tag_native_word_closure.md)
+now packs arbitrary duration into a fixed number of positive witnesses. It
+pays ordinary input, reversed affine histories, actual cyclic phase flow and
+dyadic input-width typing. For `(0,1,1)` its complete polynomial costs
+**219=98M+121A**, with 31 positive witnesses and degree at most 1187.
+The [independent review](review_grill_native_word_closure.md) verifies all
+eight complete sources, symbolic outer equations, native-unit restoration
+and a 112,224-tile-word census. Root replay matches both receipts. Full native
+Pell witnesses are supplied by the retained theorem, not numerically
+materialized in these fixtures. The represented language allows existential
+binary padding, which can change halting; an explicit universal recognizer
+and decoder remain unproved. This does not improve the 87-operation bound.
 
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
