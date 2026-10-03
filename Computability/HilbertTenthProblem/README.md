@@ -134,6 +134,16 @@ a full negative compiler zero. The complete inverse remains unresolved,
 including the additional signed20 bounds. Root checked the proof and the
 installed exact receipt replays successfully; no universal bound changes.
 
+The [negative-index refinement](Papers/research-wip/native-stream-queue/complete74_negative_index_refinement.md)
+further proves, for raw30/positive22, that the input Pell index is e=u or
+uA. On r=−p, the odd defect d=2n−p satisfies **4^d>X≥q³**, hence d≥7;
+for fixed q,X,Y and bounded representative v there is at most one main
+index p satisfying the ratio. The proof uses exact recurrence bounds and
+residue windows without assuming p<a or invoking positive-r soundness.
+Root checked the full proof and source; fresh installed replay passes.
+The even input-index alternative and high defects remain unresolved.
+Signed20 lacks the needed positive gap/bounds; no universal bound changes.
+
 The [shared macro automaton](Papers/research-wip/native-stream-queue/group_macro_automaton_sharing.md) lowers the
 complete fixed-table matrix polynomial from **443=179M+264A** to
 **414=169M+245A**, with83→75 positive witnesses and47 comparisons.
