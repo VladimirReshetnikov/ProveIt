@@ -89,7 +89,7 @@ provenance appendix; the author lines of 12, 16 and 21 name no assistant.
 | 18 | batch 79, manuscript 03 | `Spectral_Guards_Without_Time_Expansion`, inner directory `Spectral_Guards` (25-page PDF) | *Spectral Guards Without Time Expansion: Canonical Diophantine certificates for exponentially long linear computation* | `e58b724c2` | `060e08a07` | `224ca41df` | Section 3.18 (status boxes, abstract, §1); Part XVII (§§2–14, Appendices A–B), second route |
 | 19 | batch 79, manuscript 05 | `no_borrowed_firings`, inner directory `no_borrowed_firings` (24-page PDF) | *No Borrowed Firings: Canonical Diophantine Certificates for Abelian Sandpiles* | `e58b724c2` | `060e08a07` | `bbaf322e5` | Section 3.19 (abstract, §1); Part XVI, Sections M19.1–M19.14 (opening, §§2–14) and M19.A–M19.B (Appendices A–B), a marked second route |
 | 20 | batch 79, manuscript 11 | `Compressed_Queue_Diophantine_Research`, inner directory `Compressed_Queue_Diophantine` (28-page PDF) | *Compressed Queue Computation: Grammar-size quartic certificates, exact periodic acceleration, and certified infinite loops* | `44983ed7e` | `ef2fc7990` | `bbaf322e5` | Section 3.20 (status box, abstract, §1); Part XVIII (§§2–15, Appendices A–B) |
-| 21 | batch 79, manuscript 17 | `Eager_Tree_Calculus_Research_Package`, inner directory `eager-tree-certificates` (30-page PDF) | *Eager Tree Calculus: Exact quartic proof-DAG certificates, operational universality, and binary sharing compression* | none (Jay's upstream `baa877d91`) | `aebfa386e` | `a7ae02511` | Section 3.21 (title-page box and status lines, abstract, §1); Part XIX (§§2–12, Appendices A–B) |
+| 21 | batch 79, manuscript 17 | `Eager_Tree_Calculus_Research_Package`, inner directory `eager-tree-certificates` (30-page PDF) | *Eager Tree Calculus: Exact quartic proof-DAG certificates, operational universality, and binary sharing compression* | none (Jay's upstream `baa877d91`) | `aebfa386e`; corrected code edition `4e270aa46` (batch 80, manuscript 01) | `a7ae02511`; corrected code `8a4e64732` | Section 3.21 (title-page box and status lines, abstract, §1); Part XIX (§§2–12, Appendices A–B) |
 
 Section numbers in the last column are those of each manuscript. Manuscripts
 01–07 also contribute to the Introduction and to the back matter
@@ -219,6 +219,20 @@ and was placed by `a7ae02511` (17:39; batch 79, cluster J2), after Parts
 XVII and XVIII had been placed. Its closing remarks allude, without a
 reference, to "earlier canonical and scheduled SKI certificate
 constructions"; these are Part VII's and Part V's, and a note says so.
+
+A corrected code edition of manuscript 21,
+`Eager_Tree_Calculus_Research_Package_corrected.zip` (598,941 bytes,
+SHA-256 `2c053f50…0f3dbd`; the archive dates its correction 3 October
+2026), arrived in `4e270aa46` (batch 80, manuscript 01) and was placed by
+`8a4e64732` (batch 80, cluster K1). Its `CORRECTION.md` pins the batch-79
+archive's SHA-256 and answers the research tree's review `3b5989da9`
+(finding P3), which its authors read but did not execute. Its manuscript
+source and PDF are byte-identical to the batch-79 delivery, so no printed
+statement, proof, count or label changes; 50 of its 58 members are
+byte-identical to batch-79 members. It replaced four placed files and
+added two (see Files); the note "Added 2 October 2026 (batch 80):
+corrected code edition" in the reproducibility section of Part XIX
+(`cdc:et:sec:reproduce`) records it.
 
 What each manuscript contributes:
 
@@ -460,15 +474,22 @@ tested repair is `compressed_queue_exact_inputs.patch` in
 (see Disclosures, which also record the reviews of 16, 17, 18 and 19).
 The same tree's review of manuscript 21 (`review_eager_tree_aebfa.md`,
 commit `3b5989da9`) found no theorem-level defect and one defect of the
-evaluator's input boundary; the shipped
-`code/21-eager-tree-tree_kernel.py` is the original, and the tested repair
-`eager_tree_exact_application_inputs.patch` lies beside that review.
+evaluator's input boundary, with the tested repair
+`eager_tree_exact_application_inputs.patch` beside that review. At the
+batch-79 write the shipped `code/21-eager-tree-tree_kernel.py` was the
+original; since batch 80 (placement `8a4e64732`) it is the archive's
+corrected code edition (`Eager_Tree_Calculus_Research_Package_corrected.zip`,
+arrival `4e270aa46`), whose own repair is equivalent to that patch. Do not
+apply the patch to the shipped file: the repair is already present, and the
+patch's hunk no longer applies. The same tree's correction audit
+(`review_batch80_corrected.md`, commit `abfc0cb25`) confirms the repair and
+that nothing mathematical changed.
 
 ## Files
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 607 pages
+article.pdf                              the compiled report, 608 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -491,6 +512,7 @@ README.md                                this guide
 18-spectral-guards-SOURCES.md            manuscript 18's pin and blob, inspected repository files, literature and claim boundary
 19-no-borrowed-firings-SOURCES.md        manuscript 19's pin, inspected repository files, literature and contribution status
 20-compressed-queue-CLAIMS_AND_PROVENANCE.md  manuscript 20's claims (by its own theorem numbers), scope, pin, sources and validation
+21-eager-tree-CORRECTION.md              manuscript 21's corrected code edition: the application-input repair, its scope and evidence, as delivered (batch 80)
 21-eager-tree-VERIFICATION.md            manuscript 21's verification scope: evidence by type, deliberate limits, portability
 
 code/01-causal-traces-causal_diophantine.py   exact semantics and the four compiler entry points
@@ -593,10 +615,11 @@ code/21-eager-tree-independent_audit.py  independent kernel semantics, residual 
 code/21-eager-tree-independent_compiler_audit.py  independent de Bruijn substitution semantics and tree context reduction; writes its receipt
 code/21-eager-tree-independent_growth_audit.py  independent all-index structural equality classification; writes independent_growth_receipt.json
 code/21-eager-tree-independent_shared_audit.py  independent symbolic-proof checking, graph composition and mutation rejection; writes its receipt
-code/21-eager-tree-reproduce.py  manuscript 21's replay driver: runs the 16 (with --symbolic 19) stages in code/ and writes replay-output/
+code/21-eager-tree-reproduce.py  manuscript 21's replay driver (batch-80 corrected edition): runs the 17 (with --symbolic 20) stages in code/, the regression suite first, and writes replay-output/
 code/21-eager-tree-shared_compression.py  generator and finite structural experiments for R; writes shared_compression_program.json and its receipt
 code/21-eager-tree-symbolic_audit.py  optional SymPy expansion of the small-N residual systems (exact degree four); writes symbolic_receipt.json
-code/21-eager-tree-tree_kernel.py  coding, memoized eager kernel, structural evaluator, polynomial circuit and gate counter; writes the two fixtures and receipt.json
+code/21-eager-tree-test_application_domain.py  regression suite for exact-natural application inputs (batch 80; 5 groups, 303 scenarios; --kernel tests another kernel; writes no file)
+code/21-eager-tree-tree_kernel.py  (batch-80 corrected edition) coding, memoized eager kernel, structural evaluator, polynomial circuit and gate counter; writes the two fixtures and receipt.json
 code/21-eager-tree-verify_packet_assumptions.py  kernel-proof validity and full reachability for the exact-growth identification; writes its receipt
 code/21-eager-tree-verify_shared_macro.py  standalone symbolic-row, acyclicity, program-identity and bit-bound verifier (prints JSON; writes no file)
 
@@ -752,12 +775,12 @@ data/21-eager-tree-exact_growth_receipt.json  the complete template-equality cla
 data/21-eager-tree-identity_certificate.json  full N = 4 scalar certificate of E(10,10) = 10 (124 witnesses, 95 residuals)
 data/21-eager-tree-independent_compiler_receipt.json  recorded run of independent_compiler_audit.py (707 compiled normal forms)
 data/21-eager-tree-independent_growth_receipt.json  recorded run of independent_growth_audit.py
-data/21-eager-tree-independent_receipt.json  recorded run of independent_audit.py
+data/21-eager-tree-independent_receipt.json  recorded run of independent_audit.py (batch 80: kernel hash refreshed)
 data/21-eager-tree-independent_shared_receipt.json  recorded run of independent_shared_audit.py
 data/21-eager-tree-literal_universal_tree.json  the 175-node constructor table of U (Appendix A)
 data/21-eager-tree-literal_universal_tree.sexpr  the unshared 949-node expression of U
 data/21-eager-tree-packet_assumptions_receipt.json  recorded run of verify_packet_assumptions.py, with SHA-256 of the two R files
-data/21-eager-tree-receipt.json  recorded run of tree_kernel.py (10,000 round trips, 768 input pairs)
+data/21-eager-tree-receipt.json  recorded run of tree_kernel.py (10,000 round trips, 768 input pairs; batch 80: kernel hash refreshed)
 data/21-eager-tree-requirements-optional.txt  sympy>=1.13,<2, for the optional symbolic stages only
 data/21-eager-tree-shared_compression_program.json  the 108-node constructor table of R (Appendix A)
 data/21-eager-tree-shared_compression_receipt.json  recorded run of shared_compression.py (finite structural experiments for R)
@@ -768,15 +791,22 @@ data/21-eager-tree-universal_code_circuit.json  the 175 constant-code residuals 
 data/21-eager-tree-universal_lambda_source.json  the finite source lambda AST of U
 ```
 
-The directory holds 296 files: 24 at the root (the article, its PDF, this
-README and twenty-one provenance and audit files), 106 in `code/` and 166 in
+The directory holds 298 files: 25 at the root (the article, its PDF, this
+README and twenty-two provenance, audit and correction files), 107 in `code/` and 166 in
 `data/`. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
 besides the replaced `article.tex` and `README.md`, 06 15, 07 14, 08 8, 09
 9, 10 14, 11 9, 12 9, 13 9, 14 12, 15 10, 16 19 (1 at the root, 7 in
 `code/`, 11 in `data/`), 17 13 (1, 6, 6), 18 16 (1, 5, 10), 19 11 (1, 3, 7),
-20 9 (1, 4, 4) and 21 51 (1, 21, 29). Every file of manuscripts 01–21
+20 9 (1, 4, 4) and 21 53 (2, 22, 29). Every file of manuscripts 01–21
 except `article.tex`, `article.pdf` and `README.md` is byte-identical to the
-delivery.
+delivery; for 21 the delivery is, since batch 80, the corrected code edition
+(`Eager_Tree_Calculus_Research_Package_corrected.zip`, arrival `4e270aa46`,
+placement `8a4e64732`), which replaced four placed files
+(`code/21-eager-tree-tree_kernel.py`, `code/21-eager-tree-reproduce.py`,
+`data/21-eager-tree-receipt.json`, `data/21-eager-tree-independent_receipt.json`;
+the original bytes remain in `a7ae02511` and `aebfa386e`) and added two
+(`21-eager-tree-CORRECTION.md`, `code/21-eager-tree-test_application_domain.py`).
+The other 47 files of 21 are byte-identical in both editions.
 
 ## Labels
 
@@ -1368,6 +1398,7 @@ delivered README nor audit cites a theorem by number.
 | Delivered | Shipped |
 |---|---|
 | `VERIFICATION.md` | `21-eager-tree-VERIFICATION.md` |
+| `CORRECTION.md` (corrected edition, batch 80) | `21-eager-tree-CORRECTION.md` |
 | `reproduce.py` | `code/21-eager-tree-reproduce.py` |
 | `build_pdf.py` | `code/21-eager-tree-build_pdf.py` |
 | `code/analyze_growth.py` | `code/21-eager-tree-analyze_growth.py` |
@@ -1386,6 +1417,7 @@ delivered README nor audit cites a theorem by number.
 | `code/independent_shared_audit.py` | `code/21-eager-tree-independent_shared_audit.py` |
 | `code/shared_compression.py` | `code/21-eager-tree-shared_compression.py` |
 | `code/symbolic_audit.py` | `code/21-eager-tree-symbolic_audit.py` |
+| `code/test_application_domain.py` (corrected edition, batch 80) | `code/21-eager-tree-test_application_domain.py` |
 | `code/tree_kernel.py` | `code/21-eager-tree-tree_kernel.py` |
 | `code/verify_packet_assumptions.py` | `code/21-eager-tree-verify_packet_assumptions.py` |
 | `code/verify_shared_macro.py` | `code/21-eager-tree-verify_shared_macro.py` |
@@ -1520,6 +1552,12 @@ SHA-256 `5c6c1002…04ab4`, 595,430 bytes). Its checksum ledger
 (`a7ae02511`), with its checker `verify_manifest.py`, which checks only
 that ledger. Its largest file is `shared_symbolic_proofs.json` (88,147
 bytes), so nothing was excluded as heavy and no data need reconstructing.
+The complete corrected layout of 21 (batch 80) is preferably retrieved from
+`git show 4e270aa46:docs/incoming/Eager_Tree_Calculus_Research_Package_corrected.zip`
+(SHA-256 `2c053f50…0f3dbd`, 598,941 bytes); its refreshed `MANIFEST.sha256`
+(57/57) was verified and retired at the batch-80 placement (`8a4e64732`),
+and its delivery `README.md` (with a correction notice) is not shipped.
+The `aebfa386e` command above retrieves the original edition.
 
 ## What is claimed and what is not
 
@@ -2369,11 +2407,21 @@ counts, the exact degree, the universal tree's bit interval and the
 growth formulas, narrows the bit interval of `R` to
 2,501,742,332,141–2,503,889,815,785, and supplies the patch
 `eager_tree_exact_application_inputs.patch` for one evaluator input
-defect (see Disclosures), which is not applied here. Its review of the
+defect (see Disclosures). That patch was never applied here; since batch 80
+the shipped kernel is the archive's corrected edition, which repairs the
+same defect in its own, equivalent code, and the tree's correction audit
+`review_batch80_corrected.md` (`abfc0cb25`) confirms the repair, the
+unchanged mathematics and a byte-for-byte fresh replay of its receipt. Do
+not apply the patch to the shipped file: the repair is already there and
+the hunk fails. Its review of the
 placement (`review_placement_a7ae02511.md`, `653349f6a`) authenticates the
-51 shipped files against the archive and supplies a portable stager,
+51 files placed by `a7ae02511` against the archive and supplies a portable stager,
 `replay_placed_substrates_a7ae02511.py`, that restores the delivered
-layout from Git.
+layout from Git. Four of those 51 files were replaced by corrected bytes in
+the batch-80K1 placement, so since batch 80 the stager authenticates only a
+checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`), where it
+restores the original edition; on a current checkout it stops with "Placed
+source differs". For the corrected layout extract the batch-80 archive.
 
 **Relations (batch 79, cluster J2).** Part XIX answers in part, for
 another calculus, Source 01 of `cdc:q:ski` (a validity-free coding, a
@@ -2405,10 +2453,10 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 607 pages (196 before batch 62, 306 before batch 63,
+The recorded build has 608 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes),
+509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -2484,6 +2532,17 @@ underfull line. Every label and bibliography number is unchanged (the
 `.aux` of a build of the previous text compared, 3132 `\newlabel` entries).
 The pages with the notes after `cdc:ex:gap` and after the question on
 adaptive support geometry were rendered and inspected.
+
+The batch-80 notes of cluster K1 (the corrected code edition of manuscript
+21: two dated notes, updated sentences and one bibliography entry; no
+label, macro or package) add one page: 608 pages, with no errors,
+warnings, undefined references or citations, multiply defined labels,
+duplicate destinations or overfull boxes, and the same single underfull
+line. Every label and every earlier bibliography number is unchanged (the
+`.aux` of a build of the previous text compared, 3132 `\newlabel`
+entries; `repo-b80rev` is item 99). The pages with the new note in
+`cdc:et:sec:reproduce`, the note after the artifact index, the provenance
+table and the bibliography were rendered and inspected.
 
 ## Rerunning the checks
 
@@ -2738,6 +2797,21 @@ unzip, `cd eager-tree-certificates`) and run `py verify_manifest.py` (55
 entries) **before** `py reproduce.py`; this was also tested (about 33
 seconds, all 16 stages pass). The research tree's review reports the same
 outcome, with all 19 stages, for the original and for its patched copy.
+Batch 80 (corrected edition): the `r21` recipe, run unchanged on a scratch
+copy of the shipped files after the replacement (Python 3.14.4, Windows;
+about 20 seconds), runs 17 stages, the regression suite first, and prints
+"All requested checks passed"; of the 27 regenerated files, 21 equal the
+shipped ones after removing carriage returns, including `receipt.json` and
+`independent_receipt.json` with the corrected kernel's hash `636ce7fe…`,
+and the same six receipts as above differ only in their CRLF hashes. In
+the batch-80 placement check, `reproduce.py --symbolic` under Python
+writing LF ran all 20 stages and regenerated all 27 files byte for byte.
+`py code/test_application_domain.py --kernel <file>` passes on the shipped
+kernel and on the batch-79 kernel with the review's patch, and fails on
+the batch-79 kernel (`git show a7ae02511:<path of code/21-eager-tree-tree_kernel.py>`)
+with 29 failures and 36 errors, as `21-eager-tree-CORRECTION.md` states.
+The archive route for the corrected edition (`4e270aa46`) is the same;
+there `verify_manifest.py` checks 57 entries.
 
 **Hazards.**
 
@@ -3142,6 +3216,14 @@ outcome, with all 19 stages, for the original and for its patched copy.
   and `literal_universal_tree.json` (shipped with prefixes;
   byte-identical). The article prints the shipped names in notes where 21
   names its files and keeps its artifact index in the delivered names.
+  Batch 80: `21-eager-tree-CORRECTION.md` uses the delivered names
+  (`code/tree_kernel.py`, `code/test_application_domain.py`,
+  `code/receipt.json`, `MANIFEST.sha256`), runs `python3` from the
+  extracted `eager-tree-certificates/` directory, and names the
+  unshipped `verify_manifest.py` and ledger;
+  `code/21-eager-tree-test_application_domain.py` imports the sibling
+  `tree_kernel.py` by delivered name unless `--kernel` is given; the new
+  `reproduce.py` stage runs `code/test_application_domain.py`.
 - **Batch 79, cluster J2: renamings and notes in the printed text.** 21's
   `\code` (the coding map) is typeset with `\tcode` and its `\cl` (a
   closure) with `\clos`, with unchanged glyphs; its `\file` is this
@@ -3163,7 +3245,7 @@ outcome, with all 19 stages, for the original and for its patched copy.
   `review_eager_tree_aebfa.md` (`3b5989da9`) of the Hilbert's-tenth-problem
   research tree finds no theorem-level defect. Its finding P3 concerns
   `Evaluation.app` in `tree_kernel.py` (shipped as
-  `code/21-eager-tree-tree_kernel.py`; the review cites line 65, where its
+  `code/21-eager-tree-tree_kernel.py`; the review cites line 65 of the original, where its
   patch hunk begins, and the method starts at line 67): the first code is
   checked only when it is decomposed and the second is not validated
   before the cache lookup, so `Evaluation().app(0,-1)` returns −1, and
@@ -3174,12 +3256,25 @@ outcome, with all 19 stages, for the original and for its patched copy.
   `eager_tree_exact_application_inputs.patch` (SHA-256 `bb669fe7…cdfe`,
   beside the review in
   `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`)
-  adds exact natural-integer validation of both codes and is **not
-  applied**: the shipped program is the delivered bytes. The review reran
+  adds exact natural-integer validation of both codes; it was **not
+  applied**, and at the batch-79 write the shipped program was the
+  delivered original. The review reran
   all 19 author stages on the original and the repaired copies, reproduced
   the 26 saved JSON objects (normalizing only the changed source digest),
   and added 774 independent assertions. No theorem of Part XIX depends on
-  the defect.
+  the defect. Batch 80: the authors' corrected code edition (arrival
+  `4e270aa46`, placement `8a4e64732`) makes `Evaluation.app` reject any
+  code that is not an exact nonnegative `int` (so Booleans, floats and
+  subclasses) with `ValueError`, before the cache lookup, active-call and
+  budget checks and any state change; it is now the shipped
+  `code/21-eager-tree-tree_kernel.py`. Its guard is written independently
+  (one condition on both codes, the same message) and is equivalent to the
+  patch: the patched original passes the new suite
+  `code/21-eager-tree-test_application_domain.py`, the unpatched original
+  fails it. **Do not apply the patch to the shipped file**: the repair is
+  already present and the hunk fails (`patch --dry-run`). The tree's
+  correction audit `review_batch80_corrected.md` (`abfc0cb25`) confirms the
+  repair and that the rest of the kernel's AST is unchanged.
 - **Byte-identical duplicates within a manuscript** (checked with `cmp`):
   03's `test_results.json` and `test_run.txt`, `linear_test_results.json`
   and `linear_test_run.txt`, and `example-events.json` and
@@ -3678,7 +3773,8 @@ same decisions.
   `\code`. The review's patch is not applied; its tighter interval for
   `R` is printed beside 21's numbers, which are unchanged. Bibliography:
   five new entries (`jaykernel`, `jayreflective`, `jaytree`, `dallago`
-  and the review `repo-etrev`; 98 distinct works in all), and `repo-cl`
+  and the review `repo-etrev`; 98 distinct works in all, 99 since the
+  batch-80 entry `repo-b80rev`), and `repo-cl`
   is cited by the written remark. 21's author line and PDF metadata name
   no AI assistant.
 - **Batch-79 reciprocal notes (cluster J2).** Six dated `[write]` notes of
@@ -3692,6 +3788,17 @@ same decisions.
   (batch 79, cluster J2)" above). They cite those reports' labels by name;
   no label was added, renamed or renumbered, and no printed text was
   changed.
+- **Batch 80, cluster K1 (corrected code edition of 21).** A dated
+  `[write]` note "Added 2 October 2026 (batch 80): corrected code edition"
+  after the batch-79 review note in `cdc:et:sec:reproduce`; a `[write]`
+  note after the artifact index (`cdc:et:app:artifacts`) naming the two
+  new files; sentences updated in the Part's opening, in the package note
+  of Section 3.21, in the provenance table (row 21) and its list, and in
+  the bibliography entry `repo-etrev`; one new bibliography entry,
+  `repo-b80rev`, for the correction audit. The batch-79 statements that the
+  shipped kernel was the original and the patch not applied are kept as
+  history. No statement, label, number or manuscript text changed (the
+  corrected archive's `.tex` is byte-identical); no label was added.
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
   different commits), `\repoCommit` (02) and `\reposha` (04) printed as
