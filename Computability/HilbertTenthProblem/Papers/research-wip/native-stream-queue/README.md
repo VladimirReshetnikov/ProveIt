@@ -96,9 +96,17 @@ and a five-branch example from 840 to 456. Complete emitted gate lists,
 pay the whole evaluation, including finalization; the horizon remains external.
 
 
-Four [exact U15 source identities](u15_packed_cross_projection507.md) remove
+The [U15 loader offset rewrite](u15_packed_loader_offset506.md) saves a further
+addition, giving complete ordinary-input points **506/4881, 508/3120,
+510/2116, 512/1936** (operations/exact degree). Each entire polynomial and all
+87 positive witnesses remain unchanged. The [independent review](review_u15_loader_offset506.md)
+proves equality of all eight emitted sources and transfers the exact degrees;
+root replay of both receipts passes. Raw counts remain 319/321, and the separate
+87-operation universal benchmark remains unchanged.
+
+Four preceding [exact U15 source identities](u15_packed_cross_projection507.md) remove
 two multiplications and two additions from the complete equations. The ordinary
-input schedules now cost **507/4881, 509/3120, 511/2116, 513/1936**
+input schedules cost **507/4881, 509/3120, 511/2116, 513/1936**
 (operations/exact degree), with 209 multiplications and 87 positive witnesses.
 Raw input drops to 319 operations. Each entire polynomial, comparison, native
 unit factor and finalizer is unchanged; ordinary input and unbounded duration
