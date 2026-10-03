@@ -39,19 +39,19 @@ independently verify the result. The source and both review receipts pass
 fresh replay. This is a mathematical proof with executable checks, not a
 Lean formalization or an unrestricted optimality claim.
 
-The [complete five-unit census](Papers/research-wip/native-stream-queue/complete_unit_partition_frontier109.md)
-adds **109 operations at exact degree28**, improving the earlier109/32
-construction while retaining107/42 and111/24. All37 permitted complete
-sources preserve the entire integer zero set of their asymmetric113/24
-parent on unchanged coordinates, with24 positive witnesses. The
-[independent full review](Papers/research-wip/native-stream-queue/review_complete_unit_partition_frontier109.md)
-and [separate mathematical census](Papers/research-wip/native-stream-queue/review_index_unit_partitions_math.md)
-verify all sources, corrections, exact degrees and paid ledgers; all three
-frozen receipts pass fresh replay. The degree28 proof includes both maximal
-residual squares. Ordinary input and unbounded duration remain paid.
-These points extend the86/179 through98/44 operation/degree catalogue;
-earlier points use19 witnesses. This exhausts a specified37-partition sign
-criterion, with no global optimality claim. Minimum bounds remain74/86.
+The [complete six-unit census](Papers/research-wip/native-stream-queue/complete_six_unit_partition_frontier106.md)
+now gives **106 operations at exact degree42**, **108 at degree28**, and
+**110 at degree24**, each with24 positive witnesses. A paid bound-unit
+subtraction and regrouping preserve the full positive integer zero set.
+All151 complete sources are emitted;77 also have a stronger unrestricted
+integer-zero theorem. The additional74 use a first-norm sign proof requiring
+positive coordinates. The [independent review](Papers/research-wip/native-stream-queue/review_complete_six_unit_partition_frontier106.md)
+reconstructs every circuit, correction and exact leading form from the
+separately authored scout. Author, scout and review receipts pass fresh
+replay. These replace the reviewed five-unit points107/42,109/28,111/24
+and extend the86/179 through98/44 catalogue, whose earlier points use19
+witnesses. Ordinary input and unbounded duration remain paid. The minimum
+operation bounds stay74/86; no global optimality claim is made.
 
 The [eager Tree occurrence-flow reduction](Papers/research-wip/native-stream-queue/eager_tree_occurrence_flow.md)
 saves **N−1 additions** in the complete N-row quartic certificate, giving

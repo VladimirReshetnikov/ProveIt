@@ -33,30 +33,32 @@ a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
 This restricted negative result does not cover the new first-root change.
 
-The [complete five-unit census](complete_unit_partition_frontier109.md)
-now gives **109=53M+56A at exact degree28**, with24 positive witnesses.
-It emits all37 partitions that keep the first and index units separate,
-using the existing integer sign proofs for the other three norm factors.
-The default groups are N0, Nm*Na and Ni*Nk. Its degree28 leading form
-includes both maximal residual squares, with a fixed-parameter-independent
-coefficient256. Every complete source has the same entire integer zero set
-as the asymmetric113/24 parent on unchanged coordinates. The
-[independent full review](review_complete_unit_partition_frontier109.md)
-and [separate mathematical census](review_index_unit_partitions_math.md)
-check the full sources, corrections, exact degrees, paid ledgers and proof
-scope. Author and both review receipts pass fresh root replay.
+The [complete six-unit census](complete_six_unit_partition_frontier106.md)
+now gives **106=53M+53A at exact degree42**, **108=53M+55A at degree28**
+and **110=53M+57A at degree24**, all with24 positive witnesses. One paid
+subtraction expresses the existing bound comparison as Nb=raw_bound-repunit;
+q=repunit+1 stays computed and shared. The151 emitted groupings preserve
+the parent's complete positive integer zero set. The first norm cannot
+be−1 by a descent with V=XY²>1, proved before any other equation is used.
+Exactly77 groupings additionally satisfy the stronger integer-domain sign
+criterion, with their own frontier108/30,110/24. The extra74 make no
+unrestricted integer-zero equivalence claim.
 
-The combined operation/degree frontier appends107/42,109/28 and111/24 to
-86/179 through98/44 above. These retained-coordinate points use24 witnesses;
-the earlier points use19. The census improves the earlier
-[index-unit109/32](complete109_index_unit_tradeoffs107.md) and retains its
-107/42 point. The [asymmetric family](complete113_asymmetric_retained109.md)
-and its [full review](review_complete113_asymmetric_retained109.md) supply
-the positive integral scale restoration before parent universality.
-Ordinary input and unbounded duration remain paid. The minimum operation
-bounds stay74/86. This census exhausts the stated37-partition criterion;
-the other15 set partitions remain unclassified, with no global optimality
-claim. Historical sources and receipts remain frozen.
+The [independent full review](review_complete_six_unit_partition_frontier106.md)
+reconstructs all151 sources and finalizers from the separately authored
+[bound-unit scout](complete_bound_unit_scout.md), verifies every exact leading
+form and complete correction, and audits domain metadata and public guards.
+Author, scout and independent-review receipts pass fresh root replay. The
+combined operation/degree frontier appends106/42,108/28,110/24 to86/179
+through98/44 above; these new points use24 witnesses, earlier points19.
+The [five-unit census](complete_unit_partition_frontier109.md), its
+[full review](review_complete_unit_partition_frontier109.md) and
+[mathematical census](review_index_unit_partitions_math.md) remain frozen
+predecessors at107/42,109/28,111/24. The asymmetric parent's positive scale
+restoration, ordinary input and unbounded duration remain paid. Minimum
+operation bounds stay74/86. These are finite sign-criterion frontiers;
+the other52 six-unit partitions are unclassified, with no global
+arithmetic optimality claim.
 
 The [eager Tree occurrence-flow certificate](eager_tree_occurrence_flow.md)
 reduces the complete finite N-row polynomial from27N²+125N+8 to

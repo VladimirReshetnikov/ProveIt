@@ -157,17 +157,35 @@
 > source/proof pins remain strict. Other15 partitions are unclassified by
 > this criterion; no unrestricted grouping lower bound is proved. Preserve
 > the frozen author and both review trios. Minimum bounds remain74/86.
-> A separate prospective six-unit source adds Nb=raw_bound-repunit for1A;
-> Nb-1 is exactly comparison0 since actual q=repunit+1 remains computed
-> and shared. Core76=40M+36A and seven other residuals give full102+2k
-> operations for k groups. Nb degree1 has alpha coefficient1. All-integer
-> groups separating N0,Nk,Nb suggest108/30 and110/24. The ALREADY pinned
-> asymmetric proof §2 excludes N0=-1 on positive tuples withV=XY²>1 by
-> a strict Pell descent, independently of other zero equations. Separating
-> only Nk,Nb then suggests positive-only106/42 and108/28, with110/24.
-> These latter forms and their general source/degree/API packets are not
-> yet established here. Never conflate their positive-domain theorem with
-> the stronger entire-integer zero equivalence of the current37 criterion.
+> The [complete six-unit census](complete_six_unit_partition_frontier106.md)
+> and [independent full review](review_complete_six_unit_partition_frontier106.md)
+> now establish106/42,108/28,110/24, all24 positive witnesses, superseding
+> the three preceding five-unit frontier points. The separately authored
+> [bound-unit scout](complete_bound_unit_scout.md) supplies independent source
+> reconstruction for the maintained compiler's audit; that reuse is disclosed.
+> Author, scout and independent-review receipts pass fresh root replay.
+> Actual Nb=raw_bound-repunit adds1A; Nb-1 equals comparison0 identically
+> because q=repunit+1 remains paid and shared. Core76=40M+36A, seven other
+> residuals and k product groups give full102+2k=53M+(49+2k)A operations.
+> All151 partitions separating Nk,Nb are emitted, with16/65/55/14/1 forms
+> at2/3/4/5/6 groups. Exactly77 also separate N0,Nk,Nb and preserve the
+> entire INTEGER zero set; their frontier is108/30,110/24. All151 preserve
+> POSITIVE integer zeros: before any equation, actual q>=2 and V=XY²>1
+> exclude N0=-1 by the pinned minimal-index Pell descent. Never extend this
+> argument to signed tuples; the extra74 carry no such integer theorem.
+> Six exact unit degrees are12,4,7,10,7,1. For108/28, groups[N0,Nb],
+> [Nm,Na],[Ni,Nk] have two maximal degree14 residuals; their summed leader
+> retains coefficient256 of ga^4*a^4*i^4*j^4*c^12. All151 uniform degree
+> proofs extract alpha^0 or alpha^2 before specializing the other free
+> coordinates, so arbitrary fixed program numerals cannot cancel the leader.
+> The complete census contains16,448 paid gates and1,580 comparisons.
+> Only the six-singleton partition is the identical parent polynomial;
+> every other packet records the complete six-unit correction explicitly.
+> All31 inherited source/proof pins are strict, including the scout and
+> five-unit trios. Other52 partitions are unclassified by this criterion.
+> No new input theorem, witness coordinate or external time bound is used;
+> current minimum operation bounds remain74/86. Preserve all frozen files.
+
 
 > The [eager Tree occurrence-flow reduction](eager_tree_occurrence_flow.md)
 > and [independent full review](review_eager_tree_occurrence_flow_full.md)
