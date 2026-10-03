@@ -81,9 +81,13 @@
 > 30/22/20 positive witnesses and74=40M+34A comparison operations.
 > Symmetric/asymmetric minima are20/20,56/48,84/64. Every defining and
 > protecting comparison remains paid; this is zero-set equivalence, not
-> an unconditional identity between the changed polynomials. The author
-> receipt passes fresh installed replay. Independent full source and uniform
-> degree reviews are in progress; the74/86 operation bounds remain unchanged.
+> an unconditional identity between the changed polynomials. The
+> [independent source review](review_complete74_equation_orientation_source.md)
+> and [independent symbolic-degree review](review_complete74_equation_orientation_census.md)
+> pass: all56 circuits,6,656 paid gates,856 residuals and96 unchanged protecting
+> residuals are checked. The degree review retains all six fixed numerals
+> symbolically and certifies a nonvanishing maximal leader for every source.
+> All three installed receipts pass fresh replay; the74/86 bounds are unchanged.
 >
 > The [asymmetric cross-cone scout](complete74_asymmetric_cross_cone_scout.md)
 > checks18 complete reassociations of the scale and packing cones, finding
@@ -115,17 +119,15 @@
 > the positive inverse unproved. Both installed receipts pass fresh replay.
 > No established universal bound or witness record changes.
 >
-> Next scoped transfer to consider: the [asymmetric87/88 proof](complete75_asymmetric_scale_tradeoffs.md)
-> and [retained-a,c asymmetric proof](complete113_asymmetric_retained109.md)
-> already establish smaller X=wq with Y=sq³ in their own emitted sources.
-> A read-only inventory found all three literal complete74 raw/positive/signed
-> packets still use X=wq³. A one-row transfer would keep74 and the full SOS
-> counts130/106/100; it is not an operation saving. Before claiming a transfer,
-> justify the ordinary first-root conversion to the retained-gap theorem and
-> adapt signed20's omitted-coordinate positivity recovery to the weaker scale
-> bounds. This is a missing scoped source/proof transfer to investigate, not a
-> new kernel theorem or an already verified successor. Do not rerun old suites
-> or silently apply the old symmetric proof to the changed X definition.
+> The previously suggested asymmetric74 transfer is now complete above;
+> do not repeat that source/proof task or the18-layout scale/packing scout.
+> The56 equation orientations lower degree but do not save operations.
+> Further grouping or elimination must retain the protecting comparisons,
+> or prove their restoration separately. In particular, the nonlinear
+> first-index projection still lacks a positive inverse; none of the new
+> asymmetric or same-coordinate orientation proofs fills that gap.
+> Continue with paid interactions outside these bounded families or another
+> computational substrate, including its ordinary-input and acceptance costs.
 >
 > The [native coefficient transfer](native_pell_factored_first_coefficient.md)
 > now checks the actual E=XY and kY cones in six full sources. Prescribed

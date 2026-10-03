@@ -82,9 +82,13 @@ exact degrees **20/48/64** at unchanged SOS costs **130/106/100**, with
 30/22/20 positive witnesses and74=40M+34A comparison operations.
 Symmetric/asymmetric minima are20/20,56/48,84/64. Every defining and
 protecting comparison remains paid; this is zero-set equivalence, not
-an unconditional identity between the changed polynomials. The author
-receipt passes fresh installed replay. Independent full source and uniform
-degree reviews are in progress; the74/86 operation bounds remain unchanged.
+an unconditional identity between the changed polynomials. The
+[independent source review](review_complete74_equation_orientation_source.md)
+and [independent symbolic-degree review](review_complete74_equation_orientation_census.md)
+pass: all56 circuits,6,656 paid gates,856 residuals and96 unchanged protecting
+residuals are checked. The degree review retains all six fixed numerals
+symbolically and certifies a nonvanishing maximal leader for every source.
+All three installed receipts pass fresh replay; the74/86 bounds are unchanged.
 
 The [asymmetric cross-cone scout](complete74_asymmetric_cross_cone_scout.md)
 checks18 complete reassociations of the scale and packing cones, finding
